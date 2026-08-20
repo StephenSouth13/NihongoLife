@@ -61,7 +61,6 @@ namespace NihongoLife.Tests
             var completion = breakdown.categories.Find(c => c.category == "TaskCompletion");
 
             Assert.NotNull(vocab);
-            Assert.AreEqual(105, Mathf.Clamp(100 + 5, 0, 100)); // base 100 + 10 - 5 = 105, clamped to 100
             Assert.AreEqual(100, vocab.score); // clamped to 100
 
             Assert.NotNull(grammar);

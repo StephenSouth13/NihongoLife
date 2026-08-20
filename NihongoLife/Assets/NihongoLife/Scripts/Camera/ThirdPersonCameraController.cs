@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-namespace NihongoLife.Camera
+namespace NihongoLife.Cameras
 {
     public class ThirdPersonCameraController : MonoBehaviour
     {

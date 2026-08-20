@@ -3,6 +3,7 @@ using UnityEngine.UI;
 using TMPro;
 using NihongoLife.Data;
 using NihongoLife.Core;
+using NihongoLife.Scenario;
 
 namespace NihongoLife.UI
 {

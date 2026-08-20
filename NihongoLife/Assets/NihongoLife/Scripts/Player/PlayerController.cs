@@ -22,7 +22,7 @@ namespace NihongoLife.Player
         private Vector3 _velocity;
         private bool _isGrounded;
         private bool _inputLocked = false;
-        private Camera _mainCamera;
+        private UnityEngine.Camera _mainCamera;
 
         public bool InputLocked
         {
@@ -40,7 +40,7 @@ namespace NihongoLife.Player
         private void Awake()
         {
             _characterController = GetComponent<CharacterController>();
-            _mainCamera = Camera.main;
+            _mainCamera = UnityEngine.Camera.main;
         }
 
         private void Update()

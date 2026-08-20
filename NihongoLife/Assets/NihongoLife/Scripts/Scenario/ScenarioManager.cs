@@ -6,6 +6,9 @@ using NihongoLife.Data;
 using NihongoLife.Save;
 using NihongoLife.Scoring;
 using NihongoLife.Dialogue;
+using NihongoLife.Interaction;
+using NihongoLife.Learning;
+using NihongoLife.Cameras;
 
 namespace NihongoLife.Scenario
 {
@@ -230,6 +233,38 @@ namespace NihongoLife.Scenario
 
                 AdvanceNode();
             }
+            else if (_currentNode.nodeType == ScenarioNodeType.CollectItem || _currentNode.nodeType == ScenarioNodeType.InspectItem)
+            {
+                Debug.Log($"[ScenarioManager] Objective item interaction incorrect: {itemId}");
+
+                // 1. Add score penalties
+                if (ScoringManager.Instance != null)
+                {
+                    ScoringManager.Instance.AddScore("Vocabulary", -5, $"Chọn nhầm vật phẩm", itemId);
+                    ScoringManager.Instance.AddScore("ResponseAccuracy", -10, "Chọn sai vật phẩm mục tiêu", itemId);
+                }
+
+                // 2. Trigger dynamic feedback dialogue node
+                var warningNode = new ScenarioNode
+                {
+                    id = "temp_warning_wrong_item",
+                    nodeType = ScenarioNodeType.Dialogue,
+                    speakerName = "Hệ thống",
+                    speakerId = "system",
+                    textJa = "これは違います。おにぎりを探してください。",
+                    textReading = "これはちがいます。おにぎりをさがしてください。",
+                    textVi = "Đây không phải vật phẩm được yêu cầu. Hãy tìm cơm nắm!",
+                    textRomaji = "Kore wa chigaimasu. Onigiri wo sagashite kudasai.",
+                    nextNodeId = _currentNode.id // Return back to the active CollectItem node
+                };
+
+                // Suspend player inputs and show dialogue
+                SetPlayerInputLocked(true);
+                if (DialogueManager.Instance != null)
+                {
+                    DialogueManager.Instance.StartDialogue(warningNode);
+                }
+            }
         }
 
         public void OnNPCInteracted(string npcId, NPC.NPCController npc)
@@ -355,10 +390,10 @@ namespace NihongoLife.Scenario
             }
 
             // Lock camera rotation too
-            var cam = Camera.main;
+            var cam = UnityEngine.Camera.main;
             if (cam != null)
             {
-                var camCtrl = cam.GetComponent<Camera.ThirdPersonCameraController>();
+                var camCtrl = cam.GetComponent<ThirdPersonCameraController>();
                 if (camCtrl != null)
                 {
                     camCtrl.IsLocked = locked;

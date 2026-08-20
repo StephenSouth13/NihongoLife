@@ -6,8 +6,14 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/Scenes/SampleScene.unity
-    guid: 99c9720ab356a0642a771bea13969a05
+    path: Assets/NihongoLife/Scenes/00_Bootstrap.unity
+    guid: cc840c14fd7c8584489e570253831b61
+  - enabled: 1
+    path: Assets/NihongoLife/Scenes/01_MainMenu.unity
+    guid: 28c2f6d326dc81b45bda1ced2fc407c0
+  - enabled: 1
+    path: Assets/NihongoLife/Scenes/90_TestSandbox.unity
+    guid: fd34fe1db7816f549a514675c246706a
   m_configObjects:
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 052faaac586de48259a63d0c4782560b, type: 3}
   m_UseUCBPForAssetBundles: 0

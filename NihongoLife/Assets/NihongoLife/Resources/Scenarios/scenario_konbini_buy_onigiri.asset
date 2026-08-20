@@ -124,6 +124,32 @@ MonoBehaviour:
       - grammar.n5.irimasen
       vocabularyTags:
       - vocab.n5.fukuro
+    - textJa: "袋を要ります。"
+      textVi: "Tôi cần túi bóng. (Sai trợ từ)"
+      nextNodeId: node_bag_wrong_grammar
+      scoreModifiers:
+      - category: Grammar
+        value: -10
+        reason: "Sai trợ từ: Dùng を thay vì が/は với động từ 要る"
+      - category: ResponseAccuracy
+        value: -5
+        reason: "Phản xạ chưa chính xác"
+      grammarTags: []
+      vocabularyTags: []
+    targetItemId: 
+    targetAreaId: 
+  - id: node_bag_wrong_grammar
+    nodeType: 0
+    nextNodeId: node_bag_yes
+    objectiveIdToComplete: 
+    speakerName: "Thu ngân"
+    speakerId: npc_cashier
+    textJa: "すみません、袋が要りますか？かしこまりました。"
+    textReading: "すみません、ふくろがいりますか？かしこまりました。"
+    textVi: "Xin lỗi, ý bạn là 'Tôi cần túi bóng' (袋が要ります) phải không? Chú ý: Động từ 要る đi với trợ từ が hoặc は, không đi với を."
+    textRomaji: "Sumimasen, fukuro ga irimasu ka? Kashikomarimashita."
+    voiceClip: {fileID: 0}
+    choices: []
     targetItemId: 
     targetAreaId: 
   - id: node_bag_yes
