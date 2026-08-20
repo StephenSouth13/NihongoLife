@@ -12,6 +12,8 @@ namespace NihongoLife.Scenario
         {
             if (runOnStart)
             {
+                // Load scenario ID dynamically if set by MainMenu
+                scenarioId = PlayerPrefs.GetString("ActiveScenarioId", scenarioId);
                 TriggerScenarioStart();
             }
         }

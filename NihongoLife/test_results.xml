@@ -1,35 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
-<test-run id="2" testcasecount="3" result="Passed" total="3" passed="3" failed="0" inconclusive="0" skipped="0" asserts="0" engine-version="3.5.0.0" clr-version="4.0.30319.42000" start-time="2026-08-20 17:53:24Z" end-time="2026-08-20 17:53:24Z" duration="0.0537763">
-  <test-suite type="TestSuite" id="1000" name="NihongoLife" fullname="NihongoLife" runstate="Runnable" testcasecount="3" result="Passed" start-time="2026-08-20 17:53:24Z" end-time="2026-08-20 17:53:24Z" duration="0.053776" total="3" passed="3" failed="0" inconclusive="0" skipped="0" asserts="0">
+<test-run id="2" testcasecount="3" result="Passed" total="3" passed="3" failed="0" inconclusive="0" skipped="0" asserts="0" engine-version="3.5.0.0" clr-version="4.0.30319.42000" start-time="2026-08-20 17:58:15Z" end-time="2026-08-20 17:58:15Z" duration="0.0549813">
+  <test-suite type="TestSuite" id="1000" name="NihongoLife" fullname="NihongoLife" runstate="Runnable" testcasecount="3" result="Passed" start-time="2026-08-20 17:58:15Z" end-time="2026-08-20 17:58:15Z" duration="0.054981" total="3" passed="3" failed="0" inconclusive="0" skipped="0" asserts="0">
     <properties>
       <property name="platform" value="EditMode" />
     </properties>
-    <test-suite type="Assembly" id="1005" name="NihongoLife.Tests.EditMode.dll" fullname="D:/VTC_Academy/NihongoLife/NihongoLife/NihongoLife/Library/ScriptAssemblies/NihongoLife.Tests.EditMode.dll" runstate="Runnable" testcasecount="3" result="Passed" start-time="2026-08-20 17:53:24Z" end-time="2026-08-20 17:53:24Z" duration="0.045768" total="3" passed="3" failed="0" inconclusive="0" skipped="0" asserts="0">
+    <test-suite type="Assembly" id="1005" name="NihongoLife.Tests.EditMode.dll" fullname="D:/VTC_Academy/NihongoLife/NihongoLife/NihongoLife/Library/ScriptAssemblies/NihongoLife.Tests.EditMode.dll" runstate="Runnable" testcasecount="3" result="Passed" start-time="2026-08-20 17:58:15Z" end-time="2026-08-20 17:58:15Z" duration="0.046977" total="3" passed="3" failed="0" inconclusive="0" skipped="0" asserts="0">
       <properties>
-        <property name="_PID" value="14992" />
+        <property name="_PID" value="24460" />
         <property name="_APPDOMAIN" value="Unity Child Domain" />
         <property name="platform" value="EditMode" />
         <property name="EditorOnly" value="True" />
       </properties>
-      <test-suite type="TestSuite" id="1006" name="NihongoLife" fullname="NihongoLife" runstate="Runnable" testcasecount="3" result="Passed" start-time="2026-08-20 17:53:24Z" end-time="2026-08-20 17:53:24Z" duration="0.045455" total="3" passed="3" failed="0" inconclusive="0" skipped="0" asserts="0">
+      <test-suite type="TestSuite" id="1006" name="NihongoLife" fullname="NihongoLife" runstate="Runnable" testcasecount="3" result="Passed" start-time="2026-08-20 17:58:15Z" end-time="2026-08-20 17:58:15Z" duration="0.046643" total="3" passed="3" failed="0" inconclusive="0" skipped="0" asserts="0">
         <properties />
-        <test-suite type="TestSuite" id="1007" name="Tests" fullname="NihongoLife.Tests" runstate="Runnable" testcasecount="3" result="Passed" start-time="2026-08-20 17:53:24Z" end-time="2026-08-20 17:53:24Z" duration="0.045296" total="3" passed="3" failed="0" inconclusive="0" skipped="0" asserts="0">
+        <test-suite type="TestSuite" id="1007" name="Tests" fullname="NihongoLife.Tests" runstate="Runnable" testcasecount="3" result="Passed" start-time="2026-08-20 17:58:15Z" end-time="2026-08-20 17:58:15Z" duration="0.046460" total="3" passed="3" failed="0" inconclusive="0" skipped="0" asserts="0">
           <properties />
-          <test-suite type="TestFixture" id="1001" name="ScenarioEngineTests" fullname="NihongoLife.Tests.ScenarioEngineTests" classname="NihongoLife.Tests.ScenarioEngineTests" runstate="Runnable" testcasecount="3" result="Passed" start-time="2026-08-20 17:53:24Z" end-time="2026-08-20 17:53:24Z" duration="0.044295" total="3" passed="3" failed="0" inconclusive="0" skipped="0" asserts="0">
+          <test-suite type="TestFixture" id="1001" name="ScenarioEngineTests" fullname="NihongoLife.Tests.ScenarioEngineTests" classname="NihongoLife.Tests.ScenarioEngineTests" runstate="Runnable" testcasecount="3" result="Passed" start-time="2026-08-20 17:58:15Z" end-time="2026-08-20 17:58:15Z" duration="0.045417" total="3" passed="3" failed="0" inconclusive="0" skipped="0" asserts="0">
             <properties />
-            <test-case id="1002" name="PlayerProgress_SerializationTest" fullname="NihongoLife.Tests.ScenarioEngineTests.PlayerProgress_SerializationTest" methodname="PlayerProgress_SerializationTest" classname="NihongoLife.Tests.ScenarioEngineTests" runstate="Runnable" seed="1818899655" result="Passed" start-time="2026-08-20 17:53:24Z" end-time="2026-08-20 17:53:24Z" duration="0.016653" asserts="0">
+            <test-case id="1002" name="PlayerProgress_SerializationTest" fullname="NihongoLife.Tests.ScenarioEngineTests.PlayerProgress_SerializationTest" methodname="PlayerProgress_SerializationTest" classname="NihongoLife.Tests.ScenarioEngineTests" runstate="Runnable" seed="1495860391" result="Passed" start-time="2026-08-20 17:58:15Z" end-time="2026-08-20 17:58:15Z" duration="0.018485" asserts="0">
               <properties>
                 <property name="retryIteration" value="0" />
                 <property name="repeatIteration" value="0" />
               </properties>
             </test-case>
-            <test-case id="1004" name="ScenarioDefinition_GetNodeTest" fullname="NihongoLife.Tests.ScenarioEngineTests.ScenarioDefinition_GetNodeTest" methodname="ScenarioDefinition_GetNodeTest" classname="NihongoLife.Tests.ScenarioEngineTests" runstate="Runnable" seed="582276057" result="Passed" start-time="2026-08-20 17:53:24Z" end-time="2026-08-20 17:53:24Z" duration="0.003744" asserts="0">
+            <test-case id="1004" name="ScenarioDefinition_GetNodeTest" fullname="NihongoLife.Tests.ScenarioEngineTests.ScenarioDefinition_GetNodeTest" methodname="ScenarioDefinition_GetNodeTest" classname="NihongoLife.Tests.ScenarioEngineTests" runstate="Runnable" seed="432694967" result="Passed" start-time="2026-08-20 17:58:15Z" end-time="2026-08-20 17:58:15Z" duration="0.003686" asserts="0">
               <properties>
                 <property name="retryIteration" value="0" />
                 <property name="repeatIteration" value="0" />
               </properties>
             </test-case>
-            <test-case id="1003" name="ScoringCalculation_BreakdownTest" fullname="NihongoLife.Tests.ScenarioEngineTests.ScoringCalculation_BreakdownTest" methodname="ScoringCalculation_BreakdownTest" classname="NihongoLife.Tests.ScenarioEngineTests" runstate="Runnable" seed="427137403" result="Passed" start-time="2026-08-20 17:53:24Z" end-time="2026-08-20 17:53:24Z" duration="0.008198" asserts="0">
+            <test-case id="1003" name="ScoringCalculation_BreakdownTest" fullname="NihongoLife.Tests.ScenarioEngineTests.ScoringCalculation_BreakdownTest" methodname="ScoringCalculation_BreakdownTest" classname="NihongoLife.Tests.ScenarioEngineTests" runstate="Runnable" seed="882429383" result="Passed" start-time="2026-08-20 17:58:15Z" end-time="2026-08-20 17:58:15Z" duration="0.007424" asserts="0">
               <properties>
                 <property name="retryIteration" value="0" />
                 <property name="repeatIteration" value="0" />

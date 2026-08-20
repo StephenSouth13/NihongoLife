@@ -56,15 +56,14 @@ namespace NihongoLife.UI
         {
             Debug.Log("[MainMenuUI] Starting sandbox gameplay...");
             
+            // Pass the target scenario ID dynamically using PlayerPrefs
+            PlayerPrefs.SetString("ActiveScenarioId", targetScenarioId);
+            PlayerPrefs.Save();
+
             var sceneFlow = GameServices.Get<SceneFlowController>();
             if (sceneFlow != null)
             {
-                // We load the scene first
                 sceneFlow.LoadScene(targetGameplayScene);
-                
-                // Note: The Scenario will be started automatically by an initializer in the loaded scene,
-                // or we can start it directly once loaded.
-                // We'll write a simple ScenarioSceneInitializer to automatically launch the scenario.
             }
         }
 
