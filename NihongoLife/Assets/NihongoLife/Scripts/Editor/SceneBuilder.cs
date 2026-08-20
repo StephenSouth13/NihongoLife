@@ -531,7 +531,7 @@ namespace NihongoLife.Editor
             {
                 var esGo = new GameObject("EventSystem");
                 esGo.AddComponent<UnityEngine.EventSystems.EventSystem>();
-                esGo.AddComponent<UnityEngine.EventSystems.StandaloneInputModule>();
+                esGo.AddComponent<UnityEngine.InputSystem.UI.InputSystemUIInputModule>();
             }
         }
     }

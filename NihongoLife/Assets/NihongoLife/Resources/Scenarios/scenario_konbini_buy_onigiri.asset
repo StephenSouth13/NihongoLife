@@ -48,7 +48,7 @@ MonoBehaviour:
     objectiveIdToComplete: obj_enter_store
     speakerName: "Hệ thống"
     speakerId: system
-    textJa: "コンビニへ行って、おおにぎりを1つ買ってください。"
+    textJa: "コンビニへ行って、おにぎりを1つ買ってください。"
     textReading: "こんびにへいって、おにぎりをひとつかってください。"
     textVi: "Hãy vào cửa hàng tiện lợi và mua 1 cái cơm nắm."
     textRomaji: "Konbini he itte, onigiri wo hitotsu katte kudasai."
@@ -110,8 +110,8 @@ MonoBehaviour:
       - grammar.n5.onegai_shimasu
       vocabularyTags:
       - vocab.n5.fukuro
-    - textJa: "いいえ、要りません。"
-      textVi: "Không, tôi không cần."
+    - textJa: "いいえ、大丈夫です。"
+      textVi: "Không, tôi ổn rồi. (Không cần túi)"
       nextNodeId: node_bag_no
       scoreModifiers:
       - category: Vocabulary
@@ -119,9 +119,9 @@ MonoBehaviour:
         reason: "Hiểu từ túi (fukuro)"
       - category: Grammar
         value: 10
-        reason: "Dùng mẫu ~irimasen"
+        reason: "Dùng mẫu ~daijoubu desu"
       grammarTags:
-      - grammar.n5.irimasen
+      - grammar.n5.daijoubu_desu
       vocabularyTags:
       - vocab.n5.fukuro
     - textJa: "袋を要ります。"
@@ -144,10 +144,10 @@ MonoBehaviour:
     objectiveIdToComplete: 
     speakerName: "Thu ngân"
     speakerId: npc_cashier
-    textJa: "すみません、袋が要りますか？かしこまりました。"
-    textReading: "すみません、ふくろがいりますか？かしこまりました。"
-    textVi: "Xin lỗi, ý bạn là 'Tôi cần túi bóng' (袋が要ります) phải không? Chú ý: Động từ 要る đi với trợ từ が hoặc は, không đi với を."
-    textRomaji: "Sumimasen, fukuro ga irimasu ka? Kashikomarimashita."
+    textJa: "すみません、袋は必要ですか？かしこまりました。"
+    textReading: "すみません、ふくろはひつようですか？かしこまりました。"
+    textVi: "Xin lỗi, ý bạn là bạn cần túi bóng phải không? Ở quầy thanh toán, cách trả lời tự nhiên là 'はい、お願いします' hoặc 'いいえ、大丈夫です'. Hãy chú ý: Động từ 要る đi với trợ từ が hoặc は, không đi với を."
+    textRomaji: "Sumimasen, fukuro wa hitsuyou desu ka? Kashikomarimashita. (Note: At checkouts, 'hai, onegai shimasu' or 'iie, daijoubu desu' are more natural.)"
     voiceClip: {fileID: 0}
     choices: []
     targetItemId: 
