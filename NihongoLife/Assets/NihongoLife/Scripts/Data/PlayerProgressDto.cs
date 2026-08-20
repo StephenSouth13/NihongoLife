@@ -1,0 +1,35 @@
+using System;
+using System.Collections.Generic;
+
+namespace NihongoLife.Data
+{
+    [Serializable]
+    public class ScenarioScoreRecord
+    {
+        public string scenarioId;
+        public int bestScore;
+        public long completedAt;
+    }
+
+    [Serializable]
+    public class MasteryRecord
+    {
+        public string targetId; // vocabulary/grammar item ID
+        public float masteryValue; // e.g. 0 to 100
+        public long lastUpdatedAt;
+    }
+
+    [Serializable]
+    public class PlayerProgressDto
+    {
+        public string playerId = "local_player";
+        public string displayName = "Gakusei";
+        public int xp = 0;
+        public int level = 1;
+        public int currentChapter = 1;
+        
+        public List<string> completedScenarios = new List<string>();
+        public List<ScenarioScoreRecord> bestScores = new List<ScenarioScoreRecord>();
+        public List<MasteryRecord> masteryLevels = new List<MasteryRecord>();
+    }
+}

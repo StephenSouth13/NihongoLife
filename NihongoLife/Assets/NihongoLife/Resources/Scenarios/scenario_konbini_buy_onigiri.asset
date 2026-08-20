@@ -1,0 +1,219 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3ba8f435ab5427145b206cd2a4f4ea7c, type: 3}
+  m_Name: scenario_konbini_buy_onigiri
+  m_EditorClassIdentifier: 
+  id: scenario.konbini.buy_onigiri
+  version: 1
+  titleJa: "コンビニで買い物"
+  titleVi: "Mua sắm ở cửa hàng tiện lợi"
+  descriptionJa: "おにぎりを買って、レジで会計を済ませましょう。"
+  descriptionVi: "Mua một chiếc cơm nắm và hoàn thành thanh toán tại quầy thu ngân."
+  chapterIndex: 2
+  learningTargets:
+  - grammar.n5.wo_kudasai
+  - grammar.n5.onegai_shimasu
+  - vocab.n5.onigiri
+  - vocab.n5.fukuro
+  objectives:
+  - id: obj_enter_store
+    titleJa: "コンビニに入る"
+    titleVi: "Vào cửa hàng tiện lợi"
+    isOptional: 0
+  - id: obj_find_onigiri
+    titleJa: "おにぎりを見つける"
+    titleVi: "Tìm cơm nắm"
+    isOptional: 0
+  - id: obj_go_to_cashier
+    titleJa: "レジへ行く"
+    titleVi: "Đi đến quầy thu ngân"
+    isOptional: 0
+  - id: obj_pay
+    titleJa: "お会計をする"
+    titleVi: "Thanh toán"
+    isOptional: 0
+  nodes:
+  - id: node_start
+    nodeType: 0
+    nextNodeId: node_find_onigiri
+    objectiveIdToComplete: obj_enter_store
+    speakerName: "Hệ thống"
+    speakerId: system
+    textJa: "コンビニへ行って、おおにぎりを1つ買ってください。"
+    textReading: "こんびにへいって、おにぎりをひとつかってください。"
+    textVi: "Hãy vào cửa hàng tiện lợi và mua 1 cái cơm nắm."
+    textRomaji: "Konbini he itte, onigiri wo hitotsu katte kudasai."
+    voiceClip: {fileID: 0}
+    choices: []
+    targetItemId: 
+    targetAreaId: 
+  - id: node_find_onigiri
+    nodeType: 1
+    nextNodeId: node_go_to_cashier
+    objectiveIdToComplete: obj_find_onigiri
+    speakerName: 
+    speakerId: 
+    textJa: 
+    textReading: 
+    textVi: 
+    textRomaji: 
+    voiceClip: {fileID: 0}
+    choices: []
+    targetItemId: onigiri
+    targetAreaId: 
+  - id: node_go_to_cashier
+    nodeType: 0
+    nextNodeId: node_cashier_prompt_bag
+    objectiveIdToComplete: obj_go_to_cashier
+    speakerName: "Thu ngân"
+    speakerId: npc_cashier
+    textJa: "いらっしゃいませ！お会計はご一緒ですか？"
+    textReading: "いらっしゃいませ！おかいけいはごいっしょですか？"
+    textVi: "Xin chào quý khách! Quý khách muốn thanh toán chung ạ?"
+    textRomaji: "Irasshaimase! Okaikei wa goissho desu ka?"
+    voiceClip: {fileID: 0}
+    choices: []
+    targetItemId: 
+    targetAreaId: 
+  - id: node_cashier_prompt_bag
+    nodeType: 0
+    nextNodeId: 
+    objectiveIdToComplete: 
+    speakerName: "Thu ngân"
+    speakerId: npc_cashier
+    textJa: "袋は要りますか？"
+    textReading: "ふくろはいりますか？"
+    textVi: "Quý khách có cần túi bóng không?"
+    textRomaji: "Fukuro wa irimasu ka?"
+    voiceClip: {fileID: 0}
+    choices:
+    - textJa: "はい、お願いします。"
+      textVi: "Vâng, xin vui lòng."
+      nextNodeId: node_bag_yes
+      scoreModifiers:
+      - category: Vocabulary
+        value: 10
+        reason: "Hiểu từ túi (fukuro)"
+      - category: Grammar
+        value: 10
+        reason: "Dùng mẫu ~onegaishimasu"
+      grammarTags:
+      - grammar.n5.onegai_shimasu
+      vocabularyTags:
+      - vocab.n5.fukuro
+    - textJa: "いいえ、要りません。"
+      textVi: "Không, tôi không cần."
+      nextNodeId: node_bag_no
+      scoreModifiers:
+      - category: Vocabulary
+        value: 10
+        reason: "Hiểu từ túi (fukuro)"
+      - category: Grammar
+        value: 10
+        reason: "Dùng mẫu ~irimasen"
+      grammarTags:
+      - grammar.n5.irimasen
+      vocabularyTags:
+      - vocab.n5.fukuro
+    targetItemId: 
+    targetAreaId: 
+  - id: node_bag_yes
+    nodeType: 0
+    nextNodeId: node_pay_choice
+    objectiveIdToComplete: 
+    speakerName: "Thu ngân"
+    speakerId: npc_cashier
+    textJa: "かしこまりました。袋代3円になります。お会計は500円です。"
+    textReading: "かしこまりました。ふくろだいさんえんになります。おかいけいはごひゃくえんです。"
+    textVi: "Tôi hiểu rồi. Tiền túi là 3 Yên. Tổng cộng là 500 Yên ạ."
+    textRomaji: "Kashikomarimashita. Fukurodai san-en ni narimasu. Okaikei wa gohyaku-en desu."
+    voiceClip: {fileID: 0}
+    choices: []
+    targetItemId: 
+    targetAreaId: 
+  - id: node_bag_no
+    nodeType: 0
+    nextNodeId: node_pay_choice
+    objectiveIdToComplete: 
+    speakerName: "Thu ngân"
+    speakerId: npc_cashier
+    textJa: "かしこまりました。お会計は497円です。"
+    textReading: "かしこまりました。おかいけいはよんひゃくきゅうじゅうななえんです。"
+    textVi: "Tôi hiểu rồi. Tổng cộng là 497 Yên ạ."
+    textRomaji: "Kashikomarimashita. Okaikei wa yonhyaku kyujuunana-en desu."
+    voiceClip: {fileID: 0}
+    choices: []
+    targetItemId: 
+    targetAreaId: 
+  - id: node_pay_choice
+    nodeType: 0
+    nextNodeId: 
+    objectiveIdToComplete: 
+    speakerName: "Hệ thống"
+    speakerId: system
+    textJa: "支払方法を選択してください。"
+    textReading: "しはらいほうほうをせんたくしてください。"
+    textVi: "Hãy chọn phương thức thanh toán."
+    textRomaji: "Shiharai houhou wo sentaku shite kudasai."
+    voiceClip: {fileID: 0}
+    choices:
+    - textJa: "これでお願いします。"
+      textVi: "Thanh toán bằng cái này ạ."
+      nextNodeId: node_transaction_done
+      scoreModifiers:
+      - category: Grammar
+        value: 15
+        reason: "Dùng mẫu thanh toán kore de"
+      grammarTags:
+      - grammar.n5.kore_de
+      vocabularyTags: []
+    - textJa: "カードで払います。"
+      textVi: "Thanh toán bằng thẻ."
+      nextNodeId: node_transaction_done
+      scoreModifiers:
+      - category: Vocabulary
+        value: 10
+        reason: "Dùng từ thẻ (kaado)"
+      grammarTags:
+      - grammar.n5.de_haraimasu
+      vocabularyTags:
+      - vocab.n5.kaado
+    targetItemId: 
+    targetAreaId: 
+  - id: node_transaction_done
+    nodeType: 0
+    nextNodeId: node_complete
+    objectiveIdToComplete: obj_pay
+    speakerName: "Thu ngân"
+    speakerId: npc_cashier
+    textJa: "ありがとうございます。またお越しくださいませ。"
+    textReading: "ありがとうございます。またおこしくださいませ。"
+    textVi: "Xin cảm ơn quý khách. Hẹn gặp lại quý khách lần sau."
+    textRomaji: "Arigatou gozaimasu. Mata okoshi kudasaimase."
+    voiceClip: {fileID: 0}
+    choices: []
+    targetItemId: 
+    targetAreaId: 
+  - id: node_complete
+    nodeType: 4
+    nextNodeId: 
+    objectiveIdToComplete: 
+    speakerName: 
+    speakerId: 
+    textJa: 
+    textReading: 
+    textVi: 
+    textRomaji: 
+    voiceClip: {fileID: 0}
+    choices: []
+    targetItemId: 
+    targetAreaId: 
