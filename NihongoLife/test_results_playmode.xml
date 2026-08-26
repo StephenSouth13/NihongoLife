@@ -1,52 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
-<test-run id="2" testcasecount="1" result="Failed(Child)" total="1" passed="0" failed="1" inconclusive="0" skipped="0" asserts="0" engine-version="3.5.0.0" clr-version="4.0.30319.42000" start-time="2026-08-20 18:52:24Z" end-time="2026-08-20 18:52:27Z" duration="2.8889161">
-  <test-suite type="TestSuite" id="1009" name="NihongoLife" fullname="NihongoLife" runstate="Runnable" testcasecount="1" result="Failed" site="Child" start-time="2026-08-20 18:52:24Z" end-time="2026-08-20 18:52:27Z" duration="2.888916" total="1" passed="0" failed="1" inconclusive="0" skipped="0" asserts="0">
+<test-run id="2" testcasecount="1" result="Passed" total="1" passed="1" failed="0" inconclusive="0" skipped="0" asserts="0" engine-version="3.5.0.0" clr-version="4.0.30319.42000" start-time="2026-08-26 03:10:47Z" end-time="2026-08-26 03:10:52Z" duration="4.7106716">
+  <test-suite type="TestSuite" id="1009" name="NihongoLife" fullname="NihongoLife" runstate="Runnable" testcasecount="1" result="Passed" start-time="2026-08-26 03:10:47Z" end-time="2026-08-26 03:10:52Z" duration="4.710672" total="1" passed="1" failed="0" inconclusive="0" skipped="0" asserts="0">
     <properties>
       <property name="platform" value="PlayMode" />
     </properties>
-    <failure>
-      <message><![CDATA[One or more child tests had errors]]></message>
-    </failure>
-    <test-suite type="Assembly" id="1003" name="NihongoLife.Tests.PlayMode.dll" fullname="D:/VTC_Academy/NihongoLife/NihongoLife/NihongoLife/Library/ScriptAssemblies/NihongoLife.Tests.PlayMode.dll" runstate="Runnable" testcasecount="1" result="Failed" site="Child" start-time="2026-08-20 18:52:24Z" end-time="2026-08-20 18:52:27Z" duration="2.878786" total="1" passed="0" failed="1" inconclusive="0" skipped="0" asserts="0">
+    <test-suite type="Assembly" id="1003" name="NihongoLife.Tests.PlayMode.dll" fullname="D:/VTC_Academy/NihongoLife/NihongoLife/NihongoLife/Library/ScriptAssemblies/NihongoLife.Tests.PlayMode.dll" runstate="Runnable" testcasecount="1" result="Passed" start-time="2026-08-26 03:10:47Z" end-time="2026-08-26 03:10:52Z" duration="4.701014" total="1" passed="1" failed="0" inconclusive="0" skipped="0" asserts="0">
       <properties>
-        <property name="_PID" value="23872" />
+        <property name="_PID" value="28008" />
         <property name="_APPDOMAIN" value="Unity Child Domain" />
         <property name="platform" value="PlayMode" />
         <property name="EditorOnly" value="False" />
       </properties>
-      <failure>
-        <message><![CDATA[One or more child tests had errors]]></message>
-      </failure>
-      <test-suite type="TestSuite" id="1004" name="NihongoLife" fullname="NihongoLife" runstate="Runnable" testcasecount="1" result="Failed" site="Child" start-time="2026-08-20 18:52:24Z" end-time="2026-08-20 18:52:27Z" duration="2.877920" total="1" passed="0" failed="1" inconclusive="0" skipped="0" asserts="0">
+      <test-suite type="TestSuite" id="1004" name="NihongoLife" fullname="NihongoLife" runstate="Runnable" testcasecount="1" result="Passed" start-time="2026-08-26 03:10:47Z" end-time="2026-08-26 03:10:52Z" duration="4.700430" total="1" passed="1" failed="0" inconclusive="0" skipped="0" asserts="0">
         <properties />
-        <failure>
-          <message><![CDATA[One or more child tests had errors]]></message>
-        </failure>
-        <test-suite type="TestSuite" id="1005" name="Tests" fullname="NihongoLife.Tests" runstate="Runnable" testcasecount="1" result="Failed" site="Child" start-time="2026-08-20 18:52:24Z" end-time="2026-08-20 18:52:27Z" duration="2.877619" total="1" passed="0" failed="1" inconclusive="0" skipped="0" asserts="0">
+        <test-suite type="TestSuite" id="1005" name="Tests" fullname="NihongoLife.Tests" runstate="Runnable" testcasecount="1" result="Passed" start-time="2026-08-26 03:10:47Z" end-time="2026-08-26 03:10:52Z" duration="4.699943" total="1" passed="1" failed="0" inconclusive="0" skipped="0" asserts="0">
           <properties />
-          <failure>
-            <message><![CDATA[One or more child tests had errors]]></message>
-          </failure>
-          <test-suite type="TestFixture" id="1001" name="ScenarioPlayModeTests" fullname="NihongoLife.Tests.ScenarioPlayModeTests" classname="NihongoLife.Tests.ScenarioPlayModeTests" runstate="Runnable" testcasecount="1" result="Failed" site="Child" start-time="2026-08-20 18:52:24Z" end-time="2026-08-20 18:52:27Z" duration="2.875758" total="1" passed="0" failed="1" inconclusive="0" skipped="0" asserts="0">
+          <test-suite type="TestFixture" id="1001" name="ScenarioPlayModeTests" fullname="NihongoLife.Tests.ScenarioPlayModeTests" classname="NihongoLife.Tests.ScenarioPlayModeTests" runstate="Runnable" testcasecount="1" result="Passed" start-time="2026-08-26 03:10:47Z" end-time="2026-08-26 03:10:52Z" duration="4.698664" total="1" passed="1" failed="0" inconclusive="0" skipped="0" asserts="0">
             <properties />
-            <failure>
-              <message><![CDATA[One or more child tests had errors]]></message>
-            </failure>
-            <test-case id="1002" name="Scenario_PlayModeSmokeTest" fullname="NihongoLife.Tests.ScenarioPlayModeTests.Scenario_PlayModeSmokeTest" methodname="Scenario_PlayModeSmokeTest" classname="NihongoLife.Tests.ScenarioPlayModeTests" runstate="Runnable" seed="254207207" result="Failed" start-time="2026-08-20 18:52:24Z" end-time="2026-08-20 18:52:27Z" duration="2.860456" asserts="0">
+            <test-case id="1002" name="Scenario_PlayModeSmokeTest" fullname="NihongoLife.Tests.ScenarioPlayModeTests.Scenario_PlayModeSmokeTest" methodname="Scenario_PlayModeSmokeTest" classname="NihongoLife.Tests.ScenarioPlayModeTests" runstate="Runnable" seed="538926677" result="Passed" start-time="2026-08-26 03:10:47Z" end-time="2026-08-26 03:10:52Z" duration="4.682898" asserts="0">
               <properties>
                 <property name="_JOINTYPE" value="UnityCombinatorial" />
                 <property name="retryIteration" value="0" />
                 <property name="repeatIteration" value="0" />
               </properties>
-              <failure>
-                <message><![CDATA[Unhandled log message: '[Error] [ScenarioManager] Scenario startNodeId is empty!'. Use UnityEngine.TestTools.LogAssert.Expect]]></message>
-                <stack-trace><![CDATA[NihongoLife.Scenario.ScenarioManager:StartScenario (NihongoLife.Scenario.ScenarioDefinition) (at Assets/NihongoLife/Scripts/Scenario/ScenarioManager.cs:114)
-NihongoLife.Scenario.ScenarioManager:StartScenario (string) (at Assets/NihongoLife/Scripts/Scenario/ScenarioManager.cs:77)
-NihongoLife.Scenario.ScenarioSceneInitializer:TriggerScenarioStart () (at Assets/NihongoLife/Scripts/Scenario/ScenarioSceneInitializer.cs:25)
-NihongoLife.Scenario.ScenarioSceneInitializer:Start () (at Assets/NihongoLife/Scripts/Scenario/ScenarioSceneInitializer.cs:17)
-
-]]></stack-trace>
-              </failure>
               <output><![CDATA[[AppRoot] Initializing core services...
 [SceneFlowController] Initialized.
 [AudioService] Initialized AudioSources.
@@ -57,7 +33,16 @@ NihongoLife.Scenario.ScenarioSceneInitializer:Start () (at Assets/NihongoLife/Sc
 [SceneFlowController] Loading scene: 01_MainMenu
 [ScenarioManager] Starting scenario: コンビニで買い物 (scenario.konbini.buy_onigiri)
 [ScoringManager] Score tracking reset.
-[ScenarioManager] Scenario startNodeId is empty!
+[ScenarioManager] Transitioning to Node: node_start (Type: Dialogue)
+[ScenarioManager] Objective Completed: コンビニに入る
+[DialogueManager] Starting dialogue node: node_start
+[ScenarioManager] Transitioning to Node: node_find_onigiri (Type: CollectItem)
+[ScenarioManager] Objective Completed: おにぎりを見つける
+[ScenarioManager] Objective item interaction successful: onigiri
+[ScoringManager] Added Score Event: Category=TaskCompletion, Value=+15, Reason=Đã tìm thấy vật phẩm: Lấy cơm nắm
+[ScenarioManager] Transitioning to Node: node_go_to_cashier (Type: Dialogue)
+[ScenarioManager] Objective Completed: レジへ行く
+[DialogueManager] Starting dialogue node: node_go_to_cashier
 Saving results to: C:/Users/Admin/AppData/LocalLow/DefaultCompany/NihongoLife\TestResults.xml
 ]]></output>
             </test-case>

@@ -105,13 +105,19 @@ namespace NihongoLife.Scenario
             OnScenarioStarted?.Invoke(currentScenario);
 
             // Navigate to start node
-            if (!string.IsNullOrEmpty(scenario.startNodeId))
+            string startId = scenario.startNodeId;
+            if (string.IsNullOrEmpty(startId) && scenario.nodes != null && scenario.nodes.Count > 0)
             {
-                TransitionToNode(scenario.startNodeId);
+                startId = scenario.nodes[0].id;
+            }
+
+            if (!string.IsNullOrEmpty(startId))
+            {
+                TransitionToNode(startId);
             }
             else
             {
-                Debug.LogError("[ScenarioManager] Scenario startNodeId is empty!");
+                Debug.LogError("[ScenarioManager] Scenario has no valid start node!");
             }
         }
 
