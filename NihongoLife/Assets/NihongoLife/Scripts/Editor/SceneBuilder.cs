@@ -396,45 +396,59 @@ namespace NihongoLife.Editor
             // Build Environment Placeholders
             var walls = new GameObject("Environment");
             walls.transform.position = Vector3.zero;
+            
+            // Build Visuals and Wrappers
+            VisualEnvironmentBuilder.GenerateVisualEnvironment(walls);
 
-            // Entrance door placeholder
+            // Entrance door placeholder (Keep collider, disable mesh)
             var entrance = GameObject.CreatePrimitive(PrimitiveType.Cube);
             entrance.name = "EntranceTrigger";
             entrance.transform.SetParent(walls.transform);
             entrance.transform.position = new Vector3(0, 1.5f, -8);
             entrance.transform.localScale = new Vector3(4, 3, 1);
-            entrance.GetComponent<Renderer>().material.color = Color.green;
+            Object.DestroyImmediate(entrance.GetComponent<MeshRenderer>());
+            Object.DestroyImmediate(entrance.GetComponent<MeshFilter>());
 
-            // Shelves
+            // Shelves (Gameplay colliders only)
             var shelf1 = GameObject.CreatePrimitive(PrimitiveType.Cube);
             shelf1.name = "Shelf_Food";
             shelf1.transform.SetParent(walls.transform);
             shelf1.transform.position = new Vector3(-5, 1.5f, 0);
             shelf1.transform.localScale = new Vector3(2, 3, 8);
-            shelf1.GetComponent<Renderer>().material.color = Color.cyan;
+            Object.DestroyImmediate(shelf1.GetComponent<MeshRenderer>());
+            Object.DestroyImmediate(shelf1.GetComponent<MeshFilter>());
 
             var shelf2 = GameObject.CreatePrimitive(PrimitiveType.Cube);
             shelf2.name = "Shelf_Drinks";
             shelf2.transform.SetParent(walls.transform);
             shelf2.transform.position = new Vector3(5, 1.5f, 0);
             shelf2.transform.localScale = new Vector3(2, 3, 8);
-            shelf2.GetComponent<Renderer>().material.color = Color.blue;
+            Object.DestroyImmediate(shelf2.GetComponent<MeshRenderer>());
+            Object.DestroyImmediate(shelf2.GetComponent<MeshFilter>());
 
-            // Cashier counter
+            // Cashier counter (Gameplay collider only)
             var counter = GameObject.CreatePrimitive(PrimitiveType.Cube);
             counter.name = "CashierCounter";
             counter.transform.SetParent(walls.transform);
             counter.transform.position = new Vector3(0, 1f, 8);
             counter.transform.localScale = new Vector3(6, 2, 2);
-            counter.GetComponent<Renderer>().material.color = Color.gray;
+            Object.DestroyImmediate(counter.GetComponent<MeshRenderer>());
+            Object.DestroyImmediate(counter.GetComponent<MeshFilter>());
 
             // Instantiate items on shelf
             var onigiriGo = GameObject.CreatePrimitive(PrimitiveType.Sphere);
             onigiriGo.name = "Onigiri";
             onigiriGo.transform.position = new Vector3(-5, 1.8f, 0); // On food shelf
-            onigiriGo.transform.localScale = new Vector3(0.5f, 0.5f, 0.5f);
-            onigiriGo.GetComponent<Renderer>().material.color = Color.white;
             onigiriGo.layer = interactableLayer;
+            Object.DestroyImmediate(onigiriGo.GetComponent<MeshRenderer>());
+            Object.DestroyImmediate(onigiriGo.GetComponent<MeshFilter>());
+            // Attach visual wrapper
+            var onigiriVisual = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/NihongoLife/Prefabs/Food/food_apple.prefab");
+            if (onigiriVisual != null) {
+                var vis = (GameObject)PrefabUtility.InstantiatePrefab(onigiriVisual);
+                vis.transform.SetParent(onigiriGo.transform, false);
+            }
+            
             var onigiriInteract = onigiriGo.AddComponent<InteractiveItem>();
             var serializedOnigiri = new SerializedObject(onigiriInteract);
             serializedOnigiri.FindProperty("itemId").stringValue = "onigiri";
@@ -446,9 +460,16 @@ namespace NihongoLife.Editor
             var waterGo = GameObject.CreatePrimitive(PrimitiveType.Cylinder);
             waterGo.name = "Water";
             waterGo.transform.position = new Vector3(5, 1.8f, 0); // On drinks shelf
-            waterGo.transform.localScale = new Vector3(0.4f, 0.6f, 0.4f);
-            waterGo.GetComponent<Renderer>().material.color = Color.blue;
             waterGo.layer = interactableLayer;
+            Object.DestroyImmediate(waterGo.GetComponent<MeshRenderer>());
+            Object.DestroyImmediate(waterGo.GetComponent<MeshFilter>());
+            // Attach visual wrapper
+            var waterVisual = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/NihongoLife/Prefabs/Food/food_bottle.prefab");
+            if (waterVisual != null) {
+                var vis = (GameObject)PrefabUtility.InstantiatePrefab(waterVisual);
+                vis.transform.SetParent(waterGo.transform, false);
+            }
+
             var waterInteract = waterGo.AddComponent<InteractiveItem>();
             var serializedWater = new SerializedObject(waterInteract);
             serializedWater.FindProperty("itemId").stringValue = "water";
