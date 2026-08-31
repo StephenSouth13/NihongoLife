@@ -147,6 +147,17 @@ namespace NihongoLife.Editor
         {
             var scene = EditorSceneManager.NewScene(NewSceneSetup.DefaultGameObjects, NewSceneMode.Single);
 
+            // Create AppRoot for Sandbox direct play testing
+            var appRootGo = new GameObject("AppRoot");
+            var appRoot = appRootGo.AddComponent<AppRoot>();
+            var audioService = appRootGo.AddComponent<AudioService>();
+            var sceneFlow = appRootGo.AddComponent<SceneFlowController>();
+
+            var serializedAppRoot = new SerializedObject(appRoot);
+            serializedAppRoot.FindProperty("audioService").objectReferenceValue = audioService;
+            serializedAppRoot.FindProperty("sceneFlowController").objectReferenceValue = sceneFlow;
+            serializedAppRoot.ApplyModifiedProperties();
+
             // Setup Lighting and physics environment
             RenderSettings.ambientMode = UnityEngine.Rendering.AmbientMode.Flat;
             RenderSettings.ambientLight = Color.gray;
@@ -414,39 +425,74 @@ namespace NihongoLife.Editor
             shelf1.name = "Shelf_Food";
             shelf1.transform.SetParent(walls.transform);
             shelf1.transform.position = new Vector3(-5, 1.5f, 0);
-            shelf1.transform.localScale = new Vector3(2, 3, 8);
-            Object.DestroyImmediate(shelf1.GetComponent<MeshRenderer>());
-            Object.DestroyImmediate(shelf1.GetComponent<MeshFilter>());
+            shelf1.transform.localScale = Vector3.one; // Reset scale for visual
+            var shelf1Collider = shelf1.GetComponent<BoxCollider>();
+            shelf1Collider.size = new Vector3(2, 3, 8);
+            
+            var shelfPrefab = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/NihongoLife/Prefabs/Furniture/shelf.prefab");
+            if (shelfPrefab != null) {
+                var vis = (GameObject)PrefabUtility.InstantiatePrefab(shelfPrefab);
+                vis.transform.SetParent(shelf1.transform, false);
+                vis.transform.localPosition = new Vector3(0, -1.5f, 0); // Ground offset
+                Object.DestroyImmediate(shelf1.GetComponent<MeshRenderer>());
+                Object.DestroyImmediate(shelf1.GetComponent<MeshFilter>());
+            } else {
+                shelf1.transform.localScale = new Vector3(2, 3, 8); // Restore primitive scale
+            }
 
             var shelf2 = GameObject.CreatePrimitive(PrimitiveType.Cube);
             shelf2.name = "Shelf_Drinks";
             shelf2.transform.SetParent(walls.transform);
             shelf2.transform.position = new Vector3(5, 1.5f, 0);
-            shelf2.transform.localScale = new Vector3(2, 3, 8);
-            Object.DestroyImmediate(shelf2.GetComponent<MeshRenderer>());
-            Object.DestroyImmediate(shelf2.GetComponent<MeshFilter>());
+            shelf2.transform.localScale = Vector3.one;
+            var shelf2Collider = shelf2.GetComponent<BoxCollider>();
+            shelf2Collider.size = new Vector3(2, 3, 8);
+
+            if (shelfPrefab != null) {
+                var vis = (GameObject)PrefabUtility.InstantiatePrefab(shelfPrefab);
+                vis.transform.SetParent(shelf2.transform, false);
+                vis.transform.localPosition = new Vector3(0, -1.5f, 0);
+                Object.DestroyImmediate(shelf2.GetComponent<MeshRenderer>());
+                Object.DestroyImmediate(shelf2.GetComponent<MeshFilter>());
+            } else {
+                shelf2.transform.localScale = new Vector3(2, 3, 8); // Restore primitive scale
+            }
 
             // Cashier counter (Gameplay collider only)
             var counter = GameObject.CreatePrimitive(PrimitiveType.Cube);
             counter.name = "CashierCounter";
             counter.transform.SetParent(walls.transform);
             counter.transform.position = new Vector3(0, 1f, 8);
-            counter.transform.localScale = new Vector3(6, 2, 2);
-            Object.DestroyImmediate(counter.GetComponent<MeshRenderer>());
-            Object.DestroyImmediate(counter.GetComponent<MeshFilter>());
+            counter.transform.localScale = Vector3.one;
+            var counterCollider = counter.GetComponent<BoxCollider>();
+            counterCollider.size = new Vector3(6, 2, 2);
+            
+            var counterPrefab = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/NihongoLife/Prefabs/Furniture/counter.prefab");
+            if (counterPrefab != null) {
+                var vis = (GameObject)PrefabUtility.InstantiatePrefab(counterPrefab);
+                vis.transform.SetParent(counter.transform, false);
+                vis.transform.localPosition = new Vector3(0, -1f, 0); // Ground offset
+                Object.DestroyImmediate(counter.GetComponent<MeshRenderer>());
+                Object.DestroyImmediate(counter.GetComponent<MeshFilter>());
+            } else {
+                counter.transform.localScale = new Vector3(6, 2, 2); // Restore primitive scale
+            }
 
             // Instantiate items on shelf
             var onigiriGo = GameObject.CreatePrimitive(PrimitiveType.Sphere);
             onigiriGo.name = "Onigiri";
             onigiriGo.transform.position = new Vector3(-5, 1.8f, 0); // On food shelf
             onigiriGo.layer = interactableLayer;
-            Object.DestroyImmediate(onigiriGo.GetComponent<MeshRenderer>());
-            Object.DestroyImmediate(onigiriGo.GetComponent<MeshFilter>());
+
             // Attach visual wrapper
             var onigiriVisual = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/NihongoLife/Prefabs/Food/food_apple.prefab");
             if (onigiriVisual != null) {
                 var vis = (GameObject)PrefabUtility.InstantiatePrefab(onigiriVisual);
                 vis.transform.SetParent(onigiriGo.transform, false);
+                Object.DestroyImmediate(onigiriGo.GetComponent<MeshRenderer>());
+                Object.DestroyImmediate(onigiriGo.GetComponent<MeshFilter>());
+            } else {
+                Debug.LogError("Missing visual for Onigiri. Kept primitive.");
             }
             
             var onigiriInteract = onigiriGo.AddComponent<InteractiveItem>();
@@ -461,13 +507,16 @@ namespace NihongoLife.Editor
             waterGo.name = "Water";
             waterGo.transform.position = new Vector3(5, 1.8f, 0); // On drinks shelf
             waterGo.layer = interactableLayer;
-            Object.DestroyImmediate(waterGo.GetComponent<MeshRenderer>());
-            Object.DestroyImmediate(waterGo.GetComponent<MeshFilter>());
+
             // Attach visual wrapper
             var waterVisual = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/NihongoLife/Prefabs/Food/food_bottle.prefab");
             if (waterVisual != null) {
                 var vis = (GameObject)PrefabUtility.InstantiatePrefab(waterVisual);
                 vis.transform.SetParent(waterGo.transform, false);
+                Object.DestroyImmediate(waterGo.GetComponent<MeshRenderer>());
+                Object.DestroyImmediate(waterGo.GetComponent<MeshFilter>());
+            } else {
+                Debug.LogError("Missing visual for Water. Kept primitive.");
             }
 
             var waterInteract = waterGo.AddComponent<InteractiveItem>();

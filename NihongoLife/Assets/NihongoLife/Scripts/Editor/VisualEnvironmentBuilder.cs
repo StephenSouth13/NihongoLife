@@ -53,7 +53,7 @@ namespace NihongoLife.Editor
             CreateWrapperFallback("shelf", "Furniture", "bookcaseOpen"); 
             CreateWrapperFallback("counter", "Furniture", "tableCoffee");
             CreateWrapperFallback("food_apple", "Food", "apple");
-            CreateWrapperFallback("food_bottle", "Food", "bottle-water");
+            CreateWrapperFallback("food_bottle", "Food", "soda-bottle");
             
             AssetDatabase.SaveAssets();
         }
@@ -102,8 +102,6 @@ namespace NihongoLife.Editor
 
             GameObject roadPrefab = LoadPrefab("Roads", "road_straight");
             GameObject buildingPrefab = LoadPrefab("Buildings", "building_a");
-            GameObject shelfPrefab = LoadPrefab("Furniture", "shelf"); 
-            GameObject counterPrefab = LoadPrefab("Furniture", "counter");
 
             // 1. Exterior Road
             if (roadPrefab != null)
@@ -113,6 +111,7 @@ namespace NihongoLife.Editor
                     var road = (GameObject)PrefabUtility.InstantiatePrefab(roadPrefab);
                     road.transform.SetParent(root.transform);
                     road.transform.position = new Vector3(i * 10, 0, -15);
+                    road.transform.localScale = Vector3.one;
                 }
             }
 
@@ -122,10 +121,12 @@ namespace NihongoLife.Editor
                 var bldg1 = (GameObject)PrefabUtility.InstantiatePrefab(buildingPrefab);
                 bldg1.transform.SetParent(root.transform);
                 bldg1.transform.position = new Vector3(-15, 0, -12);
+                bldg1.transform.localScale = Vector3.one;
 
                 var bldg2 = (GameObject)PrefabUtility.InstantiatePrefab(buildingPrefab);
                 bldg2.transform.SetParent(root.transform);
                 bldg2.transform.position = new Vector3(15, 0, -12);
+                bldg2.transform.localScale = Vector3.one;
             }
 
             // 3. Interior Walls/Floor

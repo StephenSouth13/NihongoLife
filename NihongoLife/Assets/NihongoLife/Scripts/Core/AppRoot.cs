@@ -59,8 +59,11 @@ namespace NihongoLife.Core
 
             Debug.Log("[AppRoot] Core services initialized successfully.");
 
-            // Start loading main menu
-            sceneFlowController.LoadScene("01_MainMenu");
+            // Start loading main menu only if we are in Bootstrap
+            if (UnityEngine.SceneManagement.SceneManager.GetActiveScene().name == "00_Bootstrap")
+            {
+                sceneFlowController.LoadScene("01_MainMenu");
+            }
         }
     }
 }
