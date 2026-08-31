@@ -84,6 +84,9 @@ namespace NihongoLife.Editor
             canvasGo.AddComponent<CanvasScaler>();
             canvasGo.AddComponent<GraphicRaycaster>();
 
+            // Load Font Asset
+            var jpFont = AssetDatabase.LoadAssetAtPath<TMP_FontAsset>("Assets/NihongoLife/Fonts/NotoSansJP SDF.asset");
+
             // Create MainMenu Panel
             var panelGo = new GameObject("MainMenuPanel");
             panelGo.transform.SetParent(canvasGo.transform, false);
@@ -97,6 +100,7 @@ namespace NihongoLife.Editor
             var titleGo = new GameObject("TitleText");
             titleGo.transform.SetParent(panelGo.transform, false);
             var titleText = titleGo.AddComponent<TextMeshProUGUI>();
+            if (jpFont != null) titleText.font = jpFont;
             titleText.text = "NIHONGO LIFE";
             titleText.fontSize = 48;
             titleText.alignment = TextAlignmentOptions.Center;
@@ -104,17 +108,18 @@ namespace NihongoLife.Editor
             rectTitle.anchoredPosition = new Vector2(0, 150);
 
             // Start Button
-            var startBtnGo = CreateUIButton(panelGo.transform, "StartButton", "Start Game / Bắt đầu", new Vector2(0, 0));
+            var startBtnGo = CreateUIButton(panelGo.transform, "StartButton", "Start Game / Bắt đầu", new Vector2(0, 0), jpFont);
             var startBtn = startBtnGo.GetComponent<Button>();
 
             // Quit Button
-            var quitBtnGo = CreateUIButton(panelGo.transform, "QuitButton", "Quit / Thoát", new Vector2(0, -60));
+            var quitBtnGo = CreateUIButton(panelGo.transform, "QuitButton", "Quit / Thoát", new Vector2(0, -60), jpFont);
             var quitBtn = quitBtnGo.GetComponent<Button>();
 
             // Profile Text Display
             var profileTextGo = new GameObject("ProfileText");
             profileTextGo.transform.SetParent(panelGo.transform, false);
             var profileText = profileTextGo.AddComponent<TextMeshProUGUI>();
+            if (jpFont != null) profileText.font = jpFont;
             profileText.fontSize = 18;
             profileText.color = Color.white;
             profileText.alignment = TextAlignmentOptions.Center;
@@ -224,6 +229,9 @@ namespace NihongoLife.Editor
             canvasGo.AddComponent<CanvasScaler>();
             canvasGo.AddComponent<GraphicRaycaster>();
 
+            // Load Font Asset
+            var jpFont = AssetDatabase.LoadAssetAtPath<TMP_FontAsset>("Assets/NihongoLife/Fonts/NotoSansJP SDF.asset");
+
             // Create HUDUI Panel
             var hudPanelGo = new GameObject("HUDPanel");
             hudPanelGo.transform.SetParent(canvasGo.transform, false);
@@ -240,6 +248,7 @@ namespace NihongoLife.Editor
             var promptRect = promptPanelGo.AddComponent<RectTransform>();
             promptRect.anchoredPosition = new Vector2(0, -100);
             var promptText = promptPanelGo.AddComponent<TextMeshProUGUI>();
+            if (jpFont != null) promptText.font = jpFont;
             promptText.fontSize = 20;
             promptText.alignment = TextAlignmentOptions.Center;
             promptText.text = "[E] Tương tác";
@@ -253,6 +262,7 @@ namespace NihongoLife.Editor
             titleRect.pivot = new Vector2(0, 1);
             titleRect.anchoredPosition = new Vector2(20, -20);
             var titleText = objTitleGo.AddComponent<TextMeshProUGUI>();
+            if (jpFont != null) titleText.font = jpFont;
             titleText.fontSize = 22;
             titleText.text = "Nhiệm vụ";
 
@@ -264,6 +274,7 @@ namespace NihongoLife.Editor
             listRect.pivot = new Vector2(0, 1);
             listRect.anchoredPosition = new Vector2(20, -60);
             var listText = objListGo.AddComponent<TextMeshProUGUI>();
+            if (jpFont != null) listText.font = jpFont;
             listText.fontSize = 18;
 
             // Dialogue Panel
@@ -280,6 +291,7 @@ namespace NihongoLife.Editor
             var spkrGo = new GameObject("SpeakerText");
             spkrGo.transform.SetParent(dialPanelGo.transform, false);
             var spkrText = spkrGo.AddComponent<TextMeshProUGUI>();
+            if (jpFont != null) spkrText.font = jpFont;
             spkrText.fontSize = 18;
             spkrText.color = Color.yellow;
             spkrGo.GetComponent<RectTransform>().anchoredPosition = new Vector2(-280, 80);
@@ -287,6 +299,7 @@ namespace NihongoLife.Editor
             var readGo = new GameObject("ReadingText");
             readGo.transform.SetParent(dialPanelGo.transform, false);
             var readText = readGo.AddComponent<TextMeshProUGUI>();
+            if (jpFont != null) readText.font = jpFont;
             readText.fontSize = 14;
             readText.color = Color.gray;
             readGo.GetComponent<RectTransform>().anchoredPosition = new Vector2(-280, 50);
@@ -294,12 +307,14 @@ namespace NihongoLife.Editor
             var jaGo = new GameObject("JapaneseText");
             jaGo.transform.SetParent(dialPanelGo.transform, false);
             var jaText = jaGo.AddComponent<TextMeshProUGUI>();
+            if (jpFont != null) jaText.font = jpFont;
             jaText.fontSize = 20;
             jaGo.GetComponent<RectTransform>().anchoredPosition = new Vector2(-280, 20);
 
             var romGo = new GameObject("RomajiText");
             romGo.transform.SetParent(dialPanelGo.transform, false);
             var romText = romGo.AddComponent<TextMeshProUGUI>();
+            if (jpFont != null) romText.font = jpFont;
             romText.fontSize = 14;
             romText.color = Color.cyan;
             romGo.GetComponent<RectTransform>().anchoredPosition = new Vector2(-280, -10);
@@ -307,12 +322,13 @@ namespace NihongoLife.Editor
             var viGo = new GameObject("TranslationText");
             viGo.transform.SetParent(dialPanelGo.transform, false);
             var viText = viGo.AddComponent<TextMeshProUGUI>();
+            if (jpFont != null) viText.font = jpFont;
             viText.fontSize = 16;
             viText.color = Color.white;
             viGo.GetComponent<RectTransform>().anchoredPosition = new Vector2(-280, -40);
 
             // Continue button
-            var contBtnGo = CreateUIButton(dialPanelGo.transform, "ContinueButton", "Tiếp tục", new Vector2(200, -60));
+            var contBtnGo = CreateUIButton(dialPanelGo.transform, "ContinueButton", "Tiếp tục", new Vector2(200, -60), jpFont);
             var contBtn = contBtnGo.GetComponent<Button>();
 
             // Choice Container
@@ -326,7 +342,7 @@ namespace NihongoLife.Editor
             layout.childForceExpandWidth = true;
 
             // Generate placeholder Choice Button Prefab (saved inside current scene structure, or instantiated directly)
-            var buttonPrefabGo = CreateUIButton(canvasGo.transform, "ChoiceButtonPrefab", "Choice", Vector2.zero);
+            var buttonPrefabGo = CreateUIButton(canvasGo.transform, "ChoiceButtonPrefab", "Choice", Vector2.zero, jpFont);
             buttonPrefabGo.SetActive(false);
             var btnPrefab = buttonPrefabGo.GetComponent<Button>();
 
@@ -361,6 +377,7 @@ namespace NihongoLife.Editor
             var resTitleGo = new GameObject("ResultTitle");
             resTitleGo.transform.SetParent(resultPanelGo.transform, false);
             var resTitleText = resTitleGo.AddComponent<TextMeshProUGUI>();
+            if (jpFont != null) resTitleText.font = jpFont;
             resTitleText.fontSize = 32;
             resTitleText.alignment = TextAlignmentOptions.Center;
             resTitleGo.GetComponent<RectTransform>().anchoredPosition = new Vector2(0, 150);
@@ -368,19 +385,20 @@ namespace NihongoLife.Editor
             var overGo = new GameObject("OverallScore");
             overGo.transform.SetParent(resultPanelGo.transform, false);
             var overText = overGo.AddComponent<TextMeshProUGUI>();
+            if (jpFont != null) overText.font = jpFont;
             overText.fontSize = 40;
             overText.alignment = TextAlignmentOptions.Center;
             overGo.GetComponent<RectTransform>().anchoredPosition = new Vector2(0, 80);
 
             // Metric labels
-            var vocabScoreGo = CreateScoreText(resultPanelGo.transform, "VocabScore", "Từ vựng: ", new Vector2(0, 20));
-            var gramScoreGo = CreateScoreText(resultPanelGo.transform, "GrammarScore", "Ngữ pháp: ", new Vector2(0, -10));
-            var listScoreGo = CreateScoreText(resultPanelGo.transform, "ListeningScore", "Nghe hiểu: ", new Vector2(0, -40));
-            var readScoreGo = CreateScoreText(resultPanelGo.transform, "ReadingScore", "Đọc hiểu: ", new Vector2(0, -70));
-            var accScoreGo = CreateScoreText(resultPanelGo.transform, "AccuracyScore", "Độ chính xác: ", new Vector2(0, -100));
-            var complScoreGo = CreateScoreText(resultPanelGo.transform, "CompletionScore", "Hoàn thành: ", new Vector2(0, -130));
+            var vocabScoreGo = CreateScoreText(resultPanelGo.transform, "VocabScore", "Từ vựng: ", new Vector2(0, 20), jpFont);
+            var gramScoreGo = CreateScoreText(resultPanelGo.transform, "GrammarScore", "Ngữ pháp: ", new Vector2(0, -10), jpFont);
+            var listScoreGo = CreateScoreText(resultPanelGo.transform, "ListeningScore", "Nghe hiểu: ", new Vector2(0, -40), jpFont);
+            var readScoreGo = CreateScoreText(resultPanelGo.transform, "ReadingScore", "Đọc hiểu: ", new Vector2(0, -70), jpFont);
+            var accScoreGo = CreateScoreText(resultPanelGo.transform, "AccuracyScore", "Độ chính xác: ", new Vector2(0, -100), jpFont);
+            var complScoreGo = CreateScoreText(resultPanelGo.transform, "CompletionScore", "Hoàn thành: ", new Vector2(0, -130), jpFont);
 
-            var exitBtnGo = CreateUIButton(resultPanelGo.transform, "ExitButton", "Quay lại Menu", new Vector2(0, -180));
+            var exitBtnGo = CreateUIButton(resultPanelGo.transform, "ExitButton", "Quay lại Menu", new Vector2(0, -180), jpFont);
             var exitBtn = exitBtnGo.GetComponent<Button>();
 
             // Wire ResultUI
@@ -415,8 +433,8 @@ namespace NihongoLife.Editor
             var entrance = GameObject.CreatePrimitive(PrimitiveType.Cube);
             entrance.name = "EntranceTrigger";
             entrance.transform.SetParent(walls.transform);
-            entrance.transform.position = new Vector3(0, 1.5f, -8);
-            entrance.transform.localScale = new Vector3(4, 3, 1);
+            entrance.transform.position = new Vector3(0, 1.5f, 0); // Entrance at Z=0
+            entrance.transform.localScale = new Vector3(3, 3, 1);
             Object.DestroyImmediate(entrance.GetComponent<MeshRenderer>());
             Object.DestroyImmediate(entrance.GetComponent<MeshFilter>());
 
@@ -424,64 +442,55 @@ namespace NihongoLife.Editor
             var shelf1 = GameObject.CreatePrimitive(PrimitiveType.Cube);
             shelf1.name = "Shelf_Food";
             shelf1.transform.SetParent(walls.transform);
-            shelf1.transform.position = new Vector3(-5, 1.5f, 0);
-            shelf1.transform.localScale = Vector3.one; // Reset scale for visual
+            shelf1.transform.position = new Vector3(-3, 1.1f, 4);
             var shelf1Collider = shelf1.GetComponent<BoxCollider>();
-            shelf1Collider.size = new Vector3(2, 3, 8);
+            shelf1Collider.size = new Vector3(2.2f, 2.2f, 0.8f); // Fit standard shelf
             
             var shelfPrefab = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/NihongoLife/Prefabs/Furniture/shelf.prefab");
             if (shelfPrefab != null) {
                 var vis = (GameObject)PrefabUtility.InstantiatePrefab(shelfPrefab);
                 vis.transform.SetParent(shelf1.transform, false);
-                vis.transform.localPosition = new Vector3(0, -1.5f, 0); // Ground offset
+                vis.transform.localPosition = new Vector3(0, -1.1f, 0); // Ground offset
                 Object.DestroyImmediate(shelf1.GetComponent<MeshRenderer>());
                 Object.DestroyImmediate(shelf1.GetComponent<MeshFilter>());
-            } else {
-                shelf1.transform.localScale = new Vector3(2, 3, 8); // Restore primitive scale
             }
 
             var shelf2 = GameObject.CreatePrimitive(PrimitiveType.Cube);
             shelf2.name = "Shelf_Drinks";
             shelf2.transform.SetParent(walls.transform);
-            shelf2.transform.position = new Vector3(5, 1.5f, 0);
-            shelf2.transform.localScale = Vector3.one;
+            shelf2.transform.position = new Vector3(3, 1.1f, 4);
             var shelf2Collider = shelf2.GetComponent<BoxCollider>();
-            shelf2Collider.size = new Vector3(2, 3, 8);
+            shelf2Collider.size = new Vector3(2.2f, 2.2f, 0.8f);
 
             if (shelfPrefab != null) {
                 var vis = (GameObject)PrefabUtility.InstantiatePrefab(shelfPrefab);
                 vis.transform.SetParent(shelf2.transform, false);
-                vis.transform.localPosition = new Vector3(0, -1.5f, 0);
+                vis.transform.localPosition = new Vector3(0, -1.1f, 0);
                 Object.DestroyImmediate(shelf2.GetComponent<MeshRenderer>());
                 Object.DestroyImmediate(shelf2.GetComponent<MeshFilter>());
-            } else {
-                shelf2.transform.localScale = new Vector3(2, 3, 8); // Restore primitive scale
             }
 
             // Cashier counter (Gameplay collider only)
             var counter = GameObject.CreatePrimitive(PrimitiveType.Cube);
             counter.name = "CashierCounter";
             counter.transform.SetParent(walls.transform);
-            counter.transform.position = new Vector3(0, 1f, 8);
-            counter.transform.localScale = Vector3.one;
+            counter.transform.position = new Vector3(0, 0.5f, 8);
             var counterCollider = counter.GetComponent<BoxCollider>();
-            counterCollider.size = new Vector3(6, 2, 2);
+            counterCollider.size = new Vector3(3, 1, 1);
             
             var counterPrefab = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/NihongoLife/Prefabs/Furniture/counter.prefab");
             if (counterPrefab != null) {
                 var vis = (GameObject)PrefabUtility.InstantiatePrefab(counterPrefab);
                 vis.transform.SetParent(counter.transform, false);
-                vis.transform.localPosition = new Vector3(0, -1f, 0); // Ground offset
+                vis.transform.localPosition = new Vector3(0, -0.5f, 0); // Ground offset
                 Object.DestroyImmediate(counter.GetComponent<MeshRenderer>());
                 Object.DestroyImmediate(counter.GetComponent<MeshFilter>());
-            } else {
-                counter.transform.localScale = new Vector3(6, 2, 2); // Restore primitive scale
             }
 
             // Instantiate items on shelf
             var onigiriGo = GameObject.CreatePrimitive(PrimitiveType.Sphere);
             onigiriGo.name = "Onigiri";
-            onigiriGo.transform.position = new Vector3(-5, 1.8f, 0); // On food shelf
+            onigiriGo.transform.position = new Vector3(-3, 1.3f, 4); // On food shelf
             onigiriGo.layer = interactableLayer;
 
             // Attach visual wrapper
@@ -491,8 +500,6 @@ namespace NihongoLife.Editor
                 vis.transform.SetParent(onigiriGo.transform, false);
                 Object.DestroyImmediate(onigiriGo.GetComponent<MeshRenderer>());
                 Object.DestroyImmediate(onigiriGo.GetComponent<MeshFilter>());
-            } else {
-                Debug.LogError("Missing visual for Onigiri. Kept primitive.");
             }
             
             var onigiriInteract = onigiriGo.AddComponent<InteractiveItem>();
@@ -505,7 +512,7 @@ namespace NihongoLife.Editor
             // Incorrect item (Water)
             var waterGo = GameObject.CreatePrimitive(PrimitiveType.Cylinder);
             waterGo.name = "Water";
-            waterGo.transform.position = new Vector3(5, 1.8f, 0); // On drinks shelf
+            waterGo.transform.position = new Vector3(3, 1.4f, 4); // On drinks shelf
             waterGo.layer = interactableLayer;
 
             // Attach visual wrapper
@@ -515,8 +522,6 @@ namespace NihongoLife.Editor
                 vis.transform.SetParent(waterGo.transform, false);
                 Object.DestroyImmediate(waterGo.GetComponent<MeshRenderer>());
                 Object.DestroyImmediate(waterGo.GetComponent<MeshFilter>());
-            } else {
-                Debug.LogError("Missing visual for Water. Kept primitive.");
             }
 
             var waterInteract = waterGo.AddComponent<InteractiveItem>();
@@ -549,7 +554,7 @@ namespace NihongoLife.Editor
             Debug.Log($"[SceneBuilder] Saved Test Sandbox scene to: {path}");
         }
 
-        private static GameObject CreateUIButton(Transform parent, string name, string text, Vector2 pos)
+        private static GameObject CreateUIButton(Transform parent, string name, string text, Vector2 pos, TMP_FontAsset font = null)
         {
             var btnGo = new GameObject(name);
             btnGo.transform.SetParent(parent, false);
@@ -565,6 +570,7 @@ namespace NihongoLife.Editor
             var textGo = new GameObject("Text");
             textGo.transform.SetParent(btnGo.transform, false);
             var txt = textGo.AddComponent<TextMeshProUGUI>();
+            if (font != null) txt.font = font;
             txt.text = text;
             txt.fontSize = 16;
             txt.color = Color.white;
@@ -578,7 +584,7 @@ namespace NihongoLife.Editor
             return btnGo;
         }
 
-        private static GameObject CreateScoreText(Transform parent, string name, string label, Vector2 pos)
+        private static GameObject CreateScoreText(Transform parent, string name, string label, Vector2 pos, TMP_FontAsset font = null)
         {
             var go = new GameObject(name);
             go.transform.SetParent(parent, false);
@@ -587,6 +593,7 @@ namespace NihongoLife.Editor
             rect.sizeDelta = new Vector2(400, 30);
             
             var txt = go.AddComponent<TextMeshProUGUI>();
+            if (font != null) txt.font = font;
             txt.text = label + "0";
             txt.fontSize = 16;
             txt.alignment = TextAlignmentOptions.Center;

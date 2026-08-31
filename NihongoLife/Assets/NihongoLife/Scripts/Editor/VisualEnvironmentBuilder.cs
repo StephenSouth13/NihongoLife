@@ -1,23 +1,28 @@
 using UnityEditor;
 using UnityEngine;
 using System.IO;
-using System.Linq;
 
 namespace NihongoLife.Editor
 {
     public static class VisualEnvironmentBuilder
     {
+        // Explicit paths
+        private static readonly string PATH_ROAD = "Assets/ThirdParty/Kenney/kenney_city-kit-roads/Models/FBX format/road-straight.fbx";
+        private static readonly string PATH_BUILDING = "Assets/ThirdParty/Kenney/kenney_city-kit-suburban/Models/FBX format/building-type-a.fbx";
+        private static readonly string PATH_SHELF = "Assets/ThirdParty/Kenney/kenney_furniture-kit/Models/FBX format/bookcaseOpen.fbx";
+        private static readonly string PATH_COUNTER = "Assets/ThirdParty/Kenney/kenney_furniture-kit/Models/FBX format/tableCoffee.fbx";
+        private static readonly string PATH_ONIGIRI = "Assets/ThirdParty/Kenney/kenney_food-kit/Models/FBX format/rice-ball.fbx";
+        private static readonly string PATH_WATER = "Assets/ThirdParty/Kenney/kenney_food-kit/Models/FBX format/soda-bottle.fbx";
+
         private static string[] prefabFolders = new string[]
         {
             "Assets/NihongoLife/Prefabs/Environment/Roads",
             "Assets/NihongoLife/Prefabs/Environment/Buildings",
-            "Assets/NihongoLife/Prefabs/Environment/Konbini",
             "Assets/NihongoLife/Prefabs/Furniture",
             "Assets/NihongoLife/Prefabs/Food",
-            "Assets/NihongoLife/Prefabs/Props"
+            "Assets/NihongoLife/Materials/Kenney"
         };
 
-        // This is called by SceneBuilder.cs
         public static void GenerateVisualEnvironment(GameObject environmentRoot)
         {
             EnsureDirectories();
@@ -36,82 +41,131 @@ namespace NihongoLife.Editor
         private static void EnsureFolderExists(string folderPath)
         {
             if (AssetDatabase.IsValidFolder(folderPath)) return;
-            
             string parent = Path.GetDirectoryName(folderPath).Replace('\\', '/');
             if (!string.IsNullOrEmpty(parent) && parent != "Assets" && !AssetDatabase.IsValidFolder(parent))
-            {
                 EnsureFolderExists(parent);
-            }
             AssetDatabase.CreateFolder(parent, Path.GetFileName(folderPath));
         }
 
         private static void GenerateWrapperPrefabs()
         {
-            // Just create some necessary wrappers based on exact known filenames if they exist
-            CreateWrapperFallback("road_straight", "Roads", "road-straight");
-            CreateWrapperFallback("building_a", "Buildings", "building-type-a");
-            CreateWrapperFallback("shelf", "Furniture", "bookcaseOpen"); 
-            CreateWrapperFallback("counter", "Furniture", "tableCoffee");
-            CreateWrapperFallback("food_apple", "Food", "apple");
-            CreateWrapperFallback("food_bottle", "Food", "soda-bottle");
+            CreateWrapperDeterministic(PATH_ROAD, "Environment/Roads", "road_straight", 10f); // ~10m wide road section
+            CreateWrapperDeterministic(PATH_BUILDING, "Environment/Buildings", "building_a", 10f); // ~10m wide building
+            CreateWrapperDeterministic(PATH_SHELF, "Furniture", "shelf", 2.2f, true); // ~2.2m tall shelf
+            CreateWrapperDeterministic(PATH_COUNTER, "Furniture", "counter", 3f); // ~3m wide counter
+            CreateWrapperDeterministic(PATH_ONIGIRI, "Food", "food_apple", 0.15f); // ~15cm size (keep name food_apple for backwards compat in SceneBuilder)
+            CreateWrapperDeterministic(PATH_WATER, "Food", "food_bottle", 0.25f, true); // ~25cm tall
             
             AssetDatabase.SaveAssets();
         }
 
-        private static void CreateWrapperFallback(string customName, string folderSuffix, string searchName)
+        private static void CreateWrapperDeterministic(string vendorModelPath, string folderSuffix, string name, float targetSize, bool useYAxis = false)
         {
-            string[] guids = AssetDatabase.FindAssets(searchName + " t:Model", new[] { "Assets/ThirdParty/Kenney" });
-            if (guids.Length > 0)
+            string prefabPath = $"Assets/NihongoLife/Prefabs/{folderSuffix}/{name}.prefab";
+
+            GameObject vendorModel = AssetDatabase.LoadAssetAtPath<GameObject>(vendorModelPath);
+            if (vendorModel == null)
             {
-                string path = AssetDatabase.GUIDToAssetPath(guids[0]);
-                CreateWrapper(path, folderSuffix, customName);
+                Debug.LogError($"[VisualEnvironmentBuilder] Missing explicit asset: {vendorModelPath}");
+                return;
+            }
+
+            GameObject root = new GameObject(name);
+            GameObject visual = (GameObject)PrefabUtility.InstantiatePrefab(vendorModel);
+            visual.name = "Visual";
+            visual.transform.SetParent(root.transform, false);
+
+            FixMaterials(visual);
+            NormalizeScale(visual, targetSize, useYAxis);
+
+            PrefabUtility.SaveAsPrefabAsset(root, prefabPath);
+            Object.DestroyImmediate(root);
+        }
+
+        private static void FixMaterials(GameObject visual)
+        {
+            Renderer[] renderers = visual.GetComponentsInChildren<Renderer>(true);
+            foreach (var r in renderers)
+            {
+                var sharedMats = r.sharedMaterials;
+                for (int i = 0; i < sharedMats.Length; i++)
+                {
+                    Material mat = sharedMats[i];
+                    if (mat == null) continue;
+
+                    if (mat.shader.name != "Universal Render Pipeline/Simple Lit" && mat.shader.name != "Universal Render Pipeline/Lit")
+                    {
+                        string matName = mat.name.Replace(" (Instance)", "").Trim();
+                        string matPath = $"Assets/NihongoLife/Materials/Kenney/{matName}_URP.mat";
+                        Material urpMat = AssetDatabase.LoadAssetAtPath<Material>(matPath);
+
+                        if (urpMat == null)
+                        {
+                            urpMat = new Material(Shader.Find("Universal Render Pipeline/Simple Lit"));
+                            if (mat.HasProperty("_MainTex")) urpMat.mainTexture = mat.mainTexture;
+                            if (mat.HasProperty("_BaseMap")) urpMat.mainTexture = mat.GetTexture("_BaseMap");
+                            if (mat.HasProperty("_Color")) urpMat.color = mat.color;
+                            if (mat.HasProperty("_BaseColor")) urpMat.color = mat.GetColor("_BaseColor");
+                            
+                            AssetDatabase.CreateAsset(urpMat, matPath);
+                        }
+                        
+                        sharedMats[i] = urpMat;
+                    }
+                }
+                r.sharedMaterials = sharedMats;
             }
         }
 
-        private static void CreateWrapper(string vendorModelPath, string folderSuffix, string overrideName = null)
+        private static void NormalizeScale(GameObject visual, float targetSize, bool useYAxis = false)
         {
-            string name = overrideName ?? Path.GetFileNameWithoutExtension(vendorModelPath);
-            string prefabPath = $"Assets/NihongoLife/Prefabs/Environment/{folderSuffix}";
-            if (folderSuffix == "Furniture" || folderSuffix == "Food" || folderSuffix == "Props")
-            {
-                prefabPath = $"Assets/NihongoLife/Prefabs/{folderSuffix}";
-            }
-            
-            string fullPath = $"{prefabPath}/{name}.prefab";
+            Renderer[] renderers = visual.GetComponentsInChildren<Renderer>(true);
+            if (renderers.Length == 0) return;
 
-            if (!File.Exists(fullPath))
+            Bounds bounds = renderers[0].bounds;
+            for (int i = 1; i < renderers.Length; i++)
             {
-                GameObject vendorModel = AssetDatabase.LoadAssetAtPath<GameObject>(vendorModelPath);
-                if (vendorModel != null)
-                {
-                    GameObject root = new GameObject(name);
-                    GameObject visual = (GameObject)PrefabUtility.InstantiatePrefab(vendorModel);
-                    visual.name = "Visual";
-                    visual.transform.SetParent(root.transform, false);
-                    
-                    PrefabUtility.SaveAsPrefabAsset(root, fullPath);
-                    Object.DestroyImmediate(root);
-                }
+                bounds.Encapsulate(renderers[i].bounds);
             }
+
+            // Move visual origin so min.y rests at 0 (floor alignment)
+            visual.transform.localPosition = new Vector3(-bounds.center.x, -bounds.min.y, -bounds.center.z);
+
+            // Recompute bounds after centering
+            bounds = renderers[0].bounds;
+            for (int i = 1; i < renderers.Length; i++) bounds.Encapsulate(renderers[i].bounds);
+
+            float currentSize = useYAxis ? bounds.size.y : Mathf.Max(bounds.size.x, bounds.size.z);
+            if (currentSize <= 0.001f || currentSize > 1000f)
+            {
+                Debug.LogWarning($"[VisualEnvironmentBuilder] Bounds for {visual.transform.parent.name} are abnormal ({currentSize}). Scale left at 1.");
+                return;
+            }
+
+            float scaleFactor = targetSize / currentSize;
+            visual.transform.localScale = new Vector3(scaleFactor, scaleFactor, scaleFactor);
+            
+            // Adjust position again due to scale applied
+            visual.transform.localPosition = new Vector3(
+                visual.transform.localPosition.x * scaleFactor,
+                visual.transform.localPosition.y * scaleFactor,
+                visual.transform.localPosition.z * scaleFactor
+            );
         }
 
         private static void AssembleKonbini(GameObject root)
         {
-            // Clean up existing environment visual placeholders if they exist
-            // (Assuming the root passed in is "Environment" object in SceneBuilder)
-
-            GameObject roadPrefab = LoadPrefab("Roads", "road_straight");
-            GameObject buildingPrefab = LoadPrefab("Buildings", "building_a");
+            GameObject roadPrefab = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/NihongoLife/Prefabs/Environment/Roads/road_straight.prefab");
+            GameObject buildingPrefab = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/NihongoLife/Prefabs/Environment/Buildings/building_a.prefab");
 
             // 1. Exterior Road
             if (roadPrefab != null)
             {
-                for (int i = -3; i <= 3; i++)
+                for (int i = -1; i <= 1; i++) // 3 segments for a compact street
                 {
                     var road = (GameObject)PrefabUtility.InstantiatePrefab(roadPrefab);
                     road.transform.SetParent(root.transform);
-                    road.transform.position = new Vector3(i * 10, 0, -15);
-                    road.transform.localScale = Vector3.one;
+                    road.transform.position = new Vector3(i * 10, 0, -6);
                 }
             }
 
@@ -120,32 +174,37 @@ namespace NihongoLife.Editor
             {
                 var bldg1 = (GameObject)PrefabUtility.InstantiatePrefab(buildingPrefab);
                 bldg1.transform.SetParent(root.transform);
-                bldg1.transform.position = new Vector3(-15, 0, -12);
-                bldg1.transform.localScale = Vector3.one;
+                bldg1.transform.position = new Vector3(-12, 0, -2);
+                bldg1.transform.rotation = Quaternion.Euler(0, 180, 0);
 
                 var bldg2 = (GameObject)PrefabUtility.InstantiatePrefab(buildingPrefab);
                 bldg2.transform.SetParent(root.transform);
-                bldg2.transform.position = new Vector3(15, 0, -12);
-                bldg2.transform.localScale = Vector3.one;
+                bldg2.transform.position = new Vector3(12, 0, -2);
+                bldg2.transform.rotation = Quaternion.Euler(0, 180, 0);
             }
 
-            // 3. Interior Walls/Floor
+            // 3. Interior Walls/Floor (12m x 10m interior)
             var konbiniFloor = GameObject.CreatePrimitive(PrimitiveType.Cube);
             konbiniFloor.name = "KonbiniFloor";
             konbiniFloor.transform.SetParent(root.transform);
-            konbiniFloor.transform.position = new Vector3(0, -0.1f, 0);
-            konbiniFloor.transform.localScale = new Vector3(20, 0.2f, 20);
-            konbiniFloor.GetComponent<Renderer>().sharedMaterial = new Material(Shader.Find("Universal Render Pipeline/Simple Lit")) { color = Color.white };
+            konbiniFloor.transform.position = new Vector3(0, -0.1f, 5); // From Z=0 to Z=10
+            konbiniFloor.transform.localScale = new Vector3(12, 0.2f, 10);
+            
+            Material floorMat = new Material(Shader.Find("Universal Render Pipeline/Simple Lit"));
+            floorMat.color = new Color(0.85f, 0.85f, 0.85f);
+            konbiniFloor.GetComponent<Renderer>().sharedMaterial = floorMat;
 
             // Exterior walls
-            CreateWall(root, new Vector3(-10, 2.5f, 0), new Vector3(0.5f, 5, 20)); // Left
-            CreateWall(root, new Vector3(10, 2.5f, 0), new Vector3(0.5f, 5, 20));  // Right
-            CreateWall(root, new Vector3(0, 2.5f, 10), new Vector3(20, 5, 0.5f));  // Back
+            CreateWall(root, new Vector3(-6, 2.5f, 5), new Vector3(0.5f, 5, 10)); // Left
+            CreateWall(root, new Vector3(6, 2.5f, 5), new Vector3(0.5f, 5, 10));  // Right
+            CreateWall(root, new Vector3(0, 2.5f, 10), new Vector3(12, 5, 0.5f));  // Back
+            CreateWall(root, new Vector3(-4, 2.5f, 0), new Vector3(4, 5, 0.5f));   // Front Left
+            CreateWall(root, new Vector3(4, 2.5f, 0), new Vector3(4, 5, 0.5f));    // Front Right
             
             // Signage
-            CreateSignage(root, "コンビニ", new Vector3(0, 4, -9.5f));
-            CreateSignage(root, "入口 (Entrance)", new Vector3(-3, 2, -9.5f));
-            CreateSignage(root, "出口 (Exit)", new Vector3(3, 2, -9.5f));
+            CreateSignage(root, "コンビニ", new Vector3(0, 4.5f, -0.1f), 3f);
+            CreateSignage(root, "入口 (Entrance)", new Vector3(-1.5f, 2f, -0.1f), 1f);
+            CreateSignage(root, "出口 (Exit)", new Vector3(1.5f, 2f, -0.1f), 1f);
         }
 
         private static void CreateWall(GameObject root, Vector3 pos, Vector3 scale)
@@ -154,29 +213,28 @@ namespace NihongoLife.Editor
             wall.transform.SetParent(root.transform);
             wall.transform.position = pos;
             wall.transform.localScale = scale;
-            wall.GetComponent<Renderer>().sharedMaterial = new Material(Shader.Find("Universal Render Pipeline/Simple Lit")) { color = new Color(0.9f, 0.9f, 0.9f) };
+            
+            Material wallMat = new Material(Shader.Find("Universal Render Pipeline/Simple Lit"));
+            wallMat.color = new Color(0.95f, 0.95f, 0.9f);
+            wall.GetComponent<Renderer>().sharedMaterial = wallMat;
         }
 
-        private static void CreateSignage(GameObject root, string text, Vector3 pos)
+        private static void CreateSignage(GameObject root, string text, Vector3 pos, float scaleMultiplier)
         {
             var sign = new GameObject("Sign_" + text);
             sign.transform.SetParent(root.transform);
             sign.transform.position = pos;
-            var tm = sign.AddComponent<TextMesh>();
-            tm.text = text;
-            tm.characterSize = 0.5f;
-            tm.color = Color.black;
-            tm.anchor = TextAnchor.MiddleCenter;
-        }
+            // Face the approaching player
+            sign.transform.rotation = Quaternion.Euler(0, 180, 0);
 
-        private static GameObject LoadPrefab(string folder, string name)
-        {
-            string path = $"Assets/NihongoLife/Prefabs/Environment/{folder}/{name}.prefab";
-            if (folder == "Furniture" || folder == "Food" || folder == "Props")
-            {
-                path = $"Assets/NihongoLife/Prefabs/{folder}/{name}.prefab";
-            }
-            return AssetDatabase.LoadAssetAtPath<GameObject>(path);
+            var tm = sign.AddComponent<TMPro.TextMeshPro>();
+            tm.text = text;
+            tm.fontSize = 5 * scaleMultiplier;
+            tm.color = Color.black;
+            tm.alignment = TMPro.TextAlignmentOptions.Center;
+            
+            var tmpFont = AssetDatabase.LoadAssetAtPath<TMPro.TMP_FontAsset>("Assets/NihongoLife/Fonts/NotoSansJP SDF.asset");
+            if(tmpFont != null) tm.font = tmpFont;
         }
     }
 }
