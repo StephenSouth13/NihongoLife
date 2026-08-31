@@ -29,13 +29,20 @@ namespace NihongoLife.Editor
         {
             foreach (var folder in prefabFolders)
             {
-                if (!AssetDatabase.IsValidFolder(folder))
-                {
-                    string parent = Path.GetDirectoryName(folder).Replace('\\', '/');
-                    string child = Path.GetFileName(folder);
-                    AssetDatabase.CreateFolder(parent, child);
-                }
+                EnsureFolderExists(folder);
             }
+        }
+
+        private static void EnsureFolderExists(string folderPath)
+        {
+            if (AssetDatabase.IsValidFolder(folderPath)) return;
+            
+            string parent = Path.GetDirectoryName(folderPath).Replace('\\', '/');
+            if (!string.IsNullOrEmpty(parent) && parent != "Assets" && !AssetDatabase.IsValidFolder(parent))
+            {
+                EnsureFolderExists(parent);
+            }
+            AssetDatabase.CreateFolder(parent, Path.GetFileName(folderPath));
         }
 
         private static void GenerateWrapperPrefabs()
