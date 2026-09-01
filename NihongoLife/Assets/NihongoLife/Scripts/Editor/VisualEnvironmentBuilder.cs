@@ -6,9 +6,9 @@ namespace NihongoLife.Editor
 {
     public static class VisualEnvironmentBuilder
     {
-        // Explicit paths
+        // Explicit paths based on verified Kenney layout
         private static readonly string PATH_ROAD = "Assets/ThirdParty/Kenney/kenney_city-kit-roads/Models/FBX format/road-straight.fbx";
-        private static readonly string PATH_BUILDING = "Assets/ThirdParty/Kenney/kenney_city-kit-suburban/Models/FBX format/building-type-a.fbx";
+        private static readonly string PATH_BUILDING = "Assets/ThirdParty/Kenney/kenney_city-kit-suburban_20/Models/FBX format/building-type-a.fbx";
         private static readonly string PATH_SHELF = "Assets/ThirdParty/Kenney/kenney_furniture-kit/Models/FBX format/bookcaseOpen.fbx";
         private static readonly string PATH_COUNTER = "Assets/ThirdParty/Kenney/kenney_furniture-kit/Models/FBX format/tableCoffee.fbx";
         private static readonly string PATH_ONIGIRI = "Assets/ThirdParty/Kenney/kenney_food-kit/Models/FBX format/rice-ball.fbx";
@@ -49,12 +49,12 @@ namespace NihongoLife.Editor
 
         private static void GenerateWrapperPrefabs()
         {
-            CreateWrapperDeterministic(PATH_ROAD, "Environment/Roads", "road_straight", 10f); // ~10m wide road section
-            CreateWrapperDeterministic(PATH_BUILDING, "Environment/Buildings", "building_a", 10f); // ~10m wide building
-            CreateWrapperDeterministic(PATH_SHELF, "Furniture", "shelf", 2.2f, true); // ~2.2m tall shelf
-            CreateWrapperDeterministic(PATH_COUNTER, "Furniture", "counter", 3f); // ~3m wide counter
-            CreateWrapperDeterministic(PATH_ONIGIRI, "Food", "food_apple", 0.15f); // ~15cm size (keep name food_apple for backwards compat in SceneBuilder)
-            CreateWrapperDeterministic(PATH_WATER, "Food", "food_bottle", 0.25f, true); // ~25cm tall
+            CreateWrapperDeterministic(PATH_ROAD, "Environment/Roads", "road_straight", 10f);
+            CreateWrapperDeterministic(PATH_BUILDING, "Environment/Buildings", "building_a", 10f);
+            CreateWrapperDeterministic(PATH_SHELF, "Furniture", "shelf", 1.8f, true); // Target ~1.8m height
+            CreateWrapperDeterministic(PATH_COUNTER, "Furniture", "counter", 2f); // Target ~2m width
+            CreateWrapperDeterministic(PATH_ONIGIRI, "Food", "food_apple", 0.15f); // Keep wrapper name food_apple for backwards compatibility, but it uses rice-ball
+            CreateWrapperDeterministic(PATH_WATER, "Food", "food_bottle", 0.25f, true);
             
             AssetDatabase.SaveAssets();
         }
@@ -66,7 +66,7 @@ namespace NihongoLife.Editor
             GameObject vendorModel = AssetDatabase.LoadAssetAtPath<GameObject>(vendorModelPath);
             if (vendorModel == null)
             {
-                Debug.LogError($"[VisualEnvironmentBuilder] Missing explicit asset: {vendorModelPath}");
+                Debug.LogError($"[VisualEnvironmentBuilder] Missing explicit asset at path: {vendorModelPath}. A primitive placeholder will be used instead.");
                 return;
             }
 
@@ -95,9 +95,12 @@ namespace NihongoLife.Editor
 
                     if (mat.shader.name != "Universal Render Pipeline/Simple Lit" && mat.shader.name != "Universal Render Pipeline/Lit")
                     {
-                        string matName = mat.name.Replace(" (Instance)", "").Trim();
-                        string matPath = $"Assets/NihongoLife/Materials/Kenney/{matName}_URP.mat";
-                        Material urpMat = AssetDatabase.LoadAssetAtPath<Material>(matPath);
+                        string sourcePath = AssetDatabase.GetAssetPath(mat);
+                        string guid = AssetDatabase.AssetPathToGUID(sourcePath);
+                        if (string.IsNullOrEmpty(guid)) guid = mat.name.Replace(" (Instance)", ""); // Fallback if it's built-in
+
+                        string newMatPath = $"Assets/NihongoLife/Materials/Kenney/{guid}_URP.mat";
+                        Material urpMat = AssetDatabase.LoadAssetAtPath<Material>(newMatPath);
 
                         if (urpMat == null)
                         {
@@ -107,7 +110,7 @@ namespace NihongoLife.Editor
                             if (mat.HasProperty("_Color")) urpMat.color = mat.color;
                             if (mat.HasProperty("_BaseColor")) urpMat.color = mat.GetColor("_BaseColor");
                             
-                            AssetDatabase.CreateAsset(urpMat, matPath);
+                            AssetDatabase.CreateAsset(urpMat, newMatPath);
                         }
                         
                         sharedMats[i] = urpMat;
@@ -123,15 +126,12 @@ namespace NihongoLife.Editor
             if (renderers.Length == 0) return;
 
             Bounds bounds = renderers[0].bounds;
-            for (int i = 1; i < renderers.Length; i++)
-            {
-                bounds.Encapsulate(renderers[i].bounds);
-            }
+            for (int i = 1; i < renderers.Length; i++) bounds.Encapsulate(renderers[i].bounds);
 
-            // Move visual origin so min.y rests at 0 (floor alignment)
+            // Center to base
             visual.transform.localPosition = new Vector3(-bounds.center.x, -bounds.min.y, -bounds.center.z);
 
-            // Recompute bounds after centering
+            // Recompute
             bounds = renderers[0].bounds;
             for (int i = 1; i < renderers.Length; i++) bounds.Encapsulate(renderers[i].bounds);
 
@@ -145,23 +145,34 @@ namespace NihongoLife.Editor
             float scaleFactor = targetSize / currentSize;
             visual.transform.localScale = new Vector3(scaleFactor, scaleFactor, scaleFactor);
             
-            // Adjust position again due to scale applied
+            // Adjust local position based on scale
             visual.transform.localPosition = new Vector3(
                 visual.transform.localPosition.x * scaleFactor,
                 visual.transform.localPosition.y * scaleFactor,
                 visual.transform.localPosition.z * scaleFactor
             );
+
+            // Final check
+            Bounds finalBounds = renderers[0].bounds;
+            for (int i = 1; i < renderers.Length; i++) finalBounds.Encapsulate(renderers[i].bounds);
+            Debug.Log($"[VisualEnvironmentBuilder] Scaled {visual.transform.parent.name}. Target size: {targetSize}. Final bounds size: {finalBounds.size}.");
         }
 
-        private static void AssembleKonbini(GameObject root)
+        public static void AssembleKonbini(GameObject root)
         {
+            // Clean up existing children if rebuilding
+            while (root.transform.childCount > 0)
+            {
+                Object.DestroyImmediate(root.transform.GetChild(0).gameObject);
+            }
+
             GameObject roadPrefab = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/NihongoLife/Prefabs/Environment/Roads/road_straight.prefab");
             GameObject buildingPrefab = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/NihongoLife/Prefabs/Environment/Buildings/building_a.prefab");
 
             // 1. Exterior Road
             if (roadPrefab != null)
             {
-                for (int i = -1; i <= 1; i++) // 3 segments for a compact street
+                for (int i = -1; i <= 1; i++) // Compact 3 segments
                 {
                     var road = (GameObject)PrefabUtility.InstantiatePrefab(roadPrefab);
                     road.transform.SetParent(root.transform);
@@ -183,15 +194,14 @@ namespace NihongoLife.Editor
                 bldg2.transform.rotation = Quaternion.Euler(0, 180, 0);
             }
 
-            // 3. Interior Walls/Floor (12m x 10m interior)
+            // 3. Interior Walls/Floor (12m x 10m interior from Z=0 to Z=10)
             var konbiniFloor = GameObject.CreatePrimitive(PrimitiveType.Cube);
             konbiniFloor.name = "KonbiniFloor";
             konbiniFloor.transform.SetParent(root.transform);
-            konbiniFloor.transform.position = new Vector3(0, -0.1f, 5); // From Z=0 to Z=10
+            konbiniFloor.transform.position = new Vector3(0, -0.1f, 5); 
             konbiniFloor.transform.localScale = new Vector3(12, 0.2f, 10);
             
-            Material floorMat = new Material(Shader.Find("Universal Render Pipeline/Simple Lit"));
-            floorMat.color = new Color(0.85f, 0.85f, 0.85f);
+            Material floorMat = new Material(Shader.Find("Universal Render Pipeline/Simple Lit")) { color = new Color(0.85f, 0.85f, 0.85f) };
             konbiniFloor.GetComponent<Renderer>().sharedMaterial = floorMat;
 
             // Exterior walls
@@ -214,8 +224,7 @@ namespace NihongoLife.Editor
             wall.transform.position = pos;
             wall.transform.localScale = scale;
             
-            Material wallMat = new Material(Shader.Find("Universal Render Pipeline/Simple Lit"));
-            wallMat.color = new Color(0.95f, 0.95f, 0.9f);
+            Material wallMat = new Material(Shader.Find("Universal Render Pipeline/Simple Lit")) { color = new Color(0.95f, 0.95f, 0.9f) };
             wall.GetComponent<Renderer>().sharedMaterial = wallMat;
         }
 
@@ -224,8 +233,7 @@ namespace NihongoLife.Editor
             var sign = new GameObject("Sign_" + text);
             sign.transform.SetParent(root.transform);
             sign.transform.position = pos;
-            // Face the approaching player
-            sign.transform.rotation = Quaternion.Euler(0, 180, 0);
+            sign.transform.rotation = Quaternion.Euler(0, 180, 0); // Face approaching player
 
             var tm = sign.AddComponent<TMPro.TextMeshPro>();
             tm.text = text;
