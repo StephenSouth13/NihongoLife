@@ -35,9 +35,9 @@ namespace NihongoLife.Editor
             scenario.id = "scenario.konbini.buy_onigiri";
             scenario.version = 2;
             scenario.titleJa = "コンビニで買い物";
-            scenario.titleVi = "Mua sắm ở cửa hàng tiện lợi";
+            scenario.titleEn = "Mua sắm ở cửa hàng tiện lợi";
             scenario.descriptionJa = "おにぎりを買って、レジで会計を済ませましょう。";
-            scenario.descriptionVi = "Mua một chiếc cơm nắm và hoàn thành thanh toán tại quầy thu ngân.";
+            scenario.descriptionEn = "Mua một chiếc cơm nắm và hoàn thành thanh toán tại quầy thu ngân.";
             scenario.chapterIndex = 2;
             scenario.learningTargets = new List<string>
             {
@@ -153,9 +153,9 @@ namespace NihongoLife.Editor
             scenario.startNodeId = "node_start";
         }
 
-        private static ObjectiveDefinition Obj(string id, string titleJa, string titleVi)
+        private static ObjectiveDefinition Obj(string id, string titleJa, string titleEn)
         {
-            return new ObjectiveDefinition { id = id, titleJa = titleJa, titleVi = titleVi };
+            return new ObjectiveDefinition { id = id, titleJa = titleJa, titleEn = titleEn };
         }
 
         private static ScenarioNode Dialogue(
@@ -164,7 +164,7 @@ namespace NihongoLife.Editor
             string speakerName,
             string textJa,
             string reading,
-            string textVi,
+            string textEn,
             string romaji,
             string animationCue,
             List<DialogueChoice> choices,
@@ -179,7 +179,7 @@ namespace NihongoLife.Editor
                 speakerName = speakerName,
                 textJa = textJa,
                 textReading = reading,
-                textVi = textVi,
+                textEn = textEn,
                 textRomaji = romaji,
                 animationCue = animationCue,
                 choices = choices ?? new List<DialogueChoice>(),
@@ -188,12 +188,12 @@ namespace NihongoLife.Editor
             };
         }
 
-        private static DialogueChoice Choice(string textJa, string textVi, string nextNodeId, params ScoreEventModifier[] modifiers)
+        private static DialogueChoice Choice(string textJa, string textEn, string nextNodeId, params ScoreEventModifier[] modifiers)
         {
             var choice = new DialogueChoice
             {
                 textJa = textJa,
-                textVi = textVi,
+                textEn = textEn,
                 nextNodeId = nextNodeId,
                 scoreModifiers = new List<ScoreEventModifier>(modifiers),
                 grammarTags = new List<string>(),

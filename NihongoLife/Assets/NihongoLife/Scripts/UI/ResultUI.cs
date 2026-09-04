@@ -38,7 +38,7 @@ namespace NihongoLife.UI
 
             // Resolve scenario names
             string titleJa = "ミッション完了";
-            string titleVi = "Nhiệm vụ hoàn thành";
+            string titleEn = "Nhiệm vụ hoàn thành";
             
             var repo = GameServices.Get<IScenarioRepository>();
             if (repo != null)
@@ -47,13 +47,13 @@ namespace NihongoLife.UI
                 if (definition != null)
                 {
                     titleJa = definition.titleJa;
-                    titleVi = definition.titleVi;
+                    titleEn = definition.titleEn;
                 }
             }
 
             if (missionTitleText != null)
             {
-                missionTitleText.text = $"{titleJa}\n<size=70%>{titleVi}</size>";
+                missionTitleText.text = $"{titleJa}\n<size=70%>{titleEn}</size>";
             }
 
             if (overallScoreText != null)

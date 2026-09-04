@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace NihongoLife.Scenario
 {
@@ -19,7 +20,10 @@ namespace NihongoLife.Scenario
     {
         public string id;
         public string titleJa;
-        public string titleVi;
+        
+        [FormerlySerializedAs("titleVi")]
+        public string titleEn;
+        
         public bool isOptional;
     }
 
@@ -27,7 +31,10 @@ namespace NihongoLife.Scenario
     public class DialogueChoice
     {
         public string textJa;
-        public string textVi;
+        
+        [FormerlySerializedAs("textVi")]
+        public string textEn;
+        
         public string nextNodeId;
         
         // Scoring and Learning modifications
@@ -59,7 +66,10 @@ namespace NihongoLife.Scenario
         public string speakerId;
         public string textJa;
         public string textReading; // Furigana/Hiragana helper
-        public string textVi;
+        
+        [FormerlySerializedAs("textVi")]
+        public string textEn;
+        
         public string textRomaji;
         public string animationCue;
         public AudioClip voiceClip;
@@ -77,9 +87,17 @@ namespace NihongoLife.Scenario
         public string id;
         public int version = 1;
         public string titleJa;
-        public string titleVi;
-        [TextArea(3, 5)] public string descriptionJa;
-        [TextArea(3, 5)] public string descriptionVi;
+        
+        [FormerlySerializedAs("titleVi")]
+        public string titleEn;
+        
+        [TextArea(3, 5)] 
+        public string descriptionJa;
+        
+        [FormerlySerializedAs("descriptionVi")]
+        [TextArea(3, 5)] 
+        public string descriptionEn;
+        
         public int chapterIndex = 1;
 
         [Header("Learning Configurations")]

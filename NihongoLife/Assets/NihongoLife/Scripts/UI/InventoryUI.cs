@@ -48,7 +48,7 @@ namespace NihongoLife.UI
                     StringBuilder sb = new StringBuilder();
                     foreach (var item in PlayerInventory.Instance.Items)
                     {
-                        sb.AppendLine($"- {item.displayNameJa} ({item.displayNameVi}) x{item.quantity}");
+                        sb.AppendLine($"- {item.displayNameJa} ({item.displayNameEn}) x{item.quantity}");
                     }
                     inventoryText.text = sb.ToString();
                 }

@@ -26,7 +26,7 @@ namespace NihongoLife.Scenario
     {
         public string id;
         public string titleJa;
-        public string titleVi;
+        public string titleEn;
         public bool isOptional;
         public ObjectiveState state;
     }
@@ -93,7 +93,7 @@ namespace NihongoLife.Scenario
                 {
                     id = objDef.id,
                     titleJa = objDef.titleJa,
-                    titleVi = objDef.titleVi,
+                    titleEn = objDef.titleEn,
                     isOptional = objDef.isOptional,
                     state = ObjectiveState.Inactive
                 });
@@ -242,7 +242,7 @@ namespace NihongoLife.Scenario
             if (isItemNode && _currentNode.targetItemId == itemId)
             {
                 Debug.Log($"[ScenarioManager] Objective item interaction successful: {itemId}");
-                ScoringManager.Instance?.AddScore("TaskCompletion", 15, $"Đã tìm thấy vật phẩm: {item.GetPromptVi()}", itemId);
+                ScoringManager.Instance?.AddScore("TaskCompletion", 15, $"Đã tìm thấy vật phẩm: {item.GetpromptEn()}", itemId);
 
                 if (!string.IsNullOrEmpty(_currentNode.objectiveIdToComplete))
                 {
@@ -267,7 +267,7 @@ namespace NihongoLife.Scenario
                     speakerId = "system",
                     textJa = "これは違います。おにぎりを探してください。",
                     textReading = "これはちがいます。おにぎりをさがしてください。",
-                    textVi = "Đây không phải vật phẩm được yêu cầu. Hãy tìm cơm nắm!",
+                    textEn = "Đây không phải vật phẩm được yêu cầu. Hãy tìm cơm nắm!",
                     textRomaji = "Kore wa chigaimasu. Onigiri wo sagashite kudasai.",
                     nextNodeId = _currentNode.id
                 };

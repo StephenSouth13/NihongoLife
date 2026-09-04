@@ -163,7 +163,7 @@ namespace NihongoLife.UI
                     foreach (var item in inventory.Items)
                     {
                         string ja = string.IsNullOrEmpty(item.displayNameJa) ? item.itemId : item.displayNameJa;
-                        string vi = string.IsNullOrEmpty(item.displayNameVi) ? item.itemId : item.displayNameVi;
+                        string vi = string.IsNullOrEmpty(item.displayNameEn) ? item.itemId : item.displayNameEn;
                         builder.AppendLine($"{ja} / {vi}");
                         builder.AppendLine($"x{item.quantity}    ¥{item.priceYen}");
                     }
@@ -198,7 +198,7 @@ namespace NihongoLife.UI
         {
             if (promptPanel == null || promptText == null) return;
             promptPanel.SetActive(true);
-            promptText.text = $"[E] {interactable.GetPromptJa()} / {interactable.GetPromptVi()}";
+            promptText.text = $"[E] {interactable.GetPromptJa()} / {interactable.GetpromptEn()}";
         }
 
         private void HidePrompt()
@@ -210,7 +210,7 @@ namespace NihongoLife.UI
         {
             if (scenarioTitleText != null)
             {
-                scenarioTitleText.text = $"{scenario.titleJa} / {scenario.titleVi}";
+                scenarioTitleText.text = $"{scenario.titleJa} / {scenario.titleEn}";
             }
             UpdateObjectivesDisplay();
         }
@@ -238,7 +238,7 @@ namespace NihongoLife.UI
 
                 string check = obj.state == ObjectiveState.Completed ? "✓" : "☐";
                 string color = obj.state == ObjectiveState.Completed ? "#74d680" : "#f5f2e8";
-                builder.AppendLine($"<color={color}>{check} {obj.titleJa} ({obj.titleVi})</color>");
+                builder.AppendLine($"<color={color}>{check} {obj.titleJa} ({obj.titleEn})</color>");
             }
 
             objectivesText.text = builder.ToString();
@@ -271,7 +271,7 @@ namespace NihongoLife.UI
                     {
                         if (data.learningMode == LearningMode.GuidedPractice)
                         {
-                            btnText.text = $"{choice.textJa}\n<size=80%><color=#8fa3b8>({choice.textVi})</color></size>";
+                            btnText.text = $"{choice.textJa}\n<size=80%><color=#8fa3b8>({choice.textEn})</color></size>";
                         }
                         else
                         {
@@ -296,12 +296,12 @@ namespace NihongoLife.UI
                 case LearningMode.GuidedPractice:
                     SetHintText(readingText, data.textReading, true);
                     SetHintText(romajiText, data.textRomaji, true);
-                    SetHintText(translationText, data.textVi, true);
+                    SetHintText(translationText, data.textEn, true);
                     break;
                 case LearningMode.Practice:
                     SetHintText(readingText, data.textReading, true);
                     SetHintText(romajiText, "", false);
-                    SetHintText(translationText, data.textVi, true);
+                    SetHintText(translationText, data.textEn, true);
                     break;
                 case LearningMode.Assessment:
                     SetHintText(readingText, "", false);

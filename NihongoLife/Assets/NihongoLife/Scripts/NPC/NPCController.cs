@@ -16,7 +16,10 @@ namespace NihongoLife.NPC
         [Header("Interaction Settings")]
         [SerializeField] private float lookAtSpeed = 5.0f;
         [SerializeField] private string promptJa = "話す";
-        [SerializeField] private string promptVi = "Nói chuyện";
+
+        [UnityEngine.Serialization.FormerlySerializedAs("promptVi")]
+        [SerializeField] private string promptEn = "Talk";
+
         [SerializeField] private string scenarioAreaIdOnInteract;
 
         private NavMeshAgent _navAgent;
@@ -45,7 +48,7 @@ namespace NihongoLife.NPC
         }
 
         public string GetPromptJa() => promptJa;
-        public string GetPromptVi() => promptVi;
+        public string GetpromptEn() => promptEn;
         public Transform GetTransform() => transform;
 
         public void Interact(GameObject player)

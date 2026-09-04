@@ -9,7 +9,7 @@ namespace NihongoLife.Player
     {
         public string itemId;
         public string displayNameJa;
-        public string displayNameVi;
+        public string displayNameEn;
         public int priceYen;
         public int quantity;
     }
@@ -47,7 +47,7 @@ namespace NihongoLife.Player
             }
         }
 
-        public void AddItem(string itemId, string displayNameJa, string displayNameVi, int priceYen, int quantity = 1)
+        public void AddItem(string itemId, string displayNameJa, string displayNameEn, int priceYen, int quantity = 1)
         {
             if (string.IsNullOrWhiteSpace(itemId) || quantity <= 0) return;
 
@@ -58,7 +58,7 @@ namespace NihongoLife.Player
                 {
                     itemId = itemId,
                     displayNameJa = displayNameJa,
-                    displayNameVi = displayNameVi,
+                    displayNameEn = displayNameEn,
                     priceYen = Mathf.Max(0, priceYen),
                     quantity = quantity
                 });

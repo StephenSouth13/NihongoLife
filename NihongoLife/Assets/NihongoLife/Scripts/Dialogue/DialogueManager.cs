@@ -14,7 +14,7 @@ namespace NihongoLife.Dialogue
         public string speakerName;
         public string textJa;
         public string textReading;
-        public string textVi;
+        public string textEn;
         public string textRomaji;
         public List<DialogueChoice> choices;
         public LearningMode learningMode;
@@ -99,7 +99,7 @@ namespace NihongoLife.Dialogue
                 speakerName = _currentNode.speakerName,
                 textJa = _currentNode.textJa,
                 textReading = _currentNode.textReading,
-                textVi = _currentNode.textVi,
+                textEn = _currentNode.textEn,
                 textRomaji = _currentNode.textRomaji,
                 choices = _currentNode.choices,
                 learningMode = currentMode

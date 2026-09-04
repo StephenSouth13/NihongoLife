@@ -11,7 +11,7 @@ namespace NihongoLife.Interaction
     {
         [SerializeField] private string areaId = "store_entrance";
         [SerializeField] private string promptJa = "ドアを開ける";
-        [SerializeField] private string promptVi = "Mở cửa";
+        [SerializeField] private string promptEn = "Mở cửa";
         [SerializeField] private Transform doorVisual;
         [SerializeField] private Collider blockingCollider;
 
@@ -29,7 +29,7 @@ namespace NihongoLife.Interaction
         private Coroutine _openRoutine;
 
         public string GetPromptJa() => _isOpen ? "入る" : promptJa;
-        public string GetPromptVi() => _isOpen ? "Vào cửa hàng" : promptVi;
+        public string GetpromptEn() => _isOpen ? "Vào cửa hàng" : promptEn;
         public Transform GetTransform() => transform;
 
         private void Awake()

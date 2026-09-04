@@ -5,7 +5,7 @@ namespace NihongoLife.Interaction
     public interface IInteractable
     {
         string GetPromptJa();
-        string GetPromptVi();
+        string GetpromptEn();
         void Interact(GameObject player);
         Transform GetTransform();
     }

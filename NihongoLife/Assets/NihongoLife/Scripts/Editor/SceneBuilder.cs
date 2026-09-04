@@ -233,6 +233,8 @@ namespace NihongoLife.Editor
 
         private static void BuildStoreGameplay(Transform root)
         {
+            BuildNeighborhoodGameplay(root);
+
             var door = new GameObject("StoreDoor");
             door.layer = InteractableLayer;
             door.transform.SetParent(root);
@@ -267,6 +269,53 @@ namespace NihongoLife.Editor
             CreateItem(root, "Onigiri", "onigiri", "おにぎり", "Cơm nắm", "おにぎりを取る", "Lấy cơm nắm", 497, true, new Vector3(-3.2f, 1.85f, 4.05f), "Assets/NihongoLife/Prefabs/Food/food_apple.prefab");
             CreateItem(root, "Water", "water", "水", "Nước", "水を調べる", "Kiểm tra nước", 120, false, new Vector3(3.2f, 1.9f, 4.05f), "Assets/NihongoLife/Prefabs/Food/food_bottle.prefab");
             CreateCashier(root);
+        }
+
+        private static void BuildNeighborhoodGameplay(Transform root)
+        {
+            CreateNeighborNPC(root, "Neighbor_1", "npc_neighbor_1", "Tanaka", "scenario.house1.greeting", new Vector3(-22f, 0.05f, -0.5f));
+            CreateNeighborNPC(root, "Neighbor_2", "npc_neighbor_2", "Suzuki", "scenario.house2.lostcat", new Vector3(-11f, 0.05f, -0.5f));
+            CreateNeighborNPC(root, "Neighbor_3", "npc_neighbor_3", "Sato", "scenario.house3.garbage", new Vector3(12f, 0.05f, -0.5f));
+        }
+
+        private static void CreateNeighborNPC(Transform root, string goName, string npcId, string displayName, string scenarioAreaId, Vector3 position)
+        {
+            var npc = new GameObject(goName);
+            npc.layer = InteractableLayer;
+            npc.transform.SetParent(root);
+            npc.transform.position = position;
+            npc.transform.rotation = Quaternion.Euler(0f, 180f, 0f);
+
+            var collider = npc.AddComponent<BoxCollider>();
+            collider.center = new Vector3(0f, 0.95f, 0f);
+            collider.size = new Vector3(0.9f, 1.9f, 0.9f);
+            collider.isTrigger = true;
+
+            var animCtrl = npc.AddComponent<CharacterAnimationController>();
+            // Reuse cashier visual for neighbors for now
+            var prefab = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/NihongoLife/Prefabs/Characters/NL_Cashier.prefab");
+            if (prefab != null)
+            {
+                var visual = (GameObject)PrefabUtility.InstantiatePrefab(prefab);
+                visual.name = "Visual";
+                visual.transform.SetParent(npc.transform, false);
+                visual.transform.localPosition = Vector3.zero;
+                StripColliders(visual);
+                animCtrl.SetAnimator(visual.GetComponentInChildren<Animator>(true));
+            }
+            else
+            {
+                CreateFallbackPerson(npc.transform, "FallbackNeighbor", new Color(0.2f, 0.7f, 0.3f));
+            }
+
+            var so = new SerializedObject(npc.AddComponent<NPCController>());
+            SetString(so, "npcId", npcId);
+            SetString(so, "displayName", displayName);
+            SetString(so, "role", "Neighbor");
+            SetString(so, "promptJa", "話す");
+            SetString(so, "promptEn", "Talk");
+            SetString(so, "scenarioAreaIdOnInteract", scenarioAreaId);
+            so.ApplyModifiedProperties();
         }
 
         private static void CreateShelf(Transform root, string name, Vector3 position)
@@ -307,7 +356,7 @@ namespace NihongoLife.Editor
             }
         }
 
-        private static void CreateItem(Transform root, string name, string itemId, string ja, string vi, string promptJa, string promptVi, int price, bool destroyOnInteract, Vector3 position, string prefabPath)
+        private static void CreateItem(Transform root, string name, string itemId, string ja, string vi, string promptJa, string promptEn, int price, bool destroyOnInteract, Vector3 position, string prefabPath)
         {
             var item = GameObject.CreatePrimitive(PrimitiveType.Sphere);
             item.name = name;
@@ -330,9 +379,9 @@ namespace NihongoLife.Editor
             var so = new SerializedObject(item.AddComponent<InteractiveItem>());
             SetString(so, "itemId", itemId);
             SetString(so, "displayNameJa", ja);
-            SetString(so, "displayNameVi", vi);
+            SetString(so, "displayNameEn", vi);
             SetString(so, "promptJa", promptJa);
-            SetString(so, "promptVi", promptVi);
+            SetString(so, "promptEn", promptEn);
             SetInt(so, "priceYen", price);
             SetBool(so, "destroyOnInteract", destroyOnInteract);
             so.ApplyModifiedProperties();
@@ -372,7 +421,7 @@ namespace NihongoLife.Editor
             SetString(so, "displayName", "Thu ngân");
             SetString(so, "role", "Cashier");
             SetString(so, "promptJa", "会計する");
-            SetString(so, "promptVi", "Thanh toán");
+            SetString(so, "promptEn", "Thanh toán");
             SetString(so, "scenarioAreaIdOnInteract", "cashier");
             so.ApplyModifiedProperties();
         }

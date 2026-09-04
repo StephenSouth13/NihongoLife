@@ -9,9 +9,9 @@ namespace NihongoLife.Interaction
         [Header("Item Config")]
         [SerializeField] private string itemId;
         [SerializeField] private string displayNameJa;
-        [SerializeField] private string displayNameVi;
+        [SerializeField] private string displayNameEn;
         [SerializeField] private string promptJa = "調べる";
-        [SerializeField] private string promptVi = "Kiểm tra";
+        [SerializeField] private string promptEn = "Kiểm tra";
         [SerializeField] private int priceYen;
         [SerializeField] private bool addToInventory = true;
         [SerializeField] private bool destroyOnInteract = true;
@@ -20,7 +20,7 @@ namespace NihongoLife.Interaction
         public int PriceYen => priceYen;
 
         public string GetPromptJa() => promptJa;
-        public string GetPromptVi() => promptVi;
+        public string GetpromptEn() => promptEn;
         public Transform GetTransform() => transform;
 
         public void Interact(GameObject player)
@@ -40,7 +40,7 @@ namespace NihongoLife.Interaction
 
             if (addToInventory && PlayerInventory.Instance != null)
             {
-                PlayerInventory.Instance.AddItem(itemId, displayNameJa, displayNameVi, priceYen);
+                PlayerInventory.Instance.AddItem(itemId, displayNameJa, displayNameEn, priceYen);
             }
 
             if (destroyOnInteract)
