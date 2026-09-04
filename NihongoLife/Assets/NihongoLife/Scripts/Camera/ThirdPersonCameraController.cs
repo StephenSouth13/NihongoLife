@@ -11,6 +11,8 @@ namespace NihongoLife.Cameras
 
         [Header("Distance Settings")]
         [SerializeField] private float defaultDistance = 3.5f;
+        [SerializeField] private float outdoorDistance = 7.2f;
+        [SerializeField] private float indoorDistance = 3.2f;
         [SerializeField] private float minDistance = 1.0f;
         [SerializeField] private float maxDistance = 10.0f;
 
@@ -28,6 +30,7 @@ namespace NihongoLife.Cameras
         private float _rotationY = 20f;
         private float _currentDistance;
         private bool _isLocked = false;
+        private bool _isIndoor = false;
 
         public bool IsLocked
         {
@@ -103,7 +106,16 @@ namespace NihongoLife.Cameras
             _rotationX = yaw;
             _rotationY = Mathf.Clamp(pitch, minYAngle, maxYAngle);
             defaultDistance = Mathf.Clamp(distance, minDistance, maxDistance);
+            outdoorDistance = defaultDistance;
             _currentDistance = defaultDistance;
+        }
+
+        public void SetIndoorMode(bool indoor)
+        {
+            _isIndoor = indoor;
+            defaultDistance = Mathf.Clamp(indoor ? indoorDistance : outdoorDistance, minDistance, maxDistance);
+            _rotationY = Mathf.Clamp(indoor ? 22f : 16f, minYAngle, maxYAngle);
+            targetOffset = indoor ? new Vector3(0f, 1.45f, 0f) : new Vector3(0f, 1.6f, 0f);
         }
     }
 }

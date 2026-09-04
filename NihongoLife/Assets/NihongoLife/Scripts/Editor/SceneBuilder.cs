@@ -72,6 +72,18 @@ namespace NihongoLife.Editor
             Debug.Log("[SceneBuilder] Rebuilt 01_MainMenu with 90_TestSandbox town preview.");
         }
 
+        [MenuItem("NihongoLife/Rebuild Gameplay Sandbox")]
+        public static void RebuildGameplaySandbox()
+        {
+            EnsureFolder("Assets/NihongoLife", "Scenes");
+            FontSetup.EnsureJapaneseFontAsset(forceRecreate: true);
+            ScenarioAssetBuilder.BuildScenarioAssets();
+            CharacterBuilder.BuildCharacterSystem();
+            BuildSandboxScene(SandboxScenePath);
+            EditorSceneManager.OpenScene(SandboxScenePath);
+            Debug.Log("[SceneBuilder] Rebuilt 90_TestSandbox with gameplay, shop door, and interior camera zone.");
+        }
+
         private static void BuildBootstrapScene(string path)
         {
             var scene = EditorSceneManager.NewScene(NewSceneSetup.DefaultGameObjects, NewSceneMode.Single);
@@ -101,7 +113,7 @@ namespace NihongoLife.Editor
             var font = FontSetup.EnsureJapaneseFontAsset();
             var canvasGo = CreateCanvas("Canvas");
 
-            var panel = CreateFullScreenPanel(canvasGo.transform, "MainMenuPanel", new Color(0.025f, 0.03f, 0.036f, 0.42f));
+            var panel = CreateFullScreenPanel(canvasGo.transform, "MainMenuPanel", new Color(0.025f, 0.03f, 0.036f, 0.68f));
             AddTopAccent(panel.transform);
 
             var title = CreateText(panel.transform, "TitleText", "NIHONGO LIFE", font, 72, new Vector2(0, 170), new Vector2(900, 96), TextAlignmentOptions.Center);
@@ -162,17 +174,19 @@ namespace NihongoLife.Editor
         {
             var previewRoot = new GameObject("MenuTownPreview_90_TestSandbox");
             VisualEnvironmentBuilder.GenerateVisualEnvironment(previewRoot);
+            CreateMenuPreviewGround(previewRoot.transform);
+            ToneDownMenuPreviewMaterials(previewRoot);
 
             var target = new GameObject("MenuCameraTarget");
-            target.transform.position = new Vector3(0f, 0f, -8f);
+            target.transform.position = new Vector3(0f, 1.2f, -10f);
 
             var cameraGo = GameObject.Find("Main Camera") ?? new GameObject("Main Camera");
             cameraGo.tag = "MainCamera";
             var camera = cameraGo.GetComponent<Camera>() ?? cameraGo.AddComponent<Camera>();
             camera.clearFlags = CameraClearFlags.Skybox;
-            camera.fieldOfView = 48f;
-            camera.nearClipPlane = 0.03f;
-            camera.farClipPlane = 180f;
+            camera.fieldOfView = 38f;
+            camera.nearClipPlane = 0.3f;
+            camera.farClipPlane = 240f;
 
             if (cameraGo.GetComponent<AudioListener>() == null)
             {
@@ -180,7 +194,44 @@ namespace NihongoLife.Editor
             }
 
             var orbit = cameraGo.GetComponent<MenuCameraOrbit>() ?? cameraGo.AddComponent<MenuCameraOrbit>();
+            orbit.Configure(62f, 24f, 1.35f, 180f, 3.8f);
             orbit.SetTarget(target.transform);
+        }
+
+        private static void CreateMenuPreviewGround(Transform parent)
+        {
+            var ground = GameObject.CreatePrimitive(PrimitiveType.Cube);
+            ground.name = "MenuPreviewGround";
+            ground.transform.SetParent(parent);
+            ground.transform.position = new Vector3(0f, -0.62f, -10f);
+            ground.transform.localScale = new Vector3(96f, 0.18f, 72f);
+            ground.GetComponent<Renderer>().sharedMaterial = CreateRuntimeMat("NL_MenuPreviewGround_Mat", new Color(0.055f, 0.06f, 0.065f, 1f));
+            UnityEngine.Object.DestroyImmediate(ground.GetComponent<Collider>());
+        }
+
+        private static void ToneDownMenuPreviewMaterials(GameObject root)
+        {
+            foreach (var renderer in root.GetComponentsInChildren<Renderer>(true))
+            {
+                var materials = renderer.sharedMaterials;
+                for (int i = 0; i < materials.Length; i++)
+                {
+                    var material = materials[i];
+                    if (material == null) continue;
+
+                    Color color = material.HasProperty("_BaseColor") ? material.GetColor("_BaseColor") : material.color;
+                    bool tooCyan = color.g > 0.7f && color.b > 0.7f && color.r < 0.25f;
+                    bool tooBright = color.maxColorComponent > 0.95f;
+                    if (!tooCyan && !tooBright) continue;
+
+                    var toned = new Material(Shader.Find("Universal Render Pipeline/Simple Lit") ?? Shader.Find("Standard"));
+                    toned.name = material.name + "_MenuToned";
+                    toned.color = new Color(0.16f, 0.2f, 0.22f, color.a);
+                    materials[i] = toned;
+                }
+
+                renderer.sharedMaterials = materials;
+            }
         }
 
         private static void CreateAppRootForDirectPlay()
@@ -291,17 +342,33 @@ namespace NihongoLife.Editor
             blocker.transform.localScale = new Vector3(2.2f, 2.2f, 0.12f);
             DestroyRenderer(blocker);
 
-            var doorVisual = GameObject.CreatePrimitive(PrimitiveType.Cube);
-            doorVisual.name = "SlidingGlassDoor";
+            var doorVisual = new GameObject("AutomaticSlidingGlassDoor");
             doorVisual.transform.SetParent(door.transform, false);
-            doorVisual.transform.localScale = new Vector3(1.65f, 2.15f, 0.08f);
-            doorVisual.GetComponent<Renderer>().sharedMaterial = CreateRuntimeMat("NL_Door_Glass", new Color(0.7f, 0.9f, 1f, 0.6f));
+            doorVisual.transform.localPosition = Vector3.zero;
+
+            var frameMat = CreateRuntimeMat("NL_Door_Frame_Mat", new Color(0.08f, 0.1f, 0.12f, 1f));
+            var glassMat = CreateRuntimeMat("NL_Door_Glass_Mat", new Color(0.45f, 0.78f, 0.95f, 0.52f));
+            var handleMat = CreateRuntimeMat("NL_Door_Handle_Mat", new Color(0.86f, 0.88f, 0.84f, 1f));
+
+            CreateDoorPiece(doorVisual.transform, "TopRail", new Vector3(0f, 1.18f, -0.02f), new Vector3(3.75f, 0.13f, 0.16f), frameMat);
+            CreateDoorPiece(doorVisual.transform, "BottomRail", new Vector3(0f, -1.05f, -0.02f), new Vector3(3.75f, 0.1f, 0.14f), frameMat);
+            CreateDoorPiece(doorVisual.transform, "LeftFrame", new Vector3(-1.9f, 0.02f, -0.02f), new Vector3(0.12f, 2.35f, 0.16f), frameMat);
+            CreateDoorPiece(doorVisual.transform, "RightFrame", new Vector3(1.9f, 0.02f, -0.02f), new Vector3(0.12f, 2.35f, 0.16f), frameMat);
+
+            var leftPanel = CreateDoorPiece(doorVisual.transform, "GlassPanel_Left", new Vector3(-0.48f, 0.02f, -0.04f), new Vector3(0.92f, 2.05f, 0.055f), glassMat);
+            var rightPanel = CreateDoorPiece(doorVisual.transform, "GlassPanel_Right", new Vector3(0.48f, 0.02f, -0.07f), new Vector3(0.92f, 2.05f, 0.055f), glassMat);
+            CreateDoorPiece(leftPanel.transform, "Handle_Left", new Vector3(0.34f, 0f, -0.08f), new Vector3(0.05f, 0.55f, 0.05f), handleMat);
+            CreateDoorPiece(rightPanel.transform, "Handle_Right", new Vector3(-0.34f, 0f, -0.08f), new Vector3(0.05f, 0.55f, 0.05f), handleMat);
 
             var doorSo = new SerializedObject(door.AddComponent<DoorInteractable>());
             SetString(doorSo, "areaId", "store_entrance");
             SetRef(doorSo, "doorVisual", doorVisual.transform);
+            SetRef(doorSo, "leftDoorPanel", leftPanel.transform);
+            SetRef(doorSo, "rightDoorPanel", rightPanel.transform);
             SetRef(doorSo, "blockingCollider", blocker.GetComponent<Collider>());
             doorSo.ApplyModifiedProperties();
+
+            CreateStoreCameraZone(root);
 
             AddStoreSign(root, new Vector3(0f, 3.15f, 1.05f));
             CreateShelf(root, "Shelf_Food", new Vector3(-3.2f, 1.1f, 4.1f));
@@ -310,6 +377,29 @@ namespace NihongoLife.Editor
             CreateItem(root, "Onigiri", "onigiri", "おにぎり", "Cơm nắm", "おにぎりを取る", "Lấy cơm nắm", 497, true, new Vector3(-3.2f, 1.85f, 4.05f), "Assets/NihongoLife/Prefabs/Food/food_apple.prefab");
             CreateItem(root, "Water", "water", "水", "Nước", "水を調べる", "Kiểm tra nước", 120, false, new Vector3(3.2f, 1.9f, 4.05f), "Assets/NihongoLife/Prefabs/Food/food_bottle.prefab");
             CreateCashier(root);
+        }
+
+        private static GameObject CreateDoorPiece(Transform parent, string name, Vector3 localPosition, Vector3 localScale, Material material)
+        {
+            var piece = GameObject.CreatePrimitive(PrimitiveType.Cube);
+            piece.name = name;
+            piece.transform.SetParent(parent, false);
+            piece.transform.localPosition = localPosition;
+            piece.transform.localScale = localScale;
+            piece.GetComponent<Renderer>().sharedMaterial = material;
+            UnityEngine.Object.DestroyImmediate(piece.GetComponent<Collider>());
+            return piece;
+        }
+
+        private static void CreateStoreCameraZone(Transform root)
+        {
+            var zone = new GameObject("StoreInteriorCameraZone");
+            zone.transform.SetParent(root);
+            zone.transform.position = new Vector3(0f, 1.1f, 5.2f);
+            var collider = zone.AddComponent<BoxCollider>();
+            collider.size = new Vector3(9f, 2.8f, 9.5f);
+            collider.isTrigger = true;
+            zone.AddComponent<StoreCameraZone>();
         }
 
         private static void BuildNeighborhoodGameplay(Transform root)

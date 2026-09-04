@@ -9,8 +9,25 @@ namespace NihongoLife.Core
         [SerializeField] private float height = 13f;
         [SerializeField] private float orbitSpeed = 4.5f;
         [SerializeField] private float lookHeight = 2.4f;
+        [SerializeField] private float startAngle = -32f;
 
-        private float _angle = -32f;
+        private float _angle;
+
+        private void Awake()
+        {
+            _angle = startAngle;
+        }
+
+        public void Configure(float orbitRadius, float cameraHeight, float speed, float initialAngle, float targetLookHeight)
+        {
+            radius = orbitRadius;
+            height = cameraHeight;
+            orbitSpeed = speed;
+            startAngle = initialAngle;
+            lookHeight = targetLookHeight;
+            _angle = startAngle;
+            ApplyPosition();
+        }
 
         public void SetTarget(Transform orbitTarget)
         {

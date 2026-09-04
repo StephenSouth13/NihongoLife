@@ -13,17 +13,21 @@ namespace NihongoLife.Interaction
         [SerializeField] private string promptJa = "ドアを開ける";
         [SerializeField] private string promptEn = "Mở cửa";
         [SerializeField] private Transform doorVisual;
+        [SerializeField] private Transform leftDoorPanel;
+        [SerializeField] private Transform rightDoorPanel;
         [SerializeField] private Collider blockingCollider;
 
         [Header("Animation Settings")]
         [SerializeField] private DoorType doorType = DoorType.Slide;
-        [SerializeField] private float openDuration = 0.5f;
+        [SerializeField] private float openDuration = 0.45f;
 
         [Header("Swing Settings")]
         [SerializeField] private float openAngle = 95f;
 
         [Header("Slide Settings")]
         [SerializeField] private Vector3 slideOffset = new Vector3(-1.2f, 0f, 0f);
+        [SerializeField] private Vector3 leftSlideOffset = new Vector3(-0.95f, 0f, 0f);
+        [SerializeField] private Vector3 rightSlideOffset = new Vector3(0.95f, 0f, 0f);
 
         private bool _isOpen;
         private Coroutine _openRoutine;
@@ -74,38 +78,80 @@ namespace NihongoLife.Interaction
 
         private IEnumerator AnimateOpen()
         {
-            float elapsed = 0f;
-
             if (doorType == DoorType.Swing)
             {
-                Quaternion start = doorVisual.localRotation;
-                Quaternion end = start * Quaternion.Euler(0f, openAngle, 0f);
-
-                while (elapsed < openDuration)
-                {
-                    elapsed += Time.deltaTime;
-                    float t = Mathf.Clamp01(elapsed / openDuration);
-                    float easedT = 1f - Mathf.Pow(1f - t, 3f);
-                    doorVisual.localRotation = Quaternion.Slerp(start, end, easedT);
-                    yield return null;
-                }
-                doorVisual.localRotation = end;
+                yield return AnimateSwing();
+                yield break;
             }
-            else
+
+            if (leftDoorPanel != null && rightDoorPanel != null)
             {
-                Vector3 start = doorVisual.localPosition;
-                Vector3 end = start + slideOffset;
-
-                while (elapsed < openDuration)
-                {
-                    elapsed += Time.deltaTime;
-                    float t = Mathf.Clamp01(elapsed / openDuration);
-                    float easedT = 1f - Mathf.Pow(1f - t, 3f);
-                    doorVisual.localPosition = Vector3.Lerp(start, end, easedT);
-                    yield return null;
-                }
-                doorVisual.localPosition = end;
+                yield return AnimateSlidingPair();
+                yield break;
             }
+
+            yield return AnimateSingleSlide();
+        }
+
+        private IEnumerator AnimateSwing()
+        {
+            float elapsed = 0f;
+            Quaternion start = doorVisual.localRotation;
+            Quaternion end = start * Quaternion.Euler(0f, openAngle, 0f);
+
+            while (elapsed < openDuration)
+            {
+                elapsed += Time.deltaTime;
+                float t = EaseOutCubic(elapsed / openDuration);
+                doorVisual.localRotation = Quaternion.Slerp(start, end, t);
+                yield return null;
+            }
+
+            doorVisual.localRotation = end;
+        }
+
+        private IEnumerator AnimateSingleSlide()
+        {
+            float elapsed = 0f;
+            Vector3 start = doorVisual.localPosition;
+            Vector3 end = start + slideOffset;
+
+            while (elapsed < openDuration)
+            {
+                elapsed += Time.deltaTime;
+                float t = EaseOutCubic(elapsed / openDuration);
+                doorVisual.localPosition = Vector3.Lerp(start, end, t);
+                yield return null;
+            }
+
+            doorVisual.localPosition = end;
+        }
+
+        private IEnumerator AnimateSlidingPair()
+        {
+            float elapsed = 0f;
+            Vector3 leftStart = leftDoorPanel.localPosition;
+            Vector3 rightStart = rightDoorPanel.localPosition;
+            Vector3 leftEnd = leftStart + leftSlideOffset;
+            Vector3 rightEnd = rightStart + rightSlideOffset;
+
+            while (elapsed < openDuration)
+            {
+                elapsed += Time.deltaTime;
+                float t = EaseOutCubic(elapsed / openDuration);
+                leftDoorPanel.localPosition = Vector3.Lerp(leftStart, leftEnd, t);
+                rightDoorPanel.localPosition = Vector3.Lerp(rightStart, rightEnd, t);
+                yield return null;
+            }
+
+            leftDoorPanel.localPosition = leftEnd;
+            rightDoorPanel.localPosition = rightEnd;
+        }
+
+        private static float EaseOutCubic(float value)
+        {
+            float t = Mathf.Clamp01(value);
+            return 1f - Mathf.Pow(1f - t, 3f);
         }
     }
 }

@@ -32,11 +32,7 @@ namespace NihongoLife.Editor
         [MenuItem("NihongoLife/Rebuild Current Street")]
         public static void RebuildCurrentStreet()
         {
-            GameObject environmentRoot = GameObject.Find("Environment") ?? new GameObject("Environment");
-            GenerateVisualEnvironment(environmentRoot);
-            EditorSceneManager.MarkSceneDirty(SceneManager.GetActiveScene());
-            EditorSceneManager.SaveOpenScenes();
-            Debug.Log("[VisualEnvironmentBuilder] Rebuilt current street with complete neighborhood layout.");
+            SceneBuilder.RebuildGameplaySandbox();
         }
 
         private static void EnsureDirectories()
