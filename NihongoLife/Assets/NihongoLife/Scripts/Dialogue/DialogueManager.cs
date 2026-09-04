@@ -65,6 +65,28 @@ namespace NihongoLife.Dialogue
                 }
             }
 
+            // Animation Integration
+            if (ScenarioManager.Instance != null && ScenarioManager.Instance.LastInteractedNPC != null)
+            {
+                var animCtrl = ScenarioManager.Instance.LastInteractedNPC.GetComponent<NihongoLife.Core.CharacterAnimationController>();
+                if (animCtrl != null)
+                {
+                    animCtrl.SetTalking(true);
+
+                    if (!string.IsNullOrEmpty(node.animationCue))
+                    {
+                        if (node.animationCue.Equals("bow", StringComparison.OrdinalIgnoreCase))
+                        {
+                            animCtrl.TriggerBow();
+                        }
+                        else if (node.animationCue.Equals("point", StringComparison.OrdinalIgnoreCase))
+                        {
+                            animCtrl.TriggerPoint();
+                        }
+                    }
+                }
+            }
+
             UpdateDialogueUI();
         }
 
@@ -157,6 +179,15 @@ namespace NihongoLife.Dialogue
 
         private void CloseDialogue()
         {
+            if (ScenarioManager.Instance != null && ScenarioManager.Instance.LastInteractedNPC != null)
+            {
+                var animCtrl = ScenarioManager.Instance.LastInteractedNPC.GetComponent<NihongoLife.Core.CharacterAnimationController>();
+                if (animCtrl != null)
+                {
+                    animCtrl.SetTalking(false);
+                }
+            }
+
             _currentNode = null;
             OnDialogueClosed?.Invoke();
         }

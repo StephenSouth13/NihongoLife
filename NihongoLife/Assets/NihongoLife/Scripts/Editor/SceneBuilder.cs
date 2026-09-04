@@ -210,6 +210,31 @@ namespace NihongoLife.Editor
             playerGo.AddComponent<PlayerInventory>();
             playerGo.AddComponent<PlayerStatus>();
             
+            var playerAnimCtrl = playerGo.AddComponent<NihongoLife.Core.CharacterAnimationController>();
+            
+            // Add visual
+            var nlPlayerPrefab = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/NihongoLife/Prefabs/Characters/NL_Player.prefab");
+            if (nlPlayerPrefab != null)
+            {
+                var visual = (GameObject)PrefabUtility.InstantiatePrefab(nlPlayerPrefab);
+                visual.name = "Visual";
+                visual.transform.SetParent(playerGo.transform, false);
+                visual.transform.localPosition = new Vector3(0, 0, 0);
+                
+                // Normalization: Remy is usually ~1.75m but FBX scale can be off. Assuming it's already 1:1, we don't scale it wildly.
+                visual.transform.localScale = Vector3.one; 
+                
+                playerAnimCtrl.SetAnimator(visual.GetComponent<Animator>());
+            }
+            else
+            {
+                // Fallback capsule
+                var capsule = GameObject.CreatePrimitive(PrimitiveType.Capsule);
+                capsule.transform.SetParent(playerGo.transform, false);
+                capsule.transform.localPosition = new Vector3(0, 1, 0);
+                UnityEngine.Object.DestroyImmediate(capsule.GetComponent<Collider>());
+            }
+            
             // Set interactable layer
             int interactableLayer = 6;
             playerGo.layer = 0; // Default
@@ -798,45 +823,64 @@ namespace NihongoLife.Editor
             var collider = root.AddComponent<BoxCollider>();
             collider.center = new Vector3(0, 0.35f, 0);
             collider.size = new Vector3(0.9f, 1.9f, 0.9f);
+            
+            var animCtrl = root.AddComponent<NihongoLife.Core.CharacterAnimationController>();
 
-            var apronMat = new Material(Shader.Find("Universal Render Pipeline/Simple Lit"));
-            apronMat.color = new Color(0.08f, 0.36f, 0.42f);
-            var skinMat = new Material(Shader.Find("Universal Render Pipeline/Simple Lit"));
-            skinMat.color = new Color(0.92f, 0.72f, 0.56f);
-            var hairMat = new Material(Shader.Find("Universal Render Pipeline/Simple Lit"));
-            hairMat.color = new Color(0.12f, 0.08f, 0.05f);
+            var cashierPrefab = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/NihongoLife/Prefabs/Characters/NL_Cashier.prefab");
+            if (cashierPrefab != null)
+            {
+                var visual = (GameObject)PrefabUtility.InstantiatePrefab(cashierPrefab);
+                visual.name = "Visual";
+                visual.transform.SetParent(root.transform, false);
+                visual.transform.localPosition = new Vector3(0, -0.6f, 0); // Ground adjust
+                visual.transform.localRotation = Quaternion.Euler(0, 180, 0); // Facing player across counter
+                
+                // Elizabeth scaling normalization if needed
+                visual.transform.localScale = Vector3.one;
+                
+                animCtrl.SetAnimator(visual.GetComponent<Animator>());
+            }
+            else
+            {
+                var apronMat = new Material(Shader.Find("Universal Render Pipeline/Simple Lit"));
+                apronMat.color = new Color(0.08f, 0.36f, 0.42f);
+                var skinMat = new Material(Shader.Find("Universal Render Pipeline/Simple Lit"));
+                skinMat.color = new Color(0.92f, 0.72f, 0.56f);
+                var hairMat = new Material(Shader.Find("Universal Render Pipeline/Simple Lit"));
+                hairMat.color = new Color(0.12f, 0.08f, 0.05f);
 
-            var body = GameObject.CreatePrimitive(PrimitiveType.Cube);
-            body.name = "Body";
-            body.transform.SetParent(root.transform, false);
-            body.transform.localPosition = new Vector3(0, 0.2f, 0);
-            body.transform.localScale = new Vector3(0.65f, 1.0f, 0.35f);
-            body.GetComponent<Renderer>().material = apronMat;
-            UnityEngine.Object.DestroyImmediate(body.GetComponent<Collider>());
+                var body = GameObject.CreatePrimitive(PrimitiveType.Cube);
+                body.name = "Body";
+                body.transform.SetParent(root.transform, false);
+                body.transform.localPosition = new Vector3(0, 0.2f, 0);
+                body.transform.localScale = new Vector3(0.65f, 1.0f, 0.35f);
+                body.GetComponent<Renderer>().material = apronMat;
+                UnityEngine.Object.DestroyImmediate(body.GetComponent<Collider>());
 
-            var head = GameObject.CreatePrimitive(PrimitiveType.Sphere);
-            head.name = "Head";
-            head.transform.SetParent(root.transform, false);
-            head.transform.localPosition = new Vector3(0, 0.95f, 0);
-            head.transform.localScale = new Vector3(0.42f, 0.42f, 0.42f);
-            head.GetComponent<Renderer>().material = skinMat;
-            UnityEngine.Object.DestroyImmediate(head.GetComponent<Collider>());
+                var head = GameObject.CreatePrimitive(PrimitiveType.Sphere);
+                head.name = "Head";
+                head.transform.SetParent(root.transform, false);
+                head.transform.localPosition = new Vector3(0, 0.95f, 0);
+                head.transform.localScale = new Vector3(0.42f, 0.42f, 0.42f);
+                head.GetComponent<Renderer>().material = skinMat;
+                UnityEngine.Object.DestroyImmediate(head.GetComponent<Collider>());
 
-            var hair = GameObject.CreatePrimitive(PrimitiveType.Sphere);
-            hair.name = "Hair";
-            hair.transform.SetParent(root.transform, false);
-            hair.transform.localPosition = new Vector3(0, 1.13f, -0.02f);
-            hair.transform.localScale = new Vector3(0.46f, 0.22f, 0.46f);
-            hair.GetComponent<Renderer>().material = hairMat;
-            UnityEngine.Object.DestroyImmediate(hair.GetComponent<Collider>());
+                var hair = GameObject.CreatePrimitive(PrimitiveType.Sphere);
+                hair.name = "Hair";
+                hair.transform.SetParent(root.transform, false);
+                hair.transform.localPosition = new Vector3(0, 1.13f, -0.02f);
+                hair.transform.localScale = new Vector3(0.46f, 0.22f, 0.46f);
+                hair.GetComponent<Renderer>().material = hairMat;
+                UnityEngine.Object.DestroyImmediate(hair.GetComponent<Collider>());
 
-            var nameTag = GameObject.CreatePrimitive(PrimitiveType.Cube);
-            nameTag.name = "NameTag";
-            nameTag.transform.SetParent(root.transform, false);
-            nameTag.transform.localPosition = new Vector3(0.18f, 0.45f, -0.19f);
-            nameTag.transform.localScale = new Vector3(0.18f, 0.08f, 0.02f);
-            nameTag.GetComponent<Renderer>().material.color = new Color(1f, 0.92f, 0.45f);
-            UnityEngine.Object.DestroyImmediate(nameTag.GetComponent<Collider>());
+                var nameTag = GameObject.CreatePrimitive(PrimitiveType.Cube);
+                nameTag.name = "NameTag";
+                nameTag.transform.SetParent(root.transform, false);
+                nameTag.transform.localPosition = new Vector3(0.18f, 0.45f, -0.19f);
+                nameTag.transform.localScale = new Vector3(0.18f, 0.08f, 0.02f);
+                nameTag.GetComponent<Renderer>().material.color = new Color(1f, 0.92f, 0.45f);
+                UnityEngine.Object.DestroyImmediate(nameTag.GetComponent<Collider>());
+            }
 
             return root;
         }

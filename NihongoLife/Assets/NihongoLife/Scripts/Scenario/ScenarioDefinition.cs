@@ -61,6 +61,7 @@ namespace NihongoLife.Scenario
         public string textReading; // Furigana/Hiragana helper
         public string textVi;
         public string textRomaji;
+        public string animationCue;
         public AudioClip voiceClip;
         public List<DialogueChoice> choices = new List<DialogueChoice>();
 

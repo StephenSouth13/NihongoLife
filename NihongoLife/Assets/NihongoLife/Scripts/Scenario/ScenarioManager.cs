@@ -45,9 +45,12 @@ namespace NihongoLife.Scenario
         public event Action<ScenarioNode> OnNodeChanged;
         public event Action<ScoreBreakdownDto> OnScenarioFinished;
 
+        private NihongoLife.NPC.NPCController _lastInteractedNPC;
+
         public ScenarioDefinition CurrentScenario => currentScenario;
         public ScenarioNode CurrentNode => _currentNode;
         public List<RuntimeObjective> Objectives => _objectives;
+        public NihongoLife.NPC.NPCController LastInteractedNPC => _lastInteractedNPC;
 
         private void Awake()
         {
@@ -318,6 +321,7 @@ namespace NihongoLife.Scenario
 
         public void OnNPCInteracted(string npcId, NPC.NPCController npc)
         {
+            _lastInteractedNPC = npc;
             if (_currentNode == null) return;
 
             // Trigger dialogue if player approaches the cashier or target NPC
