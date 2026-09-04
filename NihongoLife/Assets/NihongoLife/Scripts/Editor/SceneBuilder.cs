@@ -437,6 +437,10 @@ namespace NihongoLife.Editor
             entrance.transform.localScale = new Vector3(3, 3, 1);
             Object.DestroyImmediate(entrance.GetComponent<MeshRenderer>());
             Object.DestroyImmediate(entrance.GetComponent<MeshFilter>());
+            var entranceTrigger = entrance.AddComponent<ScenarioAreaTrigger>();
+            var serializedEntrance = new SerializedObject(entranceTrigger);
+            serializedEntrance.FindProperty("areaId").stringValue = "store_entrance";
+            serializedEntrance.ApplyModifiedProperties();
 
             // Shelves (Gameplay colliders only)
             var shelf1 = GameObject.CreatePrimitive(PrimitiveType.Cube);
@@ -545,6 +549,19 @@ namespace NihongoLife.Editor
             serializedNPC.FindProperty("displayName").stringValue = "Thu ngân";
             serializedNPC.FindProperty("role").stringValue = "Cashier";
             serializedNPC.ApplyModifiedProperties();
+
+            // The cashier area is a real navigation target; the NPC remains interactable
+            // so the same scene can later use proximity-based dialogue as well.
+            var cashierArea = new GameObject("CashierAreaTrigger");
+            cashierArea.transform.SetParent(walls.transform);
+            cashierArea.transform.position = new Vector3(0, 1.5f, 8);
+            var cashierCollider = cashierArea.AddComponent<BoxCollider>();
+            cashierCollider.size = new Vector3(3, 3, 2);
+            cashierCollider.isTrigger = true;
+            var cashierTrigger = cashierArea.AddComponent<ScenarioAreaTrigger>();
+            var serializedCashier = new SerializedObject(cashierTrigger);
+            serializedCashier.FindProperty("areaId").stringValue = "cashier";
+            serializedCashier.ApplyModifiedProperties();
 
             // Scene Initializer
             var initGo = new GameObject("ScenarioSceneInitializer");

@@ -2,6 +2,8 @@
 
 This roadmap details the future integration phases of the Nihongo Life commercial simulator.
 
+> Detailed executable tasks and the current completion state are tracked in [`TODO_CHECKLIST.md`](TODO_CHECKLIST.md).
+
 ## Phase 1 — Local Foundation (Completed)
 - Reusable namespace and folder layout.
 - Decoupled `GameServices` interface registries.
@@ -11,7 +13,9 @@ This roadmap details the future integration phases of the Nihongo Life commercia
 - Deterministic mastery calculation and local profile saving.
 
 ## Phase 2 — Asset Integration & Expansion
-- Replace geometry primitives with low-poly stylized Japanese environment assets.
+- [x] Replace the main environment and interaction item visuals with low-poly stylized Japanese assets.
+- [x] Connect real scene area triggers for store entrance and cashier navigation.
+- [ ] Replace the remaining NPC capsule placeholder with a character asset.
 - Integrate character models with standard Mecanim animations (walk, idle, talk, checkout gesture).
 - Write and build scenarios for:
   - Chapter 3: Ordering Ramen at a Restaurant

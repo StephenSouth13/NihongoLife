@@ -43,19 +43,19 @@ MonoBehaviour:
     isOptional: 0
   nodes:
   - id: node_start
-    nodeType: 0
+    nodeType: 3
     nextNodeId: node_find_onigiri
     objectiveIdToComplete: obj_enter_store
-    speakerName: "Hệ thống"
-    speakerId: system
-    textJa: "コンビニへ行って、おにぎりを1つ買ってください。"
-    textReading: "こんびにへいって、おにぎりをひとつかってください。"
-    textVi: "Hãy vào cửa hàng tiện lợi và mua 1 cái cơm nắm."
-    textRomaji: "Konbini he itte, onigiri wo hitotsu katte kudasai."
+    speakerName: 
+    speakerId: 
+    textJa: 
+    textReading: 
+    textVi: 
+    textRomaji: 
     voiceClip: {fileID: 0}
     choices: []
     targetItemId: 
-    targetAreaId: 
+    targetAreaId: store_entrance
   - id: node_find_onigiri
     nodeType: 1
     nextNodeId: node_go_to_cashier
@@ -71,19 +71,19 @@ MonoBehaviour:
     targetItemId: onigiri
     targetAreaId: 
   - id: node_go_to_cashier
-    nodeType: 0
+    nodeType: 3
     nextNodeId: node_cashier_prompt_bag
     objectiveIdToComplete: obj_go_to_cashier
-    speakerName: "Thu ngân"
-    speakerId: npc_cashier
-    textJa: "いらっしゃいませ！お会計はご一緒ですか？"
-    textReading: "いらっしゃいませ！おかいけいはごいっしょですか？"
-    textVi: "Xin chào quý khách! Quý khách muốn thanh toán chung ạ?"
-    textRomaji: "Irasshaimase! Okaikei wa goissho desu ka?"
+    speakerName: 
+    speakerId: 
+    textJa: 
+    textReading: 
+    textVi: 
+    textRomaji: 
     voiceClip: {fileID: 0}
     choices: []
     targetItemId: 
-    targetAreaId: 
+    targetAreaId: cashier
   - id: node_cashier_prompt_bag
     nodeType: 0
     nextNodeId: 

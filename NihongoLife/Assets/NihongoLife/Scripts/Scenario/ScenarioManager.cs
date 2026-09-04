@@ -139,8 +139,15 @@ namespace NihongoLife.Scenario
             _currentNode = nextNode;
             Debug.Log($"[ScenarioManager] Transitioning to Node: {_currentNode.id} (Type: {_currentNode.nodeType})");
 
-            // Complete objective associated with node if configured
-            if (!string.IsNullOrEmpty(_currentNode.objectiveIdToComplete))
+            // Interaction and area nodes keep their objective active until the
+            // player performs the required action in the real scene.
+            if (_currentNode.nodeType == ScenarioNodeType.CollectItem
+                || _currentNode.nodeType == ScenarioNodeType.InspectItem
+                || _currentNode.nodeType == ScenarioNodeType.GoToArea)
+            {
+                ActivateObjectiveByNodeConfig();
+            }
+            else if (!string.IsNullOrEmpty(_currentNode.objectiveIdToComplete))
             {
                 CompleteObjective(_currentNode.objectiveIdToComplete);
             }
@@ -220,6 +227,26 @@ namespace NihongoLife.Scenario
             {
                 TransitionToNode(_currentNode.nextNodeId);
             }
+        }
+
+        public bool CanEnterArea(string areaId)
+        {
+            return _currentNode != null
+                && _currentNode.nodeType == ScenarioNodeType.GoToArea
+                && _currentNode.targetAreaId == areaId;
+        }
+
+        public void OnAreaEntered(string areaId)
+        {
+            if (!CanEnterArea(areaId)) return;
+
+            Debug.Log($"[ScenarioManager] Target area reached: {areaId}");
+            if (!string.IsNullOrEmpty(_currentNode.objectiveIdToComplete))
+            {
+                CompleteObjective(_currentNode.objectiveIdToComplete);
+            }
+
+            AdvanceNode();
         }
 
         public void OnItemInteracted(string itemId, InteractiveItem item)

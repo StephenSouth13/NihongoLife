@@ -31,8 +31,9 @@ namespace NihongoLife.Tests
             Assert.NotNull(ScenarioManager.Instance.CurrentNode, "Initial node should be active.");
             Assert.AreEqual("node_start", ScenarioManager.Instance.CurrentNode.id);
 
-            // 5. Advance from node_start to node_find_onigiri
-            ScenarioManager.Instance.AdvanceNode();
+            // 5. Enter the store through the real area trigger
+            Assert.IsTrue(ScenarioManager.Instance.CanEnterArea("store_entrance"));
+            ScenarioManager.Instance.OnAreaEntered("store_entrance");
             yield return null;
             Assert.AreEqual("node_find_onigiri", ScenarioManager.Instance.CurrentNode.id);
 
@@ -55,6 +56,12 @@ namespace NihongoLife.Tests
             
             // 7. Verify node advanced to cashier meeting
             Assert.AreEqual("node_go_to_cashier", ScenarioManager.Instance.CurrentNode.id);
+
+            // 8. Walk to the cashier area before dialogue can start
+            Assert.IsTrue(ScenarioManager.Instance.CanEnterArea("cashier"));
+            ScenarioManager.Instance.OnAreaEntered("cashier");
+            yield return null;
+            Assert.AreEqual("node_cashier_prompt_bag", ScenarioManager.Instance.CurrentNode.id);
         }
     }
 }
