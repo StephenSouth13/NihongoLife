@@ -50,6 +50,7 @@ namespace NihongoLife.Player
             HandleGroundCheck();
             HandleMovement();
             HandleInteractionInput();
+            HandleUIInput();
         }
 
         private void HandleGroundCheck()
@@ -119,6 +120,28 @@ namespace NihongoLife.Player
                 if (detector != null)
                 {
                     detector.TriggerInteraction();
+                }
+            }
+        }
+
+        private void HandleUIInput()
+        {
+            if (Keyboard.current != null)
+            {
+                if (Keyboard.current.tabKey.wasPressedThisFrame)
+                {
+                    if (NihongoLife.UI.UIManager.Instance != null)
+                    {
+                        NihongoLife.UI.UIManager.Instance.ToggleStatusPanel();
+                    }
+                }
+                
+                if (Keyboard.current.bKey.wasPressedThisFrame)
+                {
+                    if (NihongoLife.UI.UIManager.Instance != null)
+                    {
+                        NihongoLife.UI.UIManager.Instance.ToggleInventoryPanel();
+                    }
                 }
             }
         }

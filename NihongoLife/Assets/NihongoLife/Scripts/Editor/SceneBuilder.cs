@@ -3,6 +3,7 @@ using UnityEditor.SceneManagement;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using System;
 using NihongoLife.Core;
 using NihongoLife.Audio;
 using NihongoLife.Player;
@@ -23,29 +24,44 @@ namespace NihongoLife.Editor
         public static void BuildAllScenes()
         {
             Debug.Log("[SceneBuilder] Starting build of all scenes...");
+            string previousScenePath = EditorSceneManager.GetActiveScene().path;
+            string fallbackScenePath = "Assets/NihongoLife/Scenes/90_TestSandbox.unity";
 
-            // Make sure the Scenes directory exists
-            string scenesDir = "Assets/NihongoLife/Scenes";
-            if (!AssetDatabase.IsValidFolder(scenesDir))
+            try
             {
-                AssetDatabase.CreateFolder("Assets/NihongoLife", "Scenes");
+                // Make sure the Scenes directory exists
+                string scenesDir = "Assets/NihongoLife/Scenes";
+                if (!AssetDatabase.IsValidFolder(scenesDir))
+                {
+                    AssetDatabase.CreateFolder("Assets/NihongoLife", "Scenes");
+                }
+
+                BuildBootstrapScene(scenesDir + "/00_Bootstrap.unity");
+                BuildMainMenuScene(scenesDir + "/01_MainMenu.unity");
+                BuildSandboxScene(fallbackScenePath);
+
+                // Setup Editor Build Settings
+                var buildScenes = new EditorBuildSettingsScene[]
+                {
+                    new EditorBuildSettingsScene(scenesDir + "/00_Bootstrap.unity", true),
+                    new EditorBuildSettingsScene(scenesDir + "/01_MainMenu.unity", true),
+                    new EditorBuildSettingsScene(fallbackScenePath, true)
+                };
+                EditorBuildSettings.scenes = buildScenes;
+
+                AssetDatabase.SaveAssets();
+                EditorSceneManager.OpenScene(fallbackScenePath);
+                Debug.Log("[SceneBuilder] All scenes built and wired successfully!");
             }
-
-            BuildBootstrapScene(scenesDir + "/00_Bootstrap.unity");
-            BuildMainMenuScene(scenesDir + "/01_MainMenu.unity");
-            BuildSandboxScene(scenesDir + "/90_TestSandbox.unity");
-
-            // Setup Editor Build Settings
-            var buildScenes = new EditorBuildSettingsScene[]
+            catch (Exception ex)
             {
-                new EditorBuildSettingsScene(scenesDir + "/00_Bootstrap.unity", true),
-                new EditorBuildSettingsScene(scenesDir + "/01_MainMenu.unity", true),
-                new EditorBuildSettingsScene(scenesDir + "/90_TestSandbox.unity", true)
-            };
-            EditorBuildSettings.scenes = buildScenes;
-
-            AssetDatabase.SaveAssets();
-            Debug.Log("[SceneBuilder] All scenes built and wired successfully!");
+                Debug.LogException(ex);
+                string restorePath = !string.IsNullOrEmpty(previousScenePath) ? previousScenePath : fallbackScenePath;
+                if (!string.IsNullOrEmpty(restorePath) && System.IO.File.Exists(restorePath))
+                {
+                    EditorSceneManager.OpenScene(restorePath);
+                }
+            }
         }
 
         private static void BuildBootstrapScene(string path)
@@ -88,8 +104,8 @@ namespace NihongoLife.Editor
             canvasScaler.matchWidthOrHeight = 0.5f;
             canvasGo.AddComponent<GraphicRaycaster>();
 
-            // Load Font Asset
-            var jpFont = AssetDatabase.LoadAssetAtPath<TMP_FontAsset>("Assets/NihongoLife/Fonts/NotoSansJP SDF.asset");
+            // Load/repair Font Asset. If repair fails, TMP falls back to its default font instead of aborting scene generation.
+            var jpFont = FontSetup.EnsureJapaneseFontAsset();
 
             // Create MainMenu Panel
             var panelGo = new GameObject("MainMenuPanel");
@@ -219,7 +235,10 @@ namespace NihongoLife.Editor
                 camGo.tag = "MainCamera";
                 mainCamera = camGo.AddComponent<Camera>();
             }
-            mainCamera.gameObject.AddComponent<AudioListener>();
+            if (mainCamera.gameObject.GetComponent<AudioListener>() == null)
+            {
+                mainCamera.gameObject.AddComponent<AudioListener>();
+            }
             var camController = mainCamera.gameObject.AddComponent<ThirdPersonCameraController>();
             camController.SetTarget(playerGo.transform);
             camController.SetOrbit(0f, 18f, 6.5f);
@@ -238,11 +257,15 @@ namespace NihongoLife.Editor
             var canvasGo = new GameObject("Canvas");
             var canvas = canvasGo.AddComponent<Canvas>();
             canvas.renderMode = RenderMode.ScreenSpaceOverlay;
-            canvasGo.AddComponent<CanvasScaler>();
+            var canvasScaler = canvasGo.AddComponent<CanvasScaler>();
+            canvasScaler.uiScaleMode = CanvasScaler.ScaleMode.ScaleWithScreenSize;
+            canvasScaler.referenceResolution = new Vector2(1920, 1080);
+            canvasScaler.screenMatchMode = CanvasScaler.ScreenMatchMode.MatchWidthOrHeight;
+            canvasScaler.matchWidthOrHeight = 0.5f;
             canvasGo.AddComponent<GraphicRaycaster>();
 
-            // Load Font Asset
-            var jpFont = AssetDatabase.LoadAssetAtPath<TMP_FontAsset>("Assets/NihongoLife/Fonts/NotoSansJP SDF.asset");
+            // Load/repair Font Asset. If repair fails, TMP falls back to its default font instead of aborting scene generation.
+            var jpFont = FontSetup.EnsureJapaneseFontAsset();
 
             // Create HUDUI Panel
             var hudPanelGo = new GameObject("HUDPanel");
@@ -259,7 +282,16 @@ namespace NihongoLife.Editor
             promptPanelGo.transform.SetParent(hudPanelGo.transform, false);
             var promptRect = promptPanelGo.AddComponent<RectTransform>();
             promptRect.anchoredPosition = new Vector2(0, -100);
-            var promptText = promptPanelGo.AddComponent<TextMeshProUGUI>();
+            var promptBg = promptPanelGo.AddComponent<Image>();
+            promptBg.color = new Color(0.04f, 0.05f, 0.06f, 0.82f);
+            var promptTextGo = new GameObject("PromptText");
+            promptTextGo.transform.SetParent(promptPanelGo.transform, false);
+            var promptTextRect = promptTextGo.AddComponent<RectTransform>();
+            promptTextRect.anchorMin = Vector2.zero;
+            promptTextRect.anchorMax = Vector2.one;
+            promptTextRect.offsetMin = new Vector2(14, 6);
+            promptTextRect.offsetMax = new Vector2(-14, -6);
+            var promptText = promptTextGo.AddComponent<TextMeshProUGUI>();
             if (jpFont != null) promptText.font = jpFont;
             promptText.fontSize = 20;
             promptText.alignment = TextAlignmentOptions.Center;
@@ -268,7 +300,6 @@ namespace NihongoLife.Editor
             promptRect.pivot = new Vector2(0.5f, 0);
             promptRect.anchoredPosition = new Vector2(0, 22);
             promptRect.sizeDelta = new Vector2(460, 42);
-            promptPanelGo.AddComponent<Image>().color = new Color(0.04f, 0.05f, 0.06f, 0.82f);
             promptText.fontSize = 18;
             promptText.enableWordWrapping = false;
             promptText.overflowMode = TextOverflowModes.Ellipsis;
@@ -395,24 +426,24 @@ namespace NihongoLife.Editor
 
             // Wire HUDUI
             var serializedHUD = new SerializedObject(hudUI);
-            serializedHUD.FindProperty("promptPanel").objectReferenceValue = promptPanelGo;
-            serializedHUD.FindProperty("promptText").objectReferenceValue = promptText;
-            serializedHUD.FindProperty("scenarioTitleText").objectReferenceValue = titleText;
-            serializedHUD.FindProperty("objectivesText").objectReferenceValue = listText;
-            serializedHUD.FindProperty("dialoguePanel").objectReferenceValue = dialPanelGo;
-            serializedHUD.FindProperty("speakerText").objectReferenceValue = spkrText;
-            serializedHUD.FindProperty("japaneseText").objectReferenceValue = jaText;
-            serializedHUD.FindProperty("readingText").objectReferenceValue = readText;
-            serializedHUD.FindProperty("romajiText").objectReferenceValue = romText;
-            serializedHUD.FindProperty("translationText").objectReferenceValue = viText;
-            serializedHUD.FindProperty("choicesContainer").objectReferenceValue = containerGo.transform;
-            serializedHUD.FindProperty("choiceButtonPrefab").objectReferenceValue = btnPrefab;
-            serializedHUD.FindProperty("continueButton").objectReferenceValue = contBtn;
-            serializedHUD.FindProperty("inventoryPanel").objectReferenceValue = inventoryPanelGo;
-            serializedHUD.FindProperty("inventoryText").objectReferenceValue = inventoryText;
-            serializedHUD.FindProperty("walletText").objectReferenceValue = walletText;
-            serializedHUD.FindProperty("characterPanel").objectReferenceValue = characterPanelGo;
-            serializedHUD.FindProperty("characterStatsText").objectReferenceValue = characterStatsText;
+            SetObjectReference(serializedHUD, "promptPanel", promptPanelGo);
+            SetObjectReference(serializedHUD, "promptText", promptText);
+            SetObjectReference(serializedHUD, "scenarioTitleText", titleText);
+            SetObjectReference(serializedHUD, "objectivesText", listText);
+            SetObjectReference(serializedHUD, "dialoguePanel", dialPanelGo);
+            SetObjectReference(serializedHUD, "speakerText", spkrText);
+            SetObjectReference(serializedHUD, "japaneseText", jaText);
+            SetObjectReference(serializedHUD, "readingText", readText);
+            SetObjectReference(serializedHUD, "romajiText", romText);
+            SetObjectReference(serializedHUD, "translationText", viText);
+            SetObjectReference(serializedHUD, "choicesContainer", containerGo.transform);
+            SetObjectReference(serializedHUD, "choiceButtonPrefab", btnPrefab);
+            SetObjectReference(serializedHUD, "continueButton", contBtn);
+            SetObjectReference(serializedHUD, "inventoryPanel", inventoryPanelGo);
+            SetObjectReference(serializedHUD, "inventoryText", inventoryText);
+            SetObjectReference(serializedHUD, "walletText", walletText);
+            SetObjectReference(serializedHUD, "characterPanel", characterPanelGo);
+            SetObjectReference(serializedHUD, "characterStatsText", characterStatsText);
             serializedHUD.ApplyModifiedProperties();
 
             // Create ResultUI Panel
@@ -780,6 +811,18 @@ namespace NihongoLife.Editor
             txt.alignment = TextAlignmentOptions.Center;
             
             return go;
+        }
+
+        private static void SetObjectReference(SerializedObject serializedObject, string propertyName, Object value)
+        {
+            var property = serializedObject.FindProperty(propertyName);
+            if (property == null)
+            {
+                Debug.LogError($"[SceneBuilder] Missing serialized property '{propertyName}' on {serializedObject.targetObject.name}. Wait for scripts to compile, then run Build All Scenes again.");
+                return;
+            }
+
+            property.objectReferenceValue = value;
         }
 
         private static void CreateEventSystem()

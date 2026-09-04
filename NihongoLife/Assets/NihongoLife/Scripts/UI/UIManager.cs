@@ -13,6 +13,8 @@ namespace NihongoLife.UI
         [SerializeField] private MainMenuUI mainMenuPanel;
         [SerializeField] private HUDUI hudPanel;
         [SerializeField] private ResultUI resultPanel;
+        [SerializeField] private StatusUI statusPanel;
+        [SerializeField] private InventoryUI inventoryPanel;
 
         private void Awake()
         {
@@ -30,6 +32,8 @@ namespace NihongoLife.UI
             if (mainMenuPanel == null) mainMenuPanel = GetComponentInChildren<MainMenuUI>(true);
             if (hudPanel == null) hudPanel = GetComponentInChildren<HUDUI>(true);
             if (resultPanel == null) resultPanel = GetComponentInChildren<ResultUI>(true);
+            if (statusPanel == null) statusPanel = GetComponentInChildren<StatusUI>(true);
+            if (inventoryPanel == null) inventoryPanel = GetComponentInChildren<InventoryUI>(true);
 
             ConfigureInitialUIState();
 
@@ -77,6 +81,8 @@ namespace NihongoLife.UI
             if (mainMenuPanel != null) mainMenuPanel.gameObject.SetActive(true);
             if (hudPanel != null) hudPanel.gameObject.SetActive(false);
             if (resultPanel != null) resultPanel.gameObject.SetActive(false);
+            if (statusPanel != null) statusPanel.gameObject.SetActive(false);
+            if (inventoryPanel != null) inventoryPanel.gameObject.SetActive(false);
             
             // Ensure cursor is free in main menu
             Cursor.lockState = CursorLockMode.None;
@@ -88,12 +94,16 @@ namespace NihongoLife.UI
             if (mainMenuPanel != null) mainMenuPanel.gameObject.SetActive(false);
             if (hudPanel != null) hudPanel.gameObject.SetActive(true);
             if (resultPanel != null) resultPanel.gameObject.SetActive(false);
+            if (statusPanel != null) statusPanel.gameObject.SetActive(false);
+            if (inventoryPanel != null) inventoryPanel.gameObject.SetActive(false);
         }
 
         public void ShowResultScreen(ScoreBreakdownDto breakdown)
         {
             if (mainMenuPanel != null) mainMenuPanel.gameObject.SetActive(false);
             if (hudPanel != null) hudPanel.gameObject.SetActive(false);
+            if (statusPanel != null) statusPanel.gameObject.SetActive(false);
+            if (inventoryPanel != null) inventoryPanel.gameObject.SetActive(false);
             
             if (resultPanel != null)
             {
@@ -103,6 +113,22 @@ namespace NihongoLife.UI
 
             Cursor.lockState = CursorLockMode.None;
             Cursor.visible = true;
+        }
+
+        public void ToggleStatusPanel()
+        {
+            if (statusPanel != null)
+            {
+                statusPanel.gameObject.SetActive(!statusPanel.gameObject.activeSelf);
+            }
+        }
+
+        public void ToggleInventoryPanel()
+        {
+            if (inventoryPanel != null)
+            {
+                inventoryPanel.gameObject.SetActive(!inventoryPanel.gameObject.activeSelf);
+            }
         }
 
         private void HandleScenarioStarted(ScenarioDefinition scenario)
