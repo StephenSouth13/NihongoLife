@@ -302,7 +302,7 @@ namespace NihongoLife.Editor
             promptRect.anchoredPosition = new Vector2(0, 22);
             promptRect.sizeDelta = new Vector2(460, 42);
             promptText.fontSize = 18;
-            promptText.enableWordWrapping = false;
+            promptText.textWrappingMode = TextWrappingModes.NoWrap;
             promptText.overflowMode = TextOverflowModes.Ellipsis;
             promptText.text = "[E] Tương tác";
 
@@ -335,7 +335,7 @@ namespace NihongoLife.Editor
             listText.fontSize = 18;
             listRect.sizeDelta = new Vector2(440, 190);
             listText.fontSize = 16;
-            listText.enableWordWrapping = true;
+            listText.textWrappingMode = TextWrappingModes.Normal;
 
             var walletGo = new GameObject("WalletText");
             walletGo.transform.SetParent(hudPanelGo.transform, false);
@@ -571,8 +571,8 @@ namespace NihongoLife.Editor
             doorBlocker.transform.SetParent(doorRoot.transform, false);
             doorBlocker.transform.localPosition = new Vector3(0, 0, 0.2f);
             doorBlocker.transform.localScale = new Vector3(2.2f, 2.2f, 0.12f);
-            Object.DestroyImmediate(doorBlocker.GetComponent<MeshRenderer>());
-            Object.DestroyImmediate(doorBlocker.GetComponent<MeshFilter>());
+            UnityEngine.Object.DestroyImmediate(doorBlocker.GetComponent<MeshRenderer>());
+            UnityEngine.Object.DestroyImmediate(doorBlocker.GetComponent<MeshFilter>());
 
             var doorVisual = GameObject.CreatePrimitive(PrimitiveType.Cube);
             doorVisual.name = "DoorVisual";
@@ -601,8 +601,8 @@ namespace NihongoLife.Editor
                 var vis = (GameObject)PrefabUtility.InstantiatePrefab(shelfPrefab);
                 vis.transform.SetParent(shelf1.transform, false);
                 vis.transform.localPosition = new Vector3(0, -1.1f, 0); // Ground offset
-                Object.DestroyImmediate(shelf1.GetComponent<MeshRenderer>());
-                Object.DestroyImmediate(shelf1.GetComponent<MeshFilter>());
+                UnityEngine.Object.DestroyImmediate(shelf1.GetComponent<MeshRenderer>());
+                UnityEngine.Object.DestroyImmediate(shelf1.GetComponent<MeshFilter>());
             }
 
             var shelf2 = GameObject.CreatePrimitive(PrimitiveType.Cube);
@@ -616,8 +616,8 @@ namespace NihongoLife.Editor
                 var vis = (GameObject)PrefabUtility.InstantiatePrefab(shelfPrefab);
                 vis.transform.SetParent(shelf2.transform, false);
                 vis.transform.localPosition = new Vector3(0, -1.1f, 0);
-                Object.DestroyImmediate(shelf2.GetComponent<MeshRenderer>());
-                Object.DestroyImmediate(shelf2.GetComponent<MeshFilter>());
+                UnityEngine.Object.DestroyImmediate(shelf2.GetComponent<MeshRenderer>());
+                UnityEngine.Object.DestroyImmediate(shelf2.GetComponent<MeshFilter>());
             }
 
             // Cashier counter (Gameplay collider only)
@@ -633,8 +633,8 @@ namespace NihongoLife.Editor
                 var vis = (GameObject)PrefabUtility.InstantiatePrefab(counterPrefab);
                 vis.transform.SetParent(counter.transform, false);
                 vis.transform.localPosition = new Vector3(0, -0.5f, 0); // Ground offset
-                Object.DestroyImmediate(counter.GetComponent<MeshRenderer>());
-                Object.DestroyImmediate(counter.GetComponent<MeshFilter>());
+                UnityEngine.Object.DestroyImmediate(counter.GetComponent<MeshRenderer>());
+                UnityEngine.Object.DestroyImmediate(counter.GetComponent<MeshFilter>());
             }
 
             // Instantiate items on shelf
@@ -648,8 +648,8 @@ namespace NihongoLife.Editor
             if (onigiriVisual != null) {
                 var vis = (GameObject)PrefabUtility.InstantiatePrefab(onigiriVisual);
                 vis.transform.SetParent(onigiriGo.transform, false);
-                Object.DestroyImmediate(onigiriGo.GetComponent<MeshRenderer>());
-                Object.DestroyImmediate(onigiriGo.GetComponent<MeshFilter>());
+                UnityEngine.Object.DestroyImmediate(onigiriGo.GetComponent<MeshRenderer>());
+                UnityEngine.Object.DestroyImmediate(onigiriGo.GetComponent<MeshFilter>());
             }
             
             var onigiriInteract = onigiriGo.AddComponent<InteractiveItem>();
@@ -673,8 +673,8 @@ namespace NihongoLife.Editor
             if (waterVisual != null) {
                 var vis = (GameObject)PrefabUtility.InstantiatePrefab(waterVisual);
                 vis.transform.SetParent(waterGo.transform, false);
-                Object.DestroyImmediate(waterGo.GetComponent<MeshRenderer>());
-                Object.DestroyImmediate(waterGo.GetComponent<MeshFilter>());
+                UnityEngine.Object.DestroyImmediate(waterGo.GetComponent<MeshRenderer>());
+                UnityEngine.Object.DestroyImmediate(waterGo.GetComponent<MeshFilter>());
             }
 
             var waterInteract = waterGo.AddComponent<InteractiveItem>();
@@ -786,7 +786,7 @@ namespace NihongoLife.Editor
             if (font != null) bodyText.font = font;
             bodyText.fontSize = 17;
             bodyText.color = Color.white;
-            bodyText.enableWordWrapping = true;
+            bodyText.textWrappingMode = TextWrappingModes.Normal;
 
             panelGo.SetActive(false);
             return panelGo;
@@ -812,7 +812,7 @@ namespace NihongoLife.Editor
             body.transform.localPosition = new Vector3(0, 0.2f, 0);
             body.transform.localScale = new Vector3(0.65f, 1.0f, 0.35f);
             body.GetComponent<Renderer>().material = apronMat;
-            Object.DestroyImmediate(body.GetComponent<Collider>());
+            UnityEngine.Object.DestroyImmediate(body.GetComponent<Collider>());
 
             var head = GameObject.CreatePrimitive(PrimitiveType.Sphere);
             head.name = "Head";
@@ -820,7 +820,7 @@ namespace NihongoLife.Editor
             head.transform.localPosition = new Vector3(0, 0.95f, 0);
             head.transform.localScale = new Vector3(0.42f, 0.42f, 0.42f);
             head.GetComponent<Renderer>().material = skinMat;
-            Object.DestroyImmediate(head.GetComponent<Collider>());
+            UnityEngine.Object.DestroyImmediate(head.GetComponent<Collider>());
 
             var hair = GameObject.CreatePrimitive(PrimitiveType.Sphere);
             hair.name = "Hair";
@@ -828,7 +828,7 @@ namespace NihongoLife.Editor
             hair.transform.localPosition = new Vector3(0, 1.13f, -0.02f);
             hair.transform.localScale = new Vector3(0.46f, 0.22f, 0.46f);
             hair.GetComponent<Renderer>().material = hairMat;
-            Object.DestroyImmediate(hair.GetComponent<Collider>());
+            UnityEngine.Object.DestroyImmediate(hair.GetComponent<Collider>());
 
             var nameTag = GameObject.CreatePrimitive(PrimitiveType.Cube);
             nameTag.name = "NameTag";
@@ -836,7 +836,7 @@ namespace NihongoLife.Editor
             nameTag.transform.localPosition = new Vector3(0.18f, 0.45f, -0.19f);
             nameTag.transform.localScale = new Vector3(0.18f, 0.08f, 0.02f);
             nameTag.GetComponent<Renderer>().material.color = new Color(1f, 0.92f, 0.45f);
-            Object.DestroyImmediate(nameTag.GetComponent<Collider>());
+            UnityEngine.Object.DestroyImmediate(nameTag.GetComponent<Collider>());
 
             return root;
         }
@@ -858,7 +858,7 @@ namespace NihongoLife.Editor
             return go;
         }
 
-        private static void SetObjectReference(SerializedObject serializedObject, string propertyName, Object value)
+        private static void SetObjectReference(SerializedObject serializedObject, string propertyName, UnityEngine.Object value)
         {
             var property = serializedObject.FindProperty(propertyName);
             if (property == null)
@@ -872,7 +872,7 @@ namespace NihongoLife.Editor
 
         private static void CreateEventSystem()
         {
-            var es = Object.FindFirstObjectByType<UnityEngine.EventSystems.EventSystem>();
+            var es = UnityEngine.Object.FindFirstObjectByType<UnityEngine.EventSystems.EventSystem>();
             if (es == null)
             {
                 var esGo = new GameObject("EventSystem");

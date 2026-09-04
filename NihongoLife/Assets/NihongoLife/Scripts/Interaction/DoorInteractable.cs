@@ -4,6 +4,8 @@ using NihongoLife.Scenario;
 
 namespace NihongoLife.Interaction
 {
+    public enum DoorType { Swing, Slide }
+
     [RequireComponent(typeof(Collider))]
     public class DoorInteractable : MonoBehaviour, IInteractable
     {
@@ -12,8 +14,16 @@ namespace NihongoLife.Interaction
         [SerializeField] private string promptVi = "Mở cửa";
         [SerializeField] private Transform doorVisual;
         [SerializeField] private Collider blockingCollider;
+        
+        [Header("Animation Settings")]
+        [SerializeField] private DoorType doorType = DoorType.Slide;
+        [SerializeField] private float openDuration = 0.5f;
+        
+        [Header("Swing Settings")]
         [SerializeField] private float openAngle = 95f;
-        [SerializeField] private float openDuration = 0.35f;
+        
+        [Header("Slide Settings")]
+        [SerializeField] private Vector3 slideOffset = new Vector3(-1.2f, 0, 0);
 
         private bool _isOpen;
         private Coroutine _openRoutine;
@@ -64,19 +74,40 @@ namespace NihongoLife.Interaction
 
         private IEnumerator AnimateOpen()
         {
-            Quaternion start = doorVisual.localRotation;
-            Quaternion end = Quaternion.Euler(0f, openAngle, 0f);
             float elapsed = 0f;
-
-            while (elapsed < openDuration)
+            
+            if (doorType == DoorType.Swing)
             {
-                elapsed += Time.deltaTime;
-                float t = Mathf.Clamp01(elapsed / openDuration);
-                doorVisual.localRotation = Quaternion.Slerp(start, end, t);
-                yield return null;
-            }
+                Quaternion start = doorVisual.localRotation;
+                Quaternion end = start * Quaternion.Euler(0f, openAngle, 0f);
 
-            doorVisual.localRotation = end;
+                while (elapsed < openDuration)
+                {
+                    elapsed += Time.deltaTime;
+                    float t = Mathf.Clamp01(elapsed / openDuration);
+                    // Smooth easing (Ease Out)
+                    float easedT = 1f - Mathf.Pow(1f - t, 3f); 
+                    doorVisual.localRotation = Quaternion.Slerp(start, end, easedT);
+                    yield return null;
+                }
+                doorVisual.localRotation = end;
+            }
+            else if (doorType == DoorType.Slide)
+            {
+                Vector3 start = doorVisual.localPosition;
+                Vector3 end = start + slideOffset;
+
+                while (elapsed < openDuration)
+                {
+                    elapsed += Time.deltaTime;
+                    float t = Mathf.Clamp01(elapsed / openDuration);
+                    // Smooth easing (Ease Out)
+                    float easedT = 1f - Mathf.Pow(1f - t, 3f);
+                    doorVisual.localPosition = Vector3.Lerp(start, end, easedT);
+                    yield return null;
+                }
+                doorVisual.localPosition = end;
+            }
         }
     }
 }
