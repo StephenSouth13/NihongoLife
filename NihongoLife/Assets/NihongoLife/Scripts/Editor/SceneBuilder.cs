@@ -208,6 +208,7 @@ namespace NihongoLife.Editor
             var playerCtrl = playerGo.AddComponent<PlayerController>();
             var detector = playerGo.AddComponent<InteractionDetector>();
             playerGo.AddComponent<PlayerInventory>();
+            playerGo.AddComponent<PlayerStatus>();
             
             // Set interactable layer
             int interactableLayer = 6;
@@ -497,12 +498,56 @@ namespace NihongoLife.Editor
             serializedResult.FindProperty("returnToMenuButton").objectReferenceValue = exitBtn;
             serializedResult.ApplyModifiedProperties();
 
+            // Create Status Panel
+            var statusPanelGo = new GameObject("StatusPanel");
+            statusPanelGo.transform.SetParent(canvasGo.transform, false);
+            var statusRect = statusPanelGo.AddComponent<RectTransform>();
+            statusRect.anchorMin = new Vector2(0.5f, 0.5f);
+            statusRect.anchorMax = new Vector2(0.5f, 0.5f);
+            statusRect.sizeDelta = new Vector2(300, 200);
+            statusPanelGo.AddComponent<Image>().color = new Color(0.1f, 0.1f, 0.1f, 0.9f);
+            var statusUI = statusPanelGo.AddComponent<StatusUI>();
+            var statusTextGo = new GameObject("Text");
+            statusTextGo.transform.SetParent(statusPanelGo.transform, false);
+            var statusText = statusTextGo.AddComponent<TextMeshProUGUI>();
+            statusText.font = jpFont;
+            statusText.fontSize = 18;
+            statusText.alignment = TextAlignmentOptions.Center;
+            statusText.rectTransform.sizeDelta = new Vector2(280, 180);
+            var serializedStatus = new SerializedObject(statusUI);
+            serializedStatus.FindProperty("nameText").objectReferenceValue = statusText;
+            serializedStatus.ApplyModifiedProperties();
+            statusPanelGo.SetActive(false);
+
+            // Create Inventory Panel
+            var invPanelGo = new GameObject("InventoryPanel");
+            invPanelGo.transform.SetParent(canvasGo.transform, false);
+            var invRect = invPanelGo.AddComponent<RectTransform>();
+            invRect.anchorMin = new Vector2(0.8f, 0.5f);
+            invRect.anchorMax = new Vector2(0.8f, 0.5f);
+            invRect.sizeDelta = new Vector2(250, 300);
+            invPanelGo.AddComponent<Image>().color = new Color(0.1f, 0.15f, 0.2f, 0.9f);
+            var invUI = invPanelGo.AddComponent<InventoryUI>();
+            var invTextGo = new GameObject("Text");
+            invTextGo.transform.SetParent(invPanelGo.transform, false);
+            var invText = invTextGo.AddComponent<TextMeshProUGUI>();
+            invText.font = jpFont;
+            invText.fontSize = 16;
+            invText.alignment = TextAlignmentOptions.TopLeft;
+            invText.rectTransform.sizeDelta = new Vector2(230, 280);
+            var serializedInv = new SerializedObject(invUI);
+            serializedInv.FindProperty("inventoryText").objectReferenceValue = invText;
+            serializedInv.ApplyModifiedProperties();
+            invPanelGo.SetActive(false);
+
             // Create UIManager
             var uiMgrGo = new GameObject("UIManager");
             var uiMgr = uiMgrGo.AddComponent<UIManager>();
             var serializedUI = new SerializedObject(uiMgr);
             serializedUI.FindProperty("hudPanel").objectReferenceValue = hudUI;
             serializedUI.FindProperty("resultPanel").objectReferenceValue = resultUI;
+            serializedUI.FindProperty("statusPanel").objectReferenceValue = statusUI;
+            serializedUI.FindProperty("inventoryPanel").objectReferenceValue = invUI;
             serializedUI.ApplyModifiedProperties();
 
             // Build Environment Placeholders
