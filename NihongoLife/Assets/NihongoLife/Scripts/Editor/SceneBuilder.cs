@@ -81,7 +81,11 @@ namespace NihongoLife.Editor
             var canvasGo = new GameObject("Canvas");
             var canvas = canvasGo.AddComponent<Canvas>();
             canvas.renderMode = RenderMode.ScreenSpaceOverlay;
-            canvasGo.AddComponent<CanvasScaler>();
+            var canvasScaler = canvasGo.AddComponent<CanvasScaler>();
+            canvasScaler.uiScaleMode = CanvasScaler.ScaleMode.ScaleWithScreenSize;
+            canvasScaler.referenceResolution = new Vector2(1920, 1080);
+            canvasScaler.screenMatchMode = CanvasScaler.ScreenMatchMode.MatchWidthOrHeight;
+            canvasScaler.matchWidthOrHeight = 0.5f;
             canvasGo.AddComponent<GraphicRaycaster>();
 
             // Load Font Asset
@@ -170,8 +174,8 @@ namespace NihongoLife.Editor
             // Create Floor
             var floor = GameObject.CreatePrimitive(PrimitiveType.Cube);
             floor.name = "Floor";
-            floor.transform.position = new Vector3(0, -0.5f, 0);
-            floor.transform.localScale = new Vector3(30, 1, 30);
+            floor.transform.position = new Vector3(0, -0.55f, -8);
+            floor.transform.localScale = new Vector3(72, 1, 42);
             var floorMat = new Material(Shader.Find("Universal Render Pipeline/Simple Lit"));
             floorMat.color = new Color(0.2f, 0.2f, 0.2f);
             floor.GetComponent<Renderer>().material = floorMat;
@@ -179,17 +183,24 @@ namespace NihongoLife.Editor
             // Create Player
             var playerGo = new GameObject("Player");
             playerGo.tag = "Player";
-            playerGo.transform.position = new Vector3(0, 0.5f, -5);
+            playerGo.transform.position = new Vector3(0, 0.5f, -13.5f);
+            playerGo.transform.rotation = Quaternion.Euler(0, 0, 0);
             var cc = playerGo.AddComponent<CharacterController>();
             cc.center = new Vector3(0, 1, 0);
             cc.height = 2f;
             
             var playerCtrl = playerGo.AddComponent<PlayerController>();
             var detector = playerGo.AddComponent<InteractionDetector>();
+            playerGo.AddComponent<PlayerInventory>();
             
             // Set interactable layer
             int interactableLayer = 6;
             playerGo.layer = 0; // Default
+
+            var serializedDetector = new SerializedObject(detector);
+            serializedDetector.FindProperty("detectionRadius").floatValue = 2.4f;
+            serializedDetector.FindProperty("interactableLayers").intValue = 1 << interactableLayer;
+            serializedDetector.ApplyModifiedProperties();
             
             // Wire Ground Check pivot
             var groundCheckGo = new GameObject("GroundCheck");
@@ -211,6 +222,7 @@ namespace NihongoLife.Editor
             mainCamera.gameObject.AddComponent<AudioListener>();
             var camController = mainCamera.gameObject.AddComponent<ThirdPersonCameraController>();
             camController.SetTarget(playerGo.transform);
+            camController.SetOrbit(0f, 18f, 6.5f);
 
             // Create Managers
             var scenarioMgrGo = new GameObject("ScenarioManager");
@@ -251,6 +263,15 @@ namespace NihongoLife.Editor
             if (jpFont != null) promptText.font = jpFont;
             promptText.fontSize = 20;
             promptText.alignment = TextAlignmentOptions.Center;
+            promptRect.anchorMin = new Vector2(0.5f, 0);
+            promptRect.anchorMax = new Vector2(0.5f, 0);
+            promptRect.pivot = new Vector2(0.5f, 0);
+            promptRect.anchoredPosition = new Vector2(0, 22);
+            promptRect.sizeDelta = new Vector2(460, 42);
+            promptPanelGo.AddComponent<Image>().color = new Color(0.04f, 0.05f, 0.06f, 0.82f);
+            promptText.fontSize = 18;
+            promptText.enableWordWrapping = false;
+            promptText.overflowMode = TextOverflowModes.Ellipsis;
             promptText.text = "[E] Tương tác";
 
             // Scenario Title & Objectives List
@@ -264,6 +285,10 @@ namespace NihongoLife.Editor
             var titleText = objTitleGo.AddComponent<TextMeshProUGUI>();
             if (jpFont != null) titleText.font = jpFont;
             titleText.fontSize = 22;
+            titleRect.sizeDelta = new Vector2(420, 34);
+            titleText.fontSize = 20;
+            titleText.color = new Color(1f, 0.92f, 0.45f);
+            titleText.overflowMode = TextOverflowModes.Ellipsis;
             titleText.text = "Nhiệm vụ";
 
             var objListGo = new GameObject("ObjectivesList");
@@ -276,6 +301,28 @@ namespace NihongoLife.Editor
             var listText = objListGo.AddComponent<TextMeshProUGUI>();
             if (jpFont != null) listText.font = jpFont;
             listText.fontSize = 18;
+            listRect.sizeDelta = new Vector2(440, 190);
+            listText.fontSize = 16;
+            listText.enableWordWrapping = true;
+
+            var walletGo = new GameObject("WalletText");
+            walletGo.transform.SetParent(hudPanelGo.transform, false);
+            var walletRect = walletGo.AddComponent<RectTransform>();
+            walletRect.anchorMin = new Vector2(1, 1);
+            walletRect.anchorMax = new Vector2(1, 1);
+            walletRect.pivot = new Vector2(1, 1);
+            walletRect.anchoredPosition = new Vector2(-24, -18);
+            walletRect.sizeDelta = new Vector2(180, 36);
+            var walletText = walletGo.AddComponent<TextMeshProUGUI>();
+            if (jpFont != null) walletText.font = jpFont;
+            walletText.fontSize = 22;
+            walletText.alignment = TextAlignmentOptions.Right;
+            walletText.color = new Color(1f, 0.92f, 0.45f);
+
+            var inventoryPanelGo = CreateInfoPanel(hudPanelGo.transform, "InventoryPanel", "Balo", new Vector2(1, 1), new Vector2(-24, -70), jpFont);
+            var inventoryText = inventoryPanelGo.transform.Find("Body").GetComponent<TextMeshProUGUI>();
+            var characterPanelGo = CreateInfoPanel(hudPanelGo.transform, "CharacterPanel", "Nhan vat", new Vector2(1, 1), new Vector2(-24, -70), jpFont);
+            var characterStatsText = characterPanelGo.transform.Find("Body").GetComponent<TextMeshProUGUI>();
 
             // Dialogue Panel
             var dialPanelGo = new GameObject("DialoguePanel");
@@ -284,8 +331,8 @@ namespace NihongoLife.Editor
             dialRect.anchorMin = new Vector2(0.5f, 0);
             dialRect.anchorMax = new Vector2(0.5f, 0);
             dialRect.pivot = new Vector2(0.5f, 0);
-            dialRect.anchoredPosition = new Vector2(0, 20);
-            dialRect.sizeDelta = new Vector2(600, 220);
+            dialRect.anchoredPosition = new Vector2(0, 82);
+            dialRect.sizeDelta = new Vector2(760, 250);
             dialPanelGo.AddComponent<Image>().color = new Color(0.1f, 0.1f, 0.1f, 0.85f);
 
             var spkrGo = new GameObject("SpeakerText");
@@ -361,6 +408,11 @@ namespace NihongoLife.Editor
             serializedHUD.FindProperty("choicesContainer").objectReferenceValue = containerGo.transform;
             serializedHUD.FindProperty("choiceButtonPrefab").objectReferenceValue = btnPrefab;
             serializedHUD.FindProperty("continueButton").objectReferenceValue = contBtn;
+            serializedHUD.FindProperty("inventoryPanel").objectReferenceValue = inventoryPanelGo;
+            serializedHUD.FindProperty("inventoryText").objectReferenceValue = inventoryText;
+            serializedHUD.FindProperty("walletText").objectReferenceValue = walletText;
+            serializedHUD.FindProperty("characterPanel").objectReferenceValue = characterPanelGo;
+            serializedHUD.FindProperty("characterStatsText").objectReferenceValue = characterStatsText;
             serializedHUD.ApplyModifiedProperties();
 
             // Create ResultUI Panel
@@ -429,18 +481,36 @@ namespace NihongoLife.Editor
             // Build Visuals and Wrappers
             VisualEnvironmentBuilder.GenerateVisualEnvironment(walls);
 
-            // Entrance door placeholder (Keep collider, disable mesh)
-            var entrance = GameObject.CreatePrimitive(PrimitiveType.Cube);
-            entrance.name = "EntranceTrigger";
-            entrance.transform.SetParent(walls.transform);
-            entrance.transform.position = new Vector3(0, 1.5f, 0); // Entrance at Z=0
-            entrance.transform.localScale = new Vector3(3, 3, 1);
-            Object.DestroyImmediate(entrance.GetComponent<MeshRenderer>());
-            Object.DestroyImmediate(entrance.GetComponent<MeshFilter>());
-            var entranceTrigger = entrance.AddComponent<ScenarioAreaTrigger>();
-            var serializedEntrance = new SerializedObject(entranceTrigger);
-            serializedEntrance.FindProperty("areaId").stringValue = "store_entrance";
-            serializedEntrance.ApplyModifiedProperties();
+            // Store door. The scenario advances only when the player presses E on this interactable.
+            var doorRoot = new GameObject("StoreDoor");
+            doorRoot.layer = interactableLayer;
+            doorRoot.transform.SetParent(walls.transform);
+            doorRoot.transform.position = new Vector3(0, 1.15f, 0.65f);
+            var doorTrigger = doorRoot.AddComponent<BoxCollider>();
+            doorTrigger.size = new Vector3(3.2f, 2.4f, 1.6f);
+            doorTrigger.isTrigger = true;
+
+            var doorBlocker = GameObject.CreatePrimitive(PrimitiveType.Cube);
+            doorBlocker.name = "DoorBlocker";
+            doorBlocker.transform.SetParent(doorRoot.transform, false);
+            doorBlocker.transform.localPosition = new Vector3(0, 0, 0.2f);
+            doorBlocker.transform.localScale = new Vector3(2.2f, 2.2f, 0.12f);
+            Object.DestroyImmediate(doorBlocker.GetComponent<MeshRenderer>());
+            Object.DestroyImmediate(doorBlocker.GetComponent<MeshFilter>());
+
+            var doorVisual = GameObject.CreatePrimitive(PrimitiveType.Cube);
+            doorVisual.name = "DoorVisual";
+            doorVisual.transform.SetParent(doorRoot.transform, false);
+            doorVisual.transform.localPosition = Vector3.zero;
+            doorVisual.transform.localScale = new Vector3(1.6f, 2.2f, 0.08f);
+            doorVisual.GetComponent<Renderer>().material.color = new Color(0.95f, 0.95f, 0.9f);
+
+            var doorInteractable = doorRoot.AddComponent<DoorInteractable>();
+            var serializedDoor = new SerializedObject(doorInteractable);
+            serializedDoor.FindProperty("areaId").stringValue = "store_entrance";
+            serializedDoor.FindProperty("doorVisual").objectReferenceValue = doorVisual.transform;
+            serializedDoor.FindProperty("blockingCollider").objectReferenceValue = doorBlocker.GetComponent<Collider>();
+            serializedDoor.ApplyModifiedProperties();
 
             // Shelves (Gameplay colliders only)
             var shelf1 = GameObject.CreatePrimitive(PrimitiveType.Cube);
@@ -509,6 +579,9 @@ namespace NihongoLife.Editor
             var onigiriInteract = onigiriGo.AddComponent<InteractiveItem>();
             var serializedOnigiri = new SerializedObject(onigiriInteract);
             serializedOnigiri.FindProperty("itemId").stringValue = "onigiri";
+            serializedOnigiri.FindProperty("displayNameJa").stringValue = "おにぎり";
+            serializedOnigiri.FindProperty("displayNameVi").stringValue = "Cơm nắm";
+            serializedOnigiri.FindProperty("priceYen").intValue = 497;
             serializedOnigiri.FindProperty("promptJa").stringValue = "おにぎりを取る";
             serializedOnigiri.FindProperty("promptVi").stringValue = "Lấy cơm nắm";
             serializedOnigiri.ApplyModifiedProperties();
@@ -531,37 +604,36 @@ namespace NihongoLife.Editor
             var waterInteract = waterGo.AddComponent<InteractiveItem>();
             var serializedWater = new SerializedObject(waterInteract);
             serializedWater.FindProperty("itemId").stringValue = "water";
+            serializedWater.FindProperty("displayNameJa").stringValue = "水";
+            serializedWater.FindProperty("displayNameVi").stringValue = "Nước";
+            serializedWater.FindProperty("priceYen").intValue = 120;
             serializedWater.FindProperty("promptJa").stringValue = "水を調べる";
             serializedWater.FindProperty("promptVi").stringValue = "Kiểm tra nước";
             serializedWater.FindProperty("destroyOnInteract").boolValue = false;
             serializedWater.ApplyModifiedProperties();
 
             // Cashier NPC
-            var npcGo = GameObject.CreatePrimitive(PrimitiveType.Capsule);
+            var npcGo = CreateStylizedCashier();
             npcGo.name = "CashierNPC";
-            npcGo.transform.position = new Vector3(0, 1.5f, 9.5f); // Behind cashier counter
-            npcGo.transform.localScale = new Vector3(1, 1.5f, 1);
-            npcGo.GetComponent<Renderer>().material.color = Color.magenta;
+            npcGo.transform.position = new Vector3(0, 0.75f, 9.5f); // Behind cashier counter
             npcGo.layer = interactableLayer;
             var npcCtrl = npcGo.AddComponent<NPCController>();
             var serializedNPC = new SerializedObject(npcCtrl);
             serializedNPC.FindProperty("npcId").stringValue = "npc_cashier";
+            serializedNPC.FindProperty("promptJa").stringValue = "会計する";
+            serializedNPC.FindProperty("promptVi").stringValue = "Thanh toán";
+            serializedNPC.FindProperty("scenarioAreaIdOnInteract").stringValue = "cashier";
             serializedNPC.FindProperty("displayName").stringValue = "Thu ngân";
             serializedNPC.FindProperty("role").stringValue = "Cashier";
             serializedNPC.ApplyModifiedProperties();
 
-            // The cashier area is a real navigation target; the NPC remains interactable
-            // so the same scene can later use proximity-based dialogue as well.
+            // Service zone marker only. Checkout is intentionally driven by pressing E on the cashier NPC.
             var cashierArea = new GameObject("CashierAreaTrigger");
             cashierArea.transform.SetParent(walls.transform);
             cashierArea.transform.position = new Vector3(0, 1.5f, 8);
             var cashierCollider = cashierArea.AddComponent<BoxCollider>();
             cashierCollider.size = new Vector3(3, 3, 2);
             cashierCollider.isTrigger = true;
-            var cashierTrigger = cashierArea.AddComponent<ScenarioAreaTrigger>();
-            var serializedCashier = new SerializedObject(cashierTrigger);
-            serializedCashier.FindProperty("areaId").stringValue = "cashier";
-            serializedCashier.ApplyModifiedProperties();
 
             // Scene Initializer
             var initGo = new GameObject("ScenarioSceneInitializer");
@@ -599,6 +671,98 @@ namespace NihongoLife.Editor
             textRect.sizeDelta = Vector2.zero;
 
             return btnGo;
+        }
+
+        private static GameObject CreateInfoPanel(Transform parent, string name, string title, Vector2 anchor, Vector2 pos, TMP_FontAsset font = null)
+        {
+            var panelGo = new GameObject(name);
+            panelGo.transform.SetParent(parent, false);
+            var rect = panelGo.AddComponent<RectTransform>();
+            rect.anchorMin = anchor;
+            rect.anchorMax = anchor;
+            rect.pivot = anchor;
+            rect.anchoredPosition = pos;
+            rect.sizeDelta = new Vector2(310, 230);
+            panelGo.AddComponent<Image>().color = new Color(0.06f, 0.07f, 0.08f, 0.92f);
+
+            var titleGo = new GameObject("Title");
+            titleGo.transform.SetParent(panelGo.transform, false);
+            var titleRect = titleGo.AddComponent<RectTransform>();
+            titleRect.anchorMin = new Vector2(0, 1);
+            titleRect.anchorMax = new Vector2(1, 1);
+            titleRect.pivot = new Vector2(0.5f, 1);
+            titleRect.anchoredPosition = new Vector2(0, -14);
+            titleRect.sizeDelta = new Vector2(-28, 34);
+            var titleText = titleGo.AddComponent<TextMeshProUGUI>();
+            if (font != null) titleText.font = font;
+            titleText.text = title;
+            titleText.fontSize = 22;
+            titleText.color = new Color(1f, 0.92f, 0.45f);
+
+            var bodyGo = new GameObject("Body");
+            bodyGo.transform.SetParent(panelGo.transform, false);
+            var bodyRect = bodyGo.AddComponent<RectTransform>();
+            bodyRect.anchorMin = Vector2.zero;
+            bodyRect.anchorMax = Vector2.one;
+            bodyRect.offsetMin = new Vector2(18, 18);
+            bodyRect.offsetMax = new Vector2(-18, -58);
+            var bodyText = bodyGo.AddComponent<TextMeshProUGUI>();
+            if (font != null) bodyText.font = font;
+            bodyText.fontSize = 17;
+            bodyText.color = Color.white;
+            bodyText.enableWordWrapping = true;
+
+            panelGo.SetActive(false);
+            return panelGo;
+        }
+
+        private static GameObject CreateStylizedCashier()
+        {
+            var root = new GameObject("CashierNPC");
+            var collider = root.AddComponent<BoxCollider>();
+            collider.center = new Vector3(0, 0.35f, 0);
+            collider.size = new Vector3(0.9f, 1.9f, 0.9f);
+
+            var apronMat = new Material(Shader.Find("Universal Render Pipeline/Simple Lit"));
+            apronMat.color = new Color(0.08f, 0.36f, 0.42f);
+            var skinMat = new Material(Shader.Find("Universal Render Pipeline/Simple Lit"));
+            skinMat.color = new Color(0.92f, 0.72f, 0.56f);
+            var hairMat = new Material(Shader.Find("Universal Render Pipeline/Simple Lit"));
+            hairMat.color = new Color(0.12f, 0.08f, 0.05f);
+
+            var body = GameObject.CreatePrimitive(PrimitiveType.Cube);
+            body.name = "Body";
+            body.transform.SetParent(root.transform, false);
+            body.transform.localPosition = new Vector3(0, 0.2f, 0);
+            body.transform.localScale = new Vector3(0.65f, 1.0f, 0.35f);
+            body.GetComponent<Renderer>().material = apronMat;
+            Object.DestroyImmediate(body.GetComponent<Collider>());
+
+            var head = GameObject.CreatePrimitive(PrimitiveType.Sphere);
+            head.name = "Head";
+            head.transform.SetParent(root.transform, false);
+            head.transform.localPosition = new Vector3(0, 0.95f, 0);
+            head.transform.localScale = new Vector3(0.42f, 0.42f, 0.42f);
+            head.GetComponent<Renderer>().material = skinMat;
+            Object.DestroyImmediate(head.GetComponent<Collider>());
+
+            var hair = GameObject.CreatePrimitive(PrimitiveType.Sphere);
+            hair.name = "Hair";
+            hair.transform.SetParent(root.transform, false);
+            hair.transform.localPosition = new Vector3(0, 1.13f, -0.02f);
+            hair.transform.localScale = new Vector3(0.46f, 0.22f, 0.46f);
+            hair.GetComponent<Renderer>().material = hairMat;
+            Object.DestroyImmediate(hair.GetComponent<Collider>());
+
+            var nameTag = GameObject.CreatePrimitive(PrimitiveType.Cube);
+            nameTag.name = "NameTag";
+            nameTag.transform.SetParent(root.transform, false);
+            nameTag.transform.localPosition = new Vector3(0.18f, 0.45f, -0.19f);
+            nameTag.transform.localScale = new Vector3(0.18f, 0.08f, 0.02f);
+            nameTag.GetComponent<Renderer>().material.color = new Color(1f, 0.92f, 0.45f);
+            Object.DestroyImmediate(nameTag.GetComponent<Collider>());
+
+            return root;
         }
 
         private static GameObject CreateScoreText(Transform parent, string name, string label, Vector2 pos, TMP_FontAsset font = null)

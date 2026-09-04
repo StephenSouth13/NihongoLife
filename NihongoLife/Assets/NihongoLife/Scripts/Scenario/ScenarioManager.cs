@@ -9,6 +9,7 @@ using NihongoLife.Dialogue;
 using NihongoLife.Interaction;
 using NihongoLife.Learning;
 using NihongoLife.Cameras;
+using NihongoLife.Player;
 
 namespace NihongoLife.Scenario
 {
@@ -139,6 +140,11 @@ namespace NihongoLife.Scenario
             _currentNode = nextNode;
             Debug.Log($"[ScenarioManager] Transitioning to Node: {_currentNode.id} (Type: {_currentNode.nodeType})");
 
+            if (_currentNode.id == "node_transaction_done")
+            {
+                ResolveCheckout();
+            }
+
             // Interaction and area nodes keep their objective active until the
             // player performs the required action in the real scene.
             if (_currentNode.nodeType == ScenarioNodeType.CollectItem
@@ -249,9 +255,9 @@ namespace NihongoLife.Scenario
             AdvanceNode();
         }
 
-        public void OnItemInteracted(string itemId, InteractiveItem item)
+        public bool OnItemInteracted(string itemId, InteractiveItem item)
         {
-            if (_currentNode == null) return;
+            if (_currentNode == null) return true;
 
             if ((_currentNode.nodeType == ScenarioNodeType.CollectItem || _currentNode.nodeType == ScenarioNodeType.InspectItem) 
                 && _currentNode.targetItemId == itemId)
@@ -264,7 +270,13 @@ namespace NihongoLife.Scenario
                     ScoringManager.Instance.AddScore("TaskCompletion", 15, $"Đã tìm thấy vật phẩm: {item.GetPromptVi()}", itemId);
                 }
 
+                if (!string.IsNullOrEmpty(_currentNode.objectiveIdToComplete))
+                {
+                    CompleteObjective(_currentNode.objectiveIdToComplete);
+                }
+
                 AdvanceNode();
+                return true;
             }
             else if (_currentNode.nodeType == ScenarioNodeType.CollectItem || _currentNode.nodeType == ScenarioNodeType.InspectItem)
             {
@@ -297,7 +309,11 @@ namespace NihongoLife.Scenario
                 {
                     DialogueManager.Instance.StartDialogue(warningNode);
                 }
+
+                return false;
             }
+
+            return true;
         }
 
         public void OnNPCInteracted(string npcId, NPC.NPCController npc)
@@ -408,6 +424,43 @@ namespace NihongoLife.Scenario
 
             // Trigger complete event
             OnScenarioFinished?.Invoke(breakdown);
+        }
+
+        private void ResolveCheckout()
+        {
+            var inventory = PlayerInventory.Instance;
+            if (inventory == null)
+            {
+                Debug.LogError("[ScenarioManager] Cannot checkout because PlayerInventory is missing.");
+                return;
+            }
+
+            if (!inventory.HasItem("onigiri"))
+            {
+                Debug.LogWarning("[ScenarioManager] Checkout blocked: onigiri is not in the player's inventory.");
+                if (ScoringManager.Instance != null)
+                {
+                    ScoringManager.Instance.AddScore("TaskCompletion", -30, "Thanh toán khi chưa có hàng", "checkout_missing_item");
+                }
+                return;
+            }
+
+            int total = Mathf.Max(497, inventory.GetCartTotalYen());
+            if (!inventory.SpendYen(total))
+            {
+                Debug.LogWarning("[ScenarioManager] Checkout blocked: not enough yen.");
+                if (ScoringManager.Instance != null)
+                {
+                    ScoringManager.Instance.AddScore("TaskCompletion", -30, "Không đủ tiền thanh toán", "checkout_no_money");
+                }
+                return;
+            }
+
+            inventory.RemoveItem("onigiri");
+            if (ScoringManager.Instance != null)
+            {
+                ScoringManager.Instance.AddScore("TaskCompletion", 25, $"Đã thanh toán {total} yen", "checkout_paid");
+            }
         }
 
         public void SetPlayerInputLocked(bool locked)

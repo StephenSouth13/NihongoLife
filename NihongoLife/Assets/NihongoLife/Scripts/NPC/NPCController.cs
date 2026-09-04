@@ -15,12 +15,13 @@ namespace NihongoLife.NPC
 
         [Header("Interaction Settings")]
         [SerializeField] private float lookAtSpeed = 5.0f;
-        [SerializeField] private string promptJa = "話す"; // Talk
+        [SerializeField] private string promptJa = "話す";
         [SerializeField] private string promptVi = "Nói chuyện";
+        [SerializeField] private string scenarioAreaIdOnInteract;
 
         private NavMeshAgent _navAgent;
         private Transform _lookTarget;
-        private bool _isInteracting = false;
+        private bool _isInteracting;
 
         public string NpcId => npcId;
         public string DisplayName => displayName;
@@ -33,17 +34,14 @@ namespace NihongoLife.NPC
 
         private void Update()
         {
-            if (_isInteracting && _lookTarget != null)
-            {
-                // Smoothly rotate to look at the player
-                Vector3 lookDirection = _lookTarget.position - transform.position;
-                lookDirection.y = 0; // Keep horizontal rotation only
-                if (lookDirection.magnitude > 0.1f)
-                {
-                    Quaternion targetRotation = Quaternion.LookRotation(lookDirection);
-                    transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, lookAtSpeed * Time.deltaTime);
-                }
-            }
+            if (!_isInteracting || _lookTarget == null) return;
+
+            Vector3 lookDirection = _lookTarget.position - transform.position;
+            lookDirection.y = 0f;
+            if (lookDirection.sqrMagnitude <= 0.01f) return;
+
+            Quaternion targetRotation = Quaternion.LookRotation(lookDirection);
+            transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, lookAtSpeed * Time.deltaTime);
         }
 
         public string GetPromptJa() => promptJa;
@@ -57,11 +55,15 @@ namespace NihongoLife.NPC
             _lookTarget = player.transform;
             _isInteracting = true;
 
-            // Notify ScenarioManager about interaction
-            if (ScenarioManager.Instance != null)
+            if (ScenarioManager.Instance == null) return;
+
+            if (!string.IsNullOrEmpty(scenarioAreaIdOnInteract)
+                && ScenarioManager.Instance.CanEnterArea(scenarioAreaIdOnInteract))
             {
-                ScenarioManager.Instance.OnNPCInteracted(npcId, this);
+                ScenarioManager.Instance.OnAreaEntered(scenarioAreaIdOnInteract);
             }
+
+            ScenarioManager.Instance.OnNPCInteracted(npcId, this);
         }
 
         public void StopInteracting()
@@ -80,8 +82,6 @@ namespace NihongoLife.NPC
 
             _navAgent.isStopped = false;
             _navAgent.SetDestination(destination);
-            
-            // We can start a coroutine or update check to trigger the onReached callback
             StartCoroutine(CheckReachedDestination(onReached));
         }
 
@@ -91,6 +91,7 @@ namespace NihongoLife.NPC
             {
                 yield return new WaitForSeconds(0.2f);
             }
+
             onReached?.Invoke();
         }
     }

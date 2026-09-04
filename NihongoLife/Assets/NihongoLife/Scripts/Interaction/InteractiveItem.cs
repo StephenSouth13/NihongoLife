@@ -1,4 +1,5 @@
 using UnityEngine;
+using NihongoLife.Player;
 using NihongoLife.Scenario;
 
 namespace NihongoLife.Interaction
@@ -7,11 +8,16 @@ namespace NihongoLife.Interaction
     {
         [Header("Item Config")]
         [SerializeField] private string itemId;
-        [SerializeField] private string promptJa = "調べる"; // Inspect
+        [SerializeField] private string displayNameJa;
+        [SerializeField] private string displayNameVi;
+        [SerializeField] private string promptJa = "調べる";
         [SerializeField] private string promptVi = "Kiểm tra";
+        [SerializeField] private int priceYen;
+        [SerializeField] private bool addToInventory = true;
         [SerializeField] private bool destroyOnInteract = true;
 
         public string ItemId => itemId;
+        public int PriceYen => priceYen;
 
         public string GetPromptJa() => promptJa;
         public string GetPromptVi() => promptVi;
@@ -21,17 +27,24 @@ namespace NihongoLife.Interaction
         {
             Debug.Log($"[InteractiveItem] Interacted with: {itemId}");
 
-            // Notify ScenarioManager about the interaction
-            var scenarioManager = ScenarioManager.Instance;
-            if (scenarioManager != null)
+            bool acceptedByScenario = true;
+            if (ScenarioManager.Instance != null)
             {
-                scenarioManager.OnItemInteracted(itemId, this);
+                acceptedByScenario = ScenarioManager.Instance.OnItemInteracted(itemId, this);
+            }
+
+            if (!acceptedByScenario)
+            {
+                return;
+            }
+
+            if (addToInventory && PlayerInventory.Instance != null)
+            {
+                PlayerInventory.Instance.AddItem(itemId, displayNameJa, displayNameVi, priceYen);
             }
 
             if (destroyOnInteract)
             {
-                // Disable visuals and collision instead of destroying immediately,
-                // in case other scripts need the reference or for clean cleanup.
                 gameObject.SetActive(false);
             }
         }

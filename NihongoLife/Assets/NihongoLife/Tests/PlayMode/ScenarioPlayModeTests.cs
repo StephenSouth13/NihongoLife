@@ -6,6 +6,8 @@ using UnityEngine.SceneManagement;
 using NihongoLife.Scenario;
 using NihongoLife.Core;
 using NihongoLife.Interaction;
+using NihongoLife.NPC;
+using NihongoLife.Player;
 
 namespace NihongoLife.Tests
 {
@@ -31,9 +33,15 @@ namespace NihongoLife.Tests
             Assert.NotNull(ScenarioManager.Instance.CurrentNode, "Initial node should be active.");
             Assert.AreEqual("node_start", ScenarioManager.Instance.CurrentNode.id);
 
-            // 5. Enter the store through the real area trigger
+            // 5. Enter the store through the real door interactable
+            var player = GameObject.FindWithTag("Player");
+            Assert.NotNull(player, "Player should exist in the scene.");
+            Assert.NotNull(player.GetComponent<PlayerInventory>(), "Player should have a real inventory component.");
+
+            var door = Object.FindFirstObjectByType<DoorInteractable>();
+            Assert.NotNull(door, "Store door interactable should exist in the scene.");
             Assert.IsTrue(ScenarioManager.Instance.CanEnterArea("store_entrance"));
-            ScenarioManager.Instance.OnAreaEntered("store_entrance");
+            door.Interact(player);
             yield return null;
             Assert.AreEqual("node_find_onigiri", ScenarioManager.Instance.CurrentNode.id);
 
@@ -51,15 +59,18 @@ namespace NihongoLife.Tests
             Assert.NotNull(targetItem, "Onigiri item should exist in the scene.");
             
             // Trigger item interaction
-            ScenarioManager.Instance.OnItemInteracted("onigiri", targetItem);
+            targetItem.Interact(player);
             yield return null;
+            Assert.IsTrue(PlayerInventory.Instance.HasItem("onigiri"), "Picking the rice ball should place it in the backpack.");
             
             // 7. Verify node advanced to cashier meeting
             Assert.AreEqual("node_go_to_cashier", ScenarioManager.Instance.CurrentNode.id);
 
-            // 8. Walk to the cashier area before dialogue can start
+            // 8. Talk to the cashier before dialogue can start
+            var cashier = Object.FindFirstObjectByType<NPCController>();
+            Assert.NotNull(cashier, "Cashier NPC should exist in the scene.");
             Assert.IsTrue(ScenarioManager.Instance.CanEnterArea("cashier"));
-            ScenarioManager.Instance.OnAreaEntered("cashier");
+            cashier.Interact(player);
             yield return null;
             Assert.AreEqual("node_cashier_prompt_bag", ScenarioManager.Instance.CurrentNode.id);
         }

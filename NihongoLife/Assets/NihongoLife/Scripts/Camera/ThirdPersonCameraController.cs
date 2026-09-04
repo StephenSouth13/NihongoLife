@@ -97,5 +97,13 @@ namespace NihongoLife.Cameras
         {
             target = newTarget;
         }
+
+        public void SetOrbit(float yaw, float pitch, float distance)
+        {
+            _rotationX = yaw;
+            _rotationY = Mathf.Clamp(pitch, minYAngle, maxYAngle);
+            defaultDistance = Mathf.Clamp(distance, minDistance, maxDistance);
+            _currentDistance = defaultDistance;
+        }
     }
 }

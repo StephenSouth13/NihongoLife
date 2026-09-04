@@ -1,11 +1,14 @@
 using System.Collections.Generic;
+using System.Text;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.UI;
 using TMPro;
 using NihongoLife.Dialogue;
 using NihongoLife.Scenario;
 using NihongoLife.Interaction;
 using NihongoLife.Learning;
+using NihongoLife.Player;
 
 namespace NihongoLife.UI
 {
@@ -29,6 +32,13 @@ namespace NihongoLife.UI
         [SerializeField] private Transform choicesContainer;
         [SerializeField] private Button choiceButtonPrefab;
         [SerializeField] private Button continueButton;
+
+        [Header("Player Panels")]
+        [SerializeField] private GameObject inventoryPanel;
+        [SerializeField] private TextMeshProUGUI inventoryText;
+        [SerializeField] private TextMeshProUGUI walletText;
+        [SerializeField] private GameObject characterPanel;
+        [SerializeField] private TextMeshProUGUI characterStatsText;
 
         private List<Button> _activeChoiceButtons = new List<Button>();
 
@@ -62,9 +72,32 @@ namespace NihongoLife.UI
                 continueButton.onClick.AddListener(OnContinueClicked);
             }
 
+            if (PlayerInventory.Instance != null)
+            {
+                PlayerInventory.Instance.OnInventoryChanged += RefreshPlayerPanels;
+            }
+
             HideDialogue();
             HidePrompt();
+            SetInventoryVisible(false);
+            SetCharacterVisible(false);
+            RefreshPlayerPanels();
             UpdateObjectivesDisplay();
+        }
+
+        private void Update()
+        {
+            if (Keyboard.current == null) return;
+
+            if (Keyboard.current.bKey.wasPressedThisFrame)
+            {
+                SetInventoryVisible(inventoryPanel != null && !inventoryPanel.activeSelf);
+            }
+
+            if (Keyboard.current.tabKey.wasPressedThisFrame)
+            {
+                SetCharacterVisible(characterPanel != null && !characterPanel.activeSelf);
+            }
         }
 
         private void OnDestroy()
@@ -79,6 +112,74 @@ namespace NihongoLife.UI
             {
                 ScenarioManager.Instance.OnScenarioStarted -= UpdateScenarioInfo;
                 ScenarioManager.Instance.OnObjectiveStateChanged -= HandleObjectiveChanged;
+            }
+
+            if (PlayerInventory.Instance != null)
+            {
+                PlayerInventory.Instance.OnInventoryChanged -= RefreshPlayerPanels;
+            }
+        }
+
+        private void SetInventoryVisible(bool visible)
+        {
+            if (inventoryPanel == null) return;
+            inventoryPanel.SetActive(visible);
+            if (visible)
+            {
+                SetCharacterVisible(false);
+                RefreshPlayerPanels();
+            }
+        }
+
+        private void SetCharacterVisible(bool visible)
+        {
+            if (characterPanel == null) return;
+            characterPanel.SetActive(visible);
+            if (visible)
+            {
+                SetInventoryVisible(false);
+                RefreshPlayerPanels();
+            }
+        }
+
+        private void RefreshPlayerPanels()
+        {
+            var inventory = PlayerInventory.Instance;
+            if (inventory == null) return;
+
+            if (walletText != null)
+            {
+                walletText.text = $"¥ {inventory.Yen}";
+            }
+
+            if (inventoryText != null)
+            {
+                if (inventory.Items.Count == 0)
+                {
+                    inventoryText.text = "Balo trống";
+                }
+                else
+                {
+                    var builder = new StringBuilder();
+                    foreach (var item in inventory.Items)
+                    {
+                        string ja = string.IsNullOrEmpty(item.displayNameJa) ? item.itemId : item.displayNameJa;
+                        string vi = string.IsNullOrEmpty(item.displayNameVi) ? item.itemId : item.displayNameVi;
+                        builder.AppendLine($"{ja} / {vi}");
+                        builder.AppendLine($"x{item.quantity}    ¥{item.priceYen}");
+                    }
+                    inventoryText.text = builder.ToString();
+                }
+            }
+
+            if (characterStatsText != null)
+            {
+                characterStatsText.text =
+                    "Học viên\n" +
+                    "Cấp độ: N5 Starter\n" +
+                    "Tốc độ: Đi bộ / chạy\n" +
+                    $"Tiền mặt: ¥{inventory.Yen}\n" +
+                    "Mục tiêu: mua hàng bằng tiếng Nhật";
             }
         }
 

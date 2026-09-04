@@ -6,28 +6,37 @@ namespace NihongoLife.Editor
 {
     public static class FontSetup
     {
+        private const string SourceFontPath = "Assets/NihongoLife/Fonts/NotoSansJP.otf";
+        private const string FontAssetPath = "Assets/NihongoLife/Fonts/NotoSansJP SDF.asset";
+
         [MenuItem("NihongoLife/Setup Japanese Font")]
         public static void CreateJapaneseFontAsset()
         {
-            string fontPath = "Assets/NihongoLife/Fonts/NotoSansJP.otf";
-            string assetPath = "Assets/NihongoLife/Fonts/NotoSansJP SDF.asset";
+            EnsureJapaneseFontAsset(forceRecreate: true);
+        }
+
+        public static TMP_FontAsset EnsureJapaneseFontAsset(bool forceRecreate = false)
+        {
+            TMP_FontAsset existingAsset = AssetDatabase.LoadAssetAtPath<TMP_FontAsset>(FontAssetPath);
+            if (!forceRecreate && IsUsable(existingAsset))
+            {
+                return existingAsset;
+            }
+
+            if (existingAsset != null)
+            {
+                Debug.LogWarning($"[FontSetup] Recreating broken font asset at {FontAssetPath}. Its atlas texture was missing.");
+                AssetDatabase.DeleteAsset(FontAssetPath);
+            }
 
             // Import the font if necessary
-            AssetDatabase.ImportAsset(fontPath);
-            Font sourceFont = AssetDatabase.LoadAssetAtPath<Font>(fontPath);
+            AssetDatabase.ImportAsset(SourceFontPath);
+            Font sourceFont = AssetDatabase.LoadAssetAtPath<Font>(SourceFontPath);
 
             if (sourceFont == null)
             {
-                Debug.LogError($"[FontSetup] Could not find source font at {fontPath}. Please ensure it is downloaded.");
-                return;
-            }
-
-            // Check if asset already exists
-            TMP_FontAsset existingAsset = AssetDatabase.LoadAssetAtPath<TMP_FontAsset>(assetPath);
-            if (existingAsset != null)
-            {
-                Debug.Log($"[FontSetup] Font asset already exists at {assetPath}.");
-                return;
+                Debug.LogError($"[FontSetup] Could not find source font at {SourceFontPath}. Please ensure it is downloaded.");
+                return null;
             }
 
             // Create Dynamic Font Asset
@@ -43,15 +52,37 @@ namespace NihongoLife.Editor
             if (fontAsset != null)
             {
                 fontAsset.name = "NotoSansJP SDF";
+                fontAsset.atlasPopulationMode = AtlasPopulationMode.Dynamic;
                 
-                AssetDatabase.CreateAsset(fontAsset, assetPath);
+                AssetDatabase.CreateAsset(fontAsset, FontAssetPath);
+                if (fontAsset.atlasTexture != null)
+                {
+                    fontAsset.atlasTexture.name = "NotoSansJP SDF Atlas";
+                    AssetDatabase.AddObjectToAsset(fontAsset.atlasTexture, fontAsset);
+                }
+
+                if (fontAsset.material != null)
+                {
+                    fontAsset.material.name = "NotoSansJP SDF Material";
+                    AssetDatabase.AddObjectToAsset(fontAsset.material, fontAsset);
+                }
+
                 AssetDatabase.SaveAssets();
-                Debug.Log($"[FontSetup] Successfully created dynamic font asset at {assetPath}");
+                AssetDatabase.ImportAsset(FontAssetPath, ImportAssetOptions.ForceUpdate);
+                Debug.Log($"[FontSetup] Successfully created dynamic font asset at {FontAssetPath}");
+                return AssetDatabase.LoadAssetAtPath<TMP_FontAsset>(FontAssetPath);
             }
-            else
-            {
-                Debug.LogError("[FontSetup] Failed to create TMP_FontAsset.");
-            }
+
+            Debug.LogError("[FontSetup] Failed to create TMP_FontAsset.");
+            return null;
+        }
+
+        private static bool IsUsable(TMP_FontAsset fontAsset)
+        {
+            return fontAsset != null
+                && fontAsset.atlasTextures != null
+                && fontAsset.atlasTextures.Length > 0
+                && fontAsset.atlasTextures[0] != null;
         }
     }
 }
