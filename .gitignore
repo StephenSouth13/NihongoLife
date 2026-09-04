@@ -64,6 +64,14 @@ sysinfo.txt
 *.unitypackage.meta
 *.app
 
+# Keep downloaded/source archives local; GitHub rejects regular files over 100MB.
+*.zip
+*.zip.meta
+*.7z
+*.7z.meta
+*.rar
+*.rar.meta
+
 # Crashlytics generated file
 crashlytics-build.properties
 
