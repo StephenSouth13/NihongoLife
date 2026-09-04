@@ -58,8 +58,7 @@ namespace NihongoLife.Dialogue
             // Play voice clip if assigned
             if (node.voiceClip != null)
             {
-                var audioService = GameServices.Get<IAudioService>();
-                if (audioService != null)
+                if (GameServices.TryGet(out IAudioService audioService))
                 {
                     audioService.PlayVoice(node.voiceClip);
                 }
@@ -153,7 +152,7 @@ namespace NihongoLife.Dialogue
             {
                 ScenarioManager.Instance.TransitionToNode(nextNodeId);
             }
-            else
+            else if (ScenarioManager.Instance != null)
             {
                 ScenarioManager.Instance.AdvanceNode();
             }
@@ -194,8 +193,7 @@ namespace NihongoLife.Dialogue
 
         private void PlaySelectSound()
         {
-            var audioService = GameServices.Get<IAudioService>();
-            if (audioService != null)
+            if (GameServices.TryGet(out IAudioService audioService))
             {
                 // We'll play a generic click sound or handle via sound settings
             }

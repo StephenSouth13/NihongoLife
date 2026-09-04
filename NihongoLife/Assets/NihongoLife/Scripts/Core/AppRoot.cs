@@ -13,6 +13,7 @@ namespace NihongoLife.Core
         [SerializeField] private AudioService audioService;
         [SerializeField] private SceneFlowController sceneFlowController;
         [SerializeField] private GameSettingsService settingsService;
+        [SerializeField] private GameControlService controlService;
         [SerializeField] private DayNightCycle dayNightCycle;
 
         private void Awake()
@@ -56,6 +57,13 @@ namespace NihongoLife.Core
             }
             GameServices.Register<GameSettingsService>(settingsService);
             settingsService.Initialize();
+
+            if (controlService == null)
+            {
+                controlService = gameObject.AddComponent<GameControlService>();
+            }
+            GameServices.Register<GameControlService>(controlService);
+            controlService.Initialize();
 
             if (dayNightCycle == null)
             {

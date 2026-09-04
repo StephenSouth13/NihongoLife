@@ -64,8 +64,7 @@ namespace NihongoLife.Scenario
 
         public void StartScenario(string scenarioId)
         {
-            var repo = GameServices.Get<IScenarioRepository>();
-            if (repo == null)
+            if (!GameServices.TryGet(out IScenarioRepository repo))
             {
                 Debug.LogError("[ScenarioManager] IScenarioRepository service not found!");
                 return;
@@ -280,15 +279,18 @@ namespace NihongoLife.Scenario
             return true;
         }
 
-        public void OnNPCInteracted(string npcId, NPC.NPCController npc)
+        public bool OnNPCInteracted(string npcId, NPC.NPCController npc)
         {
             _lastInteractedNPC = npc;
-            if (_currentNode == null) return;
+            if (_currentNode == null) return false;
 
             if (_currentNode.nodeType == ScenarioNodeType.Dialogue && _currentNode.speakerId == npcId)
             {
                 ExecuteCurrentNode();
+                return true;
             }
+
+            return false;
         }
 
         public void CompleteObjective(string objectiveId)
@@ -341,8 +343,7 @@ namespace NihongoLife.Scenario
                 };
             }
 
-            var progressRepo = GameServices.Get<IProgressRepository>();
-            if (progressRepo != null)
+            if (GameServices.TryGet(out IProgressRepository progressRepo))
             {
                 var progress = progressRepo.GetProgress();
                 if (success)

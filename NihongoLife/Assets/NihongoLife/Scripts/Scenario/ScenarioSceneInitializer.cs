@@ -1,4 +1,5 @@
 using UnityEngine;
+using NihongoLife.Core;
 
 namespace NihongoLife.Scenario
 {
@@ -14,6 +15,10 @@ namespace NihongoLife.Scenario
             {
                 // Load scenario ID dynamically if set by MainMenu
                 scenarioId = PlayerPrefs.GetString("ActiveScenarioId", scenarioId);
+                if (GameServices.TryGet(out GameControlService controlService))
+                {
+                    scenarioId = controlService.ActiveScenarioIdOrDefault(scenarioId);
+                }
                 TriggerScenarioStart();
             }
         }

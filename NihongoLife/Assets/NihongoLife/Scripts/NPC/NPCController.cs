@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.AI;
+using NihongoLife.Dialogue;
 using NihongoLife.Interaction;
 using NihongoLife.Scenario;
 
@@ -21,6 +22,12 @@ namespace NihongoLife.NPC
         [SerializeField] private string promptEn = "Talk";
 
         [SerializeField] private string scenarioAreaIdOnInteract;
+
+        [Header("Fallback Conversation")]
+        [SerializeField] private string fallbackJa = "こんにちは。今日はいい天気ですね。";
+        [SerializeField] private string fallbackReading = "こんにちは。きょうはいいてんきですね。";
+        [SerializeField] private string fallbackEn = "Hello. Nice weather today.";
+        [SerializeField] private string fallbackRomaji = "Konnichiwa. Kyou wa ii tenki desu ne.";
 
         private NavMeshAgent _navAgent;
         private Transform _lookTarget;
@@ -58,7 +65,11 @@ namespace NihongoLife.NPC
             _lookTarget = player.transform;
             _isInteracting = true;
 
-            if (ScenarioManager.Instance == null) return;
+            if (ScenarioManager.Instance == null)
+            {
+                StartFallbackDialogue();
+                return;
+            }
 
             if (!string.IsNullOrEmpty(scenarioAreaIdOnInteract)
                 && ScenarioManager.Instance.CanEnterArea(scenarioAreaIdOnInteract))
@@ -66,7 +77,29 @@ namespace NihongoLife.NPC
                 ScenarioManager.Instance.OnAreaEntered(scenarioAreaIdOnInteract);
             }
 
-            ScenarioManager.Instance.OnNPCInteracted(npcId, this);
+            bool handledByScenario = ScenarioManager.Instance.OnNPCInteracted(npcId, this);
+            if (!handledByScenario)
+            {
+                StartFallbackDialogue();
+            }
+        }
+
+        private void StartFallbackDialogue()
+        {
+            if (DialogueManager.Instance == null) return;
+
+            DialogueManager.Instance.StartDialogue(new ScenarioNode
+            {
+                id = "fallback_" + npcId,
+                nodeType = ScenarioNodeType.Dialogue,
+                speakerName = string.IsNullOrEmpty(displayName) ? gameObject.name : displayName,
+                speakerId = npcId,
+                textJa = fallbackJa,
+                textReading = fallbackReading,
+                textEn = fallbackEn,
+                textRomaji = fallbackRomaji,
+                animationCue = "talk"
+            });
         }
 
         public void StopInteracting()
