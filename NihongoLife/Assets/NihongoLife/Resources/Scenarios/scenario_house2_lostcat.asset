@@ -1,0 +1,80 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3ba8f435ab5427145b206cd2a4f4ea7c, type: 3}
+  m_Name: scenario_house2_lostcat
+  m_EditorClassIdentifier: NihongoLife::NihongoLife.Scenario.ScenarioDefinition
+  id: scenario.house2.lostcat
+  version: 1
+  titleJa: "\u8FF7\u5B50\u306E\u732B"
+  titleEn: Lost Cat
+  descriptionJa: "\u8FD1\u6240\u306E\u4EBA\u304C\u732B\u3092\u63A2\u3057\u3066\u3044\u307E\u3059\u3002\u624B\u4F1D\u3063\u3066\u3042\u3052\u307E\u3057\u3087\u3046\u3002"
+  descriptionEn: A neighbor is looking for their cat. Let's help them.
+  chapterIndex: 3
+  learningTargets: []
+  objectives:
+  - id: obj_ask_neighbor
+    titleJa: "\u8FD1\u6240\u306E\u4EBA\u306B\u805E\u304F"
+    titleEn: Ask the neighbor
+    isOptional: 0
+  nodes:
+  - id: node_cat_start
+    nodeType: 0
+    nextNodeId: 
+    objectiveIdToComplete: 
+    speakerName: Suzuki
+    speakerId: npc_neighbor_2
+    textJa: "\u3059\u307F\u307E\u305B\u3093\u3001\u79C1\u306E\u732B\u3092\u898B\u307E\u305B\u3093\u3067\u3057\u305F\u304B\uFF1F"
+    textReading: "\u3059\u307F\u307E\u305B\u3093\u3001\u308F\u305F\u3057\u306E\u306D\u3053\u3092\u307F\u307E\u305B\u3093\u3067\u3057\u305F\u304B\uFF1F"
+    textEn: Excuse me, have you seen my cat?
+    textRomaji: Sumimasen, watashi no neko o mimasen deshita ka?
+    animationCue: 
+    voiceClip: {fileID: 0}
+    choices:
+    - textJa: "\u3044\u3044\u3048\u3001\u898B\u307E\u305B\u3093\u3067\u3057\u305F\u3002"
+      textEn: No, I haven't seen it.
+      nextNodeId: node_cat_end
+      scoreModifiers: []
+      grammarTags: []
+      vocabularyTags: []
+    targetItemId: 
+    targetAreaId: 
+  - id: node_cat_end
+    nodeType: 0
+    nextNodeId: node_complete
+    objectiveIdToComplete: obj_ask_neighbor
+    speakerName: Suzuki
+    speakerId: npc_neighbor_2
+    textJa: "\u305D\u3046\u3067\u3059\u304B\u3002\u3042\u308A\u304C\u3068\u3046\u3054\u3056\u3044\u307E\u3059\u3002"
+    textReading: "\u305D\u3046\u3067\u3059\u304B\u3002\u3042\u308A\u304C\u3068\u3046\u3054\u3056\u3044\u307E\u3059\u3002"
+    textEn: I see. Thank you anyway.
+    textRomaji: Sou desu ka. Arigatou gozaimasu.
+    animationCue: bow
+    voiceClip: {fileID: 0}
+    choices: []
+    targetItemId: 
+    targetAreaId: 
+  - id: node_complete
+    nodeType: 4
+    nextNodeId: 
+    objectiveIdToComplete: 
+    speakerName: 
+    speakerId: 
+    textJa: 
+    textReading: 
+    textEn: 
+    textRomaji: 
+    animationCue: 
+    voiceClip: {fileID: 0}
+    choices: []
+    targetItemId: 
+    targetAreaId: 
+  startNodeId: node_cat_start
