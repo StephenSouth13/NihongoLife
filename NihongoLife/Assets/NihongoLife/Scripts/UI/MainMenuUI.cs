@@ -186,10 +186,24 @@ namespace NihongoLife.UI
         {
             GameLanguage language = GetLanguage();
 
-            if (titleText != null) titleText.text = language == GameLanguage.Japanese ? "日本語 LIFE" : "NIHONGO LIFE";
+            GameControlDatabase database = GameServices.TryGet(out GameControlService controlService) ? controlService.Database : null;
+
+            if (titleText != null)
+            {
+                titleText.text = database != null && !string.IsNullOrEmpty(database.menuTitle)
+                    ? database.menuTitle
+                    : language == GameLanguage.Japanese ? "日本語 LIFE" : "NIHONGO LIFE";
+            }
             if (subtitleText != null)
             {
-                subtitleText.text = language switch
+                subtitleText.text = database != null
+                    ? language switch
+                    {
+                        GameLanguage.English => database.menuSubtitleEn,
+                        GameLanguage.Japanese => database.menuSubtitleJa,
+                        _ => database.menuSubtitleVi
+                    }
+                    : language switch
                 {
                     GameLanguage.English => "A polished Japanese town for real shopping practice",
                     GameLanguage.Japanese => "コンビニで買い物を練習する街",
@@ -229,6 +243,10 @@ namespace NihongoLife.UI
         private void OnStartClicked()
         {
             PlayerPrefs.SetString("ActiveScenarioId", targetScenarioId);
+            if (GameServices.TryGet(out GameControlService controlService))
+            {
+                PlayerPrefs.SetString("ActiveScenarioId", controlService.ActiveScenarioIdOrDefault(targetScenarioId));
+            }
             PlayerPrefs.Save();
 
             if (GameServices.TryGet(out SceneFlowController sceneFlow))

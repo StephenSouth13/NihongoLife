@@ -23,6 +23,8 @@ namespace NihongoLife.Editor
         private const int InteractableLayer = 6;
         private const string ScenesDir = "Assets/NihongoLife/Scenes";
         private const string SandboxScenePath = ScenesDir + "/90_TestSandbox.unity";
+        private const string ControlScenePath = ScenesDir + "/99_ControlRoom.unity";
+        private const string ControlDatabasePath = "Assets/NihongoLife/Resources/Control/NihongoLifeControlDatabase.asset";
 
         [MenuItem("NihongoLife/Build All Scenes")]
         public static void BuildAllScenes()
@@ -40,6 +42,7 @@ namespace NihongoLife.Editor
                 BuildBootstrapScene(ScenesDir + "/00_Bootstrap.unity");
                 BuildMainMenuScene(ScenesDir + "/01_MainMenu.unity");
                 BuildSandboxScene(SandboxScenePath);
+                BuildControlScene(ControlScenePath);
 
                 EditorBuildSettings.scenes = new[]
                 {
@@ -84,6 +87,15 @@ namespace NihongoLife.Editor
             Debug.Log("[SceneBuilder] Rebuilt 90_TestSandbox with gameplay, shop door, and interior camera zone.");
         }
 
+        [MenuItem("NihongoLife/Rebuild Control Room")]
+        public static void RebuildControlRoom()
+        {
+            EnsureFolder("Assets/NihongoLife", "Scenes");
+            BuildControlScene(ControlScenePath);
+            EditorSceneManager.OpenScene(ControlScenePath);
+            Debug.Log("[SceneBuilder] Rebuilt 99_ControlRoom. Edit NihongoLifeControlDatabase in the Inspector.");
+        }
+
         private static void BuildBootstrapScene(string path)
         {
             var scene = EditorSceneManager.NewScene(NewSceneSetup.DefaultGameObjects, NewSceneMode.Single);
@@ -92,11 +104,13 @@ namespace NihongoLife.Editor
             var audioService = appRootGo.AddComponent<AudioService>();
             var sceneFlow = appRootGo.AddComponent<SceneFlowController>();
             var settings = appRootGo.AddComponent<GameSettingsService>();
+            var control = appRootGo.AddComponent<GameControlService>();
 
             var so = new SerializedObject(appRoot);
             SetRef(so, "audioService", audioService);
             SetRef(so, "sceneFlowController", sceneFlow);
             SetRef(so, "settingsService", settings);
+            SetRef(so, "controlService", control);
             so.ApplyModifiedProperties();
 
             EditorSceneManager.SaveScene(scene, path);
@@ -170,6 +184,62 @@ namespace NihongoLife.Editor
             EditorSceneManager.SaveScene(scene, path);
         }
 
+        private static void BuildControlScene(string path)
+        {
+            var scene = EditorSceneManager.NewScene(NewSceneSetup.DefaultGameObjects, NewSceneMode.Single);
+            CreateEventSystem();
+            CreateLighting();
+
+            var database = EnsureControlDatabaseAsset();
+            var root = new GameObject("NihongoLifeControlPanel");
+            var controlService = root.AddComponent<GameControlService>();
+            var so = new SerializedObject(controlService);
+            SetRef(so, "database", database);
+            so.ApplyModifiedProperties();
+
+            var font = FontSetup.EnsureJapaneseFontAsset();
+            var canvasGo = CreateCanvas("Canvas");
+            var panel = CreateFullScreenPanel(canvasGo.transform, "ControlRoomPanel", new Color(0.025f, 0.03f, 0.036f, 1f));
+            AddTopAccent(panel.transform);
+            var title = CreateText(panel.transform, "TitleText", "NIHONGO LIFE CONTROL ROOM", font, 44, new Vector2(0f, 220f), new Vector2(1100f, 70f), TextAlignmentOptions.Center);
+            title.color = new Color(1f, 0.91f, 0.54f);
+            var body = CreateText(panel.transform, "BodyText",
+                "Edit the NihongoLifeControlDatabase asset in the Inspector.\n\n" +
+                "- Active scenario controls which mission starts in 90_TestSandbox.\n" +
+                "- Menu copy controls the main menu text.\n" +
+                "- Online database fields are config only. Keep passwords in environment variables.\n\n" +
+                "This scene is for creators and is not added to runtime build settings.",
+                font, 22, new Vector2(0f, 40f), new Vector2(980f, 360f), TextAlignmentOptions.Center);
+            body.textWrappingMode = TextWrappingModes.Normal;
+
+            Selection.activeObject = database;
+            EditorSceneManager.SaveScene(scene, path);
+        }
+
+        private static GameControlDatabase EnsureControlDatabaseAsset()
+        {
+            EnsureFolderExists("Assets/NihongoLife/Resources/Control");
+            var database = AssetDatabase.LoadAssetAtPath<GameControlDatabase>(ControlDatabasePath);
+            if (database == null)
+            {
+                database = ScriptableObject.CreateInstance<GameControlDatabase>();
+                AssetDatabase.CreateAsset(database, ControlDatabasePath);
+            }
+
+            database.scenarios.Clear();
+            foreach (var scenario in Resources.LoadAll<ScenarioDefinition>("Scenarios"))
+            {
+                if (scenario != null && !database.scenarios.Contains(scenario))
+                {
+                    database.scenarios.Add(scenario);
+                }
+            }
+
+            EditorUtility.SetDirty(database);
+            AssetDatabase.SaveAssets();
+            return database;
+        }
+
         private static void CreateMainMenuTownPreview()
         {
             var previewRoot = new GameObject("MenuTownPreview_90_TestSandbox");
@@ -241,11 +311,13 @@ namespace NihongoLife.Editor
             var audioService = appRootGo.AddComponent<AudioService>();
             var sceneFlow = appRootGo.AddComponent<SceneFlowController>();
             var settings = appRootGo.AddComponent<GameSettingsService>();
+            var control = appRootGo.AddComponent<GameControlService>();
 
             var so = new SerializedObject(appRoot);
             SetRef(so, "audioService", audioService);
             SetRef(so, "sceneFlowController", sceneFlow);
             SetRef(so, "settingsService", settings);
+            SetRef(so, "controlService", control);
             so.ApplyModifiedProperties();
         }
 
@@ -321,6 +393,7 @@ namespace NihongoLife.Editor
             managerGo.AddComponent<ScoringManager>();
             managerGo.AddComponent<DialogueManager>();
             managerGo.AddComponent<LearningMasteryManager>();
+            managerGo.AddComponent<SpeechPracticeController>();
         }
 
         private static void BuildStoreGameplay(Transform root)
