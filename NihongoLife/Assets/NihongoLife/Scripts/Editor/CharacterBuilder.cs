@@ -7,17 +7,17 @@ namespace NihongoLife.Editor
 {
     public static class CharacterBuilder
     {
-        private static readonly string REMY_PATH = "Assets/ThirdParty/Mixamo/Characters/remy/source/Remy.fbx";
-        private static readonly string ELIZABETH_PATH = "Assets/ThirdParty/Mixamo/Characters/elizabeth-female-3-d-character/source/Elizabeth_Female_3_d_Character/Elizabeth_Female_3_d_Character.fbx";
+        private const string REMY_PATH = "Assets/ThirdParty/Mixamo/Characters/remy/source/Remy.fbx";
+        private const string ELIZABETH_PATH = "Assets/ThirdParty/Mixamo/Characters/elizabeth-female-3-d-character/source/Elizabeth_Female_3_d_Character/Elizabeth_Female_3_d_Character.fbx";
         
-        private static readonly string ANIM_IDLE = "Assets/ThirdParty/Mixamo/Animations/Remy@Idle.fbx";
-        private static readonly string ANIM_WALK = "Assets/ThirdParty/Mixamo/Animations/Remy@Walking.fbx";
-        private static readonly string ANIM_TALK = "Assets/ThirdParty/Mixamo/Animations/Remy@Talking.fbx";
-        private static readonly string ANIM_BOW = "Assets/ThirdParty/Mixamo/Animations/Remy@Quick Informal Bow.fbx";
-        private static readonly string ANIM_POINT = "Assets/ThirdParty/Mixamo/Animations/Remy@Pointing.fbx";
+        private const string ANIM_IDLE = "Assets/ThirdParty/Mixamo/Animations/Remy@Idle.fbx";
+        private const string ANIM_WALK = "Assets/ThirdParty/Mixamo/Animations/Remy@Walking.fbx";
+        private const string ANIM_TALK = "Assets/ThirdParty/Mixamo/Animations/Remy@Talking.fbx";
+        private const string ANIM_BOW = "Assets/ThirdParty/Mixamo/Animations/Remy@Quick Informal Bow.fbx";
+        private const string ANIM_POINT = "Assets/ThirdParty/Mixamo/Animations/Remy@Pointing.fbx";
 
-        private static readonly string ANIMATOR_PATH = "Assets/NihongoLife/Animations/NL_Humanoid.controller";
-        private static readonly string PREFAB_DIR = "Assets/NihongoLife/Prefabs/Characters";
+        private const string ANIMATOR_PATH = "Assets/NihongoLife/Animations/NL_Humanoid.controller";
+        private const string PREFAB_DIR = "Assets/NihongoLife/Prefabs/Characters";
 
         [MenuItem("NihongoLife/Characters/Build Character System")]
         public static void BuildCharacterSystem()
@@ -25,23 +25,19 @@ namespace NihongoLife.Editor
             EnsureFolderExists("Assets/NihongoLife/Animations");
             EnsureFolderExists(PREFAB_DIR);
 
-            // Configure Characters
             ConfigureModel(REMY_PATH);
             ConfigureModel(ELIZABETH_PATH);
 
-            // Configure Animations
             ConfigureAnimation(ANIM_IDLE, true);
             ConfigureAnimation(ANIM_WALK, true, true);
             ConfigureAnimation(ANIM_TALK, true);
             ConfigureAnimation(ANIM_BOW, false);
             ConfigureAnimation(ANIM_POINT, false);
 
-            // Generate Animator
             GenerateAnimatorController();
 
-            // Generate Prefabs
-            CreateVisualPrefab(REMY_PATH, "NL_Player");
-            CreateVisualPrefab(ELIZABETH_PATH, "NL_Cashier");
+            CreateVisualPrefab(REMY_PATH, "NL_Player", 1.72f);
+            CreateVisualPrefab(ELIZABETH_PATH, "NL_Cashier", 1.68f);
 
             AssetDatabase.SaveAssets();
             Debug.Log("[CharacterBuilder] Character system built successfully.");
@@ -142,10 +138,10 @@ namespace NihongoLife.Editor
             var rootStateMachine = controller.layers[0].stateMachine;
 
             // Load clips
-            AnimationClip idleClip = AssetDatabase.LoadAssetAtPath<AnimationClip>(ANIM_IDLE);
-            AnimationClip walkClip = AssetDatabase.LoadAssetAtPath<AnimationClip>(ANIM_WALK);
-            AnimationClip talkClip = AssetDatabase.LoadAssetAtPath<AnimationClip>(ANIM_TALK);
-            AnimationClip bowClip = AssetDatabase.LoadAssetAtPath<AnimationClip>(ANIM_BOW);
+            AnimationClip idleClip = LoadAnimationClip(ANIM_IDLE);
+            AnimationClip walkClip = LoadAnimationClip(ANIM_WALK);
+            AnimationClip talkClip = LoadAnimationClip(ANIM_TALK);
+            AnimationClip bowClip = LoadAnimationClip(ANIM_BOW);
             
             // Create or update states
             AnimatorState idleState = GetOrCreateState(rootStateMachine, "Idle");
@@ -223,27 +219,76 @@ namespace NihongoLife.Editor
             transition.AddCondition(AnimatorConditionMode.If, 0, paramName);
         }
 
-        private static void CreateVisualPrefab(string modelPath, string prefabName)
+        private static AnimationClip LoadAnimationClip(string assetPath)
+        {
+            var direct = AssetDatabase.LoadAssetAtPath<AnimationClip>(assetPath);
+            if (direct != null) return direct;
+
+            foreach (var asset in AssetDatabase.LoadAllAssetsAtPath(assetPath))
+            {
+                if (asset is AnimationClip clip && !clip.name.StartsWith("__preview__", System.StringComparison.Ordinal))
+                {
+                    return clip;
+                }
+            }
+
+            Debug.LogError($"[CharacterBuilder] Missing animation clip in {assetPath}");
+            return null;
+        }
+
+        private static void CreateVisualPrefab(string modelPath, string prefabName, float targetHeight)
         {
             string prefabPath = $"{PREFAB_DIR}/{prefabName}.prefab";
             GameObject model = AssetDatabase.LoadAssetAtPath<GameObject>(modelPath);
-            if (model == null) return;
+            if (model == null)
+            {
+                Debug.LogError($"[CharacterBuilder] Missing character model: {modelPath}");
+                return;
+            }
 
             GameObject root = new GameObject(prefabName);
             GameObject visual = (GameObject)PrefabUtility.InstantiatePrefab(model);
             visual.name = "Visual";
             visual.transform.SetParent(root.transform, false);
+            NormalizeCharacterVisual(visual.transform, targetHeight);
 
-            Animator animator = visual.GetComponent<Animator>();
+            Animator animator = visual.GetComponentInChildren<Animator>(true);
             if (animator != null)
             {
                 animator.runtimeAnimatorController = AssetDatabase.LoadAssetAtPath<RuntimeAnimatorController>(ANIMATOR_PATH);
                 animator.applyRootMotion = false;
             }
+            else
+            {
+                Debug.LogError($"[CharacterBuilder] Model has no Animator: {modelPath}");
+            }
 
             PrefabUtility.SaveAsPrefabAsset(root, prefabPath);
             Object.DestroyImmediate(root);
             Debug.Log($"[CharacterBuilder] Generated {prefabName}");
+        }
+
+        private static void NormalizeCharacterVisual(Transform visual, float targetHeight)
+        {
+            Renderer[] renderers = visual.GetComponentsInChildren<Renderer>(true);
+            if (renderers.Length == 0) return;
+
+            Bounds bounds = renderers[0].bounds;
+            for (int i = 1; i < renderers.Length; i++)
+            {
+                bounds.Encapsulate(renderers[i].bounds);
+            }
+
+            float height = bounds.size.y;
+            if (height <= 0.01f) return;
+
+            float scale = targetHeight / height;
+            visual.localScale = Vector3.one * scale;
+            visual.localPosition = new Vector3(
+                -bounds.center.x * scale,
+                -bounds.min.y * scale,
+                -bounds.center.z * scale
+            );
         }
 
         private static void EnsureFolderExists(string folderPath)

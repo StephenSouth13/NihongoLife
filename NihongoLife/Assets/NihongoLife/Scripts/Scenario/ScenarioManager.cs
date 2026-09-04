@@ -37,20 +37,20 @@ namespace NihongoLife.Scenario
 
         [Header("Current State")]
         [SerializeField] private ScenarioDefinition currentScenario;
+
         private ScenarioNode _currentNode;
-        private List<RuntimeObjective> _objectives = new List<RuntimeObjective>();
+        private readonly List<RuntimeObjective> _objectives = new List<RuntimeObjective>();
+        private NPC.NPCController _lastInteractedNPC;
 
         public event Action<ScenarioDefinition> OnScenarioStarted;
         public event Action<RuntimeObjective> OnObjectiveStateChanged;
         public event Action<ScenarioNode> OnNodeChanged;
         public event Action<ScoreBreakdownDto> OnScenarioFinished;
 
-        private NihongoLife.NPC.NPCController _lastInteractedNPC;
-
         public ScenarioDefinition CurrentScenario => currentScenario;
         public ScenarioNode CurrentNode => _currentNode;
         public List<RuntimeObjective> Objectives => _objectives;
-        public NihongoLife.NPC.NPCController LastInteractedNPC => _lastInteractedNPC;
+        public NPC.NPCController LastInteractedNPC => _lastInteractedNPC;
 
         private void Awake()
         {
@@ -86,7 +86,6 @@ namespace NihongoLife.Scenario
             currentScenario = scenario;
             Debug.Log($"[ScenarioManager] Starting scenario: {scenario.titleJa} ({scenario.id})");
 
-            // Setup runtime objectives
             _objectives.Clear();
             foreach (var objDef in scenario.objectives)
             {
@@ -100,15 +99,9 @@ namespace NihongoLife.Scenario
                 });
             }
 
-            // Setup ScoringManager
-            if (ScoringManager.Instance != null)
-            {
-                ScoringManager.Instance.ResetScore();
-            }
-
+            ScoringManager.Instance?.ResetScore();
             OnScenarioStarted?.Invoke(currentScenario);
 
-            // Navigate to start node
             string startId = scenario.startNodeId;
             if (string.IsNullOrEmpty(startId) && scenario.nodes != null && scenario.nodes.Count > 0)
             {
@@ -148,8 +141,6 @@ namespace NihongoLife.Scenario
                 ResolveCheckout();
             }
 
-            // Interaction and area nodes keep their objective active until the
-            // player performs the required action in the real scene.
             if (_currentNode.nodeType == ScenarioNodeType.CollectItem
                 || _currentNode.nodeType == ScenarioNodeType.InspectItem
                 || _currentNode.nodeType == ScenarioNodeType.GoToArea)
@@ -162,8 +153,6 @@ namespace NihongoLife.Scenario
             }
 
             OnNodeChanged?.Invoke(_currentNode);
-
-            // Execute node behavior
             ExecuteCurrentNode();
         }
 
@@ -172,10 +161,7 @@ namespace NihongoLife.Scenario
             switch (_currentNode.nodeType)
             {
                 case ScenarioNodeType.Dialogue:
-                    // Stop player movement
                     SetPlayerInputLocked(true);
-                    
-                    // Display Dialogue via DialogueManager
                     if (DialogueManager.Instance != null)
                     {
                         DialogueManager.Instance.StartDialogue(_currentNode);
@@ -183,22 +169,12 @@ namespace NihongoLife.Scenario
                     else
                     {
                         Debug.LogError("[ScenarioManager] DialogueManager.Instance is null!");
-                        // Fallback: auto advance if dialogue manager is missing
                         AdvanceNode();
                     }
                     break;
 
                 case ScenarioNodeType.CollectItem:
-                    SetPlayerInputLocked(false);
-                    // Activate corresponding objective if defined
-                    ActivateObjectiveByNodeConfig();
-                    break;
-
                 case ScenarioNodeType.InspectItem:
-                    SetPlayerInputLocked(false);
-                    ActivateObjectiveByNodeConfig();
-                    break;
-
                 case ScenarioNodeType.GoToArea:
                     SetPlayerInputLocked(false);
                     ActivateObjectiveByNodeConfig();
@@ -218,15 +194,13 @@ namespace NihongoLife.Scenario
 
         private void ActivateObjectiveByNodeConfig()
         {
-            // If the node completion triggers an objective, activate it first if it is currently inactive
-            if (!string.IsNullOrEmpty(_currentNode.objectiveIdToComplete))
+            if (string.IsNullOrEmpty(_currentNode.objectiveIdToComplete)) return;
+
+            var obj = _objectives.Find(o => o.id == _currentNode.objectiveIdToComplete);
+            if (obj != null && obj.state == ObjectiveState.Inactive)
             {
-                var obj = _objectives.Find(o => o.id == _currentNode.objectiveIdToComplete);
-                if (obj != null && obj.state == ObjectiveState.Inactive)
-                {
-                    obj.state = ObjectiveState.Active;
-                    OnObjectiveStateChanged?.Invoke(obj);
-                }
+                obj.state = ObjectiveState.Active;
+                OnObjectiveStateChanged?.Invoke(obj);
             }
         }
 
@@ -262,16 +236,13 @@ namespace NihongoLife.Scenario
         {
             if (_currentNode == null) return true;
 
-            if ((_currentNode.nodeType == ScenarioNodeType.CollectItem || _currentNode.nodeType == ScenarioNodeType.InspectItem) 
-                && _currentNode.targetItemId == itemId)
+            bool isItemNode = _currentNode.nodeType == ScenarioNodeType.CollectItem
+                || _currentNode.nodeType == ScenarioNodeType.InspectItem;
+
+            if (isItemNode && _currentNode.targetItemId == itemId)
             {
                 Debug.Log($"[ScenarioManager] Objective item interaction successful: {itemId}");
-                
-                // Add default score for task completion
-                if (ScoringManager.Instance != null)
-                {
-                    ScoringManager.Instance.AddScore("TaskCompletion", 15, $"Đã tìm thấy vật phẩm: {item.GetPromptVi()}", itemId);
-                }
+                ScoringManager.Instance?.AddScore("TaskCompletion", 15, $"Đã tìm thấy vật phẩm: {item.GetPromptVi()}", itemId);
 
                 if (!string.IsNullOrEmpty(_currentNode.objectiveIdToComplete))
                 {
@@ -281,18 +252,13 @@ namespace NihongoLife.Scenario
                 AdvanceNode();
                 return true;
             }
-            else if (_currentNode.nodeType == ScenarioNodeType.CollectItem || _currentNode.nodeType == ScenarioNodeType.InspectItem)
+
+            if (isItemNode)
             {
                 Debug.Log($"[ScenarioManager] Objective item interaction incorrect: {itemId}");
+                ScoringManager.Instance?.AddScore("Vocabulary", -5, "Chọn nhầm vật phẩm", itemId);
+                ScoringManager.Instance?.AddScore("ResponseAccuracy", -10, "Chọn sai vật phẩm mục tiêu", itemId);
 
-                // 1. Add score penalties
-                if (ScoringManager.Instance != null)
-                {
-                    ScoringManager.Instance.AddScore("Vocabulary", -5, $"Chọn nhầm vật phẩm", itemId);
-                    ScoringManager.Instance.AddScore("ResponseAccuracy", -10, "Chọn sai vật phẩm mục tiêu", itemId);
-                }
-
-                // 2. Trigger dynamic feedback dialogue node
                 var warningNode = new ScenarioNode
                 {
                     id = "temp_warning_wrong_item",
@@ -303,16 +269,11 @@ namespace NihongoLife.Scenario
                     textReading = "これはちがいます。おにぎりをさがしてください。",
                     textVi = "Đây không phải vật phẩm được yêu cầu. Hãy tìm cơm nắm!",
                     textRomaji = "Kore wa chigaimasu. Onigiri wo sagashite kudasai.",
-                    nextNodeId = _currentNode.id // Return back to the active CollectItem node
+                    nextNodeId = _currentNode.id
                 };
 
-                // Suspend player inputs and show dialogue
                 SetPlayerInputLocked(true);
-                if (DialogueManager.Instance != null)
-                {
-                    DialogueManager.Instance.StartDialogue(warningNode);
-                }
-
+                DialogueManager.Instance?.StartDialogue(warningNode);
                 return false;
             }
 
@@ -324,10 +285,8 @@ namespace NihongoLife.Scenario
             _lastInteractedNPC = npc;
             if (_currentNode == null) return;
 
-            // Trigger dialogue if player approaches the cashier or target NPC
             if (_currentNode.nodeType == ScenarioNodeType.Dialogue && _currentNode.speakerId == npcId)
             {
-                // Already started or waiting to start dialogue node
                 ExecuteCurrentNode();
             }
         }
@@ -358,7 +317,6 @@ namespace NihongoLife.Scenario
         {
             Debug.Log($"[ScenarioManager] Scenario Finished. Status: {(success ? "Success" : "Failed")}");
 
-            // Automatically complete all remaining objectives as completed or failed
             foreach (var obj in _objectives)
             {
                 if (obj.state == ObjectiveState.Active || obj.state == ObjectiveState.Inactive)
@@ -368,8 +326,7 @@ namespace NihongoLife.Scenario
                 }
             }
 
-            // Calculate scoring breakdown
-            ScoreBreakdownDto breakdown = null;
+            ScoreBreakdownDto breakdown;
             if (ScoringManager.Instance != null)
             {
                 breakdown = ScoringManager.Instance.GetBreakdown(currentScenario.id);
@@ -384,7 +341,6 @@ namespace NihongoLife.Scenario
                 };
             }
 
-            // Update local persistence progress
             var progressRepo = GameServices.Get<IProgressRepository>();
             if (progressRepo != null)
             {
@@ -396,11 +352,9 @@ namespace NihongoLife.Scenario
                         progress.completedScenarios.Add(currentScenario.id);
                     }
 
-                    // Update XP
                     progress.xp += 100;
                     progress.level = 1 + (progress.xp / 500);
 
-                    // Update best score
                     var record = progress.bestScores.Find(r => r.scenarioId == currentScenario.id);
                     if (record == null)
                     {
@@ -420,13 +374,11 @@ namespace NihongoLife.Scenario
                 progressRepo.SaveProgress(progress);
             }
 
-            // Update Learning Mastery targets
             if (LearningMasteryManager.Instance != null && success)
             {
                 LearningMasteryManager.Instance.UpdateMasteryFromScenario(currentScenario, breakdown);
             }
 
-            // Trigger complete event
             OnScenarioFinished?.Invoke(breakdown);
         }
 
@@ -442,10 +394,7 @@ namespace NihongoLife.Scenario
             if (!inventory.HasItem("onigiri"))
             {
                 Debug.LogWarning("[ScenarioManager] Checkout blocked: onigiri is not in the player's inventory.");
-                if (ScoringManager.Instance != null)
-                {
-                    ScoringManager.Instance.AddScore("TaskCompletion", -30, "Thanh toán khi chưa có hàng", "checkout_missing_item");
-                }
+                ScoringManager.Instance?.AddScore("TaskCompletion", -30, "Thanh toán khi chưa có hàng", "checkout_missing_item");
                 return;
             }
 
@@ -453,18 +402,12 @@ namespace NihongoLife.Scenario
             if (!inventory.SpendYen(total))
             {
                 Debug.LogWarning("[ScenarioManager] Checkout blocked: not enough yen.");
-                if (ScoringManager.Instance != null)
-                {
-                    ScoringManager.Instance.AddScore("TaskCompletion", -30, "Không đủ tiền thanh toán", "checkout_no_money");
-                }
+                ScoringManager.Instance?.AddScore("TaskCompletion", -30, "Không đủ tiền thanh toán", "checkout_no_money");
                 return;
             }
 
             inventory.RemoveItem("onigiri");
-            if (ScoringManager.Instance != null)
-            {
-                ScoringManager.Instance.AddScore("TaskCompletion", 25, $"Đã thanh toán {total} yen", "checkout_paid");
-            }
+            ScoringManager.Instance?.AddScore("TaskCompletion", 25, $"Đã thanh toán {total} yen", "checkout_paid");
         }
 
         public void SetPlayerInputLocked(bool locked)
@@ -479,7 +422,6 @@ namespace NihongoLife.Scenario
                 }
             }
 
-            // Lock camera rotation too
             var cam = UnityEngine.Camera.main;
             if (cam != null)
             {
