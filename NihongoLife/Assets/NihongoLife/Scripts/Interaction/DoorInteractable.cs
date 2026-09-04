@@ -14,16 +14,16 @@ namespace NihongoLife.Interaction
         [SerializeField] private string promptVi = "Mở cửa";
         [SerializeField] private Transform doorVisual;
         [SerializeField] private Collider blockingCollider;
-        
+
         [Header("Animation Settings")]
         [SerializeField] private DoorType doorType = DoorType.Slide;
         [SerializeField] private float openDuration = 0.5f;
-        
+
         [Header("Swing Settings")]
         [SerializeField] private float openAngle = 95f;
-        
+
         [Header("Slide Settings")]
-        [SerializeField] private Vector3 slideOffset = new Vector3(-1.2f, 0, 0);
+        [SerializeField] private Vector3 slideOffset = new Vector3(-1.2f, 0f, 0f);
 
         private bool _isOpen;
         private Coroutine _openRoutine;
@@ -75,7 +75,7 @@ namespace NihongoLife.Interaction
         private IEnumerator AnimateOpen()
         {
             float elapsed = 0f;
-            
+
             if (doorType == DoorType.Swing)
             {
                 Quaternion start = doorVisual.localRotation;
@@ -85,14 +85,13 @@ namespace NihongoLife.Interaction
                 {
                     elapsed += Time.deltaTime;
                     float t = Mathf.Clamp01(elapsed / openDuration);
-                    // Smooth easing (Ease Out)
-                    float easedT = 1f - Mathf.Pow(1f - t, 3f); 
+                    float easedT = 1f - Mathf.Pow(1f - t, 3f);
                     doorVisual.localRotation = Quaternion.Slerp(start, end, easedT);
                     yield return null;
                 }
                 doorVisual.localRotation = end;
             }
-            else if (doorType == DoorType.Slide)
+            else
             {
                 Vector3 start = doorVisual.localPosition;
                 Vector3 end = start + slideOffset;
@@ -101,7 +100,6 @@ namespace NihongoLife.Interaction
                 {
                     elapsed += Time.deltaTime;
                     float t = Mathf.Clamp01(elapsed / openDuration);
-                    // Smooth easing (Ease Out)
                     float easedT = 1f - Mathf.Pow(1f - t, 3f);
                     doorVisual.localPosition = Vector3.Lerp(start, end, easedT);
                     yield return null;

@@ -40,11 +40,10 @@ namespace NihongoLife.UI
         [SerializeField] private GameObject characterPanel;
         [SerializeField] private TextMeshProUGUI characterStatsText;
 
-        private List<Button> _activeChoiceButtons = new List<Button>();
+        private readonly List<Button> _activeChoiceButtons = new List<Button>();
 
         private void Start()
         {
-            // Connect to systems
             var player = GameObject.FindWithTag("Player");
             if (player != null)
             {
@@ -183,7 +182,6 @@ namespace NihongoLife.UI
             }
         }
 
-        #region Interaction Prompt
         private void HandleInteractableChanged(IInteractable interactable)
         {
             if (interactable == null)
@@ -200,7 +198,6 @@ namespace NihongoLife.UI
         {
             if (promptPanel == null || promptText == null) return;
             promptPanel.SetActive(true);
-            // Display Japanese and Vietnamese hints
             promptText.text = $"[E] {interactable.GetPromptJa()} / {interactable.GetPromptVi()}";
         }
 
@@ -208,9 +205,7 @@ namespace NihongoLife.UI
         {
             if (promptPanel != null) promptPanel.SetActive(false);
         }
-        #endregion
 
-        #region Objectives HUD
         private void UpdateScenarioInfo(ScenarioDefinition scenario)
         {
             if (scenarioTitleText != null)
@@ -236,22 +231,19 @@ namespace NihongoLife.UI
                 return;
             }
 
-            string text = "";
+            var builder = new StringBuilder();
             foreach (var obj in ScenarioManager.Instance.Objectives)
             {
                 if (obj.state == ObjectiveState.Inactive) continue;
 
-                string check = obj.state == ObjectiveState.Completed ? "✔" : "☐";
-                string color = obj.state == ObjectiveState.Completed ? "#a3e635" : "#e2e8f0"; // Green vs Light Gray
-                
-                text += $"<color={color}>{check} {obj.titleJa} ({obj.titleVi})</color>\n";
+                string check = obj.state == ObjectiveState.Completed ? "✓" : "☐";
+                string color = obj.state == ObjectiveState.Completed ? "#74d680" : "#f5f2e8";
+                builder.AppendLine($"<color={color}>{check} {obj.titleJa} ({obj.titleVi})</color>");
             }
 
-            objectivesText.text = text;
+            objectivesText.text = builder.ToString();
         }
-        #endregion
 
-        #region Dialogue System UI
         private void DisplayDialogue(DialogueDisplayData data)
         {
             if (dialoguePanel == null) return;
@@ -260,40 +252,30 @@ namespace NihongoLife.UI
             if (speakerText != null) speakerText.text = data.speakerName;
             if (japaneseText != null) japaneseText.text = data.textJa;
 
-            // Handle Learning Modes for Hints
             ConfigureModeVisibility(data);
-
-            // Clean up old choices
             ClearChoiceButtons();
 
-            // Populate choices or continue button
             if (data.choices != null && data.choices.Count > 0)
             {
                 if (continueButton != null) continueButton.gameObject.SetActive(false);
-                
+
                 for (int i = 0; i < data.choices.Count; i++)
                 {
                     int index = i;
                     var choice = data.choices[i];
-
                     Button btn = Instantiate(choiceButtonPrefab, choicesContainer);
                     btn.gameObject.SetActive(true);
 
-                    // Text configuration
                     var btnText = btn.GetComponentInChildren<TextMeshProUGUI>();
                     if (btnText != null)
                     {
                         if (data.learningMode == LearningMode.GuidedPractice)
                         {
-                            btnText.text = $"{choice.textJa}\n<size=80%><color=#94a3b8>({choice.textVi})</color></size>";
+                            btnText.text = $"{choice.textJa}\n<size=80%><color=#8fa3b8>({choice.textVi})</color></size>";
                         }
-                        else if (data.learningMode == LearningMode.Practice)
+                        else
                         {
-                            btnText.text = $"{choice.textJa}";
-                        }
-                        else // Assessment
-                        {
-                            btnText.text = $"{choice.textJa}";
+                            btnText.text = choice.textJa;
                         }
                     }
 
@@ -312,24 +294,28 @@ namespace NihongoLife.UI
             switch (data.learningMode)
             {
                 case LearningMode.GuidedPractice:
-                    if (readingText != null) { readingText.text = data.textReading; readingText.gameObject.SetActive(!string.IsNullOrEmpty(data.textReading)); }
-                    if (romajiText != null) { romajiText.text = data.textRomaji; romajiText.gameObject.SetActive(!string.IsNullOrEmpty(data.textRomaji)); }
-                    if (translationText != null) { translationText.text = data.textVi; translationText.gameObject.SetActive(!string.IsNullOrEmpty(data.textVi)); }
+                    SetHintText(readingText, data.textReading, true);
+                    SetHintText(romajiText, data.textRomaji, true);
+                    SetHintText(translationText, data.textVi, true);
                     break;
-
                 case LearningMode.Practice:
-                    if (readingText != null) { readingText.text = data.textReading; readingText.gameObject.SetActive(!string.IsNullOrEmpty(data.textReading)); }
-                    if (romajiText != null) romajiText.gameObject.SetActive(false);
-                    // Practice displays translation in muted form or hidden by default, here we display it
-                    if (translationText != null) { translationText.text = data.textVi; translationText.gameObject.SetActive(!string.IsNullOrEmpty(data.textVi)); }
+                    SetHintText(readingText, data.textReading, true);
+                    SetHintText(romajiText, "", false);
+                    SetHintText(translationText, data.textVi, true);
                     break;
-
                 case LearningMode.Assessment:
-                    if (readingText != null) readingText.gameObject.SetActive(false);
-                    if (romajiText != null) romajiText.gameObject.SetActive(false);
-                    if (translationText != null) translationText.gameObject.SetActive(false);
+                    SetHintText(readingText, "", false);
+                    SetHintText(romajiText, "", false);
+                    SetHintText(translationText, "", false);
                     break;
             }
+        }
+
+        private static void SetHintText(TextMeshProUGUI target, string value, bool showWhenNotEmpty)
+        {
+            if (target == null) return;
+            target.text = value;
+            target.gameObject.SetActive(showWhenNotEmpty && !string.IsNullOrEmpty(value));
         }
 
         private void OnChoiceSelected(int index)
@@ -362,6 +348,5 @@ namespace NihongoLife.UI
             }
             _activeChoiceButtons.Clear();
         }
-        #endregion
     }
 }

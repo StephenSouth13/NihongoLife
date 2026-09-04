@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 using NihongoLife.Interaction;
+using NihongoLife.Core;
 
 namespace NihongoLife.Player
 {
@@ -23,6 +24,7 @@ namespace NihongoLife.Player
         private bool _isGrounded;
         private bool _inputLocked = false;
         private UnityEngine.Camera _mainCamera;
+        private CharacterAnimationController _animationController;
 
         public bool InputLocked
         {
@@ -33,6 +35,7 @@ namespace NihongoLife.Player
                 if (_inputLocked)
                 {
                     _velocity = Vector3.zero;
+                    if (_animationController != null) _animationController.SetSpeed(0f);
                 }
             }
         }
@@ -41,6 +44,7 @@ namespace NihongoLife.Player
         {
             _characterController = GetComponent<CharacterController>();
             _mainCamera = UnityEngine.Camera.main;
+            _animationController = GetComponent<CharacterAnimationController>();
         }
 
         private void Update()
@@ -50,7 +54,6 @@ namespace NihongoLife.Player
             HandleGroundCheck();
             HandleMovement();
             HandleInteractionInput();
-            HandleUIInput();
         }
 
         private void HandleGroundCheck()
@@ -99,6 +102,10 @@ namespace NihongoLife.Player
 
             float currentSpeed = isRunning ? runSpeed : walkSpeed;
             _characterController.Move(moveDirection * (currentSpeed * Time.deltaTime));
+            if (_animationController != null)
+            {
+                _animationController.SetSpeed(moveDirection.magnitude * currentSpeed);
+            }
 
             // Rotate Player in movement direction
             if (moveDirection.magnitude > 0.1f)
@@ -120,28 +127,6 @@ namespace NihongoLife.Player
                 if (detector != null)
                 {
                     detector.TriggerInteraction();
-                }
-            }
-        }
-
-        private void HandleUIInput()
-        {
-            if (Keyboard.current != null)
-            {
-                if (Keyboard.current.tabKey.wasPressedThisFrame)
-                {
-                    if (NihongoLife.UI.UIManager.Instance != null)
-                    {
-                        NihongoLife.UI.UIManager.Instance.ToggleStatusPanel();
-                    }
-                }
-                
-                if (Keyboard.current.bKey.wasPressedThisFrame)
-                {
-                    if (NihongoLife.UI.UIManager.Instance != null)
-                    {
-                        NihongoLife.UI.UIManager.Instance.ToggleInventoryPanel();
-                    }
                 }
             }
         }
