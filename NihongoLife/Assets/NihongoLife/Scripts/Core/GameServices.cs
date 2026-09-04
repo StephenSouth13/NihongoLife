@@ -33,6 +33,19 @@ namespace NihongoLife.Core
             return null;
         }
 
+        public static bool TryGet<T>(out T result) where T : class, IGameService
+        {
+            var type = typeof(T);
+            if (Services.TryGetValue(type, out var service))
+            {
+                result = service as T;
+                return result != null;
+            }
+
+            result = null;
+            return false;
+        }
+
         public static void Clear()
         {
             Services.Clear();

@@ -29,7 +29,9 @@ namespace NihongoLife.UI
 
         private void Start()
         {
+            EnsureSettingsService();
             AutoBindExistingMenu();
+            CleanExistingLayout();
             EnsureLanguageSelector();
 
             if (startButton != null) startButton.onClick.AddListener(OnStartClicked);
@@ -38,14 +40,37 @@ namespace NihongoLife.UI
             if (englishButton != null) englishButton.onClick.AddListener(() => SetLanguage(GameLanguage.English));
             if (japaneseButton != null) japaneseButton.onClick.AddListener(() => SetLanguage(GameLanguage.Japanese));
 
-            var settings = GameServices.Get<GameSettingsService>();
-            if (settings != null)
+            if (GameServices.TryGet(out GameSettingsService settings))
             {
                 settings.OnLanguageChanged += HandleLanguageChanged;
             }
 
             RefreshTexts();
             DisplayProfileStats();
+        }
+
+        private void OnDestroy()
+        {
+            if (GameServices.TryGet(out GameSettingsService settings))
+            {
+                settings.OnLanguageChanged -= HandleLanguageChanged;
+            }
+        }
+
+        private void EnsureSettingsService()
+        {
+            if (GameServices.TryGet(out GameSettingsService _)) return;
+
+            var existing = FindFirstObjectByType<GameSettingsService>();
+            if (existing == null)
+            {
+                var go = new GameObject("GameSettingsService");
+                existing = go.AddComponent<GameSettingsService>();
+                DontDestroyOnLoad(go);
+            }
+
+            existing.Initialize();
+            GameServices.Register<GameSettingsService>(existing);
         }
 
         private void AutoBindExistingMenu()
@@ -59,17 +84,37 @@ namespace NihongoLife.UI
             if (quitButtonText == null && quitButton != null) quitButtonText = quitButton.GetComponentInChildren<TextMeshProUGUI>();
         }
 
+        private void CleanExistingLayout()
+        {
+            MoveRect(titleText, new Vector2(0f, 220f), new Vector2(1000f, 92f));
+            MoveRect(subtitleText, new Vector2(0f, 148f), new Vector2(980f, 42f));
+            MoveRect(startButton, new Vector2(0f, 48f), new Vector2(320f, 62f));
+            MoveRect(quitButton, new Vector2(0f, -30f), new Vector2(320f, 56f));
+
+            if (profileText != null)
+            {
+                profileText.enableAutoSizing = true;
+                profileText.fontSizeMin = 12f;
+                profileText.fontSizeMax = 17f;
+                profileText.textWrappingMode = TextWrappingModes.Normal;
+                MoveRect(profileText, new Vector2(0f, -292f), new Vector2(900f, 132f));
+            }
+        }
+
         private void EnsureLanguageSelector()
         {
-            if (vietnameseButton != null && englishButton != null && japaneseButton != null) return;
-
             TMP_FontAsset font = titleText != null ? titleText.font : null;
-            languageLabelText = languageLabelText != null ? languageLabelText : CreateMenuText("LanguageLabel", new Vector2(0f, -112f), new Vector2(520f, 32f), 19f, font);
-            languageLabelText.color = new Color(1f, 0.91f, 0.54f);
+            if (languageLabelText == null)
+            {
+                languageLabelText = CreateMenuText("LanguageLabel", new Vector2(0f, -118f), new Vector2(560f, 32f), 19f, font);
+            }
 
-            vietnameseButton = CreateLanguageButton("LanguageVietnameseButton", "VI", new Vector2(-130f, -158f), font);
-            englishButton = CreateLanguageButton("LanguageEnglishButton", "EN", new Vector2(0f, -158f), font);
-            japaneseButton = CreateLanguageButton("LanguageJapaneseButton", "JP", new Vector2(130f, -158f), font);
+            languageLabelText.color = new Color(1f, 0.91f, 0.54f);
+            MoveRect(languageLabelText, new Vector2(0f, -118f), new Vector2(560f, 32f));
+
+            vietnameseButton ??= CreateLanguageButton("LanguageVietnameseButton", "VI", new Vector2(-132f, -166f), font);
+            englishButton ??= CreateLanguageButton("LanguageEnglishButton", "EN", new Vector2(0f, -166f), font);
+            japaneseButton ??= CreateLanguageButton("LanguageJapaneseButton", "JP", new Vector2(132f, -166f), font);
         }
 
         private TextMeshProUGUI CreateMenuText(string name, Vector2 position, Vector2 size, float fontSize, TMP_FontAsset font)
@@ -81,6 +126,7 @@ namespace NihongoLife.UI
             rect.anchorMax = new Vector2(0.5f, 0.5f);
             rect.anchoredPosition = position;
             rect.sizeDelta = size;
+
             var text = go.AddComponent<TextMeshProUGUI>();
             if (font != null) text.font = font;
             text.fontSize = fontSize;
@@ -97,35 +143,26 @@ namespace NihongoLife.UI
             rect.anchorMin = new Vector2(0.5f, 0.5f);
             rect.anchorMax = new Vector2(0.5f, 0.5f);
             rect.anchoredPosition = position;
-            rect.sizeDelta = new Vector2(90f, 44f);
+            rect.sizeDelta = new Vector2(92f, 44f);
 
             var image = go.AddComponent<Image>();
-            image.color = new Color(0.12f, 0.15f, 0.17f, 1f);
+            image.color = new Color(0.12f, 0.15f, 0.17f, 0.94f);
+
             var button = go.AddComponent<Button>();
             var colors = button.colors;
             colors.highlightedColor = new Color(0.2f, 0.24f, 0.26f, 1f);
             colors.pressedColor = new Color(0.08f, 0.1f, 0.11f, 1f);
             button.colors = colors;
 
-            var text = CreateMenuText("Text", Vector2.zero, new Vector2(72f, 32f), 18f, font);
+            var text = CreateMenuText("Text", Vector2.zero, new Vector2(74f, 32f), 18f, font);
             text.transform.SetParent(go.transform, false);
             text.text = label;
             return button;
         }
 
-        private void OnDestroy()
-        {
-            var settings = GameServices.Get<GameSettingsService>();
-            if (settings != null)
-            {
-                settings.OnLanguageChanged -= HandleLanguageChanged;
-            }
-        }
-
         private void SetLanguage(GameLanguage language)
         {
-            var settings = GameServices.Get<GameSettingsService>();
-            if (settings != null)
+            if (GameServices.TryGet(out GameSettingsService settings))
             {
                 settings.SetLanguage(language);
             }
@@ -173,33 +210,20 @@ namespace NihongoLife.UI
         {
             if (profileText == null) return;
 
-            var progressRepo = GameServices.Get<Save.IProgressRepository>();
-            if (progressRepo == null)
+            string details = string.Empty;
+            if (GameServices.TryGet(out Save.IProgressRepository progressRepo))
             {
-                profileText.text = "WASD / Shift  |  E interact  |  B bag  |  Tab character";
-                return;
-            }
-
-            var progress = progressRepo.GetProgress();
-            string details =
-                $"{Text("Học viên", "Learner", "学習者")}: {progress.displayName}\n" +
-                $"{Text("Cấp độ", "Level", "レベル")}: {progress.level} (XP: {progress.xp})\n" +
-                $"{Text("Đã hoàn thành", "Completed", "完了")}: {progress.completedScenarios.Count}\n";
-
-            if (progress.bestScores.Count > 0)
-            {
-                details += "\n" + Text("Điểm cao nhất", "Best scores", "ベストスコア") + ":\n";
-                foreach (var score in progress.bestScores)
-                {
-                    string displayId = score.scenarioId.Replace("scenario.konbini.", Text("Cửa hàng tiện lợi: ", "Convenience store: ", "コンビニ: "));
-                    details += $"- {displayId}: {score.bestScore}/100\n";
-                }
+                var progress = progressRepo.GetProgress();
+                details =
+                    $"{Text("Học viên", "Learner", "学習者")}: {progress.displayName}\n" +
+                    $"{Text("Cấp độ", "Level", "レベル")}: {progress.level} (XP: {progress.xp})\n" +
+                    $"{Text("Đã hoàn thành", "Completed", "完了")}: {progress.completedScenarios.Count}\n";
             }
 
             details += "\nWASD / Shift  |  E " + Text("tương tác", "interact", "話す") +
                        "  |  B " + Text("balo", "bag", "バッグ") +
                        "  |  Tab " + Text("nhân vật", "character", "キャラ");
-            profileText.text = details;
+            profileText.text = details.Trim();
         }
 
         private void OnStartClicked()
@@ -207,10 +231,13 @@ namespace NihongoLife.UI
             PlayerPrefs.SetString("ActiveScenarioId", targetScenarioId);
             PlayerPrefs.Save();
 
-            var sceneFlow = GameServices.Get<SceneFlowController>();
-            if (sceneFlow != null)
+            if (GameServices.TryGet(out SceneFlowController sceneFlow))
             {
                 sceneFlow.LoadScene(targetGameplayScene);
+            }
+            else
+            {
+                UnityEngine.SceneManagement.SceneManager.LoadScene(targetGameplayScene);
             }
         }
 
@@ -221,14 +248,36 @@ namespace NihongoLife.UI
 
         private string Text(string vi, string en, string ja)
         {
-            var settings = GameServices.Get<GameSettingsService>();
-            return settings != null ? settings.Text(vi, en, ja) : vi;
+            return GameServices.TryGet(out GameSettingsService settings) ? settings.Text(vi, en, ja) : vi;
         }
 
         private GameLanguage GetLanguage()
         {
-            var settings = GameServices.Get<GameSettingsService>();
-            return settings != null ? settings.Language : (GameLanguage)Mathf.Clamp(PlayerPrefs.GetInt("NihongoLife.UiLanguage", 0), 0, 2);
+            return GameServices.TryGet(out GameSettingsService settings)
+                ? settings.Language
+                : (GameLanguage)Mathf.Clamp(PlayerPrefs.GetInt("NihongoLife.UiLanguage", 0), 0, 2);
+        }
+
+        private static void MoveRect(TextMeshProUGUI text, Vector2 position, Vector2 size)
+        {
+            if (text == null) return;
+            MoveRect(text.rectTransform, position, size);
+        }
+
+        private static void MoveRect(Button button, Vector2 position, Vector2 size)
+        {
+            if (button == null) return;
+            MoveRect(button.GetComponent<RectTransform>(), position, size);
+        }
+
+        private static void MoveRect(RectTransform rect, Vector2 position, Vector2 size)
+        {
+            if (rect == null) return;
+            rect.anchorMin = new Vector2(0.5f, 0.5f);
+            rect.anchorMax = new Vector2(0.5f, 0.5f);
+            rect.pivot = new Vector2(0.5f, 0.5f);
+            rect.anchoredPosition = position;
+            rect.sizeDelta = size;
         }
 
         private static void SetButtonSelected(Button button, bool selected)
@@ -237,7 +286,7 @@ namespace NihongoLife.UI
             var image = button.GetComponent<Image>();
             if (image != null)
             {
-                image.color = selected ? new Color(0.95f, 0.72f, 0.25f, 1f) : new Color(0.12f, 0.15f, 0.17f, 1f);
+                image.color = selected ? new Color(0.95f, 0.72f, 0.25f, 1f) : new Color(0.12f, 0.15f, 0.17f, 0.94f);
             }
         }
     }

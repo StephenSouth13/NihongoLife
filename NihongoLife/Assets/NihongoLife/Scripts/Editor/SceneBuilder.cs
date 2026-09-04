@@ -62,6 +62,16 @@ namespace NihongoLife.Editor
             }
         }
 
+        [MenuItem("NihongoLife/Rebuild Main Menu")]
+        public static void RebuildMainMenu()
+        {
+            EnsureFolder("Assets/NihongoLife", "Scenes");
+            FontSetup.EnsureJapaneseFontAsset(forceRecreate: true);
+            BuildMainMenuScene(ScenesDir + "/01_MainMenu.unity");
+            EditorSceneManager.OpenScene(ScenesDir + "/01_MainMenu.unity");
+            Debug.Log("[SceneBuilder] Rebuilt 01_MainMenu with 90_TestSandbox town preview.");
+        }
+
         private static void BuildBootstrapScene(string path)
         {
             var scene = EditorSceneManager.NewScene(NewSceneSetup.DefaultGameObjects, NewSceneMode.Single);
@@ -83,13 +93,15 @@ namespace NihongoLife.Editor
         private static void BuildMainMenuScene(string path)
         {
             var scene = EditorSceneManager.NewScene(NewSceneSetup.DefaultGameObjects, NewSceneMode.Single);
+            CreateAppRootForDirectPlay();
             CreateEventSystem();
             CreateLighting();
+            CreateMainMenuTownPreview();
 
             var font = FontSetup.EnsureJapaneseFontAsset();
             var canvasGo = CreateCanvas("Canvas");
 
-            var panel = CreateFullScreenPanel(canvasGo.transform, "MainMenuPanel", new Color(0.035f, 0.045f, 0.055f, 1f));
+            var panel = CreateFullScreenPanel(canvasGo.transform, "MainMenuPanel", new Color(0.025f, 0.03f, 0.036f, 0.42f));
             AddTopAccent(panel.transform);
 
             var title = CreateText(panel.transform, "TitleText", "NIHONGO LIFE", font, 72, new Vector2(0, 170), new Vector2(900, 96), TextAlignmentOptions.Center);
@@ -144,6 +156,31 @@ namespace NihongoLife.Editor
             initGo.AddComponent<ScenarioSceneInitializer>();
 
             EditorSceneManager.SaveScene(scene, path);
+        }
+
+        private static void CreateMainMenuTownPreview()
+        {
+            var previewRoot = new GameObject("MenuTownPreview_90_TestSandbox");
+            VisualEnvironmentBuilder.GenerateVisualEnvironment(previewRoot);
+
+            var target = new GameObject("MenuCameraTarget");
+            target.transform.position = new Vector3(0f, 0f, -8f);
+
+            var cameraGo = GameObject.Find("Main Camera") ?? new GameObject("Main Camera");
+            cameraGo.tag = "MainCamera";
+            var camera = cameraGo.GetComponent<Camera>() ?? cameraGo.AddComponent<Camera>();
+            camera.clearFlags = CameraClearFlags.Skybox;
+            camera.fieldOfView = 48f;
+            camera.nearClipPlane = 0.03f;
+            camera.farClipPlane = 180f;
+
+            if (cameraGo.GetComponent<AudioListener>() == null)
+            {
+                cameraGo.AddComponent<AudioListener>();
+            }
+
+            var orbit = cameraGo.GetComponent<MenuCameraOrbit>() ?? cameraGo.AddComponent<MenuCameraOrbit>();
+            orbit.SetTarget(target.transform);
         }
 
         private static void CreateAppRootForDirectPlay()

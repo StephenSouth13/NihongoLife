@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using NihongoLife.Core;
 using NihongoLife.Scenario;
 using NihongoLife.Data;
@@ -56,23 +57,19 @@ namespace NihongoLife.UI
 
         private void ConfigureInitialUIState()
         {
-            var sceneFlow = GameServices.Get<SceneFlowController>();
-            if (sceneFlow != null)
+            string currentSceneName = SceneManager.GetActiveScene().name;
+            if (GameServices.TryGet(out SceneFlowController sceneFlow))
             {
-                string currentSceneName = sceneFlow.GetCurrentSceneName();
-                if (currentSceneName == "00_Bootstrap" || currentSceneName == "01_MainMenu")
-                {
-                    ShowMainMenu();
-                }
-                else
-                {
-                    ShowHUDOnly();
-                }
+                currentSceneName = sceneFlow.GetCurrentSceneName();
+            }
+
+            if (currentSceneName == "00_Bootstrap" || currentSceneName == "01_MainMenu")
+            {
+                ShowMainMenu();
             }
             else
             {
-                // Fallback: If sceneFlow isn't ready, show main menu first
-                ShowMainMenu();
+                ShowHUDOnly();
             }
         }
 

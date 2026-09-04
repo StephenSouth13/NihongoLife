@@ -40,8 +40,7 @@ namespace NihongoLife.UI
             string titleJa = "ミッション完了";
             string titleEn = "Nhiệm vụ hoàn thành";
             
-            var repo = GameServices.Get<IScenarioRepository>();
-            if (repo != null)
+            if (GameServices.TryGet(out IScenarioRepository repo))
             {
                 var definition = repo.GetScenarioById(breakdown.scenarioId);
                 if (definition != null)
@@ -84,10 +83,13 @@ namespace NihongoLife.UI
             Cursor.lockState = CursorLockMode.None;
             Cursor.visible = true;
 
-            var sceneFlow = GameServices.Get<SceneFlowController>();
-            if (sceneFlow != null)
+            if (GameServices.TryGet(out SceneFlowController sceneFlow))
             {
                 sceneFlow.LoadScene("01_MainMenu");
+            }
+            else
+            {
+                UnityEngine.SceneManagement.SceneManager.LoadScene("01_MainMenu");
             }
         }
     }

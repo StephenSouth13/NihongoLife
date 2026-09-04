@@ -77,8 +77,7 @@ namespace NihongoLife.UI
                 PlayerInventory.Instance.OnInventoryChanged += RefreshPlayerPanels;
             }
 
-            var settings = GameServices.Get<GameSettingsService>();
-            if (settings != null)
+            if (GameServices.TryGet(out GameSettingsService settings))
             {
                 settings.OnLanguageChanged += HandleLanguageChanged;
             }
@@ -125,8 +124,7 @@ namespace NihongoLife.UI
                 PlayerInventory.Instance.OnInventoryChanged -= RefreshPlayerPanels;
             }
 
-            var settings = GameServices.Get<GameSettingsService>();
-            if (settings != null)
+            if (GameServices.TryGet(out GameSettingsService settings))
             {
                 settings.OnLanguageChanged -= HandleLanguageChanged;
             }
@@ -366,8 +364,7 @@ namespace NihongoLife.UI
 
         private static string Text(string vi, string en, string ja)
         {
-            var settings = GameServices.Get<GameSettingsService>();
-            return settings != null ? settings.Text(vi, en, ja) : vi;
+            return GameServices.TryGet(out GameSettingsService settings) ? settings.Text(vi, en, ja) : vi;
         }
     }
 }
