@@ -743,6 +743,7 @@ namespace NihongoLife.Editor
             light.type = LightType.Directional;
             light.intensity = 1.25f;
             lightGo.transform.rotation = Quaternion.Euler(48f, -36f, 0f);
+            RenderSettings.sun = light;
         }
 
         private static Material CreateRuntimeMat(string name, Color color)

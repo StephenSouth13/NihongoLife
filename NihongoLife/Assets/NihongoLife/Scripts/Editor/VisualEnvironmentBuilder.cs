@@ -90,6 +90,10 @@ namespace NihongoLife.Editor
             CreateWrapperDeterministic(FurnitureBase + "tableCoffee.fbx", "Furniture", "counter", 2f);
             CreateWrapperDeterministic(FurnitureBase + "bench.fbx", "Furniture", "bench", 1.8f);
             CreateWrapperDeterministic(FurnitureBase + "trashcan.fbx", "Furniture", "trashcan", 0.75f, true);
+            CreateWrapperDeterministic(FurnitureBase + "pottedPlant.fbx", "Furniture", "potted_plant", 1.2f, true);
+            CreateWrapperDeterministic(FurnitureBase + "kitchenFridgeLarge.fbx", "Furniture", "store_fridge", 2f, true);
+            CreateWrapperDeterministic(FurnitureBase + "kitchenCoffeeMachine.fbx", "Furniture", "coffee_machine", 0.75f, true);
+            CreateWrapperDeterministic(FurnitureBase + "cardboardBoxClosed.fbx", "Furniture", "delivery_box", 0.75f, true);
 
             CreateWrapperDeterministic(FoodBase + "rice-ball.fbx", "Food", "food_apple", 0.15f);
             CreateWrapperDeterministic(FoodBase + "soda-bottle.fbx", "Food", "food_bottle", 0.25f, true);
@@ -203,11 +207,16 @@ namespace NihongoLife.Editor
             var driveway = LoadPrefab("Environment/Buildings/driveway_short");
             var bench = LoadPrefab("Furniture/bench");
             var trash = LoadPrefab("Furniture/trashcan");
+            var pottedPlant = LoadPrefab("Furniture/potted_plant");
+            var storeFridge = LoadPrefab("Furniture/store_fridge");
+            var coffeeMachine = LoadPrefab("Furniture/coffee_machine");
+            var deliveryBox = LoadPrefab("Furniture/delivery_box");
 
             CreateDistrictBase(root.transform);
             CreateRoadNetwork(root.transform, road, crossroad, crossing, sidewalk);
             CreateBuildingRows(root.transform);
             CreateStreetFurniture(root.transform, streetLight, doubleLight, trafficLight, streetSign, stopSign, treeSmall, treeLarge, planter, bench, trash, electricityPole, electricityWires, fence, driveway);
+            CreateStorefrontDetails(root.transform, pottedPlant, storeFridge, coffeeMachine, deliveryBox);
         }
 
         private static GameObject LoadPrefab(string suffix)
@@ -336,6 +345,19 @@ namespace NihongoLife.Editor
             for (int i = 0; i < parkTrees.Length; i++)
             {
                 InstantiateScenePrefab(i % 2 == 0 ? treeLarge : treeSmall, root, $"ParkTree_{i}", parkTrees[i], Quaternion.Euler(0f, i * 27f, 0f));
+            }
+        }
+
+        private static void CreateStorefrontDetails(Transform root, GameObject pottedPlant, GameObject storeFridge, GameObject coffeeMachine, GameObject deliveryBox)
+        {
+            InstantiateScenePrefab(pottedPlant, root, "StorefrontPlant_L", new Vector3(-2.75f, 0f, -0.15f), Quaternion.identity);
+            InstantiateScenePrefab(pottedPlant, root, "StorefrontPlant_R", new Vector3(2.75f, 0f, -0.15f), Quaternion.identity);
+            InstantiateScenePrefab(storeFridge, root, "OutdoorDrinkFridge", new Vector3(4.2f, 0f, 0.8f), Quaternion.Euler(0f, 180f, 0f));
+            InstantiateScenePrefab(coffeeMachine, root, "OutdoorCoffeeMachine", new Vector3(-4.2f, 0.55f, 0.75f), Quaternion.Euler(0f, 180f, 0f));
+
+            for (int i = 0; i < 4; i++)
+            {
+                InstantiateScenePrefab(deliveryBox, root, $"DeliveryBox_{i}", new Vector3(-6.2f + i * 0.65f, 0f, 1.6f), Quaternion.Euler(0f, i * 17f, 0f));
             }
         }
 

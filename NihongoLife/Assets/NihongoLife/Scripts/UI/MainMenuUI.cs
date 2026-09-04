@@ -29,6 +29,9 @@ namespace NihongoLife.UI
 
         private void Start()
         {
+            AutoBindExistingMenu();
+            EnsureLanguageSelector();
+
             if (startButton != null) startButton.onClick.AddListener(OnStartClicked);
             if (quitButton != null) quitButton.onClick.AddListener(OnQuitClicked);
             if (vietnameseButton != null) vietnameseButton.onClick.AddListener(() => SetLanguage(GameLanguage.Vietnamese));
@@ -43,6 +46,71 @@ namespace NihongoLife.UI
 
             RefreshTexts();
             DisplayProfileStats();
+        }
+
+        private void AutoBindExistingMenu()
+        {
+            if (startButton == null) startButton = transform.Find("StartButton")?.GetComponent<Button>();
+            if (quitButton == null) quitButton = transform.Find("QuitButton")?.GetComponent<Button>();
+            if (titleText == null) titleText = transform.Find("TitleText")?.GetComponent<TextMeshProUGUI>();
+            if (subtitleText == null) subtitleText = transform.Find("SubtitleText")?.GetComponent<TextMeshProUGUI>();
+            if (profileText == null) profileText = transform.Find("ProfileText")?.GetComponent<TextMeshProUGUI>();
+            if (startButtonText == null && startButton != null) startButtonText = startButton.GetComponentInChildren<TextMeshProUGUI>();
+            if (quitButtonText == null && quitButton != null) quitButtonText = quitButton.GetComponentInChildren<TextMeshProUGUI>();
+        }
+
+        private void EnsureLanguageSelector()
+        {
+            if (vietnameseButton != null && englishButton != null && japaneseButton != null) return;
+
+            TMP_FontAsset font = titleText != null ? titleText.font : null;
+            languageLabelText = languageLabelText != null ? languageLabelText : CreateMenuText("LanguageLabel", new Vector2(0f, -112f), new Vector2(520f, 32f), 19f, font);
+            languageLabelText.color = new Color(1f, 0.91f, 0.54f);
+
+            vietnameseButton = CreateLanguageButton("LanguageVietnameseButton", "VI", new Vector2(-130f, -158f), font);
+            englishButton = CreateLanguageButton("LanguageEnglishButton", "EN", new Vector2(0f, -158f), font);
+            japaneseButton = CreateLanguageButton("LanguageJapaneseButton", "JP", new Vector2(130f, -158f), font);
+        }
+
+        private TextMeshProUGUI CreateMenuText(string name, Vector2 position, Vector2 size, float fontSize, TMP_FontAsset font)
+        {
+            var go = new GameObject(name);
+            go.transform.SetParent(transform, false);
+            var rect = go.AddComponent<RectTransform>();
+            rect.anchorMin = new Vector2(0.5f, 0.5f);
+            rect.anchorMax = new Vector2(0.5f, 0.5f);
+            rect.anchoredPosition = position;
+            rect.sizeDelta = size;
+            var text = go.AddComponent<TextMeshProUGUI>();
+            if (font != null) text.font = font;
+            text.fontSize = fontSize;
+            text.alignment = TextAlignmentOptions.Center;
+            text.color = Color.white;
+            return text;
+        }
+
+        private Button CreateLanguageButton(string name, string label, Vector2 position, TMP_FontAsset font)
+        {
+            var go = new GameObject(name);
+            go.transform.SetParent(transform, false);
+            var rect = go.AddComponent<RectTransform>();
+            rect.anchorMin = new Vector2(0.5f, 0.5f);
+            rect.anchorMax = new Vector2(0.5f, 0.5f);
+            rect.anchoredPosition = position;
+            rect.sizeDelta = new Vector2(90f, 44f);
+
+            var image = go.AddComponent<Image>();
+            image.color = new Color(0.12f, 0.15f, 0.17f, 1f);
+            var button = go.AddComponent<Button>();
+            var colors = button.colors;
+            colors.highlightedColor = new Color(0.2f, 0.24f, 0.26f, 1f);
+            colors.pressedColor = new Color(0.08f, 0.1f, 0.11f, 1f);
+            button.colors = colors;
+
+            var text = CreateMenuText("Text", Vector2.zero, new Vector2(72f, 32f), 18f, font);
+            text.transform.SetParent(go.transform, false);
+            text.text = label;
+            return button;
         }
 
         private void OnDestroy()

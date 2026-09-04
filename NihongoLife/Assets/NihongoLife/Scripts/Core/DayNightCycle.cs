@@ -48,6 +48,11 @@ namespace NihongoLife.Core
 
         private void ApplyLighting()
         {
+            if (sun == null)
+            {
+                sun = RenderSettings.sun != null ? RenderSettings.sun : FindFirstObjectByType<Light>();
+            }
+
             float dayAmount = Mathf.Clamp01(Mathf.Sin((_hour - 6f) / 12f * Mathf.PI));
             float duskAmount = 1f - Mathf.Abs(_hour - 18f) / 4f;
             duskAmount = Mathf.Clamp01(duskAmount);

@@ -199,7 +199,7 @@ namespace NihongoLife.Editor
             var transition = from.AddTransition(to);
             transition.hasExitTime = hasExitTime;
             transition.hasFixedDuration = true;
-            transition.duration = 0.25f;
+            transition.duration = hasExitTime ? 0.18f : 0.12f;
             if (!string.IsNullOrEmpty(paramName))
             {
                 transition.AddCondition(mode, threshold, paramName);
@@ -215,7 +215,7 @@ namespace NihongoLife.Editor
             var transition = sm.AddAnyStateTransition(to);
             transition.hasExitTime = false;
             transition.hasFixedDuration = true;
-            transition.duration = 0.25f;
+            transition.duration = 0.12f;
             transition.AddCondition(AnimatorConditionMode.If, 0, paramName);
         }
 
@@ -257,6 +257,8 @@ namespace NihongoLife.Editor
             {
                 animator.runtimeAnimatorController = AssetDatabase.LoadAssetAtPath<RuntimeAnimatorController>(ANIMATOR_PATH);
                 animator.applyRootMotion = false;
+                animator.cullingMode = AnimatorCullingMode.AlwaysAnimate;
+                animator.updateMode = AnimatorUpdateMode.Normal;
             }
             else
             {
