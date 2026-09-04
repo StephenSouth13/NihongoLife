@@ -650,6 +650,8 @@ namespace NihongoLife.Editor
             textGo.transform.localRotation = Quaternion.Euler(0f, 180f, 0f);
             textGo.transform.localScale = Vector3.one * 0.055f;
             var text = textGo.AddComponent<TextMeshPro>();
+            var font = FontSetup.EnsureJapaneseFontAsset();
+            if (font != null) text.font = font;
             text.text = "コンビニ";
             text.fontSize = 5f;
             text.alignment = TextAlignmentOptions.Center;

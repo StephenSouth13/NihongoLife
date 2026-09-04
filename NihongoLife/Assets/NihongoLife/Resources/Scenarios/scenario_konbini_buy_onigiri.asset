@@ -13,33 +13,35 @@ MonoBehaviour:
   m_Name: scenario_konbini_buy_onigiri
   m_EditorClassIdentifier: 
   id: scenario.konbini.buy_onigiri
-  version: 1
-  titleJa: "コンビニで買い物"
-  titleVi: "Mua sắm ở cửa hàng tiện lợi"
-  descriptionJa: "おにぎりを買って、レジで会計を済ませましょう。"
-  descriptionVi: "Mua một chiếc cơm nắm và hoàn thành thanh toán tại quầy thu ngân."
+  version: 2
+  titleJa: "\u30B3\u30F3\u30D3\u30CB\u3067\u8CB7\u3044\u7269"
+  titleVi: "Mua s\u1EAFm \u1EDF c\u1EEDa h\xE0ng ti\u1EC7n l\u1EE3i"
+  descriptionJa: "\u304A\u306B\u304E\u308A\u3092\u8CB7\u3063\u3066\u3001\u30EC\u30B8\u3067\u4F1A\u8A08\u3092\u6E08\u307E\u305B\u307E\u3057\u3087\u3046\u3002"
+  descriptionVi: "Mua m\u1ED9t chi\u1EBFc c\u01A1m n\u1EAFm v\xE0 ho\xE0n th\xE0nh
+    thanh to\xE1n t\u1EA1i qu\u1EA7y thu ng\xE2n."
   chapterIndex: 2
   learningTargets:
   - grammar.n5.wo_kudasai
   - grammar.n5.onegai_shimasu
+  - grammar.n5.daijoubu_desu
   - vocab.n5.onigiri
   - vocab.n5.fukuro
   objectives:
   - id: obj_enter_store
-    titleJa: "コンビニに入る"
-    titleVi: "Vào cửa hàng tiện lợi"
+    titleJa: "\u30B3\u30F3\u30D3\u30CB\u306B\u5165\u308B"
+    titleVi: "V\xE0o c\u1EEDa h\xE0ng ti\u1EC7n l\u1EE3i"
     isOptional: 0
   - id: obj_find_onigiri
-    titleJa: "おにぎりを見つける"
-    titleVi: "Tìm cơm nắm"
+    titleJa: "\u304A\u306B\u304E\u308A\u3092\u898B\u3064\u3051\u308B"
+    titleVi: "T\xECm c\u01A1m n\u1EAFm"
     isOptional: 0
   - id: obj_go_to_cashier
-    titleJa: "レジへ行く"
-    titleVi: "Đi đến quầy thu ngân"
+    titleJa: "\u30EC\u30B8\u3078\u884C\u304F"
+    titleVi: "\u0110i \u0111\u1EBFn qu\u1EA7y thu ng\xE2n"
     isOptional: 0
   - id: obj_pay
-    titleJa: "お会計をする"
-    titleVi: "Thanh toán"
+    titleJa: "\u304A\u4F1A\u8A08\u3092\u3059\u308B"
+    titleVi: "Thanh to\xE1n"
     isOptional: 0
   nodes:
   - id: node_start
@@ -52,6 +54,7 @@ MonoBehaviour:
     textReading: 
     textVi: 
     textRomaji: 
+    animationCue: 
     voiceClip: {fileID: 0}
     choices: []
     targetItemId: 
@@ -66,6 +69,7 @@ MonoBehaviour:
     textReading: 
     textVi: 
     textRomaji: 
+    animationCue: 
     voiceClip: {fileID: 0}
     choices: []
     targetItemId: onigiri
@@ -80,6 +84,7 @@ MonoBehaviour:
     textReading: 
     textVi: 
     textRomaji: 
+    animationCue: 
     voiceClip: {fileID: 0}
     choices: []
     targetItemId: 
@@ -88,52 +93,50 @@ MonoBehaviour:
     nodeType: 0
     nextNodeId: 
     objectiveIdToComplete: 
-    speakerName: "Thu ngân"
+    speakerName: "Thu ng\xE2n"
     speakerId: npc_cashier
-    textJa: "袋は要りますか？"
-    textReading: "ふくろはいりますか？"
-    textVi: "Quý khách có cần túi bóng không?"
-    textRomaji: "Fukuro wa irimasu ka?"
+    textJa: "\u888B\u306F\u8981\u308A\u307E\u3059\u304B\uFF1F"
+    textReading: "\u3075\u304F\u308D\u306F\u3044\u308A\u307E\u3059\u304B\uFF1F"
+    textVi: "Qu\xFD kh\xE1ch c\xF3 c\u1EA7n t\xFAi kh\xF4ng?"
+    textRomaji: Fukuro wa irimasu ka?
+    animationCue: 
     voiceClip: {fileID: 0}
     choices:
-    - textJa: "はい、お願いします。"
-      textVi: "Vâng, xin vui lòng."
+    - textJa: "\u306F\u3044\u3001\u304A\u9858\u3044\u3057\u307E\u3059\u3002"
+      textVi: "V\xE2ng, xin vui l\xF2ng."
       nextNodeId: node_bag_yes
       scoreModifiers:
       - category: Vocabulary
         value: 10
-        reason: "Hiểu từ túi (fukuro)"
+        reason: "Hi\u1EC3u t\u1EEB t\xFAi (fukuro)"
       - category: Grammar
         value: 10
-        reason: "Dùng mẫu ~onegaishimasu"
-      grammarTags:
-      - grammar.n5.onegai_shimasu
-      vocabularyTags:
-      - vocab.n5.fukuro
-    - textJa: "いいえ、大丈夫です。"
-      textVi: "Không, tôi ổn rồi. (Không cần túi)"
+        reason: "D\xF9ng m\u1EABu ~onegaishimasu"
+      grammarTags: []
+      vocabularyTags: []
+    - textJa: "\u3044\u3044\u3048\u3001\u5927\u4E08\u592B\u3067\u3059\u3002"
+      textVi: "Kh\xF4ng, t\xF4i \u1ED5n r\u1ED3i. Kh\xF4ng c\u1EA7n t\xFAi."
       nextNodeId: node_bag_no
       scoreModifiers:
       - category: Vocabulary
         value: 10
-        reason: "Hiểu từ túi (fukuro)"
+        reason: "Hi\u1EC3u t\u1EEB t\xFAi (fukuro)"
       - category: Grammar
         value: 10
-        reason: "Dùng mẫu ~daijoubu desu"
-      grammarTags:
-      - grammar.n5.daijoubu_desu
-      vocabularyTags:
-      - vocab.n5.fukuro
-    - textJa: "袋を要ります。"
-      textVi: "Tôi cần túi bóng. (Sai trợ từ)"
+        reason: "D\xF9ng m\u1EABu ~daijoubu desu"
+      grammarTags: []
+      vocabularyTags: []
+    - textJa: "\u888B\u3092\u8981\u308A\u307E\u3059\u3002"
+      textVi: "T\xF4i c\u1EA7n t\xFAi. (Sai tr\u1EE3 t\u1EEB)"
       nextNodeId: node_bag_wrong_grammar
       scoreModifiers:
       - category: Grammar
         value: -10
-        reason: "Sai trợ từ: Dùng を thay vì が/は với động từ 要る"
+        reason: "Sai tr\u1EE3 t\u1EEB: \u8981\u308B th\u01B0\u1EDDng \u0111i v\u1EDBi
+          \u304C ho\u1EB7c \u306F"
       - category: ResponseAccuracy
         value: -5
-        reason: "Phản xạ chưa chính xác"
+        reason: "Ph\u1EA3n x\u1EA1 ch\u01B0a ch\xEDnh x\xE1c"
       grammarTags: []
       vocabularyTags: []
     targetItemId: 
@@ -142,12 +145,15 @@ MonoBehaviour:
     nodeType: 0
     nextNodeId: node_bag_yes
     objectiveIdToComplete: 
-    speakerName: "Thu ngân"
+    speakerName: "Thu ng\xE2n"
     speakerId: npc_cashier
-    textJa: "すみません、袋は必要ですか？かしこまりました。"
-    textReading: "すみません、ふくろはひつようですか？かしこまりました。"
-    textVi: "Xin lỗi, ý bạn là bạn cần túi bóng phải không? Ở quầy thanh toán, cách trả lời tự nhiên là 'はい、お願いします' hoặc 'いいえ、大丈夫です'. Hãy chú ý: Động từ 要る đi với trợ từ が hoặc は, không đi với を."
-    textRomaji: "Sumimasen, fukuro wa hitsuyou desu ka? Kashikomarimashita. (Note: At checkouts, 'hai, onegai shimasu' or 'iie, daijoubu desu' are more natural.)"
+    textJa: "\u3059\u307F\u307E\u305B\u3093\u3001\u888B\u306F\u5FC5\u8981\u3067\u3059\u304B\uFF1F\u304B\u3057\u3053\u307E\u308A\u307E\u3057\u305F\u3002"
+    textReading: "\u3059\u307F\u307E\u305B\u3093\u3001\u3075\u304F\u308D\u306F\u3072\u3064\u3088\u3046\u3067\u3059\u304B\uFF1F\u304B\u3057\u3053\u307E\u308A\u307E\u3057\u305F\u3002"
+    textVi: "\xDD b\u1EA1n l\xE0 b\u1EA1n c\u1EA7n t\xFAi ph\u1EA3i kh\xF4ng? \u1EDE
+      qu\u1EA7y thanh to\xE1n, c\xE1ch n\xF3i t\u1EF1 nhi\xEAn l\xE0 \u201C\u306F\u3044\u3001\u304A\u9858\u3044\u3057\u307E\u3059\u201D
+      ho\u1EB7c \u201C\u3044\u3044\u3048\u3001\u5927\u4E08\u592B\u3067\u3059\u201D."
+    textRomaji: Sumimasen, fukuro wa hitsuyou desu ka? Kashikomarimashita.
+    animationCue: point
     voiceClip: {fileID: 0}
     choices: []
     targetItemId: 
@@ -156,12 +162,15 @@ MonoBehaviour:
     nodeType: 0
     nextNodeId: node_pay_choice
     objectiveIdToComplete: 
-    speakerName: "Thu ngân"
+    speakerName: "Thu ng\xE2n"
     speakerId: npc_cashier
-    textJa: "かしこまりました。袋代3円になります。お会計は500円です。"
-    textReading: "かしこまりました。ふくろだいさんえんになります。おかいけいはごひゃくえんです。"
-    textVi: "Tôi hiểu rồi. Tiền túi là 3 Yên. Tổng cộng là 500 Yên ạ."
-    textRomaji: "Kashikomarimashita. Fukurodai san-en ni narimasu. Okaikei wa gohyaku-en desu."
+    textJa: "\u304B\u3057\u3053\u307E\u308A\u307E\u3057\u305F\u3002\u888B\u4EE33\u5186\u306B\u306A\u308A\u307E\u3059\u3002\u304A\u4F1A\u8A08\u306F500\u5186\u3067\u3059\u3002"
+    textReading: "\u304B\u3057\u3053\u307E\u308A\u307E\u3057\u305F\u3002\u3075\u304F\u308D\u3060\u3044\u3055\u3093\u3048\u3093\u306B\u306A\u308A\u307E\u3059\u3002\u304A\u304B\u3044\u3051\u3044\u306F\u3054\u3072\u3083\u304F\u3048\u3093\u3067\u3059\u3002"
+    textVi: "T\xF4i hi\u1EC3u r\u1ED3i. Ti\u1EC1n t\xFAi l\xE0 3 y\xEAn. T\u1ED5ng
+      c\u1ED9ng l\xE0 500 y\xEAn \u1EA1."
+    textRomaji: Kashikomarimashita. Fukurodai san-en ni narimasu. Okaikei wa gohyaku-en
+      desu.
+    animationCue: bow
     voiceClip: {fileID: 0}
     choices: []
     targetItemId: 
@@ -170,12 +179,13 @@ MonoBehaviour:
     nodeType: 0
     nextNodeId: node_pay_choice
     objectiveIdToComplete: 
-    speakerName: "Thu ngân"
+    speakerName: "Thu ng\xE2n"
     speakerId: npc_cashier
-    textJa: "かしこまりました。お会計は497円です。"
-    textReading: "かしこまりました。おかいけいはよんひゃくきゅうじゅうななえんです。"
-    textVi: "Tôi hiểu rồi. Tổng cộng là 497 Yên ạ."
-    textRomaji: "Kashikomarimashita. Okaikei wa yonhyaku kyujuunana-en desu."
+    textJa: "\u304B\u3057\u3053\u307E\u308A\u307E\u3057\u305F\u3002\u304A\u4F1A\u8A08\u306F497\u5186\u3067\u3059\u3002"
+    textReading: "\u304B\u3057\u3053\u307E\u308A\u307E\u3057\u305F\u3002\u304A\u304B\u3044\u3051\u3044\u306F\u3088\u3093\u3072\u3083\u304F\u304D\u3085\u3046\u3058\u3085\u3046\u306A\u306A\u3048\u3093\u3067\u3059\u3002"
+    textVi: "T\xF4i hi\u1EC3u r\u1ED3i. T\u1ED5ng c\u1ED9ng l\xE0 497 y\xEAn \u1EA1."
+    textRomaji: Kashikomarimashita. Okaikei wa yonhyaku kyujuunana-en desu.
+    animationCue: bow
     voiceClip: {fileID: 0}
     choices: []
     targetItemId: 
@@ -184,47 +194,47 @@ MonoBehaviour:
     nodeType: 0
     nextNodeId: 
     objectiveIdToComplete: 
-    speakerName: "Hệ thống"
+    speakerName: "H\u1EC7 th\u1ED1ng"
     speakerId: system
-    textJa: "支払方法を選択してください。"
-    textReading: "しはらいほうほうをせんたくしてください。"
-    textVi: "Hãy chọn phương thức thanh toán."
-    textRomaji: "Shiharai houhou wo sentaku shite kudasai."
+    textJa: "\u652F\u6255\u65B9\u6CD5\u3092\u9078\u629E\u3057\u3066\u304F\u3060\u3055\u3044\u3002"
+    textReading: "\u3057\u306F\u3089\u3044\u307B\u3046\u307B\u3046\u3092\u305B\u3093\u305F\u304F\u3057\u3066\u304F\u3060\u3055\u3044\u3002"
+    textVi: "H\xE3y ch\u1ECDn ph\u01B0\u01A1ng th\u1EE9c thanh to\xE1n."
+    textRomaji: Shiharai houhou wo sentaku shite kudasai.
+    animationCue: 
     voiceClip: {fileID: 0}
     choices:
-    - textJa: "これでお願いします。"
-      textVi: "Thanh toán bằng cái này ạ."
+    - textJa: "\u3053\u308C\u3067\u304A\u9858\u3044\u3057\u307E\u3059\u3002"
+      textVi: "Thanh to\xE1n b\u1EB1ng c\xE1i n\xE0y \u1EA1."
       nextNodeId: node_transaction_done
       scoreModifiers:
       - category: Grammar
         value: 15
-        reason: "Dùng mẫu thanh toán kore de"
-      grammarTags:
-      - grammar.n5.kore_de
+        reason: "D\xF9ng m\u1EABu thanh to\xE1n \u201Ckore de\u201D"
+      grammarTags: []
       vocabularyTags: []
-    - textJa: "カードで払います。"
-      textVi: "Thanh toán bằng thẻ."
+    - textJa: "\u30AB\u30FC\u30C9\u3067\u6255\u3044\u307E\u3059\u3002"
+      textVi: "Thanh to\xE1n b\u1EB1ng th\u1EBB."
       nextNodeId: node_transaction_done
       scoreModifiers:
       - category: Vocabulary
         value: 10
-        reason: "Dùng từ thẻ (kaado)"
-      grammarTags:
-      - grammar.n5.de_haraimasu
-      vocabularyTags:
-      - vocab.n5.kaado
+        reason: "D\xF9ng t\u1EEB th\u1EBB (kaado)"
+      grammarTags: []
+      vocabularyTags: []
     targetItemId: 
     targetAreaId: 
   - id: node_transaction_done
     nodeType: 0
     nextNodeId: node_complete
     objectiveIdToComplete: obj_pay
-    speakerName: "Thu ngân"
+    speakerName: "Thu ng\xE2n"
     speakerId: npc_cashier
-    textJa: "ありがとうございます。またお越しくださいませ。"
-    textReading: "ありがとうございます。またおこしくださいませ。"
-    textVi: "Xin cảm ơn quý khách. Hẹn gặp lại quý khách lần sau."
-    textRomaji: "Arigatou gozaimasu. Mata okoshi kudasaimase."
+    textJa: "\u3042\u308A\u304C\u3068\u3046\u3054\u3056\u3044\u307E\u3059\u3002\u307E\u305F\u304A\u8D8A\u3057\u304F\u3060\u3055\u3044\u307E\u305B\u3002"
+    textReading: "\u3042\u308A\u304C\u3068\u3046\u3054\u3056\u3044\u307E\u3059\u3002\u307E\u305F\u304A\u3053\u3057\u304F\u3060\u3055\u3044\u307E\u305B\u3002"
+    textVi: "Xin c\u1EA3m \u01A1n qu\xFD kh\xE1ch. H\u1EB9n g\u1EB7p l\u1EA1i qu\xFD
+      kh\xE1ch l\u1EA7n sau."
+    textRomaji: Arigatou gozaimasu. Mata okoshi kudasaimase.
+    animationCue: bow
     voiceClip: {fileID: 0}
     choices: []
     targetItemId: 
@@ -239,6 +249,7 @@ MonoBehaviour:
     textReading: 
     textVi: 
     textRomaji: 
+    animationCue: 
     voiceClip: {fileID: 0}
     choices: []
     targetItemId: 

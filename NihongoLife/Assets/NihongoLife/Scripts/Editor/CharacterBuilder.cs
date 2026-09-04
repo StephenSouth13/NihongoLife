@@ -95,13 +95,13 @@ namespace NihongoLife.Editor
             {
                 for (int i = 0; i < clips.Length; i++)
                 {
-                    if (clips[i].loopTime != loop || clips[i].lockRootPositionXZ != bakeRoot || clips[i].lockRootPositionY != bakeRoot)
+                    if (clips[i].loopTime != loop || clips[i].lockRootPositionXZ != bakeRoot || clips[i].lockRootHeightY != bakeRoot)
                     {
                         clips[i].loopTime = loop;
                         if (bakeRoot)
                         {
                             clips[i].lockRootPositionXZ = true;
-                            clips[i].lockRootPositionY = true;
+                            clips[i].lockRootHeightY = true;
                             clips[i].lockRootRotation = true;
                         }
                         changed = true;
