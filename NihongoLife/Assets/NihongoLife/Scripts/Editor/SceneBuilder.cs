@@ -69,10 +69,12 @@ namespace NihongoLife.Editor
             var appRoot = appRootGo.AddComponent<AppRoot>();
             var audioService = appRootGo.AddComponent<AudioService>();
             var sceneFlow = appRootGo.AddComponent<SceneFlowController>();
+            var settings = appRootGo.AddComponent<GameSettingsService>();
 
             var so = new SerializedObject(appRoot);
             SetRef(so, "audioService", audioService);
             SetRef(so, "sceneFlowController", sceneFlow);
+            SetRef(so, "settingsService", settings);
             so.ApplyModifiedProperties();
 
             EditorSceneManager.SaveScene(scene, path);
@@ -150,10 +152,12 @@ namespace NihongoLife.Editor
             var appRoot = appRootGo.AddComponent<AppRoot>();
             var audioService = appRootGo.AddComponent<AudioService>();
             var sceneFlow = appRootGo.AddComponent<SceneFlowController>();
+            var settings = appRootGo.AddComponent<GameSettingsService>();
 
             var so = new SerializedObject(appRoot);
             SetRef(so, "audioService", audioService);
             SetRef(so, "sceneFlowController", sceneFlow);
+            SetRef(so, "settingsService", settings);
             so.ApplyModifiedProperties();
         }
 

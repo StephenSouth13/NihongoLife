@@ -12,6 +12,7 @@ namespace NihongoLife.Core
         [SerializeField] private string isTalkingParam = "IsTalking";
         [SerializeField] private string bowParam = "Bow";
         [SerializeField] private string pointParam = "Point";
+        [SerializeField] private float speedDampTime = 0.12f;
 
         private int _speedHash;
         private int _isTalkingHash;
@@ -35,7 +36,7 @@ namespace NihongoLife.Core
         {
             if (_animator != null && _animator.gameObject.activeInHierarchy)
             {
-                _animator.SetFloat(_speedHash, speed);
+                _animator.SetFloat(_speedHash, speed, speedDampTime, Time.deltaTime);
             }
         }
 

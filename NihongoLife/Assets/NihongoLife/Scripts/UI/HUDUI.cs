@@ -1,14 +1,15 @@
 using System.Collections.Generic;
 using System.Text;
+using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
-using TMPro;
+using NihongoLife.Core;
 using NihongoLife.Dialogue;
-using NihongoLife.Scenario;
 using NihongoLife.Interaction;
 using NihongoLife.Learning;
 using NihongoLife.Player;
+using NihongoLife.Scenario;
 
 namespace NihongoLife.UI
 {
@@ -76,6 +77,12 @@ namespace NihongoLife.UI
                 PlayerInventory.Instance.OnInventoryChanged += RefreshPlayerPanels;
             }
 
+            var settings = GameServices.Get<GameSettingsService>();
+            if (settings != null)
+            {
+                settings.OnLanguageChanged += HandleLanguageChanged;
+            }
+
             HideDialogue();
             HidePrompt();
             SetInventoryVisible(false);
@@ -117,6 +124,18 @@ namespace NihongoLife.UI
             {
                 PlayerInventory.Instance.OnInventoryChanged -= RefreshPlayerPanels;
             }
+
+            var settings = GameServices.Get<GameSettingsService>();
+            if (settings != null)
+            {
+                settings.OnLanguageChanged -= HandleLanguageChanged;
+            }
+        }
+
+        private void HandleLanguageChanged(GameLanguage language)
+        {
+            RefreshPlayerPanels();
+            UpdateObjectivesDisplay();
         }
 
         private void SetInventoryVisible(bool visible)
@@ -155,7 +174,7 @@ namespace NihongoLife.UI
             {
                 if (inventory.Items.Count == 0)
                 {
-                    inventoryText.text = "Balo trống";
+                    inventoryText.text = Text("Balo trống", "Bag empty", "バッグは空です");
                 }
                 else
                 {
@@ -163,8 +182,8 @@ namespace NihongoLife.UI
                     foreach (var item in inventory.Items)
                     {
                         string ja = string.IsNullOrEmpty(item.displayNameJa) ? item.itemId : item.displayNameJa;
-                        string vi = string.IsNullOrEmpty(item.displayNameEn) ? item.itemId : item.displayNameEn;
-                        builder.AppendLine($"{ja} / {vi}");
+                        string en = string.IsNullOrEmpty(item.displayNameEn) ? item.itemId : item.displayNameEn;
+                        builder.AppendLine($"{ja} / {en}");
                         builder.AppendLine($"x{item.quantity}    ¥{item.priceYen}");
                     }
                     inventoryText.text = builder.ToString();
@@ -174,11 +193,12 @@ namespace NihongoLife.UI
             if (characterStatsText != null)
             {
                 characterStatsText.text =
-                    "Học viên\n" +
-                    "Cấp độ: N5 Starter\n" +
-                    "Tốc độ: Đi bộ / chạy\n" +
-                    $"Tiền mặt: ¥{inventory.Yen}\n" +
-                    "Mục tiêu: mua hàng bằng tiếng Nhật";
+                    Text("Học viên", "Learner", "学習者") + "\n" +
+                    Text("Cấp độ: N5 Starter", "Level: N5 Starter", "レベル: N5 Starter") + "\n" +
+                    Text("Di chuyển: đi bộ / chạy", "Movement: walk / run", "移動: 歩く / 走る") + "\n" +
+                    $"{Text("Tiền mặt", "Cash", "所持金")}: ¥{inventory.Yen}\n" +
+                    Text("Mục tiêu: mua hàng bằng tiếng Nhật", "Goal: shop in Japanese", "目標: 日本語で買い物する") + "\n" +
+                    "N: Night  |  M: Morning";
             }
         }
 
@@ -226,8 +246,8 @@ namespace NihongoLife.UI
 
             if (ScenarioManager.Instance == null || ScenarioManager.Instance.CurrentScenario == null)
             {
-                objectivesText.text = "";
-                if (scenarioTitleText != null) scenarioTitleText.text = "Không có nhiệm vụ";
+                objectivesText.text = string.Empty;
+                if (scenarioTitleText != null) scenarioTitleText.text = Text("Không có nhiệm vụ", "No active mission", "ミッションなし");
                 return;
             }
 
@@ -269,14 +289,9 @@ namespace NihongoLife.UI
                     var btnText = btn.GetComponentInChildren<TextMeshProUGUI>();
                     if (btnText != null)
                     {
-                        if (data.learningMode == LearningMode.GuidedPractice)
-                        {
-                            btnText.text = $"{choice.textJa}\n<size=80%><color=#8fa3b8>({choice.textEn})</color></size>";
-                        }
-                        else
-                        {
-                            btnText.text = choice.textJa;
-                        }
+                        btnText.text = data.learningMode == LearningMode.GuidedPractice
+                            ? $"{choice.textJa}\n<size=80%><color=#8fa3b8>({choice.textEn})</color></size>"
+                            : choice.textJa;
                     }
 
                     btn.onClick.AddListener(() => OnChoiceSelected(index));
@@ -300,13 +315,13 @@ namespace NihongoLife.UI
                     break;
                 case LearningMode.Practice:
                     SetHintText(readingText, data.textReading, true);
-                    SetHintText(romajiText, "", false);
+                    SetHintText(romajiText, string.Empty, false);
                     SetHintText(translationText, data.textEn, true);
                     break;
                 case LearningMode.Assessment:
-                    SetHintText(readingText, "", false);
-                    SetHintText(romajiText, "", false);
-                    SetHintText(translationText, "", false);
+                    SetHintText(readingText, string.Empty, false);
+                    SetHintText(romajiText, string.Empty, false);
+                    SetHintText(translationText, string.Empty, false);
                     break;
             }
         }
@@ -347,6 +362,12 @@ namespace NihongoLife.UI
                 if (btn != null) Destroy(btn.gameObject);
             }
             _activeChoiceButtons.Clear();
+        }
+
+        private static string Text(string vi, string en, string ja)
+        {
+            var settings = GameServices.Get<GameSettingsService>();
+            return settings != null ? settings.Text(vi, en, ja) : vi;
         }
     }
 }

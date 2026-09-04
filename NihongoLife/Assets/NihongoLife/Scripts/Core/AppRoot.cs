@@ -12,6 +12,7 @@ namespace NihongoLife.Core
         [Header("Services")]
         [SerializeField] private AudioService audioService;
         [SerializeField] private SceneFlowController sceneFlowController;
+        [SerializeField] private GameSettingsService settingsService;
 
         private void Awake()
         {
@@ -47,12 +48,20 @@ namespace NihongoLife.Core
             GameServices.Register<IAudioService>(audioService);
             audioService.Initialize();
 
-            // 3. Save / Progress Repository
+            // 3. Player-facing settings
+            if (settingsService == null)
+            {
+                settingsService = gameObject.AddComponent<GameSettingsService>();
+            }
+            GameServices.Register<GameSettingsService>(settingsService);
+            settingsService.Initialize();
+
+            // 4. Save / Progress Repository
             var progressRepo = new LocalProgressRepository();
             GameServices.Register<IProgressRepository>(progressRepo);
             progressRepo.Initialize();
 
-            // 4. Scenario Repository
+            // 5. Scenario Repository
             var scenarioRepo = new LocalScenarioRepository();
             GameServices.Register<IScenarioRepository>(scenarioRepo);
             scenarioRepo.Initialize();
