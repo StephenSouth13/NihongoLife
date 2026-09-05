@@ -374,9 +374,6 @@ namespace NihongoLife.UI
                     $"{Text("Tiền mặt", "Cash", "所持金")}: ¥{inventory.Yen}\n" +
                     Text("Mục tiêu: mua hàng bằng tiếng Nhật", "Goal: shop in Japanese", "目標: 日本語で買い物する") + "\n" +
                     "N: Night  |  M: Morning";
-            }
-        }
-
             RenderPolishedPlayerPanels(inventory);
         }
 
