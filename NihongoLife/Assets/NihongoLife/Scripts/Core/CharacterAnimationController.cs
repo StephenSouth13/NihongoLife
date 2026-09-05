@@ -30,6 +30,11 @@ namespace NihongoLife.Core
         public void SetAnimator(Animator animator)
         {
             _animator = animator;
+            if (_animator != null)
+            {
+                _animator.applyRootMotion = false;
+                _animator.updateMode = AnimatorUpdateMode.Normal;
+            }
         }
 
         public void SetSpeed(float speed)

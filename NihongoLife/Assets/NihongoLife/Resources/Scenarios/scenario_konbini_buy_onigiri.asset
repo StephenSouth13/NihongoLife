@@ -54,10 +54,12 @@ MonoBehaviour:
     textReading: 
     textEn: 
     textRomaji: 
+    textEnglishIpa: 
     animationCue: 
     voiceClip: {fileID: 0}
     choices: []
     targetItemId: 
+    targetNpcId: 
     targetAreaId: store_entrance
   - id: node_find_onigiri
     nodeType: 1
@@ -69,10 +71,12 @@ MonoBehaviour:
     textReading: 
     textEn: 
     textRomaji: 
+    textEnglishIpa: 
     animationCue: 
     voiceClip: {fileID: 0}
     choices: []
     targetItemId: onigiri
+    targetNpcId: 
     targetAreaId: 
   - id: node_go_to_cashier
     nodeType: 3
@@ -84,10 +88,12 @@ MonoBehaviour:
     textReading: 
     textEn: 
     textRomaji: 
+    textEnglishIpa: 
     animationCue: 
     voiceClip: {fileID: 0}
     choices: []
     targetItemId: 
+    targetNpcId: 
     targetAreaId: cashier
   - id: node_cashier_prompt_bag
     nodeType: 0
@@ -99,6 +105,7 @@ MonoBehaviour:
     textReading: "\u3075\u304F\u308D\u306F\u3044\u308A\u307E\u3059\u304B\uFF1F"
     textEn: "Qu\xFD kh\xE1ch c\xF3 c\u1EA7n t\xFAi kh\xF4ng?"
     textRomaji: Fukuro wa irimasu ka?
+    textEnglishIpa: "/du\u02D0 ju\u02D0 ni\u02D0d \u0259 b\xE6\u0261/"
     animationCue: 
     voiceClip: {fileID: 0}
     choices:
@@ -140,6 +147,7 @@ MonoBehaviour:
       grammarTags: []
       vocabularyTags: []
     targetItemId: 
+    targetNpcId: 
     targetAreaId: 
   - id: node_bag_wrong_grammar
     nodeType: 0
@@ -153,10 +161,12 @@ MonoBehaviour:
       qu\u1EA7y thanh to\xE1n, c\xE1ch n\xF3i t\u1EF1 nhi\xEAn l\xE0 \u201C\u306F\u3044\u3001\u304A\u9858\u3044\u3057\u307E\u3059\u201D
       ho\u1EB7c \u201C\u3044\u3044\u3048\u3001\u5927\u4E08\u592B\u3067\u3059\u201D."
     textRomaji: Sumimasen, fukuro wa hitsuyou desu ka? Kashikomarimashita.
+    textEnglishIpa: "/du\u02D0 ju\u02D0 mi\u02D0n ju\u02D0 ni\u02D0d \u0259 b\xE6\u0261/"
     animationCue: point
     voiceClip: {fileID: 0}
     choices: []
     targetItemId: 
+    targetNpcId: 
     targetAreaId: 
   - id: node_bag_yes
     nodeType: 0
@@ -170,10 +180,13 @@ MonoBehaviour:
       c\u1ED9ng l\xE0 500 y\xEAn \u1EA1."
     textRomaji: Kashikomarimashita. Fukurodai san-en ni narimasu. Okaikei wa gohyaku-en
       desu.
+    textEnglishIpa: "/a\u026A \u028Cnd\u0259r\u02C8st\xE6nd \xF0\u0259 b\xE6\u0261
+      fi\u02D0 \u026Az \u03B8ri\u02D0 jen/"
     animationCue: bow
     voiceClip: {fileID: 0}
     choices: []
     targetItemId: 
+    targetNpcId: 
     targetAreaId: 
   - id: node_bag_no
     nodeType: 0
@@ -185,10 +198,13 @@ MonoBehaviour:
     textReading: "\u304B\u3057\u3053\u307E\u308A\u307E\u3057\u305F\u3002\u304A\u304B\u3044\u3051\u3044\u306F\u3088\u3093\u3072\u3083\u304F\u304D\u3085\u3046\u3058\u3085\u3046\u306A\u306A\u3048\u3093\u3067\u3059\u3002"
     textEn: "T\xF4i hi\u1EC3u r\u1ED3i. T\u1ED5ng c\u1ED9ng l\xE0 497 y\xEAn \u1EA1."
     textRomaji: Kashikomarimashita. Okaikei wa yonhyaku kyujuunana-en desu.
+    textEnglishIpa: "/a\u026A \u028Cnd\u0259r\u02C8st\xE6nd \xF0\u0259 to\u028Atl
+      \u026Az f\u0254\u02D0r h\u028Cndr\u0259d na\u026Anti sev\u0259n jen/"
     animationCue: bow
     voiceClip: {fileID: 0}
     choices: []
     targetItemId: 
+    targetNpcId: 
     targetAreaId: 
   - id: node_pay_choice
     nodeType: 0
@@ -200,6 +216,7 @@ MonoBehaviour:
     textReading: "\u3057\u306F\u3089\u3044\u307B\u3046\u307B\u3046\u3092\u305B\u3093\u305F\u304F\u3057\u3066\u304F\u3060\u3055\u3044\u3002"
     textEn: "H\xE3y ch\u1ECDn ph\u01B0\u01A1ng th\u1EE9c thanh to\xE1n."
     textRomaji: Shiharai houhou wo sentaku shite kudasai.
+    textEnglishIpa: "/pli\u02D0z t\u0283u\u02D0z \u0259 pe\u026Am\u0259nt me\u03B8\u0259d/"
     animationCue: 
     voiceClip: {fileID: 0}
     choices:
@@ -222,6 +239,7 @@ MonoBehaviour:
       grammarTags: []
       vocabularyTags: []
     targetItemId: 
+    targetNpcId: 
     targetAreaId: 
   - id: node_transaction_done
     nodeType: 0
@@ -234,10 +252,13 @@ MonoBehaviour:
     textEn: "Xin c\u1EA3m \u01A1n qu\xFD kh\xE1ch. H\u1EB9n g\u1EB7p l\u1EA1i qu\xFD
       kh\xE1ch l\u1EA7n sau."
     textRomaji: Arigatou gozaimasu. Mata okoshi kudasaimase.
+    textEnglishIpa: "/\u03B8\xE6\u014Bk ju\u02D0 \u02C8v\u025Bri m\u028Ct\u0283 si\u02D0
+      ju\u02D0 \u0259\u02C8\u0261en/"
     animationCue: bow
     voiceClip: {fileID: 0}
     choices: []
     targetItemId: 
+    targetNpcId: 
     targetAreaId: 
   - id: node_complete
     nodeType: 4
@@ -249,9 +270,11 @@ MonoBehaviour:
     textReading: 
     textEn: 
     textRomaji: 
+    textEnglishIpa: 
     animationCue: 
     voiceClip: {fileID: 0}
     choices: []
     targetItemId: 
+    targetNpcId: 
     targetAreaId: 
   startNodeId: node_start

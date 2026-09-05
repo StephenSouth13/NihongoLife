@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.AI;
+using NihongoLife.Core;
 using NihongoLife.Dialogue;
 using NihongoLife.Interaction;
 using NihongoLife.Scenario;
@@ -30,6 +31,8 @@ namespace NihongoLife.NPC
         [SerializeField] private string fallbackRomaji = "Konnichiwa. Kyou wa ii tenki desu ne.";
 
         private NavMeshAgent _navAgent;
+        private NPCStreetPatrol _patrol;
+        private CharacterAnimationController _animation;
         private Transform _lookTarget;
         private bool _isInteracting;
 
@@ -41,6 +44,8 @@ namespace NihongoLife.NPC
         private void Awake()
         {
             _navAgent = GetComponent<NavMeshAgent>();
+            _patrol = GetComponent<NPCStreetPatrol>();
+            _animation = GetComponent<CharacterAnimationController>();
         }
 
         private void Update()
@@ -65,6 +70,7 @@ namespace NihongoLife.NPC
 
             _lookTarget = player.transform;
             _isInteracting = true;
+            SetMovementFrozen(true);
 
             if (ScenarioManager.Instance == null)
             {
@@ -83,11 +89,29 @@ namespace NihongoLife.NPC
             if (!handledByScenario)
             {
                 ScenarioManager.Instance.SetPlayerInputLocked(true);
-                StartFallbackDialogue();
+                StartSmartFallbackDialogue();
             }
         }
 
-        private void StartFallbackDialogue()
+        private void StartSmartFallbackDialogue()
+        {
+            var gemini = FindFirstObjectByType<GeminiConversationService>();
+            if (gemini != null && gemini.IsConfigured)
+            {
+                gemini.RequestNpcReply(this, "The player walked up and pressed E to talk.",
+                    reply => StartFallbackDialogue(reply),
+                    error =>
+                    {
+                        Debug.LogWarning($"[NPCController] Gemini fallback failed for {npcId}: {error}");
+                        StartFallbackDialogue();
+                    });
+                return;
+            }
+
+            StartFallbackDialogue();
+        }
+
+        private void StartFallbackDialogue(string geminiReply = null)
         {
             if (DialogueManager.Instance == null) return;
 
@@ -99,7 +123,7 @@ namespace NihongoLife.NPC
                 speakerId = npcId,
                 textJa = fallbackJa,
                 textReading = fallbackReading,
-                textEn = fallbackEn,
+                textEn = string.IsNullOrWhiteSpace(geminiReply) ? fallbackEn : geminiReply,
                 textRomaji = fallbackRomaji,
                 animationCue = "talk"
             });
@@ -109,6 +133,23 @@ namespace NihongoLife.NPC
         {
             _isInteracting = false;
             _lookTarget = null;
+            SetMovementFrozen(false);
+        }
+
+        private void SetMovementFrozen(bool frozen)
+        {
+            if (_patrol != null)
+            {
+                _patrol.enabled = !frozen;
+            }
+
+            if (_navAgent != null && _navAgent.enabled)
+            {
+                _navAgent.isStopped = frozen;
+                if (frozen) _navAgent.ResetPath();
+            }
+
+            _animation?.SetSpeed(0f);
         }
 
         public void MoveToDestination(Vector3 destination, System.Action onReached = null)

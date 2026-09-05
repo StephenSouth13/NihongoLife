@@ -285,20 +285,49 @@ namespace NihongoLife.Editor
                 var prefab = buildings[(i + 1) % buildings.Length];
                 var instance = InstantiateScenePrefab(prefab, root, i == 5 ? "KonbiniStoreAsset" : $"StreetBuilding_N_{i}", new Vector3(northX[i], 0f, 4.8f), Quaternion.Euler(0f, 180f, 0f));
                 if (instance != null && i == 5) instance.transform.localScale *= 0.82f;
+                if (instance != null) AddFacadeAccent(instance.transform, i == 5);
             }
 
             float[] southX = { -54f, -42f, -30f, -18f, -6f, 18f, 30f, 42f, 54f };
             for (int i = 0; i < southX.Length; i++)
             {
-                InstantiateScenePrefab(buildings[(i + 3) % buildings.Length], root, $"StreetBuilding_S_{i}", new Vector3(southX[i], 0f, -24.7f), Quaternion.identity);
+                var instance = InstantiateScenePrefab(buildings[(i + 3) % buildings.Length], root, $"StreetBuilding_S_{i}", new Vector3(southX[i], 0f, -24.7f), Quaternion.identity);
+                if (instance != null) AddFacadeAccent(instance.transform, false);
             }
 
             float[] sideZ = { -56f, -44f, -32f, 12f, 24f, 36f };
             for (int i = 0; i < sideZ.Length; i++)
             {
-                InstantiateScenePrefab(buildings[(i + 4) % buildings.Length], root, $"StreetBuilding_W_{i}", new Vector3(-12f, 0f, sideZ[i]), Quaternion.Euler(0f, 90f, 0f));
-                InstantiateScenePrefab(buildings[(i + 6) % buildings.Length], root, $"StreetBuilding_E_{i}", new Vector3(12f, 0f, sideZ[i]), Quaternion.Euler(0f, -90f, 0f));
+                var west = InstantiateScenePrefab(buildings[(i + 4) % buildings.Length], root, $"StreetBuilding_W_{i}", new Vector3(-12f, 0f, sideZ[i]), Quaternion.Euler(0f, 90f, 0f));
+                var east = InstantiateScenePrefab(buildings[(i + 6) % buildings.Length], root, $"StreetBuilding_E_{i}", new Vector3(12f, 0f, sideZ[i]), Quaternion.Euler(0f, -90f, 0f));
+                if (west != null) AddFacadeAccent(west.transform, false);
+                if (east != null) AddFacadeAccent(east.transform, false);
             }
+        }
+
+        private static void AddFacadeAccent(Transform building, bool isStore)
+        {
+            var trimMat = CreateRuntimeMat(building.name + "_Trim_Mat", isStore ? new Color(0.95f, 0.55f, 0.18f) : new Color(0.08f, 0.11f, 0.14f));
+            var glowMat = CreateRuntimeMat(building.name + "_WarmWindow_Mat", new Color(1f, 0.78f, 0.38f, 1f));
+            AddFacadePiece(building, "FacadeTrim", new Vector3(0f, 2.15f, -3.62f), new Vector3(6.7f, 0.18f, 0.08f), trimMat);
+            AddFacadePiece(building, "DoorMat", new Vector3(0f, 0.04f, -3.92f), new Vector3(1.55f, 0.06f, 0.82f), trimMat);
+
+            if (!isStore)
+            {
+                AddFacadePiece(building, "WarmWindow_L", new Vector3(-1.65f, 1.85f, -3.66f), new Vector3(0.9f, 0.55f, 0.05f), glowMat);
+                AddFacadePiece(building, "WarmWindow_R", new Vector3(1.65f, 1.85f, -3.66f), new Vector3(0.9f, 0.55f, 0.05f), glowMat);
+            }
+        }
+
+        private static void AddFacadePiece(Transform parent, string name, Vector3 localPosition, Vector3 localScale, Material material)
+        {
+            var piece = GameObject.CreatePrimitive(PrimitiveType.Cube);
+            piece.name = name;
+            piece.transform.SetParent(parent, false);
+            piece.transform.localPosition = localPosition;
+            piece.transform.localScale = localScale;
+            piece.GetComponent<Renderer>().sharedMaterial = material;
+            Object.DestroyImmediate(piece.GetComponent<Collider>());
         }
 
         private static void CreateStreetFurniture(Transform root, GameObject streetLight, GameObject doubleLight, GameObject trafficLight, GameObject streetSign, GameObject stopSign, GameObject treeSmall, GameObject treeLarge, GameObject planter, GameObject bench, GameObject trash, GameObject electricityPole, GameObject electricityWires, GameObject fence, GameObject driveway)
@@ -419,12 +448,32 @@ namespace NihongoLife.Editor
 
         private static void AddBlockingFootprintIfNeeded(GameObject instance, string name)
         {
+            if (name == "KonbiniStoreAsset")
+            {
+                AddKonbiniCollision(instance.transform);
+                return;
+            }
+
             if (!name.StartsWith("StreetBuilding_", System.StringComparison.Ordinal)) return;
 
-            var collider = instance.GetComponent<BoxCollider>() ?? instance.AddComponent<BoxCollider>();
+            AddCollisionChild(instance.transform, "Collision_Footprint", new Vector3(0f, 2.3f, 0f), new Vector3(8.6f, 4.6f, 7.2f));
+        }
+
+        private static void AddKonbiniCollision(Transform root)
+        {
+            AddCollisionChild(root, "Collision_LeftWall", new Vector3(-3.9f, 2.1f, 0.2f), new Vector3(0.45f, 4.2f, 6.5f));
+            AddCollisionChild(root, "Collision_RightWall", new Vector3(3.9f, 2.1f, 0.2f), new Vector3(0.45f, 4.2f, 6.5f));
+            AddCollisionChild(root, "Collision_BackWall", new Vector3(0f, 2.1f, 3.1f), new Vector3(8.2f, 4.2f, 0.45f));
+        }
+
+        private static void AddCollisionChild(Transform parent, string name, Vector3 localPosition, Vector3 size)
+        {
+            var go = new GameObject(name);
+            go.transform.SetParent(parent, false);
+            go.transform.localPosition = localPosition;
+            var collider = go.AddComponent<BoxCollider>();
             collider.isTrigger = false;
-            collider.center = new Vector3(0f, 2.3f, 0f);
-            collider.size = new Vector3(8.6f, 4.6f, 7.2f);
+            collider.size = size;
         }
 
         private static Material CreateRuntimeMat(string name, Color color)

@@ -107,6 +107,7 @@ namespace NihongoLife.Editor
             var sceneFlow = appRootGo.AddComponent<SceneFlowController>();
             var settings = appRootGo.AddComponent<GameSettingsService>();
             var control = appRootGo.AddComponent<GameControlService>();
+            appRootGo.AddComponent<GeminiConversationService>();
 
             var so = new SerializedObject(appRoot);
             SetRef(so, "audioService", audioService);
@@ -349,6 +350,7 @@ namespace NihongoLife.Editor
             var sceneFlow = appRootGo.AddComponent<SceneFlowController>();
             var settings = appRootGo.AddComponent<GameSettingsService>();
             var control = appRootGo.AddComponent<GameControlService>();
+            appRootGo.AddComponent<GeminiConversationService>();
 
             var so = new SerializedObject(appRoot);
             SetRef(so, "audioService", audioService);
@@ -434,6 +436,8 @@ namespace NihongoLife.Editor
             managerGo.AddComponent<SpeechPracticeController>();
             managerGo.AddComponent<TownAmbientAudio>();
             managerGo.AddComponent<SupabaseVoiceSyncService>();
+            managerGo.AddComponent<GeminiConversationService>();
+            managerGo.AddComponent<RuntimeCollisionRepair>();
         }
 
         private static void CreateEndlessCityVisuals(Transform environment)
@@ -586,7 +590,10 @@ namespace NihongoLife.Editor
         {
             var npc = CreateNpcShell(root, goName, npcId, displayName, "Neighbor", position, Quaternion.Euler(0f, 180f, 0f));
             AddNpcVisual(npc, "Assets/NihongoLife/Prefabs/Characters/NL_Neighbor.prefab", new Color(0.2f, 0.7f, 0.3f));
-            AddPatrolRoute(npc, root, goName + "_Route", position + new Vector3(-5.5f, 0f, -2.8f), position + new Vector3(5.5f, 0f, -2.8f), position + new Vector3(3.5f, 0f, 2.6f));
+            if (npcId == "npc_neighbor_1")
+            {
+                AddPatrolRoute(npc, root, goName + "_Route", position + new Vector3(-2.5f, 0f, -1.4f), position + new Vector3(2.5f, 0f, -1.4f));
+            }
 
             var so = new SerializedObject(npc.GetComponent<NPCController>());
             SetString(so, "npcId", npcId);
@@ -614,6 +621,12 @@ namespace NihongoLife.Editor
             collider.center = new Vector3(0f, 0.95f, 0f);
             collider.size = new Vector3(0.9f, 1.9f, 0.9f);
             collider.isTrigger = true;
+
+            var body = npc.AddComponent<CharacterController>();
+            body.center = new Vector3(0f, 0.95f, 0f);
+            body.height = 1.85f;
+            body.radius = 0.32f;
+            body.stepOffset = 0.22f;
 
             npc.AddComponent<CharacterAnimationController>();
             npc.AddComponent<NPCAmbientTalker>();

@@ -13,14 +13,25 @@ namespace NihongoLife.NPC
 
         private NPCController _npc;
         private CharacterAnimationController _animation;
+        private CharacterController _characterController;
         private int _currentIndex;
         private float _waitTimer;
         private int _direction = 1;
+        private Vector3 _smoothVelocity;
 
         private void Awake()
         {
             _npc = GetComponent<NPCController>();
             _animation = GetComponent<CharacterAnimationController>();
+            _characterController = GetComponent<CharacterController>();
+            if (_characterController == null)
+            {
+                _characterController = gameObject.AddComponent<CharacterController>();
+                _characterController.center = new Vector3(0f, 0.95f, 0f);
+                _characterController.height = 1.85f;
+                _characterController.radius = 0.32f;
+                _characterController.stepOffset = 0.22f;
+            }
         }
 
         private void Update()
@@ -58,9 +69,11 @@ namespace NihongoLife.NPC
             }
 
             Vector3 direction = offset.normalized;
-            transform.position = Vector3.MoveTowards(transform.position, targetPosition, walkSpeed * Time.deltaTime);
+            Vector3 desiredVelocity = direction * walkSpeed;
+            _smoothVelocity = Vector3.Lerp(_smoothVelocity, desiredVelocity, 5f * Time.deltaTime);
+            _characterController.Move(_smoothVelocity * Time.deltaTime);
             transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(direction), turnSpeed * Time.deltaTime);
-            _animation?.SetSpeed(walkSpeed);
+            _animation?.SetSpeed(_smoothVelocity.magnitude);
         }
 
         private void AdvanceWaypoint()

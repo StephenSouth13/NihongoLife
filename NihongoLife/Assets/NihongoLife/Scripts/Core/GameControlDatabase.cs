@@ -33,10 +33,16 @@ namespace NihongoLife.Core
 
         [Header("Voice / Pronunciation")]
         public List<VoiceLineEntry> voiceLines = new List<VoiceLineEntry>();
-        public bool useProceduralVoiceWhenMissingClip = true;
+        public bool useProceduralVoiceWhenMissingClip = false;
         public bool enableTownAmbientAudio = true;
         public AudioClip townBgmClip;
         public AudioClip[] streetVoiceClips;
+
+        [Header("Gemini Conversation")]
+        public bool enableGeminiConversation = false;
+        public bool allowGeminiDirectClientCalls = false;
+        public string geminiModel = "gemini-2.5-flash";
+        public string geminiApiKeyEnvironmentKey = "NIHONGOLIFE_GEMINI_API_KEY";
 
         [Header("Online Database")]
         public bool enableOnlineSync = false;
