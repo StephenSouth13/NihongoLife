@@ -154,6 +154,9 @@ namespace NihongoLife.UI
             colors.pressedColor = new Color(0.08f, 0.1f, 0.11f, 1f);
             button.colors = colors;
 
+            // Add hover animation
+            go.AddComponent<UIHoverScale>();
+
             var text = CreateMenuText("Text", Vector2.zero, new Vector2(74f, 32f), 18f, font);
             text.transform.SetParent(go.transform, false);
             text.text = label;

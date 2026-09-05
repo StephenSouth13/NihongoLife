@@ -130,18 +130,19 @@ namespace NihongoLife.Editor
             var font = FontSetup.EnsureJapaneseFontAsset();
             var canvasGo = CreateCanvas("Canvas");
 
-            var panel = CreateFullScreenPanel(canvasGo.transform, "MainMenuPanel", new Color(0.025f, 0.03f, 0.036f, 0.68f));
+            var panel = CreateFullScreenPanel(canvasGo.transform, "MainMenuPanel", new Color(0f, 0f, 0f, 0.2f));
             AddTopAccent(panel.transform);
 
-            var title = CreateText(panel.transform, "TitleText", "NIHONGO LIFE", font, 72, new Vector2(0, 170), new Vector2(900, 96), TextAlignmentOptions.Center);
-            title.color = new Color(0.98f, 0.95f, 0.82f);
-            var subtitle = CreateText(panel.transform, "SubtitleText", "コンビニで買い物 / luyện hội thoại mua hàng", font, 25, new Vector2(0, 96), new Vector2(900, 44), TextAlignmentOptions.Center);
-            subtitle.color = new Color(0.72f, 0.82f, 0.9f);
+            var title = CreateText(panel.transform, "TitleText", "NIHONGO LIFE", font, 86, new Vector2(0, 200), new Vector2(900, 110), TextAlignmentOptions.Center);
+            title.color = new Color(1f, 0.98f, 0.9f);
+            title.fontStyle = FontStyles.Bold;
+            var subtitle = CreateText(panel.transform, "SubtitleText", "コンビニで買い物 / luyện hội thoại mua hàng", font, 28, new Vector2(0, 115), new Vector2(900, 44), TextAlignmentOptions.Center);
+            subtitle.color = new Color(0.9f, 0.95f, 1f);
 
-            var startBtn = CreateUIButton(panel.transform, "StartButton", "Bắt đầu", new Vector2(0, 0), new Vector2(320, 62), font, true).GetComponent<Button>();
-            var quitBtn = CreateUIButton(panel.transform, "QuitButton", "Thoát", new Vector2(0, -78), new Vector2(320, 56), font, false).GetComponent<Button>();
-            var profileText = CreateText(panel.transform, "ProfileText", "WASD di chuyển  |  E tương tác  |  B balo  |  Tab nhân vật", font, 20, new Vector2(0, -175), new Vector2(760, 48), TextAlignmentOptions.Center);
-            profileText.color = new Color(0.84f, 0.88f, 0.9f);
+            var startBtn = CreateUIButton(panel.transform, "StartButton", "Bắt đầu", new Vector2(0, -10), new Vector2(340, 68), font, true).GetComponent<Button>();
+            var quitBtn = CreateUIButton(panel.transform, "QuitButton", "Thoát", new Vector2(0, -95), new Vector2(340, 62), font, false).GetComponent<Button>();
+            var profileText = CreateText(panel.transform, "ProfileText", "WASD di chuyển  |  E tương tác  |  B balo  |  Tab nhân vật", font, 20, new Vector2(0, -195), new Vector2(760, 48), TextAlignmentOptions.Center);
+            profileText.color = new Color(0.95f, 0.95f, 0.95f);
 
             var uiManagerGo = new GameObject("UIManager");
             var uiManager = uiManagerGo.AddComponent<UIManager>();
@@ -283,7 +284,7 @@ namespace NihongoLife.Editor
             var previewRoot = new GameObject("MenuTownPreview_90_TestSandbox");
             VisualEnvironmentBuilder.GenerateVisualEnvironment(previewRoot);
             CreateMenuPreviewGround(previewRoot.transform);
-            ToneDownMenuPreviewMaterials(previewRoot);
+            // ToneDownMenuPreviewMaterials(previewRoot); // Removed to keep vibrant colors
 
             var target = new GameObject("MenuCameraTarget");
             target.transform.position = new Vector3(0f, 1.2f, -10f);
@@ -1034,8 +1035,12 @@ namespace NihongoLife.Editor
             colors.pressedColor = new Color(0.08f, 0.18f, 0.24f, 1f);
             button.colors = colors;
 
-            var label = CreateText(btnGo.transform, "Text", text, font, 20, Vector2.zero, size - new Vector2(24f, 10f), TextAlignmentOptions.Center);
+            // Add premium hover scale
+            btnGo.AddComponent<NihongoLife.UI.UIHoverScale>();
+
+            var label = CreateText(btnGo.transform, "Text", text, font, primary ? 24 : 20, Vector2.zero, size - new Vector2(24f, 10f), TextAlignmentOptions.Center);
             label.overflowMode = TextOverflowModes.Ellipsis;
+            label.fontStyle = primary ? FontStyles.Bold : FontStyles.Normal;
             return btnGo;
         }
 
