@@ -377,6 +377,53 @@ namespace NihongoLife.UI
             }
         }
 
+            RenderPolishedPlayerPanels(inventory);
+        }
+
+        private void RenderPolishedPlayerPanels(PlayerInventory inventory)
+        {
+            if (walletText != null)
+            {
+                walletText.text = $"¥ {inventory.Yen}";
+            }
+
+            if (inventoryText != null)
+            {
+                if (inventory.Items.Count == 0)
+                {
+                    inventoryText.text =
+                        $"<size=125%><b>{Text("Balo", "Bag", "バッグ")}</b></size>\n" +
+                        $"<color=#8fa3b8>{Text("Chưa có vật phẩm. Nhấn E để nhặt hoặc mua đồ khi tới đúng điểm.", "No items yet. Press E to pick up or buy at the right spot.", "目的地でEキーを押して、拾う・買う練習をします。")}</color>";
+                }
+                else
+                {
+                    var builder = new StringBuilder();
+                    builder.AppendLine($"<size=125%><b>{Text("Balo", "Bag", "バッグ")}</b></size>");
+                    builder.AppendLine($"<color=#f1c75b>{Text("Vật phẩm đang có", "Current items", "持ち物")}</color>");
+                    foreach (var item in inventory.Items)
+                    {
+                        string ja = string.IsNullOrEmpty(item.displayNameJa) ? item.itemId : item.displayNameJa;
+                        string en = string.IsNullOrEmpty(item.displayNameEn) ? item.itemId : item.displayNameEn;
+                        builder.AppendLine($"<b>{ja}</b>  <color=#8fa3b8>{en}</color>");
+                        builder.AppendLine($"<color=#f5f2e8>x{item.quantity}</color>    <color=#f1c75b>¥{item.priceYen}</color>");
+                        builder.AppendLine();
+                    }
+                    inventoryText.text = builder.ToString();
+                }
+            }
+
+            if (characterStatsText != null)
+            {
+                characterStatsText.text =
+                    $"<size=125%><b>{Text("Hồ sơ học viên", "Learner Profile", "学習者プロフィール")}</b></size>\n" +
+                    $"<color=#f1c75b>{Text("Tên", "Name", "名前")}</color>: Remy\n" +
+                    $"<color=#f1c75b>{Text("Cấp độ", "Level", "レベル")}</color>: N5 Starter\n" +
+                    $"<color=#f1c75b>{Text("Tiền mặt", "Cash", "所持金")}</color>: ¥{inventory.Yen}\n" +
+                    $"<color=#f1c75b>{Text("Mục tiêu", "Goal", "目標")}</color>: {Text("trò chuyện với người trên phố", "talk with people on the street", "街の人と話す")}\n\n" +
+                    "<color=#8fa3b8>Tab: profile  |  B: bag  |  V: mic  |  E: talk</color>";
+            }
+        }
+
         private void HandleInteractableChanged(IInteractable interactable)
         {
             if (interactable == null)
