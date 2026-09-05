@@ -43,6 +43,7 @@ namespace NihongoLife.UI
 
         private readonly List<Button> _activeChoiceButtons = new List<Button>();
         private int _selectedChoiceIndex = -1;
+        private QuestDirectionMarker _questMarker;
 
         private void Start()
         {
@@ -85,6 +86,8 @@ namespace NihongoLife.UI
 
             HideDialogue();
             HidePrompt();
+            EnsureQuestMarker();
+            WireMissionPanelClick();
             RepairRuntimeLayout();
             ConfigureResponsiveText();
             SetInventoryVisible(false);
@@ -130,6 +133,9 @@ namespace NihongoLife.UI
                 objectivesText.paragraphSpacing = 4f;
             }
 
+            StyleInfoPanel(inventoryPanel, new Vector2(1f, 1f), new Vector2(-28f, -88f), new Vector2(420f, 390f));
+            StyleInfoPanel(characterPanel, new Vector2(1f, 1f), new Vector2(-28f, -88f), new Vector2(420f, 310f));
+
             if (dialoguePanel != null)
             {
                 RectTransform rect = dialoguePanel.transform as RectTransform;
@@ -168,6 +174,70 @@ namespace NihongoLife.UI
             text.fontSizeMax = max;
             text.textWrappingMode = TextWrappingModes.Normal;
             text.overflowMode = TextOverflowModes.Ellipsis;
+        }
+
+        private void EnsureQuestMarker()
+        {
+            _questMarker = FindFirstObjectByType<QuestDirectionMarker>();
+            if (_questMarker == null)
+            {
+                _questMarker = gameObject.AddComponent<QuestDirectionMarker>();
+            }
+        }
+
+        private void WireMissionPanelClick()
+        {
+            if (scenarioTitleText == null) return;
+
+            var missionPanel = scenarioTitleText.transform.parent;
+            if (missionPanel == null) return;
+
+            var image = missionPanel.GetComponent<Image>();
+            if (image != null)
+            {
+                image.raycastTarget = true;
+                image.color = new Color(0.025f, 0.035f, 0.045f, 0.88f);
+            }
+
+            var button = missionPanel.GetComponent<Button>();
+            if (button == null) button = missionPanel.gameObject.AddComponent<Button>();
+            button.transition = Selectable.Transition.ColorTint;
+            var colors = button.colors;
+            colors.normalColor = Color.white;
+            colors.highlightedColor = new Color(1f, 0.92f, 0.68f, 1f);
+            colors.pressedColor = new Color(0.95f, 0.62f, 0.18f, 1f);
+            colors.selectedColor = colors.highlightedColor;
+            colors.fadeDuration = 0.08f;
+            button.colors = colors;
+            button.onClick.RemoveListener(ShowQuestTarget);
+            button.onClick.AddListener(ShowQuestTarget);
+        }
+
+        private void ShowQuestTarget()
+        {
+            EnsureQuestMarker();
+            _questMarker.ShowCurrentObjectiveTarget();
+        }
+
+        private static void StyleInfoPanel(GameObject panel, Vector2 anchor, Vector2 position, Vector2 size)
+        {
+            if (panel == null) return;
+
+            var rect = panel.transform as RectTransform;
+            if (rect != null)
+            {
+                rect.anchorMin = anchor;
+                rect.anchorMax = anchor;
+                rect.pivot = new Vector2(1f, 1f);
+                rect.anchoredPosition = position;
+                rect.sizeDelta = size;
+            }
+
+            var image = panel.GetComponent<Image>();
+            if (image != null)
+            {
+                image.color = new Color(0.028f, 0.038f, 0.048f, 0.94f);
+            }
         }
 
         private void Update()

@@ -51,6 +51,7 @@ namespace NihongoLife.Scenario
         public ScenarioNode CurrentNode => _currentNode;
         public List<RuntimeObjective> Objectives => _objectives;
         public NPC.NPCController LastInteractedNPC => _lastInteractedNPC;
+        public Transform CurrentTargetTransform => ResolveCurrentTargetTransform();
 
         private void Awake()
         {
@@ -314,6 +315,41 @@ namespace NihongoLife.Scenario
             }
 
             return false;
+        }
+
+        private Transform ResolveCurrentTargetTransform()
+        {
+            if (_currentNode == null) return null;
+
+            if (_currentNode.nodeType == ScenarioNodeType.TalkToNPC || _currentNode.nodeType == ScenarioNodeType.Dialogue)
+            {
+                string npcId = _currentNode.nodeType == ScenarioNodeType.TalkToNPC ? _currentNode.targetNpcId : _currentNode.speakerId;
+                if (!string.IsNullOrEmpty(npcId))
+                {
+                    foreach (var npc in FindObjectsByType<NPC.NPCController>(FindObjectsSortMode.None))
+                    {
+                        if (npc.NpcId == npcId) return npc.transform;
+                    }
+                }
+            }
+
+            if (_currentNode.nodeType == ScenarioNodeType.CollectItem || _currentNode.nodeType == ScenarioNodeType.InspectItem)
+            {
+                foreach (var item in FindObjectsByType<InteractiveItem>(FindObjectsSortMode.None))
+                {
+                    if (item.ItemId == _currentNode.targetItemId) return item.transform;
+                }
+            }
+
+            if (_currentNode.nodeType == ScenarioNodeType.GoToArea)
+            {
+                foreach (var door in FindObjectsByType<DoorInteractable>(FindObjectsSortMode.None))
+                {
+                    if (door.AreaId == _currentNode.targetAreaId) return door.transform;
+                }
+            }
+
+            return null;
         }
 
         public void CompleteObjective(string objectiveId)
