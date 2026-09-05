@@ -9,10 +9,12 @@ namespace NihongoLife.Player
     public class PlayerController : MonoBehaviour
     {
         [Header("Movement Settings")]
-        [SerializeField] private float walkSpeed = 3.5f;
-        [SerializeField] private float runSpeed = 6.0f;
+        [SerializeField] private float walkSpeed = 2.8f;
+        [SerializeField] private float runSpeed = 5.2f;
         [SerializeField] private float gravity = -9.81f;
-        [SerializeField] private float rotationSpeed = 10f;
+        [SerializeField] private float rotationSpeed = 12f;
+        [SerializeField] private float acceleration = 12f;
+        [SerializeField] private float deceleration = 16f;
 
         [Header("Ground Detection")]
         [SerializeField] private Transform groundCheck;
@@ -25,6 +27,7 @@ namespace NihongoLife.Player
         private bool _inputLocked = false;
         private UnityEngine.Camera _mainCamera;
         private CharacterAnimationController _animationController;
+        private Vector3 _smoothedMoveDirection;
 
         public bool InputLocked
         {
@@ -90,9 +93,13 @@ namespace NihongoLife.Player
                 isRunning = Keyboard.current.shiftKey.isPressed;
             }
 
-            // Calculate camera relative direction
-            Vector3 forward = _mainCamera.transform.forward;
-            Vector3 right = _mainCamera.transform.right;
+            if (_mainCamera == null)
+            {
+                _mainCamera = UnityEngine.Camera.main;
+            }
+
+            Vector3 forward = _mainCamera != null ? _mainCamera.transform.forward : transform.forward;
+            Vector3 right = _mainCamera != null ? _mainCamera.transform.right : transform.right;
             forward.y = 0f;
             right.y = 0f;
             forward.Normalize();
@@ -101,22 +108,25 @@ namespace NihongoLife.Player
             Vector3 moveDirection = (forward * moveInput.y + right * moveInput.x).normalized;
 
             float currentSpeed = isRunning ? runSpeed : walkSpeed;
-            _characterController.Move(moveDirection * (currentSpeed * Time.deltaTime));
+            float smoothing = moveDirection.sqrMagnitude > 0.001f ? acceleration : deceleration;
+            _smoothedMoveDirection = Vector3.MoveTowards(_smoothedMoveDirection, moveDirection, smoothing * Time.deltaTime);
             if (_animationController != null)
             {
-                _animationController.SetSpeed(moveDirection.magnitude * currentSpeed);
+                _animationController.SetSpeed(_smoothedMoveDirection.magnitude * currentSpeed);
             }
 
             // Rotate Player in movement direction
-            if (moveDirection.magnitude > 0.1f)
+            if (_smoothedMoveDirection.sqrMagnitude > 0.01f)
             {
-                Quaternion targetRotation = Quaternion.LookRotation(moveDirection);
+                Quaternion targetRotation = Quaternion.LookRotation(_smoothedMoveDirection);
                 transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, rotationSpeed * Time.deltaTime);
             }
 
             // Apply gravity
             _velocity.y += gravity * Time.deltaTime;
-            _characterController.Move(_velocity * Time.deltaTime);
+            Vector3 finalMove = _smoothedMoveDirection * currentSpeed;
+            finalMove.y = _velocity.y;
+            _characterController.Move(finalMove * Time.deltaTime);
         }
 
         private void HandleInteractionInput()

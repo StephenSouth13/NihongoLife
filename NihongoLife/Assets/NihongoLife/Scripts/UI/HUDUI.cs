@@ -84,10 +84,32 @@ namespace NihongoLife.UI
 
             HideDialogue();
             HidePrompt();
+            ConfigureResponsiveText();
             SetInventoryVisible(false);
             SetCharacterVisible(false);
             RefreshPlayerPanels();
             UpdateObjectivesDisplay();
+        }
+
+        private void ConfigureResponsiveText()
+        {
+            ConfigureText(scenarioTitleText, 15f, 21f);
+            ConfigureText(objectivesText, 12f, 17f);
+            ConfigureText(promptText, 13f, 18f);
+            ConfigureText(inventoryText, 12f, 17f);
+            ConfigureText(characterStatsText, 12f, 17f);
+            ConfigureText(japaneseText, 20f, 28f);
+            ConfigureText(translationText, 13f, 17f);
+        }
+
+        private static void ConfigureText(TextMeshProUGUI text, float min, float max)
+        {
+            if (text == null) return;
+            text.enableAutoSizing = true;
+            text.fontSizeMin = min;
+            text.fontSizeMax = max;
+            text.textWrappingMode = TextWrappingModes.Normal;
+            text.overflowMode = TextOverflowModes.Ellipsis;
         }
 
         private void Update()

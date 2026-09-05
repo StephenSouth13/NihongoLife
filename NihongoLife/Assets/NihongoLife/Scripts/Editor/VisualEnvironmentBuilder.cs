@@ -228,20 +228,32 @@ namespace NihongoLife.Editor
 
         private static void CreateRoadNetwork(Transform root, GameObject road, GameObject crossroad, GameObject crossing, GameObject sidewalk)
         {
-            for (int x = -4; x <= 4; x++)
+            float[] horizontalRoadZ = { -30f, -10f, 10f };
+            float[] verticalRoadX = { -30f, 0f, 30f };
+
+            foreach (float zPos in horizontalRoadZ)
             {
-                GameObject segment = x == 0 && crossroad != null ? crossroad : road;
-                InstantiateScenePrefab(segment, root, x == 0 ? "MainCrossroad" : $"MainRoad_{x}", new Vector3(x * 10f, 0f, -10f), Quaternion.identity);
-                InstantiateScenePrefab(sidewalk, root, $"NorthSidewalk_Main_{x}", new Vector3(x * 10f, 0f, -4.7f), Quaternion.identity);
-                InstantiateScenePrefab(sidewalk, root, $"SouthSidewalk_Main_{x}", new Vector3(x * 10f, 0f, -15.3f), Quaternion.Euler(0f, 180f, 0f));
+                for (int x = -4; x <= 4; x++)
+                {
+                    bool isIntersection = Mathf.Abs(x * 10f + 30f) < 0.1f || x == 0 || Mathf.Abs(x * 10f - 30f) < 0.1f;
+                    GameObject segment = isIntersection && crossroad != null ? crossroad : road;
+                    string name = Mathf.Approximately(zPos, -10f) && x == 0 ? "MainCrossroad" : $"RoadGrid_H_{zPos}_{x}";
+                    InstantiateScenePrefab(segment, root, name, new Vector3(x * 10f, 0f, zPos), Quaternion.identity);
+                    InstantiateScenePrefab(sidewalk, root, $"Sidewalk_H_N_{zPos}_{x}", new Vector3(x * 10f, 0f, zPos + 5.3f), Quaternion.identity);
+                    InstantiateScenePrefab(sidewalk, root, $"Sidewalk_H_S_{zPos}_{x}", new Vector3(x * 10f, 0f, zPos - 5.3f), Quaternion.Euler(0f, 180f, 0f));
+                }
             }
 
-            for (int z = -3; z <= 2; z++)
+            foreach (float xPos in verticalRoadX)
             {
-                if (z == 0) continue;
-                InstantiateScenePrefab(road, root, $"SideRoad_{z}", new Vector3(0f, 0f, -10f + z * 10f), Quaternion.Euler(0f, 90f, 0f));
-                InstantiateScenePrefab(sidewalk, root, $"WestSidewalk_Side_{z}", new Vector3(-5.3f, 0f, -10f + z * 10f), Quaternion.Euler(0f, 90f, 0f));
-                InstantiateScenePrefab(sidewalk, root, $"EastSidewalk_Side_{z}", new Vector3(5.3f, 0f, -10f + z * 10f), Quaternion.Euler(0f, -90f, 0f));
+                for (int z = -4; z <= 3; z++)
+                {
+                    float zPos = z * 10f;
+                    if (Mathf.Approximately(zPos, -30f) || Mathf.Approximately(zPos, -10f) || Mathf.Approximately(zPos, 10f)) continue;
+                    InstantiateScenePrefab(road, root, $"RoadGrid_V_{xPos}_{z}", new Vector3(xPos, 0f, zPos), Quaternion.Euler(0f, 90f, 0f));
+                    InstantiateScenePrefab(sidewalk, root, $"Sidewalk_V_W_{xPos}_{z}", new Vector3(xPos - 5.3f, 0f, zPos), Quaternion.Euler(0f, 90f, 0f));
+                    InstantiateScenePrefab(sidewalk, root, $"Sidewalk_V_E_{xPos}_{z}", new Vector3(xPos + 5.3f, 0f, zPos), Quaternion.Euler(0f, -90f, 0f));
+                }
             }
 
             InstantiateScenePrefab(crossing, root, "Crosswalk_KonbiniFront", new Vector3(0f, 0.015f, -9.9f), Quaternion.identity);

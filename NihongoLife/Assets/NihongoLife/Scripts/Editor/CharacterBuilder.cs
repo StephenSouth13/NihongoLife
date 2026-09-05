@@ -9,6 +9,8 @@ namespace NihongoLife.Editor
     {
         private const string REMY_PATH = "Assets/ThirdParty/Mixamo/Characters/remy/source/Remy.fbx";
         private const string ELIZABETH_PATH = "Assets/ThirdParty/Mixamo/Characters/elizabeth-female-3-d-character/source/Elizabeth_Female_3_d_Character/Elizabeth_Female_3_d_Character.fbx";
+        private const string LILLY_PATH = "Assets/ThirdParty/Mixamo/Characters/lilly/source/Lilly.fbx";
+        private const string EMINEM_PATH = "Assets/ThirdParty/Mixamo/Characters/eminem/source/Eminem FBX.Fbx";
         
         private const string ANIM_IDLE = "Assets/ThirdParty/Mixamo/Animations/Remy@Idle.fbx";
         private const string ANIM_WALK = "Assets/ThirdParty/Mixamo/Animations/Remy@Walking.fbx";
@@ -25,7 +27,14 @@ namespace NihongoLife.Editor
             EnsureFolderExists("Assets/NihongoLife/Animations");
             EnsureFolderExists(PREFAB_DIR);
 
-            ConfigureModel(REMY_PATH);
+            string playerPath = ResolveCharacterPath(LILLY_PATH, REMY_PATH);
+            string cashierPath = ResolveCharacterPath(ELIZABETH_PATH, REMY_PATH);
+            string guidePath = ResolveCharacterPath(LILLY_PATH, playerPath);
+            string neighborPath = ResolveCharacterPath(EMINEM_PATH, REMY_PATH);
+
+            ConfigureModel(playerPath);
+            ConfigureModel(guidePath);
+            ConfigureModel(neighborPath);
             ConfigureModel(ELIZABETH_PATH);
 
             ConfigureAnimation(ANIM_IDLE, true);
@@ -36,8 +45,10 @@ namespace NihongoLife.Editor
 
             GenerateAnimatorController();
 
-            CreateVisualPrefab(REMY_PATH, "NL_Player", 1.72f);
-            CreateVisualPrefab(ELIZABETH_PATH, "NL_Cashier", 1.68f);
+            CreateVisualPrefab(playerPath, "NL_Player", 1.72f);
+            CreateVisualPrefab(cashierPath, "NL_Cashier", 1.68f);
+            CreateVisualPrefab(guidePath, "NL_Guide", 1.70f);
+            CreateVisualPrefab(neighborPath, "NL_Neighbor", 1.76f);
 
             AssetDatabase.SaveAssets();
             Debug.Log("[CharacterBuilder] Character system built successfully.");
@@ -236,6 +247,20 @@ namespace NihongoLife.Editor
             return null;
         }
 
+        private static string ResolveCharacterPath(params string[] candidates)
+        {
+            foreach (string path in candidates)
+            {
+                if (string.IsNullOrEmpty(path)) continue;
+                if (File.Exists(Path.Combine(Application.dataPath, path.Substring("Assets/".Length))))
+                {
+                    return path;
+                }
+            }
+
+            return candidates.Length > 0 ? candidates[0] : string.Empty;
+        }
+
         private static void CreateVisualPrefab(string modelPath, string prefabName, float targetHeight)
         {
             string prefabPath = $"{PREFAB_DIR}/{prefabName}.prefab";
@@ -251,6 +276,7 @@ namespace NihongoLife.Editor
             visual.name = "Visual";
             visual.transform.SetParent(root.transform, false);
             NormalizeCharacterVisual(visual.transform, targetHeight);
+            visual.transform.localRotation = Quaternion.identity;
 
             Animator animator = visual.GetComponentInChildren<Animator>(true);
             if (animator != null)
@@ -291,6 +317,17 @@ namespace NihongoLife.Editor
                 -bounds.min.y * scale,
                 -bounds.center.z * scale
             );
+
+            Renderer[] finalRenderers = visual.GetComponentsInChildren<Renderer>(true);
+            if (finalRenderers.Length == 0) return;
+
+            Bounds finalBounds = finalRenderers[0].bounds;
+            for (int i = 1; i < finalRenderers.Length; i++)
+            {
+                finalBounds.Encapsulate(finalRenderers[i].bounds);
+            }
+
+            visual.localPosition += Vector3.up * Mathf.Max(0f, -finalBounds.min.y);
         }
 
         private static void EnsureFolderExists(string folderPath)

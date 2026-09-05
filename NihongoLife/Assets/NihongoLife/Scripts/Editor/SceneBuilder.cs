@@ -477,27 +477,73 @@ namespace NihongoLife.Editor
 
         private static void BuildNeighborhoodGameplay(Transform root)
         {
+            CreateGuideNPC(root);
             CreateNeighborNPC(root, "Neighbor_1", "npc_neighbor_1", "Tanaka", "scenario.house1.greeting", new Vector3(-22f, 0.05f, -0.5f));
             CreateNeighborNPC(root, "Neighbor_2", "npc_neighbor_2", "Suzuki", "scenario.house2.lostcat", new Vector3(-11f, 0.05f, -0.5f));
             CreateNeighborNPC(root, "Neighbor_3", "npc_neighbor_3", "Sato", "scenario.house3.garbage", new Vector3(12f, 0.05f, -0.5f));
         }
 
+        private static void CreateGuideNPC(Transform root)
+        {
+            var guide = CreateNpcShell(root, "GuideNPC", "npc_guide", "Lilly", "Language Guide", new Vector3(-2.8f, 0.05f, -13.2f), Quaternion.Euler(0f, 25f, 0f));
+            AddNpcVisual(guide, "Assets/NihongoLife/Prefabs/Characters/NL_Guide.prefab", new Color(0.9f, 0.64f, 0.28f));
+
+            var so = new SerializedObject(guide.GetComponent<NPCController>());
+            SetString(so, "promptJa", "練習する");
+            SetString(so, "promptEn", "Practice phrases");
+            SetString(so, "fallbackJa", "こんにちは。私はリリーです。一緒に日本語を練習しましょう。");
+            SetString(so, "fallbackReading", "こんにちは。わたしはリリーです。いっしょににほんごをれんしゅうしましょう。");
+            SetString(so, "fallbackEn", "Hi, I am Lilly. Let's practice useful Japanese phrases together.");
+            SetString(so, "fallbackRomaji", "Konnichiwa. Watashi wa Riri desu. Issho ni nihongo wo renshuu shimashou.");
+            so.ApplyModifiedProperties();
+        }
+
         private static void CreateNeighborNPC(Transform root, string goName, string npcId, string displayName, string scenarioAreaId, Vector3 position)
+        {
+            var npc = CreateNpcShell(root, goName, npcId, displayName, "Neighbor", position, Quaternion.Euler(0f, 180f, 0f));
+            AddNpcVisual(npc, "Assets/NihongoLife/Prefabs/Characters/NL_Neighbor.prefab", new Color(0.2f, 0.7f, 0.3f));
+
+            var so = new SerializedObject(npc.GetComponent<NPCController>());
+            SetString(so, "npcId", npcId);
+            SetString(so, "displayName", displayName);
+            SetString(so, "role", "Neighbor");
+            SetString(so, "promptJa", "話す");
+            SetString(so, "promptEn", "Talk");
+            SetString(so, "scenarioAreaIdOnInteract", scenarioAreaId);
+            SetString(so, "fallbackJa", "こんにちは。どこへ行きますか。");
+            SetString(so, "fallbackReading", "こんにちは。どこへいきますか。");
+            SetString(so, "fallbackEn", "Hello. Where are you going?");
+            SetString(so, "fallbackRomaji", "Konnichiwa. Doko e ikimasu ka.");
+            so.ApplyModifiedProperties();
+        }
+
+        private static GameObject CreateNpcShell(Transform root, string goName, string npcId, string displayName, string role, Vector3 position, Quaternion rotation)
         {
             var npc = new GameObject(goName);
             npc.layer = InteractableLayer;
             npc.transform.SetParent(root);
             npc.transform.position = position;
-            npc.transform.rotation = Quaternion.Euler(0f, 180f, 0f);
+            npc.transform.rotation = rotation;
 
             var collider = npc.AddComponent<BoxCollider>();
             collider.center = new Vector3(0f, 0.95f, 0f);
             collider.size = new Vector3(0.9f, 1.9f, 0.9f);
             collider.isTrigger = true;
 
-            var animCtrl = npc.AddComponent<CharacterAnimationController>();
-            // Reuse cashier visual for neighbors for now
-            var prefab = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/NihongoLife/Prefabs/Characters/NL_Cashier.prefab");
+            npc.AddComponent<CharacterAnimationController>();
+            var controller = npc.AddComponent<NPCController>();
+            var so = new SerializedObject(controller);
+            SetString(so, "npcId", npcId);
+            SetString(so, "displayName", displayName);
+            SetString(so, "role", role);
+            so.ApplyModifiedProperties();
+            return npc;
+        }
+
+        private static void AddNpcVisual(GameObject npc, string prefabPath, Color fallbackColor)
+        {
+            var animCtrl = npc.GetComponent<CharacterAnimationController>();
+            var prefab = AssetDatabase.LoadAssetAtPath<GameObject>(prefabPath);
             if (prefab != null)
             {
                 var visual = (GameObject)PrefabUtility.InstantiatePrefab(prefab);
@@ -509,17 +555,8 @@ namespace NihongoLife.Editor
             }
             else
             {
-                CreateFallbackPerson(npc.transform, "FallbackNeighbor", new Color(0.2f, 0.7f, 0.3f));
+                CreateFallbackPerson(npc.transform, "FallbackNPC", fallbackColor);
             }
-
-            var so = new SerializedObject(npc.AddComponent<NPCController>());
-            SetString(so, "npcId", npcId);
-            SetString(so, "displayName", displayName);
-            SetString(so, "role", "Neighbor");
-            SetString(so, "promptJa", "話す");
-            SetString(so, "promptEn", "Talk");
-            SetString(so, "scenarioAreaIdOnInteract", scenarioAreaId);
-            so.ApplyModifiedProperties();
         }
 
         private static void CreateShelf(Transform root, string name, Vector3 position)
