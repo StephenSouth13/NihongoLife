@@ -16,6 +16,8 @@ namespace NihongoLife.Interaction
         [SerializeField] private Transform leftDoorPanel;
         [SerializeField] private Transform rightDoorPanel;
         [SerializeField] private Collider blockingCollider;
+        [SerializeField] private bool enterAfterOpening = true;
+        [SerializeField] private Vector3 interiorOffset = new Vector3(0f, -1.1f, 2.9f);
 
         [Header("Animation Settings")]
         [SerializeField] private DoorType doorType = DoorType.Slide;
@@ -48,14 +50,16 @@ namespace NihongoLife.Interaction
         public void Interact(GameObject player)
         {
             var scenarioManager = ScenarioManager.Instance;
-            if (scenarioManager != null && !scenarioManager.CanEnterArea(areaId))
+            Open();
+            if (scenarioManager != null && scenarioManager.CanEnterArea(areaId))
             {
-                Debug.Log($"[DoorInteractable] Door '{areaId}' is not the active scenario target.");
-                return;
+                scenarioManager.OnAreaEntered(areaId);
             }
 
-            Open();
-            scenarioManager?.OnAreaEntered(areaId);
+            if (enterAfterOpening && player != null)
+            {
+                StartCoroutine(MovePlayerInsideAfterDoorOpens(player));
+            }
         }
 
         public void Open()
@@ -146,6 +150,26 @@ namespace NihongoLife.Interaction
 
             leftDoorPanel.localPosition = leftEnd;
             rightDoorPanel.localPosition = rightEnd;
+        }
+
+        private IEnumerator MovePlayerInsideAfterDoorOpens(GameObject player)
+        {
+            yield return new WaitForSeconds(openDuration + 0.05f);
+            if (player == null) yield break;
+
+            Vector3 destination = transform.TransformPoint(interiorOffset);
+            CharacterController controller = player.GetComponent<CharacterController>();
+            if (controller != null)
+            {
+                controller.enabled = false;
+            }
+
+            player.transform.position = destination;
+
+            if (controller != null)
+            {
+                controller.enabled = true;
+            }
         }
 
         private static float EaseOutCubic(float value)

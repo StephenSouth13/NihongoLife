@@ -36,6 +36,7 @@ namespace NihongoLife.NPC
         public string NpcId => npcId;
         public string DisplayName => displayName;
         public string Role => role;
+        public bool IsInteracting => _isInteracting;
 
         private void Awake()
         {
@@ -67,6 +68,7 @@ namespace NihongoLife.NPC
 
             if (ScenarioManager.Instance == null)
             {
+                ScenarioManager.Instance?.SetPlayerInputLocked(true);
                 StartFallbackDialogue();
                 return;
             }
@@ -80,6 +82,7 @@ namespace NihongoLife.NPC
             bool handledByScenario = ScenarioManager.Instance.OnNPCInteracted(npcId, this);
             if (!handledByScenario)
             {
+                ScenarioManager.Instance.SetPlayerInputLocked(true);
                 StartFallbackDialogue();
             }
         }

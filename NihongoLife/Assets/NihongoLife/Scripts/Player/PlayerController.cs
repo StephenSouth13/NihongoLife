@@ -85,10 +85,10 @@ namespace NihongoLife.Player
 
             if (Keyboard.current != null)
             {
-                if (Keyboard.current.wKey.isPressed) moveInput.y += 1f;
-                if (Keyboard.current.sKey.isPressed) moveInput.y -= 1f;
-                if (Keyboard.current.aKey.isPressed) moveInput.x -= 1f;
-                if (Keyboard.current.dKey.isPressed) moveInput.x += 1f;
+                if (Keyboard.current.wKey.isPressed || Keyboard.current.upArrowKey.isPressed) moveInput.y += 1f;
+                if (Keyboard.current.sKey.isPressed || Keyboard.current.downArrowKey.isPressed) moveInput.y -= 1f;
+                if (Keyboard.current.aKey.isPressed || Keyboard.current.leftArrowKey.isPressed) moveInput.x -= 1f;
+                if (Keyboard.current.dKey.isPressed || Keyboard.current.rightArrowKey.isPressed) moveInput.x += 1f;
                 
                 isRunning = Keyboard.current.shiftKey.isPressed;
             }

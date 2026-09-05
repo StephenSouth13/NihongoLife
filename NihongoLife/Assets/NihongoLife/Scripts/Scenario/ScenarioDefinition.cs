@@ -12,7 +12,8 @@ namespace NihongoLife.Scenario
         InspectItem,
         GoToArea,
         Complete,
-        Fail
+        Fail,
+        TalkToNPC
     }
 
     [Serializable]
@@ -71,12 +72,14 @@ namespace NihongoLife.Scenario
         public string textEn;
         
         public string textRomaji;
+        public string textEnglishIpa;
         public string animationCue;
         public AudioClip voiceClip;
         public List<DialogueChoice> choices = new List<DialogueChoice>();
 
         [Header("Interact/Collect/Area Node Config")]
         public string targetItemId; // ID of item to collect/inspect
+        public string targetNpcId;
         public string targetAreaId; // ID of trigger area
     }
 

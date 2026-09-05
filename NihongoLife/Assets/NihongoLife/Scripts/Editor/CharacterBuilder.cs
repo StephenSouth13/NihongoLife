@@ -2,6 +2,7 @@ using UnityEditor;
 using UnityEditor.Animations;
 using UnityEngine;
 using System.IO;
+using System.Text;
 
 namespace NihongoLife.Editor
 {
@@ -20,6 +21,7 @@ namespace NihongoLife.Editor
 
         private const string ANIMATOR_PATH = "Assets/NihongoLife/Animations/NL_Humanoid.controller";
         private const string PREFAB_DIR = "Assets/NihongoLife/Prefabs/Characters";
+        private const string CHARACTER_MATERIAL_DIR = "Assets/NihongoLife/Materials/Characters";
 
         [MenuItem("NihongoLife/Characters/Build Character System")]
         public static void BuildCharacterSystem()
@@ -27,7 +29,7 @@ namespace NihongoLife.Editor
             EnsureFolderExists("Assets/NihongoLife/Animations");
             EnsureFolderExists(PREFAB_DIR);
 
-            string playerPath = ResolveCharacterPath(LILLY_PATH, REMY_PATH);
+            string playerPath = ResolveCharacterPath(REMY_PATH);
             string cashierPath = ResolveCharacterPath(ELIZABETH_PATH, REMY_PATH);
             string guidePath = ResolveCharacterPath(LILLY_PATH, playerPath);
             string neighborPath = ResolveCharacterPath(EMINEM_PATH, REMY_PATH);
@@ -275,6 +277,7 @@ namespace NihongoLife.Editor
             GameObject visual = (GameObject)PrefabUtility.InstantiatePrefab(model);
             visual.name = "Visual";
             visual.transform.SetParent(root.transform, false);
+            FixCharacterMaterials(visual, prefabName);
             NormalizeCharacterVisual(visual.transform, targetHeight);
             visual.transform.localRotation = Quaternion.identity;
 
@@ -294,6 +297,68 @@ namespace NihongoLife.Editor
             PrefabUtility.SaveAsPrefabAsset(root, prefabPath);
             Object.DestroyImmediate(root);
             Debug.Log($"[CharacterBuilder] Generated {prefabName}");
+        }
+
+        private static void FixCharacterMaterials(GameObject visual, string prefabName)
+        {
+            EnsureFolderExists(CHARACTER_MATERIAL_DIR);
+
+            foreach (Renderer renderer in visual.GetComponentsInChildren<Renderer>(true))
+            {
+                Material[] materials = renderer.sharedMaterials;
+                for (int i = 0; i < materials.Length; i++)
+                {
+                    Material source = materials[i];
+                    if (source == null) continue;
+
+                    string materialName = SanitizeAssetName($"{prefabName}_{renderer.name}_{i}_{source.name}_URP");
+                    string materialPath = $"{CHARACTER_MATERIAL_DIR}/{materialName}.mat";
+                    Material fixedMaterial = AssetDatabase.LoadAssetAtPath<Material>(materialPath);
+                    if (fixedMaterial == null)
+                    {
+                        fixedMaterial = new Material(Shader.Find("Universal Render Pipeline/Lit") ?? Shader.Find("Universal Render Pipeline/Simple Lit") ?? Shader.Find("Standard"));
+                        AssetDatabase.CreateAsset(fixedMaterial, materialPath);
+                    }
+
+                    CopyMaterialLook(source, fixedMaterial);
+                    materials[i] = fixedMaterial;
+                    EditorUtility.SetDirty(fixedMaterial);
+                }
+
+                renderer.sharedMaterials = materials;
+            }
+        }
+
+        private static void CopyMaterialLook(Material source, Material target)
+        {
+            Texture mainTexture = null;
+            if (source.HasProperty("_BaseMap")) mainTexture = source.GetTexture("_BaseMap");
+            if (mainTexture == null && source.HasProperty("_MainTex")) mainTexture = source.GetTexture("_MainTex");
+
+            Color color = Color.white;
+            if (source.HasProperty("_BaseColor")) color = source.GetColor("_BaseColor");
+            else if (source.HasProperty("_Color")) color = source.GetColor("_Color");
+
+            if (target.HasProperty("_BaseMap")) target.SetTexture("_BaseMap", mainTexture);
+            if (target.HasProperty("_MainTex")) target.SetTexture("_MainTex", mainTexture);
+            if (target.HasProperty("_BaseColor")) target.SetColor("_BaseColor", color);
+            if (target.HasProperty("_Color")) target.SetColor("_Color", color);
+
+            if (source.HasProperty("_BumpMap") && target.HasProperty("_BumpMap"))
+            {
+                target.SetTexture("_BumpMap", source.GetTexture("_BumpMap"));
+            }
+        }
+
+        private static string SanitizeAssetName(string value)
+        {
+            var builder = new StringBuilder(value.Length);
+            foreach (char c in value)
+            {
+                builder.Append(char.IsLetterOrDigit(c) || c == '_' || c == '-' ? c : '_');
+            }
+
+            return builder.ToString();
         }
 
         private static void NormalizeCharacterVisual(Transform visual, float targetHeight)

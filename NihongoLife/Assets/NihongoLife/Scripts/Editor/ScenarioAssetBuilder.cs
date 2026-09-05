@@ -10,11 +10,22 @@ namespace NihongoLife.Editor
     {
         private const string ScenarioFolder = "Assets/NihongoLife/Resources/Scenarios";
         private const string ScenarioPath = ScenarioFolder + "/scenario_konbini_buy_onigiri.asset";
+        private const string StreetScenarioPath = ScenarioFolder + "/scenario_street_first_talk.asset";
 
         [MenuItem("NihongoLife/Build Scenario Assets")]
         public static void BuildScenarioAssets()
         {
             EnsureFolderExists(ScenarioFolder);
+
+            var streetScenario = AssetDatabase.LoadAssetAtPath<ScenarioDefinition>(StreetScenarioPath);
+            if (streetScenario == null)
+            {
+                streetScenario = ScriptableObject.CreateInstance<ScenarioDefinition>();
+                AssetDatabase.CreateAsset(streetScenario, StreetScenarioPath);
+            }
+
+            FillStreetFirstTalkScenario(streetScenario);
+            EditorUtility.SetDirty(streetScenario);
 
             var scenario = AssetDatabase.LoadAssetAtPath<ScenarioDefinition>(ScenarioPath);
             if (scenario == null)
@@ -26,8 +37,72 @@ namespace NihongoLife.Editor
             FillKonbiniScenario(scenario);
             EditorUtility.SetDirty(scenario);
             AssetDatabase.SaveAssets();
+            AssetDatabase.ImportAsset(StreetScenarioPath, ImportAssetOptions.ForceUpdate);
             AssetDatabase.ImportAsset(ScenarioPath, ImportAssetOptions.ForceUpdate);
             Debug.Log($"[ScenarioAssetBuilder] Rebuilt scenario asset: {ScenarioPath}");
+        }
+
+        private static void FillStreetFirstTalkScenario(ScenarioDefinition scenario)
+        {
+            scenario.id = "scenario.street.first_talk";
+            scenario.version = 1;
+            scenario.titleJa = "街であいさつ";
+            scenario.titleEn = "Talk to someone on the street";
+            scenario.descriptionJa = "通りにいる人に話しかけて、あいさつと行き先を練習しましょう。";
+            scenario.descriptionEn = "Walk to a person on the street, start a conversation, then practice the line with your mic.";
+            scenario.chapterIndex = 1;
+            scenario.learningTargets = new List<string>
+            {
+                "english.ipa.greeting",
+                "japanese.greeting.konnichiwa",
+                "japanese.pattern.doko_e_ikimasu_ka"
+            };
+
+            scenario.objectives = new List<ObjectiveDefinition>
+            {
+                Obj("obj_talk_to_neighbor", "通りの人に話しかける", "Talk to the person on the street"),
+                Obj("obj_practice_voice", "声に出して練習する", "Practice the line with the microphone")
+            };
+
+            scenario.nodes = new List<ScenarioNode>
+            {
+                new ScenarioNode
+                {
+                    id = "node_find_neighbor",
+                    nodeType = ScenarioNodeType.TalkToNPC,
+                    nextNodeId = "node_neighbor_greeting",
+                    objectiveIdToComplete = "obj_talk_to_neighbor",
+                    targetNpcId = "npc_neighbor_1"
+                },
+                Dialogue("node_neighbor_greeting", "npc_neighbor_1", "Tanaka",
+                    "こんにちは。どこへ行きますか。",
+                    "こんにちは。どこへいきますか。",
+                    "Hello. Where are you going?",
+                    "Konnichiwa. Doko e ikimasu ka.",
+                    "talk",
+                    new List<DialogueChoice>
+                    {
+                        Choice("コンビニへ行きます。", "I am going to the convenience store.", "node_neighbor_reply",
+                            Score("ResponseAccuracy", 10, "Answered the street greeting naturally")),
+                        Choice("駅へ行きます。", "I am going to the station.", "node_neighbor_reply",
+                            Score("Vocabulary", 8, "Practiced destination vocabulary"))
+                    }),
+                Dialogue("node_neighbor_reply", "npc_neighbor_1", "Tanaka",
+                    "いいですね。気をつけて。",
+                    "いいですね。きをつけて。",
+                    "Nice. Take care.",
+                    "Ii desu ne. Ki o tsukete.",
+                    "bow",
+                    null,
+                    "node_street_complete"),
+                new ScenarioNode
+                {
+                    id = "node_street_complete",
+                    nodeType = ScenarioNodeType.Complete
+                }
+            };
+
+            scenario.startNodeId = "node_find_neighbor";
         }
 
         private static void FillKonbiniScenario(ScenarioDefinition scenario)
@@ -181,6 +256,7 @@ namespace NihongoLife.Editor
                 textReading = reading,
                 textEn = textEn,
                 textRomaji = romaji,
+                textEnglishIpa = EnglishIpaFor(id),
                 animationCue = animationCue,
                 choices = choices ?? new List<DialogueChoice>(),
                 nextNodeId = nextNodeId,
@@ -205,6 +281,31 @@ namespace NihongoLife.Editor
         private static ScoreEventModifier Score(string category, int value, string reason)
         {
             return new ScoreEventModifier { category = category, value = value, reason = reason };
+        }
+
+        private static string EnglishIpaFor(string nodeId)
+        {
+            switch (nodeId)
+            {
+                case "node_cashier_prompt_bag":
+                    return "/du\u02d0 ju\u02d0 ni\u02d0d \u0259 b\u00e6\u0261/";
+                case "node_bag_wrong_grammar":
+                    return "/du\u02d0 ju\u02d0 mi\u02d0n ju\u02d0 ni\u02d0d \u0259 b\u00e6\u0261/";
+                case "node_bag_yes":
+                    return "/a\u026a \u028cnd\u0259r\u02c8st\u00e6nd \u00f0\u0259 b\u00e6\u0261 fi\u02d0 \u026az \u03b8ri\u02d0 jen/";
+                case "node_bag_no":
+                    return "/a\u026a \u028cnd\u0259r\u02c8st\u00e6nd \u00f0\u0259 to\u028atl \u026az f\u0254\u02d0r h\u028cndr\u0259d na\u026anti sev\u0259n jen/";
+                case "node_pay_choice":
+                    return "/pli\u02d0z t\u0283u\u02d0z \u0259 pe\u026am\u0259nt me\u03b8\u0259d/";
+                case "node_transaction_done":
+                    return "/\u03b8\u00e6\u014bk ju\u02d0 \u02c8v\u025bri m\u028ct\u0283 si\u02d0 ju\u02d0 \u0259\u02c8\u0261en/";
+                case "node_neighbor_greeting":
+                    return "/h\u0259\u02c8lo\u028a we\u0259r \u0251\u02d0r ju\u02d0 \u02c8\u0261o\u028a\u026a\u014b/";
+                case "node_neighbor_reply":
+                    return "/na\u026as te\u026ak ke\u0259r/";
+                default:
+                    return string.Empty;
+            }
         }
 
         private static void EnsureFolderExists(string folderPath)

@@ -64,6 +64,21 @@ sysinfo.txt
 *.unitypackage.meta
 *.app
 
+# Keep downloaded/source archives and extracted source FBX local.
+# GitHub rejects regular files over 100MB; Unity can still use them on this machine.
+*.zip
+*.zip.meta
+*.7z
+*.7z.meta
+*.rar
+*.rar.meta
+/Assets/ThirdParty/Mixamo/Characters/lilly/source/*.fbx
+/Assets/ThirdParty/Mixamo/Characters/lilly/source/*.fbx.meta
+/Assets/ThirdParty/Mixamo/Characters/eminem/source/*.Fbx
+/Assets/ThirdParty/Mixamo/Characters/eminem/source/*.Fbx.meta
+/Assets/ThirdParty/Mixamo/Characters/eminem/source/*.fbx
+/Assets/ThirdParty/Mixamo/Characters/eminem/source/*.fbx.meta
+
 # Crashlytics generated file
 crashlytics-build.properties
 

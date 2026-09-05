@@ -1,6 +1,8 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Networking;
 using NihongoLife.Scenario;
 using NihongoLife.Scoring;
 using NihongoLife.Learning;
@@ -16,6 +18,7 @@ namespace NihongoLife.Dialogue
         public string textReading;
         public string textEn;
         public string textRomaji;
+        public string textEnglishIpa;
         public List<DialogueChoice> choices;
         public LearningMode learningMode;
     }
@@ -26,8 +29,11 @@ namespace NihongoLife.Dialogue
 
         [Header("Learning Settings")]
         [SerializeField] private LearningMode currentMode = LearningMode.GuidedPractice;
+        [SerializeField] private bool generateDialogueVoice = true;
+        [SerializeField] private float generatedVoiceVolume = 0.85f;
 
         private ScenarioNode _currentNode;
+        private AudioSource _generatedVoiceSource;
 
         public event Action<DialogueDisplayData> OnDialogueUpdated;
         public event Action OnDialogueClosed;
@@ -46,6 +52,9 @@ namespace NihongoLife.Dialogue
                 return;
             }
             Instance = this;
+            _generatedVoiceSource = gameObject.AddComponent<AudioSource>();
+            _generatedVoiceSource.playOnAwake = false;
+            _generatedVoiceSource.spatialBlend = 0f;
         }
 
         public void StartDialogue(ScenarioNode node)
@@ -56,12 +65,30 @@ namespace NihongoLife.Dialogue
             Debug.Log($"[DialogueManager] Starting dialogue node: {node.id}");
 
             // Play voice clip if assigned
-            if (node.voiceClip != null)
+            AudioClip configuredClip = node.voiceClip;
+            VoiceLineEntry configuredVoiceLine = null;
+            if (configuredClip == null
+                && GameServices.TryGet(out GameControlService control)
+                && GameServices.TryGet(out GameSettingsService settings))
+            {
+                configuredVoiceLine = control.FindVoiceLine(node.id, settings.Language);
+                configuredClip = configuredVoiceLine != null ? configuredVoiceLine.clip : null;
+            }
+
+            if (configuredClip != null)
             {
                 if (GameServices.TryGet(out IAudioService audioService))
                 {
-                    audioService.PlayVoice(node.voiceClip);
+                    audioService.PlayVoice(configuredClip);
                 }
+            }
+            else if (configuredVoiceLine != null && !string.IsNullOrWhiteSpace(configuredVoiceLine.remoteUrl))
+            {
+                    StartCoroutine(PlayRemoteVoice(configuredVoiceLine.remoteUrl, configuredVoiceLine.remoteAudioType, node));
+            }
+            else if (generateDialogueVoice && ShouldUseProceduralVoice())
+            {
+                PlayGeneratedVoice(node);
             }
 
             // Animation Integration
@@ -100,6 +127,7 @@ namespace NihongoLife.Dialogue
                 textReading = _currentNode.textReading,
                 textEn = _currentNode.textEn,
                 textRomaji = _currentNode.textRomaji,
+                textEnglishIpa = ResolveEnglishIpa(_currentNode),
                 choices = _currentNode.choices,
                 learningMode = currentMode
             };
@@ -150,7 +178,7 @@ namespace NihongoLife.Dialogue
 
             if (!string.IsNullOrEmpty(nextNodeId))
             {
-                ScenarioManager.Instance.TransitionToNode(nextNodeId);
+                ScenarioManager.Instance?.TransitionToNode(nextNodeId);
             }
             else if (ScenarioManager.Instance != null)
             {
@@ -168,9 +196,9 @@ namespace NihongoLife.Dialogue
 
             if (!string.IsNullOrEmpty(nextNodeId))
             {
-                ScenarioManager.Instance.TransitionToNode(nextNodeId);
+                ScenarioManager.Instance?.TransitionToNode(nextNodeId);
             }
-            else
+            else if (ScenarioManager.Instance != null)
             {
                 ScenarioManager.Instance.AdvanceNode();
             }
@@ -185,10 +213,120 @@ namespace NihongoLife.Dialogue
                 {
                     animCtrl.SetTalking(false);
                 }
+
+                ScenarioManager.Instance.LastInteractedNPC.StopInteracting();
             }
 
             _currentNode = null;
             OnDialogueClosed?.Invoke();
+
+            if (ScenarioManager.Instance != null)
+            {
+                ScenarioManager.Instance.SetPlayerInputLocked(false);
+            }
+        }
+
+        private void PlayGeneratedVoice(ScenarioNode node)
+        {
+            if (_generatedVoiceSource == null) return;
+
+            string line = node.textJa;
+            if (GameServices.TryGet(out GameSettingsService settings))
+            {
+                line = settings.Language == GameLanguage.English ? node.textEn : node.textJa;
+            }
+
+            if (string.IsNullOrWhiteSpace(line)) return;
+
+            AudioClip clip = CreateSpeechToneClip(line);
+            _generatedVoiceSource.Stop();
+            _generatedVoiceSource.volume = generatedVoiceVolume;
+            _generatedVoiceSource.PlayOneShot(clip);
+        }
+
+        private IEnumerator PlayRemoteVoice(string url, AudioType audioType, ScenarioNode fallbackNode)
+        {
+            using (UnityWebRequest request = UnityWebRequestMultimedia.GetAudioClip(url, audioType))
+            {
+                yield return request.SendWebRequest();
+                if (request.result != UnityWebRequest.Result.Success)
+                {
+                    Debug.LogWarning($"[DialogueManager] Failed to load remote voice: {request.error}");
+                    PlayGeneratedVoice(fallbackNode);
+                    yield break;
+                }
+
+                AudioClip clip = DownloadHandlerAudioClip.GetContent(request);
+                if (clip == null)
+                {
+                    PlayGeneratedVoice(fallbackNode);
+                    yield break;
+                }
+
+                _generatedVoiceSource.Stop();
+                _generatedVoiceSource.volume = generatedVoiceVolume;
+                _generatedVoiceSource.PlayOneShot(clip);
+            }
+        }
+
+        public bool TryGetCurrentPracticePhrase(out string phrase, out string ipa)
+        {
+            phrase = string.Empty;
+            ipa = string.Empty;
+            if (_currentNode == null) return false;
+
+            phrase = _currentNode.textJa;
+            ipa = _currentNode.textRomaji;
+            if (GameServices.TryGet(out GameSettingsService settings) && settings.Language == GameLanguage.English)
+            {
+                phrase = _currentNode.textEn;
+                ipa = ResolveEnglishIpa(_currentNode);
+            }
+
+            return !string.IsNullOrWhiteSpace(phrase);
+        }
+
+        private static bool ShouldUseProceduralVoice()
+        {
+            if (!GameServices.TryGet(out GameControlService control) || control.Database == null) return true;
+            return control.Database.useProceduralVoiceWhenMissingClip;
+        }
+
+        private static string ResolveEnglishIpa(ScenarioNode node)
+        {
+            if (node == null) return string.Empty;
+            if (!string.IsNullOrWhiteSpace(node.textEnglishIpa)) return node.textEnglishIpa;
+            if (GameServices.TryGet(out GameControlService control))
+            {
+                string fromDatabase = control.FindEnglishIpa(node.id);
+                if (!string.IsNullOrWhiteSpace(fromDatabase)) return fromDatabase;
+            }
+
+            return string.Empty;
+        }
+
+        private static AudioClip CreateSpeechToneClip(string line)
+        {
+            const int sampleRate = 22050;
+            int syllables = Mathf.Clamp(line.Length / 3, 8, 34);
+            float duration = Mathf.Clamp(0.12f * syllables, 0.8f, 3.4f);
+            int samples = Mathf.CeilToInt(duration * sampleRate);
+            float[] data = new float[samples];
+
+            int hash = Mathf.Abs(line.GetHashCode());
+            for (int i = 0; i < samples; i++)
+            {
+                float time = i / (float)sampleRate;
+                float syllable = Mathf.Floor(time / 0.12f);
+                float baseFrequency = 180f + ((hash + (int)syllable * 37) % 140);
+                float envelope = Mathf.Sin(Mathf.Clamp01((time % 0.12f) / 0.12f) * Mathf.PI);
+                float pause = (time % 0.36f) > 0.29f ? 0.15f : 1f;
+                data[i] = Mathf.Sin(2f * Mathf.PI * baseFrequency * time) * envelope * pause * 0.22f;
+            }
+
+            AudioClip clip = AudioClip.Create("GeneratedDialogueVoice", samples, 1, sampleRate, false);
+            clip.SetData(data, 0);
+            return clip;
         }
 
         private void PlaySelectSound()

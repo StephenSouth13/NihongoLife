@@ -9,6 +9,7 @@ namespace NihongoLife.Interaction
         [SerializeField] private float detectionRadius = 2.0f;
         [SerializeField] private LayerMask interactableLayers;
         [SerializeField] private float checkInterval = 0.1f;
+        [SerializeField] private bool fallbackToAnyLayer = true;
 
         private float _nextCheckTime;
         private IInteractable _currentInteractable;
@@ -16,6 +17,11 @@ namespace NihongoLife.Interaction
         public event Action<IInteractable> OnInteractableChanged;
 
         public IInteractable CurrentInteractable => _currentInteractable;
+
+        private void Awake()
+        {
+            detectionRadius = Mathf.Max(detectionRadius, 3.6f);
+        }
 
         private void Update()
         {
@@ -28,7 +34,13 @@ namespace NihongoLife.Interaction
 
         private void DetectInteractables()
         {
-            Collider[] colliders = Physics.OverlapSphere(transform.position, detectionRadius, interactableLayers);
+            Vector3 detectionOrigin = transform.position + Vector3.up * 0.9f;
+            Collider[] colliders = Physics.OverlapSphere(detectionOrigin, detectionRadius, interactableLayers);
+            if (colliders.Length == 0 && fallbackToAnyLayer)
+            {
+                colliders = Physics.OverlapSphere(detectionOrigin, detectionRadius);
+            }
+
             IInteractable closestInteractable = null;
             float minDistance = float.MaxValue;
 
@@ -42,7 +54,7 @@ namespace NihongoLife.Interaction
 
                 if (interactable != null)
                 {
-                    float dist = Vector3.Distance(transform.position, interactable.GetTransform().position);
+                    float dist = Vector3.Distance(detectionOrigin, interactable.GetTransform().position + Vector3.up * 0.9f);
                     if (dist < minDistance)
                     {
                         minDistance = dist;
@@ -63,13 +75,23 @@ namespace NihongoLife.Interaction
             if (_currentInteractable != null)
             {
                 _currentInteractable.Interact(gameObject);
+                return;
             }
+
+            DetectInteractables();
+            if (_currentInteractable != null)
+            {
+                _currentInteractable.Interact(gameObject);
+                return;
+            }
+
+            Debug.Log("[InteractionDetector] No interactable nearby. Move closer to an NPC, item, or door.");
         }
 
         private void OnDrawGizmosSelected()
         {
             Gizmos.color = Color.yellow;
-            Gizmos.DrawWireSphere(transform.position, detectionRadius);
+            Gizmos.DrawWireSphere(transform.position + Vector3.up * 0.9f, detectionRadius);
         }
     }
 }

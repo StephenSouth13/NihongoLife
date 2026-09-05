@@ -142,7 +142,8 @@ namespace NihongoLife.Scenario
 
             if (_currentNode.nodeType == ScenarioNodeType.CollectItem
                 || _currentNode.nodeType == ScenarioNodeType.InspectItem
-                || _currentNode.nodeType == ScenarioNodeType.GoToArea)
+                || _currentNode.nodeType == ScenarioNodeType.GoToArea
+                || _currentNode.nodeType == ScenarioNodeType.TalkToNPC)
             {
                 ActivateObjectiveByNodeConfig();
             }
@@ -175,6 +176,7 @@ namespace NihongoLife.Scenario
                 case ScenarioNodeType.CollectItem:
                 case ScenarioNodeType.InspectItem:
                 case ScenarioNodeType.GoToArea:
+                case ScenarioNodeType.TalkToNPC:
                     SetPlayerInputLocked(false);
                     ActivateObjectiveByNodeConfig();
                     break;
@@ -194,8 +196,13 @@ namespace NihongoLife.Scenario
         private void ActivateObjectiveByNodeConfig()
         {
             if (string.IsNullOrEmpty(_currentNode.objectiveIdToComplete)) return;
+            ActivateObjective(_currentNode.objectiveIdToComplete);
+        }
 
-            var obj = _objectives.Find(o => o.id == _currentNode.objectiveIdToComplete);
+        private void ActivateObjective(string objectiveId)
+        {
+            if (string.IsNullOrEmpty(objectiveId)) return;
+            var obj = _objectives.Find(o => o.id == objectiveId);
             if (obj != null && obj.state == ObjectiveState.Inactive)
             {
                 obj.state = ObjectiveState.Active;
@@ -287,6 +294,22 @@ namespace NihongoLife.Scenario
             if (_currentNode.nodeType == ScenarioNodeType.Dialogue && _currentNode.speakerId == npcId)
             {
                 ExecuteCurrentNode();
+                return true;
+            }
+
+            if (_currentNode.nodeType == ScenarioNodeType.TalkToNPC && _currentNode.targetNpcId == npcId)
+            {
+                if (!string.IsNullOrEmpty(_currentNode.objectiveIdToComplete))
+                {
+                    CompleteObjective(_currentNode.objectiveIdToComplete);
+                }
+
+                if (_currentNode.id == "node_find_neighbor")
+                {
+                    ActivateObjective("obj_practice_voice");
+                }
+
+                AdvanceNode();
                 return true;
             }
 

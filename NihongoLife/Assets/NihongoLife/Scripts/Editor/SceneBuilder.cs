@@ -15,6 +15,7 @@ using NihongoLife.Player;
 using NihongoLife.Scenario;
 using NihongoLife.Scoring;
 using NihongoLife.UI;
+using NihongoLife.World;
 
 namespace NihongoLife.Editor
 {
@@ -48,7 +49,8 @@ namespace NihongoLife.Editor
                 {
                     new EditorBuildSettingsScene(ScenesDir + "/00_Bootstrap.unity", true),
                     new EditorBuildSettingsScene(ScenesDir + "/01_MainMenu.unity", true),
-                    new EditorBuildSettingsScene(SandboxScenePath, true)
+                    new EditorBuildSettingsScene(SandboxScenePath, true),
+                    new EditorBuildSettingsScene(ControlScenePath, false)
                 };
 
                 AssetDatabase.SaveAssets();
@@ -165,13 +167,14 @@ namespace NihongoLife.Editor
 
             var ground = GameObject.CreatePrimitive(PrimitiveType.Cube);
             ground.name = "GameplayGround";
-            ground.transform.position = new Vector3(0f, -0.5f, -7.5f);
-            ground.transform.localScale = new Vector3(86f, 1f, 54f);
+            ground.transform.position = new Vector3(0f, -0.5f, 0f);
+            ground.transform.localScale = new Vector3(132f, 1f, 10000f);
             ground.GetComponent<Renderer>().sharedMaterial = CreateRuntimeMat("NL_Ground_Mat", new Color(0.16f, 0.17f, 0.17f));
 
             var environment = new GameObject("Environment");
-            VisualEnvironmentBuilder.GenerateVisualEnvironment(environment);
+            CreateEndlessCityVisuals(environment.transform);
             BuildStoreGameplay(environment.transform);
+            CreateWorldSafety(environment.transform);
 
             var player = CreatePlayer();
             CreateCamera(player.transform);
@@ -207,6 +210,7 @@ namespace NihongoLife.Editor
                 "Edit the NihongoLifeControlDatabase asset in the Inspector.\n\n" +
                 "- Active scenario controls which mission starts in 90_TestSandbox.\n" +
                 "- Menu copy controls the main menu text.\n" +
+                "- Voice lines let you assign Japanese/English clips and IPA per dialogue node.\n" +
                 "- Online database fields are config only. Keep passwords in environment variables.\n\n" +
                 "This scene is for creators and is not added to runtime build settings.",
                 font, 22, new Vector2(0f, 40f), new Vector2(980f, 360f), TextAlignmentOptions.Center);
@@ -235,9 +239,42 @@ namespace NihongoLife.Editor
                 }
             }
 
+            database.activeScenarioId = "scenario.street.first_talk";
+            EnsureVoiceLineRows(database);
+
             EditorUtility.SetDirty(database);
             AssetDatabase.SaveAssets();
             return database;
+        }
+
+        private static void EnsureVoiceLineRows(GameControlDatabase database)
+        {
+            if (database.voiceLines == null)
+            {
+                database.voiceLines = new System.Collections.Generic.List<VoiceLineEntry>();
+            }
+
+            foreach (var scenario in database.scenarios)
+            {
+                if (scenario == null || scenario.nodes == null) continue;
+                foreach (var node in scenario.nodes)
+                {
+                    if (node == null || node.nodeType != ScenarioNodeType.Dialogue) continue;
+                    EnsureVoiceLine(database, node.id, GameLanguage.Japanese, node.textEnglishIpa);
+                    EnsureVoiceLine(database, node.id, GameLanguage.English, node.textEnglishIpa);
+                }
+            }
+        }
+
+        private static void EnsureVoiceLine(GameControlDatabase database, string nodeId, GameLanguage language, string ipa)
+        {
+            if (database.voiceLines.Exists(v => v != null && v.nodeId == nodeId && v.language == language)) return;
+            database.voiceLines.Add(new VoiceLineEntry
+            {
+                nodeId = nodeId,
+                language = language,
+                englishIpa = ipa
+            });
         }
 
         private static void CreateMainMenuTownPreview()
@@ -338,6 +375,7 @@ namespace NihongoLife.Editor
             var detector = playerGo.AddComponent<InteractionDetector>();
             playerGo.AddComponent<PlayerInventory>();
             playerGo.AddComponent<PlayerStatus>();
+            playerGo.AddComponent<WorldBoundsGuard>();
             var animCtrl = playerGo.AddComponent<CharacterAnimationController>();
 
             var visualPrefab = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/NihongoLife/Prefabs/Characters/NL_Player.prefab");
@@ -366,7 +404,7 @@ namespace NihongoLife.Editor
             playerSo.ApplyModifiedProperties();
 
             var detectorSo = new SerializedObject(detector);
-            SetFloat(detectorSo, "detectionRadius", 2.8f);
+            SetFloat(detectorSo, "detectionRadius", 4.2f);
             SetInt(detectorSo, "interactableLayers", 1 << InteractableLayer);
             detectorSo.ApplyModifiedProperties();
 
@@ -394,6 +432,52 @@ namespace NihongoLife.Editor
             managerGo.AddComponent<DialogueManager>();
             managerGo.AddComponent<LearningMasteryManager>();
             managerGo.AddComponent<SpeechPracticeController>();
+            managerGo.AddComponent<TownAmbientAudio>();
+            managerGo.AddComponent<SupabaseVoiceSyncService>();
+        }
+
+        private static void CreateEndlessCityVisuals(Transform environment)
+        {
+            const float tileLength = 100f;
+            Transform[] tiles = new Transform[3];
+            for (int i = 0; i < tiles.Length; i++)
+            {
+                var tile = new GameObject($"CityTile_{i - 1}");
+                tile.transform.SetParent(environment);
+                tile.transform.position = Vector3.zero;
+                VisualEnvironmentBuilder.GenerateVisualEnvironment(tile);
+                tile.transform.position = new Vector3(0f, 0f, (i - 1) * tileLength);
+                tiles[i] = tile.transform;
+            }
+
+            var looper = environment.gameObject.AddComponent<EndlessCityLooper>();
+            var so = new SerializedObject(looper);
+            SetFloat(so, "tileLength", tileLength);
+            var tileProp = so.FindProperty("tileRoots");
+            tileProp.arraySize = tiles.Length;
+            for (int i = 0; i < tiles.Length; i++)
+            {
+                tileProp.GetArrayElementAtIndex(i).objectReferenceValue = tiles[i];
+            }
+            so.ApplyModifiedProperties();
+        }
+
+        private static void CreateWorldSafety(Transform root)
+        {
+            var safety = new GameObject("WorldFallSafety");
+            safety.transform.SetParent(root);
+            CreateInvisibleWall(safety.transform, "WestWall", new Vector3(-66f, 2.4f, -6f), new Vector3(1f, 4.8f, 104f));
+            CreateInvisibleWall(safety.transform, "EastWall", new Vector3(66f, 2.4f, -6f), new Vector3(1f, 4.8f, 104f));
+        }
+
+        private static void CreateInvisibleWall(Transform root, string name, Vector3 position, Vector3 scale)
+        {
+            var wall = GameObject.CreatePrimitive(PrimitiveType.Cube);
+            wall.name = name;
+            wall.transform.SetParent(root);
+            wall.transform.position = position;
+            wall.transform.localScale = scale;
+            DestroyRenderer(wall);
         }
 
         private static void BuildStoreGameplay(Transform root)
@@ -502,6 +586,7 @@ namespace NihongoLife.Editor
         {
             var npc = CreateNpcShell(root, goName, npcId, displayName, "Neighbor", position, Quaternion.Euler(0f, 180f, 0f));
             AddNpcVisual(npc, "Assets/NihongoLife/Prefabs/Characters/NL_Neighbor.prefab", new Color(0.2f, 0.7f, 0.3f));
+            AddPatrolRoute(npc, root, goName + "_Route", position + new Vector3(-5.5f, 0f, -2.8f), position + new Vector3(5.5f, 0f, -2.8f), position + new Vector3(3.5f, 0f, 2.6f));
 
             var so = new SerializedObject(npc.GetComponent<NPCController>());
             SetString(so, "npcId", npcId);
@@ -531,6 +616,7 @@ namespace NihongoLife.Editor
             collider.isTrigger = true;
 
             npc.AddComponent<CharacterAnimationController>();
+            npc.AddComponent<NPCAmbientTalker>();
             var controller = npc.AddComponent<NPCController>();
             var so = new SerializedObject(controller);
             SetString(so, "npcId", npcId);
@@ -538,6 +624,32 @@ namespace NihongoLife.Editor
             SetString(so, "role", role);
             so.ApplyModifiedProperties();
             return npc;
+        }
+
+        private static void AddPatrolRoute(GameObject npc, Transform root, string routeName, params Vector3[] points)
+        {
+            var route = new GameObject(routeName);
+            route.transform.SetParent(root);
+            Transform[] waypoints = new Transform[points.Length];
+            for (int i = 0; i < points.Length; i++)
+            {
+                var waypoint = new GameObject($"Waypoint_{i + 1}");
+                waypoint.transform.SetParent(route.transform);
+                waypoint.transform.position = points[i];
+                waypoints[i] = waypoint.transform;
+            }
+
+            var patrol = npc.AddComponent<NPCStreetPatrol>();
+            var so = new SerializedObject(patrol);
+            var prop = so.FindProperty("waypoints");
+            prop.arraySize = waypoints.Length;
+            for (int i = 0; i < waypoints.Length; i++)
+            {
+                prop.GetArrayElementAtIndex(i).objectReferenceValue = waypoints[i];
+            }
+            SetFloat(so, "walkSpeed", 1.05f);
+            SetFloat(so, "waitSeconds", 1.4f);
+            so.ApplyModifiedProperties();
         }
 
         private static void AddNpcVisual(GameObject npc, string prefabPath, Color fallbackColor)
@@ -642,6 +754,7 @@ namespace NihongoLife.Editor
             collider.isTrigger = true;
 
             var animCtrl = npc.AddComponent<CharacterAnimationController>();
+            npc.AddComponent<NPCAmbientTalker>();
             var prefab = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/NihongoLife/Prefabs/Characters/NL_Cashier.prefab");
             if (prefab != null)
             {

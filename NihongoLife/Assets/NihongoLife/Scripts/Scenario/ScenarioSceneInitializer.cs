@@ -6,7 +6,7 @@ namespace NihongoLife.Scenario
     public class ScenarioSceneInitializer : MonoBehaviour
     {
         [Header("Config")]
-        [SerializeField] private string scenarioId = "scenario.konbini.buy_onigiri";
+        [SerializeField] private string scenarioId = "scenario.street.first_talk";
         [SerializeField] private bool runOnStart = true;
 
         private void Start()

@@ -4,11 +4,22 @@ using NihongoLife.Scenario;
 
 namespace NihongoLife.Core
 {
+    [System.Serializable]
+    public class VoiceLineEntry
+    {
+        public string nodeId;
+        public GameLanguage language = GameLanguage.Japanese;
+        public AudioClip clip;
+        public string remoteUrl;
+        public AudioType remoteAudioType = AudioType.MPEG;
+        public string englishIpa;
+    }
+
     [CreateAssetMenu(fileName = "NihongoLifeControlDatabase", menuName = "NihongoLife/Control Database")]
     public class GameControlDatabase : ScriptableObject
     {
         [Header("Game Flow")]
-        public string activeScenarioId = "scenario.konbini.buy_onigiri";
+        public string activeScenarioId = "scenario.street.first_talk";
         public GameLanguage defaultLanguage = GameLanguage.Vietnamese;
 
         [Header("Menu")]
@@ -20,8 +31,17 @@ namespace NihongoLife.Core
         [Header("Scenario Library")]
         public List<ScenarioDefinition> scenarios = new List<ScenarioDefinition>();
 
+        [Header("Voice / Pronunciation")]
+        public List<VoiceLineEntry> voiceLines = new List<VoiceLineEntry>();
+        public bool useProceduralVoiceWhenMissingClip = true;
+        public bool enableTownAmbientAudio = true;
+        public AudioClip townBgmClip;
+        public AudioClip[] streetVoiceClips;
+
         [Header("Online Database")]
         public bool enableOnlineSync = false;
+        public string supabaseProjectUrl = "";
+        public string supabaseAnonKey = "";
         public string supabaseHost = "aws-0-ap-northeast-2.pooler.supabase.com";
         public int postgresPort = 5432;
         public string databaseName = "postgres";

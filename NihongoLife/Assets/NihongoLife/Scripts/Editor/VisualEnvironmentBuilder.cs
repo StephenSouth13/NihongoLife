@@ -220,22 +220,22 @@ namespace NihongoLife.Editor
 
         private static void CreateDistrictBase(Transform root)
         {
-            CreateBlock(root, "BackLot_North", new Vector3(0f, -0.04f, 7.5f), new Vector3(86f, 0.08f, 17f), new Color(0.22f, 0.23f, 0.24f));
-            CreateBlock(root, "BackLot_South", new Vector3(0f, -0.04f, -28.5f), new Vector3(86f, 0.08f, 16f), new Color(0.2f, 0.21f, 0.22f));
-            CreateBlock(root, "PocketPark_East", new Vector3(32f, -0.035f, -3f), new Vector3(16f, 0.06f, 9f), new Color(0.18f, 0.3f, 0.19f));
-            CreateBlock(root, "PocketPark_West", new Vector3(-33f, -0.035f, -17.5f), new Vector3(14f, 0.06f, 8f), new Color(0.18f, 0.29f, 0.2f));
+            CreateBlock(root, "BackLot_North", new Vector3(0f, -0.04f, 19f), new Vector3(126f, 0.08f, 26f), new Color(0.22f, 0.23f, 0.24f));
+            CreateBlock(root, "BackLot_South", new Vector3(0f, -0.04f, -43f), new Vector3(126f, 0.08f, 24f), new Color(0.2f, 0.21f, 0.22f));
+            CreateBlock(root, "PocketPark_East", new Vector3(48f, -0.035f, -4f), new Vector3(20f, 0.06f, 15f), new Color(0.18f, 0.3f, 0.19f));
+            CreateBlock(root, "PocketPark_West", new Vector3(-50f, -0.035f, -24f), new Vector3(20f, 0.06f, 15f), new Color(0.18f, 0.29f, 0.2f));
         }
 
         private static void CreateRoadNetwork(Transform root, GameObject road, GameObject crossroad, GameObject crossing, GameObject sidewalk)
         {
-            float[] horizontalRoadZ = { -30f, -10f, 10f };
-            float[] verticalRoadX = { -30f, 0f, 30f };
+            float[] horizontalRoadZ = { -50f, -30f, -10f, 10f, 30f };
+            float[] verticalRoadX = { -50f, -30f, 0f, 30f, 50f };
 
             foreach (float zPos in horizontalRoadZ)
             {
-                for (int x = -4; x <= 4; x++)
+                for (int x = -6; x <= 6; x++)
                 {
-                    bool isIntersection = Mathf.Abs(x * 10f + 30f) < 0.1f || x == 0 || Mathf.Abs(x * 10f - 30f) < 0.1f;
+                    bool isIntersection = Mathf.Approximately(x * 10f, -50f) || Mathf.Approximately(x * 10f, -30f) || x == 0 || Mathf.Approximately(x * 10f, 30f) || Mathf.Approximately(x * 10f, 50f);
                     GameObject segment = isIntersection && crossroad != null ? crossroad : road;
                     string name = Mathf.Approximately(zPos, -10f) && x == 0 ? "MainCrossroad" : $"RoadGrid_H_{zPos}_{x}";
                     InstantiateScenePrefab(segment, root, name, new Vector3(x * 10f, 0f, zPos), Quaternion.identity);
@@ -246,10 +246,10 @@ namespace NihongoLife.Editor
 
             foreach (float xPos in verticalRoadX)
             {
-                for (int z = -4; z <= 3; z++)
+                for (int z = -6; z <= 4; z++)
                 {
                     float zPos = z * 10f;
-                    if (Mathf.Approximately(zPos, -30f) || Mathf.Approximately(zPos, -10f) || Mathf.Approximately(zPos, 10f)) continue;
+                    if (Mathf.Approximately(zPos, -50f) || Mathf.Approximately(zPos, -30f) || Mathf.Approximately(zPos, -10f) || Mathf.Approximately(zPos, 10f) || Mathf.Approximately(zPos, 30f)) continue;
                     InstantiateScenePrefab(road, root, $"RoadGrid_V_{xPos}_{z}", new Vector3(xPos, 0f, zPos), Quaternion.Euler(0f, 90f, 0f));
                     InstantiateScenePrefab(sidewalk, root, $"Sidewalk_V_W_{xPos}_{z}", new Vector3(xPos - 5.3f, 0f, zPos), Quaternion.Euler(0f, 90f, 0f));
                     InstantiateScenePrefab(sidewalk, root, $"Sidewalk_V_E_{xPos}_{z}", new Vector3(xPos + 5.3f, 0f, zPos), Quaternion.Euler(0f, -90f, 0f));
@@ -259,7 +259,7 @@ namespace NihongoLife.Editor
             InstantiateScenePrefab(crossing, root, "Crosswalk_KonbiniFront", new Vector3(0f, 0.015f, -9.9f), Quaternion.identity);
             InstantiateScenePrefab(crossing, root, "Crosswalk_SideStreet", new Vector3(0f, 0.02f, -10f), Quaternion.Euler(0f, 90f, 0f));
 
-            for (int x = -4; x <= 4; x++)
+            for (int x = -6; x <= 6; x++)
             {
                 CreateLaneLine(root, $"LaneLine_Main_{x}", new Vector3(x * 10f, 0.055f, -10f), Quaternion.identity);
             }
@@ -279,21 +279,21 @@ namespace NihongoLife.Editor
                 LoadPrefab("Environment/Buildings/building_h")
             };
 
-            float[] northX = { -36f, -24f, -12f, 0f, 12f, 24f, 36f };
+            float[] northX = { -54f, -42f, -30f, -18f, -6f, 0f, 12f, 24f, 36f, 48f, 60f };
             for (int i = 0; i < northX.Length; i++)
             {
                 var prefab = buildings[(i + 1) % buildings.Length];
-                var instance = InstantiateScenePrefab(prefab, root, i == 3 ? "KonbiniStoreAsset" : $"StreetBuilding_N_{i}", new Vector3(northX[i], 0f, 4.8f), Quaternion.Euler(0f, 180f, 0f));
-                if (instance != null && i == 3) instance.transform.localScale *= 0.82f;
+                var instance = InstantiateScenePrefab(prefab, root, i == 5 ? "KonbiniStoreAsset" : $"StreetBuilding_N_{i}", new Vector3(northX[i], 0f, 4.8f), Quaternion.Euler(0f, 180f, 0f));
+                if (instance != null && i == 5) instance.transform.localScale *= 0.82f;
             }
 
-            float[] southX = { -36f, -24f, -12f, 12f, 24f, 36f };
+            float[] southX = { -54f, -42f, -30f, -18f, -6f, 18f, 30f, 42f, 54f };
             for (int i = 0; i < southX.Length; i++)
             {
                 InstantiateScenePrefab(buildings[(i + 3) % buildings.Length], root, $"StreetBuilding_S_{i}", new Vector3(southX[i], 0f, -24.7f), Quaternion.identity);
             }
 
-            float[] sideZ = { -36f, -28f, 10f, 18f };
+            float[] sideZ = { -56f, -44f, -32f, 12f, 24f, 36f };
             for (int i = 0; i < sideZ.Length; i++)
             {
                 InstantiateScenePrefab(buildings[(i + 4) % buildings.Length], root, $"StreetBuilding_W_{i}", new Vector3(-12f, 0f, sideZ[i]), Quaternion.Euler(0f, 90f, 0f));
@@ -303,7 +303,7 @@ namespace NihongoLife.Editor
 
         private static void CreateStreetFurniture(Transform root, GameObject streetLight, GameObject doubleLight, GameObject trafficLight, GameObject streetSign, GameObject stopSign, GameObject treeSmall, GameObject treeLarge, GameObject planter, GameObject bench, GameObject trash, GameObject electricityPole, GameObject electricityWires, GameObject fence, GameObject driveway)
         {
-            for (int i = -4; i <= 4; i++)
+            for (int i = -6; i <= 6; i++)
             {
                 float x = i * 10f + 3f;
                 AddStreetLight(root, streetLight, $"StreetLight_N_{i}", new Vector3(x, 0f, -4.2f), Quaternion.identity, new Vector3(0f, 2.35f, -1.2f), Quaternion.Euler(62f, 180f, 0f));
@@ -326,16 +326,16 @@ namespace NihongoLife.Editor
             InstantiateScenePrefab(trash, root, "Trashcan_Stop_North", new Vector3(10.1f, 0f, -3.4f), Quaternion.identity);
             InstantiateScenePrefab(trash, root, "Trashcan_Stop_South", new Vector3(-15.8f, 0f, -17.2f), Quaternion.identity);
 
-            for (int i = -3; i <= 3; i += 2)
+            for (int i = -5; i <= 5; i += 2)
             {
                 InstantiateScenePrefab(electricityPole, root, $"ElectricPole_N_{i}", new Vector3(i * 10f, 0f, 12.2f), Quaternion.Euler(0f, 90f, 0f));
                 InstantiateScenePrefab(electricityWires, root, $"ElectricWires_N_{i}", new Vector3(i * 10f + 5f, 3.8f, 12.2f), Quaternion.Euler(0f, 90f, 0f));
             }
 
-            for (int i = 0; i < 7; i++)
+            for (int i = 0; i < 11; i++)
             {
-                InstantiateScenePrefab(fence, root, $"BackFence_N_{i}", new Vector3(-36f + i * 12f, 0f, 15.8f), Quaternion.identity);
-                InstantiateScenePrefab(driveway, root, $"Driveway_S_{i}", new Vector3(-36f + i * 12f, 0.01f, -18.5f), Quaternion.identity);
+                InstantiateScenePrefab(fence, root, $"BackFence_N_{i}", new Vector3(-60f + i * 12f, 0f, 31.8f), Quaternion.identity);
+                InstantiateScenePrefab(driveway, root, $"Driveway_S_{i}", new Vector3(-60f + i * 12f, 0.01f, -33.5f), Quaternion.identity);
             }
 
             Vector3[] parkTrees =
@@ -413,7 +413,18 @@ namespace NihongoLife.Editor
             instance.transform.SetParent(parent);
             instance.transform.position = position;
             instance.transform.rotation = rotation;
+            AddBlockingFootprintIfNeeded(instance, name);
             return instance;
+        }
+
+        private static void AddBlockingFootprintIfNeeded(GameObject instance, string name)
+        {
+            if (!name.StartsWith("StreetBuilding_", System.StringComparison.Ordinal)) return;
+
+            var collider = instance.GetComponent<BoxCollider>() ?? instance.AddComponent<BoxCollider>();
+            collider.isTrigger = false;
+            collider.center = new Vector3(0f, 2.3f, 0f);
+            collider.size = new Vector3(8.6f, 4.6f, 7.2f);
         }
 
         private static Material CreateRuntimeMat(string name, Color color)

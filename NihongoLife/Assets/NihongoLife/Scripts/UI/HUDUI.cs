@@ -42,6 +42,7 @@ namespace NihongoLife.UI
         [SerializeField] private TextMeshProUGUI characterStatsText;
 
         private readonly List<Button> _activeChoiceButtons = new List<Button>();
+        private int _selectedChoiceIndex = -1;
 
         private void Start()
         {
@@ -84,6 +85,7 @@ namespace NihongoLife.UI
 
             HideDialogue();
             HidePrompt();
+            RepairRuntimeLayout();
             ConfigureResponsiveText();
             SetInventoryVisible(false);
             SetCharacterVisible(false);
@@ -93,13 +95,69 @@ namespace NihongoLife.UI
 
         private void ConfigureResponsiveText()
         {
-            ConfigureText(scenarioTitleText, 15f, 21f);
-            ConfigureText(objectivesText, 12f, 17f);
+            ConfigureText(scenarioTitleText, 14f, 18f);
+            ConfigureText(objectivesText, 11f, 15f);
             ConfigureText(promptText, 13f, 18f);
             ConfigureText(inventoryText, 12f, 17f);
             ConfigureText(characterStatsText, 12f, 17f);
             ConfigureText(japaneseText, 20f, 28f);
+            ConfigureText(readingText, 12f, 16f);
+            ConfigureText(romajiText, 12f, 16f);
             ConfigureText(translationText, 13f, 17f);
+        }
+
+        private void RepairRuntimeLayout()
+        {
+            if (scenarioTitleText != null)
+            {
+                RectTransform missionPanel = scenarioTitleText.transform.parent as RectTransform;
+                if (missionPanel != null)
+                {
+                    missionPanel.anchorMin = new Vector2(0f, 1f);
+                    missionPanel.anchorMax = new Vector2(0f, 1f);
+                    missionPanel.pivot = new Vector2(0f, 1f);
+                    missionPanel.anchoredPosition = new Vector2(24f, -28f);
+                    missionPanel.sizeDelta = new Vector2(620f, 188f);
+                }
+
+                SetTopLeft(scenarioTitleText.rectTransform, new Vector2(18f, -14f), new Vector2(584f, 34f));
+            }
+
+            if (objectivesText != null)
+            {
+                SetTopLeft(objectivesText.rectTransform, new Vector2(18f, -54f), new Vector2(584f, 112f));
+                objectivesText.lineSpacing = 8f;
+                objectivesText.paragraphSpacing = 4f;
+            }
+
+            if (dialoguePanel != null)
+            {
+                RectTransform rect = dialoguePanel.transform as RectTransform;
+                if (rect != null)
+                {
+                    rect.anchorMin = new Vector2(0.5f, 0f);
+                    rect.anchorMax = new Vector2(0.5f, 0f);
+                    rect.pivot = new Vector2(0.5f, 0f);
+                    rect.anchoredPosition = new Vector2(0f, 90f);
+                    rect.sizeDelta = new Vector2(980f, 332f);
+                }
+            }
+
+            if (speakerText != null) SetTopLeft(speakerText.rectTransform, new Vector2(24f, -18f), new Vector2(920f, 28f));
+            if (japaneseText != null) SetTopLeft(japaneseText.rectTransform, new Vector2(24f, -56f), new Vector2(920f, 50f));
+            if (readingText != null) SetTopLeft(readingText.rectTransform, new Vector2(24f, -106f), new Vector2(920f, 28f));
+            if (romajiText != null) SetTopLeft(romajiText.rectTransform, new Vector2(24f, -136f), new Vector2(920f, 28f));
+            if (translationText != null) SetTopLeft(translationText.rectTransform, new Vector2(24f, -166f), new Vector2(920f, 70f));
+        }
+
+        private static void SetTopLeft(RectTransform rect, Vector2 position, Vector2 size)
+        {
+            if (rect == null) return;
+            rect.anchorMin = new Vector2(0f, 1f);
+            rect.anchorMax = new Vector2(0f, 1f);
+            rect.pivot = new Vector2(0f, 1f);
+            rect.anchoredPosition = position;
+            rect.sizeDelta = size;
         }
 
         private static void ConfigureText(TextMeshProUGUI text, float min, float max)
@@ -124,6 +182,33 @@ namespace NihongoLife.UI
             if (Keyboard.current.tabKey.wasPressedThisFrame)
             {
                 SetCharacterVisible(characterPanel != null && !characterPanel.activeSelf);
+            }
+
+            HandleDialogueKeyboard();
+        }
+
+        private void HandleDialogueKeyboard()
+        {
+            if (dialoguePanel == null || !dialoguePanel.activeSelf) return;
+
+            if (_activeChoiceButtons.Count > 0)
+            {
+                if (Keyboard.current.downArrowKey.wasPressedThisFrame || Keyboard.current.sKey.wasPressedThisFrame)
+                {
+                    SelectChoiceVisual(_selectedChoiceIndex + 1);
+                }
+                else if (Keyboard.current.upArrowKey.wasPressedThisFrame || Keyboard.current.wKey.wasPressedThisFrame)
+                {
+                    SelectChoiceVisual(_selectedChoiceIndex - 1);
+                }
+                else if (Keyboard.current.enterKey.wasPressedThisFrame || Keyboard.current.spaceKey.wasPressedThisFrame)
+                {
+                    OnChoiceSelected(Mathf.Clamp(_selectedChoiceIndex, 0, _activeChoiceButtons.Count - 1));
+                }
+            }
+            else if (Keyboard.current.enterKey.wasPressedThisFrame || Keyboard.current.spaceKey.wasPressedThisFrame)
+            {
+                OnContinueClicked();
             }
         }
 
@@ -250,7 +335,7 @@ namespace NihongoLife.UI
         {
             if (scenarioTitleText != null)
             {
-                scenarioTitleText.text = $"{scenario.titleJa} / {scenario.titleEn}";
+                scenarioTitleText.text = Text(scenario.titleEn, scenario.titleEn, scenario.titleJa);
             }
             UpdateObjectivesDisplay();
         }
@@ -278,7 +363,7 @@ namespace NihongoLife.UI
 
                 string check = obj.state == ObjectiveState.Completed ? "✓" : "☐";
                 string color = obj.state == ObjectiveState.Completed ? "#74d680" : "#f5f2e8";
-                builder.AppendLine($"<color={color}>{check} {obj.titleJa} ({obj.titleEn})</color>");
+                builder.AppendLine($"<color={color}>{check} {Text(obj.titleEn, obj.titleEn, obj.titleJa)}</color>");
             }
 
             objectivesText.text = builder.ToString();
@@ -317,6 +402,8 @@ namespace NihongoLife.UI
                     btn.onClick.AddListener(() => OnChoiceSelected(index));
                     _activeChoiceButtons.Add(btn);
                 }
+
+                SelectChoiceVisual(0);
             }
             else
             {
@@ -331,12 +418,12 @@ namespace NihongoLife.UI
                 case LearningMode.GuidedPractice:
                     SetHintText(readingText, data.textReading, true);
                     SetHintText(romajiText, data.textRomaji, true);
-                    SetHintText(translationText, data.textEn, true);
+                    SetHintText(translationText, TranslationLine(data), true);
                     break;
                 case LearningMode.Practice:
                     SetHintText(readingText, data.textReading, true);
-                    SetHintText(romajiText, string.Empty, false);
-                    SetHintText(translationText, data.textEn, true);
+                    SetHintText(romajiText, data.textEnglishIpa, !string.IsNullOrWhiteSpace(data.textEnglishIpa));
+                    SetHintText(translationText, TranslationLine(data), true);
                     break;
                 case LearningMode.Assessment:
                     SetHintText(readingText, string.Empty, false);
@@ -353,11 +440,46 @@ namespace NihongoLife.UI
             target.gameObject.SetActive(showWhenNotEmpty && !string.IsNullOrEmpty(value));
         }
 
+        private static string TranslationLine(DialogueDisplayData data)
+        {
+            if (GameServices.TryGet(out GameSettingsService settings) && settings.Language == GameLanguage.English)
+            {
+                return string.IsNullOrWhiteSpace(data.textEnglishIpa)
+                    ? data.textEn
+                    : $"{data.textEn}\nIPA: {data.textEnglishIpa}";
+            }
+
+            return data.textEn;
+        }
+
         private void OnChoiceSelected(int index)
         {
+            if (_activeChoiceButtons.Count > 0 && (index < 0 || index >= _activeChoiceButtons.Count)) return;
+
             if (DialogueManager.Instance != null)
             {
                 DialogueManager.Instance.SelectChoice(index);
+            }
+        }
+
+        private void SelectChoiceVisual(int index)
+        {
+            if (_activeChoiceButtons.Count == 0)
+            {
+                _selectedChoiceIndex = -1;
+                return;
+            }
+
+            _selectedChoiceIndex = (index % _activeChoiceButtons.Count + _activeChoiceButtons.Count) % _activeChoiceButtons.Count;
+            for (int i = 0; i < _activeChoiceButtons.Count; i++)
+            {
+                var image = _activeChoiceButtons[i].GetComponent<Image>();
+                if (image != null)
+                {
+                    image.color = i == _selectedChoiceIndex
+                        ? new Color(0.95f, 0.55f, 0.12f, 1f)
+                        : new Color(0.12f, 0.15f, 0.17f, 1f);
+                }
             }
         }
 
@@ -382,6 +504,7 @@ namespace NihongoLife.UI
                 if (btn != null) Destroy(btn.gameObject);
             }
             _activeChoiceButtons.Clear();
+            _selectedChoiceIndex = -1;
         }
 
         private static string Text(string vi, string en, string ja)
