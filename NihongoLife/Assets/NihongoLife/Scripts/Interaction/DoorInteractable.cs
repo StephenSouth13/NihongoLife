@@ -34,6 +34,7 @@ namespace NihongoLife.Interaction
         private bool _isOpen;
         private Coroutine _openRoutine;
 
+        public string AreaId => areaId;
         public string GetPromptJa() => _isOpen ? "入る" : promptJa;
         public string GetpromptEn() => _isOpen ? "Vào cửa hàng" : promptEn;
         public Transform GetTransform() => transform;

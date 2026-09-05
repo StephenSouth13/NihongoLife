@@ -8,6 +8,7 @@ using NihongoLife.Scoring;
 using NihongoLife.Learning;
 using NihongoLife.Audio;
 using NihongoLife.Core;
+using NihongoLife.Cameras;
 
 namespace NihongoLife.Dialogue
 {
@@ -94,6 +95,7 @@ namespace NihongoLife.Dialogue
             // Animation Integration
             if (ScenarioManager.Instance != null && ScenarioManager.Instance.LastInteractedNPC != null)
             {
+                SetConversationCamera(ScenarioManager.Instance.LastInteractedNPC.transform);
                 var animCtrl = ScenarioManager.Instance.LastInteractedNPC.GetComponent<NihongoLife.Core.CharacterAnimationController>();
                 if (animCtrl != null)
                 {
@@ -217,6 +219,7 @@ namespace NihongoLife.Dialogue
                 ScenarioManager.Instance.LastInteractedNPC.StopInteracting();
             }
 
+            ClearConversationCamera();
             _currentNode = null;
             OnDialogueClosed?.Invoke();
 
@@ -335,6 +338,22 @@ namespace NihongoLife.Dialogue
             {
                 // We'll play a generic click sound or handle via sound settings
             }
+        }
+
+        private static void SetConversationCamera(Transform target)
+        {
+            var camera = Camera.main;
+            if (camera == null) return;
+            var controller = camera.GetComponent<ThirdPersonCameraController>();
+            if (controller != null) controller.SetConversationTarget(target);
+        }
+
+        private static void ClearConversationCamera()
+        {
+            var camera = Camera.main;
+            if (camera == null) return;
+            var controller = camera.GetComponent<ThirdPersonCameraController>();
+            if (controller != null) controller.ClearConversationTarget();
         }
     }
 }

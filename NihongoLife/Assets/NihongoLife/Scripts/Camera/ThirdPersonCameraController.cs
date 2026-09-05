@@ -31,6 +31,8 @@ namespace NihongoLife.Cameras
         private float _currentDistance;
         private bool _isLocked = false;
         private bool _isIndoor = false;
+        private Transform _conversationTarget;
+        private Vector3 _conversationVelocity;
 
         public bool IsLocked
         {
@@ -60,6 +62,12 @@ namespace NihongoLife.Cameras
         private void LateUpdate()
         {
             if (target == null) return;
+
+            if (_conversationTarget != null)
+            {
+                UpdateConversationCamera();
+                return;
+            }
 
             // Handle lock state (e.g. during menus/dialogue)
             if (!_isLocked && Mouse.current != null)
@@ -116,6 +124,29 @@ namespace NihongoLife.Cameras
             defaultDistance = Mathf.Clamp(indoor ? indoorDistance : outdoorDistance, minDistance, maxDistance);
             _rotationY = Mathf.Clamp(indoor ? 22f : 16f, minYAngle, maxYAngle);
             targetOffset = indoor ? new Vector3(0f, 1.45f, 0f) : new Vector3(0f, 1.6f, 0f);
+        }
+
+        public void SetConversationTarget(Transform focusTarget)
+        {
+            _conversationTarget = focusTarget;
+            IsLocked = true;
+        }
+
+        public void ClearConversationTarget()
+        {
+            _conversationTarget = null;
+            _conversationVelocity = Vector3.zero;
+        }
+
+        private void UpdateConversationCamera()
+        {
+            Vector3 faceTarget = _conversationTarget.position + Vector3.up * 1.55f;
+            Vector3 forward = _conversationTarget.forward.sqrMagnitude > 0.01f ? _conversationTarget.forward : transform.forward;
+            Vector3 side = _conversationTarget.right.sqrMagnitude > 0.01f ? _conversationTarget.right : transform.right;
+            Vector3 desiredPosition = faceTarget + forward * 2.4f + side * 0.65f + Vector3.up * 0.05f;
+
+            transform.position = Vector3.SmoothDamp(transform.position, desiredPosition, ref _conversationVelocity, 0.18f);
+            transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(faceTarget - transform.position), 12f * Time.deltaTime);
         }
     }
 }
