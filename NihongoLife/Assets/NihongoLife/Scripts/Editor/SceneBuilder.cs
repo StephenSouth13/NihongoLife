@@ -994,6 +994,20 @@ namespace NihongoLife.Editor
             }
         }
 
+        private static void EnsureFolderExists(string folderPath)
+        {
+            folderPath = folderPath.Replace('\\', '/');
+            if (AssetDatabase.IsValidFolder(folderPath)) return;
+
+            string parent = System.IO.Path.GetDirectoryName(folderPath)?.Replace('\\', '/');
+            if (!string.IsNullOrEmpty(parent) && parent != "Assets" && !AssetDatabase.IsValidFolder(parent))
+            {
+                EnsureFolderExists(parent);
+            }
+
+            AssetDatabase.CreateFolder(parent, System.IO.Path.GetFileName(folderPath));
+        }
+
         private static void SetRef(SerializedObject obj, string propertyName, UnityEngine.Object value)
         {
             var prop = obj.FindProperty(propertyName);
