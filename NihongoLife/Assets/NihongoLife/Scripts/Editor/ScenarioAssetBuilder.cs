@@ -108,11 +108,11 @@ namespace NihongoLife.Editor
         private static void FillKonbiniScenario(ScenarioDefinition scenario)
         {
             scenario.id = "scenario.konbini.buy_onigiri";
-            scenario.version = 2;
+            scenario.version = 3;
             scenario.titleJa = "コンビニで買い物";
             scenario.titleEn = "Mua sắm ở cửa hàng tiện lợi";
             scenario.descriptionJa = "おにぎりを買って、レジで会計を済ませましょう。";
-            scenario.descriptionEn = "Mua một chiếc cơm nắm và hoàn thành thanh toán tại quầy thu ngân.";
+            scenario.descriptionEn = "Vào cửa hàng, kiểm tra kệ đồ uống, chọn đúng onigiri và hoàn thành thanh toán tại quầy.";
             scenario.chapterIndex = 2;
             scenario.learningTargets = new List<string>
             {
@@ -120,12 +120,16 @@ namespace NihongoLife.Editor
                 "grammar.n5.onegai_shimasu",
                 "grammar.n5.daijoubu_desu",
                 "vocab.n5.onigiri",
+                "vocab.n5.mizu",
+                "vocab.n5.ocha",
                 "vocab.n5.fukuro"
             };
 
             scenario.objectives = new List<ObjectiveDefinition>
             {
                 Obj("obj_enter_store", "コンビニに入る", "Vào cửa hàng tiện lợi"),
+                Obj("obj_check_drink", "飲み物を確認する", "Kiểm tra kệ đồ uống"),
+                Obj("obj_confirm_item", "買うものを選ぶ", "Chọn đúng món cần mua"),
                 Obj("obj_find_onigiri", "おにぎりを見つける", "Tìm cơm nắm"),
                 Obj("obj_go_to_cashier", "レジへ行く", "Đi đến quầy thu ngân"),
                 Obj("obj_pay", "お会計をする", "Thanh toán")
@@ -137,10 +141,45 @@ namespace NihongoLife.Editor
                 {
                     id = "node_start",
                     nodeType = ScenarioNodeType.GoToArea,
-                    nextNodeId = "node_find_onigiri",
+                    nextNodeId = "node_check_drink",
                     objectiveIdToComplete = "obj_enter_store",
                     targetAreaId = "store_entrance"
                 },
+                new ScenarioNode
+                {
+                    id = "node_check_drink",
+                    nodeType = ScenarioNodeType.InspectItem,
+                    nextNodeId = "node_confirm_item",
+                    objectiveIdToComplete = "obj_check_drink",
+                    targetItemId = "water"
+                },
+                Dialogue("node_confirm_item", "system", "Hệ thống",
+                    "今日買うものはどれですか？",
+                    "きょうかうものはどれですか？",
+                    "Hôm nay bạn cần mua món nào?", "Kyou kau mono wa dore desu ka?", "",
+                    new List<DialogueChoice>
+                    {
+                        Choice("おにぎりをください。", "Tôi muốn cơm nắm.", "node_confirm_item_done",
+                            Score("Vocabulary", 10, "Chọn đúng từ onigiri"),
+                            Score("Grammar", 10, "Dùng mẫu をください")),
+                        Choice("お茶をください。", "Tôi muốn trà xanh.", "node_confirm_item_hint",
+                            Score("Vocabulary", -5, "Nhầm món cần mua")),
+                        Choice("水をください。", "Tôi muốn nước.", "node_confirm_item_hint",
+                            Score("ResponseAccuracy", -5, "Cần đọc lại yêu cầu nhiệm vụ"))
+                    }),
+                Dialogue("node_confirm_item_done", "system", "Hệ thống",
+                    "はい、おにぎりですね。",
+                    "はい、おにぎりですね。",
+                    "Đúng rồi, hãy lấy onigiri trên kệ hàng.", "Hai, onigiri desu ne.", "",
+                    null,
+                    "node_find_onigiri",
+                    "obj_confirm_item"),
+                Dialogue("node_confirm_item_hint", "system", "Hệ thống",
+                    "今日はおにぎりを買います。",
+                    "きょうはおにぎりをかいます。",
+                    "Hôm nay nhiệm vụ là mua cơm nắm. Hãy chọn onigiri.", "Kyou wa onigiri wo kaimasu.", "",
+                    null,
+                    "node_confirm_item"),
                 new ScenarioNode
                 {
                     id = "node_find_onigiri",

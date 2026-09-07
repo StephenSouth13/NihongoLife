@@ -31,6 +31,7 @@ namespace NihongoLife.UI
         {
             EnsureSettingsService();
             AutoBindExistingMenu();
+            ImproveMenuPresentation();
             CleanExistingLayout();
             EnsureLanguageSelector();
 
@@ -47,6 +48,42 @@ namespace NihongoLife.UI
 
             RefreshTexts();
             DisplayProfileStats();
+        }
+
+        private void ImproveMenuPresentation()
+        {
+            var overlay = GetComponent<Image>();
+            if (overlay != null)
+            {
+                overlay.color = new Color(0.03f, 0.035f, 0.04f, 0.08f);
+            }
+
+            RenderSettings.ambientMode = UnityEngine.Rendering.AmbientMode.Flat;
+            RenderSettings.ambientLight = new Color(0.72f, 0.76f, 0.78f, 1f);
+            RenderSettings.fog = true;
+            RenderSettings.fogColor = new Color(0.74f, 0.82f, 0.86f, 1f);
+            RenderSettings.fogDensity = 0.0045f;
+
+            var dayNight = FindFirstObjectByType<DayNightCycle>();
+            if (dayNight != null)
+            {
+                dayNight.SetHour(9f);
+            }
+
+            var sun = RenderSettings.sun != null ? RenderSettings.sun : FindFirstObjectByType<Light>();
+            if (sun != null)
+            {
+                sun.intensity = 1.45f;
+                sun.color = new Color(1f, 0.95f, 0.84f, 1f);
+                sun.transform.rotation = Quaternion.Euler(42f, -34f, 0f);
+                RenderSettings.sun = sun;
+            }
+
+            var orbit = Camera.main != null ? Camera.main.GetComponent<MenuCameraOrbit>() : null;
+            if (orbit != null)
+            {
+                orbit.Configure(44f, 15.5f, 2.15f, 205f, 3.1f);
+            }
         }
 
         private void OnDestroy()

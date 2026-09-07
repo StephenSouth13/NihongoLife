@@ -130,7 +130,7 @@ namespace NihongoLife.Editor
             var font = FontSetup.EnsureJapaneseFontAsset();
             var canvasGo = CreateCanvas("Canvas");
 
-            var panel = CreateFullScreenPanel(canvasGo.transform, "MainMenuPanel", new Color(0f, 0f, 0f, 0.2f));
+            var panel = CreateFullScreenPanel(canvasGo.transform, "MainMenuPanel", new Color(0.03f, 0.035f, 0.04f, 0.08f));
             AddTopAccent(panel.transform);
 
             var title = CreateText(panel.transform, "TitleText", "NIHONGO LIFE", font, 86, new Vector2(0, 200), new Vector2(900, 110), TextAlignmentOptions.Center);
@@ -303,7 +303,7 @@ namespace NihongoLife.Editor
             }
 
             var orbit = cameraGo.GetComponent<MenuCameraOrbit>() ?? cameraGo.AddComponent<MenuCameraOrbit>();
-            orbit.Configure(62f, 24f, 1.35f, 180f, 3.8f);
+            orbit.Configure(44f, 15.5f, 2.15f, 205f, 3.1f);
             orbit.SetTarget(target.transform);
         }
 
@@ -314,7 +314,7 @@ namespace NihongoLife.Editor
             ground.transform.SetParent(parent);
             ground.transform.position = new Vector3(0f, -0.62f, -10f);
             ground.transform.localScale = new Vector3(96f, 0.18f, 72f);
-            ground.GetComponent<Renderer>().sharedMaterial = CreateRuntimeMat("NL_MenuPreviewGround_Mat", new Color(0.055f, 0.06f, 0.065f, 1f));
+            ground.GetComponent<Renderer>().sharedMaterial = CreateRuntimeMat("NL_MenuPreviewGround_Mat", new Color(0.18f, 0.2f, 0.18f, 1f));
             UnityEngine.Object.DestroyImmediate(ground.GetComponent<Collider>());
         }
 
@@ -536,8 +536,9 @@ namespace NihongoLife.Editor
             CreateShelf(root, "Shelf_Food", new Vector3(-3.2f, 1.1f, 4.1f));
             CreateShelf(root, "Shelf_Drinks", new Vector3(3.2f, 1.1f, 4.1f));
             CreateCounter(root, new Vector3(0f, 0.55f, 8.1f));
-            CreateItem(root, "Onigiri", "onigiri", "おにぎり", "Cơm nắm", "おにぎりを取る", "Lấy cơm nắm", 497, true, new Vector3(-3.2f, 1.85f, 4.05f), "Assets/NihongoLife/Prefabs/Food/food_apple.prefab");
-            CreateItem(root, "Water", "water", "水", "Nước", "水を調べる", "Kiểm tra nước", 120, false, new Vector3(3.2f, 1.9f, 4.05f), "Assets/NihongoLife/Prefabs/Food/food_bottle.prefab");
+            CreateItem(root, "Onigiri", "onigiri", "おにぎり", "Cơm nắm", "おにぎりを取る", "Lấy cơm nắm", 497, true, true, new Vector3(-3.2f, 1.85f, 4.05f), "Assets/NihongoLife/Prefabs/Food/food_apple.prefab");
+            CreateItem(root, "Water", "water", "水", "Nước", "水を調べる", "Kiểm tra nước", 120, false, false, new Vector3(3.2f, 1.9f, 4.05f), "Assets/NihongoLife/Prefabs/Food/food_bottle.prefab");
+            CreateItem(root, "Tea", "tea", "お茶", "Trà xanh", "お茶を調べる", "Kiểm tra trà xanh", 150, false, false, new Vector3(3.95f, 1.9f, 4.05f), "Assets/NihongoLife/Prefabs/Food/food_bottle.prefab");
             CreateCashier(root);
         }
 
@@ -723,7 +724,7 @@ namespace NihongoLife.Editor
             }
         }
 
-        private static void CreateItem(Transform root, string name, string itemId, string ja, string vi, string promptJa, string promptEn, int price, bool destroyOnInteract, Vector3 position, string prefabPath)
+        private static void CreateItem(Transform root, string name, string itemId, string ja, string vi, string promptJa, string promptEn, int price, bool destroyOnInteract, bool addToInventory, Vector3 position, string prefabPath)
         {
             var item = GameObject.CreatePrimitive(PrimitiveType.Sphere);
             item.name = name;
@@ -750,6 +751,7 @@ namespace NihongoLife.Editor
             SetString(so, "promptJa", promptJa);
             SetString(so, "promptEn", promptEn);
             SetInt(so, "priceYen", price);
+            SetBool(so, "addToInventory", addToInventory);
             SetBool(so, "destroyOnInteract", destroyOnInteract);
             so.ApplyModifiedProperties();
         }
@@ -904,7 +906,7 @@ namespace NihongoLife.Editor
             var reading = CreateScoreText(panel.transform, "ReadingScore", "Đọc hiểu: ", new Vector2(0f, -60f), font);
             var accuracy = CreateScoreText(panel.transform, "AccuracyScore", "Độ chính xác: ", new Vector2(0f, -92f), font);
             var completion = CreateScoreText(panel.transform, "CompletionScore", "Hoàn thành: ", new Vector2(0f, -124f), font);
-            var exit = CreateUIButton(panel.transform, "ExitButton", "Quay lại menu", new Vector2(0f, -196f), new Vector2(260f, 54f), font, true).GetComponent<Button>();
+            var exit = CreateUIButton(panel.transform, "ExitButton", "Nhiệm tiếp theo", new Vector2(0f, -196f), new Vector2(280f, 54f), font, true).GetComponent<Button>();
 
             var so = new SerializedObject(result);
             SetRef(so, "missionTitleText", title);
@@ -916,6 +918,7 @@ namespace NihongoLife.Editor
             SetRef(so, "accuracyScoreText", accuracy);
             SetRef(so, "completionScoreText", completion);
             SetRef(so, "returnToMenuButton", exit);
+            SetRef(so, "returnToMenuButtonText", exit.GetComponentInChildren<TextMeshProUGUI>());
             so.ApplyModifiedProperties();
             panel.SetActive(false);
             return result;
@@ -1105,13 +1108,17 @@ namespace NihongoLife.Editor
         private static void CreateLighting()
         {
             RenderSettings.ambientMode = UnityEngine.Rendering.AmbientMode.Flat;
-            RenderSettings.ambientLight = new Color(0.58f, 0.62f, 0.66f);
+            RenderSettings.ambientLight = new Color(0.72f, 0.76f, 0.78f);
+            RenderSettings.fog = true;
+            RenderSettings.fogColor = new Color(0.74f, 0.82f, 0.86f, 1f);
+            RenderSettings.fogDensity = 0.0045f;
 
             var lightGo = GameObject.Find("Directional Light") ?? new GameObject("Directional Light");
             var light = lightGo.GetComponent<Light>() ?? lightGo.AddComponent<Light>();
             light.type = LightType.Directional;
-            light.intensity = 1.25f;
-            lightGo.transform.rotation = Quaternion.Euler(48f, -36f, 0f);
+            light.color = new Color(1f, 0.95f, 0.84f, 1f);
+            light.intensity = 1.45f;
+            lightGo.transform.rotation = Quaternion.Euler(42f, -34f, 0f);
             RenderSettings.sun = light;
         }
 
