@@ -46,6 +46,7 @@ namespace NihongoLife.UI
                 settings.OnLanguageChanged += HandleLanguageChanged;
             }
 
+            EnsureSettingsUI();
             RefreshTexts();
             DisplayProfileStats();
         }
@@ -138,6 +139,9 @@ namespace NihongoLife.UI
             }
         }
 
+        private Button settingsButton;
+        private SettingsUI settingsUI;
+
         private void EnsureLanguageSelector()
         {
             TMP_FontAsset font = titleText != null ? titleText.font : null;
@@ -152,6 +156,23 @@ namespace NihongoLife.UI
             vietnameseButton ??= CreateLanguageButton("LanguageVietnameseButton", "VI", new Vector2(-132f, -166f), font);
             englishButton ??= CreateLanguageButton("LanguageEnglishButton", "EN", new Vector2(0f, -166f), font);
             japaneseButton ??= CreateLanguageButton("LanguageJapaneseButton", "JP", new Vector2(132f, -166f), font);
+        }
+
+        private void EnsureSettingsUI()
+        {
+            TMP_FontAsset font = titleText != null ? titleText.font : null;
+
+            // Settings UI script attached to MainMenuPanel
+            settingsUI = gameObject.AddComponent<SettingsUI>();
+            settingsUI.Initialize(font);
+
+            // Settings Button
+            settingsButton = CreateLanguageButton("SettingsButton", "Cài đặt", new Vector2(400f, 200f), font);
+            settingsButton.GetComponent<RectTransform>().sizeDelta = new Vector2(120f, 44f);
+            var txt = settingsButton.transform.Find("Text").GetComponent<TextMeshProUGUI>();
+            txt.text = "Cài đặt";
+
+            settingsButton.onClick.AddListener(() => settingsUI.Show());
         }
 
         private TextMeshProUGUI CreateMenuText(string name, Vector2 position, Vector2 size, float fontSize, TMP_FontAsset font)

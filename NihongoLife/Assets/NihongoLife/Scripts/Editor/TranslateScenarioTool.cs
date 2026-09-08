@@ -6,7 +6,7 @@ namespace NihongoLife.Editor
 {
     public static class TranslateScenarioTool
     {
-        [MenuItem("NihongoLife/Scenarios/Translate and Generate Scenarios")]
+        // [MenuItem("NihongoLife/Scenarios/Translate and Generate Scenarios")]
         public static void TranslateAndGenerateScenarios()
         {
             TranslateKonbiniScenario();

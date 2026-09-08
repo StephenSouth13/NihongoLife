@@ -94,6 +94,14 @@ namespace NihongoLife.UI
             SetCharacterVisible(false);
             RefreshPlayerPanels();
             UpdateObjectivesDisplay();
+            EnsureTutorial();
+        }
+
+        private void EnsureTutorial()
+        {
+            var tutorial = gameObject.AddComponent<TutorialUI>();
+            TMP_FontAsset font = scenarioTitleText != null ? scenarioTitleText.font : null;
+            tutorial.Initialize(font);
         }
 
         private void ConfigureResponsiveText()

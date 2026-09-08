@@ -12,7 +12,7 @@ namespace NihongoLife.Editor
         private const string ScenarioPath = ScenarioFolder + "/scenario_konbini_buy_onigiri.asset";
         private const string StreetScenarioPath = ScenarioFolder + "/scenario_street_first_talk.asset";
 
-        [MenuItem("NihongoLife/Build Scenario Assets")]
+        // [MenuItem("NihongoLife/Build Scenario Assets")]
         public static void BuildScenarioAssets()
         {
             EnsureFolderExists(ScenarioFolder);
@@ -327,21 +327,21 @@ namespace NihongoLife.Editor
             switch (nodeId)
             {
                 case "node_cashier_prompt_bag":
-                    return "/du\u02d0 ju\u02d0 ni\u02d0d \u0259 b\u00e6\u0261/";
+                    return "/duː juː niːd ə bæɡ/";
                 case "node_bag_wrong_grammar":
-                    return "/du\u02d0 ju\u02d0 mi\u02d0n ju\u02d0 ni\u02d0d \u0259 b\u00e6\u0261/";
+                    return "/duː juː miːn juː niːd ə bæɡ/";
                 case "node_bag_yes":
-                    return "/a\u026a \u028cnd\u0259r\u02c8st\u00e6nd \u00f0\u0259 b\u00e6\u0261 fi\u02d0 \u026az \u03b8ri\u02d0 jen/";
+                    return "/aɪ ʌndərˈstænd ðə bæɡ fiː ɪz θriː jen/";
                 case "node_bag_no":
-                    return "/a\u026a \u028cnd\u0259r\u02c8st\u00e6nd \u00f0\u0259 to\u028atl \u026az f\u0254\u02d0r h\u028cndr\u0259d na\u026anti sev\u0259n jen/";
+                    return "/aɪ ʌndərˈstænd ðə toʊtl ɪz fɔːr hʌndrəd naɪnti sevən jen/";
                 case "node_pay_choice":
-                    return "/pli\u02d0z t\u0283u\u02d0z \u0259 pe\u026am\u0259nt me\u03b8\u0259d/";
+                    return "/pliːz tʃuːz ə peɪmənt meθəd/";
                 case "node_transaction_done":
-                    return "/\u03b8\u00e6\u014bk ju\u02d0 \u02c8v\u025bri m\u028ct\u0283 si\u02d0 ju\u02d0 \u0259\u02c8\u0261en/";
+                    return "/θæŋk juː ˈveri mʌtʃ siː juː əˈɡen/";
                 case "node_neighbor_greeting":
-                    return "/h\u0259\u02c8lo\u028a we\u0259r \u0251\u02d0r ju\u02d0 \u02c8\u0261o\u028a\u026a\u014b/";
+                    return "/həˈloʊ weər ɑːr juː ˈɡoʊɪŋ/";
                 case "node_neighbor_reply":
-                    return "/na\u026as te\u026ak ke\u0259r/";
+                    return "/naɪs teɪk keər/";
                 default:
                     return string.Empty;
             }

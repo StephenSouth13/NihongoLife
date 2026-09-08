@@ -27,7 +27,7 @@ namespace NihongoLife.Editor
             AssembleKonbini(environmentRoot);
         }
 
-        [MenuItem("NihongoLife/Rebuild Current Street")]
+        // [MenuItem("NihongoLife/Rebuild Current Street")]
         public static void RebuildCurrentStreet()
         {
             SceneBuilder.RebuildGameplaySandbox();
