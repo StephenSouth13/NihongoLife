@@ -830,15 +830,15 @@ namespace NihongoLife.Editor
             var characterPanel = CreateInfoPanel(hudPanel.transform, "CharacterPanel", "Nhân vật", "Tab", font);
             var characterText = characterPanel.transform.Find("Body").GetComponent<TextMeshProUGUI>();
 
-            var dialoguePanel = CreatePanel(hudPanel.transform, "DialoguePanel", new Vector2(0.5f, 0f), new Vector2(0f, 92f), new Vector2(900f, 275f), new Color(0.035f, 0.045f, 0.055f, 0.94f));
-            var speaker = CreateText(dialoguePanel.transform, "SpeakerText", "", font, 18, new Vector2(24f, -22f), new Vector2(830f, 28f), TextAlignmentOptions.Left);
+            var dialoguePanel = CreatePanel(hudPanel.transform, "DialoguePanel", new Vector2(0.5f, 0f), new Vector2(0f, 74f), new Vector2(1120f, 378f), new Color(0.035f, 0.045f, 0.055f, 0.94f));
+            var speaker = CreateText(dialoguePanel.transform, "SpeakerText", "", font, 18, new Vector2(28f, -20f), new Vector2(1048f, 30f), TextAlignmentOptions.Left);
             speaker.color = new Color(1f, 0.91f, 0.54f);
-            var japanese = CreateText(dialoguePanel.transform, "JapaneseText", "", font, 28, new Vector2(24f, -62f), new Vector2(830f, 42f), TextAlignmentOptions.Left);
-            var reading = CreateText(dialoguePanel.transform, "ReadingText", "", font, 16, new Vector2(24f, -104f), new Vector2(830f, 26f), TextAlignmentOptions.Left);
+            var japanese = CreateText(dialoguePanel.transform, "JapaneseText", "", font, 28, new Vector2(28f, -58f), new Vector2(1048f, 58f), TextAlignmentOptions.Left);
+            var reading = CreateText(dialoguePanel.transform, "ReadingText", "", font, 16, new Vector2(28f, -116f), new Vector2(1048f, 30f), TextAlignmentOptions.Left);
             reading.color = new Color(0.72f, 0.82f, 0.9f);
-            var romaji = CreateText(dialoguePanel.transform, "RomajiText", "", font, 15, new Vector2(24f, -132f), new Vector2(830f, 24f), TextAlignmentOptions.Left);
+            var romaji = CreateText(dialoguePanel.transform, "RomajiText", "", font, 15, new Vector2(28f, -148f), new Vector2(1048f, 30f), TextAlignmentOptions.Left);
             romaji.color = new Color(0.72f, 0.82f, 0.9f);
-            var translation = CreateText(dialoguePanel.transform, "TranslationText", "", font, 17, new Vector2(24f, -160f), new Vector2(830f, 34f), TextAlignmentOptions.Left);
+            var translation = CreateText(dialoguePanel.transform, "TranslationText", "", font, 17, new Vector2(28f, -180f), new Vector2(1048f, 92f), TextAlignmentOptions.Left);
 
             var choicesContainer = new GameObject("ChoicesContainer");
             choicesContainer.transform.SetParent(dialoguePanel.transform, false);
@@ -846,8 +846,8 @@ namespace NihongoLife.Editor
             choicesRect.anchorMin = new Vector2(0f, 0f);
             choicesRect.anchorMax = new Vector2(1f, 0f);
             choicesRect.pivot = new Vector2(0.5f, 0f);
-            choicesRect.anchoredPosition = new Vector2(0f, 16f);
-            choicesRect.sizeDelta = new Vector2(-36f, 68f);
+            choicesRect.anchoredPosition = new Vector2(0f, 18f);
+            choicesRect.sizeDelta = new Vector2(-56f, 72f);
             var layout = choicesContainer.AddComponent<HorizontalLayoutGroup>();
             layout.spacing = 12f;
             layout.childControlWidth = true;
@@ -858,6 +858,13 @@ namespace NihongoLife.Editor
             var choicePrefab = CreateUIButton(canvasGo.transform, "ChoiceButtonPrefab", "Choice", Vector2.zero, new Vector2(240f, 58f), font, false).GetComponent<Button>();
             choicePrefab.gameObject.SetActive(false);
             var continueButton = CreateUIButton(dialoguePanel.transform, "ContinueButton", "Tiếp tục", new Vector2(330f, 28f), new Vector2(170f, 48f), font, true).GetComponent<Button>();
+
+            var continueRect = continueButton.GetComponent<RectTransform>();
+            continueRect.anchorMin = new Vector2(1f, 0f);
+            continueRect.anchorMax = new Vector2(1f, 0f);
+            continueRect.pivot = new Vector2(1f, 0f);
+            continueRect.anchoredPosition = new Vector2(-28f, 18f);
+            continueRect.sizeDelta = new Vector2(180f, 52f);
 
             var hudSo = new SerializedObject(hud);
             SetRef(hudSo, "promptPanel", prompt);

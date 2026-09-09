@@ -152,16 +152,38 @@ namespace NihongoLife.UI
                     rect.anchorMin = new Vector2(0.5f, 0f);
                     rect.anchorMax = new Vector2(0.5f, 0f);
                     rect.pivot = new Vector2(0.5f, 0f);
-                    rect.anchoredPosition = new Vector2(0f, 90f);
-                    rect.sizeDelta = new Vector2(980f, 332f);
+                    rect.anchoredPosition = new Vector2(0f, 74f);
+                    rect.sizeDelta = new Vector2(1120f, 378f);
                 }
             }
 
-            if (speakerText != null) SetTopLeft(speakerText.rectTransform, new Vector2(24f, -18f), new Vector2(920f, 28f));
-            if (japaneseText != null) SetTopLeft(japaneseText.rectTransform, new Vector2(24f, -56f), new Vector2(920f, 50f));
-            if (readingText != null) SetTopLeft(readingText.rectTransform, new Vector2(24f, -106f), new Vector2(920f, 28f));
-            if (romajiText != null) SetTopLeft(romajiText.rectTransform, new Vector2(24f, -136f), new Vector2(920f, 28f));
-            if (translationText != null) SetTopLeft(translationText.rectTransform, new Vector2(24f, -166f), new Vector2(920f, 70f));
+            if (speakerText != null) SetTopLeft(speakerText.rectTransform, new Vector2(28f, -20f), new Vector2(1048f, 30f));
+            if (japaneseText != null) SetTopLeft(japaneseText.rectTransform, new Vector2(28f, -58f), new Vector2(1048f, 58f));
+            if (readingText != null) SetTopLeft(readingText.rectTransform, new Vector2(28f, -116f), new Vector2(1048f, 30f));
+            if (romajiText != null) SetTopLeft(romajiText.rectTransform, new Vector2(28f, -148f), new Vector2(1048f, 30f));
+            if (translationText != null) SetTopLeft(translationText.rectTransform, new Vector2(28f, -180f), new Vector2(1048f, 92f));
+
+            if (choicesContainer is RectTransform choicesRect)
+            {
+                choicesRect.anchorMin = new Vector2(0f, 0f);
+                choicesRect.anchorMax = new Vector2(1f, 0f);
+                choicesRect.pivot = new Vector2(0.5f, 0f);
+                choicesRect.anchoredPosition = new Vector2(0f, 18f);
+                choicesRect.sizeDelta = new Vector2(-56f, 72f);
+            }
+
+            if (continueButton != null)
+            {
+                var continueRect = continueButton.GetComponent<RectTransform>();
+                if (continueRect != null)
+                {
+                    continueRect.anchorMin = new Vector2(1f, 0f);
+                    continueRect.anchorMax = new Vector2(1f, 0f);
+                    continueRect.pivot = new Vector2(1f, 0f);
+                    continueRect.anchoredPosition = new Vector2(-28f, 18f);
+                    continueRect.sizeDelta = new Vector2(180f, 52f);
+                }
+            }
         }
 
         private static void SetTopLeft(RectTransform rect, Vector2 position, Vector2 size)
@@ -518,6 +540,7 @@ namespace NihongoLife.UI
                     var btnText = btn.GetComponentInChildren<TextMeshProUGUI>();
                     if (btnText != null)
                     {
+                        ConfigureText(btnText, 11f, 16f);
                         btnText.text = data.learningMode == LearningMode.GuidedPractice
                             ? $"{choice.textJa}\n<size=80%><color=#8fa3b8>({choice.textEn})</color></size>"
                             : choice.textJa;

@@ -155,6 +155,7 @@ namespace NihongoLife.Editor
             AnimationClip walkClip = LoadAnimationClip(ANIM_WALK);
             AnimationClip talkClip = LoadAnimationClip(ANIM_TALK);
             AnimationClip bowClip = LoadAnimationClip(ANIM_BOW);
+            AnimationClip pointClip = LoadAnimationClip(ANIM_POINT);
             
             // Create or update states
             AnimatorState idleState = GetOrCreateState(rootStateMachine, "Idle");
@@ -169,6 +170,9 @@ namespace NihongoLife.Editor
             AnimatorState bowState = GetOrCreateState(rootStateMachine, "Bow");
             bowState.motion = bowClip;
 
+            AnimatorState pointState = GetOrCreateState(rootStateMachine, "Point");
+            pointState.motion = pointClip;
+
             // Transitions: Idle <-> Walk
             AddTransition(idleState, walkState, "Speed", AnimatorConditionMode.Greater, 0.1f);
             AddTransition(walkState, idleState, "Speed", AnimatorConditionMode.Less, 0.1f);
@@ -176,6 +180,10 @@ namespace NihongoLife.Editor
             // Transitions: Any -> Bow
             AddAnyStateTransition(rootStateMachine, bowState, "Bow");
             AddTransition(bowState, idleState, null, AnimatorConditionMode.If, 0, true); // Has exit time
+
+            // Transitions: Any -> Point
+            AddAnyStateTransition(rootStateMachine, pointState, "Point");
+            AddTransition(pointState, idleState, null, AnimatorConditionMode.If, 0, true); // Has exit time
 
             // Transitions: Idle <-> Talking
             AddTransition(idleState, talkState, "IsTalking", AnimatorConditionMode.If, 0);

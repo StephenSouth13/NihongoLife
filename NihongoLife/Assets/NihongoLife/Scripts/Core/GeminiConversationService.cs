@@ -7,6 +7,20 @@ using NihongoLife.NPC;
 
 namespace NihongoLife.Core
 {
+    [Serializable]
+    public class AiNpcReply
+    {
+        public string japanese;
+        public string reading;
+        public string romaji;
+        public string translation;
+
+        public bool HasUsableJapanese()
+        {
+            return !string.IsNullOrWhiteSpace(japanese);
+        }
+    }
+
     public class GeminiConversationService : MonoBehaviour
     {
         [Serializable]
@@ -63,10 +77,17 @@ namespace NihongoLife.Core
 
         public void RequestNpcReply(NPCController npc, string playerIntent, Action<string> onComplete, Action<string> onError = null)
         {
+            RequestNpcReply(npc, playerIntent,
+                reply => onComplete?.Invoke(FormatReplyForLegacyConsumers(reply)),
+                onError);
+        }
+
+        public void RequestNpcReply(NPCController npc, string playerIntent, Action<AiNpcReply> onComplete, Action<string> onError = null)
+        {
             StartCoroutine(RequestNpcReplyRoutine(npc, playerIntent, onComplete, onError));
         }
 
-        private IEnumerator RequestNpcReplyRoutine(NPCController npc, string playerIntent, Action<string> onComplete, Action<string> onError)
+        private IEnumerator RequestNpcReplyRoutine(NPCController npc, string playerIntent, Action<AiNpcReply> onComplete, Action<string> onError)
         {
             if (!GameServices.TryGet(out GameControlService control) || control.Database == null)
             {
@@ -121,7 +142,14 @@ namespace NihongoLife.Core
                     yield break;
                 }
 
-                onComplete?.Invoke(text.Trim());
+                AiNpcReply reply = ParseReply(text);
+                if (reply == null || !reply.HasUsableJapanese())
+                {
+                    onError?.Invoke("Gemini returned a response that could not be mapped to NPC dialogue.");
+                    yield break;
+                }
+
+                onComplete?.Invoke(reply);
             }
         }
 
@@ -142,7 +170,9 @@ namespace NihongoLife.Core
                 $"Player intent: {playerIntent}\n" +
                 $"UI language: {language}.\n" +
                 "Reply as one short natural conversation turn for a beginner learner.\n" +
-                "Include Japanese, romaji, and the translation. Keep it friendly and useful.";
+                "Use natural N5-level Japanese. Keep the Japanese sentence short and pronounceable.\n" +
+                "Return JSON only with these exact string fields: japanese, reading, romaji, translation.\n" +
+                "reading must be hiragana/katakana reading for the Japanese line. romaji must match the Japanese line. translation must use the UI language.";
         }
 
         private static string ExtractText(string json)
@@ -162,6 +192,52 @@ namespace NihongoLife.Core
                 Debug.LogWarning($"[GeminiConversationService] Failed to parse Gemini response: {ex.Message}");
                 return string.Empty;
             }
+        }
+
+        private static AiNpcReply ParseReply(string text)
+        {
+            if (string.IsNullOrWhiteSpace(text)) return null;
+
+            string json = ExtractJsonObject(text.Trim());
+            if (string.IsNullOrWhiteSpace(json)) return null;
+
+            try
+            {
+                return JsonUtility.FromJson<AiNpcReply>(json);
+            }
+            catch (Exception ex)
+            {
+                Debug.LogWarning($"[GeminiConversationService] Failed to parse NPC reply JSON: {ex.Message}");
+                return null;
+            }
+        }
+
+        private static string ExtractJsonObject(string text)
+        {
+            if (string.IsNullOrWhiteSpace(text)) return string.Empty;
+
+            text = text.Trim();
+            if (text.StartsWith("```", StringComparison.Ordinal))
+            {
+                int firstLineEnd = text.IndexOf('\n');
+                int fenceEnd = text.LastIndexOf("```", StringComparison.Ordinal);
+                if (firstLineEnd >= 0 && fenceEnd > firstLineEnd)
+                {
+                    text = text.Substring(firstLineEnd + 1, fenceEnd - firstLineEnd - 1).Trim();
+                }
+            }
+
+            int start = text.IndexOf('{');
+            int end = text.LastIndexOf('}');
+            if (start < 0 || end <= start) return string.Empty;
+            return text.Substring(start, end - start + 1);
+        }
+
+        private static string FormatReplyForLegacyConsumers(AiNpcReply reply)
+        {
+            if (reply == null) return string.Empty;
+            if (string.IsNullOrWhiteSpace(reply.translation)) return reply.japanese ?? string.Empty;
+            return $"{reply.japanese}\n{reply.romaji}\n{reply.translation}";
         }
     }
 }

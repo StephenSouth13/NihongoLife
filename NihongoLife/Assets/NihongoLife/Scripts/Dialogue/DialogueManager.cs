@@ -30,7 +30,7 @@ namespace NihongoLife.Dialogue
 
         [Header("Learning Settings")]
         [SerializeField] private LearningMode currentMode = LearningMode.GuidedPractice;
-        [SerializeField] private bool generateDialogueVoice = true;
+        [SerializeField] private bool generateDialogueVoice = false;
         [SerializeField] private float generatedVoiceVolume = 0.85f;
 
         private ScenarioNode _currentNode;

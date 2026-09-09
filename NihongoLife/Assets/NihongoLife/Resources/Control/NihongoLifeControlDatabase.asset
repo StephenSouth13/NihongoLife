@@ -29,8 +29,8 @@ MonoBehaviour:
   enableTownAmbientAudio: 1
   townBgmClip: {fileID: 0}
   streetVoiceClips: []
-  enableGeminiConversation: 0
-  allowGeminiDirectClientCalls: 0
+  enableGeminiConversation: 1
+  allowGeminiDirectClientCalls: 1
   geminiModel: gemini-2.5-flash
   geminiApiKeyEnvironmentKey: NIHONGOLIFE_GEMINI_API_KEY
   enableOnlineSync: 0

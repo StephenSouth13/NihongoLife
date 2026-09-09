@@ -71,6 +71,7 @@ namespace NihongoLife.NPC
             _lookTarget = player.transform;
             _isInteracting = true;
             SetMovementFrozen(true);
+            _animation?.SetLookTarget(player.transform);
 
             if (ScenarioManager.Instance == null)
             {
@@ -99,7 +100,7 @@ namespace NihongoLife.NPC
             if (gemini != null && gemini.IsConfigured)
             {
                 gemini.RequestNpcReply(this, "The player walked up and pressed E to talk.",
-                    reply => StartFallbackDialogue(reply),
+                    StartAiDialogue,
                     error =>
                     {
                         Debug.LogWarning($"[NPCController] Gemini fallback failed for {npcId}: {error}");
@@ -109,6 +110,27 @@ namespace NihongoLife.NPC
             }
 
             StartFallbackDialogue();
+        }
+
+        private void StartAiDialogue(AiNpcReply reply)
+        {
+            if (DialogueManager.Instance == null)
+            {
+                return;
+            }
+
+            DialogueManager.Instance.StartDialogue(new ScenarioNode
+            {
+                id = "ai_fallback_" + npcId,
+                nodeType = ScenarioNodeType.Dialogue,
+                speakerName = string.IsNullOrEmpty(displayName) ? gameObject.name : displayName,
+                speakerId = npcId,
+                textJa = string.IsNullOrWhiteSpace(reply.japanese) ? fallbackJa : reply.japanese,
+                textReading = string.IsNullOrWhiteSpace(reply.reading) ? fallbackReading : reply.reading,
+                textEn = string.IsNullOrWhiteSpace(reply.translation) ? fallbackEn : reply.translation,
+                textRomaji = string.IsNullOrWhiteSpace(reply.romaji) ? fallbackRomaji : reply.romaji,
+                animationCue = "talk"
+            });
         }
 
         private void StartFallbackDialogue(string geminiReply = null)
@@ -133,6 +155,7 @@ namespace NihongoLife.NPC
         {
             _isInteracting = false;
             _lookTarget = null;
+            _animation?.SetLookTarget(null);
             SetMovementFrozen(false);
         }
 

@@ -26,8 +26,17 @@ namespace NihongoLife.Learning
 
         private void Update()
         {
-            if (Keyboard.current == null) return;
-            if (!Keyboard.current[triggerKey].wasPressedThisFrame) return;
+            if (_isRecording && _recording != null && !string.IsNullOrEmpty(_device))
+            {
+                int position = Microphone.GetPosition(_device);
+                if (position >= _recording.samples - 1)
+                {
+                    StopRecording();
+                    return;
+                }
+            }
+
+            if (!WasTriggerPressed()) return;
 
             if (_isRecording)
             {
@@ -37,6 +46,20 @@ namespace NihongoLife.Learning
             {
                 StartRecording();
             }
+        }
+
+        private bool WasTriggerPressed()
+        {
+            if (Keyboard.current != null && Keyboard.current[triggerKey].wasPressedThisFrame)
+            {
+                return true;
+            }
+
+#if ENABLE_LEGACY_INPUT_MANAGER
+            return Input.GetKeyDown(KeyCode.V);
+#else
+            return false;
+#endif
         }
 
         public void StartRecording()
@@ -90,7 +113,7 @@ namespace NihongoLife.Learning
             _isRecording = true;
             _lastResult = "Recording... press V again to stop";
             PlayFeedbackTone(true);
-            Debug.Log("[SpeechPractice] Recording started. Press V again to stop.");
+            Debug.Log($"[SpeechPractice] Recording started on '{_device}'. Press V again to stop.");
         }
 
         public void StopRecording()

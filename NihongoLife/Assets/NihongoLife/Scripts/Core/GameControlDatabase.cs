@@ -39,8 +39,8 @@ namespace NihongoLife.Core
         public AudioClip[] streetVoiceClips;
 
         [Header("Gemini Conversation")]
-        public bool enableGeminiConversation = false;
-        public bool allowGeminiDirectClientCalls = false;
+        public bool enableGeminiConversation = true;
+        public bool allowGeminiDirectClientCalls = true;
         public string geminiModel = "gemini-2.5-flash";
         public string geminiApiKeyEnvironmentKey = "NIHONGOLIFE_GEMINI_API_KEY";
 

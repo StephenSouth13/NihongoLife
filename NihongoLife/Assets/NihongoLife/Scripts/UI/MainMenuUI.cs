@@ -22,10 +22,16 @@ namespace NihongoLife.UI
         [SerializeField] private TextMeshProUGUI startButtonText;
         [SerializeField] private TextMeshProUGUI quitButtonText;
         [SerializeField] private TextMeshProUGUI languageLabelText;
+        [SerializeField] private TextMeshProUGUI guideTitleText;
+        [SerializeField] private TextMeshProUGUI guideBodyText;
+        [SerializeField] private TextMeshProUGUI creditsTitleText;
+        [SerializeField] private TextMeshProUGUI creditsBodyText;
 
         [Header("Settings")]
         [SerializeField] private string targetGameplayScene = "90_TestSandbox";
         [SerializeField] private string targetScenarioId = "scenario.konbini.buy_onigiri";
+        [SerializeField] private string authorName = "VTC Academy - NihongoLife Team";
+        [SerializeField] private string projectRole = "Japanese learning simulation project";
 
         private void Start()
         {
@@ -34,6 +40,7 @@ namespace NihongoLife.UI
             ImproveMenuPresentation();
             CleanExistingLayout();
             EnsureLanguageSelector();
+            EnsureMenuInfoPanels();
 
             if (startButton != null) startButton.onClick.AddListener(OnStartClicked);
             if (quitButton != null) quitButton.onClick.AddListener(OnQuitClicked);
@@ -118,6 +125,10 @@ namespace NihongoLife.UI
             if (titleText == null) titleText = transform.Find("TitleText")?.GetComponent<TextMeshProUGUI>();
             if (subtitleText == null) subtitleText = transform.Find("SubtitleText")?.GetComponent<TextMeshProUGUI>();
             if (profileText == null) profileText = transform.Find("ProfileText")?.GetComponent<TextMeshProUGUI>();
+            if (guideTitleText == null) guideTitleText = transform.Find("GuidePanel/Title")?.GetComponent<TextMeshProUGUI>();
+            if (guideBodyText == null) guideBodyText = transform.Find("GuidePanel/Body")?.GetComponent<TextMeshProUGUI>();
+            if (creditsTitleText == null) creditsTitleText = transform.Find("CreditsPanel/Title")?.GetComponent<TextMeshProUGUI>();
+            if (creditsBodyText == null) creditsBodyText = transform.Find("CreditsPanel/Body")?.GetComponent<TextMeshProUGUI>();
             if (startButtonText == null && startButton != null) startButtonText = startButton.GetComponentInChildren<TextMeshProUGUI>();
             if (quitButtonText == null && quitButton != null) quitButtonText = quitButton.GetComponentInChildren<TextMeshProUGUI>();
         }
@@ -141,6 +152,37 @@ namespace NihongoLife.UI
 
         private Button settingsButton;
         private SettingsUI settingsUI;
+
+        private void EnsureMenuInfoPanels()
+        {
+            TMP_FontAsset font = titleText != null ? titleText.font : null;
+
+            if (guideTitleText == null || guideBodyText == null)
+            {
+                CreateInfoPanel(
+                    "GuidePanel",
+                    new Vector2(-500f, -72f),
+                    new Vector2(405f, 330f),
+                    font,
+                    out guideTitleText,
+                    out guideBodyText);
+            }
+
+            ConfigureInfoPanel(guideTitleText, guideBodyText, new Vector2(-500f, -72f), new Vector2(405f, 330f));
+
+            if (creditsTitleText == null || creditsBodyText == null)
+            {
+                CreateInfoPanel(
+                    "CreditsPanel",
+                    new Vector2(500f, -72f),
+                    new Vector2(405f, 330f),
+                    font,
+                    out creditsTitleText,
+                    out creditsBodyText);
+            }
+
+            ConfigureInfoPanel(creditsTitleText, creditsBodyText, new Vector2(500f, -72f), new Vector2(405f, 330f));
+        }
 
         private void EnsureLanguageSelector()
         {
@@ -191,6 +233,71 @@ namespace NihongoLife.UI
             text.alignment = TextAlignmentOptions.Center;
             text.color = Color.white;
             return text;
+        }
+
+        private void CreateInfoPanel(string name, Vector2 position, Vector2 size, TMP_FontAsset font, out TextMeshProUGUI title, out TextMeshProUGUI body)
+        {
+            var panelGo = new GameObject(name);
+            panelGo.transform.SetParent(transform, false);
+
+            var rect = panelGo.AddComponent<RectTransform>();
+            rect.anchorMin = new Vector2(0.5f, 0.5f);
+            rect.anchorMax = new Vector2(0.5f, 0.5f);
+            rect.pivot = new Vector2(0.5f, 0.5f);
+            rect.anchoredPosition = position;
+            rect.sizeDelta = size;
+
+            var image = panelGo.AddComponent<Image>();
+            image.color = new Color(0.045f, 0.055f, 0.06f, 0.82f);
+
+            title = CreateMenuText("Title", new Vector2(0f, 116f), new Vector2(size.x - 34f, 34f), 21f, font);
+            title.transform.SetParent(panelGo.transform, false);
+            title.alignment = TextAlignmentOptions.Left;
+            title.color = new Color(1f, 0.91f, 0.54f, 1f);
+            title.fontStyle = FontStyles.Bold;
+
+            body = CreateMenuText("Body", new Vector2(0f, -26f), new Vector2(size.x - 34f, 226f), 15.5f, font);
+            body.transform.SetParent(panelGo.transform, false);
+            body.alignment = TextAlignmentOptions.TopLeft;
+            body.color = new Color(0.92f, 0.96f, 1f, 1f);
+            body.textWrappingMode = TextWrappingModes.Normal;
+            body.lineSpacing = 7f;
+        }
+
+        private static void ConfigureInfoPanel(TextMeshProUGUI title, TextMeshProUGUI body, Vector2 position, Vector2 size)
+        {
+            Transform panel = title != null ? title.transform.parent : body != null ? body.transform.parent : null;
+            if (panel != null)
+            {
+                var rect = panel.GetComponent<RectTransform>();
+                MoveRect(rect, position, size);
+
+                var image = panel.GetComponent<Image>();
+                if (image != null)
+                {
+                    image.color = new Color(0.035f, 0.045f, 0.05f, 0.9f);
+                }
+            }
+
+            if (title != null)
+            {
+                MoveRect(title, new Vector2(0f, 128f), new Vector2(size.x - 44f, 38f));
+                title.enableAutoSizing = true;
+                title.fontSizeMin = 15f;
+                title.fontSizeMax = 22f;
+                title.overflowMode = TextOverflowModes.Ellipsis;
+            }
+
+            if (body != null)
+            {
+                MoveRect(body, new Vector2(0f, -24f), new Vector2(size.x - 44f, 248f));
+                body.enableAutoSizing = true;
+                body.fontSizeMin = 10.5f;
+                body.fontSizeMax = 14.5f;
+                body.textWrappingMode = TextWrappingModes.Normal;
+                body.overflowMode = TextOverflowModes.Ellipsis;
+                body.lineSpacing = 4f;
+            }
         }
 
         private Button CreateLanguageButton(string name, string label, Vector2 position, TMP_FontAsset font)
@@ -276,9 +383,64 @@ namespace NihongoLife.UI
             if (quitButtonText != null) quitButtonText.text = Text("Thoát", "Quit", "終了");
             if (languageLabelText != null) languageLabelText.text = Text("Ngôn ngữ giao diện", "Interface language", "表示言語");
 
+            if (guideTitleText != null) guideTitleText.text = Text("Cách chơi", "How to play", "遊び方");
+            if (guideBodyText != null) guideBodyText.text = BuildGuideText(language);
+            if (creditsTitleText != null) creditsTitleText.text = Text("Tác giả", "Credits", "クレジット");
+            if (creditsBodyText != null) creditsBodyText.text = BuildCreditsText(language);
+
             SetButtonSelected(vietnameseButton, language == GameLanguage.Vietnamese);
             SetButtonSelected(englishButton, language == GameLanguage.English);
             SetButtonSelected(japaneseButton, language == GameLanguage.Japanese);
+        }
+
+        private string BuildGuideText(GameLanguage language)
+        {
+            return language switch
+            {
+                GameLanguage.English =>
+                    "1. Walk through town and find the active NPC, shop, or mission marker.\n" +
+                    "2. Press E to talk, choose short N5 Japanese replies, and follow the objective.\n" +
+                    "3. Use B for your bag, Tab for character status, and V to practice speaking.\n" +
+                    "4. Listen first, read hints when needed, finish the scene, and gain XP.",
+                GameLanguage.Japanese =>
+                    "1. 町を歩いて、NPC・店・ミッションを探します。\n" +
+                    "2. Eで話して、N5レベルの短い返事を選びます。\n" +
+                    "3. Bでバッグ、Tabでステータス、Vで発音練習。\n" +
+                    "4. まず聞いて、必要ならヒントを読み、XPを獲得します。",
+                _ =>
+                    "1. Đi quanh khu phố để tìm NPC, cửa hàng hoặc điểm nhiệm vụ.\n" +
+                    "2. Nhấn E để trò chuyện, chọn câu đáp tiếng Nhật N5 phù hợp.\n" +
+                    "3. Dùng B mở balo, Tab xem nhân vật, V luyện phát âm.\n" +
+                    "4. Nghe trước, đọc gợi ý khi cần, hoàn thành tình huống để nhận XP."
+            };
+        }
+
+        private string BuildCreditsText(GameLanguage language)
+        {
+            return language switch
+            {
+                GameLanguage.English =>
+                    $"Author: {authorName}\n" +
+                    $"Role: {projectRole}\n\n" +
+                    "Scenario Japanese practice\n" +
+                    "Dialogue, scoring, inventory, AI NPC replies\n" +
+                    "Friendly Japanese town art direction\n\n" +
+                    "Built for VTC Academy learning and demo use.",
+                GameLanguage.Japanese =>
+                    $"作者: {authorName}\n" +
+                    $"役割: {projectRole}\n\n" +
+                    "シナリオ型日本語練習\n" +
+                    "会話、スコア、バッグ、AI NPC\n" +
+                    "楽しく学べる日本の町\n\n" +
+                    "VTC Academyの学習・デモ用に制作。",
+                _ =>
+                    $"Tác giả: {authorName}\n" +
+                    $"Vai trò: {projectRole}\n\n" +
+                    "Luyện tiếng Nhật theo tình huống\n" +
+                    "Hội thoại, điểm số, balo, NPC AI\n" +
+                    "Khu phố Nhật thân thiện, dễ học\n\n" +
+                    "Xây dựng cho học tập và demo tại VTC Academy."
+            };
         }
 
         private void DisplayProfileStats()
