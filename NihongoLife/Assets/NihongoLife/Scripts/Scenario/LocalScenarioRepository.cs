@@ -35,6 +35,16 @@ namespace NihongoLife.Scenario
             {
                 if (scenario != null && !string.IsNullOrEmpty(scenario.id))
                 {
+                    var validation = ScenarioValidator.Validate(scenario);
+                    if (validation.HasErrors)
+                    {
+                        Debug.LogError($"[LocalScenarioRepository] Scenario '{scenario.id}' has validation errors:\n{validation.ToLogString()}");
+                    }
+                    else if (validation.Issues.Count > 0)
+                    {
+                        Debug.LogWarning($"[LocalScenarioRepository] Scenario '{scenario.id}' has validation warnings:\n{validation.ToLogString()}");
+                    }
+
                     if (!_scenarios.ContainsKey(scenario.id))
                     {
                         _scenarios.Add(scenario.id, scenario);

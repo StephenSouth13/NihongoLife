@@ -83,6 +83,18 @@ namespace NihongoLife.Scenario
 
         public void StartScenario(ScenarioDefinition scenario)
         {
+            var validation = ScenarioValidator.Validate(scenario);
+            if (validation.HasErrors)
+            {
+                Debug.LogError($"[ScenarioManager] Cannot start scenario because validation failed:\n{validation.ToLogString()}");
+                return;
+            }
+
+            if (validation.Issues.Count > 0)
+            {
+                Debug.LogWarning($"[ScenarioManager] Scenario validation warnings:\n{validation.ToLogString()}");
+            }
+
             currentScenario = scenario;
             Debug.Log($"[ScenarioManager] Starting scenario: {scenario.titleJa} ({scenario.id})");
 

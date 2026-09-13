@@ -94,5 +94,70 @@ namespace NihongoLife.Tests
             Assert.AreEqual(ScenarioNodeType.Complete, nodeEnd.nodeType);
             Assert.Null(nodeMissing);
         }
+
+        [Test]
+        public void ScenarioValidator_AcceptsValidScenario()
+        {
+            var scenario = ScriptableObject.CreateInstance<ScenarioDefinition>();
+            scenario.id = "scenario.valid";
+            scenario.startNodeId = "start";
+            scenario.objectives = new List<ObjectiveDefinition>
+            {
+                new ObjectiveDefinition { id = "obj_pickup", titleJa = "買う", titleEn = "Buy" }
+            };
+            scenario.nodes = new List<ScenarioNode>
+            {
+                new ScenarioNode
+                {
+                    id = "start",
+                    nodeType = ScenarioNodeType.CollectItem,
+                    targetItemId = "onigiri",
+                    objectiveIdToComplete = "obj_pickup",
+                    nextNodeId = "done"
+                },
+                new ScenarioNode { id = "done", nodeType = ScenarioNodeType.Complete }
+            };
+
+            var result = ScenarioValidator.Validate(scenario);
+
+            Object.DestroyImmediate(scenario);
+            Assert.IsFalse(result.HasErrors, result.ToLogString());
+        }
+
+        [Test]
+        public void ScenarioValidator_RejectsMissingBranchesAndTargets()
+        {
+            var scenario = ScriptableObject.CreateInstance<ScenarioDefinition>();
+            scenario.id = "scenario.invalid";
+            scenario.startNodeId = "missing_start";
+            scenario.objectives = new List<ObjectiveDefinition>
+            {
+                new ObjectiveDefinition { id = "obj_known" }
+            };
+            scenario.nodes = new List<ScenarioNode>
+            {
+                new ScenarioNode
+                {
+                    id = "start",
+                    nodeType = ScenarioNodeType.GoToArea,
+                    objectiveIdToComplete = "obj_missing",
+                    nextNodeId = "missing_next",
+                    choices = new List<DialogueChoice>
+                    {
+                        new DialogueChoice { textJa = "はい", nextNodeId = "missing_choice" }
+                    }
+                }
+            };
+
+            var result = ScenarioValidator.Validate(scenario);
+
+            Object.DestroyImmediate(scenario);
+            Assert.IsTrue(result.HasErrors);
+            StringAssert.Contains("start node", result.ToLogString());
+            StringAssert.Contains("targetAreaId", result.ToLogString());
+            StringAssert.Contains("missing nextNodeId", result.ToLogString());
+            StringAssert.Contains("missing objective", result.ToLogString());
+            StringAssert.Contains("missing node", result.ToLogString());
+        }
     }
 }
