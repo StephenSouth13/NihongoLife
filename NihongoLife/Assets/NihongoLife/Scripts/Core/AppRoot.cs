@@ -15,6 +15,8 @@ namespace NihongoLife.Core
         [SerializeField] private GameSettingsService settingsService;
         [SerializeField] private GameControlService controlService;
         [SerializeField] private DayNightCycle dayNightCycle;
+        [SerializeField] private ScenarioCampaignManager campaignManager;
+        [SerializeField] private OnlineWorldBootstrap onlineWorldBootstrap;
 
         private void Awake()
         {
@@ -79,6 +81,22 @@ namespace NihongoLife.Core
             var scenarioRepo = new LocalScenarioRepository();
             GameServices.Register<IScenarioRepository>(scenarioRepo);
             scenarioRepo.Initialize();
+
+            if (campaignManager == null)
+            {
+                campaignManager = gameObject.AddComponent<ScenarioCampaignManager>();
+            }
+            GameServices.Register<ScenarioCampaignManager>(campaignManager);
+            campaignManager.Initialize();
+
+            var onlineWorld = new LocalOnlineWorldService();
+            GameServices.Register<IOnlineWorldService>(onlineWorld);
+            onlineWorld.Initialize();
+
+            if (onlineWorldBootstrap == null)
+            {
+                onlineWorldBootstrap = gameObject.AddComponent<OnlineWorldBootstrap>();
+            }
 
             Debug.Log("[AppRoot] Core services initialized successfully.");
 

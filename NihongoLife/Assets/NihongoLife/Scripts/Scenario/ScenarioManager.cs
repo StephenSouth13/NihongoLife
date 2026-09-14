@@ -392,9 +392,28 @@ namespace NihongoLife.Scenario
 
             foreach (var obj in _objectives)
             {
-                if (obj.state == ObjectiveState.Active || obj.state == ObjectiveState.Inactive)
+                if (obj.state == ObjectiveState.Completed)
                 {
-                    obj.state = success ? ObjectiveState.Completed : ObjectiveState.Failed;
+                    continue;
+                }
+
+                if (success && !UsesExplicitObjectiveTracking())
+                {
+                    obj.state = ObjectiveState.Completed;
+                    OnObjectiveStateChanged?.Invoke(obj);
+                    continue;
+                }
+
+                if (success && obj.state == ObjectiveState.Active)
+                {
+                    obj.state = ObjectiveState.Completed;
+                    OnObjectiveStateChanged?.Invoke(obj);
+                    continue;
+                }
+
+                if (!success || (!obj.isOptional && obj.state == ObjectiveState.Inactive))
+                {
+                    obj.state = ObjectiveState.Failed;
                     OnObjectiveStateChanged?.Invoke(obj);
                 }
             }
@@ -452,6 +471,21 @@ namespace NihongoLife.Scenario
             }
 
             OnScenarioFinished?.Invoke(breakdown);
+        }
+
+        private bool UsesExplicitObjectiveTracking()
+        {
+            if (currentScenario == null || currentScenario.nodes == null) return false;
+
+            foreach (var node in currentScenario.nodes)
+            {
+                if (node != null && !string.IsNullOrEmpty(node.objectiveIdToComplete))
+                {
+                    return true;
+                }
+            }
+
+            return false;
         }
 
         private void ResolveCheckout()

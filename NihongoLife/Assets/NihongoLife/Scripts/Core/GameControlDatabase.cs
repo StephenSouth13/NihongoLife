@@ -30,6 +30,15 @@ namespace NihongoLife.Core
 
         [Header("Scenario Library")]
         public List<ScenarioDefinition> scenarios = new List<ScenarioDefinition>();
+        public List<string> campaignScenarioIds = new List<string>
+        {
+            "scenario.street.first_talk",
+            "scenario.konbini.buy_onigiri",
+            "scenario.house1.greeting",
+            "scenario.house2.lostcat",
+            "scenario.house3.garbage"
+        };
+        public bool continueCampaignInGameplayScene = true;
 
         [Header("Voice / Pronunciation")]
         public List<VoiceLineEntry> voiceLines = new List<VoiceLineEntry>();
@@ -46,6 +55,12 @@ namespace NihongoLife.Core
 
         [Header("Online Database")]
         public bool enableOnlineSync = false;
+
+        [Header("Online World Simulation")]
+        public bool enableLocalOnlineSimulation = true;
+        public int maxVisiblePlayers = 24;
+        public int chatHistoryLimit = 80;
+
         public string supabaseProjectUrl = "";
         public string supabaseAnonKey = "";
         public string supabaseHost = "aws-0-ap-northeast-2.pooler.supabase.com";

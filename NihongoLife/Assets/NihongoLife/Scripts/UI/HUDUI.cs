@@ -41,9 +41,16 @@ namespace NihongoLife.UI
         [SerializeField] private GameObject characterPanel;
         [SerializeField] private TextMeshProUGUI characterStatsText;
 
+        [Header("Online Simulation")]
+        [SerializeField] private GameObject chatPanel;
+        [SerializeField] private TextMeshProUGUI chatHistoryText;
+        [SerializeField] private TMP_InputField chatInputField;
+        [SerializeField] private TextMeshProUGUI onlineStatusText;
+
         private readonly List<Button> _activeChoiceButtons = new List<Button>();
         private int _selectedChoiceIndex = -1;
         private QuestDirectionMarker _questMarker;
+        private IOnlineWorldService _onlineWorld;
 
         private void Start()
         {
@@ -84,15 +91,25 @@ namespace NihongoLife.UI
                 settings.OnLanguageChanged += HandleLanguageChanged;
             }
 
+            if (GameServices.TryGet(out _onlineWorld))
+            {
+                _onlineWorld.OnChatMessageReceived += HandleChatMessageReceived;
+                _onlineWorld.OnPlayerJoinedOrUpdated += HandlePlayerPresenceChanged;
+                _onlineWorld.OnPlayerLeft += HandlePlayerLeft;
+            }
+
             HideDialogue();
             HidePrompt();
             EnsureQuestMarker();
             WireMissionPanelClick();
             RepairRuntimeLayout();
             ConfigureResponsiveText();
+            EnsureOnlineChatPanel();
             SetInventoryVisible(false);
             SetCharacterVisible(false);
+            SetChatVisible(false);
             RefreshPlayerPanels();
+            RefreshOnlineStatus();
             UpdateObjectivesDisplay();
             EnsureTutorial();
         }
@@ -115,6 +132,8 @@ namespace NihongoLife.UI
             ConfigureText(readingText, 12f, 16f);
             ConfigureText(romajiText, 12f, 16f);
             ConfigureText(translationText, 13f, 17f);
+            ConfigureText(chatHistoryText, 10f, 13f);
+            ConfigureText(onlineStatusText, 11f, 14f);
         }
 
         private void RepairRuntimeLayout()
@@ -143,6 +162,7 @@ namespace NihongoLife.UI
 
             StyleInfoPanel(inventoryPanel, new Vector2(1f, 1f), new Vector2(-28f, -88f), new Vector2(420f, 390f));
             StyleInfoPanel(characterPanel, new Vector2(1f, 1f), new Vector2(-28f, -88f), new Vector2(420f, 310f));
+            StyleInfoPanel(chatPanel, new Vector2(0f, 0f), new Vector2(24f, 24f), new Vector2(470f, 250f));
 
             if (dialoguePanel != null)
             {
@@ -184,6 +204,70 @@ namespace NihongoLife.UI
                     continueRect.sizeDelta = new Vector2(180f, 52f);
                 }
             }
+        }
+
+        private void EnsureOnlineChatPanel()
+        {
+            TMP_FontAsset font = scenarioTitleText != null ? scenarioTitleText.font : null;
+
+            if (onlineStatusText == null)
+            {
+                onlineStatusText = CreateHudText("OnlineStatusText", transform, new Vector2(24f, -176f), new Vector2(620f, 28f), 13f, font);
+                onlineStatusText.alignment = TextAlignmentOptions.Left;
+                onlineStatusText.color = new Color(0.58f, 0.72f, 0.86f, 1f);
+            }
+
+            if (chatPanel == null)
+            {
+                chatPanel = new GameObject("OnlineChatPanel");
+                chatPanel.transform.SetParent(transform, false);
+                chatPanel.AddComponent<Image>().color = new Color(0.025f, 0.035f, 0.045f, 0.94f);
+            }
+
+            StyleInfoPanel(chatPanel, new Vector2(0f, 0f), new Vector2(24f, 24f), new Vector2(470f, 250f));
+
+            if (chatHistoryText == null)
+            {
+                chatHistoryText = CreateHudText("ChatHistory", chatPanel.transform, new Vector2(16f, -14f), new Vector2(438f, 176f), 12f, font);
+                chatHistoryText.alignment = TextAlignmentOptions.TopLeft;
+                chatHistoryText.color = new Color(0.91f, 0.96f, 1f, 1f);
+            }
+
+            if (chatInputField == null)
+            {
+                var inputObject = new GameObject("ChatInput");
+                inputObject.transform.SetParent(chatPanel.transform, false);
+                var inputRect = inputObject.AddComponent<RectTransform>();
+                inputRect.anchorMin = new Vector2(0f, 0f);
+                inputRect.anchorMax = new Vector2(1f, 0f);
+                inputRect.pivot = new Vector2(0.5f, 0f);
+                inputRect.anchoredPosition = new Vector2(0f, 14f);
+                inputRect.sizeDelta = new Vector2(-32f, 42f);
+
+                var inputImage = inputObject.AddComponent<Image>();
+                inputImage.color = new Color(0.11f, 0.13f, 0.15f, 1f);
+
+                chatInputField = inputObject.AddComponent<TMP_InputField>();
+                chatInputField.textViewport = inputRect;
+                chatInputField.lineType = TMP_InputField.LineType.SingleLine;
+                chatInputField.characterLimit = 120;
+
+                var text = CreateHudText("Text", inputObject.transform, Vector2.zero, new Vector2(408f, 34f), 14f, font);
+                text.alignment = TextAlignmentOptions.MidlineLeft;
+                text.margin = new Vector4(10f, 0f, 10f, 0f);
+                chatInputField.textComponent = text;
+
+                var placeholder = CreateHudText("Placeholder", inputObject.transform, Vector2.zero, new Vector2(408f, 34f), 14f, font);
+                placeholder.alignment = TextAlignmentOptions.MidlineLeft;
+                placeholder.margin = new Vector4(10f, 0f, 10f, 0f);
+                placeholder.color = new Color(0.58f, 0.64f, 0.7f, 0.72f);
+                placeholder.text = "Type a town chat message...";
+                chatInputField.placeholder = placeholder;
+
+                chatInputField.onSubmit.AddListener(SendChatMessage);
+            }
+
+            RefreshChatHistory();
         }
 
         private static void SetTopLeft(RectTransform rect, Vector2 position, Vector2 size)
@@ -274,6 +358,16 @@ namespace NihongoLife.UI
         {
             if (Keyboard.current == null) return;
 
+            if (chatPanel != null && chatPanel.activeSelf)
+            {
+                if (Keyboard.current.escapeKey.wasPressedThisFrame)
+                {
+                    SetChatVisible(false);
+                }
+
+                return;
+            }
+
             if (Keyboard.current.bKey.wasPressedThisFrame)
             {
                 SetInventoryVisible(inventoryPanel != null && !inventoryPanel.activeSelf);
@@ -282,6 +376,16 @@ namespace NihongoLife.UI
             if (Keyboard.current.tabKey.wasPressedThisFrame)
             {
                 SetCharacterVisible(characterPanel != null && !characterPanel.activeSelf);
+            }
+
+            if (Keyboard.current.enterKey.wasPressedThisFrame && dialoguePanel != null && !dialoguePanel.activeSelf)
+            {
+                SetChatVisible(true);
+            }
+
+            if (Keyboard.current.escapeKey.wasPressedThisFrame)
+            {
+                SetChatVisible(false);
             }
 
             HandleDialogueKeyboard();
@@ -335,6 +439,13 @@ namespace NihongoLife.UI
             {
                 settings.OnLanguageChanged -= HandleLanguageChanged;
             }
+
+            if (_onlineWorld != null)
+            {
+                _onlineWorld.OnChatMessageReceived -= HandleChatMessageReceived;
+                _onlineWorld.OnPlayerJoinedOrUpdated -= HandlePlayerPresenceChanged;
+                _onlineWorld.OnPlayerLeft -= HandlePlayerLeft;
+            }
         }
 
         private void HandleLanguageChanged(GameLanguage language)
@@ -350,6 +461,7 @@ namespace NihongoLife.UI
             if (visible)
             {
                 SetCharacterVisible(false);
+                SetChatVisible(false);
                 RefreshPlayerPanels();
             }
         }
@@ -361,8 +473,91 @@ namespace NihongoLife.UI
             if (visible)
             {
                 SetInventoryVisible(false);
+                SetChatVisible(false);
                 RefreshPlayerPanels();
             }
+        }
+
+        private void SetChatVisible(bool visible)
+        {
+            if (chatPanel == null) return;
+            chatPanel.SetActive(visible);
+            ScenarioManager.Instance?.SetPlayerInputLocked(visible);
+
+            if (visible)
+            {
+                SetInventoryVisible(false);
+                SetCharacterVisible(false);
+                RefreshChatHistory();
+                chatInputField?.ActivateInputField();
+            }
+            else
+            {
+                chatInputField?.DeactivateInputField();
+            }
+        }
+
+        private void SendChatMessage(string message)
+        {
+            if (_onlineWorld == null || string.IsNullOrWhiteSpace(message)) return;
+
+            _onlineWorld.SendChatMessage("town", message);
+            if (chatInputField != null)
+            {
+                chatInputField.text = string.Empty;
+                chatInputField.ActivateInputField();
+            }
+        }
+
+        private void HandleChatMessageReceived(OnlineChatMessage message)
+        {
+            RefreshChatHistory();
+        }
+
+        private void HandlePlayerPresenceChanged(OnlinePlayerSnapshot player)
+        {
+            RefreshOnlineStatus();
+        }
+
+        private void HandlePlayerLeft(string playerId)
+        {
+            RefreshOnlineStatus();
+        }
+
+        private void RefreshOnlineStatus()
+        {
+            if (onlineStatusText == null) return;
+
+            int onlineCount = _onlineWorld != null && _onlineWorld.IsConnected ? _onlineWorld.VisiblePlayers.Count : 0;
+            string status = _onlineWorld != null && _onlineWorld.IsConnected
+                ? Text($"Online mô phỏng: {onlineCount} người chơi  |  Enter: chat", $"Online simulation: {onlineCount} player(s)  |  Enter: chat", $"オンライン模擬: {onlineCount}人  |  Enter: チャット")
+                : Text("Online mô phỏng: chưa kết nối", "Online simulation: offline", "オンライン模擬: オフライン");
+            onlineStatusText.text = status;
+        }
+
+        private void RefreshChatHistory()
+        {
+            if (chatHistoryText == null) return;
+
+            if (_onlineWorld == null || _onlineWorld.ChatHistory.Count == 0)
+            {
+                chatHistoryText.text = Text("Chưa có tin nhắn.", "No messages yet.", "メッセージはまだありません。");
+                return;
+            }
+
+            var builder = new StringBuilder();
+            int start = Mathf.Max(0, _onlineWorld.ChatHistory.Count - 8);
+            for (int i = start; i < _onlineWorld.ChatHistory.Count; i++)
+            {
+                OnlineChatMessage message = _onlineWorld.ChatHistory[i];
+                builder.Append("<color=#f1c75b>")
+                    .Append(message.senderDisplayName)
+                    .Append("</color>: ")
+                    .Append(message.text)
+                    .AppendLine();
+            }
+
+            chatHistoryText.text = builder.ToString();
         }
 
         private void RefreshPlayerPanels()
@@ -505,10 +700,14 @@ namespace NihongoLife.UI
             var builder = new StringBuilder();
             foreach (var obj in ScenarioManager.Instance.Objectives)
             {
-                if (obj.state == ObjectiveState.Inactive) continue;
-
-                string check = obj.state == ObjectiveState.Completed ? "✓" : "☐";
-                string color = obj.state == ObjectiveState.Completed ? "#74d680" : "#f5f2e8";
+                string check = obj.state == ObjectiveState.Completed ? "[x]" : obj.state == ObjectiveState.Failed ? "[!]" : "[ ]";
+                string color = obj.state switch
+                {
+                    ObjectiveState.Completed => "#74d680",
+                    ObjectiveState.Failed => "#ff7676",
+                    ObjectiveState.Active => "#f5f2e8",
+                    _ => "#8fa3b8"
+                };
                 builder.AppendLine($"<color={color}>{check} {Text(obj.titleEn, obj.titleEn, obj.titleJa)}</color>");
             }
 
@@ -657,6 +856,25 @@ namespace NihongoLife.UI
         private static string Text(string vi, string en, string ja)
         {
             return GameServices.TryGet(out GameSettingsService settings) ? settings.Text(vi, en, ja) : vi;
+        }
+
+        private static TextMeshProUGUI CreateHudText(string name, Transform parent, Vector2 position, Vector2 size, float fontSize, TMP_FontAsset font)
+        {
+            var go = new GameObject(name);
+            go.transform.SetParent(parent, false);
+            var rect = go.AddComponent<RectTransform>();
+            rect.anchorMin = new Vector2(0f, 1f);
+            rect.anchorMax = new Vector2(0f, 1f);
+            rect.pivot = new Vector2(0f, 1f);
+            rect.anchoredPosition = position;
+            rect.sizeDelta = size;
+
+            var text = go.AddComponent<TextMeshProUGUI>();
+            if (font != null) text.font = font;
+            text.fontSize = fontSize;
+            text.textWrappingMode = TextWrappingModes.Normal;
+            text.overflowMode = TextOverflowModes.Ellipsis;
+            return text;
         }
     }
 }

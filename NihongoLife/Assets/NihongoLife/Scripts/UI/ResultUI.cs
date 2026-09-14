@@ -136,6 +136,16 @@ namespace NihongoLife.UI
         private static string FindNextScenarioId(string currentScenarioId)
         {
             if (string.IsNullOrEmpty(currentScenarioId)) return string.Empty;
+            if (GameServices.TryGet(out ScenarioCampaignManager campaign))
+            {
+                return campaign.GetNextScenarioId(currentScenarioId);
+            }
+
+            if (GameServices.TryGet(out GameControlService control) && GameServices.TryGet(out IScenarioRepository configuredRepo))
+            {
+                return control.FindNextCampaignScenarioId(currentScenarioId, configuredRepo);
+            }
+
             if (!GameServices.TryGet(out IScenarioRepository repo)) return string.Empty;
 
             List<ScenarioDefinition> scenarios = repo.GetAllScenarios();

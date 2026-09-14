@@ -159,5 +159,30 @@ namespace NihongoLife.Tests
             StringAssert.Contains("missing objective", result.ToLogString());
             StringAssert.Contains("missing node", result.ToLogString());
         }
+
+        [Test]
+        public void GameControlService_OrdersCampaignAndFindsNextScenario()
+        {
+            var controlObject = new GameObject("GameControlService");
+            var control = controlObject.AddComponent<GameControlService>();
+            var database = ScriptableObject.CreateInstance<GameControlDatabase>();
+            database.campaignScenarioIds = new List<string>
+            {
+                "scenario.street.first_talk",
+                "scenario.konbini.buy_onigiri",
+                "scenario.house1.greeting"
+            };
+
+            typeof(GameControlService)
+                .GetField("database", System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic)
+                ?.SetValue(control, database);
+
+            Assert.AreEqual("scenario.konbini.buy_onigiri", control.FindNextCampaignScenarioId("scenario.street.first_talk"));
+            Assert.AreEqual("scenario.house1.greeting", control.FindNextCampaignScenarioId("scenario.konbini.buy_onigiri"));
+            Assert.AreEqual(string.Empty, control.FindNextCampaignScenarioId("scenario.house1.greeting"));
+
+            Object.DestroyImmediate(database);
+            Object.DestroyImmediate(controlObject);
+        }
     }
 }
