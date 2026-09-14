@@ -15,6 +15,7 @@ namespace NihongoLife.Player
         [SerializeField] private float rotationSpeed = 12f;
         [SerializeField] private float acceleration = 12f;
         [SerializeField] private float deceleration = 16f;
+        [SerializeField] private float maxFallSpeed = -20f;
 
         [Header("Ground Detection")]
         [SerializeField] private Transform groundCheck;
@@ -61,19 +62,19 @@ namespace NihongoLife.Player
 
         private void HandleGroundCheck()
         {
-            // Simple grounding check. Fallback if groundCheck transform isn't assigned
+            bool controllerGrounded = _characterController.isGrounded;
             if (groundCheck != null)
             {
-                _isGrounded = Physics.CheckSphere(groundCheck.position, groundDistance, groundMask);
+                _isGrounded = controllerGrounded || Physics.CheckSphere(groundCheck.position, groundDistance, groundMask, QueryTriggerInteraction.Ignore);
             }
             else
             {
-                _isGrounded = _characterController.isGrounded;
+                _isGrounded = controllerGrounded;
             }
 
             if (_isGrounded && _velocity.y < 0)
             {
-                _velocity.y = -2f; // Slight downward force to keep grounded
+                _velocity.y = -2f;
             }
         }
 
@@ -123,10 +124,15 @@ namespace NihongoLife.Player
             }
 
             // Apply gravity
-            _velocity.y += gravity * Time.deltaTime;
+            _velocity.y = Mathf.Max(_velocity.y + gravity * Time.deltaTime, maxFallSpeed);
             Vector3 finalMove = _smoothedMoveDirection * currentSpeed;
             finalMove.y = _velocity.y;
-            _characterController.Move(finalMove * Time.deltaTime);
+            CollisionFlags flags = _characterController.Move(finalMove * Time.deltaTime);
+            if ((flags & CollisionFlags.Below) != 0 && _velocity.y < 0f)
+            {
+                _velocity.y = -2f;
+                _isGrounded = true;
+            }
         }
 
         private void HandleInteractionInput()

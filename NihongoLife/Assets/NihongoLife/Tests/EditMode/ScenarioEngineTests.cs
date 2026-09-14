@@ -1,5 +1,6 @@
 using NUnit.Framework;
 using UnityEngine;
+using NihongoLife.Core;
 using NihongoLife.Data;
 using NihongoLife.Scenario;
 using NihongoLife.Scoring;

@@ -1,21 +1,23 @@
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.InputSystem;
 using TMPro;
 
 namespace NihongoLife.UI
 {
     public class TutorialUI : MonoBehaviour
     {
+        private const string TutorialCompletedKey = "TutorialCompleted";
+
+        [SerializeField] private float autoHideSeconds = 5f;
+
         private GameObject panel;
         private TextMeshProUGUI instructionsText;
-        private bool hasMoved = false;
-        private bool hasInteracted = false;
-        private bool hasBag = false;
+        private float _hideAtTime;
 
         public void Initialize(TMP_FontAsset font)
         {
-            // Only show tutorial once per session/save
-            if (PlayerPrefs.GetInt("TutorialCompleted", 0) == 1)
+            if (PlayerPrefs.GetInt(TutorialCompletedKey, 0) == 1)
             {
                 return;
             }
@@ -43,44 +45,39 @@ namespace NihongoLife.UI
             instructionsText.fontSize = 24;
             instructionsText.alignment = TextAlignmentOptions.Center;
             instructionsText.color = Color.white;
-            instructionsText.text = "Sử dụng phím W A S D để di chuyển";
+            instructionsText.text = "S\u1eed d\u1ee5ng ph\u00edm W A S D \u0111\u1ec3 di chuy\u1ec3n";
 
             panel.SetActive(true);
+            _hideAtTime = Time.unscaledTime + autoHideSeconds;
         }
 
         private void Update()
         {
             if (panel == null || !panel.activeSelf) return;
 
-            if (!hasMoved)
+            if (Time.unscaledTime >= _hideAtTime || HasMovementInput())
             {
-                if (Input.GetAxis("Horizontal") != 0 || Input.GetAxis("Vertical") != 0)
-                {
-                    hasMoved = true;
-                    instructionsText.text = "Sử dụng chuột để xoay Camera\nNhấn [E] để tương tác với nhân vật/đồ vật";
-                }
+                CompleteTutorial();
             }
-            else if (!hasInteracted)
-            {
-                if (Input.GetKeyDown(KeyCode.E))
-                {
-                    hasInteracted = true;
-                    instructionsText.text = "Nhấn [B] để mở Balo (Inventory)";
-                }
-            }
-            else if (!hasBag)
-            {
-                if (Input.GetKeyDown(KeyCode.B))
-                {
-                    hasBag = true;
-                    CompleteTutorial();
-                }
-            }
+        }
+
+        private static bool HasMovementInput()
+        {
+            if (Keyboard.current == null) return false;
+
+            return Keyboard.current.wKey.wasPressedThisFrame
+                || Keyboard.current.aKey.wasPressedThisFrame
+                || Keyboard.current.sKey.wasPressedThisFrame
+                || Keyboard.current.dKey.wasPressedThisFrame
+                || Keyboard.current.upArrowKey.wasPressedThisFrame
+                || Keyboard.current.downArrowKey.wasPressedThisFrame
+                || Keyboard.current.leftArrowKey.wasPressedThisFrame
+                || Keyboard.current.rightArrowKey.wasPressedThisFrame;
         }
 
         private void CompleteTutorial()
         {
-            PlayerPrefs.SetInt("TutorialCompleted", 1);
+            PlayerPrefs.SetInt(TutorialCompletedKey, 1);
             PlayerPrefs.Save();
             panel.SetActive(false);
         }
