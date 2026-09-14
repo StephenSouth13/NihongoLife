@@ -14,6 +14,8 @@ namespace NihongoLife.UI
         [SerializeField] private Button vietnameseButton;
         [SerializeField] private Button englishButton;
         [SerializeField] private Button japaneseButton;
+        [SerializeField] private Button guideButton;
+        [SerializeField] private Button aboutButton;
 
         [Header("Text")]
         [SerializeField] private TextMeshProUGUI titleText;
@@ -30,12 +32,14 @@ namespace NihongoLife.UI
         [Header("Settings")]
         [SerializeField] private string targetGameplayScene = "90_TestSandbox";
         [SerializeField] private string targetScenarioId = "scenario.konbini.buy_onigiri";
-        [SerializeField] private string authorName = "VTC Academy - NihongoLife Team";
-        [SerializeField] private string projectRole = "Japanese learning simulation project";
+        [SerializeField] private string authorName = "quachthanhlong.com";
+        [SerializeField] private string projectRole = "Creator of Nihongo Life";
 
         private void Start()
         {
             EnsureSettingsService();
+            authorName = "quachthanhlong.com";
+            projectRole = "Creator of Nihongo Life";
             AutoBindExistingMenu();
             ImproveMenuPresentation();
             CleanExistingLayout();
@@ -47,6 +51,8 @@ namespace NihongoLife.UI
             if (vietnameseButton != null) vietnameseButton.onClick.AddListener(() => SetLanguage(GameLanguage.Vietnamese));
             if (englishButton != null) englishButton.onClick.AddListener(() => SetLanguage(GameLanguage.English));
             if (japaneseButton != null) japaneseButton.onClick.AddListener(() => SetLanguage(GameLanguage.Japanese));
+            if (guideButton != null) guideButton.onClick.AddListener(() => ToggleInfoPanel(guideTitleText));
+            if (aboutButton != null) aboutButton.onClick.AddListener(() => ToggleInfoPanel(creditsTitleText));
 
             if (GameServices.TryGet(out GameSettingsService settings))
             {
@@ -129,6 +135,8 @@ namespace NihongoLife.UI
             if (guideBodyText == null) guideBodyText = transform.Find("GuidePanel/Body")?.GetComponent<TextMeshProUGUI>();
             if (creditsTitleText == null) creditsTitleText = transform.Find("CreditsPanel/Title")?.GetComponent<TextMeshProUGUI>();
             if (creditsBodyText == null) creditsBodyText = transform.Find("CreditsPanel/Body")?.GetComponent<TextMeshProUGUI>();
+            if (guideButton == null) guideButton = transform.Find("GuideButton")?.GetComponent<Button>();
+            if (aboutButton == null) aboutButton = transform.Find("AboutButton")?.GetComponent<Button>();
             if (startButtonText == null && startButton != null) startButtonText = startButton.GetComponentInChildren<TextMeshProUGUI>();
             if (quitButtonText == null && quitButton != null) quitButtonText = quitButton.GetComponentInChildren<TextMeshProUGUI>();
         }
@@ -168,7 +176,7 @@ namespace NihongoLife.UI
                     out guideBodyText);
             }
 
-            ConfigureInfoPanel(guideTitleText, guideBodyText, new Vector2(-500f, -72f), new Vector2(405f, 330f));
+            ConfigureInfoPanel(guideTitleText, guideBodyText, new Vector2(0f, -28f), new Vector2(520f, 300f));
 
             if (creditsTitleText == null || creditsBodyText == null)
             {
@@ -181,7 +189,13 @@ namespace NihongoLife.UI
                     out creditsBodyText);
             }
 
-            ConfigureInfoPanel(creditsTitleText, creditsBodyText, new Vector2(500f, -72f), new Vector2(405f, 330f));
+            ConfigureInfoPanel(creditsTitleText, creditsBodyText, new Vector2(0f, -28f), new Vector2(520f, 300f));
+
+            guideButton ??= CreateLanguageButton("GuideButton", "How", new Vector2(-112f, -230f), font);
+            aboutButton ??= CreateLanguageButton("AboutButton", "About", new Vector2(112f, -230f), font);
+            MoveRect(guideButton, new Vector2(-112f, -230f), new Vector2(170f, 46f));
+            MoveRect(aboutButton, new Vector2(112f, -230f), new Vector2(170f, 46f));
+            HideInfoPanels();
         }
 
         private void EnsureLanguageSelector()
@@ -210,10 +224,11 @@ namespace NihongoLife.UI
 
             // Settings Button
             settingsButton = CreateLanguageButton("SettingsButton", "Cài đặt", new Vector2(400f, 200f), font);
-            settingsButton.GetComponent<RectTransform>().sizeDelta = new Vector2(120f, 44f);
+            MoveRect(settingsButton, new Vector2(420f, 220f), new Vector2(140f, 44f));
             var txt = settingsButton.transform.Find("Text").GetComponent<TextMeshProUGUI>();
             txt.text = "Cài đặt";
 
+            SetButtonText(settingsButton, Text("Cài đặt", "Settings", "設定"));
             settingsButton.onClick.AddListener(() => settingsUI.Show());
         }
 
@@ -382,10 +397,13 @@ namespace NihongoLife.UI
             if (startButtonText != null) startButtonText.text = Text("Bắt đầu", "Start", "始める");
             if (quitButtonText != null) quitButtonText.text = Text("Thoát", "Quit", "終了");
             if (languageLabelText != null) languageLabelText.text = Text("Ngôn ngữ giao diện", "Interface language", "表示言語");
+            SetButtonText(guideButton, Text("Cách chơi", "How to play", "遊び方"));
+            SetButtonText(aboutButton, Text("Về tôi", "About me", "作者"));
+            SetButtonText(settingsButton, Text("Cài đặt", "Settings", "設定"));
 
             if (guideTitleText != null) guideTitleText.text = Text("Cách chơi", "How to play", "遊び方");
             if (guideBodyText != null) guideBodyText.text = BuildGuideText(language);
-            if (creditsTitleText != null) creditsTitleText.text = Text("Tác giả", "Credits", "クレジット");
+            if (creditsTitleText != null) creditsTitleText.text = Text("Về tôi", "About me", "作者");
             if (creditsBodyText != null) creditsBodyText.text = BuildCreditsText(language);
 
             SetButtonSelected(vietnameseButton, language == GameLanguage.Vietnamese);
@@ -421,25 +439,25 @@ namespace NihongoLife.UI
             {
                 GameLanguage.English =>
                     $"Author: {authorName}\n" +
+                    "Website: quachthanhlong.com\n" +
                     $"Role: {projectRole}\n\n" +
-                    "Scenario Japanese practice\n" +
-                    "Dialogue, scoring, inventory, AI NPC replies\n" +
-                    "Friendly Japanese town art direction\n\n" +
-                    "Built for VTC Academy learning and demo use.",
+                    "Japanese learning simulation\n" +
+                    "Scenario design, dialogue, scoring, inventory, AI NPC replies\n" +
+                    "Prepared for future online learner communication.",
                 GameLanguage.Japanese =>
                     $"作者: {authorName}\n" +
+                    "Website: quachthanhlong.com\n" +
                     $"役割: {projectRole}\n\n" +
-                    "シナリオ型日本語練習\n" +
+                    "シナリオ型日本語学習シミュレーション\n" +
                     "会話、スコア、バッグ、AI NPC\n" +
-                    "楽しく学べる日本の町\n\n" +
-                    "VTC Academyの学習・デモ用に制作。",
+                    "将来のオンライン交流に対応する設計。",
                 _ =>
                     $"Tác giả: {authorName}\n" +
+                    "Website: quachthanhlong.com\n" +
                     $"Vai trò: {projectRole}\n\n" +
-                    "Luyện tiếng Nhật theo tình huống\n" +
+                    "Mô phỏng học tiếng Nhật theo tình huống\n" +
                     "Hội thoại, điểm số, balo, NPC AI\n" +
-                    "Khu phố Nhật thân thiện, dễ học\n\n" +
-                    "Xây dựng cho học tập và demo tại VTC Academy."
+                    "Có nền tảng để phát triển giao tiếp online giữa người chơi."
             };
         }
 
@@ -529,6 +547,52 @@ namespace NihongoLife.UI
             {
                 image.color = selected ? new Color(0.95f, 0.72f, 0.25f, 1f) : new Color(0.12f, 0.15f, 0.17f, 0.94f);
             }
+        }
+
+        private static void SetButtonText(Button button, string text)
+        {
+            if (button == null) return;
+            var label = button.GetComponentInChildren<TextMeshProUGUI>();
+            if (label == null) return;
+
+            label.text = text;
+            label.enableAutoSizing = true;
+            label.fontSizeMin = 10f;
+            label.fontSizeMax = 18f;
+            label.overflowMode = TextOverflowModes.Ellipsis;
+
+            var labelRect = label.GetComponent<RectTransform>();
+            var buttonRect = button.GetComponent<RectTransform>();
+            if (labelRect != null && buttonRect != null)
+            {
+                labelRect.anchorMin = new Vector2(0.5f, 0.5f);
+                labelRect.anchorMax = new Vector2(0.5f, 0.5f);
+                labelRect.pivot = new Vector2(0.5f, 0.5f);
+                labelRect.anchoredPosition = Vector2.zero;
+                labelRect.sizeDelta = new Vector2(Mathf.Max(48f, buttonRect.sizeDelta.x - 24f), buttonRect.sizeDelta.y - 10f);
+            }
+        }
+
+        private void ToggleInfoPanel(TextMeshProUGUI title)
+        {
+            Transform panel = title != null ? title.transform.parent : null;
+            if (panel == null) return;
+
+            bool shouldShow = !panel.gameObject.activeSelf;
+            HideInfoPanels();
+            panel.gameObject.SetActive(shouldShow);
+        }
+
+        private void HideInfoPanels()
+        {
+            SetInfoPanelVisible(guideTitleText, false);
+            SetInfoPanelVisible(creditsTitleText, false);
+        }
+
+        private static void SetInfoPanelVisible(TextMeshProUGUI title, bool visible)
+        {
+            Transform panel = title != null ? title.transform.parent : null;
+            if (panel != null) panel.gameObject.SetActive(visible);
         }
     }
 }
