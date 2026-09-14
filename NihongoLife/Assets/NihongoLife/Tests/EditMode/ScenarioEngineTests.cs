@@ -184,5 +184,31 @@ namespace NihongoLife.Tests
             Object.DestroyImmediate(database);
             Object.DestroyImmediate(controlObject);
         }
+
+        [Test]
+        public void LocalOnlineWorldService_TracksPresenceAndChat()
+        {
+            GameServices.Clear();
+            var onlineWorld = new LocalOnlineWorldService();
+            onlineWorld.Initialize();
+
+            OnlineChatMessage receivedMessage = null;
+            onlineWorld.OnChatMessageReceived += message => receivedMessage = message;
+
+            onlineWorld.ConnectLocalPlayer("player-1", "Aiko");
+            onlineWorld.UpdateLocalPlayerPose("90_TestSandbox", new Vector3(1f, 0f, 2f), Quaternion.Euler(0f, 45f, 0f));
+            onlineWorld.SendChatMessage("town", "こんにちは");
+
+            Assert.IsTrue(onlineWorld.IsConnected);
+            Assert.AreEqual(1, onlineWorld.VisiblePlayers.Count);
+            Assert.AreEqual("90_TestSandbox", onlineWorld.VisiblePlayers[0].sceneName);
+            Assert.GreaterOrEqual(onlineWorld.ChatHistory.Count, 2);
+            Assert.NotNull(receivedMessage);
+            Assert.AreEqual("こんにちは", receivedMessage.text);
+
+            onlineWorld.Disconnect();
+            Assert.IsFalse(onlineWorld.IsConnected);
+            Assert.AreEqual(0, onlineWorld.VisiblePlayers.Count);
+        }
     }
 }
