@@ -35,8 +35,8 @@ namespace NihongoLife.Interaction
         private Coroutine _openRoutine;
 
         public string AreaId => areaId;
-        public string GetPromptJa() => _isOpen ? "入る" : promptJa;
-        public string GetpromptEn() => _isOpen ? "Vào cửa hàng" : promptEn;
+        public string GetPromptJa() => _isOpen ? "ドアを閉める" : promptJa;
+        public string GetpromptEn() => _isOpen ? "Đóng cửa" : promptEn;
         public Transform GetTransform() => transform;
 
         private void Awake()
@@ -50,16 +50,23 @@ namespace NihongoLife.Interaction
 
         public void Interact(GameObject player)
         {
-            var scenarioManager = ScenarioManager.Instance;
-            Open();
-            if (scenarioManager != null && scenarioManager.CanEnterArea(areaId))
+            if (!_isOpen)
             {
-                scenarioManager.OnAreaEntered(areaId);
-            }
+                var scenarioManager = ScenarioManager.Instance;
+                Open();
+                if (scenarioManager != null && scenarioManager.CanEnterArea(areaId))
+                {
+                    scenarioManager.OnAreaEntered(areaId);
+                }
 
-            if (enterAfterOpening && player != null)
+                if (enterAfterOpening && player != null)
+                {
+                    StartCoroutine(MovePlayerInsideAfterDoorOpens(player));
+                }
+            }
+            else
             {
-                StartCoroutine(MovePlayerInsideAfterDoorOpens(player));
+                Close();
             }
         }
 
@@ -78,31 +85,49 @@ namespace NihongoLife.Interaction
                 StopCoroutine(_openRoutine);
             }
 
-            _openRoutine = StartCoroutine(AnimateOpen());
+            _openRoutine = StartCoroutine(AnimateOpen(true));
         }
 
-        private IEnumerator AnimateOpen()
+        public void Close()
+        {
+            if (!_isOpen) return;
+
+            _isOpen = false;
+            if (blockingCollider != null)
+            {
+                blockingCollider.enabled = true;
+            }
+
+            if (_openRoutine != null)
+            {
+                StopCoroutine(_openRoutine);
+            }
+
+            _openRoutine = StartCoroutine(AnimateOpen(false));
+        }
+
+        private IEnumerator AnimateOpen(bool opening)
         {
             if (doorType == DoorType.Swing)
             {
-                yield return AnimateSwing();
+                yield return AnimateSwing(opening);
                 yield break;
             }
 
             if (leftDoorPanel != null && rightDoorPanel != null)
             {
-                yield return AnimateSlidingPair();
+                yield return AnimateSlidingPair(opening);
                 yield break;
             }
 
-            yield return AnimateSingleSlide();
+            yield return AnimateSingleSlide(opening);
         }
 
-        private IEnumerator AnimateSwing()
+        private IEnumerator AnimateSwing(bool opening)
         {
             float elapsed = 0f;
             Quaternion start = doorVisual.localRotation;
-            Quaternion end = start * Quaternion.Euler(0f, openAngle, 0f);
+            Quaternion end = opening ? (start * Quaternion.Euler(0f, openAngle, 0f)) : Quaternion.identity;
 
             while (elapsed < openDuration)
             {
@@ -115,11 +140,11 @@ namespace NihongoLife.Interaction
             doorVisual.localRotation = end;
         }
 
-        private IEnumerator AnimateSingleSlide()
+        private IEnumerator AnimateSingleSlide(bool opening)
         {
             float elapsed = 0f;
             Vector3 start = doorVisual.localPosition;
-            Vector3 end = start + slideOffset;
+            Vector3 end = opening ? (start + slideOffset) : Vector3.zero;
 
             while (elapsed < openDuration)
             {
@@ -132,13 +157,13 @@ namespace NihongoLife.Interaction
             doorVisual.localPosition = end;
         }
 
-        private IEnumerator AnimateSlidingPair()
+        private IEnumerator AnimateSlidingPair(bool opening)
         {
             float elapsed = 0f;
             Vector3 leftStart = leftDoorPanel.localPosition;
             Vector3 rightStart = rightDoorPanel.localPosition;
-            Vector3 leftEnd = leftStart + leftSlideOffset;
-            Vector3 rightEnd = rightStart + rightSlideOffset;
+            Vector3 leftEnd = opening ? (leftStart + leftSlideOffset) : Vector3.zero;
+            Vector3 rightEnd = opening ? (rightStart + rightSlideOffset) : Vector3.zero;
 
             while (elapsed < openDuration)
             {
