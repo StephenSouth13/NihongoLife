@@ -12,6 +12,8 @@ Phân công công việc giữa 3 "nhân sự" AI: **Claude** (nội dung + qu�
 
 Nếu bạn thấy hợp hơn thì đổi chéo Codex/Antigravity — 2 task độc lập với nhau nên hoán đổi không ảnh hưởng gì.
 
+**Cập nhật (2026-09-16)**: Đã thêm `Assets/NihongoLife/Scripts/Editor/AutoBuildOnLoad.cs` — tự động chạy `CharacterBuilder.BuildCharacterSystem()` và `TrailerSceneBuilder.BuildTrailerSceneSafe()` (2 bản an toàn/skip-if-exists) đúng 1 lần mỗi khi mở Unity, không cần bấm menu `NihongoLife/Characters/...` hay `NihongoLife/Trailer/...` cho việc thường ngày nữa. Chỉ còn cần bấm tay khi: (1) muốn ép reset thật (`Force Rebuild ...`), hoặc (2) vừa thả FBX nhân vật mới vào giữa lúc Unity đang mở (auto-run chỉ chạy 1 lần lúc mở Editor, không lặp lại mỗi lần recompile) — lúc đó bấm `Scan New Characters` thủ công 1 lần.
+
 ---
 
 ## TASK-A (Codex) — Auto-import pipeline cho nhân vật/asset mới
@@ -76,7 +78,68 @@ Nếu bạn thấy hợp hơn thì đổi chéo Codex/Antigravity — 2 task đ�
 
 ---
 
+## TASK-C (Codex) — Wire ramen shop & station vào scene gameplay thật (90_TestSandbox)
+
+**Bối cảnh**: `scenario_restaurant_order_ramen.asset` và `scenario_station_buy_ticket.asset` (đã viết, xem `STORY_BIBLE.md`) mỗi cái có 1 node `GoToArea` (`nodeType: 3`) cần trigger thật trong scene mới chạy được:
+- Ramen: `targetAreaId: ramen_shop_entrance`.
+- Station: `targetAreaId: station_entrance`.
+
+Sau khi vào đúng area, các node `Dialogue` tiếp theo (`speakerId: npc_ramen_owner` / `npc_station_staff`) tự chạy qua `DialogueManager` — **không cần** cơ chế `TalkToNPC`/tương tác trực tiếp để scenario chạy được, nên việc bắt buộc chỉ là 2 trigger area. Đặt NPC Yamada/Kimura đứng trong shop chỉ là polish hình ảnh, không bắt buộc cho logic.
+
+**CẢNH BÁO QUAN TRỌNG — đọc trước khi code**: `SceneBuilder.cs` đang chứa hàm dựng toàn bộ `90_TestSandbox.unity` (cửa hàng konbini, kệ, quầy thu ngân...) và **3 `[MenuItem]` liên quan đều đã bị comment out** (`// [MenuItem("NihongoLife/Rebuild Gameplay Sandbox")]` dòng 80) — rõ ràng là cố ý vô hiệu hoá để không ai lỡ tay bấm lại và ghi đè scene đã được chỉnh tay rất nhiều. **Tuyệt đối không gọi lại `BuildAllScenes`/hàm rebuild sandbox hiện có, không sửa để bật lại menu đó.** Đây đúng loại lỗi chủ dự án vừa bị (xem lịch sử task TASK-A/B: rebuild đè mất đồ đã chỉnh tay) — lặp lại ở `90_TestSandbox` sẽ nghiêm trọng hơn nhiều vì đây là scene gameplay chính.
+
+**Yêu cầu**: Chỉnh `90_TestSandbox.unity` theo kiểu **cộng dồn (additive)**, không đụng vào hàm dựng scene hiện có và không commit editor menu/tool setup riêng:
+1. Mở/chỉnh `90_TestSandbox.unity` hiện có (giữ nguyên toàn bộ nội dung đã có), **không** gọi `NewScene`, không rebuild sandbox.
+2. Kiểm tra trước khi tạo: nếu đã có GameObject tên `RamenShopArea`/`StationArea` trong scene rồi thì **skip/giữ nguyên, không tạo trùng** — giống hệt pattern `skipIfExists` đã dùng ở TASK-A/B.
+3. Nếu chưa có, thêm mới (không xoá/đổi gì object cũ):
+   - 1 trigger area cho `ramen_shop_entrance`: dùng `ScenarioAreaTrigger` (`Assets/NihongoLife/Scripts/Interaction/ScenarioAreaTrigger.cs`) trên 1 BoxCollider `isTrigger=true`, `areaId = "ramen_shop_entrance"`, đặt cạnh vị trí trống trong scene (tự chọn toạ độ không đè lên object khác, ví dụ cách khu konbini hiện có vài mét).
+   - 1 trigger area cho `station_entrance` tương tự, `areaId = "station_entrance"`.
+   - Tham khảo đúng pattern `CreateCashier()` trong `SceneBuilder.cs` (dòng ~760, đã có sẵn ví dụ NPCController + prefab instantiate + fallback primitive) để đặt NPC Yamada (`npcId: npc_ramen_owner`) và Kimura (`npcId: npc_station_staff`) đứng cạnh 2 khu vực trên — dùng `NL_Guide`/`NL_Neighbor` prefab tạm (giống cách mình vừa map trong `TrailerSceneBuilder.CastPrefabOverrides`) làm placeholder, kèm log warning nhắc đây là model tạm.
+4. Lưu chính scene đang mở/đang chỉnh, không tạo scene mới.
+5. **Không thêm menu/tool phải bấm trong `NihongoLife/...` cho game setup.** Scene gameplay thật phải có sẵn trigger/NPC cần thiết sau khi chỉnh, hoặc nếu cần script hỗ trợ thì chỉ dùng script tạm thời không commit. Game không được phụ thuộc vào việc người làm phải nhớ bấm menu editor riêng.
+
+**Acceptance criteria**:
+- Không còn menu/editor tool mới kiểu `NihongoLife/Scenes/Add ...` để setup ramen/station; mở scene là đã có đúng 1 `RamenShopArea` và đúng 1 `StationArea`.
+- Mở `90_TestSandbox`, xác nhận toàn bộ nội dung konbini/shop cũ (kệ, quầy, cửa) còn nguyên, không bị dịch chuyển hay mất.
+- Vào Play Mode, load `scenario.restaurant.order_ramen`, đi tới vị trí `ramen_shop_entrance` → objective `obj_enter_shop` hoàn thành, dialogue Yamada tự chạy tiếp.
+- Tương tự cho `scenario.station.buy_ticket` với `station_entrance`.
+
+## TASK-D (Codex) — Audit hệ thống chat/online multiplayer đã có sẵn (chưa từng chạy thật)
+
+**Phát hiện quan trọng (2026-09-16)**: Chủ dự án tưởng game chưa có chat/online giữa người chơi, nhưng thật ra **đã có sẵn gần như đầy đủ code**, chỉ chưa từng nối với backend thật nên chưa ai thấy nó chạy. Đọc kỹ trước khi code thêm bất cứ gì — tránh viết trùng:
+
+- `Assets/NihongoLife/Scripts/Core/OnlineWorldService.cs` — interface `IOnlineWorldService` + `LocalOnlineWorldService` (giả lập local khi chưa có backend).
+- `Assets/NihongoLife/Scripts/Core/SupabaseOnlineWorldService.cs` — bản thật: presence (thấy người chơi khác) + chat qua Supabase Realtime Broadcast, có `SendChatMessage`, `OnChatMessageReceived`, lưu lịch sử chat, persist vào bảng `chat_messages`.
+- `Assets/NihongoLife/Scripts/Core/SupabaseRealtimeClient.cs` — WebSocket client cho Presence/Broadcast/Postgres Changes.
+- `Assets/NihongoLife/Scripts/Core/OnlineWorldBootstrap.cs` — tự connect người chơi local khi vào game, publish vị trí mỗi 0.2s.
+- `Assets/NihongoLife/Scripts/UI/HUDUI.cs` (dòng ~45, ~209-270, ~500-563) — **UI chat đã dựng sẵn hoàn chỉnh**: panel, ô nhập, lịch sử tin nhắn, phím Enter để mở/gửi.
+- `Assets/NihongoLife/Scripts/Player/RemotePlayerManager.cs` + `RemotePlayerAvatar.cs` — hiển thị người chơi khác trong thế giới.
+- `Assets/NihongoLife/Scripts/Core/CoopSessionService.cs`, `Scripts/Scenario/CoopScenarioController.cs`, `Scripts/UI/CoopLobbyUI.cs` — hệ thống chơi chung 1 scenario (co-op).
+- `Assets/NihongoLife/Scripts/Core/FriendService.cs` + `Scripts/UI/FriendsUI.cs` — kết bạn.
+- `Assets/NihongoLife/Scripts/Core/LeaderboardService.cs` + `Scripts/UI/LeaderboardUI.cs` — bảng xếp hạng.
+- `Assets/NihongoLife/Scripts/Core/SupabaseAuthService.cs` + `Scripts/UI/AuthUI.cs` — đăng nhập.
+- `Assets/NihongoLife/Scripts/Core/AppRoot.cs` dòng ~79-138: đã **wire đúng** — nếu `SupabaseClient.IsConfigured` (có `supabaseProjectUrl`/`supabaseAnonKey` trong `GameControlDatabase`) thì dùng `SupabaseOnlineWorldService` (thật), không thì tự fallback `LocalOnlineWorldService` (giả lập). Hiện tại 2 field đó đang rỗng (`GameControlDatabase.cs` dòng 68-69) → toàn bộ hệ thống đang chạy chế độ giả lập local, chưa ai test qua backend thật bao giờ.
+
+**Lý do quan trọng**: đoạn code này viết ra nhưng **chưa từng chạy với backend thật**, nên rất có thể có bug tiềm ẩn (parse JSON sai field, race condition khi reconnect, RLS-mismatch giả định sai cấu trúc bảng...). Claude sẽ tự tạo Supabase project + 8 bảng cần thiết riêng (không phải việc của Codex, đang chờ chủ dự án xác nhận) — 8 bảng code đang gọi tới: `coop_sessions`, `coop_participants`, `friendships`, `leaderboard`, `player_progress`, `profiles`, `scenario_scores`, `chat_messages`.
+
+**Yêu cầu cho Codex — CHỈ audit + fix bug đọc thấy, KHÔNG tự bịa Supabase URL/key, KHÔNG tự tạo project**:
+1. Đọc hết các file liệt kê ở trên, liệt kê rõ: field/kiểu dữ liệu mỗi REST call hoặc broadcast payload đang giả định (dùng để Claude đối chiếu khi tạo schema thật cho khớp 100%, tránh lệch tên cột).
+2. Tìm và sửa bug logic đọc thấy được qua code review tĩnh (không cần chạy): null-check thiếu, race condition rõ ràng, JSON field name không khớp giữa nơi gửi và nơi nhận (vd so sánh field trong `SendChatMessage` với field trong `HandleRemoteChatMessage`), event không unsubscribe gây leak (theo đúng tinh thần `TODO_CHECKLIST.md` mục "huỷ event subscription đúng cách").
+3. Kiểm tra `HUDUI` chat panel: UI đã dựng nhưng có bind đúng `_onlineWorld` chưa, có handle trường hợp `_onlineWorld == null` (chưa có GameServices) không bị NullReferenceException không.
+4. Viết lại danh sách rõ ràng: **cái gì chắc chắn hoạt động ngay khi có Supabase thật**, **cái gì cần Claude tạo thêm bảng/RLS mới hoạt động**, **cái gì nghi có bug cần fix trước khi test** — trả lời thẳng vào cuối task này trong `TEAM_TASKS.md` hoặc file mới `Docs/ONLINE_AUDIT.md`.
+
+**Không làm**: không tự điền `supabaseProjectUrl`/`supabaseAnonKey`, không tự tạo Supabase project, không tự sửa schema — phần backend là của Claude.
+
+**CẬP NHẬT (2026-09-16, đã xong phần backend)**: Claude đã tạo xong Supabase project thật `nihongolife` (region ap-southeast-1), apply migration đủ 8 bảng (`profiles`, `player_progress`, `scenario_scores`, `chat_messages`, `coop_sessions`, `coop_participants`, `friendships`, `leaderboard`) kèm RLS policy cho từng bảng (đã chạy security advisor, không có cảnh báo), và đã điền `supabaseProjectUrl` + `supabaseAnonKey` + bật `enableOnlineSync: 1` vào `Assets/NihongoLife/Resources/Control/NihongoLifeControlDatabase.asset`. Nghĩa là **giờ có thể test thật** (không chỉ audit tĩnh nữa) — nhắc lưu ý khi audit/test:
+- `chat_messages.user_id` cố tình để kiểu `text` (không phải `uuid` FK) vì người chơi có thể chat mà chưa đăng nhập (dùng `SystemInfo.deviceUniqueIdentifier`) — không phải bug, đừng "sửa" thành uuid.
+- Các bảng còn lại (`profiles`, `player_progress`, `coop_*`, `friendships`, `leaderboard`) đều yêu cầu người chơi đã đăng nhập thật qua `SupabaseAuthService`/`AuthUI` (RLS check `auth.uid()`) — nếu test mà chưa đăng nhập, các tính năng đó sẽ fail có chủ đích (không phải lỗi).
+- Nếu Realtime Broadcast (`chat_message`) không nhận được ở client khác dù đã connect — khả năng do Supabase Realtime Authorization cho channel cần thêm policy trên `realtime.messages` (tính năng mới của Supabase), báo lại cho Claude thay vì tự đoán sửa, vì đây là cấu hình phía backend.
+- 6 field cũ `supabaseHost/postgresPort/databaseName/userName/passwordEnvironmentKey/requireSsl` trong `GameControlDatabase.cs` là tàn dư từ hướng tiếp cận Postgres-direct-connection cũ, không còn dùng (đã xác nhận `SupabaseClient` chỉ dùng REST qua `supabaseProjectUrl`/`supabaseAnonKey`) — an toàn để bỏ qua, không cần dọn trong task này.
+
 ## Việc của Claude (song song, không chờ Codex/Antigravity)
+
+- Đang xác nhận với chủ dự án về việc tạo Supabase project riêng cho NihongoLife (tài khoản hiện chỉ có 1 project không liên quan tên `hrm_crm`) — sau khi có project sẽ tạo 8 bảng + RLS rồi điền vào `GameControlDatabase`.
+- Tiếp tục viết sâu nội dung cốt truyện (mở rộng `STORY_BIBLE.md`, thêm chi tiết/nhánh cho các chapter).
 
 1. Sửa `chapterIndex` cho `house1_greeting` (3→1) theo `STORY_BIBLE.md` mục 5.
 2. Viết `scenario.restaurant.order_ramen`, `scenario.station.buy_ticket`, `scenario.town.summer_festival` theo nguyên tắc rẽ nhánh sâu ở `STORY_BIBLE.md` mục 10 (nhiều nhánh, hệ quả khác nhau, dùng đa dạng `animationCue`).

@@ -32,7 +32,9 @@ MonoBehaviour:
   allowGeminiDirectClientCalls: 1
   geminiModel: gemini-2.5-flash
   geminiApiKeyEnvironmentKey: NIHONGOLIFE_GEMINI_API_KEY
-  enableOnlineSync: 0
+  enableOnlineSync: 1
+  supabaseProjectUrl: https://kcxhynckzlkrkomnmucp.supabase.co
+  supabaseAnonKey: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImtjeGh5bmNremxrcmtvbW5tdWNwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODk1NjcwNDcsImV4cCI6MjEwNTE0MzA0N30.U9VElgrSn8quiDArQGoZXmDUDcDV2iFBKNvSnQoWSgE
   supabaseHost: aws-0-ap-northeast-2.pooler.supabase.com
   postgresPort: 5432
   databaseName: postgres
