@@ -1,0 +1,326 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3ba8f435ab5427145b206cd2a4f4ea7c, type: 3}
+  m_Name: scenario_station_buy_ticket
+  m_EditorClassIdentifier: NihongoLife::NihongoLife.Scenario.ScenarioDefinition
+  id: scenario.station.buy_ticket
+  version: 1
+  titleJa: 駅で切符を買う
+  titleEn: Mua vé ở nhà ga
+  descriptionJa: 駅員さんに行き先を伝えて、切符かICカードで改札を通りましょう。
+  descriptionEn: Hỏi đường, chọn cách thanh toán và tìm đúng sân ga tại nhà ga.
+  chapterIndex: 4
+  learningTargets:
+  - grammar.n5.made_onegaishimasu
+  - grammar.n5.kaimasu
+  - grammar.n5.tsukaimasu
+  - vocab.n5.kippu
+  - vocab.n5.ic_card
+  - vocab.n5.bansen
+  objectives:
+  - id: obj_arrive_station
+    titleJa: 駅に着く
+    titleEn: Đến nhà ga
+    isOptional: 0
+  - id: obj_ask_direction
+    titleJa: 行き先を伝える
+    titleEn: Nói điểm đến
+    isOptional: 0
+  - id: obj_choose_payment
+    titleJa: 支払い方法を選ぶ
+    titleEn: Chọn cách thanh toán
+    isOptional: 0
+  - id: obj_find_platform
+    titleJa: 番線を確認する
+    titleEn: Xác nhận đúng sân ga
+    isOptional: 0
+  nodes:
+  - id: node_station_start
+    nodeType: 3
+    nextNodeId: node_ask_direction
+    objectiveIdToComplete: obj_arrive_station
+    speakerName:
+    speakerId:
+    textJa:
+    textReading:
+    textEn:
+    textRomaji:
+    textEnglishIpa:
+    animationCue:
+    voiceClip: {fileID: 0}
+    choices: []
+    targetItemId:
+    targetNpcId:
+    targetAreaId: station_entrance
+  - id: node_ask_direction
+    nodeType: 0
+    nextNodeId:
+    objectiveIdToComplete:
+    speakerName: Kimura
+    speakerId: npc_station_staff
+    textJa: いらっしゃいませ。今日はどちらまでですか？
+    textReading: いらっしゃいませ。きょうはどちらまでですか？
+    textEn: Xin chào quý khách. Hôm nay quý khách đi đến đâu ạ?
+    textRomaji: Irasshaimase. Kyou wa dochira made desu ka?
+    textEnglishIpa:
+    animationCue: talk
+    voiceClip: {fileID: 0}
+    choices:
+    - textJa: 渋谷まで、お願いします。
+      textEn: Cho tôi đến Shibuya.
+      nextNodeId: node_fare_shibuya
+      scoreModifiers:
+      - category: Vocabulary
+        value: 10
+        reason: Dùng đúng tên ga đến
+      - category: Grammar
+        value: 10
+        reason: Dùng đúng mẫu 〜までお願いします
+      grammarTags: []
+      vocabularyTags: []
+    - textJa: 新宿までです。
+      textEn: Tôi đi đến Shinjuku.
+      nextNodeId: node_fare_shinjuku
+      scoreModifiers:
+      - category: Vocabulary
+        value: 10
+        reason: Dùng đúng tên ga đến
+      - category: Grammar
+        value: 8
+        reason: Câu trả lời rõ ràng, đúng ngữ pháp
+      grammarTags: []
+      vocabularyTags: []
+    - textJa: 駅。
+      textEn: Nhà ga.
+      nextNodeId: node_ask_direction_hint
+      scoreModifiers:
+      - category: ResponseAccuracy
+        value: -10
+        reason: Câu trả lời chưa nêu rõ điểm đến
+      grammarTags: []
+      vocabularyTags: []
+    targetItemId:
+    targetNpcId:
+    targetAreaId:
+  - id: node_ask_direction_hint
+    nodeType: 0
+    nextNodeId: node_ask_direction
+    objectiveIdToComplete:
+    speakerName: Kimura
+    speakerId: npc_station_staff
+    textJa: すみません、「（駅名）までお願いします」と言ってくださいね。
+    textReading: すみません、「（えきめい）までおねがいします」といってくださいね。
+    textEn: Xin lỗi quý khách, hãy nói kèm tên ga và "~made onegaishimasu" nhé.
+    textRomaji: Sumimasen, "(ekimei) made onegaishimasu" to itte kudasai ne.
+    textEnglishIpa:
+    animationCue: point
+    voiceClip: {fileID: 0}
+    choices: []
+    targetItemId:
+    targetNpcId:
+    targetAreaId:
+  - id: node_fare_shibuya
+    nodeType: 0
+    nextNodeId: node_payment_choice
+    objectiveIdToComplete: obj_ask_direction
+    speakerName: Kimura
+    speakerId: npc_station_staff
+    textJa: 渋谷までは200円です。
+    textReading: しぶやまではにひゃくえんです。
+    textEn: Đi đến Shibuya là 200 yên.
+    textRomaji: Shibuya made wa nihyaku-en desu.
+    textEnglishIpa:
+    animationCue: talk
+    voiceClip: {fileID: 0}
+    choices: []
+    targetItemId:
+    targetNpcId:
+    targetAreaId:
+  - id: node_fare_shinjuku
+    nodeType: 0
+    nextNodeId: node_payment_choice
+    objectiveIdToComplete: obj_ask_direction
+    speakerName: Kimura
+    speakerId: npc_station_staff
+    textJa: 新宿までは250円です。
+    textReading: しんじゅくまではにひゃくごじゅうえんです。
+    textEn: Đi đến Shinjuku là 250 yên.
+    textRomaji: Shinjuku made wa nihyaku gojuu-en desu.
+    textEnglishIpa:
+    animationCue: talk
+    voiceClip: {fileID: 0}
+    choices: []
+    targetItemId:
+    targetNpcId:
+    targetAreaId:
+  - id: node_payment_choice
+    nodeType: 0
+    nextNodeId:
+    objectiveIdToComplete:
+    speakerName: Kimura
+    speakerId: npc_station_staff
+    textJa: 切符を買いますか、ICカードを使いますか？
+    textReading: きっぷをかいますか、アイシーカードをつかいますか？
+    textEn: Quý khách mua vé giấy hay dùng thẻ IC ạ?
+    textRomaji: Kippu wo kaimasu ka, IC kaado wo tsukaimasu ka?
+    textEnglishIpa:
+    animationCue: point
+    voiceClip: {fileID: 0}
+    choices:
+    - textJa: 切符を買います。
+      textEn: Tôi sẽ mua vé giấy.
+      nextNodeId: node_buy_ticket
+      scoreModifiers:
+      - category: Vocabulary
+        value: 8
+        reason: Dùng đúng từ 切符 (vé giấy)
+      - category: Grammar
+        value: 8
+        reason: Dùng đúng động từ 買います
+      grammarTags: []
+      vocabularyTags: []
+    - textJa: ICカードを使います。
+      textEn: Tôi sẽ dùng thẻ IC.
+      nextNodeId: node_use_ic
+      scoreModifiers:
+      - category: Vocabulary
+        value: 8
+        reason: Dùng đúng từ ICカード
+      - category: Grammar
+        value: 8
+        reason: Dùng đúng động từ 使います
+      grammarTags: []
+      vocabularyTags: []
+    targetItemId:
+    targetNpcId:
+    targetAreaId:
+  - id: node_buy_ticket
+    nodeType: 0
+    nextNodeId: node_platform_question
+    objectiveIdToComplete: obj_choose_payment
+    speakerName: Kimura
+    speakerId: npc_station_staff
+    textJa: あちらの券売機で切符を買ってくださいね。
+    textReading: あちらのけんばいきできっぷをかってくださいね。
+    textEn: Quý khách hãy mua vé tại máy bán vé đằng kia nhé.
+    textRomaji: Achira no kenbaiki de kippu wo katte kudasai ne.
+    textEnglishIpa:
+    animationCue: point
+    voiceClip: {fileID: 0}
+    choices: []
+    targetItemId:
+    targetNpcId:
+    targetAreaId:
+  - id: node_use_ic
+    nodeType: 0
+    nextNodeId: node_platform_question
+    objectiveIdToComplete: obj_choose_payment
+    speakerName: Kimura
+    speakerId: npc_station_staff
+    textJa: 改札でICカードをタッチしてくださいね。
+    textReading: かいさつでアイシーカードをタッチしてくださいね。
+    textEn: Quý khách hãy chạm thẻ IC ở cổng soát vé nhé.
+    textRomaji: Kaisatsu de IC kaado wo tacchi shite kudasai ne.
+    textEnglishIpa:
+    animationCue: point
+    voiceClip: {fileID: 0}
+    choices: []
+    targetItemId:
+    targetNpcId:
+    targetAreaId:
+  - id: node_platform_question
+    nodeType: 0
+    nextNodeId:
+    objectiveIdToComplete:
+    speakerName: Kimura
+    speakerId: npc_station_staff
+    textJa: 何番線か、分かりますか？
+    textReading: なんばんせんか、わかりますか？
+    textEn: Quý khách có biết sân ga số mấy không?
+    textRomaji: Nanbansen ka, wakarimasu ka?
+    textEnglishIpa:
+    animationCue: talk
+    voiceClip: {fileID: 0}
+    choices:
+    - textJa: 3番線です。
+      textEn: Sân ga số 3 ạ.
+      nextNodeId: node_platform_correct
+      scoreModifiers:
+      - category: TaskCompletion
+        value: 10
+        reason: Xác nhận đúng số sân ga đã được thông báo
+      grammarTags: []
+      vocabularyTags: []
+    - textJa: 分かりません。
+      textEn: Em không biết ạ.
+      nextNodeId: node_platform_help
+      scoreModifiers:
+      - category: ResponseAccuracy
+        value: -5
+        reason: Chưa xác nhận lại thông tin sân ga
+      grammarTags: []
+      vocabularyTags: []
+    targetItemId:
+    targetNpcId:
+    targetAreaId:
+  - id: node_platform_help
+    nodeType: 0
+    nextNodeId: node_platform_correct
+    objectiveIdToComplete:
+    speakerName: Kimura
+    speakerId: npc_station_staff
+    textJa: 大丈夫ですよ。3番線です。あの階段を上がってください。
+    textReading: だいじょうぶですよ。さんばんせんです。あのかいだんをあがってください。
+    textEn: Không sao đâu ạ. Sân ga số 3. Quý khách hãy lên cầu thang đằng kia.
+    textRomaji: Daijoubu desu yo. San-bansen desu. Ano kaidan wo agatte kudasai.
+    textEnglishIpa:
+    animationCue: point
+    voiceClip: {fileID: 0}
+    choices: []
+    targetItemId:
+    targetNpcId:
+    targetAreaId:
+  - id: node_platform_correct
+    nodeType: 0
+    nextNodeId: node_complete
+    objectiveIdToComplete: obj_find_platform
+    speakerName: Kimura
+    speakerId: npc_station_staff
+    textJa: そうです。気をつけて行ってらっしゃい。
+    textReading: そうです。きをつけていってらっしゃい。
+    textEn: Đúng vậy ạ. Quý khách đi cẩn thận nhé.
+    textRomaji: Sou desu. Ki wo tsukete itterasshai.
+    textEnglishIpa:
+    animationCue: bow
+    voiceClip: {fileID: 0}
+    choices: []
+    targetItemId:
+    targetNpcId:
+    targetAreaId:
+  - id: node_complete
+    nodeType: 4
+    nextNodeId:
+    objectiveIdToComplete:
+    speakerName:
+    speakerId:
+    textJa:
+    textReading:
+    textEn:
+    textRomaji:
+    textEnglishIpa:
+    animationCue:
+    voiceClip: {fileID: 0}
+    choices: []
+    targetItemId:
+    targetNpcId:
+    targetAreaId:
+  startNodeId: node_station_start

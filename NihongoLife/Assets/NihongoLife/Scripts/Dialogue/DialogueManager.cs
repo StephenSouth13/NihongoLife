@@ -35,6 +35,7 @@ namespace NihongoLife.Dialogue
 
         private ScenarioNode _currentNode;
         private AudioSource _generatedVoiceSource;
+        private NihongoLife.NPC.NPCController _speakingNpc;
 
         public event Action<DialogueDisplayData> OnDialogueUpdated;
         public event Action OnDialogueClosed;
@@ -75,6 +76,11 @@ namespace NihongoLife.Dialogue
             if (node == null || node.nodeType != ScenarioNodeType.Dialogue) return;
 
             _currentNode = node;
+            if (ScenarioManager.Instance == null)
+            {
+                SetPlayerInputLockedWithoutScenario(true);
+            }
+
             Debug.Log($"[DialogueManager] Starting dialogue node: {node.id}");
 
             // Play voice clip if assigned
@@ -105,10 +111,11 @@ namespace NihongoLife.Dialogue
             }
 
             // Animation Integration
-            if (ScenarioManager.Instance != null && ScenarioManager.Instance.LastInteractedNPC != null)
+            _speakingNpc = ResolveSpeakingNpc(node);
+            if (_speakingNpc != null)
             {
-                SetConversationCamera(ScenarioManager.Instance.LastInteractedNPC.transform);
-                var animCtrl = ScenarioManager.Instance.LastInteractedNPC.GetComponent<NihongoLife.Core.CharacterAnimationController>();
+                SetConversationCamera(_speakingNpc.transform);
+                var animCtrl = _speakingNpc.GetComponent<NihongoLife.Core.CharacterAnimationController>();
                 if (animCtrl != null)
                 {
                     animCtrl.SetTalking(true);
@@ -202,7 +209,8 @@ namespace NihongoLife.Dialogue
 
             // 6. Close/Transition
             string nextNodeId = selectedChoice.nextNodeId;
-            CloseDialogue();
+            string effectiveNextNodeId = !string.IsNullOrEmpty(nextNodeId) ? nextNodeId : _currentNode.nextNodeId;
+            CloseDialogue(ShouldUnlockAfterTransition(effectiveNextNodeId), ShouldKeepCurrentSpeaker(effectiveNextNodeId));
 
             if (!string.IsNullOrEmpty(nextNodeId))
             {
@@ -237,7 +245,8 @@ namespace NihongoLife.Dialogue
 
                 PlaySelectSound();
                 string nextNodeId = choice.nextNodeId;
-                CloseDialogue();
+                string effectiveNextNodeId = !string.IsNullOrEmpty(nextNodeId) ? nextNodeId : _currentNode.nextNodeId;
+                CloseDialogue(ShouldUnlockAfterTransition(effectiveNextNodeId), ShouldKeepCurrentSpeaker(effectiveNextNodeId));
 
                 if (!string.IsNullOrEmpty(nextNodeId))
                 {
@@ -256,7 +265,7 @@ namespace NihongoLife.Dialogue
 
             // Advancing a plain node with no choices
             string nextNodeId = _currentNode.nextNodeId;
-            CloseDialogue();
+            CloseDialogue(ShouldUnlockAfterTransition(nextNodeId), ShouldKeepCurrentSpeaker(nextNodeId));
 
             if (!string.IsNullOrEmpty(nextNodeId))
             {
@@ -268,26 +277,35 @@ namespace NihongoLife.Dialogue
             }
         }
 
-        private void CloseDialogue()
+        private void CloseDialogue(bool unlockPlayerInput = true, bool keepCurrentSpeaker = false)
         {
-            if (ScenarioManager.Instance != null && ScenarioManager.Instance.LastInteractedNPC != null)
+            if (_speakingNpc != null && !keepCurrentSpeaker)
             {
-                var animCtrl = ScenarioManager.Instance.LastInteractedNPC.GetComponent<NihongoLife.Core.CharacterAnimationController>();
+                var animCtrl = _speakingNpc.GetComponent<NihongoLife.Core.CharacterAnimationController>();
                 if (animCtrl != null)
                 {
                     animCtrl.SetTalking(false);
                 }
 
-                ScenarioManager.Instance.LastInteractedNPC.StopInteracting();
+                _speakingNpc.StopInteracting();
+                _speakingNpc = null;
             }
 
-            ClearConversationCamera();
+            if (!keepCurrentSpeaker)
+            {
+                ClearConversationCamera();
+            }
+
             _currentNode = null;
             OnDialogueClosed?.Invoke();
 
-            if (ScenarioManager.Instance != null)
+            if (unlockPlayerInput && ScenarioManager.Instance != null)
             {
                 ScenarioManager.Instance.SetPlayerInputLocked(false);
+            }
+            else if (unlockPlayerInput)
+            {
+                SetPlayerInputLockedWithoutScenario(false);
             }
         }
 
@@ -400,6 +418,95 @@ namespace NihongoLife.Dialogue
             {
                 // We'll play a generic click sound or handle via sound settings
             }
+        }
+
+        private static NihongoLife.NPC.NPCController ResolveSpeakingNpc(ScenarioNode node)
+        {
+            if (node == null || string.IsNullOrEmpty(node.speakerId))
+            {
+                return null;
+            }
+
+            if (ScenarioManager.Instance != null)
+            {
+                var lastNpc = ScenarioManager.Instance.LastInteractedNPC;
+                if (lastNpc != null && lastNpc.NpcId == node.speakerId)
+                {
+                    return lastNpc;
+                }
+            }
+
+            foreach (var npc in FindObjectsByType<NihongoLife.NPC.NPCController>(FindObjectsSortMode.None))
+            {
+                if (npc.NpcId == node.speakerId)
+                {
+                    return npc;
+                }
+            }
+
+            return null;
+        }
+
+        private static bool ShouldUnlockAfterTransition(string nextNodeId)
+        {
+            if (ScenarioManager.Instance == null)
+            {
+                return true;
+            }
+
+            var scenario = ScenarioManager.Instance.CurrentScenario;
+            if (scenario == null || string.IsNullOrEmpty(nextNodeId))
+            {
+                return true;
+            }
+
+            var nextNode = scenario.GetNode(nextNodeId);
+            return nextNode == null || nextNode.nodeType != ScenarioNodeType.Dialogue;
+        }
+
+        private bool ShouldKeepCurrentSpeaker(string nextNodeId)
+        {
+            if (_speakingNpc == null || ScenarioManager.Instance == null)
+            {
+                return false;
+            }
+
+            var scenario = ScenarioManager.Instance.CurrentScenario;
+            if (scenario == null || string.IsNullOrEmpty(nextNodeId))
+            {
+                return false;
+            }
+
+            var nextNode = scenario.GetNode(nextNodeId);
+            return nextNode != null
+                && nextNode.nodeType == ScenarioNodeType.Dialogue
+                && nextNode.speakerId == _speakingNpc.NpcId;
+        }
+
+        private static void SetPlayerInputLockedWithoutScenario(bool locked)
+        {
+            var player = GameObject.FindWithTag("Player");
+            if (player != null)
+            {
+                var controller = player.GetComponent<NihongoLife.Player.PlayerController>();
+                if (controller != null)
+                {
+                    controller.InputLocked = locked;
+                }
+            }
+
+            var camera = Camera.main;
+            if (camera != null)
+            {
+                var controller = camera.GetComponent<ThirdPersonCameraController>();
+                if (controller != null)
+                {
+                    controller.IsLocked = locked;
+                }
+            }
+
+            Cursor.lockState = locked ? CursorLockMode.None : CursorLockMode.Locked;
+            Cursor.visible = locked;
         }
 
         private static void SetConversationCamera(Transform target)

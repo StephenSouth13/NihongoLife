@@ -42,8 +42,9 @@ Checklist này là danh sách công việc còn lại sau khi đối chiếu v�
 - [ ] Kiểm tra các lựa chọn đúng/sai có score modifier và lý do phù hợp.
 - [ ] Hoàn thiện Learning Mode: GuidedPractice, Practice và Assessment; kiểm tra ẩn/hiện hint.
 - [ ] Bổ sung voice clip native cho các dialogue quan trọng.
-- [ ] Viết scenario Chapter 3: gọi món ramen.
-- [ ] Viết scenario Chapter 4: mua vé và hỏi đường ở nhà ga.
+- [ ] Viết scenario Chapter 3: gọi món ramen. *(Draft nội dung đã có tại `scenario_restaurant_order_ramen.asset`, theo `STORY_BIBLE.md`; chưa mở Unity để kiểm tra node graph/playtest — không tick cho đến khi verify runtime.)*
+- [ ] Viết scenario Chapter 4: mua vé và hỏi đường ở nhà ga. *(Draft nội dung đã có tại `scenario_station_buy_ticket.asset`; chưa verify runtime.)*
+- [ ] Viết scenario kết Chapter 4: lễ hội mùa hè quy tụ toàn bộ NPC. *(Draft nội dung đã có tại `scenario_town_summer_festival.asset`; chưa verify runtime.)*
 - [ ] Tạo checklist QA nội dung cho mỗi scenario mới.
 
 ## P2 — Dữ liệu, lưu tiến độ và tài khoản

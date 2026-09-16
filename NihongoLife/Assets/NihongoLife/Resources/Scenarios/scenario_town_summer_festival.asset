@@ -1,0 +1,220 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3ba8f435ab5427145b206cd2a4f4ea7c, type: 3}
+  m_Name: scenario_town_summer_festival
+  m_EditorClassIdentifier: NihongoLife::NihongoLife.Scenario.ScenarioDefinition
+  id: scenario.town.summer_festival
+  version: 1
+  titleJa: ひばり町の夏祭り
+  titleEn: Lễ hội mùa hè ở Hibari-chō
+  descriptionJa: 町の皆に会いに、夏祭りへ行きましょう。
+  descriptionEn: Ghé thăm lễ hội mùa hè và gặp lại tất cả những người bạn đã quen trong khu phố.
+  chapterIndex: 4
+  learningTargets:
+  - grammar.n5.okage_de
+  - grammar.n5.te_kudasatte_arigatou
+  objectives:
+  - id: obj_meet_tanaka
+    titleJa: 田中さんに会う
+    titleEn: Gặp lại Tanaka
+    isOptional: 0
+  - id: obj_meet_suzuki
+    titleJa: 鈴木さんに会う
+    titleEn: Gặp lại Suzuki
+    isOptional: 0
+  - id: obj_meet_sato
+    titleJa: 佐藤さんに会う
+    titleEn: Gặp lại Sato
+    isOptional: 0
+  - id: obj_meet_yamada
+    titleJa: 山田さんに会う
+    titleEn: Gặp lại Yamada
+    isOptional: 0
+  - id: obj_join_festival
+    titleJa: 夏祭りに参加する
+    titleEn: Hòa vào lễ hội
+    isOptional: 0
+  nodes:
+  - id: node_festival_start
+    nodeType: 0
+    nextNodeId: node_meet_tanaka
+    objectiveIdToComplete:
+    speakerName: Sato
+    speakerId: npc_neighbor_3
+    textJa: よく来ましたね！今日は夏祭りです。皆、待っていますよ。
+    textReading: よくきましたね！きょうはなつまつりです。みんな、まっていますよ。
+    textEn: Cháu đến rồi đấy à! Hôm nay là lễ hội mùa hè. Mọi người đang đợi cháu đấy.
+    textRomaji: Yoku kimashita ne! Kyou wa natsu matsuri desu. Minna, matte imasu yo.
+    textEnglishIpa:
+    animationCue: point
+    voiceClip: {fileID: 0}
+    choices: []
+    targetItemId:
+    targetNpcId:
+    targetAreaId:
+  - id: node_meet_tanaka
+    nodeType: 0
+    nextNodeId:
+    objectiveIdToComplete: obj_meet_tanaka
+    speakerName: Tanaka
+    speakerId: npc_neighbor_1
+    textJa: 久しぶりですね。この町にもう慣れましたか？
+    textReading: ひさしぶりですね。このまちにもうなれましたか？
+    textEn: Lâu rồi mới gặp nhỉ. Cháu đã quen với khu phố này chưa?
+    textRomaji: Hisashiburi desu ne. Kono machi ni mou naremashita ka?
+    textEnglishIpa:
+    animationCue: bow
+    voiceClip: {fileID: 0}
+    choices:
+    - textJa: はい、皆さんのおかげです。
+      textEn: Vâng, tất cả là nhờ mọi người ạ.
+      nextNodeId: node_meet_suzuki
+      scoreModifiers:
+      - category: Grammar
+        value: 10
+        reason: Dùng đúng mẫu 〜のおかげです
+      grammarTags: []
+      vocabularyTags: []
+    - textJa: はい、とても楽しいです。
+      textEn: Vâng, cháu thấy rất vui ạ.
+      nextNodeId: node_meet_suzuki
+      scoreModifiers:
+      - category: Vocabulary
+        value: 8
+        reason: Diễn đạt cảm xúc tự nhiên
+      grammarTags: []
+      vocabularyTags: []
+    targetItemId:
+    targetNpcId:
+    targetAreaId:
+  - id: node_meet_suzuki
+    nodeType: 0
+    nextNodeId:
+    objectiveIdToComplete: obj_meet_suzuki
+    speakerName: Suzuki
+    speakerId: npc_neighbor_2
+    textJa: あ、この間はありがとうございました。あの後、猫は自分で帰ってきたんですよ。
+    textReading: あ、このあいだはありがとうございました。あのあと、ねこはじぶんでかえってきたんですよ。
+    textEn: À, cảm ơn cháu hôm trước nhé. Sau đó con mèo tự về nhà đấy.
+    textRomaji: A, kono aida wa arigatou gozaimashita. Ano ato, neko wa jibun de kaette kitan desu yo.
+    textEnglishIpa:
+    animationCue: bow
+    voiceClip: {fileID: 0}
+    choices:
+    - textJa: よかったですね！
+      textEn: Thật là tốt quá ạ!
+      nextNodeId: node_meet_sato
+      scoreModifiers:
+      - category: TaskCompletion
+        value: 5
+        reason: Phản hồi phù hợp cảm xúc người nói
+      grammarTags: []
+      vocabularyTags: []
+    - textJa: 安心しました。
+      textEn: Cháu thấy nhẹ nhõm hẳn ạ.
+      nextNodeId: node_meet_sato
+      scoreModifiers:
+      - category: Vocabulary
+        value: 5
+        reason: Dùng đúng từ 安心する
+      grammarTags: []
+      vocabularyTags: []
+    targetItemId:
+    targetNpcId:
+    targetAreaId:
+  - id: node_meet_sato
+    nodeType: 0
+    nextNodeId: node_meet_yamada
+    objectiveIdToComplete: obj_meet_sato
+    speakerName: Sato
+    speakerId: npc_neighbor_3
+    textJa: 祭りのごみは、あそこに分けて捨ててくださいね。もう慣れていますよね？
+    textReading: まつりのごみは、あそこにわけてすててくださいね。もうなれていますよね？
+    textEn: Rác của lễ hội thì cháu nhớ phân loại và vứt ở đằng kia nhé. Chắc cháu quen rồi đúng không?
+    textRomaji: Matsuri no gomi wa, asoko ni wakete sutete kudasai ne. Mou narete imasu yo ne?
+    textEnglishIpa:
+    animationCue: point
+    voiceClip: {fileID: 0}
+    choices: []
+    targetItemId:
+    targetNpcId:
+    targetAreaId:
+  - id: node_meet_yamada
+    nodeType: 0
+    nextNodeId:
+    objectiveIdToComplete: obj_meet_yamada
+    speakerName: Yamada
+    speakerId: npc_ramen_owner
+    textJa: いらっしゃい！今日は屋台でラーメンを出していますよ。
+    textReading: いらっしゃい！きょうはやたいでラーメンをだしていますよ。
+    textEn: Chào mừng cháu! Hôm nay chú bán ramen ở quầy hàng đấy.
+    textRomaji: Irasshai! Kyou wa yatai de ramen wo dashite imasu yo.
+    textEnglishIpa:
+    animationCue: talk
+    voiceClip: {fileID: 0}
+    choices:
+    - textJa: ください！
+      textEn: Cho cháu một tô ạ!
+      nextNodeId: node_festival_finale
+      scoreModifiers:
+      - category: TaskCompletion
+        value: 5
+        reason: Phản hồi tự nhiên, hưởng ứng không khí lễ hội
+      grammarTags: []
+      vocabularyTags: []
+    - textJa: 後で行きます。
+      textEn: Lát nữa cháu ghé qua ạ.
+      nextNodeId: node_festival_finale
+      scoreModifiers:
+      - category: Grammar
+        value: 5
+        reason: Dùng đúng mẫu 後で
+      grammarTags: []
+      vocabularyTags: []
+    targetItemId:
+    targetNpcId:
+    targetAreaId:
+  - id: node_festival_finale
+    nodeType: 0
+    nextNodeId: node_complete
+    objectiveIdToComplete: obj_join_festival
+    speakerName: Sato
+    speakerId: npc_neighbor_3
+    textJa: この町へようこそ。これからもよろしくお願いします。
+    textReading: このまちへようこそ。これからもよろしくおねがいします。
+    textEn: Chào mừng cháu đến với khu phố này. Sau này cũng mong được giúp đỡ cháu nhé.
+    textRomaji: Kono machi e youkoso. Korekara mo yoroshiku onegaishimasu.
+    textEnglishIpa:
+    animationCue: bow
+    voiceClip: {fileID: 0}
+    choices: []
+    targetItemId:
+    targetNpcId:
+    targetAreaId:
+  - id: node_complete
+    nodeType: 4
+    nextNodeId:
+    objectiveIdToComplete:
+    speakerName:
+    speakerId:
+    textJa:
+    textReading:
+    textEn:
+    textRomaji:
+    textEnglishIpa:
+    animationCue:
+    voiceClip: {fileID: 0}
+    choices: []
+    targetItemId:
+    targetNpcId:
+    targetAreaId:
+  startNodeId: node_festival_start

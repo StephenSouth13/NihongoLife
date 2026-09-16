@@ -1,0 +1,376 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3ba8f435ab5427145b206cd2a4f4ea7c, type: 3}
+  m_Name: scenario_restaurant_order_ramen
+  m_EditorClassIdentifier: NihongoLife::NihongoLife.Scenario.ScenarioDefinition
+  id: scenario.restaurant.order_ramen
+  version: 1
+  titleJa: ラーメンを注文する
+  titleEn: Gọi món ramen
+  descriptionJa: 田中さんに紹介されたラーメン屋で注文してみましょう。
+  descriptionEn: Tanaka giới thiệu một quán ramen quen. Hãy gọi món, chọn thêm topping và thanh toán.
+  chapterIndex: 3
+  learningTargets:
+  - grammar.n5.wo_kudasai
+  - grammar.n5.mashou_ka
+  - grammar.n5.daijoubu_desu
+  - vocab.n5.ramen
+  - vocab.n5.negi
+  - vocab.n5.okaikei
+  objectives:
+  - id: obj_enter_shop
+    titleJa: 店に入る
+    titleEn: Vào quán ramen
+    isOptional: 0
+  - id: obj_order
+    titleJa: 注文する
+    titleEn: Gọi món
+    isOptional: 0
+  - id: obj_eat
+    titleJa: 食べる
+    titleEn: Thưởng thức món ăn
+    isOptional: 0
+  - id: obj_pay
+    titleJa: お会計をする
+    titleEn: Thanh toán
+    isOptional: 0
+  nodes:
+  - id: node_ramen_intro
+    nodeType: 0
+    nextNodeId:
+    objectiveIdToComplete:
+    speakerName: Tanaka
+    speakerId: npc_neighbor_1
+    textJa: ここが山田さんのラーメン屋です。おいしいですよ。
+    textReading: ここがやまださんのラーメンやです。おいしいですよ。
+    textEn: Đây là quán ramen của anh Yamada. Ngon lắm đấy.
+    textRomaji: Koko ga Yamada-san no ramen-ya desu. Oishii desu yo.
+    textEnglishIpa:
+    animationCue: point
+    voiceClip: {fileID: 0}
+    choices:
+    - textJa: 楽しみです。
+      textEn: Em rất mong chờ.
+      nextNodeId: node_enter_shop
+      scoreModifiers:
+      - category: Vocabulary
+        value: 8
+        reason: Dùng đúng tính từ cảm xúc
+      grammarTags: []
+      vocabularyTags: []
+    - textJa: お腹すきました。
+      textEn: Em đói bụng rồi.
+      nextNodeId: node_enter_shop
+      scoreModifiers:
+      - category: ResponseAccuracy
+        value: 8
+        reason: Phản hồi tự nhiên, đúng ngữ cảnh
+      grammarTags: []
+      vocabularyTags: []
+    targetItemId:
+    targetNpcId:
+    targetAreaId:
+  - id: node_enter_shop
+    nodeType: 3
+    nextNodeId: node_yamada_greeting
+    objectiveIdToComplete: obj_enter_shop
+    speakerName:
+    speakerId:
+    textJa:
+    textReading:
+    textEn:
+    textRomaji:
+    textEnglishIpa:
+    animationCue:
+    voiceClip: {fileID: 0}
+    choices: []
+    targetItemId:
+    targetNpcId:
+    targetAreaId: ramen_shop_entrance
+  - id: node_yamada_greeting
+    nodeType: 0
+    nextNodeId:
+    objectiveIdToComplete:
+    speakerName: Yamada
+    speakerId: npc_ramen_owner
+    textJa: いらっしゃいませ！何になさいますか？
+    textReading: いらっしゃいませ！なにになさいますか？
+    textEn: Xin chào quý khách! Quý khách dùng món gì ạ?
+    textRomaji: Irasshaimase! Nani ni nasaimasu ka?
+    textEnglishIpa:
+    animationCue: talk
+    voiceClip: {fileID: 0}
+    choices:
+    - textJa: しょうゆラーメンをください。
+      textEn: Cho tôi một tô ramen sốt tương.
+      nextNodeId: node_order_shoyu
+      scoreModifiers:
+      - category: Vocabulary
+        value: 10
+        reason: Gọi đúng tên món shoyu ramen
+      - category: Grammar
+        value: 10
+        reason: Dùng đúng mẫu 〜をください
+      grammarTags: []
+      vocabularyTags: []
+    - textJa: みそラーメンをください。
+      textEn: Cho tôi một tô ramen sốt miso.
+      nextNodeId: node_order_miso
+      scoreModifiers:
+      - category: Vocabulary
+        value: 10
+        reason: Gọi đúng tên món miso ramen
+      - category: Grammar
+        value: 10
+        reason: Dùng đúng mẫu 〜をください
+      grammarTags: []
+      vocabularyTags: []
+    - textJa: ラーメン。
+      textEn: Ramen.
+      nextNodeId: node_order_rude
+      scoreModifiers:
+      - category: ResponseAccuracy
+        value: -10
+        reason: Thiếu mẫu câu lịch sự 〜をください
+      - category: Grammar
+        value: -5
+        reason: Câu gọi món chưa hoàn chỉnh
+      grammarTags: []
+      vocabularyTags: []
+    targetItemId:
+    targetNpcId:
+    targetAreaId:
+  - id: node_order_rude
+    nodeType: 0
+    nextNodeId: node_yamada_greeting
+    objectiveIdToComplete:
+    speakerName: Yamada
+    speakerId: npc_ramen_owner
+    textJa: すみません、「〜をください」と言ってくださいね。もう一度どうぞ。
+    textReading: すみません、「〜をください」といってくださいね。もういちどどうぞ。
+    textEn: Xin lỗi quý khách, hãy nói kèm "~wo kudasai" nhé. Mời quý khách gọi lại.
+    textRomaji: Sumimasen, "~wo kudasai" to itte kudasai ne. Mou ichido douzo.
+    textEnglishIpa:
+    animationCue: point
+    voiceClip: {fileID: 0}
+    choices: []
+    targetItemId:
+    targetNpcId:
+    targetAreaId:
+  - id: node_order_shoyu
+    nodeType: 0
+    nextNodeId: node_extra_request
+    objectiveIdToComplete: obj_order
+    speakerName: Yamada
+    speakerId: npc_ramen_owner
+    textJa: しょうゆラーメンですね。かしこまりました。
+    textReading: しょうゆラーメンですね。かしこまりました。
+    textEn: Ramen sốt tương phải không ạ. Tôi hiểu rồi.
+    textRomaji: Shouyu ramen desu ne. Kashikomarimashita.
+    textEnglishIpa:
+    animationCue: bow
+    voiceClip: {fileID: 0}
+    choices: []
+    targetItemId:
+    targetNpcId:
+    targetAreaId:
+  - id: node_order_miso
+    nodeType: 0
+    nextNodeId: node_extra_request
+    objectiveIdToComplete: obj_order
+    speakerName: Yamada
+    speakerId: npc_ramen_owner
+    textJa: みそラーメンですね。かしこまりました。
+    textReading: みそラーメンですね。かしこまりました。
+    textEn: Ramen sốt miso phải không ạ. Tôi hiểu rồi.
+    textRomaji: Miso ramen desu ne. Kashikomarimashita.
+    textEnglishIpa:
+    animationCue: bow
+    voiceClip: {fileID: 0}
+    choices: []
+    targetItemId:
+    targetNpcId:
+    targetAreaId:
+  - id: node_extra_request
+    nodeType: 0
+    nextNodeId:
+    objectiveIdToComplete:
+    speakerName: Yamada
+    speakerId: npc_ramen_owner
+    textJa: ねぎを増しましょうか？
+    textReading: ねぎをましましょうか？
+    textEn: Anh có muốn thêm hành lá không?
+    textRomaji: Negi wo mashimashou ka?
+    textEnglishIpa:
+    animationCue: talk
+    voiceClip: {fileID: 0}
+    choices:
+    - textJa: はい、お願いします。
+      textEn: Vâng, xin vui lòng.
+      nextNodeId: node_wait_ramen
+      scoreModifiers:
+      - category: Vocabulary
+        value: 8
+        reason: Hiểu từ ねぎ (hành lá)
+      grammarTags: []
+      vocabularyTags: []
+    - textJa: いいえ、大丈夫です。
+      textEn: Không, như vậy là đủ rồi ạ.
+      nextNodeId: node_wait_ramen
+      scoreModifiers:
+      - category: Grammar
+        value: 8
+        reason: Dùng đúng mẫu 大丈夫です để từ chối lịch sự
+      grammarTags: []
+      vocabularyTags: []
+    targetItemId:
+    targetNpcId:
+    targetAreaId:
+  - id: node_wait_ramen
+    nodeType: 0
+    nextNodeId: node_ramen_served
+    objectiveIdToComplete:
+    speakerName: Yamada
+    speakerId: npc_ramen_owner
+    textJa: 少々お待ちください。
+    textReading: しょうしょうおまちください。
+    textEn: Xin quý khách vui lòng chờ một chút.
+    textRomaji: Shoushou omachi kudasai.
+    textEnglishIpa:
+    animationCue: point
+    voiceClip: {fileID: 0}
+    choices: []
+    targetItemId:
+    targetNpcId:
+    targetAreaId:
+  - id: node_ramen_served
+    nodeType: 0
+    nextNodeId:
+    objectiveIdToComplete:
+    speakerName: Yamada
+    speakerId: npc_ramen_owner
+    textJa: お待たせしました。どうぞ。
+    textReading: おまたせしました。どうぞ。
+    textEn: Xin lỗi đã để quý khách chờ lâu. Mời dùng.
+    textRomaji: Omatase shimashita. Douzo.
+    textEnglishIpa:
+    animationCue: bow
+    voiceClip: {fileID: 0}
+    choices:
+    - textJa: いただきます。
+      textEn: Cảm ơn, em ăn đây ạ.
+      nextNodeId: node_after_eating
+      scoreModifiers:
+      - category: TaskCompletion
+        value: 10
+        reason: Dùng đúng câu chào trước khi ăn
+      grammarTags: []
+      vocabularyTags: []
+    - textJa: ありがとうございます。
+      textEn: Em cảm ơn ạ.
+      nextNodeId: node_after_eating
+      scoreModifiers:
+      - category: Grammar
+        value: 8
+        reason: Đáp lễ phù hợp
+      grammarTags: []
+      vocabularyTags: []
+    targetItemId:
+    targetNpcId:
+    targetAreaId:
+  - id: node_after_eating
+    nodeType: 0
+    nextNodeId: node_pay_ramen
+    objectiveIdToComplete: obj_eat
+    speakerName: Yamada
+    speakerId: npc_ramen_owner
+    textJa: 田中さんの友達ですね。今度、この町で夏祭りがありますよ。
+    textReading: たなかさんのともだちですね。こんど、このまちでなつまつりがありますよ。
+    textEn: Anh là bạn của Tanaka phải không nhỉ. Sắp tới khu phố này có lễ hội mùa hè đấy.
+    textRomaji: Tanaka-san no tomodachi desu ne. Kondo, kono machi de natsu matsuri ga arimasu yo.
+    textEnglishIpa:
+    animationCue: talk
+    voiceClip: {fileID: 0}
+    choices: []
+    targetItemId:
+    targetNpcId:
+    targetAreaId:
+  - id: node_pay_ramen
+    nodeType: 0
+    nextNodeId:
+    objectiveIdToComplete:
+    speakerName: Yamada
+    speakerId: npc_ramen_owner
+    textJa: お会計は600円です。
+    textReading: おかいけいはろっぴゃくえんです。
+    textEn: Tổng cộng là 600 yên ạ.
+    textRomaji: Okaikei wa roppyaku-en desu.
+    textEnglishIpa:
+    animationCue: talk
+    voiceClip: {fileID: 0}
+    choices:
+    - textJa: これでお願いします。
+      textEn: Thanh toán bằng cái này ạ.
+      nextNodeId: node_ramen_complete
+      scoreModifiers:
+      - category: Grammar
+        value: 10
+        reason: Dùng đúng mẫu thanh toán これで
+      grammarTags: []
+      vocabularyTags: []
+    - textJa: カードで払います。
+      textEn: Em thanh toán bằng thẻ ạ.
+      nextNodeId: node_ramen_complete
+      scoreModifiers:
+      - category: Vocabulary
+        value: 10
+        reason: Dùng đúng từ カード (thẻ)
+      grammarTags: []
+      vocabularyTags: []
+    targetItemId:
+    targetNpcId:
+    targetAreaId:
+  - id: node_ramen_complete
+    nodeType: 0
+    nextNodeId: node_complete
+    objectiveIdToComplete: obj_pay
+    speakerName: Yamada
+    speakerId: npc_ramen_owner
+    textJa: ありがとうございました。またどうぞ。
+    textReading: ありがとうございました。またどうぞ。
+    textEn: Cảm ơn quý khách. Hẹn gặp lại lần sau.
+    textRomaji: Arigatou gozaimashita. Mata douzo.
+    textEnglishIpa:
+    animationCue: bow
+    voiceClip: {fileID: 0}
+    choices: []
+    targetItemId:
+    targetNpcId:
+    targetAreaId:
+  - id: node_complete
+    nodeType: 4
+    nextNodeId:
+    objectiveIdToComplete:
+    speakerName:
+    speakerId:
+    textJa:
+    textReading:
+    textEn:
+    textRomaji:
+    textEnglishIpa:
+    animationCue:
+    voiceClip: {fileID: 0}
+    choices: []
+    targetItemId:
+    targetNpcId:
+    targetAreaId:
+  startNodeId: node_ramen_intro
