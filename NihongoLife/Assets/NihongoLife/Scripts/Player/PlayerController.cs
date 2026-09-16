@@ -49,6 +49,7 @@ namespace NihongoLife.Player
             _characterController = GetComponent<CharacterController>();
             _mainCamera = UnityEngine.Camera.main;
             _animationController = GetComponent<CharacterAnimationController>();
+            PlayableCharacterCatalog.ApplySelectedVisual(gameObject);
         }
 
         private void Update()

@@ -2,6 +2,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 using NihongoLife.Core;
+using NihongoLife.Player;
 using NihongoLife.Scenario;
 
 namespace NihongoLife.UI
@@ -62,8 +63,17 @@ namespace NihongoLife.UI
 
             EnsureSettingsUI();
             EnsureSocialUI();
+            EnsureCharacterSelectUI();
             RefreshTexts();
             DisplayProfileStats();
+        }
+
+        private void Update()
+        {
+            if (characterPreviewModel != null && characterSelectPanel != null && characterSelectPanel.activeSelf)
+            {
+                characterPreviewModel.transform.Rotate(0f, 18f * Time.deltaTime, 0f, Space.World);
+            }
         }
 
         private void ImproveMenuPresentation()
@@ -107,6 +117,17 @@ namespace NihongoLife.UI
             if (GameServices.TryGet(out GameSettingsService settings))
             {
                 settings.OnLanguageChanged -= HandleLanguageChanged;
+            }
+
+            if (characterPreviewTexture != null)
+            {
+                characterPreviewTexture.Release();
+                Destroy(characterPreviewTexture);
+            }
+
+            if (characterPreviewStage != null)
+            {
+                Destroy(characterPreviewStage);
             }
         }
 
@@ -285,6 +306,20 @@ namespace NihongoLife.UI
         private LeaderboardUI leaderboardUI;
         private FriendsUI friendsUI;
         private PlayerProfileUI profileUI;
+        private GameObject characterSelectPanel;
+        private RawImage characterPreviewImage;
+        private TextMeshProUGUI characterSelectTitleText;
+        private TextMeshProUGUI characterNameText;
+        private TextMeshProUGUI characterTaglineText;
+        private Button previousCharacterButton;
+        private Button nextCharacterButton;
+        private Button confirmCharacterButton;
+        private Button closeCharacterButton;
+        private RenderTexture characterPreviewTexture;
+        private Camera characterPreviewCamera;
+        private GameObject characterPreviewStage;
+        private GameObject characterPreviewModel;
+        private int selectedCharacterIndex;
 
         private void EnsureSocialUI()
         {
@@ -313,6 +348,151 @@ namespace NihongoLife.UI
             MoveRect(profileButton, new Vector2(0f, -290f), new Vector2(130f, 46f));
             SetButtonText(profileButton, Text("Hồ sơ", "Profile", "プロフィール"));
             profileButton.onClick.AddListener(() => profileUI.ShowOwnProfile());
+        }
+
+        private void EnsureCharacterSelectUI()
+        {
+            TMP_FontAsset font = titleText != null ? titleText.font : null;
+            selectedCharacterIndex = PlayableCharacterCatalog.IndexOf(PlayerPrefs.GetString(PlayableCharacterCatalog.PlayerPrefsKey, PlayableCharacterCatalog.DefaultId));
+            if (selectedCharacterIndex < 0) selectedCharacterIndex = 0;
+
+            characterSelectPanel = new GameObject("CharacterSelectPanel");
+            characterSelectPanel.transform.SetParent(transform, false);
+            var panelRect = characterSelectPanel.AddComponent<RectTransform>();
+            MoveRect(panelRect, new Vector2(0f, 0f), new Vector2(930f, 560f));
+            characterSelectPanel.AddComponent<Image>().color = new Color(0.025f, 0.032f, 0.036f, 0.94f);
+            UIStyleKit.StylePanel(panelRect, new Color(0.025f, 0.032f, 0.036f, 0.94f));
+
+            characterSelectTitleText = CreateMenuText("Title", new Vector2(0f, 226f), new Vector2(760f, 48f), 30f, font);
+            characterSelectTitleText.transform.SetParent(characterSelectPanel.transform, false);
+            characterSelectTitleText.text = Text("Chọn nhân vật", "Choose your character", "キャラクター選択");
+            characterSelectTitleText.fontStyle = FontStyles.Bold;
+            characterSelectTitleText.color = new Color(1f, 0.91f, 0.58f, 1f);
+
+            characterNameText = CreateMenuText("CharacterName", new Vector2(250f, 96f), new Vector2(300f, 44f), 28f, font);
+            characterNameText.transform.SetParent(characterSelectPanel.transform, false);
+            characterNameText.fontStyle = FontStyles.Bold;
+
+            characterTaglineText = CreateMenuText("CharacterTagline", new Vector2(250f, 46f), new Vector2(360f, 42f), 16f, font);
+            characterTaglineText.transform.SetParent(characterSelectPanel.transform, false);
+            characterTaglineText.color = new Color(0.9f, 0.95f, 1f, 1f);
+
+            var previewFrame = new GameObject("PreviewFrame");
+            previewFrame.transform.SetParent(characterSelectPanel.transform, false);
+            var frameRect = previewFrame.AddComponent<RectTransform>();
+            MoveRect(frameRect, new Vector2(-170f, -12f), new Vector2(390f, 430f));
+            previewFrame.AddComponent<Image>().color = new Color(0.08f, 0.1f, 0.11f, 1f);
+
+            var previewGo = new GameObject("Preview");
+            previewGo.transform.SetParent(previewFrame.transform, false);
+            var previewRect = previewGo.AddComponent<RectTransform>();
+            MoveRect(previewRect, Vector2.zero, new Vector2(370f, 410f));
+            characterPreviewImage = previewGo.AddComponent<RawImage>();
+
+            previousCharacterButton = CreateLanguageButton("PreviousCharacterButton", "<", new Vector2(52f, -34f), font);
+            previousCharacterButton.transform.SetParent(characterSelectPanel.transform, false);
+            MoveRect(previousCharacterButton, new Vector2(52f, -34f), new Vector2(58f, 58f));
+
+            nextCharacterButton = CreateLanguageButton("NextCharacterButton", ">", new Vector2(448f, -34f), font);
+            nextCharacterButton.transform.SetParent(characterSelectPanel.transform, false);
+            MoveRect(nextCharacterButton, new Vector2(448f, -34f), new Vector2(58f, 58f));
+
+            confirmCharacterButton = CreateLanguageButton("ConfirmCharacterButton", "Play", new Vector2(250f, -120f), font);
+            confirmCharacterButton.transform.SetParent(characterSelectPanel.transform, false);
+            MoveRect(confirmCharacterButton, new Vector2(250f, -120f), new Vector2(260f, 58f));
+            UIStyleKit.StyleButton(confirmCharacterButton, UIStyleKit.AccentGold, UIStyleKit.AccentGoldHover, UIStyleKit.AccentGoldPressed);
+
+            closeCharacterButton = CreateLanguageButton("CloseCharacterButton", "Back", new Vector2(250f, -190f), font);
+            closeCharacterButton.transform.SetParent(characterSelectPanel.transform, false);
+            MoveRect(closeCharacterButton, new Vector2(250f, -190f), new Vector2(180f, 46f));
+
+            previousCharacterButton.onClick.AddListener(() => SelectCharacter(selectedCharacterIndex - 1));
+            nextCharacterButton.onClick.AddListener(() => SelectCharacter(selectedCharacterIndex + 1));
+            confirmCharacterButton.onClick.AddListener(ConfirmCharacterAndStart);
+            closeCharacterButton.onClick.AddListener(() => characterSelectPanel.SetActive(false));
+
+            CreateCharacterPreviewStage();
+            characterSelectPanel.SetActive(false);
+            SelectCharacter(selectedCharacterIndex);
+        }
+
+        private void CreateCharacterPreviewStage()
+        {
+            characterPreviewTexture = new RenderTexture(768, 900, 24, RenderTextureFormat.ARGB32)
+            {
+                name = "CharacterSelectPreviewTexture",
+                antiAliasing = 4
+            };
+            characterPreviewTexture.Create();
+            if (characterPreviewImage != null) characterPreviewImage.texture = characterPreviewTexture;
+
+            characterPreviewStage = new GameObject("CharacterSelectPreviewStage");
+            characterPreviewStage.transform.position = new Vector3(0f, -500f, 0f);
+            DontDestroyOnLoad(characterPreviewStage);
+
+            var cameraGo = new GameObject("PreviewCamera");
+            cameraGo.transform.SetParent(characterPreviewStage.transform, false);
+            cameraGo.transform.localPosition = new Vector3(0f, 1.35f, 4.2f);
+            cameraGo.transform.localRotation = Quaternion.Euler(5f, 180f, 0f);
+            characterPreviewCamera = cameraGo.AddComponent<Camera>();
+            characterPreviewCamera.clearFlags = CameraClearFlags.SolidColor;
+            characterPreviewCamera.backgroundColor = new Color(0.02f, 0.026f, 0.03f, 1f);
+            characterPreviewCamera.fieldOfView = 30f;
+            characterPreviewCamera.nearClipPlane = 0.05f;
+            characterPreviewCamera.farClipPlane = 20f;
+            characterPreviewCamera.targetTexture = characterPreviewTexture;
+
+            CreatePreviewLight("KeyLight", new Vector3(-2.2f, 4f, 2.4f), Quaternion.Euler(52f, -32f, 0f), 3.2f, new Color(1f, 0.93f, 0.78f, 1f));
+            CreatePreviewLight("RimLight", new Vector3(2.8f, 2.8f, -2f), Quaternion.Euler(34f, 136f, 0f), 1.8f, new Color(0.48f, 0.74f, 1f, 1f));
+        }
+
+        private void CreatePreviewLight(string name, Vector3 position, Quaternion rotation, float intensity, Color color)
+        {
+            if (characterPreviewStage == null) return;
+
+            var lightGo = new GameObject(name);
+            lightGo.transform.SetParent(characterPreviewStage.transform, false);
+            lightGo.transform.localPosition = position;
+            lightGo.transform.localRotation = rotation;
+            var light = lightGo.AddComponent<Light>();
+            light.type = LightType.Directional;
+            light.intensity = intensity;
+            light.color = color;
+        }
+
+        private void SelectCharacter(int index)
+        {
+            int count = PlayableCharacterCatalog.Count;
+            if (count <= 0) return;
+
+            selectedCharacterIndex = (index % count + count) % count;
+            var character = PlayableCharacterCatalog.Get(selectedCharacterIndex);
+            if (characterNameText != null)
+            {
+                characterNameText.text = character.DisplayName;
+                characterNameText.color = character.AccentColor;
+            }
+            if (characterTaglineText != null) characterTaglineText.text = character.Tagline;
+            SetButtonText(confirmCharacterButton, Text("Chọn nhân vật này", "Play as this character", "このキャラで始める"));
+
+            if (characterPreviewModel != null)
+            {
+                Destroy(characterPreviewModel);
+            }
+
+            var prefab = PlayableCharacterCatalog.LoadPrefab(character);
+            if (prefab == null || characterPreviewStage == null) return;
+
+            characterPreviewModel = Instantiate(prefab, characterPreviewStage.transform);
+            characterPreviewModel.name = "SelectedCharacterPreview";
+            characterPreviewModel.transform.localPosition = Vector3.zero;
+            characterPreviewModel.transform.localRotation = Quaternion.Euler(0f, 180f, 0f);
+            characterPreviewModel.transform.localScale = Vector3.one;
+
+            foreach (var collider in characterPreviewModel.GetComponentsInChildren<Collider>(true))
+            {
+                Destroy(collider);
+            }
         }
 
         private TextMeshProUGUI CreateMenuText(string name, Vector2 position, Vector2 size, float fontSize, TMP_FontAsset font)
@@ -475,6 +655,9 @@ namespace NihongoLife.UI
             SetButtonText(guideButton, Text("Cách chơi", "How to play", "遊び方"));
             SetButtonText(aboutButton, Text("Về tôi", "About me", "作者"));
             SetButtonText(settingsButton, Text("Cài đặt", "Settings", "設定"));
+            SetButtonText(closeCharacterButton, Text("Quay lại", "Back", "戻る"));
+            SetButtonText(confirmCharacterButton, Text("Chọn nhân vật này", "Play as this character", "このキャラで始める"));
+            if (characterSelectTitleText != null) characterSelectTitleText.text = Text("Chọn nhân vật", "Choose your character", "キャラクター選択");
 
             if (guideTitleText != null) guideTitleText.text = Text("Cách chơi", "How to play", "遊び方");
             if (guideBodyText != null) guideBodyText.text = BuildGuideText(language);
@@ -562,6 +745,27 @@ namespace NihongoLife.UI
         }
 
         private void OnStartClicked()
+        {
+            if (characterSelectPanel == null)
+            {
+                BeginGameWithSelectedCharacter();
+                return;
+            }
+
+            HideInfoPanels();
+            characterSelectPanel.SetActive(true);
+            SelectCharacter(selectedCharacterIndex);
+            UIStyleKit.PlayShowAnimation(characterSelectPanel);
+        }
+
+        private void ConfirmCharacterAndStart()
+        {
+            var character = PlayableCharacterCatalog.Get(selectedCharacterIndex);
+            PlayableCharacterCatalog.SaveSelected(character.Id);
+            BeginGameWithSelectedCharacter();
+        }
+
+        private void BeginGameWithSelectedCharacter()
         {
             PlayerPrefs.SetString("ActiveScenarioId", targetScenarioId);
             if (GameServices.TryGet(out GameControlService controlService))
