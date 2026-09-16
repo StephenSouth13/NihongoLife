@@ -31,6 +31,10 @@ Nguyên tắc: **mỗi NPC xuất hiện lại ở nhiều scenario**, giữ ngu
 
 Khớp với 4 chương curriculum trong `CONTENT_GUIDE.md`. Cột "Trạng thái" phản ánh đúng asset hiện có trong `Resources/Scenarios/`.
 
+### Mở màn — `scenario.intro.arrival` (chapterIndex 0)
+
+Cảnh dẫn nhập thuần narration trước Chapter 1, chạy tự động khi bấm "Start" (đã set `activeScenarioId` trong `GameControlDatabase` trỏ tới đây). Không có NPC, không rẽ nhánh thật (ngoại lệ so với mục 10 — đây là cinematic mở đầu, không phải bài học), chỉ 4 dòng narration + 1 lựa chọn xác nhận để chuyển sang `scenario.street.first_talk`. File: `Resources/Scenarios/scenario_intro_arrival.asset`.
+
 ### Chapter 1 — はじめまして (Chuyển đến Hibari-chō)
 1. `scenario.street.first_talk` *(đã có)* — Gặp Tanaka lần đầu trên phố, được hỏi "đi đâu vậy".
 2. `scenario.house1.greeting` *(đã có)* — Đến chào Tanaka chính thức tại nhà, tự giới thiệu bản thân. **Callback**: câu mở đầu nên nhắc đã gặp nhau ngoài đường lúc nãy, thay vì mở màn như người lạ hoàn toàn.

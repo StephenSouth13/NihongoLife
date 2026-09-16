@@ -43,6 +43,7 @@ namespace NihongoLife.UI
             AutoBindExistingMenu();
             ImproveMenuPresentation();
             CleanExistingLayout();
+            StyleCoreButtons();
             EnsureLanguageSelector();
             EnsureMenuInfoPanels();
 
@@ -159,6 +160,17 @@ namespace NihongoLife.UI
             }
         }
 
+        private void StyleCoreButtons()
+        {
+            // Start = primary call-to-action (warm gold accent, matches the story's
+            // lantern-lit-town mood). Quit = muted secondary so it never competes for
+            // attention.
+            UIStyleKit.StyleButton(startButton, UIStyleKit.AccentGold, UIStyleKit.AccentGoldHover, UIStyleKit.AccentGoldPressed);
+            UIStyleKit.StyleButton(quitButton, UIStyleKit.PanelBase, UIStyleKit.PanelHover, UIStyleKit.PanelPressed);
+
+            if (startButtonText != null) startButtonText.color = new Color(0.08f, 0.06f, 0.02f, 1f);
+        }
+
         private Button settingsButton;
         private SettingsUI settingsUI;
         private Button loginButton;
@@ -180,6 +192,7 @@ namespace NihongoLife.UI
             }
 
             ConfigureInfoPanel(guideTitleText, guideBodyText, new Vector2(0f, -28f), new Vector2(520f, 300f));
+            StylePanelFor(guideTitleText);
 
             if (creditsTitleText == null || creditsBodyText == null)
             {
@@ -193,6 +206,7 @@ namespace NihongoLife.UI
             }
 
             ConfigureInfoPanel(creditsTitleText, creditsBodyText, new Vector2(0f, -28f), new Vector2(520f, 300f));
+            StylePanelFor(creditsTitleText);
 
             guideButton ??= CreateLanguageButton("GuideButton", "How", new Vector2(-112f, -230f), font);
             aboutButton ??= CreateLanguageButton("AboutButton", "About", new Vector2(112f, -230f), font);
@@ -394,17 +408,9 @@ namespace NihongoLife.UI
             rect.anchoredPosition = position;
             rect.sizeDelta = new Vector2(92f, 44f);
 
-            var image = go.AddComponent<Image>();
-            image.color = new Color(0.12f, 0.15f, 0.17f, 0.94f);
-
+            go.AddComponent<Image>();
             var button = go.AddComponent<Button>();
-            var colors = button.colors;
-            colors.highlightedColor = new Color(0.2f, 0.24f, 0.26f, 1f);
-            colors.pressedColor = new Color(0.08f, 0.1f, 0.11f, 1f);
-            button.colors = colors;
-
-            // Add hover animation
-            go.AddComponent<UIHoverScale>();
+            UIStyleKit.StyleButton(button, UIStyleKit.PanelBase, UIStyleKit.PanelHover, UIStyleKit.PanelPressed);
 
             var text = CreateMenuText("Text", Vector2.zero, new Vector2(74f, 32f), 18f, font);
             text.transform.SetParent(go.transform, false);
@@ -616,10 +622,19 @@ namespace NihongoLife.UI
         private static void SetButtonSelected(Button button, bool selected)
         {
             if (button == null) return;
+
+            Color baseColor = selected ? UIStyleKit.AccentGold : UIStyleKit.PanelBase;
+            var swap = button.GetComponent<ButtonColorSwap>();
+            if (swap != null)
+            {
+                swap.SetBaseColor(baseColor);
+                return;
+            }
+
             var image = button.GetComponent<Image>();
             if (image != null)
             {
-                image.color = selected ? new Color(0.95f, 0.72f, 0.25f, 1f) : new Color(0.12f, 0.15f, 0.17f, 0.94f);
+                image.color = baseColor;
             }
         }
 
@@ -647,6 +662,13 @@ namespace NihongoLife.UI
             }
         }
 
+        private static void StylePanelFor(TextMeshProUGUI title)
+        {
+            Transform panel = title != null ? title.transform.parent : null;
+            if (panel == null) return;
+            UIStyleKit.StylePanel(panel.GetComponent<RectTransform>(), UIStyleKit.PanelBase);
+        }
+
         private void ToggleInfoPanel(TextMeshProUGUI title)
         {
             Transform panel = title != null ? title.transform.parent : null;
@@ -655,6 +677,10 @@ namespace NihongoLife.UI
             bool shouldShow = !panel.gameObject.activeSelf;
             HideInfoPanels();
             panel.gameObject.SetActive(shouldShow);
+            if (shouldShow)
+            {
+                UIStyleKit.PlayShowAnimation(panel.gameObject);
+            }
         }
 
         private void HideInfoPanels()

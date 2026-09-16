@@ -35,13 +35,15 @@ namespace NihongoLife.Editor
             ("eminem", "NL_Neighbor")
         };
 
-        [MenuItem("NihongoLife/Characters/Build Character System")]
+        // No MenuItem and no editor auto-run. Call this explicitly from a
+        // temporary script, test, or batch step when the character build step is needed.
         public static void BuildCharacterSystem()
         {
             BuildCharacterSystem(forceRebuildLegacyPrefabs: false);
         }
 
-        [MenuItem("NihongoLife/Characters/Force Rebuild Legacy Characters (Destructive)")]
+        // Call directly from code (e.g. Test Runner or a throwaway script) for the rare
+        // case of intentionally wiping the 4 legacy character prefabs and rebuilding them.
         public static void ForceRebuildLegacyCharacters()
         {
             if (!EditorUtility.DisplayDialog(
@@ -92,7 +94,8 @@ namespace NihongoLife.Editor
             Debug.Log("[CharacterBuilder] Character system built successfully.");
         }
 
-        [MenuItem("NihongoLife/Characters/Scan New Characters")]
+        // No MenuItem. BuildCharacterSystem() calls this as its scan step; it can also
+        // be called explicitly from a temporary script or test.
         public static void ScanNewCharacters()
         {
             EnsureFolderExists(PREFAB_DIR);
@@ -240,19 +243,24 @@ namespace NihongoLife.Editor
             // Create or update states
             AnimatorState idleState = GetOrCreateState(rootStateMachine, "Idle");
             idleState.motion = idleClip;
+            idleState.iKOnFeet = false;
 
             AnimatorState walkState = GetOrCreateState(rootStateMachine, "Walk");
             walkState.motion = walkClip;
             walkState.speed = ResolveWalkStateSpeed(walkClip);
+            walkState.iKOnFeet = true;
             
             AnimatorState talkState = GetOrCreateState(rootStateMachine, "Talking");
             talkState.motion = talkClip;
+            talkState.iKOnFeet = false;
 
             AnimatorState bowState = GetOrCreateState(rootStateMachine, "Bow");
             bowState.motion = bowClip;
+            bowState.iKOnFeet = true;
 
             AnimatorState pointState = GetOrCreateState(rootStateMachine, "Point");
             pointState.motion = pointClip;
+            pointState.iKOnFeet = true;
 
             // Transitions: Idle <-> Walk
             AddTransition(idleState, walkState, "Speed", AnimatorConditionMode.Greater, 0.1f);
@@ -318,31 +326,57 @@ namespace NihongoLife.Editor
 
         private static void AddTransition(AnimatorState from, AnimatorState to, string paramName, AnimatorConditionMode mode, float threshold, bool hasExitTime = false)
         {
+            AnimatorStateTransition transition = null;
             foreach (var t in from.transitions)
             {
-                if (t.destinationState == to) return;
+                if (t.destinationState == to)
+                {
+                    transition = t;
+                    break;
+                }
             }
-            var transition = from.AddTransition(to);
+
+            if (transition == null)
+            {
+                transition = from.AddTransition(to);
+            }
+
             transition.hasExitTime = hasExitTime;
             transition.hasFixedDuration = true;
             transition.duration = hasExitTime ? 0.18f : 0.12f;
+            transition.exitTime = hasExitTime ? 0.9f : 0f;
+            transition.conditions = System.Array.Empty<AnimatorCondition>();
             if (!string.IsNullOrEmpty(paramName))
             {
                 transition.AddCondition(mode, threshold, paramName);
             }
+            EditorUtility.SetDirty(transition);
         }
 
         private static void AddAnyStateTransition(AnimatorStateMachine sm, AnimatorState to, string paramName)
         {
+            AnimatorStateTransition transition = null;
             foreach (var t in sm.anyStateTransitions)
             {
-                if (t.destinationState == to) return;
+                if (t.destinationState == to)
+                {
+                    transition = t;
+                    break;
+                }
             }
-            var transition = sm.AddAnyStateTransition(to);
+
+            if (transition == null)
+            {
+                transition = sm.AddAnyStateTransition(to);
+            }
+
             transition.hasExitTime = false;
             transition.hasFixedDuration = true;
             transition.duration = 0.12f;
+            transition.exitTime = 0f;
+            transition.conditions = System.Array.Empty<AnimatorCondition>();
             transition.AddCondition(AnimatorConditionMode.If, 0, paramName);
+            EditorUtility.SetDirty(transition);
         }
 
         private static AnimationClip LoadAnimationClip(string assetPath)

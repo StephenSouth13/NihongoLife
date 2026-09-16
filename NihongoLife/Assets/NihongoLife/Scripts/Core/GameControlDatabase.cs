@@ -32,6 +32,7 @@ namespace NihongoLife.Core
         public List<ScenarioDefinition> scenarios = new List<ScenarioDefinition>();
         public List<string> campaignScenarioIds = new List<string>
         {
+            "scenario.intro.arrival",
             "scenario.street.first_talk",
             "scenario.konbini.buy_onigiri",
             "scenario.house1.greeting",

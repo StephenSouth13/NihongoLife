@@ -9,7 +9,8 @@ namespace NihongoLife.Editor
         private const string SourceFontPath = "Assets/NihongoLife/Fonts/NotoSansJP.otf";
         private const string FontAssetPath = "Assets/NihongoLife/Fonts/NotoSansJP SDF.asset";
 
-        [MenuItem("NihongoLife/Setup Japanese Font")]
+        // No MenuItem — EnsureJapaneseFontAsset() is called lazily wherever the font is
+        // needed (see SceneBuilder.cs), and forceRecreate is only for manual recovery.
         public static void CreateJapaneseFontAsset()
         {
             EnsureJapaneseFontAsset(forceRecreate: true);

@@ -1,0 +1,116 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3ba8f435ab5427145b206cd2a4f4ea7c, type: 3}
+  m_Name: scenario_intro_arrival
+  m_EditorClassIdentifier: NihongoLife::NihongoLife.Scenario.ScenarioDefinition
+  id: scenario.intro.arrival
+  version: 1
+  titleJa: ひばり町に到着
+  titleEn: Đến Hibari-chō
+  descriptionJa: 新しい町での生活が始まります。
+  descriptionEn: Mở màn — người chơi vừa chuyển đến khu phố Hibari-chō, chuẩn bị bắt đầu cuộc sống mới.
+  chapterIndex: 0
+  learningTargets: []
+  objectives: []
+  nodes:
+  - id: node_arrival_1
+    nodeType: 0
+    nextNodeId: node_arrival_2
+    objectiveIdToComplete:
+    speakerName:
+    speakerId:
+    textJa: ようこそ、ひばり町へ。
+    textReading: ようこそ、ひばりちょうへ。
+    textEn: Chào mừng bạn đến với Hibari-chō.
+    textRomaji: Youkoso, Hibari-chou e.
+    textEnglishIpa:
+    animationCue:
+    voiceClip: {fileID: 0}
+    choices: []
+    targetItemId:
+    targetNpcId:
+    targetAreaId:
+  - id: node_arrival_2
+    nodeType: 0
+    nextNodeId: node_arrival_3
+    objectiveIdToComplete:
+    speakerName:
+    speakerId:
+    textJa: ここは小さいけれど、あたたかい町です。
+    textReading: ここはちいさいけれど、あたたかいまちです。
+    textEn: Đây là một khu phố nhỏ nhưng ấm áp.
+    textRomaji: Koko wa chiisai keredo, atatakai machi desu.
+    textEnglishIpa:
+    animationCue:
+    voiceClip: {fileID: 0}
+    choices: []
+    targetItemId:
+    targetNpcId:
+    targetAreaId:
+  - id: node_arrival_3
+    nodeType: 0
+    nextNodeId: node_arrival_4
+    objectiveIdToComplete:
+    speakerName:
+    speakerId:
+    textJa: 今日から、この町での新しい生活が始まります。
+    textReading: きょうから、このまちでのあたらしいせいかつがはじまります。
+    textEn: Từ hôm nay, cuộc sống mới của bạn ở khu phố này bắt đầu.
+    textRomaji: Kyou kara, kono machi de no atarashii seikatsu ga hajimarimasu.
+    textEnglishIpa:
+    animationCue:
+    voiceClip: {fileID: 0}
+    choices: []
+    targetItemId:
+    targetNpcId:
+    targetAreaId:
+  - id: node_arrival_4
+    nodeType: 0
+    nextNodeId:
+    objectiveIdToComplete:
+    speakerName:
+    speakerId:
+    textJa: さあ、外に出てみましょう。
+    textReading: さあ、そとにでてみましょう。
+    textEn: Nào, hãy ra ngoài xem khu phố này thế nào.
+    textRomaji: Saa, soto ni dete mimashou.
+    textEnglishIpa:
+    animationCue:
+    voiceClip: {fileID: 0}
+    choices:
+    - textJa: はい。
+      textEn: Vâng.
+      nextNodeId: node_complete
+      scoreModifiers: []
+      grammarTags: []
+      vocabularyTags: []
+    targetItemId:
+    targetNpcId:
+    targetAreaId:
+  - id: node_complete
+    nodeType: 4
+    nextNodeId:
+    objectiveIdToComplete:
+    speakerName:
+    speakerId:
+    textJa:
+    textReading:
+    textEn:
+    textRomaji:
+    textEnglishIpa:
+    animationCue:
+    voiceClip: {fileID: 0}
+    choices: []
+    targetItemId:
+    targetNpcId:
+    targetAreaId:
+  startNodeId: node_arrival_1

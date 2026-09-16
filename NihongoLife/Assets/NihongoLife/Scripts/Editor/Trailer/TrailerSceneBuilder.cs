@@ -30,7 +30,8 @@ namespace NihongoLife.Editor
         /// Re-running this after you've hand-tuned camera anchors, shot values or swapped in
         /// real character prefabs inside 99_Trailer.unity must NOT wipe that work.
         /// </summary>
-        [MenuItem("NihongoLife/Trailer/Build Trailer Scene (safe, skip if exists)")]
+        // No MenuItem and no editor auto-run. Call BuildTrailerSceneSafe() explicitly
+        // from a temporary script, test, or batch step when the trailer build step is needed.
         public static void BuildTrailerSceneSafe()
         {
             EnsureFolderExists(ScenesDir);
@@ -50,7 +51,6 @@ namespace NihongoLife.Editor
             BuildSceneFromScratch(shots);
         }
 
-        [MenuItem("NihongoLife/Trailer/Force Rebuild Trailer Scene (Destructive)")]
         public static void ForceRebuildTrailerScene()
         {
             if (!EditorUtility.DisplayDialog(

@@ -13,6 +13,8 @@ namespace NihongoLife.Core
         [SerializeField] private string bowParam = "Bow";
         [SerializeField] private string pointParam = "Point";
         [SerializeField] private float speedDampTime = 0.12f;
+        [SerializeField] private float fullSpeedReference = 1.15f;
+        [SerializeField] private bool enableProceduralPresentationOnAnimatedRig = false;
         [SerializeField] private float idleBreathAmount = 0.012f;
         [SerializeField] private float walkBobAmount = 0.025f;
         [SerializeField] private float lookAtWeight = 0.42f;
@@ -65,7 +67,8 @@ namespace NihongoLife.Core
             _currentSpeed = Mathf.Max(0f, speed);
             if (_animator != null && _animator.gameObject.activeInHierarchy)
             {
-                _animator.SetFloat(_speedHash, speed, speedDampTime, Time.deltaTime);
+                float normalizedSpeed = Mathf.Clamp01(_currentSpeed / Mathf.Max(0.01f, fullSpeedReference));
+                _animator.SetFloat(_speedHash, normalizedSpeed, speedDampTime, Time.deltaTime);
             }
         }
 
@@ -123,6 +126,7 @@ namespace NihongoLife.Core
         private void ApplyPresentationMotion()
         {
             if (_visualRoot == null) return;
+            if (_animator != null && !enableProceduralPresentationOnAnimatedRig) return;
 
             float time = Time.time + _phaseOffset;
             float idle = Mathf.Clamp01(1f - _currentSpeed);

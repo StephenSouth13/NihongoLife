@@ -12,13 +12,17 @@ Phân công công việc giữa 3 "nhân sự" AI: **Claude** (nội dung + qu�
 
 Nếu bạn thấy hợp hơn thì đổi chéo Codex/Antigravity — 2 task độc lập với nhau nên hoán đổi không ảnh hưởng gì.
 
-**Cập nhật (2026-09-16)**: Đã thêm `Assets/NihongoLife/Scripts/Editor/AutoBuildOnLoad.cs` — tự động chạy `CharacterBuilder.BuildCharacterSystem()` và `TrailerSceneBuilder.BuildTrailerSceneSafe()` (2 bản an toàn/skip-if-exists) đúng 1 lần mỗi khi mở Unity, không cần bấm menu `NihongoLife/Characters/...` hay `NihongoLife/Trailer/...` cho việc thường ngày nữa. Chỉ còn cần bấm tay khi: (1) muốn ép reset thật (`Force Rebuild ...`), hoặc (2) vừa thả FBX nhân vật mới vào giữa lúc Unity đang mở (auto-run chỉ chạy 1 lần lúc mở Editor, không lặp lại mỗi lần recompile) — lúc đó bấm `Scan New Characters` thủ công 1 lần.
+**Cập nhật (2026-09-17)**: Chủ dự án không muốn auto-build khi mở Unity và cũng không muốn quay lại menu `NihongoLife/...`. Đã bỏ hệ `AutoBuildOnLoad`/`[InitializeOnLoad]`. Từ giờ build theo từng bước có chủ đích: gọi trực tiếp từng hàm build từ script tạm, test, hoặc batch step rõ ràng, ví dụ `CharacterBuilder.BuildCharacterSystem()` rồi mới tới `TrailerSceneBuilder.BuildTrailerSceneSafe()` khi thật sự cần.
+
+**Không còn auto-installer/editor setup cho scene gameplay**: không commit script kiểu `GameplayAreaInstaller`/`SafeGameplayAreaInstaller`, không để bất kỳ editor auto-run nào tự mở và ghi `90_TestSandbox.unity`. Ramen/station phải được chỉnh trực tiếp trong scene thật hoặc bằng script tạm không commit.
+
+Nếu về sau cần force reset thật (hiếm khi cần), gọi trực tiếp `CharacterBuilder.ForceRebuildLegacyCharacters()` / `TrailerSceneBuilder.ForceRebuildTrailerScene()` qua 1 script tạm hoặc Test Runner — không auto-run và không còn menu để bấm nữa.
 
 ---
 
 ## TASK-A (Codex) — Auto-import pipeline cho nhân vật/asset mới
 
-**Bối cảnh đã có sẵn**: `Assets/NihongoLife/Scripts/Editor/CharacterBuilder.cs` (menu `NihongoLife/Characters/Build Character System`) đã tự động hoá gần hết việc "biến FBX thô thành nhân vật dùng được":
+**Bối cảnh đã có sẵn**: `Assets/NihongoLife/Scripts/Editor/CharacterBuilder.cs` đã tự động hoá gần hết việc "biến FBX thô thành nhân vật dùng được":
 - Cấu hình ModelImporter sang Humanoid (`ConfigureModel`).
 - Cấu hình animation clip (idle/walk/talk/bow/point) từ Mixamo.
 - Generate `Assets/NihongoLife/Animations/NL_Humanoid.controller` với đủ state/trigger (`Speed`, `IsTalking`, `Bow`, `Point` — khớp `CharacterAnimationController.cs`).
@@ -30,7 +34,7 @@ Nếu bạn thấy hợp hơn thì đổi chéo Codex/Antigravity — 2 task đ�
 1. Viết lại/bổ sung thành pipeline quét thư mục thay vì hardcode path: quét toàn bộ `Assets/ThirdParty/Mixamo/Characters/*/source/*.fbx`, với quy ước đặt tên **tên thư mục con = `speakerId`** (vd. thư mục `npc_ramen_owner/source/xxx.fbx`).
 2. Với mỗi nhân vật chưa có prefab tương ứng trong `Assets/NihongoLife/Prefabs/Characters/NL_<speakerId>.prefab`, tự động: `ConfigureModel` → gán chung `NL_Humanoid.controller` → `CreateVisualPrefab` (tái dùng logic đã có, không viết lại từ đầu — đọc kỹ file trước khi sửa).
 3. Bỏ qua (skip, log rõ ràng) nhân vật đã có prefab rồi, không build lại đè lên tuỳ chỉnh thủ công đã làm trong Inspector.
-4. Giữ nguyên `[MenuItem("NihongoLife/Characters/Build Character System")]` làm entry point chính; có thể thêm `[MenuItem("NihongoLife/Characters/Scan New Characters")]` riêng nếu tách logic quét khỏi logic build 4 nhân vật gốc — miễn không phá hành vi cũ.
+4. Không thêm lại `[MenuItem]`/menu bar `NihongoLife/...` và không thêm auto-build khi mở Unity. Entry point chính là gọi trực tiếp `CharacterBuilder.BuildCharacterSystem()` từ test, batch step, hoặc script tạm không commit.
 5. Không tự ý đổi animation set mặc định (idle/walk/talk/bow/point) trừ khi asset FBX thiếu clip tương ứng — trường hợp đó log warning, dùng animation cue gần nhất làm fallback thay vì crash.
 
 **Không làm**: không cần tự động đặt prefab vào scene hay gán `npcId` trên `NPCController` — bước đó vẫn thủ công (kéo prefab vào scene + set field), vì cần quyết định vị trí/scenario cụ thể.
@@ -79,6 +83,8 @@ Nếu bạn thấy hợp hơn thì đổi chéo Codex/Antigravity — 2 task đ�
 ---
 
 ## TASK-C (Codex) — Wire ramen shop & station vào scene gameplay thật (90_TestSandbox)
+
+**TRẠNG THÁI (2026-09-16)**: Không dùng/không commit `GameplayAreaInstaller` hoặc auto-installer scene. Nếu TASK-C còn thiếu object trong `90_TestSandbox.unity`, hãy chỉnh trực tiếp scene thật theo kiểu additive, không rebuild sandbox và không thêm menu/editor setup phải bấm.
 
 **Bối cảnh**: `scenario_restaurant_order_ramen.asset` và `scenario_station_buy_ticket.asset` (đã viết, xem `STORY_BIBLE.md`) mỗi cái có 1 node `GoToArea` (`nodeType: 3`) cần trigger thật trong scene mới chạy được:
 - Ramen: `targetAreaId: ramen_shop_entrance`.
