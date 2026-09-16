@@ -72,12 +72,42 @@ namespace NihongoLife.Core
                 dayNightCycle = gameObject.AddComponent<DayNightCycle>();
             }
 
-            // 4. Save / Progress Repository
-            var progressRepo = new LocalProgressRepository();
+            // Determine if online features are enabled
+            bool onlineEnabled = controlService.Database != null && controlService.Database.enableOnlineSync;
+
+            // 4. Supabase Client (foundation for all online services)
+            SupabaseClient supabaseClient = null;
+            if (onlineEnabled)
+            {
+                supabaseClient = gameObject.AddComponent<SupabaseClient>();
+                supabaseClient.Initialize(controlService.Database);
+            }
+
+            // 5. Authentication Service
+            if (onlineEnabled && supabaseClient != null && supabaseClient.IsConfigured)
+            {
+                var authService = gameObject.AddComponent<SupabaseAuthService>();
+                GameServices.Register<IAuthService>(authService);
+                authService.Initialize();
+                Debug.Log("[AppRoot] Supabase Auth service registered.");
+            }
+
+            // 6. Save / Progress Repository (cloud or local)
+            IProgressRepository progressRepo;
+            if (onlineEnabled && supabaseClient != null && supabaseClient.IsConfigured)
+            {
+                progressRepo = new SupabaseProgressRepository(supabaseClient);
+                Debug.Log("[AppRoot] Using SupabaseProgressRepository (cloud save).");
+            }
+            else
+            {
+                progressRepo = new LocalProgressRepository();
+                Debug.Log("[AppRoot] Using LocalProgressRepository (offline save).");
+            }
             GameServices.Register<IProgressRepository>(progressRepo);
             progressRepo.Initialize();
 
-            // 5. Scenario Repository
+            // 7. Scenario Repository
             var scenarioRepo = new LocalScenarioRepository();
             GameServices.Register<IScenarioRepository>(scenarioRepo);
             scenarioRepo.Initialize();
@@ -89,7 +119,22 @@ namespace NihongoLife.Core
             GameServices.Register<ScenarioCampaignManager>(campaignManager);
             campaignManager.Initialize();
 
-            var onlineWorld = new LocalOnlineWorldService();
+            // 8. Online World Service (Supabase realtime or local simulation)
+            IOnlineWorldService onlineWorld;
+            if (onlineEnabled && supabaseClient != null && supabaseClient.IsConfigured)
+            {
+                var realtimeClient = gameObject.AddComponent<SupabaseRealtimeClient>();
+                realtimeClient.Initialize(supabaseClient);
+
+                var supabaseOnline = gameObject.AddComponent<SupabaseOnlineWorldService>();
+                onlineWorld = supabaseOnline;
+                Debug.Log("[AppRoot] Using SupabaseOnlineWorldService (real online).");
+            }
+            else
+            {
+                onlineWorld = new LocalOnlineWorldService();
+                Debug.Log("[AppRoot] Using LocalOnlineWorldService (local simulation).");
+            }
             GameServices.Register<IOnlineWorldService>(onlineWorld);
             onlineWorld.Initialize();
 

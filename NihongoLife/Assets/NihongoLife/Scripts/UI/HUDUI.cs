@@ -529,9 +529,12 @@ namespace NihongoLife.UI
             if (onlineStatusText == null) return;
 
             int onlineCount = _onlineWorld != null && _onlineWorld.IsConnected ? _onlineWorld.VisiblePlayers.Count : 0;
+            bool isRealOnline = _onlineWorld is SupabaseOnlineWorldService;
+            string modeLabel = isRealOnline ? "Online" : Text("Mô phỏng", "Simulation", "模擬");
+
             string status = _onlineWorld != null && _onlineWorld.IsConnected
-                ? Text($"Online mô phỏng: {onlineCount} người chơi  |  Enter: chat", $"Online simulation: {onlineCount} player(s)  |  Enter: chat", $"オンライン模擬: {onlineCount}人  |  Enter: チャット")
-                : Text("Online mô phỏng: chưa kết nối", "Online simulation: offline", "オンライン模擬: オフライン");
+                ? Text($"{modeLabel}: {onlineCount} người chơi  |  Enter: chat", $"{modeLabel}: {onlineCount} player(s)  |  Enter: chat", $"{modeLabel}: {onlineCount}人  |  Enter: チャット")
+                : Text($"{modeLabel}: chưa kết nối", $"{modeLabel}: offline", $"{modeLabel}: オフライン");
             onlineStatusText.text = status;
         }
 

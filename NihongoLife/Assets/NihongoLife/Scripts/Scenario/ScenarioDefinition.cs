@@ -113,6 +113,12 @@ namespace NihongoLife.Scenario
         public List<ScenarioNode> nodes = new List<ScenarioNode>();
         public string startNodeId;
 
+        [Header("Co-op Settings")]
+        public bool supportsCoOp = false;
+        public int minPlayers = 1;
+        public int maxPlayers = 2;
+        public List<string> speakerRoles = new List<string>(); // e.g. ["Customer", "Shopkeeper"]
+
         public ScenarioNode GetNode(string nodeId)
         {
             if (nodes == null) return null;

@@ -60,6 +60,7 @@ namespace NihongoLife.UI
             }
 
             EnsureSettingsUI();
+            EnsureSocialUI();
             RefreshTexts();
             DisplayProfileStats();
         }
@@ -160,6 +161,8 @@ namespace NihongoLife.UI
 
         private Button settingsButton;
         private SettingsUI settingsUI;
+        private Button loginButton;
+        private AuthUI authUI;
 
         private void EnsureMenuInfoPanels()
         {
@@ -230,6 +233,72 @@ namespace NihongoLife.UI
 
             SetButtonText(settingsButton, Text("Cài đặt", "Settings", "設定"));
             settingsButton.onClick.AddListener(() => settingsUI.Show());
+
+            // Auth UI
+            authUI = gameObject.AddComponent<AuthUI>();
+            authUI.Initialize(font);
+
+            // Login/Account Button
+            loginButton = CreateLanguageButton("LoginButton", "Login", new Vector2(-420f, 220f), font);
+            MoveRect(loginButton, new Vector2(-420f, 220f), new Vector2(140f, 44f));
+            UpdateLoginButtonText();
+            loginButton.onClick.AddListener(() => authUI.Show());
+
+            if (GameServices.TryGet(out IAuthService auth))
+            {
+                auth.OnAuthStateChanged += _ =>
+                {
+                    UpdateLoginButtonText();
+                    DisplayProfileStats();
+                };
+            }
+        }
+
+        private void UpdateLoginButtonText()
+        {
+            if (loginButton == null) return;
+            bool authenticated = GameServices.TryGet(out IAuthService auth) && auth.IsAuthenticated;
+            SetButtonText(loginButton, authenticated
+                ? Text("Tài khoản", "Account", "アカウント")
+                : Text("Đăng nhập", "Login", "ログイン"));
+        }
+
+        // ──────────────────────── Social UI ────────────────────────
+
+        private Button leaderboardButton;
+        private Button friendsButton;
+        private Button profileButton;
+        private LeaderboardUI leaderboardUI;
+        private FriendsUI friendsUI;
+        private PlayerProfileUI profileUI;
+
+        private void EnsureSocialUI()
+        {
+            TMP_FontAsset font = titleText != null ? titleText.font : null;
+
+            // Leaderboard
+            leaderboardUI = gameObject.AddComponent<LeaderboardUI>();
+            leaderboardUI.Initialize(font);
+            leaderboardButton = CreateLanguageButton("LeaderboardBtn", "Rank", new Vector2(-280f, -230f), font);
+            MoveRect(leaderboardButton, new Vector2(-280f, -230f), new Vector2(130f, 46f));
+            SetButtonText(leaderboardButton, Text("Xếp hạng", "Ranking", "ランキング"));
+            leaderboardButton.onClick.AddListener(() => leaderboardUI.Show());
+
+            // Friends
+            friendsUI = gameObject.AddComponent<FriendsUI>();
+            friendsUI.Initialize(font);
+            friendsButton = CreateLanguageButton("FriendsBtn", "Friends", new Vector2(280f, -230f), font);
+            MoveRect(friendsButton, new Vector2(280f, -230f), new Vector2(130f, 46f));
+            SetButtonText(friendsButton, Text("Bạn bè", "Friends", "フレンド"));
+            friendsButton.onClick.AddListener(() => friendsUI.Show());
+
+            // Profile
+            profileUI = gameObject.AddComponent<PlayerProfileUI>();
+            profileUI.Initialize(font);
+            profileButton = CreateLanguageButton("ProfileBtn", "Profile", new Vector2(0f, -290f), font);
+            MoveRect(profileButton, new Vector2(0f, -290f), new Vector2(130f, 46f));
+            SetButtonText(profileButton, Text("Hồ sơ", "Profile", "プロフィール"));
+            profileButton.onClick.AddListener(() => profileUI.ShowOwnProfile());
         }
 
         private TextMeshProUGUI CreateMenuText(string name, Vector2 position, Vector2 size, float fontSize, TMP_FontAsset font)
@@ -469,8 +538,13 @@ namespace NihongoLife.UI
             if (GameServices.TryGet(out Save.IProgressRepository progressRepo))
             {
                 var progress = progressRepo.GetProgress();
+                string name = progress.displayName;
+                if (GameServices.TryGet(out IAuthService authSvc) && authSvc.IsAuthenticated && !string.IsNullOrWhiteSpace(authSvc.DisplayName))
+                {
+                    name = authSvc.DisplayName;
+                }
                 details =
-                    $"{Text("Học viên", "Learner", "学習者")}: {progress.displayName}\n" +
+                    $"{Text("Học viên", "Learner", "学習者")}: {name}\n" +
                     $"{Text("Cấp độ", "Level", "レベル")}: {progress.level} (XP: {progress.xp})\n" +
                     $"{Text("Đã hoàn thành", "Completed", "完了")}: {progress.completedScenarios.Count}\n";
             }

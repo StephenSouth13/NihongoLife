@@ -56,6 +56,10 @@ namespace NihongoLife.Core
         [Header("Online Database")]
         public bool enableOnlineSync = false;
 
+        [Header("Authentication")]
+        public bool enableAnonymousLogin = true;
+        public bool enableEmailLogin = true;
+
         [Header("Online World Simulation")]
         public bool enableLocalOnlineSimulation = true;
         public int maxVisiblePlayers = 24;

@@ -39,6 +39,10 @@ namespace NihongoLife.Dialogue
         public event Action<DialogueDisplayData> OnDialogueUpdated;
         public event Action OnDialogueClosed;
 
+        // Co-op integration
+        private CoopScenarioController _coopController;
+        public bool IsCoopMode => _coopController != null && _coopController.IsCoopActive;
+
         public LearningMode CurrentMode
         {
             get => currentMode;
@@ -56,6 +60,14 @@ namespace NihongoLife.Dialogue
             _generatedVoiceSource = gameObject.AddComponent<AudioSource>();
             _generatedVoiceSource.playOnAwake = false;
             _generatedVoiceSource.spatialBlend = 0f;
+
+            // Try to find co-op controller
+            _coopController = FindFirstObjectByType<CoopScenarioController>();
+            if (_coopController != null)
+            {
+                _coopController.OnNodeSyncReceived += HandleCoopNodeSync;
+                _coopController.OnPartnerChoseOption += HandlePartnerChoice;
+            }
         }
 
         public void StartDialogue(ScenarioNode node)
@@ -146,6 +158,14 @@ namespace NihongoLife.Dialogue
             }
 
             var selectedChoice = _currentNode.choices[choiceIndex];
+
+            // Co-op: check if this player is allowed to choose
+            if (IsCoopMode && _currentNode != null && !_coopController.CanSelectChoice(_currentNode))
+            {
+                Debug.Log("[DialogueManager] Not your turn — waiting for partner's choice.");
+                return;
+            }
+
             Debug.Log($"[DialogueManager] Selected choice index {choiceIndex}: {selectedChoice.textJa}");
 
             // 1. Process scoring event modifiers
@@ -171,20 +191,62 @@ namespace NihongoLife.Dialogue
                 }
             }
 
-            // 3. Play UI select sound
+            // 4. Co-op: broadcast choice to partner
+            if (IsCoopMode)
+            {
+                _coopController.BroadcastChoiceSelected(choiceIndex, selectedChoice.nextNodeId);
+            }
+
+            // 5. Play UI select sound
             PlaySelectSound();
 
-            // 4. Close/Transition
+            // 6. Close/Transition
             string nextNodeId = selectedChoice.nextNodeId;
             CloseDialogue();
 
             if (!string.IsNullOrEmpty(nextNodeId))
             {
+                if (IsCoopMode) _coopController.BroadcastNodeAdvance(nextNodeId);
                 ScenarioManager.Instance?.TransitionToNode(nextNodeId);
             }
             else if (ScenarioManager.Instance != null)
             {
                 ScenarioManager.Instance.AdvanceNode();
+            }
+        }
+
+        // ──────────────────────── Co-op Handlers ────────────────────────
+
+        private void HandleCoopNodeSync(string nodeId)
+        {
+            Debug.Log($"[DialogueManager] Co-op node sync: {nodeId}");
+            // Partner advanced to this node — transition to it
+            if (ScenarioManager.Instance != null)
+            {
+                ScenarioManager.Instance.TransitionToNode(nodeId);
+            }
+        }
+
+        private void HandlePartnerChoice(int choiceIndex)
+        {
+            Debug.Log($"[DialogueManager] Partner chose option {choiceIndex}");
+            // Partner made a choice — auto-select it locally
+            if (_currentNode != null && _currentNode.choices != null && choiceIndex >= 0 && choiceIndex < _currentNode.choices.Count)
+            {
+                var choice = _currentNode.choices[choiceIndex];
+
+                PlaySelectSound();
+                string nextNodeId = choice.nextNodeId;
+                CloseDialogue();
+
+                if (!string.IsNullOrEmpty(nextNodeId))
+                {
+                    ScenarioManager.Instance?.TransitionToNode(nextNodeId);
+                }
+                else
+                {
+                    ScenarioManager.Instance?.AdvanceNode();
+                }
             }
         }
 
