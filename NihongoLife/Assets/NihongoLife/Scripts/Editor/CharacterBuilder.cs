@@ -3,6 +3,8 @@ using UnityEditor.Animations;
 using UnityEngine;
 using System.IO;
 using System.Text;
+using System.Collections.Generic;
+using NihongoLife.NPC;
 
 namespace NihongoLife.Editor
 {
@@ -22,9 +24,39 @@ namespace NihongoLife.Editor
         private const string ANIMATOR_PATH = "Assets/NihongoLife/Animations/NL_Humanoid.controller";
         private const string PREFAB_DIR = "Assets/NihongoLife/Prefabs/Characters";
         private const string CHARACTER_MATERIAL_DIR = "Assets/NihongoLife/Materials/Characters";
+        private const string MIXAMO_CHARACTER_ROOT = "Assets/ThirdParty/Mixamo/Characters";
+        private const float DEFAULT_CHARACTER_HEIGHT = 1.72f;
+
+        private static readonly (string speakerId, string legacyPrefabName)[] LegacyCharacterPrefabs =
+        {
+            ("remy", "NL_Player"),
+            ("elizabeth-female-3-d-character", "NL_Cashier"),
+            ("lilly", "NL_Guide"),
+            ("eminem", "NL_Neighbor")
+        };
 
         [MenuItem("NihongoLife/Characters/Build Character System")]
         public static void BuildCharacterSystem()
+        {
+            BuildCharacterSystem(forceRebuildLegacyPrefabs: false);
+        }
+
+        [MenuItem("NihongoLife/Characters/Force Rebuild Legacy Characters (Destructive)")]
+        public static void ForceRebuildLegacyCharacters()
+        {
+            if (!EditorUtility.DisplayDialog(
+                    "Force Rebuild Legacy Characters",
+                    "Việc này sẽ ghi đè lại 4 prefab NL_Player/NL_Cashier/NL_Guide/NL_Neighbor từ FBX gốc, mất mọi chỉnh sửa tay đã làm trên các prefab đó (material, component thêm, v.v.). Tiếp tục?",
+                    "Rebuild (mất chỉnh sửa tay)",
+                    "Huỷ"))
+            {
+                return;
+            }
+
+            BuildCharacterSystem(forceRebuildLegacyPrefabs: true);
+        }
+
+        private static void BuildCharacterSystem(bool forceRebuildLegacyPrefabs)
         {
             EnsureFolderExists("Assets/NihongoLife/Animations");
             EnsureFolderExists(PREFAB_DIR);
@@ -35,9 +67,9 @@ namespace NihongoLife.Editor
             string neighborPath = ResolveCharacterPath(EMINEM_PATH, REMY_PATH);
 
             ConfigureModel(playerPath);
+            ConfigureModel(cashierPath);
             ConfigureModel(guidePath);
             ConfigureModel(neighborPath);
-            ConfigureModel(ELIZABETH_PATH);
 
             ConfigureAnimation(ANIM_IDLE, true);
             ConfigureAnimation(ANIM_WALK, true, true);
@@ -47,13 +79,61 @@ namespace NihongoLife.Editor
 
             GenerateAnimatorController();
 
-            CreateVisualPrefab(playerPath, "NL_Player", 1.72f);
-            CreateVisualPrefab(cashierPath, "NL_Cashier", 1.68f);
-            CreateVisualPrefab(guidePath, "NL_Guide", 1.70f);
-            CreateVisualPrefab(neighborPath, "NL_Neighbor", 1.76f);
+            // skipIfExists=true by default: re-running "Build Character System" must never wipe manual
+            // tweaks already made on these prefabs. Use "Force Rebuild Legacy Characters" to intentionally reset.
+            bool skipIfExists = !forceRebuildLegacyPrefabs;
+            CreateVisualPrefab(playerPath, "NL_Player", 1.72f, skipIfExists);
+            CreateVisualPrefab(cashierPath, "NL_Cashier", 1.68f, skipIfExists);
+            CreateVisualPrefab(guidePath, "NL_Guide", 1.70f, skipIfExists);
+            CreateVisualPrefab(neighborPath, "NL_Neighbor", 1.76f, skipIfExists);
+            ScanNewCharacters();
 
             AssetDatabase.SaveAssets();
             Debug.Log("[CharacterBuilder] Character system built successfully.");
+        }
+
+        [MenuItem("NihongoLife/Characters/Scan New Characters")]
+        public static void ScanNewCharacters()
+        {
+            EnsureFolderExists(PREFAB_DIR);
+            EnsureFolderExists(CHARACTER_MATERIAL_DIR);
+
+            var controller = AssetDatabase.LoadAssetAtPath<RuntimeAnimatorController>(ANIMATOR_PATH);
+            if (controller == null)
+            {
+                Debug.LogWarning("[CharacterBuilder] Animator controller missing. Generating NL_Humanoid.controller before scanning characters.");
+                ConfigureAnimation(ANIM_IDLE, true);
+                ConfigureAnimation(ANIM_WALK, true, true);
+                ConfigureAnimation(ANIM_TALK, true);
+                ConfigureAnimation(ANIM_BOW, false);
+                ConfigureAnimation(ANIM_POINT, false);
+                GenerateAnimatorController();
+            }
+
+            int created = 0;
+            foreach (var character in FindMixamoCharacters())
+            {
+                string prefabName = "NL_" + character.speakerId;
+                string prefabPath = $"{PREFAB_DIR}/{prefabName}.prefab";
+                if (AssetDatabase.LoadAssetAtPath<GameObject>(prefabPath) != null)
+                {
+                    Debug.Log($"[CharacterBuilder] Skipping '{character.speakerId}' because {prefabPath} already exists.");
+                    continue;
+                }
+
+                if (HasLegacyPrefab(character.speakerId))
+                {
+                    Debug.Log($"[CharacterBuilder] Skipping legacy character '{character.speakerId}' because its existing prefab is managed by the original build pipeline.");
+                    continue;
+                }
+
+                ConfigureModel(character.modelPath);
+                CreateVisualPrefab(character.modelPath, prefabName, DEFAULT_CHARACTER_HEIGHT, skipIfExists: true);
+                created++;
+            }
+
+            AssetDatabase.SaveAssets();
+            Debug.Log($"[CharacterBuilder] Character scan complete. Created {created} new prefab(s).");
         }
 
         private static void ConfigureModel(string path)
@@ -163,6 +243,7 @@ namespace NihongoLife.Editor
 
             AnimatorState walkState = GetOrCreateState(rootStateMachine, "Walk");
             walkState.motion = walkClip;
+            walkState.speed = ResolveWalkStateSpeed(walkClip);
             
             AnimatorState talkState = GetOrCreateState(rootStateMachine, "Talking");
             talkState.motion = talkClip;
@@ -191,6 +272,30 @@ namespace NihongoLife.Editor
 
             rootStateMachine.defaultState = idleState;
             EditorUtility.SetDirty(controller);
+        }
+
+        private static float ResolveWalkStateSpeed(AnimationClip walkClip)
+        {
+            if (walkClip == null)
+            {
+                Debug.LogWarning("[CharacterBuilder] Walk clip is missing. Using animator walk speed 1.");
+                return 1f;
+            }
+
+            float clipMetersPerSecond = new Vector2(walkClip.averageSpeed.x, walkClip.averageSpeed.z).magnitude;
+            if (clipMetersPerSecond <= 0.01f)
+            {
+                clipMetersPerSecond = Mathf.Abs(walkClip.averageSpeed.y);
+            }
+
+            if (clipMetersPerSecond <= 0.01f)
+            {
+                Debug.LogWarning($"[CharacterBuilder] Could not infer foot speed from walk clip '{walkClip.name}'. Using animator walk speed 1.");
+                return 1f;
+            }
+
+            float playbackSpeed = NPCStreetPatrol.DefaultWalkSpeed / clipMetersPerSecond;
+            return Mathf.Clamp(playbackSpeed, 0.35f, 2.5f);
         }
 
         private static void AddParameterIfNotExists(AnimatorController controller, string name, AnimatorControllerParameterType type)
@@ -271,9 +376,15 @@ namespace NihongoLife.Editor
             return candidates.Length > 0 ? candidates[0] : string.Empty;
         }
 
-        private static void CreateVisualPrefab(string modelPath, string prefabName, float targetHeight)
+        private static void CreateVisualPrefab(string modelPath, string prefabName, float targetHeight, bool skipIfExists = false)
         {
             string prefabPath = $"{PREFAB_DIR}/{prefabName}.prefab";
+            if (skipIfExists && AssetDatabase.LoadAssetAtPath<GameObject>(prefabPath) != null)
+            {
+                Debug.Log($"[CharacterBuilder] Skipping '{prefabName}' because {prefabPath} already exists.");
+                return;
+            }
+
             GameObject model = AssetDatabase.LoadAssetAtPath<GameObject>(modelPath);
             if (model == null)
             {
@@ -305,6 +416,71 @@ namespace NihongoLife.Editor
             PrefabUtility.SaveAsPrefabAsset(root, prefabPath);
             Object.DestroyImmediate(root);
             Debug.Log($"[CharacterBuilder] Generated {prefabName}");
+        }
+
+        private static IEnumerable<(string speakerId, string modelPath)> FindMixamoCharacters()
+        {
+            string absoluteRoot = Path.Combine(Application.dataPath, MIXAMO_CHARACTER_ROOT.Substring("Assets/".Length));
+            if (!Directory.Exists(absoluteRoot))
+            {
+                Debug.LogWarning($"[CharacterBuilder] Mixamo character folder not found: {MIXAMO_CHARACTER_ROOT}");
+                yield break;
+            }
+
+            foreach (string characterDirectory in Directory.GetDirectories(absoluteRoot))
+            {
+                string speakerId = Path.GetFileName(characterDirectory);
+                string sourceDirectory = Path.Combine(characterDirectory, "source");
+                if (!Directory.Exists(sourceDirectory))
+                {
+                    Debug.LogWarning($"[CharacterBuilder] Skipping '{speakerId}' because it has no source folder.");
+                    continue;
+                }
+
+                string[] fbxFiles = Directory.GetFiles(sourceDirectory, "*.fbx", SearchOption.AllDirectories);
+                if (fbxFiles.Length == 0)
+                {
+                    fbxFiles = Directory.GetFiles(sourceDirectory, "*.Fbx", SearchOption.AllDirectories);
+                }
+
+                if (fbxFiles.Length == 0)
+                {
+                    Debug.LogWarning($"[CharacterBuilder] Skipping '{speakerId}' because no FBX was found under source.");
+                    continue;
+                }
+
+                System.Array.Sort(fbxFiles);
+                string assetPath = ToAssetPath(fbxFiles[0]);
+                yield return (speakerId, assetPath);
+            }
+        }
+
+        private static bool HasLegacyPrefab(string speakerId)
+        {
+            foreach (var legacy in LegacyCharacterPrefabs)
+            {
+                if (legacy.speakerId != speakerId)
+                {
+                    continue;
+                }
+
+                string path = $"{PREFAB_DIR}/{legacy.legacyPrefabName}.prefab";
+                return AssetDatabase.LoadAssetAtPath<GameObject>(path) != null;
+            }
+
+            return false;
+        }
+
+        private static string ToAssetPath(string absolutePath)
+        {
+            string normalized = absolutePath.Replace('\\', '/');
+            string dataPath = Application.dataPath.Replace('\\', '/');
+            if (!normalized.StartsWith(dataPath, System.StringComparison.Ordinal))
+            {
+                return normalized;
+            }
+
+            return "Assets" + normalized.Substring(dataPath.Length);
         }
 
         private static void FixCharacterMaterials(GameObject visual, string prefabName)

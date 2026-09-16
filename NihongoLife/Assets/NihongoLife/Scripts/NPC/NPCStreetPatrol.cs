@@ -5,8 +5,10 @@ namespace NihongoLife.NPC
 {
     public class NPCStreetPatrol : MonoBehaviour
     {
+        public const float DefaultWalkSpeed = 1.15f;
+
         [SerializeField] private Transform[] waypoints;
-        [SerializeField] private float walkSpeed = 1.15f;
+        [SerializeField] private float walkSpeed = DefaultWalkSpeed;
         [SerializeField] private float turnSpeed = 7f;
         [SerializeField] private float waitSeconds = 1.2f;
         [SerializeField] private bool loop = true;
