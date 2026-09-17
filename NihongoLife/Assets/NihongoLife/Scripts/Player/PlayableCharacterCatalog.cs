@@ -7,7 +7,9 @@ namespace NihongoLife.Player
     public static class PlayableCharacterCatalog
     {
         public const string PlayerPrefsKey = "NihongoLife.SelectedPlayableCharacter";
+        public const string PlayerNamePrefsKey = "NihongoLife.PlayerDisplayName";
         public const string DefaultId = "student";
+        public const string DefaultPlayerName = "Gakusei";
 
         private static readonly PlayableCharacter[] Characters =
         {
@@ -58,6 +60,18 @@ namespace NihongoLife.Player
         {
             PlayerPrefs.SetString(PlayerPrefsKey, string.IsNullOrWhiteSpace(id) ? DefaultId : id);
             PlayerPrefs.Save();
+        }
+
+        public static void SavePlayerName(string playerName)
+        {
+            PlayerPrefs.SetString(PlayerNamePrefsKey, string.IsNullOrWhiteSpace(playerName) ? DefaultPlayerName : playerName.Trim());
+            PlayerPrefs.Save();
+        }
+
+        public static string GetPlayerName()
+        {
+            string savedName = PlayerPrefs.GetString(PlayerNamePrefsKey, DefaultPlayerName);
+            return string.IsNullOrWhiteSpace(savedName) ? DefaultPlayerName : savedName.Trim();
         }
 
         public static GameObject LoadPrefab(PlayableCharacter character)

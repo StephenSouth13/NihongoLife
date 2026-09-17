@@ -22,6 +22,7 @@ namespace NihongoLife.UI
         private Button _leaveButton;
         private Button _closeButton;
         private TMP_FontAsset _font;
+        private readonly List<Button> _sessionButtons = new List<Button>();
 
         public void Initialize(TMP_FontAsset font)
         {
@@ -32,12 +33,18 @@ namespace NihongoLife.UI
         public void Show()
         {
             if (_panel != null) _panel.SetActive(true);
+            SubscribeEvents();
             RefreshView();
         }
 
         public void Hide()
         {
             if (_panel != null) _panel.SetActive(false);
+        }
+
+        private void OnDestroy()
+        {
+            UnsubscribeEvents();
         }
 
         private void BuildUI()
@@ -99,6 +106,26 @@ namespace NihongoLife.UI
             {
                 _sessionListText.text = Text("Co-op chưa khả dụng.", "Co-op not available.", "協力モードは利用できません。");
                 _lobbyInfoText.text = string.Empty;
+                ClearSessionButtons();
+                SetActive(_createButton, false);
+                SetActive(_refreshButton, true);
+                SetActive(_startButton, false);
+                SetActive(_leaveButton, false);
+                return;
+            }
+
+            if (!GameServices.TryGet(out IAuthService auth) || !auth.IsAuthenticated)
+            {
+                _sessionListText.text = Text(
+                    "Ban can dang nhap truoc khi tao hoac tham gia phong online.",
+                    "Sign in before creating or joining an online room.",
+                    "オンラインルームを作成・参加する前にログインしてください。");
+                _lobbyInfoText.text = string.Empty;
+                ClearSessionButtons();
+                SetActive(_createButton, false);
+                SetActive(_refreshButton, true);
+                SetActive(_startButton, false);
+                SetActive(_leaveButton, false);
                 return;
             }
 
@@ -114,6 +141,7 @@ namespace NihongoLife.UI
 
         private void ShowCurrentSession(CoopSessionService service)
         {
+            ClearSessionButtons();
             _sessionListText.text = string.Empty;
             SetActive(_createButton, false);
             SetActive(_refreshButton, false);
@@ -130,7 +158,7 @@ namespace NihongoLife.UI
             foreach (var p in service.Participants)
             {
                 string role = string.IsNullOrWhiteSpace(p.assigned_speaker) ? p.role : $"{p.role} → {p.assigned_speaker}";
-                sb.AppendLine($"• {(string.IsNullOrWhiteSpace(p.displayName) ? p.user_id.Substring(0, 8) : p.displayName)} ({role})");
+                sb.AppendLine($"• {DisplayParticipantName(p)} ({role})");
             }
 
             _lobbyInfoText.text = sb.ToString();
@@ -138,6 +166,7 @@ namespace NihongoLife.UI
 
         private void ShowAvailableSessions(CoopSessionService service)
         {
+            ClearSessionButtons();
             SetActive(_createButton, true);
             SetActive(_refreshButton, true);
             SetActive(_startButton, false);
@@ -161,8 +190,40 @@ namespace NihongoLife.UI
                     var s = sessions[i];
                     sb.AppendLine($"{i + 1}. {s.scenario_id} | {Text("Tối đa", "Max", "最大")}: {s.max_players}");
                 }
+                for (int i = 0; i < sessions.Count; i++)
+                {
+                    CreateSessionJoinButton(i, sessions[i]);
+                }
                 _sessionListText.text = sb.ToString();
             });
+        }
+
+        private void CreateSessionJoinButton(int index, CoopSession session)
+        {
+            if (_sessionListText == null || _sessionListText.transform.parent == null || session == null) return;
+
+            var parent = _sessionListText.transform.parent.gameObject;
+            var button = MakeButton(
+                parent,
+                $"JoinSessionBtn_{index}",
+                new Vector2(190f, 145f - index * 32f),
+                new Vector2(104f, 28f),
+                Text("Vao phong", "Join", "参加"));
+            button.onClick.AddListener(() => OnJoinClicked(session.id));
+            _sessionButtons.Add(button);
+        }
+
+        private void ClearSessionButtons()
+        {
+            for (int i = 0; i < _sessionButtons.Count; i++)
+            {
+                if (_sessionButtons[i] != null)
+                {
+                    Destroy(_sessionButtons[i].gameObject);
+                }
+            }
+
+            _sessionButtons.Clear();
         }
 
         // ──────────────────────── Actions ────────────────────────
@@ -182,10 +243,21 @@ namespace NihongoLife.UI
             coopService.CreateSession(scenarioId, 2, success => RefreshView());
         }
 
+        private void OnJoinClicked(string sessionId)
+        {
+            if (string.IsNullOrWhiteSpace(sessionId)) return;
+
+            var coopService = FindFirstObjectByType<CoopSessionService>();
+            if (coopService == null) return;
+
+            _lobbyInfoText.text = Text("Dang vao phong...", "Joining room...", "参加中...");
+            coopService.JoinSession(sessionId, success => RefreshView());
+        }
+
         private void OnStartClicked()
         {
             var coopService = FindFirstObjectByType<CoopSessionService>();
-            coopService?.StartSession(success => RefreshView());
+            coopService?.StartSession(_ => RefreshView());
         }
 
         private void OnLeaveClicked()
@@ -195,6 +267,61 @@ namespace NihongoLife.UI
         }
 
         // ──────────────────────── Helpers ────────────────────────
+
+        private void SubscribeEvents()
+        {
+            var service = FindFirstObjectByType<CoopSessionService>();
+            if (service == null) return;
+
+            service.OnSessionUpdated -= HandleSessionUpdated;
+            service.OnSessionUpdated += HandleSessionUpdated;
+            service.OnSessionEnded -= RefreshView;
+            service.OnSessionEnded += RefreshView;
+        }
+
+        private void UnsubscribeEvents()
+        {
+            var service = FindFirstObjectByType<CoopSessionService>();
+            if (service == null) return;
+
+            service.OnSessionUpdated -= HandleSessionUpdated;
+            service.OnSessionEnded -= RefreshView;
+        }
+
+        private void HandleSessionUpdated(CoopSession session)
+        {
+            RefreshView();
+            if (session != null && session.status == "active")
+            {
+                LoadCoopGameplay(session.scenario_id);
+            }
+        }
+
+        private static void LoadCoopGameplay(string scenarioId)
+        {
+            if (!string.IsNullOrWhiteSpace(scenarioId))
+            {
+                PlayerPrefs.SetString("ActiveScenarioId", scenarioId);
+                PlayerPrefs.Save();
+            }
+
+            if (GameServices.TryGet(out SceneFlowController sceneFlow))
+            {
+                sceneFlow.LoadScene("90_TestSandbox");
+            }
+            else
+            {
+                UnityEngine.SceneManagement.SceneManager.LoadScene("90_TestSandbox");
+            }
+        }
+
+        private static string DisplayParticipantName(CoopParticipant participant)
+        {
+            if (participant == null) return "Player";
+            if (!string.IsNullOrWhiteSpace(participant.displayName)) return participant.displayName;
+            if (string.IsNullOrWhiteSpace(participant.user_id)) return "Player";
+            return participant.user_id.Length <= 8 ? participant.user_id : participant.user_id.Substring(0, 8);
+        }
 
         private static void SetActive(Component c, bool v)
         {

@@ -126,7 +126,7 @@ namespace NihongoLife.UI
                     sb.AppendLine($"<b>{Text("Danh sách bạn bè", "Friends List", "フレンドリスト")}</b>\n");
                     foreach (var f in friendService.Friends)
                     {
-                        string name = !string.IsNullOrWhiteSpace(f.friendDisplayName) ? f.friendDisplayName : f.friendUserId.Substring(0, 8);
+                        string name = !string.IsNullOrWhiteSpace(f.friendDisplayName) ? f.friendDisplayName : ShortId(f.friendUserId);
                         sb.AppendLine($"• <color=#74d680>{name}</color>");
                     }
                     _friendsListText.text = sb.ToString();
@@ -143,7 +143,7 @@ namespace NihongoLife.UI
                     sb.AppendLine($"<b>{Text("Lời mời kết bạn", "Pending Requests", "保留中のリクエスト")}</b>");
                     foreach (var p in friendService.PendingRequests)
                     {
-                        sb.AppendLine($"• {p.requester_id.Substring(0, 8)}...");
+                        sb.AppendLine($"• {ShortId(p.requester_id)}...");
                     }
                     _pendingText.text = sb.ToString();
                 }
@@ -213,6 +213,12 @@ namespace NihongoLife.UI
         private static string Text(string vi, string en, string ja)
         {
             return GameServices.TryGet(out GameSettingsService s) ? s.Text(vi, en, ja) : vi;
+        }
+
+        private static string ShortId(string id)
+        {
+            if (string.IsNullOrWhiteSpace(id)) return "Player";
+            return id.Length <= 8 ? id : id.Substring(0, 8);
         }
     }
 }

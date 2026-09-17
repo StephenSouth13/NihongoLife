@@ -28,6 +28,14 @@ namespace NihongoLife.Player
                 return;
             }
             Instance = this;
+            PlayerName = PlayableCharacterCatalog.GetPlayerName();
+        }
+
+        public void SetPlayerName(string playerName)
+        {
+            PlayerName = string.IsNullOrWhiteSpace(playerName) ? PlayableCharacterCatalog.DefaultPlayerName : playerName.Trim();
+            PlayableCharacterCatalog.SavePlayerName(PlayerName);
+            OnStatusChanged?.Invoke();
         }
 
         private void OnDestroy()

@@ -1,12 +1,42 @@
 # Story Bible — Nihongo Life
 
+> **Tóm tắt 1 dòng**: Một học viên nước ngoài đến sống ở Hibari-chō suốt một mùa xuân-hè, dần được cả khu phố nhớ mặt qua từng việc nhỏ (chào hỏi, mua đồ, giúp hàng xóm, ăn ramen, đi tàu), rồi cùng những học viên thật khác (chơi online) góp mặt vào lễ hội mùa hè cuối cùng — không có villain, chỉ có cảm giác "được thuộc về".
+
 Tài liệu này định nghĩa cốt truyện xuyên suốt cho các scenario N5, để mọi scenario mới/cũ dùng chung một thế giới, một dàn nhân vật và một mạch cảm xúc thay vì là các lát cắt rời rạc như hiện tại. Đây là tài liệu sáng tạo (content), không thay đổi kiến trúc engine mô tả trong `ARCHITECTURE.md` / `SCENARIO_SYSTEM.md`.
 
 ## 1. Premise
 
-Người chơi vừa chuyển đến sống ở một khu phố nhỏ hư cấu tên **ひばり町 (Hibari-chō — "phố Chim Sơn Ca")** để đi học/đi làm tại Nhật. Không có phản diện, không có drama lớn — mục tiêu xuyên suốt là **hòa nhập vào khu phố**: từ một người lạ chưa quen ai, đến khi được cả xóm nhớ mặt và mời tham gia lễ hội mùa hè cuối game.
+Người chơi vừa chuyển đến sống ở một khu phố nhỏ hư cấu tên **ひばり町 (Hibari-chō — "phố Chim Sơn Ca")** để đi học/đi làm tại Nhật, theo diện **"Chương trình lưu trú giao lưu văn hoá Hibari"** (Hibari Cultural Exchange Residency) — một lý do nền nhẹ nhàng, không cần kể chi tiết trong dialogue, nhưng quan trọng vì nó giải thích **tự nhiên vì sao nhiều học viên thật (người chơi khác) cùng "sống" trong cùng một Hibari-chō**: họ đều là học viên khác trong cùng chương trình, xuất hiện qua hệ thống online (xem mục 11). Không có phản diện, không có drama lớn — mục tiêu xuyên suốt là **hòa nhập vào khu phố**: từ một người lạ chưa quen ai, đến khi được cả xóm nhớ mặt và mời tham gia lễ hội mùa hè cuối game.
 
-Tông truyện: **slice-of-life nhẹ nhàng** (kiểu Animal Crossing/Shizuku no Hibi), phù hợp trình độ N5, không tạo áp lực kịch tính lệch tông với mục đích e-learning.
+Câu chuyện trải dài đúng 1 mùa: bắt đầu vào **đầu mùa xuân** (lúc mới chuyển tới, hoa nở, không khí mới mẻ hợp với "khởi đầu") và kết ở **lễ hội mùa hè** (Chapter 4) — khung thời gian ngắn, rõ ràng, giúp người chơi cảm nhận được "hành trình có điểm đầu điểm cuối" dù mỗi chapter học độc lập.
+
+Tông truyện: **slice-of-life nhẹ nhàng** (kiểu Animal Crossing/Shizuku no Hibi), phù hợp trình độ N5, không tạo áp lực kịch tính lệch tông với mục đích e-learning. Chất lượng "cuốn" đến từ **sự nhất quán và các chi tiết callback nhỏ** (NPC nhớ bạn, nhắc lại chuyện cũ, môi trường phản ánh đúng mùa/thời gian) — không phải từ kịch tính lớn.
+
+### 1.1 Địa danh cố định trong Hibari-chō
+
+Dùng nhất quán tên địa danh sau trong mọi dialogue/mô tả từ giờ trở đi, thay vì mô tả chung chung "con phố"/"cửa hàng" — giúp thế giới có cảm giác thật và nhất quán giữa các chapter:
+
+| Địa danh | Vai trò | Xuất hiện |
+|---|---|---|
+| **さくら通り (Sakura-dōri)** | Con đường chính của khu phố, nơi gặp Tanaka lần đầu | Ch1 |
+| **ひばりコンビニ (Hibari Konbini)** | Cửa hàng tiện lợi | Ch2 |
+| **ひばり神社 (Hibari Jinja — đền Hibari)** | Ngôi đền nhỏ đầu phố; Suzuki hay nhắc mèo thích lảng vảng ở đây | Nhắc ở Ch3 (lostcat), là nơi tổ chức lễ hội Ch4 |
+| **やまだ食堂 (Yamada Shokudō)** | Quán ăn của Yamada, bán ramen | Ch3 |
+| **ひばり駅 (Hibari Eki — ga Hibari)** | Nhà ga khu phố | Ch4 |
+
+## 11. Đa người chơi trong cốt truyện (Online E-Learning)
+
+Đây là **e-learning online**, không phải single-player thuần — hệ thống chat/presence/co-op/bạn bè/xếp hạng đã có sẵn trong code (xem `online_multiplayer_scaffolding` memory), chỉ cần khớp đúng ý nghĩa cốt truyện thay vì để trống ý nghĩa fiction:
+
+- **Người chơi khác xuất hiện trong Hibari-chō như những học viên khác cùng chương trình** — không phải NPC, mà là presence thật (`SupabaseOnlineWorldService`/`RemotePlayerAvatar`). Không cần lời thoại giải thích điều này (phá nhịp slice-of-life) — người chơi tự hiểu khi thấy nhân vật khác đi lại trong cùng khu phố.
+- **Kênh chat "town" = bảng tin khu phố (Hibari-chō Board).** Khung fiction: đây là nơi cư dân mới trao đổi, thực hành viết tiếng Nhật ngắn với nhau — không cần thay đổi code, chỉ cần khi có UI copy/placeholder text cho ô chat, dùng đúng khung này (vd. placeholder "Nhắn gì đó cho khu phố...", không phải "type a message" chung chung).
+- **Co-op = "học cùng bạn" (study buddy).** `CoopParticipant.assigned_speaker` đã cho phép 2 người chơi thật nhận 2 vai thoại khác nhau trong cùng 1 scenario — đề xuất áp dụng cho các scenario có đúng 2 vai rõ ràng, tự nhiên nhất là:
+  - `scenario.restaurant.order_ramen`: 1 người chơi vai khách, 1 người chơi tạm vai Yamada (đọc lại lời NPC) — luyện cả nghe lẫn nói 2 chiều.
+  - `scenario.station.buy_ticket`: tương tự với Kimura.
+  - Không áp dụng co-op cho `scenario.intro.arrival`/`town.summer_festival` (thuần narration, không có structure 2 vai rõ ràng).
+- **Leaderboard = "reputation trong khu phố"**, không cần đổi tên hiển thị nhưng khi Sato/Tanaka nói chuyện ở lễ hội cuối (Ch4), có thể lồng 1 câu nhẹ nhàng ghi nhận tiến bộ (đã có sẵn hook: `progress.level`/`completedScenarios.Count` hiển thị trong `MainMenuUI.DisplayProfileStats`) — không cần thêm cơ chế mới, chỉ là văn phong khi viết node cuối game nên gợi ý "khu phố đã thấy bạn tiến bộ" thay vì chỉ nói chung chung.
+
+**Việc không nên làm**: không viết NPC nào đại diện "người chơi khác" bằng dialogue node cứng — vì đó là chỗ của presence/avatar thật, viết cứng vào sẽ xung đột ý nghĩa và không tận dụng được multiplayer thật.
 
 ## 2. Nhân vật chính
 
@@ -18,14 +48,14 @@ Tông truyện: **slice-of-life nhẹ nhàng** (kiểu Animal Crossing/Shizuku n
 
 Nguyên tắc: **mỗi NPC xuất hiện lại ở nhiều scenario**, giữ nguyên `speakerId`, tính cách nhất quán. Không tạo NPC dùng một lần rồi bỏ.
 
-| speakerId | Tên | Vai trò | Tính cách ngắn gọn | Xuất hiện |
-|---|---|---|---|---|
-| `npc_neighbor_1` | Tanaka | Hàng xóm sát vách, người bạn đầu tiên, "hướng dẫn viên" không chính thức của khu phố | Thân thiện, hay chủ động bắt chuyện | Ch1 (street, house1), dẫn dắt sang Ch2, xuất hiện lại ở lễ hội Ch4 |
-| `npc_neighbor_2` | Suzuki | Hàng xóm nuôi mèo | Hơi đãng trí, ấm áp, hay cảm ơn quá mức | Ch3 (lostcat), quay lại Ch4 báo tin đã tìm được mèo |
-| `npc_neighbor_3` | Sato | Trưởng khu phố (chōnaikai), phụ trách quy tắc sinh hoạt | Nghiêm túc nhưng tốt bụng, thích giải thích quy tắc | Ch3 (garbage), là người đứng ra tổ chức lễ hội ở Ch4 |
-| `npc_konbini_clerk` | (chưa đặt tên, gợi ý: Ito) | Nhân viên cửa hàng tiện lợi | Lịch sự kiểu công việc (敬語 chuẩn mực) | Ch2, có thể xuất hiện nền ở lễ hội Ch4 |
-| `npc_ramen_owner` *(mới)* | Yamada | Chủ quán ramen được Tanaka giới thiệu | Xuề xòa, nhiệt tình, hay mời thêm | Ch3 (ramen — nội dung mới) |
-| `npc_station_staff` *(mới)* | (gợi ý: Kimura) | Nhân viên nhà ga | Chuyên nghiệp, nói nhanh, chuẩn văn phong hướng dẫn | Ch4 (station — nội dung mới) |
+| speakerId | Tên | Vai trò | Tính cách ngắn gọn | Xuất hiện | Arc nhỏ xuyên suốt |
+|---|---|---|---|---|---|
+| `npc_neighbor_1` | Tanaka | Hàng xóm sát vách, người bạn đầu tiên, "hướng dẫn viên" không chính thức của khu phố | Thân thiện, hay chủ động bắt chuyện | Ch1 (street, house1), dẫn dắt sang Ch2, xuất hiện lại ở lễ hội Ch4 | Từ "người lạ tốt bụng chỉ đường" → "bạn thân đầu tiên" → ở lễ hội, chính Tanaka là người giới thiệu người chơi với cả khu phố như "bạn tôi" — khép lại vòng tròn từ người lạ thành người trong nhóm. |
+| `npc_neighbor_2` | Suzuki | Hàng xóm nuôi mèo | Hơi đãng trí, ấm áp, hay cảm ơn quá mức | Ch3 (lostcat), quay lại Ch4 báo tin đã tìm được mèo | Mối lo nhỏ (mèo lạc) được gieo ở Ch3, giải quyết nhẹ nhàng ở Ch4 — không cần người chơi trực tiếp tìm ra mèo, chỉ cần đã quan tâm hỏi han là đủ để Suzuki nhớ ơn. |
+| `npc_neighbor_3` | Sato | Trưởng khu phố (chōnaikai), phụ trách quy tắc sinh hoạt | Nghiêm túc nhưng tốt bụng, thích giải thích quy tắc | Ch3 (garbage), là người đứng ra tổ chức lễ hội ở Ch4 | Từ "người canh giữ luật lệ" (hơi xa cách) → người đầu tiên công nhận công khai sự tiến bộ của người chơi trước cả khu phố ở lễ hội — phần thưởng cảm xúc cho việc tuân thủ quy tắc nhỏ nhặt trước đó. |
+| `npc_cashier` | Ito | Nhân viên cửa hàng tiện lợi | Lịch sự kiểu công việc (敬語 chuẩn mực) | Ch2, xuất hiện nền ở lễ hội Ch4 | Đại diện cho "giao dịch lịch sự kiểu Nhật" — ở lễ hội chỉ cần 1 câu chào nhận ra mặt quen, không cần arc lớn, đủ để không bị "dùng 1 lần rồi bỏ". |
+| `npc_ramen_owner` | Yamada | Chủ quán ramen được Tanaka giới thiệu | Xuề xòa, nhiệt tình, hay mời thêm | Ch3 (ramen), bán hàng ở lễ hội Ch4 | Ban đầu là "chủ quán do Tanaka giới thiệu" → tới lễ hội đã tự nhận ra người chơi mà không cần Tanaka giới thiệu lại — dấu hiệu rõ ràng nhất cho thấy người chơi đã thực sự thành cư dân quen mặt. |
+| `npc_station_staff` | Kimura | Nhân viên nhà ga | Chuyên nghiệp, nói nhanh, chuẩn văn phong hướng dẫn | Ch4 (station), có thể xuất hiện thoáng qua ở lễ hội | NPC "công việc" cuối cùng gặp trước lễ hội — đại diện thử thách nhỏ cuối "phải tự lo được việc hành chính/di chuyển" trước khi được đón nhận vào cộng đồng ở lễ hội. |
 
 ## 4. Cấu trúc chương (Main Quest)
 

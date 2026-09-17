@@ -196,7 +196,7 @@ namespace NihongoLife.Editor
                     objectiveIdToComplete = "obj_go_to_cashier",
                     targetAreaId = "cashier"
                 },
-                Dialogue("node_cashier_prompt_bag", "npc_cashier", "Thu ngân",
+                Dialogue("node_cashier_prompt_bag", "npc_cashier", "Ito",
                     "袋は要りますか？", "ふくろはいりますか？",
                     "Quý khách có cần túi không?", "Fukuro wa irimasu ka?", "",
                     new List<DialogueChoice>
@@ -211,7 +211,7 @@ namespace NihongoLife.Editor
                             Score("Grammar", -10, "Sai trợ từ: 要る thường đi với が hoặc は"),
                             Score("ResponseAccuracy", -5, "Phản xạ chưa chính xác"))
                     }),
-                Dialogue("node_bag_wrong_grammar", "npc_cashier", "Thu ngân",
+                Dialogue("node_bag_wrong_grammar", "npc_cashier", "Ito",
                     "すみません、袋は必要ですか？かしこまりました。",
                     "すみません、ふくろはひつようですか？かしこまりました。",
                     "Ý bạn là bạn cần túi phải không? Ở quầy thanh toán, cách nói tự nhiên là “はい、お願いします” hoặc “いいえ、大丈夫です”.",
@@ -219,7 +219,7 @@ namespace NihongoLife.Editor
                     "point",
                     null,
                     "node_bag_yes"),
-                Dialogue("node_bag_yes", "npc_cashier", "Thu ngân",
+                Dialogue("node_bag_yes", "npc_cashier", "Ito",
                     "かしこまりました。袋代3円になります。お会計は500円です。",
                     "かしこまりました。ふくろだいさんえんになります。おかいけいはごひゃくえんです。",
                     "Tôi hiểu rồi. Tiền túi là 3 yên. Tổng cộng là 500 yên ạ.",
@@ -227,7 +227,7 @@ namespace NihongoLife.Editor
                     "bow",
                     null,
                     "node_pay_choice"),
-                Dialogue("node_bag_no", "npc_cashier", "Thu ngân",
+                Dialogue("node_bag_no", "npc_cashier", "Ito",
                     "かしこまりました。お会計は497円です。",
                     "かしこまりました。おかいけいはよんひゃくきゅうじゅうななえんです。",
                     "Tôi hiểu rồi. Tổng cộng là 497 yên ạ.",
@@ -248,7 +248,7 @@ namespace NihongoLife.Editor
                         Choice("カードで払います。", "Thanh toán bằng thẻ.", "node_transaction_done",
                             Score("Vocabulary", 10, "Dùng từ thẻ (kaado)"))
                     }),
-                Dialogue("node_transaction_done", "npc_cashier", "Thu ngân",
+                Dialogue("node_transaction_done", "npc_cashier", "Ito",
                     "ありがとうございます。またお越しくださいませ。",
                     "ありがとうございます。またおこしくださいませ。",
                     "Xin cảm ơn quý khách. Hẹn gặp lại quý khách lần sau.",

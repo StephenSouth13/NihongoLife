@@ -303,14 +303,17 @@ namespace NihongoLife.UI
         private Button leaderboardButton;
         private Button friendsButton;
         private Button profileButton;
+        private Button onlineButton;
         private LeaderboardUI leaderboardUI;
         private FriendsUI friendsUI;
         private PlayerProfileUI profileUI;
+        private CoopLobbyUI coopLobbyUI;
         private GameObject characterSelectPanel;
         private RawImage characterPreviewImage;
         private TextMeshProUGUI characterSelectTitleText;
         private TextMeshProUGUI characterNameText;
         private TextMeshProUGUI characterTaglineText;
+        private TMP_InputField playerNameInput;
         private Button previousCharacterButton;
         private Button nextCharacterButton;
         private Button confirmCharacterButton;
@@ -320,6 +323,7 @@ namespace NihongoLife.UI
         private GameObject characterPreviewStage;
         private GameObject characterPreviewModel;
         private int selectedCharacterIndex;
+        private bool startOnlineAfterCharacterConfirm;
 
         private void EnsureSocialUI()
         {
@@ -348,6 +352,13 @@ namespace NihongoLife.UI
             MoveRect(profileButton, new Vector2(0f, -290f), new Vector2(130f, 46f));
             SetButtonText(profileButton, Text("Hồ sơ", "Profile", "プロフィール"));
             profileButton.onClick.AddListener(() => profileUI.ShowOwnProfile());
+
+            coopLobbyUI = gameObject.AddComponent<CoopLobbyUI>();
+            coopLobbyUI.Initialize(font);
+            onlineButton = CreateLanguageButton("OnlineBtn", "Online", new Vector2(0f, -350f), font);
+            MoveRect(onlineButton, new Vector2(0f, -350f), new Vector2(150f, 46f));
+            SetButtonText(onlineButton, Text("Online", "Online", "オンライン"));
+            onlineButton.onClick.AddListener(OnOnlineClicked);
         }
 
         private void EnsureCharacterSelectUI()
@@ -376,6 +387,11 @@ namespace NihongoLife.UI
             characterTaglineText = CreateMenuText("CharacterTagline", new Vector2(250f, 46f), new Vector2(360f, 42f), 16f, font);
             characterTaglineText.transform.SetParent(characterSelectPanel.transform, false);
             characterTaglineText.color = new Color(0.9f, 0.95f, 1f, 1f);
+
+            playerNameInput = CreateInputField("PlayerNameInput", new Vector2(250f, -28f), new Vector2(300f, 44f), font);
+            playerNameInput.transform.SetParent(characterSelectPanel.transform, false);
+            MoveRect(playerNameInput.GetComponent<RectTransform>(), new Vector2(250f, -28f), new Vector2(300f, 44f));
+            playerNameInput.text = PlayableCharacterCatalog.GetPlayerName();
 
             var previewFrame = new GameObject("PreviewFrame");
             previewFrame.transform.SetParent(characterSelectPanel.transform, false);
@@ -493,6 +509,38 @@ namespace NihongoLife.UI
             {
                 Destroy(collider);
             }
+        }
+
+        private TMP_InputField CreateInputField(string name, Vector2 position, Vector2 size, TMP_FontAsset font)
+        {
+            var go = new GameObject(name);
+            go.transform.SetParent(transform, false);
+            var rect = go.AddComponent<RectTransform>();
+            MoveRect(rect, position, size);
+
+            var image = go.AddComponent<Image>();
+            image.color = new Color(0.07f, 0.085f, 0.095f, 0.96f);
+
+            var input = go.AddComponent<TMP_InputField>();
+            input.characterLimit = 24;
+            input.lineType = TMP_InputField.LineType.SingleLine;
+
+            var text = CreateMenuText("Text", Vector2.zero, new Vector2(size.x - 28f, size.y - 10f), 17f, font);
+            text.transform.SetParent(go.transform, false);
+            MoveRect(text.rectTransform, Vector2.zero, new Vector2(size.x - 28f, size.y - 10f));
+            text.alignment = TextAlignmentOptions.MidlineLeft;
+            text.color = Color.white;
+            input.textComponent = text;
+
+            var placeholder = CreateMenuText("Placeholder", Vector2.zero, new Vector2(size.x - 28f, size.y - 10f), 15f, font);
+            placeholder.transform.SetParent(go.transform, false);
+            MoveRect(placeholder.rectTransform, Vector2.zero, new Vector2(size.x - 28f, size.y - 10f));
+            placeholder.alignment = TextAlignmentOptions.MidlineLeft;
+            placeholder.color = new Color(0.72f, 0.78f, 0.84f, 0.75f);
+            placeholder.text = Text("Tên nhân vật", "Character name", "名前");
+            input.placeholder = placeholder;
+
+            return input;
         }
 
         private TextMeshProUGUI CreateMenuText(string name, Vector2 position, Vector2 size, float fontSize, TMP_FontAsset font)
@@ -655,6 +703,7 @@ namespace NihongoLife.UI
             SetButtonText(guideButton, Text("Cách chơi", "How to play", "遊び方"));
             SetButtonText(aboutButton, Text("Về tôi", "About me", "作者"));
             SetButtonText(settingsButton, Text("Cài đặt", "Settings", "設定"));
+            SetButtonText(onlineButton, Text("Online", "Online", "オンライン"));
             SetButtonText(closeCharacterButton, Text("Quay lại", "Back", "戻る"));
             SetButtonText(confirmCharacterButton, Text("Chọn nhân vật này", "Play as this character", "このキャラで始める"));
             if (characterSelectTitleText != null) characterSelectTitleText.text = Text("Chọn nhân vật", "Choose your character", "キャラクター選択");
@@ -746,6 +795,7 @@ namespace NihongoLife.UI
 
         private void OnStartClicked()
         {
+            startOnlineAfterCharacterConfirm = false;
             if (characterSelectPanel == null)
             {
                 BeginGameWithSelectedCharacter();
@@ -758,11 +808,47 @@ namespace NihongoLife.UI
             UIStyleKit.PlayShowAnimation(characterSelectPanel);
         }
 
+        private void OnOnlineClicked()
+        {
+            startOnlineAfterCharacterConfirm = true;
+            HideInfoPanels();
+            if (characterSelectPanel != null)
+            {
+                characterSelectPanel.SetActive(true);
+                SelectCharacter(selectedCharacterIndex);
+                UIStyleKit.PlayShowAnimation(characterSelectPanel);
+                return;
+            }
+
+            ShowOnlineLobby();
+        }
+
         private void ConfirmCharacterAndStart()
         {
             var character = PlayableCharacterCatalog.Get(selectedCharacterIndex);
             PlayableCharacterCatalog.SaveSelected(character.Id);
+            PlayableCharacterCatalog.SavePlayerName(playerNameInput != null ? playerNameInput.text : PlayableCharacterCatalog.DefaultPlayerName);
+            if (startOnlineAfterCharacterConfirm)
+            {
+                characterSelectPanel?.SetActive(false);
+                ShowOnlineLobby();
+                return;
+            }
+
             BeginGameWithSelectedCharacter();
+        }
+
+        private void ShowOnlineLobby()
+        {
+            startOnlineAfterCharacterConfirm = false;
+            if (coopLobbyUI == null)
+            {
+                TMP_FontAsset font = titleText != null ? titleText.font : null;
+                coopLobbyUI = gameObject.AddComponent<CoopLobbyUI>();
+                coopLobbyUI.Initialize(font);
+            }
+
+            coopLobbyUI.Show();
         }
 
         private void BeginGameWithSelectedCharacter()

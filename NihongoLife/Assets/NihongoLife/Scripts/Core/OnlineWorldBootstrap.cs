@@ -1,4 +1,5 @@
 using NihongoLife.Save;
+using NihongoLife.Player;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -18,11 +19,11 @@ namespace NihongoLife.Core
             }
 
             string playerId = SystemInfo.deviceUniqueIdentifier;
-            string displayName = "Learner";
+            string displayName = PlayableCharacterCatalog.GetPlayerName();
             if (GameServices.TryGet(out IProgressRepository progressRepository))
             {
                 var progress = progressRepository.GetProgress();
-                if (progress != null && !string.IsNullOrWhiteSpace(progress.displayName))
+                if (displayName == PlayableCharacterCatalog.DefaultPlayerName && progress != null && !string.IsNullOrWhiteSpace(progress.displayName))
                 {
                     displayName = progress.displayName;
                 }

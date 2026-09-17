@@ -788,7 +788,7 @@ namespace NihongoLife.Editor
 
             var so = new SerializedObject(npc.AddComponent<NPCController>());
             SetString(so, "npcId", "npc_cashier");
-            SetString(so, "displayName", "Thu ngân");
+            SetString(so, "displayName", "Ito");
             SetString(so, "role", "Cashier");
             SetString(so, "promptJa", "会計する");
             SetString(so, "promptEn", "Thanh toán");

@@ -17,6 +17,7 @@ namespace NihongoLife.Core
         [SerializeField] private DayNightCycle dayNightCycle;
         [SerializeField] private ScenarioCampaignManager campaignManager;
         [SerializeField] private OnlineWorldBootstrap onlineWorldBootstrap;
+        [SerializeField] private CoopSessionService coopSessionService;
 
         private void Awake()
         {
@@ -137,6 +138,13 @@ namespace NihongoLife.Core
             }
             GameServices.Register<IOnlineWorldService>(onlineWorld);
             onlineWorld.Initialize();
+
+            if (coopSessionService == null)
+            {
+                coopSessionService = gameObject.AddComponent<CoopSessionService>();
+            }
+            GameServices.Register<CoopSessionService>(coopSessionService);
+            coopSessionService.Initialize();
 
             if (onlineWorldBootstrap == null)
             {
