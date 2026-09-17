@@ -33794,7 +33794,7 @@ MonoBehaviour:
   m_VertexBufferAutoSizeReduction: 0
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
-  m_margin: {x: 0, y: 0, z: 0, w: 0}
+  m_margin: {x: 43.440765, y: 0, z: 0, w: 0}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_hasFontAssetChanged: 0
@@ -45363,7 +45363,8 @@ GameObject:
   m_Component:
   - component: {fileID: 2058446891}
   - component: {fileID: 2058446892}
-  m_Layer: 0
+  - component: {fileID: 920000001}
+  m_Layer: 6
   m_Name: CashierCounter
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -45384,6 +45385,8 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 709002404}
+  - {fileID: 920000011}
+  - {fileID: 920000021}
   m_Father: {fileID: 1090880070}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!65 &2058446892
@@ -45407,6 +45410,24 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 3.4, y: 1.1, z: 1.1}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &920000001
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2058446890}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 42dd4c6b09504a58a4a326d87fde1021, type: 3}
+  m_Name:
+  m_EditorClassIdentifier: NihongoLife::NihongoLife.Interaction.ShopCounter
+  stockItems:
+  - {fileID: 920000012}
+  - {fileID: 920000022}
+  blockedScenarioId: scenario.konbini.buy_onigiri
+  promptJa: "\u8CB7\u3044\u7269\u3092\u3059\u308B"
+  promptEn: Mua hang tu do
 --- !u!1001 &2061662778
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -47223,6 +47244,112 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 3184517162889014102, guid: 1e42a4897b3650347aae38c398628346, type: 3}
   m_PrefabInstance: {fileID: 2145287220}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &920000010
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 920000011}
+  - component: {fileID: 920000012}
+  m_Layer: 0
+  m_Name: FreeShop_CannedCoffee
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &920000011
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 920000010}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 2058446891}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &920000012
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 920000010}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c9f1918fc500ba949a053ec9d5b98dcf, type: 3}
+  m_Name:
+  m_EditorClassIdentifier: NihongoLife::NihongoLife.Interaction.InteractiveItem
+  itemId: free_shop_canned_coffee
+  displayNameJa: "\u7F36\u30B3\u30FC\u30D2\u30FC"
+  displayNameReading: kan koohii
+  displayNameEn: Ca phe lon
+  promptJa: "\u8ABF\u3079\u308B"
+  promptEn: Kiem tra
+  priceYen: 180
+  addToInventory: 1
+  destroyOnInteract: 0
+--- !u!1 &920000020
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 920000021}
+  - component: {fileID: 920000022}
+  m_Layer: 0
+  m_Name: FreeShop_SweetBread
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &920000021
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 920000020}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 2058446891}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &920000022
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 920000020}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c9f1918fc500ba949a053ec9d5b98dcf, type: 3}
+  m_Name:
+  m_EditorClassIdentifier: NihongoLife::NihongoLife.Interaction.InteractiveItem
+  itemId: free_shop_sweet_bread
+  displayNameJa: "\u83D3\u5B50\u30D1\u30F3"
+  displayNameReading: kashi pan
+  displayNameEn: Banh ngot
+  promptJa: "\u8ABF\u3079\u308B"
+  promptEn: Kiem tra
+  priceYen: 220
+  addToInventory: 1
+  destroyOnInteract: 0
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

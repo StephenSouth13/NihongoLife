@@ -9,4 +9,9 @@ namespace NihongoLife.Interaction
         void Interact(GameObject player);
         Transform GetTransform();
     }
+
+    public interface IConditionalInteractable
+    {
+        bool IsInteractionAvailable { get; }
+    }
 }

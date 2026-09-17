@@ -9,6 +9,7 @@ namespace NihongoLife.Interaction
         [Header("Item Config")]
         [SerializeField] private string itemId;
         [SerializeField] private string displayNameJa;
+        [SerializeField] private string displayNameReading;
         [SerializeField] private string displayNameEn;
         [SerializeField] private string promptJa = "調べる";
         [SerializeField] private string promptEn = "Kiểm tra";
@@ -17,6 +18,9 @@ namespace NihongoLife.Interaction
         [SerializeField] private bool destroyOnInteract = true;
 
         public string ItemId => itemId;
+        public string DisplayNameJa => displayNameJa;
+        public string DisplayNameReading => displayNameReading;
+        public string DisplayNameEn => displayNameEn;
         public int PriceYen => priceYen;
 
         public string GetPromptJa() => promptJa;

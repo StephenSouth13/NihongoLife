@@ -102,6 +102,19 @@ namespace NihongoLife.Player
             return true;
         }
 
+        public void AddYen(int amount)
+        {
+            if (amount <= 0) return;
+            Yen += amount;
+            OnInventoryChanged?.Invoke();
+        }
+
+        public int GetItemQuantity(string itemId)
+        {
+            var item = _items.Find(entry => entry.itemId == itemId);
+            return item != null ? item.quantity : 0;
+        }
+
         public int GetCartTotalYen()
         {
             int total = 0;

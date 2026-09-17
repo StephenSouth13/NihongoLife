@@ -54,6 +54,11 @@ namespace NihongoLife.Interaction
 
                 if (interactable != null)
                 {
+                    if (interactable is IConditionalInteractable conditional && !conditional.IsInteractionAvailable)
+                    {
+                        continue;
+                    }
+
                     float dist = Vector3.Distance(detectionOrigin, interactable.GetTransform().position + Vector3.up * 0.9f);
                     if (dist < minDistance)
                     {
