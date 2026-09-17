@@ -10,6 +10,7 @@ namespace NihongoLife.Core
         [SerializeField] private float posePublishIntervalSeconds = 0.2f;
 
         private float _nextPublishTime;
+        private Transform _playerTransform;
 
         private void Start()
         {
@@ -30,6 +31,7 @@ namespace NihongoLife.Core
             }
 
             onlineWorld.ConnectLocalPlayer(playerId, displayName);
+            CachePlayerTransform();
         }
 
         private void Update()
@@ -42,13 +44,22 @@ namespace NihongoLife.Core
                 return;
             }
 
-            var player = GameObject.FindWithTag("Player");
-            if (player == null) return;
+            if (_playerTransform == null)
+            {
+                CachePlayerTransform();
+                if (_playerTransform == null) return;
+            }
 
             onlineWorld.UpdateLocalPlayerPose(
                 SceneManager.GetActiveScene().name,
-                player.transform.position,
-                player.transform.rotation);
+                _playerTransform.position,
+                _playerTransform.rotation);
+        }
+
+        private void CachePlayerTransform()
+        {
+            var player = GameObject.FindWithTag("Player");
+            _playerTransform = player != null ? player.transform : null;
         }
     }
 }

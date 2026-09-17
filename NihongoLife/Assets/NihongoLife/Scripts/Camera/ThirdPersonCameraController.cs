@@ -26,6 +26,13 @@ namespace NihongoLife.Cameras
         [SerializeField] private LayerMask collisionLayers;
         [SerializeField] private float cameraRadius = 0.2f;
 
+        [Header("Conversation Framing")]
+        [SerializeField] private float conversationShoulderDistance = 1.45f;
+        [SerializeField] private float conversationShoulderOffset = 0.65f;
+        [SerializeField] private float conversationHeightOffset = 0.18f;
+        [SerializeField] private float conversationPositionSmoothTime = 0.28f;
+        [SerializeField] private float conversationRotationSharpness = 7f;
+
         private float _rotationX = 0f;
         private float _rotationY = 20f;
         private float _currentDistance;
@@ -33,6 +40,11 @@ namespace NihongoLife.Cameras
         private bool _isIndoor = false;
         private Transform _conversationTarget;
         private Vector3 _conversationVelocity;
+        private float _conversationSide = 1f;
+        private float _preConversationYaw;
+        private float _preConversationPitch;
+        private float _preConversationDistance;
+        private bool _returningFromConversation;
 
         public bool IsLocked
         {
@@ -100,8 +112,28 @@ namespace NihongoLife.Cameras
             // Final position
             Vector3 finalPosition = targetPosition + desiredDirection * _currentDistance;
 
-            transform.position = finalPosition;
-            transform.LookAt(targetPosition);
+            if (_returningFromConversation)
+            {
+                transform.position = Vector3.SmoothDamp(
+                    transform.position,
+                    finalPosition,
+                    ref _conversationVelocity,
+                    conversationPositionSmoothTime);
+                Quaternion desiredRotation = Quaternion.LookRotation(targetPosition - transform.position, Vector3.up);
+                float rotationT = 1f - Mathf.Exp(-conversationRotationSharpness * Time.deltaTime);
+                transform.rotation = Quaternion.Slerp(transform.rotation, desiredRotation, rotationT);
+
+                if ((transform.position - finalPosition).sqrMagnitude < 0.0025f)
+                {
+                    _returningFromConversation = false;
+                    _conversationVelocity = Vector3.zero;
+                }
+            }
+            else
+            {
+                transform.position = finalPosition;
+                transform.LookAt(targetPosition);
+            }
         }
 
         public void SetTarget(Transform newTarget)
@@ -128,25 +160,62 @@ namespace NihongoLife.Cameras
 
         public void SetConversationTarget(Transform focusTarget)
         {
+            if (focusTarget == null || target == null) return;
+
+            _preConversationYaw = _rotationX;
+            _preConversationPitch = _rotationY;
+            _preConversationDistance = defaultDistance;
+            _returningFromConversation = false;
             _conversationTarget = focusTarget;
+            Vector3 playerToNpc = Vector3.ProjectOnPlane(focusTarget.position - target.position, Vector3.up);
+            if (playerToNpc.sqrMagnitude > 0.01f)
+            {
+                Vector3 conversationRight = Vector3.Cross(Vector3.up, playerToNpc.normalized);
+                _conversationSide = Vector3.Dot(transform.position - target.position, conversationRight) >= 0f ? 1f : -1f;
+            }
             IsLocked = true;
         }
 
         public void ClearConversationTarget()
         {
+            if (_conversationTarget == null) return;
+
             _conversationTarget = null;
             _conversationVelocity = Vector3.zero;
+            _rotationX = _preConversationYaw;
+            _rotationY = _preConversationPitch;
+            defaultDistance = Mathf.Clamp(_preConversationDistance, minDistance, maxDistance);
+            _currentDistance = defaultDistance;
+            _returningFromConversation = true;
         }
 
         private void UpdateConversationCamera()
         {
-            Vector3 faceTarget = _conversationTarget.position + Vector3.up * 1.55f;
-            Vector3 forward = _conversationTarget.forward.sqrMagnitude > 0.01f ? _conversationTarget.forward : transform.forward;
-            Vector3 side = _conversationTarget.right.sqrMagnitude > 0.01f ? _conversationTarget.right : transform.right;
-            Vector3 desiredPosition = faceTarget + forward * 2.4f + side * 0.65f + Vector3.up * 0.05f;
+            Vector3 playerFace = target.position + targetOffset;
+            Vector3 npcFace = _conversationTarget.position + Vector3.up * 1.55f;
+            Vector3 playerToNpc = Vector3.ProjectOnPlane(npcFace - playerFace, Vector3.up);
+            Vector3 forward = playerToNpc.sqrMagnitude > 0.01f ? playerToNpc.normalized : target.forward;
+            Vector3 side = Vector3.Cross(Vector3.up, forward) * _conversationSide;
+            Vector3 desiredPosition = playerFace
+                - forward * conversationShoulderDistance
+                + side * conversationShoulderOffset
+                + Vector3.up * conversationHeightOffset;
+            Vector3 lookTarget = Vector3.Lerp(playerFace, npcFace, 0.72f);
 
-            transform.position = Vector3.SmoothDamp(transform.position, desiredPosition, ref _conversationVelocity, 0.18f);
-            transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(faceTarget - transform.position), 12f * Time.deltaTime);
+            transform.position = Vector3.SmoothDamp(
+                transform.position,
+                desiredPosition,
+                ref _conversationVelocity,
+                conversationPositionSmoothTime);
+
+            Vector3 lookDirection = lookTarget - transform.position;
+            if (lookDirection.sqrMagnitude > 0.001f)
+            {
+                float rotationT = 1f - Mathf.Exp(-conversationRotationSharpness * Time.deltaTime);
+                Quaternion desiredRotation = Quaternion.LookRotation(lookDirection.normalized, Vector3.up);
+                transform.rotation = Quaternion.Slerp(transform.rotation, desiredRotation, rotationT);
+            }
         }
+
     }
 }

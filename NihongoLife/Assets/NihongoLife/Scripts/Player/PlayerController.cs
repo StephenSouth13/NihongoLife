@@ -2,6 +2,7 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using NihongoLife.Interaction;
 using NihongoLife.Core;
+using NihongoLife.Cameras;
 
 namespace NihongoLife.Player
 {
@@ -47,7 +48,7 @@ namespace NihongoLife.Player
         private void Awake()
         {
             _characterController = GetComponent<CharacterController>();
-            _mainCamera = UnityEngine.Camera.main;
+            _mainCamera = ResolveGameplayCamera();
             _animationController = GetComponent<CharacterAnimationController>();
             PlayableCharacterCatalog.ApplySelectedVisual(gameObject);
         }
@@ -95,9 +96,9 @@ namespace NihongoLife.Player
                 isRunning = Keyboard.current.shiftKey.isPressed;
             }
 
-            if (_mainCamera == null)
+            if (!IsGameplayCamera(_mainCamera))
             {
-                _mainCamera = UnityEngine.Camera.main;
+                _mainCamera = ResolveGameplayCamera();
             }
 
             Vector3 forward = _mainCamera != null ? _mainCamera.transform.forward : transform.forward;
@@ -146,6 +147,22 @@ namespace NihongoLife.Player
                     detector.TriggerInteraction();
                 }
             }
+        }
+
+        private static bool IsGameplayCamera(UnityEngine.Camera camera)
+        {
+            return camera != null
+                && camera.isActiveAndEnabled
+                && camera.GetComponent<ThirdPersonCameraController>() != null;
+        }
+
+        private static UnityEngine.Camera ResolveGameplayCamera()
+        {
+            UnityEngine.Camera taggedCamera = UnityEngine.Camera.main;
+            if (IsGameplayCamera(taggedCamera)) return taggedCamera;
+
+            var controller = FindFirstObjectByType<ThirdPersonCameraController>();
+            return controller != null ? controller.GetComponent<UnityEngine.Camera>() : null;
         }
     }
 }

@@ -170,8 +170,38 @@ Sau khi vào đúng area, các node `Dialogue` tiếp theo (`speakerId: npc_rame
 ### Đã tự fix (không cần Codex làm lại)
 Claude đã sửa `HUDUI.cs` (`RenderPolishedPlayerPanels`, panel "Hồ sơ học viên" bên phải) — trước đó bị hardcode cứng `"Tên: Remy"` và `"Mục tiêu: trò chuyện với người trên phố"` bất kể scenario nào đang chạy. Giờ đọc tên thật từ `IProgressRepository`/`IAuthService` và mục tiêu thật từ `ScenarioManager.Instance.Objectives`. Không đụng lại phần này.
 
-### Câu hỏi cần chủ dự án làm rõ (Codex không tự đoán)
-Chủ dự án báo "cửa hàng chẳng có đồ vật phẩm/asset gì cả" nhưng ảnh chụp gửi kèm là cảnh **đường phố** (`street_first_talk`, không phải cửa hàng konbini) — cần hỏi lại chính xác lúc nào/màn hình nào bị trống trước khi Codex sửa, tránh sửa nhầm chỗ.
+### E5. Konbini bên trong trông như "mockup trống" (đã xác nhận với chủ dự án — không phải hỏi nữa)
+Chủ dự án xác nhận: đã bước vào bên trong konbini thật (không phải cảnh đường phố ở ảnh trước) và thấy nó trống, giống mockup chưa có asset.
+
+**Đã verify bằng cách grep GUID trực tiếp trong `90_TestSandbox.unity` — KHÔNG phải bug thiếu asset**: `Shelf_Food`, `Shelf_Drinks`, `Onigiri`, `CashierNPC`, cửa kính đều tồn tại trong scene, và GUID của cả 5 prefab liên quan (`shelf.prefab`, `counter.prefab`, `store_fridge.prefab`, `food_apple.prefab`, `food_bottle.prefab` — toàn bộ đều có file thật trong `Assets/NihongoLife/Prefabs/Furniture/` và `Prefabs/Food/`) đều xuất hiện nhiều lần trong scene, tức đã được instantiate thật, không phải reference bị đứt. `store_fridge.prefab` tồn tại trên đĩa và được reference trong scene nhưng **không thấy lệnh gọi `CreateItem`/tương đương cho fridge trong `FillKonbiniInterior`/hàm dựng shop hiện tại** (chỉ có 2 shelf + 3 item + counter + cashier) — nghĩa là scene hiện tại đã được ai đó bổ sung thêm fridge bằng tay ngoài code, nhưng tổng thể vẫn rất ít đồ so với 1 gian phòng cửa hàng đầy đủ.
+
+**Kết luận**: đây không phải bug kỹ thuật (thiếu asset/reference đứt) mà là **thiếu nội dung trang trí + có thể ánh sáng trong nhà quá tối/phẳng** khiến 1 phòng lớn với chỉ 2 kệ + vài vật phẩm trông trống. Việc cho Codex (không phải audit thêm, mà làm trực tiếp, additive, đúng tinh thần TASK-C — không rebuild toàn bộ shop):
+1. Thêm thêm 1-2 vị trí `CreateShelf`/`CreateItem` mới (tái dùng nguyên hàm có sẵn trong `SceneBuilder.cs` dòng 689-757) trực tiếp vào `90_TestSandbox.unity` hiện có — thêm vật phẩm mới (vd. bánh, cà phê lon) lấp khoảng trống, không xoá gì cũ.
+2. Kiểm tra ánh sáng bên trong konbini khi `StoreCameraZone`/`SetIndoorMode(true)` kích hoạt (`ThirdPersonCameraController.cs` dòng 121-127) — xem có set riêng ambient light/point light cho khu vực trong nhà không, hay đang dùng chung ánh sáng ngoài trời khiến bên trong tối/phẳng.
+3. Không cần hỏi lại chủ dự án về việc này nữa — đã xác nhận rõ trong hội thoại.
+
+---
+
+## TASK-F (Codex) — Shop UI mua hàng kiểu danh sách (click chọn, thay thế nhặt đồ 3D)
+
+**Quyết định đã chốt với chủ dự án (2026-09-17)**: thêm UI mua hàng kiểu danh sách (như shop RPG) — tương tác kệ/quầy hiện bảng liệt kê món + giá, bấm mua trực tiếp bằng UI thay vì phải đi nhặt vật phẩm 3D ngoài đời.
+
+**Khuyến nghị của Claude (chủ dự án đã biết trade-off, xem lại nếu muốn đổi)**: chỉ áp dụng UI mua hàng kiểu này cho việc mua sắm **tự do/lặp lại**, không áp dụng lên scenario `scenario.konbini.buy_onigiri` (bài học N5 chính thức đang luyện mẫu câu `〜をください` qua `DialogueChoice`) — nếu thay luôn cả bài học đó bằng UI bấm chọn thì phần luyện nói/chọn câu tiếng Nhật ở bước mua hàng sẽ mất, không còn giá trị học tập. Nếu chủ dự án muốn thay luôn cả bài học, báo lại rõ ràng trước khi Codex đụng vào node `CollectItem` của scenario đó.
+
+**Cơ chế đã có sẵn, tái dùng — không viết lại từ đầu**:
+- `Assets/NihongoLife/Scripts/Interaction/InteractiveItem.cs` dòng 26-50 (`Interact`): đã xử lý sẵn đăng ký với `ScenarioManager.OnItemInteracted`, thêm vào `PlayerInventory`, ẩn vật phẩm — **UI mua hàng nên gọi lại đúng hàm `item.Interact(player)` này** cho từng item được mua, không viết logic riêng, để tương thích ngược với mọi scenario đang track vật phẩm qua `CollectItem`/`InspectItem` node.
+- `Assets/NihongoLife/Scripts/Player/PlayerInventory.cs`: `SpendYen(int amount)` dòng 95, `AddItem(...)` dòng 50, `Yen` property dòng 27 — dùng để trừ tiền khi bấm mua (lưu ý: `InteractiveItem.Interact` KHÔNG tự trừ tiền, hiện tại việc trừ tiền đang nằm ở bước hội thoại tại quầy thu ngân — UI mua hàng mới phải tự gọi `SpendYen` khi xác nhận mua, kiểm tra đủ tiền trước khi cho mua).
+- `Assets/NihongoLife/Scripts/UI/HUDUI.cs` đã có pattern tạo panel UI runtime nhất quán (`CreateInfoPanel`, `StyleInfoPanel`) — nên viết `ShopUI` theo đúng phong cách này (dựng bằng code lúc `Start()`, không cần dựng tay trong Scene — đúng convention toàn bộ project).
+
+**Yêu cầu**:
+1. Tạo `ShopUI.cs` (namespace `NihongoLife.UI`): panel liệt kê item — mỗi dòng hiện `displayNameJa` (kèm đọc nếu có), `displayNameEn`/vi, `priceYen`, nút "Mua". Bấm mua → kiểm tra `PlayerInventory.Instance.Yen >= item.PriceYen` → nếu đủ: `SpendYen` rồi `item.Interact(player)`; nếu không đủ: hiện cảnh báo nhẹ, không trừ tiền.
+2. Tạo component mới (vd. `ShopCounter.cs`, implement `IInteractable` giống `InteractiveItem`) đặt tại quầy — khi tương tác (E), tự tìm tất cả `InteractiveItem` đang active trong khu vực cửa hàng (vd. `GetComponentsInChildren` từ 1 root "ShopArea", hoặc liệt kê thủ công qua Inspector), mở `ShopUI` với danh sách đó.
+3. **Không đụng vào node `CollectItem`/`node_find_onigiri` trong `scenario_konbini_buy_onigiri.asset`** — vật phẩm onigiri/nước/trà trong scenario đó vẫn giữ nguyên cơ chế nhặt 3D + hội thoại thanh toán như cũ. `ShopCounter`/`ShopUI` mới chỉ nên gắn vào vật phẩm/khu vực KHÔNG thuộc scenario đang chạy (vd. chỉ kích hoạt khi không có `ScenarioManager.Instance.CurrentScenario` đang yêu cầu nhặt tay item đó — hoặc đơn giản nhất: thêm lối vào ShopUI ở 1 vị trí riêng trong konbini, tách biệt hoàn toàn khỏi 3 vật phẩm bài học).
+
+**Acceptance criteria**:
+- Chơi hết `scenario.konbini.buy_onigiri` bằng đúng cách cũ (nhặt tay + hội thoại) vẫn hoạt động y hệt, không bị ShopUI can thiệp.
+- Có thể mở `ShopUI` ở khu vực mua sắm tự do, mua được item, trừ đúng tiền, item vào túi đồ.
+- Không đủ tiền thì không mua được, có phản hồi rõ ràng cho người chơi.
 
 ## Việc của Claude (song song, không chờ Codex/Antigravity)
 

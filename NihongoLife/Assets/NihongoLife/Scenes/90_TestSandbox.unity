@@ -842,6 +842,11 @@ MonoBehaviour:
   bowParam: Bow
   pointParam: Point
   speedDampTime: 0.12
+  fullSpeedReference: 1.15
+  enableProceduralPresentationOnAnimatedRig: 0
+  idleBreathAmount: 0.012
+  walkBobAmount: 0.025
+  lookAtWeight: 0.42
 --- !u!65 &55718772
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -3439,7 +3444,7 @@ MonoBehaviour:
   m_text: 
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 793647c526956ec419ceb4cadc59653d, type: 2}
-  m_sharedMaterial: {fileID: -6762442987846610753, guid: 793647c526956ec419ceb4cadc59653d, type: 2}
+  m_sharedMaterial: {fileID: -786698975230610591, guid: 793647c526956ec419ceb4cadc59653d, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -4134,7 +4139,7 @@ MonoBehaviour:
   m_text: "Ti\u1EBFp t\u1EE5c"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 793647c526956ec419ceb4cadc59653d, type: 2}
-  m_sharedMaterial: {fileID: -6762442987846610753, guid: 793647c526956ec419ceb4cadc59653d, type: 2}
+  m_sharedMaterial: {fileID: -786698975230610591, guid: 793647c526956ec419ceb4cadc59653d, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -4268,6 +4273,11 @@ MonoBehaviour:
   bowParam: Bow
   pointParam: Point
   speedDampTime: 0.12
+  fullSpeedReference: 1.15
+  enableProceduralPresentationOnAnimatedRig: 0
+  idleBreathAmount: 0.012
+  walkBobAmount: 0.025
+  lookAtWeight: 0.42
 --- !u!114 &211338514
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4329,6 +4339,7 @@ MonoBehaviour:
   rotationSpeed: 12
   acceleration: 12
   deceleration: 16
+  maxFallSpeed: -20
   groundCheck: {fileID: 948684152}
   groundDistance: 0.28
   groundMask:
@@ -4686,11 +4697,11 @@ GameObject:
   - component: {fileID: 233129388}
   m_Layer: 0
   m_Name: Main Camera
-  m_TagString: MainCamera
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!81 &233129385
 AudioListener:
   m_ObjectHideFlags: 0
@@ -5249,8 +5260,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 24, y: -24}
-  m_SizeDelta: {x: 520, y: 210}
+  m_AnchoredPosition: {x: 14.612183, y: -24}
+  m_SizeDelta: {x: 562.2567, y: 358.0953}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &248271578
 MonoBehaviour:
@@ -6527,7 +6538,7 @@ MonoBehaviour:
   m_text: 
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 793647c526956ec419ceb4cadc59653d, type: 2}
-  m_sharedMaterial: {fileID: -6762442987846610753, guid: 793647c526956ec419ceb4cadc59653d, type: 2}
+  m_sharedMaterial: {fileID: -786698975230610591, guid: 793647c526956ec419ceb4cadc59653d, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -15239,8 +15250,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 18, y: -68}
-  m_SizeDelta: {x: 480, y: 126}
+  m_AnchoredPosition: {x: 7.24469, y: -29.281006}
+  m_SizeDelta: {x: 501.5106, y: 214.9103}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &717717419
 MonoBehaviour:
@@ -15265,7 +15276,7 @@ MonoBehaviour:
   m_text: 
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 793647c526956ec419ceb4cadc59653d, type: 2}
-  m_sharedMaterial: {fileID: -6762442987846610753, guid: 793647c526956ec419ceb4cadc59653d, type: 2}
+  m_sharedMaterial: {fileID: -786698975230610591, guid: 793647c526956ec419ceb4cadc59653d, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -15328,7 +15339,7 @@ MonoBehaviour:
   m_VertexBufferAutoSizeReduction: 0
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
-  m_margin: {x: 0, y: 0, z: 0, w: 0}
+  m_margin: {x: 0, y: 0, z: 87.0611, w: 0}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_hasFontAssetChanged: 0
@@ -17039,6 +17050,10 @@ MonoBehaviour:
   walletText: {fileID: 1572845011}
   characterPanel: {fileID: 739993243}
   characterStatsText: {fileID: 2115254800}
+  chatPanel: {fileID: 0}
+  chatHistoryText: {fileID: 0}
+  chatInputField: {fileID: 0}
+  onlineStatusText: {fileID: 0}
 --- !u!1 &789371657
 GameObject:
   m_ObjectHideFlags: 0
@@ -20840,6 +20855,11 @@ MonoBehaviour:
   bowParam: Bow
   pointParam: Point
   speedDampTime: 0.12
+  fullSpeedReference: 1.15
+  enableProceduralPresentationOnAnimatedRig: 0
+  idleBreathAmount: 0.012
+  walkBobAmount: 0.025
+  lookAtWeight: 0.42
 --- !u!65 &997661536
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -23010,6 +23030,7 @@ MonoBehaviour:
   accuracyScoreText: {fileID: 2050368423}
   completionScoreText: {fileID: 411626075}
   returnToMenuButton: {fileID: 795945948}
+  returnToMenuButtonText: {fileID: 0}
 --- !u!1001 &1094328087
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -23646,6 +23667,11 @@ MonoBehaviour:
   bowParam: Bow
   pointParam: Point
   speedDampTime: 0.12
+  fullSpeedReference: 1.15
+  enableProceduralPresentationOnAnimatedRig: 0
+  idleBreathAmount: 0.012
+  walkBobAmount: 0.025
+  lookAtWeight: 0.42
 --- !u!65 &1115744294
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -24369,7 +24395,7 @@ MonoBehaviour:
   m_text: 
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 793647c526956ec419ceb4cadc59653d, type: 2}
-  m_sharedMaterial: {fileID: -6762442987846610753, guid: 793647c526956ec419ceb4cadc59653d, type: 2}
+  m_sharedMaterial: {fileID: -786698975230610591, guid: 793647c526956ec419ceb4cadc59653d, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -25687,7 +25713,7 @@ MonoBehaviour:
   m_text: 
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 793647c526956ec419ceb4cadc59653d, type: 2}
-  m_sharedMaterial: {fileID: -6762442987846610753, guid: 793647c526956ec419ceb4cadc59653d, type: 2}
+  m_sharedMaterial: {fileID: -786698975230610591, guid: 793647c526956ec419ceb4cadc59653d, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -30511,6 +30537,11 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 0
   cameraRadius: 0.2
+  conversationShoulderDistance: 1.45
+  conversationShoulderOffset: 0.65
+  conversationHeightOffset: 0.18
+  conversationPositionSmoothTime: 0.28
+  conversationRotationSharpness: 7
 --- !u!81 &1455790498
 AudioListener:
   m_ObjectHideFlags: 0
@@ -32566,8 +32597,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0}
   m_AnchorMax: {x: 0.5, y: 0}
-  m_AnchoredPosition: {x: 0, y: 92}
-  m_SizeDelta: {x: 900, y: 275}
+  m_AnchoredPosition: {x: -7.4970016, y: 49.160095}
+  m_SizeDelta: {x: 1187.028, y: 317.8399}
   m_Pivot: {x: 0.5, y: 0}
 --- !u!114 &1532504831
 MonoBehaviour:
@@ -33700,7 +33731,7 @@ MonoBehaviour:
   m_text: "\xA5 1500"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 793647c526956ec419ceb4cadc59653d, type: 2}
-  m_sharedMaterial: {fileID: -6762442987846610753, guid: 793647c526956ec419ceb4cadc59653d, type: 2}
+  m_sharedMaterial: {fileID: -786698975230610591, guid: 793647c526956ec419ceb4cadc59653d, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -34774,6 +34805,9 @@ MonoBehaviour:
   settingsService: {fileID: 1599394321}
   controlService: {fileID: 1599394320}
   dayNightCycle: {fileID: 0}
+  campaignManager: {fileID: 0}
+  onlineWorldBootstrap: {fileID: 0}
+  coopSessionService: {fileID: 0}
 --- !u!4 &1599394325
 Transform:
   m_ObjectHideFlags: 0
@@ -35016,6 +35050,11 @@ MonoBehaviour:
   bowParam: Bow
   pointParam: Point
   speedDampTime: 0.12
+  fullSpeedReference: 1.15
+  enableProceduralPresentationOnAnimatedRig: 0
+  idleBreathAmount: 0.012
+  walkBobAmount: 0.025
+  lookAtWeight: 0.42
 --- !u!65 &1618325830
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -36696,7 +36735,7 @@ MonoBehaviour:
   m_text: "\u30B3\u30F3\u30D3\u30CB"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 793647c526956ec419ceb4cadc59653d, type: 2}
-  m_sharedMaterial: {fileID: -6762442987846610753, guid: 793647c526956ec419ceb4cadc59653d, type: 2}
+  m_sharedMaterial: {fileID: -786698975230610591, guid: 793647c526956ec419ceb4cadc59653d, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -36793,7 +36832,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: -6762442987846610753, guid: 793647c526956ec419ceb4cadc59653d, type: 2}
+  - {fileID: -786698975230610591, guid: 793647c526956ec419ceb4cadc59653d, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -40366,6 +40405,11 @@ MonoBehaviour:
   bowParam: Bow
   pointParam: Point
   speedDampTime: 0.12
+  fullSpeedReference: 1.15
+  enableProceduralPresentationOnAnimatedRig: 0
+  idleBreathAmount: 0.012
+  walkBobAmount: 0.025
+  lookAtWeight: 0.42
 --- !u!65 &1821555963
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -41159,7 +41203,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 18, y: -20}
+  m_AnchoredPosition: {x: -23, y: 136}
   m_SizeDelta: {x: 480, y: 34}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1861507002
@@ -41185,7 +41229,7 @@ MonoBehaviour:
   m_text: "Nhi\u1EC7m v\u1EE5"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 793647c526956ec419ceb4cadc59653d, type: 2}
-  m_sharedMaterial: {fileID: -6762442987846610753, guid: 793647c526956ec419ceb4cadc59653d, type: 2}
+  m_sharedMaterial: {fileID: -786698975230610591, guid: 793647c526956ec419ceb4cadc59653d, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -43399,7 +43443,7 @@ MonoBehaviour:
   m_text: 
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 793647c526956ec419ceb4cadc59653d, type: 2}
-  m_sharedMaterial: {fileID: -6762442987846610753, guid: 793647c526956ec419ceb4cadc59653d, type: 2}
+  m_sharedMaterial: {fileID: -786698975230610591, guid: 793647c526956ec419ceb4cadc59653d, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
