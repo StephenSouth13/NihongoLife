@@ -142,6 +142,37 @@ Sau khi vào đúng area, các node `Dialogue` tiếp theo (`speakerId: npc_rame
 - Nếu Realtime Broadcast (`chat_message`) không nhận được ở client khác dù đã connect — khả năng do Supabase Realtime Authorization cho channel cần thêm policy trên `realtime.messages` (tính năng mới của Supabase), báo lại cho Claude thay vì tự đoán sửa, vì đây là cấu hình phía backend.
 - 6 field cũ `supabaseHost/postgresPort/databaseName/userName/passwordEnvironmentKey/requireSsl` trong `GameControlDatabase.cs` là tàn dư từ hướng tiếp cận Postgres-direct-connection cũ, không còn dùng (đã xác nhận `SupabaseClient` chỉ dùng REST qua `supabaseProjectUrl`/`supabaseAnonKey`) — an toàn để bỏ qua, không cần dọn trong task này.
 
+---
+
+## TASK-E (Codex) — Bug thật từ playtest: camera hội thoại, hướng di chuyển, giật lag, checklist nhiệm vụ trống
+
+**Bối cảnh**: Chủ dự án playtest `90_TestSandbox` (scenario `street.first_talk`) và báo 4 vấn đề bằng ảnh chụp Play Mode thật. Claude đã đọc code liên quan và xác nhận/khoanh vùng như dưới — Codex verify lại bằng cách chạy thật trong Play Mode (Claude không chạy được Unity), đừng đoán mò thêm khi không cần.
+
+### E1. Camera lúc đối thoại quá đơn giản
+`Assets/NihongoLife/Scripts/Camera/ThirdPersonCameraController.cs` dòng 141-150 (`UpdateConversationCamera`) — **đã có** cơ chế camera riêng khi nói chuyện (`SetConversationTarget` gọi khi bắt đầu dialogue), không phải hoàn toàn thiếu, nhưng chỉ có **đúng 1 góc máy cố định** (offset forward 2.4 + side 0.65), không có over-the-shoulder đẹp, không zoom/cắt cảnh theo diễn biến. Cải thiện: thêm easing mượt hơn khi vào/ra góc hội thoại (hiện chỉ có `SmoothDamp` cho position, rotation dùng `Slerp` tốc độ cố định 12f — dễ giật nếu camera đang di chuyển nhanh lúc bắt đầu hội thoại), và cân nhắc thêm 1-2 biến thể góc máy (vd. hơi lệch trái/phải tuỳ vị trí NPC) thay vì luôn 1 công thức y hệt.
+
+### E2. Nghi vấn "di chuyển không theo hướng chuột"
+`Assets/NihongoLife/Scripts/Player/PlayerController.cs` dòng 103-104: di chuyển ĐÃ tính theo `_mainCamera.transform.forward/right` (camera-relative, đúng chuẩn third-person) — không phải world-relative. `Assets/NihongoLife/Scripts/Camera/ThirdPersonCameraController.cs` dòng 73-79: camera ĐÃ xoay theo `Mouse.current.delta` mỗi frame. Về lý thuyết 2 hệ thống này khớp nhau đúng. Nghi vấn cụ thể cần verify trong Play Mode (Claude không kiểm tra được):
+- `PlayerController.Awake()` dòng 50 cache `_mainCamera = UnityEngine.Camera.main` **một lần duy nhất** — nếu lúc đó `Camera.main` trỏ nhầm camera (vd. có camera khác đang tag "MainCamera" tại thời điểm scene load, hoặc `ThirdPersonCameraController` chưa kịp gắn tag), player sẽ di chuyển theo hướng của SAI camera dù camera hiển thị đúng hướng mắt nhìn. Có fallback tự fetch lại nếu null (dòng 98-101) nhưng KHÔNG fallback nếu nó khác null nhưng sai camera.
+- Kiểm tra xem có >1 GameObject nào đang mang tag "MainCamera" trong `90_TestSandbox` không (vd. camera preview menu còn sót, hoặc `Main Camera` mặc định của Unity chưa bị gỡ).
+
+### E3. Animation giật/lag
+Đã có 1 phần fix liên quan trong commit "Update menu" (`CharacterAnimationController.cs`: tắt `ApplyPresentationMotion` khi có Animator thật, thêm `iKOnFeet`, normalize Speed) — nhưng nếu vẫn còn giật sau đó thì đây là vấn đề **hiệu năng thật** (frame rate/GC/quá nhiều Update), cần Unity Profiler để xác định, không đoán được từ đọc code. Việc của Codex: mở Window → Analysis → Profiler, chơi thử trong `90_TestSandbox`, xem CPU spike do đâu (thường nghi: NavMesh recalculation của nhiều NPC patrol cùng lúc, hoặc quá nhiều `FindFirstObjectByType`/`GetComponent` gọi trong `Update()` thay vì cache 1 lần — nhiều chỗ trong codebase đang làm vậy, vd. `SupabaseOnlineWorldService`, `OnlineWorldBootstrap.Update()` dòng 34-51 gọi `GameServices.TryGet` + `FindWithTag` mỗi frame).
+
+### E4. Checklist nhiệm vụ (góc trên trái, "Nhiệm vụ") hiển thị trống
+`Assets/NihongoLife/Scripts/UI/HUDUI.cs` — code populate coi hợp lý trên giấy:
+- `UpdateObjectivesDisplay()` (dòng ~692-718) đọc `ScenarioManager.Instance.Objectives`, build checklist, gán `objectivesText.text`. Được gọi ở `Start()` dòng 113, và lại qua event `OnScenarioStarted`/`OnObjectiveStateChanged` (dòng 75-76).
+- `Assets/NihongoLife/Scripts/Editor/SceneBuilder.cs` dòng 814 + 873 tạo object "ObjectivesList" và wire đúng vào field `objectivesText` qua `SetRef`.
+- Nhưng ảnh chụp thật cho thấy panel "Nhiệm vụ" trống rỗng. Nghi vấn cần Codex verify trực tiếp trong Inspector lúc Play:
+  1. Click GameObject HUD trong Hierarchy lúc đang Play → xem field `Objectives Text` trên component `HUDUI` có bị "None" (chưa gán) không — nếu `90_TestSandbox` hiện tại không phải bản do đúng hàm `CreateGameUI` trong `SceneBuilder.cs` sinh ra (đã bị chỉnh tay nhiều lần qua các session trước), reference này có thể đã đứt.
+  2. Nếu field vẫn còn gán đúng, thêm tạm 1 `Debug.Log($"Objectives count: {ScenarioManager.Instance.Objectives.Count}")` trong `UpdateObjectivesDisplay()` để xem lúc `Start()` chạy, list đã có dữ liệu chưa (nghi vấn: `ScenarioManager` load scenario ở `Start()`/`Awake()` khác thứ tự với `HUDUI.Start()`, dẫn tới đọc list rỗng lúc gọi đầu tiên — nếu đúng vậy, fix bằng cách gọi lại `UpdateObjectivesDisplay()` trong `UpdateScenarioInfo` cho chắc thay vì chỉ dựa vào event, hoặc double check `ScenarioManager` có invoke `OnScenarioStarted` sau khi `_objectives` đã populate xong chưa (nhìn thứ tự code trong `ScenarioManager.cs` dòng ~101-104).
+
+### Đã tự fix (không cần Codex làm lại)
+Claude đã sửa `HUDUI.cs` (`RenderPolishedPlayerPanels`, panel "Hồ sơ học viên" bên phải) — trước đó bị hardcode cứng `"Tên: Remy"` và `"Mục tiêu: trò chuyện với người trên phố"` bất kể scenario nào đang chạy. Giờ đọc tên thật từ `IProgressRepository`/`IAuthService` và mục tiêu thật từ `ScenarioManager.Instance.Objectives`. Không đụng lại phần này.
+
+### Câu hỏi cần chủ dự án làm rõ (Codex không tự đoán)
+Chủ dự án báo "cửa hàng chẳng có đồ vật phẩm/asset gì cả" nhưng ảnh chụp gửi kèm là cảnh **đường phố** (`street_first_talk`, không phải cửa hàng konbini) — cần hỏi lại chính xác lúc nào/màn hình nào bị trống trước khi Codex sửa, tránh sửa nhầm chỗ.
+
 ## Việc của Claude (song song, không chờ Codex/Antigravity)
 
 - Đang xác nhận với chủ dự án về việc tạo Supabase project riêng cho NihongoLife (tài khoản hiện chỉ có 1 project không liên quan tên `hrm_crm`) — sau khi có project sẽ tạo 8 bảng + RLS rồi điền vào `GameControlDatabase`.

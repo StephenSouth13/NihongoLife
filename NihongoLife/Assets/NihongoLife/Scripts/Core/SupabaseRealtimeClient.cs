@@ -85,7 +85,7 @@ namespace NihongoLife.Core
             if (!IsConnected || !_joined) return;
 
             string message = BuildMessage("realtime:broadcast", "broadcast", $"{{\"type\":\"broadcast\",\"event\":\"{eventType}\",\"payload\":{payloadJson}}}");
-            SendMessage(message);
+            SendSocketMessage(message);
         }
 
         /// <summary>Track presence state (e.g., player position).</summary>
@@ -94,7 +94,7 @@ namespace NihongoLife.Core
             if (!IsConnected || !_joined) return;
 
             string message = BuildMessage($"realtime:{_channelTopic}", "presence", $"{{\"type\":\"presence\",\"event\":\"track\",\"payload\":{presencePayloadJson}}}");
-            SendMessage(message);
+            SendSocketMessage(message);
         }
 
         // ──────────────────────── Connection ────────────────────────
@@ -147,7 +147,7 @@ namespace NihongoLife.Core
             $"}}";
 
             string message = $"{{\"topic\":\"realtime:{_channelTopic}\",\"event\":\"phx_join\",\"payload\":{joinPayload},\"ref\":\"{NextRef()}\"}}";
-            SendMessage(message);
+            SendSocketMessage(message);
             _joined = true;
             _nextHeartbeat = Time.unscaledTime + _heartbeatInterval;
             Debug.Log($"[SupabaseRealtime] Joined channel: {_channelTopic}");
@@ -319,7 +319,7 @@ namespace NihongoLife.Core
 
         // ──────────────────────── Send helpers ────────────────────────
 
-        private void SendMessage(string json)
+        private void SendSocketMessage(string json)
         {
             if (_socket == null || _socket.State != WebSocketState.Open) return;
 
@@ -337,7 +337,7 @@ namespace NihongoLife.Core
         private void SendHeartbeat()
         {
             string heartbeat = $"{{\"topic\":\"phoenix\",\"event\":\"heartbeat\",\"payload\":{{}},\"ref\":\"{NextRef()}\"}}";
-            SendMessage(heartbeat);
+            SendSocketMessage(heartbeat);
         }
 
         private string BuildMessage(string topic, string eventName, string payload)

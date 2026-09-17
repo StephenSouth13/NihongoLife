@@ -4,6 +4,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 using NihongoLife.Core;
+using NihongoLife.Scenario;
 
 namespace NihongoLife.UI
 {
@@ -301,8 +302,7 @@ namespace NihongoLife.UI
         {
             if (!string.IsNullOrWhiteSpace(scenarioId))
             {
-                PlayerPrefs.SetString("ActiveScenarioId", scenarioId);
-                PlayerPrefs.Save();
+                ScenarioSceneInitializer.QueueLaunch(scenarioId);
             }
 
             if (GameServices.TryGet(out SceneFlowController sceneFlow))

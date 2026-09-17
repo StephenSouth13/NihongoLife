@@ -641,12 +641,33 @@ namespace NihongoLife.UI
 
             if (characterStatsText != null)
             {
+                string learnerName = "Học viên Nihongo";
+                int level = 1;
+                if (GameServices.TryGet(out Save.IProgressRepository progressRepo))
+                {
+                    var progress = progressRepo.GetProgress();
+                    if (!string.IsNullOrWhiteSpace(progress.displayName)) learnerName = progress.displayName;
+                    level = progress.level;
+                }
+                if (GameServices.TryGet(out IAuthService authSvc) && authSvc.IsAuthenticated && !string.IsNullOrWhiteSpace(authSvc.DisplayName))
+                {
+                    learnerName = authSvc.DisplayName;
+                }
+
+                string goalText = Text("Chưa có nhiệm vụ", "No active goal", "目標なし");
+                if (ScenarioManager.Instance != null && ScenarioManager.Instance.Objectives.Count > 0)
+                {
+                    var activeObjective = ScenarioManager.Instance.Objectives.Find(o => o.state == ObjectiveState.Active)
+                        ?? ScenarioManager.Instance.Objectives[0];
+                    goalText = Text(activeObjective.titleEn, activeObjective.titleEn, activeObjective.titleJa);
+                }
+
                 characterStatsText.text =
                     $"<size=125%><b>{Text("Hồ sơ học viên", "Learner Profile", "学習者プロフィール")}</b></size>\n" +
-                    $"<color=#f1c75b>{Text("Tên", "Name", "名前")}</color>: Remy\n" +
-                    $"<color=#f1c75b>{Text("Cấp độ", "Level", "レベル")}</color>: N5 Starter\n" +
+                    $"<color=#f1c75b>{Text("Tên", "Name", "名前")}</color>: {learnerName}\n" +
+                    $"<color=#f1c75b>{Text("Cấp độ", "Level", "レベル")}</color>: N5 · Lv.{level}\n" +
                     $"<color=#f1c75b>{Text("Tiền mặt", "Cash", "所持金")}</color>: ¥{inventory.Yen}\n" +
-                    $"<color=#f1c75b>{Text("Mục tiêu", "Goal", "目標")}</color>: {Text("trò chuyện với người trên phố", "talk with people on the street", "街の人と話す")}\n\n" +
+                    $"<color=#f1c75b>{Text("Mục tiêu", "Goal", "目標")}</color>: {goalText}\n\n" +
                     "<color=#8fa3b8>Tab: profile  |  B: bag  |  V: mic  |  E: talk</color>";
             }
         }

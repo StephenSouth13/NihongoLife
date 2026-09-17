@@ -5,6 +5,9 @@ namespace NihongoLife.Scenario
 {
     public class ScenarioSceneInitializer : MonoBehaviour
     {
+        private const string PendingLaunchKey = "NihongoLife.PendingScenarioLaunch";
+        private const string ScenarioIdKey = "ActiveScenarioId";
+
         [Header("Config")]
         [SerializeField] private string scenarioId = "scenario.street.first_talk";
         [SerializeField] private bool runOnStart = true;
@@ -13,14 +16,30 @@ namespace NihongoLife.Scenario
         {
             if (runOnStart)
             {
-                // Load scenario ID dynamically if set by MainMenu
-                scenarioId = PlayerPrefs.GetString("ActiveScenarioId", scenarioId);
-                if (GameServices.TryGet(out GameControlService controlService))
+                if (PlayerPrefs.GetInt(PendingLaunchKey, 0) == 1)
                 {
-                    scenarioId = controlService.ActiveScenarioIdOrDefault(scenarioId);
+                    scenarioId = PlayerPrefs.GetString(ScenarioIdKey, scenarioId);
                 }
+
+                ClearPendingLaunch();
                 TriggerScenarioStart();
             }
+        }
+
+        public static void QueueLaunch(string requestedScenarioId)
+        {
+            if (string.IsNullOrWhiteSpace(requestedScenarioId)) return;
+
+            PlayerPrefs.SetString(ScenarioIdKey, requestedScenarioId);
+            PlayerPrefs.SetInt(PendingLaunchKey, 1);
+            PlayerPrefs.Save();
+        }
+
+        private static void ClearPendingLaunch()
+        {
+            PlayerPrefs.DeleteKey(PendingLaunchKey);
+            PlayerPrefs.DeleteKey(ScenarioIdKey);
+            PlayerPrefs.Save();
         }
 
         public void TriggerScenarioStart()

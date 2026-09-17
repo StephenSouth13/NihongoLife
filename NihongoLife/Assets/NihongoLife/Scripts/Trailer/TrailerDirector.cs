@@ -2,6 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.EventSystems;
+using UnityEngine.InputSystem.UI;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using NihongoLife.Core;
 
@@ -22,9 +25,12 @@ namespace NihongoLife.Trailer
         [SerializeField] private TextMeshProUGUI englishText;
         [SerializeField] private CanvasGroup fadeGroup;
         [SerializeField] private float fadeSeconds = 0.45f;
+        [SerializeField] private string skipDestinationScene = "01_MainMenu";
 
         private readonly List<CharacterAnimationController> _talkingCharacters = new List<CharacterAnimationController>();
         private Coroutine _playback;
+        private bool _advanceRequested;
+        private bool _skipRequested;
 
         private void Awake()
         {
@@ -34,6 +40,7 @@ namespace NihongoLife.Trailer
             }
 
             EnsureRuntimeOverlay();
+            DisableLegacyLogoPlaceholder();
         }
 
         private void Start()
@@ -47,7 +54,23 @@ namespace NihongoLife.Trailer
         public void Play()
         {
             Stop();
+            _advanceRequested = false;
+            _skipRequested = false;
             _playback = StartCoroutine(PlaySequence());
+        }
+
+        public void NextShot()
+        {
+            _advanceRequested = true;
+        }
+
+        public void SkipTrailer()
+        {
+            if (_skipRequested) return;
+
+            _skipRequested = true;
+            Stop();
+            SceneManager.LoadScene(skipDestinationScene);
         }
 
         public void Stop()
@@ -83,6 +106,7 @@ namespace NihongoLife.Trailer
             {
                 foreach (var shot in orderedShots)
                 {
+                    if (_skipRequested) yield break;
                     if (shot == null)
                     {
                         continue;
@@ -98,6 +122,7 @@ namespace NihongoLife.Trailer
 
         private IEnumerator PlayShot(TrailerShotDefinition shot)
         {
+            _advanceRequested = false;
             yield return Fade(1f, 0f, fadeSeconds);
 
             Transform focus = ResolveFocusTarget(shot);
@@ -111,7 +136,7 @@ namespace NihongoLife.Trailer
             float duration = Mathf.Max(0.1f, shot.durationSeconds);
             float elapsed = 0f;
 
-            while (elapsed < duration)
+            while (elapsed < duration && !_advanceRequested && !_skipRequested)
             {
                 float rawT = Mathf.Clamp01(elapsed / duration);
                 float t = shot.easing != null ? Mathf.Clamp01(shot.easing.Evaluate(rawT)) : rawT;
@@ -129,6 +154,8 @@ namespace NihongoLife.Trailer
                 elapsed += Time.deltaTime;
                 yield return null;
             }
+
+            if (_skipRequested) yield break;
 
             targetCamera.transform.position = endPosition;
             if (shot.lookAtFocusTarget && focus != null)
@@ -274,6 +301,57 @@ namespace NihongoLife.Trailer
             image.color = Color.black;
             fadeGroup = fade.AddComponent<CanvasGroup>();
             fadeGroup.alpha = 1f;
+
+            CreateControlButton(canvasObject.transform, "NextButton", "Next  >", new Vector2(-210f, -54f), NextShot);
+            CreateControlButton(canvasObject.transform, "SkipButton", "Skip", new Vector2(-54f, -54f), SkipTrailer);
+            EnsureEventSystem();
+        }
+
+        private static void CreateControlButton(Transform parent, string name, string label, Vector2 anchoredPosition, UnityEngine.Events.UnityAction action)
+        {
+            var go = new GameObject(name);
+            go.transform.SetParent(parent, false);
+            var rect = go.AddComponent<RectTransform>();
+            rect.anchorMin = Vector2.one;
+            rect.anchorMax = Vector2.one;
+            rect.pivot = Vector2.one;
+            rect.anchoredPosition = anchoredPosition;
+            rect.sizeDelta = new Vector2(138f, 48f);
+
+            var image = go.AddComponent<Image>();
+            image.color = new Color(0.06f, 0.09f, 0.12f, 0.9f);
+            var button = go.AddComponent<Button>();
+            button.targetGraphic = image;
+            button.onClick.AddListener(action);
+
+            var text = CreateOverlayText(go.transform, "Label", 24f, Vector2.zero);
+            var textRect = text.rectTransform;
+            textRect.anchorMin = Vector2.zero;
+            textRect.anchorMax = Vector2.one;
+            textRect.pivot = new Vector2(0.5f, 0.5f);
+            textRect.offsetMin = Vector2.zero;
+            textRect.offsetMax = Vector2.zero;
+            text.alignment = TextAlignmentOptions.Center;
+            text.text = label;
+            text.raycastTarget = false;
+        }
+
+        private static void EnsureEventSystem()
+        {
+            if (EventSystem.current != null) return;
+
+            var eventSystem = new GameObject("TrailerEventSystem");
+            eventSystem.AddComponent<EventSystem>();
+            eventSystem.AddComponent<InputSystemUIInputModule>();
+        }
+
+        private static void DisableLegacyLogoPlaceholder()
+        {
+            var placeholder = GameObject.Find("NihongoLifeLogoBlock");
+            if (placeholder != null)
+            {
+                placeholder.SetActive(false);
+            }
         }
 
         private static TextMeshProUGUI CreateOverlayText(Transform parent, string name, float fontSize, Vector2 anchoredPosition)

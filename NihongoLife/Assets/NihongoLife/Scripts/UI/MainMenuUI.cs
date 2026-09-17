@@ -853,12 +853,7 @@ namespace NihongoLife.UI
 
         private void BeginGameWithSelectedCharacter()
         {
-            PlayerPrefs.SetString("ActiveScenarioId", targetScenarioId);
-            if (GameServices.TryGet(out GameControlService controlService))
-            {
-                PlayerPrefs.SetString("ActiveScenarioId", controlService.ActiveScenarioIdOrDefault(targetScenarioId));
-            }
-            PlayerPrefs.Save();
+            ScenarioSceneInitializer.QueueLaunch(targetScenarioId);
 
             if (GameServices.TryGet(out SceneFlowController sceneFlow))
             {
