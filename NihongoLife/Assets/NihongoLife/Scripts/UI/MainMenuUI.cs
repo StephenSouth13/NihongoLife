@@ -70,10 +70,6 @@ namespace NihongoLife.UI
 
         private void Update()
         {
-            if (characterPreviewModel != null && characterSelectPanel != null && characterSelectPanel.activeSelf)
-            {
-                characterPreviewModel.transform.Rotate(0f, 18f * Time.deltaTime, 0f, Space.World);
-            }
         }
 
         private void ImproveMenuPresentation()
@@ -418,6 +414,8 @@ namespace NihongoLife.UI
             var previewRect = previewGo.AddComponent<RectTransform>();
             MoveRect(previewRect, Vector2.zero, new Vector2(370f, 410f));
             characterPreviewImage = previewGo.AddComponent<RawImage>();
+            var dragRotate = previewGo.AddComponent<CharacterPreviewDragRotate>();
+            dragRotate.Configure(ApplyCharacterPreviewYaw);
 
             previousCharacterButton = CreateLanguageButton("PreviousCharacterButton", "<", new Vector2(52f, -34f), font);
             previousCharacterButton.transform.SetParent(characterSelectPanel.transform, false);
@@ -503,7 +501,10 @@ namespace NihongoLife.UI
                 characterNameText.color = character.AccentColor;
             }
             if (characterTaglineText != null) characterTaglineText.text = character.Tagline;
-            SetButtonText(confirmCharacterButton, Text("Chọn nhân vật này", "Play as this character", "このキャラで始める"));
+            confirmCharacterButton.interactable = character.IsAvailable;
+            SetButtonText(confirmCharacterButton, character.IsAvailable
+                ? Text("Chọn nhân vật này", "Play as this character", "このキャラで始める")
+                : "COMING SOON");
 
             if (characterPreviewModel != null)
             {
@@ -518,11 +519,18 @@ namespace NihongoLife.UI
             characterPreviewModel.transform.localPosition = Vector3.zero;
             characterPreviewModel.transform.localRotation = Quaternion.Euler(0f, 180f, 0f);
             characterPreviewModel.transform.localScale = Vector3.one;
+            ApplyCharacterPreviewYaw(0f);
 
             foreach (var collider in characterPreviewModel.GetComponentsInChildren<Collider>(true))
             {
                 Destroy(collider);
             }
+        }
+
+        private void ApplyCharacterPreviewYaw(float yaw)
+        {
+            if (characterPreviewModel == null) return;
+            characterPreviewModel.transform.localRotation = Quaternion.Euler(0f, 180f + Mathf.Clamp(yaw, -90f, 90f), 0f);
         }
 
         private TMP_InputField CreateInputField(string name, Vector2 position, Vector2 size, TMP_FontAsset font)
@@ -845,6 +853,7 @@ namespace NihongoLife.UI
         private void ConfirmCharacterAndStart()
         {
             var character = PlayableCharacterCatalog.Get(selectedCharacterIndex);
+            if (!character.IsAvailable) return;
             PlayableCharacterCatalog.SaveSelected(character.Id);
             PlayableCharacterCatalog.SavePlayerName(playerNameInput != null ? playerNameInput.text : PlayableCharacterCatalog.DefaultPlayerName);
             if (startOnlineAfterCharacterConfirm)

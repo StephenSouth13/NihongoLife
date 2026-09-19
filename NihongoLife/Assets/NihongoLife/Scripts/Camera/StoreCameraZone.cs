@@ -5,33 +5,65 @@ namespace NihongoLife.Cameras
     [RequireComponent(typeof(Collider))]
     public class StoreCameraZone : MonoBehaviour
     {
+        private Camera _outdoorCamera;
+        private Camera _indoorCamera;
+
         private void Awake()
         {
             GetComponent<Collider>().isTrigger = true;
+            CreateIndoorCamera();
         }
 
         private void OnTriggerEnter(Collider other)
         {
             if (!other.CompareTag("Player")) return;
-            SetIndoorMode(true);
+            SetIndoorMode(true, other.transform);
         }
 
         private void OnTriggerExit(Collider other)
         {
             if (!other.CompareTag("Player")) return;
-            SetIndoorMode(false);
+            SetIndoorMode(false, other.transform);
         }
 
-        private static void SetIndoorMode(bool indoor)
+        private void CreateIndoorCamera()
         {
-            var camera = Camera.main;
-            if (camera == null) return;
+            _outdoorCamera = Camera.main;
+            if (_outdoorCamera == null) return;
 
-            var controller = camera.GetComponent<ThirdPersonCameraController>();
-            if (controller != null)
+            var go = new GameObject("Store Interior Camera");
+            go.SetActive(false);
+            _indoorCamera = go.AddComponent<Camera>();
+            _indoorCamera.clearFlags = _outdoorCamera.clearFlags;
+            _indoorCamera.backgroundColor = _outdoorCamera.backgroundColor;
+            _indoorCamera.fieldOfView = 56f;
+            _indoorCamera.nearClipPlane = 0.12f;
+            _indoorCamera.farClipPlane = _outdoorCamera.farClipPlane;
+            go.AddComponent<AudioListener>();
+            var controller = go.AddComponent<ThirdPersonCameraController>();
+            controller.SetOrbit(180f, 18f, 3.1f);
+            controller.SetIndoorMode(true);
+        }
+
+        private void SetIndoorMode(bool indoor, Transform player)
+        {
+            if (_outdoorCamera == null || _indoorCamera == null) return;
+
+            if (indoor)
             {
-                controller.SetIndoorMode(indoor);
+                var controller = _indoorCamera.GetComponent<ThirdPersonCameraController>();
+                controller.SetTarget(player);
+                _outdoorCamera.gameObject.tag = "Untagged";
+                _outdoorCamera.gameObject.SetActive(false);
+                _indoorCamera.gameObject.tag = "MainCamera";
+                _indoorCamera.gameObject.SetActive(true);
+                return;
             }
+
+            _indoorCamera.gameObject.tag = "Untagged";
+            _indoorCamera.gameObject.SetActive(false);
+            _outdoorCamera.gameObject.tag = "MainCamera";
+            _outdoorCamera.gameObject.SetActive(true);
         }
     }
 }

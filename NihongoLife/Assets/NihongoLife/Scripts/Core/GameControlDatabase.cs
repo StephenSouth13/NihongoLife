@@ -37,7 +37,10 @@ namespace NihongoLife.Core
             "scenario.konbini.buy_onigiri",
             "scenario.house1.greeting",
             "scenario.house2.lostcat",
-            "scenario.house3.garbage"
+            "scenario.house3.garbage",
+            "scenario.restaurant.order_ramen",
+            "scenario.station.buy_ticket",
+            "scenario.town.summer_festival"
         };
         public bool continueCampaignInGameplayScene = true;
 

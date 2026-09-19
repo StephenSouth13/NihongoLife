@@ -237,9 +237,21 @@ namespace NihongoLife.UI
                     if (success)
                     {
                         _statusText.color = new Color(0.45f, 0.84f, 0.5f, 1f);
-                        _statusText.text = Text("Tạo tài khoản thành công!", "Account created!", "アカウント作成成功！");
+                        bool confirmationRequired = error == "EMAIL_CONFIRMATION_REQUIRED";
+                        _statusText.text = confirmationRequired
+                            ? Text("Đã gửi email xác minh. Hãy mở mail rồi đăng nhập.", "Verification email sent. Confirm it, then sign in.", "確認メールを送信しました。確認後にログインしてください。")
+                            : Text("Tạo tài khoản thành công!", "Account created!", "アカウント作成成功！");
                         _isRegistering = false;
-                        UpdateState();
+                        if (!confirmationRequired)
+                        {
+                            UpdateState();
+                        }
+                        else
+                        {
+                            SetActive(_displayNameInput, false);
+                            _signInButton.GetComponentInChildren<TextMeshProUGUI>().text = Text("Đăng nhập", "Sign In", "ログイン");
+                            _signUpButton.GetComponentInChildren<TextMeshProUGUI>().text = Text("Đăng ký mới", "Register", "新規登録");
+                        }
                     }
                     else
                     {

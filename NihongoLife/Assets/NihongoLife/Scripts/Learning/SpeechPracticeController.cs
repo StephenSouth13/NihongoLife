@@ -1,5 +1,10 @@
+using System;
+using System.Collections;
+using System.Text;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.Networking;
+using NihongoLife.Core;
 using NihongoLife.Dialogue;
 using NihongoLife.Scenario;
 
@@ -7,6 +12,13 @@ namespace NihongoLife.Learning
 {
     public class SpeechPracticeController : MonoBehaviour
     {
+        [Serializable] private class InlineData { public string mimeType; public string data; }
+        [Serializable] private class GeminiPart { public string text; public InlineData inlineData; }
+        [Serializable] private class GeminiContent { public GeminiPart[] parts; }
+        [Serializable] private class GeminiRequest { public GeminiContent[] contents; }
+        [Serializable] private class GeminiCandidate { public GeminiContent content; }
+        [Serializable] private class GeminiResponse { public GeminiCandidate[] candidates; }
+
         [SerializeField] private int sampleRate = 16000;
         [SerializeField] private int maxRecordSeconds = 8;
         [SerializeField] private Key triggerKey = Key.V;
@@ -138,29 +150,177 @@ namespace NihongoLife.Learning
 
             float seconds = position / (float)sampleRate;
             float energy = EstimateEnergy(_recording, position);
-            bool accepted = energy > 0.012f && seconds > 0.45f;
-            string result;
-            if (accepted && DialogueManager.Instance != null && DialogueManager.Instance.TryGetCurrentPracticePhrase(out string phrase, out string ipa))
+            if (energy <= 0.012f || seconds <= 0.45f)
             {
-                result = string.IsNullOrWhiteSpace(ipa)
-                    ? $"Good. Practice line: {phrase}"
-                    : $"Good. Practice: {phrase}  / {ipa} /";
-            }
-            else
-            {
-                result = accepted
-                    ? "Good voice input captured. Ready for pronunciation scoring."
-                    : "Voice too short or too quiet. Try again closer to the mic.";
+                _lastResult = $"Voice too short or too quiet. Try again closer to the mic. ({seconds:0.0}s)";
+                PlayFeedbackTone(false);
+                return;
             }
 
-            _lastResult = $"{result} ({seconds:0.0}s)";
-            PlayFeedbackTone(accepted);
-            if (accepted && ScenarioManager.Instance != null)
+            if (DialogueManager.Instance == null ||
+                !DialogueManager.Instance.TryGetCurrentPracticePhrase(out string phrase, out _))
             {
-                ScenarioManager.Instance.CompleteObjective("obj_practice_voice");
+                _lastResult = "No active practice sentence. Start a dialogue first.";
+                PlayFeedbackTone(false);
+                return;
             }
-            Debug.Log($"[SpeechPractice] {result} Duration: {seconds:0.00}s, energy: {energy:0.0000}");
+
+            StartCoroutine(RecognizeAndScore(phrase, position, seconds));
         }
+
+        private IEnumerator RecognizeAndScore(string expectedPhrase, int sampleFrames, float seconds)
+        {
+            if (!GameServices.TryGet(out GameControlService controls) || controls.Database == null)
+            {
+                _lastResult = "Speech service is not configured.";
+                yield break;
+            }
+
+            GameControlDatabase database = controls.Database;
+            string apiKey = Environment.GetEnvironmentVariable(database.geminiApiKeyEnvironmentKey);
+            if (!database.enableGeminiConversation || !database.allowGeminiDirectClientCalls || string.IsNullOrWhiteSpace(apiKey))
+            {
+                _lastResult = $"Set {database.geminiApiKeyEnvironmentKey} to enable real speech recognition.";
+                PlayFeedbackTone(false);
+                yield break;
+            }
+
+            _lastResult = "Analyzing recorded speech...";
+            byte[] wav = EncodeWav(_recording, sampleFrames);
+            string prompt = "Transcribe only the spoken words in this audio. Preserve Japanese script when Japanese is spoken. Return the transcript only, without notes or punctuation.";
+            var body = new GeminiRequest
+            {
+                contents = new[]
+                {
+                    new GeminiContent
+                    {
+                        parts = new[]
+                        {
+                            new GeminiPart { text = prompt },
+                            new GeminiPart { inlineData = new InlineData { mimeType = "audio/wav", data = Convert.ToBase64String(wav) } }
+                        }
+                    }
+                }
+            };
+
+            string model = string.IsNullOrWhiteSpace(database.geminiModel) ? "gemini-2.5-flash" : database.geminiModel;
+            string url = $"https://generativelanguage.googleapis.com/v1beta/models/{UnityWebRequest.EscapeURL(model)}:generateContent";
+            byte[] payload = Encoding.UTF8.GetBytes(JsonUtility.ToJson(body));
+            using (var request = new UnityWebRequest(url, UnityWebRequest.kHttpVerbPOST))
+            {
+                request.uploadHandler = new UploadHandlerRaw(payload);
+                request.downloadHandler = new DownloadHandlerBuffer();
+                request.SetRequestHeader("Content-Type", "application/json");
+                request.SetRequestHeader("x-goog-api-key", apiKey);
+                request.timeout = 30;
+                yield return request.SendWebRequest();
+
+                if (request.result != UnityWebRequest.Result.Success)
+                {
+                    _lastResult = $"Speech recognition failed ({request.responseCode}). Check network/API key.";
+                    Debug.LogWarning($"[SpeechPractice] Gemini failed: {request.responseCode} {request.downloadHandler.text}");
+                    PlayFeedbackTone(false);
+                    yield break;
+                }
+
+                string transcript = ReadTranscript(request.downloadHandler.text);
+                if (string.IsNullOrWhiteSpace(transcript))
+                {
+                    _lastResult = "No speech could be recognized. Please try again.";
+                    PlayFeedbackTone(false);
+                    yield break;
+                }
+
+                float match = Similarity(expectedPhrase, transcript);
+                bool accepted = match >= 0.58f;
+                _lastResult = accepted
+                    ? $"Recognized: {transcript} | Match {match:P0} ({seconds:0.0}s)"
+                    : $"Heard: {transcript} | Try: {expectedPhrase} | Match {match:P0}";
+                PlayFeedbackTone(accepted);
+                if (accepted && ScenarioManager.Instance != null)
+                {
+                    ScenarioManager.Instance.CompleteObjective("obj_practice_voice");
+                }
+            }
+        }
+
+        private static string ReadTranscript(string json)
+        {
+            try
+            {
+                var response = JsonUtility.FromJson<GeminiResponse>(json);
+                if (response?.candidates == null || response.candidates.Length == 0) return string.Empty;
+                GeminiPart[] parts = response.candidates[0].content?.parts;
+                return parts != null && parts.Length > 0 ? (parts[0].text ?? string.Empty).Trim() : string.Empty;
+            }
+            catch (Exception ex)
+            {
+                Debug.LogWarning("[SpeechPractice] Invalid recognition response: " + ex.Message);
+                return string.Empty;
+            }
+        }
+
+        private static byte[] EncodeWav(AudioClip clip, int sampleFrames)
+        {
+            int channels = clip.channels;
+            int frames = Mathf.Clamp(sampleFrames, 1, clip.samples);
+            float[] source = new float[frames * channels];
+            clip.GetData(source, 0);
+            byte[] wav = new byte[44 + source.Length * 2];
+            WriteAscii(wav, 0, "RIFF");
+            WriteInt(wav, 4, wav.Length - 8);
+            WriteAscii(wav, 8, "WAVEfmt ");
+            WriteInt(wav, 16, 16);
+            WriteShort(wav, 20, 1);
+            WriteShort(wav, 22, (short)channels);
+            WriteInt(wav, 24, clip.frequency);
+            WriteInt(wav, 28, clip.frequency * channels * 2);
+            WriteShort(wav, 32, (short)(channels * 2));
+            WriteShort(wav, 34, 16);
+            WriteAscii(wav, 36, "data");
+            WriteInt(wav, 40, source.Length * 2);
+            for (int i = 0; i < source.Length; i++)
+            {
+                short value = (short)(Mathf.Clamp(source[i], -1f, 1f) * short.MaxValue);
+                WriteShort(wav, 44 + i * 2, value);
+            }
+            return wav;
+        }
+
+        private static float Similarity(string expected, string actual)
+        {
+            string a = Normalize(expected);
+            string b = Normalize(actual);
+            if (a.Length == 0 || b.Length == 0) return 0f;
+            int[] previous = new int[b.Length + 1];
+            int[] current = new int[b.Length + 1];
+            for (int j = 0; j <= b.Length; j++) previous[j] = j;
+            for (int i = 1; i <= a.Length; i++)
+            {
+                current[0] = i;
+                for (int j = 1; j <= b.Length; j++)
+                {
+                    int cost = a[i - 1] == b[j - 1] ? 0 : 1;
+                    current[j] = Mathf.Min(Mathf.Min(current[j - 1] + 1, previous[j] + 1), previous[j - 1] + cost);
+                }
+                var swap = previous; previous = current; current = swap;
+            }
+            return 1f - previous[b.Length] / (float)Mathf.Max(a.Length, b.Length);
+        }
+
+        private static string Normalize(string value)
+        {
+            var result = new StringBuilder(value.Length);
+            foreach (char c in value.ToLowerInvariant())
+            {
+                if (char.IsLetterOrDigit(c)) result.Append(c);
+            }
+            return result.ToString();
+        }
+
+        private static void WriteAscii(byte[] target, int offset, string value) => Encoding.ASCII.GetBytes(value, 0, value.Length, target, offset);
+        private static void WriteInt(byte[] target, int offset, int value) => Array.Copy(BitConverter.GetBytes(value), 0, target, offset, 4);
+        private static void WriteShort(byte[] target, int offset, short value) => Array.Copy(BitConverter.GetBytes(value), 0, target, offset, 2);
 
         private void PlayFeedbackTone(bool positive)
         {

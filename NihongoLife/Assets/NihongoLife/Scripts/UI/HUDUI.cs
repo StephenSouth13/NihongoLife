@@ -160,6 +160,11 @@ namespace NihongoLife.UI
                 objectivesText.paragraphSpacing = 4f;
             }
 
+            if (onlineStatusText != null)
+            {
+                SetTopLeft(onlineStatusText.rectTransform, new Vector2(24f, -228f), new Vector2(620f, 28f));
+            }
+
             StyleInfoPanel(inventoryPanel, new Vector2(1f, 1f), new Vector2(-28f, -88f), new Vector2(420f, 390f));
             StyleInfoPanel(characterPanel, new Vector2(1f, 1f), new Vector2(-28f, -88f), new Vector2(420f, 310f));
             StyleInfoPanel(chatPanel, new Vector2(0f, 0f), new Vector2(24f, 24f), new Vector2(470f, 250f));
@@ -212,7 +217,7 @@ namespace NihongoLife.UI
 
             if (onlineStatusText == null)
             {
-                onlineStatusText = CreateHudText("OnlineStatusText", transform, new Vector2(24f, -176f), new Vector2(620f, 28f), 13f, font);
+                onlineStatusText = CreateHudText("OnlineStatusText", transform, new Vector2(24f, -228f), new Vector2(620f, 28f), 13f, font);
                 onlineStatusText.alignment = TextAlignmentOptions.Left;
                 onlineStatusText.color = new Color(0.58f, 0.72f, 0.86f, 1f);
             }

@@ -13,10 +13,10 @@ namespace NihongoLife.Player
 
         private static readonly PlayableCharacter[] Characters =
         {
-            new PlayableCharacter("student", "Tanaka", "Học viên", "Characters/NL_Player", new Color(0.98f, 0.78f, 0.32f)),
-            new PlayableCharacter("cashier", "Aki", "Gọn gàng", "Characters/NL_Cashier", new Color(0.38f, 0.74f, 0.95f)),
-            new PlayableCharacter("guide", "Lilly", "Thân thiện", "Characters/NL_Guide", new Color(0.95f, 0.52f, 0.34f)),
-            new PlayableCharacter("neighbor", "Ren", "Đời thường", "Characters/NL_Neighbor", new Color(0.54f, 0.86f, 0.54f))
+            new PlayableCharacter("student", "Tanaka", "Học viên", "Characters/NL_Player", new Color(0.98f, 0.78f, 0.32f), true),
+            new PlayableCharacter("cashier", "Aki", "COMING SOON", "Characters/NL_Cashier", new Color(0.38f, 0.74f, 0.95f), false),
+            new PlayableCharacter("guide", "Lilly", "COMING SOON", "Characters/NL_Guide", new Color(0.95f, 0.52f, 0.34f), false),
+            new PlayableCharacter("neighbor", "Ren", "COMING SOON", "Characters/NL_Neighbor", new Color(0.54f, 0.86f, 0.54f), false)
         };
 
         public static int Count => Characters.Length;
@@ -34,7 +34,8 @@ namespace NihongoLife.Player
         public static PlayableCharacter GetSelected()
         {
             string selectedId = PlayerPrefs.GetString(PlayerPrefsKey, DefaultId);
-            return FindById(selectedId);
+            PlayableCharacter selected = FindById(selectedId);
+            return selected.IsAvailable ? selected : Characters[0];
         }
 
         public static PlayableCharacter FindById(string id)
@@ -127,14 +128,16 @@ namespace NihongoLife.Player
         public readonly string Tagline;
         public readonly string ResourcePath;
         public readonly Color AccentColor;
+        public readonly bool IsAvailable;
 
-        public PlayableCharacter(string id, string displayName, string tagline, string resourcePath, Color accentColor)
+        public PlayableCharacter(string id, string displayName, string tagline, string resourcePath, Color accentColor, bool isAvailable)
         {
             Id = id;
             DisplayName = displayName;
             Tagline = tagline;
             ResourcePath = resourcePath;
             AccentColor = accentColor;
+            IsAvailable = isAvailable;
         }
     }
 }

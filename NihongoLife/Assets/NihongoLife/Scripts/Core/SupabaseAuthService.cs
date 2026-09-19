@@ -160,12 +160,17 @@ namespace NihongoLife.Core
                 json =>
                 {
                     success = HandleAuthResponse(json);
+                    if (!success && IsEmailConfirmationPending(json))
+                    {
+                        success = true;
+                        errorMessage = "EMAIL_CONFIRMATION_REQUIRED";
+                    }
                     if (success && !string.IsNullOrWhiteSpace(displayName))
                     {
                         DisplayName = displayName;
                         PlayerPrefs.SetString(PrefKeyDisplayName, DisplayName);
                     }
-                    if (!success) errorMessage = "Failed to parse auth response.";
+                    if (!success) errorMessage = "Supabase did not return a valid account.";
                     done = true;
                 },
                 (code, error) =>
@@ -177,6 +182,23 @@ namespace NihongoLife.Core
             while (!done) yield return null;
 
             callback?.Invoke(success, errorMessage);
+        }
+
+        private static bool IsEmailConfirmationPending(string json)
+        {
+            if (string.IsNullOrWhiteSpace(json)) return false;
+
+            try
+            {
+                var response = JsonUtility.FromJson<SupabaseClient.SupabaseSessionResponse>(json);
+                return response != null && response.user != null &&
+                       !string.IsNullOrWhiteSpace(response.user.id) &&
+                       string.IsNullOrWhiteSpace(response.access_token);
+            }
+            catch
+            {
+                return false;
+            }
         }
 
         // ──────────────────────── Sign Out ────────────────────────

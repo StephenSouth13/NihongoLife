@@ -23,6 +23,17 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 6b6dcec479151794ca6c1f84d2828a08, type: 2}
   - {fileID: 11400000, guid: 135f94793cf7b6e488aeeacaf7cf31ac, type: 2}
   - {fileID: 11400000, guid: e190ab35a81e1284eaf7a1ffbc73c286, type: 2}
+  campaignScenarioIds:
+  - scenario.intro.arrival
+  - scenario.street.first_talk
+  - scenario.konbini.buy_onigiri
+  - scenario.house1.greeting
+  - scenario.house2.lostcat
+  - scenario.house3.garbage
+  - scenario.restaurant.order_ramen
+  - scenario.station.buy_ticket
+  - scenario.town.summer_festival
+  continueCampaignInGameplayScene: 1
   voiceLines: []
   useProceduralVoiceWhenMissingClip: 0
   enableTownAmbientAudio: 1

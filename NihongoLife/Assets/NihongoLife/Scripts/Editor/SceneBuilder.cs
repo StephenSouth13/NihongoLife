@@ -551,9 +551,9 @@ namespace NihongoLife.Editor
             CreateShelf(root, "Shelf_Food", new Vector3(-3.2f, 1.1f, 4.1f));
             CreateShelf(root, "Shelf_Drinks", new Vector3(3.2f, 1.1f, 4.1f));
             CreateCounter(root, new Vector3(0f, 0.55f, 8.1f));
-            CreateItem(root, "Onigiri", "onigiri", "おにぎり", "Cơm nắm", "おにぎりを取る", "Lấy cơm nắm", 497, true, true, new Vector3(-3.2f, 1.85f, 4.05f), "Assets/NihongoLife/Prefabs/Food/food_apple.prefab");
-            CreateItem(root, "Water", "water", "水", "Nước", "水を調べる", "Kiểm tra nước", 120, false, false, new Vector3(3.2f, 1.9f, 4.05f), "Assets/NihongoLife/Prefabs/Food/food_bottle.prefab");
-            CreateItem(root, "Tea", "tea", "お茶", "Trà xanh", "お茶を調べる", "Kiểm tra trà xanh", 150, false, false, new Vector3(3.95f, 1.9f, 4.05f), "Assets/NihongoLife/Prefabs/Food/food_bottle.prefab");
+            CreateItem(root, "Onigiri", "onigiri", "おにぎり", "Cơm nắm", "おにぎりを取る", "Lấy cơm nắm", 497, true, true, new Vector3(-4.55f, 1.82f, 5.55f), "Assets/ThirdParty/Kenney/kenney_food-kit/Models/FBX format/rice-ball.fbx");
+            CreateItem(root, "Water", "water", "水", "Nước", "水を調べる", "Kiểm tra nước", 120, false, false, new Vector3(4.55f, 1.82f, 5.45f), "Assets/ThirdParty/Kenney/kenney_food-kit/Models/FBX format/soda-bottle.fbx");
+            CreateItem(root, "Tea", "tea", "お茶", "Trà xanh", "お茶を調べる", "Kiểm tra trà xanh", 150, false, false, new Vector3(4.55f, 1.82f, 6.35f), "Assets/ThirdParty/Kenney/kenney_food-kit/Models/FBX format/carton-small.fbx");
             CreateCashier(root);
         }
 
