@@ -92,7 +92,7 @@ namespace NihongoLife.UI
             _leaveButton = MakeButton(card, "LeaveBtn", new Vector2(120f, -200f), new Vector2(120f, 42f), Text("Rời phòng", "Leave", "退出"));
             _leaveButton.onClick.AddListener(OnLeaveClicked);
 
-            _closeButton = MakeButton(card, "CloseBtn", new Vector2(250f, 220f), new Vector2(40f, 40f), "✕");
+            _closeButton = MakeButton(card, "CloseBtn", new Vector2(250f, 220f), new Vector2(40f, 40f), "X");
             _closeButton.onClick.AddListener(Hide);
 
             _panel.SetActive(false);

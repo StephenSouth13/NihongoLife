@@ -201,6 +201,9 @@ namespace NihongoLife.UI
         {
             TMP_FontAsset font = titleText != null ? titleText.font : null;
 
+            guideButton ??= FindMenuButton("GuideButton");
+            aboutButton ??= FindMenuButton("AboutButton");
+
             if (guideTitleText == null || guideBodyText == null)
             {
                 CreateInfoPanel(
@@ -239,6 +242,11 @@ namespace NihongoLife.UI
         private void EnsureLanguageSelector()
         {
             TMP_FontAsset font = titleText != null ? titleText.font : null;
+            languageLabelText ??= transform.Find("LanguageLabel")?.GetComponent<TextMeshProUGUI>();
+            vietnameseButton ??= FindMenuButton("LanguageVietnameseButton");
+            englishButton ??= FindMenuButton("LanguageEnglishButton");
+            japaneseButton ??= FindMenuButton("LanguageJapaneseButton");
+
             if (languageLabelText == null)
             {
                 languageLabelText = CreateMenuText("LanguageLabel", new Vector2(0f, -118f), new Vector2(560f, 32f), 19f, font);
@@ -261,7 +269,8 @@ namespace NihongoLife.UI
             settingsUI.Initialize(font);
 
             // Settings Button
-            settingsButton = CreateLanguageButton("SettingsButton", "Cài đặt", new Vector2(400f, 200f), font);
+            settingsButton = FindMenuButton("SettingsButton")
+                ?? CreateLanguageButton("SettingsButton", "Cài đặt", new Vector2(400f, 200f), font);
             MoveRect(settingsButton, new Vector2(420f, 220f), new Vector2(140f, 44f));
             var txt = settingsButton.transform.Find("Text").GetComponent<TextMeshProUGUI>();
             txt.text = "Cài đặt";
@@ -274,7 +283,8 @@ namespace NihongoLife.UI
             authUI.Initialize(font);
 
             // Login/Account Button
-            loginButton = CreateLanguageButton("LoginButton", "Login", new Vector2(-420f, 220f), font);
+            loginButton = FindMenuButton("LoginButton")
+                ?? CreateLanguageButton("LoginButton", "Login", new Vector2(-420f, 220f), font);
             MoveRect(loginButton, new Vector2(-420f, 220f), new Vector2(140f, 44f));
             UpdateLoginButtonText();
             loginButton.onClick.AddListener(() => authUI.Show());
@@ -332,7 +342,8 @@ namespace NihongoLife.UI
             // Leaderboard
             leaderboardUI = gameObject.AddComponent<LeaderboardUI>();
             leaderboardUI.Initialize(font);
-            leaderboardButton = CreateLanguageButton("LeaderboardBtn", "Rank", new Vector2(-280f, -230f), font);
+            leaderboardButton = FindMenuButton("LeaderboardBtn")
+                ?? CreateLanguageButton("LeaderboardBtn", "Rank", new Vector2(-280f, -230f), font);
             MoveRect(leaderboardButton, new Vector2(-280f, -230f), new Vector2(130f, 46f));
             SetButtonText(leaderboardButton, Text("Xếp hạng", "Ranking", "ランキング"));
             leaderboardButton.onClick.AddListener(() => leaderboardUI.Show());
@@ -340,7 +351,8 @@ namespace NihongoLife.UI
             // Friends
             friendsUI = gameObject.AddComponent<FriendsUI>();
             friendsUI.Initialize(font);
-            friendsButton = CreateLanguageButton("FriendsBtn", "Friends", new Vector2(280f, -230f), font);
+            friendsButton = FindMenuButton("FriendsBtn")
+                ?? CreateLanguageButton("FriendsBtn", "Friends", new Vector2(280f, -230f), font);
             MoveRect(friendsButton, new Vector2(280f, -230f), new Vector2(130f, 46f));
             SetButtonText(friendsButton, Text("Bạn bè", "Friends", "フレンド"));
             friendsButton.onClick.AddListener(() => friendsUI.Show());
@@ -348,14 +360,16 @@ namespace NihongoLife.UI
             // Profile
             profileUI = gameObject.AddComponent<PlayerProfileUI>();
             profileUI.Initialize(font);
-            profileButton = CreateLanguageButton("ProfileBtn", "Profile", new Vector2(0f, -290f), font);
+            profileButton = FindMenuButton("ProfileBtn")
+                ?? CreateLanguageButton("ProfileBtn", "Profile", new Vector2(0f, -290f), font);
             MoveRect(profileButton, new Vector2(0f, -290f), new Vector2(130f, 46f));
             SetButtonText(profileButton, Text("Hồ sơ", "Profile", "プロフィール"));
             profileButton.onClick.AddListener(() => profileUI.ShowOwnProfile());
 
             coopLobbyUI = gameObject.AddComponent<CoopLobbyUI>();
             coopLobbyUI.Initialize(font);
-            onlineButton = CreateLanguageButton("OnlineBtn", "Online", new Vector2(0f, -350f), font);
+            onlineButton = FindMenuButton("OnlineBtn")
+                ?? CreateLanguageButton("OnlineBtn", "Online", new Vector2(0f, -350f), font);
             MoveRect(onlineButton, new Vector2(0f, -350f), new Vector2(150f, 46f));
             SetButtonText(onlineButton, Text("Online", "Online", "オンライン"));
             onlineButton.onClick.AddListener(OnOnlineClicked);
@@ -644,6 +658,11 @@ namespace NihongoLife.UI
             text.transform.SetParent(go.transform, false);
             text.text = label;
             return button;
+        }
+
+        private Button FindMenuButton(string name)
+        {
+            return transform.Find(name)?.GetComponent<Button>();
         }
 
         private void SetLanguage(GameLanguage language)

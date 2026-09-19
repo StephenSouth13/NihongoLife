@@ -13,6 +13,7 @@ namespace NihongoLife.Interaction
 
         private float _nextCheckTime;
         private IInteractable _currentInteractable;
+        private readonly Collider[] _overlapBuffer = new Collider[32];
 
         public event Action<IInteractable> OnInteractableChanged;
 
@@ -35,17 +36,31 @@ namespace NihongoLife.Interaction
         private void DetectInteractables()
         {
             Vector3 detectionOrigin = transform.position + Vector3.up * 0.9f;
-            Collider[] colliders = Physics.OverlapSphere(detectionOrigin, detectionRadius, interactableLayers);
-            if (colliders.Length == 0 && fallbackToAnyLayer)
+            int colliderCount = Physics.OverlapSphereNonAlloc(
+                detectionOrigin,
+                detectionRadius,
+                _overlapBuffer,
+                interactableLayers,
+                QueryTriggerInteraction.Collide);
+
+            if (colliderCount == 0 && fallbackToAnyLayer)
             {
-                colliders = Physics.OverlapSphere(detectionOrigin, detectionRadius);
+                colliderCount = Physics.OverlapSphereNonAlloc(
+                    detectionOrigin,
+                    detectionRadius,
+                    _overlapBuffer,
+                    Physics.AllLayers,
+                    QueryTriggerInteraction.Collide);
             }
 
             IInteractable closestInteractable = null;
             float minDistance = float.MaxValue;
 
-            foreach (var col in colliders)
+            for (int i = 0; i < colliderCount; i++)
             {
+                Collider col = _overlapBuffer[i];
+                if (col == null) continue;
+
                 var interactable = col.GetComponentInParent<IInteractable>();
                 if (interactable == null)
                 {

@@ -7,18 +7,6 @@ namespace NihongoLife.NPC
     {
         [SerializeField] private float audibleDistance = 9f;
         [SerializeField] private Vector2 interval = new Vector2(7f, 16f);
-        [SerializeField] private string[] japaneseLines =
-        {
-            "こんにちは",
-            "いい天気ですね",
-            "コンビニへ行きます"
-        };
-        [SerializeField] private string[] englishLines =
-        {
-            "Good morning.",
-            "Excuse me.",
-            "Where is the station?"
-        };
 
         private AudioSource _source;
         private Transform _player;
@@ -38,6 +26,13 @@ namespace NihongoLife.NPC
         {
             var player = GameObject.FindWithTag("Player");
             if (player != null) _player = player.transform;
+
+            if (!HasConfiguredStreetVoice())
+            {
+                enabled = false;
+                return;
+            }
+
             Schedule();
         }
 
@@ -47,14 +42,11 @@ namespace NihongoLife.NPC
             Schedule();
             if (_player == null || Vector3.Distance(transform.position, _player.position) > audibleDistance) return;
 
-            string[] lines = japaneseLines;
-            if (GameServices.TryGet(out GameSettingsService settings) && settings.Language == GameLanguage.English)
+            AudioClip clip = PickConfiguredStreetVoice();
+            if (clip != null)
             {
-                lines = englishLines;
+                _source.PlayOneShot(clip, 0.32f);
             }
-
-            string line = lines != null && lines.Length > 0 ? lines[Random.Range(0, lines.Length)] : "hello";
-            _source.PlayOneShot(CreateMumble(line), 0.32f);
         }
 
         private void Schedule()
@@ -62,25 +54,32 @@ namespace NihongoLife.NPC
             _nextTime = Time.time + Random.Range(interval.x, interval.y);
         }
 
-        private static AudioClip CreateMumble(string seed)
+        private static bool HasConfiguredStreetVoice()
         {
-            const int sampleRate = 22050;
-            int samples = sampleRate * Random.Range(1, 3);
-            float[] data = new float[samples];
-            int hash = Mathf.Abs(seed.GetHashCode());
-            float baseFrequency = 150f + hash % 120;
-            for (int i = 0; i < samples; i++)
+            if (!GameServices.TryGet(out GameControlService control) || control.Database == null) return false;
+            AudioClip[] clips = control.Database.streetVoiceClips;
+            if (clips == null) return false;
+            for (int i = 0; i < clips.Length; i++)
             {
-                float t = i / (float)sampleRate;
-                float syllable = Mathf.Floor(t / 0.13f);
-                float freq = baseFrequency + ((hash + (int)syllable * 41) % 90);
-                float envelope = Mathf.Sin(Mathf.Clamp01((t % 0.13f) / 0.13f) * Mathf.PI);
-                data[i] = Mathf.Sin(2f * Mathf.PI * freq * t) * envelope * 0.08f;
+                if (clips[i] != null) return true;
             }
 
-            AudioClip clip = AudioClip.Create("GeneratedNpcMumble", samples, 1, sampleRate, false);
-            clip.SetData(data, 0);
-            return clip;
+            return false;
+        }
+
+        private static AudioClip PickConfiguredStreetVoice()
+        {
+            if (!GameServices.TryGet(out GameControlService control) || control.Database == null) return null;
+            AudioClip[] clips = control.Database.streetVoiceClips;
+            if (clips == null || clips.Length == 0) return null;
+
+            for (int i = 0; i < clips.Length; i++)
+            {
+                AudioClip clip = clips[Random.Range(0, clips.Length)];
+                if (clip != null) return clip;
+            }
+
+            return null;
         }
     }
 }

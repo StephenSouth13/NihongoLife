@@ -85,7 +85,7 @@ namespace NihongoLife.UI
             _addFriendButton = MakeButton(card, "AddFriendBtn", new Vector2(0f, -136f), new Vector2(200f, 42f), Text("Kết bạn", "Add Friend", "フレンド追加"));
             _addFriendButton.onClick.AddListener(OnAddFriendClicked);
 
-            _closeButton = MakeButton(card, "CloseBtn", new Vector2(200f, 200f), new Vector2(40f, 40f), "✕");
+            _closeButton = MakeButton(card, "CloseBtn", new Vector2(200f, 200f), new Vector2(40f, 40f), "X");
             _closeButton.onClick.AddListener(Hide);
 
             _panel.SetActive(false);

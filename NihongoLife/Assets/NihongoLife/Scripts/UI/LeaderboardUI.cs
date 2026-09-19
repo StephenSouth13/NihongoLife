@@ -80,7 +80,7 @@ namespace NihongoLife.UI
             _playerRankText.fontStyle = FontStyles.Bold;
 
             // Buttons
-            _closeButton = CreateSimpleButton(card, "Close", new Vector2(250f, 240f), new Vector2(40f, 40f), "✕");
+            _closeButton = CreateSimpleButton(card, "Close", new Vector2(250f, 240f), new Vector2(40f, 40f), "X");
             _closeButton.onClick.AddListener(Hide);
 
             _refreshButton = CreateSimpleButton(card, "Refresh", new Vector2(0f, -234f), new Vector2(160f, 42f), Text("Làm mới", "Refresh", "更新"));

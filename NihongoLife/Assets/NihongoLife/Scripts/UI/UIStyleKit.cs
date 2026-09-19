@@ -146,12 +146,19 @@ namespace NihongoLife.UI
         public static void PlayShowAnimation(GameObject target)
         {
             if (target == null) return;
+
+            var canvasGroup = target.GetComponent<CanvasGroup>();
+            if (!canvasGroup)
+            {
+                canvasGroup = target.AddComponent<CanvasGroup>();
+            }
+
             var runner = target.GetComponent<UIPopupAnimator>();
-            if (runner == null)
+            if (!runner)
             {
                 runner = target.AddComponent<UIPopupAnimator>();
             }
-            runner.PlayIn();
+            runner.PlayIn(canvasGroup);
         }
     }
 
@@ -208,11 +215,16 @@ namespace NihongoLife.UI
         private CanvasGroup _canvasGroup;
         private Coroutine _running;
 
-        public void PlayIn()
+        public void PlayIn(CanvasGroup canvasGroup = null)
         {
-            if (_canvasGroup == null)
+            _canvasGroup = canvasGroup;
+            if (!_canvasGroup)
             {
-                _canvasGroup = GetComponent<CanvasGroup>() ?? gameObject.AddComponent<CanvasGroup>();
+                _canvasGroup = GetComponent<CanvasGroup>();
+            }
+            if (!_canvasGroup)
+            {
+                _canvasGroup = gameObject.AddComponent<CanvasGroup>();
             }
 
             if (_running != null) StopCoroutine(_running);
@@ -229,6 +241,12 @@ namespace NihongoLife.UI
             float elapsed = 0f;
             while (elapsed < duration)
             {
+                if (!_canvasGroup)
+                {
+                    _running = null;
+                    yield break;
+                }
+
                 elapsed += Time.unscaledDeltaTime;
                 float t = Mathf.Clamp01(elapsed / duration);
                 float eased = 1f - Mathf.Pow(1f - t, 3f);
@@ -238,7 +256,7 @@ namespace NihongoLife.UI
             }
 
             if (rect != null) rect.localScale = endScale;
-            _canvasGroup.alpha = 1f;
+            if (_canvasGroup) _canvasGroup.alpha = 1f;
             _running = null;
         }
     }

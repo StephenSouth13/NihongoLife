@@ -67,7 +67,8 @@ namespace NihongoLife.Editor
             }
         }
 
-        // [MenuItem("NihongoLife/Rebuild Main Menu")]
+        // Intentionally not exposed as a menu item: this replaces the entire scene.
+        // Keep it callable from BuildAllScenes for initial project generation only.
         public static void RebuildMainMenu()
         {
             EnsureFolder("Assets/NihongoLife", "Scenes");
@@ -143,6 +144,20 @@ namespace NihongoLife.Editor
             var quitBtn = CreateUIButton(panel.transform, "QuitButton", "Thoát", new Vector2(0, -95), new Vector2(340, 62), font, false).GetComponent<Button>();
             var profileText = CreateText(panel.transform, "ProfileText", "WASD di chuyển  |  E tương tác  |  B balo  |  Tab nhân vật", font, 20, new Vector2(0, -195), new Vector2(760, 48), TextAlignmentOptions.Center);
             profileText.color = new Color(0.95f, 0.95f, 0.95f);
+
+            CreateText(panel.transform, "LanguageLabel", "Ngôn ngữ giao diện", font, 19, new Vector2(0f, -118f), new Vector2(560f, 32f), TextAlignmentOptions.Center).color = new Color(1f, 0.91f, 0.54f);
+            CreateMenuButton(panel.transform, "LanguageVietnameseButton", "VI", new Vector2(-132f, -166f), new Vector2(92f, 44f), font);
+            CreateMenuButton(panel.transform, "LanguageEnglishButton", "EN", new Vector2(0f, -166f), new Vector2(92f, 44f), font);
+            CreateMenuButton(panel.transform, "LanguageJapaneseButton", "JP", new Vector2(132f, -166f), new Vector2(92f, 44f), font);
+
+            CreateMenuButton(panel.transform, "LoginButton", "Đăng nhập", new Vector2(-420f, 220f), new Vector2(140f, 44f), font);
+            CreateMenuButton(panel.transform, "SettingsButton", "Cài đặt", new Vector2(420f, 220f), new Vector2(140f, 44f), font);
+            CreateMenuButton(panel.transform, "LeaderboardBtn", "Xếp hạng", new Vector2(-280f, -230f), new Vector2(130f, 46f), font);
+            CreateMenuButton(panel.transform, "GuideButton", "Cách chơi", new Vector2(-112f, -230f), new Vector2(170f, 46f), font);
+            CreateMenuButton(panel.transform, "AboutButton", "Về tôi", new Vector2(112f, -230f), new Vector2(170f, 46f), font);
+            CreateMenuButton(panel.transform, "FriendsBtn", "Bạn bè", new Vector2(280f, -230f), new Vector2(130f, 46f), font);
+            CreateMenuButton(panel.transform, "ProfileBtn", "Hồ sơ", new Vector2(0f, -290f), new Vector2(130f, 46f), font);
+            CreateMenuButton(panel.transform, "OnlineBtn", "Online", new Vector2(0f, -350f), new Vector2(150f, 46f), font);
 
             var uiManagerGo = new GameObject("UIManager");
             var uiManager = uiManagerGo.AddComponent<UIManager>();
@@ -1052,6 +1067,13 @@ namespace NihongoLife.Editor
             label.overflowMode = TextOverflowModes.Ellipsis;
             label.fontStyle = primary ? FontStyles.Bold : FontStyles.Normal;
             return btnGo;
+        }
+
+        private static Button CreateMenuButton(Transform parent, string name, string text, Vector2 pos, Vector2 size, TMP_FontAsset font)
+        {
+            var button = CreateUIButton(parent, name, text, pos, size, font, false).GetComponent<Button>();
+            UIStyleKit.StyleButton(button, UIStyleKit.PanelBase, UIStyleKit.PanelHover, UIStyleKit.PanelPressed);
+            return button;
         }
 
         private static void AddTopAccent(Transform parent)

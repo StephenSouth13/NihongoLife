@@ -153,7 +153,7 @@ namespace NihongoLife.UI
             CreateText(panelRect, "Title", "CỬA HÀNG / お店", new Vector2(28f, -30f), new Vector2(560f, 48f), 30f, FontStyles.Bold);
             _balanceText = CreateText(panelRect, "Balance", string.Empty, new Vector2(28f, -82f), new Vector2(420f, 36f), 20f, FontStyles.Normal);
 
-            Button close = CreateButton(panelRect, "Close", "×", new Vector2(-28f, -28f), new Vector2(48f, 44f));
+            Button close = CreateButton(panelRect, "Close", "X", new Vector2(-28f, -28f), new Vector2(48f, 44f));
             var closeRect = (RectTransform)close.transform;
             closeRect.anchorMin = Vector2.one;
             closeRect.anchorMax = Vector2.one;
