@@ -73,6 +73,13 @@ MonoBehaviour:
     isSpecialty: 0
     specialtyNoteVi: ""
     vocabularyTag: "vocab.n5.maguro"
+    hungerRestore: 7
+    thirstRestore: 0
+    servingVi: "1 phần = 2 miếng"
+    servedModel: {fileID: 100100000, guid: a197afcd7b7b898469922b2c5b45c420, type: 3}
+    servedModelSize: 0.15
+    servedModelEuler: {x: -90, y: 0, z: 0}
+    servedOnPlate: 1
   - id: "salmon"
     categoryId: "nigiri"
     nameJa: "サーモン"
@@ -95,6 +102,13 @@ MonoBehaviour:
     isSpecialty: 0
     specialtyNoteVi: ""
     vocabularyTag: "vocab.n5.sake"
+    hungerRestore: 7
+    thirstRestore: 0
+    servingVi: "1 phần = 2 miếng"
+    servedModel: {fileID: 100100000, guid: f694e8604dbbd4d4b8c77a9ebaeea544, type: 3}
+    servedModelSize: 0.15
+    servedModelEuler: {x: -90, y: 0, z: 0}
+    servedOnPlate: 1
   - id: "ebi"
     categoryId: "nigiri"
     nameJa: "えび"
@@ -116,6 +130,13 @@ MonoBehaviour:
     isSpecialty: 0
     specialtyNoteVi: ""
     vocabularyTag: "vocab.n5.ebi"
+    hungerRestore: 7
+    thirstRestore: 0
+    servingVi: "1 phần = 2 miếng"
+    servedModel: {fileID: 100100000, guid: 1bc950c954199b745a02eafe3da54a62, type: 3}
+    servedModelSize: 0.15
+    servedModelEuler: {x: -90, y: 0, z: 0}
+    servedOnPlate: 1
   - id: "tamago"
     categoryId: "nigiri"
     nameJa: "たまご"
@@ -138,6 +159,13 @@ MonoBehaviour:
     isSpecialty: 0
     specialtyNoteVi: ""
     vocabularyTag: "vocab.n5.tamago"
+    hungerRestore: 6
+    thirstRestore: 0
+    servingVi: "1 phần = 2 miếng"
+    servedModel: {fileID: 100100000, guid: a886bbd5d8cd17e4fb743346a2d6f864, type: 3}
+    servedModelSize: 0.15
+    servedModelEuler: {x: -90, y: 0, z: 0}
+    servedOnPlate: 1
   - id: "ika"
     categoryId: "nigiri"
     nameJa: "いか"
@@ -159,6 +187,13 @@ MonoBehaviour:
     isSpecialty: 0
     specialtyNoteVi: ""
     vocabularyTag: "vocab.n5.ika"
+    hungerRestore: 6
+    thirstRestore: 0
+    servingVi: "1 phần = 2 miếng"
+    servedModel: {fileID: 100100000, guid: c81dd715be12d6845be9c3509eafdc1b, type: 3}
+    servedModelSize: 0.15
+    servedModelEuler: {x: -90, y: 0, z: 0}
+    servedOnPlate: 1
   - id: "unagi_nigiri"
     categoryId: "nigiri"
     nameJa: "うなぎ"
@@ -182,6 +217,13 @@ MonoBehaviour:
     isSpecialty: 1
     specialtyNoteVi: "Người Nhật hay ăn lươn vào 'Doyo no Ushi no Hi' (土用の丑の日), ngày giữa mùa hè, để lấy sức chống nóng."
     vocabularyTag: "vocab.n5.unagi"
+    hungerRestore: 8
+    thirstRestore: 0
+    servingVi: "1 phần = 2 miếng"
+    servedModel: {fileID: 100100000, guid: a197afcd7b7b898469922b2c5b45c420, type: 3}
+    servedModelSize: 0.15
+    servedModelEuler: {x: -90, y: 0, z: 0}
+    servedOnPlate: 1
   - id: "hotate"
     categoryId: "nigiri"
     nameJa: "ほたて"
@@ -203,6 +245,13 @@ MonoBehaviour:
     isSpecialty: 0
     specialtyNoteVi: ""
     vocabularyTag: "vocab.n5.hotate"
+    hungerRestore: 7
+    thirstRestore: 0
+    servingVi: "1 phần = 2 miếng"
+    servedModel: {fileID: 100100000, guid: f694e8604dbbd4d4b8c77a9ebaeea544, type: 3}
+    servedModelSize: 0.15
+    servedModelEuler: {x: -90, y: 0, z: 0}
+    servedOnPlate: 1
   - id: "ikura"
     categoryId: "nigiri"
     nameJa: "いくら（軍艦）"
@@ -226,6 +275,13 @@ MonoBehaviour:
     isSpecialty: 0
     specialtyNoteVi: ""
     vocabularyTag: "vocab.n5.ikura"
+    hungerRestore: 7
+    thirstRestore: 0
+    servingVi: "1 phần = 2 miếng"
+    servedModel: {fileID: 100100000, guid: a886bbd5d8cd17e4fb743346a2d6f864, type: 3}
+    servedModelSize: 0.15
+    servedModelEuler: {x: -90, y: 0, z: 0}
+    servedOnPlate: 1
   - id: "kappamaki"
     categoryId: "maki"
     nameJa: "かっぱ巻き"
@@ -247,6 +303,13 @@ MonoBehaviour:
     isSpecialty: 0
     specialtyNoteVi: ""
     vocabularyTag: "vocab.n5.kyuuri"
+    hungerRestore: 9
+    thirstRestore: 0
+    servingVi: "1 phần = 6 miếng nhỏ"
+    servedModel: {fileID: 100100000, guid: a656cd6806486fb4fb5ff7ff46fbb8b1, type: 3}
+    servedModelSize: 0.08
+    servedModelEuler: {x: -90, y: 0, z: 0}
+    servedOnPlate: 1
   - id: "tekkamaki"
     categoryId: "maki"
     nameJa: "鉄火巻き"
@@ -269,6 +332,13 @@ MonoBehaviour:
     isSpecialty: 0
     specialtyNoteVi: ""
     vocabularyTag: "vocab.n5.maguro"
+    hungerRestore: 10
+    thirstRestore: 0
+    servingVi: "1 phần = 6 miếng nhỏ"
+    servedModel: {fileID: 100100000, guid: a656cd6806486fb4fb5ff7ff46fbb8b1, type: 3}
+    servedModelSize: 0.08
+    servedModelEuler: {x: -90, y: 0, z: 0}
+    servedOnPlate: 1
   - id: "futomaki"
     categoryId: "maki"
     nameJa: "太巻き"
@@ -296,6 +366,13 @@ MonoBehaviour:
     isSpecialty: 0
     specialtyNoteVi: ""
     vocabularyTag: "vocab.n5.makizushi"
+    hungerRestore: 14
+    thirstRestore: 0
+    servingVi: "1 phần = 4 miếng lớn"
+    servedModel: {fileID: 100100000, guid: a656cd6806486fb4fb5ff7ff46fbb8b1, type: 3}
+    servedModelSize: 0.1
+    servedModelEuler: {x: -90, y: 0, z: 0}
+    servedOnPlate: 1
   - id: "california"
     categoryId: "maki"
     nameJa: "カリフォルニアロール"
@@ -322,6 +399,13 @@ MonoBehaviour:
     isSpecialty: 0
     specialtyNoteVi: ""
     vocabularyTag: "vocab.n5.abokado"
+    hungerRestore: 12
+    thirstRestore: 0
+    servingVi: "1 phần = 6-8 miếng"
+    servedModel: {fileID: 100100000, guid: a656cd6806486fb4fb5ff7ff46fbb8b1, type: 3}
+    servedModelSize: 0.09
+    servedModelEuler: {x: -90, y: 0, z: 0}
+    servedOnPlate: 1
   - id: "chirashi"
     categoryId: "donburi"
     nameJa: "ちらし寿司"
@@ -349,6 +433,13 @@ MonoBehaviour:
     isSpecialty: 1
     specialtyNoteVi: "Món đặc trưng của quán, đầu bếp chọn hải sản tươi theo từng ngày."
     vocabularyTag: "vocab.n5.chirashi"
+    hungerRestore: 32
+    thirstRestore: 0
+    servingVi: "1 bát (kèm súp miso)"
+    servedModel: {fileID: 100100000, guid: b802e0fea61ff6b47b2f4955fea8ea8d, type: 3}
+    servedModelSize: 0.2
+    servedModelEuler: {x: -90, y: 0, z: 0}
+    servedOnPlate: 0
   - id: "kaisendon"
     categoryId: "donburi"
     nameJa: "海鮮丼"
@@ -376,6 +467,13 @@ MonoBehaviour:
     isSpecialty: 0
     specialtyNoteVi: ""
     vocabularyTag: "vocab.n5.donburi"
+    hungerRestore: 34
+    thirstRestore: 0
+    servingVi: "1 bát (kèm súp miso)"
+    servedModel: {fileID: 100100000, guid: b802e0fea61ff6b47b2f4955fea8ea8d, type: 3}
+    servedModelSize: 0.2
+    servedModelEuler: {x: -90, y: 0, z: 0}
+    servedOnPlate: 0
   - id: "unadon"
     categoryId: "donburi"
     nameJa: "うな丼"
@@ -399,6 +497,13 @@ MonoBehaviour:
     isSpecialty: 1
     specialtyNoteVi: "Món ăn 'lấy sức' quen thuộc trong mùa hè, đặc biệt vào ngày Doyo no Ushi no Hi (土用の丑の日)."
     vocabularyTag: "vocab.n5.unagi"
+    hungerRestore: 33
+    thirstRestore: 0
+    servingVi: "1 bát (kèm súp miso)"
+    servedModel: {fileID: 100100000, guid: b802e0fea61ff6b47b2f4955fea8ea8d, type: 3}
+    servedModelSize: 0.2
+    servedModelEuler: {x: -90, y: 0, z: 0}
+    servedOnPlate: 0
   - id: "hibari_set"
     categoryId: "donburi"
     nameJa: "ひばり特選にぎり"
@@ -424,6 +529,13 @@ MonoBehaviour:
     isSpecialty: 1
     specialtyNoteVi: "Món đặc trưng của quán. 'Shun' (旬) là mùa ngon nhất của mỗi loại cá, vì vậy nguyên liệu trong set thay đổi theo mùa."
     vocabularyTag: "vocab.n5.nigiri"
+    hungerRestore: 40
+    thirstRestore: 0
+    servingVi: "1 suất = 8 miếng nigiri + tamago + súp miso"
+    servedModel: {fileID: 100100000, guid: b802e0fea61ff6b47b2f4955fea8ea8d, type: 3}
+    servedModelSize: 0.22
+    servedModelEuler: {x: -90, y: 0, z: 0}
+    servedOnPlate: 0
   - id: "misoshiru"
     categoryId: "side"
     nameJa: "お味噌汁"
@@ -448,6 +560,13 @@ MonoBehaviour:
     isSpecialty: 0
     specialtyNoteVi: ""
     vocabularyTag: "vocab.n5.misoshiru"
+    hungerRestore: 4
+    thirstRestore: 6
+    servingVi: "1 bát"
+    servedModel: {fileID: 100100000, guid: b802e0fea61ff6b47b2f4955fea8ea8d, type: 3}
+    servedModelSize: 0.13
+    servedModelEuler: {x: -90, y: 0, z: 0}
+    servedOnPlate: 0
   - id: "chawanmushi"
     categoryId: "side"
     nameJa: "茶碗蒸し"
@@ -476,6 +595,13 @@ MonoBehaviour:
     isSpecialty: 1
     specialtyNoteVi: "Đầu bếp của quán hấp món này theo công thức riêng, mỗi ngày làm số lượng có hạn."
     vocabularyTag: "vocab.n5.chawanmushi"
+    hungerRestore: 8
+    thirstRestore: 3
+    servingVi: "1 chén"
+    servedModel: {fileID: 100100000, guid: b802e0fea61ff6b47b2f4955fea8ea8d, type: 3}
+    servedModelSize: 0.1
+    servedModelEuler: {x: -90, y: 0, z: 0}
+    servedOnPlate: 0
   - id: "edamame"
     categoryId: "side"
     nameJa: "枝豆"
@@ -496,6 +622,13 @@ MonoBehaviour:
     isSpecialty: 0
     specialtyNoteVi: ""
     vocabularyTag: "vocab.n5.mame"
+    hungerRestore: 6
+    thirstRestore: 0
+    servingVi: "1 đĩa nhỏ"
+    servedModel: {fileID: 100100000, guid: b802e0fea61ff6b47b2f4955fea8ea8d, type: 3}
+    servedModelSize: 0.16
+    servedModelEuler: {x: -90, y: 0, z: 0}
+    servedOnPlate: 0
   - id: "ocha"
     categoryId: "drink"
     nameJa: "お茶（あがり）"
@@ -514,6 +647,13 @@ MonoBehaviour:
     isSpecialty: 0
     specialtyNoteVi: ""
     vocabularyTag: "vocab.n5.ocha"
+    hungerRestore: 0
+    thirstRestore: 16
+    servingVi: "1 tách (miễn phí, rót thêm được)"
+    servedModel: {fileID: 100100000, guid: b802e0fea61ff6b47b2f4955fea8ea8d, type: 3}
+    servedModelSize: 0.09
+    servedModelEuler: {x: -90, y: 0, z: 0}
+    servedOnPlate: 0
   - id: "oolong"
     categoryId: "drink"
     nameJa: "ウーロン茶"
@@ -532,6 +672,13 @@ MonoBehaviour:
     isSpecialty: 0
     specialtyNoteVi: ""
     vocabularyTag: "vocab.n5.ocha"
+    hungerRestore: 0
+    thirstRestore: 18
+    servingVi: "1 ly"
+    servedModel: {fileID: 100100000, guid: e683d54a409932244a59e383584d9fca, type: 3}
+    servedModelSize: 0.22
+    servedModelEuler: {x: -90, y: 0, z: 0}
+    servedOnPlate: 0
   - id: "ramune"
     categoryId: "drink"
     nameJa: "ラムネ"
@@ -552,6 +699,13 @@ MonoBehaviour:
     isSpecialty: 0
     specialtyNoteVi: ""
     vocabularyTag: "vocab.n5.soda"
+    hungerRestore: 0
+    thirstRestore: 18
+    servingVi: "1 chai"
+    servedModel: {fileID: 100100000, guid: e683d54a409932244a59e383584d9fca, type: 3}
+    servedModelSize: 0.2
+    servedModelEuler: {x: -90, y: 0, z: 0}
+    servedOnPlate: 0
   - id: "matcha_ice"
     categoryId: "dessert"
     nameJa: "抹茶アイス"
@@ -575,6 +729,13 @@ MonoBehaviour:
     isSpecialty: 0
     specialtyNoteVi: ""
     vocabularyTag: "vocab.n5.aisu"
+    hungerRestore: 4
+    thirstRestore: 0
+    servingVi: "1 cốc"
+    servedModel: {fileID: 100100000, guid: b802e0fea61ff6b47b2f4955fea8ea8d, type: 3}
+    servedModelSize: 0.1
+    servedModelEuler: {x: -90, y: 0, z: 0}
+    servedOnPlate: 0
   - id: "mitarashi"
     categoryId: "dessert"
     nameJa: "みたらし団子"
@@ -597,6 +758,13 @@ MonoBehaviour:
     isSpecialty: 0
     specialtyNoteVi: ""
     vocabularyTag: "vocab.n5.dango"
+    hungerRestore: 6
+    thirstRestore: 0
+    servingVi: "1 xiên (3-4 viên)"
+    servedModel: {fileID: 100100000, guid: 6b20a1689a65afd40978327e5aa0a74e, type: 3}
+    servedModelSize: 0.16
+    servedModelEuler: {x: -90, y: 0, z: 0}
+    servedOnPlate: 1
   phrases:
   - ja: "いらっしゃいませ。"
     reading: "いらっしゃいませ。"
@@ -713,3 +881,24 @@ MonoBehaviour:
   - titleJa: "お会計"
     titleVi: "Thanh toán"
     bodyVi: "Thanh toán tại quầy thu ngân khi đã ăn xong, không cần để tiền boa (ở Nhật không có tục tiền boa). Nhiều quán nhỏ chỉ nhận tiền mặt."
+  staffNameJa: 青木
+  staffNameVi: Aoki
+  plateModel: {fileID: 100100000, guid: fa485bb8ebeb39c4684a09ba1343d109, type: 3}
+  plateModelSize: 0.26
+  plateModelEuler: {x: -90, y: 0, z: 0}
+  serviceLines:
+  - key: "order_confirm"
+    ja: "かしこまりました。{order}ですね。少々お待ちください。"
+    reading: "かしこまりました。{order}ですね。しょうしょうおまちください。"
+    vi: "Vâng ạ. {order}, đúng không ạ? Xin quý khách đợi một chút."
+    en: "Certainly. {order}, correct? Please wait a moment."
+  - key: "served"
+    ja: "お待たせしました。ごゆっくりどうぞ。"
+    reading: "おまたせしました。ごゆっくりどうぞ。"
+    vi: "Để quý khách đợi lâu rồi. Xin mời dùng bữa thong thả."
+    en: "Thank you for waiting. Please take your time and enjoy."
+  - key: "bill"
+    ja: "お会計は{total}です。ありがとうございました。またお越しください。"
+    reading: "おかいけいは{total}です。ありがとうございました。またおこしください。"
+    vi: "Tổng cộng là {total}. Cảm ơn quý khách, xin mời quý khách quay lại lần sau."
+    en: "Your total is {total}. Thank you very much. Please come again."

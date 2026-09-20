@@ -14,6 +14,8 @@ namespace NihongoLife.Core
         private TextMeshProUGUI _status;
         private Image _progressFill;
         private bool _isLoading;
+        private string _hostSceneName;
+        private string _activeZoneSceneName;
 
         public bool IsLoading => _isLoading;
 
@@ -81,6 +83,14 @@ namespace NihongoLife.Core
             LockPlayer(true);
             yield return FadeIn(displayName);
 
+            Scene host = SceneManager.GetActiveScene();
+            if (!host.IsValid() || !host.isLoaded || string.Equals(host.name, sceneName, System.StringComparison.OrdinalIgnoreCase))
+            {
+                yield return FailAndRelease($"Cannot enter {sceneName} from the current scene.");
+                yield break;
+            }
+            _hostSceneName = host.name;
+
             Scene zone = SceneManager.GetSceneByName(sceneName);
             if (!zone.isLoaded)
             {
@@ -98,9 +108,22 @@ namespace NihongoLife.Core
                 zone = SceneManager.GetSceneByName(sceneName);
             }
 
-            SetZoneRootsActive(SceneManager.GetActiveScene(), false);
+            if (!zone.IsValid() || !zone.isLoaded)
+            {
+                yield return FailAndRelease($"Zone {sceneName} did not finish loading.");
+                yield break;
+            }
+
+            SetZoneRootsActive(host, false);
             SetZoneRootsActive(zone, true);
-            MovePlayerToSpawn(zone, spawnId);
+            if (!MovePlayerToSpawn(zone, spawnId))
+            {
+                SetZoneRootsActive(host, true);
+                yield return FailAndRelease($"Spawn {spawnId} is missing from {sceneName}.");
+                yield break;
+            }
+            SceneManager.SetActiveScene(zone);
+            _activeZoneSceneName = zone.name;
             SetProgress(1f, "Đã đến nơi");
             yield return FadeOut();
             LockPlayer(false);
@@ -112,10 +135,25 @@ namespace NihongoLife.Core
             _isLoading = true;
             LockPlayer(true);
             yield return FadeIn(displayName);
-            Scene city = SceneManager.GetActiveScene();
-            Scene zone = SceneManager.GetSceneByName(sceneName);
+
+            string zoneName = string.IsNullOrWhiteSpace(_activeZoneSceneName) ? sceneName : _activeZoneSceneName;
+            Scene zone = SceneManager.GetSceneByName(zoneName);
+            Scene city = string.IsNullOrWhiteSpace(_hostSceneName)
+                ? SceneManager.GetSceneByName(WorldLocationCatalog.CityScene)
+                : SceneManager.GetSceneByName(_hostSceneName);
+            if (!city.IsValid() || !city.isLoaded || city == zone)
+            {
+                yield return FailAndRelease("The return city scene is not loaded.");
+                yield break;
+            }
+
             SetZoneRootsActive(city, true);
-            MovePlayerToSpawn(city, citySpawnId);
+            if (!MovePlayerToSpawn(city, citySpawnId))
+            {
+                yield return FailAndRelease($"Return spawn {citySpawnId} is missing from {city.name}.");
+                yield break;
+            }
+            SceneManager.SetActiveScene(city);
             if (zone.isLoaded)
             {
                 AsyncOperation unload = SceneManager.UnloadSceneAsync(zone);
@@ -125,6 +163,8 @@ namespace NihongoLife.Core
                     yield return null;
                 }
             }
+            _activeZoneSceneName = null;
+            _hostSceneName = null;
             SetProgress(1f, "Đã đến nơi");
             yield return FadeOut();
             LockPlayer(false);
@@ -141,10 +181,14 @@ namespace NihongoLife.Core
             }
         }
 
-        private static void MovePlayerToSpawn(Scene scene, string spawnId)
+        private static bool MovePlayerToSpawn(Scene scene, string spawnId)
         {
             var player = FindFirstObjectByType<PlayerController>();
-            if (player == null) return;
+            if (player == null)
+            {
+                Debug.LogWarning("[SceneFlowController] Player was not found during scene transition.");
+                return false;
+            }
             foreach (GameObject root in scene.GetRootGameObjects())
             {
                 foreach (var spawn in root.GetComponentsInChildren<SceneSpawnPoint>(true))
@@ -154,10 +198,11 @@ namespace NihongoLife.Core
                     if (controller != null) controller.enabled = false;
                     player.transform.SetPositionAndRotation(spawn.transform.position, spawn.transform.rotation);
                     if (controller != null) controller.enabled = true;
-                    return;
+                    return true;
                 }
             }
             Debug.LogWarning($"[SceneFlowController] Spawn '{spawnId}' was not found in {scene.name}.");
+            return false;
         }
 
         private IEnumerator FadeIn(string displayName)

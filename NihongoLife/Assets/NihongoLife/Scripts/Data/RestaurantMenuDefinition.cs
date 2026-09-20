@@ -34,6 +34,33 @@ namespace NihongoLife.Data
         public bool isSpecialty;
         public string specialtyNoteVi;
         public string vocabularyTag;
+
+        [Header("Ordering and table service")]
+        [Tooltip("Hunger restored (0-100 scale) per serving when eaten at the table.")]
+        public float hungerRestore;
+        [Tooltip("Thirst restored (0-100 scale) per serving when consumed at the table.")]
+        public float thirstRestore;
+        [Tooltip("What one order contains, e.g. 2 pieces. Shown next to the price when ordering.")]
+        public string servingVi;
+        [Tooltip("Model placed on the table when served. Empty = a simple placeholder shape.")]
+        public GameObject servedModel;
+        [Tooltip("Longest edge of the served model in meters. The model is fitted to this size at runtime, so it does not matter how the FBX was imported.")]
+        public float servedModelSize = 0.12f;
+        [Tooltip("Rotation applied to the model before fitting (kit models import lying down, so they use -90, 0, 0).")]
+        public Vector3 servedModelEuler = new Vector3(-90f, 0f, 0f);
+        [Tooltip("Serve on a plate (see RestaurantMenuDefinition.plateModel).")]
+        public bool servedOnPlate;
+    }
+
+    /// <summary>One line the staff says during table service. Placeholders: {total}, {order}.</summary>
+    [Serializable]
+    public class RestaurantServiceLine
+    {
+        public string key;
+        public string ja;
+        public string reading;
+        public string vi;
+        public string en;
     }
 
     [Serializable]
@@ -72,6 +99,21 @@ namespace NihongoLife.Data
         public List<RestaurantDish> dishes = new List<RestaurantDish>();
         public List<RestaurantPhrase> phrases = new List<RestaurantPhrase>();
         public List<RestaurantEtiquette> etiquette = new List<RestaurantEtiquette>();
+
+        [Header("Table service")]
+        public string staffNameJa = "青木";
+        public string staffNameVi = "Aoki";
+        public List<RestaurantServiceLine> serviceLines = new List<RestaurantServiceLine>();
+        [Tooltip("Plate model used under dishes that have servedOnPlate enabled.")]
+        public GameObject plateModel;
+        public float plateModelSize = 0.26f;
+        public Vector3 plateModelEuler = new Vector3(-90f, 0f, 0f);
+
+        public RestaurantServiceLine GetServiceLine(string key)
+        {
+            if (string.IsNullOrEmpty(key) || serviceLines == null) return null;
+            return serviceLines.Find(line => line != null && line.key == key);
+        }
 
         public RestaurantDish FindDish(string dishId)
         {
