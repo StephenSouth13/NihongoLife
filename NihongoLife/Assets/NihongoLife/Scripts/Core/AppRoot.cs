@@ -65,14 +65,14 @@ namespace NihongoLife.Core
 
             if (inputService == null)
             {
-                inputService = gameObject.AddComponent<GameInputService>();
+                inputService = GameInputService.GetOrCreate();
             }
             GameServices.Register<GameInputService>(inputService);
             inputService.Initialize();
 
             if (sessionService == null)
             {
-                sessionService = gameObject.AddComponent<PlayerSessionService>();
+                sessionService = PlayerSessionService.GetOrCreate();
             }
             GameServices.Register<PlayerSessionService>(sessionService);
             sessionService.Initialize();

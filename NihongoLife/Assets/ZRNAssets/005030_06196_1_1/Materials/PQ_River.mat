@@ -1,0 +1,66 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!21 &2100000
+Material:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_Name: PQ_River
+  m_Shader: {fileID: 4800000, guid: e01fe9f1e5018214ab339aaaa4fd06ea, type: 3}
+  m_ShaderKeywords: []
+  m_CustomRenderQueue: -1
+  m_SavedProperties:
+    serializedVersion: 2
+    m_TexEnvs:
+      data:
+        first:
+          name: _MainTex
+        second:
+          m_Texture: {fileID: 0}
+          m_Scale: {x: 1, y: 1}
+          m_Offset: {x: 0, y: 0}
+      data:
+        first:
+          name: _nise_texture
+        second:
+          m_Texture: {fileID: 2800000, guid: a3db29b7018a514418274a3c7e0f81b2, type: 3}
+          m_Scale: {x: 8, y: 10}
+          m_Offset: {x: 0, y: 0}
+      data:
+        first:
+          name: _hamon_texture
+        second:
+          m_Texture: {fileID: 2800000, guid: 4a56ba3eaf7698947af72c52331d518e, type: 3}
+          m_Scale: {x: 12, y: 1.5}
+          m_Offset: {x: 0, y: 0}
+    m_Floats:
+      data:
+        first:
+          name: _far_pos
+        second: 1.5
+      data:
+        first:
+          name: _Gloss
+        second: .300000012
+      data:
+        first:
+          name: _tex_scroll_A
+        second: .0700000003
+      data:
+        first:
+          name: _tex_scroll_B
+        second: .0500000007
+    m_Colors:
+      data:
+        first:
+          name: _Color
+        second: {r: .290657461, g: .352941185, b: .327469468, a: 1}
+      data:
+        first:
+          name: _near_color
+        second: {r: .345097989, g: .415686309, b: .4627451, a: 1}
+      data:
+        first:
+          name: _far_color
+        second: {r: .231372595, g: .26666671, b: .258823514, a: 1}

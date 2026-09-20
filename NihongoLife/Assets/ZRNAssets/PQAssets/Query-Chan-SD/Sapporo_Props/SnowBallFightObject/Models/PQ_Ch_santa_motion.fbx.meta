@@ -1,0 +1,191 @@
+fileFormatVersion: 2
+guid: 1295acf0236de4fb39e07a74538df54a
+ModelImporter:
+  serializedVersion: 16
+  fileIDToRecycleName:
+    100000: body_02
+    100002: face
+    100004: face 1
+    100006: l_arm_01
+    100008: l_arm_02
+    100010: neck
+    100012: neck 1
+    100014: Prop_santa
+    100016: r_arm_01
+    100018: r_arm_02
+    100020: reindeer_body_01
+    100022: Reins
+    100024: rig_foot_l_01
+    100026: rig_foot_l_02
+    100028: rig_foot_r_01
+    100030: rig_foot_r_02
+    100032: santa
+    100034: //RootNode
+    100036: santa_body
+    100038: sled_joint
+    100040: Sori
+    100042: Tonakai
+    400000: body_02
+    400002: face
+    400004: face 1
+    400006: l_arm_01
+    400008: l_arm_02
+    400010: neck
+    400012: neck 1
+    400014: Prop_santa
+    400016: r_arm_01
+    400018: r_arm_02
+    400020: reindeer_body_01
+    400022: Reins
+    400024: rig_foot_l_01
+    400026: rig_foot_l_02
+    400028: rig_foot_r_01
+    400030: rig_foot_r_02
+    400032: santa
+    400034: //RootNode
+    400036: santa_body
+    400038: sled_joint
+    400040: Sori
+    400042: Tonakai
+    4300000: Tonakai
+    4300002: santa
+    4300004: Reins
+    4300006: Sori
+    7400000: Take 001
+    9500000: //RootNode
+    11100000: //RootNode
+    13700000: Reins
+    13700002: santa
+    13700004: Sori
+    13700006: Tonakai
+  materials:
+    importMaterials: 1
+    materialName: 1
+    materialSearch: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    optimizeGameObjects: 0
+    motionNodeName: 
+    animationCompression: 1
+    animationRotationError: .5
+    animationPositionError: .5
+    animationScaleError: .5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    clipAnimations:
+    - serializedVersion: 16
+      name: Take 001
+      takeName: Take 001
+      firstFrame: 1
+      lastFrame: 76
+      wrapMode: 2
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: Prop_santa
+        weight: 1
+      - path: Prop_santa/Reins
+        weight: 1
+      - path: Prop_santa/santa
+        weight: 1
+      - path: Prop_santa/Sori
+        weight: 1
+      - path: Prop_santa/Tonakai
+        weight: 1
+      - path: reindeer_body_01
+        weight: 1
+      - path: reindeer_body_01/body_02
+        weight: 1
+      - path: reindeer_body_01/body_02/rig_foot_l_02
+        weight: 1
+      - path: reindeer_body_01/body_02/rig_foot_r_02
+        weight: 1
+      - path: reindeer_body_01/neck
+        weight: 1
+      - path: reindeer_body_01/neck/face
+        weight: 1
+      - path: reindeer_body_01/rig_foot_l_01
+        weight: 1
+      - path: reindeer_body_01/rig_foot_r_01
+        weight: 1
+      - path: santa_body
+        weight: 1
+      - path: santa_body/l_arm_01
+        weight: 1
+      - path: santa_body/l_arm_01/l_arm_02
+        weight: 1
+      - path: santa_body/neck 1
+        weight: 1
+      - path: santa_body/neck 1/face 1
+        weight: 1
+      - path: santa_body/r_arm_01
+        weight: 1
+      - path: santa_body/r_arm_01/r_arm_02
+        weight: 1
+      - path: sled_joint
+        weight: 1
+      maskType: 0
+      maskSource: {instanceID: 0}
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: .00999999978
+    meshCompression: 0
+    addColliders: 0
+    importBlendShapes: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    weldVertices: 1
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+  tangentSpace:
+    normalSmoothAngle: 180
+    splitTangentsAcrossUV: 1
+    normalImportMode: 1
+    tangentImportMode: 1
+  importAnimation: 1
+  copyAvatar: 0
+  humanDescription:
+    human: []
+    skeleton: []
+    armTwist: .5
+    foreArmTwist: .5
+    upperLegTwist: .5
+    legTwist: .5
+    armStretch: .0500000007
+    legStretch: .0500000007
+    feetSpacing: 0
+    rootMotionBoneName: 
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 1
+  additionalBone: 0
+  userData: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 36810
+  packageName: Japanese Dosanko City
+  packageVersion: 1.0.0
+  assetPath: Assets/ZRNAssets/PQAssets/Query-Chan-SD/Sapporo_Props/SnowBallFightObject/Models/PQ_Ch_santa_motion.fbx
+  uploadId: 275953

@@ -103,6 +103,10 @@ namespace NihongoLife.Scenario
         
         public int chapterIndex = 1;
 
+        [Header("Knowledge Progression")]
+        [Range(1, 10)] public int learningDifficulty = 1;
+        [Min(1)] public int baseKnowledgeReward = 60;
+
         [Header("Learning Configurations")]
         public List<string> learningTargets = new List<string>();
 

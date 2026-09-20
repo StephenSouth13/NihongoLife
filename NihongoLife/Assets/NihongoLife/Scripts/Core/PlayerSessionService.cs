@@ -1,5 +1,6 @@
 using System;
 using NihongoLife.Data;
+using NihongoLife.Player;
 using UnityEngine;
 
 namespace NihongoLife.Core
@@ -49,7 +50,7 @@ namespace NihongoLife.Core
         public void BeginAccount(string userId, string displayName)
         {
             Mode = PlayerSessionMode.Account;
-            if (!string.IsNullOrWhiteSpace(displayName)) PlayerPrefs.SetString("NihongoLife.PlayerName", displayName.Trim());
+            if (!string.IsNullOrWhiteSpace(displayName)) PlayableCharacterCatalog.SavePlayerName(displayName.Trim());
             PlayerPrefs.Save();
             OnModeChanged?.Invoke(Mode);
         }

@@ -1,6 +1,7 @@
 using System.IO;
 using UnityEngine;
 using NihongoLife.Data;
+using NihongoLife.Core;
 
 namespace NihongoLife.Save
 {

@@ -139,6 +139,7 @@ namespace NihongoLife.Player
             if (!Core.GameServices.TryGet(out Save.IProgressRepository repository)) return;
             var progress = repository.GetProgress();
             if (progress == null) return;
+            if (!string.IsNullOrWhiteSpace(progress.displayName)) PlayerName = progress.displayName;
             Level = Mathf.Max(1, progress.level);
             CurrentExp = Mathf.Max(0, progress.xp);
             Knowledge = Mathf.Max(0, progress.knowledge > 0 ? progress.knowledge : progress.xp);
@@ -148,6 +149,12 @@ namespace NihongoLife.Player
             Thirst = Mathf.Clamp(progress.thirst <= 0f ? 100f : progress.thirst, 0f, 100f);
         }
 
+        public void ReloadProgress()
+        {
+            LoadProgress();
+            OnStatusChanged?.Invoke();
+        }
+
         private void SaveProgress()
         {
             if (!Core.GameServices.TryGet(out Save.IProgressRepository repository)) return;
@@ -155,6 +162,7 @@ namespace NihongoLife.Player
             if (progress == null) return;
             progress.level = Level;
             progress.xp = CurrentExp;
+            progress.displayName = PlayerName;
             progress.knowledge = Knowledge;
             progress.health = CurrentHealth;
             progress.energy = CurrentEnergy;

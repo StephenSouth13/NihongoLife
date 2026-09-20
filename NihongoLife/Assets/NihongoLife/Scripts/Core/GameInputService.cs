@@ -31,10 +31,13 @@ namespace NihongoLife.Core
         private InputActionMap _gameplay;
         private InputAction _move;
         private InputActionRebindingExtensions.RebindingOperation _rebindOperation;
+        private Vector2 _mobileMove;
+        private readonly HashSet<GameInputId> _mobileHeld = new();
+        private readonly HashSet<GameInputId> _mobilePressed = new();
 
         public event Action OnBindingsChanged;
         public static GameInputService Instance => _instance;
-        public Vector2 Move => _move != null ? _move.ReadValue<Vector2>() : Vector2.zero;
+        public Vector2 Move => _mobileMove.sqrMagnitude > 0.001f ? _mobileMove : (_move != null ? _move.ReadValue<Vector2>() : Vector2.zero);
 
         public static GameInputService GetOrCreate()
         {
@@ -67,7 +70,8 @@ namespace NihongoLife.Core
         private void BuildActions()
         {
             _gameplay = new InputActionMap("Gameplay");
-            _move = _gameplay.AddAction("Move", InputActionType.Value, expectedControlType: "Vector2");
+            _move = _gameplay.AddAction("Move", InputActionType.Value);
+            _move.expectedControlType = "Vector2";
             _move.AddBinding("<Gamepad>/leftStick");
             int composite = _move.AddCompositeBinding("2DVector", processors: "NormalizeVector2")
                 .With("Up", "<Keyboard>/w")
@@ -99,8 +103,24 @@ namespace NihongoLife.Core
             _bindings[id] = (action, binding);
         }
 
-        public bool IsPressed(GameInputId id) => _bindings.TryGetValue(id, out var entry) && entry.action.IsPressed();
-        public bool WasPressed(GameInputId id) => _bindings.TryGetValue(id, out var entry) && entry.action.WasPressedThisFrame();
+        public bool IsPressed(GameInputId id) => _mobileHeld.Contains(id) || (_bindings.TryGetValue(id, out var entry) && entry.action.IsPressed());
+        public bool WasPressed(GameInputId id) => _mobilePressed.Contains(id) || (_bindings.TryGetValue(id, out var entry) && entry.action.WasPressedThisFrame());
+
+        public void SetMobileMove(Vector2 value) => _mobileMove = Vector2.ClampMagnitude(value, 1f);
+
+        public void SetMobileButton(GameInputId id, bool pressed)
+        {
+            if (pressed)
+            {
+                if (_mobileHeld.Add(id)) _mobilePressed.Add(id);
+            }
+            else
+            {
+                _mobileHeld.Remove(id);
+            }
+        }
+
+        private void LateUpdate() => _mobilePressed.Clear();
 
         public string GetBindingLabel(GameInputId id)
         {

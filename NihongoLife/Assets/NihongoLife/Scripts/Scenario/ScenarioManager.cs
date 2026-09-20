@@ -436,14 +436,17 @@ namespace NihongoLife.Scenario
             if (GameServices.TryGet(out IProgressRepository progressRepo))
             {
                 var progress = progressRepo.GetProgress();
+                bool firstCompletion = !progress.completedScenarios.Contains(currentScenario.id);
                 if (success)
                 {
-                    if (!progress.completedScenarios.Contains(currentScenario.id))
+                    if (firstCompletion)
                     {
                         progress.completedScenarios.Add(currentScenario.id);
                     }
 
-                    progress.xp += 100;
+                    int knowledgeReward = CalculateKnowledgeReward(currentScenario, breakdown, firstCompletion);
+                    progress.xp += Mathf.Max(10, knowledgeReward / 2);
+                    progress.knowledge += knowledgeReward;
                     progress.level = 1 + (progress.xp / 500);
 
                     var record = progress.bestScores.Find(r => r.scenarioId == currentScenario.id);
@@ -463,11 +466,8 @@ namespace NihongoLife.Scenario
                     }
                 }
                 progressRepo.SaveProgress(progress);
-            }
-
-            if (success && Player.PlayerStatus.Instance != null)
-            {
-                Player.PlayerStatus.Instance.AddKnowledge(100);
+                if (success && Player.PlayerStatus.Instance != null)
+                    Player.PlayerStatus.Instance.ReloadProgress();
             }
 
             if (LearningMasteryManager.Instance != null && success)
@@ -476,6 +476,19 @@ namespace NihongoLife.Scenario
             }
 
             OnScenarioFinished?.Invoke(breakdown);
+        }
+
+        private static int CalculateKnowledgeReward(ScenarioDefinition scenario, ScoreBreakdownDto score, bool firstCompletion)
+        {
+            int chapter = Mathf.Max(1, scenario.chapterIndex);
+            int difficulty = Mathf.Max(1, scenario.learningDifficulty);
+            int targets = Mathf.Max(1, scenario.learningTargets?.Count ?? 0);
+            float accuracy = Mathf.Clamp01(score.overallScore / 100f);
+            float qualityMultiplier = Mathf.Lerp(0.45f, 1.35f, accuracy);
+            float firstClearMultiplier = firstCompletion ? 1f : 0.25f;
+            float progression = 1f + (chapter - 1) * 0.18f + (difficulty - 1) * 0.12f;
+            int baseReward = Mathf.Max(20, scenario.baseKnowledgeReward) + targets * 8;
+            return Mathf.Max(5, Mathf.RoundToInt(baseReward * progression * qualityMultiplier * firstClearMultiplier));
         }
 
         private bool UsesExplicitObjectiveTracking()

@@ -1,0 +1,70 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!21 &2100000
+Material:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_Name: mat_Snow
+  m_Shader: {fileID: 4800000, guid: 3eda81b5ccc6d914798275b8cddc634e, type: 3}
+  m_ShaderKeywords:
+  - _UNLIT_ON
+  m_CustomRenderQueue: -1
+  m_SavedProperties:
+    serializedVersion: 2
+    m_TexEnvs:
+      data:
+        first:
+          name: _MainTex
+        second:
+          m_Texture: {fileID: 0}
+          m_Scale: {x: 1, y: 1}
+          m_Offset: {x: 0, y: 0}
+      data:
+        first:
+          name: _Main_Texture
+        second:
+          m_Texture: {fileID: 2800000, guid: e79e42b2066b4cb4e9e02fb97907c2c4, type: 3}
+          m_Scale: {x: 1, y: 1}
+          m_Offset: {x: 0, y: 0}
+      data:
+        first:
+          name: _Normal_Texture
+        second:
+          m_Texture: {fileID: 2800000, guid: 0651c46e2a836a548806df84be6a485e, type: 3}
+          m_Scale: {x: 1, y: 1}
+          m_Offset: {x: 0, y: 0}
+      data:
+        first:
+          name: _Spec_Texture
+        second:
+          m_Texture: {fileID: 0}
+          m_Scale: {x: 1, y: 1}
+          m_Offset: {x: 0, y: 0}
+    m_Floats:
+      data:
+        first:
+          name: _Cutoff
+        second: .5
+      data:
+        first:
+          name: _Unlit
+        second: 1
+      data:
+        first:
+          name: _Diffuse_Val
+        second: 1.875
+      data:
+        first:
+          name: _Spec_Power
+        second: .678571463
+      data:
+        first:
+          name: _Gloss_Power
+        second: .089285709
+    m_Colors:
+      data:
+        first:
+          name: _Color
+        second: {r: .843137264, g: .785896361, b: .396770447, a: 1}

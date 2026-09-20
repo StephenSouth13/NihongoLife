@@ -1,0 +1,69 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!21 &2100000
+Material:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_Name: PQ_Park_04_Fountain
+  m_Shader: {fileID: 4800000, guid: c25bf066d85c2d2478c93ab9c6b85a23, type: 3}
+  m_ShaderKeywords: []
+  m_CustomRenderQueue: -1
+  m_SavedProperties:
+    serializedVersion: 2
+    m_TexEnvs:
+      data:
+        first:
+          name: _MainTex
+        second:
+          m_Texture: {fileID: 0}
+          m_Scale: {x: 1, y: 1}
+          m_Offset: {x: 0, y: 0}
+      data:
+        first:
+          name: _tex_defuse
+        second:
+          m_Texture: {fileID: 2800000, guid: 8f313972cfd31b44cb38b931d36c7e34, type: 3}
+          m_Scale: {x: 8, y: 1}
+          m_Offset: {x: 0, y: 0}
+      data:
+        first:
+          name: _tex_alpha
+        second:
+          m_Texture: {fileID: 2800000, guid: 805cde2a7de9519409f6d7ff9661cb17, type: 3}
+          m_Scale: {x: 12, y: 1}
+          m_Offset: {x: 0, y: 0}
+      data:
+        first:
+          name: _tex_spec
+        second:
+          m_Texture: {fileID: 2800000, guid: 81b59cce8dcc4894b9398013e1652056, type: 3}
+          m_Scale: {x: 6, y: 1}
+          m_Offset: {x: 0, y: 0}
+    m_Floats:
+      data:
+        first:
+          name: _Cutoff
+        second: .5
+      data:
+        first:
+          name: _spec_val
+        second: 1.29999995
+      data:
+        first:
+          name: _gloss_val
+        second: .200000003
+      data:
+        first:
+          name: _scroll_def
+        second: .899999976
+      data:
+        first:
+          name: _scroll_spec
+        second: 1.20000005
+    m_Colors:
+      data:
+        first:
+          name: _Color
+        second: {r: .452902764, g: .699840426, b: .745098054, a: 1}
