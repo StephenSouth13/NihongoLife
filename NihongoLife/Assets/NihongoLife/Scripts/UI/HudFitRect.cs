@@ -21,6 +21,10 @@ namespace NihongoLife.UI
         private RectTransform _parent;
         private Vector2 _authoredSize;
         private Vector2 _lastParentSize;
+        private float _fitScale = 1f;
+
+        /// <summary>Scale currently needed to fit the parent (1 when the panel already fits).</summary>
+        public float FitScale => _fitScale;
 
         public void Configure(float widthFraction, float heightFraction, Vector2 freeMargin, float lowestScale)
         {
@@ -64,6 +68,7 @@ namespace NihongoLife.UI
             float availableHeight = Mathf.Max(1f, parentSize.y * maxHeightFraction - margin.y);
             float scale = Mathf.Min(1f, availableWidth / _authoredSize.x, availableHeight / _authoredSize.y);
             scale = Mathf.Max(minScale, scale);
+            _fitScale = scale;
             _rect.localScale = new Vector3(scale, scale, 1f);
         }
     }

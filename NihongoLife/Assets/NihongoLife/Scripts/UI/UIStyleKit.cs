@@ -236,7 +236,9 @@ namespace NihongoLife.UI
         {
             const float duration = 0.16f;
             var rect = transform as RectTransform;
-            Vector3 endScale = Vector3.one;
+            // Panels that auto-fit small screens (HudFitRect) animate towards their fitted scale, not 1.
+            var fit = GetComponent<HudFitRect>();
+            Vector3 endScale = Vector3.one * (fit != null ? fit.FitScale : 1f);
             Vector3 startScale = endScale * 0.92f;
 
             float elapsed = 0f;

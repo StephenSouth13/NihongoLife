@@ -228,6 +228,27 @@ Chủ dự án xác nhận: đã bước vào bên trong konbini thật (không 
 
 **Acceptance criteria**: mục 1-3 và 7 có bằng chứng Play Mode (mô tả hoặc ảnh), console không lỗi mới, không thêm menu Editor.
 
+## TASK-H (Codex) — Kiểm chứng HUD cứng + responsive trong Unity (`90_TestSandbox`)
+
+**Bối cảnh**: Claude đã ghi HUD mới trực tiếp vào `90_TestSandbox.unity` bằng tay (chưa mở Unity nên **chưa nhìn thấy kết quả**). Đổi này thay cho việc dựng/đặt lại HUD lúc chạy (`RepairRuntimeLayout` đã bỏ). Mở scene sẽ có hộp thoại "scene đã bị đổi bên ngoài": chọn **Reload**. Tuân thủ `AGENTS.md` và `Docs/DEVELOPMENT.md` mục "HUD & Responsive UI Standard".
+
+**Đã có (check-first — đừng làm lại)**
+- Scripts: `HudCanvasFitter`, `HudSafeArea`, `HudFitRect`, `HudVitalsCard`, `HudNotificationTray` trong `Scripts/UI`.
+- Scene: `Canvas` (CanvasScaler đã đổi sang Expand + `HudCanvasFitter`) > `SafeArea` > `HUDPanel` > `HudRightColumn` (`VitalsCard` + `NotificationTray` với 3 `NotificationChip_*`). `WalletText` cũ đã tắt (ví nằm trong `VitalsCard`). Vị trí/kích thước MissionPanel, DialoguePanel, InventoryPanel, CharacterPanel đã được ghi cứng vào scene theo đúng giá trị mà code runtime cũ từng áp.
+- `RestaurantMenuUI` đăng thông báo hóa đơn qua `HudNotificationTray` (không còn chip tự dựng).
+
+**Việc cần làm**
+1. Mở `90_TestSandbox`, kiểm tra Console không có lỗi khi Reload; Scene view: cột phải trên có thẻ chỉ số, không lỗi missing script/reference.
+2. Play Mode ở 1920x1080: thẻ chỉ số cập nhật (Lv, ví, 4 thanh; thử ăn/uống để thấy thanh tăng; hạ dưới 25% thì đỏ nhấp nháy); mở túi (B) và hồ sơ (Tab) — panel nằm dưới thẻ, đúng vị trí, chữ không tràn; mở hội thoại; mission panel góc trái trên.
+3. Đổi Game view sang các độ phân giải trong Standard mục 7 (và bật `forceTouchLayout` để thử cảm ứng): không panel nào tràn màn hình / đè lên nhau. Chỉnh `HudFitRect` (`maxWidthFraction`, `maxHeightFraction`, `minScale`) và kích thước thẻ trong scene nếu cần; chữ nhỏ nhất vẫn đọc được.
+4. Ở `30_SushiRestaurant`: gọi món rồi ăn xong đi ra cửa → chip "Hóa đơn" hiện trong `NotificationTray` dưới thẻ chỉ số (nháy vàng khi chờ thanh toán), bấm được khi con trỏ tự do, biến mất sau khi trả tiền.
+5. Chat panel (tự tạo lúc chạy) và `TutorialUI`/`WorldMapUI`/`PlayerProfileUI` có đè lên cột phải không; nếu có thì dời/ẩn theo quy tắc neo cạnh, không thêm menu Editor.
+6. Bản build WebGL thử trên điện thoại thật hoặc trình giả lập trình duyệt (DevTools) nếu có thể; ghi lại nếu `Screen.dpi` trả về giá trị lạ làm chữ quá to/nhỏ (`HudCanvasFitter` dùng nó để tính chiều cao CSS).
+
+**Ranh giới**: không tạo scene mới; không dựng lại HUD bằng code lúc chạy; không đổi tên field serialized của `HudVitalsCard`/`HudNotificationTray`/`HudFitRect` (scene đang tham chiếu theo tên); nếu thẻ chỉ số cần thêm hàng mới (ví dụ vệ sinh/WC) thì báo Claude vì cần `PlayerStatus` hỗ trợ trước.
+
+**Acceptance criteria**: mục 1-4 có bằng chứng Play Mode (mô tả hoặc ảnh ở ít nhất 1920x1080 và 1 độ phân giải điện thoại), console không lỗi mới.
+
 ## Việc của Claude (song song, không chờ Codex/Antigravity)
 
 - Đang xác nhận với chủ dự án về việc tạo Supabase project riêng cho NihongoLife (tài khoản hiện chỉ có 1 project không liên quan tên `hrm_crm`) — sau khi có project sẽ tạo 8 bảng + RLS rồi điền vào `GameControlDatabase`.

@@ -102,9 +102,11 @@ namespace NihongoLife.Core
         private void AddButton(GameInputId id, string name, string keyboardPath, string gamepadPath = null)
         {
             var action = _gameplay.AddAction(name, InputActionType.Button);
-            int binding = action.AddBinding(keyboardPath).bindingIndex;
+            action.AddBinding(keyboardPath);
             if (!string.IsNullOrEmpty(gamepadPath)) action.AddBinding(gamepadPath);
-            _bindings[id] = (action, binding);
+            // AddBinding returns an index in the owning map. Display/rebind APIs expect
+            // an index local to this action, where the keyboard binding is always first.
+            _bindings[id] = (action, 0);
         }
 
         public bool IsPressed(GameInputId id) => _mobileHeld.Contains(id) || (_bindings.TryGetValue(id, out var entry) && entry.action.IsPressed());

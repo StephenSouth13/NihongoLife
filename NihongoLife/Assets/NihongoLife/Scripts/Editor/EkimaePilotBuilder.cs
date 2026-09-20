@@ -7,6 +7,7 @@ using UnityEditor.SceneManagement;
 using UnityEngine;
 using UnityEngine.Rendering;
 using UnityEngine.SceneManagement;
+using NihongoLife.World;
 
 namespace NihongoLife.EditorTools
 {
@@ -40,6 +41,7 @@ namespace NihongoLife.EditorTools
             GameObject blockB = BuildWrapper('B');
             GameObject blockH = BuildWrapper('H');
             IntegratePilot(blockB, blockH);
+            InstallStationSafety();
             AssetDatabase.SaveAssets();
             AssetDatabase.Refresh();
             ValidatePilot();
@@ -54,6 +56,10 @@ namespace NihongoLife.EditorTools
             if (pilot.transform.childCount != 2) throw new System.InvalidOperationException("Ekimae pilot must contain exactly two blocks.");
             if (GameObject.Find("Spawn_station_entrance") == null) throw new System.InvalidOperationException("Station entrance spawn was lost.");
             if (GameObject.Find("ExitToCity") == null) throw new System.InvalidOperationException("Station exit portal was lost.");
+            ValidatePortal("ExitToCity", "90_TestSandbox", "city_station_return");
+            GameObject safety = GameObject.Find("EkimaeSafety");
+            if (safety == null || safety.GetComponent<StationSafetyController>() == null)
+                throw new System.InvalidOperationException("Station safety controller is missing.");
 
             Renderer[] renderers = pilot.GetComponentsInChildren<Renderer>(true);
             if (renderers.Length < 8) throw new System.InvalidOperationException("Ekimae pilot renderer set is incomplete.");
@@ -73,6 +79,19 @@ namespace NihongoLife.EditorTools
             if (bounds.min.y < -0.08f || bounds.max.y > 20f)
                 throw new System.InvalidOperationException($"Pilot vertical bounds are invalid: {bounds}");
             Debug.Log($"[EkimaePilot] Validation passed. renderers={renderers.Length}, bounds={bounds}, scene={scene.name}");
+        }
+
+        private static void ValidatePortal(string objectName, string expectedScene, string expectedSpawn)
+        {
+            GameObject portalObject = GameObject.Find(objectName);
+            var portal = portalObject != null ? portalObject.GetComponent<NihongoLife.Interaction.ScenePortal>() : null;
+            if (portal == null) throw new System.InvalidOperationException($"Portal {objectName} is missing its ScenePortal component.");
+
+            var serialized = new SerializedObject(portal);
+            string targetScene = serialized.FindProperty("targetScene")?.stringValue;
+            string targetSpawn = serialized.FindProperty("targetSpawnId")?.stringValue;
+            if (targetScene != expectedScene || targetSpawn != expectedSpawn)
+                throw new System.InvalidOperationException($"Portal {objectName} targets {targetScene}/{targetSpawn}, expected {expectedScene}/{expectedSpawn}.");
         }
 
         public static void OpenPilotForReview()
@@ -302,6 +321,39 @@ namespace NihongoLife.EditorTools
 
             EditorSceneManager.MarkSceneDirty(scene);
             EditorSceneManager.SaveScene(scene, StationScene);
+        }
+
+        private static void InstallStationSafety()
+        {
+            Scene scene = SceneManager.GetActiveScene();
+            GameObject existing = scene.GetRootGameObjects().FirstOrDefault(item => item.name == "EkimaeSafety");
+            if (existing != null) Object.DestroyImmediate(existing);
+
+            var root = new GameObject("EkimaeSafety");
+            root.AddComponent<StationSafetyController>().Configure(GameObject.Find("Spawn_station_entrance")?.transform);
+
+            // Invisible colliders define the playable district without changing its visual composition.
+            CreateBarrier(root.transform, "Boundary_West", new Vector3(742.5f, 2f, -2f), new Vector3(1f, 4f, 35f));
+            CreateBarrier(root.transform, "Boundary_East", new Vector3(857.5f, 2f, -2f), new Vector3(1f, 4f, 35f));
+            CreateBarrier(root.transform, "Boundary_South", new Vector3(800f, 2f, -19.5f), new Vector3(116f, 4f, 1f));
+            CreateBarrier(root.transform, "Boundary_North", new Vector3(800f, 2f, 15.5f), new Vector3(116f, 4f, 1f));
+
+            // The train is boarded through interaction; the platform edge must never be used as a walking route.
+            CreateBarrier(root.transform, "PlatformEdge_Left", new Vector3(789f, 1.1f, 0.15f), new Vector3(20f, 2.2f, 0.35f));
+            CreateBarrier(root.transform, "PlatformEdge_Right", new Vector3(811f, 1.1f, 0.15f), new Vector3(20f, 2.2f, 0.35f));
+
+            EditorSceneManager.MarkSceneDirty(scene);
+            EditorSceneManager.SaveScene(scene, StationScene);
+        }
+
+        private static void CreateBarrier(Transform parent, string name, Vector3 position, Vector3 size)
+        {
+            var barrier = new GameObject(name);
+            barrier.layer = 2; // Ignore Raycast keeps station interaction prompts unobstructed.
+            barrier.transform.SetParent(parent);
+            barrier.transform.position = position;
+            var collider = barrier.AddComponent<BoxCollider>();
+            collider.size = size;
         }
 
         private static void EnsureFolder(string path)

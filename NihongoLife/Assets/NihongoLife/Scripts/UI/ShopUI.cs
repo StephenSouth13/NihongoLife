@@ -149,6 +149,7 @@ namespace NihongoLife.UI
             panelRect.pivot = new Vector2(0.5f, 0.5f);
             panelRect.sizeDelta = new Vector2(720f, 560f);
             UIStyleKit.StylePanel(panelRect, UIStyleKit.PanelBase);
+            _panel.AddComponent<HudFitRect>().Configure(1f, 0.96f, new Vector2(32f, 0f), 0.4f);
 
             CreateText(panelRect, "Title", "CỬA HÀNG / お店", new Vector2(28f, -30f), new Vector2(560f, 48f), 30f, FontStyles.Bold);
             _balanceText = CreateText(panelRect, "Balance", string.Empty, new Vector2(28f, -82f), new Vector2(420f, 36f), 20f, FontStyles.Normal);

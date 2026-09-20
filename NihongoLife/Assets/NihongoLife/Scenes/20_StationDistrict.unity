@@ -4123,7 +4123,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c39540fa226dc1a4c95b4265bd2967a4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: NihongoLife::NihongoLife.Interaction.ScenePortal
-  targetScene: 20_StationDistrict
+  targetScene: 90_TestSandbox
   targetSpawnId: city_station_return
   displayName: "\u8857\u3078\u623B\u308B / Tr\u1EDF l\u1EA1i th\xE0nh ph\u1ED1"
   promptJa: "\u5165\u308B"
@@ -13001,3 +13001,56 @@ SceneRoots:
   m_Roots:
   - {fileID: 505769633}
   - {fileID: 879011042}
+  - {fileID: 987654321002}
+--- !u!1 &987654321001
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 987654321002}
+  - component: {fileID: 987654321003}
+  m_Layer: 0
+  m_Name: EkimaeSafety
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &987654321002
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 987654321001}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &987654321003
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 987654321001}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7d286b73ff5e46a998b7ca096a97847c, type: 3}
+  m_Name:
+  m_EditorClassIdentifier: NihongoLife::NihongoLife.World.StationSafetyController
+  safeSpawn: {fileID: 879880478}
+  districtCenter: {x: 800, y: 0, z: -2}
+  districtHalfExtents: {x: 57, y: 12, z: 17}
+  carriageCenter: {x: 800, y: 2, z: 42}
+  carriageHalfExtents: {x: 11, y: 6, z: 8}
+  trackCenter: {x: 800, y: 0, z: -3.6}
+  trackHalfExtents: {x: 21, y: 5, z: 3.5}
+  fallY: -2.5
