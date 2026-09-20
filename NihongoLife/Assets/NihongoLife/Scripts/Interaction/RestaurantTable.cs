@@ -19,7 +19,7 @@ namespace NihongoLife.Interaction
     /// collider and (optionally) a child Transform used as <see cref="serveAnchor"/>.
     /// </summary>
     [RequireComponent(typeof(Collider))]
-    public class RestaurantTable : MonoBehaviour, IInteractable, IConditionalInteractable
+    public class RestaurantTable : MonoBehaviour, IInteractable, IConditionalInteractable, IExitBlocker
     {
         public enum ServiceState { Idle, Preparing, Served, Eating, ReadyToPay, Paying }
 
@@ -47,7 +47,78 @@ namespace NihongoLife.Interaction
         private readonly List<GameObject> _served = new List<GameObject>();
         private int _total;
 
+        private static readonly List<RestaurantTable> ActiveTables = new List<RestaurantTable>();
+        private float _nextReminderTime;
+
         public ServiceState State => _state;
+        public int BillTotal => _total;
+
+        /// <summary>An order exists that has not been paid yet (including still being prepared or eaten).</summary>
+        public bool HasUnpaidBill => _state == ServiceState.Preparing || _state == ServiceState.Served || _state == ServiceState.Eating || _state == ServiceState.ReadyToPay;
+        public bool BlocksExit => HasUnpaidBill;
+
+        /// <summary>First table in the loaded scenes that still has an unpaid order, or null.</summary>
+        public static RestaurantTable FindUnpaid()
+        {
+            for (int i = 0; i < ActiveTables.Count; i++)
+            {
+                if (ActiveTables[i] != null && ActiveTables[i].HasUnpaidBill) return ActiveTables[i];
+            }
+
+            return null;
+        }
+
+        /// <summary>Short localized status for the bill notification chip.</summary>
+        public string GetBillStatus()
+        {
+            switch (_state)
+            {
+                case ServiceState.Preparing: return Localize("Món đang được chuẩn bị", "Your food is being prepared", "お料理を準備中です");
+                case ServiceState.Served: return Localize("Món đã lên bàn", "Your food is on the table", "お料理が届きました");
+                case ServiceState.Eating: return Localize("Đang dùng bữa", "Enjoy your meal", "お食事中です");
+                case ServiceState.ReadyToPay: return Localize("Chờ thanh toán tại bàn", "Waiting for payment at the table", "テーブルでお会計をお願いします");
+                default: return string.Empty;
+            }
+        }
+
+        private void OnEnable()
+        {
+            if (!ActiveTables.Contains(this)) ActiveTables.Add(this);
+            ExitGuard.Register(this);
+        }
+
+        private void Update()
+        {
+            if (_state == ServiceState.ReadyToPay && Time.time >= _nextReminderTime)
+            {
+                _nextReminderTime = Time.time + 30f;
+                ShowStaff("bill_reminder", null, null, null, null,
+                    "お客様、お会計をお願いします。", "おきゃくさま、おかいけいをおねがいします。",
+                    "Quý khách ơi, xin mời thanh toán tại bàn ạ.", 6f);
+            }
+        }
+
+        public void OnExitBlocked()
+        {
+            switch (_state)
+            {
+                case ServiceState.ReadyToPay:
+                    ShowStaff("exit_blocked", null, null, null, null,
+                        "お客様、お会計がまだです。テーブルでお願いします。", "おきゃくさま、おかいけいがまだです。テーブルでおねがいします。",
+                        "Quý khách ơi, quý khách chưa thanh toán ạ. Xin thanh toán tại bàn. (Ở Nhật, rời quán mà không trả tiền - 食い逃げ - là vi phạm pháp luật.)", 8f);
+                    break;
+                case ServiceState.Preparing:
+                    ShowStaff(null, null, null, null, null,
+                        "お客様、お料理はもうすぐです。少々お待ちください。", "おきゃくさま、おりょうりはもうすぐです。しょうしょうおまちください。",
+                        "Món của quý khách sắp xong rồi ạ. Xin đợi một chút.", 6f);
+                    break;
+                default:
+                    ShowStaff(null, null, null, null, null,
+                        "お客様、お料理とお会計がまだです。", "おきゃくさま、おりょうりとおかいけいがまだです。",
+                        "Quý khách chưa dùng xong món và chưa thanh toán ạ. Hãy ăn xong (E ở bàn), thanh toán rồi hãy ra về.", 7f);
+                    break;
+            }
+        }
 
         public bool IsInteractionAvailable => _state == ServiceState.Idle || _state == ServiceState.Served || _state == ServiceState.ReadyToPay;
         public Transform GetTransform() => transform;
@@ -204,6 +275,7 @@ namespace NihongoLife.Interaction
             _served.Clear();
             PlayerStatus.Instance?.RestoreNeeds(hunger, thirst, 0f);
             _state = ServiceState.ReadyToPay;
+            _nextReminderTime = Time.time + 25f;
             ShowStaff(null, null, null, null, null, "ごちそうさまでした。", "ごちそうさまでした。", "Cảm ơn vì bữa ăn (câu nói sau khi ăn). Bấm E để thanh toán.", 5f);
         }
 
@@ -213,7 +285,7 @@ namespace NihongoLife.Interaction
             if (inventory != null && !inventory.SpendYen(_total))
             {
                 ShowStaff(null, null, null, null, null, "すみません、お金が足りないようです。", "すみません、おかねがたりないようです。",
-                    $"Xin lỗi, dường như bạn không đủ tiền (cần ¥{_total:N0}). Hãy kiếm thêm tiền rồi quay lại thanh toán.", 6f);
+                    $"Xin lỗi, dường như bạn không đủ tiền (cần ¥{_total:N0}). Bạn có thể làm ca ở quầy (JobPoint) để kiếm thêm tiền rồi quay lại thanh toán.", 6f);
                 return;
             }
 
@@ -358,6 +430,9 @@ namespace NihongoLife.Interaction
 
         private void OnDisable()
         {
+            ActiveTables.Remove(this);
+            ExitGuard.Unregister(this);
+
             // A disabled table must not stay stuck mid-service; coroutines stop with the object.
             if (_state == ServiceState.Preparing)
             {

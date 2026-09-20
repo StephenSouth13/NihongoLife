@@ -30,6 +30,8 @@ namespace NihongoLife.Interaction
 
         public void Interact(GameObject player)
         {
+            if (exitsZone && ExitGuard.TryBlock()) return;
+
             SceneFlowController flow = null;
             if (!GameServices.TryGet(out flow)) flow = FindFirstObjectByType<SceneFlowController>();
             if (flow == null || string.IsNullOrWhiteSpace(targetScene)) return;

@@ -72,6 +72,12 @@ namespace NihongoLife.UI
         private TextMeshProUGUI _staffLineText;
         private float _staffHideTime;
 
+        // Unpaid-bill notification chip (top centre, visible while any table has an unpaid order)
+        private GameObject _billChip;
+        private Image _billChipImage;
+        private TextMeshProUGUI _billChipText;
+        private float _nextChipRefresh;
+
         public static RestaurantMenuUI GetOrCreate()
         {
             if (_instance != null) return _instance;
@@ -117,6 +123,34 @@ namespace NihongoLife.UI
             {
                 _staffBar.SetActive(false);
             }
+
+            UpdateBillChip();
+        }
+
+        private void UpdateBillChip()
+        {
+            if (_billChip == null || Time.unscaledTime < _nextChipRefresh) return;
+            _nextChipRefresh = Time.unscaledTime + 0.25f;
+
+            var unpaid = RestaurantTable.FindUnpaid();
+            if (unpaid == null)
+            {
+                if (_billChip.activeSelf) _billChip.SetActive(false);
+                return;
+            }
+
+            _billChip.SetActive(true);
+            _billChipText.text = $"<b>{Pick("Hóa đơn", "Bill", "お会計")}  ¥{unpaid.BillTotal:N0}</b>\n<size=78%>{unpaid.GetBillStatus()}</size>";
+
+            // Gentle pulse while the bill is waiting to be paid, calm otherwise.
+            float pulse = unpaid.State == RestaurantTable.ServiceState.ReadyToPay ? 0.78f + 0.22f * Mathf.Sin(Time.unscaledTime * 4f) : 0.9f;
+            _billChipImage.color = new Color(0.36f * pulse + 0.05f, 0.27f * pulse + 0.04f, 0.08f, 0.96f);
+        }
+
+        private void OnBillChipClicked()
+        {
+            var unpaid = RestaurantTable.FindUnpaid();
+            if (unpaid != null) unpaid.OnExitBlocked();
         }
 
         /// <summary>Subtitle bar for the staff: Japanese, reading and translation, auto-hides.</summary>
@@ -646,6 +680,7 @@ namespace NihongoLife.UI
 
             BuildFooter(panelRect);
             BuildStaffBar(canvas.transform);
+            BuildBillChip(canvas.transform);
         }
 
         private void BuildFooter(RectTransform panelRect)
@@ -674,6 +709,58 @@ namespace NihongoLife.UI
             _orderButtonLabel.alignment = TextAlignmentOptions.Center;
             _orderButton.onClick.AddListener(PlaceOrder);
             _footer.SetActive(false);
+        }
+
+        private void BuildBillChip(Transform canvasTransform)
+        {
+            _billChip = new GameObject("RestaurantBillChip", typeof(RectTransform), typeof(Image), typeof(Button));
+            _billChip.transform.SetParent(canvasTransform, false);
+            var rect = (RectTransform)_billChip.transform;
+            rect.anchorMin = new Vector2(0.5f, 1f);
+            rect.anchorMax = new Vector2(0.5f, 1f);
+            rect.pivot = new Vector2(0.5f, 1f);
+            rect.anchoredPosition = new Vector2(0f, -22f);
+            rect.sizeDelta = new Vector2(420f, 64f);
+
+            _billChipImage = _billChip.GetComponent<Image>();
+            UIStyleKit.StylePanel(rect, new Color(0.36f, 0.27f, 0.08f, 0.96f));
+            var button = _billChip.GetComponent<Button>();
+            button.targetGraphic = _billChipImage;
+            button.onClick.AddListener(OnBillChipClicked);
+
+            // Round gold badge with "!" so it reads as a notification.
+            var badge = new GameObject("Badge", typeof(RectTransform), typeof(Image));
+            badge.transform.SetParent(rect, false);
+            var badgeRect = (RectTransform)badge.transform;
+            badgeRect.anchorMin = new Vector2(0f, 0.5f);
+            badgeRect.anchorMax = new Vector2(0f, 0.5f);
+            badgeRect.pivot = new Vector2(0f, 0.5f);
+            badgeRect.anchoredPosition = new Vector2(12f, 0f);
+            badgeRect.sizeDelta = new Vector2(40f, 40f);
+            var badgeImage = badge.GetComponent<Image>();
+            badgeImage.sprite = UIStyleKit.RoundedSprite();
+            badgeImage.type = Image.Type.Sliced;
+            badgeImage.color = UIStyleKit.AccentGold;
+            badgeImage.raycastTarget = false;
+            var mark = CreateText(badgeRect, "Mark", "!", Vector2.zero, Vector2.zero, 28f, FontStyles.Bold);
+            var markRect = mark.rectTransform;
+            markRect.anchorMin = Vector2.zero;
+            markRect.anchorMax = Vector2.one;
+            markRect.offsetMin = Vector2.zero;
+            markRect.offsetMax = Vector2.zero;
+            mark.alignment = TextAlignmentOptions.Center;
+            mark.color = new Color(0.08f, 0.06f, 0.02f, 1f);
+            mark.raycastTarget = false;
+
+            _billChipText = CreateText(rect, "Text", string.Empty, Vector2.zero, Vector2.zero, 22f, FontStyles.Normal);
+            var textRect = _billChipText.rectTransform;
+            textRect.anchorMin = Vector2.zero;
+            textRect.anchorMax = Vector2.one;
+            textRect.offsetMin = new Vector2(64f, 4f);
+            textRect.offsetMax = new Vector2(-12f, -4f);
+            _billChipText.alignment = TextAlignmentOptions.MidlineLeft;
+            _billChipText.raycastTarget = false;
+            _billChip.SetActive(false);
         }
 
         private void BuildStaffBar(Transform canvasTransform)
