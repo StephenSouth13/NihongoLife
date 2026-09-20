@@ -19,6 +19,25 @@ MonoBehaviour:
   descriptionJa: "\u30B4\u30DF\u306E\u51FA\u3057\u65B9\u306B\u3064\u3044\u3066\u8CEA\u554F\u3057\u307E\u3057\u3087\u3046\u3002"
   descriptionEn: Ask about the garbage disposal rules.
   chapterIndex: 3
+  questType: community
+  giverNpcId: npc_neighbor_3
+  briefingVi: "Sato, trưởng khu phố, giải thích quy tắc đổ rác. Hỏi đúng cách để không làm phiền hàng xóm."
+  briefingEn: "Sato, the neighbourhood head, explains the garbage rules. Ask the right way so you do not bother your neighbours."
+  briefingJa: "町内会長の佐藤さんがゴミの出し方を説明してくれます。近所に迷惑をかけないよう、正しく聞きましょう。"
+  locationHintVi: "Nhà Sato (trưởng khu phố)"
+  locationHintEn: "Sato's house (neighbourhood head)"
+  locationHintJa: "佐藤さんの家（町内会長）"
+  rewardYen: 200
+  branchId: community
+  requiredKnowledge: 40
+  requiredScenarioIds:
+  - scenario.konbini.buy_onigiri
+  unlockScenarioIds:
+  - scenario.neighborhood.recycling_morning
+  repeatable: 0
+  supportsCoOp: 0
+  minPlayers: 1
+  maxPlayers: 2
   learningTargets: []
   objectives:
   - id: obj_ask_garbage

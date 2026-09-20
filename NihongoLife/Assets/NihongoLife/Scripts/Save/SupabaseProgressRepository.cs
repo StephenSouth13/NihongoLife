@@ -250,12 +250,20 @@ namespace NihongoLife.Save
                 activeJobRole = !string.IsNullOrWhiteSpace(cloud.activeJobRole) ? cloud.activeJobRole : local.activeJobRole,
                 business = cloud.business ?? local.business ?? new BusinessRecord(),
                 completedScenarios = new System.Collections.Generic.List<string>(cloud.completedScenarios),
+                storyFlags = cloud.storyFlags != null ? new System.Collections.Generic.List<string>(cloud.storyFlags) : new System.Collections.Generic.List<string>(),
                 bestScores = new System.Collections.Generic.List<ScenarioScoreRecord>(cloud.bestScores),
                 masteryLevels = new System.Collections.Generic.List<MasteryRecord>(cloud.masteryLevels),
                 careers = cloud.careers != null
                     ? new System.Collections.Generic.List<CareerRecord>(cloud.careers)
                     : new System.Collections.Generic.List<CareerRecord>()
             };
+
+            // Merge story flags (union)
+            if (merged.storyFlags == null) merged.storyFlags = new System.Collections.Generic.List<string>();
+            foreach (var flag in local.storyFlags ?? new System.Collections.Generic.List<string>())
+            {
+                if (!merged.storyFlags.Contains(flag)) merged.storyFlags.Add(flag);
+            }
 
             // Merge completed scenarios (union)
             foreach (var s in local.completedScenarios)

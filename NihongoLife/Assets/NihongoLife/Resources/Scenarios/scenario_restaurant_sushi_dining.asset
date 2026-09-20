@@ -19,6 +19,25 @@ MonoBehaviour:
   descriptionJa: "ひばり寿司で、あいさつ、注文、会計まで練習しましょう。"
   descriptionEn: "Luyện toàn bộ quy trình ở quán sushi Hibari: chào hỏi, chọn chỗ, hỏi món đặc sản, báo dị ứng, gọi món, ăn, thanh toán và ra về."
   chapterIndex: 3
+  questType: main
+  giverNpcId: npc_sushi_staff
+  briefingVi: "Lần đầu ăn ở nhà hàng sushi: chào hỏi, gọi món, ăn, tính tiền. Học cách nói chuyện ở quán ăn Nhật."
+  briefingEn: "Your first meal at a sushi restaurant: greet, order, eat and pay. Learn how to talk in a Japanese restaurant."
+  briefingJa: "初めての寿司店：挨拶、注文、食事、お会計。日本のレストランでの話し方を学びます。"
+  locationHintVi: "ひばり寿司 (cổng vào quán ở khu phố)"
+  locationHintEn: "Hibari Sushi (entrance in town)"
+  locationHintJa: "ひばり寿司"
+  rewardYen: 0
+  branchId: main
+  requiredKnowledge: 60
+  requiredScenarioIds:
+  - scenario.konbini.buy_onigiri
+  unlockScenarioIds:
+  - scenario.station.buy_ticket
+  repeatable: 0
+  supportsCoOp: 1
+  minPlayers: 2
+  maxPlayers: 2
   learningTargets:
   - grammar.n5.counter_people
   - grammar.n5.de_onegaishimasu

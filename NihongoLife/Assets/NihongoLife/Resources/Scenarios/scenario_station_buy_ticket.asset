@@ -19,6 +19,25 @@ MonoBehaviour:
   descriptionJa: 駅員さんに行き先を伝えて、切符かICカードで改札を通りましょう。
   descriptionEn: Hỏi đường, chọn cách thanh toán và tìm đúng sân ga tại nhà ga.
   chapterIndex: 4
+  questType: main
+  giverNpcId: npc_station_staff
+  briefingVi: "Hỏi đường và mua vé tại ga Hibari với nhân viên Kimura."
+  briefingEn: "Ask for directions and buy a ticket at Hibari Station from Kimura."
+  briefingJa: "ひばり駅で木村さんに道を聞き、切符を買いましょう。"
+  locationHintVi: "ひばり駅 (ga Hibari)"
+  locationHintEn: "Hibari Station"
+  locationHintJa: "ひばり駅"
+  rewardYen: 300
+  branchId: main
+  requiredKnowledge: 80
+  requiredScenarioIds:
+  - scenario.restaurant.sushi_dining
+  unlockScenarioIds:
+  - scenario.town.summer_festival
+  repeatable: 0
+  supportsCoOp: 0
+  minPlayers: 1
+  maxPlayers: 2
   learningTargets:
   - grammar.n5.made_onegaishimasu
   - grammar.n5.kaimasu

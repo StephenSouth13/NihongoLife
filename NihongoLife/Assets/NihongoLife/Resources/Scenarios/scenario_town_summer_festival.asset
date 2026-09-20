@@ -19,6 +19,27 @@ MonoBehaviour:
   descriptionJa: 町の皆に会いに、夏祭りへ行きましょう。
   descriptionEn: Ghé thăm lễ hội mùa hè và gặp lại tất cả những người bạn đã quen trong khu phố.
   chapterIndex: 4
+  questType: main
+  giverNpcId: npc_neighbor_3
+  briefingVi: "Lễ hội mùa hè của khu phố. Những người bạn bạn đã giúp đỡ đều có mặt để cảm ơn bạn."
+  briefingEn: "The neighbourhood summer festival. The people you helped are all there to thank you."
+  briefingJa: "町の夏祭り。これまで助けた人たちが、あなたにお礼を言いに集まります。"
+  locationHintVi: "ひばり神社 (đền Hibari)"
+  locationHintEn: "Hibari Shrine"
+  locationHintJa: "ひばり神社"
+  rewardYen: 1000
+  branchId: main
+  requiredKnowledge: 150
+  requiredScenarioIds:
+  - scenario.station.buy_ticket
+  - scenario.neighborhood.cat_followup
+  - scenario.neighborhood.recycling_morning
+  - scenario.restaurant.order_ramen
+  unlockScenarioIds: []
+  repeatable: 0
+  supportsCoOp: 1
+  minPlayers: 2
+  maxPlayers: 2
   learningTargets:
   - grammar.n5.okage_de
   - grammar.n5.te_kudasatte_arigatou

@@ -19,6 +19,25 @@ MonoBehaviour:
   descriptionJa: 先生とクラスのみんなに自己紹介をしましょう。
   descriptionEn: Buổi học đầu tiên tại ひばり日本語学院. Chào cô giáo và tự giới thiệu trước lớp.
   chapterIndex: 1
+  questType: main
+  giverNpcId: npc_teacher_morita
+  briefingVi: "Buổi học đầu tiên tại ひばり日本語学院. Tự giới thiệu với cô Morita và bạn Kim: tên, quê hương, sở thích."
+  briefingEn: "Your first class at Hibari Nihongo Gakuin. Introduce yourself to Ms. Morita and Kim: name, home country, hobby."
+  briefingJa: "ひばり日本語学院での最初の授業。森田先生とキムさんに、名前・出身・趣味を自己紹介しましょう。"
+  locationHintVi: "ひばり日本語学院, lớp さくら"
+  locationHintEn: "Hibari Nihongo Gakuin, Sakura class"
+  locationHintJa: "ひばり日本語学院 さくらクラス"
+  rewardYen: 300
+  branchId: main
+  requiredKnowledge: 0
+  requiredScenarioIds:
+  - scenario.house1.greeting
+  unlockScenarioIds:
+  - scenario.konbini.buy_onigiri
+  repeatable: 0
+  supportsCoOp: 1
+  minPlayers: 2
+  maxPlayers: 2
   learningTargets:
   - grammar.n5.hajimemashite
   - grammar.n5.wa_desu

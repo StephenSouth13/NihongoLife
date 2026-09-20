@@ -13,30 +13,63 @@ MonoBehaviour:
   m_Name: scenario_street_first_talk
   m_EditorClassIdentifier: NihongoLife::NihongoLife.Scenario.ScenarioDefinition
   id: scenario.street.first_talk
-  version: 1
-  titleJa: "\u8857\u3067\u3042\u3044\u3055\u3064"
-  titleEn: Talk to someone on the street
-  descriptionJa: "\u901A\u308A\u306B\u3044\u308B\u4EBA\u306B\u8A71\u3057\u304B\u3051\u3066\u3001\u3042\u3044\u3055\u3064\u3068\u884C\u304D\u5148\u3092\u7DF4\u7FD2\u3057\u307E\u3057\u3087\u3046\u3002"
-  descriptionEn: Walk to a person on the street, start a conversation, then practice
-    the line with your mic.
+  version: 2
+  titleJa: "通りであいさつ"
+  titleEn: "Chào hỏi và hỏi đường trên phố"
+  descriptionJa: "朝のあいさつをして、ひばりコンビニへの道を聞きましょう。"
+  descriptionEn: "Chào buổi sáng, nói mình đi đâu và hỏi đường đến cửa hàng tiện lợi Hibari."
   chapterIndex: 1
+  questType: main
+  giverNpcId: npc_neighbor_1
+  briefingVi: "Một người hàng xóm thân thiện chào bạn trên phố. Hãy đáp lại bằng tiếng Nhật và luyện phát âm."
+  briefingEn: "A friendly neighbour greets you on the street. Answer in Japanese and practise your pronunciation."
+  briefingJa: "親切な隣人が通りで声をかけてくれます。日本語で答えて、発音も練習しましょう。"
+  locationHintVi: "Sakura-dōri, gần nhà bạn"
+  locationHintEn: "Sakura-dori, near your home"
+  locationHintJa: "さくら通り（家の近く）"
+  rewardYen: 200
+  branchId: main
+  requiredKnowledge: 0
+  requiredScenarioIds:
+  - scenario.intro.arrival
+  unlockScenarioIds:
+  - scenario.house1.greeting
+  repeatable: 0
+  supportsCoOp: 0
+  minPlayers: 1
+  maxPlayers: 2
   learningTargets:
-  - english.ipa.greeting
-  - japanese.greeting.konnichiwa
-  - japanese.pattern.doko_e_ikimasu_ka
+  - grammar.n5.e_ikimasu
+  - grammar.n5.wa_doko_desu_ka
+  - vocab.n5.ohayou_gozaimasu
+  - vocab.n5.massugu
+  - vocab.n5.migi
+  - vocab.n5.hidari
   objectives:
   - id: obj_talk_to_neighbor
-    titleJa: "\u901A\u308A\u306E\u4EBA\u306B\u8A71\u3057\u304B\u3051\u308B"
-    titleEn: Talk to the person on the street
+    titleJa: "通りの人に話しかける"
+    titleEn: "Bắt chuyện với người hàng xóm trên phố"
+    isOptional: 0
+  - id: obj_greet
+    titleJa: "朝のあいさつと世間話をする"
+    titleEn: "Chào buổi sáng và trò chuyện về thời tiết"
+    isOptional: 0
+  - id: obj_ask_way
+    titleJa: "道をたずねて、聞き取る"
+    titleEn: "Hỏi đường và nghe hiểu chỉ dẫn"
+    isOptional: 0
+  - id: obj_thank
+    titleJa: "お礼を言って別れる"
+    titleEn: "Cảm ơn và chào tạm biệt"
     isOptional: 0
   - id: obj_practice_voice
-    titleJa: "\u58F0\u306B\u51FA\u3057\u3066\u7DF4\u7FD2\u3059\u308B"
-    titleEn: Practice the line with the microphone
-    isOptional: 0
+    titleJa: "声に出して練習する"
+    titleEn: "Luyện nói bằng micro (không bắt buộc)"
+    isOptional: 1
   nodes:
   - id: node_find_neighbor
     nodeType: 6
-    nextNodeId: node_neighbor_greeting
+    nextNodeId: n_greet
     objectiveIdToComplete: obj_talk_to_neighbor
     speakerName: 
     speakerId: 
@@ -51,59 +84,670 @@ MonoBehaviour:
     targetItemId: 
     targetNpcId: npc_neighbor_1
     targetAreaId: 
-  - id: node_neighbor_greeting
+  - id: n_greet
     nodeType: 0
     nextNodeId: 
     objectiveIdToComplete: 
     speakerName: Tanaka
     speakerId: npc_neighbor_1
-    textJa: "\u3053\u3093\u306B\u3061\u306F\u3002\u3069\u3053\u3078\u884C\u304D\u307E\u3059\u304B\u3002"
-    textReading: "\u3053\u3093\u306B\u3061\u306F\u3002\u3069\u3053\u3078\u3044\u304D\u307E\u3059\u304B\u3002"
-    textEn: Hello. Where are you going?
-    textRomaji: Konnichiwa. Doko e ikimasu ka.
-    textEnglishIpa: "/h\u0259\u02C8lo\u028A we\u0259r \u0251\u02D0r ju\u02D0 \u02C8\u0261o\u028A\u026A\u014B/"
+    textJa: "おはようございます！いい朝ですね。"
+    textReading: "おはようございます！いいあさですね。"
+    textEn: "Chào buổi sáng! Sáng nay đẹp trời nhỉ."
+    textRomaji: "Ohayou gozaimasu! Ii asa desu ne."
+    textEnglishIpa: 
     animationCue: talk
     voiceClip: {fileID: 0}
     choices:
-    - textJa: "\u30B3\u30F3\u30D3\u30CB\u3078\u884C\u304D\u307E\u3059\u3002"
-      textEn: I am going to the convenience store.
-      nextNodeId: node_neighbor_reply
-      scoreModifiers:
-      - category: ResponseAccuracy
-        value: 10
-        reason: Answered the street greeting naturally
-      grammarTags: []
-      vocabularyTags: []
-    - textJa: "\u99C5\u3078\u884C\u304D\u307E\u3059\u3002"
-      textEn: I am going to the station.
-      nextNodeId: node_neighbor_reply
+    - textJa: "おはようございます。"
+      textEn: "Chào buổi sáng ạ."
+      nextNodeId: n_weather
       scoreModifiers:
       - category: Vocabulary
-        value: 8
-        reason: Practiced destination vocabulary
+        value: 10
+        reason: "Chào đúng buổi sáng bằng cách nói lịch sự おはようございます"
+      grammarTags: []
+      vocabularyTags:
+      - vocab.n5.ohayou_gozaimasu
+    - textJa: "おはよう。"
+      textEn: "Chào."
+      nextNodeId: n_greet_casual
+      scoreModifiers:
+      - category: ResponseAccuracy
+        value: 2
+        reason: "Đúng buổi nhưng おはよう là cách nói thân mật, chưa hợp với hàng xóm"
+      grammarTags: []
+      vocabularyTags:
+      - vocab.n5.ohayou_gozaimasu
+    - textJa: "こんばんは。"
+      textEn: "Chào buổi tối."
+      nextNodeId: n_greet_wrong
+      scoreModifiers:
+      - category: Vocabulary
+        value: -8
+        reason: "Chào sai buổi: こんばんは dùng vào buổi tối, lúc này là buổi sáng"
       grammarTags: []
       vocabularyTags: []
     targetItemId: 
     targetNpcId: 
     targetAreaId: 
-  - id: node_neighbor_reply
+  - id: n_greet_casual
     nodeType: 0
-    nextNodeId: node_street_complete
+    nextNodeId: n_weather
     objectiveIdToComplete: 
     speakerName: Tanaka
     speakerId: npc_neighbor_1
-    textJa: "\u3044\u3044\u3067\u3059\u306D\u3002\u6C17\u3092\u3064\u3051\u3066\u3002"
-    textReading: "\u3044\u3044\u3067\u3059\u306D\u3002\u304D\u3092\u3064\u3051\u3066\u3002"
-    textEn: Nice. Take care.
-    textRomaji: Ii desu ne. Ki o tsukete.
-    textEnglishIpa: "/na\u026As te\u026Ak ke\u0259r/"
+    textJa: "ふふ、「おはよう」は友達に言いますね。近所の人には「おはようございます」ですよ。"
+    textReading: "ふふ、「おはよう」はともだちにいいますね。きんじょのひとには「おはようございます」ですよ。"
+    textEn: "Hì, \"ohayou\" là để nói với bạn bè. Với hàng xóm thì nói \"ohayou gozaimasu\" nhé."
+    textRomaji: "Fufu, \"ohayou\" wa tomodachi ni iimasu ne. Kinjo no hito ni wa \"ohayou gozaimasu\" desu yo."
+    textEnglishIpa: 
+    animationCue: talk
+    voiceClip: {fileID: 0}
+    choices: []
+    targetItemId: 
+    targetNpcId: 
+    targetAreaId: 
+  - id: n_greet_wrong
+    nodeType: 0
+    nextNodeId: n_greet
+    objectiveIdToComplete: 
+    speakerName: Tanaka
+    speakerId: npc_neighbor_1
+    textJa: "「こんばんは」は夜のあいさつですよ。今は朝ですから、もう一度どうぞ。"
+    textReading: "「こんばんは」はよるのあいさつですよ。いまはあさですから、もういちどどうぞ。"
+    textEn: "\"Konbanwa\" là lời chào buổi tối đấy. Bây giờ là buổi sáng nên bạn thử lại nhé."
+    textRomaji: "\"Konbanwa\" wa yoru no aisatsu desu yo. Ima wa asa desu kara, mou ichido douzo."
+    textEnglishIpa: 
+    animationCue: point
+    voiceClip: {fileID: 0}
+    choices: []
+    targetItemId: 
+    targetNpcId: 
+    targetAreaId: 
+  - id: n_weather
+    nodeType: 0
+    nextNodeId: 
+    objectiveIdToComplete: 
+    speakerName: Tanaka
+    speakerId: npc_neighbor_1
+    textJa: "今日は天気がいいですね。"
+    textReading: "きょうはてんきがいいですね。"
+    textEn: "Hôm nay thời tiết đẹp nhỉ."
+    textRomaji: "Kyou wa tenki ga ii desu ne."
+    textEnglishIpa: 
+    animationCue: talk
+    voiceClip: {fileID: 0}
+    choices:
+    - textJa: "そうですね。いい天気ですね。"
+      textEn: "Đúng thế ạ. Thời tiết đẹp thật."
+      nextNodeId: n_where
+      scoreModifiers:
+      - category: Grammar
+        value: 10
+        reason: "Đồng ý tự nhiên bằng そうですね rồi nhắc lại nhận xét"
+      grammarTags:
+      - grammar.n5.sou_desu_ne
+      vocabularyTags:
+      - vocab.n5.tenki
+    - textJa: "はい、天気です。"
+      textEn: "Vâng, là thời tiết."
+      nextNodeId: n_weather_flat
+      scoreModifiers:
+      - category: ResponseAccuracy
+        value: 2
+        reason: "Trả lời được nhưng nghe như đọc lại từ, không tự nhiên (nên dùng そうですね)"
+      grammarTags: []
+      vocabularyTags:
+      - vocab.n5.tenki
+    - textJa: "いいえ、雨です。"
+      textEn: "Không, trời mưa."
+      nextNodeId: n_weather_wrong
+      scoreModifiers:
+      - category: ResponseAccuracy
+        value: -8
+        reason: "Trả lời trái với thực tế: trời đang đẹp, không mưa"
+      grammarTags: []
+      vocabularyTags: []
+    targetItemId: 
+    targetNpcId: 
+    targetAreaId: 
+  - id: n_weather_flat
+    nodeType: 0
+    nextNodeId: n_where
+    objectiveIdToComplete: 
+    speakerName: Tanaka
+    speakerId: npc_neighbor_1
+    textJa: "そうですね。「そうですね」と言うと、自然ですよ。"
+    textReading: "そうですね。「そうですね」というと、しぜんですよ。"
+    textEn: "Đúng vậy. Nói \"sou desu ne\" (đúng thế nhỉ) sẽ tự nhiên hơn đấy."
+    textRomaji: "Sou desu ne. \"Sou desu ne\" to iu to, shizen desu yo."
+    textEnglishIpa: 
+    animationCue: talk
+    voiceClip: {fileID: 0}
+    choices: []
+    targetItemId: 
+    targetNpcId: 
+    targetAreaId: 
+  - id: n_weather_wrong
+    nodeType: 0
+    nextNodeId: n_weather
+    objectiveIdToComplete: 
+    speakerName: Tanaka
+    speakerId: npc_neighbor_1
+    textJa: "え？雨は降っていませんよ。空を見てください。"
+    textReading: "え？あめはふっていませんよ。そらをみてください。"
+    textEn: "Hả? Trời đâu có mưa. Bạn nhìn lên trời xem."
+    textRomaji: "E? Ame wa futte imasen yo. Sora wo mite kudasai."
+    textEnglishIpa: 
+    animationCue: point
+    voiceClip: {fileID: 0}
+    choices: []
+    targetItemId: 
+    targetNpcId: 
+    targetAreaId: 
+  - id: n_where
+    nodeType: 0
+    nextNodeId: 
+    objectiveIdToComplete: obj_greet
+    speakerName: Tanaka
+    speakerId: npc_neighbor_1
+    textJa: "どこへ行きますか。"
+    textReading: "どこへいきますか。"
+    textEn: "Bạn đi đâu đấy?"
+    textRomaji: "Doko e ikimasu ka?"
+    textEnglishIpa: 
+    animationCue: talk
+    voiceClip: {fileID: 0}
+    choices:
+    - textJa: "ひばりコンビニへ行きます。"
+      textEn: "Tôi đi đến cửa hàng tiện lợi Hibari."
+      nextNodeId: n_konbini_nice
+      scoreModifiers:
+      - category: Grammar
+        value: 10
+        reason: "Dùng đúng mẫu 〜へ行きます để nói nơi mình đi đến"
+      grammarTags:
+      - grammar.n5.e_ikimasu
+      vocabularyTags:
+      - vocab.n5.konbini
+    - textJa: "コンビニです。"
+      textEn: "Cửa hàng tiện lợi ạ."
+      nextNodeId: n_where_short
+      scoreModifiers:
+      - category: ResponseAccuracy
+        value: 3
+        reason: "Hiểu ý nhưng chỉ nói tên nơi chốn, chưa thành câu hoàn chỉnh"
+      grammarTags: []
+      vocabularyTags:
+      - vocab.n5.konbini
+    - textJa: "コンビニを行きます。"
+      textEn: "Tôi đi cửa hàng tiện lợi."
+      nextNodeId: n_where_wrong
+      scoreModifiers:
+      - category: Grammar
+        value: -8
+        reason: "Dùng trợ từ を sai: nơi đến của động từ 行きます phải đi với へ (hoặc に)"
+      grammarTags: []
+      vocabularyTags: []
+    targetItemId: 
+    targetNpcId: 
+    targetAreaId: 
+  - id: n_where_short
+    nodeType: 0
+    nextNodeId: n_konbini_nice
+    objectiveIdToComplete: 
+    speakerName: Tanaka
+    speakerId: npc_neighbor_1
+    textJa: "コンビニですか。「コンビニへ行きます」と言うと、分かりやすいですよ。"
+    textReading: "コンビニですか。「コンビニへいきます」というと、わかりやすいですよ。"
+    textEn: "Cửa hàng tiện lợi à. Nói \"konbini e ikimasu\" thì dễ hiểu hơn đấy."
+    textRomaji: "Konbini desu ka. \"Konbini e ikimasu\" to iu to, wakariyasui desu yo."
+    textEnglishIpa: 
+    animationCue: talk
+    voiceClip: {fileID: 0}
+    choices: []
+    targetItemId: 
+    targetNpcId: 
+    targetAreaId: 
+  - id: n_where_wrong
+    nodeType: 0
+    nextNodeId: n_where
+    objectiveIdToComplete: 
+    speakerName: Tanaka
+    speakerId: npc_neighbor_1
+    textJa: "「を」ではなくて、「へ」ですよ。「コンビニへ行きます」。もう一度どうぞ。"
+    textReading: "「を」ではなくて、「へ」ですよ。「コンビニへいきます」。もういちどどうぞ。"
+    textEn: "Không phải \"wo\" mà là \"e\" nhé. \"Konbini e ikimasu\". Bạn nói lại nhé."
+    textRomaji: "\"Wo\" dewa nakute, \"e\" desu yo. \"Konbini e ikimasu\". Mou ichido douzo."
+    textEnglishIpa: 
+    animationCue: point
+    voiceClip: {fileID: 0}
+    choices: []
+    targetItemId: 
+    targetNpcId: 
+    targetAreaId: 
+  - id: n_konbini_nice
+    nodeType: 0
+    nextNodeId: 
+    objectiveIdToComplete: 
+    speakerName: Tanaka
+    speakerId: npc_neighbor_1
+    textJa: "ひばりコンビニですね。でも、この辺ははじめてですよね？"
+    textReading: "ひばりコンビニですね。でも、このへんははじめてですよね？"
+    textEn: "Cửa hàng Hibari nhỉ. Nhưng khu này bạn mới đến lần đầu đúng không?"
+    textRomaji: "Hibari konbini desu ne. Demo, kono hen wa hajimete desu yo ne?"
+    textEnglishIpa: 
+    animationCue: talk
+    voiceClip: {fileID: 0}
+    choices:
+    - textJa: "はい、はじめてです。コンビニはどこですか。"
+      textEn: "Vâng, lần đầu ạ. Cửa hàng tiện lợi ở đâu ạ?"
+      nextNodeId: n_dir_a
+      scoreModifiers:
+      - category: Grammar
+        value: 10
+        reason: "Hỏi vị trí đúng mẫu 〜はどこですか"
+      grammarTags:
+      - grammar.n5.wa_doko_desu_ka
+      vocabularyTags:
+      - vocab.n5.konbini
+      - vocab.n5.hajimete
+    - textJa: "コンビニ、どこ？"
+      textEn: "Cửa hàng tiện lợi, ở đâu?"
+      nextNodeId: n_ask_casual
+      scoreModifiers:
+      - category: ResponseAccuracy
+        value: 2
+        reason: "Hiểu được nhưng quá cộc lốc với người lớn tuổi hơn, thiếu ですか"
+      grammarTags:
+      - grammar.n5.wa_doko_desu_ka
+      vocabularyTags:
+      - vocab.n5.konbini
+    - textJa: "コンビニですか。"
+      textEn: "Là cửa hàng tiện lợi ạ?"
+      nextNodeId: n_ask_wrong
+      scoreModifiers:
+      - category: Grammar
+        value: -8
+        reason: "Câu này chỉ hỏi lại, không hỏi vị trí (muốn hỏi chỗ phải dùng 〜はどこですか)"
+      grammarTags: []
+      vocabularyTags: []
+    targetItemId: 
+    targetNpcId: 
+    targetAreaId: 
+  - id: n_ask_casual
+    nodeType: 0
+    nextNodeId: n_dir_a
+    objectiveIdToComplete: 
+    speakerName: Tanaka
+    speakerId: npc_neighbor_1
+    textJa: "ふふ。「コンビニはどこですか」と言いましょう。ていねいですよ。"
+    textReading: "ふふ。「コンビニはどこですか」といいましょう。ていねいですよ。"
+    textEn: "Hì. Mình nói \"konbini wa doko desu ka\" nhé, như vậy lịch sự hơn."
+    textRomaji: "Fufu. \"Konbini wa doko desu ka\" to iimashou. Teinei desu yo."
+    textEnglishIpa: 
+    animationCue: talk
+    voiceClip: {fileID: 0}
+    choices: []
+    targetItemId: 
+    targetNpcId: 
+    targetAreaId: 
+  - id: n_ask_wrong
+    nodeType: 0
+    nextNodeId: n_konbini_nice
+    objectiveIdToComplete: 
+    speakerName: Tanaka
+    speakerId: npc_neighbor_1
+    textJa: "え？私が聞いていますよ。場所を聞くときは、「〜はどこですか」です。もう一度どうぞ。"
+    textReading: "え？わたしがきいていますよ。ばしょをきくときは、「〜はどこですか」です。もういちどどうぞ。"
+    textEn: "Hả? Tôi đang hỏi bạn mà. Khi hỏi chỗ thì nói \"~ wa doko desu ka\". Bạn thử lại nhé."
+    textRomaji: "E? Watashi ga kiite imasu yo. Basho wo kiku toki wa, \"~ wa doko desu ka\" desu. Mou ichido douzo."
+    textEnglishIpa: 
+    animationCue: point
+    voiceClip: {fileID: 0}
+    choices: []
+    targetItemId: 
+    targetNpcId: 
+    targetAreaId: 
+  - id: n_dir_a
+    nodeType: 0
+    nextNodeId: n_dir_b
+    objectiveIdToComplete: 
+    speakerName: Tanaka
+    speakerId: npc_neighbor_1
+    textJa: "この道を、まっすぐ行ってください。"
+    textReading: "このみちを、まっすぐいってください。"
+    textEn: "Bạn cứ đi thẳng con đường này nhé."
+    textRomaji: "Kono michi wo, massugu itte kudasai."
+    textEnglishIpa: 
+    animationCue: point
+    voiceClip: {fileID: 0}
+    choices: []
+    targetItemId: 
+    targetNpcId: 
+    targetAreaId: 
+  - id: n_dir_b
+    nodeType: 0
+    nextNodeId: n_dir_check
+    objectiveIdToComplete: 
+    speakerName: Tanaka
+    speakerId: npc_neighbor_1
+    textJa: "そして、次の角を右です。赤い屋根の店ですよ。"
+    textReading: "そして、つぎのかどをみぎです。あかいやねのみせですよ。"
+    textEn: "Sau đó, đến góc tiếp theo thì rẽ phải. Đó là cửa hàng có mái nhà màu đỏ."
+    textRomaji: "Soshite, tsugi no kado wo migi desu. Akai yane no mise desu yo."
+    textEnglishIpa: 
+    animationCue: point
+    voiceClip: {fileID: 0}
+    choices: []
+    targetItemId: 
+    targetNpcId: 
+    targetAreaId: 
+  - id: n_dir_check
+    nodeType: 0
+    nextNodeId: 
+    objectiveIdToComplete: 
+    speakerName: Tanaka
+    speakerId: npc_neighbor_1
+    textJa: "分かりましたか。ひばりコンビニは、どこですか。"
+    textReading: "わかりましたか。ひばりコンビニは、どこですか。"
+    textEn: "Bạn hiểu chưa? Cửa hàng Hibari ở đâu nào?"
+    textRomaji: "Wakarimashita ka. Hibari konbini wa, doko desu ka?"
+    textEnglishIpa: 
+    animationCue: talk
+    voiceClip: {fileID: 0}
+    choices:
+    - textJa: "まっすぐ行って、右ですね。"
+      textEn: "Đi thẳng rồi rẽ phải, đúng không ạ."
+      nextNodeId: n_dir_right
+      scoreModifiers:
+      - category: Vocabulary
+        value: 10
+        reason: "Nhắc lại đúng chỉ đường: まっすぐ (đi thẳng) và 右 (phải)"
+      grammarTags:
+      - grammar.n5.wa_doko_desu_ka
+      vocabularyTags:
+      - vocab.n5.massugu
+      - vocab.n5.migi
+    - textJa: "すみません、もう一度お願いします。"
+      textEn: "Xin lỗi, phiền bạn nói lại một lần nữa ạ."
+      nextNodeId: n_dir_repeat
+      scoreModifiers:
+      - category: ResponseAccuracy
+        value: 8
+        reason: "Biết xin nghe lại lịch sự khi chưa hiểu rõ"
+      grammarTags: []
+      vocabularyTags:
+      - vocab.n5.sumimasen
+    - textJa: "分かりません。"
+      textEn: "Tôi không hiểu."
+      nextNodeId: n_dir_repeat
+      scoreModifiers:
+      - category: ResponseAccuracy
+        value: 2
+        reason: "Nói thật là chưa hiểu nhưng thiếu すみません và もう一度 nên hơi cộc"
+      grammarTags: []
+      vocabularyTags:
+      - vocab.n5.wakarimasen
+    - textJa: "まっすぐ行って、左ですね。"
+      textEn: "Đi thẳng rồi rẽ trái, đúng không ạ."
+      nextNodeId: n_dir_wrong
+      scoreModifiers:
+      - category: Vocabulary
+        value: -8
+        reason: "Nhầm hướng: 左 (trái) trong khi chỉ đường là 右 (phải)"
+      grammarTags: []
+      vocabularyTags:
+      - vocab.n5.hidari
+    targetItemId: 
+    targetNpcId: 
+    targetAreaId: 
+  - id: n_dir_repeat
+    nodeType: 0
+    nextNodeId: n_dir_check
+    objectiveIdToComplete: 
+    speakerName: Tanaka
+    speakerId: npc_neighbor_1
+    textJa: "はい。ゆっくり言いますね。まっすぐ。…そして、右です。"
+    textReading: "はい。ゆっくりいいますね。まっすぐ。…そして、みぎです。"
+    textEn: "Vâng. Tôi nói chậm nhé. Đi thẳng... rồi rẽ phải."
+    textRomaji: "Hai. Yukkuri iimasu ne. Massugu. ...Soshite, migi desu."
+    textEnglishIpa: 
+    animationCue: point
+    voiceClip: {fileID: 0}
+    choices: []
+    targetItemId: 
+    targetNpcId: 
+    targetAreaId: 
+  - id: n_dir_wrong
+    nodeType: 0
+    nextNodeId: n_dir_check
+    objectiveIdToComplete: 
+    speakerName: Tanaka
+    speakerId: npc_neighbor_1
+    textJa: "左ではありませんよ。右です。お箸を持つ手のほうですね。"
+    textReading: "ひだりではありませんよ。みぎです。おはしをもつてのほうですね。"
+    textEn: "Không phải bên trái đâu. Là bên phải nhé, phía tay cầm đũa."
+    textRomaji: "Hidari dewa arimasen yo. Migi desu. Ohashi wo motsu te no hou desu ne."
+    textEnglishIpa: 
+    animationCue: point
+    voiceClip: {fileID: 0}
+    choices: []
+    targetItemId: 
+    targetNpcId: 
+    targetAreaId: 
+  - id: n_dir_right
+    nodeType: 0
+    nextNodeId: n_thanks
+    objectiveIdToComplete: obj_ask_way
+    speakerName: Tanaka
+    speakerId: npc_neighbor_1
+    textJa: "そうです！よくできました。"
+    textReading: "そうです！よくできました。"
+    textEn: "Đúng rồi! Bạn làm tốt lắm."
+    textRomaji: "Sou desu! Yoku dekimashita."
+    textEnglishIpa: 
     animationCue: bow
     voiceClip: {fileID: 0}
     choices: []
     targetItemId: 
     targetNpcId: 
     targetAreaId: 
-  - id: node_street_complete
+  - id: n_thanks
+    nodeType: 0
+    nextNodeId: 
+    objectiveIdToComplete: 
+    speakerName: Tanaka
+    speakerId: npc_neighbor_1
+    textJa: "ひばりコンビニは、おにぎりがおいしいですよ。"
+    textReading: "ひばりコンビニは、おにぎりがおいしいですよ。"
+    textEn: "Cửa hàng Hibari có onigiri rất ngon đấy."
+    textRomaji: "Hibari konbini wa, onigiri ga oishii desu yo."
+    textEnglishIpa: 
+    animationCue: talk
+    voiceClip: {fileID: 0}
+    choices:
+    - textJa: "ありがとうございます。"
+      textEn: "Cảm ơn bạn ạ."
+      nextNodeId: n_farewell
+      scoreModifiers:
+      - category: Vocabulary
+        value: 10
+        reason: "Cảm ơn đầy đủ và lịch sự sau khi được chỉ đường"
+      grammarTags: []
+      vocabularyTags:
+      - vocab.n5.arigatou_gozaimasu
+    - textJa: "どうも。"
+      textEn: "Cảm ơn."
+      nextNodeId: n_thanks_casual
+      scoreModifiers:
+      - category: ResponseAccuracy
+        value: 3
+        reason: "Cảm ơn ngắn gọn, với hàng xóm nên nói ありがとうございます"
+      grammarTags: []
+      vocabularyTags:
+      - vocab.n5.arigatou_gozaimasu
+    - textJa: "さようなら。"
+      textEn: "Tạm biệt."
+      nextNodeId: n_thanks_wrong
+      scoreModifiers:
+      - category: ResponseAccuracy
+        value: -8
+        reason: "Chào tạm biệt mà quên cảm ơn; さようなら còn nghe như chia tay lâu dài"
+      grammarTags: []
+      vocabularyTags: []
+    targetItemId: 
+    targetNpcId: 
+    targetAreaId: 
+  - id: n_thanks_casual
+    nodeType: 0
+    nextNodeId: n_farewell
+    objectiveIdToComplete: 
+    speakerName: Tanaka
+    speakerId: npc_neighbor_1
+    textJa: "いえいえ。近所の人には「ありがとうございます」がていねいですよ。"
+    textReading: "いえいえ。きんじょのひとには「ありがとうございます」がていねいですよ。"
+    textEn: "Không có gì. Với hàng xóm thì \"arigatou gozaimasu\" sẽ lịch sự hơn."
+    textRomaji: "Ie ie. Kinjo no hito ni wa \"arigatou gozaimasu\" ga teinei desu yo."
+    textEnglishIpa: 
+    animationCue: talk
+    voiceClip: {fileID: 0}
+    choices: []
+    targetItemId: 
+    targetNpcId: 
+    targetAreaId: 
+  - id: n_thanks_wrong
+    nodeType: 0
+    nextNodeId: n_thanks
+    objectiveIdToComplete: 
+    speakerName: Tanaka
+    speakerId: npc_neighbor_1
+    textJa: "「さようなら」はちょっとさびしいですよ。まず「ありがとうございます」ですね。"
+    textReading: "「さようなら」はちょっとさびしいですよ。まず「ありがとうございます」ですね。"
+    textEn: "\"Sayounara\" nghe hơi buồn đấy. Trước hết hãy nói \"arigatou gozaimasu\" nhé."
+    textRomaji: "\"Sayounara\" wa chotto sabishii desu yo. Mazu \"arigatou gozaimasu\" desu ne."
+    textEnglishIpa: 
+    animationCue: point
+    voiceClip: {fileID: 0}
+    choices: []
+    targetItemId: 
+    targetNpcId: 
+    targetAreaId: 
+  - id: n_farewell
+    nodeType: 0
+    nextNodeId: 
+    objectiveIdToComplete: 
+    speakerName: Tanaka
+    speakerId: npc_neighbor_1
+    textJa: "気をつけて。行ってらっしゃい。"
+    textReading: "きをつけて。いってらっしゃい。"
+    textEn: "Đi cẩn thận nhé. Chúc bạn đi vui vẻ."
+    textRomaji: "Ki wo tsukete. Itterasshai."
+    textEnglishIpa: 
+    animationCue: talk
+    voiceClip: {fileID: 0}
+    choices:
+    - textJa: "失礼します。"
+      textEn: "Tôi xin phép đi ạ."
+      nextNodeId: n_practice
+      scoreModifiers:
+      - category: Vocabulary
+        value: 10
+        reason: "Chào tạm biệt lịch sự khi rời đi bằng 失礼します"
+      grammarTags: []
+      vocabularyTags:
+      - vocab.n5.shitsurei_shimasu
+    - textJa: "じゃあね。"
+      textEn: "Hẹn gặp lại nhé."
+      nextNodeId: n_farewell_casual
+      scoreModifiers:
+      - category: ResponseAccuracy
+        value: 2
+        reason: "Cách nói thân mật với bạn bè, chưa hợp với hàng xóm lớn tuổi hơn"
+      grammarTags: []
+      vocabularyTags:
+      - vocab.n5.jaa_ne
+    - textJa: "こんにちは。"
+      textEn: "Xin chào."
+      nextNodeId: n_farewell_wrong
+      scoreModifiers:
+      - category: Vocabulary
+        value: -8
+        reason: "Chào hỏi khi đang rời đi: こんにちは là lời chào gặp mặt, không phải lời tạm biệt"
+      grammarTags: []
+      vocabularyTags: []
+    targetItemId: 
+    targetNpcId: 
+    targetAreaId: 
+  - id: n_farewell_casual
+    nodeType: 0
+    nextNodeId: n_practice
+    objectiveIdToComplete: 
+    speakerName: Tanaka
+    speakerId: npc_neighbor_1
+    textJa: "ふふ、「じゃあね」は友達に言いますね。「失礼します」がていねいですよ。"
+    textReading: "ふふ、「じゃあね」はともだちにいいますね。「しつれいします」がていねいですよ。"
+    textEn: "Hì, \"jaa ne\" là nói với bạn bè. \"Shitsurei shimasu\" mới lịch sự."
+    textRomaji: "Fufu, \"jaa ne\" wa tomodachi ni iimasu ne. \"Shitsurei shimasu\" ga teinei desu yo."
+    textEnglishIpa: 
+    animationCue: talk
+    voiceClip: {fileID: 0}
+    choices: []
+    targetItemId: 
+    targetNpcId: 
+    targetAreaId: 
+  - id: n_farewell_wrong
+    nodeType: 0
+    nextNodeId: n_farewell
+    objectiveIdToComplete: 
+    speakerName: Tanaka
+    speakerId: npc_neighbor_1
+    textJa: "「こんにちは」は会ったときのあいさつですよ。別れるときは、「失礼します」です。"
+    textReading: "「こんにちは」はあったときのあいさつですよ。わかれるときは、「しつれいします」です。"
+    textEn: "\"Konnichiwa\" là lời chào khi gặp mặt. Khi chia tay thì nói \"shitsurei shimasu\"."
+    textRomaji: "\"Konnichiwa\" wa atta toki no aisatsu desu yo. Wakareru toki wa, \"shitsurei shimasu\" desu."
+    textEnglishIpa: 
+    animationCue: point
+    voiceClip: {fileID: 0}
+    choices: []
+    targetItemId: 
+    targetNpcId: 
+    targetAreaId: 
+  - id: n_practice
+    nodeType: 0
+    nextNodeId: n_recap
+    objectiveIdToComplete: 
+    speakerName: 
+    speakerId: 
+    textJa: "ひばりコンビニはどこですか。"
+    textReading: "ひばりコンビニはどこですか。"
+    textEn: "Luyện nói (không bắt buộc): nhấn V rồi nói to câu này để luyện phát âm."
+    textRomaji: "Hibari konbini wa doko desu ka."
+    textEnglishIpa: 
+    animationCue: 
+    voiceClip: {fileID: 0}
+    choices: []
+    targetItemId: 
+    targetNpcId: 
+    targetAreaId: 
+  - id: n_recap
+    nodeType: 0
+    nextNodeId: n_complete
+    objectiveIdToComplete: obj_thank
+    speakerName: 
+    speakerId: 
+    textJa: "今日のポイント：「〜へ行きます」と「〜はどこですか」。"
+    textReading: "きょうのポイント：「〜へいきます」と「〜はどこですか」。"
+    textEn: "Tóm tắt: \"~ e ikimasu\" (đi đến ~) và \"~ wa doko desu ka\" (~ ở đâu?). Từ chỉ đường: massugu (thẳng), migi (phải), hidari (trái). Bây giờ hãy đến cửa hàng Hibari nhé!"
+    textRomaji: "Kyou no pointo: \"~ e ikimasu\" to \"~ wa doko desu ka\"."
+    textEnglishIpa: 
+    animationCue: 
+    voiceClip: {fileID: 0}
+    choices: []
+    targetItemId: 
+    targetNpcId: 
+    targetAreaId: 
+  - id: n_complete
     nodeType: 4
     nextNodeId: 
     objectiveIdToComplete: 

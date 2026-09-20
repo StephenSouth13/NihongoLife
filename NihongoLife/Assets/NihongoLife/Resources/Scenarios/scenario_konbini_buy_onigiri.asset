@@ -19,6 +19,27 @@ MonoBehaviour:
   descriptionJa: おにぎりを買って、レジで会計を済ませましょう。
   descriptionEn: Vào cửa hàng, kiểm tra kệ đồ uống, chọn đúng onigiri và hoàn thành thanh toán tại quầy.
   chapterIndex: 2
+  questType: main
+  giverNpcId: npc_cashier
+  briefingVi: "Bạn đói rồi. Vào ひばりコンビニ, tìm onigiri và nước uống, rồi thanh toán bằng tiếng Nhật."
+  briefingEn: "You are hungry. Go into Hibari Konbini, find an onigiri and a drink, and pay in Japanese."
+  briefingJa: "お腹がすきました。ひばりコンビニでおにぎりと飲み物を探し、日本語でお会計をしましょう。"
+  locationHintVi: "ひばりコンビニ (Sakura-dōri)"
+  locationHintEn: "Hibari Konbini (Sakura-dori)"
+  locationHintJa: "ひばりコンビニ（さくら通り）"
+  rewardYen: 400
+  branchId: main
+  requiredKnowledge: 0
+  requiredScenarioIds:
+  - scenario.school.self_intro
+  unlockScenarioIds:
+  - scenario.house2.lostcat
+  - scenario.house3.garbage
+  - scenario.konbini.evening_shift
+  repeatable: 0
+  supportsCoOp: 0
+  minPlayers: 1
+  maxPlayers: 2
   learningTargets:
   - grammar.n5.wo_kudasai
   - grammar.n5.onegai_shimasu

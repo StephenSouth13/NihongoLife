@@ -19,6 +19,24 @@ MonoBehaviour:
   descriptionJa: 新しい町での生活が始まります。
   descriptionEn: Mở màn — người chơi vừa chuyển đến khu phố Hibari-chō, chuẩn bị bắt đầu cuộc sống mới.
   chapterIndex: 0
+  questType: main
+  giverNpcId: ""
+  briefingVi: "Bạn vừa đến Hibari-chō với tư cách du học sinh. Hãy bước ra phố và làm quen với nơi mình sẽ sống."
+  briefingEn: "You have just arrived in Hibari-cho as an international student. Step out and get to know your new neighbourhood."
+  briefingJa: "留学生としてひばり町に着きました。外に出て、これから住む町に慣れましょう。"
+  locationHintVi: "Sakura-dōri (con phố chính của khu phố)"
+  locationHintEn: "Sakura-dori (the main street)"
+  locationHintJa: "さくら通り"
+  rewardYen: 0
+  branchId: main
+  requiredKnowledge: 0
+  requiredScenarioIds: []
+  unlockScenarioIds:
+  - scenario.street.first_talk
+  repeatable: 0
+  supportsCoOp: 0
+  minPlayers: 1
+  maxPlayers: 2
   learningTargets: []
   objectives: []
   nodes:

@@ -19,6 +19,25 @@ MonoBehaviour:
   descriptionJa: "\u8FD1\u6240\u306E\u4EBA\u304C\u732B\u3092\u63A2\u3057\u3066\u3044\u307E\u3059\u3002\u624B\u4F1D\u3063\u3066\u3042\u3052\u307E\u3057\u3087\u3046\u3002"
   descriptionEn: A neighbor is looking for their cat. Let's help them.
   chapterIndex: 3
+  questType: community
+  giverNpcId: npc_neighbor_2
+  briefingVi: "Suzuki lo lắng vì chú mèo bị lạc. Hãy hỏi thăm và nghe cô ấy tả con mèo bằng tiếng Nhật."
+  briefingEn: "Suzuki is worried about her lost cat. Ask about it and listen to her describe the cat in Japanese."
+  briefingJa: "鈴木さんは迷子の猫を心配しています。声をかけて、猫の特徴を日本語で聞きましょう。"
+  locationHintVi: "Nhà Suzuki"
+  locationHintEn: "Suzuki's house"
+  locationHintJa: "鈴木さんの家"
+  rewardYen: 300
+  branchId: community
+  requiredKnowledge: 40
+  requiredScenarioIds:
+  - scenario.konbini.buy_onigiri
+  unlockScenarioIds:
+  - scenario.neighborhood.cat_followup
+  repeatable: 0
+  supportsCoOp: 0
+  minPlayers: 1
+  maxPlayers: 2
   learningTargets: []
   objectives:
   - id: obj_ask_neighbor

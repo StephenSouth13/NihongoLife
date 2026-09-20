@@ -14,7 +14,9 @@ namespace NihongoLife.Scenario
         GoToArea,
         Complete,
         Fail,
-        TalkToNPC
+        TalkToNPC,
+        /// <summary>Invisible router: goes to flagJumpNodeId when flagCondition holds, otherwise to nextNodeId.</summary>
+        Branch
     }
 
     [Serializable]
@@ -43,6 +45,9 @@ namespace NihongoLife.Scenario
         public List<ScoreEventModifier> scoreModifiers = new List<ScoreEventModifier>();
         public List<string> grammarTags = new List<string>();
         public List<string> vocabularyTags = new List<string>();
+
+        [Tooltip("Story flags stored when this answer is chosen (see StoryFlags). Later quests can react to them.")]
+        public List<string> setFlags = new List<string>();
     }
 
     [Serializable]
@@ -77,6 +82,11 @@ namespace NihongoLife.Scenario
         public string animationCue;
         public AudioClip voiceClip;
         public List<DialogueChoice> choices = new List<DialogueChoice>();
+
+        [Header("Branch Node Config (nodeType = Branch)")]
+        [Tooltip("Comma-separated AND tokens: flag, !flag, done:scenarioId, !done:scenarioId")]
+        public string flagCondition;
+        public string flagJumpNodeId;
 
         [Header("Interact/Collect/Area Node Config")]
         public string targetItemId; // ID of item to collect/inspect

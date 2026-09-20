@@ -146,6 +146,15 @@ namespace NihongoLife.Scenario
                 return;
             }
 
+            if (nextNode.nodeType == ScenarioNodeType.Branch)
+            {
+                bool jump = StoryFlags.Evaluate(nextNode.flagCondition);
+                string target = jump ? nextNode.flagJumpNodeId : nextNode.nextNodeId;
+                Debug.Log($"[ScenarioManager] Branch '{nextNode.id}' ({nextNode.flagCondition}) -> {jump} -> {target}");
+                TransitionToNode(target);
+                return;
+            }
+
             _currentNode = nextNode;
             Debug.Log($"[ScenarioManager] Transitioning to Node: {_currentNode.id} (Type: {_currentNode.nodeType})");
 

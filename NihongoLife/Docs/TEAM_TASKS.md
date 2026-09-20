@@ -262,6 +262,18 @@ Chủ dự án xác nhận: đã bước vào bên trong konbini thật (không 
 
 **Ranh giới**: không sửa nội dung tiếng Nhật trong scenario; không đổi `speakerId`/tên khu vực đã dùng trong scenario (nếu cần đổi thì báo Claude).
 
+## TASK-J (Codex) — Kiểm chứng khung nhiệm vụ và co-op online (xem `Docs/QUEST_AND_ONLINE_PLAN.md`)
+
+**Đã có (check-first)**: trường quest mới trong `ScenarioDefinition` (đã điền cho cả 14 quest), thưởng tiền khi hoàn thành (`ScenarioManager`), nhật ký nhiệm vụ `QuestLogPopup` (phím J, gắn trong `HUDUI.EnsureQuestLog`), quest `street.first_talk` viết lại 28 node, `CoopScenarioController` được tạo khi có phiên co-op (`CoopScenarioController.EnsureFor`), lượt chọn luân phiên (host trước), `CoopLobbyUI` tự chọn quest co-op.
+
+**Việc cần làm (không tạo scene mới, không thêm menu Editor)**
+1. Play Mode: mở J ở gameplay (không mở được lúc đang hội thoại), 3 tab, Bắt đầu nhiệm vụ / Chỉ đường, đóng bằng J/ESC/X, nhân vật không kẹt khoá di chuyển, con trỏ trở lại đúng.
+2. Chơi hết `street.first_talk` (28 node: chọn đúng, kém, sai → sửa → thử lại), kiểm tra mục tiêu đổi trạng thái, luyện nói (V) ở node `n_practice`, màn kết quả hiện `+kiến thức` và `+¥200`, nhật ký chuyển quest sang tab Đã xong.
+3. Online: chờ bạn bật Anonymous Sign-Ins (Supabase Dashboard). Sau đó thử 2 bản chạy: tạo phòng ở máy A, vào phòng ở máy B, bắt đầu `school.self_intro`; kiểm tra node đồng bộ, lượt (chip "Đến lượt bạn"), người không có lượt bấm chọn thì không có tác dụng, node không bị chuyển lặp, kết thúc phiên trở lại solo.
+4. Sửa hoặc ghi lại lỗi; nếu cần đổi giao thức broadcast thì báo Claude trước.
+
+**Ranh giới**: không sửa nội dung tiếng Nhật/Việt trong scenario; không đổi tên field serialized mới của `ScenarioDefinition`; không thêm bảng Supabase mới khi chưa báo.
+
 ## Việc của Claude (song song, không chờ Codex/Antigravity)
 
 - Đang xác nhận với chủ dự án về việc tạo Supabase project riêng cho NihongoLife (tài khoản hiện chỉ có 1 project không liên quan tên `hrm_crm`) — sau khi có project sẽ tạo 8 bảng + RLS rồi điền vào `GameControlDatabase`.

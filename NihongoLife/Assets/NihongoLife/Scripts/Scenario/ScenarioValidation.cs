@@ -170,6 +170,19 @@ namespace NihongoLife.Scenario
                 result.AddError($"Scenario '{scenarioId}' node '{node.id}' points to missing nextNodeId '{node.nextNodeId}'.");
             }
 
+            if (node.nodeType == ScenarioNodeType.Branch)
+            {
+                if (string.IsNullOrWhiteSpace(node.flagJumpNodeId) || !nodeIds.Contains(node.flagJumpNodeId))
+                {
+                    result.AddError($"Scenario '{scenarioId}' branch node '{node.id}' has missing flagJumpNodeId '{node.flagJumpNodeId}'.");
+                }
+
+                if (string.IsNullOrWhiteSpace(node.nextNodeId))
+                {
+                    result.AddError($"Scenario '{scenarioId}' branch node '{node.id}' needs a nextNodeId for the case where the condition is false.");
+                }
+            }
+
             if (!string.IsNullOrWhiteSpace(node.objectiveIdToComplete) && !objectiveIds.Contains(node.objectiveIdToComplete))
             {
                 result.AddError($"Scenario '{scenarioId}' node '{node.id}' references missing objective '{node.objectiveIdToComplete}'.");
@@ -257,6 +270,7 @@ namespace NihongoLife.Scenario
                 }
 
                 EnqueueIfValid(node.nextNodeId, nodeIds, pending);
+                EnqueueIfValid(node.flagJumpNodeId, nodeIds, pending);
 
                 if (node.choices == null)
                 {

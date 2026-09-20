@@ -14,7 +14,7 @@ namespace NihongoLife.Scenario
 
         private static ScenarioDefinition CreateCatFollowUp()
         {
-            var scenario = Create("scenario.neighborhood.cat_followup", 4,
+            var scenario = Create("scenario.neighborhood.cat_followup", 3,
                 "猫の手がかり", "Manh mối về chú mèo",
                 "鈴木さんに新しい手がかりを伝えましょう。", "Báo cho Suzuki manh mối mới và luyện cách mô tả vị trí.");
             scenario.learningTargets.AddRange(new[] { "grammar.n5.te_imashita", "grammar.n5.no_soba", "vocab.n5.direction" });
@@ -45,13 +45,16 @@ namespace NihongoLife.Scenario
                 "助かりました。一緒に探してくれて、ありがとうございます。", "Bạn giúp tôi nhiều lắm. Cảm ơn vì đã cùng tìm.", "Tasukarimashita. Issho ni sagashite kurete, arigatou gozaimasu.",
                 "node_complete", "obj_report_cat_clue"));
             scenario.nodes.Add(Complete());
+            ApplyQuest(scenario, "community", "npc_neighbor_2", 400, 50, new[] { "scenario.house2.lostcat" }, new[] { "scenario.town.summer_festival" },
+                "Bạn thấy manh mối về chú mèo. Báo cho Suzuki và tả vị trí bằng tiếng Nhật.", "You spotted a clue about the cat. Tell Suzuki and describe the place in Japanese.", "猫の手がかりを見つけました。鈴木さんに伝え、場所を日本語で説明しましょう。",
+                "Nhà Suzuki", "Suzuki's house", "鈴木さんの家");
             scenario.startNodeId = "node_find_suzuki";
             return scenario;
         }
 
         private static ScenarioDefinition CreateRecyclingMorning()
         {
-            var scenario = Create("scenario.neighborhood.recycling_morning", 5,
+            var scenario = Create("scenario.neighborhood.recycling_morning", 3,
                 "資源ごみの朝", "Buổi sáng phân loại rác",
                 "佐藤さんと資源ごみの分け方を確認しましょう。", "Cùng Sato kiểm tra cách phân loại rác tái chế trong khu phố.");
             scenario.learningTargets.AddRange(new[] { "grammar.n5.te_kudasai", "grammar.n5.nakereba_naranai", "vocab.n5.recycling" });
@@ -82,13 +85,16 @@ namespace NihongoLife.Scenario
                 "完璧です。これで町をきれいにできますね。", "Hoàn hảo. Vậy là chúng ta có thể giữ khu phố sạch đẹp.", "Kanpeki desu. Kore de machi o kirei ni dekimasu ne.",
                 "node_complete", "obj_learn_recycling"));
             scenario.nodes.Add(Complete());
+            ApplyQuest(scenario, "community", "npc_neighbor_3", 300, 50, new[] { "scenario.house3.garbage" }, new[] { "scenario.town.summer_festival" },
+                "Sáng thứ hai là ngày thu gom rác tái chế. Phân loại đúng và hỏi Sato khi chưa chắc.", "Monday morning is recycling day. Sort correctly and ask Sato when you are unsure.", "月曜の朝はリサイクルの日。正しく分別し、迷ったら佐藤さんに聞きましょう。",
+                "Điểm tập kết rác gần nhà Sato", "The collection point near Sato's house", "佐藤さんの家の近くのゴミ置き場");
             scenario.startNodeId = "node_find_sato";
             return scenario;
         }
 
         private static ScenarioDefinition CreateStoreEveningShift()
         {
-            var scenario = Create("scenario.konbini.evening_shift", 6,
+            var scenario = Create("scenario.konbini.evening_shift", 3,
                 "コンビニの夕方シフト", "Ca tối ở cửa hàng tiện lợi",
                 "伊藤さんを手伝って、商品と接客表現を確認しましょう。", "Giúp Ito kiểm tra hàng hóa và luyện cách phục vụ khách vào ca tối.");
             scenario.learningTargets.AddRange(new[] { "grammar.n5.mada_arimasu", "grammar.n5.hou_ga_ii", "vocab.n5.customer_service" });
@@ -126,8 +132,30 @@ namespace NihongoLife.Scenario
                 "よくできました。夕方の準備は完了です。", "Làm tốt lắm. Việc chuẩn bị ca tối đã hoàn tất.", "Yoku dekimashita. Yuugata no junbi wa kanryou desu.",
                 "node_complete", "obj_help_cashier"));
             scenario.nodes.Add(Complete());
+            ApplyQuest(scenario, "career", "npc_cashier", 1200, 50, new[] { "scenario.konbini.buy_onigiri" }, new string[0],
+                "Ito nhờ bạn phụ ca tối ở cửa hàng. Học cách nói với khách khi hết hàng và gợi ý món khác.", "Ito asks you to help with the evening shift. Learn what to say when an item is out of stock and how to suggest another.", "伊藤さんに夜のシフトを頼まれました。品切れのときの言い方と、別の商品のすすめ方を学びます。",
+                "ひばりコンビニ", "Hibari Konbini", "ひばりコンビニ");
             scenario.startNodeId = "node_find_ito";
             return scenario;
+        }
+
+        private static void ApplyQuest(ScenarioDefinition scenario, string questType, string giverNpcId, int rewardYen, int requiredKnowledge,
+            string[] requiredScenarioIds, string[] unlockScenarioIds, string briefingVi, string briefingEn, string briefingJa,
+            string locationVi, string locationEn, string locationJa)
+        {
+            scenario.questType = questType;
+            scenario.giverNpcId = giverNpcId;
+            scenario.rewardYen = rewardYen;
+            scenario.requiredKnowledge = requiredKnowledge;
+            scenario.requiredScenarioIds = new List<string>(requiredScenarioIds);
+            scenario.unlockScenarioIds = new List<string>(unlockScenarioIds);
+            scenario.branchId = questType == "career" ? "career.retail" : questType;
+            scenario.briefingVi = briefingVi;
+            scenario.briefingEn = briefingEn;
+            scenario.briefingJa = briefingJa;
+            scenario.locationHintVi = locationVi;
+            scenario.locationHintEn = locationEn;
+            scenario.locationHintJa = locationJa;
         }
 
         private static ScenarioDefinition Create(string id, int chapter, string titleJa, string titleEn, string descriptionJa, string descriptionEn)

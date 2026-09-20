@@ -220,6 +220,9 @@ namespace NihongoLife.Dialogue
                 }
             }
 
+            // 3. Story memory
+            StoryFlags.SetAll(selectedChoice.setFlags);
+
             // 4. Co-op: broadcast choice to partner
             if (IsCoopMode)
             {
@@ -265,6 +268,7 @@ namespace NihongoLife.Dialogue
             if (_currentNode != null && _currentNode.choices != null && choiceIndex >= 0 && choiceIndex < _currentNode.choices.Count)
             {
                 var choice = _currentNode.choices[choiceIndex];
+                StoryFlags.SetAll(choice.setFlags);
 
                 PlaySelectSound();
                 string nextNodeId = choice.nextNodeId;

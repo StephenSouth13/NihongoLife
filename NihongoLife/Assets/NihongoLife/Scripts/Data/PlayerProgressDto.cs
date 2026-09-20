@@ -58,6 +58,7 @@ namespace NihongoLife.Data
         public BusinessRecord business = new BusinessRecord();
         
         public List<string> completedScenarios = new List<string>();
+        public List<string> storyFlags = new List<string>();
         public List<ScenarioScoreRecord> bestScores = new List<ScenarioScoreRecord>();
         public List<MasteryRecord> masteryLevels = new List<MasteryRecord>();
         public List<CareerRecord> careers = new List<CareerRecord>();

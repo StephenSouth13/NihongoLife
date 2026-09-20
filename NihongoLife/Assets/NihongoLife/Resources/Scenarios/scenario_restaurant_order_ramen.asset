@@ -19,6 +19,25 @@ MonoBehaviour:
   descriptionJa: 田中さんに紹介されたラーメン屋で注文してみましょう。
   descriptionEn: Tanaka giới thiệu một quán ramen quen. Hãy gọi món, chọn thêm topping và thanh toán.
   chapterIndex: 3
+  questType: side
+  giverNpcId: npc_neighbor_1
+  briefingVi: "Tanaka dẫn bạn tới quán ramen của ông Yamada. Gọi món và trả tiền theo cách khác với nhà hàng sushi."
+  briefingEn: "Tanaka takes you to Mr. Yamada's ramen shop. Order and pay in a more casual way than at the sushi restaurant."
+  briefingJa: "田中さんが山田さんのラーメン店に案内してくれます。寿司店よりカジュアルな注文と支払いを学びます。"
+  locationHintVi: "やまだ食堂 (quán ramen)"
+  locationHintEn: "Yamada Shokudo (ramen shop)"
+  locationHintJa: "やまだ食堂"
+  rewardYen: 0
+  branchId: side
+  requiredKnowledge: 60
+  requiredScenarioIds:
+  - scenario.konbini.buy_onigiri
+  unlockScenarioIds:
+  - scenario.town.summer_festival
+  repeatable: 0
+  supportsCoOp: 0
+  minPlayers: 1
+  maxPlayers: 2
   learningTargets:
   - grammar.n5.wo_kudasai
   - grammar.n5.mashou_ka
