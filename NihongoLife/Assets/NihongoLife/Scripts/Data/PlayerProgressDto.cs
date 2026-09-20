@@ -27,6 +27,11 @@ namespace NihongoLife.Data
         public int xp = 0;
         public int level = 1;
         public int currentChapter = 1;
+        public float health = 100f;
+        public float energy = 100f;
+        public float hunger = 100f;
+        public float thirst = 100f;
+        public int knowledge = 0;
         
         public List<string> completedScenarios = new List<string>();
         public List<ScenarioScoreRecord> bestScores = new List<ScenarioScoreRecord>();

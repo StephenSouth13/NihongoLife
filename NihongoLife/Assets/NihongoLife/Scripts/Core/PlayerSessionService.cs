@@ -1,0 +1,64 @@
+using System;
+using NihongoLife.Data;
+using UnityEngine;
+
+namespace NihongoLife.Core
+{
+    public enum PlayerSessionMode { Guest, Account }
+
+    public class PlayerSessionService : MonoBehaviour, IGameService
+    {
+        private static PlayerSessionService _instance;
+        private PlayerProgressDto _guestProgress;
+
+        public static PlayerSessionService Instance => _instance;
+        public PlayerSessionMode Mode { get; private set; } = PlayerSessionMode.Guest;
+        public bool CanPersist => Mode == PlayerSessionMode.Account;
+        public PlayerProgressDto GuestProgress => _guestProgress ??= new PlayerProgressDto { playerId = "guest", displayName = "Guest" };
+
+        public event Action<PlayerSessionMode> OnModeChanged;
+
+        public static PlayerSessionService GetOrCreate()
+        {
+            if (_instance != null) return _instance;
+            var existing = FindFirstObjectByType<PlayerSessionService>();
+            if (existing != null) { existing.Initialize(); return existing; }
+            var go = new GameObject("PlayerSessionService");
+            DontDestroyOnLoad(go);
+            var service = go.AddComponent<PlayerSessionService>();
+            service.Initialize();
+            GameServices.Register<PlayerSessionService>(service);
+            return service;
+        }
+
+        public void Initialize()
+        {
+            if (_instance == this) return;
+            _instance = this;
+            Mode = PlayerSessionMode.Guest;
+            _guestProgress = new PlayerProgressDto { playerId = "guest", displayName = "Guest" };
+        }
+
+        public void BeginGuest()
+        {
+            Mode = PlayerSessionMode.Guest;
+            _guestProgress = new PlayerProgressDto { playerId = "guest", displayName = "Guest" };
+            OnModeChanged?.Invoke(Mode);
+        }
+
+        public void BeginAccount(string userId, string displayName)
+        {
+            Mode = PlayerSessionMode.Account;
+            if (!string.IsNullOrWhiteSpace(displayName)) PlayerPrefs.SetString("NihongoLife.PlayerName", displayName.Trim());
+            PlayerPrefs.Save();
+            OnModeChanged?.Invoke(Mode);
+        }
+
+        public void UpdateGuestProgress(PlayerProgressDto progress)
+        {
+            if (Mode == PlayerSessionMode.Guest && progress != null) _guestProgress = progress;
+        }
+
+        private void OnDestroy() { if (_instance == this) _instance = null; }
+    }
+}

@@ -32,6 +32,11 @@ namespace NihongoLife.Core
         private float _gestureTimer;
         private float _phaseOffset;
         private bool _isTalking;
+        private bool _hasSpeed;
+        private bool _hasTalking;
+        private bool _hasBow;
+        private bool _hasPoint;
+        private bool _rigWarningLogged;
 
         private void Awake()
         {
@@ -41,6 +46,7 @@ namespace NihongoLife.Core
             _pointHash = Animator.StringToHash(pointParam);
             _phaseOffset = Random.Range(0f, 10f);
             CacheRig();
+            ValidateAnimator();
         }
 
         private void LateUpdate()
@@ -57,15 +63,17 @@ namespace NihongoLife.Core
             {
                 _animator.applyRootMotion = false;
                 _animator.updateMode = AnimatorUpdateMode.Normal;
+                _animator.cullingMode = AnimatorCullingMode.AlwaysAnimate;
             }
 
             CacheRig();
+            ValidateAnimator();
         }
 
         public void SetSpeed(float speed)
         {
             _currentSpeed = Mathf.Max(0f, speed);
-            if (_animator != null && _animator.gameObject.activeInHierarchy)
+            if (_animator != null && _hasSpeed && _animator.gameObject.activeInHierarchy)
             {
                 float normalizedSpeed = Mathf.Clamp01(_currentSpeed / Mathf.Max(0.01f, fullSpeedReference));
                 _animator.SetFloat(_speedHash, normalizedSpeed, speedDampTime, Time.deltaTime);
@@ -80,7 +88,7 @@ namespace NihongoLife.Core
                 _gestureTimer = Random.Range(0.4f, 1.3f);
             }
 
-            if (_animator != null && _animator.gameObject.activeInHierarchy)
+            if (_animator != null && _hasTalking && _animator.gameObject.activeInHierarchy)
             {
                 _animator.SetBool(_isTalkingHash, isTalking);
             }
@@ -93,7 +101,7 @@ namespace NihongoLife.Core
 
         public void TriggerBow()
         {
-            if (_animator != null && _animator.gameObject.activeInHierarchy)
+            if (_animator != null && _hasBow && _animator.gameObject.activeInHierarchy)
             {
                 _animator.SetTrigger(_bowHash);
             }
@@ -101,7 +109,7 @@ namespace NihongoLife.Core
 
         public void TriggerPoint()
         {
-            if (_animator != null && _animator.gameObject.activeInHierarchy)
+            if (_animator != null && _hasPoint && _animator.gameObject.activeInHierarchy)
             {
                 _animator.SetTrigger(_pointHash);
             }
@@ -109,6 +117,11 @@ namespace NihongoLife.Core
 
         private void CacheRig()
         {
+            if (_animator == null)
+            {
+                _animator = GetComponentInChildren<Animator>(true);
+            }
+
             _visualRoot = _animator != null ? _animator.transform : transform.Find("Visual");
             if (_visualRoot != null)
             {
@@ -120,6 +133,40 @@ namespace NihongoLife.Core
             if (_animator != null && _animator.isHuman)
             {
                 _head = _animator.GetBoneTransform(HumanBodyBones.Head);
+            }
+        }
+
+        private void ValidateAnimator()
+        {
+            _hasSpeed = false;
+            _hasTalking = false;
+            _hasBow = false;
+            _hasPoint = false;
+
+            if (_animator == null || _animator.runtimeAnimatorController == null)
+            {
+                if (!_rigWarningLogged)
+                {
+                    Debug.LogError($"[CharacterAnimation] '{name}' has no usable Animator Controller.", this);
+                    _rigWarningLogged = true;
+                }
+                return;
+            }
+
+            _animator.applyRootMotion = false;
+            _animator.updateMode = AnimatorUpdateMode.Normal;
+            _animator.cullingMode = AnimatorCullingMode.AlwaysAnimate;
+            foreach (AnimatorControllerParameter parameter in _animator.parameters)
+            {
+                if (parameter.nameHash == _speedHash && parameter.type == AnimatorControllerParameterType.Float) _hasSpeed = true;
+                else if (parameter.nameHash == _isTalkingHash && parameter.type == AnimatorControllerParameterType.Bool) _hasTalking = true;
+                else if (parameter.nameHash == _bowHash && parameter.type == AnimatorControllerParameterType.Trigger) _hasBow = true;
+                else if (parameter.nameHash == _pointHash && parameter.type == AnimatorControllerParameterType.Trigger) _hasPoint = true;
+            }
+
+            if (!_hasSpeed || !_hasTalking || !_hasBow || !_hasPoint)
+            {
+                Debug.LogError($"[CharacterAnimation] '{name}' controller is missing one or more required parameters: Speed, IsTalking, Bow, Point.", this);
             }
         }
 
@@ -157,11 +204,11 @@ namespace NihongoLife.Core
             _gestureTimer -= Time.deltaTime;
             if (_gestureTimer > 0f) return;
 
-            if (Random.value > 0.35f)
+            if (_hasPoint && Random.value > 0.35f)
             {
                 TriggerPoint();
             }
-            else
+            else if (_hasBow)
             {
                 TriggerBow();
             }

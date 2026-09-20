@@ -17,6 +17,10 @@ namespace NihongoLife.Save
 
         public PlayerProgressDto GetProgress()
         {
+            if (!PlayerSessionService.GetOrCreate().CanPersist)
+            {
+                return PlayerSessionService.Instance.GuestProgress;
+            }
             if (_cachedProgress == null)
             {
                 LoadFromDisk();
@@ -26,12 +30,22 @@ namespace NihongoLife.Save
 
         public void SaveProgress(PlayerProgressDto progress)
         {
+            if (!PlayerSessionService.GetOrCreate().CanPersist)
+            {
+                PlayerSessionService.Instance.UpdateGuestProgress(progress);
+                return;
+            }
             _cachedProgress = progress;
             SaveToDisk();
         }
 
         public void ResetProgress()
         {
+            if (!PlayerSessionService.GetOrCreate().CanPersist)
+            {
+                PlayerSessionService.Instance.BeginGuest();
+                return;
+            }
             _cachedProgress = new PlayerProgressDto();
             SaveToDisk();
             Debug.Log("[LocalProgressRepository] Progress reset to default.");
@@ -39,6 +53,11 @@ namespace NihongoLife.Save
 
         private void LoadFromDisk()
         {
+            if (!PlayerSessionService.GetOrCreate().CanPersist)
+            {
+                _cachedProgress = PlayerSessionService.Instance.GuestProgress;
+                return;
+            }
             try
             {
                 if (File.Exists(SavePath))

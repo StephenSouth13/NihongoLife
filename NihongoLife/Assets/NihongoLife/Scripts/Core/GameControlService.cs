@@ -31,8 +31,9 @@ namespace NihongoLife.Core
         {
             var orderedIds = new List<string>();
             var seen = new HashSet<string>();
+            bool hasExplicitCampaign = database != null && database.campaignScenarioIds != null && database.campaignScenarioIds.Count > 0;
 
-            if (database != null && database.campaignScenarioIds != null)
+            if (hasExplicitCampaign)
             {
                 foreach (string scenarioId in database.campaignScenarioIds)
                 {
@@ -40,7 +41,7 @@ namespace NihongoLife.Core
                 }
             }
 
-            if (database != null && database.scenarios != null)
+            if (!hasExplicitCampaign && database != null && database.scenarios != null)
             {
                 foreach (ScenarioDefinition scenario in database.scenarios)
                 {
@@ -48,7 +49,7 @@ namespace NihongoLife.Core
                 }
             }
 
-            if (repository != null)
+            if (!hasExplicitCampaign && repository != null)
             {
                 var scenarios = repository.GetAllScenarios();
                 scenarios.RemoveAll(s => s == null || string.IsNullOrEmpty(s.id));

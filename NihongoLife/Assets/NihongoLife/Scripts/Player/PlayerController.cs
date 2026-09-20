@@ -17,6 +17,8 @@ namespace NihongoLife.Player
         [SerializeField] private float acceleration = 12f;
         [SerializeField] private float deceleration = 16f;
         [SerializeField] private float maxFallSpeed = -20f;
+        [SerializeField] private float runEnergyCostPerSecond = 4.5f;
+        [SerializeField] private float jumpHeight = 1.25f;
 
         [Header("Ground Detection")]
         [SerializeField] private Transform groundCheck;
@@ -30,6 +32,7 @@ namespace NihongoLife.Player
         private UnityEngine.Camera _mainCamera;
         private CharacterAnimationController _animationController;
         private Vector3 _smoothedMoveDirection;
+        private GameInputService _input;
 
         public bool InputLocked
         {
@@ -51,6 +54,11 @@ namespace NihongoLife.Player
             _mainCamera = ResolveGameplayCamera();
             _animationController = GetComponent<CharacterAnimationController>();
             PlayableCharacterCatalog.ApplySelectedVisual(gameObject);
+            _input = GameInputService.GetOrCreate();
+            if (GetComponent<PlayerWorldActionController>() == null)
+            {
+                gameObject.AddComponent<PlayerWorldActionController>();
+            }
         }
 
         private void Update()
@@ -60,6 +68,7 @@ namespace NihongoLife.Player
             HandleGroundCheck();
             HandleMovement();
             HandleInteractionInput();
+            HandleActionInput();
         }
 
         private void HandleGroundCheck()
@@ -82,18 +91,12 @@ namespace NihongoLife.Player
 
         private void HandleMovement()
         {
-            // Read new Input System inputs directly
-            Vector2 moveInput = Vector2.zero;
-            bool isRunning = false;
+            Vector2 moveInput = _input != null ? _input.Move : Vector2.zero;
+            bool isRunning = _input != null && _input.IsPressed(GameInputId.Sprint);
 
-            if (Keyboard.current != null)
+            if (isRunning && moveInput.sqrMagnitude > 0.01f && PlayerStatus.Instance != null)
             {
-                if (Keyboard.current.wKey.isPressed || Keyboard.current.upArrowKey.isPressed) moveInput.y += 1f;
-                if (Keyboard.current.sKey.isPressed || Keyboard.current.downArrowKey.isPressed) moveInput.y -= 1f;
-                if (Keyboard.current.aKey.isPressed || Keyboard.current.leftArrowKey.isPressed) moveInput.x -= 1f;
-                if (Keyboard.current.dKey.isPressed || Keyboard.current.rightArrowKey.isPressed) moveInput.x += 1f;
-                
-                isRunning = Keyboard.current.shiftKey.isPressed;
+                isRunning = PlayerStatus.Instance.ConsumeEnergy(runEnergyCostPerSecond * Time.deltaTime);
             }
 
             if (!IsGameplayCamera(_mainCamera))
@@ -126,6 +129,10 @@ namespace NihongoLife.Player
             }
 
             // Apply gravity
+            if (_isGrounded && _input != null && _input.WasPressed(GameInputId.Jump))
+            {
+                _velocity.y = Mathf.Sqrt(jumpHeight * -2f * gravity);
+            }
             _velocity.y = Mathf.Max(_velocity.y + gravity * Time.deltaTime, maxFallSpeed);
             Vector3 finalMove = _smoothedMoveDirection * currentSpeed;
             finalMove.y = _velocity.y;
@@ -139,7 +146,7 @@ namespace NihongoLife.Player
 
         private void HandleInteractionInput()
         {
-            if (Keyboard.current != null && Keyboard.current.eKey.wasPressedThisFrame)
+            if (_input != null && _input.WasPressed(GameInputId.Interact))
             {
                 var detector = GetComponent<InteractionDetector>();
                 if (detector != null)
@@ -147,6 +154,14 @@ namespace NihongoLife.Player
                     detector.TriggerInteraction();
                 }
             }
+        }
+
+        private void HandleActionInput()
+        {
+            var actions = GetComponent<PlayerWorldActionController>();
+            if (actions == null) return;
+            if (_input.WasPressed(GameInputId.Attack)) actions.TryAttack();
+            if (_input.WasPressed(GameInputId.DropItem)) actions.TryDropLastItem();
         }
 
         private static bool IsGameplayCamera(UnityEngine.Camera camera)

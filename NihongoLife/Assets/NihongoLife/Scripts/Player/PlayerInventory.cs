@@ -12,6 +12,7 @@ namespace NihongoLife.Player
         public string displayNameEn;
         public int priceYen;
         public int quantity;
+        public bool isLitter;
     }
 
     public class PlayerInventory : MonoBehaviour
@@ -19,6 +20,8 @@ namespace NihongoLife.Player
         public static PlayerInventory Instance { get; private set; }
 
         [SerializeField] private int startingYen = 1200;
+        [SerializeField, Min(1)] private int maxSlots = 16;
+        [SerializeField, Min(1)] private int maxStackSize = 20;
 
         private readonly List<InventoryEntry> _items = new List<InventoryEntry>();
 
@@ -26,6 +29,10 @@ namespace NihongoLife.Player
 
         public int Yen { get; private set; }
         public IReadOnlyList<InventoryEntry> Items => _items;
+        public int MaxSlots => maxSlots;
+        public int UsedSlots => _items.Count;
+        public int MaxStackSize => maxStackSize;
+        public bool IsFull => UsedSlots >= maxSlots;
 
         private void Awake()
         {
@@ -47,28 +54,32 @@ namespace NihongoLife.Player
             }
         }
 
-        public void AddItem(string itemId, string displayNameJa, string displayNameEn, int priceYen, int quantity = 1)
+        public bool AddItem(string itemId, string displayNameJa, string displayNameEn, int priceYen, int quantity = 1, bool isLitter = false)
         {
-            if (string.IsNullOrWhiteSpace(itemId) || quantity <= 0) return;
+            if (string.IsNullOrWhiteSpace(itemId) || quantity <= 0) return false;
 
             var existing = _items.Find(item => item.itemId == itemId);
             if (existing == null)
             {
+                if (_items.Count >= maxSlots) return false;
                 _items.Add(new InventoryEntry
                 {
                     itemId = itemId,
                     displayNameJa = displayNameJa,
                     displayNameEn = displayNameEn,
                     priceYen = Mathf.Max(0, priceYen),
-                    quantity = quantity
+                    quantity = Mathf.Min(quantity, maxStackSize),
+                    isLitter = isLitter
                 });
             }
             else
             {
-                existing.quantity += quantity;
+                if (existing.quantity >= maxStackSize) return false;
+                existing.quantity = Mathf.Min(existing.quantity + quantity, maxStackSize);
             }
 
             OnInventoryChanged?.Invoke();
+            return true;
         }
 
         public bool HasItem(string itemId, int quantity = 1)
@@ -107,6 +118,18 @@ namespace NihongoLife.Player
             if (amount <= 0) return;
             Yen += amount;
             OnInventoryChanged?.Invoke();
+        }
+
+        public void ApplyFine(int amount)
+        {
+            Yen = Mathf.Max(0, Yen - Mathf.Max(0, amount));
+            OnInventoryChanged?.Invoke();
+        }
+
+        public bool TryGetLastItem(out InventoryEntry entry)
+        {
+            entry = _items.Count > 0 ? _items[_items.Count - 1] : null;
+            return entry != null;
         }
 
         public int GetItemQuantity(string itemId)

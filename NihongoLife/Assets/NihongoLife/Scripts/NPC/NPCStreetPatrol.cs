@@ -12,6 +12,8 @@ namespace NihongoLife.NPC
         [SerializeField] private float turnSpeed = 7f;
         [SerializeField] private float waitSeconds = 1.2f;
         [SerializeField] private bool loop = true;
+        [SerializeField] private float stuckTimeout = 1.4f;
+        [SerializeField] private float minimumProgress = 0.025f;
 
         private NPCController _npc;
         private CharacterAnimationController _animation;
@@ -22,6 +24,8 @@ namespace NihongoLife.NPC
         private Vector3 _smoothVelocity;
         private float _speedPersonality = 1f;
         private float _waitPersonality = 1f;
+        private Vector3 _lastProgressPosition;
+        private float _stuckTimer;
 
         private void Awake()
         {
@@ -38,6 +42,7 @@ namespace NihongoLife.NPC
                 _characterController.radius = 0.32f;
                 _characterController.stepOffset = 0.22f;
             }
+            _lastProgressPosition = transform.position;
         }
 
         private void Update()
@@ -81,6 +86,29 @@ namespace NihongoLife.NPC
             _characterController.Move(_smoothVelocity * Time.deltaTime);
             transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(direction), turnSpeed * Time.deltaTime);
             _animation?.SetSpeed(_smoothVelocity.magnitude);
+            RecoverIfStuck();
+        }
+
+        private void RecoverIfStuck()
+        {
+            Vector3 progress = transform.position - _lastProgressPosition;
+            progress.y = 0f;
+            if (progress.sqrMagnitude >= minimumProgress * minimumProgress)
+            {
+                _lastProgressPosition = transform.position;
+                _stuckTimer = 0f;
+                return;
+            }
+
+            _stuckTimer += Time.deltaTime;
+            if (_stuckTimer < stuckTimeout) return;
+
+            _stuckTimer = 0f;
+            _lastProgressPosition = transform.position;
+            _smoothVelocity = Vector3.zero;
+            AdvanceWaypoint();
+            _waitTimer = 0.2f;
+            Debug.LogWarning($"[NPCStreetPatrol] {name} was blocked and advanced to the next patrol point.", this);
         }
 
         private void FaceCurrentWaypoint(float speed)

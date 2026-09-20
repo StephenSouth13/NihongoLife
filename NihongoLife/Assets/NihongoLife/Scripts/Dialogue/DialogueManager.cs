@@ -94,6 +94,11 @@ namespace NihongoLife.Dialogue
                 configuredClip = configuredVoiceLine != null ? configuredVoiceLine.clip : null;
             }
 
+            if (configuredClip == null)
+            {
+                configuredClip = LoadDropInVoiceClip(node.id);
+            }
+
             if (configuredClip != null)
             {
                 if (GameServices.TryGet(out IAudioService audioService))
@@ -386,6 +391,22 @@ namespace NihongoLife.Dialogue
             }
 
             return string.Empty;
+        }
+
+        private static AudioClip LoadDropInVoiceClip(string nodeId)
+        {
+            if (string.IsNullOrWhiteSpace(nodeId)) return null;
+
+            string languageFolder = "ja";
+            if (GameServices.TryGet(out GameSettingsService settings))
+            {
+                languageFolder = settings.Language == GameLanguage.Vietnamese ? "vi" :
+                    settings.Language == GameLanguage.English ? "en" : "ja";
+            }
+
+            AudioClip clip = Resources.Load<AudioClip>($"Voice/{languageFolder}/{nodeId}");
+            if (clip == null) clip = Resources.Load<AudioClip>($"Voice/{nodeId}");
+            return clip;
         }
 
         private static AudioClip CreateSpeechToneClip(string line)

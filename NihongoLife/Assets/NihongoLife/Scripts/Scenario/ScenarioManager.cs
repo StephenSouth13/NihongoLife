@@ -465,6 +465,11 @@ namespace NihongoLife.Scenario
                 progressRepo.SaveProgress(progress);
             }
 
+            if (success && Player.PlayerStatus.Instance != null)
+            {
+                Player.PlayerStatus.Instance.AddKnowledge(100);
+            }
+
             if (LearningMasteryManager.Instance != null && success)
             {
                 LearningMasteryManager.Instance.UpdateMasteryFromScenario(currentScenario, breakdown);

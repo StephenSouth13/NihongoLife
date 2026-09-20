@@ -33,29 +33,24 @@ namespace NihongoLife.Scenario
             var loaded = Resources.LoadAll<ScenarioDefinition>("Scenarios");
             foreach (var scenario in loaded)
             {
-                if (scenario != null && !string.IsNullOrEmpty(scenario.id))
-                {
-                    var validation = ScenarioValidator.Validate(scenario);
-                    if (validation.HasErrors)
-                    {
-                        Debug.LogError($"[LocalScenarioRepository] Scenario '{scenario.id}' has validation errors:\n{validation.ToLogString()}");
-                    }
-                    else if (validation.Issues.Count > 0)
-                    {
-                        Debug.LogWarning($"[LocalScenarioRepository] Scenario '{scenario.id}' has validation warnings:\n{validation.ToLogString()}");
-                    }
-
-                    if (!_scenarios.ContainsKey(scenario.id))
-                    {
-                        _scenarios.Add(scenario.id, scenario);
-                    }
-                    else
-                    {
-                        Debug.LogWarning($"[LocalScenarioRepository] Duplicate Scenario ID: {scenario.id}");
-                    }
-                }
+                AddScenario(scenario);
             }
+            foreach (var scenario in BuiltInStoryScenarioCatalog.CreateAll()) AddScenario(scenario);
             Debug.Log($"[LocalScenarioRepository] Loaded {_scenarios.Count} scenarios from Resources/Scenarios.");
+        }
+
+        private void AddScenario(ScenarioDefinition scenario)
+        {
+            if (scenario == null || string.IsNullOrEmpty(scenario.id)) return;
+            var validation = ScenarioValidator.Validate(scenario);
+            if (validation.HasErrors)
+            {
+                Debug.LogError($"[LocalScenarioRepository] Scenario '{scenario.id}' has validation errors:\n{validation.ToLogString()}");
+                return;
+            }
+            if (validation.Issues.Count > 0) Debug.LogWarning($"[LocalScenarioRepository] Scenario '{scenario.id}' has validation warnings:\n{validation.ToLogString()}");
+            if (!_scenarios.ContainsKey(scenario.id)) _scenarios.Add(scenario.id, scenario);
+            else Debug.LogWarning($"[LocalScenarioRepository] Duplicate Scenario ID: {scenario.id}");
         }
     }
 }

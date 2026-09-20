@@ -99,7 +99,7 @@ namespace NihongoLife.NPC
             var gemini = FindFirstObjectByType<GeminiConversationService>();
             if (gemini != null && gemini.IsConfigured)
             {
-                gemini.RequestNpcReply(this, "The player walked up and pressed E to talk.",
+                gemini.RequestNpcReply(this, "The player approached and used the interact action to talk.",
                     StartAiDialogue,
                     error =>
                     {
@@ -157,6 +157,19 @@ namespace NihongoLife.NPC
             _lookTarget = null;
             _animation?.SetLookTarget(null);
             SetMovementFrozen(false);
+        }
+
+        public void ReactToAttack(Transform attacker)
+        {
+            StopInteracting();
+            if (attacker != null)
+            {
+                Vector3 away = transform.position - attacker.position;
+                away.y = 0f;
+                if (away.sqrMagnitude > 0.01f) transform.rotation = Quaternion.LookRotation(-away.normalized);
+            }
+            _animation?.SetSpeed(0f);
+            Debug.LogWarning($"[NPCController] {displayName} was attacked. Civic conduct penalty reported.", this);
         }
 
         private void SetMovementFrozen(bool frozen)

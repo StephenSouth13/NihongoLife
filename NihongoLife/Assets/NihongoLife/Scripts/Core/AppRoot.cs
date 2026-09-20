@@ -13,6 +13,8 @@ namespace NihongoLife.Core
         [SerializeField] private AudioService audioService;
         [SerializeField] private SceneFlowController sceneFlowController;
         [SerializeField] private GameSettingsService settingsService;
+        [SerializeField] private GameInputService inputService;
+        [SerializeField] private PlayerSessionService sessionService;
         [SerializeField] private GameControlService controlService;
         [SerializeField] private DayNightCycle dayNightCycle;
         [SerializeField] private ScenarioCampaignManager campaignManager;
@@ -60,6 +62,20 @@ namespace NihongoLife.Core
             }
             GameServices.Register<GameSettingsService>(settingsService);
             settingsService.Initialize();
+
+            if (inputService == null)
+            {
+                inputService = gameObject.AddComponent<GameInputService>();
+            }
+            GameServices.Register<GameInputService>(inputService);
+            inputService.Initialize();
+
+            if (sessionService == null)
+            {
+                sessionService = gameObject.AddComponent<PlayerSessionService>();
+            }
+            GameServices.Register<PlayerSessionService>(sessionService);
+            sessionService.Initialize();
 
             if (controlService == null)
             {

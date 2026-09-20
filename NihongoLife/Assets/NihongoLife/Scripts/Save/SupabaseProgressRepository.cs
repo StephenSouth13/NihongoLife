@@ -47,6 +47,8 @@ namespace NihongoLife.Save
 
         public PlayerProgressDto GetProgress()
         {
+            if (!PlayerSessionService.GetOrCreate().CanPersist)
+                return PlayerSessionService.Instance.GuestProgress;
             if (_cachedProgress == null)
             {
                 _cachedProgress = _localFallback.GetProgress();
@@ -56,6 +58,12 @@ namespace NihongoLife.Save
 
         public void SaveProgress(PlayerProgressDto progress)
         {
+            if (!PlayerSessionService.GetOrCreate().CanPersist)
+            {
+                PlayerSessionService.Instance.UpdateGuestProgress(progress);
+                _cachedProgress = progress;
+                return;
+            }
             _cachedProgress = progress;
 
             // Always save locally first
@@ -89,6 +97,7 @@ namespace NihongoLife.Save
         {
             if (state == AuthState.SignedIn || state == AuthState.TokenRefreshed)
             {
+                PlayerSessionService.Instance?.BeginAccount(_authService.UserId, _authService.DisplayName);
                 if (_cloudSyncPending)
                 {
                     UploadToCloud(_cachedProgress);
@@ -232,6 +241,11 @@ namespace NihongoLife.Save
                 xp = Mathf.Max(local.xp, cloud.xp),
                 level = Mathf.Max(local.level, cloud.level),
                 currentChapter = Mathf.Max(local.currentChapter, cloud.currentChapter),
+                health = cloud.health,
+                energy = cloud.energy,
+                hunger = cloud.hunger,
+                thirst = cloud.thirst,
+                knowledge = Mathf.Max(local.knowledge, cloud.knowledge),
                 completedScenarios = new System.Collections.Generic.List<string>(cloud.completedScenarios),
                 bestScores = new System.Collections.Generic.List<ScenarioScoreRecord>(cloud.bestScores),
                 masteryLevels = new System.Collections.Generic.List<MasteryRecord>(cloud.masteryLevels)

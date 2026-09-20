@@ -38,9 +38,9 @@ namespace NihongoLife.Core
             "scenario.house1.greeting",
             "scenario.house2.lostcat",
             "scenario.house3.garbage",
-            "scenario.restaurant.order_ramen",
-            "scenario.station.buy_ticket",
-            "scenario.town.summer_festival"
+            "scenario.neighborhood.cat_followup",
+            "scenario.neighborhood.recycling_morning",
+            "scenario.konbini.evening_shift"
         };
         public bool continueCampaignInGameplayScene = true;
 

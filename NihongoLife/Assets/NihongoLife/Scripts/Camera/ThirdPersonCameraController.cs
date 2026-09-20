@@ -15,6 +15,9 @@ namespace NihongoLife.Cameras
         [SerializeField] private float indoorDistance = 3.2f;
         [SerializeField] private float minDistance = 1.0f;
         [SerializeField] private float maxDistance = 10.0f;
+        [SerializeField] private float zoomSpeed = 0.012f;
+        [SerializeField] private float distanceSmoothTime = 0.08f;
+        [SerializeField] private float positionSmoothTime = 0.055f;
 
         [Header("Orbit Sensitivity")]
         [SerializeField] private float sensitivityX = 0.15f;
@@ -25,6 +28,7 @@ namespace NihongoLife.Cameras
         [Header("Obstacle Collision")]
         [SerializeField] private LayerMask collisionLayers;
         [SerializeField] private float cameraRadius = 0.2f;
+        [SerializeField] private float collisionPadding = 0.12f;
 
         [Header("Conversation Framing")]
         [SerializeField] private float conversationShoulderDistance = 1.45f;
@@ -36,6 +40,8 @@ namespace NihongoLife.Cameras
         private float _rotationX = 0f;
         private float _rotationY = 20f;
         private float _currentDistance;
+        private float _distanceVelocity;
+        private Vector3 _followVelocity;
         private bool _isLocked = false;
         private bool _isIndoor = false;
         private Transform _conversationTarget;
@@ -54,6 +60,10 @@ namespace NihongoLife.Cameras
 
         private void Start()
         {
+            if (collisionLayers.value == 0)
+            {
+                collisionLayers = Physics.DefaultRaycastLayers;
+            }
             _currentDistance = defaultDistance;
             
             // Auto-find player target if not set
@@ -88,6 +98,15 @@ namespace NihongoLife.Cameras
                 _rotationX += mouseDelta.x * sensitivityX;
                 _rotationY -= mouseDelta.y * sensitivityY;
                 _rotationY = Mathf.Clamp(_rotationY, minYAngle, maxYAngle);
+
+                float scroll = Mouse.current.scroll.ReadValue().y;
+                if (Mathf.Abs(scroll) > 0.01f)
+                {
+                    float zoomed = Mathf.Clamp(defaultDistance - scroll * zoomSpeed, minDistance, maxDistance);
+                    defaultDistance = zoomed;
+                    if (!_isIndoor) outdoorDistance = zoomed;
+                    else indoorDistance = zoomed;
+                }
             }
 
             // Determine target position
@@ -100,14 +119,13 @@ namespace NihongoLife.Cameras
 
             // Simple camera collision detection
             Vector3 targetToDesired = desiredPosition - targetPosition;
-            if (Physics.SphereCast(targetPosition, cameraRadius, targetToDesired.normalized, out RaycastHit hit, defaultDistance, collisionLayers))
+            float targetDistance = defaultDistance;
+            if (Physics.SphereCast(targetPosition, cameraRadius, targetToDesired.normalized, out RaycastHit hit, defaultDistance, collisionLayers, QueryTriggerInteraction.Ignore))
             {
-                _currentDistance = Mathf.Clamp(hit.distance, minDistance, maxDistance);
+                targetDistance = Mathf.Clamp(hit.distance - collisionPadding, minDistance, defaultDistance);
             }
-            else
-            {
-                _currentDistance = defaultDistance;
-            }
+
+            _currentDistance = Mathf.SmoothDamp(_currentDistance, targetDistance, ref _distanceVelocity, distanceSmoothTime);
 
             // Final position
             Vector3 finalPosition = targetPosition + desiredDirection * _currentDistance;
@@ -131,8 +149,13 @@ namespace NihongoLife.Cameras
             }
             else
             {
-                transform.position = finalPosition;
-                transform.LookAt(targetPosition);
+                transform.position = Vector3.SmoothDamp(transform.position, finalPosition, ref _followVelocity, positionSmoothTime);
+                Vector3 lookDirection = targetPosition - transform.position;
+                if (lookDirection.sqrMagnitude > 0.001f)
+                {
+                    float rotationT = 1f - Mathf.Exp(-18f * Time.deltaTime);
+                    transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(lookDirection, Vector3.up), rotationT);
+                }
             }
         }
 
@@ -148,6 +171,7 @@ namespace NihongoLife.Cameras
             defaultDistance = Mathf.Clamp(distance, minDistance, maxDistance);
             outdoorDistance = defaultDistance;
             _currentDistance = defaultDistance;
+            _distanceVelocity = 0f;
         }
 
         public void SetIndoorMode(bool indoor)
@@ -186,6 +210,7 @@ namespace NihongoLife.Cameras
             _rotationY = _preConversationPitch;
             defaultDistance = Mathf.Clamp(_preConversationDistance, minDistance, maxDistance);
             _currentDistance = defaultDistance;
+            _distanceVelocity = 0f;
             _returningFromConversation = true;
         }
 

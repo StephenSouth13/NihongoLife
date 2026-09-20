@@ -1,4 +1,5 @@
 using UnityEngine;
+using System.Collections.Generic;
 using NihongoLife.Player;
 using NihongoLife.Scenario;
 
@@ -6,6 +7,7 @@ namespace NihongoLife.Interaction
 {
     public class InteractiveItem : MonoBehaviour, IInteractable
     {
+        private static readonly Dictionary<string, InteractiveItem> Templates = new();
         [Header("Item Config")]
         [SerializeField] private string itemId;
         [SerializeField] private string displayNameJa;
@@ -16,6 +18,12 @@ namespace NihongoLife.Interaction
         [SerializeField] private int priceYen;
         [SerializeField] private bool addToInventory = true;
         [SerializeField] private bool destroyOnInteract = true;
+        [SerializeField] private bool isLitter;
+
+        private void Awake()
+        {
+            if (!string.IsNullOrWhiteSpace(itemId) && !Templates.ContainsKey(itemId)) Templates[itemId] = this;
+        }
 
         public string ItemId => itemId;
         public string DisplayNameJa => displayNameJa;
@@ -44,13 +52,31 @@ namespace NihongoLife.Interaction
 
             if (addToInventory && PlayerInventory.Instance != null)
             {
-                PlayerInventory.Instance.AddItem(itemId, displayNameJa, displayNameEn, priceYen);
+                if (!PlayerInventory.Instance.AddItem(itemId, displayNameJa, displayNameEn, priceYen, 1, isLitter))
+                {
+                    Debug.LogWarning($"[InteractiveItem] Inventory is full. Item '{itemId}' remains in the world.", this);
+                    return;
+                }
             }
 
             if (destroyOnInteract)
             {
                 gameObject.SetActive(false);
             }
+        }
+
+        public static bool TrySpawnDropped(InventoryEntry entry, Vector3 position, Quaternion rotation)
+        {
+            if (entry == null || !Templates.TryGetValue(entry.itemId, out InteractiveItem template) || template == null)
+            {
+                Debug.LogWarning($"[InteractiveItem] No world prefab/template registered for '{entry?.itemId}'. Drop cancelled.");
+                return false;
+            }
+
+            var clone = Instantiate(template.gameObject, position, rotation);
+            clone.name = $"Dropped_{entry.itemId}";
+            clone.SetActive(true);
+            return true;
         }
     }
 }

@@ -85,6 +85,10 @@ namespace NihongoLife.UI
             {
                 PlayerInventory.Instance.OnInventoryChanged += RefreshPlayerPanels;
             }
+            if (PlayerStatus.Instance != null)
+            {
+                PlayerStatus.Instance.OnStatusChanged += RefreshPlayerPanels;
+            }
 
             if (GameServices.TryGet(out GameSettingsService settings))
             {
@@ -134,6 +138,29 @@ namespace NihongoLife.UI
             ConfigureText(translationText, 13f, 17f);
             ConfigureText(chatHistoryText, 10f, 13f);
             ConfigureText(onlineStatusText, 11f, 14f);
+
+            if (speakerText != null)
+            {
+                speakerText.fontStyle = FontStyles.Bold;
+                speakerText.color = new Color(0.95f, 0.76f, 0.30f, 1f);
+            }
+            if (japaneseText != null)
+            {
+                japaneseText.fontStyle = FontStyles.Bold;
+                japaneseText.color = new Color(0.98f, 0.98f, 0.96f, 1f);
+                japaneseText.lineSpacing = 7f;
+            }
+            if (readingText != null) readingText.color = new Color(0.54f, 0.80f, 0.92f, 1f);
+            if (romajiText != null)
+            {
+                romajiText.fontStyle = FontStyles.Italic;
+                romajiText.color = new Color(0.68f, 0.73f, 0.78f, 1f);
+            }
+            if (translationText != null)
+            {
+                translationText.color = new Color(0.91f, 0.94f, 0.96f, 1f);
+                translationText.lineSpacing = 6f;
+            }
         }
 
         private void RepairRuntimeLayout()
@@ -293,6 +320,9 @@ namespace NihongoLife.UI
             text.fontSizeMax = max;
             text.textWrappingMode = TextWrappingModes.Normal;
             text.overflowMode = TextOverflowModes.Ellipsis;
+            text.characterSpacing = 0f;
+            text.wordSpacing = 0f;
+            text.lineSpacing = 4f;
         }
 
         private void EnsureQuestMarker()
@@ -361,11 +391,12 @@ namespace NihongoLife.UI
 
         private void Update()
         {
-            if (Keyboard.current == null) return;
+            var input = GameInputService.GetOrCreate();
+            bool dialogueOpen = dialoguePanel != null && dialoguePanel.activeSelf;
 
             if (chatPanel != null && chatPanel.activeSelf)
             {
-                if (Keyboard.current.escapeKey.wasPressedThisFrame)
+                if (input.WasPressed(GameInputId.Pause))
                 {
                     SetChatVisible(false);
                 }
@@ -373,22 +404,22 @@ namespace NihongoLife.UI
                 return;
             }
 
-            if (Keyboard.current.bKey.wasPressedThisFrame)
+            if (!dialogueOpen && input.WasPressed(GameInputId.Inventory))
             {
                 SetInventoryVisible(inventoryPanel != null && !inventoryPanel.activeSelf);
             }
 
-            if (Keyboard.current.tabKey.wasPressedThisFrame)
+            if (!dialogueOpen && input.WasPressed(GameInputId.Character))
             {
                 SetCharacterVisible(characterPanel != null && !characterPanel.activeSelf);
             }
 
-            if (Keyboard.current.enterKey.wasPressedThisFrame && dialoguePanel != null && !dialoguePanel.activeSelf)
+            if (input.WasPressed(GameInputId.Chat) && dialoguePanel != null && !dialoguePanel.activeSelf)
             {
                 SetChatVisible(true);
             }
 
-            if (Keyboard.current.escapeKey.wasPressedThisFrame)
+            if (input.WasPressed(GameInputId.Pause))
             {
                 SetChatVisible(false);
             }
@@ -439,6 +470,10 @@ namespace NihongoLife.UI
             {
                 PlayerInventory.Instance.OnInventoryChanged -= RefreshPlayerPanels;
             }
+            if (PlayerStatus.Instance != null)
+            {
+                PlayerStatus.Instance.OnStatusChanged -= RefreshPlayerPanels;
+            }
 
             if (GameServices.TryGet(out GameSettingsService settings))
             {
@@ -469,6 +504,7 @@ namespace NihongoLife.UI
                 SetChatVisible(false);
                 RefreshPlayerPanels();
             }
+            UpdateOverlayInputLock();
         }
 
         private void SetCharacterVisible(bool visible)
@@ -481,13 +517,13 @@ namespace NihongoLife.UI
                 SetChatVisible(false);
                 RefreshPlayerPanels();
             }
+            UpdateOverlayInputLock();
         }
 
         private void SetChatVisible(bool visible)
         {
             if (chatPanel == null) return;
             chatPanel.SetActive(visible);
-            ScenarioManager.Instance?.SetPlayerInputLocked(visible);
 
             if (visible)
             {
@@ -500,6 +536,18 @@ namespace NihongoLife.UI
             {
                 chatInputField?.DeactivateInputField();
             }
+            UpdateOverlayInputLock();
+        }
+
+        private void UpdateOverlayInputLock()
+        {
+            bool overlayOpen = (inventoryPanel != null && inventoryPanel.activeSelf) ||
+                               (characterPanel != null && characterPanel.activeSelf) ||
+                               (chatPanel != null && chatPanel.activeSelf);
+            bool dialogueOpen = dialoguePanel != null && dialoguePanel.activeSelf;
+            ScenarioManager.Instance?.SetPlayerInputLocked(overlayOpen || dialogueOpen);
+            Cursor.lockState = overlayOpen ? CursorLockMode.None : CursorLockMode.Locked;
+            Cursor.visible = overlayOpen;
         }
 
         private void SendChatMessage(string message)
@@ -580,22 +628,7 @@ namespace NihongoLife.UI
 
             if (inventoryText != null)
             {
-                if (inventory.Items.Count == 0)
-                {
-                    inventoryText.text = Text("Balo trống", "Bag empty", "バッグは空です");
-                }
-                else
-                {
-                    var builder = new StringBuilder();
-                    foreach (var item in inventory.Items)
-                    {
-                        string ja = string.IsNullOrEmpty(item.displayNameJa) ? item.itemId : item.displayNameJa;
-                        string en = string.IsNullOrEmpty(item.displayNameEn) ? item.itemId : item.displayNameEn;
-                        builder.AppendLine($"{ja} / {en}");
-                        builder.AppendLine($"x{item.quantity}    ¥{item.priceYen}");
-                    }
-                    inventoryText.text = builder.ToString();
-                }
+                inventoryText.text = BuildInventoryGrid(inventory);
             }
 
             if (characterStatsText != null)
@@ -621,27 +654,7 @@ namespace NihongoLife.UI
 
             if (inventoryText != null)
             {
-                if (inventory.Items.Count == 0)
-                {
-                    inventoryText.text =
-                        $"<size=125%><b>{Text("Balo", "Bag", "バッグ")}</b></size>\n" +
-                        $"<color=#8fa3b8>{Text("Chưa có vật phẩm. Nhấn E để nhặt hoặc mua đồ khi tới đúng điểm.", "No items yet. Press E to pick up or buy at the right spot.", "目的地でEキーを押して、拾う・買う練習をします。")}</color>";
-                }
-                else
-                {
-                    var builder = new StringBuilder();
-                    builder.AppendLine($"<size=125%><b>{Text("Balo", "Bag", "バッグ")}</b></size>");
-                    builder.AppendLine($"<color=#f1c75b>{Text("Vật phẩm đang có", "Current items", "持ち物")}</color>");
-                    foreach (var item in inventory.Items)
-                    {
-                        string ja = string.IsNullOrEmpty(item.displayNameJa) ? item.itemId : item.displayNameJa;
-                        string en = string.IsNullOrEmpty(item.displayNameEn) ? item.itemId : item.displayNameEn;
-                        builder.AppendLine($"<b>{ja}</b>  <color=#8fa3b8>{en}</color>");
-                        builder.AppendLine($"<color=#f5f2e8>x{item.quantity}</color>    <color=#f1c75b>¥{item.priceYen}</color>");
-                        builder.AppendLine();
-                    }
-                    inventoryText.text = builder.ToString();
-                }
+                inventoryText.text = BuildInventoryGrid(inventory);
             }
 
             if (characterStatsText != null)
@@ -667,14 +680,51 @@ namespace NihongoLife.UI
                     goalText = Text(activeObjective.titleEn, activeObjective.titleEn, activeObjective.titleJa);
                 }
 
+                PlayerStatus status = PlayerStatus.Instance;
                 characterStatsText.text =
                     $"<size=125%><b>{Text("Hồ sơ học viên", "Learner Profile", "学習者プロフィール")}</b></size>\n" +
                     $"<color=#f1c75b>{Text("Tên", "Name", "名前")}</color>: {learnerName}\n" +
                     $"<color=#f1c75b>{Text("Cấp độ", "Level", "レベル")}</color>: N5 · Lv.{level}\n" +
+                    (status != null
+                        ? $"{StatLine(Text("Máu", "Health", "体力"), status.CurrentHealth, status.MaxHealth, "#e35d6a")}\n" +
+                          $"{StatLine(Text("Năng lượng", "Energy", "元気"), status.CurrentEnergy, status.MaxEnergy, "#64b5f6")}\n" +
+                          $"{StatLine(Text("No", "Hunger", "満腹"), status.Hunger, 100f, "#f2b84b")}\n" +
+                          $"{StatLine(Text("Khát", "Thirst", "水分"), status.Thirst, 100f, "#4dd0c8")}\n" +
+                          $"<color=#b79cff>{Text("Kiến thức", "Knowledge", "知識")}: {status.Knowledge}</color>\n"
+                        : string.Empty) +
                     $"<color=#f1c75b>{Text("Tiền mặt", "Cash", "所持金")}</color>: ¥{inventory.Yen}\n" +
                     $"<color=#f1c75b>{Text("Mục tiêu", "Goal", "目標")}</color>: {goalText}\n\n" +
                     "<color=#8fa3b8>Tab: profile  |  B: bag  |  V: mic  |  E: talk</color>";
             }
+        }
+
+        private static string BuildInventoryGrid(PlayerInventory inventory)
+        {
+            var builder = new StringBuilder();
+            builder.AppendLine($"<size=125%><b>{Text("Balo", "Bag", "バッグ")}</b></size>  <color=#8fa3b8>{inventory.UsedSlots}/{inventory.MaxSlots} slots</color>");
+            for (int i = 0; i < inventory.MaxSlots; i++)
+            {
+                if (i < inventory.Items.Count)
+                {
+                    var item = inventory.Items[i];
+                    string name = string.IsNullOrEmpty(item.displayNameJa) ? item.displayNameEn : item.displayNameJa;
+                    builder.Append($"<color=#f1c75b>[{i + 1:00}]</color> <b>{name}</b>  x{item.quantity}/{inventory.MaxStackSize}");
+                }
+                else
+                {
+                    builder.Append($"<color=#536170>[{i + 1:00}]  --</color>");
+                }
+                builder.AppendLine();
+            }
+            return builder.ToString();
+        }
+
+        private static string StatLine(string label, float value, float max, string color)
+        {
+            const int segments = 10;
+            int filled = Mathf.RoundToInt(Mathf.Clamp01(value / Mathf.Max(1f, max)) * segments);
+            string bar = new string('|', filled) + new string('.', segments - filled);
+            return $"<color={color}>{label} [{bar}] {value:0}/{max:0}</color>";
         }
 
         private void HandleInteractableChanged(IInteractable interactable)
@@ -693,7 +743,8 @@ namespace NihongoLife.UI
         {
             if (promptPanel == null || promptText == null) return;
             promptPanel.SetActive(true);
-            promptText.text = $"[E] {interactable.GetPromptJa()} / {interactable.GetpromptEn()}";
+            string key = GameInputService.GetOrCreate().GetBindingLabel(GameInputId.Interact);
+            promptText.text = $"[{key}] {interactable.GetPromptJa()} / {interactable.GetpromptEn()}";
         }
 
         private void HidePrompt()

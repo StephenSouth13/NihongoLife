@@ -29,6 +29,7 @@ namespace NihongoLife.UI
 
         public void Initialize(TMP_FontAsset font)
         {
+            PlayerSessionService.GetOrCreate();
             _font = font;
             BuildUI();
             UpdateState();
@@ -193,6 +194,7 @@ namespace NihongoLife.UI
                     SetButtonsInteractable(true);
                     if (success)
                     {
+                        PlayerSessionService.Instance?.BeginAccount(auth.UserId, auth.DisplayName);
                         _statusText.color = new Color(0.45f, 0.84f, 0.5f, 1f);
                         _statusText.text = Text("Đăng nhập thành công!", "Sign in successful!", "ログイン成功！");
                         UpdateState();
@@ -244,6 +246,7 @@ namespace NihongoLife.UI
                         _isRegistering = false;
                         if (!confirmationRequired)
                         {
+                            PlayerSessionService.Instance?.BeginAccount(auth.UserId, auth.DisplayName);
                             UpdateState();
                         }
                         else
@@ -264,27 +267,8 @@ namespace NihongoLife.UI
 
         private void OnGuestClicked()
         {
-            SetButtonsInteractable(false);
-            _statusText.color = new Color(0.88f, 0.93f, 1f, 1f);
-            _statusText.text = Text("Đang vào game...", "Entering game...", "ゲーム開始中...");
-
-            if (GameServices.TryGet(out IAuthService auth))
-            {
-                auth.SignInAnonymously((success, error) =>
-                {
-                    SetButtonsInteractable(true);
-                    if (success)
-                    {
-                        UpdateState();
-                        Hide();
-                    }
-                    else
-                    {
-                        _statusText.color = new Color(0.98f, 0.55f, 0.55f, 1f);
-                        _statusText.text = error;
-                    }
-                });
-            }
+            PlayerSessionService.GetOrCreate().BeginGuest();
+            Hide();
         }
 
         private void OnLogoutClicked()
@@ -293,6 +277,7 @@ namespace NihongoLife.UI
             {
                 auth.SignOut();
             }
+            PlayerSessionService.Instance?.BeginGuest();
             UpdateState();
         }
 
