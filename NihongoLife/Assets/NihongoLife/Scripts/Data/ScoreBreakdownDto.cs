@@ -16,6 +16,9 @@ namespace NihongoLife.Data
         public string scenarioId;
         public int overallScore;
         public bool success;
+        public int rewardYen;
+        public int rewardKnowledge;
+        public bool firstCompletion;
         public List<ScoreCategoryResult> categories = new List<ScoreCategoryResult>();
     }
 }

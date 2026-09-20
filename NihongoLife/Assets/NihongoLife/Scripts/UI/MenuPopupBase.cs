@@ -47,6 +47,7 @@ namespace NihongoLife.UI
         protected abstract void Build(RectTransform card);
 
         protected virtual void OnOpened() { }
+        protected virtual void OnClosed() { }
         protected virtual void OnLanguageApplied() { }
         protected virtual void OnOpenUpdate() { }
 
@@ -90,6 +91,7 @@ namespace NihongoLife.UI
             if (PanelObject == null || !PanelObject.activeSelf) return;
             PanelObject.SetActive(false);
             PlayCue(GameAudioCue.UiClose, 0.8f);
+            OnClosed();
         }
 
         protected static void PlayCue(GameAudioCue cue, float volume)
@@ -97,7 +99,7 @@ namespace NihongoLife.UI
             if (GameServices.TryGet(out IAudioService audio)) audio.PlayCue(cue, volume);
         }
 
-        private void Update()
+        protected virtual void Update()
         {
             if (!IsOpen) return;
 

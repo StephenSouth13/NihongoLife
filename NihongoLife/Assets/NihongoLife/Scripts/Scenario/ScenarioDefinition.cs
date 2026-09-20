@@ -111,6 +111,20 @@ namespace NihongoLife.Scenario
         public List<string> unlockScenarioIds = new List<string>();
         public bool repeatable;
 
+        [Header("Quest")]
+        [Tooltip("main | side | career | community | coop. Shown as a badge in the quest journal.")]
+        public string questType = "main";
+        [Tooltip("NPC who gives the quest (speakerId), shown in the journal.")]
+        public string giverNpcId;
+        [TextArea(2, 4)] public string briefingVi;
+        [TextArea(2, 4)] public string briefingEn;
+        [TextArea(2, 4)] public string briefingJa;
+        [Tooltip("Where to go, in plain words.")]
+        public string locationHintVi;
+        public string locationHintEn;
+        public string locationHintJa;
+        [Min(0)] public int rewardYen;
+
         [Header("Knowledge Progression")]
         [Range(1, 10)] public int learningDifficulty = 1;
         [Min(1)] public int baseKnowledgeReward = 60;

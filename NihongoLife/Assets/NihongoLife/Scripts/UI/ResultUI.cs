@@ -72,6 +72,10 @@ namespace NihongoLife.UI
             if (overallScoreText != null)
             {
                 overallScoreText.text = $"{breakdown.overallScore} / 100";
+                if (breakdown.success && (breakdown.rewardYen > 0 || breakdown.rewardKnowledge > 0))
+                {
+                    overallScoreText.text += $"\n<size=55%>+{breakdown.rewardKnowledge} kiến thức" + (breakdown.rewardYen > 0 ? $"   +¥{breakdown.rewardYen:N0}" : string.Empty) + "</size>";
+                }
             }
 
             if (returnToMenuButtonText != null)

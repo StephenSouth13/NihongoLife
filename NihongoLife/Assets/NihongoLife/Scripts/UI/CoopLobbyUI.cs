@@ -234,14 +234,35 @@ namespace NihongoLife.UI
             var coopService = FindFirstObjectByType<CoopSessionService>();
             if (coopService == null) return;
 
-            // Use active scenario from GameControlDatabase
-            string scenarioId = "scenario.konbini.buy_onigiri";
-            if (GameServices.TryGet(out GameControlService control) && control.Database != null)
+            string scenarioId = PickCoopScenarioId();
+            if (string.IsNullOrEmpty(scenarioId))
             {
-                scenarioId = control.Database.activeScenarioId;
+                _lobbyInfoText.text = Text("Chưa có nhiệm vụ nào hỗ trợ co-op.", "No co-op quest available yet.", "協力プレイ対応のクエストがありません。");
+                return;
             }
 
             coopService.CreateSession(scenarioId, 2, success => RefreshView());
+        }
+
+        /// <summary>First co-op capable quest the player has unlocked, else the first co-op quest at all.</summary>
+        private static string PickCoopScenarioId()
+        {
+            if (!GameServices.TryGet(out IScenarioRepository repository)) return string.Empty;
+
+            var candidates = repository.GetAllScenarios().FindAll(s => s != null && s.supportsCoOp);
+            candidates.Sort((a, b) => a.chapterIndex.CompareTo(b.chapterIndex));
+            if (candidates.Count == 0) return string.Empty;
+
+            if (GameServices.TryGet(out Save.IProgressRepository progressRepository))
+            {
+                var progress = progressRepository.GetProgress();
+                foreach (var scenario in candidates)
+                {
+                    if (progress != null && scenario.IsUnlocked(progress.knowledge, progress.completedScenarios)) return scenario.id;
+                }
+            }
+
+            return candidates[0].id;
         }
 
         private void OnJoinClicked(string sessionId)

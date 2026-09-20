@@ -3,12 +3,14 @@ using System.Collections.Generic;
 using UnityEngine;
 using NihongoLife.Core;
 using NihongoLife.Dialogue;
+using NihongoLife.UI;
 
 namespace NihongoLife.Scenario
 {
     /// <summary>
-    /// Controls co-op scenario flow — assigns speaker roles, syncs dialogue nodes between players,
-    /// and manages turn-based dialogue choices.
+    /// Controls co-op scenario flow: both players see the same scene, dialogue nodes are synced, and the
+    /// two players take turns choosing the learner's answer (host first). Each side sees the partner's
+    /// choice and its consequences, so both practise the same phrases together.
     /// </summary>
     public class CoopScenarioController : MonoBehaviour
     {
@@ -17,6 +19,9 @@ namespace NihongoLife.Scenario
         private string _myAssignedSpeaker;
         private string _currentNodeId;
         private ScenarioDefinition _scenario;
+        private int _choiceCount;
+
+        private const string TurnNoticeId = "coop.turn";
 
         public bool IsCoopActive => _sessionService != null && _sessionService.InSession && _sessionService.CurrentSession.status == "active";
         public string MyAssignedSpeaker => _myAssignedSpeaker;
@@ -26,8 +31,22 @@ namespace NihongoLife.Scenario
 
         // ──────────────────────── Setup ────────────────────────
 
+        /// <summary>Creates (or reuses) the controller when a co-op session is running and binds it to the scenario.</summary>
+        public static CoopScenarioController EnsureFor(ScenarioDefinition scenario, GameObject host)
+        {
+            var session = FindFirstObjectByType<CoopSessionService>();
+            if (session == null || !session.InSession) return null;
+
+            var controller = FindFirstObjectByType<CoopScenarioController>();
+            if (controller == null) controller = host.AddComponent<CoopScenarioController>();
+            controller.Initialize(scenario);
+            return controller;
+        }
+
         public void Initialize(ScenarioDefinition scenario)
         {
+            Detach();
+            _choiceCount = 0;
             _scenario = scenario;
             _sessionService = FindFirstObjectByType<CoopSessionService>();
 
@@ -47,9 +66,12 @@ namespace NihongoLife.Scenario
             }
 
             Debug.Log($"[CoopScenario] Initialized for scenario '{scenario?.id}'. Co-op active: {IsCoopActive}");
+            PublishTurn();
         }
 
-        private void OnDestroy()
+        private void OnDestroy() => Detach();
+
+        private void Detach()
         {
             if (_sessionService != null)
             {
@@ -57,6 +79,8 @@ namespace NihongoLife.Scenario
                 _sessionService.OnParticipantsUpdated -= HandleParticipantsUpdated;
                 _sessionService.OnSessionEnded -= HandleSessionEnded;
             }
+
+            HudNotificationTray.Instance?.Clear(TurnNoticeId);
         }
 
         // ──────────────────────── Turn Logic ────────────────────────
@@ -76,19 +100,47 @@ namespace NihongoLife.Scenario
             return string.IsNullOrWhiteSpace(node.speakerName) || true; // Default: allow
         }
 
+        /// <summary>True when it is this player's turn to choose the learner's answer (host answers first, then alternate).</summary>
+        public bool IsMyTurnToChoose
+        {
+            get
+            {
+                if (!IsCoopActive || _sessionService == null) return true;
+                bool hostTurn = _choiceCount % 2 == 0;
+                return hostTurn == _sessionService.IsHost;
+            }
+        }
+
         /// <summary>Check if this player can select a choice for the current node.</summary>
         public bool CanSelectChoice(ScenarioNode node)
         {
-            if (!IsCoopActive) return true;
+            return IsMyTurnToChoose;
+        }
 
-            // In co-op, only the player whose speaker role matches the node's speaker can pick
-            if (!string.IsNullOrWhiteSpace(node.speakerId))
+        private void PublishTurn()
+        {
+            var tray = HudNotificationTray.Instance;
+            if (tray == null) return;
+
+            if (!IsCoopActive)
             {
-                return node.speakerId == _myAssignedSpeaker;
+                tray.Clear(TurnNoticeId);
+                return;
             }
 
-            // Fallback: host picks
-            return _sessionService.IsHost;
+            bool mine = IsMyTurnToChoose;
+            tray.Post(TurnNoticeId,
+                "Co-op",
+                mine ? Pick("Đến lượt bạn chọn câu trả lời", "Your turn to answer", "あなたの番です") : Pick("Đang chờ bạn cùng chơi chọn...", "Waiting for your partner...", "相手の番です..."),
+                null,
+                mine ? HudNoticeTone.Warning : HudNoticeTone.Info,
+                mine);
+        }
+
+        private static string Pick(string vi, string en, string ja)
+        {
+            GameLanguage language = GameServices.TryGet(out GameSettingsService settings) ? settings.Language : GameLanguage.Vietnamese;
+            return language == GameLanguage.English ? en : language == GameLanguage.Japanese ? ja : vi;
         }
 
         // ──────────────────────── Broadcast Events ────────────────────────
@@ -107,6 +159,8 @@ namespace NihongoLife.Scenario
         public void BroadcastChoiceSelected(int choiceIndex, string nextNodeId)
         {
             if (!IsCoopActive) return;
+            _choiceCount++;
+            PublishTurn();
 
             string payload = $"{{\"type\":\"choice_selected\",\"choice_index\":{choiceIndex},\"next_node_id\":\"{nextNodeId}\",\"sender\":\"{_myUserId}\"}}";
             _sessionService.BroadcastCoopEvent("dialogue", payload);
@@ -140,16 +194,14 @@ namespace NihongoLife.Scenario
                         break;
 
                     case "choice_selected":
+                        _choiceCount++;
                         OnPartnerChoseOption?.Invoke(msg.choice_index);
-                        // Also advance to the next node
-                        if (!string.IsNullOrWhiteSpace(msg.next_node_id))
-                        {
-                            OnNodeSyncReceived?.Invoke(msg.next_node_id);
-                        }
+                        PublishTurn();
                         break;
 
                     case "scenario_complete":
                         Debug.Log($"[CoopScenario] Partner completed scenario with score: {msg.score}");
+                        HudNotificationTray.Instance?.Clear(TurnNoticeId);
                         break;
                 }
             }
@@ -167,6 +219,7 @@ namespace NihongoLife.Scenario
         private void HandleSessionEnded()
         {
             _myAssignedSpeaker = null;
+            HudNotificationTray.Instance?.Clear(TurnNoticeId);
             Debug.Log("[CoopScenario] Session ended — reverting to solo mode.");
         }
 

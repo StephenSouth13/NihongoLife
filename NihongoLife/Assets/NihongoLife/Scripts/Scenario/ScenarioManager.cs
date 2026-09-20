@@ -96,6 +96,7 @@ namespace NihongoLife.Scenario
             }
 
             currentScenario = scenario;
+            CoopScenarioController.EnsureFor(scenario, gameObject);
             Debug.Log($"[ScenarioManager] Starting scenario: {scenario.titleJa} ({scenario.id})");
 
             _objectives.Clear();
@@ -445,6 +446,11 @@ namespace NihongoLife.Scenario
                     }
 
                     int knowledgeReward = CalculateKnowledgeReward(currentScenario, breakdown, firstCompletion);
+                    int yenReward = firstCompletion ? Mathf.Max(0, currentScenario.rewardYen) : 0;
+                    breakdown.rewardKnowledge = knowledgeReward;
+                    breakdown.rewardYen = yenReward;
+                    breakdown.firstCompletion = firstCompletion;
+                    if (yenReward > 0) Player.PlayerInventory.Instance?.AddYen(yenReward);
                     progress.xp += Mathf.Max(10, knowledgeReward / 2);
                     progress.knowledge += knowledgeReward;
                     progress.level = 1 + (progress.xp / 500);

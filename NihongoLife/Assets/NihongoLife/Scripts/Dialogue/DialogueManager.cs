@@ -71,9 +71,26 @@ namespace NihongoLife.Dialogue
             }
         }
 
+        private void BindCoopController()
+        {
+            var controller = FindFirstObjectByType<CoopScenarioController>();
+            if (controller == null || controller == _coopController) return;
+
+            if (_coopController != null)
+            {
+                _coopController.OnNodeSyncReceived -= HandleCoopNodeSync;
+                _coopController.OnPartnerChoseOption -= HandlePartnerChoice;
+            }
+
+            _coopController = controller;
+            _coopController.OnNodeSyncReceived += HandleCoopNodeSync;
+            _coopController.OnPartnerChoseOption += HandlePartnerChoice;
+        }
+
         public void StartDialogue(ScenarioNode node)
         {
             if (node == null || node.nodeType != ScenarioNodeType.Dialogue) return;
+            BindCoopController();
 
             _currentNode = node;
             if (ScenarioManager.Instance == null)
@@ -233,6 +250,7 @@ namespace NihongoLife.Dialogue
         private void HandleCoopNodeSync(string nodeId)
         {
             Debug.Log($"[DialogueManager] Co-op node sync: {nodeId}");
+            if (ScenarioManager.Instance != null && ScenarioManager.Instance.CurrentNode != null && ScenarioManager.Instance.CurrentNode.id == nodeId) return; // already there
             // Partner advanced to this node — transition to it
             if (ScenarioManager.Instance != null)
             {

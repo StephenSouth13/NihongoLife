@@ -123,6 +123,14 @@ namespace NihongoLife.UI
             RefreshOnlineStatus();
             UpdateObjectivesDisplay();
             EnsureTutorial();
+            EnsureQuestLog();
+        }
+
+        private void EnsureQuestLog()
+        {
+            var questLog = GetComponent<QuestLogPopup>() ?? gameObject.AddComponent<QuestLogPopup>();
+            questLog.SetDialoguePanel(dialoguePanel);
+            questLog.Initialize(scenarioTitleText != null ? scenarioTitleText.font : null);
         }
 
         private void EnsureTutorial()
