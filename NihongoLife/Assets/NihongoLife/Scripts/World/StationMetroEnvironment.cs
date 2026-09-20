@@ -10,10 +10,13 @@ namespace NihongoLife.World
         private const float CenterX = 800f;
         private const float Length = 92f;
         private readonly List<(Transform transform, Vector3 origin)> _oppositeTrain = new();
+        private readonly Dictionary<Color, Material> _materials = new();
         private Transform _generated;
 
         private void Awake()
         {
+            DisableLegacyObstruction("TicketGateArch");
+            DisableLegacyObstruction("CanopyPost_0");
             Transform existing = transform.Find("MetroEnvironment_Runtime");
             if (existing != null) Destroy(existing.gameObject);
             _generated = new GameObject("MetroEnvironment_Runtime").transform;
@@ -30,7 +33,7 @@ namespace NihongoLife.World
             RenderSettings.fogColor = new Color(0.035f, 0.055f, 0.07f);
             RenderSettings.fogDensity = 0.012f;
             RenderSettings.ambientMode = AmbientMode.Flat;
-            RenderSettings.ambientLight = new Color(0.28f, 0.32f, 0.36f);
+            RenderSettings.ambientLight = new Color(0.52f, 0.56f, 0.6f);
         }
 
         private void Update()
@@ -48,8 +51,8 @@ namespace NihongoLife.World
         private void BuildShell()
         {
             CreateBlock("TunnelFloor", new Vector3(CenterX, -0.45f, -4.5f), new Vector3(Length, 0.5f, 27f), new Color(0.055f, 0.07f, 0.085f), true);
-            CreateBlock("TunnelCeiling", new Vector3(CenterX, 6.2f, -4.5f), new Vector3(Length, 0.35f, 27f), new Color(0.09f, 0.12f, 0.145f), true);
-            CreateBlock("TunnelNorthWall", new Vector3(CenterX, 2.9f, 9f), new Vector3(Length, 6.6f, 0.45f), new Color(0.12f, 0.15f, 0.17f), true);
+            CreateBlock("TunnelCeiling", new Vector3(CenterX, 6.2f, -3.25f), new Vector3(Length, 0.35f, 29.5f), new Color(0.09f, 0.12f, 0.145f), true);
+            CreateBlock("TunnelNorthWall", new Vector3(CenterX, 2.9f, 11.5f), new Vector3(Length, 6.6f, 0.45f), new Color(0.12f, 0.15f, 0.17f), true);
             CreateBlock("TunnelSouthWall", new Vector3(CenterX, 2.9f, -18f), new Vector3(Length, 6.6f, 0.45f), new Color(0.12f, 0.15f, 0.17f), true);
             CreateBlock("TunnelWestPortal", new Vector3(CenterX - Length * 0.5f, 2.9f, -4.5f), new Vector3(0.6f, 6.6f, 27f), new Color(0.025f, 0.035f, 0.045f), true);
             CreateBlock("TunnelEastPortal", new Vector3(CenterX + Length * 0.5f, 2.9f, -4.5f), new Vector3(0.6f, 6.6f, 27f), new Color(0.025f, 0.035f, 0.045f), true);
@@ -65,8 +68,19 @@ namespace NihongoLife.World
             for (int i = -7; i <= 7; i++)
             {
                 float x = CenterX + i * 5.5f;
-                CreateBlock($"ScreenPostNorth_{i}", new Vector3(x, 1.15f, 0.55f), new Vector3(0.12f, 1.7f, 0.12f), new Color(0.18f, 0.48f, 0.58f), true);
-                CreateBlock($"ScreenPostSouth_{i}", new Vector3(x, 1.15f, -9.55f), new Vector3(0.12f, 1.7f, 0.12f), new Color(0.18f, 0.48f, 0.58f), true);
+                if (i != 0)
+                {
+                    GameObject northPost = CreateBlock($"ScreenPostNorth_{i}", new Vector3(x, 1.15f, 0.55f), new Vector3(0.12f, 1.7f, 0.12f), new Color(0.18f, 0.48f, 0.58f), true);
+                    northPost.layer = 2;
+                }
+                GameObject southPost = CreateBlock($"ScreenPostSouth_{i}", new Vector3(x, 1.15f, -9.55f), new Vector3(0.12f, 1.7f, 0.12f), new Color(0.18f, 0.48f, 0.58f), true);
+                southPost.layer = 2;
+            }
+            for (int i = -5; i <= 5; i++)
+            {
+                float x = CenterX + i * 8f;
+                CreateLightPanel($"CeilingPanelNorth_{i}", new Vector3(x, 5.95f, 4.2f));
+                CreateLightPanel($"CeilingPanelSouth_{i}", new Vector3(x, 5.95f, -13.2f));
             }
         }
 
@@ -91,15 +105,18 @@ namespace NihongoLife.World
                 float x = CenterX + i * 5.5f;
                 CreateBlock($"NorthColumn_{i}", new Vector3(x, 3.1f, 6.8f), new Vector3(0.42f, 5.8f, 0.42f), new Color(0.15f, 0.35f, 0.42f), true);
                 CreateBlock($"SouthColumn_{i}", new Vector3(x, 3.1f, -15.8f), new Vector3(0.42f, 5.8f, 0.42f), new Color(0.15f, 0.35f, 0.42f), true);
-                CreateLight($"NorthLight_{i}", new Vector3(x, 5.75f, 4.2f));
-                CreateLight($"SouthLight_{i}", new Vector3(x, 5.75f, -13.2f));
+                if (i % 3 == 0)
+                {
+                    CreateLight($"NorthLight_{i}", new Vector3(x, 5.75f, 4.2f));
+                    CreateLight($"SouthLight_{i}", new Vector3(x, 5.75f, -13.2f));
+                }
             }
             CreateBlock("ConcourseHeader", new Vector3(CenterX, 4.8f, 8.2f), new Vector3(18f, 2.2f, 1.3f), new Color(0.08f, 0.17f, 0.22f), true);
         }
 
         private void BuildSigns()
         {
-            CreateWorldLabel("StationNameNorth", "SAKURA METRO", new Vector3(CenterX, 3.2f, 8.72f), Quaternion.Euler(0f, 180f, 0f), 1.1f);
+            CreateWorldLabel("StationNameNorth", "SAKURA METRO", new Vector3(CenterX, 4.45f, 11.24f), Quaternion.Euler(0f, 180f, 0f), 0.65f);
             CreateWorldLabel("Platform1", "1  >  MIDORI / SHINJUKU", new Vector3(CenterX - 13f, 4.4f, 5.9f), Quaternion.Euler(0f, 180f, 0f), 0.55f);
             CreateWorldLabel("Platform2", "2  >  ASAKUSA / SAKURA", new Vector3(CenterX + 13f, 4.4f, -14.9f), Quaternion.identity, 0.55f);
         }
@@ -128,8 +145,12 @@ namespace NihongoLife.World
             block.transform.SetParent(_generated);
             block.transform.SetPositionAndRotation(position, Quaternion.identity);
             block.transform.localScale = scale;
-            var material = new Material(Shader.Find("Universal Render Pipeline/Simple Lit"));
-            material.color = color;
+            if (!_materials.TryGetValue(color, out Material material))
+            {
+                material = new Material(Shader.Find("Universal Render Pipeline/Simple Lit"));
+                material.color = color;
+                _materials[color] = material;
+            }
             block.GetComponent<Renderer>().sharedMaterial = material;
             block.GetComponent<Renderer>().shadowCastingMode = ShadowCastingMode.Off;
             Collider blockCollider = block.GetComponent<Collider>();
@@ -145,9 +166,30 @@ namespace NihongoLife.World
             Light light = lightObject.AddComponent<Light>();
             light.type = LightType.Point;
             light.range = 9f;
-            light.intensity = 1.35f;
+            light.intensity = 2.5f;
             light.color = new Color(0.78f, 0.9f, 1f);
             light.shadows = LightShadows.None;
+        }
+
+        private void CreateLightPanel(string objectName, Vector3 position)
+        {
+            GameObject panel = GameObject.CreatePrimitive(PrimitiveType.Cube);
+            panel.name = objectName;
+            panel.transform.SetParent(_generated);
+            panel.transform.position = position;
+            panel.transform.localScale = new Vector3(5.2f, 0.08f, 0.65f);
+            Collider collider = panel.GetComponent<Collider>();
+            if (collider != null) collider.enabled = false;
+            var material = new Material(Shader.Find("Universal Render Pipeline/Unlit"));
+            material.color = new Color(0.78f, 0.92f, 1f);
+            panel.GetComponent<Renderer>().sharedMaterial = material;
+            panel.GetComponent<Renderer>().shadowCastingMode = ShadowCastingMode.Off;
+        }
+
+        private static void DisableLegacyObstruction(string objectName)
+        {
+            GameObject obstruction = GameObject.Find(objectName);
+            if (obstruction != null) obstruction.SetActive(false);
         }
 
         private void CreateWorldLabel(string objectName, string value, Vector3 position, Quaternion rotation, float size)

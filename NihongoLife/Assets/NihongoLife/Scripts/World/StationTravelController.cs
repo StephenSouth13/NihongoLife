@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using NihongoLife.Audio;
 using NihongoLife.Core;
@@ -40,11 +41,16 @@ namespace NihongoLife.World
         private Canvas _canvas;
         private TextMeshProUGUI _routeText;
         private TextMeshProUGUI _messageText;
+        private GameObject _messagePanel;
+        private TextMeshProUGUI _stationHelpText;
+        private TextMeshProUGUI _walletText;
         private GameObject _ticketPanel;
         private string _destination = "MIDORI";
         private float _messageUntil;
         private float _ticketDeparture = -1f;
         private readonly List<(Transform transform, Vector3 platformPosition)> _platformTrain = new();
+        private InteractionDetector _interactionDetector;
+        private GameObject _carriageInterior;
 
         public void Configure(Transform platform, Transform carriage, Transform movingScenery)
         {
@@ -55,11 +61,31 @@ namespace NihongoLife.World
 
         private void Awake()
         {
+            _carriageInterior = carriageSpawn != null && carriageSpawn.parent != null
+                ? carriageSpawn.parent.gameObject
+                : GameObject.Find("TrainCarriageInterior");
+            if (sceneryRoot != null && _carriageInterior != null)
+                sceneryRoot.SetParent(_carriageInterior.transform, true);
             if (sceneryRoot != null)
                 foreach (Transform child in sceneryRoot) _scenery.Add(child);
+            if (_carriageInterior != null) _carriageInterior.SetActive(false);
             BuildTravelHud();
             CachePlatformTrain();
             RefreshHud();
+        }
+
+        private IEnumerator Start()
+        {
+            for (int attempt = 0; attempt < 30 && _interactionDetector == null; attempt++)
+            {
+                _interactionDetector = FindFirstObjectByType<InteractionDetector>();
+                if (_interactionDetector == null) yield return null;
+            }
+            if (_interactionDetector != null)
+            {
+                _interactionDetector.OnInteractableChanged += HandleInteractableChanged;
+                HandleInteractableChanged(_interactionDetector.CurrentInteractable);
+            }
         }
 
         private void Update()
@@ -84,7 +110,11 @@ namespace NihongoLife.World
                 RefreshHud();
             }
 
-            if (_messageText != null && Time.unscaledTime > _messageUntil) _messageText.text = string.Empty;
+            if (_messageText != null && Time.unscaledTime > _messageUntil)
+            {
+                _messageText.text = string.Empty;
+                if (_messagePanel != null) _messagePanel.SetActive(false);
+            }
         }
 
         public void Execute(StationAction action, GameObject player)
@@ -137,6 +167,7 @@ namespace NihongoLife.World
         {
             if (!_gatePassed) { ShowMessage(Localize("Hãy mua vé và qua cổng soát vé trước.", "Buy a ticket and pass the gate first.", "先に切符を購入して改札を通ってください。")); return; }
             if (!IsTrainBoarding()) { ShowMessage(Localize("Tàu chưa vào ga hoặc đã đóng cửa.", "The train is not boarding now.", "現在、この電車には乗車できません。")); return; }
+            if (_carriageInterior != null) _carriageInterior.SetActive(true);
             Teleport(player, carriageSpawn);
             ShowMessage(Localize("Đã lên tàu. Hãy tìm chỗ ngồi.", "You boarded the train. Please find a seat.", "乗車しました。席をお探しください。"));
         }
@@ -153,6 +184,7 @@ namespace NihongoLife.World
         {
             if (_riding) { ShowMessage("Tau dang chay. Vui long doi den ga."); return; }
             Teleport(player, platformSpawn);
+            if (_carriageInterior != null) _carriageInterior.SetActive(false);
             _hasTicket = false;
             _gatePassed = false;
             ShowMessage("Da xuong tau an toan.");
@@ -200,12 +232,22 @@ namespace NihongoLife.World
             GameObject panel = new GameObject("RoutePanel");
             panel.transform.SetParent(canvasObject.transform, false);
             var rect = panel.AddComponent<RectTransform>();
-            rect.anchorMin = rect.anchorMax = new Vector2(0.5f, 1f);
-            rect.pivot = new Vector2(0.5f, 1f);
-            rect.anchoredPosition = new Vector2(0f, -24f);
-            rect.sizeDelta = new Vector2(560f, 72f);
+            rect.anchorMin = rect.anchorMax = Vector2.one;
+            rect.pivot = Vector2.one;
+            rect.anchoredPosition = new Vector2(-24f, -24f);
+            rect.sizeDelta = new Vector2(500f, 72f);
             panel.AddComponent<Image>().color = new Color(0.025f, 0.055f, 0.075f, 0.94f);
             _routeText = CreateText(panel.transform, 22f, TextAlignmentOptions.Center);
+
+            GameObject wallet = new GameObject("StationWallet");
+            wallet.transform.SetParent(canvasObject.transform, false);
+            var walletRect = wallet.AddComponent<RectTransform>();
+            walletRect.anchorMin = walletRect.anchorMax = new Vector2(0f, 1f);
+            walletRect.pivot = new Vector2(0f, 1f);
+            walletRect.anchoredPosition = new Vector2(24f, -24f);
+            walletRect.sizeDelta = new Vector2(230f, 56f);
+            wallet.AddComponent<Image>().color = new Color(0.025f, 0.045f, 0.06f, 0.9f);
+            _walletText = CreateText(wallet.transform, 21f, TextAlignmentOptions.Center);
 
             GameObject message = new GameObject("TravelMessage");
             message.transform.SetParent(canvasObject.transform, false);
@@ -215,7 +257,20 @@ namespace NihongoLife.World
             messageRect.anchoredPosition = new Vector2(0f, 32f);
             messageRect.sizeDelta = new Vector2(900f, 64f);
             message.AddComponent<Image>().color = new Color(0.025f, 0.035f, 0.045f, 0.92f);
+            _messagePanel = message;
             _messageText = CreateText(message.transform, 20f, TextAlignmentOptions.Center);
+            _messagePanel.SetActive(false);
+
+            GameObject help = new GameObject("StationHelp");
+            help.transform.SetParent(canvasObject.transform, false);
+            var helpRect = help.AddComponent<RectTransform>();
+            helpRect.anchorMin = helpRect.anchorMax = Vector2.zero;
+            helpRect.pivot = Vector2.zero;
+            helpRect.anchoredPosition = new Vector2(24f, 24f);
+            helpRect.sizeDelta = new Vector2(570f, 66f);
+            help.AddComponent<Image>().color = new Color(0.025f, 0.045f, 0.06f, 0.9f);
+            _stationHelpText = CreateText(help.transform, 17f, TextAlignmentOptions.Left);
+            _stationHelpText.text = Localize("F Tương tác | B Balo | M Bản đồ | Esc Cài đặt", "F Interact | B Bag | M Map | Esc Settings", "F 調べる | B バッグ | M 地図 | Esc 設定");
             BuildTicketPanel(canvasObject.transform);
         }
 
@@ -279,6 +334,8 @@ namespace NihongoLife.World
         private void RefreshHud()
         {
             if (_routeText == null) return;
+            if (_walletText != null)
+                _walletText.text = PlayerInventory.Instance != null ? $"¥ {PlayerInventory.Instance.Yen:N0}" : "¥ --";
             float wait = SecondsUntilBoardingEnds();
             string stage = _riding
                 ? Localize($"ĐANG ĐI | {_rideRemaining:0}s", $"EN ROUTE | {_rideRemaining:0}s", $"走行中 | {_rideRemaining:0}秒")
@@ -324,8 +381,27 @@ namespace NihongoLife.World
             return GameServices.TryGet(out GameSettingsService settings) ? settings.Text(vi, en, ja) : vi;
         }
 
+        private void HandleInteractableChanged(IInteractable interactable)
+        {
+            if (_stationHelpText == null) return;
+            if (interactable == null)
+            {
+                _stationHelpText.text = Localize("F Tương tác | B Balo | M Bản đồ | Esc Cài đặt", "F Interact | B Bag | M Map | Esc Settings", "F 調べる | B バッグ | M 地図 | Esc 設定");
+                return;
+            }
+
+            bool japanese = GameServices.TryGet(out GameSettingsService settings) && settings.Language == GameLanguage.Japanese;
+            _stationHelpText.text = $"[F] {(japanese ? interactable.GetPromptJa() : interactable.GetpromptEn())}";
+        }
+
+        private void OnDestroy()
+        {
+            if (_interactionDetector != null) _interactionDetector.OnInteractableChanged -= HandleInteractableChanged;
+        }
+
         private void ShowMessage(string message, float seconds = 4f)
         {
+            if (_messagePanel != null) _messagePanel.SetActive(!string.IsNullOrEmpty(message));
             if (_messageText != null) _messageText.text = message;
             _messageUntil = Time.unscaledTime + seconds;
         }
