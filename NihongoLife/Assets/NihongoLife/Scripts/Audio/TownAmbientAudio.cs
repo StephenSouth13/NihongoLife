@@ -61,6 +61,9 @@ namespace NihongoLife.Audio
 
         private void Update()
         {
+            // Follow the BGM slider from Settings (the shared AudioService is not used for this source).
+            if (_bgmSource.clip != null) _bgmSource.volume = bgmVolume * Mathf.Clamp01(PlayerPrefs.GetFloat("Volume_BGM", 0.5f) * 2f);
+
             if (Time.time < _nextStreetVoiceTime) return;
 
             AudioClip clip = PickStreetVoiceClip();

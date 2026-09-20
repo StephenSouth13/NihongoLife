@@ -189,9 +189,18 @@ namespace NihongoLife.UI
             if (_image != null) _image.color = _base;
         }
 
+        private static float _lastHoverSound;
+
         public void OnPointerEnter(UnityEngine.EventSystems.PointerEventData eventData)
         {
             if (_image != null) _image.color = _hover;
+
+            // Soft hover tick; skipped for disabled buttons and rate-limited so sweeping the pointer is not noisy.
+            var button = GetComponent<UnityEngine.UI.Button>();
+            if (button != null && !button.interactable) return;
+            if (Time.unscaledTime - _lastHoverSound < 0.07f) return;
+            _lastHoverSound = Time.unscaledTime;
+            if (NihongoLife.Core.GameServices.TryGet(out NihongoLife.Audio.IAudioService audio)) audio.PlayCue(NihongoLife.Audio.GameAudioCue.UiHover, 0.35f);
         }
 
         public void OnPointerExit(UnityEngine.EventSystems.PointerEventData eventData)

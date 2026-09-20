@@ -72,12 +72,20 @@ namespace NihongoLife.UI
             RefreshBindingLabels();
             panelObj.SetActive(true);
             panelObj.transform.SetAsLastSibling();
+            PlayCue(GameAudioCue.UiOpen, 0.8f);
             UIStyleKit.PlayShowAnimation(cardRect != null ? cardRect.gameObject : panelObj);
         }
 
         public void Hide()
         {
-            if (panelObj != null) panelObj.SetActive(false);
+            if (panelObj == null || !panelObj.activeSelf) return;
+            panelObj.SetActive(false);
+            PlayCue(GameAudioCue.UiClose, 0.8f);
+        }
+
+        private static void PlayCue(GameAudioCue cue, float volume)
+        {
+            if (GameServices.TryGet(out IAudioService audio)) audio.PlayCue(cue, volume);
         }
 
         public void ToggleFromEscape()
@@ -254,6 +262,8 @@ namespace NihongoLife.UI
             UpdateValueText(sfxValue, sfxSlider.value);
         }
 
+        private float _lastTickTime;
+
         private void OnBgmChanged(float value)
         {
             UpdateValueText(bgmValue, value);
@@ -263,7 +273,15 @@ namespace NihongoLife.UI
         private void OnSfxChanged(float value)
         {
             UpdateValueText(sfxValue, value);
-            if (GameServices.TryGet(out IAudioService audio)) audio.SetSFXVolume(value);
+            if (!GameServices.TryGet(out IAudioService audio)) return;
+
+            audio.SetSFXVolume(value);
+            // Audible preview of the new effects volume while dragging.
+            if (Time.unscaledTime - _lastTickTime > 0.12f)
+            {
+                _lastTickTime = Time.unscaledTime;
+                audio.PlayCue(GameAudioCue.UiTick, 1f);
+            }
         }
 
         private static void UpdateValueText(TextMeshProUGUI text, float value)

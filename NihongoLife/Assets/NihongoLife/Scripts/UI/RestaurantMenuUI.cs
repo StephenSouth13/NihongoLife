@@ -2,8 +2,11 @@ using System.Collections.Generic;
 using System.Text;
 using TMPro;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
+using UnityEngine.InputSystem.UI;
 using UnityEngine.UI;
+using NihongoLife.Audio;
 using NihongoLife.Core;
 using NihongoLife.Data;
 using NihongoLife.Interaction;
@@ -187,6 +190,7 @@ namespace NihongoLife.UI
 
             _panel.SetActive(true);
             _panel.transform.SetAsLastSibling();
+            if (GameServices.TryGet(out IAudioService openAudio)) openAudio.PlayCue(GameAudioCue.UiOpen, 0.8f);
             UIStyleKit.PlayShowAnimation(_panel);
             ScenarioManager.Instance?.SetPlayerInputLocked(true);
             Cursor.lockState = CursorLockMode.None;
@@ -198,6 +202,7 @@ namespace NihongoLife.UI
             if (_panel == null || !_panel.activeSelf) return;
 
             _panel.SetActive(false);
+            if (GameServices.TryGet(out IAudioService closeAudio)) closeAudio.PlayCue(GameAudioCue.UiClose, 0.8f);
             ScenarioManager.Instance?.SetPlayerInputLocked(false);
             Cursor.lockState = CursorLockMode.Locked;
             Cursor.visible = false;
@@ -645,6 +650,7 @@ namespace NihongoLife.UI
 
         private void BuildUI()
         {
+            EnsureEventSystem();
             _font = ResolveFont();
             Canvas canvas = ResolveCanvas();
             _panel = new GameObject("RestaurantMenuPanel", typeof(RectTransform), typeof(Image));
@@ -683,6 +689,14 @@ namespace NihongoLife.UI
 
             BuildFooter(panelRect);
             BuildStaffBar(canvas.transform);
+        }
+
+        private static void EnsureEventSystem()
+        {
+            if (EventSystem.current != null) return;
+            var eventSystemObject = new GameObject("RestaurantEventSystem");
+            eventSystemObject.AddComponent<EventSystem>();
+            eventSystemObject.AddComponent<InputSystemUIInputModule>();
         }
 
         private void BuildFooter(RectTransform panelRect)

@@ -7,6 +7,8 @@ namespace NihongoLife.Audio
     {
         void PlayBGM(AudioClip clip, bool loop = true, float volume = 1.0f);
         void StopBGM();
+        void FadeOutBGM(float seconds);
+        bool IsBgmPlaying { get; }
         void PlaySFX(AudioClip clip, float volume = 1.0f);
         void PlayVoice(AudioClip clip, float volume = 1.0f);
         void PlayCue(GameAudioCue cue, float volume = 1.0f);

@@ -6,6 +6,9 @@ using NihongoLife.Interaction;
 using NihongoLife.Player;
 using TMPro;
 using UnityEngine;
+using UnityEngine.EventSystems;
+using UnityEngine.InputSystem;
+using UnityEngine.InputSystem.UI;
 using UnityEngine.UI;
 
 namespace NihongoLife.World
@@ -44,7 +47,9 @@ namespace NihongoLife.World
         private GameObject _messagePanel;
         private TextMeshProUGUI _stationHelpText;
         private TextMeshProUGUI _walletText;
+        private TextMeshProUGUI _flowText;
         private GameObject _ticketPanel;
+        private Button _firstTicketButton;
         private string _destination = "MIDORI";
         private float _messageUntil;
         private float _ticketDeparture = -1f;
@@ -90,6 +95,12 @@ namespace NihongoLife.World
 
         private void Update()
         {
+            if (_ticketPanel != null && _ticketPanel.activeSelf && Keyboard.current != null && Keyboard.current.escapeKey.wasPressedThisFrame)
+            {
+                CloseTicketPanel();
+                return;
+            }
+
             UpdatePlatformTrain();
             if (_hasTicket && Time.time > _ticketDeparture + 5f)
             {
@@ -134,7 +145,7 @@ namespace NihongoLife.World
         private void BuyTicket()
         {
             if (_hasTicket) { ShowMessage(Localize("Bạn đã có vé cho chuyến kế tiếp.", "You already have a ticket for the next service.", "次の電車の切符を持っています。")); return; }
-            if (_ticketPanel != null) _ticketPanel.SetActive(true);
+            OpenTicketPanel();
             ShowMessage(Localize("Chọn ga đến trên máy bán vé.", "Choose a destination on the ticket machine.", "券売機で行き先を選んでください。"));
         }
 
@@ -150,7 +161,7 @@ namespace NihongoLife.World
             float cycleStart = Mathf.Floor(Time.time / serviceInterval) * serviceInterval;
             _ticketDeparture = cycleStart + boardingWindow;
             if (Time.time > _ticketDeparture) _ticketDeparture += serviceInterval;
-            if (_ticketPanel != null) _ticketPanel.SetActive(false);
+            CloseTicketPanel();
             ShowMessage(Localize($"Đã mua vé {_destination}. Vé chỉ dùng cho chuyến kế tiếp.", $"{_destination} ticket purchased. Valid only for the next service.", $"{_destination}行きの切符を購入しました。次の電車のみ有効です。"));
             PlayConfirm();
         }
@@ -220,6 +231,7 @@ namespace NihongoLife.World
 
         private void BuildTravelHud()
         {
+            EnsureEventSystem();
             var canvasObject = new GameObject("StationTravelHUD");
             canvasObject.transform.SetParent(transform, false);
             _canvas = canvasObject.AddComponent<Canvas>();
@@ -227,7 +239,9 @@ namespace NihongoLife.World
             _canvas.sortingOrder = 80;
             var scaler = canvasObject.AddComponent<CanvasScaler>();
             scaler.uiScaleMode = CanvasScaler.ScaleMode.ScaleWithScreenSize;
-            scaler.referenceResolution = new Vector2(1920f, 1080f);
+            scaler.referenceResolution = new Vector2(1280f, 720f);
+            scaler.screenMatchMode = CanvasScaler.ScreenMatchMode.MatchWidthOrHeight;
+            scaler.matchWidthOrHeight = 0.5f;
 
             GameObject panel = new GameObject("RoutePanel");
             panel.transform.SetParent(canvasObject.transform, false);
@@ -235,9 +249,19 @@ namespace NihongoLife.World
             rect.anchorMin = rect.anchorMax = Vector2.one;
             rect.pivot = Vector2.one;
             rect.anchoredPosition = new Vector2(-24f, -24f);
-            rect.sizeDelta = new Vector2(500f, 72f);
-            panel.AddComponent<Image>().color = new Color(0.025f, 0.055f, 0.075f, 0.94f);
-            _routeText = CreateText(panel.transform, 22f, TextAlignmentOptions.Center);
+            rect.sizeDelta = new Vector2(440f, 76f);
+            panel.AddComponent<Image>().color = new Color(0.055f, 0.068f, 0.082f, 0.96f);
+            _routeText = CreateText(panel.transform, 24f, TextAlignmentOptions.Center);
+
+            GameObject flow = new GameObject("TravelFlow");
+            flow.transform.SetParent(canvasObject.transform, false);
+            var flowRect = flow.AddComponent<RectTransform>();
+            flowRect.anchorMin = flowRect.anchorMax = new Vector2(0.5f, 1f);
+            flowRect.pivot = new Vector2(0.5f, 1f);
+            flowRect.anchoredPosition = new Vector2(0f, -118f);
+            flowRect.sizeDelta = new Vector2(780f, 64f);
+            flow.AddComponent<Image>().color = new Color(0.055f, 0.068f, 0.082f, 0.96f);
+            _flowText = CreateText(flow.transform, 20f, TextAlignmentOptions.Center);
 
             GameObject wallet = new GameObject("StationWallet");
             wallet.transform.SetParent(canvasObject.transform, false);
@@ -274,6 +298,14 @@ namespace NihongoLife.World
             BuildTicketPanel(canvasObject.transform);
         }
 
+        private static void EnsureEventSystem()
+        {
+            if (EventSystem.current != null) return;
+            var eventSystemObject = new GameObject("StationEventSystem");
+            eventSystemObject.AddComponent<EventSystem>();
+            eventSystemObject.AddComponent<InputSystemUIInputModule>();
+        }
+
         private void BuildTicketPanel(Transform parent)
         {
             _ticketPanel = new GameObject("TicketMachinePanel");
@@ -288,9 +320,27 @@ namespace NihongoLife.World
             title.rectTransform.offsetMax = new Vector2(-24f, -24f);
             title.text = Localize("CHỌN GA ĐẾN", "SELECT DESTINATION", "行き先を選択");
 
+            TextMeshProUGUI hint = CreateText(_ticketPanel.transform, 17f, TextAlignmentOptions.Bottom);
+            hint.rectTransform.offsetMin = new Vector2(24f, 8f);
+            hint.rectTransform.offsetMax = new Vector2(-24f, -286f);
+            hint.text = Localize("Nhấn chuột hoặc Enter để mua vé", "Click or press Enter to buy", "クリックまたはEnterで購入");
+
             CreateTicketButton("MIDORI", 180, 175f);
             CreateTicketButton("SHINJUKU", 260, 105f);
             CreateTicketButton("ASAKUSA", 320, 35f);
+            var closeObject = new GameObject("CloseTicketPanel");
+            closeObject.transform.SetParent(_ticketPanel.transform, false);
+            var closeRect = closeObject.AddComponent<RectTransform>();
+            closeRect.anchorMin = closeRect.anchorMax = new Vector2(1f, 1f);
+            closeRect.pivot = new Vector2(1f, 1f);
+            closeRect.anchoredPosition = new Vector2(-14f, -14f);
+            closeRect.sizeDelta = new Vector2(44f, 40f);
+            var closeImage = closeObject.AddComponent<Image>();
+            closeImage.color = new Color(0.22f, 0.27f, 0.3f, 1f);
+            var closeButton = closeObject.AddComponent<Button>();
+            closeButton.targetGraphic = closeImage;
+            CreateText(closeObject.transform, 22f, TextAlignmentOptions.Center).text = "X";
+            closeButton.onClick.AddListener(CloseTicketPanel);
             _ticketPanel.SetActive(false);
         }
 
@@ -310,6 +360,26 @@ namespace NihongoLife.World
             TextMeshProUGUI label = CreateText(buttonObject.transform, 20f, TextAlignmentOptions.Center);
             label.text = $"{destination}     ¥{fare}";
             button.onClick.AddListener(() => PurchaseTicket(destination, fare));
+            if (_firstTicketButton == null) _firstTicketButton = button;
+        }
+
+        private void OpenTicketPanel()
+        {
+            if (_ticketPanel == null) return;
+            _ticketPanel.SetActive(true);
+            _ticketPanel.transform.SetAsLastSibling();
+            Cursor.lockState = CursorLockMode.None;
+            Cursor.visible = true;
+            if (EventSystem.current != null && _firstTicketButton != null)
+                EventSystem.current.SetSelectedGameObject(_firstTicketButton.gameObject);
+        }
+
+        private void CloseTicketPanel()
+        {
+            if (_ticketPanel != null) _ticketPanel.SetActive(false);
+            if (EventSystem.current != null) EventSystem.current.SetSelectedGameObject(null);
+            Cursor.lockState = CursorLockMode.Locked;
+            Cursor.visible = false;
         }
 
         private static TextMeshProUGUI CreateText(Transform parent, float size, TextAlignmentOptions alignment)
@@ -343,6 +413,25 @@ namespace NihongoLife.World
                     ? Localize($"ĐANG ĐÓN KHÁCH | {wait:0}s", $"BOARDING | {wait:0}s", $"乗車中 | {wait:0}秒")
                     : Localize($"CHUYẾN KẾ | {wait:0}s", $"NEXT TRAIN | {wait:0}s", $"次の電車 | {wait:0}秒");
             _routeText.text = $"SAKURA  >  {_destination}\n<size=70%><color=#78C7D4>{stage}</color></size>";
+            if (_flowText != null)
+            {
+                int step = !_hasTicket ? 1 : !_gatePassed ? 2 : !IsTrainBoarding() ? 3 : 4;
+                string[] labels =
+                {
+                    Localize("MUA VÉ", "BUY TICKET", "きっぷ"),
+                    Localize("QUÉT VÉ", "VALIDATE", "改札"),
+                    Localize("CHỜ TÀU", "WAIT AT PLATFORM", "待つ"),
+                    Localize("LÊN TÀU", "BOARD TRAIN", "乗車")
+                };
+                var builder = new System.Text.StringBuilder();
+                for (int i = 0; i < labels.Length; i++)
+                {
+                    string color = i + 1 < step ? "#70D6A2" : i + 1 == step ? "#FFD35A" : "#82939B";
+                    if (i > 0) builder.Append("   >   ");
+                    builder.Append($"<color={color}>{i + 1}  {labels[i]}</color>");
+                }
+                _flowText.text = builder.ToString();
+            }
         }
 
         private bool IsTrainBoarding() => Mathf.Repeat(Time.time, serviceInterval) < boardingWindow;

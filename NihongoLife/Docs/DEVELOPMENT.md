@@ -33,3 +33,11 @@ Mục tiêu: HUD gọn, đẹp, đọc được trên mọi thiết bị (máy t
 5. **Chỉ số nhân vật** nằm trong `HudRightColumn/VitalsCard` (`HudVitalsCard`: Lv/EXP, ví, Máu/Năng lượng/No/Khát; thanh đỏ nhấp nháy khi dưới 25%). Thêm chỉ số mới: nhân đôi 1 hàng trong scene, thêm vào danh sách `rows`, mở rộng `ReadValue`.
 6. **Thông báo** nằm trong `HudRightColumn/NotificationTray` (3 khe cố định, `HudNotificationTray`). Hệ thống nào cần báo chỉ gọi `HudNotificationTray.Instance.Post(id, tiêu đề, phụ đề, onClick, tone)` và `Clear(id)`; không tự dựng chip riêng.
 7. **Kiểm tra bắt buộc** khi đổi HUD: Game view ở 1920x1080, 1366x768, 2560x1080 (ultrawide), 1024x768 (4:3), 844x390 và 390x844 (điện thoại ngang/dọc; bật `forceTouchLayout` trên `HudCanvasFitter` để giả lập cảm ứng), rồi mở hội thoại, túi đồ, hồ sơ, thực đơn nhà hàng và thông báo hóa đơn — không panel nào tràn màn hình hay đè nhau.
+
+## Audio
+
+- **Dịch vụ chung**: `AudioService` (BGM / SFX / giọng nói; thanh trượt Cài đặt lưu ở `Volume_BGM`, `Volume_SFX`). Âm UI lấy từ `Resources/Audio/GameAudioCatalog.asset` (Kenney Interface Sounds): `UiClick`, `UiConfirm`, `UiBack`, `UiError`, `UiHover`, `UiOpen`, `UiClose`, `UiTick` + cửa, bước chân, nhặt đồ...
+- **Tự động cho UI**: mọi nút dựng bằng `UIStyleKit.StyleButton` đã có tiếng bấm và tiếng hover nhẹ (`ButtonColorSwap`). Popup/panel gọi `UiOpen`/`UiClose` khi mở/đóng; kéo thanh SFX có tiếng xem trước (`UiTick`).
+- **Nhạc menu**: `MenuMusicController` (gắn bởi `MainMenuUI`). Có file `Assets/NihongoLife/Resources/Audio/Music/menu_bgm.*` (ogg/mp3/wav) thì dùng file đó; không có thì tự sinh nhạc nền phong cách Nhật lúc chạy (`ProceduralMenuMusic`: đàn koto Karplus-Strong, thang âm D yo, pad, loop liền mạch, không cần bản quyền). Vào game thì nhạc menu tắt dần (`FadeOutBGM`).
+- **Nhạc trong game**: `TownAmbientAudio` phát `GameControlDatabase.townBgmClip` (đang trống nên chưa có nhạc) và đã theo thanh BGM.
+- Trình duyệt chặn tự phát âm thanh trước lần bấm/chạm đầu tiên của người dùng; nhạc menu sẽ bắt đầu sau lần tương tác đầu.

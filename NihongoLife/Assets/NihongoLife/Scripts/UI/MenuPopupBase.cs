@@ -4,6 +4,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
+using NihongoLife.Audio;
 using NihongoLife.Core;
 
 namespace NihongoLife.UI
@@ -80,12 +81,20 @@ namespace NihongoLife.UI
             OnOpened();
             PanelObject.SetActive(true);
             PanelObject.transform.SetAsLastSibling();
+            PlayCue(GameAudioCue.UiOpen, 0.8f);
             UIStyleKit.PlayShowAnimation(Card != null ? Card.gameObject : PanelObject);
         }
 
         public void Hide()
         {
-            if (PanelObject != null) PanelObject.SetActive(false);
+            if (PanelObject == null || !PanelObject.activeSelf) return;
+            PanelObject.SetActive(false);
+            PlayCue(GameAudioCue.UiClose, 0.8f);
+        }
+
+        protected static void PlayCue(GameAudioCue cue, float volume)
+        {
+            if (GameServices.TryGet(out IAudioService audio)) audio.PlayCue(cue, volume);
         }
 
         private void Update()

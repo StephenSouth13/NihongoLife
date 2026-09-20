@@ -34,9 +34,9 @@ namespace NihongoLife.Core
         {
             "scenario.intro.arrival",
             "scenario.street.first_talk",
-            "scenario.konbini.buy_onigiri",
             "scenario.house1.greeting",
             "scenario.school.self_intro",
+            "scenario.konbini.buy_onigiri",
             "scenario.house2.lostcat",
             "scenario.house3.garbage",
             "scenario.restaurant.sushi_dining",

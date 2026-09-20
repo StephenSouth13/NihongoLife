@@ -249,6 +249,19 @@ Chủ dự án xác nhận: đã bước vào bên trong konbini thật (không 
 
 **Acceptance criteria**: mục 1-4 có bằng chứng Play Mode (mô tả hoặc ảnh ở ít nhất 1920x1080 và 1 độ phân giải điện thoại), console không lỗi mới.
 
+## TASK-I (Codex) — Đưa cốt truyện vào thế giới thật (theo `Docs/PROJECT_AUDIT.md` mục 4, P0)
+
+**Thứ tự campaign hiện hành** (đã ghi vào `NihongoLifeControlDatabase.asset`): intro → street → house1 → school → konbini → lostcat → garbage → sushi_dining → cat_followup → recycling → evening_shift. `restaurant.order_ramen`, `station.buy_ticket`, `town.summer_festival` **chưa** nằm trong campaign vì thiếu NPC/khu vực trong scene; khi dựng xong từng phần thì báo Claude để đưa vào.
+
+**Việc cần làm (không tạo scene mới, không thêm menu Editor, ghi trực tiếp vào scene)**
+1. Play thử toàn bộ campaign theo thứ tự trên, ghi lại node treo, lỗi hiển thị, lỗi va chạm, lỗi mục tiêu.
+2. `30_SushiRestaurant`: đặt NPC `npc_sushi_staff` (Aoki) và `npc_sushi_chef` (Ota) bằng pipeline nhân vật hiện có; bỏ đầu bếp sinh lúc chạy trong `SushiRestaurantRuntime` (chỉ giữ 1 đầu bếp, dùng lời thoại từ scenario/menu asset).
+3. Ghi phần môi trường sinh lúc chạy (`SushiRestaurantRuntime`, `StationMetroEnvironment`, `RuntimeCollisionRepair`, `StoreLayoutStabilizer`) vào scene rồi bỏ đoạn sinh; kiểm tra collider, cửa, spawn.
+4. Quán ramen: thêm khu vực `ramen_shop_entrance` + NPC `npc_ramen_owner` (Yamada). Nhà ga: khu vực `station_entrance` + NPC `npc_station_staff` (Kimura). Sau đó báo Claude.
+5. Quy chuẩn ánh sáng chung cho menu / sandbox / zone (giờ trong ngày, sương, ambient), kèm ảnh so sánh.
+
+**Ranh giới**: không sửa nội dung tiếng Nhật trong scenario; không đổi `speakerId`/tên khu vực đã dùng trong scenario (nếu cần đổi thì báo Claude).
+
 ## Việc của Claude (song song, không chờ Codex/Antigravity)
 
 - Đang xác nhận với chủ dự án về việc tạo Supabase project riêng cho NihongoLife (tài khoản hiện chỉ có 1 project không liên quan tên `hrm_crm`) — sau khi có project sẽ tạo 8 bảng + RLS rồi điền vào `GameControlDatabase`.

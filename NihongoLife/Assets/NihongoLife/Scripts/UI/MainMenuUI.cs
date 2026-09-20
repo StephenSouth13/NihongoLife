@@ -1,6 +1,7 @@
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using NihongoLife.Audio;
 using NihongoLife.Core;
 using NihongoLife.Player;
 using NihongoLife.Scenario;
@@ -58,6 +59,7 @@ namespace NihongoLife.UI
             }
 
             EnsureSettingsUI();
+            menuMusic = gameObject.GetComponent<MenuMusicController>() ?? gameObject.AddComponent<MenuMusicController>();
             EnsureSocialUI();
             EnsureCharacterSelectUI();
             RefreshTexts();
@@ -185,6 +187,7 @@ namespace NihongoLife.UI
         private Button loginButton;
         private AuthUI authUI;
 
+        private MenuMusicController menuMusic;
         private GuidePopup guidePopup;
         private AboutPopup aboutPopup;
 
@@ -742,6 +745,7 @@ namespace NihongoLife.UI
 
         private void BeginGameWithSelectedCharacter()
         {
+            menuMusic?.FadeOut(1f);
             ScenarioSceneInitializer.QueueLaunch(targetScenarioId);
 
             if (GameServices.TryGet(out SceneFlowController sceneFlow))

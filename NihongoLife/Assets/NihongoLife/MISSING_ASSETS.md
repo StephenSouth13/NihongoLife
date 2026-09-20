@@ -31,6 +31,7 @@ All new clips must be Humanoid-compatible and preferably in-place.
 - Pick up item from a shelf
 - Carry a shopping basket or bag
 - Use cash register / scan product
+- Sushi chef preparation loop (knife cutting, shaping nigiri and plating). The restaurant currently uses a restrained procedural work motion until this Humanoid clip is supplied.
 - Sit down and stand up
 - Positive and negative reaction
 - Conversation listening idle

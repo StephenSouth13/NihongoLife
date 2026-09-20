@@ -1,5 +1,15 @@
 # NihongoLife - Social story and career roadmap
 
+> **Canon cốt truyện**: nội dung và nhân vật lấy từ `Docs/STORY_BIBLE.md` (nhân vật chính là du học sinh Việt tại ひばり日本語学院; các chương 0-4: mở màn, chào hỏi, cửa hàng, xóm giềng và nhà hàng, ga và lễ hội). Tài liệu này mô tả **cách mở khóa và phát triển nhánh** (nghề, quản lý, dạy học), không thay thế bible.
+>
+> | Act ở đây | Tương ứng trong bible |
+> |---|---|
+> | Act 1 - New resident | Chương 0-3 (mở màn, trường học, konbini, xóm giềng, nhà hàng) |
+> | Act 2 - Working life | Nhánh phụ mở bằng kiến thức: `career.retail` (konbini), `career.station` (ga), `career.education` (trường), `community` (xóm giềng, lễ hội) |
+> | Act 3-4 - Responsibility, Teacher | Sau lễ hội (bible mục 4.6: mở rộng mùa thu) |
+>
+> Kiểm tra hiện trạng và việc còn thiếu: `Docs/PROJECT_AUDIT.md`.
+
 ## Product direction
 
 NihongoLife is a Japanese-learning social simulation. Knowledge is the main progression gate. Money, jobs, relationships and exploration create reasons to use Japanese; they must not replace learning.
