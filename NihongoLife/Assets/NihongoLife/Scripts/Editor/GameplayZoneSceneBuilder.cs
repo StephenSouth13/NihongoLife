@@ -26,7 +26,6 @@ namespace NihongoLife.EditorTools
         private const string House = "Assets/ThirdParty/Ultimate House Interior Pack - June 2020-20260920T035345Z-1-001";
         private const int InteractableLayer = 6;
 
-        [InitializeOnLoadMethod]
         private static void ApplySushiLayoutMigration()
         {
             if (File.Exists(SushiScene))
@@ -42,7 +41,6 @@ namespace NihongoLife.EditorTools
             };
         }
 
-        [InitializeOnLoadMethod]
         private static void ApplyStationLayoutMigration()
         {
             if (File.Exists(StationScene))
@@ -84,9 +82,9 @@ namespace NihongoLife.EditorTools
             CreateBlock(root.transform, "SafetyLine", origin + new Vector3(0f, 0.33f, 0.55f), new Vector3(30f, 0.035f, 0.28f), new Color(0.95f, 0.72f, 0.12f));
             for (int i = -2; i <= 2; i++)
                 Place(Train, "RailwayTrack_Straight", root.transform, $"Track_{i}", origin + new Vector3(i * 6f, 0f, -3.2f), new Vector3(6.2f, 0.28f, 2.1f), Quaternion.identity, true);
-            Place(Train, "HighSpeed_Front", root.transform, "HighSpeed_Front", origin + new Vector3(-5f, 0.1f, -3.2f), new Vector3(7f, 2.5f, 2.4f), Quaternion.Euler(0f, 90f, 0f), true);
-            Place(Train, "HighSpeed_Wagon", root.transform, "HighSpeed_Wagon_A", origin + new Vector3(2.2f, 0.1f, -3.2f), new Vector3(7f, 2.5f, 2.4f), Quaternion.Euler(0f, 90f, 0f), true);
-            Place(Train, "HighSpeed_Wagon", root.transform, "HighSpeed_Wagon_B", origin + new Vector3(9.4f, 0.1f, -3.2f), new Vector3(7f, 2.5f, 2.4f), Quaternion.Euler(0f, 90f, 0f), true);
+            Place(Train, "HighSpeed_Front", root.transform, "HighSpeed_Front", origin + new Vector3(-10f, 0.1f, -3.2f), new Vector3(12f, 3.2f, 3f), Quaternion.identity, true);
+            Place(Train, "HighSpeed_Wagon", root.transform, "HighSpeed_Wagon_A", origin + new Vector3(0f, 0.1f, -3.2f), new Vector3(12f, 3.2f, 3f), Quaternion.identity, true);
+            Place(Train, "HighSpeed_Wagon", root.transform, "HighSpeed_Wagon_B", origin + new Vector3(10f, 0.1f, -3.2f), new Vector3(12f, 3.2f, 3f), Quaternion.identity, true);
             Place(Sushi, "Environment_Bench", root.transform, "PlatformBench_A", origin + new Vector3(-6f, 0.3f, 4f), new Vector3(2.4f, 1.0f, 0.8f), Quaternion.Euler(0f, 180f, 0f), true);
             Place(Sushi, "Environment_Bench", root.transform, "PlatformBench_B", origin + new Vector3(3f, 0.3f, 4f), new Vector3(2.4f, 1.0f, 0.8f), Quaternion.Euler(0f, 180f, 0f), true);
             Place(Sushi, "Environment_Arch", root.transform, "TicketGateArch", origin + new Vector3(0f, 0.3f, 8.5f), new Vector3(4f, 3.3f, 1.2f), Quaternion.identity, true);
@@ -253,7 +251,7 @@ namespace NihongoLife.EditorTools
             var collider = portal.AddComponent<BoxCollider>();
             collider.size = new Vector3(3f, 2.2f, 1f);
             collider.isTrigger = true;
-            portal.AddComponent<ScenePortal>().Configure(Path.GetFileNameWithoutExtension(zoneScene), citySpawn, display, true);
+            portal.AddComponent<ScenePortal>().Configure(Path.GetFileNameWithoutExtension(CityScene), citySpawn, display, true);
         }
 
         private static void CreateSpawn(Transform parent, string id, Vector3 position, Quaternion rotation)

@@ -64,3 +64,13 @@ Toàn bộ thông tin món ăn nằm trong dữ liệu, không hard-code trong U
 **Mẫu câu quán ăn bắt buộc có trong mỗi bài nhà hàng**: いらっしゃいませ / 何名様ですか / 〜をください / 〜をお願いします / おすすめは何ですか / お会計をお願いします / いただきます / ごちそうさまでした. Người chơi **không** phải tự nói kính ngữ của nhân viên (かしこまりました…), chỉ cần nghe hiểu.
 
 **Kiểm tra trước khi coi là xong**: chạy Play Mode: bấm E ở bảng thực đơn (mở/đóng bằng ESC, không kẹt khoá di chuyển); ở bàn ăn chạy hết vòng gọi món → chờ → món hiện đúng chỗ, đúng kích thước → ăn (thanh no/khát tăng) → thanh toán (ví trừ đúng); thử không đủ tiền; chơi hết các nhánh scenario; đọc lại tiếng Nhật với người bản ngữ (chưa được review).
+
+## Menu popups (Về tôi / Cách chơi)
+
+Hai popup ở màn menu dùng chung khung `MenuPopupBase` (nền tối bấm ra ngoài để đóng, nút X, ESC, hiệu ứng mở, tự thu nhỏ theo màn hình). Panel cũ `GuidePanel`/`CreditsPanel` đã bỏ, không dựng nữa.
+
+**Về tôi (`AboutPopup`)**: thông tin tác giả nằm ở `Resources/Menu/menu_about.asset` (tên, avatar chữ, vai trò, giới thiệu 3 ngôn ngữ, nút website, link phụ, danh sách credit, thời gian tự chuyển ảnh). Sửa trong Inspector, không cần đụng code.
+
+**Thêm ảnh chụp màn hình**: chỉ cần thả file PNG/JPG (khuyên dùng 16:9, khoảng 1920x1080 trở xuống) vào `Assets/NihongoLife/Resources/MenuGallery/`. Ảnh tự xuất hiện trong gallery theo thứ tự tên file (đặt `01_...`, `02_...`). Chú thích mặc định lấy từ tên file (bỏ số đầu, dấu `_` thành khoảng trắng). Muốn chú thích 3 ngôn ngữ: thêm 1 dòng vào `Captions` của asset với `Texture Name` = tên file không có đuôi. Có nút mũi tên, chấm chuyển ảnh, phím trái/phải, tự chuyển ảnh, bấm vào ảnh để xem cỡ lớn. Chưa có ảnh nào thì hiện khung dự phòng.
+
+**Cách chơi (`GuidePopup`)**: 4 bước + dải phím tắt; nhãn phím lấy trực tiếp từ bảng phím hiện tại nên đúng cả khi người chơi đã đổi phím. Nội dung 3 ngôn ngữ nằm trong `GuidePopup.cs` (mục `_steps`).

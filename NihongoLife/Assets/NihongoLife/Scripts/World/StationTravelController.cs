@@ -28,6 +28,9 @@ namespace NihongoLife.World
         [SerializeField] private float rideDuration = 45f;
         [SerializeField] private float scenerySpeed = 8f;
         [SerializeField] private float sceneryLoopWidth = 48f;
+        [SerializeField] private float serviceInterval = 60f;
+        [SerializeField] private float boardingWindow = 15f;
+        [SerializeField] private float trainTravelDistance = 75f;
 
         private readonly List<Transform> _scenery = new();
         private bool _hasTicket;
@@ -37,7 +40,11 @@ namespace NihongoLife.World
         private Canvas _canvas;
         private TextMeshProUGUI _routeText;
         private TextMeshProUGUI _messageText;
+        private GameObject _ticketPanel;
+        private string _destination = "MIDORI";
         private float _messageUntil;
+        private float _ticketDeparture = -1f;
+        private readonly List<(Transform transform, Vector3 platformPosition)> _platformTrain = new();
 
         public void Configure(Transform platform, Transform carriage, Transform movingScenery)
         {
@@ -51,11 +58,20 @@ namespace NihongoLife.World
             if (sceneryRoot != null)
                 foreach (Transform child in sceneryRoot) _scenery.Add(child);
             BuildTravelHud();
+            CachePlatformTrain();
             RefreshHud();
         }
 
         private void Update()
         {
+            UpdatePlatformTrain();
+            if (_hasTicket && Time.time > _ticketDeparture + 5f)
+            {
+                _hasTicket = false;
+                _gatePassed = false;
+                ShowMessage(Localize("Vé đã hết hiệu lực vì bạn lỡ chuyến.", "Your ticket expired because the train was missed.", "乗り遅れたため、切符は無効になりました。"));
+            }
+
             if (_riding)
             {
                 _rideRemaining = Mathf.Max(0f, _rideRemaining - Time.deltaTime);
@@ -87,30 +103,42 @@ namespace NihongoLife.World
 
         private void BuyTicket()
         {
-            if (_hasTicket) { ShowMessage("Ban da co ve den ga Midori."); return; }
-            if (PlayerInventory.Instance == null || !PlayerInventory.Instance.SpendYen(ticketPrice))
+            if (_hasTicket) { ShowMessage(Localize("Bạn đã có vé cho chuyến kế tiếp.", "You already have a ticket for the next service.", "次の電車の切符を持っています。")); return; }
+            if (_ticketPanel != null) _ticketPanel.SetActive(true);
+            ShowMessage(Localize("Chọn ga đến trên máy bán vé.", "Choose a destination on the ticket machine.", "券売機で行き先を選んでください。"));
+        }
+
+        private void PurchaseTicket(string destination, int fare)
+        {
+            if (PlayerInventory.Instance == null || !PlayerInventory.Instance.SpendYen(fare))
             {
-                ShowMessage($"Khong du tien. Gia ve: Y{ticketPrice}.");
+                ShowMessage(Localize($"Không đủ tiền. Giá vé: ¥{fare}.", $"Not enough money. Fare: ¥{fare}.", $"お金が足りません。運賃は¥{fare}です。"));
                 return;
             }
+            _destination = destination;
             _hasTicket = true;
-            ShowMessage("Da mua ve. Hay qua cong soat ve.");
+            float cycleStart = Mathf.Floor(Time.time / serviceInterval) * serviceInterval;
+            _ticketDeparture = cycleStart + boardingWindow;
+            if (Time.time > _ticketDeparture) _ticketDeparture += serviceInterval;
+            if (_ticketPanel != null) _ticketPanel.SetActive(false);
+            ShowMessage(Localize($"Đã mua vé {_destination}. Vé chỉ dùng cho chuyến kế tiếp.", $"{_destination} ticket purchased. Valid only for the next service.", $"{_destination}行きの切符を購入しました。次の電車のみ有効です。"));
             PlayConfirm();
         }
 
         private void PassGate()
         {
-            if (!_hasTicket) { ShowMessage("Can mua ve truoc khi qua cong."); return; }
+            if (!_hasTicket) { ShowMessage(Localize("Bạn cần mua vé hợp lệ trước.", "A valid ticket is required.", "有効な切符が必要です。")); return; }
             _gatePassed = true;
-            ShowMessage("Ve hop le. Tau den san so 1.");
+            ShowMessage(Localize("Vé hợp lệ. Hãy đến sân ga số 1 đúng giờ.", "Ticket accepted. Go to platform 1 on time.", "切符は有効です。時間どおり1番線へお越しください。"));
             PlayConfirm();
         }
 
         private void Board(GameObject player)
         {
-            if (!_gatePassed) { ShowMessage("Hay mua ve va qua cong soat truoc."); return; }
+            if (!_gatePassed) { ShowMessage(Localize("Hãy mua vé và qua cổng soát vé trước.", "Buy a ticket and pass the gate first.", "先に切符を購入して改札を通ってください。")); return; }
+            if (!IsTrainBoarding()) { ShowMessage(Localize("Tàu chưa vào ga hoặc đã đóng cửa.", "The train is not boarding now.", "現在、この電車には乗車できません。")); return; }
             Teleport(player, carriageSpawn);
-            ShowMessage("Da len tau. Tim ghe ngoi va bat dau hanh trinh.");
+            ShowMessage(Localize("Đã lên tàu. Hãy tìm chỗ ngồi.", "You boarded the train. Please find a seat.", "乗車しました。席をお探しください。"));
         }
 
         private void StartRide()
@@ -188,6 +216,45 @@ namespace NihongoLife.World
             messageRect.sizeDelta = new Vector2(900f, 64f);
             message.AddComponent<Image>().color = new Color(0.025f, 0.035f, 0.045f, 0.92f);
             _messageText = CreateText(message.transform, 20f, TextAlignmentOptions.Center);
+            BuildTicketPanel(canvasObject.transform);
+        }
+
+        private void BuildTicketPanel(Transform parent)
+        {
+            _ticketPanel = new GameObject("TicketMachinePanel");
+            _ticketPanel.transform.SetParent(parent, false);
+            var rect = _ticketPanel.AddComponent<RectTransform>();
+            rect.anchorMin = rect.anchorMax = rect.pivot = new Vector2(0.5f, 0.5f);
+            rect.sizeDelta = new Vector2(620f, 330f);
+            _ticketPanel.AddComponent<Image>().color = new Color(0.025f, 0.045f, 0.06f, 0.98f);
+
+            TextMeshProUGUI title = CreateText(_ticketPanel.transform, 28f, TextAlignmentOptions.Top);
+            title.rectTransform.offsetMin = new Vector2(24f, 250f);
+            title.rectTransform.offsetMax = new Vector2(-24f, -24f);
+            title.text = Localize("CHỌN GA ĐẾN", "SELECT DESTINATION", "行き先を選択");
+
+            CreateTicketButton("MIDORI", 180, 175f);
+            CreateTicketButton("SHINJUKU", 260, 105f);
+            CreateTicketButton("ASAKUSA", 320, 35f);
+            _ticketPanel.SetActive(false);
+        }
+
+        private void CreateTicketButton(string destination, int fare, float y)
+        {
+            var buttonObject = new GameObject("Ticket_" + destination);
+            buttonObject.transform.SetParent(_ticketPanel.transform, false);
+            var rect = buttonObject.AddComponent<RectTransform>();
+            rect.anchorMin = rect.anchorMax = new Vector2(0.5f, 0f);
+            rect.pivot = new Vector2(0.5f, 0f);
+            rect.anchoredPosition = new Vector2(0f, y);
+            rect.sizeDelta = new Vector2(500f, 54f);
+            var image = buttonObject.AddComponent<Image>();
+            image.color = new Color(0.1f, 0.32f, 0.42f, 1f);
+            Button button = buttonObject.AddComponent<Button>();
+            button.targetGraphic = image;
+            TextMeshProUGUI label = CreateText(buttonObject.transform, 20f, TextAlignmentOptions.Center);
+            label.text = $"{destination}     ¥{fare}";
+            button.onClick.AddListener(() => PurchaseTicket(destination, fare));
         }
 
         private static TextMeshProUGUI CreateText(Transform parent, float size, TextAlignmentOptions alignment)
@@ -212,8 +279,49 @@ namespace NihongoLife.World
         private void RefreshHud()
         {
             if (_routeText == null) return;
-            string stage = _riding ? $"DANG DI  |  {_rideRemaining:0}s" : _gatePassed ? "SAN SO 1  |  MOI LEN TAU" : _hasTicket ? "VE MIDORI  |  QUA CONG" : $"MUA VE  |  Y{ticketPrice}";
-            _routeText.text = $"SAKURA  >  MIDORI\n<size=70%><color=#78C7D4>{stage}</color></size>";
+            float wait = SecondsUntilBoardingEnds();
+            string stage = _riding
+                ? Localize($"ĐANG ĐI | {_rideRemaining:0}s", $"EN ROUTE | {_rideRemaining:0}s", $"走行中 | {_rideRemaining:0}秒")
+                : IsTrainBoarding()
+                    ? Localize($"ĐANG ĐÓN KHÁCH | {wait:0}s", $"BOARDING | {wait:0}s", $"乗車中 | {wait:0}秒")
+                    : Localize($"CHUYẾN KẾ | {wait:0}s", $"NEXT TRAIN | {wait:0}s", $"次の電車 | {wait:0}秒");
+            _routeText.text = $"SAKURA  >  {_destination}\n<size=70%><color=#78C7D4>{stage}</color></size>";
+        }
+
+        private bool IsTrainBoarding() => Mathf.Repeat(Time.time, serviceInterval) < boardingWindow;
+
+        private float SecondsUntilBoardingEnds()
+        {
+            float phase = Mathf.Repeat(Time.time, serviceInterval);
+            return phase < boardingWindow ? boardingWindow - phase : serviceInterval - phase;
+        }
+
+        private void CachePlatformTrain()
+        {
+            string[] names = { "HighSpeed_Front", "HighSpeed_Wagon_A", "HighSpeed_Wagon_B" };
+            foreach (string trainName in names)
+            {
+                GameObject item = GameObject.Find(trainName);
+                if (item != null) _platformTrain.Add((item.transform, item.transform.position));
+            }
+        }
+
+        private void UpdatePlatformTrain()
+        {
+            float phase = Mathf.Repeat(Time.time, serviceInterval);
+            float offset;
+            if (phase < boardingWindow) offset = 0f;
+            else if (phase < boardingWindow + 12f) offset = Mathf.SmoothStep(0f, trainTravelDistance, (phase - boardingWindow) / 12f);
+            else if (phase < serviceInterval - 12f) offset = trainTravelDistance;
+            else offset = Mathf.SmoothStep(-trainTravelDistance, 0f, (phase - (serviceInterval - 12f)) / 12f);
+
+            foreach (var item in _platformTrain)
+                if (item.transform != null) item.transform.position = item.platformPosition + Vector3.right * offset;
+        }
+
+        private static string Localize(string vi, string en, string ja)
+        {
+            return GameServices.TryGet(out GameSettingsService settings) ? settings.Text(vi, en, ja) : vi;
         }
 
         private void ShowMessage(string message, float seconds = 4f)

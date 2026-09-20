@@ -56,8 +56,13 @@ namespace NihongoLife.World
 
         private void RescuePlayer(Vector3 unsafePosition)
         {
-            Vector3 target = safeSpawn != null ? safeSpawn.position : new Vector3(800f, 0.38f, 6.8f);
-            Quaternion rotation = safeSpawn != null ? safeSpawn.rotation : Quaternion.identity;
+            bool fellNearTracks = Mathf.Abs(unsafePosition.x - trackCenter.x) <= trackHalfExtents.x + 4f;
+            Vector3 target = fellNearTracks
+                ? new Vector3(Mathf.Clamp(unsafePosition.x, 786f, 814f), 0.38f, 1.9f)
+                : safeSpawn != null ? safeSpawn.position : new Vector3(800f, 0.38f, 6.8f);
+            Quaternion rotation = fellNearTracks
+                ? Quaternion.Euler(0f, 180f, 0f)
+                : safeSpawn != null ? safeSpawn.rotation : Quaternion.identity;
             CharacterController controller = _player.GetComponent<CharacterController>();
             if (controller != null) controller.enabled = false;
             _player.transform.SetPositionAndRotation(target, rotation);

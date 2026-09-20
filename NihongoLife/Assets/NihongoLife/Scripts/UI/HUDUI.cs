@@ -52,6 +52,7 @@ namespace NihongoLife.UI
         private QuestDirectionMarker _questMarker;
         private IOnlineWorldService _onlineWorld;
         private WorldMapUI _worldMap;
+        private SettingsUI _settingsUI;
 
         private void Start()
         {
@@ -113,6 +114,8 @@ namespace NihongoLife.UI
             _worldMap = gameObject.AddComponent<WorldMapUI>();
             _worldMap.Initialize(scenarioTitleText != null ? scenarioTitleText.font : null);
             _worldMap.OnVisibilityChanged += _ => UpdateOverlayInputLock();
+            _settingsUI = gameObject.AddComponent<SettingsUI>();
+            _settingsUI.Initialize(scenarioTitleText != null ? scenarioTitleText.font : null);
             SetInventoryVisible(false);
             SetCharacterVisible(false);
             SetChatVisible(false);
@@ -384,6 +387,7 @@ namespace NihongoLife.UI
             {
                 SetChatVisible(false);
                 _worldMap?.SetVisible(false);
+                _settingsUI?.ToggleFromEscape();
                 UpdateOverlayInputLock();
             }
 
@@ -720,7 +724,9 @@ namespace NihongoLife.UI
             if (promptPanel == null || promptText == null) return;
             promptPanel.SetActive(true);
             string key = GameInputService.GetOrCreate().GetBindingLabel(GameInputId.Interact);
-            promptText.text = $"[{key}] {interactable.GetPromptJa()} / {interactable.GetpromptEn()}";
+            bool japanese = GameServices.TryGet(out GameSettingsService settings)
+                && settings.Language == GameLanguage.Japanese;
+            promptText.text = $"[{key}] {(japanese ? interactable.GetPromptJa() : interactable.GetpromptEn())}";
         }
 
         private void HidePrompt()

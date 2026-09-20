@@ -1,0 +1,46 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a98733b7d27f45f1b07f7dad31eff0fd, type: 3}
+  m_Name: menu_about
+  m_EditorClassIdentifier: NihongoLife::NihongoLife.Data.MenuAboutDefinition
+  displayName: quachthanhlong.com
+  avatarText: QL
+  websiteUrl: https://quachthanhlong.com
+  websiteButtonVi: "Mở website"
+  websiteButtonEn: "Visit website"
+  websiteButtonJa: "サイトを開く"
+  roleVi: "Người tạo ra Nihongo Life"
+  roleEn: "Creator of Nihongo Life"
+  roleJa: "Nihongo Life の制作者"
+  bioVi: "Nihongo Life là game mô phỏng cuộc sống ở Nhật để học tiếng Nhật qua tình huống thật: hội thoại rẽ nhánh, mua sắm, nhà hàng, trường học và cộng đồng online.\n\nKịch bản, hội thoại, chấm điểm, hệ thống sinh tồn và phần online đều do mình thiết kế và xây dựng."
+  bioEn: "Nihongo Life is a Japan life-sim for learning Japanese through real situations: branching conversations, shopping, restaurants, school and an online community.\n\nThe scenarios, dialogue, scoring, survival system and online features are designed and built by me."
+  bioJa: "Nihongo Life は、分岐する会話・買い物・レストラン・学校・オンライン交流を通して日本語を学ぶ生活シミュレーションです。\n\nシナリオ、会話、採点、サバイバル、オンライン機能はすべて自分で設計・開発しています。"
+  links: []
+  credits:
+  - "Unity 6 (URP)"
+  - "Supabase (online)"
+  - "Sushi Restaurant Kit, Quaternius (CC0)"
+  - "Kenney kits (CC0)"
+  - "KayKit City Builder (CC0)"
+  - "Mixamo"
+  - "Devion Games"
+  galleryResourceFolder: MenuGallery
+  autoAdvanceSeconds: 5
+  captions:
+  - textureName: 01_graduation_2025
+    captionVi: "Lễ bế giảng VTC Academy - 01/08/2025"
+    captionEn: "VTC Academy Graduation Ceremony - August 1, 2025"
+    captionJa: "VTC Academy 卒業式 - 2025年8月1日"
+  - textureName: 02_unique_project_2025
+    captionVi: "Giải Triển vọng - Unique Project 2025 Award, VTC Academy"
+    captionEn: "Promising Award (Giải Triển vọng) - Unique Project 2025 Award, VTC Academy"
+    captionJa: "期待賞（Giải Triển vọng）- Unique Project 2025 Award、VTC Academy"

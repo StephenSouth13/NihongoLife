@@ -80,6 +80,13 @@ namespace NihongoLife.UI
             if (panelObj != null) panelObj.SetActive(false);
         }
 
+        public void ToggleFromEscape()
+        {
+            escapeBlockedFrame = Time.frameCount;
+            if (IsOpen) Hide();
+            else Show();
+        }
+
         private void Update()
         {
             if (!IsOpen || rebinding || Time.frameCount <= escapeBlockedFrame) return;
@@ -118,6 +125,10 @@ namespace NihongoLife.UI
             bgmSlider = CreateSlider(card.transform, new Vector2(-380f, 80f), out bgmValue);
             Label(card.transform, "Hiệu ứng", "Sound effects", "効果音", 17, new Vector2(-360f, 30f), new Vector2(300f, 35f), TextAlignmentOptions.Center, false);
             sfxSlider = CreateSlider(card.transform, new Vector2(-380f, -8f), out sfxValue);
+            Label(card.transform, "Ngon ngu", "Language", "Language", 19, new Vector2(-360f, -82f), new Vector2(300f, 35f), TextAlignmentOptions.Center, true);
+            CreateLanguageButton(card.transform, "VI", GameLanguage.Vietnamese, new Vector2(-465f, -130f));
+            CreateLanguageButton(card.transform, "EN", GameLanguage.English, new Vector2(-360f, -130f));
+            CreateLanguageButton(card.transform, "JP", GameLanguage.Japanese, new Vector2(-255f, -130f));
             Label(card.transform, "Điều khiển", "Controls", "操作", 24, new Vector2(220f, 220f), new Vector2(600f, 45f), TextAlignmentOptions.Center, true);
 
             bgmSlider.onValueChanged.AddListener(OnBgmChanged);
@@ -140,6 +151,16 @@ namespace NihongoLife.UI
 
             CreateBindingRows(card.transform);
             RefreshValues();
+        }
+
+        private void CreateLanguageButton(Transform parent, string label, GameLanguage language, Vector2 position)
+        {
+            Button button = CreateButton(parent, label, position, new Vector2(88f, 38f), false);
+            button.onClick.AddListener(() =>
+            {
+                if (GameServices.TryGet(out GameSettingsService settings)) settings.SetLanguage(language);
+                ApplyLanguage();
+            });
         }
 
         private void CreateBindingRows(Transform parent)

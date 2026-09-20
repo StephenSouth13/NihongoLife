@@ -40,12 +40,9 @@ namespace NihongoLife.EditorTools
 
             GameObject blockB = BuildWrapper('B');
             GameObject blockH = BuildWrapper('H');
-            IntegratePilot(blockB, blockH);
-            InstallStationSafety();
             AssetDatabase.SaveAssets();
             AssetDatabase.Refresh();
-            ValidatePilot();
-            Debug.Log("[EkimaePilot] Build complete. Fukuoka blocks B and H integrated without modifying vendor assets.");
+            Debug.Log("[EkimaePilot] Wrapper prefabs updated. Urban blocks are intentionally not injected into the station scene.");
         }
 
         public static void ValidatePilot()
