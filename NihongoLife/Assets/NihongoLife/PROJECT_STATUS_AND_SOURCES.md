@@ -34,6 +34,8 @@ Trọng tâm thiết kế vẫn là E-Learning: **điểm Kiến thức** là ti
 | `00_Bootstrap.unity` | Khởi tạo service và chuyển scene | Đang dùng |
 | `01_MainMenu.unity` | Menu, tài khoản, ngôn ngữ, chọn nhân vật, cài đặt | Đang dùng |
 | `90_TestSandbox.unity` | Toàn bộ gameplay chính và các khu vực cốt truyện | Đang dùng |
+| `20_StationDistrict.unity` | Khu nhà ga tải additive, có platform/train/spawn/portal | Đang dùng |
+| `30_SushiRestaurant.unity` | Nội thất nhà hàng sushi tải additive, có spawn/portal | Đang dùng |
 
 ### Scene công cụ, không đưa vào build
 
@@ -42,7 +44,7 @@ Trọng tâm thiết kế vẫn là E-Learning: **điểm Kiến thức** là ti
 | `99_ControlRoom.unity` | Kiểm tra nội bộ | Tắt trong build |
 | `99_Trailer.unity` | Dựng trailer | Tắt trong build |
 
-Chủ trương hiện tại: không tạo thêm gameplay scene. Cửa hàng, nhà ở, nhà ga, quán ăn, lễ hội và các khu vực tương lai được tổ chức thành zone trong `90_TestSandbox.unity`. Khi project lớn hơn, cần chuyển sang additive zone/addressable thay vì để mọi object luôn hoạt động cùng lúc.
+Kiến trúc hiện tại: `90_TestSandbox` là City Hub/persistent gameplay. Không chia từng con phố hoặc căn nhà thành scene riêng. Các khu nặng, interior hoặc district biệt lập dùng additive zone; hiện có Station District và Sushi Restaurant. `SceneFlowController` chịu trách nhiệm fade, tên địa điểm, tiến trình tải, khóa input, spawn và unload zone.
 
 ## 3. Kiến trúc kỹ thuật hiện tại
 
@@ -154,6 +156,8 @@ Các tình huống hiện có bao gồm:
 
 - Mỗi node có thể dùng clip gán trực tiếp hoặc nạp từ `Resources/Voice`.
 - Cấu trúc voice hỗ trợ `ja`, `vi`, `en` và fallback theo node ID.
+- 230 SFX Kenney đã import; catalog runtime hiện gán 10 cue hành động và 15 biến thể bước chân cho UI, cửa, nhặt/thả, portal, va chạm NPC và bề mặt sàn.
+- Chỉ asset được tham chiếu trong `GameAudioCatalog` mới đi vào runtime/build, tránh nạp toàn bộ thư viện và tăng dung lượng WebGL.
 - Hỗ trợ MP3/WAV nhập thủ công.
 - Không sinh âm giả bằng tone procedural.
 - Thiếu clip thì im lặng và báo qua validation/log.
@@ -203,7 +207,7 @@ Các tỷ lệ dưới đây là đánh giá kỹ thuật tại thời điểm c
 | Balo, chỉ số, tiền | 60% | Loop cơ bản có; thiếu catalog item, consume/equip/drop UX hoàn chỉnh |
 | Scenario/cốt truyện | 45% | Có engine và 12 scenario; chưa đủ nội dung/asset/voice cho game 3 giờ |
 | E-Learning/scoring | 65% | Có score, mastery, Knowledge scaling; cần curriculum và đánh giá sư phạm |
-| Audio/voice/speech | 45% | Pipeline có; thiếu phần lớn file voice và test thiết bị/API |
+| Audio/voice/speech | 55% | SFX gameplay đã nối catalog; vẫn thiếu ambience, phần lớn voice và test thiết bị/API |
 | Store và world art | 40% | Prototype dùng được; thiếu asset chuyên dụng và pass art/lighting cuối |
 | NPC/animation | 45% | Có patrol/recovery; thiếu nhiều clip và reaction chất lượng cao |
 | Combat/conduct | 20% | Có foundation; chưa phải hệ chiến đấu hoàn chỉnh |

@@ -12,7 +12,6 @@ namespace NihongoLife.Editor
         private const string ScenarioPath = ScenarioFolder + "/scenario_konbini_buy_onigiri.asset";
         private const string StreetScenarioPath = ScenarioFolder + "/scenario_street_first_talk.asset";
 
-        // [MenuItem("NihongoLife/Build Scenario Assets")]
         public static void BuildScenarioAssets()
         {
             EnsureFolderExists(ScenarioFolder);

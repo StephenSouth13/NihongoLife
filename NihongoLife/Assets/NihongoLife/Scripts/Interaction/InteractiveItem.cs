@@ -2,6 +2,8 @@ using UnityEngine;
 using System.Collections.Generic;
 using NihongoLife.Player;
 using NihongoLife.Scenario;
+using NihongoLife.Audio;
+using NihongoLife.Core;
 
 namespace NihongoLife.Interaction
 {
@@ -58,6 +60,8 @@ namespace NihongoLife.Interaction
                     return;
                 }
             }
+
+            if (GameServices.TryGet(out IAudioService audio)) audio.PlayCue(GameAudioCue.Pickup, 0.75f);
 
             if (destroyOnInteract)
             {

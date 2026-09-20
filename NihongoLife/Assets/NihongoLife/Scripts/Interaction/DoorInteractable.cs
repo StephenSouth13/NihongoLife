@@ -1,6 +1,8 @@
 using System.Collections;
 using UnityEngine;
 using NihongoLife.Scenario;
+using NihongoLife.Audio;
+using NihongoLife.Core;
 
 namespace NihongoLife.Interaction
 {
@@ -75,6 +77,7 @@ namespace NihongoLife.Interaction
             if (_isOpen) return;
 
             _isOpen = true;
+            if (GameServices.TryGet(out IAudioService audio)) audio.PlayCue(GameAudioCue.DoorOpen, 0.8f);
             if (blockingCollider != null)
             {
                 blockingCollider.enabled = false;
@@ -93,6 +96,7 @@ namespace NihongoLife.Interaction
             if (!_isOpen) return;
 
             _isOpen = false;
+            if (GameServices.TryGet(out IAudioService audio)) audio.PlayCue(GameAudioCue.DoorClose, 0.8f);
             if (blockingCollider != null)
             {
                 blockingCollider.enabled = true;

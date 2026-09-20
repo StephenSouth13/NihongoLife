@@ -10,6 +10,8 @@ namespace NihongoLife.Audio
 
         private float _bgmVolume = 0.5f;
         private float _sfxVolume = 0.8f;
+        private GameAudioCatalog _catalog;
+        private int _footstepIndex;
 
         public void Initialize()
         {
@@ -29,6 +31,7 @@ namespace NihongoLife.Audio
             _bgmSource.volume = _bgmVolume;
             _sfxSource.volume = _sfxVolume;
             _voiceSource.volume = _sfxVolume;
+            _catalog = Resources.Load<GameAudioCatalog>("Audio/GameAudioCatalog");
 
             Debug.Log("[AudioService] Initialized AudioSources.");
         }
@@ -61,6 +64,37 @@ namespace NihongoLife.Audio
             _voiceSource.clip = clip;
             _voiceSource.volume = _sfxVolume * volume;
             _voiceSource.Play();
+        }
+
+        public void PlayCue(GameAudioCue cue, float volume = 1.0f)
+        {
+            if (_catalog == null) return;
+            AudioClip clip = cue switch
+            {
+                GameAudioCue.UiClick => _catalog.uiClick,
+                GameAudioCue.UiConfirm => _catalog.uiConfirm,
+                GameAudioCue.UiBack => _catalog.uiBack,
+                GameAudioCue.UiError => _catalog.uiError,
+                GameAudioCue.DoorOpen => _catalog.doorOpen,
+                GameAudioCue.DoorClose => _catalog.doorClose,
+                GameAudioCue.Pickup => _catalog.pickup,
+                GameAudioCue.Drop => _catalog.drop,
+                GameAudioCue.Portal => _catalog.portal,
+                GameAudioCue.Punch => _catalog.punch,
+                GameAudioCue.FootstepConcrete => Next(_catalog.footstepsConcrete),
+                GameAudioCue.FootstepWood => Next(_catalog.footstepsWood),
+                GameAudioCue.FootstepCarpet => Next(_catalog.footstepsCarpet),
+                _ => null
+            };
+            PlaySFX(clip, volume);
+        }
+
+        private AudioClip Next(AudioClip[] clips)
+        {
+            if (clips == null || clips.Length == 0) return null;
+            AudioClip clip = clips[_footstepIndex % clips.Length];
+            _footstepIndex = (_footstepIndex + 1) % clips.Length;
+            return clip;
         }
 
         public void SetBGMVolume(float volume)

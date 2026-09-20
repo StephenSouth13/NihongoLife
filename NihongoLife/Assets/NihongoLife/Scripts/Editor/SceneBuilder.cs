@@ -27,7 +27,6 @@ namespace NihongoLife.Editor
         private const string ControlScenePath = ScenesDir + "/99_ControlRoom.unity";
         private const string ControlDatabasePath = "Assets/NihongoLife/Resources/Control/NihongoLifeControlDatabase.asset";
 
-        // [MenuItem("NihongoLife/Build All Scenes")]
         public static void BuildAllScenes()
         {
             Debug.Log("[SceneBuilder] Building real playable NihongoLife scenes...");
@@ -78,7 +77,6 @@ namespace NihongoLife.Editor
             Debug.Log("[SceneBuilder] Rebuilt 01_MainMenu with 90_TestSandbox town preview.");
         }
 
-        // [MenuItem("NihongoLife/Rebuild Gameplay Sandbox")]
         public static void RebuildGameplaySandbox()
         {
             EnsureFolder("Assets/NihongoLife", "Scenes");
@@ -90,7 +88,6 @@ namespace NihongoLife.Editor
             Debug.Log("[SceneBuilder] Rebuilt 90_TestSandbox with gameplay, shop door, and interior camera zone.");
         }
 
-        // [MenuItem("NihongoLife/Rebuild Control Room")]
         public static void RebuildControlRoom()
         {
             EnsureFolder("Assets/NihongoLife", "Scenes");

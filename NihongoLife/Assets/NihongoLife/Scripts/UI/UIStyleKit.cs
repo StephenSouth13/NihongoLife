@@ -82,6 +82,7 @@ namespace NihongoLife.UI
         public static void StyleButton(Button button, Color baseColor, Color hoverColor, Color pressedColor)
         {
             if (button == null) return;
+            if (button.GetComponent<UIButtonAudio>() == null) button.gameObject.AddComponent<UIButtonAudio>();
 
             var image = button.GetComponent<Image>();
             if (image != null)

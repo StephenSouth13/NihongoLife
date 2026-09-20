@@ -1,6 +1,8 @@
 using System.Collections;
 using NihongoLife.Interaction;
 using NihongoLife.NPC;
+using NihongoLife.Audio;
+using NihongoLife.Core;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -34,6 +36,7 @@ namespace NihongoLife.Player
 
             var npc = hit.collider.GetComponentInParent<NPCController>();
             if (npc == null) return;
+            if (GameServices.TryGet(out IAudioService audio)) audio.PlayCue(GameAudioCue.Punch, 0.8f);
             npc.ReactToAttack(transform);
             _conduct.Report(CivicOffense.AssaultNpc);
         }
@@ -46,6 +49,7 @@ namespace NihongoLife.Player
             Vector3 dropPosition = transform.position + transform.forward * 1.15f + Vector3.up * 0.2f;
             if (!InteractiveItem.TrySpawnDropped(entry, dropPosition, Quaternion.identity)) return;
             if (!inventory.RemoveItem(entry.itemId)) return;
+            if (GameServices.TryGet(out IAudioService audio)) audio.PlayCue(GameAudioCue.Drop, 0.75f);
             if (entry.isLitter) _conduct.Report(CivicOffense.Littering);
         }
     }

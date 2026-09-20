@@ -10,6 +10,7 @@ namespace DevionGames
 	{
 		static WriteInputManager ()
 		{
+#if ENABLE_LEGACY_INPUT_MANAGER
 			if (!AxisDefined ("Change Speed")) {
 				AddAxis (new InputAxis () {
 					name = "Change Speed",
@@ -58,6 +59,7 @@ namespace DevionGames
 					axis = 1
 				});
 			}
+#endif
 		}
 
 		private static SerializedProperty GetChildProperty (SerializedProperty parent, string name)
@@ -73,15 +75,16 @@ namespace DevionGames
 
 		private static bool AxisDefined (string axisName)
 		{
-			SerializedObject serializedObject = new SerializedObject (AssetDatabase.LoadAllAssetsAtPath ("ProjectSettings/InputManager.asset") [0]);
+			Object[] assets = AssetDatabase.LoadAllAssetsAtPath ("ProjectSettings/InputManager.asset");
+			if (assets == null || assets.Length == 0) return false;
+			SerializedObject serializedObject = new SerializedObject (assets [0]);
 			SerializedProperty axesProperty = serializedObject.FindProperty ("m_Axes");
+			if (axesProperty == null || !axesProperty.isArray) return false;
 
-			axesProperty.Next (true);
-			axesProperty.Next (true);
-			while (axesProperty.Next (false)) {
-				SerializedProperty axis = axesProperty.Copy ();
-				axis.Next (true);
-				if (axis.stringValue == axisName)
+			for (int i = 0; i < axesProperty.arraySize; i++) {
+				SerializedProperty axis = axesProperty.GetArrayElementAtIndex (i);
+				SerializedProperty name = axis.FindPropertyRelative ("m_Name");
+				if (name != null && name.stringValue == axisName)
 					return true;
 			}
 			return false;

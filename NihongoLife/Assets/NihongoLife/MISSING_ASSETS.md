@@ -5,7 +5,19 @@ For the complete project overview, progress assessment, roadmap, import rules an
 This list only contains assets that are not already available in the project.
 Do not import another generic furniture or food pack: the current Kenney kits already cover basic shelves, tables, lights, refrigerators and food props.
 
+## Installed and integrated (2026-09-20)
+
+- Sushi Restaurant Kit fixtures: counters, cabinets, shelves, refrigerator, cold display, steamer, bell, sign and plants.
+- Sushi/food shelf stock: onigiri, dango, gyoza, rolls, tamago, bottles, soda and soy sauce.
+- Train Pack: a lightweight station landmark using one high-speed front, one wagon and one track section.
+- Ultimate Animated Animals: Shiba Inu with a generated Generic Animator controller using Idle, Walk, Eating, Hit, Attack and Jump clips.
+- Kenney interface/impact audio packs: 230 OGG files imported. A curated set is now wired through `GameAudioCatalog` for UI clicks, doors, pickup/drop, portals, NPC hits and surface-aware footsteps.
+- Integration is baked into `90_TestSandbox.unity` under `ThirdParty_Integrated_World`.
+- Third-party integration is stored directly in the gameplay scenes. No manual build, integration or validation menu is required.
+
 ## Priority 1 - Character animation
+
+> Deferred by project owner: environment/scene production may continue now. Add and retarget these Humanoid clips in a later animation pass.
 
 All new clips must be Humanoid-compatible and preferably in-place.
 
@@ -19,28 +31,26 @@ All new clips must be Humanoid-compatible and preferably in-place.
 - Positive and negative reaction
 - Conversation listening idle
 
-The project already has: Idle, Walk, Talk, Bow and Point.
+The human characters currently have: Idle, Walk, Talk, Bow and Point. The animal clips do not replace the missing Humanoid clips above.
 
 ## Priority 1 - Convenience store
 
 - Japanese convenience-store checkout/POS terminal
 - Barcode scanner and receipt printer
-- Commercial glass-door drink refrigerator
-- Retail gondola shelf with end caps
 - Shopping basket and basket stand
 - Shelf price rails and editable price cards
 - Packaged Japanese products: bento, cup noodles, snacks, drinks and toiletries
-- Store decals/signage with reusable blank variants
+- Store decals/signage with editable blank variants
 
-The project already has generic refrigerators, cabinets, ceiling lights, food, cans, bottles, cartons and the rice-ball model.
+The integrated store now has counters, shelves, refrigerator/cold display, hot-food steamer, food, bottles and a real onigiri visual. POS terminal, barcode scanner, receipt printer, shopping basket, shelf labels and Japanese packaged non-food products are still missing.
 
-## Priority 2 - Story locations in the same gameplay scene
+## Priority 2 - Story locations and additive zones
 
 - Small ramen shop exterior and interior set
-- Japanese station entrance, ticket machine, gate and platform props
+- Japanese station ticket machine, gate and platform signage props
 - Summer festival stalls, lantern strings, torii and portable shrine props
 
-These locations must be added as zones inside `90_TestSandbox.unity`; no additional gameplay scene is required.
+Current architecture keeps the walkable city in `90_TestSandbox.unity` and loads heavy interiors/districts additively. `20_StationDistrict.unity` and `30_SushiRestaurant.unity` are now built and enabled. Do not split every street or house into a separate scene.
 
 ## Priority 2 - Story props
 
@@ -51,9 +61,11 @@ These locations must be added as zones inside `90_TestSandbox.unity`; no additio
 
 ## Audio
 
-- Licensed town ambience and indoor convenience-store ambience
-- Door chime, scanner beep, receipt, bag and shelf interaction SFX
+- Still missing: licensed town ambience and indoor convenience-store ambience
+- Still missing or unassigned: dedicated scanner beep, receipt printer and bag handling SFX
 - Recorded Japanese dialogue or approved TTS files for every story node
+
+Runtime SFX is integrated directly through `Assets/NihongoLife/Resources/Audio/GameAudioCatalog.asset`; no build menu or setup step is required. To replace a sound later, assign the new clip directly to this catalog in the Inspector. The full 230-file library is intentionally not loaded at runtime; only referenced clips are included in the build.
 
 Do not add generated placeholder tones. Missing audio should remain silent and be reported by validation.
 

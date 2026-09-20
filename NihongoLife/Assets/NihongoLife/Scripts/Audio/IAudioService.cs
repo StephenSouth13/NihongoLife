@@ -9,6 +9,7 @@ namespace NihongoLife.Audio
         void StopBGM();
         void PlaySFX(AudioClip clip, float volume = 1.0f);
         void PlayVoice(AudioClip clip, float volume = 1.0f);
+        void PlayCue(GameAudioCue cue, float volume = 1.0f);
         void SetBGMVolume(float volume);
         void SetSFXVolume(float volume);
     }

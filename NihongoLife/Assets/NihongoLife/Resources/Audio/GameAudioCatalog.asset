@@ -1,0 +1,42 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 80cd9fdf3fc115a46a4b563b60d2d66b, type: 3}
+  m_Name: GameAudioCatalog
+  m_EditorClassIdentifier: NihongoLife::NihongoLife.Audio.GameAudioCatalog
+  uiClick: {fileID: 8300000, guid: b2ce5aadc0935dd4ea99b9946163c4dd, type: 3}
+  uiConfirm: {fileID: 8300000, guid: 875b8a38dfa8db64180a90cefaaea71f, type: 3}
+  uiBack: {fileID: 8300000, guid: 0ad8427f5a589474fbd7b1fc9528772f, type: 3}
+  uiError: {fileID: 8300000, guid: 674c23d75360241418bcafa4239f1b79, type: 3}
+  doorOpen: {fileID: 8300000, guid: e9a7e6a74c436fe418cd83708ffdbc0c, type: 3}
+  doorClose: {fileID: 8300000, guid: 10db21bccd6c9514dba91705b64d1655, type: 3}
+  pickup: {fileID: 8300000, guid: 352f5fe1efdad464d8b985c50cdc1aef, type: 3}
+  drop: {fileID: 8300000, guid: 25e1511e409dc4b4e8e2c862780e229a, type: 3}
+  portal: {fileID: 8300000, guid: 24d2ee9f1de95c74ea2d2196d1b1f909, type: 3}
+  punch: {fileID: 8300000, guid: c4453fee9626f0747a5c82197885a6d7, type: 3}
+  footstepsConcrete:
+  - {fileID: 8300000, guid: ec4b1b30717a55346b167748131e805a, type: 3}
+  - {fileID: 8300000, guid: 390f08dcb3a3b354a801a6de1c2da63b, type: 3}
+  - {fileID: 8300000, guid: 294bbf1e59f655c42bb37d4b9536b614, type: 3}
+  - {fileID: 8300000, guid: d24eff50efa575841b751633dad2c0bd, type: 3}
+  - {fileID: 8300000, guid: 76de2f86f972423419fe847546d9aaba, type: 3}
+  footstepsWood:
+  - {fileID: 8300000, guid: 9b68239ca94bb154e808ab5811d5a61c, type: 3}
+  - {fileID: 8300000, guid: de54729f6d46a8e4a81cff263771a4c3, type: 3}
+  - {fileID: 8300000, guid: 4ba107f35d637cb4ba1bcff6d27beeb6, type: 3}
+  - {fileID: 8300000, guid: 00027765764352f4bb8d935e8318a7d7, type: 3}
+  - {fileID: 8300000, guid: 974d66f0f7d41e741ad24307000f77ef, type: 3}
+  footstepsCarpet:
+  - {fileID: 8300000, guid: e57ca9ad01aa52143a2b4ad58200e2c4, type: 3}
+  - {fileID: 8300000, guid: 7c20d7334458c224aadcafdd8435baa6, type: 3}
+  - {fileID: 8300000, guid: e900563499700e347b31f1754446b241, type: 3}
+  - {fileID: 8300000, guid: f2468448ca0935f4eb225af83cc72915, type: 3}
+  - {fileID: 8300000, guid: 2c4fac748491ef14abf36aa4fddee155, type: 3}

@@ -3,6 +3,7 @@ using UnityEngine.InputSystem;
 using NihongoLife.Interaction;
 using NihongoLife.Core;
 using NihongoLife.Cameras;
+using NihongoLife.Audio;
 
 namespace NihongoLife.Player
 {
@@ -19,6 +20,8 @@ namespace NihongoLife.Player
         [SerializeField] private float maxFallSpeed = -20f;
         [SerializeField] private float runEnergyCostPerSecond = 4.5f;
         [SerializeField] private float jumpHeight = 1.25f;
+        [SerializeField] private float walkFootstepInterval = 0.52f;
+        [SerializeField] private float runFootstepInterval = 0.34f;
 
         [Header("Ground Detection")]
         [SerializeField] private Transform groundCheck;
@@ -33,6 +36,7 @@ namespace NihongoLife.Player
         private CharacterAnimationController _animationController;
         private Vector3 _smoothedMoveDirection;
         private GameInputService _input;
+        private float _footstepTimer;
 
         public bool InputLocked
         {
@@ -142,6 +146,32 @@ namespace NihongoLife.Player
                 _velocity.y = -2f;
                 _isGrounded = true;
             }
+            HandleFootsteps(moveDirection.sqrMagnitude > 0.01f, isRunning);
+        }
+
+        private void HandleFootsteps(bool moving, bool running)
+        {
+            if (!moving || !_isGrounded)
+            {
+                _footstepTimer = 0f;
+                return;
+            }
+
+            _footstepTimer += Time.deltaTime;
+            if (_footstepTimer < (running ? runFootstepInterval : walkFootstepInterval)) return;
+            _footstepTimer = 0f;
+            if (GameServices.TryGet(out IAudioService audio)) audio.PlayCue(ResolveFootstepCue(), 0.45f);
+        }
+
+        private GameAudioCue ResolveFootstepCue()
+        {
+            if (!Physics.Raycast(transform.position + Vector3.up * 0.25f, Vector3.down, out RaycastHit hit,
+                    1.5f, ~0, QueryTriggerInteraction.Ignore)) return GameAudioCue.FootstepConcrete;
+
+            string surface = hit.collider.name.ToLowerInvariant();
+            if (surface.Contains("wood") || surface.Contains("floor")) return GameAudioCue.FootstepWood;
+            if (surface.Contains("carpet") || surface.Contains("rug")) return GameAudioCue.FootstepCarpet;
+            return GameAudioCue.FootstepConcrete;
         }
 
         private void HandleInteractionInput()
