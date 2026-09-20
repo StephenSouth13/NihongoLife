@@ -47,7 +47,7 @@ namespace DevionGames.UIWidgets
 
         public static void RegisterInput(KeyCode key, UIWidget widget) {
             if (m_WidgetKeyBindings == null) {
-                WidgetInputHandler handler = GameObject.FindObjectOfType<WidgetInputHandler>();
+                WidgetInputHandler handler = GameObject.FindFirstObjectByType<WidgetInputHandler>();
                 if (handler == null)
                 {
                     GameObject handlerObject = new GameObject("WidgetInputHandler");

@@ -36,6 +36,7 @@ namespace NihongoLife.Core
             "scenario.street.first_talk",
             "scenario.konbini.buy_onigiri",
             "scenario.house1.greeting",
+            "scenario.school.self_intro",
             "scenario.house2.lostcat",
             "scenario.house3.garbage",
             "scenario.neighborhood.cat_followup",

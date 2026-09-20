@@ -56,6 +56,17 @@ The integrated store now has counters, shelves, refrigerator/cold display, hot-f
 
 Current architecture keeps the walkable city in `90_TestSandbox.unity` and loads heavy interiors/districts additively. `20_StationDistrict.unity` and `30_SushiRestaurant.unity` are now built and enabled. Do not split every street or house into a separate scene.
 
+## Priority 1 - Train interior visual replacement
+
+The installed Train Pack contains exterior trains and tracks only. The playable ticket, gate, boarding, ride, window scenery, conversation and arrival flow is implemented in `20_StationDistrict`, but the carriage shell is functional in-project geometry rather than final art.
+
+- Low-poly Japanese commuter train interior with openable doors
+- Bench seats, hand straps, route display, luggage racks and priority-seat decals
+- Modular window/wall pieces
+- Seated commuters compatible with the existing Humanoid rigs
+
+Do not import another exterior-only train pack. The replacement must include an inspectable interior and permit redistribution in a built game.
+
 ## Priority 2 - Story props
 
 - Rigged cat with idle/walk animations

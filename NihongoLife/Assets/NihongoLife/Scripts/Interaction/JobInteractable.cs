@@ -62,6 +62,8 @@ namespace NihongoLife.Interaction
         public event Action<string> OnEmploymentMessage;
         public JobRole? CurrentJob { get; private set; }
         public JobRank CurrentRank => CurrentJob.HasValue ? GetCareer(CurrentJob.Value).rank : JobRank.Trainee;
+        public int CurrentCompletedShifts => CurrentJob.HasValue ? GetCareer(CurrentJob.Value).completedShifts : 0;
+        public int CurrentReputation => CurrentJob.HasValue ? GetCareer(CurrentJob.Value).reputation : 0;
         private float _nextShiftTime;
 
         private sealed class CareerState

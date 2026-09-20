@@ -61,6 +61,23 @@ Recommended branch IDs:
 - Signed-in progress is saved through the existing Supabase progress repository.
 - Guest progress remains session-only.
 
+## Station journey implemented
+
+- Buy a ticket, pass the gate, board, start the ride and leave after arrival.
+- Dedicated route/status UI for Sakura to Midori.
+- Playable carriage in the existing station scene; no extra scene was created.
+- Reused moving scenery is visible through the carriage windows without moving the world.
+- Passenger interaction provides a bilingual travel exchange and knowledge reward.
+- Final carriage art remains listed in `MISSING_ASSETS.md` because the Train Pack has no interior.
+
+## Business progression implemented
+
+- Wallet, career and business data are part of local/cloud progress.
+- Company opening requires 300 knowledge and Y50,000 capital.
+- Hiring validates a living-wage floor; underpaying reduces fairness and reputation.
+- Partnerships require reputation and educational contribution, not money alone.
+- Company, career rank and completed shifts are visible in the character profile.
+
 ## Online architecture
 
 Client-authoritative rewards are acceptable only for offline development. Production online jobs require a server-side transaction/RPC that validates:

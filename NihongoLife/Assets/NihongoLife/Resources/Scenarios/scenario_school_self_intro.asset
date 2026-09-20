@@ -1,0 +1,585 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3ba8f435ab5427145b206cd2a4f4ea7c, type: 3}
+  m_Name: scenario_school_self_intro
+  m_EditorClassIdentifier: NihongoLife::NihongoLife.Scenario.ScenarioDefinition
+  id: scenario.school.self_intro
+  version: 1
+  titleJa: 自己紹介
+  titleEn: Tự giới thiệu ở lớp
+  descriptionJa: 先生とクラスのみんなに自己紹介をしましょう。
+  descriptionEn: Buổi học đầu tiên tại ひばり日本語学院. Chào cô giáo và tự giới thiệu trước lớp.
+  chapterIndex: 1
+  learningTargets:
+  - grammar.n5.hajimemashite
+  - grammar.n5.wa_desu
+  - grammar.n5.kara_kimashita
+  - grammar.n5.hobby_wa_desu
+  - grammar.n5.yoroshiku
+  - vocab.n5.ohayou_gozaimasu
+  - vocab.n5.namae
+  - vocab.n5.shumi
+  objectives:
+  - id: obj_greet_teacher
+    titleJa: 先生にあいさつする
+    titleEn: Chào cô giáo
+    isOptional: 0
+  - id: obj_say_name
+    titleJa: 名前を言う
+    titleEn: Giới thiệu tên
+    isOptional: 0
+  - id: obj_say_country
+    titleJa: 国を言う
+    titleEn: Nói mình đến từ nước nào
+    isOptional: 0
+  - id: obj_say_hobby
+    titleJa: しゅみを言う
+    titleEn: Nói sở thích
+    isOptional: 0
+  nodes:
+  - id: node_class_start
+    nodeType: 0
+    nextNodeId:
+    objectiveIdToComplete:
+    speakerName: Morita
+    speakerId: npc_teacher_morita
+    textJa: みなさん、おはようございます。今日は自己紹介をしましょう。
+    textReading: みなさん、おはようございます。きょうはじこしょうかいをしましょう。
+    textEn: Chào buổi sáng cả lớp. Hôm nay chúng ta cùng tự giới thiệu nhé.
+    textRomaji: Minasan, ohayou gozaimasu. Kyou wa jikoshoukai wo shimashou.
+    textEnglishIpa:
+    animationCue: talk
+    voiceClip: {fileID: 0}
+    choices:
+    - textJa: おはようございます。
+      textEn: Em chào cô ạ.
+      nextNodeId: node_greet_ok
+      scoreModifiers:
+      - category: Vocabulary
+        value: 8
+        reason: Chào đúng buổi sáng và đủ lịch sự với giáo viên (おはようございます)
+      grammarTags: []
+      vocabularyTags:
+      - vocab.n5.ohayou_gozaimasu
+    - textJa: おはよう。
+      textEn: Chào cô.
+      nextNodeId: node_greet_casual
+      scoreModifiers:
+      - category: ResponseAccuracy
+        value: 2
+        reason: Đúng buổi nhưng dùng thể thân mật với giáo viên
+      grammarTags: []
+      vocabularyTags:
+      - vocab.n5.ohayou_gozaimasu
+    - textJa: こんばんは。
+      textEn: Chào buổi tối ạ.
+      nextNodeId: node_greet_wrong
+      scoreModifiers:
+      - category: ResponseAccuracy
+        value: -8
+        reason: Chào sai buổi trong ngày (こんばんは là buổi tối)
+      grammarTags: []
+      vocabularyTags: []
+    targetItemId:
+    targetNpcId:
+    targetAreaId:
+  - id: node_greet_ok
+    nodeType: 0
+    nextNodeId: node_ask_name
+    objectiveIdToComplete: obj_greet_teacher
+    speakerName: Morita
+    speakerId: npc_teacher_morita
+    textJa: おはようございます。いいあいさつですね。
+    textReading: おはようございます。いいあいさつですね。
+    textEn: Chào em. Lời chào hay lắm.
+    textRomaji: Ohayou gozaimasu. Ii aisatsu desu ne.
+    textEnglishIpa:
+    animationCue: bow
+    voiceClip: {fileID: 0}
+    choices: []
+    targetItemId:
+    targetNpcId:
+    targetAreaId:
+  - id: node_greet_casual
+    nodeType: 0
+    nextNodeId: node_ask_name
+    objectiveIdToComplete: obj_greet_teacher
+    speakerName: Morita
+    speakerId: npc_teacher_morita
+    textJa: おはようございます。先生には「おはようございます」と言いましょう。
+    textReading: おはようございます。せんせいには「おはようございます」といいましょう。
+    textEn: Cô chào em. Với giáo viên, hãy nói "ohayou gozaimasu" nhé.
+    textRomaji: Ohayou gozaimasu. Sensei ni wa "ohayou gozaimasu" to iimashou.
+    textEnglishIpa:
+    animationCue: talk
+    voiceClip: {fileID: 0}
+    choices: []
+    targetItemId:
+    targetNpcId:
+    targetAreaId:
+  - id: node_greet_wrong
+    nodeType: 0
+    nextNodeId: node_class_start
+    objectiveIdToComplete:
+    speakerName: Morita
+    speakerId: npc_teacher_morita
+    textJa: こんばんは？今は朝ですよ。「おはようございます」ですね。もう一度どうぞ。
+    textReading: こんばんは？いまはあさですよ。「おはようございます」ですね。もういちどどうぞ。
+    textEn: Em nói konbanwa à? Bây giờ là buổi sáng đấy. Phải là "ohayou gozaimasu" nhé. Mời em thử lại.
+    textRomaji: Konbanwa? Ima wa asa desu yo. "Ohayou gozaimasu" desu ne. Mou ichido douzo.
+    textEnglishIpa:
+    animationCue: point
+    voiceClip: {fileID: 0}
+    choices: []
+    targetItemId:
+    targetNpcId:
+    targetAreaId:
+  - id: node_ask_name
+    nodeType: 0
+    nextNodeId:
+    objectiveIdToComplete:
+    speakerName: Morita
+    speakerId: npc_teacher_morita
+    textJa: では、お名前をお願いします。
+    textReading: では、おなまえをおねがいします。
+    textEn: Vậy em cho cô biết tên nhé.
+    textRomaji: Dewa, onamae wo onegaishimasu.
+    textEnglishIpa:
+    animationCue: talk
+    voiceClip: {fileID: 0}
+    choices:
+    - textJa: はじめまして。わたしは［なまえ］です。
+      textEn: Rất hân hạnh. Em tên là [tên của bạn].
+      nextNodeId: node_name_ok
+      scoreModifiers:
+      - category: Grammar
+        value: 10
+        reason: Dùng đúng và đủ lịch sự mẫu はじめまして + わたしは〜です
+      grammarTags:
+      - grammar.n5.hajimemashite
+      - grammar.n5.wa_desu
+      vocabularyTags:
+      - vocab.n5.namae
+    - textJa: わたしは［なまえ］です。
+      textEn: Em tên là [tên của bạn].
+      nextNodeId: node_name_short
+      scoreModifiers:
+      - category: Grammar
+        value: 5
+        reason: Đúng mẫu わたしは〜です nhưng thiếu lời chào はじめまして khi mới gặp
+      grammarTags:
+      - grammar.n5.wa_desu
+      vocabularyTags:
+      - vocab.n5.namae
+    - textJa: ［なまえ］はわたしです。
+      textEn: 'Tên của bạn là em (đảo ngược câu).'
+      nextNodeId: node_name_wrong
+      scoreModifiers:
+      - category: Grammar
+        value: -8
+        reason: Đảo ngược cấu trúc AはBです (phải là わたしは［なまえ］です)
+      grammarTags: []
+      vocabularyTags: []
+    targetItemId:
+    targetNpcId:
+    targetAreaId:
+  - id: node_name_ok
+    nodeType: 0
+    nextNodeId: node_ask_country
+    objectiveIdToComplete: obj_say_name
+    speakerName: Morita
+    speakerId: npc_teacher_morita
+    textJa: とても上手ですね。「はじめまして」から始めると、ていねいです。
+    textReading: とてもじょうずですね。「はじめまして」からはじめると、ていねいです。
+    textEn: Em nói rất giỏi. Bắt đầu bằng "hajimemashite" nghe rất lịch sự.
+    textRomaji: Totemo jouzu desu ne. "Hajimemashite" kara hajimeru to, teinei desu.
+    textEnglishIpa:
+    animationCue: bow
+    voiceClip: {fileID: 0}
+    choices: []
+    targetItemId:
+    targetNpcId:
+    targetAreaId:
+  - id: node_name_short
+    nodeType: 0
+    nextNodeId: node_ask_country
+    objectiveIdToComplete: obj_say_name
+    speakerName: Morita
+    speakerId: npc_teacher_morita
+    textJa: いいですね。でも、はじめに「はじめまして」と言いましょう。
+    textReading: いいですね。でも、はじめに「はじめまして」といいましょう。
+    textEn: Được đấy. Nhưng đầu tiên hãy nói "hajimemashite" nhé.
+    textRomaji: Ii desu ne. Demo, hajime ni "hajimemashite" to iimashou.
+    textEnglishIpa:
+    animationCue: talk
+    voiceClip: {fileID: 0}
+    choices: []
+    targetItemId:
+    targetNpcId:
+    targetAreaId:
+  - id: node_name_wrong
+    nodeType: 0
+    nextNodeId: node_ask_name
+    objectiveIdToComplete:
+    speakerName: Morita
+    speakerId: npc_teacher_morita
+    textJa: あれ？「わたしは［なまえ］です」と言いましょう。もう一度どうぞ。
+    textReading: あれ？「わたしは［なまえ］です」といいましょう。もういちどどうぞ。
+    textEn: Ơ? Em hãy nói "watashi wa [tên] desu" (tôi là …) nhé. Mời em thử lại.
+    textRomaji: Are? "Watashi wa [namae] desu" to iimashou. Mou ichido douzo.
+    textEnglishIpa:
+    animationCue: point
+    voiceClip: {fileID: 0}
+    choices: []
+    targetItemId:
+    targetNpcId:
+    targetAreaId:
+  - id: node_ask_country
+    nodeType: 0
+    nextNodeId:
+    objectiveIdToComplete:
+    speakerName: Morita
+    speakerId: npc_teacher_morita
+    textJa: どこから来ましたか。
+    textReading: どこからきましたか。
+    textEn: Em đến từ đâu vậy?
+    textRomaji: Doko kara kimashita ka?
+    textEnglishIpa:
+    animationCue: talk
+    voiceClip: {fileID: 0}
+    choices:
+    - textJa: ベトナムから来ました。
+      textEn: Em đến từ Việt Nam ạ.
+      nextNodeId: node_country_ok
+      scoreModifiers:
+      - category: Grammar
+        value: 10
+        reason: Dùng đúng mẫu 〜から来ました để nói nơi mình đến từ
+      grammarTags:
+      - grammar.n5.kara_kimashita
+      vocabularyTags: []
+    - textJa: ベトナムです。
+      textEn: Việt Nam ạ.
+      nextNodeId: node_country_short
+      scoreModifiers:
+      - category: Grammar
+        value: 4
+        reason: Trả lời được nhưng ngắn, nên dùng đủ mẫu 〜から来ました
+      grammarTags:
+      - grammar.n5.wa_desu
+      vocabularyTags: []
+    - textJa: ベトナムに来ました。
+      textEn: Em đã đến Việt Nam.
+      nextNodeId: node_country_wrong
+      scoreModifiers:
+      - category: Grammar
+        value: -8
+        reason: Nhầm trợ từ に (nơi đến) với から (nơi xuất phát)
+      grammarTags: []
+      vocabularyTags: []
+    targetItemId:
+    targetNpcId:
+    targetAreaId:
+  - id: node_country_ok
+    nodeType: 0
+    nextNodeId: node_ask_hobby
+    objectiveIdToComplete: obj_say_country
+    speakerName: Morita
+    speakerId: npc_teacher_morita
+    textJa: ベトナムから来ましたね。遠いところから、ようこそ。
+    textReading: ベトナムからきましたね。とおいところから、ようこそ。
+    textEn: Em đến từ Việt Nam nhỉ. Chào mừng em từ nơi xa đến.
+    textRomaji: Betonamu kara kimashita ne. Tooi tokoro kara, youkoso.
+    textEnglishIpa:
+    animationCue: bow
+    voiceClip: {fileID: 0}
+    choices: []
+    targetItemId:
+    targetNpcId:
+    targetAreaId:
+  - id: node_country_short
+    nodeType: 0
+    nextNodeId: node_ask_hobby
+    objectiveIdToComplete: obj_say_country
+    speakerName: Morita
+    speakerId: npc_teacher_morita
+    textJa: ベトナムですね。「ベトナムから来ました」と言うと、もっといいですよ。
+    textReading: ベトナムですね。「ベトナムからきました」というと、もっといいですよ。
+    textEn: Việt Nam nhỉ. Nói "Betonamu kara kimashita" sẽ tốt hơn nữa đấy.
+    textRomaji: Betonamu desu ne. "Betonamu kara kimashita" to iu to, motto ii desu yo.
+    textEnglishIpa:
+    animationCue: talk
+    voiceClip: {fileID: 0}
+    choices: []
+    targetItemId:
+    targetNpcId:
+    targetAreaId:
+  - id: node_country_wrong
+    nodeType: 0
+    nextNodeId: node_ask_country
+    objectiveIdToComplete:
+    speakerName: Morita
+    speakerId: npc_teacher_morita
+    textJa: もう少しですね。どこから来たかを言うときは、「から」です。もう一度どうぞ。
+    textReading: もうすこしですね。どこからきたかをいうときは、「から」です。もういちどどうぞ。
+    textEn: Gần đúng rồi. Khi nói mình đến từ đâu thì dùng "kara". Mời em thử lại.
+    textRomaji: Mou sukoshi desu ne. Doko kara kita ka wo iu toki wa, "kara" desu. Mou ichido douzo.
+    textEnglishIpa:
+    animationCue: point
+    voiceClip: {fileID: 0}
+    choices: []
+    targetItemId:
+    targetNpcId:
+    targetAreaId:
+  - id: node_ask_hobby
+    nodeType: 0
+    nextNodeId:
+    objectiveIdToComplete:
+    speakerName: Morita
+    speakerId: npc_teacher_morita
+    textJa: しゅみは何ですか。
+    textReading: しゅみはなんですか。
+    textEn: Sở thích của em là gì?
+    textRomaji: Shumi wa nan desu ka?
+    textEnglishIpa:
+    animationCue: talk
+    voiceClip: {fileID: 0}
+    choices:
+    - textJa: しゅみは料理です。
+      textEn: Sở thích của em là nấu ăn.
+      nextNodeId: node_hobby_cooking
+      scoreModifiers:
+      - category: Grammar
+        value: 10
+        reason: Dùng đúng mẫu しゅみは〜です để nói sở thích
+      grammarTags:
+      - grammar.n5.hobby_wa_desu
+      vocabularyTags:
+      - vocab.n5.shumi
+      - vocab.n5.ryouri
+    - textJa: しゅみは音楽です。
+      textEn: Sở thích của em là âm nhạc.
+      nextNodeId: node_hobby_music
+      scoreModifiers:
+      - category: Grammar
+        value: 10
+        reason: Dùng đúng mẫu しゅみは〜です để nói sở thích
+      grammarTags:
+      - grammar.n5.hobby_wa_desu
+      vocabularyTags:
+      - vocab.n5.shumi
+      - vocab.n5.ongaku
+    - textJa: 料理。
+      textEn: Nấu ăn.
+      nextNodeId: node_hobby_short
+      scoreModifiers:
+      - category: Grammar
+        value: 2
+        reason: Chỉ nói một từ, thiếu しゅみは〜です nên chưa thành câu lịch sự
+      grammarTags: []
+      vocabularyTags:
+      - vocab.n5.ryouri
+    - textJa: しゅみは何ですか。
+      textEn: Sở thích của cô là gì ạ?
+      nextNodeId: node_hobby_wrong
+      scoreModifiers:
+      - category: ResponseAccuracy
+        value: -8
+        reason: Lặp lại câu hỏi thay vì trả lời
+      grammarTags: []
+      vocabularyTags: []
+    targetItemId:
+    targetNpcId:
+    targetAreaId:
+  - id: node_hobby_cooking
+    nodeType: 0
+    nextNodeId: node_closing_prompt
+    objectiveIdToComplete: obj_say_hobby
+    speakerName: Kim
+    speakerId: npc_classmate_kim
+    textJa: 私も料理が好きです。いっしょに食べましょう。
+    textReading: わたしもりょうりがすきです。いっしょにたべましょう。
+    textEn: Mình cũng thích nấu ăn. Cùng ăn nhé.
+    textRomaji: Watashi mo ryouri ga suki desu. Issho ni tabemashou.
+    textEnglishIpa:
+    animationCue: talk
+    voiceClip: {fileID: 0}
+    choices: []
+    targetItemId:
+    targetNpcId:
+    targetAreaId:
+  - id: node_hobby_music
+    nodeType: 0
+    nextNodeId: node_closing_prompt
+    objectiveIdToComplete: obj_say_hobby
+    speakerName: Kim
+    speakerId: npc_classmate_kim
+    textJa: 音楽ですか。いいですね。私も好きです。
+    textReading: おんがくですか。いいですね。わたしもすきです。
+    textEn: Âm nhạc à. Hay nhỉ. Mình cũng thích.
+    textRomaji: Ongaku desu ka. Ii desu ne. Watashi mo suki desu.
+    textEnglishIpa:
+    animationCue: talk
+    voiceClip: {fileID: 0}
+    choices: []
+    targetItemId:
+    targetNpcId:
+    targetAreaId:
+  - id: node_hobby_short
+    nodeType: 0
+    nextNodeId: node_closing_prompt
+    objectiveIdToComplete: obj_say_hobby
+    speakerName: Morita
+    speakerId: npc_teacher_morita
+    textJa: いいですね。「しゅみは〜です」と言うと、もっといいですよ。
+    textReading: いいですね。「しゅみは〜です」というと、もっといいですよ。
+    textEn: Hay đấy. Nói "shumi wa ~ desu" sẽ tốt hơn nữa.
+    textRomaji: Ii desu ne. "Shumi wa ~ desu" to iu to, motto ii desu yo.
+    textEnglishIpa:
+    animationCue: talk
+    voiceClip: {fileID: 0}
+    choices: []
+    targetItemId:
+    targetNpcId:
+    targetAreaId:
+  - id: node_hobby_wrong
+    nodeType: 0
+    nextNodeId: node_ask_hobby
+    objectiveIdToComplete:
+    speakerName: Morita
+    speakerId: npc_teacher_morita
+    textJa: それは先生の質問ですよ。「しゅみは〜です」と言いましょう。もう一度どうぞ。
+    textReading: それはせんせいのしつもんですよ。「しゅみは〜です」といいましょう。もういちどどうぞ。
+    textEn: Đó là câu hỏi của cô đấy. Em hãy trả lời bằng "shumi wa ~ desu" nhé. Mời em thử lại.
+    textRomaji: Sore wa sensei no shitsumon desu yo. "Shumi wa ~ desu" to iimashou. Mou ichido douzo.
+    textEnglishIpa:
+    animationCue: point
+    voiceClip: {fileID: 0}
+    choices: []
+    targetItemId:
+    targetNpcId:
+    targetAreaId:
+  - id: node_closing_prompt
+    nodeType: 0
+    nextNodeId:
+    objectiveIdToComplete:
+    speakerName: Morita
+    speakerId: npc_teacher_morita
+    textJa: 最後に、クラスのみなさんにあいさつをしましょう。
+    textReading: さいごに、クラスのみなさんにあいさつをしましょう。
+    textEn: Cuối cùng, hãy chào cả lớp nhé.
+    textRomaji: Saigo ni, kurasu no minasan ni aisatsu wo shimashou.
+    textEnglishIpa:
+    animationCue: talk
+    voiceClip: {fileID: 0}
+    choices:
+    - textJa: よろしくお願いします。
+      textEn: Rất mong được mọi người giúp đỡ ạ.
+      nextNodeId: node_closing_ok
+      scoreModifiers:
+      - category: Grammar
+        value: 10
+        reason: Dùng đúng câu chào chuẩn lịch sự よろしくお願いします
+      grammarTags:
+      - grammar.n5.yoroshiku
+      vocabularyTags: []
+    - textJa: よろしく。
+      textEn: Mong được giúp đỡ.
+      nextNodeId: node_closing_casual
+      scoreModifiers:
+      - category: ResponseAccuracy
+        value: 2
+        reason: Đúng ý nhưng dùng thể thân mật, không phù hợp khi chào giáo viên và cả lớp
+      grammarTags:
+      - grammar.n5.yoroshiku
+      vocabularyTags: []
+    - textJa: さようなら。
+      textEn: Tạm biệt.
+      nextNodeId: node_closing_wrong
+      scoreModifiers:
+      - category: ResponseAccuracy
+        value: -8
+        reason: さようなら là lời tạm biệt, không dùng khi mới gặp
+      grammarTags: []
+      vocabularyTags: []
+    targetItemId:
+    targetNpcId:
+    targetAreaId:
+  - id: node_closing_ok
+    nodeType: 0
+    nextNodeId: node_complete
+    objectiveIdToComplete:
+    speakerName: Morita
+    speakerId: npc_teacher_morita
+    textJa: こちらこそ、よろしくお願いします。今日は「はじめまして」と「〜から来ました」と「しゅみは〜です」を使いましたね。上手でした。
+    textReading: こちらこそ、よろしくおねがいします。きょうは「はじめまして」と「〜からきました」と「しゅみは〜です」をつかいましたね。じょうずでした。
+    textEn: Cô cũng mong được giúp đỡ em. Hôm nay em đã dùng "hajimemashite", "~kara kimashita" và "shumi wa ~ desu". Em làm rất tốt.
+    textRomaji: Kochira koso, yoroshiku onegaishimasu. Kyou wa "hajimemashite" to "~kara kimashita" to "shumi wa ~ desu" wo tsukaimashita ne. Jouzu deshita.
+    textEnglishIpa:
+    animationCue: bow
+    voiceClip: {fileID: 0}
+    choices: []
+    targetItemId:
+    targetNpcId:
+    targetAreaId:
+  - id: node_closing_casual
+    nodeType: 0
+    nextNodeId: node_complete
+    objectiveIdToComplete:
+    speakerName: Morita
+    speakerId: npc_teacher_morita
+    textJa: 「よろしく」は友だちに言います。先生やクラスには「よろしくお願いします」と言いましょう。
+    textReading: 「よろしく」はともだちにいいます。せんせいやクラスには「よろしくおねがいします」といいましょう。
+    textEn: Câu "yoroshiku" chỉ nói với bạn bè. Với giáo viên và cả lớp, hãy nói "yoroshiku onegaishimasu" nhé.
+    textRomaji: Yoroshiku wa tomodachi ni iimasu. Sensei ya kurasu ni wa "yoroshiku onegaishimasu" to iimashou.
+    textEnglishIpa:
+    animationCue: talk
+    voiceClip: {fileID: 0}
+    choices: []
+    targetItemId:
+    targetNpcId:
+    targetAreaId:
+  - id: node_closing_wrong
+    nodeType: 0
+    nextNodeId: node_closing_prompt
+    objectiveIdToComplete:
+    speakerName: Morita
+    speakerId: npc_teacher_morita
+    textJa: さようなら？今ははじめのあいさつですよ。「よろしくお願いします」と言いましょう。もう一度どうぞ。
+    textReading: さようなら？いまははじめのあいさつですよ。「よろしくおねがいします」といいましょう。もういちどどうぞ。
+    textEn: Em nói sayounara à? Bây giờ là lời chào lúc mới gặp đấy. Hãy nói "yoroshiku onegaishimasu" nhé. Mời em thử lại.
+    textRomaji: Sayounara? Ima wa hajime no aisatsu desu yo. "Yoroshiku onegaishimasu" to iimashou. Mou ichido douzo.
+    textEnglishIpa:
+    animationCue: point
+    voiceClip: {fileID: 0}
+    choices: []
+    targetItemId:
+    targetNpcId:
+    targetAreaId:
+  - id: node_complete
+    nodeType: 4
+    nextNodeId:
+    objectiveIdToComplete:
+    speakerName:
+    speakerId:
+    textJa:
+    textReading:
+    textEn:
+    textRomaji:
+    textEnglishIpa:
+    animationCue:
+    voiceClip: {fileID: 0}
+    choices: []
+    targetItemId:
+    targetNpcId:
+    targetAreaId:
+  startNodeId: node_class_start

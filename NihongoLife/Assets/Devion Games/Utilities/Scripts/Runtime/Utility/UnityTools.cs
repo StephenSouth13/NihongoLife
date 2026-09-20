@@ -39,7 +39,7 @@ namespace DevionGames
             }
             if (audioSource == null)
             {
-                AudioListener listener = GameObject.FindObjectOfType<AudioListener>();
+                AudioListener listener = GameObject.FindFirstObjectByType<AudioListener>();
                 if (listener != null)
                 {
                     audioSource = listener.GetComponent<AudioSource>();
@@ -214,7 +214,7 @@ namespace DevionGames
         public static void SetActiveObjectsOfType<T>(bool state) where T : Component
         {
 
-            T[] objects = GameObject.FindObjectsOfType<T>();
+            T[] objects = GameObject.FindObjectsByType<T>(FindObjectsSortMode.None);
             for (int i = 0; i < objects.Length; i++)
             {
                 objects[i].gameObject.SetActive(state);

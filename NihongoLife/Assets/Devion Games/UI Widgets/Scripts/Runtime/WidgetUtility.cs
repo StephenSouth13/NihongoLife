@@ -43,7 +43,7 @@ namespace DevionGames.UIWidgets
 			if (!widgetCache.TryGetValue(name, out current) || current.Count == 0)
 			{
 				current = new List<UIWidget>();
-				Canvas[] canvas = GameObject.FindObjectsOfType<Canvas>();
+				Canvas[] canvas = GameObject.FindObjectsByType<Canvas>(FindObjectsSortMode.None);
 				for (int c = 0; c < canvas.Length; c++)
 				{
 					T[] windows = canvas[c].GetComponentsInChildren<T>(true);
@@ -64,7 +64,7 @@ namespace DevionGames.UIWidgets
 		public static T[] FindAll<T>() where T : UIWidget
         {
             List<UIWidget> current = new List<UIWidget>();
-            Canvas[] canvas = GameObject.FindObjectsOfType<Canvas>();
+            Canvas[] canvas = GameObject.FindObjectsByType<Canvas>(FindObjectsSortMode.None);
             for (int c = 0; c < canvas.Length; c++)
             {
                 T[] windows = canvas[c].GetComponentsInChildren<T>(true);
@@ -88,7 +88,7 @@ namespace DevionGames.UIWidgets
 				return;
 			}
 			if (audioSource == null) {
-				AudioListener listener = GameObject.FindObjectOfType<AudioListener> ();
+				AudioListener listener = GameObject.FindFirstObjectByType<AudioListener> ();
 				if (listener != null) {
 					audioSource = listener.GetComponent<AudioSource> ();
 					if (audioSource == null) {

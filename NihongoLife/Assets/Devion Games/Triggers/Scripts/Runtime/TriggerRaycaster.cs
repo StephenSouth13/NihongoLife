@@ -23,7 +23,7 @@ namespace DevionGames
         static void Initialize()
         {
             Camera camera = Camera.main;
-            if (camera.GetComponent<TriggerRaycaster>() == null)
+            if (camera != null && camera.GetComponent<TriggerRaycaster>() == null)
                 camera.gameObject.AddComponent<TriggerRaycaster>();
         }
 
@@ -36,7 +36,11 @@ namespace DevionGames
         private void Update()
         {
 
-            Ray ray = (Cursor.lockState == CursorLockMode.Locked? new Ray(this.m_Transform.position,this.m_Transform.forward) : Camera.main.ScreenPointToRay(Input.mousePosition));
+            Camera camera = Camera.main;
+            if (camera == null) return;
+            Ray ray = Cursor.lockState == CursorLockMode.Locked
+                ? new Ray(this.m_Transform.position, this.m_Transform.forward)
+                : camera.ScreenPointToRay(Input.mousePosition);
 
             RaycastHit hit;
             if (TriggerRaycaster.Raycast(ray, out hit, float.PositiveInfinity, this.m_LayerMask))

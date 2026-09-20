@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using NihongoLife.Core;
+using NihongoLife.Save;
 
 namespace NihongoLife.Player
 {
@@ -55,6 +57,11 @@ namespace NihongoLife.Player
 
             Instance = this;
             Yen = startingYen;
+            if (GameServices.TryGet(out IProgressRepository repository))
+            {
+                var progress = repository.GetProgress();
+                if (progress != null) Yen = Mathf.Max(0, progress.yen);
+            }
         }
 
         private void OnDestroy()
@@ -95,6 +102,7 @@ namespace NihongoLife.Player
             }
 
             OnInventoryChanged?.Invoke();
+            SaveWallet();
             return true;
         }
 
@@ -116,6 +124,7 @@ namespace NihongoLife.Player
             }
 
             OnInventoryChanged?.Invoke();
+            SaveWallet();
             return true;
         }
 
@@ -126,6 +135,7 @@ namespace NihongoLife.Player
 
             Yen -= amount;
             OnInventoryChanged?.Invoke();
+            SaveWallet();
             return true;
         }
 
@@ -134,12 +144,14 @@ namespace NihongoLife.Player
             if (amount <= 0) return;
             Yen += amount;
             OnInventoryChanged?.Invoke();
+            SaveWallet();
         }
 
         public void ApplyFine(int amount)
         {
             Yen = Mathf.Max(0, Yen - Mathf.Max(0, amount));
             OnInventoryChanged?.Invoke();
+            SaveWallet();
         }
 
         public bool TryGetLastItem(out InventoryEntry entry)
@@ -178,6 +190,15 @@ namespace NihongoLife.Player
             }
 
             return total;
+        }
+
+        private void SaveWallet()
+        {
+            if (!GameServices.TryGet(out IProgressRepository repository)) return;
+            var progress = repository.GetProgress();
+            if (progress == null) return;
+            progress.yen = Yen;
+            repository.SaveProgress(progress);
         }
     }
 }

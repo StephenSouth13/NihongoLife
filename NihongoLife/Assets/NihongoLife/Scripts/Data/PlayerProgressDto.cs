@@ -29,6 +29,18 @@ namespace NihongoLife.Data
     }
 
     [Serializable]
+    public class BusinessRecord
+    {
+        public string companyName;
+        public int capitalYen;
+        public int reputation;
+        public int employeeCount;
+        public int fairWageScore = 50;
+        public int educationScore;
+        public int partnershipCount;
+    }
+
+    [Serializable]
     public class PlayerProgressDto
     {
         public string playerId = "local_player";
@@ -41,7 +53,9 @@ namespace NihongoLife.Data
         public float hunger = 100f;
         public float thirst = 100f;
         public int knowledge = 0;
+        public int yen = 1200;
         public string activeJobRole = string.Empty;
+        public BusinessRecord business = new BusinessRecord();
         
         public List<string> completedScenarios = new List<string>();
         public List<ScenarioScoreRecord> bestScores = new List<ScenarioScoreRecord>();

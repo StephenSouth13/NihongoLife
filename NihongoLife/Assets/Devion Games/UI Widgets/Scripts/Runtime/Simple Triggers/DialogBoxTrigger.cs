@@ -15,7 +15,7 @@ public class DialogBoxTrigger : MonoBehaviour
 
     private void Start()
     {
-        this.m_DialogBox = FindObjectOfType<DialogBox>();   
+        this.m_DialogBox = FindFirstObjectByType<DialogBox>();   
     }
 
     public void Show() {

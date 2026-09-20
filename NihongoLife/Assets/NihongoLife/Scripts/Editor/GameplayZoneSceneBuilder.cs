@@ -10,12 +10,13 @@ using UnityEngine.Rendering;
 using NihongoLife.Core;
 using NihongoLife.Interaction;
 using NihongoLife.Cameras;
+using NihongoLife.World;
 
 namespace NihongoLife.EditorTools
 {
     public static class GameplayZoneSceneBuilder
     {
-        private const string StationMigrationKey = "NihongoLife.StationLayout.v2";
+        private const string StationMigrationKey = "NihongoLife.StationLayout.v3";
         private const string SceneDir = "Assets/NihongoLife/Scenes";
         private const string CityScene = SceneDir + "/90_TestSandbox.unity";
         private const string StationScene = SceneDir + "/20_StationDistrict.unity";
@@ -47,7 +48,7 @@ namespace NihongoLife.EditorTools
             if (File.Exists(StationScene))
             {
                 string savedScene = File.ReadAllText(StationScene);
-                if (savedScene.Contains("StationSceneCamera") && savedScene.Contains("TicketMachine_A")) return;
+                if (savedScene.Contains("TrainCarriageInterior") && savedScene.Contains("StationTravelController")) return;
             }
             if (SessionState.GetBool(StationMigrationKey, false)) return;
             EditorApplication.delayCall += () =>
@@ -75,6 +76,8 @@ namespace NihongoLife.EditorTools
             Vector3 origin = new Vector3(800f, 0f, 0f);
             var root = new GameObject("StationDistrict_Zone");
             root.AddComponent<SceneZoneVisibility>();
+            root.AddComponent<StandaloneZoneBootstrap>().Configure("station_entrance");
+            var travel = root.AddComponent<StationTravelController>();
 
             CreateBlock(root.transform, "StationGround", origin + new Vector3(0f, -0.15f, 0f), new Vector3(34f, 0.3f, 22f), new Color(0.2f, 0.23f, 0.25f));
             CreateBlock(root.transform, "Platform", origin + new Vector3(0f, 0.15f, 2.8f), new Vector3(30f, 0.3f, 5f), new Color(0.62f, 0.6f, 0.54f));
@@ -93,7 +96,13 @@ namespace NihongoLife.EditorTools
             Place(Sushi, "Environment_Counter_Doors", root.transform, "TicketGate_A", origin + new Vector3(-2.1f, 0f, 7.5f), new Vector3(1.4f, 1.05f, 0.8f), Quaternion.identity, true);
             Place(Sushi, "Environment_Counter_Doors", root.transform, "TicketGate_B", origin + new Vector3(2.1f, 0f, 7.5f), new Vector3(1.4f, 1.05f, 0.8f), Quaternion.identity, true);
             GameObject ticketMachine = Place(Sushi, "Environment_Cabinet_Doors", root.transform, "TicketMachine_A", origin + new Vector3(-6.4f, 0f, 7.5f), new Vector3(1.2f, 1.8f, 0.75f), Quaternion.identity, true);
-            if (ticketMachine != null) CreateSign(root.transform, "TICKETS / きっぷ", ticketMachine.transform.position + new Vector3(0f, 2.05f, 0f), new Vector2(3f, 0.5f));
+            if (ticketMachine != null)
+            {
+                CreateSign(root.transform, "TICKETS / きっぷ", ticketMachine.transform.position + new Vector3(0f, 2.05f, 0f), new Vector2(3f, 0.5f));
+                AddStationInteraction(ticketMachine, travel, StationAction.BuyTicket, "切符を買う", "Mua ve");
+            }
+            Transform gate = root.transform.Find("TicketGate_A");
+            if (gate != null) AddStationInteraction(gate.gameObject, travel, StationAction.PassGate, "改札を通る", "Qua cong soat ve");
             GameObject stationJob = Place(Sushi, "Environment_Counter_Straight", root.transform, "StationJobDesk", origin + new Vector3(6.2f, 0f, 7.2f), new Vector3(2.1f, 1.05f, 0.9f), Quaternion.identity, true);
             if (stationJob != null) CreateJobPoint(stationJob.transform, JobRole.StationAssistant, 35, 520, 10, 24f);
             CreateSign(root.transform, "駅前 / KHU NHÀ GA", origin + new Vector3(0f, 3.8f, 8.5f), new Vector2(8f, 0.9f));
@@ -101,6 +110,7 @@ namespace NihongoLife.EditorTools
             CreateSpawn(root.transform, "station_entrance", origin + new Vector3(0f, 0.38f, 6.8f), Quaternion.Euler(0f, 180f, 0f));
             CreateExitPortal(root.transform, "ExitToCity", StationScene, "city_station_return", "街へ戻る / Trở lại thành phố", origin + new Vector3(0f, 1.1f, 9.8f));
 
+            BuildTrainJourney(root.transform, travel, origin);
             CreatePreviewCamera(root.transform, origin, "StationSceneCamera", new Vector3(0f, 5.2f, 14.5f), new Vector3(0f, 1.2f, 1.5f));
             EditorSceneManager.SaveScene(scene, StationScene);
         }
@@ -111,6 +121,7 @@ namespace NihongoLife.EditorTools
             Vector3 origin = new Vector3(500f, 0f, 0f);
             var root = new GameObject("SushiRestaurant_Zone");
             root.AddComponent<SceneZoneVisibility>();
+            root.AddComponent<StandaloneZoneBootstrap>().Configure("sushi_entrance");
 
             CreateBlock(root.transform, "Floor", origin + new Vector3(0f, -0.1f, 0f), new Vector3(16f, 0.2f, 18f), new Color(0.22f, 0.16f, 0.12f));
             CreateBlock(root.transform, "BackWall", origin + new Vector3(0f, 2.2f, 8.8f), new Vector3(16f, 4.4f, 0.25f), new Color(0.82f, 0.78f, 0.68f));
@@ -251,6 +262,74 @@ namespace NihongoLife.EditorTools
             spawn.transform.SetParent(parent);
             spawn.transform.SetPositionAndRotation(position, rotation);
             spawn.AddComponent<SceneSpawnPoint>().Configure(id);
+        }
+
+        private static void BuildTrainJourney(Transform parent, StationTravelController travel, Vector3 stationOrigin)
+        {
+            var cabin = new GameObject("TrainCarriageInterior").transform;
+            cabin.SetParent(parent);
+            Vector3 center = stationOrigin + new Vector3(0f, 0f, 42f);
+
+            CreateBlock(cabin, "CarriageFloor", center, new Vector3(14f, 0.2f, 4.8f), new Color(0.16f, 0.19f, 0.22f));
+            CreateBlock(cabin, "CarriageCeiling", center + Vector3.up * 3.25f, new Vector3(14f, 0.18f, 4.8f), new Color(0.88f, 0.89f, 0.86f));
+            CreateBlock(cabin, "CarriageEnd_W", center + new Vector3(-7f, 1.65f, 0f), new Vector3(0.2f, 3.3f, 4.8f), new Color(0.78f, 0.8f, 0.8f));
+            CreateBlock(cabin, "CarriageEnd_E", center + new Vector3(7f, 1.65f, 0f), new Vector3(0.2f, 3.3f, 4.8f), new Color(0.78f, 0.8f, 0.8f));
+
+            for (int i = -3; i <= 3; i++)
+            {
+                float x = i * 2f;
+                CreateBlock(cabin, $"WindowPost_N_{i}", center + new Vector3(x, 1.65f, 2.35f), new Vector3(0.16f, 3.1f, 0.16f), new Color(0.18f, 0.24f, 0.28f));
+                CreateBlock(cabin, $"WindowPost_S_{i}", center + new Vector3(x, 1.65f, -2.35f), new Vector3(0.16f, 3.1f, 0.16f), new Color(0.18f, 0.24f, 0.28f));
+            }
+            CreateBlock(cabin, "WindowRail_N_Low", center + new Vector3(0f, 0.65f, 2.35f), new Vector3(14f, 1.1f, 0.16f), new Color(0.75f, 0.78f, 0.78f));
+            CreateBlock(cabin, "WindowRail_N_High", center + new Vector3(0f, 2.85f, 2.35f), new Vector3(14f, 0.75f, 0.16f), new Color(0.75f, 0.78f, 0.78f));
+            CreateBlock(cabin, "WindowRail_S_Low", center + new Vector3(0f, 0.65f, -2.35f), new Vector3(14f, 1.1f, 0.16f), new Color(0.75f, 0.78f, 0.78f));
+            CreateBlock(cabin, "WindowRail_S_High", center + new Vector3(0f, 2.85f, -2.35f), new Vector3(14f, 0.75f, 0.16f), new Color(0.75f, 0.78f, 0.78f));
+
+            for (int i = -2; i <= 2; i++)
+            {
+                Place(Sushi, "Environment_Bench", cabin, $"CarriageSeat_N_{i}", center + new Vector3(i * 2.3f, 0.1f, 1.55f), new Vector3(1.65f, 0.85f, 0.7f), Quaternion.Euler(0f, 180f, 0f), true);
+                Place(Sushi, "Environment_Bench", cabin, $"CarriageSeat_S_{i}", center + new Vector3(i * 2.3f, 0.1f, -1.55f), new Vector3(1.65f, 0.85f, 0.7f), Quaternion.identity, true);
+            }
+
+            var platformSpawn = new GameObject("TravelPlatformSpawn").transform;
+            platformSpawn.SetParent(parent);
+            platformSpawn.SetPositionAndRotation(stationOrigin + new Vector3(0f, 0.38f, 1.9f), Quaternion.identity);
+            var carriageSpawn = new GameObject("TravelCarriageSpawn").transform;
+            carriageSpawn.SetParent(cabin);
+            carriageSpawn.SetPositionAndRotation(center + new Vector3(-5.3f, 0.3f, 0f), Quaternion.Euler(0f, 90f, 0f));
+
+            GameObject board = CreateBlock(parent, "BoardTrainDoor", stationOrigin + new Vector3(-0.5f, 1.15f, 0.9f), new Vector3(1.6f, 2.2f, 0.18f), new Color(0.12f, 0.48f, 0.62f));
+            AddStationInteraction(board, travel, StationAction.BoardTrain, "電車に乗る", "Len tau");
+            GameObject ride = CreateBlock(cabin, "StartRidePanel", center + new Vector3(-5.8f, 1.25f, 2.2f), new Vector3(1.5f, 0.75f, 0.12f), new Color(0.12f, 0.48f, 0.62f));
+            AddStationInteraction(ride, travel, StationAction.StartRide, "出発する", "Bat dau hanh trinh");
+            GameObject leave = CreateBlock(cabin, "LeaveTrainDoor", center + new Vector3(6.85f, 1.15f, 0f), new Vector3(0.18f, 2.2f, 1.5f), new Color(0.12f, 0.48f, 0.62f));
+            AddStationInteraction(leave, travel, StationAction.LeaveTrain, "電車を降りる", "Xuong tau");
+            GameObject passenger = CreateBlock(cabin, "PassengerConversation", center + new Vector3(2.3f, 1.05f, 1.45f), new Vector3(0.45f, 1.7f, 0.45f), new Color(0.35f, 0.52f, 0.68f));
+            AddStationInteraction(passenger, travel, StationAction.TalkPassenger, "話す", "Noi chuyen");
+
+            var scenery = new GameObject("MovingWindowScenery").transform;
+            scenery.SetParent(parent);
+            scenery.position = center;
+            for (int i = 0; i < 8; i++)
+            {
+                float x = -21f + i * 6f;
+                GameObject building = CreateBlock(scenery, $"SceneryBuilding_{i}", center + new Vector3(x, 1.4f + i % 3 * 0.35f, 6f),
+                    new Vector3(3.5f, 2.8f + i % 3 * 0.7f, 2.2f), i % 2 == 0 ? new Color(0.38f, 0.48f, 0.52f) : new Color(0.52f, 0.44f, 0.38f));
+                building.transform.SetParent(scenery, true);
+            }
+            CreateBlock(scenery, "SceneryGround", center + new Vector3(0f, -0.2f, 5.5f), new Vector3(54f, 0.2f, 8f), new Color(0.2f, 0.34f, 0.24f)).transform.SetParent(scenery, true);
+            CreateInteriorLight(cabin, "CarriageLight_A", center + new Vector3(-3.5f, 2.8f, 0f), 7f, 1.6f);
+            CreateInteriorLight(cabin, "CarriageLight_B", center + new Vector3(3.5f, 2.8f, 0f), 7f, 1.6f);
+            travel.Configure(platformSpawn, carriageSpawn, scenery);
+        }
+
+        private static void AddStationInteraction(GameObject target, StationTravelController controller, StationAction action, string ja, string en)
+        {
+            if (target == null) return;
+            target.layer = InteractableLayer;
+            if (target.GetComponent<Collider>() == null) target.AddComponent<BoxCollider>();
+            target.AddComponent<StationTravelInteractable>().Configure(controller, action, ja, en);
         }
 
         private static void CreateJobPoint(Transform support, JobRole role, int requiredKnowledge, int pay, int knowledgeReward, float energyCost)

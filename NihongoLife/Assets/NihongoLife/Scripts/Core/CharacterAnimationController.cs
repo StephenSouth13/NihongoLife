@@ -143,7 +143,11 @@ namespace NihongoLife.Core
             _hasBow = false;
             _hasPoint = false;
 
-            if (_animator == null || _animator.runtimeAnimatorController == null)
+            // Runtime-spawned actors receive their visual immediately after this component
+            // is created, so a temporarily missing Animator is a valid initialization state.
+            if (_animator == null) return;
+
+            if (_animator.runtimeAnimatorController == null)
             {
                 if (!_rigWarningLogged)
                 {

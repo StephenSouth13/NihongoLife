@@ -6,7 +6,9 @@ Tài liệu này định nghĩa cốt truyện xuyên suốt cho các scenario N
 
 ## 1. Premise
 
-Người chơi vừa chuyển đến sống ở một khu phố nhỏ hư cấu tên **ひばり町 (Hibari-chō — "phố Chim Sơn Ca")** để đi học/đi làm tại Nhật, theo diện **"Chương trình lưu trú giao lưu văn hoá Hibari"** (Hibari Cultural Exchange Residency) — một lý do nền nhẹ nhàng, không cần kể chi tiết trong dialogue, nhưng quan trọng vì nó giải thích **tự nhiên vì sao nhiều học viên thật (người chơi khác) cùng "sống" trong cùng một Hibari-chō**: họ đều là học viên khác trong cùng chương trình, xuất hiện qua hệ thống online (xem mục 11). Không có phản diện, không có drama lớn — mục tiêu xuyên suốt là **hòa nhập vào khu phố**: từ một người lạ chưa quen ai, đến khi được cả xóm nhớ mặt và mời tham gia lễ hội mùa hè cuối game.
+**Danh tính nhân vật chính (đã chốt, 2026-09-20): DU HỌC SINH (留学生).** Người chơi là một du học sinh vừa sang Nhật, nhập học **ひばり日本語学院 (Hibari Nihongo Gakuin — trường tiếng Nhật của khu phố)**, thuê phòng ở ngay cạnh nhà Tanaka trong **ひばり町 (Hibari-chō — "phố Chim Sơn Ca")**. Quốc tịch mặc định là **Việt Nam** (khớp lời thoại đã có: `ベトナムから来ました` trong `house1_greeting`, và đối tượng học viên chính của game). Không phải người nhập cư/lao động: chủ đề việc làm, visa, thủ tục hành chính (バイト, 役所) để dành làm **mở rộng sau lễ hội** (xem 4.5), không làm đổi danh tính.
+
+Vì sao du học sinh: (1) trường học cho khung học tự nhiên (lớp, sensei, bạn cùng lớp, bài kiểm tra) đúng tinh thần E-learning; (2) mọi tình huống đời thường N5 (chào hỏi, mua đồ, ăn uống, đi tàu) đều hợp lý với một sinh viên mới sang; (3) **người chơi online khác chính là bạn cùng lớp thật** — giải thích tự nhiên cho multiplayer/co-op (xem mục 11), không cần lý do fiction riêng; (4) có mốc tiến trình rõ (lớp N5 → N4) để gắn điểm Kiến thức. Không có phản diện, không có drama lớn — mục tiêu xuyên suốt là **hòa nhập vào khu phố**: từ một người lạ chưa quen ai, đến khi được cả xóm nhớ mặt và mời tham gia lễ hội mùa hè cuối game.
 
 Câu chuyện trải dài đúng 1 mùa: bắt đầu vào **đầu mùa xuân** (lúc mới chuyển tới, hoa nở, không khí mới mẻ hợp với "khởi đầu") và kết ở **lễ hội mùa hè** (Chapter 4) — khung thời gian ngắn, rõ ràng, giúp người chơi cảm nhận được "hành trình có điểm đầu điểm cuối" dù mỗi chapter học độc lập.
 
@@ -23,6 +25,7 @@ Dùng nhất quán tên địa danh sau trong mọi dialogue/mô tả từ giờ
 | **ひばり神社 (Hibari Jinja — đền Hibari)** | Ngôi đền nhỏ đầu phố; Suzuki hay nhắc mèo thích lảng vảng ở đây | Nhắc ở Ch3 (lostcat), là nơi tổ chức lễ hội Ch4 |
 | **やまだ食堂 (Yamada Shokudō)** | Quán ăn của Yamada, bán ramen | Ch3 |
 | **ひばり駅 (Hibari Eki — ga Hibari)** | Nhà ga khu phố | Ch4 |
+| **ひばり日本語学院 (Hibari Nihongo Gakuin)** | Trường tiếng Nhật của nhân vật chính; lớp N5 "さくらクラス" | Ch1 (buổi học đầu), các bài học trường ở 4.5, cameo ở lễ hội Ch4 |
 
 ## 11. Đa người chơi trong cốt truyện (Online E-Learning)
 
@@ -40,8 +43,8 @@ Dùng nhất quán tên địa danh sau trong mọi dialogue/mô tả từ giờ
 
 ## 2. Nhân vật chính
 
-- Ẩn danh, không có thoại/lời thoại riêng — học viên tự chiếu bản thân vào nhân vật.
-- Không NPC nào gọi tên nhân vật chính trong dialogue (tránh phải nhánh theo `display_name` của `PlayerProfile`, việc này không cần thiết cho N5).
+- Danh tính cố định: **du học sinh Việt Nam tại ひばり日本語学院** (xem mục 1). Không có lời thoại riêng ngoài các `DialogueChoice` — học viên tự chiếu bản thân vào nhân vật.
+- Không NPC nào gọi tên nhân vật chính bằng tên thật trong dialogue (tránh phải nhánh theo `display_name`). NPC dùng "あなた"/"留学生のみなさん", hoặc "〜さん" chung. Khi bài học đòi hỏi tự giới thiệu tên (`scenario.school.self_intro`), lựa chọn của người chơi dùng ký hiệu **［なまえ］** thay cho tên riêng — dạy đúng mẫu câu mà không cần engine thay thế tên.
 - `PlayerStatus.PlayerName` ("Học viên Nihongo") và `PlayerProfile.display_name` chỉ dùng cho UI hồ sơ/điểm số, không xuất hiện trong lời NPC.
 
 ## 3. Dàn nhân vật cố định (Cast)
@@ -54,6 +57,8 @@ Nguyên tắc: **mỗi NPC xuất hiện lại ở nhiều scenario**, giữ ngu
 | `npc_neighbor_2` | Suzuki | Hàng xóm nuôi mèo | Hơi đãng trí, ấm áp, hay cảm ơn quá mức | Ch3 (lostcat), quay lại Ch4 báo tin đã tìm được mèo | Mối lo nhỏ (mèo lạc) được gieo ở Ch3, giải quyết nhẹ nhàng ở Ch4 — không cần người chơi trực tiếp tìm ra mèo, chỉ cần đã quan tâm hỏi han là đủ để Suzuki nhớ ơn. |
 | `npc_neighbor_3` | Sato | Trưởng khu phố (chōnaikai), phụ trách quy tắc sinh hoạt | Nghiêm túc nhưng tốt bụng, thích giải thích quy tắc | Ch3 (garbage), là người đứng ra tổ chức lễ hội ở Ch4 | Từ "người canh giữ luật lệ" (hơi xa cách) → người đầu tiên công nhận công khai sự tiến bộ của người chơi trước cả khu phố ở lễ hội — phần thưởng cảm xúc cho việc tuân thủ quy tắc nhỏ nhặt trước đó. |
 | `npc_cashier` | Ito | Nhân viên cửa hàng tiện lợi | Lịch sự kiểu công việc (敬語 chuẩn mực) | Ch2, xuất hiện nền ở lễ hội Ch4 | Đại diện cho "giao dịch lịch sự kiểu Nhật" — ở lễ hội chỉ cần 1 câu chào nhận ra mặt quen, không cần arc lớn, đủ để không bị "dùng 1 lần rồi bỏ". |
+| `npc_teacher_morita` *(mới)* | Morita (森田先生) | Giáo viên lớp N5 "さくらクラス" tại ひばり日本語学院 | Dịu dàng, kiên nhẫn, nói chậm rõ; luôn khen cụ thể ("〜が上手ですね") rồi mới sửa lỗi | Ch1 (`school.self_intro`), các bài học trường ở 4.5, phát biểu ở lễ hội Ch4 | Từ "cô giáo hướng dẫn từng bước" → ở lễ hội nói với cả khu phố rằng học viên của cô đã tiến bộ — hook tự nhiên để đọc thành tích Kiến thức/level. |
+| `npc_classmate_kim` *(mới)* | Kim (キムさん) | Bạn cùng lớp người Hàn, học viên NPC duy nhất cố định (các bạn cùng lớp còn lại là người chơi thật) | Vui vẻ, hay nói sai rồi cười, nói tiếng Nhật đơn giản như chính người học | Ch1 (`school.self_intro`), lớp học ở 4.5, lễ hội Ch4 | Cho người chơi thấy "người học khác cũng sai và vẫn ổn" — giảm áp lực; cuối game Kim nói chuyện tự nhiên hơn hẳn (dấu hiệu tiến bộ chung của cả lớp). |
 | `npc_ramen_owner` | Yamada | Chủ quán ramen được Tanaka giới thiệu | Xuề xòa, nhiệt tình, hay mời thêm | Ch3 (ramen), bán hàng ở lễ hội Ch4 | Ban đầu là "chủ quán do Tanaka giới thiệu" → tới lễ hội đã tự nhận ra người chơi mà không cần Tanaka giới thiệu lại — dấu hiệu rõ ràng nhất cho thấy người chơi đã thực sự thành cư dân quen mặt. |
 | `npc_station_staff` | Kimura | Nhân viên nhà ga | Chuyên nghiệp, nói nhanh, chuẩn văn phong hướng dẫn | Ch4 (station), có thể xuất hiện thoáng qua ở lễ hội | NPC "công việc" cuối cùng gặp trước lễ hội — đại diện thử thách nhỏ cuối "phải tự lo được việc hành chính/di chuyển" trước khi được đón nhận vào cộng đồng ở lễ hội. |
 
@@ -68,6 +73,7 @@ Cảnh dẫn nhập thuần narration trước Chapter 1, chạy tự động kh
 ### Chapter 1 — はじめまして (Chuyển đến Hibari-chō)
 1. `scenario.street.first_talk` *(đã có)* — Gặp Tanaka lần đầu trên phố, được hỏi "đi đâu vậy".
 2. `scenario.house1.greeting` *(đã có)* — Đến chào Tanaka chính thức tại nhà, tự giới thiệu bản thân. **Callback**: câu mở đầu nên nhắc đã gặp nhau ngoài đường lúc nãy, thay vì mở màn như người lạ hoàn toàn.
+3. `scenario.school.self_intro` *(MỚI, đã viết — chờ khu lớp học thật)* — Buổi học đầu tại ひばり日本語学院: chào Morita-sensei, tự giới thiệu (tên, nước, sở thích) trước lớp, gặp Kim. Bài học N5 cốt lõi của "はじめまして": `はじめまして`, `〜です`, `〜から来ました`, `しゅみは〜です`, `よろしくお願いします`.
 - Kết chương: Tanaka rủ ra cửa hàng tiện lợi gần đó → mở khóa Chapter 2.
 
 ### Chapter 2 — コンビニ
@@ -82,7 +88,26 @@ Cảnh dẫn nhập thuần narration trước Chapter 1, chạy tự động kh
 
 ### Chapter 4 — 駅と夏祭り (Nhà ga & Lễ hội mùa hè)
 1. `scenario.station.buy_ticket` *(MỚI — cần viết)* — Hỏi đường và mua vé tại ga, với Kimura.
-2. `scenario.town.summer_festival` *(MỚI — cảnh kết)* — Toàn bộ NPC cũ (Tanaka, Suzuki đã tìm được mèo, Sato, Yamada, nhân viên konbini) xuất hiện lại tại lễ hội, cảm ơn/ghi nhận người chơi đã hòa nhập vào khu phố. Đây là màn kết game, mang tính tổng kết cảm xúc, không cần learning target mới.
+2. `scenario.town.summer_festival` *(MỚI — cảnh kết)* — Toàn bộ NPC cũ (Tanaka, Suzuki đã tìm được mèo, Sato, Yamada, nhân viên konbini) xuất hiện lại tại lễ hội, cảm ơn/ghi nhận người chơi đã hòa nhập vào khu phố. Đây là màn kết game, mang tính tổng kết cảm xúc, không cần learning target mới. Morita-sensei và Kim cũng xuất hiện lại ở đây (cô nhận xét cả lớp đã tiến bộ).
+
+### 4.5 Mở rộng: cuộc sống trường học (kế hoạch, chưa viết)
+
+Trường học là "xương sống học tập" chạy song song với đời sống khu phố: mỗi chapter có thêm 1 bài ở lớp dùng đúng ngữ pháp/từ vựng của chapter đó, để người học vừa **học có hệ thống trong lớp** vừa **dùng ngay ngoài đời**. Mỗi bài bám chuẩn Edu Dialogue ở `CONTENT_GUIDE.md`.
+
+| Chapter | Bài ở trường (dự kiến id) | Nội dung N5 | Nối với đời sống |
+|---|---|---|---|
+| 1 | `school.self_intro` *(đã viết)* | Tự giới thiệu, `〜から来ました`, `しゅみ` | Dùng lại khi chào Tanaka |
+| 2 | `school.numbers_prices` | Số đếm, giá tiền, `いくらですか` | Trả tiền ở konbini |
+| 3 | `school.food_likes` | `〜が好きです`, tên món ăn, `〜をください` | Gọi ramen ở quán Yamada |
+| 3 | `school.daily_schedule` | Giờ giấc, `〜時に〜ます` | Giờ đổ rác, giờ mở cửa quán |
+| 4 | `school.directions_transport` | `どこ`, phương hướng, `〜で行きます` | Mua vé, hỏi ga ở ga Hibari |
+| 4 | `school.test_day` | Bài kiểm tra tổng hợp (ôn lại điểm yếu từ dữ liệu độ thành thạo) | Cổng vào lễ hội: điểm Kiến thức quyết định lời khen của Morita-sensei |
+
+**Ràng buộc kỹ thuật (theo `AGENTS.md`)**: nội thất lớp học cần **1 zone additive mới** (như `20_StationDistrict`/`30_SushiRestaurant`) — không được tạo scene mới nếu chưa được chủ dự án duyệt đúng scene đó. Trước khi có zone, các bài ở trường chạy dạng hội thoại ở bất kỳ vị trí nào (không có node `GoToArea` chặn tiến trình, tránh kẹt campaign vì không tới được khu vực chưa tồn tại).
+
+### 4.6 Mở rộng sau lễ hội (định hướng)
+
+Sau khi kết thúc mùa xuân-hè, có thể mở "Mùa thu": バイト (việc làm thêm ở konbini/quán Yamada — hội thoại công việc và 敬語), 役所 (thủ tục), bệnh viện, kỳ thi JLPT N4. Đây là nơi phần "lao động/nhập cư" nếu muốn có, không làm đổi danh tính du học sinh.
 
 ## 5. Vấn đề dữ liệu cần xử lý trước khi viết nội dung mới
 

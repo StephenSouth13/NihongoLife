@@ -66,6 +66,7 @@ namespace NihongoLife.Player
                 gameObject.AddComponent<PlayerWorldActionController>();
             }
             if (GetComponent<EmploymentSystem>() == null) gameObject.AddComponent<EmploymentSystem>();
+            if (GetComponent<BusinessSystem>() == null) gameObject.AddComponent<BusinessSystem>();
         }
 
         private void Update()
