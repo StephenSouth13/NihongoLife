@@ -21,7 +21,7 @@ namespace NihongoLife.Interaction
     [RequireComponent(typeof(Collider))]
     public class RestaurantTable : MonoBehaviour, IInteractable, IConditionalInteractable
     {
-        public enum ServiceState { Idle, Preparing, Served, Eating, ReadyToPay }
+        public enum ServiceState { Idle, Preparing, Served, Eating, ReadyToPay, Paying }
 
         private class OrderLine
         {
@@ -39,7 +39,7 @@ namespace NihongoLife.Interaction
         [SerializeField, Min(0f)] private float prepBaseSeconds = 3f;
         [SerializeField, Min(0f)] private float prepSecondsPerItem = 0.6f;
         [SerializeField, Min(0.5f)] private float eatSeconds = 4f;
-        [SerializeField] private Vector2 slotSpacing = new Vector2(0.34f, 0.3f);
+        [SerializeField] private Vector2 slotSpacing = new Vector2(0.26f, 0.28f);
 
         private RestaurantMenuDefinition _menu;
         private ServiceState _state = ServiceState.Idle;
@@ -49,7 +49,7 @@ namespace NihongoLife.Interaction
 
         public ServiceState State => _state;
 
-        public bool IsInteractionAvailable => _state != ServiceState.Preparing && _state != ServiceState.Eating;
+        public bool IsInteractionAvailable => _state == ServiceState.Idle || _state == ServiceState.Served || _state == ServiceState.ReadyToPay;
         public Transform GetTransform() => transform;
 
         public string GetPromptJa()
@@ -225,6 +225,15 @@ namespace NihongoLife.Interaction
 
             _order.Clear();
             _total = 0;
+
+            // Briefly unavailable so the interaction prompt refreshes from お会計 back to 注文する.
+            _state = ServiceState.Paying;
+            StartCoroutine(FinishPaying());
+        }
+
+        private IEnumerator FinishPaying()
+        {
+            yield return new WaitForSeconds(0.8f);
             _state = ServiceState.Idle;
         }
 
@@ -359,6 +368,10 @@ namespace NihongoLife.Interaction
             {
                 ClearServed();
                 _state = ServiceState.ReadyToPay;
+            }
+            else if (_state == ServiceState.Paying)
+            {
+                _state = ServiceState.Idle;
             }
         }
 
