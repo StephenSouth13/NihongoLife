@@ -167,79 +167,15 @@ namespace NihongoLife.UI
             }
         }
 
+        /// <summary>
+        /// HUD positions and sizes are authored in the scene (Canvas > SafeArea > HUDPanel) and scaled to
+        /// the device by HudCanvasFitter / HudSafeArea / HudFitRect, so nothing is repositioned here.
+        /// Only colours are normalised for the panels that other code toggles at runtime.
+        /// </summary>
         private void RepairRuntimeLayout()
         {
-            if (scenarioTitleText != null)
-            {
-                RectTransform missionPanel = scenarioTitleText.transform.parent as RectTransform;
-                if (missionPanel != null)
-                {
-                    missionPanel.anchorMin = new Vector2(0f, 1f);
-                    missionPanel.anchorMax = new Vector2(0f, 1f);
-                    missionPanel.pivot = new Vector2(0f, 1f);
-                    missionPanel.anchoredPosition = new Vector2(24f, -28f);
-                    missionPanel.sizeDelta = new Vector2(620f, 188f);
-                }
-
-                SetTopLeft(scenarioTitleText.rectTransform, new Vector2(18f, -14f), new Vector2(584f, 34f));
-            }
-
-            if (objectivesText != null)
-            {
-                SetTopLeft(objectivesText.rectTransform, new Vector2(18f, -54f), new Vector2(584f, 112f));
-                objectivesText.lineSpacing = 8f;
-                objectivesText.paragraphSpacing = 4f;
-            }
-
-            if (onlineStatusText != null)
-            {
-                SetTopLeft(onlineStatusText.rectTransform, new Vector2(24f, -228f), new Vector2(620f, 28f));
-            }
-
-            StyleInfoPanel(inventoryPanel, new Vector2(1f, 1f), new Vector2(-28f, -88f), new Vector2(420f, 390f));
-            StyleInfoPanel(characterPanel, new Vector2(1f, 1f), new Vector2(-28f, -88f), new Vector2(420f, 310f));
-            StyleInfoPanel(chatPanel, new Vector2(0f, 0f), new Vector2(24f, 24f), new Vector2(470f, 250f));
-
-            if (dialoguePanel != null)
-            {
-                RectTransform rect = dialoguePanel.transform as RectTransform;
-                if (rect != null)
-                {
-                    rect.anchorMin = new Vector2(0.5f, 0f);
-                    rect.anchorMax = new Vector2(0.5f, 0f);
-                    rect.pivot = new Vector2(0.5f, 0f);
-                    rect.anchoredPosition = new Vector2(0f, 74f);
-                    rect.sizeDelta = new Vector2(1120f, 378f);
-                }
-            }
-
-            if (speakerText != null) SetTopLeft(speakerText.rectTransform, new Vector2(28f, -20f), new Vector2(1048f, 30f));
-            if (japaneseText != null) SetTopLeft(japaneseText.rectTransform, new Vector2(28f, -58f), new Vector2(1048f, 58f));
-            if (readingText != null) SetTopLeft(readingText.rectTransform, new Vector2(28f, -116f), new Vector2(1048f, 30f));
-            if (romajiText != null) SetTopLeft(romajiText.rectTransform, new Vector2(28f, -148f), new Vector2(1048f, 30f));
-            if (translationText != null) SetTopLeft(translationText.rectTransform, new Vector2(28f, -180f), new Vector2(1048f, 92f));
-
-            if (choicesContainer is RectTransform choicesRect)
-            {
-                choicesRect.anchorMin = new Vector2(0f, 0f);
-                choicesRect.anchorMax = new Vector2(1f, 0f);
-                choicesRect.pivot = new Vector2(0.5f, 0f);
-                choicesRect.anchoredPosition = new Vector2(0f, 18f);
-                choicesRect.sizeDelta = new Vector2(-56f, 72f);
-            }
-
-            if (continueButton != null)
-            {
-                var continueRect = continueButton.GetComponent<RectTransform>();
-                if (continueRect != null)
-                {
-                    continueRect.anchorMin = new Vector2(1f, 0f);
-                    continueRect.anchorMax = new Vector2(1f, 0f);
-                    continueRect.pivot = new Vector2(1f, 0f);
-                    continueRect.anchoredPosition = new Vector2(-28f, 18f);
-                    continueRect.sizeDelta = new Vector2(180f, 52f);
-                }
-            }
+            StyleInfoPanelColor(inventoryPanel);
+            StyleInfoPanelColor(characterPanel);
         }
 
         private void EnsureOnlineChatPanel()
@@ -261,6 +197,10 @@ namespace NihongoLife.UI
             }
 
             StyleInfoPanel(chatPanel, new Vector2(0f, 0f), new Vector2(24f, 24f), new Vector2(470f, 250f));
+            if (chatPanel.GetComponent<HudFitRect>() == null)
+            {
+                chatPanel.AddComponent<HudFitRect>().Configure(0.9f, 0.6f, new Vector2(48f, 48f), 0.5f);
+            }
 
             if (chatHistoryText == null)
             {
@@ -381,7 +321,7 @@ namespace NihongoLife.UI
             {
                 rect.anchorMin = anchor;
                 rect.anchorMax = anchor;
-                rect.pivot = new Vector2(1f, 1f);
+                rect.pivot = anchor;
                 rect.anchoredPosition = position;
                 rect.sizeDelta = size;
             }
@@ -391,6 +331,13 @@ namespace NihongoLife.UI
             {
                 image.color = new Color(0.028f, 0.038f, 0.048f, 0.94f);
             }
+        }
+
+        private static void StyleInfoPanelColor(GameObject panel)
+        {
+            if (panel == null) return;
+            var image = panel.GetComponent<Image>();
+            if (image != null) image.color = new Color(0.028f, 0.038f, 0.048f, 0.94f);
         }
 
         private void Update()
