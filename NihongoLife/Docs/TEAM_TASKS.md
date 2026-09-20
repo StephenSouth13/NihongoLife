@@ -208,22 +208,25 @@ Chủ dự án xác nhận: đã bước vào bên trong konbini thật (không 
 **Bối cảnh**: Claude đã thêm dữ liệu + hệ thống thực đơn và scenario, và đặt sẵn bảng thực đơn trong scene, **chưa chạy Play Mode lần nào**. Tuân thủ `AGENTS.md`: không thêm `[MenuItem]`, không tạo scene mới, không xếp môi trường mới đè lên cũ, chỉnh trực tiếp scene/prefab/asset.
 
 **Đã có (check-first — đừng làm lại)**
-- `Scripts/Data/RestaurantMenuDefinition.cs`, `Scripts/Interaction/RestaurantMenuBoard.cs`, `Scripts/UI/RestaurantMenuUI.cs`.
-- `Resources/Restaurants/menu_sushi_hibari.asset` (24 món, 6 nhóm, 4 đặc sản 名物, 18 cụm từ, 8 nghi thức).
-- `Resources/Scenarios/scenario_restaurant_sushi_dining.asset` (74 node, có trong `campaignScenarioIds` của `GameControlDatabase.cs`, không có node `GoToArea` nên chạy ở bất kỳ vị trí nào).
-- Scene `30_SushiRestaurant.unity`: GameObject `RestaurantMenuBoard_Sushi` (layer 6, trigger BoxCollider, cạnh cửa phía bên phải trong nhà, x≈504.2, z≈-8.62, mặt quay vào phía trong) + 2 cube con `MenuBoardFrame`/`MenuBoardPaper`.
+- `Scripts/Data/RestaurantMenuDefinition.cs` (+ `JapaneseNumber.cs`), `Scripts/Interaction/RestaurantMenuBoard.cs` (bảng xem trên tường), `Scripts/Interaction/RestaurantTable.cs` (vòng gọi món tại bàn), `Scripts/UI/RestaurantMenuUI.cs` (thực đơn + màn gọi món + phụ đề nhân viên).
+- `Resources/Restaurants/menu_sushi_hibari.asset` (24 món có `hungerRestore`/`thirstRestore`/`servingVi`/`servedModel`, 6 nhóm, 4 đặc sản 名物, 18 cụm từ, 8 nghi thức, 3 câu nhân viên `serviceLines`).
+- `Resources/Scenarios/scenario_restaurant_sushi_dining.asset` (74 node, có trong `campaignScenarioIds`, không có node `GoToArea`).
+- Scene `30_SushiRestaurant.unity`: `RestaurantMenuBoard_Sushi` (x≈504.2, z≈-8.62); `DiningTableService_A` (496.2, 0, -2.4) và `DiningTableService_B` (503.8, 0, -2.4) là **object phục vụ không có hình**, đặt chồng lên `DiningTable_A/B` (prefab instance của Codex, mặt bàn cao ≈ 0.87 m) — mỗi object có trigger (2.4 x 1.6 x 4.2) + `RestaurantTable` + con `ServeAnchor` (local y 0.87). Model bày món chỉ dùng Sushi Restaurant Kit.
+- Nếu đổi vị trí/kích thước bàn `DiningTable_*`, phải dời `DiningTableService_*` và `ServeAnchor` theo (không được tạo bàn thứ hai).
 
 **Việc cần làm**
-1. Mở `30_SushiRestaurant` ở Play Mode: nhân vật tới gần bảng → có prompt「メニューを見る」→ bấm E mở `RestaurantMenuUI` (4 tab, cuộn danh sách, chi tiết món, ESC đóng, nhân vật không kẹt khoá input). Sửa vị trí/collider nếu `InteractionDetector` không thấy (ghi lại giá trị đã chỉnh).
-2. Kiểm tra chồng lấn: bảng không xuyên tường/đồ nội thất; camera không bị che; ánh sáng đọc được tờ menu.
-3. Đặt 2 NPC `npc_sushi_staff` (Aoki, gần cửa/khu ghế) và `npc_sushi_chef` (Ota, sau quầy) bằng đúng pipeline nhân vật hiện có (tên khớp `speakerId` trong scenario), có collider/idle animation, không tạo nhân vật giả lập nếu đã có model.
-4. Quyết định gating: hiện scenario chạy ở bất kỳ đâu. Nếu muốn ép người chơi vào quán mới chơi, thêm trigger khu vực trong zone và node `GoToArea` — **phải giữ nhánh cũ chạy được**, báo Claude trước khi đổi graph.
-5. Chơi hết các nhánh scenario (đúng / kém tự nhiên / sai → sửa → thử lại) và chụp/ghi lại lỗi hiển thị hoặc node treo.
-6. Trang trí zone cho đỡ "mockup": quầy sushi, ghế, noren, đèn — chỉ dùng asset có trong project; **disable/xoá** thứ bị thay thế, không xếp chồng.
+1. Play Mode ở `30_SushiRestaurant`: tới gần bảng thực đơn → prompt「メニューを見る」→ E mở `RestaurantMenuUI` (4 tab, ESC đóng, nhân vật không kẹt khoá input).
+2. Tới `DiningTable_A/B` → prompt「注文する」→ E: thấy nút - / + ở mỗi món, tab 注文, tổng tiền/ví, nút 注文する; đặt món → phụ đề nhân viên (青木さん) hiện đủ Nhật/furigana/dịch → chờ → món hiện trên mặt bàn (không chìm xuống bàn, không trùng TableBowl/TableBottle) → E いただきます (no/khát tăng ở HUD) → E お会計 (ví trừ đúng tổng, có phụ đề). Thử: không chọn món, không đủ tiền, 2 bàn cùng lúc, đặt lại sau khi trả tiền.
+3. Chỉnh trực tiếp nếu sai: `servedModelSize`/`servedModelEuler`/`plateModelSize` trong asset thực đơn (hình bày món), `serveAnchor` và trigger của `DiningTableService_*` (vị trí), `slotSpacing` (khoảng cách đĩa). Ghi lại giá trị đã chỉnh.
+4. Model bày món hiện đang tạm (ví dụ unagi/ikura/hotate dùng chung hình nigiri khác, tráng miệng và đồ uống dùng bowl/bottle): thay bằng model đúng nếu có trong project, không nhập thêm nếu không cần.
+5. Đặt 2 NPC `npc_sushi_staff` (Aoki, gần cửa/khu ghế) và `npc_sushi_chef` (Ota, sau quầy) bằng pipeline nhân vật hiện có (tên khớp `speakerId` trong scenario), collider + idle animation; không tạo nhân vật giả lập nếu đã có model. Khi có Aoki, cho Aoki đi tới bàn khi món sẵn sàng (hiện chỉ có phụ đề, chưa có nhân vật đi bưng món).
+6. Quyết định gating scenario: hiện chạy ở bất kỳ đâu. Nếu muốn ép vào quán mới chơi, thêm trigger khu vực trong zone và node `GoToArea` — **phải giữ nhánh cũ chạy được**, báo Claude trước khi đổi graph.
+7. Chơi hết các nhánh scenario (đúng / kém tự nhiên / sai → sửa → thử lại), ghi lỗi hiển thị hoặc node treo.
+8. Trang trí thêm nếu còn trống: chỉ dùng asset có sẵn; **disable/xoá** thứ bị thay thế, không xếp chồng.
 
 **Ranh giới**: không sửa nội dung tiếng Nhật trong scenario/menu (Claude sở hữu nội dung); nếu thấy lỗi thì ghi vào báo cáo. Không đổi tên field serialized của `RestaurantMenuDefinition` (asset đang dùng GUID script 5e1a7c30…).
 
-**Acceptance criteria**: đủ 6 mục trên có bằng chứng Play Mode (mô tả hoặc ảnh), console không lỗi mới, không thêm menu Editor.
+**Acceptance criteria**: mục 1-3 và 7 có bằng chứng Play Mode (mô tả hoặc ảnh), console không lỗi mới, không thêm menu Editor.
 
 ## Việc của Claude (song song, không chờ Codex/Antigravity)
 
