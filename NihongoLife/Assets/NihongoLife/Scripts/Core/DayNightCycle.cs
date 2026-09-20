@@ -1,5 +1,4 @@
 using UnityEngine;
-using UnityEngine.InputSystem;
 using System;
 using System.Collections.Generic;
 
@@ -47,14 +46,6 @@ namespace NihongoLife.Core
 
         private void Update()
         {
-            if (Keyboard.current != null)
-            {
-                if (Keyboard.current.nKey.wasPressedThisFrame) SetHour(21f);
-                if (Keyboard.current.mKey.wasPressedThisFrame) SetHour(9f);
-                if (Keyboard.current.leftBracketKey.wasPressedThisFrame) SetHour(_hour - 1f);
-                if (Keyboard.current.rightBracketKey.wasPressedThisFrame) SetHour(_hour + 1f);
-            }
-
             if (!runCycle || cycleMinutes <= 0.01f) return;
 
             _hour += Time.deltaTime * 24f / (cycleMinutes * 60f);

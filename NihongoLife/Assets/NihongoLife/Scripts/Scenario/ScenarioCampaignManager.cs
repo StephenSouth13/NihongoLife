@@ -1,5 +1,8 @@
 using System;
 using NihongoLife.Core;
+using NihongoLife.Save;
+using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 namespace NihongoLife.Scenario
@@ -86,6 +89,32 @@ namespace NihongoLife.Scenario
         public bool ShouldStayInGameplaySceneAfterResult()
         {
             return _controlService == null || _controlService.ShouldContinueCampaignInGameplayScene();
+        }
+
+        public List<ScenarioDefinition> GetAvailableBranches()
+        {
+            var available = new List<ScenarioDefinition>();
+            if (_repository == null) return available;
+            int knowledge = 0;
+            IReadOnlyCollection<string> completed = System.Array.Empty<string>();
+            if (GameServices.TryGet(out IProgressRepository progressRepository))
+            {
+                var progress = progressRepository.GetProgress();
+                if (progress != null)
+                {
+                    knowledge = progress.knowledge;
+                    completed = progress.completedScenarios ?? new List<string>();
+                }
+            }
+
+            foreach (ScenarioDefinition scenario in _repository.GetAllScenarios())
+            {
+                if (scenario == null || !scenario.IsUnlocked(knowledge, completed)) continue;
+                if (!scenario.repeatable && completed.Contains(scenario.id)) continue;
+                available.Add(scenario);
+            }
+            available.Sort((a, b) => a.chapterIndex.CompareTo(b.chapterIndex));
+            return available;
         }
 
         private void HandleScenarioStarted(ScenarioDefinition scenario)

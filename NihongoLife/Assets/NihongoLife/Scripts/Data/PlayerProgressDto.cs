@@ -20,6 +20,15 @@ namespace NihongoLife.Data
     }
 
     [Serializable]
+    public class CareerRecord
+    {
+        public string roleId;
+        public int rank;
+        public int completedShifts;
+        public int reputation;
+    }
+
+    [Serializable]
     public class PlayerProgressDto
     {
         public string playerId = "local_player";
@@ -32,9 +41,11 @@ namespace NihongoLife.Data
         public float hunger = 100f;
         public float thirst = 100f;
         public int knowledge = 0;
+        public string activeJobRole = string.Empty;
         
         public List<string> completedScenarios = new List<string>();
         public List<ScenarioScoreRecord> bestScores = new List<ScenarioScoreRecord>();
         public List<MasteryRecord> masteryLevels = new List<MasteryRecord>();
+        public List<CareerRecord> careers = new List<CareerRecord>();
     }
 }

@@ -48,6 +48,8 @@ Kiến trúc hiện tại: `90_TestSandbox` là City Hub/persistent gameplay. Kh
 
 ## 3. Kiến trúc kỹ thuật hiện tại
 
+> **Quy tắc dự án:** Không tạo Unity editor menu (`[MenuItem]`) cho thao tác build, setup, tích hợp hoặc sửa scene. Không tạo thêm scene nếu chưa có yêu cầu rõ ràng. Nội dung hoàn chỉnh phải được lưu trực tiếp trong scene/prefab/asset và chạy được ngay khi mở project.
+
 - `AppRoot`: khởi tạo và đăng ký service dùng xuyên scene.
 - `GameServices`: service locator cho audio, setting, input, auth, progress, scenario và online world.
 - `GameInputService`: một lớp input chung cho keyboard, mouse, gamepad và mobile bridge.

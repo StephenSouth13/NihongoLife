@@ -35,6 +35,10 @@ namespace NihongoLife.Interaction
 
         private bool _isOpen;
         private Coroutine _openRoutine;
+        private Vector3 _closedDoorPosition;
+        private Vector3 _closedLeftPosition;
+        private Vector3 _closedRightPosition;
+        private Quaternion _closedDoorRotation;
 
         public string AreaId => areaId;
         public string GetPromptJa() => _isOpen ? "ドアを閉める" : promptJa;
@@ -48,6 +52,10 @@ namespace NihongoLife.Interaction
             {
                 doorVisual = transform;
             }
+            _closedDoorPosition = doorVisual.localPosition;
+            _closedDoorRotation = doorVisual.localRotation;
+            if (leftDoorPanel != null) _closedLeftPosition = leftDoorPanel.localPosition;
+            if (rightDoorPanel != null) _closedRightPosition = rightDoorPanel.localPosition;
         }
 
         public void Interact(GameObject player)
@@ -131,7 +139,9 @@ namespace NihongoLife.Interaction
         {
             float elapsed = 0f;
             Quaternion start = doorVisual.localRotation;
-            Quaternion end = opening ? (start * Quaternion.Euler(0f, openAngle, 0f)) : Quaternion.identity;
+            Quaternion end = opening
+                ? _closedDoorRotation * Quaternion.Euler(0f, openAngle, 0f)
+                : _closedDoorRotation;
 
             while (elapsed < openDuration)
             {
@@ -148,7 +158,7 @@ namespace NihongoLife.Interaction
         {
             float elapsed = 0f;
             Vector3 start = doorVisual.localPosition;
-            Vector3 end = opening ? (start + slideOffset) : Vector3.zero;
+            Vector3 end = opening ? _closedDoorPosition + slideOffset : _closedDoorPosition;
 
             while (elapsed < openDuration)
             {
@@ -166,8 +176,8 @@ namespace NihongoLife.Interaction
             float elapsed = 0f;
             Vector3 leftStart = leftDoorPanel.localPosition;
             Vector3 rightStart = rightDoorPanel.localPosition;
-            Vector3 leftEnd = opening ? (leftStart + leftSlideOffset) : Vector3.zero;
-            Vector3 rightEnd = opening ? (rightStart + rightSlideOffset) : Vector3.zero;
+            Vector3 leftEnd = opening ? _closedLeftPosition + leftSlideOffset : _closedLeftPosition;
+            Vector3 rightEnd = opening ? _closedRightPosition + rightSlideOffset : _closedRightPosition;
 
             while (elapsed < openDuration)
             {

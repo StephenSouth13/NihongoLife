@@ -51,6 +51,7 @@ namespace NihongoLife.UI
         private int _selectedChoiceIndex = -1;
         private QuestDirectionMarker _questMarker;
         private IOnlineWorldService _onlineWorld;
+        private WorldMapUI _worldMap;
 
         private void Start()
         {
@@ -109,6 +110,9 @@ namespace NihongoLife.UI
             RepairRuntimeLayout();
             ConfigureResponsiveText();
             EnsureOnlineChatPanel();
+            _worldMap = gameObject.AddComponent<WorldMapUI>();
+            _worldMap.Initialize(scenarioTitleText != null ? scenarioTitleText.font : null);
+            _worldMap.OnVisibilityChanged += _ => UpdateOverlayInputLock();
             SetInventoryVisible(false);
             SetCharacterVisible(false);
             SetChatVisible(false);
@@ -414,6 +418,16 @@ namespace NihongoLife.UI
                 SetCharacterVisible(characterPanel != null && !characterPanel.activeSelf);
             }
 
+            if (!dialogueOpen && input.WasPressed(GameInputId.Map))
+            {
+                bool show = _worldMap != null && !_worldMap.IsVisible;
+                SetInventoryVisible(false);
+                SetCharacterVisible(false);
+                SetChatVisible(false);
+                _worldMap?.SetVisible(show);
+                UpdateOverlayInputLock();
+            }
+
             if (input.WasPressed(GameInputId.Chat) && dialoguePanel != null && !dialoguePanel.activeSelf)
             {
                 SetChatVisible(true);
@@ -422,6 +436,8 @@ namespace NihongoLife.UI
             if (input.WasPressed(GameInputId.Pause))
             {
                 SetChatVisible(false);
+                _worldMap?.SetVisible(false);
+                UpdateOverlayInputLock();
             }
 
             HandleDialogueKeyboard();
@@ -500,6 +516,7 @@ namespace NihongoLife.UI
             inventoryPanel.SetActive(visible);
             if (visible)
             {
+                _worldMap?.SetVisible(false);
                 SetCharacterVisible(false);
                 SetChatVisible(false);
                 RefreshPlayerPanels();
@@ -513,6 +530,7 @@ namespace NihongoLife.UI
             characterPanel.SetActive(visible);
             if (visible)
             {
+                _worldMap?.SetVisible(false);
                 SetInventoryVisible(false);
                 SetChatVisible(false);
                 RefreshPlayerPanels();
@@ -527,6 +545,7 @@ namespace NihongoLife.UI
 
             if (visible)
             {
+                _worldMap?.SetVisible(false);
                 SetInventoryVisible(false);
                 SetCharacterVisible(false);
                 RefreshChatHistory();
@@ -543,7 +562,8 @@ namespace NihongoLife.UI
         {
             bool overlayOpen = (inventoryPanel != null && inventoryPanel.activeSelf) ||
                                (characterPanel != null && characterPanel.activeSelf) ||
-                               (chatPanel != null && chatPanel.activeSelf);
+                               (chatPanel != null && chatPanel.activeSelf) ||
+                               (_worldMap != null && _worldMap.IsVisible);
             bool dialogueOpen = dialoguePanel != null && dialoguePanel.activeSelf;
             ScenarioManager.Instance?.SetPlayerInputLocked(overlayOpen || dialogueOpen);
             Cursor.lockState = overlayOpen ? CursorLockMode.None : CursorLockMode.Locked;
@@ -708,7 +728,8 @@ namespace NihongoLife.UI
                 {
                     var item = inventory.Items[i];
                     string name = string.IsNullOrEmpty(item.displayNameJa) ? item.displayNameEn : item.displayNameJa;
-                    builder.Append($"<color=#f1c75b>[{i + 1:00}]</color> <b>{name}</b>  x{item.quantity}/{inventory.MaxStackSize}");
+                    string kind = item.useType == ItemUseType.Food ? " [FOOD]" : item.useType == ItemUseType.Drink ? " [DRINK]" : string.Empty;
+                    builder.Append($"<color=#f1c75b>[{i + 1:00}]</color> <b>{name}</b>{kind}  x{item.quantity}/{inventory.MaxStackSize}");
                 }
                 else
                 {

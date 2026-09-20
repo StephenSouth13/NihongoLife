@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.Serialization;
 
@@ -103,6 +104,13 @@ namespace NihongoLife.Scenario
         
         public int chapterIndex = 1;
 
+        [Header("Branching Story")]
+        public string branchId = "main";
+        [Min(0)] public int requiredKnowledge;
+        public List<string> requiredScenarioIds = new List<string>();
+        public List<string> unlockScenarioIds = new List<string>();
+        public bool repeatable;
+
         [Header("Knowledge Progression")]
         [Range(1, 10)] public int learningDifficulty = 1;
         [Min(1)] public int baseKnowledgeReward = 60;
@@ -127,6 +135,18 @@ namespace NihongoLife.Scenario
         {
             if (nodes == null) return null;
             return nodes.Find(n => n.id == nodeId);
+        }
+
+        public bool IsUnlocked(int knowledge, IReadOnlyCollection<string> completedScenarioIds)
+        {
+            if (knowledge < requiredKnowledge) return false;
+            if (requiredScenarioIds == null || requiredScenarioIds.Count == 0) return true;
+            if (completedScenarioIds == null) return false;
+            foreach (string requirement in requiredScenarioIds)
+            {
+                if (!completedScenarioIds.Contains(requirement)) return false;
+            }
+            return true;
         }
     }
 }

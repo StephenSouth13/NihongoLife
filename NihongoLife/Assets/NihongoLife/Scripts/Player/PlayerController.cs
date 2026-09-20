@@ -4,6 +4,7 @@ using NihongoLife.Interaction;
 using NihongoLife.Core;
 using NihongoLife.Cameras;
 using NihongoLife.Audio;
+using NihongoLife.World;
 
 namespace NihongoLife.Player
 {
@@ -55,6 +56,7 @@ namespace NihongoLife.Player
         private void Awake()
         {
             _characterController = GetComponent<CharacterController>();
+            StoreLayoutStabilizer.Apply();
             _mainCamera = ResolveGameplayCamera();
             _animationController = GetComponent<CharacterAnimationController>();
             PlayableCharacterCatalog.ApplySelectedVisual(gameObject);
@@ -63,6 +65,7 @@ namespace NihongoLife.Player
             {
                 gameObject.AddComponent<PlayerWorldActionController>();
             }
+            if (GetComponent<EmploymentSystem>() == null) gameObject.AddComponent<EmploymentSystem>();
         }
 
         private void Update()
@@ -192,6 +195,11 @@ namespace NihongoLife.Player
             if (actions == null) return;
             if (_input.WasPressed(GameInputId.Attack)) actions.TryAttack();
             if (_input.WasPressed(GameInputId.DropItem)) actions.TryDropLastItem();
+            if (_input.WasPressed(GameInputId.UseItem) && PlayerInventory.Instance != null &&
+                PlayerInventory.Instance.TryConsumeLastConsumable() && GameServices.TryGet(out IAudioService audio))
+            {
+                audio.PlayCue(GameAudioCue.UiConfirm, 0.7f);
+            }
         }
 
         private static bool IsGameplayCamera(UnityEngine.Camera camera)

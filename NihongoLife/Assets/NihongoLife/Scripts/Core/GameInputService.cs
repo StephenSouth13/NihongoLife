@@ -20,7 +20,9 @@ namespace NihongoLife.Core
         Voice,
         Attack,
         DropItem,
-        Pause
+        Pause,
+        Map,
+        UseItem
     }
 
     public class GameInputService : MonoBehaviour, IGameService
@@ -88,6 +90,8 @@ namespace NihongoLife.Core
             AddButton(GameInputId.Interact, "Interact", "<Keyboard>/f", "<Gamepad>/buttonWest");
             AddButton(GameInputId.Inventory, "Inventory", "<Keyboard>/b", "<Gamepad>/dpad/up");
             AddButton(GameInputId.Character, "Character", "<Keyboard>/tab", "<Gamepad>/select");
+            AddButton(GameInputId.Map, "Map", "<Keyboard>/m", "<Gamepad>/dpad/right");
+            AddButton(GameInputId.UseItem, "UseItem", "<Keyboard>/c", "<Gamepad>/buttonNorth");
             AddButton(GameInputId.Chat, "Chat", "<Keyboard>/enter");
             AddButton(GameInputId.Voice, "Voice", "<Keyboard>/v");
             AddButton(GameInputId.Attack, "Attack", "<Mouse>/leftButton", "<Gamepad>/rightTrigger");

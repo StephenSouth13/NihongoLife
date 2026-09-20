@@ -4,6 +4,13 @@ using UnityEngine;
 
 namespace NihongoLife.Player
 {
+    public enum ItemUseType
+    {
+        None,
+        Food,
+        Drink
+    }
+
     [Serializable]
     public class InventoryEntry
     {
@@ -13,6 +20,10 @@ namespace NihongoLife.Player
         public int priceYen;
         public int quantity;
         public bool isLitter;
+        public ItemUseType useType;
+        public float foodRestore;
+        public float drinkRestore;
+        public float energyRestore;
     }
 
     public class PlayerInventory : MonoBehaviour
@@ -54,7 +65,8 @@ namespace NihongoLife.Player
             }
         }
 
-        public bool AddItem(string itemId, string displayNameJa, string displayNameEn, int priceYen, int quantity = 1, bool isLitter = false)
+        public bool AddItem(string itemId, string displayNameJa, string displayNameEn, int priceYen, int quantity = 1, bool isLitter = false,
+            ItemUseType useType = ItemUseType.None, float foodRestore = 0f, float drinkRestore = 0f, float energyRestore = 0f)
         {
             if (string.IsNullOrWhiteSpace(itemId) || quantity <= 0) return false;
 
@@ -69,7 +81,11 @@ namespace NihongoLife.Player
                     displayNameEn = displayNameEn,
                     priceYen = Mathf.Max(0, priceYen),
                     quantity = Mathf.Min(quantity, maxStackSize),
-                    isLitter = isLitter
+                    isLitter = isLitter,
+                    useType = useType,
+                    foodRestore = Mathf.Max(0f, foodRestore),
+                    drinkRestore = Mathf.Max(0f, drinkRestore),
+                    energyRestore = Mathf.Max(0f, energyRestore)
                 });
             }
             else
@@ -130,6 +146,21 @@ namespace NihongoLife.Player
         {
             entry = _items.Count > 0 ? _items[_items.Count - 1] : null;
             return entry != null;
+        }
+
+        public bool TryConsumeLastConsumable()
+        {
+            for (int i = _items.Count - 1; i >= 0; i--)
+            {
+                InventoryEntry item = _items[i];
+                if (item.useType == ItemUseType.None) continue;
+                PlayerStatus status = PlayerStatus.Instance;
+                if (status == null || !RemoveItem(item.itemId)) return false;
+                status.RestoreNeeds(item.foodRestore, item.drinkRestore, item.energyRestore);
+                return true;
+            }
+
+            return false;
         }
 
         public int GetItemQuantity(string itemId)

@@ -37,11 +37,11 @@ namespace NihongoLife.Cameras
             _indoorCamera.clearFlags = _outdoorCamera.clearFlags;
             _indoorCamera.backgroundColor = _outdoorCamera.backgroundColor;
             _indoorCamera.fieldOfView = 56f;
-            _indoorCamera.nearClipPlane = 0.12f;
+            _indoorCamera.nearClipPlane = 0.06f;
             _indoorCamera.farClipPlane = _outdoorCamera.farClipPlane;
             go.AddComponent<AudioListener>();
             var controller = go.AddComponent<ThirdPersonCameraController>();
-            controller.SetOrbit(180f, 18f, 3.1f);
+            controller.SetOrbit(180f, 18f, 2.45f);
             controller.SetIndoorMode(true);
         }
 

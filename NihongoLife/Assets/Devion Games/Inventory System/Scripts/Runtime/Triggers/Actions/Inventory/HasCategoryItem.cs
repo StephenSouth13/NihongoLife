@@ -6,6 +6,7 @@ using UnityEngine;
 namespace DevionGames.InventorySystem
 {
     [UnityEngine.Scripting.APIUpdating.MovedFromAttribute(true, null, "Assembly-CSharp")]
+    [System.Serializable]
     [Icon("Condition Item")]
     [ComponentMenu("Inventory System/Has Category Item")]
     public class HasCategoryItem : Action, ICondition

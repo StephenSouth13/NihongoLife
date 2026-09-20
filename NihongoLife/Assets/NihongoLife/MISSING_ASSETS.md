@@ -1,5 +1,9 @@
 # NihongoLife - Asset gaps
 
+Story, career and online expansion design: [SOCIAL_STORY_ROADMAP.md](SOCIAL_STORY_ROADMAP.md).
+
+> **Important project rule:** Do not add `[MenuItem]` setup/build commands and do not create another scene without explicit approval. Finished work must be integrated directly into the existing scene/prefab/assets and work immediately with Play.
+
 For the complete project overview, progress assessment, roadmap, import rules and verified source list, see [PROJECT_STATUS_AND_SOURCES.md](PROJECT_STATUS_AND_SOURCES.md).
 
 This list only contains assets that are not already available in the project.

@@ -54,7 +54,9 @@ namespace NihongoLife.Interaction
 
             if (addToInventory && PlayerInventory.Instance != null)
             {
-                if (!PlayerInventory.Instance.AddItem(itemId, displayNameJa, displayNameEn, priceYen, 1, isLitter))
+                ConsumableCatalog.Resolve(itemId, out ItemUseType useType, out float food, out float drink, out float energy);
+                if (!PlayerInventory.Instance.AddItem(itemId, displayNameJa, displayNameEn, priceYen, 1, isLitter,
+                        useType, food, drink, energy))
                 {
                     Debug.LogWarning($"[InteractiveItem] Inventory is full. Item '{itemId}' remains in the world.", this);
                     return;
@@ -66,6 +68,31 @@ namespace NihongoLife.Interaction
             if (destroyOnInteract)
             {
                 gameObject.SetActive(false);
+            }
+        }
+
+        private static class ConsumableCatalog
+        {
+            public static void Resolve(string id, out ItemUseType type, out float food, out float drink, out float energy)
+            {
+                type = ItemUseType.None;
+                food = drink = energy = 0f;
+                string key = (id ?? string.Empty).ToLowerInvariant();
+                if (key.Contains("water") || key.Contains("tea") || key.Contains("drink") || key.Contains("soda"))
+                {
+                    type = ItemUseType.Drink;
+                    drink = key.Contains("water") ? 38f : 28f;
+                    energy = key.Contains("tea") ? 8f : 3f;
+                    return;
+                }
+
+                if (key.Contains("onigiri") || key.Contains("rice") || key.Contains("ramen") || key.Contains("udon") ||
+                    key.Contains("sushi") || key.Contains("nigiri") || key.Contains("roll") || key.Contains("dango") || key.Contains("food"))
+                {
+                    type = ItemUseType.Food;
+                    food = key.Contains("ramen") || key.Contains("udon") ? 45f : 28f;
+                    energy = 10f;
+                }
             }
         }
 

@@ -55,20 +55,21 @@ namespace NihongoLife.UI
         {
             var rows = new (GameInputId id, string label)[]
             {
+                (GameInputId.UseItem, "Use item"),
                 (GameInputId.MoveUp, "Đi tới"), (GameInputId.MoveDown, "Đi lùi"),
                 (GameInputId.MoveLeft, "Sang trái"), (GameInputId.MoveRight, "Sang phải"),
                 (GameInputId.Sprint, "Chạy"), (GameInputId.Jump, "Nhảy"),
                 (GameInputId.Interact, "Tương tác"), (GameInputId.Inventory, "Balo"),
-                (GameInputId.Character, "Nhân vật"), (GameInputId.Chat, "Chat"),
+                (GameInputId.Character, "Nhân vật"), (GameInputId.Map, "Bản đồ"), (GameInputId.Chat, "Chat"),
                 (GameInputId.Voice, "Ghi âm"), (GameInputId.Attack, "Tấn công"),
                 (GameInputId.DropItem, "Vứt đồ"), (GameInputId.Pause, "Tạm dừng")
             };
             for (int i = 0; i < rows.Length; i++)
             {
-                int column = i / 7;
-                int row = i % 7;
+                int column = i / 8;
+                int row = i % 8;
                 float x = 65f + column * 315f;
-                float y = 135f - row * 51f;
+                float y = 150f - row * 45f;
                 CreateText(panelObj.transform, rows[i].label, 15, new Vector2(x, y), new Vector2(120, 38), TextAlignmentOptions.MidlineLeft);
                 var button = CreateButton(panelObj.transform, string.Empty, new Vector2(x + 125f, y), new Vector2(118, 36));
                 var value = button.GetComponentInChildren<TextMeshProUGUI>();

@@ -246,9 +246,13 @@ namespace NihongoLife.Save
                 hunger = cloud.hunger,
                 thirst = cloud.thirst,
                 knowledge = Mathf.Max(local.knowledge, cloud.knowledge),
+                activeJobRole = !string.IsNullOrWhiteSpace(cloud.activeJobRole) ? cloud.activeJobRole : local.activeJobRole,
                 completedScenarios = new System.Collections.Generic.List<string>(cloud.completedScenarios),
                 bestScores = new System.Collections.Generic.List<ScenarioScoreRecord>(cloud.bestScores),
-                masteryLevels = new System.Collections.Generic.List<MasteryRecord>(cloud.masteryLevels)
+                masteryLevels = new System.Collections.Generic.List<MasteryRecord>(cloud.masteryLevels),
+                careers = cloud.careers != null
+                    ? new System.Collections.Generic.List<CareerRecord>(cloud.careers)
+                    : new System.Collections.Generic.List<CareerRecord>()
             };
 
             // Merge completed scenarios (union)
@@ -273,6 +277,20 @@ namespace NihongoLife.Save
                     existing.bestScore = localScore.bestScore;
                     existing.completedAt = localScore.completedAt;
                 }
+            }
+
+            foreach (var localCareer in local.careers ?? new System.Collections.Generic.List<CareerRecord>())
+            {
+                var existingCareer = merged.careers.Find(c => c.roleId == localCareer.roleId);
+                if (existingCareer == null)
+                {
+                    merged.careers.Add(localCareer);
+                    continue;
+                }
+
+                existingCareer.rank = Mathf.Max(existingCareer.rank, localCareer.rank);
+                existingCareer.completedShifts = Mathf.Max(existingCareer.completedShifts, localCareer.completedShifts);
+                existingCareer.reputation = Mathf.Max(existingCareer.reputation, localCareer.reputation);
             }
 
             return merged;

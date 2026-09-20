@@ -115,6 +115,16 @@ namespace NihongoLife.Player
             return CurrentEnergy > 0f;
         }
 
+        public bool TrySpendEnergy(float amount)
+        {
+            amount = Mathf.Max(0f, amount);
+            if (CurrentEnergy < amount) return false;
+            CurrentEnergy -= amount;
+            OnStatusChanged?.Invoke();
+            SaveProgress();
+            return true;
+        }
+
         public void RestoreNeeds(float food, float drink, float energy)
         {
             Hunger = Mathf.Clamp(Hunger + food, 0f, 100f);

@@ -3,6 +3,7 @@
 namespace DevionGames
 {
     [UnityEngine.Scripting.APIUpdating.MovedFromAttribute(true, null, "Assembly-CSharp")]
+    [System.Serializable]
     [Icon(typeof(Animator))]
     [ComponentMenu("Animator/Set Float")]
     public class SetFloat : Action

@@ -5,6 +5,7 @@ using UnityEngine;
 namespace DevionGames
 {
     [UnityEngine.Scripting.APIUpdating.MovedFromAttribute(true, null, "Assembly-CSharp")]
+    [System.Serializable]
     [Icon(typeof(Transform))]
     [ComponentMenu("Transform/Look Forward")]
     public class LookForward : Action

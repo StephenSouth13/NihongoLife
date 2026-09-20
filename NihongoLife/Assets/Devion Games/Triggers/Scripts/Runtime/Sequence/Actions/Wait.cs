@@ -5,6 +5,7 @@ using UnityEngine;
 namespace DevionGames
 {
     [UnityEngine.Scripting.APIUpdating.MovedFromAttribute(true, null, "Assembly-CSharp")]
+    [System.Serializable]
     [ComponentMenu("Time/Wait")]
     [Icon("Time")]
     public class Wait : Action

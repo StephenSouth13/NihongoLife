@@ -89,6 +89,8 @@ namespace NihongoLife.EditorTools
             store.SetParent(world, false);
 
             DisableLegacyVisual("StoreMerchandiseDecor");
+            DisableLegacyVisual("Shelf_Food");
+            DisableLegacyVisual("Shelf_Drinks");
 
             // Fixtures stay inside the established store footprint: x [-4.8, 4.8], z [1, 9].
             Place(SushiFolder, "Environment_Fridge", store, "DrinkFridge", new Vector3(3.55f, 0.05f, 6.65f), new Vector3(2.0f, 2.5f, 1.4f), Quaternion.Euler(0f, 180f, 0f), true);
