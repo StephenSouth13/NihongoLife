@@ -203,6 +203,28 @@ Chủ dự án xác nhận: đã bước vào bên trong konbini thật (không 
 - Có thể mở `ShopUI` ở khu vực mua sắm tự do, mua được item, trừ đúng tiền, item vào túi đồ.
 - Không đủ tiền thì không mua được, có phản hồi rõ ràng cho người chơi.
 
+## TASK-G (Codex) — Play Mode kiểm chứng & hoàn thiện nhà hàng ひばり寿司 (zone `30_SushiRestaurant`)
+
+**Bối cảnh**: Claude đã thêm dữ liệu + hệ thống thực đơn và scenario, và đặt sẵn bảng thực đơn trong scene, **chưa chạy Play Mode lần nào**. Tuân thủ `AGENTS.md`: không thêm `[MenuItem]`, không tạo scene mới, không xếp môi trường mới đè lên cũ, chỉnh trực tiếp scene/prefab/asset.
+
+**Đã có (check-first — đừng làm lại)**
+- `Scripts/Data/RestaurantMenuDefinition.cs`, `Scripts/Interaction/RestaurantMenuBoard.cs`, `Scripts/UI/RestaurantMenuUI.cs`.
+- `Resources/Restaurants/menu_sushi_hibari.asset` (24 món, 6 nhóm, 4 đặc sản 名物, 18 cụm từ, 8 nghi thức).
+- `Resources/Scenarios/scenario_restaurant_sushi_dining.asset` (74 node, có trong `campaignScenarioIds` của `GameControlDatabase.cs`, không có node `GoToArea` nên chạy ở bất kỳ vị trí nào).
+- Scene `30_SushiRestaurant.unity`: GameObject `RestaurantMenuBoard_Sushi` (layer 6, trigger BoxCollider, cạnh cửa phía bên phải trong nhà, x≈504.2, z≈-8.62, mặt quay vào phía trong) + 2 cube con `MenuBoardFrame`/`MenuBoardPaper`.
+
+**Việc cần làm**
+1. Mở `30_SushiRestaurant` ở Play Mode: nhân vật tới gần bảng → có prompt「メニューを見る」→ bấm E mở `RestaurantMenuUI` (4 tab, cuộn danh sách, chi tiết món, ESC đóng, nhân vật không kẹt khoá input). Sửa vị trí/collider nếu `InteractionDetector` không thấy (ghi lại giá trị đã chỉnh).
+2. Kiểm tra chồng lấn: bảng không xuyên tường/đồ nội thất; camera không bị che; ánh sáng đọc được tờ menu.
+3. Đặt 2 NPC `npc_sushi_staff` (Aoki, gần cửa/khu ghế) và `npc_sushi_chef` (Ota, sau quầy) bằng đúng pipeline nhân vật hiện có (tên khớp `speakerId` trong scenario), có collider/idle animation, không tạo nhân vật giả lập nếu đã có model.
+4. Quyết định gating: hiện scenario chạy ở bất kỳ đâu. Nếu muốn ép người chơi vào quán mới chơi, thêm trigger khu vực trong zone và node `GoToArea` — **phải giữ nhánh cũ chạy được**, báo Claude trước khi đổi graph.
+5. Chơi hết các nhánh scenario (đúng / kém tự nhiên / sai → sửa → thử lại) và chụp/ghi lại lỗi hiển thị hoặc node treo.
+6. Trang trí zone cho đỡ "mockup": quầy sushi, ghế, noren, đèn — chỉ dùng asset có trong project; **disable/xoá** thứ bị thay thế, không xếp chồng.
+
+**Ranh giới**: không sửa nội dung tiếng Nhật trong scenario/menu (Claude sở hữu nội dung); nếu thấy lỗi thì ghi vào báo cáo. Không đổi tên field serialized của `RestaurantMenuDefinition` (asset đang dùng GUID script 5e1a7c30…).
+
+**Acceptance criteria**: đủ 6 mục trên có bằng chứng Play Mode (mô tả hoặc ảnh), console không lỗi mới, không thêm menu Editor.
+
 ## Việc của Claude (song song, không chờ Codex/Antigravity)
 
 - Đang xác nhận với chủ dự án về việc tạo Supabase project riêng cho NihongoLife (tài khoản hiện chỉ có 1 project không liên quan tên `hrm_crm`) — sau khi có project sẽ tạo 8 bảng + RLS rồi điền vào `GameControlDatabase`.

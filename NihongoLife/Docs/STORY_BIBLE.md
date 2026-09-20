@@ -26,6 +26,7 @@ Dùng nhất quán tên địa danh sau trong mọi dialogue/mô tả từ giờ
 | **やまだ食堂 (Yamada Shokudō)** | Quán ăn của Yamada, bán ramen | Ch3 |
 | **ひばり駅 (Hibari Eki — ga Hibari)** | Nhà ga khu phố | Ch4 |
 | **ひばり日本語学院 (Hibari Nihongo Gakuin)** | Trường tiếng Nhật của nhân vật chính; lớp N5 "さくらクラス" | Ch1 (buổi học đầu), các bài học trường ở 4.5, cameo ở lễ hội Ch4 |
+| **ひばり寿司 (Hibari Sushi)** | Quán sushi kiểu Edomae của khu phố (zone `30_SushiRestaurant`); nơi học gọi món, ăn uống, trả tiền. Thực đơn nằm ở `Resources/Restaurants/menu_sushi_hibari.asset` | Ch3 (`scenario.restaurant.sushi_dining`), cameo ở lễ hội Ch4 |
 
 ## 11. Đa người chơi trong cốt truyện (Online E-Learning)
 
@@ -57,6 +58,8 @@ Nguyên tắc: **mỗi NPC xuất hiện lại ở nhiều scenario**, giữ ngu
 | `npc_neighbor_2` | Suzuki | Hàng xóm nuôi mèo | Hơi đãng trí, ấm áp, hay cảm ơn quá mức | Ch3 (lostcat), quay lại Ch4 báo tin đã tìm được mèo | Mối lo nhỏ (mèo lạc) được gieo ở Ch3, giải quyết nhẹ nhàng ở Ch4 — không cần người chơi trực tiếp tìm ra mèo, chỉ cần đã quan tâm hỏi han là đủ để Suzuki nhớ ơn. |
 | `npc_neighbor_3` | Sato | Trưởng khu phố (chōnaikai), phụ trách quy tắc sinh hoạt | Nghiêm túc nhưng tốt bụng, thích giải thích quy tắc | Ch3 (garbage), là người đứng ra tổ chức lễ hội ở Ch4 | Từ "người canh giữ luật lệ" (hơi xa cách) → người đầu tiên công nhận công khai sự tiến bộ của người chơi trước cả khu phố ở lễ hội — phần thưởng cảm xúc cho việc tuân thủ quy tắc nhỏ nhặt trước đó. |
 | `npc_cashier` | Ito | Nhân viên cửa hàng tiện lợi | Lịch sự kiểu công việc (敬語 chuẩn mực) | Ch2, xuất hiện nền ở lễ hội Ch4 | Đại diện cho "giao dịch lịch sự kiểu Nhật" — ở lễ hội chỉ cần 1 câu chào nhận ra mặt quen, không cần arc lớn, đủ để không bị "dùng 1 lần rồi bỏ". |
+| `npc_sushi_staff` *(mới)* | Aoki (青木さん) | Nhân viên phục vụ ひばり寿司 | Nhanh nhẹn, vui vẻ, nói 敬語 quán ăn chuẩn (「いらっしゃいませ」「かしこまりました」); luôn nhắc lại đơn để xác nhận | Ch3 (`scenario.restaurant.sushi_dining`), cameo lễ hội Ch4 | Đại diện "phục vụ khách kiểu Nhật": người chơi học nghe và đáp lại kính ngữ của bên phục vụ, không phải tự nói kính ngữ. |
+| `npc_sushi_chef` *(mới)* | Ota (大田さん) | Itamae (板前) đứng sau quầy sushi | Ít nói, tự hào về nghề, chỉ mở lời nhiều khi được hỏi về món omakase/đặc sản | Ch3 (`scenario.restaurant.sushi_dining`) | Từ "người thợ lặng lẽ" → khen ngắn 「いい食べっぷりですね」 nếu người chơi ăn/đáp đúng nghi thức — phần thưởng nhỏ cho việc học văn hoá ăn sushi. |
 | `npc_teacher_morita` *(mới)* | Morita (森田先生) | Giáo viên lớp N5 "さくらクラス" tại ひばり日本語学院 | Dịu dàng, kiên nhẫn, nói chậm rõ; luôn khen cụ thể ("〜が上手ですね") rồi mới sửa lỗi | Ch1 (`school.self_intro`), các bài học trường ở 4.5, phát biểu ở lễ hội Ch4 | Từ "cô giáo hướng dẫn từng bước" → ở lễ hội nói với cả khu phố rằng học viên của cô đã tiến bộ — hook tự nhiên để đọc thành tích Kiến thức/level. |
 | `npc_classmate_kim` *(mới)* | Kim (キムさん) | Bạn cùng lớp người Hàn, học viên NPC duy nhất cố định (các bạn cùng lớp còn lại là người chơi thật) | Vui vẻ, hay nói sai rồi cười, nói tiếng Nhật đơn giản như chính người học | Ch1 (`school.self_intro`), lớp học ở 4.5, lễ hội Ch4 | Cho người chơi thấy "người học khác cũng sai và vẫn ổn" — giảm áp lực; cuối game Kim nói chuyện tự nhiên hơn hẳn (dấu hiệu tiến bộ chung của cả lớp). |
 | `npc_ramen_owner` | Yamada | Chủ quán ramen được Tanaka giới thiệu | Xuề xòa, nhiệt tình, hay mời thêm | Ch3 (ramen), bán hàng ở lễ hội Ch4 | Ban đầu là "chủ quán do Tanaka giới thiệu" → tới lễ hội đã tự nhận ra người chơi mà không cần Tanaka giới thiệu lại — dấu hiệu rõ ràng nhất cho thấy người chơi đã thực sự thành cư dân quen mặt. |
@@ -84,6 +87,7 @@ Cảnh dẫn nhập thuần narration trước Chapter 1, chạy tự động kh
 1. `scenario.house2.lostcat` *(đã có)* — Suzuki nhờ tìm mèo lạc. **Callback**: Suzuki có thể nhắc "đã thấy bạn nói chuyện với Tanaka hôm trước".
 2. `scenario.house3.garbage` *(đã có)* — Sato hướng dẫn luật đổ rác.
 3. `scenario.restaurant.order_ramen` *(MỚI — cần viết)* — Gọi món tại quán Yamada, Tanaka dẫn đường và giới thiệu.
+   - **Bản mở rộng đã có: `scenario.restaurant.sushi_dining`** (74 node, đủ vòng: vào quán → được dẫn chỗ → xem thực đơn → gọi món → ăn (itadakimasu/gochisōsama) → tính tiền → chào ra về, với Aoki/Ota). Là bài mẫu chuẩn cho "nói chuyện trong nhà hàng"; ramen Yamada giữ vai bài nhẹ hơn. Dữ liệu món/cụm từ/nghi thức tách khỏi hội thoại, xem `CONTENT_GUIDE.md` mục "Restaurant content pipeline".
 - Kết chương: Sato nhắc tới "lễ hội mùa hè sắp tới của khu phố" → mở khóa Chapter 4.
 
 ### Chapter 4 — 駅と夏祭り (Nhà ga & Lễ hội mùa hè)

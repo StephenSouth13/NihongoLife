@@ -1,0 +1,1938 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3ba8f435ab5427145b206cd2a4f4ea7c, type: 3}
+  m_Name: scenario_restaurant_sushi_dining
+  m_EditorClassIdentifier: NihongoLife::NihongoLife.Scenario.ScenarioDefinition
+  id: scenario.restaurant.sushi_dining
+  version: 1
+  titleJa: "すし店で食事"
+  titleEn: "Dùng bữa ở quán sushi"
+  descriptionJa: "ひばり寿司で、あいさつ、注文、会計まで練習しましょう。"
+  descriptionEn: "Luyện toàn bộ quy trình ở quán sushi Hibari: chào hỏi, chọn chỗ, hỏi món đặc sản, báo dị ứng, gọi món, ăn, thanh toán và ra về."
+  chapterIndex: 3
+  learningTargets:
+  - grammar.n5.counter_people
+  - grammar.n5.de_onegaishimasu
+  - grammar.n5.wo_kudasai
+  - grammar.n5.wo_onegaishimasu
+  - grammar.n5.nashi_de
+  - grammar.n5.daijoubu_desu
+  - vocab.n5.itadakimasu
+  - vocab.n5.gochisousama_deshita
+  - vocab.n5.okaikei
+  - vocab.n5.osusume
+  objectives:
+  - id: obj_enter
+    titleJa: "店に入ってあいさつする"
+    titleEn: "Vào quán và đáp lời chào"
+    isOptional: 0
+  - id: obj_seat
+    titleJa: "席を決める"
+    titleEn: "Chọn chỗ ngồi"
+    isOptional: 0
+  - id: obj_order
+    titleJa: "注文する"
+    titleEn: "Gọi món"
+    isOptional: 0
+  - id: obj_eat
+    titleJa: "食事をする"
+    titleEn: "Thưởng thức bữa ăn"
+    isOptional: 0
+  - id: obj_pay
+    titleJa: "お会計をする"
+    titleEn: "Thanh toán"
+    isOptional: 0
+  - id: obj_leave
+    titleJa: "あいさつして店を出る"
+    titleEn: "Chào và rời quán"
+    isOptional: 0
+  nodes:
+  - id: n_arrive
+    nodeType: 0
+    nextNodeId: n_welcome
+    objectiveIdToComplete: 
+    speakerName: 
+    speakerId: 
+    textJa: "夕方、ひばり寿司に着きました。"
+    textReading: "ゆうがた、ひばりずしにつきました。"
+    textEn: "Chiều tối, bạn đến quán Hibari Sushi."
+    textRomaji: "Yuugata, Hibari zushi ni tsukimashita."
+    textEnglishIpa: 
+    animationCue: 
+    voiceClip: {fileID: 0}
+    choices: []
+    targetItemId: 
+    targetNpcId: 
+    targetAreaId: 
+  - id: n_welcome
+    nodeType: 0
+    nextNodeId: 
+    objectiveIdToComplete: 
+    speakerName: Aoki
+    speakerId: npc_sushi_staff
+    textJa: "いらっしゃいませ！何名様ですか。"
+    textReading: "いらっしゃいませ！なんめいさまですか。"
+    textEn: "Xin chào quý khách! Quý khách đi mấy người ạ?"
+    textRomaji: "Irasshaimase! Nanmeisama desu ka?"
+    textEnglishIpa: 
+    animationCue: bow
+    voiceClip: {fileID: 0}
+    choices:
+    - textJa: "一人です。"
+      textEn: "Một người ạ."
+      nextNodeId: n_seat_offer
+      scoreModifiers:
+      - category: Grammar
+        value: 10
+        reason: "Dùng đúng cách đếm người 一人 (ひとり) và câu 〜です"
+      grammarTags:
+      - grammar.n5.counter_people
+      - grammar.n5.wa_desu
+      vocabularyTags:
+      - vocab.n5.hitori
+    - textJa: "一人。"
+      textEn: "Một người."
+      nextNodeId: n_welcome_short
+      scoreModifiers:
+      - category: ResponseAccuracy
+        value: 2
+        reason: "Đúng ý nhưng thiếu です nên nghe hơi cộc"
+      grammarTags:
+      - grammar.n5.counter_people
+      vocabularyTags:
+      - vocab.n5.hitori
+    - textJa: "一つです。"
+      textEn: "Một cái ạ."
+      nextNodeId: n_welcome_wrong
+      scoreModifiers:
+      - category: Grammar
+        value: -8
+        reason: "Dùng bộ đếm đồ vật 一つ cho người (phải dùng 一人)"
+      grammarTags: []
+      vocabularyTags: []
+    targetItemId: 
+    targetNpcId: 
+    targetAreaId: 
+  - id: n_welcome_short
+    nodeType: 0
+    nextNodeId: n_seat_offer
+    objectiveIdToComplete: 
+    speakerName: Aoki
+    speakerId: npc_sushi_staff
+    textJa: "一名様ですね。「一人です」と言うと、もっとていねいですよ。"
+    textReading: "いちめいさまですね。「ひとりです」というと、もっとていねいですよ。"
+    textEn: "Một người ạ. Nói \"hitori desu\" sẽ lịch sự hơn đấy."
+    textRomaji: "Ichimeisama desu ne. \"Hitori desu\" to iu to, motto teinei desu yo."
+    textEnglishIpa: 
+    animationCue: talk
+    voiceClip: {fileID: 0}
+    choices: []
+    targetItemId: 
+    targetNpcId: 
+    targetAreaId: 
+  - id: n_welcome_wrong
+    nodeType: 0
+    nextNodeId: n_welcome
+    objectiveIdToComplete: 
+    speakerName: Aoki
+    speakerId: npc_sushi_staff
+    textJa: "あ、人は「一人、二人」と数えますよ。もう一度どうぞ。"
+    textReading: "あ、ひとは「ひとり、ふたり」とかぞえますよ。もういちどどうぞ。"
+    textEn: "À, khi đếm người thì nói \"hitori, futari\" nhé. Mời quý khách nói lại."
+    textRomaji: "A, hito wa \"hitori, futari\" to kazoemasu yo. Mou ichido douzo."
+    textEnglishIpa: 
+    animationCue: point
+    voiceClip: {fileID: 0}
+    choices: []
+    targetItemId: 
+    targetNpcId: 
+    targetAreaId: 
+  - id: n_seat_offer
+    nodeType: 0
+    nextNodeId: 
+    objectiveIdToComplete: obj_enter
+    speakerName: Aoki
+    speakerId: npc_sushi_staff
+    textJa: "カウンターとテーブルがあります。どちらがいいですか。"
+    textReading: "カウンターとテーブルがあります。どちらがいいですか。"
+    textEn: "Quán có quầy và bàn. Quý khách muốn ngồi chỗ nào ạ?"
+    textRomaji: "Kauntaa to teeburu ga arimasu. Dochira ga ii desu ka?"
+    textEnglishIpa: 
+    animationCue: talk
+    voiceClip: {fileID: 0}
+    choices:
+    - textJa: "カウンターでお願いします。"
+      textEn: "Cho tôi ngồi ở quầy nhé."
+      nextNodeId: n_counter
+      scoreModifiers:
+      - category: Grammar
+        value: 10
+        reason: "Dùng đúng mẫu 〜でお願いします để chọn chỗ ngồi"
+      grammarTags:
+      - grammar.n5.de_onegaishimasu
+      vocabularyTags:
+      - vocab.n5.kauntaa
+    - textJa: "テーブルでお願いします。"
+      textEn: "Cho tôi ngồi ở bàn nhé."
+      nextNodeId: n_table
+      scoreModifiers:
+      - category: Grammar
+        value: 10
+        reason: "Dùng đúng mẫu 〜でお願いします để chọn chỗ ngồi"
+      grammarTags:
+      - grammar.n5.de_onegaishimasu
+      vocabularyTags:
+      - vocab.n5.teeburu
+    - textJa: "どちらでもいいです。"
+      textEn: "Chỗ nào cũng được ạ."
+      nextNodeId: n_seat_any
+      scoreModifiers:
+      - category: ResponseAccuracy
+        value: 4
+        reason: "Trả lời được nhưng nhường hết quyết định cho nhân viên"
+      grammarTags:
+      - grammar.n5.dochira
+      vocabularyTags: []
+    - textJa: "カウンターをください。"
+      textEn: "Cho tôi cái quầy."
+      nextNodeId: n_seat_wrong
+      scoreModifiers:
+      - category: Grammar
+        value: -8
+        reason: "Dùng をください (xin một vật) cho chỗ ngồi; phải dùng 〜でお願いします"
+      grammarTags: []
+      vocabularyTags: []
+    targetItemId: 
+    targetNpcId: 
+    targetAreaId: 
+  - id: n_counter
+    nodeType: 0
+    nextNodeId: n_thanks_towel
+    objectiveIdToComplete: obj_seat
+    speakerName: Ota
+    speakerId: npc_sushi_chef
+    textJa: "いらっしゃい！今日はいい魚がありますよ。どうぞ、ここへ。"
+    textReading: "いらっしゃい！きょうはいいさかながありますよ。どうぞ、ここへ。"
+    textEn: "Chào mừng! Hôm nay có cá ngon lắm đấy. Mời ngồi đây."
+    textRomaji: "Irasshai! Kyou wa ii sakana ga arimasu yo. Douzo, koko e."
+    textEnglishIpa: 
+    animationCue: talk
+    voiceClip: {fileID: 0}
+    choices: []
+    targetItemId: 
+    targetNpcId: 
+    targetAreaId: 
+  - id: n_table
+    nodeType: 0
+    nextNodeId: n_thanks_towel
+    objectiveIdToComplete: obj_seat
+    speakerName: Aoki
+    speakerId: npc_sushi_staff
+    textJa: "こちらのテーブルへどうぞ。"
+    textReading: "こちらのテーブルへどうぞ。"
+    textEn: "Mời quý khách ngồi bàn này ạ."
+    textRomaji: "Kochira no teeburu e douzo."
+    textEnglishIpa: 
+    animationCue: point
+    voiceClip: {fileID: 0}
+    choices: []
+    targetItemId: 
+    targetNpcId: 
+    targetAreaId: 
+  - id: n_seat_any
+    nodeType: 0
+    nextNodeId: n_thanks_towel
+    objectiveIdToComplete: obj_seat
+    speakerName: Aoki
+    speakerId: npc_sushi_staff
+    textJa: "では、カウンターへどうぞ。大将の前です。"
+    textReading: "では、カウンターへどうぞ。たいしょうのまえです。"
+    textEn: "Vậy mời quý khách ngồi quầy ạ. Ngay trước mặt đầu bếp (taishou, cách gọi kính trọng dành cho bếp trưởng)."
+    textRomaji: "Dewa, kauntaa e douzo. Taishou no mae desu."
+    textEnglishIpa: 
+    animationCue: point
+    voiceClip: {fileID: 0}
+    choices: []
+    targetItemId: 
+    targetNpcId: 
+    targetAreaId: 
+  - id: n_seat_wrong
+    nodeType: 0
+    nextNodeId: n_seat_offer
+    objectiveIdToComplete: 
+    speakerName: Aoki
+    speakerId: npc_sushi_staff
+    textJa: "「カウンターをください」ではありませんよ。席は「〜でお願いします」と言います。もう一度どうぞ。"
+    textReading: "「カウンターをください」ではありませんよ。せきは「〜でおねがいします」といいます。もういちどどうぞ。"
+    textEn: "Không phải \"kauntaa wo kudasai\" đâu ạ. Khi chọn chỗ ngồi, hãy nói \"~ de onegaishimasu\". Mời quý khách nói lại."
+    textRomaji: "\"Kauntaa wo kudasai\" dewa arimasen yo. Seki wa \"~ de onegaishimasu\" to iimasu. Mou ichido douzo."
+    textEnglishIpa: 
+    animationCue: point
+    voiceClip: {fileID: 0}
+    choices: []
+    targetItemId: 
+    targetNpcId: 
+    targetAreaId: 
+  - id: n_thanks_towel
+    nodeType: 0
+    nextNodeId: 
+    objectiveIdToComplete: 
+    speakerName: Aoki
+    speakerId: npc_sushi_staff
+    textJa: "おしぼりとお茶です。どうぞ。"
+    textReading: "おしぼりとおちゃです。どうぞ。"
+    textEn: "Khăn ướt và trà ạ. Mời quý khách."
+    textRomaji: "Oshibori to ocha desu. Douzo."
+    textEnglishIpa: 
+    animationCue: bow
+    voiceClip: {fileID: 0}
+    choices:
+    - textJa: "ありがとうございます。"
+      textEn: "Cảm ơn ạ."
+      nextNodeId: n_towel_ok
+      scoreModifiers:
+      - category: Vocabulary
+        value: 8
+        reason: "Cảm ơn đúng mức lịch sự khi nhận khăn và trà"
+      grammarTags: []
+      vocabularyTags:
+      - vocab.n5.arigatou_gozaimasu
+    - textJa: "どうも。"
+      textEn: "Cảm ơn."
+      nextNodeId: n_towel_casual
+      scoreModifiers:
+      - category: ResponseAccuracy
+        value: 3
+        reason: "Cảm ơn ngắn gọn, ổn với nhân viên quán nhưng kém lịch sự hơn"
+      grammarTags: []
+      vocabularyTags:
+      - vocab.n5.arigatou_gozaimasu
+    - textJa: "いただきます。"
+      textEn: "Xin phép được ăn ạ."
+      nextNodeId: n_towel_wrong
+      scoreModifiers:
+      - category: ResponseAccuracy
+        value: -8
+        reason: "いただきます chỉ nói trước khi ăn, không dùng khi nhận khăn"
+      grammarTags: []
+      vocabularyTags: []
+    targetItemId: 
+    targetNpcId: 
+    targetAreaId: 
+  - id: n_towel_ok
+    nodeType: 0
+    nextNodeId: n_ask_order
+    objectiveIdToComplete: 
+    speakerName: Aoki
+    speakerId: npc_sushi_staff
+    textJa: "いえいえ。メニューはそちらのボードにあります。ゆっくり見てくださいね。"
+    textReading: "いえいえ。メニューはそちらのボードにあります。ゆっくりみてくださいね。"
+    textEn: "Không có gì ạ. Thực đơn ở bảng bên kia, quý khách cứ xem thong thả nhé. (Gợi ý: lại gần bảng thực đơn trong quán và nhấn E để xem chi tiết từng món.)"
+    textRomaji: "Ie ie. Menyuu wa sochira no boodo ni arimasu. Yukkuri mite kudasai ne."
+    textEnglishIpa: 
+    animationCue: bow
+    voiceClip: {fileID: 0}
+    choices: []
+    targetItemId: 
+    targetNpcId: 
+    targetAreaId: 
+  - id: n_towel_casual
+    nodeType: 0
+    nextNodeId: n_ask_order
+    objectiveIdToComplete: 
+    speakerName: Aoki
+    speakerId: npc_sushi_staff
+    textJa: "いえいえ。「ありがとうございます」と言うと、もっとていねいですよ。メニューはそちらのボードにあります。"
+    textReading: "いえいえ。「ありがとうございます」というと、もっとていねいですよ。メニューはそちらのボードにあります。"
+    textEn: "Không có gì ạ. Nói \"arigatou gozaimasu\" sẽ lịch sự hơn. Thực đơn ở bảng bên kia ạ. (Gợi ý: lại gần bảng thực đơn trong quán và nhấn E để xem chi tiết từng món.)"
+    textRomaji: "Ie ie. \"Arigatou gozaimasu\" to iu to, motto teinei desu yo. Menyuu wa sochira no boodo ni arimasu."
+    textEnglishIpa: 
+    animationCue: talk
+    voiceClip: {fileID: 0}
+    choices: []
+    targetItemId: 
+    targetNpcId: 
+    targetAreaId: 
+  - id: n_towel_wrong
+    nodeType: 0
+    nextNodeId: n_thanks_towel
+    objectiveIdToComplete: 
+    speakerName: Aoki
+    speakerId: npc_sushi_staff
+    textJa: "あ、「いただきます」は食べるときに言いますよ。ここは「ありがとうございます」ですね。"
+    textReading: "あ、「いただきます」はたべるときにいいますよ。ここは「ありがとうございます」ですね。"
+    textEn: "À, \"itadakimasu\" chỉ nói khi bắt đầu ăn thôi ạ. Ở đây phải nói \"arigatou gozaimasu\"."
+    textRomaji: "A, \"itadakimasu\" wa taberu toki ni iimasu yo. Koko wa \"arigatou gozaimasu\" desu ne."
+    textEnglishIpa: 
+    animationCue: point
+    voiceClip: {fileID: 0}
+    choices: []
+    targetItemId: 
+    targetNpcId: 
+    targetAreaId: 
+  - id: n_ask_order
+    nodeType: 0
+    nextNodeId: 
+    objectiveIdToComplete: 
+    speakerName: Aoki
+    speakerId: npc_sushi_staff
+    textJa: "ご注文はお決まりですか。"
+    textReading: "ごちゅうもんはおきまりですか。"
+    textEn: "Quý khách đã chọn món chưa ạ?"
+    textRomaji: "Gochuumon wa okimari desu ka?"
+    textEnglishIpa: 
+    animationCue: talk
+    voiceClip: {fileID: 0}
+    choices:
+    - textJa: "おすすめは何ですか。"
+      textEn: "Món nào được gợi ý ạ?"
+      nextNodeId: n_recommend
+      scoreModifiers:
+      - category: Vocabulary
+        value: 8
+        reason: "Hỏi món gợi ý đúng cách: おすすめは何ですか"
+      grammarTags:
+      - grammar.n5.nan_desu_ka
+      vocabularyTags:
+      - vocab.n5.osusume
+    - textJa: "まぐろとサーモンをください。"
+      textEn: "Cho tôi cá ngừ và cá hồi."
+      nextNodeId: n_order_nigiri
+      scoreModifiers:
+      - category: Grammar
+        value: 10
+        reason: "Dùng đúng mẫu 〜と〜をください để gọi hai món"
+      grammarTags:
+      - grammar.n5.wo_kudasai
+      - grammar.n5.to_and
+      vocabularyTags:
+      - vocab.n5.maguro
+      - vocab.n5.sake
+    - textJa: "まぐろとサーモンください。"
+      textEn: "Cho tôi cá ngừ và cá hồi."
+      nextNodeId: n_order_casual
+      scoreModifiers:
+      - category: Grammar
+        value: 3
+        reason: "Đúng ý nhưng bỏ trợ từ を nên hơi cộc, hợp với người quen hơn là nhân viên"
+      grammarTags:
+      - grammar.n5.wo_kudasai
+      vocabularyTags:
+      - vocab.n5.maguro
+      - vocab.n5.sake
+    - textJa: "すみません、まだです。"
+      textEn: "Xin lỗi, tôi chưa chọn xong."
+      nextNodeId: n_not_yet
+      scoreModifiers:
+      - category: ResponseAccuracy
+        value: 5
+        reason: "Nói lịch sự rằng mình chưa quyết định xong"
+      grammarTags: []
+      vocabularyTags:
+      - vocab.n5.sumimasen
+    - textJa: "まぐろは食べます。"
+      textEn: "Tôi ăn cá ngừ."
+      nextNodeId: n_order_wrong
+      scoreModifiers:
+      - category: Grammar
+        value: -8
+        reason: "Câu này chỉ nói mình ăn cá ngừ, không phải gọi món (gọi món dùng 〜をください/〜をお願いします)"
+      grammarTags: []
+      vocabularyTags: []
+    targetItemId: 
+    targetNpcId: 
+    targetAreaId: 
+  - id: n_not_yet
+    nodeType: 0
+    nextNodeId: n_ask_order
+    objectiveIdToComplete: 
+    speakerName: Aoki
+    speakerId: npc_sushi_staff
+    textJa: "はい、ゆっくりどうぞ。決まったらお呼びください。"
+    textReading: "はい、ゆっくりどうぞ。きまったらおよびください。"
+    textEn: "Vâng, cứ thong thả ạ. Chọn xong thì gọi tôi nhé."
+    textRomaji: "Hai, yukkuri douzo. Kimattara oyobi kudasai."
+    textEnglishIpa: 
+    animationCue: bow
+    voiceClip: {fileID: 0}
+    choices: []
+    targetItemId: 
+    targetNpcId: 
+    targetAreaId: 
+  - id: n_order_wrong
+    nodeType: 0
+    nextNodeId: n_ask_order
+    objectiveIdToComplete: 
+    speakerName: Aoki
+    speakerId: npc_sushi_staff
+    textJa: "注文のときは「〜をください」と言いますよ。もう一度どうぞ。"
+    textReading: "ちゅうもんのときは「〜をください」といいますよ。もういちどどうぞ。"
+    textEn: "Khi gọi món thì nói \"~ wo kudasai\" nhé. Mời quý khách gọi lại."
+    textRomaji: "Chuumon no toki wa \"~ wo kudasai\" to iimasu yo. Mou ichido douzo."
+    textEnglishIpa: 
+    animationCue: point
+    voiceClip: {fileID: 0}
+    choices: []
+    targetItemId: 
+    targetNpcId: 
+    targetAreaId: 
+  - id: n_recommend
+    nodeType: 0
+    nextNodeId: 
+    objectiveIdToComplete: 
+    speakerName: Ota
+    speakerId: npc_sushi_chef
+    textJa: "今日のおすすめは、うな丼とちらし寿司です。うな丼は、あまいたれがおいしいですよ。ちらし寿司は、いろいろな魚が入っています。"
+    textReading: "きょうのおすすめは、うなどんとちらしずしです。うなどんは、あまいたれがおいしいですよ。ちらしずしは、いろいろなさかながはいっています。"
+    textEn: "Món gợi ý hôm nay là unadon và chirashi zushi. Unadon có sốt ngọt rất ngon. Chirashi có nhiều loại cá bên trong."
+    textRomaji: "Kyou no osusume wa, unadon to chirashi zushi desu. Unadon wa, amai tare ga oishii desu yo. Chirashi zushi wa, iroiro na sakana ga haitte imasu."
+    textEnglishIpa: 
+    animationCue: talk
+    voiceClip: {fileID: 0}
+    choices:
+    - textJa: "うな丼をお願いします。"
+      textEn: "Cho tôi unadon nhé."
+      nextNodeId: n_order_unadon
+      scoreModifiers:
+      - category: Grammar
+        value: 10
+        reason: "Dùng đúng mẫu 〜をお願いします để gọi món"
+      grammarTags:
+      - grammar.n5.wo_onegaishimasu
+      vocabularyTags:
+      - vocab.n5.unagi
+    - textJa: "ちらし寿司をお願いします。"
+      textEn: "Cho tôi chirashi zushi nhé."
+      nextNodeId: n_order_chirashi
+      scoreModifiers:
+      - category: Grammar
+        value: 10
+        reason: "Dùng đúng mẫu 〜をお願いします để gọi món"
+      grammarTags:
+      - grammar.n5.wo_onegaishimasu
+      vocabularyTags:
+      - vocab.n5.chirashi
+    - textJa: "アレルギーがあります。"
+      textEn: "Tôi bị dị ứng."
+      nextNodeId: n_allergy_ask
+      scoreModifiers:
+      - category: ResponseAccuracy
+        value: 8
+        reason: "Báo dị ứng trước khi gọi món, đúng thói quen an toàn"
+      grammarTags:
+      - grammar.n5.ga_arimasu
+      vocabularyTags:
+      - vocab.n5.arerugii
+    - textJa: "おいしいです。"
+      textEn: "Ngon quá ạ."
+      nextNodeId: n_recommend_wrong
+      scoreModifiers:
+      - category: ResponseAccuracy
+        value: -8
+        reason: "Khen ngon khi chưa gọi và chưa ăn món nào, không khớp tình huống"
+      grammarTags: []
+      vocabularyTags: []
+    targetItemId: 
+    targetNpcId: 
+    targetAreaId: 
+  - id: n_recommend_wrong
+    nodeType: 0
+    nextNodeId: n_recommend
+    objectiveIdToComplete: 
+    speakerName: Ota
+    speakerId: npc_sushi_chef
+    textJa: "まだ食べていませんよ。どちらにしますか。"
+    textReading: "まだたべていませんよ。どちらにしますか。"
+    textEn: "Quý khách chưa ăn mà. Quý khách chọn món nào ạ?"
+    textRomaji: "Mada tabete imasen yo. Dochira ni shimasu ka?"
+    textEnglishIpa: 
+    animationCue: talk
+    voiceClip: {fileID: 0}
+    choices: []
+    targetItemId: 
+    targetNpcId: 
+    targetAreaId: 
+  - id: n_allergy_ask
+    nodeType: 0
+    nextNodeId: 
+    objectiveIdToComplete: 
+    speakerName: Ota
+    speakerId: npc_sushi_chef
+    textJa: "アレルギーですか。何のアレルギーですか。"
+    textReading: "アレルギーですか。なんのアレルギーですか。"
+    textEn: "Dị ứng à? Quý khách dị ứng với gì ạ?"
+    textRomaji: "Arerugii desu ka. Nan no arerugii desu ka?"
+    textEnglishIpa: 
+    animationCue: point
+    voiceClip: {fileID: 0}
+    choices:
+    - textJa: "えびです。"
+      textEn: "Tôm ạ."
+      nextNodeId: n_allergy_shrimp
+      scoreModifiers:
+      - category: Vocabulary
+        value: 8
+        reason: "Nêu đúng tên chất gây dị ứng: えび (tôm)"
+      grammarTags: []
+      vocabularyTags:
+      - vocab.n5.ebi
+    - textJa: "たまごです。"
+      textEn: "Trứng ạ."
+      nextNodeId: n_allergy_egg
+      scoreModifiers:
+      - category: Vocabulary
+        value: 8
+        reason: "Nêu đúng tên chất gây dị ứng: たまご (trứng)"
+      grammarTags: []
+      vocabularyTags:
+      - vocab.n5.tamago
+    targetItemId: 
+    targetNpcId: 
+    targetAreaId: 
+  - id: n_allergy_shrimp
+    nodeType: 0
+    nextNodeId: n_choose_after_allergy
+    objectiveIdToComplete: 
+    speakerName: Ota
+    speakerId: npc_sushi_chef
+    textJa: "えびですね。ちらし寿司にはえびが入っています。うな丼は大丈夫ですよ。"
+    textReading: "えびですね。ちらしずしにはえびがはいっています。うなどんはだいじょうぶですよ。"
+    textEn: "Tôm nhỉ. Chirashi có tôm bên trong. Unadon thì không sao đâu ạ."
+    textRomaji: "Ebi desu ne. Chirashi zushi ni wa ebi ga haitte imasu. Unadon wa daijoubu desu yo."
+    textEnglishIpa: 
+    animationCue: point
+    voiceClip: {fileID: 0}
+    choices: []
+    targetItemId: 
+    targetNpcId: 
+    targetAreaId: 
+  - id: n_allergy_egg
+    nodeType: 0
+    nextNodeId: n_choose_after_allergy
+    objectiveIdToComplete: 
+    speakerName: Ota
+    speakerId: npc_sushi_chef
+    textJa: "たまごですね。ちらし寿司にはたまごやきが入っています。うな丼は大丈夫ですよ。"
+    textReading: "たまごですね。ちらしずしにはたまごやきがはいっています。うなどんはだいじょうぶですよ。"
+    textEn: "Trứng nhỉ. Chirashi có trứng cuộn bên trong. Unadon thì không sao đâu ạ."
+    textRomaji: "Tamago desu ne. Chirashi zushi ni wa tamagoyaki ga haitte imasu. Unadon wa daijoubu desu yo."
+    textEnglishIpa: 
+    animationCue: point
+    voiceClip: {fileID: 0}
+    choices: []
+    targetItemId: 
+    targetNpcId: 
+    targetAreaId: 
+  - id: n_choose_after_allergy
+    nodeType: 0
+    nextNodeId: 
+    objectiveIdToComplete: 
+    speakerName: Ota
+    speakerId: npc_sushi_chef
+    textJa: "では、どれにしますか。"
+    textReading: "では、どれにしますか。"
+    textEn: "Vậy quý khách chọn món nào ạ?"
+    textRomaji: "Dewa, dore ni shimasu ka?"
+    textEnglishIpa: 
+    animationCue: talk
+    voiceClip: {fileID: 0}
+    choices:
+    - textJa: "うな丼をお願いします。"
+      textEn: "Cho tôi unadon nhé."
+      nextNodeId: n_order_unadon
+      scoreModifiers:
+      - category: Grammar
+        value: 10
+        reason: "Chọn đúng món an toàn và dùng đúng mẫu 〜をお願いします"
+      grammarTags:
+      - grammar.n5.wo_onegaishimasu
+      vocabularyTags:
+      - vocab.n5.unagi
+    - textJa: "まぐろとサーモンをください。"
+      textEn: "Cho tôi cá ngừ và cá hồi."
+      nextNodeId: n_order_nigiri
+      scoreModifiers:
+      - category: Grammar
+        value: 10
+        reason: "Chọn đúng món an toàn và dùng đúng mẫu 〜をください"
+      grammarTags:
+      - grammar.n5.wo_kudasai
+      - grammar.n5.to_and
+      vocabularyTags:
+      - vocab.n5.maguro
+      - vocab.n5.sake
+    - textJa: "ちらし寿司をお願いします。"
+      textEn: "Cho tôi chirashi zushi nhé."
+      nextNodeId: n_allergy_warn
+      scoreModifiers:
+      - category: ResponseAccuracy
+        value: -10
+        reason: "Chọn món có chất gây dị ứng vừa nêu"
+      grammarTags: []
+      vocabularyTags: []
+    targetItemId: 
+    targetNpcId: 
+    targetAreaId: 
+  - id: n_allergy_warn
+    nodeType: 0
+    nextNodeId: n_choose_after_allergy
+    objectiveIdToComplete: 
+    speakerName: Ota
+    speakerId: npc_sushi_chef
+    textJa: "それにはえびとたまごが入っていますよ。あぶないですから、ほかのものにしましょう。"
+    textReading: "それにはえびとたまごがはいっていますよ。あぶないですから、ほかのものにしましょう。"
+    textEn: "Món đó có tôm và trứng đấy ạ. Nguy hiểm nên mình chọn món khác nhé."
+    textRomaji: "Sore ni wa ebi to tamago ga haitte imasu yo. Abunai desu kara, hoka no mono ni shimashou."
+    textEnglishIpa: 
+    animationCue: point
+    voiceClip: {fileID: 0}
+    choices: []
+    targetItemId: 
+    targetNpcId: 
+    targetAreaId: 
+  - id: n_order_unadon
+    nodeType: 0
+    nextNodeId: n_served_unadon
+    objectiveIdToComplete: obj_order
+    speakerName: Aoki
+    speakerId: npc_sushi_staff
+    textJa: "かしこまりました。うな丼ですね。少々お待ちください。"
+    textReading: "かしこまりました。うなどんですね。しょうしょうおまちください。"
+    textEn: "Vâng ạ. Quý khách gọi unadon nhỉ. Xin chờ một chút."
+    textRomaji: "Kashikomarimashita. Unadon desu ne. Shoushou omachi kudasai."
+    textEnglishIpa: 
+    animationCue: bow
+    voiceClip: {fileID: 0}
+    choices: []
+    targetItemId: 
+    targetNpcId: 
+    targetAreaId: 
+  - id: n_order_chirashi
+    nodeType: 0
+    nextNodeId: n_served_chirashi
+    objectiveIdToComplete: obj_order
+    speakerName: Aoki
+    speakerId: npc_sushi_staff
+    textJa: "かしこまりました。ちらし寿司ですね。少々お待ちください。"
+    textReading: "かしこまりました。ちらしずしですね。しょうしょうおまちください。"
+    textEn: "Vâng ạ. Quý khách gọi chirashi zushi nhỉ. Xin chờ một chút."
+    textRomaji: "Kashikomarimashita. Chirashi zushi desu ne. Shoushou omachi kudasai."
+    textEnglishIpa: 
+    animationCue: bow
+    voiceClip: {fileID: 0}
+    choices: []
+    targetItemId: 
+    targetNpcId: 
+    targetAreaId: 
+  - id: n_order_nigiri
+    nodeType: 0
+    nextNodeId: n_wasabi
+    objectiveIdToComplete: obj_order
+    speakerName: Aoki
+    speakerId: npc_sushi_staff
+    textJa: "かしこまりました。まぐろとサーモンですね。"
+    textReading: "かしこまりました。まぐろとサーモンですね。"
+    textEn: "Vâng ạ. Cá ngừ và cá hồi nhỉ."
+    textRomaji: "Kashikomarimashita. Maguro to saamon desu ne."
+    textEnglishIpa: 
+    animationCue: bow
+    voiceClip: {fileID: 0}
+    choices: []
+    targetItemId: 
+    targetNpcId: 
+    targetAreaId: 
+  - id: n_order_casual
+    nodeType: 0
+    nextNodeId: n_wasabi
+    objectiveIdToComplete: obj_order
+    speakerName: Aoki
+    speakerId: npc_sushi_staff
+    textJa: "かしこまりました。「まぐろとサーモンをください」と言うと、もっとていねいですよ。"
+    textReading: "かしこまりました。「まぐろとサーモンをください」というと、もっとていねいですよ。"
+    textEn: "Vâng ạ. Nói \"maguro to saamon wo kudasai\" sẽ lịch sự hơn đấy."
+    textRomaji: "Kashikomarimashita. \"Maguro to saamon wo kudasai\" to iu to, motto teinei desu yo."
+    textEnglishIpa: 
+    animationCue: talk
+    voiceClip: {fileID: 0}
+    choices: []
+    targetItemId: 
+    targetNpcId: 
+    targetAreaId: 
+  - id: n_wasabi
+    nodeType: 0
+    nextNodeId: 
+    objectiveIdToComplete: 
+    speakerName: Ota
+    speakerId: npc_sushi_chef
+    textJa: "わさびは大丈夫ですか。"
+    textReading: "わさびはだいじょうぶですか。"
+    textEn: "Quý khách dùng wasabi được không ạ?"
+    textRomaji: "Wasabi wa daijoubu desu ka?"
+    textEnglishIpa: 
+    animationCue: talk
+    voiceClip: {fileID: 0}
+    choices:
+    - textJa: "大丈夫です。"
+      textEn: "Được ạ."
+      nextNodeId: n_wasabi_ok
+      scoreModifiers:
+      - category: Grammar
+        value: 8
+        reason: "Dùng 大丈夫です để đồng ý một cách tự nhiên"
+      grammarTags:
+      - grammar.n5.daijoubu_desu
+      vocabularyTags:
+      - vocab.n5.wasabi
+    - textJa: "わさびなしでお願いします。"
+      textEn: "Cho tôi không wasabi nhé."
+      nextNodeId: n_wasabi_none
+      scoreModifiers:
+      - category: Grammar
+        value: 10
+        reason: "Dùng đúng mẫu 〜なしでお願いします để bỏ một thành phần"
+      grammarTags:
+      - grammar.n5.nashi_de
+      vocabularyTags:
+      - vocab.n5.wasabi
+    - textJa: "わさびをください。"
+      textEn: "Cho tôi wasabi."
+      nextNodeId: n_wasabi_wrong
+      scoreModifiers:
+      - category: ResponseAccuracy
+        value: -8
+        reason: "Trả lời không khớp câu hỏi (nhân viên hỏi có dùng được không, không phải xin thêm)"
+      grammarTags: []
+      vocabularyTags: []
+    targetItemId: 
+    targetNpcId: 
+    targetAreaId: 
+  - id: n_wasabi_ok
+    nodeType: 0
+    nextNodeId: n_served_nigiri
+    objectiveIdToComplete: 
+    speakerName: Ota
+    speakerId: npc_sushi_chef
+    textJa: "はい、ふつうにしますね。"
+    textReading: "はい、ふつうにしますね。"
+    textEn: "Vâng, tôi làm như bình thường nhé."
+    textRomaji: "Hai, futsuu ni shimasu ne."
+    textEnglishIpa: 
+    animationCue: talk
+    voiceClip: {fileID: 0}
+    choices: []
+    targetItemId: 
+    targetNpcId: 
+    targetAreaId: 
+  - id: n_wasabi_none
+    nodeType: 0
+    nextNodeId: n_served_nigiri
+    objectiveIdToComplete: 
+    speakerName: Ota
+    speakerId: npc_sushi_chef
+    textJa: "わかりました。わさびなしですね。"
+    textReading: "わかりました。わさびなしですね。"
+    textEn: "Tôi hiểu rồi ạ. Không wasabi nhé."
+    textRomaji: "Wakarimashita. Wasabi nashi desu ne."
+    textEnglishIpa: 
+    animationCue: bow
+    voiceClip: {fileID: 0}
+    choices: []
+    targetItemId: 
+    targetNpcId: 
+    targetAreaId: 
+  - id: n_wasabi_wrong
+    nodeType: 0
+    nextNodeId: n_wasabi
+    objectiveIdToComplete: 
+    speakerName: Ota
+    speakerId: npc_sushi_chef
+    textJa: "あ、たくさんですか？いえ、「大丈夫です」か「なしでお願いします」ですよ。"
+    textReading: "あ、たくさんですか？いえ、「だいじょうぶです」か「なしでおねがいします」ですよ。"
+    textEn: "À, quý khách muốn nhiều à? Không, phải trả lời \"daijoubu desu\" hoặc \"nashi de onegaishimasu\" cơ ạ."
+    textRomaji: "A, takusan desu ka? Ie, \"daijoubu desu\" ka \"nashi de onegaishimasu\" desu yo."
+    textEnglishIpa: 
+    animationCue: point
+    voiceClip: {fileID: 0}
+    choices: []
+    targetItemId: 
+    targetNpcId: 
+    targetAreaId: 
+  - id: n_served_nigiri
+    nodeType: 0
+    nextNodeId: nn_eat
+    objectiveIdToComplete: 
+    speakerName: Ota
+    speakerId: npc_sushi_chef
+    textJa: "お待たせしました。まぐろとサーモンです。しょうゆは、さかなにつけてください。どうぞ。"
+    textReading: "おまたせしました。まぐろとサーモンです。しょうゆは、さかなにつけてください。どうぞ。"
+    textEn: "Xin lỗi đã để quý khách chờ. Cá ngừ và cá hồi ạ. Nước tương thì chấm vào phần cá nhé. Mời quý khách."
+    textRomaji: "Omatase shimashita. Maguro to saamon desu. Shouyu wa, sakana ni tsukete kudasai. Douzo."
+    textEnglishIpa: 
+    animationCue: point
+    voiceClip: {fileID: 0}
+    choices: []
+    targetItemId: 
+    targetNpcId: 
+    targetAreaId: 
+  - id: n_served_unadon
+    nodeType: 0
+    nextNodeId: nd_eat
+    objectiveIdToComplete: 
+    speakerName: Aoki
+    speakerId: npc_sushi_staff
+    textJa: "お待たせしました。うな丼です。お味噌汁もどうぞ。"
+    textReading: "おまたせしました。うなどんです。おみそしるもどうぞ。"
+    textEn: "Xin lỗi đã để quý khách chờ. Unadon ạ. Có cả súp miso, mời quý khách."
+    textRomaji: "Omatase shimashita. Unadon desu. Omisoshiru mo douzo."
+    textEnglishIpa: 
+    animationCue: bow
+    voiceClip: {fileID: 0}
+    choices: []
+    targetItemId: 
+    targetNpcId: 
+    targetAreaId: 
+  - id: n_served_chirashi
+    nodeType: 0
+    nextNodeId: nd_eat
+    objectiveIdToComplete: 
+    speakerName: Aoki
+    speakerId: npc_sushi_staff
+    textJa: "お待たせしました。ちらし寿司です。お味噌汁もどうぞ。"
+    textReading: "おまたせしました。ちらしずしです。おみそしるもどうぞ。"
+    textEn: "Xin lỗi đã để quý khách chờ. Chirashi zushi ạ. Có cả súp miso, mời quý khách."
+    textRomaji: "Omatase shimashita. Chirashi zushi desu. Omisoshiru mo douzo."
+    textEnglishIpa: 
+    animationCue: bow
+    voiceClip: {fileID: 0}
+    choices: []
+    targetItemId: 
+    targetNpcId: 
+    targetAreaId: 
+  - id: nn_eat
+    nodeType: 0
+    nextNodeId: 
+    objectiveIdToComplete: 
+    speakerName: Ota
+    speakerId: npc_sushi_chef
+    textJa: "ごゆっくりどうぞ。"
+    textReading: "ごゆっくりどうぞ。"
+    textEn: "Xin mời quý khách dùng bữa thong thả ạ."
+    textRomaji: "Goyukkuri douzo."
+    textEnglishIpa: 
+    animationCue: bow
+    voiceClip: {fileID: 0}
+    choices:
+    - textJa: "いただきます。"
+      textEn: "Xin phép được ăn ạ."
+      nextNodeId: nn_taste
+      scoreModifiers:
+      - category: Vocabulary
+        value: 10
+        reason: "Nói いただきます đúng lúc trước khi ăn"
+      grammarTags: []
+      vocabularyTags:
+      - vocab.n5.itadakimasu
+    - textJa: "ありがとうございます。"
+      textEn: "Cảm ơn ạ."
+      nextNodeId: nn_eat_thanks
+      scoreModifiers:
+      - category: ResponseAccuracy
+        value: 3
+        reason: "Cảm ơn cũng lịch sự nhưng trước khi ăn nên nói いただきます"
+      grammarTags: []
+      vocabularyTags:
+      - vocab.n5.arigatou_gozaimasu
+    - textJa: "いただきました。"
+      textEn: "Tôi đã ăn xong rồi ạ."
+      nextNodeId: nn_eat_wrong
+      scoreModifiers:
+      - category: Grammar
+        value: -8
+        reason: "Dùng quá khứ いただきました khi chưa ăn (trước khi ăn phải là いただきます)"
+      grammarTags: []
+      vocabularyTags: []
+    targetItemId: 
+    targetNpcId: 
+    targetAreaId: 
+  - id: nn_eat_thanks
+    nodeType: 0
+    nextNodeId: nn_taste
+    objectiveIdToComplete: 
+    speakerName: Ota
+    speakerId: npc_sushi_chef
+    textJa: "いえいえ。食べるときは「いただきます」と言いましょう。どうぞ。"
+    textReading: "いえいえ。たべるときは「いただきます」といいましょう。どうぞ。"
+    textEn: "Không có gì ạ. Khi bắt đầu ăn hãy nói \"itadakimasu\" nhé. Mời quý khách."
+    textRomaji: "Ie ie. Taberu toki wa \"itadakimasu\" to iimashou. Douzo."
+    textEnglishIpa: 
+    animationCue: talk
+    voiceClip: {fileID: 0}
+    choices: []
+    targetItemId: 
+    targetNpcId: 
+    targetAreaId: 
+  - id: nn_eat_wrong
+    nodeType: 0
+    nextNodeId: nn_eat
+    objectiveIdToComplete: 
+    speakerName: Ota
+    speakerId: npc_sushi_chef
+    textJa: "あ、まだ食べていませんよ。食べる前は「いただきます」です。"
+    textReading: "あ、まだたべていませんよ。たべるまえは「いただきます」です。"
+    textEn: "À, quý khách chưa ăn mà. Trước khi ăn thì nói \"itadakimasu\" ạ."
+    textRomaji: "A, mada tabete imasen yo. Taberu mae wa \"itadakimasu\" desu."
+    textEnglishIpa: 
+    animationCue: point
+    voiceClip: {fileID: 0}
+    choices: []
+    targetItemId: 
+    targetNpcId: 
+    targetAreaId: 
+  - id: nn_taste
+    nodeType: 0
+    nextNodeId: 
+    objectiveIdToComplete: 
+    speakerName: Ota
+    speakerId: npc_sushi_chef
+    textJa: "どうですか。おいしいですか。"
+    textReading: "どうですか。おいしいですか。"
+    textEn: "Thế nào ạ? Có ngon không ạ?"
+    textRomaji: "Dou desu ka. Oishii desu ka?"
+    textEnglishIpa: 
+    animationCue: talk
+    voiceClip: {fileID: 0}
+    choices:
+    - textJa: "おいしいです。"
+      textEn: "Ngon ạ."
+      nextNodeId: nn_finish
+      scoreModifiers:
+      - category: Vocabulary
+        value: 8
+        reason: "Khen món ăn tự nhiên bằng おいしいです"
+      grammarTags: []
+      vocabularyTags:
+      - vocab.n5.oishii
+    - textJa: "おいしかったです。"
+      textEn: "Đã ngon ạ."
+      nextNodeId: nn_taste_past
+      scoreModifiers:
+      - category: ResponseAccuracy
+        value: 3
+        reason: "Dùng quá khứ khi đang ăn nghe hơi lạ; quá khứ dùng khi đã ăn xong"
+      grammarTags: []
+      vocabularyTags:
+      - vocab.n5.oishii
+    - textJa: "まずいです。"
+      textEn: "Dở ạ."
+      nextNodeId: nn_taste_wrong
+      scoreModifiers:
+      - category: ResponseAccuracy
+        value: -10
+        reason: "まずい là chê món ăn rất thô lỗ, không dùng với người nấu"
+      grammarTags: []
+      vocabularyTags: []
+    targetItemId: 
+    targetNpcId: 
+    targetAreaId: 
+  - id: nn_taste_past
+    nodeType: 0
+    nextNodeId: nn_finish
+    objectiveIdToComplete: 
+    speakerName: Ota
+    speakerId: npc_sushi_chef
+    textJa: "ありがとうございます。食べているときは「おいしいです」、食べたあとは「おいしかったです」ですよ。"
+    textReading: "ありがとうございます。たべているときは「おいしいです」、たべたあとは「おいしかったです」ですよ。"
+    textEn: "Cảm ơn quý khách. Khi đang ăn thì nói \"oishii desu\", ăn xong thì nói \"oishikatta desu\" nhé."
+    textRomaji: "Arigatou gozaimasu. Tabete iru toki wa \"oishii desu\", tabeta ato wa \"oishikatta desu\" desu yo."
+    textEnglishIpa: 
+    animationCue: bow
+    voiceClip: {fileID: 0}
+    choices: []
+    targetItemId: 
+    targetNpcId: 
+    targetAreaId: 
+  - id: nn_taste_wrong
+    nodeType: 0
+    nextNodeId: nn_taste
+    objectiveIdToComplete: 
+    speakerName: Ota
+    speakerId: npc_sushi_chef
+    textJa: "えっ！それは失礼ですよ。「おいしいです」と言いましょう。"
+    textReading: "えっ！それはしつれいですよ。「おいしいです」といいましょう。"
+    textEn: "Ơ! Thế là thất lễ đấy ạ. Hãy nói \"oishii desu\" nhé."
+    textRomaji: "E! Sore wa shitsurei desu yo. \"Oishii desu\" to iimashou."
+    textEnglishIpa: 
+    animationCue: point
+    voiceClip: {fileID: 0}
+    choices: []
+    targetItemId: 
+    targetNpcId: 
+    targetAreaId: 
+  - id: nn_finish
+    nodeType: 0
+    nextNodeId: 
+    objectiveIdToComplete: obj_eat
+    speakerName: 
+    speakerId: 
+    textJa: "食べ終わりました。店員さんを呼びましょう。"
+    textReading: "たべおわりました。てんいんさんをよびましょう。"
+    textEn: "Bạn đã ăn xong. Hãy gọi nhân viên để thanh toán."
+    textRomaji: "Tabeowarimashita. Tenin-san wo yobimashou."
+    textEnglishIpa: 
+    animationCue: 
+    voiceClip: {fileID: 0}
+    choices:
+    - textJa: "すみません、お会計をお願いします。"
+      textEn: "Xin lỗi, cho tôi thanh toán ạ."
+      nextNodeId: nn_total
+      scoreModifiers:
+      - category: Grammar
+        value: 10
+        reason: "Gọi nhân viên bằng すみません rồi xin thanh toán đúng mẫu お会計をお願いします"
+      grammarTags:
+      - grammar.n5.wo_onegaishimasu
+      vocabularyTags:
+      - vocab.n5.okaikei
+      - vocab.n5.sumimasen
+    - textJa: "いくらですか。"
+      textEn: "Bao nhiêu tiền ạ?"
+      nextNodeId: nn_total_asked
+      scoreModifiers:
+      - category: ResponseAccuracy
+        value: 4
+        reason: "Hỏi giá được nhưng khi thanh toán thường dùng お会計をお願いします"
+      grammarTags: []
+      vocabularyTags:
+      - vocab.n5.ikura
+    - textJa: "お金をください。"
+      textEn: "Cho tôi tiền."
+      nextNodeId: nn_bill_wrong
+      scoreModifiers:
+      - category: Grammar
+        value: -10
+        reason: "お金をください nghĩa là xin nhân viên đưa tiền cho mình, ngược với ý muốn thanh toán"
+      grammarTags: []
+      vocabularyTags: []
+    targetItemId: 
+    targetNpcId: 
+    targetAreaId: 
+  - id: nn_total
+    nodeType: 0
+    nextNodeId: nn_pay
+    objectiveIdToComplete: 
+    speakerName: Aoki
+    speakerId: npc_sushi_staff
+    textJa: "はい。お会計は530円です。"
+    textReading: "はい。おかいけいはごひゃくさんじゅうえんです。"
+    textEn: "Vâng. Tổng cộng là 530 yên ạ."
+    textRomaji: "Hai. Okaikei wa gohyaku sanjuu-en desu."
+    textEnglishIpa: 
+    animationCue: talk
+    voiceClip: {fileID: 0}
+    choices: []
+    targetItemId: 
+    targetNpcId: 
+    targetAreaId: 
+  - id: nn_total_asked
+    nodeType: 0
+    nextNodeId: nn_pay
+    objectiveIdToComplete: 
+    speakerName: Aoki
+    speakerId: npc_sushi_staff
+    textJa: "「お会計をお願いします」と言うと、もっといいですよ。530円です。"
+    textReading: "「おかいけいをおねがいします」というと、もっといいですよ。ごひゃくさんじゅうえんです。"
+    textEn: "Nói \"okaikei wo onegaishimasu\" sẽ hay hơn đấy ạ. Tổng cộng là 530 yên ạ."
+    textRomaji: "\"Okaikei wo onegaishimasu\" to iu to, motto ii desu yo. gohyaku sanjuu-en desu."
+    textEnglishIpa: 
+    animationCue: talk
+    voiceClip: {fileID: 0}
+    choices: []
+    targetItemId: 
+    targetNpcId: 
+    targetAreaId: 
+  - id: nn_bill_wrong
+    nodeType: 0
+    nextNodeId: nn_finish
+    objectiveIdToComplete: 
+    speakerName: Aoki
+    speakerId: npc_sushi_staff
+    textJa: "えっ？お金をもらうんですか？お会計は「お会計をお願いします」ですよ。"
+    textReading: "えっ？おかねをもらうんですか？おかいけいは「おかいけいをおねがいします」ですよ。"
+    textEn: "Ơ? Quý khách muốn lấy tiền của tôi sao? Xin thanh toán thì nói \"okaikei wo onegaishimasu\" nhé."
+    textRomaji: "E? Okane wo morau n desu ka? Okaikei wa \"okaikei wo onegaishimasu\" desu yo."
+    textEnglishIpa: 
+    animationCue: point
+    voiceClip: {fileID: 0}
+    choices: []
+    targetItemId: 
+    targetNpcId: 
+    targetAreaId: 
+  - id: nn_pay
+    nodeType: 0
+    nextNodeId: 
+    objectiveIdToComplete: 
+    speakerName: Aoki
+    speakerId: npc_sushi_staff
+    textJa: "現金ですか、カードですか。"
+    textReading: "げんきんですか、カードですか。"
+    textEn: "Quý khách trả bằng tiền mặt hay thẻ ạ?"
+    textRomaji: "Genkin desu ka, kaado desu ka?"
+    textEnglishIpa: 
+    animationCue: talk
+    voiceClip: {fileID: 0}
+    choices:
+    - textJa: "現金でお願いします。"
+      textEn: "Tôi trả bằng tiền mặt ạ."
+      nextNodeId: nn_change
+      scoreModifiers:
+      - category: Grammar
+        value: 10
+        reason: "Dùng đúng mẫu 〜でお願いします để chọn cách thanh toán"
+      grammarTags:
+      - grammar.n5.de_onegaishimasu
+      vocabularyTags:
+      - vocab.n5.genkin
+    - textJa: "カードで払えますか。"
+      textEn: "Tôi trả bằng thẻ được không ạ?"
+      nextNodeId: nn_card_no
+      scoreModifiers:
+      - category: ResponseAccuracy
+        value: 4
+        reason: "Hỏi trước xem có trả bằng thẻ được không là thói quen tốt ở quán nhỏ"
+      grammarTags: []
+      vocabularyTags:
+      - vocab.n5.kaado
+    - textJa: "払います。"
+      textEn: "Tôi trả."
+      nextNodeId: nn_pay_short
+      scoreModifiers:
+      - category: Grammar
+        value: 2
+        reason: "Nói được ý trả tiền nhưng chưa chọn cách thanh toán"
+      grammarTags: []
+      vocabularyTags:
+      - vocab.n5.harau
+    targetItemId: 
+    targetNpcId: 
+    targetAreaId: 
+  - id: nn_pay_short
+    nodeType: 0
+    nextNodeId: nn_change
+    objectiveIdToComplete: 
+    speakerName: Aoki
+    speakerId: npc_sushi_staff
+    textJa: "はい。現金ですね。"
+    textReading: "はい。げんきんですね。"
+    textEn: "Vâng. Tiền mặt nhỉ ạ."
+    textRomaji: "Hai. Genkin desu ne."
+    textEnglishIpa: 
+    animationCue: talk
+    voiceClip: {fileID: 0}
+    choices: []
+    targetItemId: 
+    targetNpcId: 
+    targetAreaId: 
+  - id: nn_card_no
+    nodeType: 0
+    nextNodeId: 
+    objectiveIdToComplete: 
+    speakerName: Aoki
+    speakerId: npc_sushi_staff
+    textJa: "すみません、カードは使えません。現金だけです。"
+    textReading: "すみません、カードはつかえません。げんきんだけです。"
+    textEn: "Xin lỗi, quán không dùng thẻ được ạ. Chỉ nhận tiền mặt."
+    textRomaji: "Sumimasen, kaado wa tsukaemasen. Genkin dake desu."
+    textEnglishIpa: 
+    animationCue: bow
+    voiceClip: {fileID: 0}
+    choices:
+    - textJa: "はい、現金で払います。"
+      textEn: "Vâng, tôi trả bằng tiền mặt."
+      nextNodeId: nn_change
+      scoreModifiers:
+      - category: Grammar
+        value: 8
+        reason: "Đổi sang tiền mặt bằng mẫu 〜で払います"
+      grammarTags:
+      - grammar.n5.de_harau
+      vocabularyTags:
+      - vocab.n5.genkin
+    - textJa: "いいえ、カードです。"
+      textEn: "Không, tôi dùng thẻ."
+      nextNodeId: nn_card_again
+      scoreModifiers:
+      - category: ResponseAccuracy
+        value: -6
+        reason: "Nhân viên vừa nói không dùng được thẻ nhưng vẫn khăng khăng dùng thẻ"
+      grammarTags: []
+      vocabularyTags: []
+    targetItemId: 
+    targetNpcId: 
+    targetAreaId: 
+  - id: nn_card_again
+    nodeType: 0
+    nextNodeId: nn_card_no
+    objectiveIdToComplete: 
+    speakerName: Aoki
+    speakerId: npc_sushi_staff
+    textJa: "すみません、本当にカードは使えません。現金でお願いします。"
+    textReading: "すみません、ほんとうにカードはつかえません。げんきんでおねがいします。"
+    textEn: "Xin lỗi, thật sự quán không dùng được thẻ ạ. Xin quý khách trả bằng tiền mặt."
+    textRomaji: "Sumimasen, hontou ni kaado wa tsukaemasen. Genkin de onegaishimasu."
+    textEnglishIpa: 
+    animationCue: point
+    voiceClip: {fileID: 0}
+    choices: []
+    targetItemId: 
+    targetNpcId: 
+    targetAreaId: 
+  - id: nn_change
+    nodeType: 0
+    nextNodeId: nn_leave
+    objectiveIdToComplete: obj_pay
+    speakerName: Aoki
+    speakerId: npc_sushi_staff
+    textJa: "はい、530円ですね。ありがとうございます。"
+    textReading: "はい、ごひゃくさんじゅうえんですね。ありがとうございます。"
+    textEn: "Vâng, Tổng cộng là 530 yên ạ nhỉ. Xin cảm ơn quý khách."
+    textRomaji: "Hai, gohyaku sanjuu-en desu ne. Arigatou gozaimasu."
+    textEnglishIpa: 
+    animationCue: bow
+    voiceClip: {fileID: 0}
+    choices: []
+    targetItemId: 
+    targetNpcId: 
+    targetAreaId: 
+  - id: nn_leave
+    nodeType: 0
+    nextNodeId: 
+    objectiveIdToComplete: 
+    speakerName: 
+    speakerId: 
+    textJa: "店を出ます。何と言いますか。"
+    textReading: "みせをでます。なんといいますか。"
+    textEn: "Bạn rời quán. Bạn sẽ nói gì?"
+    textRomaji: "Mise wo demasu. Nan to iimasu ka?"
+    textEnglishIpa: 
+    animationCue: 
+    voiceClip: {fileID: 0}
+    choices:
+    - textJa: "ごちそうさまでした。"
+      textEn: "Cảm ơn vì bữa ăn ngon ạ."
+      nextNodeId: nn_leave_ok
+      scoreModifiers:
+      - category: Vocabulary
+        value: 10
+        reason: "Cảm ơn bữa ăn đúng lúc khi rời quán"
+      grammarTags: []
+      vocabularyTags:
+      - vocab.n5.gochisousama_deshita
+    - textJa: "さようなら。"
+      textEn: "Tạm biệt ạ."
+      nextNodeId: nn_leave_casual
+      scoreModifiers:
+      - category: ResponseAccuracy
+        value: 3
+        reason: "Chào tạm biệt được, nhưng ở quán ăn người ta thường nói ごちそうさまでした"
+      grammarTags: []
+      vocabularyTags:
+      - vocab.n5.sayounara
+    - textJa: "いただきます。"
+      textEn: "Xin phép được ăn ạ."
+      nextNodeId: nn_leave_wrong
+      scoreModifiers:
+      - category: ResponseAccuracy
+        value: -8
+        reason: "いただきます là lời trước bữa ăn, không dùng khi ra về"
+      grammarTags: []
+      vocabularyTags: []
+    targetItemId: 
+    targetNpcId: 
+    targetAreaId: 
+  - id: nn_leave_ok
+    nodeType: 0
+    nextNodeId: n_summary
+    objectiveIdToComplete: obj_leave
+    speakerName: Ota
+    speakerId: npc_sushi_chef
+    textJa: "ありがとうございました。またどうぞ。"
+    textReading: "ありがとうございました。またどうぞ。"
+    textEn: "Xin cảm ơn quý khách. Mời quý khách quay lại ạ."
+    textRomaji: "Arigatou gozaimashita. Mata douzo."
+    textEnglishIpa: 
+    animationCue: bow
+    voiceClip: {fileID: 0}
+    choices: []
+    targetItemId: 
+    targetNpcId: 
+    targetAreaId: 
+  - id: nn_leave_casual
+    nodeType: 0
+    nextNodeId: n_summary
+    objectiveIdToComplete: obj_leave
+    speakerName: Aoki
+    speakerId: npc_sushi_staff
+    textJa: "ありがとうございました。店を出るときは「ごちそうさまでした」と言うと、うれしいです。"
+    textReading: "ありがとうございました。みせをでるときは「ごちそうさまでした」というと、うれしいです。"
+    textEn: "Xin cảm ơn quý khách. Khi rời quán, nếu quý khách nói \"gochisousama deshita\" chúng tôi sẽ rất vui ạ."
+    textRomaji: "Arigatou gozaimashita. Mise wo deru toki wa \"gochisousama deshita\" to iu to, ureshii desu."
+    textEnglishIpa: 
+    animationCue: talk
+    voiceClip: {fileID: 0}
+    choices: []
+    targetItemId: 
+    targetNpcId: 
+    targetAreaId: 
+  - id: nn_leave_wrong
+    nodeType: 0
+    nextNodeId: nn_leave
+    objectiveIdToComplete: 
+    speakerName: Aoki
+    speakerId: npc_sushi_staff
+    textJa: "あ、「いただきます」は食べる前ですよ。「ごちそうさまでした」ですね。"
+    textReading: "あ、「いただきます」はたべるまえですよ。「ごちそうさまでした」ですね。"
+    textEn: "À, \"itadakimasu\" là lời trước khi ăn ạ. Khi ra về thì nói \"gochisousama deshita\" nhé."
+    textRomaji: "A, \"itadakimasu\" wa taberu mae desu yo. \"Gochisousama deshita\" desu ne."
+    textEnglishIpa: 
+    animationCue: point
+    voiceClip: {fileID: 0}
+    choices: []
+    targetItemId: 
+    targetNpcId: 
+    targetAreaId: 
+  - id: nd_eat
+    nodeType: 0
+    nextNodeId: 
+    objectiveIdToComplete: 
+    speakerName: Aoki
+    speakerId: npc_sushi_staff
+    textJa: "ごゆっくりどうぞ。"
+    textReading: "ごゆっくりどうぞ。"
+    textEn: "Xin mời quý khách dùng bữa thong thả ạ."
+    textRomaji: "Goyukkuri douzo."
+    textEnglishIpa: 
+    animationCue: bow
+    voiceClip: {fileID: 0}
+    choices:
+    - textJa: "いただきます。"
+      textEn: "Xin phép được ăn ạ."
+      nextNodeId: nd_taste
+      scoreModifiers:
+      - category: Vocabulary
+        value: 10
+        reason: "Nói いただきます đúng lúc trước khi ăn"
+      grammarTags: []
+      vocabularyTags:
+      - vocab.n5.itadakimasu
+    - textJa: "ありがとうございます。"
+      textEn: "Cảm ơn ạ."
+      nextNodeId: nd_eat_thanks
+      scoreModifiers:
+      - category: ResponseAccuracy
+        value: 3
+        reason: "Cảm ơn cũng lịch sự nhưng trước khi ăn nên nói いただきます"
+      grammarTags: []
+      vocabularyTags:
+      - vocab.n5.arigatou_gozaimasu
+    - textJa: "いただきました。"
+      textEn: "Tôi đã ăn xong rồi ạ."
+      nextNodeId: nd_eat_wrong
+      scoreModifiers:
+      - category: Grammar
+        value: -8
+        reason: "Dùng quá khứ いただきました khi chưa ăn (trước khi ăn phải là いただきます)"
+      grammarTags: []
+      vocabularyTags: []
+    targetItemId: 
+    targetNpcId: 
+    targetAreaId: 
+  - id: nd_eat_thanks
+    nodeType: 0
+    nextNodeId: nd_taste
+    objectiveIdToComplete: 
+    speakerName: Aoki
+    speakerId: npc_sushi_staff
+    textJa: "いえいえ。食べるときは「いただきます」と言いましょう。どうぞ。"
+    textReading: "いえいえ。たべるときは「いただきます」といいましょう。どうぞ。"
+    textEn: "Không có gì ạ. Khi bắt đầu ăn hãy nói \"itadakimasu\" nhé. Mời quý khách."
+    textRomaji: "Ie ie. Taberu toki wa \"itadakimasu\" to iimashou. Douzo."
+    textEnglishIpa: 
+    animationCue: talk
+    voiceClip: {fileID: 0}
+    choices: []
+    targetItemId: 
+    targetNpcId: 
+    targetAreaId: 
+  - id: nd_eat_wrong
+    nodeType: 0
+    nextNodeId: nd_eat
+    objectiveIdToComplete: 
+    speakerName: Aoki
+    speakerId: npc_sushi_staff
+    textJa: "あ、まだ食べていませんよ。食べる前は「いただきます」です。"
+    textReading: "あ、まだたべていませんよ。たべるまえは「いただきます」です。"
+    textEn: "À, quý khách chưa ăn mà. Trước khi ăn thì nói \"itadakimasu\" ạ."
+    textRomaji: "A, mada tabete imasen yo. Taberu mae wa \"itadakimasu\" desu."
+    textEnglishIpa: 
+    animationCue: point
+    voiceClip: {fileID: 0}
+    choices: []
+    targetItemId: 
+    targetNpcId: 
+    targetAreaId: 
+  - id: nd_taste
+    nodeType: 0
+    nextNodeId: 
+    objectiveIdToComplete: 
+    speakerName: Ota
+    speakerId: npc_sushi_chef
+    textJa: "どうですか。おいしいですか。"
+    textReading: "どうですか。おいしいですか。"
+    textEn: "Thế nào ạ? Có ngon không ạ?"
+    textRomaji: "Dou desu ka. Oishii desu ka?"
+    textEnglishIpa: 
+    animationCue: talk
+    voiceClip: {fileID: 0}
+    choices:
+    - textJa: "おいしいです。"
+      textEn: "Ngon ạ."
+      nextNodeId: nd_finish
+      scoreModifiers:
+      - category: Vocabulary
+        value: 8
+        reason: "Khen món ăn tự nhiên bằng おいしいです"
+      grammarTags: []
+      vocabularyTags:
+      - vocab.n5.oishii
+    - textJa: "おいしかったです。"
+      textEn: "Đã ngon ạ."
+      nextNodeId: nd_taste_past
+      scoreModifiers:
+      - category: ResponseAccuracy
+        value: 3
+        reason: "Dùng quá khứ khi đang ăn nghe hơi lạ; quá khứ dùng khi đã ăn xong"
+      grammarTags: []
+      vocabularyTags:
+      - vocab.n5.oishii
+    - textJa: "まずいです。"
+      textEn: "Dở ạ."
+      nextNodeId: nd_taste_wrong
+      scoreModifiers:
+      - category: ResponseAccuracy
+        value: -10
+        reason: "まずい là chê món ăn rất thô lỗ, không dùng với người nấu"
+      grammarTags: []
+      vocabularyTags: []
+    targetItemId: 
+    targetNpcId: 
+    targetAreaId: 
+  - id: nd_taste_past
+    nodeType: 0
+    nextNodeId: nd_finish
+    objectiveIdToComplete: 
+    speakerName: Ota
+    speakerId: npc_sushi_chef
+    textJa: "ありがとうございます。食べているときは「おいしいです」、食べたあとは「おいしかったです」ですよ。"
+    textReading: "ありがとうございます。たべているときは「おいしいです」、たべたあとは「おいしかったです」ですよ。"
+    textEn: "Cảm ơn quý khách. Khi đang ăn thì nói \"oishii desu\", ăn xong thì nói \"oishikatta desu\" nhé."
+    textRomaji: "Arigatou gozaimasu. Tabete iru toki wa \"oishii desu\", tabeta ato wa \"oishikatta desu\" desu yo."
+    textEnglishIpa: 
+    animationCue: bow
+    voiceClip: {fileID: 0}
+    choices: []
+    targetItemId: 
+    targetNpcId: 
+    targetAreaId: 
+  - id: nd_taste_wrong
+    nodeType: 0
+    nextNodeId: nd_taste
+    objectiveIdToComplete: 
+    speakerName: Ota
+    speakerId: npc_sushi_chef
+    textJa: "えっ！それは失礼ですよ。「おいしいです」と言いましょう。"
+    textReading: "えっ！それはしつれいですよ。「おいしいです」といいましょう。"
+    textEn: "Ơ! Thế là thất lễ đấy ạ. Hãy nói \"oishii desu\" nhé."
+    textRomaji: "E! Sore wa shitsurei desu yo. \"Oishii desu\" to iimashou."
+    textEnglishIpa: 
+    animationCue: point
+    voiceClip: {fileID: 0}
+    choices: []
+    targetItemId: 
+    targetNpcId: 
+    targetAreaId: 
+  - id: nd_finish
+    nodeType: 0
+    nextNodeId: 
+    objectiveIdToComplete: obj_eat
+    speakerName: 
+    speakerId: 
+    textJa: "食べ終わりました。店員さんを呼びましょう。"
+    textReading: "たべおわりました。てんいんさんをよびましょう。"
+    textEn: "Bạn đã ăn xong. Hãy gọi nhân viên để thanh toán."
+    textRomaji: "Tabeowarimashita. Tenin-san wo yobimashou."
+    textEnglishIpa: 
+    animationCue: 
+    voiceClip: {fileID: 0}
+    choices:
+    - textJa: "すみません、お会計をお願いします。"
+      textEn: "Xin lỗi, cho tôi thanh toán ạ."
+      nextNodeId: nd_total
+      scoreModifiers:
+      - category: Grammar
+        value: 10
+        reason: "Gọi nhân viên bằng すみません rồi xin thanh toán đúng mẫu お会計をお願いします"
+      grammarTags:
+      - grammar.n5.wo_onegaishimasu
+      vocabularyTags:
+      - vocab.n5.okaikei
+      - vocab.n5.sumimasen
+    - textJa: "いくらですか。"
+      textEn: "Bao nhiêu tiền ạ?"
+      nextNodeId: nd_total_asked
+      scoreModifiers:
+      - category: ResponseAccuracy
+        value: 4
+        reason: "Hỏi giá được nhưng khi thanh toán thường dùng お会計をお願いします"
+      grammarTags: []
+      vocabularyTags:
+      - vocab.n5.ikura
+    - textJa: "お金をください。"
+      textEn: "Cho tôi tiền."
+      nextNodeId: nd_bill_wrong
+      scoreModifiers:
+      - category: Grammar
+        value: -10
+        reason: "お金をください nghĩa là xin nhân viên đưa tiền cho mình, ngược với ý muốn thanh toán"
+      grammarTags: []
+      vocabularyTags: []
+    targetItemId: 
+    targetNpcId: 
+    targetAreaId: 
+  - id: nd_total
+    nodeType: 0
+    nextNodeId: nd_pay
+    objectiveIdToComplete: 
+    speakerName: Aoki
+    speakerId: npc_sushi_staff
+    textJa: "はい。お会計は1,100円です。"
+    textReading: "はい。おかいけいはせんひゃくえんです。"
+    textEn: "Vâng. Tổng cộng là 1.100 yên ạ."
+    textRomaji: "Hai. Okaikei wa sen hyaku-en desu."
+    textEnglishIpa: 
+    animationCue: talk
+    voiceClip: {fileID: 0}
+    choices: []
+    targetItemId: 
+    targetNpcId: 
+    targetAreaId: 
+  - id: nd_total_asked
+    nodeType: 0
+    nextNodeId: nd_pay
+    objectiveIdToComplete: 
+    speakerName: Aoki
+    speakerId: npc_sushi_staff
+    textJa: "「お会計をお願いします」と言うと、もっといいですよ。1,100円です。"
+    textReading: "「おかいけいをおねがいします」というと、もっといいですよ。せんひゃくえんです。"
+    textEn: "Nói \"okaikei wo onegaishimasu\" sẽ hay hơn đấy ạ. Tổng cộng là 1.100 yên ạ."
+    textRomaji: "\"Okaikei wo onegaishimasu\" to iu to, motto ii desu yo. sen hyaku-en desu."
+    textEnglishIpa: 
+    animationCue: talk
+    voiceClip: {fileID: 0}
+    choices: []
+    targetItemId: 
+    targetNpcId: 
+    targetAreaId: 
+  - id: nd_bill_wrong
+    nodeType: 0
+    nextNodeId: nd_finish
+    objectiveIdToComplete: 
+    speakerName: Aoki
+    speakerId: npc_sushi_staff
+    textJa: "えっ？お金をもらうんですか？お会計は「お会計をお願いします」ですよ。"
+    textReading: "えっ？おかねをもらうんですか？おかいけいは「おかいけいをおねがいします」ですよ。"
+    textEn: "Ơ? Quý khách muốn lấy tiền của tôi sao? Xin thanh toán thì nói \"okaikei wo onegaishimasu\" nhé."
+    textRomaji: "E? Okane wo morau n desu ka? Okaikei wa \"okaikei wo onegaishimasu\" desu yo."
+    textEnglishIpa: 
+    animationCue: point
+    voiceClip: {fileID: 0}
+    choices: []
+    targetItemId: 
+    targetNpcId: 
+    targetAreaId: 
+  - id: nd_pay
+    nodeType: 0
+    nextNodeId: 
+    objectiveIdToComplete: 
+    speakerName: Aoki
+    speakerId: npc_sushi_staff
+    textJa: "現金ですか、カードですか。"
+    textReading: "げんきんですか、カードですか。"
+    textEn: "Quý khách trả bằng tiền mặt hay thẻ ạ?"
+    textRomaji: "Genkin desu ka, kaado desu ka?"
+    textEnglishIpa: 
+    animationCue: talk
+    voiceClip: {fileID: 0}
+    choices:
+    - textJa: "現金でお願いします。"
+      textEn: "Tôi trả bằng tiền mặt ạ."
+      nextNodeId: nd_change
+      scoreModifiers:
+      - category: Grammar
+        value: 10
+        reason: "Dùng đúng mẫu 〜でお願いします để chọn cách thanh toán"
+      grammarTags:
+      - grammar.n5.de_onegaishimasu
+      vocabularyTags:
+      - vocab.n5.genkin
+    - textJa: "カードで払えますか。"
+      textEn: "Tôi trả bằng thẻ được không ạ?"
+      nextNodeId: nd_card_no
+      scoreModifiers:
+      - category: ResponseAccuracy
+        value: 4
+        reason: "Hỏi trước xem có trả bằng thẻ được không là thói quen tốt ở quán nhỏ"
+      grammarTags: []
+      vocabularyTags:
+      - vocab.n5.kaado
+    - textJa: "払います。"
+      textEn: "Tôi trả."
+      nextNodeId: nd_pay_short
+      scoreModifiers:
+      - category: Grammar
+        value: 2
+        reason: "Nói được ý trả tiền nhưng chưa chọn cách thanh toán"
+      grammarTags: []
+      vocabularyTags:
+      - vocab.n5.harau
+    targetItemId: 
+    targetNpcId: 
+    targetAreaId: 
+  - id: nd_pay_short
+    nodeType: 0
+    nextNodeId: nd_change
+    objectiveIdToComplete: 
+    speakerName: Aoki
+    speakerId: npc_sushi_staff
+    textJa: "はい。現金ですね。"
+    textReading: "はい。げんきんですね。"
+    textEn: "Vâng. Tiền mặt nhỉ ạ."
+    textRomaji: "Hai. Genkin desu ne."
+    textEnglishIpa: 
+    animationCue: talk
+    voiceClip: {fileID: 0}
+    choices: []
+    targetItemId: 
+    targetNpcId: 
+    targetAreaId: 
+  - id: nd_card_no
+    nodeType: 0
+    nextNodeId: 
+    objectiveIdToComplete: 
+    speakerName: Aoki
+    speakerId: npc_sushi_staff
+    textJa: "すみません、カードは使えません。現金だけです。"
+    textReading: "すみません、カードはつかえません。げんきんだけです。"
+    textEn: "Xin lỗi, quán không dùng thẻ được ạ. Chỉ nhận tiền mặt."
+    textRomaji: "Sumimasen, kaado wa tsukaemasen. Genkin dake desu."
+    textEnglishIpa: 
+    animationCue: bow
+    voiceClip: {fileID: 0}
+    choices:
+    - textJa: "はい、現金で払います。"
+      textEn: "Vâng, tôi trả bằng tiền mặt."
+      nextNodeId: nd_change
+      scoreModifiers:
+      - category: Grammar
+        value: 8
+        reason: "Đổi sang tiền mặt bằng mẫu 〜で払います"
+      grammarTags:
+      - grammar.n5.de_harau
+      vocabularyTags:
+      - vocab.n5.genkin
+    - textJa: "いいえ、カードです。"
+      textEn: "Không, tôi dùng thẻ."
+      nextNodeId: nd_card_again
+      scoreModifiers:
+      - category: ResponseAccuracy
+        value: -6
+        reason: "Nhân viên vừa nói không dùng được thẻ nhưng vẫn khăng khăng dùng thẻ"
+      grammarTags: []
+      vocabularyTags: []
+    targetItemId: 
+    targetNpcId: 
+    targetAreaId: 
+  - id: nd_card_again
+    nodeType: 0
+    nextNodeId: nd_card_no
+    objectiveIdToComplete: 
+    speakerName: Aoki
+    speakerId: npc_sushi_staff
+    textJa: "すみません、本当にカードは使えません。現金でお願いします。"
+    textReading: "すみません、ほんとうにカードはつかえません。げんきんでおねがいします。"
+    textEn: "Xin lỗi, thật sự quán không dùng được thẻ ạ. Xin quý khách trả bằng tiền mặt."
+    textRomaji: "Sumimasen, hontou ni kaado wa tsukaemasen. Genkin de onegaishimasu."
+    textEnglishIpa: 
+    animationCue: point
+    voiceClip: {fileID: 0}
+    choices: []
+    targetItemId: 
+    targetNpcId: 
+    targetAreaId: 
+  - id: nd_change
+    nodeType: 0
+    nextNodeId: nd_leave
+    objectiveIdToComplete: obj_pay
+    speakerName: Aoki
+    speakerId: npc_sushi_staff
+    textJa: "はい、1,100円ですね。ありがとうございます。"
+    textReading: "はい、せんひゃくえんですね。ありがとうございます。"
+    textEn: "Vâng, Tổng cộng là 1.100 yên ạ nhỉ. Xin cảm ơn quý khách."
+    textRomaji: "Hai, sen hyaku-en desu ne. Arigatou gozaimasu."
+    textEnglishIpa: 
+    animationCue: bow
+    voiceClip: {fileID: 0}
+    choices: []
+    targetItemId: 
+    targetNpcId: 
+    targetAreaId: 
+  - id: nd_leave
+    nodeType: 0
+    nextNodeId: 
+    objectiveIdToComplete: 
+    speakerName: 
+    speakerId: 
+    textJa: "店を出ます。何と言いますか。"
+    textReading: "みせをでます。なんといいますか。"
+    textEn: "Bạn rời quán. Bạn sẽ nói gì?"
+    textRomaji: "Mise wo demasu. Nan to iimasu ka?"
+    textEnglishIpa: 
+    animationCue: 
+    voiceClip: {fileID: 0}
+    choices:
+    - textJa: "ごちそうさまでした。"
+      textEn: "Cảm ơn vì bữa ăn ngon ạ."
+      nextNodeId: nd_leave_ok
+      scoreModifiers:
+      - category: Vocabulary
+        value: 10
+        reason: "Cảm ơn bữa ăn đúng lúc khi rời quán"
+      grammarTags: []
+      vocabularyTags:
+      - vocab.n5.gochisousama_deshita
+    - textJa: "さようなら。"
+      textEn: "Tạm biệt ạ."
+      nextNodeId: nd_leave_casual
+      scoreModifiers:
+      - category: ResponseAccuracy
+        value: 3
+        reason: "Chào tạm biệt được, nhưng ở quán ăn người ta thường nói ごちそうさまでした"
+      grammarTags: []
+      vocabularyTags:
+      - vocab.n5.sayounara
+    - textJa: "いただきます。"
+      textEn: "Xin phép được ăn ạ."
+      nextNodeId: nd_leave_wrong
+      scoreModifiers:
+      - category: ResponseAccuracy
+        value: -8
+        reason: "いただきます là lời trước bữa ăn, không dùng khi ra về"
+      grammarTags: []
+      vocabularyTags: []
+    targetItemId: 
+    targetNpcId: 
+    targetAreaId: 
+  - id: nd_leave_ok
+    nodeType: 0
+    nextNodeId: n_summary
+    objectiveIdToComplete: obj_leave
+    speakerName: Ota
+    speakerId: npc_sushi_chef
+    textJa: "ありがとうございました。またどうぞ。"
+    textReading: "ありがとうございました。またどうぞ。"
+    textEn: "Xin cảm ơn quý khách. Mời quý khách quay lại ạ."
+    textRomaji: "Arigatou gozaimashita. Mata douzo."
+    textEnglishIpa: 
+    animationCue: bow
+    voiceClip: {fileID: 0}
+    choices: []
+    targetItemId: 
+    targetNpcId: 
+    targetAreaId: 
+  - id: nd_leave_casual
+    nodeType: 0
+    nextNodeId: n_summary
+    objectiveIdToComplete: obj_leave
+    speakerName: Aoki
+    speakerId: npc_sushi_staff
+    textJa: "ありがとうございました。店を出るときは「ごちそうさまでした」と言うと、うれしいです。"
+    textReading: "ありがとうございました。みせをでるときは「ごちそうさまでした」というと、うれしいです。"
+    textEn: "Xin cảm ơn quý khách. Khi rời quán, nếu quý khách nói \"gochisousama deshita\" chúng tôi sẽ rất vui ạ."
+    textRomaji: "Arigatou gozaimashita. Mise wo deru toki wa \"gochisousama deshita\" to iu to, ureshii desu."
+    textEnglishIpa: 
+    animationCue: talk
+    voiceClip: {fileID: 0}
+    choices: []
+    targetItemId: 
+    targetNpcId: 
+    targetAreaId: 
+  - id: nd_leave_wrong
+    nodeType: 0
+    nextNodeId: nd_leave
+    objectiveIdToComplete: 
+    speakerName: Aoki
+    speakerId: npc_sushi_staff
+    textJa: "あ、「いただきます」は食べる前ですよ。「ごちそうさまでした」ですね。"
+    textReading: "あ、「いただきます」はたべるまえですよ。「ごちそうさまでした」ですね。"
+    textEn: "À, \"itadakimasu\" là lời trước khi ăn ạ. Khi ra về thì nói \"gochisousama deshita\" nhé."
+    textRomaji: "A, \"itadakimasu\" wa taberu mae desu yo. \"Gochisousama deshita\" desu ne."
+    textEnglishIpa: 
+    animationCue: point
+    voiceClip: {fileID: 0}
+    choices: []
+    targetItemId: 
+    targetNpcId: 
+    targetAreaId: 
+  - id: n_summary
+    nodeType: 0
+    nextNodeId: n_complete
+    objectiveIdToComplete: 
+    speakerName: Ota
+    speakerId: npc_sushi_chef
+    textJa: "今日は「一人です」「〜でお願いします」「〜をください」「お会計をお願いします」「ごちそうさまでした」を使いましたね。上手でした。また来てください。"
+    textReading: "きょうは「ひとりです」「〜でおねがいします」「〜をください」「おかいけいをおねがいします」「ごちそうさまでした」をつかいましたね。じょうずでした。またきてください。"
+    textEn: "Hôm nay bạn đã dùng \"hitori desu\", \"~ de onegaishimasu\", \"~ wo kudasai\", \"okaikei wo onegaishimasu\" và \"gochisousama deshita\". Bạn làm rất tốt. Hãy quay lại nhé."
+    textRomaji: "Kyou wa \"hitori desu\" \"~ de onegaishimasu\" \"~ wo kudasai\" \"okaikei wo onegaishimasu\" \"gochisousama deshita\" wo tsukaimashita ne. Jouzu deshita. Mata kite kudasai."
+    textEnglishIpa: 
+    animationCue: bow
+    voiceClip: {fileID: 0}
+    choices: []
+    targetItemId: 
+    targetNpcId: 
+    targetAreaId: 
+  - id: n_complete
+    nodeType: 4
+    nextNodeId: 
+    objectiveIdToComplete: 
+    speakerName: 
+    speakerId: 
+    textJa: 
+    textReading: 
+    textEn: 
+    textRomaji: 
+    textEnglishIpa: 
+    animationCue: 
+    voiceClip: {fileID: 0}
+    choices: []
+    targetItemId: 
+    targetNpcId: 
+    targetAreaId: 
+  startNodeId: n_arrive

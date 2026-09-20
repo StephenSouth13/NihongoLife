@@ -39,6 +39,7 @@ namespace NihongoLife.Core
             "scenario.school.self_intro",
             "scenario.house2.lostcat",
             "scenario.house3.garbage",
+            "scenario.restaurant.sushi_dining",
             "scenario.neighborhood.cat_followup",
             "scenario.neighborhood.recycling_morning",
             "scenario.konbini.evening_shift"
