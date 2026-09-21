@@ -18,9 +18,11 @@ namespace NihongoLife.Save
 
         public PlayerProgressDto GetProgress()
         {
-            if (!PlayerSessionService.GetOrCreate().CanPersist)
+            PlayerSessionService session = PlayerSessionService.GetOrCreate();
+            if (session == null) return _cachedProgress ??= new PlayerProgressDto();
+            if (!session.CanPersist)
             {
-                return PlayerSessionService.Instance.GuestProgress;
+                return session.GuestProgress;
             }
             if (_cachedProgress == null)
             {
@@ -31,9 +33,11 @@ namespace NihongoLife.Save
 
         public void SaveProgress(PlayerProgressDto progress)
         {
-            if (!PlayerSessionService.GetOrCreate().CanPersist)
+            PlayerSessionService session = PlayerSessionService.GetOrCreate();
+            if (session == null) return;
+            if (!session.CanPersist)
             {
-                PlayerSessionService.Instance.UpdateGuestProgress(progress);
+                session.UpdateGuestProgress(progress);
                 return;
             }
             _cachedProgress = progress;
@@ -42,9 +46,11 @@ namespace NihongoLife.Save
 
         public void ResetProgress()
         {
-            if (!PlayerSessionService.GetOrCreate().CanPersist)
+            PlayerSessionService session = PlayerSessionService.GetOrCreate();
+            if (session == null) return;
+            if (!session.CanPersist)
             {
-                PlayerSessionService.Instance.BeginGuest();
+                session.BeginGuest();
                 return;
             }
             _cachedProgress = new PlayerProgressDto();
@@ -54,9 +60,15 @@ namespace NihongoLife.Save
 
         private void LoadFromDisk()
         {
-            if (!PlayerSessionService.GetOrCreate().CanPersist)
+            PlayerSessionService session = PlayerSessionService.GetOrCreate();
+            if (session == null)
             {
-                _cachedProgress = PlayerSessionService.Instance.GuestProgress;
+                _cachedProgress ??= new PlayerProgressDto();
+                return;
+            }
+            if (!session.CanPersist)
+            {
+                _cachedProgress = session.GuestProgress;
                 return;
             }
             try

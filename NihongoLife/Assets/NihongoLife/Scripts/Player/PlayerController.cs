@@ -56,7 +56,6 @@ namespace NihongoLife.Player
         private void Awake()
         {
             _characterController = GetComponent<CharacterController>();
-            StoreLayoutStabilizer.Apply();
             _mainCamera = ResolveGameplayCamera();
             _animationController = GetComponent<CharacterAnimationController>();
             PlayableCharacterCatalog.ApplySelectedVisual(gameObject);

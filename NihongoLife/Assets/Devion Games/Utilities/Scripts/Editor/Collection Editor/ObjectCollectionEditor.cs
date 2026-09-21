@@ -108,13 +108,13 @@ namespace DevionGames
 
         private void OnPlayModeStateChanged(PlayModeStateChange playModeStateChange)
         {
-            this.m_SerializedObject = new SerializedObject(EditorUtility.InstanceIDToObject(this.m_TargetInstanceID));
+            this.m_SerializedObject = new SerializedObject(EditorUtility.EntityIdToObject(this.m_TargetInstanceID));
             this.m_SerializedProperty = this.m_SerializedObject.FindProperty(this.m_SerializedPropertyPath);
         }
 
         private void OnAfterAssemblyReload()
         {
-            this.m_SerializedObject = new SerializedObject(EditorUtility.InstanceIDToObject(this.m_TargetInstanceID));
+            this.m_SerializedObject = new SerializedObject(EditorUtility.EntityIdToObject(this.m_TargetInstanceID));
             this.m_SerializedProperty = this.m_SerializedObject.FindProperty(this.m_SerializedPropertyPath);
         }
 

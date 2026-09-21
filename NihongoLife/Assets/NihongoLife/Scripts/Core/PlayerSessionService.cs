@@ -10,6 +10,7 @@ namespace NihongoLife.Core
     public class PlayerSessionService : MonoBehaviour, IGameService
     {
         private static PlayerSessionService _instance;
+        private static bool _isShuttingDown;
         private PlayerProgressDto _guestProgress;
 
         public static PlayerSessionService Instance => _instance;
@@ -22,6 +23,7 @@ namespace NihongoLife.Core
         public static PlayerSessionService GetOrCreate()
         {
             if (_instance != null) return _instance;
+            if (_isShuttingDown) return null;
             var existing = FindFirstObjectByType<PlayerSessionService>();
             if (existing != null) { existing.Initialize(); return existing; }
             var go = new GameObject("PlayerSessionService");
@@ -39,6 +41,17 @@ namespace NihongoLife.Core
             Mode = PlayerSessionMode.Guest;
             _guestProgress = new PlayerProgressDto { playerId = "guest", displayName = "Guest" };
         }
+
+        [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
+        private static void ResetStatics()
+        {
+            _instance = null;
+            _isShuttingDown = false;
+            Application.quitting -= HandleApplicationQuitting;
+            Application.quitting += HandleApplicationQuitting;
+        }
+
+        private static void HandleApplicationQuitting() => _isShuttingDown = true;
 
         public void BeginGuest()
         {
@@ -60,6 +73,13 @@ namespace NihongoLife.Core
             if (Mode == PlayerSessionMode.Guest && progress != null) _guestProgress = progress;
         }
 
-        private void OnDestroy() { if (_instance == this) _instance = null; }
+        private void OnApplicationQuit() => _isShuttingDown = true;
+
+        private void OnDestroy()
+        {
+            if (_instance != this) return;
+            _isShuttingDown = true;
+            _instance = null;
+        }
     }
 }

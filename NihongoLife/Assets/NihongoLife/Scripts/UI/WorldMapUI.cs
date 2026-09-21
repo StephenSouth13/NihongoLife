@@ -1,21 +1,20 @@
 using System;
+using NihongoLife.Core;
 using TMPro;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 namespace NihongoLife.UI
 {
     public class WorldMapUI : MonoBehaviour
     {
-        private readonly Vector2 _worldMin = new Vector2(-66f, -50f);
-        private readonly Vector2 _worldMax = new Vector2(66f, 38f);
         private GameObject _overlay;
-        private RectTransform _mapArea;
-        private RectTransform _playerMarker;
-        private TextMeshProUGUI _coordinates;
+        private RectTransform _mapArea, _playerMarker;
+        private TextMeshProUGUI _header, _location, _coordinates;
         private Transform _player;
         private TMP_FontAsset _font;
-
+        private Vector2 _worldMin, _worldMax;
         public bool IsVisible => _overlay != null && _overlay.activeSelf;
         public event Action<bool> OnVisibilityChanged;
 
@@ -23,134 +22,107 @@ namespace NihongoLife.UI
         {
             if (_overlay != null) return;
             _font = font;
-            _overlay = Panel("WorldMap", transform, new Color(0.015f, 0.022f, 0.026f, 0.97f));
-            Stretch(_overlay.GetComponent<RectTransform>(), Vector2.zero, Vector2.zero);
-
-            var header = Label("Header", _overlay.transform, "BẢN ĐỒ THỊ TRẤN  |  町の地図", font, 26f, FontStyles.Bold);
-            SetRect(header.rectTransform, new Vector2(0.5f, 1f), new Vector2(0f, -28f), new Vector2(760f, 46f));
-            header.alignment = TextAlignmentOptions.Center;
-            header.color = new Color(0.96f, 0.78f, 0.30f);
-
-            var close = Panel("Close", _overlay.transform, new Color(0.16f, 0.19f, 0.20f, 1f));
-            SetRect(close.GetComponent<RectTransform>(), new Vector2(1f, 1f), new Vector2(-28f, -24f), new Vector2(44f, 40f));
-            var closeButton = close.AddComponent<Button>();
-            closeButton.targetGraphic = close.GetComponent<Image>();
-            closeButton.onClick.AddListener(() => SetVisible(false));
-            var closeLabel = Label("Label", close.transform, "X", font, 19f, FontStyles.Bold);
-            Stretch(closeLabel.rectTransform, Vector2.zero, Vector2.zero);
-            closeLabel.alignment = TextAlignmentOptions.Center;
-            UIStyleKit.StyleButton(closeButton, new Color(0.16f, 0.19f, 0.20f), new Color(0.28f, 0.32f, 0.33f), new Color(0.10f, 0.12f, 0.13f));
-
-            _mapArea = Panel("MapArea", _overlay.transform, new Color(0.09f, 0.16f, 0.16f, 1f)).GetComponent<RectTransform>();
-            SetRect(_mapArea, new Vector2(0.5f, 0.5f), new Vector2(0f, -10f), new Vector2(820f, 520f));
-            AddRoad(new Vector2(0f, 0f), new Vector2(760f, 58f), 0f);
-            AddRoad(new Vector2(-120f, 0f), new Vector2(54f, 460f), 0f);
-            AddRoad(new Vector2(190f, 35f), new Vector2(48f, 390f), 18f);
-            AddRoad(new Vector2(40f, 125f), new Vector2(650f, 38f), -8f);
-
-            AddPlace("Cửa hàng tiện lợi\nコンビニ", new Vector2(0f, -28f), new Color(0.20f, 0.76f, 0.66f));
-            AddPlace("Nhà ga\n駅前", new Vector2(260f, 120f), new Color(0.30f, 0.62f, 0.94f));
-            AddPlace("Nhà hàng sushi\nすし店", new Vector2(-245f, 132f), new Color(0.94f, 0.42f, 0.36f));
-            AddPlace("Khu dân cư\n住宅街", new Vector2(-245f, -150f), new Color(0.62f, 0.76f, 0.38f));
-            AddPlace("Công viên\n公園", new Vector2(245f, -145f), new Color(0.42f, 0.72f, 0.40f));
-
-            _playerMarker = Panel("PlayerMarker", _mapArea, new Color(1f, 0.84f, 0.22f)).GetComponent<RectTransform>();
-            _playerMarker.sizeDelta = new Vector2(18f, 24f);
-            _playerMarker.pivot = new Vector2(0.5f, 0.25f);
-
-            _coordinates = Label("Coordinates", _overlay.transform, "", font, 15f, FontStyles.Normal);
-            SetRect(_coordinates.rectTransform, new Vector2(0.5f, 0f), new Vector2(0f, 22f), new Vector2(620f, 34f));
+            _overlay = Panel("WorldMap", transform, new Color(.012f, .018f, .022f, .98f));
+            Stretch(_overlay.GetComponent<RectTransform>());
+            _header = Text("Header", _overlay.transform, 27, FontStyles.Bold);
+            Rect(_header.rectTransform, new(.5f, 1), new(0, -24), new(820, 42));
+            _header.alignment = TextAlignmentOptions.Center;
+            _header.color = new(.96f, .79f, .30f);
+            _location = Text("Location", _overlay.transform, 15, FontStyles.Normal);
+            Rect(_location.rectTransform, new(.5f, 1), new(0, -65), new(820, 28));
+            _location.alignment = TextAlignmentOptions.Center;
+            _location.color = new(.55f, .82f, .86f);
+            GameObject close = Panel("Close", _overlay.transform, new(.16f, .19f, .20f));
+            Rect(close.GetComponent<RectTransform>(), Vector2.one, new(-24, -22), new(44, 40));
+            Button button = close.AddComponent<Button>();
+            button.targetGraphic = close.GetComponent<Image>();
+            button.onClick.AddListener(() => SetVisible(false));
+            TextMeshProUGUI x = Text("Label", close.transform, 19, FontStyles.Bold, "X");
+            Stretch(x.rectTransform); x.alignment = TextAlignmentOptions.Center;
+            _mapArea = Panel("MapArea", _overlay.transform, new(.055f, .095f, .105f)).GetComponent<RectTransform>();
+            Rect(_mapArea, new(.5f, .5f), new(0, -8), new(940, 530));
+            _coordinates = Text("Coordinates", _overlay.transform, 15, FontStyles.Normal);
+            Rect(_coordinates.rectTransform, new(.5f, 0), new(0, 18), new(900, 32));
             _coordinates.alignment = TextAlignmentOptions.Center;
-            _coordinates.color = new Color(0.72f, 0.82f, 0.84f);
+            _coordinates.color = new(.72f, .82f, .84f);
             _overlay.SetActive(false);
         }
 
         public void SetVisible(bool visible)
         {
             if (_overlay == null) return;
-            _overlay.SetActive(visible);
-            OnVisibilityChanged?.Invoke(visible);
-            if (visible)
-            {
-                var found = GameObject.FindWithTag("Player");
-                _player = found != null ? found.transform : null;
-                RefreshPlayerMarker();
-            }
+            _overlay.SetActive(visible); OnVisibilityChanged?.Invoke(visible);
+            if (!visible) return;
+            GameObject found = GameObject.FindWithTag("Player");
+            _player = found != null ? found.transform : null;
+            BuildMap(); RefreshMarker();
         }
 
-        private void LateUpdate()
+        private void BuildMap()
         {
-            if (IsVisible) RefreshPlayerMarker();
+            for (int i = _mapArea.childCount - 1; i >= 0; i--) Destroy(_mapArea.GetChild(i).gameObject);
+            string scene = SceneManager.GetActiveScene().name;
+            _location.text = WorldLocationCatalog.Get(scene).DisplayName;
+            if (scene == WorldLocationCatalog.StationScene) StationMap();
+            else if (scene == WorldLocationCatalog.SushiRestaurantScene) SushiMap();
+            else CityMap();
+            _playerMarker = Panel("YouAreHere", _mapArea, new(1f, .82f, .16f)).GetComponent<RectTransform>();
+            _playerMarker.sizeDelta = new(18, 24); _playerMarker.pivot = new(.5f, .25f);
+            TextMeshProUGUI you = Text("Label", _playerMarker, 12, FontStyles.Bold, L("BẠN", "YOU", "現在地"));
+            Rect(you.rectTransform, new(.5f, 0), new(0, -5), new(82, 24)); you.alignment = TextAlignmentOptions.Top;
         }
 
-        private void RefreshPlayerMarker()
+        private void CityMap()
+        {
+            _header.text = L("BẢN ĐỒ NIHONGO CITY", "NIHONGO CITY MAP", "日本語シティ地図");
+            _worldMin = new(-66, -50); _worldMax = new(66, 38);
+            Road(Vector2.zero, new(860, 60)); Road(new(-145, 0), new(56, 470)); Road(new(215, 35), new(50, 410), 18); Road(new(35, 135), new(720, 38), -8);
+            Place(L("Cửa hàng tiện lợi", "Convenience store", "コンビニ"), new(0, -32), new(.2f, .76f, .66f), "SHOP");
+            Place("Sushi Hibari", new(-285, 145), new(.94f, .42f, .36f), L("VÀO QUÁN", "ENTER", "入口"));
+            Place(L("Ga Sakura Metro", "Sakura Metro", "さくら駅"), new(300, 135), new(.3f, .62f, .94f), L("ĐI TÀU", "TRAINS", "電車"));
+            Place(L("Khu dân cư", "Residential", "住宅街"), new(-285, -160), new(.62f, .76f, .38f), "HOME");
+            Place(L("Công viên", "Park", "公園"), new(285, -155), new(.42f, .72f, .4f), "PARK");
+        }
+
+        private void StationMap()
+        {
+            _header.text = L("SƠ ĐỒ GA SAKURA METRO", "SAKURA METRO DIRECTORY", "さくら駅構内図");
+            _worldMin = new(742, -20); _worldMax = new(858, 16);
+            Road(new(0, 10), new(850, 115)); Road(new(0, -105), new(850, 48));
+            Place(L("Quầy vé", "Ticket counter", "きっぷ売り場"), new(-315, 165), new(.22f, .7f, .78f), "TICKETS");
+            Place(L("Cổng soát vé", "Ticket gate", "改札"), new(-85, 85), new(.94f, .68f, .25f), "GATE");
+            Place(L("Sân ga số 1", "Platform 1", "1番線"), new(185, -65), new(.3f, .62f, .94f), "MIDORI");
+            Place(L("Lối ra thành phố", "City exit", "出口"), new(350, 165), new(.45f, .78f, .48f), "EXIT");
+        }
+
+        private void SushiMap()
+        {
+            _header.text = L("SƠ ĐỒ SUSHI HIBARI", "SUSHI HIBARI FLOOR MAP", "ひばり寿司 店内図");
+            _worldMin = new(492, -9); _worldMax = new(508, 9);
+            Road(Vector2.zero, new(720, 430));
+            Place(L("Lễ tân", "Reception", "受付"), new(-275, -150), new(.22f, .7f, .78f), "MENU");
+            Place(L("Quầy đầu bếp Ota", "Chef Ota counter", "太田職人"), new(0, 155), new(.94f, .48f, .3f), "ORDER");
+            Place(L("Khu bàn ăn", "Dining area", "客席"), new(20, -15), new(.72f, .62f, .36f), "SEATS");
+            Place(L("Về thành phố", "Return to city", "町へ戻る"), new(300, -165), new(.45f, .78f, .48f), "EXIT");
+        }
+
+        private void LateUpdate() { if (IsVisible) RefreshMarker(); }
+        private void RefreshMarker()
         {
             if (_player == null || _playerMarker == null) return;
-            Vector2 world = new Vector2(_player.position.x, _player.position.z);
-            Vector2 normalized = new Vector2(
-                Mathf.InverseLerp(_worldMin.x, _worldMax.x, world.x),
-                Mathf.InverseLerp(_worldMin.y, _worldMax.y, world.y));
-            _playerMarker.anchoredPosition = new Vector2(
-                (normalized.x - 0.5f) * (_mapArea.rect.width - 40f),
-                (normalized.y - 0.5f) * (_mapArea.rect.height - 40f));
-            _playerMarker.localRotation = Quaternion.Euler(0f, 0f, -_player.eulerAngles.y);
-            _coordinates.text = $"Vị trí hiện tại  X {_player.position.x:0}  Z {_player.position.z:0}    |    M / Esc: đóng bản đồ";
+            Vector2 p = new(_player.position.x, _player.position.z);
+            Vector2 n = new(Mathf.InverseLerp(_worldMin.x, _worldMax.x, p.x), Mathf.InverseLerp(_worldMin.y, _worldMax.y, p.y));
+            _playerMarker.anchoredPosition = new((n.x - .5f) * (_mapArea.rect.width - 46), (n.y - .5f) * (_mapArea.rect.height - 46));
+            _playerMarker.localRotation = Quaternion.Euler(0, 0, -_player.eulerAngles.y);
+            _coordinates.text = $"{L("Vị trí", "Position", "位置")}  X {_player.position.x:0.0}  Z {_player.position.z:0.0}    |    M / Esc: {L("đóng", "close", "閉じる")}";
         }
 
-        private void AddRoad(Vector2 position, Vector2 size, float angle)
-        {
-            var road = Panel("Road", _mapArea, new Color(0.25f, 0.29f, 0.29f, 1f)).GetComponent<RectTransform>();
-            road.anchoredPosition = position;
-            road.sizeDelta = size;
-            road.localRotation = Quaternion.Euler(0f, 0f, angle);
-        }
-
-        private void AddPlace(string value, Vector2 position, Color color)
-        {
-            var marker = Panel("Place", _mapArea, color).GetComponent<RectTransform>();
-            marker.anchoredPosition = position;
-            marker.sizeDelta = new Vector2(14f, 14f);
-            var label = Label("Label", marker, value, _font, 14f, FontStyles.Bold);
-            SetRect(label.rectTransform, new Vector2(0.5f, 0f), new Vector2(0f, -8f), new Vector2(180f, 46f));
-            label.alignment = TextAlignmentOptions.Top;
-        }
-
-        private static GameObject Panel(string name, Transform parent, Color color)
-        {
-            var go = new GameObject(name, typeof(RectTransform), typeof(CanvasRenderer), typeof(Image));
-            go.transform.SetParent(parent, false);
-            go.GetComponent<Image>().color = color;
-            return go;
-        }
-
-        private static TextMeshProUGUI Label(string name, Transform parent, string value, TMP_FontAsset font, float size, FontStyles style)
-        {
-            var go = new GameObject(name, typeof(RectTransform), typeof(CanvasRenderer), typeof(TextMeshProUGUI));
-            go.transform.SetParent(parent, false);
-            var label = go.GetComponent<TextMeshProUGUI>();
-            if (font != null) label.font = font;
-            label.text = value;
-            label.fontSize = size;
-            label.fontStyle = style;
-            label.color = Color.white;
-            label.characterSpacing = 0f;
-            return label;
-        }
-
-        private static void SetRect(RectTransform rect, Vector2 anchor, Vector2 position, Vector2 size)
-        {
-            rect.anchorMin = rect.anchorMax = anchor;
-            rect.pivot = anchor;
-            rect.anchoredPosition = position;
-            rect.sizeDelta = size;
-        }
-
-        private static void Stretch(RectTransform rect, Vector2 min, Vector2 max)
-        {
-            rect.anchorMin = Vector2.zero;
-            rect.anchorMax = Vector2.one;
-            rect.offsetMin = min;
-            rect.offsetMax = max;
-        }
+        private void Road(Vector2 p, Vector2 s, float angle = 0) { RectTransform r = Panel("Route", _mapArea, new(.22f, .27f, .29f)).GetComponent<RectTransform>(); r.anchoredPosition = p; r.sizeDelta = s; r.localRotation = Quaternion.Euler(0, 0, angle); }
+        private void Place(string name, Vector2 p, Color color, string type) { RectTransform m = Panel("Place_" + type, _mapArea, color).GetComponent<RectTransform>(); m.anchoredPosition = p; m.sizeDelta = new(18, 18); TextMeshProUGUI t = Text("Label", m, 14, FontStyles.Bold, $"<size=75%><color=#AFC2C8>{type}</color></size>\n{name}"); Rect(t.rectTransform, new(.5f, 0), new(0, -7), new(190, 55)); t.alignment = TextAlignmentOptions.Top; }
+        private string L(string vi, string en, string ja) => GameServices.TryGet(out GameSettingsService s) ? s.Text(vi, en, ja) : vi;
+        private static GameObject Panel(string n, Transform p, Color c) { GameObject g = new(n, typeof(RectTransform), typeof(CanvasRenderer), typeof(Image)); g.transform.SetParent(p, false); g.GetComponent<Image>().color = c; return g; }
+        private TextMeshProUGUI Text(string n, Transform p, float size, FontStyles style, string value = "") { GameObject g = new(n, typeof(RectTransform), typeof(CanvasRenderer), typeof(TextMeshProUGUI)); g.transform.SetParent(p, false); TextMeshProUGUI t = g.GetComponent<TextMeshProUGUI>(); if (_font != null) t.font = _font; t.text = value; t.fontSize = size; t.fontStyle = style; t.color = Color.white; t.characterSpacing = 0; t.enableAutoSizing = true; t.fontSizeMin = 11; t.raycastTarget = false; return t; }
+        private static void Rect(RectTransform r, Vector2 a, Vector2 p, Vector2 s) { r.anchorMin = r.anchorMax = r.pivot = a; r.anchoredPosition = p; r.sizeDelta = s; }
+        private static void Stretch(RectTransform r) { r.anchorMin = Vector2.zero; r.anchorMax = Vector2.one; r.offsetMin = r.offsetMax = Vector2.zero; }
     }
 }

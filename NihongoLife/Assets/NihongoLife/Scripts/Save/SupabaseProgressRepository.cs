@@ -47,8 +47,10 @@ namespace NihongoLife.Save
 
         public PlayerProgressDto GetProgress()
         {
-            if (!PlayerSessionService.GetOrCreate().CanPersist)
-                return PlayerSessionService.Instance.GuestProgress;
+            PlayerSessionService session = PlayerSessionService.GetOrCreate();
+            if (session == null) return _cachedProgress ??= new PlayerProgressDto();
+            if (!session.CanPersist)
+                return session.GuestProgress;
             if (_cachedProgress == null)
             {
                 _cachedProgress = _localFallback.GetProgress();
@@ -58,9 +60,11 @@ namespace NihongoLife.Save
 
         public void SaveProgress(PlayerProgressDto progress)
         {
-            if (!PlayerSessionService.GetOrCreate().CanPersist)
+            PlayerSessionService session = PlayerSessionService.GetOrCreate();
+            if (session == null) return;
+            if (!session.CanPersist)
             {
-                PlayerSessionService.Instance.UpdateGuestProgress(progress);
+                session.UpdateGuestProgress(progress);
                 _cachedProgress = progress;
                 return;
             }
