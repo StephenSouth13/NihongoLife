@@ -23,9 +23,9 @@ Mỗi `ScenarioDefinition` giờ là một quest, các trường mới:
 
 ## 2. Danh mục nhiệm vụ
 
-**Đã có (14)**: intro.arrival, street.first_talk (đã viết lại đủ chuẩn Edu: 28 node), house1.greeting, school.self_intro, konbini.buy_onigiri, house2.lostcat, house3.garbage, restaurant.sushi_dining, restaurant.order_ramen, neighborhood.cat_followup, neighborhood.recycling_morning, konbini.evening_shift, station.buy_ticket, town.summer_festival.
+**Đã có (14)**, trong đó **10 quest đã viết sâu đủ chuẩn Edu**: intro.arrival (31 node), street.first_talk (28), house1.greeting (41), school.self_intro (22), house2.lostcat (27), house3.garbage (27), restaurant.sushi_dining (74), restaurant.order_ramen (36), station.buy_ticket (32), town.summer_festival (55). Còn mỏng: konbini.buy_onigiri, neighborhood.cat_followup, neighborhood.recycling_morning, konbini.evening_shift. Campaign hiện chạy được toàn bộ 14 quest theo thứ tự từ mở màn đến lễ hội. Bộ nhớ truyện (story flags) đã có: xem `STORY_BIBLE.md` mục 12.
 
-**Còn phải viết lại theo chuẩn Edu** (đang 3-5 node): intro.arrival, house1.greeting, house2.lostcat, house3.garbage; và thêm tag học cho konbini, ramen, station, festival.
+**Còn phải viết sâu**: konbini.buy_onigiri (thêm tag, thêm nhánh), và 3 quest đang dựng bằng code (cat_followup, recycling_morning, evening_shift) chuyển thành asset có dùng cờ.
 
 **Nhiệm vụ mới cần viết** (mỗi cái: nhiều nhánh, sai → sửa → thử lại, ≤2 mẫu ngữ pháp mới):
 
@@ -67,8 +67,8 @@ Nguyên tắc an toàn: không PvP, chat có bộ lọc và nút báo cáo, ch�
 
 ## 4. Thứ tự làm tiếp
 
-1. **Play thử khung quest + nhật ký J + quest street mới** (Codex/bạn) rồi sửa lỗi.
-2. Viết lại 4 quest mỏng theo chuẩn Edu (Claude): intro → house1 → lostcat → garbage.
+1. **Play thử toàn bộ campaign 14 quest** cùng khung quest, nhật ký J, story flags (Codex/bạn), ghi và sửa lỗi.
+2. Viết sâu 4 quest còn mỏng: konbini.buy_onigiri, cat_followup, recycling_morning, evening_shift, chuyển 3 quest dựng bằng code thành asset và dùng cờ (Claude).
 3. O1 + O2 chạy thật với 2 máy (bạn bật Dashboard, Codex test).
-4. Dựng NPC/khu vực còn thiếu (TASK-I) rồi đưa ramen, ga, lễ hội vào campaign.
+4. Dựng NPC/khu vực thật cho ramen, nhà ga, nhà hàng (TASK-I); khi có NPC thật thì đổi node bắt đầu từ hội thoại thuần sang `TalkToNPC`/`GoToArea` nếu muốn đi bộ tới nơi.
 5. Quest sinh tồn + cộng đồng mới (Claude), rồi co-op đổi vai (O3).

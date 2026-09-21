@@ -74,3 +74,12 @@ Hai popup ở màn menu dùng chung khung `MenuPopupBase` (nền tối bấm ra 
 **Thêm ảnh chụp màn hình**: chỉ cần thả file PNG/JPG (khuyên dùng 16:9, khoảng 1920x1080 trở xuống) vào `Assets/NihongoLife/Resources/MenuGallery/`. Ảnh tự xuất hiện trong gallery theo thứ tự tên file (đặt `01_...`, `02_...`). Chú thích mặc định lấy từ tên file (bỏ số đầu, dấu `_` thành khoảng trắng). Muốn chú thích 3 ngôn ngữ: thêm 1 dòng vào `Captions` của asset với `Texture Name` = tên file không có đuôi. Có nút mũi tên, chấm chuyển ảnh, phím trái/phải, tự chuyển ảnh, bấm vào ảnh để xem cỡ lớn. Chưa có ảnh nào thì hiện khung dự phòng.
 
 **Cách chơi (`GuidePopup`)**: 4 bước + dải phím tắt; nhãn phím lấy trực tiếp từ bảng phím hiện tại nên đúng cả khi người chơi đã đổi phím. Nội dung 3 ngôn ngữ nằm trong `GuidePopup.cs` (mục `_steps`).
+
+## Story flags và node Branch (viết truyện có nhớ)
+
+- **Đặt cờ**: trên `DialogueChoice.setFlags` (danh sách chuỗi). Chỉ đặt cờ ở lựa chọn đáng nhớ (giúp đỡ, thô lỗ, thành thật, lễ phép). Tên cờ: `npc.hành_vi` hoặc `quest.hành_vi`, chữ thường, không dấu, ví dụ `tanaka.friend`, `sato.stern`.
+- **Đọc cờ**: thêm node loại `Branch` (`nodeType = 7`) với `flagCondition` (ví dụ `cat.shrine_hint,cat.promised`, `!sato.stern`, `done:scenario.restaurant.order_ramen`), `flagJumpNodeId` (đi tới khi điều kiện đúng) và `nextNodeId` (khi sai). Branch không hiển thị gì; có thể nối chuỗi nhiều Branch.
+- **Callback**: quest sau luôn nên có ít nhất một dòng nhớ lại việc quest trước (xem bảng cờ trong `STORY_BIBLE.md` mục 12).
+- **Hub**: cho người chơi chọn thứ tự (ví dụ 4 cuộc trò chuyện ở lễ hội): mỗi nhánh đặt một cờ ở lựa chọn cuối, một Branch kiểm tra đủ cờ mới đi tiếp, không thì quay lại hub.
+- **Bắt đầu quest ở đời thật**: node đầu là `TalkToNPC` (cần NPC có mặt trong scene), sau đó hội thoại tự chạy. Quest chỉ hội thoại thì bắt đầu bằng node Dialogue.
+- **Công cụ sinh quest**: `Tools/story/*.py` (Python) tạo asset từ nội dung viết sẵn và kiểm tra đồ thị (nhánh treo, node không tới được, mục tiêu không hoàn thành, thiếu furigana/romaji/bản dịch). Chạy: `python gen_house1.py <đường dẫn .asset>`; sau khi sinh nhớ chạy lại phần metadata quest (`Tools/story/quest_meta.py`). Sau khi đã sinh, bạn có thể tiếp tục sửa trực tiếp asset trong Inspector; nếu chỉnh cả hai nơi thì file sinh ra sẽ ghi đè bản sửa tay.

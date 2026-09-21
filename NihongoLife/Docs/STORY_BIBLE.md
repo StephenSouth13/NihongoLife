@@ -159,3 +159,29 @@ Phản hồi từ chủ dự án: ưu tiên **ít scenario hơn nhưng sâu hơn
 - `chapterIndex` khớp bảng ở mục 4/5.
 - Không có nhân vật nào chỉ xuất hiện đúng 1 lần trong toàn bộ 4 chapter (trừ NPC nền không tên trong lễ hội).
 - Cảnh kết Chapter 4 có mặt (trực tiếp hoặc được nhắc tên) toàn bộ NPC chính đã gặp trước đó.
+
+## 12. Mạch cảm xúc, chủ đề và bộ nhớ truyện (cập nhật 2026-09-21)
+
+**Chủ đề xuyên suốt: 「間違えてもいい」 (nói sai cũng không sao).** Người chơi mang nỗi sợ nói sai; mỗi NPC là một cách khác nhau của việc *sửa lỗi một cách tử tế*: Tanaka đón nhận, Suzuki lo lắng và biết ơn, Sato nghiêm nhưng công bằng, Ito chuyên nghiệp, Morita khen trước sửa sau, Kim nói sai rồi cười, Aoki/Ota/Yamada tự hào nghề của mình, Kimura chịu trách nhiệm. Không NPC nào chế giễu người chơi.
+
+**Mạch cảm xúc của nhân vật chính**: đêm đầu tiên ở Hibari (một mình, tim đập nhanh) → được chào hỏi trên phố → được mời vào nhà (không còn là người lạ) → có bạn cùng lớp → tự làm được việc nhỏ (mua đồ, gọi món, đi tàu) → giúp người khác (mèo, rác) → được cả khu phố nhớ và công nhận ở lễ hội (bài phát biểu cuối).
+
+### 12.1 Bộ nhớ truyện (story flags)
+Lựa chọn của người chơi được lưu bằng cờ (`DialogueChoice.setFlags`, lưu trong tiến độ, đồng bộ cloud). Node `Branch` đọc cờ để đổi lời thoại ở quest sau. Cú pháp điều kiện: `flag`, `!flag`, `done:scenarioId`, nối bằng dấu phẩy là AND.
+
+| Cờ | Đặt ở đâu | Ai nhớ và phản ứng |
+|---|---|---|
+| `feel.excited` / `feel.nervous` / `feel.tired` | intro: cảm xúc khi đến ga | Tanaka (house1) an ủi/hỏi thăm; Morita (lễ hội) nhắc "ngày đầu bạn còn căng thẳng" |
+| `intro.polite_reply`, `intro.greeted_stranger`, `intro.said_tadaima` | intro | dùng cho thành tích/khen sau này |
+| `tanaka.invited`, `tanaka.tea_accepted`, `tanaka.knows_teacher`, `tanaka.friend` | house1 | Sato (garbage) "tôi nghe bác Tanaka kể rồi"; Tanaka (lễ hội) giới thiệu "bạn của tôi" |
+| `house1.polite_entry`, `house1.took_off_shoes`, `house1.asked_permission`, `house1.polite_exit` | house1 | thành tích lễ nghi |
+| `cat.asked`, `cat.described`, `cat.shrine_hint`, `cat.park_hint`, `cat.offered_help`, `cat.promised` | lostcat | Suzuki (lễ hội): mèo tìm thấy nhờ gợi ý của bạn hay tự về |
+| `garbage.rules_known`, `sato.asked_night`, `sato.stern`, `sato.respect`, `sato.appointment` | garbage | Sato (lễ hội): khen công khai / miễn cưỡng công nhận; hẹn sáng thứ Hai cho recycling_morning |
+| `ramen.invited`, `ramen.miso/shoyu/shio`, `yamada.introduced`, `yamada.friend`, `yamada.regular` | ramen | Yamada (lễ hội): "lại đến rồi à!" |
+| `station.safety_ok`, `station.gave_seat` | station | thành tích văn hoá ứng xử |
+| `fest.*` | lễ hội | điều khiển việc đủ 4 cuộc trò chuyện để vào phần phát biểu |
+
+### 12.2 Quest đã viết sâu (2026-09-21)
+`intro.arrival` (31 node), `street.first_talk` (28), `house1.greeting` (41), `school.self_intro` (22), `house2.lostcat` (27), `house3.garbage` (27), `restaurant.sushi_dining` (74), `restaurant.order_ramen` (36), `station.buy_ticket` (32), `town.summer_festival` (55, hub 4 cuộc trò chuyện + bài phát biểu + kết thúc theo lựa chọn). Ramen và ga được viết dạng hội thoại thuần (không cần khu vực trong scene), nên **cả campaign chạy được từ mở màn đến lễ hội** mà không chờ dựng scene.
+
+**Còn mỏng cần viết sâu**: `konbini.buy_onigiri` (14 node, thiếu tag), 3 quest dựng bằng code (`cat_followup`, `recycling_morning`, `evening_shift`, ~8 node mỗi cái). Nên chuyển sang asset và dùng cờ ở trên (ví dụ `cat_followup` đọc `cat.shrine_hint`, `recycling_morning` đọc `sato.appointment`/`sato.stern`).

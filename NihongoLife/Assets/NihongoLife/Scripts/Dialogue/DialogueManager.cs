@@ -503,8 +503,21 @@ namespace NihongoLife.Dialogue
                 return true;
             }
 
-            var nextNode = scenario.GetNode(nextNodeId);
+            var nextNode = scenario.GetNode(ResolveThroughBranches(scenario, nextNodeId));
             return nextNode == null || nextNode.nodeType != ScenarioNodeType.Dialogue;
+        }
+
+        /// <summary>Follows story-flag Branch nodes to the node that will really run next.</summary>
+        private static string ResolveThroughBranches(ScenarioDefinition scenario, string nodeId)
+        {
+            for (int guard = 0; guard < 16 && !string.IsNullOrEmpty(nodeId); guard++)
+            {
+                var node = scenario.GetNode(nodeId);
+                if (node == null || node.nodeType != ScenarioNodeType.Branch) break;
+                nodeId = StoryFlags.Evaluate(node.flagCondition) ? node.flagJumpNodeId : node.nextNodeId;
+            }
+
+            return nodeId;
         }
 
         private bool ShouldKeepCurrentSpeaker(string nextNodeId)
@@ -520,7 +533,7 @@ namespace NihongoLife.Dialogue
                 return false;
             }
 
-            var nextNode = scenario.GetNode(nextNodeId);
+            var nextNode = scenario.GetNode(ResolveThroughBranches(scenario, nextNodeId));
             return nextNode != null
                 && nextNode.nodeType == ScenarioNodeType.Dialogue
                 && nextNode.speakerId == _speakingNpc.NpcId;

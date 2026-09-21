@@ -1,5 +1,7 @@
+using System.Collections;
 using NihongoLife.Player;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace NihongoLife.World
 {
@@ -17,6 +19,8 @@ namespace NihongoLife.World
         private PlayerController _player;
         private float _nextSearchTime;
         private float _nextRescueTime;
+        private bool _rescuing;
+        private CanvasGroup _rescueFade;
 
         public void Configure(Transform spawn)
         {
@@ -49,13 +53,16 @@ namespace NihongoLife.World
             bool inCarriage = ContainsXZ(position, carriageCenter, carriageHalfExtents);
             bool onTracks = ContainsXZ(position, trackCenter, trackHalfExtents);
             bool unsafePosition = position.y < fallY || (!inDistrict && !inCarriage) || (onTracks && !inCarriage);
-            if (!unsafePosition || Time.unscaledTime < _nextRescueTime) return;
+            if (!unsafePosition || _rescuing || Time.unscaledTime < _nextRescueTime) return;
 
-            RescuePlayer(position);
+            StartCoroutine(RescuePlayer(position));
         }
 
-        private void RescuePlayer(Vector3 unsafePosition)
+        private IEnumerator RescuePlayer(Vector3 unsafePosition)
         {
+            _rescuing = true;
+            EnsureRescueFade();
+            yield return FadeTo(1f, 0.18f);
             bool fellNearTracks = Mathf.Abs(unsafePosition.x - trackCenter.x) <= trackHalfExtents.x + 4f;
             Vector3 target = fellNearTracks
                 ? new Vector3(Mathf.Clamp(unsafePosition.x, 786f, 814f), 0.38f, 1.9f)
@@ -69,6 +76,45 @@ namespace NihongoLife.World
             if (controller != null) controller.enabled = true;
             _nextRescueTime = Time.unscaledTime + 1f;
             Debug.LogWarning($"[StationSafety] Rescued player from unsafe position {unsafePosition} to {target}.");
+            yield return new WaitForSecondsRealtime(0.08f);
+            yield return FadeTo(0f, 0.3f);
+            _rescuing = false;
+        }
+
+        private void EnsureRescueFade()
+        {
+            if (_rescueFade != null) return;
+            GameObject overlay = new GameObject("StationSafetyFade");
+            overlay.transform.SetParent(transform, false);
+            Canvas canvas = overlay.AddComponent<Canvas>();
+            canvas.renderMode = RenderMode.ScreenSpaceOverlay;
+            canvas.sortingOrder = 1000;
+            overlay.AddComponent<CanvasScaler>();
+            GameObject imageObject = new GameObject("Fade");
+            imageObject.transform.SetParent(overlay.transform, false);
+            RectTransform rect = imageObject.AddComponent<RectTransform>();
+            rect.anchorMin = Vector2.zero;
+            rect.anchorMax = Vector2.one;
+            rect.offsetMin = rect.offsetMax = Vector2.zero;
+            imageObject.AddComponent<Image>().color = Color.black;
+            _rescueFade = imageObject.AddComponent<CanvasGroup>();
+            _rescueFade.alpha = 0f;
+            _rescueFade.blocksRaycasts = false;
+        }
+
+        private IEnumerator FadeTo(float target, float duration)
+        {
+            float start = _rescueFade.alpha;
+            float elapsed = 0f;
+            _rescueFade.blocksRaycasts = target > 0f;
+            while (elapsed < duration)
+            {
+                elapsed += Time.unscaledDeltaTime;
+                _rescueFade.alpha = Mathf.Lerp(start, target, Mathf.Clamp01(elapsed / duration));
+                yield return null;
+            }
+            _rescueFade.alpha = target;
+            if (target <= 0f) _rescueFade.blocksRaycasts = false;
         }
 
         private static bool ContainsXZ(Vector3 point, Vector3 center, Vector3 halfExtents)

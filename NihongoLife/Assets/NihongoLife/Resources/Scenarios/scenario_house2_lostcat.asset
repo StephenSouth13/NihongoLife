@@ -13,11 +13,11 @@ MonoBehaviour:
   m_Name: scenario_house2_lostcat
   m_EditorClassIdentifier: NihongoLife::NihongoLife.Scenario.ScenarioDefinition
   id: scenario.house2.lostcat
-  version: 1
-  titleJa: "\u8FF7\u5B50\u306E\u732B"
-  titleEn: Lost Cat
-  descriptionJa: "\u8FD1\u6240\u306E\u4EBA\u304C\u732B\u3092\u63A2\u3057\u3066\u3044\u307E\u3059\u3002\u624B\u4F1D\u3063\u3066\u3042\u3052\u307E\u3057\u3087\u3046\u3002"
-  descriptionEn: A neighbor is looking for their cat. Let's help them.
+  version: 2
+  titleJa: "鈴木さんの猫を探す"
+  titleEn: "Giúp cô Suzuki tìm mèo"
+  descriptionJa: "鈴木さんの猫が、昨日からいません。話を聞いて、手伝いましょう。"
+  descriptionEn: "Con mèo Mike của cô Suzuki mất từ hôm qua. Hỏi thăm, nghe tả đặc điểm và nhận lời giúp."
   chapterIndex: 3
   questType: community
   giverNpcId: npc_neighbor_2
@@ -38,50 +38,764 @@ MonoBehaviour:
   supportsCoOp: 0
   minPlayers: 1
   maxPlayers: 2
-  learningTargets: []
+  learningTargets:
+  - grammar.n5.donna_desu_ka
+  - grammar.n5.masen_deshita
+  - grammar.n5.mashou_ka
+  - vocab.n5.neko
+  - vocab.n5.jinja
   objectives:
-  - id: obj_ask_neighbor
-    titleJa: "\u8FD1\u6240\u306E\u4EBA\u306B\u805E\u304F"
-    titleEn: Ask the neighbor
+  - id: obj_meet
+    titleJa: "鈴木さんに会う"
+    titleEn: "Gặp cô Suzuki"
+    isOptional: 0
+  - id: obj_describe
+    titleJa: "ミケのようすを聞き取る"
+    titleEn: "Nghe hiểu đặc điểm của Mike"
+    isOptional: 0
+  - id: obj_help
+    titleJa: "手伝うと言う"
+    titleEn: "Nhận lời giúp tìm mèo"
     isOptional: 0
   nodes:
-  - id: node_cat_start
+  - id: node_find_suzuki
+    nodeType: 6
+    nextNodeId: n_open
+    objectiveIdToComplete: obj_meet
+    speakerName: 
+    speakerId: 
+    textJa: 
+    textReading: 
+    textEn: 
+    textRomaji: 
+    textEnglishIpa: 
+    animationCue: 
+    voiceClip: {fileID: 0}
+    choices: []
+    flagCondition: 
+    flagJumpNodeId: 
+    targetItemId: 
+    targetNpcId: npc_neighbor_2
+    targetAreaId: 
+  - id: n_open
     nodeType: 0
     nextNodeId: 
     objectiveIdToComplete: 
     speakerName: Suzuki
     speakerId: npc_neighbor_2
-    textJa: "\u3059\u307F\u307E\u305B\u3093\u3001\u79C1\u306E\u732B\u3092\u898B\u307E\u305B\u3093\u3067\u3057\u305F\u304B\uFF1F"
-    textReading: "\u3059\u307F\u307E\u305B\u3093\u3001\u308F\u305F\u3057\u306E\u306D\u3053\u3092\u307F\u307E\u305B\u3093\u3067\u3057\u305F\u304B\uFF1F"
-    textEn: Excuse me, have you seen my cat?
-    textRomaji: Sumimasen, watashi no neko o mimasen deshita ka?
-    animationCue: 
+    textJa: "あの…すみません。私の猫を見ませんでしたか。"
+    textReading: "あの…すみません。わたしのねこをみませんでしたか。"
+    textEn: "À... xin lỗi. Bạn có thấy con mèo của tôi không?"
+    textRomaji: "Ano... sumimasen. Watashi no neko wo mimasen deshita ka."
+    textEnglishIpa: 
+    animationCue: talk
     voiceClip: {fileID: 0}
     choices:
-    - textJa: "\u3044\u3044\u3048\u3001\u898B\u307E\u305B\u3093\u3067\u3057\u305F\u3002"
-      textEn: No, I haven't seen it.
-      nextNodeId: node_cat_end
-      scoreModifiers: []
+    - textJa: "いいえ、見ませんでした。どんな猫ですか。"
+      textEn: "Không, tôi không thấy. Mèo thế nào ạ?"
+      nextNodeId: n_describe
+      scoreModifiers:
+      - category: Grammar
+        value: 10
+        reason: "Trả lời phủ định quá khứ 見ませんでした và hỏi tiếp bằng どんな〜ですか"
+      grammarTags:
+      - grammar.n5.masen_deshita
+      - grammar.n5.donna_desu_ka
+      vocabularyTags:
+      - vocab.n5.neko
+      setFlags:
+      - cat.asked
+    - textJa: "見ませんでした。"
+      textEn: "Tôi không thấy."
+      nextNodeId: n_open_short
+      scoreModifiers:
+      - category: ResponseAccuracy
+        value: 3
+        reason: "Trả lời đúng nhưng dừng ở đó, bỏ lỡ cơ hội hỏi giúp đỡ"
+      grammarTags:
+      - grammar.n5.masen_deshita
+      vocabularyTags:
+      - vocab.n5.neko
+      setFlags: []
+    - textJa: "猫は好きです。"
+      textEn: "Tôi thích mèo."
+      nextNodeId: n_open_wrong
+      scoreModifiers:
+      - category: ResponseAccuracy
+        value: -8
+        reason: "Trả lời lạc đề: được hỏi có thấy mèo không, không phải có thích mèo không"
       grammarTags: []
       vocabularyTags: []
+      setFlags: []
+    flagCondition: 
+    flagJumpNodeId: 
     targetItemId: 
+    targetNpcId: 
     targetAreaId: 
-  - id: node_cat_end
+  - id: n_open_short
     nodeType: 0
-    nextNodeId: node_complete
-    objectiveIdToComplete: obj_ask_neighbor
+    nextNodeId: n_ribbon
+    objectiveIdToComplete: 
     speakerName: Suzuki
     speakerId: npc_neighbor_2
-    textJa: "\u305D\u3046\u3067\u3059\u304B\u3002\u3042\u308A\u304C\u3068\u3046\u3054\u3056\u3044\u307E\u3059\u3002"
-    textReading: "\u305D\u3046\u3067\u3059\u304B\u3002\u3042\u308A\u304C\u3068\u3046\u3054\u3056\u3044\u307E\u3059\u3002"
-    textEn: I see. Thank you anyway.
-    textRomaji: Sou desu ka. Arigatou gozaimasu.
+    textJa: "そうですか…。ミケは、白と茶色と黒の猫です。昨日から、いません。"
+    textReading: "そうですか…。ミケは、しろとちゃいろとくろのねこです。きのうから、いません。"
+    textEn: "Vậy à... Con Mike là mèo ba màu trắng, nâu và đen. Nó mất từ hôm qua rồi."
+    textRomaji: "Sou desu ka.... Mike wa, shiro to chairo to kuro no neko desu. Kinou kara, imasen."
+    textEnglishIpa: 
+    animationCue: talk
+    voiceClip: {fileID: 0}
+    choices: []
+    flagCondition: 
+    flagJumpNodeId: 
+    targetItemId: 
+    targetNpcId: 
+    targetAreaId: 
+  - id: n_open_wrong
+    nodeType: 0
+    nextNodeId: n_open
+    objectiveIdToComplete: 
+    speakerName: Suzuki
+    speakerId: npc_neighbor_2
+    textJa: "あ、ありがとう…。でも、今は、うちの猫がいなくて…。"
+    textReading: "あ、ありがとう…。でも、いまは、うちのねこがいなくて…。"
+    textEn: "À, cảm ơn... Nhưng bây giờ mèo nhà tôi đi mất rồi..."
+    textRomaji: "A, arigatou.... Demo, ima wa, uchi no neko ga inakute...."
+    textEnglishIpa: 
+    animationCue: talk
+    voiceClip: {fileID: 0}
+    choices: []
+    flagCondition: 
+    flagJumpNodeId: 
+    targetItemId: 
+    targetNpcId: 
+    targetAreaId: 
+  - id: n_describe
+    nodeType: 0
+    nextNodeId: n_ribbon
+    objectiveIdToComplete: 
+    speakerName: Suzuki
+    speakerId: npc_neighbor_2
+    textJa: "ミケです。白と茶色と黒の猫です。"
+    textReading: "ミケです。しろとちゃいろとくろのねこです。"
+    textEn: "Tên nó là Mike. Là con mèo ba màu trắng, nâu và đen."
+    textRomaji: "Mike desu. Shiro to chairo to kuro no neko desu."
+    textEnglishIpa: 
+    animationCue: talk
+    voiceClip: {fileID: 0}
+    choices: []
+    flagCondition: 
+    flagJumpNodeId: 
+    targetItemId: 
+    targetNpcId: 
+    targetAreaId: 
+  - id: n_ribbon
+    nodeType: 0
+    nextNodeId: n_check_color
+    objectiveIdToComplete: 
+    speakerName: Suzuki
+    speakerId: npc_neighbor_2
+    textJa: "首に、赤いリボンがあります。大きい猫ではありません。小さいです。"
+    textReading: "くびに、あかいリボンがあります。おおきいねこではありません。ちいさいです。"
+    textEn: "Ở cổ nó có một chiếc nơ đỏ. Nó không phải mèo to. Nó nhỏ thôi."
+    textRomaji: "Kubi ni, akai ribon ga arimasu. Ookii neko dewa arimasen. Chiisai desu."
+    textEnglishIpa: 
+    animationCue: point
+    voiceClip: {fileID: 0}
+    choices: []
+    flagCondition: 
+    flagJumpNodeId: 
+    targetItemId: 
+    targetNpcId: 
+    targetAreaId: 
+  - id: n_check_color
+    nodeType: 0
+    nextNodeId: 
+    objectiveIdToComplete: 
+    speakerName: Suzuki
+    speakerId: npc_neighbor_2
+    textJa: "分かりましたか。ミケは、何色の猫ですか。"
+    textReading: "わかりましたか。ミケは、なにいろのねこですか。"
+    textEn: "Bạn hiểu chưa? Mike là mèo màu gì nhỉ?"
+    textRomaji: "Wakarimashita ka. Mike wa, nani iro no neko desu ka?"
+    textEnglishIpa: 
+    animationCue: talk
+    voiceClip: {fileID: 0}
+    choices:
+    - textJa: "白と茶色と黒の猫です。"
+      textEn: "Là mèo màu trắng, nâu và đen ạ."
+      nextNodeId: n_check_ribbon
+      scoreModifiers:
+      - category: Vocabulary
+        value: 10
+        reason: "Nhắc lại đúng màu lông: 白・茶色・黒"
+      grammarTags:
+      - grammar.n5.no_neko
+      vocabularyTags:
+      - vocab.n5.shiro
+      - vocab.n5.chairo
+      - vocab.n5.kuro
+      setFlags: []
+    - textJa: "もう一度お願いします。"
+      textEn: "Phiền bạn nói lại một lần nữa ạ."
+      nextNodeId: n_color_repeat
+      scoreModifiers:
+      - category: ResponseAccuracy
+        value: 8
+        reason: "Xin nghe lại lịch sự khi chưa nghe rõ"
+      grammarTags: []
+      vocabularyTags:
+      - vocab.n5.mou_ichido
+      setFlags: []
+    - textJa: "白い猫です。"
+      textEn: "Là mèo trắng ạ."
+      nextNodeId: n_color_wrong
+      scoreModifiers:
+      - category: Vocabulary
+        value: -8
+        reason: "Bỏ sót màu nâu và đen: Mike là mèo ba màu, không chỉ có màu trắng"
+      grammarTags: []
+      vocabularyTags: []
+      setFlags: []
+    flagCondition: 
+    flagJumpNodeId: 
+    targetItemId: 
+    targetNpcId: 
+    targetAreaId: 
+  - id: n_color_repeat
+    nodeType: 0
+    nextNodeId: n_check_color
+    objectiveIdToComplete: 
+    speakerName: Suzuki
+    speakerId: npc_neighbor_2
+    textJa: "はい。白、茶色、黒。三つの色です。ミケです。"
+    textReading: "はい。しろ、ちゃいろ、くろ。みっつのいろです。ミケです。"
+    textEn: "Vâng. Trắng, nâu, đen. Ba màu. Đó là Mike."
+    textRomaji: "Hai. Shiro, chairo, kuro. Mittsu no iro desu. Mike desu."
+    textEnglishIpa: 
+    animationCue: point
+    voiceClip: {fileID: 0}
+    choices: []
+    flagCondition: 
+    flagJumpNodeId: 
+    targetItemId: 
+    targetNpcId: 
+    targetAreaId: 
+  - id: n_color_wrong
+    nodeType: 0
+    nextNodeId: n_check_color
+    objectiveIdToComplete: 
+    speakerName: Suzuki
+    speakerId: npc_neighbor_2
+    textJa: "白だけではありませんよ。白と、茶色と、黒です。三つの色です。"
+    textReading: "しろだけではありませんよ。しろと、ちゃいろと、くろです。みっつのいろです。"
+    textEn: "Không chỉ có màu trắng đâu. Là trắng, nâu và đen. Ba màu."
+    textRomaji: "Shiro dake dewa arimasen yo. Shiro to, chairo to, kuro desu. Mittsu no iro desu."
+    textEnglishIpa: 
+    animationCue: point
+    voiceClip: {fileID: 0}
+    choices: []
+    flagCondition: 
+    flagJumpNodeId: 
+    targetItemId: 
+    targetNpcId: 
+    targetAreaId: 
+  - id: n_check_ribbon
+    nodeType: 0
+    nextNodeId: 
+    objectiveIdToComplete: obj_describe
+    speakerName: Suzuki
+    speakerId: npc_neighbor_2
+    textJa: "そうです！ミケの首には、何がありますか。"
+    textReading: "そうです！ミケのくびには、なにがありますか。"
+    textEn: "Đúng rồi! Ở cổ Mike có gì nào?"
+    textRomaji: "Sou desu! Mike no kubi ni wa, nani ga arimasu ka?"
+    textEnglishIpa: 
+    animationCue: talk
+    voiceClip: {fileID: 0}
+    choices:
+    - textJa: "赤いリボンがあります。"
+      textEn: "Có một chiếc nơ đỏ ạ."
+      nextNodeId: n_when
+      scoreModifiers:
+      - category: Grammar
+        value: 10
+        reason: "Mô tả vật ở đâu bằng 〜に〜があります (cổ có nơ đỏ)"
+      grammarTags:
+      - grammar.n5.ni_ga_arimasu
+      vocabularyTags:
+      - vocab.n5.ribon
+      - vocab.n5.akai
+      setFlags:
+      - cat.described
+    - textJa: "青い鈴があります。"
+      textEn: "Có một chiếc chuông xanh ạ."
+      nextNodeId: n_ribbon_wrong
+      scoreModifiers:
+      - category: Vocabulary
+        value: -8
+        reason: "Nhớ sai chi tiết: Suzuki nói 赤いリボン (nơ đỏ), không phải chuông xanh"
+      grammarTags: []
+      vocabularyTags: []
+      setFlags: []
+    - textJa: "もう一度お願いします。"
+      textEn: "Phiền bạn nói lại một lần nữa ạ."
+      nextNodeId: n_ribbon_repeat
+      scoreModifiers:
+      - category: ResponseAccuracy
+        value: 8
+        reason: "Xin nghe lại lịch sự"
+      grammarTags: []
+      vocabularyTags:
+      - vocab.n5.mou_ichido
+      setFlags: []
+    flagCondition: 
+    flagJumpNodeId: 
+    targetItemId: 
+    targetNpcId: 
+    targetAreaId: 
+  - id: n_ribbon_wrong
+    nodeType: 0
+    nextNodeId: n_check_ribbon
+    objectiveIdToComplete: 
+    speakerName: Suzuki
+    speakerId: npc_neighbor_2
+    textJa: "ちがいますよ。赤い、リボンです。首に、赤いリボンがあります。"
+    textReading: "ちがいますよ。あかい、リボンです。くびに、あかいリボンがあります。"
+    textEn: "Không phải đâu. Là nơ đỏ. Ở cổ có một chiếc nơ đỏ."
+    textRomaji: "Chigaimasu yo. Akai, ribon desu. Kubi ni, akai ribon ga arimasu."
+    textEnglishIpa: 
+    animationCue: point
+    voiceClip: {fileID: 0}
+    choices: []
+    flagCondition: 
+    flagJumpNodeId: 
+    targetItemId: 
+    targetNpcId: 
+    targetAreaId: 
+  - id: n_ribbon_repeat
+    nodeType: 0
+    nextNodeId: n_check_ribbon
+    objectiveIdToComplete: 
+    speakerName: Suzuki
+    speakerId: npc_neighbor_2
+    textJa: "はい。首に、赤い、リボン。きのう、私がつけました。"
+    textReading: "はい。くびに、あかい、リボン。きのう、わたしがつけました。"
+    textEn: "Vâng. Ở cổ, một chiếc nơ đỏ. Hôm qua chính tôi đã buộc cho nó."
+    textRomaji: "Hai. Kubi ni, akai, ribon. Kinou, watashi ga tsukemashita."
+    textEnglishIpa: 
+    animationCue: point
+    voiceClip: {fileID: 0}
+    choices: []
+    flagCondition: 
+    flagJumpNodeId: 
+    targetItemId: 
+    targetNpcId: 
+    targetAreaId: 
+  - id: n_when
+    nodeType: 0
+    nextNodeId: 
+    objectiveIdToComplete: 
+    speakerName: Suzuki
+    speakerId: npc_neighbor_2
+    textJa: "昨日の夜、窓を開けました。それから、ミケがいません。"
+    textReading: "きのうのよる、まどをあけました。それから、ミケがいません。"
+    textEn: "Tối qua tôi mở cửa sổ. Từ đó, Mike không thấy đâu nữa."
+    textRomaji: "Kinou no yoru, mado wo akemashita. Sorekara, Mike ga imasen."
+    textEnglishIpa: 
+    animationCue: talk
+    voiceClip: {fileID: 0}
+    choices:
+    - textJa: "いつからいませんか。"
+      textEn: "Nó mất từ khi nào ạ?"
+      nextNodeId: n_when_answer
+      scoreModifiers:
+      - category: Grammar
+        value: 10
+        reason: "Hỏi thời điểm bằng いつから để nắm rõ tình hình"
+      grammarTags:
+      - grammar.n5.itsu_kara
+      vocabularyTags:
+      - vocab.n5.itsu
+      setFlags: []
+    - textJa: "いつですか。"
+      textEn: "Khi nào ạ?"
+      nextNodeId: n_when_answer
+      scoreModifiers:
+      - category: ResponseAccuracy
+        value: 3
+        reason: "Hỏi được nhưng thiếu から nên không rõ hỏi 'từ khi nào', dễ gây hiểu nhầm"
+      grammarTags: []
+      vocabularyTags:
+      - vocab.n5.itsu
+      setFlags: []
+    - textJa: "どこですか。"
+      textEn: "Ở đâu ạ?"
+      nextNodeId: n_when_wrong
+      scoreModifiers:
+      - category: Grammar
+        value: -8
+        reason: "Dùng どこ (ở đâu) để hỏi thời gian; phải dùng いつ (khi nào)"
+      grammarTags: []
+      vocabularyTags: []
+      setFlags: []
+    flagCondition: 
+    flagJumpNodeId: 
+    targetItemId: 
+    targetNpcId: 
+    targetAreaId: 
+  - id: n_when_wrong
+    nodeType: 0
+    nextNodeId: n_when
+    objectiveIdToComplete: 
+    speakerName: Suzuki
+    speakerId: npc_neighbor_2
+    textJa: "「どこ」は場所です。時間は、「いつ」ですよ。"
+    textReading: "「どこ」はばしょです。じかんは、「いつ」ですよ。"
+    textEn: "\"Doko\" là hỏi nơi chốn. Hỏi thời gian thì dùng \"itsu\" nhé."
+    textRomaji: "\"Doko\" wa basho desu. Jikan wa, \"itsu\" desu yo."
+    textEnglishIpa: 
+    animationCue: point
+    voiceClip: {fileID: 0}
+    choices: []
+    flagCondition: 
+    flagJumpNodeId: 
+    targetItemId: 
+    targetNpcId: 
+    targetAreaId: 
+  - id: n_when_answer
+    nodeType: 0
+    nextNodeId: n_place
+    objectiveIdToComplete: 
+    speakerName: Suzuki
+    speakerId: npc_neighbor_2
+    textJa: "昨日の夜、八時ごろからです。もう、二十時間です。"
+    textReading: "きのうのよる、はちじごろからです。もう、にじゅうじかんです。"
+    textEn: "Từ khoảng tám giờ tối qua. Đã hai mươi tiếng rồi."
+    textRomaji: "Kinou no yoru, hachiji goro kara desu. Mou, nijuu jikan desu."
+    textEnglishIpa: 
+    animationCue: talk
+    voiceClip: {fileID: 0}
+    choices: []
+    flagCondition: 
+    flagJumpNodeId: 
+    targetItemId: 
+    targetNpcId: 
+    targetAreaId: 
+  - id: n_place
+    nodeType: 0
+    nextNodeId: 
+    objectiveIdToComplete: 
+    speakerName: Suzuki
+    speakerId: npc_neighbor_2
+    textJa: "ミケは、よく神社の近くに行きます。公園にも行きます。"
+    textReading: "ミケは、よくじんじゃのちかくにいきます。こうえんにもいきます。"
+    textEn: "Mike hay đi đến gần đền thờ. Nó cũng hay ra công viên."
+    textRomaji: "Mike wa, yoku jinja no chikaku ni ikimasu. Kouen ni mo ikimasu."
+    textEnglishIpa: 
+    animationCue: point
+    voiceClip: {fileID: 0}
+    choices:
+    - textJa: "神社の近くですね。分かりました。"
+      textEn: "Gần đền thờ nhỉ. Tôi hiểu rồi ạ."
+      nextNodeId: n_help
+      scoreModifiers:
+      - category: Vocabulary
+        value: 10
+        reason: "Xác nhận thông tin bằng cách nhắc lại địa điểm: 神社の近く"
+      grammarTags:
+      - grammar.n5.desu_ne
+      vocabularyTags:
+      - vocab.n5.jinja
+      - vocab.n5.chikaku
+      setFlags:
+      - cat.shrine_hint
+    - textJa: "公園ですね。分かりました。"
+      textEn: "Công viên nhỉ. Tôi hiểu rồi ạ."
+      nextNodeId: n_help
+      scoreModifiers:
+      - category: Vocabulary
+        value: 8
+        reason: "Xác nhận thông tin bằng cách nhắc lại địa điểm: 公園"
+      grammarTags:
+      - grammar.n5.desu_ne
+      vocabularyTags:
+      - vocab.n5.kouen
+      setFlags:
+      - cat.park_hint
+    - textJa: "神社は嫌いです。"
+      textEn: "Tôi không thích đền thờ."
+      nextNodeId: n_place_wrong
+      scoreModifiers:
+      - category: ResponseAccuracy
+        value: -8
+        reason: "Nói điều không liên quan và làm người đang lo lắng thêm bối rối"
+      grammarTags: []
+      vocabularyTags: []
+      setFlags: []
+    flagCondition: 
+    flagJumpNodeId: 
+    targetItemId: 
+    targetNpcId: 
+    targetAreaId: 
+  - id: n_place_wrong
+    nodeType: 0
+    nextNodeId: n_place
+    objectiveIdToComplete: 
+    speakerName: Suzuki
+    speakerId: npc_neighbor_2
+    textJa: "あ…そうですか。でも、ミケは神社が好きなんです。もう一度、聞いてください。"
+    textReading: "あ…そうですか。でも、ミケはじんじゃがすきなんです。もういちど、きいてください。"
+    textEn: "À... vậy à. Nhưng Mike lại thích đền thờ lắm. Bạn nghe lại giúp tôi nhé."
+    textRomaji: "A... sou desu ka. Demo, Mike wa jinja ga suki nan desu. Mou ichido, kiite kudasai."
+    textEnglishIpa: 
+    animationCue: talk
+    voiceClip: {fileID: 0}
+    choices: []
+    flagCondition: 
+    flagJumpNodeId: 
+    targetItemId: 
+    targetNpcId: 
+    targetAreaId: 
+  - id: n_help
+    nodeType: 0
+    nextNodeId: 
+    objectiveIdToComplete: 
+    speakerName: Suzuki
+    speakerId: npc_neighbor_2
+    textJa: "ああ、どうしよう…。ミケが、さむくないでしょうか。"
+    textReading: "ああ、どうしよう…。ミケが、さむくないでしょうか。"
+    textEn: "Ôi, biết làm sao đây... Không biết Mike có bị lạnh không nữa."
+    textRomaji: "Aa, dou shiyou.... Mike ga, samukunai deshou ka."
+    textEnglishIpa: 
+    animationCue: talk
+    voiceClip: {fileID: 0}
+    choices:
+    - textJa: "私も探しましょうか。"
+      textEn: "Để tôi cũng đi tìm giúp nhé?"
+      nextNodeId: n_help_yes
+      scoreModifiers:
+      - category: Grammar
+        value: 10
+        reason: "Đề nghị giúp đỡ bằng mẫu 〜ましょうか"
+      grammarTags:
+      - grammar.n5.mashou_ka
+      vocabularyTags:
+      - vocab.n5.sagasu
+      setFlags:
+      - cat.offered_help
+    - textJa: "がんばってください。"
+      textEn: "Cố lên nhé."
+      nextNodeId: n_help_cheer
+      scoreModifiers:
+      - category: ResponseAccuracy
+        value: 3
+        reason: "Động viên được, nhưng chưa đề nghị giúp trong khi bạn có thể giúp"
+      grammarTags:
+      - grammar.n5.te_kudasai
+      vocabularyTags: []
+      setFlags: []
+    - textJa: "猫は自分で帰りますよ。"
+      textEn: "Mèo sẽ tự về thôi."
+      nextNodeId: n_help_wrong
+      scoreModifiers:
+      - category: ResponseAccuracy
+        value: -8
+        reason: "Nói nhẹ nhõm vô tâm với người đang rất lo, dễ bị coi là thiếu tế nhị"
+      grammarTags: []
+      vocabularyTags: []
+      setFlags: []
+    flagCondition: 
+    flagJumpNodeId: 
+    targetItemId: 
+    targetNpcId: 
+    targetAreaId: 
+  - id: n_help_cheer
+    nodeType: 0
+    nextNodeId: n_help
+    objectiveIdToComplete: 
+    speakerName: Suzuki
+    speakerId: npc_neighbor_2
+    textJa: "ありがとう…。でも、私一人では、ちょっと…。"
+    textReading: "ありがとう…。でも、わたしひとりでは、ちょっと…。"
+    textEn: "Cảm ơn bạn... Nhưng một mình tôi thì hơi... khó."
+    textRomaji: "Arigatou.... Demo, watashi hitori de wa, chotto...."
+    textEnglishIpa: 
+    animationCue: talk
+    voiceClip: {fileID: 0}
+    choices: []
+    flagCondition: 
+    flagJumpNodeId: 
+    targetItemId: 
+    targetNpcId: 
+    targetAreaId: 
+  - id: n_help_wrong
+    nodeType: 0
+    nextNodeId: n_help
+    objectiveIdToComplete: 
+    speakerName: Suzuki
+    speakerId: npc_neighbor_2
+    textJa: "そう…でしょうか。でも、私は、心配です。"
+    textReading: "そう…でしょうか。でも、わたしは、しんぱいです。"
+    textEn: "Vậy... sao. Nhưng tôi thì rất lo."
+    textRomaji: "Sou... deshou ka. Demo, watashi wa, shinpai desu."
+    textEnglishIpa: 
+    animationCue: talk
+    voiceClip: {fileID: 0}
+    choices: []
+    flagCondition: 
+    flagJumpNodeId: 
+    targetItemId: 
+    targetNpcId: 
+    targetAreaId: 
+  - id: n_help_yes
+    nodeType: 0
+    nextNodeId: n_promise
+    objectiveIdToComplete: 
+    speakerName: Suzuki
+    speakerId: npc_neighbor_2
+    textJa: "本当ですか！ありがとうございます、ありがとうございます！"
+    textReading: "ほんとうですか！ありがとうございます、ありがとうございます！"
+    textEn: "Thật sao! Cảm ơn bạn, cảm ơn bạn nhiều lắm!"
+    textRomaji: "Hontou desu ka! Arigatou gozaimasu, arigatou gozaimasu!"
+    textEnglishIpa: 
     animationCue: bow
     voiceClip: {fileID: 0}
     choices: []
+    flagCondition: 
+    flagJumpNodeId: 
     targetItemId: 
+    targetNpcId: 
     targetAreaId: 
-  - id: node_complete
+  - id: n_promise
+    nodeType: 0
+    nextNodeId: 
+    objectiveIdToComplete: obj_help
+    speakerName: Suzuki
+    speakerId: npc_neighbor_2
+    textJa: "ミケを見たら、教えてください。私の家は、あの青い屋根の家です。"
+    textReading: "ミケをみたら、おしえてください。わたしのいえは、あのあおいやねのいえです。"
+    textEn: "Nếu bạn thấy Mike, xin hãy báo cho tôi. Nhà tôi là căn có mái xanh kia."
+    textRomaji: "Mike wo mitara, oshiete kudasai. Watashi no ie wa, ano aoi yane no ie desu."
+    textEnglishIpa: 
+    animationCue: point
+    voiceClip: {fileID: 0}
+    choices:
+    - textJa: "はい、見たら、すぐ教えます。"
+      textEn: "Vâng, nếu thấy tôi sẽ báo ngay ạ."
+      nextNodeId: n_bye
+      scoreModifiers:
+      - category: Grammar
+        value: 10
+        reason: "Hứa hẹn bằng mẫu 〜たら (nếu ... thì) và 教えます"
+      grammarTags:
+      - grammar.n5.tara
+      vocabularyTags:
+      - vocab.n5.oshieru
+      setFlags:
+      - cat.promised
+    - textJa: "はい、たぶん。"
+      textEn: "Vâng, chắc vậy."
+      nextNodeId: n_bye_weak
+      scoreModifiers:
+      - category: ResponseAccuracy
+        value: 2
+        reason: "Trả lời mơ hồ, nghe thiếu chắc chắn khi người ta đang cần giúp"
+      grammarTags: []
+      vocabularyTags: []
+      setFlags: []
+    - textJa: "いいえ、忙しいです。"
+      textEn: "Không, tôi bận."
+      nextNodeId: n_promise_wrong
+      scoreModifiers:
+      - category: ResponseAccuracy
+        value: -8
+        reason: "Từ chối phũ phàng khi vừa nói sẽ giúp tìm mèo"
+      grammarTags: []
+      vocabularyTags: []
+      setFlags: []
+    flagCondition: 
+    flagJumpNodeId: 
+    targetItemId: 
+    targetNpcId: 
+    targetAreaId: 
+  - id: n_bye_weak
+    nodeType: 0
+    nextNodeId: n_recap
+    objectiveIdToComplete: 
+    speakerName: Suzuki
+    speakerId: npc_neighbor_2
+    textJa: "はい…。お願いします。"
+    textReading: "はい…。おねがいします。"
+    textEn: "Vâng... Nhờ bạn nhé."
+    textRomaji: "Hai.... Onegaishimasu."
+    textEnglishIpa: 
+    animationCue: talk
+    voiceClip: {fileID: 0}
+    choices: []
+    flagCondition: 
+    flagJumpNodeId: 
+    targetItemId: 
+    targetNpcId: 
+    targetAreaId: 
+  - id: n_promise_wrong
+    nodeType: 0
+    nextNodeId: n_promise
+    objectiveIdToComplete: 
+    speakerName: Suzuki
+    speakerId: npc_neighbor_2
+    textJa: "え…さっき、探しましょうかと言いましたよね…。"
+    textReading: "え…さっき、さがしましょうかといいましたよね…。"
+    textEn: "Hả... lúc nãy bạn còn nói \"để tôi tìm giúp\" mà..."
+    textRomaji: "E... sakki, sagashimashou ka to iimashita yo ne...."
+    textEnglishIpa: 
+    animationCue: talk
+    voiceClip: {fileID: 0}
+    choices: []
+    flagCondition: 
+    flagJumpNodeId: 
+    targetItemId: 
+    targetNpcId: 
+    targetAreaId: 
+  - id: n_bye
+    nodeType: 0
+    nextNodeId: n_recap
+    objectiveIdToComplete: 
+    speakerName: Suzuki
+    speakerId: npc_neighbor_2
+    textJa: "ありがとうございます。ミケも、きっとうれしいです。"
+    textReading: "ありがとうございます。ミケも、きっとうれしいです。"
+    textEn: "Cảm ơn bạn. Chắc chắn Mike cũng sẽ rất vui."
+    textRomaji: "Arigatou gozaimasu. Mike mo, kitto ureshii desu."
+    textEnglishIpa: 
+    animationCue: bow
+    voiceClip: {fileID: 0}
+    choices: []
+    flagCondition: 
+    flagJumpNodeId: 
+    targetItemId: 
+    targetNpcId: 
+    targetAreaId: 
+  - id: n_recap
+    nodeType: 0
+    nextNodeId: n_complete
+    objectiveIdToComplete: 
+    speakerName: 
+    speakerId: 
+    textJa: "今日のポイント：「どんな〜ですか」「〜ませんでした」「〜ましょうか」。"
+    textReading: "きょうのポイント：「どんな〜ですか」「〜ませんでした」「〜ましょうか」。"
+    textEn: "Tóm tắt: \"donna ~ desu ka\" (~ như thế nào?), \"~ masen deshita\" (đã không ~), \"~ mashou ka\" (để tôi ~ nhé?). Hãy để ý đến ngôi đền và công viên khi đi dạo!"
+    textRomaji: "Kyou no pointo: \"donna ~ desu ka\" \"~ masen deshita\" \"~ mashou ka\"."
+    textEnglishIpa: 
+    animationCue: 
+    voiceClip: {fileID: 0}
+    choices: []
+    flagCondition: 
+    flagJumpNodeId: 
+    targetItemId: 
+    targetNpcId: 
+    targetAreaId: 
+  - id: n_complete
     nodeType: 4
     nextNodeId: 
     objectiveIdToComplete: 
@@ -91,9 +805,13 @@ MonoBehaviour:
     textReading: 
     textEn: 
     textRomaji: 
+    textEnglishIpa: 
     animationCue: 
     voiceClip: {fileID: 0}
     choices: []
+    flagCondition: 
+    flagJumpNodeId: 
     targetItemId: 
+    targetNpcId: 
     targetAreaId: 
-  startNodeId: node_cat_start
+  startNodeId: node_find_suzuki

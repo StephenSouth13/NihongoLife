@@ -75,7 +75,6 @@ namespace NihongoLife.EditorTools
             var root = new GameObject("StationDistrict_Zone");
             root.AddComponent<SceneZoneVisibility>();
             root.AddComponent<StandaloneZoneBootstrap>().Configure("station_entrance");
-            root.AddComponent<StationMetroEnvironment>();
             var travel = root.AddComponent<StationTravelController>();
 
             CreateBlock(root.transform, "StationGround", origin + new Vector3(0f, -0.15f, 0f), new Vector3(34f, 0.3f, 22f), new Color(0.2f, 0.23f, 0.25f));

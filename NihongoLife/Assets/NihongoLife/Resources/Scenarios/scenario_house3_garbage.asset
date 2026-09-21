@@ -13,11 +13,11 @@ MonoBehaviour:
   m_Name: scenario_house3_garbage
   m_EditorClassIdentifier: NihongoLife::NihongoLife.Scenario.ScenarioDefinition
   id: scenario.house3.garbage
-  version: 1
-  titleJa: "\u30B4\u30DF\u306E\u51FA\u3057\u65B9"
-  titleEn: Garbage Sorting Rules
-  descriptionJa: "\u30B4\u30DF\u306E\u51FA\u3057\u65B9\u306B\u3064\u3044\u3066\u8CEA\u554F\u3057\u307E\u3057\u3087\u3046\u3002"
-  descriptionEn: Ask about the garbage disposal rules.
+  version: 2
+  titleJa: "ゴミの出し方"
+  titleEn: "Quy tắc đổ rác của khu phố"
+  descriptionJa: "町内会長の佐藤さんに、ゴミの日と出し方を聞きましょう。"
+  descriptionEn: "Hỏi trưởng khu phố Sato về ngày đổ rác, giờ giấc và điểm tập kết; học cách hỏi và hiểu điều cấm."
   chapterIndex: 3
   questType: community
   giverNpcId: npc_neighbor_3
@@ -38,50 +38,784 @@ MonoBehaviour:
   supportsCoOp: 0
   minPlayers: 1
   maxPlayers: 2
-  learningTargets: []
+  learningTargets:
+  - grammar.n5.wa_itsu_desu_ka
+  - grammar.n5.nai_de_kudasai
+  - grammar.n5.made
+  - vocab.n5.moeru_gomi
+  - vocab.n5.kinyoubi
   objectives:
-  - id: obj_ask_garbage
-    titleJa: "\u30B4\u30DF\u306B\u3064\u3044\u3066\u805E\u304F"
-    titleEn: Ask about garbage
+  - id: obj_meet
+    titleJa: "佐藤さんに会う"
+    titleEn: "Gặp trưởng khu phố Sato"
+    isOptional: 0
+  - id: obj_rules
+    titleJa: "ゴミの日を聞いて覚える"
+    titleEn: "Hỏi và ghi nhớ ngày đổ rác"
+    isOptional: 0
+  - id: obj_promise
+    titleJa: "月曜日の朝に会う約束をする"
+    titleEn: "Hẹn gặp vào sáng thứ Hai"
     isOptional: 0
   nodes:
-  - id: node_garbage_start
+  - id: node_find_sato
+    nodeType: 6
+    nextNodeId: b_tanaka
+    objectiveIdToComplete: obj_meet
+    speakerName: 
+    speakerId: 
+    textJa: 
+    textReading: 
+    textEn: 
+    textRomaji: 
+    textEnglishIpa: 
+    animationCue: 
+    voiceClip: {fileID: 0}
+    choices: []
+    flagCondition: 
+    flagJumpNodeId: 
+    targetItemId: 
+    targetNpcId: npc_neighbor_3
+    targetAreaId: 
+  - id: b_tanaka
+    nodeType: 7
+    nextNodeId: n_open
+    objectiveIdToComplete: 
+    speakerName: 
+    speakerId: 
+    textJa: 
+    textReading: 
+    textEn: 
+    textRomaji: 
+    textEnglishIpa: 
+    animationCue: 
+    voiceClip: {fileID: 0}
+    choices: []
+    flagCondition: "tanaka.friend"
+    flagJumpNodeId: n_tanaka_praise
+    targetItemId: 
+    targetNpcId: 
+    targetAreaId: 
+  - id: n_tanaka_praise
+    nodeType: 0
+    nextNodeId: n_open
+    objectiveIdToComplete: 
+    speakerName: Sato
+    speakerId: npc_neighbor_3
+    textJa: "田中さんから聞きましたよ。礼儀正しい学生さんが来た、と。"
+    textReading: "たなかさんからききましたよ。れいぎただしいがくせいさんがきた、と。"
+    textEn: "Tôi nghe bác Tanaka kể rồi. Bác nói có một học viên rất lễ phép mới đến."
+    textRomaji: "Tanaka-san kara kikimashita yo. Reigi tadashii gakusei-san ga kita, to."
+    textEnglishIpa: 
+    animationCue: talk
+    voiceClip: {fileID: 0}
+    choices: []
+    flagCondition: 
+    flagJumpNodeId: 
+    targetItemId: 
+    targetNpcId: 
+    targetAreaId: 
+  - id: n_open
     nodeType: 0
     nextNodeId: 
     objectiveIdToComplete: 
     speakerName: Sato
     speakerId: npc_neighbor_3
-    textJa: "\u660E\u65E5\u306F\u71C3\u3048\u308B\u30B4\u30DF\u306E\u65E5\u3067\u3059\u3088\u3002"
-    textReading: "\u3042\u3057\u305F\u306F\u3082\u3048\u308B\u30B4\u30DF\u306E\u3072\u3067\u3059\u3088\u3002"
-    textEn: Tomorrow is burnable garbage day.
-    textRomaji: Ashita wa moeru gomi no hi desu yo.
-    animationCue: 
+    textJa: "あなたが、新しい学生さんですね。町のゴミのルールを、説明します。"
+    textReading: "あなたが、あたらしいがくせいさんですね。まちのゴミのルールを、せつめいします。"
+    textEn: "Bạn là học viên mới nhỉ. Tôi sẽ giải thích quy tắc đổ rác của khu phố."
+    textRomaji: "Anata ga, atarashii gakusei-san desu ne. Machi no gomi no ruuru wo, setsumei shimasu."
+    textEnglishIpa: 
+    animationCue: talk
     voiceClip: {fileID: 0}
     choices:
-    - textJa: "\u306F\u3044\u3001\u308F\u304B\u308A\u307E\u3057\u305F\u3002\u3042\u308A\u304C\u3068\u3046\u3054\u3056\u3044\u307E\u3059\u3002"
-      textEn: Yes, I understand. Thank you.
-      nextNodeId: node_garbage_end
-      scoreModifiers: []
+    - textJa: "はい、よろしくお願いします。"
+      textEn: "Vâng, xin nhờ bác chỉ bảo ạ."
+      nextNodeId: n_q_when
+      scoreModifiers:
+      - category: Vocabulary
+        value: 10
+        reason: "Mở đầu lịch sự với người phụ trách khu phố bằng よろしくお願いします"
+      grammarTags: []
+      vocabularyTags:
+      - vocab.n5.yoroshiku
+      setFlags: []
+    - textJa: "はい。"
+      textEn: "Vâng."
+      nextNodeId: n_q_when
+      scoreModifiers:
+      - category: ResponseAccuracy
+        value: 3
+        reason: "Đáp được nhưng hơi cộc với một người lớn tuổi có vai trò quan trọng"
       grammarTags: []
       vocabularyTags: []
+      setFlags: []
+    - textJa: "ルールは嫌いです。"
+      textEn: "Cháu không thích quy tắc."
+      nextNodeId: n_open_wrong
+      scoreModifiers:
+      - category: ResponseAccuracy
+        value: -8
+        reason: "Nói thẳng điều tiêu cực ngay lúc đầu, gây ấn tượng xấu với trưởng khu phố"
+      grammarTags: []
+      vocabularyTags: []
+      setFlags: []
+    flagCondition: 
+    flagJumpNodeId: 
     targetItemId: 
+    targetNpcId: 
     targetAreaId: 
-  - id: node_garbage_end
+  - id: n_open_wrong
     nodeType: 0
-    nextNodeId: node_complete
-    objectiveIdToComplete: obj_ask_garbage
+    nextNodeId: n_open
+    objectiveIdToComplete: 
     speakerName: Sato
     speakerId: npc_neighbor_3
-    textJa: "\u3069\u3046\u3044\u305F\u3057\u307E\u3057\u3066\u3002"
-    textReading: "\u3069\u3046\u3044\u305F\u3057\u307E\u3057\u3066\u3002"
-    textEn: You're welcome.
-    textRomaji: Douitashimashite.
+    textJa: "…そうですか。でも、ルールは、みんなのためです。もう一度、聞いてください。"
+    textReading: "…そうですか。でも、ルールは、みんなのためです。もういちど、きいてください。"
+    textEn: "...Vậy à. Nhưng quy tắc là vì mọi người. Mời bạn nghe lại cho."
+    textRomaji: "...Sou desu ka. Demo, ruuru wa, minna no tame desu. Mou ichido, kiite kudasai."
+    textEnglishIpa: 
+    animationCue: talk
+    voiceClip: {fileID: 0}
+    choices: []
+    flagCondition: 
+    flagJumpNodeId: 
+    targetItemId: 
+    targetNpcId: 
+    targetAreaId: 
+  - id: n_q_when
+    nodeType: 0
+    nextNodeId: 
+    objectiveIdToComplete: 
+    speakerName: Sato
+    speakerId: npc_neighbor_3
+    textJa: "ゴミについて、質問がありますか。"
+    textReading: "ゴミについて、しつもんがありますか。"
+    textEn: "Bạn có câu hỏi nào về việc đổ rác không?"
+    textRomaji: "Gomi ni tsuite, shitsumon ga arimasu ka?"
+    textEnglishIpa: 
+    animationCue: talk
+    voiceClip: {fileID: 0}
+    choices:
+    - textJa: "燃えるゴミは、いつですか。"
+      textEn: "Rác cháy được thì đổ khi nào ạ?"
+      nextNodeId: n_when_answer
+      scoreModifiers:
+      - category: Grammar
+        value: 10
+        reason: "Hỏi lịch bằng mẫu 〜はいつですか (khi nào)"
+      grammarTags:
+      - grammar.n5.wa_itsu_desu_ka
+      vocabularyTags:
+      - vocab.n5.moeru_gomi
+      - vocab.n5.itsu
+      setFlags: []
+    - textJa: "ゴミ、いつ？"
+      textEn: "Rác, khi nào?"
+      nextNodeId: n_when_casual
+      scoreModifiers:
+      - category: ResponseAccuracy
+        value: 2
+        reason: "Hiểu được nhưng quá cộc lốc với trưởng khu phố, và chưa nói rõ loại rác"
+      grammarTags:
+      - grammar.n5.wa_itsu_desu_ka
+      vocabularyTags:
+      - vocab.n5.gomi
+      setFlags: []
+    - textJa: "ゴミはどこですか。"
+      textEn: "Rác ở đâu ạ?"
+      nextNodeId: n_when_wrong
+      scoreModifiers:
+      - category: Grammar
+        value: -8
+        reason: "Dùng どこ (ở đâu) trong khi muốn hỏi ngày; ngày phải dùng いつ"
+      grammarTags: []
+      vocabularyTags: []
+      setFlags: []
+    flagCondition: 
+    flagJumpNodeId: 
+    targetItemId: 
+    targetNpcId: 
+    targetAreaId: 
+  - id: n_when_casual
+    nodeType: 0
+    nextNodeId: n_q_when
+    objectiveIdToComplete: 
+    speakerName: Sato
+    speakerId: npc_neighbor_3
+    textJa: "「燃えるゴミは、いつですか」と聞きましょう。種類も言ってくださいね。"
+    textReading: "「もえるゴミは、いつですか」とききましょう。しゅるいもいってくださいね。"
+    textEn: "Hãy hỏi là \"moeru gomi wa, itsu desu ka\". Nhớ nói rõ cả loại rác nữa nhé."
+    textRomaji: "\"Moeru gomi wa, itsu desu ka\" to kikimashou. Shurui mo itte kudasai ne."
+    textEnglishIpa: 
+    animationCue: talk
+    voiceClip: {fileID: 0}
+    choices: []
+    flagCondition: 
+    flagJumpNodeId: 
+    targetItemId: 
+    targetNpcId: 
+    targetAreaId: 
+  - id: n_when_wrong
+    nodeType: 0
+    nextNodeId: n_q_when
+    objectiveIdToComplete: 
+    speakerName: Sato
+    speakerId: npc_neighbor_3
+    textJa: "場所ではなくて、日です。「いつ」ですよ。もう一度。"
+    textReading: "ばしょではなくて、ひです。「いつ」ですよ。もういちど。"
+    textEn: "Không phải hỏi nơi chốn mà là hỏi ngày. Dùng \"itsu\" nhé. Bạn hỏi lại đi."
+    textRomaji: "Basho dewa nakute, hi desu. \"Itsu\" desu yo. Mou ichido."
+    textEnglishIpa: 
     animationCue: point
     voiceClip: {fileID: 0}
     choices: []
+    flagCondition: 
+    flagJumpNodeId: 
     targetItemId: 
+    targetNpcId: 
     targetAreaId: 
-  - id: node_complete
+  - id: n_when_answer
+    nodeType: 0
+    nextNodeId: n_check_day
+    objectiveIdToComplete: 
+    speakerName: Sato
+    speakerId: npc_neighbor_3
+    textJa: "燃えるゴミは、月曜日と木曜日です。ペットボトルは、金曜日です。"
+    textReading: "もえるゴミは、げつようびともくようびです。ペットボトルは、きんようびです。"
+    textEn: "Rác cháy được là thứ Hai và thứ Năm. Chai nhựa là thứ Sáu."
+    textRomaji: "Moeru gomi wa, getsuyoubi to mokuyoubi desu. Pettobotoru wa, kinyoubi desu."
+    textEnglishIpa: 
+    animationCue: talk
+    voiceClip: {fileID: 0}
+    choices: []
+    flagCondition: 
+    flagJumpNodeId: 
+    targetItemId: 
+    targetNpcId: 
+    targetAreaId: 
+  - id: n_check_day
+    nodeType: 0
+    nextNodeId: 
+    objectiveIdToComplete: obj_rules
+    speakerName: Sato
+    speakerId: npc_neighbor_3
+    textJa: "では、ペットボトルは、何曜日ですか。"
+    textReading: "では、ペットボトルは、なんようびですか。"
+    textEn: "Vậy chai nhựa thì đổ vào thứ mấy?"
+    textRomaji: "Dewa, pettobotoru wa, nan youbi desu ka?"
+    textEnglishIpa: 
+    animationCue: talk
+    voiceClip: {fileID: 0}
+    choices:
+    - textJa: "金曜日です。"
+      textEn: "Là thứ Sáu ạ."
+      nextNodeId: n_q_time
+      scoreModifiers:
+      - category: Vocabulary
+        value: 10
+        reason: "Nhớ đúng thứ trong tuần: 金曜日 (thứ Sáu)"
+      grammarTags: []
+      vocabularyTags:
+      - vocab.n5.kinyoubi
+      - vocab.n5.pettobotoru
+      setFlags:
+      - garbage.rules_known
+    - textJa: "木曜日です。"
+      textEn: "Là thứ Năm ạ."
+      nextNodeId: n_day_wrong
+      scoreModifiers:
+      - category: Vocabulary
+        value: -8
+        reason: "Nhầm 木曜日 (thứ Năm, ngày đổ rác cháy được) với 金曜日 (thứ Sáu)"
+      grammarTags: []
+      vocabularyTags: []
+      setFlags: []
+    - textJa: "もう一度お願いします。"
+      textEn: "Phiền bác nói lại một lần nữa ạ."
+      nextNodeId: n_day_repeat
+      scoreModifiers:
+      - category: ResponseAccuracy
+        value: 8
+        reason: "Xin nghe lại lịch sự khi chưa nhớ rõ"
+      grammarTags: []
+      vocabularyTags:
+      - vocab.n5.mou_ichido
+      setFlags: []
+    flagCondition: 
+    flagJumpNodeId: 
+    targetItemId: 
+    targetNpcId: 
+    targetAreaId: 
+  - id: n_day_wrong
+    nodeType: 0
+    nextNodeId: n_check_day
+    objectiveIdToComplete: 
+    speakerName: Sato
+    speakerId: npc_neighbor_3
+    textJa: "木曜日は、燃えるゴミです。ペットボトルは、金曜日ですよ。"
+    textReading: "もくようびは、もえるゴミです。ペットボトルは、きんようびですよ。"
+    textEn: "Thứ Năm là rác cháy được. Chai nhựa là thứ Sáu nhé."
+    textRomaji: "Mokuyoubi wa, moeru gomi desu. Pettobotoru wa, kinyoubi desu yo."
+    textEnglishIpa: 
+    animationCue: point
+    voiceClip: {fileID: 0}
+    choices: []
+    flagCondition: 
+    flagJumpNodeId: 
+    targetItemId: 
+    targetNpcId: 
+    targetAreaId: 
+  - id: n_day_repeat
+    nodeType: 0
+    nextNodeId: n_check_day
+    objectiveIdToComplete: 
+    speakerName: Sato
+    speakerId: npc_neighbor_3
+    textJa: "はい。燃えるゴミは月曜日と木曜日。ペットボトルは金曜日です。"
+    textReading: "はい。もえるゴミはげつようびともくようび。ペットボトルはきんようびです。"
+    textEn: "Vâng. Rác cháy được thứ Hai và thứ Năm. Chai nhựa thứ Sáu."
+    textRomaji: "Hai. Moeru gomi wa getsuyoubi to mokuyoubi. Pettobotoru wa kinyoubi desu."
+    textEnglishIpa: 
+    animationCue: point
+    voiceClip: {fileID: 0}
+    choices: []
+    flagCondition: 
+    flagJumpNodeId: 
+    targetItemId: 
+    targetNpcId: 
+    targetAreaId: 
+  - id: n_q_time
+    nodeType: 0
+    nextNodeId: 
+    objectiveIdToComplete: 
+    speakerName: Sato
+    speakerId: npc_neighbor_3
+    textJa: "ゴミは、朝八時までに出してください。"
+    textReading: "ゴミは、あさはちじまでにだしてください。"
+    textEn: "Rác thì hãy đem ra trước tám giờ sáng."
+    textRomaji: "Gomi wa, asa hachiji made ni dashite kudasai."
+    textEnglishIpa: 
+    animationCue: talk
+    voiceClip: {fileID: 0}
+    choices:
+    - textJa: "朝八時までですね。分かりました。"
+      textEn: "Trước tám giờ sáng nhỉ. Cháu hiểu rồi ạ."
+      nextNodeId: n_place
+      scoreModifiers:
+      - category: Vocabulary
+        value: 10
+        reason: "Xác nhận thời hạn bằng 〜までですね"
+      grammarTags:
+      - grammar.n5.made
+      vocabularyTags:
+      - vocab.n5.made
+      - vocab.n5.hachiji
+      setFlags: []
+    - textJa: "夜に出してもいいですか。"
+      textEn: "Cháu đem ra vào ban đêm có được không ạ?"
+      nextNodeId: n_night_no
+      scoreModifiers:
+      - category: Grammar
+        value: 4
+        reason: "Hỏi xin phép đúng mẫu 〜てもいいですか; đây là câu hỏi hợp lý dù câu trả lời sẽ là không"
+      grammarTags:
+      - grammar.n5.te_mo_ii_desu_ka
+      vocabularyTags:
+      - vocab.n5.yoru
+      setFlags:
+      - sato.asked_night
+    - textJa: "夜に出します。大丈夫です。"
+      textEn: "Cháu sẽ đem ra ban đêm. Không sao đâu ạ."
+      nextNodeId: n_night_stern
+      scoreModifiers:
+      - category: ResponseAccuracy
+        value: -10
+        reason: "Tự quyết định phá quy tắc thay vì hỏi ý kiến người phụ trách"
+      grammarTags: []
+      vocabularyTags: []
+      setFlags:
+      - sato.stern
+    flagCondition: 
+    flagJumpNodeId: 
+    targetItemId: 
+    targetNpcId: 
+    targetAreaId: 
+  - id: n_night_no
+    nodeType: 0
+    nextNodeId: n_q_time_ok
+    objectiveIdToComplete: 
+    speakerName: Sato
+    speakerId: npc_neighbor_3
+    textJa: "いいえ。夜に出さないでください。カラスが来ますから。"
+    textReading: "いいえ。よるにださないでください。カラスがきますから。"
+    textEn: "Không được đâu. Xin đừng đem rác ra vào ban đêm. Vì quạ sẽ đến."
+    textRomaji: "Iie. Yoru ni dasanai de kudasai. Karasu ga kimasu kara."
+    textEnglishIpa: 
+    animationCue: talk
+    voiceClip: {fileID: 0}
+    choices: []
+    flagCondition: 
+    flagJumpNodeId: 
+    targetItemId: 
+    targetNpcId: 
+    targetAreaId: 
+  - id: n_night_stern
+    nodeType: 0
+    nextNodeId: n_q_time_ok
+    objectiveIdToComplete: 
+    speakerName: Sato
+    speakerId: npc_neighbor_3
+    textJa: "大丈夫ではありません！夜に出さないでください。カラスが来て、町がよごれます。"
+    textReading: "だいじょうぶではありません！よるにださないでください。カラスがきて、まちがよごれます。"
+    textEn: "Không ổn đâu! Xin đừng đem rác ra ban đêm. Quạ sẽ đến làm bẩn cả khu phố."
+    textRomaji: "Daijoubu dewa arimasen! Yoru ni dasanai de kudasai. Karasu ga kite, machi ga yogoremasu."
+    textEnglishIpa: 
+    animationCue: point
+    voiceClip: {fileID: 0}
+    choices: []
+    flagCondition: 
+    flagJumpNodeId: 
+    targetItemId: 
+    targetNpcId: 
+    targetAreaId: 
+  - id: n_q_time_ok
+    nodeType: 0
+    nextNodeId: 
+    objectiveIdToComplete: 
+    speakerName: Sato
+    speakerId: npc_neighbor_3
+    textJa: "もう一度、聞きます。ゴミは、何時までに出しますか。"
+    textReading: "もういちど、ききます。ゴミは、なんじまでにだしますか。"
+    textEn: "Tôi hỏi lại nhé. Rác thì phải đem ra trước mấy giờ?"
+    textRomaji: "Mou ichido, kikimasu. Gomi wa, nanji made ni dashimasu ka?"
+    textEnglishIpa: 
+    animationCue: talk
+    voiceClip: {fileID: 0}
+    choices:
+    - textJa: "朝八時までです。"
+      textEn: "Trước tám giờ sáng ạ."
+      nextNodeId: n_place
+      scoreModifiers:
+      - category: Vocabulary
+        value: 10
+        reason: "Nhắc lại đúng giờ hạn chót: 朝八時まで"
+      grammarTags:
+      - grammar.n5.made
+      vocabularyTags:
+      - vocab.n5.made
+      - vocab.n5.hachiji
+      setFlags: []
+    - textJa: "朝八時からです。"
+      textEn: "Từ tám giờ sáng ạ."
+      nextNodeId: n_time_wrong
+      scoreModifiers:
+      - category: Grammar
+        value: -8
+        reason: "Nhầm から (từ) với まで (đến/trước): hạn chót là trước 8 giờ, không phải sau 8 giờ"
+      grammarTags: []
+      vocabularyTags: []
+      setFlags: []
+    flagCondition: 
+    flagJumpNodeId: 
+    targetItemId: 
+    targetNpcId: 
+    targetAreaId: 
+  - id: n_time_wrong
+    nodeType: 0
+    nextNodeId: n_q_time_ok
+    objectiveIdToComplete: 
+    speakerName: Sato
+    speakerId: npc_neighbor_3
+    textJa: "「から」ではありません。「まで」です。八時までに、出してください。"
+    textReading: "「から」ではありません。「まで」です。はちじまでに、だしてください。"
+    textEn: "Không phải \"kara\" mà là \"made\". Hãy đem ra trước tám giờ."
+    textRomaji: "\"Kara\" dewa arimasen. \"Made\" desu. Hachiji made ni, dashite kudasai."
+    textEnglishIpa: 
+    animationCue: point
+    voiceClip: {fileID: 0}
+    choices: []
+    flagCondition: 
+    flagJumpNodeId: 
+    targetItemId: 
+    targetNpcId: 
+    targetAreaId: 
+  - id: n_place
+    nodeType: 0
+    nextNodeId: 
+    objectiveIdToComplete: 
+    speakerName: Sato
+    speakerId: npc_neighbor_3
+    textJa: "ゴミは、あの角の、ゴミ置き場に出してください。ネットをかけるのも、忘れないでくださいね。"
+    textReading: "ゴミは、あのかどの、ゴミおきばにだしてください。ネットをかけるのも、わすれないでくださいね。"
+    textEn: "Rác thì hãy đem ra điểm tập kết ở góc đường kia. Đừng quên phủ tấm lưới lên nhé."
+    textRomaji: "Gomi wa, ano kado no, gomi okiba ni dashite kudasai. Netto wo kakeru no mo, wasurenai de kudasai ne."
+    textEnglishIpa: 
+    animationCue: point
+    voiceClip: {fileID: 0}
+    choices:
+    - textJa: "はい、忘れません。"
+      textEn: "Vâng, cháu sẽ không quên ạ."
+      nextNodeId: n_why
+      scoreModifiers:
+      - category: Grammar
+        value: 10
+        reason: "Đáp lại 〜ないでください bằng câu hứa 忘れません"
+      grammarTags:
+      - grammar.n5.nai_de_kudasai
+      vocabularyTags:
+      - vocab.n5.wasureru
+      setFlags: []
+    - textJa: "ネットはどこですか。"
+      textEn: "Tấm lưới ở đâu ạ?"
+      nextNodeId: n_net_answer
+      scoreModifiers:
+      - category: Grammar
+        value: 8
+        reason: "Hỏi đúng mẫu 〜はどこですか để biết chỗ lấy lưới"
+      grammarTags:
+      - grammar.n5.wa_doko_desu_ka
+      vocabularyTags:
+      - vocab.n5.netto
+      setFlags: []
+    - textJa: "ネットは嫌いです。"
+      textEn: "Cháu không thích tấm lưới."
+      nextNodeId: n_place_wrong
+      scoreModifiers:
+      - category: ResponseAccuracy
+        value: -8
+        reason: "Nói điều tiêu cực không cần thiết về quy tắc được nhờ"
+      grammarTags: []
+      vocabularyTags: []
+      setFlags: []
+    flagCondition: 
+    flagJumpNodeId: 
+    targetItemId: 
+    targetNpcId: 
+    targetAreaId: 
+  - id: n_net_answer
+    nodeType: 0
+    nextNodeId: n_why
+    objectiveIdToComplete: 
+    speakerName: Sato
+    speakerId: npc_neighbor_3
+    textJa: "ゴミ置き場の横に、緑のネットがあります。それを使ってください。"
+    textReading: "ゴミおきばのよこに、みどりのネットがあります。それをつかってください。"
+    textEn: "Bên cạnh điểm tập kết có tấm lưới màu xanh lá. Hãy dùng nó nhé."
+    textRomaji: "Gomi okiba no yoko ni, midori no netto ga arimasu. Sore wo tsukatte kudasai."
+    textEnglishIpa: 
+    animationCue: point
+    voiceClip: {fileID: 0}
+    choices: []
+    flagCondition: 
+    flagJumpNodeId: 
+    targetItemId: 
+    targetNpcId: 
+    targetAreaId: 
+  - id: n_place_wrong
+    nodeType: 0
+    nextNodeId: n_place
+    objectiveIdToComplete: 
+    speakerName: Sato
+    speakerId: npc_neighbor_3
+    textJa: "ネットがないと、カラスがゴミを食べます。だいじな物です。"
+    textReading: "ネットがないと、カラスがゴミをたべます。だいじなものです。"
+    textEn: "Nếu không có lưới, quạ sẽ bới rác ra ăn. Nó quan trọng lắm."
+    textRomaji: "Netto ga nai to, karasu ga gomi wo tabemasu. Daiji na mono desu."
+    textEnglishIpa: 
+    animationCue: talk
+    voiceClip: {fileID: 0}
+    choices: []
+    flagCondition: 
+    flagJumpNodeId: 
+    targetItemId: 
+    targetNpcId: 
+    targetAreaId: 
+  - id: n_why
+    nodeType: 0
+    nextNodeId: 
+    objectiveIdToComplete: 
+    speakerName: Sato
+    speakerId: npc_neighbor_3
+    textJa: "ルールは、みんなのためです。町がきれいだと、みんなが気持ちいいでしょう？"
+    textReading: "ルールは、みんなのためです。まちがきれいだと、みんながきもちいいでしょう？"
+    textEn: "Quy tắc là vì mọi người. Khi khu phố sạch sẽ, ai cũng thấy dễ chịu, phải không?"
+    textRomaji: "Ruuru wa, minna no tame desu. Machi ga kirei da to, minna ga kimochi ii deshou?"
+    textEnglishIpa: 
+    animationCue: talk
+    voiceClip: {fileID: 0}
+    choices:
+    - textJa: "はい、きれいな町は、気持ちいいです。"
+      textEn: "Vâng, khu phố sạch thì thấy dễ chịu ạ."
+      nextNodeId: n_promise
+      scoreModifiers:
+      - category: ResponseAccuracy
+        value: 10
+        reason: "Đồng tình và diễn đạt lại bằng lời của mình: きれいな町は、気持ちいいです"
+      grammarTags:
+      - grammar.n5.na_adj
+      vocabularyTags:
+      - vocab.n5.kirei
+      - vocab.n5.kimochi_ii
+      setFlags:
+      - sato.respect
+    - textJa: "分かりました。"
+      textEn: "Cháu hiểu rồi ạ."
+      nextNodeId: n_promise
+      scoreModifiers:
+      - category: ResponseAccuracy
+        value: 3
+        reason: "Đáp được nhưng chưa thể hiện sự đồng cảm với lý do của bác"
+      grammarTags: []
+      vocabularyTags: []
+      setFlags: []
+    - textJa: "面倒くさいです。"
+      textEn: "Phiền phức quá ạ."
+      nextNodeId: n_why_wrong
+      scoreModifiers:
+      - category: ResponseAccuracy
+        value: -8
+        reason: "Than phiền thẳng với trưởng khu phố, rất bất lịch sự"
+      grammarTags: []
+      vocabularyTags: []
+      setFlags:
+      - sato.stern
+    flagCondition: 
+    flagJumpNodeId: 
+    targetItemId: 
+    targetNpcId: 
+    targetAreaId: 
+  - id: n_why_wrong
+    nodeType: 0
+    nextNodeId: n_why
+    objectiveIdToComplete: 
+    speakerName: Sato
+    speakerId: npc_neighbor_3
+    textJa: "…面倒でも、大切です。もう一度、考えてください。"
+    textReading: "…めんどうでも、たいせつです。もういちど、かんがえてください。"
+    textEn: "...Dù phiền phức thì nó vẫn quan trọng. Xin bạn suy nghĩ lại."
+    textRomaji: "...Mendou demo, taisetsu desu. Mou ichido, kangaete kudasai."
+    textEnglishIpa: 
+    animationCue: talk
+    voiceClip: {fileID: 0}
+    choices: []
+    flagCondition: 
+    flagJumpNodeId: 
+    targetItemId: 
+    targetNpcId: 
+    targetAreaId: 
+  - id: n_promise
+    nodeType: 0
+    nextNodeId: 
+    objectiveIdToComplete: obj_promise
+    speakerName: Sato
+    speakerId: npc_neighbor_3
+    textJa: "では、来週の月曜日の朝、ゴミ置き場で会いましょう。いっしょにゴミを出しましょう。"
+    textReading: "では、らいしゅうのげつようびのあさ、ゴミおきばであいましょう。いっしょにゴミをだしましょう。"
+    textEn: "Vậy thì sáng thứ Hai tuần sau, chúng ta gặp nhau ở điểm tập kết rác. Cùng nhau đem rác ra nhé."
+    textRomaji: "Dewa, raishuu no getsuyoubi no asa, gomi okiba de aimashou. Issho ni gomi wo dashimashou."
+    textEnglishIpa: 
+    animationCue: talk
+    voiceClip: {fileID: 0}
+    choices:
+    - textJa: "はい、月曜日の朝ですね。よろしくお願いします。"
+      textEn: "Vâng, sáng thứ Hai nhỉ. Xin nhờ bác chỉ bảo ạ."
+      nextNodeId: n_bye
+      scoreModifiers:
+      - category: Grammar
+        value: 10
+        reason: "Xác nhận hẹn bằng 〜ですね và kết thúc lịch sự"
+      grammarTags:
+      - grammar.n5.desu_ne
+      vocabularyTags:
+      - vocab.n5.getsuyoubi
+      - vocab.n5.yoroshiku
+      setFlags:
+      - sato.appointment
+    - textJa: "はい、行きます。"
+      textEn: "Vâng, cháu sẽ đến ạ."
+      nextNodeId: n_bye
+      scoreModifiers:
+      - category: ResponseAccuracy
+        value: 4
+        reason: "Đúng ý nhưng chưa nhắc lại thời gian để xác nhận"
+      grammarTags: []
+      vocabularyTags: []
+      setFlags: []
+    - textJa: "月曜日は忙しいです。"
+      textEn: "Thứ Hai cháu bận ạ."
+      nextNodeId: n_promise_wrong
+      scoreModifiers:
+      - category: ResponseAccuracy
+        value: -6
+        reason: "Từ chối thẳng mà không đề xuất thời gian khác, hơi thiếu tế nhị"
+      grammarTags: []
+      vocabularyTags: []
+      setFlags: []
+    flagCondition: 
+    flagJumpNodeId: 
+    targetItemId: 
+    targetNpcId: 
+    targetAreaId: 
+  - id: n_promise_wrong
+    nodeType: 0
+    nextNodeId: n_promise
+    objectiveIdToComplete: 
+    speakerName: Sato
+    speakerId: npc_neighbor_3
+    textJa: "そうですか。では、いつがいいですか。…でも、月曜日の朝は、ゴミの日です。がんばりましょう。"
+    textReading: "そうですか。では、いつがいいですか。…でも、げつようびのあさは、ゴミのひです。がんばりましょう。"
+    textEn: "Vậy à. Thế khi nào thì được? ...Nhưng sáng thứ Hai là ngày đổ rác. Mình cố gắng nhé."
+    textRomaji: "Sou desu ka. Dewa, itsu ga ii desu ka. ...Demo, getsuyoubi no asa wa, gomi no hi desu. Ganbarimashou."
+    textEnglishIpa: 
+    animationCue: talk
+    voiceClip: {fileID: 0}
+    choices: []
+    flagCondition: 
+    flagJumpNodeId: 
+    targetItemId: 
+    targetNpcId: 
+    targetAreaId: 
+  - id: n_bye
+    nodeType: 0
+    nextNodeId: n_recap
+    objectiveIdToComplete: 
+    speakerName: Sato
+    speakerId: npc_neighbor_3
+    textJa: "はい、お願いします。町のこと、何でも聞いてくださいね。"
+    textReading: "はい、おねがいします。まちのこと、なんでもきいてくださいね。"
+    textEn: "Vâng, nhờ bạn nhé. Về khu phố này, cứ hỏi tôi bất cứ điều gì."
+    textRomaji: "Hai, onegaishimasu. Machi no koto, nan demo kiite kudasai ne."
+    textEnglishIpa: 
+    animationCue: bow
+    voiceClip: {fileID: 0}
+    choices: []
+    flagCondition: 
+    flagJumpNodeId: 
+    targetItemId: 
+    targetNpcId: 
+    targetAreaId: 
+  - id: n_recap
+    nodeType: 0
+    nextNodeId: n_complete
+    objectiveIdToComplete: 
+    speakerName: 
+    speakerId: 
+    textJa: "今日のポイント：「〜はいつですか」「〜ないでください」「〜まで」。"
+    textReading: "きょうのポイント：「〜はいつですか」「〜ないでください」「〜まで」。"
+    textEn: "Tóm tắt: \"~ wa itsu desu ka\" (~ khi nào?), \"~ nai de kudasai\" (xin đừng ~), \"~ made\" (đến/trước ~). Nhớ: rác cháy được thứ Hai và thứ Năm, chai nhựa thứ Sáu, đem ra trước 8 giờ sáng!"
+    textRomaji: "Kyou no pointo: \"~ wa itsu desu ka\" \"~ nai de kudasai\" \"~ made\"."
+    textEnglishIpa: 
+    animationCue: 
+    voiceClip: {fileID: 0}
+    choices: []
+    flagCondition: 
+    flagJumpNodeId: 
+    targetItemId: 
+    targetNpcId: 
+    targetAreaId: 
+  - id: n_complete
     nodeType: 4
     nextNodeId: 
     objectiveIdToComplete: 
@@ -91,9 +825,13 @@ MonoBehaviour:
     textReading: 
     textEn: 
     textRomaji: 
+    textEnglishIpa: 
     animationCue: 
     voiceClip: {fileID: 0}
     choices: []
+    flagCondition: 
+    flagJumpNodeId: 
     targetItemId: 
+    targetNpcId: 
     targetAreaId: 
-  startNodeId: node_garbage_start
+  startNodeId: node_find_sato

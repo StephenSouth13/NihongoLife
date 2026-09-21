@@ -13,11 +13,11 @@ MonoBehaviour:
   m_Name: scenario_station_buy_ticket
   m_EditorClassIdentifier: NihongoLife::NihongoLife.Scenario.ScenarioDefinition
   id: scenario.station.buy_ticket
-  version: 1
-  titleJa: 駅で切符を買う
-  titleEn: Mua vé ở nhà ga
-  descriptionJa: 駅員さんに行き先を伝えて、切符かICカードで改札を通りましょう。
-  descriptionEn: Hỏi đường, chọn cách thanh toán và tìm đúng sân ga tại nhà ga.
+  version: 2
+  titleJa: "駅で切符を買う"
+  titleEn: "Mua vé và đi tàu ở ga Hibari"
+  descriptionJa: "ひばり駅で切符を買って、ミナト駅まで行きましょう。駅員さんに聞いて、ホームでアナウンスを聞き取ります。"
+  descriptionEn: "Mua vé tại ga Hibari để đến Minato: nói nơi muốn đến, đọc giá vé, dùng máy bán vé, hỏi đường ray, nghe thông báo và cư xử đúng trên tàu."
   chapterIndex: 4
   questType: main
   giverNpcId: npc_station_staff
@@ -39,307 +39,889 @@ MonoBehaviour:
   minPlayers: 1
   maxPlayers: 2
   learningTargets:
-  - grammar.n5.made_onegaishimasu
-  - grammar.n5.kaimasu
-  - grammar.n5.tsukaimasu
+  - grammar.n5.tai_desu
+  - grammar.n5.nan_ban_sen
+  - grammar.n5.mazu_sorekara
+  - vocab.n5.densha
   - vocab.n5.kippu
-  - vocab.n5.ic_card
-  - vocab.n5.bansen
   objectives:
-  - id: obj_arrive_station
-    titleJa: 駅に着く
-    titleEn: Đến nhà ga
+  - id: obj_arrive
+    titleJa: "駅に着く"
+    titleEn: "Đến nhà ga"
     isOptional: 0
-  - id: obj_ask_direction
-    titleJa: 行き先を伝える
-    titleEn: Nói điểm đến
+  - id: obj_ask
+    titleJa: "駅員さんに行き先を伝える"
+    titleEn: "Nói với nhân viên nhà ga nơi bạn muốn đến"
     isOptional: 0
-  - id: obj_choose_payment
-    titleJa: 支払い方法を選ぶ
-    titleEn: Chọn cách thanh toán
+  - id: obj_ticket
+    titleJa: "券売機で切符を買う"
+    titleEn: "Mua vé ở máy bán vé"
     isOptional: 0
-  - id: obj_find_platform
-    titleJa: 番線を確認する
-    titleEn: Xác nhận đúng sân ga
+  - id: obj_platform
+    titleJa: "ホームを確認する"
+    titleEn: "Xác nhận đúng đường ray"
+    isOptional: 0
+  - id: obj_board
+    titleJa: "電車に乗ってミナト駅に着く"
+    titleEn: "Lên tàu và đến ga Minato"
     isOptional: 0
   nodes:
-  - id: node_station_start
-    nodeType: 3
-    nextNodeId: node_ask_direction
-    objectiveIdToComplete: obj_arrive_station
-    speakerName:
-    speakerId:
-    textJa:
-    textReading:
-    textEn:
-    textRomaji:
-    textEnglishIpa:
-    animationCue:
+  - id: n_arrive
+    nodeType: 0
+    nextNodeId: n_counter
+    objectiveIdToComplete: obj_arrive
+    speakerName: 
+    speakerId: 
+    textJa: "ひばり駅です。今日は、電車に乗って、ミナト駅まで海を見に行きます。"
+    textReading: "ひばりえきです。きょうは、でんしゃにのって、ミナトえきまでうみをみにいきます。"
+    textEn: "Ga Hibari. Hôm nay bạn sẽ đi tàu đến ga Minato để ngắm biển."
+    textRomaji: "Hibari eki desu. Kyou wa, densha ni notte, Minato eki made umi wo mi ni ikimasu."
+    textEnglishIpa: 
+    animationCue: 
     voiceClip: {fileID: 0}
     choices: []
-    targetItemId:
-    targetNpcId:
-    targetAreaId: station_entrance
-  - id: node_ask_direction
+    flagCondition: 
+    flagJumpNodeId: 
+    targetItemId: 
+    targetNpcId: 
+    targetAreaId: 
+  - id: n_counter
     nodeType: 0
-    nextNodeId:
-    objectiveIdToComplete:
+    nextNodeId: 
+    objectiveIdToComplete: 
     speakerName: Kimura
     speakerId: npc_station_staff
-    textJa: いらっしゃいませ。今日はどちらまでですか？
-    textReading: いらっしゃいませ。きょうはどちらまでですか？
-    textEn: Xin chào quý khách. Hôm nay quý khách đi đến đâu ạ?
-    textRomaji: Irasshaimase. Kyou wa dochira made desu ka?
-    textEnglishIpa:
+    textJa: "いらっしゃいませ。ご案内しましょうか。"
+    textReading: "いらっしゃいませ。ごあんないしましょうか。"
+    textEn: "Xin chào quý khách. Tôi hướng dẫn giúp quý khách nhé?"
+    textRomaji: "Irasshaimase. Goannai shimashou ka."
+    textEnglishIpa: 
     animationCue: talk
     voiceClip: {fileID: 0}
     choices:
-    - textJa: 渋谷まで、お願いします。
-      textEn: Cho tôi đến Shibuya.
-      nextNodeId: node_fare_shibuya
+    - textJa: "ミナト駅へ行きたいです。"
+      textEn: "Tôi muốn đến ga Minato ạ."
+      nextNodeId: n_fare
       scoreModifiers:
-      - category: Vocabulary
-        value: 10
-        reason: Dùng đúng tên ga đến
       - category: Grammar
         value: 10
-        reason: Dùng đúng mẫu 〜までお願いします
-      grammarTags: []
-      vocabularyTags: []
-    - textJa: 新宿までです。
-      textEn: Tôi đi đến Shinjuku.
-      nextNodeId: node_fare_shinjuku
-      scoreModifiers:
-      - category: Vocabulary
-        value: 10
-        reason: Dùng đúng tên ga đến
-      - category: Grammar
-        value: 8
-        reason: Câu trả lời rõ ràng, đúng ngữ pháp
-      grammarTags: []
-      vocabularyTags: []
-    - textJa: 駅。
-      textEn: Nhà ga.
-      nextNodeId: node_ask_direction_hint
+        reason: "Nói mong muốn bằng 〜たいです và nơi đến bằng 〜へ"
+      grammarTags:
+      - grammar.n5.tai_desu
+      - grammar.n5.e_ikimasu
+      vocabularyTags:
+      - vocab.n5.eki
+      - vocab.n5.minato
+      setFlags: []
+    - textJa: "ミナト駅へ行きます。"
+      textEn: "Tôi sẽ đi đến ga Minato."
+      nextNodeId: n_counter_flat
       scoreModifiers:
       - category: ResponseAccuracy
+        value: 3
+        reason: "Nói được kế hoạch nhưng chưa nhờ giúp; muốn được hướng dẫn nên dùng 〜たいです"
+      grammarTags:
+      - grammar.n5.e_ikimasu
+      vocabularyTags:
+      - vocab.n5.eki
+      setFlags: []
+    - textJa: "ミナト駅、どこ？"
+      textEn: "Ga Minato, ở đâu?"
+      nextNodeId: n_counter_wrong
+      scoreModifiers:
+      - category: ResponseAccuracy
+        value: -6
+        reason: "Hỏi cộc lốc với nhân viên, thiếu ですか và không nêu rõ điều mình cần"
+      grammarTags: []
+      vocabularyTags: []
+      setFlags: []
+    flagCondition: 
+    flagJumpNodeId: 
+    targetItemId: 
+    targetNpcId: 
+    targetAreaId: 
+  - id: n_counter_flat
+    nodeType: 0
+    nextNodeId: n_fare
+    objectiveIdToComplete: 
+    speakerName: Kimura
+    speakerId: npc_station_staff
+    textJa: "はい、ミナト駅ですね。切符が必要ですか。「行きたいです」と言うと、分かりやすいですよ。"
+    textReading: "はい、ミナトえきですね。きっぷがひつようですか。「いきたいです」というと、わかりやすいですよ。"
+    textEn: "Vâng, ga Minato nhỉ. Quý khách cần vé không ạ? Nói \"ikitai desu\" (tôi muốn đi) thì dễ hiểu hơn đấy ạ."
+    textRomaji: "Hai, Minato eki desu ne. Kippu ga hitsuyou desu ka. \"Ikitai desu\" to iu to, wakariyasui desu yo."
+    textEnglishIpa: 
+    animationCue: talk
+    voiceClip: {fileID: 0}
+    choices: []
+    flagCondition: 
+    flagJumpNodeId: 
+    targetItemId: 
+    targetNpcId: 
+    targetAreaId: 
+  - id: n_counter_wrong
+    nodeType: 0
+    nextNodeId: n_counter
+    objectiveIdToComplete: 
+    speakerName: Kimura
+    speakerId: npc_station_staff
+    textJa: "失礼ですが、「ミナト駅へ行きたいです」と、お話しください。"
+    textReading: "しつれいですが、「ミナトえきへいきたいです」と、おはなしください。"
+    textEn: "Xin thất lễ, xin quý khách hãy nói \"Minato eki e ikitai desu\" (tôi muốn đến ga Minato) ạ."
+    textRomaji: "Shitsurei desu ga, \"Minato eki e ikitai desu\" to, ohanashi kudasai."
+    textEnglishIpa: 
+    animationCue: point
+    voiceClip: {fileID: 0}
+    choices: []
+    flagCondition: 
+    flagJumpNodeId: 
+    targetItemId: 
+    targetNpcId: 
+    targetAreaId: 
+  - id: n_fare
+    nodeType: 0
+    nextNodeId: n_fare_check
+    objectiveIdToComplete: obj_ask
+    speakerName: Kimura
+    speakerId: npc_station_staff
+    textJa: "ミナト駅までは、三百二十円です。二十分ぐらいです。"
+    textReading: "ミナトえきまでは、さんびゃくにじゅうえんです。にじゅっぷんぐらいです。"
+    textEn: "Đến ga Minato giá 320 yên. Mất khoảng 20 phút."
+    textRomaji: "Minato eki made wa, sanbyaku nijuu en desu. Nijuppun gurai desu."
+    textEnglishIpa: 
+    animationCue: talk
+    voiceClip: {fileID: 0}
+    choices: []
+    flagCondition: 
+    flagJumpNodeId: 
+    targetItemId: 
+    targetNpcId: 
+    targetAreaId: 
+  - id: n_fare_check
+    nodeType: 0
+    nextNodeId: 
+    objectiveIdToComplete: 
+    speakerName: Kimura
+    speakerId: npc_station_staff
+    textJa: "おわかりですか。ミナト駅までは、いくらですか。"
+    textReading: "おわかりですか。ミナトえきまでは、いくらですか。"
+    textEn: "Quý khách đã rõ chưa ạ? Đến ga Minato là bao nhiêu tiền?"
+    textRomaji: "Owakari desu ka. Minato eki made wa, ikura desu ka?"
+    textEnglishIpa: 
+    animationCue: talk
+    voiceClip: {fileID: 0}
+    choices:
+    - textJa: "三百二十円です。"
+      textEn: "Là 320 yên ạ."
+      nextNodeId: n_machine
+      scoreModifiers:
+      - category: Vocabulary
+        value: 10
+        reason: "Nhắc lại đúng giá vé: 三百二十円 (さんびゃくにじゅうえん)"
+      grammarTags:
+      - grammar.n5.ikura_desu_ka
+      vocabularyTags:
+      - vocab.n5.sanbyaku
+      - vocab.n5.nijuu
+      setFlags: []
+    - textJa: "二百三十円です。"
+      textEn: "Là 230 yên ạ."
+      nextNodeId: n_fare_wrong
+      scoreModifiers:
+      - category: Vocabulary
+        value: -8
+        reason: "Nhầm thứ tự chữ số: 三百二十 (320) khác 二百三十 (230)"
+      grammarTags: []
+      vocabularyTags: []
+      setFlags: []
+    - textJa: "もう一度お願いします。"
+      textEn: "Phiền anh nói lại một lần nữa ạ."
+      nextNodeId: n_fare_repeat
+      scoreModifiers:
+      - category: ResponseAccuracy
+        value: 8
+        reason: "Xin nghe lại lịch sự để chắc chắn về số tiền"
+      grammarTags: []
+      vocabularyTags:
+      - vocab.n5.mou_ichido
+      setFlags: []
+    flagCondition: 
+    flagJumpNodeId: 
+    targetItemId: 
+    targetNpcId: 
+    targetAreaId: 
+  - id: n_fare_wrong
+    nodeType: 0
+    nextNodeId: n_fare_check
+    objectiveIdToComplete: 
+    speakerName: Kimura
+    speakerId: npc_station_staff
+    textJa: "三百二十円です。三、百、二、十。もう一度、お願いします。"
+    textReading: "さんびゃくにじゅうえんです。さん、ひゃく、に、じゅう。もういちど、おねがいします。"
+    textEn: "Là 320 yên. Ba, trăm, hai, mươi. Xin quý khách nói lại ạ."
+    textRomaji: "Sanbyaku nijuu en desu. San, hyaku, ni, juu. Mou ichido, onegaishimasu."
+    textEnglishIpa: 
+    animationCue: point
+    voiceClip: {fileID: 0}
+    choices: []
+    flagCondition: 
+    flagJumpNodeId: 
+    targetItemId: 
+    targetNpcId: 
+    targetAreaId: 
+  - id: n_fare_repeat
+    nodeType: 0
+    nextNodeId: n_fare_check
+    objectiveIdToComplete: 
+    speakerName: Kimura
+    speakerId: npc_station_staff
+    textJa: "はい。三百二十円です。三百と、二十です。"
+    textReading: "はい。さんびゃくにじゅうえんです。さんびゃくと、にじゅうです。"
+    textEn: "Vâng. 320 yên. Ba trăm và hai mươi ạ."
+    textRomaji: "Hai. Sanbyaku nijuu en desu. Sanbyaku to, nijuu desu."
+    textEnglishIpa: 
+    animationCue: point
+    voiceClip: {fileID: 0}
+    choices: []
+    flagCondition: 
+    flagJumpNodeId: 
+    targetItemId: 
+    targetNpcId: 
+    targetAreaId: 
+  - id: n_machine
+    nodeType: 0
+    nextNodeId: n_machine_q
+    objectiveIdToComplete: 
+    speakerName: Kimura
+    speakerId: npc_station_staff
+    textJa: "切符は、あの券売機で買います。まず、お金を入れます。それから、行き先のボタンを押します。"
+    textReading: "きっぷは、あのけんばいきでかいます。まず、おかねをいれます。それから、いきさきのボタンをおします。"
+    textEn: "Vé thì mua ở máy bán vé kia. Trước tiên, bỏ tiền vào. Sau đó, bấm nút điểm đến."
+    textRomaji: "Kippu wa, ano kenbaiki de kaimasu. Mazu, okane wo iremasu. Sorekara, ikisaki no botan wo oshimasu."
+    textEnglishIpa: 
+    animationCue: point
+    voiceClip: {fileID: 0}
+    choices: []
+    flagCondition: 
+    flagJumpNodeId: 
+    targetItemId: 
+    targetNpcId: 
+    targetAreaId: 
+  - id: n_machine_q
+    nodeType: 0
+    nextNodeId: 
+    objectiveIdToComplete: 
+    speakerName: 
+    speakerId: 
+    textJa: "券売機の前に来ました。最初に、何をしますか。"
+    textReading: "けんばいきのまえにきました。さいしょに、なにをしますか。"
+    textEn: "Bạn đứng trước máy bán vé. Việc đầu tiên bạn làm là gì?"
+    textRomaji: "Kenbaiki no mae ni kimashita. Saisho ni, nani wo shimasu ka?"
+    textEnglishIpa: 
+    animationCue: 
+    voiceClip: {fileID: 0}
+    choices:
+    - textJa: "まず、お金を入れます。"
+      textEn: "Trước tiên tôi bỏ tiền vào."
+      nextNodeId: n_machine_ok
+      scoreModifiers:
+      - category: Grammar
+        value: 10
+        reason: "Nói đúng thứ tự thao tác bằng まず〜、それから〜"
+      grammarTags:
+      - grammar.n5.mazu_sorekara
+      vocabularyTags:
+      - vocab.n5.okane
+      - vocab.n5.ireru
+      setFlags: []
+    - textJa: "まず、ボタンを押します。"
+      textEn: "Trước tiên tôi bấm nút."
+      nextNodeId: n_machine_wrong
+      scoreModifiers:
+      - category: Grammar
+        value: -8
+        reason: "Sai thứ tự: máy này cần bỏ tiền vào trước rồi mới bấm nút điểm đến"
+      grammarTags: []
+      vocabularyTags: []
+      setFlags: []
+    flagCondition: 
+    flagJumpNodeId: 
+    targetItemId: 
+    targetNpcId: 
+    targetAreaId: 
+  - id: n_machine_wrong
+    nodeType: 0
+    nextNodeId: n_machine_q
+    objectiveIdToComplete: 
+    speakerName: Kimura
+    speakerId: npc_station_staff
+    textJa: "ボタンは、お金を入れてからです。まず、お金を入れてください。"
+    textReading: "ボタンは、おかねをいれてからです。まず、おかねをいれてください。"
+    textEn: "Nút chỉ bấm sau khi bỏ tiền. Trước tiên xin hãy bỏ tiền vào ạ."
+    textRomaji: "Botan wa, okane wo irete kara desu. Mazu, okane wo irete kudasai."
+    textEnglishIpa: 
+    animationCue: point
+    voiceClip: {fileID: 0}
+    choices: []
+    flagCondition: 
+    flagJumpNodeId: 
+    targetItemId: 
+    targetNpcId: 
+    targetAreaId: 
+  - id: n_machine_ok
+    nodeType: 0
+    nextNodeId: n_platform_ask
+    objectiveIdToComplete: obj_ticket
+    speakerName: 
+    speakerId: 
+    textJa: "五百円玉を入れて、「ミナト」のボタンを押しました。切符と、おつりの百八十円が出ました。"
+    textReading: "ごひゃくえんだまをいれて、「ミナト」のボタンをおしました。きっぷと、おつりのひゃくはちじゅうえんがでました。"
+    textEn: "Bạn bỏ đồng 500 yên vào rồi bấm nút 「ミナト」. Vé và tiền thừa 180 yên được nhả ra."
+    textRomaji: "Gohyaku en dama wo irete, \"Minato\" no botan wo oshimashita. Kippu to, otsuri no hyaku hachijuu en ga demashita."
+    textEnglishIpa: 
+    animationCue: 
+    voiceClip: {fileID: 0}
+    choices: []
+    flagCondition: 
+    flagJumpNodeId: 
+    targetItemId: 
+    targetNpcId: 
+    targetAreaId: 
+  - id: n_platform_ask
+    nodeType: 0
+    nextNodeId: 
+    objectiveIdToComplete: 
+    speakerName: Kimura
+    speakerId: npc_station_staff
+    textJa: "何か、ご質問はありますか。"
+    textReading: "なにか、ごしつもんはありますか。"
+    textEn: "Quý khách còn câu hỏi nào không ạ?"
+    textRomaji: "Nani ka, goshitsumon wa arimasu ka?"
+    textEnglishIpa: 
+    animationCue: talk
+    voiceClip: {fileID: 0}
+    choices:
+    - textJa: "何番線ですか。"
+      textEn: "Là đường ray số mấy ạ?"
+      nextNodeId: n_platform_answer
+      scoreModifiers:
+      - category: Grammar
+        value: 10
+        reason: "Hỏi số đường ray bằng 何番線ですか"
+      grammarTags:
+      - grammar.n5.nan_ban_sen
+      vocabularyTags:
+      - vocab.n5.bansen
+      setFlags: []
+    - textJa: "電車は、どこですか。"
+      textEn: "Tàu ở đâu ạ?"
+      nextNodeId: n_platform_vague
+      scoreModifiers:
+      - category: ResponseAccuracy
+        value: 3
+        reason: "Hiểu được nhưng quá mơ hồ: nên hỏi cụ thể 何番線 (đường ray số mấy)"
+      grammarTags:
+      - grammar.n5.wa_doko_desu_ka
+      vocabularyTags:
+      - vocab.n5.densha
+      setFlags: []
+    - textJa: "トイレは、どこですか。"
+      textEn: "Nhà vệ sinh ở đâu ạ?"
+      nextNodeId: n_platform_wrong
+      scoreModifiers:
+      - category: ResponseAccuracy
+        value: -4
+        reason: "Câu hỏi hợp lệ nhưng không phải điều bạn cần lúc này; hãy hỏi đường ray trước để khỏi lỡ tàu"
+      grammarTags: []
+      vocabularyTags: []
+      setFlags: []
+    flagCondition: 
+    flagJumpNodeId: 
+    targetItemId: 
+    targetNpcId: 
+    targetAreaId: 
+  - id: n_platform_vague
+    nodeType: 0
+    nextNodeId: n_platform_check
+    objectiveIdToComplete: 
+    speakerName: Kimura
+    speakerId: npc_station_staff
+    textJa: "ミナト行きは、二番線です。次は、「何番線ですか」と聞いてくださいね。"
+    textReading: "ミナトゆきは、にばんせんです。つぎは、「なんばんせんですか」ときいてくださいね。"
+    textEn: "Tàu đi Minato ở đường ray số 2. Lần sau hãy hỏi \"nanbansen desu ka\" (đường ray số mấy) nhé."
+    textRomaji: "Minato yuki wa, nibansen desu. Tsugi wa, \"nanbansen desu ka\" to kiite kudasai ne."
+    textEnglishIpa: 
+    animationCue: talk
+    voiceClip: {fileID: 0}
+    choices: []
+    flagCondition: 
+    flagJumpNodeId: 
+    targetItemId: 
+    targetNpcId: 
+    targetAreaId: 
+  - id: n_platform_wrong
+    nodeType: 0
+    nextNodeId: n_platform_check
+    objectiveIdToComplete: 
+    speakerName: Kimura
+    speakerId: npc_station_staff
+    textJa: "トイレは、あちらです。ミナト行きは、二番線ですよ。"
+    textReading: "トイレは、あちらです。ミナトゆきは、にばんせんですよ。"
+    textEn: "Nhà vệ sinh ở phía kia ạ. Tàu đi Minato ở đường ray số 2 đấy ạ."
+    textRomaji: "Toire wa, achira desu. Minato yuki wa, nibansen desu yo."
+    textEnglishIpa: 
+    animationCue: point
+    voiceClip: {fileID: 0}
+    choices: []
+    flagCondition: 
+    flagJumpNodeId: 
+    targetItemId: 
+    targetNpcId: 
+    targetAreaId: 
+  - id: n_platform_answer
+    nodeType: 0
+    nextNodeId: n_platform_check
+    objectiveIdToComplete: 
+    speakerName: Kimura
+    speakerId: npc_station_staff
+    textJa: "ミナト行きは、二番線です。階段を上がってください。"
+    textReading: "ミナトゆきは、にばんせんです。かいだんをあがってください。"
+    textEn: "Tàu đi Minato ở đường ray số 2. Xin hãy đi lên cầu thang ạ."
+    textRomaji: "Minato yuki wa, nibansen desu. Kaidan wo agatte kudasai."
+    textEnglishIpa: 
+    animationCue: point
+    voiceClip: {fileID: 0}
+    choices: []
+    flagCondition: 
+    flagJumpNodeId: 
+    targetItemId: 
+    targetNpcId: 
+    targetAreaId: 
+  - id: n_platform_check
+    nodeType: 0
+    nextNodeId: 
+    objectiveIdToComplete: obj_platform
+    speakerName: Kimura
+    speakerId: npc_station_staff
+    textJa: "ミナト行きは、何番線ですか。"
+    textReading: "ミナトゆきは、なんばんせんですか。"
+    textEn: "Tàu đi Minato ở đường ray số mấy nhỉ?"
+    textRomaji: "Minato yuki wa, nanbansen desu ka?"
+    textEnglishIpa: 
+    animationCue: talk
+    voiceClip: {fileID: 0}
+    choices:
+    - textJa: "二番線です。"
+      textEn: "Số 2 ạ."
+      nextNodeId: n_time
+      scoreModifiers:
+      - category: Vocabulary
+        value: 10
+        reason: "Nhớ đúng số đường ray: 二番線"
+      grammarTags: []
+      vocabularyTags:
+      - vocab.n5.nibansen
+      setFlags: []
+    - textJa: "三番線です。"
+      textEn: "Số 3 ạ."
+      nextNodeId: n_platform_wrong2
+      scoreModifiers:
+      - category: Vocabulary
+        value: -8
+        reason: "Nhầm số đường ray: tàu đi Minato ở số 2, không phải số 3"
+      grammarTags: []
+      vocabularyTags: []
+      setFlags: []
+    flagCondition: 
+    flagJumpNodeId: 
+    targetItemId: 
+    targetNpcId: 
+    targetAreaId: 
+  - id: n_platform_wrong2
+    nodeType: 0
+    nextNodeId: n_platform_check
+    objectiveIdToComplete: 
+    speakerName: Kimura
+    speakerId: npc_station_staff
+    textJa: "三番線は、反対の方向です。ミナト行きは、二番線ですよ。"
+    textReading: "さんばんせんは、はんたいのほうこうです。ミナトゆきは、にばんせんですよ。"
+    textEn: "Đường ray số 3 đi hướng ngược lại. Tàu đi Minato là đường ray số 2 ạ."
+    textRomaji: "Sanbansen wa, hantai no houkou desu. Minato yuki wa, nibansen desu yo."
+    textEnglishIpa: 
+    animationCue: point
+    voiceClip: {fileID: 0}
+    choices: []
+    flagCondition: 
+    flagJumpNodeId: 
+    targetItemId: 
+    targetNpcId: 
+    targetAreaId: 
+  - id: n_time
+    nodeType: 0
+    nextNodeId: 
+    objectiveIdToComplete: 
+    speakerName: Kimura
+    speakerId: npc_station_staff
+    textJa: "次の電車は、十時十五分です。あと五分ですよ。"
+    textReading: "つぎのでんしゃは、じゅうじじゅうごふんです。あとごふんですよ。"
+    textEn: "Chuyến tàu tiếp theo là 10 giờ 15 phút. Còn 5 phút nữa thôi ạ."
+    textRomaji: "Tsugi no densha wa, juuji juugo fun desu. Ato gofun desu yo."
+    textEnglishIpa: 
+    animationCue: talk
+    voiceClip: {fileID: 0}
+    choices:
+    - textJa: "十時十五分ですね。ありがとうございます。"
+      textEn: "10 giờ 15 phút nhỉ. Cảm ơn anh ạ."
+      nextNodeId: n_announce
+      scoreModifiers:
+      - category: Vocabulary
+        value: 10
+        reason: "Xác nhận giờ tàu bằng cách nhắc lại: 十時十五分"
+      grammarTags:
+      - grammar.n5.desu_ne
+      vocabularyTags:
+      - vocab.n5.juuji
+      - vocab.n5.fun
+      setFlags: []
+    - textJa: "十一時十五分ですね。"
+      textEn: "11 giờ 15 phút nhỉ."
+      nextNodeId: n_time_wrong
+      scoreModifiers:
+      - category: Vocabulary
+        value: -8
+        reason: "Nghe nhầm giờ: 十時 (10 giờ) khác 十一時 (11 giờ)"
+      grammarTags: []
+      vocabularyTags: []
+      setFlags: []
+    - textJa: "何時ですか。"
+      textEn: "Mấy giờ ạ?"
+      nextNodeId: n_time
+      scoreModifiers:
+      - category: ResponseAccuracy
+        value: 3
+        reason: "Hỏi lại được nhưng vừa nghe rõ giờ rồi, nên nhắc lại để xác nhận"
+      grammarTags: []
+      vocabularyTags:
+      - vocab.n5.nanji
+      setFlags: []
+    flagCondition: 
+    flagJumpNodeId: 
+    targetItemId: 
+    targetNpcId: 
+    targetAreaId: 
+  - id: n_time_wrong
+    nodeType: 0
+    nextNodeId: n_time
+    objectiveIdToComplete: 
+    speakerName: Kimura
+    speakerId: npc_station_staff
+    textJa: "十時十五分です。十一時ではありません。あと五分ですよ。"
+    textReading: "じゅうじじゅうごふんです。じゅういちじではありません。あとごふんですよ。"
+    textEn: "Là 10 giờ 15 phút, không phải 11 giờ. Còn 5 phút nữa thôi ạ."
+    textRomaji: "Juuji juugo fun desu. Juuichiji dewa arimasen. Ato gofun desu yo."
+    textEnglishIpa: 
+    animationCue: point
+    voiceClip: {fileID: 0}
+    choices: []
+    flagCondition: 
+    flagJumpNodeId: 
+    targetItemId: 
+    targetNpcId: 
+    targetAreaId: 
+  - id: n_announce
+    nodeType: 0
+    nextNodeId: n_announce_q
+    objectiveIdToComplete: 
+    speakerName: 
+    speakerId: 
+    textJa: "ホームに立ちました。アナウンスが流れます。「まもなく、二番線に、ミナト行きが参ります。あぶないですから、白い線の内側まで、お下がりください。」"
+    textReading: "ホームにたちました。アナウンスがながれます。「まもなく、にばんせんに、ミナトゆきがまいります。あぶないですから、しろいせんのうちがわまで、おさがりください。」"
+    textEn: "Bạn đứng trên sân ga. Có thông báo vang lên: \"Chỉ ít phút nữa, tàu đi Minato sẽ vào đường ray số 2. Vì nguy hiểm, xin quý khách lùi vào trong vạch trắng.\""
+    textRomaji: "Hoomu ni tachimashita. Anaunsu ga nagaremasu. \"Mamonaku, nibansen ni, Minato yuki ga mairimasu. Abunai desu kara, shiroi sen no uchigawa made, osagari kudasai.\""
+    textEnglishIpa: 
+    animationCue: 
+    voiceClip: {fileID: 0}
+    choices: []
+    flagCondition: 
+    flagJumpNodeId: 
+    targetItemId: 
+    targetNpcId: 
+    targetAreaId: 
+  - id: n_announce_q
+    nodeType: 0
+    nextNodeId: 
+    objectiveIdToComplete: 
+    speakerName: 
+    speakerId: 
+    textJa: "アナウンスで、何と言いましたか。どうしますか。"
+    textReading: "アナウンスで、なんといいましたか。どうしますか。"
+    textEn: "Thông báo nói gì? Bạn sẽ làm gì?"
+    textRomaji: "Anaunsu de, nan to iimashita ka. Dou shimasu ka?"
+    textEnglishIpa: 
+    animationCue: 
+    voiceClip: {fileID: 0}
+    choices:
+    - textJa: "白い線の後ろに下がります。"
+      textEn: "Tôi lùi ra phía sau vạch trắng."
+      nextNodeId: n_train
+      scoreModifiers:
+      - category: Vocabulary
+        value: 10
+        reason: "Hiểu đúng thông báo an toàn: お下がりください = lùi ra sau vạch trắng"
+      grammarTags:
+      - grammar.n5.te_kudasai
+      vocabularyTags:
+      - vocab.n5.shiroi_sen
+      - vocab.n5.sagaru
+      setFlags:
+      - station.safety_ok
+    - textJa: "線の前に立ちます。"
+      textEn: "Tôi đứng sát trước vạch."
+      nextNodeId: n_announce_wrong
+      scoreModifiers:
+      - category: Vocabulary
         value: -10
-        reason: Câu trả lời chưa nêu rõ điểm đến
+        reason: "Hiểu ngược thông báo: đứng sát vạch là nguy hiểm khi tàu vào ga"
       grammarTags: []
       vocabularyTags: []
-    targetItemId:
-    targetNpcId:
-    targetAreaId:
-  - id: node_ask_direction_hint
-    nodeType: 0
-    nextNodeId: node_ask_direction
-    objectiveIdToComplete:
-    speakerName: Kimura
-    speakerId: npc_station_staff
-    textJa: すみません、「（駅名）までお願いします」と言ってくださいね。
-    textReading: すみません、「（えきめい）までおねがいします」といってくださいね。
-    textEn: Xin lỗi quý khách, hãy nói kèm tên ga và "~made onegaishimasu" nhé.
-    textRomaji: Sumimasen, "(ekimei) made onegaishimasu" to itte kudasai ne.
-    textEnglishIpa:
-    animationCue: point
-    voiceClip: {fileID: 0}
-    choices: []
-    targetItemId:
-    targetNpcId:
-    targetAreaId:
-  - id: node_fare_shibuya
-    nodeType: 0
-    nextNodeId: node_payment_choice
-    objectiveIdToComplete: obj_ask_direction
-    speakerName: Kimura
-    speakerId: npc_station_staff
-    textJa: 渋谷までは200円です。
-    textReading: しぶやまではにひゃくえんです。
-    textEn: Đi đến Shibuya là 200 yên.
-    textRomaji: Shibuya made wa nihyaku-en desu.
-    textEnglishIpa:
-    animationCue: talk
-    voiceClip: {fileID: 0}
-    choices: []
-    targetItemId:
-    targetNpcId:
-    targetAreaId:
-  - id: node_fare_shinjuku
-    nodeType: 0
-    nextNodeId: node_payment_choice
-    objectiveIdToComplete: obj_ask_direction
-    speakerName: Kimura
-    speakerId: npc_station_staff
-    textJa: 新宿までは250円です。
-    textReading: しんじゅくまではにひゃくごじゅうえんです。
-    textEn: Đi đến Shinjuku là 250 yên.
-    textRomaji: Shinjuku made wa nihyaku gojuu-en desu.
-    textEnglishIpa:
-    animationCue: talk
-    voiceClip: {fileID: 0}
-    choices: []
-    targetItemId:
-    targetNpcId:
-    targetAreaId:
-  - id: node_payment_choice
-    nodeType: 0
-    nextNodeId:
-    objectiveIdToComplete:
-    speakerName: Kimura
-    speakerId: npc_station_staff
-    textJa: 切符を買いますか、ICカードを使いますか？
-    textReading: きっぷをかいますか、アイシーカードをつかいますか？
-    textEn: Quý khách mua vé giấy hay dùng thẻ IC ạ?
-    textRomaji: Kippu wo kaimasu ka, IC kaado wo tsukaimasu ka?
-    textEnglishIpa:
-    animationCue: point
-    voiceClip: {fileID: 0}
-    choices:
-    - textJa: 切符を買います。
-      textEn: Tôi sẽ mua vé giấy.
-      nextNodeId: node_buy_ticket
-      scoreModifiers:
-      - category: Vocabulary
-        value: 8
-        reason: Dùng đúng từ 切符 (vé giấy)
-      - category: Grammar
-        value: 8
-        reason: Dùng đúng động từ 買います
-      grammarTags: []
-      vocabularyTags: []
-    - textJa: ICカードを使います。
-      textEn: Tôi sẽ dùng thẻ IC.
-      nextNodeId: node_use_ic
-      scoreModifiers:
-      - category: Vocabulary
-        value: 8
-        reason: Dùng đúng từ ICカード
-      - category: Grammar
-        value: 8
-        reason: Dùng đúng động từ 使います
-      grammarTags: []
-      vocabularyTags: []
-    targetItemId:
-    targetNpcId:
-    targetAreaId:
-  - id: node_buy_ticket
-    nodeType: 0
-    nextNodeId: node_platform_question
-    objectiveIdToComplete: obj_choose_payment
-    speakerName: Kimura
-    speakerId: npc_station_staff
-    textJa: あちらの券売機で切符を買ってくださいね。
-    textReading: あちらのけんばいきできっぷをかってくださいね。
-    textEn: Quý khách hãy mua vé tại máy bán vé đằng kia nhé.
-    textRomaji: Achira no kenbaiki de kippu wo katte kudasai ne.
-    textEnglishIpa:
-    animationCue: point
-    voiceClip: {fileID: 0}
-    choices: []
-    targetItemId:
-    targetNpcId:
-    targetAreaId:
-  - id: node_use_ic
-    nodeType: 0
-    nextNodeId: node_platform_question
-    objectiveIdToComplete: obj_choose_payment
-    speakerName: Kimura
-    speakerId: npc_station_staff
-    textJa: 改札でICカードをタッチしてくださいね。
-    textReading: かいさつでアイシーカードをタッチしてくださいね。
-    textEn: Quý khách hãy chạm thẻ IC ở cổng soát vé nhé.
-    textRomaji: Kaisatsu de IC kaado wo tacchi shite kudasai ne.
-    textEnglishIpa:
-    animationCue: point
-    voiceClip: {fileID: 0}
-    choices: []
-    targetItemId:
-    targetNpcId:
-    targetAreaId:
-  - id: node_platform_question
-    nodeType: 0
-    nextNodeId:
-    objectiveIdToComplete:
-    speakerName: Kimura
-    speakerId: npc_station_staff
-    textJa: 何番線か、分かりますか？
-    textReading: なんばんせんか、わかりますか？
-    textEn: Quý khách có biết sân ga số mấy không?
-    textRomaji: Nanbansen ka, wakarimasu ka?
-    textEnglishIpa:
-    animationCue: talk
-    voiceClip: {fileID: 0}
-    choices:
-    - textJa: 3番線です。
-      textEn: Sân ga số 3 ạ.
-      nextNodeId: node_platform_correct
-      scoreModifiers:
-      - category: TaskCompletion
-        value: 10
-        reason: Xác nhận đúng số sân ga đã được thông báo
-      grammarTags: []
-      vocabularyTags: []
-    - textJa: 分かりません。
-      textEn: Em không biết ạ.
-      nextNodeId: node_platform_help
+      setFlags: []
+    - textJa: "もう一度、聞きます。"
+      textEn: "Tôi nghe lại lần nữa."
+      nextNodeId: n_announce_repeat
       scoreModifiers:
       - category: ResponseAccuracy
-        value: -5
-        reason: Chưa xác nhận lại thông tin sân ga
+        value: 4
+        reason: "Muốn nghe lại thông báo là hợp lý nhưng tàu sắp vào, hãy lùi lại cho an toàn"
       grammarTags: []
       vocabularyTags: []
-    targetItemId:
-    targetNpcId:
-    targetAreaId:
-  - id: node_platform_help
+      setFlags: []
+    flagCondition: 
+    flagJumpNodeId: 
+    targetItemId: 
+    targetNpcId: 
+    targetAreaId: 
+  - id: n_announce_wrong
     nodeType: 0
-    nextNodeId: node_platform_correct
-    objectiveIdToComplete:
-    speakerName: Kimura
-    speakerId: npc_station_staff
-    textJa: 大丈夫ですよ。3番線です。あの階段を上がってください。
-    textReading: だいじょうぶですよ。さんばんせんです。あのかいだんをあがってください。
-    textEn: Không sao đâu ạ. Sân ga số 3. Quý khách hãy lên cầu thang đằng kia.
-    textRomaji: Daijoubu desu yo. San-bansen desu. Ano kaidan wo agatte kudasai.
-    textEnglishIpa:
-    animationCue: point
+    nextNodeId: n_announce_q
+    objectiveIdToComplete: 
+    speakerName: 
+    speakerId: 
+    textJa: "あぶない！電車が来ます。「お下がりください」は、後ろに下がってください、という意味です。"
+    textReading: "あぶない！でんしゃがきます。「おさがりください」は、うしろにさがってください、といういみです。"
+    textEn: "Nguy hiểm! Tàu sắp vào. 「お下がりください」 nghĩa là hãy lùi ra phía sau."
+    textRomaji: "Abunai! Densha ga kimasu. \"Osagari kudasai\" wa, ushiro ni sagatte kudasai, to iu imi desu."
+    textEnglishIpa: 
+    animationCue: 
     voiceClip: {fileID: 0}
     choices: []
-    targetItemId:
-    targetNpcId:
-    targetAreaId:
-  - id: node_platform_correct
+    flagCondition: 
+    flagJumpNodeId: 
+    targetItemId: 
+    targetNpcId: 
+    targetAreaId: 
+  - id: n_announce_repeat
     nodeType: 0
-    nextNodeId: node_complete
-    objectiveIdToComplete: obj_find_platform
-    speakerName: Kimura
-    speakerId: npc_station_staff
-    textJa: そうです。気をつけて行ってらっしゃい。
-    textReading: そうです。きをつけていってらっしゃい。
-    textEn: Đúng vậy ạ. Quý khách đi cẩn thận nhé.
-    textRomaji: Sou desu. Ki wo tsukete itterasshai.
-    textEnglishIpa:
-    animationCue: bow
+    nextNodeId: n_announce_q
+    objectiveIdToComplete: 
+    speakerName: 
+    speakerId: 
+    textJa: "アナウンスは、もう終わりました。電車が来ます。白い線の後ろに下がりましょう。"
+    textReading: "アナウンスは、もうおわりました。でんしゃがきます。しろいせんのうしろにさがりましょう。"
+    textEn: "Thông báo đã kết thúc. Tàu sắp vào rồi. Hãy lùi ra sau vạch trắng nào."
+    textRomaji: "Anaunsu wa, mou owarimashita. Densha ga kimasu. Shiroi sen no ushiro ni sagarimashou."
+    textEnglishIpa: 
+    animationCue: 
     voiceClip: {fileID: 0}
     choices: []
-    targetItemId:
-    targetNpcId:
-    targetAreaId:
-  - id: node_complete
+    flagCondition: 
+    flagJumpNodeId: 
+    targetItemId: 
+    targetNpcId: 
+    targetAreaId: 
+  - id: n_train
+    nodeType: 0
+    nextNodeId: n_seat_choice
+    objectiveIdToComplete: 
+    speakerName: 
+    speakerId: 
+    textJa: "電車は、すいています。でも、次の駅で、お年寄りが乗ってきました。優先席の前に、立っています。"
+    textReading: "でんしゃは、すいています。でも、つぎのえきで、おとしよりがのってきました。ゆうせんせきのまえに、たっています。"
+    textEn: "Tàu khá vắng. Nhưng ở ga tiếp theo, một cụ già bước lên. Cụ đang đứng trước ghế ưu tiên."
+    textRomaji: "Densha wa, suite imasu. Demo, tsugi no eki de, otoshiyori ga notte kimashita. Yuusenseki no mae ni, tatte imasu."
+    textEnglishIpa: 
+    animationCue: 
+    voiceClip: {fileID: 0}
+    choices: []
+    flagCondition: 
+    flagJumpNodeId: 
+    targetItemId: 
+    targetNpcId: 
+    targetAreaId: 
+  - id: n_seat_choice
+    nodeType: 0
+    nextNodeId: 
+    objectiveIdToComplete: 
+    speakerName: 
+    speakerId: 
+    textJa: "あなたは、席に座っています。どうしますか。"
+    textReading: "あなたは、せきにすわっています。どうしますか。"
+    textEn: "Bạn đang ngồi trên ghế. Bạn sẽ làm gì?"
+    textRomaji: "Anata wa, seki ni suwatte imasu. Dou shimasu ka?"
+    textEnglishIpa: 
+    animationCue: 
+    voiceClip: {fileID: 0}
+    choices:
+    - textJa: "「どうぞ、座ってください」と言います。"
+      textEn: "Bạn nói \"douzo, suwatte kudasai\" (mời cụ ngồi)."
+      nextNodeId: n_seat_yes
+      scoreModifiers:
+      - category: Grammar
+        value: 10
+        reason: "Nhường ghế bằng lời mời lịch sự どうぞ、座ってください"
+      grammarTags:
+      - grammar.n5.te_kudasai
+      vocabularyTags:
+      - vocab.n5.douzo
+      - vocab.n5.suwaru
+      setFlags:
+      - station.gave_seat
+    - textJa: "寝たふりをします。"
+      textEn: "Bạn giả vờ ngủ."
+      nextNodeId: n_seat_no
+      scoreModifiers:
+      - category: ResponseAccuracy
+        value: -6
+        reason: "Tránh né trong khi có người cần chỗ ngồi hơn mình"
+      grammarTags: []
+      vocabularyTags: []
+      setFlags: []
+    - textJa: "スマホを見ます。"
+      textEn: "Bạn cúi xuống xem điện thoại."
+      nextNodeId: n_seat_no
+      scoreModifiers:
+      - category: ResponseAccuracy
+        value: -4
+        reason: "Không để ý đến người xung quanh, dù có thể giúp"
+      grammarTags: []
+      vocabularyTags: []
+      setFlags: []
+    flagCondition: 
+    flagJumpNodeId: 
+    targetItemId: 
+    targetNpcId: 
+    targetAreaId: 
+  - id: n_seat_yes
+    nodeType: 0
+    nextNodeId: n_minato
+    objectiveIdToComplete: 
+    speakerName: 
+    speakerId: 
+    textJa: "お年寄りは、「ありがとう。やさしい人ですね」と言って、ほほえみました。"
+    textReading: "おとしよりは、「ありがとう。やさしいひとですね」といって、ほほえみました。"
+    textEn: "Cụ già nói \"Cảm ơn cháu. Cháu thật là người tốt bụng\" rồi mỉm cười."
+    textRomaji: "Otoshiyori wa, \"Arigatou. Yasashii hito desu ne\" to itte, hohoemimashita."
+    textEnglishIpa: 
+    animationCue: 
+    voiceClip: {fileID: 0}
+    choices: []
+    flagCondition: 
+    flagJumpNodeId: 
+    targetItemId: 
+    targetNpcId: 
+    targetAreaId: 
+  - id: n_seat_no
+    nodeType: 0
+    nextNodeId: n_minato
+    objectiveIdToComplete: 
+    speakerName: 
+    speakerId: 
+    textJa: "お年寄りは、少しつらそうです。次の駅で、ほかの人が席をゆずりました。あなたも、次は、声をかけてみましょう。"
+    textReading: "おとしよりは、すこしつらそうです。つぎのえきで、ほかのひとがせきをゆずりました。あなたも、つぎは、こえをかけてみましょう。"
+    textEn: "Cụ già trông có vẻ hơi mệt. Ở ga tiếp theo, một người khác đã nhường ghế. Lần sau bạn cũng hãy thử lên tiếng nhé."
+    textRomaji: "Otoshiyori wa, sukoshi tsurasou desu. Tsugi no eki de, hoka no hito ga seki wo yuzurimashita. Anata mo, tsugi wa, koe wo kakete mimashou."
+    textEnglishIpa: 
+    animationCue: 
+    voiceClip: {fileID: 0}
+    choices: []
+    flagCondition: 
+    flagJumpNodeId: 
+    targetItemId: 
+    targetNpcId: 
+    targetAreaId: 
+  - id: n_minato
+    nodeType: 0
+    nextNodeId: n_last
+    objectiveIdToComplete: obj_board
+    speakerName: 
+    speakerId: 
+    textJa: "ミナト駅に着きました。ドアが開くと、海のにおいがします。"
+    textReading: "ミナトえきにつきました。ドアがあくと、うみのにおいがします。"
+    textEn: "Bạn đến ga Minato. Cửa tàu mở ra, mùi biển ùa vào."
+    textRomaji: "Minato eki ni tsukimashita. Doa ga aku to, umi no nioi ga shimasu."
+    textEnglishIpa: 
+    animationCue: 
+    voiceClip: {fileID: 0}
+    choices: []
+    flagCondition: 
+    flagJumpNodeId: 
+    targetItemId: 
+    targetNpcId: 
+    targetAreaId: 
+  - id: n_last
+    nodeType: 0
+    nextNodeId: n_recap
+    objectiveIdToComplete: 
+    speakerName: 
+    speakerId: 
+    textJa: "帰りの最終電車は、夜の十一時です。忘れないでくださいね。"
+    textReading: "かえりのさいしゅうでんしゃは、よるのじゅういちじです。わすれないでくださいね。"
+    textEn: "Chuyến tàu cuối để về là lúc 11 giờ đêm. Đừng quên nhé."
+    textRomaji: "Kaeri no saishuu densha wa, yoru no juuichiji desu. Wasurenai de kudasai ne."
+    textEnglishIpa: 
+    animationCue: 
+    voiceClip: {fileID: 0}
+    choices: []
+    flagCondition: 
+    flagJumpNodeId: 
+    targetItemId: 
+    targetNpcId: 
+    targetAreaId: 
+  - id: n_recap
+    nodeType: 0
+    nextNodeId: n_complete
+    objectiveIdToComplete: 
+    speakerName: 
+    speakerId: 
+    textJa: "今日のポイント：「〜たいです」「何番線ですか」「まず、それから」。"
+    textReading: "きょうのポイント：「〜たいです」「なんばんせんですか」「まず、それから」。"
+    textEn: "Tóm tắt: \"~ tai desu\" (tôi muốn ~), \"nanbansen desu ka\" (đường ray số mấy?), \"mazu, sorekara\" (trước tiên..., sau đó...). Ở ga: lùi ra sau vạch trắng, nhường ghế cho người cần."
+    textRomaji: "Kyou no pointo: \"~ tai desu\" \"nanbansen desu ka\" \"mazu, sorekara\"."
+    textEnglishIpa: 
+    animationCue: 
+    voiceClip: {fileID: 0}
+    choices: []
+    flagCondition: 
+    flagJumpNodeId: 
+    targetItemId: 
+    targetNpcId: 
+    targetAreaId: 
+  - id: n_complete
     nodeType: 4
-    nextNodeId:
-    objectiveIdToComplete:
-    speakerName:
-    speakerId:
-    textJa:
-    textReading:
-    textEn:
-    textRomaji:
-    textEnglishIpa:
-    animationCue:
+    nextNodeId: 
+    objectiveIdToComplete: 
+    speakerName: 
+    speakerId: 
+    textJa: 
+    textReading: 
+    textEn: 
+    textRomaji: 
+    textEnglishIpa: 
+    animationCue: 
     voiceClip: {fileID: 0}
     choices: []
-    targetItemId:
-    targetNpcId:
-    targetAreaId:
-  startNodeId: node_station_start
+    flagCondition: 
+    flagJumpNodeId: 
+    targetItemId: 
+    targetNpcId: 
+    targetAreaId: 
+  startNodeId: n_arrive

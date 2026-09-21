@@ -1,5 +1,7 @@
 # Kiểm tra tổng thể: scene, cốt truyện, gameplay (2026-09-21)
 
+> **Cập nhật cuối ngày**: 10/14 quest đã viết sâu, có bộ nhớ truyện (story flags), ramen/ga/lễ hội viết dạng hội thoại thuần và đã nằm trong campaign (14 quest). Các mục "mỏng" và "không nằm trong campaign" trong bảng dưới là số liệu buổi sáng; xem `QUEST_AND_ONLINE_PLAN.md` và `STORY_BIBLE.md` mục 12 cho trạng thái hiện tại.
+
 Cách kiểm tra: đọc trực tiếp YAML của 7 scene, chạy script kiểm tra đồ thị cho 11 scenario asset, đối chiếu code (`ScenarioManager`, `GameControlService`, `LocalScenarioRepository`, `SushiRestaurantRuntime`...), tài liệu (`STORY_BIBLE`, `SOCIAL_STORY_ROADMAP`, `PROJECT_STATUS_AND_SOURCES`, `TODO_CHECKLIST`) và `Editor.log`.
 **Chưa chạy Play Mode**, nên mọi thứ dưới đây là kết quả kiểm tra tĩnh, không phải kết luận "chơi được".
 

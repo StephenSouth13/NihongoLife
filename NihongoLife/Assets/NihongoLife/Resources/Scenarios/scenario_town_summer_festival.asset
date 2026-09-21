@@ -13,11 +13,11 @@ MonoBehaviour:
   m_Name: scenario_town_summer_festival
   m_EditorClassIdentifier: NihongoLife::NihongoLife.Scenario.ScenarioDefinition
   id: scenario.town.summer_festival
-  version: 1
-  titleJa: ひばり町の夏祭り
-  titleEn: Lễ hội mùa hè ở Hibari-chō
-  descriptionJa: 町の皆に会いに、夏祭りへ行きましょう。
-  descriptionEn: Ghé thăm lễ hội mùa hè và gặp lại tất cả những người bạn đã quen trong khu phố.
+  version: 2
+  titleJa: "ひばり町の夏祭り"
+  titleEn: "Lễ hội mùa hè ở Hibari-chō"
+  descriptionJa: "夏祭りの夜。町の人たちと話して、みんなの前であいさつしましょう。"
+  descriptionEn: "Đêm lễ hội mùa hè. Gặp lại những người bạn bạn đã giúp đỡ, thử ramen của chú Yamada và phát biểu trước cả khu phố; mọi điều bạn từng làm đều được mọi người nhớ."
   chapterIndex: 4
   questType: main
   giverNpcId: npc_neighbor_3
@@ -41,201 +41,1446 @@ MonoBehaviour:
   minPlayers: 2
   maxPlayers: 2
   learningTargets:
-  - grammar.n5.okage_de
-  - grammar.n5.te_kudasatte_arigatou
+  - grammar.n5.mashou
+  - grammar.n5.wo_kudasai
+  - vocab.n5.yokatta
+  - vocab.n5.oishii
+  - vocab.n5.arigatou_gozaimasu
   objectives:
-  - id: obj_meet_tanaka
-    titleJa: 田中さんに会う
-    titleEn: Gặp lại Tanaka
+  - id: obj_arrive
+    titleJa: "夏祭りに着く"
+    titleEn: "Đến lễ hội mùa hè"
     isOptional: 0
-  - id: obj_meet_suzuki
-    titleJa: 鈴木さんに会う
-    titleEn: Gặp lại Suzuki
+  - id: obj_tanaka
+    titleJa: "田中さんと話す"
+    titleEn: "Trò chuyện với bác Tanaka"
     isOptional: 0
-  - id: obj_meet_sato
-    titleJa: 佐藤さんに会う
-    titleEn: Gặp lại Sato
+  - id: obj_suzuki
+    titleJa: "鈴木さんと話す"
+    titleEn: "Trò chuyện với cô Suzuki"
     isOptional: 0
-  - id: obj_meet_yamada
-    titleJa: 山田さんに会う
-    titleEn: Gặp lại Yamada
+  - id: obj_yamada
+    titleJa: "山田さんのラーメンを食べる"
+    titleEn: "Ăn ramen của chú Yamada"
     isOptional: 0
-  - id: obj_join_festival
-    titleJa: 夏祭りに参加する
-    titleEn: Hòa vào lễ hội
+  - id: obj_school
+    titleJa: "森田先生とキムさんに会う"
+    titleEn: "Gặp cô Morita và bạn Kim"
+    isOptional: 0
+  - id: obj_speech
+    titleJa: "みんなの前であいさつする"
+    titleEn: "Phát biểu trước mọi người"
     isOptional: 0
   nodes:
-  - id: node_festival_start
+  - id: n_arrive
     nodeType: 0
-    nextNodeId: node_meet_tanaka
-    objectiveIdToComplete:
-    speakerName: Sato
-    speakerId: npc_neighbor_3
-    textJa: よく来ましたね！今日は夏祭りです。皆、待っていますよ。
-    textReading: よくきましたね！きょうはなつまつりです。みんな、まっていますよ。
-    textEn: Cháu đến rồi đấy à! Hôm nay là lễ hội mùa hè. Mọi người đang đợi cháu đấy.
-    textRomaji: Yoku kimashita ne! Kyou wa natsu matsuri desu. Minna, matte imasu yo.
-    textEnglishIpa:
-    animationCue: point
+    nextNodeId: n_sato_open
+    objectiveIdToComplete: obj_arrive
+    speakerName: 
+    speakerId: 
+    textJa: "夏祭りの夜。ひばり神社は、ちょうちんの光でいっぱいです。"
+    textReading: "なつまつりのよる。ひばりじんじゃは、ちょうちんのひかりでいっぱいです。"
+    textEn: "Đêm lễ hội mùa hè. Đền Hibari ngập tràn ánh sáng của những chiếc đèn lồng."
+    textRomaji: "Natsu matsuri no yoru. Hibari jinja wa, chouchin no hikari de ippai desu."
+    textEnglishIpa: 
+    animationCue: 
     voiceClip: {fileID: 0}
     choices: []
-    targetItemId:
-    targetNpcId:
-    targetAreaId:
-  - id: node_meet_tanaka
+    flagCondition: 
+    flagJumpNodeId: 
+    targetItemId: 
+    targetNpcId: 
+    targetAreaId: 
+  - id: n_sato_open
     nodeType: 0
-    nextNodeId:
-    objectiveIdToComplete: obj_meet_tanaka
+    nextNodeId: n_hub
+    objectiveIdToComplete: 
+    speakerName: Sato
+    speakerId: npc_neighbor_3
+    textJa: "皆さん、こんばんは。今年も、夏祭りが始まります。今日は、新しい仲間もいますよ。"
+    textReading: "みなさん、こんばんは。ことしも、なつまつりがはじまります。きょうは、あたらしいなかまもいますよ。"
+    textEn: "Chào mọi người. Năm nay lễ hội mùa hè lại bắt đầu. Hôm nay cũng có một người bạn mới nữa đấy."
+    textRomaji: "Minasan, konbanwa. Kotoshi mo, natsu matsuri ga hajimarimasu. Kyou wa, atarashii nakama mo imasu yo."
+    textEnglishIpa: 
+    animationCue: talk
+    voiceClip: {fileID: 0}
+    choices: []
+    flagCondition: 
+    flagJumpNodeId: 
+    targetItemId: 
+    targetNpcId: 
+    targetAreaId: 
+  - id: n_hub
+    nodeType: 0
+    nextNodeId: 
+    objectiveIdToComplete: 
+    speakerName: 
+    speakerId: 
+    textJa: "お祭りには、知っている人がたくさんいます。だれと話しますか。"
+    textReading: "おまつりには、しっているひとがたくさんいます。だれとはなしますか。"
+    textEn: "Ở lễ hội có rất nhiều người bạn quen. Bạn muốn nói chuyện với ai?"
+    textRomaji: "Omatsuri ni wa, shitte iru hito ga takusan imasu. Dare to hanashimasu ka?"
+    textEnglishIpa: 
+    animationCue: 
+    voiceClip: {fileID: 0}
+    choices:
+    - textJa: "田中さんと話します。"
+      textEn: "Nói chuyện với bác Tanaka."
+      nextNodeId: t_start
+      scoreModifiers: []
+      grammarTags: []
+      vocabularyTags: []
+      setFlags: []
+    - textJa: "鈴木さんと話します。"
+      textEn: "Nói chuyện với cô Suzuki."
+      nextNodeId: b_s1
+      scoreModifiers: []
+      grammarTags: []
+      vocabularyTags: []
+      setFlags: []
+    - textJa: "山田さんの屋台へ行きます。"
+      textEn: "Đến quầy hàng của chú Yamada."
+      nextNodeId: b_y
+      scoreModifiers: []
+      grammarTags: []
+      vocabularyTags: []
+      setFlags: []
+    - textJa: "森田先生とキムさんに会います。"
+      textEn: "Gặp cô Morita và bạn Kim."
+      nextNodeId: b_m
+      scoreModifiers: []
+      grammarTags: []
+      vocabularyTags: []
+      setFlags: []
+    flagCondition: 
+    flagJumpNodeId: 
+    targetItemId: 
+    targetNpcId: 
+    targetAreaId: 
+  - id: b_hub
+    nodeType: 7
+    nextNodeId: n_hub
+    objectiveIdToComplete: 
+    speakerName: 
+    speakerId: 
+    textJa: 
+    textReading: 
+    textEn: 
+    textRomaji: 
+    textEnglishIpa: 
+    animationCue: 
+    voiceClip: {fileID: 0}
+    choices: []
+    flagCondition: "fest.met_tanaka,fest.met_suzuki,fest.met_yamada,fest.met_school"
+    flagJumpNodeId: f_start
+    targetItemId: 
+    targetNpcId: 
+    targetAreaId: 
+  - id: t_start
+    nodeType: 0
+    nextNodeId: 
+    objectiveIdToComplete: 
     speakerName: Tanaka
     speakerId: npc_neighbor_1
-    textJa: 久しぶりですね。この町にもう慣れましたか？
-    textReading: ひさしぶりですね。このまちにもうなれましたか？
-    textEn: Lâu rồi mới gặp nhỉ. Cháu đã quen với khu phố này chưa?
-    textRomaji: Hisashiburi desu ne. Kono machi ni mou naremashita ka?
-    textEnglishIpa:
-    animationCue: bow
-    voiceClip: {fileID: 0}
-    choices:
-    - textJa: はい、皆さんのおかげです。
-      textEn: Vâng, tất cả là nhờ mọi người ạ.
-      nextNodeId: node_meet_suzuki
-      scoreModifiers:
-      - category: Grammar
-        value: 10
-        reason: Dùng đúng mẫu 〜のおかげです
-      grammarTags: []
-      vocabularyTags: []
-    - textJa: はい、とても楽しいです。
-      textEn: Vâng, cháu thấy rất vui ạ.
-      nextNodeId: node_meet_suzuki
-      scoreModifiers:
-      - category: Vocabulary
-        value: 8
-        reason: Diễn đạt cảm xúc tự nhiên
-      grammarTags: []
-      vocabularyTags: []
-    targetItemId:
-    targetNpcId:
-    targetAreaId:
-  - id: node_meet_suzuki
-    nodeType: 0
-    nextNodeId:
-    objectiveIdToComplete: obj_meet_suzuki
-    speakerName: Suzuki
-    speakerId: npc_neighbor_2
-    textJa: あ、この間はありがとうございました。あの後、猫は自分で帰ってきたんですよ。
-    textReading: あ、このあいだはありがとうございました。あのあと、ねこはじぶんでかえってきたんですよ。
-    textEn: À, cảm ơn cháu hôm trước nhé. Sau đó con mèo tự về nhà đấy.
-    textRomaji: A, kono aida wa arigatou gozaimashita. Ano ato, neko wa jibun de kaette kitan desu yo.
-    textEnglishIpa:
-    animationCue: bow
-    voiceClip: {fileID: 0}
-    choices:
-    - textJa: よかったですね！
-      textEn: Thật là tốt quá ạ!
-      nextNodeId: node_meet_sato
-      scoreModifiers:
-      - category: TaskCompletion
-        value: 5
-        reason: Phản hồi phù hợp cảm xúc người nói
-      grammarTags: []
-      vocabularyTags: []
-    - textJa: 安心しました。
-      textEn: Cháu thấy nhẹ nhõm hẳn ạ.
-      nextNodeId: node_meet_sato
-      scoreModifiers:
-      - category: Vocabulary
-        value: 5
-        reason: Dùng đúng từ 安心する
-      grammarTags: []
-      vocabularyTags: []
-    targetItemId:
-    targetNpcId:
-    targetAreaId:
-  - id: node_meet_sato
-    nodeType: 0
-    nextNodeId: node_meet_yamada
-    objectiveIdToComplete: obj_meet_sato
-    speakerName: Sato
-    speakerId: npc_neighbor_3
-    textJa: 祭りのごみは、あそこに分けて捨ててくださいね。もう慣れていますよね？
-    textReading: まつりのごみは、あそこにわけてすててくださいね。もうなれていますよね？
-    textEn: Rác của lễ hội thì cháu nhớ phân loại và vứt ở đằng kia nhé. Chắc cháu quen rồi đúng không?
-    textRomaji: Matsuri no gomi wa, asoko ni wakete sutete kudasai ne. Mou narete imasu yo ne?
-    textEnglishIpa:
-    animationCue: point
-    voiceClip: {fileID: 0}
-    choices: []
-    targetItemId:
-    targetNpcId:
-    targetAreaId:
-  - id: node_meet_yamada
-    nodeType: 0
-    nextNodeId:
-    objectiveIdToComplete: obj_meet_yamada
-    speakerName: Yamada
-    speakerId: npc_ramen_owner
-    textJa: いらっしゃい！今日は屋台でラーメンを出していますよ。
-    textReading: いらっしゃい！きょうはやたいでラーメンをだしていますよ。
-    textEn: Chào mừng cháu! Hôm nay chú bán ramen ở quầy hàng đấy.
-    textRomaji: Irasshai! Kyou wa yatai de ramen wo dashite imasu yo.
-    textEnglishIpa:
+    textJa: "やあ、来ましたね。今日は、ゆかたを着ましたよ。"
+    textReading: "やあ、きましたね。きょうは、ゆかたをきましたよ。"
+    textEn: "Chào, bạn đến rồi nhỉ. Hôm nay tôi mặc yukata đấy."
+    textRomaji: "Yaa, kimashita ne. Kyou wa, yukata wo kimashita yo."
+    textEnglishIpa: 
     animationCue: talk
     voiceClip: {fileID: 0}
     choices:
-    - textJa: ください！
-      textEn: Cho cháu một tô ạ!
-      nextNodeId: node_festival_finale
+    - textJa: "ゆかた、似合いますね。"
+      textEn: "Bác mặc yukata hợp quá ạ."
+      nextNodeId: b_t1
       scoreModifiers:
-      - category: TaskCompletion
-        value: 5
-        reason: Phản hồi tự nhiên, hưởng ứng không khí lễ hội
+      - category: Vocabulary
+        value: 10
+        reason: "Khen trang phục bằng 似合いますね, cách khen tự nhiên với người quen"
+      grammarTags:
+      - grammar.n5.desu_ne
+      vocabularyTags:
+      - vocab.n5.yukata
+      - vocab.n5.niau
+      setFlags: []
+    - textJa: "ゆかたですね。"
+      textEn: "Là yukata nhỉ."
+      nextNodeId: b_t1
+      scoreModifiers:
+      - category: ResponseAccuracy
+        value: 3
+        reason: "Nhận xét đúng nhưng chưa thành lời khen"
+      grammarTags: []
+      vocabularyTags:
+      - vocab.n5.yukata
+      setFlags: []
+    - textJa: "ゆかたは暑いです。"
+      textEn: "Yukata nóng lắm."
+      nextNodeId: t_wrong1
+      scoreModifiers:
+      - category: ResponseAccuracy
+        value: -6
+        reason: "Chê trang phục của người vừa khoe, thiếu tế nhị"
       grammarTags: []
       vocabularyTags: []
-    - textJa: 後で行きます。
-      textEn: Lát nữa cháu ghé qua ạ.
-      nextNodeId: node_festival_finale
-      scoreModifiers:
-      - category: Grammar
-        value: 5
-        reason: Dùng đúng mẫu 後で
-      grammarTags: []
-      vocabularyTags: []
-    targetItemId:
-    targetNpcId:
-    targetAreaId:
-  - id: node_festival_finale
+      setFlags: []
+    flagCondition: 
+    flagJumpNodeId: 
+    targetItemId: 
+    targetNpcId: 
+    targetAreaId: 
+  - id: t_wrong1
     nodeType: 0
-    nextNodeId: node_complete
-    objectiveIdToComplete: obj_join_festival
-    speakerName: Sato
-    speakerId: npc_neighbor_3
-    textJa: この町へようこそ。これからもよろしくお願いします。
-    textReading: このまちへようこそ。これからもよろしくおねがいします。
-    textEn: Chào mừng cháu đến với khu phố này. Sau này cũng mong được giúp đỡ cháu nhé.
-    textRomaji: Kono machi e youkoso. Korekara mo yoroshiku onegaishimasu.
-    textEnglishIpa:
+    nextNodeId: t_start
+    objectiveIdToComplete: 
+    speakerName: Tanaka
+    speakerId: npc_neighbor_1
+    textJa: "あはは、夏ですから、少し暑いですね。でも、ゆかたは、いいですよ。"
+    textReading: "あはは、なつですから、すこしあついですね。でも、ゆかたは、いいですよ。"
+    textEn: "Haha, mùa hè nên cũng hơi nóng thật. Nhưng yukata đẹp lắm đấy."
+    textRomaji: "Ahaha, natsu desu kara, sukoshi atsui desu ne. Demo, yukata wa, ii desu yo."
+    textEnglishIpa: 
+    animationCue: talk
+    voiceClip: {fileID: 0}
+    choices: []
+    flagCondition: 
+    flagJumpNodeId: 
+    targetItemId: 
+    targetNpcId: 
+    targetAreaId: 
+  - id: b_t1
+    nodeType: 7
+    nextNodeId: t_plain
+    objectiveIdToComplete: 
+    speakerName: 
+    speakerId: 
+    textJa: 
+    textReading: 
+    textEn: 
+    textRomaji: 
+    textEnglishIpa: 
+    animationCue: 
+    voiceClip: {fileID: 0}
+    choices: []
+    flagCondition: "tanaka.friend"
+    flagJumpNodeId: t_friend
+    targetItemId: 
+    targetNpcId: 
+    targetAreaId: 
+  - id: t_friend
+    nodeType: 0
+    nextNodeId: t_ask
+    objectiveIdToComplete: 
+    speakerName: Tanaka
+    speakerId: npc_neighbor_1
+    textJa: "私たちは、もう友達ですね。今日は、みんなに「私の友達です」と紹介しますよ。"
+    textReading: "わたしたちは、もうともだちですね。きょうは、みんなに「わたしのともだちです」としょうかいしますよ。"
+    textEn: "Chúng ta đã là bạn rồi nhỉ. Hôm nay tôi sẽ giới thiệu bạn với mọi người là \"bạn của tôi\"."
+    textRomaji: "Watashitachi wa, mou tomodachi desu ne. Kyou wa, minna ni \"watashi no tomodachi desu\" to shoukai shimasu yo."
+    textEnglishIpa: 
     animationCue: bow
     voiceClip: {fileID: 0}
     choices: []
-    targetItemId:
-    targetNpcId:
-    targetAreaId:
-  - id: node_complete
-    nodeType: 4
-    nextNodeId:
-    objectiveIdToComplete:
-    speakerName:
-    speakerId:
-    textJa:
-    textReading:
-    textEn:
-    textRomaji:
-    textEnglishIpa:
-    animationCue:
+    flagCondition: 
+    flagJumpNodeId: 
+    targetItemId: 
+    targetNpcId: 
+    targetAreaId: 
+  - id: t_plain
+    nodeType: 0
+    nextNodeId: t_ask
+    objectiveIdToComplete: 
+    speakerName: Tanaka
+    speakerId: npc_neighbor_1
+    textJa: "この町の人は、みんな、あなたを知っていますよ。"
+    textReading: "このまちのひとは、みんな、あなたをしっていますよ。"
+    textEn: "Mọi người trong khu phố này ai cũng biết bạn rồi đấy."
+    textRomaji: "Kono machi no hito wa, minna, anata wo shitte imasu yo."
+    textEnglishIpa: 
+    animationCue: talk
     voiceClip: {fileID: 0}
     choices: []
-    targetItemId:
-    targetNpcId:
-    targetAreaId:
-  startNodeId: node_festival_start
+    flagCondition: 
+    flagJumpNodeId: 
+    targetItemId: 
+    targetNpcId: 
+    targetAreaId: 
+  - id: t_ask
+    nodeType: 0
+    nextNodeId: 
+    objectiveIdToComplete: 
+    speakerName: Tanaka
+    speakerId: npc_neighbor_1
+    textJa: "この町は、どうですか。"
+    textReading: "このまちは、どうですか。"
+    textEn: "Bạn thấy khu phố này thế nào?"
+    textRomaji: "Kono machi wa, dou desu ka?"
+    textEnglishIpa: 
+    animationCue: talk
+    voiceClip: {fileID: 0}
+    choices:
+    - textJa: "この町が好きです。人がやさしいです。"
+      textEn: "Cháu thích khu phố này. Mọi người rất tử tế ạ."
+      nextNodeId: t_end
+      scoreModifiers:
+      - category: Grammar
+        value: 10
+        reason: "Nói cảm nghĩ bằng 〜が好きです và mô tả bằng tính từ đuôi い: やさしいです"
+      grammarTags:
+      - grammar.n5.ga_suki_desu
+      vocabularyTags:
+      - vocab.n5.suki
+      - vocab.n5.yasashii
+      setFlags:
+      - fest.met_tanaka
+      - fest.said_love_town
+    - textJa: "まだ、ちょっと不安です。でも、がんばります。"
+      textEn: "Cháu vẫn hơi lo. Nhưng cháu sẽ cố gắng ạ."
+      nextNodeId: t_end_honest
+      scoreModifiers:
+      - category: ResponseAccuracy
+        value: 8
+        reason: "Nói thật lòng nhưng vẫn tích cực bằng でも、がんばります"
+      grammarTags: []
+      vocabularyTags:
+      - vocab.n5.fuan
+      - vocab.n5.ganbaru
+      setFlags:
+      - fest.met_tanaka
+    - textJa: "つまらないです。"
+      textEn: "Chán lắm ạ."
+      nextNodeId: t_wrong2
+      scoreModifiers:
+      - category: ResponseAccuracy
+        value: -8
+        reason: "Nói tiêu cực giữa lễ hội, thiếu phù hợp với hoàn cảnh và người nghe"
+      grammarTags: []
+      vocabularyTags: []
+      setFlags: []
+    flagCondition: 
+    flagJumpNodeId: 
+    targetItemId: 
+    targetNpcId: 
+    targetAreaId: 
+  - id: t_wrong2
+    nodeType: 0
+    nextNodeId: t_ask
+    objectiveIdToComplete: 
+    speakerName: Tanaka
+    speakerId: npc_neighbor_1
+    textJa: "えっ！…ふふ、お祭りは、これからですよ。もう一度、聞きますね。"
+    textReading: "えっ！…ふふ、おまつりは、これからですよ。もういちど、ききますね。"
+    textEn: "Hả! ...Hì, lễ hội mới bắt đầu thôi mà. Tôi hỏi lại nhé."
+    textRomaji: "Ee! ...Fufu, omatsuri wa, korekara desu yo. Mou ichido, kikimasu ne."
+    textEnglishIpa: 
+    animationCue: talk
+    voiceClip: {fileID: 0}
+    choices: []
+    flagCondition: 
+    flagJumpNodeId: 
+    targetItemId: 
+    targetNpcId: 
+    targetAreaId: 
+  - id: t_end
+    nodeType: 0
+    nextNodeId: b_hub
+    objectiveIdToComplete: obj_tanaka
+    speakerName: Tanaka
+    speakerId: npc_neighbor_1
+    textJa: "うれしいですね。この町も、あなたが好きですよ。"
+    textReading: "うれしいですね。このまちも、あなたがすきですよ。"
+    textEn: "Vui quá nhỉ. Khu phố này cũng quý mến bạn đấy."
+    textRomaji: "Ureshii desu ne. Kono machi mo, anata ga suki desu yo."
+    textEnglishIpa: 
+    animationCue: bow
+    voiceClip: {fileID: 0}
+    choices: []
+    flagCondition: 
+    flagJumpNodeId: 
+    targetItemId: 
+    targetNpcId: 
+    targetAreaId: 
+  - id: t_end_honest
+    nodeType: 0
+    nextNodeId: b_hub
+    objectiveIdToComplete: obj_tanaka
+    speakerName: Tanaka
+    speakerId: npc_neighbor_1
+    textJa: "だいじょうぶ。この町には、友達がたくさんいますよ。"
+    textReading: "だいじょうぶ。このまちには、ともだちがたくさんいますよ。"
+    textEn: "Không sao đâu. Khu phố này có rất nhiều bạn bè đấy."
+    textRomaji: "Daijoubu. Kono machi ni wa, tomodachi ga takusan imasu yo."
+    textEnglishIpa: 
+    animationCue: bow
+    voiceClip: {fileID: 0}
+    choices: []
+    flagCondition: 
+    flagJumpNodeId: 
+    targetItemId: 
+    targetNpcId: 
+    targetAreaId: 
+  - id: b_s1
+    nodeType: 7
+    nextNodeId: b_s2
+    objectiveIdToComplete: 
+    speakerName: 
+    speakerId: 
+    textJa: 
+    textReading: 
+    textEn: 
+    textRomaji: 
+    textEnglishIpa: 
+    animationCue: 
+    voiceClip: {fileID: 0}
+    choices: []
+    flagCondition: "cat.shrine_hint,cat.promised"
+    flagJumpNodeId: s_found
+    targetItemId: 
+    targetNpcId: 
+    targetAreaId: 
+  - id: b_s2
+    nodeType: 7
+    nextNodeId: s_returned
+    objectiveIdToComplete: 
+    speakerName: 
+    speakerId: 
+    textJa: 
+    textReading: 
+    textEn: 
+    textRomaji: 
+    textEnglishIpa: 
+    animationCue: 
+    voiceClip: {fileID: 0}
+    choices: []
+    flagCondition: "cat.described"
+    flagJumpNodeId: s_returned_asked
+    targetItemId: 
+    targetNpcId: 
+    targetAreaId: 
+  - id: s_found
+    nodeType: 0
+    nextNodeId: s_react
+    objectiveIdToComplete: 
+    speakerName: Suzuki
+    speakerId: npc_neighbor_2
+    textJa: "ミケが、見つかりました！神社の近くにいました。あなたが教えてくれた場所です！"
+    textReading: "ミケが、みつかりました！じんじゃのちかくにいました。あなたがおしえてくれたばしょです！"
+    textEn: "Tìm thấy Mike rồi! Nó ở gần đền thờ. Chính là chỗ mà bạn đã nhắc cho tôi đấy!"
+    textRomaji: "Mike ga, mitsukarimashita! Jinja no chikaku ni imashita. Anata ga oshiete kureta basho desu!"
+    textEnglishIpa: 
+    animationCue: bow
+    voiceClip: {fileID: 0}
+    choices: []
+    flagCondition: 
+    flagJumpNodeId: 
+    targetItemId: 
+    targetNpcId: 
+    targetAreaId: 
+  - id: s_returned_asked
+    nodeType: 0
+    nextNodeId: s_react
+    objectiveIdToComplete: 
+    speakerName: Suzuki
+    speakerId: npc_neighbor_2
+    textJa: "ミケは、自分で帰ってきました。心配してくれて、ありがとうございました。"
+    textReading: "ミケは、じぶんでかえってきました。しんぱいしてくれて、ありがとうございました。"
+    textEn: "Mike đã tự về nhà rồi. Cảm ơn bạn đã lo lắng cho tôi."
+    textRomaji: "Mike wa, jibun de kaette kimashita. Shinpai shite kurete, arigatou gozaimashita."
+    textEnglishIpa: 
+    animationCue: bow
+    voiceClip: {fileID: 0}
+    choices: []
+    flagCondition: 
+    flagJumpNodeId: 
+    targetItemId: 
+    targetNpcId: 
+    targetAreaId: 
+  - id: s_returned
+    nodeType: 0
+    nextNodeId: s_react
+    objectiveIdToComplete: 
+    speakerName: Suzuki
+    speakerId: npc_neighbor_2
+    textJa: "ミケは、帰ってきました。今日は、元気です。"
+    textReading: "ミケは、かえってきました。きょうは、げんきです。"
+    textEn: "Mike đã về rồi. Hôm nay nó khỏe lắm."
+    textRomaji: "Mike wa, kaette kimashita. Kyou wa, genki desu."
+    textEnglishIpa: 
+    animationCue: talk
+    voiceClip: {fileID: 0}
+    choices: []
+    flagCondition: 
+    flagJumpNodeId: 
+    targetItemId: 
+    targetNpcId: 
+    targetAreaId: 
+  - id: s_react
+    nodeType: 0
+    nextNodeId: 
+    objectiveIdToComplete: 
+    speakerName: Suzuki
+    speakerId: npc_neighbor_2
+    textJa: "ほら、あそこ。ミケも、お祭りに来ましたよ。赤いリボンをしています。"
+    textReading: "ほら、あそこ。ミケも、おまつりにきましたよ。あかいリボンをしています。"
+    textEn: "Kìa, ở đằng kia. Mike cũng đến lễ hội rồi. Nó đang đeo chiếc nơ đỏ."
+    textRomaji: "Hora, asoko. Mike mo, omatsuri ni kimashita yo. Akai ribon wo shite imasu."
+    textEnglishIpa: 
+    animationCue: point
+    voiceClip: {fileID: 0}
+    choices:
+    - textJa: "よかったですね！"
+      textEn: "Thật tốt quá ạ!"
+      nextNodeId: s_end
+      scoreModifiers:
+      - category: Vocabulary
+        value: 10
+        reason: "Chia sẻ niềm vui bằng よかったですね"
+      grammarTags:
+      - grammar.n5.desu_ne
+      vocabularyTags:
+      - vocab.n5.yokatta
+      setFlags:
+      - fest.met_suzuki
+    - textJa: "そうですか。"
+      textEn: "Vậy ạ."
+      nextNodeId: s_end
+      scoreModifiers:
+      - category: ResponseAccuracy
+        value: 3
+        reason: "Đáp lại được nhưng lạnh nhạt, chưa chia sẻ niềm vui"
+      grammarTags: []
+      vocabularyTags: []
+      setFlags:
+      - fest.met_suzuki
+    - textJa: "猫は、嫌いです。"
+      textEn: "Cháu không thích mèo."
+      nextNodeId: s_wrong
+      scoreModifiers:
+      - category: ResponseAccuracy
+        value: -8
+        reason: "Nói điều tiêu cực đúng lúc người ta đang vui vì tìm được mèo"
+      grammarTags: []
+      vocabularyTags: []
+      setFlags: []
+    flagCondition: 
+    flagJumpNodeId: 
+    targetItemId: 
+    targetNpcId: 
+    targetAreaId: 
+  - id: s_wrong
+    nodeType: 0
+    nextNodeId: s_react
+    objectiveIdToComplete: 
+    speakerName: Suzuki
+    speakerId: npc_neighbor_2
+    textJa: "あ…そうですか。でも、ミケは、あなたが好きですよ。"
+    textReading: "あ…そうですか。でも、ミケは、あなたがすきですよ。"
+    textEn: "À... vậy à. Nhưng Mike thì quý bạn lắm đấy."
+    textRomaji: "A... sou desu ka. Demo, Mike wa, anata ga suki desu yo."
+    textEnglishIpa: 
+    animationCue: talk
+    voiceClip: {fileID: 0}
+    choices: []
+    flagCondition: 
+    flagJumpNodeId: 
+    targetItemId: 
+    targetNpcId: 
+    targetAreaId: 
+  - id: s_end
+    nodeType: 0
+    nextNodeId: b_hub
+    objectiveIdToComplete: obj_suzuki
+    speakerName: Suzuki
+    speakerId: npc_neighbor_2
+    textJa: "ありがとうございます、ありがとうございます！"
+    textReading: "ありがとうございます、ありがとうございます！"
+    textEn: "Cảm ơn bạn, cảm ơn bạn nhiều lắm!"
+    textRomaji: "Arigatou gozaimasu, arigatou gozaimasu!"
+    textEnglishIpa: 
+    animationCue: bow
+    voiceClip: {fileID: 0}
+    choices: []
+    flagCondition: 
+    flagJumpNodeId: 
+    targetItemId: 
+    targetNpcId: 
+    targetAreaId: 
+  - id: b_y
+    nodeType: 7
+    nextNodeId: y_new
+    objectiveIdToComplete: 
+    speakerName: 
+    speakerId: 
+    textJa: 
+    textReading: 
+    textEn: 
+    textRomaji: 
+    textEnglishIpa: 
+    animationCue: 
+    voiceClip: {fileID: 0}
+    choices: []
+    flagCondition: "done:scenario.restaurant.order_ramen"
+    flagJumpNodeId: y_regular
+    targetItemId: 
+    targetNpcId: 
+    targetAreaId: 
+  - id: y_regular
+    nodeType: 0
+    nextNodeId: y_order
+    objectiveIdToComplete: 
+    speakerName: Yamada
+    speakerId: npc_ramen_owner
+    textJa: "おっ、また来たね！いつものラーメンかい？"
+    textReading: "おっ、またきたね！いつものラーメンかい？"
+    textEn: "Ồ, lại đến rồi à! Vẫn tô ramen quen thuộc chứ?"
+    textRomaji: "O, mata kita ne! Itsumo no raamen kai?"
+    textEnglishIpa: 
+    animationCue: talk
+    voiceClip: {fileID: 0}
+    choices: []
+    flagCondition: 
+    flagJumpNodeId: 
+    targetItemId: 
+    targetNpcId: 
+    targetAreaId: 
+  - id: y_new
+    nodeType: 0
+    nextNodeId: y_order
+    objectiveIdToComplete: 
+    speakerName: Yamada
+    speakerId: npc_ramen_owner
+    textJa: "いらっしゃい！新しい学生さんだね。ラーメン、食べていくかい？"
+    textReading: "いらっしゃい！あたらしいがくせいさんだね。ラーメン、たべていくかい？"
+    textEn: "Xin chào! Học viên mới nhỉ. Ăn tô ramen rồi hẵng đi chứ?"
+    textRomaji: "Irasshai! Atarashii gakusei-san da ne. Raamen, tabete iku kai?"
+    textEnglishIpa: 
+    animationCue: talk
+    voiceClip: {fileID: 0}
+    choices: []
+    flagCondition: 
+    flagJumpNodeId: 
+    targetItemId: 
+    targetNpcId: 
+    targetAreaId: 
+  - id: y_order
+    nodeType: 0
+    nextNodeId: 
+    objectiveIdToComplete: 
+    speakerName: 
+    speakerId: 
+    textJa: "ラーメンを注文します。何と言いますか。"
+    textReading: "ラーメンをちゅうもんします。なんといいますか。"
+    textEn: "Bạn gọi một tô ramen. Bạn sẽ nói gì?"
+    textRomaji: "Raamen wo chuumon shimasu. Nan to iimasu ka?"
+    textEnglishIpa: 
+    animationCue: 
+    voiceClip: {fileID: 0}
+    choices:
+    - textJa: "ラーメンを一つください。"
+      textEn: "Cho cháu một tô ramen ạ."
+      nextNodeId: y_serve
+      scoreModifiers:
+      - category: Grammar
+        value: 10
+        reason: "Gọi món đúng mẫu 〜を〜(số đếm)ください với 一つ"
+      grammarTags:
+      - grammar.n5.wo_kudasai
+      - grammar.n5.counter_tsu
+      vocabularyTags:
+      - vocab.n5.raamen
+      - vocab.n5.hitotsu
+      setFlags: []
+    - textJa: "ラーメン、一つ。"
+      textEn: "Ramen, một tô."
+      nextNodeId: y_serve_casual
+      scoreModifiers:
+      - category: ResponseAccuracy
+        value: 3
+        reason: "Hiểu được nhưng cộc lốc, thiếu をください"
+      grammarTags:
+      - grammar.n5.counter_tsu
+      vocabularyTags:
+      - vocab.n5.raamen
+      setFlags: []
+    - textJa: "ラーメンをいただきます。"
+      textEn: "Cháu xin phép dùng ramen ạ."
+      nextNodeId: y_wrong
+      scoreModifiers:
+      - category: Grammar
+        value: -8
+        reason: "いただきます nói khi bắt đầu ăn, không dùng để gọi món"
+      grammarTags: []
+      vocabularyTags: []
+      setFlags: []
+    flagCondition: 
+    flagJumpNodeId: 
+    targetItemId: 
+    targetNpcId: 
+    targetAreaId: 
+  - id: y_serve_casual
+    nodeType: 0
+    nextNodeId: y_serve
+    objectiveIdToComplete: 
+    speakerName: Yamada
+    speakerId: npc_ramen_owner
+    textJa: "ははは、いいよ。でも、「ください」をつけると、もっといいね。"
+    textReading: "ははは、いいよ。でも、「ください」をつけると、もっといいね。"
+    textEn: "Haha, được thôi. Nhưng thêm \"kudasai\" vào thì còn hay hơn nữa."
+    textRomaji: "Hahaha, ii yo. Demo, \"kudasai\" wo tsukeru to, motto ii ne."
+    textEnglishIpa: 
+    animationCue: talk
+    voiceClip: {fileID: 0}
+    choices: []
+    flagCondition: 
+    flagJumpNodeId: 
+    targetItemId: 
+    targetNpcId: 
+    targetAreaId: 
+  - id: y_wrong
+    nodeType: 0
+    nextNodeId: y_order
+    objectiveIdToComplete: 
+    speakerName: Yamada
+    speakerId: npc_ramen_owner
+    textJa: "おいおい、まだ食べてないよ。注文は、「ください」だよ。"
+    textReading: "おいおい、まだたべてないよ。ちゅうもんは、「ください」だよ。"
+    textEn: "Này này, chưa ăn mà. Gọi món thì phải nói \"kudasai\" chứ."
+    textRomaji: "Oi oi, mada tabetenai yo. Chuumon wa, \"kudasai\" da yo."
+    textEnglishIpa: 
+    animationCue: point
+    voiceClip: {fileID: 0}
+    choices: []
+    flagCondition: 
+    flagJumpNodeId: 
+    targetItemId: 
+    targetNpcId: 
+    targetAreaId: 
+  - id: y_serve
+    nodeType: 0
+    nextNodeId: 
+    objectiveIdToComplete: 
+    speakerName: Yamada
+    speakerId: npc_ramen_owner
+    textJa: "はい、おまち！熱いから、気をつけてね。"
+    textReading: "はい、おまち！あついから、きをつけてね。"
+    textEn: "Đây, xong rồi! Nóng đấy, cẩn thận nhé."
+    textRomaji: "Hai, omachi! Atsui kara, ki wo tsukete ne."
+    textEnglishIpa: 
+    animationCue: point
+    voiceClip: {fileID: 0}
+    choices:
+    - textJa: "いただきます。"
+      textEn: "Cháu xin phép dùng ạ."
+      nextNodeId: y_eat
+      scoreModifiers:
+      - category: Vocabulary
+        value: 10
+        reason: "Nói いただきます trước khi ăn"
+      grammarTags: []
+      vocabularyTags:
+      - vocab.n5.itadakimasu
+      setFlags: []
+    - textJa: "ありがとうございます。いただきます。"
+      textEn: "Cháu cảm ơn. Cháu xin phép dùng ạ."
+      nextNodeId: y_eat
+      scoreModifiers:
+      - category: Vocabulary
+        value: 10
+        reason: "Cảm ơn rồi nói いただきます, rất lịch sự"
+      grammarTags: []
+      vocabularyTags:
+      - vocab.n5.itadakimasu
+      - vocab.n5.arigatou_gozaimasu
+      setFlags: []
+    flagCondition: 
+    flagJumpNodeId: 
+    targetItemId: 
+    targetNpcId: 
+    targetAreaId: 
+  - id: y_eat
+    nodeType: 0
+    nextNodeId: 
+    objectiveIdToComplete: 
+    speakerName: Yamada
+    speakerId: npc_ramen_owner
+    textJa: "どうだい？おいしいかい？"
+    textReading: "どうだい？おいしいかい？"
+    textEn: "Thế nào? Ngon không?"
+    textRomaji: "Dou dai? Oishii kai?"
+    textEnglishIpa: 
+    animationCue: talk
+    voiceClip: {fileID: 0}
+    choices:
+    - textJa: "とてもおいしいです！"
+      textEn: "Rất ngon ạ!"
+      nextNodeId: y_end
+      scoreModifiers:
+      - category: Vocabulary
+        value: 10
+        reason: "Khen món ăn bằng とてもおいしいです"
+      grammarTags:
+      - grammar.n5.i_adj
+      vocabularyTags:
+      - vocab.n5.oishii
+      setFlags:
+      - fest.met_yamada
+    - textJa: "おいしいです。"
+      textEn: "Ngon ạ."
+      nextNodeId: y_end
+      scoreModifiers:
+      - category: Vocabulary
+        value: 8
+        reason: "Khen món ăn ngắn gọn nhưng đủ lịch sự"
+      grammarTags:
+      - grammar.n5.i_adj
+      vocabularyTags:
+      - vocab.n5.oishii
+      setFlags:
+      - fest.met_yamada
+    - textJa: "ふつうです。"
+      textEn: "Bình thường ạ."
+      nextNodeId: y_plain
+      scoreModifiers:
+      - category: ResponseAccuracy
+        value: -6
+        reason: "Chê món ăn ngay trước mặt chủ quán: thẳng thắn quá mức và bất lịch sự"
+      grammarTags: []
+      vocabularyTags: []
+      setFlags: []
+    flagCondition: 
+    flagJumpNodeId: 
+    targetItemId: 
+    targetNpcId: 
+    targetAreaId: 
+  - id: y_plain
+    nodeType: 0
+    nextNodeId: y_eat
+    objectiveIdToComplete: 
+    speakerName: Yamada
+    speakerId: npc_ramen_owner
+    textJa: "ふつう！？ははは、正直だね。もう一度、食べてみて。"
+    textReading: "ふつう！？ははは、しょうじきだね。もういちど、たべてみて。"
+    textEn: "Bình thường ư?! Haha, thật thà quá. Ăn thử lại xem."
+    textRomaji: "Futsuu!? Hahaha, shoujiki da ne. Mou ichido, tabete mite."
+    textEnglishIpa: 
+    animationCue: talk
+    voiceClip: {fileID: 0}
+    choices: []
+    flagCondition: 
+    flagJumpNodeId: 
+    targetItemId: 
+    targetNpcId: 
+    targetAreaId: 
+  - id: y_end
+    nodeType: 0
+    nextNodeId: b_hub
+    objectiveIdToComplete: obj_yamada
+    speakerName: Yamada
+    speakerId: npc_ramen_owner
+    textJa: "そうだろう！また、いつでも来てね。"
+    textReading: "そうだろう！また、いつでもきてね。"
+    textEn: "Đúng không nào! Lúc nào cũng ghé lại nhé."
+    textRomaji: "Sou darou! Mata, itsu demo kite ne."
+    textEnglishIpa: 
+    animationCue: bow
+    voiceClip: {fileID: 0}
+    choices: []
+    flagCondition: 
+    flagJumpNodeId: 
+    targetItemId: 
+    targetNpcId: 
+    targetAreaId: 
+  - id: b_m
+    nodeType: 7
+    nextNodeId: m_general
+    objectiveIdToComplete: 
+    speakerName: 
+    speakerId: 
+    textJa: 
+    textReading: 
+    textEn: 
+    textRomaji: 
+    textEnglishIpa: 
+    animationCue: 
+    voiceClip: {fileID: 0}
+    choices: []
+    flagCondition: "feel.nervous"
+    flagJumpNodeId: m_nervous
+    targetItemId: 
+    targetNpcId: 
+    targetAreaId: 
+  - id: m_nervous
+    nodeType: 0
+    nextNodeId: m_kim
+    objectiveIdToComplete: 
+    speakerName: Morita
+    speakerId: npc_teacher_morita
+    textJa: "はじめて会った日、あなたは、少し緊張していましたね。今は、ずいぶん上手に話せますよ。"
+    textReading: "はじめてあったひ、あなたは、すこしきんちょうしていましたね。いまは、ずいぶんじょうずにはなせますよ。"
+    textEn: "Hôm gặp nhau lần đầu, bạn đã hơi căng thẳng nhỉ. Bây giờ bạn nói giỏi lên rất nhiều rồi đấy."
+    textRomaji: "Hajimete atta hi, anata wa, sukoshi kinchou shite imashita ne. Ima wa, zuibun jouzu ni hanasemasu yo."
+    textEnglishIpa: 
+    animationCue: bow
+    voiceClip: {fileID: 0}
+    choices: []
+    flagCondition: 
+    flagJumpNodeId: 
+    targetItemId: 
+    targetNpcId: 
+    targetAreaId: 
+  - id: m_general
+    nodeType: 0
+    nextNodeId: m_kim
+    objectiveIdToComplete: 
+    speakerName: Morita
+    speakerId: npc_teacher_morita
+    textJa: "日本語が、とても上手になりましたね。がんばりましたね。"
+    textReading: "にほんごが、とてもじょうずになりましたね。がんばりましたね。"
+    textEn: "Tiếng Nhật của bạn đã giỏi lên nhiều rồi nhỉ. Bạn đã rất cố gắng."
+    textRomaji: "Nihongo ga, totemo jouzu ni narimashita ne. Ganbarimashita ne."
+    textEnglishIpa: 
+    animationCue: bow
+    voiceClip: {fileID: 0}
+    choices: []
+    flagCondition: 
+    flagJumpNodeId: 
+    targetItemId: 
+    targetNpcId: 
+    targetAreaId: 
+  - id: m_kim
+    nodeType: 0
+    nextNodeId: 
+    objectiveIdToComplete: 
+    speakerName: Kim
+    speakerId: npc_classmate_kim
+    textJa: "私も、がんばっています！まちがえても、笑いますよ。あはは！いっしょに、がんばりましょう！"
+    textReading: "わたしも、がんばっています！まちがえても、わらいますよ。あはは！いっしょに、がんばりましょう！"
+    textEn: "Tớ cũng đang cố gắng đây! Nói sai thì tớ cũng chỉ cười thôi. Haha! Cùng cố gắng nhé!"
+    textRomaji: "Watashi mo, ganbatte imasu! Machigaete mo, waraimasu yo. Ahaha! Issho ni, ganbarimashou!"
+    textEnglishIpa: 
+    animationCue: talk
+    voiceClip: {fileID: 0}
+    choices:
+    - textJa: "はい、いっしょにがんばりましょう。"
+      textEn: "Ừ, cùng cố gắng nhé."
+      nextNodeId: m_end
+      scoreModifiers:
+      - category: Grammar
+        value: 10
+        reason: "Rủ cùng làm bằng mẫu 〜ましょう"
+      grammarTags:
+      - grammar.n5.mashou
+      vocabularyTags:
+      - vocab.n5.issho_ni
+      - vocab.n5.ganbaru
+      setFlags:
+      - fest.met_school
+    - textJa: "はい。"
+      textEn: "Ừ."
+      nextNodeId: m_end
+      scoreModifiers:
+      - category: ResponseAccuracy
+        value: 3
+        reason: "Đáp được nhưng chưa đáp lại sự nhiệt tình của bạn"
+      grammarTags: []
+      vocabularyTags: []
+      setFlags:
+      - fest.met_school
+    - textJa: "私は、もうがんばりません。"
+      textEn: "Tớ không cố gắng nữa đâu."
+      nextNodeId: m_wrong
+      scoreModifiers:
+      - category: ResponseAccuracy
+        value: -8
+        reason: "Nói điều tiêu cực trái ngược với tinh thần lễ hội và với người bạn đang cổ vũ"
+      grammarTags: []
+      vocabularyTags: []
+      setFlags: []
+    flagCondition: 
+    flagJumpNodeId: 
+    targetItemId: 
+    targetNpcId: 
+    targetAreaId: 
+  - id: m_wrong
+    nodeType: 0
+    nextNodeId: m_kim
+    objectiveIdToComplete: 
+    speakerName: Kim
+    speakerId: npc_classmate_kim
+    textJa: "えっ！だめですよ！…あはは、じょうだんですよね？"
+    textReading: "えっ！だめですよ！…あはは、じょうだんですよね？"
+    textEn: "Hả! Không được đâu! ...Haha, cậu nói đùa đúng không?"
+    textRomaji: "Ee! Dame desu yo! ...Ahaha, joudan desu yo ne?"
+    textEnglishIpa: 
+    animationCue: talk
+    voiceClip: {fileID: 0}
+    choices: []
+    flagCondition: 
+    flagJumpNodeId: 
+    targetItemId: 
+    targetNpcId: 
+    targetAreaId: 
+  - id: m_end
+    nodeType: 0
+    nextNodeId: b_hub
+    objectiveIdToComplete: obj_school
+    speakerName: Morita
+    speakerId: npc_teacher_morita
+    textJa: "みなさん、この学生は、いいクラスメートです。"
+    textReading: "みなさん、このがくせいは、いいクラスメートです。"
+    textEn: "Mọi người ơi, học viên này là một bạn học rất tốt."
+    textRomaji: "Minasan, kono gakusei wa, ii kurasumeeto desu."
+    textEnglishIpa: 
+    animationCue: bow
+    voiceClip: {fileID: 0}
+    choices: []
+    flagCondition: 
+    flagJumpNodeId: 
+    targetItemId: 
+    targetNpcId: 
+    targetAreaId: 
+  - id: f_start
+    nodeType: 0
+    nextNodeId: f_s1
+    objectiveIdToComplete: 
+    speakerName: Sato
+    speakerId: npc_neighbor_3
+    textJa: "皆さん、ちょっと聞いてください。この学生さんが、あいさつをします。"
+    textReading: "みなさん、ちょっときいてください。このがくせいさんが、あいさつをします。"
+    textEn: "Mọi người ơi, xin hãy lắng nghe. Học viên này sẽ phát biểu đôi lời."
+    textRomaji: "Minasan, chotto kiite kudasai. Kono gakusei-san ga, aisatsu wo shimasu."
+    textEnglishIpa: 
+    animationCue: talk
+    voiceClip: {fileID: 0}
+    choices: []
+    flagCondition: 
+    flagJumpNodeId: 
+    targetItemId: 
+    targetNpcId: 
+    targetAreaId: 
+  - id: f_s1
+    nodeType: 0
+    nextNodeId: 
+    objectiveIdToComplete: 
+    speakerName: 
+    speakerId: 
+    textJa: "たくさんの人が、あなたを見ています。まず、あいさつです。"
+    textReading: "たくさんのひとが、あなたをみています。まず、あいさつです。"
+    textEn: "Rất nhiều người đang nhìn bạn. Trước hết là lời chào."
+    textRomaji: "Takusan no hito ga, anata wo mite imasu. Mazu, aisatsu desu."
+    textEnglishIpa: 
+    animationCue: 
+    voiceClip: {fileID: 0}
+    choices:
+    - textJa: "みなさん、こんばんは。"
+      textEn: "Xin chào mọi người, chào buổi tối ạ."
+      nextNodeId: f_s2
+      scoreModifiers:
+      - category: Vocabulary
+        value: 10
+        reason: "Chào đúng buổi tối với nhiều người bằng みなさん、こんばんは"
+      grammarTags: []
+      vocabularyTags:
+      - vocab.n5.minasan
+      - vocab.n5.konbanwa
+      setFlags: []
+    - textJa: "こんにちは、みんな。"
+      textEn: "Chào các bạn."
+      nextNodeId: f_s1_casual
+      scoreModifiers:
+      - category: ResponseAccuracy
+        value: 2
+        reason: "Sai buổi (đang là buổi tối) và quá thân mật cho một lời phát biểu"
+      grammarTags: []
+      vocabularyTags:
+      - vocab.n5.konnichiwa
+      setFlags: []
+    - textJa: "さようなら。"
+      textEn: "Tạm biệt."
+      nextNodeId: f_s1_wrong
+      scoreModifiers:
+      - category: Vocabulary
+        value: -8
+        reason: "Nói tạm biệt ngay khi mở đầu: không phù hợp"
+      grammarTags: []
+      vocabularyTags: []
+      setFlags: []
+    flagCondition: 
+    flagJumpNodeId: 
+    targetItemId: 
+    targetNpcId: 
+    targetAreaId: 
+  - id: f_s1_casual
+    nodeType: 0
+    nextNodeId: f_s1
+    objectiveIdToComplete: 
+    speakerName: 
+    speakerId: 
+    textJa: "今は夜ですから、「こんばんは」ですね。もう一度、言いましょう。"
+    textReading: "いまはよるですから、「こんばんは」ですね。もういちど、いいましょう。"
+    textEn: "Bây giờ là buổi tối nên phải nói \"konbanwa\". Ta nói lại nhé."
+    textRomaji: "Ima wa yoru desu kara, \"konbanwa\" desu ne. Mou ichido, iimashou."
+    textEnglishIpa: 
+    animationCue: 
+    voiceClip: {fileID: 0}
+    choices: []
+    flagCondition: 
+    flagJumpNodeId: 
+    targetItemId: 
+    targetNpcId: 
+    targetAreaId: 
+  - id: f_s1_wrong
+    nodeType: 0
+    nextNodeId: f_s1
+    objectiveIdToComplete: 
+    speakerName: 
+    speakerId: 
+    textJa: "まだ、始まったばかりですよ。「みなさん、こんばんは」と言いましょう。"
+    textReading: "まだ、はじまったばかりですよ。「みなさん、こんばんは」といいましょう。"
+    textEn: "Mới bắt đầu thôi mà. Hãy nói \"minasan, konbanwa\" nhé."
+    textRomaji: "Mada, hajimatta bakari desu yo. \"Minasan, konbanwa\" to iimashou."
+    textEnglishIpa: 
+    animationCue: 
+    voiceClip: {fileID: 0}
+    choices: []
+    flagCondition: 
+    flagJumpNodeId: 
+    targetItemId: 
+    targetNpcId: 
+    targetAreaId: 
+  - id: f_s2
+    nodeType: 0
+    nextNodeId: 
+    objectiveIdToComplete: 
+    speakerName: 
+    speakerId: 
+    textJa: "次に、この町の人に、お礼を言います。"
+    textReading: "つぎに、このまちのひとに、おれいをいいます。"
+    textEn: "Tiếp theo, bạn nói lời cảm ơn với người dân khu phố này."
+    textRomaji: "Tsugi ni, kono machi no hito ni, orei wo iimasu."
+    textEnglishIpa: 
+    animationCue: 
+    voiceClip: {fileID: 0}
+    choices:
+    - textJa: "この町の人は、とてもやさしいです。ありがとうございます。"
+      textEn: "Người dân khu phố này rất tử tế. Cảm ơn mọi người ạ."
+      nextNodeId: f_s3
+      scoreModifiers:
+      - category: Grammar
+        value: 10
+        reason: "Cảm ơn bằng câu đầy đủ: nêu lý do rồi ありがとうございます"
+      grammarTags:
+      - grammar.n5.i_adj
+      vocabularyTags:
+      - vocab.n5.yasashii
+      - vocab.n5.arigatou_gozaimasu
+      setFlags:
+      - fest.said_thanks
+    - textJa: "ありがとう。"
+      textEn: "Cảm ơn."
+      nextNodeId: f_s2_casual
+      scoreModifiers:
+      - category: ResponseAccuracy
+        value: 3
+        reason: "Quá ngắn và thân mật cho lời phát biểu trước cả khu phố"
+      grammarTags: []
+      vocabularyTags: []
+      setFlags: []
+    - textJa: "ごめんなさい。"
+      textEn: "Xin lỗi ạ."
+      nextNodeId: f_s2_wrong
+      scoreModifiers:
+      - category: Vocabulary
+        value: -8
+        reason: "Dùng lời xin lỗi thay cho lời cảm ơn"
+      grammarTags: []
+      vocabularyTags: []
+      setFlags: []
+    flagCondition: 
+    flagJumpNodeId: 
+    targetItemId: 
+    targetNpcId: 
+    targetAreaId: 
+  - id: f_s2_casual
+    nodeType: 0
+    nextNodeId: f_s2
+    objectiveIdToComplete: 
+    speakerName: 
+    speakerId: 
+    textJa: "もう少し、長く言いましょう。「この町の人は、やさしいです」と。"
+    textReading: "もうすこし、ながくいいましょう。「このまちのひとは、やさしいです」と。"
+    textEn: "Hãy nói dài hơn một chút, ví dụ \"kono machi no hito wa, yasashii desu\" (người trong khu phố này rất tử tế)."
+    textRomaji: "Mou sukoshi, nagaku iimashou. \"Kono machi no hito wa, yasashii desu\" to."
+    textEnglishIpa: 
+    animationCue: 
+    voiceClip: {fileID: 0}
+    choices: []
+    flagCondition: 
+    flagJumpNodeId: 
+    targetItemId: 
+    targetNpcId: 
+    targetAreaId: 
+  - id: f_s2_wrong
+    nodeType: 0
+    nextNodeId: f_s2
+    objectiveIdToComplete: 
+    speakerName: 
+    speakerId: 
+    textJa: "ここは、お礼の時間です。「ありがとうございます」ですよ。"
+    textReading: "ここは、おれいのじかんです。「ありがとうございます」ですよ。"
+    textEn: "Đây là lúc nói lời cảm ơn. Câu cần nói là \"arigatou gozaimasu\" nhé."
+    textRomaji: "Koko wa, orei no jikan desu. \"Arigatou gozaimasu\" desu yo."
+    textEnglishIpa: 
+    animationCue: 
+    voiceClip: {fileID: 0}
+    choices: []
+    flagCondition: 
+    flagJumpNodeId: 
+    targetItemId: 
+    targetNpcId: 
+    targetAreaId: 
+  - id: f_s3
+    nodeType: 0
+    nextNodeId: 
+    objectiveIdToComplete: 
+    speakerName: 
+    speakerId: 
+    textJa: "最後に、これからのことを言います。"
+    textReading: "さいごに、これからのことをいいます。"
+    textEn: "Cuối cùng, bạn nói về tương lai."
+    textRomaji: "Saigo ni, korekara no koto wo iimasu."
+    textEnglishIpa: 
+    animationCue: 
+    voiceClip: {fileID: 0}
+    choices:
+    - textJa: "これからも、日本語をがんばります。よろしくお願いします。"
+      textEn: "Từ nay cháu cũng sẽ cố gắng học tiếng Nhật. Xin mọi người tiếp tục giúp đỡ ạ."
+      nextNodeId: b_end1
+      scoreModifiers:
+      - category: Grammar
+        value: 10
+        reason: "Kết thúc bằng quyết tâm và よろしくお願いします, đúng chuẩn lời phát biểu"
+      grammarTags:
+      - grammar.n5.mo_korekara
+      vocabularyTags:
+      - vocab.n5.ganbaru
+      - vocab.n5.yoroshiku
+      setFlags:
+      - fest.said_promise
+    - textJa: "がんばります。"
+      textEn: "Cháu sẽ cố gắng ạ."
+      nextNodeId: f_s3_short
+      scoreModifiers:
+      - category: ResponseAccuracy
+        value: 3
+        reason: "Đúng ý nhưng quá ngắn cho lời kết"
+      grammarTags: []
+      vocabularyTags:
+      - vocab.n5.ganbaru
+      setFlags: []
+    - textJa: "もう、帰ります。"
+      textEn: "Cháu về đây ạ."
+      nextNodeId: f_s3_wrong
+      scoreModifiers:
+      - category: ResponseAccuracy
+        value: -8
+        reason: "Kết thúc bài phát biểu bằng việc rời đi: lạc điệu và thiếu tôn trọng"
+      grammarTags: []
+      vocabularyTags: []
+      setFlags: []
+    flagCondition: 
+    flagJumpNodeId: 
+    targetItemId: 
+    targetNpcId: 
+    targetAreaId: 
+  - id: f_s3_short
+    nodeType: 0
+    nextNodeId: f_s3
+    objectiveIdToComplete: 
+    speakerName: 
+    speakerId: 
+    textJa: "みんなが、あなたの言葉を待っています。もう少し、言いましょう。"
+    textReading: "みんなが、あなたのことばをまっています。もうすこし、いいましょう。"
+    textEn: "Mọi người đang chờ lời của bạn. Hãy nói thêm một chút nhé."
+    textRomaji: "Minna ga, anata no kotoba wo matte imasu. Mou sukoshi, iimashou."
+    textEnglishIpa: 
+    animationCue: 
+    voiceClip: {fileID: 0}
+    choices: []
+    flagCondition: 
+    flagJumpNodeId: 
+    targetItemId: 
+    targetNpcId: 
+    targetAreaId: 
+  - id: f_s3_wrong
+    nodeType: 0
+    nextNodeId: f_s3
+    objectiveIdToComplete: 
+    speakerName: 
+    speakerId: 
+    textJa: "まだ、花火が始まっていませんよ。もう一度、言いましょう。"
+    textReading: "まだ、はなびがはじまっていませんよ。もういちど、いいましょう。"
+    textEn: "Pháo hoa còn chưa bắt đầu mà. Ta nói lại nhé."
+    textRomaji: "Mada, hanabi ga hajimatte imasen yo. Mou ichido, iimashou."
+    textEnglishIpa: 
+    animationCue: 
+    voiceClip: {fileID: 0}
+    choices: []
+    flagCondition: 
+    flagJumpNodeId: 
+    targetItemId: 
+    targetNpcId: 
+    targetAreaId: 
+  - id: b_end1
+    nodeType: 7
+    nextNodeId: b_end2
+    objectiveIdToComplete: 
+    speakerName: 
+    speakerId: 
+    textJa: 
+    textReading: 
+    textEn: 
+    textRomaji: 
+    textEnglishIpa: 
+    animationCue: 
+    voiceClip: {fileID: 0}
+    choices: []
+    flagCondition: "sato.respect"
+    flagJumpNodeId: e_respect
+    targetItemId: 
+    targetNpcId: 
+    targetAreaId: 
+  - id: b_end2
+    nodeType: 7
+    nextNodeId: e_plain
+    objectiveIdToComplete: 
+    speakerName: 
+    speakerId: 
+    textJa: 
+    textReading: 
+    textEn: 
+    textRomaji: 
+    textEnglishIpa: 
+    animationCue: 
+    voiceClip: {fileID: 0}
+    choices: []
+    flagCondition: "sato.stern"
+    flagJumpNodeId: e_stern
+    targetItemId: 
+    targetNpcId: 
+    targetAreaId: 
+  - id: e_respect
+    nodeType: 0
+    nextNodeId: e_end
+    objectiveIdToComplete: 
+    speakerName: Sato
+    speakerId: npc_neighbor_3
+    textJa: "あなたは、ゴミのルールも、ちゃんと守りました。みなさん、この人は、町の大切な仲間です。"
+    textReading: "あなたは、ゴミのルールも、ちゃんとまもりました。みなさん、このひとは、まちのたいせつななかまです。"
+    textEn: "Bạn đã giữ đúng cả quy tắc đổ rác. Mọi người ơi, người này là một người bạn đồng hành quý giá của khu phố."
+    textRomaji: "Anata wa, gomi no ruuru mo, chanto mamorimashita. Minasan, kono hito wa, machi no taisetsu na nakama desu."
+    textEnglishIpa: 
+    animationCue: bow
+    voiceClip: {fileID: 0}
+    choices: []
+    flagCondition: 
+    flagJumpNodeId: 
+    targetItemId: 
+    targetNpcId: 
+    targetAreaId: 
+  - id: e_stern
+    nodeType: 0
+    nextNodeId: e_end
+    objectiveIdToComplete: 
+    speakerName: Sato
+    speakerId: npc_neighbor_3
+    textJa: "最初は、心配しました。でも、今は、だいじょうぶ。あなたは、町の仲間です。"
+    textReading: "さいしょは、しんぱいしました。でも、いまは、だいじょうぶ。あなたは、まちのなかまです。"
+    textEn: "Lúc đầu tôi có lo lắng. Nhưng bây giờ thì ổn rồi. Bạn là một người của khu phố này."
+    textRomaji: "Saisho wa, shinpai shimashita. Demo, ima wa, daijoubu. Anata wa, machi no nakama desu."
+    textEnglishIpa: 
+    animationCue: bow
+    voiceClip: {fileID: 0}
+    choices: []
+    flagCondition: 
+    flagJumpNodeId: 
+    targetItemId: 
+    targetNpcId: 
+    targetAreaId: 
+  - id: e_plain
+    nodeType: 0
+    nextNodeId: e_end
+    objectiveIdToComplete: 
+    speakerName: Sato
+    speakerId: npc_neighbor_3
+    textJa: "ありがとうございます。あなたは、この町の仲間です。"
+    textReading: "ありがとうございます。あなたは、このまちのなかまです。"
+    textEn: "Cảm ơn bạn. Bạn là một người của khu phố này."
+    textRomaji: "Arigatou gozaimasu. Anata wa, kono machi no nakama desu."
+    textEnglishIpa: 
+    animationCue: bow
+    voiceClip: {fileID: 0}
+    choices: []
+    flagCondition: 
+    flagJumpNodeId: 
+    targetItemId: 
+    targetNpcId: 
+    targetAreaId: 
+  - id: e_end
+    nodeType: 0
+    nextNodeId: e_last
+    objectiveIdToComplete: obj_speech
+    speakerName: 
+    speakerId: 
+    textJa: "そのとき、夜空に大きな花火が上がりました。ドン！みんなの笑い声が、ひろがります。"
+    textReading: "そのとき、よぞらにおおきなはなびがあがりました。ドン！みんなのわらいごえが、ひろがります。"
+    textEn: "Đúng lúc đó, một chùm pháo hoa lớn bừng lên trên bầu trời đêm. Đùng! Tiếng cười của mọi người lan ra."
+    textRomaji: "Sono toki, yozora ni ookina hanabi ga agarimashita. Don! Minna no waraigoe ga, hirogarimasu."
+    textEnglishIpa: 
+    animationCue: 
+    voiceClip: {fileID: 0}
+    choices: []
+    flagCondition: 
+    flagJumpNodeId: 
+    targetItemId: 
+    targetNpcId: 
+    targetAreaId: 
+  - id: e_last
+    nodeType: 0
+    nextNodeId: n_complete
+    objectiveIdToComplete: 
+    speakerName: 
+    speakerId: 
+    textJa: "はじめて来た日から、三か月。ここは、もう、あなたの町です。"
+    textReading: "はじめてきたひから、さんかげつ。ここは、もう、あなたのまちです。"
+    textEn: "Ba tháng kể từ ngày đầu tiên bạn đến. Nơi này giờ đã là thị trấn của bạn."
+    textRomaji: "Hajimete kita hi kara, sankagetsu. Koko wa, mou, anata no machi desu."
+    textEnglishIpa: 
+    animationCue: 
+    voiceClip: {fileID: 0}
+    choices: []
+    flagCondition: 
+    flagJumpNodeId: 
+    targetItemId: 
+    targetNpcId: 
+    targetAreaId: 
+  - id: n_complete
+    nodeType: 4
+    nextNodeId: 
+    objectiveIdToComplete: 
+    speakerName: 
+    speakerId: 
+    textJa: 
+    textReading: 
+    textEn: 
+    textRomaji: 
+    textEnglishIpa: 
+    animationCue: 
+    voiceClip: {fileID: 0}
+    choices: []
+    flagCondition: 
+    flagJumpNodeId: 
+    targetItemId: 
+    targetNpcId: 
+    targetAreaId: 
+  startNodeId: n_arrive

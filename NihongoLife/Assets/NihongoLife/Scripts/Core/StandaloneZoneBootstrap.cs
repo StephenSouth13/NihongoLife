@@ -85,6 +85,18 @@ namespace NihongoLife.Core
                 if (point.gameObject.scene != gameObject.scene) continue;
                 if (string.Equals(point.Id, spawnId, System.StringComparison.OrdinalIgnoreCase)) return point.transform;
             }
+
+            string expectedName = "Spawn_" + spawnId;
+            foreach (GameObject root in gameObject.scene.GetRootGameObjects())
+            {
+                foreach (Transform candidate in root.GetComponentsInChildren<Transform>(true))
+                {
+                    if (string.Equals(candidate.name, expectedName, System.StringComparison.OrdinalIgnoreCase))
+                        return candidate;
+                }
+            }
+
+            Debug.LogError($"[StandaloneZoneBootstrap] Spawn '{spawnId}' was not found in {gameObject.scene.name}.");
             return null;
         }
 

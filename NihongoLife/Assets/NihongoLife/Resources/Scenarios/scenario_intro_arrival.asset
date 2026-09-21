@@ -13,11 +13,11 @@ MonoBehaviour:
   m_Name: scenario_intro_arrival
   m_EditorClassIdentifier: NihongoLife::NihongoLife.Scenario.ScenarioDefinition
   id: scenario.intro.arrival
-  version: 1
-  titleJa: ひばり町に到着
-  titleEn: Đến Hibari-chō
-  descriptionJa: 新しい町での生活が始まります。
-  descriptionEn: Mở màn — người chơi vừa chuyển đến khu phố Hibari-chō, chuẩn bị bắt đầu cuộc sống mới.
+  version: 2
+  titleJa: "ひばり町へようこそ"
+  titleEn: "Chào mừng đến Hibari-chō"
+  descriptionJa: "ひばり駅に着いた夜。看板を読み、学校のメッセージに返事をして、部屋に帰りましょう。"
+  descriptionEn: "Đêm đầu tiên ở Hibari: đọc biển ga, hiểu tin nhắn của trường, chào người dân và về nhà."
   chapterIndex: 0
   questType: main
   giverNpcId: ""
@@ -37,98 +37,806 @@ MonoBehaviour:
   supportsCoOp: 0
   minPlayers: 1
   maxPlayers: 2
-  learningTargets: []
-  objectives: []
+  learningTargets:
+  - vocab.n5.deguchi
+  - vocab.n5.ashita
+  - vocab.n5.konbanwa
+  - vocab.n5.wakarimashita
+  - vocab.n5.yoroshiku
+  objectives:
+  - id: obj_arrive
+    titleJa: "駅を出て、町に着く"
+    titleEn: "Ra khỏi ga và đến thị trấn"
+    isOptional: 0
+  - id: obj_read
+    titleJa: "学校のメッセージを読む"
+    titleEn: "Đọc tin nhắn của trường"
+    isOptional: 0
+  - id: obj_home
+    titleJa: "部屋に着く"
+    titleEn: "Về đến căn phòng của mình"
+    isOptional: 0
   nodes:
-  - id: node_arrival_1
+  - id: n_open
     nodeType: 0
-    nextNodeId: node_arrival_2
-    objectiveIdToComplete:
-    speakerName:
-    speakerId:
-    textJa: ようこそ、ひばり町へ。
-    textReading: ようこそ、ひばりちょうへ。
-    textEn: Chào mừng bạn đến với Hibari-chō.
-    textRomaji: Youkoso, Hibari-chou e.
-    textEnglishIpa:
-    animationCue:
+    nextNodeId: n_open2
+    objectiveIdToComplete: obj_arrive
+    speakerName: 
+    speakerId: 
+    textJa: "八月の夕方。ひばり駅に着きました。"
+    textReading: "はちがつのゆうがた。ひばりえきにつきました。"
+    textEn: "Chiều tháng Tám. Bạn xuống tàu ở ga Hibari."
+    textRomaji: "Hachigatsu no yuugata. Hibari eki ni tsukimashita."
+    textEnglishIpa: 
+    animationCue: 
     voiceClip: {fileID: 0}
     choices: []
-    targetItemId:
-    targetNpcId:
-    targetAreaId:
-  - id: node_arrival_2
+    flagCondition: 
+    flagJumpNodeId: 
+    targetItemId: 
+    targetNpcId: 
+    targetAreaId: 
+  - id: n_open2
     nodeType: 0
-    nextNodeId: node_arrival_3
-    objectiveIdToComplete:
-    speakerName:
-    speakerId:
-    textJa: ここは小さいけれど、あたたかい町です。
-    textReading: ここはちいさいけれど、あたたかいまちです。
-    textEn: Đây là một khu phố nhỏ nhưng ấm áp.
-    textRomaji: Koko wa chiisai keredo, atatakai machi desu.
-    textEnglishIpa:
-    animationCue:
+    nextNodeId: n_feel
+    objectiveIdToComplete: 
+    speakerName: 
+    speakerId: 
+    textJa: "大きなかばんを持って、はじめて一人で日本に来ました。ここが、これから住む町です。"
+    textReading: "おおきなかばんをもって、はじめてひとりでにほんにきました。ここが、これからすむまちです。"
+    textEn: "Kéo theo chiếc vali lớn, lần đầu tiên bạn một mình đến Nhật. Đây là nơi bạn sẽ sống từ nay."
+    textRomaji: "Ookina kaban wo motte, hajimete hitori de Nihon ni kimashita. Koko ga, korekara sumu machi desu."
+    textEnglishIpa: 
+    animationCue: 
     voiceClip: {fileID: 0}
     choices: []
-    targetItemId:
-    targetNpcId:
-    targetAreaId:
-  - id: node_arrival_3
+    flagCondition: 
+    flagJumpNodeId: 
+    targetItemId: 
+    targetNpcId: 
+    targetAreaId: 
+  - id: n_feel
     nodeType: 0
-    nextNodeId: node_arrival_4
-    objectiveIdToComplete:
-    speakerName:
-    speakerId:
-    textJa: 今日から、ひばり日本語学院の留学生として、新しい生活が始まります。
-    textReading: きょうから、ひばりにほんごがくいんのりゅうがくせいとして、あたらしいせいかつがはじまります。
-    textEn: Từ hôm nay, cuộc sống mới của bạn bắt đầu với tư cách du học sinh của ひばり日本語学院.
-    textRomaji: Kyou kara, Hibari Nihongo Gakuin no ryuugakusei toshite, atarashii seikatsu ga hajimarimasu.
-    textEnglishIpa:
-    animationCue:
-    voiceClip: {fileID: 0}
-    choices: []
-    targetItemId:
-    targetNpcId:
-    targetAreaId:
-  - id: node_arrival_4
-    nodeType: 0
-    nextNodeId:
-    objectiveIdToComplete:
-    speakerName:
-    speakerId:
-    textJa: さあ、外に出てみましょう。
-    textReading: さあ、そとにでてみましょう。
-    textEn: Nào, hãy ra ngoài xem khu phố này thế nào.
-    textRomaji: Saa, soto ni dete mimashou.
-    textEnglishIpa:
-    animationCue:
+    nextNodeId: 
+    objectiveIdToComplete: 
+    speakerName: 
+    speakerId: 
+    textJa: "むねがどきどきします。今、どんな気持ちですか。"
+    textReading: "むねがどきどきします。いま、どんなきもちですか。"
+    textEn: "Tim bạn đập thình thịch. Lúc này bạn thấy thế nào?"
+    textRomaji: "Mune ga dokidoki shimasu. Ima, donna kimochi desu ka?"
+    textEnglishIpa: 
+    animationCue: 
     voiceClip: {fileID: 0}
     choices:
-    - textJa: はい。
-      textEn: Vâng.
-      nextNodeId: node_complete
-      scoreModifiers: []
-      grammarTags: []
-      vocabularyTags: []
-    targetItemId:
-    targetNpcId:
-    targetAreaId:
-  - id: node_complete
-    nodeType: 4
-    nextNodeId:
-    objectiveIdToComplete:
-    speakerName:
-    speakerId:
-    textJa:
-    textReading:
-    textEn:
-    textRomaji:
-    textEnglishIpa:
-    animationCue:
+    - textJa: "わくわくします。"
+      textEn: "Tôi thấy háo hức."
+      nextNodeId: n_feel_excited
+      scoreModifiers:
+      - category: Vocabulary
+        value: 8
+        reason: "Nói cảm xúc bằng động từ わくわくします (háo hức)"
+      grammarTags:
+      - grammar.n5.masu_form
+      vocabularyTags:
+      - vocab.n5.wakuwaku
+      setFlags:
+      - feel.excited
+    - textJa: "ちょっと不安です。"
+      textEn: "Tôi hơi lo lắng."
+      nextNodeId: n_feel_nervous
+      scoreModifiers:
+      - category: Vocabulary
+        value: 8
+        reason: "Nói cảm xúc bằng tính từ 不安です (lo lắng) và ちょっと làm nhẹ ý"
+      grammarTags:
+      - grammar.n5.desu_adj
+      vocabularyTags:
+      - vocab.n5.fuan
+      setFlags:
+      - feel.nervous
+    - textJa: "疲れました。"
+      textEn: "Tôi mệt rồi."
+      nextNodeId: n_feel_tired
+      scoreModifiers:
+      - category: Vocabulary
+        value: 8
+        reason: "Nói cảm xúc bằng 疲れました (đã mệt) sau chuyến đi dài"
+      grammarTags:
+      - grammar.n5.masu_form
+      vocabularyTags:
+      - vocab.n5.tsukareta
+      setFlags:
+      - feel.tired
+    flagCondition: 
+    flagJumpNodeId: 
+    targetItemId: 
+    targetNpcId: 
+    targetAreaId: 
+  - id: n_feel_excited
+    nodeType: 0
+    nextNodeId: n_exit
+    objectiveIdToComplete: 
+    speakerName: 
+    speakerId: 
+    textJa: "新しい町。新しい生活。早く歩いてみたいです。"
+    textReading: "あたらしいまち。あたらしいせいかつ。はやくあるいてみたいです。"
+    textEn: "Thị trấn mới. Cuộc sống mới. Bạn muốn đi thử ngay."
+    textRomaji: "Atarashii machi. Atarashii seikatsu. Hayaku aruite mitai desu."
+    textEnglishIpa: 
+    animationCue: 
     voiceClip: {fileID: 0}
     choices: []
-    targetItemId:
-    targetNpcId:
-    targetAreaId:
-  startNodeId: node_arrival_1
+    flagCondition: 
+    flagJumpNodeId: 
+    targetItemId: 
+    targetNpcId: 
+    targetAreaId: 
+  - id: n_feel_nervous
+    nodeType: 0
+    nextNodeId: n_exit
+    objectiveIdToComplete: 
+    speakerName: 
+    speakerId: 
+    textJa: "日本語がうまく話せるでしょうか。でも、だいじょうぶ。まず、一歩ずつ。"
+    textReading: "にほんごがうまくはなせるでしょうか。でも、だいじょうぶ。まず、いっぽずつ。"
+    textEn: "Liệu mình có nói tiếng Nhật giỏi không nhỉ? Nhưng không sao. Cứ từng bước một."
+    textRomaji: "Nihongo ga umaku hanaseru deshou ka. Demo, daijoubu. Mazu, ippo zutsu."
+    textEnglishIpa: 
+    animationCue: 
+    voiceClip: {fileID: 0}
+    choices: []
+    flagCondition: 
+    flagJumpNodeId: 
+    targetItemId: 
+    targetNpcId: 
+    targetAreaId: 
+  - id: n_feel_tired
+    nodeType: 0
+    nextNodeId: n_exit
+    objectiveIdToComplete: 
+    speakerName: 
+    speakerId: 
+    textJa: "今日は早く休みたいです。でも、その前にやることがあります。"
+    textReading: "きょうははやくやすみたいです。でも、そのまえにやることがあります。"
+    textEn: "Hôm nay bạn muốn nghỉ sớm. Nhưng trước đó còn việc phải làm."
+    textRomaji: "Kyou wa hayaku yasumitai desu. Demo, sono mae ni yaru koto ga arimasu."
+    textEnglishIpa: 
+    animationCue: 
+    voiceClip: {fileID: 0}
+    choices: []
+    flagCondition: 
+    flagJumpNodeId: 
+    targetItemId: 
+    targetNpcId: 
+    targetAreaId: 
+  - id: n_exit
+    nodeType: 0
+    nextNodeId: 
+    objectiveIdToComplete: 
+    speakerName: 
+    speakerId: 
+    textJa: "駅の中に、大きな看板がいくつかあります。外に出たいです。どれを見ますか。"
+    textReading: "えきのなかに、おおきなかんばんがいくつかあります。そとにでたいです。どれをみますか。"
+    textEn: "Trong ga có vài tấm biển lớn. Bạn muốn ra ngoài. Bạn nhìn tấm nào?"
+    textRomaji: "Eki no naka ni, ookina kanban ga ikutsu ka arimasu. Soto ni detai desu. Dore wo mimasu ka?"
+    textEnglishIpa: 
+    animationCue: 
+    voiceClip: {fileID: 0}
+    choices:
+    - textJa: "「出口」を見ます。"
+      textEn: "Tôi nhìn biển \"deguchi\" (lối ra)."
+      nextNodeId: n_exit_ok
+      scoreModifiers:
+      - category: Vocabulary
+        value: 10
+        reason: "Đọc đúng biển 出口 (lối ra) bằng chữ Hán N5"
+      grammarTags: []
+      vocabularyTags:
+      - vocab.n5.deguchi
+      setFlags: []
+    - textJa: "「入口」を見ます。"
+      textEn: "Tôi nhìn biển \"iriguchi\" (lối vào)."
+      nextNodeId: n_exit_wrong
+      scoreModifiers:
+      - category: Vocabulary
+        value: -8
+        reason: "Nhầm 入口 (lối vào) với 出口 (lối ra)"
+      grammarTags: []
+      vocabularyTags: []
+      setFlags: []
+    - textJa: "駅員さんに聞きます。"
+      textEn: "Tôi hỏi nhân viên nhà ga."
+      nextNodeId: n_exit_ask
+      scoreModifiers:
+      - category: ResponseAccuracy
+        value: 4
+        reason: "Hỏi người khác cũng được, nhưng nên tập đọc biển trước"
+      grammarTags: []
+      vocabularyTags:
+      - vocab.n5.ekiin
+      setFlags: []
+    flagCondition: 
+    flagJumpNodeId: 
+    targetItemId: 
+    targetNpcId: 
+    targetAreaId: 
+  - id: n_exit_wrong
+    nodeType: 0
+    nextNodeId: n_exit
+    objectiveIdToComplete: 
+    speakerName: 
+    speakerId: 
+    textJa: "「入」は中に入る、「出」は外に出る。「入口」は入るところです。もう一度見ましょう。"
+    textReading: "「にゅう」はなかにはいる、「しゅつ」はそとにでる。「いりぐち」ははいるところです。もういちどみましょう。"
+    textEn: "「入」là vào trong, 「出」là ra ngoài. 「入口」là chỗ để đi vào. Ta xem lại nhé."
+    textRomaji: "\"Nyuu\" wa naka ni hairu, \"shutsu\" wa soto ni deru. \"Iriguchi\" wa hairu tokoro desu. Mou ichido mimashou."
+    textEnglishIpa: 
+    animationCue: 
+    voiceClip: {fileID: 0}
+    choices: []
+    flagCondition: 
+    flagJumpNodeId: 
+    targetItemId: 
+    targetNpcId: 
+    targetAreaId: 
+  - id: n_exit_ask
+    nodeType: 0
+    nextNodeId: n_out
+    objectiveIdToComplete: 
+    speakerName: 
+    speakerId: 
+    textJa: "駅員さんは、あの緑の看板を指さしました。「出口」と書いてあります。"
+    textReading: "えきいんさんは、あのみどりのかんばんをゆびさしました。「でぐち」とかいてあります。"
+    textEn: "Nhân viên nhà ga chỉ vào tấm biển xanh lá kia. Trên đó viết 「出口」 (lối ra)."
+    textRomaji: "Ekiin-san wa, ano midori no kanban wo yubisashimashita. \"Deguchi\" to kaite arimasu."
+    textEnglishIpa: 
+    animationCue: 
+    voiceClip: {fileID: 0}
+    choices: []
+    flagCondition: 
+    flagJumpNodeId: 
+    targetItemId: 
+    targetNpcId: 
+    targetAreaId: 
+  - id: n_exit_ok
+    nodeType: 0
+    nextNodeId: n_out
+    objectiveIdToComplete: 
+    speakerName: 
+    speakerId: 
+    textJa: "あの緑の看板に「出口」と書いてあります。そちらへ行きましょう。"
+    textReading: "あのみどりのかんばんに「でぐち」とかいてあります。そちらへいきましょう。"
+    textEn: "Trên tấm biển xanh lá kia có viết 「出口」. Đi về phía đó nào."
+    textRomaji: "Ano midori no kanban ni \"deguchi\" to kaite arimasu. Sochira e ikimashou."
+    textEnglishIpa: 
+    animationCue: 
+    voiceClip: {fileID: 0}
+    choices: []
+    flagCondition: 
+    flagJumpNodeId: 
+    targetItemId: 
+    targetNpcId: 
+    targetAreaId: 
+  - id: n_out
+    nodeType: 0
+    nextNodeId: n_phone
+    objectiveIdToComplete: 
+    speakerName: 
+    speakerId: 
+    textJa: "外は、ゆうやけがきれいな町でした。さくらの並木道が長くのびています。"
+    textReading: "そとは、ゆうやけがきれいなまちでした。さくらのなみきみちがながくのびています。"
+    textEn: "Bên ngoài là một thị trấn có hoàng hôn rất đẹp. Con đường trồng anh đào kéo dài phía trước."
+    textRomaji: "Soto wa, yuuyake ga kirei na machi deshita. Sakura no namikimichi ga nagaku nobite imasu."
+    textEnglishIpa: 
+    animationCue: 
+    voiceClip: {fileID: 0}
+    choices: []
+    flagCondition: 
+    flagJumpNodeId: 
+    targetItemId: 
+    targetNpcId: 
+    targetAreaId: 
+  - id: n_phone
+    nodeType: 0
+    nextNodeId: n_message
+    objectiveIdToComplete: obj_arrive
+    speakerName: 
+    speakerId: 
+    textJa: "スマホが鳴りました。学校からのメッセージです。"
+    textReading: "スマホがなりました。がっこうからのメッセージです。"
+    textEn: "Điện thoại kêu lên. Là tin nhắn từ trường."
+    textRomaji: "Sumaho ga narimashita. Gakkou kara no messeeji desu."
+    textEnglishIpa: 
+    animationCue: 
+    voiceClip: {fileID: 0}
+    choices: []
+    flagCondition: 
+    flagJumpNodeId: 
+    targetItemId: 
+    targetNpcId: 
+    targetAreaId: 
+  - id: n_message
+    nodeType: 0
+    nextNodeId: n_message_q
+    objectiveIdToComplete: 
+    speakerName: 
+    speakerId: 
+    textJa: "「ひばり日本語学院です。ようこそ！明日の朝九時に、学校へ来てください。」"
+    textReading: "「ひばりにほんごがくいんです。ようこそ！あしたのあさくじに、がっこうへきてください。」"
+    textEn: "\"Đây là Học viện tiếng Nhật Hibari. Chào mừng bạn! Sáng mai lúc 9 giờ, xin hãy đến trường.\""
+    textRomaji: "\"Hibari Nihongo Gakuin desu. Youkoso! Ashita no asa kuji ni, gakkou e kite kudasai.\""
+    textEnglishIpa: 
+    animationCue: 
+    voiceClip: {fileID: 0}
+    choices: []
+    flagCondition: 
+    flagJumpNodeId: 
+    targetItemId: 
+    targetNpcId: 
+    targetAreaId: 
+  - id: n_message_q
+    nodeType: 0
+    nextNodeId: 
+    objectiveIdToComplete: 
+    speakerName: 
+    speakerId: 
+    textJa: "学校へ行くのは、いつですか。"
+    textReading: "がっこうへいくのは、いつですか。"
+    textEn: "Khi nào bạn phải đến trường?"
+    textRomaji: "Gakkou e iku no wa, itsu desu ka?"
+    textEnglishIpa: 
+    animationCue: 
+    voiceClip: {fileID: 0}
+    choices:
+    - textJa: "明日の朝九時です。"
+      textEn: "Là 9 giờ sáng mai."
+      nextNodeId: n_message_ok
+      scoreModifiers:
+      - category: Vocabulary
+        value: 10
+        reason: "Hiểu đúng thời gian trong tin nhắn: 明日の朝九時"
+      grammarTags:
+      - grammar.n5.ni_time
+      vocabularyTags:
+      - vocab.n5.ashita
+      - vocab.n5.kuji
+      setFlags: []
+    - textJa: "今日の夜九時です。"
+      textEn: "Là 9 giờ tối nay."
+      nextNodeId: n_message_wrong
+      scoreModifiers:
+      - category: Vocabulary
+        value: -8
+        reason: "Nhầm 明日の朝 (sáng mai) với 今日の夜 (tối nay)"
+      grammarTags: []
+      vocabularyTags: []
+      setFlags: []
+    - textJa: "来週の月曜日です。"
+      textEn: "Là thứ Hai tuần sau."
+      nextNodeId: n_message_wrong
+      scoreModifiers:
+      - category: Vocabulary
+        value: -8
+        reason: "Nhầm 明日 (ngày mai) với 来週 (tuần sau)"
+      grammarTags: []
+      vocabularyTags: []
+      setFlags: []
+    flagCondition: 
+    flagJumpNodeId: 
+    targetItemId: 
+    targetNpcId: 
+    targetAreaId: 
+  - id: n_message_wrong
+    nodeType: 0
+    nextNodeId: n_message_q
+    objectiveIdToComplete: 
+    speakerName: 
+    speakerId: 
+    textJa: "もう一度、メッセージを読みましょう。「明日の朝九時に」と書いてあります。"
+    textReading: "もういちど、メッセージをよみましょう。「あしたのあさくじに」とかいてあります。"
+    textEn: "Đọc lại tin nhắn nào. Trong đó viết 「明日の朝九時に」 (9 giờ sáng mai)."
+    textRomaji: "Mou ichido, messeeji wo yomimashou. \"Ashita no asa kuji ni\" to kaite arimasu."
+    textEnglishIpa: 
+    animationCue: 
+    voiceClip: {fileID: 0}
+    choices: []
+    flagCondition: 
+    flagJumpNodeId: 
+    targetItemId: 
+    targetNpcId: 
+    targetAreaId: 
+  - id: n_message_ok
+    nodeType: 0
+    nextNodeId: n_reply
+    objectiveIdToComplete: obj_read
+    speakerName: 
+    speakerId: 
+    textJa: "そうです。明日の朝九時。忘れないように、スマホにメモしましょう。"
+    textReading: "そうです。あしたのあさくじ。わすれないように、スマホにメモしましょう。"
+    textEn: "Đúng rồi. 9 giờ sáng mai. Để khỏi quên, hãy ghi vào điện thoại nhé."
+    textRomaji: "Sou desu. Ashita no asa kuji. Wasurenai you ni, sumaho ni memo shimashou."
+    textEnglishIpa: 
+    animationCue: 
+    voiceClip: {fileID: 0}
+    choices: []
+    flagCondition: 
+    flagJumpNodeId: 
+    targetItemId: 
+    targetNpcId: 
+    targetAreaId: 
+  - id: n_reply
+    nodeType: 0
+    nextNodeId: 
+    objectiveIdToComplete: 
+    speakerName: 
+    speakerId: 
+    textJa: "学校に返事を送ります。何と書きますか。"
+    textReading: "がっこうにへんじをおくります。なんとかきますか。"
+    textEn: "Bạn gửi tin trả lời cho trường. Bạn sẽ viết gì?"
+    textRomaji: "Gakkou ni henji wo okurimasu. Nan to kakimasu ka?"
+    textEnglishIpa: 
+    animationCue: 
+    voiceClip: {fileID: 0}
+    choices:
+    - textJa: "分かりました。よろしくお願いします。"
+      textEn: "Tôi đã hiểu. Xin nhờ thầy cô giúp đỡ ạ."
+      nextNodeId: n_reply_ok
+      scoreModifiers:
+      - category: Grammar
+        value: 10
+        reason: "Trả lời lịch sự bằng 分かりました và よろしくお願いします"
+      grammarTags:
+      - grammar.n5.masu_past
+      - grammar.n5.onegaishimasu
+      vocabularyTags:
+      - vocab.n5.wakarimashita
+      - vocab.n5.yoroshiku
+      setFlags:
+      - intro.polite_reply
+    - textJa: "OK。"
+      textEn: "OK."
+      nextNodeId: n_reply_casual
+      scoreModifiers:
+      - category: ResponseAccuracy
+        value: 2
+        reason: "Ý đúng nhưng quá suồng sã khi nhắn cho nhà trường"
+      grammarTags: []
+      vocabularyTags: []
+      setFlags: []
+    - textJa: "分かりません。"
+      textEn: "Tôi không hiểu."
+      nextNodeId: n_reply_wrong
+      scoreModifiers:
+      - category: ResponseAccuracy
+        value: -8
+        reason: "Trả lời không hiểu trong khi bạn đã đọc và hiểu tin nhắn"
+      grammarTags: []
+      vocabularyTags: []
+      setFlags: []
+    flagCondition: 
+    flagJumpNodeId: 
+    targetItemId: 
+    targetNpcId: 
+    targetAreaId: 
+  - id: n_reply_casual
+    nodeType: 0
+    nextNodeId: n_walk
+    objectiveIdToComplete: 
+    speakerName: 
+    speakerId: 
+    textJa: "友達には「OK」でいいですが、学校には「分かりました」と書きましょう。"
+    textReading: "ともだちには「オーケー」でいいですが、がっこうには「わかりました」とかきましょう。"
+    textEn: "Với bạn bè thì \"OK\" là được, nhưng với nhà trường hãy viết 「分かりました」 nhé."
+    textRomaji: "Tomodachi ni wa \"OK\" de ii desu ga, gakkou ni wa \"wakarimashita\" to kakimashou."
+    textEnglishIpa: 
+    animationCue: 
+    voiceClip: {fileID: 0}
+    choices: []
+    flagCondition: 
+    flagJumpNodeId: 
+    targetItemId: 
+    targetNpcId: 
+    targetAreaId: 
+  - id: n_reply_wrong
+    nodeType: 0
+    nextNodeId: n_reply
+    objectiveIdToComplete: 
+    speakerName: 
+    speakerId: 
+    textJa: "でも、もう分かりましたよね。「分かりました」と書きましょう。"
+    textReading: "でも、もうわかりましたよね。「わかりました」とかきましょう。"
+    textEn: "Nhưng bạn đã hiểu rồi mà. Hãy viết 「分かりました」 nhé."
+    textRomaji: "Demo, mou wakarimashita yo ne. \"Wakarimashita\" to kakimashou."
+    textEnglishIpa: 
+    animationCue: 
+    voiceClip: {fileID: 0}
+    choices: []
+    flagCondition: 
+    flagJumpNodeId: 
+    targetItemId: 
+    targetNpcId: 
+    targetAreaId: 
+  - id: n_reply_ok
+    nodeType: 0
+    nextNodeId: n_walk
+    objectiveIdToComplete: 
+    speakerName: 
+    speakerId: 
+    textJa: "すぐに返事が来ました。「ありがとうございます。あしたお会いしましょう。」"
+    textReading: "すぐにへんじがきました。「ありがとうございます。あしたおあいしましょう。」"
+    textEn: "Tin trả lời đến ngay. \"Cảm ơn bạn. Ngày mai chúng ta gặp nhau nhé.\""
+    textRomaji: "Sugu ni henji ga kimashita. \"Arigatou gozaimasu. Ashita oai shimashou.\""
+    textEnglishIpa: 
+    animationCue: 
+    voiceClip: {fileID: 0}
+    choices: []
+    flagCondition: 
+    flagJumpNodeId: 
+    targetItemId: 
+    targetNpcId: 
+    targetAreaId: 
+  - id: n_walk
+    nodeType: 0
+    nextNodeId: n_greet_choice
+    objectiveIdToComplete: 
+    speakerName: 
+    speakerId: 
+    textJa: "さくら通りを歩きます。パン屋さんのいいにおい。犬の散歩をする人。"
+    textReading: "さくらどおりをあるきます。パンやさんのいいにおい。いぬのさんぽをするひと。"
+    textEn: "Bạn đi bộ trên phố Sakura. Mùi bánh mì thơm từ tiệm bánh. Có người dắt chó đi dạo."
+    textRomaji: "Sakura-doori wo arukimasu. Panya-san no ii nioi. Inu no sanpo wo suru hito."
+    textEnglishIpa: 
+    animationCue: 
+    voiceClip: {fileID: 0}
+    choices: []
+    flagCondition: 
+    flagJumpNodeId: 
+    targetItemId: 
+    targetNpcId: 
+    targetAreaId: 
+  - id: n_greet_choice
+    nodeType: 0
+    nextNodeId: 
+    objectiveIdToComplete: 
+    speakerName: 
+    speakerId: 
+    textJa: "犬を連れたおばあさんと目が合いました。ほほえんでいます。どうしますか。"
+    textReading: "いぬをつれたおばあさんとめがあいました。ほほえんでいます。どうしますか。"
+    textEn: "Ánh mắt bạn chạm vào một bà cụ dắt chó. Bà đang mỉm cười. Bạn sẽ làm gì?"
+    textRomaji: "Inu wo tsureta obaasan to me ga aimashita. Hohoende imasu. Dou shimasu ka?"
+    textEnglishIpa: 
+    animationCue: 
+    voiceClip: {fileID: 0}
+    choices:
+    - textJa: "「こんばんは」と言います。"
+      textEn: "Bạn nói \"konbanwa\"."
+      nextNodeId: n_greet_ok
+      scoreModifiers:
+      - category: Vocabulary
+        value: 10
+        reason: "Chào đúng buổi tối bằng こんばんは"
+      grammarTags: []
+      vocabularyTags:
+      - vocab.n5.konbanwa
+      setFlags:
+      - intro.greeted_stranger
+    - textJa: "頭を下げます。"
+      textEn: "Bạn cúi đầu chào."
+      nextNodeId: n_greet_bow
+      scoreModifiers:
+      - category: ResponseAccuracy
+        value: 6
+        reason: "Cúi chào là lời chào không lời rất tự nhiên ở Nhật"
+      grammarTags: []
+      vocabularyTags: []
+      setFlags: []
+    - textJa: "見ないで、通ります。"
+      textEn: "Bạn lờ đi rồi đi qua."
+      nextNodeId: n_greet_pass
+      scoreModifiers:
+      - category: ResponseAccuracy
+        value: -4
+        reason: "Bỏ qua một lời chào thân thiện: ở khu phố nhỏ người ta thường chào nhau"
+      grammarTags: []
+      vocabularyTags: []
+      setFlags: []
+    flagCondition: 
+    flagJumpNodeId: 
+    targetItemId: 
+    targetNpcId: 
+    targetAreaId: 
+  - id: n_greet_ok
+    nodeType: 0
+    nextNodeId: n_home
+    objectiveIdToComplete: 
+    speakerName: 
+    speakerId: 
+    textJa: "おばあさんは「こんばんは。いい夕方ですね」と言って、笑いました。"
+    textReading: "おばあさんは「こんばんは。いいゆうがたですね」といって、わらいました。"
+    textEn: "Bà cụ nói \"Chào buổi tối. Chiều nay thật đẹp nhỉ\" rồi mỉm cười."
+    textRomaji: "Obaasan wa \"Konbanwa. Ii yuugata desu ne\" to itte, waraimashita."
+    textEnglishIpa: 
+    animationCue: 
+    voiceClip: {fileID: 0}
+    choices: []
+    flagCondition: 
+    flagJumpNodeId: 
+    targetItemId: 
+    targetNpcId: 
+    targetAreaId: 
+  - id: n_greet_bow
+    nodeType: 0
+    nextNodeId: n_home
+    objectiveIdToComplete: 
+    speakerName: 
+    speakerId: 
+    textJa: "おばあさんも頭を下げました。言葉がなくても、気持ちは伝わります。"
+    textReading: "おばあさんもあたまをさげました。ことばがなくても、きもちはつたわります。"
+    textEn: "Bà cụ cũng cúi đầu. Dù không có lời nào, tấm lòng vẫn được truyền đến."
+    textRomaji: "Obaasan mo atama wo sagemashita. Kotoba ga nakute mo, kimochi wa tsutawarimasu."
+    textEnglishIpa: 
+    animationCue: 
+    voiceClip: {fileID: 0}
+    choices: []
+    flagCondition: 
+    flagJumpNodeId: 
+    targetItemId: 
+    targetNpcId: 
+    targetAreaId: 
+  - id: n_greet_pass
+    nodeType: 0
+    nextNodeId: n_home
+    objectiveIdToComplete: 
+    speakerName: 
+    speakerId: 
+    textJa: "おばあさんは少しさびしそうでした。明日は、自分からあいさつしてみましょう。"
+    textReading: "おばあさんはすこしさびしそうでした。あしたは、じぶんからあいさつしてみましょう。"
+    textEn: "Bà cụ có vẻ hơi buồn. Ngày mai hãy thử chủ động chào trước nhé."
+    textRomaji: "Obaasan wa sukoshi sabishisou deshita. Ashita wa, jibun kara aisatsu shite mimashou."
+    textEnglishIpa: 
+    animationCue: 
+    voiceClip: {fileID: 0}
+    choices: []
+    flagCondition: 
+    flagJumpNodeId: 
+    targetItemId: 
+    targetNpcId: 
+    targetAreaId: 
+  - id: n_home
+    nodeType: 0
+    nextNodeId: n_home_q
+    objectiveIdToComplete: 
+    speakerName: 
+    speakerId: 
+    textJa: "小さな部屋のドアを開けました。電気をつけると、白い机とベッドがあります。"
+    textReading: "ちいさなへやのドアをあけました。でんきをつけると、しろいつくえとベッドがあります。"
+    textEn: "Bạn mở cửa căn phòng nhỏ. Bật đèn lên, có một chiếc bàn trắng và một chiếc giường."
+    textRomaji: "Chiisana heya no doa wo akemashita. Denki wo tsukeru to, shiroi tsukue to beddo ga arimasu."
+    textEnglishIpa: 
+    animationCue: 
+    voiceClip: {fileID: 0}
+    choices: []
+    flagCondition: 
+    flagJumpNodeId: 
+    targetItemId: 
+    targetNpcId: 
+    targetAreaId: 
+  - id: n_home_q
+    nodeType: 0
+    nextNodeId: 
+    objectiveIdToComplete: 
+    speakerName: 
+    speakerId: 
+    textJa: "「ただいま」と言ってみますか。"
+    textReading: "「ただいま」といってみますか。"
+    textEn: "Bạn có thử nói \"tadaima\" (con/tôi về rồi) không?"
+    textRomaji: "\"Tadaima\" to itte mimasu ka?"
+    textEnglishIpa: 
+    animationCue: 
+    voiceClip: {fileID: 0}
+    choices:
+    - textJa: "「ただいま」と言います。"
+      textEn: "Bạn nói \"tadaima\"."
+      nextNodeId: n_home_tadaima
+      scoreModifiers:
+      - category: Vocabulary
+        value: 8
+        reason: "ただいま là lời nói khi về đến nhà, kể cả nhà trống"
+      grammarTags: []
+      vocabularyTags:
+      - vocab.n5.tadaima
+      setFlags:
+      - intro.said_tadaima
+    - textJa: "何も言いません。"
+      textEn: "Bạn không nói gì."
+      nextNodeId: n_home_silent
+      scoreModifiers:
+      - category: ResponseAccuracy
+        value: 0
+        reason: "Không sao, nhưng ở Nhật người ta hay nói ただいま khi về nhà"
+      grammarTags: []
+      vocabularyTags: []
+      setFlags: []
+    flagCondition: 
+    flagJumpNodeId: 
+    targetItemId: 
+    targetNpcId: 
+    targetAreaId: 
+  - id: n_home_tadaima
+    nodeType: 0
+    nextNodeId: n_end
+    objectiveIdToComplete: 
+    speakerName: 
+    speakerId: 
+    textJa: "だれもいません。でも、小さな声で言うと、少し、ほっとしました。"
+    textReading: "だれもいません。でも、ちいさなこえでいうと、すこし、ほっとしました。"
+    textEn: "Không có ai cả. Nhưng nói bằng giọng nhỏ, bạn thấy yên lòng hơn một chút."
+    textRomaji: "Dare mo imasen. Demo, chiisana koe de iu to, sukoshi, hotto shimashita."
+    textEnglishIpa: 
+    animationCue: 
+    voiceClip: {fileID: 0}
+    choices: []
+    flagCondition: 
+    flagJumpNodeId: 
+    targetItemId: 
+    targetNpcId: 
+    targetAreaId: 
+  - id: n_home_silent
+    nodeType: 0
+    nextNodeId: n_end
+    objectiveIdToComplete: 
+    speakerName: 
+    speakerId: 
+    textJa: "部屋は静かです。でも、明日から、この町がにぎやかになります。"
+    textReading: "へやはしずかです。でも、あしたから、このまちがにぎやかになります。"
+    textEn: "Căn phòng yên tĩnh. Nhưng từ ngày mai, thị trấn này sẽ trở nên náo nhiệt."
+    textRomaji: "Heya wa shizuka desu. Demo, ashita kara, kono machi ga nigiyaka ni narimasu."
+    textEnglishIpa: 
+    animationCue: 
+    voiceClip: {fileID: 0}
+    choices: []
+    flagCondition: 
+    flagJumpNodeId: 
+    targetItemId: 
+    targetNpcId: 
+    targetAreaId: 
+  - id: n_end
+    nodeType: 0
+    nextNodeId: n_complete
+    objectiveIdToComplete: obj_home
+    speakerName: 
+    speakerId: 
+    textJa: "おやすみなさい。明日から、ひばり町の生活が始まります。"
+    textReading: "おやすみなさい。あしたから、ひばりちょうのせいかつがはじまります。"
+    textEn: "Chúc ngủ ngon. Từ ngày mai, cuộc sống ở Hibari-chō bắt đầu."
+    textRomaji: "Oyasuminasai. Ashita kara, Hibari-chou no seikatsu ga hajimarimasu."
+    textEnglishIpa: 
+    animationCue: 
+    voiceClip: {fileID: 0}
+    choices: []
+    flagCondition: 
+    flagJumpNodeId: 
+    targetItemId: 
+    targetNpcId: 
+    targetAreaId: 
+  - id: n_complete
+    nodeType: 4
+    nextNodeId: 
+    objectiveIdToComplete: 
+    speakerName: 
+    speakerId: 
+    textJa: 
+    textReading: 
+    textEn: 
+    textRomaji: 
+    textEnglishIpa: 
+    animationCue: 
+    voiceClip: {fileID: 0}
+    choices: []
+    flagCondition: 
+    flagJumpNodeId: 
+    targetItemId: 
+    targetNpcId: 
+    targetAreaId: 
+  startNodeId: n_open
