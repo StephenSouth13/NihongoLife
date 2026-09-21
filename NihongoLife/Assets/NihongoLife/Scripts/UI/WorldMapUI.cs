@@ -78,8 +78,8 @@ namespace NihongoLife.UI
             _worldMin = new(-66, -50); _worldMax = new(66, 38);
             Road(Vector2.zero, new(860, 60)); Road(new(-145, 0), new(56, 470)); Road(new(215, 35), new(50, 410), 18); Road(new(35, 135), new(720, 38), -8);
             Place(L("Cửa hàng tiện lợi", "Convenience store", "コンビニ"), new(0, -32), new(.2f, .76f, .66f), "SHOP");
-            Place("Sushi Hibari", new(-285, 145), new(.94f, .42f, .36f), L("VÀO QUÁN", "ENTER", "入口"));
-            Place(L("Ga Sakura Metro", "Sakura Metro", "さくら駅"), new(300, 135), new(.3f, .62f, .94f), L("ĐI TÀU", "TRAINS", "電車"));
+            Place("Sushi Hibari", new(-285, 145), new(.94f, .42f, .36f), "SUSHI");
+            Place(L("Ga Sakura Metro", "Sakura Metro", "さくら駅"), new(300, 135), new(.3f, .62f, .94f), "STATION");
             Place(L("Khu dân cư", "Residential", "住宅街"), new(-285, -160), new(.62f, .76f, .38f), "HOME");
             Place(L("Công viên", "Park", "公園"), new(285, -155), new(.42f, .72f, .4f), "PARK");
         }
