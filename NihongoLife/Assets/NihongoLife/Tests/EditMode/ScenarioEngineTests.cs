@@ -200,6 +200,29 @@ namespace NihongoLife.Tests
         }
 
         [Test]
+        public void ScenarioValidator_RejectsMissingInteractionTargets()
+        {
+            var scenario = ScriptableObject.CreateInstance<ScenarioDefinition>();
+            scenario.id = "scenario.missing_targets";
+            scenario.startNodeId = "start";
+            scenario.nodes = new List<ScenarioNode>
+            {
+                new ScenarioNode { id = "start", nodeType = ScenarioNodeType.TalkToNPC, nextNodeId = "item" },
+                new ScenarioNode { id = "item", nodeType = ScenarioNodeType.CollectItem, nextNodeId = "area" },
+                new ScenarioNode { id = "area", nodeType = ScenarioNodeType.GoToArea, nextNodeId = "done" },
+                new ScenarioNode { id = "done", nodeType = ScenarioNodeType.Complete }
+            };
+
+            var result = ScenarioValidator.Validate(scenario);
+
+            Object.DestroyImmediate(scenario);
+            Assert.IsTrue(result.HasErrors);
+            StringAssert.Contains("targetNpcId", result.ToLogString());
+            StringAssert.Contains("targetItemId", result.ToLogString());
+            StringAssert.Contains("targetAreaId", result.ToLogString());
+        }
+
+        [Test]
         public void GameControlService_OrdersCampaignAndFindsNextScenario()
         {
             var controlObject = new GameObject("GameControlService");
