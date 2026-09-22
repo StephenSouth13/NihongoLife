@@ -38,6 +38,14 @@ namespace NihongoLife.Player
         private Vector3 _smoothedMoveDirection;
         private GameInputService _input;
         private float _footstepTimer;
+        private Vector3 _clickDestination;
+        private bool _hasClickDestination;
+
+        public void SetClickDestination(Vector3 destination)
+        {
+            _clickDestination = destination;
+            _hasClickDestination = true;
+        }
 
         public bool InputLocked
         {
@@ -58,6 +66,10 @@ namespace NihongoLife.Player
             _characterController = GetComponent<CharacterController>();
             _mainCamera = ResolveGameplayCamera();
             _animationController = GetComponent<CharacterAnimationController>();
+            if (GetComponent<ClickToMoveController>() == null)
+            {
+                gameObject.AddComponent<ClickToMoveController>();
+            }
             PlayableCharacterCatalog.ApplySelectedVisual(gameObject);
             _input = GameInputService.GetOrCreate();
             if (GetComponent<PlayerWorldActionController>() == null)
@@ -119,6 +131,24 @@ namespace NihongoLife.Player
             right.Normalize();
 
             Vector3 moveDirection = (forward * moveInput.y + right * moveInput.x).normalized;
+            if (_hasClickDestination && moveInput.sqrMagnitude < 0.01f)
+            {
+                Vector3 toDestination = _clickDestination - transform.position;
+                toDestination.y = 0f;
+                if (toDestination.sqrMagnitude <= 0.16f)
+                {
+                    _hasClickDestination = false;
+                    moveDirection = Vector3.zero;
+                }
+                else
+                {
+                    moveDirection = toDestination.normalized;
+                }
+            }
+            else if (moveInput.sqrMagnitude > 0.01f)
+            {
+                _hasClickDestination = false;
+            }
 
             float currentSpeed = isRunning ? runSpeed : walkSpeed;
             float smoothing = moveDirection.sqrMagnitude > 0.001f ? acceleration : deceleration;
@@ -144,6 +174,11 @@ namespace NihongoLife.Player
             Vector3 finalMove = _smoothedMoveDirection * currentSpeed;
             finalMove.y = _velocity.y;
             CollisionFlags flags = _characterController.Move(finalMove * Time.deltaTime);
+            if (_hasClickDestination && (flags & CollisionFlags.Sides) != 0 && finalMove.magnitude > 0.25f)
+            {
+                _hasClickDestination = false;
+                _smoothedMoveDirection = Vector3.zero;
+            }
             if ((flags & CollisionFlags.Below) != 0 && _velocity.y < 0f)
             {
                 _velocity.y = -2f;

@@ -4,13 +4,16 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using UnityEngine.EventSystems;
+using NihongoLife.Player;
+using UnityEngine.AI;
 
 namespace NihongoLife.UI
 {
     public class WorldMapUI : MonoBehaviour
     {
         private GameObject _overlay;
-        private RectTransform _mapArea, _playerMarker;
+        private RectTransform _mapArea, _playerMarker, _destinationMarker;
         private TextMeshProUGUI _header, _location, _coordinates;
         private Transform _player;
         private TMP_FontAsset _font;
@@ -41,6 +44,8 @@ namespace NihongoLife.UI
             Stretch(x.rectTransform); x.alignment = TextAlignmentOptions.Center;
             _mapArea = Panel("MapArea", _overlay.transform, new(.055f, .095f, .105f)).GetComponent<RectTransform>();
             Rect(_mapArea, new(.5f, .5f), new(0, -8), new(940, 530));
+            var clickTarget = _mapArea.gameObject.AddComponent<MapClickTarget>();
+            clickTarget.Clicked += HandleMapClick;
             _coordinates = Text("Coordinates", _overlay.transform, 15, FontStyles.Normal);
             Rect(_coordinates.rectTransform, new(.5f, 0), new(0, 18), new(900, 32));
             _coordinates.alignment = TextAlignmentOptions.Center;
@@ -68,6 +73,9 @@ namespace NihongoLife.UI
             else CityMap();
             _playerMarker = Panel("YouAreHere", _mapArea, new(1f, .82f, .16f)).GetComponent<RectTransform>();
             _playerMarker.sizeDelta = new(18, 24); _playerMarker.pivot = new(.5f, .25f);
+            _destinationMarker = Panel("Destination", _mapArea, new(.95f, .25f, .28f)).GetComponent<RectTransform>();
+            _destinationMarker.sizeDelta = new(18, 18);
+            _destinationMarker.gameObject.SetActive(false);
             TextMeshProUGUI you = Text("Label", _playerMarker, 12, FontStyles.Bold, L("BẠN", "YOU", "現在地"));
             Rect(you.rectTransform, new(.5f, 0), new(0, -5), new(82, 24)); you.alignment = TextAlignmentOptions.Top;
         }
@@ -115,6 +123,35 @@ namespace NihongoLife.UI
             _playerMarker.anchoredPosition = new((n.x - .5f) * (_mapArea.rect.width - 46), (n.y - .5f) * (_mapArea.rect.height - 46));
             _playerMarker.localRotation = Quaternion.Euler(0, 0, -_player.eulerAngles.y);
             _coordinates.text = $"{L("Vị trí", "Position", "位置")}  X {_player.position.x:0.0}  Z {_player.position.z:0.0}    |    M / Esc: {L("đóng", "close", "閉じる")}";
+        }
+
+        private void HandleMapClick(Vector2 localPosition)
+        {
+            if (_player == null || _mapArea == null) return;
+            Vector2 normalized = new(
+                Mathf.Clamp01(localPosition.x / _mapArea.rect.width + 0.5f),
+                Mathf.Clamp01(localPosition.y / _mapArea.rect.height + 0.5f));
+            Vector3 destination = new(
+                Mathf.Lerp(_worldMin.x, _worldMax.x, normalized.x),
+                _player.position.y,
+                Mathf.Lerp(_worldMin.y, _worldMax.y, normalized.y));
+            if (!NavMesh.SamplePosition(destination, out NavMeshHit navHit, 3f, NavMesh.AllAreas)) return;
+            destination = navHit.position;
+            _destinationMarker.anchoredPosition = localPosition;
+            _destinationMarker.gameObject.SetActive(true);
+            _player.GetComponent<PlayerController>()?.SetClickDestination(destination);
+            SetVisible(false);
+        }
+
+        private sealed class MapClickTarget : MonoBehaviour, IPointerClickHandler
+        {
+            public event Action<Vector2> Clicked;
+            public void OnPointerClick(PointerEventData eventData)
+            {
+                if (RectTransformUtility.ScreenPointToLocalPointInRectangle(
+                        (RectTransform)transform, eventData.position, eventData.pressEventCamera, out Vector2 local))
+                    Clicked?.Invoke(local);
+            }
         }
 
         private void Road(Vector2 p, Vector2 s, float angle = 0) { RectTransform r = Panel("Route", _mapArea, new(.22f, .27f, .29f)).GetComponent<RectTransform>(); r.anchoredPosition = p; r.sizeDelta = s; r.localRotation = Quaternion.Euler(0, 0, angle); }
