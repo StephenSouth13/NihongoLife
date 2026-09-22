@@ -12,6 +12,13 @@ namespace NihongoLife.Data
     }
 
     [Serializable]
+    public class ActiveObjectiveRecord
+    {
+        public string objectiveId;
+        public int state;
+    }
+
+    [Serializable]
     public class MasteryRecord
     {
         public string targetId; // vocabulary/grammar item ID
@@ -54,6 +61,9 @@ namespace NihongoLife.Data
         public float thirst = 100f;
         public int knowledge = 0;
         public int yen = 1200;
+        public string activeScenarioId = string.Empty;
+        public string activeScenarioNodeId = string.Empty;
+        public List<ActiveObjectiveRecord> activeObjectives = new List<ActiveObjectiveRecord>();
         public string activeJobRole = string.Empty;
         public BusinessRecord business = new BusinessRecord();
         

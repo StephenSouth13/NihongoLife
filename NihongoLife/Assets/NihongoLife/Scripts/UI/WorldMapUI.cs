@@ -14,6 +14,11 @@ namespace NihongoLife.UI
     {
         private GameObject _overlay;
         private RectTransform _mapArea, _playerMarker, _destinationMarker;
+        private RawImage _topDownImage;
+        private Camera _topDownCamera;
+        private RenderTexture _topDownTexture;
+        private Button _areaTab, _overviewTab;
+        private bool _showTopDown;
         private TextMeshProUGUI _header, _location, _coordinates;
         private Transform _player;
         private TMP_FontAsset _font;
@@ -46,6 +51,7 @@ namespace NihongoLife.UI
             Rect(_mapArea, new(.5f, .5f), new(0, -8), new(940, 530));
             var clickTarget = _mapArea.gameObject.AddComponent<MapClickTarget>();
             clickTarget.Clicked += HandleMapClick;
+            BuildTabs();
             _coordinates = Text("Coordinates", _overlay.transform, 15, FontStyles.Normal);
             Rect(_coordinates.rectTransform, new(.5f, 0), new(0, 18), new(900, 32));
             _coordinates.alignment = TextAlignmentOptions.Center;
@@ -57,10 +63,74 @@ namespace NihongoLife.UI
         {
             if (_overlay == null) return;
             _overlay.SetActive(visible); OnVisibilityChanged?.Invoke(visible);
-            if (!visible) return;
+            if (!visible)
+            {
+                if (_topDownCamera != null) _topDownCamera.enabled = false;
+                return;
+            }
             GameObject found = GameObject.FindWithTag("Player");
             _player = found != null ? found.transform : null;
             BuildMap(); RefreshMarker();
+            UpdateTopDownCamera();
+        }
+
+        private void BuildTabs()
+        {
+            _areaTab = Tab("Khu vực hiện tại", new(-112, 0));
+            _overviewTab = Tab("Bản đồ tổng", new(112, 0));
+            _areaTab.onClick.AddListener(() => SetMapMode(true));
+            _overviewTab.onClick.AddListener(() => SetMapMode(false));
+            _topDownImage = _mapArea.gameObject.AddComponent<RawImage>();
+            _topDownImage.color = Color.white;
+            Stretch(_topDownImage.rectTransform);
+            _topDownImage.raycastTarget = false;
+            SetMapMode(false);
+        }
+
+        private Button Tab(string label, Vector2 position)
+        {
+            GameObject panel = Panel("MapTab_" + label, _overlay.transform, new(.08f, .12f, .15f));
+            RectTransform rect = panel.GetComponent<RectTransform>();
+            Rect(rect, new(.5f, 1), position + new(0, -103), new(190, 38));
+            Button button = panel.AddComponent<Button>();
+            button.targetGraphic = panel.GetComponent<Image>();
+            TextMeshProUGUI text = Text("Label", panel.transform, 14, FontStyles.Bold, label);
+            Stretch(text.rectTransform); text.alignment = TextAlignmentOptions.Center;
+            return button;
+        }
+
+        private void SetMapMode(bool topDown)
+        {
+            _showTopDown = topDown;
+            _topDownImage.gameObject.SetActive(topDown);
+            _mapArea.GetComponent<MapClickTarget>().enabled = !topDown;
+            if (_areaTab != null) _areaTab.GetComponent<Image>().color = topDown ? new(.95f, .58f, .18f) : new(.08f, .12f, .15f);
+            if (_overviewTab != null) _overviewTab.GetComponent<Image>().color = topDown ? new(.08f, .12f, .15f) : new(.95f, .58f, .18f);
+            if (topDown) UpdateTopDownCamera();
+        }
+
+        private void UpdateTopDownCamera()
+        {
+            if (!_showTopDown || _player == null) return;
+            if (_topDownTexture == null)
+            {
+                _topDownTexture = new RenderTexture(1024, 576, 16, RenderTextureFormat.ARGB32);
+                _topDownTexture.name = "NihongoLife_TopDownMap";
+                _topDownTexture.Create();
+            }
+            if (_topDownCamera == null)
+            {
+                var go = new GameObject("TopDownMapCamera");
+                _topDownCamera = go.AddComponent<Camera>();
+                _topDownCamera.orthographic = true;
+                _topDownCamera.orthographicSize = 16f;
+                _topDownCamera.clearFlags = CameraClearFlags.SolidColor;
+                _topDownCamera.backgroundColor = new Color(.035f, .055f, .065f, 1f);
+                _topDownCamera.targetTexture = _topDownTexture;
+                _topDownImage.texture = _topDownTexture;
+            }
+            _topDownCamera.transform.SetPositionAndRotation(_player.position + Vector3.up * 24f, Quaternion.Euler(90f, 0f, 0f));
+            _topDownCamera.enabled = true;
         }
 
         private void BuildMap()
@@ -114,7 +184,7 @@ namespace NihongoLife.UI
             Place(L("Về thành phố", "Return to city", "町へ戻る"), new(300, -165), new(.45f, .78f, .48f), "EXIT");
         }
 
-        private void LateUpdate() { if (IsVisible) RefreshMarker(); }
+        private void LateUpdate() { if (IsVisible) { RefreshMarker(); UpdateTopDownCamera(); } }
         private void RefreshMarker()
         {
             if (_player == null || _playerMarker == null) return;

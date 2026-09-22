@@ -123,7 +123,8 @@ namespace NihongoLife.Scenario
 
             if (!string.IsNullOrEmpty(startId))
             {
-                TransitionToNode(startId);
+                string savedNode = GetSavedNode(scenario.id);
+                TransitionToNode(string.IsNullOrEmpty(savedNode) ? startId : savedNode);
             }
             else
             {
@@ -176,6 +177,7 @@ namespace NihongoLife.Scenario
             }
 
             OnNodeChanged?.Invoke(_currentNode);
+            SaveActiveProgress();
             ExecuteCurrentNode();
         }
 
@@ -230,6 +232,7 @@ namespace NihongoLife.Scenario
             {
                 obj.state = ObjectiveState.Active;
                 OnObjectiveStateChanged?.Invoke(obj);
+                SaveActiveProgress();
             }
         }
 
@@ -382,6 +385,7 @@ namespace NihongoLife.Scenario
                 obj.state = ObjectiveState.Completed;
                 Debug.Log($"[ScenarioManager] Objective Completed: {obj.titleJa}");
                 OnObjectiveStateChanged?.Invoke(obj);
+                SaveActiveProgress();
             }
         }
 
@@ -393,7 +397,53 @@ namespace NihongoLife.Scenario
                 obj.state = ObjectiveState.Failed;
                 Debug.Log($"[ScenarioManager] Objective Failed: {obj.titleJa}");
                 OnObjectiveStateChanged?.Invoke(obj);
+                SaveActiveProgress();
             }
+        }
+
+        private string GetSavedNode(string scenarioId)
+        {
+            if (!GameServices.TryGet(out IProgressRepository repository)) return string.Empty;
+            var progress = repository.GetProgress();
+            if (progress == null || progress.activeScenarioId != scenarioId) return string.Empty;
+            foreach (var objective in _objectives)
+            {
+                var saved = progress.activeObjectives?.Find(record => record.objectiveId == objective.id);
+                if (saved != null) objective.state = (ObjectiveState)saved.state;
+            }
+            return progress.activeScenarioNodeId;
+        }
+
+        private void SaveActiveProgress()
+        {
+            if (currentScenario == null || _currentNode == null) return;
+            if (!GameServices.TryGet(out IProgressRepository repository)) return;
+            var progress = repository.GetProgress();
+            if (progress == null) return;
+            progress.activeScenarioId = currentScenario.id;
+            progress.activeScenarioNodeId = _currentNode.id;
+            progress.activeObjectives ??= new List<ActiveObjectiveRecord>();
+            progress.activeObjectives.Clear();
+            foreach (var objective in _objectives)
+            {
+                progress.activeObjectives.Add(new ActiveObjectiveRecord
+                {
+                    objectiveId = objective.id,
+                    state = (int)objective.state
+                });
+            }
+            repository.SaveProgress(progress);
+        }
+
+        private void ClearActiveProgress()
+        {
+            if (!GameServices.TryGet(out IProgressRepository repository)) return;
+            var progress = repository.GetProgress();
+            if (progress == null) return;
+            progress.activeScenarioId = string.Empty;
+            progress.activeScenarioNodeId = string.Empty;
+            progress.activeObjectives?.Clear();
+            repository.SaveProgress(progress);
         }
 
         private void FinishScenario(bool success)
@@ -489,6 +539,8 @@ namespace NihongoLife.Scenario
             {
                 LearningMasteryManager.Instance.UpdateMasteryFromScenario(currentScenario, breakdown);
             }
+
+            ClearActiveProgress();
 
             OnScenarioFinished?.Invoke(breakdown);
         }

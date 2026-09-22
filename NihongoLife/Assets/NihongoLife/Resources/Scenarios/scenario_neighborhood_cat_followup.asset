@@ -1,0 +1,484 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3ba8f435ab5427145b206cd2a4f4ea7c, type: 3}
+  m_Name: scenario_neighborhood_cat_followup
+  m_EditorClassIdentifier: NihongoLife::NihongoLife.Scenario.ScenarioDefinition
+  id: scenario.neighborhood.cat_followup
+  version: 2
+  titleJa: "猫の手がかり"
+  titleEn: "Manh mối về chú mèo"
+  descriptionJa: "鈴木さんに新しい手がかりを伝えましょう。"
+  descriptionEn: "Báo cho cô Suzuki manh mối mới về Mike và luyện cách mô tả vị trí, đặc điểm bằng tiếng Nhật."
+  chapterIndex: 3
+  learningTargets:
+  - grammar.n5.no_chikaku_de
+  - grammar.n5.te_form_adj
+  - grammar.n5.no_mukaigawa
+  - vocab.n5.ribon
+  - vocab.n5.kouen
+  objectives:
+  - id: obj_meet
+    titleJa: "鈴木さんに会う"
+    titleEn: "Gặp lại cô Suzuki"
+    isOptional: 0
+  - id: obj_report_cat_clue
+    titleJa: "手がかりを伝える"
+    titleEn: "Báo manh mối cho Suzuki"
+    isOptional: 0
+  nodes:
+  - id: node_find_suzuki
+    nodeType: 6
+    nextNodeId: b_promised
+    objectiveIdToComplete: obj_meet
+    speakerName: 
+    speakerId: 
+    textJa: 
+    textReading: 
+    textEn: 
+    textRomaji: 
+    textEnglishIpa: 
+    animationCue: 
+    voiceClip: {fileID: 0}
+    choices: []
+    flagCondition: 
+    flagJumpNodeId: 
+    targetItemId: 
+    targetNpcId: npc_neighbor_2
+    targetAreaId: 
+  - id: b_promised
+    nodeType: 7
+    nextNodeId: n_open_new
+    objectiveIdToComplete: 
+    speakerName: 
+    speakerId: 
+    textJa: 
+    textReading: 
+    textEn: 
+    textRomaji: 
+    textEnglishIpa: 
+    animationCue: 
+    voiceClip: {fileID: 0}
+    choices: []
+    flagCondition: "cat.promised"
+    flagJumpNodeId: n_open_promised
+    targetItemId: 
+    targetNpcId: 
+    targetAreaId: 
+  - id: n_open_promised
+    nodeType: 0
+    nextNodeId: n_check
+    objectiveIdToComplete: 
+    speakerName: Suzuki
+    speakerId: npc_neighbor_2
+    textJa: "あ、この間、手伝うと言ってくれた方ですね！ミケのこと、何か分かりましたか。"
+    textReading: "あ、このあいだ、てつだうといってくれたかたですね！ミケのこと、なにかわかりましたか。"
+    textEn: "À, là người hôm trước đã hứa giúp tôi phải không! Bạn có biết được gì về Mike chưa?"
+    textRomaji: "A, kono aida, tetsudau to itte kureta kata desu ne! Mike no koto, nanika wakarimashita ka."
+    textEnglishIpa: 
+    animationCue: talk
+    voiceClip: {fileID: 0}
+    choices: []
+    flagCondition: 
+    flagJumpNodeId: 
+    targetItemId: 
+    targetNpcId: 
+    targetAreaId: 
+  - id: n_open_new
+    nodeType: 0
+    nextNodeId: n_check
+    objectiveIdToComplete: 
+    speakerName: Suzuki
+    speakerId: npc_neighbor_2
+    textJa: "あの…すみません。うちの猫が、まだ見つからないんです。"
+    textReading: "あの…すみません。うちのねこが、まだみつからないんです。"
+    textEn: "À... xin lỗi bạn. Con mèo nhà tôi vẫn chưa tìm thấy."
+    textRomaji: "Ano... sumimasen. Uchi no neko ga, mada mitsukaranai n desu."
+    textEnglishIpa: 
+    animationCue: talk
+    voiceClip: {fileID: 0}
+    choices: []
+    flagCondition: 
+    flagJumpNodeId: 
+    targetItemId: 
+    targetNpcId: 
+    targetAreaId: 
+  - id: n_check
+    nodeType: 0
+    nextNodeId: 
+    objectiveIdToComplete: 
+    speakerName: Suzuki
+    speakerId: npc_neighbor_2
+    textJa: "猫について、何か分かりましたか。"
+    textReading: "ねこについて、なにかわかりましたか。"
+    textEn: "Bạn đã tìm được manh mối gì về chú mèo chưa?"
+    textRomaji: "Neko ni tsuite, nanika wakarimashita ka?"
+    textEnglishIpa: 
+    animationCue: talk
+    voiceClip: {fileID: 0}
+    choices:
+    - textJa: "公園の近くで見ました。"
+      textEn: "Tôi đã thấy nó gần công viên."
+      nextNodeId: b_where_hint
+      scoreModifiers:
+      - category: Grammar
+        value: 10
+        reason: "Mô tả vị trí bằng mẫu 〜の近くで見ました"
+      grammarTags:
+      - grammar.n5.no_chikaku_de
+      - grammar.n5.mashita
+      vocabularyTags:
+      - vocab.n5.kouen
+      setFlags: []
+    - textJa: "猫は公園です。"
+      textEn: "Con mèo là công viên."
+      nextNodeId: n_correction
+      scoreModifiers:
+      - category: Grammar
+        value: -8
+        reason: "Câu vô nghĩa: mèo không thể 'là' công viên; cần dùng mẫu mô tả vị trí"
+      grammarTags: []
+      vocabularyTags: []
+      setFlags: []
+    flagCondition: 
+    flagJumpNodeId: 
+    targetItemId: 
+    targetNpcId: 
+    targetAreaId: 
+  - id: n_correction
+    nodeType: 0
+    nextNodeId: n_check
+    objectiveIdToComplete: 
+    speakerName: Suzuki
+    speakerId: npc_neighbor_2
+    textJa: "場所を言うときは、「〜の近くで見ました」と言うと自然ですよ。もう一度、どうぞ。"
+    textReading: "ばしょをいうときは、「〜のちかくでみました」というとしぜんですよ。もういちど、どうぞ。"
+    textEn: "Khi nói vị trí, dùng mẫu \"~ no chikaku de mimashita\" (đã thấy gần ~) sẽ tự nhiên hơn. Mời bạn nói lại."
+    textRomaji: "Basho wo iu toki wa, \"~ no chikaku de mimashita\" to iu to shizen desu yo. Mou ichido, douzo."
+    textEnglishIpa: 
+    animationCue: talk
+    voiceClip: {fileID: 0}
+    choices: []
+    flagCondition: 
+    flagJumpNodeId: 
+    targetItemId: 
+    targetNpcId: 
+    targetAreaId: 
+  - id: b_where_hint
+    nodeType: 7
+    nextNodeId: n_where_park
+    objectiveIdToComplete: 
+    speakerName: 
+    speakerId: 
+    textJa: 
+    textReading: 
+    textEn: 
+    textRomaji: 
+    textEnglishIpa: 
+    animationCue: 
+    voiceClip: {fileID: 0}
+    choices: []
+    flagCondition: "cat.shrine_hint"
+    flagJumpNodeId: n_where_shrine
+    targetItemId: 
+    targetNpcId: 
+    targetAreaId: 
+  - id: n_where_shrine
+    nodeType: 0
+    nextNodeId: n_detail_after
+    objectiveIdToComplete: 
+    speakerName: Suzuki
+    speakerId: npc_neighbor_2
+    textJa: "神社の近くですか。前に、ミケはそこが好きだと言いましたね。"
+    textReading: "じんじゃのちかくですか。まえに、ミケはそこがすきだといいましたね。"
+    textEn: "Gần đền thờ à. Lúc trước tôi có nói Mike thích chỗ đó nhỉ."
+    textRomaji: "Jinja no chikaku desu ka. Mae ni, Mike wa soko ga suki da to iimashita ne."
+    textEnglishIpa: 
+    animationCue: talk
+    voiceClip: {fileID: 0}
+    choices: []
+    flagCondition: 
+    flagJumpNodeId: 
+    targetItemId: 
+    targetNpcId: 
+    targetAreaId: 
+  - id: n_where_park
+    nodeType: 0
+    nextNodeId: n_detail_after
+    objectiveIdToComplete: 
+    speakerName: Suzuki
+    speakerId: npc_neighbor_2
+    textJa: "公園ですか。そういえば、ミケは公園にもよく行きますね。"
+    textReading: "こうえんですか。そういえば、ミケはこうえんにもよくいきますね。"
+    textEn: "Công viên à. À phải rồi, Mike cũng hay đi công viên nhỉ."
+    textRomaji: "Kouen desu ka. Souieba, Mike wa kouen ni mo yoku ikimasu ne."
+    textEnglishIpa: 
+    animationCue: talk
+    voiceClip: {fileID: 0}
+    choices: []
+    flagCondition: 
+    flagJumpNodeId: 
+    targetItemId: 
+    targetNpcId: 
+    targetAreaId: 
+  - id: n_detail_after
+    nodeType: 0
+    nextNodeId: 
+    objectiveIdToComplete: 
+    speakerName: Suzuki
+    speakerId: npc_neighbor_2
+    textJa: "どんな猫でしたか？"
+    textReading: "どんなねこでしたか？"
+    textEn: "Đó là một chú mèo như thế nào?"
+    textRomaji: "Donna neko deshita ka?"
+    textEnglishIpa: 
+    animationCue: talk
+    voiceClip: {fileID: 0}
+    choices:
+    - textJa: "小さくて、白い猫でした。"
+      textEn: "Đó là một chú mèo nhỏ, màu trắng."
+      nextNodeId: n_ask_ribbon
+      scoreModifiers:
+      - category: Grammar
+        value: 10
+        reason: "Nối hai tính từ đuôi い bằng dạng 〜くて: 小さくて"
+      grammarTags:
+      - grammar.n5.te_form_adj
+      vocabularyTags:
+      - vocab.n5.chiisai
+      - vocab.n5.shiroi
+      setFlags: []
+    - textJa: "白いと小さい猫でした。"
+      textEn: "Một chú mèo trắng và nhỏ."
+      nextNodeId: n_adjective_hint
+      scoreModifiers:
+      - category: Grammar
+        value: -4
+        reason: "Nối hai tính từ đuôi い phải đổi thành dạng 〜くて (小さくて), không dùng と"
+      grammarTags: []
+      vocabularyTags: []
+      setFlags: []
+    flagCondition: 
+    flagJumpNodeId: 
+    targetItemId: 
+    targetNpcId: 
+    targetAreaId: 
+  - id: n_adjective_hint
+    nodeType: 0
+    nextNodeId: n_detail_after
+    objectiveIdToComplete: 
+    speakerName: Suzuki
+    speakerId: npc_neighbor_2
+    textJa: "い形容詞をつなぐ時は「小さくて」と言いますよ。もう一度、どうぞ。"
+    textReading: "いけいようしをつなぐときは「ちいさくて」といいますよ。もういちど、どうぞ。"
+    textEn: "Khi nối tính từ đuôi い, hãy nói \"chiisakute\" nhé. Mời bạn nói lại."
+    textRomaji: "I-keiyoushi wo tsunagu toki wa \"chiisakute\" to iimasu yo. Mou ichido, douzo."
+    textEnglishIpa: 
+    animationCue: point
+    voiceClip: {fileID: 0}
+    choices: []
+    flagCondition: 
+    flagJumpNodeId: 
+    targetItemId: 
+    targetNpcId: 
+    targetAreaId: 
+  - id: n_ask_ribbon
+    nodeType: 0
+    nextNodeId: 
+    objectiveIdToComplete: 
+    speakerName: Suzuki
+    speakerId: npc_neighbor_2
+    textJa: "そうです、ミケです！首に、赤いリボンをしていましたか。"
+    textReading: "そうです、ミケです！くびに、あかいリボンをしていましたか。"
+    textEn: "Đúng rồi, chính là Mike! Nó có đeo chiếc nơ đỏ ở cổ không?"
+    textRomaji: "Sou desu, Mike desu! Kubi ni, akai ribon wo shite imashita ka?"
+    textEnglishIpa: 
+    animationCue: talk
+    voiceClip: {fileID: 0}
+    choices:
+    - textJa: "はい、赤いリボンをしていました。"
+      textEn: "Vâng, nó có đeo một chiếc nơ đỏ ạ."
+      nextNodeId: n_direction
+      scoreModifiers:
+      - category: Grammar
+        value: 10
+        reason: "Xác nhận đúng chi tiết bằng thì quá khứ 〜していました"
+      grammarTags:
+      - grammar.n5.te_imashita
+      vocabularyTags:
+      - vocab.n5.ribon
+      setFlags:
+      - cat.described
+    - textJa: "覚えていません。"
+      textEn: "Tôi không nhớ rõ."
+      nextNodeId: n_direction
+      scoreModifiers:
+      - category: ResponseAccuracy
+        value: 3
+        reason: "Trả lời thành thật nhưng thiếu chi tiết quan trọng"
+      grammarTags: []
+      vocabularyTags:
+      - vocab.n5.oboeru
+      setFlags: []
+    flagCondition: 
+    flagJumpNodeId: 
+    targetItemId: 
+    targetNpcId: 
+    targetAreaId: 
+  - id: n_direction
+    nodeType: 0
+    nextNodeId: 
+    objectiveIdToComplete: 
+    speakerName: Suzuki
+    speakerId: npc_neighbor_2
+    textJa: "公園のどちら側ですか。"
+    textReading: "こうえんのどちらがわですか。"
+    textEn: "Nó ở phía nào của công viên?"
+    textRomaji: "Kouen no dochira gawa desu ka?"
+    textEnglishIpa: 
+    animationCue: talk
+    voiceClip: {fileID: 0}
+    choices:
+    - textJa: "コンビニの向かい側です。"
+      textEn: "Ở phía đối diện cửa hàng tiện lợi ạ."
+      nextNodeId: n_thanks
+      scoreModifiers:
+      - category: Grammar
+        value: 10
+        reason: "Mô tả vị trí tương đối bằng 〜の向かい側です"
+      grammarTags:
+      - grammar.n5.no_mukaigawa
+      vocabularyTags:
+      - vocab.n5.konbini
+      setFlags:
+      - cat.direction_given
+    - textJa: "コンビニの中です。"
+      textEn: "Ở bên trong cửa hàng tiện lợi ạ."
+      nextNodeId: n_verify
+      scoreModifiers:
+      - category: ResponseAccuracy
+        value: -3
+        reason: "Vị trí không hợp lý: mèo hoang không ở trong cửa hàng, dễ gây hiểu nhầm"
+      grammarTags: []
+      vocabularyTags: []
+      setFlags: []
+    flagCondition: 
+    flagJumpNodeId: 
+    targetItemId: 
+    targetNpcId: 
+    targetAreaId: 
+  - id: n_verify
+    nodeType: 0
+    nextNodeId: 
+    objectiveIdToComplete: 
+    speakerName: Suzuki
+    speakerId: npc_neighbor_2
+    textJa: "お店の中ではなく、向かい側ですね？"
+    textReading: "おみせのなかではなく、むかいがわですね？"
+    textEn: "Không phải bên trong cửa hàng, mà là phía đối diện đúng không ạ?"
+    textRomaji: "Omise no naka dewa naku, mukaigawa desu ne?"
+    textEnglishIpa: 
+    animationCue: talk
+    voiceClip: {fileID: 0}
+    choices:
+    - textJa: "はい、向かい側です。"
+      textEn: "Vâng, phía đối diện ạ."
+      nextNodeId: n_thanks
+      scoreModifiers:
+      - category: ResponseAccuracy
+        value: 7
+        reason: "Xác nhận lại đúng vị trí"
+      grammarTags: []
+      vocabularyTags: []
+      setFlags:
+      - cat.direction_given
+    flagCondition: 
+    flagJumpNodeId: 
+    targetItemId: 
+    targetNpcId: 
+    targetAreaId: 
+  - id: n_thanks
+    nodeType: 0
+    nextNodeId: n_go
+    objectiveIdToComplete: obj_report_cat_clue
+    speakerName: Suzuki
+    speakerId: npc_neighbor_2
+    textJa: "助かりました。一緒に探してくれて、ありがとうございます。"
+    textReading: "たすかりました。いっしょにさがしてくれて、ありがとうございます。"
+    textEn: "Bạn giúp tôi nhiều lắm. Cảm ơn vì đã cùng tôi tìm kiếm."
+    textRomaji: "Tasukarimashita. Issho ni sagashite kurete, arigatou gozaimasu."
+    textEnglishIpa: 
+    animationCue: bow
+    voiceClip: {fileID: 0}
+    choices: []
+    flagCondition: 
+    flagJumpNodeId: 
+    targetItemId: 
+    targetNpcId: 
+    targetAreaId: 
+  - id: n_go
+    nodeType: 0
+    nextNodeId: n_recap
+    objectiveIdToComplete: 
+    speakerName: Suzuki
+    speakerId: npc_neighbor_2
+    textJa: "今から、向かい側を見に行きます。あなたも、良かったら来てください。"
+    textReading: "いまから、むかいがわをみにいきます。あなたも、よかったらきてください。"
+    textEn: "Bây giờ tôi sẽ đi xem phía đối diện. Nếu tiện thì bạn cùng đi nhé."
+    textRomaji: "Ima kara, mukaigawa wo mi ni ikimasu. Anata mo, yokattara kite kudasai."
+    textEnglishIpa: 
+    animationCue: talk
+    voiceClip: {fileID: 0}
+    choices: []
+    flagCondition: 
+    flagJumpNodeId: 
+    targetItemId: 
+    targetNpcId: 
+    targetAreaId: 
+  - id: n_recap
+    nodeType: 0
+    nextNodeId: node_complete
+    objectiveIdToComplete: 
+    speakerName: 
+    speakerId: 
+    textJa: "今日のポイント：「〜の近くで見ました」「小さくて、白い」「〜の向かい側です」。"
+    textReading: "きょうのポイント：「〜のちかくでみました」「ちいさくて、しろい」「〜のむかいがわです」。"
+    textEn: "Tóm tắt: \"~ no chikaku de mimashita\" (đã thấy gần ~), nối tính từ đuôi い bằng 〜くて, \"~ no mukaigawa desu\" (ở phía đối diện ~)."
+    textRomaji: "Kyou no pointo: \"~ no chikaku de mimashita\" \"chiisakute, shiroi\" \"~ no mukaigawa desu\"."
+    textEnglishIpa: 
+    animationCue: 
+    voiceClip: {fileID: 0}
+    choices: []
+    flagCondition: 
+    flagJumpNodeId: 
+    targetItemId: 
+    targetNpcId: 
+    targetAreaId: 
+  - id: node_complete
+    nodeType: 4
+    nextNodeId: 
+    objectiveIdToComplete: 
+    speakerName: 
+    speakerId: 
+    textJa: 
+    textReading: 
+    textEn: 
+    textRomaji: 
+    textEnglishIpa: 
+    animationCue: 
+    voiceClip: {fileID: 0}
+    choices: []
+    flagCondition: 
+    flagJumpNodeId: 
+    targetItemId: 
+    targetNpcId: 
+    targetAreaId: 
+  startNodeId: node_find_suzuki

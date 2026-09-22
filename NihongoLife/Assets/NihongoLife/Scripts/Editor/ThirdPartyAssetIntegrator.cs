@@ -135,7 +135,7 @@ namespace NihongoLife.EditorTools
                 for (int i = 0; i < products.Length; i++)
                 {
                     Place(FoodFolder, products[i], parent, $"ColdStock_{row}_{i}",
-                        new Vector3(3.15f + i * 0.24f, 0.45f + row * 0.34f, 3.0f),
+                        new Vector3(3.10f + i * 0.22f, 0.42f + row * 0.30f, 6.18f),
                         new Vector3(0.16f, 0.32f, 0.16f), Quaternion.identity, false, true);
                 }
             }

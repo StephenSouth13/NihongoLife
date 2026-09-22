@@ -11,13 +11,13 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 3ba8f435ab5427145b206cd2a4f4ea7c, type: 3}
   m_Name: scenario_konbini_buy_onigiri
-  m_EditorClassIdentifier:
+  m_EditorClassIdentifier: NihongoLife::NihongoLife.Scenario.ScenarioDefinition
   id: scenario.konbini.buy_onigiri
-  version: 3
-  titleJa: コンビニで買い物
-  titleEn: Mua sắm ở cửa hàng tiện lợi
-  descriptionJa: おにぎりを買って、レジで会計を済ませましょう。
-  descriptionEn: Vào cửa hàng, kiểm tra kệ đồ uống, chọn đúng onigiri và hoàn thành thanh toán tại quầy.
+  version: 2
+  titleJa: "コンビニでおにぎりを買う"
+  titleEn: "Mua cơm nắm ở cửa hàng tiện lợi"
+  descriptionJa: "ひばりコンビニで、おにぎりと飲み物を見て、お会計をしましょう。"
+  descriptionEn: "Vào cửa hàng Hibari, tìm đúng món trên kệ, mua cơm nắm và thanh toán bằng tiếng Nhật."
   chapterIndex: 2
   questType: main
   giverNpcId: npc_cashier
@@ -42,358 +42,762 @@ MonoBehaviour:
   maxPlayers: 2
   learningTargets:
   - grammar.n5.wo_kudasai
-  - grammar.n5.onegai_shimasu
-  - grammar.n5.daijoubu_desu
+  - grammar.n5.wo_onegaishimasu
+  - grammar.n5.de_onegaishimasu
   - vocab.n5.onigiri
-  - vocab.n5.mizu
-  - vocab.n5.ocha
   - vocab.n5.fukuro
   objectives:
   - id: obj_enter_store
-    titleJa: コンビニに入る
-    titleEn: Vào cửa hàng tiện lợi
+    titleJa: "コンビニに入る"
+    titleEn: "Vào cửa hàng tiện lợi"
     isOptional: 0
   - id: obj_check_drink
-    titleJa: 飲み物を確認する
-    titleEn: Kiểm tra kệ đồ uống
+    titleJa: "飲み物のたなを確認する"
+    titleEn: "Kiểm tra kệ đồ uống"
     isOptional: 0
   - id: obj_confirm_item
-    titleJa: 買うものを選ぶ
-    titleEn: Chọn đúng món cần mua
+    titleJa: "買うものを選ぶ"
+    titleEn: "Chọn đúng món cần mua"
     isOptional: 0
   - id: obj_find_onigiri
-    titleJa: おにぎりを見つける
-    titleEn: Tìm cơm nắm
+    titleJa: "おにぎりを見つける"
+    titleEn: "Tìm và lấy cơm nắm"
     isOptional: 0
   - id: obj_go_to_cashier
-    titleJa: レジへ行く
-    titleEn: Đi đến quầy thu ngân
+    titleJa: "レジへ行く"
+    titleEn: "Đi đến quầy thu ngân"
     isOptional: 0
   - id: obj_pay
-    titleJa: お会計をする
-    titleEn: Thanh toán
+    titleJa: "お金を払う"
+    titleEn: "Thanh toán"
     isOptional: 0
   nodes:
   - id: node_start
     nodeType: 3
-    nextNodeId: node_check_drink
+    nextNodeId: n_greet
     objectiveIdToComplete: obj_enter_store
-    speakerName:
-    speakerId:
-    textJa:
-    textReading:
-    textEn:
-    textRomaji:
-    textEnglishIpa:
-    animationCue:
+    speakerName: 
+    speakerId: 
+    textJa: 
+    textReading: 
+    textEn: 
+    textRomaji: 
+    textEnglishIpa: 
+    animationCue: 
     voiceClip: {fileID: 0}
     choices: []
-    targetItemId:
-    targetNpcId:
+    flagCondition: 
+    flagJumpNodeId: 
+    targetItemId: 
+    targetNpcId: 
     targetAreaId: store_entrance
-  - id: node_check_drink
-    nodeType: 2
-    nextNodeId: node_confirm_item
-    objectiveIdToComplete: obj_check_drink
-    speakerName:
-    speakerId:
-    textJa:
-    textReading:
-    textEn:
-    textRomaji:
-    textEnglishIpa:
-    animationCue:
-    voiceClip: {fileID: 0}
-    choices: []
-    targetItemId: water
-    targetNpcId:
-    targetAreaId:
-  - id: node_confirm_item
+  - id: n_greet
     nodeType: 0
-    nextNodeId:
-    objectiveIdToComplete:
-    speakerName: Hệ thống
-    speakerId: system
-    textJa: 今日買うものはどれですか？
-    textReading: きょうかうものはどれですか？
-    textEn: Hôm nay bạn cần mua món nào?
-    textRomaji: Kyou kau mono wa dore desu ka?
-    textEnglishIpa:
-    animationCue:
+    nextNodeId: 
+    objectiveIdToComplete: 
+    speakerName: Ito
+    speakerId: npc_cashier
+    textJa: "いらっしゃいませ！"
+    textReading: "いらっしゃいませ！"
+    textEn: "Xin chào quý khách!"
+    textRomaji: "Irasshaimase!"
+    textEnglishIpa: 
+    animationCue: bow
     voiceClip: {fileID: 0}
     choices:
-    - textJa: おにぎりをください。
-      textEn: Tôi muốn cơm nắm.
-      nextNodeId: node_confirm_item_done
+    - textJa: "こんにちは。"
+      textEn: "Xin chào ạ."
+      nextNodeId: n_task
       scoreModifiers:
       - category: Vocabulary
-        value: 10
-        reason: Chọn đúng từ onigiri
-      - category: Grammar
-        value: 10
-        reason: Dùng mẫu をください
+        value: 8
+        reason: "Đáp lại lời chào của nhân viên bằng こんにちは"
+      grammarTags: []
+      vocabularyTags:
+      - vocab.n5.konnichiwa
+      setFlags: []
+    - textJa: "どうも。"
+      textEn: "Chào."
+      nextNodeId: n_greet_casual
+      scoreModifiers:
+      - category: ResponseAccuracy
+        value: 2
+        reason: "Đáp được nhưng hơi suồng sã với nhân viên cửa hàng"
       grammarTags: []
       vocabularyTags: []
-    - textJa: お茶をください。
-      textEn: Tôi muốn trà xanh.
+      setFlags: []
+    flagCondition: 
+    flagJumpNodeId: 
+    targetItemId: 
+    targetNpcId: 
+    targetAreaId: 
+  - id: n_greet_casual
+    nodeType: 0
+    nextNodeId: n_task
+    objectiveIdToComplete: 
+    speakerName: Ito
+    speakerId: npc_cashier
+    textJa: "いらっしゃいませ。ごゆっくりどうぞ。"
+    textReading: "いらっしゃいませ。ごゆっくりどうぞ。"
+    textEn: "Xin chào quý khách. Mời quý khách xem thong thả ạ."
+    textRomaji: "Irasshaimase. Goyukkuri douzo."
+    textEnglishIpa: 
+    animationCue: bow
+    voiceClip: {fileID: 0}
+    choices: []
+    flagCondition: 
+    flagJumpNodeId: 
+    targetItemId: 
+    targetNpcId: 
+    targetAreaId: 
+  - id: n_task
+    nodeType: 0
+    nextNodeId: node_check_drink
+    objectiveIdToComplete: 
+    speakerName: 
+    speakerId: 
+    textJa: "今日は、おにぎりと飲み物を買いに来ました。お店の中を見てみましょう。"
+    textReading: "きょうは、おにぎりとのみものをかいにきました。おみせのなかをみてみましょう。"
+    textEn: "Hôm nay bạn đến mua cơm nắm và đồ uống. Hãy xem xung quanh cửa hàng."
+    textRomaji: "Kyou wa, onigiri to nomimono wo kai ni kimashita. Omise no naka wo mite mimashou."
+    textEnglishIpa: 
+    animationCue: 
+    voiceClip: {fileID: 0}
+    choices: []
+    flagCondition: 
+    flagJumpNodeId: 
+    targetItemId: 
+    targetNpcId: 
+    targetAreaId: 
+  - id: node_check_drink
+    nodeType: 2
+    nextNodeId: n_drink_react
+    objectiveIdToComplete: obj_check_drink
+    speakerName: 
+    speakerId: 
+    textJa: 
+    textReading: 
+    textEn: 
+    textRomaji: 
+    textEnglishIpa: 
+    animationCue: 
+    voiceClip: {fileID: 0}
+    choices: []
+    flagCondition: 
+    flagJumpNodeId: 
+    targetItemId: water
+    targetNpcId: 
+    targetAreaId: 
+  - id: n_drink_react
+    nodeType: 0
+    nextNodeId: n_shelf
+    objectiveIdToComplete: 
+    speakerName: 
+    speakerId: 
+    textJa: "冷蔵庫に、水、お茶、ジュースがあります。「水」と書いてあるラベルを見つけました。"
+    textReading: "れいぞうこに、みず、おちゃ、ジュースがあります。「みず」とかいてあるラベルをみつけました。"
+    textEn: "Trong tủ lạnh có nước, trà và nước ép. Bạn tìm thấy nhãn có ghi 「水」 (nước)."
+    textRomaji: "Reizouko ni, mizu, ocha, juusu ga arimasu. \"Mizu\" to kaite aru raberu wo mitsukemashita."
+    textEnglishIpa: 
+    animationCue: 
+    voiceClip: {fileID: 0}
+    choices: []
+    flagCondition: 
+    flagJumpNodeId: 
+    targetItemId: 
+    targetNpcId: 
+    targetAreaId: 
+  - id: n_shelf
+    nodeType: 0
+    nextNodeId: node_confirm_item
+    objectiveIdToComplete: 
+    speakerName: Ito
+    speakerId: npc_cashier
+    textJa: "何かお探しですか。"
+    textReading: "なにかおさがしですか。"
+    textEn: "Quý khách đang tìm gì ạ?"
+    textRomaji: "Nani ka osagashi desu ka?"
+    textEnglishIpa: 
+    animationCue: talk
+    voiceClip: {fileID: 0}
+    choices: []
+    flagCondition: 
+    flagJumpNodeId: 
+    targetItemId: 
+    targetNpcId: 
+    targetAreaId: 
+  - id: node_confirm_item
+    nodeType: 0
+    nextNodeId: 
+    objectiveIdToComplete: 
+    speakerName: 
+    speakerId: 
+    textJa: "今日買うものはどれですか？"
+    textReading: "きょうかうものはどれですか？"
+    textEn: "Hôm nay bạn cần mua món nào?"
+    textRomaji: "Kyou kau mono wa dore desu ka?"
+    textEnglishIpa: 
+    animationCue: 
+    voiceClip: {fileID: 0}
+    choices:
+    - textJa: "おにぎりをください。"
+      textEn: "Cho tôi cơm nắm ạ."
+      nextNodeId: node_confirm_item_done
+      scoreModifiers:
+      - category: Grammar
+        value: 10
+        reason: "Chọn đúng vật phẩm bằng mẫu 〜をください"
+      grammarTags:
+      - grammar.n5.wo_kudasai
+      vocabularyTags:
+      - vocab.n5.onigiri
+      setFlags: []
+    - textJa: "パンをください。"
+      textEn: "Cho tôi bánh mì ạ."
       nextNodeId: node_confirm_item_hint
       scoreModifiers:
       - category: Vocabulary
         value: -5
-        reason: Nhầm món cần mua
+        reason: "Nhớ nhầm món: nhiệm vụ hôm nay là mua おにぎり, không phải パン"
       grammarTags: []
       vocabularyTags: []
-    - textJa: 水をください。
-      textEn: Tôi muốn nước.
+      setFlags: []
+    - textJa: "お茶をください。"
+      textEn: "Cho tôi trà ạ."
+      nextNodeId: node_confirm_item_hint
+      scoreModifiers:
+      - category: Vocabulary
+        value: -5
+        reason: "Nhầm món cần mua"
+      grammarTags: []
+      vocabularyTags: []
+      setFlags: []
+    - textJa: "水をください。"
+      textEn: "Cho tôi nước ạ."
       nextNodeId: node_confirm_item_hint
       scoreModifiers:
       - category: ResponseAccuracy
         value: -5
-        reason: Cần đọc lại yêu cầu nhiệm vụ
+        reason: "Cần đọc lại yêu cầu nhiệm vụ"
       grammarTags: []
       vocabularyTags: []
-    targetItemId:
-    targetNpcId:
-    targetAreaId:
-  - id: node_confirm_item_done
-    nodeType: 0
-    nextNodeId: node_find_onigiri
-    objectiveIdToComplete: obj_confirm_item
-    speakerName: Hệ thống
-    speakerId: system
-    textJa: はい、おにぎりですね。
-    textReading: はい、おにぎりですね。
-    textEn: Đúng rồi, hãy lấy onigiri trên kệ hàng.
-    textRomaji: Hai, onigiri desu ne.
-    textEnglishIpa:
-    animationCue:
-    voiceClip: {fileID: 0}
-    choices: []
-    targetItemId:
-    targetNpcId:
-    targetAreaId:
+      setFlags: []
+    flagCondition: 
+    flagJumpNodeId: 
+    targetItemId: 
+    targetNpcId: 
+    targetAreaId: 
   - id: node_confirm_item_hint
     nodeType: 0
     nextNodeId: node_confirm_item
-    objectiveIdToComplete:
-    speakerName: Hệ thống
-    speakerId: system
-    textJa: 今日はおにぎりを買います。
-    textReading: きょうはおにぎりをかいます。
-    textEn: Hôm nay nhiệm vụ là mua cơm nắm. Hãy chọn onigiri.
-    textRomaji: Kyou wa onigiri wo kaimasu.
-    textEnglishIpa:
-    animationCue:
-    voiceClip: {fileID: 0}
-    choices: []
-    targetItemId:
-    targetNpcId:
-    targetAreaId:
-  - id: node_find_onigiri
-    nodeType: 1
-    nextNodeId: node_go_to_cashier
-    objectiveIdToComplete: obj_find_onigiri
-    speakerName:
-    speakerId:
-    textJa:
-    textReading:
-    textEn:
-    textRomaji:
-    textEnglishIpa:
-    animationCue:
-    voiceClip: {fileID: 0}
-    choices: []
-    targetItemId: onigiri
-    targetNpcId:
-    targetAreaId:
-  - id: node_go_to_cashier
-    nodeType: 3
-    nextNodeId: node_cashier_prompt_bag
-    objectiveIdToComplete: obj_go_to_cashier
-    speakerName:
-    speakerId:
-    textJa:
-    textReading:
-    textEn:
-    textRomaji:
-    textEnglishIpa:
-    animationCue:
-    voiceClip: {fileID: 0}
-    choices: []
-    targetItemId:
-    targetNpcId:
-    targetAreaId: cashier
-  - id: node_cashier_prompt_bag
-    nodeType: 0
-    nextNodeId:
-    objectiveIdToComplete:
+    objectiveIdToComplete: 
     speakerName: Ito
     speakerId: npc_cashier
-    textJa: 袋は要りますか？
-    textReading: ふくろはいりますか？
-    textEn: Quý khách có cần túi không?
-    textRomaji: Fukuro wa irimasu ka?
-    textEnglishIpa: /duː juː niːd ə bæɡ/
-    animationCue:
+    textJa: "今日はおにぎりを買います。棚を見てくださいね。"
+    textReading: "きょうはおにぎりをかいます。たなをみてくださいね。"
+    textEn: "Hôm nay nhiệm vụ là mua cơm nắm. Mời quý khách xem trên kệ hàng nhé."
+    textRomaji: "Kyou wa onigiri wo kaimasu. Tana wo mite kudasai ne."
+    textEnglishIpa: 
+    animationCue: point
+    voiceClip: {fileID: 0}
+    choices: []
+    flagCondition: 
+    flagJumpNodeId: 
+    targetItemId: 
+    targetNpcId: 
+    targetAreaId: 
+  - id: node_confirm_item_done
+    nodeType: 0
+    nextNodeId: n_flavor
+    objectiveIdToComplete: obj_confirm_item
+    speakerName: Ito
+    speakerId: npc_cashier
+    textJa: "はい、おにぎりですね。あちらの棚にありますよ。"
+    textReading: "はい、おにぎりですね。あちらのたなにありますよ。"
+    textEn: "Vâng, cơm nắm nhỉ. Ở kệ đằng kia có đấy ạ."
+    textRomaji: "Hai, onigiri desu ne. Achira no tana ni arimasu yo."
+    textEnglishIpa: 
+    animationCue: point
+    voiceClip: {fileID: 0}
+    choices: []
+    flagCondition: 
+    flagJumpNodeId: 
+    targetItemId: 
+    targetNpcId: 
+    targetAreaId: 
+  - id: n_flavor
+    nodeType: 0
+    nextNodeId: node_find_onigiri
+    objectiveIdToComplete: 
+    speakerName: 
+    speakerId: 
+    textJa: "おにぎりの棚に、うめ、さけ、こんぶ、と書いてあります。"
+    textReading: "おにぎりのたなに、うめ、さけ、こんぶ、とかいてあります。"
+    textEn: "Trên kệ có ghi các vị: ume (mơ muối), sake (cá hồi), konbu (rong biển)."
+    textRomaji: "Onigiri no tana ni, ume, sake, konbu, to kaite arimasu."
+    textEnglishIpa: 
+    animationCue: 
+    voiceClip: {fileID: 0}
+    choices: []
+    flagCondition: 
+    flagJumpNodeId: 
+    targetItemId: 
+    targetNpcId: 
+    targetAreaId: 
+  - id: node_find_onigiri
+    nodeType: 1
+    nextNodeId: n_flavor_done
+    objectiveIdToComplete: obj_find_onigiri
+    speakerName: 
+    speakerId: 
+    textJa: 
+    textReading: 
+    textEn: 
+    textRomaji: 
+    textEnglishIpa: 
+    animationCue: 
+    voiceClip: {fileID: 0}
+    choices: []
+    flagCondition: 
+    flagJumpNodeId: 
+    targetItemId: onigiri
+    targetNpcId: 
+    targetAreaId: 
+  - id: n_flavor_done
+    nodeType: 0
+    nextNodeId: node_go_to_cashier
+    objectiveIdToComplete: 
+    speakerName: 
+    speakerId: 
+    textJa: "さけのおにぎりを、かごに入れました。"
+    textReading: "さけのおにぎりを、かごにいれました。"
+    textEn: "Bạn bỏ một cái onigiri vị cá hồi vào giỏ."
+    textRomaji: "Sake no onigiri wo, kago ni iremashita."
+    textEnglishIpa: 
+    animationCue: 
+    voiceClip: {fileID: 0}
+    choices: []
+    flagCondition: 
+    flagJumpNodeId: 
+    targetItemId: 
+    targetNpcId: 
+    targetAreaId: 
+  - id: node_go_to_cashier
+    nodeType: 3
+    nextNodeId: n_cashier_greet
+    objectiveIdToComplete: obj_go_to_cashier
+    speakerName: 
+    speakerId: 
+    textJa: 
+    textReading: 
+    textEn: 
+    textRomaji: 
+    textEnglishIpa: 
+    animationCue: 
+    voiceClip: {fileID: 0}
+    choices: []
+    flagCondition: 
+    flagJumpNodeId: 
+    targetItemId: 
+    targetNpcId: 
+    targetAreaId: cashier
+  - id: n_cashier_greet
+    nodeType: 0
+    nextNodeId: 
+    objectiveIdToComplete: 
+    speakerName: Ito
+    speakerId: npc_cashier
+    textJa: "お決まりですか。"
+    textReading: "おきまりですか。"
+    textEn: "Quý khách đã chọn xong chưa ạ?"
+    textRomaji: "Okimari desu ka?"
+    textEnglishIpa: 
+    animationCue: talk
     voiceClip: {fileID: 0}
     choices:
-    - textJa: はい、お願いします。
-      textEn: Vâng, xin vui lòng.
-      nextNodeId: node_bag_yes
+    - textJa: "はい、これをお願いします。"
+      textEn: "Vâng, cho tôi cái này ạ."
+      nextNodeId: node_cashier_prompt_bag
+      scoreModifiers:
+      - category: Grammar
+        value: 10
+        reason: "Đưa món ra thanh toán bằng mẫu 〜をお願いします"
+      grammarTags:
+      - grammar.n5.wo_onegaishimasu
+      vocabularyTags: []
+      setFlags: []
+    - textJa: "はい。"
+      textEn: "Vâng."
+      nextNodeId: node_cashier_prompt_bag
+      scoreModifiers:
+      - category: ResponseAccuracy
+        value: 4
+        reason: "Đáp được nhưng ngắn, nên nói kèm これをお願いします khi đưa đồ ra"
+      grammarTags: []
+      vocabularyTags: []
+      setFlags: []
+    flagCondition: 
+    flagJumpNodeId: 
+    targetItemId: 
+    targetNpcId: 
+    targetAreaId: 
+  - id: node_cashier_prompt_bag
+    nodeType: 0
+    nextNodeId: 
+    objectiveIdToComplete: 
+    speakerName: Ito
+    speakerId: npc_cashier
+    textJa: "袋は要りますか？"
+    textReading: "ふくろはいりますか？"
+    textEn: "Quý khách có cần túi không?"
+    textRomaji: "Fukuro wa irimasu ka?"
+    textEnglishIpa: 
+    animationCue: talk
+    voiceClip: {fileID: 0}
+    choices:
+    - textJa: "はい、お願いします。"
+      textEn: "Vâng, xin cho tôi ạ."
+      nextNodeId: n_bag_yes
       scoreModifiers:
       - category: Vocabulary
         value: 10
-        reason: Hiểu từ túi (fukuro)
-      - category: Grammar
-        value: 10
-        reason: Dùng mẫu ~onegaishimasu
-      grammarTags: []
-      vocabularyTags: []
-    - textJa: いいえ、大丈夫です。
-      textEn: Không, tôi ổn rồi. Không cần túi.
-      nextNodeId: node_bag_no
+        reason: "Hiểu từ túi (fukuro) và dùng mẫu 〜お願いします"
+      grammarTags:
+      - grammar.n5.wo_onegaishimasu
+      vocabularyTags:
+      - vocab.n5.fukuro
+      setFlags: []
+    - textJa: "いいえ、大丈夫です。"
+      textEn: "Không, tôi ổn rồi ạ."
+      nextNodeId: n_bag_no
       scoreModifiers:
       - category: Vocabulary
         value: 10
-        reason: Hiểu từ túi (fukuro)
-      - category: Grammar
-        value: 10
-        reason: Dùng mẫu ~daijoubu desu
-      grammarTags: []
-      vocabularyTags: []
-    - textJa: 袋を要ります。
-      textEn: Tôi cần túi. (Sai trợ từ)
+        reason: "Hiểu từ túi (fukuro) và từ chối lịch sự bằng 大丈夫です"
+      grammarTags:
+      - grammar.n5.daijoubu_desu
+      vocabularyTags:
+      - vocab.n5.fukuro
+      setFlags: []
+    - textJa: "袋を要ります。"
+      textEn: "Tôi cần một túi."
       nextNodeId: node_bag_wrong_grammar
       scoreModifiers:
       - category: Grammar
         value: -10
-        reason: Sai trợ từ, 要る thường đi với が hoặc は
-      - category: ResponseAccuracy
-        value: -5
-        reason: Phản xạ chưa chính xác
+        reason: "Sai trợ từ: 要る thường đi với が hoặc は, không phải を"
       grammarTags: []
       vocabularyTags: []
-    targetItemId:
-    targetNpcId:
-    targetAreaId:
+      setFlags: []
+    flagCondition: 
+    flagJumpNodeId: 
+    targetItemId: 
+    targetNpcId: 
+    targetAreaId: 
   - id: node_bag_wrong_grammar
     nodeType: 0
-    nextNodeId: node_bag_yes
-    objectiveIdToComplete:
+    nextNodeId: n_bag_yes
+    objectiveIdToComplete: 
     speakerName: Ito
     speakerId: npc_cashier
-    textJa: すみません、袋は必要ですか？かしこまりました。
-    textReading: すみません、ふくろはひつようですか？かしこまりました。
-    textEn: Ý bạn là bạn cần túi phải không? Ở quầy thanh toán, cách nói tự nhiên là はい、お願いします hoặc いいえ、大丈夫です.
-    textRomaji: Sumimasen, fukuro wa hitsuyou desu ka? Kashikomarimashita.
-    textEnglishIpa: /duː juː miːn juː niːd ə bæɡ/
+    textJa: "すみません、袋は要りますか、ということですね。かしこまりました。"
+    textReading: "すみません、ふくろはいりますか、ということですね。かしこまりました。"
+    textEn: "Xin lỗi, ý quý khách là 「袋は要りますか」 đúng không ạ. Tôi hiểu rồi ạ."
+    textRomaji: "Sumimasen, fukuro wa irimasu ka, to iu koto desu ne. Kashikomarimashita."
+    textEnglishIpa: 
     animationCue: point
     voiceClip: {fileID: 0}
     choices: []
-    targetItemId:
-    targetNpcId:
-    targetAreaId:
-  - id: node_bag_yes
+    flagCondition: 
+    flagJumpNodeId: 
+    targetItemId: 
+    targetNpcId: 
+    targetAreaId: 
+  - id: n_bag_yes
     nodeType: 0
-    nextNodeId: node_pay_choice
-    objectiveIdToComplete:
+    nextNodeId: n_total
+    objectiveIdToComplete: 
     speakerName: Ito
     speakerId: npc_cashier
-    textJa: かしこまりました。袋代3円になります。お会計は500円です。
-    textReading: かしこまりました。ふくろだいさんえんになります。おかいけいはごひゃくえんです。
-    textEn: Tôi hiểu rồi. Tiền túi là 3 yên. Tổng cộng là 500 yên ạ.
-    textRomaji: Kashikomarimashita. Fukurodai san-en ni narimasu. Okaikei wa gohyaku-en desu.
-    textEnglishIpa: /aɪ ʌndərˈstænd ðə bæɡ fiː ɪz θriː jen/
-    animationCue: bow
+    textJa: "かしこまりました。袋代3円になります。"
+    textReading: "かしこまりました。ふくろだいさんえんになります。"
+    textEn: "Vâng ạ. Tiền túi là 3 yên."
+    textRomaji: "Kashikomarimashita. Fukurodai san-en ni narimasu."
+    textEnglishIpa: 
+    animationCue: talk
     voiceClip: {fileID: 0}
     choices: []
-    targetItemId:
-    targetNpcId:
-    targetAreaId:
-  - id: node_bag_no
+    flagCondition: 
+    flagJumpNodeId: 
+    targetItemId: 
+    targetNpcId: 
+    targetAreaId: 
+  - id: n_bag_no
     nodeType: 0
-    nextNodeId: node_pay_choice
-    objectiveIdToComplete:
+    nextNodeId: n_total
+    objectiveIdToComplete: 
     speakerName: Ito
     speakerId: npc_cashier
-    textJa: かしこまりました。お会計は497円です。
-    textReading: かしこまりました。おかいけいはよんひゃくきゅうじゅうななえんです。
-    textEn: Tôi hiểu rồi. Tổng cộng là 497 yên ạ.
-    textRomaji: Kashikomarimashita. Okaikei wa yonhyaku kyujuunana-en desu.
-    textEnglishIpa: /aɪ ʌndərˈstænd ðə toʊtl ɪz fɔːr hʌndrəd naɪnti sevən jen/
-    animationCue: bow
+    textJa: "かしこまりました。"
+    textReading: "かしこまりました。"
+    textEn: "Vâng, tôi hiểu rồi ạ."
+    textRomaji: "Kashikomarimashita."
+    textEnglishIpa: 
+    animationCue: talk
     voiceClip: {fileID: 0}
     choices: []
-    targetItemId:
-    targetNpcId:
-    targetAreaId:
-  - id: node_pay_choice
+    flagCondition: 
+    flagJumpNodeId: 
+    targetItemId: 
+    targetNpcId: 
+    targetAreaId: 
+  - id: n_total
     nodeType: 0
-    nextNodeId:
-    objectiveIdToComplete:
-    speakerName: Hệ thống
-    speakerId: system
-    textJa: 支払方法を選択してください。
-    textReading: しはらいほうほうをせんたくしてください。
-    textEn: Hãy chọn phương thức thanh toán.
-    textRomaji: Shiharai houhou wo sentaku shite kudasai.
-    textEnglishIpa: /pliːz tʃuːz ə peɪmənt meθəd/
-    animationCue:
+    nextNodeId: 
+    objectiveIdToComplete: 
+    speakerName: Ito
+    speakerId: npc_cashier
+    textJa: "お会計は、497円です。"
+    textReading: "おかいけいは、よんひゃくきゅうじゅうななえんです。"
+    textEn: "Tổng cộng là 497 yên ạ."
+    textRomaji: "Okaikei wa, yonhyaku kyuujuu nana en desu."
+    textEnglishIpa: 
+    animationCue: talk
     voiceClip: {fileID: 0}
     choices:
-    - textJa: これでお願いします。
-      textEn: Thanh toán bằng cái này ạ.
-      nextNodeId: node_transaction_done
-      scoreModifiers:
-      - category: Grammar
-        value: 15
-        reason: Dùng mẫu thanh toán kore de
-      grammarTags: []
-      vocabularyTags: []
-    - textJa: カードで払います。
-      textEn: Thanh toán bằng thẻ.
-      nextNodeId: node_transaction_done
+    - textJa: "497円ですね。分かりました。"
+      textEn: "497 yên nhỉ. Cháu hiểu rồi ạ."
+      nextNodeId: node_pay_choice
       scoreModifiers:
       - category: Vocabulary
         value: 10
-        reason: Dùng từ thẻ (kaado)
+        reason: "Xác nhận đúng số tiền: 四百九十七円"
+      grammarTags:
+      - grammar.n5.desu_ne
+      vocabularyTags:
+      - vocab.n5.yonhyaku
+      - vocab.n5.en
+      setFlags: []
+    - textJa: "もう一度お願いします。"
+      textEn: "Phiền chị nói lại một lần nữa ạ."
+      nextNodeId: n_total_repeat
+      scoreModifiers:
+      - category: ResponseAccuracy
+        value: 6
+        reason: "Xin nghe lại lịch sự khi chưa chắc số tiền"
+      grammarTags: []
+      vocabularyTags:
+      - vocab.n5.mou_ichido
+      setFlags: []
+    - textJa: "598円ですね。"
+      textEn: "598 yên nhỉ."
+      nextNodeId: n_total_wrong
+      scoreModifiers:
+      - category: Vocabulary
+        value: -8
+        reason: "Nghe nhầm số tiền: 497 khác 598"
       grammarTags: []
       vocabularyTags: []
-    targetItemId:
-    targetNpcId:
-    targetAreaId:
+      setFlags: []
+    flagCondition: 
+    flagJumpNodeId: 
+    targetItemId: 
+    targetNpcId: 
+    targetAreaId: 
+  - id: n_total_repeat
+    nodeType: 0
+    nextNodeId: n_total
+    objectiveIdToComplete: 
+    speakerName: Ito
+    speakerId: npc_cashier
+    textJa: "はい。四百、九十七円です。"
+    textReading: "はい。よんひゃく、きゅうじゅうななえんです。"
+    textEn: "Vâng ạ. Bốn trăm, chín mươi bảy yên."
+    textRomaji: "Hai. Yonhyaku, kyuujuu nana en desu."
+    textEnglishIpa: 
+    animationCue: point
+    voiceClip: {fileID: 0}
+    choices: []
+    flagCondition: 
+    flagJumpNodeId: 
+    targetItemId: 
+    targetNpcId: 
+    targetAreaId: 
+  - id: n_total_wrong
+    nodeType: 0
+    nextNodeId: n_total
+    objectiveIdToComplete: 
+    speakerName: Ito
+    speakerId: npc_cashier
+    textJa: "いいえ、497円ですよ。もう一度、聞いてくださいね。"
+    textReading: "いいえ、よんひゃくきゅうじゅうななえんですよ。もういちど、きいてくださいね。"
+    textEn: "Không đâu ạ, là 497 yên. Mời quý khách nghe lại nhé."
+    textRomaji: "Iie, yonhyaku kyuujuu nana en desu yo. Mou ichido, kiite kudasai ne."
+    textEnglishIpa: 
+    animationCue: point
+    voiceClip: {fileID: 0}
+    choices: []
+    flagCondition: 
+    flagJumpNodeId: 
+    targetItemId: 
+    targetNpcId: 
+    targetAreaId: 
+  - id: node_pay_choice
+    nodeType: 0
+    nextNodeId: 
+    objectiveIdToComplete: 
+    speakerName: 
+    speakerId: 
+    textJa: "支払方法を選択してください。"
+    textReading: "しはらいほうほうをせんたくしてください。"
+    textEn: "Hãy chọn phương thức thanh toán."
+    textRomaji: "Shiharai houhou wo sentaku shite kudasai."
+    textEnglishIpa: 
+    animationCue: 
+    voiceClip: {fileID: 0}
+    choices:
+    - textJa: "これでお願いします。"
+      textEn: "Cho tôi thanh toán bằng cái này ạ."
+      nextNodeId: n_pay_confirm
+      scoreModifiers:
+      - category: Grammar
+        value: 15
+        reason: "Đưa tiền/thẻ ra bằng mẫu これでお願いします"
+      grammarTags:
+      - grammar.n5.de_onegaishimasu
+      vocabularyTags: []
+      setFlags: []
+    - textJa: "カードで払います。"
+      textEn: "Tôi thanh toán bằng thẻ ạ."
+      nextNodeId: n_pay_confirm
+      scoreModifiers:
+      - category: Vocabulary
+        value: 10
+        reason: "Nói rõ phương thức bằng 〜で払います"
+      grammarTags:
+      - grammar.n5.de_harau
+      vocabularyTags:
+      - vocab.n5.kaado
+      setFlags: []
+    flagCondition: 
+    flagJumpNodeId: 
+    targetItemId: 
+    targetNpcId: 
+    targetAreaId: 
+  - id: n_pay_confirm
+    nodeType: 0
+    nextNodeId: node_transaction_done
+    objectiveIdToComplete: 
+    speakerName: Ito
+    speakerId: npc_cashier
+    textJa: "はい、確かに。"
+    textReading: "はい、たしかに。"
+    textEn: "Vâng, tôi đã nhận đủ ạ."
+    textRomaji: "Hai, tashika ni."
+    textEnglishIpa: 
+    animationCue: point
+    voiceClip: {fileID: 0}
+    choices: []
+    flagCondition: 
+    flagJumpNodeId: 
+    targetItemId: 
+    targetNpcId: 
+    targetAreaId: 
   - id: node_transaction_done
     nodeType: 0
-    nextNodeId: node_complete
+    nextNodeId: n_farewell
     objectiveIdToComplete: obj_pay
     speakerName: Ito
     speakerId: npc_cashier
-    textJa: ありがとうございます。またお越しくださいませ。
-    textReading: ありがとうございます。またおこしくださいませ。
-    textEn: Xin cảm ơn quý khách. Hẹn gặp lại quý khách lần sau.
-    textRomaji: Arigatou gozaimasu. Mata okoshi kudasaimase.
-    textEnglishIpa: /θæŋk juː ˈvɛri mʌtʃ siː juː əˈɡen/
+    textJa: "ありがとうございます。またお越しくださいませ。"
+    textReading: "ありがとうございます。またおこしくださいませ。"
+    textEn: "Xin cảm ơn quý khách. Hẹn gặp lại quý khách lần sau ạ."
+    textRomaji: "Arigatou gozaimasu. Mata okoshi kudasaimase."
+    textEnglishIpa: 
     animationCue: bow
     voiceClip: {fileID: 0}
     choices: []
-    targetItemId:
-    targetNpcId:
-    targetAreaId:
-  - id: node_complete
-    nodeType: 4
-    nextNodeId:
-    objectiveIdToComplete:
-    speakerName:
-    speakerId:
-    textJa:
-    textReading:
-    textEn:
-    textRomaji:
-    textEnglishIpa:
-    animationCue:
+    flagCondition: 
+    flagJumpNodeId: 
+    targetItemId: 
+    targetNpcId: 
+    targetAreaId: 
+  - id: n_farewell
+    nodeType: 0
+    nextNodeId: 
+    objectiveIdToComplete: 
+    speakerName: 
+    speakerId: 
+    textJa: "レシートを受け取って、お店を出ます。何と言いますか。"
+    textReading: "レシートをうけとって、おみせをでます。なんといいますか。"
+    textEn: "Bạn nhận hóa đơn rồi ra khỏi cửa hàng. Bạn nói gì?"
+    textRomaji: "Reshiito wo uketotte, omise wo demasu. Nan to iimasu ka?"
+    textEnglishIpa: 
+    animationCue: 
+    voiceClip: {fileID: 0}
+    choices:
+    - textJa: "ありがとうございました。"
+      textEn: "Cảm ơn chị ạ."
+      nextNodeId: n_recap
+      scoreModifiers:
+      - category: Vocabulary
+        value: 10
+        reason: "Cảm ơn nhân viên bằng thì quá khứ ありがとうございました khi rời đi"
+      grammarTags: []
+      vocabularyTags:
+      - vocab.n5.arigatou_gozaimashita
+      setFlags: []
+    - textJa: "さようなら。"
+      textEn: "Tạm biệt."
+      nextNodeId: n_recap
+      scoreModifiers:
+      - category: ResponseAccuracy
+        value: 3
+        reason: "Chào tạm biệt được nhưng ở cửa hàng nên nói lời cảm ơn hơn là さようなら"
+      grammarTags: []
+      vocabularyTags: []
+      setFlags: []
+    flagCondition: 
+    flagJumpNodeId: 
+    targetItemId: 
+    targetNpcId: 
+    targetAreaId: 
+  - id: n_recap
+    nodeType: 0
+    nextNodeId: node_complete
+    objectiveIdToComplete: 
+    speakerName: 
+    speakerId: 
+    textJa: "今日のポイント：「〜をください」「〜は要りますか」「〜でお願いします」。"
+    textReading: "きょうのポイント：「〜をください」「〜はいりますか」「〜でおねがいします」。"
+    textEn: "Tóm tắt: \"~ wo kudasai\" (cho tôi ~), \"~ wa irimasu ka\" (bạn có cần ~ không?), \"~ de onegaishimasu\" (thanh toán bằng ~). Nhớ đọc kỹ nhãn hàng trước khi chọn!"
+    textRomaji: "Kyou no pointo: \"~ wo kudasai\" \"~ wa irimasu ka\" \"~ de onegaishimasu\"."
+    textEnglishIpa: 
+    animationCue: 
     voiceClip: {fileID: 0}
     choices: []
-    targetItemId:
-    targetNpcId:
-    targetAreaId:
+    flagCondition: 
+    flagJumpNodeId: 
+    targetItemId: 
+    targetNpcId: 
+    targetAreaId: 
+  - id: node_complete
+    nodeType: 4
+    nextNodeId: 
+    objectiveIdToComplete: 
+    speakerName: 
+    speakerId: 
+    textJa: 
+    textReading: 
+    textEn: 
+    textRomaji: 
+    textEnglishIpa: 
+    animationCue: 
+    voiceClip: {fileID: 0}
+    choices: []
+    flagCondition: 
+    flagJumpNodeId: 
+    targetItemId: 
+    targetNpcId: 
+    targetAreaId: 
   startNodeId: node_start

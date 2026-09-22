@@ -64,6 +64,8 @@ namespace NihongoLife.Player
         private void Awake()
         {
             _characterController = GetComponent<CharacterController>();
+            _characterController.detectCollisions = true;
+            _characterController.skinWidth = Mathf.Max(_characterController.skinWidth, 0.08f);
             _mainCamera = ResolveGameplayCamera();
             _animationController = GetComponent<CharacterAnimationController>();
             if (GetComponent<ClickToMoveController>() == null)
@@ -173,6 +175,22 @@ namespace NihongoLife.Player
             _velocity.y = Mathf.Max(_velocity.y + gravity * Time.deltaTime, maxFallSpeed);
             Vector3 finalMove = _smoothedMoveDirection * currentSpeed;
             finalMove.y = _velocity.y;
+            Vector3 horizontalMove = new(finalMove.x, 0f, finalMove.z);
+            float horizontalDistance = horizontalMove.magnitude * Time.deltaTime;
+            if (horizontalDistance > 0.001f)
+            {
+                Vector3 capsuleBottom = transform.position + _characterController.center + Vector3.down * (_characterController.height * 0.5f - _characterController.radius);
+                Vector3 capsuleTop = capsuleBottom + Vector3.up * Mathf.Max(0f, _characterController.height - _characterController.radius * 2f);
+                if (Physics.CapsuleCast(capsuleBottom, capsuleTop, _characterController.radius * 0.92f,
+                        horizontalMove.normalized, out RaycastHit wallHit, horizontalDistance + 0.06f,
+                        Physics.DefaultRaycastLayers, QueryTriggerInteraction.Ignore))
+                {
+                    finalMove.x = 0f;
+                    finalMove.z = 0f;
+                    _hasClickDestination = false;
+                    _smoothedMoveDirection = Vector3.zero;
+                }
+            }
             CollisionFlags flags = _characterController.Move(finalMove * Time.deltaTime);
             if (_hasClickDestination && (flags & CollisionFlags.Sides) != 0 && finalMove.magnitude > 0.25f)
             {
