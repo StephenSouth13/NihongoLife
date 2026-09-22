@@ -1,6 +1,6 @@
 # Kiểm tra tổng thể: scene, cốt truyện, gameplay (2026-09-21)
 
-> **Cập nhật cuối ngày**: 10/14 quest đã viết sâu, có bộ nhớ truyện (story flags), ramen/ga/lễ hội viết dạng hội thoại thuần và đã nằm trong campaign (14 quest). Các mục "mỏng" và "không nằm trong campaign" trong bảng dưới là số liệu buổi sáng; xem `QUEST_AND_ONLINE_PLAN.md` và `STORY_BIBLE.md` mục 12 cho trạng thái hiện tại.
+> **Cập nhật 2026-09-22**: **14/14 quest trong campaign đã viết sâu** (439 node), có bộ nhớ truyện (story flags), không còn quest nào dựng bằng code. Bảng "Cốt truyện" bên dưới là số liệu chụp nhanh buổi sáng 2026-09-21 và đã lỗi thời; xem `QUEST_AND_ONLINE_PLAN.md` mục 2 và `STORY_BIBLE.md` mục 12 cho trạng thái hiện tại (đúng nhất). Lưu ý thêm: đã tìm thấy một lỗi biên dịch (`WorldMapUI.cs`, không liên quan tới nội dung) trong commit gần nhất — xem báo cáo cuối cùng.
 
 Cách kiểm tra: đọc trực tiếp YAML của 7 scene, chạy script kiểm tra đồ thị cho 11 scenario asset, đối chiếu code (`ScenarioManager`, `GameControlService`, `LocalScenarioRepository`, `SushiRestaurantRuntime`...), tài liệu (`STORY_BIBLE`, `SOCIAL_STORY_ROADMAP`, `PROJECT_STATUS_AND_SOURCES`, `TODO_CHECKLIST`) và `Editor.log`.
 **Chưa chạy Play Mode**, nên mọi thứ dưới đây là kết quả kiểm tra tĩnh, không phải kết luận "chơi được".

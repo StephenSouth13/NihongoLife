@@ -19,6 +19,25 @@ MonoBehaviour:
   descriptionJa: "鈴木さんに新しい手がかりを伝えましょう。"
   descriptionEn: "Báo cho cô Suzuki manh mối mới về Mike và luyện cách mô tả vị trí, đặc điểm bằng tiếng Nhật."
   chapterIndex: 3
+  questType: community
+  giverNpcId: npc_neighbor_2
+  briefingVi: "Bạn thấy manh mối về chú mèo. Báo cho Suzuki và tả vị trí bằng tiếng Nhật."
+  briefingEn: "You spotted a clue about the cat. Tell Suzuki and describe the place in Japanese."
+  briefingJa: "猫の手がかりを見つけました。鈴木さんに伝え、場所を日本語で説明しましょう。"
+  locationHintVi: "Nhà Suzuki"
+  locationHintEn: "Suzuki's house"
+  locationHintJa: "鈴木さんの家"
+  rewardYen: 400
+  branchId: community
+  requiredKnowledge: 50
+  requiredScenarioIds:
+  - scenario.house2.lostcat
+  unlockScenarioIds:
+  - scenario.town.summer_festival
+  repeatable: 0
+  supportsCoOp: 0
+  minPlayers: 1
+  maxPlayers: 2
   learningTargets:
   - grammar.n5.no_chikaku_de
   - grammar.n5.te_form_adj

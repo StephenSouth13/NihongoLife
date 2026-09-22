@@ -12,6 +12,12 @@ namespace NihongoLife.Editor
         private const string ScenarioPath = ScenarioFolder + "/scenario_konbini_buy_onigiri.asset";
         private const string StreetScenarioPath = ScenarioFolder + "/scenario_street_first_talk.asset";
 
+        /// <summary>
+        /// Only creates the two scenario assets when they do not exist yet. Both are now hand-authored
+        /// (deep, multi-branch content with story flags — see Tools/story/gen_street.py and
+        /// gen_konbini.py); this legacy generator must never silently overwrite that work with its
+        /// hardcoded placeholder dialogue.
+        /// </summary>
         public static void BuildScenarioAssets()
         {
             EnsureFolderExists(ScenarioFolder);
@@ -20,25 +26,31 @@ namespace NihongoLife.Editor
             if (streetScenario == null)
             {
                 streetScenario = ScriptableObject.CreateInstance<ScenarioDefinition>();
+                FillStreetFirstTalkScenario(streetScenario);
                 AssetDatabase.CreateAsset(streetScenario, StreetScenarioPath);
+                EditorUtility.SetDirty(streetScenario);
             }
-
-            FillStreetFirstTalkScenario(streetScenario);
-            EditorUtility.SetDirty(streetScenario);
+            else
+            {
+                Debug.Log($"[ScenarioAssetBuilder] Skipped {StreetScenarioPath}: asset already exists (hand-authored content is preserved).");
+            }
 
             var scenario = AssetDatabase.LoadAssetAtPath<ScenarioDefinition>(ScenarioPath);
             if (scenario == null)
             {
                 scenario = ScriptableObject.CreateInstance<ScenarioDefinition>();
+                FillKonbiniScenario(scenario);
                 AssetDatabase.CreateAsset(scenario, ScenarioPath);
+                EditorUtility.SetDirty(scenario);
+            }
+            else
+            {
+                Debug.Log($"[ScenarioAssetBuilder] Skipped {ScenarioPath}: asset already exists (hand-authored content is preserved).");
             }
 
-            FillKonbiniScenario(scenario);
-            EditorUtility.SetDirty(scenario);
             AssetDatabase.SaveAssets();
             AssetDatabase.ImportAsset(StreetScenarioPath, ImportAssetOptions.ForceUpdate);
             AssetDatabase.ImportAsset(ScenarioPath, ImportAssetOptions.ForceUpdate);
-            Debug.Log($"[ScenarioAssetBuilder] Rebuilt scenario asset: {ScenarioPath}");
         }
 
         private static void FillStreetFirstTalkScenario(ScenarioDefinition scenario)

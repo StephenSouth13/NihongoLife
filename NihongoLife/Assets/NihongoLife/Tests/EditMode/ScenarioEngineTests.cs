@@ -36,6 +36,30 @@ namespace NihongoLife.Tests
         }
 
         [Test]
+        public void PlayerProgress_PreservesActiveQuestNodeAndObjectiveStates()
+        {
+            var progress = new PlayerProgressDto
+            {
+                activeScenarioId = "scenario.konbini.buy_onigiri",
+                activeScenarioNodeId = "node_choose_item",
+                activeObjectives = new List<ActiveObjectiveRecord>
+                {
+                    new ActiveObjectiveRecord { objectiveId = "obj_enter_shop", state = (int)ObjectiveState.Completed },
+                    new ActiveObjectiveRecord { objectiveId = "obj_choose_onigiri", state = (int)ObjectiveState.Active }
+                }
+            };
+
+            string json = JsonUtility.ToJson(progress);
+            var restored = JsonUtility.FromJson<PlayerProgressDto>(json);
+
+            Assert.AreEqual("scenario.konbini.buy_onigiri", restored.activeScenarioId);
+            Assert.AreEqual("node_choose_item", restored.activeScenarioNodeId);
+            Assert.AreEqual(2, restored.activeObjectives.Count);
+            Assert.AreEqual((int)ObjectiveState.Completed, restored.activeObjectives[0].state);
+            Assert.AreEqual((int)ObjectiveState.Active, restored.activeObjectives[1].state);
+        }
+
+        [Test]
         public void ScoringCalculation_BreakdownTest()
         {
             // Arrange
@@ -94,6 +118,20 @@ namespace NihongoLife.Tests
             Assert.NotNull(nodeEnd);
             Assert.AreEqual(ScenarioNodeType.Complete, nodeEnd.nodeType);
             Assert.Null(nodeMissing);
+        }
+
+        [Test]
+        public void ScenarioDefinition_RequiresKnowledgeAndPrerequisiteScenarios()
+        {
+            var scenario = ScriptableObject.CreateInstance<ScenarioDefinition>();
+            scenario.requiredKnowledge = 20;
+            scenario.requiredScenarioIds = new List<string> { "scenario.intro" };
+
+            Assert.IsFalse(scenario.IsUnlocked(19, new List<string> { "scenario.intro" }));
+            Assert.IsFalse(scenario.IsUnlocked(20, new List<string>()));
+            Assert.IsTrue(scenario.IsUnlocked(20, new List<string> { "scenario.intro" }));
+
+            Object.DestroyImmediate(scenario);
         }
 
         [Test]

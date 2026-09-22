@@ -1,0 +1,429 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3ba8f435ab5427145b206cd2a4f4ea7c, type: 3}
+  m_Name: scenario_neighborhood_recycling_morning
+  m_EditorClassIdentifier: NihongoLife::NihongoLife.Scenario.ScenarioDefinition
+  id: scenario.neighborhood.recycling_morning
+  version: 2
+  titleJa: "資源ごみの朝"
+  titleEn: "Buổi sáng phân loại rác tái chế"
+  descriptionJa: "佐藤さんと資源ごみの分け方を確認しましょう。"
+  descriptionEn: "Cùng bác Sato kiểm tra cách phân loại rác tái chế: chai nhựa, lon, chai thủy tinh và giấy cũ."
+  chapterIndex: 3
+  questType: community
+  giverNpcId: npc_neighbor_3
+  briefingVi: "Sáng thứ hai là ngày thu gom rác tái chế. Phân loại đúng và hỏi Sato khi chưa chắc."
+  briefingEn: "Monday morning is recycling day. Sort correctly and ask Sato when you are unsure."
+  briefingJa: "月曜の朝はリサイクルの日。正しく分別し、迷ったら佐藤さんに聞きましょう。"
+  locationHintVi: "Điểm tập kết rác gần nhà Sato"
+  locationHintEn: "The collection point near Sato's house"
+  locationHintJa: "佐藤さんの家の近くのゴミ置き場"
+  rewardYen: 300
+  branchId: community
+  requiredKnowledge: 50
+  requiredScenarioIds:
+  - scenario.house3.garbage
+  unlockScenarioIds:
+  - scenario.town.summer_festival
+  repeatable: 0
+  supportsCoOp: 0
+  minPlayers: 1
+  maxPlayers: 2
+  learningTargets:
+  - grammar.n5.te_kudasai
+  - grammar.n5.nakereba_naranai
+  - vocab.n5.kan
+  - vocab.n5.suiyoubi
+  - vocab.n5.raberu
+  objectives:
+  - id: obj_meet
+    titleJa: "佐藤さんに会う"
+    titleEn: "Gặp lại trưởng khu phố Sato"
+    isOptional: 0
+  - id: obj_learn_recycling
+    titleJa: "分別を確認する"
+    titleEn: "Học quy tắc phân loại rác tái chế"
+    isOptional: 0
+  nodes:
+  - id: node_find_sato
+    nodeType: 6
+    nextNodeId: b_appt
+    objectiveIdToComplete: obj_meet
+    speakerName: 
+    speakerId: 
+    textJa: 
+    textReading: 
+    textEn: 
+    textRomaji: 
+    textEnglishIpa: 
+    animationCue: 
+    voiceClip: {fileID: 0}
+    choices: []
+    flagCondition: 
+    flagJumpNodeId: 
+    targetItemId: 
+    targetNpcId: npc_neighbor_3
+    targetAreaId: 
+  - id: b_appt
+    nodeType: 7
+    nextNodeId: n_open_new
+    objectiveIdToComplete: 
+    speakerName: 
+    speakerId: 
+    textJa: 
+    textReading: 
+    textEn: 
+    textRomaji: 
+    textEnglishIpa: 
+    animationCue: 
+    voiceClip: {fileID: 0}
+    choices: []
+    flagCondition: "sato.appointment"
+    flagJumpNodeId: n_open_appt
+    targetItemId: 
+    targetNpcId: 
+    targetAreaId: 
+  - id: n_open_appt
+    nodeType: 0
+    nextNodeId: n_intro
+    objectiveIdToComplete: 
+    speakerName: Sato
+    speakerId: npc_neighbor_3
+    textJa: "おはようございます。約束どおり、来てくれましたね。今日は、資源ごみの日です。"
+    textReading: "おはようございます。やくそくどおり、きてくれましたね。きょうは、しげんごみのひです。"
+    textEn: "Chào buổi sáng. Bạn đến đúng như đã hẹn nhỉ. Hôm nay là ngày đổ rác tái chế."
+    textRomaji: "Ohayou gozaimasu. Yakusoku doori, kite kuremashita ne. Kyou wa, shigen gomi no hi desu."
+    textEnglishIpa: 
+    animationCue: talk
+    voiceClip: {fileID: 0}
+    choices: []
+    flagCondition: 
+    flagJumpNodeId: 
+    targetItemId: 
+    targetNpcId: 
+    targetAreaId: 
+  - id: n_open_new
+    nodeType: 0
+    nextNodeId: n_intro
+    objectiveIdToComplete: 
+    speakerName: Sato
+    speakerId: npc_neighbor_3
+    textJa: "おはようございます。今日は、資源ごみの日です。少し、手伝ってもらえますか。"
+    textReading: "おはようございます。きょうは、しげんごみのひです。すこし、てつだってもらえますか。"
+    textEn: "Chào buổi sáng. Hôm nay là ngày đổ rác tái chế. Bạn giúp tôi một chút được không?"
+    textRomaji: "Ohayou gozaimasu. Kyou wa, shigen gomi no hi desu. Sukoshi, tetsudatte moraemasu ka?"
+    textEnglishIpa: 
+    animationCue: talk
+    voiceClip: {fileID: 0}
+    choices: []
+    flagCondition: 
+    flagJumpNodeId: 
+    targetItemId: 
+    targetNpcId: 
+    targetAreaId: 
+  - id: n_intro
+    nodeType: 0
+    nextNodeId: 
+    objectiveIdToComplete: 
+    speakerName: Sato
+    speakerId: npc_neighbor_3
+    textJa: "このペットボトルは、どう出しますか。"
+    textReading: "このペットボトルは、どうだしますか。"
+    textEn: "Chai nhựa này thì phải bỏ như thế nào?"
+    textRomaji: "Kono petto botoru wa, dou dashimasu ka?"
+    textEnglishIpa: 
+    animationCue: point
+    voiceClip: {fileID: 0}
+    choices:
+    - textJa: "ふたを外して、洗ってください。"
+      textEn: "Hãy tháo nắp rồi rửa sạch ạ."
+      nextNodeId: n_label
+      scoreModifiers:
+      - category: Grammar
+        value: 10
+        reason: "Trả lời đúng bằng mẫu 〜てください cho hai việc liên tiếp"
+      grammarTags:
+      - grammar.n5.te_kudasai
+      vocabularyTags:
+      - vocab.n5.futa
+      - vocab.n5.arau
+      setFlags: []
+    - textJa: "そのまま捨ててください。"
+      textEn: "Cứ vứt nguyên như vậy đi ạ."
+      nextNodeId: n_sort_hint
+      scoreModifiers:
+      - category: ResponseAccuracy
+        value: -6
+        reason: "Trả lời sai quy trình: chai nhựa phải tháo nắp và rửa trước khi vứt"
+      grammarTags: []
+      vocabularyTags: []
+      setFlags: []
+    flagCondition: 
+    flagJumpNodeId: 
+    targetItemId: 
+    targetNpcId: 
+    targetAreaId: 
+  - id: n_sort_hint
+    nodeType: 0
+    nextNodeId: n_intro
+    objectiveIdToComplete: 
+    speakerName: Sato
+    speakerId: npc_neighbor_3
+    textJa: "そのままでは出せません。ふたを外して、洗います。"
+    textReading: "そのままではだせません。ふたをはずして、あらいます。"
+    textEn: "Không thể bỏ nguyên như vậy được. Ta tháo nắp rồi rửa sạch."
+    textRomaji: "Sono mama dewa dasemasen. Futa wo hazushite, araimasu."
+    textEnglishIpa: 
+    animationCue: point
+    voiceClip: {fileID: 0}
+    choices: []
+    flagCondition: 
+    flagJumpNodeId: 
+    targetItemId: 
+    targetNpcId: 
+    targetAreaId: 
+  - id: n_label
+    nodeType: 0
+    nextNodeId: 
+    objectiveIdToComplete: 
+    speakerName: Sato
+    speakerId: npc_neighbor_3
+    textJa: "ラベルも外さなければなりませんか。"
+    textReading: "ラベルもはずさなければなりませんか。"
+    textEn: "Có bắt buộc phải tháo cả nhãn không nhỉ?"
+    textRomaji: "Raberu mo hazusanakereba narimasen ka?"
+    textEnglishIpa: 
+    animationCue: point
+    voiceClip: {fileID: 0}
+    choices:
+    - textJa: "はい、外さなければなりません。"
+      textEn: "Vâng, bắt buộc phải tháo ạ."
+      nextNodeId: n_where_sort
+      scoreModifiers:
+      - category: Grammar
+        value: 10
+        reason: "Diễn đạt việc bắt buộc bằng mẫu 〜なければなりません"
+      grammarTags:
+      - grammar.n5.nakereba_naranai
+      vocabularyTags:
+      - vocab.n5.raberu
+      setFlags: []
+    - textJa: "いいえ、外します。"
+      textEn: "Không, tháo ạ."
+      nextNodeId: n_grammar_hint
+      scoreModifiers:
+      - category: Grammar
+        value: -4
+        reason: "Mâu thuẫn: いいえ (không) nhưng lại nói 外します (sẽ tháo); trả lời việc bắt buộc cần dùng なければなりません"
+      grammarTags: []
+      vocabularyTags: []
+      setFlags: []
+    flagCondition: 
+    flagJumpNodeId: 
+    targetItemId: 
+    targetNpcId: 
+    targetAreaId: 
+  - id: n_grammar_hint
+    nodeType: 0
+    nextNodeId: n_label
+    objectiveIdToComplete: 
+    speakerName: Sato
+    speakerId: npc_neighbor_3
+    textJa: "必要なことを聞かれたら、「〜なければなりません」と答えますよ。もう一度、どうぞ。"
+    textReading: "ひつようなことをきかれたら、「〜なければなりません」とこたえますよ。もういちど、どうぞ。"
+    textEn: "Khi được hỏi về việc bắt buộc, ta trả lời bằng mẫu \"~ nakereba narimasen\". Mời bạn nói lại."
+    textRomaji: "Hitsuyou na koto wo kikaretara, \"~ nakereba narimasen\" to kotaemasu yo. Mou ichido, douzo."
+    textEnglishIpa: 
+    animationCue: point
+    voiceClip: {fileID: 0}
+    choices: []
+    flagCondition: 
+    flagJumpNodeId: 
+    targetItemId: 
+    targetNpcId: 
+    targetAreaId: 
+  - id: n_where_sort
+    nodeType: 0
+    nextNodeId: 
+    objectiveIdToComplete: 
+    speakerName: Sato
+    speakerId: npc_neighbor_3
+    textJa: "缶と、ビンと、古紙は、それぞれ違う袋に入れます。この缶は、どこに入れますか。"
+    textReading: "かんと、ビンと、こしは、それぞれちがうふくろにいれます。このかんは、どこにいれますか。"
+    textEn: "Lon, chai thủy tinh và giấy cũ thì bỏ vào các túi khác nhau. Cái lon này thì bỏ vào đâu?"
+    textRomaji: "Kan to, bin to, koshi wa, sorezore chigau fukuro ni iremasu. Kono kan wa, doko ni iremasu ka?"
+    textEnglishIpa: 
+    animationCue: point
+    voiceClip: {fileID: 0}
+    choices:
+    - textJa: "缶の袋に入れます。"
+      textEn: "Bỏ vào túi đựng lon ạ."
+      nextNodeId: n_day
+      scoreModifiers:
+      - category: Vocabulary
+        value: 10
+        reason: "Phân loại đúng: lon (缶) vào túi dành cho lon"
+      grammarTags: []
+      vocabularyTags:
+      - vocab.n5.kan
+      setFlags: []
+    - textJa: "ビンの袋に入れます。"
+      textEn: "Bỏ vào túi đựng chai thủy tinh ạ."
+      nextNodeId: n_sort_wrong2
+      scoreModifiers:
+      - category: Vocabulary
+        value: -6
+        reason: "Nhầm loại: đây là lon (缶), không phải chai thủy tinh (ビン)"
+      grammarTags: []
+      vocabularyTags: []
+      setFlags: []
+    flagCondition: 
+    flagJumpNodeId: 
+    targetItemId: 
+    targetNpcId: 
+    targetAreaId: 
+  - id: n_sort_wrong2
+    nodeType: 0
+    nextNodeId: n_day
+    objectiveIdToComplete: 
+    speakerName: Sato
+    speakerId: npc_neighbor_3
+    textJa: "それは、缶ですよ。ビンではありません。缶の袋に入れてくださいね。"
+    textReading: "それは、かんですよ。ビンではありません。かんのふくろにいれてくださいね。"
+    textEn: "Đó là lon đấy. Không phải chai thủy tinh. Xin hãy bỏ vào túi đựng lon nhé."
+    textRomaji: "Sore wa, kan desu yo. Bin dewa arimasen. Kan no fukuro ni irete kudasai ne."
+    textEnglishIpa: 
+    animationCue: point
+    voiceClip: {fileID: 0}
+    choices: []
+    flagCondition: 
+    flagJumpNodeId: 
+    targetItemId: 
+    targetNpcId: 
+    targetAreaId: 
+  - id: n_day
+    nodeType: 0
+    nextNodeId: 
+    objectiveIdToComplete: obj_learn_recycling
+    speakerName: Sato
+    speakerId: npc_neighbor_3
+    textJa: "資源ごみは、何曜日に出せますか。"
+    textReading: "しげんごみは、なんようびにだせますか。"
+    textEn: "Rác tái chế thì có thể bỏ vào thứ mấy?"
+    textRomaji: "Shigen gomi wa, nan youbi ni dasemasu ka?"
+    textEnglishIpa: 
+    animationCue: talk
+    voiceClip: {fileID: 0}
+    choices:
+    - textJa: "水曜日の朝です。"
+      textEn: "Sáng thứ Tư ạ."
+      nextNodeId: n_end
+      scoreModifiers:
+      - category: Vocabulary
+        value: 10
+        reason: "Nhớ đúng ngày thu gom: 水曜日"
+      grammarTags: []
+      vocabularyTags:
+      - vocab.n5.suiyoubi
+      setFlags: []
+    - textJa: "毎晩です。"
+      textEn: "Mỗi tối ạ."
+      nextNodeId: n_day_hint
+      scoreModifiers:
+      - category: Vocabulary
+        value: -5
+        reason: "Trả lời sai: chỉ thu gom sáng thứ Tư, không phải mỗi tối"
+      grammarTags: []
+      vocabularyTags: []
+      setFlags: []
+    flagCondition: 
+    flagJumpNodeId: 
+    targetItemId: 
+    targetNpcId: 
+    targetAreaId: 
+  - id: n_day_hint
+    nodeType: 0
+    nextNodeId: n_day
+    objectiveIdToComplete: 
+    speakerName: Sato
+    speakerId: npc_neighbor_3
+    textJa: "回収は、水曜日の朝だけですよ。もう一度、どうぞ。"
+    textReading: "かいしゅうは、すいようびのあさだけですよ。もういちど、どうぞ。"
+    textEn: "Chỉ thu gom vào sáng thứ Tư thôi đấy. Mời bạn nói lại."
+    textRomaji: "Kaishuu wa, suiyoubi no asa dake desu yo. Mou ichido, douzo."
+    textEnglishIpa: 
+    animationCue: point
+    voiceClip: {fileID: 0}
+    choices: []
+    flagCondition: 
+    flagJumpNodeId: 
+    targetItemId: 
+    targetNpcId: 
+    targetAreaId: 
+  - id: n_end
+    nodeType: 0
+    nextNodeId: n_recap
+    objectiveIdToComplete: 
+    speakerName: Sato
+    speakerId: npc_neighbor_3
+    textJa: "完璧です。これで町をきれいにできますね。"
+    textReading: "かんぺきです。これでまちをきれいにできますね。"
+    textEn: "Hoàn hảo. Vậy là chúng ta có thể giữ khu phố sạch đẹp rồi nhỉ."
+    textRomaji: "Kanpeki desu. Kore de machi wo kirei ni dekimasu ne."
+    textEnglishIpa: 
+    animationCue: bow
+    voiceClip: {fileID: 0}
+    choices: []
+    flagCondition: 
+    flagJumpNodeId: 
+    targetItemId: 
+    targetNpcId: 
+    targetAreaId: 
+  - id: n_recap
+    nodeType: 0
+    nextNodeId: node_complete
+    objectiveIdToComplete: 
+    speakerName: 
+    speakerId: 
+    textJa: "今日のポイント：「〜てください」「〜なければなりません」「何曜日ですか」。"
+    textReading: "きょうのポイント：「〜てください」「〜なければなりません」「なんようびですか」。"
+    textEn: "Tóm tắt: \"~ te kudasai\" (hãy ~), \"~ nakereba narimasen\" (bắt buộc phải ~), \"nan youbi desu ka\" (thứ mấy?). Nhớ: lon, chai thủy tinh và giấy cũ bỏ vào túi riêng, thu gom sáng thứ Tư."
+    textRomaji: "Kyou no pointo: \"~ te kudasai\" \"~ nakereba narimasen\" \"nan youbi desu ka\"."
+    textEnglishIpa: 
+    animationCue: 
+    voiceClip: {fileID: 0}
+    choices: []
+    flagCondition: 
+    flagJumpNodeId: 
+    targetItemId: 
+    targetNpcId: 
+    targetAreaId: 
+  - id: node_complete
+    nodeType: 4
+    nextNodeId: 
+    objectiveIdToComplete: 
+    speakerName: 
+    speakerId: 
+    textJa: 
+    textReading: 
+    textEn: 
+    textRomaji: 
+    textEnglishIpa: 
+    animationCue: 
+    voiceClip: {fileID: 0}
+    choices: []
+    flagCondition: 
+    flagJumpNodeId: 
+    targetItemId: 
+    targetNpcId: 
+    targetAreaId: 
+  startNodeId: node_find_sato

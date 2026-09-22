@@ -273,6 +273,7 @@ Chủ dự án xác nhận: đã bước vào bên trong konbini thật (không 
 4. **Story flags và node Branch** (mới): chơi `intro` chọn "ちょっと不安です" rồi chơi `house1` — Tanaka phải nói câu an ủi tương ứng; chơi lostcat có/không hỏi どんな猫ですか rồi tới lễ hội — Suzuki phải đổi lời; kiểm tra Console có log `[StoryFlags] Set ...` và `Branch ... -> true/false`; đóng game, mở lại: cờ còn (lưu local), thử đăng nhập cloud nếu đã bật.
 5. Chơi từng quest theo thứ tự campaign (14 quest): ghi node treo, chữ Nhật hiển thị lỗi, hội thoại nhảy sai node, mục tiêu không đổi trạng thái, `TalkToNPC` không kích hoạt được (NPC Tanaka/Suzuki/Sato phải có mặt trong sandbox).
 6. Sửa hoặc ghi lại lỗi; nếu cần đổi giao thức broadcast thì báo Claude trước.
+7. **Lỗi biên dịch chặn mọi thứ ở trên**: `Assets/NihongoLife/Scripts/UI/WorldMapUI.cs:94` — `position + new(0, -103)` không hợp lệ trong C# (không thể suy ra kiểu của `new(...)` qua toán tử `+`). Đây không phải file nội dung/scenario nên Claude không tự sửa; Codex sửa bằng cách viết rõ kiểu, ví dụ `position + new Vector2(0, -103)`, rồi báo lại khi Unity mở được (mục 1-6 ở trên đều cần Unity biên dịch được trước).
 
 **Ranh giới**: không sửa nội dung tiếng Nhật/Việt trong scenario; không đổi tên field serialized mới của `ScenarioDefinition`; không thêm bảng Supabase mới khi chưa báo.
 

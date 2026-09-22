@@ -59,19 +59,19 @@ Q = {
         ja="田中さんが山田さんのラーメン店に案内してくれます。寿司店よりカジュアルな注文と支払いを学びます。",
         wvi="やまだ食堂 (quán ramen)", wen="Yamada Shokudo (ramen shop)", wja="やまだ食堂"),
     "scenario.neighborhood.cat_followup": dict(
-        file=None, type="community", giver="npc_neighbor_2", reward=400, know=50, req=["scenario.house2.lostcat"], unlock=["scenario.town.summer_festival"], coop=False,
+        file="scenario_neighborhood_cat_followup", type="community", giver="npc_neighbor_2", reward=400, know=50, req=["scenario.house2.lostcat"], unlock=["scenario.town.summer_festival"], coop=False,
         vi="Bạn thấy manh mối về chú mèo. Báo cho Suzuki và tả vị trí bằng tiếng Nhật.",
         en="You spotted a clue about the cat. Tell Suzuki and describe the place in Japanese.",
         ja="猫の手がかりを見つけました。鈴木さんに伝え、場所を日本語で説明しましょう。",
         wvi="Nhà Suzuki", wen="Suzuki's house", wja="鈴木さんの家"),
     "scenario.neighborhood.recycling_morning": dict(
-        file=None, type="community", giver="npc_neighbor_3", reward=300, know=50, req=["scenario.house3.garbage"], unlock=["scenario.town.summer_festival"], coop=False,
+        file="scenario_neighborhood_recycling_morning", type="community", giver="npc_neighbor_3", reward=300, know=50, req=["scenario.house3.garbage"], unlock=["scenario.town.summer_festival"], coop=False,
         vi="Sáng thứ hai là ngày thu gom rác tái chế. Phân loại đúng và hỏi Sato khi chưa chắc.",
         en="Monday morning is recycling day. Sort correctly and ask Sato when you are unsure.",
         ja="月曜の朝はリサイクルの日。正しく分別し、迷ったら佐藤さんに聞きましょう。",
         wvi="Điểm tập kết rác gần nhà Sato", wen="The collection point near Sato's house", wja="佐藤さんの家の近くのゴミ置き場"),
     "scenario.konbini.evening_shift": dict(
-        file=None, type="career", giver="npc_cashier", reward=1200, know=50, req=["scenario.konbini.buy_onigiri"], unlock=[], coop=False,
+        file="scenario_konbini_evening_shift", type="career", giver="npc_cashier", reward=1200, know=50, req=["scenario.konbini.buy_onigiri"], unlock=[], coop=False,
         vi="Ito nhờ bạn phụ ca tối ở cửa hàng. Học cách nói với khách khi hết hàng và gợi ý món khác.",
         en="Ito asks you to help with the evening shift. Learn what to say when an item is out of stock and how to suggest another.",
         ja="伊藤さんに夜のシフトを頼まれました。品切れのときの言い方と、別の商品のすすめ方を学びます。",

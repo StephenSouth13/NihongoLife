@@ -1,0 +1,445 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3ba8f435ab5427145b206cd2a4f4ea7c, type: 3}
+  m_Name: scenario_konbini_evening_shift
+  m_EditorClassIdentifier: NihongoLife::NihongoLife.Scenario.ScenarioDefinition
+  id: scenario.konbini.evening_shift
+  version: 2
+  titleJa: "コンビニの夕方シフト"
+  titleEn: "Ca tối ở cửa hàng tiện lợi"
+  descriptionJa: "伊藤さんを手伝って、商品と接客表現を確認しましょう。"
+  descriptionEn: "Giúp chị Ito kiểm tra hàng hóa và luyện cách nói chuyện với khách hàng vào ca tối."
+  chapterIndex: 3
+  questType: career
+  giverNpcId: npc_cashier
+  briefingVi: "Ito nhờ bạn phụ ca tối ở cửa hàng. Học cách nói với khách khi hết hàng và gợi ý món khác."
+  briefingEn: "Ito asks you to help with the evening shift. Learn what to say when an item is out of stock and how to suggest another."
+  briefingJa: "伊藤さんに夜のシフトを頼まれました。品切れのときの言い方と、別の商品のすすめ方を学びます。"
+  locationHintVi: "ひばりコンビニ"
+  locationHintEn: "Hibari Konbini"
+  locationHintJa: "ひばりコンビニ"
+  rewardYen: 1200
+  branchId: career.retail
+  requiredKnowledge: 50
+  requiredScenarioIds:
+  - scenario.konbini.buy_onigiri
+  unlockScenarioIds: []
+  repeatable: 0
+  supportsCoOp: 0
+  minPlayers: 1
+  maxPlayers: 2
+  learningTargets:
+  - grammar.n5.mada_arimasu
+  - grammar.n5.ta_hou_ga_ii
+  - grammar.n5.gozaimasu
+  - vocab.n5.irasshaimase
+  - vocab.n5.tsuika
+  objectives:
+  - id: obj_help_cashier
+    titleJa: "伊藤さんを手伝う"
+    titleEn: "Giúp chị Ito chuẩn bị ca tối"
+    isOptional: 0
+  nodes:
+  - id: node_find_ito
+    nodeType: 6
+    nextNodeId: n_intro
+    objectiveIdToComplete: obj_help_cashier
+    speakerName: 
+    speakerId: 
+    textJa: 
+    textReading: 
+    textEn: 
+    textRomaji: 
+    textEnglishIpa: 
+    animationCue: 
+    voiceClip: {fileID: 0}
+    choices: []
+    flagCondition: 
+    flagJumpNodeId: 
+    targetItemId: 
+    targetNpcId: npc_cashier
+    targetAreaId: 
+  - id: n_intro
+    nodeType: 0
+    nextNodeId: 
+    objectiveIdToComplete: 
+    speakerName: Ito
+    speakerId: npc_cashier
+    textJa: "あ、いつもありがとうございます。夕方の準備を、手伝ってもらえますか。"
+    textReading: "あ、いつもありがとうございます。ゆうがたのじゅんびを、てつだってもらえますか。"
+    textEn: "À, cảm ơn bạn lúc nào cũng ghé qua. Bạn giúp tôi chuẩn bị cho ca tối được không?"
+    textRomaji: "A, itsumo arigatou gozaimasu. Yuugata no junbi wo, tetsudatte moraemasu ka?"
+    textEnglishIpa: 
+    animationCue: talk
+    voiceClip: {fileID: 0}
+    choices:
+    - textJa: "はい、何をすればいいですか。"
+      textEn: "Vâng, cháu nên làm gì ạ?"
+      nextNodeId: n_water
+      scoreModifiers:
+      - category: Grammar
+        value: 10
+        reason: "Hỏi việc cần làm bằng mẫu 〜すればいいですか"
+      grammarTags:
+      - grammar.n5.sureba_ii_desu_ka
+      vocabularyTags: []
+      setFlags: []
+    - textJa: "はい、何をしますかでした？"
+      textEn: "Vâng, đã làm gì vậy?"
+      nextNodeId: n_offer_hint
+      scoreModifiers:
+      - category: Grammar
+        value: -4
+        reason: "Câu hỏi sai thì: nên hỏi việc sắp làm, không phải hỏi lại việc đã làm"
+      grammarTags: []
+      vocabularyTags: []
+      setFlags: []
+    flagCondition: 
+    flagJumpNodeId: 
+    targetItemId: 
+    targetNpcId: 
+    targetAreaId: 
+  - id: n_offer_hint
+    nodeType: 0
+    nextNodeId: n_water
+    objectiveIdToComplete: 
+    speakerName: Ito
+    speakerId: npc_cashier
+    textJa: "仕事を聞くときは、「何をすればいいですか」と言うと自然ですよ。"
+    textReading: "しごとをきくときは、「なにをすればいいですか」というとしぜんですよ。"
+    textEn: "Khi hỏi việc cần làm, nói \"nani wo sureba ii desu ka\" sẽ tự nhiên hơn."
+    textRomaji: "Shigoto wo kiku toki wa, \"nani wo sureba ii desu ka\" to iu to shizen desu yo."
+    textEnglishIpa: 
+    animationCue: talk
+    voiceClip: {fileID: 0}
+    choices: []
+    flagCondition: 
+    flagJumpNodeId: 
+    targetItemId: 
+    targetNpcId: 
+    targetAreaId: 
+  - id: n_water
+    nodeType: 0
+    nextNodeId: 
+    objectiveIdToComplete: 
+    speakerName: Ito
+    speakerId: npc_cashier
+    textJa: "水は、まだありますか。"
+    textReading: "みずは、まだありますか。"
+    textEn: "Nước vẫn còn hàng chứ?"
+    textRomaji: "Mizu wa, mada arimasu ka?"
+    textEnglishIpa: 
+    animationCue: point
+    voiceClip: {fileID: 0}
+    choices:
+    - textJa: "はい、まだあります。"
+      textEn: "Vâng, vẫn còn ạ."
+      nextNodeId: n_onigiri
+      scoreModifiers:
+      - category: Grammar
+        value: 10
+        reason: "Trả lời đúng bằng mẫu まだ〜あります (vẫn còn)"
+      grammarTags:
+      - grammar.n5.mada_arimasu
+      vocabularyTags: []
+      setFlags: []
+    - textJa: "はい、もうありません。"
+      textEn: "Vâng, đã hết rồi ạ."
+      nextNodeId: n_quantity_hint
+      scoreModifiers:
+      - category: Grammar
+        value: -5
+        reason: "Mâu thuẫn: はい (vâng) nhưng lại nói hết hàng; nếu còn hàng phải dùng まだあります"
+      grammarTags: []
+      vocabularyTags: []
+      setFlags: []
+    flagCondition: 
+    flagJumpNodeId: 
+    targetItemId: 
+    targetNpcId: 
+    targetAreaId: 
+  - id: n_quantity_hint
+    nodeType: 0
+    nextNodeId: n_water
+    objectiveIdToComplete: 
+    speakerName: Ito
+    speakerId: npc_cashier
+    textJa: "棚にありますから、「まだあります」ですね。よく見てくださいね。"
+    textReading: "たなにありますから、「まだあります」ですね。よくみてくださいね。"
+    textEn: "Vì vẫn còn trên kệ nên phải là \"mada arimasu\" (vẫn còn) nhé. Bạn xem kỹ lại nhé."
+    textRomaji: "Tana ni arimasu kara, \"mada arimasu\" desu ne. Yoku mite kudasai ne."
+    textEnglishIpa: 
+    animationCue: point
+    voiceClip: {fileID: 0}
+    choices: []
+    flagCondition: 
+    flagJumpNodeId: 
+    targetItemId: 
+    targetNpcId: 
+    targetAreaId: 
+  - id: n_onigiri
+    nodeType: 0
+    nextNodeId: 
+    objectiveIdToComplete: 
+    speakerName: Ito
+    speakerId: npc_cashier
+    textJa: "おにぎりは少ないですね。どうしますか。"
+    textReading: "おにぎりはすくないですね。どうしますか。"
+    textEn: "Cơm nắm còn ít nhỉ. Ta nên làm gì?"
+    textRomaji: "Onigiri wa sukunai desu ne. Dou shimasu ka?"
+    textEnglishIpa: 
+    animationCue: point
+    voiceClip: {fileID: 0}
+    choices:
+    - textJa: "追加したほうがいいです。"
+      textEn: "Nên bổ sung thêm ạ."
+      nextNodeId: n_customer
+      scoreModifiers:
+      - category: Grammar
+        value: 10
+        reason: "Đề xuất bằng mẫu 〜たほうがいいです (nên làm ~)"
+      grammarTags:
+      - grammar.n5.ta_hou_ga_ii
+      vocabularyTags:
+      - vocab.n5.tsuika
+      setFlags: []
+    - textJa: "追加しないです。"
+      textEn: "Không cần bổ sung ạ."
+      nextNodeId: n_restock_hint
+      scoreModifiers:
+      - category: ResponseAccuracy
+        value: -5
+        reason: "Đề xuất không hợp lý: hàng đang ít mà lại nói không cần thêm"
+      grammarTags: []
+      vocabularyTags: []
+      setFlags: []
+    flagCondition: 
+    flagJumpNodeId: 
+    targetItemId: 
+    targetNpcId: 
+    targetAreaId: 
+  - id: n_restock_hint
+    nodeType: 0
+    nextNodeId: n_onigiri
+    objectiveIdToComplete: 
+    speakerName: Ito
+    speakerId: npc_cashier
+    textJa: "少ないときは、追加したほうがいいですね。お客様が困りますから。"
+    textReading: "すくないときは、ついかしたほうがいいですね。おきゃくさまがこまりますから。"
+    textEn: "Khi hàng còn ít thì nên bổ sung thêm nhé. Vì khách hàng sẽ gặp khó khăn nếu hết hàng."
+    textRomaji: "Sukunai toki wa, tsuika shita hou ga ii desu ne. Okyakusama ga komarimasu kara."
+    textEnglishIpa: 
+    animationCue: point
+    voiceClip: {fileID: 0}
+    choices: []
+    flagCondition: 
+    flagJumpNodeId: 
+    targetItemId: 
+    targetNpcId: 
+    targetAreaId: 
+  - id: n_customer
+    nodeType: 0
+    nextNodeId: 
+    objectiveIdToComplete: 
+    speakerName: Ito
+    speakerId: npc_cashier
+    textJa: "もし、お客様に「おにぎりはありますか」と聞かれたら、何と答えますか。"
+    textReading: "もし、おきゃくさまに「おにぎりはありますか」ときかれたら、なんとこたえますか。"
+    textEn: "Nếu khách hỏi \"onigiri wa arimasu ka\" (có cơm nắm không), bạn sẽ đáp gì?"
+    textRomaji: "Moshi, okyakusama ni \"onigiri wa arimasu ka\" to kikaretara, nan to kotaemasu ka?"
+    textEnglishIpa: 
+    animationCue: talk
+    voiceClip: {fileID: 0}
+    choices:
+    - textJa: "はい、あちらにございます。"
+      textEn: "Vâng, ở đằng kia ạ."
+      nextNodeId: n_phrase
+      scoreModifiers:
+      - category: Grammar
+        value: 10
+        reason: "Dùng kính ngữ ございます thay cho あります khi phục vụ khách"
+      grammarTags:
+      - grammar.n5.gozaimasu
+      vocabularyTags:
+      - vocab.n5.achira
+      setFlags: []
+    - textJa: "はい、あります。"
+      textEn: "Vâng, có ạ."
+      nextNodeId: n_customer_hint
+      scoreModifiers:
+      - category: ResponseAccuracy
+        value: 4
+        reason: "Đúng nghĩa nhưng thiếu kính ngữ dành cho khách hàng"
+      grammarTags:
+      - grammar.n5.arimasu
+      vocabularyTags: []
+      setFlags: []
+    flagCondition: 
+    flagJumpNodeId: 
+    targetItemId: 
+    targetNpcId: 
+    targetAreaId: 
+  - id: n_customer_hint
+    nodeType: 0
+    nextNodeId: n_phrase
+    objectiveIdToComplete: 
+    speakerName: Ito
+    speakerId: npc_cashier
+    textJa: "お客様には、「ございます」を使うと、もっとていねいですよ。"
+    textReading: "おきゃくさまには、「ございます」をつかうと、もっとていねいですよ。"
+    textEn: "Với khách hàng, dùng \"gozaimasu\" sẽ lịch sự hơn đấy."
+    textRomaji: "Okyakusama ni wa, \"gozaimasu\" wo tsukau to, motto teinei desu yo."
+    textEnglishIpa: 
+    animationCue: talk
+    voiceClip: {fileID: 0}
+    choices: []
+    flagCondition: 
+    flagJumpNodeId: 
+    targetItemId: 
+    targetNpcId: 
+    targetAreaId: 
+  - id: n_phrase
+    nodeType: 0
+    nextNodeId: 
+    objectiveIdToComplete: 
+    speakerName: Ito
+    speakerId: npc_cashier
+    textJa: "最後に、お客様を迎える言葉は。"
+    textReading: "さいごに、おきゃくさまをむかえることばは。"
+    textEn: "Cuối cùng, câu dùng để chào đón khách là gì nhỉ?"
+    textRomaji: "Saigo ni, okyakusama wo mukaeru kotoba wa?"
+    textEnglishIpa: 
+    animationCue: talk
+    voiceClip: {fileID: 0}
+    choices:
+    - textJa: "いらっしゃいませ。"
+      textEn: "Kính chào quý khách."
+      nextNodeId: n_end
+      scoreModifiers:
+      - category: Vocabulary
+        value: 10
+        reason: "Nhớ đúng câu chào đón khách chuẩn ở cửa hàng: いらっしゃいませ"
+      grammarTags: []
+      vocabularyTags:
+      - vocab.n5.irasshaimase
+      setFlags: []
+    - textJa: "行ってきます。"
+      textEn: "Con đi đây."
+      nextNodeId: n_greeting_hint
+      scoreModifiers:
+      - category: Vocabulary
+        value: -6
+        reason: "Nhầm câu: 行ってきます là lời chào khi rời khỏi nhà, không phải câu chào đón khách"
+      grammarTags: []
+      vocabularyTags: []
+      setFlags: []
+    flagCondition: 
+    flagJumpNodeId: 
+    targetItemId: 
+    targetNpcId: 
+    targetAreaId: 
+  - id: n_greeting_hint
+    nodeType: 0
+    nextNodeId: n_phrase
+    objectiveIdToComplete: 
+    speakerName: Ito
+    speakerId: npc_cashier
+    textJa: "お店では、「いらっしゃいませ」と言いますよ。"
+    textReading: "おみせでは、「いらっしゃいませ」といいますよ。"
+    textEn: "Ở cửa hàng thì ta nói \"irasshaimase\" nhé."
+    textRomaji: "Omise de wa, \"irasshaimase\" to iimasu yo."
+    textEnglishIpa: 
+    animationCue: talk
+    voiceClip: {fileID: 0}
+    choices: []
+    flagCondition: 
+    flagJumpNodeId: 
+    targetItemId: 
+    targetNpcId: 
+    targetAreaId: 
+  - id: n_end
+    nodeType: 0
+    nextNodeId: n_pay
+    objectiveIdToComplete: obj_help_cashier
+    speakerName: Ito
+    speakerId: npc_cashier
+    textJa: "よくできました。夕方の準備は完了です。ありがとうございました。"
+    textReading: "よくできました。ゆうがたのじゅんびはかんりょうです。ありがとうございました。"
+    textEn: "Bạn làm tốt lắm. Việc chuẩn bị ca tối đã xong. Cảm ơn bạn nhiều nhé."
+    textRomaji: "Yoku dekimashita. Yuugata no junbi wa kanryou desu. Arigatou gozaimashita."
+    textEnglishIpa: 
+    animationCue: bow
+    voiceClip: {fileID: 0}
+    choices: []
+    flagCondition: 
+    flagJumpNodeId: 
+    targetItemId: 
+    targetNpcId: 
+    targetAreaId: 
+  - id: n_pay
+    nodeType: 0
+    nextNodeId: n_recap
+    objectiveIdToComplete: 
+    speakerName: Ito
+    speakerId: npc_cashier
+    textJa: "お礼に、これをどうぞ。"
+    textReading: "おれいに、これをどうぞ。"
+    textEn: "Để cảm ơn, mời bạn nhận cái này."
+    textRomaji: "Orei ni, kore wo douzo."
+    textEnglishIpa: 
+    animationCue: point
+    voiceClip: {fileID: 0}
+    choices: []
+    flagCondition: 
+    flagJumpNodeId: 
+    targetItemId: 
+    targetNpcId: 
+    targetAreaId: 
+  - id: n_recap
+    nodeType: 0
+    nextNodeId: node_complete
+    objectiveIdToComplete: 
+    speakerName: 
+    speakerId: 
+    textJa: "今日のポイント：「まだあります」「〜たほうがいいです」「いらっしゃいませ」。"
+    textReading: "きょうのポイント：「まだあります」「〜たほうがいいです」「いらっしゃいませ」。"
+    textEn: "Tóm tắt: \"mada arimasu\" (vẫn còn), \"~ ta hou ga ii desu\" (nên làm ~), \"irasshaimase\" (câu chào đón khách). Với khách hàng, nhớ dùng \"gozaimasu\" thay cho \"arimasu\"."
+    textRomaji: "Kyou no pointo: \"mada arimasu\" \"~ ta hou ga ii desu\" \"irasshaimase\"."
+    textEnglishIpa: 
+    animationCue: 
+    voiceClip: {fileID: 0}
+    choices: []
+    flagCondition: 
+    flagJumpNodeId: 
+    targetItemId: 
+    targetNpcId: 
+    targetAreaId: 
+  - id: node_complete
+    nodeType: 4
+    nextNodeId: 
+    objectiveIdToComplete: 
+    speakerName: 
+    speakerId: 
+    textJa: 
+    textReading: 
+    textEn: 
+    textRomaji: 
+    textEnglishIpa: 
+    animationCue: 
+    voiceClip: {fileID: 0}
+    choices: []
+    flagCondition: 
+    flagJumpNodeId: 
+    targetItemId: 
+    targetNpcId: 
+    targetAreaId: 
+  startNodeId: node_find_ito

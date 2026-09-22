@@ -23,9 +23,9 @@ Mỗi `ScenarioDefinition` giờ là một quest, các trường mới:
 
 ## 2. Danh mục nhiệm vụ
 
-**Đã có (14)**, trong đó **10 quest đã viết sâu đủ chuẩn Edu**: intro.arrival (31 node), street.first_talk (28), house1.greeting (41), school.self_intro (22), house2.lostcat (27), house3.garbage (27), restaurant.sushi_dining (74), restaurant.order_ramen (36), station.buy_ticket (32), town.summer_festival (55). Còn mỏng: konbini.buy_onigiri, neighborhood.cat_followup, neighborhood.recycling_morning, konbini.evening_shift. Campaign hiện chạy được toàn bộ 14 quest theo thứ tự từ mở màn đến lễ hội. Bộ nhớ truyện (story flags) đã có: xem `STORY_BIBLE.md` mục 12.
+**Cả 14/14 quest trong campaign đã viết sâu đủ chuẩn Edu** (mỗi cái: nhánh đúng / kém tự nhiên / sai → sửa → thử lại, tag ngữ pháp/từ vựng, tóm tắt cuối bài): intro.arrival (31 node), street.first_talk (28), house1.greeting (41), school.self_intro (22), konbini.buy_onigiri (28), house2.lostcat (27), house3.garbage (27), restaurant.sushi_dining (74), restaurant.order_ramen (36), neighborhood.cat_followup (18), neighborhood.recycling_morning (15), konbini.evening_shift (15), station.buy_ticket (32), town.summer_festival (55). Tổng cộng 439 node. Đã kiểm bằng script: không có node treo, không có nhánh không tới được (kể cả qua node Branch), không có node lời thoại thiếu furigana/romaji/bản dịch. Campaign chạy được toàn bộ 14 quest theo thứ tự từ mở màn đến lễ hội. Bộ nhớ truyện (story flags) đã có: xem `STORY_BIBLE.md` mục 12.
 
-**Còn phải viết sâu**: konbini.buy_onigiri (thêm tag, thêm nhánh), và 3 quest đang dựng bằng code (cat_followup, recycling_morning, evening_shift) chuyển thành asset có dùng cờ.
+**Còn phải viết** (mở rộng ngoài campaign chính, xem bảng nhiệm vụ mới bên dưới): quest trường học, sinh tồn, cộng đồng và nghề nghiệp mới, cùng co-op đổi vai.
 
 **Nhiệm vụ mới cần viết** (mỗi cái: nhiều nhánh, sai → sửa → thử lại, ≤2 mẫu ngữ pháp mới):
 
@@ -68,7 +68,7 @@ Nguyên tắc an toàn: không PvP, chat có bộ lọc và nút báo cáo, ch�
 ## 4. Thứ tự làm tiếp
 
 1. **Play thử toàn bộ campaign 14 quest** cùng khung quest, nhật ký J, story flags (Codex/bạn), ghi và sửa lỗi.
-2. Viết sâu 4 quest còn mỏng: konbini.buy_onigiri, cat_followup, recycling_morning, evening_shift, chuyển 3 quest dựng bằng code thành asset và dùng cờ (Claude).
-3. O1 + O2 chạy thật với 2 máy (bạn bật Dashboard, Codex test).
-4. Dựng NPC/khu vực thật cho ramen, nhà ga, nhà hàng (TASK-I); khi có NPC thật thì đổi node bắt đầu từ hội thoại thuần sang `TalkToNPC`/`GoToArea` nếu muốn đi bộ tới nơi.
-5. Quest sinh tồn + cộng đồng mới (Claude), rồi co-op đổi vai (O3).
+2. O1 + O2 chạy thật với 2 máy (bạn bật Dashboard, Codex test).
+3. Dựng NPC/khu vực thật cho ramen, nhà ga, nhà hàng (TASK-I); khi có NPC thật thì đổi node bắt đầu từ hội thoại thuần sang `TalkToNPC`/`GoToArea` nếu muốn đi bộ tới nơi.
+4. Quest sinh tồn + cộng đồng mới (Claude), rồi co-op đổi vai (O3).
+5. Người bản ngữ duyệt tiếng Nhật của cả 14 quest.

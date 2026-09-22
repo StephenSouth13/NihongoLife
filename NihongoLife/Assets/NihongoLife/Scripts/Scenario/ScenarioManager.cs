@@ -83,6 +83,18 @@ namespace NihongoLife.Scenario
 
         public void StartScenario(ScenarioDefinition scenario)
         {
+            if (scenario == null)
+            {
+                Debug.LogError("[ScenarioManager] Cannot start a null scenario.");
+                return;
+            }
+
+            if (!CanStartScenario(scenario))
+            {
+                Debug.LogWarning($"[ScenarioManager] Scenario '{scenario.id}' is locked by its requirements.");
+                return;
+            }
+
             var validation = ScenarioValidator.Validate(scenario);
             if (validation.HasErrors)
             {
@@ -130,6 +142,15 @@ namespace NihongoLife.Scenario
             {
                 Debug.LogError("[ScenarioManager] Scenario has no valid start node!");
             }
+        }
+
+        public bool CanStartScenario(ScenarioDefinition scenario)
+        {
+            if (scenario == null) return false;
+            if (!GameServices.TryGet(out IProgressRepository repository)) return false;
+
+            var progress = repository.GetProgress();
+            return progress != null && scenario.IsUnlocked(progress.knowledge, progress.completedScenarios);
         }
 
         public void TransitionToNode(string nodeId)

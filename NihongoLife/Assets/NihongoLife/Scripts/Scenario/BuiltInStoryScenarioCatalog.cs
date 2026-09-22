@@ -5,11 +5,17 @@ namespace NihongoLife.Scenario
 {
     public static class BuiltInStoryScenarioCatalog
     {
+        /// <summary>
+        /// Superseded (2026-09-22): scenario.neighborhood.cat_followup, scenario.neighborhood.recycling_morning
+        /// and scenario.konbini.evening_shift are now written as full ScenarioDefinition assets under
+        /// Resources/Scenarios (with story-flag callbacks into house2.lostcat / house3.garbage /
+        /// konbini.buy_onigiri — see StoryFlags.cs and Tools/story/). LocalScenarioRepository loads
+        /// Resources/Scenarios first, so an asset with the same id always wins over these; this method is
+        /// kept only so the private Create* builders below remain available as a reference/fallback.
+        /// </summary>
         public static IEnumerable<ScenarioDefinition> CreateAll()
         {
-            yield return CreateCatFollowUp();
-            yield return CreateRecyclingMorning();
-            yield return CreateStoreEveningShift();
+            yield break;
         }
 
         private static ScenarioDefinition CreateCatFollowUp()
