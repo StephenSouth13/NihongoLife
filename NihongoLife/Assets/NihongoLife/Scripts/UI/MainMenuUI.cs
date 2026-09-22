@@ -420,6 +420,8 @@ namespace NihongoLife.UI
 
         private void CreateCharacterPreviewStage()
         {
+            if (Application.isBatchMode) return;
+
             characterPreviewTexture = new RenderTexture(768, 900, 24, RenderTextureFormat.ARGB32)
             {
                 name = "CharacterSelectPreviewTexture",

@@ -253,7 +253,7 @@ namespace NihongoLife.Editor
                 }
             }
 
-            database.activeScenarioId = "scenario.street.first_talk";
+            database.activeScenarioId = "scenario.intro.arrival";
             EnsureVoiceLineRows(database);
 
             EditorUtility.SetDirty(database);

@@ -5,6 +5,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
+using UnityEngine.Rendering;
 using NihongoLife.Player;
 using UnityEngine.AI;
 
@@ -80,7 +81,9 @@ namespace NihongoLife.UI
             _overviewTab = Tab("Bản đồ tổng", new(112, 0));
             _areaTab.onClick.AddListener(() => SetMapMode(true));
             _overviewTab.onClick.AddListener(() => SetMapMode(false));
-            _topDownImage = _mapArea.gameObject.AddComponent<RawImage>();
+            var topDownObject = new GameObject("TopDownMap", typeof(RectTransform), typeof(RawImage));
+            topDownObject.transform.SetParent(_mapArea, false);
+            _topDownImage = topDownObject.GetComponent<RawImage>();
             _topDownImage.color = Color.white;
             Stretch(_topDownImage.rectTransform);
             _topDownImage.raycastTarget = false;
@@ -91,7 +94,7 @@ namespace NihongoLife.UI
         {
             GameObject panel = Panel("MapTab_" + label, _overlay.transform, new(.08f, .12f, .15f));
             RectTransform rect = panel.GetComponent<RectTransform>();
-            Rect(rect, new(.5f, 1), position + new(0, -103), new(190, 38));
+            Rect(rect, new Vector2(.5f, 1f), position + new Vector2(0f, -103f), new Vector2(190f, 38f));
             Button button = panel.AddComponent<Button>();
             button.targetGraphic = panel.GetComponent<Image>();
             TextMeshProUGUI text = Text("Label", panel.transform, 14, FontStyles.Bold, label);
@@ -112,6 +115,7 @@ namespace NihongoLife.UI
         private void UpdateTopDownCamera()
         {
             if (!_showTopDown || _player == null) return;
+            if (Application.isBatchMode || SystemInfo.graphicsDeviceType == GraphicsDeviceType.Null) return;
             if (_topDownTexture == null)
             {
                 _topDownTexture = new RenderTexture(1024, 576, 16, RenderTextureFormat.ARGB32);
@@ -135,7 +139,12 @@ namespace NihongoLife.UI
 
         private void BuildMap()
         {
-            for (int i = _mapArea.childCount - 1; i >= 0; i--) Destroy(_mapArea.GetChild(i).gameObject);
+            for (int i = _mapArea.childCount - 1; i >= 0; i--)
+            {
+                Transform child = _mapArea.GetChild(i);
+                if (_topDownImage != null && child == _topDownImage.transform) continue;
+                Destroy(child.gameObject);
+            }
             string scene = SceneManager.GetActiveScene().name;
             _location.text = WorldLocationCatalog.Get(scene).DisplayName;
             if (scene == WorldLocationCatalog.StationScene) StationMap();

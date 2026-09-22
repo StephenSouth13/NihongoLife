@@ -405,6 +405,7 @@ namespace NihongoLife.UI
         private void HandleDialogueKeyboard()
         {
             if (dialoguePanel == null || !dialoguePanel.activeSelf) return;
+            if (Keyboard.current == null) return;
 
             if (_activeChoiceButtons.Count > 0)
             {

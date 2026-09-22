@@ -9,7 +9,7 @@ namespace NihongoLife.Scenario
         private const string ScenarioIdKey = "ActiveScenarioId";
 
         [Header("Config")]
-        [SerializeField] private string scenarioId = "scenario.street.first_talk";
+        [SerializeField] private string scenarioId = "scenario.intro.arrival";
         [SerializeField] private bool runOnStart = true;
 
         private void Start()
