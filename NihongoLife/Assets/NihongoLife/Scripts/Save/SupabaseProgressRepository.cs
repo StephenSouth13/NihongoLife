@@ -3,6 +3,7 @@ using System.Collections;
 using UnityEngine;
 using NihongoLife.Core;
 using NihongoLife.Data;
+using NihongoLife.Exam;
 
 namespace NihongoLife.Save
 {
@@ -256,6 +257,7 @@ namespace NihongoLife.Save
                 completedScenarios = new System.Collections.Generic.List<string>(cloud.completedScenarios),
                 storyFlags = cloud.storyFlags != null ? new System.Collections.Generic.List<string>(cloud.storyFlags) : new System.Collections.Generic.List<string>(),
                 bestScores = new System.Collections.Generic.List<ScenarioScoreRecord>(cloud.bestScores),
+                examAttempts = cloud.examAttempts != null ? new System.Collections.Generic.List<ExamAttemptRecord>(cloud.examAttempts) : new System.Collections.Generic.List<ExamAttemptRecord>(),
                 masteryLevels = new System.Collections.Generic.List<MasteryRecord>(cloud.masteryLevels),
                 careers = cloud.careers != null
                     ? new System.Collections.Generic.List<CareerRecord>(cloud.careers)
@@ -291,6 +293,14 @@ namespace NihongoLife.Save
                     existing.bestScore = localScore.bestScore;
                     existing.completedAt = localScore.completedAt;
                 }
+            }
+
+            // Merge exam attempts (append every local attempt not already present by timestamp; every
+            // attempt is kept, not just the best one, so the review screen can show attempt history).
+            foreach (var localAttempt in local.examAttempts ?? new System.Collections.Generic.List<ExamAttemptRecord>())
+            {
+                bool alreadyPresent = merged.examAttempts.Exists(a => a.examId == localAttempt.examId && a.completedAtUtcTicks == localAttempt.completedAtUtcTicks);
+                if (!alreadyPresent) merged.examAttempts.Add(localAttempt);
             }
 
             foreach (var localCareer in local.careers ?? new System.Collections.Generic.List<CareerRecord>())

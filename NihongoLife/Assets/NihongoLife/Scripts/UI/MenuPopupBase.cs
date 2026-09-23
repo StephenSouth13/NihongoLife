@@ -72,7 +72,17 @@ namespace NihongoLife.UI
             {
                 Debug.LogException(exception);
             }
+
+            // Live language switching: re-localize immediately, even while this popup is open.
+            if (GameServices.TryGet(out GameSettingsService settings)) settings.OnLanguageChanged += HandleGlobalLanguageChanged;
         }
+
+        private void OnDestroy()
+        {
+            if (GameServices.TryGet(out GameSettingsService settings)) settings.OnLanguageChanged -= HandleGlobalLanguageChanged;
+        }
+
+        private void HandleGlobalLanguageChanged(GameLanguage _) => ApplyLanguage();
 
         public void Show()
         {

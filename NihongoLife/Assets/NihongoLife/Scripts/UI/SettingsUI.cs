@@ -61,7 +61,12 @@ namespace NihongoLife.UI
             {
                 Debug.LogException(exception);
             }
+
+            // Live language switching, even while Settings is open.
+            if (GameServices.TryGet(out GameSettingsService settings)) settings.OnLanguageChanged += HandleGlobalLanguageChanged;
         }
+
+        private void HandleGlobalLanguageChanged(GameLanguage _) => ApplyLanguage();
 
         public void Show()
         {
@@ -431,6 +436,7 @@ namespace NihongoLife.UI
         private void OnDestroy()
         {
             if (input != null) input.OnBindingsChanged -= RefreshBindingLabels;
+            if (GameServices.TryGet(out GameSettingsService settings)) settings.OnLanguageChanged -= HandleGlobalLanguageChanged;
         }
     }
 }

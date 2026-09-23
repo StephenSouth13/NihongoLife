@@ -29,6 +29,12 @@ namespace NihongoLife.UI
         {
             _font = font;
             BuildUI();
+            if (GameServices.TryGet(out GameSettingsService settings)) settings.OnLanguageChanged += HandleGlobalLanguageChanged;
+        }
+
+        private void HandleGlobalLanguageChanged(GameLanguage _)
+        {
+            if (_panel != null && _panel.activeSelf) RefreshView();
         }
 
         public void Show()
@@ -46,6 +52,7 @@ namespace NihongoLife.UI
         private void OnDestroy()
         {
             UnsubscribeEvents();
+            if (GameServices.TryGet(out GameSettingsService settings)) settings.OnLanguageChanged -= HandleGlobalLanguageChanged;
         }
 
         private void BuildUI()

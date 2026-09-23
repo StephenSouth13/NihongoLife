@@ -31,6 +31,7 @@ namespace NihongoLife.UI
         {
             if (_overlay != null) return;
             _font = font;
+            if (GameServices.TryGet(out GameSettingsService languageSettings)) languageSettings.OnLanguageChanged += HandleGlobalLanguageChanged;
             _overlay = Panel("WorldMap", transform, new Color(.012f, .018f, .022f, .98f));
             Stretch(_overlay.GetComponent<RectTransform>());
             _header = Text("Header", _overlay.transform, 27, FontStyles.Bold);
@@ -58,6 +59,18 @@ namespace NihongoLife.UI
             _coordinates.alignment = TextAlignmentOptions.Center;
             _coordinates.color = new(.72f, .82f, .84f);
             _overlay.SetActive(false);
+        }
+
+        private void OnDestroy()
+        {
+            if (GameServices.TryGet(out GameSettingsService settings)) settings.OnLanguageChanged -= HandleGlobalLanguageChanged;
+        }
+
+        private void HandleGlobalLanguageChanged(GameLanguage _)
+        {
+            if (_areaTab != null) _areaTab.GetComponentInChildren<TextMeshProUGUI>().text = L("Khu vực hiện tại", "Current area", "現在のエリア");
+            if (_overviewTab != null) _overviewTab.GetComponentInChildren<TextMeshProUGUI>().text = L("Bản đồ tổng", "Overview map", "全体マップ");
+            if (IsVisible) { BuildMap(); RefreshMarker(); }
         }
 
         public void SetVisible(bool visible)

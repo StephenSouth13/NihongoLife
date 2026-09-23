@@ -124,6 +124,7 @@ namespace NihongoLife.UI
             UpdateObjectivesDisplay();
             EnsureTutorial();
             EnsureQuestLog();
+            EnsureExamCenter();
         }
 
         private void EnsureQuestLog()
@@ -131,6 +132,12 @@ namespace NihongoLife.UI
             var questLog = GetComponent<QuestLogPopup>() ?? gameObject.AddComponent<QuestLogPopup>();
             questLog.SetDialoguePanel(dialoguePanel);
             questLog.Initialize(scenarioTitleText != null ? scenarioTitleText.font : null);
+        }
+
+        private void EnsureExamCenter()
+        {
+            var examCenter = GetComponent<ExamCenterPopup>() ?? gameObject.AddComponent<ExamCenterPopup>();
+            examCenter.Initialize(scenarioTitleText != null ? scenarioTitleText.font : null);
         }
 
         private void EnsureTutorial()

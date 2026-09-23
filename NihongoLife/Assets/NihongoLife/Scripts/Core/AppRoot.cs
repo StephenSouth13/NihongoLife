@@ -1,5 +1,6 @@
 using UnityEngine;
 using NihongoLife.Audio;
+using NihongoLife.Exam;
 using NihongoLife.Save;
 using NihongoLife.Scenario;
 
@@ -166,6 +167,19 @@ namespace NihongoLife.Core
             {
                 onlineWorldBootstrap = gameObject.AddComponent<OnlineWorldBootstrap>();
             }
+
+            // 9. Exam Center (JLPT / IELTS practice tests) — independent of the story scenario system.
+            var examRepo = new ExamRepository();
+            GameServices.Register<ExamRepository>(examRepo);
+            examRepo.Initialize();
+
+            var examGrading = gameObject.AddComponent<ExamGradingService>();
+            GameServices.Register<ExamGradingService>(examGrading);
+            examGrading.Initialize();
+
+            var examManager = gameObject.AddComponent<ExamManager>();
+            GameServices.Register<ExamManager>(examManager);
+            examManager.Initialize();
 
             Debug.Log("[AppRoot] Core services initialized successfully.");
 

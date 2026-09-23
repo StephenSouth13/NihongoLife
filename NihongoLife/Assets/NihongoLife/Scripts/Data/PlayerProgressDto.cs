@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using NihongoLife.Exam;
 
 namespace NihongoLife.Data
 {
@@ -69,6 +70,7 @@ namespace NihongoLife.Data
         
         public List<string> completedScenarios = new List<string>();
         public List<string> storyFlags = new List<string>();
+        public List<ExamAttemptRecord> examAttempts = new List<ExamAttemptRecord>();
         public List<ScenarioScoreRecord> bestScores = new List<ScenarioScoreRecord>();
         public List<MasteryRecord> masteryLevels = new List<MasteryRecord>();
         public List<CareerRecord> careers = new List<CareerRecord>();

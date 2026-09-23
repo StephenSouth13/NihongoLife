@@ -104,6 +104,7 @@ namespace NihongoLife.UI
             }
 
             _instance = this;
+            if (GameServices.TryGet(out GameSettingsService languageSettings)) languageSettings.OnLanguageChanged += HandleGlobalLanguageChanged;
             BuildUI();
             _panel.SetActive(false);
         }
@@ -111,6 +112,15 @@ namespace NihongoLife.UI
         private void OnDestroy()
         {
             if (_instance == this) _instance = null;
+            if (GameServices.TryGet(out GameSettingsService settings)) settings.OnLanguageChanged -= HandleGlobalLanguageChanged;
+        }
+
+        private void HandleGlobalLanguageChanged(GameLanguage _)
+        {
+            if (_panel == null || !_panel.activeSelf || _menu == null) return;
+            RefreshHeader();
+            SetDefaultHint();
+            SelectTab(_tabIndex);
         }
 
         private void Update()

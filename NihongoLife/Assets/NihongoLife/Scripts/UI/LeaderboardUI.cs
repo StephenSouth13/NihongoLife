@@ -23,8 +23,20 @@ namespace NihongoLife.UI
 
         public void Initialize(TMP_FontAsset font)
         {
+            if (GameServices.TryGet(out GameSettingsService languageSettings)) languageSettings.OnLanguageChanged += HandleGlobalLanguageChanged;
+
             _font = font;
             BuildUI();
+        }
+
+        private void OnDestroy()
+        {
+            if (GameServices.TryGet(out GameSettingsService settings)) settings.OnLanguageChanged -= HandleGlobalLanguageChanged;
+        }
+
+        private void HandleGlobalLanguageChanged(GameLanguage _)
+        {
+            if (_panel != null && _panel.activeSelf) RefreshContent();
         }
 
         public void Show()

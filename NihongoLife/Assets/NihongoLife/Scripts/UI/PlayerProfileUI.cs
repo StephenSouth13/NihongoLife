@@ -24,6 +24,8 @@ namespace NihongoLife.UI
 
         public void Initialize(TMP_FontAsset font)
         {
+            if (GameServices.TryGet(out GameSettingsService languageSettings)) languageSettings.OnLanguageChanged += HandleGlobalLanguageChanged;
+
             _font = font;
             BuildUI();
         }
@@ -42,6 +44,17 @@ namespace NihongoLife.UI
             _viewingUserId = userId;
             if (_panel != null) _panel.SetActive(true);
             LoadProfile();
+        }
+
+        private void OnDestroy()
+        {
+            if (GameServices.TryGet(out GameSettingsService settings)) settings.OnLanguageChanged -= HandleGlobalLanguageChanged;
+        }
+
+        private void HandleGlobalLanguageChanged(GameLanguage _)
+        {
+            // LoadProfile re-queries the profile service; only worth it while this panel is actually visible.
+            if (_panel != null && _panel.activeSelf) LoadProfile();
         }
 
         public void Hide()
