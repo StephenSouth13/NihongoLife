@@ -6,6 +6,7 @@ using UnityEngine.UI;
 using NihongoLife.Core;
 using NihongoLife.Data;
 using NihongoLife.Exam;
+using NihongoLife.Save;
 
 namespace NihongoLife.UI
 {

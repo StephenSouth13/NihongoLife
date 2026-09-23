@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using NihongoLife.Core;
 using NihongoLife.Data;
+using NihongoLife.Save;
 
 namespace NihongoLife.Exam
 {
