@@ -165,6 +165,7 @@ namespace NihongoLife.UI
             if (scene == WorldLocationCatalog.StationScene) StationMap();
             else if (scene == WorldLocationCatalog.SushiRestaurantScene) SushiMap();
             else if (scene == WorldLocationCatalog.ShoppingDistrictScene) ShoppingMap();
+            else if (scene == WorldLocationCatalog.LearningCenterScene) LearningMap();
             else CityMap();
             _playerMarker = Panel("YouAreHere", _mapArea, new(1f, .82f, .16f)).GetComponent<RectTransform>();
             _playerMarker.sizeDelta = new(18, 24); _playerMarker.pivot = new(.5f, .25f);
@@ -186,6 +187,7 @@ namespace NihongoLife.UI
             Place(L("Ga Sakura Metro", "Sakura Metro", "さくら駅"), new(300, 135), new(.3f, .62f, .94f), "STATION");
             Place(L("Khu dân cư", "Residential", "住宅街"), new(-285, -160), new(.62f, .76f, .38f), "HOME");
             Place(L("Công viên", "Park", "公園"), new(285, -155), new(.42f, .72f, .4f), "PARK");
+            Place(L("Trung tâm học tập", "Learning Center", "学習センター"), new(-120, 210), new(.18f, .55f, .92f), "LEARNING");
         }
 
         private void StationMap()
@@ -220,6 +222,18 @@ namespace NihongoLife.UI
             Place(L("Cổng chợ", "Market entrance", "市場入口"), new(-300, -150), new(.95f, .48f, .18f), "ENTRANCE");
             Place(L("Quầy hàng", "Market stalls", "屋台"), new(-60, 15), new(.95f, .66f, .18f), "STALLS");
             Place(L("Phố đi bộ", "Pedestrian lane", "歩行者通り"), new(210, 120), new(.3f, .72f, .8f), "LANE");
+            Place(L("Về thành phố", "Return to city", "町へ戻る"), new(300, -165), new(.45f, .78f, .48f), "EXIT");
+        }
+
+        private void LearningMap()
+        {
+            _header.text = L("TRUNG TÂM HỌC TẬP", "LEARNING CENTER", "学習センター");
+            _worldMin = new(1188, -12); _worldMax = new(1212, 12);
+            Road(Vector2.zero, new(760, 58));
+            Place(L("Sảnh học tập", "Learning hub", "学習受付"), new(-280, -125), new(.18f, .55f, .92f), "HUB");
+            Place("JLPT N5 / N4", new(-120, 100), new(.95f, .66f, .18f), "JLPT");
+            Place("IELTS 4 Skills", new(120, 100), new(.18f, .58f, .9f), "IELTS");
+            Place(L("Phòng thi thử", "Mock exam", "模擬試験"), new(0, -120), new(.75f, .3f, .9f), "EXAM");
             Place(L("Về thành phố", "Return to city", "町へ戻る"), new(300, -165), new(.45f, .78f, .48f), "EXIT");
         }
 

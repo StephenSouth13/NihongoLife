@@ -277,6 +277,36 @@ Chủ dự án xác nhận: đã bước vào bên trong konbini thật (không 
 
 **Ranh giới**: không sửa nội dung tiếng Nhật/Việt trong scenario; không đổi tên field serialized mới của `ScenarioDefinition`; không thêm bảng Supabase mới khi chưa báo.
 
+## TASK-K (Codex) — Play Mode kiểm chứng hệ thống luyện thi JLPT/IELTS mới
+
+**Bối cảnh**: Claude vừa viết xong toàn bộ hệ thống luyện thi JLPT/IELTS (xem `Docs/EXAM_SYSTEM.md` để hiểu kiến trúc + giới hạn trung thực trước khi test) — độc lập với hệ scenario/quest, vào bằng phím **K** hoặc `ExamCenterPopup`. **Chưa chạy Play Mode lần nào**: lúc viết, `Library/ScriptAssemblies` thiếu DLL TextMeshPro/InputSystem/UGUI (Unity đang mở/rebuild ở máy khác), nên không tự kiểm tra biên dịch offline được. Đây là việc code hoàn toàn mới, rủi ro lỗi biên dịch/logic cao hơn bình thường — đọc kỹ code trước khi chỉ chạy thử.
+
+**Đã có (check-first — đừng viết lại)**:
+- `Scripts/Exam/ExamModels.cs`, `ExamResultDto.cs`, `ExamGradingService.cs`, `ExamRepository.cs`, `ExamManager.cs`.
+- `Scripts/UI/ExamCenterPopup.cs` (chọn đề, phím K), `Scripts/UI/ExamPlayUI.cs` (làm bài + kết quả).
+- `AppRoot.cs` mục "9. Exam Center" đã đăng ký 3 service (`ExamRepository`, `ExamGradingService`, `ExamManager`).
+- `HUDUI.cs` đã gọi `EnsureExamCenter()` để gắn `ExamCenterPopup` vào HUD.
+- `PlayerProgressDto.examAttempts` + `SupabaseProgressRepository` đã cộng dồn merge lịch sử lượt thi (local + cloud).
+- 2 đề mẫu: `Resources/Exams/jlpt_n5_mock_1.asset`, `Resources/Exams/ielts_academic_practice_1.asset` (sinh bằng `Tools/exam/gen_*.py`, đã tự kiểm tra YAML hợp lệ bằng PyYAML — nhưng chưa qua Unity Editor).
+
+**Việc cần làm**:
+1. **Trước hết: xác nhận project biên dịch được** (mở Unity, xem Console không có lỗi CS ở 7 file mới). Đây là bước biên dịch đầu tiên của toàn bộ hệ thống — nhiều khả năng có lỗi nhỏ (tên field/thứ tự tham số) cần Codex tự sửa vì Claude không tự chạy Unity được.
+2. Play Mode: mở HUD, nhấn **K** → `ExamCenterPopup` hiện, có 2 tab JLPT/IELTS, mỗi tab có 1 thẻ đề (đề kia đang trống nếu tab chưa có đề gì tương ứng — hiện tại mỗi tab đúng 1 đề).
+3. Bấm "Bắt đầu" đề JLPT N5:
+   - Phần Vocabulary: chọn đáp án, bấm Sau/Trước, bảng số câu đổi màu đúng khi đã trả lời.
+   - Phần Grammar/Reading: bài đọc hiện bên trái, câu hỏi bên phải; câu ngữ pháp không có bài đọc thì panel câu hỏi chiếm full chiều ngang (không có khoảng trống bên trái).
+   - Phần Listening: nút "Nghe (2)" giảm dần khi bấm, hết lượt thì nút mờ/không bấm được.
+   - Nộp từng phần (nút "Nộp phần này") hoặc để hết giờ tự khoá — sau khi khoá, Trước/Sau/palette của phần đó không cho sửa nữa.
+   - Nộp xong phần cuối → màn kết quả hiện ĐẠT/CHƯA ĐẠT + điểm từng phần + danh sách xem lại đáp án (đúng/sai + giải thích).
+4. Bấm "Đóng" ở màn kết quả, mở lại `ExamCenterPopup` → thấy "Điểm cao nhất" cập nhật đúng.
+5. Thử đề IELTS: đặc biệt kiểm tra phần Writing (gõ essay, đếm từ chạy đúng, đóng/mở lại câu vẫn giữ nội dung đã gõ) và Speaking (bấm ghi âm, nói vài giây, bấm dừng, trạng thái đổi thành "Đã ghi âm xong"). Nếu chưa cấu hình Gemini (`GameControlDatabase.enableGeminiConversation`/API key env var), xác nhận màn "Đang chấm..." vẫn chạy xong và trả về feedback kiểu "chấm tạm, chưa phải AI thật" thay vì bị treo vô hạn.
+6. Đóng `ExamPlayUI` giữa chừng một lượt thi (chưa nộp hết), mở lại qua `ExamCenterPopup` → xác nhận **tiếp tục đúng câu đang làm**, không bị reset về đầu (đây là hành vi cố ý, xem `ExamCenterPopup.StartExam`).
+7. Kiểm tra HUD/gameplay khác không bị ảnh hưởng: phím K không trùng phím nào khác đang dùng (J = quest log, W/A/S/D = di chuyển/tutorial).
+
+**Ranh giới**: không sửa nội dung câu hỏi/đáp án tiếng Nhật/Anh trong 2 đề mẫu (nội dung học thuật thuộc Claude) — nếu thấy sai thì ghi lại báo cáo. Có thể sửa lỗi biên dịch/logic C# tự do. Không đổi tên field serialized trong `ExamModels.cs`/`ExamResultDto.cs` (2 file `.asset` đang tham chiếu theo tên field) nếu không báo Claude trước — 2 file này là ScriptableObject asset, đổi tên field mà không có `[FormerlySerializedAs]` sẽ làm mất dữ liệu đã lưu.
+
+**Acceptance criteria**: mục 1-6 có bằng chứng Play Mode (mô tả hoặc ảnh), Console không có lỗi mới liên quan tới `NihongoLife.Exam`/`ExamCenterPopup`/`ExamPlayUI`.
+
 ## Việc của Claude (song song, không chờ Codex/Antigravity)
 
 - Đang xác nhận với chủ dự án về việc tạo Supabase project riêng cho NihongoLife (tài khoản hiện chỉ có 1 project không liên quan tên `hrm_crm`) — sau khi có project sẽ tạo 8 bảng + RLS rồi điền vào `GameControlDatabase`.
@@ -290,6 +320,7 @@ Chủ dự án xác nhận: đã bước vào bên trong konbini thật (không 
 
 - [ ] TASK-A (Codex) — chưa giao
 - [ ] TASK-B (Antigravity) — chưa giao
+- [ ] TASK-K (Codex) — chưa giao. Hệ thống luyện thi JLPT/IELTS (Claude viết xong kiến trúc + UI + 2 đề mẫu, chưa Play Mode) — xem `Docs/EXAM_SYSTEM.md`.
 - [x] Nội dung 3 scenario mới (Claude) — đã viết xong dạng draft: `scenario_restaurant_order_ramen.asset`, `scenario_station_buy_ticket.asset`, `scenario_town_summer_festival.asset` (rẽ nhánh thật theo mục 10 `STORY_BIBLE.md`, có nhánh sai/nhánh sửa sai). **Chưa mở Unity để playtest/verify** — xem việc còn thiếu bên dưới trước khi coi là xong.
 - [x] Sửa `chapterIndex` `house1_greeting` (3→1) theo mục 5 `STORY_BIBLE.md`.
 

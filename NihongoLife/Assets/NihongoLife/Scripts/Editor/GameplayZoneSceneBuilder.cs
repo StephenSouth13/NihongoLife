@@ -22,6 +22,8 @@ namespace NihongoLife.EditorTools
         private const string StationScene = SceneDir + "/20_StationDistrict.unity";
         private const string SushiScene = SceneDir + "/30_SushiRestaurant.unity";
         private const string ShoppingScene = SceneDir + "/40_ShoppingDistrict.unity";
+        private const string LearningScene = SceneDir + "/50_LearningCenter.unity";
+        private const string Styloo = "Assets/ThirdParty/StylooClassroomAssetPack GLTF & FBX";
         private const string Sushi = "Assets/ThirdParty/Sushi Restaurant Kit - May 2023-20260920T035054Z-1-001";
         private const string Train = "Assets/ThirdParty/Train Pack - April 2019-20260920T035456Z-1-001";
         private const string House = "Assets/ThirdParty/Ultimate House Interior Pack - June 2020-20260920T035345Z-1-001";
@@ -64,6 +66,7 @@ namespace NihongoLife.EditorTools
             BuildStation();
             BuildSushiRestaurant();
             BuildShoppingDistrict();
+            BuildLearningCenter();
             AddCityPortals();
             UpdateBuildSettings();
             AssetDatabase.SaveAssets();
@@ -92,6 +95,46 @@ namespace NihongoLife.EditorTools
             CreatePreviewCamera(root.transform, origin, "ShoppingSceneCamera", new Vector3(0f, 5f, -14f), new Vector3(0f, 1.4f, 2f));
             CreateLighting(root.transform, origin + new Vector3(0f, 5f, 0f));
             EditorSceneManager.SaveScene(scene, ShoppingScene);
+        }
+
+        public static void BuildLearningCenter()
+        {
+            Scene scene = EditorSceneManager.NewScene(NewSceneSetup.EmptyScene, NewSceneMode.Single);
+            Vector3 origin = new Vector3(1200f, 0f, 0f);
+            var root = new GameObject("LearningCenter_Zone");
+            root.AddComponent<SceneZoneVisibility>();
+            root.AddComponent<StandaloneZoneBootstrap>().Configure("learning_entrance");
+
+            CreateBlock(root.transform, "LearningFloor", origin + new Vector3(0f, -0.1f, 0f), new Vector3(26f, 0.2f, 22f), new Color(0.24f, 0.28f, 0.3f));
+            CreateBlock(root.transform, "LearningBackWall", origin + new Vector3(0f, 2.5f, 10.8f), new Vector3(26f, 5f, 0.25f), new Color(0.82f, 0.84f, 0.8f));
+            CreateBlock(root.transform, "LearningLeftWall", origin + new Vector3(-12.8f, 2.5f, 0f), new Vector3(0.25f, 5f, 22f), new Color(0.82f, 0.84f, 0.8f));
+            CreateBlock(root.transform, "LearningRightWall", origin + new Vector3(12.8f, 2.5f, 0f), new Vector3(0.25f, 5f, 22f), new Color(0.82f, 0.84f, 0.8f));
+            CreateSign(root.transform, "NIHONGO LIFE LEARNING CENTER", origin + new Vector3(0f, 4.5f, 10.55f), new Vector2(10f, 0.85f));
+
+            PlaceClassroom(root.transform, origin + new Vector3(-6.2f, 0f, 3.8f), "JLPTRoom", "JLPT N5 / N4", "blackboardbig", "desk", "chairtable");
+            PlaceClassroom(root.transform, origin + new Vector3(6.2f, 0f, 3.8f), "IELTSRoom", "IELTS 4 SKILLS", "blackboardbig_1", "desk", "chairtable");
+            PlaceClassroom(root.transform, origin + new Vector3(0f, 0f, -5.8f), "ExamRoom", "MOCK EXAM / REVIEW", "blackboardlittle", "COMPUTERtable", "COMPUTERchair");
+
+            CreateSpawn(root.transform, "learning_entrance", origin + new Vector3(0f, 0.25f, -9f), Quaternion.identity);
+            CreateExitPortal(root.transform, "ExitToCity", LearningScene, "city_learning_return", "街へ戻る / Trở lại thành phố", origin + new Vector3(0f, 1.1f, -10.3f));
+            CreatePreviewCamera(root.transform, origin, "LearningSceneCamera", new Vector3(0f, 7f, -16f), new Vector3(0f, 1.2f, 2f));
+            CreateLighting(root.transform, origin + new Vector3(0f, 5f, 0f));
+            EditorSceneManager.SaveScene(scene, LearningScene);
+        }
+
+        private static void PlaceClassroom(Transform parent, Vector3 origin, string name, string label, string board, string desk, string chair)
+        {
+            var room = new GameObject(name);
+            room.transform.SetParent(parent);
+            Place(Styloo, board, room.transform, name + "_Board", origin + new Vector3(0f, 2.1f, 2.2f), new Vector3(4.6f, 2.2f, 0.25f), Quaternion.Euler(0f, 180f, 0f), true);
+            for (int row = 0; row < 2; row++)
+            for (int column = 0; column < 3; column++)
+            {
+                Vector3 position = origin + new Vector3(-2.2f + column * 2.2f, 0f, -0.9f + row * 1.5f);
+                Place(Styloo, desk, room.transform, name + "_Desk_" + row + "_" + column, position, new Vector3(1.4f, 1.1f, 1.0f), Quaternion.identity, true);
+                Place(Styloo, chair, room.transform, name + "_Chair_" + row + "_" + column, position + Vector3.back * 0.85f, new Vector3(0.8f, 1.0f, 0.8f), Quaternion.identity, true);
+            }
+            CreateSign(room.transform, label, origin + new Vector3(0f, 3.7f, 2.05f), new Vector2(4.5f, 0.55f));
         }
 
         public static void BuildStation()
@@ -474,6 +517,7 @@ namespace NihongoLife.EditorTools
             AddOrEnable(scenes, StationScene);
             AddOrEnable(scenes, SushiScene);
             AddOrEnable(scenes, ShoppingScene);
+            AddOrEnable(scenes, LearningScene);
             EditorBuildSettings.scenes = scenes.ToArray();
         }
 

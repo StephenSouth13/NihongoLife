@@ -334,6 +334,7 @@ namespace NihongoLife.Core
             "20_StationDistrict" => "駅前 / Khu nhà ga",
             "30_SushiRestaurant" => "すし店 / Nhà hàng sushi",
             "40_ShoppingDistrict" => "ショッピング / Khu mua sắm",
+            "50_LearningCenter" => "学習センター / Trung tâm học tập",
             _ => sceneName
         };
     }

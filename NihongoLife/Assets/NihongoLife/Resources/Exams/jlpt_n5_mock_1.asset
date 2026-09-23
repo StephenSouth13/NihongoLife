@@ -1,0 +1,522 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f5214dc098a14546900e76a0b9a4682c, type: 3}
+  m_Name: jlpt_n5_mock_1
+  m_EditorClassIdentifier: NihongoLife::NihongoLife.Exam.ExamDefinition
+  id: exam.jlpt.n5.mock1
+  examType: 0
+  level: "N5"
+  titleVi: "JLPT N5 - Đề luyện tập 1"
+  titleEn: "JLPT N5 - Practice Test 1"
+  titleJa: "JLPT N5 模擬テスト1"
+  descriptionVi: "Đề luyện tập ngắn cho N5: chữ Hán/từ vựng, ngữ pháp/đọc hiểu và nghe hiểu (nghe được mô phỏng bằng văn bản)."
+  descriptionEn: "A short N5 practice set: Vocabulary/Kanji, Grammar/Reading and Listening (listening is text-simulated)."
+  sections:
+  - id: n5_vocab
+    type: 0
+    titleVi: "文字・語彙"
+    titleEn: "Vocabulary / Kanji"
+    titleJa: "文字・語彙"
+    timeLimitSeconds: 300
+    scoreScaleMax: 60
+    passages: []
+    questions:
+    - id: n5v_q1
+      type: 0
+      passageId: 
+      promptVi: "「先生」の読み方はどれですか。"
+      promptEn: "「先生」の読み方はどれですか。"
+      promptJa: "先生"
+      promptReading: ""
+      choices:
+      - textVi: "せんせい"
+        textEn: "せんせい"
+        textJa: "せんせい"
+      - textVi: "せんせえ"
+        textEn: "せんせえ"
+        textJa: "せんせえ"
+      - textVi: "せいせん"
+        textEn: "せいせん"
+        textJa: "せいせん"
+      - textVi: "せんせ"
+        textEn: "せんせ"
+        textJa: "せんせ"
+      correctChoiceIndex: 0
+      acceptedAnswers: []
+      taskInstructionsVi: ""
+      taskInstructionsEn: ""
+      minWords: 0
+      timeLimitSeconds: 0
+      explanationVi: "正解: せんせい"
+      explanationEn: "Correct reading: せんせい"
+      tags:
+      - "kanji"
+      - "n5"
+      points: 1
+    - id: n5v_q2
+      type: 0
+      passageId: 
+      promptVi: "「今日」の読み方はどれですか。"
+      promptEn: "「今日」の読み方はどれですか。"
+      promptJa: "今日"
+      promptReading: ""
+      choices:
+      - textVi: "きょう"
+        textEn: "きょう"
+        textJa: "きょう"
+      - textVi: "きにち"
+        textEn: "きにち"
+        textJa: "きにち"
+      - textVi: "こんび"
+        textEn: "こんび"
+        textJa: "こんび"
+      - textVi: "きゅう"
+        textEn: "きゅう"
+        textJa: "きゅう"
+      correctChoiceIndex: 0
+      acceptedAnswers: []
+      taskInstructionsVi: ""
+      taskInstructionsEn: ""
+      minWords: 0
+      timeLimitSeconds: 0
+      explanationVi: "正解: きょう"
+      explanationEn: "Correct reading: きょう"
+      tags:
+      - "kanji"
+      - "n5"
+      points: 1
+    - id: n5v_q3
+      type: 0
+      passageId: 
+      promptVi: "「水」の読み方はどれですか。"
+      promptEn: "「水」の読み方はどれですか。"
+      promptJa: "水"
+      promptReading: ""
+      choices:
+      - textVi: "みず"
+        textEn: "みず"
+        textJa: "みず"
+      - textVi: "みす"
+        textEn: "みす"
+        textJa: "みす"
+      - textVi: "すい"
+        textEn: "すい"
+        textJa: "すい"
+      - textVi: "みづ"
+        textEn: "みづ"
+        textJa: "みづ"
+      correctChoiceIndex: 0
+      acceptedAnswers: []
+      taskInstructionsVi: ""
+      taskInstructionsEn: ""
+      minWords: 0
+      timeLimitSeconds: 0
+      explanationVi: "正解: みず"
+      explanationEn: "Correct reading: みず"
+      tags:
+      - "kanji"
+      - "n5"
+      points: 1
+    - id: n5v_q4
+      type: 0
+      passageId: 
+      promptVi: "「学校」の読み方はどれですか。"
+      promptEn: "「学校」の読み方はどれですか。"
+      promptJa: "学校"
+      promptReading: ""
+      choices:
+      - textVi: "がっこう"
+        textEn: "がっこう"
+        textJa: "がっこう"
+      - textVi: "がくこう"
+        textEn: "がくこう"
+        textJa: "がくこう"
+      - textVi: "かっこう"
+        textEn: "かっこう"
+        textJa: "かっこう"
+      - textVi: "がこう"
+        textEn: "がこう"
+        textJa: "がこう"
+      correctChoiceIndex: 0
+      acceptedAnswers: []
+      taskInstructionsVi: ""
+      taskInstructionsEn: ""
+      minWords: 0
+      timeLimitSeconds: 0
+      explanationVi: "正解: がっこう"
+      explanationEn: "Correct reading: がっこう"
+      tags:
+      - "kanji"
+      - "n5"
+      points: 1
+    - id: n5v_q5
+      type: 0
+      passageId: 
+      promptVi: "「友達」の読み方はどれですか。"
+      promptEn: "「友達」の読み方はどれですか。"
+      promptJa: "友達"
+      promptReading: ""
+      choices:
+      - textVi: "ともだち"
+        textEn: "ともだち"
+        textJa: "ともだち"
+      - textVi: "ゆうだち"
+        textEn: "ゆうだち"
+        textJa: "ゆうだち"
+      - textVi: "とうだち"
+        textEn: "とうだち"
+        textJa: "とうだち"
+      - textVi: "ともたち"
+        textEn: "ともたち"
+        textJa: "ともたち"
+      correctChoiceIndex: 0
+      acceptedAnswers: []
+      taskInstructionsVi: ""
+      taskInstructionsEn: ""
+      minWords: 0
+      timeLimitSeconds: 0
+      explanationVi: "正解: ともだち"
+      explanationEn: "Correct reading: ともだち"
+      tags:
+      - "kanji"
+      - "n5"
+      points: 1
+    - id: n5v_q6
+      type: 0
+      passageId: 
+      promptVi: "「食べます」の読み方はどれですか。"
+      promptEn: "「食べます」の読み方はどれですか。"
+      promptJa: "食べます"
+      promptReading: ""
+      choices:
+      - textVi: "たべます"
+        textEn: "たべます"
+        textJa: "たべます"
+      - textVi: "たへます"
+        textEn: "たへます"
+        textJa: "たへます"
+      - textVi: "だべます"
+        textEn: "だべます"
+        textJa: "だべます"
+      - textVi: "たべまつ"
+        textEn: "たべまつ"
+        textJa: "たべまつ"
+      correctChoiceIndex: 0
+      acceptedAnswers: []
+      taskInstructionsVi: ""
+      taskInstructionsEn: ""
+      minWords: 0
+      timeLimitSeconds: 0
+      explanationVi: "正解: たべます"
+      explanationEn: "Correct reading: たべます"
+      tags:
+      - "kanji"
+      - "n5"
+      points: 1
+  - id: n5_grammar_reading
+    type: 1
+    titleVi: "文法・読解"
+    titleEn: "Grammar / Reading"
+    titleJa: "文法・読解"
+    timeLimitSeconds: 600
+    scoreScaleMax: 60
+    passages:
+    - id: n5_passage_intro
+      titleVi: "Bài đọc: Tự giới thiệu"
+      titleEn: "Reading: Self-introduction"
+      titleJa: "読み物：自己紹介"
+      bodyVi: "Tôi là Nguyễn. Tôi đến từ Việt Nam. Hiện tại tôi đang học ở trường tiếng Nhật. Mỗi ngày tôi đến trường lúc 8 giờ sáng. Giờ học từ 9 giờ đến 12 giờ. Buổi chiều tôi đi làm thêm. Thứ Bảy và Chủ Nhật là ngày nghỉ. Vào ngày nghỉ tôi đi mua sắm cùng bạn bè."
+      bodyEn: "I am Nguyen. I came from Vietnam. Now I am studying at a Japanese language school. Every day I go to school at 8 in the morning. Classes run from 9 to 12. In the afternoon I do a part-time job. Saturday and Sunday are days off. On my days off I go shopping with friends."
+      bodyJa: "わたしはグエンです。ベトナムから来ました。今、日本語学校で勉強しています。毎日、朝8時に学校へ行きます。授業は9時から12時までです。午後はアルバイトをします。土曜日と日曜日は休みです。休みの日はともだちと買い物に行きます。"
+      bodyReading: "わたしはグエンです。べとなむからきました。いま、にほんごがっこうでべんきょうしています。まいにち、あさ8じにがっこうへいきます。じゅぎょうは9じから12じまでです。ごごはあるばいとをします。どようびとにちようびはやすみです。やすみのひはともだちとかいものにいきます。"
+      maxPlays: 0
+    questions:
+    - id: n5g_q1
+      type: 0
+      passageId: 
+      promptVi: ""
+      promptEn: "わたし（　）がくせいです。"
+      promptJa: "わたし（　）がくせいです。"
+      promptReading: ""
+      choices:
+      - textVi: "は"
+        textEn: "は"
+        textJa: "は"
+      - textVi: "を"
+        textEn: "を"
+        textJa: "を"
+      - textVi: "に"
+        textEn: "に"
+        textJa: "に"
+      - textVi: "で"
+        textEn: "で"
+        textJa: "で"
+      correctChoiceIndex: 0
+      acceptedAnswers: []
+      taskInstructionsVi: ""
+      taskInstructionsEn: ""
+      minWords: 0
+      timeLimitSeconds: 0
+      explanationVi: "Trợ từ「は」đánh dấu chủ đề câu."
+      explanationEn: "「は」marks the topic of the sentence."
+      tags:
+      - "grammar"
+      - "n5"
+      - "particle"
+      points: 1
+    - id: n5g_q2
+      type: 0
+      passageId: 
+      promptVi: ""
+      promptEn: "きのう ともだち（　）あいました。"
+      promptJa: "きのう ともだち（　）あいました。"
+      promptReading: ""
+      choices:
+      - textVi: "に"
+        textEn: "に"
+        textJa: "に"
+      - textVi: "を"
+        textEn: "を"
+        textJa: "を"
+      - textVi: "は"
+        textEn: "は"
+        textJa: "は"
+      - textVi: "の"
+        textEn: "の"
+        textJa: "の"
+      correctChoiceIndex: 0
+      acceptedAnswers: []
+      taskInstructionsVi: ""
+      taskInstructionsEn: ""
+      minWords: 0
+      timeLimitSeconds: 0
+      explanationVi: "「～に あいます」= gặp ai đó."
+      explanationEn: "「～に あいます」means \"to meet (someone)\"."
+      tags:
+      - "grammar"
+      - "n5"
+      - "particle"
+      points: 1
+    - id: n5g_q3
+      type: 0
+      passageId: 
+      promptVi: ""
+      promptEn: "この ほんは たなかさん（　）です。"
+      promptJa: "この ほんは たなかさん（　）です。"
+      promptReading: ""
+      choices:
+      - textVi: "の"
+        textEn: "の"
+        textJa: "の"
+      - textVi: "に"
+        textEn: "に"
+        textJa: "に"
+      - textVi: "で"
+        textEn: "で"
+        textJa: "で"
+      - textVi: "へ"
+        textEn: "へ"
+        textJa: "へ"
+      correctChoiceIndex: 0
+      acceptedAnswers: []
+      taskInstructionsVi: ""
+      taskInstructionsEn: ""
+      minWords: 0
+      timeLimitSeconds: 0
+      explanationVi: "「～の」thể hiện sở hữu: sách của Tanaka."
+      explanationEn: "「～の」shows possession: Tanaka's book."
+      tags:
+      - "grammar"
+      - "n5"
+      - "particle"
+      points: 1
+    - id: n5g_q4
+      type: 0
+      passageId: 
+      promptVi: ""
+      promptEn: "まいにち コーヒー（　）のみます。"
+      promptJa: "まいにち コーヒー（　）のみます。"
+      promptReading: ""
+      choices:
+      - textVi: "を"
+        textEn: "を"
+        textJa: "を"
+      - textVi: "に"
+        textEn: "に"
+        textJa: "に"
+      - textVi: "は"
+        textEn: "は"
+        textJa: "は"
+      - textVi: "で"
+        textEn: "で"
+        textJa: "で"
+      correctChoiceIndex: 0
+      acceptedAnswers: []
+      taskInstructionsVi: ""
+      taskInstructionsEn: ""
+      minWords: 0
+      timeLimitSeconds: 0
+      explanationVi: "「を」đánh dấu tân ngữ trực tiếp của động từ."
+      explanationEn: "「を」marks the direct object of the verb."
+      tags:
+      - "grammar"
+      - "n5"
+      - "particle"
+      points: 1
+    - id: n5r_q1
+      type: 0
+      passageId: n5_passage_intro
+      promptVi: ""
+      promptEn: "グエンさんは どこから 来ましたか。"
+      promptJa: "グエンさんは どこから 来ましたか。"
+      promptReading: ""
+      choices:
+      - textVi: "ベトナム"
+        textEn: "ベトナム"
+        textJa: "ベトナム"
+      - textVi: "にほん"
+        textEn: "にほん"
+        textJa: "にほん"
+      - textVi: "かんこく"
+        textEn: "かんこく"
+        textJa: "かんこく"
+      - textVi: "ちゅうごく"
+        textEn: "ちゅうごく"
+        textJa: "ちゅうごく"
+      correctChoiceIndex: 0
+      acceptedAnswers: []
+      taskInstructionsVi: ""
+      taskInstructionsEn: ""
+      minWords: 0
+      timeLimitSeconds: 0
+      explanationVi: "Bài đọc ghi rõ: 「ベトナムから来ました」."
+      explanationEn: "The passage says: 「ベトナムから来ました」(came from Vietnam)."
+      tags:
+      - "reading"
+      - "n5"
+      points: 1
+    - id: n5r_q2
+      type: 0
+      passageId: n5_passage_intro
+      promptVi: ""
+      promptEn: "じゅぎょうは 何時からですか。"
+      promptJa: "じゅぎょうは 何時からですか。"
+      promptReading: ""
+      choices:
+      - textVi: "8時"
+        textEn: "8時"
+        textJa: "8時"
+      - textVi: "9時"
+        textEn: "9時"
+        textJa: "9時"
+      - textVi: "12時"
+        textEn: "12時"
+        textJa: "12時"
+      - textVi: "午後"
+        textEn: "午後"
+        textJa: "午後"
+      correctChoiceIndex: 1
+      acceptedAnswers: []
+      taskInstructionsVi: ""
+      taskInstructionsEn: ""
+      minWords: 0
+      timeLimitSeconds: 0
+      explanationVi: "「授業は9時から12時までです」nghĩa là học từ 9 giờ."
+      explanationEn: "「授業は9時から12時までです」means classes run from 9."
+      tags:
+      - "reading"
+      - "n5"
+      points: 1
+  - id: n5_listening
+    type: 2
+    titleVi: "聴解"
+    titleEn: "Listening"
+    titleJa: "聴解"
+    timeLimitSeconds: 300
+    scoreScaleMax: 60
+    passages:
+    - id: n5_listen_library
+      titleVi: "Hội thoại: Hỏi đường"
+      titleEn: "Conversation: Asking for directions"
+      titleJa: "会話：道を聞く"
+      bodyVi: "Nam: Xin lỗi, thư viện ở đâu ạ?\nNữ: Thư viện à? Đi thẳng rồi rẽ phải.\nNam: Tôi hiểu rồi. Cảm ơn chị."
+      bodyEn: "Man: Excuse me, where is the library?\nWoman: The library? Go straight, then turn right.\nMan: I understand. Thank you."
+      bodyJa: "男：すみません、図書館はどこですか。\n女：図書館ですか。まっすぐ行って、右に曲がってください。\n男：わかりました。ありがとうございます。"
+      bodyReading: "おとこ：すみません、としょかんは どこですか。\nおんな：としょかんですか。まっすぐ 行って、右に 曲がって ください。\nおとこ：わかりました。ありがとうございます。"
+      maxPlays: 2
+    questions:
+    - id: n5l_q1
+      type: 0
+      passageId: n5_listen_library
+      promptVi: ""
+      promptEn: "としょかんは どちらに ありますか。"
+      promptJa: "としょかんは どちらに ありますか。"
+      promptReading: ""
+      choices:
+      - textVi: "右"
+        textEn: "右"
+        textJa: "右"
+      - textVi: "左"
+        textEn: "左"
+        textJa: "左"
+      - textVi: "まっすぐ"
+        textEn: "まっすぐ"
+        textJa: "まっすぐ"
+      - textVi: "うしろ"
+        textEn: "うしろ"
+        textJa: "うしろ"
+      correctChoiceIndex: 0
+      acceptedAnswers: []
+      taskInstructionsVi: ""
+      taskInstructionsEn: ""
+      minWords: 0
+      timeLimitSeconds: 0
+      explanationVi: "Người phụ nữ nói: 「まっすぐ行って、右に曲がってください」."
+      explanationEn: "The woman says: 「まっすぐ行って、右に曲がってください」(go straight, then turn right)."
+      tags:
+      - "listening"
+      - "n5"
+      points: 1
+    - id: n5l_q2
+      type: 0
+      passageId: n5_listen_library
+      promptVi: ""
+      promptEn: "おとこの人は さいごに 何と言いましたか。"
+      promptJa: "おとこの人は さいごに 何と言いましたか。"
+      promptReading: ""
+      choices:
+      - textVi: "ありがとうございます"
+        textEn: "ありがとうございます"
+        textJa: "ありがとうございます"
+      - textVi: "すみません"
+        textEn: "すみません"
+        textJa: "すみません"
+      - textVi: "こんにちは"
+        textEn: "こんにちは"
+        textJa: "こんにちは"
+      - textVi: "さようなら"
+        textEn: "さようなら"
+        textJa: "さようなら"
+      correctChoiceIndex: 0
+      acceptedAnswers: []
+      taskInstructionsVi: ""
+      taskInstructionsEn: ""
+      minWords: 0
+      timeLimitSeconds: 0
+      explanationVi: "Câu cuối cùng của người đàn ông là 「ありがとうございます」."
+      explanationEn: "The man's last line is 「ありがとうございます」(thank you)."
+      tags:
+      - "listening"
+      - "n5"
+      points: 1
+  jlptTotalPassScore: 80
+  jlptSectionPassScore: 19

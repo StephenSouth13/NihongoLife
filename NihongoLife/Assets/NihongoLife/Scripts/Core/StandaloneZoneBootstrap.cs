@@ -27,6 +27,7 @@ namespace NihongoLife.Core
                 "20_StationDistrict" => "station_entrance",
                 "30_SushiRestaurant" => "sushi_entrance",
                 "40_ShoppingDistrict" => "shopping_entrance",
+                "50_LearningCenter" => "learning_entrance",
                 _ => string.Empty
             };
             if (string.IsNullOrEmpty(targetSpawn)) return;

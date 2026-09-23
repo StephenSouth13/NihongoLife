@@ -1,0 +1,357 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f5214dc098a14546900e76a0b9a4682c, type: 3}
+  m_Name: ielts_academic_practice_1
+  m_EditorClassIdentifier: NihongoLife::NihongoLife.Exam.ExamDefinition
+  id: exam.ielts.academic.practice1
+  examType: 1
+  level: "Academic"
+  titleVi: "IELTS Academic - Đề luyện tập 1"
+  titleEn: "IELTS Academic - Practice Test 1"
+  titleJa: ""
+  descriptionVi: "Đề luyện tập ngắn: Đọc (1 bài + Đúng/Sai/Không có thông tin + trắc nghiệm), Nghe (mô phỏng bằng văn bản), Viết (Task 2) và Nói (Part 2)."
+  descriptionEn: "A short practice set: Reading (1 passage + True/False/Not Given + MCQ), Listening (text-simulated), Writing (Task 2) and Speaking (Part 2)."
+  sections:
+  - id: ielts_listening
+    type: 3
+    titleVi: "Listening"
+    titleEn: "Listening"
+    titleJa: ""
+    timeLimitSeconds: 480
+    scoreScaleMax: 60
+    passages:
+    - id: ielts_listen_hotel
+      titleVi: "Hội thoại: Đặt phòng khách sạn"
+      titleEn: "Conversation: Booking a hotel room"
+      titleJa: ""
+      bodyVi: "Nữ: Chào buổi chiều, khách sạn Lakeside, tôi có thể giúp gì cho anh?\nNam: Chào chị, tôi muốn đặt phòng hai đêm, từ ngày 10 đến ngày 12 tháng 6.\nNữ: Vâng ạ. Anh muốn phòng đơn hay phòng đôi?\nNam: Cho tôi phòng đôi, nếu có thể nhìn ra hồ.\nNữ: Chúng tôi có một phòng như vậy. Giá 90 bảng một đêm, tổng cộng 180 bảng. Cho tôi xin tên anh?\nNam: Vâng, tôi là James Carter."
+      bodyEn: "Woman: Good afternoon, Lakeside Hotel, how can I help you?\nMan: Hi, I'd like to book a room for two nights, please, from the 10th to the 12th of June.\nWoman: Certainly. Would you prefer a single or a double room?\nMan: A double room, please, with a view of the lake if possible.\nWoman: We do have one available. That will be 90 pounds per night, so 180 pounds in total. Could I have your name, please?\nMan: Yes, it's James Carter."
+      bodyJa: ""
+      bodyReading: ""
+      maxPlays: 1
+    questions:
+    - id: ielts_l_q1
+      type: 0
+      passageId: ielts_listen_hotel
+      promptVi: ""
+      promptEn: "What type of room does the man book?"
+      promptJa: ""
+      promptReading: ""
+      choices:
+      - textVi: "Single"
+        textEn: "Single"
+        textJa: ""
+      - textVi: "Double"
+        textEn: "Double"
+        textJa: ""
+      - textVi: "Twin"
+        textEn: "Twin"
+        textJa: ""
+      - textVi: "Family"
+        textEn: "Family"
+        textJa: ""
+      correctChoiceIndex: 1
+      acceptedAnswers: []
+      taskInstructionsVi: ""
+      taskInstructionsEn: ""
+      minWords: 0
+      timeLimitSeconds: 0
+      explanationVi: "Người đàn ông nói: \"A double room, please\"."
+      explanationEn: "The man says: \"A double room, please\"."
+      tags:
+      - "listening"
+      - "mc"
+      points: 1
+    - id: ielts_l_q2
+      type: 2
+      passageId: ielts_listen_hotel
+      promptVi: ""
+      promptEn: "What is the total cost mentioned for the stay?"
+      promptJa: ""
+      promptReading: ""
+      choices: []
+      correctChoiceIndex: -1
+      acceptedAnswers:
+      - "180 pounds"
+      - "£180"
+      - "180"
+      taskInstructionsVi: ""
+      taskInstructionsEn: ""
+      minWords: 0
+      timeLimitSeconds: 0
+      explanationVi: "Nhân viên nói: \"90 pounds per night, so 180 pounds in total\"."
+      explanationEn: "The receptionist says: \"90 pounds per night, so 180 pounds in total\"."
+      tags:
+      - "listening"
+      - "fill"
+      points: 1
+    - id: ielts_l_q3
+      type: 0
+      passageId: ielts_listen_hotel
+      promptVi: ""
+      promptEn: "What is the man's name?"
+      promptJa: ""
+      promptReading: ""
+      choices:
+      - textVi: "James Carter"
+        textEn: "James Carter"
+        textJa: ""
+      - textVi: "James Cartier"
+        textEn: "James Cartier"
+        textJa: ""
+      - textVi: "Jason Carter"
+        textEn: "Jason Carter"
+        textJa: ""
+      - textVi: "James Carker"
+        textEn: "James Carker"
+        textJa: ""
+      correctChoiceIndex: 0
+      acceptedAnswers: []
+      taskInstructionsVi: ""
+      taskInstructionsEn: ""
+      minWords: 0
+      timeLimitSeconds: 0
+      explanationVi: "Người đàn ông nói: \"it's James Carter\"."
+      explanationEn: "The man says: \"it's James Carter\"."
+      tags:
+      - "listening"
+      - "mc"
+      points: 1
+  - id: ielts_reading
+    type: 4
+    titleVi: "Reading"
+    titleEn: "Reading"
+    titleJa: ""
+    timeLimitSeconds: 1200
+    scoreScaleMax: 60
+    passages:
+    - id: ielts_passage_gardens
+      titleVi: "Bài đọc: Vườn cộng đồng"
+      titleEn: "Reading: Community Gardens"
+      titleJa: ""
+      bodyVi: "Vườn cộng đồng ngày càng phổ biến ở các thành phố trên khắp thế giới. Những mảnh đất chung này cho phép cư dân, đặc biệt là những người sống trong căn hộ không có không gian ngoài trời riêng, tự trồng rau, trái cây và hoa. Ngoài lợi ích thực tế là có nông sản tươi, vườn cộng đồng còn tạo cơ hội để hàng xóm gặp gỡ và hợp tác, thường củng cố cảm giác gắn kết trong khu vực. Các nghiên cứu cũng cho thấy hoạt động làm vườn giúp giảm căng thẳng và cải thiện sức khỏe tinh thần. Tuy nhiên, vườn cộng đồng cũng có thách thức: tranh chấp về tài nguyên chung như nước và dụng cụ là chuyện thường gặp, và danh sách chờ dài khiến không phải ai muốn có một mảnh đất cũng có thể nhận được ngay."
+      bodyEn: "Community gardens have become increasingly popular in cities around the world. These shared plots of land allow residents, especially those living in apartments without private outdoor space, to grow their own vegetables, fruits, and flowers. Beyond the practical benefit of fresh produce, community gardens create opportunities for neighbours to meet and cooperate, often strengthening a sense of belonging within the local area. Studies have also linked gardening activities to reduced stress and improved mental well-being. However, community gardens are not without challenges: disputes over shared resources such as water and tools are common, and long waiting lists mean that not everyone who wants a plot can obtain one quickly."
+      bodyJa: ""
+      bodyReading: ""
+      maxPlays: 0
+    questions:
+    - id: ielts_r_q1
+      type: 1
+      passageId: ielts_passage_gardens
+      promptVi: ""
+      promptEn: "Community gardens exist only in large cities."
+      promptJa: ""
+      promptReading: ""
+      choices:
+      - textVi: "True"
+        textEn: "True"
+        textJa: ""
+      - textVi: "False"
+        textEn: "False"
+        textJa: ""
+      - textVi: "Not Given"
+        textEn: "Not Given"
+        textJa: ""
+      correctChoiceIndex: 2
+      acceptedAnswers: []
+      taskInstructionsVi: ""
+      taskInstructionsEn: ""
+      minWords: 0
+      timeLimitSeconds: 0
+      explanationVi: "Bài đọc nói \"around the world\" nhưng không đề cập đến quy mô thành phố."
+      explanationEn: "The passage says \"around the world\" but never specifies city size, so this is Not Given."
+      tags:
+      - "reading"
+      - "tfng"
+      points: 1
+    - id: ielts_r_q2
+      type: 1
+      passageId: ielts_passage_gardens
+      promptVi: ""
+      promptEn: "Gardening has been linked to lower stress levels."
+      promptJa: ""
+      promptReading: ""
+      choices:
+      - textVi: "True"
+        textEn: "True"
+        textJa: ""
+      - textVi: "False"
+        textEn: "False"
+        textJa: ""
+      - textVi: "Not Given"
+        textEn: "Not Given"
+        textJa: ""
+      correctChoiceIndex: 0
+      acceptedAnswers: []
+      taskInstructionsVi: ""
+      taskInstructionsEn: ""
+      minWords: 0
+      timeLimitSeconds: 0
+      explanationVi: "Bài đọc nói rõ: \"linked gardening activities to reduced stress\"."
+      explanationEn: "The passage explicitly states gardening is \"linked ... to reduced stress\"."
+      tags:
+      - "reading"
+      - "tfng"
+      points: 1
+    - id: ielts_r_q3
+      type: 1
+      passageId: ielts_passage_gardens
+      promptVi: ""
+      promptEn: "Disputes over shared resources never occur in community gardens."
+      promptJa: ""
+      promptReading: ""
+      choices:
+      - textVi: "True"
+        textEn: "True"
+        textJa: ""
+      - textVi: "False"
+        textEn: "False"
+        textJa: ""
+      - textVi: "Not Given"
+        textEn: "Not Given"
+        textJa: ""
+      correctChoiceIndex: 1
+      acceptedAnswers: []
+      taskInstructionsVi: ""
+      taskInstructionsEn: ""
+      minWords: 0
+      timeLimitSeconds: 0
+      explanationVi: "Bài đọc nói ngược lại: \"disputes ... are common\"."
+      explanationEn: "The passage contradicts this: \"disputes ... are common\"."
+      tags:
+      - "reading"
+      - "tfng"
+      points: 1
+    - id: ielts_r_q4
+      type: 0
+      passageId: ielts_passage_gardens
+      promptVi: ""
+      promptEn: "According to the passage, what is one social benefit of community gardens?"
+      promptJa: ""
+      promptReading: ""
+      choices:
+      - textVi: "They increase property values"
+        textEn: "They increase property values"
+        textJa: ""
+      - textVi: "They help neighbours meet and cooperate"
+        textEn: "They help neighbours meet and cooperate"
+        textJa: ""
+      - textVi: "They reduce city traffic"
+        textEn: "They reduce city traffic"
+        textJa: ""
+      - textVi: "They provide free tools"
+        textEn: "They provide free tools"
+        textJa: ""
+      correctChoiceIndex: 1
+      acceptedAnswers: []
+      taskInstructionsVi: ""
+      taskInstructionsEn: ""
+      minWords: 0
+      timeLimitSeconds: 0
+      explanationVi: "Bài đọc nói vườn cộng đồng \"create opportunities for neighbours to meet and cooperate\"."
+      explanationEn: "The passage says gardens \"create opportunities for neighbours to meet and cooperate\"."
+      tags:
+      - "reading"
+      - "mc"
+      points: 1
+    - id: ielts_r_q5
+      type: 0
+      passageId: ielts_passage_gardens
+      promptVi: ""
+      promptEn: "What problem does the passage mention regarding community gardens?"
+      promptJa: ""
+      promptReading: ""
+      choices:
+      - textVi: "They require expensive land"
+        textEn: "They require expensive land"
+        textJa: ""
+      - textVi: "Long waiting lists for plots"
+        textEn: "Long waiting lists for plots"
+        textJa: ""
+      - textVi: "They are illegal in many countries"
+        textEn: "They are illegal in many countries"
+        textJa: ""
+      - textVi: "They only grow flowers"
+        textEn: "They only grow flowers"
+        textJa: ""
+      correctChoiceIndex: 1
+      acceptedAnswers: []
+      taskInstructionsVi: ""
+      taskInstructionsEn: ""
+      minWords: 0
+      timeLimitSeconds: 0
+      explanationVi: "Bài đọc nói \"long waiting lists mean that not everyone ... can obtain one quickly\"."
+      explanationEn: "The passage says \"long waiting lists mean that not everyone ... can obtain one quickly\"."
+      tags:
+      - "reading"
+      - "mc"
+      points: 1
+  - id: ielts_writing
+    type: 5
+    titleVi: "Writing"
+    titleEn: "Writing"
+    titleJa: ""
+    timeLimitSeconds: 2400
+    scoreScaleMax: 9
+    passages: []
+    questions:
+    - id: ielts_w_task2
+      type: 3
+      passageId: 
+      promptVi: ""
+      promptEn: "Writing Task 2: Some people believe that university education should be free for all students, while others think students should pay tuition fees. Discuss both views and give your own opinion."
+      promptJa: ""
+      promptReading: ""
+      choices: []
+      correctChoiceIndex: -1
+      acceptedAnswers: []
+      taskInstructionsVi: "Thảo luận cả hai quan điểm và nêu ý kiến riêng của bạn. Viết ít nhất 250 từ."
+      taskInstructionsEn: "Discuss both views and give your own opinion. Write at least 250 words."
+      minWords: 250
+      timeLimitSeconds: 2400
+      explanationVi: "Được chấm bởi AI (hoặc quy tắc dự phòng khi chưa cấu hình AI) theo 4 tiêu chí IELTS Writing: Task Response, Coherence and Cohesion, Lexical Resource, Grammatical Range and Accuracy."
+      explanationEn: "Graded by AI (or a transparent fallback rubric when AI is not configured) against the four IELTS Writing criteria: Task Response, Coherence and Cohesion, Lexical Resource, Grammatical Range and Accuracy."
+      tags:
+      - "writing"
+      - "task2"
+      points: 1
+  - id: ielts_speaking
+    type: 6
+    titleVi: "Speaking"
+    titleEn: "Speaking"
+    titleJa: ""
+    timeLimitSeconds: 300
+    scoreScaleMax: 9
+    passages: []
+    questions:
+    - id: ielts_s_part2
+      type: 4
+      passageId: 
+      promptVi: ""
+      promptEn: "Speaking Part 2: Describe a skill you would like to learn in the future."
+      promptJa: ""
+      promptReading: ""
+      choices: []
+      correctChoiceIndex: -1
+      acceptedAnswers: []
+      taskInstructionsVi: "Bạn nên nói về: kỹ năng đó là gì, tại sao bạn muốn học, bạn sẽ học như thế nào, và kỹ năng này sẽ giúp ích cho bạn ra sao trong tương lai. Bạn có 1 phút chuẩn bị và nên nói trong 1-2 phút."
+      taskInstructionsEn: "You should say: what the skill is, why you want to learn it, how you would learn it, and explain how this skill would help you in the future. You have 1 minute to prepare and should speak for 1-2 minutes."
+      minWords: 0
+      timeLimitSeconds: 120
+      explanationVi: "Điểm Speaking chỉ dựa trên nội dung bản ghi âm được chuyển thành văn bản — không thể đánh giá phát âm hay ngữ điệu qua bản ghi."
+      explanationEn: "The Speaking score reflects transcript content only — pronunciation and intonation cannot be judged from a recording's transcript."
+      tags:
+      - "speaking"
+      - "part2"
+      points: 1
+  jlptTotalPassScore: 80
+  jlptSectionPassScore: 19
