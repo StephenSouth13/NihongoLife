@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.AI;
 using UnityEngine.InputSystem;
 using NihongoLife.Interaction;
 using NihongoLife.Core;
@@ -39,11 +40,23 @@ namespace NihongoLife.Player
         private GameInputService _input;
         private float _footstepTimer;
         private Vector3 _clickDestination;
+        private Vector3 _clickFinalDestination;
         private bool _hasClickDestination;
+        private NavMeshPath _clickPath;
 
         public void SetClickDestination(Vector3 destination)
         {
-            _clickDestination = destination;
+            _clickFinalDestination = destination;
+            if (_clickPath == null) _clickPath = new NavMeshPath();
+            if (NavMesh.CalculatePath(transform.position, destination, NavMesh.AllAreas, _clickPath)
+                && _clickPath.corners != null && _clickPath.corners.Length > 1)
+            {
+                _clickDestination = _clickPath.corners[1];
+            }
+            else
+            {
+                _clickDestination = destination;
+            }
             _hasClickDestination = true;
         }
 
@@ -139,8 +152,17 @@ namespace NihongoLife.Player
                 toDestination.y = 0f;
                 if (toDestination.sqrMagnitude <= 0.16f)
                 {
-                    _hasClickDestination = false;
-                    moveDirection = Vector3.zero;
+                    if (_clickDestination != _clickFinalDestination
+                        && NavMesh.CalculatePath(transform.position, _clickFinalDestination, NavMesh.AllAreas, _clickPath)
+                        && _clickPath.corners != null && _clickPath.corners.Length > 1)
+                    {
+                        _clickDestination = _clickPath.corners[1];
+                    }
+                    else
+                    {
+                        _hasClickDestination = false;
+                        moveDirection = Vector3.zero;
+                    }
                 }
                 else
                 {
@@ -187,7 +209,10 @@ namespace NihongoLife.Player
                 {
                     finalMove.x = 0f;
                     finalMove.z = 0f;
-                    _hasClickDestination = false;
+                    if (_clickDestination == _clickFinalDestination)
+                    {
+                        _hasClickDestination = false;
+                    }
                     _smoothedMoveDirection = Vector3.zero;
                 }
             }

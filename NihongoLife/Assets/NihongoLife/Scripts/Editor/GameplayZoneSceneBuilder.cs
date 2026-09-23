@@ -21,6 +21,7 @@ namespace NihongoLife.EditorTools
         private const string CityScene = SceneDir + "/90_TestSandbox.unity";
         private const string StationScene = SceneDir + "/20_StationDistrict.unity";
         private const string SushiScene = SceneDir + "/30_SushiRestaurant.unity";
+        private const string ShoppingScene = SceneDir + "/40_ShoppingDistrict.unity";
         private const string Sushi = "Assets/ThirdParty/Sushi Restaurant Kit - May 2023-20260920T035054Z-1-001";
         private const string Train = "Assets/ThirdParty/Train Pack - April 2019-20260920T035456Z-1-001";
         private const string House = "Assets/ThirdParty/Ultimate House Interior Pack - June 2020-20260920T035345Z-1-001";
@@ -62,10 +63,35 @@ namespace NihongoLife.EditorTools
         {
             BuildStation();
             BuildSushiRestaurant();
+            BuildShoppingDistrict();
             AddCityPortals();
             UpdateBuildSettings();
             AssetDatabase.SaveAssets();
             Debug.Log("[GameplayZoneSceneBuilder] Built Station District and Sushi Restaurant additive zones.");
+        }
+
+        public static void BuildShoppingDistrict()
+        {
+            Scene scene = EditorSceneManager.NewScene(NewSceneSetup.EmptyScene, NewSceneMode.Single);
+            Vector3 origin = new Vector3(1000f, 0f, 0f);
+            var root = new GameObject("ShoppingDistrict_Zone");
+            root.AddComponent<SceneZoneVisibility>();
+            root.AddComponent<StandaloneZoneBootstrap>().Configure("shopping_entrance");
+
+            CreateBlock(root.transform, "ShoppingGround", origin + new Vector3(0f, -0.15f, 0f), new Vector3(34f, 0.3f, 24f), new Color(0.22f, 0.24f, 0.26f));
+            CreateBlock(root.transform, "PedestrianLane", origin + new Vector3(0f, 0.05f, 0f), new Vector3(28f, 0.15f, 5f), new Color(0.55f, 0.53f, 0.49f));
+            CreateBlock(root.transform, "MarketFacade", origin + new Vector3(0f, 2.3f, 8.2f), new Vector3(24f, 4.6f, 0.3f), new Color(0.78f, 0.3f, 0.18f));
+            CreateSign(root.transform, "NIHONGO MARKET / KHU MUA SAM", origin + new Vector3(0f, 4.5f, 7.95f), new Vector2(10f, 0.9f));
+            Place(Sushi, "Environment_Counter_Straight", root.transform, "MarketCounter_A", origin + new Vector3(-6f, 0f, 3.2f), new Vector3(2.2f, 1.05f, 0.9f), Quaternion.identity, true);
+            Place(Sushi, "Environment_Counter_Straight", root.transform, "MarketCounter_B", origin + new Vector3(0f, 0f, 3.2f), new Vector3(2.2f, 1.05f, 0.9f), Quaternion.identity, true);
+            Place(Sushi, "Environment_Counter_Straight", root.transform, "MarketCounter_C", origin + new Vector3(6f, 0f, 3.2f), new Vector3(2.2f, 1.05f, 0.9f), Quaternion.identity, true);
+            Place(House, "Light_Ceiling3", root.transform, "MarketLight_A", origin + new Vector3(-7f, 4f, 0f), Vector3.one, Quaternion.identity, false);
+            Place(House, "Light_Ceiling3", root.transform, "MarketLight_B", origin + new Vector3(7f, 4f, 0f), Vector3.one, Quaternion.identity, false);
+            CreateSpawn(root.transform, "shopping_entrance", origin + new Vector3(0f, 0.25f, -8f), Quaternion.identity);
+            CreateExitPortal(root.transform, "ExitToCity", ShoppingScene, "city_shopping_return", "街へ戻る / Trở lại thành phố", origin + new Vector3(0f, 1.1f, -9.5f));
+            CreatePreviewCamera(root.transform, origin, "ShoppingSceneCamera", new Vector3(0f, 5f, -14f), new Vector3(0f, 1.4f, 2f));
+            CreateLighting(root.transform, origin + new Vector3(0f, 5f, 0f));
+            EditorSceneManager.SaveScene(scene, ShoppingScene);
         }
 
         public static void BuildStation()
@@ -447,6 +473,7 @@ namespace NihongoLife.EditorTools
             var scenes = new System.Collections.Generic.List<EditorBuildSettingsScene>(EditorBuildSettings.scenes);
             AddOrEnable(scenes, StationScene);
             AddOrEnable(scenes, SushiScene);
+            AddOrEnable(scenes, ShoppingScene);
             EditorBuildSettings.scenes = scenes.ToArray();
         }
 

@@ -333,6 +333,7 @@ namespace NihongoLife.Core
             "90_TestSandbox" => "日本の町 / Thành phố Nihongo",
             "20_StationDistrict" => "駅前 / Khu nhà ga",
             "30_SushiRestaurant" => "すし店 / Nhà hàng sushi",
+            "40_ShoppingDistrict" => "ショッピング / Khu mua sắm",
             _ => sceneName
         };
     }

@@ -96,19 +96,8 @@ namespace NihongoLife.World
 
         private void ConfigureNpcPopulation(ScenarioDefinition scenario)
         {
-            string scenarioId = scenario != null ? scenario.id : string.Empty;
-            foreach (var npc in _controlledNpcs)
-            {
-                if (npc == null) continue;
-
-                string name = npc.gameObject.name;
-                bool visible = name == "GuideNPC"
-                    || (name == "CashierNPC" && scenarioId.Contains("konbini"))
-                    || (name == "Neighbor_1" && scenarioId.Contains("house1"))
-                    || (name == "Neighbor_2" && scenarioId.Contains("house2"))
-                    || (name == "Neighbor_3" && scenarioId.Contains("house3"));
-                npc.gameObject.SetActive(visible);
-            }
+            // Keep authored NPCs visible. Scenario filtering here used to hide
+            // most of the scene when the active scenario was empty or loading.
         }
 
         public static void BuildStoreInterior()
@@ -116,70 +105,28 @@ namespace NihongoLife.World
             if (GameObject.Find("StoreDoor") == null) return;
 
             var existingShell = GameObject.Find("StoreInteriorShell");
-            if (existingShell != null) return;
-
-            DisableLegacyStoreHouse();
-
-            var shell = new GameObject("StoreInteriorShell");
-            Material floor = CreateMaterial("StoreFloor", new Color(0.14f, 0.18f, 0.2f, 1f));
-            Material wall = CreateMaterial("StoreWall", new Color(0.9f, 0.88f, 0.8f, 1f));
-            Material trim = CreateMaterial("StoreTrim", new Color(0.02f, 0.38f, 0.32f, 1f));
-            Material accent = CreateMaterial("StoreAccent", new Color(0.96f, 0.53f, 0.14f, 1f));
-
-            CreateStorePiece(shell.transform, "Floor", new Vector3(0f, -0.12f, 6.4f), new Vector3(14f, 0.2f, 13f), floor);
-            CreateStorePiece(shell.transform, "LeftWall", new Vector3(-7f, 2.7f, 6.4f), new Vector3(0.25f, 5.6f, 13f), wall);
-            CreateStorePiece(shell.transform, "RightWall", new Vector3(7f, 2.7f, 6.4f), new Vector3(0.25f, 5.6f, 13f), wall);
-            CreateStorePiece(shell.transform, "BackWall", new Vector3(0f, 2.7f, 12.8f), new Vector3(14f, 5.6f, 0.25f), wall);
-            CreateStorePiece(shell.transform, "FrontLeft", new Vector3(-4.6f, 2.7f, 0.05f), new Vector3(4.8f, 5.6f, 0.25f), wall);
-            CreateStorePiece(shell.transform, "FrontRight", new Vector3(4.6f, 2.7f, 0.05f), new Vector3(4.8f, 5.6f, 0.25f), wall);
-            CreateStorePiece(shell.transform, "Ceiling", new Vector3(0f, 5.45f, 6.4f), new Vector3(14f, 0.2f, 13f), wall);
-            CreateStorePiece(shell.transform, "CounterBackdrop", new Vector3(0f, 2.2f, 12.55f), new Vector3(8f, 3.2f, 0.18f), trim);
-            CreateStorePiece(shell.transform, "BrandStripe", new Vector3(0f, 4.15f, -0.1f), new Vector3(14f, 0.22f, 0.32f), accent);
-
-            var sign = CreateStorePiece(shell.transform, "SushiStoreSign", new Vector3(0f, 4.75f, -0.12f), new Vector3(6.8f, 0.92f, 0.24f), trim);
-            var label = new GameObject("Label");
-            label.transform.SetParent(shell.transform, false);
-            label.transform.position = sign.transform.position + new Vector3(0f, 0f, -0.13f);
-            label.transform.localRotation = Quaternion.Euler(0f, 180f, 0f);
-            label.transform.localScale = Vector3.one;
-            var text = label.AddComponent<TextMesh>();
-            text.text = "NIHONGO MART";
-            text.anchor = TextAnchor.MiddleCenter;
-            text.alignment = TextAlignment.Center;
-            text.fontSize = 54;
-            text.characterSize = 0.12f;
-            text.color = new Color(1f, 0.9f, 0.55f, 1f);
-
-            CreateStoreLight(shell.transform, new Vector3(-4f, 4.9f, 4f));
-            CreateStoreLight(shell.transform, new Vector3(0f, 4.9f, 7f));
-            CreateStoreLight(shell.transform, new Vector3(4f, 4.9f, 10f));
-
-            var cameraZone = GameObject.Find("StoreInteriorCameraZone");
-            if (cameraZone != null)
+            if (existingShell != null)
             {
-                cameraZone.transform.position = new Vector3(0f, 2.3f, 6.4f);
-                var zoneCollider = cameraZone.GetComponent<BoxCollider>();
-                if (zoneCollider != null) zoneCollider.size = new Vector3(13.2f, 5f, 11.8f);
+                // Keep one authored store only. The old runtime shell duplicated
+                // walls and furniture over the real store asset.
+                Object.Destroy(existingShell);
             }
 
-            Transform cashier = GameObject.Find("CashierNPC")?.transform;
-            if (cashier != null)
-            {
-                cashier.position = new Vector3(0f, 0.05f, 11.65f);
-                cashier.rotation = Quaternion.Euler(0f, 180f, 0f);
-            }
+            // Store geometry and merchandise are authored in the scene. Do not
+            // inject a second house/store at runtime.
+            return;
 
-            Transform counter = GameObject.Find("CashierCounter")?.transform;
-            if (counter != null) counter.position = new Vector3(0f, 0.55f, 10.45f);
         }
 
         private static void DisableLegacyStoreHouse()
         {
-            var legacy = GameObject.Find("KonbiniStoreAsset") ?? GameObject.Find("LegacyKonbiniStoreAsset_Disabled");
-            if (legacy == null) return;
-            foreach (var renderer in legacy.GetComponentsInChildren<Renderer>(true)) renderer.enabled = false;
-            foreach (var collider in legacy.GetComponentsInChildren<Collider>(true)) collider.enabled = false;
-            legacy.name = "LegacyKonbiniStoreAsset_Disabled";
+            foreach (var transform in FindObjectsByType<Transform>(FindObjectsInactive.Include, FindObjectsSortMode.None))
+            {
+                if (transform == null || transform.name != "KonbiniStoreAsset") continue;
+                foreach (var renderer in transform.GetComponentsInChildren<Renderer>(true)) renderer.enabled = false;
+                foreach (var collider in transform.GetComponentsInChildren<Collider>(true)) collider.enabled = false;
+                transform.name = "LegacyKonbiniStoreAsset_Disabled";
+            }
         }
 
         private static GameObject CreateStorePiece(Transform parent, string name, Vector3 position, Vector3 scale, Material material)

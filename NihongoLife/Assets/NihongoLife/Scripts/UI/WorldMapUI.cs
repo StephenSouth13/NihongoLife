@@ -106,7 +106,9 @@ namespace NihongoLife.UI
         {
             _showTopDown = topDown;
             _topDownImage.gameObject.SetActive(topDown);
-            _mapArea.GetComponent<MapClickTarget>().enabled = !topDown;
+            // Both map tabs are navigable. The top-down camera is only a visual layer;
+            // the click target remains active so a click always produces a destination.
+            _mapArea.GetComponent<MapClickTarget>().enabled = true;
             if (_areaTab != null) _areaTab.GetComponent<Image>().color = topDown ? new(.95f, .58f, .18f) : new(.08f, .12f, .15f);
             if (_overviewTab != null) _overviewTab.GetComponent<Image>().color = topDown ? new(.08f, .12f, .15f) : new(.95f, .58f, .18f);
             if (topDown) UpdateTopDownCamera();
@@ -149,6 +151,7 @@ namespace NihongoLife.UI
             _location.text = WorldLocationCatalog.Get(scene).DisplayName;
             if (scene == WorldLocationCatalog.StationScene) StationMap();
             else if (scene == WorldLocationCatalog.SushiRestaurantScene) SushiMap();
+            else if (scene == WorldLocationCatalog.ShoppingDistrictScene) ShoppingMap();
             else CityMap();
             _playerMarker = Panel("YouAreHere", _mapArea, new(1f, .82f, .16f)).GetComponent<RectTransform>();
             _playerMarker.sizeDelta = new(18, 24); _playerMarker.pivot = new(.5f, .25f);
@@ -165,6 +168,7 @@ namespace NihongoLife.UI
             _worldMin = new(-66, -50); _worldMax = new(66, 38);
             Road(Vector2.zero, new(860, 60)); Road(new(-145, 0), new(56, 470)); Road(new(215, 35), new(50, 410), 18); Road(new(35, 135), new(720, 38), -8);
             Place(L("Cửa hàng tiện lợi", "Convenience store", "コンビニ"), new(0, -32), new(.2f, .76f, .66f), "SHOP");
+            Place(L("Khu mua sắm Nihongo", "Nihongo Market", "ショッピング街"), new(160, -32), new(.95f, .48f, .18f), "MARKET");
             Place("Sushi Hibari", new(-285, 145), new(.94f, .42f, .36f), "SUSHI");
             Place(L("Ga Sakura Metro", "Sakura Metro", "さくら駅"), new(300, 135), new(.3f, .62f, .94f), "STATION");
             Place(L("Khu dân cư", "Residential", "住宅街"), new(-285, -160), new(.62f, .76f, .38f), "HOME");
@@ -193,6 +197,19 @@ namespace NihongoLife.UI
             Place(L("Về thành phố", "Return to city", "町へ戻る"), new(300, -165), new(.45f, .78f, .48f), "EXIT");
         }
 
+        private void ShoppingMap()
+        {
+            _header.text = L("KHU MUA SẮM NIHONGO", "NIHONGO MARKET", "ショッピング街");
+            _worldMin = new(982, -12); _worldMax = new(1018, 12);
+            Road(Vector2.zero, new(780, 64));
+            Road(new(-260, 0), new(48, 380));
+            Road(new(260, 0), new(48, 380));
+            Place(L("Cổng chợ", "Market entrance", "市場入口"), new(-300, -150), new(.95f, .48f, .18f), "ENTRANCE");
+            Place(L("Quầy hàng", "Market stalls", "屋台"), new(-60, 15), new(.95f, .66f, .18f), "STALLS");
+            Place(L("Phố đi bộ", "Pedestrian lane", "歩行者通り"), new(210, 120), new(.3f, .72f, .8f), "LANE");
+            Place(L("Về thành phố", "Return to city", "町へ戻る"), new(300, -165), new(.45f, .78f, .48f), "EXIT");
+        }
+
         private void LateUpdate() { if (IsVisible) { RefreshMarker(); UpdateTopDownCamera(); } }
         private void RefreshMarker()
         {
@@ -214,8 +231,19 @@ namespace NihongoLife.UI
                 Mathf.Lerp(_worldMin.x, _worldMax.x, normalized.x),
                 _player.position.y,
                 Mathf.Lerp(_worldMin.y, _worldMax.y, normalized.y));
-            if (!NavMesh.SamplePosition(destination, out NavMeshHit navHit, 3f, NavMesh.AllAreas)) return;
-            destination = navHit.position;
+            if (NavMesh.SamplePosition(destination, out NavMeshHit navHit, 3f, NavMesh.AllAreas))
+            {
+                destination = navHit.position;
+            }
+            else if (Physics.Raycast(destination + Vector3.up * 30f, Vector3.down, out RaycastHit ground,
+                60f, Physics.DefaultRaycastLayers, QueryTriggerInteraction.Ignore))
+            {
+                destination = ground.point;
+            }
+            else
+            {
+                return;
+            }
             _destinationMarker.anchoredPosition = localPosition;
             _destinationMarker.gameObject.SetActive(true);
             _player.GetComponent<PlayerController>()?.SetClickDestination(destination);
