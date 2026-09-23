@@ -28,6 +28,15 @@ namespace NihongoLife.Data
     }
 
     [Serializable]
+    public class ReviewRecord
+    {
+        public string questionId;
+        public string targetId; // skill or vocab ID
+        public int incorrectCount;
+        public long nextReviewAt;
+    }
+
+    [Serializable]
     public class CareerRecord
     {
         public string roleId;
@@ -73,6 +82,7 @@ namespace NihongoLife.Data
         public List<ExamAttemptRecord> examAttempts = new List<ExamAttemptRecord>();
         public List<ScenarioScoreRecord> bestScores = new List<ScenarioScoreRecord>();
         public List<MasteryRecord> masteryLevels = new List<MasteryRecord>();
+        public List<ReviewRecord> reviewItems = new List<ReviewRecord>();
         public List<CareerRecord> careers = new List<CareerRecord>();
     }
 }
