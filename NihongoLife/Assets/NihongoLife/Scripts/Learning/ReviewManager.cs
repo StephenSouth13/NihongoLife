@@ -22,8 +22,7 @@ namespace NihongoLife.Learning
 
         public void Initialize()
         {
-            _progressRepository = ServiceLocator.Get<IProgressRepository>();
-            IsInitialized = true;
+            IsInitialized = GameServices.TryGet(out _progressRepository);
         }
 
         public void RecordIncorrectAnswer(string questionId, string targetId)
