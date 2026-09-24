@@ -109,6 +109,7 @@ namespace NihongoLife.UI
             HidePrompt();
             EnsureQuestMarker();
             WireMissionPanelClick();
+            EnsureNameplateToggle();
             RepairRuntimeLayout();
             ConfigureResponsiveText();
             EnsureOnlineChatPanel();
@@ -376,6 +377,16 @@ namespace NihongoLife.UI
             var missionPanel = scenarioTitleText.transform.parent;
             if (missionPanel == null) return;
 
+            var missionRect = missionPanel as RectTransform;
+            if (missionRect != null)
+            {
+                missionRect.anchorMin = new Vector2(0f, 1f);
+                missionRect.anchorMax = new Vector2(0f, 1f);
+                missionRect.pivot = new Vector2(0f, 1f);
+                missionRect.anchoredPosition = new Vector2(24f, -24f);
+                missionRect.sizeDelta = new Vector2(430f, 170f);
+            }
+
             var image = missionPanel.GetComponent<Image>();
             if (image != null)
             {
@@ -396,6 +407,20 @@ namespace NihongoLife.UI
             button.onClick.RemoveListener(ShowQuestTarget);
             button.onClick.RemoveListener(ToggleObjectivesPanel);
             button.onClick.AddListener(ToggleObjectivesPanel);
+
+            var toggleObject = new GameObject("QuestDropdownToggle");
+            toggleObject.transform.SetParent(missionPanel, false);
+            var toggleRect = toggleObject.AddComponent<RectTransform>();
+            toggleRect.anchorMin = toggleRect.anchorMax = new Vector2(1f, 1f);
+            toggleRect.pivot = new Vector2(1f, 1f); toggleRect.anchoredPosition = new Vector2(-10f, -10f);
+            toggleRect.sizeDelta = new Vector2(42f, 34f);
+            var toggleImage = toggleObject.AddComponent<Image>(); toggleImage.color = new Color(0.95f, 0.68f, 0.2f, 0.9f);
+            var toggleButton = toggleObject.AddComponent<Button>(); toggleButton.targetGraphic = toggleImage;
+            var toggleLabel = new GameObject("Icon").AddComponent<TextMeshProUGUI>();
+            toggleLabel.transform.SetParent(toggleObject.transform, false); toggleLabel.text = "≡";
+            toggleLabel.fontSize = 22f; toggleLabel.alignment = TextAlignmentOptions.Center; toggleLabel.color = Color.black;
+            toggleLabel.rectTransform.anchorMin = Vector2.zero; toggleLabel.rectTransform.anchorMax = Vector2.one; toggleLabel.rectTransform.sizeDelta = Vector2.zero;
+            toggleButton.onClick.AddListener(ToggleObjectivesPanel);
         }
 
         private void ShowQuestTarget()
@@ -413,6 +438,25 @@ namespace NihongoLife.UI
                 string title = scenarioTitleText.text.Replace("  ˅", string.Empty).Replace("  ˄", string.Empty);
                 scenarioTitleText.text = title + (_objectivesExpanded ? "  ˄" : "  ˅");
             }
+        }
+
+        private void EnsureNameplateToggle()
+        {
+            if (NPCNameplateSystem.Instance == null) gameObject.AddComponent<NPCNameplateSystem>();
+            var canvas = GetComponentInParent<Canvas>();
+            if (canvas == null || canvas.transform.Find("ToggleNPCNames") != null) return;
+            var objectButton = new GameObject("ToggleNPCNames");
+            objectButton.transform.SetParent(canvas.transform, false);
+            var rect = objectButton.AddComponent<RectTransform>();
+            rect.anchorMin = rect.anchorMax = new Vector2(1f, 1f); rect.pivot = new Vector2(1f, 1f);
+            rect.anchoredPosition = new Vector2(-28f, -28f); rect.sizeDelta = new Vector2(150f, 44f);
+            var image = objectButton.AddComponent<Image>(); image.color = new Color(0.025f, 0.04f, 0.06f, 0.9f);
+            var button = objectButton.AddComponent<Button>(); button.targetGraphic = image;
+            var label = new GameObject("Label").AddComponent<TextMeshProUGUI>();
+            label.transform.SetParent(objectButton.transform, false); label.text = "◉  Tên nhân vật";
+            label.fontSize = 15f; label.alignment = TextAlignmentOptions.Center; label.color = Color.white;
+            label.rectTransform.anchorMin = Vector2.zero; label.rectTransform.anchorMax = Vector2.one; label.rectTransform.sizeDelta = Vector2.zero;
+            button.onClick.AddListener(() => NPCNameplateSystem.Instance?.Toggle());
         }
 
         private static void StyleInfoPanel(GameObject panel, Vector2 anchor, Vector2 position, Vector2 size)

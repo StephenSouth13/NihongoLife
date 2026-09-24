@@ -46,6 +46,8 @@ namespace NihongoLife.NPC
             _navAgent = GetComponent<NavMeshAgent>();
             _patrol = GetComponent<NPCStreetPatrol>();
             _animation = GetComponent<CharacterAnimationController>();
+            if (_animation == null)
+                Debug.LogWarning($"[NPCController] '{name}' has no CharacterAnimationController; its visual may remain in T-pose.", this);
         }
 
         private void Update()

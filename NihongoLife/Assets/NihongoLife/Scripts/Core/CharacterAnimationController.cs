@@ -164,6 +164,12 @@ namespace NihongoLife.Core
                 _animator = GetComponentInChildren<Animator>(true);
             }
 
+            if (_animator != null && _animator.runtimeAnimatorController == null && !_rigWarningLogged)
+            {
+                Debug.LogError($"[CharacterAnimation] '{name}' visual Animator has no RuntimeAnimatorController; assign NL_Humanoid to remove T-pose.", this);
+                _rigWarningLogged = true;
+            }
+
             _visualRoot = _animator != null ? _animator.transform : transform.Find("Visual");
             if (_visualRoot != null)
             {

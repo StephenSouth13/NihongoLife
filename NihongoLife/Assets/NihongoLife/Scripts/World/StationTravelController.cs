@@ -255,6 +255,17 @@ namespace NihongoLife.World
             collider.isTrigger = true; collider.radius = 1.25f;
             var staff = interaction.AddComponent<StationStaffInteractable>();
             staff.Configure(this);
+            AddRoleLabel(clerk.transform, "NHAN VIEN GA\n駅員", new Color(1f, 0.82f, 0.3f));
+        }
+
+        private static void AddRoleLabel(Transform parent, string value, Color color)
+        {
+            var labelObject = new GameObject("StationStaffRoleLabel");
+            labelObject.transform.SetParent(parent, false);
+            labelObject.transform.localPosition = Vector3.up * 2.35f;
+            var label = labelObject.AddComponent<TextMeshPro>();
+            label.text = value; label.fontSize = 0.22f; label.alignment = TextAlignmentOptions.Center;
+            label.color = color; labelObject.AddComponent<StationBillboardLabel>();
         }
 
         private void MoveScenery()
@@ -319,6 +330,7 @@ namespace NihongoLife.World
             flowRect.sizeDelta = new Vector2(780f, 64f);
             flow.AddComponent<Image>().color = new Color(0.055f, 0.068f, 0.082f, 0.96f);
             _flowText = CreateText(flow.transform, 20f, TextAlignmentOptions.Center);
+            flow.SetActive(false);
 
             GameObject wallet = new GameObject("StationWallet");
             wallet.transform.SetParent(canvasObject.transform, false);
@@ -349,9 +361,9 @@ namespace NihongoLife.World
             helpRect.anchorMin = helpRect.anchorMax = Vector2.zero;
             helpRect.pivot = Vector2.zero;
             helpRect.anchoredPosition = new Vector2(24f, 24f);
-            helpRect.sizeDelta = new Vector2(570f, 66f);
+            helpRect.sizeDelta = new Vector2(430f, 48f);
             help.AddComponent<Image>().color = new Color(0.025f, 0.045f, 0.06f, 0.9f);
-            _stationHelpText = CreateText(help.transform, 17f, TextAlignmentOptions.Left);
+            _stationHelpText = CreateText(help.transform, 14f, TextAlignmentOptions.Left);
             _stationHelpText.text = Localize("F Tương tác | B Balo | M Bản đồ | Esc Cài đặt", "F Interact | B Bag | M Map | Esc Settings", "F 調べる | B バッグ | M 地図 | Esc 設定");
             help.SetActive(sharedHud == null);
             BuildTicketPanel(canvasObject.transform);
@@ -606,7 +618,8 @@ namespace NihongoLife.World
             }
 
             bool japanese = GameServices.TryGet(out GameSettingsService settings) && settings.Language == GameLanguage.Japanese;
-            _stationHelpText.text = $"[F] {(japanese ? interactable.GetPromptJa() : interactable.GetpromptEn())}";
+            string prompt = japanese ? interactable.GetPromptJa() : interactable.GetpromptEn();
+            _stationHelpText.text = prompt.StartsWith("[F]") ? prompt : $"[F] {prompt}";
         }
 
         private void OnDestroy()
@@ -655,8 +668,18 @@ namespace NihongoLife.World
 
         public void Configure(StationTravelController controller) => _controller = controller;
         public string GetPromptJa() => "[F] 駅員と話す";
-        public string GetpromptEn() => "[F] Noi chuyen voi nhan vien ga";
+        public string GetpromptEn() => "Noi chuyen voi nhan vien ga";
         public Transform GetTransform() => transform;
         public void Interact(GameObject player) => _controller?.Execute(StationAction.TalkStationStaff, player);
+    }
+
+    public sealed class StationBillboardLabel : MonoBehaviour
+    {
+        private void LateUpdate()
+        {
+            var camera = Camera.main;
+            if (camera != null)
+                transform.rotation = Quaternion.LookRotation(transform.position - camera.transform.position);
+        }
     }
 }
