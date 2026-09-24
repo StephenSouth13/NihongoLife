@@ -20,7 +20,7 @@ namespace NihongoLife.Player
         private TextMeshPro _nameTag;
         private CharacterAnimationController _animController;
         private Vector3 _lastPosition;
-        private static readonly Color NameTagColor = new Color(0.88f, 0.93f, 1f, 1f);
+        private static readonly Color NameTagColor = new Color(0.3f, 0.95f, 0.98f, 1f);
         private static readonly Color AvatarColor = new Color(0.35f, 0.6f, 0.85f, 0.92f);
 
         // ──────────────────────── Setup ────────────────────────

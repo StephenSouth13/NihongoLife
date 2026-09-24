@@ -39,6 +39,17 @@ namespace NihongoLife.Home
             Block("WindowGlow", new Vector3(2.3f, 2.7f, 4.15f), new Vector3(3.2f, 1.8f, 0.08f), _accent);
             Block("Rug", new Vector3(1f, 0.03f, -1.5f), new Vector3(4.4f, 0.05f, 2.6f), _accent);
             Block("BedHeadboard", new Vector3(-2.8f, 1.5f, 2.25f), new Vector3(4.2f, 1.4f, 0.22f), _wood);
+            CreateDecorationSlot("DecorationSlot_Wall", new Vector3(0f, 2.35f, 4.12f));
+            CreateDecorationSlot("DecorationSlot_Desk", new Vector3(2.4f, 1.08f, 2.6f));
+            CreateDecorationSlot("DecorationSlot_Floor", new Vector3(1.2f, 0.08f, -1.5f));
+        }
+
+        private void CreateDecorationSlot(string name, Vector3 position)
+        {
+            var slot = new GameObject(name);
+            slot.transform.SetParent(transform, false);
+            slot.transform.localPosition = position;
+            slot.SetActive(false);
         }
 
         private void CreateRestPoint(string name, Vector3 position, Quaternion rotation)

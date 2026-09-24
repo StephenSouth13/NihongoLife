@@ -165,6 +165,7 @@ namespace NihongoLife.UI
             if (scene == WorldLocationCatalog.StationScene) StationMap();
             else if (scene == WorldLocationCatalog.SushiRestaurantScene) SushiMap();
             else if (scene == WorldLocationCatalog.SchoolScene) SchoolMap();
+            else if (scene == WorldLocationCatalog.HomeBedroomScene) BedroomMap();
             else CityMap();
             _playerMarker = Panel("YouAreHere", _mapArea, new(1f, .82f, .16f)).GetComponent<RectTransform>();
             _playerMarker.sizeDelta = new(18, 24); _playerMarker.pivot = new(.5f, .25f);
@@ -218,6 +219,16 @@ namespace NihongoLife.UI
             Place(L("Bảng đen / Cô Morita", "Blackboard / Teacher Morita", "黒板・森田先生"), new(0, 150), new(.75f, .35f, .55f), "TEACHER");
             Place(L("Bàn học sinh", "Student desks", "生徒の机"), new(-60, -20), new(.94f, .78f, .3f), "DESKS");
             Place(L("Về thành phố", "Return to city", "町へ戻る"), new(0, -170), new(.45f, .78f, .48f), "EXIT");
+        }
+
+        private void BedroomMap()
+        {
+            _header.text = L("PHÒNG RIÊNG", "YOUR BEDROOM", "自室");
+            _worldMin = new(-6, -4); _worldMax = new(6, 4);
+            Road(Vector2.zero, new(720, 420));
+            Place(L("Giường nghỉ", "Bed / Rest", "ベッド"), new(-170, 55), new(.3f, .62f, .94f), "REST");
+            Place(L("Bàn học", "Study desk", "勉強机"), new(170, 55), new(.2f, .72f, .64f), "STUDY");
+            Place(L("Ra thành phố", "Return to city", "町へ戻る"), new(0, -160), new(.45f, .78f, .48f), "EXIT");
         }
 
         private void LateUpdate() { if (IsVisible) { RefreshMarker(); UpdateTopDownCamera(); } }

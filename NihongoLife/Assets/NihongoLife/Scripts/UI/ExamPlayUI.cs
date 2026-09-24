@@ -20,6 +20,7 @@ namespace NihongoLife.UI
         // Header
         private TextMeshProUGUI _sectionTitleText;
         private TextMeshProUGUI _timerText;
+        private TextMeshProUGUI _progressText;
 
         // Palette
         private RectTransform _paletteRoot;
@@ -97,6 +98,7 @@ namespace NihongoLife.UI
             Place((RectTransform)header.transform, 24f, 76f, 1252f, 82f);
             header.GetComponent<Image>().color = new Color(0.08f, 0.12f, 0.16f, 0.98f);
             _sectionTitleText = AddText(header.transform, string.Empty, 22f, 20f, 10f, 700f, 30f, TextAlignmentOptions.MidlineLeft, FontStyles.Bold, false, Gold);
+            _progressText = AddText(header.transform, string.Empty, 13f, 520f, 46f, 330f, 20f, TextAlignmentOptions.MidlineLeft, FontStyles.Normal, false, Muted);
             AddText(header.transform, Pick("Bài thi đang làm", "Current exam", "受験中"), 12f, 20f, 43f, 360f, 20f, TextAlignmentOptions.MidlineLeft, FontStyles.Normal, false, Muted);
             var timerCard = new GameObject("TimerCard", typeof(RectTransform), typeof(Image));
             timerCard.transform.SetParent(header.transform, false);
@@ -398,6 +400,10 @@ namespace NihongoLife.UI
             if (section == null) return;
 
             _sectionTitleText.text = $"{Pick(section.titleVi, section.titleEn, section.titleJa)}  ({manager.QuestionIndex + 1}/{section.questions.Count})";
+            int answered = 0;
+            foreach (var item in section.questions) if (manager.GetAnswer(item.id) != null) answered++;
+            if (_progressText != null)
+                _progressText.text = Pick($"Đã trả lời {answered}/{section.questions.Count} câu", $"Answered {answered}/{section.questions.Count}", $"回答済み {answered}/{section.questions.Count}");
 
             if (section.timeLimitSeconds <= 0)
             {
