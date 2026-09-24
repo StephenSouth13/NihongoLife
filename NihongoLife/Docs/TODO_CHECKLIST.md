@@ -24,6 +24,14 @@ Checklist này là danh sách công việc còn lại sau khi đối chiếu v�
 - [ ] Kiểm tra collider, layer, trigger và điểm spawn để người chơi luôn tiếp cận được các mục tiêu.
 - [ ] Bổ sung NavMesh/AI Navigation bake cho khu vực có nhân vật hoặc loại bỏ dependency nếu NPC chỉ đứng tại chỗ.
 
+## P0 — Xác minh pháp lý & Định hướng phát hành (MỚI)
+
+- [ ] **Định hướng:** Chuyển sang mô hình Miễn phí/Cộng đồng (Patreon/Ko-fi) trong ngắn hạn, không thu tiền trực tiếp để giảm rủi ro hoàn tiền/pháp lý.
+- [ ] Xác minh điều khoản thương mại (License) của `Sushi Restaurant Kit` và `StylooClassroomAssetPack`.
+- [ ] Lấy ý kiến pháp lý/review rủi ro về việc sử dụng nhãn hiệu "JLPT" và "IELTS" trong game/marketing.
+- [ ] Gộp toàn bộ hệ thống thi thành 1 luồng duy nhất (hiện đang dùng `ExamManager`, đã xóa `AssessmentEngine` trùng lặp).
+- [ ] Xây dựng mô hình chi phí API (Gemini/AI) trước khi lên kế hoạch Freemium/trả phí.
+
 ## P1 — Hoàn thiện trải nghiệm gameplay
 
 - [ ] Thay NPC capsule màu magenta bằng character prefab thật.

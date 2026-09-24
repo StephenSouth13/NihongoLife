@@ -164,8 +164,7 @@ namespace NihongoLife.UI
             _location.text = WorldLocationCatalog.Get(scene).DisplayName;
             if (scene == WorldLocationCatalog.StationScene) StationMap();
             else if (scene == WorldLocationCatalog.SushiRestaurantScene) SushiMap();
-            else if (scene == WorldLocationCatalog.ShoppingDistrictScene) ShoppingMap();
-            else if (scene == WorldLocationCatalog.LearningCenterScene) LearningMap();
+            else if (scene == WorldLocationCatalog.SchoolScene) SchoolMap();
             else CityMap();
             _playerMarker = Panel("YouAreHere", _mapArea, new(1f, .82f, .16f)).GetComponent<RectTransform>();
             _playerMarker.sizeDelta = new(18, 24); _playerMarker.pivot = new(.5f, .25f);
@@ -182,12 +181,11 @@ namespace NihongoLife.UI
             _worldMin = new(-66, -50); _worldMax = new(66, 38);
             Road(Vector2.zero, new(860, 60)); Road(new(-145, 0), new(56, 470)); Road(new(215, 35), new(50, 410), 18); Road(new(35, 135), new(720, 38), -8);
             Place(L("Cửa hàng tiện lợi", "Convenience store", "コンビニ"), new(0, -32), new(.2f, .76f, .66f), "SHOP");
-            Place(L("Khu mua sắm Nihongo", "Nihongo Market", "ショッピング街"), new(160, -32), new(.95f, .48f, .18f), "MARKET");
             Place("Sushi Hibari", new(-285, 145), new(.94f, .42f, .36f), "SUSHI");
             Place(L("Ga Sakura Metro", "Sakura Metro", "さくら駅"), new(300, 135), new(.3f, .62f, .94f), "STATION");
             Place(L("Khu dân cư", "Residential", "住宅街"), new(-285, -160), new(.62f, .76f, .38f), "HOME");
             Place(L("Công viên", "Park", "公園"), new(285, -155), new(.42f, .72f, .4f), "PARK");
-            Place(L("Trung tâm học tập", "Learning Center", "学習センター"), new(-120, 210), new(.18f, .55f, .92f), "LEARNING");
+            Place(L("Trường Nhật ngữ Hibari", "Hibari Japanese School", "ひばり日本語学院"), new(160, 210), new(.2f, .55f, .32f), "SCHOOL");
         }
 
         private void StationMap()
@@ -212,29 +210,14 @@ namespace NihongoLife.UI
             Place(L("Về thành phố", "Return to city", "町へ戻る"), new(300, -165), new(.45f, .78f, .48f), "EXIT");
         }
 
-        private void ShoppingMap()
+        private void SchoolMap()
         {
-            _header.text = L("KHU MUA SẮM NIHONGO", "NIHONGO MARKET", "ショッピング街");
-            _worldMin = new(982, -12); _worldMax = new(1018, 12);
-            Road(Vector2.zero, new(780, 64));
-            Road(new(-260, 0), new(48, 380));
-            Road(new(260, 0), new(48, 380));
-            Place(L("Cổng chợ", "Market entrance", "市場入口"), new(-300, -150), new(.95f, .48f, .18f), "ENTRANCE");
-            Place(L("Quầy hàng", "Market stalls", "屋台"), new(-60, 15), new(.95f, .66f, .18f), "STALLS");
-            Place(L("Phố đi bộ", "Pedestrian lane", "歩行者通り"), new(210, 120), new(.3f, .72f, .8f), "LANE");
-            Place(L("Về thành phố", "Return to city", "町へ戻る"), new(300, -165), new(.45f, .78f, .48f), "EXIT");
-        }
-
-        private void LearningMap()
-        {
-            _header.text = L("TRUNG TÂM HỌC TẬP", "LEARNING CENTER", "学習センター");
-            _worldMin = new(1188, -12); _worldMax = new(1212, 12);
-            Road(Vector2.zero, new(760, 58));
-            Place(L("Sảnh học tập", "Learning hub", "学習受付"), new(-280, -125), new(.18f, .55f, .92f), "HUB");
-            Place("JLPT N5 / N4", new(-120, 100), new(.95f, .66f, .18f), "JLPT");
-            Place("IELTS 4 Skills", new(120, 100), new(.18f, .58f, .9f), "IELTS");
-            Place(L("Phòng thi thử", "Mock exam", "模擬試験"), new(0, -120), new(.75f, .3f, .9f), "EXAM");
-            Place(L("Về thành phố", "Return to city", "町へ戻る"), new(300, -165), new(.45f, .78f, .48f), "EXIT");
+            _header.text = L("SƠ ĐỒ TRƯỜNG HIBARI", "HIBARI SCHOOL FLOOR MAP", "ひばり日本語学院 見取り図");
+            _worldMin = new(990, -10); _worldMax = new(1010, 10);
+            Road(Vector2.zero, new(760, 640));
+            Place(L("Bảng đen / Cô Morita", "Blackboard / Teacher Morita", "黒板・森田先生"), new(0, 150), new(.75f, .35f, .55f), "TEACHER");
+            Place(L("Bàn học sinh", "Student desks", "生徒の机"), new(-60, -20), new(.94f, .78f, .3f), "DESKS");
+            Place(L("Về thành phố", "Return to city", "町へ戻る"), new(0, -170), new(.45f, .78f, .48f), "EXIT");
         }
 
         private void LateUpdate() { if (IsVisible) { RefreshMarker(); UpdateTopDownCamera(); } }

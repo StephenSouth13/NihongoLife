@@ -139,8 +139,16 @@ Sau khi vào đúng area, các node `Dialogue` tiếp theo (`speakerId: npc_rame
 **CẬP NHẬT (2026-09-16, đã xong phần backend)**: Claude đã tạo xong Supabase project thật `nihongolife` (region ap-southeast-1), apply migration đủ 8 bảng (`profiles`, `player_progress`, `scenario_scores`, `chat_messages`, `coop_sessions`, `coop_participants`, `friendships`, `leaderboard`) kèm RLS policy cho từng bảng (đã chạy security advisor, không có cảnh báo), và đã điền `supabaseProjectUrl` + `supabaseAnonKey` + bật `enableOnlineSync: 1` vào `Assets/NihongoLife/Resources/Control/NihongoLifeControlDatabase.asset`. Nghĩa là **giờ có thể test thật** (không chỉ audit tĩnh nữa) — nhắc lưu ý khi audit/test:
 - `chat_messages.user_id` cố tình để kiểu `text` (không phải `uuid` FK) vì người chơi có thể chat mà chưa đăng nhập (dùng `SystemInfo.deviceUniqueIdentifier`) — không phải bug, đừng "sửa" thành uuid.
 - Các bảng còn lại (`profiles`, `player_progress`, `coop_*`, `friendships`, `leaderboard`) đều yêu cầu người chơi đã đăng nhập thật qua `SupabaseAuthService`/`AuthUI` (RLS check `auth.uid()`) — nếu test mà chưa đăng nhập, các tính năng đó sẽ fail có chủ đích (không phải lỗi).
-- Nếu Realtime Broadcast (`chat_message`) không nhận được ở client khác dù đã connect — khả năng do Supabase Realtime Authorization cho channel cần thêm policy trên `realtime.messages` (tính năng mới của Supabase), báo lại cho Claude thay vì tự đoán sửa, vì đây là cấu hình phía backend.
+- ~~Nếu Realtime Broadcast (`chat_message`) không nhận được ở client khác... báo lại cho Claude~~ **Đã tự kiểm tra và loại trừ (2026-09-24)**: `SupabaseRealtimeClient.JoinChannel()` không set `"private": true` trong config, nghĩa là dùng kênh broadcast công khai — không cần policy `realtime.messages`, không phải cấu hình còn thiếu. Nếu chat vẫn không nhận được ở client khác thì là bug code, không phải backend.
 - 6 field cũ `supabaseHost/postgresPort/databaseName/userName/passwordEnvironmentKey/requireSsl` trong `GameControlDatabase.cs` là tàn dư từ hướng tiếp cận Postgres-direct-connection cũ, không còn dùng (đã xác nhận `SupabaseClient` chỉ dùng REST qua `supabaseProjectUrl`/`supabaseAnonKey`) — an toàn để bỏ qua, không cần dọn trong task này.
+
+**CẬP NHẬT (2026-09-24, đổi sang project Supabase mới)**: chủ dự án tự tạo 1 project Supabase khác (`pkxrtvlerjjiignmlebx`, ngoài tài khoản mà tool Supabase của Claude truy cập được) và yêu cầu chuyển sang dùng project này thay cho `nihongolife` (`kcxhynckzlkrkomnmucp`). Claude đã:
+- Điền lại `supabaseProjectUrl`/`supabaseAnonKey` trong `NihongoLifeControlDatabase.asset` trỏ sang project mới.
+- Dựng lại y hệt schema cũ (8 bảng + 25 RLS policy + index) sang project mới bằng kết nối Postgres trực tiếp (psql, connection string chủ dự án cung cấp) — đã xác minh lại số bảng/policy khớp 100% với project cũ.
+- Xác nhận: không có trigger nào trên `auth.users` (profiles/player_progress/leaderboard được client tự insert lần đầu, không tự sinh qua trigger — đúng như policy `*_upsert_own` đã thiết kế), không có Storage bucket nào được dùng (`avatar_url` chỉ là text field).
+- Chủ dự án đã tự bật Anonymous Sign-Ins cho project mới qua Dashboard.
+- **Chưa làm** (ngoài khả năng của Claude với project này): lịch sử "Migrations" trên Dashboard sẽ không hiện bản ghi vì áp schema bằng kết nối trực tiếp thay vì Supabase CLI/Management API — chỉ là vấn đề hiển thị, không ảnh hưởng schema thật.
+- Project `nihongolife` (`kcxhynckzlkrkomnmucp`) cũ coi như không dùng nữa — không cần dọn, chỉ cần biết là project đang chạy đã đổi.
 
 ---
 
@@ -316,11 +324,34 @@ Chủ dự án xác nhận: đã bước vào bên trong konbini thật (không 
 2. Viết `scenario.restaurant.order_ramen`, `scenario.station.buy_ticket`, `scenario.town.summer_festival` theo nguyên tắc rẽ nhánh sâu ở `STORY_BIBLE.md` mục 10 (nhiều nhánh, hệ quả khác nhau, dùng đa dạng `animationCue`).
 3. Sau khi TASK-A/TASK-B có kết quả: review code theo convention hiện có (service locator, ScriptableObject data-driven, namespace `NihongoLife.*`), đảm bảo không phá test hiện có, cập nhật `TODO_CHECKLIST.md`.
 
+## TASK-L (Codex) — Play Mode kiểm chứng zone mới ひばり日本語学院 (`40_HibariSchool`)
+
+**Bối cảnh (2026-09-24)**: theo yêu cầu trực tiếp của chủ dự án, Claude vừa dựng zone `40_HibariSchool.unity` bằng `GameplayZoneSceneBuilder.BuildHibariSchool()` (chạy thật qua Unity batch mode, biên dịch sạch — 0 lỗi CS, chỉ có 3 warning CS0414 cũ không liên quan) và nối cổng vào từ thành phố bằng `GameplayZoneSceneBuilder.AddCityPortals()` (cũng chạy thật, `git diff` xác nhận chỉ thêm mới, không xoá gì trong `90_TestSandbox.unity`, file vẫn thuần LF). **Chưa mở Unity Editor bằng GUI, chưa Play Mode** — mọi thứ dưới đây chỉ được xác nhận bằng batch mode + đọc trực tiếp YAML.
+
+**Đã có (check-first — đừng dựng lại)**:
+- Zone `40_HibariSchool.unity`: 1 phòng học (sàn/tường/header hiệu "ひばり日本語学院") dùng khối màu đơn giản như Station/Sushi; bảng đen (`blackboardbig`), bàn giáo viên (`table`), 6 bộ bàn-ghế học sinh (`desk`+`chairtable`), tủ sách (`shelf`), tủ đồ (`locker`) — toàn bộ lấy từ `Assets/ThirdParty/StylooClassroomAssetPack GLTF & FBX/.../classroom/FBX`.
+- 2 NPC: `TeacherMorita` (`npc_teacher_morita`) và `ClassmateKim` (`npc_classmate_kim`) — **đang dùng tạm prefab `NL_Guide`/`NL_Neighbor`** (log warning rõ ràng khi build, chưa có model riêng cho Morita/Kim).
+- Cổng ra vào: `Spawn_school_entrance` trong zone, `SchoolPortal`/`Spawn_city_school_return` trong `90_TestSandbox` (đặt tại toạ độ thành phố `(18, 1, -4)` — **chưa xác nhận bằng mắt là không đè lên object nào khác**, đây là việc đầu tiên cần kiểm).
+- **Cố ý KHÔNG** thêm node `GoToArea` vào `scenario_school_self_intro.asset` — scenario vẫn chạy dialogue-anywhere như trước (xem `STORY_BIBLE.md` mục 4.5). Zone này thuần là bổ sung hình ảnh.
+
+**Việc cần làm**:
+1. Mở Unity Editor bằng GUI (không batch mode) một lần, xác nhận Console sạch khi load lại toàn bộ project.
+2. Play Mode ở `90_TestSandbox`: xác nhận cổng `SchoolPortal` (toạ độ `(18, 1, -4)`) hiện rõ, không chồng lên nhà/NPC/đường nào khác; đi vào cổng → chuyển scene `40_HibariSchool` tại `school_entrance`, không lỗi.
+3. Trong `40_HibariSchool`: xác nhận va chạm tường/bàn/ghế đúng (không đi xuyên), Morita và Kim đứng đúng vị trí không lọt xuống sàn/xuyên bàn, ánh sáng đủ nhìn rõ (2 `ClassroomLight_A/B` + `ZoneLighting`), bảng đen/bàn giáo viên không chồng lấn bàn học sinh.
+4. Tương tác (E) với Morita và Kim — xác nhận thoại fallback hiện đúng (câu tiếng Nhật đã set: Morita "自己紹介の練習をしましょう。", Kim "こんにちは。同じクラスですね。") khi Gemini không phản hồi/chưa cấu hình.
+5. Đi ra cổng `ExitToCity` trong trường → xác nhận quay lại đúng `city_school_return` trong thành phố, không kẹt.
+6. Kiểm tra `WorldMapUI` (phím M): bản đồ tổng thành phố có pin "SCHOOL" mới, mở bản đồ khi đang đứng trong `40_HibariSchool` hiện đúng sơ đồ riêng (bảng đen/bàn học sinh/lối ra).
+
+**Ranh giới**: không sửa nội dung tiếng Nhật/thoại fallback (thuộc Claude); nếu cần đổi toạ độ cổng/NPC để hết chồng lấn thì cứ chỉnh trực tiếp trong `GameplayZoneSceneBuilder.cs` rồi chạy lại `BuildHibariSchool()`/`AddCityPortals()` qua batch mode (không dựng tay trong Editor, để lần sau chạy lại vẫn ra kết quả giống hệt — đúng tinh thần data/code-driven của file này). Không thêm `GoToArea` vào scenario nếu chưa báo Claude.
+
+**Acceptance criteria**: mục 2-5 có bằng chứng Play Mode (mô tả hoặc ảnh), Console không có lỗi mới liên quan tới `HibariSchool`/`GameplayZoneSceneBuilder`.
+
 ## Trạng thái
 
 - [ ] TASK-A (Codex) — chưa giao
 - [ ] TASK-B (Antigravity) — chưa giao
 - [ ] TASK-K (Codex) — chưa giao. Hệ thống luyện thi JLPT/IELTS (Claude viết xong kiến trúc + UI + 2 đề mẫu, chưa Play Mode) — xem `Docs/EXAM_SYSTEM.md`.
+- [ ] TASK-L (Codex) — chưa giao. Zone trường học `40_HibariSchool` vừa dựng bằng batch mode, chưa Play Mode.
 - [x] Nội dung 3 scenario mới (Claude) — đã viết xong dạng draft: `scenario_restaurant_order_ramen.asset`, `scenario_station_buy_ticket.asset`, `scenario_town_summer_festival.asset` (rẽ nhánh thật theo mục 10 `STORY_BIBLE.md`, có nhánh sai/nhánh sửa sai). **Chưa mở Unity để playtest/verify** — xem việc còn thiếu bên dưới trước khi coi là xong.
 - [x] Sửa `chapterIndex` `house1_greeting` (3→1) theo mục 5 `STORY_BIBLE.md`.
 

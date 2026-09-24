@@ -76,7 +76,7 @@ Cảnh dẫn nhập thuần narration trước Chapter 1, chạy tự động kh
 ### Chapter 1 — はじめまして (Chuyển đến Hibari-chō)
 1. `scenario.street.first_talk` *(đã có)* — Gặp Tanaka lần đầu trên phố, được hỏi "đi đâu vậy".
 2. `scenario.house1.greeting` *(đã có)* — Đến chào Tanaka chính thức tại nhà, tự giới thiệu bản thân. **Callback**: câu mở đầu nên nhắc đã gặp nhau ngoài đường lúc nãy, thay vì mở màn như người lạ hoàn toàn.
-3. `scenario.school.self_intro` *(MỚI, đã viết — chờ khu lớp học thật)* — Buổi học đầu tại ひばり日本語学院: chào Morita-sensei, tự giới thiệu (tên, nước, sở thích) trước lớp, gặp Kim. Bài học N5 cốt lõi của "はじめまして": `はじめまして`, `〜です`, `〜から来ました`, `しゅみは〜です`, `よろしくお願いします`.
+3. `scenario.school.self_intro` *(đã viết; zone `40_HibariSchool` đã dựng — xem mục 4.5)* — Buổi học đầu tại ひばり日本語学院: chào Morita-sensei, tự giới thiệu (tên, nước, sở thích) trước lớp, gặp Kim. Bài học N5 cốt lõi của "はじめまして": `はじめまして`, `〜です`, `〜から来ました`, `しゅみは〜です`, `よろしくお願いします`.
 - Kết chương: Tanaka rủ ra cửa hàng tiện lợi gần đó → mở khóa Chapter 2.
 
 ### Chapter 2 — コンビニ
@@ -107,7 +107,7 @@ Trường học là "xương sống học tập" chạy song song với đời s
 | 4 | `school.directions_transport` | `どこ`, phương hướng, `〜で行きます` | Mua vé, hỏi ga ở ga Hibari |
 | 4 | `school.test_day` | Bài kiểm tra tổng hợp (ôn lại điểm yếu từ dữ liệu độ thành thạo) | Cổng vào lễ hội: điểm Kiến thức quyết định lời khen của Morita-sensei |
 
-**Ràng buộc kỹ thuật (theo `AGENTS.md`)**: nội thất lớp học cần **1 zone additive mới** (như `20_StationDistrict`/`30_SushiRestaurant`) — không được tạo scene mới nếu chưa được chủ dự án duyệt đúng scene đó. Trước khi có zone, các bài ở trường chạy dạng hội thoại ở bất kỳ vị trí nào (không có node `GoToArea` chặn tiến trình, tránh kẹt campaign vì không tới được khu vực chưa tồn tại).
+**Cập nhật (2026-09-24)**: zone `40_HibariSchool.unity` đã được dựng (chủ dự án duyệt) — 1 phòng học với bảng đen, bàn giáo viên, 6 bàn học sinh (`Assets/ThirdParty/StylooClassroomAssetPack GLTF & FBX`), Morita và Kim đứng trong lớp (dùng tạm prefab `NL_Guide`/`NL_Neighbor`, chưa có model riêng), cổng vào từ `90_TestSandbox` (`SchoolPortal`). **Cố ý chưa thêm node `GoToArea`** vào `scenario.school.self_intro` — scenario vẫn chạy hội thoại ở bất kỳ đâu như trước, để không kẹt campaign; zone chỉ là bổ sung hình ảnh/immersion. Chưa Play Mode kiểm chứng.
 
 ### 4.6 Mở rộng sau lễ hội (định hướng)
 

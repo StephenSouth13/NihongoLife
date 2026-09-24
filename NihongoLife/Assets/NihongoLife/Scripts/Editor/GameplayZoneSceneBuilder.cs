@@ -11,6 +11,7 @@ using NihongoLife.Core;
 using NihongoLife.Interaction;
 using NihongoLife.Cameras;
 using NihongoLife.World;
+using NihongoLife.NPC;
 
 namespace NihongoLife.EditorTools
 {
@@ -21,12 +22,11 @@ namespace NihongoLife.EditorTools
         private const string CityScene = SceneDir + "/90_TestSandbox.unity";
         private const string StationScene = SceneDir + "/20_StationDistrict.unity";
         private const string SushiScene = SceneDir + "/30_SushiRestaurant.unity";
-        private const string ShoppingScene = SceneDir + "/40_ShoppingDistrict.unity";
-        private const string LearningScene = SceneDir + "/50_LearningCenter.unity";
-        private const string Styloo = "Assets/ThirdParty/StylooClassroomAssetPack GLTF & FBX";
+        private const string SchoolScene = SceneDir + "/40_HibariSchool.unity";
         private const string Sushi = "Assets/ThirdParty/Sushi Restaurant Kit - May 2023-20260920T035054Z-1-001";
         private const string Train = "Assets/ThirdParty/Train Pack - April 2019-20260920T035456Z-1-001";
         private const string House = "Assets/ThirdParty/Ultimate House Interior Pack - June 2020-20260920T035345Z-1-001";
+        private const string Styloo = "Assets/ThirdParty/StylooClassroomAssetPack GLTF & FBX";
         private const int InteractableLayer = 6;
 
         private static void ApplySushiLayoutMigration()
@@ -65,76 +65,164 @@ namespace NihongoLife.EditorTools
         {
             BuildStation();
             BuildSushiRestaurant();
-            BuildShoppingDistrict();
-            BuildLearningCenter();
+            BuildHibariSchool();
             AddCityPortals();
             UpdateBuildSettings();
             AssetDatabase.SaveAssets();
-            Debug.Log("[GameplayZoneSceneBuilder] Built Station District and Sushi Restaurant additive zones.");
+            Debug.Log("[GameplayZoneSceneBuilder] Built Station District, Sushi Restaurant and Hibari School additive zones.");
         }
 
-        public static void BuildShoppingDistrict()
+        /// <summary>
+        /// ひばり日本語学院 — the story's school (chapter 1, scenario.school.self_intro: npc_teacher_morita,
+        /// npc_classmate_kim). This zone is a visual/immersion addition only: the scenario itself is pure
+        /// Dialogue nodes with no GoToArea/TalkToNPC gate, so it already plays regardless of location.
+        /// Reaching this room is not required to progress the story; it gives Morita and Kim a real place
+        /// to stand and be talked to, matching how npc_guide/npc_cashier exist outside any single scenario.
+        /// </summary>
+        public static void BuildHibariSchool()
         {
             Scene scene = EditorSceneManager.NewScene(NewSceneSetup.EmptyScene, NewSceneMode.Single);
             Vector3 origin = new Vector3(1000f, 0f, 0f);
-            var root = new GameObject("ShoppingDistrict_Zone");
+            var root = new GameObject("HibariSchool_Zone");
             root.AddComponent<SceneZoneVisibility>();
-            root.AddComponent<StandaloneZoneBootstrap>().Configure("shopping_entrance");
+            root.AddComponent<StandaloneZoneBootstrap>().Configure("school_entrance");
 
-            CreateBlock(root.transform, "ShoppingGround", origin + new Vector3(0f, -0.15f, 0f), new Vector3(34f, 0.3f, 24f), new Color(0.22f, 0.24f, 0.26f));
-            CreateBlock(root.transform, "PedestrianLane", origin + new Vector3(0f, 0.05f, 0f), new Vector3(28f, 0.15f, 5f), new Color(0.55f, 0.53f, 0.49f));
-            CreateBlock(root.transform, "MarketFacade", origin + new Vector3(0f, 2.3f, 8.2f), new Vector3(24f, 4.6f, 0.3f), new Color(0.78f, 0.3f, 0.18f));
-            CreateSign(root.transform, "NIHONGO MARKET / KHU MUA SAM", origin + new Vector3(0f, 4.5f, 7.95f), new Vector2(10f, 0.9f));
-            Place(Sushi, "Environment_Counter_Straight", root.transform, "MarketCounter_A", origin + new Vector3(-6f, 0f, 3.2f), new Vector3(2.2f, 1.05f, 0.9f), Quaternion.identity, true);
-            Place(Sushi, "Environment_Counter_Straight", root.transform, "MarketCounter_B", origin + new Vector3(0f, 0f, 3.2f), new Vector3(2.2f, 1.05f, 0.9f), Quaternion.identity, true);
-            Place(Sushi, "Environment_Counter_Straight", root.transform, "MarketCounter_C", origin + new Vector3(6f, 0f, 3.2f), new Vector3(2.2f, 1.05f, 0.9f), Quaternion.identity, true);
-            Place(House, "Light_Ceiling3", root.transform, "MarketLight_A", origin + new Vector3(-7f, 4f, 0f), Vector3.one, Quaternion.identity, false);
-            Place(House, "Light_Ceiling3", root.transform, "MarketLight_B", origin + new Vector3(7f, 4f, 0f), Vector3.one, Quaternion.identity, false);
-            CreateSpawn(root.transform, "shopping_entrance", origin + new Vector3(0f, 0.25f, -8f), Quaternion.identity);
-            CreateExitPortal(root.transform, "ExitToCity", ShoppingScene, "city_shopping_return", "街へ戻る / Trở lại thành phố", origin + new Vector3(0f, 1.1f, -9.5f));
-            CreatePreviewCamera(root.transform, origin, "ShoppingSceneCamera", new Vector3(0f, 5f, -14f), new Vector3(0f, 1.4f, 2f));
-            CreateLighting(root.transform, origin + new Vector3(0f, 5f, 0f));
-            EditorSceneManager.SaveScene(scene, ShoppingScene);
-        }
+            CreateBlock(root.transform, "SchoolFloor", origin + new Vector3(0f, -0.1f, 0f), new Vector3(16f, 0.2f, 14f), new Color(0.58f, 0.52f, 0.42f));
+            CreateBlock(root.transform, "SchoolBackWall", origin + new Vector3(0f, 2.5f, 6.9f), new Vector3(16f, 5f, 0.25f), new Color(0.85f, 0.86f, 0.82f));
+            CreateBlock(root.transform, "SchoolLeftWall", origin + new Vector3(-7.9f, 2.5f, 0f), new Vector3(0.25f, 5f, 14f), new Color(0.85f, 0.86f, 0.82f));
+            CreateBlock(root.transform, "SchoolRightWall", origin + new Vector3(7.9f, 2.5f, 0f), new Vector3(0.25f, 5f, 14f), new Color(0.85f, 0.86f, 0.82f));
+            CreateBlock(root.transform, "SchoolFrontWall_L", origin + new Vector3(-5.5f, 2.5f, -6.9f), new Vector3(5f, 5f, 0.25f), new Color(0.85f, 0.86f, 0.82f));
+            CreateBlock(root.transform, "SchoolFrontWall_R", origin + new Vector3(5.5f, 2.5f, -6.9f), new Vector3(5f, 5f, 0.25f), new Color(0.85f, 0.86f, 0.82f));
+            CreateBlock(root.transform, "SchoolFrontHeader", origin + new Vector3(0f, 4.3f, -6.9f), new Vector3(6f, 1.4f, 0.25f), new Color(0.16f, 0.32f, 0.22f));
+            CreateSign(root.transform, "ひばり日本語学院 / HIBARI JAPANESE SCHOOL", origin + new Vector3(0f, 3.6f, -7.15f), new Vector2(9f, 0.9f));
 
-        public static void BuildLearningCenter()
-        {
-            Scene scene = EditorSceneManager.NewScene(NewSceneSetup.EmptyScene, NewSceneMode.Single);
-            Vector3 origin = new Vector3(1200f, 0f, 0f);
-            var root = new GameObject("LearningCenter_Zone");
-            root.AddComponent<SceneZoneVisibility>();
-            root.AddComponent<StandaloneZoneBootstrap>().Configure("learning_entrance");
+            Place(Styloo, "blackboardbig", root.transform, "Blackboard", origin + new Vector3(0f, 1.65f, 6.6f), new Vector3(4.4f, 2f, 0.2f), Quaternion.Euler(0f, 180f, 0f), true);
+            Place(Styloo, "table", root.transform, "TeacherTable", origin + new Vector3(0f, 0f, 5.1f), new Vector3(2f, 0.85f, 1f), Quaternion.identity, true);
 
-            CreateBlock(root.transform, "LearningFloor", origin + new Vector3(0f, -0.1f, 0f), new Vector3(26f, 0.2f, 22f), new Color(0.24f, 0.28f, 0.3f));
-            CreateBlock(root.transform, "LearningBackWall", origin + new Vector3(0f, 2.5f, 10.8f), new Vector3(26f, 5f, 0.25f), new Color(0.82f, 0.84f, 0.8f));
-            CreateBlock(root.transform, "LearningLeftWall", origin + new Vector3(-12.8f, 2.5f, 0f), new Vector3(0.25f, 5f, 22f), new Color(0.82f, 0.84f, 0.8f));
-            CreateBlock(root.transform, "LearningRightWall", origin + new Vector3(12.8f, 2.5f, 0f), new Vector3(0.25f, 5f, 22f), new Color(0.82f, 0.84f, 0.8f));
-            CreateSign(root.transform, "NIHONGO LIFE LEARNING CENTER", origin + new Vector3(0f, 4.5f, 10.55f), new Vector2(10f, 0.85f));
-
-            PlaceClassroom(root.transform, origin + new Vector3(-6.2f, 0f, 3.8f), "JLPTRoom", "JLPT N5 / N4", "blackboardbig", "desk", "chairtable");
-            PlaceClassroom(root.transform, origin + new Vector3(6.2f, 0f, 3.8f), "IELTSRoom", "IELTS 4 SKILLS", "blackboardbig_1", "desk", "chairtable");
-            PlaceClassroom(root.transform, origin + new Vector3(0f, 0f, -5.8f), "ExamRoom", "MOCK EXAM / REVIEW", "blackboardlittle", "COMPUTERtable", "COMPUTERchair");
-
-            CreateSpawn(root.transform, "learning_entrance", origin + new Vector3(0f, 0.25f, -9f), Quaternion.identity);
-            CreateExitPortal(root.transform, "ExitToCity", LearningScene, "city_learning_return", "街へ戻る / Trở lại thành phố", origin + new Vector3(0f, 1.1f, -10.3f));
-            CreatePreviewCamera(root.transform, origin, "LearningSceneCamera", new Vector3(0f, 7f, -16f), new Vector3(0f, 1.2f, 2f));
-            CreateLighting(root.transform, origin + new Vector3(0f, 5f, 0f));
-            EditorSceneManager.SaveScene(scene, LearningScene);
-        }
-
-        private static void PlaceClassroom(Transform parent, Vector3 origin, string name, string label, string board, string desk, string chair)
-        {
-            var room = new GameObject(name);
-            room.transform.SetParent(parent);
-            Place(Styloo, board, room.transform, name + "_Board", origin + new Vector3(0f, 2.1f, 2.2f), new Vector3(4.6f, 2.2f, 0.25f), Quaternion.Euler(0f, 180f, 0f), true);
             for (int row = 0; row < 2; row++)
             for (int column = 0; column < 3; column++)
             {
-                Vector3 position = origin + new Vector3(-2.2f + column * 2.2f, 0f, -0.9f + row * 1.5f);
-                Place(Styloo, desk, room.transform, name + "_Desk_" + row + "_" + column, position, new Vector3(1.4f, 1.1f, 1.0f), Quaternion.identity, true);
-                Place(Styloo, chair, room.transform, name + "_Chair_" + row + "_" + column, position + Vector3.back * 0.85f, new Vector3(0.8f, 1.0f, 0.8f), Quaternion.identity, true);
+                Vector3 position = origin + new Vector3(-3.5f + column * 3.5f, 0f, 1f + row * 2.6f);
+                Place(Styloo, "desk", root.transform, $"StudentDesk_{row}_{column}", position, new Vector3(1.3f, 0.9f, 0.8f), Quaternion.identity, true);
+                Place(Styloo, "chairtable", root.transform, $"StudentChair_{row}_{column}", position + Vector3.back * 0.75f, new Vector3(0.75f, 0.95f, 0.75f), Quaternion.identity, true);
             }
-            CreateSign(room.transform, label, origin + new Vector3(0f, 3.7f, 2.05f), new Vector2(4.5f, 0.55f));
+
+            Place(Styloo, "shelf", root.transform, "BookShelf", origin + new Vector3(-7.3f, 0f, 5f), new Vector3(1.2f, 1.8f, 0.5f), Quaternion.Euler(0f, 90f, 0f), true);
+            Place(Styloo, "locker", root.transform, "StudentLocker", origin + new Vector3(7.3f, 0f, 5f), new Vector3(1.4f, 1.8f, 0.5f), Quaternion.Euler(0f, 270f, 0f), true);
+
+            CreateSchoolNpc(root.transform, "TeacherMorita", "npc_teacher_morita", "Morita", "Teacher",
+                "Assets/NihongoLife/Prefabs/Characters/NL_Guide.prefab", new Color(0.75f, 0.35f, 0.55f),
+                origin + new Vector3(0f, 0.05f, 4.1f), Quaternion.Euler(0f, 180f, 0f),
+                "自己紹介の練習をしましょう。", "じこしょうかいのれんしゅうをしましょう。",
+                "Let's practice self-introductions.", "Jikoshoukai no renshuu wo shimashou.");
+            CreateSchoolNpc(root.transform, "ClassmateKim", "npc_classmate_kim", "Kim", "Classmate",
+                "Assets/NihongoLife/Prefabs/Characters/NL_Neighbor.prefab", new Color(0.3f, 0.55f, 0.85f),
+                origin + new Vector3(-3.5f, 0.05f, 1f), Quaternion.identity,
+                "こんにちは。同じクラスですね。", "こんにちは。おなじクラスですね。",
+                "Hi. Looks like we're in the same class.", "Konnichiwa. Onaji kurasu desu ne.");
+
+            CreateSpawn(root.transform, "school_entrance", origin + new Vector3(0f, 0.25f, -6.2f), Quaternion.identity);
+            CreateExitPortal(root.transform, "ExitToCity", SchoolScene, "city_school_return", "街へ戻る / Trở lại thành phố", origin + new Vector3(0f, 1.1f, -7.6f));
+            CreatePreviewCamera(root.transform, origin, "SchoolSceneCamera", new Vector3(0f, 4.6f, -11f), new Vector3(0f, 1.3f, 2f));
+            CreateLighting(root.transform, origin + new Vector3(0f, 5f, 1f));
+            CreateInteriorLight(root.transform, "ClassroomLight_A", origin + new Vector3(-3f, 3.8f, 2f), 9f, 2f);
+            CreateInteriorLight(root.transform, "ClassroomLight_B", origin + new Vector3(3f, 3.8f, 2f), 9f, 2f);
+            EditorSceneManager.SaveScene(scene, SchoolScene);
+        }
+
+        /// <summary>Places a talkable NPC using an existing character prefab as a stand-in visual (no
+        /// dedicated Morita/Kim model exists yet — same placeholder pattern used for Yamada/Kimura).</summary>
+        private static void CreateSchoolNpc(Transform parent, string goName, string npcId, string displayName, string role,
+            string visualPrefabPath, Color fallbackColor, Vector3 position, Quaternion rotation,
+            string fallbackJa, string fallbackReading, string fallbackEn, string fallbackRomaji)
+        {
+            Debug.LogWarning($"[GameplayZoneSceneBuilder] '{displayName}' ({npcId}) is using a placeholder visual ({visualPrefabPath}) — no dedicated model exists yet.");
+
+            var npc = new GameObject(goName);
+            npc.layer = InteractableLayer;
+            npc.transform.SetParent(parent);
+            npc.transform.SetPositionAndRotation(position, rotation);
+
+            var collider = npc.AddComponent<BoxCollider>();
+            collider.center = new Vector3(0f, 0.95f, 0f);
+            collider.size = new Vector3(0.9f, 1.9f, 0.9f);
+            collider.isTrigger = true;
+
+            var body = npc.AddComponent<CharacterController>();
+            body.center = new Vector3(0f, 0.95f, 0f);
+            body.height = 1.85f;
+            body.radius = 0.32f;
+            body.stepOffset = 0.22f;
+
+            npc.AddComponent<CharacterAnimationController>();
+            npc.AddComponent<NPCAmbientTalker>();
+            var controller = npc.AddComponent<NPCController>();
+            var so = new SerializedObject(controller);
+            SetString(so, "npcId", npcId);
+            SetString(so, "displayName", displayName);
+            SetString(so, "role", role);
+            SetString(so, "fallbackJa", fallbackJa);
+            SetString(so, "fallbackReading", fallbackReading);
+            SetString(so, "fallbackEn", fallbackEn);
+            SetString(so, "fallbackRomaji", fallbackRomaji);
+            so.ApplyModifiedProperties();
+
+            AddNpcVisual(npc, visualPrefabPath, fallbackColor);
+        }
+
+        private static void AddNpcVisual(GameObject npc, string prefabPath, Color fallbackColor)
+        {
+            var animCtrl = npc.GetComponent<CharacterAnimationController>();
+            var prefab = AssetDatabase.LoadAssetAtPath<GameObject>(prefabPath);
+            if (prefab != null)
+            {
+                var visual = (GameObject)PrefabUtility.InstantiatePrefab(prefab);
+                visual.name = "Visual";
+                visual.transform.SetParent(npc.transform, false);
+                visual.transform.localPosition = Vector3.zero;
+                StripColliders(visual);
+                animCtrl.SetAnimator(visual.GetComponentInChildren<Animator>(true));
+            }
+            else
+            {
+                CreateFallbackPerson(npc.transform, "FallbackNPC", fallbackColor);
+            }
+        }
+
+        private static void CreateFallbackPerson(Transform parent, string name, Color bodyColor)
+        {
+            var bodyMat = new Material(Shader.Find("Universal Render Pipeline/Simple Lit")) { color = bodyColor };
+            var skinMat = new Material(Shader.Find("Universal Render Pipeline/Simple Lit")) { color = new Color(0.9f, 0.72f, 0.58f) };
+
+            var body = GameObject.CreatePrimitive(PrimitiveType.Capsule);
+            body.name = name + "_Body";
+            body.transform.SetParent(parent, false);
+            body.transform.localPosition = new Vector3(0f, 0.95f, 0f);
+            body.transform.localScale = new Vector3(0.55f, 0.85f, 0.55f);
+            body.GetComponent<Renderer>().sharedMaterial = bodyMat;
+            UnityEngine.Object.DestroyImmediate(body.GetComponent<Collider>());
+
+            var head = GameObject.CreatePrimitive(PrimitiveType.Sphere);
+            head.name = name + "_Head";
+            head.transform.SetParent(parent, false);
+            head.transform.localPosition = new Vector3(0f, 1.82f, 0f);
+            head.transform.localScale = Vector3.one * 0.32f;
+            head.GetComponent<Renderer>().sharedMaterial = skinMat;
+            UnityEngine.Object.DestroyImmediate(head.GetComponent<Collider>());
+        }
+
+        private static void StripColliders(GameObject root)
+        {
+            foreach (var collider in root.GetComponentsInChildren<Collider>(true))
+            {
+                UnityEngine.Object.DestroyImmediate(collider);
+            }
+        }
+
+        private static void SetString(SerializedObject obj, string propertyName, string value)
+        {
+            var prop = obj.FindProperty(propertyName);
+            if (prop != null) prop.stringValue = value;
         }
 
         public static void BuildStation()
@@ -286,7 +374,7 @@ namespace NihongoLife.EditorTools
 
         }
 
-        private static void AddCityPortals()
+        public static void AddCityPortals()
         {
             Scene scene = EditorSceneManager.OpenScene(CityScene, OpenSceneMode.Single);
             GameObject existing = GameObject.Find("AdditiveZonePortals");
@@ -297,6 +385,8 @@ namespace NihongoLife.EditorTools
             CreateSpawn(root.transform, "city_station_return", new Vector3(9f, 0.1f, -6.2f), Quaternion.Euler(0f, 180f, 0f));
             CreateCityPortal(root.transform, "SushiPortal", SushiScene, "sushi_entrance", "すし店 / Nhà hàng sushi", new Vector3(-9f, 1f, -4f), new Color(0.76f, 0.2f, 0.18f));
             CreateSpawn(root.transform, "city_sushi_return", new Vector3(-9f, 0.1f, -6.2f), Quaternion.Euler(0f, 180f, 0f));
+            CreateCityPortal(root.transform, "SchoolPortal", SchoolScene, "school_entrance", "学院 / Trường học", new Vector3(18f, 1f, -4f), new Color(0.2f, 0.55f, 0.32f));
+            CreateSpawn(root.transform, "city_school_return", new Vector3(18f, 0.1f, -6.2f), Quaternion.Euler(0f, 180f, 0f));
 
             EditorSceneManager.MarkSceneDirty(scene);
             EditorSceneManager.SaveScene(scene, CityScene);
@@ -516,8 +606,7 @@ namespace NihongoLife.EditorTools
             var scenes = new System.Collections.Generic.List<EditorBuildSettingsScene>(EditorBuildSettings.scenes);
             AddOrEnable(scenes, StationScene);
             AddOrEnable(scenes, SushiScene);
-            AddOrEnable(scenes, ShoppingScene);
-            AddOrEnable(scenes, LearningScene);
+            AddOrEnable(scenes, SchoolScene);
             EditorBuildSettings.scenes = scenes.ToArray();
         }
 

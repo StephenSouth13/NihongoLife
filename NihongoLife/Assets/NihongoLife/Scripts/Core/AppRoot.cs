@@ -181,10 +181,6 @@ namespace NihongoLife.Core
             GameServices.Register<ExamManager>(examManager);
             examManager.Initialize();
 
-            var reviewManager = gameObject.AddComponent<NihongoLife.Learning.ReviewManager>();
-            GameServices.Register<NihongoLife.Learning.IReviewManager>(reviewManager);
-            reviewManager.Initialize();
-
             Debug.Log("[AppRoot] Core services initialized successfully.");
 
             // Start loading main menu only if we are in Bootstrap
