@@ -53,6 +53,7 @@ namespace NihongoLife.UI
         private IOnlineWorldService _onlineWorld;
         private WorldMapUI _worldMap;
         private SettingsUI _settingsUI;
+        private bool _objectivesExpanded = true;
 
         private void Start()
         {
@@ -393,13 +394,25 @@ namespace NihongoLife.UI
             colors.fadeDuration = 0.08f;
             button.colors = colors;
             button.onClick.RemoveListener(ShowQuestTarget);
-            button.onClick.AddListener(ShowQuestTarget);
+            button.onClick.RemoveListener(ToggleObjectivesPanel);
+            button.onClick.AddListener(ToggleObjectivesPanel);
         }
 
         private void ShowQuestTarget()
         {
             EnsureQuestMarker();
             _questMarker.ShowCurrentObjectiveTarget();
+        }
+
+        private void ToggleObjectivesPanel()
+        {
+            _objectivesExpanded = !_objectivesExpanded;
+            if (objectivesText != null) objectivesText.gameObject.SetActive(_objectivesExpanded);
+            if (scenarioTitleText != null)
+            {
+                string title = scenarioTitleText.text.Replace("  ˅", string.Empty).Replace("  ˄", string.Empty);
+                scenarioTitleText.text = title + (_objectivesExpanded ? "  ˄" : "  ˅");
+            }
         }
 
         private static void StyleInfoPanel(GameObject panel, Vector2 anchor, Vector2 position, Vector2 size)

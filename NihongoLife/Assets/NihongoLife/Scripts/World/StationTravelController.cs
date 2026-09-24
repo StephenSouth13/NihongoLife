@@ -178,6 +178,7 @@ namespace NihongoLife.World
             }
             _destination = destination;
             _hasTicket = true;
+            CompleteQuestObjective("obj_buy_ticket");
             float cycleStart = Mathf.Floor(Time.time / serviceInterval) * serviceInterval;
             _ticketDeparture = cycleStart + boardingWindow;
             if (Time.time > _ticketDeparture) _ticketDeparture += serviceInterval;
@@ -190,6 +191,7 @@ namespace NihongoLife.World
         {
             if (!_hasTicket) { ShowMessage(Localize("Bạn cần mua vé hợp lệ trước.", "A valid ticket is required.", "有効な切符が必要です。")); return; }
             _gatePassed = true;
+            CompleteQuestObjective("obj_pass_station_gate");
             ShowMessage(Localize("Vé hợp lệ. Hãy đến sân ga số 1 đúng giờ.", "Ticket accepted. Go to platform 1 on time.", "切符は有効です。時間どおり1番線へお越しください。"));
             PlayConfirm();
         }
@@ -200,6 +202,7 @@ namespace NihongoLife.World
             if (!IsTrainBoarding()) { ShowMessage(Localize("Tàu chưa vào ga hoặc đã đóng cửa.", "The train is not boarding now.", "現在、この電車には乗車できません。")); return; }
             if (_carriageInterior != null) _carriageInterior.SetActive(true);
             Teleport(player, carriageSpawn);
+            CompleteQuestObjective("obj_board_train");
             ShowMessage(Localize("Đã lên tàu. Hãy tìm chỗ ngồi.", "You boarded the train. Please find a seat.", "乗車しました。席をお探しください。"));
         }
 
@@ -234,6 +237,11 @@ namespace NihongoLife.World
         {
             ShowMessage("Nhân viên ga: Vé Midori giá ¥180. Hãy qua cổng rồi chờ chuyến tàu.\n駅員: ミドリ行きは180円です。", 8f);
             PlayerStatus.Instance?.AddKnowledge(3);
+        }
+
+        private static void CompleteQuestObjective(string objectiveId)
+        {
+            Scenario.ScenarioManager.Instance?.CompleteObjective(objectiveId);
         }
 
         private void EnsureStationStaffInteractable()
