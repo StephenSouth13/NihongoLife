@@ -241,7 +241,7 @@ namespace NihongoLife.World
 
         private static void CompleteQuestObjective(string objectiveId)
         {
-            Scenario.ScenarioManager.Instance?.CompleteObjective(objectiveId);
+            NihongoLife.Scenario.ScenarioManager.Instance?.CompleteObjective(objectiveId);
         }
 
         private void EnsureStationStaffInteractable()
