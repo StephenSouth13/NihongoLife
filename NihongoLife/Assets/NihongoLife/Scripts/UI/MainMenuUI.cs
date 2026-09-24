@@ -30,14 +30,10 @@ namespace NihongoLife.UI
         [Header("Settings")]
         [SerializeField] private string targetGameplayScene = "90_TestSandbox";
         [SerializeField] private string targetScenarioId = "scenario.konbini.buy_onigiri";
-        [SerializeField] private string authorName = "quachthanhlong.com";
-        [SerializeField] private string projectRole = "Creator of Nihongo Life";
 
         private void Start()
         {
             EnsureSettingsService();
-            authorName = "quachthanhlong.com";
-            projectRole = "Creator of Nihongo Life";
             AutoBindExistingMenu();
             ImproveMenuPresentation();
             CleanExistingLayout();

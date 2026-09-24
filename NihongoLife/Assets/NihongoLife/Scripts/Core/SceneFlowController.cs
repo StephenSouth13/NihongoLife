@@ -334,6 +334,7 @@ namespace NihongoLife.Core
             "20_StationDistrict" => "駅前 / Khu nhà ga",
             "30_SushiRestaurant" => "すし店 / Nhà hàng sushi",
             "40_ HIBARICLASS" => "ひばり日本語学院 / Trường Nhật ngữ Hibari",
+            "45_HomeBedroom" => "Your Bedroom / Phòng riêng",
             _ => sceneName
         };
     }

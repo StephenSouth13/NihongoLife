@@ -1,0 +1,68 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &100000001
+GameObject:
+  m_ObjectHideFlags: 0
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 100000002}
+  - component: {fileID: 100000003}
+  - component: {fileID: 100000004}
+  m_Layer: 0
+  m_Name: HomeBedroom_YourRoom
+  m_TagString: Untagged
+  m_IsActive: 1
+--- !u!4 &100000002
+Transform:
+  m_ObjectHideFlags: 0
+  m_GameObject: {fileID: 100000001}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+--- !u!114 &100000003
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_GameObject: {fileID: 100000001}
+  m_Enabled: 1
+  m_Script: {fileID: 11500000, guid: 7b8c6e9d4f5a4b1c9e2d3f60718293a4, type: 3}
+  m_EditorClassIdentifier: NihongoLife::NihongoLife.Home.HomeBedroomRuntime
+--- !u!114 &100000004
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_GameObject: {fileID: 100000001}
+  m_Enabled: 1
+  m_Script: {fileID: 11500000, guid: 8fe6012fa6192e743bbfb808e6497995, type: 3}
+  m_EditorClassIdentifier: NihongoLife::NihongoLife.Core.StandaloneZoneBootstrap
+  spawnId: home_bedroom
+--- !u!1 &100000005
+GameObject:
+  m_ObjectHideFlags: 0
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 100000006}
+  - component: {fileID: 100000007}
+  m_Layer: 0
+  m_Name: Spawn_home_bedroom
+  m_TagString: Untagged
+  m_IsActive: 1
+--- !u!4 &100000006
+Transform:
+  m_ObjectHideFlags: 0
+  m_GameObject: {fileID: 100000005}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 1.1, z: -2.8}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+--- !u!114 &100000007
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_GameObject: {fileID: 100000005}
+  m_Enabled: 1
+  m_Script: {fileID: 11500000, guid: ec1eea06727e9744fb0cec686461ea86, type: 3}
+  m_EditorClassIdentifier: NihongoLife::NihongoLife.Core.SceneSpawnPoint
+  id: home_bedroom

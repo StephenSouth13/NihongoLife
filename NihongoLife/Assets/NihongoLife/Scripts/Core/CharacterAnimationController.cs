@@ -13,6 +13,7 @@ namespace NihongoLife.Core
         [SerializeField] private string bowParam = "Bow";
         [SerializeField] private string pointParam = "Point";
         [SerializeField] private string sitStateName = "Sit";
+        [SerializeField] private string restStateName = "Lay";
         [SerializeField] private string standStateName = "Idle";
         [SerializeField] private float speedDampTime = 0.12f;
         [SerializeField] private float fullSpeedReference = 1.15f;
@@ -127,6 +128,17 @@ namespace NihongoLife.Core
             string state = sitting ? sitStateName : standStateName;
             if (!HasState(state)) return false;
             _animator.CrossFadeInFixedTime(state, 0.18f, 0);
+            if (_hasSpeed) _animator.SetFloat(_speedHash, 0f);
+            return true;
+        }
+
+        public bool SetResting(bool resting)
+        {
+            _isSitting = !resting;
+            if (_animator == null || _animator.runtimeAnimatorController == null) return false;
+            string state = resting ? restStateName : standStateName;
+            if (!HasState(state)) return false;
+            _animator.CrossFadeInFixedTime(state, 0.22f, 0);
             if (_hasSpeed) _animator.SetFloat(_speedHash, 0f);
             return true;
         }

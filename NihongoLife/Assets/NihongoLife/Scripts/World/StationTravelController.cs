@@ -399,7 +399,7 @@ namespace NihongoLife.World
             hint.rectTransform.offsetMax = new Vector2(-24f, -286f);
             hint.text = Localize("Nhấn chuột hoặc Enter để mua vé", "Click or press Enter to buy", "クリックまたはEnterで購入");
 
-            CreateTicketButton("MIDORI", 180, 175f, true);
+            CreateTicketButton("MIDORI", ticketPrice, 175f, true);
             CreateTicketButton("SHINJUKU", 260, 105f, false);
             CreateTicketButton("ASAKUSA", 320, 35f, false);
             var closeObject = new GameObject("CloseTicketPanel");
