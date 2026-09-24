@@ -110,12 +110,12 @@ namespace NihongoLife.EditorTools
             Place(Styloo, "shelf", root.transform, "BookShelf", origin + new Vector3(-7.3f, 0f, 5f), new Vector3(1.2f, 1.8f, 0.5f), Quaternion.Euler(0f, 90f, 0f), true);
             Place(Styloo, "locker", root.transform, "StudentLocker", origin + new Vector3(7.3f, 0f, 5f), new Vector3(1.4f, 1.8f, 0.5f), Quaternion.Euler(0f, 270f, 0f), true);
 
-            CreateSchoolNpc(root.transform, "TeacherMorita", "npc_teacher_morita", "Morita", "Teacher",
+            CreatePlaceholderNpc(root.transform, "TeacherMorita", "npc_teacher_morita", "Morita", "Teacher",
                 "Assets/NihongoLife/Prefabs/Characters/NL_Guide.prefab", new Color(0.75f, 0.35f, 0.55f),
                 origin + new Vector3(0f, 0.05f, 4.1f), Quaternion.Euler(0f, 180f, 0f),
                 "自己紹介の練習をしましょう。", "じこしょうかいのれんしゅうをしましょう。",
                 "Let's practice self-introductions.", "Jikoshoukai no renshuu wo shimashou.");
-            CreateSchoolNpc(root.transform, "ClassmateKim", "npc_classmate_kim", "Kim", "Classmate",
+            CreatePlaceholderNpc(root.transform, "ClassmateKim", "npc_classmate_kim", "Kim", "Classmate",
                 "Assets/NihongoLife/Prefabs/Characters/NL_Neighbor.prefab", new Color(0.3f, 0.55f, 0.85f),
                 origin + new Vector3(-3.5f, 0.05f, 1f), Quaternion.identity,
                 "こんにちは。同じクラスですね。", "こんにちは。おなじクラスですね。",
@@ -132,7 +132,7 @@ namespace NihongoLife.EditorTools
 
         /// <summary>Places a talkable NPC using an existing character prefab as a stand-in visual (no
         /// dedicated Morita/Kim model exists yet — same placeholder pattern used for Yamada/Kimura).</summary>
-        private static void CreateSchoolNpc(Transform parent, string goName, string npcId, string displayName, string role,
+        private static void CreatePlaceholderNpc(Transform parent, string goName, string npcId, string displayName, string role,
             string visualPrefabPath, Color fallbackColor, Vector3 position, Quaternion rotation,
             string fallbackJa, string fallbackReading, string fallbackEn, string fallbackRomaji)
         {
@@ -326,6 +326,57 @@ namespace NihongoLife.EditorTools
             CreatePreviewCamera(root.transform, origin, "SushiSceneCamera", new Vector3(0f, 4.2f, -11.5f), new Vector3(0f, 1.2f, 1.2f));
             ValidateSushiLayout(root);
             EditorSceneManager.SaveScene(scene, SushiScene);
+        }
+
+        /// <summary>
+        /// Adds npc_sushi_staff (Aoki) and npc_sushi_chef (Ota) to the existing, hand-tuned
+        /// 30_SushiRestaurant.unity — additive only (opens the scene, checks for existing NPCs by name,
+        /// adds only what's missing, saves). Never calls BuildSushiRestaurant() again: that would
+        /// regenerate the whole zone from scratch and blow away every hand-adjustment made since
+        /// (serve anchors, plate sizes — see Docs/TEAM_TASKS.md TASK-G).
+        /// </summary>
+        public static void AddSushiStaff()
+        {
+            Scene scene = EditorSceneManager.OpenScene(SushiScene, OpenSceneMode.Single);
+            GameObject root = GameObject.Find("SushiRestaurant_Zone");
+            if (root == null)
+            {
+                Debug.LogError("[GameplayZoneSceneBuilder] SushiRestaurant_Zone not found — scene structure has changed, aborting AddSushiStaff.");
+                return;
+            }
+
+            Vector3 origin = new Vector3(500f, 0f, 0f);
+            bool changed = false;
+
+            if (root.transform.Find("SushiStaffAoki") == null)
+            {
+                CreatePlaceholderNpc(root.transform, "SushiStaffAoki", "npc_sushi_staff", "Aoki", "Staff",
+                    "Assets/NihongoLife/Prefabs/Characters/NL_Neighbor.prefab", new Color(0.85f, 0.55f, 0.25f),
+                    origin + new Vector3(0f, 0.05f, -5f), Quaternion.Euler(0f, 180f, 0f),
+                    "いらっしゃいませ。何名様ですか。", "いらっしゃいませ。なんめいさまですか。",
+                    "Welcome! How many people in your party?", "Irasshaimase. Nanmeisama desu ka.");
+                changed = true;
+            }
+
+            if (root.transform.Find("SushiChefOta") == null)
+            {
+                CreatePlaceholderNpc(root.transform, "SushiChefOta", "npc_sushi_chef", "Ota", "Chef",
+                    "Assets/NihongoLife/Prefabs/Characters/NL_Guide.prefab", new Color(0.3f, 0.3f, 0.32f),
+                    origin + new Vector3(0f, 0.05f, 5f), Quaternion.Euler(0f, 180f, 0f),
+                    "新鮮なネタが揃っていますよ。", "しんせんなネタがそろっていますよ。",
+                    "We've got fresh ingredients today.", "Shinsen na neta ga sorotte imasu yo.");
+                changed = true;
+            }
+
+            if (!changed)
+            {
+                Debug.Log("[GameplayZoneSceneBuilder] SushiStaffAoki/SushiChefOta already present — nothing to add.");
+                return;
+            }
+
+            EditorSceneManager.MarkSceneDirty(scene);
+            EditorSceneManager.SaveScene(scene, SushiScene);
+            Debug.Log("[GameplayZoneSceneBuilder] Added Aoki/Ota to 30_SushiRestaurant.unity.");
         }
 
         private static void CreateDiningSet(Transform parent, Vector3 center, string suffix)

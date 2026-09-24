@@ -125,6 +125,78 @@ namespace NihongoLife.UI
             EnsureTutorial();
             EnsureQuestLog();
             EnsureExamCenter();
+            EnsureMobileControls();
+        }
+
+        /// <summary>
+        /// On-screen joystick + Interact/Jump buttons for touch devices. Skipped entirely on desktop
+        /// (HudCanvasFitter.IsTouchLayout already governs HUD sizing the same way). The input plumbing
+        /// itself (GameInputService.SetMobileMove/SetMobileButton, consumed by PlayerController) already
+        /// existed and worked — MobileJoystick/MobileActionButton (Scripts/UI/MobileGameControls.cs) were
+        /// written but never actually placed anywhere, so touch devices had movement/interact logic with
+        /// no visible control to drive it. This is the missing visual half.
+        /// Menus that are keyboard-shortcut-only (inventory B, map M, quest log J, exam center K, character
+        /// Tab, settings Esc) still have no on-screen button — out of scope here, flagged separately.
+        /// </summary>
+        private void EnsureMobileControls()
+        {
+            if (!HudCanvasFitter.IsTouchLayout(false)) return;
+            if (transform.Find("MobileControls") != null) return;
+
+            TMP_FontAsset font = scenarioTitleText != null ? scenarioTitleText.font : null;
+
+            var root = new GameObject("MobileControls", typeof(RectTransform));
+            root.transform.SetParent(transform, false);
+            var rootRect = (RectTransform)root.transform;
+            rootRect.anchorMin = Vector2.zero;
+            rootRect.anchorMax = Vector2.one;
+            rootRect.offsetMin = rootRect.offsetMax = Vector2.zero;
+
+            RectTransform joyBase = CreateMobileCircle(root.transform, "Joystick_Base", new Vector2(0f, 0f), new Vector2(24f, 24f), 160f, new Color(1f, 1f, 1f, 0.14f));
+            RectTransform joyHandle = CreateMobileCircle(joyBase, "Joystick_Handle", new Vector2(0.5f, 0.5f), Vector2.zero, 70f, new Color(1f, 1f, 1f, 0.32f));
+            joyBase.gameObject.AddComponent<MobileJoystick>().Configure(joyHandle, 45f);
+
+            RectTransform interactButton = CreateMobileCircle(root.transform, "Button_Interact", new Vector2(1f, 0f), new Vector2(-24f, 24f), 120f, new Color(0.95f, 0.72f, 0.25f, 0.55f));
+            interactButton.gameObject.AddComponent<MobileActionButton>().Configure(GameInputId.Interact);
+            CreateMobileLabel(interactButton, "E", font);
+
+            RectTransform jumpButton = CreateMobileCircle(root.transform, "Button_Jump", new Vector2(1f, 0f), new Vector2(-24f, 160f), 90f, new Color(1f, 1f, 1f, 0.28f));
+            jumpButton.gameObject.AddComponent<MobileActionButton>().Configure(GameInputId.Jump);
+            CreateMobileLabel(jumpButton, "JUMP", font);
+        }
+
+        private static RectTransform CreateMobileCircle(Transform parent, string name, Vector2 anchor, Vector2 anchoredPosition, float diameter, Color color)
+        {
+            var go = new GameObject(name, typeof(RectTransform), typeof(Image));
+            go.transform.SetParent(parent, false);
+            var rect = (RectTransform)go.transform;
+            rect.anchorMin = rect.anchorMax = rect.pivot = anchor;
+            rect.anchoredPosition = anchoredPosition;
+            rect.sizeDelta = new Vector2(diameter, diameter);
+            var image = go.GetComponent<Image>();
+            image.sprite = UIStyleKit.RoundedSprite();
+            image.type = Image.Type.Sliced;
+            image.color = color;
+            image.raycastTarget = true;
+            return rect;
+        }
+
+        private static void CreateMobileLabel(RectTransform parent, string value, TMP_FontAsset font)
+        {
+            var go = new GameObject("Label", typeof(RectTransform), typeof(TextMeshProUGUI));
+            go.transform.SetParent(parent, false);
+            var rect = (RectTransform)go.transform;
+            rect.anchorMin = Vector2.zero;
+            rect.anchorMax = Vector2.one;
+            rect.offsetMin = rect.offsetMax = Vector2.zero;
+            var text = go.GetComponent<TextMeshProUGUI>();
+            if (font != null) text.font = font;
+            text.text = value;
+            text.fontSize = 24f;
+            text.fontStyle = FontStyles.Bold;
+            text.color = new Color(1f, 1f, 1f, 0.85f);
+            text.alignment = TextAlignmentOptions.Center;
+            text.raycastTarget = false;
         }
 
         private void EnsureQuestLog()

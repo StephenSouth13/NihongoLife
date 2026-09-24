@@ -227,7 +227,7 @@ Chủ dự án xác nhận: đã bước vào bên trong konbini thật (không 
 2. Tới `DiningTable_A/B` → prompt「注文する」→ E: thấy nút - / + ở mỗi món, tab 注文, tổng tiền/ví, nút 注文する; đặt món → phụ đề nhân viên (青木さん) hiện đủ Nhật/furigana/dịch → chờ → món hiện trên mặt bàn (không chìm xuống bàn, không trùng TableBowl/TableBottle) → E いただきます (no/khát tăng ở HUD) → E お会計 (ví trừ đúng tổng, có phụ đề). Thử: không chọn món, không đủ tiền, 2 bàn cùng lúc, đặt lại sau khi trả tiền. Thử thêm: ăn xong rồi đi ra cửa (`ExitToCity`) khi chưa trả tiền → phải bị chặn kèm phụ đề nhân viên; chip thông báo vàng "!" giữa phía trên màn hình hiện đúng số tiền/trạng thái, không đè lên HUD khác (nếu đè thì dời `anchoredPosition` trong `BuildBillChip` của `RestaurantMenuUI.cs`); nhắc lại sau 25 s; trả tiền xong thì chip biến mất và ra cửa bình thường.
 3. Chỉnh trực tiếp nếu sai: `servedModelSize`/`servedModelEuler`/`plateModelSize` trong asset thực đơn (hình bày món), `serveAnchor` và trigger của `DiningTableService_*` (vị trí), `slotSpacing` (khoảng cách đĩa). Ghi lại giá trị đã chỉnh.
 4. Model bày món hiện đang tạm (ví dụ unagi/ikura/hotate dùng chung hình nigiri khác, tráng miệng và đồ uống dùng bowl/bottle): thay bằng model đúng nếu có trong project, không nhập thêm nếu không cần.
-5. Đặt 2 NPC `npc_sushi_staff` (Aoki, gần cửa/khu ghế) và `npc_sushi_chef` (Ota, sau quầy) bằng pipeline nhân vật hiện có (tên khớp `speakerId` trong scenario), collider + idle animation; không tạo nhân vật giả lập nếu đã có model. Khi có Aoki, cho Aoki đi tới bàn khi món sẵn sàng (hiện chỉ có phụ đề, chưa có nhân vật đi bưng món).
+5. ~~Đặt 2 NPC npc_sushi_staff (Aoki)... npc_sushi_chef (Ota)~~ **Đã thêm (2026-09-24)** bằng `GameplayZoneSceneBuilder.AddSushiStaff()` (chạy qua batch mode, additive — không đụng `DiningTable_*`/serve anchor đã chỉnh tay, xác nhận bằng git diff không mất object nào cũ): Aoki đứng gần cửa vào (origin +(0,0.05,-5)), Ota đứng sau quầy giữa quầy sushi và bàn bếp (origin +(0,0.05,5)) — **đang dùng tạm prefab `NL_Neighbor`/`NL_Guide`** (chưa có model riêng, đã log warning). Cả hai chỉ đứng yên, chưa có patrol/đi bưng món — việc Aoki đi tới bàn khi món sẵn sàng vẫn còn treo, chưa làm.
 6. Quyết định gating scenario: hiện chạy ở bất kỳ đâu. Nếu muốn ép vào quán mới chơi, thêm trigger khu vực trong zone và node `GoToArea` — **phải giữ nhánh cũ chạy được**, báo Claude trước khi đổi graph.
 7. Chơi hết các nhánh scenario (đúng / kém tự nhiên / sai → sửa → thử lại), ghi lỗi hiển thị hoặc node treo.
 8. Trang trí thêm nếu còn trống: chỉ dùng asset có sẵn; **disable/xoá** thứ bị thay thế, không xếp chồng.
@@ -346,12 +346,39 @@ Chủ dự án xác nhận: đã bước vào bên trong konbini thật (không 
 
 **Acceptance criteria**: mục 2-5 có bằng chứng Play Mode (mô tả hoặc ảnh), Console không có lỗi mới liên quan tới `HibariSchool`/`GameplayZoneSceneBuilder`.
 
+## TASK-M (Codex) — Play Mode kiểm chứng điều khiển cảm ứng mới + audit tương tác/NPC toàn game (2026-09-24)
+
+**Bối cảnh**: chủ dự án hỏi trực tiếp 3 việc: (1) scene/tương tác nào còn thiếu/lỗi, (2) chó mèo động vật và NPC bán hàng/người đi phố/bán vé/giáo viên đã tương tác đủ chưa, (3) UI/menu hoàn chỉnh và không có `[MenuItem]` rác. Claude đã audit tĩnh (đọc code + YAML scene trực tiếp, không chạy được Unity GUI) và trả lời + sửa một phần — bảng dưới đây là kết quả audit, task này là để Codex xác nhận bằng Play Mode và xử lý phần còn lại.
+
+**Đã xác nhận bằng audit tĩnh (đọc trực tiếp 8 file scene + toàn bộ Scripts/)**:
+- `[MenuItem]` — **0 kết quả trong toàn bộ `Scripts/`**, sạch, không có menu rác nào trên thanh Tools của Unity.
+- NPC theo scene (đếm `npcId:` trực tiếp trong YAML): `90_TestSandbox` có 5 (Tanaka/Suzuki/Sato/Lilly-guide/cashier), `20_StationDistrict` có 1 (Kimura), `40_HibariSchool` có 2 (Morita/Kim, Claude vừa thêm), `30_SushiRestaurant` **có 2 (Aoki/Ota, Claude vừa thêm hôm nay)**. `01_MainMenu`/`99_*`: 0 (đúng, không cần NPC).
+- **Không có ambient/filler NPC nào** — chỉ 1 `NPCStreetPatrol` trong toàn bộ project (Tanaka), nghĩa là "người đi phố" ngoài các nhân vật chính không tồn tại. Đây là giới hạn thật, không phải bug.
+- **Chó/mèo/động vật**: pack `Ultimate Animated Animals` có sẵn trong `Assets/ThirdParty/` (Alpaca, Bull, Cow, Deer, Donkey, Fox, Horse, Husky, ShibaInu, Stag, Wolf) nhưng **chưa đặt một con nào vào bất kỳ scene nào**. Quan trọng: **không có model mèo nào trong project** (chỉ Husky/ShibaInu là chó) — scenario `house2.lostcat` (con mèo Mike của Suzuki) hiện **hoàn toàn chỉ là hội thoại**, không có mèo 3D, và đúng ra không cần vì thiết kế node graph không có `CollectItem`/`InspectItem` cho con mèo. Việc thêm chó trang trí vào thành phố Claude **chưa dám tự làm** vì không xem được Editor để tránh đặt xuyên tường/nhà đã dựng tay rất nhiều lần — cần Codex đặt trực tiếp trong Editor.
+- **Bán vé tàu**: không qua hội thoại NPC — `StationTravelController`/`TicketMachine_A` (`StationTravelInteractable`, `StationAction.BuyTicket`) đã có sẵn và hoạt động độc lập với Kimura (đúng thiết kế, không phải thiếu).
+- **`ShopUI`/`ShopCounter`** (TASK-F, mua hàng tự do): code đầy đủ và đúng (`ShopCounter.Interact()` gọi `ShopUI.GetOrCreate()` chính xác) nhưng **`ShopCounter` chưa được gắn vào bất kỳ GameObject nào trong bất kỳ scene nào** — tính năng này viết xong nhưng người chơi không bao giờ gặp được. Cần Codex chọn 1 vị trí trong `90_TestSandbox` (khu chợ/market, tách biệt khỏi 3 vật phẩm bài học konbini theo đúng ranh giới TASK-F) và gắn `ShopCounter` + vài `InteractiveItem` mẫu.
+- **Điều khiển cảm ứng (mobile)**: `MobileJoystick`/`MobileActionButton` (`Scripts/UI/MobileGameControls.cs`) đã viết từ trước nhưng **chưa từng được đặt vào HUD** — input plumbing (`GameInputService.SetMobileMove/SetMobileButton`, `PlayerController` đọc đúng) đã hoạt động, chỉ thiếu UI hiển thị. Claude vừa thêm `HUDUI.EnsureMobileControls()` (joystick góc dưới-trái, nút Interact/Jump góc dưới-phải, chỉ hiện khi `HudCanvasFitter.IsTouchLayout()` true) — **compile sạch, chưa Play Mode/chưa test cảm ứng thật**.
+- **Menu/panel khác vẫn chỉ dùng phím tắt, không có nút chạm**: Inventory (B), bản đồ (M), nhật ký nhiệm vụ (J), trung tâm thi (K), hồ sơ (Tab), cài đặt (Esc) — trên thiết bị cảm ứng thật (không bàn phím) người chơi sẽ **không mở được các menu này**. Chưa sửa trong lượt này — cần quyết định thêm 1 thanh icon HUD cho các menu này hay chấp nhận giới hạn "chỉ chơi được bằng bàn phím/gamepad thật" trước mắt.
+
+**Việc cần làm**:
+1. Mở `90_TestSandbox`, `30_SushiRestaurant`, `40_HibariSchool` — Play Mode xác nhận Aoki/Ota/Morita/Kim đứng đúng chỗ, không xuyên sàn/tường, tương tác (E) ra đúng thoại fallback đã set.
+2. Bật `forceTouchLayout` (hoặc build thử trên thiết bị cảm ứng/DevTools) ở `HudCanvasFitter` trên Canvas chính → xác nhận joystick di chuyển được nhân vật, 2 nút Interact/Jump bấm được, không đè lên `OnlineChatPanel` khi panel đó đang mở (cả hai đang neo cùng góc dưới-trái — nếu đè, dời `EnsureMobileControls()` trong `HUDUI.cs`).
+3. Quyết định + báo lại: có cần thêm nút chạm cho Inventory/Map/Quest/Exam/Character/Settings không, hay chấp nhận giới hạn hiện tại.
+4. Gắn `ShopCounter` vào 1 vị trí thật trong `90_TestSandbox` theo đúng ranh giới TASK-F.
+5. Nếu muốn có chó trang trí trong thành phố: chọn vị trí trống thật (Codex nhìn được Editor), dùng model `Husky`/`ShibaInu` từ `Ultimate Animated Animals`, chỉ cần đứng/animation idle, không cần AI phức tạp.
+6. Ramen shop (Yamada) và quán trọn vẹn cho `scenario.restaurant.order_ramen` **vẫn chưa có scene** — đây là 1 scene mới hoàn toàn, theo đúng AGENTS.md Claude cần chủ dự án duyệt tên/vị trí scene cụ thể trước (giống cách `40_HibariSchool` đã được duyệt) trước khi ai dựng, kể cả Codex.
+
+**Ranh giới**: không đụng nội dung tiếng Nhật/thoại fallback (thuộc Claude); nếu cần đổi toạ độ NPC/nút UI thì sửa trực tiếp trong `GameplayZoneSceneBuilder.cs`/`HUDUI.cs` rồi chạy lại qua batch mode hoặc Editor, không dựng tay rồi quên đồng bộ code.
+
+**Acceptance criteria**: mục 1-2 có bằng chứng Play Mode; mục 3 có câu trả lời rõ ràng (làm hay không làm thêm nút chạm); Console không lỗi mới liên quan `MobileGameControls`/`AddSushiStaff`.
+
 ## Trạng thái
 
 - [ ] TASK-A (Codex) — chưa giao
 - [ ] TASK-B (Antigravity) — chưa giao
 - [ ] TASK-K (Codex) — chưa giao. Hệ thống luyện thi JLPT/IELTS (Claude viết xong kiến trúc + UI + 2 đề mẫu, chưa Play Mode) — xem `Docs/EXAM_SYSTEM.md`.
 - [ ] TASK-L (Codex) — chưa giao. Zone trường học `40_HibariSchool` vừa dựng bằng batch mode, chưa Play Mode.
+- [ ] TASK-M (Codex) — chưa giao. Điều khiển cảm ứng mới + audit NPC/tương tác/động vật toàn game, xem chi tiết ở trên.
 - [x] Nội dung 3 scenario mới (Claude) — đã viết xong dạng draft: `scenario_restaurant_order_ramen.asset`, `scenario_station_buy_ticket.asset`, `scenario_town_summer_festival.asset` (rẽ nhánh thật theo mục 10 `STORY_BIBLE.md`, có nhánh sai/nhánh sửa sai). **Chưa mở Unity để playtest/verify** — xem việc còn thiếu bên dưới trước khi coi là xong.
 - [x] Sửa `chapterIndex` `house1_greeting` (3→1) theo mục 5 `STORY_BIBLE.md`.
 
