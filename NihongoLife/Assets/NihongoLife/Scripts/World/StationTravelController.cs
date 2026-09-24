@@ -22,6 +22,7 @@ namespace NihongoLife.World
         StartRide,
         LeaveTrain,
         TalkPassenger
+        ,TalkStationStaff
     }
 
     public sealed class StationTravelController : MonoBehaviour
@@ -85,6 +86,7 @@ namespace NihongoLife.World
             BuildTravelHud();
             CachePlatformTrain();
             CachePlatformFixtures();
+            EnsureStationStaffInteractable();
             RefreshHud();
         }
 
@@ -150,6 +152,7 @@ namespace NihongoLife.World
                 case StationAction.StartRide: StartRide(); break;
                 case StationAction.LeaveTrain: Leave(player); break;
                 case StationAction.TalkPassenger: TalkPassenger(); break;
+                case StationAction.TalkStationStaff: TalkStationStaff(); break;
             }
             RefreshHud();
         }
@@ -225,6 +228,25 @@ namespace NihongoLife.World
                 : "Hanh khach: Kono densha wa Midori ni ikimasu. / Tau nay di den Midori.";
             ShowMessage(line, 7f);
             PlayerStatus.Instance?.AddKnowledge(2);
+        }
+
+        private void TalkStationStaff()
+        {
+            ShowMessage("Nhân viên ga: Vé Midori giá ¥180. Hãy qua cổng rồi chờ chuyến tàu.\n駅員: ミドリ行きは180円です。", 8f);
+            PlayerStatus.Instance?.AddKnowledge(3);
+        }
+
+        private void EnsureStationStaffInteractable()
+        {
+            var clerk = GameObject.Find("StationTicketClerk");
+            if (clerk == null || clerk.GetComponentInChildren<StationStaffInteractable>(true) != null) return;
+            var interaction = new GameObject("StationStaffInteraction");
+            interaction.transform.SetParent(clerk.transform, false);
+            interaction.transform.localPosition = Vector3.up * 1.1f;
+            var collider = interaction.AddComponent<SphereCollider>();
+            collider.isTrigger = true; collider.radius = 1.25f;
+            var staff = interaction.AddComponent<StationStaffInteractable>();
+            staff.Configure(this);
         }
 
         private void MoveScenery()
@@ -617,5 +639,16 @@ namespace NihongoLife.World
         public string GetpromptEn() => promptEn;
         public Transform GetTransform() => transform;
         public void Interact(GameObject player) => controller?.Execute(action, player);
+    }
+
+    public sealed class StationStaffInteractable : MonoBehaviour, IInteractable
+    {
+        private StationTravelController _controller;
+
+        public void Configure(StationTravelController controller) => _controller = controller;
+        public string GetPromptJa() => "[F] 駅員と話す";
+        public string GetpromptEn() => "[F] Noi chuyen voi nhan vien ga";
+        public Transform GetTransform() => transform;
+        public void Interact(GameObject player) => _controller?.Execute(StationAction.TalkStationStaff, player);
     }
 }

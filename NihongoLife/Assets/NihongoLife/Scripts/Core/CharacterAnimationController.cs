@@ -14,6 +14,7 @@ namespace NihongoLife.Core
         [SerializeField] private string pointParam = "Point";
         [SerializeField] private string sitStateName = "Sit";
         [SerializeField] private string restStateName = "Lay";
+        [SerializeField] private string jumpStateName = "Jump";
         [SerializeField] private string standStateName = "Idle";
         [SerializeField] private float speedDampTime = 0.12f;
         [SerializeField] private float fullSpeedReference = 1.15f;
@@ -139,6 +140,14 @@ namespace NihongoLife.Core
             string state = resting ? restStateName : standStateName;
             if (!HasState(state)) return false;
             _animator.CrossFadeInFixedTime(state, 0.22f, 0);
+            if (_hasSpeed) _animator.SetFloat(_speedHash, 0f);
+            return true;
+        }
+
+        public bool TriggerJump()
+        {
+            if (_animator == null || _animator.runtimeAnimatorController == null || !HasState(jumpStateName)) return false;
+            _animator.CrossFadeInFixedTime(jumpStateName, 0.1f, 0);
             if (_hasSpeed) _animator.SetFloat(_speedHash, 0f);
             return true;
         }
