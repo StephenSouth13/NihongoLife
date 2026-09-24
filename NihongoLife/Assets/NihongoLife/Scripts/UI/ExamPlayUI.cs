@@ -92,8 +92,18 @@ namespace NihongoLife.UI
 
         protected override void Build(RectTransform card)
         {
-            _sectionTitleText = AddText(card, string.Empty, 22f, 36f, 96f, 700f, 30f, TextAlignmentOptions.MidlineLeft, FontStyles.Bold, false, Gold);
-            _timerText = AddText(card, string.Empty, 20f, 760f, 96f, 504f, 30f, TextAlignmentOptions.MidlineRight, FontStyles.Bold);
+            var header = new GameObject("ExamHeader", typeof(RectTransform), typeof(Image));
+            header.transform.SetParent(card, false);
+            Place((RectTransform)header.transform, 24f, 76f, 1252f, 82f);
+            header.GetComponent<Image>().color = new Color(0.08f, 0.12f, 0.16f, 0.98f);
+            _sectionTitleText = AddText(header.transform, string.Empty, 22f, 20f, 10f, 700f, 30f, TextAlignmentOptions.MidlineLeft, FontStyles.Bold, false, Gold);
+            AddText(header.transform, Pick("Bài thi đang làm", "Current exam", "受験中"), 12f, 20f, 43f, 360f, 20f, TextAlignmentOptions.MidlineLeft, FontStyles.Normal, false, Muted);
+            var timerCard = new GameObject("TimerCard", typeof(RectTransform), typeof(Image));
+            timerCard.transform.SetParent(header.transform, false);
+            Place((RectTransform)timerCard.transform, 902f, 10f, 326f, 60f);
+            timerCard.GetComponent<Image>().color = new Color(0.02f, 0.04f, 0.05f, 1f);
+            AddText(timerCard.transform, Pick("THỜI GIAN", "TIME", "時間"), 11f, 14f, 7f, 90f, 18f, TextAlignmentOptions.MidlineLeft, FontStyles.Bold, false, Muted);
+            _timerText = AddText(timerCard.transform, string.Empty, 21f, 96f, 5f, 210f, 42f, TextAlignmentOptions.MidlineRight, FontStyles.Bold, false, Gold);
 
             BuildPaletteRoot(card);
             BuildPassagePanel(card);

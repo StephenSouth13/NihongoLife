@@ -10,6 +10,7 @@ namespace NihongoLife.Core
         public string playerId;
         public string displayName;
         public string sceneName;
+        public string roomId;
         public Vector3 position;
         public Quaternion rotation;
         public long serverTick;
@@ -100,10 +101,18 @@ namespace NihongoLife.Core
 
             snapshot.displayName = _localDisplayName;
             snapshot.sceneName = sceneName;
+            snapshot.roomId = RoomIdFor(sceneName, _localPlayerId);
             snapshot.position = position;
             snapshot.rotation = rotation;
             snapshot.serverTick = DateTime.UtcNow.Ticks;
             OnPlayerJoinedOrUpdated?.Invoke(snapshot);
+        }
+
+        private static string RoomIdFor(string sceneName, string playerId)
+        {
+            if (!string.IsNullOrWhiteSpace(sceneName) && sceneName.IndexOf("Bedroom", StringComparison.OrdinalIgnoreCase) >= 0)
+                return "bedroom_" + (string.IsNullOrWhiteSpace(playerId) ? "guest" : playerId);
+            return sceneName ?? string.Empty;
         }
 
         public void SendChatMessage(string channelId, string text)

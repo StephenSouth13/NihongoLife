@@ -17,6 +17,7 @@ namespace NihongoLife.Player
         [SerializeField] private float maxEnergy = 100f;
         [SerializeField] private float hungerDrainPerMinute = 0.8f;
         [SerializeField] private float thirstDrainPerMinute = 1.25f;
+        [SerializeField] private float sleepinessGainPerMinute = 0.65f;
         [SerializeField] private float passiveEnergyRecoveryPerSecond = 7f;
         [SerializeField] private float exhaustedHealthLossPerSecond = 1.5f;
 
@@ -26,6 +27,8 @@ namespace NihongoLife.Player
         public float MaxEnergy => maxEnergy;
         public float Hunger { get; private set; } = 100f;
         public float Thirst { get; private set; } = 100f;
+        public float Sleepiness { get; private set; }
+        public float Restfulness => 100f - Sleepiness;
         public int Knowledge { get; private set; }
         public int CurrentStamina => Mathf.RoundToInt(CurrentEnergy);
         public int MaxStamina => Mathf.RoundToInt(MaxEnergy);
@@ -49,6 +52,7 @@ namespace NihongoLife.Player
         {
             Hunger = Mathf.Max(0f, Hunger - hungerDrainPerMinute * Time.deltaTime / 60f);
             Thirst = Mathf.Max(0f, Thirst - thirstDrainPerMinute * Time.deltaTime / 60f);
+            Sleepiness = Mathf.Min(100f, Sleepiness + sleepinessGainPerMinute * Time.deltaTime / 60f);
 
             float recoveryMultiplier = Mathf.Clamp01(Mathf.Min(Hunger, Thirst) / 25f);
             if (CurrentEnergy < maxEnergy && recoveryMultiplier > 0f)
@@ -134,6 +138,16 @@ namespace NihongoLife.Player
             SaveProgress();
         }
 
+        public void Sleep(float hours = 8f)
+        {
+            float recovery = Mathf.Clamp(hours / 8f, 0.25f, 1f) * 100f;
+            Sleepiness = Mathf.Clamp(Sleepiness - recovery, 0f, 100f);
+            CurrentEnergy = Mathf.Clamp(maxEnergy, 0f, maxEnergy);
+            CurrentHealth = Mathf.Min(maxHealth, CurrentHealth + 8f);
+            OnStatusChanged?.Invoke();
+            SaveProgress();
+        }
+
         public void AddKnowledge(int amount)
         {
             if (amount <= 0) return;
@@ -157,6 +171,7 @@ namespace NihongoLife.Player
             CurrentEnergy = Mathf.Clamp(progress.energy <= 0f ? maxEnergy : progress.energy, 0f, maxEnergy);
             Hunger = Mathf.Clamp(progress.hunger <= 0f ? 100f : progress.hunger, 0f, 100f);
             Thirst = Mathf.Clamp(progress.thirst <= 0f ? 100f : progress.thirst, 0f, 100f);
+            Sleepiness = Mathf.Clamp(progress.sleepiness, 0f, 100f);
         }
 
         public void ReloadProgress()
@@ -178,6 +193,7 @@ namespace NihongoLife.Player
             progress.energy = CurrentEnergy;
             progress.hunger = Hunger;
             progress.thirst = Thirst;
+            progress.sleepiness = Sleepiness;
             repository.SaveProgress(progress);
         }
     }

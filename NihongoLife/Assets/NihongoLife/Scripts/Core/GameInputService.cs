@@ -27,7 +27,9 @@ namespace NihongoLife.Core
 
     public class GameInputService : MonoBehaviour, IGameService
     {
-        private const string OverridesKey = "NihongoLife.InputOverrides.v1";
+        // The action map was rebuilt and old binding GUIDs are no longer valid.
+        // Bumping this key prevents Unity from applying stale overrides at startup.
+        private const string OverridesKey = "NihongoLife.InputOverrides.v2";
         private static GameInputService _instance;
         private readonly Dictionary<GameInputId, (InputAction action, int binding)> _bindings = new();
         private InputActionMap _gameplay;

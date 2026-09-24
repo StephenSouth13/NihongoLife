@@ -8,7 +8,7 @@ namespace NihongoLife.Core
         public const string CityScene = "90_TestSandbox";
         public const string StationScene = "20_StationDistrict";
         public const string SushiRestaurantScene = "30_SushiRestaurant";
-        public const string SchoolScene = "40_HibariSchool";
+        public const string SchoolScene = "40_ HIBARICLASS";
 
         public const string StationEntrance = "station_entrance";
         public const string SushiEntrance = "sushi_entrance";

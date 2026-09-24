@@ -12,6 +12,8 @@ namespace NihongoLife.Core
         [SerializeField] private string isTalkingParam = "IsTalking";
         [SerializeField] private string bowParam = "Bow";
         [SerializeField] private string pointParam = "Point";
+        [SerializeField] private string sitStateName = "Sit";
+        [SerializeField] private string standStateName = "Idle";
         [SerializeField] private float speedDampTime = 0.12f;
         [SerializeField] private float fullSpeedReference = 1.15f;
         [SerializeField] private bool enableProceduralPresentationOnAnimatedRig = false;
@@ -36,6 +38,7 @@ namespace NihongoLife.Core
         private bool _hasTalking;
         private bool _hasBow;
         private bool _hasPoint;
+        private bool _isSitting;
         private bool _rigWarningLogged;
 
         private void Awake()
@@ -113,6 +116,24 @@ namespace NihongoLife.Core
             {
                 _animator.SetTrigger(_pointHash);
             }
+        }
+
+        public bool HasSitState => _animator != null && _animator.runtimeAnimatorController != null && HasState(sitStateName);
+
+        public bool SetSitting(bool sitting)
+        {
+            _isSitting = sitting;
+            if (_animator == null || _animator.runtimeAnimatorController == null) return false;
+            string state = sitting ? sitStateName : standStateName;
+            if (!HasState(state)) return false;
+            _animator.CrossFadeInFixedTime(state, 0.18f, 0);
+            if (_hasSpeed) _animator.SetFloat(_speedHash, 0f);
+            return true;
+        }
+
+        private bool HasState(string stateName)
+        {
+            return !string.IsNullOrWhiteSpace(stateName) && _animator.HasState(0, Animator.StringToHash(stateName));
         }
 
         private void CacheRig()

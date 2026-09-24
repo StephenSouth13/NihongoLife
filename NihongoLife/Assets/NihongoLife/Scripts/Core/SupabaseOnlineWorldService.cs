@@ -143,6 +143,7 @@ namespace NihongoLife.Core
 
             snapshot.displayName = _localDisplayName;
             snapshot.sceneName = sceneName;
+            snapshot.roomId = RoomIdFor(sceneName, _localPlayerId);
             snapshot.position = position;
             snapshot.rotation = rotation;
             snapshot.serverTick = DateTime.UtcNow.Ticks;
@@ -192,6 +193,7 @@ namespace NihongoLife.Core
                 playerId = snapshot.playerId,
                 displayName = snapshot.displayName,
                 sceneName = snapshot.sceneName,
+                roomId = snapshot.roomId,
                 x = snapshot.position.x,
                 y = snapshot.position.y,
                 z = snapshot.position.z,
@@ -214,6 +216,8 @@ namespace NihongoLife.Core
             var data = TryParsePresenceData(payloadJson);
             if (data == null || data.playerId == _localPlayerId) return;
 
+            if (!string.Equals(data.roomId, RoomIdFor(UnityEngine.SceneManagement.SceneManager.GetActiveScene().name, _localPlayerId), StringComparison.Ordinal)) return;
+
             if (_visiblePlayers.Count >= _maxVisiblePlayers) return;
 
             var snapshot = _visiblePlayers.Find(p => p.playerId == data.playerId);
@@ -225,6 +229,7 @@ namespace NihongoLife.Core
 
             snapshot.displayName = data.displayName;
             snapshot.sceneName = data.sceneName;
+            snapshot.roomId = data.roomId;
             snapshot.position = new Vector3(data.x, data.y, data.z);
             snapshot.rotation = Quaternion.Euler(0f, data.rotY, 0f);
             snapshot.serverTick = DateTime.UtcNow.Ticks;
@@ -374,10 +379,18 @@ namespace NihongoLife.Core
             public string playerId;
             public string displayName;
             public string sceneName;
+            public string roomId;
             public float x;
             public float y;
             public float z;
             public float rotY;
+        }
+
+        private static string RoomIdFor(string sceneName, string playerId)
+        {
+            if (!string.IsNullOrWhiteSpace(sceneName) && sceneName.IndexOf("Bedroom", StringComparison.OrdinalIgnoreCase) >= 0)
+                return "bedroom_" + (string.IsNullOrWhiteSpace(playerId) ? "guest" : playerId);
+            return sceneName ?? string.Empty;
         }
     }
 }

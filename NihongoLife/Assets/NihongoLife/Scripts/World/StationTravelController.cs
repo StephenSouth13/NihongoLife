@@ -55,6 +55,8 @@ namespace NihongoLife.World
         private float _messageUntil;
         private float _ticketDeparture = -1f;
         private readonly List<(Transform transform, Vector3 platformPosition)> _platformTrain = new();
+        private readonly List<Collider> _trainColliders = new();
+        private bool _playerTrainCollisionIgnored;
         private InteractionDetector _interactionDetector;
         private GameObject _carriageInterior;
         private Transform _platformDoorLeft;
@@ -110,6 +112,8 @@ namespace NihongoLife.World
 
             UpdatePlatformTrain();
             UpdatePlatformFixtures();
+            PlayerController player = FindFirstObjectByType<PlayerController>();
+            IgnorePlayerTrainCollision(player);
             if (_hasTicket && Time.time > _ticketDeparture + 5f)
             {
                 _hasTicket = false;
@@ -522,8 +526,26 @@ namespace NihongoLife.World
             foreach (string trainName in names)
             {
                 GameObject item = GameObject.Find(trainName);
-                if (item != null) _platformTrain.Add((item.transform, item.transform.position));
+                if (item != null)
+                {
+                    _platformTrain.Add((item.transform, item.transform.position));
+                    foreach (Collider collider in item.GetComponentsInChildren<Collider>(true))
+                        if (collider != null && !collider.isTrigger) _trainColliders.Add(collider);
+                }
             }
+        }
+
+        private void IgnorePlayerTrainCollision(PlayerController player)
+        {
+            if (_playerTrainCollisionIgnored || player == null || _trainColliders.Count == 0) return;
+            foreach (Collider playerCollider in player.GetComponentsInChildren<Collider>(true))
+            {
+                if (playerCollider == null) continue;
+                foreach (Collider trainCollider in _trainColliders)
+                    if (trainCollider != null) Physics.IgnoreCollision(playerCollider, trainCollider, true);
+            }
+            _playerTrainCollisionIgnored = true;
+            Debug.Log("[StationTravel] Player/train collision ignored for the moving platform train.");
         }
 
         private void UpdatePlatformTrain()

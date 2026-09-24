@@ -213,6 +213,7 @@ namespace NihongoLife.Core
             public string token_type;
             public int expires_in;
             public string refresh_token;
+            public string confirmation_sent_at;
             public SupabaseUser user;
         }
 

@@ -26,7 +26,7 @@ namespace NihongoLife.Core
             {
                 "20_StationDistrict" => "station_entrance",
                 "30_SushiRestaurant" => "sushi_entrance",
-                "40_HibariSchool" => "school_entrance",
+                "40_ HIBARICLASS" => "school_entrance",
                 _ => string.Empty
             };
             if (string.IsNullOrEmpty(targetSpawn)) return;

@@ -69,6 +69,7 @@ namespace NihongoLife.Data
         public float energy = 100f;
         public float hunger = 100f;
         public float thirst = 100f;
+        public float sleepiness = 0f;
         public int knowledge = 0;
         public int yen = 1200;
         public string activeScenarioId = string.Empty;

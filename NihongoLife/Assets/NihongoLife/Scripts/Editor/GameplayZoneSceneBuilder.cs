@@ -22,7 +22,7 @@ namespace NihongoLife.EditorTools
         private const string CityScene = SceneDir + "/90_TestSandbox.unity";
         private const string StationScene = SceneDir + "/20_StationDistrict.unity";
         private const string SushiScene = SceneDir + "/30_SushiRestaurant.unity";
-        private const string SchoolScene = SceneDir + "/40_HibariSchool.unity";
+        private const string SchoolScene = SceneDir + "/40_ HIBARICLASS.unity";
         private const string Sushi = "Assets/ThirdParty/Sushi Restaurant Kit - May 2023-20260920T035054Z-1-001";
         private const string Train = "Assets/ThirdParty/Train Pack - April 2019-20260920T035456Z-1-001";
         private const string House = "Assets/ThirdParty/Ultimate House Interior Pack - June 2020-20260920T035345Z-1-001";

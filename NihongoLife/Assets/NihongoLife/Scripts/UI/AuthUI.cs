@@ -19,6 +19,7 @@ namespace NihongoLife.UI
         private Button _signUpButton;
         private Button _guestButton;
         private TextMeshProUGUI _statusText;
+        private Image _statusPanel;
         private TextMeshProUGUI _titleText;
         private TextMeshProUGUI _userInfoText;
         private Button _logoutButton;
@@ -117,8 +118,14 @@ namespace NihongoLife.UI
             _guestButton.onClick.AddListener(OnGuestClicked);
 
             // Status text
-            _statusText = CreateText(card, "StatusText", new Vector2(0f, -246f), new Vector2(380f, 30f), 13f);
-            _statusText.color = new Color(0.98f, 0.55f, 0.55f, 1f);
+            var statusObject = CreateChild(card, "StatusPanel");
+            var statusRect = statusObject.AddComponent<RectTransform>();
+            CenterRect(statusRect, new Vector2(370f, 54f));
+            statusRect.anchoredPosition = new Vector2(0f, -246f);
+            _statusPanel = statusObject.AddComponent<Image>();
+            _statusPanel.color = new Color(0.12f, 0.16f, 0.19f, 0.96f);
+            _statusText = CreateText(statusObject, "StatusText", Vector2.zero, new Vector2(340f, 44f), 13f);
+            _statusText.color = new Color(0.83f, 0.91f, 0.95f, 1f);
             _statusText.text = string.Empty;
 
             // User info (shown when logged in)
@@ -172,7 +179,7 @@ namespace NihongoLife.UI
                 _guestButton.GetComponentInChildren<TextMeshProUGUI>().text = Text("Chơi thử (Guest)", "Play as Guest", "ゲストとしてプレイ");
             }
 
-            _statusText.text = string.Empty;
+            if (_statusPanel != null) _statusPanel.gameObject.SetActive(!string.IsNullOrWhiteSpace(_statusText.text));
         }
 
         // ──────────────────────── Button Handlers ────────────────────────
@@ -182,6 +189,7 @@ namespace NihongoLife.UI
             if (_isRegistering)
             {
                 _isRegistering = false;
+                ResetFormMessage();
                 UpdateState();
                 return;
             }
@@ -281,6 +289,30 @@ namespace NihongoLife.UI
         {
             PlayerSessionService.GetOrCreate().BeginGuest();
             Hide();
+        }
+
+        private void ResetFormMessage()
+        {
+            if (_emailInput != null) _emailInput.text = string.Empty;
+            if (_passwordInput != null) _passwordInput.text = string.Empty;
+            if (_displayNameInput != null) _displayNameInput.text = string.Empty;
+            SetStatus(string.Empty, false);
+        }
+
+        private void SetStatus(string message, bool positive)
+        {
+            if (_statusText == null) return;
+            _statusText.text = message ?? string.Empty;
+            _statusText.color = positive
+                ? new Color(0.48f, 0.9f, 0.62f, 1f)
+                : new Color(0.88f, 0.93f, 0.96f, 1f);
+            if (_statusPanel != null)
+            {
+                _statusPanel.color = positive
+                    ? new Color(0.06f, 0.22f, 0.15f, 0.96f)
+                    : new Color(0.12f, 0.16f, 0.19f, 0.96f);
+                _statusPanel.gameObject.SetActive(!string.IsNullOrWhiteSpace(message));
+            }
         }
 
         private void OnLogoutClicked()

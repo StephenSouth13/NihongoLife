@@ -170,7 +170,7 @@ namespace NihongoLife.Core
                         DisplayName = displayName;
                         PlayerPrefs.SetString(PrefKeyDisplayName, DisplayName);
                     }
-                    if (!success) errorMessage = "Supabase did not return a valid account.";
+                    if (!success) errorMessage = ExplainSignUpResponse(json);
                     done = true;
                 },
                 (code, error) =>
@@ -191,14 +191,30 @@ namespace NihongoLife.Core
             try
             {
                 var response = JsonUtility.FromJson<SupabaseClient.SupabaseSessionResponse>(json);
-                return response != null && response.user != null &&
-                       !string.IsNullOrWhiteSpace(response.user.id) &&
-                       string.IsNullOrWhiteSpace(response.access_token);
+                return response != null && string.IsNullOrWhiteSpace(response.access_token) &&
+                       ((response.user != null && !string.IsNullOrWhiteSpace(response.user.id)) ||
+                        !string.IsNullOrWhiteSpace(response.confirmation_sent_at));
             }
             catch
             {
                 return false;
             }
+        }
+
+        private static string ExplainSignUpResponse(string json)
+        {
+            if (string.IsNullOrWhiteSpace(json)) return "Supabase returned an empty response.";
+            try
+            {
+                var response = JsonUtility.FromJson<SupabaseClient.SupabaseSessionResponse>(json);
+                if (response != null && response.user == null && string.IsNullOrWhiteSpace(response.access_token))
+                    return "Email này đã tồn tại hoặc đang chờ xác minh. Hãy xác minh email rồi đăng nhập, hoặc dùng email khác.";
+            }
+            catch (Exception exception)
+            {
+                Debug.LogWarning($"[SupabaseAuth] Sign-up response parse failed: {exception.Message}");
+            }
+            return "Supabase không trả về tài khoản hợp lệ. Kiểm tra Email provider và Project URL/anon key.";
         }
 
         // ──────────────────────── Sign Out ────────────────────────
