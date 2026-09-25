@@ -800,10 +800,10 @@ namespace NihongoLife.UI
                 EmploymentSystem employment = FindFirstObjectByType<EmploymentSystem>();
                 BusinessSystem businessSystem = FindFirstObjectByType<BusinessSystem>();
                 string careerSummary = employment != null && employment.CurrentJob.HasValue
-                    ? $"<color=#78c7d4>Career</color>: {employment.CurrentJob} · {employment.CurrentRank} · {employment.CurrentCompletedShifts} shifts\n"
-                    : "<color=#78c7d4>Career</color>: Not employed\n";
+                    ? $"<color=#78c7d4>💼 {Text("Nghề nghiệp", "Career", "仕事")}</color>: {employment.CurrentJob} · {employment.CurrentRank} · {employment.CurrentCompletedShifts} {Text("Ca làm", "shifts", "シフト")}\n"
+                    : $"<color=#78c7d4>💼 {Text("Nghề nghiệp", "Career", "仕事")}</color>: {Text("Thất nghiệp", "Unemployed", "無職")}\n";
                 string businessSummary = businessSystem != null && businessSystem.OwnsCompany
-                    ? $"<color=#7fd39b>Company</color>: {businessSystem.Business.companyName} · Rep {businessSystem.Business.reputation}\n"
+                    ? $"<color=#7fd39b>🏢 {Text("Công ty", "Company", "会社")}</color>: {businessSystem.Business.companyName} · Uy tín {businessSystem.Business.reputation}\n"
                     : string.Empty;
                 characterStatsText.text = careerSummary + businessSummary +
                     $"<size=125%><b>{Text("Hồ sơ học viên", "Learner Profile", "学習者プロフィール")}</b></size>\n" +

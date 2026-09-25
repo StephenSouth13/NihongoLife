@@ -134,6 +134,7 @@ namespace NihongoLife.Scenario
         public string locationHintEn;
         public string locationHintJa;
         [Min(0)] public int rewardYen;
+        public List<string> rewardItems = new List<string>();
 
         [Header("Knowledge Progression")]
         [Range(1, 10)] public int learningDifficulty = 1;
