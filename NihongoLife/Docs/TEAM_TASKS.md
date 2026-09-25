@@ -372,6 +372,17 @@ Chủ dự án xác nhận: đã bước vào bên trong konbini thật (không 
 
 **Acceptance criteria**: mục 1-2 có bằng chứng Play Mode; mục 3 có câu trả lời rõ ràng (làm hay không làm thêm nút chạm); Console không lỗi mới liên quan `MobileGameControls`/`AddSushiStaff`.
 
+## Cập nhật (2026-09-24, chủ dự án tự làm + Claude hoàn thiện) — Phòng riêng `45_HomeBedroom` + lia camera vào zone
+
+**Bối cảnh**: chủ dự án tự tạo `45_HomeBedroom.unity` + `HomeBedroomRuntime.cs` (dựng phòng lúc Play, giống lỗi cũ của `SushiRestaurantRuntime`). Claude đã:
+- Bake toàn bộ nội thất (sàn/tường/giường/bàn học/thảm/điểm nghỉ `BedRestPoint`) trực tiếp vào `45_HomeBedroom.unity` qua `GameplayZoneSceneBuilder.BuildHomeBedroom()` (batch mode thật, biên dịch sạch). Sửa `HomeBedroomRuntime.cs` bỏ phần dựng phòng lúc Play, chỉ giữ bảng trạng thái (năng lượng/nghỉ/kiến thức/tiền) — đúng loại runtime UI được chấp nhận.
+- Thêm cổng `HomeBedroomPortal` trong `90_TestSandbox` (toạ độ `(-18,1,-4)`, đối xứng với `SchoolPortal` ở `(18,1,-4)`) + cổng ra khỏi phòng về thành phố.
+- Điền `WorldLocationCatalog.cs` còn thiếu entry `45_HomeBedroom` (trước đó sẽ hiện tên scene thô thay vì "Phòng riêng" trên HUD).
+- **Mới**: `Scripts/Camera/ZoneEntrancePan.cs` — lia camera thiết lập cảnh khi vào zone (dùng lại đúng `ThirdPersonCameraController.SetOrbit()`/`IsLocked` sẵn có, không tạo camera/AudioListener thứ 2 để tránh xung đột). Đã gắn vào `HomeBedroom_YourRoom` — mỗi lần vào phòng, camera lia từ yaw -55° sang 55° trong 2.4s (khoá di chuyển tạm thời), rồi trả lại điều khiển bình thường. **Chưa Play Mode kiểm chứng góc quay/tốc độ có mượt không** — cần chỉnh `panDuration`/`startYaw`/`endYaw`/`pitch`/`distance` trực tiếp trên component trong Inspector nếu cảm thấy chưa đẹp.
+- `HibariClassroomRuntime.cs` (chủ dự án tự viết) đã kiểm tra — đúng chuẩn AGENTS.md (chỉ decorate/gắn tương tác lên geometry đã bake, không tự sinh môi trường), không cần sửa.
+
+**Việc cần Codex Play Mode xác nhận**: vào `90_TestSandbox`, đi tới cổng `HomeBedroomPortal` (x=-18) → vào phòng, xem cảnh lia camera có mượt/đẹp không, nội thất không xuyên sàn/tường, `BedRestPoint` tương tác (F) được, ra cổng về đúng thành phố. Nếu muốn lia camera cho cả School/Sushi/Station, chỉ cần thêm `root.AddComponent<ZoneEntrancePan>();` vào các hàm `Build*()` tương ứng trong `GameplayZoneSceneBuilder.cs`, không cần viết lại gì.
+
 ## Trạng thái
 
 - [ ] TASK-A (Codex) — chưa giao

@@ -12,6 +12,7 @@ using NihongoLife.Interaction;
 using NihongoLife.Cameras;
 using NihongoLife.World;
 using NihongoLife.NPC;
+using NihongoLife.Home;
 
 namespace NihongoLife.EditorTools
 {
@@ -23,6 +24,7 @@ namespace NihongoLife.EditorTools
         private const string StationScene = SceneDir + "/20_StationDistrict.unity";
         private const string SushiScene = SceneDir + "/30_SushiRestaurant.unity";
         private const string SchoolScene = SceneDir + "/40_ HIBARICLASS.unity";
+        private const string HomeBedroomScene = SceneDir + "/45_HomeBedroom.unity";
         private const string Sushi = "Assets/ThirdParty/Sushi Restaurant Kit - May 2023-20260920T035054Z-1-001";
         private const string Train = "Assets/ThirdParty/Train Pack - April 2019-20260920T035456Z-1-001";
         private const string House = "Assets/ThirdParty/Ultimate House Interior Pack - June 2020-20260920T035345Z-1-001";
@@ -379,6 +381,108 @@ namespace NihongoLife.EditorTools
             Debug.Log("[GameplayZoneSceneBuilder] Added Aoki/Ota to 30_SushiRestaurant.unity.");
         }
 
+        /// <summary>
+        /// Bakes the player's own bedroom directly into 45_HomeBedroom.unity (floor/walls/bed/desk/rug,
+        /// same layout HomeBedroomRuntime used to build at runtime every Play) plus a city portal, so the
+        /// room exists in the finished scene instead of appearing only after pressing Play. Additive and
+        /// check-first: opens the existing scene (created by the project owner directly in the Editor,
+        /// already has HomeBedroom_YourRoom + Spawn_home_bedroom), only adds what's missing.
+        /// HomeBedroomRuntime.BuildRoom() was trimmed to stop re-generating this geometry every Start()
+        /// now that it is baked — see HomeBedroomRuntime.cs. Its BuildUi()/Update() (live energy/rest/
+        /// knowledge/yen status panel) stays runtime-built, same as the rest of the HUD.
+        /// </summary>
+        public static void BuildHomeBedroom()
+        {
+            Scene scene = EditorSceneManager.OpenScene(HomeBedroomScene, OpenSceneMode.Single);
+            GameObject root = GameObject.Find("HomeBedroom_YourRoom");
+            if (root == null)
+            {
+                Debug.LogError("[GameplayZoneSceneBuilder] HomeBedroom_YourRoom not found in 45_HomeBedroom.unity — aborting BuildHomeBedroom.");
+                return;
+            }
+
+            bool changed = false;
+
+            if (root.transform.Find("Floor") == null)
+            {
+                BakeHomeBedroomGeometry(root.transform);
+                changed = true;
+            }
+
+            if (root.GetComponent<ZoneEntrancePan>() == null)
+            {
+                root.AddComponent<ZoneEntrancePan>();
+                changed = true;
+            }
+
+            if (!changed)
+            {
+                Debug.Log("[GameplayZoneSceneBuilder] HomeBedroom already fully baked — nothing to add.");
+                return;
+            }
+
+            EditorSceneManager.MarkSceneDirty(scene);
+            EditorSceneManager.SaveScene(scene, HomeBedroomScene);
+            Debug.Log("[GameplayZoneSceneBuilder] Updated 45_HomeBedroom.unity.");
+        }
+
+        private static void BakeHomeBedroomGeometry(Transform root)
+        {
+
+            var wall = new Material(Shader.Find("Universal Render Pipeline/Simple Lit")) { color = new Color(0.82f, 0.88f, 0.9f) };
+            var floor = new Material(Shader.Find("Universal Render Pipeline/Simple Lit")) { color = new Color(0.16f, 0.2f, 0.25f) };
+            var wood = new Material(Shader.Find("Universal Render Pipeline/Simple Lit")) { color = new Color(0.42f, 0.22f, 0.12f) };
+            var accent = new Material(Shader.Find("Universal Render Pipeline/Simple Lit")) { color = new Color(0.24f, 0.62f, 0.58f) };
+
+            BedroomBlock(root.transform, "Floor", new Vector3(0f, -0.15f, 0f), new Vector3(12f, 0.3f, 9f), floor);
+            BedroomBlock(root.transform, "BackWall", new Vector3(0f, 2.5f, 4.35f), new Vector3(12f, 5f, 0.3f), wall);
+            BedroomBlock(root.transform, "LeftWall", new Vector3(-5.85f, 2.5f, 0f), new Vector3(0.3f, 5f, 9f), wall);
+            BedroomBlock(root.transform, "RightWall", new Vector3(5.85f, 2.5f, 0f), new Vector3(0.3f, 5f, 9f), wall);
+            BedroomBlock(root.transform, "BedFrame", new Vector3(-2.8f, 0.45f, 1.4f), new Vector3(4.2f, 0.55f, 2.1f), wood);
+            BedroomBlock(root.transform, "Mattress", new Vector3(-2.8f, 0.82f, 1.4f), new Vector3(3.9f, 0.25f, 1.9f), accent);
+            BedroomBlock(root.transform, "BedHeadboard", new Vector3(-2.8f, 1.5f, 2.25f), new Vector3(4.2f, 1.4f, 0.22f), wood);
+            BedroomBlock(root.transform, "Desk", new Vector3(2.4f, 0.9f, 2.6f), new Vector3(2.3f, 0.18f, 1f), wood);
+            BedroomBlock(root.transform, "DeskLeg_A", new Vector3(1.55f, 0.4f, 2.6f), new Vector3(0.16f, 0.8f, 0.16f), wood);
+            BedroomBlock(root.transform, "DeskLeg_B", new Vector3(3.25f, 0.4f, 2.6f), new Vector3(0.16f, 0.8f, 0.16f), wood);
+            BedroomBlock(root.transform, "WindowGlow", new Vector3(2.3f, 2.7f, 4.15f), new Vector3(3.2f, 1.8f, 0.08f), accent);
+            BedroomBlock(root.transform, "Rug", new Vector3(1f, 0.03f, -1.5f), new Vector3(4.4f, 0.05f, 2.6f), accent);
+
+            CreateDecorationSlot(root.transform, "DecorationSlot_Wall", new Vector3(0f, 2.35f, 4.12f));
+            CreateDecorationSlot(root.transform, "DecorationSlot_Desk", new Vector3(2.4f, 1.08f, 2.6f));
+            CreateDecorationSlot(root.transform, "DecorationSlot_Floor", new Vector3(1.2f, 0.08f, -1.5f));
+
+            var restPoint = new GameObject("BedRestPoint");
+            restPoint.transform.SetParent(root.transform, false);
+            restPoint.transform.SetPositionAndRotation(new Vector3(-2.8f, 1.05f, 0.85f), Quaternion.Euler(0f, 180f, 0f));
+            var restCollider = restPoint.AddComponent<BoxCollider>();
+            restCollider.isTrigger = true;
+            restCollider.size = new Vector3(2.4f, 1.5f, 1.5f);
+            restPoint.AddComponent<BedroomRestInteractable>();
+
+            CreateExitPortal(root.transform, "ExitToCity", HomeBedroomScene, "city_home_return", "街へ戻る / Trở lại thành phố", new Vector3(0f, 1.1f, -4f));
+            CreatePreviewCamera(root.transform, Vector3.zero, "BedroomSceneCamera", new Vector3(0f, 3.2f, -7f), new Vector3(0f, 1.3f, 1f));
+            CreateLighting(root.transform, new Vector3(0f, 4f, 1f));
+        }
+
+        private static void CreateDecorationSlot(Transform parent, string name, Vector3 position)
+        {
+            var slot = new GameObject(name);
+            slot.transform.SetParent(parent, false);
+            slot.transform.localPosition = position;
+            slot.SetActive(false);
+        }
+
+        private static GameObject BedroomBlock(Transform parent, string name, Vector3 position, Vector3 scale, Material material)
+        {
+            var go = GameObject.CreatePrimitive(PrimitiveType.Cube);
+            go.name = name;
+            go.transform.SetParent(parent, false);
+            go.transform.localPosition = position;
+            go.transform.localScale = scale;
+            go.GetComponent<Renderer>().sharedMaterial = material;
+            return go;
+        }
+
         private static void CreateDiningSet(Transform parent, Vector3 center, string suffix)
         {
             GameObject table = Place(Sushi, "Environment_Table", parent, $"DiningTable_{suffix}", center, new Vector3(2.5f, 0.86f, 1.45f), Quaternion.identity, true);
@@ -438,6 +542,8 @@ namespace NihongoLife.EditorTools
             CreateSpawn(root.transform, "city_sushi_return", new Vector3(-9f, 0.1f, -6.2f), Quaternion.Euler(0f, 180f, 0f));
             CreateCityPortal(root.transform, "SchoolPortal", SchoolScene, "school_entrance", "学院 / Trường học", new Vector3(18f, 1f, -4f), new Color(0.2f, 0.55f, 0.32f));
             CreateSpawn(root.transform, "city_school_return", new Vector3(18f, 0.1f, -6.2f), Quaternion.Euler(0f, 180f, 0f));
+            CreateCityPortal(root.transform, "HomeBedroomPortal", HomeBedroomScene, "home_bedroom", "自室 / Phòng riêng", new Vector3(-18f, 1f, -4f), new Color(0.55f, 0.4f, 0.75f));
+            CreateSpawn(root.transform, "city_home_return", new Vector3(-18f, 0.1f, -6.2f), Quaternion.Euler(0f, 180f, 0f));
 
             EditorSceneManager.MarkSceneDirty(scene);
             EditorSceneManager.SaveScene(scene, CityScene);
@@ -658,6 +764,7 @@ namespace NihongoLife.EditorTools
             AddOrEnable(scenes, StationScene);
             AddOrEnable(scenes, SushiScene);
             AddOrEnable(scenes, SchoolScene);
+            AddOrEnable(scenes, HomeBedroomScene);
             EditorBuildSettings.scenes = scenes.ToArray();
         }
 

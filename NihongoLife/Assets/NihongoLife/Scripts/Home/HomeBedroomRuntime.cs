@@ -6,80 +6,20 @@ using NihongoLife.Player;
 
 namespace NihongoLife.Home
 {
+    /// <summary>
+    /// The room geometry (floor/walls/bed/desk/rug/BedRestPoint) is baked directly into
+    /// 45_HomeBedroom.unity by GameplayZoneSceneBuilder.BuildHomeBedroom() — it used to be built here
+    /// every Start(), which meant the saved scene had no visible room until Play was pressed. This
+    /// component now only owns the live status HUD (energy/rest/knowledge/yen), which genuinely needs
+    /// to run at runtime, the same way the rest of the HUD is runtime-built.
+    /// </summary>
     public sealed class HomeBedroomRuntime : MonoBehaviour
     {
-        private Material _wall;
-        private Material _floor;
-        private Material _wood;
-        private Material _accent;
         private TextMeshProUGUI _statusText;
 
         private void Start()
         {
-            _wall = Material("Wall", new Color(0.82f, 0.88f, 0.9f));
-            _floor = Material("Floor", new Color(0.16f, 0.2f, 0.25f));
-            _wood = Material("Wood", new Color(0.42f, 0.22f, 0.12f));
-            _accent = Material("Accent", new Color(0.24f, 0.62f, 0.58f));
-            BuildRoom();
             BuildUi();
-        }
-
-        private void BuildRoom()
-        {
-            Block("Floor", new Vector3(0f, -0.15f, 0f), new Vector3(12f, 0.3f, 9f), _floor);
-            Block("BackWall", new Vector3(0f, 2.5f, 4.35f), new Vector3(12f, 5f, 0.3f), _wall);
-            Block("LeftWall", new Vector3(-5.85f, 2.5f, 0f), new Vector3(0.3f, 5f, 9f), _wall);
-            Block("RightWall", new Vector3(5.85f, 2.5f, 0f), new Vector3(0.3f, 5f, 9f), _wall);
-            Block("BedFrame", new Vector3(-2.8f, 0.45f, 1.4f), new Vector3(4.2f, 0.55f, 2.1f), _wood);
-            Block("Mattress", new Vector3(-2.8f, 0.82f, 1.4f), new Vector3(3.9f, 0.25f, 1.9f), _accent);
-            CreateRestPoint("BedRestPoint", new Vector3(-2.8f, 1.05f, 0.85f), Quaternion.Euler(0f, 180f, 0f));
-            Block("Desk", new Vector3(2.4f, 0.9f, 2.6f), new Vector3(2.3f, 0.18f, 1f), _wood);
-            Block("DeskLeg", new Vector3(1.55f, 0.4f, 2.6f), new Vector3(0.16f, 0.8f, 0.16f), _wood);
-            Block("DeskLeg", new Vector3(3.25f, 0.4f, 2.6f), new Vector3(0.16f, 0.8f, 0.16f), _wood);
-            Block("WindowGlow", new Vector3(2.3f, 2.7f, 4.15f), new Vector3(3.2f, 1.8f, 0.08f), _accent);
-            Block("Rug", new Vector3(1f, 0.03f, -1.5f), new Vector3(4.4f, 0.05f, 2.6f), _accent);
-            Block("BedHeadboard", new Vector3(-2.8f, 1.5f, 2.25f), new Vector3(4.2f, 1.4f, 0.22f), _wood);
-            CreateDecorationSlot("DecorationSlot_Wall", new Vector3(0f, 2.35f, 4.12f));
-            CreateDecorationSlot("DecorationSlot_Desk", new Vector3(2.4f, 1.08f, 2.6f));
-            CreateDecorationSlot("DecorationSlot_Floor", new Vector3(1.2f, 0.08f, -1.5f));
-        }
-
-        private void CreateDecorationSlot(string name, Vector3 position)
-        {
-            var slot = new GameObject(name);
-            slot.transform.SetParent(transform, false);
-            slot.transform.localPosition = position;
-            slot.SetActive(false);
-        }
-
-        private void CreateRestPoint(string name, Vector3 position, Quaternion rotation)
-        {
-            var go = new GameObject(name);
-            go.transform.SetParent(transform, false);
-            go.transform.SetPositionAndRotation(position, rotation);
-            var collider = go.AddComponent<BoxCollider>();
-            collider.isTrigger = true;
-            collider.size = new Vector3(2.4f, 1.5f, 1.5f);
-            go.AddComponent<BedroomRestInteractable>();
-        }
-
-        private GameObject Block(string name, Vector3 position, Vector3 scale, Material material)
-        {
-            var go = GameObject.CreatePrimitive(PrimitiveType.Cube);
-            go.name = name;
-            go.transform.SetParent(transform, false);
-            go.transform.localPosition = position;
-            go.transform.localScale = scale;
-            go.GetComponent<Renderer>().sharedMaterial = material;
-            return go;
-        }
-
-        private Material Material(string name, Color color)
-        {
-            var material = new Material(Shader.Find("Universal Render Pipeline/Simple Lit") ?? Shader.Find("Standard"));
-            material.name = name;
-            material.color = color;
-            return material;
         }
 
         private void BuildUi()

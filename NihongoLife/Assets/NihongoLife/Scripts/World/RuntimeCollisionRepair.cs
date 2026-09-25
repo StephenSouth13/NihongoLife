@@ -15,6 +15,7 @@ namespace NihongoLife.World
         {
             if (repairOnStart)
             {
+                EnsureSingleStoreBuilding();
                 RepairBuildings();
                 BuildStoreInterior();
                 CacheControlledNpcs();
@@ -50,6 +51,43 @@ namespace NihongoLife.World
                 {
                     EnsureKonbiniSideColliders(transform);
                 }
+            }
+        }
+
+        /// <summary>
+        /// The town scene contains authored store geometry. Older scene builders
+        /// could leave a second KonbiniStoreAsset or a second merchandise root
+        /// behind, which makes walls, props and colliders overlap at runtime.
+        /// Keep the first authored instance and disable only true duplicates.
+        /// </summary>
+        private static void EnsureSingleStoreBuilding()
+        {
+            var storeBuildings = new List<Transform>();
+            var merchandiseRoots = new List<Transform>();
+
+            foreach (var transform in FindObjectsByType<Transform>(FindObjectsInactive.Include, FindObjectsSortMode.None))
+            {
+                if (transform == null) continue;
+                if (transform.name == "KonbiniStoreAsset") storeBuildings.Add(transform);
+                if (transform.name == "Store_ThirdParty_Visuals") merchandiseRoots.Add(transform);
+            }
+
+            DisableDuplicates(storeBuildings, "store building");
+            DisableDuplicates(merchandiseRoots, "store merchandise");
+        }
+
+        private static void DisableDuplicates(List<Transform> candidates, string label)
+        {
+            if (candidates.Count < 2) return;
+
+            // Deterministic order keeps the authored first instance stable.
+            candidates.Sort((a, b) => a.GetInstanceID().CompareTo(b.GetInstanceID()));
+            for (int i = 1; i < candidates.Count; i++)
+            {
+                var duplicate = candidates[i];
+                if (duplicate == null || !duplicate.gameObject.activeSelf) continue;
+                duplicate.gameObject.SetActive(false);
+                Debug.LogWarning($"[StoreLayout] Disabled duplicate {label}: {duplicate.name}", duplicate);
             }
         }
 
