@@ -1,5 +1,7 @@
 using TMPro;
+using System.Collections;
 using UnityEngine;
+using UnityEngine.Networking;
 using UnityEngine.UI;
 using NihongoLife.Exam;
 
@@ -28,6 +30,7 @@ namespace NihongoLife.UI
         // Passage (left panel, shown when the current question references one)
         private GameObject _passagePanelRoot;
         private RectTransform _passageContent;
+        private AudioSource _listeningAudio;
 
         // Question (right panel)
         private RectTransform _questionPanel;
@@ -93,6 +96,10 @@ namespace NihongoLife.UI
 
         protected override void Build(RectTransform card)
         {
+            _listeningAudio = gameObject.GetComponent<AudioSource>() ?? gameObject.AddComponent<AudioSource>();
+            _listeningAudio.playOnAwake = false;
+            _listeningAudio.loop = false;
+            _listeningAudio.spatialBlend = 0f;
             var header = new GameObject("ExamHeader", typeof(RectTransform), typeof(Image));
             header.transform.SetParent(card, false);
             Place((RectTransform)header.transform, 24f, 76f, 1252f, 82f);
@@ -476,11 +483,24 @@ namespace NihongoLife.UI
                 playRow.GetComponent<LayoutElement>().preferredHeight = 44f;
                 var playButton = AddButton(playRow.transform, string.Empty, 0f, 0f, 220f, 40f, true, 15f);
                 playButton.GetComponentInChildren<TextMeshProUGUI>().text = $"{Pick("Nghe", "Play", "再生")} ({remaining})";
-                playButton.interactable = remaining > 0;
+                bool hasAudio = passage.audioClip != null || !string.IsNullOrWhiteSpace(passage.audioUrl);
+                playButton.interactable = remaining > 0 && hasAudio;
+                if (!hasAudio)
+                {
+                    playButton.GetComponentInChildren<TextMeshProUGUI>().text = "Audio missing";
+                }
                 playButton.onClick.AddListener(() =>
                 {
-                    manager.TryConsumePassagePlay(passage);
-                    RefreshPassage(manager, section, question);
+                    if (passage.audioClip != null)
+                    {
+                        if (!manager.TryConsumePassagePlay(passage)) return;
+                        PlayListeningClip(passage.audioClip);
+                        RefreshPassage(manager, section, question);
+                    }
+                    else if (!string.IsNullOrWhiteSpace(passage.audioUrl))
+                    {
+                        StartCoroutine(DownloadAndPlayListening(manager, passage, section, question));
+                    }
                 });
             }
 
@@ -495,6 +515,31 @@ namespace NihongoLife.UI
             float bodyHeight = EstimateTextHeight(body, 520f, 16f);
             var bodyText = AddText(_passageContent, body, 16f, 0f, 0f, 520f, bodyHeight, TextAlignmentOptions.TopLeft, FontStyles.Normal, true);
             bodyText.gameObject.AddComponent<LayoutElement>().preferredHeight = bodyHeight;
+        }
+
+        private void PlayListeningClip(AudioClip clip)
+        {
+            if (_listeningAudio == null || clip == null) return;
+            _listeningAudio.Stop();
+            _listeningAudio.clip = clip;
+            _listeningAudio.Play();
+        }
+
+        private IEnumerator DownloadAndPlayListening(ExamManager manager, ExamPassage passage, ExamSection section, ExamQuestion question)
+        {
+            using (UnityWebRequest request = UnityWebRequestMultimedia.GetAudioClip(passage.audioUrl, AudioType.MPEG))
+            {
+                yield return request.SendWebRequest();
+                if (request.result != UnityWebRequest.Result.Success)
+                {
+                    Debug.LogWarning($"[ExamPlayUI] Listening audio download failed: {request.error}");
+                    yield break;
+                }
+
+                if (!manager.TryConsumePassagePlay(passage)) yield break;
+                PlayListeningClip(DownloadHandlerAudioClip.GetContent(request));
+                RefreshPassage(manager, section, question);
+            }
         }
 
         // ──────────────────────── Refresh: question / answer ────────────────────────

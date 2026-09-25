@@ -40,6 +40,18 @@ namespace NihongoLife.Exam
     public class ExamPassage
     {
         public string id;
+        [Tooltip("Audio used by Listening questions. Assign an imported WAV/MP3 clip in the exam asset.")]
+        public AudioClip audioClip;
+        [Tooltip("Optional CDN/Supabase Storage URL. Prefer this for WebGL instead of shipping audio in Assets.")]
+        public string audioUrl;
+        [Tooltip("Optional remote MP4/WebM URL for video-based listening material.")]
+        public string videoUrl;
+        [Tooltip("Optional public YouTube URL. Resolve it through the website player, never with a service key in Unity.")]
+        public string youtubeUrl;
+        [Min(0f)] public float mediaStartSeconds;
+        [Min(0f)] public float mediaDurationSeconds;
+        [Tooltip("0 = preserve source ratio; otherwise use width/height, e.g. 16/9 = 1.7778.")]
+        [Min(0f)] public float mediaAspectRatio;
         [TextArea(4, 20)] public string titleVi;
         [TextArea(4, 20)] public string titleEn;
         [TextArea(4, 20)] public string titleJa;
@@ -137,6 +149,11 @@ namespace NihongoLife.Exam
         public ExamType examType = ExamType.Jlpt;
         /// <summary>JLPT: "N5".."N1". IELTS: "Academic" or "General Training".</summary>
         public string level = "N5";
+        [Header("Learner level mapping")]
+        [Tooltip("Human-readable level such as Basic, Elementary, Intermediate, Upper-intermediate or Advanced.")]
+        public string learnerLevel = "Beginner";
+        [Min(0f)] public float recommendedBandMin;
+        [Min(0f)] public float recommendedBandMax;
         public string titleVi;
         public string titleEn;
         public string titleJa;

@@ -148,19 +148,34 @@ namespace NihongoLife.UI
         {
             var card = new GameObject("ExamCard", typeof(RectTransform), typeof(Image), typeof(LayoutElement));
             card.transform.SetParent(_listRoot, false);
-            card.GetComponent<LayoutElement>().preferredHeight = 118f;
+            card.GetComponent<LayoutElement>().preferredHeight = 154f;
             card.GetComponent<Image>().color = Surface;
 
             AddText(card.transform, $"{exam.level}  ·  {Pick(exam.titleVi, exam.titleEn, exam.titleJa)}", 22f, 22f, 14f, 640f, 32f, TextAlignmentOptions.MidlineLeft, FontStyles.Bold, false, Gold);
-            AddText(card.transform, Pick(exam.descriptionVi, exam.descriptionEn, exam.descriptionEn), 15f, 22f, 50f, 640f, 56f, TextAlignmentOptions.TopLeft, FontStyles.Normal, true, Muted);
+            AddText(card.transform, Pick(exam.descriptionVi, exam.descriptionEn, exam.descriptionEn), 15f, 22f, 48f, 640f, 44f, TextAlignmentOptions.TopLeft, FontStyles.Normal, true, Muted);
+
+            string levelLabel = BuildLevelLabel(exam);
+            AddText(card.transform, levelLabel, 14f, 22f, 94f, 760f, 22f, TextAlignmentOptions.MidlineLeft, FontStyles.Bold, false, new Color(0.35f, 0.82f, 0.72f, 1f));
 
             string bestLabel = BuildBestLabel(exam, progress);
-            AddText(card.transform, bestLabel, 15f, 22f, 88f, 640f, 24f, TextAlignmentOptions.MidlineLeft, FontStyles.Normal);
+            AddText(card.transform, bestLabel, 14f, 22f, 120f, 760f, 24f, TextAlignmentOptions.MidlineLeft, FontStyles.Normal);
 
             var start = AddButton(card.transform, string.Empty, 900f, 34f, 180f, 50f, true, 18f);
             start.GetComponentInChildren<TextMeshProUGUI>().text = Pick("Bắt đầu", "Start", "始める");
             var capturedExam = exam;
             start.onClick.AddListener(() => StartExam(capturedExam));
+        }
+
+        private string BuildLevelLabel(ExamDefinition exam)
+        {
+            if (exam == null) return string.Empty;
+            if (exam.examType != ExamType.Ielts)
+                return $"{Pick("Cap do", "Level", "レベル")}: {exam.level}";
+
+            string band = exam.recommendedBandMax > 0f
+                ? $"IELTS {exam.recommendedBandMin:0.0}-{exam.recommendedBandMax:0.0}"
+                : $"IELTS {exam.recommendedBandMin:0.0}+";
+            return $"{Pick("Cap do", "Level", "レベル")}: {exam.learnerLevel}  |  {band}";
         }
 
         private string BuildBestLabel(ExamDefinition exam, PlayerProgressDto progress)

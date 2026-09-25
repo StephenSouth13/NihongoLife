@@ -1,4 +1,6 @@
 using UnityEngine;
+using UnityEngine.Animations;
+using UnityEngine.Playables;
 
 namespace NihongoLife.Core
 {
@@ -19,6 +21,10 @@ namespace NihongoLife.Core
         [SerializeField] private float speedDampTime = 0.12f;
         [SerializeField] private float fullSpeedReference = 1.15f;
         [SerializeField] private bool enableProceduralPresentationOnAnimatedRig = false;
+        [Header("Direct rest animation fallback")]
+        [SerializeField] private string sittingClipName = "Remy@Sitting";
+        [SerializeField] private string layingClipName = "Remy@Laying Nodding";
+        [SerializeField] private string jumpClipName = "Remy@Jump";
         [SerializeField] private float idleBreathAmount = 0.012f;
         [SerializeField] private float walkBobAmount = 0.025f;
         [SerializeField] private float lookAtWeight = 0.42f;
@@ -42,6 +48,8 @@ namespace NihongoLife.Core
         private bool _hasPoint;
         private bool _isSitting;
         private bool _rigWarningLogged;
+        private PlayableGraph _directAnimationGraph;
+        private bool _directAnimationPlaying;
 
         private void Awake()
         {
@@ -60,6 +68,8 @@ namespace NihongoLife.Core
             ApplyHeadLook();
             TickConversationGestures();
         }
+
+        private void OnDestroy() => StopDirectAnimation();
 
         public void SetAnimator(Animator animator)
         {
@@ -125,9 +135,15 @@ namespace NihongoLife.Core
         public bool SetSitting(bool sitting)
         {
             _isSitting = sitting;
-            if (_animator == null || _animator.runtimeAnimatorController == null) return false;
+            if (_animator == null) return false;
             string state = sitting ? sitStateName : standStateName;
-            if (!HasState(state)) return false;
+            if (_animator.runtimeAnimatorController == null || !HasState(state))
+            {
+                if (sitting) return PlayDirectClip(sittingClipName, "Sitting");
+                StopDirectAnimation();
+                return true;
+            }
+            StopDirectAnimation();
             _animator.CrossFadeInFixedTime(state, 0.18f, 0);
             if (_hasSpeed) _animator.SetFloat(_speedHash, 0f);
             return true;
@@ -136,9 +152,15 @@ namespace NihongoLife.Core
         public bool SetResting(bool resting)
         {
             _isSitting = !resting;
-            if (_animator == null || _animator.runtimeAnimatorController == null) return false;
+            if (_animator == null) return false;
             string state = resting ? restStateName : standStateName;
-            if (!HasState(state)) return false;
+            if (_animator.runtimeAnimatorController == null || !HasState(state))
+            {
+                if (resting) return PlayDirectClip(layingClipName, "Laying");
+                StopDirectAnimation();
+                return true;
+            }
+            StopDirectAnimation();
             _animator.CrossFadeInFixedTime(state, 0.22f, 0);
             if (_hasSpeed) _animator.SetFloat(_speedHash, 0f);
             return true;
@@ -146,7 +168,11 @@ namespace NihongoLife.Core
 
         public bool TriggerJump()
         {
-            if (_animator == null || _animator.runtimeAnimatorController == null || !HasState(jumpStateName)) return false;
+            if (_animator == null) return false;
+            if (_animator.runtimeAnimatorController == null || !HasState(jumpStateName))
+            {
+                return PlayDirectClip(jumpClipName, "Jump");
+            }
             _animator.CrossFadeInFixedTime(jumpStateName, 0.1f, 0);
             if (_hasSpeed) _animator.SetFloat(_speedHash, 0f);
             return true;
@@ -155,6 +181,47 @@ namespace NihongoLife.Core
         private bool HasState(string stateName)
         {
             return !string.IsNullOrWhiteSpace(stateName) && _animator.HasState(0, Animator.StringToHash(stateName));
+        }
+
+        private bool PlayDirectClip(string requestedName, string label)
+        {
+            if (_animator == null || string.IsNullOrWhiteSpace(requestedName)) return false;
+            AnimationClip clip = FindAnimationClip(requestedName);
+            if (clip == null)
+            {
+                Debug.LogWarning($"[CharacterAnimation] '{name}' could not find {label} clip '{requestedName}'.", this);
+                return false;
+            }
+
+            StopDirectAnimation();
+            _directAnimationGraph = PlayableGraph.Create($"{name}_{label}");
+            var output = AnimationPlayableOutput.Create(_directAnimationGraph, label, _animator);
+            var playable = AnimationClipPlayable.Create(_directAnimationGraph, clip);
+            playable.SetApplyFootIK(true);
+            output.SetSourcePlayable(playable);
+            _directAnimationGraph.Play();
+            _directAnimationPlaying = true;
+            if (_hasSpeed) _animator.SetFloat(_speedHash, 0f);
+            return true;
+        }
+
+        private static AnimationClip FindAnimationClip(string requestedName)
+        {
+            string normalized = requestedName.Replace(" ", string.Empty).Replace("@", string.Empty).ToLowerInvariant();
+            foreach (var clip in Resources.FindObjectsOfTypeAll<AnimationClip>())
+            {
+                if (clip == null) continue;
+                string candidate = clip.name.Replace(" ", string.Empty).Replace("@", string.Empty).ToLowerInvariant();
+                if (candidate == normalized || candidate.Contains(normalized) || normalized.Contains(candidate)) return clip;
+            }
+            return null;
+        }
+
+        private void StopDirectAnimation()
+        {
+            if (!_directAnimationPlaying) return;
+            if (_directAnimationGraph.IsValid()) _directAnimationGraph.Destroy();
+            _directAnimationPlaying = false;
         }
 
         private void CacheRig()
