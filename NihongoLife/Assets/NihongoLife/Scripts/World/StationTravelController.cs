@@ -65,6 +65,7 @@ namespace NihongoLife.World
         private Vector3 _platformDoorLeftClosed;
         private Vector3 _platformDoorRightClosed;
         private TextMeshPro _departureBoard;
+        private const string TicketItemId = "train_ticket_midori";
 
         public void Configure(Transform platform, Transform carriage, Transform movingScenery)
         {
@@ -121,6 +122,7 @@ namespace NihongoLife.World
             {
                 _hasTicket = false;
                 _gatePassed = false;
+                PlayerInventory.Instance?.RemoveItem(TicketItemId);
                 ShowMessage(Localize("Vé đã hết hiệu lực vì bạn lỡ chuyến.", "Your ticket expired because the train was missed.", "乗り遅れたため、切符は無効になりました。"));
             }
 
@@ -177,6 +179,12 @@ namespace NihongoLife.World
                 ShowMessage(Localize($"Không đủ tiền. Giá vé: ¥{fare}.", $"Not enough money. Fare: ¥{fare}.", $"お金が足りません。運賃は¥{fare}です。"));
                 return;
             }
+            if (!PlayerInventory.Instance.AddItem(TicketItemId, "切符", $"Vé tàu {destination}", fare, 1))
+            {
+                PlayerInventory.Instance.AddYen(fare);
+                ShowMessage(Localize("Balo đã đầy. Không thể nhận vé.", "Your bag is full. The ticket was not issued.", "バッグがいっぱいです。切符を発行できません。"));
+                return;
+            }
             _destination = destination;
             _hasTicket = true;
             CompleteQuestObjective("obj_buy_ticket");
@@ -203,6 +211,7 @@ namespace NihongoLife.World
             if (!IsTrainBoarding()) { ShowMessage(Localize("Tàu chưa vào ga hoặc đã đóng cửa.", "The train is not boarding now.", "現在、この電車には乗車できません。")); return; }
             if (_carriageInterior != null) _carriageInterior.SetActive(true);
             Teleport(player, carriageSpawn);
+            PlayerInventory.Instance?.RemoveItem(TicketItemId);
             CompleteQuestObjective("obj_board_train");
             ShowMessage(Localize("Đã lên tàu. Hãy tìm chỗ ngồi.", "You boarded the train. Please find a seat.", "乗車しました。席をお探しください。"));
         }
@@ -287,6 +296,13 @@ namespace NihongoLife.World
                     box.isTrigger = true;
                     box.center = new Vector3(0f, 1f, 0f);
                     box.size = new Vector3(2.2f, 2.2f, 1.2f);
+                }
+                else
+                {
+                    // The scanner is an interaction kiosk, not a solid wall.
+                    // A non-trigger mesh collider made the player stop in front
+                    // of it and hid the interaction prompt behind the mesh.
+                    collider.isTrigger = true;
                 }
                 scannerInteractable = scanner.AddComponent<StationTravelInteractable>();
                 scannerInteractable.Configure(this, StationAction.PassGate, "改札を通る", "QUET VE / SCAN TICKET");
