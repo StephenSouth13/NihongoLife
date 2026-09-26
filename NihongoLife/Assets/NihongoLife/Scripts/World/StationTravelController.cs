@@ -87,6 +87,7 @@ namespace NihongoLife.World
             CachePlatformTrain();
             CachePlatformFixtures();
             EnsureStationStaffInteractable();
+            NormalizeStationInteractions();
             RefreshHud();
         }
 
@@ -256,6 +257,43 @@ namespace NihongoLife.World
             var staff = interaction.AddComponent<StationStaffInteractable>();
             staff.Configure(this);
             AddRoleLabel(clerk.transform, "NHAN VIEN GA\n駅員", new Color(1f, 0.82f, 0.3f));
+        }
+
+        private void NormalizeStationInteractions()
+        {
+            var interactables = FindObjectsByType<StationTravelInteractable>(FindObjectsInactive.Include, FindObjectsSortMode.None);
+            StationTravelInteractable firstTicketMachine = null;
+            foreach (var interactable in interactables)
+            {
+                if (interactable == null) continue;
+                string objectName = interactable.gameObject.name;
+                if (objectName.IndexOf("TicketMachine", System.StringComparison.OrdinalIgnoreCase) >= 0 ||
+                    objectName.IndexOf("TicketPOS", System.StringComparison.OrdinalIgnoreCase) >= 0)
+                {
+                    if (firstTicketMachine == null) firstTicketMachine = interactable;
+                    else if (interactable != firstTicketMachine) interactable.gameObject.SetActive(false);
+                }
+            }
+
+            var scanner = GameObject.Find("GateScanner");
+            if (scanner == null) return;
+            var scannerInteractable = scanner.GetComponent<StationTravelInteractable>();
+            if (scannerInteractable == null)
+            {
+                var collider = scanner.GetComponent<Collider>();
+                if (collider == null)
+                {
+                    var box = scanner.AddComponent<BoxCollider>();
+                    box.isTrigger = true;
+                    box.center = new Vector3(0f, 1f, 0f);
+                    box.size = new Vector3(2.2f, 2.2f, 1.2f);
+                }
+                scannerInteractable = scanner.AddComponent<StationTravelInteractable>();
+                scannerInteractable.Configure(this, StationAction.PassGate, "改札を通る", "QUET VE / SCAN TICKET");
+            }
+
+            if (scanner.GetComponentInChildren<TextMeshPro>(true) == null)
+                AddRoleLabel(scanner.transform, "SCAN TICKET\nQUET VE", new Color(0.35f, 0.9f, 1f));
         }
 
         private static void AddRoleLabel(Transform parent, string value, Color color)
