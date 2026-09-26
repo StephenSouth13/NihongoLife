@@ -7,7 +7,7 @@ namespace NihongoLife.Editor.Exam
 {
     public class Exam3DBuilder : EditorWindow
     {
-        [MenuItem("NihongoLife/Exam/Create 3D Exam Desk (Diegetic UI)")]
+        // [MenuItem("NihongoLife/Exam/Create 3D Exam Desk (Diegetic UI)")]
         public static void Create3DExamDesk()
         {
             // 1. Create Root

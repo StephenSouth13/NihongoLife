@@ -10,7 +10,7 @@ namespace NihongoLife.Editor.Scenario
         private TextAsset jsonFile;
         private string outputFolder = "Assets/NihongoLife/Resources/Scenarios";
 
-        [MenuItem("NihongoLife/Scenario/Import Scenario from JSON")]
+        // [MenuItem("NihongoLife/Scenario/Import Scenario from JSON")]
         public static void ShowWindow()
         {
             GetWindow<ScenarioImporterTool>("Scenario Importer");

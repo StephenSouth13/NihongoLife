@@ -64,3 +64,25 @@ Xây dựng một **Webhook** hoặc **Trigger**. Khi hệ thống Web ghi nhậ
 1.  **Cung cấp API Login:** Xác thực tài khoản / mật khẩu.
 2.  **Cung cấp API Nhận Thành tích:** Cấp voucher / điểm thưởng trên web khi học viên chơi game giỏi.
 3.  **Viết Script bắn Data sang Supabase:** Khi học viên nạp tiền/học xong bài trên web, bắn API cập nhật Tiền ảo/Item vào Supabase của Game. (Mình sẽ cung cấp thông tin kết nối Supabase sau khi thống nhất).
+
+---
+
+## PHẦN 4: TÍCH HỢP VIDEO CALL (LỚP HỌC TRỰC TUYẾN 1-KÈM-1 QUA AGORA)
+**Mục tiêu:** Cho phép học viên và giáo viên gọi Video tương tác trực tiếp bằng khuôn mặt ngay bên trong Metaverse của Game (hiển thị lên Tivi 3D).
+
+Hệ thống Client Game đã tích hợp sẵn thư viện **Agora Video SDK**, đã bao gồm Base64 Encoded `App ID` và `Primary Certificate`.
+Tuy nhiên, để bảo mật trong thực tế, Team Web cần xây dựng một API cấp Token linh hoạt:
+
+**Bộ phận Web cần cung cấp 1 API (Token Generator):**
+- **Endpoint (Ví dụ):** `https://quangdungnihongo.com/api/v1/agora/generate-token`
+- **Game sẽ gửi (GET/POST):** `?channelName=LopHocN5&uid=123`
+- **Web cần xử lý:** Dùng `App ID` và `Primary Certificate` (lưu kín trên máy chủ Web) kết hợp thư viện Agora Backend để tạo ra một chuỗi `Token` sống trong 24h.
+- **Web trả về (JSON):**
+  ```json
+  {
+    "status": "success",
+    "token": "00649f7d...chuoi_dai_ngoang...",
+    "channelName": "LopHocN5"
+  }
+  ```
+*(Game sẽ nhận Token này, gọi hàm `_rtcEngine.JoinChannelByKey` để chính thức vào phòng học mở camera).*

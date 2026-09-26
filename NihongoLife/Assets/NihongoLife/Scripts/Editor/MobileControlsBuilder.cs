@@ -8,7 +8,7 @@ namespace NihongoLife.Editor.UI
 {
     public class MobileControlsBuilder : EditorWindow
     {
-        [MenuItem("NihongoLife/Mobile/Generate Mobile Joystick UI")]
+        // [MenuItem("NihongoLife/Mobile/Generate Mobile Joystick UI")]
         public static void GenerateJoystick()
         {
             // 1. Check/Create EventSystem

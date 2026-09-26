@@ -1,0 +1,408 @@
+﻿using System.Collections;
+using UnityEngine;
+using UnityEngine.UI;
+using UnityEngine.Serialization;
+using Agora.Rtc;
+
+
+
+#if UNITY_2018_1_OR_NEWER
+using Unity.Collections;
+#endif
+
+using io.agora.rtc.demo;
+
+namespace Agora_RTC_Plugin.API_Example.Examples.Advanced.CustomCaptureVideo
+{
+    public class CustomCaptureVideo : MonoBehaviour
+    {
+        [FormerlySerializedAs("appIdInput")]
+        [SerializeField]
+        private AppIdInput _appIdInput;
+
+        [Header("_____________Basic Configuration_____________")]
+        [FormerlySerializedAs("APP_ID")]
+        [SerializeField]
+        private string _appID = "";
+
+        [FormerlySerializedAs("TOKEN")]
+        [SerializeField]
+        private string _token = "";
+
+        [FormerlySerializedAs("CHANNEL_NAME")]
+        [SerializeField]
+        private string _channelName = "";
+
+        public Text LogText;
+        internal Logger Log;
+        internal IRtcEngineEx RtcEngine = null;
+
+
+        private Texture2D _texture;
+        private Rect _rect;
+
+#if !UNITY_VISIONOS
+        private WebCamTexture _webCameraTexture;
+#endif
+        public RawImage RawImage;
+        public Vector2 CameraSize = new Vector2(640, 480);
+        public int CameraFPS = 15;
+        private byte[] _shareData;
+        private uint _videoTrack;
+
+
+        // Use this for initialization
+        private void Start()
+        {
+
+            LoadAssetData();
+#if !UNITY_VISIONOS
+            if (CheckAppId())
+            {
+                InitCameraDevice();
+                InitTexture();
+                InitEngine();
+                CreateCustomVideoTrack();
+                JoinChannel();
+            }
+#else
+            Log.UpdateLog("Not support WebCamTexture in Vision os");
+#endif
+
+        }
+
+        private void Update()
+        {
+            PermissionHelper.RequestMicrophontPermission();
+            StartCoroutine(ShareScreen());
+        }
+
+        //Show data in AgoraBasicProfile
+        [ContextMenu("ShowAgoraBasicProfileData")]
+        private void LoadAssetData()
+        {
+            if (_appIdInput == null) return;
+            _appID = _appIdInput.appID;
+            _token = _appIdInput.token;
+            _channelName = _appIdInput.channelName;
+        }
+
+        private IEnumerator ShareScreen()
+        {
+            yield return new WaitForEndOfFrame();
+            IRtcEngine rtc = Agora.Rtc.RtcEngine.Instance;
+            if (rtc != null)
+            {
+                _texture.ReadPixels(_rect, 0, 0);
+                _texture.Apply();
+
+#if UNITY_2018_1_OR_NEWER
+                NativeArray<byte> nativeByteArray = _texture.GetRawTextureData<byte>();
+                if (_shareData == null || _shareData.Length != nativeByteArray.Length)
+                {
+                    _shareData = new byte[nativeByteArray.Length];
+                }
+                nativeByteArray.CopyTo(_shareData);
+#else
+                _shareData = _texture.GetRawTextureData();
+#endif
+
+                ExternalVideoFrame externalVideoFrame = new ExternalVideoFrame();
+                externalVideoFrame.type = VIDEO_BUFFER_TYPE.VIDEO_BUFFER_RAW_DATA;
+                externalVideoFrame.format = VIDEO_PIXEL_FORMAT.VIDEO_PIXEL_RGBA;
+                externalVideoFrame.buffer = _shareData;
+                externalVideoFrame.stride = (int)_rect.width;
+                externalVideoFrame.height = (int)_rect.height;
+                externalVideoFrame.cropLeft = 10;
+                externalVideoFrame.cropTop = 10;
+                externalVideoFrame.cropRight = 10;
+                externalVideoFrame.cropBottom = 10;
+                externalVideoFrame.rotation = 180;
+                externalVideoFrame.timestamp = System.DateTime.Now.Ticks / 10000;
+                var ret = rtc.PushVideoFrame(externalVideoFrame, _videoTrack);
+                Debug.Log("PushVideoFrame ret = " + ret + "time: " + System.DateTime.Now.Millisecond);
+            }
+        }
+
+        private void InitEngine()
+        {
+            RtcEngine = Agora.Rtc.RtcEngine.CreateAgoraRtcEngineEx();
+            UserEventHandler handler = new UserEventHandler(this);
+            RtcEngineContext context = new RtcEngineContext();
+            context.appId = _appID;
+            context.channelProfile = CHANNEL_PROFILE_TYPE.CHANNEL_PROFILE_LIVE_BROADCASTING;
+            context.audioScenario = AUDIO_SCENARIO_TYPE.AUDIO_SCENARIO_DEFAULT;
+            context.areaCode = AREA_CODE.AREA_CODE_GLOB;
+            RtcEngine.Initialize(context);
+            RtcEngine.InitEventHandler(handler);
+        }
+
+        private void CreateCustomVideoTrack()
+        {
+            _videoTrack = RtcEngine.CreateCustomVideoTrack();
+            this.Log.UpdateLog("CreateCustomVideoTrack returns:" + _videoTrack);
+        }
+
+        private void JoinChannel()
+        {
+            RtcEngine.EnableAudio();
+            RtcEngine.EnableVideo();
+            RtcEngine.SetClientRole(CLIENT_ROLE_TYPE.CLIENT_ROLE_BROADCASTER);
+            ChannelMediaOptions options = new ChannelMediaOptions();
+            options.publishCameraTrack.SetValue(false);
+            options.publishCustomVideoTrack.SetValue(true);
+            options.customVideoTrackId.SetValue(_videoTrack);
+
+            RtcEngine.JoinChannel(_token, _channelName, 0, options);
+        }
+
+        private void JoinChannelEx()
+        {
+            RtcEngine.EnableAudio();
+            RtcEngine.EnableVideo();
+
+            uint videoTrack1 = RtcEngine.CreateCustomVideoTrack();
+            ChannelMediaOptions options = new ChannelMediaOptions();
+            options.clientRoleType.SetValue(CLIENT_ROLE_TYPE.CLIENT_ROLE_BROADCASTER);
+            options.publishCameraTrack.SetValue(false);
+            options.publishCustomVideoTrack.SetValue(true);
+            options.customVideoTrackId.SetValue(videoTrack1);
+            options.autoSubscribeAudio.SetValue(false);
+            options.autoSubscribeVideo.SetValue(false);
+            RtcEngine.JoinChannelEx(_token, new RtcConnection("channel_id_1", 123), options);
+
+            uint videoTrack2 = RtcEngine.CreateCustomVideoTrack();
+            ChannelMediaOptions options2 = new ChannelMediaOptions();
+            options2.clientRoleType.SetValue(CLIENT_ROLE_TYPE.CLIENT_ROLE_BROADCASTER);
+            options2.publishCameraTrack.SetValue(false);
+            options2.publishCustomVideoTrack.SetValue(true);
+            options2.customVideoTrackId.SetValue(videoTrack2);
+            options2.autoSubscribeAudio.SetValue(false);
+            options2.autoSubscribeVideo.SetValue(false);
+
+            RtcEngine.JoinChannelEx(_token, new RtcConnection("channel_id_2", 123), options2);
+        }
+
+        private bool CheckAppId()
+        {
+            Log = new Logger(LogText);
+            return Log.DebugAssert(_appID.Length > 10, "Please fill in your appId in Canvas!!!!");
+        }
+
+        private void InitTexture()
+        {
+            _rect = new UnityEngine.Rect(0, 0, Screen.width, Screen.height);
+            _texture = new Texture2D((int)_rect.width, (int)_rect.height, TextureFormat.RGBA32, false);
+        }
+
+        private void InitCameraDevice()
+        {
+#if !UNITY_VISIONOS
+            WebCamDevice[] devices = WebCamTexture.devices;
+            _webCameraTexture = new WebCamTexture(devices[0].name, (int)CameraSize.x, (int)CameraSize.y, CameraFPS);
+            RawImage.texture = _webCameraTexture;
+            _webCameraTexture.Play();
+#endif
+        }
+
+        private void OnDestroy()
+        {
+            Debug.Log("OnDestroy");
+#if !UNITY_VISIONOS
+            if (_webCameraTexture)
+            {
+                _webCameraTexture.Stop();
+            }
+#endif
+            if (RtcEngine == null) return;
+            RtcEngine.DestroyCustomVideoTrack(_videoTrack);
+            RtcEngine.InitEventHandler(null);
+            RtcEngine.LeaveChannel();
+            RtcEngine.Dispose();
+        }
+
+        internal string GetChannelName()
+        {
+            return _channelName;
+        }
+
+        #region -- Video Render UI Logic ---
+
+        internal static void MakeVideoView(uint uid, string channelId = "")
+        {
+            GameObject go = GameObject.Find(uid.ToString());
+            if (!ReferenceEquals(go, null))
+            {
+                return; // reuse
+            }
+
+            // create a GameObject and assign to this new user
+            VideoSurface videoSurface = makeImageSurface(uid.ToString());
+            if (!ReferenceEquals(videoSurface, null))
+            {
+                // configure videoSurface
+                if (uid == 0)
+                {
+                    videoSurface.SetForUser(uid, channelId);
+                }
+                else
+                {
+                    videoSurface.SetForUser(uid, channelId, VIDEO_SOURCE_TYPE.VIDEO_SOURCE_REMOTE);
+                }
+
+                videoSurface.OnTextureSizeModify += (int width, int height) =>
+                {
+                    var transform = videoSurface.GetComponent<RectTransform>();
+                    if (transform)
+                    {
+                        //If render in RawImage. just set rawImage size.
+                        transform.sizeDelta = new Vector2(width / 2, height / 2);
+                        transform.localScale = Vector3.one;
+                    }
+                    else
+                    {
+                        //If render in MeshRenderer, just set localSize with MeshRenderer
+                        float scale = (float)height / (float)width;
+                        videoSurface.transform.localScale = new Vector3(-1, 1, scale);
+                    }
+                    Debug.Log("OnTextureSizeModify: " + width + "  " + height);
+                };
+
+                videoSurface.SetEnable(true);
+            }
+        }
+
+        // VIDEO TYPE 1: 3D Object
+        private static VideoSurface MakePlaneSurface(string goName)
+        {
+            GameObject go = GameObject.CreatePrimitive(PrimitiveType.Plane);
+
+            if (go == null)
+            {
+                return null;
+            }
+
+            go.name = goName;
+            var mesh = go.GetComponent<MeshRenderer>();
+            if (mesh != null)
+            {
+                Debug.LogWarning("VideoSureface update shader");
+                mesh.material = new Material(Shader.Find("Unlit/Texture"));
+            }
+            // set up transform
+            go.transform.Rotate(-90.0f, 0.0f, 0.0f);
+            go.transform.position = Vector3.zero;
+            go.transform.localScale = new Vector3(0.25f, 0.5f, .5f);
+
+            // configure videoSurface
+            VideoSurface videoSurface = go.AddComponent<VideoSurfaceYUV>();
+            return videoSurface;
+        }
+
+        // Video TYPE 2: RawImage
+        private static VideoSurface makeImageSurface(string goName)
+        {
+            GameObject go = new GameObject();
+
+            if (go == null)
+            {
+                return null;
+            }
+
+            go.name = goName;
+            // to be renderered onto
+            go.AddComponent<RawImage>();
+            // make the object draggable
+            go.AddComponent<UIElementDrag>();
+            GameObject canvas = GameObject.Find("VideoCanvas");
+            if (canvas != null)
+            {
+                go.transform.parent = canvas.transform;
+                Debug.Log("add video view");
+            }
+            else
+            {
+                Debug.Log("Canvas is null video view");
+            }
+
+            // set up transform
+            go.transform.Rotate(0f, 0.0f, 180.0f);
+            go.transform.localPosition = Vector3.zero;
+            go.transform.localScale = new Vector3(3f, 4f, 1f);
+
+            // configure videoSurface
+            VideoSurface videoSurface = go.AddComponent<VideoSurfaceYUV>();
+            return videoSurface;
+        }
+
+        internal static void DestroyVideoView(uint uid)
+        {
+            GameObject go = GameObject.Find(uid.ToString());
+            if (!ReferenceEquals(go, null))
+            {
+                Destroy(go);
+            }
+        }
+
+        #endregion
+    }
+
+    #region -- Agora Event ---
+
+    internal class UserEventHandler : IRtcEngineEventHandler
+    {
+        private readonly CustomCaptureVideo _customCaptureVideo;
+
+        internal UserEventHandler(CustomCaptureVideo customCaptureVideo)
+        {
+            _customCaptureVideo = customCaptureVideo;
+        }
+
+        public override void OnError(int err, string msg)
+        {
+            _customCaptureVideo.Log.UpdateLog(string.Format("OnError err: {0}, msg: {1}", err, msg));
+        }
+
+        public override void OnJoinChannelSuccess(RtcConnection connection, int elapsed)
+        {
+            int build = 0;
+            _customCaptureVideo.Log.UpdateLog(string.Format("sdk version: ${0}",
+                _customCaptureVideo.RtcEngine.GetVersion(ref build)));
+            _customCaptureVideo.Log.UpdateLog(
+                string.Format("OnJoinChannelSuccess channelName: {0}, uid: {1}, elapsed: {2}",
+                    connection.channelId, connection.localUid, elapsed));
+        }
+
+        public override void OnRejoinChannelSuccess(RtcConnection connection, int elapsed)
+        {
+            _customCaptureVideo.Log.UpdateLog("OnRejoinChannelSuccess");
+        }
+
+        public override void OnLeaveChannel(RtcConnection connection, RtcStats stats)
+        {
+            _customCaptureVideo.Log.UpdateLog("OnLeaveChannel");
+        }
+
+        public override void OnClientRoleChanged(RtcConnection connection, CLIENT_ROLE_TYPE oldRole,
+            CLIENT_ROLE_TYPE newRole, ClientRoleOptions newRoleOptions)
+        {
+            _customCaptureVideo.Log.UpdateLog("OnClientRoleChanged");
+        }
+
+        public override void OnUserJoined(RtcConnection connection, uint uid, int elapsed)
+        {
+            _customCaptureVideo.Log.UpdateLog(
+                string.Format("OnUserJoined uid: ${0} elapsed: ${1}", uid, elapsed));
+            CustomCaptureVideo.MakeVideoView(uid, _customCaptureVideo.GetChannelName());
+        }
+
+        public override void OnUserOffline(RtcConnection connection, uint uid, USER_OFFLINE_REASON_TYPE reason)
+        {
+            _customCaptureVideo.Log.UpdateLog(string.Format("OnUserOffLine uid: ${0}, reason: ${1}", uid,
+                (int)reason));
+            CustomCaptureVideo.DestroyVideoView(uid);
+        }
+    }
+
+    #endregion
+}

@@ -1,0 +1,6 @@
+framework module AgoraRtcWrapper {
+  umbrella header "AgoraRtcWrapper.h"
+
+  export *
+  module * { export * }
+}

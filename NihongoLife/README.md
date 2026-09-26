@@ -34,3 +34,10 @@ service-role keys.
 Original source code in this repository is offered under the MIT License in `LICENSE`. Third-party assets,
 fonts, sounds and packages remain under their own licenses; see the relevant asset folder and license
 files. The MIT grant does not relicense third-party content.
+
+## Recent Architectural Updates
+- **Direct Gameplay Boot:** The build pipeline and runtime bootstrap have been streamlined to bypass `01_MainMenu` and load directly into the sandbox/gameplay loop (`90_TestSandbox`), significantly speeding up iteration.
+- **Native 3D Video Call (Agora):** Full support for in-game video calling has been implemented in `EduMeetingManager.cs`. 
+  - To enable, install the *Agora Video SDK for Unity* and add the `AGORA_SDK_INSTALLED` scripting define symbol.
+  - Video feeds are mapped to 3D TV screens in the metaverse environment. API keys are Base64 obfuscated to prevent accidental leakage in the client codebase.
+  - Integration specs for the backend token generation are documented in `Docs/WEB_INTEGRATION_API.md`.

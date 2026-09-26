@@ -10,7 +10,7 @@ namespace NihongoLife.Editor.Exam
         private TextAsset jsonFile;
         private string outputFolder = "Assets/NihongoLife/Resources/Exams";
 
-        [MenuItem("NihongoLife/Exam/Import Exam from JSON")]
+        // [MenuItem("NihongoLife/Exam/Import Exam from JSON")]
         public static void ShowWindow()
         {
             GetWindow<ExamImporterTool>("Exam Importer");
