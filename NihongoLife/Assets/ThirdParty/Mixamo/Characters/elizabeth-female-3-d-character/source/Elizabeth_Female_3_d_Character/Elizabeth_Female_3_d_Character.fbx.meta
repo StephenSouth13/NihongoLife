@@ -34,15 +34,15 @@ ModelImporter:
   meshes:
     lODScreenPercentages: []
     globalScale: 1
-    meshCompression: 0
+    meshCompression: 2
     addColliders: 0
     useSRGBMaterialColor: 1
     sortHierarchyByName: 1
     importPhysicalCameras: 1
     importVisibility: 1
     importBlendShapes: 1
-    importCameras: 1
-    importLights: 1
+    importCameras: 0
+    importLights: 0
     nodeNameCollisionStrategy: 1
     fileIdsGeneration: 2
     swapUVChannels: 0
@@ -83,7 +83,47 @@ ModelImporter:
   humanDescription:
     serializedVersion: 3
     human: []
-    skeleton: []
+    skeleton:
+    - name: Elizabeth_Female_3_d_Character(Clone)
+      parentName: 
+      position: {x: 0.000010967255, y: 0.8419476, z: -0.0061204955}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Full_Body
+      parentName: Elizabeth_Female_3_d_Character(Clone)
+      position: {x: -0, y: 0.001305408, z: 0.008160257}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Eyelashes
+      parentName: Elizabeth_Female_3_d_Character(Clone)
+      position: {x: 0.000065143104, y: 0.73916227, z: 0.09370148}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Hair
+      parentName: Elizabeth_Female_3_d_Character(Clone)
+      position: {x: -0.0012726593, y: 0.73185354, z: 0.013189172}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Eyes
+      parentName: Elizabeth_Female_3_d_Character(Clone)
+      position: {x: -0.000014021396, y: 0.740213, z: 0.08168361}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: T_Shirt
+      parentName: Elizabeth_Female_3_d_Character(Clone)
+      position: {x: 0.001842699, y: 0.40805236, z: 0.023990674}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Skirt
+      parentName: Elizabeth_Female_3_d_Character(Clone)
+      position: {x: 0.005261059, y: 0.029787349, z: -0.00944755}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Shoes
+      parentName: Elizabeth_Female_3_d_Character(Clone)
+      position: {x: -0.000007696151, y: -0.8080701, z: 0.02822751}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
     armTwist: 0.5
     foreArmTwist: 0.5
     upperLegTwist: 0.5

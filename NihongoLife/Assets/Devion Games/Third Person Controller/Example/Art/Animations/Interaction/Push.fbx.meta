@@ -1,7 +1,14 @@
 fileFormatVersion: 2
 guid: 7fe3e5f3866f3184cb4fc59c109e0931
+AssetOrigin:
+  serializedVersion: 1
+  productId: 45568
+  packageName: Item & Inventory System
+  packageVersion: 2.1.3
+  assetPath: Assets/Devion Games/Third Person Controller/Example/Art/Animations/Interaction/Push.fbx
+  uploadId: 420191
 ModelImporter:
-  serializedVersion: 25
+  serializedVersion: 24200
   internalIDToNameTable:
   - first:
       1: 100000
@@ -572,7 +579,7 @@ ModelImporter:
       name: face
     second: {fileID: 2100000, guid: e2893cbff509c5944be1189202f4841e, type: 2}
   materials:
-    importMaterials: 1
+    materialImportMode: 1
     materialName: 1
     materialSearch: 2
     materialLocation: 1
@@ -581,13 +588,8 @@ ModelImporter:
     bakeSimulation: 0
     resampleCurves: 1
     optimizeGameObjects: 0
+    removeConstantScaleCurves: 0
     motionNodeName: 
-    rigImportErrors: 
-    rigImportWarnings: "Avatar Rig Configuration mis-match. Bone length in configuration
-      does not match position in animation file:\n\t'LeftUpLeg' : position error
-      = 8545.919922 mm\n\t'LeftLeg' : position error = 39701.292969 mm\n\t'LeftFoot'
-      : position error = 41023.972656 mm\n\t'LeftToes' : position error = 15791.808594
-      mm\n"
     animationImportErrors: 
     animationImportWarnings: 
     animationRetargetingWarnings: 
@@ -803,29 +805,42 @@ ModelImporter:
   meshes:
     lODScreenPercentages: []
     globalScale: 1
-    meshCompression: 0
+    meshCompression: 2
     addColliders: 0
     useSRGBMaterialColor: 1
+    sortHierarchyByName: 1
+    importPhysicalCameras: 1
     importVisibility: 0
     importBlendShapes: 1
     importCameras: 0
     importLights: 0
+    nodeNameCollisionStrategy: 0
+    fileIdsGeneration: 1
     swapUVChannels: 0
     generateSecondaryUV: 0
     useFileUnits: 1
     keepQuads: 0
     weldVertices: 1
+    bakeAxisConversion: 0
     preserveHierarchy: 0
     skinWeightsMode: 0
     maxBonesPerVertex: 4
     minBoneWeight: 0.001
+    optimizeBones: 1
+    generateMeshLods: 0
+    meshLodGenerationFlags: 0
+    maximumMeshLod: -1
     meshOptimizationFlags: -1
     indexFormat: 1
     secondaryUVAngleDistortion: 8
     secondaryUVAreaDistortion: 15.000001
     secondaryUVHardAngle: 88
+    secondaryUVMarginMethod: 0
+    secondaryUVMinLightmapResolution: 40
+    secondaryUVMinObjectScale: 1
     secondaryUVPackMargin: 4
     useFileScale: 1
+    strictVertexDataChecks: 0
   tangentSpace:
     normalSmoothAngle: 60
     normalImportMode: 0
@@ -836,7 +851,6 @@ ModelImporter:
     normalSmoothingSource: 0
   referencedClips: []
   importAnimation: 1
-  copyAvatar: 0
   humanDescription:
     serializedVersion: 3
     human:
@@ -1316,8 +1330,7 @@ ModelImporter:
     - name: Spine
       parentName: Hips
       position: {x: -0, y: 0.092263184, z: 0.015771331}
-      rotation: {x: 0.000000014901161, y: 0.000000007450581, z: 0.0000000018626451,
-        w: 1}
+      rotation: {x: 0.000000014901161, y: 0.000000007450581, z: 0.0000000018626451, w: 1}
       scale: {x: 1, y: 1.0000001, z: 1}
     - name: Chest
       parentName: Spine
@@ -1327,8 +1340,7 @@ ModelImporter:
     - name: Neck
       parentName: Chest
       position: {x: -0, y: 0.2357239, z: -0.032413255}
-      rotation: {x: -0.00000008940697, y: -0.000000007450581, z: 0.0000000037252899,
-        w: 1}
+      rotation: {x: -0.00000008940697, y: -0.000000007450581, z: 0.0000000037252899, w: 1}
       scale: {x: 1, y: 1, z: 0.9999998}
     - name: Head
       parentName: Neck
@@ -1658,14 +1670,12 @@ ModelImporter:
     - name: RightUpLeg
       parentName: Hips
       position: {x: 0.075449534, y: -0.04566399, z: 0}
-      rotation: {x: -0.000000044703484, y: 0.000000029802322, z: 0.0000000055879354,
-        w: 1}
+      rotation: {x: -0.000000044703484, y: 0.000000029802322, z: 0.0000000055879354, w: 1}
       scale: {x: 0.99999994, y: 1.0000002, z: 0.9999999}
     - name: RightLeg
       parentName: RightUpLeg
       position: {x: 0.020550467, y: -0.40913, z: 0.0071713654}
-      rotation: {x: 0.000000014901161, y: -0.000000029802322, z: -0.0000000055879363,
-        w: 1}
+      rotation: {x: 0.000000014901161, y: -0.000000029802322, z: -0.0000000055879363, w: 1}
       scale: {x: 1.0000001, y: 0.9999999, z: 0.9999999}
     - name: RightFoot
       parentName: RightLeg
@@ -1680,8 +1690,7 @@ ModelImporter:
     - name: LeftUpLeg
       parentName: Hips
       position: {x: -0.0754495, y: -0.04566402, z: 0}
-      rotation: {x: -0.000000029802322, y: 0.000000007450581, z: -0.0000000037252903,
-        w: 1}
+      rotation: {x: -0.000000029802322, y: 0.000000007450581, z: -0.0000000037252903, w: 1}
       scale: {x: 1.0000001, y: 1.0000001, z: 1}
     - name: LeftLeg
       parentName: LeftUpLeg
@@ -1711,16 +1720,14 @@ ModelImporter:
     hasExtraRoot: 1
     skeletonHasParents: 1
   lastHumanDescriptionAvatarSource: {instanceID: 0}
+  autoGenerateAvatarMappingIfUnspecified: 1
   animationType: 3
   humanoidOversampling: 1
+  avatarSetup: 1
+  addHumanoidExtraRootOnlyWhenUsingAvatar: 0
+  importBlendShapeDeformPercent: 0
+  remapMaterialsIfMaterialImportModeIsNone: 1
   additionalBone: 0
   userData: 
   assetBundleName: 
   assetBundleVariant: 
-AssetOrigin:
-  serializedVersion: 1
-  productId: 45568
-  packageName: Item & Inventory System
-  packageVersion: 2.1.3
-  assetPath: Assets/Devion Games/Third Person Controller/Example/Art/Animations/Interaction/Push.fbx
-  uploadId: 420191

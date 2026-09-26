@@ -21,6 +21,7 @@ namespace NihongoLife.Core
         private int _maxVisiblePlayers = 24;
         private SupabaseRealtimeClient _realtimeClient;
         private SupabaseClient _supabaseClient;
+        private NihongoLife.Audio.VivoxVoiceManager _vivox;
         private float _presencePublishInterval = 0.25f;
         private float _nextPresencePublish;
 
@@ -65,6 +66,15 @@ namespace NihongoLife.Core
                 _realtimeClient.OnDisconnected += HandleDisconnected;
             }
 
+            // Keep the optional voice/text transport visible in the same HUD chat
+            // stream when Vivox is configured. Supabase remains the persistence
+            // and presence backend; Vivox carries live channel messages.
+            _vivox = FindFirstObjectByType<NihongoLife.Audio.VivoxVoiceManager>();
+            if (_vivox != null)
+            {
+                _vivox.OnTextMessageReceived += HandleVivoxMessage;
+            }
+
             Debug.Log("[SupabaseOnlineWorld] Initialized.");
         }
 
@@ -77,6 +87,12 @@ namespace NihongoLife.Core
                 _realtimeClient.OnPresenceLeave -= HandlePresenceLeave;
                 _realtimeClient.OnPresenceSync -= HandlePresenceSync;
                 _realtimeClient.OnDisconnected -= HandleDisconnected;
+            }
+
+            if (_vivox != null)
+            {
+                _vivox.OnTextMessageReceived -= HandleVivoxMessage;
+                _vivox = null;
             }
         }
 
@@ -180,8 +196,25 @@ namespace NihongoLife.Core
                 _realtimeClient.Broadcast("chat_message", payload);
             }
 
+            _vivox?.SendTextMessage(message.text);
+
             // Persist to database
             PersistChatMessage(message);
+        }
+
+        private void HandleVivoxMessage(string senderName, string text)
+        {
+            if (string.IsNullOrWhiteSpace(text)) return;
+
+            AddChatMessage(new OnlineChatMessage
+            {
+                messageId = Guid.NewGuid().ToString("N"),
+                senderPlayerId = "vivox_remote",
+                senderDisplayName = string.IsNullOrWhiteSpace(senderName) ? "Learner" : senderName,
+                channelId = "town",
+                text = text.Trim(),
+                sentAtUtcTicks = DateTime.UtcNow.Ticks
+            });
         }
 
         // ──────────────────────── Presence ────────────────────────

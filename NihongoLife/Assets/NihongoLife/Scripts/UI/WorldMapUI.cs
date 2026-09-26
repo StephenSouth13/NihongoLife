@@ -90,8 +90,8 @@ namespace NihongoLife.UI
 
         private void BuildTabs()
         {
-            _areaTab = Tab("Khu vực hiện tại", new(-112, 0));
-            _overviewTab = Tab("Bản đồ tổng", new(112, 0));
+            _areaTab = Tab("Khu vực hiện tại", new Vector2(-112f, 0f));
+            _overviewTab = Tab("Bản đồ tổng", new Vector2(112f, 0f));
             _areaTab.onClick.AddListener(() => SetMapMode(true));
             _overviewTab.onClick.AddListener(() => SetMapMode(false));
             var topDownObject = new GameObject("TopDownMap", typeof(RectTransform), typeof(RawImage));

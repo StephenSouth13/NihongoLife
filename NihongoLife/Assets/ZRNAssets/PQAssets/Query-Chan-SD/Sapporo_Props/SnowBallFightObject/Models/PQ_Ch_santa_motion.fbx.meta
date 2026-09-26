@@ -1,82 +1,211 @@
 fileFormatVersion: 2
 guid: 1295acf0236de4fb39e07a74538df54a
+AssetOrigin:
+  serializedVersion: 1
+  productId: 36810
+  packageName: Japanese Dosanko City
+  packageVersion: 1.0.0
+  assetPath: Assets/ZRNAssets/PQAssets/Query-Chan-SD/Sapporo_Props/SnowBallFightObject/Models/PQ_Ch_santa_motion.fbx
+  uploadId: 275953
 ModelImporter:
-  serializedVersion: 16
-  fileIDToRecycleName:
-    100000: body_02
-    100002: face
-    100004: face 1
-    100006: l_arm_01
-    100008: l_arm_02
-    100010: neck
-    100012: neck 1
-    100014: Prop_santa
-    100016: r_arm_01
-    100018: r_arm_02
-    100020: reindeer_body_01
-    100022: Reins
-    100024: rig_foot_l_01
-    100026: rig_foot_l_02
-    100028: rig_foot_r_01
-    100030: rig_foot_r_02
-    100032: santa
-    100034: //RootNode
-    100036: santa_body
-    100038: sled_joint
-    100040: Sori
-    100042: Tonakai
-    400000: body_02
-    400002: face
-    400004: face 1
-    400006: l_arm_01
-    400008: l_arm_02
-    400010: neck
-    400012: neck 1
-    400014: Prop_santa
-    400016: r_arm_01
-    400018: r_arm_02
-    400020: reindeer_body_01
-    400022: Reins
-    400024: rig_foot_l_01
-    400026: rig_foot_l_02
-    400028: rig_foot_r_01
-    400030: rig_foot_r_02
-    400032: santa
-    400034: //RootNode
-    400036: santa_body
-    400038: sled_joint
-    400040: Sori
-    400042: Tonakai
-    4300000: Tonakai
-    4300002: santa
-    4300004: Reins
-    4300006: Sori
-    7400000: Take 001
-    9500000: //RootNode
-    11100000: //RootNode
-    13700000: Reins
-    13700002: santa
-    13700004: Sori
-    13700006: Tonakai
+  serializedVersion: 24200
+  internalIDToNameTable:
+  - first:
+      1: 100000
+    second: body_02
+  - first:
+      1: 100002
+    second: face
+  - first:
+      1: 100004
+    second: face 1
+  - first:
+      1: 100006
+    second: l_arm_01
+  - first:
+      1: 100008
+    second: l_arm_02
+  - first:
+      1: 100010
+    second: neck
+  - first:
+      1: 100012
+    second: neck 1
+  - first:
+      1: 100014
+    second: Prop_santa
+  - first:
+      1: 100016
+    second: r_arm_01
+  - first:
+      1: 100018
+    second: r_arm_02
+  - first:
+      1: 100020
+    second: reindeer_body_01
+  - first:
+      1: 100022
+    second: Reins
+  - first:
+      1: 100024
+    second: rig_foot_l_01
+  - first:
+      1: 100026
+    second: rig_foot_l_02
+  - first:
+      1: 100028
+    second: rig_foot_r_01
+  - first:
+      1: 100030
+    second: rig_foot_r_02
+  - first:
+      1: 100032
+    second: santa
+  - first:
+      1: 100034
+    second: //RootNode
+  - first:
+      1: 100036
+    second: santa_body
+  - first:
+      1: 100038
+    second: sled_joint
+  - first:
+      1: 100040
+    second: Sori
+  - first:
+      1: 100042
+    second: Tonakai
+  - first:
+      4: 400000
+    second: body_02
+  - first:
+      4: 400002
+    second: face
+  - first:
+      4: 400004
+    second: face 1
+  - first:
+      4: 400006
+    second: l_arm_01
+  - first:
+      4: 400008
+    second: l_arm_02
+  - first:
+      4: 400010
+    second: neck
+  - first:
+      4: 400012
+    second: neck 1
+  - first:
+      4: 400014
+    second: Prop_santa
+  - first:
+      4: 400016
+    second: r_arm_01
+  - first:
+      4: 400018
+    second: r_arm_02
+  - first:
+      4: 400020
+    second: reindeer_body_01
+  - first:
+      4: 400022
+    second: Reins
+  - first:
+      4: 400024
+    second: rig_foot_l_01
+  - first:
+      4: 400026
+    second: rig_foot_l_02
+  - first:
+      4: 400028
+    second: rig_foot_r_01
+  - first:
+      4: 400030
+    second: rig_foot_r_02
+  - first:
+      4: 400032
+    second: santa
+  - first:
+      4: 400034
+    second: //RootNode
+  - first:
+      4: 400036
+    second: santa_body
+  - first:
+      4: 400038
+    second: sled_joint
+  - first:
+      4: 400040
+    second: Sori
+  - first:
+      4: 400042
+    second: Tonakai
+  - first:
+      43: 4300000
+    second: Tonakai
+  - first:
+      43: 4300002
+    second: santa
+  - first:
+      43: 4300004
+    second: Reins
+  - first:
+      43: 4300006
+    second: Sori
+  - first:
+      74: 7400000
+    second: Take 001
+  - first:
+      95: 9500000
+    second: //RootNode
+  - first:
+      111: 11100000
+    second: //RootNode
+  - first:
+      137: 13700000
+    second: Reins
+  - first:
+      137: 13700002
+    second: santa
+  - first:
+      137: 13700004
+    second: Sori
+  - first:
+      137: 13700006
+    second: Tonakai
+  externalObjects: {}
   materials:
-    importMaterials: 1
+    materialImportMode: 1
     materialName: 1
     materialSearch: 1
+    materialLocation: 0
   animations:
     legacyGenerateAnimations: 4
     bakeSimulation: 0
+    resampleCurves: 1
     optimizeGameObjects: 0
+    removeConstantScaleCurves: 0
     motionNodeName: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    importAnimatedCustomProperties: 0
+    importConstraints: 0
     animationCompression: 1
-    animationRotationError: .5
-    animationPositionError: .5
-    animationScaleError: .5
+    animationRotationError: 0.5
+    animationPositionError: 0.5
+    animationScaleError: 0.5
     animationWrapMode: 0
     extraExposedTransformPaths: []
+    extraUserProperties: []
     clipAnimations:
     - serializedVersion: 16
       name: Take 001
       takeName: Take 001
+      internalID: 0
       firstFrame: 1
       lastFrame: 76
       wrapMode: 2
@@ -84,6 +213,7 @@ ModelImporter:
       level: 0
       cycleOffset: 0
       loop: 0
+      hasAdditiveReferencePose: 0
       loopTime: 0
       loopBlend: 0
       loopBlendOrientation: 0
@@ -144,48 +274,82 @@ ModelImporter:
         weight: 1
       maskType: 0
       maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
     isReadable: 1
   meshes:
     lODScreenPercentages: []
-    globalScale: .00999999978
-    meshCompression: 0
+    globalScale: 0.01
+    meshCompression: 2
     addColliders: 0
+    useSRGBMaterialColor: 1
+    sortHierarchyByName: 1
+    importPhysicalCameras: 0
+    importVisibility: 0
     importBlendShapes: 1
+    importCameras: 0
+    importLights: 0
+    nodeNameCollisionStrategy: 0
+    fileIdsGeneration: 1
     swapUVChannels: 0
     generateSecondaryUV: 0
     useFileUnits: 1
-    optimizeMeshForGPU: 1
+    keepQuads: 0
     weldVertices: 1
+    bakeAxisConversion: 0
+    preserveHierarchy: 0
+    skinWeightsMode: 0
+    maxBonesPerVertex: 4
+    minBoneWeight: 0.001
+    optimizeBones: 1
+    generateMeshLods: 0
+    meshLodGenerationFlags: 0
+    maximumMeshLod: -1
+    meshOptimizationFlags: -1
+    indexFormat: 1
     secondaryUVAngleDistortion: 8
     secondaryUVAreaDistortion: 15.000001
     secondaryUVHardAngle: 88
+    secondaryUVMarginMethod: 0
+    secondaryUVMinLightmapResolution: 40
+    secondaryUVMinObjectScale: 1
     secondaryUVPackMargin: 4
+    useFileScale: 0
+    strictVertexDataChecks: 0
   tangentSpace:
     normalSmoothAngle: 180
-    splitTangentsAcrossUV: 1
     normalImportMode: 1
-    tangentImportMode: 1
+    tangentImportMode: 4
+    normalCalculationMode: 0
+    legacyComputeAllNormalsFromSmoothingGroupsWhenMeshHasBlendShapes: 1
+    blendShapeNormalImportMode: 1
+    normalSmoothingSource: 0
+  referencedClips: []
   importAnimation: 1
-  copyAvatar: 0
   humanDescription:
+    serializedVersion: 3
     human: []
     skeleton: []
-    armTwist: .5
-    foreArmTwist: .5
-    upperLegTwist: .5
-    legTwist: .5
-    armStretch: .0500000007
-    legStretch: .0500000007
+    armTwist: 0.5
+    foreArmTwist: 0.5
+    upperLegTwist: 0.5
+    legTwist: 0.5
+    armStretch: 0.05
+    legStretch: 0.05
     feetSpacing: 0
+    globalScale: 0.01
     rootMotionBoneName: 
+    hasTranslationDoF: 0
+    hasExtraRoot: 0
+    skeletonHasParents: 0
   lastHumanDescriptionAvatarSource: {instanceID: 0}
-  animationType: 1
+  autoGenerateAvatarMappingIfUnspecified: 1
+  animationType: 0
+  humanoidOversampling: 1
+  avatarSetup: 0
+  addHumanoidExtraRootOnlyWhenUsingAvatar: 0
+  importBlendShapeDeformPercent: 0
+  remapMaterialsIfMaterialImportModeIsNone: 1
   additionalBone: 0
   userData: 
-AssetOrigin:
-  serializedVersion: 1
-  productId: 36810
-  packageName: Japanese Dosanko City
-  packageVersion: 1.0.0
-  assetPath: Assets/ZRNAssets/PQAssets/Query-Chan-SD/Sapporo_Props/SnowBallFightObject/Models/PQ_Ch_santa_motion.fbx
-  uploadId: 275953
+  assetBundleName: 
+  assetBundleVariant: 

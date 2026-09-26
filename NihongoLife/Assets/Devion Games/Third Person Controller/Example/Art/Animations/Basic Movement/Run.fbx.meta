@@ -1,7 +1,15 @@
 fileFormatVersion: 2
 guid: 1cb8ed3cbba15f0479fbae54e0a963df
+AssetOrigin:
+  serializedVersion: 1
+  productId: 45568
+  packageName: Item & Inventory System
+  packageVersion: 2.1.3
+  assetPath: Assets/Devion Games/Third Person Controller/Example/Art/Animations/Basic
+    Movement/Run.fbx
+  uploadId: 420191
 ModelImporter:
-  serializedVersion: 19301
+  serializedVersion: 24200
   internalIDToNameTable:
   - first:
       1: 100000
@@ -1895,11 +1903,8 @@ ModelImporter:
     bakeSimulation: 0
     resampleCurves: 1
     optimizeGameObjects: 0
+    removeConstantScaleCurves: 0
     motionNodeName: 
-    rigImportErrors: 
-    rigImportWarnings: "Avatar Rig Configuration mis-match. Bone length in configuration
-      does not match position in animation file:\n\t'LeftLeg' : position error =
-      7.696520 mm\n\t'LeftFoot' : position error = 15.233778 mm\n"
     animationImportErrors: 
     animationImportWarnings: 
     animationRetargetingWarnings: 
@@ -2355,31 +2360,42 @@ ModelImporter:
   meshes:
     lODScreenPercentages: []
     globalScale: 0.01
-    meshCompression: 0
+    meshCompression: 2
     addColliders: 0
     useSRGBMaterialColor: 1
     sortHierarchyByName: 1
+    importPhysicalCameras: 1
     importVisibility: 0
     importBlendShapes: 1
     importCameras: 0
     importLights: 0
+    nodeNameCollisionStrategy: 0
     fileIdsGeneration: 1
     swapUVChannels: 0
     generateSecondaryUV: 0
     useFileUnits: 1
     keepQuads: 0
     weldVertices: 1
+    bakeAxisConversion: 0
     preserveHierarchy: 0
     skinWeightsMode: 0
     maxBonesPerVertex: 4
     minBoneWeight: 0.001
+    optimizeBones: 1
+    generateMeshLods: 0
+    meshLodGenerationFlags: 0
+    maximumMeshLod: -1
     meshOptimizationFlags: -1
     indexFormat: 1
     secondaryUVAngleDistortion: 8
     secondaryUVAreaDistortion: 15.000001
     secondaryUVHardAngle: 88
+    secondaryUVMarginMethod: 0
+    secondaryUVMinLightmapResolution: 40
+    secondaryUVMinObjectScale: 1
     secondaryUVPackMargin: 4
     useFileScale: 0
+    strictVertexDataChecks: 0
   tangentSpace:
     normalSmoothAngle: 60
     normalImportMode: 0
@@ -2939,8 +2955,7 @@ ModelImporter:
     - name: LeftHandMiddle3
       parentName: 
       position: {x: -0.03396478, y: 0.00000016108528, z: 0.000000005419296}
-      rotation: {x: 6.1322064e-10, y: -0.0000000041246895, z: 0.0000000018221633,
-        w: 0.99999994}
+      rotation: {x: 6.1322064e-10, y: -0.0000000041246895, z: 0.0000000018221633, w: 0.99999994}
       scale: {x: 1, y: 1, z: 1}
     - name: LeftHandPinky1
       parentName: 
@@ -2970,8 +2985,7 @@ ModelImporter:
     - name: LeftHandRing3
       parentName: 
       position: {x: -0.030835424, y: -0.00000015687996, z: -0.000000014096336}
-      rotation: {x: 4.936146e-10, y: -0.0000000015807432, z: -0.0000000057879603,
-        w: 0.99999994}
+      rotation: {x: 4.936146e-10, y: -0.0000000015807432, z: -0.0000000057879603, w: 0.99999994}
       scale: {x: 1, y: 0.99999994, z: 0.9999999}
     - name: LeftHandThumb1
       parentName: 
@@ -3046,8 +3060,7 @@ ModelImporter:
     - name: RightHandIndex3
       parentName: 
       position: {x: 0.025225095, y: -0.004966217, z: 0.011012183}
-      rotation: {x: 0.000000002161792, y: 0.000000010685001, z: -0.000000008502301,
-        w: 0.99999994}
+      rotation: {x: 0.000000002161792, y: 0.000000010685001, z: -0.000000008502301, w: 0.99999994}
       scale: {x: 1, y: 1.0000001, z: 1.0000001}
     - name: RightHandMiddle1
       parentName: 
@@ -3062,8 +3075,7 @@ ModelImporter:
     - name: RightHandMiddle3
       parentName: 
       position: {x: 0.033072565, y: -0.0075473776, z: 0.0016898564}
-      rotation: {x: -3.7425496e-10, y: -0.000000004229181, z: -0.000000010583729,
-        w: 0.99999994}
+      rotation: {x: -3.7425496e-10, y: -0.000000004229181, z: -0.000000010583729, w: 0.99999994}
       scale: {x: 1, y: 0.9999999, z: 1}
     - name: RightHandPinky1
       parentName: 
@@ -3093,8 +3105,7 @@ ModelImporter:
     - name: RightHandRing3
       parentName: 
       position: {x: 0.029500818, y: -0.0076926965, z: -0.004622266}
-      rotation: {x: -0.0000000026137765, y: -0.000000008063095, z: -0.0000000061184586,
-        w: 0.99999994}
+      rotation: {x: -0.0000000026137765, y: -0.000000008063095, z: -0.0000000061184586, w: 0.99999994}
       scale: {x: 1, y: 1, z: 1.0000001}
     - name: RightHandThumb1
       parentName: 
@@ -3109,8 +3120,7 @@ ModelImporter:
     - name: RightHandThumb3
       parentName: 
       position: {x: 0.025460003, y: -0.007640302, z: 0.020833014}
-      rotation: {x: 0.000000013181404, y: 0.0000000010564283, z: -0.000000002011415,
-        w: 0.99999994}
+      rotation: {x: 0.000000013181404, y: 0.0000000010564283, z: -0.000000002011415, w: 0.99999994}
       scale: {x: 1, y: 1, z: 1}
     armTwist: 0.5
     foreArmTwist: 0.493
@@ -3129,15 +3139,10 @@ ModelImporter:
   animationType: 3
   humanoidOversampling: 1
   avatarSetup: 1
+  addHumanoidExtraRootOnlyWhenUsingAvatar: 0
+  importBlendShapeDeformPercent: 0
+  remapMaterialsIfMaterialImportModeIsNone: 1
   additionalBone: 0
   userData: 
   assetBundleName: 
   assetBundleVariant: 
-AssetOrigin:
-  serializedVersion: 1
-  productId: 45568
-  packageName: Item & Inventory System
-  packageVersion: 2.1.3
-  assetPath: Assets/Devion Games/Third Person Controller/Example/Art/Animations/Basic
-    Movement/Run.fbx
-  uploadId: 420191

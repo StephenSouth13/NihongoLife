@@ -1,15 +1,5 @@
 fileFormatVersion: 2
 guid: 0a4e71e9e89024e2c89ab0f8be473854
-AudioImporter:
-  serializedVersion: 4
-  format: 0
-  quality: .5
-  stream: 1
-  3D: 1
-  forceToMono: 0
-  useHardware: 0
-  loopable: 0
-  userData: 
 AssetOrigin:
   serializedVersion: 1
   productId: 35619
@@ -17,3 +7,24 @@ AssetOrigin:
   packageVersion: 1.0.0
   assetPath: Assets/ZRNAssets/PQAssets/Query-Chan-SD/Fukuoka_Props/Sounds/Flute_02.wav
   uploadId: 275951
+AudioImporter:
+  externalObjects: {}
+  serializedVersion: 8
+  defaultSettings:
+    serializedVersion: 2
+    loadType: 1
+    sampleRateSetting: 0
+    sampleRateOverride: 0
+    compressionFormat: 1
+    quality: 0.5
+    conversionMode: 0
+    preloadAudioData: 0
+  platformSettingOverrides: {}
+  forceToMono: 1
+  normalize: 1
+  loadInBackground: 0
+  ambisonic: 0
+  3D: 1
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

@@ -1,89 +1,258 @@
 fileFormatVersion: 2
 guid: 53ca9f0de18d9e04c900a6a027284e72
+AssetOrigin:
+  serializedVersion: 1
+  productId: 36810
+  packageName: Japanese Dosanko City
+  packageVersion: 1.0.0
+  assetPath: Assets/ZRNAssets/PQAssets/Query-Chan-SD/Models/SD_QUERY_05.fbx
+  uploadId: 275953
 ModelImporter:
-  serializedVersion: 23
-  fileIDToRecycleName:
-    100000: ahoge
-    100002: body
-    100004: earphone
-    100006: face
-    100008: hair
-    100010: hair_top
-    100012: hat_defo
-    100014: head
-    100016: hip
-    100018: L_arm
-    100020: L_arm2
-    100022: L_foot
-    100024: L_hand
-    100026: L_leg
-    100028: L_leg2
-    100030: leg
-    100032: R_arm
-    100034: R_arm2
-    100036: R_foot
-    100038: R_hand
-    100040: R_leg
-    100042: R_leg2
-    100044: //RootNode
-    100046: SD_QUERY_05
-    100048: SD_QUERY_05_Reference
-    100050: spine
-    100052: upper
-    400000: ahoge
-    400002: body
-    400004: earphone
-    400006: face
-    400008: hair
-    400010: hair_top
-    400012: hat_defo
-    400014: head
-    400016: hip
-    400018: L_arm
-    400020: L_arm2
-    400022: L_foot
-    400024: L_hand
-    400026: L_leg
-    400028: L_leg2
-    400030: leg
-    400032: R_arm
-    400034: R_arm2
-    400036: R_foot
-    400038: R_hand
-    400040: R_leg
-    400042: R_leg2
-    400044: //RootNode
-    400046: SD_QUERY_05
-    400048: SD_QUERY_05_Reference
-    400050: spine
-    400052: upper
-    4300000: hat_defo
-    4300002: body
-    4300004: face
-    4300006: earphone
-    4300008: hair_top
-    4300010: hair
-    4300012: leg
-    7400000: 0400_Def
-    7400002: 0401_Stand
-    7400004: 0402_Walk
-    7400006: 0403_Run
-    7400008: 0404_Idle
-    7400010: 0405_Snowballing
-    7400012: 0406_Clione
-    7400014: 0407_IkaDance
-    7400016: 0450_Pose_Cold
-    7400018: 0451_Pose_BeAmbitious
-    7400020: 0452_Pose_Bear
-    9500000: //RootNode
-    13700000: body
-    13700002: earphone
-    13700004: face
-    13700006: hair
-    13700008: hair_top
-    13700010: hat_defo
-    13700012: leg
-    2186277476908879412: ImportLogs
+  serializedVersion: 24200
+  internalIDToNameTable:
+  - first:
+      1: 100000
+    second: ahoge
+  - first:
+      1: 100002
+    second: body
+  - first:
+      1: 100004
+    second: earphone
+  - first:
+      1: 100006
+    second: face
+  - first:
+      1: 100008
+    second: hair
+  - first:
+      1: 100010
+    second: hair_top
+  - first:
+      1: 100012
+    second: hat_defo
+  - first:
+      1: 100014
+    second: head
+  - first:
+      1: 100016
+    second: hip
+  - first:
+      1: 100018
+    second: L_arm
+  - first:
+      1: 100020
+    second: L_arm2
+  - first:
+      1: 100022
+    second: L_foot
+  - first:
+      1: 100024
+    second: L_hand
+  - first:
+      1: 100026
+    second: L_leg
+  - first:
+      1: 100028
+    second: L_leg2
+  - first:
+      1: 100030
+    second: leg
+  - first:
+      1: 100032
+    second: R_arm
+  - first:
+      1: 100034
+    second: R_arm2
+  - first:
+      1: 100036
+    second: R_foot
+  - first:
+      1: 100038
+    second: R_hand
+  - first:
+      1: 100040
+    second: R_leg
+  - first:
+      1: 100042
+    second: R_leg2
+  - first:
+      1: 100044
+    second: //RootNode
+  - first:
+      1: 100046
+    second: SD_QUERY_05
+  - first:
+      1: 100048
+    second: SD_QUERY_05_Reference
+  - first:
+      1: 100050
+    second: spine
+  - first:
+      1: 100052
+    second: upper
+  - first:
+      4: 400000
+    second: ahoge
+  - first:
+      4: 400002
+    second: body
+  - first:
+      4: 400004
+    second: earphone
+  - first:
+      4: 400006
+    second: face
+  - first:
+      4: 400008
+    second: hair
+  - first:
+      4: 400010
+    second: hair_top
+  - first:
+      4: 400012
+    second: hat_defo
+  - first:
+      4: 400014
+    second: head
+  - first:
+      4: 400016
+    second: hip
+  - first:
+      4: 400018
+    second: L_arm
+  - first:
+      4: 400020
+    second: L_arm2
+  - first:
+      4: 400022
+    second: L_foot
+  - first:
+      4: 400024
+    second: L_hand
+  - first:
+      4: 400026
+    second: L_leg
+  - first:
+      4: 400028
+    second: L_leg2
+  - first:
+      4: 400030
+    second: leg
+  - first:
+      4: 400032
+    second: R_arm
+  - first:
+      4: 400034
+    second: R_arm2
+  - first:
+      4: 400036
+    second: R_foot
+  - first:
+      4: 400038
+    second: R_hand
+  - first:
+      4: 400040
+    second: R_leg
+  - first:
+      4: 400042
+    second: R_leg2
+  - first:
+      4: 400044
+    second: //RootNode
+  - first:
+      4: 400046
+    second: SD_QUERY_05
+  - first:
+      4: 400048
+    second: SD_QUERY_05_Reference
+  - first:
+      4: 400050
+    second: spine
+  - first:
+      4: 400052
+    second: upper
+  - first:
+      43: 4300000
+    second: hat_defo
+  - first:
+      43: 4300002
+    second: body
+  - first:
+      43: 4300004
+    second: face
+  - first:
+      43: 4300006
+    second: earphone
+  - first:
+      43: 4300008
+    second: hair_top
+  - first:
+      43: 4300010
+    second: hair
+  - first:
+      43: 4300012
+    second: leg
+  - first:
+      74: 7400000
+    second: 0400_Def
+  - first:
+      74: 7400002
+    second: 0401_Stand
+  - first:
+      74: 7400004
+    second: 0402_Walk
+  - first:
+      74: 7400006
+    second: 0403_Run
+  - first:
+      74: 7400008
+    second: 0404_Idle
+  - first:
+      74: 7400010
+    second: 0405_Snowballing
+  - first:
+      74: 7400012
+    second: 0406_Clione
+  - first:
+      74: 7400014
+    second: 0407_IkaDance
+  - first:
+      74: 7400016
+    second: 0450_Pose_Cold
+  - first:
+      74: 7400018
+    second: 0451_Pose_BeAmbitious
+  - first:
+      74: 7400020
+    second: 0452_Pose_Bear
+  - first:
+      95: 9500000
+    second: //RootNode
+  - first:
+      137: 13700000
+    second: body
+  - first:
+      137: 13700002
+    second: earphone
+  - first:
+      137: 13700004
+    second: face
+  - first:
+      137: 13700006
+    second: hair
+  - first:
+      137: 13700008
+    second: hair_top
+  - first:
+      137: 13700010
+    second: hat_defo
+  - first:
+      137: 13700012
+    second: leg
+  - first:
+      41386430: 2186277476908879412
+    second: ImportLogs
   externalObjects:
   - first:
       type: UnityEngine:Material
@@ -96,7 +265,7 @@ ModelImporter:
       name: phong5
     second: {fileID: 2100000, guid: 127b929b72c0a424bb82364dd758ece2, type: 2}
   materials:
-    importMaterials: 1
+    materialImportMode: 1
     materialName: 0
     materialSearch: 1
     materialLocation: 0
@@ -105,14 +274,10 @@ ModelImporter:
     bakeSimulation: 0
     resampleCurves: 1
     optimizeGameObjects: 0
+    removeConstantScaleCurves: 0
     motionNodeName: 
-    rigImportErrors: 
-    rigImportWarnings: 
     animationImportErrors: 
-    animationImportWarnings: "\nClip 'Take 001' has import animation warnings that
-      might lower retargeting quality:\nNote: Activate translation DOF on avatar
-      to improve retargeting quality.\n\t'spine' has translation animation that will
-      be discarded.\n\t'R_arm2' has translation animation that will be discarded.\n"
+    animationImportWarnings: 
     animationRetargetingWarnings: 
     animationDoRetargetingWarnings: 0
     importAnimatedCustomProperties: 0
@@ -128,6 +293,7 @@ ModelImporter:
     - serializedVersion: 16
       name: 0400_Def
       takeName: Take 001
+      internalID: 0
       firstFrame: 0
       lastFrame: 0.1
       wrapMode: 0
@@ -208,6 +374,7 @@ ModelImporter:
     - serializedVersion: 16
       name: 0401_Stand
       takeName: Take 001
+      internalID: 0
       firstFrame: 1
       lastFrame: 1.1
       wrapMode: 0
@@ -288,6 +455,7 @@ ModelImporter:
     - serializedVersion: 16
       name: 0402_Walk
       takeName: Take 001
+      internalID: 0
       firstFrame: 2
       lastFrame: 64
       wrapMode: 0
@@ -368,6 +536,7 @@ ModelImporter:
     - serializedVersion: 16
       name: 0403_Run
       takeName: Take 001
+      internalID: 0
       firstFrame: 70
       lastFrame: 110
       wrapMode: 0
@@ -448,6 +617,7 @@ ModelImporter:
     - serializedVersion: 16
       name: 0404_Idle
       takeName: Take 001
+      internalID: 0
       firstFrame: 120
       lastFrame: 180
       wrapMode: 0
@@ -528,6 +698,7 @@ ModelImporter:
     - serializedVersion: 16
       name: 0405_Snowballing
       takeName: Take 001
+      internalID: 0
       firstFrame: 190
       lastFrame: 240
       wrapMode: 0
@@ -608,6 +779,7 @@ ModelImporter:
     - serializedVersion: 16
       name: 0406_Clione
       takeName: Take 001
+      internalID: 0
       firstFrame: 250
       lastFrame: 319
       wrapMode: 0
@@ -688,6 +860,7 @@ ModelImporter:
     - serializedVersion: 16
       name: 0407_IkaDance
       takeName: Take 001
+      internalID: 0
       firstFrame: 350
       lastFrame: 569
       wrapMode: 0
@@ -768,6 +941,7 @@ ModelImporter:
     - serializedVersion: 16
       name: 0450_Pose_Cold
       takeName: Take 001
+      internalID: 0
       firstFrame: 601
       lastFrame: 601.1
       wrapMode: 0
@@ -848,6 +1022,7 @@ ModelImporter:
     - serializedVersion: 16
       name: 0451_Pose_BeAmbitious
       takeName: Take 001
+      internalID: 0
       firstFrame: 602
       lastFrame: 602.1
       wrapMode: 0
@@ -928,6 +1103,7 @@ ModelImporter:
     - serializedVersion: 16
       name: 0452_Pose_Bear
       takeName: Take 001
+      internalID: 0
       firstFrame: 603
       lastFrame: 603.1
       wrapMode: 0
@@ -1009,36 +1185,54 @@ ModelImporter:
   meshes:
     lODScreenPercentages: []
     globalScale: 0.1
-    meshCompression: 0
+    meshCompression: 2
     addColliders: 0
+    useSRGBMaterialColor: 1
+    sortHierarchyByName: 1
+    importPhysicalCameras: 1
     importVisibility: 0
     importBlendShapes: 1
     importCameras: 0
     importLights: 0
+    nodeNameCollisionStrategy: 0
+    fileIdsGeneration: 1
     swapUVChannels: 0
     generateSecondaryUV: 0
     useFileUnits: 1
-    optimizeMeshForGPU: 1
     keepQuads: 0
     weldVertices: 1
+    bakeAxisConversion: 0
     preserveHierarchy: 0
+    skinWeightsMode: 0
+    maxBonesPerVertex: 4
+    minBoneWeight: 0.001
+    optimizeBones: 1
+    generateMeshLods: 0
+    meshLodGenerationFlags: 0
+    maximumMeshLod: -1
+    meshOptimizationFlags: -1
     indexFormat: 1
     secondaryUVAngleDistortion: 8
     secondaryUVAreaDistortion: 15.000001
     secondaryUVHardAngle: 88
+    secondaryUVMarginMethod: 0
+    secondaryUVMinLightmapResolution: 40
+    secondaryUVMinObjectScale: 1
     secondaryUVPackMargin: 4
     useFileScale: 0
-    previousCalculatedGlobalScale: 0.1
-    hasPreviousCalculatedGlobalScale: 1
+    strictVertexDataChecks: 0
   tangentSpace:
     normalSmoothAngle: 60
     normalImportMode: 0
     tangentImportMode: 4
     normalCalculationMode: 0
+    legacyComputeAllNormalsFromSmoothingGroupsWhenMeshHasBlendShapes: 0
+    blendShapeNormalImportMode: 1
+    normalSmoothingSource: 0
+  referencedClips: []
   importAnimation: 1
-  copyAvatar: 0
   humanDescription:
-    serializedVersion: 2
+    serializedVersion: 3
     human:
     - boneName: hip
       humanName: Hips
@@ -1314,22 +1508,20 @@ ModelImporter:
     armStretch: 0.05
     legStretch: 0.05
     feetSpacing: 0
+    globalScale: 0.1
     rootMotionBoneName: 
-    rootMotionBoneRotation: {x: 0, y: 0, z: 0, w: 1}
     hasTranslationDoF: 0
     hasExtraRoot: 0
     skeletonHasParents: 0
   lastHumanDescriptionAvatarSource: {instanceID: 0}
-  animationType: 3
+  autoGenerateAvatarMappingIfUnspecified: 1
+  animationType: 0
   humanoidOversampling: 1
+  avatarSetup: 0
+  addHumanoidExtraRootOnlyWhenUsingAvatar: 0
+  importBlendShapeDeformPercent: 0
+  remapMaterialsIfMaterialImportModeIsNone: 1
   additionalBone: 0
   userData: 
   assetBundleName: 
   assetBundleVariant: 
-AssetOrigin:
-  serializedVersion: 1
-  productId: 36810
-  packageName: Japanese Dosanko City
-  packageVersion: 1.0.0
-  assetPath: Assets/ZRNAssets/PQAssets/Query-Chan-SD/Models/SD_QUERY_05.fbx
-  uploadId: 275953
