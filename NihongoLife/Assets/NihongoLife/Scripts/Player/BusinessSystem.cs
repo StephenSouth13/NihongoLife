@@ -8,13 +8,19 @@ namespace NihongoLife.Player
 {
     public sealed class BusinessSystem : MonoBehaviour
     {
+        public static BusinessSystem Instance { get; private set; }
         public const int CompanyKnowledgeRequirement = 300;
         public const int CompanyCapitalRequirement = 50000;
         public event Action<string> OnBusinessMessage;
         public BusinessRecord Business { get; private set; }
         public bool OwnsCompany => Business != null && !string.IsNullOrWhiteSpace(Business.companyName);
 
-        private void Awake() => Load();
+        private void Awake()
+        {
+            if (Instance != null && Instance != this) { Destroy(this); return; }
+            Instance = this;
+            Load();
+        }
 
         public bool TryOpenCompany(string companyName)
         {

@@ -85,5 +85,7 @@ namespace NihongoLife.Data
         public List<MasteryRecord> masteryLevels = new List<MasteryRecord>();
         public List<ReviewRecord> reviewItems = new List<ReviewRecord>();
         public List<CareerRecord> careers = new List<CareerRecord>();
+        public List<NihongoLife.Player.InventoryEntry> inventory = new List<NihongoLife.Player.InventoryEntry>();
+        public List<NihongoLife.Player.InventoryEntry> homeStorage = new List<NihongoLife.Player.InventoryEntry>();
     }
 }

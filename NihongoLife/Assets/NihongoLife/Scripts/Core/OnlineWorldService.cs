@@ -66,6 +66,26 @@ namespace NihongoLife.Core
             {
                 _chatHistoryLimit = Mathf.Max(10, control.Database.chatHistoryLimit);
             }
+
+            // Hook up to Vivox Text Chat if available
+            var vivox = UnityEngine.Object.FindFirstObjectByType<NihongoLife.Audio.VivoxVoiceManager>();
+            if (vivox != null)
+            {
+                vivox.OnTextMessageReceived += OnVivoxMessageReceived;
+            }
+        }
+
+        private void OnVivoxMessageReceived(string senderName, string text)
+        {
+            AddChatMessage(new OnlineChatMessage
+            {
+                messageId = Guid.NewGuid().ToString("N"),
+                senderPlayerId = "vivox_remote",
+                senderDisplayName = senderName,
+                channelId = "town",
+                text = text,
+                sentAtUtcTicks = DateTime.UtcNow.Ticks
+            });
         }
 
         public void ConnectLocalPlayer(string playerId, string displayName)
@@ -118,6 +138,13 @@ namespace NihongoLife.Core
         public void SendChatMessage(string channelId, string text)
         {
             if (!IsConnected || string.IsNullOrWhiteSpace(text)) return;
+
+            // Broadcast to Vivox so other players see it
+            var vivox = UnityEngine.Object.FindFirstObjectByType<NihongoLife.Audio.VivoxVoiceManager>();
+            if (vivox != null)
+            {
+                vivox.SendTextMessage(text.Trim());
+            }
 
             AddChatMessage(new OnlineChatMessage
             {

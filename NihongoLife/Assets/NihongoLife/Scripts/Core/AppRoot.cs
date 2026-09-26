@@ -186,7 +186,7 @@ namespace NihongoLife.Core
             // Start loading main menu only if we are in Bootstrap
             if (UnityEngine.SceneManagement.SceneManager.GetActiveScene().name == "00_Bootstrap")
             {
-                sceneFlowController.LoadScene("01_MainMenu");
+                sceneFlowController.LoadScene("90_TestSandbox");
             }
         }
     }

@@ -60,7 +60,15 @@ namespace NihongoLife.Player
             if (GameServices.TryGet(out IProgressRepository repository))
             {
                 var progress = repository.GetProgress();
-                if (progress != null) Yen = Mathf.Max(0, progress.yen);
+                if (progress != null)
+                {
+                    Yen = Mathf.Max(0, progress.yen);
+                    if (progress.inventory != null)
+                    {
+                        _items.Clear();
+                        _items.AddRange(progress.inventory);
+                    }
+                }
             }
         }
 
@@ -198,6 +206,7 @@ namespace NihongoLife.Player
             var progress = repository.GetProgress();
             if (progress == null) return;
             progress.yen = Yen;
+            progress.inventory = new List<InventoryEntry>(_items);
             repository.SaveProgress(progress);
         }
     }

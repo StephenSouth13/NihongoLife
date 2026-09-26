@@ -146,6 +146,13 @@ namespace NihongoLife.Player
             right.Normalize();
 
             Vector3 moveDirection = (forward * moveInput.y + right * moveInput.x).normalized;
+
+            // VIVOX 3D AUDIO SYNC: Update our position so others hear us correctly
+            if (NihongoLife.Audio.VivoxVoiceManager.Instance != null && _mainCamera != null)
+            {
+                NihongoLife.Audio.VivoxVoiceManager.Instance.Update3DPosition(transform, _mainCamera.transform);
+            }
+
             if (_hasClickDestination && moveInput.sqrMagnitude < 0.01f)
             {
                 Vector3 toDestination = _clickDestination - transform.position;

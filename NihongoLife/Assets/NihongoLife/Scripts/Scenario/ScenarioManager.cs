@@ -531,7 +531,7 @@ namespace NihongoLife.Scenario
                     breakdown.rewardYen = yenReward;
                     breakdown.firstCompletion = firstCompletion;
                     if (yenReward > 0) Player.PlayerInventory.Instance?.AddYen(yenReward);
-                    if (firstCompletion && currentScenario.rewardItems != null && Player.PlayerInventory.Instance != null) { foreach (string itemId in currentScenario.rewardItems) Player.PlayerInventory.Instance.AddItem(itemId, itemId, itemId, 0, 1, false, null); }
+                    if (firstCompletion && currentScenario.rewardItems != null && Player.PlayerInventory.Instance != null) { foreach (string itemId in currentScenario.rewardItems) Player.PlayerInventory.Instance.AddItem(itemId, itemId, itemId, 0, 1, false, Player.ItemUseType.None); }
                     progress.xp += Mathf.Max(10, knowledgeReward / 2);
                     progress.knowledge += knowledgeReward;
                     progress.level = 1 + (progress.xp / 500);

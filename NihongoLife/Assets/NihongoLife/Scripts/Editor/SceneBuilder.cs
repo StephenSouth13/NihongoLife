@@ -40,14 +40,14 @@ namespace NihongoLife.Editor
                 CharacterBuilder.BuildCharacterSystem();
 
                 BuildBootstrapScene(ScenesDir + "/00_Bootstrap.unity");
-                BuildMainMenuScene(ScenesDir + "/01_MainMenu.unity");
+                // BuildMainMenuScene(ScenesDir + "/01_MainMenu.unity");
                 BuildSandboxScene(SandboxScenePath);
                 BuildControlScene(ControlScenePath);
 
                 EditorBuildSettings.scenes = new[]
                 {
                     new EditorBuildSettingsScene(ScenesDir + "/00_Bootstrap.unity", true),
-                    new EditorBuildSettingsScene(ScenesDir + "/01_MainMenu.unity", true),
+                    // new EditorBuildSettingsScene(ScenesDir + "/01_MainMenu.unity", true),
                     new EditorBuildSettingsScene(SandboxScenePath, true),
                     new EditorBuildSettingsScene(ControlScenePath, false)
                 };
@@ -131,7 +131,7 @@ namespace NihongoLife.Editor
             var panel = CreateFullScreenPanel(canvasGo.transform, "MainMenuPanel", new Color(0.03f, 0.035f, 0.04f, 0.08f));
             AddTopAccent(panel.transform);
 
-            var title = CreateText(panel.transform, "TitleText", "NIHONGO LIFE", font, 86, new Vector2(0, 200), new Vector2(900, 110), TextAlignmentOptions.Center);
+            var title = CreateText(panel.transform, "TitleText", "", font, 86, new Vector2(0, 200), new Vector2(900, 110), TextAlignmentOptions.Center);
             title.color = new Color(1f, 0.98f, 0.9f);
             title.fontStyle = FontStyles.Bold;
             var subtitle = CreateText(panel.transform, "SubtitleText", "コンビニで買い物 / luyện hội thoại mua hàng", font, 28, new Vector2(0, 115), new Vector2(900, 44), TextAlignmentOptions.Center);
@@ -143,6 +143,7 @@ namespace NihongoLife.Editor
             profileText.color = new Color(0.95f, 0.95f, 0.95f);
 
             CreateText(panel.transform, "LanguageLabel", "Ngôn ngữ giao diện", font, 19, new Vector2(0f, -118f), new Vector2(560f, 32f), TextAlignmentOptions.Center).color = new Color(1f, 0.91f, 0.54f);
+            /*
             CreateMenuButton(panel.transform, "LanguageVietnameseButton", "VI", new Vector2(-132f, -166f), new Vector2(92f, 44f), font);
             CreateMenuButton(panel.transform, "LanguageEnglishButton", "EN", new Vector2(0f, -166f), new Vector2(92f, 44f), font);
             CreateMenuButton(panel.transform, "LanguageJapaneseButton", "JP", new Vector2(132f, -166f), new Vector2(92f, 44f), font);
@@ -155,6 +156,7 @@ namespace NihongoLife.Editor
             CreateMenuButton(panel.transform, "FriendsBtn", "Bạn bè", new Vector2(280f, -230f), new Vector2(130f, 46f), font);
             CreateMenuButton(panel.transform, "ProfileBtn", "Hồ sơ", new Vector2(0f, -290f), new Vector2(130f, 46f), font);
             CreateMenuButton(panel.transform, "OnlineBtn", "Online", new Vector2(0f, -350f), new Vector2(150f, 46f), font);
+            */
 
             var uiManagerGo = new GameObject("UIManager");
             var uiManager = uiManagerGo.AddComponent<UIManager>();
