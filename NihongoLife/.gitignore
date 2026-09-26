@@ -62,6 +62,10 @@ sysinfo.txt
 *.aab
 *.unitypackage
 *.unitypackage.meta
+
+# Ignore large third-party SDKs imported manually
+/NihongoLife/Assets/Agora-RTC-Plugin/
+/NihongoLife/Assets/Agora-RTC-Plugin.meta
 *.app
 
 # Keep downloaded/source archives and extracted source FBX local.
