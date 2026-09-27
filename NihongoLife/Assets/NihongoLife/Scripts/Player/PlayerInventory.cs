@@ -189,6 +189,46 @@ namespace NihongoLife.Player
             return item != null ? item.quantity : 0;
         }
 
+        public bool DropItem(string itemId, int quantity = 1)
+        {
+            return RemoveItem(itemId, quantity);
+        }
+
+        public bool SplitStack(string itemId, int quantity)
+        {
+            var item = _items.Find(entry => entry.itemId == itemId);
+            if (item == null || quantity <= 0 || quantity >= item.quantity || _items.Count >= maxSlots) return false;
+            item.quantity -= quantity;
+            _items.Add(new InventoryEntry
+            {
+                itemId = item.itemId,
+                displayNameJa = item.displayNameJa,
+                displayNameEn = item.displayNameEn,
+                priceYen = item.priceYen,
+                quantity = quantity,
+                isLitter = item.isLitter,
+                useType = item.useType,
+                foodRestore = item.foodRestore,
+                drinkRestore = item.drinkRestore,
+                energyRestore = item.energyRestore
+            });
+            OnInventoryChanged?.Invoke();
+            SaveWallet();
+            return true;
+        }
+
+        public void SortItems()
+        {
+            _items.Sort((a, b) =>
+            {
+                int type = a.useType.CompareTo(b.useType);
+                if (type != 0) return type;
+                return string.Compare(a.displayNameEn, b.displayNameEn, StringComparison.OrdinalIgnoreCase);
+            });
+            OnInventoryChanged?.Invoke();
+            SaveWallet();
+        }
+
         public int GetCartTotalYen()
         {
             int total = 0;

@@ -54,6 +54,8 @@ namespace NihongoLife.UI
         private WorldMapUI _worldMap;
         private SettingsUI _settingsUI;
         private bool _objectivesExpanded = true;
+        private TextMeshProUGUI _inventoryDetailText;
+        private int _selectedInventoryIndex;
 
         private void Start()
         {
@@ -112,6 +114,7 @@ namespace NihongoLife.UI
             EnsureNameplateToggle();
             RepairRuntimeLayout();
             ConfigureResponsiveText();
+            EnsureInventoryActions();
             EnsureOnlineChatPanel();
             _worldMap = gameObject.AddComponent<WorldMapUI>();
             _worldMap.Initialize(scenarioTitleText != null ? scenarioTitleText.font : null);
@@ -507,6 +510,11 @@ namespace NihongoLife.UI
                 SetInventoryVisible(inventoryPanel != null && !inventoryPanel.activeSelf);
             }
 
+            if (inventoryPanel != null && inventoryPanel.activeSelf)
+            {
+                HandleInventoryShortcuts();
+            }
+
             if (!dialogueOpen && input.WasPressed(GameInputId.Character))
             {
                 SetCharacterVisible(characterPanel != null && !characterPanel.activeSelf);
@@ -732,6 +740,111 @@ namespace NihongoLife.UI
             chatHistoryText.text = builder.ToString();
         }
 
+        private void EnsureInventoryActions()
+        {
+            if (inventoryPanel == null || _inventoryDetailText != null) return;
+            var inventoryRect = inventoryPanel.GetComponent<RectTransform>();
+            if (inventoryRect != null) inventoryRect.sizeDelta = new Vector2(780f, 420f);
+            TMP_FontAsset font = scenarioTitleText != null ? scenarioTitleText.font : null;
+            _inventoryDetailText = CreateHudText("InventoryDetail", inventoryPanel.transform,
+                new Vector2(430f, -28f), new Vector2(300f, 150f), 15f, font);
+            _inventoryDetailText.alignment = TextAlignmentOptions.TopLeft;
+            _inventoryDetailText.color = new Color(0.82f, 0.9f, 0.94f, 1f);
+
+            CreateInventoryButton("Chi tiết", new Vector2(430f, -190f), () => RefreshInventoryDetail());
+            CreateInventoryButton("Bỏ ra", new Vector2(540f, -190f), DropSelectedInventoryItem);
+            CreateInventoryButton("Chia nhỏ", new Vector2(650f, -190f), SplitSelectedInventoryItem);
+            CreateInventoryButton("Sắp xếp", new Vector2(760f, -190f), SortInventory);
+        }
+
+        private void CreateInventoryButton(string label, Vector2 position, UnityEngine.Events.UnityAction action)
+        {
+            var go = new GameObject("InventoryAction_" + label, typeof(RectTransform), typeof(Image), typeof(Button));
+            go.transform.SetParent(inventoryPanel.transform, false);
+            var rect = go.GetComponent<RectTransform>();
+            rect.anchorMin = rect.anchorMax = new Vector2(0f, 1f);
+            rect.pivot = new Vector2(0f, 1f);
+            rect.anchoredPosition = position;
+            rect.sizeDelta = new Vector2(100f, 40f);
+            go.GetComponent<Image>().color = new Color(0.08f, 0.18f, 0.24f, 0.96f);
+            var button = go.GetComponent<Button>();
+            button.targetGraphic = go.GetComponent<Image>();
+            button.onClick.AddListener(action);
+            var text = CreateHudText("Label", go.transform, Vector2.zero, Vector2.zero, 13f,
+                scenarioTitleText != null ? scenarioTitleText.font : null);
+            text.rectTransform.anchorMin = Vector2.zero;
+            text.rectTransform.anchorMax = Vector2.one;
+            text.rectTransform.offsetMin = text.rectTransform.offsetMax = Vector2.zero;
+            text.alignment = TextAlignmentOptions.Center;
+            text.text = label;
+            text.raycastTarget = false;
+        }
+
+        private void HandleInventoryShortcuts()
+        {
+            if (Keyboard.current == null) return;
+            for (int i = 0; i < 9; i++)
+            {
+                if (Keyboard.current[(Key)((int)Key.Digit1 + i)].wasPressedThisFrame)
+                {
+                    _selectedInventoryIndex = i;
+                    RefreshInventoryDetail();
+                    break;
+                }
+            }
+            if (Keyboard.current.sKey.wasPressedThisFrame) SortInventory();
+            if (Keyboard.current.deleteKey.wasPressedThisFrame) DropSelectedInventoryItem();
+        }
+
+        private InventoryEntry SelectedInventoryItem()
+        {
+            var inventory = PlayerInventory.Instance;
+            return inventory != null && _selectedInventoryIndex >= 0 && _selectedInventoryIndex < inventory.Items.Count
+                ? inventory.Items[_selectedInventoryIndex]
+                : null;
+        }
+
+        private void RefreshInventoryDetail()
+        {
+            if (_inventoryDetailText == null) return;
+            var item = SelectedInventoryItem();
+            if (item == null)
+            {
+                _inventoryDetailText.text = Text("Chọn một ô đồ để xem chi tiết.", "Select an item to view details.", "アイテムを選択してください。");
+                return;
+            }
+            string name = string.IsNullOrWhiteSpace(item.displayNameEn) ? item.displayNameJa : item.displayNameEn;
+            _inventoryDetailText.text = $"<size=120%><b>{name}</b></size>\n" +
+                $"{Text("Số lượng", "Quantity", "数量")}: {item.quantity}\n" +
+                $"{Text("Giá trị", "Value", "価格")}: ¥{item.priceYen:N0}\n" +
+                (item.itemId == "train_ticket_midori"
+                    ? Text("Tuyến: Sakura → Midori\nVé dùng cho chuyến kế tiếp.", "Route: Sakura → Midori\nValid for the next service.", "路線: さくら → みどり\n次の電車に有効です。")
+                    : Text("Vật phẩm trong balo.", "Item in your bag.", "バッグのアイテムです。"));
+        }
+
+        private void DropSelectedInventoryItem()
+        {
+            var item = SelectedInventoryItem();
+            if (item == null) return;
+            PlayerInventory.Instance.DropItem(item.itemId);
+            RefreshInventoryDetail();
+        }
+
+        private void SplitSelectedInventoryItem()
+        {
+            var item = SelectedInventoryItem();
+            if (item == null || item.quantity < 2) return;
+            PlayerInventory.Instance.SplitStack(item.itemId, item.quantity / 2);
+            RefreshInventoryDetail();
+        }
+
+        private void SortInventory()
+        {
+            PlayerInventory.Instance?.SortItems();
+            _selectedInventoryIndex = 0;
+            RefreshInventoryDetail();
+        }
+
         private void RefreshPlayerPanels()
         {
             var inventory = PlayerInventory.Instance;
@@ -759,6 +872,7 @@ namespace NihongoLife.UI
             }
 
             RenderPolishedPlayerPanels(inventory);
+            RefreshInventoryDetail();
         }
 
         private void RenderPolishedPlayerPanels(PlayerInventory inventory)
