@@ -26,6 +26,7 @@ namespace NihongoLife.Scenario
     {
         public string id;
         public string titleJa;
+        public string titleVi;
         public string titleEn;
         public bool isOptional;
         public ObjectiveState state;
@@ -118,6 +119,7 @@ namespace NihongoLife.Scenario
                 {
                     id = objDef.id,
                     titleJa = objDef.titleJa,
+                    titleVi = objDef.titleVi,
                     titleEn = objDef.titleEn,
                     isOptional = objDef.isOptional,
                     state = ObjectiveState.Inactive

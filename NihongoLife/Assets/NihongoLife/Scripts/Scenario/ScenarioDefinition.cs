@@ -24,8 +24,11 @@ namespace NihongoLife.Scenario
     {
         public string id;
         public string titleJa;
+
+        // New content should provide all three labels. Existing assets used titleEn
+        // for the former Vietnamese value, so the runtime keeps titleEn as a fallback.
+        public string titleVi;
         
-        [FormerlySerializedAs("titleVi")]
         public string titleEn;
         
         public bool isOptional;
@@ -101,8 +104,11 @@ namespace NihongoLife.Scenario
         public string id;
         public int version = 1;
         public string titleJa;
+
+        // New scenario assets should fill all three languages. Legacy titleEn values
+        // are retained as the Vietnamese fallback until content is migrated.
+        public string titleVi;
         
-        [FormerlySerializedAs("titleVi")]
         public string titleEn;
         
         [TextArea(3, 5)] 

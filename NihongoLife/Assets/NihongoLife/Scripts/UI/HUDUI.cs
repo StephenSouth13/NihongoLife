@@ -908,7 +908,7 @@ namespace NihongoLife.UI
                 {
                     var activeObjective = ScenarioManager.Instance.Objectives.Find(o => o.state == ObjectiveState.Active)
                         ?? ScenarioManager.Instance.Objectives[0];
-                    goalText = Text(activeObjective.titleEn, activeObjective.titleEn, activeObjective.titleJa);
+                    goalText = ObjectiveText(activeObjective);
                 }
 
                 PlayerStatus status = PlayerStatus.Instance;
@@ -999,7 +999,7 @@ namespace NihongoLife.UI
         {
             if (scenarioTitleText != null)
             {
-                scenarioTitleText.text = Text(scenario.titleEn, scenario.titleEn, scenario.titleJa);
+                scenarioTitleText.text = ScenarioText(scenario);
             }
             UpdateObjectivesDisplay();
         }
@@ -1031,10 +1031,27 @@ namespace NihongoLife.UI
                     ObjectiveState.Active => "#f5f2e8",
                     _ => "#8fa3b8"
                 };
-                builder.AppendLine($"<color={color}>{check} {Text(obj.titleEn, obj.titleEn, obj.titleJa)}</color>");
+                builder.AppendLine($"<color={color}>{check} {ObjectiveText(obj)}</color>");
             }
 
             objectivesText.text = builder.ToString();
+        }
+
+        private string ObjectiveText(RuntimeObjective objective)
+        {
+            if (objective == null) return string.Empty;
+            // Legacy assets may have Vietnamese text serialized in titleEn.
+            string vi = string.IsNullOrWhiteSpace(objective.titleVi) ? objective.titleEn : objective.titleVi;
+            string en = string.IsNullOrWhiteSpace(objective.titleEn) ? vi : objective.titleEn;
+            return Text(vi, en, objective.titleJa);
+        }
+
+        private string ScenarioText(ScenarioDefinition scenario)
+        {
+            if (scenario == null) return string.Empty;
+            string vi = string.IsNullOrWhiteSpace(scenario.titleVi) ? scenario.titleEn : scenario.titleVi;
+            string en = string.IsNullOrWhiteSpace(scenario.titleEn) ? vi : scenario.titleEn;
+            return Text(vi, en, scenario.titleJa);
         }
 
         private void DisplayDialogue(DialogueDisplayData data)
