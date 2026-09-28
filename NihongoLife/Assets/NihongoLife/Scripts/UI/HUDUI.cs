@@ -56,6 +56,7 @@ namespace NihongoLife.UI
         private bool _objectivesExpanded = true;
         private TextMeshProUGUI _inventoryDetailText;
         private int _selectedInventoryIndex;
+        private IInteractable _currentInteractable;
 
         private void Start()
         {
@@ -612,6 +613,7 @@ namespace NihongoLife.UI
         {
             RefreshPlayerPanels();
             UpdateObjectivesDisplay();
+            if (_currentInteractable != null) ShowPrompt(_currentInteractable);
         }
 
         private void SetInventoryVisible(bool visible)
@@ -967,6 +969,7 @@ namespace NihongoLife.UI
 
         private void HandleInteractableChanged(IInteractable interactable)
         {
+            _currentInteractable = interactable;
             if (interactable == null)
             {
                 HidePrompt();
