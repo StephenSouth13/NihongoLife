@@ -2,6 +2,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
 using UnityEngine.AI;
+using NihongoLife.Cameras;
 
 namespace NihongoLife.Player
 {
@@ -16,14 +17,14 @@ namespace NihongoLife.Player
         private void Awake()
         {
             _player = GetComponent<PlayerController>();
-            _camera = Camera.main;
+            _camera = ResolveGameplayCamera();
         }
 
         private void Update()
         {
             if (Mouse.current == null || !Mouse.current.leftButton.wasPressedThisFrame) return;
             if (EventSystem.current != null && EventSystem.current.IsPointerOverGameObject()) return;
-            if (_camera == null) _camera = Camera.main;
+            if (!IsGameplayCamera(_camera)) _camera = ResolveGameplayCamera();
             if (_camera == null || _player == null) return;
 
             Ray ray = _camera.ScreenPointToRay(Mouse.current.position.ReadValue());
@@ -35,9 +36,25 @@ namespace NihongoLife.Player
                 if (NavMesh.SamplePosition(hit.point, out NavMeshHit navHit, 1.5f, NavMesh.AllAreas))
                 {
                     _player.SetClickDestination(navHit.position);
+                    return;
                 }
-                break;
             }
+        }
+
+        private static bool IsGameplayCamera(Camera camera)
+        {
+            return camera != null
+                && camera.isActiveAndEnabled
+                && camera.GetComponent<ThirdPersonCameraController>() != null;
+        }
+
+        private static Camera ResolveGameplayCamera()
+        {
+            Camera taggedCamera = Camera.main;
+            if (IsGameplayCamera(taggedCamera)) return taggedCamera;
+
+            var controller = Object.FindFirstObjectByType<ThirdPersonCameraController>();
+            return controller != null ? controller.GetComponent<Camera>() : null;
         }
     }
 }

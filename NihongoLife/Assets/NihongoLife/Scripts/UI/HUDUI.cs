@@ -792,7 +792,6 @@ namespace NihongoLife.UI
                     break;
                 }
             }
-            if (Keyboard.current.sKey.wasPressedThisFrame) SortInventory();
             if (Keyboard.current.deleteKey.wasPressedThisFrame) DropSelectedInventoryItem();
         }
 
