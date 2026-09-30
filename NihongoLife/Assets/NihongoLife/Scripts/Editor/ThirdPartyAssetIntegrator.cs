@@ -106,6 +106,17 @@ namespace NihongoLife.EditorTools
             Place(SushiFolder, "Decoration_Plant1", store, "EntrancePlant_L", new Vector3(-4.15f, 0.05f, 1.25f), new Vector3(0.65f, 1.05f, 0.65f), Quaternion.identity, false);
             Place(SushiFolder, "Decoration_Plant2", store, "EntrancePlant_R", new Vector3(4.15f, 0.05f, 1.25f), new Vector3(0.65f, 1.05f, 0.65f), Quaternion.identity, false);
 
+            var fridge = store.Find("DrinkFridge");
+            if (fridge != null)
+            {
+                var interactable = fridge.gameObject.GetComponent<FridgeInteractable>();
+                if (interactable == null) interactable = fridge.gameObject.AddComponent<FridgeInteractable>();
+                var serializedFridge = new SerializedObject(interactable);
+                var door = serializedFridge.FindProperty("door");
+                if (door != null) door.objectReferenceValue = fridge.Find("Door") ?? fridge.Find("FridgeDoor");
+                serializedFridge.ApplyModifiedPropertiesWithoutUndo();
+            }
+
             CreateShelfProducts(store, -3.05f, 3.15f);
             CreateShelfProducts(store, -3.05f, 5.85f);
             CreateColdProducts(store);

@@ -93,6 +93,7 @@ namespace NihongoLife.Player
             }
             if (GetComponent<EmploymentSystem>() == null) gameObject.AddComponent<EmploymentSystem>();
             if (GetComponent<BusinessSystem>() == null) gameObject.AddComponent<BusinessSystem>();
+            if (GetComponent<NihongoLife.Interaction.PlayerEmoteController>() == null) gameObject.AddComponent<NihongoLife.Interaction.PlayerEmoteController>();
         }
 
         private void Update()
