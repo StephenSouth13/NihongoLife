@@ -8,6 +8,7 @@ using UnityEditor.Animations;
 using UnityEngine;
 using UnityEngine.Rendering;
 using UnityEngine.SceneManagement;
+using NihongoLife.Interaction;
 
 namespace NihongoLife.EditorTools
 {
@@ -121,8 +122,9 @@ namespace NihongoLife.EditorTools
                 for (int i = 0; i < products.Length; i++)
                 {
                     var position = new Vector3(x + row * 0.22f, 0.68f + i % 3 * 0.46f, z + (i / 3) * 0.48f - 0.25f);
-                    Place(SushiFolder, products[i], parent, $"Stock_{products[i]}_{row}_{i}", position,
+                    var item = Place(SushiFolder, products[i], parent, $"Stock_{products[i]}_{row}_{i}", position,
                         new Vector3(0.24f, 0.24f, 0.24f), Quaternion.Euler(0f, 90f, 0f), false, true);
+                    ConfigureStoreProduct(item, products[i]);
                 }
             }
         }
@@ -134,11 +136,80 @@ namespace NihongoLife.EditorTools
             {
                 for (int i = 0; i < products.Length; i++)
                 {
-                    Place(FoodFolder, products[i], parent, $"ColdStock_{row}_{i}",
+                    var item = Place(FoodFolder, products[i], parent, $"ColdStock_{row}_{i}",
                         new Vector3(3.10f + i * 0.22f, 0.42f + row * 0.30f, 6.18f),
                         new Vector3(0.16f, 0.32f, 0.16f), Quaternion.identity, false, true);
+                    ConfigureStoreProduct(item, products[i]);
                 }
             }
+        }
+
+        private static void ConfigureStoreProduct(GameObject item, string modelName)
+        {
+            if (item == null) return;
+
+            AddBoundsCollider(item);
+            var interactable = item.GetComponent<InteractiveItem>();
+            if (interactable == null) interactable = item.AddComponent<InteractiveItem>();
+
+            string key = (modelName ?? string.Empty).ToLowerInvariant();
+            string itemId = key.Contains("onigiri") ? "onigiri" :
+                key.Contains("dango") ? "dango" :
+                key.Contains("gyoza") ? "gyoza" :
+                key.Contains("roll") ? "sushi_roll" :
+                key.Contains("tamago") ? "tamago_nigiri" :
+                key.Contains("chukaman") ? "chukaman" :
+                key.Contains("bottle1") ? "water" :
+                key.Contains("bottle2") ? "tea" :
+                key.Contains("soda") ? "soda" : "soy_sauce";
+
+            string ja = key.Contains("onigiri") ? "おにぎり" :
+                key.Contains("dango") ? "だんご" :
+                key.Contains("gyoza") ? "餃子" :
+                key.Contains("roll") ? "巻き寿司" :
+                key.Contains("tamago") ? "たまご握り" :
+                key.Contains("chukaman") ? "中華まん" :
+                key.Contains("bottle1") ? "水" :
+                key.Contains("bottle2") ? "お茶" :
+                key.Contains("soda") ? "ソーダ" : "しょうゆ";
+            string vi = key.Contains("onigiri") ? "Cơm nắm" :
+                key.Contains("dango") ? "Bánh dango" :
+                key.Contains("gyoza") ? "Há cảo" :
+                key.Contains("roll") ? "Sushi cuộn" :
+                key.Contains("tamago") ? "Nigiri trứng" :
+                key.Contains("chukaman") ? "Bánh bao" :
+                key.Contains("bottle1") ? "Nước" :
+                key.Contains("bottle2") ? "Trà" :
+                key.Contains("soda") ? "Nước ngọt" : "Nước tương";
+
+            var serialized = new SerializedObject(interactable);
+            Set(serialized, "itemId", itemId);
+            Set(serialized, "displayNameJa", ja);
+            Set(serialized, "displayNameEn", vi);
+            Set(serialized, "promptJa", "取る");
+            Set(serialized, "promptEn", "Lấy " + vi);
+            Set(serialized, "priceYen", key.Contains("water") || key.Contains("bottle1") ? 120 : 180);
+            Set(serialized, "addToInventory", true);
+            Set(serialized, "destroyOnInteract", true);
+            serialized.ApplyModifiedPropertiesWithoutUndo();
+        }
+
+        private static void Set(SerializedObject serialized, string property, string value)
+        {
+            var field = serialized.FindProperty(property);
+            if (field != null) field.stringValue = value;
+        }
+
+        private static void Set(SerializedObject serialized, string property, int value)
+        {
+            var field = serialized.FindProperty(property);
+            if (field != null) field.intValue = value;
+        }
+
+        private static void Set(SerializedObject serialized, string property, bool value)
+        {
+            var field = serialized.FindProperty(property);
+            if (field != null) field.boolValue = value;
         }
 
         private static void BuildStoryProps(Transform world)

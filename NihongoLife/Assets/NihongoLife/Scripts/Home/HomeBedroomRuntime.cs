@@ -64,20 +64,45 @@ namespace NihongoLife.Home
 
     public sealed class BedroomRestInteractable : MonoBehaviour, IInteractable
     {
+        private bool _isSleeping = false;
+
         public string GetPromptJa() => "[F] 休む";
         public string GetpromptEn() => "[F] Sleep / Rest";
         public Transform GetTransform() => transform;
         public void Interact(GameObject player)
         {
-            if (PlayerStatus.Instance != null) PlayerStatus.Instance.Sleep(8f);
+            if (_isSleeping) return;
+            _isSleeping = true;
+
             var animator = player != null ? player.GetComponentInChildren<NihongoLife.Core.CharacterAnimationController>() : null;
             if (animator != null && !animator.SetResting(true)) animator.SetSitting(true);
-            Invoke(nameof(StandUp), 3f);
+
+            StartCoroutine(SleepRoutine(player, animator));
         }
-        private void StandUp()
+
+        private System.Collections.IEnumerator SleepRoutine(GameObject player, NihongoLife.Core.CharacterAnimationController animator)
         {
-            var animator = FindFirstObjectByType<NihongoLife.Core.CharacterAnimationController>();
+            // Ngủ tối đa 5 giây
+            float sleepDuration = 5f;
+            float elapsed = 0f;
+            var status = PlayerStatus.Instance;
+
+            // Vô hiệu hóa di chuyển
+            var playerController = player != null ? player.GetComponent<NihongoLife.Core.PlayerController>() : null;
+            if (playerController != null) playerController.enabled = false;
+
+            while (elapsed < sleepDuration)
+            {
+                elapsed += Time.deltaTime;
+                // Hồi phục dần dần (VD: Hồi tổng cộng 50 năng lượng trong 5s)
+                if (status != null) status.Sleep(50f * (Time.deltaTime / sleepDuration));
+                yield return null;
+            }
+
+            // Tỉnh dậy
             if (animator != null) animator.SetResting(false);
+            if (playerController != null) playerController.enabled = true;
+            _isSleeping = false;
         }
     }
 }

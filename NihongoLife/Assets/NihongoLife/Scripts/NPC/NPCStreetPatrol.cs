@@ -67,6 +67,7 @@ namespace NihongoLife.NPC
                 return;
             }
 
+            if (waypoints == null || waypoints.Length == 0) return;
             Transform target = waypoints[Mathf.Clamp(_currentIndex, 0, waypoints.Length - 1)];
             Vector3 targetPosition = target.position;
             targetPosition.y = transform.position.y;
