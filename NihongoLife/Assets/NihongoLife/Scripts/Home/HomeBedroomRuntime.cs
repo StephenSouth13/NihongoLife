@@ -1,145 +1,423 @@
+using System;
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using NihongoLife.Cameras;
+using NihongoLife.Core;
 using NihongoLife.Interaction;
 using NihongoLife.Player;
+using NihongoLife.UI;
 
 namespace NihongoLife.Home
 {
     /// <summary>
-    /// The room geometry (floor/walls/bed/desk/rug/BedRestPoint) is baked directly into
-    /// 45_HomeBedroom.unity by GameplayZoneSceneBuilder.BuildHomeBedroom() — it used to be built here
-    /// every Start(), which meant the saved scene had no visible room until Play was pressed. This
-    /// component now only owns the live status HUD (energy/rest/knowledge/yen), which genuinely needs
-    /// to run at runtime, the same way the rest of the HUD is runtime-built.
+    /// Room-level controller for 45_HomeBedroom. The furniture, lights and interactables are baked into
+    /// the scene by HomeBedroomBuilder; this component only owns what must exist at runtime:
+    /// the entry title card, the indoor camera mode, the sleep fade, the vocabulary review card used by
+    /// the study desk, short toasts, and an interaction prompt for when the zone is played on its own
+    /// (no city HUD loaded). When the city HUD is present it already shows prompts and status, so this
+    /// component never duplicates them.
     /// </summary>
     public sealed class HomeBedroomRuntime : MonoBehaviour
     {
         public static HomeBedroomRuntime Instance { get; private set; }
-        public event System.Action OnNewDay;
-        private TextMeshProUGUI _statusText;
+        public event Action OnNewDay;
+
+        [SerializeField] private TMP_FontAsset font;
+        [SerializeField] private string roomTitleJa = "じぶんの へや";
+        [SerializeField] private string roomTitleVi = "Phòng trọ của bạn · Hibari-chō 2-14";
+
+        private static readonly Color Ink = new Color(0.06f, 0.08f, 0.12f, 0.94f);
+        private static readonly Color Muted = new Color(0.72f, 0.78f, 0.86f, 1f);
+        private static readonly Color Correct = new Color(0.25f, 0.68f, 0.45f, 1f);
+        private static readonly Color Wrong = new Color(0.82f, 0.33f, 0.3f, 1f);
+
+        private Canvas _canvas;
+        private CanvasGroup _titleCard;
+        private RectTransform _promptChip;
+        private TextMeshProUGUI _promptText;
+        private CanvasGroup _toast;
+        private TextMeshProUGUI _toastText;
         private CanvasGroup _sleepFade;
         private TextMeshProUGUI _sleepMessage;
+        private Coroutine _toastRoutine;
+        private InteractionDetector _detector;
+        private bool _hasCityHud;
+        private ThirdPersonCameraController _camera;
 
-        private void Awake() => Instance = this;
-        private void OnDestroy() { if (Instance == this) Instance = null; }
+        // ─────────── Study card ───────────
+        private GameObject _studyRoot;
+        private TextMeshProUGUI _studyProgress;
+        private TextMeshProUGUI _studyWord;
+        private TextMeshProUGUI _studyReading;
+        private TextMeshProUGUI _studyFeedback;
+        private readonly List<Button> _studyButtons = new List<Button>();
+        private readonly List<TextMeshProUGUI> _studyLabels = new List<TextMeshProUGUI>();
+        private int _studyAnswer = -1;
 
-        public void ResetDailyActivities() => OnNewDay?.Invoke();
+        public bool IsStudyOpen => _studyRoot != null && _studyRoot.activeSelf;
+        public string CurrentStudyJapanese => _studyWord != null ? _studyWord.text : string.Empty;
+        public bool IsPromptVisible => _promptChip != null && _promptChip.gameObject.activeInHierarchy;
+        public string PromptText => _promptText != null ? _promptText.text : string.Empty;
+        public bool IsToastVisible => _toast != null && _toast.alpha > 0.5f;
+        public string ToastText => _toastText != null ? _toastText.text : string.Empty;
+        public bool IsTitleVisible => _titleCard != null && _titleCard.alpha > 0.5f;
 
-        public void SetRoomLights(bool lit, bool includeInactive)
+        private void Awake()
         {
-            foreach (var light in GetComponentsInChildren<Light>(includeInactive)) light.enabled = lit;
+            Instance = this;
+            gameObject.name = "HomeBedroom_YourRoom";
         }
 
-        public System.Collections.IEnumerator FadeToNight(string title, string subtitle)
+        private void OnDestroy()
         {
-            EnsureSleepFade();
-            _sleepMessage.text = title + "\n" + subtitle;
-            yield return FadeSleep(1f);
+            if (Instance == this) Instance = null;
         }
 
-        public System.Collections.IEnumerator FadeToMorning(string title, string subtitle, string summary)
+        private void OnEnable()
         {
-            EnsureSleepFade();
-            _sleepMessage.text = title + "\n" + subtitle + "\n<size=70%>" + summary + "</size>";
-            yield return new WaitForSecondsRealtime(1.5f);
-            yield return FadeSleep(0f);
+            if (_canvas != null) StartCoroutine(ShowTitleCard());
+            SetIndoorCamera(true);
         }
 
-        private void EnsureSleepFade()
+        private void OnDisable()
         {
-            if (_sleepFade != null) return;
-            var root = new GameObject("SleepFade", typeof(RectTransform), typeof(Canvas), typeof(CanvasScaler), typeof(CanvasGroup));
-            root.transform.SetParent(transform, false);
-            var canvas = root.GetComponent<Canvas>();
-            canvas.renderMode = RenderMode.ScreenSpaceOverlay;
-            canvas.sortingOrder = 1001;
-            var scaler = root.GetComponent<CanvasScaler>();
-            scaler.uiScaleMode = CanvasScaler.ScaleMode.ScaleWithScreenSize;
-            scaler.referenceResolution = new Vector2(1920f, 1080f);
-            scaler.screenMatchMode = CanvasScaler.ScreenMatchMode.Expand;
-            var panel = new GameObject("Night", typeof(RectTransform), typeof(Image));
-            panel.transform.SetParent(root.transform, false);
-            var rect = (RectTransform)panel.transform;
-            rect.anchorMin = Vector2.zero; rect.anchorMax = Vector2.one;
-            rect.offsetMin = rect.offsetMax = Vector2.zero;
-            panel.GetComponent<Image>().color = new Color(.015f, .025f, .045f, 1f);
-            _sleepMessage = MakeText(panel.transform, "", 28, Color.white);
-            _sleepMessage.rectTransform.anchorMin = _sleepMessage.rectTransform.anchorMax = new Vector2(.5f, .5f);
-            _sleepMessage.rectTransform.pivot = new Vector2(.5f, .5f);
-            _sleepMessage.rectTransform.sizeDelta = new Vector2(1100f, 240f);
-            _sleepMessage.alignment = TextAlignmentOptions.Center;
-            _sleepFade = root.GetComponent<CanvasGroup>();
-            _sleepFade.alpha = 0f;
-            _sleepFade.blocksRaycasts = false;
-        }
-
-        private System.Collections.IEnumerator FadeSleep(float target)
-        {
-            float start = _sleepFade.alpha;
-            _sleepFade.blocksRaycasts = true;
-            for (float t = 0f; t < .6f; t += Time.unscaledDeltaTime)
-            {
-                _sleepFade.alpha = Mathf.Lerp(start, target, t / .6f);
-                yield return null;
-            }
-            _sleepFade.alpha = target;
-            _sleepFade.blocksRaycasts = target > 0f;
+            SetIndoorCamera(false);
+            if (_canvas != null && _promptChip != null) _promptChip.gameObject.SetActive(false);
         }
 
         private void Start()
         {
-            BuildUi();
-        }
-
-        private void BuildUi()
-        {
-            gameObject.name = "HomeBedroom_YourRoom";
-            var canvasObject = new GameObject("BedroomHUD");
-            canvasObject.transform.SetParent(transform, false);
-            var canvas = canvasObject.AddComponent<Canvas>();
-            canvas.renderMode = RenderMode.ScreenSpaceOverlay;
-            var scaler = canvasObject.AddComponent<CanvasScaler>();
-            scaler.uiScaleMode = CanvasScaler.ScaleMode.ScaleWithScreenSize;
-            scaler.referenceResolution = new Vector2(1920f, 1080f);
-            scaler.screenMatchMode = CanvasScaler.ScreenMatchMode.Expand;
-            canvasObject.AddComponent<GraphicRaycaster>();
-            var panel = new GameObject("StatusPanel");
-            panel.transform.SetParent(canvasObject.transform, false);
-            panel.AddComponent<Image>().color = new Color(0.02f, 0.05f, 0.08f, 0.88f);
-            var rect = panel.GetComponent<RectTransform>();
-            rect.anchorMin = new Vector2(0f, 1f); rect.anchorMax = new Vector2(0f, 1f);
-            rect.pivot = new Vector2(0f, 1f); rect.anchoredPosition = new Vector2(28f, -300f); rect.sizeDelta = new Vector2(390f, 132f);
-            var title = MakeText(panel.transform, "PHÒNG RIÊNG  •  YOUR ROOM", 22, new Color(1f, 0.82f, 0.3f));
-            title.rectTransform.anchoredPosition = new Vector2(20f, -28f);
-            _statusText = MakeText(panel.transform, "Đang tải trạng thái...", 16, Color.white);
-            _statusText.rectTransform.anchoredPosition = new Vector2(20f, -74f);
-            var help = MakeText(canvasObject.transform, "[F] Nghỉ ngơi trên giường   •   [Esc] Đóng bảng", 18, new Color(0.8f, 0.9f, 0.95f));
-            help.alignment = TextAlignmentOptions.Center;
-            help.rectTransform.anchorMin = help.rectTransform.anchorMax = new Vector2(.5f, 0f);
-            help.rectTransform.pivot = new Vector2(.5f, 0f);
-            help.rectTransform.sizeDelta = new Vector2(900f, 52f);
-            help.rectTransform.anchoredPosition = new Vector2(0f, 34f);
-        }
-
-        private TextMeshProUGUI MakeText(Transform parent, string value, int size, Color color)
-        {
-            var textObject = new GameObject("Text"); textObject.transform.SetParent(parent, false);
-            var text = textObject.AddComponent<TextMeshProUGUI>();
-            text.text = value; text.fontSize = size; text.color = color; text.alignment = TextAlignmentOptions.Left;
-            text.raycastTarget = false;
-            text.rectTransform.anchorMin = text.rectTransform.anchorMax = new Vector2(0f, 1f);
-            text.rectTransform.pivot = new Vector2(0f, .5f);
-            text.rectTransform.sizeDelta = new Vector2(350f, 52f); return text;
+            BuildCanvas();
+            SetIndoorCamera(true);
+            StartCoroutine(ShowTitleCard());
         }
 
         private void Update()
         {
-            if (_statusText == null) return;
-            var status = PlayerStatus.Instance; var inventory = FindFirstObjectByType<PlayerInventory>();
-            _statusText.text = status == null ? "Phòng cá nhân • Room ID riêng" :
-                $"Năng lượng {status.CurrentEnergy:0}   Nghỉ ngơi {status.Restfulness:0}\nKiến thức {status.Knowledge}   Tiền {(inventory == null ? 0 : inventory.Yen):N0}¥";
+            UpdateStandalonePrompt();
+            if (IsStudyOpen) HandleStudyKeys();
+        }
+
+        public void ResetDailyActivities() => OnNewDay?.Invoke();
+
+        /// <summary>Ceiling/kitchen lights follow the wall switch; lamps marked as night lights stay on.</summary>
+        public void SetRoomLights(bool lit, bool includeInactive)
+        {
+            var roomSwitch = GetComponentInChildren<RoomLightSwitch>(includeInactive);
+            if (roomSwitch != null) roomSwitch.SetLit(lit, false);
+            else foreach (var light in GetComponentsInChildren<Light>(includeInactive)) light.enabled = lit;
+        }
+
+        // ─────────── Sleep fade (used by BedroomRestInteractable) ───────────
+
+        public IEnumerator FadeToNight(string title, string subtitle)
+        {
+            BuildCanvas();
+            _sleepMessage.text = $"<size=140%>{title}</size>\n<color=#B8C4D6>{subtitle}</color>\n\n<size=160%>Z z z</size>";
+            yield return Fade(_sleepFade, 1f, 1.1f);
+            yield return new WaitForSeconds(1.6f);
+        }
+
+        public IEnumerator FadeToMorning(string title, string subtitle, string summary)
+        {
+            BuildCanvas();
+            _sleepMessage.text = $"<size=140%>{title}</size>\n<color=#F2B233>{subtitle}</color>\n\n<size=80%><color=#B8C4D6>{summary}</color></size>";
+            yield return new WaitForSeconds(2.2f);
+            yield return Fade(_sleepFade, 0f, 0.9f);
+        }
+
+        // ─────────── Toast ───────────
+
+        public void ShowToast(string japanese, string vietnamese)
+        {
+            BuildCanvas();
+            _toastText.text = string.IsNullOrEmpty(japanese) ? vietnamese : $"<color=#F2B233>{japanese}</color>   {vietnamese}";
+            if (_toastRoutine != null) StopCoroutine(_toastRoutine);
+            _toastRoutine = StartCoroutine(ToastRoutine());
+        }
+
+        private IEnumerator ToastRoutine()
+        {
+            yield return Fade(_toast, 1f, 0.2f);
+            yield return new WaitForSeconds(2.8f);
+            yield return Fade(_toast, 0f, 0.35f);
+        }
+
+        // ─────────── Study card (used by StudyDeskInteractable) ───────────
+
+        /// <summary>Runs a multiple-choice review. onFinished receives the number of correct answers.</summary>
+        public IEnumerator RunStudySession(IReadOnlyList<StudyWord> questions, Action<int> onFinished)
+        {
+            BuildCanvas();
+            SetGameplayLocked(true);
+            _studyRoot.SetActive(true);
+            UIStyleKit.PlayShowAnimation(_studyRoot);
+            int correct = 0;
+            for (int q = 0; q < questions.Count; q++)
+            {
+                StudyWord word = questions[q];
+                var options = new List<string> { word.meaning, word.distractorA, word.distractorB };
+                Shuffle(options);
+                int answerIndex = options.IndexOf(word.meaning);
+                _studyProgress.text = $"Câu {q + 1}/{questions.Count}   ·   Đúng {correct}";
+                _studyWord.text = word.japanese;
+                _studyReading.text = word.reading;
+                _studyFeedback.text = "Chọn nghĩa đúng (chuột hoặc phím 1 · 2 · 3)";
+                _studyFeedback.color = Muted;
+                for (int i = 0; i < _studyButtons.Count; i++)
+                {
+                    _studyLabels[i].text = $"{i + 1}.  {options[i]}";
+                    _studyButtons[i].interactable = true;
+                    _studyButtons[i].GetComponent<Image>().color = UIStyleKit.PanelHover;
+                }
+
+                _studyAnswer = -1;
+                while (_studyAnswer < 0) yield return null;
+
+                bool ok = _studyAnswer == answerIndex;
+                if (ok) correct++;
+                foreach (var b in _studyButtons) b.interactable = false;
+                _studyButtons[answerIndex].GetComponent<Image>().color = Correct;
+                if (!ok) _studyButtons[_studyAnswer].GetComponent<Image>().color = Wrong;
+                _studyFeedback.text = ok
+                    ? $"せいかい！ Đúng rồi — {word.example}"
+                    : $"ざんねん… “{word.japanese}” nghĩa là “{word.meaning}”. {word.example}";
+                _studyFeedback.color = ok ? Correct : Wrong;
+                yield return new WaitForSeconds(ok ? 1.3f : 2.4f);
+            }
+
+            _studyRoot.SetActive(false);
+            SetGameplayLocked(false);
+            onFinished?.Invoke(correct);
+        }
+
+        private void HandleStudyKeys()
+        {
+            var keyboard = UnityEngine.InputSystem.Keyboard.current;
+            if (keyboard == null || _studyAnswer >= 0) return;
+            if (keyboard.digit1Key.wasPressedThisFrame || keyboard.numpad1Key.wasPressedThisFrame) PickAnswer(0);
+            else if (keyboard.digit2Key.wasPressedThisFrame || keyboard.numpad2Key.wasPressedThisFrame) PickAnswer(1);
+            else if (keyboard.digit3Key.wasPressedThisFrame || keyboard.numpad3Key.wasPressedThisFrame) PickAnswer(2);
+        }
+
+        /// <summary>Also used by tests to answer without input devices.</summary>
+        public void PickAnswer(int index)
+        {
+            if (!IsStudyOpen || _studyAnswer >= 0 || index < 0 || index >= _studyButtons.Count) return;
+            if (!_studyButtons[index].interactable) return;
+            _studyAnswer = index;
+        }
+
+        /// <summary>Index of the option that holds the given meaning on the current question (tests).</summary>
+        public int FindOption(string meaning)
+        {
+            for (int i = 0; i < _studyLabels.Count; i++)
+                if (_studyLabels[i].text.EndsWith(meaning, StringComparison.Ordinal)) return i;
+            return -1;
+        }
+
+        private void SetGameplayLocked(bool locked)
+        {
+            var player = FindFirstObjectByType<PlayerController>();
+            if (player != null) player.InputLocked = locked;
+            if (_camera == null) _camera = FindFirstObjectByType<ThirdPersonCameraController>();
+            if (_camera != null) _camera.IsLocked = locked;
+            Cursor.lockState = locked ? CursorLockMode.None : CursorLockMode.Locked;
+            Cursor.visible = locked;
+        }
+
+        // ─────────── Prompt when the zone runs without the city HUD ───────────
+
+        private void UpdateStandalonePrompt()
+        {
+            if (_promptChip == null) return;
+            if (_hasCityHud || IsStudyOpen || _sleepFade.alpha > 0.01f)
+            {
+                _promptChip.gameObject.SetActive(false);
+                return;
+            }
+
+            if (_detector == null) _detector = FindFirstObjectByType<InteractionDetector>();
+            IInteractable current = _detector != null ? _detector.CurrentInteractable : null;
+            bool show = current != null && (current as MonoBehaviour) != null;
+            _promptChip.gameObject.SetActive(show);
+            if (!show) return;
+            string key = GameInputService.GetOrCreate().GetBindingLabel(GameInputId.Interact);
+            _promptText.text = $"<color=#F2B233>[{key}]</color>  {current.GetPromptJa()}  <color=#B8C4D6>· {current.GetpromptEn()}</color>";
+        }
+
+        // ─────────── Camera ───────────
+
+        private void SetIndoorCamera(bool indoor)
+        {
+            if (_camera == null) _camera = FindFirstObjectByType<ThirdPersonCameraController>();
+            if (_camera != null) _camera.SetIndoorMode(indoor);
+        }
+
+        // ─────────── Building ───────────
+
+        private void BuildCanvas()
+        {
+            if (_canvas != null) return;
+            if (font == null) font = TMP_Settings.defaultFontAsset;
+            _hasCityHud = FindFirstObjectByType<HUDUI>() != null;
+
+            var root = new GameObject("HomeRoomCanvas", typeof(RectTransform), typeof(Canvas), typeof(CanvasScaler), typeof(GraphicRaycaster));
+            root.transform.SetParent(transform, false);
+            _canvas = root.GetComponent<Canvas>();
+            _canvas.renderMode = RenderMode.ScreenSpaceOverlay;
+            _canvas.sortingOrder = 80;
+            var scaler = root.GetComponent<CanvasScaler>();
+            scaler.uiScaleMode = CanvasScaler.ScaleMode.ScaleWithScreenSize;
+            scaler.referenceResolution = new Vector2(1920f, 1080f);
+            scaler.matchWidthOrHeight = 0.5f;
+
+            // Entry title card — top centre, fades out after a few seconds.
+            var title = Panel(root.transform, "RoomTitle", new Vector2(0.5f, 1f), new Vector2(0f, -54f), new Vector2(560f, 104f), Ink);
+            _titleCard = title.gameObject.AddComponent<CanvasGroup>();
+            _titleCard.alpha = 0f;
+            var titleJa = Label(title, roomTitleJa, 34, Color.white, TextAlignmentOptions.Center);
+            Place(titleJa.rectTransform, new Vector2(0.5f, 1f), new Vector2(0f, -14f), new Vector2(520f, 46f));
+            var titleVi = Label(title, roomTitleVi, 19, new Color(0.95f, 0.72f, 0.25f), TextAlignmentOptions.Center);
+            Place(titleVi.rectTransform, new Vector2(0.5f, 0f), new Vector2(0f, 14f), new Vector2(520f, 32f));
+
+            // Interaction prompt (standalone only) — bottom centre.
+            _promptChip = Panel(root.transform, "RoomPrompt", new Vector2(0.5f, 0f), new Vector2(0f, 46f), new Vector2(620f, 58f), Ink);
+            _promptText = Label(_promptChip, string.Empty, 22, Color.white, TextAlignmentOptions.Center);
+            Stretch(_promptText.rectTransform, 12f);
+            _promptChip.gameObject.SetActive(false);
+
+            // Toast — above the prompt.
+            var toast = Panel(root.transform, "RoomToast", new Vector2(0.5f, 0f), new Vector2(0f, 128f), new Vector2(760f, 60f), Ink);
+            _toast = toast.gameObject.AddComponent<CanvasGroup>();
+            _toast.alpha = 0f;
+            _toast.blocksRaycasts = false;
+            _toastText = Label(toast, string.Empty, 21, Color.white, TextAlignmentOptions.Center);
+            Stretch(_toastText.rectTransform, 14f);
+
+            BuildStudyCard(root.transform);
+
+            // Sleep fade — full screen, above everything else in the room canvas.
+            var night = new GameObject("SleepFade", typeof(RectTransform), typeof(Image), typeof(CanvasGroup));
+            night.transform.SetParent(root.transform, false);
+            Stretch((RectTransform)night.transform, 0f);
+            night.GetComponent<Image>().color = new Color(0.02f, 0.03f, 0.06f, 1f);
+            _sleepFade = night.GetComponent<CanvasGroup>();
+            _sleepFade.alpha = 0f;
+            _sleepFade.blocksRaycasts = false;
+            _sleepMessage = Label((RectTransform)night.transform, string.Empty, 34, Color.white, TextAlignmentOptions.Center);
+            Place(_sleepMessage.rectTransform, new Vector2(0.5f, 0.5f), Vector2.zero, new Vector2(1200f, 420f));
+            _sleepFade.transform.SetAsLastSibling();
+        }
+
+        private void BuildStudyCard(Transform root)
+        {
+            var card = Panel(root, "StudyCard", new Vector2(0.5f, 0.5f), new Vector2(0f, 10f), new Vector2(760f, 560f), UIStyleKit.PanelBase);
+            _studyRoot = card.gameObject;
+            var header = Label(card, "勉強する  ·  Ôn từ vựng N5", 28, new Color(0.95f, 0.72f, 0.25f), TextAlignmentOptions.Left);
+            Place(header.rectTransform, new Vector2(0.5f, 1f), new Vector2(0f, -40f), new Vector2(680f, 40f));
+            _studyProgress = Label(card, string.Empty, 18, Muted, TextAlignmentOptions.Right);
+            Place(_studyProgress.rectTransform, new Vector2(0.5f, 1f), new Vector2(0f, -42f), new Vector2(680f, 36f));
+            _studyWord = Label(card, string.Empty, 64, Color.white, TextAlignmentOptions.Center);
+            Place(_studyWord.rectTransform, new Vector2(0.5f, 1f), new Vector2(0f, -128f), new Vector2(680f, 84f));
+            _studyReading = Label(card, string.Empty, 22, Muted, TextAlignmentOptions.Center);
+            Place(_studyReading.rectTransform, new Vector2(0.5f, 1f), new Vector2(0f, -186f), new Vector2(680f, 34f));
+
+            for (int i = 0; i < 3; i++)
+            {
+                var buttonRect = Panel(card, "Answer_" + (i + 1), new Vector2(0.5f, 1f), new Vector2(0f, -258f - i * 70f), new Vector2(640f, 58f), UIStyleKit.PanelHover);
+                var button = buttonRect.gameObject.AddComponent<Button>();
+                button.targetGraphic = buttonRect.GetComponent<Image>();
+                int index = i;
+                button.onClick.AddListener(() => PickAnswer(index));
+                var label = Label(buttonRect, string.Empty, 22, Color.white, TextAlignmentOptions.Left);
+                Stretch(label.rectTransform, 22f);
+                _studyButtons.Add(button);
+                _studyLabels.Add(label);
+            }
+
+            _studyFeedback = Label(card, string.Empty, 18, Muted, TextAlignmentOptions.Center);
+            Place(_studyFeedback.rectTransform, new Vector2(0.5f, 0f), new Vector2(0f, 34f), new Vector2(680f, 56f));
+            _studyFeedback.textWrappingMode = TextWrappingModes.Normal;
+            _studyRoot.SetActive(false);
+        }
+
+        private IEnumerator ShowTitleCard()
+        {
+            if (_titleCard == null) yield break;
+            yield return new WaitForSeconds(0.4f);
+            yield return Fade(_titleCard, 1f, 0.45f);
+            yield return new WaitForSeconds(3f);
+            yield return Fade(_titleCard, 0f, 0.6f);
+        }
+
+        private static IEnumerator Fade(CanvasGroup group, float target, float seconds)
+        {
+            if (group == null) yield break;
+            float start = group.alpha;
+            group.blocksRaycasts = target > 0f && group.gameObject.name == "SleepFade";
+            for (float t = 0f; t < seconds; t += Time.unscaledDeltaTime)
+            {
+                group.alpha = Mathf.Lerp(start, target, t / seconds);
+                yield return null;
+            }
+            group.alpha = target;
+        }
+
+        private RectTransform Panel(Transform parent, string name, Vector2 anchor, Vector2 position, Vector2 size, Color color)
+        {
+            var go = new GameObject(name, typeof(RectTransform), typeof(Image));
+            go.transform.SetParent(parent, false);
+            var rect = (RectTransform)go.transform;
+            Place(rect, anchor, position, size);
+            var image = go.GetComponent<Image>();
+            image.sprite = UIStyleKit.RoundedSprite();
+            image.type = Image.Type.Sliced;
+            image.color = color;
+            return rect;
+        }
+
+        private TextMeshProUGUI Label(Transform parent, string value, float size, Color color, TextAlignmentOptions alignment)
+        {
+            var go = new GameObject("Text", typeof(RectTransform));
+            go.transform.SetParent(parent, false);
+            var text = go.AddComponent<TextMeshProUGUI>();
+            if (font != null) text.font = font;
+            text.text = value;
+            text.fontSize = size;
+            text.color = color;
+            text.alignment = alignment;
+            text.textWrappingMode = TextWrappingModes.NoWrap;
+            text.overflowMode = TextOverflowModes.Ellipsis;
+            text.raycastTarget = false;
+            return text;
+        }
+
+        private static void Place(RectTransform rect, Vector2 anchor, Vector2 position, Vector2 size)
+        {
+            rect.anchorMin = rect.anchorMax = rect.pivot = anchor;
+            rect.anchoredPosition = position;
+            rect.sizeDelta = size;
+        }
+
+        private static void Stretch(RectTransform rect, float padding)
+        {
+            rect.anchorMin = Vector2.zero;
+            rect.anchorMax = Vector2.one;
+            rect.offsetMin = new Vector2(padding, 0f);
+            rect.offsetMax = new Vector2(-padding, 0f);
+        }
+
+        private static void Shuffle<T>(IList<T> list)
+        {
+            for (int i = list.Count - 1; i > 0; i--)
+            {
+                int j = UnityEngine.Random.Range(0, i + 1);
+                (list[i], list[j]) = (list[j], list[i]);
+            }
         }
     }
-
 }

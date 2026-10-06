@@ -393,94 +393,9 @@ namespace NihongoLife.EditorTools
         /// </summary>
         public static void BuildHomeBedroom()
         {
-            Scene scene = EditorSceneManager.OpenScene(HomeBedroomScene, OpenSceneMode.Single);
-            GameObject root = GameObject.Find("HomeBedroom_YourRoom");
-            if (root == null)
-            {
-                Debug.LogError("[GameplayZoneSceneBuilder] HomeBedroom_YourRoom not found in 45_HomeBedroom.unity — aborting BuildHomeBedroom.");
-                return;
-            }
-
-            bool changed = false;
-
-            if (root.transform.Find("Floor") == null)
-            {
-                BakeHomeBedroomGeometry(root.transform);
-                changed = true;
-            }
-
-            if (root.GetComponent<ZoneEntrancePan>() == null)
-            {
-                root.AddComponent<ZoneEntrancePan>();
-                changed = true;
-            }
-
-            if (!changed)
-            {
-                Debug.Log("[GameplayZoneSceneBuilder] HomeBedroom already fully baked — nothing to add.");
-                return;
-            }
-
-            EditorSceneManager.MarkSceneDirty(scene);
-            EditorSceneManager.SaveScene(scene, HomeBedroomScene);
-            Debug.Log("[GameplayZoneSceneBuilder] Updated 45_HomeBedroom.unity.");
-        }
-
-        private static void BakeHomeBedroomGeometry(Transform root)
-        {
-
-            var wall = new Material(Shader.Find("Universal Render Pipeline/Simple Lit")) { color = new Color(0.82f, 0.88f, 0.9f) };
-            var floor = new Material(Shader.Find("Universal Render Pipeline/Simple Lit")) { color = new Color(0.16f, 0.2f, 0.25f) };
-            var wood = new Material(Shader.Find("Universal Render Pipeline/Simple Lit")) { color = new Color(0.42f, 0.22f, 0.12f) };
-            var accent = new Material(Shader.Find("Universal Render Pipeline/Simple Lit")) { color = new Color(0.24f, 0.62f, 0.58f) };
-
-            BedroomBlock(root.transform, "Floor", new Vector3(0f, -0.15f, 0f), new Vector3(12f, 0.3f, 9f), floor);
-            BedroomBlock(root.transform, "BackWall", new Vector3(0f, 2.5f, 4.35f), new Vector3(12f, 5f, 0.3f), wall);
-            BedroomBlock(root.transform, "LeftWall", new Vector3(-5.85f, 2.5f, 0f), new Vector3(0.3f, 5f, 9f), wall);
-            BedroomBlock(root.transform, "RightWall", new Vector3(5.85f, 2.5f, 0f), new Vector3(0.3f, 5f, 9f), wall);
-            BedroomBlock(root.transform, "BedFrame", new Vector3(-2.8f, 0.45f, 1.4f), new Vector3(4.2f, 0.55f, 2.1f), wood);
-            BedroomBlock(root.transform, "Mattress", new Vector3(-2.8f, 0.82f, 1.4f), new Vector3(3.9f, 0.25f, 1.9f), accent);
-            BedroomBlock(root.transform, "BedHeadboard", new Vector3(-2.8f, 1.5f, 2.25f), new Vector3(4.2f, 1.4f, 0.22f), wood);
-            BedroomBlock(root.transform, "Desk", new Vector3(2.4f, 0.9f, 2.6f), new Vector3(2.3f, 0.18f, 1f), wood);
-            BedroomBlock(root.transform, "DeskLeg_A", new Vector3(1.55f, 0.4f, 2.6f), new Vector3(0.16f, 0.8f, 0.16f), wood);
-            BedroomBlock(root.transform, "DeskLeg_B", new Vector3(3.25f, 0.4f, 2.6f), new Vector3(0.16f, 0.8f, 0.16f), wood);
-            BedroomBlock(root.transform, "WindowGlow", new Vector3(2.3f, 2.7f, 4.15f), new Vector3(3.2f, 1.8f, 0.08f), accent);
-            BedroomBlock(root.transform, "Rug", new Vector3(1f, 0.03f, -1.5f), new Vector3(4.4f, 0.05f, 2.6f), accent);
-
-            CreateDecorationSlot(root.transform, "DecorationSlot_Wall", new Vector3(0f, 2.35f, 4.12f));
-            CreateDecorationSlot(root.transform, "DecorationSlot_Desk", new Vector3(2.4f, 1.08f, 2.6f));
-            CreateDecorationSlot(root.transform, "DecorationSlot_Floor", new Vector3(1.2f, 0.08f, -1.5f));
-
-            var restPoint = new GameObject("BedRestPoint");
-            restPoint.transform.SetParent(root.transform, false);
-            restPoint.transform.SetPositionAndRotation(new Vector3(-2.8f, 1.05f, 0.85f), Quaternion.Euler(0f, 180f, 0f));
-            var restCollider = restPoint.AddComponent<BoxCollider>();
-            restCollider.isTrigger = true;
-            restCollider.size = new Vector3(2.4f, 1.5f, 1.5f);
-            restPoint.AddComponent<BedroomRestInteractable>();
-
-            CreateExitPortal(root.transform, "ExitToCity", HomeBedroomScene, "city_home_return", "街へ戻る / Trở lại thành phố", new Vector3(0f, 1.1f, -4f));
-            CreatePreviewCamera(root.transform, Vector3.zero, "BedroomSceneCamera", new Vector3(0f, 3.2f, -7f), new Vector3(0f, 1.3f, 1f));
-            CreateLighting(root.transform, new Vector3(0f, 4f, 1f));
-        }
-
-        private static void CreateDecorationSlot(Transform parent, string name, Vector3 position)
-        {
-            var slot = new GameObject(name);
-            slot.transform.SetParent(parent, false);
-            slot.transform.localPosition = position;
-            slot.SetActive(false);
-        }
-
-        private static GameObject BedroomBlock(Transform parent, string name, Vector3 position, Vector3 scale, Material material)
-        {
-            var go = GameObject.CreatePrimitive(PrimitiveType.Cube);
-            go.name = name;
-            go.transform.SetParent(parent, false);
-            go.transform.localPosition = position;
-            go.transform.localScale = scale;
-            go.GetComponent<Renderer>().sharedMaterial = material;
-            return go;
+            // The room is now a furnished 1K apartment baked by HomeBedroomBuilder (Kenney furniture,
+            // interactables, lighting). Delegate so BuildAll never re-adds the old primitive blocks.
+            HomeBedroomBuilder.Build();
         }
 
         private static void CreateDiningSet(Transform parent, Vector3 center, string suffix)
