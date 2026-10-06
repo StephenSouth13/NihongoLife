@@ -1,4 +1,6 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
+using NihongoLife.Core;
 
 namespace NihongoLife.World
 {
@@ -18,6 +20,8 @@ namespace NihongoLife.World
 
         private void LateUpdate()
         {
+            if (SceneManager.GetActiveScene() != gameObject.scene) return;
+            if (GameServices.TryGet(out SceneFlowController flow) && flow.IsLoading) return;
             Vector3 position = transform.position;
             bool outOfBounds = Mathf.Abs(position.x) > halfExtents.x
                 || (limitForwardAxis && Mathf.Abs(position.z) > halfExtents.y)

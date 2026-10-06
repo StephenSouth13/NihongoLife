@@ -387,7 +387,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 16128205}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 888487153}
+  m_Script: {fileID: 11500000, guid: b94d66f3a49a49b6a7ab5a4a8b170a51, type: 3}
   m_Name: 
   m_EditorClassIdentifier: NihongoLife::NihongoLife.World.StationTravelInteractable
   controller: {fileID: 505769631}
@@ -1691,7 +1691,7 @@ GameObject:
   - component: {fileID: 65419774}
   - component: {fileID: 65419773}
   - component: {fileID: 65419772}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: CeilingPanelNorth_-5
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2295,7 +2295,7 @@ GameObject:
   - component: {fileID: 100515484}
   - component: {fileID: 100515483}
   - component: {fileID: 100515482}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: CeilingPanelSouth_2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3236,7 +3236,7 @@ GameObject:
   - component: {fileID: 143437498}
   - component: {fileID: 143437497}
   - component: {fileID: 143437496}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: CeilingPanelSouth_-3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4339,7 +4339,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 194065226}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 888487153}
+  m_Script: {fileID: 11500000, guid: b94d66f3a49a49b6a7ab5a4a8b170a51, type: 3}
   m_Name: 
   m_EditorClassIdentifier: NihongoLife::NihongoLife.World.StationTravelInteractable
   controller: {fileID: 505769631}
@@ -5480,7 +5480,7 @@ GameObject:
   - component: {fileID: 237971866}
   - component: {fileID: 237971865}
   - component: {fileID: 237971864}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: TunnelCeiling
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -6040,7 +6040,7 @@ GameObject:
   - component: {fileID: 276431632}
   - component: {fileID: 276431631}
   - component: {fileID: 276431630}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: CeilingPanelNorth_-2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -6856,7 +6856,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 312181182}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 1533093546}
+  m_Script: {fileID: 11500000, guid: b94d66f3a49a49b6a7ab5a4a8b170a51, type: 3}
   m_Name: 
   m_EditorClassIdentifier: NihongoLife::NihongoLife.World.StationTravelInteractable
   controller: {fileID: 505769631}
@@ -7321,7 +7321,7 @@ GameObject:
   - component: {fileID: 341671248}
   - component: {fileID: 341671247}
   - component: {fileID: 341671246}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: CeilingPanelSouth_4
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -7540,7 +7540,7 @@ GameObject:
   - component: {fileID: 379593282}
   - component: {fileID: 379593281}
   - component: {fileID: 379593280}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: CeilingPanelNorth_-4
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -8611,7 +8611,7 @@ GameObject:
   - component: {fileID: 457370246}
   - component: {fileID: 457370245}
   - component: {fileID: 457370244}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: CeilingPanelNorth_2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -10420,7 +10420,7 @@ GameObject:
   - component: {fileID: 570109693}
   - component: {fileID: 570109692}
   - component: {fileID: 570109691}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: CeilingPanelNorth_1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -12239,7 +12239,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 650634485}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 888487153}
+  m_Script: {fileID: 11500000, guid: b94d66f3a49a49b6a7ab5a4a8b170a51, type: 3}
   m_Name: 
   m_EditorClassIdentifier: NihongoLife::NihongoLife.World.StationTravelInteractable
   controller: {fileID: 505769631}
@@ -15847,7 +15847,7 @@ GameObject:
   - component: {fileID: 862282104}
   - component: {fileID: 862282103}
   - component: {fileID: 862282102}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: CeilingPanelSouth_-1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -16469,7 +16469,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 879880477}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 1178086177}
+  m_Script: {fileID: 11500000, guid: d94ad48abb274f79b9c56b22600c11e6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: NihongoLife::NihongoLife.Core.SceneSpawnPoint
   id: station_entrance
@@ -18927,7 +18927,7 @@ GameObject:
   - component: {fileID: 1024593059}
   - component: {fileID: 1024593058}
   - component: {fileID: 1024593057}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: CarriageCeiling
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -19653,7 +19653,7 @@ GameObject:
   - component: {fileID: 1046817736}
   - component: {fileID: 1046817735}
   - component: {fileID: 1046817734}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: CeilingPanelSouth_5
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -20451,7 +20451,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1056244078}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 888487153}
+  m_Script: {fileID: 11500000, guid: b94d66f3a49a49b6a7ab5a4a8b170a51, type: 3}
   m_Name: 
   m_EditorClassIdentifier: NihongoLife::NihongoLife.World.StationTravelInteractable
   controller: {fileID: 505769631}
@@ -22646,7 +22646,7 @@ GameObject:
   - component: {fileID: 1166059647}
   - component: {fileID: 1166059646}
   - component: {fileID: 1166059645}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: CeilingPanelNorth_0
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -24259,7 +24259,7 @@ GameObject:
   - component: {fileID: 1226464548}
   - component: {fileID: 1226464547}
   - component: {fileID: 1226464546}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: CeilingPanelSouth_0
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -24468,7 +24468,7 @@ GameObject:
   - component: {fileID: 1259412747}
   - component: {fileID: 1259412746}
   - component: {fileID: 1259412745}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: CeilingPanelNorth_-1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -24804,7 +24804,7 @@ GameObject:
   - component: {fileID: 1270244233}
   - component: {fileID: 1270244232}
   - component: {fileID: 1270244231}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: CeilingPanelNorth_-3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -26701,7 +26701,7 @@ GameObject:
   - component: {fileID: 1358543388}
   - component: {fileID: 1358543387}
   - component: {fileID: 1358543386}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: CeilingPanelSouth_-2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -28002,7 +28002,7 @@ GameObject:
   - component: {fileID: 1442986389}
   - component: {fileID: 1442986388}
   - component: {fileID: 1442986387}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: CeilingPanelSouth_-4
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -29525,7 +29525,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1510283213}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 888487153}
+  m_Script: {fileID: 11500000, guid: b94d66f3a49a49b6a7ab5a4a8b170a51, type: 3}
   m_Name: 
   m_EditorClassIdentifier: NihongoLife::NihongoLife.World.StationTravelInteractable
   controller: {fileID: 505769631}
@@ -31684,7 +31684,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1607494471}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 888487153}
+  m_Script: {fileID: 11500000, guid: b94d66f3a49a49b6a7ab5a4a8b170a51, type: 3}
   m_Name: 
   m_EditorClassIdentifier: NihongoLife::NihongoLife.World.StationTravelInteractable
   controller: {fileID: 505769631}
@@ -32122,7 +32122,7 @@ GameObject:
   - component: {fileID: 1636824532}
   - component: {fileID: 1636824531}
   - component: {fileID: 1636824530}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: CeilingPanelNorth_4
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -37838,7 +37838,7 @@ GameObject:
   - component: {fileID: 1942010481}
   - component: {fileID: 1942010480}
   - component: {fileID: 1942010479}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: CeilingPanelSouth_1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -38951,7 +38951,7 @@ GameObject:
   - component: {fileID: 1982060850}
   - component: {fileID: 1982060849}
   - component: {fileID: 1982060848}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: CeilingPanelSouth_3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -39063,7 +39063,7 @@ GameObject:
   - component: {fileID: 1987006135}
   - component: {fileID: 1987006134}
   - component: {fileID: 1987006133}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: CeilingPanelNorth_5
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -40429,7 +40429,7 @@ GameObject:
   - component: {fileID: 2050300819}
   - component: {fileID: 2050300818}
   - component: {fileID: 2050300817}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: CeilingPanelNorth_3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -40685,7 +40685,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 2050757640}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 1533093546}
+  m_Script: {fileID: 11500000, guid: b94d66f3a49a49b6a7ab5a4a8b170a51, type: 3}
   m_Name: 
   m_EditorClassIdentifier: NihongoLife::NihongoLife.World.StationTravelInteractable
   controller: {fileID: 505769631}
@@ -40894,7 +40894,7 @@ GameObject:
   - component: {fileID: 2075445062}
   - component: {fileID: 2075445061}
   - component: {fileID: 2075445060}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: CeilingPanelSouth_-5
   m_TagString: Untagged
   m_Icon: {fileID: 0}

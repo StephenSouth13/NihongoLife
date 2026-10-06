@@ -69,6 +69,8 @@ namespace NihongoLife.Player
                 if (_inputLocked)
                 {
                     _velocity = Vector3.zero;
+                    _smoothedMoveDirection = Vector3.zero;
+                    _hasClickDestination = false;
                     if (_animationController != null) _animationController.SetSpeed(0f);
                 }
             }

@@ -120,6 +120,7 @@ namespace NihongoLife.UI
             _worldMap = gameObject.AddComponent<WorldMapUI>();
             _worldMap.Initialize(scenarioTitleText != null ? scenarioTitleText.font : null);
             _worldMap.OnVisibilityChanged += _ => UpdateOverlayInputLock();
+            EnsureMapButton();
             _settingsUI = gameObject.AddComponent<SettingsUI>();
             _settingsUI.Initialize(scenarioTitleText != null ? scenarioTitleText.font : null);
             SetInventoryVisible(false);
@@ -144,6 +145,34 @@ namespace NihongoLife.UI
         /// Menus that are keyboard-shortcut-only (inventory B, map M, quest log J, exam center K, character
         /// Tab, settings Esc) still have no on-screen button — out of scope here, flagged separately.
         /// </summary>
+        private void EnsureMapButton()
+        {
+            var canvas = GetComponentInParent<Canvas>();
+            if (canvas == null || canvas.transform.Find("MapButton") != null) return;
+            var go = new GameObject("MapButton", typeof(RectTransform), typeof(Image), typeof(Button));
+            go.transform.SetParent(canvas.transform, false);
+            var rect = (RectTransform)go.transform;
+            rect.anchorMin = rect.anchorMax = rect.pivot = Vector2.zero;
+            rect.anchoredPosition = new Vector2(24f, 24f);
+            rect.sizeDelta = new Vector2(160f, 42f);
+            var image = go.GetComponent<Image>();
+            image.color = new Color(.035f, .09f, .12f, .95f);
+            var button = go.GetComponent<Button>();
+            button.targetGraphic = image;
+            button.onClick.AddListener(() => _worldMap.SetVisible(!_worldMap.IsVisible));
+            var labelObject = new GameObject("Label", typeof(RectTransform), typeof(TextMeshProUGUI));
+            labelObject.transform.SetParent(go.transform, false);
+            var label = labelObject.GetComponent<TextMeshProUGUI>();
+            if (scenarioTitleText != null) label.font = scenarioTitleText.font;
+            label.text = "M | B\u1ea3n \u0111\u1ed3";
+            label.fontSize = 17f;
+            label.alignment = TextAlignmentOptions.Center;
+            label.raycastTarget = false;
+            label.rectTransform.anchorMin = Vector2.zero;
+            label.rectTransform.anchorMax = Vector2.one;
+            label.rectTransform.offsetMin = label.rectTransform.offsetMax = Vector2.zero;
+        }
+
         private void EnsureMobileControls()
         {
             if (!HudCanvasFitter.IsTouchLayout(false)) return;

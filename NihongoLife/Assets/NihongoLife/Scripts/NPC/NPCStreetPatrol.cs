@@ -69,6 +69,7 @@ namespace NihongoLife.NPC
 
             if (waypoints == null || waypoints.Length == 0) return;
             Transform target = waypoints[Mathf.Clamp(_currentIndex, 0, waypoints.Length - 1)];
+            if (target == null) { AdvanceWaypoint(); _animation?.SetSpeed(0f); return; }
             Vector3 targetPosition = target.position;
             targetPosition.y = transform.position.y;
 
@@ -117,6 +118,7 @@ namespace NihongoLife.NPC
             if (waypoints == null || waypoints.Length == 0) return;
 
             Transform target = waypoints[Mathf.Clamp(_currentIndex, 0, waypoints.Length - 1)];
+            if (target == null) return;
             Vector3 direction = target.position - transform.position;
             direction.y = 0f;
             if (direction.sqrMagnitude <= 0.05f) return;

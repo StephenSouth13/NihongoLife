@@ -33,7 +33,9 @@ namespace NihongoLife.UI
             _font = font;
             if (GameServices.TryGet(out GameSettingsService languageSettings)) languageSettings.OnLanguageChanged += HandleGlobalLanguageChanged;
             _overlay = Panel("WorldMap", transform, new Color(.012f, .018f, .022f, .98f));
+            _overlay.transform.SetParent(GetComponentInParent<Canvas>().transform, false);
             Stretch(_overlay.GetComponent<RectTransform>());
+            _overlay.transform.SetAsLastSibling();
             _header = Text("Header", _overlay.transform, 27, FontStyles.Bold);
             Rect(_header.rectTransform, new(.5f, 1), new(0, -24), new(820, 42));
             _header.alignment = TextAlignmentOptions.Center;
@@ -64,6 +66,8 @@ namespace NihongoLife.UI
         private void OnDestroy()
         {
             if (GameServices.TryGet(out GameSettingsService settings)) settings.OnLanguageChanged -= HandleGlobalLanguageChanged;
+            if (_topDownCamera != null) Destroy(_topDownCamera.gameObject);
+            if (_topDownTexture != null) { _topDownTexture.Release(); Destroy(_topDownTexture); }
         }
 
         private void HandleGlobalLanguageChanged(GameLanguage _)
@@ -76,7 +80,9 @@ namespace NihongoLife.UI
         public void SetVisible(bool visible)
         {
             if (_overlay == null) return;
-            _overlay.SetActive(visible); OnVisibilityChanged?.Invoke(visible);
+            _overlay.SetActive(visible);
+            if (visible) _overlay.transform.SetAsLastSibling();
+            OnVisibilityChanged?.Invoke(visible);
             if (!visible)
             {
                 if (_topDownCamera != null) _topDownCamera.enabled = false;
@@ -119,18 +125,21 @@ namespace NihongoLife.UI
         {
             _showTopDown = topDown;
             _topDownImage.gameObject.SetActive(topDown);
+            foreach (Transform child in _mapArea)
+                if (child.name == "Route" || child.name.StartsWith("Place_")) child.gameObject.SetActive(!topDown);
             // Both map tabs are navigable. The top-down camera is only a visual layer;
             // the click target remains active so a click always produces a destination.
             _mapArea.GetComponent<MapClickTarget>().enabled = true;
             if (_areaTab != null) _areaTab.GetComponent<Image>().color = topDown ? new(.95f, .58f, .18f) : new(.08f, .12f, .15f);
             if (_overviewTab != null) _overviewTab.GetComponent<Image>().color = topDown ? new(.08f, .12f, .15f) : new(.95f, .58f, .18f);
+            if (_topDownCamera != null) _topDownCamera.enabled = topDown && IsVisible;
             if (topDown) UpdateTopDownCamera();
         }
 
         private void UpdateTopDownCamera()
         {
             if (!_showTopDown || _player == null) return;
-            if (Application.isBatchMode || SystemInfo.graphicsDeviceType == GraphicsDeviceType.Null) return;
+            if (SystemInfo.graphicsDeviceType == GraphicsDeviceType.Null) return;
             if (_topDownTexture == null)
             {
                 _topDownTexture = new RenderTexture(1024, 576, 16, RenderTextureFormat.ARGB32);
@@ -142,13 +151,18 @@ namespace NihongoLife.UI
                 var go = new GameObject("TopDownMapCamera");
                 _topDownCamera = go.AddComponent<Camera>();
                 _topDownCamera.orthographic = true;
+                _topDownCamera.cullingMask = ~(LayerMask.GetMask("MapRoof") | (1 << 5));
                 _topDownCamera.orthographicSize = 16f;
                 _topDownCamera.clearFlags = CameraClearFlags.SolidColor;
                 _topDownCamera.backgroundColor = new Color(.035f, .055f, .065f, 1f);
                 _topDownCamera.targetTexture = _topDownTexture;
                 _topDownImage.texture = _topDownTexture;
             }
-            _topDownCamera.transform.SetPositionAndRotation(_player.position + Vector3.up * 24f, Quaternion.Euler(90f, 0f, 0f));
+            Vector2 center = (_worldMin + _worldMax) * .5f;
+            Vector2 size = _worldMax - _worldMin;
+            _topDownCamera.orthographicSize = size.y * .5f;
+            _topDownCamera.aspect = size.x / size.y;
+            _topDownCamera.transform.SetPositionAndRotation(new Vector3(center.x, _player.position.y + 80f, center.y), Quaternion.Euler(90f, 0f, 0f));
             _topDownCamera.enabled = true;
         }
 
@@ -173,7 +187,10 @@ namespace NihongoLife.UI
             _destinationMarker.sizeDelta = new(18, 18);
             _destinationMarker.gameObject.SetActive(false);
             TextMeshProUGUI you = Text("Label", _playerMarker, 12, FontStyles.Bold, L("BẠN", "YOU", "現在地"));
-            Rect(you.rectTransform, new(.5f, 0), new(0, -5), new(82, 24)); you.alignment = TextAlignmentOptions.Top;
+            Rect(you.rectTransform, new(.5f, 0), new(0, 28), new(82, 24));
+            you.rectTransform.pivot = new Vector2(.5f, 1f);
+            you.alignment = TextAlignmentOptions.Top;
+            SetMapMode(_showTopDown);
         }
 
         private void CityMap()
@@ -184,7 +201,7 @@ namespace NihongoLife.UI
             Place(L("Cửa hàng tiện lợi", "Convenience store", "コンビニ"), new(0, -32), new(.2f, .76f, .66f), "SHOP");
             Place("Sushi Hibari", new(-285, 145), new(.94f, .42f, .36f), "SUSHI");
             Place(L("Ga Sakura Metro", "Sakura Metro", "さくら駅"), new(300, 135), new(.3f, .62f, .94f), "STATION");
-            Place(L("Khu dân cư", "Residential", "住宅街"), new(-285, -160), new(.62f, .76f, .38f), "HOME");
+            Place(L("Phòng riêng", "Your bedroom", "自室"), new(-285, -160), new(.62f, .76f, .38f), "HOME");
             Place(L("Công viên", "Park", "公園"), new(285, -155), new(.42f, .72f, .4f), "PARK");
             Place(L("Trường Nhật ngữ Hibari", "Hibari Japanese School", "ひばり日本語学院"), new(160, 210), new(.2f, .55f, .32f), "SCHOOL");
         }
@@ -215,7 +232,7 @@ namespace NihongoLife.UI
         {
             _header.text = L("SƠ ĐỒ TRƯỜNG HIBARI", "HIBARI SCHOOL FLOOR MAP", "ひばり日本語学院 見取り図");
             _worldMin = new(990, -10); _worldMax = new(1010, 10);
-            Road(Vector2.zero, new(760, 640));
+            Road(Vector2.zero, new(760, 440));
             Place(L("Bảng đen / Cô Morita", "Blackboard / Teacher Morita", "黒板・森田先生"), new(0, 150), new(.75f, .35f, .55f), "TEACHER");
             Place(L("Bàn học sinh", "Student desks", "生徒の机"), new(-60, -20), new(.94f, .78f, .3f), "DESKS");
             Place(L("Về thành phố", "Return to city", "町へ戻る"), new(0, -170), new(.45f, .78f, .48f), "EXIT");
@@ -238,7 +255,7 @@ namespace NihongoLife.UI
             Vector2 p = new(_player.position.x, _player.position.z);
             Vector2 n = new(Mathf.InverseLerp(_worldMin.x, _worldMax.x, p.x), Mathf.InverseLerp(_worldMin.y, _worldMax.y, p.y));
             _playerMarker.anchoredPosition = new((n.x - .5f) * (_mapArea.rect.width - 46), (n.y - .5f) * (_mapArea.rect.height - 46));
-            _playerMarker.localRotation = Quaternion.Euler(0, 0, -_player.eulerAngles.y);
+            _playerMarker.localRotation = Quaternion.identity;
             _coordinates.text = $"{L("Vị trí", "Position", "位置")}  X {_player.position.x:0.0}  Z {_player.position.z:0.0}    |    M / Esc: {L("đóng", "close", "閉じる")}";
         }
 
@@ -257,7 +274,7 @@ namespace NihongoLife.UI
                 destination = navHit.position;
             }
             else if (Physics.Raycast(destination + Vector3.up * 30f, Vector3.down, out RaycastHit ground,
-                60f, Physics.DefaultRaycastLayers, QueryTriggerInteraction.Ignore))
+                60f, Physics.DefaultRaycastLayers & ~LayerMask.GetMask("MapRoof"), QueryTriggerInteraction.Ignore))
             {
                 destination = ground.point;
             }
@@ -283,7 +300,7 @@ namespace NihongoLife.UI
         }
 
         private void Road(Vector2 p, Vector2 s, float angle = 0) { RectTransform r = Panel("Route", _mapArea, new(.22f, .27f, .29f)).GetComponent<RectTransform>(); r.anchoredPosition = p; r.sizeDelta = s; r.localRotation = Quaternion.Euler(0, 0, angle); }
-        private void Place(string name, Vector2 p, Color color, string type) { RectTransform m = Panel("Place_" + type, _mapArea, color).GetComponent<RectTransform>(); m.anchoredPosition = p; m.sizeDelta = new(18, 18); TextMeshProUGUI t = Text("Label", m, 14, FontStyles.Bold, $"<size=75%><color=#AFC2C8>{type}</color></size>\n{name}"); Rect(t.rectTransform, new(.5f, 0), new(0, -7), new(190, 55)); t.alignment = TextAlignmentOptions.Top; }
+        private void Place(string name, Vector2 p, Color color, string type) { RectTransform m = Panel("Place_" + type, _mapArea, color).GetComponent<RectTransform>(); m.anchoredPosition = p; m.sizeDelta = new(18, 18); TextMeshProUGUI t = Text("Label", m, 14, FontStyles.Bold, $"<size=75%><color=#AFC2C8>{type}</color></size>\n{name}"); Rect(t.rectTransform, new(.5f, 0), new(0, -7), new(190, 55)); t.rectTransform.pivot = new Vector2(.5f, 1f); t.alignment = TextAlignmentOptions.Top; }
         private string L(string vi, string en, string ja) => GameServices.TryGet(out GameSettingsService s) ? s.Text(vi, en, ja) : vi;
         private static GameObject Panel(string n, Transform p, Color c) { GameObject g = new(n, typeof(RectTransform), typeof(CanvasRenderer), typeof(Image)); g.transform.SetParent(p, false); g.GetComponent<Image>().color = c; return g; }
         private TextMeshProUGUI Text(string n, Transform p, float size, FontStyles style, string value = "") { GameObject g = new(n, typeof(RectTransform), typeof(CanvasRenderer), typeof(TextMeshProUGUI)); g.transform.SetParent(p, false); TextMeshProUGUI t = g.GetComponent<TextMeshProUGUI>(); if (_font != null) t.font = _font; t.text = value; t.fontSize = size; t.fontStyle = style; t.color = Color.white; t.characterSpacing = 0; t.enableAutoSizing = true; t.fontSizeMin = 11; t.raycastTarget = false; return t; }

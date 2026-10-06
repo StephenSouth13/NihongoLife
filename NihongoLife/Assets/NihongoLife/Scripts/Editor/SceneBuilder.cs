@@ -822,10 +822,12 @@ namespace NihongoLife.Editor
             var hud = hudPanel.AddComponent<HUDUI>();
             hudPanel.AddComponent<QuestDirectionMarker>();
 
-            var topLeft = CreatePanel(hudPanel.transform, "MissionPanel", new Vector2(0f, 1f), new Vector2(24f, -24f), new Vector2(620f, 188f), new Color(0.025f, 0.035f, 0.045f, 0.88f));
-            var scenarioTitle = CreateText(topLeft.transform, "ScenarioTitle", "Nhiệm vụ", font, 21, new Vector2(18f, -20f), new Vector2(480f, 34f), TextAlignmentOptions.Left);
+            var topLeft = CreatePanel(hudPanel.transform, "MissionPanel", new Vector2(0f, 1f), new Vector2(24f, -24f), new Vector2(430f, 170f), new Color(0.025f, 0.035f, 0.045f, 0.88f));
+            var scenarioTitle = CreateText(topLeft.transform, "ScenarioTitle", "Nhiệm vụ", font, 21, new Vector2(18f, -20f), new Vector2(350f, 34f), TextAlignmentOptions.Left);
+            scenarioTitle.rectTransform.anchorMin = scenarioTitle.rectTransform.anchorMax = scenarioTitle.rectTransform.pivot = new Vector2(0f, 1f);
             scenarioTitle.color = new Color(1f, 0.91f, 0.54f);
-            var objectives = CreateText(topLeft.transform, "ObjectivesList", "", font, 17, new Vector2(18f, -68f), new Vector2(584f, 104f), TextAlignmentOptions.TopLeft);
+            var objectives = CreateText(topLeft.transform, "ObjectivesList", "", font, 17, new Vector2(18f, -68f), new Vector2(394f, 104f), TextAlignmentOptions.TopLeft);
+            objectives.rectTransform.anchorMin = objectives.rectTransform.anchorMax = objectives.rectTransform.pivot = new Vector2(0f, 1f);
             objectives.textWrappingMode = TextWrappingModes.Normal;
 
             var wallet = CreateText(hudPanel.transform, "WalletText", "¥ 1500", font, 24, new Vector2(-28f, -22f), new Vector2(220f, 42f), TextAlignmentOptions.Right);
@@ -993,7 +995,7 @@ namespace NihongoLife.Editor
             var scaler = canvasGo.AddComponent<CanvasScaler>();
             scaler.uiScaleMode = CanvasScaler.ScaleMode.ScaleWithScreenSize;
             scaler.referenceResolution = new Vector2(1920f, 1080f);
-            scaler.screenMatchMode = CanvasScaler.ScreenMatchMode.MatchWidthOrHeight;
+            scaler.screenMatchMode = CanvasScaler.ScreenMatchMode.Expand;
             scaler.matchWidthOrHeight = 0.5f;
             canvasGo.AddComponent<GraphicRaycaster>();
             return canvasGo;

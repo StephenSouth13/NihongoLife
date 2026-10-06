@@ -135,9 +135,9 @@ namespace NihongoLife.World
                     _riding = false;
                     ShowMessage("Tau da den ga Midori. Ban co the xuong tau.");
                 }
-                RefreshHud();
             }
 
+            RefreshHud();
             if (_messageText != null && Time.unscaledTime > _messageUntil)
             {
                 _messageText.text = string.Empty;
@@ -345,7 +345,7 @@ namespace NihongoLife.World
         {
             EnsureEventSystem();
             HUDUI sharedHud = FindFirstObjectByType<HUDUI>();
-            var canvasObject = new GameObject("StationTravelHUD");
+            var canvasObject = new GameObject("StationTravelHUD", typeof(RectTransform));
             if (sharedHud != null)
             {
                 _canvas = sharedHud.GetComponentInParent<Canvas>();
@@ -365,12 +365,17 @@ namespace NihongoLife.World
                 canvasObject.AddComponent<GraphicRaycaster>();
             }
 
+            var hudRect = (RectTransform)canvasObject.transform;
+            hudRect.anchorMin = Vector2.zero;
+            hudRect.anchorMax = Vector2.one;
+            hudRect.offsetMin = hudRect.offsetMax = Vector2.zero;
+
             GameObject panel = new GameObject("RoutePanel");
             panel.transform.SetParent(canvasObject.transform, false);
             var rect = panel.AddComponent<RectTransform>();
             rect.anchorMin = rect.anchorMax = Vector2.one;
             rect.pivot = Vector2.one;
-            rect.anchoredPosition = new Vector2(-24f, -24f);
+            rect.anchoredPosition = new Vector2(-24f, -86f);
             rect.sizeDelta = new Vector2(440f, 76f);
             panel.AddComponent<Image>().color = new Color(0.055f, 0.068f, 0.082f, 0.96f);
             _routeText = CreateText(panel.transform, 24f, TextAlignmentOptions.Center);
@@ -380,7 +385,7 @@ namespace NihongoLife.World
             var flowRect = flow.AddComponent<RectTransform>();
             flowRect.anchorMin = flowRect.anchorMax = new Vector2(0.5f, 1f);
             flowRect.pivot = new Vector2(0.5f, 1f);
-            flowRect.anchoredPosition = new Vector2(0f, -118f);
+            flowRect.anchoredPosition = new Vector2(0f, -24f);
             flowRect.sizeDelta = new Vector2(780f, 64f);
             flow.AddComponent<Image>().color = new Color(0.055f, 0.068f, 0.082f, 0.96f);
             _flowText = CreateText(flow.transform, 20f, TextAlignmentOptions.Center);
@@ -678,6 +683,8 @@ namespace NihongoLife.World
 
         private void OnDestroy()
         {
+            if (_routeText != null && _routeText.transform.parent != null)
+                Destroy(_routeText.transform.parent.parent.gameObject);
             if (_interactionDetector != null) _interactionDetector.OnInteractableChanged -= HandleInteractableChanged;
         }
 
@@ -692,28 +699,6 @@ namespace NihongoLife.World
         {
             if (GameServices.TryGet(out IAudioService audio)) audio.PlayCue(GameAudioCue.UiConfirm, 0.75f);
         }
-    }
-
-    [RequireComponent(typeof(Collider))]
-    public sealed class StationTravelInteractable : MonoBehaviour, IInteractable
-    {
-        [SerializeField] private StationTravelController controller;
-        [SerializeField] private StationAction action;
-        [SerializeField] private string promptJa = "利用する";
-        [SerializeField] private string promptEn = "Su dung";
-
-        public void Configure(StationTravelController travelController, StationAction stationAction, string ja, string en)
-        {
-            controller = travelController;
-            action = stationAction;
-            promptJa = ja;
-            promptEn = en;
-        }
-
-        public string GetPromptJa() => promptJa;
-        public string GetpromptEn() => promptEn;
-        public Transform GetTransform() => transform;
-        public void Interact(GameObject player) => controller?.Execute(action, player);
     }
 
     public sealed class StationStaffInteractable : MonoBehaviour, IInteractable

@@ -1,9 +1,11 @@
 using System.Collections;
+using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using NihongoLife.Player;
+using NihongoLife.Cameras;
 
 namespace NihongoLife.Core
 {
@@ -16,6 +18,7 @@ namespace NihongoLife.Core
         private bool _isLoading;
         private string _hostSceneName;
         private string _activeZoneSceneName;
+        private readonly Dictionary<GameObject, bool> _hiddenRootStates = new();
 
         public bool IsLoading => _isLoading;
 
@@ -28,18 +31,18 @@ namespace NihongoLife.Core
         public void LoadScene(string sceneName)
         {
             if (_isLoading) return;
-            StartCoroutine(LoadSingleRoutine(sceneName, FriendlyName(sceneName)));
+            LoadScene(sceneName, FriendlyName(sceneName));
         }
 
         public void LoadScene(string sceneName, string displayName)
         {
-            if (_isLoading) return;
+            if (_isLoading || !CanLoad(sceneName)) return;
             StartCoroutine(LoadSingleRoutine(sceneName, displayName));
         }
 
         public void EnterZone(string sceneName, string spawnId, string displayName)
         {
-            if (_isLoading) return;
+            if (_isLoading || !CanLoad(sceneName) || !string.IsNullOrEmpty(_activeZoneSceneName)) return;
             StartCoroutine(EnterZoneRoutine(sceneName, spawnId, displayName));
         }
 
@@ -72,6 +75,9 @@ namespace NihongoLife.Core
             yield return new WaitForSecondsRealtime(0.18f);
             operation.allowSceneActivation = true;
             while (!operation.isDone) yield return null;
+            _hostSceneName = null;
+            _activeZoneSceneName = null;
+            _hiddenRootStates.Clear();
             yield return FadeOut();
             LockPlayer(false);
             _isLoading = false;
@@ -92,7 +98,8 @@ namespace NihongoLife.Core
             _hostSceneName = host.name;
 
             Scene zone = SceneManager.GetSceneByName(sceneName);
-            if (!zone.isLoaded)
+            bool newlyLoaded = !zone.isLoaded;
+            if (newlyLoaded)
             {
                 AsyncOperation load = SceneManager.LoadSceneAsync(sceneName, LoadSceneMode.Additive);
                 if (load == null)
@@ -119,10 +126,16 @@ namespace NihongoLife.Core
             if (!MovePlayerToSpawn(zone, spawnId))
             {
                 SetZoneRootsActive(host, true);
+                if (newlyLoaded) yield return SceneManager.UnloadSceneAsync(zone);
+                else SetZoneRootsActive(zone, false);
+                _hostSceneName = null;
                 yield return FailAndRelease($"Spawn {spawnId} is missing from {sceneName}.");
                 yield break;
             }
             SceneManager.SetActiveScene(zone);
+            foreach (GameObject root in zone.GetRootGameObjects())
+                foreach (var preview in root.GetComponentsInChildren<ZonePreviewCamera>(true))
+                    preview.gameObject.SetActive(false);
             _activeZoneSceneName = zone.name;
             SetProgress(1f, "Đã đến nơi");
             yield return FadeOut();
@@ -150,6 +163,7 @@ namespace NihongoLife.Core
             SetZoneRootsActive(city, true);
             if (!MovePlayerToSpawn(city, citySpawnId))
             {
+                SetZoneRootsActive(city, false);
                 yield return FailAndRelease($"Return spawn {citySpawnId} is missing from {city.name}.");
                 yield break;
             }
@@ -171,13 +185,30 @@ namespace NihongoLife.Core
             _isLoading = false;
         }
 
-        private static void SetZoneRootsActive(Scene scene, bool active)
+        private static bool CanLoad(string sceneName)
+        {
+            if (!string.IsNullOrWhiteSpace(sceneName) && Application.CanStreamedLevelBeLoaded(sceneName)) return true;
+            Debug.LogError($"[SceneFlowController] Scene '{sceneName}' is not available in build settings.");
+            return false;
+        }
+
+        private void SetZoneRootsActive(Scene scene, bool active)
         {
             if (!scene.IsValid() || !scene.isLoaded) return;
             foreach (GameObject root in scene.GetRootGameObjects())
             {
                 var visibility = root.GetComponent<SceneZoneVisibility>();
-                if (visibility != null && visibility.HideWhenZoneChanges) root.SetActive(active);
+                if (visibility == null || !visibility.HideWhenZoneChanges) continue;
+                if (!active)
+                {
+                    if (!_hiddenRootStates.ContainsKey(root)) _hiddenRootStates[root] = root.activeSelf;
+                    root.SetActive(false);
+                }
+                else if (_hiddenRootStates.TryGetValue(root, out bool wasActive))
+                {
+                    root.SetActive(wasActive);
+                    _hiddenRootStates.Remove(root);
+                }
             }
         }
 
@@ -198,6 +229,16 @@ namespace NihongoLife.Core
                     if (controller != null) controller.enabled = false;
                     player.transform.SetPositionAndRotation(spawn.transform.position, spawn.transform.rotation);
                     if (controller != null) controller.enabled = true;
+                    var camera = FindFirstObjectByType<ThirdPersonCameraController>();
+                    if (camera != null)
+                    {
+                        camera.ClearConversationTarget();
+                        camera.SetTarget(player.transform);
+                        bool indoor = scene.name == WorldLocationCatalog.HomeBedroomScene
+                            || scene.name == WorldLocationCatalog.SchoolScene || scene.name == WorldLocationCatalog.SushiRestaurantScene;
+                        camera.SetIndoorMode(indoor);
+                        camera.SetOrbit(spawn.transform.eulerAngles.y, indoor ? 22f : 20f, indoor ? 3.2f : 7.2f);
+                    }
                     return true;
                 }
             }

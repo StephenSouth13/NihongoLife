@@ -2,6 +2,8 @@ using System.Collections;
 using NihongoLife.Player;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
+using NihongoLife.Core;
 
 namespace NihongoLife.World
 {
@@ -40,6 +42,9 @@ namespace NihongoLife.World
 
         private void LateUpdate()
         {
+            // An additive load runs Awake before the player has left the host scene.
+            if (SceneManager.GetActiveScene() != gameObject.scene) return;
+            if (GameServices.TryGet(out SceneFlowController flow) && flow.IsLoading) return;
             if (_player == null)
             {
                 if (Time.unscaledTime < _nextSearchTime) return;
@@ -63,6 +68,12 @@ namespace NihongoLife.World
             _rescuing = true;
             EnsureRescueFade();
             yield return FadeTo(1f, 0.18f);
+            if (_player == null || SceneManager.GetActiveScene() != gameObject.scene)
+            {
+                yield return FadeTo(0f, 0.1f);
+                _rescuing = false;
+                yield break;
+            }
             bool fellNearTracks = Mathf.Abs(unsafePosition.x - trackCenter.x) <= trackHalfExtents.x + 4f;
             Vector3 target = fellNearTracks
                 ? new Vector3(Mathf.Clamp(unsafePosition.x, 786f, 814f), 0.38f, 1.9f)
