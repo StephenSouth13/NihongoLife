@@ -55,7 +55,8 @@ namespace NihongoLife.UI
             }
 
             EnsureSettingsUI();
-            menuMusic = gameObject.GetComponent<MenuMusicController>() ?? gameObject.AddComponent<MenuMusicController>();
+            menuMusic = gameObject.GetComponent<MenuMusicController>();
+            if (menuMusic == null) menuMusic = gameObject.AddComponent<MenuMusicController>();
             EnsureSocialUI();
             EnsureCharacterSelectUI();
             RefreshTexts();

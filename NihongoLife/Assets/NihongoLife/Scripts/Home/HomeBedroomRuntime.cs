@@ -88,7 +88,7 @@ namespace NihongoLife.Home
             var status = PlayerStatus.Instance;
 
             // Vô hiệu hóa di chuyển
-            var playerController = player != null ? player.GetComponent<NihongoLife.Core.PlayerController>() : null;
+            var playerController = player != null ? player.GetComponent<NihongoLife.Player.PlayerController>() : null;
             if (playerController != null) playerController.enabled = false;
 
             while (elapsed < sleepDuration)

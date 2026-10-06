@@ -96,7 +96,9 @@ namespace NihongoLife.UI
 
         protected override void Build(RectTransform card)
         {
-            _listeningAudio = gameObject.GetComponent<AudioSource>() ?? gameObject.AddComponent<AudioSource>();
+            // Unity's fake-null breaks `??` on components; use an explicit lifetime check.
+            _listeningAudio = gameObject.GetComponent<AudioSource>();
+            if (_listeningAudio == null) _listeningAudio = gameObject.AddComponent<AudioSource>();
             _listeningAudio.playOnAwake = false;
             _listeningAudio.loop = false;
             _listeningAudio.spatialBlend = 0f;

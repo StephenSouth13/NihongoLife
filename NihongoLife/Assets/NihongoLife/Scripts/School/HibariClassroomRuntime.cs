@@ -63,7 +63,8 @@ namespace NihongoLife.School
                 if (child.GetComponent<ClassroomSeatInteractable>() != null) continue;
 
                 Bounds bounds = CalculateBounds(child);
-                BoxCollider collider = child.GetComponent<BoxCollider>() ?? child.gameObject.AddComponent<BoxCollider>();
+                BoxCollider collider = child.GetComponent<BoxCollider>();
+                if (collider == null) collider = child.gameObject.AddComponent<BoxCollider>();
                 collider.isTrigger = true;
                 collider.center = child.InverseTransformPoint(bounds.center);
                 collider.size = new Vector3(Mathf.Max(0.45f, bounds.size.x), Mathf.Max(0.8f, bounds.size.y), Mathf.Max(0.45f, bounds.size.z));
@@ -77,7 +78,8 @@ namespace NihongoLife.School
         {
             Transform board = FindTransform("SchoolFrontHeader") ?? FindTransform("TeacherTable");
             if (board == null || board.GetComponent<ClassroomExamStation>() != null) return;
-            BoxCollider collider = board.GetComponent<BoxCollider>() ?? board.gameObject.AddComponent<BoxCollider>();
+            BoxCollider collider = board.GetComponent<BoxCollider>();
+            if (collider == null) collider = board.gameObject.AddComponent<BoxCollider>();
             collider.isTrigger = true;
             collider.size = Vector3.Max(collider.size, new Vector3(1.4f, 1.2f, 0.25f));
             board.gameObject.AddComponent<ClassroomExamStation>();
@@ -211,7 +213,8 @@ namespace NihongoLife.School
             if (controller != null) controller.enabled = false;
             player.transform.SetPositionAndRotation(_seatPosition, Quaternion.LookRotation(-_forward, Vector3.up));
             if (controller != null) controller.enabled = true;
-            _animation = player.GetComponent<CharacterAnimationController>() ?? player.GetComponentInChildren<CharacterAnimationController>();
+            _animation = player.GetComponent<CharacterAnimationController>();
+            if (_animation == null) _animation = player.GetComponentInChildren<CharacterAnimationController>();
             if (_animation != null && !_animation.SetSitting(true))
                 Debug.LogWarning("[HibariClassroom] No Sit animation state found. Add a humanoid Sitting clip to the player Animator.", player);
             PlayerController movement = player.GetComponent<PlayerController>();
@@ -237,7 +240,8 @@ namespace NihongoLife.School
         {
             Canvas canvas = FindFirstObjectByType<Canvas>(FindObjectsInactive.Include);
             if (canvas == null) return;
-            ExamCenterPopup popup = canvas.GetComponent<ExamCenterPopup>() ?? canvas.gameObject.AddComponent<ExamCenterPopup>();
+            ExamCenterPopup popup = canvas.GetComponent<ExamCenterPopup>();
+            if (popup == null) popup = canvas.gameObject.AddComponent<ExamCenterPopup>();
             if (popup.GetComponent<ExamCenterPopup>() != null)
             {
                 popup.Initialize(TMPro.TMP_Settings.defaultFontAsset);

@@ -50,7 +50,8 @@ namespace NihongoLife.Interaction
 
         public void Interact(GameObject player)
         {
-            EmploymentSystem system = player.GetComponent<EmploymentSystem>() ?? player.AddComponent<EmploymentSystem>();
+            EmploymentSystem system = player.GetComponent<EmploymentSystem>();
+            if (system == null) system = player.AddComponent<EmploymentSystem>();
             if (!system.IsEmployedAs(role)) system.TryApply(role, requiredKnowledge);
             else system.TryWorkShift(role, shiftPayYen, shiftKnowledge, shiftEnergyCost, shiftCooldownSeconds);
         }

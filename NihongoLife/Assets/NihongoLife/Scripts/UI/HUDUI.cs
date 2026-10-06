@@ -207,14 +207,16 @@ namespace NihongoLife.UI
 
         private void EnsureQuestLog()
         {
-            var questLog = GetComponent<QuestLogPopup>() ?? gameObject.AddComponent<QuestLogPopup>();
+            var questLog = GetComponent<QuestLogPopup>();
+            if (questLog == null) questLog = gameObject.AddComponent<QuestLogPopup>();
             questLog.SetDialoguePanel(dialoguePanel);
             questLog.Initialize(scenarioTitleText != null ? scenarioTitleText.font : null);
         }
 
         private void EnsureExamCenter()
         {
-            var examCenter = GetComponent<ExamCenterPopup>() ?? gameObject.AddComponent<ExamCenterPopup>();
+            var examCenter = GetComponent<ExamCenterPopup>();
+            if (examCenter == null) examCenter = gameObject.AddComponent<ExamCenterPopup>();
             examCenter.Initialize(scenarioTitleText != null ? scenarioTitleText.font : null);
         }
 
