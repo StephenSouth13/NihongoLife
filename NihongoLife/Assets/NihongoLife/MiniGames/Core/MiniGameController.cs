@@ -189,12 +189,17 @@ namespace NihongoLife.MiniGames
         {
             _resultPanel.gameObject.SetActive(true);
             _resultPanel.SetAsLastSibling();
-            _resultTitle.text = result.completed ? "クリア！ <size=60%><color=#E8EEF6>Hoàn thành</color></size>" : "ちゅうだん <size=60%><color=#E8EEF6>Đã dừng</color></size>";
+            string stars = result.completed ? $"\n<size=80%><color=#F2B233>{new string('★', result.stars)}</color><color=#3A4250>{new string('★', 3 - result.stars)}</color></size>" : string.Empty;
+            _resultTitle.text = (result.completed ? "クリア！ <size=60%><color=#E8EEF6>Hoàn thành</color></size>" : "ちゅうだん <size=60%><color=#E8EEF6>Đã dừng</color></size>") + stars;
             var body = new System.Text.StringBuilder();
             body.AppendLine($"<color=#A8B4C4>Điểm</color>  <b>{result.score}</b>      <color=#A8B4C4>Chính xác</color>  <b>{result.accuracy:P0}</b>      <color=#A8B4C4>Thời gian</color>  <b>{result.completionSeconds:0}s</b>");
             body.AppendLine($"<color=#A8B4C4>Đúng</color>  {result.correctCount}      <color=#A8B4C4>Sai</color>  {result.incorrectCount}");
             if (result.completed)
+            {
                 body.AppendLine($"<color=#7BD88F>+{result.expReward} EXP   +{result.knowledgeReward} Kiến thức   · đã ghi vào hồ sơ học tập</color>");
+                body.AppendLine($"<color=#F2B233>チケット +{result.tickets}</color>  <color=#A8B4C4>(đổi quà ở quầy けいひん)</color>   ·   <color=#A8B4C4>Combo cao nhất</color> x{result.bestCombo}" +
+                                (result.newRecord ? "   <color=#FF7FB0><b>きろく こうしん！ Kỷ lục mới</b></color>" : string.Empty));
+            }
             if (result.mistakes.Count > 0)
             {
                 body.AppendLine("\n<color=#F2B233>Cần ôn lại</color>");

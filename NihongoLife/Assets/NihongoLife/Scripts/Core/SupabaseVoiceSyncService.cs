@@ -7,11 +7,17 @@ namespace NihongoLife.Core
     public class SupabaseVoiceSyncService : MonoBehaviour
     {
         [SerializeField] private bool testConnectionOnStart = true;
+        private static bool _testedThisSession;
+
+        [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
+        private static void ResetSession() => _testedThisSession = false;
 
         private void Start()
         {
-            if (testConnectionOnStart)
+            // The city reloads often (zones, menu); probing the REST API once per session is enough.
+            if (testConnectionOnStart && !_testedThisSession)
             {
+                _testedThisSession = true;
                 StartCoroutine(TestConnection());
             }
         }
@@ -42,6 +48,11 @@ namespace NihongoLife.Core
                 if (request.result == UnityWebRequest.Result.Success)
                 {
                     Debug.Log("[SupabaseVoiceSync] Supabase REST connection OK. Voice remoteUrl lines can be managed from database/storage.");
+                }
+                else if (request.responseCode == 404)
+                {
+                    // Reachable project, but the optional voice_lines table is not provisioned: voices stay local.
+                    Debug.Log("[SupabaseVoiceSync] voice_lines table not provisioned yet — voice lines use the bundled clips.");
                 }
                 else
                 {

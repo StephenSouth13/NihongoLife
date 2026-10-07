@@ -39,6 +39,20 @@ namespace NihongoLife.Tests
 
             var portal = GameObject.Find("AdditiveZonePortals/GameCenterPortal").GetComponent<ScenePortal>();
             var citySpawn = GameObject.Find("AdditiveZonePortals/Spawn_" + WorldLocationCatalog.CityGameCenterReturn).transform;
+
+            // The map guides the player there: pick "Game Center" → HUD arrow + ground arrow, cleared on arrival.
+            Teleport(player, new Vector3(0f, 0.08f, -13.5f), 180f);
+            var map = Object.FindFirstObjectByType<WorldMapUI>();
+            map.SetVisible(true);
+            yield return null;
+            Assert.IsTrue(map.GuideTo("ARCADE"), "The city map must list the Game Center.");
+            map.SetVisible(false);
+            yield return new WaitForSecondsRealtime(0.8f);
+            Assert.IsTrue(WaypointGuide.IsActive, "Picking the Game Center on the map shows a guide.");
+            Capture("00_waypoint_guide");
+            Teleport(player, new Vector3(WaypointGuide.TargetPosition.x, 0.08f, WaypointGuide.TargetPosition.z), 180f);
+            yield return null; yield return null;
+            Assert.IsFalse(WaypointGuide.IsActive, "Arriving clears the guide.");
             Teleport(player, citySpawn.position + Vector3.forward * 4f, 180f);
             yield return new WaitForSecondsRealtime(1.2f);
             Capture("01_city_entrance");
@@ -96,7 +110,9 @@ namespace NihongoLife.Tests
             // 8) Play a full hiragana round with exactly one mistake.
             var hiragana = launcher.Definition.contentSets.First(s => s.type == KanaPairType.HiraganaRomaji);
             game.StartRound(hiragana);
-            yield return new WaitForSecondsRealtime(0.5f);
+            yield return new WaitForSecondsRealtime(0.6f);
+            Capture("05a_countdown");
+            yield return WaitUntil(() => !game.IsBusy, 5f, "The 3-2-1 countdown must finish.");
             Assert.AreEqual(16, game.Cards.Count, "8 pairs → 16 cards.");
             Capture("05_board");
             var cards = game.Cards.ToList();
@@ -130,6 +146,9 @@ namespace NihongoLife.Tests
             Assert.IsTrue(ScoringManager.Instance.Events.Any(e => e.sourceId == "minigame.kana_match" && e.category == "ResponseAccuracy"));
             if (result.submittedToMastery)
                 Assert.Greater(LearningMasteryManager.Instance.GetMastery(result.masteredTargetIds[0]), 50f, "Mastered kana gain mastery.");
+            Assert.AreEqual(2, result.stars, "8/9 accuracy earns two stars.");
+            Assert.Greater(result.tickets, 0, "A cleared round pays tickets.");
+            Assert.AreEqual(result.tickets, PlayerInventory.Instance.GetItemQuantity(KanaMatchGame.TicketItemId));
             Capture("08_result");
 
             // 11) Back to normal third-person play at the same spot.
@@ -140,6 +159,26 @@ namespace NihongoLife.Tests
             Assert.IsTrue(follow.enabled, "Follow camera restored.");
             Assert.Less(Vector3.Distance(beforeGame, player.transform.position), 0.05f, "Player keeps the position they played from.");
             Capture("09_back_to_world");
+
+            // Prize counter: Aoi swaps tickets for a prize.
+            var counter = Object.FindFirstObjectByType<PrizeCounter>();
+            Assert.NotNull(counter, "The arcade needs its prize counter.");
+            Teleport(player, counter.transform.position + Vector3.left * 1.2f + Vector3.down * 0.9f, 90f);
+            yield return new WaitForSecondsRealtime(0.5f);
+            counter.Interact(player.gameObject);
+            yield return new WaitForSecondsRealtime(1f);
+            Assert.IsTrue(DialogueManager.Instance.IsOpen, "Aoi greets the player at the counter.");
+            Capture("09b_prize_counter");
+            dm.CancelDialogue();
+            yield return null;
+            int before = PlayerInventory.Instance.GetItemQuantity(KanaMatchGame.TicketItemId);
+            Assert.IsTrue(PrizeCounter.Exchange("prize_snack"), "Enough tickets for the snack box.");
+            Assert.AreEqual(before - 3, PlayerInventory.Instance.GetItemQuantity(KanaMatchGame.TicketItemId));
+            Assert.AreEqual(1, PlayerInventory.Instance.GetItemQuantity("prize_snack"));
+            yield return new WaitForSecondsRealtime(0.6f);
+            for (int guard = 0; guard < 6 && dm.IsOpen; guard++) { dm.CancelDialogue(); yield return null; }
+            Teleport(player, beforeGame, 0f);
+            yield return null;
 
             // 12) Exit returns to the matching outdoor doorway.
             var exit = Object.FindObjectsByType<ScenePortal>(FindObjectsSortMode.None).First(p => p.gameObject.scene.name == WorldLocationCatalog.GameCenterScene);

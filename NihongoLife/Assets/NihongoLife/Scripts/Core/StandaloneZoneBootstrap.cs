@@ -90,6 +90,8 @@ namespace NihongoLife.Core
         private void Start()
         {
             if (!string.IsNullOrEmpty(_zoneToEnter)) return;
+            // A zone opened on its own is being booted through the city: the bare fallback player is not needed.
+            if (_bootingThroughCity) return;
             PlayerController existingPlayer = FindFirstObjectByType<PlayerController>();
             if (existingPlayer != null)
             {

@@ -376,7 +376,11 @@ namespace NihongoLife.UI
                 {
                     var button = row.gameObject.AddComponent<Button>();
                     button.targetGraphic = row.GetComponent<Image>();
-                    button.onClick.AddListener(() => WalkTo(new Vector3(p.World.x, _player != null ? _player.position.y : 0f, p.World.y), p.Pixel));
+                    button.onClick.AddListener(() =>
+                    {
+                        WaypointGuide.Show(p.Name, new Vector3(p.World.x, 0f, p.World.y));
+                        WalkTo(new Vector3(p.World.x, _player != null ? _player.position.y : 0f, p.World.y), p.Pixel);
+                    });
                 }
                 _rows.Add((place, distance));
             }
@@ -430,7 +434,17 @@ namespace NihongoLife.UI
                 Mathf.Lerp(_worldMin.x, _worldMax.x, normalized.x),
                 _player.position.y,
                 Mathf.Lerp(_worldMin.y, _worldMax.y, normalized.y));
+            WaypointGuide.Show(L("Điểm đã chọn", "Picked spot", "目的地"), destination);
             WalkTo(destination, localPosition);
+        }
+
+        /// <summary>Guide (and walk) to a listed place by its marker type, e.g. "ARCADE" (tests, quests).</summary>
+        public bool GuideTo(string type)
+        {
+            var place = _places.Find(x => x.Type == type);
+            if (place == null || !place.HasWorld) return false;
+            WaypointGuide.Show(place.Name, new Vector3(place.World.x, 0f, place.World.y));
+            return true;
         }
 
         private void WalkTo(Vector3 destination, Vector2 markerPosition)

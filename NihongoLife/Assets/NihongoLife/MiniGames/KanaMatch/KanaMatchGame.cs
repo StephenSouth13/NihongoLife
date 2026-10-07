@@ -2,7 +2,10 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using NihongoLife.Audio;
+using NihongoLife.Core;
 using NihongoLife.Interaction;
+using NihongoLife.Player;
 using NihongoLife.UI;
 using TMPro;
 using UnityEngine;
@@ -53,6 +56,19 @@ namespace NihongoLife.MiniGames
         private TextMeshProUGUI _timerText;
         private TextMeshProUGUI _attemptText;
         private TextMeshProUGUI _pairText;
+        private TextMeshProUGUI _scoreText;
+        private RectTransform _progressFill;
+        private RectTransform _boardRoot;
+        private int _combo;
+        private int _bestCombo;
+        private int _liveScore;
+        public const string TicketItemId = "game_ticket";
+
+        public int Combo => _combo;
+        public int LiveScore => _liveScore;
+        public static int Stars(MiniGameResult r) => !r.completed ? 0 : r.accuracy >= 0.9f ? 3 : r.accuracy >= 0.7f ? 2 : 1;
+        public static int TicketsFor(MiniGameResult r) => r.completed ? Mathf.Max(1, r.score / 100) + Stars(r) : 0;
+        public static string BestKey(string setId) => "NL.KanaMatch.Best." + setId;
 
         public string GameId => "kana_match";
         public Phase State { get; private set; }
@@ -116,8 +132,44 @@ namespace NihongoLife.MiniGames
             _elapsed = 0f;
             int count = Mathf.Clamp(_definition.pairsPerRound, 2, set.pairs.Count);
             _pairs = set.pairs.OrderBy(_ => UnityEngine.Random.value).Take(count).ToList();
+            _combo = 0;
+            _bestCombo = 0;
+            _liveScore = 0;
             State = Phase.Playing;
             BuildBoard();
+            StartCoroutine(Countdown());
+        }
+
+        private IEnumerator Countdown()
+        {
+            _busy = true;
+            var label = NLUi.Label(_root, "Countdown", "", 120f, NLUi.Gold, _font, FontStyles.Bold, TextAlignmentOptions.Center);
+            NLUi.Stretch(label.rectTransform);
+            foreach (string step in new[] { "3", "2", "1", "スタート！" })
+            {
+                label.text = step;
+                Cue(step.Length > 1 ? GameAudioCue.UiConfirm : GameAudioCue.UiTick);
+                for (float t = 0f; t < 1f; t += Time.unscaledDeltaTime / 0.55f)
+                {
+                    float s = Mathf.Lerp(1.6f, 1f, Mathf.SmoothStep(0f, 1f, Mathf.Min(1f, t * 2f)));
+                    label.rectTransform.localScale = Vector3.one * s;
+                    label.alpha = 1f - Mathf.Max(0f, t - 0.7f) / 0.3f;
+                    yield return null;
+                }
+            }
+            Destroy(label.gameObject);
+            _elapsed = 0f;
+            _busy = false;
+        }
+
+        /// <summary>Skips the 3-2-1 intro (tests).</summary>
+        public void SkipCountdown()
+        {
+            var label = _root != null ? _root.Find("Countdown") : null;
+            if (label != null) Destroy(label.gameObject);
+            StopAllCoroutines();
+            _elapsed = 0f;
+            _busy = false;
         }
 
         private void BuildBoard()
@@ -131,6 +183,18 @@ namespace NihongoLife.MiniGames
             _timerText = NLUi.Pill(header, "Timer", "", _font, new Color(1f, 1f, 1f, 0.08f), NLUi.Gold, 19f).GetComponentInChildren<TextMeshProUGUI>();
             _attemptText = NLUi.Pill(header, "Attempts", "", _font, new Color(1f, 1f, 1f, 0.08f), NLUi.Text, 19f).GetComponentInChildren<TextMeshProUGUI>();
             _pairText = NLUi.Pill(header, "Pairs", "", _font, new Color(1f, 1f, 1f, 0.08f), NLUi.Good, 19f).GetComponentInChildren<TextMeshProUGUI>();
+            _scoreText = NLUi.Pill(header, "Score", "", _font, new Color(0.95f, 0.7f, 0.2f, 0.18f), NLUi.Gold, 19f).GetComponentInChildren<TextMeshProUGUI>();
+            var track = new GameObject("Progress", typeof(RectTransform), typeof(Image), typeof(LayoutElement)).GetComponent<RectTransform>();
+            track.SetParent(frame, false);
+            track.GetComponent<Image>().color = new Color(1f, 1f, 1f, 0.08f);
+            track.GetComponent<LayoutElement>().preferredHeight = 8f;
+            _progressFill = new GameObject("Fill", typeof(RectTransform), typeof(Image)).GetComponent<RectTransform>();
+            _progressFill.SetParent(track, false);
+            _progressFill.GetComponent<Image>().color = NLUi.Good;
+            _progressFill.anchorMin = Vector2.zero;
+            _progressFill.anchorMax = new Vector2(0f, 1f);
+            _progressFill.offsetMin = _progressFill.offsetMax = Vector2.zero;
+            _boardRoot = frame;
 
             int total = _pairs.Count * 2;
             int columns = total <= 12 ? 4 : total <= 16 ? 4 : 5;
@@ -236,6 +300,12 @@ namespace NihongoLife.MiniGames
             {
                 first.Matched = second.Matched = true;
                 _matchedPairs++;
+                _combo++;
+                _bestCombo = Mathf.Max(_bestCombo, _combo);
+                int gained = 100 + (_combo - 1) * 25;
+                _liveScore += gained;
+                Cue(GameAudioCue.UiConfirm);
+                FloatText(second.Rect, _combo >= 2 ? $"+{gained}  コンボ x{_combo}!" : $"+{gained}", NLUi.Good);
                 StartCoroutine(Tint(first, CardMatched));
                 StartCoroutine(Tint(second, CardMatched));
                 StartCoroutine(Pop(first.Rect));
@@ -258,6 +328,10 @@ namespace NihongoLife.MiniGames
             });
             first.Background.color = CardWrong;
             second.Background.color = CardWrong;
+            _combo = 0;
+            _liveScore = Mathf.Max(0, _liveScore - 15);
+            Cue(GameAudioCue.UiError);
+            FloatText(second.Rect, "ちがう！ -15", NLUi.Bad);
             yield return Shake(first.Rect, second.Rect);
             yield return new WaitForSecondsRealtime(0.35f);
             StartCoroutine(Flip(first, false));
@@ -278,6 +352,7 @@ namespace NihongoLife.MiniGames
         private void Update()
         {
             if (State != Phase.Playing) return;
+            if (_root != null && _root.Find("Countdown") != null) return;
             _elapsed += Time.unscaledDeltaTime;
             RefreshHeader();
             if (_definition.timeLimitSeconds > 0f && _elapsed >= _definition.timeLimitSeconds && !_busy)
@@ -294,6 +369,8 @@ namespace NihongoLife.MiniGames
             _timerText.text = $"時間 {Mathf.FloorToInt(left / 60f)}:{Mathf.FloorToInt(left % 60f):00}";
             _attemptText.text = $"Lượt {_attempts}";
             _pairText.text = $"Cặp {_matchedPairs}/{_pairs.Count}";
+            if (_scoreText != null) _scoreText.text = _combo >= 2 ? $"{_liveScore} điểm · x{_combo}" : $"{_liveScore} điểm";
+            if (_progressFill != null) _progressFill.anchorMax = new Vector2(_pairs.Count > 0 ? _matchedPairs / (float)_pairs.Count : 0f, 1f);
         }
 
         private MiniGameResult BuildResult(bool completed)
@@ -316,11 +393,51 @@ namespace NihongoLife.MiniGames
                 if (!_missedPairs.Contains(i) && _cards.Any(c => c.PairIndex == i && c.Matched)) result.masteredTargetIds.Add(_pairs[i].targetId);
             }
             float timeBonus = _definition.timeLimitSeconds > 0f ? Mathf.Max(0f, _definition.timeLimitSeconds - _elapsed) * 2f : 0f;
-            result.score = completed ? Mathf.Max(0, _matchedPairs * 100 + Mathf.RoundToInt(timeBonus) - result.incorrectCount * 15) : _matchedPairs * 50;
+            result.score = completed ? Mathf.Max(0, _liveScore + Mathf.RoundToInt(timeBonus)) : _matchedPairs * 50;
             result.expReward = completed ? _matchedPairs * _definition.expPerCorrect : 0;
             result.knowledgeReward = completed ? _definition.knowledgePerRound : 0;
             result.masteryGain = result.masteredTargetIds.Count * 5f - (result.learningTargetIds.Count - result.masteredTargetIds.Count) * 3f;
+            result.stars = Stars(result);
+            result.bestCombo = _bestCombo;
+            if (completed && _set != null)
+            {
+                result.tickets = TicketsFor(result);
+                PlayerInventory.Instance?.AddItem(TicketItemId, "チケット", "Vé thưởng Game Center — đổi quà ở quầy けいひん", 0, result.tickets);
+                if (result.score > PlayerPrefs.GetInt(BestKey(_set.id), 0))
+                {
+                    result.newRecord = true;
+                    PlayerPrefs.SetInt(BestKey(_set.id), result.score);
+                    PlayerPrefs.Save();
+                }
+            }
             return result;
+        }
+
+        private void FloatText(RectTransform anchor, string value, Color color)
+        {
+            if (_boardRoot == null) return;
+            var label = NLUi.Label(_root, "Float", value, 26f, color, _font, FontStyles.Bold, TextAlignmentOptions.Center);
+            label.rectTransform.position = anchor.position;
+            label.rectTransform.sizeDelta = new Vector2(320f, 40f);
+            StartCoroutine(Rise(label));
+        }
+
+        private static IEnumerator Rise(TextMeshProUGUI label)
+        {
+            Vector3 start = label.rectTransform.position;
+            for (float t = 0f; t < 1f; t += Time.unscaledDeltaTime / 0.8f)
+            {
+                if (label == null) yield break;
+                label.rectTransform.position = start + Vector3.up * (60f * t);
+                label.alpha = 1f - t;
+                yield return null;
+            }
+            if (label != null) Destroy(label.gameObject);
+        }
+
+        private static void Cue(GameAudioCue cue)
+        {
+            if (GameServices.TryGet(out IAudioService audio)) audio.PlayCue(cue, 0.7f);
         }
 
         // ─────────── Animation ───────────

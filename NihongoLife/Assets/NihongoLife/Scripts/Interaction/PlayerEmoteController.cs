@@ -96,7 +96,7 @@ namespace NihongoLife.Interaction
 
         private void CloseWheel()
         {
-            _wheel?.Close();
+            if (_wheel != null) _wheel.Close(); // Unity null: the HUD may already be destroyed on scene unload
             _wheelOpenedByHold = false;
             if (!_lockedByWheel) return;
             _lockedByWheel = false;

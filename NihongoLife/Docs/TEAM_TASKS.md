@@ -467,3 +467,50 @@ Chủ dự án xác nhận: đã bước vào bên trong konbini thật (không 
 - `INpcService` mới: `IPriorityNpcService`. `DialogueManager.StartConversation` callback giờ trả về id node cuối, hoặc id "lệnh" như `buy:minato` (trước trả `null` nên mọi nhánh thưởng không chạy).
 
 **Test:** `GameplayUiPlayModeTests` (Station_FullTripToMinato, Station_GakuenMaeTicketGoesToSchool, Hud_StatusDockButtonsAndPortalSigns), `BedroomPlayModeTests.BedroomStandalone_BootsThroughCityAndLeaves`.
+
+## Cập nhật (2026-10-08, Claude) — Game Center `50_GameCenter` + Kana Match (vertical slice)
+
+**Scene mới đã được chủ dự án duyệt:** `Assets/NihongoLife/Scenes/50_GameCenter.unity`, dựng bằng `Scripts/Editor/GameCenterBuilder.cs` (`-executeMethod NihongoLife.EditorTools.GameCenterBuilder.Build`).
+- Asset: `ThirdParty/Minigame/kenney_mini-arcade`.
+- Tối ưu WebGL: 1 vật liệu colormap chung, static batching (trừ chữ TMP), tắt bóng.
+- Cổng vào gắn vào `StreetBuilding_S_4` trong `90_TestSandbox`: `Town_Destinations/Entrance_GameCenter`, `AdditiveZonePortals/GameCenterPortal`, `Spawn_city_game_center_return`. Builder chỉ thêm hoặc thay đúng các object này.
+
+**Kiến trúc** `Assets/NihongoLife/MiniGames/` (asmdef `NihongoLife.MiniGames`):
+- Lõi: `IMiniGame`, `MiniGameController`, `MiniGameLauncher`, `MiniGameDefinition`, `MiniGameResult`, `KanaPairSet` (5 loại cặp).
+- Kết quả đi vào `ScoringManager` (sourceId `minigame.<id>`), `LearningMasteryManager.RegisterUsage` và `PlayerStatus.AddExp`/`AddKnowledge`. Không có lưu trữ riêng.
+- Dữ liệu ở `MiniGames/Data/*.asset`; ảnh từ vựng ở `Resources/MiniGames/Words`.
+- Word Shooter và Order Rush: mới có định nghĩa dữ liệu (`playable = false`), máy hiện "じゅんびちゅう". Làm tiếp sau khi Kana Match ổn định.
+
+**Font:** `NotoSansJP SDF` lấy mẫu lại ở 56pt, padding 6, atlas 2048 (`Editor/FontAtlasUpgrader.cs`).
+- Trước đó: 90pt, atlas 1024, chỉ khoảng 81 ký tự mỗi trang. Ký tự tràn sang trang 2 bị mất trên chữ TMP 3D (biển hiệu).
+- Test `FontAtlasDiagnosticTests` giữ cho lỗi này không quay lại.
+
+**Test:** `GameCenterPlayModeTests.GameCenter_KanaMatchVerticalSlice` đi qua đủ 14 điểm kiểm chứng của spec.
+
+⚠️ **`NPC_StationStaff_Kimura` đã bị xoá khỏi `20_StationDistrict`** trong commit `fe1ad2f1` (2026-10-07 23:35). Quầy vé vẫn bán được qua `StationTicketClerk`, nhưng không còn nhân viên hiển thị. Test `Station_FullTripToMinato` cần Kimura nên đang lỗi. Chờ chủ dự án xác nhận: khôi phục hay bỏ hẳn.
+
+## Cập nhật (2026-10-08 sáng, Claude) — ga, HUD, Game Center, lớp học, trailer, nợ kỹ thuật
+
+- **Quầy vé ga:** `StationTicketClerk` giờ là Kimura duy nhất. Model tĩnh không xương (bị chồng với NPC) đã thay bằng `NL_Cashier` có xương, kèm `NPCController` + `StationStaffService`. Builder: `Editor/StationClerkBuilder.cs`.
+- **HUD đồng bộ** (`HUDUI.UnifyHudStyle`):
+  - bảng nhiệm vụ, lời nhắc `[ F ]` và nút tên nhân vật dùng kiểu NLUi; ẩn ví trùng;
+  - mục tiêu hiển thị ●/○/×;
+  - HUD trên tàu: bảng LED, đồng hồ, sơ đồ tuyến, chip vé/cửa, nút ngắm cảnh.
+- **Chỉ đường:** `UI/WaypointGuide.cs`; bản đồ gọi khi chọn địa điểm, có thêm `WorldMapUI.GuideTo(type)`.
+- **Game Center** (`GameCenterBuilder`):
+  - biển neon theo khu, poster, đèn rọi màu;
+  - quầy quà `MiniGames/Core/PrizeCounter.cs` (vé `game_ticket`);
+  - Kana Match: đếm ngược, combo, điểm trực tiếp, ★, kỷ lục theo bộ, vé thưởng.
+- **Lớp học** `40_ HIBARICLASS`, dựng lại bằng `Editor/ClassroomBuilder.cs` (bộ Styloo):
+  - bàn thi `School/ClassroomExamDesk.cs` mở đề JLPT/IELTS;
+  - `School/ClassroomRuntime.cs`: banner chào, nghi thức thi (đèn dịu, đèn rọi), kết quả, pháo giấy, cô Morita nhận xét, bảng đen ghi điểm cao nhất.
+- **Trailer:**
+  - Hệ thống cũ (`TrailerDirector`, `TrailerSceneBuilder`, 8 shot asset) đã xoá.
+  - `TrailerReel/TrailerReel.cs` (asmdef `NihongoLife.Trailer`) quay trên scene thật; `99_Trailer` chỉ còn host (`Editor/TrailerReelSceneBuilder.cs`).
+  - Nhạc tự tổng hợp: `Resources/Audio/Trailer/nihongolife_theme.ogg`.
+  - Video: `Bao_Cao/NihongoLife_Trailer.mp4` (1080p30, khoảng 67 s), ghi bằng test `[Explicit]` `TrailerRecordingTests.Trailer_RecordFrames`, sau đó ghép bằng ffmpeg.
+- **Nợ kỹ thuật đã xử lý:**
+  - Supabase `voice_lines` 404 chỉ kiểm tra 1 lần/phiên, ghi info thay vì cảnh báo.
+  - `StandaloneZoneBootstrap` không còn tạo nhân vật thừa khi Play từ zone.
+  - `ScenarioValidationTests` chạy validator có sẵn trên cả 14 kịch bản: tất cả hợp lệ.
+- **Test:** PlayMode 14/14 (+1 explicit), EditMode 11/11.

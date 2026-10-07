@@ -104,6 +104,13 @@ namespace NihongoLife.World
         private RectTransform _onboardHud;
         private TextMeshProUGUI _ledText;
         private TextMeshProUGUI _onboardHint;
+        private TextMeshProUGUI _ledTimer;
+        private TextMeshProUGUI _ticketChip;
+        private TextMeshProUGUI _doorChip;
+        private Button _viewButton;
+        private RectTransform _lineDone;
+        private RectTransform _windowCaption;
+        private readonly List<TextMeshProUGUI> _stopLabels = new();
         private RectTransform _lineTrack;
         private RectTransform _trainMarker;
         private readonly List<Image> _stopDots = new();
@@ -391,8 +398,8 @@ namespace NihongoLife.World
             if (open && !_onboard) return;
             _windowCamera.enabled = open;
             _windowCamera.depth = 5f;
-            if (_onboardHint != null)
-                _onboardHint.text = open ? "Q · Quay lại toa tàu" : "Q · Ngắm cảnh qua cửa sổ    F · Nói chuyện với hành khách";
+            if (_windowCaption != null) _windowCaption.gameObject.SetActive(open);
+            if (_viewButton != null) _viewButton.GetComponentInChildren<TextMeshProUGUI>().text = open ? "Q · Về toa tàu" : "Q · Ngắm cảnh";
         }
 
         /// <summary>Different commuters every trip; the ones the player can talk to always ride.</summary>
@@ -732,49 +739,84 @@ namespace NihongoLife.World
             BuildTicketPanel();
         }
 
-        /// <summary>Japanese-train style LED strip + line diagram with a moving train marker.</summary>
+        /// <summary>Japanese-train style onboard display: an amber LED board with the next stop and a countdown,
+        /// a line diagram (travelled part green, the ticket's stop starred, a moving train marker), info chips
+        /// and a clickable window-view action. A caption frames the window view.</summary>
         private void BuildOnboardHud()
         {
-            _onboardHud = NLUi.Panel(_hudRoot, "OnboardHUD", new Color(0.03f, 0.04f, 0.06f, 0.94f), new RectOffset(26, 26, 14, 16), 10f);
-            NLUi.Anchor(_onboardHud, new Vector2(0.5f, 1f), new Vector2(0f, -18f), new Vector2(980f, 0f));
+            _onboardHud = NLUi.Panel(_hudRoot, "OnboardHUD", new Color(0.03f, 0.04f, 0.06f, 0.95f), new RectOffset(24, 24, 14, 16), 10f);
+            NLUi.Anchor(_onboardHud, new Vector2(0.5f, 1f), new Vector2(0f, -16f), new Vector2(1060f, 0f));
             NLUi.FitContent(_onboardHud);
 
-            var ledRow = NLUi.Panel(_onboardHud, "LED", new Color(0f, 0f, 0f, 1f), new RectOffset(18, 18, 8, 8), 0f);
-            _ledText = NLUi.Label(ledRow, "LEDText", "", 30f, new Color(1f, 0.62f, 0.12f), _font, FontStyles.Bold, TextAlignmentOptions.Center);
+            var ledRow = NLUi.Panel(_onboardHud, "LED", new Color(0f, 0f, 0f, 1f), new RectOffset(22, 22, 8, 8), 0f, false);
+            ((HorizontalLayoutGroup)ledRow.GetComponent<HorizontalOrVerticalLayoutGroup>()).childForceExpandWidth = false;
+            var ledOutline = ledRow.gameObject.AddComponent<Outline>();
+            ledOutline.effectColor = new Color(1f, 0.55f, 0.1f, 0.35f);
+            ledOutline.effectDistance = new Vector2(2f, -2f);
+            _ledText = NLUi.Label(ledRow, "LEDText", "", 32f, new Color(1f, 0.6f, 0.1f), _font, FontStyles.Bold, TextAlignmentOptions.Left);
+            NLUi.Size(_ledText, flexibleWidth: 1f);
+            _ledTimer = NLUi.Label(ledRow, "LEDTimer", "", 22f, new Color(0.45f, 1f, 0.55f), _font, FontStyles.Bold, TextAlignmentOptions.Right);
+            NLUi.Size(_ledTimer, 220f);
 
             var diagram = new GameObject("LineDiagram", typeof(RectTransform), typeof(LayoutElement)).GetComponent<RectTransform>();
             diagram.SetParent(_onboardHud, false);
-            diagram.GetComponent<LayoutElement>().preferredHeight = 70f;
-            _lineTrack = new GameObject("Track", typeof(RectTransform), typeof(Image)).GetComponent<RectTransform>();
-            _lineTrack.SetParent(diagram, false);
-            _lineTrack.anchorMin = new Vector2(0.08f, 0.62f); _lineTrack.anchorMax = new Vector2(0.92f, 0.62f);
-            _lineTrack.sizeDelta = new Vector2(0f, 6f);
-            _lineTrack.GetComponent<Image>().color = new Color(0.25f, 0.62f, 0.45f);
+            diagram.GetComponent<LayoutElement>().preferredHeight = 84f;
+            _lineTrack = Bar(diagram, "Track", new Color(1f, 1f, 1f, 0.14f), 0.08f, 0.92f, 8f);
+            _lineDone = Bar(diagram, "TrackDone", new Color(0.3f, 0.78f, 0.52f), 0.08f, 0.08f, 8f);
             for (int i = 0; i < Line.Length; i++)
             {
-                float t = Line.Length == 1 ? 0f : i / (float)(Line.Length - 1);
-                float x = Mathf.Lerp(0.08f, 0.92f, t);
+                float x = Mathf.Lerp(0.08f, 0.92f, Line.Length == 1 ? 0f : i / (float)(Line.Length - 1));
+                var ring = new GameObject("StopRing_" + Line[i].Id, typeof(RectTransform), typeof(Image)).GetComponent<RectTransform>();
+                ring.SetParent(diagram, false);
+                ring.anchorMin = ring.anchorMax = new Vector2(x, 0.66f);
+                ring.sizeDelta = new Vector2(30f, 30f);
+                ring.GetComponent<Image>().color = new Color(0.03f, 0.04f, 0.06f, 1f);
                 var dot = new GameObject("Stop_" + Line[i].Id, typeof(RectTransform), typeof(Image)).GetComponent<RectTransform>();
-                dot.SetParent(diagram, false);
-                dot.anchorMin = dot.anchorMax = new Vector2(x, 0.62f);
+                dot.SetParent(ring, false);
+                dot.anchorMin = dot.anchorMax = new Vector2(0.5f, 0.5f);
                 dot.sizeDelta = new Vector2(20f, 20f);
-                var image = dot.GetComponent<Image>();
-                image.color = NLUi.Text;
-                _stopDots.Add(image);
-                var label = NLUi.Label(diagram, "Label_" + Line[i].Id, $"{Line[i].Ja}\n<size=70%><color=#A8B4C4>{Line[i].Vi}</color></size>", 17f, NLUi.Text, _font, FontStyles.Bold, TextAlignmentOptions.Center);
+                _stopDots.Add(dot.GetComponent<Image>());
+                var label = NLUi.Label(diagram, "Label_" + Line[i].Id, StopLabel(i), 18f, NLUi.Text, _font, FontStyles.Bold, TextAlignmentOptions.Center);
                 var labelRect = label.rectTransform;
-                labelRect.anchorMin = labelRect.anchorMax = new Vector2(x, 0.62f);
+                labelRect.anchorMin = labelRect.anchorMax = new Vector2(x, 0.66f);
                 labelRect.pivot = new Vector2(0.5f, 1f);
-                labelRect.anchoredPosition = new Vector2(0f, -14f);
-                labelRect.sizeDelta = new Vector2(220f, 50f);
+                labelRect.anchoredPosition = new Vector2(0f, -18f);
+                labelRect.sizeDelta = new Vector2(240f, 52f);
+                _stopLabels.Add(label);
             }
-            _trainMarker = NLUi.Label(diagram, "Train", "▶", 26f, NLUi.Gold, _font, FontStyles.Bold, TextAlignmentOptions.Center).rectTransform;
-            _trainMarker.anchorMin = _trainMarker.anchorMax = new Vector2(0.08f, 0.62f);
-            _trainMarker.sizeDelta = new Vector2(40f, 40f);
-            _trainMarker.anchoredPosition = new Vector2(0f, 26f);
+            _trainMarker = NLUi.Pill(diagram, "Train", "電車", _font, NLUi.Gold, NLUi.Ink, 15f);
+            _trainMarker.anchorMin = _trainMarker.anchorMax = new Vector2(0.08f, 0.66f);
+            _trainMarker.pivot = new Vector2(0.5f, 0f);
+            _trainMarker.anchoredPosition = new Vector2(0f, 18f);
 
-            _onboardHint = NLUi.Label(_onboardHud, "Hint", "Q · Ngắm cảnh qua cửa sổ    F · Nói chuyện với hành khách", 17f, NLUi.Muted, _font, FontStyles.Normal, TextAlignmentOptions.Center);
+            var chips = NLUi.Group(_onboardHud, "Chips", false, 10f, TextAnchor.MiddleCenter, false);
+            ((HorizontalLayoutGroup)chips.GetComponent<HorizontalOrVerticalLayoutGroup>()).childForceExpandWidth = false;
+            _ticketChip = NLUi.Pill(chips, "Ticket", "", _font, new Color(1f, 1f, 1f, 0.08f), NLUi.Gold, 16f).GetComponentInChildren<TextMeshProUGUI>();
+            _doorChip = NLUi.Pill(chips, "Door", "", _font, new Color(1f, 1f, 1f, 0.08f), NLUi.Text, 16f).GetComponentInChildren<TextMeshProUGUI>();
+            _viewButton = NLUi.Button(chips, "WindowViewButton", "Q · Ngắm cảnh", _font, () => SetWindowView(!IsWindowViewOpen), new Color(0.13f, 0.32f, 0.45f), 16f, null, 40f);
+            NLUi.Size(_viewButton, 190f, 40f);
+            _onboardHint = NLUi.Label(chips, "Hint", "F · Nói chuyện với hành khách", 15f, NLUi.Muted, _font, FontStyles.Normal, TextAlignmentOptions.Center);
             _onboardHud.gameObject.SetActive(false);
+
+            _windowCaption = NLUi.Panel(_hudRoot, "WindowCaption", new Color(0.02f, 0.03f, 0.05f, 0.82f), new RectOffset(28, 28, 10, 12), 2f);
+            NLUi.Anchor(_windowCaption, new Vector2(0.5f, 0f), new Vector2(0f, 250f), new Vector2(620f, 0f));
+            NLUi.FitContent(_windowCaption);
+            NLUi.Label(_windowCaption, "Title", "まどの そと  <size=70%><color=#A8B4C4>Ngắm cảnh qua cửa sổ</color></size>", 24f, NLUi.Text, _font, FontStyles.Bold, TextAlignmentOptions.Center);
+            NLUi.Label(_windowCaption, "Hint", "Q · quay lại toa tàu", 15f, NLUi.Muted, _font, FontStyles.Normal, TextAlignmentOptions.Center);
+            _windowCaption.gameObject.SetActive(false);
+        }
+
+        private string StopLabel(int i) => (i == _ticketStop ? "★ " : "") + $"{Line[i].Ja}\n<size=68%><color=#A8B4C4>{Line[i].Vi}</color></size>";
+
+        private static RectTransform Bar(RectTransform parent, string name, Color color, float from, float to, float height)
+        {
+            var bar = new GameObject(name, typeof(RectTransform), typeof(Image)).GetComponent<RectTransform>();
+            bar.SetParent(parent, false);
+            bar.anchorMin = new Vector2(from, 0.66f);
+            bar.anchorMax = new Vector2(to, 0.66f);
+            bar.sizeDelta = new Vector2(0f, height);
+            bar.GetComponent<Image>().color = color;
+            return bar;
         }
 
         private void BuildTicketPanel()
@@ -831,14 +873,21 @@ namespace NihongoLife.World
             if (_onboard)
             {
                 if (_ledText != null)
-                    _ledText.text = _atStop ? $"{NextStop.Ja}  ·  Ga {NextStop.Vi}" : $"つぎは  {NextStop.Ja}   <size=70%>Next  {NextStop.Vi}</size>";
+                    _ledText.text = _atStop ? $"{NextStop.Ja}  <size=62%><color=#FFD08A>Ga {NextStop.Vi}</color></size>" : $"つぎは  {NextStop.Ja}  <size=62%><color=#FFD08A>Next · {NextStop.Vi}</color></size>";
+                if (_ledTimer != null)
+                    _ledTimer.text = _atStop ? "停車中 · đang dừng" : $"còn {Mathf.CeilToInt((1f - _legProgress) * LegSeconds)}s";
                 float position = Mathf.Clamp(_nextStop - 1 + _legProgress, 0f, Line.Length - 1) / (Line.Length - 1);
-                if (_trainMarker != null)
-                {
-                    _trainMarker.anchorMin = _trainMarker.anchorMax = new Vector2(Mathf.Lerp(0.08f, 0.92f, position), 0.62f);
-                }
+                float x = Mathf.Lerp(0.08f, 0.92f, position);
+                if (_trainMarker != null) _trainMarker.anchorMin = _trainMarker.anchorMax = new Vector2(x, 0.66f);
+                if (_lineDone != null) _lineDone.anchorMax = new Vector2(x, 0.66f);
                 for (int i = 0; i < _stopDots.Count; i++)
-                    _stopDots[i].color = i == _ticketStop ? NLUi.Gold : i < _nextStop || (i == _nextStop && _atStop) ? new Color(0.25f, 0.62f, 0.45f) : NLUi.Text;
+                {
+                    bool passed = i < _nextStop || (i == _nextStop && _atStop);
+                    _stopDots[i].color = i == _ticketStop ? NLUi.Gold : passed ? new Color(0.3f, 0.78f, 0.52f) : new Color(0.75f, 0.8f, 0.88f);
+                    if (i < _stopLabels.Count) _stopLabels[i].text = StopLabel(i);
+                }
+                if (_ticketChip != null) _ticketChip.text = TicketStop != null ? $"きっぷ  {TicketStop.Ja} · ¥{TicketStop.Price}" : "きっぷ —";
+                if (_doorChip != null) _doorChip.text = "おでぐち · cửa bên trái";
                 return;
             }
             _routeText.text = HasTicket ? $"ひばり  →  {TicketStop.Ja}" : "ひばり  →  ？";

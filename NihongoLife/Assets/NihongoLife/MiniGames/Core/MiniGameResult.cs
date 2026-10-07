@@ -32,6 +32,10 @@ namespace NihongoLife.MiniGames
         public float masteryGain;
         public int expReward;
         public int knowledgeReward;
+        public int stars;
+        public int tickets;
+        public int bestCombo;
+        public bool newRecord;
 
         // Filled by MiniGameController once the result reached the shared systems.
         public bool submittedToScoring;

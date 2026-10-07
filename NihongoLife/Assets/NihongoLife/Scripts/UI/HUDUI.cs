@@ -128,6 +128,7 @@ namespace NihongoLife.UI
             _settingsUI = gameObject.AddComponent<SettingsUI>();
             _settingsUI.Initialize(scenarioTitleText != null ? scenarioTitleText.font : null);
             EnsureStatusDock();
+            UnifyHudStyle();
             SetInventoryVisible(false);
             SetCharacterVisible(false);
             SetChatVisible(false);
@@ -205,6 +206,44 @@ namespace NihongoLife.UI
             _statusDock = StatusDock.Create(transform, font, buttons, () => SetCharacterVisible(false));
             if (characterPanel != null) characterPanel.SetActive(false);
             characterPanel = _statusDock.CharacterRoot;
+        }
+
+        /// <summary>One visual language for the legacy HUD pieces that live in the city scene: the mission card,
+        /// the interaction prompt and the nameplate toggle get the NLUi ink/gold look of the status dock, the
+        /// duplicate wallet (the dock already shows ¥) is hidden, and the prompt sits above the action bar.</summary>
+        private void UnifyHudStyle()
+        {
+            if (walletText != null) walletText.gameObject.SetActive(false);
+            if (scenarioTitleText != null && scenarioTitleText.transform.parent != null)
+            {
+                var card = scenarioTitleText.transform.parent;
+                var image = card.GetComponent<Image>();
+                if (image != null) image.color = NLUi.Ink;
+                scenarioTitleText.color = NLUi.Gold;
+                scenarioTitleText.fontStyle = FontStyles.Bold;
+                if (objectivesText != null) objectivesText.lineSpacing = 8f;
+            }
+            if (promptPanel != null)
+            {
+                var rect = promptPanel.transform as RectTransform;
+                rect.anchorMin = rect.anchorMax = new Vector2(0.5f, 0f);
+                rect.pivot = new Vector2(0.5f, 0f);
+                rect.anchoredPosition = new Vector2(0f, 104f);
+                var image = promptPanel.GetComponent<Image>();
+                if (image != null) image.color = NLUi.Ink;
+                if (promptText != null) { promptText.fontSize = Mathf.Max(promptText.fontSize, 20f); promptText.color = NLUi.Text; }
+            }
+            var toggle = GetComponentInParent<Canvas>()?.transform.Find("ToggleNPCNames");
+            if (toggle != null)
+            {
+                var image = toggle.GetComponent<Image>();
+                if (image != null) image.color = NLUi.Ink;
+                var rect = (RectTransform)toggle;
+                rect.anchoredPosition = new Vector2(-24f, -24f);
+                var label = toggle.GetComponentInChildren<TextMeshProUGUI>();
+                if (label != null) { label.color = NLUi.Muted; label.text = "◉  Tên nhân vật"; }
+            }
+            if (onlineStatusText != null) onlineStatusText.color = NLUi.Muted;
         }
 
         private void TogglePopup(MenuPopupBase popup)
@@ -1070,7 +1109,7 @@ namespace NihongoLife.UI
             string key = GameInputService.GetOrCreate().GetBindingLabel(GameInputId.Interact);
             bool japanese = GameServices.TryGet(out GameSettingsService settings)
                 && settings.Language == GameLanguage.Japanese;
-            promptText.text = $"[{key}] {(japanese ? interactable.GetPromptJa() : interactable.GetpromptEn())}";
+            promptText.text = $"<color=#F2B233><b>[ {key} ]</b></color>   {(japanese ? interactable.GetPromptJa() : interactable.GetpromptEn())}";
         }
 
         private void HidePrompt()
@@ -1106,7 +1145,7 @@ namespace NihongoLife.UI
             var builder = new StringBuilder();
             foreach (var obj in ScenarioManager.Instance.Objectives)
             {
-                string check = obj.state == ObjectiveState.Completed ? "[x]" : obj.state == ObjectiveState.Failed ? "[!]" : "[ ]";
+                string check = obj.state == ObjectiveState.Completed ? "●" : obj.state == ObjectiveState.Failed ? "×" : "○";
                 string color = obj.state switch
                 {
                     ObjectiveState.Completed => "#74d680",

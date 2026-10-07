@@ -205,6 +205,25 @@ namespace NihongoLife.EditorTools
             Machine(machines, "ticket-machine", "TicketMachine", O + new Vector3(-5.4f, 0f, -HalfZ + 0.8f), 0f, 1.7f);
             Machine(machines, "character-gamer", "Gamer_1", O + new Vector3(-HalfX + 2.0f, 0f, -0.6f), -90f, 1.6f, collider: false);
             Text(decor, "PrizeSign", "けいひん · Quầy đổi quà", O + new Vector3(7.6f, 2.5f, -5.6f), 0f, 0.2f, new Color(1f, 0.85f, 0.4f), 3f);
+            var prize = Trigger(machines, "PrizeCounterInteraction", O + new Vector3(7.6f, 1f, -5.6f), new Vector3(2.2f, 2f, 1.4f));
+            prize.AddComponent<PrizeCounter>();
+
+            // Zone signs, posters and a welcome board so every corner reads as a Japanese arcade.
+            NeonSign(decor, "Sign_UFO", "UFOキャッチャー", "Máy gắp thú", O + new Vector3(HalfX - 0.2f, 3.2f, -2.2f), 90f, _neonPink);
+            NeonSign(decor, "Sign_Dance", "ダンス", "Máy nhảy", O + new Vector3(-7f, 3.4f, HalfZ - 0.25f), 0f, _neonCyan);
+            NeonSign(decor, "Sign_Retro", "レトロゲーム", "Tủ game cổ điển", O + new Vector3(-HalfX + 0.2f, 3.2f, -0.6f), -90f, _neonGold);
+            NeonSign(decor, "Sign_Pinball", "ピンボール", "Pinball", O + new Vector3(HalfX - 0.2f, 3.2f, 5.6f), 90f, _neonCyan);
+            NeonSign(decor, "Sign_Welcome", "ようこそ！", "Chào mừng tới Game Center", O + new Vector3(0f, 3.3f, -HalfZ + 0.2f), 180f, _neonPink);
+            Poster(decor, "Poster_Kana", "かなマッチ\n<size=60%>NEW! 5 bộ thẻ</size>", O + new Vector3(-3.6f, 1.9f, HalfZ - 0.17f), 0f, new Color(0.95f, 0.35f, 0.65f));
+            Poster(decor, "Poster_Tickets", "チケット → けいひん\n<size=60%>Đổi vé lấy quà</size>", O + new Vector3(3.6f, 1.9f, HalfZ - 0.17f), 0f, new Color(0.25f, 0.65f, 0.85f));
+            foreach (var (x, color) in new[] { (-3.6f, new Color(1f, 0.45f, 0.8f)), (0f, new Color(0.4f, 0.9f, 1f)), (3.6f, new Color(1f, 0.8f, 0.35f)) })
+            {
+                var spot = new GameObject("FeaturedSpot_" + x).AddComponent<Light>();
+                spot.transform.SetParent(root.transform);
+                spot.transform.SetPositionAndRotation(O + new Vector3(x, Height - 0.3f, 0.2f), Quaternion.Euler(70f, 0f, 0f));
+                spot.type = LightType.Spot; spot.range = 8f; spot.spotAngle = 48f; spot.intensity = 3.2f; spot.color = color;
+                spot.shadows = LightShadows.None;
+            }
 
             // Lights: neon pools, no shadows (WebGL).
             PointLight(root.transform, "Light_Pink", O + new Vector3(-5f, 3.6f, 2f), 11f, 1.6f, new Color(1f, 0.45f, 0.8f));
@@ -256,6 +275,25 @@ namespace NihongoLife.EditorTools
             }
 
             if (!EditorSceneManager.SaveScene(scene, ScenePath)) throw new InvalidOperationException("Could not save " + ScenePath);
+        }
+
+        private static void NeonSign(Transform parent, string name, string ja, string vi, Vector3 position, float yaw, Material neon)
+        {
+            var group = Group(parent, name);
+            group.SetPositionAndRotation(position, Quaternion.Euler(0f, yaw, 0f));
+            Block(group, "Back", Vector3.zero, new Vector3(3.0f, 0.75f, 0.06f), _signBack, false);
+            Block(group, "Frame", new Vector3(0f, 0f, 0.04f), new Vector3(3.12f, 0.87f, 0.02f), neon, false);
+            Text(group, "JA", ja, new Vector3(0f, 0.09f, -0.08f), 0f, 0.24f, Color.white, 2.9f);
+            Text(group, "VI", vi, new Vector3(0f, -0.2f, -0.08f), 0f, 0.09f, new Color(0.8f, 0.86f, 0.95f), 2.9f);
+        }
+
+        private static void Poster(Transform parent, string name, string value, Vector3 position, float yaw, Color color)
+        {
+            var mat = Lit(MatDir, "GC_Poster_" + name, color, 0.3f, color * 0.35f);
+            var group = Group(parent, name);
+            group.SetPositionAndRotation(position, Quaternion.Euler(0f, yaw, 0f));
+            Block(group, "Paper", Vector3.zero, new Vector3(1.4f, 1.0f, 0.02f), mat, false);
+            Text(group, "Text", value, new Vector3(0f, 0f, -0.03f), 0f, 0.16f, Color.white, 1.3f);
         }
 
         private static void Featured(Transform machines, Transform decor, MiniGameDefinition definition, string model, Vector3 position, Material neon, string badge)

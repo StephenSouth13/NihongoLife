@@ -107,7 +107,10 @@ namespace NihongoLife.UI
             Select(preselect);
         }
 
-        public void Close() => _root.gameObject.SetActive(false);
+        public void Close()
+        {
+            if (_root != null) _root.gameObject.SetActive(false);
+        }
 
         public void Select(int index)
         {
