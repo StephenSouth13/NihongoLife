@@ -23,11 +23,11 @@ namespace NihongoLife.Core
         private static readonly Dictionary<string, LocationInfo> Locations =
             new Dictionary<string, LocationInfo>(StringComparer.OrdinalIgnoreCase)
             {
-                [CityScene] = new LocationInfo("nihongo_city", "Nihongo City", "Thanh pho Nihongo", "日本の町"),
-                [StationScene] = new LocationInfo("ekimae", "Ekimae Station District", "Khu nha ga Ekimae", "駅前"),
-                [SushiRestaurantScene] = new LocationInfo("sushi_hibari", "Sushi Hibari", "Nha hang Sushi Hibari", "ひばり寿司"),
-                [SchoolScene] = new LocationInfo("hibari_school", "Hibari Japanese School", "Truong Nhat ngu Hibari", "ひばり日本語学院"),
-                [HomeBedroomScene] = new LocationInfo("home_bedroom", "Your Bedroom", "Phong rieng", "自室")
+                [CityScene] = new LocationInfo("nihongo_city", "Nihongo City", "Thành phố Hibari", "ひばり町"),
+                [StationScene] = new LocationInfo("ekimae", "Ekimae Station District", "Ga Hibari", "ひばり駅"),
+                [SushiRestaurantScene] = new LocationInfo("sushi_hibari", "Sushi Hibari", "Nhà hàng Sushi Hibari", "ひばり寿司"),
+                [SchoolScene] = new LocationInfo("hibari_school", "Hibari Japanese School", "Trường Nhật ngữ Hibari", "ひばり日本語学院"),
+                [HomeBedroomScene] = new LocationInfo("home_bedroom", "Your Bedroom", "Phòng trọ của bạn", "自室")
             };
 
         public static LocationInfo Get(string sceneName)

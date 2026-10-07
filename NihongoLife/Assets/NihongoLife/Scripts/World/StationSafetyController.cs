@@ -40,6 +40,12 @@ namespace NihongoLife.World
             EnsureBarrier("PlatformEdge_Right", new Vector3(811f, 1.1f, 0.15f), new Vector3(20f, 2.2f, 0.35f));
         }
 
+        private void Start()
+        {
+            var station = FindFirstObjectByType<StationTravelController>();
+            if (station != null && station.gameObject.scene == gameObject.scene) carriageCenter = station.CarriageCenter;
+        }
+
         private void LateUpdate()
         {
             // An additive load runs Awake before the player has left the host scene.

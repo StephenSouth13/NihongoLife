@@ -88,6 +88,10 @@ namespace NihongoLife.NPC
                 ScenarioManager.Instance.OnAreaEntered(scenarioAreaIdOnInteract);
             }
 
+            // Service NPCs that drive real gameplay (e.g. the station clerk selling tickets) run before the
+            // scenario and report progress to it themselves, so a narrated scenario chain cannot hide the service.
+            if (TryGetComponent(out IPriorityNpcService priority) && priority.HandleInteract(player)) return;
+
             bool handledByScenario = ScenarioManager.Instance.OnNPCInteracted(npcId, this);
             if (!handledByScenario && TryGetComponent(out INpcService service) && service.HandleInteract(player))
             {
@@ -223,5 +227,10 @@ namespace NihongoLife.NPC
     public interface INpcService
     {
         bool HandleInteract(GameObject player);
+    }
+
+    /// <summary>An <see cref="INpcService"/> that runs before the scenario gets the interaction.</summary>
+    public interface IPriorityNpcService : INpcService
+    {
     }
 }

@@ -174,8 +174,8 @@ namespace NihongoLife.Dialogue
         }
 
         /// <summary>Runs a self-contained conversation (nodes linked by nextNodeId / choice.nextNodeId) in the
-        /// shared dialogue UI. onFinished receives the id the conversation ended on ("cancel" when the player
-        /// left with Esc), so callers can branch on the player's answer.</summary>
+        /// shared dialogue UI. onFinished receives the id the conversation ended on: the last node shown, a
+        /// choice's nextNodeId that is not a node (an action id), or "cancel" when the player left with Esc.</summary>
         public void StartConversation(IEnumerable<ScenarioNode> nodes, string startNodeId, Action<string> onFinished)
         {
             _conversation = new Dictionary<string, ScenarioNode>();
@@ -209,9 +209,12 @@ namespace NihongoLife.Dialogue
             if (_conversation != null)
             {
                 bool hasNext = !string.IsNullOrEmpty(nextNodeId) && _conversation.ContainsKey(nextNodeId);
+                // Ended on: the last node shown when the line has no follow-up, otherwise the unknown id
+                // itself, so a choice can end the conversation with an action id such as "buy:minato".
+                string endedOn = string.IsNullOrEmpty(nextNodeId) ? _currentNode?.id : nextNodeId;
                 CloseDialogue(!hasNext, hasNext);
                 if (hasNext) StartDialogue(_conversation[nextNodeId]);
-                else FinishConversation(nextNodeId);
+                else FinishConversation(endedOn);
                 return true;
             }
 

@@ -5,7 +5,7 @@ using NihongoLife.Audio;
 namespace NihongoLife.Interaction
 {
     [RequireComponent(typeof(Collider))]
-    public class ScenePortal : MonoBehaviour, IInteractable
+    public class ScenePortal : MonoBehaviour, IInteractable, IInteractionPriority
     {
         [SerializeField] private string targetScene;
         [SerializeField] private string targetSpawnId = "entrance";
@@ -15,11 +15,18 @@ namespace NihongoLife.Interaction
         [SerializeField] private bool exitsZone;
 
         public string TargetSpawnId => targetSpawnId;
+        public float InteractionPriority => 0.75f;
         public string GetPromptJa() => promptJa;
         public string GetpromptEn() => promptEn;
         public Transform GetTransform() => transform;
 
         private void Awake() => GetComponent<Collider>().isTrigger = true;
+
+        private void Start()
+        {
+            string title = exitsZone ? "出口 · Ra phố" : displayName.Replace(" / ", " · ");
+            PortalBeacon.Attach(this, title, exitsZone ? "Trở lại thành phố" : promptEn, exitsZone);
+        }
 
         public void Configure(string scene, string spawnId, string locationName, bool exit)
         {

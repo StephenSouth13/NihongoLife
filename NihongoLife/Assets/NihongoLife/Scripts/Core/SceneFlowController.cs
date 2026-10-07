@@ -59,6 +59,19 @@ namespace NihongoLife.Core
             StartCoroutine(EnterZoneRoutine(sceneName, spawnId, displayName));
         }
 
+        /// <summary>Moves the player from the active zone straight into another zone (train arrivals);
+        /// the host city stays hidden and the zone's own exit still returns to the city.</summary>
+        public void TransferZone(string sceneName, string spawnId, string displayName, System.Action onArrived = null)
+        {
+            if (_isLoading || !CanLoad(sceneName)) return;
+            if (string.IsNullOrEmpty(_activeZoneSceneName))
+            {
+                StartCoroutine(EnterZoneRoutine(sceneName, spawnId, displayName, onArrived));
+                return;
+            }
+            StartCoroutine(TransferZoneRoutine(sceneName, spawnId, displayName, onArrived));
+        }
+
         public void ExitZone(string sceneName, string citySpawnId, string displayName = "街へ戻る / Trở lại thành phố")
         {
             if (_isLoading) return;
@@ -96,7 +109,7 @@ namespace NihongoLife.Core
             _isLoading = false;
         }
 
-        private IEnumerator EnterZoneRoutine(string sceneName, string spawnId, string displayName)
+        private IEnumerator EnterZoneRoutine(string sceneName, string spawnId, string displayName, System.Action onArrived = null)
         {
             _isLoading = true;
             LockPlayer(true);
@@ -154,6 +167,61 @@ namespace NihongoLife.Core
             yield return FadeOut();
             LockPlayer(false);
             _isLoading = false;
+            onArrived?.Invoke();
+        }
+
+        private IEnumerator TransferZoneRoutine(string sceneName, string spawnId, string displayName, System.Action onArrived)
+        {
+            _isLoading = true;
+            LockPlayer(true);
+            yield return FadeIn(displayName);
+
+            Scene from = SceneManager.GetSceneByName(_activeZoneSceneName);
+            Scene to = SceneManager.GetSceneByName(sceneName);
+            bool newlyLoaded = !to.isLoaded;
+            if (newlyLoaded)
+            {
+                AsyncOperation load = SceneManager.LoadSceneAsync(sceneName, LoadSceneMode.Additive);
+                if (load == null)
+                {
+                    yield return FailAndRelease($"Không tìm thấy zone {sceneName}");
+                    yield break;
+                }
+                while (!load.isDone)
+                {
+                    SetProgress(Mathf.Clamp01(load.progress / 0.9f), "Đang tới nơi...");
+                    yield return null;
+                }
+                to = SceneManager.GetSceneByName(sceneName);
+            }
+            if (!to.IsValid() || !to.isLoaded)
+            {
+                yield return FailAndRelease($"Zone {sceneName} did not finish loading.");
+                yield break;
+            }
+
+            SetZoneRootsActive(to, true);
+            if (!MovePlayerToSpawn(to, spawnId))
+            {
+                if (newlyLoaded) yield return SceneManager.UnloadSceneAsync(to);
+                yield return FailAndRelease($"Spawn {spawnId} is missing from {sceneName}.");
+                yield break;
+            }
+            SceneManager.SetActiveScene(to);
+            foreach (GameObject root in to.GetRootGameObjects())
+                foreach (var preview in root.GetComponentsInChildren<ZonePreviewCamera>(true))
+                    preview.gameObject.SetActive(false);
+            if (from.IsValid() && from.isLoaded && from != to)
+            {
+                AsyncOperation unload = SceneManager.UnloadSceneAsync(from);
+                while (unload != null && !unload.isDone) yield return null;
+            }
+            _activeZoneSceneName = to.name;
+            SetProgress(1f, "Đã đến nơi");
+            yield return FadeOut();
+            LockPlayer(false);
+            _isLoading = false;
+            onArrived?.Invoke();
         }
 
         private IEnumerator ExitZoneRoutine(string sceneName, string citySpawnId, string displayName)

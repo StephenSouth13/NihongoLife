@@ -187,19 +187,66 @@ namespace NihongoLife.Tests
         }
 
         [UnityTest]
-        public IEnumerator BedroomStandalone_ShowsOwnPrompt()
+        public IEnumerator BedroomStandalone_BootsThroughCityAndLeaves()
         {
+            // Pressing Play inside 45_HomeBedroom must give the full game: city host, HUD, status dock, exits.
             yield return SceneManager.LoadSceneAsync(WorldLocationCatalog.HomeBedroomScene);
-            yield return new WaitForSecondsRealtime(3f);
+            float timeout = Time.realtimeSinceStartup + 40f;
+            while (Time.realtimeSinceStartup < timeout &&
+                   (SceneManager.GetActiveScene().name != WorldLocationCatalog.HomeBedroomScene || StandaloneZoneBootstrap.IsBooting
+                    || !SceneManager.GetSceneByName(WorldLocationCatalog.CityScene).isLoaded || FlowLoading()))
+                yield return null;
+            yield return new WaitForSecondsRealtime(1.5f);
+            Assert.AreEqual(WorldLocationCatalog.HomeBedroomScene, SceneManager.GetActiveScene().name);
+            Assert.IsTrue(SceneManager.GetSceneByName(WorldLocationCatalog.CityScene).isLoaded, "The city must host the room.");
             var player = Object.FindFirstObjectByType<PlayerController>();
-            Assert.NotNull(player, "Standalone bootstrap must spawn a player.");
-            var room = HomeBedroomRuntime.Instance;
+            Assert.NotNull(player);
+            Assert.NotNull(Object.FindFirstObjectByType<NihongoLife.UI.HUDUI>(), "The shared HUD must exist in the room.");
+            Assert.NotNull(Object.FindFirstObjectByType<NihongoLife.UI.StatusDock>(), "Vitals/action bar must exist in the room.");
+            Assert.NotNull(GameObject.Find("BagButton"));
+            Assert.NotNull(GameObject.Find("MapButton"));
+            var dm = NihongoLife.Dialogue.DialogueManager.Instance;
+            for (int guard = 0; guard < 60 && dm != null && dm.IsOpen; guard++) { dm.CancelDialogue(); if (dm.IsOpen) dm.ContinueDialogue(); yield return null; }
+
             var bed = Object.FindFirstObjectByType<BedroomRestInteractable>();
             Teleport(player, new Vector3(bed.transform.position.x + 1.1f, 0.05f, bed.transform.position.z), -90f);
-            yield return new WaitForSecondsRealtime(0.5f);
-            Assert.IsTrue(room.IsPromptVisible, "Without the city HUD the room must show the interaction prompt.");
-            StringAssert.Contains("ねる", room.PromptText);
-            Capture("13_standalone_prompt");
+            yield return new WaitForSecondsRealtime(0.6f);
+            Assert.IsInstanceOf<BedroomRestInteractable>(player.GetComponent<InteractionDetector>().CurrentInteractable);
+            Capture("13_standalone_hud");
+
+            // Walk to the genkan: the exit must be the interaction there, and F must reach the street.
+            var exit = GameObject.Find("ExitToCity").GetComponent<ScenePortal>();
+            Vector3 toRoom = Vector3.ProjectOnPlane(Vector3.zero - exit.transform.position, Vector3.up).normalized;
+            float doorYaw = Quaternion.LookRotation(-toRoom).eulerAngles.y;
+            Teleport(player, new Vector3(exit.transform.position.x, 0.05f, exit.transform.position.z) + toRoom * 0.7f, doorYaw);
+            var orbit = Object.FindFirstObjectByType<NihongoLife.Cameras.ThirdPersonCameraController>();
+            if (orbit != null) orbit.SetOrbit(doorYaw, 20f, 2.4f);
+            yield return new WaitForSecondsRealtime(2f); // let the follow camera settle behind the player
+            var near = Physics.OverlapSphere(player.transform.position + Vector3.up * 0.9f, 2f, ~0, QueryTriggerInteraction.Collide)
+                .Select(c => c.name + "@" + c.gameObject.scene.name).ToArray();
+            Assert.AreSame(exit, player.GetComponent<InteractionDetector>().CurrentInteractable as ScenePortal,
+                $"Standing at the door must offer そとに でる. player={player.transform.position} exit={exit.transform.position} scene={exit.gameObject.scene.name} near=[{string.Join(", ", near)}] current={player.GetComponent<InteractionDetector>().CurrentInteractable}");
+            // Evidence shot from inside the room (the follow camera is still easing in after the teleport).
+            var shot = new GameObject("DoorEvidenceCamera").AddComponent<Camera>();
+            shot.transform.position = player.transform.position + toRoom * 2.6f + Vector3.up * 1.9f;
+            shot.transform.LookAt(exit.transform.position + Vector3.up * 0.1f);
+            shot.depth = 50f;
+            yield return null;
+            Capture("14_standalone_door", shot);
+            Object.Destroy(shot.gameObject);
+            exit.Interact(player.gameObject);
+            timeout = Time.realtimeSinceStartup + 30f;
+            yield return null;
+            while (FlowLoading() && Time.realtimeSinceStartup < timeout) yield return null;
+            Assert.AreEqual(WorldLocationCatalog.CityScene, SceneManager.GetActiveScene().name, "The door must lead to the street.");
+            yield return new WaitForSecondsRealtime(1f);
+            Capture("15_standalone_street");
+        }
+
+        private static bool FlowLoading()
+        {
+            var flow = Object.FindFirstObjectByType<SceneFlowController>();
+            return flow != null && flow.IsLoading;
         }
 
         private static Bounds RendererBounds(GameObject go)
@@ -249,11 +296,11 @@ namespace NihongoLife.Tests
             Assert.IsFalse(flow.IsLoading, "Transition timed out.");
         }
 
-        private static void Capture(string name)
+        private static void Capture(string name, Camera source = null)
         {
             string folder = Path.GetFullPath(Path.Combine(Application.dataPath, "../../Bao_Cao/bedroom-regression"));
             Directory.CreateDirectory(folder);
-            var camera = Camera.main;
+            var camera = source != null ? source : Camera.main;
             if (camera == null) return;
             var canvases = Object.FindObjectsByType<Canvas>(FindObjectsSortMode.None).Where(x => x.isRootCanvas && x.renderMode == RenderMode.ScreenSpaceOverlay).OrderBy(x => x.sortingOrder).ToArray();
             var target = new RenderTexture(1600, 900, 24);

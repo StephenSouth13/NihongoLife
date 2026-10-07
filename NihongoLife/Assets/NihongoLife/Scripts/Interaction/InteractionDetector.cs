@@ -74,7 +74,14 @@ namespace NihongoLife.Interaction
                         continue;
                     }
 
-                    float dist = Vector3.Distance(detectionOrigin, interactable.GetTransform().position + Vector3.up * 0.9f);
+                    // Closest wins, but what the player faces and doors (IInteractionPriority) win ties, so a
+                    // light switch beside the genkan no longer steals F from the exit.
+                    Vector3 target = interactable.GetTransform().position;
+                    Vector3 flat = Vector3.ProjectOnPlane(target - transform.position, Vector3.up);
+                    float facing = flat.sqrMagnitude > 0.0001f ? Vector3.Dot(transform.forward, flat.normalized) : 1f;
+                    float horizontal = flat.magnitude;
+                    float dist = horizontal + (1f - facing) * 0.6f
+                        - (interactable is IInteractionPriority priority ? priority.InteractionPriority : 0f);
                     if (dist < minDistance)
                     {
                         minDistance = dist;

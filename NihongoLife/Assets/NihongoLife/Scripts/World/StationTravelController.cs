@@ -4,6 +4,7 @@ using NihongoLife.Audio;
 using NihongoLife.Core;
 using NihongoLife.Dialogue;
 using NihongoLife.Interaction;
+using NihongoLife.NPC;
 using NihongoLife.Player;
 using NihongoLife.Scenario;
 using NihongoLife.UI;
@@ -28,12 +29,13 @@ namespace NihongoLife.World
     }
 
     /// <summary>
-    /// Hibari Station travel loop, matching scenario.station.buy_ticket (Minato, ¥320, platform 2):
-    /// ticket machine → ticket gate → platform 2 → board → ride → arrive at Minato → back on the platform.
-    /// Once the player has passed the gate the next train is called in and holds its doors until the
-    /// player boards (the old timetable expired the ticket 5 s after departure and closed the doors after
-    /// 15 s, so most players never managed to board). Staff and passengers talk through the shared
-    /// dialogue UI instead of plain status text.
+    /// Hibari Station: one line, platform 2, ひばり → がくえんまえ (¥180) → ミナト (¥320).
+    /// Kimura at the counter or the ticket machine sells the ticket, the gate checks it, the train is
+    /// called in and holds its doors for a validated passenger, and the ride stops at every station.
+    /// Alighting at Gakuen-mae lands in front of Hibari School, Minato in front of Sushi Hibari
+    /// (SceneFlowController.TransferZone) — the trip no longer drops the player back on the platform.
+    /// The station scenario (scenario.station.buy_ticket) only receives objective progress, and is
+    /// wrapped up with its recap once the player actually reaches Minato.
     /// </summary>
     public sealed class StationTravelController : MonoBehaviour
     {
@@ -48,44 +50,93 @@ namespace NihongoLife.World
         [SerializeField] private float boardingWindow = 15f;
         [SerializeField] private float trainTravelDistance = 75f;
 
+        public sealed class Stop
+        {
+            public Stop(string id, string ja, string vi, string place, string scene, string spawn, int price)
+            {
+                Id = id; Ja = ja; Vi = vi; Place = place; Scene = scene; Spawn = spawn; Price = price;
+            }
+
+            public string Id { get; }
+            public string Ja { get; }
+            public string Vi { get; }
+            public string Place { get; }
+            public string Scene { get; }
+            public string Spawn { get; }
+            public int Price { get; }
+        }
+
+        /// <summary>Stops in running order; index 0 is Hibari itself.</summary>
+        public static readonly Stop[] Line =
+        {
+            new Stop("hibari", "ひばり", "Hibari", "Ga Hibari", WorldLocationCatalog.StationScene, WorldLocationCatalog.StationEntrance, 0),
+            new Stop("gakuen", "がくえんまえ", "Gakuen-mae", "Trường Nhật ngữ Hibari", WorldLocationCatalog.SchoolScene, WorldLocationCatalog.SchoolEntrance, 180),
+            new Stop("minato", "ミナト", "Minato", "phố cảng · Sushi Hibari", WorldLocationCatalog.SushiRestaurantScene, WorldLocationCatalog.SushiEntrance, 320),
+        };
+
         public const string Destination = "ミナト";
         public const string DestinationVi = "Minato";
         public const string TicketItemId = "train_ticket_minato";
+        public const int Platform = 2;
         private const string ScenarioId = "scenario.station.buy_ticket";
+        private const float LegSeconds = 10f;
+        private const float DwellSeconds = 4f;
 
-        private readonly List<Transform> _scenery = new();
-        private bool _hasTicket;
         private bool _gatePassed;
         private bool _onboard;
         private bool _riding;
-        private float _rideRemaining;
+        private bool _atStop;
+        private bool _alighting;
+        private int _ticketStop = -1;
+        private int _nextStop = 1;
+        private float _legProgress;
         private float _serviceClock;
         private RectTransform _hudRoot;
         private TextMeshProUGUI _routeText;
         private TextMeshProUGUI _statusText;
         private readonly List<(Image bg, TextMeshProUGUI text)> _steps = new();
+        private RectTransform _stationHud;
         private RectTransform _toast;
         private TextMeshProUGUI _toastText;
         private float _toastUntil;
         private RectTransform _ticketWindow;
         private TextMeshProUGUI _ticketWallet;
+        private RectTransform _onboardHud;
+        private TextMeshProUGUI _ledText;
+        private TextMeshProUGUI _onboardHint;
+        private RectTransform _lineTrack;
+        private RectTransform _trainMarker;
+        private readonly List<Image> _stopDots = new();
         private TMP_FontAsset _font;
         private readonly List<(Transform transform, Vector3 platformPosition)> _platformTrain = new();
         private readonly List<Collider> _trainColliders = new();
         private bool _playerTrainCollisionIgnored;
         private GameObject _carriageInterior;
+        private TrainWindowScenery _windowScenery;
+        private Camera _windowCamera;
+        private readonly List<TextMeshPro> _carriageLeds = new();
         private Transform _platformDoorLeft;
         private Transform _platformDoorRight;
         private Vector3 _platformDoorLeftClosed;
         private Vector3 _platformDoorRightClosed;
         private TextMeshPro _departureBoard;
 
-        public bool HasTicket => _hasTicket;
+        public bool HasTicket => _ticketStop > 0;
+        public Stop TicketStop => HasTicket ? Line[_ticketStop] : null;
         public bool GatePassed => _gatePassed;
         public bool IsOnboard => _onboard;
         public bool IsRiding => _riding;
+        public bool IsAtStop => _atStop;
+        public Stop NextStop => Line[Mathf.Clamp(_nextStop, 0, Line.Length - 1)];
         public bool IsTrainBoarding => Phase < boardingWindow;
         public bool IsTicketMachineOpen => _ticketWindow != null && _ticketWindow.gameObject.activeSelf;
+        public bool IsWindowViewOpen => _windowCamera != null && _windowCamera.enabled;
+        public Camera WindowCamera => _windowCamera;
+
+        /// <summary>World centre of the carriage (the builder moves the carriage far from the hall).</summary>
+        public Vector3 CarriageCenter => carriageSpawn != null && carriageSpawn.parent != null
+            ? carriageSpawn.parent.TransformPoint(new Vector3(800f, 2f, 42f))
+            : new Vector3(800f, 2f, 42f);
         private float Phase => Mathf.Repeat(_serviceClock, serviceInterval);
 
         public void Configure(Transform platform, Transform carriage, Transform movingScenery)
@@ -97,45 +148,45 @@ namespace NihongoLife.World
 
         private void Awake()
         {
-            ticketPrice = 320;
-            rideDuration = Mathf.Min(rideDuration, 18f);
             _carriageInterior = carriageSpawn != null && carriageSpawn.parent != null
                 ? carriageSpawn.parent.gameObject
                 : GameObject.Find("TrainCarriageInterior");
-            if (sceneryRoot != null && _carriageInterior != null)
-                sceneryRoot.SetParent(_carriageInterior.transform, true);
-            if (sceneryRoot != null)
-                foreach (Transform child in sceneryRoot) _scenery.Add(child);
-            if (_carriageInterior != null) _carriageInterior.SetActive(false);
+            if (_carriageInterior != null)
+            {
+                _windowScenery = _carriageInterior.GetComponentInChildren<TrainWindowScenery>(true);
+                foreach (var cam in _carriageInterior.GetComponentsInChildren<Camera>(true))
+                    if (cam.name == "TrainWindowCamera") _windowCamera = cam;
+                foreach (var led in _carriageInterior.GetComponentsInChildren<TextMeshPro>(true))
+                    if (led.name.StartsWith("CarriageLED")) _carriageLeds.Add(led);
+                _carriageInterior.SetActive(false);
+            }
+            if (_windowCamera != null) _windowCamera.enabled = false;
             _serviceClock = boardingWindow + 14f; // the first train is out of the station when the player arrives
             BuildTravelHud();
             CachePlatformTrain();
             CachePlatformFixtures();
-            EnsureStationStaffInteractable();
+            EnsureStationStaff();
             NormalizeStationInteractions();
             RefreshHud();
         }
 
+        private void Start() => CompleteObjective("obj_arrive");
+
         private void Update()
         {
-            if (IsTicketMachineOpen && Keyboard.current != null && Keyboard.current.escapeKey.wasPressedThisFrame)
+            var keyboard = Keyboard.current;
+            if (IsTicketMachineOpen && keyboard != null && keyboard.escapeKey.wasPressedThisFrame)
             {
                 CloseTicketPanel();
                 return;
             }
+            if (_onboard && keyboard != null && keyboard.qKey.wasPressedThisFrame && (DialogueManager.Instance == null || !DialogueManager.Instance.IsOpen))
+                SetWindowView(!IsWindowViewOpen);
 
             AdvanceTimetable(Time.deltaTime);
             UpdatePlatformTrain();
             UpdatePlatformFixtures();
             IgnorePlayerTrainCollision(FindFirstObjectByType<PlayerController>());
-
-            if (_riding)
-            {
-                _rideRemaining = Mathf.Max(0f, _rideRemaining - Time.deltaTime);
-                MoveScenery();
-                if (_rideRemaining <= 0f) StartCoroutine(Arrive());
-            }
-
             RefreshHud();
             if (_toast != null && _toast.gameObject.activeSelf && Time.unscaledTime > _toastUntil) _toast.gameObject.SetActive(false);
         }
@@ -150,7 +201,7 @@ namespace NihongoLife.World
                 if (Phase > boardingWindow + 12f && Phase < serviceInterval - 12f)
                 {
                     _serviceClock += (serviceInterval - 12f) - Phase; // call the next train in now
-                    Announce("まもなく、2ばんせんに ミナトゆきが まいります。", "Tàu đi Minato sắp vào sân ga số 2.");
+                    Announce($"まもなく、{Platform}ばんせんに ミナトゆきが まいります。", $"Tàu đi Minato sắp vào sân ga số {Platform}.");
                 }
                 if (Phase < boardingWindow && Phase + dt >= boardingWindow - 2f) return; // hold the doors
             }
@@ -164,55 +215,63 @@ namespace NihongoLife.World
                 case StationAction.BuyTicket: BuyTicket(); break;
                 case StationAction.PassGate: PassGate(); break;
                 case StationAction.BoardTrain: Board(player); break;
-                case StationAction.StartRide: StartRide(); break;
-                case StationAction.LeaveTrain: Leave(player); break;
-                case StationAction.TalkPassenger: TalkPassenger(); break;
+                case StationAction.StartRide: SetWindowView(!IsWindowViewOpen); break;
+                case StationAction.LeaveTrain: Leave(); break;
+                case StationAction.TalkPassenger: TalkToPassenger("student"); break;
                 case StationAction.TalkStationStaff: TalkStationStaff(); break;
             }
             RefreshHud();
         }
 
-        // ─────────── Actions ───────────
+        // ─────────── Tickets ───────────
 
         private void BuyTicket()
         {
-            if (_hasTicket) { Announce("きっぷは もう あります。", "Bạn đã có vé đi Minato — hãy qua cổng soát vé."); return; }
+            if (HasTicket) { Announce("きっぷは もう あります。", $"Bạn đã có vé đi {TicketStop.Vi} — hãy qua cổng soát vé."); return; }
             OpenTicketPanel();
         }
 
-        /// <summary>Buys the Minato ticket (ticket machine button; also used by tests).</summary>
-        public bool PurchaseTicket()
+        /// <summary>Buys the Minato ticket (kept for the scenario wording and older tests).</summary>
+        public bool PurchaseTicket() => PurchaseTicket("minato");
+
+        public bool PurchaseTicket(string stopId)
         {
+            int index = System.Array.FindIndex(Line, s => s.Id == stopId);
+            if (index <= 0) return false;
+            if (HasTicket) { Announce("きっぷは もう あります。", $"Bạn đã có vé đi {TicketStop.Vi}."); return false; }
+            Stop stop = Line[index];
             var inventory = PlayerInventory.Instance;
-            if (inventory == null || !inventory.SpendYen(ticketPrice))
+            if (inventory == null || !inventory.SpendYen(stop.Price))
             {
-                Announce("おかねが たりません。", $"Không đủ tiền. Vé đi Minato giá ¥{ticketPrice}.");
+                Announce("おかねが たりません。", $"Không đủ tiền. Vé đi {stop.Vi} giá ¥{stop.Price}.");
                 Cue(GameAudioCue.UiError);
                 return false;
             }
-            if (!inventory.AddItem(TicketItemId, "きっぷ（ミナト）", "Vé tàu đi Minato", ticketPrice, 1))
+            if (!inventory.AddItem(TicketItemId, $"きっぷ（{stop.Ja}）", $"Vé tàu Hibari → {stop.Vi}", stop.Price, 1))
             {
-                inventory.AddYen(ticketPrice);
+                inventory.AddYen(stop.Price);
                 Announce("バッグが いっぱいです。", "Balo đã đầy, không nhận được vé.");
                 return false;
             }
-            _hasTicket = true;
+            _ticketStop = index;
             CloseTicketPanel();
             CompleteObjective("obj_ticket");
-            Announce("きっぷを かいました。", $"Đã mua vé đi Minato (¥{ticketPrice}). Qua cổng soát vé rồi ra sân ga số 2.");
+            Announce("きっぷを かいました。", $"Đã mua vé đi {stop.Vi} (¥{stop.Price}). Qua cổng soát vé rồi ra sân ga số {Platform}.");
             Cue(GameAudioCue.UiConfirm);
             return true;
         }
 
         private void PassGate()
         {
-            if (!_hasTicket) { Announce("きっぷが ひつようです。", "Cần mua vé ở máy bán vé trước."); Cue(GameAudioCue.UiError); return; }
-            if (_gatePassed) { Announce("2ばんせんへ どうぞ。", "Bạn đã qua cổng. Ra sân ga số 2 chờ tàu."); return; }
+            if (!HasTicket) { Announce("きっぷが ひつようです。", "Cần có vé: hỏi nhân viên Kimura ở quầy hoặc dùng máy bán vé."); Cue(GameAudioCue.UiError); return; }
+            if (_gatePassed) { Announce($"{Platform}ばんせんへ どうぞ。", $"Bạn đã qua cổng. Ra sân ga số {Platform} chờ tàu."); return; }
             _gatePassed = true;
             CompleteObjective("obj_platform");
-            Announce("2ばんせんへ どうぞ。", "Vé hợp lệ. Ra sân ga số 2 — tàu sẽ đợi bạn.");
+            Announce($"{Platform}ばんせんへ どうぞ。", $"Vé hợp lệ. Ra sân ga số {Platform} — tàu sẽ đợi bạn.");
             Cue(GameAudioCue.UiConfirm);
         }
+
+        // ─────────── Ride ───────────
 
         private void Board(GameObject player)
         {
@@ -220,96 +279,250 @@ namespace NihongoLife.World
             if (!_gatePassed) { Announce("さきに かいさつを とおって ください。", "Hãy mua vé và qua cổng soát vé trước."); Cue(GameAudioCue.UiError); return; }
             if (!IsTrainBoarding) { Announce("でんしゃは まだ きません。", $"Tàu chưa vào ga — còn khoảng {SecondsUntilArrival():0} giây."); return; }
             if (_carriageInterior != null) _carriageInterior.SetActive(true);
+            ShuffleCommuters();
             Teleport(player, carriageSpawn);
-            PlayerInventory.Instance?.RemoveItem(TicketItemId);
+            var camera = FindFirstObjectByType<Cameras.ThirdPersonCameraController>();
+            if (camera != null && carriageSpawn != null)
+            {
+                camera.SetIndoorMode(true);
+                camera.SetOrbit(carriageSpawn.eulerAngles.y, 16f, 3.0f);
+            }
             _onboard = true;
-            StartRide();
+            _nextStop = 1;
+            if (_stationHud != null) _stationHud.gameObject.SetActive(false);
+            if (_onboardHud != null) _onboardHud.gameObject.SetActive(true);
+            StartCoroutine(RideRoutine());
         }
 
-        private void StartRide()
+        private IEnumerator RideRoutine()
         {
-            if (!_onboard || _riding) return;
-            _riding = true;
-            _rideRemaining = rideDuration;
-            Announce("ドアが しまります。つぎは ミナト、ミナトです。", "Cửa đóng. Ga tiếp theo: Minato. Hãy nói chuyện với hành khách hoặc ngắm cảnh.");
+            Announce("ドアが しまります。ご注意ください。", "Cửa sắp đóng. Xin chú ý.", 3f);
+            for (_nextStop = 1; _nextStop < Line.Length; _nextStop++)
+            {
+                Stop stop = Line[_nextStop];
+                _riding = true;
+                _atStop = false;
+                _legProgress = 0f;
+                if (_windowScenery != null) _windowScenery.Throttle = 1f;
+                yield return new WaitForSeconds(1.5f);
+                Announce($"つぎは {stop.Ja}、{stop.Ja}です。", $"Ga tiếp theo: {stop.Vi} ({stop.Place}). Bấm Q để ngắm cảnh, F để nói chuyện.");
+                float elapsed = 0f;
+                while (elapsed < LegSeconds)
+                {
+                    elapsed += Time.deltaTime;
+                    _legProgress = Mathf.Clamp01(elapsed / LegSeconds);
+                    if (_windowScenery != null && elapsed > LegSeconds - 3f) _windowScenery.Throttle = 0f; // brake into the platform
+                    yield return null;
+                }
+                _riding = false;
+                _atStop = true;
+                _legProgress = 1f;
+                Announce($"{stop.Ja}、{stop.Ja}です。おでぐちは ひだりがわです。", $"Đã tới ga {stop.Vi}. Cửa ra bên trái.");
+                Cue(GameAudioCue.UiConfirm);
+                if (_nextStop == _ticketStop)
+                {
+                    yield return new WaitForSeconds(2f);
+                    AlightAt(_nextStop);
+                    yield break;
+                }
+                yield return new WaitForSeconds(DwellSeconds);
+                if (_alighting) yield break;
+                Announce("ドアが しまります。", $"Cửa đóng — vé của bạn đi tới {TicketStop?.Vi}.", 3f);
+            }
         }
 
-        private IEnumerator Arrive()
+        private void Leave()
         {
-            if (!_riding) yield break;
-            _riding = false;
-            Announce("ミナト、ミナトです。おでぐちは ひだりがわです。", "Đã tới ga Minato! Cửa ra ở bên trái.");
-            CompleteObjective("obj_board");
-            PlayerStatus.Instance?.AddKnowledge(5);
-            yield return new WaitForSeconds(2.5f);
-            Leave(FindFirstObjectByType<PlayerController>()?.gameObject);
-        }
-
-        private void Leave(GameObject player)
-        {
-            if (_riding) { Announce("でんしゃが はしって います。", "Tàu đang chạy — đợi tới ga đã."); return; }
             if (!_onboard) return;
-            Teleport(player, platformSpawn);
-            if (_carriageInterior != null) _carriageInterior.SetActive(false);
-            _onboard = false;
-            _hasTicket = false;
-            _gatePassed = false;
-            Announce("おつかれさまでした。", "Đã xuống tàu. Đi qua lối 出口 để về thành phố.");
+            if (_riding) { Announce("でんしゃが はしって います。", "Tàu đang chạy — đợi tới ga đã."); return; }
+            if (_atStop) AlightAt(_nextStop);
         }
+
+        private void AlightAt(int stopIndex)
+        {
+            if (_alighting) return;
+            _alighting = true;
+            Stop stop = Line[stopIndex];
+            SetWindowView(false);
+            PlayerInventory.Instance?.RemoveItem(TicketItemId);
+            PlayerStatus.Instance?.AddKnowledge(5);
+            string stopId = stop.Id;
+            SceneFlowController flow = null;
+            if (!GameServices.TryGet(out flow)) flow = FindFirstObjectByType<SceneFlowController>();
+            if (flow == null)
+            {
+                Debug.LogError("[StationTravelController] No SceneFlowController — cannot leave the train.");
+                _alighting = false;
+                return;
+            }
+            flow.TransferZone(stop.Scene, stop.Spawn, $"{stop.Ja}えき / Ga {stop.Vi}", () => OnArrivedAt(stopId));
+        }
+
+        /// <summary>Runs on the persistent SceneFlowController after the destination zone is active
+        /// (this station, and therefore this component, is unloaded by then).</summary>
+        private static void OnArrivedAt(string stopId)
+        {
+            Stop stop = System.Array.Find(Line, s => s.Id == stopId);
+            if (stop == null) return;
+            ShowArrivalBanner(stop);
+            var scenario = ScenarioManager.Instance;
+            if (stopId != "minato" || scenario == null || scenario.CurrentScenario == null || scenario.CurrentScenario.id != ScenarioId) return;
+            scenario.CompleteObjective("obj_board");
+            if (scenario.CurrentScenario.GetNode("n_recap") != null) scenario.TransitionToNode("n_recap");
+        }
+
+        private static void ShowArrivalBanner(Stop stop)
+        {
+            var hud = FindFirstObjectByType<HUDUI>();
+            if (hud == null) return;
+            var font = NLUi.ResolveFont();
+            var canvas = NLUi.CreateCanvas("TrainArrivalBanner", 130, hud.transform);
+            var card = NLUi.Panel((RectTransform)canvas.transform, "Card", NLUi.Ink, new RectOffset(30, 30, 16, 16), 4f);
+            NLUi.Anchor(card, new Vector2(0.5f, 1f), new Vector2(0f, -90f), new Vector2(760f, 0f));
+            NLUi.FitContent(card);
+            NLUi.Label(card, "Title", $"{stop.Ja}えき に つきました", 30f, NLUi.Gold, font, FontStyles.Bold, TextAlignmentOptions.Center);
+            NLUi.Label(card, "Sub", $"Đã tới ga {stop.Vi} — {stop.Place}. Cửa ra đưa bạn về phố.", 19f, NLUi.Text, font, FontStyles.Normal, TextAlignmentOptions.Center);
+            Destroy(canvas.gameObject, 6f);
+        }
+
+        public void SetWindowView(bool open)
+        {
+            if (_windowCamera == null) return;
+            if (open && !_onboard) return;
+            _windowCamera.enabled = open;
+            _windowCamera.depth = 5f;
+            if (_onboardHint != null)
+                _onboardHint.text = open ? "Q · Quay lại toa tàu" : "Q · Ngắm cảnh qua cửa sổ    F · Nói chuyện với hành khách";
+        }
+
+        /// <summary>Different commuters every trip; the ones the player can talk to always ride.</summary>
+        private void ShuffleCommuters()
+        {
+            if (_carriageInterior == null) return;
+            foreach (var passenger in _carriageInterior.GetComponentsInChildren<SeatedPassenger>(true))
+                passenger.gameObject.SetActive(passenger.AlwaysOnBoard || Random.value < 0.6f);
+        }
+
+        // ─────────── Conversations ───────────
 
         private void TalkStationStaff()
         {
-            // While the station scenario owns the clerk, let it drive the conversation.
-            var scenario = ScenarioManager.Instance;
-            if (scenario != null && scenario.CurrentScenario != null && scenario.CurrentScenario.id == ScenarioId
-                && scenario.OnNPCInteracted("npc_station_staff", null)) return;
-
             var dm = DialogueManager.Instance;
-            if (dm == null) return;
-            const string staff = "えきいん · Nhân viên ga";
+            if (dm == null || dm.IsOpen) return;
+            const string staff = "えきいん · Kimura (nhân viên ga)";
+            if (HasTicket)
+            {
+                dm.StartConversation(new List<ScenarioNode>
+                {
+                    Line_("st_has", staff, $"{TicketStop.Ja}ゆきの きっぷ ですね。かいさつは あちら、{Platform}ばんせん です。", $"{TicketStop.Ja}ゆきの きっぷ ですね。かいさつは あちら、にばんせん です。",
+                        $"Vé đi {TicketStop.Vi} nhỉ. Cổng soát vé ở đằng kia, sân ga số {Platform}.", null),
+                }, "st_has", null);
+                return;
+            }
+
             var nodes = new List<ScenarioNode>
             {
-                Line("st_hello", staff, "いらっしゃいませ。どちらまで ですか。", "いらっしゃいませ。どちらまで ですか。", "Xin chào quý khách. Quý khách đi đến đâu ạ?", null,
-                    Choice("ミナトえきへ いきたいです。", "Tôi muốn đến ga Minato.", "st_fare"),
+                Line_("st_hello", staff, "いらっしゃいませ。どちらまで ですか。", "いらっしゃいませ。どちらまで ですか。", "Xin chào quý khách. Quý khách đi đến đâu ạ?", null,
+                    Choice("ミナトえきへ いきたいです。", "Tôi muốn đến ga Minato.", "st_fare_minato"),
+                    Choice("がくえんまえへ いきたいです。", "Tôi muốn đến ga Gakuen-mae.", "st_fare_gakuen"),
                     Choice("ミナト、どこ？", "Minato, đâu? (cộc lốc)", "st_polite"),
                     Choice("すみません、だいじょうぶです。", "Xin lỗi, không cần đâu ạ.", "st_bye")),
-                Line("st_polite", staff, "「〜へ いきたいです」と いうと ていねいですよ。", "「〜へ いきたいです」と いうと ていねいですよ。", "Nói 「〜へ いきたいです」 sẽ lịch sự hơn đó.", "st_hello"),
-                Line("st_fare", staff, "ミナトまでは 320えん です。2ばんせん です。", "ミナトまでは さんびゃくにじゅうえん です。にばんせん です。", "Đến Minato là 320 yên, sân ga số 2.", null,
-                    Choice("2ばんせんですね。ありがとうございます。", "Sân ga số 2 nhỉ. Cảm ơn ạ.", "st_machine"),
-                    Choice("3ばんせんですね。", "Sân ga số 3 nhỉ.", "st_wrong")),
-                Line("st_wrong", staff, "いいえ、2ばんせん です。3ばんせんは はんたいほうこう です。", "いいえ、にばんせん です。", "Không, là sân ga số 2. Số 3 là chiều ngược lại.", "st_fare"),
-                Line("st_machine", staff, "きっぷは あの けんばいきで かって ください。", "きっぷは あの けんばいきで かって ください。", "Vé thì mua ở máy bán vé đằng kia nhé.", null),
-                Line("st_bye", staff, "はい、どうぞ おきをつけて。", "はい、どうぞ おきをつけて。", "Vâng, quý khách đi cẩn thận.", null),
+                Line_("st_polite", staff, "「〜へ いきたいです」と いうと ていねいですよ。", "「〜へ いきたいです」と いうと ていねいですよ。", "Nói 「〜へ いきたいです」 sẽ lịch sự hơn đó.", "st_hello"),
+                FareLine("minato", staff), FareLine("gakuen", staff),
+                Line_("st_wrong", staff, $"いいえ、{Platform}ばんせん です。3ばんせんは はんたいほうこう ですよ。", "いいえ、にばんせん です。", $"Không, là sân ga số {Platform}. Số 3 là chiều ngược lại đó.", "st_hello"),
+                Line_("st_machine", staff, "では、あちらの けんばいきで どうぞ。", "では、あちらの けんばいきで どうぞ。", "Vậy mời quý khách mua ở máy bán vé đằng kia.", null),
+                Line_("st_bye", staff, "はい、どうぞ おきをつけて。", "はい、どうぞ おきをつけて。", "Vâng, quý khách đi cẩn thận.", null),
             };
-            dm.StartConversation(nodes, "st_hello", ended => { if (ended != "cancel") PlayerStatus.Instance?.AddKnowledge(3); });
+            dm.StartConversation(nodes, "st_hello", ended =>
+            {
+                if (string.IsNullOrEmpty(ended) || ended == "cancel") return;
+                bool buying = ended.StartsWith("buy:");
+                if (ended == "st_machine" || buying) CompleteObjective("obj_ask");
+                PlayerStatus.Instance?.AddKnowledge(2);
+                if (buying) StartCoroutine(SellAtCounter(ended.Substring("buy:".Length)));
+            });
         }
 
-        private void TalkPassenger()
+        private ScenarioNode FareLine(string stopId, string staff)
         {
-            var dm = DialogueManager.Instance;
-            if (dm == null) return;
-            const string passenger = "じょうきゃく · Hành khách";
-            var nodes = _riding
+            Stop stop = System.Array.Find(Line, s => s.Id == stopId);
+            string yenReading = stop.Price == 320 ? "さんびゃくにじゅうえん" : "ひゃくはちじゅうえん";
+            return Line_("st_fare_" + stopId, staff, $"{stop.Ja}までは {stop.Price}えん、{Platform}ばんせん です。きっぷを おかいに なりますか。",
+                $"{stop.Ja}までは {yenReading}、にばんせん です。", $"Đến {stop.Vi} là {stop.Price} yên, sân ga số {Platform}. Quý khách mua vé luôn không ạ?", null,
+                Choice("きっぷを いちまい ください。", $"Cho tôi một vé ạ. (¥{stop.Price})", "buy:" + stopId),
+                Choice("けんばいきで かいます。", "Tôi sẽ mua ở máy bán vé.", "st_machine"),
+                Choice("3ばんせん ですか。", "Sân ga số 3 ạ?", "st_wrong"));
+        }
+
+        private IEnumerator SellAtCounter(string stopId)
+        {
+            yield return null; // let the first conversation close
+            Stop stop = System.Array.Find(Line, s => s.Id == stopId);
+            const string staff = "えきいん · Kimura (nhân viên ga)";
+            bool sold = PurchaseTicket(stopId);
+            var nodes = sold
                 ? new List<ScenarioNode>
                 {
-                    Line("ps_q", passenger, "すみません、ミナトは まだ ですか。", "すみません、ミナトは まだ ですか。", "Xin lỗi, chưa tới Minato à?", null,
-                        Choice("はい、つぎです。", "Vâng, ga tiếp theo ạ.", "ps_ok"),
-                        Choice("わかりません。", "Tôi không biết.", "ps_meh")),
-                    Line("ps_ok", passenger, "そうですか。ありがとうございます！", "そうですか。ありがとうございます！", "Vậy à. Cảm ơn bạn!", null),
-                    Line("ps_meh", passenger, "アナウンスを きいて みましょう。", "アナウンスを きいて みましょう。", "Thử nghe thông báo trên tàu xem.", null),
+                    Line_("st_sold", staff, $"{stop.Price}えん ちょうだい します。はい、{stop.Ja}ゆきの きっぷ です。{Platform}ばんせんへ どうぞ。",
+                        $"{stop.Price}えん ちょうだい します。", $"Xin nhận {stop.Price} yên. Đây là vé đi {stop.Vi}. Mời quý khách ra sân ga số {Platform}.", null,
+                        Choice("ありがとうございます。", "Cảm ơn anh ạ.", "st_thanks")),
+                    Line_("st_thanks", staff, "いってらっしゃいませ。", "いってらっしゃいませ。", "Chúc quý khách đi vui vẻ.", null),
                 }
                 : new List<ScenarioNode>
                 {
-                    Line("ps_q", passenger, "この でんしゃは ミナトへ いきますか。", "この でんしゃは ミナトへ いきますか。", "Tàu này có đi Minato không?", null,
-                        Choice("はい、2ばんせんの でんしゃです。", "Có, là tàu ở sân ga số 2.", "ps_ok"),
-                        Choice("いいえ。", "Không.", "ps_meh")),
-                    Line("ps_ok", passenger, "たすかりました。ありがとう！", "たすかりました。ありがとう！", "May quá. Cảm ơn nhé!", null),
-                    Line("ps_meh", passenger, "えっ、そうですか…。えきいんさんに きいて みます。", "えっ、そうですか…。", "Ơ, vậy sao… Tôi sẽ hỏi nhân viên ga.", null),
+                    Line_("st_nomoney", staff, "もうしわけありません、おかねが たりない ようです。", "もうしわけありません、おかねが たりない ようです。",
+                        $"Xin lỗi, có vẻ quý khách không đủ tiền (vé ¥{stop.Price}).", null),
                 };
+            DialogueManager.Instance?.StartConversation(nodes, nodes[0].id, null);
+        }
+
+        public void TalkToPassenger(string passengerId)
+        {
+            var dm = DialogueManager.Instance;
+            if (dm == null || dm.IsOpen) return;
+            SetWindowView(false);
+            List<ScenarioNode> nodes = passengerId switch
+            {
+                "grandma" => new List<ScenarioNode>
+                {
+                    Line_("ps_q", "おばあさん · Bà cụ", "ミナトの さかなは おいしいですよ。あなたも ミナトへ いきますか。", "ミナトの さかなは おいしいですよ。",
+                        "Cá ở Minato ngon lắm đó. Cháu cũng đi Minato à?", null,
+                        Choice("はい、すしを たべに いきます。", "Vâng, cháu đi ăn sushi ạ.", "ps_ok"),
+                        Choice("いいえ、がくえんまえで おります。", "Không, cháu xuống ở Gakuen-mae ạ.", "ps_school")),
+                    Line_("ps_ok", "おばあさん · Bà cụ", "いいですね！ひばりずしが おすすめ ですよ。", "いいですね！", "Hay quá! Bà gợi ý quán Sushi Hibari đó.", null),
+                    Line_("ps_school", "おばあさん · Bà cụ", "べんきょう、がんばって くださいね。", "べんきょう、がんばって くださいね。", "Học hành chăm chỉ nhé cháu.", null),
+                },
+                "worker" => new List<ScenarioNode>
+                {
+                    Line_("ps_q", "かいしゃいん · Nhân viên văn phòng", "すみません、いま なんじ ですか。", "すみません、いま なんじ ですか。", "Xin lỗi, bây giờ là mấy giờ ạ?", null,
+                        Choice("ちょっと まって ください…くじ です。", "Chờ chút ạ… 9 giờ.", "ps_ok"),
+                        Choice("しりません。", "Không biết.", "ps_meh")),
+                    Line_("ps_ok", "かいしゃいん · Nhân viên văn phòng", "ありがとうございます。まにあいそう です。", "ありがとうございます。", "Cảm ơn bạn. Chắc là kịp giờ rồi.", null),
+                    Line_("ps_meh", "かいしゃいん · Nhân viên văn phòng", "そうですか…。", "そうですか…。", "Vậy à…", null),
+                },
+                _ => _riding || _atStop
+                    ? new List<ScenarioNode>
+                    {
+                        Line_("ps_q", "がくせい · Học sinh", $"すみません、つぎは {NextStop.Ja} ですか。", $"すみません、つぎは {NextStop.Ja} ですか。",
+                            $"Xin lỗi, ga tiếp theo là {NextStop.Vi} phải không?", null,
+                            Choice($"はい、つぎは {NextStop.Ja} です。", $"Vâng, ga tiếp theo là {NextStop.Vi}.", "ps_ok"),
+                            Choice("わかりません。", "Tôi không biết.", "ps_meh")),
+                        Line_("ps_ok", "がくせい · Học sinh", "よかった！ありがとうございます。", "よかった！", "May quá! Cảm ơn bạn.", null),
+                        Line_("ps_meh", "がくせい · Học sinh", "アナウンスを きいて みましょう。", "アナウンスを きいて みましょう。", "Thử nghe thông báo trên tàu xem.", null),
+                    }
+                    : new List<ScenarioNode>
+                    {
+                        Line_("ps_q", "じょうきゃく · Hành khách", $"この でんしゃは ミナトへ いきますか。", "この でんしゃは ミナトへ いきますか。", "Tàu này có đi Minato không?", null,
+                            Choice($"はい、{Platform}ばんせんの でんしゃです。", $"Có, là tàu ở sân ga số {Platform}.", "ps_ok"),
+                            Choice("いいえ。", "Không.", "ps_meh")),
+                        Line_("ps_ok", "じょうきゃく · Hành khách", "たすかりました。ありがとう！", "たすかりました。ありがとう！", "May quá. Cảm ơn nhé!", null),
+                        Line_("ps_meh", "じょうきゃく · Hành khách", "えっ、そうですか…。えきいんさんに きいて みます。", "えっ、そうですか…。", "Ơ, vậy sao… Tôi sẽ hỏi nhân viên ga.", null),
+                    },
+            };
             dm.StartConversation(nodes, "ps_q", ended => { if (ended == "ps_ok") PlayerStatus.Instance?.AddKnowledge(2); });
         }
 
-        private static ScenarioNode Line(string id, string speaker, string ja, string reading, string vi, string next, params DialogueChoice[] choices) => new ScenarioNode
+        private static ScenarioNode Line_(string id, string speaker, string ja, string reading, string vi, string next, params DialogueChoice[] choices) => new ScenarioNode
         {
             id = id, nodeType = ScenarioNodeType.Dialogue, speakerId = "station_" + id, speakerName = speaker,
             textJa = ja, textReading = reading, textEn = vi, nextNodeId = next,
@@ -329,8 +542,18 @@ namespace NihongoLife.World
 
         // ─────────── Station fixtures ───────────
 
-        private void EnsureStationStaffInteractable()
+        /// <summary>Kimura (npc_station_staff) sells tickets ahead of the narrated scenario chain; the
+        /// clerk anchor without an NPC keeps a plain trigger.</summary>
+        private void EnsureStationStaff()
         {
+            NPCController kimura = null;
+            foreach (var npc in FindObjectsByType<NPCController>(FindObjectsInactive.Include, FindObjectsSortMode.None))
+                if (npc.gameObject.scene == gameObject.scene && npc.NpcId == "npc_station_staff") kimura = npc;
+            if (kimura != null)
+            {
+                if (kimura.GetComponent<StationStaffService>() == null) kimura.gameObject.AddComponent<StationStaffService>();
+                return;
+            }
             var clerk = GameObject.Find("StationTicketClerk");
             if (clerk == null || clerk.GetComponentInChildren<StationStaffInteractable>(true) != null) return;
             var interaction = new GameObject("StationStaffInteraction");
@@ -339,7 +562,6 @@ namespace NihongoLife.World
             var collider = interaction.AddComponent<SphereCollider>();
             collider.isTrigger = true; collider.radius = 1.25f;
             interaction.AddComponent<StationStaffInteractable>().Configure(this);
-            AddRoleLabel(clerk.transform, "えきいん\nNhân viên ga", new Color(1f, 0.82f, 0.3f));
         }
 
         private void NormalizeStationInteractions()
@@ -347,7 +569,7 @@ namespace NihongoLife.World
             StationTravelInteractable firstTicketMachine = null;
             foreach (var interactable in FindObjectsByType<StationTravelInteractable>(FindObjectsInactive.Include, FindObjectsSortMode.None))
             {
-                if (interactable == null) continue;
+                if (interactable == null || interactable.gameObject.scene != gameObject.scene) continue;
                 string objectName = interactable.gameObject.name;
                 if (objectName.IndexOf("TicketMachine", System.StringComparison.OrdinalIgnoreCase) >= 0 ||
                     objectName.IndexOf("TicketPOS", System.StringComparison.OrdinalIgnoreCase) >= 0)
@@ -360,13 +582,13 @@ namespace NihongoLife.World
 
             foreach (var interactable in FindObjectsByType<StationTravelInteractable>(FindObjectsInactive.Include, FindObjectsSortMode.None))
             {
-                if (interactable == null) continue;
+                if (interactable == null || interactable.gameObject.scene != gameObject.scene) continue;
                 switch (interactable.Action)
                 {
-                    case StationAction.BoardTrain: interactable.Configure(this, StationAction.BoardTrain, "でんしゃに のる", "Lên tàu đi Minato"); break;
-                    case StationAction.LeaveTrain: interactable.Configure(this, StationAction.LeaveTrain, "でんしゃを おりる", "Xuống tàu"); break;
+                    case StationAction.BoardTrain: interactable.Configure(this, StationAction.BoardTrain, "でんしゃに のる", "Lên tàu (sân ga 2)"); break;
+                    case StationAction.LeaveTrain: interactable.Configure(this, StationAction.LeaveTrain, "でんしゃを おりる", "Xuống tàu ở ga này"); break;
                     case StationAction.TalkPassenger: interactable.Configure(this, StationAction.TalkPassenger, "はなしかける", "Nói chuyện với hành khách"); break;
-                    case StationAction.StartRide: interactable.Configure(this, StationAction.StartRide, "せきに すわる", "Ngồi xuống ghế"); break;
+                    case StationAction.StartRide: interactable.Configure(this, StationAction.StartRide, "まどの そとを みる", "Ngắm cảnh qua cửa sổ (Q)"); break;
                 }
             }
 
@@ -387,28 +609,6 @@ namespace NihongoLife.World
                 scannerInteractable = scanner.AddComponent<StationTravelInteractable>();
             }
             scannerInteractable.Configure(this, StationAction.PassGate, "かいさつを とおる", "Qua cổng soát vé");
-            if (scanner.GetComponentInChildren<TextMeshPro>(true) == null)
-                AddRoleLabel(scanner.transform, "かいさつ\nCổng soát vé", new Color(0.35f, 0.9f, 1f));
-        }
-
-        private static void AddRoleLabel(Transform parent, string value, Color color)
-        {
-            var labelObject = new GameObject("StationStaffRoleLabel");
-            labelObject.transform.SetParent(parent, false);
-            labelObject.transform.localPosition = Vector3.up * 2.35f;
-            var label = labelObject.AddComponent<TextMeshPro>();
-            label.text = value; label.fontSize = 2.2f; label.alignment = TextAlignmentOptions.Center;
-            label.color = color; labelObject.AddComponent<StationBillboardLabel>();
-        }
-
-        private void MoveScenery()
-        {
-            foreach (Transform item in _scenery)
-            {
-                item.position += Vector3.left * (scenerySpeed * Time.deltaTime);
-                if (item.localPosition.x < -sceneryLoopWidth * 0.5f)
-                    item.localPosition += Vector3.right * sceneryLoopWidth;
-            }
         }
 
         private static void Teleport(GameObject player, Transform target)
@@ -446,9 +646,13 @@ namespace NihongoLife.World
             }
             if (_platformDoorLeft != null) _platformDoorLeft.position = _platformDoorLeftClosed + Vector3.left * (2.75f * openAmount);
             if (_platformDoorRight != null) _platformDoorRight.position = _platformDoorRightClosed + Vector3.right * (2.75f * openAmount);
-            if (_departureBoard == null) return;
-            string state = boarding ? (_gatePassed && !_onboard ? "のりば で まって います" : "ただいま 乗車中") : $"つぎ {SecondsUntilArrival():00}s";
-            _departureBoard.text = $"2ばんせん  ミナトゆき\n<size=65%>{state}     ¥{ticketPrice}</size>";
+            if (_departureBoard != null)
+            {
+                string state = boarding ? (_gatePassed && !_onboard ? "のりば で まって います" : "ただいま 乗車中") : $"つぎ {SecondsUntilArrival():00}s";
+                _departureBoard.text = $"{Platform}ばんせん  ミナトゆき\n<size=55%>がくえんまえ ¥180 · ミナト ¥320    {state}</size>";
+            }
+            string led = _atStop ? $"{NextStop.Ja}  ·  {NextStop.Vi}" : $"つぎは  {NextStop.Ja}  ·  Next {NextStop.Vi}";
+            foreach (var text in _carriageLeds) if (text != null) text.text = led;
         }
 
         private void CachePlatformTrain()
@@ -499,16 +703,20 @@ namespace NihongoLife.World
             var canvas = NLUi.CreateCanvas("StationTravelHUD", 120, parent);
             _hudRoot = (RectTransform)canvas.transform;
 
-            var route = NLUi.Panel(_hudRoot, "RouteCard", NLUi.Ink, new RectOffset(20, 20, 12, 12), 2f);
-            NLUi.Anchor(route, new Vector2(1f, 1f), new Vector2(-28f, -96f), new Vector2(380f, 0f));
+            _stationHud = new GameObject("StationLayer", typeof(RectTransform)).GetComponent<RectTransform>();
+            _stationHud.SetParent(_hudRoot, false);
+            NLUi.Stretch(_stationHud);
+
+            var route = NLUi.Panel(_stationHud, "RouteCard", NLUi.Ink, new RectOffset(20, 20, 12, 12), 2f);
+            NLUi.Anchor(route, new Vector2(1f, 1f), new Vector2(-28f, -96f), new Vector2(400f, 0f));
             NLUi.FitContent(route);
-            _routeText = NLUi.Label(route, "Route", "ひばり  →  ミナト", 24f, NLUi.Text, _font, FontStyles.Bold);
+            _routeText = NLUi.Label(route, "Route", "ひばり  →  ？", 24f, NLUi.Text, _font, FontStyles.Bold);
             _statusText = NLUi.Label(route, "Status", "", 17f, NLUi.Muted, _font);
 
-            var steps = NLUi.Group(_hudRoot, "TravelSteps", false, 8f, TextAnchor.MiddleCenter, false);
+            var steps = NLUi.Group(_stationHud, "TravelSteps", false, 8f, TextAnchor.MiddleCenter, false);
             NLUi.Anchor(steps, new Vector2(0.5f, 1f), new Vector2(0f, -22f), new Vector2(900f, 44f));
             ((HorizontalLayoutGroup)steps.GetComponent<HorizontalOrVerticalLayoutGroup>()).childForceExpandWidth = false;
-            string[] labels = { "1  きっぷ · Mua vé", "2  かいさつ · Qua cổng", "3  2ばんせん · Chờ tàu", "4  のる · Lên tàu" };
+            string[] labels = { "1  きっぷ · Mua vé", "2  かいさつ · Qua cổng", $"3  {Platform}ばんせん · Chờ tàu", "4  のる · Lên tàu" };
             foreach (string label in labels)
             {
                 var pill = NLUi.Pill(steps, "Step", label, _font, NLUi.Card, NLUi.Muted, 16f);
@@ -520,7 +728,53 @@ namespace NihongoLife.World
             NLUi.FitContent(_toast);
             _toastText = NLUi.Label(_toast, "Text", "", 21f, NLUi.Text, _font, FontStyles.Normal, TextAlignmentOptions.Center);
             _toast.gameObject.SetActive(false);
+            BuildOnboardHud();
             BuildTicketPanel();
+        }
+
+        /// <summary>Japanese-train style LED strip + line diagram with a moving train marker.</summary>
+        private void BuildOnboardHud()
+        {
+            _onboardHud = NLUi.Panel(_hudRoot, "OnboardHUD", new Color(0.03f, 0.04f, 0.06f, 0.94f), new RectOffset(26, 26, 14, 16), 10f);
+            NLUi.Anchor(_onboardHud, new Vector2(0.5f, 1f), new Vector2(0f, -18f), new Vector2(980f, 0f));
+            NLUi.FitContent(_onboardHud);
+
+            var ledRow = NLUi.Panel(_onboardHud, "LED", new Color(0f, 0f, 0f, 1f), new RectOffset(18, 18, 8, 8), 0f);
+            _ledText = NLUi.Label(ledRow, "LEDText", "", 30f, new Color(1f, 0.62f, 0.12f), _font, FontStyles.Bold, TextAlignmentOptions.Center);
+
+            var diagram = new GameObject("LineDiagram", typeof(RectTransform), typeof(LayoutElement)).GetComponent<RectTransform>();
+            diagram.SetParent(_onboardHud, false);
+            diagram.GetComponent<LayoutElement>().preferredHeight = 70f;
+            _lineTrack = new GameObject("Track", typeof(RectTransform), typeof(Image)).GetComponent<RectTransform>();
+            _lineTrack.SetParent(diagram, false);
+            _lineTrack.anchorMin = new Vector2(0.08f, 0.62f); _lineTrack.anchorMax = new Vector2(0.92f, 0.62f);
+            _lineTrack.sizeDelta = new Vector2(0f, 6f);
+            _lineTrack.GetComponent<Image>().color = new Color(0.25f, 0.62f, 0.45f);
+            for (int i = 0; i < Line.Length; i++)
+            {
+                float t = Line.Length == 1 ? 0f : i / (float)(Line.Length - 1);
+                float x = Mathf.Lerp(0.08f, 0.92f, t);
+                var dot = new GameObject("Stop_" + Line[i].Id, typeof(RectTransform), typeof(Image)).GetComponent<RectTransform>();
+                dot.SetParent(diagram, false);
+                dot.anchorMin = dot.anchorMax = new Vector2(x, 0.62f);
+                dot.sizeDelta = new Vector2(20f, 20f);
+                var image = dot.GetComponent<Image>();
+                image.color = NLUi.Text;
+                _stopDots.Add(image);
+                var label = NLUi.Label(diagram, "Label_" + Line[i].Id, $"{Line[i].Ja}\n<size=70%><color=#A8B4C4>{Line[i].Vi}</color></size>", 17f, NLUi.Text, _font, FontStyles.Bold, TextAlignmentOptions.Center);
+                var labelRect = label.rectTransform;
+                labelRect.anchorMin = labelRect.anchorMax = new Vector2(x, 0.62f);
+                labelRect.pivot = new Vector2(0.5f, 1f);
+                labelRect.anchoredPosition = new Vector2(0f, -14f);
+                labelRect.sizeDelta = new Vector2(220f, 50f);
+            }
+            _trainMarker = NLUi.Label(diagram, "Train", "▶", 26f, NLUi.Gold, _font, FontStyles.Bold, TextAlignmentOptions.Center).rectTransform;
+            _trainMarker.anchorMin = _trainMarker.anchorMax = new Vector2(0.08f, 0.62f);
+            _trainMarker.sizeDelta = new Vector2(40f, 40f);
+            _trainMarker.anchoredPosition = new Vector2(0f, 26f);
+
+            _onboardHint = NLUi.Label(_onboardHud, "Hint", "Q · Ngắm cảnh qua cửa sổ    F · Nói chuyện với hành khách", 17f, NLUi.Muted, _font, FontStyles.Normal, TextAlignmentOptions.Center);
+            _onboardHud.gameObject.SetActive(false);
         }
 
         private void BuildTicketPanel()
@@ -532,12 +786,14 @@ namespace NihongoLife.World
             ((HorizontalLayoutGroup)header.GetComponent<HorizontalOrVerticalLayoutGroup>()).childForceExpandWidth = false;
             NLUi.Size(NLUi.Label(header, "Title", "けんばいき  <size=70%><color=#A8B4C4>Máy bán vé</color></size>", 28f, NLUi.Text, _font, FontStyles.Bold), flexibleWidth: 1f);
             _ticketWallet = NLUi.Pill(header, "Wallet", "¥0", _font, new Color(1f, 1f, 1f, 0.08f), NLUi.Gold, 19f).GetComponentInChildren<TextMeshProUGUI>();
-            NLUi.Label(_ticketWindow, "Hint", "いきさきを えらんで ください — Chọn ga đến.", 18f, NLUi.Muted, _font);
-            NLUi.Button(_ticketWindow, "Ticket_MINATO", $"ミナト  ·  Minato   —   2ばんせん   —   ¥{ticketPrice}", _font, () => PurchaseTicket(), new Color(0.12f, 0.4f, 0.5f), 22f, null, 60f);
-            var later1 = NLUi.Button(_ticketWindow, "Ticket_SHINJUKU", "しんじゅく  ·  Shinjuku   —   じゅんびちゅう (sắp mở)", _font, null, NLUi.Card, 19f, NLUi.Muted, 52f);
-            later1.interactable = false;
-            var later2 = NLUi.Button(_ticketWindow, "Ticket_ASAKUSA", "あさくさ  ·  Asakusa   —   じゅんびちゅう (sắp mở)", _font, null, NLUi.Card, 19f, NLUi.Muted, 52f);
-            later2.interactable = false;
+            NLUi.Label(_ticketWindow, "Hint", $"いきさきを えらんで ください — Chọn ga đến (tuyến sân ga số {Platform}).", 18f, NLUi.Muted, _font);
+            for (int i = 1; i < Line.Length; i++)
+            {
+                Stop stop = Line[i];
+                string id = stop.Id;
+                NLUi.Button(_ticketWindow, "Ticket_" + id.ToUpperInvariant(), $"{stop.Ja}  ·  {stop.Vi}   —   {stop.Place}   —   ¥{stop.Price}", _font,
+                    () => PurchaseTicket(id), new Color(0.12f, 0.4f, 0.5f), 21f, null, 60f);
+            }
             NLUi.Button(_ticketWindow, "Close", "とじる · Esc", _font, CloseTicketPanel, NLUi.Card, 17f, NLUi.Muted, 44f);
             _ticketWindow.gameObject.SetActive(false);
         }
@@ -572,12 +828,24 @@ namespace NihongoLife.World
         private void RefreshHud()
         {
             if (_routeText == null) return;
-            string status = _riding ? $"Đang chạy — tới Minato sau {_rideRemaining:0}s"
-                : _onboard ? "Đã tới Minato"
-                : IsTrainBoarding ? (_gatePassed ? "Tàu đang đợi ở sân ga số 2 — lên tàu!" : "Tàu đang đón khách")
+            if (_onboard)
+            {
+                if (_ledText != null)
+                    _ledText.text = _atStop ? $"{NextStop.Ja}  ·  Ga {NextStop.Vi}" : $"つぎは  {NextStop.Ja}   <size=70%>Next  {NextStop.Vi}</size>";
+                float position = Mathf.Clamp(_nextStop - 1 + _legProgress, 0f, Line.Length - 1) / (Line.Length - 1);
+                if (_trainMarker != null)
+                {
+                    _trainMarker.anchorMin = _trainMarker.anchorMax = new Vector2(Mathf.Lerp(0.08f, 0.92f, position), 0.62f);
+                }
+                for (int i = 0; i < _stopDots.Count; i++)
+                    _stopDots[i].color = i == _ticketStop ? NLUi.Gold : i < _nextStop || (i == _nextStop && _atStop) ? new Color(0.25f, 0.62f, 0.45f) : NLUi.Text;
+                return;
+            }
+            _routeText.text = HasTicket ? $"ひばり  →  {TicketStop.Ja}" : "ひばり  →  ？";
+            string status = IsTrainBoarding ? (_gatePassed ? $"Tàu đang đợi ở sân ga số {Platform} — lên tàu!" : "Tàu đang đón khách")
                 : $"Chuyến kế tiếp sau {SecondsUntilArrival():0}s";
-            _statusText.text = status + $"   ·   ¥{ticketPrice}";
-            int step = _onboard ? 4 : _gatePassed ? 3 : _hasTicket ? 2 : 1;
+            _statusText.text = HasTicket ? $"{status}   ·   ¥{TicketStop.Price}" : $"{status}\nHỏi Kimura ở quầy hoặc dùng máy bán vé";
+            int step = _gatePassed ? 3 : HasTicket ? 2 : 1;
             for (int i = 0; i < _steps.Count; i++)
             {
                 bool done = i + 1 < step, current = i + 1 == step;

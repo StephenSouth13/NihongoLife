@@ -39,6 +39,7 @@ namespace NihongoLife.UI
         [SerializeField] private TextMeshProUGUI inventoryText;
         [SerializeField] private TextMeshProUGUI walletText;
         [SerializeField] private GameObject characterPanel;
+        private StatusDock _statusDock;
         [SerializeField] private TextMeshProUGUI characterStatsText;
 
         [Header("Online Simulation")]
@@ -124,9 +125,9 @@ namespace NihongoLife.UI
             _worldMap = gameObject.AddComponent<WorldMapUI>();
             _worldMap.Initialize(scenarioTitleText != null ? scenarioTitleText.font : null);
             _worldMap.OnVisibilityChanged += _ => UpdateOverlayInputLock();
-            EnsureMapButton();
             _settingsUI = gameObject.AddComponent<SettingsUI>();
             _settingsUI.Initialize(scenarioTitleText != null ? scenarioTitleText.font : null);
+            EnsureStatusDock();
             SetInventoryVisible(false);
             SetCharacterVisible(false);
             SetChatVisible(false);
@@ -175,6 +176,45 @@ namespace NihongoLife.UI
             label.rectTransform.anchorMin = Vector2.zero;
             label.rectTransform.anchorMax = Vector2.one;
             label.rectTransform.offsetMin = label.rectTransform.offsetMax = Vector2.zero;
+        }
+
+        /// <summary>Vitals card + clickable action bar (bag, character, map, quests, exams, settings) and the
+        /// new character window, shared by every zone because the city's HUD stays loaded underneath.</summary>
+        private void EnsureStatusDock()
+        {
+            if (_statusDock != null) return;
+            var oldMapButton = GetComponentInParent<Canvas>()?.transform.Find("MapButton");
+            if (oldMapButton != null) Destroy(oldMapButton.gameObject);
+            TMP_FontAsset font = scenarioTitleText != null ? scenarioTitleText.font : null;
+            var buttons = new List<(string, string, string, System.Action)>
+            {
+                ("BagButton", "B", "Balo", () => SetInventoryVisible(inventoryPanel != null && !inventoryPanel.activeSelf)),
+                ("CharacterButton", "Tab", "Nhân vật", () => SetCharacterVisible(characterPanel != null && !characterPanel.activeSelf)),
+                ("MapButton", "M", "Bản đồ", () =>
+                {
+                    bool show = _worldMap != null && !_worldMap.IsVisible;
+                    SetInventoryVisible(false);
+                    SetCharacterVisible(false);
+                    _worldMap?.SetVisible(show);
+                    UpdateOverlayInputLock();
+                }),
+                ("QuestButton", "J", "Nhiệm vụ", () => TogglePopup(GetComponent<QuestLogPopup>())),
+                ("ExamButton", "K", "Luyện thi", () => TogglePopup(GetComponent<ExamCenterPopup>())),
+                ("SettingsButton", "Esc", "Cài đặt", () => _settingsUI?.ToggleFromEscape()),
+            };
+            _statusDock = StatusDock.Create(transform, font, buttons, () => SetCharacterVisible(false));
+            if (characterPanel != null) characterPanel.SetActive(false);
+            characterPanel = _statusDock.CharacterRoot;
+        }
+
+        private void TogglePopup(MenuPopupBase popup)
+        {
+            if (popup == null) return;
+            SetInventoryVisible(false);
+            SetCharacterVisible(false);
+            _worldMap?.SetVisible(false);
+            if (popup.IsOpen) popup.Hide(); else popup.Show();
+            UpdateOverlayInputLock();
         }
 
         private void EnsureMobileControls()
@@ -574,9 +614,11 @@ namespace NihongoLife.UI
 
             if (!dialogueOpen && input.WasPressed(GameInputId.Pause))
             {
-                bool closedOverlay = (inventoryPanel != null && inventoryPanel.activeSelf) || (_worldMap != null && _worldMap.IsVisible);
+                bool closedOverlay = (inventoryPanel != null && inventoryPanel.activeSelf) || (_worldMap != null && _worldMap.IsVisible)
+                    || (characterPanel != null && characterPanel.activeSelf);
                 SetChatVisible(false);
                 SetInventoryVisible(false);
+                SetCharacterVisible(false);
                 _worldMap?.SetVisible(false);
                 if (!closedOverlay) _settingsUI?.ToggleFromEscape();
                 UpdateOverlayInputLock();
@@ -676,6 +718,7 @@ namespace NihongoLife.UI
             characterPanel.SetActive(visible);
             if (visible)
             {
+                _statusDock?.Refresh();
                 _worldMap?.SetVisible(false);
                 SetInventoryVisible(false);
                 SetChatVisible(false);

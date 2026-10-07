@@ -443,3 +443,27 @@ Chủ dự án xác nhận: đã bước vào bên trong konbini thật (không 
 - Nút `ToggleNPCNames` dời sang trái ví tiền (trước bị đè lên số ¥).
 
 **Test:** `Tests/PlayMode/GameplayUiPlayModeTests.cs` (City_DialogueShopBagMap, Station_FullTripToMinato, IntroScenario_GoesHomeBeforeTadaima), ảnh trong `Bao_Cao/ui-regression/`. Play Mode 8/8, EditMode 10/10.
+
+## Cập nhật (2026-10-07 tối, Claude) — HUD mọi scene, tàu tới nơi thật, cổng có biển
+
+**Chạy độc lập một zone:** bấm Play trong `20/30/40/45` giờ sẽ tự nạp `90_TestSandbox` làm nền rồi `EnterZone` vào đúng zone (`StandaloneZoneBootstrap`). Nhờ vậy zone có đủ HUD, balo, bản đồ, dịch vụ, và cửa ra phố hoạt động. Cách cũ (nhân vật trơn) chỉ còn là dự phòng khi thành phố không có trong Build Settings.
+
+**HUD:** `UI/StatusDock.cs` — thẻ chỉ số (体 Thể lực, 元 Năng lượng, 食 No, 水 Khát, Kiến thức, ¥, nơi đang đứng) + thanh nút `BagButton`/`CharacterButton`/`MapButton`/`QuestButton`/`ExamButton`/`SettingsButton` + cửa sổ Nhân vật mới (Tab). Nút `MapButton` cũ đã thay bằng nút cùng tên trong thanh nút.
+
+**Cổng:** mỗi `ScenePortal` tự gắn `PortalBeacon` (biển nổi "駅前 · Khu nhà ga [F] Đi vào", lối ra "出口 · Ra phố"). Không sửa scene.
+
+**Ga (phạm vi Codex) — tuyến ひばり → がくえんまえ ¥180 → ミナト ¥320, sân ga 2:**
+- Kimura (`npc_station_staff`) có `StationStaffService : IPriorityNpcService`, chạy trước scenario. Kimura hỏi đi đâu và **bán vé**. Máy bán vé vẫn bán cả 2 ga.
+- Tàu dừng ở mỗi ga. Tới ga trên vé → `SceneFlowController.TransferZone()`:
+  - Gakuen-mae → cổng `40_ HIBARICLASS`;
+  - Minato → cổng `30_SushiRestaurant`.
+  - Không còn đưa về sân ga.
+- Scenario `scenario.station.buy_ticket` chỉ nhận objective (`obj_arrive/ask/ticket/platform/board`). Tới Minato → `TransitionToNode("n_recap")`.
+- Toa tàu dựng lại bằng `Editor/StationTrainBuilder.cs` (`-executeMethod NihongoLife.EditorTools.StationTrainBuilder.Build`, chỉ đụng `TrainCarriageInterior`, toa dời ra z+260 để cửa sổ không nhìn thấy sảnh ga):
+  - ghế băng, kính, cửa, tay vịn, giá hành lý, LED つぎは, quảng cáo;
+  - hành khách ngồi (`SeatedPassenger`, `TrainPassengerTalk`);
+  - cảnh ngoài nhiều lớp (`TrainWindowScenery`);
+  - `TrainWindowCamera` (phím Q).
+- `INpcService` mới: `IPriorityNpcService`. `DialogueManager.StartConversation` callback giờ trả về id node cuối, hoặc id "lệnh" như `buy:minato` (trước trả `null` nên mọi nhánh thưởng không chạy).
+
+**Test:** `GameplayUiPlayModeTests` (Station_FullTripToMinato, Station_GakuenMaeTicketGoesToSchool, Hud_StatusDockButtonsAndPortalSigns), `BedroomPlayModeTests.BedroomStandalone_BootsThroughCityAndLeaves`.

@@ -15,30 +15,80 @@ namespace NihongoLife.Core
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
         private static void RegisterStandaloneSceneSupport()
         {
+            _bootingThroughCity = false;
             SceneManager.sceneLoaded -= HandleSceneLoaded;
             SceneManager.sceneLoaded += HandleSceneLoaded;
         }
 
+        private static bool _bootingThroughCity;
+
         private static void HandleSceneLoaded(Scene scene, LoadSceneMode mode)
         {
-            if (FindFirstObjectByType<PlayerController>() != null) return;
+            if (_bootingThroughCity || FindFirstObjectByType<PlayerController>() != null) return;
             string targetSpawn = scene.name switch
             {
-                "20_StationDistrict" => "station_entrance",
-                "30_SushiRestaurant" => "sushi_entrance",
-                "40_ HIBARICLASS" => "school_entrance",
-                "45_HomeBedroom" => "home_bedroom",
+                WorldLocationCatalog.StationScene => WorldLocationCatalog.StationEntrance,
+                WorldLocationCatalog.SushiRestaurantScene => WorldLocationCatalog.SushiEntrance,
+                WorldLocationCatalog.SchoolScene => WorldLocationCatalog.SchoolEntrance,
+                WorldLocationCatalog.HomeBedroomScene => WorldLocationCatalog.HomeBedroomEntrance,
                 _ => string.Empty
             };
             if (string.IsNullOrEmpty(targetSpawn)) return;
+
+            // Pressing Play inside a zone boots the real game: the city (HUD, bag, map, services, exits)
+            // loads as the host and the zone is entered through SceneFlowController, exactly like walking in.
+            if (Application.CanStreamedLevelBeLoaded(WorldLocationCatalog.CityScene))
+            {
+                var runner = new GameObject("StandaloneZoneBootstrap_CityBoot");
+                DontDestroyOnLoad(runner);
+                runner.AddComponent<StandaloneZoneBootstrap>().BootThroughCity(scene.name, targetSpawn);
+                return;
+            }
 
             var bootstrapObject = new GameObject("StandaloneZoneBootstrap_Runtime");
             SceneManager.MoveGameObjectToScene(bootstrapObject, scene);
             bootstrapObject.AddComponent<StandaloneZoneBootstrap>().Configure(targetSpawn);
         }
 
+        private string _zoneToEnter;
+
+        private void BootThroughCity(string zoneScene, string targetSpawn)
+        {
+            _zoneToEnter = zoneScene;
+            spawnId = targetSpawn;
+            _bootingThroughCity = true;
+            StartCoroutine(BootRoutine());
+        }
+
+        private System.Collections.IEnumerator BootRoutine()
+        {
+            yield return null; // let the zone finish its first frame before it is replaced
+            AsyncOperation load = SceneManager.LoadSceneAsync(WorldLocationCatalog.CityScene, LoadSceneMode.Single);
+            while (load != null && !load.isDone) yield return null;
+
+            float timeout = Time.realtimeSinceStartup + 10f;
+            SceneFlowController flow = null;
+            while (Time.realtimeSinceStartup < timeout)
+            {
+                if (!GameServices.TryGet(out flow)) flow = FindFirstObjectByType<SceneFlowController>();
+                if (flow != null && !flow.IsLoading && FindFirstObjectByType<PlayerController>() != null) break;
+                yield return null;
+            }
+            _bootingThroughCity = false;
+            if (flow != null)
+            {
+                Debug.Log($"[StandaloneZoneBootstrap] Booted through {WorldLocationCatalog.CityScene}; entering {_zoneToEnter}.");
+                flow.EnterZone(_zoneToEnter, spawnId, WorldLocationCatalog.Get(_zoneToEnter).DisplayName);
+            }
+            else Debug.LogError("[StandaloneZoneBootstrap] City booted without a SceneFlowController.");
+            Destroy(gameObject);
+        }
+
+        public static bool IsBooting => _bootingThroughCity;
+
         private void Start()
         {
+            if (!string.IsNullOrEmpty(_zoneToEnter)) return;
             PlayerController existingPlayer = FindFirstObjectByType<PlayerController>();
             if (existingPlayer != null)
             {

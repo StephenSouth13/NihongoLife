@@ -10,6 +10,12 @@ namespace NihongoLife.Interaction
         Transform GetTransform();
     }
 
+    /// <summary>Optional bonus (in metres) when several interactables are in reach; doors use it.</summary>
+    public interface IInteractionPriority
+    {
+        float InteractionPriority { get; }
+    }
+
     public interface IConditionalInteractable
     {
         bool IsInteractionAvailable { get; }
