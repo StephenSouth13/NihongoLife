@@ -169,7 +169,7 @@ namespace NihongoLife.Exam
         private static bool TryGetConfig(out string apiKey, out string model)
         {
             apiKey = string.Empty;
-            model = "gemini-2.5-flash";
+            model = "gemini-flash-latest";
             if (!GameServices.TryGet(out GameControlService control) || control.Database == null) return false;
             var db = control.Database;
             if (!db.enableGeminiConversation || !db.allowGeminiDirectClientCalls) return false;

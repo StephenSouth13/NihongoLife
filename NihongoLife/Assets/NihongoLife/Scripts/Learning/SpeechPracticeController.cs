@@ -256,7 +256,7 @@ namespace NihongoLife.Learning
                 }
             };
 
-            string model = string.IsNullOrWhiteSpace(database.geminiModel) ? "gemini-2.5-flash" : database.geminiModel;
+            string model = string.IsNullOrWhiteSpace(database.geminiModel) ? "gemini-flash-latest" : database.geminiModel;
             string url = $"https://generativelanguage.googleapis.com/v1beta/models/{UnityWebRequest.EscapeURL(model)}:generateContent";
             byte[] payload = Encoding.UTF8.GetBytes(JsonUtility.ToJson(body));
             using (var request = new UnityWebRequest(url, UnityWebRequest.kHttpVerbPOST))

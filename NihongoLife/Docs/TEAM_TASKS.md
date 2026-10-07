@@ -538,3 +538,20 @@ Chủ dự án xác nhận: đã bước vào bên trong konbini thật (không 
 - **Dáng đi:** `Player/PostureStabilizer.cs` (do PlayerController tự thêm) kéo cột sống/ngực/cổ về trục đứng sau Animator để bớt lắc hông. Bỏ qua khi ngồi/nằm.
 - **Test mới:** `WorldFeelPlayModeTests.City_HorizonStaminaPosture`, ảnh lưu ở `Bao_Cao/world-regression`.
   - Test UI và Game Center kiểm tra thêm nút × và ảnh cơm nắm.
+
+## Cập nhật (2026-10-08 chiều, Claude) — hoàn tất phần Codex còn dở, báo cáo Capstone
+
+Phiên Codex 08/10 dừng giữa chừng vì hết lượt dùng. Các mục còn dở đã làm xong:
+- **Gemini 404:** `gemini-2.5-flash` không còn mở cho tài khoản hiện tại (Codex đã phát hiện; gọi lại vẫn 404). Đã đổi sang `gemini-flash-latest` (gọi thử trả 200) ở:
+  - `Resources/Control/NihongoLifeControlDatabase.asset`;
+  - mặc định trong `GameControlDatabase.cs`;
+  - fallback trong `ExamGradingService.cs` và `SpeechPracticeController.cs`.
+- **Ảnh cơm nắm** (ảnh chụp do Codex nhúng) thu về 512 px (≈0,4 MB thay vì ≈2 MB/ảnh). Các món khác vẫn là ảnh minh hoạ/render.
+- **Đã xoá** `Assets/InitTestScene7a3ed5f2-….unity`: scene thừa do test runner sinh ra và bị commit nhầm.
+- **Slide riêng "Dịch vụ trực tuyến"** (Supabase · Gemini · Agora, kèm hiện trạng thật), là slide 32. Slide 22–24 giữ nguyên số.
+- **Báo cáo** `Bao_Cao/NihongoLife_Bao_Cao_Capstone.docx` (75 trang, bản PDF kèm theo):
+  - thêm 3 chương: Ga tàu, Game Center & mini-game, Quy trình phát triển;
+  - thêm 13 sơ đồ UML: use case, lớp, 5 tuần tự, 2 máy trạng thái, ERD Supabase, triển khai, chuyến tàu, quy trình nhóm;
+  - ảnh UI mới;
+  - bảng kiểm thử và bảng lỗi cập nhật.
+- **Test (08/10 chiều):** PlayMode 16/16 (+1 explicit), EditMode 11/11.
