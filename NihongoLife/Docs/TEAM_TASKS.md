@@ -416,3 +416,30 @@ Chủ dự án xác nhận: đã bước vào bên trong konbini thật (không 
 - 4 cổng `AdditiveZonePortals/*` giữ nguyên tên và component, chỉ dời tới mặt tiền thật (`Town_Destinations`), spawn trở về đặt ngay trước cửa. Thêm cột chỉ đường `Town_Signposts`. `WorldMapUI.CityMap()` vẽ theo tọa độ thật.
 - ⚠️ **Ảnh hưởng tới Codex:** `NL_Cashier.prefab` (cả `Prefabs/` và `Resources/`) đã dựng lại từ mô hình Lilly có xương + tạp dề, vì mô hình Elizabeth cũ không có xương. Nhân viên ở `20_StationDistrict` và đầu bếp sushi dùng prefab này nên giờ đã có animation. Vật liệu `NL_Guide__*_URP.mat` đã được nối lại texture.
 - Test: `Tests/PlayMode/CityTownPlayModeTests.cs`, ảnh trong `Bao_Cao/city-regression/`. Toàn bộ Play Mode 5/5, EditMode 10/10 (07/10/2026).
+
+## Cập nhật (2026-10-07, Claude) — Hội thoại, siêu thị, Balo/Bản đồ, ga `20_StationDistrict`
+
+**UI dùng chung (mọi scene nên dùng lại, không tự dựng UI riêng):**
+- `Scripts/UI/NLUi.cs`: bộ dựng UI theo layout group (Panel, Label, Button, Pill, màu `NLUi.Ink/Card/Gold…`). `CreateCanvas` lồng trong canvas khác sẽ tự stretch và bật `overrideSorting`.
+- `Scripts/UI/DialogueView.cs`: hộp thoại duy nhất, tự giãn theo nội dung; phím 1–4, ↑↓, Enter, Esc để rời cuộc nói chuyện. `HUDUI` tự tạo và chuyển `DisplayDialogue`/`HideDialogue` sang view này.
+- `DialogueManager.StartConversation(nodes, startId, onFinished)` dùng cho trò chuyện phụ, **không** đẩy bước scenario. `CancelDialogue()` để thoát. Trước đây nói chuyện phiếm làm nhảy node nhiệm vụ.
+- `NPCController`: nếu scenario không xử lý, NPC có component `INpcService` sẽ nhận `HandleInteract(player)`.
+
+**Siêu thị:** `Scripts/Shop/` (`KonbiniCatalog` 16 món + `KonbiniBasket`, `KonbiniShelf`, `KonbiniClerk`) và `UI/KonbiniShopUI.cs`. `CityTownBuilder` gắn 4 kệ `Shelf_*` và `KonbiniClerk` cho Ito. Scenario konbini vẫn nhận `onigiri`/`water`/`tea` qua `OnItemInteracted`.
+
+**Balo / Bản đồ:** `UI/InventoryWindow.cs` thay panel túi cũ; `UI/WorldMapUI.cs` viết lại, API public giữ nguyên.
+
+**⚠️ Ga `20_StationDistrict` (phạm vi Codex) — Claude đã viết lại `World/StationTravelController.cs`** vì người chơi không lên được tàu:
+- Tuyến ひばり → ミナト, ¥320, sân ga 2, vé `train_ticket_minato`.
+- Tàu tự vào ga khi người chơi qua cổng và giữ cửa tới khi lên tàu; chạy 18 s; tới nơi tự xuống.
+- Objective `obj_ticket`, `obj_platform`, `obj_board` chỉ được hoàn thành khi `scenario.station.buy_ticket` đang chạy.
+- API: `PurchaseTicket()`, `HasTicket`, `GatePassed`, `IsOnboard`, `IsRiding`, `IsTrainBoarding`, `IsTicketMachineOpen`. HUD mới là `StationTravelHUD`, gồm thẻ tuyến, 4 bước, thông báo và máy bán vé.
+- `StationTravelInteractable` có thêm getter `Action`.
+- Nếu Codex sửa ga, hãy giữ các API này và chạy lại `GameplayUiPlayModeTests.Station_FullTripToMinato`.
+
+**Sửa chung:**
+- `SceneFlowController` reset trạng thái zone khi load scene Single. Trước đây sau khi về menu/load save trong zone, `EnterZone` bị chặn.
+- `TMP Settings.asset` thêm `NotoSansJP SDF` làm fallback toàn dự án. Trước đây chữ Nhật trên bảng giờ tàu, nhãn nhân viên và màn tải hiện ô vuông.
+- Nút `ToggleNPCNames` dời sang trái ví tiền (trước bị đè lên số ¥).
+
+**Test:** `Tests/PlayMode/GameplayUiPlayModeTests.cs` (City_DialogueShopBagMap, Station_FullTripToMinato, IntroScenario_GoesHomeBeforeTadaima), ảnh trong `Bao_Cao/ui-regression/`. Play Mode 8/8, EditMode 10/10.
