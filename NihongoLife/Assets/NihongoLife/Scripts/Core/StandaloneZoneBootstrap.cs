@@ -31,6 +31,7 @@ namespace NihongoLife.Core
                 WorldLocationCatalog.SushiRestaurantScene => WorldLocationCatalog.SushiEntrance,
                 WorldLocationCatalog.SchoolScene => WorldLocationCatalog.SchoolEntrance,
                 WorldLocationCatalog.HomeBedroomScene => WorldLocationCatalog.HomeBedroomEntrance,
+                WorldLocationCatalog.GameCenterScene => WorldLocationCatalog.GameCenterEntrance,
                 _ => string.Empty
             };
             if (string.IsNullOrEmpty(targetSpawn)) return;

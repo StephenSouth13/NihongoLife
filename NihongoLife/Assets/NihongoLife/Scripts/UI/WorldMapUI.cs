@@ -207,6 +207,7 @@ namespace NihongoLife.UI
             else if (scene == WorldLocationCatalog.SushiRestaurantScene) SushiMap();
             else if (scene == WorldLocationCatalog.SchoolScene) SchoolMap();
             else if (scene == WorldLocationCatalog.HomeBedroomScene) BedroomMap();
+            else if (scene == WorldLocationCatalog.GameCenterScene) GameCenterMap();
             else CityMap();
             DrawGrid();
             _labelRects.Clear();
@@ -233,6 +234,19 @@ namespace NihongoLife.UI
             AddWorld(L("Ga Hibari", "Hibari Station", "ひばり駅"), "STATION", "駅", 24f, 0.3f, new(.3f, .62f, .94f), "えき");
             AddWorld(L("Trường Nhật ngữ Hibari", "Hibari Japanese School", "ひばり日本語学院"), "SCHOOL", "学", 18f, -20f, new(.2f, .55f, .32f), "がっこう");
             AddWorld(L("Công viên", "Park", "こうえん"), "PARK", "園", 48f, -4f, new(.42f, .72f, .4f), "こうえん");
+            AddWorld(L("Game Center Hibari", "Game Center Hibari", "ゲームセンター"), "ARCADE", "遊", -6f, -20.5f, new(.92f, .36f, .72f), "ゲーセン");
+        }
+
+        private void GameCenterMap()
+        {
+            _header.text = L("SƠ ĐỒ GAME CENTER", "GAME CENTER FLOOR MAP", "ゲームセンター 案内図");
+            _worldMin = new(288, -10); _worldMax = new(312, 10);
+            Road(Vector2.zero, new(MapW - 120, MapH - 80));
+            AddPixel(L("Kana Match · chơi ngay", "Kana Match · play", "かなマッチ"), "KANA", "か", new(-140, 40), new(.92f, .36f, .72f));
+            AddPixel(L("Word Shooter · sắp mở", "Word Shooter · soon", "ワードシューター"), "SHOOT", "撃", new(0, 40), new(.3f, .62f, .94f));
+            AddPixel(L("Order Rush · sắp mở", "Order Rush · soon", "オーダーラッシュ"), "ORDER", "注", new(140, 40), new(.94f, .68f, .25f));
+            AddPixel(L("Quầy đổi quà", "Prize counter", "景品カウンター"), "PRIZE", "賞", new(300, -150), new(.45f, .78f, .48f));
+            AddPixel(L("Về thành phố", "Return to city", "出口"), "EXIT", "出", new(0, -200), new(.45f, .78f, .48f));
         }
 
         private void StationMap()

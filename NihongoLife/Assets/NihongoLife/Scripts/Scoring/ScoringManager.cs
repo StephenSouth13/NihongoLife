@@ -21,6 +21,9 @@ namespace NihongoLife.Scoring
 
         private List<ScoreEvent> _events = new List<ScoreEvent>();
 
+        /// <summary>Read-only view of the recorded score events (mini-game results, scenario choices).</summary>
+        public IReadOnlyList<ScoreEvent> Events => _events;
+
         private void Awake()
         {
             if (Instance != null && Instance != this)

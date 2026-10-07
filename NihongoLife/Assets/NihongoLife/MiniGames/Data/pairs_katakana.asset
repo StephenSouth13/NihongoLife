@@ -1,0 +1,99 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 435994bc376c2e94d8946b4ffab107f6, type: 3}
+  m_Name: pairs_katakana
+  m_EditorClassIdentifier: NihongoLife.MiniGames::NihongoLife.MiniGames.KanaPairSet
+  id: katakana_basic
+  type: 1
+  titleJa: "\u30AB\u30BF\u30AB\u30CA"
+  titleVi: "Katakana \u2194 Romaji"
+  pairs:
+  - targetId: kana.katakana.a
+    a: "\u30A2"
+    b: a
+    imageB: 
+    hintVi: a
+  - targetId: kana.katakana.i
+    a: "\u30A4"
+    b: i
+    imageB: 
+    hintVi: i
+  - targetId: kana.katakana.u
+    a: "\u30A6"
+    b: u
+    imageB: 
+    hintVi: u
+  - targetId: kana.katakana.e
+    a: "\u30A8"
+    b: e
+    imageB: 
+    hintVi: e
+  - targetId: kana.katakana.o
+    a: "\u30AA"
+    b: o
+    imageB: 
+    hintVi: o
+  - targetId: kana.katakana.ka
+    a: "\u30AB"
+    b: ka
+    imageB: 
+    hintVi: ka
+  - targetId: kana.katakana.ki
+    a: "\u30AD"
+    b: ki
+    imageB: 
+    hintVi: ki
+  - targetId: kana.katakana.ku
+    a: "\u30AF"
+    b: ku
+    imageB: 
+    hintVi: ku
+  - targetId: kana.katakana.ke
+    a: "\u30B1"
+    b: ke
+    imageB: 
+    hintVi: ke
+  - targetId: kana.katakana.ko
+    a: "\u30B3"
+    b: ko
+    imageB: 
+    hintVi: ko
+  - targetId: kana.katakana.sa
+    a: "\u30B5"
+    b: sa
+    imageB: 
+    hintVi: sa
+  - targetId: kana.katakana.shi
+    a: "\u30B7"
+    b: shi
+    imageB: 
+    hintVi: shi
+  - targetId: kana.katakana.su
+    a: "\u30B9"
+    b: su
+    imageB: 
+    hintVi: su
+  - targetId: kana.katakana.se
+    a: "\u30BB"
+    b: se
+    imageB: 
+    hintVi: se
+  - targetId: kana.katakana.so
+    a: "\u30BD"
+    b: so
+    imageB: 
+    hintVi: so
+  - targetId: kana.katakana.ta
+    a: "\u30BF"
+    b: ta
+    imageB: 
+    hintVi: ta

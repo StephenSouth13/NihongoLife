@@ -1,0 +1,99 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 435994bc376c2e94d8946b4ffab107f6, type: 3}
+  m_Name: pairs_ja_vi
+  m_EditorClassIdentifier: NihongoLife.MiniGames::NihongoLife.MiniGames.KanaPairSet
+  id: ja_vi_daily
+  type: 4
+  titleJa: "\u3053\u3068\u3070"
+  titleVi: "Nh\u1EADt \u2194 Vi\u1EC7t (giao ti\u1EBFp)"
+  pairs:
+  - targetId: "vocab.daily.\u3053\u3093\u306B\u3061\u306F"
+    a: "\u3053\u3093\u306B\u3061\u306F"
+    b: "Xin ch\xE0o"
+    imageB: 
+    hintVi: "Xin ch\xE0o"
+  - targetId: "vocab.daily.\u3042\u308A\u304C\u3068\u3046"
+    a: "\u3042\u308A\u304C\u3068\u3046"
+    b: "C\u1EA3m \u01A1n"
+    imageB: 
+    hintVi: "C\u1EA3m \u01A1n"
+  - targetId: "vocab.daily.\u3059\u307F\u307E\u305B\u3093"
+    a: "\u3059\u307F\u307E\u305B\u3093"
+    b: "Xin l\u1ED7i"
+    imageB: 
+    hintVi: "Xin l\u1ED7i"
+  - targetId: "vocab.daily.\u304A\u306F\u3088\u3046"
+    a: "\u304A\u306F\u3088\u3046"
+    b: "Ch\xE0o bu\u1ED5i s\xE1ng"
+    imageB: 
+    hintVi: "Ch\xE0o bu\u1ED5i s\xE1ng"
+  - targetId: "vocab.daily.\u304A\u3084\u3059\u307F"
+    a: "\u304A\u3084\u3059\u307F"
+    b: "Ch\xFAc ng\u1EE7 ngon"
+    imageB: 
+    hintVi: "Ch\xFAc ng\u1EE7 ngon"
+  - targetId: "vocab.daily.\u3044\u305F\u3060\u304D\u307E\u3059"
+    a: "\u3044\u305F\u3060\u304D\u307E\u3059"
+    b: "M\u1EDDi \u0103n c\u01A1m"
+    imageB: 
+    hintVi: "M\u1EDDi \u0103n c\u01A1m"
+  - targetId: "vocab.daily.\u304C\u3063\u3053\u3046"
+    a: "\u304C\u3063\u3053\u3046"
+    b: "Tr\u01B0\u1EDDng h\u1ECDc"
+    imageB: 
+    hintVi: "Tr\u01B0\u1EDDng h\u1ECDc"
+  - targetId: "vocab.daily.\u3048\u304D"
+    a: "\u3048\u304D"
+    b: "Nh\xE0 ga"
+    imageB: 
+    hintVi: "Nh\xE0 ga"
+  - targetId: "vocab.daily.\u3067\u3093\u3057\u3083"
+    a: "\u3067\u3093\u3057\u3083"
+    b: "T\xE0u \u0111i\u1EC7n"
+    imageB: 
+    hintVi: "T\xE0u \u0111i\u1EC7n"
+  - targetId: "vocab.daily.\u3068\u3082\u3060\u3061"
+    a: "\u3068\u3082\u3060\u3061"
+    b: "B\u1EA1n b\xE8"
+    imageB: 
+    hintVi: "B\u1EA1n b\xE8"
+  - targetId: "vocab.daily.\u305B\u3093\u305B\u3044"
+    a: "\u305B\u3093\u305B\u3044"
+    b: "Gi\xE1o vi\xEAn"
+    imageB: 
+    hintVi: "Gi\xE1o vi\xEAn"
+  - targetId: "vocab.daily.\u307F\u305A"
+    a: "\u307F\u305A"
+    b: "N\u01B0\u1EDBc"
+    imageB: 
+    hintVi: "N\u01B0\u1EDBc"
+  - targetId: "vocab.daily.\u304A\u304B\u306D"
+    a: "\u304A\u304B\u306D"
+    b: "Ti\u1EC1n"
+    imageB: 
+    hintVi: "Ti\u1EC1n"
+  - targetId: "vocab.daily.\u3044\u3048"
+    a: "\u3044\u3048"
+    b: "Nh\xE0"
+    imageB: 
+    hintVi: "Nh\xE0"
+  - targetId: "vocab.daily.\u306D\u3053"
+    a: "\u306D\u3053"
+    b: "Con m\xE8o"
+    imageB: 
+    hintVi: "Con m\xE8o"
+  - targetId: "vocab.daily.\u3044\u306C"
+    a: "\u3044\u306C"
+    b: "Con ch\xF3"
+    imageB: 
+    hintVi: "Con ch\xF3"

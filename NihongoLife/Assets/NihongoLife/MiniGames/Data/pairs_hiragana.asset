@@ -1,0 +1,99 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 435994bc376c2e94d8946b4ffab107f6, type: 3}
+  m_Name: pairs_hiragana
+  m_EditorClassIdentifier: NihongoLife.MiniGames::NihongoLife.MiniGames.KanaPairSet
+  id: hiragana_basic
+  type: 0
+  titleJa: "\u3072\u3089\u304C\u306A"
+  titleVi: "Hiragana \u2194 Romaji"
+  pairs:
+  - targetId: kana.hiragana.a
+    a: "\u3042"
+    b: a
+    imageB: 
+    hintVi: a
+  - targetId: kana.hiragana.i
+    a: "\u3044"
+    b: i
+    imageB: 
+    hintVi: i
+  - targetId: kana.hiragana.u
+    a: "\u3046"
+    b: u
+    imageB: 
+    hintVi: u
+  - targetId: kana.hiragana.e
+    a: "\u3048"
+    b: e
+    imageB: 
+    hintVi: e
+  - targetId: kana.hiragana.o
+    a: "\u304A"
+    b: o
+    imageB: 
+    hintVi: o
+  - targetId: kana.hiragana.ka
+    a: "\u304B"
+    b: ka
+    imageB: 
+    hintVi: ka
+  - targetId: kana.hiragana.ki
+    a: "\u304D"
+    b: ki
+    imageB: 
+    hintVi: ki
+  - targetId: kana.hiragana.ku
+    a: "\u304F"
+    b: ku
+    imageB: 
+    hintVi: ku
+  - targetId: kana.hiragana.ke
+    a: "\u3051"
+    b: ke
+    imageB: 
+    hintVi: ke
+  - targetId: kana.hiragana.ko
+    a: "\u3053"
+    b: ko
+    imageB: 
+    hintVi: ko
+  - targetId: kana.hiragana.sa
+    a: "\u3055"
+    b: sa
+    imageB: 
+    hintVi: sa
+  - targetId: kana.hiragana.shi
+    a: "\u3057"
+    b: shi
+    imageB: 
+    hintVi: shi
+  - targetId: kana.hiragana.su
+    a: "\u3059"
+    b: su
+    imageB: 
+    hintVi: su
+  - targetId: kana.hiragana.se
+    a: "\u305B"
+    b: se
+    imageB: 
+    hintVi: se
+  - targetId: kana.hiragana.so
+    a: "\u305D"
+    b: so
+    imageB: 
+    hintVi: so
+  - targetId: kana.hiragana.ta
+    a: "\u305F"
+    b: ta
+    imageB: 
+    hintVi: ta

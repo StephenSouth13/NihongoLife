@@ -1,0 +1,99 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 435994bc376c2e94d8946b4ffab107f6, type: 3}
+  m_Name: pairs_word_image
+  m_EditorClassIdentifier: NihongoLife.MiniGames::NihongoLife.MiniGames.KanaPairSet
+  id: word_image
+  type: 3
+  titleJa: "\u305F\u3079\u3082\u306E"
+  titleVi: "T\u1EEB \u2194 H\xECnh (\u0111\u1ED3 \u0103n)"
+  pairs:
+  - targetId: vocab.food.ringo
+    a: "\u308A\u3093\u3054"
+    b: "t\xE1o"
+    imageB: MiniGames/Words/ringo
+    hintVi: "t\xE1o"
+  - targetId: vocab.food.banana
+    a: "\u30D0\u30CA\u30CA"
+    b: "chu\u1ED1i"
+    imageB: MiniGames/Words/banana
+    hintVi: "chu\u1ED1i"
+  - targetId: vocab.food.pan
+    a: "\u30D1\u30F3"
+    b: "b\xE1nh m\xEC"
+    imageB: MiniGames/Words/pan
+    hintVi: "b\xE1nh m\xEC"
+  - targetId: vocab.food.keeki
+    a: "\u30B1\u30FC\u30AD"
+    b: "b\xE1nh kem"
+    imageB: MiniGames/Words/keeki
+    hintVi: "b\xE1nh kem"
+  - targetId: vocab.food.ninjin
+    a: "\u306B\u3093\u3058\u3093"
+    b: "c\xE0 r\u1ED1t"
+    imageB: MiniGames/Words/ninjin
+    hintVi: "c\xE0 r\u1ED1t"
+  - targetId: vocab.food.sakana
+    a: "\u3055\u304B\u306A"
+    b: "c\xE1"
+    imageB: MiniGames/Words/sakana
+    hintVi: "c\xE1"
+  - targetId: vocab.food.tamago
+    a: "\u305F\u307E\u3054"
+    b: "tr\u1EE9ng"
+    imageB: MiniGames/Words/tamago
+    hintVi: "tr\u1EE9ng"
+  - targetId: vocab.food.budou
+    a: "\u3076\u3069\u3046"
+    b: nho
+    imageB: MiniGames/Words/budou
+    hintVi: nho
+  - targetId: vocab.food.ocha
+    a: "\u304A\u3061\u3083"
+    b: "tr\xE0"
+    imageB: MiniGames/Words/ocha
+    hintVi: "tr\xE0"
+  - targetId: vocab.food.koohii
+    a: "\u30B3\u30FC\u30D2\u30FC"
+    b: "c\xE0 ph\xEA"
+    imageB: MiniGames/Words/koohii
+    hintVi: "c\xE0 ph\xEA"
+  - targetId: vocab.food.onigiri
+    a: "\u304A\u306B\u304E\u308A"
+    b: "c\u01A1m n\u1EAFm"
+    imageB: MiniGames/Words/onigiri
+    hintVi: "c\u01A1m n\u1EAFm"
+  - targetId: vocab.food.sushi
+    a: "\u3059\u3057"
+    b: sushi
+    imageB: MiniGames/Words/sushi
+    hintVi: sushi
+  - targetId: vocab.food.suika
+    a: "\u3059\u3044\u304B"
+    b: "d\u01B0a h\u1EA5u"
+    imageB: MiniGames/Words/suika
+    hintVi: "d\u01B0a h\u1EA5u"
+  - targetId: vocab.food.ichigo
+    a: "\u3044\u3061\u3054"
+    b: "d\xE2u t\xE2y"
+    imageB: MiniGames/Words/ichigo
+    hintVi: "d\xE2u t\xE2y"
+  - targetId: vocab.food.aisu
+    a: "\u30A2\u30A4\u30B9"
+    b: kem
+    imageB: MiniGames/Words/aisu
+    hintVi: kem
+  - targetId: vocab.food.tomato
+    a: "\u30C8\u30DE\u30C8"
+    b: "c\xE0 chua"
+    imageB: MiniGames/Words/tomato
+    hintVi: "c\xE0 chua"

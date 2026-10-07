@@ -1,0 +1,32 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8cd7292b80d74e04db4a79c2979f607a, type: 3}
+  m_Name: minigame_kana_match
+  m_EditorClassIdentifier: NihongoLife.MiniGames::NihongoLife.MiniGames.MiniGameDefinition
+  id: kana_match
+  kind: 0
+  titleJa: "\u304B\u306A\u30DE\u30C3\u30C1"
+  titleVi: Kana Match
+  descriptionVi: "L\u1EADt th\u1EBB v\xE0 gh\xE9p c\u1EB7p: ch\u1EEF \u2194 c\xE1ch
+    \u0111\u1ECDc, t\u1EEB \u2194 h\xECnh, ti\u1EBFng Nh\u1EADt \u2194 ti\u1EBFng
+    Vi\u1EC7t."
+  playable: 1
+  contentSets:
+  - {fileID: 11400000, guid: 25f61ec1b2aa4864caca02215798e31e, type: 2}
+  - {fileID: 11400000, guid: 278b97930c6f619429be8006d027c8c2, type: 2}
+  - {fileID: 11400000, guid: 7ab00ab706bb59e46bd2f806ad67c152, type: 2}
+  - {fileID: 11400000, guid: 4e11c5ac95210e84ba8c18ff569b8063, type: 2}
+  - {fileID: 11400000, guid: 0c2812a7c27ad314ab294e9e02927910, type: 2}
+  pairsPerRound: 8
+  timeLimitSeconds: 150
+  expPerCorrect: 3
+  knowledgePerRound: 4

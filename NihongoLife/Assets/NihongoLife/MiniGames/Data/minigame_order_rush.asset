@@ -1,0 +1,28 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8cd7292b80d74e04db4a79c2979f607a, type: 3}
+  m_Name: minigame_order_rush
+  m_EditorClassIdentifier: NihongoLife.MiniGames::NihongoLife.MiniGames.MiniGameDefinition
+  id: order_rush
+  kind: 2
+  titleJa: "\u30AA\u30FC\u30C0\u30FC\u30E9\u30C3\u30B7\u30E5"
+  titleVi: Order Rush
+  descriptionVi: "Kh\xE1ch g\u1ECDi m\xF3n b\u1EB1ng ti\u1EBFng Nh\u1EADt \u2014
+    ch\u1ECDn \u0111\xFAng m\xF3n tr\u01B0\u1EDBc khi h\u1EBFt gi\u1EDD (s\u1EAFp
+    ra m\u1EAFt)."
+  playable: 0
+  contentSets:
+  - {fileID: 11400000, guid: 4e11c5ac95210e84ba8c18ff569b8063, type: 2}
+  pairsPerRound: 6
+  timeLimitSeconds: 120
+  expPerCorrect: 3
+  knowledgePerRound: 4

@@ -1,0 +1,29 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8cd7292b80d74e04db4a79c2979f607a, type: 3}
+  m_Name: minigame_word_shooter
+  m_EditorClassIdentifier: NihongoLife.MiniGames::NihongoLife.MiniGames.MiniGameDefinition
+  id: word_shooter
+  kind: 1
+  titleJa: "\u30EF\u30FC\u30C9\u30B7\u30E5\u30FC\u30BF\u30FC"
+  titleVi: Word Shooter
+  descriptionVi: "Nghe ho\u1EB7c \u0111\u1ECDc m\u1ED9t t\u1EEB r\u1ED3i b\u1EAFn
+    \u0111\xFAng m\u1EE5c ti\xEAu (s\u1EAFp ra m\u1EAFt)."
+  playable: 0
+  contentSets:
+  - {fileID: 11400000, guid: 4e11c5ac95210e84ba8c18ff569b8063, type: 2}
+  - {fileID: 11400000, guid: 7ab00ab706bb59e46bd2f806ad67c152, type: 2}
+  - {fileID: 11400000, guid: 0c2812a7c27ad314ab294e9e02927910, type: 2}
+  pairsPerRound: 10
+  timeLimitSeconds: 90
+  expPerCorrect: 3
+  knowledgePerRound: 4

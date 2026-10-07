@@ -10,11 +10,14 @@ namespace NihongoLife.Core
         public const string SushiRestaurantScene = "30_SushiRestaurant";
         public const string SchoolScene = "40_ HIBARICLASS";
         public const string HomeBedroomScene = "45_HomeBedroom";
+        public const string GameCenterScene = "50_GameCenter";
 
         public const string StationEntrance = "station_entrance";
         public const string SushiEntrance = "sushi_entrance";
         public const string SchoolEntrance = "school_entrance";
         public const string HomeBedroomEntrance = "home_bedroom";
+        public const string GameCenterEntrance = "game_center_entrance";
+        public const string CityGameCenterReturn = "city_game_center_return";
         public const string CityStationReturn = "city_station_return";
         public const string CitySushiReturn = "city_sushi_return";
         public const string CitySchoolReturn = "city_school_return";
@@ -27,6 +30,7 @@ namespace NihongoLife.Core
                 [StationScene] = new LocationInfo("ekimae", "Ekimae Station District", "Ga Hibari", "ひばり駅"),
                 [SushiRestaurantScene] = new LocationInfo("sushi_hibari", "Sushi Hibari", "Nhà hàng Sushi Hibari", "ひばり寿司"),
                 [SchoolScene] = new LocationInfo("hibari_school", "Hibari Japanese School", "Trường Nhật ngữ Hibari", "ひばり日本語学院"),
+                [GameCenterScene] = new LocationInfo("game_center", "Game Center Hibari", "Trung tâm trò chơi Hibari", "ゲームセンター"),
                 [HomeBedroomScene] = new LocationInfo("home_bedroom", "Your Bedroom", "Phòng trọ của bạn", "自室")
             };
 
