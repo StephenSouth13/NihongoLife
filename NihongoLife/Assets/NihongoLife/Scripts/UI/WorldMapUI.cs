@@ -21,7 +21,7 @@ namespace NihongoLife.UI
     {
         private sealed class MapPlace
         {
-            public string Name, Type, Glyph;
+            public string Name, Type, Glyph, Short;
             public Vector2 World;     // world X/Z, or NaN when only a pixel position is known
             public Vector2 Pixel;
             public Color Color;
@@ -42,6 +42,7 @@ namespace NihongoLife.UI
         private TMP_FontAsset _font;
         private Vector2 _worldMin, _worldMax;
         private readonly List<MapPlace> _places = new List<MapPlace>();
+        private readonly List<Rect> _labelRects = new List<Rect>();
         private readonly List<(MapPlace place, TextMeshProUGUI distance)> _rows = new List<(MapPlace, TextMeshProUGUI)>();
         public bool IsVisible => _overlay != null && _overlay.activeSelf;
         public event Action<bool> OnVisibilityChanged;
@@ -208,6 +209,7 @@ namespace NihongoLife.UI
             else if (scene == WorldLocationCatalog.HomeBedroomScene) BedroomMap();
             else CityMap();
             DrawGrid();
+            _labelRects.Clear();
             foreach (var place in _places) DrawPlace(place);
             BuildSidebar();
             DrawPlayerMarker();
@@ -224,13 +226,13 @@ namespace NihongoLife.UI
             Road(MapPos(0f, -6f), MapSize(9f, 52f));
             Road(MapPos(-12f, -6f), MapSize(5f, 52f));
             Road(MapPos(12f, -6f), MapSize(5f, 52f));
-            AddWorld(L("Siêu thị Hibari Mart", "Hibari Mart", "ひばりマート"), "KONBINI", "店", 0f, 4f, new(.2f, .76f, .66f));
-            AddWorld(L("Bảng tin khu phố", "Notice board", "けいじばん"), "PLAZA", "掲", -8f, 1.5f, new(.85f, .7f, .4f));
-            AddWorld(L("Sushi Hibari", "Sushi Hibari", "ひばり寿司"), "SUSHI", "寿", -18f, 0.3f, new(.94f, .42f, .36f));
-            AddWorld(L("Nhà trọ Hibari Heights", "Hibari Heights (home)", "ひばりハイツ"), "HOME", "家", -30f, 1.3f, new(.62f, .76f, .38f));
-            AddWorld(L("Ga Hibari", "Hibari Station", "ひばり駅"), "STATION", "駅", 24f, 0.3f, new(.3f, .62f, .94f));
-            AddWorld(L("Trường Nhật ngữ Hibari", "Hibari Japanese School", "ひばり日本語学院"), "SCHOOL", "学", 18f, -20f, new(.2f, .55f, .32f));
-            AddWorld(L("Công viên", "Park", "こうえん"), "PARK", "園", 48f, -4f, new(.42f, .72f, .4f));
+            AddWorld(L("Siêu thị Hibari Mart", "Hibari Mart", "ひばりマート"), "KONBINI", "店", 0f, 4f, new(.2f, .76f, .66f), "ひばりマート");
+            AddWorld(L("Bảng tin khu phố", "Notice board", "けいじばん"), "PLAZA", "掲", -8f, 1.5f, new(.85f, .7f, .4f), "けいじばん");
+            AddWorld(L("Sushi Hibari", "Sushi Hibari", "ひばり寿司"), "SUSHI", "寿", -18f, 0.3f, new(.94f, .42f, .36f), "すし");
+            AddWorld(L("Nhà trọ Hibari Heights", "Hibari Heights (home)", "ひばりハイツ"), "HOME", "家", -30f, 1.3f, new(.62f, .76f, .38f), "いえ");
+            AddWorld(L("Ga Hibari", "Hibari Station", "ひばり駅"), "STATION", "駅", 24f, 0.3f, new(.3f, .62f, .94f), "えき");
+            AddWorld(L("Trường Nhật ngữ Hibari", "Hibari Japanese School", "ひばり日本語学院"), "SCHOOL", "学", 18f, -20f, new(.2f, .55f, .32f), "がっこう");
+            AddWorld(L("Công viên", "Park", "こうえん"), "PARK", "園", 48f, -4f, new(.42f, .72f, .4f), "こうえん");
         }
 
         private void StationMap()
@@ -276,8 +278,8 @@ namespace NihongoLife.UI
             AddWorld(L("Cửa ra phố", "Door to the street", "げんかん"), "EXIT", "出", -2.4f, -2.6f, new(.45f, .78f, .48f));
         }
 
-        private void AddWorld(string name, string type, string glyph, float x, float z, Color color) =>
-            _places.Add(new MapPlace { Name = name, Type = type, Glyph = glyph, World = new Vector2(x, z), Pixel = MapPos(x, z), Color = color });
+        private void AddWorld(string name, string type, string glyph, float x, float z, Color color, string shortLabel = null) =>
+            _places.Add(new MapPlace { Name = name, Type = type, Glyph = glyph, Short = shortLabel, World = new Vector2(x, z), Pixel = MapPos(x, z), Color = color });
 
         private void AddPixel(string name, string type, string glyph, Vector2 pixel, Color color) =>
             _places.Add(new MapPlace { Name = name, Type = type, Glyph = glyph, World = new Vector2(float.NaN, float.NaN), Pixel = pixel, Color = color });
@@ -329,10 +331,17 @@ namespace NihongoLife.UI
             NLUi.Anchor(marker, new Vector2(0.5f, 0.5f), place.Pixel, new Vector2(46f, 46f));
             marker.GetComponent<Image>().raycastTarget = false;
             NLUi.Stretch(NLUi.Label(marker, "Glyph", place.Glyph, 26f, new Color(0.08f, 0.1f, 0.12f), _font, FontStyles.Bold, TextAlignmentOptions.Center).rectTransform);
-            var label = NLUi.Pill(marker, "Label", place.Name, _font, new Color(0.05f, 0.07f, 0.09f, 0.88f), NLUi.Text, 15f);
-            label.anchorMin = label.anchorMax = new Vector2(0.5f, 0f);
-            label.pivot = new Vector2(0.5f, 1f);
-            label.anchoredPosition = new Vector2(0f, -6f);
+            string text = string.IsNullOrEmpty(place.Short) ? place.Name : place.Short;
+            var label = NLUi.Pill(marker, "Label", text, _font, new Color(0.05f, 0.07f, 0.09f, 0.88f), NLUi.Text, 15f);
+            // Below the marker by default; flip above when that would cover a neighbour's label.
+            float width = text.Length * 16f + 34f;
+            var below = new Rect(place.Pixel.x - width / 2f, place.Pixel.y - 23f - 30f, width, 30f);
+            bool above = _labelRects.Exists(r => r.Overlaps(below));
+            var chosen = above ? new Rect(below.x, place.Pixel.y + 23f, width, 30f) : below;
+            _labelRects.Add(chosen);
+            label.anchorMin = label.anchorMax = new Vector2(0.5f, above ? 1f : 0f);
+            label.pivot = new Vector2(0.5f, above ? 0f : 1f);
+            label.anchoredPosition = new Vector2(0f, above ? 6f : -6f);
         }
 
         private void BuildSidebar()

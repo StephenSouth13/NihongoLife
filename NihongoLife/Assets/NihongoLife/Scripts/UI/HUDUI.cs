@@ -305,7 +305,7 @@ namespace NihongoLife.UI
         /// </summary>
         private void RepairRuntimeLayout()
         {
-            StyleInfoPanelColor(inventoryPanel);
+            if (_inventoryWindow == null) StyleInfoPanelColor(inventoryPanel);
             StyleInfoPanelColor(characterPanel);
         }
 
@@ -783,7 +783,7 @@ namespace NihongoLife.UI
 
         private void EnsureInventoryActions()
         {
-            if (inventoryPanel == null || _inventoryDetailText != null) return;
+            if (_inventoryWindow != null || inventoryPanel == null || _inventoryDetailText != null) return; // InventoryWindow has its own detail/actions
             var inventoryRect = inventoryPanel.GetComponent<RectTransform>();
             if (inventoryRect != null) inventoryRect.sizeDelta = new Vector2(780f, 420f);
             TMP_FontAsset font = scenarioTitleText != null ? scenarioTitleText.font : null;

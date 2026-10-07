@@ -29,7 +29,11 @@ namespace NihongoLife.UI
             if (parent != null) go.transform.SetParent(parent, false);
             var canvas = go.GetComponent<Canvas>();
             canvas.renderMode = RenderMode.ScreenSpaceOverlay;
+            canvas.overrideSorting = true;
             canvas.sortingOrder = sortingOrder;
+            // Nested under another canvas (e.g. the HUD) the RectTransform defaults to a 100×100 box in the
+            // middle of the screen; stretch it so anchored windows land at the real screen edges.
+            if (parent != null && parent.GetComponentInParent<Canvas>() != null) Stretch((RectTransform)go.transform);
             var scaler = go.GetComponent<CanvasScaler>();
             scaler.uiScaleMode = CanvasScaler.ScaleMode.ScaleWithScreenSize;
             scaler.referenceResolution = new Vector2(1920f, 1080f);

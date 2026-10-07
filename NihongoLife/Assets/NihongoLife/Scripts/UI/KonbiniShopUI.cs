@@ -87,6 +87,7 @@ namespace NihongoLife.UI
             Show();
             _browse.gameObject.SetActive(false);
             _checkout.gameObject.SetActive(true);
+            _title.text = "ひばりマート  ·  <color=#F2B233>レジ</color>  <size=70%><color=#A8B4C4>Quầy thanh toán</color></size>";
             RebuildCheckout();
         }
 
@@ -250,7 +251,9 @@ namespace NihongoLife.UI
                 NLUi.Size(qty, preferredWidth: 180f);
                 string id = p.id;
                 var remove = NLUi.Button(row, "Remove", "×", _font, () => KonbiniBasket.Remove(id), new Color(0.3f, 0.12f, 0.12f), 20f, null, 40f);
-                NLUi.Size(remove, preferredWidth: 48f);
+                remove.GetComponent<VerticalLayoutGroup>().padding = new RectOffset(4, 4, 4, 4);
+                var removeSize = NLUi.Size(remove, preferredWidth: 44f);
+                removeSize.flexibleWidth = 0f;
             }
             int wallet = PlayerInventory.Instance != null ? PlayerInventory.Instance.Yen : 0;
             _checkoutTotal.text = KonbiniBasket.IsEmpty
