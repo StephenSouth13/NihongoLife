@@ -9103,35 +9103,35 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 49859afe922439b4c888254f378de7dd, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 803
+      value: 801.475
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 49859afe922439b4c888254f378de7dd, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.30000004
+      value: 0.3
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 49859afe922439b4c888254f378de7dd, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 4
+      value: 3.92
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 49859afe922439b4c888254f378de7dd, type: 3}
       propertyPath: m_LocalRotation.w
-      value: -0.000000030908616
+      value: 0.4904572
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 49859afe922439b4c888254f378de7dd, type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0.00000003090862
+      value: -0.49045715
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 49859afe922439b4c888254f378de7dd, type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0.7071067
+      value: 0.5093641
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 49859afe922439b4c888254f378de7dd, type: 3}
       propertyPath: m_LocalRotation.z
-      value: 0.7071068
+      value: 0.5093642
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 49859afe922439b4c888254f378de7dd, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
+      value: -90
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 49859afe922439b4c888254f378de7dd, type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
@@ -9139,7 +9139,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 49859afe922439b4c888254f378de7dd, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
+      value: 92.167
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 49859afe922439b4c888254f378de7dd, type: 3}
       propertyPath: m_Name
@@ -17534,7 +17534,6 @@ Transform:
   - {fileID: 1098564744}
   - {fileID: 1955409606}
   - {fileID: 187138480}
-  - {fileID: 1194331746}
   - {fileID: 1560194294}
   - {fileID: 1350204354}
   - {fileID: 134235934}
@@ -39274,123 +39273,6 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1189270291}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
---- !u!1001 &1194331745
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    serializedVersion: 3
-    m_TransformParent: {fileID: 505769633}
-    m_Modifications:
-    - target: {fileID: 5712569708338321974, guid: 87123e4a9f4545b6b8799124f3a4c3f8, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 790
-      objectReference: {fileID: 0}
-    - target: {fileID: 5712569708338321974, guid: 87123e4a9f4545b6b8799124f3a4c3f8, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 0.31
-      objectReference: {fileID: 0}
-    - target: {fileID: 5712569708338321974, guid: 87123e4a9f4545b6b8799124f3a4c3f8, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 9.35
-      objectReference: {fileID: 0}
-    - target: {fileID: 5712569708338321974, guid: 87123e4a9f4545b6b8799124f3a4c3f8, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: -0.00000004371139
-      objectReference: {fileID: 0}
-    - target: {fileID: 5712569708338321974, guid: 87123e4a9f4545b6b8799124f3a4c3f8, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5712569708338321974, guid: 87123e4a9f4545b6b8799124f3a4c3f8, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 5712569708338321974, guid: 87123e4a9f4545b6b8799124f3a4c3f8, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5712569708338321974, guid: 87123e4a9f4545b6b8799124f3a4c3f8, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5712569708338321974, guid: 87123e4a9f4545b6b8799124f3a4c3f8, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5712569708338321974, guid: 87123e4a9f4545b6b8799124f3a4c3f8, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6959516871158418510, guid: 87123e4a9f4545b6b8799124f3a4c3f8, type: 3}
-      propertyPath: m_Name
-      value: NPC_StationStaff_Kimura
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-    m_RemovedGameObjects: []
-    m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 6959516871158418510, guid: 87123e4a9f4545b6b8799124f3a4c3f8, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1194331749}
-    - targetCorrespondingSourceObject: {fileID: 6959516871158418510, guid: 87123e4a9f4545b6b8799124f3a4c3f8, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1194331748}
-  m_SourcePrefab: {fileID: 100100000, guid: 87123e4a9f4545b6b8799124f3a4c3f8, type: 3}
---- !u!4 &1194331746 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 5712569708338321974, guid: 87123e4a9f4545b6b8799124f3a4c3f8, type: 3}
-  m_PrefabInstance: {fileID: 1194331745}
-  m_PrefabAsset: {fileID: 0}
---- !u!1 &1194331747 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 6959516871158418510, guid: 87123e4a9f4545b6b8799124f3a4c3f8, type: 3}
-  m_PrefabInstance: {fileID: 1194331745}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &1194331748
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1194331747}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5341a182b282f3842951de9cc0a5db21, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: NihongoLife::NihongoLife.NPC.NPCController
-  npcId: npc_station_staff
-  displayName: Kimura
-  role: Station staff
-  lookAtSpeed: 5
-  promptJa: "\u99C5\u54E1\u3068\u8A71\u3059"
-  promptEn: "N\xF3i chuy\u1EC7n v\u1EDBi nh\xE2n vi\xEAn ga"
-  scenarioAreaIdOnInteract: 
-  fallbackJa: "\u5207\u7B26\u3092\u8CB7\u3063\u3066\u3001\u6539\u672D\u3092\u901A\u3063\u3066\u304F\u3060\u3055\u3044\u3002"
-  fallbackReading: Kippu o katte, kaisatsu o toottekudasai.
-  fallbackEn: Please buy a ticket and pass through the gate.
-  fallbackRomaji: Kippu o katte, kaisatsu o tootte kudasai.
---- !u!65 &1194331749
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1194331747}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 0.8, y: 2, z: 0.8}
-  m_Center: {x: 0, y: 1, z: 0}
 --- !u!1 &1195256342
 GameObject:
   m_ObjectHideFlags: 0
@@ -55065,15 +54947,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 864ea1f31ab71b84a821c09170168f67, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 806.2
+      value: 806.77
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 864ea1f31ab71b84a821c09170168f67, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.000000059604645
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 864ea1f31ab71b84a821c09170168f67, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 7.2
+      value: 6.278
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 864ea1f31ab71b84a821c09170168f67, type: 3}
       propertyPath: m_LocalRotation.w
