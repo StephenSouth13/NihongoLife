@@ -25,7 +25,20 @@ namespace NihongoLife.Core
         public void Initialize()
         {
             EnsureOverlay();
+            SceneManager.sceneLoaded -= HandleSceneLoaded;
+            SceneManager.sceneLoaded += HandleSceneLoaded;
             Debug.Log("[SceneFlowController] Initialized.");
+        }
+
+        private void OnDestroy() => SceneManager.sceneLoaded -= HandleSceneLoaded;
+
+        // A single-mode load (title, save load, direct LoadScene) replaces every zone, so stale zone state must not block the next EnterZone.
+        private void HandleSceneLoaded(Scene scene, LoadSceneMode mode)
+        {
+            if (mode != LoadSceneMode.Single || _isLoading) return;
+            _hostSceneName = null;
+            _activeZoneSceneName = null;
+            _hiddenRootStates.Clear();
         }
 
         public void LoadScene(string sceneName)

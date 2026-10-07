@@ -488,7 +488,8 @@ namespace NihongoLife.UI
             objectButton.transform.SetParent(canvas.transform, false);
             var rect = objectButton.AddComponent<RectTransform>();
             rect.anchorMin = rect.anchorMax = new Vector2(1f, 1f); rect.pivot = new Vector2(1f, 1f);
-            rect.anchoredPosition = new Vector2(-28f, -28f); rect.sizeDelta = new Vector2(150f, 44f);
+            // Sits left of the top-right wallet (WalletText spans x -248..-28) so the two never overlap.
+            rect.anchoredPosition = new Vector2(-262f, -24f); rect.sizeDelta = new Vector2(150f, 40f);
             var image = objectButton.AddComponent<Image>(); image.color = new Color(0.025f, 0.04f, 0.06f, 0.9f);
             var button = objectButton.AddComponent<Button>(); button.targetGraphic = image;
             var label = new GameObject("Label").AddComponent<TextMeshProUGUI>();
