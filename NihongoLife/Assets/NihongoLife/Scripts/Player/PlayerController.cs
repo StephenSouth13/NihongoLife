@@ -20,7 +20,7 @@ namespace NihongoLife.Player
         [SerializeField] private float acceleration = 12f;
         [SerializeField] private float deceleration = 16f;
         [SerializeField] private float maxFallSpeed = -20f;
-        [SerializeField] private float runEnergyCostPerSecond = 4.5f;
+        [SerializeField] private float runEnergyCostPerSecond = 14f;
         [SerializeField] private float jumpHeight = 1.25f;
         [SerializeField] private float walkFootstepInterval = 0.52f;
         [SerializeField] private float runFootstepInterval = 0.34f;
@@ -96,6 +96,7 @@ namespace NihongoLife.Player
             if (GetComponent<EmploymentSystem>() == null) gameObject.AddComponent<EmploymentSystem>();
             if (GetComponent<BusinessSystem>() == null) gameObject.AddComponent<BusinessSystem>();
             if (GetComponent<NihongoLife.Interaction.PlayerEmoteController>() == null) gameObject.AddComponent<NihongoLife.Interaction.PlayerEmoteController>();
+            if (GetComponent<PostureStabilizer>() == null) gameObject.AddComponent<PostureStabilizer>();
         }
 
         private void Update()
@@ -129,12 +130,15 @@ namespace NihongoLife.Player
         private void HandleMovement()
         {
             Vector2 moveInput = _input != null ? _input.Move : Vector2.zero;
-            bool isRunning = _input != null && _input.IsPressed(GameInputId.Sprint);
-
-            if (isRunning && moveInput.sqrMagnitude > 0.01f && PlayerStatus.Instance != null)
+            bool moving = moveInput.sqrMagnitude > 0.01f && !InputLocked;
+            bool isRunning = moving && _input != null && _input.IsPressed(GameInputId.Sprint);
+            var status = PlayerStatus.Instance;
+            if (isRunning && status != null)
             {
-                isRunning = PlayerStatus.Instance.ConsumeEnergy(runEnergyCostPerSecond * Time.deltaTime);
+                // Exhausted players walk until they have caught their breath (see PlayerStatus.IsExhausted).
+                isRunning = status.CanSprint && status.ConsumeEnergy(runEnergyCostPerSecond * Time.deltaTime);
             }
+            status?.ReportActivity(moving, isRunning);
 
             if (!IsGameplayCamera(_mainCamera))
             {

@@ -42,6 +42,30 @@ namespace NihongoLife.UI
 
         public bool IsOpen => PanelObject != null && PanelObject.activeSelf;
 
+        protected virtual bool LocksGameplay => false;
+        private NihongoLife.Player.PlayerController _modalPlayer;
+        private NihongoLife.Cameras.ThirdPersonCameraController _modalCamera;
+        private bool _playerWasLocked, _cameraWasLocked, _cursorWasVisible;
+        private CursorLockMode _previousCursorLock;
+
+        private void LateUpdate()
+        {
+            if (!LocksGameplay || !IsOpen) return;
+            if (_modalPlayer != null) _modalPlayer.InputLocked = true;
+            if (_modalCamera != null) _modalCamera.IsLocked = true;
+            Cursor.lockState = CursorLockMode.None;
+            Cursor.visible = true;
+        }
+
+        private void RestoreGameplay()
+        {
+            if (!LocksGameplay) return;
+            if (_modalPlayer != null) _modalPlayer.InputLocked = _playerWasLocked;
+            if (_modalCamera != null) _modalCamera.IsLocked = _cameraWasLocked;
+            Cursor.lockState = _previousCursorLock;
+            Cursor.visible = _cursorWasVisible;
+        }
+
         protected abstract Vector2 CardSize { get; }
         protected abstract void GetTitle(out string vi, out string en, out string ja);
         protected abstract void Build(RectTransform card);
@@ -79,6 +103,7 @@ namespace NihongoLife.UI
 
         private void OnDestroy()
         {
+            if (IsOpen) RestoreGameplay();
             if (GameServices.TryGet(out GameSettingsService settings)) settings.OnLanguageChanged -= HandleGlobalLanguageChanged;
         }
 
@@ -86,12 +111,22 @@ namespace NihongoLife.UI
 
         public void Show()
         {
-            if (PanelObject == null) return;
+            if (PanelObject == null || IsOpen) return;
+            if (LocksGameplay)
+            {
+                _modalPlayer = FindFirstObjectByType<NihongoLife.Player.PlayerController>();
+                _modalCamera = FindFirstObjectByType<NihongoLife.Cameras.ThirdPersonCameraController>();
+                _playerWasLocked = _modalPlayer != null && _modalPlayer.InputLocked;
+                _cameraWasLocked = _modalCamera != null && _modalCamera.IsLocked;
+                _previousCursorLock = Cursor.lockState;
+                _cursorWasVisible = Cursor.visible;
+            }
 
             ApplyLanguage();
             OnOpened();
             PanelObject.SetActive(true);
             PanelObject.transform.SetAsLastSibling();
+            LateUpdate();
             PlayCue(GameAudioCue.UiOpen, 0.8f);
             UIStyleKit.PlayShowAnimation(Card != null ? Card.gameObject : PanelObject);
         }
@@ -100,6 +135,7 @@ namespace NihongoLife.UI
         {
             if (PanelObject == null || !PanelObject.activeSelf) return;
             PanelObject.SetActive(false);
+            RestoreGameplay();
             PlayCue(GameAudioCue.UiClose, 0.8f);
             OnClosed();
         }

@@ -43,6 +43,7 @@ namespace NihongoLife.UI
         private bool _typing;
         private float _typed;
         private bool _canLeave;
+        private UnityEngine.UI.Button _closeButton;
         private float _openedAt;
 
         private const float CharsPerSecond = 55f;
@@ -76,6 +77,9 @@ namespace NihongoLife.UI
             NLUi.Size(spacer.transform, flexibleWidth: 1f);
             _mode = NLUi.Label(header, "Mode", "", 15f, NLUi.Muted, _font, FontStyles.Normal, TextAlignmentOptions.Right);
             _mode.textWrappingMode = TextWrappingModes.NoWrap;
+            var closeSpace = new GameObject("CloseSpace", typeof(RectTransform));
+            closeSpace.transform.SetParent(header, false);
+            NLUi.Size(closeSpace.transform, 46f, 46f);
 
             _japanese = NLUi.Label(_box, "Japanese", "", 33f, NLUi.Text, _font, FontStyles.Bold);
             _japanese.lineSpacing = 6f;
@@ -86,6 +90,7 @@ namespace NihongoLife.UI
             _choiceRoot = NLUi.Group(_box, "Choices", true, 8f);
             NLUi.Divider(_box).SetSiblingIndex(_choiceRoot.GetSiblingIndex());
             _hint = NLUi.Label(_box, "Hint", "", 15f, NLUi.Muted, _font, FontStyles.Normal, TextAlignmentOptions.Right);
+            _closeButton = NLUi.CloseButton(_box, _font, Leave, 42f, 14f);
             _root.gameObject.SetActive(false);
         }
 
@@ -93,6 +98,7 @@ namespace NihongoLife.UI
         {
             _canLeave = canLeave;
             _openedAt = Time.unscaledTime;
+            if (_closeButton != null) _closeButton.gameObject.SetActive(canLeave);
             _root.gameObject.SetActive(true);
             _root.SetAsLastSibling();
 

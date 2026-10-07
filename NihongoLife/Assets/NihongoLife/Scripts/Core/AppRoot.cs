@@ -168,6 +168,12 @@ namespace NihongoLife.Core
                 onlineWorldBootstrap = gameObject.AddComponent<OnlineWorldBootstrap>();
             }
 
+            // Persistent voice and live classroom controls are available in every gameplay scene.
+            if (GetComponent<NihongoLife.Learning.SpeechPracticeController>() == null)
+                gameObject.AddComponent<NihongoLife.Learning.SpeechPracticeController>();
+            if (FindFirstObjectByType<NihongoLife.Learning.EduMeetingManager>() == null)
+                gameObject.AddComponent<NihongoLife.Learning.EduMeetingManager>();
+
             // 9. Exam Center (JLPT / IELTS practice tests) — independent of the story scenario system.
             var examRepo = new ExamRepository();
             GameServices.Register<ExamRepository>(examRepo);

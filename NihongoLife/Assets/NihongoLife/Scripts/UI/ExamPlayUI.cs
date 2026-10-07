@@ -67,6 +67,8 @@ namespace NihongoLife.UI
         private Button _recordButton;
         private TextMeshProUGUI _recordStatusText;
 
+        protected override bool LocksGameplay => true;
+
         protected override Vector2 CardSize => new Vector2(1300f, 800f);
 
         public static ExamPlayUI GetOrCreate(Transform host)

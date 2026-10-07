@@ -106,7 +106,7 @@ namespace NihongoLife.UI
             element.preferredWidth = 150f; element.preferredHeight = 10f; element.flexibleWidth = 1f;
             var fill = Fill(track, color);
             var value = NLUi.Label(row, "Value", "100", 14f, NLUi.Text, _font, FontStyles.Normal, TextAlignmentOptions.Right);
-            NLUi.Size(value, 36f);
+            NLUi.Size(value, 62f);
             return new Bar(fill, value);
         }
 
@@ -149,7 +149,11 @@ namespace NihongoLife.UI
             NLUi.Label(names, "Kicker", "じぶん · Nhân vật", 15f, NLUi.Gold, _font, FontStyles.Bold);
             _characterName = NLUi.Label(names, "Name", "", 28f, NLUi.Text, _font, FontStyles.Bold);
             _characterLevel = NLUi.Label(names, "Level", "", 16f, NLUi.Muted, _font);
-            NLUi.Size(NLUi.Button(header, "Close", "Tab · Đóng", _font, () => close?.Invoke(), NLUi.Card, 16f, NLUi.Muted, 44f), 130f, 44f);
+            NLUi.Label(header, "TabHint", "Tab", 15f, NLUi.Muted, _font).textWrappingMode = TextWrappingModes.NoWrap;
+            var closeSpace = new GameObject("CloseSpace", typeof(RectTransform));
+            closeSpace.transform.SetParent(header, false);
+            NLUi.Size(closeSpace.transform, 46f, 46f);
+            NLUi.CloseButton(_characterWindow, _font, () => close?.Invoke(), 46f, 18f);
             _characterExp = BarFill(_characterWindow, "Exp", new Color(0.55f, 0.45f, 0.95f), 8f);
             NLUi.Divider(_characterWindow);
             _characterBars["health"] = BarRow(_characterWindow, "体", "Thể lực", new Color(0.9f, 0.36f, 0.36f));
@@ -173,6 +177,14 @@ namespace NihongoLife.UI
             float alpha = dialogueOpen ? 0f : 1f;
             _dockGroup.alpha = Mathf.MoveTowards(_dockGroup.alpha, alpha, Time.unscaledDeltaTime * 6f);
             _dockGroup.blocksRaycasts = !dialogueOpen;
+            var status = PlayerStatus.Instance;
+            if (status != null && _bars.TryGetValue("energy", out Bar energy))
+            {
+                // Out of breath: the energy bar pulses red until sprinting is allowed again.
+                var normal = new Color(0.39f, 0.71f, 0.96f);
+                energy.Fill.color = status.IsExhausted ? Color.Lerp(new Color(0.95f, 0.3f, 0.3f), new Color(0.6f, 0.15f, 0.15f), Mathf.PingPong(Time.unscaledTime * 2.5f, 1f)) : normal;
+                if (status.IsExhausted) energy.Value.text = "Hết sức";
+            }
         }
 
         private void Bind()

@@ -24,6 +24,28 @@ namespace NihongoLife.Tests
     /// </summary>
     public class SchoolPlayModeTests
     {
+        private static void ClickTab(ExamCenterPopup center, string label)
+        {
+            var button = center.GetComponentsInChildren<UnityEngine.UI.Button>().First(b => b.GetComponentInChildren<TMPro.TextMeshProUGUI>()?.text == label);
+            ClickAt(button);
+        }
+
+        private static void ClickAt(UnityEngine.UI.Button button)
+        {
+            Canvas.ForceUpdateCanvases();
+            var rect = (RectTransform)button.transform;
+            var point = RectTransformUtility.WorldToScreenPoint(null, rect.TransformPoint(rect.rect.center));
+            var eventSystem = UnityEngine.EventSystems.EventSystem.current;
+            Assert.NotNull(eventSystem);
+            var pointer = new UnityEngine.EventSystems.PointerEventData(eventSystem) { position = point };
+            var hits = new System.Collections.Generic.List<UnityEngine.EventSystems.RaycastResult>();
+            eventSystem.RaycastAll(pointer, hits);
+            Assert.IsTrue(hits.Count > 0, "Mouse must hit the exam UI.");
+            var target = UnityEngine.EventSystems.ExecuteEvents.GetEventHandler<UnityEngine.EventSystems.IPointerClickHandler>(hits[0].gameObject);
+            Assert.AreSame(button.gameObject, target, "The exam button must be the top clickable surface.");
+            UnityEngine.EventSystems.ExecuteEvents.Execute(target, pointer, UnityEngine.EventSystems.ExecuteEvents.pointerClickHandler);
+        }
+
         [UnityTest]
         public IEnumerator Classroom_ExamDeskRunsAnExamWithFeedback()
         {
@@ -45,6 +67,17 @@ namespace NihongoLife.Tests
             Assert.NotNull(GameObject.Find("ClassroomFX/Banner"), "Walking in shows the welcome banner.");
             Capture("01_welcome");
 
+            var meeting = NihongoLife.Learning.EduMeetingManager.Instance;
+            Assert.NotNull(meeting);
+            bool wasLocked = player.InputLocked;
+            meeting.SetOpen(true);
+            yield return null;
+            Assert.IsTrue(player.InputLocked);
+            Assert.AreEqual(CursorLockMode.None, Cursor.lockState);
+            Capture("01a_video_controls");
+            meeting.SetOpen(false);
+            Assert.AreEqual(wasLocked, player.InputLocked);
+
             var desk = Object.FindFirstObjectByType<ClassroomExamDesk>();
             Assert.NotNull(desk);
             Vector3 front = desk.transform.position + Vector3.back * 0.6f; front.y = 0.08f;
@@ -56,10 +89,23 @@ namespace NihongoLife.Tests
             yield return new WaitForSecondsRealtime(0.6f);
             var center = Object.FindFirstObjectByType<ExamCenterPopup>();
             Assert.IsTrue(center.IsOpen, "The desk opens the exam centre.");
+            Assert.AreEqual(CursorLockMode.None, Cursor.lockState, "Exam selection must release the mouse.");
+            Assert.IsTrue(Cursor.visible);
+            Assert.IsTrue(player.InputLocked, "Clicking an exam must not move the player.");
+            Assert.NotNull(Object.FindFirstObjectByType<NihongoLife.Learning.SpeechPracticeController>());
+            Assert.NotNull(NihongoLife.Learning.EduMeetingManager.Instance);
+            ClickTab(center, "IELTS");
+            yield return null;
+            Assert.IsTrue(center.GetComponentsInChildren<TMPro.TextMeshProUGUI>().Any(t => t.text.Contains("IELTS") && t.transform.parent.name == "ExamCard"), "IELTS tab must show its tests.");
+            Capture("03a_ielts_selection");
+            ClickTab(center, "JLPT");
+            yield return null;
             Capture("03_exam_centre");
 
             var exam = Resources.LoadAll<ExamDefinition>("Exams").First(e => e.examType == ExamType.Jlpt);
-            typeof(ExamCenterPopup).GetMethod("StartExam", BindingFlags.Instance | BindingFlags.NonPublic).Invoke(center, new object[] { exam });
+            var startButton = center.GetComponentsInChildren<UnityEngine.UI.Button>().First(b => b.transform.parent.name == "ExamCard");
+            ClickAt(startButton);
+
             yield return new WaitForSecondsRealtime(1f);
             Assert.IsTrue(ExamManager.Instance.IsAttemptActive);
             Assert.IsTrue(room.ExamCeremonyActive, "Starting an exam dims the room and lights the desk.");

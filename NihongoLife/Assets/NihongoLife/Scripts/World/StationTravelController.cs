@@ -836,7 +836,10 @@ namespace NihongoLife.World
                 NLUi.Button(_ticketWindow, "Ticket_" + id.ToUpperInvariant(), $"{stop.Ja}  ·  {stop.Vi}   —   {stop.Place}   —   ¥{stop.Price}", _font,
                     () => PurchaseTicket(id), new Color(0.12f, 0.4f, 0.5f), 21f, null, 60f);
             }
-            NLUi.Button(_ticketWindow, "Close", "とじる · Esc", _font, CloseTicketPanel, NLUi.Card, 17f, NLUi.Muted, 44f);
+            var closeSpace = new GameObject("CloseSpace", typeof(RectTransform));
+            closeSpace.transform.SetParent(header, false);
+            NLUi.Size(closeSpace.transform, 46f, 46f);
+            NLUi.CloseButton(_ticketWindow, _font, CloseTicketPanel, 46f, 18f);
             _ticketWindow.gameObject.SetActive(false);
         }
 

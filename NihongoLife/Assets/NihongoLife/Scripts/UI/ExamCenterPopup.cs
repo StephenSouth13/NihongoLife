@@ -25,6 +25,8 @@ namespace NihongoLife.UI
         private RectTransform _listRoot;
         private TextMeshProUGUI _emptyText;
 
+        protected override bool LocksGameplay => true;
+
         protected override Vector2 CardSize => new Vector2(1180f, 700f);
 
         protected override void GetTitle(out string vi, out string en, out string ja)
@@ -62,6 +64,8 @@ namespace NihongoLife.UI
             _listRoot.anchorMin = new Vector2(0f, 1f);
             _listRoot.anchorMax = new Vector2(1f, 1f);
             _listRoot.pivot = new Vector2(0.5f, 1f);
+            _listRoot.sizeDelta = Vector2.zero;
+            _listRoot.anchoredPosition = Vector2.zero;
             var layout = contentObject.GetComponent<VerticalLayoutGroup>();
             layout.padding = new RectOffset(14, 14, 14, 14);
             layout.spacing = 12f;

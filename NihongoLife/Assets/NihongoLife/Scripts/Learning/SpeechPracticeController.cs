@@ -23,6 +23,10 @@ namespace NihongoLife.Learning
         [SerializeField] private int maxRecordSeconds = 8;
         [SerializeField] private Key triggerKey = Key.V;
 
+        private static SpeechPracticeController _instance;
+        private float _recordingStartedAt;
+        private int _lastSamplePosition;
+        private bool _permissionPending, _analyzing;
         private AudioClip _recording;
         private string _device;
         private bool _isRecording;
@@ -31,6 +35,13 @@ namespace NihongoLife.Learning
 
         private void Awake()
         {
+            if (_instance != null && _instance != this)
+            {
+                if (GetComponent<AppRoot>() == null) { enabled = false; Destroy(this); return; }
+                _instance.enabled = false;
+                Destroy(_instance);
+            }
+            _instance = this;
             _feedbackSource = gameObject.AddComponent<AudioSource>();
             _feedbackSource.playOnAwake = false;
             _feedbackSource.spatialBlend = 0f;
@@ -41,7 +52,8 @@ namespace NihongoLife.Learning
             if (_isRecording && _recording != null && !string.IsNullOrEmpty(_device))
             {
                 int position = Microphone.GetPosition(_device);
-                if (position >= _recording.samples - 1)
+                _lastSamplePosition = Mathf.Max(_lastSamplePosition, position);
+                if (Time.realtimeSinceStartup - _recordingStartedAt >= maxRecordSeconds || position >= _recording.samples - 1)
                 {
                     StopRecording();
                     return;
@@ -76,6 +88,17 @@ namespace NihongoLife.Learning
 
         public void StartRecording()
         {
+            if (_isRecording || _permissionPending || _analyzing) return;
+            if (DialogueManager.Instance == null || !DialogueManager.Instance.TryGetCurrentPracticePhrase(out _, out _))
+            {
+                _lastResult = "Hãy mở hội thoại với NPC trước để có câu luyện phát âm.";
+                return;
+            }
+            if (EduMeetingManager.Instance != null && EduMeetingManager.Instance.IsInClassroom)
+            {
+                _lastResult = "Micro đang dùng cho cuộc gọi. Rời cuộc gọi để luyện phát âm.";
+                return;
+            }
             if (!Application.HasUserAuthorization(UserAuthorization.Microphone))
             {
                 StartCoroutine(RequestMicPermissionThenStart());
@@ -87,8 +110,10 @@ namespace NihongoLife.Learning
 
         private System.Collections.IEnumerator RequestMicPermissionThenStart()
         {
+            _permissionPending = true;
             _lastResult = "Requesting microphone permission...";
             yield return Application.RequestUserAuthorization(UserAuthorization.Microphone);
+            _permissionPending = false;
             if (!Application.HasUserAuthorization(UserAuthorization.Microphone))
             {
                 _lastResult = "Microphone permission denied.";
@@ -109,6 +134,7 @@ namespace NihongoLife.Learning
                 return;
             }
 
+            if (_recording != null) Destroy(_recording);
             _device = Microphone.devices[0];
             try
             {
@@ -122,6 +148,9 @@ namespace NihongoLife.Learning
                 return;
             }
 
+            if (_recording == null) { _lastResult = "Không khởi động được micro."; return; }
+            _lastSamplePosition = 0;
+            _recordingStartedAt = Time.realtimeSinceStartup;
             _isRecording = true;
             _lastResult = "Recording... press V again to stop";
             PlayFeedbackTone(true);
@@ -136,6 +165,9 @@ namespace NihongoLife.Learning
             try
             {
                 position = Microphone.GetPosition(_device);
+                position = Mathf.Max(position, _lastSamplePosition);
+                if (Time.realtimeSinceStartup - _recordingStartedAt >= maxRecordSeconds)
+                    position = _recording.samples;
                 Microphone.End(_device);
             }
             catch (System.Exception ex)
@@ -148,7 +180,7 @@ namespace NihongoLife.Learning
             }
             _isRecording = false;
 
-            float seconds = position / (float)sampleRate;
+            float seconds = position / (float)_recording.frequency;
             float energy = EstimateEnergy(_recording, position);
             if (energy <= 0.012f || seconds <= 0.45f)
             {
@@ -165,7 +197,28 @@ namespace NihongoLife.Learning
                 return;
             }
 
-            StartCoroutine(RecognizeAndScore(phrase, position, seconds));
+            StartCoroutine(AnalyzeRecording(phrase, position, seconds));
+        }
+
+        private IEnumerator AnalyzeRecording(string phrase, int position, float seconds)
+        {
+            _analyzing = true;
+            try { yield return RecognizeAndScore(phrase, position, seconds); }
+            finally { _analyzing = false; }
+        }
+
+        private void OnDisable()
+        {
+            if (_isRecording) Microphone.End(_device);
+            _isRecording = false;
+            _permissionPending = _analyzing = false;
+            StopAllCoroutines();
+        }
+
+        private void OnDestroy()
+        {
+            if (_instance == this) _instance = null;
+            if (_recording != null) Destroy(_recording);
         }
 
         private IEnumerator RecognizeAndScore(string expectedPhrase, int sampleFrames, float seconds)

@@ -15,10 +15,13 @@ namespace NihongoLife.Player
         [Header("Survival")]
         [SerializeField] private float maxHealth = 100f;
         [SerializeField] private float maxEnergy = 100f;
-        [SerializeField] private float hungerDrainPerMinute = 0.8f;
-        [SerializeField] private float thirstDrainPerMinute = 1.25f;
+        [SerializeField] private float hungerDrainPerMinute = 1.6f;
+        [SerializeField] private float thirstDrainPerMinute = 2.4f;
         [SerializeField] private float sleepinessGainPerMinute = 0.65f;
-        [SerializeField] private float passiveEnergyRecoveryPerSecond = 7f;
+        [SerializeField] private float passiveEnergyRecoveryPerSecond = 9f;
+        [SerializeField] private float walkingEnergyRecoveryPerSecond = 4f;
+        [SerializeField] private float recoveryDelayAfterSprint = 1.2f;
+        [SerializeField] private float sprintAgainAtEnergy = 25f;
         [SerializeField] private float exhaustedHealthLossPerSecond = 1.5f;
 
         public float CurrentHealth { get; private set; } = 100f;
@@ -34,6 +37,25 @@ namespace NihongoLife.Player
         public int MaxStamina => Mathf.RoundToInt(MaxEnergy);
 
         public event Action OnStatusChanged;
+
+        private bool _moving;
+        private bool _sprinting;
+        private float _lastSprintTime = -10f;
+        private float _lastReportTime = -10f;
+
+        /// <summary>True from the moment energy hits 0 until it has recovered to <c>sprintAgainAtEnergy</c>.</summary>
+        public bool IsExhausted { get; private set; }
+        public bool CanSprint => !IsExhausted && CurrentEnergy > 0f;
+        public bool IsSprinting => _sprinting;
+
+        /// <summary>Called every frame by the PlayerController so needs follow what the body is doing.</summary>
+        public void ReportActivity(bool moving, bool sprinting)
+        {
+            _moving = moving;
+            _sprinting = sprinting;
+            _lastReportTime = Time.time;
+            if (sprinting) _lastSprintTime = Time.time;
+        }
         private float _statusNotifyTimer;
 
         private void Awake()
@@ -50,15 +72,25 @@ namespace NihongoLife.Player
 
         private void Update()
         {
-            Hunger = Mathf.Max(0f, Hunger - hungerDrainPerMinute * Time.deltaTime / 60f);
-            Thirst = Mathf.Max(0f, Thirst - thirstDrainPerMinute * Time.deltaTime / 60f);
-            Sleepiness = Mathf.Min(100f, Sleepiness + sleepinessGainPerMinute * Time.deltaTime / 60f);
+            if (Time.time - _lastReportTime > 0.25f) { _moving = false; _sprinting = false; } // locked / in a menu
+            // Moving burns more food and water than standing; sprinting burns a lot more.
+            float hungerRate = _sprinting ? 4f : _moving ? 1.5f : 1f;
+            float thirstRate = _sprinting ? 5f : _moving ? 1.5f : 1f;
+            Hunger = Mathf.Max(0f, Hunger - hungerDrainPerMinute * hungerRate * Time.deltaTime / 60f);
+            Thirst = Mathf.Max(0f, Thirst - thirstDrainPerMinute * thirstRate * Time.deltaTime / 60f);
+            Sleepiness = Mathf.Min(100f, Sleepiness + sleepinessGainPerMinute * (_sprinting ? 2f : 1f) * Time.deltaTime / 60f);
 
+            // Energy only comes back once the player has stopped sprinting for a moment; hungry or thirsty
+            // bodies recover slower.
             float recoveryMultiplier = Mathf.Clamp01(Mathf.Min(Hunger, Thirst) / 25f);
-            if (CurrentEnergy < maxEnergy && recoveryMultiplier > 0f)
+            bool resting = !_sprinting && Time.time - _lastSprintTime >= recoveryDelayAfterSprint;
+            if (resting && CurrentEnergy < maxEnergy && recoveryMultiplier > 0f)
             {
-                CurrentEnergy = Mathf.Min(maxEnergy, CurrentEnergy + passiveEnergyRecoveryPerSecond * recoveryMultiplier * Time.deltaTime);
+                float rate = _moving ? walkingEnergyRecoveryPerSecond : passiveEnergyRecoveryPerSecond;
+                CurrentEnergy = Mathf.Min(maxEnergy, CurrentEnergy + rate * recoveryMultiplier * Time.deltaTime);
             }
+            if (CurrentEnergy <= 0f) IsExhausted = true;
+            else if (IsExhausted && CurrentEnergy >= sprintAgainAtEnergy) IsExhausted = false;
 
             if (Hunger <= 0f || Thirst <= 0f)
             {

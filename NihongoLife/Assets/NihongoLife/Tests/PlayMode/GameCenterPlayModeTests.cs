@@ -106,6 +106,7 @@ namespace NihongoLife.Tests
             var game = (KanaMatchGame)controller.CurrentGame;
             Assert.AreEqual(KanaMatchGame.Phase.ChoosingSet, game.State);
             Capture("04_set_picker");
+            Assert.IsTrue(Object.FindObjectsByType<UnityEngine.UI.Button>(FindObjectsSortMode.None).Any(b => b.name == "CloseX" && b.gameObject.activeInHierarchy), "Mini-games show a × to quit.");
 
             // 8) Play a full hiragana round with exactly one mistake.
             var hiragana = launcher.Definition.contentSets.First(s => s.type == KanaPairType.HiraganaRomaji);
@@ -151,8 +152,8 @@ namespace NihongoLife.Tests
             Assert.AreEqual(result.tickets, PlayerInventory.Instance.GetItemQuantity(KanaMatchGame.TicketItemId));
             Capture("08_result");
 
-            // 11) Back to normal third-person play at the same spot.
-            controller.Close();
+            // 11) Back to normal third-person play at the same spot (the × on the result card).
+            controller.CloseOrAbort();
             yield return new WaitForSecondsRealtime(0.6f);
             Assert.IsFalse(controller.IsRunning);
             Assert.IsFalse(player.InputLocked, "PlayerController restored.");

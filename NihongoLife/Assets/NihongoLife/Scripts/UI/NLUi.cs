@@ -146,6 +146,33 @@ namespace NihongoLife.UI
             return button;
         }
 
+        /// <summary>Round "×" close button pinned to the top-right corner of <paramref name="parent"/>, outside
+        /// its layout. Every overlay window (mini-game, dialogue, shop, bag, ticket machine…) uses it so the
+        /// way out is always visible, not only the Esc key.</summary>
+        public static Button CloseButton(Transform parent, TMP_FontAsset font, Action onClick, float size = 46f, float inset = 12f)
+        {
+            var go = new GameObject("CloseX", typeof(RectTransform), typeof(Image), typeof(Button), typeof(LayoutElement));
+            go.transform.SetParent(parent, false);
+            go.GetComponent<LayoutElement>().ignoreLayout = true;
+            var rect = (RectTransform)go.transform;
+            rect.anchorMin = rect.anchorMax = rect.pivot = new Vector2(1f, 1f);
+            rect.anchoredPosition = new Vector2(-inset, -inset);
+            rect.sizeDelta = new Vector2(size, size);
+            var image = go.GetComponent<Image>();
+            image.color = new Color(0.62f, 0.16f, 0.14f, 1f);
+            var button = go.GetComponent<Button>();
+            button.targetGraphic = image;
+            UIStyleKit.StyleButton(button, image.color, new Color(0.85f, 0.25f, 0.2f, 1f), new Color(0.42f, 0.1f, 0.08f, 1f));
+            var text = Label(rect, "X", "×", size * 0.72f, Color.white, font, FontStyles.Bold, TextAlignmentOptions.Center);
+            text.textWrappingMode = TextWrappingModes.NoWrap;
+            text.raycastTarget = false;
+            if (text.TryGetComponent(out LayoutElement element)) element.ignoreLayout = true;
+            Stretch(text.rectTransform);
+            if (onClick != null) button.onClick.AddListener(() => onClick());
+            go.transform.SetAsLastSibling();
+            return button;
+        }
+
         public static RectTransform Divider(Transform parent)
         {
             var go = new GameObject("Divider", typeof(RectTransform), typeof(Image));

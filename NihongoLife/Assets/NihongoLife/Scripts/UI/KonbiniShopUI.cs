@@ -108,6 +108,7 @@ namespace NihongoLife.UI
             foreach (var (p, card) in _cards) card.color = p == product ? new Color(0.3f, 0.24f, 0.09f, 1f) : NLUi.Card;
             _detailTile.color = product.tint;
             _detailGlyph.text = product.glyph;
+            ItemIcons.Apply(_detailGlyph, product.id, 10f);
             _detailName.text = product.japanese;
             _detailReading.text = product.reading;
             _detailMeaning.text = product.vietnamese;
@@ -245,6 +246,8 @@ namespace NihongoLife.UI
                 var row = NLUi.Panel(_checkoutLines, "Line_" + p.id, NLUi.Card, new RectOffset(16, 12, 8, 8), 14f, vertical: false);
                 ((HorizontalLayoutGroup)row.GetComponent<HorizontalOrVerticalLayoutGroup>()).childForceExpandWidth = false;
                 var glyph = NLUi.Pill(row, "Glyph", p.glyph, _font, p.tint, new Color(0.15f, 0.12f, 0.1f), 22f);
+                NLUi.Size(glyph, 56f, 56f);
+                ItemIcons.Apply(glyph.GetComponentInChildren<TextMeshProUGUI>(), p.id, 3f);
                 var name = NLUi.Label(row, "Name", $"{p.japanese}  <size=75%><color=#A8B4C4>{p.vietnamese}</color></size>", 21f, NLUi.Text, _font);
                 NLUi.Size(name, flexibleWidth: 1f);
                 var qty = NLUi.Label(row, "Qty", $"×{line.Value}   ¥{p.price * line.Value}", 21f, NLUi.Soft, _font, FontStyles.Bold, TextAlignmentOptions.Right);
@@ -303,7 +306,11 @@ namespace NihongoLife.UI
             _title = NLUi.Label(header, "Title", "ひばりマート", 30f, NLUi.Text, _font, FontStyles.Bold);
             NLUi.Size(_title, flexibleWidth: 1f);
             _wallet = NLUi.Pill(header, "Wallet", "¥0", _font, new Color(1f, 1f, 1f, 0.08f), NLUi.Gold, 20f).GetComponentInChildren<TextMeshProUGUI>();
-            NLUi.Button(header, "Close", "とじる · Esc", _font, Close, NLUi.Card, 17f, NLUi.Muted, 44f);
+            NLUi.Label(header, "EscHint", "Esc", 15f, NLUi.Muted, _font).textWrappingMode = TextWrappingModes.NoWrap;
+            var closeSpace = new GameObject("CloseSpace", typeof(RectTransform));
+            closeSpace.transform.SetParent(header, false);
+            NLUi.Size(closeSpace.transform, 46f, 46f);
+            NLUi.CloseButton(_window, _font, Close, 46f, 18f);
 
             // Browse page
             _browse = NLUi.Group(_window, "Browse", true, 14f);
@@ -375,8 +382,9 @@ namespace NihongoLife.UI
         {
             var card = NLUi.Panel(_grid, "Card_" + product.id, NLUi.Card, new RectOffset(12, 12, 12, 10), 4f);
             var tile = NLUi.Panel(card, "Tile", product.tint, new RectOffset(0, 0, 2, 2), 0f);
-            NLUi.Size(tile, preferredHeight: 70f);
-            NLUi.Label(tile, "Glyph", product.glyph, 42f, new Color(0.15f, 0.12f, 0.1f), _font, FontStyles.Bold, TextAlignmentOptions.Center);
+            NLUi.Size(tile, preferredHeight: 96f);
+            var tileGlyph = NLUi.Label(tile, "Glyph", product.glyph, 42f, new Color(0.15f, 0.12f, 0.1f), _font, FontStyles.Bold, TextAlignmentOptions.Center);
+            ItemIcons.Apply(tileGlyph, product.id, 4f);
             NLUi.Label(card, "Name", product.japanese, 20f, NLUi.Text, _font, FontStyles.Bold);
             NLUi.Label(card, "Meaning", product.vietnamese, 15f, NLUi.Muted, _font);
             NLUi.Label(card, "Price", $"¥{product.price}", 19f, NLUi.Gold, _font, FontStyles.Bold);

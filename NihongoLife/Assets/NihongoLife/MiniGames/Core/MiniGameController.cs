@@ -28,6 +28,7 @@ namespace NihongoLife.MiniGames
         private Canvas _canvas;
         private RectTransform _gameRoot;
         private RectTransform _resultPanel;
+        private UnityEngine.UI.Button _closeButton;
         private TextMeshProUGUI _resultTitle;
         private TextMeshProUGUI _resultBody;
         private TMP_FontAsset _font;
@@ -68,6 +69,7 @@ namespace NihongoLife.MiniGames
             _gameRoot.SetParent(_canvas.transform, false);
             NLUi.Stretch(_gameRoot);
             BuildResultPanel();
+            _closeButton = NLUi.CloseButton(_canvas.transform, _font, CloseOrAbort, 56f, 22f);
             _canvas.gameObject.SetActive(false);
         }
 
@@ -123,8 +125,17 @@ namespace NihongoLife.MiniGames
             }
         }
 
+        /// <summary>The "×" button: quits the running game (counts as an abort) or closes the result card.</summary>
+        public void CloseOrAbort()
+        {
+            if (IsShowingResult) { Close(); return; }
+            _game?.Abort();
+        }
+
         private void Update()
         {
+            if (_closeButton != null && _closeButton.transform.GetSiblingIndex() != _closeButton.transform.parent.childCount - 1)
+                _closeButton.transform.SetAsLastSibling();
             if (_game == null || IsShowingResult) return;
             if (Keyboard.current != null && Keyboard.current.escapeKey.wasPressedThisFrame) _game.Abort();
         }

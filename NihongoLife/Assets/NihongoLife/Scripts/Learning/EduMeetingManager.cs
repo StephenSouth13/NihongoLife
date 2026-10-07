@@ -1,198 +1,227 @@
+using System;
 using System.Collections;
-using UnityEngine;
-using NihongoLife.Core;
-using NihongoLife.Player;
-
-#if AGORA_SDK_INSTALLED
 using Agora.Rtc;
-#endif
+using UnityEngine;
+using UnityEngine.InputSystem;
+using UnityEngine.UI;
 
 namespace NihongoLife.Learning
 {
-    /// <summary>
-    /// Handles connecting the Metaverse to real-world Video calling platforms for 1-on-1 tutoring.
-    /// Supports opening Google Meet/Zoom in a browser, or provides hooks for Agora Video SDK (Native 3D Video).
-    /// </summary>
     public class EduMeetingManager : MonoBehaviour
     {
         public static EduMeetingManager Instance { get; private set; }
+        // Agora App IDs are public identifiers. Tokens come from the classroom host; no certificate belongs in the client.
+        [SerializeField] private string appId = "44f7d5dbf7054b8787da9313bad4305a";
+        private IRtcEngine _engine;
+        private string _channel = "nihongolife-classroom", _token = "";
+        private string _status = "Nhập cùng phòng với giáo viên. Phòng bảo mật cần token còn hạn.";
+        private bool _open, _joining, _muted;
+        private GameObject _videoRoot;
+        private VideoSurface _remote;
+        private uint _remoteUid;
+        private NihongoLife.Player.PlayerController _player;
+        private NihongoLife.Cameras.ThirdPersonCameraController _camera;
+        private bool _oldPlayerLock, _oldCameraLock, _oldVisible;
+        private CursorLockMode _oldCursor;
+        public bool IsInClassroom { get; private set; }
+        public string Status => _status;
 
         private void Awake()
         {
+            if (Instance != null && Instance != this) { Destroy(this); return; }
             Instance = this;
         }
 
-        /// <summary>
-        /// Opens a scheduled Google Meet/Zoom link directly.
-        /// Useful for quick integration without needing the Agora SDK size overhead.
-        /// </summary>
-        public void JoinExternalMeeting(string meetingUrl)
+        private void Update()
         {
-            if (string.IsNullOrEmpty(meetingUrl))
-            {
-                Debug.LogWarning("[EduMeeting] No meeting URL provided.");
-                return;
-            }
-
-            Debug.Log($"[EduMeeting] Opening Virtual Classroom at: {meetingUrl}");
-            Application.OpenURL(meetingUrl);
-
-            // Optional: Give the player XP for attending a live class
-            if (GameServices.TryGet(out NihongoLife.Save.IProgressRepository repo))
-            {
-                var progress = repo.GetProgress();
-                progress.knowledge += 50;
-                progress.xp += 100;
-                repo.SaveProgress(progress);
-                Debug.Log("[EduMeeting] Awarded 50 Knowledge for attending external live class.");
-            }
+            if (Keyboard.current == null) return;
+            if (Keyboard.current.f8Key.wasPressedThisFrame) SetOpen(!_open);
+            else if (_open && Keyboard.current.escapeKey.wasPressedThisFrame) SetOpen(false);
         }
 
-        /// <summary>
-        /// Stub for AGORA Video SDK.
-        /// To make video appear ON A 3D SCREEN inside the game, you need to import the 'Agora Video SDK for Unity'.
-        /// Once imported, you would initialize IRtcEngine here and map the teacher's video frame to a Unity Texture/Material.
-        /// </summary>
-        public void JoinAgoraClassroom(string channelName, string token = "")
+        public void SetOpen(bool open)
         {
-            /* 
-             * AGORA INTEGRATION (Đã viết hoàn chỉnh):
-             * HƯỚNG DẪN BẬT TÍNH NĂNG:
-             * 1. Import "Agora Video SDK for Unity" từ Asset Store.
-             * 2. Vào Edit > Project Settings > Player > Other Settings.
-             * 3. Ở mục Scripting Define Symbols, thêm vào chữ: AGORA_SDK_INSTALLED
-             */
-
-#if AGORA_SDK_INSTALLED
-            string encodedAppId = "NDRmN2Q1ZGJmNzA1NGI4Nzg3ZGE5MzEzYmFkNDMwNWE=";
-            string encodedCert = "NzgxZjY5YzJiMmJhNDc4ZDk2MmUzYTQyODkyZGUzMzY="; 
-            string appId = System.Text.Encoding.UTF8.GetString(System.Convert.FromBase64String(encodedAppId));
-            
-            if (_rtcEngine == null)
+            if (_open == open) return;
+            if (open)
             {
-                _rtcEngine = IRtcEngine.GetEngine(appId);
-                _rtcEngine.EnableVideo();
-                _rtcEngine.EnableAudio();
-                _rtcEngine.EnableVideoObserver();
-                
-                // Đăng ký sự kiện
-                _rtcEngine.OnUserJoined = OnTeacherJoined;
-                _rtcEngine.OnUserOffline = OnTeacherOffline;
-                _rtcEngine.OnJoinChannelSuccess = OnLocalUserJoined;
-            }
-
-            Debug.Log($"[EduMeeting] Joining Native 3D Channel: {channelName}");
-            _rtcEngine.JoinChannelByKey(token, channelName, "", 0);
-#else
-            Debug.LogWarning("[EduMeeting] Chưa bật AGORA_SDK_INSTALLED trong Project Settings! Code Native Video tạm ẩn.");
-#endif
-        }
-
-#if AGORA_SDK_INSTALLED
-        private IRtcEngine _rtcEngine;
-        private bool _isMuted = false;
-
-        private void OnLocalUserJoined(string channelName, uint uid, int elapsed)
-        {
-            Debug.Log($"[EduMeeting] Mình đã vào lớp học (UID: {uid})");
-            // Hiển thị camera của bản thân lên một góc màn hình (tùy chọn)
-            // Cần gán script VideoSurface vào 1 UI RawImage
-        }
-
-        private void OnTeacherJoined(uint uid, int elapsed)
-        {
-            Debug.Log($"[EduMeeting] Giáo viên / Đối tác đã vào (UID: {uid})");
-            
-            // Tìm màn hình Tivi 3D trong game (phải được setup tag hoặc tìm bằng tên)
-            GameObject tvScreen = GameObject.Find("TeacherScreen3D");
-            if (tvScreen != null)
-            {
-                VideoSurface videoSurface = tvScreen.GetComponent<VideoSurface>();
-                if (videoSurface == null) videoSurface = tvScreen.AddComponent<VideoSurface>();
-                
-                videoSurface.SetForUser(uid);
-                videoSurface.SetEnable(true);
+                _player = FindFirstObjectByType<NihongoLife.Player.PlayerController>();
+                _camera = FindFirstObjectByType<NihongoLife.Cameras.ThirdPersonCameraController>();
+                _oldPlayerLock = _player != null && _player.InputLocked;
+                _oldCameraLock = _camera != null && _camera.IsLocked;
+                _oldCursor = Cursor.lockState; _oldVisible = Cursor.visible;
             }
             else
             {
-                Debug.LogWarning("[EduMeeting] Không tìm thấy vật thể 'TeacherScreen3D' trong cảnh để phát video giáo viên!");
+                if (_player != null) _player.InputLocked = _oldPlayerLock;
+                if (_camera != null) _camera.IsLocked = _oldCameraLock;
+                Cursor.lockState = _oldCursor; Cursor.visible = _oldVisible;
             }
+            _open = open;
+            if (_videoRoot != null) _videoRoot.SetActive(open);
+            LateUpdate();
         }
 
-        private void OnTeacherOffline(uint uid, USER_OFFLINE_REASON reason)
+        private void LateUpdate()
         {
-            Debug.Log($"[EduMeeting] Giáo viên đã ngắt kết nối.");
-            GameObject tvScreen = GameObject.Find("TeacherScreen3D");
-            if (tvScreen != null)
+            if (!_open) return;
+            if (_player != null) _player.InputLocked = true;
+            if (_camera != null) _camera.IsLocked = true;
+            Cursor.lockState = CursorLockMode.None; Cursor.visible = true;
+        }
+
+        public void JoinAgoraClassroom(string channelName, string token = "")
+        {
+            SetOpen(true);
+            if (IsInClassroom || _joining) return;
+            if (string.IsNullOrWhiteSpace(channelName)) { _status = "Vui lòng nhập tên phòng."; return; }
+            _channel = channelName.Trim(); _token = token ?? "";
+            StartCoroutine(JoinWithPermission());
+        }
+
+        private IEnumerator JoinWithPermission()
+        {
+            _joining = true;
+            _status = "Đang xin quyền micro và camera...";
+            yield return Application.RequestUserAuthorization(UserAuthorization.Microphone | UserAuthorization.WebCam);
+            if (!Application.HasUserAuthorization(UserAuthorization.Microphone) || !Application.HasUserAuthorization(UserAuthorization.WebCam))
             {
-                VideoSurface videoSurface = tvScreen.GetComponent<VideoSurface>();
-                if (videoSurface != null) videoSurface.SetEnable(false);
+                _status = "Chưa được cấp quyền micro/camera. Kiểm tra quyền trong hệ điều hành.";
+                _joining = false; yield break;
+            }
+            try
+            {
+                if (_engine == null)
+                {
+                    string configuredId = Environment.GetEnvironmentVariable("AGORA_APP_ID");
+                    _engine = RtcEngine.CreateAgoraRtcEngine();
+                    Check(_engine.Initialize(new RtcEngineContext { appId = string.IsNullOrWhiteSpace(configuredId) ? appId : configuredId }), "Khởi tạo Agora");
+                    _engine.InitEventHandler(new Events(this));
+                    Check(_engine.EnableAudio(), "Bật micro");
+                    Check(_engine.EnableVideo(), "Bật camera");
+                }
+                var options = new ChannelMediaOptions();
+                options.channelProfile.SetValue(CHANNEL_PROFILE_TYPE.CHANNEL_PROFILE_COMMUNICATION);
+                options.clientRoleType.SetValue(CLIENT_ROLE_TYPE.CLIENT_ROLE_BROADCASTER);
+                options.publishCameraTrack.SetValue(true);
+                options.publishMicrophoneTrack.SetValue(true);
+                options.autoSubscribeAudio.SetValue(true);
+                options.autoSubscribeVideo.SetValue(true);
+                Check(_engine.JoinChannel(_token, _channel, 0, options), "Vào phòng");
+                _status = "Đang kết nối Agora...";
+            }
+            catch (Exception ex)
+            {
+                _status = ex.Message; _joining = false;
+                if (_engine != null) { _engine.Dispose(); _engine = null; }
             }
         }
 
-        /// <summary>
-        /// Thoát phòng học
-        /// </summary>
+        private static void Check(int code, string action)
+        {
+            if (code != 0) throw new InvalidOperationException(action + " thất bại (" + code + "). Kiểm tra App ID, token và thiết bị.");
+        }
+
+        private void CreateVideo()
+        {
+            if (_videoRoot != null) return;
+            _videoRoot = new GameObject("LiveClassroomVideo", typeof(Canvas));
+            _videoRoot.transform.SetParent(transform, false);
+            var canvas = _videoRoot.GetComponent<Canvas>();
+            canvas.renderMode = RenderMode.ScreenSpaceOverlay; canvas.sortingOrder = 150;
+            _remote = CreateSurface("Teacher", new Vector2(0.5f, 0.55f), new Vector2(640, 360));
+            var local = CreateSurface("MyCamera", new Vector2(0.85f, 0.8f), new Vector2(240, 135));
+            local.SetForUser(); local.SetEnable(true);
+            _videoRoot.SetActive(_open);
+        }
+
+        private VideoSurface CreateSurface(string name, Vector2 anchor, Vector2 size)
+        {
+            var go = new GameObject(name, typeof(RectTransform), typeof(RawImage));
+            go.transform.SetParent(_videoRoot.transform, false);
+            var rect = (RectTransform)go.transform; rect.anchorMin = rect.anchorMax = anchor; rect.sizeDelta = size;
+            go.GetComponent<RawImage>().raycastTarget = false;
+            var surface = go.AddComponent<VideoSurface>(); surface.SetEnable(false); return surface;
+        }
+
+        private sealed class Events : IRtcEngineEventHandler
+        {
+            private readonly EduMeetingManager _owner;
+            public Events(EduMeetingManager owner) { _owner = owner; }
+            public override void OnJoinChannelSuccess(RtcConnection connection, int elapsed)
+            {
+                _owner._joining = false; _owner.IsInClassroom = true;
+                _owner._status = "Đã vào phòng " + connection.channelId + ". Đang chờ người cùng phòng.";
+                _owner.CreateVideo();
+            }
+            public override void OnUserJoined(RtcConnection connection, uint remoteUid, int elapsed)
+            {
+                _owner.CreateVideo(); _owner._remoteUid = remoteUid;
+                _owner._remote.SetForUser(remoteUid, connection.channelId, VIDEO_SOURCE_TYPE.VIDEO_SOURCE_REMOTE);
+                _owner._remote.SetEnable(true); _owner._status = "Đã kết nối người cùng phòng.";
+            }
+            public override void OnUserOffline(RtcConnection connection, uint remoteUid, USER_OFFLINE_REASON_TYPE reason)
+            {
+                if (_owner._remoteUid != remoteUid) return;
+                if (_owner._remote != null) _owner._remote.SetEnable(false);
+                _owner._status = "Người cùng phòng đã rời cuộc gọi.";
+            }
+            public override void OnError(int err, string msg)
+            {
+                _owner._joining = false;
+                _owner._status = "Agora lỗi " + err + ": " + msg + ". Kiểm tra token còn hạn và đúng phòng/App ID.";
+            }
+        }
+
         public void LeaveClassroom()
         {
-            if (_rtcEngine != null)
-            {
-                _rtcEngine.LeaveChannel();
-                Debug.Log("[EduMeeting] Đã rời phòng học Video.");
-            }
+            StopAllCoroutines(); _joining = false;
+            if (_engine != null) { _engine.LeaveChannel(); _engine.StopPreview(); }
+            IsInClassroom = false; _muted = false; _remoteUid = 0;
+            if (_engine != null) _engine.MuteLocalAudioStream(false);
+            if (_videoRoot != null) Destroy(_videoRoot);
+            _videoRoot = null; _remote = null; _status = "Đã rời phòng.";
         }
-
-        /// <summary>
-        /// Bật/Tắt Micro
-        /// </summary>
         public void ToggleMicrophone()
         {
-            if (_rtcEngine != null)
-            {
-                _isMuted = !_isMuted;
-                _rtcEngine.MuteLocalAudioStream(_isMuted);
-                Debug.Log($"[EduMeeting] Micro: {(_isMuted ? "TẮT" : "BẬT")}");
-            }
+            if (_engine == null || !IsInClassroom) return;
+            int code = _engine.MuteLocalAudioStream(!_muted);
+            if (code == 0) _muted = !_muted;
+            else _status = "Không đổi được micro: " + code;
         }
-
-        /// <summary>
-        /// Xoay camera (đổi giữa camera trước và sau trên Mobile)
-        /// </summary>
-        public void SwitchCamera()
+        public void SwitchCamera() { if (_engine != null) _engine.SwitchCamera(); }
+        public void JoinExternalMeeting(string meetingUrl)
         {
-            if (_rtcEngine != null)
-            {
-                _rtcEngine.SwitchCamera();
-                Debug.Log("[EduMeeting] Đã đổi Camera trước/sau.");
-            }
+            if (Uri.TryCreate(meetingUrl, UriKind.Absolute, out var uri) && (uri.Scheme == "https" || uri.Scheme == "http")) Application.OpenURL(meetingUrl);
         }
-
-        private void OnDestroy()
-        {
-            if (_rtcEngine != null)
-            {
-                IRtcEngine.Destroy();
-                _rtcEngine = null;
-            }
-        }
-#endif
-
-        /// <summary>
-        /// Chụp ảnh màn hình khoảnh khắc học tập (hoạt động kể cả chưa có Agora)
-        /// </summary>
         public void TakeScreenshot()
         {
             string folder = System.IO.Path.Combine(Application.persistentDataPath, "Screenshots");
-            if (!System.IO.Directory.Exists(folder))
-            {
-                System.IO.Directory.CreateDirectory(folder);
-            }
-            
-            string filename = $"EduMeeting_Capture_{System.DateTime.Now:yyyyMMdd_HHmmss}.png";
-            string fullPath = System.IO.Path.Combine(folder, filename);
-            
-            ScreenCapture.CaptureScreenshot(fullPath);
-            Debug.Log($"[EduMeeting] 📸 Đã chụp màn hình và lưu tại: {fullPath}");
+            System.IO.Directory.CreateDirectory(folder);
+            ScreenCapture.CaptureScreenshot(System.IO.Path.Combine(folder, "EduMeeting_" + DateTime.Now.ToString("yyyyMMdd_HHmmss") + ".png"));
+        }
+        private void OnGUI()
+        {
+            if (!_open) { GUI.Label(new Rect(24, Screen.height - 82, 400, 25), "[F8] Gọi video / lớp học trực tiếp"); return; }
+            GUILayout.BeginArea(new Rect(20, 20, Mathf.Min(620, Screen.width - 40), 240), GUI.skin.box);
+            GUILayout.Label("LỚP HỌC TRỰC TIẾP · AGORA");
+            GUILayout.Label(_status);
+            GUI.enabled = !_joining && !IsInClassroom;
+            GUILayout.Label("Tên phòng"); _channel = GUILayout.TextField(_channel);
+            GUILayout.Label("Token do người tổ chức cung cấp (nếu phòng bảo mật)"); _token = GUILayout.PasswordField(_token, '*');
+            if (GUILayout.Button("Vào phòng · bật camera và micro")) JoinAgoraClassroom(_channel, _token);
+            GUI.enabled = true;
+            GUILayout.BeginHorizontal();
+            if (IsInClassroom && GUILayout.Button(_muted ? "Bật micro" : "Tắt micro")) ToggleMicrophone();
+            if ((IsInClassroom || _joining) && GUILayout.Button("Rời cuộc gọi")) LeaveClassroom();
+            if (GUILayout.Button("Đóng · F8 / Esc")) SetOpen(false);
+            GUILayout.EndHorizontal(); GUILayout.EndArea();
+        }
+        private void OnDestroy()
+        {
+            if (Instance != this) return;
+            SetOpen(false); LeaveClassroom();
+            if (_engine != null) { _engine.Dispose(); _engine = null; }
+            Instance = null;
         }
     }
 }

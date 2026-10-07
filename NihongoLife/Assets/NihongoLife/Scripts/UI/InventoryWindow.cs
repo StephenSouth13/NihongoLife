@@ -109,6 +109,7 @@ namespace NihongoLife.UI
                 Visual(items[i], out Color tint, out string glyph);
                 slot.tile.color = tint;
                 slot.glyph.text = glyph;
+                ItemIcons.Apply(slot.glyph, items[i].itemId, 5f);
                 slot.qty.text = "×" + items[i].quantity;
             }
             RefreshDetail(items != null && _selected < items.Count ? items[_selected] : null);
@@ -161,6 +162,7 @@ namespace NihongoLife.UI
             Visual(entry, out Color tint, out string glyph);
             _detailTile.color = tint;
             _detailGlyph.text = glyph;
+            ItemIcons.Apply(_detailGlyph, entry.itemId, 10f);
             _detailName.text = entry.displayNameJa;
             _detailInfo.text = $"{entry.displayNameEn}\nSố lượng: {entry.quantity}   ·   Giá: ¥{entry.priceYen}";
             var effects = new List<string>();
@@ -218,7 +220,11 @@ namespace NihongoLife.UI
             NLUi.Size(title, flexibleWidth: 1f);
             _slotsText = NLUi.Pill(header, "Slots", "0/16 ô", _font, new Color(1f, 1f, 1f, 0.08f), NLUi.Muted, 18f).GetComponentInChildren<TextMeshProUGUI>();
             _walletText = NLUi.Pill(header, "Wallet", "¥0", _font, new Color(1f, 1f, 1f, 0.08f), NLUi.Gold, 20f).GetComponentInChildren<TextMeshProUGUI>();
-            NLUi.Label(header, "Hint", "B / Esc đóng", 15f, NLUi.Muted, _font).textWrappingMode = TextWrappingModes.NoWrap;
+            NLUi.Label(header, "Hint", "B / Esc", 15f, NLUi.Muted, _font).textWrappingMode = TextWrappingModes.NoWrap;
+            var closeSpace = new GameObject("CloseSpace", typeof(RectTransform));
+            closeSpace.transform.SetParent(header, false);
+            NLUi.Size(closeSpace.transform, 46f, 46f);
+            NLUi.CloseButton(window, _font, () => _root.gameObject.SetActive(false), 46f, 18f);
 
             var body = NLUi.Group(window, "Body", false, 20f, TextAnchor.UpperLeft);
             ((HorizontalLayoutGroup)body.GetComponent<HorizontalOrVerticalLayoutGroup>()).childForceExpandWidth = false;

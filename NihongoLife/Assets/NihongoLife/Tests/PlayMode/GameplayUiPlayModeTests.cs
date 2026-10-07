@@ -49,7 +49,9 @@ namespace NihongoLife.Tests
                 Assert.IsTrue(view.IsOpen, "Dialogue box must open.");
                 Capture("01_dialogue_box");
                 Assert.IsTrue(dm.CanLeave, "NPC conversations can be left with Esc.");
-                view.Leave();
+                var closeX = Object.FindObjectsByType<Button>(FindObjectsSortMode.None).FirstOrDefault(b => b.name == "CloseX" && b.transform.IsChildOf(view.transform) && b.gameObject.activeInHierarchy);
+                Assert.NotNull(closeX, "Leavable conversations show a × button.");
+                closeX.onClick.Invoke();
                 yield return null;
                 Assert.IsFalse(dm.IsOpen, "Esc must close the conversation.");
                 Assert.IsFalse(player.InputLocked, "Player must move again after leaving.");
@@ -71,6 +73,9 @@ namespace NihongoLife.Tests
             shop.Select(KonbiniCatalog.Find("onigiri_sake"));
             yield return new WaitForSecondsRealtime(0.4f);
             Capture("02_shop_onigiri");
+            Assert.IsTrue(Object.FindObjectsByType<Image>(FindObjectsSortMode.None).Any(i => i.name == "ItemIcon" && i.gameObject.activeInHierarchy && i.sprite != null && i.sprite.name == "onigiri_sake"),
+                "The shop must show the rice-ball picture, not only a glyph.");
+            Assert.IsTrue(Object.FindObjectsByType<Button>(FindObjectsSortMode.None).Any(b => b.name == "CloseX" && b.gameObject.activeInHierarchy), "The shop has a × button.");
             shop.AddSelectedToBasket();
             shop.OpenSection(KonbiniSection.Drinks);
             shop.Select(KonbiniCatalog.Find("tea"));
