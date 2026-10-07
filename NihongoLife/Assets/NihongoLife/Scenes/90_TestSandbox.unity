@@ -10291,7 +10291,7 @@ MonoBehaviour:
   hungerDrainPerMinute: 0.8
   thirstDrainPerMinute: 1.25
   sleepinessGainPerMinute: 0.65
-  passiveEnergyRecoveryPerSecond: 7
+  passiveEnergyRecoveryPerSecond: 9
   walkingEnergyRecoveryPerSecond: 4
   recoveryDelayAfterSprint: 1.2
   sprintAgainAtEnergy: 25
@@ -10348,7 +10348,7 @@ MonoBehaviour:
   acceleration: 12
   deceleration: 16
   maxFallSpeed: -20
-  runEnergyCostPerSecond: 4.5
+  runEnergyCostPerSecond: 14
   jumpHeight: 1.25
   walkFootstepInterval: 0.52
   runFootstepInterval: 0.34

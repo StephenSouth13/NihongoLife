@@ -108,7 +108,7 @@ namespace NihongoLife.UI
             foreach (var (p, card) in _cards) card.color = p == product ? new Color(0.3f, 0.24f, 0.09f, 1f) : NLUi.Card;
             _detailTile.color = product.tint;
             _detailGlyph.text = product.glyph;
-            ItemIcons.Apply(_detailGlyph, product.id, 10f);
+            ItemIcons.Apply(_detailGlyph, product.id, 6f);
             _detailName.text = product.japanese;
             _detailReading.text = product.reading;
             _detailMeaning.text = product.vietnamese;
@@ -339,7 +339,7 @@ namespace NihongoLife.UI
             NLUi.Size(detail, preferredWidth: 420f, flexibleWidth: 1f);
             var tile = NLUi.Panel(detail, "Tile", Color.white, new RectOffset(0, 0, 6, 6), 0f);
             _detailTile = tile.GetComponent<Image>();
-            NLUi.Size(tile, preferredHeight: 110f);
+            NLUi.Size(tile, preferredHeight: 168f);
             _detailGlyph = NLUi.Label(tile, "Glyph", "", 70f, new Color(0.15f, 0.12f, 0.1f), _font, FontStyles.Bold, TextAlignmentOptions.Center);
             _detailName = NLUi.Label(detail, "Name", "", 30f, NLUi.Text, _font, FontStyles.Bold);
             _detailReading = NLUi.Label(detail, "Reading", "", 18f, NLUi.Muted, _font);
@@ -382,7 +382,7 @@ namespace NihongoLife.UI
         {
             var card = NLUi.Panel(_grid, "Card_" + product.id, NLUi.Card, new RectOffset(12, 12, 12, 10), 4f);
             var tile = NLUi.Panel(card, "Tile", product.tint, new RectOffset(0, 0, 2, 2), 0f);
-            NLUi.Size(tile, preferredHeight: 96f);
+            NLUi.Size(tile, preferredHeight: 116f);
             var tileGlyph = NLUi.Label(tile, "Glyph", product.glyph, 42f, new Color(0.15f, 0.12f, 0.1f), _font, FontStyles.Bold, TextAlignmentOptions.Center);
             ItemIcons.Apply(tileGlyph, product.id, 4f);
             NLUi.Label(card, "Name", product.japanese, 20f, NLUi.Text, _font, FontStyles.Bold);

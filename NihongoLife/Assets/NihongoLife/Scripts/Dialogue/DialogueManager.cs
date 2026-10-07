@@ -46,9 +46,20 @@ namespace NihongoLife.Dialogue
         public bool IsOpen => _currentNode != null;
         public bool IsConversation => _conversation != null;
 
-        /// <summary>Esc may leave NPC conversations (scenario or local); story narration must be finished.</summary>
-        public bool CanLeave => _currentNode != null && (_conversation != null || !_currentIsScenarioNode ||
-            (!string.IsNullOrEmpty(_currentNode.speakerId) && _currentNode.speakerId != "system" && _speakingNpc != null));
+        /// <summary>Every dialogue can be closed; story progress remains at the current node.</summary>
+        public bool CanLeave => IsOpen;
+        private ScenarioNode _pausedStoryNode;
+        public bool IsStoryPaused => _pausedStoryNode != null && ScenarioManager.Instance != null
+            && ScenarioManager.Instance.CurrentNode == _pausedStoryNode;
+
+        public void ResumeDialogue()
+        {
+            if (!IsStoryPaused || IsOpen) return;
+            var node = _pausedStoryNode;
+            _pausedStoryNode = null;
+            ScenarioManager.Instance.SetPlayerInputLocked(true);
+            StartDialogue(node);
+        }
 
         public event Action<DialogueDisplayData> OnDialogueUpdated;
         public event Action OnDialogueClosed;
@@ -107,6 +118,7 @@ namespace NihongoLife.Dialogue
 
             _currentNode = node;
             _currentIsScenarioNode = ScenarioManager.Instance != null && ScenarioManager.Instance.CurrentNode == node;
+            if (_currentIsScenarioNode) _pausedStoryNode = null;
             if (ScenarioManager.Instance == null)
             {
                 SetPlayerInputLockedWithoutScenario(true);
@@ -198,6 +210,7 @@ namespace NihongoLife.Dialogue
         {
             if (!CanLeave) return false;
             bool local = _conversation != null;
+            if (_currentIsScenarioNode && !local) _pausedStoryNode = _currentNode;
             CloseDialogue(true, false);
             if (local) FinishConversation("cancel");
             return true;

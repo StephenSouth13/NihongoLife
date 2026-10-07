@@ -93,54 +93,75 @@ namespace NihongoLife.Tests
             var animator = player.GetComponentInChildren<Animator>();
             var anim = player.GetComponentInChildren<CharacterAnimationController>();
             posture.enabled = false;
-            float rawTilt = 0f;
-            yield return WalkAndMeasure(player, animator, anim, 90, t => rawTilt = Mathf.Max(rawTilt, t));
+            var raw = new Sway();
+            yield return WalkAndMeasure(player, animator, raw, "raw");
             posture.enabled = true;
-            float worstTilt = 0f;
-            yield return WalkAndMeasure(player, animator, anim, 90, t => worstTilt = Mathf.Max(worstTilt, t));
+            var fixedPose = new Sway();
+            yield return WalkAndMeasure(player, animator, fixedPose, "upright");
             Assert.IsTrue(posture.IsActive, "The player rig must be humanoid so the stabiliser can act.");
-            Debug.Log($"[WorldFeel] Worst sideways neck-over-hips tilt while walking: raw {rawTilt:0.0}° → stabilised {worstTilt:0.0}°");
-            Assert.LessOrEqual(worstTilt, rawTilt + 0.1f, "The stabiliser must not add sway.");
-            Assert.Less(worstTilt, 6f, "The back must stay upright (no swaying walk).");
-            CaptureWalk(player);
-            anim?.SetSpeed(0f);
+            Debug.Log($"[WorldFeel] Walk sway raw → stabilised: hips roll {raw.Hips:0.0}° → {fixedPose.Hips:0.0}°, " +
+                      $"shoulder roll {raw.Shoulders:0.0}° → {fixedPose.Shoulders:0.0}°, spine lean {raw.Spine:0.0}° → {fixedPose.Spine:0.0}°, " +
+                      $"narrowest feet gap {raw.FeetGap * 100f:0} cm → {fixedPose.FeetGap * 100f:0} cm");
+            Assert.Greater(fixedPose.FeetGap, 0.08f, "Feet must not cross onto one line while walking.");
+            Assert.LessOrEqual(fixedPose.Shoulders, raw.Shoulders + 0.5f, "The stabiliser must not add shoulder roll.");
+            Assert.Less(fixedPose.Shoulders, 7f, "Shoulders stay level while walking.");
+            Assert.Less(fixedPose.Spine, 6f, "The back must stay upright (no swaying walk).");
+            animator.SetFloat("Speed", 0f);
         }
 
-        private static IEnumerator WalkAndMeasure(PlayerController player, Animator animator, CharacterAnimationController anim, int frames, System.Action<float> report)
+        private sealed class Sway { public float Hips, Shoulders, Spine, FeetGap = 99f; }
+
+        /// <summary>Walks in place for 3 s at full walk speed, records the worst sideways roll of the pelvis
+        /// (hip joints line), the shoulder line and the neck-over-hips lean, and saves a 6-frame front/back
+        /// filmstrip. Measured in the coroutine slot after Update, when bones still hold the previous frame's
+        /// final pose (after PostureStabilizer).</summary>
+        private static IEnumerator WalkAndMeasure(PlayerController player, Animator animator, Sway sway, string label)
         {
-            for (int frame = 0; frame < frames; frame++)
+            var camera = new GameObject("WalkProbe").AddComponent<Camera>();
+            camera.CopyFrom(Camera.main);
+            camera.enabled = false;
+            Transform t = player.transform;
+            float start = Time.time;
+            int shot = 0;
+            while (Time.time - start < 3f)
             {
-                anim?.SetSpeed(1f);
-                yield return new WaitForEndOfFrame();
-                if (animator == null) continue;
-                var top = animator.GetBoneTransform(HumanBodyBones.Neck);
-                var hips = animator.GetBoneTransform(HumanBodyBones.Hips);
-                if (top == null || hips == null) continue;
-                Vector3 spine = top.position - hips.position;
-                Vector3 side = Vector3.ProjectOnPlane(spine, player.transform.forward);
-                if (frame > 20) report(Vector3.Angle(side, player.transform.up));
+                animator.SetFloat("Speed", 1f);
+                yield return null;
+                if (Time.time - start < 0.8f) continue; // let the Idle → Walk transition finish
+                Vector3 hipLine = animator.GetBoneTransform(HumanBodyBones.RightUpperLeg).position - animator.GetBoneTransform(HumanBodyBones.LeftUpperLeg).position;
+                Vector3 shoulderLine = animator.GetBoneTransform(HumanBodyBones.RightUpperArm).position - animator.GetBoneTransform(HumanBodyBones.LeftUpperArm).position;
+                Vector3 spine = animator.GetBoneTransform(HumanBodyBones.Neck).position - animator.GetBoneTransform(HumanBodyBones.Hips).position;
+                sway.Hips = Mathf.Max(sway.Hips, Roll(hipLine, t));
+                sway.Shoulders = Mathf.Max(sway.Shoulders, Roll(shoulderLine, t));
+                sway.Spine = Mathf.Max(sway.Spine, Vector3.Angle(Vector3.ProjectOnPlane(spine, t.forward), t.up));
+                Vector3 feet = animator.GetBoneTransform(HumanBodyBones.RightFoot).position - animator.GetBoneTransform(HumanBodyBones.LeftFoot).position;
+                sway.FeetGap = Mathf.Min(sway.FeetGap, Vector3.Dot(feet, t.right));
+                if (shot < 6 && Time.time - start > 0.8f + shot * 0.18f)
+                {
+                    Vector3 chest = t.position + Vector3.up * 1.0f;
+                    camera.transform.position = chest + t.forward * 2.6f;
+                    camera.transform.LookAt(chest);
+                    Capture($"walk_{label}_front_{shot}", camera);
+                    camera.transform.position = chest - t.forward * 2.6f;
+                    camera.transform.LookAt(chest);
+                    Capture($"walk_{label}_back_{shot}", camera);
+                    shot++;
+                }
             }
+            Object.Destroy(camera.gameObject);
+        }
+
+        /// <summary>Angle of a left→right body line out of the horizontal, seen from the front.</summary>
+        private static float Roll(Vector3 line, Transform body)
+        {
+            Vector3 flat = Vector3.ProjectOnPlane(line, body.forward);
+            return Mathf.Abs(90f - Vector3.Angle(flat, body.up));
         }
 
         private static float VoidFraction(Color32[] pixels)
         {
             int dark = pixels.Count(p => p.r < 10 && p.g < 10 && p.b < 12);
             return dark / (float)pixels.Length;
-        }
-
-        private static void CaptureWalk(PlayerController player)
-        {
-            var camera = new GameObject("PostureProbe").AddComponent<Camera>();
-            camera.CopyFrom(Camera.main);
-            camera.enabled = false;
-            Vector3 chest = player.transform.position + Vector3.up * 1.1f;
-            camera.transform.position = chest + player.transform.forward * 3.2f + Vector3.up * 0.2f;
-            camera.transform.LookAt(chest);
-            Capture("posture_front", camera);
-            camera.transform.position = chest + player.transform.right * 3.2f + Vector3.up * 0.2f;
-            camera.transform.LookAt(chest);
-            Capture("posture_side", camera);
-            Object.Destroy(camera.gameObject);
         }
 
         private static Color32[] Capture(string name, Camera camera)

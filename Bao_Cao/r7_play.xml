@@ -1,0 +1,341 @@
+<?xml version="1.0" encoding="utf-8"?>
+<test-run id="2" testcasecount="16" result="Failed(Child)" total="16" passed="14" failed="1" inconclusive="0" skipped="1" asserts="0" engine-version="3.5.0.0" clr-version="4.0.30319.42000" start-time="2026-10-07 22:35:52Z" end-time="2026-10-07 22:40:17Z" duration="265.2828845">
+  <test-suite type="TestSuite" id="1033" name="NihongoLife" fullname="NihongoLife" runstate="Runnable" testcasecount="16" result="Failed" site="Child" start-time="2026-10-07 22:35:52Z" end-time="2026-10-07 22:40:17Z" duration="265.282885" total="16" passed="14" failed="1" inconclusive="0" skipped="1" asserts="0">
+    <properties>
+      <property name="platform" value="PlayMode" />
+    </properties>
+    <failure>
+      <message><![CDATA[One or more child tests had errors]]></message>
+    </failure>
+    <test-suite type="Assembly" id="1027" name="NihongoLife.Tests.PlayMode.dll" fullname="D:/VTC_Academy/NihongoLife/NihongoLife/NihongoLife/Library/ScriptAssemblies/NihongoLife.Tests.PlayMode.dll" runstate="Runnable" testcasecount="16" result="Failed" site="Child" start-time="2026-10-07 22:35:52Z" end-time="2026-10-07 22:40:17Z" duration="265.273570" total="16" passed="14" failed="1" inconclusive="0" skipped="1" asserts="0">
+      <properties>
+        <property name="_PID" value="12792" />
+        <property name="_APPDOMAIN" value="Unity Child Domain" />
+        <property name="platform" value="PlayMode" />
+        <property name="EditorOnly" value="False" />
+      </properties>
+      <failure>
+        <message><![CDATA[One or more child tests had errors]]></message>
+      </failure>
+      <test-suite type="TestSuite" id="1028" name="NihongoLife" fullname="NihongoLife" runstate="Runnable" testcasecount="16" result="Failed" site="Child" start-time="2026-10-07 22:35:52Z" end-time="2026-10-07 22:40:17Z" duration="265.272836" total="16" passed="14" failed="1" inconclusive="0" skipped="1" asserts="0">
+        <properties />
+        <failure>
+          <message><![CDATA[One or more child tests had errors]]></message>
+        </failure>
+        <test-suite type="TestSuite" id="1029" name="Tests" fullname="NihongoLife.Tests" runstate="Runnable" testcasecount="16" result="Failed" site="Child" start-time="2026-10-07 22:35:52Z" end-time="2026-10-07 22:40:17Z" duration="265.272426" total="16" passed="14" failed="1" inconclusive="0" skipped="1" asserts="0">
+          <properties />
+          <failure>
+            <message><![CDATA[One or more child tests had errors]]></message>
+          </failure>
+          <test-suite type="TestFixture" id="1001" name="BedroomPlayModeTests" fullname="NihongoLife.Tests.BedroomPlayModeTests" classname="NihongoLife.Tests.BedroomPlayModeTests" runstate="Runnable" testcasecount="2" result="Passed" start-time="2026-10-07 22:35:52Z" end-time="2026-10-07 22:36:29Z" duration="36.946805" total="2" passed="2" failed="0" inconclusive="0" skipped="0" asserts="0">
+            <properties />
+            <test-case id="1002" name="BedroomFromCity_AllInteractions" fullname="NihongoLife.Tests.BedroomPlayModeTests.BedroomFromCity_AllInteractions" methodname="BedroomFromCity_AllInteractions" classname="NihongoLife.Tests.BedroomPlayModeTests" runstate="Runnable" seed="2018297924" result="Passed" start-time="2026-10-07 22:35:52Z" end-time="2026-10-07 22:36:20Z" duration="28.564642" asserts="0">
+              <properties>
+                <property name="_JOINTYPE" value="UnityCombinatorial" />
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+              <output><![CDATA[[AppRoot] Initializing core services...
+[SceneFlowController] Initialized.
+[AudioService] Initialized AudioSources.
+[GameServices] Service GameInputService is already registered. Overwriting.
+[GameServices] Service PlayerSessionService is already registered. Overwriting.
+[SupabaseClient] Configured for https://pkxrtvlerjjiignmlebx.supabase.co
+[SupabaseAuth] Initialized.
+[AppRoot] Supabase Auth service registered.
+[AppRoot] Using SupabaseProgressRepository (cloud save).
+[LocalProgressRepository] Initialized. Save path: C:/Users/Admin/AppData/LocalLow/DefaultCompany/NihongoLife\progress.json
+[SupabaseProgressRepo] Initialized with local fallback.
+[LocalScenarioRepository] Loaded 14 scenarios from Resources/Scenarios.
+[AppRoot] Using SupabaseOnlineWorldService (real online).
+[SupabaseOnlineWorld] Initialized.
+[CoopSessionService] Initialized.
+[ExamRepository] Loaded 2 exam(s) from Resources/Exams.
+[AppRoot] Core services initialized successfully.
+[ScenarioManager] Starting scenario: ひばり町へようこそ (scenario.intro.arrival)
+[ScoringManager] Score tracking reset.
+[ScenarioManager] Transitioning to Node: n_open (Type: Dialogue)
+[ScenarioManager] Objective Completed: 駅を出て、町に着く
+[DialogueManager] Starting dialogue node: n_open
+[SupabaseRealtime] Connecting to wss://pkxrtvlerjjiignmlebx.supabase.co/realtime/v1/websocket?apikey=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBreHJ0dmxlcmpqaWlnbm1sZWJ4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODg1Mzc1MDMsImV4cCI6MjEwNDExMzUwM30.m8UT0o6p4WXItZ3LcDt7QLs25uq28rm0bNS1f3cOYb4&vsn=1.0.0
+[SupabaseOnlineWorld] Local player connected: Guest (ad0ed602544428b9b09a4ab9c21abcf14785c5af)
+[SupabaseRealtime] WebSocket connected.
+[SupabaseRealtime] Joined channel: nihongolife-world
+[SupabaseVoiceSync] voice_lines table not provisioned yet — voice lines use the bundled clips.
+Reduced additional punctual light shadows resolution by 2 to make 6 shadow maps fit in the 2048x2048 shadow atlas. To avoid this, increase shadow atlas size, decrease big shadow resolutions, or reduce the number of shadow maps active in the same frame
+]]></output>
+            </test-case>
+            <test-case id="1003" name="BedroomStandalone_BootsThroughCityAndLeaves" fullname="NihongoLife.Tests.BedroomPlayModeTests.BedroomStandalone_BootsThroughCityAndLeaves" methodname="BedroomStandalone_BootsThroughCityAndLeaves" classname="NihongoLife.Tests.BedroomPlayModeTests" runstate="Runnable" seed="1485079940" result="Passed" start-time="2026-10-07 22:36:20Z" end-time="2026-10-07 22:36:29Z" duration="8.366283" asserts="0">
+              <properties>
+                <property name="_JOINTYPE" value="UnityCombinatorial" />
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+              <output><![CDATA[[ScenarioManager] Starting scenario: ひばり町へようこそ (scenario.intro.arrival)
+[ScoringManager] Score tracking reset.
+[ScenarioManager] Transitioning to Node: n_open (Type: Dialogue)
+[DialogueManager] Starting dialogue node: n_open
+[StandaloneZoneBootstrap] Booted through 90_TestSandbox; entering 45_HomeBedroom.
+[ScenarioManager] Transitioning to Node: n_open2 (Type: Dialogue)
+[DialogueManager] Starting dialogue node: n_open2
+[ScenarioManager] Transitioning to Node: n_feel (Type: Dialogue)
+[DialogueManager] Starting dialogue node: n_feel
+Reduced additional punctual light shadows resolution by 2 to make 6 shadow maps fit in the 2048x2048 shadow atlas. To avoid this, increase shadow atlas size, decrease big shadow resolutions, or reduce the number of shadow maps active in the same frame
+Reduced additional punctual light shadows resolution by 2 to make 6 shadow maps fit in the 2048x2048 shadow atlas. To avoid this, increase shadow atlas size, decrease big shadow resolutions, or reduce the number of shadow maps active in the same frame
+]]></output>
+            </test-case>
+          </test-suite>
+          <test-suite type="TestFixture" id="1004" name="CityTownPlayModeTests" fullname="NihongoLife.Tests.CityTownPlayModeTests" classname="NihongoLife.Tests.CityTownPlayModeTests" runstate="Runnable" testcasecount="1" result="Passed" start-time="2026-10-07 22:36:29Z" end-time="2026-10-07 22:36:58Z" duration="29.259597" total="1" passed="1" failed="0" inconclusive="0" skipped="0" asserts="0">
+            <properties />
+            <test-case id="1005" name="Town_KonbiniEntrancesAndMap" fullname="NihongoLife.Tests.CityTownPlayModeTests.Town_KonbiniEntrancesAndMap" methodname="Town_KonbiniEntrancesAndMap" classname="NihongoLife.Tests.CityTownPlayModeTests" runstate="Runnable" seed="1344250029" result="Passed" start-time="2026-10-07 22:36:29Z" end-time="2026-10-07 22:36:58Z" duration="29.254873" asserts="0">
+              <properties>
+                <property name="_JOINTYPE" value="UnityCombinatorial" />
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+              <output><![CDATA[[ScenarioManager] Starting scenario: ひばり町へようこそ (scenario.intro.arrival)
+[ScoringManager] Score tracking reset.
+[ScenarioManager] Transitioning to Node: n_feel (Type: Dialogue)
+[DialogueManager] Starting dialogue node: n_feel
+Reduced additional punctual light shadows resolution by 2 to make 6 shadow maps fit in the 2048x2048 shadow atlas. To avoid this, increase shadow atlas size, decrease big shadow resolutions, or reduce the number of shadow maps active in the same frame
+]]></output>
+            </test-case>
+          </test-suite>
+          <test-suite type="TestFixture" id="1006" name="FontAtlasDiagnosticTests" fullname="NihongoLife.Tests.FontAtlasDiagnosticTests" classname="NihongoLife.Tests.FontAtlasDiagnosticTests" runstate="Runnable" testcasecount="1" result="Passed" start-time="2026-10-07 22:36:58Z" end-time="2026-10-07 22:37:03Z" duration="4.409738" total="1" passed="1" failed="0" inconclusive="0" skipped="0" asserts="0">
+            <properties />
+            <test-case id="1007" name="GameCenterSigns_KeepAllGlyphs" fullname="NihongoLife.Tests.FontAtlasDiagnosticTests.GameCenterSigns_KeepAllGlyphs" methodname="GameCenterSigns_KeepAllGlyphs" classname="NihongoLife.Tests.FontAtlasDiagnosticTests" runstate="Runnable" seed="832897931" result="Passed" start-time="2026-10-07 22:36:58Z" end-time="2026-10-07 22:37:03Z" duration="4.404783" asserts="0">
+              <properties>
+                <property name="_JOINTYPE" value="UnityCombinatorial" />
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+              <output><![CDATA[[ScenarioManager] Starting scenario: ひばり町へようこそ (scenario.intro.arrival)
+[ScoringManager] Score tracking reset.
+[ScenarioManager] Transitioning to Node: n_feel (Type: Dialogue)
+[DialogueManager] Starting dialogue node: n_feel
+[FontAtlasDiagnostic]
+font=NotoSansJP SDF atlasTextures=1 fallback=1
+
+]]></output>
+            </test-case>
+          </test-suite>
+          <test-suite type="TestFixture" id="1008" name="GameCenterPlayModeTests" fullname="NihongoLife.Tests.GameCenterPlayModeTests" classname="NihongoLife.Tests.GameCenterPlayModeTests" runstate="Runnable" testcasecount="1" result="Passed" start-time="2026-10-07 22:37:03Z" end-time="2026-10-07 22:37:27Z" duration="24.293167" total="1" passed="1" failed="0" inconclusive="0" skipped="0" asserts="0">
+            <properties />
+            <test-case id="1009" name="GameCenter_KanaMatchVerticalSlice" fullname="NihongoLife.Tests.GameCenterPlayModeTests.GameCenter_KanaMatchVerticalSlice" methodname="GameCenter_KanaMatchVerticalSlice" classname="NihongoLife.Tests.GameCenterPlayModeTests" runstate="Runnable" seed="1768686856" result="Passed" start-time="2026-10-07 22:37:03Z" end-time="2026-10-07 22:37:27Z" duration="24.291005" asserts="0">
+              <properties>
+                <property name="_JOINTYPE" value="UnityCombinatorial" />
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+              <output><![CDATA[[ScenarioManager] Starting scenario: ひばり町へようこそ (scenario.intro.arrival)
+[ScoringManager] Score tracking reset.
+[ScenarioManager] Transitioning to Node: n_feel (Type: Dialogue)
+[DialogueManager] Starting dialogue node: n_feel
+[ScoringManager] Added Score Event: Category=Vocabulary, Value=+40, Reason=kana_match: 8 đúng
+[ScoringManager] Added Score Event: Category=ResponseAccuracy, Value=+89, Reason=kana_match: chính xác 89 %
+[ScoringManager] Added Score Event: Category=TaskCompletion, Value=+100, Reason=kana_match: hoàn thành trong 5s
+[ScoringManager] Added Score Event: Category=Vocabulary, Value=-2, Reason=kana_match: 1 lần sai
+[LearningMasteryManager] Quick update: kana.hiragana.su Mastery => 55.0
+[LearningMasteryManager] Quick update: kana.hiragana.i Mastery => 55.0
+[LearningMasteryManager] Quick update: kana.hiragana.se Mastery => 55.0
+[LearningMasteryManager] Quick update: kana.hiragana.u Mastery => 55.0
+[LearningMasteryManager] Quick update: kana.hiragana.ki Mastery => 55.0
+[LearningMasteryManager] Quick update: kana.hiragana.ka Mastery => 47.0
+[LearningMasteryManager] Quick update: kana.hiragana.sa Mastery => 47.0
+[LearningMasteryManager] Quick update: kana.hiragana.ku Mastery => 55.0
+[DialogueManager] Starting dialogue node: hello
+[DialogueManager] Starting dialogue node: done
+]]></output>
+            </test-case>
+          </test-suite>
+          <test-suite type="TestFixture" id="1010" name="GameplayUiPlayModeTests" fullname="NihongoLife.Tests.GameplayUiPlayModeTests" classname="NihongoLife.Tests.GameplayUiPlayModeTests" runstate="Runnable" testcasecount="6" result="Passed" start-time="2026-10-07 22:37:27Z" end-time="2026-10-07 22:39:37Z" duration="130.462104" total="6" passed="6" failed="0" inconclusive="0" skipped="0" asserts="0">
+            <properties />
+            <test-case id="1011" name="City_DialogueShopBagMap" fullname="NihongoLife.Tests.GameplayUiPlayModeTests.City_DialogueShopBagMap" methodname="City_DialogueShopBagMap" classname="NihongoLife.Tests.GameplayUiPlayModeTests" runstate="Runnable" seed="1996752590" result="Passed" start-time="2026-10-07 22:37:27Z" end-time="2026-10-07 22:37:39Z" duration="11.747231" asserts="0">
+              <properties>
+                <property name="_JOINTYPE" value="UnityCombinatorial" />
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+              <output><![CDATA[[ScenarioManager] Starting scenario: ひばり町へようこそ (scenario.intro.arrival)
+[ScoringManager] Score tracking reset.
+[ScenarioManager] Transitioning to Node: n_feel (Type: Dialogue)
+[DialogueManager] Starting dialogue node: n_feel
+[NPCController] Player interacted with NPC: npc_guide (Lilly)
+[NPCController] Gemini fallback failed for npc_guide: HTTP/1.1 404 Not Found
+[DialogueManager] Starting dialogue node: fallback_npc_guide
+[NPCController] Player interacted with NPC: npc_cashier (Ito)
+[DialogueManager] Starting dialogue node: pay_total
+[DialogueManager] Starting dialogue node: pay_bag
+[DialogueManager] Selected choice index 0: はい、おねがいします。
+[DialogueManager] Starting dialogue node: pay_yes
+]]></output>
+            </test-case>
+            <test-case id="1015" name="Emote_WheelAndColouredCharacters" fullname="NihongoLife.Tests.GameplayUiPlayModeTests.Emote_WheelAndColouredCharacters" methodname="Emote_WheelAndColouredCharacters" classname="NihongoLife.Tests.GameplayUiPlayModeTests" runstate="Runnable" seed="1649711238" result="Passed" start-time="2026-10-07 22:37:39Z" end-time="2026-10-07 22:37:45Z" duration="6.139320" asserts="0">
+              <properties>
+                <property name="_JOINTYPE" value="UnityCombinatorial" />
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+              <output><![CDATA[[ScenarioManager] Starting scenario: ひばり町へようこそ (scenario.intro.arrival)
+[ScoringManager] Score tracking reset.
+[ScenarioManager] Transitioning to Node: n_feel (Type: Dialogue)
+[DialogueManager] Starting dialogue node: n_feel
+]]></output>
+            </test-case>
+            <test-case id="1014" name="Hud_StatusDockButtonsAndPortalSigns" fullname="NihongoLife.Tests.GameplayUiPlayModeTests.Hud_StatusDockButtonsAndPortalSigns" methodname="Hud_StatusDockButtonsAndPortalSigns" classname="NihongoLife.Tests.GameplayUiPlayModeTests" runstate="Runnable" seed="1874692303" result="Passed" start-time="2026-10-07 22:37:45Z" end-time="2026-10-07 22:37:50Z" duration="5.282398" asserts="0">
+              <properties>
+                <property name="_JOINTYPE" value="UnityCombinatorial" />
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+              <output><![CDATA[[ScenarioManager] Starting scenario: ひばり町へようこそ (scenario.intro.arrival)
+[ScoringManager] Score tracking reset.
+[ScenarioManager] Transitioning to Node: n_feel (Type: Dialogue)
+[DialogueManager] Starting dialogue node: n_feel
+]]></output>
+            </test-case>
+            <test-case id="1016" name="IntroScenario_GoesHomeBeforeTadaima" fullname="NihongoLife.Tests.GameplayUiPlayModeTests.IntroScenario_GoesHomeBeforeTadaima" methodname="IntroScenario_GoesHomeBeforeTadaima" classname="NihongoLife.Tests.GameplayUiPlayModeTests" runstate="Runnable" seed="717637852" result="Passed" start-time="2026-10-07 22:37:50Z" end-time="2026-10-07 22:37:50Z" duration="0.003321" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1012" name="Station_FullTripToMinato" fullname="NihongoLife.Tests.GameplayUiPlayModeTests.Station_FullTripToMinato" methodname="Station_FullTripToMinato" classname="NihongoLife.Tests.GameplayUiPlayModeTests" runstate="Runnable" seed="438100495" result="Passed" start-time="2026-10-07 22:37:50Z" end-time="2026-10-07 22:39:03Z" duration="72.924305" asserts="0">
+              <properties>
+                <property name="_JOINTYPE" value="UnityCombinatorial" />
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+              <output><![CDATA[[ScenarioManager] Starting scenario: ひばり町へようこそ (scenario.intro.arrival)
+[ScoringManager] Score tracking reset.
+[ScenarioManager] Transitioning to Node: n_feel (Type: Dialogue)
+[DialogueManager] Starting dialogue node: n_feel
+[NPCController] Player interacted with NPC: npc_station_staff (Kimura)
+[DialogueManager] Starting dialogue node: st_hello
+[DialogueManager] Selected choice index 0: ミナトえきへ いきたいです。
+[DialogueManager] Starting dialogue node: st_fare_minato
+[DialogueManager] Selected choice index 0: きっぷを いちまい ください。
+[DialogueManager] Starting dialogue node: st_sold
+[DialogueManager] Selected choice index 0: ありがとうございます。
+[DialogueManager] Starting dialogue node: st_thanks
+[DialogueManager] Starting dialogue node: ps_q
+[DialogueManager] Selected choice index 0: はい、すしを たべに いきます。
+[DialogueManager] Starting dialogue node: ps_ok
+]]></output>
+            </test-case>
+            <test-case id="1013" name="Station_GakuenMaeTicketGoesToSchool" fullname="NihongoLife.Tests.GameplayUiPlayModeTests.Station_GakuenMaeTicketGoesToSchool" methodname="Station_GakuenMaeTicketGoesToSchool" classname="NihongoLife.Tests.GameplayUiPlayModeTests" runstate="Runnable" seed="209332324" result="Passed" start-time="2026-10-07 22:39:03Z" end-time="2026-10-07 22:39:37Z" duration="34.359389" asserts="0">
+              <properties>
+                <property name="_JOINTYPE" value="UnityCombinatorial" />
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+              <output><![CDATA[[ScenarioManager] Starting scenario: ひばり町へようこそ (scenario.intro.arrival)
+[ScoringManager] Score tracking reset.
+[ScenarioManager] Transitioning to Node: n_feel (Type: Dialogue)
+[DialogueManager] Starting dialogue node: n_feel
+]]></output>
+            </test-case>
+          </test-suite>
+          <test-suite type="TestFixture" id="1017" name="ScenarioPlayModeTests" fullname="NihongoLife.Tests.ScenarioPlayModeTests" classname="NihongoLife.Tests.ScenarioPlayModeTests" runstate="Runnable" testcasecount="1" result="Passed" start-time="2026-10-07 22:39:37Z" end-time="2026-10-07 22:39:40Z" duration="2.421431" total="1" passed="1" failed="0" inconclusive="0" skipped="0" asserts="0">
+            <properties />
+            <test-case id="1018" name="Scenario_PlayModeSmokeTest" fullname="NihongoLife.Tests.ScenarioPlayModeTests.Scenario_PlayModeSmokeTest" methodname="Scenario_PlayModeSmokeTest" classname="NihongoLife.Tests.ScenarioPlayModeTests" runstate="Runnable" seed="709434075" result="Passed" start-time="2026-10-07 22:39:37Z" end-time="2026-10-07 22:39:40Z" duration="2.418042" asserts="0">
+              <properties>
+                <property name="_JOINTYPE" value="UnityCombinatorial" />
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+              <output><![CDATA[[ScenarioManager] Starting scenario: コンビニでおにぎりを買う (scenario.konbini.buy_onigiri)
+[ScoringManager] Score tracking reset.
+[ScenarioManager] Transitioning to Node: node_start (Type: GoToArea)
+[ScenarioManager] Target area reached: store_entrance
+[ScenarioManager] Objective Completed: コンビニに入る
+[ScenarioManager] Transitioning to Node: n_greet (Type: Dialogue)
+[DialogueManager] Starting dialogue node: n_greet
+]]></output>
+            </test-case>
+          </test-suite>
+          <test-suite type="TestFixture" id="1019" name="SchoolPlayModeTests" fullname="NihongoLife.Tests.SchoolPlayModeTests" classname="NihongoLife.Tests.SchoolPlayModeTests" runstate="Runnable" testcasecount="1" result="Passed" start-time="2026-10-07 22:39:40Z" end-time="2026-10-07 22:39:51Z" duration="11.307263" total="1" passed="1" failed="0" inconclusive="0" skipped="0" asserts="0">
+            <properties />
+            <test-case id="1020" name="Classroom_ExamDeskRunsAnExamWithFeedback" fullname="NihongoLife.Tests.SchoolPlayModeTests.Classroom_ExamDeskRunsAnExamWithFeedback" methodname="Classroom_ExamDeskRunsAnExamWithFeedback" classname="NihongoLife.Tests.SchoolPlayModeTests" runstate="Runnable" seed="1413760392" result="Passed" start-time="2026-10-07 22:39:40Z" end-time="2026-10-07 22:39:51Z" duration="11.305327" asserts="0">
+              <properties>
+                <property name="_JOINTYPE" value="UnityCombinatorial" />
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+              <output><![CDATA[[ScenarioManager] Starting scenario: ひばり町へようこそ (scenario.intro.arrival)
+[ScoringManager] Score tracking reset.
+[ScenarioManager] Transitioning to Node: n_open (Type: Dialogue)
+[ScenarioManager] Objective Completed: 駅を出て、町に着く
+[DialogueManager] Starting dialogue node: n_open
+[ScenarioManager] Transitioning to Node: n_open2 (Type: Dialogue)
+[DialogueManager] Starting dialogue node: n_open2
+[ScenarioManager] Transitioning to Node: n_feel (Type: Dialogue)
+[DialogueManager] Starting dialogue node: n_feel
+The character with Unicode value \u2717 was not found in the [NotoSansJP SDF] font asset or any potential fallbacks. It was replaced by Unicode character \u25A1 in text object [Text].
+The character with Unicode value \u2717 was not found in the [NotoSansJP SDF] font asset or any potential fallbacks. It was replaced by Unicode character \u25A1 in text object [Text].
+The character with Unicode value \u2717 was not found in the [NotoSansJP SDF] font asset or any potential fallbacks. It was replaced by Unicode character \u25A1 in text object [Text].
+The character with Unicode value \u2717 was not found in the [NotoSansJP SDF] font asset or any potential fallbacks. It was replaced by Unicode character \u25A1 in text object [Text].
+[DialogueManager] Starting dialogue node: exam_comment
+]]></output>
+            </test-case>
+          </test-suite>
+          <test-suite type="TestFixture" id="1021" name="TrailerRecordingTests" fullname="NihongoLife.Tests.TrailerRecordingTests" classname="NihongoLife.Tests.TrailerRecordingTests" runstate="Runnable" testcasecount="1" result="Passed" start-time="2026-10-07 22:39:51Z" end-time="2026-10-07 22:39:51Z" duration="0.004936" total="1" passed="0" failed="0" inconclusive="0" skipped="1" asserts="0">
+            <properties />
+            <test-case id="1022" name="Trailer_RecordFrames" fullname="NihongoLife.Tests.TrailerRecordingTests.Trailer_RecordFrames" methodname="Trailer_RecordFrames" classname="NihongoLife.Tests.TrailerRecordingTests" runstate="Explicit" seed="1880926032" result="Skipped" label="Explicit" start-time="2026-10-07 22:39:51Z" end-time="2026-10-07 22:39:51Z" duration="0.000266" asserts="0">
+              <properties>
+                <property name="_JOINTYPE" value="UnityCombinatorial" />
+                <property name="Timeout" value="1800000" />
+              </properties>
+            </test-case>
+          </test-suite>
+          <test-suite type="TestFixture" id="1023" name="WorldFeelPlayModeTests" fullname="NihongoLife.Tests.WorldFeelPlayModeTests" classname="NihongoLife.Tests.WorldFeelPlayModeTests" runstate="Runnable" testcasecount="1" result="Failed" site="Child" start-time="2026-10-07 22:39:51Z" end-time="2026-10-07 22:40:05Z" duration="13.698272" total="1" passed="0" failed="1" inconclusive="0" skipped="0" asserts="0">
+            <properties />
+            <failure>
+              <message><![CDATA[One or more child tests had errors]]></message>
+            </failure>
+            <test-case id="1024" name="City_HorizonStaminaPosture" fullname="NihongoLife.Tests.WorldFeelPlayModeTests.City_HorizonStaminaPosture" methodname="City_HorizonStaminaPosture" classname="NihongoLife.Tests.WorldFeelPlayModeTests" runstate="Runnable" seed="2135216505" result="Failed" start-time="2026-10-07 22:39:51Z" end-time="2026-10-07 22:40:05Z" duration="13.696555" asserts="0">
+              <properties>
+                <property name="_JOINTYPE" value="UnityCombinatorial" />
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+              <failure>
+                <message><![CDATA[  The stabiliser must not add sway.
+  Expected: less than or equal to 0.904542506f
+  But was:  1.62822688f
+]]></message>
+                <stack-trace><![CDATA[at NihongoLife.Tests.WorldFeelPlayModeTests+<City_HorizonStaminaPosture>d__0.MoveNext () [0x0075c] in D:\VTC_Academy\NihongoLife\NihongoLife\NihongoLife\Assets\NihongoLife\Tests\PlayMode\WorldFeelPlayModeTests.cs:103
+at UnityEngine.TestTools.TestEnumerator+<Execute>d__7.MoveNext () [0x0003a] in .\Library\PackageCache\com.unity.test-framework@aebcb98460c6\UnityEngine.TestRunner\NUnitExtensions\Attributes\TestEnumerator.cs:44
+]]></stack-trace>
+              </failure>
+              <output><![CDATA[[ScenarioManager] Starting scenario: ひばり町へようこそ (scenario.intro.arrival)
+[ScoringManager] Score tracking reset.
+[ScenarioManager] Transitioning to Node: n_feel (Type: Dialogue)
+[DialogueManager] Starting dialogue node: n_feel
+[WorldFeel] Worst sideways neck-over-hips tilt while walking: raw 0.8° → stabilised 1.6°
+]]></output>
+            </test-case>
+          </test-suite>
+          <test-suite type="TestFixture" id="1025" name="ZoneTransitionPlayModeTests" fullname="NihongoLife.Tests.ZoneTransitionPlayModeTests" classname="NihongoLife.Tests.ZoneTransitionPlayModeTests" runstate="Runnable" testcasecount="1" result="Passed" start-time="2026-10-07 22:40:05Z" end-time="2026-10-07 22:40:17Z" duration="12.466608" total="1" passed="1" failed="0" inconclusive="0" skipped="0" asserts="0">
+            <properties />
+            <test-case id="1026" name="CityStationBedroomRoundTrip" fullname="NihongoLife.Tests.ZoneTransitionPlayModeTests.CityStationBedroomRoundTrip" methodname="CityStationBedroomRoundTrip" classname="NihongoLife.Tests.ZoneTransitionPlayModeTests" runstate="Runnable" seed="633923180" result="Passed" start-time="2026-10-07 22:40:05Z" end-time="2026-10-07 22:40:17Z" duration="12.464750" asserts="0">
+              <properties>
+                <property name="_JOINTYPE" value="UnityCombinatorial" />
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+              <output><![CDATA[[ScenarioManager] Starting scenario: ひばり町へようこそ (scenario.intro.arrival)
+[ScoringManager] Score tracking reset.
+[ScenarioManager] Transitioning to Node: n_feel (Type: Dialogue)
+[DialogueManager] Starting dialogue node: n_feel
+Reduced additional punctual light shadows resolution by 2 to make 6 shadow maps fit in the 2048x2048 shadow atlas. To avoid this, increase shadow atlas size, decrease big shadow resolutions, or reduce the number of shadow maps active in the same frame
+Reduced additional punctual light shadows resolution by 2 to make 6 shadow maps fit in the 2048x2048 shadow atlas. To avoid this, increase shadow atlas size, decrease big shadow resolutions, or reduce the number of shadow maps active in the same frame
+Saving results to: C:/Users/Admin/AppData/LocalLow/DefaultCompany/NihongoLife\TestResults.xml
+]]></output>
+            </test-case>
+          </test-suite>
+        </test-suite>
+      </test-suite>
+    </test-suite>
+  </test-suite>
+</test-run>

@@ -74,8 +74,8 @@ namespace NihongoLife.UI
             _name = NLUi.Label(names, "Name", "Học viên", 19f, NLUi.Text, _font, FontStyles.Bold);
             _level = NLUi.Label(names, "Level", "Lv 1", 15f, NLUi.Muted, _font);
             _expFill = BarFill(card, "Exp", new Color(0.55f, 0.45f, 0.95f), 5f);
-            _bars["health"] = BarRow(card, "体", "Thể lực", new Color(0.9f, 0.36f, 0.36f));
-            _bars["energy"] = BarRow(card, "元", "Năng lượng", new Color(0.39f, 0.71f, 0.96f));
+            _bars["health"] = BarRow(card, "体", "Sức khỏe", new Color(0.9f, 0.36f, 0.36f));
+            _bars["energy"] = BarRow(card, "元", "Thể lực", new Color(0.39f, 0.71f, 0.96f));
             _bars["hunger"] = BarRow(card, "食", "No", new Color(0.95f, 0.72f, 0.29f));
             _bars["thirst"] = BarRow(card, "水", "Khát", new Color(0.3f, 0.82f, 0.78f));
             _footer = NLUi.Label(card, "Footer", "", 15f, NLUi.Soft, _font);
@@ -156,14 +156,14 @@ namespace NihongoLife.UI
             NLUi.CloseButton(_characterWindow, _font, () => close?.Invoke(), 46f, 18f);
             _characterExp = BarFill(_characterWindow, "Exp", new Color(0.55f, 0.45f, 0.95f), 8f);
             NLUi.Divider(_characterWindow);
-            _characterBars["health"] = BarRow(_characterWindow, "体", "Thể lực", new Color(0.9f, 0.36f, 0.36f));
-            _characterBars["energy"] = BarRow(_characterWindow, "元", "Năng lượng", new Color(0.39f, 0.71f, 0.96f));
+            _characterBars["health"] = BarRow(_characterWindow, "体", "Sức khỏe", new Color(0.9f, 0.36f, 0.36f));
+            _characterBars["energy"] = BarRow(_characterWindow, "元", "Thể lực", new Color(0.39f, 0.71f, 0.96f));
             _characterBars["hunger"] = BarRow(_characterWindow, "食", "No", new Color(0.95f, 0.72f, 0.29f));
             _characterBars["thirst"] = BarRow(_characterWindow, "水", "Khát", new Color(0.3f, 0.82f, 0.78f));
             _characterBars["rest"] = BarRow(_characterWindow, "眠", "Tỉnh táo", new Color(0.7f, 0.6f, 0.95f));
             NLUi.Divider(_characterWindow);
             _characterInfo = NLUi.Label(_characterWindow, "Info", "", 17f, NLUi.Text, _font);
-            NLUi.Label(_characterWindow, "Tip", "Mẹo: ăn ở konbini để hồi No/Khát, ngủ ở phòng trọ để hồi Năng lượng và Tỉnh táo.", 14f, NLUi.Muted, _font);
+            NLUi.Label(_characterWindow, "Tip", "Ăn/uống để hồi No/Khát; nghỉ để hồi Thể lực, ngủ để tỉnh táo.", 14f, NLUi.Muted, _font);
             _characterWindow.gameObject.SetActive(false);
         }
 

@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<test-run id="2" testcasecount="1" result="Passed" total="1" passed="1" failed="0" inconclusive="0" skipped="0" asserts="0" engine-version="3.5.0.0" clr-version="4.0.30319.42000" start-time="2026-10-07 22:44:01Z" end-time="2026-10-07 22:44:22Z" duration="21.0474814">
+  <test-suite type="TestSuite" id="1033" name="NihongoLife" fullname="NihongoLife" runstate="Runnable" testcasecount="16" result="Passed" start-time="2026-10-07 22:44:01Z" end-time="2026-10-07 22:44:22Z" duration="21.047481" total="1" passed="1" failed="0" inconclusive="0" skipped="0" asserts="0">
+    <properties>
+      <property name="platform" value="PlayMode" />
+    </properties>
+    <test-suite type="Assembly" id="1027" name="NihongoLife.Tests.PlayMode.dll" fullname="D:/VTC_Academy/NihongoLife/NihongoLife/NihongoLife/Library/ScriptAssemblies/NihongoLife.Tests.PlayMode.dll" runstate="Runnable" testcasecount="16" result="Passed" start-time="2026-10-07 22:44:01Z" end-time="2026-10-07 22:44:22Z" duration="21.035546" total="1" passed="1" failed="0" inconclusive="0" skipped="0" asserts="0">
+      <properties>
+        <property name="_PID" value="7088" />
+        <property name="_APPDOMAIN" value="Unity Child Domain" />
+        <property name="platform" value="PlayMode" />
+        <property name="EditorOnly" value="False" />
+      </properties>
+      <test-suite type="TestSuite" id="1028" name="NihongoLife" fullname="NihongoLife" runstate="Runnable" testcasecount="16" result="Passed" start-time="2026-10-07 22:44:01Z" end-time="2026-10-07 22:44:22Z" duration="21.034540" total="1" passed="1" failed="0" inconclusive="0" skipped="0" asserts="0">
+        <properties />
+        <test-suite type="TestSuite" id="1029" name="Tests" fullname="NihongoLife.Tests" runstate="Runnable" testcasecount="16" result="Passed" start-time="2026-10-07 22:44:01Z" end-time="2026-10-07 22:44:22Z" duration="21.033983" total="1" passed="1" failed="0" inconclusive="0" skipped="0" asserts="0">
+          <properties />
+          <test-suite type="TestFixture" id="1023" name="WorldFeelPlayModeTests" fullname="NihongoLife.Tests.WorldFeelPlayModeTests" classname="NihongoLife.Tests.WorldFeelPlayModeTests" runstate="Runnable" testcasecount="1" result="Passed" start-time="2026-10-07 22:44:01Z" end-time="2026-10-07 22:44:22Z" duration="21.032220" total="1" passed="1" failed="0" inconclusive="0" skipped="0" asserts="0">
+            <properties />
+            <test-case id="1024" name="City_HorizonStaminaPosture" fullname="NihongoLife.Tests.WorldFeelPlayModeTests.City_HorizonStaminaPosture" methodname="City_HorizonStaminaPosture" classname="NihongoLife.Tests.WorldFeelPlayModeTests" runstate="Runnable" seed="556647360" result="Passed" start-time="2026-10-07 22:44:01Z" end-time="2026-10-07 22:44:22Z" duration="21.016548" asserts="0">
+              <properties>
+                <property name="_JOINTYPE" value="UnityCombinatorial" />
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+              <output><![CDATA[[AppRoot] Initializing core services...
+[SceneFlowController] Initialized.
+[AudioService] Initialized AudioSources.
+[GameServices] Service GameInputService is already registered. Overwriting.
+[GameServices] Service PlayerSessionService is already registered. Overwriting.
+[SupabaseClient] Configured for https://pkxrtvlerjjiignmlebx.supabase.co
+[SupabaseAuth] Initialized.
+[AppRoot] Supabase Auth service registered.
+[AppRoot] Using SupabaseProgressRepository (cloud save).
+[LocalProgressRepository] Initialized. Save path: C:/Users/Admin/AppData/LocalLow/DefaultCompany/NihongoLife\progress.json
+[SupabaseProgressRepo] Initialized with local fallback.
+[LocalScenarioRepository] Loaded 14 scenarios from Resources/Scenarios.
+[AppRoot] Using SupabaseOnlineWorldService (real online).
+[SupabaseOnlineWorld] Initialized.
+[CoopSessionService] Initialized.
+[ExamRepository] Loaded 2 exam(s) from Resources/Exams.
+[AppRoot] Core services initialized successfully.
+[ScenarioManager] Starting scenario: ひばり町へようこそ (scenario.intro.arrival)
+[ScoringManager] Score tracking reset.
+[ScenarioManager] Transitioning to Node: n_open (Type: Dialogue)
+[ScenarioManager] Objective Completed: 駅を出て、町に着く
+[DialogueManager] Starting dialogue node: n_open
+[SupabaseRealtime] Connecting to wss://pkxrtvlerjjiignmlebx.supabase.co/realtime/v1/websocket?apikey=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBreHJ0dmxlcmpqaWlnbm1sZWJ4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODg1Mzc1MDMsImV4cCI6MjEwNDExMzUwM30.m8UT0o6p4WXItZ3LcDt7QLs25uq28rm0bNS1f3cOYb4&vsn=1.0.0
+[SupabaseOnlineWorld] Local player connected: Guest (ad0ed602544428b9b09a4ab9c21abcf14785c5af)
+[SupabaseVoiceSync] voice_lines table not provisioned yet — voice lines use the bundled clips.
+[SupabaseRealtime] WebSocket connected.
+[SupabaseRealtime] Joined channel: nihongolife-world
+[WorldFeel] Walk sway raw → stabilised: hips roll 3.3° → 3.3°, shoulder roll 6.3° → 2.1°, spine lean 3.7° → 1.7°, narrowest feet gap 6 cm → 15 cm
+Saving results to: C:/Users/Admin/AppData/LocalLow/DefaultCompany/NihongoLife\TestResults.xml
+]]></output>
+            </test-case>
+          </test-suite>
+        </test-suite>
+      </test-suite>
+    </test-suite>
+  </test-suite>
+</test-run>

@@ -162,13 +162,13 @@ namespace NihongoLife.UI
             Visual(entry, out Color tint, out string glyph);
             _detailTile.color = tint;
             _detailGlyph.text = glyph;
-            ItemIcons.Apply(_detailGlyph, entry.itemId, 10f);
+            ItemIcons.Apply(_detailGlyph, entry.itemId, 6f);
             _detailName.text = entry.displayNameJa;
             _detailInfo.text = $"{entry.displayNameEn}\nSố lượng: {entry.quantity}   ·   Giá: ¥{entry.priceYen}";
             var effects = new List<string>();
             if (entry.foodRestore > 0) effects.Add($"No +{entry.foodRestore:0}");
             if (entry.drinkRestore > 0) effects.Add($"Nước +{entry.drinkRestore:0}");
-            if (entry.energyRestore > 0) effects.Add($"Năng lượng +{entry.energyRestore:0}");
+            if (entry.energyRestore > 0) effects.Add($"Thể lực +{entry.energyRestore:0}");
             _detailEffect.text = effects.Count > 0 ? string.Join("  ·  ", effects) : "Không dùng được — giữ trong balo.";
             _useLabel.text = entry.useType == ItemUseType.Drink ? "のむ  ·  Uống (E)" : "たべる  ·  Ăn (E)";
         }
@@ -241,7 +241,7 @@ namespace NihongoLife.UI
             var detail = NLUi.Panel(body, "Detail", NLUi.Card, new RectOffset(22, 22, 20, 20), 10f);
             NLUi.Size(detail, preferredWidth: 470f, flexibleWidth: 1f);
             var tile = NLUi.Panel(detail, "Tile", Color.white, new RectOffset(0, 0, 4, 4), 0f);
-            NLUi.Size(tile, preferredHeight: 104f);
+            NLUi.Size(tile, preferredHeight: 160f);
             _detailTile = tile.GetComponent<Image>();
             _detailGlyph = NLUi.Label(tile, "Glyph", "", 64f, new Color(0.15f, 0.12f, 0.1f), _font, FontStyles.Bold, TextAlignmentOptions.Center);
             _detailName = NLUi.Label(detail, "Name", "", 28f, NLUi.Text, _font, FontStyles.Bold);
@@ -256,7 +256,7 @@ namespace NihongoLife.UI
             NLUi.Label(detail, "VitalsTitle", "からだ  <size=75%><color=#A8B4C4>Thể trạng</color></size>", 20f, NLUi.Text, _font, FontStyles.Bold);
             Bar(detail, "food", "おなか · No");
             Bar(detail, "drink", "のど · Nước");
-            Bar(detail, "energy", "げんき · Năng lượng");
+            Bar(detail, "energy", "げんき · Thể lực");
             Bar(detail, "rest", "ねむけ · Tỉnh táo");
             _root.gameObject.SetActive(false);
         }

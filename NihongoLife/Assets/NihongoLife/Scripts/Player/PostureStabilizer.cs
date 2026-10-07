@@ -6,7 +6,8 @@ namespace NihongoLife.Player
     /// Keeps the player's back straight. The Mixamo idle/walk clips bend the spine sideways and roll the
     /// hips a lot, which reads as a slouchy, swaying walk. After the Animator has posed the rig, each spine
     /// segment (hips → spine → chest → neck) is pulled part of the way back to the character's vertical axis.
-    /// Legs, arms and the step cycle are untouched.
+    /// The thighs are also turned slightly outward so the steps track hip-width apart. Arms and the step
+    /// cycle are untouched.
     /// </summary>
     [DefaultExecutionOrder(500)]
     public sealed class PostureStabilizer : MonoBehaviour
@@ -16,9 +17,11 @@ namespace NihongoLife.Player
         [SerializeField, Range(0f, 1f)] private float chest = 0.5f;
         [SerializeField, Range(0f, 1f)] private float neck = 0.35f;
         [SerializeField, Range(0f, 1f)] private float keepForwardLean = 0.6f;
+        [Tooltip("Degrees each thigh is turned outward so the feet track hip-width apart instead of crossing onto one line (catwalk gait).")]
+        [SerializeField, Range(0f, 10f)] private float stanceWidening = 4f;
 
         private Animator _animator;
-        private Transform _hips, _spine, _chest, _neck, _head;
+        private Transform _hips, _spine, _chest, _neck, _head, _leftLeg, _rightLeg;
 
         public bool IsActive => _hips != null && _spine != null;
 
@@ -32,6 +35,12 @@ namespace NihongoLife.Player
             Straighten(_spine, _chest != null ? _chest : _neck, up, spine);
             if (_chest != null) Straighten(_chest, _neck, up, chest);
             if (_neck != null) Straighten(_neck, _head, up, neck);
+            if (stanceWidening > 0f)
+            {
+                Vector3 forward = transform.forward;
+                if (_leftLeg != null) _leftLeg.rotation = Quaternion.AngleAxis(-stanceWidening, forward) * _leftLeg.rotation;
+                if (_rightLeg != null) _rightLeg.rotation = Quaternion.AngleAxis(stanceWidening, forward) * _rightLeg.rotation;
+            }
         }
 
         /// <summary>Rotates <paramref name="bone"/> so the direction to <paramref name="child"/> moves toward
@@ -61,6 +70,8 @@ namespace NihongoLife.Player
             if (_chest == null) _chest = _animator.GetBoneTransform(HumanBodyBones.Chest);
             _neck = _animator.GetBoneTransform(HumanBodyBones.Neck);
             _head = _animator.GetBoneTransform(HumanBodyBones.Head);
+            _leftLeg = _animator.GetBoneTransform(HumanBodyBones.LeftUpperLeg);
+            _rightLeg = _animator.GetBoneTransform(HumanBodyBones.RightUpperLeg);
             return _hips != null && _spine != null;
         }
     }

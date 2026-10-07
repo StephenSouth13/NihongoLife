@@ -514,3 +514,27 @@ Chủ dự án xác nhận: đã bước vào bên trong konbini thật (không 
   - `StandaloneZoneBootstrap` không còn tạo nhân vật thừa khi Play từ zone.
   - `ScenarioValidationTests` chạy validator có sẵn trên cả 14 kịch bản: tất cả hợp lệ.
 - **Test:** PlayMode 14/14 (+1 explicit), EditMode 11/11.
+
+## Cập nhật (2026-10-08 trưa, Claude) — nút ×, đường chân trời, ảnh vật phẩm, thể lực, dáng đi
+
+- **Nút × dùng chung:** `NLUi.CloseButton(parent, font, onClick)` — ô đỏ góc trên phải, nằm ngoài layout.
+  - Đã gắn vào: mini-game (`MiniGameController.CloseOrAbort`: đang chơi thì dừng, ở bảng kết quả thì đóng), hộp thoại (chỉ hiện khi `CanLeave`), cửa hàng konbini, balo, cửa sổ nhân vật, máy bán vé ga.
+  - Các nút chữ "とじる · Esc" / "Tab · Đóng" cũ đã thay; Esc/Tab vẫn hoạt động.
+- **Đường chân trời** `90_TestSandbox` (ảnh hưởng asset dùng chung, Codex lưu ý):
+  - Root mới `Horizon_Backdrop` (có `SceneZoneVisibility`), dựng bằng `Editor/HorizonBuilder.cs`. Chạy lại sẽ thay root cũ, không chồng lên.
+  - Gồm: dải đất hai bên phố, khu nhà ngoại ô có cửa sổ (lặp mỗi 100 m theo phố vô tận), vòng đồi, dải sương nhuộm theo màu fog.
+  - Runtime `World/HorizonBackdrop.cs`: bám camera; cửa sổ sáng dần khi trời tối.
+  - Không có collider. Chống rơi vẫn do `WorldBoundsGuard` + `WorldFallSafety` sẵn có.
+  - Asset mới: `Materials/Horizon/*`, `Models/Horizon/*`.
+- **Ảnh vật phẩm thật:** `Resources/Items/<itemId>.png`, nạp bằng `UI/ItemIcons.cs` (cửa hàng, giỏ, balo).
+  - 13 món vẽ minh hoạ: onigiri ×3, nước, trà, nước cam, sữa, cà phê lon, senbei, Pocky, melonpan, karaage, nikuman, cùng sandwich trứng.
+  - Vé và quà cũng vẽ minh hoạ.
+  - Kem, oden, snack render từ Kenney (`Editor/ItemIconRenderer.cs` chỉ đụng 3 món này).
+  - Item mới chưa có ảnh vẫn hiện chữ Hán như cũ.
+- **Thể lực:** chạy nhanh tốn 14/s và không hồi khi đang chạy (hồi sau 1,2 s nghỉ).
+  - Hết thể lực thì bị khoá chạy tới khi hồi đủ 25; HUD hiện "Hết sức".
+  - Đói/khát giảm nhanh hơn khi đi/chạy.
+  - File: `Player/PlayerStatus.cs`, `PlayerController.cs`, `UI/StatusDock.cs`.
+- **Dáng đi:** `Player/PostureStabilizer.cs` (do PlayerController tự thêm) kéo cột sống/ngực/cổ về trục đứng sau Animator để bớt lắc hông. Bỏ qua khi ngồi/nằm.
+- **Test mới:** `WorldFeelPlayModeTests.City_HorizonStaminaPosture`, ảnh lưu ở `Bao_Cao/world-regression`.
+  - Test UI và Game Center kiểm tra thêm nút × và ảnh cơm nắm.

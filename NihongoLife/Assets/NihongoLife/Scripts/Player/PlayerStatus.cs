@@ -147,6 +147,7 @@ namespace NihongoLife.Player
             if (amount <= 0f) return true;
             if (CurrentEnergy <= 0f) return false;
             CurrentEnergy = Mathf.Max(0f, CurrentEnergy - amount);
+            if (CurrentEnergy <= 0f) IsExhausted = true;
             OnStatusChanged?.Invoke();
             return CurrentEnergy > 0f;
         }
@@ -156,6 +157,7 @@ namespace NihongoLife.Player
             amount = Mathf.Max(0f, amount);
             if (CurrentEnergy < amount) return false;
             CurrentEnergy -= amount;
+            if (CurrentEnergy <= 0f) IsExhausted = true;
             OnStatusChanged?.Invoke();
             SaveProgress();
             return true;
@@ -166,6 +168,7 @@ namespace NihongoLife.Player
             Hunger = Mathf.Clamp(Hunger + food, 0f, 100f);
             Thirst = Mathf.Clamp(Thirst + drink, 0f, 100f);
             CurrentEnergy = Mathf.Clamp(CurrentEnergy + energy, 0f, maxEnergy);
+            if (CurrentEnergy >= sprintAgainAtEnergy) IsExhausted = false;
             OnStatusChanged?.Invoke();
             SaveProgress();
         }
@@ -175,6 +178,7 @@ namespace NihongoLife.Player
             float recovery = Mathf.Clamp(hours / 8f, 0.25f, 1f) * 100f;
             Sleepiness = Mathf.Clamp(Sleepiness - recovery, 0f, 100f);
             CurrentEnergy = Mathf.Clamp(maxEnergy, 0f, maxEnergy);
+            IsExhausted = false;
             CurrentHealth = Mathf.Min(maxHealth, CurrentHealth + 8f);
             OnStatusChanged?.Invoke();
             SaveProgress();
@@ -199,10 +203,11 @@ namespace NihongoLife.Player
             Level = Mathf.Max(1, progress.level);
             CurrentExp = Mathf.Max(0, progress.xp);
             Knowledge = Mathf.Max(0, progress.knowledge > 0 ? progress.knowledge : progress.xp);
-            CurrentHealth = Mathf.Clamp(progress.health <= 0f ? maxHealth : progress.health, 0f, maxHealth);
-            CurrentEnergy = Mathf.Clamp(progress.energy <= 0f ? maxEnergy : progress.energy, 0f, maxEnergy);
-            Hunger = Mathf.Clamp(progress.hunger <= 0f ? 100f : progress.hunger, 0f, 100f);
-            Thirst = Mathf.Clamp(progress.thirst <= 0f ? 100f : progress.thirst, 0f, 100f);
+            CurrentHealth = Mathf.Clamp(progress.health, 0f, maxHealth);
+            CurrentEnergy = Mathf.Clamp(progress.energy, 0f, maxEnergy);
+            Hunger = Mathf.Clamp(progress.hunger, 0f, 100f);
+            Thirst = Mathf.Clamp(progress.thirst, 0f, 100f);
+            IsExhausted = CurrentEnergy <= 0f;
             Sleepiness = Mathf.Clamp(progress.sleepiness, 0f, 100f);
         }
 

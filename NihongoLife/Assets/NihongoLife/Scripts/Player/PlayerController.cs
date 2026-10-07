@@ -138,7 +138,6 @@ namespace NihongoLife.Player
                 // Exhausted players walk until they have caught their breath (see PlayerStatus.IsExhausted).
                 isRunning = status.CanSprint && status.ConsumeEnergy(runEnergyCostPerSecond * Time.deltaTime);
             }
-            status?.ReportActivity(moving, isRunning);
 
             if (!IsGameplayCamera(_mainCamera))
             {
@@ -191,6 +190,7 @@ namespace NihongoLife.Player
             float currentSpeed = isRunning ? runSpeed : walkSpeed;
             float smoothing = moveDirection.sqrMagnitude > 0.001f ? acceleration : deceleration;
             _smoothedMoveDirection = Vector3.MoveTowards(_smoothedMoveDirection, moveDirection, smoothing * Time.deltaTime);
+            status?.ReportActivity(_smoothedMoveDirection.sqrMagnitude > 0.01f, isRunning);
             if (_animationController != null)
             {
                 _animationController.SetSpeed(_smoothedMoveDirection.magnitude * currentSpeed);
