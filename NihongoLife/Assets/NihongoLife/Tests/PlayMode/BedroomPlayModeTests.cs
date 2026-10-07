@@ -41,6 +41,8 @@ namespace NihongoLife.Tests
             yield return new WaitForSecondsRealtime(1.4f);
             Assert.IsTrue(room.IsTitleVisible, "Entry title card should show.");
             Capture("01_entry_title");
+            var cam = Camera.main.transform.position;
+            Assert.IsTrue(Mathf.Abs(cam.x) < HalfW && Mathf.Abs(cam.z) < HalfD && cam.y < 2.7f, $"Camera must stay inside the room during the entrance shot: {cam}");
             yield return new WaitForSecondsRealtime(4f);
             Assert.IsFalse(room.IsTitleVisible, "Title card must fade out.");
 
@@ -51,7 +53,7 @@ namespace NihongoLife.Tests
             var strays = Object.FindObjectsByType<Animator>(FindObjectsSortMode.None)
                 .Where(a => a.gameObject.activeInHierarchy && !a.transform.IsChildOf(player.transform))
                 .Where(a => Mathf.Abs(a.transform.position.x) < HalfW + 1f && Mathf.Abs(a.transform.position.z) < HalfD + 1f && Mathf.Abs(a.transform.position.y) < 4f)
-                .Select(a => $"{a.name} ({a.gameObject.scene.name}) @ {a.transform.position}").ToArray();
+                .Select(a => $"{PathOf(a.transform)} [{string.Join(",", a.transform.root.GetComponents<Component>().Select(c => c.GetType().Name))}] ({a.gameObject.scene.name}) @ {a.transform.position}").ToArray();
             Assert.IsEmpty(strays, "Stray characters in the room: " + string.Join("; ", strays));
 
             // The city HUD is present, so the room must not draw a second prompt.
@@ -142,10 +144,21 @@ namespace NihongoLife.Tests
             Teleport(player, new Vector3(bed.transform.position.x + 1.1f, 0.05f, bed.transform.position.z), -90f);
             yield return null;
             bed.Interact(player.gameObject);
-            yield return new WaitForSecondsRealtime(0.5f);
+            yield return new WaitForSecondsRealtime(0.35f);
+            Capture("09_lying_down");
+            yield return new WaitForSecondsRealtime(0.3f);
             Assert.IsTrue(player.InputLocked, "Player must be locked while sleeping.");
             Assert.IsFalse(bed.IsInteractionAvailable);
-            Capture("09_lying_down");
+            Bounds bedBounds = RendererBounds(GameObject.Find("HomeBedroom_YourRoom/Room/Furniture/Bed"));
+            Bounds pose = SkinBounds(player.gameObject);
+            Assert.Less(pose.size.y, 0.95f, $"Player must lie down, pose bounds {pose.size}");
+            Assert.Greater(pose.size.z, pose.size.x, $"Body must lie along the bed, pose bounds {pose.size}");
+            Assert.IsTrue(pose.center.x > bedBounds.min.x && pose.center.x < bedBounds.max.x && pose.center.z > bedBounds.min.z && pose.center.z < bedBounds.max.z,
+                $"Body must be on the mattress: pose {pose.center}, bed {bedBounds.min}-{bedBounds.max}");
+            Assert.Greater(pose.min.y, bedBounds.min.y + 0.15f, "Body must lie on the mattress, not inside the frame.");
+            var rig = player.GetComponentInChildren<Animator>();
+            Transform head = rig.GetBoneTransform(HumanBodyBones.Head), hips = rig.GetBoneTransform(HumanBodyBones.Hips);
+            Assert.Greater(head.position.z, hips.position.z + 0.2f, $"Head must point to the headboard (+Z): head {head.position}, hips {hips.position}");
             yield return new WaitForSecondsRealtime(2.2f);
             Capture("10_sleep_night");
             float wake = Time.realtimeSinceStartup + 20f;
@@ -187,6 +200,30 @@ namespace NihongoLife.Tests
             Assert.IsTrue(room.IsPromptVisible, "Without the city HUD the room must show the interaction prompt.");
             StringAssert.Contains("ねる", room.PromptText);
             Capture("13_standalone_prompt");
+        }
+
+        private static Bounds RendererBounds(GameObject go)
+        {
+            var renderers = go.GetComponentsInChildren<Renderer>().Where(r => r.enabled && !(r is ParticleSystemRenderer)).ToArray();
+            Bounds b = renderers[0].bounds;
+            foreach (var r in renderers) b.Encapsulate(r.bounds);
+            return b;
+        }
+
+        private static Bounds SkinBounds(GameObject go)
+        {
+            var skins = go.GetComponentsInChildren<SkinnedMeshRenderer>().Where(r => r.enabled).ToArray();
+            Assert.IsNotEmpty(skins, "Player has no skinned mesh.");
+            Bounds b = skins[0].bounds;
+            foreach (var r in skins) b.Encapsulate(r.bounds);
+            return b;
+        }
+
+        private static string PathOf(Transform t)
+        {
+            string p = t.name;
+            while (t.parent != null) { t = t.parent; p = t.name + "/" + p; }
+            return p;
         }
 
         private static string Meaning(string japanese)

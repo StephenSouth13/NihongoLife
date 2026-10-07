@@ -195,16 +195,28 @@ namespace NihongoLife.UI
 
         private void CityMap()
         {
-            _header.text = L("BẢN ĐỒ NIHONGO CITY", "NIHONGO CITY MAP", "日本語シティ地図");
-            _worldMin = new(-66, -50); _worldMax = new(66, 38);
-            Road(Vector2.zero, new(860, 60)); Road(new(-145, 0), new(56, 470)); Road(new(215, 35), new(50, 410), 18); Road(new(35, 135), new(720, 38), -8);
-            Place(L("Cửa hàng tiện lợi", "Convenience store", "コンビニ"), new(0, -32), new(.2f, .76f, .66f), "SHOP");
-            Place("Sushi Hibari", new(-285, 145), new(.94f, .42f, .36f), "SUSHI");
-            Place(L("Ga Sakura Metro", "Sakura Metro", "さくら駅"), new(300, 135), new(.3f, .62f, .94f), "STATION");
-            Place(L("Phòng riêng", "Your bedroom", "自室"), new(-285, -160), new(.62f, .76f, .38f), "HOME");
-            Place(L("Công viên", "Park", "公園"), new(285, -155), new(.42f, .72f, .4f), "PARK");
-            Place(L("Trường Nhật ngữ Hibari", "Hibari Japanese School", "ひばり日本語学院"), new(160, 210), new(.2f, .55f, .32f), "SCHOOL");
+            _header.text = L("BẢN ĐỒ HIBARI-CHŌ", "HIBARI-CHŌ MAP", "ひばり町 地図");
+            _worldMin = new(-42, -32); _worldMax = new(58, 20);
+            // Positions are real world coordinates (see CityTownBuilder) converted with the same
+            // mapping as the player marker, so labels, roads and "you are here" line up.
+            Road(MapPos(8f, -10f), MapSize(100f, 10f));          // main street (Sakura-dōri)
+            Road(MapPos(0f, -6f), MapSize(10f, 52f));            // north–south avenue
+            Place(L("ひばりマート", "Hibari Mart", "ひばりマート"), MapPos(0f, 5f), new(.2f, .76f, .66f), "KONBINI");
+            Place(L("Quán sushi", "Sushi", "寿司"), MapPos(-18f, 0.3f), new(.94f, .42f, .36f), "SUSHI");
+            Place(L("Nhà trọ", "Home", "ひばりハイツ"), MapPos(-30f, 1.3f), new(.62f, .76f, .38f), "HOME");
+            Place(L("Ga Hibari", "Hibari Station", "ひばり駅"), MapPos(24f, 0.3f), new(.3f, .62f, .94f), "STATION");
+            Place(L("Trường Nhật ngữ Hibari", "Hibari Japanese School", "ひばり日本語学院"), MapPos(18f, -20f), new(.2f, .55f, .32f), "SCHOOL");
+            Place(L("Công viên", "Park", "公園"), MapPos(48f, -4f), new(.42f, .72f, .4f), "PARK");
         }
+
+        private Vector2 MapPos(float x, float z)
+        {
+            Vector2 n = new(Mathf.InverseLerp(_worldMin.x, _worldMax.x, x), Mathf.InverseLerp(_worldMin.y, _worldMax.y, z));
+            return new((n.x - .5f) * (940f - 46f), (n.y - .5f) * (530f - 46f));
+        }
+
+        private Vector2 MapSize(float width, float depth) =>
+            new(width / (_worldMax.x - _worldMin.x) * (940f - 46f), depth / (_worldMax.y - _worldMin.y) * (530f - 46f));
 
         private void StationMap()
         {

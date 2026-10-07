@@ -398,3 +398,21 @@ Chủ dự án xác nhận: đã bước vào bên trong konbini thật (không 
 - 2 NPC mới cần dựng nhân vật thật: `npc_ramen_owner` (Yamada), `npc_station_staff` (Kimura) — dùng đúng pipeline TASK-A khi Codex hoàn thành, quy ước tên thư mục FBX phải khớp 2 `speakerId` này.
 - 2 khu vực trigger mới chưa tồn tại trong scene, cần dựng: `ramen_shop_entrance` (`targetAreaId` trong `scenario_restaurant_order_ramen`), `station_entrance` (`targetAreaId` trong `scenario_station_buy_ticket`). Việc này thuộc phạm vi dựng scene (`SceneBuilder.cs`/thủ công trong Editor), chưa gán cho ai — Claude sẽ làm khi có model NPC từ TASK-A, hoặc báo lại nếu muốn giao riêng.
 - Cần chạy Unity Editor để mở từng scenario, kiểm tra node graph không lỗi tham chiếu, rồi playtest thật (đúng quy tắc trong `TODO_CHECKLIST.md`: không tick hoàn thành chỉ vì đã viết code/data).
+
+## Cập nhật (2026-10-07, Claude) — Phòng trọ `45_HomeBedroom` + thành phố/siêu thị `90_TestSandbox`
+
+**Phân công đã chốt với chủ dự án:** Claude giữ `45_HomeBedroom` + `Scripts/Home`. Codex **không sửa** các file này; nếu cần thay đổi, ghi yêu cầu tại đây.
+
+**Phòng trọ** — dựng lại bằng `Scripts/Editor/HomeBedroomBuilder.cs` (chạy `-batchmode -executeMethod NihongoLife.EditorTools.HomeBedroomBuilder.Build`, không có MenuItem, chạy lại không bị chồng):
+- Căn hộ 1K bằng Kenney furniture kit, gồm giường, bàn học, bếp mini, tủ lạnh, TV, tủ quần áo, poster ひらがな và cửa げんかん ra phố.
+- Tương tác: `BedroomRestInteractable` (ngủ → 07:00, hồi năng lượng, lưu game), `StudyDeskInteractable` (ôn 5 từ N5, +Kiến thức, 3 lượt/ngày), `HomeNeedsStation` (bồn rửa uống nước / tủ lạnh dùng đồ đã mua), `RoomLightSwitch`.
+- `NL_Humanoid.controller` có thêm state `Sit`/`Lay`. Clip `Remy@Sitting`, `Remy@Laying Nodding` đã chuyển sang Humanoid (trước là Generic nên bị T-pose).
+- Test: `Tests/PlayMode/BedroomPlayModeTests.cs`, ảnh trong `Bao_Cao/bedroom-regression/`.
+
+**Thành phố** — `Scripts/Editor/CityTownBuilder.cs` (chạy bằng `-executeMethod NihongoLife.EditorTools.CityTownBuilder.Build`):
+- Đã xóa 61 object gốc bị nhân bản (DoorMat/FacadeTrim/WarmWindow/Collision_Footprint…) và object `Visual` mồ côi (nhân vật T-pose lạc sang phòng ngủ).
+- Siêu thị ひばりマート là tòa nhà thật (`Town_Konbini`), có kệ, quầy và **NPC thu ngân `npc_cashier` (Ito)**. NPC này trước đó bị mất nên nhiệm vụ konbini bị kẹt.
+- Đã tắt `StreetBuilding_N_4` (khối 19 m trùm lên lô siêu thị) và `KonbiniStoreAsset` cũ (có 3 tường vô hình giữa lối đi). Lô đất trống làm quảng trường `Town_Plaza`.
+- 4 cổng `AdditiveZonePortals/*` giữ nguyên tên và component, chỉ dời tới mặt tiền thật (`Town_Destinations`), spawn trở về đặt ngay trước cửa. Thêm cột chỉ đường `Town_Signposts`. `WorldMapUI.CityMap()` vẽ theo tọa độ thật.
+- ⚠️ **Ảnh hưởng tới Codex:** `NL_Cashier.prefab` (cả `Prefabs/` và `Resources/`) đã dựng lại từ mô hình Lilly có xương + tạp dề, vì mô hình Elizabeth cũ không có xương. Nhân viên ở `20_StationDistrict` và đầu bếp sushi dùng prefab này nên giờ đã có animation. Vật liệu `NL_Guide__*_URP.mat` đã được nối lại texture.
+- Test: `Tests/PlayMode/CityTownPlayModeTests.cs`, ảnh trong `Bao_Cao/city-regression/`. Toàn bộ Play Mode 5/5, EditMode 10/10 (07/10/2026).

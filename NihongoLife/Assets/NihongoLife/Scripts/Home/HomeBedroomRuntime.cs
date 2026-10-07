@@ -78,7 +78,6 @@ namespace NihongoLife.Home
 
         private void OnEnable()
         {
-            if (_canvas != null) StartCoroutine(ShowTitleCard());
             SetIndoorCamera(true);
         }
 
@@ -88,11 +87,44 @@ namespace NihongoLife.Home
             if (_canvas != null && _promptChip != null) _promptChip.gameObject.SetActive(false);
         }
 
+        [SerializeField] private float entranceStartYaw = -40f;
+        [SerializeField] private float entranceEndYaw = 12f;
+        [SerializeField] private float entrancePitch = 24f;
+        [SerializeField] private float entranceDistance = 2.9f;
+        [SerializeField] private float entranceSeconds = 2.2f;
+
         private void Start()
         {
             BuildCanvas();
             SetIndoorCamera(true);
+            StartCoroutine(EntranceShot());
+        }
+
+        /// <summary>Establishing orbit into the room once the zone transition has finished (the scene's
+        /// Start runs while the loading screen is still up, before the player is moved to the spawn).</summary>
+        private IEnumerator EntranceShot()
+        {
+            var flow = FindFirstObjectByType<SceneFlowController>();
+            while (flow != null && flow.IsLoading) yield return null;
+            yield return null;
             StartCoroutine(ShowTitleCard());
+            if (_camera == null) _camera = FindFirstObjectByType<ThirdPersonCameraController>();
+            if (_camera == null) yield break;
+            SetIndoorCamera(true);
+            var player = FindFirstObjectByType<PlayerController>();
+            bool wasLocked = _camera.IsLocked;
+            _camera.IsLocked = true;
+            if (player != null) player.InputLocked = true;
+            for (float t = 0f; t < entranceSeconds; t += Time.deltaTime)
+            {
+                float k = Mathf.SmoothStep(0f, 1f, t / entranceSeconds);
+                float yaw = Mathf.Lerp(entranceStartYaw, entranceEndYaw, k);
+                _camera.SetOrbit(yaw, entrancePitch, SafeOrbitDistance(player, yaw));
+                yield return null;
+            }
+            _camera.SetOrbit(entranceEndYaw, entrancePitch, SafeOrbitDistance(player, entranceEndYaw));
+            _camera.IsLocked = wasLocked;
+            if (player != null) player.InputLocked = false;
         }
 
         private void Update()
@@ -251,6 +283,18 @@ namespace NihongoLife.Home
 
         // ─────────── Camera ───────────
 
+        /// <summary>SetOrbit snaps the camera distance, bypassing the controller's wall collision, so the
+        /// establishing shot clamps the distance against the room walls itself.</summary>
+        private float SafeOrbitDistance(PlayerController player, float yaw)
+        {
+            if (player == null) return entranceDistance;
+            Vector3 pivot = player.transform.position + Vector3.up * 1.45f;
+            Vector3 direction = Quaternion.Euler(entrancePitch, yaw, 0f) * Vector3.back;
+            if (Physics.SphereCast(pivot, 0.25f, direction, out RaycastHit hit, entranceDistance, Physics.DefaultRaycastLayers, QueryTriggerInteraction.Ignore))
+                return Mathf.Max(0.6f, hit.distance - 0.3f);
+            return entranceDistance;
+        }
+
         private void SetIndoorCamera(bool indoor)
         {
             if (_camera == null) _camera = FindFirstObjectByType<ThirdPersonCameraController>();
@@ -269,18 +313,18 @@ namespace NihongoLife.Home
             root.transform.SetParent(transform, false);
             _canvas = root.GetComponent<Canvas>();
             _canvas.renderMode = RenderMode.ScreenSpaceOverlay;
-            _canvas.sortingOrder = 80;
+            _canvas.sortingOrder = 900; // above the city HUD so the sleep fade covers it
             var scaler = root.GetComponent<CanvasScaler>();
             scaler.uiScaleMode = CanvasScaler.ScaleMode.ScaleWithScreenSize;
             scaler.referenceResolution = new Vector2(1920f, 1080f);
             scaler.matchWidthOrHeight = 0.5f;
 
             // Entry title card — top centre, fades out after a few seconds.
-            var title = Panel(root.transform, "RoomTitle", new Vector2(0.5f, 1f), new Vector2(0f, -54f), new Vector2(560f, 104f), Ink);
+            var title = Panel(root.transform, "RoomTitle", new Vector2(0.5f, 1f), new Vector2(0f, -54f), new Vector2(560f, 112f), Ink);
             _titleCard = title.gameObject.AddComponent<CanvasGroup>();
             _titleCard.alpha = 0f;
             var titleJa = Label(title, roomTitleJa, 34, Color.white, TextAlignmentOptions.Center);
-            Place(titleJa.rectTransform, new Vector2(0.5f, 1f), new Vector2(0f, -14f), new Vector2(520f, 46f));
+            Place(titleJa.rectTransform, new Vector2(0.5f, 1f), new Vector2(0f, -8f), new Vector2(520f, 56f));
             var titleVi = Label(title, roomTitleVi, 19, new Color(0.95f, 0.72f, 0.25f), TextAlignmentOptions.Center);
             Place(titleVi.rectTransform, new Vector2(0.5f, 0f), new Vector2(0f, 14f), new Vector2(520f, 32f));
 
@@ -322,9 +366,9 @@ namespace NihongoLife.Home
             _studyProgress = Label(card, string.Empty, 18, Muted, TextAlignmentOptions.Right);
             Place(_studyProgress.rectTransform, new Vector2(0.5f, 1f), new Vector2(0f, -42f), new Vector2(680f, 36f));
             _studyWord = Label(card, string.Empty, 64, Color.white, TextAlignmentOptions.Center);
-            Place(_studyWord.rectTransform, new Vector2(0.5f, 1f), new Vector2(0f, -128f), new Vector2(680f, 84f));
+            Place(_studyWord.rectTransform, new Vector2(0.5f, 1f), new Vector2(0f, -92f), new Vector2(680f, 96f));
             _studyReading = Label(card, string.Empty, 22, Muted, TextAlignmentOptions.Center);
-            Place(_studyReading.rectTransform, new Vector2(0.5f, 1f), new Vector2(0f, -186f), new Vector2(680f, 34f));
+            Place(_studyReading.rectTransform, new Vector2(0.5f, 1f), new Vector2(0f, -192f), new Vector2(680f, 34f));
 
             for (int i = 0; i < 3; i++)
             {
@@ -391,7 +435,7 @@ namespace NihongoLife.Home
             text.color = color;
             text.alignment = alignment;
             text.textWrappingMode = TextWrappingModes.NoWrap;
-            text.overflowMode = TextOverflowModes.Ellipsis;
+            text.overflowMode = TextOverflowModes.Overflow;
             text.raycastTarget = false;
             return text;
         }

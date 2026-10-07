@@ -192,7 +192,6 @@ namespace NihongoLife.EditorTools
             Add("Microwave", OnTop(f, "kitchenMicrowave", "Microwave", map["Fridge"], Vector2.zero, -90f, new Vector3(0.5f, 0.3f, 0.36f)));
             Add("Sink", Furn(f, "kitchenSink", "KitchenSink", new Vector3(-HalfW + 0.32f, 0f, -0.66f), -90f, new Vector3(0.82f, 0.92f, 0.62f), true));
             Add("Stove", Furn(f, "kitchenStoveElectric", "KitchenStove", new Vector3(-HalfW + 0.32f, 0f, 0.18f), -90f, new Vector3(0.82f, 0.92f, 0.62f), true));
-            Add("UpperCabinet", Furn(f, "kitchenCabinetUpper", "UpperCabinet", new Vector3(-HalfW + 0.2f, 1.55f, -0.24f), 90f, new Vector3(1.6f, 0.6f, 0.36f), false));
             Add("Kettle", OnTop(f, "kitchenCoffeeMachine", "Kettle", map["Stove"], new Vector2(0.05f, 0.12f), -90f, new Vector3(0.22f, 0.3f, 0.22f)));
 
             // Living area: rug, low table, TV.
@@ -209,7 +208,7 @@ namespace NihongoLife.EditorTools
             Add("CoatRack", Furn(f, "coatRackStanding", "CoatRack", new Vector3(-1.42f, 0f, -HalfD + 0.32f), 0f, new Vector3(0.5f, 1.7f, 0.5f), true));
 
             // Ceiling lamp (shade gets an emissive material so the switch visibly turns it off).
-            Add("CeilingLamp", Furn(f, "lampSquareCeiling", "CeilingLamp", new Vector3(0.3f, Height - 0.38f, 0.1f), 0f, new Vector3(0.55f, 0.38f, 0.55f), false));
+            Add("CeilingLamp", Furn(f, "lampSquareCeiling", "CeilingLamp", new Vector3(0.3f, Height - 0.26f, 0.1f), 0f, new Vector3(0.42f, 0.26f, 0.42f), false));
             foreach (var r in map["CeilingLamp"].GetComponentsInChildren<Renderer>())
                 r.sharedMaterials = r.sharedMaterials.Select(_ => _shadeMat).ToArray();
             return map;
@@ -361,7 +360,7 @@ namespace NihongoLife.EditorTools
             var spawn = UnityEngine.Object.FindObjectsByType<SceneSpawnPoint>(FindObjectsInactive.Include, FindObjectsSortMode.None)
                 .FirstOrDefault(s => s.Id == "home_bedroom");
             if (spawn == null) throw new InvalidOperationException("Spawn home_bedroom is missing.");
-            spawn.transform.SetPositionAndRotation(new Vector3(-2.4f, 0.05f, -2.15f), Quaternion.identity);
+            spawn.transform.SetPositionAndRotation(new Vector3(-2.2f, 0.05f, -1.65f), Quaternion.Euler(0f, 20f, 0f));
 
             var exit = root.transform.Find("ExitToCity");
             if (exit == null) throw new InvalidOperationException("ExitToCity portal is missing.");
@@ -375,17 +374,10 @@ namespace NihongoLife.EditorTools
             portal.FindProperty("promptEn").stringValue = "Ra phố (về Hibari-chō)";
             portal.ApplyModifiedPropertiesWithoutUndo();
 
+            // ZoneEntrancePan runs in Start, i.e. under the loading screen before the player reaches the
+            // spawn; HomeBedroomRuntime now plays the establishing orbit after the transition instead.
             var pan = root.GetComponent<ZoneEntrancePan>();
-            if (pan != null)
-            {
-                var p = new SerializedObject(pan);
-                p.FindProperty("startYaw").floatValue = -38f;
-                p.FindProperty("endYaw").floatValue = 22f;
-                p.FindProperty("pitch").floatValue = 20f;
-                p.FindProperty("distance").floatValue = 2.7f;
-                p.FindProperty("panDuration").floatValue = 2.2f;
-                p.ApplyModifiedPropertiesWithoutUndo();
-            }
+            if (pan != null) UnityEngine.Object.DestroyImmediate(pan, true);
 
             var preview = root.transform.Find("BedroomSceneCamera");
             if (preview != null)
@@ -429,13 +421,52 @@ namespace NihongoLife.EditorTools
 
         private static bool EnsureState(AnimatorStateMachine machine, string state, string fbx, Vector3 position)
         {
-            if (machine.states.Any(s => s.state.name == state)) return false;
+            EnsureHumanoidLoop(fbx);
             var clip = AssetDatabase.LoadAllAssetsAtPath(fbx).OfType<AnimationClip>().FirstOrDefault(c => !c.name.StartsWith("__preview__"));
             if (clip == null) throw new InvalidOperationException("No animation clip in " + fbx);
+            var existing = machine.states.FirstOrDefault(s => s.state.name == state).state;
+            if (existing != null)
+            {
+                if (existing.motion == clip) return false;
+                existing.motion = clip;
+                return true;
+            }
             var added = machine.AddState(state, position);
             added.motion = clip;
             added.writeDefaultValues = true;
             return true;
+        }
+
+        /// <summary>The Mixamo sit/lie clips were imported as Generic while the Remy rig and every other
+        /// clip is Humanoid — a Generic clip cannot drive a Humanoid avatar, so the player fell back to a
+        /// T-pose on the bed. Re-import them as looping Humanoid clips with the root baked in place.</summary>
+        private static void EnsureHumanoidLoop(string fbx)
+        {
+            var importer = (ModelImporter)AssetImporter.GetAtPath(fbx);
+            if (importer == null) throw new InvalidOperationException("Missing model importer for " + fbx);
+            bool dirty = false;
+            if (importer.animationType != ModelImporterAnimationType.Human)
+            {
+                importer.animationType = ModelImporterAnimationType.Human;
+                importer.avatarSetup = ModelImporterAvatarSetup.CreateFromThisModel;
+                dirty = true;
+            }
+            var clips = importer.clipAnimations.Length > 0 ? importer.clipAnimations : importer.defaultClipAnimations;
+            foreach (var clip in clips)
+            {
+                if (clip.loopTime && clip.lockRootRotation && clip.lockRootHeightY && clip.lockRootPositionXZ && clip.keepOriginalPositionY) continue;
+                clip.loopTime = true;
+                clip.lockRootRotation = true;
+                clip.keepOriginalOrientation = true;
+                clip.lockRootHeightY = true;
+                clip.keepOriginalPositionY = true;
+                clip.lockRootPositionXZ = true;
+                clip.keepOriginalPositionXZ = true;
+                dirty = true;
+            }
+            if (!dirty) return;
+            importer.clipAnimations = clips;
+            importer.SaveAndReimport();
         }
 
         // ─────────── Helpers ───────────
