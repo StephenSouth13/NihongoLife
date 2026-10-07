@@ -37,6 +37,19 @@ namespace NihongoLife.Dialogue
         private AudioSource _generatedVoiceSource;
         private NihongoLife.NPC.NPCController _speakingNpc;
 
+        // Local (non-scenario) conversations: station staff, shop clerk, NPC small talk. They use the same
+        // dialogue UI but never advance the active scenario.
+        private Dictionary<string, ScenarioNode> _conversation;
+        private Action<string> _conversationFinished;
+        private bool _currentIsScenarioNode;
+
+        public bool IsOpen => _currentNode != null;
+        public bool IsConversation => _conversation != null;
+
+        /// <summary>Esc may leave NPC conversations (scenario or local); story narration must be finished.</summary>
+        public bool CanLeave => _currentNode != null && (_conversation != null || !_currentIsScenarioNode ||
+            (!string.IsNullOrEmpty(_currentNode.speakerId) && _currentNode.speakerId != "system" && _speakingNpc != null));
+
         public event Action<DialogueDisplayData> OnDialogueUpdated;
         public event Action OnDialogueClosed;
 
@@ -93,6 +106,7 @@ namespace NihongoLife.Dialogue
             BindCoopController();
 
             _currentNode = node;
+            _currentIsScenarioNode = ScenarioManager.Instance != null && ScenarioManager.Instance.CurrentNode == node;
             if (ScenarioManager.Instance == null)
             {
                 SetPlayerInputLockedWithoutScenario(true);
@@ -159,6 +173,68 @@ namespace NihongoLife.Dialogue
             UpdateDialogueUI();
         }
 
+        /// <summary>Runs a self-contained conversation (nodes linked by nextNodeId / choice.nextNodeId) in the
+        /// shared dialogue UI. onFinished receives the id the conversation ended on ("cancel" when the player
+        /// left with Esc), so callers can branch on the player's answer.</summary>
+        public void StartConversation(IEnumerable<ScenarioNode> nodes, string startNodeId, Action<string> onFinished)
+        {
+            _conversation = new Dictionary<string, ScenarioNode>();
+            foreach (var node in nodes)
+                if (node != null && !string.IsNullOrEmpty(node.id)) _conversation[node.id] = node;
+            _conversationFinished = onFinished;
+            if (!_conversation.TryGetValue(startNodeId, out var start))
+            {
+                FinishConversation(startNodeId);
+                return;
+            }
+            if (ScenarioManager.Instance != null) ScenarioManager.Instance.SetPlayerInputLocked(true);
+            else SetPlayerInputLockedWithoutScenario(true);
+            StartDialogue(start);
+        }
+
+        /// <summary>Leave the current conversation (Esc). Scenario nodes stay current, so talking to the
+        /// NPC again resumes exactly where the player left.</summary>
+        public bool CancelDialogue()
+        {
+            if (!CanLeave) return false;
+            bool local = _conversation != null;
+            CloseDialogue(true, false);
+            if (local) FinishConversation("cancel");
+            return true;
+        }
+
+        /// <summary>Advances nodes that do not belong to the running scenario. Returns false for scenario nodes.</summary>
+        private bool HandleLocalAdvance(string nextNodeId)
+        {
+            if (_conversation != null)
+            {
+                bool hasNext = !string.IsNullOrEmpty(nextNodeId) && _conversation.ContainsKey(nextNodeId);
+                CloseDialogue(!hasNext, hasNext);
+                if (hasNext) StartDialogue(_conversation[nextNodeId]);
+                else FinishConversation(nextNodeId);
+                return true;
+            }
+
+            if (!_currentIsScenarioNode)
+            {
+                // Small talk / warnings: close without touching the scenario, except warnings that point
+                // back to a scenario node (e.g. "wrong item"), which re-run that node.
+                CloseDialogue(true, false);
+                if (!string.IsNullOrEmpty(nextNodeId)) ScenarioManager.Instance?.TransitionToNode(nextNodeId);
+                return true;
+            }
+
+            return false;
+        }
+
+        private void FinishConversation(string endedOn)
+        {
+            var callback = _conversationFinished;
+            _conversation = null;
+            _conversationFinished = null;
+            callback?.Invoke(endedOn);
+        }
+
         private void UpdateDialogueUI()
         {
             if (_currentNode == null) return;
@@ -222,6 +298,13 @@ namespace NihongoLife.Dialogue
 
             // 3. Story memory
             StoryFlags.SetAll(selectedChoice.setFlags);
+
+            if (!_currentIsScenarioNode || _conversation != null)
+            {
+                PlaySelectSound();
+                HandleLocalAdvance(!string.IsNullOrEmpty(selectedChoice.nextNodeId) ? selectedChoice.nextNodeId : _currentNode.nextNodeId);
+                return;
+            }
 
             // 4. Co-op: broadcast choice to partner
             if (IsCoopMode)
@@ -289,6 +372,7 @@ namespace NihongoLife.Dialogue
         public void ContinueDialogue()
         {
             if (_currentNode == null) return;
+            if (HandleLocalAdvance(_currentNode.nextNodeId)) return;
 
             // Advancing a plain node with no choices
             string nextNodeId = _currentNode.nextNodeId;

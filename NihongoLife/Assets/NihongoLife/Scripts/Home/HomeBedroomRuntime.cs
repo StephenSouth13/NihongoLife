@@ -8,6 +8,7 @@ using NihongoLife.Cameras;
 using NihongoLife.Core;
 using NihongoLife.Interaction;
 using NihongoLife.Player;
+using NihongoLife.Scenario;
 using NihongoLife.UI;
 
 namespace NihongoLife.Home
@@ -108,6 +109,8 @@ namespace NihongoLife.Home
             while (flow != null && flow.IsLoading) yield return null;
             yield return null;
             StartCoroutine(ShowTitleCard());
+            // Arriving home completes "go home" steps (intro: 「ただいま」 must happen in the room, not at the konbini).
+            ScenarioManager.Instance?.OnAreaEntered(WorldLocationCatalog.HomeBedroomEntrance);
             if (_camera == null) _camera = FindFirstObjectByType<ThirdPersonCameraController>();
             if (_camera == null) yield break;
             SetIndoorCamera(true);

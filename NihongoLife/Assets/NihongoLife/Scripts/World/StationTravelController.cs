@@ -2,8 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using NihongoLife.Audio;
 using NihongoLife.Core;
+using NihongoLife.Dialogue;
 using NihongoLife.Interaction;
 using NihongoLife.Player;
+using NihongoLife.Scenario;
 using NihongoLife.UI;
 using TMPro;
 using UnityEngine;
@@ -25,47 +27,66 @@ namespace NihongoLife.World
         ,TalkStationStaff
     }
 
+    /// <summary>
+    /// Hibari Station travel loop, matching scenario.station.buy_ticket (Minato, ¥320, platform 2):
+    /// ticket machine → ticket gate → platform 2 → board → ride → arrive at Minato → back on the platform.
+    /// Once the player has passed the gate the next train is called in and holds its doors until the
+    /// player boards (the old timetable expired the ticket 5 s after departure and closed the doors after
+    /// 15 s, so most players never managed to board). Staff and passengers talk through the shared
+    /// dialogue UI instead of plain status text.
+    /// </summary>
     public sealed class StationTravelController : MonoBehaviour
     {
         [SerializeField] private Transform platformSpawn;
         [SerializeField] private Transform carriageSpawn;
         [SerializeField] private Transform sceneryRoot;
-        [SerializeField] private int ticketPrice = 180;
-        [SerializeField] private float rideDuration = 45f;
+        [SerializeField] private int ticketPrice = 320;
+        [SerializeField] private float rideDuration = 18f;
         [SerializeField] private float scenerySpeed = 8f;
         [SerializeField] private float sceneryLoopWidth = 48f;
         [SerializeField] private float serviceInterval = 60f;
         [SerializeField] private float boardingWindow = 15f;
         [SerializeField] private float trainTravelDistance = 75f;
 
+        public const string Destination = "ミナト";
+        public const string DestinationVi = "Minato";
+        public const string TicketItemId = "train_ticket_minato";
+        private const string ScenarioId = "scenario.station.buy_ticket";
+
         private readonly List<Transform> _scenery = new();
         private bool _hasTicket;
         private bool _gatePassed;
+        private bool _onboard;
         private bool _riding;
         private float _rideRemaining;
-        private Canvas _canvas;
+        private float _serviceClock;
+        private RectTransform _hudRoot;
         private TextMeshProUGUI _routeText;
-        private TextMeshProUGUI _messageText;
-        private GameObject _messagePanel;
-        private TextMeshProUGUI _stationHelpText;
-        private TextMeshProUGUI _walletText;
-        private TextMeshProUGUI _flowText;
-        private GameObject _ticketPanel;
-        private Button _firstTicketButton;
-        private string _destination = "MIDORI";
-        private float _messageUntil;
-        private float _ticketDeparture = -1f;
+        private TextMeshProUGUI _statusText;
+        private readonly List<(Image bg, TextMeshProUGUI text)> _steps = new();
+        private RectTransform _toast;
+        private TextMeshProUGUI _toastText;
+        private float _toastUntil;
+        private RectTransform _ticketWindow;
+        private TextMeshProUGUI _ticketWallet;
+        private TMP_FontAsset _font;
         private readonly List<(Transform transform, Vector3 platformPosition)> _platformTrain = new();
         private readonly List<Collider> _trainColliders = new();
         private bool _playerTrainCollisionIgnored;
-        private InteractionDetector _interactionDetector;
         private GameObject _carriageInterior;
         private Transform _platformDoorLeft;
         private Transform _platformDoorRight;
         private Vector3 _platformDoorLeftClosed;
         private Vector3 _platformDoorRightClosed;
         private TextMeshPro _departureBoard;
-        private const string TicketItemId = "train_ticket_midori";
+
+        public bool HasTicket => _hasTicket;
+        public bool GatePassed => _gatePassed;
+        public bool IsOnboard => _onboard;
+        public bool IsRiding => _riding;
+        public bool IsTrainBoarding => Phase < boardingWindow;
+        public bool IsTicketMachineOpen => _ticketWindow != null && _ticketWindow.gameObject.activeSelf;
+        private float Phase => Mathf.Repeat(_serviceClock, serviceInterval);
 
         public void Configure(Transform platform, Transform carriage, Transform movingScenery)
         {
@@ -76,6 +97,8 @@ namespace NihongoLife.World
 
         private void Awake()
         {
+            ticketPrice = 320;
+            rideDuration = Mathf.Min(rideDuration, 18f);
             _carriageInterior = carriageSpawn != null && carriageSpawn.parent != null
                 ? carriageSpawn.parent.gameObject
                 : GameObject.Find("TrainCarriageInterior");
@@ -84,6 +107,7 @@ namespace NihongoLife.World
             if (sceneryRoot != null)
                 foreach (Transform child in sceneryRoot) _scenery.Add(child);
             if (_carriageInterior != null) _carriageInterior.SetActive(false);
+            _serviceClock = boardingWindow + 14f; // the first train is out of the station when the player arrives
             BuildTravelHud();
             CachePlatformTrain();
             CachePlatformFixtures();
@@ -92,57 +116,45 @@ namespace NihongoLife.World
             RefreshHud();
         }
 
-        private IEnumerator Start()
-        {
-            for (int attempt = 0; attempt < 30 && _interactionDetector == null; attempt++)
-            {
-                _interactionDetector = FindFirstObjectByType<InteractionDetector>();
-                if (_interactionDetector == null) yield return null;
-            }
-            if (_interactionDetector != null)
-            {
-                _interactionDetector.OnInteractableChanged += HandleInteractableChanged;
-                HandleInteractableChanged(_interactionDetector.CurrentInteractable);
-            }
-        }
-
         private void Update()
         {
-            if (_ticketPanel != null && _ticketPanel.activeSelf && Keyboard.current != null && Keyboard.current.escapeKey.wasPressedThisFrame)
+            if (IsTicketMachineOpen && Keyboard.current != null && Keyboard.current.escapeKey.wasPressedThisFrame)
             {
                 CloseTicketPanel();
                 return;
             }
 
+            AdvanceTimetable(Time.deltaTime);
             UpdatePlatformTrain();
             UpdatePlatformFixtures();
-            PlayerController player = FindFirstObjectByType<PlayerController>();
-            IgnorePlayerTrainCollision(player);
-            if (_hasTicket && Time.time > _ticketDeparture + 5f)
-            {
-                _hasTicket = false;
-                _gatePassed = false;
-                PlayerInventory.Instance?.RemoveItem(TicketItemId);
-                ShowMessage(Localize("Vé đã hết hiệu lực vì bạn lỡ chuyến.", "Your ticket expired because the train was missed.", "乗り遅れたため、切符は無効になりました。"));
-            }
+            IgnorePlayerTrainCollision(FindFirstObjectByType<PlayerController>());
 
             if (_riding)
             {
                 _rideRemaining = Mathf.Max(0f, _rideRemaining - Time.deltaTime);
                 MoveScenery();
-                if (_rideRemaining <= 0f)
-                {
-                    _riding = false;
-                    ShowMessage("Tau da den ga Midori. Ban co the xuong tau.");
-                }
+                if (_rideRemaining <= 0f) StartCoroutine(Arrive());
             }
 
             RefreshHud();
-            if (_messageText != null && Time.unscaledTime > _messageUntil)
+            if (_toast != null && _toast.gameObject.activeSelf && Time.unscaledTime > _toastUntil) _toast.gameObject.SetActive(false);
+        }
+
+        /// <summary>Normal 60 s service, except: a validated passenger calls the train in, and the doors
+        /// stay open until that passenger boards.</summary>
+        private void AdvanceTimetable(float dt)
+        {
+            bool waitingPassenger = _gatePassed && !_onboard;
+            if (waitingPassenger)
             {
-                _messageText.text = string.Empty;
-                if (_messagePanel != null) _messagePanel.SetActive(false);
+                if (Phase > boardingWindow + 12f && Phase < serviceInterval - 12f)
+                {
+                    _serviceClock += (serviceInterval - 12f) - Phase; // call the next train in now
+                    Announce("まもなく、2ばんせんに ミナトゆきが まいります。", "Tàu đi Minato sắp vào sân ga số 2.");
+                }
+                if (Phase < boardingWindow && Phase + dt >= boardingWindow - 2f) return; // hold the doors
             }
+            _serviceClock += dt;
         }
 
         public void Execute(StationAction action, GameObject player)
@@ -160,99 +172,162 @@ namespace NihongoLife.World
             RefreshHud();
         }
 
+        // ─────────── Actions ───────────
+
         private void BuyTicket()
         {
-            if (_hasTicket) { ShowMessage(Localize("Bạn đã có vé cho chuyến kế tiếp.", "You already have a ticket for the next service.", "次の電車の切符を持っています。")); return; }
+            if (_hasTicket) { Announce("きっぷは もう あります。", "Bạn đã có vé đi Minato — hãy qua cổng soát vé."); return; }
             OpenTicketPanel();
-            ShowMessage(Localize("Chọn ga đến trên máy bán vé.", "Choose a destination on the ticket machine.", "券売機で行き先を選んでください。"));
         }
 
-        private void PurchaseTicket(string destination, int fare)
+        /// <summary>Buys the Minato ticket (ticket machine button; also used by tests).</summary>
+        public bool PurchaseTicket()
         {
-            if (destination != "MIDORI")
+            var inventory = PlayerInventory.Instance;
+            if (inventory == null || !inventory.SpendYen(ticketPrice))
             {
-                ShowMessage(Localize("Tuyến này đang được hoàn thiện.", "This route is coming soon.", "この路線は準備中です。"));
-                return;
+                Announce("おかねが たりません。", $"Không đủ tiền. Vé đi Minato giá ¥{ticketPrice}.");
+                Cue(GameAudioCue.UiError);
+                return false;
             }
-            if (PlayerInventory.Instance == null || !PlayerInventory.Instance.SpendYen(fare))
+            if (!inventory.AddItem(TicketItemId, "きっぷ（ミナト）", "Vé tàu đi Minato", ticketPrice, 1))
             {
-                ShowMessage(Localize($"Không đủ tiền. Giá vé: ¥{fare}.", $"Not enough money. Fare: ¥{fare}.", $"お金が足りません。運賃は¥{fare}です。"));
-                return;
+                inventory.AddYen(ticketPrice);
+                Announce("バッグが いっぱいです。", "Balo đã đầy, không nhận được vé.");
+                return false;
             }
-            if (!PlayerInventory.Instance.AddItem(TicketItemId, "切符", $"Vé tàu {destination}", fare, 1))
-            {
-                PlayerInventory.Instance.AddYen(fare);
-                ShowMessage(Localize("Balo đã đầy. Không thể nhận vé.", "Your bag is full. The ticket was not issued.", "バッグがいっぱいです。切符を発行できません。"));
-                return;
-            }
-            _destination = destination;
             _hasTicket = true;
-            CompleteQuestObjective("obj_buy_ticket");
-            float cycleStart = Mathf.Floor(Time.time / serviceInterval) * serviceInterval;
-            _ticketDeparture = cycleStart + boardingWindow;
-            if (Time.time > _ticketDeparture) _ticketDeparture += serviceInterval;
             CloseTicketPanel();
-            ShowMessage(Localize($"Đã mua vé {_destination}. Vé chỉ dùng cho chuyến kế tiếp.", $"{_destination} ticket purchased. Valid only for the next service.", $"{_destination}行きの切符を購入しました。次の電車のみ有効です。"));
-            PlayConfirm();
+            CompleteObjective("obj_ticket");
+            Announce("きっぷを かいました。", $"Đã mua vé đi Minato (¥{ticketPrice}). Qua cổng soát vé rồi ra sân ga số 2.");
+            Cue(GameAudioCue.UiConfirm);
+            return true;
         }
 
         private void PassGate()
         {
-            if (!_hasTicket) { ShowMessage(Localize("Bạn cần mua vé hợp lệ trước.", "A valid ticket is required.", "有効な切符が必要です。")); return; }
+            if (!_hasTicket) { Announce("きっぷが ひつようです。", "Cần mua vé ở máy bán vé trước."); Cue(GameAudioCue.UiError); return; }
+            if (_gatePassed) { Announce("2ばんせんへ どうぞ。", "Bạn đã qua cổng. Ra sân ga số 2 chờ tàu."); return; }
             _gatePassed = true;
-            CompleteQuestObjective("obj_pass_station_gate");
-            ShowMessage(Localize("Vé hợp lệ. Hãy đến sân ga số 1 đúng giờ.", "Ticket accepted. Go to platform 1 on time.", "切符は有効です。時間どおり1番線へお越しください。"));
-            PlayConfirm();
+            CompleteObjective("obj_platform");
+            Announce("2ばんせんへ どうぞ。", "Vé hợp lệ. Ra sân ga số 2 — tàu sẽ đợi bạn.");
+            Cue(GameAudioCue.UiConfirm);
         }
 
         private void Board(GameObject player)
         {
-            if (!_gatePassed) { ShowMessage(Localize("Hãy mua vé và qua cổng soát vé trước.", "Buy a ticket and pass the gate first.", "先に切符を購入して改札を通ってください。")); return; }
-            if (!IsTrainBoarding()) { ShowMessage(Localize("Tàu chưa vào ga hoặc đã đóng cửa.", "The train is not boarding now.", "現在、この電車には乗車できません。")); return; }
+            if (_onboard) return;
+            if (!_gatePassed) { Announce("さきに かいさつを とおって ください。", "Hãy mua vé và qua cổng soát vé trước."); Cue(GameAudioCue.UiError); return; }
+            if (!IsTrainBoarding) { Announce("でんしゃは まだ きません。", $"Tàu chưa vào ga — còn khoảng {SecondsUntilArrival():0} giây."); return; }
             if (_carriageInterior != null) _carriageInterior.SetActive(true);
             Teleport(player, carriageSpawn);
             PlayerInventory.Instance?.RemoveItem(TicketItemId);
-            CompleteQuestObjective("obj_board_train");
-            ShowMessage(Localize("Đã lên tàu. Hãy tìm chỗ ngồi.", "You boarded the train. Please find a seat.", "乗車しました。席をお探しください。"));
+            _onboard = true;
+            StartRide();
         }
 
         private void StartRide()
         {
-            if (_riding) { ShowMessage("Tau dang di den ga Midori."); return; }
+            if (!_onboard || _riding) return;
             _riding = true;
             _rideRemaining = rideDuration;
-            ShowMessage("Tau khoi hanh. Co the nhin qua cua so hoac noi chuyen voi hanh khach.");
+            Announce("ドアが しまります。つぎは ミナト、ミナトです。", "Cửa đóng. Ga tiếp theo: Minato. Hãy nói chuyện với hành khách hoặc ngắm cảnh.");
+        }
+
+        private IEnumerator Arrive()
+        {
+            if (!_riding) yield break;
+            _riding = false;
+            Announce("ミナト、ミナトです。おでぐちは ひだりがわです。", "Đã tới ga Minato! Cửa ra ở bên trái.");
+            CompleteObjective("obj_board");
+            PlayerStatus.Instance?.AddKnowledge(5);
+            yield return new WaitForSeconds(2.5f);
+            Leave(FindFirstObjectByType<PlayerController>()?.gameObject);
         }
 
         private void Leave(GameObject player)
         {
-            if (_riding) { ShowMessage("Tau dang chay. Vui long doi den ga."); return; }
+            if (_riding) { Announce("でんしゃが はしって います。", "Tàu đang chạy — đợi tới ga đã."); return; }
+            if (!_onboard) return;
             Teleport(player, platformSpawn);
             if (_carriageInterior != null) _carriageInterior.SetActive(false);
+            _onboard = false;
             _hasTicket = false;
             _gatePassed = false;
-            ShowMessage("Da xuong tau an toan.");
-        }
-
-        private void TalkPassenger()
-        {
-            string line = _riding
-                ? "Hanh khach: Midori wa mada desu ka? / Ga Midori van chua den a?"
-                : "Hanh khach: Kono densha wa Midori ni ikimasu. / Tau nay di den Midori.";
-            ShowMessage(line, 7f);
-            PlayerStatus.Instance?.AddKnowledge(2);
+            Announce("おつかれさまでした。", "Đã xuống tàu. Đi qua lối 出口 để về thành phố.");
         }
 
         private void TalkStationStaff()
         {
-            ShowMessage("Nhân viên ga: Vé Midori giá ¥180. Hãy qua cổng rồi chờ chuyến tàu.\n駅員: ミドリ行きは180円です。", 8f);
-            PlayerStatus.Instance?.AddKnowledge(3);
+            // While the station scenario owns the clerk, let it drive the conversation.
+            var scenario = ScenarioManager.Instance;
+            if (scenario != null && scenario.CurrentScenario != null && scenario.CurrentScenario.id == ScenarioId
+                && scenario.OnNPCInteracted("npc_station_staff", null)) return;
+
+            var dm = DialogueManager.Instance;
+            if (dm == null) return;
+            const string staff = "えきいん · Nhân viên ga";
+            var nodes = new List<ScenarioNode>
+            {
+                Line("st_hello", staff, "いらっしゃいませ。どちらまで ですか。", "いらっしゃいませ。どちらまで ですか。", "Xin chào quý khách. Quý khách đi đến đâu ạ?", null,
+                    Choice("ミナトえきへ いきたいです。", "Tôi muốn đến ga Minato.", "st_fare"),
+                    Choice("ミナト、どこ？", "Minato, đâu? (cộc lốc)", "st_polite"),
+                    Choice("すみません、だいじょうぶです。", "Xin lỗi, không cần đâu ạ.", "st_bye")),
+                Line("st_polite", staff, "「〜へ いきたいです」と いうと ていねいですよ。", "「〜へ いきたいです」と いうと ていねいですよ。", "Nói 「〜へ いきたいです」 sẽ lịch sự hơn đó.", "st_hello"),
+                Line("st_fare", staff, "ミナトまでは 320えん です。2ばんせん です。", "ミナトまでは さんびゃくにじゅうえん です。にばんせん です。", "Đến Minato là 320 yên, sân ga số 2.", null,
+                    Choice("2ばんせんですね。ありがとうございます。", "Sân ga số 2 nhỉ. Cảm ơn ạ.", "st_machine"),
+                    Choice("3ばんせんですね。", "Sân ga số 3 nhỉ.", "st_wrong")),
+                Line("st_wrong", staff, "いいえ、2ばんせん です。3ばんせんは はんたいほうこう です。", "いいえ、にばんせん です。", "Không, là sân ga số 2. Số 3 là chiều ngược lại.", "st_fare"),
+                Line("st_machine", staff, "きっぷは あの けんばいきで かって ください。", "きっぷは あの けんばいきで かって ください。", "Vé thì mua ở máy bán vé đằng kia nhé.", null),
+                Line("st_bye", staff, "はい、どうぞ おきをつけて。", "はい、どうぞ おきをつけて。", "Vâng, quý khách đi cẩn thận.", null),
+            };
+            dm.StartConversation(nodes, "st_hello", ended => { if (ended != "cancel") PlayerStatus.Instance?.AddKnowledge(3); });
         }
 
-        private static void CompleteQuestObjective(string objectiveId)
+        private void TalkPassenger()
         {
-            NihongoLife.Scenario.ScenarioManager.Instance?.CompleteObjective(objectiveId);
+            var dm = DialogueManager.Instance;
+            if (dm == null) return;
+            const string passenger = "じょうきゃく · Hành khách";
+            var nodes = _riding
+                ? new List<ScenarioNode>
+                {
+                    Line("ps_q", passenger, "すみません、ミナトは まだ ですか。", "すみません、ミナトは まだ ですか。", "Xin lỗi, chưa tới Minato à?", null,
+                        Choice("はい、つぎです。", "Vâng, ga tiếp theo ạ.", "ps_ok"),
+                        Choice("わかりません。", "Tôi không biết.", "ps_meh")),
+                    Line("ps_ok", passenger, "そうですか。ありがとうございます！", "そうですか。ありがとうございます！", "Vậy à. Cảm ơn bạn!", null),
+                    Line("ps_meh", passenger, "アナウンスを きいて みましょう。", "アナウンスを きいて みましょう。", "Thử nghe thông báo trên tàu xem.", null),
+                }
+                : new List<ScenarioNode>
+                {
+                    Line("ps_q", passenger, "この でんしゃは ミナトへ いきますか。", "この でんしゃは ミナトへ いきますか。", "Tàu này có đi Minato không?", null,
+                        Choice("はい、2ばんせんの でんしゃです。", "Có, là tàu ở sân ga số 2.", "ps_ok"),
+                        Choice("いいえ。", "Không.", "ps_meh")),
+                    Line("ps_ok", passenger, "たすかりました。ありがとう！", "たすかりました。ありがとう！", "May quá. Cảm ơn nhé!", null),
+                    Line("ps_meh", passenger, "えっ、そうですか…。えきいんさんに きいて みます。", "えっ、そうですか…。", "Ơ, vậy sao… Tôi sẽ hỏi nhân viên ga.", null),
+                };
+            dm.StartConversation(nodes, "ps_q", ended => { if (ended == "ps_ok") PlayerStatus.Instance?.AddKnowledge(2); });
         }
+
+        private static ScenarioNode Line(string id, string speaker, string ja, string reading, string vi, string next, params DialogueChoice[] choices) => new ScenarioNode
+        {
+            id = id, nodeType = ScenarioNodeType.Dialogue, speakerId = "station_" + id, speakerName = speaker,
+            textJa = ja, textReading = reading, textEn = vi, nextNodeId = next,
+            choices = new List<DialogueChoice>(choices)
+        };
+
+        private static DialogueChoice Choice(string ja, string vi, string next) => new DialogueChoice { textJa = ja, textEn = vi, nextNodeId = next };
+
+        private static void CompleteObjective(string objectiveId)
+        {
+            var scenario = ScenarioManager.Instance;
+            if (scenario != null && scenario.CurrentScenario != null && scenario.CurrentScenario.id == ScenarioId)
+                scenario.CompleteObjective(objectiveId);
+        }
+
+        private float SecondsUntilArrival() => IsTrainBoarding ? 0f : serviceInterval - Phase;
+
+        // ─────────── Station fixtures ───────────
 
         private void EnsureStationStaffInteractable()
         {
@@ -263,16 +338,14 @@ namespace NihongoLife.World
             interaction.transform.localPosition = Vector3.up * 1.1f;
             var collider = interaction.AddComponent<SphereCollider>();
             collider.isTrigger = true; collider.radius = 1.25f;
-            var staff = interaction.AddComponent<StationStaffInteractable>();
-            staff.Configure(this);
-            AddRoleLabel(clerk.transform, "NHAN VIEN GA\n駅員", new Color(1f, 0.82f, 0.3f));
+            interaction.AddComponent<StationStaffInteractable>().Configure(this);
+            AddRoleLabel(clerk.transform, "えきいん\nNhân viên ga", new Color(1f, 0.82f, 0.3f));
         }
 
         private void NormalizeStationInteractions()
         {
-            var interactables = FindObjectsByType<StationTravelInteractable>(FindObjectsInactive.Include, FindObjectsSortMode.None);
             StationTravelInteractable firstTicketMachine = null;
-            foreach (var interactable in interactables)
+            foreach (var interactable in FindObjectsByType<StationTravelInteractable>(FindObjectsInactive.Include, FindObjectsSortMode.None))
             {
                 if (interactable == null) continue;
                 string objectName = interactable.gameObject.name;
@@ -281,6 +354,19 @@ namespace NihongoLife.World
                 {
                     if (firstTicketMachine == null) firstTicketMachine = interactable;
                     else if (interactable != firstTicketMachine) interactable.gameObject.SetActive(false);
+                }
+            }
+            if (firstTicketMachine != null) firstTicketMachine.Configure(this, StationAction.BuyTicket, "きっぷを かう", "Mua vé (máy bán vé)");
+
+            foreach (var interactable in FindObjectsByType<StationTravelInteractable>(FindObjectsInactive.Include, FindObjectsSortMode.None))
+            {
+                if (interactable == null) continue;
+                switch (interactable.Action)
+                {
+                    case StationAction.BoardTrain: interactable.Configure(this, StationAction.BoardTrain, "でんしゃに のる", "Lên tàu đi Minato"); break;
+                    case StationAction.LeaveTrain: interactable.Configure(this, StationAction.LeaveTrain, "でんしゃを おりる", "Xuống tàu"); break;
+                    case StationAction.TalkPassenger: interactable.Configure(this, StationAction.TalkPassenger, "はなしかける", "Nói chuyện với hành khách"); break;
+                    case StationAction.StartRide: interactable.Configure(this, StationAction.StartRide, "せきに すわる", "Ngồi xuống ghế"); break;
                 }
             }
 
@@ -297,19 +383,12 @@ namespace NihongoLife.World
                     box.center = new Vector3(0f, 1f, 0f);
                     box.size = new Vector3(2.2f, 2.2f, 1.2f);
                 }
-                else
-                {
-                    // The scanner is an interaction kiosk, not a solid wall.
-                    // A non-trigger mesh collider made the player stop in front
-                    // of it and hid the interaction prompt behind the mesh.
-                    collider.isTrigger = true;
-                }
+                else collider.isTrigger = true; // a solid kiosk hid the prompt behind its mesh
                 scannerInteractable = scanner.AddComponent<StationTravelInteractable>();
-                scannerInteractable.Configure(this, StationAction.PassGate, "改札を通る", "QUET VE / SCAN TICKET");
             }
-
+            scannerInteractable.Configure(this, StationAction.PassGate, "かいさつを とおる", "Qua cổng soát vé");
             if (scanner.GetComponentInChildren<TextMeshPro>(true) == null)
-                AddRoleLabel(scanner.transform, "SCAN TICKET\nQUET VE", new Color(0.35f, 0.9f, 1f));
+                AddRoleLabel(scanner.transform, "かいさつ\nCổng soát vé", new Color(0.35f, 0.9f, 1f));
         }
 
         private static void AddRoleLabel(Transform parent, string value, Color color)
@@ -318,7 +397,7 @@ namespace NihongoLife.World
             labelObject.transform.SetParent(parent, false);
             labelObject.transform.localPosition = Vector3.up * 2.35f;
             var label = labelObject.AddComponent<TextMeshPro>();
-            label.text = value; label.fontSize = 0.22f; label.alignment = TextAlignmentOptions.Center;
+            label.text = value; label.fontSize = 2.2f; label.alignment = TextAlignmentOptions.Center;
             label.color = color; labelObject.AddComponent<StationBillboardLabel>();
         }
 
@@ -339,93 +418,7 @@ namespace NihongoLife.World
             if (controller != null) controller.enabled = false;
             player.transform.SetPositionAndRotation(target.position, target.rotation);
             if (controller != null) controller.enabled = true;
-        }
-
-        private void BuildTravelHud()
-        {
-            EnsureEventSystem();
-            HUDUI sharedHud = FindFirstObjectByType<HUDUI>();
-            var canvasObject = new GameObject("StationTravelHUD", typeof(RectTransform));
-            if (sharedHud != null)
-            {
-                _canvas = sharedHud.GetComponentInParent<Canvas>();
-                canvasObject.transform.SetParent(_canvas.transform, false);
-            }
-            else
-            {
-                canvasObject.transform.SetParent(transform, false);
-                _canvas = canvasObject.AddComponent<Canvas>();
-                _canvas.renderMode = RenderMode.ScreenSpaceOverlay;
-                _canvas.sortingOrder = 80;
-                var scaler = canvasObject.AddComponent<CanvasScaler>();
-                scaler.uiScaleMode = CanvasScaler.ScaleMode.ScaleWithScreenSize;
-                scaler.referenceResolution = new Vector2(1280f, 720f);
-                scaler.screenMatchMode = CanvasScaler.ScreenMatchMode.MatchWidthOrHeight;
-                scaler.matchWidthOrHeight = 0.5f;
-                canvasObject.AddComponent<GraphicRaycaster>();
-            }
-
-            var hudRect = (RectTransform)canvasObject.transform;
-            hudRect.anchorMin = Vector2.zero;
-            hudRect.anchorMax = Vector2.one;
-            hudRect.offsetMin = hudRect.offsetMax = Vector2.zero;
-
-            GameObject panel = new GameObject("RoutePanel");
-            panel.transform.SetParent(canvasObject.transform, false);
-            var rect = panel.AddComponent<RectTransform>();
-            rect.anchorMin = rect.anchorMax = Vector2.one;
-            rect.pivot = Vector2.one;
-            rect.anchoredPosition = new Vector2(-24f, -86f);
-            rect.sizeDelta = new Vector2(440f, 76f);
-            panel.AddComponent<Image>().color = new Color(0.055f, 0.068f, 0.082f, 0.96f);
-            _routeText = CreateText(panel.transform, 24f, TextAlignmentOptions.Center);
-
-            GameObject flow = new GameObject("TravelFlow");
-            flow.transform.SetParent(canvasObject.transform, false);
-            var flowRect = flow.AddComponent<RectTransform>();
-            flowRect.anchorMin = flowRect.anchorMax = new Vector2(0.5f, 1f);
-            flowRect.pivot = new Vector2(0.5f, 1f);
-            flowRect.anchoredPosition = new Vector2(0f, -24f);
-            flowRect.sizeDelta = new Vector2(780f, 64f);
-            flow.AddComponent<Image>().color = new Color(0.055f, 0.068f, 0.082f, 0.96f);
-            _flowText = CreateText(flow.transform, 20f, TextAlignmentOptions.Center);
-            flow.SetActive(false);
-
-            GameObject wallet = new GameObject("StationWallet");
-            wallet.transform.SetParent(canvasObject.transform, false);
-            var walletRect = wallet.AddComponent<RectTransform>();
-            walletRect.anchorMin = walletRect.anchorMax = new Vector2(0f, 1f);
-            walletRect.pivot = new Vector2(0f, 1f);
-            walletRect.anchoredPosition = new Vector2(24f, -24f);
-            walletRect.sizeDelta = new Vector2(230f, 56f);
-            wallet.AddComponent<Image>().color = new Color(0.025f, 0.045f, 0.06f, 0.9f);
-            _walletText = CreateText(wallet.transform, 21f, TextAlignmentOptions.Center);
-            wallet.SetActive(sharedHud == null);
-
-            GameObject message = new GameObject("TravelMessage");
-            message.transform.SetParent(canvasObject.transform, false);
-            var messageRect = message.AddComponent<RectTransform>();
-            messageRect.anchorMin = messageRect.anchorMax = new Vector2(0.5f, 0f);
-            messageRect.pivot = new Vector2(0.5f, 0f);
-            messageRect.anchoredPosition = new Vector2(0f, 32f);
-            messageRect.sizeDelta = new Vector2(900f, 64f);
-            message.AddComponent<Image>().color = new Color(0.025f, 0.035f, 0.045f, 0.92f);
-            _messagePanel = message;
-            _messageText = CreateText(message.transform, 20f, TextAlignmentOptions.Center);
-            _messagePanel.SetActive(false);
-
-            GameObject help = new GameObject("StationHelp");
-            help.transform.SetParent(canvasObject.transform, false);
-            var helpRect = help.AddComponent<RectTransform>();
-            helpRect.anchorMin = helpRect.anchorMax = Vector2.zero;
-            helpRect.pivot = Vector2.zero;
-            helpRect.anchoredPosition = new Vector2(24f, 24f);
-            helpRect.sizeDelta = new Vector2(430f, 48f);
-            help.AddComponent<Image>().color = new Color(0.025f, 0.045f, 0.06f, 0.9f);
-            _stationHelpText = CreateText(help.transform, 14f, TextAlignmentOptions.Left);
-            _stationHelpText.text = Localize("F Tương tác | B Balo | M Bản đồ | Esc Cài đặt", "F Interact | B Bag | M Map | Esc Settings", "F 調べる | B バッグ | M 地図 | Esc 設定");
-            help.SetActive(sharedHud == null);
-            BuildTicketPanel(canvasObject.transform);
+            Physics.SyncTransforms();
         }
 
         private void CachePlatformFixtures()
@@ -433,192 +426,29 @@ namespace NihongoLife.World
             foreach (Transform item in FindObjectsByType<Transform>(FindObjectsInactive.Include, FindObjectsSortMode.None))
             {
                 if (item.gameObject.scene != gameObject.scene) continue;
-                if (item.name == "PlatformDoor_Left")
-                {
-                    _platformDoorLeft = item;
-                    _platformDoorLeftClosed = item.position;
-                }
-                else if (item.name == "PlatformDoor_Right")
-                {
-                    _platformDoorRight = item;
-                    _platformDoorRightClosed = item.position;
-                }
+                if (item.name == "PlatformDoor_Left") { _platformDoorLeft = item; _platformDoorLeftClosed = item.position; }
+                else if (item.name == "PlatformDoor_Right") { _platformDoorRight = item; _platformDoorRightClosed = item.position; }
                 else if (item.name == "DepartureBoard") _departureBoard = item.GetComponent<TextMeshPro>();
             }
         }
 
         private void UpdatePlatformFixtures()
         {
-            float phase = Mathf.Repeat(Time.time, serviceInterval);
+            float phase = Phase;
             bool boarding = phase < boardingWindow;
             float openAmount = 0f;
             if (boarding)
             {
                 const float transition = 1.25f;
-                openAmount = phase < transition
-                    ? Mathf.SmoothStep(0f, 1f, phase / transition)
-                    : phase > boardingWindow - transition
-                        ? Mathf.SmoothStep(1f, 0f, (phase - (boardingWindow - transition)) / transition)
-                        : 1f;
+                openAmount = phase < transition ? Mathf.SmoothStep(0f, 1f, phase / transition)
+                    : phase > boardingWindow - transition ? Mathf.SmoothStep(1f, 0f, (phase - (boardingWindow - transition)) / transition)
+                    : 1f;
             }
-            if (_platformDoorLeft != null)
-                _platformDoorLeft.position = _platformDoorLeftClosed + Vector3.left * (2.75f * openAmount);
-            if (_platformDoorRight != null)
-                _platformDoorRight.position = _platformDoorRightClosed + Vector3.right * (2.75f * openAmount);
+            if (_platformDoorLeft != null) _platformDoorLeft.position = _platformDoorLeftClosed + Vector3.left * (2.75f * openAmount);
+            if (_platformDoorRight != null) _platformDoorRight.position = _platformDoorRightClosed + Vector3.right * (2.75f * openAmount);
             if (_departureBoard == null) return;
-            float seconds = boarding ? boardingWindow - phase : serviceInterval - phase;
-            string state = boarding
-                ? Localize("ĐANG ĐÓN KHÁCH", "BOARDING", "乗車中")
-                : Localize("CHUYẾN KẾ", "NEXT", "次発");
-            _departureBoard.text = $"PLATFORM 1 / MIDORI\n<size=65%>{state}  {seconds:00}s     FARE  ¥180</size>";
-        }
-
-        private static void EnsureEventSystem()
-        {
-            if (EventSystem.current != null) return;
-            var eventSystemObject = new GameObject("StationEventSystem");
-            eventSystemObject.AddComponent<EventSystem>();
-            eventSystemObject.AddComponent<InputSystemUIInputModule>();
-        }
-
-        private void BuildTicketPanel(Transform parent)
-        {
-            _ticketPanel = new GameObject("TicketMachinePanel");
-            _ticketPanel.transform.SetParent(parent, false);
-            var rect = _ticketPanel.AddComponent<RectTransform>();
-            rect.anchorMin = rect.anchorMax = rect.pivot = new Vector2(0.5f, 0.5f);
-            rect.sizeDelta = new Vector2(620f, 330f);
-            _ticketPanel.AddComponent<Image>().color = new Color(0.025f, 0.045f, 0.06f, 0.98f);
-
-            TextMeshProUGUI title = CreateText(_ticketPanel.transform, 28f, TextAlignmentOptions.Top);
-            title.rectTransform.offsetMin = new Vector2(24f, 250f);
-            title.rectTransform.offsetMax = new Vector2(-24f, -24f);
-            title.text = Localize("CHỌN GA ĐẾN", "SELECT DESTINATION", "行き先を選択");
-
-            TextMeshProUGUI hint = CreateText(_ticketPanel.transform, 17f, TextAlignmentOptions.Bottom);
-            hint.rectTransform.offsetMin = new Vector2(24f, 8f);
-            hint.rectTransform.offsetMax = new Vector2(-24f, -286f);
-            hint.text = Localize("Nhấn chuột hoặc Enter để mua vé", "Click or press Enter to buy", "クリックまたはEnterで購入");
-
-            CreateTicketButton("MIDORI", ticketPrice, 175f, true);
-            CreateTicketButton("SHINJUKU", 260, 105f, false);
-            CreateTicketButton("ASAKUSA", 320, 35f, false);
-            var closeObject = new GameObject("CloseTicketPanel");
-            closeObject.transform.SetParent(_ticketPanel.transform, false);
-            var closeRect = closeObject.AddComponent<RectTransform>();
-            closeRect.anchorMin = closeRect.anchorMax = new Vector2(1f, 1f);
-            closeRect.pivot = new Vector2(1f, 1f);
-            closeRect.anchoredPosition = new Vector2(-14f, -14f);
-            closeRect.sizeDelta = new Vector2(44f, 40f);
-            var closeImage = closeObject.AddComponent<Image>();
-            closeImage.color = new Color(0.22f, 0.27f, 0.3f, 1f);
-            var closeButton = closeObject.AddComponent<Button>();
-            closeButton.targetGraphic = closeImage;
-            CreateText(closeObject.transform, 22f, TextAlignmentOptions.Center).text = "X";
-            closeButton.onClick.AddListener(CloseTicketPanel);
-            _ticketPanel.SetActive(false);
-        }
-
-        private void CreateTicketButton(string destination, int fare, float y, bool available)
-        {
-            var buttonObject = new GameObject("Ticket_" + destination);
-            buttonObject.transform.SetParent(_ticketPanel.transform, false);
-            var rect = buttonObject.AddComponent<RectTransform>();
-            rect.anchorMin = rect.anchorMax = new Vector2(0.5f, 0f);
-            rect.pivot = new Vector2(0.5f, 0f);
-            rect.anchoredPosition = new Vector2(0f, y);
-            rect.sizeDelta = new Vector2(500f, 54f);
-            var image = buttonObject.AddComponent<Image>();
-            image.color = new Color(0.1f, 0.32f, 0.42f, 1f);
-            Button button = buttonObject.AddComponent<Button>();
-            button.targetGraphic = image;
-            button.interactable = available;
-            TextMeshProUGUI label = CreateText(buttonObject.transform, 20f, TextAlignmentOptions.Center);
-            label.text = available
-                ? $"{destination}     ¥{fare}"
-                : $"{destination}     {Localize("SẮP MỞ", "COMING SOON", "準備中")}";
-            image.color = available ? image.color : new Color(0.12f, 0.15f, 0.17f, 1f);
-            if (available) button.onClick.AddListener(() => PurchaseTicket(destination, fare));
-            if (available && _firstTicketButton == null) _firstTicketButton = button;
-        }
-
-        private void OpenTicketPanel()
-        {
-            if (_ticketPanel == null) return;
-            _ticketPanel.SetActive(true);
-            _ticketPanel.transform.SetAsLastSibling();
-            Cursor.lockState = CursorLockMode.None;
-            Cursor.visible = true;
-            if (EventSystem.current != null && _firstTicketButton != null)
-                EventSystem.current.SetSelectedGameObject(_firstTicketButton.gameObject);
-        }
-
-        private void CloseTicketPanel()
-        {
-            if (_ticketPanel != null) _ticketPanel.SetActive(false);
-            if (EventSystem.current != null) EventSystem.current.SetSelectedGameObject(null);
-            Cursor.lockState = CursorLockMode.Locked;
-            Cursor.visible = false;
-        }
-
-        private static TextMeshProUGUI CreateText(Transform parent, float size, TextAlignmentOptions alignment)
-        {
-            GameObject go = new GameObject("Label");
-            go.transform.SetParent(parent, false);
-            var rect = go.AddComponent<RectTransform>();
-            rect.anchorMin = Vector2.zero;
-            rect.anchorMax = Vector2.one;
-            rect.offsetMin = new Vector2(18f, 8f);
-            rect.offsetMax = new Vector2(-18f, -8f);
-            var text = go.AddComponent<TextMeshProUGUI>();
-            text.fontSize = size;
-            text.alignment = alignment;
-            text.color = new Color(0.94f, 0.96f, 0.98f);
-            text.enableAutoSizing = true;
-            text.fontSizeMin = 14f;
-            text.raycastTarget = false;
-            return text;
-        }
-
-        private void RefreshHud()
-        {
-            if (_routeText == null) return;
-            if (_walletText != null)
-                _walletText.text = PlayerInventory.Instance != null ? $"¥ {PlayerInventory.Instance.Yen:N0}" : "¥ --";
-            float wait = SecondsUntilBoardingEnds();
-            string stage = _riding
-                ? Localize($"ĐANG ĐI | {_rideRemaining:0}s", $"EN ROUTE | {_rideRemaining:0}s", $"走行中 | {_rideRemaining:0}秒")
-                : IsTrainBoarding()
-                    ? Localize($"ĐANG ĐÓN KHÁCH | {wait:0}s", $"BOARDING | {wait:0}s", $"乗車中 | {wait:0}秒")
-                    : Localize($"CHUYẾN KẾ | {wait:0}s", $"NEXT TRAIN | {wait:0}s", $"次の電車 | {wait:0}秒");
-            _routeText.text = $"SAKURA  >  {_destination}\n<size=70%><color=#78C7D4>{stage}</color></size>";
-            if (_flowText != null)
-            {
-                int step = !_hasTicket ? 1 : !_gatePassed ? 2 : !IsTrainBoarding() ? 3 : 4;
-                string[] labels =
-                {
-                    Localize("MUA VÉ", "BUY TICKET", "きっぷ"),
-                    Localize("QUÉT VÉ", "VALIDATE", "改札"),
-                    Localize("CHỜ TÀU", "WAIT AT PLATFORM", "待つ"),
-                    Localize("LÊN TÀU", "BOARD TRAIN", "乗車")
-                };
-                var builder = new System.Text.StringBuilder();
-                for (int i = 0; i < labels.Length; i++)
-                {
-                    string color = i + 1 < step ? "#70D6A2" : i + 1 == step ? "#FFD35A" : "#82939B";
-                    if (i > 0) builder.Append("   >   ");
-                    builder.Append($"<color={color}>{i + 1}  {labels[i]}</color>");
-                }
-                _flowText.text = builder.ToString();
-            }
-        }
-
-        private bool IsTrainBoarding() => Mathf.Repeat(Time.time, serviceInterval) < boardingWindow;
-
-        private float SecondsUntilBoardingEnds()
-        {
-            float phase = Mathf.Repeat(Time.time, serviceInterval);
-            return phase < boardingWindow ? boardingWindow - phase : serviceInterval - phase;
+            string state = boarding ? (_gatePassed && !_onboard ? "のりば で まって います" : "ただいま 乗車中") : $"つぎ {SecondsUntilArrival():00}s";
+            _departureBoard.text = $"2ばんせん  ミナトゆき\n<size=65%>{state}     ¥{ticketPrice}</size>";
         }
 
         private void CachePlatformTrain()
@@ -627,12 +457,10 @@ namespace NihongoLife.World
             foreach (string trainName in names)
             {
                 GameObject item = GameObject.Find(trainName);
-                if (item != null)
-                {
-                    _platformTrain.Add((item.transform, item.transform.position));
-                    foreach (Collider collider in item.GetComponentsInChildren<Collider>(true))
-                        if (collider != null && !collider.isTrigger) _trainColliders.Add(collider);
-                }
+                if (item == null) continue;
+                _platformTrain.Add((item.transform, item.transform.position));
+                foreach (Collider collider in item.GetComponentsInChildren<Collider>(true))
+                    if (collider != null && !collider.isTrigger) _trainColliders.Add(collider);
             }
         }
 
@@ -646,58 +474,142 @@ namespace NihongoLife.World
                     if (trainCollider != null) Physics.IgnoreCollision(playerCollider, trainCollider, true);
             }
             _playerTrainCollisionIgnored = true;
-            Debug.Log("[StationTravel] Player/train collision ignored for the moving platform train.");
         }
 
         private void UpdatePlatformTrain()
         {
-            float phase = Mathf.Repeat(Time.time, serviceInterval);
+            float phase = Phase;
             float offset;
             if (phase < boardingWindow) offset = 0f;
             else if (phase < boardingWindow + 12f) offset = Mathf.SmoothStep(0f, trainTravelDistance, (phase - boardingWindow) / 12f);
             else if (phase < serviceInterval - 12f) offset = trainTravelDistance;
             else offset = Mathf.SmoothStep(-trainTravelDistance, 0f, (phase - (serviceInterval - 12f)) / 12f);
-
             foreach (var item in _platformTrain)
                 if (item.transform != null) item.transform.position = item.platformPosition + Vector3.right * offset;
         }
 
-        private static string Localize(string vi, string en, string ja)
-        {
-            return GameServices.TryGet(out GameSettingsService settings) ? settings.Text(vi, en, ja) : vi;
-        }
+        // ─────────── HUD ───────────
 
-        private void HandleInteractableChanged(IInteractable interactable)
+        private void BuildTravelHud()
         {
-            if (_stationHelpText == null) return;
-            if (interactable == null)
+            EnsureEventSystem();
+            _font = NLUi.ResolveFont();
+            HUDUI sharedHud = FindFirstObjectByType<HUDUI>();
+            Transform parent = sharedHud != null ? sharedHud.transform : transform;
+            var canvas = NLUi.CreateCanvas("StationTravelHUD", 120, parent);
+            _hudRoot = (RectTransform)canvas.transform;
+
+            var route = NLUi.Panel(_hudRoot, "RouteCard", NLUi.Ink, new RectOffset(20, 20, 12, 12), 2f);
+            NLUi.Anchor(route, new Vector2(1f, 1f), new Vector2(-28f, -96f), new Vector2(380f, 0f));
+            NLUi.FitContent(route);
+            _routeText = NLUi.Label(route, "Route", "ひばり  →  ミナト", 24f, NLUi.Text, _font, FontStyles.Bold);
+            _statusText = NLUi.Label(route, "Status", "", 17f, NLUi.Muted, _font);
+
+            var steps = NLUi.Group(_hudRoot, "TravelSteps", false, 8f, TextAnchor.MiddleCenter, false);
+            NLUi.Anchor(steps, new Vector2(0.5f, 1f), new Vector2(0f, -22f), new Vector2(900f, 44f));
+            ((HorizontalLayoutGroup)steps.GetComponent<HorizontalOrVerticalLayoutGroup>()).childForceExpandWidth = false;
+            string[] labels = { "1  きっぷ · Mua vé", "2  かいさつ · Qua cổng", "3  2ばんせん · Chờ tàu", "4  のる · Lên tàu" };
+            foreach (string label in labels)
             {
-                _stationHelpText.text = Localize("F Tương tác | B Balo | M Bản đồ | Esc Cài đặt", "F Interact | B Bag | M Map | Esc Settings", "F 調べる | B バッグ | M 地図 | Esc 設定");
-                return;
+                var pill = NLUi.Pill(steps, "Step", label, _font, NLUi.Card, NLUi.Muted, 16f);
+                _steps.Add((pill.GetComponent<Image>(), pill.GetComponentInChildren<TextMeshProUGUI>()));
             }
 
-            bool japanese = GameServices.TryGet(out GameSettingsService settings) && settings.Language == GameLanguage.Japanese;
-            string prompt = japanese ? interactable.GetPromptJa() : interactable.GetpromptEn();
-            _stationHelpText.text = prompt.StartsWith("[F]") ? prompt : $"[F] {prompt}";
+            _toast = NLUi.Panel(_hudRoot, "Announcement", NLUi.Ink, new RectOffset(26, 26, 14, 14), 4f);
+            NLUi.Anchor(_toast, new Vector2(0.5f, 0f), new Vector2(0f, 150f), new Vector2(980f, 0f));
+            NLUi.FitContent(_toast);
+            _toastText = NLUi.Label(_toast, "Text", "", 21f, NLUi.Text, _font, FontStyles.Normal, TextAlignmentOptions.Center);
+            _toast.gameObject.SetActive(false);
+            BuildTicketPanel();
+        }
+
+        private void BuildTicketPanel()
+        {
+            _ticketWindow = NLUi.Panel(_hudRoot, "TicketMachine", NLUi.Ink, new RectOffset(30, 30, 24, 24), 12f);
+            NLUi.Anchor(_ticketWindow, new Vector2(0.5f, 0.5f), Vector2.zero, new Vector2(720f, 0f));
+            NLUi.FitContent(_ticketWindow);
+            var header = NLUi.Group(_ticketWindow, "Header", false, 10f, TextAnchor.MiddleLeft);
+            ((HorizontalLayoutGroup)header.GetComponent<HorizontalOrVerticalLayoutGroup>()).childForceExpandWidth = false;
+            NLUi.Size(NLUi.Label(header, "Title", "けんばいき  <size=70%><color=#A8B4C4>Máy bán vé</color></size>", 28f, NLUi.Text, _font, FontStyles.Bold), flexibleWidth: 1f);
+            _ticketWallet = NLUi.Pill(header, "Wallet", "¥0", _font, new Color(1f, 1f, 1f, 0.08f), NLUi.Gold, 19f).GetComponentInChildren<TextMeshProUGUI>();
+            NLUi.Label(_ticketWindow, "Hint", "いきさきを えらんで ください — Chọn ga đến.", 18f, NLUi.Muted, _font);
+            NLUi.Button(_ticketWindow, "Ticket_MINATO", $"ミナト  ·  Minato   —   2ばんせん   —   ¥{ticketPrice}", _font, () => PurchaseTicket(), new Color(0.12f, 0.4f, 0.5f), 22f, null, 60f);
+            var later1 = NLUi.Button(_ticketWindow, "Ticket_SHINJUKU", "しんじゅく  ·  Shinjuku   —   じゅんびちゅう (sắp mở)", _font, null, NLUi.Card, 19f, NLUi.Muted, 52f);
+            later1.interactable = false;
+            var later2 = NLUi.Button(_ticketWindow, "Ticket_ASAKUSA", "あさくさ  ·  Asakusa   —   じゅんびちゅう (sắp mở)", _font, null, NLUi.Card, 19f, NLUi.Muted, 52f);
+            later2.interactable = false;
+            NLUi.Button(_ticketWindow, "Close", "とじる · Esc", _font, CloseTicketPanel, NLUi.Card, 17f, NLUi.Muted, 44f);
+            _ticketWindow.gameObject.SetActive(false);
+        }
+
+        private void OpenTicketPanel()
+        {
+            if (_ticketWindow == null) return;
+            if (PlayerInventory.Instance != null) _ticketWallet.text = $"¥{PlayerInventory.Instance.Yen:N0}";
+            _ticketWindow.gameObject.SetActive(true);
+            _ticketWindow.SetAsLastSibling();
+            UIStyleKit.PlayShowAnimation(_ticketWindow.gameObject);
+            SetLocked(true);
+        }
+
+        private void CloseTicketPanel()
+        {
+            if (_ticketWindow == null || !_ticketWindow.gameObject.activeSelf) return;
+            _ticketWindow.gameObject.SetActive(false);
+            if (EventSystem.current != null) EventSystem.current.SetSelectedGameObject(null);
+            SetLocked(false);
+        }
+
+        private static void SetLocked(bool locked)
+        {
+            ScenarioManager.Instance?.SetPlayerInputLocked(locked);
+            var player = FindFirstObjectByType<PlayerController>();
+            if (player != null) player.InputLocked = locked;
+            Cursor.lockState = locked ? CursorLockMode.None : CursorLockMode.Locked;
+            Cursor.visible = locked;
+        }
+
+        private void RefreshHud()
+        {
+            if (_routeText == null) return;
+            string status = _riding ? $"Đang chạy — tới Minato sau {_rideRemaining:0}s"
+                : _onboard ? "Đã tới Minato"
+                : IsTrainBoarding ? (_gatePassed ? "Tàu đang đợi ở sân ga số 2 — lên tàu!" : "Tàu đang đón khách")
+                : $"Chuyến kế tiếp sau {SecondsUntilArrival():0}s";
+            _statusText.text = status + $"   ·   ¥{ticketPrice}";
+            int step = _onboard ? 4 : _gatePassed ? 3 : _hasTicket ? 2 : 1;
+            for (int i = 0; i < _steps.Count; i++)
+            {
+                bool done = i + 1 < step, current = i + 1 == step;
+                _steps[i].bg.color = done ? new Color(0.16f, 0.4f, 0.27f) : current ? NLUi.Gold : NLUi.Card;
+                _steps[i].text.color = current ? NLUi.Ink : done ? NLUi.Text : NLUi.Muted;
+            }
+        }
+
+        private void Announce(string japanese, string vietnamese, float seconds = 5f)
+        {
+            if (_toast == null) return;
+            _toastText.text = $"<color=#F2B233>{japanese}</color>\n<size=85%>{vietnamese}</size>";
+            _toast.gameObject.SetActive(true);
+            _toastUntil = Time.unscaledTime + seconds;
+        }
+
+        private static void EnsureEventSystem()
+        {
+            if (EventSystem.current != null) return;
+            var eventSystemObject = new GameObject("StationEventSystem");
+            eventSystemObject.AddComponent<EventSystem>();
+            eventSystemObject.AddComponent<InputSystemUIInputModule>();
+        }
+
+        private static void Cue(GameAudioCue cue)
+        {
+            if (GameServices.TryGet(out IAudioService audio)) audio.PlayCue(cue, 0.75f);
         }
 
         private void OnDestroy()
         {
-            if (_routeText != null && _routeText.transform.parent != null)
-                Destroy(_routeText.transform.parent.parent.gameObject);
-            if (_interactionDetector != null) _interactionDetector.OnInteractableChanged -= HandleInteractableChanged;
-        }
-
-        private void ShowMessage(string message, float seconds = 4f)
-        {
-            if (_messagePanel != null) _messagePanel.SetActive(!string.IsNullOrEmpty(message));
-            if (_messageText != null) _messageText.text = message;
-            _messageUntil = Time.unscaledTime + seconds;
-        }
-
-        private static void PlayConfirm()
-        {
-            if (GameServices.TryGet(out IAudioService audio)) audio.PlayCue(GameAudioCue.UiConfirm, 0.75f);
+            if (_hudRoot != null) Destroy(_hudRoot.gameObject);
         }
     }
 
@@ -706,8 +618,8 @@ namespace NihongoLife.World
         private StationTravelController _controller;
 
         public void Configure(StationTravelController controller) => _controller = controller;
-        public string GetPromptJa() => "[F] 駅員と話す";
-        public string GetpromptEn() => "Noi chuyen voi nhan vien ga";
+        public string GetPromptJa() => "えきいんと はなす";
+        public string GetpromptEn() => "Nói chuyện với nhân viên ga";
         public Transform GetTransform() => transform;
         public void Interact(GameObject player) => _controller?.Execute(StationAction.TalkStationStaff, player);
     }

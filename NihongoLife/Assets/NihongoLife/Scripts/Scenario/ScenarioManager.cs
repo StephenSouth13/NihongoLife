@@ -395,6 +395,11 @@ namespace NihongoLife.Scenario
                 {
                     if (door.AreaId == _currentNode.targetAreaId) return door.transform;
                 }
+                // Zone areas (e.g. "home_bedroom") are reached through the portal that spawns into them.
+                foreach (var portal in FindObjectsByType<ScenePortal>(FindObjectsSortMode.None))
+                {
+                    if (portal.TargetSpawnId == _currentNode.targetAreaId) return portal.transform;
+                }
             }
 
             return null;

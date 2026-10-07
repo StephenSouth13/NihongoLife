@@ -11,6 +11,7 @@ using UnityEngine.SceneManagement;
 using NihongoLife.Core;
 using NihongoLife.Interaction;
 using NihongoLife.NPC;
+using NihongoLife.Shop;
 using static NihongoLife.EditorTools.ZoneBuildKit;
 using Object = UnityEngine.Object;
 
@@ -228,6 +229,7 @@ namespace NihongoLife.EditorTools
             BuildGondola(konbini, "Gondola_A", 2.55f, 3.8f);
             BuildGondola(konbini, "Gondola_B", 5.25f, 6.5f);
             BuildCounter(konbini);
+            BuildShelfInteractions(konbini);
 
             // Quest items sit on real fixtures instead of floating at shoulder height.
             var env = GameObject.Find("Environment").transform;
@@ -263,6 +265,24 @@ namespace NihongoLife.EditorTools
                 Block(g, "PriceRail_" + level.ToString("0.00"), new Vector3(x1 + 0.01f, level - 0.05f, cz), new Vector3(0.02f, 0.05f, len), _green, false);
             }
             Block(g, "Header", new Vector3(cx + 0.2f, 2.08f, cz), new Vector3(0.5f, 0.16f, len), _green, false);
+        }
+
+        /// <summary>Shopping happens through shelf sections (product browser + basket) and the clerk at the
+        /// register. The old quest items stay in place only as quest-marker targets, so their colliders are
+        /// disabled — pressing F on them used to grab one rice ball with no choice.</summary>
+        private static void BuildShelfInteractions(Transform root)
+        {
+            var g = Group(root, "ShelfSections");
+            Trigger(g, "Shelf_Onigiri", new Vector3(-2.15f, 1.0f, 3.2f), new Vector3(1.0f, 2.0f, 1.4f)).AddComponent<KonbiniShelf>().Configure(KonbiniSection.Onigiri);
+            Trigger(g, "Shelf_Snacks", new Vector3(-2.15f, 1.0f, 5.9f), new Vector3(1.0f, 2.0f, 1.4f)).AddComponent<KonbiniShelf>().Configure(KonbiniSection.Snacks);
+            Trigger(g, "Shelf_Drinks", new Vector3(2.45f, 1.0f, 4.6f), new Vector3(1.2f, 2.0f, 3.2f)).AddComponent<KonbiniShelf>().Configure(KonbiniSection.Drinks);
+            Trigger(g, "Shelf_HotSnacks", new Vector3(-1.5f, 1.0f, 7.55f), new Vector3(1.4f, 2.0f, 0.8f)).AddComponent<KonbiniShelf>().Configure(KonbiniSection.Hot);
+            foreach (string item in new[] { "Onigiri", "Water", "Tea" })
+            {
+                var t = GameObject.Find("Environment/" + item);
+                if (t == null) continue;
+                foreach (var c in t.GetComponentsInChildren<Collider>(true)) c.enabled = false;
+            }
         }
 
         private static void BuildCounter(Transform root)
@@ -411,6 +431,7 @@ namespace NihongoLife.EditorTools
             so.FindProperty("fallbackEn").stringValue = "Xin mời quý khách!";
             so.FindProperty("fallbackRomaji").stringValue = "Irasshaimase!";
             so.ApplyModifiedPropertiesWithoutUndo();
+            npc.AddComponent<KonbiniClerk>();
             Text(konbini, "CashierNameplate", "いとう · Ito", new Vector3(0f, 2.05f, 9.15f), 0f, 0.09f, Color.white, 0.8f);
         }
 

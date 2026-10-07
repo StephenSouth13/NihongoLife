@@ -14,6 +14,7 @@ namespace NihongoLife.Interaction
         [SerializeField] private string promptEn = "Đi vào";
         [SerializeField] private bool exitsZone;
 
+        public string TargetSpawnId => targetSpawnId;
         public string GetPromptJa() => promptJa;
         public string GetpromptEn() => promptEn;
         public Transform GetTransform() => transform;

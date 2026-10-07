@@ -648,7 +648,7 @@ MonoBehaviour:
     targetAreaId: 
   - id: n_greet_ok
     nodeType: 0
-    nextNodeId: n_home
+    nextNodeId: n_go_home
     objectiveIdToComplete: 
     speakerName: 
     speakerId: 
@@ -667,7 +667,7 @@ MonoBehaviour:
     targetAreaId: 
   - id: n_greet_bow
     nodeType: 0
-    nextNodeId: n_home
+    nextNodeId: n_go_home
     objectiveIdToComplete: 
     speakerName: 
     speakerId: 
@@ -686,7 +686,7 @@ MonoBehaviour:
     targetAreaId: 
   - id: n_greet_pass
     nodeType: 0
-    nextNodeId: n_home
+    nextNodeId: n_go_home
     objectiveIdToComplete: 
     speakerName: 
     speakerId: 
@@ -703,6 +703,25 @@ MonoBehaviour:
     targetItemId: 
     targetNpcId: 
     targetAreaId: 
+  - id: n_go_home
+    nodeType: 3
+    nextNodeId: n_home
+    objectiveIdToComplete: 
+    speakerName: 
+    speakerId: 
+    textJa: "ひばりハイツの へやに かえりましょう。"
+    textReading: "ひばりハイツの へやに かえりましょう。"
+    textEn: "Hãy về phòng trọ ở Hibari Heights."
+    textRomaji: "Hibari Haitsu no heya ni kaerimashou."
+    textEnglishIpa: 
+    animationCue: 
+    voiceClip: {fileID: 0}
+    choices: []
+    flagCondition: 
+    flagJumpNodeId: 
+    targetItemId: 
+    targetNpcId: 
+    targetAreaId: home_bedroom
   - id: n_home
     nodeType: 0
     nextNodeId: n_home_q

@@ -89,6 +89,10 @@ namespace NihongoLife.NPC
             }
 
             bool handledByScenario = ScenarioManager.Instance.OnNPCInteracted(npcId, this);
+            if (!handledByScenario && TryGetComponent(out INpcService service) && service.HandleInteract(player))
+            {
+                return;
+            }
             if (!handledByScenario)
             {
                 ScenarioManager.Instance.SetPlayerInputLocked(true);
@@ -212,5 +216,12 @@ namespace NihongoLife.NPC
 
             onReached?.Invoke();
         }
+    }
+
+    /// <summary>Optional job an NPC performs when the scenario does not own the conversation
+    /// (e.g. the konbini clerk rings up the basket). Return true when the interaction was handled.</summary>
+    public interface INpcService
+    {
+        bool HandleInteract(GameObject player);
     }
 }

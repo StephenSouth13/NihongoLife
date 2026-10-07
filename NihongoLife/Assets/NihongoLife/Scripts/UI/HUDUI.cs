@@ -57,9 +57,13 @@ namespace NihongoLife.UI
         private TextMeshProUGUI _inventoryDetailText;
         private int _selectedInventoryIndex;
         private IInteractable _currentInteractable;
+        private DialogueView _dialogueView;
+        private InventoryWindow _inventoryWindow;
 
         private void Start()
         {
+            EnsureDialogueView();
+            EnsureInventoryWindow();
             var player = GameObject.FindWithTag("Player");
             if (player != null)
             {
@@ -567,11 +571,13 @@ namespace NihongoLife.UI
                 SetChatVisible(true);
             }
 
-            if (input.WasPressed(GameInputId.Pause))
+            if (!dialogueOpen && input.WasPressed(GameInputId.Pause))
             {
+                bool closedOverlay = (inventoryPanel != null && inventoryPanel.activeSelf) || (_worldMap != null && _worldMap.IsVisible);
                 SetChatVisible(false);
+                SetInventoryVisible(false);
                 _worldMap?.SetVisible(false);
-                _settingsUI?.ToggleFromEscape();
+                if (!closedOverlay) _settingsUI?.ToggleFromEscape();
                 UpdateOverlayInputLock();
             }
 
@@ -581,6 +587,7 @@ namespace NihongoLife.UI
         private void HandleDialogueKeyboard()
         {
             if (dialoguePanel == null || !dialoguePanel.activeSelf) return;
+            if (_dialogueView != null) return; // DialogueView handles its own keys.
             if (Keyboard.current == null) return;
 
             if (_activeChoiceButtons.Count > 0)
@@ -653,6 +660,7 @@ namespace NihongoLife.UI
             inventoryPanel.SetActive(visible);
             if (visible)
             {
+                _inventoryWindow?.Refresh();
                 _worldMap?.SetVisible(false);
                 SetCharacterVisible(false);
                 SetChatVisible(false);
@@ -815,7 +823,7 @@ namespace NihongoLife.UI
 
         private void HandleInventoryShortcuts()
         {
-            if (Keyboard.current == null) return;
+            if (Keyboard.current == null || _inventoryWindow != null) return;
             for (int i = 0; i < 9; i++)
             {
                 if (Keyboard.current[(Key)((int)Key.Digit1 + i)].wasPressedThisFrame)
@@ -1085,8 +1093,39 @@ namespace NihongoLife.UI
             return Text(vi, en, scenario.titleJa);
         }
 
+        /// <summary>The scene-authored dialogue panel stacked fixed-size text boxes that overflowed on long
+        /// lines; every scene now uses the layout-driven DialogueView. dialoguePanel points at the new view so
+        /// the existing "dialogue open" checks keep working.</summary>
+        private void EnsureDialogueView()
+        {
+            if (_dialogueView != null) return;
+            var font = japaneseText != null ? japaneseText.font : (scenarioTitleText != null ? scenarioTitleText.font : null);
+            _dialogueView = DialogueView.Create(transform, font);
+            if (dialoguePanel != null) dialoguePanel.SetActive(false);
+            dialoguePanel = _dialogueView.Root;
+            _dialogueView.ChoiceSelected += OnChoiceSelected;
+            _dialogueView.ContinueRequested += OnContinueClicked;
+            _dialogueView.LeaveRequested += () => DialogueManager.Instance?.CancelDialogue();
+        }
+
+        /// <summary>The bag (B) uses InventoryWindow (slot grid + detail + vitals) instead of the old text list.</summary>
+        private void EnsureInventoryWindow()
+        {
+            if (_inventoryWindow != null) return;
+            var font = japaneseText != null ? japaneseText.font : (scenarioTitleText != null ? scenarioTitleText.font : null);
+            _inventoryWindow = InventoryWindow.Create(transform, font);
+            if (inventoryPanel != null) inventoryPanel.SetActive(false);
+            inventoryPanel = _inventoryWindow.Root;
+        }
+
         private void DisplayDialogue(DialogueDisplayData data)
         {
+            EnsureDialogueView();
+            if (_dialogueView != null)
+            {
+                _dialogueView.Show(data, DialogueManager.Instance != null && DialogueManager.Instance.CanLeave);
+                return;
+            }
             if (dialoguePanel == null) return;
             dialoguePanel.SetActive(true);
 
@@ -1210,6 +1249,7 @@ namespace NihongoLife.UI
 
         private void HideDialogue()
         {
+            _dialogueView?.Hide();
             if (dialoguePanel != null) dialoguePanel.SetActive(false);
             ClearChoiceButtons();
         }

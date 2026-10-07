@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using NihongoLife.Core;
 using TMPro;
 using UnityEngine;
@@ -11,10 +12,26 @@ using UnityEngine.AI;
 
 namespace NihongoLife.UI
 {
+    /// <summary>
+    /// Map window (M). Overview: real-coordinate roads, kanji place markers and a heading arrow for the
+    /// player; sidebar lists every place with its distance — click a place or anywhere on the map to walk
+    /// there. "Current area" shows a live top-down camera of the zone.
+    /// </summary>
     public class WorldMapUI : MonoBehaviour
     {
+        private sealed class MapPlace
+        {
+            public string Name, Type, Glyph;
+            public Vector2 World;     // world X/Z, or NaN when only a pixel position is known
+            public Vector2 Pixel;
+            public Color Color;
+            public bool HasWorld => !float.IsNaN(World.x);
+        }
+
+        private const float MapW = 960f, MapH = 560f, Inset = 40f;
+
         private GameObject _overlay;
-        private RectTransform _mapArea, _playerMarker, _destinationMarker;
+        private RectTransform _mapArea, _playerMarker, _destinationMarker, _sidebarList;
         private RawImage _topDownImage;
         private Camera _topDownCamera;
         private RenderTexture _topDownTexture;
@@ -24,42 +41,60 @@ namespace NihongoLife.UI
         private Transform _player;
         private TMP_FontAsset _font;
         private Vector2 _worldMin, _worldMax;
+        private readonly List<MapPlace> _places = new List<MapPlace>();
+        private readonly List<(MapPlace place, TextMeshProUGUI distance)> _rows = new List<(MapPlace, TextMeshProUGUI)>();
         public bool IsVisible => _overlay != null && _overlay.activeSelf;
         public event Action<bool> OnVisibilityChanged;
 
         public void Initialize(TMP_FontAsset font)
         {
             if (_overlay != null) return;
-            _font = font;
+            _font = font != null ? font : NLUi.ResolveFont();
             if (GameServices.TryGet(out GameSettingsService languageSettings)) languageSettings.OnLanguageChanged += HandleGlobalLanguageChanged;
-            _overlay = Panel("WorldMap", transform, new Color(.012f, .018f, .022f, .98f));
-            _overlay.transform.SetParent(GetComponentInParent<Canvas>().transform, false);
-            Stretch(_overlay.GetComponent<RectTransform>());
+
+            var canvas = GetComponentInParent<Canvas>();
+            _overlay = new GameObject("WorldMap", typeof(RectTransform), typeof(Image));
+            _overlay.transform.SetParent(canvas != null ? canvas.transform : transform, false);
+            NLUi.Stretch((RectTransform)_overlay.transform);
+            _overlay.GetComponent<Image>().color = new Color(0f, 0.01f, 0.02f, 0.72f);
             _overlay.transform.SetAsLastSibling();
-            _header = Text("Header", _overlay.transform, 27, FontStyles.Bold);
-            Rect(_header.rectTransform, new(.5f, 1), new(0, -24), new(820, 42));
-            _header.alignment = TextAlignmentOptions.Center;
-            _header.color = new(.96f, .79f, .30f);
-            _location = Text("Location", _overlay.transform, 15, FontStyles.Normal);
-            Rect(_location.rectTransform, new(.5f, 1), new(0, -65), new(820, 28));
-            _location.alignment = TextAlignmentOptions.Center;
-            _location.color = new(.55f, .82f, .86f);
-            GameObject close = Panel("Close", _overlay.transform, new(.16f, .19f, .20f));
-            Rect(close.GetComponent<RectTransform>(), Vector2.one, new(-24, -22), new(44, 40));
-            Button button = close.AddComponent<Button>();
-            button.targetGraphic = close.GetComponent<Image>();
-            button.onClick.AddListener(() => SetVisible(false));
-            TextMeshProUGUI x = Text("Label", close.transform, 19, FontStyles.Bold, "X");
-            Stretch(x.rectTransform); x.alignment = TextAlignmentOptions.Center;
-            _mapArea = Panel("MapArea", _overlay.transform, new(.055f, .095f, .105f)).GetComponent<RectTransform>();
-            Rect(_mapArea, new(.5f, .5f), new(0, -8), new(940, 530));
+
+            var window = NLUi.Panel(_overlay.transform, "MapWindow", NLUi.Ink);
+            NLUi.Anchor(window, new Vector2(0.5f, 0.5f), Vector2.zero, new Vector2(1400f, 800f));
+
+            _header = NLUi.Label(window, "Header", "", 30f, NLUi.Gold, _font, FontStyles.Bold);
+            NLUi.Anchor(_header.rectTransform, new Vector2(0f, 1f), new Vector2(36f, -26f), new Vector2(700f, 44f));
+            _location = NLUi.Label(window, "Location", "", 18f, NLUi.Muted, _font);
+            NLUi.Anchor(_location.rectTransform, new Vector2(0f, 1f), new Vector2(38f, -70f), new Vector2(700f, 28f));
+
+            var close = NLUi.Button(window, "Close", "×", _font, () => SetVisible(false), NLUi.Card, 26f, null, 48f);
+            NLUi.Anchor((RectTransform)close.transform, new Vector2(1f, 1f), new Vector2(-26f, -24f), new Vector2(56f, 52f));
+
+            var mapFrame = NLUi.Panel(window, "MapFrame", new Color(0.075f, 0.12f, 0.14f, 1f));
+            NLUi.Anchor(mapFrame, new Vector2(0f, 1f), new Vector2(30f, -112f), new Vector2(MapW + 12f, MapH + 12f));
+            var areaGo = new GameObject("MapArea", typeof(RectTransform), typeof(Image), typeof(Mask));
+            areaGo.transform.SetParent(mapFrame, false);
+            _mapArea = (RectTransform)areaGo.transform;
+            NLUi.Anchor(_mapArea, new Vector2(0.5f, 0.5f), Vector2.zero, new Vector2(MapW, MapH));
+            var areaImage = areaGo.GetComponent<Image>();
+            areaImage.sprite = UIStyleKit.RoundedSprite();
+            areaImage.type = Image.Type.Sliced;
+            areaImage.color = new Color(0.1f, 0.16f, 0.18f, 1f);
+            areaGo.GetComponent<Mask>().showMaskGraphic = true;
             var clickTarget = _mapArea.gameObject.AddComponent<MapClickTarget>();
             clickTarget.Clicked += HandleMapClick;
-            BuildTabs();
-            _coordinates = Text("Coordinates", _overlay.transform, 15, FontStyles.Normal);
-            Rect(_coordinates.rectTransform, new(.5f, 0), new(0, 18), new(900, 32));
-            _coordinates.alignment = TextAlignmentOptions.Center;
-            _coordinates.color = new(.72f, .82f, .84f);
+
+            BuildTabs(window);
+
+            var sidebar = NLUi.Panel(window, "Places", NLUi.Card, new RectOffset(18, 18, 16, 16), 8f);
+            NLUi.Anchor(sidebar, new Vector2(1f, 1f), new Vector2(-30f, -112f), new Vector2(362f, MapH + 12f));
+            var layout = sidebar.GetComponent<VerticalLayoutGroup>();
+            layout.childForceExpandHeight = false;
+            NLUi.Label(sidebar, "Title", "ちめい  <size=75%><color=#A8B4C4>Địa điểm · bấm để đi tới</color></size>", 21f, NLUi.Text, _font, FontStyles.Bold);
+            _sidebarList = NLUi.Group(sidebar, "List", true, 6f);
+
+            _coordinates = NLUi.Label(window, "Coordinates", "", 16f, NLUi.Muted, _font, FontStyles.Normal, TextAlignmentOptions.Left);
+            NLUi.Anchor(_coordinates.rectTransform, new Vector2(0f, 0f), new Vector2(36f, 22f), new Vector2(1320f, 30f));
             _overlay.SetActive(false);
         }
 
@@ -94,31 +129,20 @@ namespace NihongoLife.UI
             UpdateTopDownCamera();
         }
 
-        private void BuildTabs()
+        private void BuildTabs(Transform window)
         {
-            _areaTab = Tab("Khu vực hiện tại", new Vector2(-112f, 0f));
-            _overviewTab = Tab("Bản đồ tổng", new Vector2(112f, 0f));
-            _areaTab.onClick.AddListener(() => SetMapMode(true));
-            _overviewTab.onClick.AddListener(() => SetMapMode(false));
+            var tabs = NLUi.Group(window, "Tabs", false, 10f, TextAnchor.MiddleRight, false);
+            NLUi.Anchor(tabs, new Vector2(1f, 1f), new Vector2(-96f, -30f), new Vector2(460f, 46f));
+            ((HorizontalLayoutGroup)tabs.GetComponent<HorizontalOrVerticalLayoutGroup>()).childForceExpandWidth = false;
+            _areaTab = NLUi.Button(tabs, "MapTab_Area", L("Khu vực hiện tại", "Current area", "現在のエリア"), _font, () => SetMapMode(true), NLUi.Card, 17f, null, 44f);
+            _overviewTab = NLUi.Button(tabs, "MapTab_Overview", L("Bản đồ tổng", "Overview map", "全体マップ"), _font, () => SetMapMode(false), NLUi.Card, 17f, null, 44f);
             var topDownObject = new GameObject("TopDownMap", typeof(RectTransform), typeof(RawImage));
             topDownObject.transform.SetParent(_mapArea, false);
             _topDownImage = topDownObject.GetComponent<RawImage>();
             _topDownImage.color = Color.white;
-            Stretch(_topDownImage.rectTransform);
+            NLUi.Stretch(_topDownImage.rectTransform);
             _topDownImage.raycastTarget = false;
             SetMapMode(false);
-        }
-
-        private Button Tab(string label, Vector2 position)
-        {
-            GameObject panel = Panel("MapTab_" + label, _overlay.transform, new(.08f, .12f, .15f));
-            RectTransform rect = panel.GetComponent<RectTransform>();
-            Rect(rect, new Vector2(.5f, 1f), position + new Vector2(0f, -103f), new Vector2(190f, 38f));
-            Button button = panel.AddComponent<Button>();
-            button.targetGraphic = panel.GetComponent<Image>();
-            TextMeshProUGUI text = Text("Label", panel.transform, 14, FontStyles.Bold, label);
-            Stretch(text.rectTransform); text.alignment = TextAlignmentOptions.Center;
-            return button;
         }
 
         private void SetMapMode(bool topDown)
@@ -126,12 +150,12 @@ namespace NihongoLife.UI
             _showTopDown = topDown;
             _topDownImage.gameObject.SetActive(topDown);
             foreach (Transform child in _mapArea)
-                if (child.name == "Route" || child.name.StartsWith("Place_")) child.gameObject.SetActive(!topDown);
-            // Both map tabs are navigable. The top-down camera is only a visual layer;
-            // the click target remains active so a click always produces a destination.
+                if (child.name == "Route" || child.name == "Grid" || child.name.StartsWith("Place_")) child.gameObject.SetActive(!topDown);
             _mapArea.GetComponent<MapClickTarget>().enabled = true;
-            if (_areaTab != null) _areaTab.GetComponent<Image>().color = topDown ? new(.95f, .58f, .18f) : new(.08f, .12f, .15f);
-            if (_overviewTab != null) _overviewTab.GetComponent<Image>().color = topDown ? new(.08f, .12f, .15f) : new(.95f, .58f, .18f);
+            if (_areaTab != null) _areaTab.GetComponent<Image>().color = topDown ? NLUi.Gold : NLUi.Card;
+            if (_overviewTab != null) _overviewTab.GetComponent<Image>().color = topDown ? NLUi.Card : NLUi.Gold;
+            if (_areaTab != null) _areaTab.GetComponentInChildren<TextMeshProUGUI>().color = topDown ? NLUi.Ink : NLUi.Text;
+            if (_overviewTab != null) _overviewTab.GetComponentInChildren<TextMeshProUGUI>().color = topDown ? NLUi.Text : NLUi.Ink;
             if (_topDownCamera != null) _topDownCamera.enabled = topDown && IsVisible;
             if (topDown) UpdateTopDownCamera();
         }
@@ -142,7 +166,7 @@ namespace NihongoLife.UI
             if (SystemInfo.graphicsDeviceType == GraphicsDeviceType.Null) return;
             if (_topDownTexture == null)
             {
-                _topDownTexture = new RenderTexture(1024, 576, 16, RenderTextureFormat.ARGB32);
+                _topDownTexture = new RenderTexture(1024, 600, 16, RenderTextureFormat.ARGB32);
                 _topDownTexture.name = "NihongoLife_TopDownMap";
                 _topDownTexture.Create();
             }
@@ -152,7 +176,6 @@ namespace NihongoLife.UI
                 _topDownCamera = go.AddComponent<Camera>();
                 _topDownCamera.orthographic = true;
                 _topDownCamera.cullingMask = ~(LayerMask.GetMask("MapRoof") | (1 << 5));
-                _topDownCamera.orthographicSize = 16f;
                 _topDownCamera.clearFlags = CameraClearFlags.SolidColor;
                 _topDownCamera.backgroundColor = new Color(.035f, .055f, .065f, 1f);
                 _topDownCamera.targetTexture = _topDownTexture;
@@ -174,113 +197,222 @@ namespace NihongoLife.UI
                 if (_topDownImage != null && child == _topDownImage.transform) continue;
                 Destroy(child.gameObject);
             }
+            foreach (Transform child in _sidebarList) Destroy(child.gameObject);
+            _places.Clear();
+            _rows.Clear();
             string scene = SceneManager.GetActiveScene().name;
-            _location.text = WorldLocationCatalog.Get(scene).DisplayName;
+            _location.text = L("Bạn đang ở: ", "You are in: ", "現在地: ") + WorldLocationCatalog.Get(scene).DisplayName;
             if (scene == WorldLocationCatalog.StationScene) StationMap();
             else if (scene == WorldLocationCatalog.SushiRestaurantScene) SushiMap();
             else if (scene == WorldLocationCatalog.SchoolScene) SchoolMap();
             else if (scene == WorldLocationCatalog.HomeBedroomScene) BedroomMap();
             else CityMap();
-            _playerMarker = Panel("YouAreHere", _mapArea, new(1f, .82f, .16f)).GetComponent<RectTransform>();
-            _playerMarker.sizeDelta = new(18, 24); _playerMarker.pivot = new(.5f, .25f);
-            _destinationMarker = Panel("Destination", _mapArea, new(.95f, .25f, .28f)).GetComponent<RectTransform>();
-            _destinationMarker.sizeDelta = new(18, 18);
-            _destinationMarker.gameObject.SetActive(false);
-            TextMeshProUGUI you = Text("Label", _playerMarker, 12, FontStyles.Bold, L("BẠN", "YOU", "現在地"));
-            Rect(you.rectTransform, new(.5f, 0), new(0, 28), new(82, 24));
-            you.rectTransform.pivot = new Vector2(.5f, 1f);
-            you.alignment = TextAlignmentOptions.Top;
+            DrawGrid();
+            foreach (var place in _places) DrawPlace(place);
+            BuildSidebar();
+            DrawPlayerMarker();
             SetMapMode(_showTopDown);
         }
+
+        // ─────────── Map definitions ───────────
 
         private void CityMap()
         {
             _header.text = L("BẢN ĐỒ HIBARI-CHŌ", "HIBARI-CHŌ MAP", "ひばり町 地図");
             _worldMin = new(-42, -32); _worldMax = new(58, 20);
-            // Positions are real world coordinates (see CityTownBuilder) converted with the same
-            // mapping as the player marker, so labels, roads and "you are here" line up.
-            Road(MapPos(8f, -10f), MapSize(100f, 10f));          // main street (Sakura-dōri)
-            Road(MapPos(0f, -6f), MapSize(10f, 52f));            // north–south avenue
-            Place(L("ひばりマート", "Hibari Mart", "ひばりマート"), MapPos(0f, 5f), new(.2f, .76f, .66f), "KONBINI");
-            Place(L("Quán sushi", "Sushi", "寿司"), MapPos(-18f, 0.3f), new(.94f, .42f, .36f), "SUSHI");
-            Place(L("Nhà trọ", "Home", "ひばりハイツ"), MapPos(-30f, 1.3f), new(.62f, .76f, .38f), "HOME");
-            Place(L("Ga Hibari", "Hibari Station", "ひばり駅"), MapPos(24f, 0.3f), new(.3f, .62f, .94f), "STATION");
-            Place(L("Trường Nhật ngữ Hibari", "Hibari Japanese School", "ひばり日本語学院"), MapPos(18f, -20f), new(.2f, .55f, .32f), "SCHOOL");
-            Place(L("Công viên", "Park", "公園"), MapPos(48f, -4f), new(.42f, .72f, .4f), "PARK");
+            Road(MapPos(8f, -10f), MapSize(100f, 9f));
+            Road(MapPos(0f, -6f), MapSize(9f, 52f));
+            Road(MapPos(-12f, -6f), MapSize(5f, 52f));
+            Road(MapPos(12f, -6f), MapSize(5f, 52f));
+            AddWorld(L("Siêu thị Hibari Mart", "Hibari Mart", "ひばりマート"), "KONBINI", "店", 0f, 4f, new(.2f, .76f, .66f));
+            AddWorld(L("Bảng tin khu phố", "Notice board", "けいじばん"), "PLAZA", "掲", -8f, 1.5f, new(.85f, .7f, .4f));
+            AddWorld(L("Sushi Hibari", "Sushi Hibari", "ひばり寿司"), "SUSHI", "寿", -18f, 0.3f, new(.94f, .42f, .36f));
+            AddWorld(L("Nhà trọ Hibari Heights", "Hibari Heights (home)", "ひばりハイツ"), "HOME", "家", -30f, 1.3f, new(.62f, .76f, .38f));
+            AddWorld(L("Ga Hibari", "Hibari Station", "ひばり駅"), "STATION", "駅", 24f, 0.3f, new(.3f, .62f, .94f));
+            AddWorld(L("Trường Nhật ngữ Hibari", "Hibari Japanese School", "ひばり日本語学院"), "SCHOOL", "学", 18f, -20f, new(.2f, .55f, .32f));
+            AddWorld(L("Công viên", "Park", "こうえん"), "PARK", "園", 48f, -4f, new(.42f, .72f, .4f));
         }
-
-        private Vector2 MapPos(float x, float z)
-        {
-            Vector2 n = new(Mathf.InverseLerp(_worldMin.x, _worldMax.x, x), Mathf.InverseLerp(_worldMin.y, _worldMax.y, z));
-            return new((n.x - .5f) * (940f - 46f), (n.y - .5f) * (530f - 46f));
-        }
-
-        private Vector2 MapSize(float width, float depth) =>
-            new(width / (_worldMax.x - _worldMin.x) * (940f - 46f), depth / (_worldMax.y - _worldMin.y) * (530f - 46f));
 
         private void StationMap()
         {
-            _header.text = L("SƠ ĐỒ GA SAKURA METRO", "SAKURA METRO DIRECTORY", "さくら駅構内図");
+            _header.text = L("SƠ ĐỒ GA HIBARI", "HIBARI STATION MAP", "ひばり駅 構内図");
             _worldMin = new(742, -20); _worldMax = new(858, 16);
-            Road(new(0, 10), new(850, 115)); Road(new(0, -105), new(850, 48));
-            Place(L("Quầy vé", "Ticket counter", "きっぷ売り場"), new(-315, 165), new(.22f, .7f, .78f), "TICKETS");
-            Place(L("Cổng soát vé", "Ticket gate", "改札"), new(-85, 85), new(.94f, .68f, .25f), "GATE");
-            Place(L("Sân ga số 1", "Platform 1", "1番線"), new(185, -65), new(.3f, .62f, .94f), "MIDORI");
-            Place(L("Lối ra thành phố", "City exit", "出口"), new(350, 165), new(.45f, .78f, .48f), "EXIT");
+            Road(new(0, 10), new(MapW - 60, 120)); Road(new(0, -110), new(MapW - 60, 52));
+            AddPixel(L("Máy bán vé", "Ticket machine", "券売機"), "TICKETS", "券", new(-330, 170), new(.22f, .7f, .78f));
+            AddPixel(L("Cổng soát vé", "Ticket gate", "改札"), "GATE", "改", new(-90, 90), new(.94f, .68f, .25f));
+            AddPixel(L("Sân ga số 1 · đi Midori", "Platform 1 · to Midori", "1番線 みどり行き"), "PLATFORM", "線", new(190, -70), new(.3f, .62f, .94f));
+            AddPixel(L("Lối ra thành phố", "City exit", "出口"), "EXIT", "出", new(360, 170), new(.45f, .78f, .48f));
         }
 
         private void SushiMap()
         {
             _header.text = L("SƠ ĐỒ SUSHI HIBARI", "SUSHI HIBARI FLOOR MAP", "ひばり寿司 店内図");
             _worldMin = new(492, -9); _worldMax = new(508, 9);
-            Road(Vector2.zero, new(720, 430));
-            Place(L("Lễ tân", "Reception", "受付"), new(-275, -150), new(.22f, .7f, .78f), "MENU");
-            Place(L("Quầy đầu bếp Ota", "Chef Ota counter", "太田職人"), new(0, 155), new(.94f, .48f, .3f), "ORDER");
-            Place(L("Khu bàn ăn", "Dining area", "客席"), new(20, -15), new(.72f, .62f, .36f), "SEATS");
-            Place(L("Về thành phố", "Return to city", "町へ戻る"), new(300, -165), new(.45f, .78f, .48f), "EXIT");
+            Road(Vector2.zero, new(MapW - 120, MapH - 80));
+            AddPixel(L("Lễ tân", "Reception", "受付"), "MENU", "受", new(-300, -170), new(.22f, .7f, .78f));
+            AddPixel(L("Quầy đầu bếp Ota", "Chef Ota counter", "板前"), "ORDER", "板", new(0, 170), new(.94f, .48f, .3f));
+            AddPixel(L("Khu bàn ăn", "Dining area", "客席"), "SEATS", "席", new(20, -15), new(.72f, .62f, .36f));
+            AddPixel(L("Về thành phố", "Return to city", "出口"), "EXIT", "出", new(320, -180), new(.45f, .78f, .48f));
         }
 
         private void SchoolMap()
         {
             _header.text = L("SƠ ĐỒ TRƯỜNG HIBARI", "HIBARI SCHOOL FLOOR MAP", "ひばり日本語学院 見取り図");
             _worldMin = new(990, -10); _worldMax = new(1010, 10);
-            Road(Vector2.zero, new(760, 440));
-            Place(L("Bảng đen / Cô Morita", "Blackboard / Teacher Morita", "黒板・森田先生"), new(0, 150), new(.75f, .35f, .55f), "TEACHER");
-            Place(L("Bàn học sinh", "Student desks", "生徒の机"), new(-60, -20), new(.94f, .78f, .3f), "DESKS");
-            Place(L("Về thành phố", "Return to city", "町へ戻る"), new(0, -170), new(.45f, .78f, .48f), "EXIT");
+            Road(Vector2.zero, new(MapW - 120, MapH - 80));
+            AddPixel(L("Bảng đen / Cô Morita", "Blackboard / Teacher Morita", "黒板・森田先生"), "TEACHER", "先", new(0, 170), new(.75f, .35f, .55f));
+            AddPixel(L("Bàn học sinh", "Student desks", "机"), "DESKS", "机", new(-60, -20), new(.94f, .78f, .3f));
+            AddPixel(L("Về thành phố", "Return to city", "出口"), "EXIT", "出", new(0, -190), new(.45f, .78f, .48f));
         }
 
         private void BedroomMap()
         {
-            _header.text = L("PHÒNG RIÊNG", "YOUR BEDROOM", "自室");
-            _worldMin = new(-6, -4); _worldMax = new(6, 4);
-            Road(Vector2.zero, new(720, 420));
-            Place(L("Giường nghỉ", "Bed / Rest", "ベッド"), new(-170, 55), new(.3f, .62f, .94f), "REST");
-            Place(L("Bàn học", "Study desk", "勉強机"), new(170, 55), new(.2f, .72f, .64f), "STUDY");
-            Place(L("Ra thành phố", "Return to city", "町へ戻る"), new(0, -160), new(.45f, .78f, .48f), "EXIT");
+            _header.text = L("PHÒNG TRỌ CỦA BẠN", "YOUR ROOM", "じぶんの へや");
+            _worldMin = new(-4.2f, -3.4f); _worldMax = new(4.2f, 3.4f);
+            Road(MapPos(0f, 0f), MapSize(7.2f, 6f));
+            AddWorld(L("Giường · ngủ", "Bed · sleep", "ベッド"), "REST", "寝", -2.5f, 1.9f, new(.3f, .62f, .94f));
+            AddWorld(L("Bàn học · ôn từ", "Desk · study", "つくえ"), "STUDY", "机", 1.6f, 2.4f, new(.2f, .72f, .64f));
+            AddWorld(L("Bếp & tủ lạnh", "Kitchen & fridge", "だいどころ"), "KITCHEN", "台", -3.0f, -1.0f, new(.94f, .68f, .25f));
+            AddWorld(L("Cửa ra phố", "Door to the street", "げんかん"), "EXIT", "出", -2.4f, -2.6f, new(.45f, .78f, .48f));
+        }
+
+        private void AddWorld(string name, string type, string glyph, float x, float z, Color color) =>
+            _places.Add(new MapPlace { Name = name, Type = type, Glyph = glyph, World = new Vector2(x, z), Pixel = MapPos(x, z), Color = color });
+
+        private void AddPixel(string name, string type, string glyph, Vector2 pixel, Color color) =>
+            _places.Add(new MapPlace { Name = name, Type = type, Glyph = glyph, World = new Vector2(float.NaN, float.NaN), Pixel = pixel, Color = color });
+
+        private Vector2 MapPos(float x, float z)
+        {
+            Vector2 n = new(Mathf.InverseLerp(_worldMin.x, _worldMax.x, x), Mathf.InverseLerp(_worldMin.y, _worldMax.y, z));
+            return new((n.x - .5f) * (MapW - Inset), (n.y - .5f) * (MapH - Inset));
+        }
+
+        private Vector2 MapSize(float width, float depth) =>
+            new(width / (_worldMax.x - _worldMin.x) * (MapW - Inset), depth / (_worldMax.y - _worldMin.y) * (MapH - Inset));
+
+        // ─────────── Drawing ───────────
+
+        private void DrawGrid()
+        {
+            var grid = new GameObject("Grid", typeof(RectTransform));
+            grid.transform.SetParent(_mapArea, false);
+            grid.transform.SetAsFirstSibling();
+            NLUi.Stretch((RectTransform)grid.transform);
+            for (int i = 1; i < 12; i++)
+            {
+                Line(grid.transform, new Vector2(-MapW / 2f + i * MapW / 12f, 0f), new Vector2(1f, MapH));
+                if (i < 7) Line(grid.transform, new Vector2(0f, -MapH / 2f + i * MapH / 7f), new Vector2(MapW, 1f));
+            }
+        }
+
+        private static void Line(Transform parent, Vector2 position, Vector2 size)
+        {
+            var go = new GameObject("GridLine", typeof(RectTransform), typeof(Image));
+            go.transform.SetParent(parent, false);
+            go.GetComponent<Image>().color = new Color(1f, 1f, 1f, 0.035f);
+            go.GetComponent<Image>().raycastTarget = false;
+            NLUi.Anchor((RectTransform)go.transform, new Vector2(0.5f, 0.5f), position, size);
+        }
+
+        private void Road(Vector2 p, Vector2 s, float angle = 0)
+        {
+            var road = NLUi.Panel(_mapArea, "Route", new Color(0.26f, 0.32f, 0.35f, 1f));
+            road.GetComponent<Image>().raycastTarget = false;
+            NLUi.Anchor(road, new Vector2(0.5f, 0.5f), p, s);
+            road.localRotation = Quaternion.Euler(0, 0, angle);
+        }
+
+        private void DrawPlace(MapPlace place)
+        {
+            var marker = NLUi.Panel(_mapArea, "Place_" + place.Type, place.Color);
+            NLUi.Anchor(marker, new Vector2(0.5f, 0.5f), place.Pixel, new Vector2(46f, 46f));
+            marker.GetComponent<Image>().raycastTarget = false;
+            NLUi.Stretch(NLUi.Label(marker, "Glyph", place.Glyph, 26f, new Color(0.08f, 0.1f, 0.12f), _font, FontStyles.Bold, TextAlignmentOptions.Center).rectTransform);
+            var label = NLUi.Pill(marker, "Label", place.Name, _font, new Color(0.05f, 0.07f, 0.09f, 0.88f), NLUi.Text, 15f);
+            label.anchorMin = label.anchorMax = new Vector2(0.5f, 0f);
+            label.pivot = new Vector2(0.5f, 1f);
+            label.anchoredPosition = new Vector2(0f, -6f);
+        }
+
+        private void BuildSidebar()
+        {
+            foreach (var place in _places)
+            {
+                var p = place;
+                var row = NLUi.Panel(_sidebarList, "Row_" + place.Type, new Color(1f, 1f, 1f, 0.04f), new RectOffset(10, 12, 7, 7), 10f, vertical: false);
+                ((HorizontalLayoutGroup)row.GetComponent<HorizontalOrVerticalLayoutGroup>()).childForceExpandWidth = false;
+                var dot = NLUi.Pill(row, "Glyph", place.Glyph, _font, place.Color, new Color(0.08f, 0.1f, 0.12f), 18f);
+                NLUi.Size(dot, preferredWidth: 38f);
+                var name = NLUi.Label(row, "Name", place.Name, 17f, NLUi.Text, _font);
+                NLUi.Size(name, flexibleWidth: 1f);
+                var distance = NLUi.Label(row, "Distance", "", 15f, NLUi.Gold, _font, FontStyles.Bold, TextAlignmentOptions.Right);
+                distance.textWrappingMode = TextWrappingModes.NoWrap;
+                NLUi.Size(distance, preferredWidth: 58f);
+                if (place.HasWorld)
+                {
+                    var button = row.gameObject.AddComponent<Button>();
+                    button.targetGraphic = row.GetComponent<Image>();
+                    button.onClick.AddListener(() => WalkTo(new Vector3(p.World.x, _player != null ? _player.position.y : 0f, p.World.y), p.Pixel));
+                }
+                _rows.Add((place, distance));
+            }
+        }
+
+        private void DrawPlayerMarker()
+        {
+            _destinationMarker = NLUi.Panel(_mapArea, "Destination", NLUi.Bad);
+            NLUi.Anchor(_destinationMarker, new Vector2(0.5f, 0.5f), Vector2.zero, new Vector2(18f, 18f));
+            _destinationMarker.gameObject.SetActive(false);
+            _playerMarker = new GameObject("YouAreHere", typeof(RectTransform)).GetComponent<RectTransform>();
+            _playerMarker.SetParent(_mapArea, false);
+            NLUi.Anchor(_playerMarker, new Vector2(0.5f, 0.5f), Vector2.zero, new Vector2(40f, 40f));
+            var ring = NLUi.Panel(_playerMarker, "Ring", new Color(1f, 0.82f, 0.2f, 0.25f));
+            NLUi.Stretch(ring, -10f);
+            var arrow = NLUi.Panel(_playerMarker, "Arrow", NLUi.Gold);
+            NLUi.Anchor(arrow, new Vector2(0.5f, 0.5f), Vector2.zero, new Vector2(22f, 22f));
+            arrow.localRotation = Quaternion.Euler(0f, 0f, 45f);
+            var tip = NLUi.Panel(_playerMarker, "Tip", Color.white);
+            NLUi.Anchor(tip, new Vector2(0.5f, 0.5f), new Vector2(0f, 14f), new Vector2(8f, 12f));
+            var you = NLUi.Pill(_playerMarker, "Label", L("BẠN", "YOU", "現在地"), _font, NLUi.Gold, NLUi.Ink, 13f);
+            you.anchorMin = you.anchorMax = new Vector2(0.5f, 1f);
+            you.pivot = new Vector2(0.5f, 0f);
+            you.anchoredPosition = new Vector2(0f, 14f);
         }
 
         private void LateUpdate() { if (IsVisible) { RefreshMarker(); UpdateTopDownCamera(); } }
+
         private void RefreshMarker()
         {
             if (_player == null || _playerMarker == null) return;
             Vector2 p = new(_player.position.x, _player.position.z);
-            Vector2 n = new(Mathf.InverseLerp(_worldMin.x, _worldMax.x, p.x), Mathf.InverseLerp(_worldMin.y, _worldMax.y, p.y));
-            _playerMarker.anchoredPosition = new((n.x - .5f) * (_mapArea.rect.width - 46), (n.y - .5f) * (_mapArea.rect.height - 46));
-            _playerMarker.localRotation = Quaternion.identity;
-            _coordinates.text = $"{L("Vị trí", "Position", "位置")}  X {_player.position.x:0.0}  Z {_player.position.z:0.0}    |    M / Esc: {L("đóng", "close", "閉じる")}";
+            _playerMarker.anchoredPosition = MapPos(p.x, p.y);
+            _playerMarker.localRotation = Quaternion.Euler(0f, 0f, -_player.eulerAngles.y);
+            var label = _playerMarker.Find("Label");
+            if (label != null) label.rotation = Quaternion.identity;
+            foreach (var (place, distance) in _rows)
+                distance.text = place.HasWorld ? $"{Vector2.Distance(p, place.World):0}m" : string.Empty;
+            _coordinates.text = $"{L("Vị trí", "Position", "位置")}  X {_player.position.x:0.0}  Z {_player.position.z:0.0}     ·     " +
+                                L("Bấm vào bản đồ hoặc danh sách để tự đi tới", "Click the map or a place to walk there", "地図か場所をクリックすると歩いて行きます") +
+                                $"     ·     M / Esc: {L("đóng", "close", "閉じる")}";
         }
 
         private void HandleMapClick(Vector2 localPosition)
         {
             if (_player == null || _mapArea == null) return;
             Vector2 normalized = new(
-                Mathf.Clamp01(localPosition.x / _mapArea.rect.width + 0.5f),
-                Mathf.Clamp01(localPosition.y / _mapArea.rect.height + 0.5f));
+                Mathf.Clamp01(localPosition.x / (MapW - Inset) + 0.5f),
+                Mathf.Clamp01(localPosition.y / (MapH - Inset) + 0.5f));
             Vector3 destination = new(
                 Mathf.Lerp(_worldMin.x, _worldMax.x, normalized.x),
                 _player.position.y,
                 Mathf.Lerp(_worldMin.y, _worldMax.y, normalized.y));
+            WalkTo(destination, localPosition);
+        }
+
+        private void WalkTo(Vector3 destination, Vector2 markerPosition)
+        {
+            if (_player == null) return;
             if (NavMesh.SamplePosition(destination, out NavMeshHit navHit, 3f, NavMesh.AllAreas))
             {
                 destination = navHit.position;
@@ -294,7 +426,7 @@ namespace NihongoLife.UI
             {
                 return;
             }
-            _destinationMarker.anchoredPosition = localPosition;
+            _destinationMarker.anchoredPosition = markerPosition;
             _destinationMarker.gameObject.SetActive(true);
             _player.GetComponent<PlayerController>()?.SetClickDestination(destination);
             SetVisible(false);
@@ -311,12 +443,6 @@ namespace NihongoLife.UI
             }
         }
 
-        private void Road(Vector2 p, Vector2 s, float angle = 0) { RectTransform r = Panel("Route", _mapArea, new(.22f, .27f, .29f)).GetComponent<RectTransform>(); r.anchoredPosition = p; r.sizeDelta = s; r.localRotation = Quaternion.Euler(0, 0, angle); }
-        private void Place(string name, Vector2 p, Color color, string type) { RectTransform m = Panel("Place_" + type, _mapArea, color).GetComponent<RectTransform>(); m.anchoredPosition = p; m.sizeDelta = new(18, 18); TextMeshProUGUI t = Text("Label", m, 14, FontStyles.Bold, $"<size=75%><color=#AFC2C8>{type}</color></size>\n{name}"); Rect(t.rectTransform, new(.5f, 0), new(0, -7), new(190, 55)); t.rectTransform.pivot = new Vector2(.5f, 1f); t.alignment = TextAlignmentOptions.Top; }
         private string L(string vi, string en, string ja) => GameServices.TryGet(out GameSettingsService s) ? s.Text(vi, en, ja) : vi;
-        private static GameObject Panel(string n, Transform p, Color c) { GameObject g = new(n, typeof(RectTransform), typeof(CanvasRenderer), typeof(Image)); g.transform.SetParent(p, false); g.GetComponent<Image>().color = c; return g; }
-        private TextMeshProUGUI Text(string n, Transform p, float size, FontStyles style, string value = "") { GameObject g = new(n, typeof(RectTransform), typeof(CanvasRenderer), typeof(TextMeshProUGUI)); g.transform.SetParent(p, false); TextMeshProUGUI t = g.GetComponent<TextMeshProUGUI>(); if (_font != null) t.font = _font; t.text = value; t.fontSize = size; t.fontStyle = style; t.color = Color.white; t.characterSpacing = 0; t.enableAutoSizing = true; t.fontSizeMin = 11; t.raycastTarget = false; return t; }
-        private static void Rect(RectTransform r, Vector2 a, Vector2 p, Vector2 s) { r.anchorMin = r.anchorMax = r.pivot = a; r.anchoredPosition = p; r.sizeDelta = s; }
-        private static void Stretch(RectTransform r) { r.anchorMin = Vector2.zero; r.anchorMax = Vector2.one; r.offsetMin = r.offsetMax = Vector2.zero; }
     }
 }

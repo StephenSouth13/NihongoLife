@@ -19,6 +19,7 @@ namespace NihongoLife.World
             promptEn = en;
         }
 
+        public StationAction Action => action;
         public string GetPromptJa() => promptJa;
         public string GetpromptEn() => promptEn;
         public Transform GetTransform() => transform;
