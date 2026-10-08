@@ -41,3 +41,25 @@ files. The MIT grant does not relicense third-party content.
   - To enable, install the *Agora Video SDK for Unity* and add the `AGORA_SDK_INSTALLED` scripting define symbol.
   - Video feeds are mapped to 3D TV screens in the metaverse environment. API keys are Base64 obfuscated to prevent accidental leakage in the client codebase.
   - Integration specs for the backend token generation are documented in `Docs/WEB_INTEGRATION_API.md`.
+
+## Donation & Support / Ủng hộ dự án
+
+Nếu bạn thấy **NihongoLife** hữu ích và muốn đồng hành cùng sự phát triển của dự án, bạn có thể ủng hộ (donate) qua chuyển khoản ngân hàng:
+
+<div align="center">
+
+| Thông tin chuyển khoản | Chi tiết |
+| :--- | :--- |
+| **Chủ tài khoản** | **QUACH THANH LONG** |
+| **Số tài khoản** | **0001244698984** |
+| **Ngân hàng** | **MB Bank (Ngân hàng TMCP Quân Đội)** |
+| **Dịch vụ** | VietQR / Napas 247 |
+
+<br/>
+
+![VietQR Code](https://img.vietqr.io/image/MB-0001244698984-compact2.png?accountName=QUACH%20THANH%20LONG)
+
+*Cảm ơn sự đóng góp và ủng hộ của bạn dành cho dự án!*
+
+</div>
+
