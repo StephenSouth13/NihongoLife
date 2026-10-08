@@ -315,6 +315,33 @@ Quy tắc của repo (xem [`AGENTS.md`](AGENTS.md)): không dùng lệnh `[MenuI
 
 [Unity](https://unity.com/) · [Kenney](https://kenney.nl/) · [Quaternius](https://quaternius.com/) · [KayKit](https://kaylousberg.itch.io/) · [Mixamo](https://www.mixamo.com/) · [Noto Sans JP](https://fonts.google.com/noto/specimen/Noto+Sans+JP) · [Supabase](https://supabase.com/) · [Google Gemini](https://ai.google.dev/) · [Agora](https://www.agora.io/)
 
+---
+
+## 💳 Donation & Support / Ủng hộ dự án
+
+Nếu bạn thấy **NihongoLife** hữu ích và muốn đồng hành cùng sự phát triển của dự án, bạn có thể ủng hộ (donate) qua chuyển khoản ngân hàng:
+
+<div align="center">
+
+| Thông tin chuyển khoản | Chi tiết |
+| :--- | :--- |
+| **Chủ tài khoản** | **QUACH THANH LONG** |
+| **Số tài khoản** | **0001244698984** |
+| **Ngân hàng** | **MB Bank (Ngân hàng TMCP Quân Đội)** |
+| **Dịch vụ** | VietQR / Napas 247 |
+
+<br/>
+
+<img src="https://img.vietqr.io/image/MB-0001244698984-compact2.png?accountName=QUACH%20THANH%20LONG" width="360" alt="VietQR Code - QUACH THANH LONG"/>
+
+<br/>
+
+*Cảm ơn sự hỗ trợ và đồng hành của bạn dành cho NihongoLife!*
+
+</div>
+
+---
+
 <div align="center">
 <br/>
 
@@ -329,3 +356,4 @@ Giảng viên hướng dẫn: Nguyễn Ngọc Chấn
 <i>ひばり町で、また会いましょう。 · Hẹn gặp lại ở Hibari-chō.</i>
 
 </div>
+
