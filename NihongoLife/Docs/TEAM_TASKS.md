@@ -587,3 +587,31 @@ Phiên Codex 08/10 dừng giữa chừng vì hết lượt dùng. Các mục cò
 - **HUD nhu cầu:** thanh chạy mượt; dưới 50 % chuyển màu hổ phách, dưới 20 % nhấp nháy đỏ và hiện "Đói!", "Khát!".
   - HUD tự ẩn khi đang thi hoặc chơi mini-game (overlay đăng ký `immersive`).
 - **Đề thi có bản quyền** (sách và audio Cambridge, đề JLPT PDF) đã bỏ khỏi git (`.gitignore`); file vẫn giữ ở máy. Lịch sử GitHub cũ vẫn còn: chủ dự án tự quyết định có xoá khỏi lịch sử hay không.
+
+## Cập nhật (2026-10-10, Claude) — Stage B: engine IELTS, Listening kiểm chứng đầu tiên
+
+### Phân chia file (cập nhật)
+
+| Việc | Người làm | File được phép sửa | Phụ thuộc | Kiểm tra khi ghép |
+|---|---|---|---|---|
+| Engine + UI thi IELTS/JLPT | Claude | `Scripts/Exam/Ielts/**`, `Scripts/UI/IeltsTestUI.cs`, `UI/ExamCenterPopup.cs`, test `Ielts*` | — | PlayMode E2E |
+| Mở rộng `validate_exam.py` cho schema `nihongolife.ielts.v1` (test.json + key.json: số câu liền mạch, mỗi câu có key, `set` đối xứng, file audio tồn tại) | Codex | `Tools/asset_pipeline/**`, `Docs/AssetPipeline/**` | schema trong `Scripts/Exam/Ielts/IeltsModels.cs` (chỉ đọc) | Claude chạy validator trước mỗi lần nhập đề |
+| Gán icon từ bộ 438 thumbnail vào item | Codex đề xuất, Claude duyệt và nối vào `ItemIcons` | `Docs/AssetPipeline/Reports/**` | danh sách item được duyệt | ảnh cửa hàng/balo |
+
+- **Không đưa nội dung đề có bản quyền vào repo:** câu hỏi, đáp án, audio, ảnh chụp màn hình bài thi chỉ nằm trong `NihongoLife/LocalContent/` (đã gitignore, Unity không import, không vào bản build). Test E2E đọc đáp án từ `key.json` lúc chạy.
+
+### Đã làm
+- **Gói local Cambridge 14 Test 1 Listening** (`LocalContent/IELTS/cambridge14_test1/`, có `INVENTORY.md`):
+  - Chép tay từ bản PDF scan (máy không có OCR) và đối chiếu từng dòng với ảnh trang.
+  - Cả 40 đáp án được đối chiếu với audioscript.
+  - 4 file audio khớp đúng 4 phần: kiểm tra bằng tên file và nhận dạng giọng nói offline của Windows.
+- **Engine** `Scripts/Exam/Ielts/`:
+  - Gồm schema (`IeltsModels`), thư viện tải gói và audio lúc chạy (`IeltsLibrary`), bộ chấm (`IeltsGrader`), lưu bài đang làm và lịch sử (`IeltsAttemptStore`).
+  - Bộ chấm: phần "(…)" trong key là tuỳ chọn; giới hạn số từ được kiểm tra; cặp "IN EITHER ORDER" chấm theo cặp; band chỉ là ước tính.
+- **UI** `UI/IeltsTestUI.cs`: màn hình toàn màn, có 2 chế độ.
+  - Luyện tập: phát, dừng, tua tự do.
+  - Thi: mỗi phần phát một lần, không dừng, tự sang phần sau; hết 2 phút kiểm tra thì tự nộp.
+  - Ô điền nằm ngay trong form; điều hướng câu 1–40; tự lưu và làm tiếp được; nộp bài có xác nhận; trang xem lại từng câu.
+  - ESC và × hỏi trước khi rời; HUD ẩn, phím tắt bị khoá trong lúc thi.
+- Exam Center (tab IELTS) hiện thẻ cho gói local, với các nút Tiếp tục / Luyện tập / Thi thử.
+- Test: `IeltsGraderTests` (5, dữ liệu giả lập) và `IeltsListeningPlayModeTests` (E2E; tự bỏ qua nếu máy không có gói local).

@@ -32,6 +32,7 @@ namespace NihongoLife.Core
                 WorldLocationCatalog.SchoolScene => WorldLocationCatalog.SchoolEntrance,
                 WorldLocationCatalog.HomeBedroomScene => WorldLocationCatalog.HomeBedroomEntrance,
                 WorldLocationCatalog.GameCenterScene => WorldLocationCatalog.GameCenterEntrance,
+                WorldLocationCatalog.MidoriIslandScene => WorldLocationCatalog.MidoriStation,
                 _ => string.Empty
             };
             if (string.IsNullOrEmpty(targetSpawn)) return;

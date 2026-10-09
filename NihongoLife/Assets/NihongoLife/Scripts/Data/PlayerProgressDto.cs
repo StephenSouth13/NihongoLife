@@ -87,5 +87,7 @@ namespace NihongoLife.Data
         public List<CareerRecord> careers = new List<CareerRecord>();
         public List<NihongoLife.Player.InventoryEntry> inventory = new List<NihongoLife.Player.InventoryEntry>();
         public List<NihongoLife.Player.InventoryEntry> homeStorage = new List<NihongoLife.Player.InventoryEntry>();
+        /// <summary>Midori Island: farm plots, vocabulary, animals, achievements and the chosen target language.</summary>
+        public NihongoLife.Island.IslandRecord island = new NihongoLife.Island.IslandRecord();
     }
 }

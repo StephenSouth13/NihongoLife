@@ -75,6 +75,9 @@ namespace NihongoLife.UI
             }
         }
 
+        /// <summary>Single-key game shortcuts (B, M, Tab, E, Q, R, V, F8…) must not fire while typing or during an exam.</summary>
+        public static bool BlocksHotkeys => IsTyping || ImmersiveOpen;
+
         public static void Register(UnityEngine.Object owner, Func<bool> isOpen, Action close, string name = null, bool immersive = false)
         {
             if (owner == null || isOpen == null || close == null) return;

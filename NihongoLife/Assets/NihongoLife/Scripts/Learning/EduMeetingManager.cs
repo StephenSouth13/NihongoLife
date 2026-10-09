@@ -36,7 +36,7 @@ namespace NihongoLife.Learning
         private void Update()
         {
             if (Keyboard.current == null) return;
-            if (Keyboard.current.f8Key.wasPressedThisFrame) SetOpen(!_open);
+            if (Keyboard.current.f8Key.wasPressedThisFrame && !NihongoLife.UI.UiModalStack.BlocksHotkeys) SetOpen(!_open);
         }
 
         public void SetOpen(bool open)

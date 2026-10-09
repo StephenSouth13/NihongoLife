@@ -1,0 +1,20 @@
+﻿# Stage C0 Unity / WebGL readiness
+
+Measured from the actual delivery: 438 valid 512 × 512 RGBA PNGs, 16,227,573 bytes (15.48 MiB). There are 33 exact-byte and decoded-pixel duplicate groups: 405 unique PNGs; avoiding duplicate payloads could save 1,527,124 bytes (1.46 MiB). No files were deduplicated or compressed.
+
+If all 438 icons were resident as uncompressed RGBA8 textures, their base levels would occupy 438 MiB; full mip chains would occupy about 584 MiB. These are arithmetic estimates, not measured browser heap, Unity resident memory or WebGL build size. The gallery paginates 40 cards and lazy-loads visible images; opening the gallery does not imply every texture remains GPU-resident.
+
+All 438 current .meta files enable mipmaps, use Default texture type, request Crunch, disable Read/Write, and enable alpha transparency. The active DefaultTexturePlatform maximum is 512 with textureCompression=0 (Uncompressed). The legacy root maximum of 2048 is not the active platform maximum. WebGL override is disabled. A requested Crunch flag does not establish effective compression when the platform is Uncompressed.
+
+The shared `Assets/NihongoLife/Scripts/Editor/AutoOptimizationProcessor.cs` sets mipmaps and Crunch for non-Sprite textures during preprocessing. Coordinate a targeted icon-path exception before changing imports; otherwise a reimport can restore the current settings. No importer or runtime code was changed in C0.
+
+Recommended integration sequence:
+
+1. Resolve the 17 image review flags and provisional category/item semantics with the owner. The `food_apple` prefab references rice-ball geometry; never assign it to an apple item. Harvested crop meshes can depict plants after harvesting, rather than produce. There are no Fashion icons or verified seed-item models in this delivery.
+2. For screen-space icons, evaluate no mipmaps, Clamp wrapping, alpha transparency, sRGB and Read/Write disabled. Test the chosen filtering and compression in the actual UI; this HTML does not simulate Unity import or WebGL texture compression.
+3. Compare 256 px derivatives of approved icons at 32/48/64 px UI sizes, keeping original 512 px PNGs intact. A 256 px RGBA8 base uses one quarter the memory of a 512 px base. Thin stalks, pale egg/rice surfaces, small sandwiches and the axe need particular scrutiny. Detail dialogs include all three UI samples and dark/light/checker backgrounds.
+4. Consider atlases for a small, approved set loaded together. A 2048 atlas fits at most 3 × 3 tiles of 512 px plus an illustrative 8 px padding allowance, or 7 × 7 tiles of 256 px plus the same allowance. Actual packing, extrusion, platform limits and category loading determine the result; avoid a single always-loaded atlas of the entire catalog.
+5. Existing `ItemIcons.Get` loads textures from Resources and creates Sprites dynamically. A SpriteAtlas will not automatically optimize those references. Plan explicit sprite/atlas references and validate build inclusion before proposing a runtime change. Exact duplicate format variants are separate source records and require an approved canonical-item mapping before payload consolidation.
+6. Test materials, edge alpha, filtering, memory, loading and icon readability in the coordinated Unity/WebGL session. C0 did not launch Unity, rerender images or test scene collisions.
+
+Unity describes supported texture formats and decompression fallbacks in its [texture compression documentation](https://docs.unity.com/en-us/engine/6000.3/manual/materials-and-shaders/textures/textures-getting-started/texture-compression-formats/fundamentals). Unsupported GPU formats can increase memory through fallback decompression; Crunch primarily reduces disk/download data and is not a universal GPU-memory reduction. See [Sprite Atlas](https://docs.unity.com/en-us/engine/6000.3/manual/unity2d/sprite/atlas) and [atlas settings](https://docs.unity.com/en-us/engine/6000.3/manual/unity2d/sprite/atlas/sprite-atlas-reference) for packing, padding and platform settings. These are recommendations to validate, not changes applied by this audit.

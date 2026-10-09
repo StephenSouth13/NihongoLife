@@ -1,0 +1,27 @@
+{
+  "mode": "Headless Chrome, direct file://, no server",
+  "checks": [
+    "All 438 actual PNG URLs load from file://",
+    "40 cards per first page",
+    "Pagination covers 438 gallery cards",
+    "Fashion has honest empty state",
+    "Zero-result search",
+    "Search source identity",
+    "Detail semantic warning present",
+    "Copy path feedback",
+    "Escape closes detail",
+    "Missing assets included by failure filter",
+    "Dark background",
+    "Checkerboard toggles",
+    "Selected shop preview exists",
+    "Mock owned state visible",
+    "No invented fashion cards",
+    "118 failures retained",
+    "Mobile selected preview visible",
+    "Mobile has no horizontal page overflow",
+    "Tablet no horizontal overflow",
+    "No page errors or failed local requests"
+  ],
+  "loadedImages": 438,
+  "errors": []
+}

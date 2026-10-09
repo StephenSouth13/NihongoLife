@@ -1,0 +1,71 @@
+{
+  "schema": "nihongolife.island.v1",
+  "ticketPrice": 450,
+  "starterKit": [
+    { "itemId": "tool_hoe", "quantity": 1 },
+    { "itemId": "tool_watering_can", "quantity": 1 },
+    { "itemId": "seed_carrot", "quantity": 3 }
+  ],
+  "crops": [
+    { "id": "carrot",  "model": "Carrot",  "secondsPerStage": 20, "seedPrice": 40,  "sellPrice": 35, "yield": 2,
+      "word": { "ja": "にんじん", "reading": "ninjin", "en": "carrot", "vi": "cà rốt" } },
+    { "id": "tomato",  "model": "Tomato",  "secondsPerStage": 30, "seedPrice": 60,  "sellPrice": 50, "yield": 2,
+      "word": { "ja": "トマト", "reading": "tomato", "en": "tomato", "vi": "cà chua" } },
+    { "id": "corn",    "model": "Corn",    "secondsPerStage": 40, "seedPrice": 80,  "sellPrice": 65, "yield": 2,
+      "word": { "ja": "とうもろこし", "reading": "tōmorokoshi", "en": "corn", "vi": "ngô" } },
+    { "id": "pumpkin", "model": "Pumpkin", "secondsPerStage": 50, "seedPrice": 100, "sellPrice": 90, "yield": 2,
+      "word": { "ja": "かぼちゃ", "reading": "kabocha", "en": "pumpkin", "vi": "bí ngô" } }
+  ],
+  "tools": [
+    { "id": "tool_hoe", "action": "till", "price": 200,
+      "word": { "ja": "くわ", "reading": "kuwa", "en": "hoe", "vi": "cái cuốc" },
+      "verb": { "ja": "つちを たがやします。", "reading": "tsuchi o tagayashimasu", "en": "I till the soil.", "vi": "Tôi xới đất." } },
+    { "id": "tool_watering_can", "action": "water", "price": 150,
+      "word": { "ja": "じょうろ", "reading": "jōro", "en": "watering can", "vi": "bình tưới" },
+      "verb": { "ja": "みずを あげます。", "reading": "mizu o agemasu", "en": "I water the plant.", "vi": "Tôi tưới nước." } },
+    { "id": "tool_shovel", "action": "clear", "price": 180,
+      "word": { "ja": "シャベル", "reading": "shaberu", "en": "shovel", "vi": "cái xẻng" },
+      "verb": { "ja": "つちを ほります。", "reading": "tsuchi o horimasu", "en": "I dig the soil.", "vi": "Tôi đào đất." } }
+  ],
+  "verbs": {
+    "plant":   { "ja": "たねを うえます。", "reading": "tane o uemasu", "en": "I plant the seeds.", "vi": "Tôi gieo hạt." },
+    "harvest": { "ja": "しゅうかくします！", "reading": "shūkaku shimasu", "en": "I harvest it!", "vi": "Tôi thu hoạch!" },
+    "feed":    { "ja": "えさを あげます。", "reading": "esa o agemasu", "en": "I feed it.", "vi": "Tôi cho ăn." },
+    "pet":     { "ja": "なでます。", "reading": "nademasu", "en": "I pet it.", "vi": "Tôi vuốt ve." },
+    "buy":     { "ja": "かいます。", "reading": "kaimasu", "en": "I buy it.", "vi": "Tôi mua." },
+    "sell":    { "ja": "うります。", "reading": "urimasu", "en": "I sell it.", "vi": "Tôi bán." }
+  },
+  "animals": [
+    { "id": "cow",    "model": "Cow",      "foods": ["corn", "carrot"],
+      "word": { "ja": "うし", "reading": "ushi", "en": "cow", "vi": "con bò" },
+      "sound": { "ja": "モー", "en": "Moo", "vi": "Ò ò" } },
+    { "id": "alpaca", "model": "Alpaca",   "foods": ["carrot", "corn"],
+      "word": { "ja": "アルパカ", "reading": "arupaka", "en": "alpaca", "vi": "lạc đà alpaca" },
+      "sound": { "ja": "フン", "en": "Hmm", "vi": "Hừm" } },
+    { "id": "donkey", "model": "Donkey",   "foods": ["carrot"],
+      "word": { "ja": "ロバ", "reading": "roba", "en": "donkey", "vi": "con lừa" },
+      "sound": { "ja": "ヒーホー", "en": "Hee-haw", "vi": "Hí hô" } },
+    { "id": "horse",  "model": "Horse",    "foods": ["carrot"],
+      "word": { "ja": "うま", "reading": "uma", "en": "horse", "vi": "con ngựa" },
+      "sound": { "ja": "ヒヒーン", "en": "Neigh", "vi": "Hí hí" } },
+    { "id": "dog",    "model": "ShibaInu", "foods": [],
+      "word": { "ja": "いぬ", "reading": "inu", "en": "dog", "vi": "con chó" },
+      "sound": { "ja": "ワン", "en": "Woof", "vi": "Gâu" } }
+  ],
+  "products": [
+    { "itemId": "tech_laptop", "category": "technology", "price": 1200,
+      "word": { "ja": "ノートパソコン", "reading": "nōto pasokon", "en": "laptop", "vi": "máy tính xách tay" },
+      "note": "Đồ sưu tầm — để trong balo. Đặt trang trí phòng trọ sẽ có ở bản sau." },
+    { "itemId": "tech_tv", "category": "technology", "price": 1500,
+      "word": { "ja": "テレビ", "reading": "terebi", "en": "television", "vi": "ti vi" },
+      "note": "Đồ sưu tầm — để trong balo. Đặt trang trí phòng trọ sẽ có ở bản sau." }
+  ],
+  "places": {
+    "island":  { "ja": "みどりじま", "reading": "midori-jima", "en": "Midori Island", "vi": "Đảo Xanh" },
+    "station": { "ja": "みどりじまえき", "reading": "midori-jima eki", "en": "Midori Island Station", "vi": "Ga Đảo Xanh" },
+    "farm":    { "ja": "はたけ", "reading": "hatake", "en": "field", "vi": "ruộng" },
+    "shop":    { "ja": "みどりしょうてん", "reading": "midori shōten", "en": "Midori Store", "vi": "Cửa hàng Midori" },
+    "barn":    { "ja": "なや", "reading": "naya", "en": "barn", "vi": "chuồng trại" },
+    "view":    { "ja": "てんぼうだい", "reading": "tenbōdai", "en": "lookout", "vi": "đài ngắm cảnh" }
+  }
+}

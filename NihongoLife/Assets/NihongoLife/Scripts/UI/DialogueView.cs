@@ -224,7 +224,7 @@ namespace NihongoLife.UI
         {
             bool paused = !IsOpen && DialogueManager.Instance != null && DialogueManager.Instance.IsStoryPaused;
             if (_resumeButton != null) _resumeButton.gameObject.SetActive(paused);
-            if (paused && Keyboard.current != null && Keyboard.current.rKey.wasPressedThisFrame)
+            if (paused && Keyboard.current != null && Keyboard.current.rKey.wasPressedThisFrame && !UiModalStack.BlocksHotkeys)
             {
                 DialogueManager.Instance.ResumeDialogue();
                 return;

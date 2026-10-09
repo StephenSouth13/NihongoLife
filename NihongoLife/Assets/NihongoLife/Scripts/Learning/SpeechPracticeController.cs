@@ -74,7 +74,7 @@ namespace NihongoLife.Learning
 
         private bool WasTriggerPressed()
         {
-            if (Keyboard.current != null && Keyboard.current[triggerKey].wasPressedThisFrame)
+            if (Keyboard.current != null && Keyboard.current[triggerKey].wasPressedThisFrame && !NihongoLife.UI.UiModalStack.BlocksHotkeys)
             {
                 return true;
             }

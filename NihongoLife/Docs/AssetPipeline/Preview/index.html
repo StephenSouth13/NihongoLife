@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light dark">
+  <title>Nihongo Life · Asset Library</title>
+  <meta name="description" content="Inspect real Nihongo Life icons, source mappings and recovery reports. Local visual preview only.">
+  <link rel="stylesheet" href="styles.css">
+  <script src="gallery-data.js" defer></script>
+  <script src="gallery.js" defer></script>
+</head>
+<body data-surface="light" data-checker="true">
+  <a class="skip-link" href="#main">Skip to asset library</a>
+  <aside class="sidebar">
+    <a class="brand" href="#gallery" aria-label="Nihongo Life asset library"><span class="brand-mark" aria-hidden="true">日</span><span>nihongo life<small>日本語のある暮らし</small></span></a>
+    <div class="library-label"><span class="status-dot"></span> LOCAL ASSET LIBRARY <span>C0</span></div>
+    <nav class="view-nav" aria-label="Preview views">
+      <button class="view-button active" data-view="gallery"><span aria-hidden="true">▦</span> Asset gallery</button>
+      <button class="view-button" data-view="shop"><span aria-hidden="true">▤</span> Shop study <span class="nav-note">PREVIEW</span></button>
+      <button class="view-button" data-view="quality"><span aria-hidden="true">◈</span> Quality & recovery</button>
+    </nav>
+    <div class="sidebar-divider"></div>
+    <p class="eyebrow sidebar-eyebrow">COLLECTIONS</p>
+    <nav id="collections" class="collection-nav" aria-label="Asset categories"></nav>
+    <div class="sidebar-bottom">
+      <button id="shortlist-filter" class="quiet-button">♡ Your shortlist <span id="shortlist-count">0</span></button>
+      <a href="../Reports/STAGE_C0_QUALITY.md" class="text-link">Read the audit ↗</a>
+      <div class="offline-note"><span class="status-dot"></span><span>Real files. No cloud.<small>All decisions stay in this browser.</small></span></div>
+    </div>
+  </aside>
+  <main id="main">
+    <header class="topbar"><div class="breadcrumb">NIHONGO LIFE <span>/</span> <span id="view-label">Asset library</span></div><div class="topbar-right"><span class="outline-label">VISUAL REVIEW · NOT APPROVAL</span><button id="export-shortlist" class="quiet-button">Export shortlist ↗</button></div></header>
+    <section id="gallery-view" class="view-panel">
+      <div class="intro">
+        <div><p class="eyebrow"><span class="tiny-star" aria-hidden="true">✳</span> A LITTLE WORLD, ONE ASSET AT A TIME</p><h1>Your next piece<br>of Nihongo Life<span>.</span></h1><p class="intro-copy">Explore the real collection. Compare the details.<br>Choose what belongs on the island.</p></div>
+        <div class="intro-art" aria-label="Examples from the real generated collection"><div class="art-orbit" aria-hidden="true"></div><div id="hero-icons"></div><span class="art-caption">暮らしをつくる、小さなもの。<small>The little things that make a life.</small></span></div>
+      </div>
+      <div id="summary-stats" class="summary-stats"></div>
+      <div class="library-toolbar">
+        <div class="search-wrap"><span aria-hidden="true">⌕</span><input id="search" type="search" placeholder="Search asset names, IDs or source paths…" aria-label="Search asset names, IDs or source paths"><kbd>/</kbd></div>
+        <label class="include-missing"><input id="include-missing" type="checkbox"> Include missing</label>
+        <select id="status-filter" aria-label="Filter technical status"><option value="all">All quality statuses</option><option value="Accepted candidate">Technical pass</option><option value="Needs visual review">Review flags</option><option value="Failed">Failed</option><option value="Not generated">Not generated</option></select>
+      </div>
+      <div class="collection-heading"><div><h2 id="collection-title">All generated icons</h2><p id="result-count" role="status"></p></div><div class="surface-controls" aria-label="Preview background"><button class="surface-button active" data-surface="light">Light</button><button class="surface-button" data-surface="dark">Dark</button><label><input id="checker-toggle" type="checkbox" checked> Checkerboard</label></div></div>
+      <div id="asset-grid" class="asset-grid"></div>
+      <div id="empty-gallery" class="empty-state" hidden><span class="empty-title">A little room for something new.</span><p>No assets match these filters. Missing collections stay empty; we never substitute an icon.</p><button id="reset-filters" class="primary-button">Reset filters</button></div>
+      <footer class="pagination"><p id="page-info"></p><div><button id="previous-page" class="quiet-button">← Previous</button><span id="page-number"></span><button id="next-page" class="quiet-button">Next →</button></div></footer>
+      <p class="page-note">Collection labels come from the catalog, with source evidence visible in every detail panel. They remain provisional. A technical pass is not owner approval.</p>
+    </section>
+    <section id="shop-view" class="view-panel" hidden>
+      <div class="section-intro"><p class="eyebrow">PRESENTATION STUDY / お店のかたち</p><h1>A place for the<br>everyday essentials<span>.</span></h1><p class="intro-copy">Real available icons in a possible shop layout. No purchasing, invented prices or gameplay changes.</p></div>
+      <div class="preview-banner"><span>VISUAL PREVIEW ONLY</span> Items are unapproved candidates. Balance and ownership are presentation states.</div>
+      <div class="shop-header"><div id="shop-tabs" class="shop-tabs" role="tablist" aria-label="Shop preview collection"></div><div class="balance"><small>PREVIEW BALANCE</small><strong>¥ —</strong><span>No balance assigned</span></div></div>
+      <div class="shop-layout"><div><div class="shop-controls"><label><input id="shop-shortlist-only" type="checkbox"> Show my shortlist only</label><span id="shop-count"></span></div><div id="shop-grid" class="shop-grid"></div><div id="shop-empty" class="empty-state" hidden><span class="empty-title">This shelf is waiting.</span><p id="shop-empty-copy"></p></div><div class="shop-pagination"><button id="shop-previous" class="quiet-button">← Previous</button><span id="shop-page-info"></span><button id="shop-next" class="quiet-button">Next →</button></div></div><aside id="selected-shop-item" class="selected-shop-item"></aside></div>
+    </section>
+    <section id="quality-view" class="view-panel" hidden>
+      <div class="section-intro"><p class="eyebrow">EVIDENCE BEFORE INTEGRATION</p><h1>Look closer.<br>Keep what works<span>.</span></h1><p class="intro-copy">Measured file checks, honest review limits and a recovery path for every failed render.</p></div>
+      <div id="quality-stats" class="summary-stats"></div>
+      <div class="report-columns"><article class="report-card"><span class="eyebrow">THE IMPORTANT DISTINCTION</span><h2>Technical acceptance<br>is a starting point.</h2><p>Integrity, alpha, source hashes, resolution and framing can be measured. Texture fidelity, source orientation, item meaning and visual quality still need review. Owner approvals: <strong>0</strong>.</p><a href="../Reports/STAGE_C0_QUALITY.md">Full per-icon audit ↗</a></article><article class="report-card warm"><span class="eyebrow">UNITY IMPORT SETTINGS</span><h2>A shared importer<br>needs attention.</h2><p id="import-finding"></p><p>Current PNG previews do not simulate Unity’s compressed textures or mipmaps. This gallery changes no importer settings.</p><a href="../Reports/STAGE_C0_READINESS.md">Unity & WebGL recommendations ↗</a></article></div>
+      <div class="report-heading"><div><p class="eyebrow">THE COMPLETE COLLECTION</p><h2>Contact sheets</h2></div><p>Every actual generated PNG, numbered for review.</p></div><div id="contact-sheets" class="sheet-links"></div>
+      <div class="report-heading"><div><p class="eyebrow">RECOVER WHAT IS ALREADY HERE</p><h2>Failed render jobs</h2></div><span id="failure-count"></span></div>
+      <div class="search-wrap recovery-search"><span aria-hidden="true">⌕</span><input id="failure-search" type="search" aria-label="Search failed assets" placeholder="Search failed assets or failure classifications…"></div>
+      <div class="failure-table-wrap"><table class="failure-table"><thead><tr><th>Source asset</th><th>Diagnosis</th><th>Existing alternative</th><th>Inspect</th></tr></thead><tbody id="failure-table"></tbody></table></div>
+      <div class="shop-pagination"><button id="failure-previous" class="quiet-button">← Previous</button><span id="failure-page-info"></span><button id="failure-next" class="quiet-button">Next →</button></div>
+    </section>
+    <footer class="site-footer"><span>nihongo life <span class="footer-jp">・日本語のある暮らし</span></span><span>Built from actual project files · Stage C0</span><a href="STAGE_C0_HANDOFF.md">Claude handoff ↗</a></footer>
+  </main>
+  <dialog id="asset-dialog" aria-labelledby="dialog-title"><div class="dialog-toolbar"><span class="eyebrow">ASSET INSPECTOR</span><div><button id="dialog-previous" class="quiet-button" aria-label="Previous asset">←</button><button id="dialog-next" class="quiet-button" aria-label="Next asset">→</button><button id="close-dialog" class="quiet-button" aria-label="Close asset inspector">✕</button></div></div><div id="dialog-content"></div></dialog>
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+  <noscript><p class="noscript">Enable JavaScript to filter and inspect this local asset gallery. Contact sheets are available in ../Reports/StageC0ContactSheets/.</p></noscript>
+</body>
+</html>

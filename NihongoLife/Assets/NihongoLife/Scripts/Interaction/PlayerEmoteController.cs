@@ -44,6 +44,7 @@ namespace NihongoLife.Interaction
             bool wheelOpen = _wheel != null && _wheel.IsOpen;
 
 
+            if (NihongoLife.UI.UiModalStack.BlocksHotkeys) return;
             if (_input.WasPressed(GameInputId.Emote) && CanEmote()) _pressedAt = Time.unscaledTime;
             if (_pressedAt < 0f) return;
 

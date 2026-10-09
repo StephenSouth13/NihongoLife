@@ -1,3 +1,4 @@
+using System.Linq;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
@@ -142,7 +143,9 @@ namespace NihongoLife.UI
             }
 
             exams.Sort((a, b) => string.CompareOrdinal(a.level, b.level));
-            _emptyText.gameObject.SetActive(exams.Count == 0);
+            var localPackages = _tab == ExamType.Ielts ? NihongoLife.Exam.Ielts.IeltsLibrary.Discover() : new List<NihongoLife.Exam.Ielts.IeltsLibrary.Package>();
+            _emptyText.gameObject.SetActive(exams.Count == 0 && localPackages.Count == 0);
+            foreach (var package in localPackages) BuildLocalIeltsCard(package);
 
             PlayerProgressDto progress = GameServices.TryGet(out IProgressRepository progressRepository) ? progressRepository.GetProgress() : null;
             foreach (var exam in exams) BuildCard(exam, progress);
@@ -168,6 +171,45 @@ namespace NihongoLife.UI
             start.GetComponentInChildren<TextMeshProUGUI>().text = Pick("Bắt đầu", "Start", "始める");
             var capturedExam = exam;
             start.onClick.AddListener(() => StartExam(capturedExam));
+        }
+
+        /// <summary>Full IELTS tests from LocalContent (licensed books kept on this machine only).</summary>
+        private void BuildLocalIeltsCard(NihongoLife.Exam.Ielts.IeltsLibrary.Package package)
+        {
+            var test = package.Test;
+            var card = new GameObject("IeltsLocalCard", typeof(RectTransform), typeof(Image), typeof(LayoutElement));
+            card.transform.SetParent(_listRoot, false);
+            card.GetComponent<LayoutElement>().preferredHeight = 154f;
+            card.GetComponent<Image>().color = new Color(0.09f, 0.16f, 0.22f, 1f);
+            string skill = test.skill switch { "listening" => "Listening · 40 câu · 4 phần", "reading" => "Reading", "writing" => "Writing", "speaking" => "Speaking", _ => test.skill };
+            AddText(card.transform, test.title, 22f, 22f, 14f, 640f, 32f, TextAlignmentOptions.MidlineLeft, FontStyles.Bold, false, Gold);
+            AddText(card.transform, $"{skill}   ·   {(test.localOnly ? "Bản local — chỉ để kiểm thử trên máy này, không phát hành" : "")}", 15f, 22f, 50f, 640f, 24f, TextAlignmentOptions.MidlineLeft, FontStyles.Normal, false, Muted);
+            var history = NihongoLife.Exam.Ielts.IeltsAttemptStore.LoadHistory().entries.FindAll(e => e.testId == test.id);
+            var saved = NihongoLife.Exam.Ielts.IeltsAttemptStore.LoadAttempt(test.id);
+            string best = history.Count > 0 ? $"Tốt nhất: {history.Max(h => h.rawScore)}/{history[0].maxScore} · band ước tính {history.Max(h => h.band):0.0}  ({history.Count} lần)" : "Chưa làm lần nào";
+            string progress = saved != null && !saved.submitted ? $"   ·   Đang làm dở ({(saved.mode == "exam" ? "thi thử" : "luyện tập")}, {saved.responses.Count} câu)" : "";
+            AddText(card.transform, best + progress, 14f, 22f, 86f, 640f, 24f, TextAlignmentOptions.MidlineLeft, FontStyles.Normal, false, new Color(0.35f, 0.82f, 0.72f, 1f));
+            AddText(card.transform, "Có audio · nộp bài để chấm theo đáp án gốc · xem lại từng câu", 13f, 22f, 116f, 640f, 22f, TextAlignmentOptions.MidlineLeft, FontStyles.Italic, false, Muted);
+
+            // Buttons in a right-hand column, clear of the text (same column as the other exam cards).
+            float y = 10f;
+            bool resumable = saved != null && !saved.submitted;
+            if (resumable)
+            {
+                var resume = AddButton(card.transform, "Tiếp tục", 900f, y, 180f, 40f, true, 16f);
+                resume.onClick.AddListener(() => OpenLocal(package, saved.mode, true));
+                y += 46f;
+            }
+            var practice = AddButton(card.transform, "Luyện tập", 900f, y, 180f, 40f, false, 16f);
+            practice.onClick.AddListener(() => OpenLocal(package, NihongoLife.UI.IeltsTestUI.PracticeMode, false));
+            var exam = AddButton(card.transform, "Thi thử", 900f, y + 46f, 180f, 40f, !resumable, 16f);
+            exam.onClick.AddListener(() => OpenLocal(package, NihongoLife.UI.IeltsTestUI.ExamMode, false));
+        }
+
+        private void OpenLocal(NihongoLife.Exam.Ielts.IeltsLibrary.Package package, string mode, bool resume)
+        {
+            Hide();
+            NihongoLife.UI.IeltsTestUI.Open(package, mode, resume);
         }
 
         private string BuildLevelLabel(ExamDefinition exam)

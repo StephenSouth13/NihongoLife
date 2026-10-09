@@ -94,3 +94,5 @@ crashlytics-build.properties
 NihongoLife/Docs/Exam/IELTS/
 NihongoLife/Docs/Exam/IELTS.meta
 NihongoLife/Docs/Exam/JLPT/*.pdf
+# Local-only exam packages built from licensed material (questions, keys, audio). Never commit or ship.
+NihongoLife/LocalContent/

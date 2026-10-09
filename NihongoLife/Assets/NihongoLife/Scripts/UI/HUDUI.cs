@@ -613,6 +613,7 @@ namespace NihongoLife.UI
 
             RegisterModalPanels();
             if (chatPanel != null && chatPanel.activeSelf) return; // typing: Esc (UiModalStack) closes the chat
+            if (UiModalStack.BlocksHotkeys) return;               // exam / text field: no B, M, Tab, O…
 
             if (!UiModalStack.IsTyping && input.WasPressed(GameInputId.Settings))
             {

@@ -29,7 +29,7 @@ namespace NihongoLife.World
     }
 
     /// <summary>
-    /// Hibari Station: one line, platform 2, ひばり → がくえんまえ (¥180) → ミナト (¥320).
+    /// Hibari Station: one line, platform 2, ひばり → がくえんまえ (¥180) → ミナト (¥320) → みどりじま (¥450, island terminus).
     /// Kimura at the counter or the ticket machine sells the ticket, the gate checks it, the train is
     /// called in and holds its doors for a validated passenger, and the ride stops at every station.
     /// Alighting at Gakuen-mae lands in front of Hibari School, Minato in front of Sushi Hibari
@@ -72,6 +72,7 @@ namespace NihongoLife.World
             new Stop("hibari", "ひばり", "Hibari", "Ga Hibari", WorldLocationCatalog.StationScene, WorldLocationCatalog.StationEntrance, 0),
             new Stop("gakuen", "がくえんまえ", "Gakuen-mae", "Trường Nhật ngữ Hibari", WorldLocationCatalog.SchoolScene, WorldLocationCatalog.SchoolEntrance, 180),
             new Stop("minato", "ミナト", "Minato", "phố cảng · Sushi Hibari", WorldLocationCatalog.SushiRestaurantScene, WorldLocationCatalog.SushiEntrance, 320),
+            new Stop("midori", "みどりじま", "Midori Island", "Đảo Xanh · nông trại", WorldLocationCatalog.MidoriIslandScene, WorldLocationCatalog.MidoriStation, 450),
         };
 
         public const string Destination = "ミナト";
@@ -187,7 +188,7 @@ namespace NihongoLife.World
         private void Update()
         {
             var keyboard = Keyboard.current;
-            if (_onboard && keyboard != null && keyboard.qKey.wasPressedThisFrame && (DialogueManager.Instance == null || !DialogueManager.Instance.IsOpen))
+            if (_onboard && keyboard != null && keyboard.qKey.wasPressedThisFrame && !NihongoLife.UI.UiModalStack.BlocksHotkeys && (DialogueManager.Instance == null || !DialogueManager.Instance.IsOpen))
                 SetWindowView(!IsWindowViewOpen);
 
             AdvanceTimetable(Time.deltaTime);
@@ -208,7 +209,7 @@ namespace NihongoLife.World
                 if (Phase > boardingWindow + 12f && Phase < serviceInterval - 12f)
                 {
                     _serviceClock += (serviceInterval - 12f) - Phase; // call the next train in now
-                    Announce($"まもなく、{Platform}ばんせんに ミナトゆきが まいります。", $"Tàu đi Minato sắp vào sân ga số {Platform}.");
+                    Announce($"まもなく、{Platform}ばんせんに みどりじまゆきが まいります。", $"Tàu đi Đảo Xanh (qua Gakuen-mae, Minato) sắp vào sân ga số {Platform}.");
                 }
                 if (Phase < boardingWindow && Phase + dt >= boardingWindow - 2f) return; // hold the doors
             }
@@ -378,6 +379,13 @@ namespace NihongoLife.World
             if (scenario.CurrentScenario.GetNode("n_recap") != null) scenario.TransitionToNode("n_recap");
         }
 
+        /// <summary>Arrival banner for trips that end at a stop without riding this line (e.g. the Midori return).</summary>
+        public static void AnnounceArrival(string stopId)
+        {
+            Stop stop = System.Array.Find(Line, s => s.Id == stopId);
+            if (stop != null) ShowArrivalBanner(stop);
+        }
+
         private static void ShowArrivalBanner(Stop stop)
         {
             var hud = FindFirstObjectByType<HUDUI>();
@@ -432,10 +440,11 @@ namespace NihongoLife.World
                 Line_("st_hello", staff, "いらっしゃいませ。どちらまで ですか。", "いらっしゃいませ。どちらまで ですか。", "Xin chào quý khách. Quý khách đi đến đâu ạ?", null,
                     Choice("ミナトえきへ いきたいです。", "Tôi muốn đến ga Minato.", "st_fare_minato"),
                     Choice("がくえんまえへ いきたいです。", "Tôi muốn đến ga Gakuen-mae.", "st_fare_gakuen"),
+                    Choice("みどりじまへ いきたいです。", "Tôi muốn đến Đảo Xanh (Midori).", "st_fare_midori"),
                     Choice("ミナト、どこ？", "Minato, đâu? (cộc lốc)", "st_polite"),
                     Choice("すみません、だいじょうぶです。", "Xin lỗi, không cần đâu ạ.", "st_bye")),
                 Line_("st_polite", staff, "「〜へ いきたいです」と いうと ていねいですよ。", "「〜へ いきたいです」と いうと ていねいですよ。", "Nói 「〜へ いきたいです」 sẽ lịch sự hơn đó.", "st_hello"),
-                FareLine("minato", staff), FareLine("gakuen", staff),
+                FareLine("minato", staff), FareLine("gakuen", staff), FareLine("midori", staff),
                 Line_("st_wrong", staff, $"いいえ、{Platform}ばんせん です。3ばんせんは はんたいほうこう ですよ。", "いいえ、にばんせん です。", $"Không, là sân ga số {Platform}. Số 3 là chiều ngược lại đó.", "st_hello"),
                 Line_("st_machine", staff, "では、あちらの けんばいきで どうぞ。", "では、あちらの けんばいきで どうぞ。", "Vậy mời quý khách mua ở máy bán vé đằng kia.", null),
                 Line_("st_bye", staff, "はい、どうぞ おきをつけて。", "はい、どうぞ おきをつけて。", "Vâng, quý khách đi cẩn thận.", null),
@@ -453,7 +462,7 @@ namespace NihongoLife.World
         private ScenarioNode FareLine(string stopId, string staff)
         {
             Stop stop = System.Array.Find(Line, s => s.Id == stopId);
-            string yenReading = stop.Price == 320 ? "さんびゃくにじゅうえん" : "ひゃくはちじゅうえん";
+            string yenReading = stop.Price switch { 320 => "さんびゃくにじゅうえん", 450 => "よんひゃくごじゅうえん", _ => "ひゃくはちじゅうえん" };
             return Line_("st_fare_" + stopId, staff, $"{stop.Ja}までは {stop.Price}えん、{Platform}ばんせん です。きっぷを おかいに なりますか。",
                 $"{stop.Ja}までは {yenReading}、にばんせん です。", $"Đến {stop.Vi} là {stop.Price} yên, sân ga số {Platform}. Quý khách mua vé luôn không ạ?", null,
                 Choice("きっぷを いちまい ください。", $"Cho tôi một vé ạ. (¥{stop.Price})", "buy:" + stopId),
@@ -656,7 +665,7 @@ namespace NihongoLife.World
             if (_departureBoard != null)
             {
                 string state = boarding ? (_gatePassed && !_onboard ? "のりば で まって います" : "ただいま 乗車中") : $"つぎ {SecondsUntilArrival():00}s";
-                _departureBoard.text = $"{Platform}ばんせん  ミナトゆき\n<size=55%>がくえんまえ ¥180 · ミナト ¥320    {state}</size>";
+                _departureBoard.text = $"{Platform}ばんせん  みどりじまゆき\n<size=55%>がくえんまえ ¥180 · ミナト ¥320 · みどりじま ¥450    {state}</size>";
             }
             string led = _atStop ? $"{NextStop.Ja}  ·  {NextStop.Vi}" : $"つぎは  {NextStop.Ja}  ·  Next {NextStop.Vi}";
             foreach (var text in _carriageLeds) if (text != null) text.text = led;
