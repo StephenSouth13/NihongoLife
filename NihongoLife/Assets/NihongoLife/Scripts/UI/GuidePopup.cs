@@ -99,6 +99,9 @@ namespace NihongoLife.UI
             _shortcuts.Add(new Shortcut { id = GameInputId.Map, vi = "Bản đồ", en = "Map", ja = "地図" });
             _shortcuts.Add(new Shortcut { id = GameInputId.Chat, vi = "Chat", en = "Chat", ja = "チャット" });
             _shortcuts.Add(new Shortcut { id = GameInputId.Voice, vi = "Luyện nói", en = "Speak", ja = "発音練習" });
+            _shortcuts.Add(new Shortcut { id = GameInputId.Pause, vi = "Đóng cửa sổ / quay lại", en = "Close window / back", ja = "閉じる・戻る" });
+            _shortcuts.Add(new Shortcut { id = GameInputId.Settings, vi = "Cài đặt", en = "Settings", ja = "設定" });
+            _shortcuts.Add(new Shortcut { fixedKey = "Chuột phải", vi = "Giữ và kéo để xoay camera", en = "Hold and drag to orbit the camera", ja = "ドラッグでカメラ回転" });
 
             for (int i = 0; i < _shortcuts.Count; i++)
             {

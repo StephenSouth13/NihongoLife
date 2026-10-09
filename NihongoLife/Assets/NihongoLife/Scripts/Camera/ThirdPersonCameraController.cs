@@ -22,7 +22,7 @@ namespace NihongoLife.Cameras
         [Header("Orbit Sensitivity")]
         [SerializeField] private float sensitivityX = 0.15f;
         [SerializeField] private float sensitivityY = 0.15f;
-        [SerializeField] private float minYAngle = -30f;
+        [SerializeField] private float minYAngle = -10f;
         [SerializeField] private float maxYAngle = 60f;
 
         [Header("Obstacle Collision")]
@@ -37,6 +37,8 @@ namespace NihongoLife.Cameras
         [SerializeField] private float conversationPositionSmoothTime = 0.28f;
         [SerializeField] private float conversationRotationSharpness = 7f;
 
+        [SerializeField] private float orbitDragMultiplier = 1.6f;
+        private bool _orbiting;
         private float _rotationX = 0f;
         private float _rotationY = 20f;
         private float _currentDistance;
@@ -76,9 +78,9 @@ namespace NihongoLife.Cameras
                 }
             }
 
-            // Lock and hide cursor for third-person control
-            Cursor.lockState = CursorLockMode.Locked;
-            Cursor.visible = false;
+            // Sims-style controls: the cursor stays visible (click-to-move, HUD buttons); right/middle drag orbits.
+            Cursor.lockState = CursorLockMode.None; // Sims-style: the cursor stays free in gameplay
+            Cursor.visible = true;
         }
 
         private void LateUpdate()
@@ -92,14 +94,22 @@ namespace NihongoLife.Cameras
             }
 
             // Handle lock state (e.g. during menus/dialogue)
-            if (!_isLocked && Mouse.current != null)
+            if (!_isLocked && Mouse.current != null && !NihongoLife.UI.UiModalStack.AnyOpen)
             {
-                Vector2 mouseDelta = Mouse.current.delta.ReadValue();
-                _rotationX += mouseDelta.x * sensitivityX;
-                _rotationY -= mouseDelta.y * sensitivityY;
-                _rotationY = Mathf.Clamp(_rotationY, minYAngle, maxYAngle);
+                var mouse = Mouse.current;
+                bool overUi = UnityEngine.EventSystems.EventSystem.current != null && UnityEngine.EventSystems.EventSystem.current.IsPointerOverGameObject();
+                // Start an orbit only when the drag begins over the world, then keep it until the button is released.
+                if ((mouse.rightButton.wasPressedThisFrame || mouse.middleButton.wasPressedThisFrame) && !overUi) _orbiting = true;
+                if (!mouse.rightButton.isPressed && !mouse.middleButton.isPressed) _orbiting = false;
+                if (_orbiting)
+                {
+                    Vector2 mouseDelta = mouse.delta.ReadValue();
+                    _rotationX += mouseDelta.x * sensitivityX * orbitDragMultiplier;
+                    _rotationY -= mouseDelta.y * sensitivityY * orbitDragMultiplier;
+                    _rotationY = Mathf.Clamp(_rotationY, minYAngle, maxYAngle);
+                }
 
-                float scroll = Mouse.current.scroll.ReadValue().y;
+                float scroll = overUi ? 0f : mouse.scroll.ReadValue().y;
                 if (Mathf.Abs(scroll) > 0.01f)
                 {
                     float zoomed = Mathf.Clamp(defaultDistance - scroll * zoomSpeed, minDistance, maxDistance);

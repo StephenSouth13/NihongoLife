@@ -42,6 +42,7 @@ namespace NihongoLife.UI
 
         public void Initialize(TMP_FontAsset font)
         {
+            UiModalStack.Register(this, () => IsOpen && !rebinding, Hide, "Settings");
             if (panelObj != null) return;
 
             uiFont = font;
@@ -102,8 +103,7 @@ namespace NihongoLife.UI
 
         private void Update()
         {
-            if (!IsOpen || rebinding || Time.frameCount <= escapeBlockedFrame) return;
-            if (Keyboard.current != null && Keyboard.current.escapeKey.wasPressedThisFrame) Hide();
+            // Esc is routed by UiModalStack; Settings opens with O (GameInputId.Settings).
         }
 
         // ──────────────────────── Build ────────────────────────
@@ -187,8 +187,8 @@ namespace NihongoLife.UI
                 (GameInputId.Interact, "Tương tác", "Interact", "調べる"), (GameInputId.Inventory, "Balo", "Bag", "バッグ"),
                 (GameInputId.Character, "Nhân vật", "Profile", "プロフィール"), (GameInputId.Map, "Bản đồ", "Map", "地図"),
                 (GameInputId.Chat, "Chat", "Chat", "チャット"), (GameInputId.Voice, "Ghi âm", "Record", "録音"),
-                (GameInputId.Attack, "Tấn công", "Attack", "攻撃"), (GameInputId.DropItem, "Vứt đồ", "Drop item", "捨てる"),
-                (GameInputId.Pause, "Tạm dừng", "Pause", "ポーズ")
+                (GameInputId.Settings, "Cài đặt", "Settings", "設定"), (GameInputId.DropItem, "Vứt đồ", "Drop item", "捨てる"),
+                (GameInputId.Pause, "Đóng / quay lại", "Close / back", "閉じる・戻る")
             };
 
             for (int i = 0; i < rows.Length; i++)

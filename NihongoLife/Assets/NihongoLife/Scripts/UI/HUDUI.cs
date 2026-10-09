@@ -201,7 +201,7 @@ namespace NihongoLife.UI
                 }),
                 ("QuestButton", "J", "Nhiệm vụ", () => TogglePopup(GetComponent<QuestLogPopup>())),
                 ("ExamButton", "K", "Luyện thi", () => TogglePopup(GetComponent<ExamCenterPopup>())),
-                ("SettingsButton", "Esc", "Cài đặt", () => _settingsUI?.ToggleFromEscape()),
+                ("SettingsButton", "O", "Cài đặt", () => _settingsUI?.ToggleFromEscape()),
             };
             _statusDock = StatusDock.Create(transform, font, buttons, () => SetCharacterVisible(false));
             if (characterPanel != null) characterPanel.SetActive(false);
@@ -611,14 +611,13 @@ namespace NihongoLife.UI
             var input = GameInputService.GetOrCreate();
             bool dialogueOpen = dialoguePanel != null && dialoguePanel.activeSelf;
 
-            if (chatPanel != null && chatPanel.activeSelf)
-            {
-                if (input.WasPressed(GameInputId.Pause))
-                {
-                    SetChatVisible(false);
-                }
+            RegisterModalPanels();
+            if (chatPanel != null && chatPanel.activeSelf) return; // typing: Esc (UiModalStack) closes the chat
 
-                return;
+            if (!UiModalStack.IsTyping && input.WasPressed(GameInputId.Settings))
+            {
+                if (_settingsUI != null && _settingsUI.IsOpen) _settingsUI.Hide();
+                else if (_settingsUI != null && !dialogueOpen) _settingsUI.Show();
             }
 
             if (!dialogueOpen && input.WasPressed(GameInputId.Inventory))
@@ -651,19 +650,21 @@ namespace NihongoLife.UI
                 SetChatVisible(true);
             }
 
-            if (!dialogueOpen && input.WasPressed(GameInputId.Pause))
-            {
-                bool closedOverlay = (inventoryPanel != null && inventoryPanel.activeSelf) || (_worldMap != null && _worldMap.IsVisible)
-                    || (characterPanel != null && characterPanel.activeSelf);
-                SetChatVisible(false);
-                SetInventoryVisible(false);
-                SetCharacterVisible(false);
-                _worldMap?.SetVisible(false);
-                if (!closedOverlay) _settingsUI?.ToggleFromEscape();
-                UpdateOverlayInputLock();
-            }
-
             HandleDialogueKeyboard();
+        }
+
+        private bool _modalPanelsRegistered;
+
+        /// <summary>Esc for the HUD's own panels goes through UiModalStack like every other overlay; with nothing
+        /// open Esc does nothing (Settings is on O).</summary>
+        private void RegisterModalPanels()
+        {
+            if (_modalPanelsRegistered) return;
+            _modalPanelsRegistered = true;
+            UiModalStack.Register(this, () => chatPanel != null && chatPanel.activeSelf, () => SetChatVisible(false), "Chat");
+            UiModalStack.Register(this, () => inventoryPanel != null && inventoryPanel.activeSelf, () => { SetInventoryVisible(false); UpdateOverlayInputLock(); }, "Bag");
+            UiModalStack.Register(this, () => characterPanel != null && characterPanel.activeSelf, () => { SetCharacterVisible(false); UpdateOverlayInputLock(); }, "Character");
+            UiModalStack.Register(this, () => _worldMap != null && _worldMap.IsVisible, () => { _worldMap.SetVisible(false); UpdateOverlayInputLock(); }, "Map");
         }
 
         private void HandleDialogueKeyboard()
@@ -794,8 +795,8 @@ namespace NihongoLife.UI
                                (_worldMap != null && _worldMap.IsVisible);
             bool dialogueOpen = dialoguePanel != null && dialoguePanel.activeSelf;
             ScenarioManager.Instance?.SetPlayerInputLocked(overlayOpen || dialogueOpen);
-            Cursor.lockState = overlayOpen ? CursorLockMode.None : CursorLockMode.Locked;
-            Cursor.visible = overlayOpen;
+            Cursor.lockState = CursorLockMode.None; // Sims-style: the cursor stays free in gameplay
+            Cursor.visible = true;
         }
 
         private void SendChatMessage(string message)

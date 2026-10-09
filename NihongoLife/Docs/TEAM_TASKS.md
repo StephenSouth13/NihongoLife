@@ -555,3 +555,35 @@ Phiên Codex 08/10 dừng giữa chừng vì hết lượt dùng. Các mục cò
   - ảnh UI mới;
   - bảng kiểm thử và bảng lỗi cập nhật.
 - **Test (08/10 chiều):** PlayMode 16/16 (+1 explicit), EditMode 11/11.
+
+## Cập nhật (2026-10-09 tối, Claude) — Stage A: ESC/O/Tab, camera kiểu Sims, HUD nhu cầu, sửa ga
+
+### Phân chia file với Codex (Phase 7) — tránh ghi đè nhau
+
+| Việc | Người làm | File được phép sửa | Kiểm tra khi ghép |
+|---|---|---|---|
+| Icon 2D từ model 3D, atlas, manifest, tối ưu ảnh | Codex | `Scripts/Editor/AssetPipeline/**`, `Generated/AssetPipeline/**`, `Docs/AssetPipeline/**` | Claude nối icon vào `UI/ItemIcons.cs` |
+| Runtime UI, input, camera, HUD, vé tàu, thi | Claude | `Scripts/UI/**`, `Scripts/Core/**`, `Scripts/Camera/**`, `Scripts/World/**`, `Scripts/Exam/**`, scene, builder | PlayMode + ảnh chụp |
+
+- **Unity batchmode: mỗi lúc chỉ một người chạy.** Nếu Unity đang mở project thì chờ, không mở thêm instance.
+- Codex không sửa scene hoặc script gameplay khi chưa có xác nhận.
+
+### Đã làm và kiểm chứng bằng Play Mode
+- **Ga: Kimura không phản hồi.** Khi Play từ ga, game nạp phố trước và lời dẫn mở đầu (`n_open`) ở lại trạng thái "đang mở" nhưng không hiện, nên Kimura bỏ qua mọi lần nhấn F.
+  - Sửa: mỗi lần chuyển khu, `SceneFlowController.LockPlayer` gọi `DialogueManager.SuspendForTravel()` để tạm dừng hội thoại đang mở (giữ bước truyện, nhấn R để tiếp).
+  - Test `StationStandalonePlayModeTests`: nhấn F qua đường input thật thì hội thoại với Kimura mở.
+- **Nhân vật lơ lửng.** CharacterController luôn giữ đáy capsule cao hơn sàn đúng bằng skinWidth (8 cm), mà model được vẽ từ transform.
+  - Sửa: `PlayerController.Awake` nâng `center.y` thêm skinWidth. Đo được khoảng hở 0,000 m.
+- **ESC.** Trước đây 13 script tự đọc phím ESC; HUD mở Cài đặt khi không thấy cửa sổ nào đang mở (mà HUD không biết DialogueView, cửa hàng, máy vé, mini-game, bài thi).
+  - Mới: `UI/UiModalStack.cs`. Mỗi cửa sổ đăng ký một lần ("đang mở?", "đóng"); ESC chỉ đóng cửa sổ mở gần nhất, không mở Cài đặt.
+  - **O** mở Cài đặt (`GameInputId.Settings`); nút HUD ghi "O".
+  - Bài thi: ESC hỏi "Tạm rời bài thi?" trước khi đóng.
+  - Test `ModalInputPlayModeTests`.
+- **Camera / chuột kiểu Sims:** chuột luôn hiện (click-to-move và nút HUD dùng được).
+  - Giữ chuột phải hoặc chuột giữa rồi kéo để xoay quanh nhân vật; lăn chuột để zoom.
+  - Không xoay camera khi đang mở cửa sổ hoặc khi trỏ chuột nằm trên UI.
+  - Đã bỏ mọi chỗ khoá con trỏ (`CursorLockMode.Locked`).
+- **Tab — hồ sơ nhân vật:** model 3D thật của người chơi (`UI/ProfilePreview.cs`, clone "Visual" lên sân khấu riêng ở layer 30), kéo chuột để xoay, cùng các chỉ số nhu cầu.
+- **HUD nhu cầu:** thanh chạy mượt; dưới 50 % chuyển màu hổ phách, dưới 20 % nhấp nháy đỏ và hiện "Đói!", "Khát!".
+  - HUD tự ẩn khi đang thi hoặc chơi mini-game (overlay đăng ký `immersive`).
+- **Đề thi có bản quyền** (sách và audio Cambridge, đề JLPT PDF) đã bỏ khỏi git (`.gitignore`); file vẫn giữ ở máy. Lịch sử GitHub cũ vẫn còn: chủ dự án tự quyết định có xoá khỏi lịch sử hay không.

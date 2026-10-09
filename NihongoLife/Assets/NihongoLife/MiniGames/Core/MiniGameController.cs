@@ -58,6 +58,7 @@ namespace NihongoLife.MiniGames
         {
             if (Instance != null && Instance != this) { Destroy(gameObject); return; }
             Instance = this;
+            UiModalStack.Register(this, () => IsRunning, CloseOrAbort, "Mini-game", immersive: true);
             _font = NLUi.ResolveFont();
             var hud = FindFirstObjectByType<HUDUI>();
             _canvas = NLUi.CreateCanvas("MiniGameCanvas", 800, hud != null ? hud.transform : transform);
@@ -136,8 +137,7 @@ namespace NihongoLife.MiniGames
         {
             if (_closeButton != null && _closeButton.transform.GetSiblingIndex() != _closeButton.transform.parent.childCount - 1)
                 _closeButton.transform.SetAsLastSibling();
-            if (_game == null || IsShowingResult) return;
-            if (Keyboard.current != null && Keyboard.current.escapeKey.wasPressedThisFrame) _game.Abort();
+
         }
 
         // ─────────── Result ───────────
@@ -237,8 +237,8 @@ namespace NihongoLife.MiniGames
                 _player.InputLocked = false;
             }
             ScenarioManager.Instance?.SetPlayerInputLocked(false);
-            Cursor.lockState = CursorLockMode.Locked;
-            Cursor.visible = false;
+            Cursor.lockState = CursorLockMode.None; // Sims-style: the cursor stays free in gameplay
+            Cursor.visible = true;
             _launcher = null;
         }
 

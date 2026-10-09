@@ -206,6 +206,13 @@ namespace NihongoLife.Dialogue
 
         /// <summary>Leave the current conversation (Esc). Scenario nodes stay current, so talking to the
         /// NPC again resumes exactly where the player left.</summary>
+        /// <summary>Called when the player changes zone: closes an open dialogue the same way × does
+        /// (scenario lines are paused and can be resumed with R, local conversations end).</summary>
+        public void SuspendForTravel()
+        {
+            if (IsOpen) CancelDialogue();
+        }
+
         public bool CancelDialogue()
         {
             if (!CanLeave) return false;
@@ -661,8 +668,8 @@ namespace NihongoLife.Dialogue
                 }
             }
 
-            Cursor.lockState = locked ? CursorLockMode.None : CursorLockMode.Locked;
-            Cursor.visible = locked;
+            Cursor.lockState = CursorLockMode.None; // Sims-style: the cursor stays free in gameplay
+            Cursor.visible = true;
         }
 
         private static void SetConversationCamera(Transform target)

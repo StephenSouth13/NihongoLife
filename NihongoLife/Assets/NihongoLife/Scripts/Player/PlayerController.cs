@@ -81,6 +81,11 @@ namespace NihongoLife.Player
             _characterController = GetComponent<CharacterController>();
             _characterController.detectCollisions = true;
             _characterController.skinWidth = Mathf.Max(_characterController.skinWidth, 0.08f);
+            // The controller keeps its capsule bottom skinWidth above the floor. Lift the capsule by that much
+            // relative to the transform so the model's feet (drawn from the transform) rest on the ground.
+            Vector3 center = _characterController.center;
+            float grounded = _characterController.height * 0.5f + _characterController.skinWidth;
+            if (Mathf.Abs(center.y - _characterController.height * 0.5f) < 0.01f) _characterController.center = new Vector3(center.x, grounded, center.z);
             _mainCamera = ResolveGameplayCamera();
             _animationController = GetComponent<CharacterAnimationController>();
             if (GetComponent<ClickToMoveController>() == null)

@@ -56,10 +56,7 @@ namespace NihongoLife.UI
 
         private void Update()
         {
-            if (_panel != null && _panel.activeSelf && Keyboard.current != null && Keyboard.current.escapeKey.wasPressedThisFrame)
-            {
-                Close();
-            }
+            UiModalStack.Register(this, () => _panel != null && _panel.activeSelf, Close, "Shop");
         }
 
         public void Show(IReadOnlyList<InteractiveItem> items, GameObject player)
@@ -94,8 +91,8 @@ namespace NihongoLife.UI
 
             _panel.SetActive(false);
             ScenarioManager.Instance?.SetPlayerInputLocked(false);
-            Cursor.lockState = CursorLockMode.Locked;
-            Cursor.visible = false;
+            Cursor.lockState = CursorLockMode.None; // Sims-style: the cursor stays free in gameplay
+            Cursor.visible = true;
         }
 
         private void Buy(InteractiveItem item)

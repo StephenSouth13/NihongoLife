@@ -125,10 +125,7 @@ namespace NihongoLife.UI
 
         private void Update()
         {
-            if (_panel != null && _panel.activeSelf && Keyboard.current != null && Keyboard.current.escapeKey.wasPressedThisFrame)
-            {
-                Close();
-            }
+            UiModalStack.Register(this, () => _panel != null && _panel.activeSelf, Close, "Restaurant menu");
 
             if (_staffBar != null && _staffBar.activeSelf && Time.unscaledTime >= _staffHideTime)
             {
@@ -214,8 +211,8 @@ namespace NihongoLife.UI
             _panel.SetActive(false);
             if (GameServices.TryGet(out IAudioService closeAudio)) closeAudio.PlayCue(GameAudioCue.UiClose, 0.8f);
             ScenarioManager.Instance?.SetPlayerInputLocked(false);
-            Cursor.lockState = CursorLockMode.Locked;
-            Cursor.visible = false;
+            Cursor.lockState = CursorLockMode.None; // Sims-style: the cursor stays free in gameplay
+            Cursor.visible = true;
         }
 
         // ──────────────────────── Content ────────────────────────

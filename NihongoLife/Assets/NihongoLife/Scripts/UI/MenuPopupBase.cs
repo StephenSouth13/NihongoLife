@@ -112,6 +112,7 @@ namespace NihongoLife.UI
         public void Show()
         {
             if (PanelObject == null || IsOpen) return;
+            UiModalStack.Register(this, () => IsOpen, () => { if (!HandleEscape()) Hide(); }, GetType().Name, immersive: LocksGameplay);
             if (LocksGameplay)
             {
                 _modalPlayer = FindFirstObjectByType<NihongoLife.Player.PlayerController>();
@@ -148,13 +149,6 @@ namespace NihongoLife.UI
         protected virtual void Update()
         {
             if (!IsOpen) return;
-
-            if (Keyboard.current != null && Keyboard.current.escapeKey.wasPressedThisFrame && _escapeHandledFrame != Time.frameCount)
-            {
-                _escapeHandledFrame = Time.frameCount;
-                if (!HandleEscape()) Hide();
-                return;
-            }
 
             OnOpenUpdate();
         }

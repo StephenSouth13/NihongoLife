@@ -35,6 +35,7 @@ namespace NihongoLife.Interaction
         {
             _input = GameInputService.GetOrCreate();
             _player = GetComponent<PlayerController>();
+            NihongoLife.UI.UiModalStack.Register(this, () => _wheel != null && _wheel.IsOpen, () => { CloseWheel(); _pressedAt = -1f; }, "EmoteWheel");
         }
 
         private void Update()
@@ -42,12 +43,6 @@ namespace NihongoLife.Interaction
             if (_input == null) return;
             bool wheelOpen = _wheel != null && _wheel.IsOpen;
 
-            if (wheelOpen && Keyboard.current != null && Keyboard.current.escapeKey.wasPressedThisFrame)
-            {
-                CloseWheel();
-                _pressedAt = -1f;
-                return;
-            }
 
             if (_input.WasPressed(GameInputId.Emote) && CanEmote()) _pressedAt = Time.unscaledTime;
             if (_pressedAt < 0f) return;

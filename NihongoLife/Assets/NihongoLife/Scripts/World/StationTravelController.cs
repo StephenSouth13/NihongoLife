@@ -177,16 +177,16 @@ namespace NihongoLife.World
             RefreshHud();
         }
 
-        private void Start() => CompleteObjective("obj_arrive");
+        private void Start()
+        {
+            CompleteObjective("obj_arrive");
+            NihongoLife.UI.UiModalStack.Register(this, () => IsTicketMachineOpen, CloseTicketPanel, "Ticket machine");
+            NihongoLife.UI.UiModalStack.Register(this, () => IsWindowViewOpen, () => SetWindowView(false), "Window view");
+        }
 
         private void Update()
         {
             var keyboard = Keyboard.current;
-            if (IsTicketMachineOpen && keyboard != null && keyboard.escapeKey.wasPressedThisFrame)
-            {
-                CloseTicketPanel();
-                return;
-            }
             if (_onboard && keyboard != null && keyboard.qKey.wasPressedThisFrame && (DialogueManager.Instance == null || !DialogueManager.Instance.IsOpen))
                 SetWindowView(!IsWindowViewOpen);
 
@@ -866,8 +866,8 @@ namespace NihongoLife.World
             ScenarioManager.Instance?.SetPlayerInputLocked(locked);
             var player = FindFirstObjectByType<PlayerController>();
             if (player != null) player.InputLocked = locked;
-            Cursor.lockState = locked ? CursorLockMode.None : CursorLockMode.Locked;
-            Cursor.visible = locked;
+            Cursor.lockState = CursorLockMode.None; // Sims-style: the cursor stays free in gameplay
+            Cursor.visible = true;
         }
 
         private void RefreshHud()

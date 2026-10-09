@@ -260,8 +260,8 @@ namespace NihongoLife.Home
             if (player != null) player.InputLocked = locked;
             if (_camera == null) _camera = FindFirstObjectByType<ThirdPersonCameraController>();
             if (_camera != null) _camera.IsLocked = locked;
-            Cursor.lockState = locked ? CursorLockMode.None : CursorLockMode.Locked;
-            Cursor.visible = locked;
+            Cursor.lockState = CursorLockMode.None; // Sims-style: the cursor stays free in gameplay
+            Cursor.visible = true;
         }
 
         // ─────────── Prompt when the zone runs without the city HUD ───────────

@@ -370,6 +370,13 @@ namespace NihongoLife.Core
 
         private static void LockPlayer(bool locked)
         {
+            // A dialogue left open across a zone change stays "open" but invisible, which silently blocks every
+            // NPC in the new zone (e.g. Kimura). Pause it instead: story progress is kept and R resumes it.
+            if (locked)
+            {
+                var dialogue = NihongoLife.Dialogue.DialogueManager.Instance;
+                if (dialogue != null) dialogue.SuspendForTravel();
+            }
             var player = FindFirstObjectByType<PlayerController>();
             if (player != null) player.InputLocked = locked;
         }

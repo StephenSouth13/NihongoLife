@@ -30,13 +30,13 @@ namespace NihongoLife.Learning
         {
             if (Instance != null && Instance != this) { Destroy(this); return; }
             Instance = this;
+            NihongoLife.UI.UiModalStack.Register(this, () => _open, () => SetOpen(false), "Classroom video");
         }
 
         private void Update()
         {
             if (Keyboard.current == null) return;
             if (Keyboard.current.f8Key.wasPressedThisFrame) SetOpen(!_open);
-            else if (_open && Keyboard.current.escapeKey.wasPressedThisFrame) SetOpen(false);
         }
 
         public void SetOpen(bool open)

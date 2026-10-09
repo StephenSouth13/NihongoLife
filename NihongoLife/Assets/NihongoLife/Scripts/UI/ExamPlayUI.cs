@@ -124,6 +124,45 @@ namespace NihongoLife.UI
             BuildFooter(card);
             BuildGradingOverlay(card);
             BuildResultsPanel(card);
+            BuildLeaveConfirm(card);
+        }
+
+        // ─────────── Esc during an attempt: confirm before leaving ───────────
+
+        private GameObject _leaveConfirm;
+
+        private void BuildLeaveConfirm(RectTransform card)
+        {
+            _leaveConfirm = new GameObject("LeaveConfirm", typeof(RectTransform), typeof(Image));
+            _leaveConfirm.transform.SetParent(card, false);
+            var rect = (RectTransform)_leaveConfirm.transform;
+            rect.anchorMin = Vector2.zero; rect.anchorMax = Vector2.one; rect.offsetMin = rect.offsetMax = Vector2.zero;
+            _leaveConfirm.GetComponent<Image>().color = new Color(0.01f, 0.014f, 0.02f, 0.88f);
+            var box = new GameObject("Box", typeof(RectTransform), typeof(Image));
+            box.transform.SetParent(_leaveConfirm.transform, false);
+            Place((RectTransform)box.transform, CardSize.x / 2f - 300f, CardSize.y / 2f - 120f, 600f, 240f);
+            box.GetComponent<Image>().color = new Color(0.08f, 0.12f, 0.16f, 1f);
+            AddText(box.transform, Pick("Tạm rời bài thi?", "Leave the exam for now?", "試験を中断しますか？"), 24f, 30f, 26f, 540f, 36f, TextAlignmentOptions.Center, FontStyles.Bold, false, Gold);
+            AddText(box.transform, Pick("Bài làm được giữ lại. Mở lại Trung tâm luyện thi để làm tiếp; đồng hồ vẫn chạy theo luật của đề.",
+                "Your answers are kept. Reopen the Exam Center to continue; the timer follows the exam's rules.",
+                "解答は保存されます。試験センターから再開できます。"), 16f, 40f, 76f, 520f, 70f, TextAlignmentOptions.Center, FontStyles.Normal, true, Muted);
+            var stay = AddButton(box.transform, Pick("Tiếp tục làm bài", "Keep going", "続ける"), 60f, 168f, 220f, 46f, true, 16f);
+            stay.onClick.AddListener(() => _leaveConfirm.SetActive(false));
+            var leave = AddButton(box.transform, Pick("Tạm rời", "Leave", "中断する"), 320f, 168f, 220f, 46f, false, 16f);
+            leave.onClick.AddListener(() => { _leaveConfirm.SetActive(false); Hide(); });
+            _leaveConfirm.SetActive(false);
+        }
+
+        /// <summary>Esc while an attempt is running asks first; a second Esc dismisses the question.</summary>
+        protected override bool HandleEscape()
+        {
+            if (_leaveConfirm != null && _leaveConfirm.activeSelf) { _leaveConfirm.SetActive(false); return true; }
+            var manager = ExamManager.Instance;
+            bool running = manager != null && manager.IsAttemptActive && (_resultsRoot == null || !_resultsRoot.activeSelf);
+            if (!running || _leaveConfirm == null) return false;
+            _leaveConfirm.SetActive(true);
+            _leaveConfirm.transform.SetAsLastSibling();
+            return true;
         }
 
         private void BuildPaletteRoot(RectTransform card)

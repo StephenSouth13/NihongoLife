@@ -170,8 +170,8 @@ namespace NihongoLife.UI
         protected override void OnClosed()
         {
             Scenario.ScenarioManager.Instance?.SetPlayerInputLocked(false);
-            Cursor.lockState = CursorLockMode.Locked;
-            Cursor.visible = false;
+            Cursor.lockState = CursorLockMode.None; // Sims-style: the cursor stays free in gameplay
+            Cursor.visible = true;
         }
 
         protected override void OnLanguageApplied()

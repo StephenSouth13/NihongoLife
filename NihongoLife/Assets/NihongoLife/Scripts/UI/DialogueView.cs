@@ -55,6 +55,7 @@ namespace NihongoLife.UI
             var view = canvas.gameObject.AddComponent<DialogueView>();
             view._font = font != null ? font : NLUi.ResolveFont();
             view.Build(canvas.transform);
+            UiModalStack.Register(view, () => view.IsOpen && view._canLeave, view.Leave, "Dialogue");
             return view;
         }
 
@@ -95,7 +96,7 @@ namespace NihongoLife.UI
             _root.gameObject.SetActive(false);
             _resumeButton = NLUi.Button(canvas, "ResumeDialogue", "Tiếp hội thoại · R", _font,
                 () => DialogueManager.Instance?.ResumeDialogue(), NLUi.Card, 20f, null, 52f);
-            NLUi.Anchor((RectTransform)_resumeButton.transform, new Vector2(0.5f, 0f), new Vector2(0f, 100f), new Vector2(280f, 52f));
+            NLUi.Anchor((RectTransform)_resumeButton.transform, new Vector2(0.5f, 0f), new Vector2(0f, 168f), new Vector2(280f, 52f));
             _resumeButton.gameObject.SetActive(false);
         }
 
@@ -238,7 +239,6 @@ namespace NihongoLife.UI
 
             var keyboard = Keyboard.current;
             if (keyboard == null) return;
-            if (keyboard.escapeKey.wasPressedThisFrame) { Leave(); return; }
             for (int i = 0; i < Mathf.Min(4, _choices.Count); i++)
             {
                 if (keyboard[(Key)((int)Key.Digit1 + i)].wasPressedThisFrame || keyboard[(Key)((int)Key.Numpad1 + i)].wasPressedThisFrame)

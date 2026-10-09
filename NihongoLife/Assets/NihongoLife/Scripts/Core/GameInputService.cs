@@ -23,7 +23,8 @@ namespace NihongoLife.Core
         Pause,
         Map,
         UseItem,
-        Emote
+        Emote,
+        Settings
     }
 
     public class GameInputService : MonoBehaviour, IGameService
@@ -101,6 +102,7 @@ namespace NihongoLife.Core
             AddButton(GameInputId.DropItem, "DropItem", "<Keyboard>/g", "<Gamepad>/dpad/down");
             AddButton(GameInputId.Pause, "Pause", "<Keyboard>/escape", "<Gamepad>/start");
             AddButton(GameInputId.Emote, "Emote", "<Keyboard>/e", "<Gamepad>/dpad/left");
+            AddButton(GameInputId.Settings, "Settings", "<Keyboard>/o");
         }
 
         private void AddButton(GameInputId id, string name, string keyboardPath, string gamepadPath = null)

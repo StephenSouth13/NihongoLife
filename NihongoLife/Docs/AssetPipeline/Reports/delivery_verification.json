@@ -1,0 +1,40 @@
+{
+  "changedTrackedModelInputs": [],
+  "failed": 118,
+  "fatalRenderError": "",
+  "fullRunComparison": {
+    "changedPngs": [],
+    "commonPngs": 437,
+    "identicalPngs": 437,
+    "note": "The second batch adds Legacy Diffuse support; common outputs should remain identical."
+  },
+  "note": "Shared worktree: concurrent changes and staged removals preserved. No commits or staging performed by this package.",
+  "ownedTextFilesWhitespaceChecked": 459,
+  "ownedWhitespaceIssues": [],
+  "persistedGeneratedPngCount": 438,
+  "rendered": 438,
+  "stagedExamSourceAdditions": [],
+  "trackedModelInputsChecked": 599,
+  "trackedWorkspaceChangesOutsidePackage": [
+    ".gitignore",
+    "NihongoLife/Assets/NihongoLife/Fonts/NotoSansJP SDF.asset",
+    "NihongoLife/Assets/NihongoLife/MiniGames/Core/MiniGameController.cs",
+    "NihongoLife/Assets/NihongoLife/Scripts/Core/GameInputService.cs",
+    "NihongoLife/Assets/NihongoLife/Scripts/Core/SceneFlowController.cs",
+    "NihongoLife/Assets/NihongoLife/Scripts/Dialogue/DialogueManager.cs",
+    "NihongoLife/Assets/NihongoLife/Scripts/Interaction/PlayerEmoteController.cs",
+    "NihongoLife/Assets/NihongoLife/Scripts/Learning/EduMeetingManager.cs",
+    "NihongoLife/Assets/NihongoLife/Scripts/Player/PlayerController.cs",
+    "NihongoLife/Assets/NihongoLife/Scripts/UI/DialogueView.cs",
+    "NihongoLife/Assets/NihongoLife/Scripts/UI/GuidePopup.cs",
+    "NihongoLife/Assets/NihongoLife/Scripts/UI/HUDUI.cs",
+    "NihongoLife/Assets/NihongoLife/Scripts/UI/KonbiniShopUI.cs",
+    "NihongoLife/Assets/NihongoLife/Scripts/UI/MenuPopupBase.cs",
+    "NihongoLife/Assets/NihongoLife/Scripts/UI/RestaurantMenuUI.cs",
+    "NihongoLife/Assets/NihongoLife/Scripts/UI/SettingsUI.cs",
+    "NihongoLife/Assets/NihongoLife/Scripts/UI/ShopUI.cs",
+    "NihongoLife/Assets/NihongoLife/Scripts/World/StationTravelController.cs",
+    "NihongoLife/Assets/TextMesh Pro/Resources/Fonts & Materials/LiberationSans SDF - Fallback.asset"
+  ],
+  "unitTestsPassed": 16
+}

@@ -278,8 +278,8 @@ namespace NihongoLife.UI
             if (player != null) player.InputLocked = locked;
             var camera = FindFirstObjectByType<NihongoLife.Cameras.ThirdPersonCameraController>();
             if (camera != null) camera.IsLocked = locked;
-            Cursor.lockState = locked ? CursorLockMode.None : CursorLockMode.Locked;
-            Cursor.visible = locked;
+            Cursor.lockState = CursorLockMode.None; // Sims-style: the cursor stays free in gameplay
+            Cursor.visible = true;
         }
 
         private static void Cue(GameAudioCue cue)
@@ -287,16 +287,11 @@ namespace NihongoLife.UI
             if (GameServices.TryGet(out IAudioService audio)) audio.PlayCue(cue, 0.7f);
         }
 
-        private void Update()
-        {
-            if (!IsOpen || Keyboard.current == null) return;
-            if (Keyboard.current.escapeKey.wasPressedThisFrame) Close();
-        }
-
         // ─────────── Building ───────────
 
         private void Build(Transform canvas)
         {
+            UiModalStack.Register(this, () => IsOpen, Close, "Konbini shop");
             _window = NLUi.Panel(canvas, "ShopWindow", NLUi.Ink, new RectOffset(30, 30, 24, 24), 16f);
             NLUi.Anchor(_window, new Vector2(0.5f, 0.5f), Vector2.zero, new Vector2(1240f, 0f));
             NLUi.FitContent(_window);

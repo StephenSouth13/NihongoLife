@@ -656,8 +656,8 @@ namespace NihongoLife.Scenario
                     }
                     else
                     {
-                        Cursor.lockState = CursorLockMode.Locked;
-                        Cursor.visible = false;
+                        Cursor.lockState = CursorLockMode.None; // Sims-style: the cursor stays free in gameplay
+                        Cursor.visible = true;
                     }
                 }
             }
