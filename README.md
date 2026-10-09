@@ -23,6 +23,20 @@
 
 ---
 
+## 🖼️ Asset Gallery — thư viện vật phẩm
+
+Xem trước **438 icon PNG thật** của NihongoLife ngay trong README. Gallery tương tác có tìm kiếm, lọc danh mục, nền sáng/tối, xem chi tiết từng icon và bố cục cửa hàng mẫu.
+
+[![NihongoLife Asset Gallery — 438 icon thật, tìm kiếm và lọc danh mục](docs/readme/asset-gallery.png)](docs/readme/asset-gallery.png)
+
+**[Xem ảnh đầy đủ](docs/readme/asset-gallery.png)** · **[Thư mục gallery](NihongoLife/Docs/AssetPipeline/Preview/)** · **[Hướng dẫn xem và báo cáo](NihongoLife/Docs/AssetPipeline/Preview/STAGE_C0_HANDOFF.md)**
+
+Để dùng bản tương tác, clone hoặc tải toàn bộ repo, rồi mở `NihongoLife/Docs/AssetPipeline/Preview/index.html` bằng trình duyệt. Không cần chạy Unity hay server. README trên GitHub hiển thị ảnh xem trước; file HTML trên trang mã nguồn GitHub không chạy trực tiếp.
+
+*Đây là bản xem xét asset và cửa hàng mẫu; chất lượng hình ảnh vẫn chờ chủ dự án duyệt.*
+
+---
+
 <div align="center">
 <img src="docs/readme/gif_city.gif" alt="Bay qua phố Hibari-chō rồi đi bộ trên phố" width="80%"/>
 <br/><sub><i>Phố Hibari-chō: khu phố Nhật thu nhỏ, nơi mọi bài học diễn ra.</i></sub>
