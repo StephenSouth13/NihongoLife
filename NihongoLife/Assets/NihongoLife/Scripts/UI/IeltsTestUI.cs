@@ -820,6 +820,9 @@ namespace NihongoLife.UI
             foreach (var option in group.options ?? Array.Empty<IeltsOption>())
                 PaperText(box, $"<b>{option.letter}</b>     {option.text}", 17f, FontStyles.Normal);
             if (!string.IsNullOrWhiteSpace(group.heading)) PaperText(sheet, group.heading, 18f, FontStyles.Bold);
+            // A summary completed from the box: show its text with numbered gaps; the letters are picked per gap below.
+            foreach (var line in group.lines ?? Array.Empty<IeltsLine>())
+                PaperText(sheet, Regex.Replace(line.text ?? "", @"\{(\d+)\}", "<b>$1</b> ________"), 17f, FontStyles.Normal);
             foreach (var item in group.items ?? Array.Empty<IeltsItem>())
             {
                 var row = Row(sheet, "Q" + item.number, 10f);

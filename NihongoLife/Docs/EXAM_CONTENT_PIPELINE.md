@@ -1,5 +1,13 @@
 # Exam Content Pipeline
 
+## Công cụ đang dùng trong repository
+
+- `exam_lib.py`, `gen_jlpt_n5_mock1.py`, `gen_jlpt_n5_mock2.py`: sinh `ExamDefinition` cho JLPT, tránh sửa YAML lồng nhau bằng tay.
+- `ielts_ocr.py`: OCR PDF nguồn hợp pháp của người dùng; có chế độ đọc theo cột cho passage hai cột.
+- `ielts_pkg.py`: chuẩn hoá passage, cắt ảnh sơ đồ, chuyển audio sang OGG, ghi `test.json`/`key.json` và xác minh đủ câu 1–40.
+
+Nội dung JLPT do dự án cung cấp nằm trong `Resources/Exams` và audio trong `Assets/NihongoLife/Audio/JLPT`. Package IELTS trích từ tài liệu có bản quyền phải nằm tại `LocalContent/IELTS`, bị Git ignore và không được đóng gói/phát hành cùng repository.
+
 ## Folder convention
 
 Each exam owns one folder. Keep the ScriptableObject small and keep large media outside Git:

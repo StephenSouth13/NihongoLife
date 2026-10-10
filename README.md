@@ -17,6 +17,10 @@
 **Học tiếng Nhật bằng cách sống ở Nhật.**
 *Learn Japanese by living in Japan · 日本で暮らして、日本語を学ぼう*
 
+<a href="https://www.gzv.one/gzver/quach-thanh-long"><img src="NihongoLife/Docs/partners/gzv.one.png" alt="GZV — Quách Thành Long" width="150"/></a>
+
+**Quách Thành Long** · [Hồ sơ GZV](https://www.gzv.one/gzver/quach-thanh-long) · [quachthanhlong.com](https://quachthanhlong.com/)
+
 [Gameplay](#-trải-nghiệm-trong-game) · [Bắt đầu](#-bắt-đầu-nhanh) · [Điều khiển](#-điều-khiển) · [Kiến trúc](#-kiến-trúc) · [Kiểm thử](#-kiểm-thử) · [Tài liệu](#-tài-liệu)
 
 </div>
@@ -92,7 +96,9 @@ Hỏi anh Kimura ở quầy vé (¥320, sân số 2), mua vé, qua cổng soát 
 
 ### 🏫 Lớp học Hibari và luyện thi JLPT / IELTS
 
-Ngồi vào bàn thi trong lớp, chọn đề **JLPT N5** hoặc **IELTS**, làm bài có đồng hồ đếm ngược. Nộp bài xong, lớp tắt đèn, pháo giấy bay và cô Morita nhận xét kết quả.
+Ngồi vào bàn thi trong lớp hoặc mở nhanh bằng <kbd>K</kbd>, chọn **JLPT N5** hoặc **IELTS** và làm bài có đồng hồ đếm ngược. JLPT hiện có hai đề mẫu; mock 2 gồm 67 câu, audio nghe hiểu thật, giới hạn một lượt phát, thang 180 điểm và phân tích nhóm câu còn yếu. IELTS hỗ trợ package Reading/Listening 40 câu, hai chế độ luyện tập/thi thử, tự lưu để làm tiếp, giới hạn từ, đáp án thay thế và quy đổi band. Nộp bài xong, cô Morita nhận xét kết quả.
+
+> IELTS dùng package cục bộ trong `LocalContent/IELTS/` (không đưa tài liệu có bản quyền vào Git). Điểm trong game chỉ phục vụ luyện tập, không phải kết quả JLPT/IELTS chính thức. Xem [tài liệu hệ thống thi](NihongoLife/Docs/EXAM_SYSTEM.md).
 
 <table>
 <tr>
@@ -129,6 +135,12 @@ Lật thẻ ghép cặp **hiragana, katakana, kanji N5, đồ ăn và từ vựn
 </table>
 
 **Chỉ số sống chạy như thật.** Chạy (Shift) tốn **14 thể lực/giây** và không hồi khi đang chạy. Hết thể lực thì bị khoá chạy tới khi hồi đủ 25 điểm, và HUD nháy đỏ "Hết sức". Đi và chạy làm đói, khát nhanh hơn; ăn uống và ngủ để hồi.
+
+### 🌱 Trồng trọt bằng nông cụ và câu cá ở đảo Midori
+
+Nông trại không có thao tác “tay không”: phải mua và mang đúng **cuốc/xẻng/bình tưới**. Quy trình hoàn chỉnh là xới đất → gieo hạt → tưới từng giai đoạn → thu hoạch; công cụ hao độ bền sau thao tác thành công, có thể hỏng và tự chuyển sang món dự phòng. Huỷ giữa chừng không làm thay đổi ruộng và không trừ độ bền.
+
+Ở cầu tàu, người chơi cần **cần câu** để quăng phao, chờ cá cắn và kéo bằng <kbd>F</kbd> đúng cửa sổ thời gian. Kéo sớm, để cá thoát, huỷ hoặc đầy balo đều không nhận cá. Cá bắt được đi vào inventory dùng chung, lưu cùng hồ sơ, tính nhiệm vụ/thành tựu và có thể bán tại cửa hàng Midori. Xem [chi tiết farming, công cụ và fishing](NihongoLife/Docs/FISHING_FARMING_TOOLS.md).
 
 ### 🌅 Thế giới liền mạch
 
@@ -176,6 +188,7 @@ git clone https://github.com/StephenSouth13/NihongoLife.git
 | <kbd>M</kbd> | Bản đồ | <kbd>J</kbd> | Nhiệm vụ |
 | <kbd>K</kbd> | Luyện thi | <kbd>V</kbd> | Luyện phát âm (AI) |
 | <kbd>Q</kbd> | Ngắm cảnh trên tàu | <kbd>F8</kbd> | Lớp học video |
+| <kbd>F</kbd> tại ruộng/cầu tàu | Làm nông · quăng/kéo cần | <kbd>Esc</kbd> | Huỷ thao tác đang làm |
 | <kbd>Esc</kbd> / **×** | Đóng cửa sổ · cài đặt | 🖱️ | Xoay camera, bấm nút |
 
 ## 🗺️ Thế giới
@@ -191,6 +204,7 @@ git clone https://github.com/StephenSouth13/NihongoLife.git
 | `40_ HIBARICLASS` | Trường Nhật ngữ Hibari, bàn thi |
 | `45_HomeBedroom` | Phòng trọ Hibari Heights |
 | `50_GameCenter` | Game Center, Kana Match, quầy quà |
+| `60_MidoriIsland` | Đảo Midori, nông trại, cửa hàng, chuồng vật nuôi và cầu câu cá |
 
 Mọi khu vực được nạp thêm (additive) trên nền thành phố và có lối ra cố định về đúng cửa đã vào.
 
@@ -281,6 +295,9 @@ Mỗi bộ kiểm thử Play Mode **điều khiển nhân vật bằng thao tác
 | `SchoolPlayModeTests` | Bàn thi, chọn JLPT/IELTS, làm bài, nhận xét |
 | `BedroomPlayModeTests` · `CityTown` · `ZoneTransition` · `Scenario` | Phòng trọ, lối vào các khu, chuyển khu hai chiều, chạy kịch bản |
 | `CharacterHumanoidAuditPlayModeTests` | Pilot Remy Humanoid: Avatar/rig, Idle, Walk, Run retarget, Talk, Sit; giữ nguyên controller, camera, collider, inventory và online |
+| `FishingFarmPlayModeTests` | Nông cụ/độ bền, huỷ thao tác, trồng–tưới–thu hoạch, quăng/kéo cần, bắt–bán–lưu cá và ảnh Play Mode |
+| `JlptMockPlayModeTests` | JLPT mock 2: 67 câu, audio một lượt, thang điểm 180, lưu lượt thi và phân tích nhóm yếu |
+| `IeltsReadingPlayModeTests` · `IeltsListeningPlayModeTests` | Package IELTS cục bộ 40 câu, timer, audio, làm tiếp, tự nộp, chấm raw/band và khoá input/HUD |
 
 **Kết quả gần nhất (08/10/2026):** Play Mode **16/16** · EditMode **11/11** · hơn 150 ảnh tự chụp.
 
@@ -325,10 +342,11 @@ Quy tắc của repo (xem [`AGENTS.md`](AGENTS.md)): không dùng lệnh `[MenuI
 | 🎞️ **Slide thuyết trình** | [`Bao_Cao/NihongoLife_Thuyet_Trinh_Capstone_v4.pptx`](Bao_Cao/NihongoLife_Thuyet_Trinh_Capstone_v4.pptx) |
 | 🎬 **Trailer** | [`Bao_Cao/NihongoLife_Trailer.mp4`](Bao_Cao/NihongoLife_Trailer.mp4) · 1080p, 67 giây |
 | 🧭 **Thiết kế** | [`ARCHITECTURE`](NihongoLife/Docs/ARCHITECTURE.md) · [`STORY_BIBLE`](NihongoLife/Docs/STORY_BIBLE.md) · [`SCENARIO_SYSTEM`](NihongoLife/Docs/SCENARIO_SYSTEM.md) · [`EXAM_SYSTEM`](NihongoLife/Docs/EXAM_SYSTEM.md) · [`ROADMAP`](NihongoLife/Docs/ROADMAP.md) |
+| 🎣 **Gameplay mới** | [`FISHING_FARMING_TOOLS`](NihongoLife/Docs/FISHING_FARMING_TOOLS.md) · [`EXAM_CONTENT_PIPELINE`](NihongoLife/Docs/EXAM_CONTENT_PIPELINE.md) |
 
 ## 🙏 Ghi công
 
-[Unity](https://unity.com/) · [Kenney](https://kenney.nl/) · [Quaternius](https://quaternius.com/) · [KayKit](https://kaylousberg.itch.io/) · [Mixamo](https://www.mixamo.com/) · [Noto Sans JP](https://fonts.google.com/noto/specimen/Noto+Sans+JP) · [Supabase](https://supabase.com/) · [Google Gemini](https://ai.google.dev/) · [Agora](https://www.agora.io/)
+[Unity](https://unity.com/) · [Kenney](https://kenney.nl/) · [Quaternius](https://quaternius.com/) · [KayKit](https://kaylousberg.itch.io/) · [Mixamo](https://www.mixamo.com/) · [Noto Sans JP](https://fonts.google.com/noto/specimen/Noto+Sans+JP) · [Supabase](https://supabase.com/) · [Google Gemini](https://ai.google.dev/) · [Agora](https://www.agora.io/) · [GZV](https://www.gzv.one/gzver/quach-thanh-long)
 
 ---
 
@@ -361,6 +379,8 @@ Nếu bạn thấy **NihongoLife** hữu ích và muốn đồng hành cùng s�
 <br/>
 
 **Quách Thành Long** · K24GD03 · Project 3 Capstone · VTC Academy · 2026
+<br/>
+[quachthanhlong.com](https://quachthanhlong.com/) · [GZV Profile](https://www.gzv.one/gzver/quach-thanh-long)
 <br/>
 Giảng viên hướng dẫn: Nguyễn Ngọc Chấn
 
