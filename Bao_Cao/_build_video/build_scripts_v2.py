@@ -285,8 +285,8 @@ DEMO = {
     "train": ("3 · Ga & tàu", "F lên tàu khi tàu mở cửa", "Chuyển vùng bằng tàu"),
     "island": ("4 · Đảo Midori", "—", "Toàn cảnh đảo, ví chung"),
     "hana": ("4 · Đảo Midori", "F nói chuyện với Hana → “Nhận ca làm”", "Job nông trại, được phát 2 gói hạt"),
-    "hand": ("4 · Đảo Midori", "F ở luống 1 → “Xới bằng tay”", "Không có cuốc: 7 s"),
-    "hoe": ("4 · Đảo Midori", "Cầm cuốc → F ở luống 2 → “Xới đất”", "Có cuốc: 1,6 s"),
+    "hand": ("4 · Đảo Midori", "F ở luống 1 (chưa có cuốc)", "Không có dụng cụ thì không xới được; thẻ ô ruộng mở cửa hàng"),
+    "hoe": ("4 · Đảo Midori", "Cầm cuốc → F ở luống 2 → “Xới đất”", "Xới 1,6 s; cuốc mòn 1/40 mỗi lần, hết bền thì hỏng"),
     "plant": ("4 · Đảo Midori", "“Gieo cà rốt” → “Tưới nước” (2 luống)", "Gieo, tưới cần bình tưới"),
     "grow": ("4 · Đảo Midori", "Tưới lại khi cây cần nước", "Cây lớn theo thời gian thực (video tua nhanh)"),
     "harvest": ("4 · Đảo Midori", "“Thu hoạch” → thẻ vật nuôi → “Cho ăn”", "Nông sản dùng làm thức ăn"),
@@ -347,7 +347,7 @@ bullets(d, [
 ])
 d.add_heading("4. Ghi chú trung thực", 1)
 bullets(d, [
-    "Ở bước “xới bằng tay”, cuốc trong bộ khởi đầu được cất đi để minh họa trường hợp chưa có dụng cụ, rồi trả lại ngay ở bước sau.",
+    "Ở bước “chưa có cuốc”, cuốc trong bộ khởi đầu được cất đi để minh họa trường hợp thiếu dụng cụ, rồi trả lại ngay ở bước sau.",
     "Ở bước “cây lớn”, đồng hồ nông trại được tua nhanh; lời thuyết minh nói rõ điều này.",
     "Lời thuyết minh và lời dẫn là giọng đọc AI (TTS).",
     "Video được ghi trong Unity Editor (PlayMode); bản build WebGL chưa được kiểm thử.",

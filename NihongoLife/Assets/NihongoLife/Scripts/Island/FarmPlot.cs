@@ -90,9 +90,11 @@ namespace NihongoLife.Island
         public string Till()
         {
             if (Record.tilled) return "Đất đã được xới rồi.";
-            // No hoe is not a dead end: the farm card digs by hand, just much slower (FarmActionTimes).
+            string tool = FarmActionTimes.Till().toolId;
+            if (tool == null) return "Cần cuốc (くわ) hoặc xẻng (シャベル) để xới — mua ở cửa hàng Midori.";
             var r = Record; r.tilled = true; r.cropId = null; r.stage = 0; r.watered = false;
             IslandState.Save(); Refresh(true);
+            IslandTools.Wear(tool);
             NihongoLife.Progression.QuestService.Raise("till", plotId);
             return null;
         }
@@ -117,9 +119,10 @@ namespace NihongoLife.Island
             if (phase == Phase.Untilled || phase == Phase.Tilled) return "Chưa có gì để tưới — hãy gieo hạt trước.";
             if (phase == Phase.Ready) return "Cây đã chín, thu hoạch thôi!";
             if (phase == Phase.Growing) return "Cây vừa được tưới, đợi cây lớn đã.";
-            if (IslandEconomy.Owned("tool_watering_can") == 0) return "Cần bình tưới (じょうろ).";
+            if (!IslandTools.Usable("tool_watering_can")) return "Cần bình tưới (じょうろ) — mua ở cửa hàng Midori.";
             var r = Record; r.watered = true; r.stageStartTicks = IslandState.UtcNow.Ticks;
             IslandState.Save(); Refresh(true);
+            IslandTools.Wear("tool_watering_can");
             NihongoLife.Progression.QuestService.Raise("water", r.cropId);
             return null;
         }
@@ -144,8 +147,11 @@ namespace NihongoLife.Island
         public string Clear()
         {
             if (string.IsNullOrEmpty(Record.cropId)) return "Ô đất đang trống.";
+            string tool = FarmActionTimes.Clear().toolId;
+            if (tool == null) return "Cần xẻng (シャベル) hoặc cuốc để dọn ô.";
             var r = Record; r.cropId = null; r.stage = 0; r.watered = false; r.tilled = true;
             IslandState.Save(); Refresh(true);
+            IslandTools.Wear(tool);
             return null;
         }
 

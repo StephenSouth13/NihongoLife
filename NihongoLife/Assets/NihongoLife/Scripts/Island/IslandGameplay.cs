@@ -34,6 +34,8 @@ namespace NihongoLife.Island
             var inventory = PlayerInventory.Instance;
             var catalog = IslandCatalog.Load();
             if (inventory == null || !catalog.TryDescribe(itemId, out string ja, out string vi, out int price)) return false;
+            // A newly obtained tool (none in the bag) is brand new: forget the wear of the last one.
+            if (catalog.Tool(itemId) != null && Owned(itemId) == 0) IslandState.Record.toolWear.RemoveAll(w => w.itemId == itemId);
             return inventory.AddItem(itemId, ja, vi, price, quantity);
         }
 

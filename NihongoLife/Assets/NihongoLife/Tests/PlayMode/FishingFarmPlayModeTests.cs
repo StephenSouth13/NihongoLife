@@ -59,33 +59,64 @@ namespace NihongoLife.Tests
             if (bag.GetItemQuantity("tool_watering_can") == 0) IslandEconomy.Give("tool_watering_can", 1);
             if (bag.GetItemQuantity("seed_carrot") < 2) IslandEconomy.Give("seed_carrot", 2);
 
-            // Bare hands: kneeling dig, nothing in the hand.
+            // No hoe or shovel: tilling cannot be done (no bare-hand way); the card points to the store.
             yield return StandAt(plots[0].transform, 1.9f);
             IslandUI.OpenFarm(plots[0]);
-            ClickFarm("Xới bằng tay");
-            yield return AssertWork("Work_DigHand", false, "41_dig_by_hand");
-            yield return WaitWork();
-            yield return AssertIdle();
+            yield return null;
+            Assert.NotNull(GameObject.Find("NeedTool"), "The farm card explains the missing tool");
+            Assert.IsFalse(FarmButton("Xới"), "No till button without a tool");
+            Assert.IsNotNull(plots[0].Till(), "Tilling refused without a tool");
+            Assert.IsFalse(plots[0].Record.tilled);
+            Capture("41_no_tool");
+            IslandUI.CloseFarm();
 
-            // Hoe: the hoe is in the right hand while tilling, gone afterwards.
+            // Hoe: in the right hand while tilling; each finished use wears it by one.
             IslandEconomy.Give("tool_hoe", 1);
+            int max = IslandTools.Max("tool_hoe");
+            Assert.AreEqual(max, IslandTools.Left("tool_hoe"), "A new hoe is at full durability");
             yield return StandAt(plots[1].transform, 1.9f);
             IslandUI.OpenFarm(plots[1]);
             ClickFarm("Xới đất");
             yield return AssertWork("Work_Hoe", true, "42_till_with_hoe");
             yield return WaitWork();
             yield return AssertIdle();
+            Assert.AreEqual(max - 1, IslandTools.Left("tool_hoe"), "One use worn");
 
+            // Cancelling (Esc) wears nothing and tills nothing.
             IslandUI.OpenFarm(plots[0]);
+            ClickFarm("Xới đất");
+            yield return new WaitForSeconds(0.3f);
+            Assert.IsTrue(UiModalStack.CloseTop(), "Esc stops the work");
+            yield return null;
+            Assert.IsFalse(plots[0].Record.tilled, "Cancelled work does nothing");
+            Assert.AreEqual(max - 1, IslandTools.Left("tool_hoe"), "Cancelled work wears nothing");
+
+            // A worn-out hoe breaks on its last use and leaves the bag.
+            IslandState.Record.toolWear.First(w => w.itemId == "tool_hoe").usesLeft = 1;
+            TimedAction.SpeedScale = 0.1f;
+            IslandUI.OpenFarm(plots[0]);
+            ClickFarm("Xới đất");
+            yield return WaitWork();
+            TimedAction.SpeedScale = 1f;
+            Assert.IsTrue(plots[0].Record.tilled, "The last use still counts");
+            Assert.AreEqual(0, bag.GetItemQuantity("tool_hoe"), "Broken hoe removed from the bag");
+            IslandUI.OpenFarm(plots[0]);
+            IslandUI.CloseFarm();
+
+            // Plant, water (the can wears too), grow, harvest on plot 2.
+            IslandUI.OpenFarm(plots[1]);
             ClickNamed("Plant_carrot");
             yield return AssertWork("Work_Plant", false, "43_plant");
             yield return WaitWork();
-            IslandUI.OpenFarm(plots[0]);
+            int can = IslandTools.Left("tool_watering_can");
+            IslandUI.OpenFarm(plots[1]);
             ClickFarm("Tưới nước");
             yield return AssertWork("Work_Water", false, "44_water");
             yield return WaitWork();
             yield return AssertIdle();
+            Assert.AreEqual(can - 1, IslandTools.Left("tool_watering_can"), "Watering wears the can");
 
+            plots.Reverse(); // the grown plot is now plots[0]
             var crop = plots[0].Crop;
             for (int stage = 0; stage < 3; stage++)
             {
@@ -155,6 +186,7 @@ namespace NihongoLife.Tests
             Assert.AreEqual("Fish_Cast", _anim.CurrentWork);
             AssertHeldInRightHand("rod");
             Capture("50_cast");
+            CaptureFrom("50b_pier_overview", spot.transform.position + new Vector3(9f, 5f, -7f), spot.transform.position);
             yield return WaitPhase(IslandFishing.Phase.Waiting, 8f);
             Assert.AreEqual("Fish_Wait", _anim.CurrentWork);
             var floatGo = GameObject.Find("FishingFloat");
@@ -253,6 +285,9 @@ namespace NihongoLife.Tests
                 yield return null;
             }
             Assert.NotNull(_player, "Island player");
+            var all = Object.FindObjectsByType<FishingSpot>(FindObjectsInactive.Include, FindObjectsSortMode.None);
+            Assert.IsNotNull(Object.FindFirstObjectByType<FishingSpot>(),
+                $"Fishing spot active (scene={SceneManager.GetActiveScene().name}, spots incl. inactive={all.Length}, inactive path={(all.Length > 0 ? HierarchyPath(all[0].transform) : "-")}, runtime={IslandRuntime.Active})");
             yield return new WaitForSecondsRealtime(1f);
             _anim = _player.GetComponentInChildren<CharacterAnimationController>();
             _animator = _player.GetComponentInChildren<Animator>();
@@ -276,6 +311,8 @@ namespace NihongoLife.Tests
             Note($"{state}: tool={(_anim.HeldProp != null ? _anim.HeldProp.name : "none")}");
             Capture(capture);
         }
+
+        private static string HierarchyPath(Transform t) => t == null ? "" : HierarchyPath(t.parent) + "/" + t.name + (t.gameObject.activeSelf ? "" : "(off)");
 
         private static float FarmActionTimesFor(string state) => state switch
         {
@@ -359,6 +396,12 @@ namespace NihongoLife.Tests
             button.onClick.Invoke();
         }
 
+        private static bool FarmButton(string label)
+        {
+            var card = GameObject.Find("FarmCard");
+            return card != null && card.GetComponentsInChildren<Button>().Any(b => b.GetComponentInChildren<TextMeshProUGUI>()?.text.Contains(label) == true);
+        }
+
         private static void ClickFarm(string label)
         {
             var card = GameObject.Find("FarmCard");
@@ -376,6 +419,16 @@ namespace NihongoLife.Tests
             string folder = Path.GetFullPath(Path.Combine(Application.dataPath, "../../Bao_Cao/" + Folder));
             Directory.CreateDirectory(folder);
             return folder;
+        }
+
+        private static void CaptureFrom(string name, Vector3 position, Vector3 lookAt)
+        {
+            var camera = Camera.main;
+            if (camera == null) return;
+            var pos = camera.transform.position; var rot = camera.transform.rotation;
+            camera.transform.SetPositionAndRotation(position, Quaternion.LookRotation(lookAt - position));
+            Capture(name);
+            camera.transform.SetPositionAndRotation(pos, rot);
         }
 
         private static void Capture(string name)

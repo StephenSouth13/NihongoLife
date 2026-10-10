@@ -144,9 +144,17 @@ namespace NihongoLife.UI
 
             _title.text = $"<b>{_test.title}</b>  <size=70%><color=#9FB0C4>{(_test.localOnly ? "bản local · không phát hành" : "")}</color></size>";
             _modeChip.text = IsExam ? "CHẾ ĐỘ THI" : "LUYỆN TẬP";
-            _note.text = IsExam
-                ? "Chế độ thi: mỗi phần nghe phát <b>một lần</b>, không dừng, không tua. Sau phần cuối có " + Mathf.RoundToInt(_test.reviewSeconds / 60f) + " phút kiểm tra, rồi tự nộp."
-                : "Luyện tập: nghe lại, tạm dừng và tua tự do.";
+            // The audio controls belong to Listening only; Reading/Writing keep just the part tabs.
+            foreach (var audioOnly in new Component[] { _playButton, _progressTrack, _audioTime, _audioStatus })
+                if (audioOnly != null) audioOnly.gameObject.SetActive(IsListening);
+            if (IsListening)
+                _note.text = IsExam
+                    ? "Chế độ thi: mỗi phần nghe phát <b>một lần</b>, không dừng, không tua. Sau phần cuối có " + Mathf.RoundToInt(_test.reviewSeconds / 60f) + " phút kiểm tra, rồi tự nộp."
+                    : "Luyện tập: nghe lại, tạm dừng và tua tự do.";
+            else
+                _note.text = IsExam
+                    ? $"Chế độ thi: <b>{_test.timeLimitMinutes} phút</b> cho cả bài, hết giờ tự nộp. Không có thời gian chép đáp án riêng."
+                    : $"Luyện tập: không giới hạn thời gian (bài thật {_test.timeLimitMinutes} phút).";
             BuildTabs();
             BuildNavigator();
             ShowPart(Mathf.Clamp(_attempt.partIndex, 0, parts - 1));
@@ -353,9 +361,22 @@ namespace NihongoLife.UI
                 if (_attempt.reviewRemaining <= 0f) { SubmitNow(); return; }
             }
 
-            _timer.text = IsExam && _attempt.reviewRemaining >= 0f
-                ? $"Kiểm tra lại: <b>{Clock(Mathf.Max(0f, _attempt.reviewRemaining))}</b>"
-                : $"Thời gian: <b>{Clock(_attempt.elapsedSeconds)}</b>   ·   Đã làm {AnsweredCount}/{QuestionCount}";
+            // Reading / Writing: one time limit for the whole paper (exam mode submits when it runs out).
+            float limit = !IsListening && _test.timeLimitMinutes > 0 ? _test.timeLimitMinutes * 60f : 0f;
+            if (limit > 0f && IsExam && !IsSubmitted)
+            {
+                float left = limit - _attempt.elapsedSeconds;
+                if (left <= 0f) { SubmitNow(); return; }
+                if (left <= 600f && left + Time.unscaledDeltaTime > 600f) NihongoLife.UI.HudFeed.Post("Còn 10 phút.", NihongoLife.UI.HudFeed.Kind.Warning, 4f);
+                if (left <= 60f && left + Time.unscaledDeltaTime > 60f) NihongoLife.UI.HudFeed.Post("Còn 1 phút — bài sẽ tự nộp khi hết giờ.", NihongoLife.UI.HudFeed.Kind.Warning, 4f);
+                _timer.text = $"Còn lại: <b>{(left <= 300f ? "<color=#E0644E>" : "")}{Clock(left)}{(left <= 300f ? "</color>" : "")}</b>   ·   Đã làm {AnsweredCount}/{QuestionCount}";
+            }
+            else if (limit > 0f)
+                _timer.text = $"Thời gian: <b>{Clock(_attempt.elapsedSeconds)}</b> / {_test.timeLimitMinutes} phút   ·   Đã làm {AnsweredCount}/{QuestionCount}";
+            else
+                _timer.text = IsExam && _attempt.reviewRemaining >= 0f
+                    ? $"Kiểm tra lại: <b>{Clock(Mathf.Max(0f, _attempt.reviewRemaining))}</b>"
+                    : $"Thời gian: <b>{Clock(_attempt.elapsedSeconds)}</b>   ·   Đã làm {AnsweredCount}/{QuestionCount}";
 
             if (_saveAt > 0f && Time.unscaledTime >= _saveAt) Save();
             if (_audioPlaying && Time.frameCount % 120 == 0) Save();

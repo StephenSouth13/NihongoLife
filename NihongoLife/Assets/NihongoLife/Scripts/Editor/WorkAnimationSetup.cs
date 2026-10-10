@@ -31,7 +31,6 @@ namespace NihongoLife.Editor
             { "Remy@Fishing Idle.fbx", true },
             { "Remy@Harvesting.fbx", true },
             { "Remy@Watering.fbx", true },
-            { "Farming Pack/dig and plant seeds.fbx", true },
             { "Farming Pack/plant a plant.fbx", true },
             { "Farming Pack/pull plant.fbx", true },
             { "Farming Pack/pull plant (2).fbx", true },
@@ -78,7 +77,6 @@ namespace NihongoLife.Editor
         /// <summary>Animator state → clip file. The names are the contract with gameplay (WorkPose).</summary>
         public static readonly (string state, string file, bool feetIk)[] States =
         {
-            ("Work_DigHand", "Farming Pack/dig and plant seeds.fbx", false),
             ("Work_Hoe", "Remy@Harvesting.fbx", true),
             ("Work_Plant", "Farming Pack/plant a plant.fbx", false),
             ("Work_Water", "Remy@Watering.fbx", true),
@@ -116,6 +114,9 @@ namespace NihongoLife.Editor
         {
             var controller = AssetDatabase.LoadAssetAtPath<AnimatorController>(ControllerPath) ?? throw new InvalidOperationException("Missing " + ControllerPath);
             var sm = controller.layers[0].stateMachine;
+            // Drop work states that are no longer part of the contract (e.g. the removed bare-hand dig).
+            foreach (var old in sm.states.Select(s => s.state).Where(s => (s.name.StartsWith("Work_") || s.name.StartsWith("Fish_")) && States.All(x => x.state != s.name)).ToList())
+                sm.RemoveState(old);
             int row = 0;
             foreach (var (stateName, file, feetIk) in States)
             {

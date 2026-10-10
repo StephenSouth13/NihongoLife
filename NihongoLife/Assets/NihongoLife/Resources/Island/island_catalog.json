@@ -17,16 +17,16 @@
       "word": { "ja": "かぼちゃ", "reading": "kabocha", "en": "pumpkin", "vi": "bí ngô" } }
   ],
   "tools": [
-    { "id": "tool_hoe", "action": "till", "price": 200,
+    { "id": "tool_hoe", "action": "till", "price": 200, "durability": 40,
       "word": { "ja": "くわ", "reading": "kuwa", "en": "hoe", "vi": "cái cuốc" },
       "verb": { "ja": "つちを たがやします。", "reading": "tsuchi o tagayashimasu", "en": "I till the soil.", "vi": "Tôi xới đất." } },
-    { "id": "tool_watering_can", "action": "water", "price": 150,
+    { "id": "tool_watering_can", "action": "water", "price": 150, "durability": 60,
       "word": { "ja": "じょうろ", "reading": "jōro", "en": "watering can", "vi": "bình tưới" },
       "verb": { "ja": "みずを あげます。", "reading": "mizu o agemasu", "en": "I water the plant.", "vi": "Tôi tưới nước." } },
-    { "id": "tool_shovel", "action": "clear", "price": 180,
+    { "id": "tool_shovel", "action": "clear", "price": 180, "durability": 30,
       "word": { "ja": "シャベル", "reading": "shaberu", "en": "shovel", "vi": "cái xẻng" },
       "verb": { "ja": "つちを ほります。", "reading": "tsuchi o horimasu", "en": "I dig the soil.", "vi": "Tôi đào đất." } },
-    { "id": "tool_fishing_rod", "action": "fish", "price": 300,
+    { "id": "tool_fishing_rod", "action": "fish", "price": 300, "durability": 50,
       "word": { "ja": "つりざお", "reading": "tsurizao", "en": "fishing rod", "vi": "cần câu" },
       "verb": { "ja": "つりを します。", "reading": "tsuri o shimasu", "en": "I go fishing.", "vi": "Tôi đi câu cá." } }
   ],

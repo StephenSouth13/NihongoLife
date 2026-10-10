@@ -1,0 +1,2598 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f5214dc098a14546900e76a0b9a4682c, type: 3}
+  m_Name: jlpt_n5_mock_2
+  m_EditorClassIdentifier: NihongoLife::NihongoLife.Exam.ExamDefinition
+  id: jlpt_n5_mock_2
+  examType: 0
+  level: "N5"
+  titleVi: "JLPT N5 — Đề thi thử đầy đủ số 2"
+  titleEn: "JLPT N5 — Full mock test 2"
+  titleJa: "JLPT N5 もぎしけん 2"
+  descriptionVi: "Đề tự soạn theo đúng cấu trúc N5 hiện hành (67 câu, 90 phút). Phần nghe dùng giọng đọc AI. Điểm quy đổi tuyến tính để luyện tập."
+  descriptionEn: "Original practice test in the current N5 layout (67 questions, 90 minutes). Listening uses AI voices."
+  sections:
+  - id: n5m2_vocab
+    type: 0
+    titleVi: "Từ vựng (文字・語彙) · 20 phút"
+    titleEn: "Vocabulary · 20 min"
+    titleJa: "言語知識（文字・語彙）"
+    timeLimitSeconds: 1200
+    scoreScaleMax: 60
+    scoreGroup: "gengo"
+    mondai:
+    - id: "m1"
+      titleJa: "もんだい1　漢字読み"
+      titleVi: "đọc chữ Hán"
+    - id: "m2"
+      titleJa: "もんだい2　表記"
+      titleVi: "cách viết"
+    - id: "m3"
+      titleJa: "もんだい3　文脈規定"
+      titleVi: "từ hợp ngữ cảnh"
+    - id: "m4"
+      titleJa: "もんだい4　言い換え類義"
+      titleVi: "câu đồng nghĩa"
+    passages: []
+    questions:
+    - id: n5m2_v01
+      type: 0
+      passageId: 
+      promptVi: "Từ trong 【 】 đọc (viết bằng hiragana) thế nào?\n【毎朝】 コーヒーを のみます。"
+      promptEn: "【　】の ことばは ひらがなで どう かきますか。\n【毎朝】 コーヒーを のみます。"
+      promptJa: "【　】の ことばは ひらがなで どう かきますか。\n【毎朝】 コーヒーを のみます。"
+      promptReading: ""
+      choices:
+      - textVi: "まえあさ"
+        textEn: "まえあさ"
+        textJa: "まえあさ"
+      - textVi: "まいばん"
+        textEn: "まいばん"
+        textJa: "まいばん"
+      - textVi: "まいあさ"
+        textEn: "まいあさ"
+        textJa: "まいあさ"
+      - textVi: "まいにち"
+        textEn: "まいにち"
+        textJa: "まいにち"
+      correctChoiceIndex: 2
+      acceptedAnswers: []
+      taskInstructionsVi: ""
+      taskInstructionsEn: ""
+      minWords: 0
+      timeLimitSeconds: 0
+      explanationVi: "Đáp án: まいあさ. 毎朝 = mỗi sáng."
+      explanationEn: "Answer: まいあさ."
+      tags:
+      - "n5"
+      - "m1"
+      points: 1
+      mondai: "m1"
+    - id: n5m2_v02
+      type: 0
+      passageId: 
+      promptVi: "Từ trong 【 】 đọc (viết bằng hiragana) thế nào?\nえきの 【北】に こうえんが あります。"
+      promptEn: "【　】の ことばは ひらがなで どう かきますか。\nえきの 【北】に こうえんが あります。"
+      promptJa: "【　】の ことばは ひらがなで どう かきますか。\nえきの 【北】に こうえんが あります。"
+      promptReading: ""
+      choices:
+      - textVi: "ひがし"
+        textEn: "ひがし"
+        textJa: "ひがし"
+      - textVi: "きた"
+        textEn: "きた"
+        textJa: "きた"
+      - textVi: "みなみ"
+        textEn: "みなみ"
+        textJa: "みなみ"
+      - textVi: "にし"
+        textEn: "にし"
+        textJa: "にし"
+      correctChoiceIndex: 1
+      acceptedAnswers: []
+      taskInstructionsVi: ""
+      taskInstructionsEn: ""
+      minWords: 0
+      timeLimitSeconds: 0
+      explanationVi: "Đáp án: きた. 北 = phía bắc (きた)."
+      explanationEn: "Answer: きた."
+      tags:
+      - "n5"
+      - "m1"
+      points: 1
+      mondai: "m1"
+    - id: n5m2_v03
+      type: 0
+      passageId: 
+      promptVi: "Từ trong 【 】 đọc (viết bằng hiragana) thế nào?\nこの かばんは 【高い】です。"
+      promptEn: "【　】の ことばは ひらがなで どう かきますか。\nこの かばんは 【高い】です。"
+      promptJa: "【　】の ことばは ひらがなで どう かきますか。\nこの かばんは 【高い】です。"
+      promptReading: ""
+      choices:
+      - textVi: "ひくい"
+        textEn: "ひくい"
+        textJa: "ひくい"
+      - textVi: "たかい"
+        textEn: "たかい"
+        textJa: "たかい"
+      - textVi: "おおい"
+        textEn: "おおい"
+        textJa: "おおい"
+      - textVi: "やすい"
+        textEn: "やすい"
+        textJa: "やすい"
+      correctChoiceIndex: 1
+      acceptedAnswers: []
+      taskInstructionsVi: ""
+      taskInstructionsEn: ""
+      minWords: 0
+      timeLimitSeconds: 0
+      explanationVi: "Đáp án: たかい. 高い = cao, đắt (たかい)."
+      explanationEn: "Answer: たかい."
+      tags:
+      - "n5"
+      - "m1"
+      points: 1
+      mondai: "m1"
+    - id: n5m2_v04
+      type: 0
+      passageId: 
+      promptVi: "Từ trong 【 】 đọc (viết bằng hiragana) thế nào?\n【来週】 しけんが あります。"
+      promptEn: "【　】の ことばは ひらがなで どう かきますか。\n【来週】 しけんが あります。"
+      promptJa: "【　】の ことばは ひらがなで どう かきますか。\n【来週】 しけんが あります。"
+      promptReading: ""
+      choices:
+      - textVi: "らいしゅう"
+        textEn: "らいしゅう"
+        textJa: "らいしゅう"
+      - textVi: "こんしゅう"
+        textEn: "こんしゅう"
+        textJa: "こんしゅう"
+      - textVi: "らいしゅ"
+        textEn: "らいしゅ"
+        textJa: "らいしゅ"
+      - textVi: "きしゅう"
+        textEn: "きしゅう"
+        textJa: "きしゅう"
+      correctChoiceIndex: 0
+      acceptedAnswers: []
+      taskInstructionsVi: ""
+      taskInstructionsEn: ""
+      minWords: 0
+      timeLimitSeconds: 0
+      explanationVi: "Đáp án: らいしゅう. 来週 = tuần sau; 今週 là こんしゅう."
+      explanationEn: "Answer: らいしゅう."
+      tags:
+      - "n5"
+      - "m1"
+      points: 1
+      mondai: "m1"
+    - id: n5m2_v05
+      type: 0
+      passageId: 
+      promptVi: "Từ trong 【 】 đọc (viết bằng hiragana) thế nào?\nふゆやすみに 【外国】へ いきたいです。"
+      promptEn: "【　】の ことばは ひらがなで どう かきますか。\nふゆやすみに 【外国】へ いきたいです。"
+      promptJa: "【　】の ことばは ひらがなで どう かきますか。\nふゆやすみに 【外国】へ いきたいです。"
+      promptReading: ""
+      choices:
+      - textVi: "がいこく"
+        textEn: "がいこく"
+        textJa: "がいこく"
+      - textVi: "がいごく"
+        textEn: "がいごく"
+        textJa: "がいごく"
+      - textVi: "かいこく"
+        textEn: "かいこく"
+        textJa: "かいこく"
+      - textVi: "そとくに"
+        textEn: "そとくに"
+        textJa: "そとくに"
+      correctChoiceIndex: 0
+      acceptedAnswers: []
+      taskInstructionsVi: ""
+      taskInstructionsEn: ""
+      minWords: 0
+      timeLimitSeconds: 0
+      explanationVi: "Đáp án: がいこく. 外国 = nước ngoài (がいこく)."
+      explanationEn: "Answer: がいこく."
+      tags:
+      - "n5"
+      - "m1"
+      points: 1
+      mondai: "m1"
+    - id: n5m2_v06
+      type: 0
+      passageId: 
+      promptVi: "Từ trong 【 】 đọc (viết bằng hiragana) thế nào?\n【父】は ぎんこうで はたらいて います。"
+      promptEn: "【　】の ことばは ひらがなで どう かきますか。\n【父】は ぎんこうで はたらいて います。"
+      promptJa: "【　】の ことばは ひらがなで どう かきますか。\n【父】は ぎんこうで はたらいて います。"
+      promptReading: ""
+      choices:
+      - textVi: "あね"
+        textEn: "あね"
+        textJa: "あね"
+      - textVi: "あに"
+        textEn: "あに"
+        textJa: "あに"
+      - textVi: "ちち"
+        textEn: "ちち"
+        textJa: "ちち"
+      - textVi: "はは"
+        textEn: "はは"
+        textJa: "はは"
+      correctChoiceIndex: 2
+      acceptedAnswers: []
+      taskInstructionsVi: ""
+      taskInstructionsEn: ""
+      minWords: 0
+      timeLimitSeconds: 0
+      explanationVi: "Đáp án: ちち. 父 = bố (khi nói về bố mình)."
+      explanationEn: "Answer: ちち."
+      tags:
+      - "n5"
+      - "m1"
+      points: 1
+      mondai: "m1"
+    - id: n5m2_v07
+      type: 0
+      passageId: 
+      promptVi: "Từ trong 【 】 đọc (viết bằng hiragana) thế nào?\nつくえの 【上】に ほんが あります。"
+      promptEn: "【　】の ことばは ひらがなで どう かきますか。\nつくえの 【上】に ほんが あります。"
+      promptJa: "【　】の ことばは ひらがなで どう かきますか。\nつくえの 【上】に ほんが あります。"
+      promptReading: ""
+      choices:
+      - textVi: "した"
+        textEn: "した"
+        textJa: "した"
+      - textVi: "なか"
+        textEn: "なか"
+        textJa: "なか"
+      - textVi: "よこ"
+        textEn: "よこ"
+        textJa: "よこ"
+      - textVi: "うえ"
+        textEn: "うえ"
+        textJa: "うえ"
+      correctChoiceIndex: 3
+      acceptedAnswers: []
+      taskInstructionsVi: ""
+      taskInstructionsEn: ""
+      minWords: 0
+      timeLimitSeconds: 0
+      explanationVi: "Đáp án: うえ. 上 = trên (うえ)."
+      explanationEn: "Answer: うえ."
+      tags:
+      - "n5"
+      - "m1"
+      points: 1
+      mondai: "m1"
+    - id: n5m2_v08
+      type: 0
+      passageId: 
+      promptVi: "Từ trong 【 】 viết bằng chữ nào?\n【しろい】 くつを かいました。"
+      promptEn: "【　】の ことばは どう かきますか。\n【しろい】 くつを かいました。"
+      promptJa: "【　】の ことばは どう かきますか。\n【しろい】 くつを かいました。"
+      promptReading: ""
+      choices:
+      - textVi: "百い"
+        textEn: "百い"
+        textJa: "百い"
+      - textVi: "白い"
+        textEn: "白い"
+        textJa: "白い"
+      - textVi: "目い"
+        textEn: "目い"
+        textJa: "目い"
+      - textVi: "日い"
+        textEn: "日い"
+        textJa: "日い"
+      correctChoiceIndex: 1
+      acceptedAnswers: []
+      taskInstructionsVi: ""
+      taskInstructionsEn: ""
+      minWords: 0
+      timeLimitSeconds: 0
+      explanationVi: "Đáp án: 白い. しろい = 白い (trắng)."
+      explanationEn: "Answer: 白い."
+      tags:
+      - "n5"
+      - "m2"
+      points: 1
+      mondai: "m2"
+    - id: n5m2_v09
+      type: 0
+      passageId: 
+      promptVi: "Từ trong 【 】 viết bằng chữ nào?\nまいばん 【てれび】を みます。"
+      promptEn: "【　】の ことばは どう かきますか。\nまいばん 【てれび】を みます。"
+      promptJa: "【　】の ことばは どう かきますか。\nまいばん 【てれび】を みます。"
+      promptReading: ""
+      choices:
+      - textVi: "テレビー"
+        textEn: "テレビー"
+        textJa: "テレビー"
+      - textVi: "デレビ"
+        textEn: "デレビ"
+        textJa: "デレビ"
+      - textVi: "テルビ"
+        textEn: "テルビ"
+        textJa: "テルビ"
+      - textVi: "テレビ"
+        textEn: "テレビ"
+        textJa: "テレビ"
+      correctChoiceIndex: 3
+      acceptedAnswers: []
+      taskInstructionsVi: ""
+      taskInstructionsEn: ""
+      minWords: 0
+      timeLimitSeconds: 0
+      explanationVi: "Đáp án: テレビ. Từ ngoại lai viết katakana: テレビ."
+      explanationEn: "Answer: テレビ."
+      tags:
+      - "n5"
+      - "m2"
+      points: 1
+      mondai: "m2"
+    - id: n5m2_v10
+      type: 0
+      passageId: 
+      promptVi: "Từ trong 【 】 viết bằng chữ nào?\nなつやすみに 【やま】に のぼりました。"
+      promptEn: "【　】の ことばは どう かきますか。\nなつやすみに 【やま】に のぼりました。"
+      promptJa: "【　】の ことばは どう かきますか。\nなつやすみに 【やま】に のぼりました。"
+      promptReading: ""
+      choices:
+      - textVi: "木"
+        textEn: "木"
+        textJa: "木"
+      - textVi: "出"
+        textEn: "出"
+        textJa: "出"
+      - textVi: "山"
+        textEn: "山"
+        textJa: "山"
+      - textVi: "川"
+        textEn: "川"
+        textJa: "川"
+      correctChoiceIndex: 2
+      acceptedAnswers: []
+      taskInstructionsVi: ""
+      taskInstructionsEn: ""
+      minWords: 0
+      timeLimitSeconds: 0
+      explanationVi: "Đáp án: 山. やま = 山 (núi); 川 là かわ."
+      explanationEn: "Answer: 山."
+      tags:
+      - "n5"
+      - "m2"
+      points: 1
+      mondai: "m2"
+    - id: n5m2_v11
+      type: 0
+      passageId: 
+      promptVi: "Từ trong 【 】 viết bằng chữ nào?\n【ごご】 3じに あいましょう。"
+      promptEn: "【　】の ことばは どう かきますか。\n【ごご】 3じに あいましょう。"
+      promptJa: "【　】の ことばは どう かきますか。\n【ごご】 3じに あいましょう。"
+      promptReading: ""
+      choices:
+      - textVi: "午前"
+        textEn: "午前"
+        textJa: "午前"
+      - textVi: "牛後"
+        textEn: "牛後"
+        textJa: "牛後"
+      - textVi: "千後"
+        textEn: "千後"
+        textJa: "千後"
+      - textVi: "午後"
+        textEn: "午後"
+        textJa: "午後"
+      correctChoiceIndex: 3
+      acceptedAnswers: []
+      taskInstructionsVi: ""
+      taskInstructionsEn: ""
+      minWords: 0
+      timeLimitSeconds: 0
+      explanationVi: "Đáp án: 午後. ごご = 午後 (buổi chiều); 午前 là ごぜん."
+      explanationEn: "Answer: 午後."
+      tags:
+      - "n5"
+      - "m2"
+      points: 1
+      mondai: "m2"
+    - id: n5m2_v12
+      type: 0
+      passageId: 
+      promptVi: "Từ trong 【 】 viết bằng chữ nào?\nこの 【へや】は ひろいです。"
+      promptEn: "【　】の ことばは どう かきますか。\nこの 【へや】は ひろいです。"
+      promptJa: "【　】の ことばは どう かきますか。\nこの 【へや】は ひろいです。"
+      promptReading: ""
+      choices:
+      - textVi: "部家"
+        textEn: "部家"
+        textJa: "部家"
+      - textVi: "部屋"
+        textEn: "部屋"
+        textJa: "部屋"
+      - textVi: "剖屋"
+        textEn: "剖屋"
+        textJa: "剖屋"
+      - textVi: "都屋"
+        textEn: "都屋"
+        textJa: "都屋"
+      correctChoiceIndex: 1
+      acceptedAnswers: []
+      taskInstructionsVi: ""
+      taskInstructionsEn: ""
+      minWords: 0
+      timeLimitSeconds: 0
+      explanationVi: "Đáp án: 部屋. へや = 部屋 (căn phòng)."
+      explanationEn: "Answer: 部屋."
+      tags:
+      - "n5"
+      - "m2"
+      points: 1
+      mondai: "m2"
+    - id: n5m2_v13
+      type: 0
+      passageId: 
+      promptVi: "Điền từ thích hợp vào （ ）.\nさむいですから、まどを （　）ください。"
+      promptEn: "（　）に なにを いれますか。\nさむいですから、まどを （　）ください。"
+      promptJa: "（　）に なにを いれますか。\nさむいですから、まどを （　）ください。"
+      promptReading: ""
+      choices:
+      - textVi: "けして"
+        textEn: "けして"
+        textJa: "けして"
+      - textVi: "あけて"
+        textEn: "あけて"
+        textJa: "あけて"
+      - textVi: "つけて"
+        textEn: "つけて"
+        textJa: "つけて"
+      - textVi: "しめて"
+        textEn: "しめて"
+        textJa: "しめて"
+      correctChoiceIndex: 3
+      acceptedAnswers: []
+      taskInstructionsVi: ""
+      taskInstructionsEn: ""
+      minWords: 0
+      timeLimitSeconds: 0
+      explanationVi: "Đáp án: しめて. Trời lạnh nên đóng (しめる) cửa sổ."
+      explanationEn: "Answer: しめて."
+      tags:
+      - "n5"
+      - "m3"
+      points: 1
+      mondai: "m3"
+    - id: n5m2_v14
+      type: 0
+      passageId: 
+      promptVi: "Điền từ thích hợp vào （ ）.\nのどが かわいたので、みずを （　）。"
+      promptEn: "（　）に なにを いれますか。\nのどが かわいたので、みずを （　）。"
+      promptJa: "（　）に なにを いれますか。\nのどが かわいたので、みずを （　）。"
+      promptReading: ""
+      choices:
+      - textVi: "たべました"
+        textEn: "たべました"
+        textJa: "たべました"
+      - textVi: "はきました"
+        textEn: "はきました"
+        textJa: "はきました"
+      - textVi: "ききました"
+        textEn: "ききました"
+        textJa: "ききました"
+      - textVi: "のみました"
+        textEn: "のみました"
+        textJa: "のみました"
+      correctChoiceIndex: 3
+      acceptedAnswers: []
+      taskInstructionsVi: ""
+      taskInstructionsEn: ""
+      minWords: 0
+      timeLimitSeconds: 0
+      explanationVi: "Đáp án: のみました. Khát nước → uống (のむ)."
+      explanationEn: "Answer: のみました."
+      tags:
+      - "n5"
+      - "m3"
+      points: 1
+      mondai: "m3"
+    - id: n5m2_v15
+      type: 0
+      passageId: 
+      promptVi: "Điền từ thích hợp vào （ ）.\nわたしの へやは せまいですが、（　）です。"
+      promptEn: "（　）に なにを いれますか。\nわたしの へやは せまいですが、（　）です。"
+      promptJa: "（　）に なにを いれますか。\nわたしの へやは せまいですが、（　）です。"
+      promptReading: ""
+      choices:
+      - textVi: "ちいさい"
+        textEn: "ちいさい"
+        textJa: "ちいさい"
+      - textVi: "くらい"
+        textEn: "くらい"
+        textJa: "くらい"
+      - textVi: "せまい"
+        textEn: "せまい"
+        textJa: "せまい"
+      - textVi: "きれい"
+        textEn: "きれい"
+        textJa: "きれい"
+      correctChoiceIndex: 3
+      acceptedAnswers: []
+      taskInstructionsVi: ""
+      taskInstructionsEn: ""
+      minWords: 0
+      timeLimitSeconds: 0
+      explanationVi: "Đáp án: きれい. 「〜が」 nối hai ý trái ngược: hẹp nhưng sạch đẹp."
+      explanationEn: "Answer: きれい."
+      tags:
+      - "n5"
+      - "m3"
+      points: 1
+      mondai: "m3"
+    - id: n5m2_v16
+      type: 0
+      passageId: 
+      promptVi: "Điền từ thích hợp vào （ ）.\n「いってきます。」「（　）。」"
+      promptEn: "（　）に なにを いれますか。\n「いってきます。」「（　）。」"
+      promptJa: "（　）に なにを いれますか。\n「いってきます。」「（　）。」"
+      promptReading: ""
+      choices:
+      - textVi: "おかえりなさい"
+        textEn: "おかえりなさい"
+        textJa: "おかえりなさい"
+      - textVi: "いってらっしゃい"
+        textEn: "いってらっしゃい"
+        textJa: "いってらっしゃい"
+      - textVi: "いただきます"
+        textEn: "いただきます"
+        textJa: "いただきます"
+      - textVi: "ただいま"
+        textEn: "ただいま"
+        textJa: "ただいま"
+      correctChoiceIndex: 1
+      acceptedAnswers: []
+      taskInstructionsVi: ""
+      taskInstructionsEn: ""
+      minWords: 0
+      timeLimitSeconds: 0
+      explanationVi: "Đáp án: いってらっしゃい. Đáp lại 「いってきます」 là 「いってらっしゃい」."
+      explanationEn: "Answer: いってらっしゃい."
+      tags:
+      - "n5"
+      - "m3"
+      points: 1
+      mondai: "m3"
+    - id: n5m2_v17
+      type: 0
+      passageId: 
+      promptVi: "Điền từ thích hợp vào （ ）.\nえきまで あるいて 10（　）です。"
+      promptEn: "（　）に なにを いれますか。\nえきまで あるいて 10（　）です。"
+      promptJa: "（　）に なにを いれますか。\nえきまで あるいて 10（　）です。"
+      promptReading: ""
+      choices:
+      - textVi: "かい"
+        textEn: "かい"
+        textJa: "かい"
+      - textVi: "ほん"
+        textEn: "ほん"
+        textJa: "ほん"
+      - textVi: "じ"
+        textEn: "じ"
+        textJa: "じ"
+      - textVi: "ぷん"
+        textEn: "ぷん"
+        textJa: "ぷん"
+      correctChoiceIndex: 3
+      acceptedAnswers: []
+      taskInstructionsVi: ""
+      taskInstructionsEn: ""
+      minWords: 0
+      timeLimitSeconds: 0
+      explanationVi: "Đáp án: ぷん. 10ぷん = 10 phút."
+      explanationEn: "Answer: ぷん."
+      tags:
+      - "n5"
+      - "m3"
+      points: 1
+      mondai: "m3"
+    - id: n5m2_v18
+      type: 0
+      passageId: 
+      promptVi: "Điền từ thích hợp vào （ ）.\nあしたは やすみですから、（　）まで ねます。"
+      promptEn: "（　）に なにを いれますか。\nあしたは やすみですから、（　）まで ねます。"
+      promptJa: "（　）に なにを いれますか。\nあしたは やすみですから、（　）まで ねます。"
+      promptReading: ""
+      choices:
+      - textVi: "はやく"
+        textEn: "はやく"
+        textJa: "はやく"
+      - textVi: "すこし"
+        textEn: "すこし"
+        textJa: "すこし"
+      - textVi: "おそく"
+        textEn: "おそく"
+        textJa: "おそく"
+      - textVi: "ちかく"
+        textEn: "ちかく"
+        textJa: "ちかく"
+      correctChoiceIndex: 2
+      acceptedAnswers: []
+      taskInstructionsVi: ""
+      taskInstructionsEn: ""
+      minWords: 0
+      timeLimitSeconds: 0
+      explanationVi: "Đáp án: おそく. おそくまで ねる = ngủ đến muộn."
+      explanationEn: "Answer: おそく."
+      tags:
+      - "n5"
+      - "m3"
+      points: 1
+      mondai: "m3"
+    - id: n5m2_v19
+      type: 0
+      passageId: 
+      promptVi: "Chọn câu có nghĩa gần giống câu trong 【 】.\n【この へやは くらいです。】"
+      promptEn: "【　】の ぶんと だいたい おなじ いみの ぶんは どれですか。\n【この へやは くらいです。】"
+      promptJa: "【　】の ぶんと だいたい おなじ いみの ぶんは どれですか。\n【この へやは くらいです。】"
+      promptReading: ""
+      choices:
+      - textVi: "この へやは あかるいです。"
+        textEn: "この へやは あかるいです。"
+        textJa: "この へやは あかるいです。"
+      - textVi: "この へやは あかるく ありません。"
+        textEn: "この へやは あかるく ありません。"
+        textJa: "この へやは あかるく ありません。"
+      - textVi: "この へやは ひろく ありません。"
+        textEn: "この へやは ひろく ありません。"
+        textJa: "この へやは ひろく ありません。"
+      - textVi: "この へやは しずかです。"
+        textEn: "この へやは しずかです。"
+        textJa: "この へやは しずかです。"
+      correctChoiceIndex: 1
+      acceptedAnswers: []
+      taskInstructionsVi: ""
+      taskInstructionsEn: ""
+      minWords: 0
+      timeLimitSeconds: 0
+      explanationVi: "Đáp án: この へやは あかるく ありません。. くらい (tối) = không sáng (あかるくない)."
+      explanationEn: "Answer: この へやは あかるく ありません。."
+      tags:
+      - "n5"
+      - "m4"
+      points: 1
+      mondai: "m4"
+    - id: n5m2_v20
+      type: 0
+      passageId: 
+      promptVi: "Chọn câu có nghĩa gần giống câu trong 【 】.\n【わたしは まいばん ふろに はいります。】"
+      promptEn: "【　】の ぶんと だいたい おなじ いみの ぶんは どれですか。\n【わたしは まいばん ふろに はいります。】"
+      promptJa: "【　】の ぶんと だいたい おなじ いみの ぶんは どれですか。\n【わたしは まいばん ふろに はいります。】"
+      promptReading: ""
+      choices:
+      - textVi: "わたしは よる ときどき ふろに はいります。"
+        textEn: "わたしは よる ときどき ふろに はいります。"
+        textJa: "わたしは よる ときどき ふろに はいります。"
+      - textVi: "わたしは あさ いつも ふろに はいります。"
+        textEn: "わたしは あさ いつも ふろに はいります。"
+        textJa: "わたしは あさ いつも ふろに はいります。"
+      - textVi: "わたしは あさ ときどき ふろに はいります。"
+        textEn: "わたしは あさ ときどき ふろに はいります。"
+        textJa: "わたしは あさ ときどき ふろに はいります。"
+      - textVi: "わたしは よる いつも ふろに はいります。"
+        textEn: "わたしは よる いつも ふろに はいります。"
+        textJa: "わたしは よる いつも ふろに はいります。"
+      correctChoiceIndex: 3
+      acceptedAnswers: []
+      taskInstructionsVi: ""
+      taskInstructionsEn: ""
+      minWords: 0
+      timeLimitSeconds: 0
+      explanationVi: "Đáp án: わたしは よる いつも ふろに はいります。. まいばん = mỗi tối = よる いつも."
+      explanationEn: "Answer: わたしは よる いつも ふろに はいります。."
+      tags:
+      - "n5"
+      - "m4"
+      points: 1
+      mondai: "m4"
+    - id: n5m2_v21
+      type: 0
+      passageId: 
+      promptVi: "Chọn câu có nghĩa gần giống câu trong 【 】.\n【たなかさんは りょうりが じょうずです。】"
+      promptEn: "【　】の ぶんと だいたい おなじ いみの ぶんは どれですか。\n【たなかさんは りょうりが じょうずです。】"
+      promptJa: "【　】の ぶんと だいたい おなじ いみの ぶんは どれですか。\n【たなかさんは りょうりが じょうずです。】"
+      promptReading: ""
+      choices:
+      - textVi: "たなかさんは りょうりが へたです。"
+        textEn: "たなかさんは りょうりが へたです。"
+        textJa: "たなかさんは りょうりが へたです。"
+      - textVi: "たなかさんは りょうりを つくるのが じょうずです。"
+        textEn: "たなかさんは りょうりを つくるのが じょうずです。"
+        textJa: "たなかさんは りょうりを つくるのが じょうずです。"
+      - textVi: "たなかさんは りょうりが きらいです。"
+        textEn: "たなかさんは りょうりが きらいです。"
+        textJa: "たなかさんは りょうりが きらいです。"
+      - textVi: "たなかさんは りょうりを あまり つくりません。"
+        textEn: "たなかさんは りょうりを あまり つくりません。"
+        textJa: "たなかさんは りょうりを あまり つくりません。"
+      correctChoiceIndex: 1
+      acceptedAnswers: []
+      taskInstructionsVi: ""
+      taskInstructionsEn: ""
+      minWords: 0
+      timeLimitSeconds: 0
+      explanationVi: "Đáp án: たなかさんは りょうりを つくるのが じょうずです。. りょうりが じょうず = nấu ăn giỏi."
+      explanationEn: "Answer: たなかさんは りょうりを つくるのが じょうずです。."
+      tags:
+      - "n5"
+      - "m4"
+      points: 1
+      mondai: "m4"
+  - id: n5m2_grammar
+    type: 1
+    titleVi: "Ngữ pháp · Đọc hiểu (文法・読解) · 40 phút"
+    titleEn: "Grammar · Reading · 40 min"
+    titleJa: "言語知識（文法）・読解"
+    timeLimitSeconds: 2400
+    scoreScaleMax: 60
+    scoreGroup: "gengo"
+    mondai:
+    - id: "m1"
+      titleJa: "もんだい1　文法形式"
+      titleVi: "chọn ngữ pháp"
+    - id: "m2"
+      titleJa: "もんだい2　文の組み立て"
+      titleVi: "sắp xếp câu ★"
+    - id: "m3"
+      titleJa: "もんだい3　文章の文法"
+      titleVi: "ngữ pháp trong đoạn văn"
+    - id: "m4"
+      titleJa: "もんだい4　内容理解（短文）"
+      titleVi: "đọc hiểu đoạn ngắn"
+    - id: "m5"
+      titleJa: "もんだい5　内容理解（中文）"
+      titleVi: "đọc hiểu đoạn vừa"
+    - id: "m6"
+      titleJa: "もんだい6　情報検索"
+      titleVi: "tìm thông tin"
+    passages:
+    - id: p_m3
+      titleVi: "もんだい3 · Đoạn văn của du học sinh"
+      titleEn: "もんだい3"
+      titleJa: "もんだい3　ぶんしょう"
+      bodyVi: "わたしは 先週の 日よう日、ともだちと うみへ 行きました。うみは とても きれい （35）。わたしたちは およいだり、すなで あそんだり （36）。うみは とおいですから、でんしゃ （37） 2じかん かかりました。とても たのしかったです。こんどは かぞく （38） 行きたいです。"
+      bodyEn: "わたしは 先週の 日よう日、ともだちと うみへ 行きました。うみは とても きれい （35）。わたしたちは およいだり、すなで あそんだり （36）。うみは とおいですから、でんしゃ （37） 2じかん かかりました。とても たのしかったです。こんどは かぞく （38） 行きたいです。"
+      bodyJa: "わたしは 先週の 日よう日、ともだちと うみへ 行きました。うみは とても きれい （35）。わたしたちは およいだり、すなで あそんだり （36）。うみは とおいですから、でんしゃ （37） 2じかん かかりました。とても たのしかったです。こんどは かぞく （38） 行きたいです。"
+      bodyReading: ""
+      maxPlays: 0
+    - id: p_m4a
+      titleVi: "もんだい4 (1) · Lời nhắn"
+      titleEn: "もんだい4 (1)"
+      titleJa: "もんだい4 (1)　メモ"
+      bodyVi: "マリアさんへ\nきょうは 5じに かえります。れいぞうこに ケーキが あります。たべても いいですよ。でも、ぎゅうにゅうは のまないで ください。あしたの あさ つかいます。\nはは"
+      bodyEn: ""
+      bodyJa: "マリアさんへ\nきょうは 5じに かえります。れいぞうこに ケーキが あります。たべても いいですよ。でも、ぎゅうにゅうは のまないで ください。あしたの あさ つかいます。\nはは"
+      bodyReading: ""
+      maxPlays: 0
+    - id: p_m4b
+      titleVi: "もんだい4 (2) · Thư điện tử"
+      titleEn: "もんだい4 (2)"
+      titleJa: "もんだい4 (2)　メール"
+      bodyVi: "やまださん\nあしたの じゅぎょうは 10じからでしたが、11じからに なりました。きょうしつも 3がいから 5かいに かわりました。きょうかしょを わすれないで ください。\n田中"
+      bodyEn: ""
+      bodyJa: "やまださん\nあしたの じゅぎょうは 10じからでしたが、11じからに なりました。きょうしつも 3がいから 5かいに かわりました。きょうかしょを わすれないで ください。\n田中"
+      bodyReading: ""
+      maxPlays: 0
+    - id: p_m5
+      titleVi: "もんだい5 · Phòng của tôi"
+      titleEn: "もんだい5"
+      titleJa: "もんだい5　わたしの へや"
+      bodyVi: "わたしは 先月から アパートに すんで います。へやは 一つだけで、あまり ひろく ありませんが、まどが 大きくて あかるいです。えきから あるいて 5ふんですから、とても べんりです。\nでも、ちかくに スーパーが ありません。かいものに 行く ときは、バスに のります。ときどき たいへんです。らいねんは スーパーの ちかくの へやに ひっこしたいです。"
+      bodyEn: ""
+      bodyJa: "わたしは 先月から アパートに すんで います。へやは 一つだけで、あまり ひろく ありませんが、まどが 大きくて あかるいです。えきから あるいて 5ふんですから、とても べんりです。\nでも、ちかくに スーパーが ありません。かいものに 行く ときは、バスに のります。ときどき たいへんです。らいねんは スーパーの ちかくの へやに ひっこしたいです。"
+      bodyReading: ""
+      maxPlays: 0
+    - id: p_m6
+      titleVi: "もんだい6 · Bảng giờ mở cửa hồ bơi"
+      titleEn: "もんだい6"
+      titleJa: "もんだい6　ひばりスポーツセンター　プール"
+      bodyVi: "月・水・金　9:00〜17:00　おとな 500えん／こども 200えん\n火・木　　13:00〜21:00　おとな 500えん／こども 200えん\n土・日　　9:00〜21:00　おとな 700えん／こども 300えん\n※ まいつき さいごの 月よう日は やすみです。"
+      bodyEn: ""
+      bodyJa: "月・水・金　9:00〜17:00　おとな 500えん／こども 200えん\n火・木　　13:00〜21:00　おとな 500えん／こども 200えん\n土・日　　9:00〜21:00　おとな 700えん／こども 300えん\n※ まいつき さいごの 月よう日は やすみです。"
+      bodyReading: ""
+      maxPlays: 0
+    questions:
+    - id: n5m2_g01
+      type: 0
+      passageId: 
+      promptVi: "Điền vào （ ） phương án đúng.\nわたしは まいにち でんしゃ（　）がっこうへ 行きます。"
+      promptEn: "（　）に 何を 入れますか。\nわたしは まいにち でんしゃ（　）がっこうへ 行きます。"
+      promptJa: "（　）に 何を 入れますか。\nわたしは まいにち でんしゃ（　）がっこうへ 行きます。"
+      promptReading: ""
+      choices:
+      - textVi: "に"
+        textEn: "に"
+        textJa: "に"
+      - textVi: "を"
+        textEn: "を"
+        textJa: "を"
+      - textVi: "が"
+        textEn: "が"
+        textJa: "が"
+      - textVi: "で"
+        textEn: "で"
+        textJa: "で"
+      correctChoiceIndex: 3
+      acceptedAnswers: []
+      taskInstructionsVi: ""
+      taskInstructionsEn: ""
+      minWords: 0
+      timeLimitSeconds: 0
+      explanationVi: "Đáp án: で. で chỉ phương tiện: đi bằng tàu."
+      explanationEn: "Answer: で."
+      tags:
+      - "n5"
+      - "m1"
+      points: 1
+      mondai: "m1"
+    - id: n5m2_g02
+      type: 0
+      passageId: 
+      promptVi: "Điền vào （ ） phương án đúng.\nつくえの 下に ねこ（　）います。"
+      promptEn: "（　）に 何を 入れますか。\nつくえの 下に ねこ（　）います。"
+      promptJa: "（　）に 何を 入れますか。\nつくえの 下に ねこ（　）います。"
+      promptReading: ""
+      choices:
+      - textVi: "を"
+        textEn: "を"
+        textJa: "を"
+      - textVi: "が"
+        textEn: "が"
+        textJa: "が"
+      - textVi: "へ"
+        textEn: "へ"
+        textJa: "へ"
+      - textVi: "で"
+        textEn: "で"
+        textJa: "で"
+      correctChoiceIndex: 1
+      acceptedAnswers: []
+      taskInstructionsVi: ""
+      taskInstructionsEn: ""
+      minWords: 0
+      timeLimitSeconds: 0
+      explanationVi: "Đáp án: が. 〜に 〜が います: có (con gì) ở đâu."
+      explanationEn: "Answer: が."
+      tags:
+      - "n5"
+      - "m1"
+      points: 1
+      mondai: "m1"
+    - id: n5m2_g03
+      type: 0
+      passageId: 
+      promptVi: "Điền vào （ ） phương án đúng.\nA「この ケーキ、（　）ですか。」\nB「300えんです。」"
+      promptEn: "（　）に 何を 入れますか。\nA「この ケーキ、（　）ですか。」\nB「300えんです。」"
+      promptJa: "（　）に 何を 入れますか。\nA「この ケーキ、（　）ですか。」\nB「300えんです。」"
+      promptReading: ""
+      choices:
+      - textVi: "いくつ"
+        textEn: "いくつ"
+        textJa: "いくつ"
+      - textVi: "いくら"
+        textEn: "いくら"
+        textJa: "いくら"
+      - textVi: "なん"
+        textEn: "なん"
+        textJa: "なん"
+      - textVi: "どれ"
+        textEn: "どれ"
+        textJa: "どれ"
+      correctChoiceIndex: 1
+      acceptedAnswers: []
+      taskInstructionsVi: ""
+      taskInstructionsEn: ""
+      minWords: 0
+      timeLimitSeconds: 0
+      explanationVi: "Đáp án: いくら. Hỏi giá: いくらですか."
+      explanationEn: "Answer: いくら."
+      tags:
+      - "n5"
+      - "m1"
+      points: 1
+      mondai: "m1"
+    - id: n5m2_g04
+      type: 0
+      passageId: 
+      promptVi: "Điền vào （ ） phương án đúng.\n日本語は むずかしいです（　）、おもしろいです。"
+      promptEn: "（　）に 何を 入れますか。\n日本語は むずかしいです（　）、おもしろいです。"
+      promptJa: "（　）に 何を 入れますか。\n日本語は むずかしいです（　）、おもしろいです。"
+      promptReading: ""
+      choices:
+      - textVi: "や"
+        textEn: "や"
+        textJa: "や"
+      - textVi: "から"
+        textEn: "から"
+        textJa: "から"
+      - textVi: "と"
+        textEn: "と"
+        textJa: "と"
+      - textVi: "が"
+        textEn: "が"
+        textJa: "が"
+      correctChoiceIndex: 3
+      acceptedAnswers: []
+      taskInstructionsVi: ""
+      taskInstructionsEn: ""
+      minWords: 0
+      timeLimitSeconds: 0
+      explanationVi: "Đáp án: が. が nối hai vế trái ngược: khó nhưng thú vị."
+      explanationEn: "Answer: が."
+      tags:
+      - "n5"
+      - "m1"
+      points: 1
+      mondai: "m1"
+    - id: n5m2_g05
+      type: 0
+      passageId: 
+      promptVi: "Điền vào （ ） phương án đúng.\nきのうは あたま（　）いたかったです。"
+      promptEn: "（　）に 何を 入れますか。\nきのうは あたま（　）いたかったです。"
+      promptJa: "（　）に 何を 入れますか。\nきのうは あたま（　）いたかったです。"
+      promptReading: ""
+      choices:
+      - textVi: "で"
+        textEn: "で"
+        textJa: "で"
+      - textVi: "を"
+        textEn: "を"
+        textJa: "を"
+      - textVi: "が"
+        textEn: "が"
+        textJa: "が"
+      - textVi: "に"
+        textEn: "に"
+        textJa: "に"
+      correctChoiceIndex: 2
+      acceptedAnswers: []
+      taskInstructionsVi: ""
+      taskInstructionsEn: ""
+      minWords: 0
+      timeLimitSeconds: 0
+      explanationVi: "Đáp án: が. 〜が いたい: (chỗ nào) đau."
+      explanationEn: "Answer: が."
+      tags:
+      - "n5"
+      - "m1"
+      points: 1
+      mondai: "m1"
+    - id: n5m2_g06
+      type: 0
+      passageId: 
+      promptVi: "Điền vào （ ） phương án đúng.\nしゅくだいを（　）から、あそびに 行きます。"
+      promptEn: "（　）に 何を 入れますか。\nしゅくだいを（　）から、あそびに 行きます。"
+      promptJa: "（　）に 何を 入れますか。\nしゅくだいを（　）から、あそびに 行きます。"
+      promptReading: ""
+      choices:
+      - textVi: "して"
+        textEn: "して"
+        textJa: "して"
+      - textVi: "しない"
+        textEn: "しない"
+        textJa: "しない"
+      - textVi: "する"
+        textEn: "する"
+        textJa: "する"
+      - textVi: "した"
+        textEn: "した"
+        textJa: "した"
+      correctChoiceIndex: 0
+      acceptedAnswers: []
+      taskInstructionsVi: ""
+      taskInstructionsEn: ""
+      minWords: 0
+      timeLimitSeconds: 0
+      explanationVi: "Đáp án: して. Vて から = sau khi làm V."
+      explanationEn: "Answer: して."
+      tags:
+      - "n5"
+      - "m1"
+      points: 1
+      mondai: "m1"
+    - id: n5m2_g07
+      type: 0
+      passageId: 
+      promptVi: "Điền vào （ ） phương án đúng.\nこの みせは（　）、やすいです。"
+      promptEn: "（　）に 何を 入れますか。\nこの みせは（　）、やすいです。"
+      promptJa: "（　）に 何を 入れますか。\nこの みせは（　）、やすいです。"
+      promptReading: ""
+      choices:
+      - textVi: "しずかだ"
+        textEn: "しずかだ"
+        textJa: "しずかだ"
+      - textVi: "しずかで"
+        textEn: "しずかで"
+        textJa: "しずかで"
+      - textVi: "しずかに"
+        textEn: "しずかに"
+        textJa: "しずかに"
+      - textVi: "しずかの"
+        textEn: "しずかの"
+        textJa: "しずかの"
+      correctChoiceIndex: 1
+      acceptedAnswers: []
+      taskInstructionsVi: ""
+      taskInstructionsEn: ""
+      minWords: 0
+      timeLimitSeconds: 0
+      explanationVi: "Đáp án: しずかで. Tính từ な nối câu bằng で: しずかで やすい."
+      explanationEn: "Answer: しずかで."
+      tags:
+      - "n5"
+      - "m1"
+      points: 1
+      mondai: "m1"
+    - id: n5m2_g08
+      type: 0
+      passageId: 
+      promptVi: "Điền vào （ ） phương án đúng.\nあした ともだちと えいがを みに（　）。"
+      promptEn: "（　）に 何を 入れますか。\nあした ともだちと えいがを みに（　）。"
+      promptJa: "（　）に 何を 入れますか。\nあした ともだちと えいがを みに（　）。"
+      promptReading: ""
+      choices:
+      - textVi: "見ます"
+        textEn: "見ます"
+        textJa: "見ます"
+      - textVi: "会います"
+        textEn: "会います"
+        textJa: "会います"
+      - textVi: "行きます"
+        textEn: "行きます"
+        textJa: "行きます"
+      - textVi: "買います"
+        textEn: "買います"
+        textJa: "買います"
+      correctChoiceIndex: 2
+      acceptedAnswers: []
+      taskInstructionsVi: ""
+      taskInstructionsEn: ""
+      minWords: 0
+      timeLimitSeconds: 0
+      explanationVi: "Đáp án: 行きます. Vます(bỏ ます)に 行く: đi để làm gì."
+      explanationEn: "Answer: 行きます."
+      tags:
+      - "n5"
+      - "m1"
+      points: 1
+      mondai: "m1"
+    - id: n5m2_g09
+      type: 0
+      passageId: 
+      promptVi: "Điền vào （ ） phương án đúng.\nA「いっしょに おちゃを のみませんか。」\nB「ええ、（　）。」"
+      promptEn: "（　）に 何を 入れますか。\nA「いっしょに おちゃを のみませんか。」\nB「ええ、（　）。」"
+      promptJa: "（　）に 何を 入れますか。\nA「いっしょに おちゃを のみませんか。」\nB「ええ、（　）。」"
+      promptReading: ""
+      choices:
+      - textVi: "のみました"
+        textEn: "のみました"
+        textJa: "のみました"
+      - textVi: "のみましょう"
+        textEn: "のみましょう"
+        textJa: "のみましょう"
+      - textVi: "のんで いません"
+        textEn: "のんで いません"
+        textJa: "のんで いません"
+      - textVi: "のみません"
+        textEn: "のみません"
+        textJa: "のみません"
+      correctChoiceIndex: 1
+      acceptedAnswers: []
+      taskInstructionsVi: ""
+      taskInstructionsEn: ""
+      minWords: 0
+      timeLimitSeconds: 0
+      explanationVi: "Đáp án: のみましょう. Nhận lời mời 〜ませんか → 〜ましょう."
+      explanationEn: "Answer: のみましょう."
+      tags:
+      - "n5"
+      - "m1"
+      points: 1
+      mondai: "m1"
+    - id: n5m2_g10
+      type: 0
+      passageId: 
+      promptVi: "Sắp xếp các phần thành câu đúng; chọn phần đứng ở vị trí ★.\nあそこ ＿＿ ＿＿ ★ ＿＿ やまださんです。"
+      promptEn: "★ に 入る ものは どれですか。\nあそこ ＿＿ ＿＿ ★ ＿＿ やまださんです。"
+      promptJa: "★ に 入る ものは どれですか。\nあそこ ＿＿ ＿＿ ★ ＿＿ やまださんです。"
+      promptReading: ""
+      choices:
+      - textVi: "ないて"
+        textEn: "ないて"
+        textJa: "ないて"
+      - textVi: "で"
+        textEn: "で"
+        textJa: "で"
+      - textVi: "人が"
+        textEn: "人が"
+        textJa: "人が"
+      - textVi: "いる"
+        textEn: "いる"
+        textJa: "いる"
+      correctChoiceIndex: 3
+      acceptedAnswers: []
+      taskInstructionsVi: ""
+      taskInstructionsEn: ""
+      minWords: 0
+      timeLimitSeconds: 0
+      explanationVi: "Đáp án: いる. あそこで ないて いる 人が やまださんです → ★ = いる."
+      explanationEn: "Answer: いる."
+      tags:
+      - "n5"
+      - "m2"
+      points: 1
+      mondai: "m2"
+    - id: n5m2_g11
+      type: 0
+      passageId: 
+      promptVi: "Sắp xếp các phần thành câu đúng; chọn phần đứng ở vị trí ★.\nわたしは ＿＿ ＿＿ ★ ＿＿ すきです。"
+      promptEn: "★ に 入る ものは どれですか。\nわたしは ＿＿ ＿＿ ★ ＿＿ すきです。"
+      promptJa: "★ に 入る ものは どれですか。\nわたしは ＿＿ ＿＿ ★ ＿＿ すきです。"
+      promptReading: ""
+      choices:
+      - textVi: "あまい"
+        textEn: "あまい"
+        textJa: "あまい"
+      - textVi: "ものを"
+        textEn: "ものを"
+        textJa: "ものを"
+      - textVi: "たべる"
+        textEn: "たべる"
+        textJa: "たべる"
+      - textVi: "のが"
+        textEn: "のが"
+        textJa: "のが"
+      correctChoiceIndex: 2
+      acceptedAnswers: []
+      taskInstructionsVi: ""
+      taskInstructionsEn: ""
+      minWords: 0
+      timeLimitSeconds: 0
+      explanationVi: "Đáp án: たべる. わたしは あまい ものを たべる のが すきです → ★ = たべる."
+      explanationEn: "Answer: たべる."
+      tags:
+      - "n5"
+      - "m2"
+      points: 1
+      mondai: "m2"
+    - id: n5m2_g12
+      type: 0
+      passageId: 
+      promptVi: "Sắp xếp các phần thành câu đúng; chọn phần đứng ở vị trí ★.\nきのう ＿＿ ＿＿ ★ ＿＿ かいました。"
+      promptEn: "★ に 入る ものは どれですか。\nきのう ＿＿ ＿＿ ★ ＿＿ かいました。"
+      promptJa: "★ に 入る ものは どれですか。\nきのう ＿＿ ＿＿ ★ ＿＿ かいました。"
+      promptReading: ""
+      choices:
+      - textVi: "デパートで"
+        textEn: "デパートで"
+        textJa: "デパートで"
+      - textVi: "あかい"
+        textEn: "あかい"
+        textJa: "あかい"
+      - textVi: "セーターを"
+        textEn: "セーターを"
+        textJa: "セーターを"
+      - textVi: "ははと"
+        textEn: "ははと"
+        textJa: "ははと"
+      correctChoiceIndex: 1
+      acceptedAnswers: []
+      taskInstructionsVi: ""
+      taskInstructionsEn: ""
+      minWords: 0
+      timeLimitSeconds: 0
+      explanationVi: "Đáp án: あかい. きのう ははと デパートで あかい セーターを かいました → ★ = あかい."
+      explanationEn: "Answer: あかい."
+      tags:
+      - "n5"
+      - "m2"
+      points: 1
+      mondai: "m2"
+    - id: n5m2_g13
+      type: 0
+      passageId: 
+      promptVi: "Sắp xếp các phần thành câu đúng; chọn phần đứng ở vị trí ★.\nそれは ＿＿ ＿＿ ★ ＿＿ です。"
+      promptEn: "★ に 入る ものは どれですか。\nそれは ＿＿ ＿＿ ★ ＿＿ です。"
+      promptJa: "★ に 入る ものは どれですか。\nそれは ＿＿ ＿＿ ★ ＿＿ です。"
+      promptReading: ""
+      choices:
+      - textVi: "ほん"
+        textEn: "ほん"
+        textJa: "ほん"
+      - textVi: "かった"
+        textEn: "かった"
+        textJa: "かった"
+      - textVi: "きのう"
+        textEn: "きのう"
+        textJa: "きのう"
+      - textVi: "わたしが"
+        textEn: "わたしが"
+        textJa: "わたしが"
+      correctChoiceIndex: 1
+      acceptedAnswers: []
+      taskInstructionsVi: ""
+      taskInstructionsEn: ""
+      minWords: 0
+      timeLimitSeconds: 0
+      explanationVi: "Đáp án: かった. それは わたしが きのう かった ほん です → ★ = かった."
+      explanationEn: "Answer: かった."
+      tags:
+      - "n5"
+      - "m2"
+      points: 1
+      mondai: "m2"
+    - id: n5m2_g14
+      type: 0
+      passageId: p_m3
+      promptVi: "Đọc đoạn văn, chọn từ điền vào chỗ trống.\n（35）"
+      promptEn: "ぶんしょうの いみを かんがえて、（　）に 入る ものを えらんで ください。\n（35）"
+      promptJa: "ぶんしょうの いみを かんがえて、（　）に 入る ものを えらんで ください。\n（35）"
+      promptReading: ""
+      choices:
+      - textVi: "でした"
+        textEn: "でした"
+        textJa: "でした"
+      - textVi: "だった"
+        textEn: "だった"
+        textJa: "だった"
+      - textVi: "です"
+        textEn: "です"
+        textJa: "です"
+      - textVi: "じゃありません"
+        textEn: "じゃありません"
+        textJa: "じゃありません"
+      correctChoiceIndex: 0
+      acceptedAnswers: []
+      taskInstructionsVi: ""
+      taskInstructionsEn: ""
+      minWords: 0
+      timeLimitSeconds: 0
+      explanationVi: "Đáp án: でした. Cả đoạn ở thì quá khứ lịch sự: きれいでした."
+      explanationEn: "Answer: でした."
+      tags:
+      - "n5"
+      - "m3"
+      points: 1
+      mondai: "m3"
+    - id: n5m2_g15
+      type: 0
+      passageId: p_m3
+      promptVi: "Đọc đoạn văn, chọn từ điền vào chỗ trống.\n（36）"
+      promptEn: "ぶんしょうの いみを かんがえて、（　）に 入る ものを えらんで ください。\n（36）"
+      promptJa: "ぶんしょうの いみを かんがえて、（　）に 入る ものを えらんで ください。\n（36）"
+      promptReading: ""
+      choices:
+      - textVi: "ありました"
+        textEn: "ありました"
+        textJa: "ありました"
+      - textVi: "しました"
+        textEn: "しました"
+        textJa: "しました"
+      - textVi: "いきました"
+        textEn: "いきました"
+        textJa: "いきました"
+      - textVi: "なりました"
+        textEn: "なりました"
+        textJa: "なりました"
+      correctChoiceIndex: 1
+      acceptedAnswers: []
+      taskInstructionsVi: ""
+      taskInstructionsEn: ""
+      minWords: 0
+      timeLimitSeconds: 0
+      explanationVi: "Đáp án: しました. 〜たり 〜たり します: liệt kê hoạt động."
+      explanationEn: "Answer: しました."
+      tags:
+      - "n5"
+      - "m3"
+      points: 1
+      mondai: "m3"
+    - id: n5m2_g16
+      type: 0
+      passageId: p_m3
+      promptVi: "Đọc đoạn văn, chọn từ điền vào chỗ trống.\n（37）"
+      promptEn: "ぶんしょうの いみを かんがえて、（　）に 入る ものを えらんで ください。\n（37）"
+      promptJa: "ぶんしょうの いみを かんがえて、（　）に 入る ものを えらんで ください。\n（37）"
+      promptReading: ""
+      choices:
+      - textVi: "に"
+        textEn: "に"
+        textJa: "に"
+      - textVi: "で"
+        textEn: "で"
+        textJa: "で"
+      - textVi: "を"
+        textEn: "を"
+        textJa: "を"
+      - textVi: "と"
+        textEn: "と"
+        textJa: "と"
+      correctChoiceIndex: 1
+      acceptedAnswers: []
+      taskInstructionsVi: ""
+      taskInstructionsEn: ""
+      minWords: 0
+      timeLimitSeconds: 0
+      explanationVi: "Đáp án: で. で chỉ phương tiện: でんしゃで."
+      explanationEn: "Answer: で."
+      tags:
+      - "n5"
+      - "m3"
+      points: 1
+      mondai: "m3"
+    - id: n5m2_g17
+      type: 0
+      passageId: p_m3
+      promptVi: "Đọc đoạn văn, chọn từ điền vào chỗ trống.\n（38）"
+      promptEn: "ぶんしょうの いみを かんがえて、（　）に 入る ものを えらんで ください。\n（38）"
+      promptJa: "ぶんしょうの いみを かんがえて、（　）に 入る ものを えらんで ください。\n（38）"
+      promptReading: ""
+      choices:
+      - textVi: "が"
+        textEn: "が"
+        textJa: "が"
+      - textVi: "へ"
+        textEn: "へ"
+        textJa: "へ"
+      - textVi: "と"
+        textEn: "と"
+        textJa: "と"
+      - textVi: "を"
+        textEn: "を"
+        textJa: "を"
+      correctChoiceIndex: 2
+      acceptedAnswers: []
+      taskInstructionsVi: ""
+      taskInstructionsEn: ""
+      minWords: 0
+      timeLimitSeconds: 0
+      explanationVi: "Đáp án: と. 〜と 行く: đi cùng ai."
+      explanationEn: "Answer: と."
+      tags:
+      - "n5"
+      - "m3"
+      points: 1
+      mondai: "m3"
+    - id: n5m2_g18
+      type: 0
+      passageId: p_m4a
+      promptVi: "Đọc và trả lời câu hỏi.\nマリアさんは 何を しては いけませんか。"
+      promptEn: "しつもんに こたえて ください。\nマリアさんは 何を しては いけませんか。"
+      promptJa: "しつもんに こたえて ください。\nマリアさんは 何を しては いけませんか。"
+      promptReading: ""
+      choices:
+      - textVi: "5じに かえる"
+        textEn: "5じに かえる"
+        textJa: "5じに かえる"
+      - textVi: "ケーキを たべる"
+        textEn: "ケーキを たべる"
+        textJa: "ケーキを たべる"
+      - textVi: "ぎゅうにゅうを のむ"
+        textEn: "ぎゅうにゅうを のむ"
+        textJa: "ぎゅうにゅうを のむ"
+      - textVi: "あさごはんを つくる"
+        textEn: "あさごはんを つくる"
+        textJa: "あさごはんを つくる"
+      correctChoiceIndex: 2
+      acceptedAnswers: []
+      taskInstructionsVi: ""
+      taskInstructionsEn: ""
+      minWords: 0
+      timeLimitSeconds: 0
+      explanationVi: "Đáp án: ぎゅうにゅうを のむ. 「ぎゅうにゅうは のまないで ください」: không được uống sữa."
+      explanationEn: "Answer: ぎゅうにゅうを のむ."
+      tags:
+      - "n5"
+      - "m4"
+      points: 1
+      mondai: "m4"
+    - id: n5m2_g19
+      type: 0
+      passageId: p_m4b
+      promptVi: "Đọc và trả lời câu hỏi.\nあしたの じゅぎょうは どう なりましたか。"
+      promptEn: "しつもんに こたえて ください。\nあしたの じゅぎょうは どう なりましたか。"
+      promptJa: "しつもんに こたえて ください。\nあしたの じゅぎょうは どう なりましたか。"
+      promptReading: ""
+      choices:
+      - textVi: "11じから 3がいの きょうしつで あります"
+        textEn: "11じから 3がいの きょうしつで あります"
+        textJa: "11じから 3がいの きょうしつで あります"
+      - textVi: "11じから 5かいの きょうしつで あります"
+        textEn: "11じから 5かいの きょうしつで あります"
+        textJa: "11じから 5かいの きょうしつで あります"
+      - textVi: "10じから 5かいの きょうしつで あります"
+        textEn: "10じから 5かいの きょうしつで あります"
+        textJa: "10じから 5かいの きょうしつで あります"
+      - textVi: "10じから 3がいの きょうしつで あります"
+        textEn: "10じから 3がいの きょうしつで あります"
+        textJa: "10じから 3がいの きょうしつで あります"
+      correctChoiceIndex: 1
+      acceptedAnswers: []
+      taskInstructionsVi: ""
+      taskInstructionsEn: ""
+      minWords: 0
+      timeLimitSeconds: 0
+      explanationVi: "Đáp án: 11じから 5かいの きょうしつで あります. Giờ đổi sang 11 giờ, phòng chuyển lên tầng 5."
+      explanationEn: "Answer: 11じから 5かいの きょうしつで あります."
+      tags:
+      - "n5"
+      - "m4"
+      points: 1
+      mondai: "m4"
+    - id: n5m2_g20
+      type: 0
+      passageId: p_m5
+      promptVi: "Đọc và trả lời câu hỏi.\nこの 人の へやは どんな へやですか。"
+      promptEn: "しつもんに こたえて ください。\nこの 人の へやは どんな へやですか。"
+      promptJa: "しつもんに こたえて ください。\nこの 人の へやは どんな へやですか。"
+      promptReading: ""
+      choices:
+      - textVi: "くらいが、ひろい へや"
+        textEn: "くらいが、ひろい へや"
+        textJa: "くらいが、ひろい へや"
+      - textVi: "ひろくて あかるい へや"
+        textEn: "ひろくて あかるい へや"
+        textJa: "ひろくて あかるい へや"
+      - textVi: "ひろく ないが、あかるい へや"
+        textEn: "ひろく ないが、あかるい へや"
+        textJa: "ひろく ないが、あかるい へや"
+      - textVi: "せまくて くらい へや"
+        textEn: "せまくて くらい へや"
+        textJa: "せまくて くらい へや"
+      correctChoiceIndex: 2
+      acceptedAnswers: []
+      taskInstructionsVi: ""
+      taskInstructionsEn: ""
+      minWords: 0
+      timeLimitSeconds: 0
+      explanationVi: "Đáp án: ひろく ないが、あかるい へや. あまり ひろく ありませんが、… あかるいです."
+      explanationEn: "Answer: ひろく ないが、あかるい へや."
+      tags:
+      - "n5"
+      - "m5"
+      points: 1
+      mondai: "m5"
+    - id: n5m2_g21
+      type: 0
+      passageId: p_m5
+      promptVi: "Đọc và trả lời câu hỏi.\nこの 人は どうして ひっこしたいですか。"
+      promptEn: "しつもんに こたえて ください。\nこの 人は どうして ひっこしたいですか。"
+      promptJa: "しつもんに こたえて ください。\nこの 人は どうして ひっこしたいですか。"
+      promptReading: ""
+      choices:
+      - textVi: "へやが せまいから"
+        textEn: "へやが せまいから"
+        textJa: "へやが せまいから"
+      - textVi: "ちかくに スーパーが ないから"
+        textEn: "ちかくに スーパーが ないから"
+        textJa: "ちかくに スーパーが ないから"
+      - textVi: "へやが くらいから"
+        textEn: "へやが くらいから"
+        textJa: "へやが くらいから"
+      - textVi: "えきから とおいから"
+        textEn: "えきから とおいから"
+        textJa: "えきから とおいから"
+      correctChoiceIndex: 1
+      acceptedAnswers: []
+      taskInstructionsVi: ""
+      taskInstructionsEn: ""
+      minWords: 0
+      timeLimitSeconds: 0
+      explanationVi: "Đáp án: ちかくに スーパーが ないから. Gần nhà không có siêu thị, đi mua sắm phải đi xe buýt."
+      explanationEn: "Answer: ちかくに スーパーが ないから."
+      tags:
+      - "n5"
+      - "m5"
+      points: 1
+      mondai: "m5"
+    - id: n5m2_g22
+      type: 0
+      passageId: p_m6
+      promptVi: "Đọc và trả lời câu hỏi.\nリンさんは 土よう日の ゆうがた 6じに、こどもと 二人で プールに 行きます。リンさんは おとなです。ぜんぶで いくら はらいますか。"
+      promptEn: "しつもんに こたえて ください。\nリンさんは 土よう日の ゆうがた 6じに、こどもと 二人で プールに 行きます。リンさんは おとなです。ぜんぶで いくら はらいますか。"
+      promptJa: "しつもんに こたえて ください。\nリンさんは 土よう日の ゆうがた 6じに、こどもと 二人で プールに 行きます。リンさんは おとなです。ぜんぶで いくら はらいますか。"
+      promptReading: ""
+      choices:
+      - textVi: "900えん"
+        textEn: "900えん"
+        textJa: "900えん"
+      - textVi: "1200えん"
+        textEn: "1200えん"
+        textJa: "1200えん"
+      - textVi: "1000えん"
+        textEn: "1000えん"
+        textJa: "1000えん"
+      - textVi: "700えん"
+        textEn: "700えん"
+        textJa: "700えん"
+      correctChoiceIndex: 2
+      acceptedAnswers: []
+      taskInstructionsVi: ""
+      taskInstructionsEn: ""
+      minWords: 0
+      timeLimitSeconds: 0
+      explanationVi: "Đáp án: 1000えん. Thứ bảy: người lớn 700 + trẻ em 300 = 1000 yên."
+      explanationEn: "Answer: 1000えん."
+      tags:
+      - "n5"
+      - "m6"
+      points: 1
+      mondai: "m6"
+  - id: n5m2_listening
+    type: 2
+    titleVi: "Nghe hiểu (聴解) · 30 phút · giọng đọc AI"
+    titleEn: "Listening · 30 min · AI voices"
+    titleJa: "聴解"
+    timeLimitSeconds: 1800
+    scoreScaleMax: 60
+    scoreGroup: "choukai"
+    mondai:
+    - id: "m1"
+      titleJa: "もんだい1　課題理解"
+      titleVi: "hiểu yêu cầu"
+    - id: "m2"
+      titleJa: "もんだい2　ポイント理解"
+      titleVi: "nắm ý chính"
+    - id: "m3"
+      titleJa: "もんだい3　発話表現"
+      titleVi: "chọn câu nói"
+    - id: "m4"
+      titleJa: "もんだい4　即時応答"
+      titleVi: "đáp lời ngay"
+    passages:
+    - id: p_l01
+      audioClip: {fileID: 8300000, guid: c094570265bbc9a8c1c9f92cfc69800c, type: 3}
+      titleVi: "もんだい1 · Câu 1 — Ở văn phòng."
+      titleEn: "もんだい1 · 1"
+      titleJa: "もんだい1　1ばん"
+      bodyVi: "かいしゃで 女の人と 男の人が 話して います。男の人は はじめに 何を しますか。\n女：たなかさん、かいぎの まえに、この しりょうを 5まい コピーして ください。\n男：はい、わかりました。いすも ならべましょうか。\n女：いすは もう ならべました。あ、コピーの あとで、おちゃを かって きて ください。\n男：はい。"
+      bodyEn: "かいしゃで 女の人と 男の人が 話して います。男の人は はじめに 何を しますか。\n女：たなかさん、かいぎの まえに、この しりょうを 5まい コピーして ください。\n男：はい、わかりました。いすも ならべましょうか。\n女：いすは もう ならべました。あ、コピーの あとで、おちゃを かって きて ください。\n男：はい。"
+      bodyJa: "かいしゃで 女の人と 男の人が 話して います。男の人は はじめに 何を しますか。\n女：たなかさん、かいぎの まえに、この しりょうを 5まい コピーして ください。\n男：はい、わかりました。いすも ならべましょうか。\n女：いすは もう ならべました。あ、コピーの あとで、おちゃを かって きて ください。\n男：はい。"
+      bodyReading: ""
+      maxPlays: 1
+    - id: p_l02
+      audioClip: {fileID: 8300000, guid: 94ef5e5d951b153b4165a6e2b81ca96f, type: 3}
+      titleVi: "もんだい1 · Câu 2 — Trong lớp học."
+      titleEn: "もんだい1 · 2"
+      titleJa: "もんだい1　2ばん"
+      bodyVi: "クラスで 先生が 話して います。学生は あした 何を もって いきますか。\n女：みなさん、あしたは テストです。きょうかしょの 20ページから 25ページまで べんきょうして ください。\n男：先生、じしょを もって きても いいですか。\n女：じしょは だめです。えんぴつと けしゴムを もって きて ください。"
+      bodyEn: "クラスで 先生が 話して います。学生は あした 何を もって いきますか。\n女：みなさん、あしたは テストです。きょうかしょの 20ページから 25ページまで べんきょうして ください。\n男：先生、じしょを もって きても いいですか。\n女：じしょは だめです。えんぴつと けしゴムを もって きて ください。"
+      bodyJa: "クラスで 先生が 話して います。学生は あした 何を もって いきますか。\n女：みなさん、あしたは テストです。きょうかしょの 20ページから 25ページまで べんきょうして ください。\n男：先生、じしょを もって きても いいですか。\n女：じしょは だめです。えんぴつと けしゴムを もって きて ください。"
+      bodyReading: ""
+      maxPlays: 1
+    - id: p_l03
+      audioClip: {fileID: 8300000, guid: d7d7a2d013f3cdcfae91933f846049bb, type: 3}
+      titleVi: "もんだい1 · Câu 3 — Ở cửa hàng hoa quả."
+      titleEn: "もんだい1 · 3"
+      titleJa: "もんだい1　3ばん"
+      bodyVi: "みせで 男の人と 店の人が 話して います。男の人は ぜんぶで いくら はらいますか。\n男：すみません、この りんごは いくらですか。\n女：一つ 150えんです。三つで 400えんです。\n男：じゃあ、三つ ください。それと、みかんも 五つ ください。\n女：みかんは 一つ 50えんです。"
+      bodyEn: "みせで 男の人と 店の人が 話して います。男の人は ぜんぶで いくら はらいますか。\n男：すみません、この りんごは いくらですか。\n女：一つ 150えんです。三つで 400えんです。\n男：じゃあ、三つ ください。それと、みかんも 五つ ください。\n女：みかんは 一つ 50えんです。"
+      bodyJa: "みせで 男の人と 店の人が 話して います。男の人は ぜんぶで いくら はらいますか。\n男：すみません、この りんごは いくらですか。\n女：一つ 150えんです。三つで 400えんです。\n男：じゃあ、三つ ください。それと、みかんも 五つ ください。\n女：みかんは 一つ 50えんです。"
+      bodyReading: ""
+      maxPlays: 1
+    - id: p_l04
+      audioClip: {fileID: 8300000, guid: b50543b2fc16f157cdd95e701e0dfeb0, type: 3}
+      titleVi: "もんだい1 · Câu 4 — Hẹn đi xem phim."
+      titleEn: "もんだい1 · 4"
+      titleJa: "もんだい1　4ばん"
+      bodyVi: "女の人と 男の人が 話して います。二人は 何時に どこで あいますか。\n女：あしたの えいが、何時に あいましょうか。えいがは 3じからです。\n男：じゃあ、2じ半に えきの まえで あいましょう。\n女：えきは 人が おおいですから、えいがかんの まえに しませんか。\n男：いいですよ。じゃあ、2じ45ふんに えいがかんの まえで。"
+      bodyEn: "女の人と 男の人が 話して います。二人は 何時に どこで あいますか。\n女：あしたの えいが、何時に あいましょうか。えいがは 3じからです。\n男：じゃあ、2じ半に えきの まえで あいましょう。\n女：えきは 人が おおいですから、えいがかんの まえに しませんか。\n男：いいですよ。じゃあ、2じ45ふんに えいがかんの まえで。"
+      bodyJa: "女の人と 男の人が 話して います。二人は 何時に どこで あいますか。\n女：あしたの えいが、何時に あいましょうか。えいがは 3じからです。\n男：じゃあ、2じ半に えきの まえで あいましょう。\n女：えきは 人が おおいですから、えいがかんの まえに しませんか。\n男：いいですよ。じゃあ、2じ45ふんに えいがかんの まえで。"
+      bodyReading: ""
+      maxPlays: 1
+    - id: p_l05
+      audioClip: {fileID: 8300000, guid: 77b4bd3a7c21b20846169756a1a23526, type: 3}
+      titleVi: "もんだい1 · Câu 5 — Hỏi đường."
+      titleEn: "もんだい1 · 5"
+      titleJa: "もんだい1　5ばん"
+      bodyVi: "男の人と 女の人が 話して います。ゆうびんきょくは どこですか。\n男：すみません、ゆうびんきょくは どこですか。\n女：この みちを まっすぐ 行って、二つめの かどを 右に まがって ください。ゆうびんきょくは ぎんこうの となりです。"
+      bodyEn: "男の人と 女の人が 話して います。ゆうびんきょくは どこですか。\n男：すみません、ゆうびんきょくは どこですか。\n女：この みちを まっすぐ 行って、二つめの かどを 右に まがって ください。ゆうびんきょくは ぎんこうの となりです。"
+      bodyJa: "男の人と 女の人が 話して います。ゆうびんきょくは どこですか。\n男：すみません、ゆうびんきょくは どこですか。\n女：この みちを まっすぐ 行って、二つめの かどを 右に まがって ください。ゆうびんきょくは ぎんこうの となりです。"
+      bodyReading: ""
+      maxPlays: 1
+    - id: p_l06
+      audioClip: {fileID: 8300000, guid: d9a8b7fa4d862c4751d60a18c32b3806, type: 3}
+      titleVi: "もんだい1 · Câu 6 — Ở nhà."
+      titleEn: "もんだい1 · 6"
+      titleJa: "もんだい1　6ばん"
+      bodyVi: "うちで お母さんと 男の子が 話して います。男の子は このあと まず 何を しますか。\n女：ゆうごはんの まえに、しゅくだいを して ね。\n男：でも、いま テレビを 見たいよ。\n女：だめ。テレビは ゆうごはんの あとで 見ても いいです。\n男：はあい。"
+      bodyEn: "うちで お母さんと 男の子が 話して います。男の子は このあと まず 何を しますか。\n女：ゆうごはんの まえに、しゅくだいを して ね。\n男：でも、いま テレビを 見たいよ。\n女：だめ。テレビは ゆうごはんの あとで 見ても いいです。\n男：はあい。"
+      bodyJa: "うちで お母さんと 男の子が 話して います。男の子は このあと まず 何を しますか。\n女：ゆうごはんの まえに、しゅくだいを して ね。\n男：でも、いま テレビを 見たいよ。\n女：だめ。テレビは ゆうごはんの あとで 見ても いいです。\n男：はあい。"
+      bodyReading: ""
+      maxPlays: 1
+    - id: p_l07
+      audioClip: {fileID: 8300000, guid: 2465ee94ae696a007ee5e2dc64718e68, type: 3}
+      titleVi: "もんだい1 · Câu 7 — Chọn quà sinh nhật."
+      titleEn: "もんだい1 · 7"
+      titleJa: "もんだい1　7ばん"
+      bodyVi: "男の人と 女の人が 話して います。男の人は キムさんに 何を あげますか。\n男：キムさんの たんじょうびに 何を あげましょうか。\n女：キムさんは ほんが すきですよ。\n男：ほんは このあいだ あげました。\n女：じゃあ、おかしは どうですか。キムさんは あまい ものが すきですから。\n男：そうですね。そう しましょう。"
+      bodyEn: "男の人と 女の人が 話して います。男の人は キムさんに 何を あげますか。\n男：キムさんの たんじょうびに 何を あげましょうか。\n女：キムさんは ほんが すきですよ。\n男：ほんは このあいだ あげました。\n女：じゃあ、おかしは どうですか。キムさんは あまい ものが すきですから。\n男：そうですね。そう しましょう。"
+      bodyJa: "男の人と 女の人が 話して います。男の人は キムさんに 何を あげますか。\n男：キムさんの たんじょうびに 何を あげましょうか。\n女：キムさんは ほんが すきですよ。\n男：ほんは このあいだ あげました。\n女：じゃあ、おかしは どうですか。キムさんは あまい ものが すきですから。\n男：そうですね。そう しましょう。"
+      bodyReading: ""
+      maxPlays: 1
+    - id: p_l08
+      audioClip: {fileID: 8300000, guid: d86d869ebdb37c92637cd870ecd523b3, type: 3}
+      titleVi: "もんだい2 · Câu 8 — Nghỉ học hôm qua."
+      titleEn: "もんだい2 · 8"
+      titleJa: "もんだい2　8ばん"
+      bodyVi: "男の人と 女の人が 話して います。女の人は どうして がっこうを やすみましたか。\n男：きのう どうして がっこうを やすみましたか。かぜですか。\n女：いいえ、かぜじゃ ありません。ははが びょうきで、びょういんへ 行きました。"
+      bodyEn: "男の人と 女の人が 話して います。女の人は どうして がっこうを やすみましたか。\n男：きのう どうして がっこうを やすみましたか。かぜですか。\n女：いいえ、かぜじゃ ありません。ははが びょうきで、びょういんへ 行きました。"
+      bodyJa: "男の人と 女の人が 話して います。女の人は どうして がっこうを やすみましたか。\n男：きのう どうして がっこうを やすみましたか。かぜですか。\n女：いいえ、かぜじゃ ありません。ははが びょうきで、びょういんへ 行きました。"
+      bodyReading: ""
+      maxPlays: 1
+    - id: p_l09
+      audioClip: {fileID: 8300000, guid: cb3ec3bc2e9ecae3a9d15a52f9d79ded, type: 3}
+      titleVi: "もんだい2 · Câu 9 — Kỳ nghỉ hè."
+      titleEn: "もんだい2 · 9"
+      titleJa: "もんだい2　9ばん"
+      bodyVi: "女の人と 男の人が 話して います。男の人は なつやすみに どこへ 行きましたか。\n女：たけしさんは なつやすみに どこへ 行きましたか。\n男：おきなわへ 行く つもりでしたが、たいふうで ひこうきが とびませんでした。それで、ほっかいどうへ 行きました。"
+      bodyEn: "女の人と 男の人が 話して います。男の人は なつやすみに どこへ 行きましたか。\n女：たけしさんは なつやすみに どこへ 行きましたか。\n男：おきなわへ 行く つもりでしたが、たいふうで ひこうきが とびませんでした。それで、ほっかいどうへ 行きました。"
+      bodyJa: "女の人と 男の人が 話して います。男の人は なつやすみに どこへ 行きましたか。\n女：たけしさんは なつやすみに どこへ 行きましたか。\n男：おきなわへ 行く つもりでしたが、たいふうで ひこうきが とびませんでした。それで、ほっかいどうへ 行きました。"
+      bodyReading: ""
+      maxPlays: 1
+    - id: p_l10
+      audioClip: {fileID: 8300000, guid: 48900f352db93dbd0a84307f9f8d2312, type: 3}
+      titleVi: "もんだい2 · Câu 10 — Đôi giày mới."
+      titleEn: "もんだい2 · 10"
+      titleJa: "もんだい2　10ばん"
+      bodyVi: "女の人と 男の人が 話して います。男の人は くつを いくらで かいましたか。\n女：その くつ、いいですね。いくらでしたか。\n男：8000えんでしたが、きのうは はんぶんの ねだんでしたよ。"
+      bodyEn: "女の人と 男の人が 話して います。男の人は くつを いくらで かいましたか。\n女：その くつ、いいですね。いくらでしたか。\n男：8000えんでしたが、きのうは はんぶんの ねだんでしたよ。"
+      bodyJa: "女の人と 男の人が 話して います。男の人は くつを いくらで かいましたか。\n女：その くつ、いいですね。いくらでしたか。\n男：8000えんでしたが、きのうは はんぶんの ねだんでしたよ。"
+      bodyReading: ""
+      maxPlays: 1
+    - id: p_l11
+      audioClip: {fileID: 8300000, guid: 01bc1bec7df58ded373ae098506ec33e, type: 3}
+      titleVi: "もんだい2 · Câu 11 — Giờ thức dậy."
+      titleEn: "もんだい2 · 11"
+      titleJa: "もんだい2　11ばん"
+      bodyVi: "男の人と 女の人が 話して います。女の人は 日よう日に 何時ごろ おきますか。\n男：まいあさ 何時に おきますか。\n女：へいじつは 6じですが、土よう日と 日よう日は 8じごろ おきます。"
+      bodyEn: "男の人と 女の人が 話して います。女の人は 日よう日に 何時ごろ おきますか。\n男：まいあさ 何時に おきますか。\n女：へいじつは 6じですが、土よう日と 日よう日は 8じごろ おきます。"
+      bodyJa: "男の人と 女の人が 話して います。女の人は 日よう日に 何時ごろ おきますか。\n男：まいあさ 何時に おきますか。\n女：へいじつは 6じですが、土よう日と 日よう日は 8じごろ おきます。"
+      bodyReading: ""
+      maxPlays: 1
+    - id: p_l12
+      audioClip: {fileID: 8300000, guid: ead97a3a61bcdfe23939d2ddcfb11525, type: 3}
+      titleVi: "もんだい2 · Câu 12 — Tìm nhà hàng."
+      titleEn: "もんだい2 · 12"
+      titleJa: "もんだい2　12ばん"
+      bodyVi: "女の人と 男の人が 話して います。きょう あいて いる レストランは どこですか。\n女：すみません、この ちかくに レストランは ありますか。\n男：えきの まえに ありますよ。でも、きょうは 水よう日ですから、やすみです。ホテルの 中の レストランは あいて いますよ。"
+      bodyEn: "女の人と 男の人が 話して います。きょう あいて いる レストランは どこですか。\n女：すみません、この ちかくに レストランは ありますか。\n男：えきの まえに ありますよ。でも、きょうは 水よう日ですから、やすみです。ホテルの 中の レストランは あいて いますよ。"
+      bodyJa: "女の人と 男の人が 話して います。きょう あいて いる レストランは どこですか。\n女：すみません、この ちかくに レストランは ありますか。\n男：えきの まえに ありますよ。でも、きょうは 水よう日ですから、やすみです。ホテルの 中の レストランは あいて いますよ。"
+      bodyReading: ""
+      maxPlays: 1
+    - id: p_l13
+      audioClip: {fileID: 8300000, guid: 50147e701b81454c62b8532e9ed82acd, type: 3}
+      titleVi: "もんだい2 · Câu 13 — Chiếc ô."
+      titleEn: "もんだい2 · 13"
+      titleJa: "もんだい2　13ばん"
+      bodyVi: "男の人と 女の人が 話して います。女の人は かさを だれに もらいましたか。\n男：その かさ、すてきですね。\n女：ありがとう。たんじょうびに あねに もらいました。"
+      bodyEn: "男の人と 女の人が 話して います。女の人は かさを だれに もらいましたか。\n男：その かさ、すてきですね。\n女：ありがとう。たんじょうびに あねに もらいました。"
+      bodyJa: "男の人と 女の人が 話して います。女の人は かさを だれに もらいましたか。\n男：その かさ、すてきですね。\n女：ありがとう。たんじょうびに あねに もらいました。"
+      bodyReading: ""
+      maxPlays: 1
+    - id: p_l14
+      audioClip: {fileID: 8300000, guid: 8a10ca2433440a0f6b69902e50572477, type: 3}
+      titleVi: "もんだい3 · Câu 14 — Bạn bước vào nhà một người bạn. Bạn nói gì?"
+      titleEn: "もんだい3 · 14"
+      titleJa: "もんだい3　14ばん"
+      bodyVi: "ともだちの うちに 入ります。何と いいますか。\n女：1、おじゃまします。\n女：2、いってきます。\n女：3、おかえりなさい。"
+      bodyEn: "ともだちの うちに 入ります。何と いいますか。\n女：1、おじゃまします。\n女：2、いってきます。\n女：3、おかえりなさい。"
+      bodyJa: "ともだちの うちに 入ります。何と いいますか。\n女：1、おじゃまします。\n女：2、いってきます。\n女：3、おかえりなさい。"
+      bodyReading: ""
+      maxPlays: 1
+    - id: p_l15
+      audioClip: {fileID: 8300000, guid: 323c6b271b912dde9e534eeeaaac9c45, type: 3}
+      titleVi: "もんだい3 · Câu 15 — Bạn muốn hỏi giáo viên một câu. Bạn nói gì?"
+      titleEn: "もんだい3 · 15"
+      titleJa: "もんだい3　15ばん"
+      bodyVi: "先生に しつもんが あります。何と いいますか。\n男：1、しつもんしても いいですか。\n男：2、しつもんしましょう。\n男：3、しつもんしましたか。"
+      bodyEn: "先生に しつもんが あります。何と いいますか。\n男：1、しつもんしても いいですか。\n男：2、しつもんしましょう。\n男：3、しつもんしましたか。"
+      bodyJa: "先生に しつもんが あります。何と いいますか。\n男：1、しつもんしても いいですか。\n男：2、しつもんしましょう。\n男：3、しつもんしましたか。"
+      bodyReading: ""
+      maxPlays: 1
+    - id: p_l16
+      audioClip: {fileID: 8300000, guid: 99f6cee27b34ce0e6d5dc4f1c5fc926a, type: 3}
+      titleVi: "もんだい3 · Câu 16 — Bạn sắp ăn cơm. Trước khi ăn bạn nói gì?"
+      titleEn: "もんだい3 · 16"
+      titleJa: "もんだい3　16ばん"
+      bodyVi: "これから ごはんを たべます。何と いいますか。\n女：1、ごちそうさまでした。\n女：2、いただきます。\n女：3、おやすみなさい。"
+      bodyEn: "これから ごはんを たべます。何と いいますか。\n女：1、ごちそうさまでした。\n女：2、いただきます。\n女：3、おやすみなさい。"
+      bodyJa: "これから ごはんを たべます。何と いいますか。\n女：1、ごちそうさまでした。\n女：2、いただきます。\n女：3、おやすみなさい。"
+      bodyReading: ""
+      maxPlays: 1
+    - id: p_l17
+      audioClip: {fileID: 8300000, guid: 296d1b1d795b722ba1d196464efff68b, type: 3}
+      titleVi: "もんだい3 · Câu 17 — Bạn va phải một người trên đường. Bạn nói gì?"
+      titleEn: "もんだい3 · 17"
+      titleJa: "もんだい3　17ばん"
+      bodyVi: "みちで 人に ぶつかりました。何と いいますか。\n男：1、どういたしまして。\n男：2、ありがとう。\n男：3、すみません。"
+      bodyEn: "みちで 人に ぶつかりました。何と いいますか。\n男：1、どういたしまして。\n男：2、ありがとう。\n男：3、すみません。"
+      bodyJa: "みちで 人に ぶつかりました。何と いいますか。\n男：1、どういたしまして。\n男：2、ありがとう。\n男：3、すみません。"
+      bodyReading: ""
+      maxPlays: 1
+    - id: p_l18
+      audioClip: {fileID: 8300000, guid: f703fa08829a5d1db066fad853bf5e70, type: 3}
+      titleVi: "もんだい3 · Câu 18 — Ở cửa hàng, bạn muốn xem chiếc áo sơ mi đỏ. Bạn nói gì?"
+      titleEn: "もんだい3 · 18"
+      titleJa: "もんだい3　18ばん"
+      bodyVi: "みせで あかい シャツが 見たいです。何と いいますか。\n女：1、あかい シャツを 見せて ください。\n女：2、あかい シャツを 見て ください。\n女：3、あかい シャツは いかがですか。"
+      bodyEn: "みせで あかい シャツが 見たいです。何と いいますか。\n女：1、あかい シャツを 見せて ください。\n女：2、あかい シャツを 見て ください。\n女：3、あかい シャツは いかがですか。"
+      bodyJa: "みせで あかい シャツが 見たいです。何と いいますか。\n女：1、あかい シャツを 見せて ください。\n女：2、あかい シャツを 見て ください。\n女：3、あかい シャツは いかがですか。"
+      bodyReading: ""
+      maxPlays: 1
+    - id: p_l19
+      audioClip: {fileID: 8300000, guid: 9e97223f23fbe4176dfb0e3d7523bfa2, type: 3}
+      titleVi: "もんだい4 · Câu 19 — Nghe câu nói và chọn câu đáp phù hợp."
+      titleEn: "もんだい4 · 19"
+      titleJa: "もんだい4　19ばん"
+      bodyVi: "男：おげんきですか。\n女：1、はい、げんきです。\n女：2、はい、おげんきです。\n女：3、いいえ、げんきでした。"
+      bodyEn: "男：おげんきですか。\n女：1、はい、げんきです。\n女：2、はい、おげんきです。\n女：3、いいえ、げんきでした。"
+      bodyJa: "男：おげんきですか。\n女：1、はい、げんきです。\n女：2、はい、おげんきです。\n女：3、いいえ、げんきでした。"
+      bodyReading: ""
+      maxPlays: 1
+    - id: p_l20
+      audioClip: {fileID: 8300000, guid: 678761e8636775df93c2f625e3a34dd5, type: 3}
+      titleVi: "もんだい4 · Câu 20 — Nghe câu nói và chọn câu đáp phù hợp."
+      titleEn: "もんだい4 · 20"
+      titleJa: "もんだい4　20ばん"
+      bodyVi: "女：ごはん、もう たべましたか。\n男：1、はい、たべません。\n男：2、いいえ、まだです。\n男：3、はい、まだです。"
+      bodyEn: "女：ごはん、もう たべましたか。\n男：1、はい、たべません。\n男：2、いいえ、まだです。\n男：3、はい、まだです。"
+      bodyJa: "女：ごはん、もう たべましたか。\n男：1、はい、たべません。\n男：2、いいえ、まだです。\n男：3、はい、まだです。"
+      bodyReading: ""
+      maxPlays: 1
+    - id: p_l21
+      audioClip: {fileID: 8300000, guid: cf36e5e62d0f396c8256294717701ba1, type: 3}
+      titleVi: "もんだい4 · Câu 21 — Nghe câu nói và chọn câu đáp phù hợp."
+      titleEn: "もんだい4 · 21"
+      titleJa: "もんだい4　21ばん"
+      bodyVi: "男：これ、だれの かさですか。\n女：1、わたしのです。\n女：2、わたしは かさです。\n女：3、かさが あります。"
+      bodyEn: "男：これ、だれの かさですか。\n女：1、わたしのです。\n女：2、わたしは かさです。\n女：3、かさが あります。"
+      bodyJa: "男：これ、だれの かさですか。\n女：1、わたしのです。\n女：2、わたしは かさです。\n女：3、かさが あります。"
+      bodyReading: ""
+      maxPlays: 1
+    - id: p_l22
+      audioClip: {fileID: 8300000, guid: 9e79089ecec928e32cc5c1689bb7b639, type: 3}
+      titleVi: "もんだい4 · Câu 22 — Nghe câu nói và chọn câu đáp phù hợp."
+      titleEn: "もんだい4 · 22"
+      titleJa: "もんだい4　22ばん"
+      bodyVi: "女：どうぞ、すわって ください。\n男：1、はい、すわって ください。\n男：2、ありがとう ございます。\n男：3、どういたしまして。"
+      bodyEn: "女：どうぞ、すわって ください。\n男：1、はい、すわって ください。\n男：2、ありがとう ございます。\n男：3、どういたしまして。"
+      bodyJa: "女：どうぞ、すわって ください。\n男：1、はい、すわって ください。\n男：2、ありがとう ございます。\n男：3、どういたしまして。"
+      bodyReading: ""
+      maxPlays: 1
+    - id: p_l23
+      audioClip: {fileID: 8300000, guid: 5d37a92b98842ec51c6fc59b346210c1, type: 3}
+      titleVi: "もんだい4 · Câu 23 — Nghe câu nói và chọn câu đáp phù hợp."
+      titleEn: "もんだい4 · 23"
+      titleJa: "もんだい4　23ばん"
+      bodyVi: "男：しゅうまつは 何を しましたか。\n女：1、えいがを 見ました。\n女：2、えいがを 見ます。\n女：3、えいがが すきです。"
+      bodyEn: "男：しゅうまつは 何を しましたか。\n女：1、えいがを 見ました。\n女：2、えいがを 見ます。\n女：3、えいがが すきです。"
+      bodyJa: "男：しゅうまつは 何を しましたか。\n女：1、えいがを 見ました。\n女：2、えいがを 見ます。\n女：3、えいがが すきです。"
+      bodyReading: ""
+      maxPlays: 1
+    - id: p_l24
+      audioClip: {fileID: 8300000, guid: 4e816485d0ffb632018e09172fd10581, type: 3}
+      titleVi: "もんだい4 · Câu 24 — Nghe câu nói và chọn câu đáp phù hợp."
+      titleEn: "もんだい4 · 24"
+      titleJa: "もんだい4　24ばん"
+      bodyVi: "女：あしたの パーティー、来ますか。\n男：1、はい、来ました。\n男：2、はい、行きます。\n男：3、はい、行って ください。"
+      bodyEn: "女：あしたの パーティー、来ますか。\n男：1、はい、来ました。\n男：2、はい、行きます。\n男：3、はい、行って ください。"
+      bodyJa: "女：あしたの パーティー、来ますか。\n男：1、はい、来ました。\n男：2、はい、行きます。\n男：3、はい、行って ください。"
+      bodyReading: ""
+      maxPlays: 1
+    questions:
+    - id: n5m2_l01
+      type: 0
+      passageId: p_l01
+      promptVi: "Câu 1. Ở văn phòng.\n男の人は はじめに 何を しますか。"
+      promptEn: "1. 男の人は はじめに 何を しますか。"
+      promptJa: "1ばん　男の人は はじめに 何を しますか。"
+      promptReading: ""
+      choices:
+      - textVi: "かいぎに 出る"
+        textEn: "かいぎに 出る"
+        textJa: "かいぎに 出る"
+      - textVi: "いすを ならべる"
+        textEn: "いすを ならべる"
+        textJa: "いすを ならべる"
+      - textVi: "コピーを する"
+        textEn: "コピーを する"
+        textJa: "コピーを する"
+      - textVi: "おちゃを かう"
+        textEn: "おちゃを かう"
+        textJa: "おちゃを かう"
+      correctChoiceIndex: 2
+      acceptedAnswers: []
+      taskInstructionsVi: ""
+      taskInstructionsEn: ""
+      minWords: 0
+      timeLimitSeconds: 0
+      explanationVi: "Đáp án: コピーを する. Việc đầu tiên là photo tài liệu; mua trà để sau."
+      explanationEn: "Answer: コピーを する."
+      tags:
+      - "n5"
+      - "m1"
+      - "listening"
+      points: 1
+      mondai: "m1"
+    - id: n5m2_l02
+      type: 0
+      passageId: p_l02
+      promptVi: "Câu 2. Trong lớp học.\n学生は あした 何を もって いきますか。"
+      promptEn: "2. 学生は あした 何を もって いきますか。"
+      promptJa: "2ばん　学生は あした 何を もって いきますか。"
+      promptReading: ""
+      choices:
+      - textVi: "えんぴつと けしゴム"
+        textEn: "えんぴつと けしゴム"
+        textJa: "えんぴつと けしゴム"
+      - textVi: "じしょと えんぴつ"
+        textEn: "じしょと えんぴつ"
+        textJa: "じしょと えんぴつ"
+      - textVi: "きょうかしょと じしょ"
+        textEn: "きょうかしょと じしょ"
+        textJa: "きょうかしょと じしょ"
+      - textVi: "けしゴムと じしょ"
+        textEn: "けしゴムと じしょ"
+        textJa: "けしゴムと じしょ"
+      correctChoiceIndex: 0
+      acceptedAnswers: []
+      taskInstructionsVi: ""
+      taskInstructionsEn: ""
+      minWords: 0
+      timeLimitSeconds: 0
+      explanationVi: "Đáp án: えんぴつと けしゴム. Không được mang từ điển; mang bút chì và tẩy."
+      explanationEn: "Answer: えんぴつと けしゴム."
+      tags:
+      - "n5"
+      - "m1"
+      - "listening"
+      points: 1
+      mondai: "m1"
+    - id: n5m2_l03
+      type: 0
+      passageId: p_l03
+      promptVi: "Câu 3. Ở cửa hàng hoa quả.\n男の人は ぜんぶで いくら はらいますか。"
+      promptEn: "3. 男の人は ぜんぶで いくら はらいますか。"
+      promptJa: "3ばん　男の人は ぜんぶで いくら はらいますか。"
+      promptReading: ""
+      choices:
+      - textVi: "450えん"
+        textEn: "450えん"
+        textJa: "450えん"
+      - textVi: "400えん"
+        textEn: "400えん"
+        textJa: "400えん"
+      - textVi: "700えん"
+        textEn: "700えん"
+        textJa: "700えん"
+      - textVi: "650えん"
+        textEn: "650えん"
+        textJa: "650えん"
+      correctChoiceIndex: 3
+      acceptedAnswers: []
+      taskInstructionsVi: ""
+      taskInstructionsEn: ""
+      minWords: 0
+      timeLimitSeconds: 0
+      explanationVi: "Đáp án: 650えん. 3 quả táo 400 yên + 5 quả quýt × 50 = 250 → 650 yên."
+      explanationEn: "Answer: 650えん."
+      tags:
+      - "n5"
+      - "m1"
+      - "listening"
+      points: 1
+      mondai: "m1"
+    - id: n5m2_l04
+      type: 0
+      passageId: p_l04
+      promptVi: "Câu 4. Hẹn đi xem phim.\n二人は 何時に どこで あいますか。"
+      promptEn: "4. 二人は 何時に どこで あいますか。"
+      promptJa: "4ばん　二人は 何時に どこで あいますか。"
+      promptReading: ""
+      choices:
+      - textVi: "3じに えいがかんの まえ"
+        textEn: "3じに えいがかんの まえ"
+        textJa: "3じに えいがかんの まえ"
+      - textVi: "2じ45ふんに えいがかんの まえ"
+        textEn: "2じ45ふんに えいがかんの まえ"
+        textJa: "2じ45ふんに えいがかんの まえ"
+      - textVi: "2じ半に えきの まえ"
+        textEn: "2じ半に えきの まえ"
+        textJa: "2じ半に えきの まえ"
+      - textVi: "2じ半に えいがかんの まえ"
+        textEn: "2じ半に えいがかんの まえ"
+        textJa: "2じ半に えいがかんの まえ"
+      correctChoiceIndex: 1
+      acceptedAnswers: []
+      taskInstructionsVi: ""
+      taskInstructionsEn: ""
+      minWords: 0
+      timeLimitSeconds: 0
+      explanationVi: "Đáp án: 2じ45ふんに えいがかんの まえ. Đổi chỗ hẹn sang trước rạp, giờ 2:45."
+      explanationEn: "Answer: 2じ45ふんに えいがかんの まえ."
+      tags:
+      - "n5"
+      - "m1"
+      - "listening"
+      points: 1
+      mondai: "m1"
+    - id: n5m2_l05
+      type: 0
+      passageId: p_l05
+      promptVi: "Câu 5. Hỏi đường.\nゆうびんきょくは どこですか。"
+      promptEn: "5. ゆうびんきょくは どこですか。"
+      promptJa: "5ばん　ゆうびんきょくは どこですか。"
+      promptReading: ""
+      choices:
+      - textVi: "一つめの かどを 右、ぎんこうの となり"
+        textEn: "一つめの かどを 右、ぎんこうの となり"
+        textJa: "一つめの かどを 右、ぎんこうの となり"
+      - textVi: "二つめの かどを 右、ぎんこうの となり"
+        textEn: "二つめの かどを 右、ぎんこうの となり"
+        textJa: "二つめの かどを 右、ぎんこうの となり"
+      - textVi: "二つめの かどを 右、ぎんこうの まえ"
+        textEn: "二つめの かどを 右、ぎんこうの まえ"
+        textJa: "二つめの かどを 右、ぎんこうの まえ"
+      - textVi: "二つめの かどを 左、ぎんこうの となり"
+        textEn: "二つめの かどを 左、ぎんこうの となり"
+        textJa: "二つめの かどを 左、ぎんこうの となり"
+      correctChoiceIndex: 1
+      acceptedAnswers: []
+      taskInstructionsVi: ""
+      taskInstructionsEn: ""
+      minWords: 0
+      timeLimitSeconds: 0
+      explanationVi: "Đáp án: 二つめの かどを 右、ぎんこうの となり. Góc thứ hai rẽ phải, cạnh ngân hàng."
+      explanationEn: "Answer: 二つめの かどを 右、ぎんこうの となり."
+      tags:
+      - "n5"
+      - "m1"
+      - "listening"
+      points: 1
+      mondai: "m1"
+    - id: n5m2_l06
+      type: 0
+      passageId: p_l06
+      promptVi: "Câu 6. Ở nhà.\n男の子は このあと まず 何を しますか。"
+      promptEn: "6. 男の子は このあと まず 何を しますか。"
+      promptJa: "6ばん　男の子は このあと まず 何を しますか。"
+      promptReading: ""
+      choices:
+      - textVi: "テレビを 見る"
+        textEn: "テレビを 見る"
+        textJa: "テレビを 見る"
+      - textVi: "ねる"
+        textEn: "ねる"
+        textJa: "ねる"
+      - textVi: "しゅくだいを する"
+        textEn: "しゅくだいを する"
+        textJa: "しゅくだいを する"
+      - textVi: "ゆうごはんを たべる"
+        textEn: "ゆうごはんを たべる"
+        textJa: "ゆうごはんを たべる"
+      correctChoiceIndex: 2
+      acceptedAnswers: []
+      taskInstructionsVi: ""
+      taskInstructionsEn: ""
+      minWords: 0
+      timeLimitSeconds: 0
+      explanationVi: "Đáp án: しゅくだいを する. Phải làm bài tập trước bữa tối."
+      explanationEn: "Answer: しゅくだいを する."
+      tags:
+      - "n5"
+      - "m1"
+      - "listening"
+      points: 1
+      mondai: "m1"
+    - id: n5m2_l07
+      type: 0
+      passageId: p_l07
+      promptVi: "Câu 7. Chọn quà sinh nhật.\n男の人は キムさんに 何を あげますか。"
+      promptEn: "7. 男の人は キムさんに 何を あげますか。"
+      promptJa: "7ばん　男の人は キムさんに 何を あげますか。"
+      promptReading: ""
+      choices:
+      - textVi: "はな"
+        textEn: "はな"
+        textJa: "はな"
+      - textVi: "ほん"
+        textEn: "ほん"
+        textJa: "ほん"
+      - textVi: "CD"
+        textEn: "CD"
+        textJa: "CD"
+      - textVi: "おかし"
+        textEn: "おかし"
+        textJa: "おかし"
+      correctChoiceIndex: 3
+      acceptedAnswers: []
+      taskInstructionsVi: ""
+      taskInstructionsEn: ""
+      minWords: 0
+      timeLimitSeconds: 0
+      explanationVi: "Đáp án: おかし. Sách đã tặng rồi; chọn bánh kẹo vì Kim thích đồ ngọt."
+      explanationEn: "Answer: おかし."
+      tags:
+      - "n5"
+      - "m1"
+      - "listening"
+      points: 1
+      mondai: "m1"
+    - id: n5m2_l08
+      type: 0
+      passageId: p_l08
+      promptVi: "Câu 8. Nghỉ học hôm qua.\n女の人は どうして がっこうを やすみましたか。"
+      promptEn: "8. 女の人は どうして がっこうを やすみましたか。"
+      promptJa: "8ばん　女の人は どうして がっこうを やすみましたか。"
+      promptReading: ""
+      choices:
+      - textVi: "あたまが いたかったから"
+        textEn: "あたまが いたかったから"
+        textJa: "あたまが いたかったから"
+      - textVi: "おかあさんが びょうきだったから"
+        textEn: "おかあさんが びょうきだったから"
+        textJa: "おかあさんが びょうきだったから"
+      - textVi: "びょういんで はたらいて いるから"
+        textEn: "びょういんで はたらいて いるから"
+        textJa: "びょういんで はたらいて いるから"
+      - textVi: "かぜを ひいたから"
+        textEn: "かぜを ひいたから"
+        textJa: "かぜを ひいたから"
+      correctChoiceIndex: 1
+      acceptedAnswers: []
+      taskInstructionsVi: ""
+      taskInstructionsEn: ""
+      minWords: 0
+      timeLimitSeconds: 0
+      explanationVi: "Đáp án: おかあさんが びょうきだったから. Vì mẹ bị ốm nên đưa mẹ đi viện."
+      explanationEn: "Answer: おかあさんが びょうきだったから."
+      tags:
+      - "n5"
+      - "m2"
+      - "listening"
+      points: 1
+      mondai: "m2"
+    - id: n5m2_l09
+      type: 0
+      passageId: p_l09
+      promptVi: "Câu 9. Kỳ nghỉ hè.\n男の人は なつやすみに どこへ 行きましたか。"
+      promptEn: "9. 男の人は なつやすみに どこへ 行きましたか。"
+      promptJa: "9ばん　男の人は なつやすみに どこへ 行きましたか。"
+      promptReading: ""
+      choices:
+      - textVi: "ほっかいどう"
+        textEn: "ほっかいどう"
+        textJa: "ほっかいどう"
+      - textVi: "きょうと"
+        textEn: "きょうと"
+        textJa: "きょうと"
+      - textVi: "おきなわ"
+        textEn: "おきなわ"
+        textJa: "おきなわ"
+      - textVi: "どこへも 行きませんでした"
+        textEn: "どこへも 行きませんでした"
+        textJa: "どこへも 行きませんでした"
+      correctChoiceIndex: 0
+      acceptedAnswers: []
+      taskInstructionsVi: ""
+      taskInstructionsEn: ""
+      minWords: 0
+      timeLimitSeconds: 0
+      explanationVi: "Đáp án: ほっかいどう. Định đi Okinawa nhưng máy bay không bay, nên đi Hokkaido."
+      explanationEn: "Answer: ほっかいどう."
+      tags:
+      - "n5"
+      - "m2"
+      - "listening"
+      points: 1
+      mondai: "m2"
+    - id: n5m2_l10
+      type: 0
+      passageId: p_l10
+      promptVi: "Câu 10. Đôi giày mới.\n男の人は くつを いくらで かいましたか。"
+      promptEn: "10. 男の人は くつを いくらで かいましたか。"
+      promptJa: "10ばん　男の人は くつを いくらで かいましたか。"
+      promptReading: ""
+      choices:
+      - textVi: "2000えん"
+        textEn: "2000えん"
+        textJa: "2000えん"
+      - textVi: "4000えん"
+        textEn: "4000えん"
+        textJa: "4000えん"
+      - textVi: "6000えん"
+        textEn: "6000えん"
+        textJa: "6000えん"
+      - textVi: "8000えん"
+        textEn: "8000えん"
+        textJa: "8000えん"
+      correctChoiceIndex: 1
+      acceptedAnswers: []
+      taskInstructionsVi: ""
+      taskInstructionsEn: ""
+      minWords: 0
+      timeLimitSeconds: 0
+      explanationVi: "Đáp án: 4000えん. Giá 8000 yên, hôm qua giảm một nửa → 4000 yên."
+      explanationEn: "Answer: 4000えん."
+      tags:
+      - "n5"
+      - "m2"
+      - "listening"
+      points: 1
+      mondai: "m2"
+    - id: n5m2_l11
+      type: 0
+      passageId: p_l11
+      promptVi: "Câu 11. Giờ thức dậy.\n女の人は 日よう日に 何時ごろ おきますか。"
+      promptEn: "11. 女の人は 日よう日に 何時ごろ おきますか。"
+      promptJa: "11ばん　女の人は 日よう日に 何時ごろ おきますか。"
+      promptReading: ""
+      choices:
+      - textVi: "9じ"
+        textEn: "9じ"
+        textJa: "9じ"
+      - textVi: "8じごろ"
+        textEn: "8じごろ"
+        textJa: "8じごろ"
+      - textVi: "7じ"
+        textEn: "7じ"
+        textJa: "7じ"
+      - textVi: "6じ"
+        textEn: "6じ"
+        textJa: "6じ"
+      correctChoiceIndex: 1
+      acceptedAnswers: []
+      taskInstructionsVi: ""
+      taskInstructionsEn: ""
+      minWords: 0
+      timeLimitSeconds: 0
+      explanationVi: "Đáp án: 8じごろ. Ngày thường 6 giờ, cuối tuần khoảng 8 giờ."
+      explanationEn: "Answer: 8じごろ."
+      tags:
+      - "n5"
+      - "m2"
+      - "listening"
+      points: 1
+      mondai: "m2"
+    - id: n5m2_l12
+      type: 0
+      passageId: p_l12
+      promptVi: "Câu 12. Tìm nhà hàng.\nきょう あいて いる レストランは どこですか。"
+      promptEn: "12. きょう あいて いる レストランは どこですか。"
+      promptJa: "12ばん　きょう あいて いる レストランは どこですか。"
+      promptReading: ""
+      choices:
+      - textVi: "ホテルの 中"
+        textEn: "ホテルの 中"
+        textJa: "ホテルの 中"
+      - textVi: "デパートの 中"
+        textEn: "デパートの 中"
+        textJa: "デパートの 中"
+      - textVi: "えきの 中"
+        textEn: "えきの 中"
+        textJa: "えきの 中"
+      - textVi: "えきの まえ"
+        textEn: "えきの まえ"
+        textJa: "えきの まえ"
+      correctChoiceIndex: 0
+      acceptedAnswers: []
+      taskInstructionsVi: ""
+      taskInstructionsEn: ""
+      minWords: 0
+      timeLimitSeconds: 0
+      explanationVi: "Đáp án: ホテルの 中. Nhà hàng trước ga nghỉ thứ tư; nhà hàng trong khách sạn mở."
+      explanationEn: "Answer: ホテルの 中."
+      tags:
+      - "n5"
+      - "m2"
+      - "listening"
+      points: 1
+      mondai: "m2"
+    - id: n5m2_l13
+      type: 0
+      passageId: p_l13
+      promptVi: "Câu 13. Chiếc ô.\n女の人は かさを だれに もらいましたか。"
+      promptEn: "13. 女の人は かさを だれに もらいましたか。"
+      promptJa: "13ばん　女の人は かさを だれに もらいましたか。"
+      promptReading: ""
+      choices:
+      - textVi: "おかあさん"
+        textEn: "おかあさん"
+        textJa: "おかあさん"
+      - textVi: "ともだち"
+        textEn: "ともだち"
+        textJa: "ともだち"
+      - textVi: "おねえさん"
+        textEn: "おねえさん"
+        textJa: "おねえさん"
+      - textVi: "おにいさん"
+        textEn: "おにいさん"
+        textJa: "おにいさん"
+      correctChoiceIndex: 2
+      acceptedAnswers: []
+      taskInstructionsVi: ""
+      taskInstructionsEn: ""
+      minWords: 0
+      timeLimitSeconds: 0
+      explanationVi: "Đáp án: おねえさん. あね = chị gái mình → おねえさん."
+      explanationEn: "Answer: おねえさん."
+      tags:
+      - "n5"
+      - "m2"
+      - "listening"
+      points: 1
+      mondai: "m2"
+    - id: n5m2_l14
+      type: 0
+      passageId: p_l14
+      promptVi: "Câu 14. Bạn bước vào nhà một người bạn. Bạn nói gì?\nえを 見ながら きいて ください。"
+      promptEn: "14. えを 見ながら きいて ください。"
+      promptJa: "14ばん　えを 見ながら きいて ください。"
+      promptReading: ""
+      choices:
+      - textVi: "1"
+        textEn: "1"
+        textJa: "1"
+      - textVi: "2"
+        textEn: "2"
+        textJa: "2"
+      - textVi: "3"
+        textEn: "3"
+        textJa: "3"
+      correctChoiceIndex: 0
+      acceptedAnswers: []
+      taskInstructionsVi: ""
+      taskInstructionsEn: ""
+      minWords: 0
+      timeLimitSeconds: 0
+      explanationVi: "Đáp án: 1. Khi vào nhà người khác: おじゃまします."
+      explanationEn: "Answer: 1."
+      tags:
+      - "n5"
+      - "m3"
+      - "listening"
+      points: 1
+      mondai: "m3"
+    - id: n5m2_l15
+      type: 0
+      passageId: p_l15
+      promptVi: "Câu 15. Bạn muốn hỏi giáo viên một câu. Bạn nói gì?\nえを 見ながら きいて ください。"
+      promptEn: "15. えを 見ながら きいて ください。"
+      promptJa: "15ばん　えを 見ながら きいて ください。"
+      promptReading: ""
+      choices:
+      - textVi: "1"
+        textEn: "1"
+        textJa: "1"
+      - textVi: "2"
+        textEn: "2"
+        textJa: "2"
+      - textVi: "3"
+        textEn: "3"
+        textJa: "3"
+      correctChoiceIndex: 0
+      acceptedAnswers: []
+      taskInstructionsVi: ""
+      taskInstructionsEn: ""
+      minWords: 0
+      timeLimitSeconds: 0
+      explanationVi: "Đáp án: 1. Xin phép: 〜ても いいですか."
+      explanationEn: "Answer: 1."
+      tags:
+      - "n5"
+      - "m3"
+      - "listening"
+      points: 1
+      mondai: "m3"
+    - id: n5m2_l16
+      type: 0
+      passageId: p_l16
+      promptVi: "Câu 16. Bạn sắp ăn cơm. Trước khi ăn bạn nói gì?\nえを 見ながら きいて ください。"
+      promptEn: "16. えを 見ながら きいて ください。"
+      promptJa: "16ばん　えを 見ながら きいて ください。"
+      promptReading: ""
+      choices:
+      - textVi: "1"
+        textEn: "1"
+        textJa: "1"
+      - textVi: "2"
+        textEn: "2"
+        textJa: "2"
+      - textVi: "3"
+        textEn: "3"
+        textJa: "3"
+      correctChoiceIndex: 1
+      acceptedAnswers: []
+      taskInstructionsVi: ""
+      taskInstructionsEn: ""
+      minWords: 0
+      timeLimitSeconds: 0
+      explanationVi: "Đáp án: 2. Trước khi ăn: いただきます; ăn xong: ごちそうさまでした."
+      explanationEn: "Answer: 2."
+      tags:
+      - "n5"
+      - "m3"
+      - "listening"
+      points: 1
+      mondai: "m3"
+    - id: n5m2_l17
+      type: 0
+      passageId: p_l17
+      promptVi: "Câu 17. Bạn va phải một người trên đường. Bạn nói gì?\nえを 見ながら きいて ください。"
+      promptEn: "17. えを 見ながら きいて ください。"
+      promptJa: "17ばん　えを 見ながら きいて ください。"
+      promptReading: ""
+      choices:
+      - textVi: "1"
+        textEn: "1"
+        textJa: "1"
+      - textVi: "2"
+        textEn: "2"
+        textJa: "2"
+      - textVi: "3"
+        textEn: "3"
+        textJa: "3"
+      correctChoiceIndex: 2
+      acceptedAnswers: []
+      taskInstructionsVi: ""
+      taskInstructionsEn: ""
+      minWords: 0
+      timeLimitSeconds: 0
+      explanationVi: "Đáp án: 3. Xin lỗi: すみません."
+      explanationEn: "Answer: 3."
+      tags:
+      - "n5"
+      - "m3"
+      - "listening"
+      points: 1
+      mondai: "m3"
+    - id: n5m2_l18
+      type: 0
+      passageId: p_l18
+      promptVi: "Câu 18. Ở cửa hàng, bạn muốn xem chiếc áo sơ mi đỏ. Bạn nói gì?\nえを 見ながら きいて ください。"
+      promptEn: "18. えを 見ながら きいて ください。"
+      promptJa: "18ばん　えを 見ながら きいて ください。"
+      promptReading: ""
+      choices:
+      - textVi: "1"
+        textEn: "1"
+        textJa: "1"
+      - textVi: "2"
+        textEn: "2"
+        textJa: "2"
+      - textVi: "3"
+        textEn: "3"
+        textJa: "3"
+      correctChoiceIndex: 0
+      acceptedAnswers: []
+      taskInstructionsVi: ""
+      taskInstructionsEn: ""
+      minWords: 0
+      timeLimitSeconds: 0
+      explanationVi: "Đáp án: 1. 見せて ください = cho tôi xem; 見て ください = hãy xem."
+      explanationEn: "Answer: 1."
+      tags:
+      - "n5"
+      - "m3"
+      - "listening"
+      points: 1
+      mondai: "m3"
+    - id: n5m2_l19
+      type: 0
+      passageId: p_l19
+      promptVi: "Câu 19. Nghe câu nói và chọn câu đáp phù hợp.\nぶんを きいて、へんじを えらんで ください。"
+      promptEn: "19. ぶんを きいて、へんじを えらんで ください。"
+      promptJa: "19ばん　ぶんを きいて、へんじを えらんで ください。"
+      promptReading: ""
+      choices:
+      - textVi: "1"
+        textEn: "1"
+        textJa: "1"
+      - textVi: "2"
+        textEn: "2"
+        textJa: "2"
+      - textVi: "3"
+        textEn: "3"
+        textJa: "3"
+      correctChoiceIndex: 0
+      acceptedAnswers: []
+      taskInstructionsVi: ""
+      taskInstructionsEn: ""
+      minWords: 0
+      timeLimitSeconds: 0
+      explanationVi: "Đáp án: 1. Nói về mình không dùng お: げんきです."
+      explanationEn: "Answer: 1."
+      tags:
+      - "n5"
+      - "m4"
+      - "listening"
+      points: 1
+      mondai: "m4"
+    - id: n5m2_l20
+      type: 0
+      passageId: p_l20
+      promptVi: "Câu 20. Nghe câu nói và chọn câu đáp phù hợp.\nぶんを きいて、へんじを えらんで ください。"
+      promptEn: "20. ぶんを きいて、へんじを えらんで ください。"
+      promptJa: "20ばん　ぶんを きいて、へんじを えらんで ください。"
+      promptReading: ""
+      choices:
+      - textVi: "1"
+        textEn: "1"
+        textJa: "1"
+      - textVi: "2"
+        textEn: "2"
+        textJa: "2"
+      - textVi: "3"
+        textEn: "3"
+        textJa: "3"
+      correctChoiceIndex: 1
+      acceptedAnswers: []
+      taskInstructionsVi: ""
+      taskInstructionsEn: ""
+      minWords: 0
+      timeLimitSeconds: 0
+      explanationVi: "Đáp án: 2. もう〜ましたか → いいえ、まだです."
+      explanationEn: "Answer: 2."
+      tags:
+      - "n5"
+      - "m4"
+      - "listening"
+      points: 1
+      mondai: "m4"
+    - id: n5m2_l21
+      type: 0
+      passageId: p_l21
+      promptVi: "Câu 21. Nghe câu nói và chọn câu đáp phù hợp.\nぶんを きいて、へんじを えらんで ください。"
+      promptEn: "21. ぶんを きいて、へんじを えらんで ください。"
+      promptJa: "21ばん　ぶんを きいて、へんじを えらんで ください。"
+      promptReading: ""
+      choices:
+      - textVi: "1"
+        textEn: "1"
+        textJa: "1"
+      - textVi: "2"
+        textEn: "2"
+        textJa: "2"
+      - textVi: "3"
+        textEn: "3"
+        textJa: "3"
+      correctChoiceIndex: 0
+      acceptedAnswers: []
+      taskInstructionsVi: ""
+      taskInstructionsEn: ""
+      minWords: 0
+      timeLimitSeconds: 0
+      explanationVi: "Đáp án: 1. だれの → わたしのです."
+      explanationEn: "Answer: 1."
+      tags:
+      - "n5"
+      - "m4"
+      - "listening"
+      points: 1
+      mondai: "m4"
+    - id: n5m2_l22
+      type: 0
+      passageId: p_l22
+      promptVi: "Câu 22. Nghe câu nói và chọn câu đáp phù hợp.\nぶんを きいて、へんじを えらんで ください。"
+      promptEn: "22. ぶんを きいて、へんじを えらんで ください。"
+      promptJa: "22ばん　ぶんを きいて、へんじを えらんで ください。"
+      promptReading: ""
+      choices:
+      - textVi: "1"
+        textEn: "1"
+        textJa: "1"
+      - textVi: "2"
+        textEn: "2"
+        textJa: "2"
+      - textVi: "3"
+        textEn: "3"
+        textJa: "3"
+      correctChoiceIndex: 1
+      acceptedAnswers: []
+      taskInstructionsVi: ""
+      taskInstructionsEn: ""
+      minWords: 0
+      timeLimitSeconds: 0
+      explanationVi: "Đáp án: 2. Được mời ngồi → cảm ơn."
+      explanationEn: "Answer: 2."
+      tags:
+      - "n5"
+      - "m4"
+      - "listening"
+      points: 1
+      mondai: "m4"
+    - id: n5m2_l23
+      type: 0
+      passageId: p_l23
+      promptVi: "Câu 23. Nghe câu nói và chọn câu đáp phù hợp.\nぶんを きいて、へんじを えらんで ください。"
+      promptEn: "23. ぶんを きいて、へんじを えらんで ください。"
+      promptJa: "23ばん　ぶんを きいて、へんじを えらんで ください。"
+      promptReading: ""
+      choices:
+      - textVi: "1"
+        textEn: "1"
+        textJa: "1"
+      - textVi: "2"
+        textEn: "2"
+        textJa: "2"
+      - textVi: "3"
+        textEn: "3"
+        textJa: "3"
+      correctChoiceIndex: 0
+      acceptedAnswers: []
+      taskInstructionsVi: ""
+      taskInstructionsEn: ""
+      minWords: 0
+      timeLimitSeconds: 0
+      explanationVi: "Đáp án: 1. Hỏi quá khứ → trả lời quá khứ."
+      explanationEn: "Answer: 1."
+      tags:
+      - "n5"
+      - "m4"
+      - "listening"
+      points: 1
+      mondai: "m4"
+    - id: n5m2_l24
+      type: 0
+      passageId: p_l24
+      promptVi: "Câu 24. Nghe câu nói và chọn câu đáp phù hợp.\nぶんを きいて、へんじを えらんで ください。"
+      promptEn: "24. ぶんを きいて、へんじを えらんで ください。"
+      promptJa: "24ばん　ぶんを きいて、へんじを えらんで ください。"
+      promptReading: ""
+      choices:
+      - textVi: "1"
+        textEn: "1"
+        textJa: "1"
+      - textVi: "2"
+        textEn: "2"
+        textJa: "2"
+      - textVi: "3"
+        textEn: "3"
+        textJa: "3"
+      correctChoiceIndex: 1
+      acceptedAnswers: []
+      taskInstructionsVi: ""
+      taskInstructionsEn: ""
+      minWords: 0
+      timeLimitSeconds: 0
+      explanationVi: "Đáp án: 2. Nói về việc mình đến chỗ người kia: 行きます."
+      explanationEn: "Answer: 2."
+      tags:
+      - "n5"
+      - "m4"
+      - "listening"
+      points: 1
+      mondai: "m4"
+  jlptTotalPassScore: 80
+  jlptSectionPassScore: 19
+  scoreGroups:
+  - id: "gengo"
+    titleJa: "言語知識（文字・語彙・文法）・読解"
+    titleVi: "Kiến thức ngôn ngữ · Đọc hiểu"
+    max: 120
+    passMin: 38
+  - id: "choukai"
+    titleJa: "聴解"
+    titleVi: "Nghe hiểu"
+    max: 60
+    passMin: 19

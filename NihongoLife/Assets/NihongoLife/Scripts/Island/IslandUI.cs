@@ -55,6 +55,7 @@ namespace NihongoLife.Island
         private void OnDestroy()
         {
             IslandState.Changed -= RefreshToolbar;
+            if (NihongoLife.Player.PlayerInventory.Instance != null) NihongoLife.Player.PlayerInventory.Instance.OnInventoryChanged -= RefreshToolbar;
             IslandLanguage.Changed -= OnLanguage;
             if (_instance == this) _instance = null;
             LockPlayer(false, force: true);
@@ -252,6 +253,8 @@ namespace NihongoLife.Island
             ui.BuildToolbar();
             IslandState.Changed -= ui.RefreshToolbar;
             IslandState.Changed += ui.RefreshToolbar;
+            var bag = NihongoLife.Player.PlayerInventory.Instance;
+            if (bag != null) { bag.OnInventoryChanged -= ui.RefreshToolbar; bag.OnInventoryChanged += ui.RefreshToolbar; }
             IslandLanguage.Changed -= ui.OnLanguage;
             IslandLanguage.Changed += ui.OnLanguage;
         }
@@ -275,9 +278,16 @@ namespace NihongoLife.Island
                 ((HorizontalLayoutGroup)slot.GetComponent<HorizontalOrVerticalLayoutGroup>()).childForceExpandWidth = false;
                 var icon = Icon(slot, tool.id, 36f);
                 if (!owned) icon.color = new Color(1f, 1f, 1f, 0.35f);
-                var label = Text(slot, IslandLanguage.Primary(tool.word), 15f, owned ? Ink : Muted);
+                string wear = "";
+                if (owned && tool.durability > 0)
+                {
+                    int left = IslandTools.Left(tool.id);
+                    wear = $"\n<size=72%><color=#{(left <= 5 ? "B8452F" : "6B7566")}>{left}/{tool.durability}</color></size>";
+                }
+                var label = Text(slot, IslandLanguage.Primary(tool.word) + wear, 15f, owned ? Ink : Muted);
                 label.textWrappingMode = TextWrappingModes.NoWrap;
-                NLUi.Size(label, 78f);
+                label.lineSpacing = -18f;
+                NLUi.Size(label, 82f);
             }
             var lang = Btn(_toolbar, $"Học: <b>{IslandLanguage.LanguageLabel}</b>  ⇄", ToggleLanguage, Green, Color.white, 44f, 16f);
             NLUi.Size(lang, 160f, 44f);
@@ -358,9 +368,10 @@ namespace NihongoLife.Island
                     var tool = catalog.Tool("tool_hoe");
                     PhraseCard(body, tool.verb, "CÂU HÀNH ĐỘNG");
                     var (toolId, toolName, seconds) = FarmActionTimes.Till();
-                    string how = toolId == null ? $"Xới bằng tay  ·  {seconds:0.#}s (chưa có cuốc)" : $"Xới đất  ·  {toolName}  ·  {seconds:0.#}s";
-                    ActionButton(actions, how, toolId ?? tool.id, () => Work("Đang xới đất…", toolName, seconds, () => Do(plot.Till(), tool.verb, "Đã xới đất."), toolId == null ? "Work_DigHand" : "Work_Hoe", toolId));
-                    if (toolId == null) Text(actions, "Có cuốc (くわ) thì xới nhanh gấp 4 lần — mua ở cửa hàng Midori (P).", 14f, Muted);
+                    if (toolId != null)
+                        ActionButton(actions, $"Xới đất  ·  {toolName}  ·  {seconds:0.#}s  ·  {IslandTools.Label(toolId)}", toolId,
+                            () => Work("Đang xới đất…", toolName, seconds, () => Do(plot.Till(), tool.verb, "Đã xới đất."), "Work_Hoe", toolId));
+                    else NeedTool(actions, "Không có cuốc (くわ) hay xẻng (シャベル) thì không xới được đất — mua ở cửa hàng Midori (P).");
                     break;
                 }
                 case FarmPlot.Phase.Tilled:
@@ -373,14 +384,10 @@ namespace NihongoLife.Island
                 {
                     var tool = catalog.Tool("tool_watering_can");
                     PhraseCard(body, tool.verb, "CÂU HÀNH ĐỘNG");
-                    if (IslandEconomy.Owned(tool.id) > 0)
-                        ActionButton(actions, $"Tưới nước  ·  {IslandLanguage.Primary(tool.word)}  ·  {FarmActionTimes.Water:0.#}s", tool.id,
+                    if (IslandTools.Usable(tool.id))
+                        ActionButton(actions, $"Tưới nước  ·  {IslandLanguage.Primary(tool.word)}  ·  {FarmActionTimes.Water:0.#}s  ·  {IslandTools.Label(tool.id)}", tool.id,
                             () => Work("Đang tưới nước…", IslandLanguage.Primary(tool.word), FarmActionTimes.Water, () => Do(plot.Water(), tool.verb, "Đã tưới — cây bắt đầu lớn."), "Work_Water"));
-                    else
-                    {
-                        Text(actions, "Không có bình tưới (じょうろ) thì không mang nước được — mua ở cửa hàng Midori (P).", 15f, Error);
-                        Btn(actions, "Mở cửa hàng Midori", () => { CloseFarm(); OpenShop(); }, Gold, new Color(0.18f, 0.12f, 0.02f), 44f, 16f);
-                    }
+                    else NeedTool(actions, "Không có bình tưới (じょうろ) thì không mang nước được — mua ở cửa hàng Midori (P).");
                     break;
                 }
                 case FarmPlot.Phase.Growing:
@@ -402,11 +409,19 @@ namespace NihongoLife.Island
             if (crop != null && phase != FarmPlot.Phase.Ready)
             {
                 var shovel = catalog.Tool("tool_shovel");
-                var (_, clearTool, clearSeconds) = FarmActionTimes.Clear();
-                Btn(actions, $"Dọn ô  ·  {clearTool}  ·  {clearSeconds:0.#}s", () => Work("Đang dọn ô đất…", clearTool, clearSeconds, () => Do(plot.Clear(), shovel.verb, "Đã dọn ô đất."), "Work_Clear", FarmActionTimes.Clear().toolId), Cream2, Muted, 38f, 14f);
+                var (clearId, clearTool, clearSeconds) = FarmActionTimes.Clear();
+                if (clearId != null)
+                    Btn(actions, $"Dọn ô  ·  {clearTool}  ·  {clearSeconds:0.#}s  ·  {IslandTools.Label(clearId)}", () => Work("Đang dọn ô đất…", clearTool, clearSeconds, () => Do(plot.Clear(), shovel.verb, "Đã dọn ô đất."), "Work_Clear", clearId), Cream2, Muted, 38f, 14f);
             }
             _farmFeedback = Text(body, feedback ?? "", 15.5f, error ? Error : Green, FontStyles.Bold);
             UpdateGrowth();
+        }
+
+        private void NeedTool(RectTransform actions, string why)
+        {
+            var note = Text(actions, why, 15f, Error);
+            note.name = "NeedTool";
+            Btn(actions, "Mở cửa hàng Midori", () => { CloseFarm(); OpenShop(); }, Gold, new Color(0.18f, 0.12f, 0.02f), 44f, 16f);
         }
 
         /// <summary>Farm work takes time (progress card); repeated clicks while working are ignored.</summary>
@@ -600,7 +615,7 @@ namespace NihongoLife.Island
                     foreach (var crop in c.crops)
                         list.Add(new ShopEntry { ItemId = crop.SeedItemId, Word = crop.word, Price = crop.seedPrice, Info = $"Hạt giống · lớn trong {Mathf.RoundToInt(crop.secondsPerStage * 3)} giây · thu {crop.yield} quả, bán ¥{crop.sellPrice}/quả" });
                     foreach (var tool in c.tools)
-                        list.Add(new ShopEntry { ItemId = tool.id, Word = tool.word, Price = tool.price, Info = $"Dụng cụ · {tool.verb.vi}" });
+                        list.Add(new ShopEntry { ItemId = tool.id, Word = tool.word, Price = tool.price, Info = $"Dụng cụ · {tool.verb.vi} · bền {tool.durability} lần dùng" + (IslandEconomy.Owned(tool.id) > 0 ? $" · cái đang dùng: {IslandTools.Left(tool.id)}/{tool.durability}" : "") });
                     break;
                 case "technology":
                     foreach (var p in c.products.Where(p => p.category == "technology"))

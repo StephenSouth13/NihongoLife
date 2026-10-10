@@ -30,7 +30,7 @@ class Question:
     def __init__(self, id, type, prompt_vi="", prompt_en="", prompt_ja="", prompt_reading="",
                  passage_id="", choices=None, correct=-1, accepted=None,
                  task_vi="", task_en="", min_words=0, time_limit=0,
-                 explanation_vi="", explanation_en="", tags=None, points=1):
+                 explanation_vi="", explanation_en="", tags=None, points=1, mondai=""):
         self.id = id
         self.type = QUESTION_TYPE[type]
         self.prompt_vi, self.prompt_en, self.prompt_ja, self.prompt_reading = prompt_vi, prompt_en, prompt_ja, prompt_reading
@@ -44,20 +44,22 @@ class Question:
         self.explanation_vi, self.explanation_en = explanation_vi, explanation_en
         self.tags = tags or []
         self.points = points
+        self.mondai = mondai
 
 
 class Passage:
     def __init__(self, id, title_vi="", title_en="", title_ja="",
-                 body_vi="", body_en="", body_ja="", body_reading="", max_plays=0):
+                 body_vi="", body_en="", body_ja="", body_reading="", max_plays=0, audio_guid=""):
         self.id = id
         self.title_vi, self.title_en, self.title_ja = title_vi, title_en, title_ja
         self.body_vi, self.body_en, self.body_ja, self.body_reading = body_vi, body_en, body_ja, body_reading
         self.max_plays = max_plays
+        self.audio_guid = audio_guid  # GUID of an imported audio asset (its .meta), or "" for none
 
 
 class Section:
     def __init__(self, id, type, title_vi, title_en, title_ja="", time_limit_seconds=0, score_scale_max=60,
-                 passages=None, questions=None):
+                 passages=None, questions=None, score_group="", mondai=None):
         self.id = id
         self.type = SECTION_TYPE[type]
         self.title_vi, self.title_en, self.title_ja = title_vi, title_en, title_ja
@@ -65,12 +67,14 @@ class Section:
         self.score_scale_max = score_scale_max
         self.passages = passages or []
         self.questions = questions or []
+        self.score_group = score_group
+        self.mondai = mondai or []  # [(id, titleJa, titleVi)]
 
 
 class Exam:
     def __init__(self, id, exam_type, level, title_vi, title_en, title_ja="",
                  description_vi="", description_en="", sections=None,
-                 jlpt_total_pass=80, jlpt_section_pass=19):
+                 jlpt_total_pass=80, jlpt_section_pass=19, score_groups=None):
         self.id = id
         self.exam_type = EXAM_TYPE[exam_type]
         self.level = level
@@ -79,6 +83,7 @@ class Exam:
         self.sections = sections or []
         self.jlpt_total_pass = jlpt_total_pass
         self.jlpt_section_pass = jlpt_section_pass
+        self.score_groups = score_groups or []  # [(id, titleJa, titleVi, max, passMin)]
 
     def write(self, path, name):
         w_lines = []
@@ -109,10 +114,21 @@ class Exam:
             w("    titleJa: " + q(s.title_ja))
             w("    timeLimitSeconds: %d" % s.time_limit_seconds)
             w("    scoreScaleMax: %d" % s.score_scale_max)
+            w("    scoreGroup: " + q(s.score_group))
+            if s.mondai:
+                w("    mondai:")
+                for (mid, mja, mvi) in s.mondai:
+                    w("    - id: " + q(mid))
+                    w("      titleJa: " + q(mja))
+                    w("      titleVi: " + q(mvi))
+            else:
+                w("    mondai: []")
             if s.passages:
                 w("    passages:")
                 for p in s.passages:
                     w("    - id: " + p.id)
+                    if p.audio_guid:
+                        w("      audioClip: {fileID: 8300000, guid: %s, type: 3}" % p.audio_guid)
                     w("      titleVi: " + q(p.title_vi))
                     w("      titleEn: " + q(p.title_en))
                     w("      titleJa: " + q(p.title_ja))
@@ -161,8 +177,19 @@ class Exam:
                     else:
                         w("      tags: []")
                     w("      points: %d" % qn.points)
+                    w("      mondai: " + q(qn.mondai))
             else:
                 w("    questions: []")
         w("  jlptTotalPassScore: %d" % self.jlpt_total_pass)
         w("  jlptSectionPassScore: %d" % self.jlpt_section_pass)
+        if self.score_groups:
+            w("  scoreGroups:")
+            for (gid, gja, gvi, gmax, gmin) in self.score_groups:
+                w("  - id: " + q(gid))
+                w("    titleJa: " + q(gja))
+                w("    titleVi: " + q(gvi))
+                w("    max: %d" % gmax)
+                w("    passMin: %d" % gmin)
+        else:
+            w("  scoreGroups: []")
         open(path, "w", encoding="utf-8", newline="\n").write("\n".join(w_lines) + "\n")

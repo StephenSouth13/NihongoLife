@@ -42,6 +42,19 @@ namespace NihongoLife.Exam
         public float estimatedBand;
         public List<ExamSectionResult> sections = new List<ExamSectionResult>();
         public List<ExamQuestionRecord> answers = new List<ExamQuestionRecord>();
+        /// <summary>JLPT scoring divisions (得点区分) when the exam defines them.</summary>
+        public List<ExamGroupResult> groups = new List<ExamGroupResult>();
+    }
+
+    [Serializable]
+    public class ExamGroupResult
+    {
+        public string groupId;
+        public int scored;
+        public int max;
+        public int passMin;
+        public int rawCorrect;
+        public int rawMax;
     }
 
     /// <summary>Full result of the attempt just finished, handed to the result screen. Not persisted as-is;

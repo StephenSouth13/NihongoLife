@@ -294,33 +294,34 @@ namespace NihongoLife.Tests
             UiModalStack.CloseTop();
             Assert.AreEqual(seedsBefore + 2, bag.GetItemQuantity("seed_carrot"), "Seeds handed over on accepting");
 
-            // Without a hoe: digging by hand is allowed but takes much longer than with a hoe.
+            // Without a hoe there is no way to till (no bare-hand fallback): the card sends the player to the store.
             var plots = Object.FindObjectsByType<FarmPlot>(FindObjectsSortMode.None).OrderBy(p => p.Number).Take(2).ToList();
             yield return StandAt(plots[0].transform, 1.9f);
             yield return Press(GameInputId.Interact);
             Assert.IsTrue(IslandUI.FarmOpen);
-            var (handTool, _, handSeconds) = FarmActionTimes.Till();
-            Assert.IsNull(handTool, "No hoe owned → bare hands");
-            float t0 = Time.realtimeSinceStartup;
-            ClickText("Xới bằng tay");
-            yield return new WaitForSecondsRealtime(0.1f);
-            Assert.IsTrue(TimedAction.Busy, "Digging shows a progress bar");
-            CaptureAndCheck("30_dig_by_hand", 1600, 900);
-            ClickText("Xới bằng tay"); // rapid repeated click: ignored while working
-            yield return WaitWork();
-            float handTime = Time.realtimeSinceStartup - t0;
-            Assert.AreEqual(1, QuestService.ObjectiveProgress("job_farm_shift", "till"), "Repeated clicks count once");
+            Assert.IsNull(FarmActionTimes.Till().toolId, "No hoe owned → no tilling tool");
+            Assert.NotNull(GameObject.Find("NeedTool"), "The card explains the missing tool");
+            Assert.IsNotNull(plots[0].Till(), "Tilling refused without a tool");
+            CaptureAndCheck("30_no_hoe", 1600, 900);
             IslandUI.CloseFarm();
+
+            // With a hoe: timed work, repeated clicks count once, each finished use wears the hoe.
             IslandEconomy.Give("tool_hoe", 1);
-            yield return StandAt(plots[1].transform, 1.9f);
-            yield return Press(GameInputId.Interact);
-            t0 = Time.realtimeSinceStartup;
-            ClickText("Xới đất");
-            yield return WaitWork();
-            float hoeTime = Time.realtimeSinceStartup - t0;
-            Note($"till by hand {handTime:0.00}s vs hoe {hoeTime:0.00}s (scale {TimedAction.SpeedScale})");
-            Assert.Less(hoeTime * 2.5f, handTime, "A hoe digs much faster than bare hands");
-            IslandUI.CloseFarm();
+            int hoe0 = IslandTools.Left("tool_hoe");
+            foreach (var plot in plots)
+            {
+                yield return StandAt(plot.transform, 1.9f);
+                yield return Press(GameInputId.Interact);
+                ClickText("Xới đất");
+                yield return new WaitForSecondsRealtime(0.05f);
+                Assert.IsTrue(TimedAction.Busy, "Tilling shows a progress bar");
+                ClickText("Xới đất"); // rapid repeated click: ignored while working
+                yield return WaitWork();
+                IslandUI.CloseFarm();
+            }
+            Assert.AreEqual(2, QuestService.ObjectiveProgress("job_farm_shift", "till"), "Repeated clicks count once per plot");
+            Assert.AreEqual(hoe0 - 2, IslandTools.Left("tool_hoe"), "The hoe wore by one per plot");
+            Note($"hoe durability {hoe0} → {IslandTools.Left("tool_hoe")}");
 
             foreach (var plot in plots)
             {

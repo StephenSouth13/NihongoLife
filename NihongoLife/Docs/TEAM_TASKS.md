@@ -720,3 +720,30 @@ Claude nhận tiếp phần Codex đang làm dở: báo cáo, trailer, demo và 
 ### Lưu ý
 - Ở batchmode, `WaitForEndOfFrame` không bao giờ chạy tiếp. Bộ ghi phải tự gọi `camera.Render()` sau `yield return null`.
 - Mỗi lúc chỉ một tiến trình Unity được mở project. Đã có lần Codex và Claude cùng chạy bản ghi demo; theo quyết định của người dùng, Claude làm tiếp phần video.
+
+## Cập nhật (2026-10-10 tối, Claude) — Animation làm việc, dụng cụ có độ bền, câu cá Đảo Midori
+
+### Đã làm
+- **Animation làm việc:**
+  - 11 state mới trong `NL_Humanoid` (`Work_*`, `Fish_*`) từ clip Remy. Cấu hình bằng `WorkAnimationSetup.Run`, chạy qua `-executeMethod`, không dùng MenuItem.
+  - `TimedAction.Run(..., pose, prop)` phát clip thật và cho nhân vật cầm dụng cụ ở xương tay phải.
+- **Dụng cụ có độ bền** (dữ liệu trong `island_catalog.json`):
+  - Không còn làm bằng tay. Xới đất cần cuốc hoặc xẻng, tưới cần bình tưới.
+  - Độ bền giảm sau mỗi lần dùng xong (`IslandTools`, lưu ở `IslandRecord.toolWear`); hỏng thì công cụ bị lấy khỏi túi đồ.
+- **Câu cá:**
+  - Cầu câu ở bờ bắc đảo (do `IslandBuilder` dựng) với `FishingSpot`.
+  - 4 loài cá, cần câu bán giá ¥300; câu được cá thì nhận đúng 1 lần.
+  - Bán cá ở tab Bán. Thêm quest `farm_first_catch`.
+
+### Ảnh hưởng chung
+- `NL_Humanoid.controller`: thêm state.
+- `ThirdPartyAssetIntegrator.ConfigureMixamoImports` bỏ qua clip do `WorkAnimationSetup` quản lý.
+- `QuestService`: mục tiêu nhận dạng tiền tố `fish_*`. Sự kiện mới `fish`.
+- `TimedAction` tự huỷ khi đổi scene.
+- `CharacterAnimationController`: thêm `PlayWork`, `HoldProp`. Bow/Point bị bỏ qua khi đang làm việc.
+- Scene `60_MidoriIsland` đã dựng lại.
+
+### Còn mở
+- Không có model bình tưới, nên lúc tưới nhân vật chỉ làm động tác, không cầm gì.
+- Video demo đã dựng trước thay đổi này, vẫn có cảnh "xới bằng tay". `DemoRecordingTests` và lời thuyết minh đã cập nhật; cần ghi hình lại nếu muốn video khớp.
+- `CharacterHumanoidAuditPlayModeTests` (của Codex) lỗi: clip "Run" của Devion có AnimationEvent `Footsteps` mà không có component nhận.

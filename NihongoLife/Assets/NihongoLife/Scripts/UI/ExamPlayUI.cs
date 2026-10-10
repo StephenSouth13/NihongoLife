@@ -1,5 +1,6 @@
 using TMPro;
 using System.Collections;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.Networking;
 using UnityEngine.UI;
@@ -50,6 +51,15 @@ namespace NihongoLife.UI
 
         // Results
         private GameObject _resultsRoot;
+        private GameObject _examHeader;
+
+        /// <summary>The question screen (header, palette, passage, question, footer) — hidden while results show.</summary>
+        private void SetExamScreenVisible(bool visible)
+        {
+            foreach (var go in new[] { _examHeader, _paletteRoot != null ? _paletteRoot.gameObject : null, _passagePanelRoot, _questionPanel != null ? _questionPanel.gameObject : null,
+                                       _prevButton != null ? _prevButton.gameObject : null, _nextButton != null ? _nextButton.gameObject : null, _submitSectionButton != null ? _submitSectionButton.gameObject : null })
+                if (go != null) go.SetActive(visible);
+        }
         private TextMeshProUGUI _resultsHeadlineText;
         private TextMeshProUGUI _resultsSubText;
         private RectTransform _resultsSectionList;
@@ -105,6 +115,7 @@ namespace NihongoLife.UI
             _listeningAudio.loop = false;
             _listeningAudio.spatialBlend = 0f;
             var header = new GameObject("ExamHeader", typeof(RectTransform), typeof(Image));
+            _examHeader = header;
             header.transform.SetParent(card, false);
             Place((RectTransform)header.transform, 24f, 76f, 1252f, 82f);
             header.GetComponent<Image>().color = new Color(0.08f, 0.12f, 0.16f, 0.98f);
@@ -291,6 +302,8 @@ namespace NihongoLife.UI
             content.anchorMin = new Vector2(0f, 1f);
             content.anchorMax = new Vector2(1f, 1f);
             content.pivot = new Vector2(0.5f, 1f);
+            content.sizeDelta = Vector2.zero;        // exactly the viewport's width (the default 100 px overhang clipped the left edge)
+            content.anchoredPosition = Vector2.zero;
             var layout = contentObject.GetComponent<VerticalLayoutGroup>();
             layout.padding = new RectOffset(14, 14, 14, 14);
             layout.spacing = 10f;
@@ -374,6 +387,7 @@ namespace NihongoLife.UI
 
             _resultsRoot.SetActive(false);
             _gradingOverlay.SetActive(false);
+            SetExamScreenVisible(true);
             RefreshAll();
         }
 
@@ -555,6 +569,14 @@ namespace NihongoLife.UI
             }
 
             string body = Pick(passage.bodyVi, passage.bodyEn, passage.bodyJa);
+            bool audioListening = isListening && (passage.audioClip != null || !string.IsNullOrWhiteSpace(passage.audioUrl));
+            if (audioListening)
+            {
+                // Like the real test: the script is not shown while answering; it appears in the review.
+                body = Pick("Nghe audio rồi chọn đáp án. Lời thoại sẽ hiện ở phần xem lại sau khi nộp bài.",
+                            "Listen, then choose the answer. The script is shown in the review after you submit.",
+                            "音声を聞いて答えを選んでください。スクリプトは提出後に表示されます。");
+            }
             float bodyHeight = EstimateTextHeight(body, 520f, 16f);
             var bodyText = AddText(_passageContent, body, 16f, 0f, 0f, 520f, bodyHeight, TextAlignmentOptions.TopLeft, FontStyles.Normal, true);
             bodyText.gameObject.AddComponent<LayoutElement>().preferredHeight = bodyHeight;
@@ -808,6 +830,8 @@ namespace NihongoLife.UI
         private void ShowResults(ExamAttemptResult result)
         {
             _resultsRoot.SetActive(true);
+            _resultsRoot.transform.SetAsLastSibling(); // above the question screen it replaces
+            SetExamScreenVisible(false);
 
             var exam = result.exam;
             var record = result.record;
@@ -830,6 +854,16 @@ namespace NihongoLife.UI
 
             for (int i = _resultsSectionList.childCount - 1; i >= 0; i--) Destroy(_resultsSectionList.GetChild(i).gameObject);
             float rowY = 0f;
+            if (exam != null && exam.examType == ExamType.Jlpt && record.groups.Count > 0)
+            {
+                foreach (var group in record.groups)
+                {
+                    bool ok = group.scored >= group.passMin;
+                    AddText(_resultsSectionList, $"<b>{ExamAnalysis.GroupTitle(exam, group.groupId)}</b>: {group.scored}/{group.max}   <size=80%>({Pick("điểm liệt", "minimum", "基準点")} {group.passMin})</size>",
+                        16f, 0f, rowY, 1220f, 26f, TextAlignmentOptions.MidlineLeft, FontStyles.Normal, false, ok ? new Color(0.55f, 0.88f, 0.6f, 1f) : new Color(0.95f, 0.5f, 0.45f, 1f));
+                    rowY += 26f;
+                }
+            }
             if (exam != null)
             {
                 foreach (var sectionResult in record.sections)
@@ -837,7 +871,13 @@ namespace NihongoLife.UI
                     var section = exam.FindSection(sectionResult.sectionId);
                     string title = section != null ? Pick(section.titleVi, section.titleEn, section.titleJa) : sectionResult.sectionId;
                     string scoreText;
-                    if (exam.examType == ExamType.Jlpt)
+                    if (exam.examType == ExamType.Jlpt && record.groups.Count > 0)
+                    {
+                        var qs = section?.questions ?? new System.Collections.Generic.List<ExamQuestion>();
+                        int right = qs.Count(q => record.answers.Exists(a => a.questionId == q.id && a.correct));
+                        scoreText = $"{Pick("đúng", "correct", "正解")} {right}/{qs.Count}";
+                    }
+                    else if (exam.examType == ExamType.Jlpt)
                     {
                         scoreText = $"{sectionResult.scoredPoints}/{sectionResult.maxPoints}";
                     }
@@ -865,11 +905,23 @@ namespace NihongoLife.UI
         {
             for (int i = _reviewListContent.childCount - 1; i >= 0; i--) Destroy(_reviewListContent.GetChild(i).gameObject);
             if (exam == null) return;
+            if (exam.examType == ExamType.Jlpt) AddAnalysis(exam, record);
 
             foreach (var section in exam.sections)
             {
+                var shownPassages = new System.Collections.Generic.HashSet<string>();
+                bool listening = section.type == ExamSectionType.JlptListening || section.type == ExamSectionType.IeltsListening;
                 foreach (var question in section.questions)
                 {
+                    var passage = listening ? section.FindPassage(question.passageId) : null;
+                    if (passage != null && shownPassages.Add(passage.id))
+                    {
+                        string script = $"<color=#C9B57A>{Pick("Lời thoại", "Script", "スクリプト")} · {Pick(passage.titleVi, passage.titleEn, passage.titleJa)}</color>\n{passage.bodyJa}" +
+                                        (string.IsNullOrWhiteSpace(passage.bodyVi) || passage.bodyVi == passage.bodyJa ? "" : $"\n<color=#8FA0AE>{passage.bodyVi}</color>");
+                        float sh = EstimateTextHeight(script, 1180f, 14f) + 10f;
+                        var scriptText = AddText(_reviewListContent, script, 14f, 0f, 0f, 1180f, sh, TextAlignmentOptions.TopLeft, FontStyles.Normal, true, new Color(0.85f, 0.85f, 0.8f, 1f));
+                        scriptText.gameObject.AddComponent<LayoutElement>().preferredHeight = sh;
+                    }
                     var answer = record.answers.Find(a => a.questionId == question.id);
                     string prompt = Pick(question.promptVi, question.promptEn, question.promptJa);
                     string given = answer != null
@@ -888,6 +940,30 @@ namespace NihongoLife.UI
                     text.gameObject.AddComponent<LayoutElement>().preferredHeight = height;
                 }
             }
+        }
+
+        /// <summary>Per-もんだい table and concrete advice (ExamAnalysis), at the top of the scrolling review.</summary>
+        private void AddAnalysis(ExamDefinition exam, ExamAttemptRecord record)
+        {
+            var analysis = ExamAnalysis.Analyze(exam, record);
+            if (analysis.mondai.Count == 0) return;
+            void Row(string text, float size, FontStyles style, Color color)
+            {
+                float h = EstimateTextHeight(text, 1180f, size) + 4f;
+                var t = AddText(_reviewListContent, text, size, 0f, 0f, 1180f, h, TextAlignmentOptions.TopLeft, style, true, color);
+                t.gameObject.AddComponent<LayoutElement>().preferredHeight = h;
+            }
+            Row(Pick("Phân tích theo もんだい", "By もんだい", "もんだい別の分析") + (string.IsNullOrEmpty(analysis.status) ? "" : $"  ·  {analysis.status}"), 17f, FontStyles.Bold, Gold);
+            var lines = new System.Text.StringBuilder();
+            foreach (var m in analysis.mondai)
+            {
+                int filled = Mathf.RoundToInt(m.Accuracy * 10f);
+                string color = m.Accuracy < 0.5f ? "#F08C73" : m.Accuracy < 0.8f ? "#F2D37A" : "#8FD9A0";
+                lines.AppendLine($"<color={color}>{new string('■', filled)}{new string('□', 10 - filled)}  {m.correct}/{m.total}</color>   {m.titleJa}  <color=#8FA0AE>{m.titleVi}</color>");
+            }
+            foreach (var line in analysis.advice) Row("• " + line, 14.5f, FontStyles.Normal, new Color(0.95f, 0.92f, 0.8f, 1f));
+            Row(lines.ToString().TrimEnd(), 14f, FontStyles.Normal, Color.white);
+            Row(" ", 8f, FontStyles.Normal, Color.white);
         }
 
         // ──────────────────────── Helpers ────────────────────────

@@ -25,7 +25,8 @@ namespace NihongoLife.Island
         public string ProduceItemId => id;
     }
 
-    [Serializable] public sealed class IslandTool { public string id, action; public int price; public IslandWord word, verb; }
+    /// <summary>A tool; <c>durability</c> = uses before it breaks (0 = never wears out).</summary>
+    [Serializable] public sealed class IslandTool { public string id, action; public int price, durability; public IslandWord word, verb; }
     /// <summary>A fish caught at the pier: model name (fish pack FBX), sell price and catch weight (relative odds).</summary>
     [Serializable] public sealed class IslandFish { public string id, model; public int sellPrice, weight; public IslandWord word; }
     [Serializable] public sealed class IslandAnimalDef { public string id, model; public string[] foods; public IslandWord word; public IslandSound sound; }
@@ -157,7 +158,11 @@ namespace NihongoLife.Island
         public int earned;
         public int fed;
         public int fished;
+        public List<ToolWear> toolWear = new();   // uses left on the tool currently in use, per tool item
     }
+
+    [Serializable]
+    public sealed class ToolWear { public string itemId; public int usesLeft; }
 
     /// <summary>Access to the island record inside the shared progress save, plus the farm clock.</summary>
     public static class IslandState

@@ -1,30 +1,29 @@
 namespace NihongoLife.Island
 {
     /// <summary>
-    /// How long farm work takes, by tool. Without a hoe the soil is dug by hand (slow, never a dead end);
-    /// watering needs the can (there is nothing to carry water in otherwise).
+    /// How long farm work takes, by tool. Tilling needs a hoe (or, slower, a shovel), clearing a plot a shovel (or a hoe),
+    /// watering a watering can — there is no bare-hand way. Planting, harvesting and feeding are done by hand.
+    /// A tool counts only while it is usable (IslandTools: worn-out tools break).
     /// </summary>
     public static class FarmActionTimes
     {
-        public const float TillHoe = 1.6f, TillShovel = 2.6f, TillHand = 7f;
-        public const float ClearShovel = 1.8f, ClearHoe = 2.5f, ClearHand = 6f;
+        public const float TillHoe = 1.6f, TillShovel = 2.6f;
+        public const float ClearShovel = 1.8f, ClearHoe = 2.5f;
         public const float Plant = 1.2f, Water = 1.5f, Harvest = 1.4f, Feed = 1f;
 
-        /// <summary>(tool item id or null for bare hands, tool name, seconds).</summary>
+        /// <summary>(tool item id, tool name, seconds); tool id null = no usable tool, the work cannot be done.</summary>
         public static (string toolId, string toolName, float seconds) Till()
         {
-            var catalog = IslandCatalog.Load();
-            if (IslandEconomy.Owned("tool_hoe") > 0) return ("tool_hoe", IslandLanguage.Primary(catalog.Tool("tool_hoe")?.word), TillHoe);
-            if (IslandEconomy.Owned("tool_shovel") > 0) return ("tool_shovel", IslandLanguage.Primary(catalog.Tool("tool_shovel")?.word), TillShovel);
-            return (null, "tay không", TillHand);
+            string id = IslandTools.FirstUsable("tool_hoe", "tool_shovel");
+            return id == null ? (null, null, 0f) : (id, Name(id), id == "tool_hoe" ? TillHoe : TillShovel);
         }
 
         public static (string toolId, string toolName, float seconds) Clear()
         {
-            var catalog = IslandCatalog.Load();
-            if (IslandEconomy.Owned("tool_shovel") > 0) return ("tool_shovel", IslandLanguage.Primary(catalog.Tool("tool_shovel")?.word), ClearShovel);
-            if (IslandEconomy.Owned("tool_hoe") > 0) return ("tool_hoe", IslandLanguage.Primary(catalog.Tool("tool_hoe")?.word), ClearHoe);
-            return (null, "tay không", ClearHand);
+            string id = IslandTools.FirstUsable("tool_shovel", "tool_hoe");
+            return id == null ? (null, null, 0f) : (id, Name(id), id == "tool_shovel" ? ClearShovel : ClearHoe);
         }
+
+        private static string Name(string toolId) => IslandLanguage.Primary(IslandCatalog.Load().Tool(toolId)?.word);
     }
 }

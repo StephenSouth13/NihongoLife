@@ -11,17 +11,6 @@ using UnityEngine.UI;
 
 namespace NihongoLife.Island
 {
-    /// <summary>The end of the Midori pier: F (with a fishing rod in the bag) starts a fishing round.</summary>
-    public sealed class FishingSpot : MonoBehaviour, IInteractable
-    {
-        [Tooltip("Where the float lands on the water.")] public Transform castTarget;
-
-        public string GetPromptJa() => IslandLanguage.Primary(IslandCatalog.Load().places?.pier) is { Length: > 0 } p ? p : "つりば";
-        public string GetpromptEn() => IslandEconomy.Owned(IslandFishing.RodId) > 0 ? "Câu cá" : "Câu cá (cần có cần câu)";
-        public Transform GetTransform() => transform;
-        public void Interact(GameObject player) => IslandFishing.Begin(this, player);
-    }
-
     /// <summary>
     /// One fishing round at a FishingSpot: cast (rod in the right hand, float flies onto the water) → wait for a bite →
     /// pull while the float is down (F or the button) → the fish is shown, then added to the bag once. Pulling too early,
@@ -64,7 +53,7 @@ namespace NihongoLife.Island
         {
             if (Active) { Pull(); return null; }
             if (TimedAction.Busy) return "Đang làm việc khác.";
-            if (IslandEconomy.Owned(RodId) <= 0)
+            if (!IslandTools.Usable(RodId))
             {
                 var rod = IslandCatalog.Load().Tool(RodId);
                 string msg = $"Cần có {IslandLanguage.Primary(rod?.word)} (cần câu) — mua ở cửa hàng Midori (¥{rod?.price}).";
@@ -159,6 +148,9 @@ namespace NihongoLife.Island
             _float.transform.position = to;
             yield return new WaitForSeconds(Mathf.Max(0f, CastSeconds - LaunchAt - 0.7f));
             if (_phase != Phase.Casting) yield break;
+
+            // The line is in the water: one use of the rod (it may break after this round).
+            IslandTools.Wear(RodId);
 
             // Wait for a bite.
             _phase = Phase.Waiting;

@@ -101,6 +101,17 @@ namespace NihongoLife.Exam
         [TextArea(2, 8)] public string explanationEn;
         public List<string> tags = new List<string>();
         [Min(1)] public int points = 1;
+        /// <summary>JLPT もんだい id inside the section (e.g. "m1"); used by ExamAnalysis for per-mondai advice.</summary>
+        public string mondai;
+    }
+
+    /// <summary>A JLPT もんだい (question type) of a section: what it tests, for the result analysis.</summary>
+    [Serializable]
+    public class ExamMondai
+    {
+        public string id;
+        public string titleJa;
+        public string titleVi;
     }
 
     [Serializable]
@@ -116,6 +127,9 @@ namespace NihongoLife.Exam
         /// familiar JLPT per-section range) regardless of how many raw questions this section has.
         /// IELTS: unused — IELTS sections report a 0-9 band instead.</summary>
         [Min(1)] public int scoreScaleMax = 60;
+        /// <summary>JLPT scoring group (ExamDefinition.scoreGroups) this section counts toward; empty = scored alone.</summary>
+        public string scoreGroup;
+        public List<ExamMondai> mondai = new List<ExamMondai>();
         public List<ExamPassage> passages = new List<ExamPassage>();
         public List<ExamQuestion> questions = new List<ExamQuestion>();
 

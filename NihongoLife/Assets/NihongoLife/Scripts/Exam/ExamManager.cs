@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using NihongoLife.Core;
 using NihongoLife.Data;
@@ -365,6 +366,11 @@ namespace NihongoLife.Exam
 
         private void FinalizeScoring(ExamAttemptResult result)
         {
+            if (_exam.examType == ExamType.Jlpt && _exam.scoreGroups != null && _exam.scoreGroups.Count > 0)
+            {
+                ScoreJlptGroups(result);
+                return;
+            }
             if (_exam.examType == ExamType.Jlpt)
             {
                 int total = 0;
@@ -392,6 +398,38 @@ namespace NihongoLife.Exam
                 result.record.totalScore = Mathf.RoundToInt(result.record.estimatedBand * 10f);
                 result.record.totalMaxScore = 90;
             }
+        }
+
+        /// <summary>
+        /// JLPT 得点区分: raw points of every section in a group are pooled and scaled linearly to the group's range
+        /// (the real test uses equated scaled scores; this is the transparent practice estimate). Pass = total ≥
+        /// jlptTotalPassScore and every group ≥ its own minimum.
+        /// </summary>
+        private void ScoreJlptGroups(ExamAttemptResult result)
+        {
+            int total = 0;
+            bool groupsPass = true;
+            foreach (var group in _exam.scoreGroups)
+            {
+                int raw = 0, rawMax = 0;
+                foreach (var section in _exam.sections)
+                {
+                    if (section == null || section.scoreGroup != group.id) continue;
+                    foreach (var question in section.questions)
+                    {
+                        if (question == null) continue;
+                        rawMax += question.points;
+                        if (_answers.TryGetValue(question.id, out var record) && record.correct) raw += question.points;
+                    }
+                }
+                int scored = rawMax > 0 ? Mathf.RoundToInt((float)raw / rawMax * group.max) : 0;
+                result.record.groups.Add(new ExamGroupResult { groupId = group.id, scored = scored, max = group.max, passMin = group.passMin, rawCorrect = raw, rawMax = rawMax });
+                total += scored;
+                if (scored < group.passMin) groupsPass = false;
+            }
+            result.record.totalScore = total;
+            result.record.totalMaxScore = _exam.scoreGroups.Sum(g => g.max);
+            result.record.passed = groupsPass && total >= _exam.jlptTotalPassScore;
         }
 
         private int SumSectionScales()

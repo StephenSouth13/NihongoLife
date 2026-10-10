@@ -190,10 +190,15 @@ namespace NihongoLife.EditorTools
             foreach (float k in new[] { 0.3f, 0.5f, 0.7f })
             {
                 var origin = new Vector3(b.center.x, b.max.y + 5f, Mathf.Lerp(b.min.z, b.max.z, k));
-                if (Physics.Raycast(origin, Vector3.down, out var hit, b.size.y + 10f)) hits.Add(hit.point.y);
+                // Only the dock's own colliders (the island ground is also under the ray).
+                float top = float.NegativeInfinity;
+                foreach (var mc in temp)
+                    if (mc.Raycast(new Ray(origin, Vector3.down), out var hit, b.size.y + 10f)) top = Mathf.Max(top, hit.point.y);
+                if (!float.IsNegativeInfinity(top)) hits.Add(top);
             }
             foreach (var mc in temp) Object.DestroyImmediate(mc);
             float deckY = hits.Count > 0 ? hits.OrderBy(h => h).ElementAt(hits.Count / 2) : b.max.y;
+            Debug.Log($"[IslandBuilder] pier bounds={b.center}/{b.size} colliders={temp.Count} deck hits=[{string.Join(", ", hits.Select(h => h.ToString("0.00")))}] → deckY={deckY:0.00}");
             // Deck top at y = 0.04 (just above the grass), the pier running north from the shore.
             Vector3 worldTarget = holder.TransformPoint(new Vector3(PierX, 0f, (startZ + endZ) * 0.5f));
             dock.transform.position += new Vector3(worldTarget.x - b.center.x, holder.position.y + 0.04f - deckY, worldTarget.z - b.center.z);

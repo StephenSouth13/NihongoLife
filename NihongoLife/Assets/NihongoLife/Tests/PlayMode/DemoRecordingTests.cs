@@ -261,7 +261,7 @@ namespace NihongoLife.Tests
             yield return Hold();
             UiModalStack.CloseTop();
 
-            // Show the bare-hands case: the starter hoe is put away for this step and handed back right after.
+            // Show the no-tool case: the starter hoe is put away for this step and handed back right after.
             if (bag.GetItemQuantity("tool_hoe") > 0) bag.RemoveItem("tool_hoe", bag.GetItemQuantity("tool_hoe"));
             if (bag.GetItemQuantity("tool_shovel") > 0) bag.RemoveItem("tool_shovel", bag.GetItemQuantity("tool_shovel"));
             if (bag.GetItemQuantity("tool_watering_can") == 0) IslandEconomy.Give("tool_watering_can", 1);
@@ -273,8 +273,7 @@ namespace NihongoLife.Tests
             yield return Press(GameInputId.Interact, "F");
             if (!IslandUI.FarmOpen) IslandUI.OpenFarm(plots[0]);
             yield return Frames(0.5f);
-            yield return ClickFarm("Xới bằng tay");
-            yield return WaitWork();
+            Assert.NotNull(GameObject.Find("NeedTool"), "Without a hoe the plot cannot be tilled");
             yield return Hold();
             IslandUI.CloseFarm();
 

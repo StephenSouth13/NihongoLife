@@ -8,6 +8,17 @@ namespace NihongoLife.Exam
     /// duplicating an asset in Resources/Exams and editing its sections/questions in the Inspector — no
     /// code change. See Docs/EXAM_SYSTEM.md for the content pipeline and Tools/exam/ for generator scripts.
     /// </summary>
+    /// <summary>One JLPT scoring division (得点区分): sections with this id are pooled and scaled to <c>max</c>.</summary>
+    [System.Serializable]
+    public class JlptScoreGroup
+    {
+        public string id;
+        public string titleJa;
+        public string titleVi;
+        [Min(1)] public int max = 60;
+        [Min(0)] public int passMin = 19;
+    }
+
     public class ExamDefinition : ScriptableObject
     {
         public string id;
@@ -29,6 +40,8 @@ namespace NihongoLife.Exam
         [Header("JLPT pass criteria (ignored for IELTS)")]
         [Min(1)] public int jlptTotalPassScore = 80;
         [Min(0)] public int jlptSectionPassScore = 19;
+        [Tooltip("JLPT 得点区分: e.g. N4/N5 = 言語知識（文字・語彙・文法）・読解 0–120 (min 38) + 聴解 0–60 (min 19). Empty = each section is its own group.")]
+        public List<JlptScoreGroup> scoreGroups = new List<JlptScoreGroup>();
 
         public ExamSection FindSection(string sectionId)
         {

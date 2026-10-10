@@ -32,7 +32,7 @@ Transform:
   - {fileID: 3826145010846967907}
   m_Father: {fileID: 4120908795594175964}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &2689268101418967539
+--- !u!1 &4277522353977167818
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -40,9 +40,9 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 5483175719714882718}
-  - component: {fileID: 2475088458144999447}
-  - component: {fileID: 4776582770516605851}
+  - component: {fileID: 3731244838976838814}
+  - component: {fileID: 2362119641877725377}
+  - component: {fileID: 7527911401031139253}
   m_Layer: 0
   m_Name: RedSnapper
   m_TagString: Untagged
@@ -50,13 +50,13 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &5483175719714882718
+--- !u!4 &3731244838976838814
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2689268101418967539}
+  m_GameObject: {fileID: 4277522353977167818}
   serializedVersion: 2
   m_LocalRotation: {x: -0.7071068, y: 0, z: -0, w: 0.7071067}
   m_LocalPosition: {x: -0, y: 0, z: 0}
@@ -65,21 +65,21 @@ Transform:
   m_Children: []
   m_Father: {fileID: 4120908795594175964}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!33 &2475088458144999447
+--- !u!33 &2362119641877725377
 MeshFilter:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2689268101418967539}
+  m_GameObject: {fileID: 4277522353977167818}
   m_Mesh: {fileID: 646449423763725242, guid: 206bb2023fda658428e74dd87df64d67, type: 3}
---- !u!23 &4776582770516605851
+--- !u!23 &7527911401031139253
 MeshRenderer:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2689268101418967539}
+  m_GameObject: {fileID: 4277522353977167818}
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
@@ -187,7 +187,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 2415644260775101649}
-  - {fileID: 5483175719714882718}
+  - {fileID: 3731244838976838814}
   m_Father: {fileID: 5847645307864704691}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &5544061287514793256
