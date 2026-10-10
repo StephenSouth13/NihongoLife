@@ -13,7 +13,7 @@ ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".."))
 IELTS = os.path.join(ROOT, "LocalContent", "IELTS")
 SOURCES = os.path.join(IELTS, "_sources")
 
-NOISE = re.compile(r"(fb\.co|facebook|louisquangvo|louis vo|0962004051|ieltsfocus|the1elts|giasuielts)", re.I)
+NOISE = re.compile(r"(fb\W{0,2}co|facebook|louis ?quang|lowsquang|ou/5quang|quang ?vo|louis vo|0962004051|ieltsfocus|ielts ?focus|the1elts|giasuielts|zalo|0847705973|ielts qu)", re.I)
 RUNNING_HEAD = re.compile(r"^\s*(Test \d|Reading|Listening|Writing|Speaking|\d{1,3})\s*$")
 
 
@@ -127,7 +127,7 @@ def _paragraphs(lines, fixes=None, labelled=False, short=0.82):
             notes.append(p)
     paras = body + notes
     text = "\n\n".join(re.sub(r"(?<=\S) {2,}(?=\S)", " ", p) for p in paras)
-    text = re.sub(r"(\w)- (\w)", r"\1\2", text)  # words hyphenated across lines
+    text = re.sub(r"(\w+)- (\w+)", _rejoin, text)  # words broken across lines
     for a, b in fixes.items():
         text = text.replace(a, b)
     return text.strip()
@@ -215,3 +215,35 @@ def key_answers(spec):
         else:
             answers.append({"number": int(k), "accepted": v if isinstance(v, list) else [v]})
     return sorted(answers, key=lambda a: a["number"])
+
+
+_SPELL = None
+
+
+def _known(word):
+    """A dictionary word (pyspellchecker), British spellings (-ise, -our, -re, -ll-, -ae-) included."""
+    global _SPELL
+    if _SPELL is None:
+        from spellchecker import SpellChecker
+        _SPELL = SpellChecker()
+    w = word.lower()
+    variants = {w, re.sub(r"is(e|ed|es|ing|ation|ations|er|ers)$", r"iz\1", w), re.sub(r"ys(e|ed|es|ing)$", r"yz\1", w),
+                w.replace("our", "or"), re.sub(r"tre(s?)$", r"ter\1", w), w.replace("ll", "l"), w.replace("ae", "e"), w.replace("ogue", "og"),
+                w.replace("isation", "ization").replace("ise", "ize"), w.replace("ence", "ense")}
+    return bool(_SPELL.known(variants))
+
+
+def _rejoin(m):
+    """'cork- strippers' → 'cork-strippers' when both halves are words and the joined form is not;
+    'consider- ation' → 'consideration' otherwise."""
+    a, b = m.group(1), m.group(2)
+    if not _known(a + b) and _known(a) and _known(b):
+        return a + "-" + b
+    return a + b
+
+
+def suspects(text):
+    """Lower-case words of a built passage that an English dictionary does not know — mostly OCR damage (faded margins,
+    broken letters) to fix by hand against the page image. Capitalised names are skipped."""
+    words = {w for w in re.findall(r"(?<![\w'’-])[a-z][a-z]+(?![\w'’-])", text)}
+    return sorted(w for w in words if not _known(w))

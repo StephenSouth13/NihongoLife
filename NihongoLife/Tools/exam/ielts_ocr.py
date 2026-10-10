@@ -6,6 +6,7 @@ imported by Unity, never shipped). Output: LocalContent/IELTS/_sources/<book>/pN
 
     python Tools/exam/ielts_ocr.py "Cambridge IELTS 14.pdf" [first last]
     python Tools/exam/ielts_ocr.py --columns cam12 first last   → pNNN.col.txt: two-column passages read column by column
+    python Tools/exam/ielts_ocr.py --flat cam13 first last      → re-OCR pNNN.txt after flat-field correction (faded margins)
 """
 import asyncio
 import os
@@ -98,6 +99,31 @@ async def ocr_columns(engine, png_bytes, width):
     return "\n".join(out)
 
 
+def flat_png(path):
+    """The page with its uneven lighting removed (divided by a heavily blurred copy), so text faded by the scan's
+    gutter shadow reads as black on white."""
+    import io
+    import numpy as np
+    from PIL import Image, ImageFilter
+    gray = Image.open(path).convert("L")
+    background = np.asarray(gray.filter(ImageFilter.GaussianBlur(30)), dtype=np.float32) + 1
+    ratio = np.asarray(gray, dtype=np.float32) / background  # ~1 on paper, lower on ink
+    flat = Image.fromarray(np.clip((ratio - 0.55) / 0.4 * 255, 0, 255).astype(np.uint8))
+    buf = io.BytesIO()
+    flat.save(buf, "PNG")
+    return buf.getvalue()
+
+
+async def flat(book, first, last):
+    engine = OcrEngine.try_create_from_user_profile_languages()
+    out = os.path.join(SOURCES, book)
+    for p in range(first, last + 1):
+        text = await ocr_png(engine, flat_png(os.path.join(out, f"p{p:03d}.png")))
+        with open(os.path.join(out, f"p{p:03d}.txt"), "w", encoding="utf-8") as fh:
+            fh.write(text)
+    print(f"{book}: flat-field OCR {first}-{last}")
+
+
 async def columns(book, first, last):
     engine = OcrEngine.try_create_from_user_profile_languages()
     from PIL import Image
@@ -137,6 +163,9 @@ async def main(pdf_name, first=None, last=None):
 
 if __name__ == "__main__":
     args = sys.argv[1:]
+    if args[0] == "--flat":
+        asyncio.run(flat(args[1], int(args[2]), int(args[3])))
+        sys.exit()
     if args[0] == "--columns":
         asyncio.run(columns(args[1], int(args[2]), int(args[3])))
         sys.exit()
