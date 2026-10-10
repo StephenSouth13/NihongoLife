@@ -22,6 +22,8 @@ namespace NihongoLife.Player
 
         private void Update()
         {
+            // Only in the Sims-style scheme: with mouse-look the left button is free for gameplay and the cursor is hidden.
+            if (NihongoLife.Core.ControlSettings.Scheme != NihongoLife.Core.ControlScheme.ClickToMove) return;
             if (Mouse.current == null || !Mouse.current.leftButton.wasPressedThisFrame) return;
             if (EventSystem.current != null && EventSystem.current.IsPointerOverGameObject()) return;
             if (!IsGameplayCamera(_camera)) _camera = ResolveGameplayCamera();

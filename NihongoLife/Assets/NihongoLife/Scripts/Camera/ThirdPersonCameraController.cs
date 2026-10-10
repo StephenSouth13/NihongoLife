@@ -78,9 +78,7 @@ namespace NihongoLife.Cameras
                 }
             }
 
-            // Sims-style controls: the cursor stays visible (click-to-move, HUD buttons); right/middle drag orbits.
-            Cursor.lockState = CursorLockMode.None; // Sims-style: the cursor stays free in gameplay
-            Cursor.visible = true;
+            // The cursor itself is owned by UI.CursorDirector (locked mouse-look by default, free in menus / Ctrl).
         }
 
         private void LateUpdate()
@@ -97,17 +95,37 @@ namespace NihongoLife.Cameras
             if (!_isLocked && Mouse.current != null && !NihongoLife.UI.UiModalStack.AnyOpen)
             {
                 var mouse = Mouse.current;
-                bool overUi = UnityEngine.EventSystems.EventSystem.current != null && UnityEngine.EventSystems.EventSystem.current.IsPointerOverGameObject();
-                // Start an orbit only when the drag begins over the world, then keep it until the button is released.
-                if ((mouse.rightButton.wasPressedThisFrame || mouse.middleButton.wasPressedThisFrame) && !overUi) _orbiting = true;
-                if (!mouse.rightButton.isPressed && !mouse.middleButton.isPressed) _orbiting = false;
-                if (_orbiting)
+                bool overUi = !NihongoLife.UI.CursorDirector.GameplayLook && UnityEngine.EventSystems.EventSystem.current != null && UnityEngine.EventSystems.EventSystem.current.IsPointerOverGameObject();
+                float sensitivity = NihongoLife.Core.ControlSettings.MouseSensitivity;
+                float invert = NihongoLife.Core.ControlSettings.InvertY ? -1f : 1f;
+                if (NihongoLife.UI.CursorDirector.GameplayLook && Cursor.lockState == CursorLockMode.Locked)
                 {
-                    Vector2 mouseDelta = mouse.delta.ReadValue();
-                    _rotationX += mouseDelta.x * sensitivityX * orbitDragMultiplier;
-                    _rotationY -= mouseDelta.y * sensitivityY * orbitDragMultiplier;
-                    _rotationY = Mathf.Clamp(_rotationY, minYAngle, maxYAngle);
+                    // Gameplay mode: the locked mouse turns the camera directly. The first frames after the lock
+                    // are skipped so leaving a menu or releasing Ctrl never snaps the view.
+                    _orbiting = false;
+                    if (Time.frameCount > NihongoLife.UI.CursorDirector.LookStartedFrame + 1)
+                    {
+                        Vector2 mouseDelta = mouse.delta.ReadValue();
+                        _rotationX += mouseDelta.x * sensitivityX * sensitivity;
+                        _rotationY -= mouseDelta.y * sensitivityY * sensitivity * invert;
+                        _rotationY = Mathf.Clamp(_rotationY, minYAngle, maxYAngle);
+                    }
                 }
+                else if (!NihongoLife.UI.CursorDirector.CursorKeyHeld)
+                {
+                    // Click-to-move scheme (and the WebGL fallback before pointer lock is granted): right/middle drag
+                    // orbits. Holding Ctrl pauses the camera so the cursor can be used on the HUD.
+                    if ((mouse.rightButton.wasPressedThisFrame || mouse.middleButton.wasPressedThisFrame) && !overUi) _orbiting = true;
+                    if (!mouse.rightButton.isPressed && !mouse.middleButton.isPressed) _orbiting = false;
+                    if (_orbiting)
+                    {
+                        Vector2 mouseDelta = mouse.delta.ReadValue();
+                        _rotationX += mouseDelta.x * sensitivityX * orbitDragMultiplier * sensitivity;
+                        _rotationY -= mouseDelta.y * sensitivityY * orbitDragMultiplier * sensitivity * invert;
+                        _rotationY = Mathf.Clamp(_rotationY, minYAngle, maxYAngle);
+                    }
+                }
+                else _orbiting = false;
 
                 float scroll = overUi ? 0f : mouse.scroll.ReadValue().y;
                 if (Mathf.Abs(scroll) > 0.01f)
