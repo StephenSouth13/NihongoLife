@@ -31,7 +31,7 @@ namespace NihongoLife.Tests
             Assert.Greater(environments.Length, 2);
             var map = Object.FindFirstObjectByType<WorldMapUI>();
             Assert.NotNull(map);
-            GameObject.Find("MapButton").GetComponent<Button>().onClick.Invoke();
+            var mapInput1 = NihongoLife.Core.GameInputService.GetOrCreate(); yield return new WaitForFixedUpdate(); mapInput1.SetMobileButton(NihongoLife.Core.GameInputId.Map, true); yield return null; mapInput1.SetMobileButton(NihongoLife.Core.GameInputId.Map, false); yield return null;
             Assert.IsTrue(map.IsVisible);
             yield return null;
             Capture("city-map");
@@ -61,7 +61,7 @@ namespace NihongoLife.Tests
             yield return new WaitForSecondsRealtime(2f);
             Assert.Greater(player.transform.position.x, 740f);
             Capture("station");
-            GameObject.Find("MapButton").GetComponent<Button>().onClick.Invoke();
+            var mapInput2 = NihongoLife.Core.GameInputService.GetOrCreate(); yield return new WaitForFixedUpdate(); mapInput2.SetMobileButton(NihongoLife.Core.GameInputId.Map, true); yield return null; mapInput2.SetMobileButton(NihongoLife.Core.GameInputId.Map, false); yield return null;
             Assert.IsTrue(map.IsVisible);
             yield return null;
             Capture("station-map");
@@ -101,7 +101,7 @@ namespace NihongoLife.Tests
                     Assert.IsFalse(node.GetComponents<Component>().Any(x => x == null), "Missing script on " + node.name);
             Assert.IsTrue(Physics.Raycast(player.transform.position + Vector3.up, Vector3.down, 4f, Physics.DefaultRaycastLayers, QueryTriggerInteraction.Ignore), "Bedroom floor must support the spawn.");
             Capture("bedroom");
-            GameObject.Find("MapButton").GetComponent<Button>().onClick.Invoke();
+            var mapInput3 = NihongoLife.Core.GameInputService.GetOrCreate(); yield return new WaitForFixedUpdate(); mapInput3.SetMobileButton(NihongoLife.Core.GameInputId.Map, true); yield return null; mapInput3.SetMobileButton(NihongoLife.Core.GameInputId.Map, false); yield return null;
             Assert.IsTrue(map.IsVisible);
             yield return null;
             Capture("bedroom-map");

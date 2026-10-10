@@ -202,9 +202,8 @@ namespace NihongoLife.Tests
             var player = Object.FindFirstObjectByType<PlayerController>();
             Assert.NotNull(player);
             Assert.NotNull(Object.FindFirstObjectByType<NihongoLife.UI.HUDUI>(), "The shared HUD must exist in the room.");
-            Assert.NotNull(Object.FindFirstObjectByType<NihongoLife.UI.StatusDock>(), "Vitals/action bar must exist in the room.");
-            Assert.NotNull(GameObject.Find("BagButton"));
-            Assert.NotNull(GameObject.Find("MapButton"));
+            Assert.NotNull(Object.FindFirstObjectByType<NihongoLife.UI.StatusDock>(), "The status widget must exist in the room.");
+            Assert.NotNull(Object.FindFirstObjectByType<NihongoLife.UI.StatusDock>().StatusWidget);
             var dm = NihongoLife.Dialogue.DialogueManager.Instance;
             for (int guard = 0; guard < 60 && dm != null && dm.IsOpen; guard++) { dm.CancelDialogue(); if (dm.IsOpen) dm.ContinueDialogue(); yield return null; }
 

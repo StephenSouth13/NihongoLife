@@ -31,6 +31,8 @@ namespace NihongoLife.UI
         public static int LookStartedFrame { get; private set; }
         /// <summary>True while the player holds the temporary-cursor key (Ctrl by default).</summary>
         public static bool CursorKeyHeld { get; private set; }
+        /// <summary>Test hook: batchmode has no focused window; tests set this to exercise the gameplay-mode rules.</summary>
+        public static bool AssumeFocusForTests;
 
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterSceneLoad)]
         private static void Boot()
@@ -78,7 +80,7 @@ namespace NihongoLife.UI
         private bool WantsLook()
         {
             if (ControlSettings.Scheme != ControlScheme.MouseLook) return false;
-            if (Application.isBatchMode || !Application.isFocused) return false;
+            if ((Application.isBatchMode || !Application.isFocused) && !AssumeFocusForTests) return false;
             if (Time.unscaledTime >= _nextLookup || _player == null || _camera == null)
             {
                 _nextLookup = Time.unscaledTime + 0.5f;

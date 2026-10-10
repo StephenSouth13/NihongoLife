@@ -152,6 +152,8 @@ namespace NihongoLife.UI
                     if (!inventory.AddItem(p.id, p.japanese, p.vietnamese, p.price, 1, false, p.useType, p.food, p.drink, p.energy)) refused += p.price;
             }
             if (refused > 0) inventory.AddYen(refused);
+            foreach (var line in KonbiniBasket.Items) NihongoLife.Progression.QuestService.Raise("buy", line.Key, line.Value);
+            if (total > refused) NihongoLife.Progression.QuestService.Raise("buy", "konbini", 1);
             KonbiniBasket.Clear();
             Cue(GameAudioCue.UiConfirm);
             _clerk = null; // the thank-you conversation releases the clerk when it ends

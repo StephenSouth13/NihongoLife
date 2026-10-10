@@ -202,6 +202,7 @@ namespace NihongoLife.Island
             if (record.words.Contains(key)) return false;
             record.words.Add(key);
             Save();
+            NihongoLife.Progression.QuestService.Raise("learn", key);
             return true;
         }
 

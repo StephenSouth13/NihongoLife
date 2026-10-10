@@ -121,20 +121,32 @@ namespace NihongoLife.Player
             }
         }
 
+        /// <summary>
+        /// Experience (general progression). Knowledge is separate (AddKnowledge). Level thresholds come from
+        /// Resources/Progression/progression.json; progress.xp stores the total XP ever earned.
+        /// </summary>
         public void AddExp(int amount)
         {
             if (amount <= 0) return;
-            CurrentExp += amount;
-            AddKnowledge(amount);
-            while (CurrentExp >= MaxExp)
-            {
-                CurrentExp -= MaxExp;
-                Level++;
-                MaxExp = Mathf.FloorToInt(MaxExp * 1.5f);
-                maxHealth += 10f;
-                CurrentHealth = maxHealth;
-            }
+            int levelBefore = Level;
+            TotalExp += amount;
+            ApplyLevelFromTotal();
+            for (int l = levelBefore; l < Level; l++) { maxHealth += 10f; CurrentHealth = maxHealth; }
+            if (Level > levelBefore) NihongoLife.UI.HudFeed.Post($"Lên cấp {Level}!", NihongoLife.UI.HudFeed.Kind.Reward, 6f);
+            SaveProgress();
             OnStatusChanged?.Invoke();
+        }
+
+        /// <summary>Total XP ever earned (saved as progress.xp).</summary>
+        public int TotalExp { get; private set; }
+
+        private void ApplyLevelFromTotal()
+        {
+            var table = NihongoLife.Progression.ProgressionCatalog.Load();
+            Level = table.LevelFor(TotalExp);
+            int floor = table.XpForLevel(Level);
+            CurrentExp = TotalExp - floor;
+            MaxExp = Mathf.Max(1, table.XpForLevel(Level + 1) - floor);
         }
 
         public void ConsumeStamina(int amount)
@@ -200,8 +212,11 @@ namespace NihongoLife.Player
             var progress = repository.GetProgress();
             if (progress == null) return;
             if (!string.IsNullOrWhiteSpace(progress.displayName)) PlayerName = progress.displayName;
-            Level = Mathf.Max(1, progress.level);
-            CurrentExp = Mathf.Max(0, progress.xp);
+            // progress.xp is the total XP. Older saves stored XP inside the level: never drop a level on load.
+            var table = NihongoLife.Progression.ProgressionCatalog.Load();
+            TotalExp = Mathf.Max(0, progress.xp);
+            if (table.LevelFor(TotalExp) < progress.level) TotalExp = table.XpForLevel(Mathf.Max(1, progress.level)) + Mathf.Max(0, progress.xp);
+            ApplyLevelFromTotal();
             Knowledge = Mathf.Max(0, progress.knowledge > 0 ? progress.knowledge : progress.xp);
             CurrentHealth = Mathf.Clamp(progress.health, 0f, maxHealth);
             CurrentEnergy = Mathf.Clamp(progress.energy, 0f, maxEnergy);
@@ -223,7 +238,7 @@ namespace NihongoLife.Player
             var progress = repository.GetProgress();
             if (progress == null) return;
             progress.level = Level;
-            progress.xp = CurrentExp;
+            progress.xp = TotalExp;
             progress.displayName = PlayerName;
             progress.knowledge = Knowledge;
             progress.health = CurrentHealth;

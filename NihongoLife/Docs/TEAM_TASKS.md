@@ -648,3 +648,49 @@ Phiên Codex 08/10 dừng giữa chừng vì hết lượt dùng. Các mục cò
 - Gói `Unity_6_Animals_Free_v2.3.unitypackage` (ithappy) **chưa import**, vì gói kèm demo HDRP; 5 thú Quaternius đã đủ hoạt ảnh.
 - Bình tưới không có model 3D nào trong dự án. Icon bình tưới do Claude vẽ (PIL), không lấy từ Codex.
 - Đồ công nghệ (laptop, TV) hiện chỉ là đồ sưu tầm, chưa đặt được vào phòng trọ.
+
+## Cập nhật (2026-10-10, Claude) — HUD gọn, chuột khoá + Ctrl, Sổ nhiệm vụ (N), việc làm thêm, tiến trình theo dữ liệu
+
+| Việc | Người làm | File được phép sửa | Kiểm tra khi ghép |
+|---|---|---|---|
+| HUD, con trỏ, camera, Sổ nhiệm vụ, việc làm thêm, tiến trình | Claude | `Scripts/UI/{StatusDock,HudFeed,HudGraphics,CursorDirector,TaskJournalUI,TimedAction,JobQuizCard}.cs`, `Scripts/Progression/**`, `Scripts/Core/ControlSettings.cs`, `Scripts/Editor/JobSiteBuilder.cs`, `Resources/Progression/**`, `Docs/PROGRESSION_GUIDE.md` | `LifeLoopPlayModeTests` (3), `ProgressionCatalogTests`, `ProgressMergeTests` |
+| Icon món sushi | Codex render, Claude duyệt và chép 4 icon nigiri (`sushi_maguro/salmon/ebi/tamago`) vào `Resources/Items` | chỉ đọc `Generated/AssetPipeline/**` | thẻ gọi món |
+
+### Đã làm
+- **HUD:**
+  - Bỏ thanh phím tắt cố định (B/Tab/M/J/K/O) trên desktop; vẫn giữ trên màn hình cảm ứng.
+  - Ô trạng thái gọn ở góc dưới trái: chân dung, cấp, ¥, 5 vòng nhu cầu. Chip cảnh báo chỉ hiện khi nhu cầu < 20%.
+  - Góc trên trái chỉ còn một mục tiêu đang theo dõi.
+  - Thông báo gom vào `HudFeed`: giữa phía trên, cùng mục tiêu thì cập nhật tại chỗ, tạm ẩn khi có cửa sổ mở.
+  - Một làn gợi ý duy nhất ở dưới giữa: ưu tiên `[F]` hơn "Tiếp hội thoại · R"; ẩn khi đang làm việc có thời gian hoặc có cửa sổ mở.
+  - Dòng debug "Press V…" chuyển vào feed.
+  - Đã kiểm tra không chồng nhau ở 1920×1080, 1600×900, 1366×768, 1280×720.
+- **Chuột và camera:**
+  - `CursorDirector` là nơi duy nhất quyết định con trỏ.
+  - Mặc định khoá chuột và xoay camera bằng chuột. Giữ Ctrl để hiện con trỏ (camera dừng). Mở cửa sổ thì con trỏ tự hiện. Mất focus thì nhả chuột.
+  - Kiểu "Click để đi" (như Sims) vẫn chọn được trong Cài đặt.
+  - Cài đặt có thêm độ nhạy, đảo trục Y, kiểu điều khiển và bảng đủ phím (thêm N, P, Ctrl, E).
+- **Tiến trình theo dữ liệu:**
+  - `Resources/Progression/progression.json` chứa ngưỡng cấp, 3 việc làm thêm, nhiệm vụ nông trại, học tập, hằng ngày. Có kiểm tra dữ liệu tự động (`ProgressionCatalogTests`).
+  - `progress.xp` giờ là **tổng XP**; cấp tính từ bảng. Bản lưu cũ được nâng lên, không mất cấp.
+  - XP và Kiến thức đã tách riêng (trước đây `AddExp` cộng luôn vào Kiến thức).
+- **Việc làm thêm** (không còn nhận lương chỉ bằng một nút bấm):
+  - Konbini: bê thùng hàng → xếp 3 kệ → chỉ đường 2 khách → tính tiền → báo cáo chị Ito (¥600).
+  - Sushi: nhận 2 order tiếng Nhật → lấy đúng món ở quầy bếp → bưng đúng bàn → báo cáo anh Aoki (¥700).
+  - Đảo Xanh: cô Hana giao hạt; xới, gieo, tưới, cho thú ăn → báo cáo (¥500).
+  - Trả lời sai không được tính. Lương trả đúng một lần. Huỷ ca thì không có lương. Mỗi lúc chỉ làm một ca.
+- **Làm nông có thời gian:**
+  - Thanh tiến trình cho mọi thao tác; Esc để huỷ.
+  - Xới bằng cuốc 1,6 s, bằng xẻng 2,6 s, bằng tay 7 s. Không có bình tưới thì không tưới được.
+- **Sổ nhiệm vụ (N; J cũ cũng mở sổ này):** gồm cốt truyện, làm thêm, nông trại, học tập, hằng ngày. Có nhận, huỷ, theo dõi; hiện thưởng thật từ dữ liệu.
+
+### Ảnh hưởng chung
+- `90_TestSandbox` có thêm root `JobSite_Konbini` (riêng biệt, `CityTownBuilder` không xoá). `30_SushiRestaurant` có thêm `JobSite_Sushi`.
+- Biển `RegisterPrompt` chỉ được xoay nếu đang quay sai phía.
+- `SupabaseProgressRepository.MergeProgress` trước đây làm rơi `inventory`, `island`, `quests` khi đồng bộ đăng nhập. Đã sửa và có test.
+- `GameInputId.Journal` và `FreeCursor` được thêm vào cuối enum.
+
+### Còn mở
+- Mới kiểm thử phần gộp bản lưu cloud bằng unit test; chưa chạy với Supabase thật.
+- WebGL: pointer lock chỉ được cấp sau một lần click vào canvas. Trước đó vẫn kéo chuột phải để xoay camera. Chưa chạy thử bản build WebGL.
+- 438 icon của Codex chỉ dùng phần đã duyệt từng cái (8 + 4). Chưa gắn hàng loạt.

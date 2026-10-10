@@ -198,7 +198,7 @@ namespace NihongoLife.EditorTools
             // Static batching for everything that never moves (not animals, crops, text or interaction triggers).
             foreach (var t in root.GetComponentsInChildren<Transform>(true))
             {
-                if (t.GetComponentInParent<IslandAnimal>() != null || t.GetComponentInParent<FarmPlot>() != null) continue;
+                if (t.GetComponentInParent<IslandAnimal>() != null || t.GetComponentInParent<FarmPlot>() != null || t.GetComponentInParent<NihongoLife.Progression.JobGiver>() != null) continue;
                 if (t.GetComponent<TextMeshPro>() != null || t.GetComponent<Light>() != null || t.GetComponent<Camera>() != null) continue;
                 GameObjectUtility.SetStaticEditorFlags(t.gameObject, StaticEditorFlags.BatchingStatic | StaticEditorFlags.OccludeeStatic);
             }
@@ -347,6 +347,20 @@ namespace NihongoLife.EditorTools
             Obj(farm, "Box", "box", "SeedCrates", new Vector3(-14.2f, 0f, 2.2f), 0.9f, 20f, true);
             Obj(farm, "Barrel", "barrel", "WaterBarrel", new Vector3(-14.4f, 0f, 4.2f), 1.0f, 0f, true);
             Obj(farm, "Tool Hoe", "toolHoe", "HoeProp", new Vector3(-14.6f, 0.45f, 5.6f), 1.1f, 75f, false, tilt: 18f);
+
+            // Farm manager Hana: offers the farm-helper job, checks on the shift and pays (JobGiver → QuestService).
+            JobSiteBuilder.Materials();
+            var hana = Group(farm, "FarmManager_Hana");
+            hana.localPosition = new Vector3(-12.6f, 0f, 3.2f);
+            hana.localRotation = Quaternion.Euler(0f, 80f, 0f);
+            var hanaModel = JobSiteBuilder.Person(hana, "Visual", Vector3.zero, 0f);
+            hanaModel.SetActive(true);
+            hana.gameObject.layer = InteractableLayer;
+            var hanaTrigger = hana.gameObject.AddComponent<BoxCollider>();
+            hanaTrigger.isTrigger = true; hanaTrigger.center = new Vector3(0f, 1f, 0f); hanaTrigger.size = new Vector3(1.4f, 2f, 1.4f);
+            hana.gameObject.AddComponent<NihongoLife.Progression.JobGiver>().Configure("npc_farm_manager", "はな", "Cô Hana", "job_farm_shift", "farm_first_harvest");
+            Text(hana, "Nameplate", "はな · Cô Hana\n<size=70%>quản lý nông trại</size>", new Vector3(0f, 2.15f, 0f), 0f, 0.12f, new Color(0.95f, 0.9f, 0.7f), 1.6f).gameObject.AddComponent<NihongoLife.UI.BillboardUI>().lockRotationXAndZ = true;
+            JobSiteBuilder.Board(farm, new Vector3(-13.4f, 0f, 7.6f), -90f, "job_farm_shift", "おてつだい ぼしゅう", "Phụ việc nông trại · ¥500/ca");
         }
 
         // ─────────── Animal pen (east) ───────────

@@ -35,6 +35,10 @@ namespace NihongoLife.UI
         private GameInputService input;
         private bool rebinding;
         private int escapeBlockedFrame = -1;
+        private Slider sensitivitySlider;
+        private TextMeshProUGUI sensitivityValue;
+        private Button invertButton, schemeButton;
+        private TextMeshProUGUI schemeHint;
         private readonly Dictionary<GameInputId, TextMeshProUGUI> bindingLabels = new Dictionary<GameInputId, TextMeshProUGUI>();
         private readonly List<LocalizedLabel> localized = new List<LocalizedLabel>();
 
@@ -127,31 +131,54 @@ namespace NihongoLife.UI
             card.transform.SetParent(panelObj.transform, false);
             cardRect = (RectTransform)card.transform;
             cardRect.anchorMin = cardRect.anchorMax = cardRect.pivot = new Vector2(0.5f, 0.5f);
-            cardRect.sizeDelta = new Vector2(1180f, 640f);
+            cardRect.sizeDelta = new Vector2(1180f, 740f);
             UIStyleKit.StylePanel(cardRect, new Color(0.055f, 0.068f, 0.082f, 1f));
             card.GetComponent<Image>().raycastTarget = true;
             card.AddComponent<HudFitRect>().Configure(0.96f, 0.94f, Vector2.zero, 0.4f);
 
-            Label(card.transform, "Cài đặt", "Settings", "設定", 38, new Vector2(0f, 270f), new Vector2(700f, 56f), TextAlignmentOptions.Center, true);
-            Label(card.transform, "Âm thanh", "Audio", "音", 24, new Vector2(-360f, 175f), new Vector2(360f, 45f), TextAlignmentOptions.Center, true);
-            Label(card.transform, "Nhạc nền", "Music", "BGM", 17, new Vector2(-360f, 118f), new Vector2(300f, 35f), TextAlignmentOptions.Center, false);
-            bgmSlider = CreateSlider(card.transform, new Vector2(-380f, 80f), out bgmValue);
-            Label(card.transform, "Hiệu ứng", "Sound effects", "効果音", 17, new Vector2(-360f, 30f), new Vector2(300f, 35f), TextAlignmentOptions.Center, false);
-            sfxSlider = CreateSlider(card.transform, new Vector2(-380f, -8f), out sfxValue);
-            Label(card.transform, "Ngon ngu", "Language", "Language", 19, new Vector2(-360f, -82f), new Vector2(300f, 35f), TextAlignmentOptions.Center, true);
-            CreateLanguageButton(card.transform, "VI", GameLanguage.Vietnamese, new Vector2(-465f, -130f));
-            CreateLanguageButton(card.transform, "EN", GameLanguage.English, new Vector2(-360f, -130f));
-            CreateLanguageButton(card.transform, "JP", GameLanguage.Japanese, new Vector2(-255f, -130f));
-            Label(card.transform, "Điều khiển", "Controls", "操作", 24, new Vector2(220f, 220f), new Vector2(600f, 45f), TextAlignmentOptions.Center, true);
+            Label(card.transform, "Cài đặt", "Settings", "設定", 36, new Vector2(0f, 325f), new Vector2(700f, 52f), TextAlignmentOptions.Center, true);
+            // Left column: audio, language, camera.
+            Label(card.transform, "Âm thanh", "Audio", "音", 22, new Vector2(-360f, 262f), new Vector2(360f, 40f), TextAlignmentOptions.Center, true);
+            Label(card.transform, "Nhạc nền", "Music", "BGM", 16, new Vector2(-360f, 222f), new Vector2(300f, 32f), TextAlignmentOptions.Center, false);
+            bgmSlider = CreateSlider(card.transform, new Vector2(-380f, 190f), out bgmValue);
+            Label(card.transform, "Hiệu ứng", "Sound effects", "効果音", 16, new Vector2(-360f, 152f), new Vector2(300f, 32f), TextAlignmentOptions.Center, false);
+            sfxSlider = CreateSlider(card.transform, new Vector2(-380f, 120f), out sfxValue);
+            Label(card.transform, "Ngôn ngữ", "Language", "言語", 18, new Vector2(-360f, 74f), new Vector2(300f, 32f), TextAlignmentOptions.Center, true);
+            CreateLanguageButton(card.transform, "VI", GameLanguage.Vietnamese, new Vector2(-465f, 34f));
+            CreateLanguageButton(card.transform, "EN", GameLanguage.English, new Vector2(-360f, 34f));
+            CreateLanguageButton(card.transform, "JP", GameLanguage.Japanese, new Vector2(-255f, 34f));
+            Label(card.transform, "Camera & chuột", "Camera & mouse", "カメラ・マウス", 22, new Vector2(-360f, -22f), new Vector2(360f, 40f), TextAlignmentOptions.Center, true);
+            Label(card.transform, "Độ nhạy chuột", "Mouse sensitivity", "マウス感度", 16, new Vector2(-360f, -62f), new Vector2(300f, 32f), TextAlignmentOptions.Center, false);
+            sensitivitySlider = CreateSlider(card.transform, new Vector2(-380f, -94f), out sensitivityValue);
+            sensitivitySlider.minValue = ControlSettings.MinSensitivity;
+            sensitivitySlider.maxValue = ControlSettings.MaxSensitivity;
+            sensitivitySlider.onValueChanged.AddListener(v => { ControlSettings.MouseSensitivity = v; sensitivityValue.text = $"{v:0.0}x"; });
+            invertButton = CreateButton(card.transform, string.Empty, new Vector2(-465f, -146f), new Vector2(210f, 40f), false);
+            invertButton.name = "InvertY";
+            invertButton.onClick.AddListener(() => { ControlSettings.InvertY = !ControlSettings.InvertY; RefreshControlButtons(); });
+            schemeButton = CreateButton(card.transform, string.Empty, new Vector2(-245f, -146f), new Vector2(210f, 40f), false);
+            schemeButton.name = "ControlScheme";
+            schemeButton.onClick.AddListener(() =>
+            {
+                ControlSettings.Scheme = ControlSettings.Scheme == ControlScheme.MouseLook ? ControlScheme.ClickToMove : ControlScheme.MouseLook;
+                RefreshControlButtons();
+            });
+            schemeHint = CreateText(card.transform, string.Empty, 14, new Vector2(-355f, -210f), new Vector2(440f, 64f), TextAlignmentOptions.Center);
+            schemeHint.textWrappingMode = TextWrappingModes.Normal;
+            schemeHint.enableAutoSizing = false;
+            schemeHint.color = new Color(0.66f, 0.72f, 0.8f, 1f);
+            // Right column: every key, rebindable.
+            Label(card.transform, "Phím điều khiển", "Key bindings", "キー操作", 22, new Vector2(240f, 262f), new Vector2(600f, 40f), TextAlignmentOptions.Center, true);
+            Label(card.transform, "Bấm vào ô phím để đổi. Giữ Ctrl để hiện con trỏ khi đang chơi.", "Click a key to rebind. Hold Ctrl for a cursor during play.", "キーをクリックして変更。Ctrlでカーソル表示。", 14, new Vector2(240f, 230f), new Vector2(600f, 28f), TextAlignmentOptions.Center, false);
 
             bgmSlider.onValueChanged.AddListener(OnBgmChanged);
             sfxSlider.onValueChanged.AddListener(OnSfxChanged);
 
             // Footer and close controls first, so they exist even if binding rows fail below.
-            var reset = CreateButton(card.transform, string.Empty, new Vector2(-130f, -270f), new Vector2(220f, 48f), false);
+            var reset = CreateButton(card.transform, string.Empty, new Vector2(-130f, -318f), new Vector2(220f, 48f), false);
             Localize(reset.GetComponentInChildren<TextMeshProUGUI>(), "Mặc định", "Reset keys", "初期化");
             reset.onClick.AddListener(() => input.ResetBindings());
-            var close = CreateButton(card.transform, string.Empty, new Vector2(130f, -270f), new Vector2(220f, 48f), true);
+            var close = CreateButton(card.transform, string.Empty, new Vector2(130f, -318f), new Vector2(220f, 48f), true);
             Localize(close.GetComponentInChildren<TextMeshProUGUI>(), "Đóng", "Close", "閉じる");
             close.onClick.AddListener(Hide);
 
@@ -180,25 +207,27 @@ namespace NihongoLife.UI
         {
             var rows = new (GameInputId id, string vi, string en, string ja)[]
             {
-                (GameInputId.UseItem, "Dùng vật phẩm", "Use item", "アイテム使用"),
                 (GameInputId.MoveUp, "Đi tới", "Forward", "前進"), (GameInputId.MoveDown, "Đi lùi", "Backward", "後退"),
                 (GameInputId.MoveLeft, "Sang trái", "Left", "左"), (GameInputId.MoveRight, "Sang phải", "Right", "右"),
                 (GameInputId.Sprint, "Chạy", "Sprint", "走る"), (GameInputId.Jump, "Nhảy", "Jump", "ジャンプ"),
-                (GameInputId.Interact, "Tương tác", "Interact", "調べる"), (GameInputId.Inventory, "Balo", "Bag", "バッグ"),
-                (GameInputId.Character, "Nhân vật", "Profile", "プロフィール"), (GameInputId.Map, "Bản đồ", "Map", "地図"),
-                (GameInputId.Chat, "Chat", "Chat", "チャット"), (GameInputId.Voice, "Ghi âm", "Record", "録音"),
-                (GameInputId.Settings, "Cài đặt", "Settings", "設定"), (GameInputId.DropItem, "Vứt đồ", "Drop item", "捨てる"),
-                (GameInputId.Pause, "Đóng / quay lại", "Close / back", "閉じる・戻る")
+                (GameInputId.Interact, "Tương tác", "Interact", "調べる"), (GameInputId.FreeCursor, "Hiện con trỏ (giữ)", "Cursor (hold)", "カーソル"),
+                (GameInputId.UseItem, "Dùng vật phẩm", "Use item", "アイテム使用"), (GameInputId.DropItem, "Vứt đồ", "Drop item", "捨てる"),
+                (GameInputId.Emote, "Biểu cảm", "Emotes", "エモート"), (GameInputId.Voice, "Ghi âm", "Record", "録音"),
+                (GameInputId.Inventory, "Balo", "Bag", "バッグ"), (GameInputId.Character, "Nhân vật", "Profile", "プロフィール"),
+                (GameInputId.Journal, "Sổ nhiệm vụ", "Task journal", "タスク"), (GameInputId.Map, "Bản đồ", "Map", "地図"),
+                (GameInputId.Shop, "Cửa hàng (đảo)", "Shop (island)", "ショップ"), (GameInputId.Chat, "Chat", "Chat", "チャット"),
+                (GameInputId.Settings, "Cài đặt", "Settings", "設定"), (GameInputId.Pause, "Đóng / quay lại", "Close / back", "閉じる・戻る")
             };
 
             for (int i = 0; i < rows.Length; i++)
             {
-                int column = i / 8;
-                int row = i % 8;
-                float x = 45f + column * 315f;
-                float y = 170f - row * 45f;
-                Label(parent, rows[i].vi, rows[i].en, rows[i].ja, 15, new Vector2(x, y), new Vector2(130f, 38f), TextAlignmentOptions.MidlineLeft, false);
-                var button = CreateButton(parent, string.Empty, new Vector2(x + 135f, y), new Vector2(118f, 36f), false);
+                int column = i / 10;
+                int row = i % 10;
+                float x = 0f + column * 300f;
+                float y = 190f - row * 44f;
+                Label(parent, rows[i].vi, rows[i].en, rows[i].ja, 15, new Vector2(x, y), new Vector2(150f, 38f), TextAlignmentOptions.MidlineLeft, false);
+                var button = CreateButton(parent, string.Empty, new Vector2(x + 145f, y), new Vector2(118f, 36f), false);
+                button.name = "Bind_" + rows[i].id;
                 var value = button.GetComponentInChildren<TextMeshProUGUI>();
                 value.fontSize = 14f;
                 value.enableAutoSizing = true;
@@ -208,6 +237,10 @@ namespace NihongoLife.UI
                 GameInputId captured = rows[i].id;
                 button.onClick.AddListener(() => BeginRebind(captured));
             }
+
+            // Keys that are not rebindable, listed so every control is discoverable in one place.
+            var fixedKeys = CreateText(parent, "Chuột: xoay camera  ·  Lăn chuột: zoom  ·  Esc: đóng cửa sổ trên cùng  ·  K: luyện thi", 14, new Vector2(240f, -262f), new Vector2(620f, 28f), TextAlignmentOptions.Center);
+            fixedKeys.color = new Color(0.66f, 0.72f, 0.8f, 1f);
 
             RefreshBindingLabels();
         }
@@ -261,10 +294,28 @@ namespace NihongoLife.UI
         {
             if (bgmSlider == null || sfxSlider == null) return;
 
+            if (sensitivitySlider != null)
+            {
+                sensitivitySlider.SetValueWithoutNotify(ControlSettings.MouseSensitivity);
+                sensitivityValue.text = $"{ControlSettings.MouseSensitivity:0.0}x";
+            }
+            RefreshControlButtons();
             bgmSlider.SetValueWithoutNotify(PlayerPrefs.GetFloat("Volume_BGM", 0.5f));
             sfxSlider.SetValueWithoutNotify(PlayerPrefs.GetFloat("Volume_SFX", 0.8f));
             UpdateValueText(bgmValue, bgmSlider.value);
             UpdateValueText(sfxValue, sfxSlider.value);
+        }
+
+        private void RefreshControlButtons()
+        {
+            if (invertButton != null)
+                invertButton.GetComponentInChildren<TextMeshProUGUI>().text = ControlSettings.InvertY ? Pick("Đảo trục Y: Bật", "Invert Y: On", "上下反転: オン") : Pick("Đảo trục Y: Tắt", "Invert Y: Off", "上下反転: オフ");
+            if (schemeButton != null)
+                schemeButton.GetComponentInChildren<TextMeshProUGUI>().text = ControlSettings.Scheme == ControlScheme.MouseLook ? Pick("Kiểu: Khoá chuột", "Mode: Mouse look", "モード: マウス視点") : Pick("Kiểu: Click để đi", "Mode: Click to move", "モード: クリック移動");
+            if (schemeHint != null)
+                schemeHint.text = ControlSettings.Scheme == ControlScheme.MouseLook
+                    ? Pick("Chuột xoay camera, con trỏ ẩn. Giữ Ctrl để dùng chuột; mở cửa sổ (Tab, N, B…) cũng hiện con trỏ.", "Mouse turns the camera. Hold Ctrl or open a window for the cursor.", "マウスで視点操作。Ctrlでカーソル。")
+                    : Pick("Con trỏ luôn hiện: click chuột trái để đi tới, giữ chuột phải/giữa để xoay camera.", "Cursor always visible: left click to walk, right/middle drag to turn.", "左クリックで移動、右ドラッグで視点。");
         }
 
         private float _lastTickTime;

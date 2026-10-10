@@ -132,7 +132,7 @@ namespace NihongoLife.Tests
 
             // 4) Map window.
             Teleport(player, new Vector3(0f, 0.08f, -13.5f), 0f);
-            GameObject.Find("MapButton").GetComponent<Button>().onClick.Invoke();
+            var mapInput = NihongoLife.Core.GameInputService.GetOrCreate(); yield return new WaitForFixedUpdate(); mapInput.SetMobileButton(NihongoLife.Core.GameInputId.Map, true); yield return null; mapInput.SetMobileButton(NihongoLife.Core.GameInputId.Map, false); yield return null;
             yield return new WaitForSecondsRealtime(0.4f);
             var map = Object.FindFirstObjectByType<WorldMapUI>();
             Assert.IsTrue(map.IsVisible);
@@ -254,9 +254,11 @@ namespace NihongoLife.Tests
             var dm = DialogueManager.Instance;
             while (dm.IsOpen) { dm.CancelDialogue(); if (dm.IsOpen) dm.ContinueDialogue(); yield return null; }
             var dock = Object.FindFirstObjectByType<StatusDock>();
-            Assert.NotNull(dock, "Vitals + action bar must be on the HUD.");
+            Assert.NotNull(dock, "The compact status widget must be on the HUD.");
+            Assert.NotNull(dock.StatusWidget, "Status widget (portrait, needs, yen) missing.");
+            // HUD policy: no permanent shortcut bar on desktop — the keys are listed in Settings instead.
             foreach (string name in new[] { "BagButton", "CharacterButton", "MapButton", "QuestButton", "ExamButton", "SettingsButton" })
-                Assert.NotNull(GameObject.Find(name), name + " missing");
+                Assert.IsNull(GameObject.Find(name), name + " must not be on the desktop HUD");
 
             var portal = GameObject.Find("AdditiveZonePortals/StationPortal").GetComponent<ScenePortal>();
             Vector3 front = portal.transform.position - portal.transform.forward * 6f;
@@ -267,15 +269,18 @@ namespace NihongoLife.Tests
             Capture("22_portal_sign_and_dock");
 
             var hud = Object.FindFirstObjectByType<HUDUI>();
-            GameObject.Find("CharacterButton").GetComponent<Button>().onClick.Invoke();
+            var input = GameInputService.GetOrCreate();
+            yield return new WaitForFixedUpdate();
+            input.SetMobileButton(GameInputId.Character, true); yield return null; input.SetMobileButton(GameInputId.Character, false);
             yield return new WaitForSecondsRealtime(0.4f);
-            Assert.IsTrue(dock.CharacterRoot.activeInHierarchy, "Character button must open the character window.");
+            Assert.IsTrue(dock.CharacterRoot.activeInHierarchy, "Tab must open the character window.");
             Capture("23_character_window");
             Invoke(hud, "SetCharacterVisible", false);
             yield return null;
-            GameObject.Find("BagButton").GetComponent<Button>().onClick.Invoke();
+            yield return new WaitForFixedUpdate();
+            input.SetMobileButton(GameInputId.Inventory, true); yield return null; input.SetMobileButton(GameInputId.Inventory, false);
             yield return new WaitForSecondsRealtime(0.3f);
-            Assert.IsTrue(Object.FindFirstObjectByType<InventoryWindow>().Root.activeInHierarchy, "Bag button must open the bag.");
+            Assert.IsTrue(Object.FindFirstObjectByType<InventoryWindow>().Root.activeInHierarchy, "B must open the bag.");
             Invoke(hud, "SetInventoryVisible", false);
             yield return null;
             Assert.IsFalse(player.InputLocked);

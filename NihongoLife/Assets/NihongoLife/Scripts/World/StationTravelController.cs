@@ -129,6 +129,7 @@ namespace NihongoLife.World
         private Vector3 _platformDoorRightClosed;
         private TextMeshPro _departureBoard;
 
+        public string LastAnnouncement { get; private set; }
         public bool HasTicket => _ticketStop > 0;
         public Stop TicketStop => HasTicket ? Line[_ticketStop] : null;
         public bool GatePassed => _gatePassed;
@@ -917,9 +918,11 @@ namespace NihongoLife.World
 
         private void Announce(string japanese, string vietnamese, float seconds = 5f)
         {
+            // Announcements are notifications: they go to the shared feed (top centre), never over the prompt lane.
+            HudFeed.Post($"<color=#F2B233>{japanese}</color>  {vietnamese}", HudFeed.Kind.Info, seconds);
+            LastAnnouncement = vietnamese;
             if (_toast == null) return;
             _toastText.text = $"<color=#F2B233>{japanese}</color>\n<size=85%>{vietnamese}</size>";
-            _toast.gameObject.SetActive(true);
             _toastUntil = Time.unscaledTime + seconds;
         }
 

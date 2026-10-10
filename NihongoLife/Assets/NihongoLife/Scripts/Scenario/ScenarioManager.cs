@@ -539,9 +539,19 @@ namespace NihongoLife.Scenario
                     breakdown.firstCompletion = firstCompletion;
                     if (yenReward > 0) Player.PlayerInventory.Instance?.AddYen(yenReward);
                     if (firstCompletion && currentScenario.rewardItems != null && Player.PlayerInventory.Instance != null) { foreach (string itemId in currentScenario.rewardItems) Player.PlayerInventory.Instance.AddItem(itemId, itemId, itemId, 0, 1, false, Player.ItemUseType.None); }
-                    progress.xp += Mathf.Max(10, knowledgeReward / 2);
-                    progress.knowledge += knowledgeReward;
-                    progress.level = 1 + (progress.xp / 500);
+                    // XP (level) and knowledge are separate; level thresholds come from the progression data.
+                    int xpGain = Mathf.Max(10, knowledgeReward / 2);
+                    if (Player.PlayerStatus.Instance != null)
+                    {
+                        Player.PlayerStatus.Instance.AddExp(xpGain);
+                        Player.PlayerStatus.Instance.AddKnowledge(knowledgeReward);
+                    }
+                    else
+                    {
+                        progress.xp += xpGain;
+                        progress.knowledge += knowledgeReward;
+                        progress.level = NihongoLife.Progression.ProgressionCatalog.Load().LevelFor(progress.xp);
+                    }
 
                     var record = progress.bestScores.Find(r => r.scenarioId == currentScenario.id);
                     if (record == null)

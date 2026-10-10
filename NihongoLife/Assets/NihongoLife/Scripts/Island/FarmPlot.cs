@@ -90,9 +90,10 @@ namespace NihongoLife.Island
         public string Till()
         {
             if (Record.tilled) return "Đất đã được xới rồi.";
-            if (IslandEconomy.Owned("tool_hoe") == 0) return "Cần cái cuốc (くわ) — mua ở cửa hàng Midori.";
+            // No hoe is not a dead end: the farm card digs by hand, just much slower (FarmActionTimes).
             var r = Record; r.tilled = true; r.cropId = null; r.stage = 0; r.watered = false;
             IslandState.Save(); Refresh(true);
+            NihongoLife.Progression.QuestService.Raise("till", plotId);
             return null;
         }
 
@@ -106,6 +107,7 @@ namespace NihongoLife.Island
             var r = Record; r.cropId = cropId; r.stage = 0; r.watered = false;
             IslandState.Discover("crop:" + cropId);
             IslandState.Save(); Refresh(true);
+            NihongoLife.Progression.QuestService.Raise("plant", cropId);
             return null;
         }
 
@@ -118,6 +120,7 @@ namespace NihongoLife.Island
             if (IslandEconomy.Owned("tool_watering_can") == 0) return "Cần bình tưới (じょうろ).";
             var r = Record; r.watered = true; r.stageStartTicks = IslandState.UtcNow.Ticks;
             IslandState.Save(); Refresh(true);
+            NihongoLife.Progression.QuestService.Raise("water", r.cropId);
             return null;
         }
 
@@ -134,12 +137,12 @@ namespace NihongoLife.Island
             IslandState.Discover("crop:" + crop.id);
             IslandState.Save(); Refresh(true);
             IslandAchievements.Check();
+            NihongoLife.Progression.QuestService.Raise("harvest", crop.id);
             return null;
         }
 
         public string Clear()
         {
-            if (IslandEconomy.Owned("tool_shovel") == 0) return "Cần cái xẻng (シャベル).";
             if (string.IsNullOrEmpty(Record.cropId)) return "Ô đất đang trống.";
             var r = Record; r.cropId = null; r.stage = 0; r.watered = false; r.tilled = true;
             IslandState.Save(); Refresh(true);

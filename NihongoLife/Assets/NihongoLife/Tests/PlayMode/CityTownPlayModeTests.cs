@@ -112,7 +112,7 @@ namespace NihongoLife.Tests
             // Map overview uses real coordinates.
             var map = Object.FindFirstObjectByType<WorldMapUI>();
             Teleport(player, new Vector3(0f, 0.08f, -13.5f), 0f);
-            GameObject.Find("MapButton").GetComponent<Button>().onClick.Invoke();
+            var mapInput = NihongoLife.Core.GameInputService.GetOrCreate(); yield return new WaitForFixedUpdate(); mapInput.SetMobileButton(NihongoLife.Core.GameInputId.Map, true); yield return null; mapInput.SetMobileButton(NihongoLife.Core.GameInputId.Map, false); yield return null;
             yield return null;
             var tabs = map.GetComponentInParent<Canvas>().GetComponentsInChildren<Button>().Where(x => x.name.StartsWith("MapTab_")).ToArray();
             tabs.Last().onClick.Invoke();

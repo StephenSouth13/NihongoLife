@@ -357,7 +357,10 @@ namespace NihongoLife.Island
                 {
                     var tool = catalog.Tool("tool_hoe");
                     PhraseCard(body, tool.verb, "CÂU HÀNH ĐỘNG");
-                    ActionButton(actions, $"Xới đất  ·  {IslandLanguage.Primary(tool.word)}", tool.id, () => Do(plot.Till(), tool.verb, "Đã xới đất."));
+                    var (toolId, toolName, seconds) = FarmActionTimes.Till();
+                    string how = toolId == null ? $"Xới bằng tay  ·  {seconds:0.#}s (chưa có cuốc)" : $"Xới đất  ·  {toolName}  ·  {seconds:0.#}s";
+                    ActionButton(actions, how, toolId ?? tool.id, () => Work("Đang xới đất…", toolName, seconds, () => Do(plot.Till(), tool.verb, "Đã xới đất.")));
+                    if (toolId == null) Text(actions, "Có cuốc (くわ) thì xới nhanh gấp 4 lần — mua ở cửa hàng Midori (P).", 14f, Muted);
                     break;
                 }
                 case FarmPlot.Phase.Tilled:
@@ -370,7 +373,14 @@ namespace NihongoLife.Island
                 {
                     var tool = catalog.Tool("tool_watering_can");
                     PhraseCard(body, tool.verb, "CÂU HÀNH ĐỘNG");
-                    ActionButton(actions, $"Tưới nước  ·  {IslandLanguage.Primary(tool.word)}", tool.id, () => Do(plot.Water(), tool.verb, "Đã tưới — cây bắt đầu lớn."));
+                    if (IslandEconomy.Owned(tool.id) > 0)
+                        ActionButton(actions, $"Tưới nước  ·  {IslandLanguage.Primary(tool.word)}  ·  {FarmActionTimes.Water:0.#}s", tool.id,
+                            () => Work("Đang tưới nước…", IslandLanguage.Primary(tool.word), FarmActionTimes.Water, () => Do(plot.Water(), tool.verb, "Đã tưới — cây bắt đầu lớn.")));
+                    else
+                    {
+                        Text(actions, "Không có bình tưới (じょうろ) thì không mang nước được — mua ở cửa hàng Midori (P).", 15f, Error);
+                        Btn(actions, "Mở cửa hàng Midori", () => { CloseFarm(); OpenShop(); }, Gold, new Color(0.18f, 0.12f, 0.02f), 44f, 16f);
+                    }
                     break;
                 }
                 case FarmPlot.Phase.Growing:
@@ -379,22 +389,31 @@ namespace NihongoLife.Island
                 case FarmPlot.Phase.Ready:
                 {
                     PhraseCard(body, catalog.verbs.harvest, "CÂU HÀNH ĐỘNG");
-                    ActionButton(actions, $"Thu hoạch  ·  {IslandLanguage.Primary(crop.word)} ×{crop.yield}", crop.ProduceItemId, () =>
-                    {
-                        string err = plot.Harvest(out int amount);
-                        Do(err, catalog.verbs.harvest, $"Thu hoạch {amount} {crop.word.vi} — đã vào balo.");
-                        if (err == null) WordToast(crop.word, "Thu hoạch");
-                    });
+                    ActionButton(actions, $"Thu hoạch  ·  {IslandLanguage.Primary(crop.word)} ×{crop.yield}  ·  {FarmActionTimes.Harvest:0.#}s", crop.ProduceItemId, () =>
+                        Work("Đang thu hoạch…", "tay", FarmActionTimes.Harvest, () =>
+                        {
+                            string err = plot.Harvest(out int amount);
+                            Do(err, catalog.verbs.harvest, $"Thu hoạch {amount} {crop.word.vi} — đã vào balo.");
+                            if (err == null) WordToast(crop.word, "Thu hoạch");
+                        }));
                     break;
                 }
             }
             if (crop != null && phase != FarmPlot.Phase.Ready)
             {
                 var shovel = catalog.Tool("tool_shovel");
-                Btn(actions, $"Dọn ô (xẻng · {IslandLanguage.Primary(shovel.word)})", () => Do(plot.Clear(), shovel.verb, "Đã dọn ô đất."), Cream2, Muted, 38f, 14f);
+                var (_, clearTool, clearSeconds) = FarmActionTimes.Clear();
+                Btn(actions, $"Dọn ô  ·  {clearTool}  ·  {clearSeconds:0.#}s", () => Work("Đang dọn ô đất…", clearTool, clearSeconds, () => Do(plot.Clear(), shovel.verb, "Đã dọn ô đất.")), Cream2, Muted, 38f, 14f);
             }
             _farmFeedback = Text(body, feedback ?? "", 15.5f, error ? Error : Green, FontStyles.Bold);
             UpdateGrowth();
+        }
+
+        /// <summary>Farm work takes time (progress card); repeated clicks while working are ignored.</summary>
+        private static void Work(string label, string tool, float seconds, Action done)
+        {
+            if (TimedAction.Busy) return;
+            TimedAction.Run(label, tool, seconds, done);
         }
 
         private void ActionButton(RectTransform parent, string label, string iconItem, Action click)
@@ -426,7 +445,7 @@ namespace NihongoLife.Island
                 NLUi.Size(col, flexibleWidth: 1f);
                 Text(col, $"<b>{IslandLanguage.Primary(crop.word)}</b>  <size=80%><color=#6B7566>×{IslandEconomy.Owned(crop.SeedItemId)}</color></size>", 18f, Ink);
                 Text(col, $"Lớn trong {Mathf.RoundToInt(crop.secondsPerStage * 3)} giây · tưới 3 lần · thu {crop.yield}", 13.5f, Muted);
-                var plant = Btn(row, "Gieo", () => Do(plot.Plant(crop.id), catalog.verbs.plant, $"Đã gieo hạt {crop.word.vi}. Giờ hãy tưới nước."), Green, Color.white, 40f, 16f);
+                var plant = Btn(row, "Gieo", () => Work("Đang gieo hạt…", "tay", FarmActionTimes.Plant, () => Do(plot.Plant(crop.id), catalog.verbs.plant, $"Đã gieo hạt {crop.word.vi}. Giờ hãy tưới nước.")), Green, Color.white, 40f, 16f);
                 NLUi.Size(plant, 84f, 40f);
                 plant.name = "Plant_" + crop.id;
             }
@@ -525,13 +544,14 @@ namespace NihongoLife.Island
             {
                 PhraseCard(body, verbs.feed, "CÂU HÀNH ĐỘNG");
                 string foods = string.Join(" / ", def.foods.Select(f => IslandLanguage.Primary(IslandCatalog.Load().Crop(f)?.word)));
-                var feed = Btn(actions, $"Cho ăn  ·  {foods}", () =>
+                var feed = Btn(actions, $"Cho ăn  ·  {foods}", () => Work("Đang cho ăn…", "tay", FarmActionTimes.Feed, () =>
                 {
+                    if (_animalCard == null) return;
                     string err = _animal.Feed(out string food);
                     if (err != null) { BuildAnimal(err, true); return; }
                     IslandState.Discover("verb:" + verbs.feed.en);
                     BuildAnimal($"{def.word.vi} ăn ngon lành!  {IslandLanguage.Primary(verbs.feed)}", false);
-                }, Green, Color.white, 50f, 17f);
+                }), Green, Color.white, 50f, 17f);
                 feed.name = "Feed";
             }
             var pet = Btn(actions, "Vuốt ve", () =>

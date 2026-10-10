@@ -1,3 +1,5 @@
+using System.Linq;
+using NihongoLife.Save;
 using System.Collections.Generic;
 using System.Text;
 using TMPro;
@@ -199,7 +201,7 @@ namespace NihongoLife.UI
                     _worldMap?.SetVisible(show);
                     UpdateOverlayInputLock();
                 }),
-                ("QuestButton", "J", "Nhiệm vụ", () => TogglePopup(GetComponent<QuestLogPopup>())),
+                ("QuestButton", "N", "Nhiệm vụ", () => TaskJournalUI.Toggle()),
                 ("ExamButton", "K", "Luyện thi", () => TogglePopup(GetComponent<ExamCenterPopup>())),
                 ("SettingsButton", "O", "Cài đặt", () => _settingsUI?.ToggleFromEscape()),
             };
@@ -214,6 +216,14 @@ namespace NihongoLife.UI
         private void UnifyHudStyle()
         {
             if (walletText != null) walletText.gameObject.SetActive(false);
+            // The big mission card is replaced by the status dock's single tracked-objective chip (full list: N).
+            if (scenarioTitleText != null && scenarioTitleText.transform.parent != null)
+            {
+                var mission = scenarioTitleText.transform.parent.gameObject;
+                if (mission.GetComponent<CanvasGroup>() == null) mission.AddComponent<CanvasGroup>();
+                var group = mission.GetComponent<CanvasGroup>();
+                group.alpha = 0f; group.blocksRaycasts = false; group.interactable = false;
+            }
             if (scenarioTitleText != null && scenarioTitleText.transform.parent != null)
             {
                 var card = scenarioTitleText.transform.parent;
@@ -608,6 +618,13 @@ namespace NihongoLife.UI
 
         private void Update()
         {
+            // Prompt lane: the [F] prompt steps aside while a timed action runs or a window is open, and comes back after.
+            bool suppressPrompt = TimedAction.Busy || UiModalStack.AnyOpen;
+            if (promptPanel != null)
+            {
+                if (suppressPrompt && promptPanel.activeSelf) HidePrompt();
+                else if (!suppressPrompt && !promptPanel.activeSelf && _currentInteractable != null && (_currentInteractable as UnityEngine.Object) != null) ShowPrompt(_currentInteractable);
+            }
             var input = GameInputService.GetOrCreate();
             bool dialogueOpen = dialoguePanel != null && dialoguePanel.activeSelf;
 
@@ -615,6 +632,8 @@ namespace NihongoLife.UI
             if (chatPanel != null && chatPanel.activeSelf) return; // typing: Esc (UiModalStack) closes the chat
             if (UiModalStack.BlocksHotkeys) return;               // exam / text field: no B, M, Tab, O…
 
+            if (!UiModalStack.BlocksHotkeys && input.WasPressed(GameInputId.Journal) && (dialoguePanel == null || !dialoguePanel.activeSelf))
+                TaskJournalUI.Toggle();
             if (!UiModalStack.IsTyping && input.WasPressed(GameInputId.Settings))
             {
                 if (_settingsUI != null && _settingsUI.IsOpen) _settingsUI.Hide();
@@ -839,6 +858,7 @@ namespace NihongoLife.UI
                 ? Text($"{modeLabel}: {onlineCount} người chơi  |  Enter: chat", $"{modeLabel}: {onlineCount} player(s)  |  Enter: chat", $"{modeLabel}: {onlineCount}人  |  Enter: チャット")
                 : Text($"{modeLabel}: chưa kết nối", $"{modeLabel}: offline", $"{modeLabel}: オフライン");
             onlineStatusText.text = status;
+            onlineStatusText.gameObject.SetActive(isRealOnline && onlineCount > 1);
         }
 
         private void RefreshChatHistory()
@@ -1036,11 +1056,15 @@ namespace NihongoLife.UI
                 }
 
                 PlayerStatus status = PlayerStatus.Instance;
-                EmploymentSystem employment = FindFirstObjectByType<EmploymentSystem>();
                 BusinessSystem businessSystem = FindFirstObjectByType<BusinessSystem>();
-                string careerSummary = employment != null && employment.CurrentJob.HasValue
-                    ? $"<color=#78c7d4>💼 {Text("Nghề nghiệp", "Career", "仕事")}</color>: {employment.CurrentJob} · {employment.CurrentRank} · {employment.CurrentCompletedShifts} {Text("Ca làm", "shifts", "シフト")}\n"
-                    : $"<color=#78c7d4>💼 {Text("Nghề nghiệp", "Career", "仕事")}</color>: {Text("Thất nghiệp", "Unemployed", "無職")}\n";
+                // Part-time work now comes from the data-driven jobs (Task Journal, N).
+                var activeJob = NihongoLife.Progression.QuestService.Active.FirstOrDefault(q => q.IsJob);
+                int totalShifts = 0;
+                if (GameServices.TryGet(out IProgressRepository careerRepository) && careerRepository.GetProgress()?.careers != null)
+                    totalShifts = careerRepository.GetProgress().careers.Sum(c => c.totalShifts);
+                string careerSummary = activeJob != null
+                    ? $"<color=#78c7d4>💼 {Text("Làm thêm", "Part-time", "アルバイト")}</color>: {activeJob.titleVi} · {totalShifts} {Text("ca đã xong", "shifts done", "シフト")}\n"
+                    : $"<color=#78c7d4>💼 {Text("Làm thêm", "Part-time", "アルバイト")}</color>: {totalShifts} {Text("ca đã xong", "shifts done", "シフト")}\n";
                 string businessSummary = businessSystem != null && businessSystem.OwnsCompany
                     ? $"<color=#7fd39b>🏢 {Text("Công ty", "Company", "会社")}</color>: {businessSystem.Business.companyName} · Uy tín {businessSystem.Business.reputation}\n"
                     : string.Empty;
@@ -1108,6 +1132,7 @@ namespace NihongoLife.UI
         {
             if (promptPanel == null || promptText == null) return;
             promptPanel.SetActive(true);
+            HudPrompt.ContextualVisible = true;
             string key = GameInputService.GetOrCreate().GetBindingLabel(GameInputId.Interact);
             bool japanese = GameServices.TryGet(out GameSettingsService settings)
                 && settings.Language == GameLanguage.Japanese;
@@ -1117,6 +1142,7 @@ namespace NihongoLife.UI
         private void HidePrompt()
         {
             if (promptPanel != null) promptPanel.SetActive(false);
+            HudPrompt.ContextualVisible = false;
         }
 
         private void UpdateScenarioInfo(ScenarioDefinition scenario)

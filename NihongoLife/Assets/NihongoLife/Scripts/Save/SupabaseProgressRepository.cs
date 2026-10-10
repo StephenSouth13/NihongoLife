@@ -233,7 +233,7 @@ namespace NihongoLife.Save
             return null;
         }
 
-        private static PlayerProgressDto MergeProgress(PlayerProgressDto local, PlayerProgressDto cloud)
+        public static PlayerProgressDto MergeProgress(PlayerProgressDto local, PlayerProgressDto cloud)
         {
             if (local == null) return cloud ?? new PlayerProgressDto();
             if (cloud == null) return local;
@@ -315,7 +315,36 @@ namespace NihongoLife.Save
                 existingCareer.rank = Mathf.Max(existingCareer.rank, localCareer.rank);
                 existingCareer.completedShifts = Mathf.Max(existingCareer.completedShifts, localCareer.completedShifts);
                 existingCareer.reputation = Mathf.Max(existingCareer.reputation, localCareer.reputation);
+                existingCareer.totalShifts = Mathf.Max(existingCareer.totalShifts, localCareer.totalShifts);
             }
+
+            // Fields the merge used to drop. The wallet follows the cloud (yen = cloud.yen), so the bag does too —
+            // money and items always come from the same save and can never be duplicated across devices.
+            var cloudHasBag = cloud.inventory != null && (cloud.inventory.Count > 0 || cloud.yen != new PlayerProgressDto().yen);
+            merged.inventory = new System.Collections.Generic.List<NihongoLife.Player.InventoryEntry>((cloudHasBag ? cloud.inventory : local.inventory) ?? new System.Collections.Generic.List<NihongoLife.Player.InventoryEntry>());
+            merged.homeStorage = new System.Collections.Generic.List<NihongoLife.Player.InventoryEntry>((cloud.homeStorage != null && cloud.homeStorage.Count > 0 ? cloud.homeStorage : local.homeStorage) ?? new System.Collections.Generic.List<NihongoLife.Player.InventoryEntry>());
+            merged.sleepiness = cloud.sleepiness;
+            merged.activeScenarioId = !string.IsNullOrWhiteSpace(cloud.activeScenarioId) ? cloud.activeScenarioId : local.activeScenarioId;
+            merged.activeScenarioNodeId = !string.IsNullOrWhiteSpace(cloud.activeScenarioId) ? cloud.activeScenarioNodeId : local.activeScenarioNodeId;
+            merged.activeObjectives = (!string.IsNullOrWhiteSpace(cloud.activeScenarioId) ? cloud.activeObjectives : local.activeObjectives) ?? new System.Collections.Generic.List<ActiveObjectiveRecord>();
+            merged.reviewItems = (cloud.reviewItems != null && cloud.reviewItems.Count >= (local.reviewItems?.Count ?? 0) ? cloud.reviewItems : local.reviewItems) ?? new System.Collections.Generic.List<ReviewRecord>();
+            // Midori Island: keep the save with more island progress.
+            int Score(NihongoLife.Island.IslandRecord r) => r == null ? -1 : r.words.Count + r.harvested * 3 + r.sold + r.plots.Count + r.animalsMet.Count;
+            merged.island = Score(cloud.island) >= Score(local.island) ? cloud.island : local.island;
+            merged.island ??= new NihongoLife.Island.IslandRecord();
+            // Quests: union by id; the record completed more often wins (a reward claimed anywhere stays claimed),
+            // otherwise the most recently accepted run.
+            merged.quests = new System.Collections.Generic.List<NihongoLife.Progression.QuestStateRecord>(cloud.quests ?? new System.Collections.Generic.List<NihongoLife.Progression.QuestStateRecord>());
+            foreach (var localQuest in local.quests ?? new System.Collections.Generic.List<NihongoLife.Progression.QuestStateRecord>())
+            {
+                int index = merged.quests.FindIndex(q => q.questId == localQuest.questId);
+                if (index < 0) { merged.quests.Add(localQuest); continue; }
+                var cloudQuest = merged.quests[index];
+                bool localWins = localQuest.timesCompleted > cloudQuest.timesCompleted
+                    || (localQuest.timesCompleted == cloudQuest.timesCompleted && localQuest.acceptedTicks > cloudQuest.acceptedTicks);
+                if (localWins) merged.quests[index] = localQuest;
+            }
+            merged.trackedQuestId = !string.IsNullOrWhiteSpace(cloud.trackedQuestId) ? cloud.trackedQuestId : local.trackedQuestId;
 
             return merged;
         }

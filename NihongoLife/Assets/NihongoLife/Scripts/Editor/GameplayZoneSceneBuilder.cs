@@ -261,7 +261,6 @@ namespace NihongoLife.EditorTools
             Transform gate = root.transform.Find("TicketGate_A");
             if (gate != null) AddStationInteraction(gate.gameObject, travel, StationAction.PassGate, "改札を通る", "Qua cong soat ve");
             GameObject stationJob = Place(Sushi, "Environment_Counter_Straight", root.transform, "StationJobDesk", origin + new Vector3(6.2f, 0f, 7.2f), new Vector3(2.1f, 1.05f, 0.9f), Quaternion.identity, true);
-            if (stationJob != null) CreateJobPoint(stationJob.transform, JobRole.StationAssistant, 35, 520, 10, 24f);
             CreateSign(root.transform, "駅前 / KHU NHÀ GA", origin + new Vector3(0f, 3.8f, 8.5f), new Vector2(8f, 0.9f));
             CreateLighting(root.transform, origin + new Vector3(0f, 6f, 2f));
             CreateSpawn(root.transform, "station_entrance", origin + new Vector3(0f, 0.38f, 6.8f), Quaternion.Euler(0f, 180f, 0f));
@@ -314,8 +313,6 @@ namespace NihongoLife.EditorTools
                     new Vector2((-3f + i * 1.2f) - counterIndex * 2.05f, -0.1f), new Vector3(0.38f, 0.3f, 0.38f), Quaternion.identity);
             }
 
-            GameObject clerkDesk = root.transform.Find("SushiCounter_2")?.gameObject;
-            if (clerkDesk != null) CreateJobPoint(clerkDesk.transform, JobRole.StoreClerk, 20, 450, 8, 22f);
 
             CreateSign(root.transform, "すし店 / NHÀ HÀNG SUSHI", origin + new Vector3(0f, 3.5f, -8.4f), new Vector2(8f, 0.9f));
             CreateLighting(root.transform, origin + new Vector3(0f, 5f, 1f));
@@ -560,18 +557,6 @@ namespace NihongoLife.EditorTools
             target.layer = InteractableLayer;
             if (target.GetComponent<Collider>() == null) target.AddComponent<BoxCollider>();
             target.AddComponent<StationTravelInteractable>().Configure(controller, action, ja, en);
-        }
-
-        private static void CreateJobPoint(Transform support, JobRole role, int requiredKnowledge, int pay, int knowledgeReward, float energyCost)
-        {
-            var point = new GameObject("JobPoint_" + role);
-            point.layer = InteractableLayer;
-            point.transform.SetParent(support, false);
-            point.transform.localPosition = new Vector3(0f, 1.2f, -0.8f);
-            var trigger = point.AddComponent<BoxCollider>();
-            trigger.isTrigger = true;
-            trigger.size = new Vector3(1.4f, 1.8f, 1.4f);
-            point.AddComponent<JobInteractable>().Configure(role, requiredKnowledge, pay, knowledgeReward, energyCost);
         }
 
         private static GameObject PlaceOnSurface(string folder, string model, Transform parent, string name,

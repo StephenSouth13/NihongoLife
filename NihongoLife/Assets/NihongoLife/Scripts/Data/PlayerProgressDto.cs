@@ -43,6 +43,8 @@ namespace NihongoLife.Data
         public int rank;
         public int completedShifts;
         public int reputation;
+        /// <summary>All shifts ever finished in this role (completedShifts resets on promotion).</summary>
+        public int totalShifts;
     }
 
     [Serializable]
@@ -89,5 +91,8 @@ namespace NihongoLife.Data
         public List<NihongoLife.Player.InventoryEntry> homeStorage = new List<NihongoLife.Player.InventoryEntry>();
         /// <summary>Midori Island: farm plots, vocabulary, animals, achievements and the chosen target language.</summary>
         public NihongoLife.Island.IslandRecord island = new NihongoLife.Island.IslandRecord();
+        /// <summary>Quest / part-time job state (definitions: Resources/Progression/progression.json).</summary>
+        public List<NihongoLife.Progression.QuestStateRecord> quests = new List<NihongoLife.Progression.QuestStateRecord>();
+        public string trackedQuestId = string.Empty;
     }
 }

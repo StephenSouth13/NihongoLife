@@ -38,6 +38,7 @@ namespace NihongoLife.Tests
         {
             float started = Time.realtimeSinceStartup;
             IslandTrainService.RideSeconds = 1.2f;
+            NihongoLife.UI.TimedAction.SpeedScale = 0f; // farm work runs instantly here; LifeLoopPlayModeTests checks the timed bars
             yield return SceneManager.LoadSceneAsync(WorldLocationCatalog.CityScene);
             yield return WaitReady(20f);
             Assert.NotNull(_player, "City must spawn the player.");

@@ -61,7 +61,9 @@ namespace NihongoLife.UI
         {
             base.Update();
 
-            if (Keyboard.current == null || !Keyboard.current.jKey.wasPressedThisFrame) return;
+            // The journal moved to N (TaskJournalUI covers story, jobs, farm, learning and daily tasks); J opens it too.
+            if (Keyboard.current == null || !Keyboard.current.jKey.wasPressedThisFrame || UiModalStack.BlocksHotkeys) return;
+            if (!IsOpen) { TaskJournalUI.Toggle(); return; }
             if (IsOpen)
             {
                 Hide();

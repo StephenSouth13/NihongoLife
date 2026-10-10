@@ -398,13 +398,14 @@ namespace NihongoLife.Learning
             return clip;
         }
 
-        private void OnGUI()
-        {
-            if (string.IsNullOrEmpty(_lastResult)) return;
+        private string _postedResult = "Press V to practice pronunciation";
 
-            GUI.color = _isRecording ? new Color(1f, 0.55f, 0.35f, 1f) : new Color(0.9f, 0.95f, 1f, 1f);
-            GUI.Label(new Rect(24f, Screen.height - 54f, 620f, 32f), "[V] Mic: " + _lastResult);
-            GUI.color = Color.white;
+        // Status goes to the HUD notification feed when it changes (no permanent debug label on screen).
+        private void LateUpdate()
+        {
+            if (string.IsNullOrEmpty(_lastResult) || _lastResult == _postedResult) return;
+            _postedResult = _lastResult;
+            NihongoLife.UI.HudFeed.Post("[V] Mic: " + _lastResult, _isRecording ? NihongoLife.UI.HudFeed.Kind.Warning : NihongoLife.UI.HudFeed.Kind.Info);
         }
 
         private static float EstimateEnergy(AudioClip clip, int samplesToRead)

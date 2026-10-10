@@ -69,6 +69,8 @@ namespace NihongoLife.NPC
         public void Interact(GameObject player)
         {
             Debug.Log($"[NPCController] Player interacted with NPC: {npcId} ({displayName})");
+            // Reporting to an employer ("talk" objectives) is just talking to them.
+            NihongoLife.Progression.QuestService.Raise("talk", npcId);
 
             _lookTarget = player.transform;
             _isInteracting = true;

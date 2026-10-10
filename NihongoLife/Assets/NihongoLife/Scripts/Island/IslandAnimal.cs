@@ -94,6 +94,7 @@ namespace NihongoLife.Island
             var record = IslandState.Record; record.fed++;
             Meet();
             IslandState.Save();
+            NihongoLife.Progression.QuestService.Raise("feed", animalId);
             return null;
         }
 
@@ -101,6 +102,7 @@ namespace NihongoLife.Island
         {
             if (_animator != null) _animator.SetTrigger("Jump");
             Meet();
+            NihongoLife.Progression.QuestService.Raise("pet", animalId);
         }
 
         public void Meet()

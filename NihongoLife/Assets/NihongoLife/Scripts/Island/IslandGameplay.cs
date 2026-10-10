@@ -45,6 +45,8 @@ namespace NihongoLife.Island
             int total = unitPrice * quantity;
             if (!inventory.SpendYen(total)) return Result.NoMoney;
             if (!Give(itemId, quantity)) { inventory.AddYen(total); return Result.BagFull; }
+            NihongoLife.Progression.QuestService.Raise("buy", itemId, quantity);
+            NihongoLife.Progression.QuestService.Raise("buy", "midori_store", quantity);
             return Result.Ok;
         }
 
@@ -60,6 +62,7 @@ namespace NihongoLife.Island
             record.earned += unitPrice * quantity;
             IslandState.Save();
             if (record.sold >= 1) IslandAchievements.Check();
+            NihongoLife.Progression.QuestService.Raise("sell", itemId, quantity);
             return Result.Ok;
         }
 
