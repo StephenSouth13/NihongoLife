@@ -94,7 +94,7 @@ namespace NihongoLife.Progression
             switch (kind)
             {
                 case JobStationKind.StockCrate:
-                    TimedAction.Run("Đang bê thùng hàng…", "kho", 1.2f, () => JobShift.Carry("stock", "box", "Thùng hàng"));
+                    TimedAction.Run("Đang bê thùng hàng…", "kho", 1.2f, () => JobShift.Carry("stock", "box", "Thùng hàng"), pose: "Work_Carry");
                     break;
                 case JobStationKind.Shelf:
                     TimedAction.Run($"Đang xếp hàng lên {labelVi.ToLowerInvariant()}…", "tay", 2.5f, () =>
@@ -103,10 +103,10 @@ namespace NihongoLife.Progression
                         JobShift.DropCarry();
                         JobShift.MarkDone(stationId);
                         QuestService.Raise("restock", "konbini_shelf");
-                    });
+                    }, pose: "Work_Shelf");
                     break;
                 case JobStationKind.Customer: AskCustomer(); break;
-                case JobStationKind.Register: TimedAction.Run("Đang quét mã hàng…", "máy quét", 1.2f, Checkout); break;
+                case JobStationKind.Register: TimedAction.Run("Đang quét mã hàng…", "máy quét", 1.2f, Checkout, pose: "Work_Hold"); break;
                 case JobStationKind.OrderTable:
                     if (JobShift.OrderAt(stationId) == null) TakeOrder(); else Serve();
                     break;
@@ -236,14 +236,14 @@ namespace NihongoLife.Progression
                 JobShift.MarkDone(stationId);
                 QuestService.Raise("serve", "sushi_table");
                 HudFeed.Post("「おまたせしました！」 — Món đã lên bàn.", HudFeed.Kind.Info, 3f);
-            });
+            }, pose: "Work_Hold");
         }
 
         private void OnDishChosen(string dishId)
         {
             var dish = Dishes().FirstOrDefault(d => d.id == dishId);
             if (dish == null) return;
-            TimedAction.Run($"Đang lấy {dish.nameJa}…", "khay", 0.8f, () => JobShift.Carry("dish", dish.id, dish.nameJa));
+            TimedAction.Run($"Đang lấy {dish.nameJa}…", "khay", 0.8f, () => JobShift.Carry("dish", dish.id, dish.nameJa), pose: "Work_Hold");
         }
 
         private static void Mastery(string target, bool correct)

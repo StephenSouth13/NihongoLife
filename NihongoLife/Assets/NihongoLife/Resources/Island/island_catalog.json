@@ -25,7 +25,20 @@
       "verb": { "ja": "みずを あげます。", "reading": "mizu o agemasu", "en": "I water the plant.", "vi": "Tôi tưới nước." } },
     { "id": "tool_shovel", "action": "clear", "price": 180,
       "word": { "ja": "シャベル", "reading": "shaberu", "en": "shovel", "vi": "cái xẻng" },
-      "verb": { "ja": "つちを ほります。", "reading": "tsuchi o horimasu", "en": "I dig the soil.", "vi": "Tôi đào đất." } }
+      "verb": { "ja": "つちを ほります。", "reading": "tsuchi o horimasu", "en": "I dig the soil.", "vi": "Tôi đào đất." } },
+    { "id": "tool_fishing_rod", "action": "fish", "price": 300,
+      "word": { "ja": "つりざお", "reading": "tsurizao", "en": "fishing rod", "vi": "cần câu" },
+      "verb": { "ja": "つりを します。", "reading": "tsuri o shimasu", "en": "I go fishing.", "vi": "Tôi đi câu cá." } }
+  ],
+  "fish": [
+    { "id": "fish_hirame", "model": "Flatfish",   "sellPrice": 110, "weight": 32,
+      "word": { "ja": "ひらめ", "reading": "hirame", "en": "flounder", "vi": "cá bơn" } },
+    { "id": "fish_tai",    "model": "RedSnapper", "sellPrice": 140, "weight": 30,
+      "word": { "ja": "たい", "reading": "tai", "en": "sea bream", "vi": "cá tráp đỏ" } },
+    { "id": "fish_fugu",   "model": "Puffer",     "sellPrice": 180, "weight": 26,
+      "word": { "ja": "ふぐ", "reading": "fugu", "en": "pufferfish", "vi": "cá nóc" } },
+    { "id": "fish_maguro", "model": "Tuna",       "sellPrice": 420, "weight": 12,
+      "word": { "ja": "まぐろ", "reading": "maguro", "en": "tuna", "vi": "cá ngừ" } }
   ],
   "verbs": {
     "plant":   { "ja": "たねを うえます。", "reading": "tane o uemasu", "en": "I plant the seeds.", "vi": "Tôi gieo hạt." },
@@ -33,7 +46,8 @@
     "feed":    { "ja": "えさを あげます。", "reading": "esa o agemasu", "en": "I feed it.", "vi": "Tôi cho ăn." },
     "pet":     { "ja": "なでます。", "reading": "nademasu", "en": "I pet it.", "vi": "Tôi vuốt ve." },
     "buy":     { "ja": "かいます。", "reading": "kaimasu", "en": "I buy it.", "vi": "Tôi mua." },
-    "sell":    { "ja": "うります。", "reading": "urimasu", "en": "I sell it.", "vi": "Tôi bán." }
+    "sell":    { "ja": "うります。", "reading": "urimasu", "en": "I sell it.", "vi": "Tôi bán." },
+    "fish":    { "ja": "さかなを つりました！", "reading": "sakana o tsurimashita", "en": "I caught a fish!", "vi": "Tôi câu được cá!" }
   },
   "animals": [
     { "id": "cow",    "model": "Cow",      "foods": ["corn", "carrot"],
@@ -66,6 +80,7 @@
     "farm":    { "ja": "はたけ", "reading": "hatake", "en": "field", "vi": "ruộng" },
     "shop":    { "ja": "みどりしょうてん", "reading": "midori shōten", "en": "Midori Store", "vi": "Cửa hàng Midori" },
     "barn":    { "ja": "なや", "reading": "naya", "en": "barn", "vi": "chuồng trại" },
-    "view":    { "ja": "てんぼうだい", "reading": "tenbōdai", "en": "lookout", "vi": "đài ngắm cảnh" }
+    "view":    { "ja": "てんぼうだい", "reading": "tenbōdai", "en": "lookout", "vi": "đài ngắm cảnh" },
+    "pier":    { "ja": "つりば", "reading": "tsuriba", "en": "fishing pier", "vi": "bến câu cá" }
   }
 }

@@ -26,14 +26,16 @@ namespace NihongoLife.Island
     }
 
     [Serializable] public sealed class IslandTool { public string id, action; public int price; public IslandWord word, verb; }
+    /// <summary>A fish caught at the pier: model name (fish pack FBX), sell price and catch weight (relative odds).</summary>
+    [Serializable] public sealed class IslandFish { public string id, model; public int sellPrice, weight; public IslandWord word; }
     [Serializable] public sealed class IslandAnimalDef { public string id, model; public string[] foods; public IslandWord word; public IslandSound sound; }
     [Serializable] public sealed class IslandProduct { public string itemId, category, note; public int price; public IslandWord word; }
 
     [Serializable]
-    public sealed class IslandVerbs { public IslandWord plant, harvest, feed, pet, buy, sell; }
+    public sealed class IslandVerbs { public IslandWord plant, harvest, feed, pet, buy, sell, fish; }
 
     [Serializable]
-    public sealed class IslandPlaces { public IslandWord island, station, farm, shop, barn, view; }
+    public sealed class IslandPlaces { public IslandWord island, station, farm, shop, barn, view, pier; }
 
     [Serializable]
     public sealed class IslandCatalog
@@ -43,6 +45,7 @@ namespace NihongoLife.Island
         public IslandKitItem[] starterKit;
         public IslandCrop[] crops;
         public IslandTool[] tools;
+        public IslandFish[] fish;
         public IslandVerbs verbs;
         public IslandAnimalDef[] animals;
         public IslandProduct[] products;
@@ -63,6 +66,7 @@ namespace NihongoLife.Island
         public IslandTool Tool(string id) => tools?.FirstOrDefault(t => t.id == id);
         public IslandTool ToolFor(string action) => tools?.FirstOrDefault(t => t.action == action);
         public IslandAnimalDef Animal(string id) => animals?.FirstOrDefault(a => a.id == id);
+        public IslandFish Fish(string id) => fish?.FirstOrDefault(f => f.id == id);
         public IslandCrop CropBySeed(string seedItemId) => crops?.FirstOrDefault(c => c.SeedItemId == seedItemId);
 
         /// <summary>Japanese / Vietnamese names the inventory shows for an island item id.</summary>
@@ -74,6 +78,8 @@ namespace NihongoLife.Island
                 if (c.SeedItemId == itemId) { ja = c.word.ja + "の たね"; vi = "Hạt giống " + c.word.vi; price = c.seedPrice; return true; }
                 if (c.ProduceItemId == itemId) { ja = c.word.ja; vi = Capitalise(c.word.vi); price = c.sellPrice; return true; }
             }
+            var caught = Fish(itemId);
+            if (caught != null) { ja = caught.word.ja; vi = Capitalise(caught.word.vi); price = caught.sellPrice; return true; }
             var tool = Tool(itemId);
             if (tool != null) { ja = tool.word.ja; vi = Capitalise(tool.word.vi); price = tool.price; return true; }
             var product = products?.FirstOrDefault(p => p.itemId == itemId);
@@ -150,6 +156,7 @@ namespace NihongoLife.Island
         public int sold;
         public int earned;
         public int fed;
+        public int fished;
     }
 
     /// <summary>Access to the island record inside the shared progress save, plus the farm clock.</summary>

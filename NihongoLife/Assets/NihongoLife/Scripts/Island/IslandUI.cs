@@ -359,7 +359,7 @@ namespace NihongoLife.Island
                     PhraseCard(body, tool.verb, "CÂU HÀNH ĐỘNG");
                     var (toolId, toolName, seconds) = FarmActionTimes.Till();
                     string how = toolId == null ? $"Xới bằng tay  ·  {seconds:0.#}s (chưa có cuốc)" : $"Xới đất  ·  {toolName}  ·  {seconds:0.#}s";
-                    ActionButton(actions, how, toolId ?? tool.id, () => Work("Đang xới đất…", toolName, seconds, () => Do(plot.Till(), tool.verb, "Đã xới đất.")));
+                    ActionButton(actions, how, toolId ?? tool.id, () => Work("Đang xới đất…", toolName, seconds, () => Do(plot.Till(), tool.verb, "Đã xới đất."), toolId == null ? "Work_DigHand" : "Work_Hoe", toolId));
                     if (toolId == null) Text(actions, "Có cuốc (くわ) thì xới nhanh gấp 4 lần — mua ở cửa hàng Midori (P).", 14f, Muted);
                     break;
                 }
@@ -375,7 +375,7 @@ namespace NihongoLife.Island
                     PhraseCard(body, tool.verb, "CÂU HÀNH ĐỘNG");
                     if (IslandEconomy.Owned(tool.id) > 0)
                         ActionButton(actions, $"Tưới nước  ·  {IslandLanguage.Primary(tool.word)}  ·  {FarmActionTimes.Water:0.#}s", tool.id,
-                            () => Work("Đang tưới nước…", IslandLanguage.Primary(tool.word), FarmActionTimes.Water, () => Do(plot.Water(), tool.verb, "Đã tưới — cây bắt đầu lớn.")));
+                            () => Work("Đang tưới nước…", IslandLanguage.Primary(tool.word), FarmActionTimes.Water, () => Do(plot.Water(), tool.verb, "Đã tưới — cây bắt đầu lớn."), "Work_Water"));
                     else
                     {
                         Text(actions, "Không có bình tưới (じょうろ) thì không mang nước được — mua ở cửa hàng Midori (P).", 15f, Error);
@@ -390,7 +390,7 @@ namespace NihongoLife.Island
                 {
                     PhraseCard(body, catalog.verbs.harvest, "CÂU HÀNH ĐỘNG");
                     ActionButton(actions, $"Thu hoạch  ·  {IslandLanguage.Primary(crop.word)} ×{crop.yield}  ·  {FarmActionTimes.Harvest:0.#}s", crop.ProduceItemId, () =>
-                        Work("Đang thu hoạch…", "tay", FarmActionTimes.Harvest, () =>
+                        Work("Đang thu hoạch…", "tay", FarmActionTimes.Harvest, pose: "Work_Harvest", done: () =>
                         {
                             string err = plot.Harvest(out int amount);
                             Do(err, catalog.verbs.harvest, $"Thu hoạch {amount} {crop.word.vi} — đã vào balo.");
@@ -403,18 +403,22 @@ namespace NihongoLife.Island
             {
                 var shovel = catalog.Tool("tool_shovel");
                 var (_, clearTool, clearSeconds) = FarmActionTimes.Clear();
-                Btn(actions, $"Dọn ô  ·  {clearTool}  ·  {clearSeconds:0.#}s", () => Work("Đang dọn ô đất…", clearTool, clearSeconds, () => Do(plot.Clear(), shovel.verb, "Đã dọn ô đất.")), Cream2, Muted, 38f, 14f);
+                Btn(actions, $"Dọn ô  ·  {clearTool}  ·  {clearSeconds:0.#}s", () => Work("Đang dọn ô đất…", clearTool, clearSeconds, () => Do(plot.Clear(), shovel.verb, "Đã dọn ô đất."), "Work_Clear", FarmActionTimes.Clear().toolId), Cream2, Muted, 38f, 14f);
             }
             _farmFeedback = Text(body, feedback ?? "", 15.5f, error ? Error : Green, FontStyles.Bold);
             UpdateGrowth();
         }
 
         /// <summary>Farm work takes time (progress card); repeated clicks while working are ignored.</summary>
-        private static void Work(string label, string tool, float seconds, Action done)
+        private static void Work(string label, string tool, float seconds, Action done, string pose = null, string heldToolId = null)
         {
             if (TimedAction.Busy) return;
-            TimedAction.Run(label, tool, seconds, done);
+            TimedAction.Run(label, tool, seconds, done, pose: pose, prop: HeldTool(heldToolId));
         }
+
+        /// <summary>Hand-held model of a tool item (built by IslandBuilder as "Held_&lt;toolId&gt;"), or null.</summary>
+        public static GameObject HeldTool(string toolId) =>
+            string.IsNullOrEmpty(toolId) || IslandModelLibrary.Instance == null ? null : IslandModelLibrary.Instance.Find("Held_" + toolId);
 
         private void ActionButton(RectTransform parent, string label, string iconItem, Action click)
         {
@@ -445,7 +449,7 @@ namespace NihongoLife.Island
                 NLUi.Size(col, flexibleWidth: 1f);
                 Text(col, $"<b>{IslandLanguage.Primary(crop.word)}</b>  <size=80%><color=#6B7566>×{IslandEconomy.Owned(crop.SeedItemId)}</color></size>", 18f, Ink);
                 Text(col, $"Lớn trong {Mathf.RoundToInt(crop.secondsPerStage * 3)} giây · tưới 3 lần · thu {crop.yield}", 13.5f, Muted);
-                var plant = Btn(row, "Gieo", () => Work("Đang gieo hạt…", "tay", FarmActionTimes.Plant, () => Do(plot.Plant(crop.id), catalog.verbs.plant, $"Đã gieo hạt {crop.word.vi}. Giờ hãy tưới nước.")), Green, Color.white, 40f, 16f);
+                var plant = Btn(row, "Gieo", () => Work("Đang gieo hạt…", "tay", FarmActionTimes.Plant, () => Do(plot.Plant(crop.id), catalog.verbs.plant, $"Đã gieo hạt {crop.word.vi}. Giờ hãy tưới nước."), "Work_Plant"), Green, Color.white, 40f, 16f);
                 NLUi.Size(plant, 84f, 40f);
                 plant.name = "Plant_" + crop.id;
             }
@@ -462,9 +466,6 @@ namespace NihongoLife.Island
 
         private void ActionFeedback(Vector3 at)
         {
-            var player = FindFirstObjectByType<PlayerController>();
-            var animation = player != null ? player.GetComponentInChildren<NihongoLife.Core.CharacterAnimationController>() : null;
-            if (animation != null) animation.TriggerPoint();
             var shader = Shader.Find("Universal Render Pipeline/Particles/Unlit");
             if (at == Vector3.zero || shader == null) return;
             var puff = new GameObject("FarmPuff").AddComponent<ParticleSystem>();
@@ -544,7 +545,7 @@ namespace NihongoLife.Island
             {
                 PhraseCard(body, verbs.feed, "CÂU HÀNH ĐỘNG");
                 string foods = string.Join(" / ", def.foods.Select(f => IslandLanguage.Primary(IslandCatalog.Load().Crop(f)?.word)));
-                var feed = Btn(actions, $"Cho ăn  ·  {foods}", () => Work("Đang cho ăn…", "tay", FarmActionTimes.Feed, () =>
+                var feed = Btn(actions, $"Cho ăn  ·  {foods}", () => Work("Đang cho ăn…", "tay", FarmActionTimes.Feed, pose: "Work_Feed", done: () =>
                 {
                     if (_animalCard == null) return;
                     string err = _animal.Feed(out string food);
@@ -608,6 +609,8 @@ namespace NihongoLife.Island
                 case "sell":
                     foreach (var crop in c.crops.Where(cr => IslandEconomy.Owned(cr.ProduceItemId) > 0))
                         list.Add(new ShopEntry { ItemId = crop.ProduceItemId, Word = crop.word, Price = crop.sellPrice, Info = $"Nông sản của bạn · đang có {IslandEconomy.Owned(crop.ProduceItemId)}", Sell = true });
+                    foreach (var fish in (c.fish ?? System.Array.Empty<IslandFish>()).Where(f => IslandEconomy.Owned(f.id) > 0))
+                        list.Add(new ShopEntry { ItemId = fish.id, Word = fish.word, Price = fish.sellPrice, Info = $"Cá bạn câu được · đang có {IslandEconomy.Owned(fish.id)}", Sell = true });
                     break;
             }
             return list;
@@ -820,7 +823,8 @@ namespace NihongoLife.Island
         private static string WordKey(string itemId)
         {
             var crop = IslandCatalog.Load().crops.FirstOrDefault(c => c.SeedItemId == itemId || c.ProduceItemId == itemId);
-            return crop != null ? "crop:" + crop.id : "item:" + itemId;
+            if (crop != null) return "crop:" + crop.id;
+            return IslandCatalog.Load().Fish(itemId) != null ? "fish:" + itemId : "item:" + itemId;
         }
 
         private static IslandWord Lookup(string key)
@@ -833,6 +837,7 @@ namespace NihongoLife.Island
             {
                 case "crop": return c.Crop(id)?.word;
                 case "animal": return c.Animal(id)?.word;
+                case "fish": return c.Fish(id)?.word;
                 case "item":
                     if (c.Tool(id) != null) return c.Tool(id).word;
                     var crop = c.crops.FirstOrDefault(x => x.SeedItemId == id || x.ProduceItemId == id);
@@ -840,7 +845,7 @@ namespace NihongoLife.Island
                     return c.products.FirstOrDefault(p => p.itemId == id)?.word;
                 case "place":
                     var p2 = c.places;
-                    return id switch { "station" => p2.station, "farm" => p2.farm, "shop" => p2.shop, "barn" => p2.barn, "view" => p2.view, _ => p2.island };
+                    return id switch { "station" => p2.station, "farm" => p2.farm, "shop" => p2.shop, "barn" => p2.barn, "view" => p2.view, "pier" => p2.pier ?? p2.island, _ => p2.island };
                 case "verb":
                     var v = c.verbs;
                     foreach (var w in new[] { v.plant, v.harvest, v.feed, v.pet, v.buy, v.sell }) if (w.en == id) return w;

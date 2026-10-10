@@ -4,6 +4,7 @@ using NihongoLife.Core;
 using NihongoLife.Player;
 using TMPro;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 namespace NihongoLife.UI
@@ -23,6 +24,7 @@ namespace NihongoLife.UI
         private Action _onCancel;
         private PlayerController _player;
         private bool _wasLocked;
+        private CharacterAnimationController _animation;
 
         public static bool Busy => _instance != null && _instance._running != null;
         /// <summary>Test hook: multiplies every duration (0.05 in fast tests).</summary>
@@ -61,20 +63,31 @@ namespace NihongoLife.UI
                 NLUi.Label(ui._card, "Hint", "Esc để dừng", 13f, NLUi.Muted, font);
                 ui._card.gameObject.SetActive(false);
                 UiModalStack.Register(ui, () => Busy, () => Cancel(), "Timed action");
+                // The work belongs to the scene it started in (a plot, a shelf): leaving the scene drops it unfinished.
+                SceneManager.activeSceneChanged += (_, _) => { if (_instance == ui) ui.Abort(); };
                 _instance = ui;
                 return ui;
             }
         }
 
-        /// <summary>Starts an action; returns false (and does nothing) while another action is running.</summary>
-        public static bool Run(string label, string tool, float seconds, Action onDone, Action onCancel = null)
+        /// <summary>Starts an action; returns false (and does nothing) while another action is running. <paramref name="pose"/>
+        /// is a work state on the player's animator (e.g. "Work_Water"); <paramref name="prop"/> a tool held in the right hand.</summary>
+        public static bool Run(string label, string tool, float seconds, Action onDone, Action onCancel = null, string pose = null, GameObject prop = null)
         {
             var ui = Instance;
             if (ui._running != null) return false;
             if (SpeedScale <= 0f) { onDone?.Invoke(); return true; } // instant mode (logic-only tests)
             ui._onCancel = onCancel;
-            ui._running = ui.StartCoroutine(ui.Routine(label, tool, Mathf.Max(0.05f, seconds * SpeedScale), onDone));
+            ui._running = ui.StartCoroutine(ui.Routine(label, tool, Mathf.Max(0.05f, seconds * SpeedScale), onDone, pose, prop));
             return true;
+        }
+
+        private void Abort()
+        {
+            if (_running == null) return;
+            StopCoroutine(_running);
+            Finish();
+            _onCancel = null;
         }
 
         public static void Cancel()
@@ -88,11 +101,14 @@ namespace NihongoLife.UI
             cancel?.Invoke();
         }
 
-        private IEnumerator Routine(string label, string tool, float seconds, Action onDone)
+        private IEnumerator Routine(string label, string tool, float seconds, Action onDone, string pose, GameObject prop)
         {
             _player = FindFirstObjectByType<PlayerController>();
             if (_player != null) { _wasLocked = _player.InputLocked; _player.InputLocked = true; }
             var animation = _player != null ? _player.GetComponentInChildren<CharacterAnimationController>() : null;
+            _animation = animation;
+            bool posed = animation != null && pose != null && animation.PlayWork(pose);
+            if (posed && prop != null) animation.HoldProp(prop);
             _label.text = label;
             _card.gameObject.SetActive(true);
             _card.SetAsLastSibling();
@@ -102,7 +118,7 @@ namespace NihongoLife.UI
                 float k = t / seconds;
                 _fill.rectTransform.anchorMax = new Vector2(k, 1f);
                 _detail.text = $"{tool}  ·  {Mathf.CeilToInt((seconds - t) * 10f) / 10f:0.0}s";
-                if (animation != null && t >= nextGesture) { animation.TriggerPoint(); nextGesture = t + 1.1f; }
+                if (!posed && animation != null && t >= nextGesture) { animation.TriggerPoint(); nextGesture = t + 1.1f; }
                 yield return null;
             }
             _fill.rectTransform.anchorMax = Vector2.one;
@@ -114,6 +130,8 @@ namespace NihongoLife.UI
         private void Finish()
         {
             _running = null;
+            if (_animation != null) _animation.StopWork();
+            _animation = null;
             if (_card != null) _card.gameObject.SetActive(false);
             if (_player != null) _player.InputLocked = _wasLocked;
             _player = null;

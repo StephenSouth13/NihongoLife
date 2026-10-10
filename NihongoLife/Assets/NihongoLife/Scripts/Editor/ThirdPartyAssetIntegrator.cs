@@ -385,6 +385,7 @@ namespace NihongoLife.EditorTools
             {
                 string path = AssetDatabase.GUIDToAssetPath(guid);
                 if (AssetImporter.GetAtPath(path) is not ModelImporter importer) continue;
+                if (NihongoLife.Editor.WorkAnimationSetup.Owns(path)) continue; // work/fishing clips: loop + root baking set by WorkAnimationSetup
                 bool dirty = importer.animationType != ModelImporterAnimationType.Human || importer.avatarSetup != ModelImporterAvatarSetup.CreateFromThisModel;
                 importer.animationType = ModelImporterAnimationType.Human;
                 importer.avatarSetup = ModelImporterAvatarSetup.CreateFromThisModel;

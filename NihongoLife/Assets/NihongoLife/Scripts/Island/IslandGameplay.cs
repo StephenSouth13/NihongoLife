@@ -88,6 +88,7 @@ namespace NihongoLife.Island
         {
             new Def { Id = "first_harvest", Ja = "はじめての しゅうかく", Vi = "Lần thu hoạch đầu tiên", Done = r => r.harvested >= 1 },
             new Def { Id = "farmer", Ja = "のうか デビュー", Vi = "Thu hoạch 10 lần", Done = r => r.harvested >= 10 },
+            new Def { Id = "first_fish", Ja = "はじめての つり", Vi = "Câu được con cá đầu tiên", Done = r => r.fished >= 1 },
             new Def { Id = "first_sale", Ja = "はじめての うりあげ", Vi = "Bán nông sản lần đầu", Done = r => r.sold >= 1 },
             new Def { Id = "animal_friend", Ja = "どうぶつの ともだち", Vi = "Làm quen cả 5 con vật", Done = r => r.animalsMet.Count >= 5 },
             new Def { Id = "word_collector", Ja = "ことば あつめ", Vi = "Học 15 từ trên đảo", Done = r => r.words.Count >= 15 },

@@ -107,6 +107,30 @@
       "rewards": { "yen": 150, "xp": 35, "knowledge": 3 }
     },
     {
+      "id": "farm_first_catch",
+      "category": "farm",
+      "titleVi": "Buổi câu đầu tiên",
+      "titleEn": "First catch",
+      "titleJa": "はじめての つり",
+      "descriptionVi": "Mua cần câu ở cửa hàng Midori, ra bến câu phía bắc đảo câu 2 con cá, rồi bán 1 con.",
+      "descriptionEn": "Buy a fishing rod at the Midori Store, catch 2 fish at the pier north of the island, then sell one.",
+      "giverNpc": "",
+      "giverNameVi": "Bến câu Đảo Xanh",
+      "locationVi": "Bến câu (つりば), phía bắc Đảo Xanh",
+      "scene": "60_MidoriIsland",
+      "minLevel": 1,
+      "minKnowledge": 0,
+      "requiresQuests": [],
+      "repeatable": false,
+      "cooldownMinutes": 0,
+      "grantOnAccept": [],
+      "objectives": [
+        { "id": "fish", "event": "fish", "target": "*", "count": 2, "afterAll": false, "textVi": "Câu được 2 con cá", "textEn": "Catch 2 fish" },
+        { "id": "sell", "event": "sell", "target": "fish_*", "count": 1, "afterAll": false, "textVi": "Bán 1 con cá ở cửa hàng Midori", "textEn": "Sell 1 fish at the Midori Store" }
+      ],
+      "rewards": { "yen": 100, "xp": 30, "knowledge": 3 }
+    },
+    {
       "id": "learn_island_words",
       "category": "learning",
       "titleVi": "Sổ tay từ vựng Đảo Xanh",

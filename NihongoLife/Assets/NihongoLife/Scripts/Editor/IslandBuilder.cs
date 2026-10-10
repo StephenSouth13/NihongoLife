@@ -26,7 +26,7 @@ namespace NihongoLife.EditorTools
     /// Crop stage prefabs and animal controllers are generated under Generated/Island.
     /// Run: Unity -batchmode -executeMethod NihongoLife.EditorTools.IslandBuilder.Build
     /// </summary>
-    public static class IslandBuilder
+    public static partial class IslandBuilder
     {
         public const string ScenePath = "Assets/NihongoLife/Scenes/60_MidoriIsland.unity";
         private const string Pack = "Assets/みどり島 – Midori Island (Đảo Xanh)/";
@@ -50,6 +50,7 @@ namespace NihongoLife.EditorTools
                 EnsureFolder(GenDir); EnsureFolder(GenDir + "/Crops"); EnsureFolder(GenDir + "/Animals"); EnsureFolder(GenDir + "/Materials"); EnsureFolder(MatDir);
                 CreateMaterials();
                 var library = BuildCropPrefabs();
+                library.AddRange(BuildFishingPrefabs());
                 BuildScene(library);
                 UpdateBuildSettings();
                 AssetDatabase.SaveAssets();
@@ -164,6 +165,7 @@ namespace NihongoLife.EditorTools
             BuildPen(pen);
             BuildShop(shop);
             BuildLookout(lookout);
+            BuildPier(lookout);
             BuildNature(nature);
             BuildSigns(signs);
             root.AddComponent<IslandRuntime>().Configure(spawn);
@@ -218,12 +220,16 @@ namespace NihongoLife.EditorTools
             {
                 float a0 = i * Mathf.PI * 2f / segments, a1 = (i + 1) * Mathf.PI * 2f / segments;
                 Vector3 p0 = new Vector3(Mathf.Cos(a0) * rx, 0f, Mathf.Sin(a0) * rz), p1 = new Vector3(Mathf.Cos(a1) * rx, 0f, Mathf.Sin(a1) * rz);
-                var wall = new GameObject("Shore_" + i);
-                wall.transform.SetParent(boundsRoot, false);
-                wall.transform.localPosition = (p0 + p1) * 0.5f + Vector3.up * 1.5f;
-                wall.transform.localRotation = Quaternion.LookRotation(p1 - p0);
-                var box = wall.AddComponent<BoxCollider>();
-                box.size = new Vector3(0.6f, 3f, (p1 - p0).magnitude + 0.6f);
+                int part = 0;
+                foreach (var (a, c) in ShoreOutsidePier(p0, p1)) // the pier (north) has its own rails
+                {
+                    var wall = new GameObject(part++ == 0 ? "Shore_" + i : $"Shore_{i}_{part}");
+                    wall.transform.SetParent(boundsRoot, false);
+                    wall.transform.localPosition = (a + c) * 0.5f + Vector3.up * 1.5f;
+                    wall.transform.localRotation = Quaternion.LookRotation(c - a);
+                    var box = wall.AddComponent<BoxCollider>();
+                    box.size = new Vector3(0.6f, 3f, (c - a).magnitude + 0.6f);
+                }
             }
         }
 
@@ -540,7 +546,7 @@ namespace NihongoLife.EditorTools
             var keepOut = new List<(Vector2 c, float r)>
             {
                 (new Vector2(0f, -30f), 16f), (new Vector2(-20f, 4f), 13f), (new Vector2(18f, 6f), 11f), (new Vector2(10f, -18f), 6f),
-                (new Vector2(0f, 30f), 8f), (new Vector2(-22f, 15f), 8f), (new Vector2(-33f, 2f), 5f), (new Vector2(-31f, 12f), 4f), (new Vector2(28f, 10f), 6f), (new Vector2(27f, -6f), 4f),
+                (new Vector2(0f, 30f), 8f), (new Vector2(PierX, 34f), 6f), (new Vector2(-22f, 15f), 8f), (new Vector2(-33f, 2f), 5f), (new Vector2(-31f, 12f), 4f), (new Vector2(28f, 10f), 6f), (new Vector2(27f, -6f), 4f),
             };
             int trees = 0;
             for (int attempt = 0; attempt < 400 && trees < 34; attempt++)
@@ -580,6 +586,7 @@ namespace NihongoLife.EditorTools
             Signpost(signs, "barn", places.barn, new Vector3(13.6f, 0f, -1.6f), 0f);
             Signpost(signs, "shop", places.shop, new Vector3(5.2f, 0f, -16.2f), 0f);
             Signpost(signs, "view", places.view, new Vector3(2.2f, 0f, 24.5f), 0f);
+            if (places.pier != null) Signpost(signs, "pier", places.pier, new Vector3(PierX + PierHalfWidth + 1.4f, 0f, ShoreWallZ(PierX) - 3.2f), 0f);
         }
 
         private static void Signpost(Transform parent, string id, IslandWord word, Vector3 position, float yaw)

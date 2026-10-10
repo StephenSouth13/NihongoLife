@@ -116,6 +116,7 @@ namespace NihongoLife.Core
 
         public void TriggerBow()
         {
+            if (_workState != null) return; // a work pose is not interrupted by gestures
             if (_animator != null && _hasBow && _animator.gameObject.activeInHierarchy)
             {
                 _animator.SetTrigger(_bowHash);
@@ -124,6 +125,7 @@ namespace NihongoLife.Core
 
         public void TriggerPoint()
         {
+            if (_workState != null) return;
             if (_animator != null && _hasPoint && _animator.gameObject.activeInHierarchy)
             {
                 _animator.SetTrigger(_pointHash);
@@ -176,6 +178,69 @@ namespace NihongoLife.Core
             _animator.CrossFadeInFixedTime(jumpStateName, 0.1f, 0);
             if (_hasSpeed) _animator.SetFloat(_speedHash, 0f);
             return true;
+        }
+
+        // ─────────── Work poses and held tools (states added to NL_Humanoid by WorkAnimationSetup) ───────────
+
+        private string _workState;
+        private GameObject _heldProp;
+
+        public string CurrentWork => _workState;
+        public GameObject HeldProp => _heldProp;
+
+        /// <summary>Plays a work state (e.g. "Work_Water", "Fish_Cast"); false when the controller has no such state.</summary>
+        public bool PlayWork(string state, float startSeconds = 0f)
+        {
+            if (_animator == null || _animator.runtimeAnimatorController == null || !HasState(state)) return false;
+            StopDirectAnimation();
+            if (_hasBow) _animator.ResetTrigger(_bowHash);
+            if (_hasPoint) _animator.ResetTrigger(_pointHash);
+            _animator.CrossFadeInFixedTime(state, 0.2f, 0, startSeconds);
+            if (_hasSpeed) _animator.SetFloat(_speedHash, 0f);
+            _workState = state;
+            return true;
+        }
+
+        public void StopWork()
+        {
+            ReleaseProp();
+            if (_workState == null) return;
+            _workState = null;
+            if (_animator != null && _animator.runtimeAnimatorController != null && HasState(standStateName))
+                _animator.CrossFadeInFixedTime(standStateName, 0.25f, 0);
+        }
+
+        public Transform Bone(HumanBodyBones bone) => _animator != null && _animator.isHuman ? _animator.GetBoneTransform(bone) : null;
+
+        /// <summary>
+        /// Puts a tool in the right hand. The prefab's origin is the grip and its +Y the shaft toward the tip; the shaft
+        /// is laid across the palm along the thumb (perpendicular to the fingers) of the current pose, then follows the
+        /// hand bone. Returns the instance (null on rigs without a humanoid hand).
+        /// </summary>
+        public GameObject HoldProp(GameObject prefab)
+        {
+            ReleaseProp();
+            var hand = Bone(HumanBodyBones.RightHand);
+            var middle = Bone(HumanBodyBones.RightMiddleProximal);
+            var thumb = Bone(HumanBodyBones.RightThumbProximal);
+            if (prefab == null || hand == null || middle == null || thumb == null) return null;
+            Vector3 fingers = (middle.position - hand.position).normalized;
+            Vector3 thumbDir = thumb.position - hand.position;
+            Vector3 shaft = (thumbDir - Vector3.Dot(thumbDir, fingers) * fingers).normalized;
+            if (shaft.sqrMagnitude < 0.01f) shaft = Vector3.Cross(fingers, hand.forward).normalized;
+            _heldProp = Instantiate(prefab);
+            _heldProp.name = "HeldProp_" + prefab.name;
+            foreach (var c in _heldProp.GetComponentsInChildren<Collider>(true)) Destroy(c);
+            _heldProp.transform.SetPositionAndRotation(hand.position + fingers * Vector3.Distance(hand.position, middle.position) * 0.9f,
+                Quaternion.LookRotation(fingers, shaft)); // forward = fingers, up (+Y) = shaft
+            _heldProp.transform.SetParent(hand, true);
+            return _heldProp;
+        }
+
+        public void ReleaseProp()
+        {
+            if (_heldProp != null) Destroy(_heldProp);
+            _heldProp = null;
         }
 
         private bool HasState(string stateName)

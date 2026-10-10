@@ -55,7 +55,7 @@ namespace NihongoLife.Progression
         public static readonly string[] SupportedEvents =
         {
             "till", "plant", "water", "harvest", "feed", "pet", "buy", "sell", "talk", "learn",
-            "restock", "assist", "checkout", "order", "serve",
+            "restock", "assist", "checkout", "order", "serve", "fish",
         };
 
         public string schema;

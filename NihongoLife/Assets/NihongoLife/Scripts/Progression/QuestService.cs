@@ -175,7 +175,7 @@ namespace NihongoLife.Progression
                 {
                     var o = quest.objectives[i];
                     if (o.@event != evt || state.progress[i] >= o.count) continue;
-                    if (o.target != "*" && !string.Equals(o.target, target, StringComparison.OrdinalIgnoreCase)) continue;
+                    if (!TargetMatches(o.target, target)) continue;
                     if (o.afterAll && !OthersDone(quest, state, i)) continue;
                     state.progress[i] = Mathf.Min(o.count, state.progress[i] + amount);
                     changed = true;
@@ -299,6 +299,14 @@ namespace NihongoLife.Progression
             int done = quest.objectives.Where((x, i) => state.progress[i] >= x.count).Count();
             string kicker = quest.IsJob ? "◆ LÀM THÊM" : quest.category == "farm" ? "◆ NÔNG TRẠI" : quest.category == "learning" ? "◆ HỌC TẬP" : "◆ NHIỆM VỤ";
             return ($"{kicker} · {quest.titleVi}", $"{o.textVi}  ({state.progress[next]}/{o.count})", $"{done}/{quest.objectives.Length} mục  ·  N mở sổ nhiệm vụ");
+        }
+
+        /// <summary>"*" matches anything, "fish_*" any target with that prefix, otherwise an exact (case-insensitive) match.</summary>
+        public static bool TargetMatches(string pattern, string target)
+        {
+            if (pattern == "*") return true;
+            if (pattern != null && pattern.EndsWith("*")) return target != null && target.StartsWith(pattern.Substring(0, pattern.Length - 1), StringComparison.OrdinalIgnoreCase);
+            return string.Equals(pattern, target, StringComparison.OrdinalIgnoreCase);
         }
     }
 }

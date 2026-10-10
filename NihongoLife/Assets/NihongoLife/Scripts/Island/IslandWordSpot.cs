@@ -19,7 +19,7 @@ namespace NihongoLife.Island
             get
             {
                 var p = IslandCatalog.Load().places;
-                return placeId switch { "station" => p.station, "farm" => p.farm, "shop" => p.shop, "barn" => p.barn, "view" => p.view, _ => p.island };
+                return placeId switch { "station" => p.station, "farm" => p.farm, "shop" => p.shop, "barn" => p.barn, "view" => p.view, "pier" => p.pier ?? p.island, _ => p.island };
             }
         }
         public string GetPromptJa() => IslandLanguage.Primary(Word);
