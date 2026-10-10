@@ -1,0 +1,210 @@
+<?xml version="1.0" encoding="utf-8"?>
+<test-run id="2" testcasecount="2" result="Failed(Child)" total="2" passed="0" failed="2" inconclusive="0" skipped="0" asserts="0" engine-version="3.5.0.0" clr-version="4.0.30319.42000" start-time="2026-10-10 18:18:28Z" end-time="2026-10-10 18:19:20Z" duration="52.3882408">
+  <test-suite type="TestSuite" id="1060" name="NihongoLife" fullname="NihongoLife" runstate="Runnable" testcasecount="32" result="Failed" site="Child" start-time="2026-10-10 18:18:28Z" end-time="2026-10-10 18:19:20Z" duration="52.388241" total="2" passed="0" failed="2" inconclusive="0" skipped="0" asserts="0">
+    <properties>
+      <property name="platform" value="PlayMode" />
+    </properties>
+    <failure>
+      <message><![CDATA[One or more child tests had errors]]></message>
+    </failure>
+    <test-suite type="Assembly" id="1054" name="NihongoLife.Tests.PlayMode.dll" fullname="D:/VTC_Academy/NihongoLife/NihongoLife/NihongoLife/Library/ScriptAssemblies/NihongoLife.Tests.PlayMode.dll" runstate="Runnable" testcasecount="32" result="Failed" site="Child" start-time="2026-10-10 18:18:28Z" end-time="2026-10-10 18:19:20Z" duration="52.377637" total="2" passed="0" failed="2" inconclusive="0" skipped="0" asserts="0">
+      <properties>
+        <property name="_PID" value="13220" />
+        <property name="_APPDOMAIN" value="Unity Child Domain" />
+        <property name="platform" value="PlayMode" />
+        <property name="EditorOnly" value="False" />
+      </properties>
+      <failure>
+        <message><![CDATA[One or more child tests had errors]]></message>
+      </failure>
+      <test-suite type="TestSuite" id="1055" name="NihongoLife" fullname="NihongoLife" runstate="Runnable" testcasecount="32" result="Failed" site="Child" start-time="2026-10-10 18:18:28Z" end-time="2026-10-10 18:19:20Z" duration="52.376582" total="2" passed="0" failed="2" inconclusive="0" skipped="0" asserts="0">
+        <properties />
+        <failure>
+          <message><![CDATA[One or more child tests had errors]]></message>
+        </failure>
+        <test-suite type="TestSuite" id="1056" name="Tests" fullname="NihongoLife.Tests" runstate="Runnable" testcasecount="32" result="Failed" site="Child" start-time="2026-10-10 18:18:28Z" end-time="2026-10-10 18:19:20Z" duration="52.375876" total="2" passed="0" failed="2" inconclusive="0" skipped="0" asserts="0">
+          <properties />
+          <failure>
+            <message><![CDATA[One or more child tests had errors]]></message>
+          </failure>
+          <test-suite type="TestFixture" id="1028" name="IeltsReadingPlayModeTests" fullname="NihongoLife.Tests.IeltsReadingPlayModeTests" classname="NihongoLife.Tests.IeltsReadingPlayModeTests" runstate="Runnable" testcasecount="2" result="Failed" site="Child" start-time="2026-10-10 18:18:28Z" end-time="2026-10-10 18:19:20Z" duration="52.372908" total="2" passed="0" failed="2" inconclusive="0" skipped="0" asserts="0">
+            <properties />
+            <failure>
+              <message><![CDATA[One or more child tests had errors]]></message>
+            </failure>
+            <test-case id="1030" name="AllLocalPackages_RenderEveryQuestionAndHaveKeys" fullname="NihongoLife.Tests.IeltsReadingPlayModeTests.AllLocalPackages_RenderEveryQuestionAndHaveKeys" methodname="AllLocalPackages_RenderEveryQuestionAndHaveKeys" classname="NihongoLife.Tests.IeltsReadingPlayModeTests" runstate="Runnable" seed="1773526219" result="Failed" start-time="2026-10-10 18:18:28Z" end-time="2026-10-10 18:19:16Z" duration="47.619504" asserts="0">
+              <properties>
+                <property name="_JOINTYPE" value="UnityCombinatorial" />
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+              <failure>
+                <message><![CDATA[  cambridge16_test4_listening: every question has a widget
+  Expected is <System.Linq.Enumerable+RangeIterator>, actual is <System.Linq.OrderedEnumerable`2[System.Int32,System.Int32]>
+  Values differ at index [2]
+  Expected: 3
+  But was:  4
+]]></message>
+                <stack-trace><![CDATA[at NihongoLife.Tests.IeltsReadingPlayModeTests+<AllLocalPackages_RenderEveryQuestionAndHaveKeys>d__2.MoveNext () [0x0039a] in D:\VTC_Academy\NihongoLife\NihongoLife\NihongoLife\Assets\NihongoLife\Tests\PlayMode\IeltsReadingPlayModeTests.cs:114
+at UnityEngine.TestTools.TestEnumerator+<Execute>d__7.MoveNext () [0x0003a] in .\Library\PackageCache\com.unity.test-framework@aebcb98460c6\UnityEngine.TestRunner\NUnitExtensions\Attributes\TestEnumerator.cs:44
+]]></stack-trace>
+              </failure>
+              <output><![CDATA[[AppRoot] Initializing core services...
+[SceneFlowController] Initialized.
+[AudioService] Initialized AudioSources.
+[GameServices] Service GameInputService is already registered. Overwriting.
+[GameServices] Service PlayerSessionService is already registered. Overwriting.
+[SupabaseClient] Configured for https://pkxrtvlerjjiignmlebx.supabase.co
+[SupabaseAuth] Initialized.
+[AppRoot] Supabase Auth service registered.
+[AppRoot] Using SupabaseProgressRepository (cloud save).
+[LocalProgressRepository] Initialized. Save path: C:/Users/Admin/AppData/LocalLow/DefaultCompany/NihongoLife\progress.json
+[SupabaseProgressRepo] Initialized with local fallback.
+[LocalScenarioRepository] Loaded 14 scenarios from Resources/Scenarios.
+[AppRoot] Using SupabaseOnlineWorldService (real online).
+[SupabaseOnlineWorld] Initialized.
+[CoopSessionService] Initialized.
+[ExamRepository] Loaded 3 exam(s) from Resources/Exams.
+[AppRoot] Core services initialized successfully.
+[ScenarioManager] Starting scenario: ひばり町へようこそ (scenario.intro.arrival)
+[ScoringManager] Score tracking reset.
+[ScenarioManager] Transitioning to Node: n_open (Type: Dialogue)
+[ScenarioManager] Objective Completed: 駅を出て、町に着く
+[DialogueManager] Starting dialogue node: n_open
+[SupabaseRealtime] Connecting to wss://pkxrtvlerjjiignmlebx.supabase.co/realtime/v1/websocket?apikey=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBreHJ0dmxlcmpqaWlnbm1sZWJ4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODg1Mzc1MDMsImV4cCI6MjEwNDExMzUwM30.m8UT0o6p4WXItZ3LcDt7QLs25uq28rm0bNS1f3cOYb4&vsn=1.0.0
+[SupabaseOnlineWorld] Local player connected: Guest (ad0ed602544428b9b09a4ab9c21abcf14785c5af)
+[SupabaseRealtime] WebSocket connected.
+[SupabaseRealtime] Joined channel: nihongolife-world
+[SupabaseVoiceSync] voice_lines table not provisioned yet — voice lines use the bundled clips.
+Audio compression is not valid as streamAudio is set to true
+Audio compression is not valid as streamAudio is set to true
+Audio compression is not valid as streamAudio is set to true
+Audio compression is not valid as streamAudio is set to true
+Audio compression is not valid as streamAudio is set to true
+Audio compression is not valid as streamAudio is set to true
+Audio compression is not valid as streamAudio is set to true
+Audio compression is not valid as streamAudio is set to true
+Audio compression is not valid as streamAudio is set to true
+Audio compression is not valid as streamAudio is set to true
+Audio compression is not valid as streamAudio is set to true
+Audio compression is not valid as streamAudio is set to true
+Audio compression is not valid as streamAudio is set to true
+Audio compression is not valid as streamAudio is set to true
+Audio compression is not valid as streamAudio is set to true
+Audio compression is not valid as streamAudio is set to true
+Audio compression is not valid as streamAudio is set to true
+Audio compression is not valid as streamAudio is set to true
+Audio compression is not valid as streamAudio is set to true
+Audio compression is not valid as streamAudio is set to true
+Audio compression is not valid as streamAudio is set to true
+Audio compression is not valid as streamAudio is set to true
+Audio compression is not valid as streamAudio is set to true
+Audio compression is not valid as streamAudio is set to true
+Audio compression is not valid as streamAudio is set to true
+Audio compression is not valid as streamAudio is set to true
+Audio compression is not valid as streamAudio is set to true
+Audio compression is not valid as streamAudio is set to true
+Audio compression is not valid as streamAudio is set to true
+Audio compression is not valid as streamAudio is set to true
+Audio compression is not valid as streamAudio is set to true
+Audio compression is not valid as streamAudio is set to true
+Audio compression is not valid as streamAudio is set to true
+Audio compression is not valid as streamAudio is set to true
+Audio compression is not valid as streamAudio is set to true
+Audio compression is not valid as streamAudio is set to true
+Audio compression is not valid as streamAudio is set to true
+Audio compression is not valid as streamAudio is set to true
+Audio compression is not valid as streamAudio is set to true
+Audio compression is not valid as streamAudio is set to true
+Audio compression is not valid as streamAudio is set to true
+Audio compression is not valid as streamAudio is set to true
+Audio compression is not valid as streamAudio is set to true
+Audio compression is not valid as streamAudio is set to true
+Audio compression is not valid as streamAudio is set to true
+Audio compression is not valid as streamAudio is set to true
+Audio compression is not valid as streamAudio is set to true
+Audio compression is not valid as streamAudio is set to true
+Audio compression is not valid as streamAudio is set to true
+Audio compression is not valid as streamAudio is set to true
+Audio compression is not valid as streamAudio is set to true
+Audio compression is not valid as streamAudio is set to true
+Audio compression is not valid as streamAudio is set to true
+Audio compression is not valid as streamAudio is set to true
+Audio compression is not valid as streamAudio is set to true
+Audio compression is not valid as streamAudio is set to true
+Audio compression is not valid as streamAudio is set to true
+Audio compression is not valid as streamAudio is set to true
+Audio compression is not valid as streamAudio is set to true
+Audio compression is not valid as streamAudio is set to true
+Audio compression is not valid as streamAudio is set to true
+Audio compression is not valid as streamAudio is set to true
+Audio compression is not valid as streamAudio is set to true
+Audio compression is not valid as streamAudio is set to true
+Audio compression is not valid as streamAudio is set to true
+Audio compression is not valid as streamAudio is set to true
+Audio compression is not valid as streamAudio is set to true
+Audio compression is not valid as streamAudio is set to true
+Audio compression is not valid as streamAudio is set to true
+Audio compression is not valid as streamAudio is set to true
+Audio compression is not valid as streamAudio is set to true
+Audio compression is not valid as streamAudio is set to true
+Audio compression is not valid as streamAudio is set to true
+Audio compression is not valid as streamAudio is set to true
+Audio compression is not valid as streamAudio is set to true
+Audio compression is not valid as streamAudio is set to true
+Audio compression is not valid as streamAudio is set to true
+Audio compression is not valid as streamAudio is set to true
+Audio compression is not valid as streamAudio is set to true
+Audio compression is not valid as streamAudio is set to true
+]]></output>
+            </test-case>
+            <test-case id="1029" name="Reading_Cambridge14Test1_TimedExamEndToEnd" fullname="NihongoLife.Tests.IeltsReadingPlayModeTests.Reading_Cambridge14Test1_TimedExamEndToEnd" methodname="Reading_Cambridge14Test1_TimedExamEndToEnd" classname="NihongoLife.Tests.IeltsReadingPlayModeTests" runstate="Runnable" seed="666703514" result="Failed" start-time="2026-10-10 18:19:16Z" end-time="2026-10-10 18:19:20Z" duration="4.736916" asserts="0">
+              <properties>
+                <property name="_JOINTYPE" value="UnityCombinatorial" />
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+              <failure>
+                <message><![CDATA[Unhandled log message: '[Error] RenderTexture.Create failed'. Use UnityEngine.TestTools.LogAssert.Expect]]></message>
+                <stack-trace><![CDATA[UnityEngine.Camera:Render ()
+NihongoLife.Tests.IeltsReadingPlayModeTests:Capture (string) (at Assets/NihongoLife/Tests/PlayMode/IeltsReadingPlayModeTests.cs:178)
+NihongoLife.Tests.IeltsReadingPlayModeTests/<Reading_Cambridge14Test1_TimedExamEndToEnd>d__1:MoveNext () (at Assets/NihongoLife/Tests/PlayMode/IeltsReadingPlayModeTests.cs:58)
+UnityEngine.SetupCoroutine:InvokeMoveNext (System.Collections.IEnumerator,intptr)
+
+]]></stack-trace>
+              </failure>
+              <output><![CDATA[[ScenarioManager] Starting scenario: ひばり町へようこそ (scenario.intro.arrival)
+[ScoringManager] Score tracking reset.
+[ScenarioManager] Transitioning to Node: n_open (Type: Dialogue)
+[DialogueManager] Starting dialogue node: n_open
+RenderTexture.Create failed
+RenderTexture.Create failed
+Failed to set the active render target, ensure that it is a valid render target.
+RenderTexture.Create failed
+RenderTexture.Create failed
+SetConstantBuffer: The current renderer does not support constant buffers. This call will have no effect.
+SetConstantBuffer: The current renderer does not support constant buffers. This call will have no effect.
+RenderTexture.Create failed
+RenderTexture.Create failed
+RenderTexture.Create failed
+DrawDepthNormalPrepass: Unable to find surface for attachment 0
+EndRenderPass: Not inside a Renderpass
+RenderTexture.Create failed
+RenderTexture.Create failed
+RenderTexture.Create failed
+DrawOpaqueObjects/DrawSkybox: Unable to find surface for attachment 0
+EndRenderPass: Not inside a Renderpass
+RenderTexture.Create failed
+RenderTexture.Create failed
+RenderTexture.Create failed
+DrawTransparentObjects: Unable to find surface for attachment 0
+EndRenderPass: Not inside a Renderpass
+Saving results to: C:/Users/Admin/AppData/LocalLow/DefaultCompany/NihongoLife\TestResults.xml
+]]></output>
+            </test-case>
+          </test-suite>
+        </test-suite>
+      </test-suite>
+    </test-suite>
+  </test-suite>
+</test-run>
