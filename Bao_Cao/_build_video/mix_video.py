@@ -42,7 +42,7 @@ subprocess.run(["ffmpeg", "-y", "-v", "error", *inputs, "-filter_complex", fc, "
 # Music ducked under the voice, then summed with it.
 fc = (f"[0:a]atrim=0:{length:.3f},volume={a.mvol},afade=t=out:st={max(0, length - 3):.3f}:d=3[m];"
       f"[1:a]asplit=2[vo1][vo2];[m][vo1]sidechaincompress=threshold=0.03:ratio=6:attack=40:release=500[duck];"
-      f"[duck][vo2]amix=inputs=2:normalize=0,alimiter=limit=0.95[a]")
+      f"[duck][vo2]amix=inputs=2:normalize=0,alimiter=limit=0.95,loudnorm=I=-15:TP=-1.5:LRA=11,aresample=48000[a]")
 subprocess.run(["ffmpeg", "-y", "-v", "error", "-i", a.music, "-i", str(work / "voice.wav"), "-filter_complex", fc, "-map", "[a]", str(work / "mix.wav")], check=True)
 
 vf = "format=yuv420p"
