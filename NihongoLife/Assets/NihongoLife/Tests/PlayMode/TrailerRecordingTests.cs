@@ -15,7 +15,7 @@ namespace NihongoLife.Tests
     /// </summary>
     public class TrailerRecordingTests
     {
-        public static string FrameFolder => Path.Combine(Path.GetTempPath(), "NihongoLifeTrailerFrames");
+        public static string FrameFolder => System.Environment.GetEnvironmentVariable("NL_FRAME_DIR") is { Length: > 0 } dir ? dir : Path.Combine(Path.GetTempPath(), "NihongoLifeTrailerFrames");
 
         [UnityTest, Explicit, Timeout(1800000)]
         public IEnumerator Trailer_RecordFrames()
@@ -31,11 +31,14 @@ namespace NihongoLife.Tests
             var target = new RenderTexture(width, height, 24);
             var frame = new Texture2D(width, height, TextureFormat.RGB24, false);
             int index = 0;
+            string lastShot = null;
+            var timeline = new System.Text.StringBuilder();
             float guard = Time.realtimeSinceStartup + 1500f;
             while (!reel.Finished && Time.realtimeSinceStartup < guard)
             {
                 yield return null;
                 if (!reel.ShouldRecord || reel.ActiveCamera == null) continue;
+                if (reel.CurrentShot != lastShot) { lastShot = reel.CurrentShot; timeline.AppendLine($"{index}	{lastShot}"); }
                 var camera = reel.ActiveCamera;
                 var canvases = Object.FindObjectsByType<Canvas>(FindObjectsSortMode.None)
                     .Where(c => c.isRootCanvas && (c.renderMode == RenderMode.ScreenSpaceOverlay || c.renderMode == RenderMode.ScreenSpaceCamera))
@@ -58,6 +61,7 @@ namespace NihongoLife.Tests
                 RenderTexture.active = active;
                 File.WriteAllBytes(Path.Combine(FrameFolder, $"f{index++:00000}.jpg"), frame.EncodeToJPG(92));
             }
+            File.WriteAllText(Path.Combine(FrameFolder, "timeline.tsv"), timeline.ToString());
             Time.captureFramerate = 0;
             Object.Destroy(frame);
             target.Release();

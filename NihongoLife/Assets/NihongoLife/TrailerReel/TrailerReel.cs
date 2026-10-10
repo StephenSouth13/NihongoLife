@@ -6,6 +6,8 @@ using NihongoLife.Cameras;
 using NihongoLife.Core;
 using NihongoLife.Dialogue;
 using NihongoLife.Interaction;
+using NihongoLife.Island;
+using NihongoLife.Progression;
 using NihongoLife.MiniGames;
 using NihongoLife.NPC;
 using NihongoLife.Player;
@@ -85,22 +87,27 @@ namespace NihongoLife.Trailer
             StartMusic();
 
             yield return Shot("title", 4.0f, TitleCard());
-            yield return Shot("city", 6.0f, CityCrane(), "ひばり町へ ようこそ", "Một thị trấn Nhật Bản để sống và học");
-            yield return Shot("walk", 5.0f, StreetWalk(), "あるいて、みつけて、はなそう", "Đi bộ, khám phá, trò chuyện");
-            yield return Shot("dialogue", 5.0f, Dialogue(), "えらんで こたえる 会話", "Hội thoại N5 — chọn câu đúng ngữ cảnh");
-            yield return Shot("konbini", 5.5f, Konbini(), "コンビニで かいもの", "Tự đi chợ bằng tiếng Nhật");
-            yield return Shot("emote", 4.0f, Emote(), "ありがとう！", "Mỗi biểu cảm là một câu tiếng Nhật");
+            yield return Shot("city", 5.0f, CityCrane(), "ひばり町へ ようこそ", "Một thị trấn Nhật Bản để sống và học");
+            yield return Shot("walk", 4.0f, StreetWalk(), "あるいて、みつけて、はなそう", "Đi bộ, khám phá, trò chuyện");
+            yield return Shot("dialogue", 4.5f, Dialogue(), "えらんで こたえる 会話", "Hội thoại N5 — chọn câu đúng ngữ cảnh");
+            yield return Shot("konbini", 4.5f, Konbini(), "コンビニで かいもの", "Tự đi chợ bằng tiếng Nhật");
+            yield return Shot("job", 6.0f, KonbiniJob(), "アルバイトで はたらく", "Làm thêm: xếp hàng, chỉ đường, tính tiền");
+            yield return Shot("journal", 4.5f, Journal(), "タスクと レベル", "Sổ nhiệm vụ: việc làm, lương, cấp độ");
 
-            yield return Zone(WorldLocationCatalog.HomeBedroomScene, WorldLocationCatalog.HomeBedroomEntrance);
-            yield return Shot("bedroom", 4.5f, Bedroom(), "じぶんの へや", "Phòng trọ: ngủ, học, nghỉ ngơi");
             yield return Zone(WorldLocationCatalog.StationScene, WorldLocationCatalog.StationEntrance);
-            yield return Shot("station", 4.5f, Station(), "えきで きっぷを かう", "Mua vé, hỏi đường ở ga Hibari");
-            yield return Shot("train", 7.5f, Train(), "でんしゃの たび", "Ngồi tàu, ngắm phố, tới nơi thật");
+            yield return Shot("station", 4.0f, Station(), "えきで きっぷを かう", "Mua vé, hỏi đường ở ga Hibari");
+            yield return Shot("train", 5.5f, Train(), "でんしゃで みどりじまへ", "Đi tàu tới Đảo Midori");
+            yield return Zone(WorldLocationCatalog.MidoriIslandScene, WorldLocationCatalog.MidoriStation);
+            yield return Shot("island", 6.0f, IslandCrane(), "みどりじま", "Đảo Midori — nông trại giữa biển");
+            yield return Shot("farm", 6.5f, Farming(), "たがやして、うえて、みずを あげる", "Xới, gieo, tưới — dụng cụ quyết định tốc độ");
+            yield return Shot("grow", 4.5f, Growth(), "そだてて、しゅうかく", "Cây lớn theo thời gian thật");
+            yield return Shot("animals", 5.0f, Animals(), "どうぶつと なかよく", "Chăm sóc bò, alpaca, lừa và ngựa");
+            yield return Shot("sell", 4.5f, SellProduce(), "うって、かって、くらす", "Bán nông sản, mua hạt giống mới");
+
             yield return Zone(WorldLocationCatalog.SchoolScene, WorldLocationCatalog.SchoolEntrance);
-            yield return Shot("classroom", 5.0f, Classroom(), "ひばり日本語学院", "Lớp học & thi thử JLPT · IELTS");
+            yield return Shot("classroom", 4.0f, Classroom(), "ひばり日本語学院", "Lớp học & thi thử JLPT · IELTS");
             yield return Zone(WorldLocationCatalog.GameCenterScene, WorldLocationCatalog.GameCenterEntrance);
-            yield return Shot("arcade", 4.0f, Arcade(), "ゲームセンター", "Game Center ngay trên phố");
-            yield return Shot("kana", 5.0f, KanaMatch(), "かなマッチ", "Lật thẻ, ghép cặp, học chữ");
+            yield return Shot("kana", 4.5f, KanaMatch(), "かなマッチ", "Lật thẻ, ghép cặp, học chữ");
             yield return Shot("end", 7.0f, EndCard());
 
             Finished = true;
@@ -227,6 +234,122 @@ namespace NihongoLife.Trailer
             yield return Move(new Vector3(2.8f, 2.4f, 1.4f), new Vector3(-2f, 1.2f, 4.5f), new Vector3(1.6f, 1.9f, 2.2f), new Vector3(-2.2f, 1.1f, 3.4f), 5.5f);
         }
 
+        private IEnumerator KonbiniJob()
+        {
+            KonbiniShopUI.GetOrCreate().Close();
+            QuestService.Accept("job_konbini_shift");
+            var station = FindObjectsByType<JobStation>(FindObjectsSortMode.None).FirstOrDefault(j => j.StationId == "customer_a");
+            if (station == null) yield break;
+            Vector3 f = station.transform.forward; f.y = 0f; f.Normalize();
+            Vector3 stand = station.transform.position - f * 1.3f; stand.y = 0.08f;
+            PlacePlayer(stand, Quaternion.LookRotation(f).eulerAngles.y);
+            Vector3 side = Vector3.Cross(Vector3.up, f);
+            Vector3 cam = stand - f * 2.0f + side * 0.9f + Vector3.up * 1.9f;
+            _camera.transform.SetPositionAndRotation(cam, Quaternion.LookRotation(station.transform.position + Vector3.up * 0.4f - cam));
+            yield return Wait(0.9f);
+            station.Interact(_player.gameObject);
+            StartCoroutine(Move(cam, station.transform.position + Vector3.up * 0.4f, cam + f * 0.6f, station.transform.position + Vector3.up * 0.5f, 4.5f));
+            yield return Wait(3.2f);
+            int right = JobQuizCard.CurrentChoices.ToList().FindIndex(c => c.Correct);
+            JobQuizCard.Answer(right);
+        }
+
+        private IEnumerator Journal()
+        {
+            JobQuizCard.Close();
+            PlacePlayer(new Vector3(0.8f, 0.08f, -10f), 0f);
+            Vector3 cam = new Vector3(4f, 3.2f, -16f);
+            _camera.transform.SetPositionAndRotation(cam, Quaternion.LookRotation(new Vector3(0f, 1.5f, -6f) - cam));
+            TaskJournalUI.Open("job_konbini_shift");
+            yield return Move(cam, new Vector3(0f, 1.5f, -6f), cam + new Vector3(-1.5f, 0.2f, 1f), new Vector3(-1f, 1.5f, -6f), 4.5f);
+        }
+
+        private IEnumerator IslandCrane()
+        {
+            TaskJournalUI.Close();
+            IslandEconomy.Give("tool_hoe", 1);
+            IslandEconomy.Give("tool_watering_can", 1);
+            IslandEconomy.Give("seed_carrot", 3);
+            Vector3 o = new Vector3(-1200f, 0f, 0f);
+            PlacePlayer(o + new Vector3(-1.5f, 0.3f, -29.6f), 0f);
+            yield return Move(o + new Vector3(-30f, 38f, -75f), o + new Vector3(0f, 0f, 0f), o + new Vector3(8f, 16f, -40f), o + new Vector3(-6f, 0f, 2f), 6f);
+        }
+
+        private FarmPlot _plot;
+
+        private IEnumerator Farming()
+        {
+            _plot = FindObjectsByType<FarmPlot>(FindObjectsSortMode.None).FirstOrDefault(p => p.Number == 1);
+            if (_plot == null) yield break;
+            var r = _plot.Record; r.tilled = false; r.cropId = null; r.stage = 0; r.watered = false; _plot.Refresh(true);
+            Vector3 pos = _plot.transform.position;
+            PlacePlayer(pos + new Vector3(0f, 0.1f, -1.6f), 0f);
+            Vector3 cam = pos + new Vector3(-3.4f, 2.6f, -4.2f);
+            _camera.transform.SetPositionAndRotation(cam, Quaternion.LookRotation(pos + Vector3.up * 0.6f - cam));
+            StartCoroutine(Move(cam, pos + Vector3.up * 0.6f, cam + new Vector3(1.2f, -0.3f, 0.8f), pos + Vector3.up * 0.5f, 6.2f));
+            IslandUI.OpenFarm(_plot);
+            yield return Wait(0.6f);
+            yield return Work("Đang xới đất…", "くわ", 1.6f, () => _plot.Till());
+            IslandUI.OpenFarm(_plot);
+            yield return Wait(0.4f);
+            yield return Work("Đang gieo hạt…", "tay", 1.2f, () => _plot.Plant("carrot"));
+            IslandUI.OpenFarm(_plot);
+            yield return Wait(0.3f);
+            yield return Work("Đang tưới nước…", "じょうろ", 1.5f, () => _plot.Water());
+            IslandUI.OpenFarm(_plot);
+        }
+
+        private static IEnumerator Work(string label, string tool, float seconds, Action done)
+        {
+            TimedAction.Run(label, tool, seconds, done);
+            while (TimedAction.Busy) yield return null;
+        }
+
+        private IEnumerator Growth()
+        {
+            IslandUI.CloseFarm();
+            if (_plot == null) yield break;
+            Vector3 pos = _plot.transform.position;
+            Vector3 cam = pos + new Vector3(1.6f, 1.3f, -2.4f);
+            StartCoroutine(Move(cam, pos + Vector3.up * 0.25f, cam + new Vector3(-0.8f, 0.4f, -0.4f), pos + Vector3.up * 0.4f, 4.2f));
+            var crop = _plot.Crop;
+            for (int stage = 0; stage < 3 && crop != null; stage++)
+            {
+                yield return Wait(0.9f);
+                IslandState.ClockOffset += TimeSpan.FromSeconds(crop.secondsPerStage + 1);
+                _plot.Advance();
+                if (_plot.CurrentPhase == FarmPlot.Phase.NeedsWater) _plot.Water();
+                _plot.Refresh(true);
+            }
+        }
+
+        private IEnumerator Animals()
+        {
+            var cow = FindObjectsByType<IslandAnimal>(FindObjectsSortMode.None).FirstOrDefault(a => a.AnimalId == "cow");
+            Vector3 c = new Vector3(-1200f + 18f, 0f, 6f);
+            PlacePlayer(c + new Vector3(0f, 0.1f, -3.5f), 0f);
+            yield return Move(c + new Vector3(-7f, 3.2f, -8f), c + Vector3.up * 0.8f, c + new Vector3(3f, 2.4f, -7f), c + Vector3.up * 0.9f, 3.2f);
+            if (cow != null) IslandUI.OpenAnimal(cow);
+            Vector3 p = _camera.transform.position;
+            yield return Move(p, c + Vector3.up * 0.9f, p + new Vector3(0.6f, 0f, 0.6f), c + Vector3.up * 1f, 1.6f);
+        }
+
+        private IEnumerator SellProduce()
+        {
+            IslandUI.CloseAnimal();
+            if (_plot != null && _plot.CurrentPhase == FarmPlot.Phase.Ready) _plot.Harvest(out _);
+            if (IslandEconomy.Owned("carrot") == 0) IslandEconomy.Give("carrot", 2);
+            Vector3 o = new Vector3(-1200f, 0f, 0f);
+            Vector3 cam = o + new Vector3(4.5f, 2.4f, -20.5f);
+            _camera.transform.SetPositionAndRotation(cam, Quaternion.LookRotation(o + new Vector3(9f, 1.5f, -18f) - cam));
+            IslandUI.OpenShop();
+            IslandUI.SelectShopTab("sell");
+            IslandUI.SelectShopItem("carrot");
+            yield return Wait(2.2f);
+            IslandUI.ConfirmShop();
+            yield return Wait(2f);
+        }
+
         private IEnumerator Emote()
         {
             KonbiniShopUI.GetOrCreate().Close();
@@ -276,6 +399,7 @@ namespace NihongoLife.Trailer
 
         private IEnumerator Classroom()
         {
+            IslandUI.CloseShop();
             yield return Move(new Vector3(1006.2f, 2.9f, -6.0f), new Vector3(999f, 1.2f, 3.5f), new Vector3(1004.2f, 2.2f, -4.2f), new Vector3(999.5f, 1.6f, 5.5f), 5f);
         }
 
@@ -505,7 +629,7 @@ namespace NihongoLife.Trailer
             card.GetComponent<CanvasGroup>().alpha = 0f;
             Logo(card, "Logo", new Vector2(0f, 150f), 820f);
             var lines = NLUi.Label(card, "Lines",
-                "ひばり町で、日本語と暮らそう\n<size=55%><color=#E8EEF6>Game mô phỏng cuộc sống 3D · học tiếng Nhật N5</color></size>\n\n<size=45%><color=#A8B4C4>Thành phố · Konbini · Phòng trọ · Ga & tàu điện · Lớp học · Game Center</color></size>",
+                "ひばり町で、日本語と暮らそう\n<size=55%><color=#E8EEF6>Game mô phỏng cuộc sống 3D · học tiếng Nhật N5</color></size>\n\n<size=45%><color=#A8B4C4>Hội thoại · Làm thêm · Tàu điện · Đảo Midori · Nông trại · Luyện thi · Kana Match</color></size>",
                 44f, new Color(1f, 0.82f, 0.4f), _font, FontStyles.Bold, TextAlignmentOptions.Center);
             lines.rectTransform.anchorMin = lines.rectTransform.anchorMax = new Vector2(0.5f, 0.5f);
             lines.rectTransform.anchoredPosition = new Vector2(0f, -70f);

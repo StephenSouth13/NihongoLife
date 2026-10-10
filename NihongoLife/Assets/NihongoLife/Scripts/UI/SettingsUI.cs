@@ -432,7 +432,7 @@ namespace NihongoLife.UI
             handleAreaRect.offsetMin = new Vector2(10f, 0f);
             handleAreaRect.offsetMax = new Vector2(-10f, 0f);
             var handle = CreateSliderImage(handleArea.transform, "Handle", Color.white, rounded);
-            handle.rectTransform.sizeDelta = new Vector2(22f, 28f);
+            handle.rectTransform.sizeDelta = new Vector2(22f, 0f); // stretched to the 28 px row by the Slider; a y size here would add to it
 
             var slider = go.AddComponent<Slider>();
             slider.fillRect = fill.rectTransform;

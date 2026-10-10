@@ -1,0 +1,1385 @@
+[
+  {
+    "title": "Lời cảm ơn",
+    "lead": "Project 3 • Capstone — Lập trình game",
+    "parts": [
+      [
+        "p",
+        "Em xin gửi lời cảm ơn đến thầy Nguyễn Ngọc Chấn, giảng viên hướng dẫn, đã định hướng cách tiếp cận đồ án và đóng góp ý kiến cho quá trình xây dựng NihongoLife. Em cảm ơn các thầy cô VTC Academy đã trang bị kiến thức về lập trình, thiết kế gameplay và tổ chức dự án Unity để em có thể phát triển sản phẩm này."
+      ],
+      [
+        "p",
+        "Em cũng cảm ơn gia đình và bạn bè đã hỗ trợ, động viên trong quá trình học tập. Việc xây dựng một game học ngoại ngữ đòi hỏi kết hợp nhiều lĩnh vực: trải nghiệm người dùng, thiết kế tình huống, nội dung tiếng Nhật, kỹ thuật 3D và đánh giá học tập. Những góp ý trong quá trình thực hiện giúp em nhìn nhận sản phẩm từ cả góc độ người chơi và người học."
+      ],
+      [
+        "p",
+        "Báo cáo trình bày thiết kế, cơ chế, kiến trúc và luồng giao diện dựa trên tài liệu, mã nguồn và dữ liệu của NihongoLife. Các tính năng còn phụ thuộc dịch vụ bên ngoài hoặc chưa được kiểm thử đầy đủ được nêu riêng để tránh nhầm lẫn giữa thiết kế và kết quả triển khai."
+      ],
+      [
+        "p",
+        "Em mong nhận được góp ý của thầy cô để tiếp tục hoàn thiện chất lượng nội dung, tính ổn định và hiệu quả học tập của sản phẩm."
+      ],
+      [
+        "p",
+        "TP. Hồ Chí Minh, ngày 06 tháng 10 năm 2026\nHọc viên: Quách Thành Long"
+      ]
+    ],
+    "image": null
+  },
+  {
+    "title": "Tóm tắt đồ án",
+    "lead": "Học tiếng Nhật bằng cách sống trong một khu phố Nhật Bản.",
+    "parts": [
+      [
+        "p",
+        "NihongoLife là game mô phỏng cuộc sống 3D kết hợp học tiếng Nhật trình độ nền tảng N5. Người chơi nhập vai một du học sinh Việt Nam vừa đến Hibari-chō, làm quen với hàng xóm, đi học, mua đồ, gọi món và sử dụng phương tiện công cộng. Mỗi tình huống yêu cầu vận dụng từ vựng, ngữ pháp và cách ứng xử phù hợp trong đời sống."
+      ],
+      [
+        "p",
+        "Vòng lặp cốt lõi gồm khám phá bối cảnh → nhận mục tiêu → tương tác → chọn phản hồi tiếng Nhật → nhận giải thích và sửa lỗi → hoàn thành nhiệm vụ → cập nhật tiến trình. Lựa chọn sai được thiết kế để tạo cơ hội học lại, phù hợp chủ đề “nói sai cũng không sao”."
+      ],
+      [
+        "p",
+        "Dự án sử dụng Unity 6, C#, giao diện TextMeshPro/UGUI và dữ liệu ScriptableObject. Kịch bản tách khỏi engine để mở rộng nội dung mà không phải tạo một hệ thống gameplay mới cho từng bài. Các dịch vụ lưu tiến trình, âm thanh, chuyển scene và online được tổ chức theo mô-đun."
+      ],
+      [
+        "p",
+        "Ngoài campaign, mã nguồn có giao diện luyện thi JLPT/IELTS, quản lý túi đồ, chỉ số nhân vật, bản đồ và các thành phần cộng đồng online. Luyện thi là hoạt động thực hành của dự án; kết quả không phải chứng chỉ hay điểm thi chính thức. Việc triển khai cloud, audio đề thi và đánh giá AI cần được xác minh độc lập."
+      ],
+      [
+        "table",
+        [
+          "Thông tin",
+          "Giá trị"
+        ],
+        [
+          [
+            "Tên sản phẩm",
+            "NihongoLife / Nihongo Life"
+          ],
+          [
+            "Thể loại",
+            "3D life simulator • Educational game"
+          ],
+          [
+            "Người học chính",
+            "Người Việt bắt đầu học tiếng Nhật N5"
+          ],
+          [
+            "Công nghệ nền",
+            "Unity 6000.3.12f1 • C# • URP"
+          ],
+          [
+            "Ngôn ngữ UI",
+            "Tiếng Việt • English • 日本語"
+          ]
+        ],
+        [
+          2300,
+          7060
+        ]
+      ]
+    ],
+    "image": null
+  },
+  {
+    "title": "01. Tổng quan đề tài",
+    "lead": "Từ kiến thức trên sách đến khả năng phản hồi trong ngữ cảnh.",
+    "parts": [
+      [
+        "h",
+        "1.1. Vấn đề"
+      ],
+      [
+        "p",
+        "Người mới học có thể nhớ từ vựng hoặc mẫu câu nhưng vẫn khó chọn câu phù hợp khi gặp một tình huống thật. Bài học rời rạc thiếu mối liên hệ với địa điểm, đối tượng giao tiếp và hệ quả của phản hồi. Một môi trường mô phỏng cho phép người học thử, sai và sửa trong điều kiện ít áp lực hơn."
+      ],
+      [
+        "h",
+        "1.2. Giải pháp"
+      ],
+      [
+        "p",
+        "NihongoLife đặt kiến thức N5 vào các hoạt động có mục đích rõ: tự giới thiệu trước lớp, hỏi giá tại konbini, gọi món trong nhà hàng, hỏi đường tại ga và trao đổi với hàng xóm. Không gian 3D tạo bối cảnh; NPC đưa ra lời thoại; lựa chọn và phản hồi giúp người học hiểu tại sao một câu phù hợp."
+      ],
+      [
+        "h",
+        "1.3. Mục tiêu"
+      ],
+      [
+        "p",
+        "Xây dựng vòng chơi học tập thống nhất; cung cấp hỗ trợ theo chế độ học; lưu tiến độ và độ thành thạo; tổ chức nội dung theo dữ liệu; thiết kế UI dễ đọc với người dùng Việt; chuẩn bị nền tảng cho học cùng bạn và tích hợp dịch vụ giáo dục."
+      ],
+      [
+        "h",
+        "1.4. Phạm vi"
+      ],
+      [
+        "p",
+        "Nội dung trọng tâm là đời sống Nhật Bản và hội thoại N5. Campaign, giao diện gameplay và trung tâm luyện thi được mô tả theo trạng thái mã nguồn hiện có. Mở rộng N4, ngân hàng đề lớn, hệ thống xếp hạng có xác thực máy chủ và tích hợp LMS hoàn chỉnh thuộc kế hoạch phát triển, không được coi là kết quả đã phát hành."
+      ]
+    ],
+    "image": null
+  },
+  {
+    "title": "02. Cơ sở thiết kế học tập",
+    "lead": "Ngữ cảnh, phản hồi và luyện lại là ba trụ cột của trải nghiệm.",
+    "parts": [
+      [
+        "h",
+        "2.1. Học theo tình huống"
+      ],
+      [
+        "p",
+        "Mỗi scenario liên kết một địa điểm, một mục tiêu giao tiếp và một nhóm kiến thức. Người chơi dùng kiến thức để hoàn thành việc cụ thể, thay vì chỉ trả lời câu hỏi tách khỏi bối cảnh. Ví dụ, “〜をください” xuất hiện khi gọi món, còn “いくらですか” gắn với mua sắm."
+      ],
+      [
+        "h",
+        "2.2. Phản hồi sau lựa chọn"
+      ],
+      [
+        "p",
+        "Một lựa chọn tốt cần đúng nội dung và phù hợp mức độ lịch sự. Nhánh sai dẫn tới phản ứng NPC và giải thích, sau đó có đường phục hồi để người học thử lại. Các tag học tập và điều chỉnh điểm ghi nhận phản hồi, giúp phân biệt thành công về nhiệm vụ với chất lượng sử dụng ngôn ngữ."
+      ],
+      [
+        "h",
+        "2.3. Hỗ trợ theo chế độ"
+      ],
+      [
+        "table",
+        [
+          "Chế độ",
+          "Cách sử dụng",
+          "Mục đích"
+        ],
+        [
+          [
+            "Guided",
+            "Hiển thị gợi ý, cách đọc và bản dịch theo cấu hình",
+            "Làm quen mẫu câu"
+          ],
+          [
+            "Practice",
+            "Giảm hỗ trợ; khuyến khích tự chọn phản hồi",
+            "Luyện nhớ và áp dụng"
+          ],
+          [
+            "Assessment",
+            "Ẩn hỗ trợ theo quy tắc đánh giá",
+            "Quan sát khả năng độc lập"
+          ]
+        ],
+        [
+          2000,
+          4300,
+          3060
+        ]
+      ],
+      [
+        "h",
+        "2.4. Đánh giá đúng phạm vi"
+      ],
+      [
+        "p",
+        "Điểm từ vựng, ngữ pháp, nghe, độ chính xác phản hồi và hoàn thành nhiệm vụ là chỉ số học tập do game ghi nhận. Không suy ra hiệu quả giáo dục thực tế chỉ từ số điểm. Muốn kết luận người học tiến bộ cần nghiên cứu trước/sau, mẫu người dùng và tiêu chí đánh giá riêng."
+      ]
+    ],
+    "image": null
+  },
+  {
+    "title": "03. Thế giới và cốt truyện",
+    "lead": "Hibari-chō: từ một người mới đến trở thành một phần của khu phố.",
+    "parts": [
+      [
+        "p",
+        "Nhân vật chính là du học sinh Việt Nam tại Hibari Nihongo Gakuin. Câu chuyện bắt đầu vào mùa xuân, kết thúc ở lễ hội mùa hè. Tông truyện nhẹ nhàng, tập trung vào sự hòa nhập và lòng tử tế; không có tuyến phản diện hay cơ chế chiến đấu làm trung tâm."
+      ],
+      [
+        "table",
+        [
+          "Chặng",
+          "Bối cảnh",
+          "Nội dung học"
+        ],
+        [
+          [
+            "Mở đầu",
+            "Đến Hibari-chō",
+            "Chào hỏi, cảm xúc ngày đầu"
+          ],
+          [
+            "Chương 1",
+            "Sakura-dōri, nhà Tanaka, trường",
+            "Tự giới thiệu, quê quán, sở thích"
+          ],
+          [
+            "Chương 2",
+            "Hibari Konbini",
+            "Tên đồ ăn, số lượng, thanh toán"
+          ],
+          [
+            "Chương 3",
+            "Hàng xóm, nhà hàng",
+            "Nhờ giúp đỡ, quy tắc, gọi món"
+          ],
+          [
+            "Chương 4",
+            "Hibari Eki, lễ hội",
+            "Hỏi đường, đi tàu, tổng kết giao tiếp"
+          ]
+        ],
+        [
+          1800,
+          3650,
+          3910
+        ]
+      ],
+      [
+        "h",
+        "3.1. Nhân vật liên tục"
+      ],
+      [
+        "p",
+        "Tanaka đón nhận và giúp đỡ; Suzuki gắn với câu chuyện mèo lạc; Sato hướng dẫn sinh hoạt khu phố; Morita và Kim đại diện trường học; Aoki/Ota/Yamada gắn với nhà hàng; Kimura gắn với nhà ga. Nhân vật quay lại hoặc được nhắc ở các quest sau để tạo cảm giác một cộng đồng thống nhất."
+      ],
+      [
+        "h",
+        "3.2. Bộ nhớ truyện"
+      ],
+      [
+        "p",
+        "DialogueChoice.setFlags lưu lựa chọn có ý nghĩa. Node Branch đọc cờ để thay đổi lời thoại sau đó. Điều kiện có thể dùng tên cờ, phủ định !flag hoặc done:scenarioId; nhiều điều kiện phân tách bằng dấu phẩy được hiểu theo AND. Đây là cơ chế callback theo dữ liệu, không phải hội thoại sinh tự do."
+      ]
+    ],
+    "image": null
+  },
+  {
+    "title": "04. Danh mục nội dung campaign",
+    "lead": "14 scenario asset hiện diện trong Resources/Scenarios.",
+    "parts": [
+      [
+        "table",
+        [
+          "Scenario",
+          "Vai trò học tập"
+        ],
+        [
+          [
+            "intro.arrival",
+            "Làm quen, chào hỏi, cảm xúc ban đầu"
+          ],
+          [
+            "street.first_talk",
+            "Giao tiếp đầu tiên trên phố"
+          ],
+          [
+            "house1.greeting",
+            "Tự giới thiệu và phép lịch sự khi vào nhà"
+          ],
+          [
+            "school.self_intro",
+            "Giới thiệu trước lớp, làm quen Morita/Kim"
+          ],
+          [
+            "konbini.buy_onigiri",
+            "Tìm vật phẩm, mua cơm nắm, thanh toán"
+          ],
+          [
+            "house2.lostcat",
+            "Mô tả và đề nghị giúp tìm mèo"
+          ],
+          [
+            "house3.garbage",
+            "Hỏi quy tắc và lịch đổ rác"
+          ],
+          [
+            "restaurant.sushi_dining",
+            "Vào quán, chọn món, ăn, thanh toán"
+          ],
+          [
+            "restaurant.order_ramen",
+            "Chọn món và giao tiếp lịch sự"
+          ],
+          [
+            "station.buy_ticket",
+            "Hỏi thông tin đi tàu, mua vé"
+          ],
+          [
+            "town.summer_festival",
+            "Gặp lại cư dân, tổng kết hành trình"
+          ],
+          [
+            "neighborhood.cat_followup",
+            "Theo dõi kết quả câu chuyện mèo"
+          ],
+          [
+            "neighborhood.recycling_morning",
+            "Thực hành sinh hoạt cộng đồng"
+          ],
+          [
+            "konbini.evening_shift",
+            "Hội thoại ở ca làm và kính ngữ cơ bản"
+          ]
+        ],
+        [
+          4500,
+          4860
+        ]
+      ],
+      [
+        "p",
+        "Danh sách trên xác nhận sự tồn tại của nội dung trong repository. Thứ tự và điều kiện mở khóa thực tế phụ thuộc campaign/control asset và tiến độ người chơi. Số node trong tài liệu lịch sử có thể khác snapshot hiện tại; không dùng số liệu cũ để khẳng định thời lượng hoặc chất lượng bản phát hành."
+      ]
+    ],
+    "image": null
+  },
+  {
+    "title": "05. Gameplay và vòng lặp chính",
+    "lead": "Khám phá → tương tác → học → phản hồi → tiến bộ.",
+    "parts": [
+      [
+        "h",
+        "5.1. Khám phá và điều hướng"
+      ],
+      [
+        "p",
+        "Người chơi điều khiển nhân vật góc nhìn thứ ba trong khu phố. Camera hỗ trợ quan sát; điểm tương tác đưa người chơi tới NPC, vật phẩm và cổng khu vực. HUD, mục tiêu nhiệm vụ, chỉ hướng và bản đồ giảm tình trạng không biết phải làm gì tiếp theo."
+      ],
+      [
+        "h",
+        "5.2. Tương tác có ngữ cảnh"
+      ],
+      [
+        "p",
+        "Tương tác cần đúng đối tượng và đủ điều kiện. Một quest có thể yêu cầu tới khu vực, xem đồ, thu thập vật phẩm hoặc thực hiện hội thoại. Engine xử lý các node dữ liệu để xác định bước tiếp theo; giao diện hiển thị mục tiêu và lựa chọn thay vì buộc người học nhớ logic ẩn."
+      ],
+      [
+        "h",
+        "5.3. Hệ thống đời sống"
+      ],
+      [
+        "p",
+        "Tiền Yen, túi đồ và chỉ số nhân vật tạo lý do để mua và sử dụng vật phẩm. Ăn uống và nghỉ ngơi liên kết hoạt động đời sống với quyết định gameplay. Các chỉ số cần được đọc cùng thông báo và phản hồi hành động để người chơi hiểu tác động."
+      ],
+      [
+        "h",
+        "5.4. Hoàn thành và luyện lại"
+      ],
+      [
+        "p",
+        "Kết thúc tình huống, game tổng hợp kết quả, cập nhật tiến độ và độ thành thạo. Người học tiếp tục campaign hoặc quay lại hoạt động luyện tập. Không có quy tắc “đánh boss để thắng”; đích trải nghiệm là hoàn thành tình huống và nâng mức sử dụng ngôn ngữ."
+      ],
+      [
+        "p",
+        "Một phiên demo nên ưu tiên một vòng chơi đầy đủ: vào game → lựa chọn nhân vật → nhận mục tiêu → hội thoại → một hành động đời sống → xem tiến trình. Không cần mở mọi hệ thống để chứng minh giá trị cốt lõi."
+      ]
+    ],
+    "image": "04_gameplay"
+  },
+  {
+    "title": "06. Bản đồ giao diện và quy ước",
+    "lead": "Mỗi màn hình có một mục đích và một đường quay lại rõ ràng.",
+    "parts": [
+      [
+        "table",
+        [
+          "Nhóm UI",
+          "Thành phần",
+          "Điểm vào"
+        ],
+        [
+          [
+            "Khởi đầu",
+            "MainMenuUI, chọn nhân vật, GuidePopup, AboutPopup",
+            "Menu chính"
+          ],
+          [
+            "Gameplay",
+            "HUDUI, hội thoại, chỉ hướng, thông báo",
+            "Sau xác nhận nhân vật"
+          ],
+          [
+            "Quản lý",
+            "InventoryUI, StatusUI, PlayerProfileUI",
+            "HUD / phím được cấu hình"
+          ],
+          [
+            "Điều hướng",
+            "QuestLogPopup, WorldMapUI",
+            "J / phím bản đồ"
+          ],
+          [
+            "Giao dịch",
+            "ShopUI, RestaurantMenuUI",
+            "Tương tác vật phẩm/NPC"
+          ],
+          [
+            "Luyện thi",
+            "ExamCenterPopup, ExamPlayUI",
+            "K / nút luyện thi"
+          ],
+          [
+            "Cộng đồng",
+            "AuthUI, FriendsUI, CoopLobbyUI, LeaderboardUI",
+            "Menu hoặc thành phần social"
+          ],
+          [
+            "Tùy chỉnh",
+            "SettingsUI, GameInputService",
+            "Nút cài đặt / luồng đóng mở"
+          ]
+        ],
+        [
+          1850,
+          4850,
+          2660
+        ]
+      ],
+      [
+        "h",
+        "6.1. Nguyên tắc"
+      ],
+      [
+        "p",
+        "Ưu tiên thông tin đang cần: mục tiêu, đối tượng, lựa chọn và kết quả. Popup quản lý không được khiến người chơi thao tác đồng thời với nhân vật ngoài thế giới. Các thao tác đóng, quay lại, xác nhận và thử lại phải nhất quán. Văn bản nhiều ngôn ngữ cần kiểm tra font, xuống dòng và vùng hiển thị."
+      ],
+      [
+        "h",
+        "6.2. Màu và kiểu chữ"
+      ],
+      [
+        "p",
+        "UI mã nguồn dùng nền tối, nhấn vàng, chữ sáng và phần chữ phụ ít nổi bật hơn. Báo cáo và slide kế thừa nhận diện xanh của mẫu VTC Academy, kết hợp sắc tối và vàng của game. Logo học viện sử dụng ảnh trích từ mẫu gốc; tên NihongoLife trình bày dạng chữ để tránh dùng logo Wolf Card."
+      ]
+    ],
+    "image": null
+  },
+  {
+    "title": "07. UI workflow — Menu và nhân vật",
+    "lead": "Luồng bắt đầu một phiên chơi.",
+    "parts": [
+      [
+        "h",
+        "7.1. Menu chính"
+      ],
+      [
+        "p",
+        "Đầu vào: các dịch vụ được khởi tạo từ Bootstrap. MainMenuUI gắn nút, áp dụng ngôn ngữ và hiển thị thông tin hồ sơ. Người dùng có thể bắt đầu, mở hướng dẫn, xem tác giả, điều chỉnh cài đặt hoặc truy cập nhóm tính năng social. Chuyển ngôn ngữ cập nhật nhãn UI qua GameSettingsService."
+      ],
+      [
+        "h",
+        "7.2. Lựa chọn nhân vật"
+      ],
+      [
+        "p",
+        "Bấm bắt đầu → mở characterSelectPanel → duyệt nhân vật trong PlayableCharacterCatalog → xem mô hình preview → nhập tên → xác nhận. Nhân vật chưa có IsAvailable không được bắt đầu. Xác nhận lưu lựa chọn và tên; nhánh offline đi vào gameplay, nhánh online đi tới lobby tương ứng."
+      ],
+      [
+        "h",
+        "7.3. Hướng dẫn"
+      ],
+      [
+        "p",
+        "GuidePopup trình bày bốn bước: khám phá khu phố; trò chuyện bằng tiếng Nhật; luyện tập và quản lý; học và nhận tiến trình. Nhãn phím lấy từ GameInputService nên phản ánh cấu hình đã đổi. Hướng dẫn cần được mở lại khi người chơi quên thao tác."
+      ],
+      [
+        "h",
+        "7.4. Các trạng thái cần kiểm tra"
+      ],
+      [
+        "p",
+        "Hồ sơ chưa có dữ liệu; tên trống hoặc dài; nhân vật chưa khả dụng; quay lại từ màn chọn; đổi ngôn ngữ khi popup đang mở; nhấn xác nhận nhiều lần. Khi chuyển scene, tránh giữ popup cũ chặn HUD hoặc để người chơi thao tác trong trạng thái tải chưa hoàn tất."
+      ]
+    ],
+    "image": "03_character"
+  },
+  {
+    "title": "08. UI workflow — HUD và hội thoại",
+    "lead": "Giữ người học tập trung vào mục tiêu giao tiếp.",
+    "parts": [
+      [
+        "h",
+        "8.1. HUD"
+      ],
+      [
+        "p",
+        "Sau khi vào gameplay, HUD hiển thị chỉ số và mục tiêu đang hoạt động, hướng dẫn thao tác, thông báo và các điểm vào chức năng. Thông báo nên nêu hành động vừa xảy ra, chẳng hạn nhận vật phẩm hoặc chưa đủ tiền. Vùng an toàn và cơ chế fit canvas hỗ trợ các tỉ lệ màn hình."
+      ],
+      [
+        "h",
+        "8.2. Hội thoại"
+      ],
+      [
+        "p",
+        "Tiếp cận NPC → tương tác → hiển thị người nói và câu tiếng Nhật → đọc/nghe hỗ trợ theo LearningMode → chọn câu trả lời → DialogueManager chuyển nhánh → ScoringManager ghi nhận → objective cập nhật. Người chơi có thể chọn bằng điều hướng bàn phím hoặc thao tác UI theo cấu hình."
+      ],
+      [
+        "h",
+        "8.3. Khi trả lời sai"
+      ],
+      [
+        "p",
+        "Nhánh sai đưa ra phản hồi cụ thể và cơ hội chọn lại nếu scenario thiết kế recovery path. Không dùng thông báo lỗi chung thay cho giải thích về từ vựng, ngữ pháp hoặc phép lịch sự. Mục tiêu là giúp người học hiểu lựa chọn, không chỉ biết đáp án."
+      ],
+      [
+        "h",
+        "8.4. Kết thúc"
+      ],
+      [
+        "p",
+        "Khi node cuối và mục tiêu đạt điều kiện, scenario kết thúc và dữ liệu kết quả được truyền tới UI. Người chơi xem kết quả rồi tiếp tục. Nếu chưa đủ điều kiện mở khóa, UI cần nói rõ điều kiện thiếu. Phải kiểm tra trạng thái đóng hội thoại, quyền điều khiển nhân vật và cập nhật quest cùng nhau."
+      ]
+    ],
+    "image": null
+  },
+  {
+    "title": "09. UI workflow — Nhiệm vụ và bản đồ",
+    "lead": "Biết cần làm gì và cần đi đâu.",
+    "parts": [
+      [
+        "h",
+        "9.1. Nhật ký nhiệm vụ"
+      ],
+      [
+        "p",
+        "Mở QuestLogPopup bằng J hoặc điểm vào UI → đọc nhiệm vụ hiện tại và mục tiêu → đối chiếu tiến độ → đóng để tiếp tục. Nội dung cần thống nhất với ScenarioManager/campaign; một quest chưa hoàn thành không được hiển thị là đã xong chỉ vì người chơi đã mở popup."
+      ],
+      [
+        "h",
+        "9.2. Bản đồ"
+      ],
+      [
+        "p",
+        "Mở WorldMapUI → chọn dạng khu vực hoặc tổng quan → quan sát vị trí người chơi → chọn vị trí đích nếu chức năng khả dụng → quay về gameplay. UI chứa marker người chơi, marker đích, thông tin vị trí/toạ độ và nút đóng. Chế độ tổng quan dùng camera trên cao và RenderTexture."
+      ],
+      [
+        "h",
+        "9.3. Chuyển khu vực"
+      ],
+      [
+        "p",
+        "Tiếp cận cổng → kiểm tra điều kiện → tải khu vực phù hợp → đặt người chơi tại spawn liên kết → cập nhật vị trí và quyền điều khiển. Khi quay lại, spawn phải khớp cổng đi ra. Các scene khu vực cần phối hợp với HUD và dịch vụ có vòng đời bền vững."
+      ],
+      [
+        "h",
+        "9.4. Trường hợp biên"
+      ],
+      [
+        "p",
+        "Marker đích nằm ngoài bản đồ; người chơi chuyển scene khi bản đồ đang mở; dữ liệu vị trí chưa có; cổng bị khóa; điểm spawn thiếu; mở lại popup nhiều lần. Kiểm thử phải bao gồm collider cửa, lối đi và việc người chơi có thể rời khỏi khu vực, không chỉ kiểm tra hình ảnh bản đồ."
+      ]
+    ],
+    "image": "05_quests"
+  },
+  {
+    "title": "10. UI workflow — Balo và hồ sơ",
+    "lead": "Phân biệt tài sản, thể trạng và thành tích học.",
+    "parts": [
+      [
+        "h",
+        "10.1. Túi đồ"
+      ],
+      [
+        "p",
+        "Mở balo → xem danh sách vật phẩm → chọn một mục → đọc tên, số lượng và chức năng → sử dụng hoặc bỏ vật phẩm nếu được phép → cập nhật số lượng và chỉ số → đóng balo. HUDUI có điều hướng lựa chọn vật phẩm và thao tác bỏ vật phẩm; phím cụ thể cần đọc theo cấu hình hiện tại."
+      ],
+      [
+        "h",
+        "10.2. Thể trạng"
+      ],
+      [
+        "p",
+        "StatusUI và thẻ vitals phục vụ việc quan sát máu, năng lượng, no và khát theo PlayerStatus. Hành động ăn, uống và ngủ cần phản hồi bằng thay đổi chỉ số tương ứng. Các chỉ số không thay thế thước đo kiến thức."
+      ],
+      [
+        "h",
+        "10.3. Hồ sơ học tập"
+      ],
+      [
+        "p",
+        "PlayerProfileUI tổng hợp cấp độ, XP, tiến trình và dữ liệu cá nhân được service cung cấp. Knowledge là giá trị học tập dùng điều kiện requiredKnowledge; XP phục vụ lên cấp; kết quả thi gắn với một lượt làm bài. Giao diện và báo cáo phải giữ ba khái niệm riêng."
+      ],
+      [
+        "h",
+        "10.4. Quy tắc dữ liệu"
+      ],
+      [
+        "p",
+        "Túi đồ không được có số lượng âm; tiêu hao vật phẩm và thay đổi chỉ số phải đi cùng nhau; đóng UI không được nhân đôi vật phẩm. Thao tác lưu cần gắn với dữ liệu tiến độ. Nếu có cloud, cần xác định rõ trạng thái đang đồng bộ, lỗi và khả năng dùng dữ liệu local."
+      ]
+    ],
+    "image": null
+  },
+  {
+    "title": "11. UI workflow — Mua sắm",
+    "lead": "Từ chọn đồ tới thanh toán và nhận vật phẩm.",
+    "parts": [
+      [
+        "h",
+        "11.1. Luồng mua tại konbini"
+      ],
+      [
+        "p",
+        "Nhận mục tiêu mua đồ → đến cửa hàng → kiểm tra vật phẩm đúng mục tiêu → chọn/thu thập theo node scenario → tới quầy → hội thoại hỏi và thanh toán → cập nhật tiền, vật phẩm và objective → xem phản hồi. Một hội thoại đúng chưa chắc đã hoàn thành nếu các điều kiện vật phẩm hoặc khu vực còn thiếu."
+      ],
+      [
+        "h",
+        "11.2. ShopUI"
+      ],
+      [
+        "p",
+        "Mở shop từ đối tượng tương tác → xem danh mục, giá và số lượng → chọn mặt hàng → xác nhận mua → hệ thống kiểm tra khả năng thanh toán → cập nhật dữ liệu → thông báo kết quả. Đóng bằng đường UI hoặc Escape khi panel đang mở."
+      ],
+      [
+        "h",
+        "11.3. Phản hồi lỗi"
+      ],
+      [
+        "p",
+        "Không đủ Yen: giữ nguyên tiền và túi đồ, cho phép chọn món khác. Mặt hàng không phù hợp mục tiêu: giải thích yêu cầu nhiệm vụ thay vì đánh dấu thành công. Nhấn mua liên tiếp: phải kiểm tra không sinh giao dịch trùng. Nếu có giới hạn tồn kho hoặc sức chứa, UI cần hiển thị điều kiện tương ứng."
+      ],
+      [
+        "h",
+        "11.4. Giá trị học tập"
+      ],
+      [
+        "p",
+        "Mua sắm đặt số đếm, tên đồ ăn và cách yêu cầu vào chuỗi hành động thực tế. Scenario konbini sử dụng các node như GoToArea, InspectItem và CollectItem. Nội dung hội thoại và trạng thái giao dịch cần được kiểm tra cùng nhau để người học nhận ra mối quan hệ giữa lời nói và hành động."
+      ]
+    ],
+    "image": null
+  },
+  {
+    "title": "12. UI workflow — Nhà hàng",
+    "lead": "Một vòng tương tác đời sống có điểm đầu và điểm kết thúc.",
+    "parts": [
+      [
+        "h",
+        "12.1. Trình tự"
+      ],
+      [
+        "p",
+        "Vào quán → giao tiếp với nhân viên → nhận chỗ ngồi → mở thực đơn → chọn món → xác nhận gọi món → nhận/ăn món → hội thoại sau bữa → tính tiền → rời quán. Mỗi bước có điều kiện gameplay và câu giao tiếp tương ứng, tránh việc người chơi phải đoán trạng thái."
+      ],
+      [
+        "h",
+        "12.2. Dữ liệu và UI"
+      ],
+      [
+        "p",
+        "RestaurantMenuUI hiển thị món từ dữ liệu nhà hàng. Menu sushi ở Resources/Restaurants/menu_sushi_hibari.asset; thông tin món và nghi thức có thể tách khỏi cây hội thoại. Aoki và Ota là danh tính nội dung của quán sushi; Yamada gắn với quán ramen."
+      ],
+      [
+        "h",
+        "12.3. Học văn hóa"
+      ],
+      [
+        "p",
+        "Các cụm từ trước và sau bữa ăn, yêu cầu món và câu thanh toán tạo nội dung ứng xử. Người học cần biết khi nào dùng câu và với ai. Nhánh hồi đáp phải giữ tông lịch sự, mức N5 và sự nhất quán tên nhân vật."
+      ],
+      [
+        "h",
+        "12.4. Kiểm tra giao dịch và lối ra"
+      ],
+      [
+        "p",
+        "Xác nhận món một lần; số tiền chính xác theo dữ liệu; không trả tiền hai lần; không ăn lại vô hạn cùng món; khi có quy tắc chưa thanh toán thì chưa rời quán, UI phải giải thích lý do. Collider cửa, vị trí ghế, NPC và điểm spawn phải được kiểm thử bằng Play Mode trước khi kết luận một khu vực hoàn chỉnh."
+      ]
+    ],
+    "image": null
+  },
+  {
+    "title": "13. UI workflow — Trung tâm luyện thi",
+    "lead": "Một hệ thống thực hành độc lập với campaign.",
+    "parts": [
+      [
+        "h",
+        "13.1. Chọn bài"
+      ],
+      [
+        "p",
+        "Mở ExamCenterPopup bằng K hoặc nút tương ứng → chọn tab JLPT/IELTS → xem các đề từ ExamRepository → xem kết quả tốt nhất nếu có → bắt đầu bài hoặc tiếp tục lượt đang làm. Repository nạp ExamDefinition từ Resources/Exams."
+      ],
+      [
+        "h",
+        "13.2. Nội dung hiện có"
+      ],
+      [
+        "p",
+        "Có hai asset mẫu: jlpt_n5_mock_1 và ielts_academic_practice_1. Đây là đề rút gọn phục vụ demo luồng, không phải bộ đề đầy đủ có thời lượng và số câu tương đương kỳ thi chính thức. IELTS là phần mở rộng luyện tập, còn Nhật ngữ N5 là trọng tâm định vị game."
+      ],
+      [
+        "h",
+        "13.3. Bắt đầu một lượt"
+      ],
+      [
+        "p",
+        "ExamManager tạo trạng thái lượt làm bài, xác định phần đang hoạt động, đồng hồ và câu hỏi. ExamPlayUI trình bày nội dung tương ứng. Đóng popup giữa chừng trong cùng phiên có thể quay lại lượt thi đang hoạt động do manager có vòng đời service."
+      ],
+      [
+        "h",
+        "13.4. Tính minh bạch"
+      ],
+      [
+        "p",
+        "UI cần cho biết loại đề, số câu và giới hạn thực hành. Nghe hiểu có thể phụ thuộc audio/media đã cấu hình; tài liệu EXAM_SYSTEM ghi nhận mẫu nghe mô phỏng bằng transcript ở thời điểm viết. Không mô tả trải nghiệm nghe thật chỉ vì đã có nút phát hoặc metadata audio."
+      ]
+    ],
+    "image": "06_exam_hub"
+  },
+  {
+    "title": "14. UI workflow — Làm bài và kết quả",
+    "lead": "Điều hướng trong phần hiện tại, khóa phần đã nộp.",
+    "parts": [
+      [
+        "h",
+        "14.1. Trả lời"
+      ],
+      [
+        "p",
+        "Chọn câu trên bảng số hoặc Trước/Sau → đọc passage và câu hỏi → chọn/gõ/ghi âm tùy loại → lưu trả lời → chuyển câu. MultipleChoice và TrueFalseNotGiven dùng lựa chọn; FillBlank so với đáp án chấp nhận; Essay có ô nhập và đếm từ; SpeakingPrompt dùng microphone theo quyền được cấp."
+      ],
+      [
+        "h",
+        "14.2. Thời gian và nộp phần"
+      ],
+      [
+        "p",
+        "Mỗi section có thể có timeLimitSeconds. Hết giờ khóa phần và chuyển bước. Khi nộp, đáp án được cố định; không quay lại sửa phần đã khóa. Những câu chưa trả lời cần được hiển thị rõ trước khi xác nhận nộp, nếu luồng UI có hỗ trợ xác nhận."
+      ],
+      [
+        "h",
+        "14.3. Chấm và lưu"
+      ],
+      [
+        "p",
+        "Câu khách quan dùng quy tắc đáp án; Writing/Speaking thông qua ExamGradingService khi dịch vụ được cấu hình, hoặc fallback được ghi nhận. ExamAttemptRecord lưu thông tin lượt thi vào PlayerProgressDto.examAttempts. UI kết quả cho phép xem lại đáp án và phản hồi trong phạm vi hệ thống hỗ trợ."
+      ],
+      [
+        "h",
+        "14.4. Giới hạn"
+      ],
+      [
+        "p",
+        "Điểm thi thử và estimatedBand không phải điểm JLPT/IELTS chính thức. Phản hồi nội dung từ transcript không chứng minh độ chính xác phát âm, ngữ điệu hay fluency. Fallback theo độ dài không thay thế đánh giá chất lượng bài viết. Các kết luận về server-authoritative grading và leaderboard cần bằng chứng triển khai máy chủ riêng."
+      ]
+    ],
+    "image": null
+  },
+  {
+    "title": "15. UI workflow — Online và học cùng bạn",
+    "lead": "Tính năng cộng đồng cần được kiểm thử với dịch vụ thật.",
+    "parts": [
+      [
+        "h",
+        "15.1. Tài khoản"
+      ],
+      [
+        "p",
+        "Vào nhóm online → nhập thông tin theo AuthUI → gửi yêu cầu xác thực → thành công thì tải hồ sơ và tiến độ → vào lobby. Lỗi tài khoản, mất mạng hoặc dịch vụ chưa cấu hình phải có phản hồi và khả năng thử lại. Không đặt khóa đặc quyền hoặc token dịch vụ trong tài liệu bàn giao."
+      ],
+      [
+        "h",
+        "15.2. Bạn bè và chat"
+      ],
+      [
+        "p",
+        "FriendsUI phục vụ danh sách/kết nối bạn; chat trong khu phố tạo không gian thực hành viết. Presence và avatar từ xa cần phản ánh dữ liệu online thật. Chỉ có script hoặc plugin trong Assets chưa đủ chứng minh đã có một phiên nhiều người chơi hoạt động ổn định."
+      ],
+      [
+        "h",
+        "15.3. Co-op"
+      ],
+      [
+        "p",
+        "CoopLobbyUI cho phép tiếp cận luồng học cùng bạn. Thiết kế nội dung coi người chơi khác là các học viên cùng chương trình. Scenario có vai hội thoại phù hợp có thể được dùng để phân vai. Cần kiểm tra tạo phòng, vào phòng, rời phòng, đồng bộ lựa chọn và reconnect trước khi demo trực tiếp."
+      ],
+      [
+        "h",
+        "15.4. Dịch vụ bổ trợ"
+      ],
+      [
+        "p",
+        "Repository chứa các thành phần Supabase, Gemini và Agora. Mức độ triển khai không đồng nhất và phụ thuộc cấu hình/backend. Báo cáo mô tả vai trò kỹ thuật, không khẳng định lớp học video, SSO hay LMS đã phát hành chỉ từ các tài liệu kế hoạch tích hợp."
+      ]
+    ],
+    "image": null
+  },
+  {
+    "title": "16. UI workflow — Cài đặt và khả năng tiếp cận",
+    "lead": "Ngôn ngữ, âm lượng và thao tác phải phù hợp người học.",
+    "parts": [
+      [
+        "h",
+        "16.1. Cài đặt"
+      ],
+      [
+        "p",
+        "Mở SettingsUI → chỉnh BGM/SFX → đổi ngôn ngữ hoặc cấu hình liên quan → đổi phím nếu cần → lưu/applied theo service → đóng. Nhãn UI đang mở được cập nhật khi ngôn ngữ thay đổi. Quy trình rebind cần tránh để Escape vừa hủy gán phím vừa đóng toàn bộ popup ngoài ý muốn."
+      ],
+      [
+        "h",
+        "16.2. Đọc văn bản"
+      ],
+      [
+        "p",
+        "Giao diện có tiếng Việt, English và tiếng Nhật. Cần font đủ dấu Việt và kana/kanji; gợi ý cách đọc và bản dịch nên phân cấp rõ. Kiểm tra câu dài, tên dài, label nút và lựa chọn hội thoại để không cắt chữ hoặc che nội dung."
+      ],
+      [
+        "h",
+        "16.3. Màn hình và điều khiển"
+      ],
+      [
+        "p",
+        "HudSafeArea, HudCanvasFitter và các helper fit rect hỗ trợ bố cục. MobileGameControls có trong mã nguồn, nhưng cần chạy thực tế trên thiết bị/tỉ lệ màn hình đích để kết luận khả năng sử dụng. Phím tắt hiển thị theo binding hiện tại thay vì in cố định trong mọi màn hình."
+      ],
+      [
+        "h",
+        "16.4. Đầu ra mong đợi"
+      ],
+      [
+        "p",
+        "Người chơi quay lại đúng ngữ cảnh trước khi mở cài đặt; không mất câu trả lời hoặc mục tiêu; âm lượng được áp dụng nhất quán; popup không còn bắt input khi đóng. Đây là tiêu chí kiểm thử UX, không phải số liệu hiệu năng được đo trong báo cáo."
+      ]
+    ],
+    "image": "07_settings"
+  },
+  {
+    "title": "17. Phân tích yêu cầu và use case",
+    "lead": "Người học là tác nhân chính; tác giả nội dung là tác nhân vận hành.",
+    "parts": [
+      [
+        "table",
+        [
+          "Mã",
+          "Use case",
+          "Điều kiện kết thúc"
+        ],
+        [
+          [
+            "UC01",
+            "Bắt đầu/chọn nhân vật",
+            "Nhân vật hợp lệ đi vào gameplay"
+          ],
+          [
+            "UC02",
+            "Thực hiện scenario",
+            "Mục tiêu và node kết thúc được ghi nhận"
+          ],
+          [
+            "UC03",
+            "Mua hoặc dùng vật phẩm",
+            "Tiền, số lượng, chỉ số nhất quán"
+          ],
+          [
+            "UC04",
+            "Xem quest/bản đồ/hồ sơ",
+            "UI phản ánh đúng tiến độ hiện tại"
+          ],
+          [
+            "UC05",
+            "Làm bài luyện thi",
+            "Lượt làm bài có kết quả và lịch sử"
+          ],
+          [
+            "UC06",
+            "Tham gia tính năng online",
+            "Kết nối được xác thực và có trạng thái rõ"
+          ],
+          [
+            "UC07",
+            "Thêm nội dung học",
+            "Asset hợp lệ được repository nạp"
+          ]
+        ],
+        [
+          1000,
+          4200,
+          4160
+        ]
+      ],
+      [
+        "h",
+        "17.1. Yêu cầu chức năng"
+      ],
+      [
+        "p",
+        "Hệ thống cần điều khiển nhân vật, nhận tương tác, thực thi node, hiển thị hội thoại, ghi nhận đánh giá và lưu tiến độ. Các màn hình đời sống và luyện thi sử dụng dữ liệu của service, không tự tạo một nguồn điểm riêng không đồng bộ."
+      ],
+      [
+        "h",
+        "17.2. Yêu cầu phi chức năng"
+      ],
+      [
+        "p",
+        "Đọc được nhiều ngôn ngữ; phản hồi thao tác rõ; mở rộng nội dung qua dữ liệu; quản lý vòng đời scene và service; không lộ bí mật cloud; phục hồi được lỗi tải media/mạng trong phạm vi thiết kế. Không nêu FPS, thời gian tải hay số người đồng thời khi chưa có phép đo."
+      ]
+    ],
+    "image": null
+  },
+  {
+    "title": "18. Kiến trúc hệ thống",
+    "lead": "Tách engine, nội dung, UI và dịch vụ nền.",
+    "parts": [
+      [
+        "h",
+        "18.1. Bootstrap và service"
+      ],
+      [
+        "p",
+        "Scene 00_Bootstrap khởi tạo AppRoot. GameServices là service locator, cho phép gameplay tìm dịch vụ qua interface. Lưu trữ, âm thanh, chuyển scene và repository có thể thay đổi implementation mà không phải viết lại từng hội thoại."
+      ],
+      [
+        "h",
+        "18.2. Luồng thực thi scenario"
+      ],
+      [
+        "p",
+        "LocalScenarioRepository nạp ScenarioDefinition → campaign/ScenarioManager chọn nội dung → engine thực thi node → DialogueManager hiển thị thoại/lựa chọn → objective ghi nhận hành động → ScoringManager tổng hợp → LearningMasteryManager cập nhật độ thành thạo → repository tiến độ lưu PlayerProgressDto."
+      ],
+      [
+        "h",
+        "18.3. Luồng thi độc lập"
+      ],
+      [
+        "p",
+        "ExamRepository → ExamManager → ExamPlayUI → ExamGradingService → ExamAttemptRecord. Kiến trúc riêng giúp bài thi không phải giả dạng quest và tránh lẫn trạng thái bài đang làm với nhiệm vụ trong thế giới 3D."
+      ],
+      [
+        "h",
+        "18.4. Vòng đời"
+      ],
+      [
+        "p",
+        "Service sống qua chuyển scene; UI và đối tượng môi trường có vòng đời theo scene. Cần tháo event khi đối tượng bị hủy, tránh listener trùng và popup cũ bắt input. Scene gameplay/khu vực phải dùng dịch vụ chung thay vì nhân bản AppRoot trong mọi zone."
+      ]
+    ],
+    "image": null
+  },
+  {
+    "title": "19. Thiết kế dữ liệu và tiến trình",
+    "lead": "Dữ liệu học không đồng nhất với phần thưởng game.",
+    "parts": [
+      [
+        "table",
+        [
+          "Nhóm dữ liệu",
+          "Thành phần tiêu biểu",
+          "Ý nghĩa"
+        ],
+        [
+          [
+            "Kịch bản",
+            "ScenarioDefinition, node, choice",
+            "Mục tiêu và nhánh giao tiếp"
+          ],
+          [
+            "Truyện",
+            "setFlags, Branch, done:",
+            "Callback theo lịch sử lựa chọn"
+          ],
+          [
+            "Tiến độ",
+            "PlayerProgressDto",
+            "Quest hoàn thành, hồ sơ, lịch sử"
+          ],
+          [
+            "Học tập",
+            "Mastery, Knowledge",
+            "Độ thành thạo và điều kiện học"
+          ],
+          [
+            "Gameplay",
+            "XP, cấp độ, Yen, vật phẩm",
+            "Tiến trình và kinh tế trong game"
+          ],
+          [
+            "Thi thử",
+            "ExamDefinition, ExamAttemptRecord",
+            "Nội dung đề và kết quả từng lượt"
+          ]
+        ],
+        [
+          1900,
+          3900,
+          3560
+        ]
+      ],
+      [
+        "h",
+        "19.1. Mở khóa"
+      ],
+      [
+        "p",
+        "requiredKnowledge dùng kiểm tra kiến thức trước khi mở nội dung khi được cấu hình. XP phục vụ thanh cấp độ. Một estimatedBand hoặc điểm thi local không được xem là bằng chứng đã đạt trình độ để bỏ qua toàn bộ chương trình."
+      ],
+      [
+        "h",
+        "19.2. Đồng bộ"
+      ],
+      [
+        "p",
+        "Local progress cung cấp lưu tiến trình tại máy; cloud service bổ sung khả năng đồng bộ khi được cấu hình. Cần kiểm tra tài khoản, xung đột phiên bản, reconnect và save bị gián đoạn. Báo cáo không giả định mọi dữ liệu local đã có server validation."
+      ],
+      [
+        "h",
+        "19.3. Toàn vẹn thi"
+      ],
+      [
+        "p",
+        "Tài liệu PROGRESSION_AND_EXAM_INTEGRITY đề xuất thời gian, nộp bài và điểm có thẩm quyền từ server; idempotency và lịch sử sự kiện. Đây là yêu cầu triển khai để có xếp hạng đáng tin cậy, không phải cơ chế chống gian lận tuyệt đối phía client."
+      ]
+    ],
+    "image": null
+  },
+  {
+    "title": "20. Pipeline nội dung và media",
+    "lead": "Thêm nội dung có kiểm soát, giữ bản build nhẹ.",
+    "parts": [
+      [
+        "h",
+        "20.1. Scenario"
+      ],
+      [
+        "p",
+        "Xác định mục tiêu học → viết câu Nhật/cách đọc/bản dịch → thiết kế nhánh đúng, sai và phục hồi → đặt id ổn định → gắn tag, score và story flag → xuất ScenarioDefinition asset → kiểm tra liên kết node, speaker, area/item → chạy toàn bộ luồng trong Play Mode."
+      ],
+      [
+        "h",
+        "20.2. Đề thi"
+      ],
+      [
+        "p",
+        "Một đề có ExamDefinition .asset và thư mục theo exam id. Metadata passage/question/choice giữ trong asset; media lớn giữ ngoài repository. Công cụ Tools/exam dùng để xuất YAML hợp lệ, nhưng parse YAML không thay cho kiểm thử UI và playback."
+      ],
+      [
+        "h",
+        "20.3. Media"
+      ],
+      [
+        "p",
+        "manifest.json ghi URL media, thời lượng và checksum. Passage sử dụng mediaId ổn định. mediaStartSeconds, mediaDurationSeconds và mediaAspectRatio xác định khoảng phát và khung hiển thị; file gốc có thể phục vụ nhiều câu. Tải media theo phần đang làm, cache ở persistentDataPath theo thiết kế."
+      ],
+      [
+        "h",
+        "20.4. Xuất bản"
+      ],
+      [
+        "p",
+        "Tạo nội dung → đưa audio tối ưu lên kho media/CDN → ghi manifest → liên kết mediaId → kiểm tra số lượt phát, seek/stop, mất mạng và CORS WebGL → duyệt ngôn ngữ và quyền sử dụng → phát hành phiên bản. YouTube chỉ dùng cơ chế nhúng hợp lệ; không scrape hoặc tải lại nội dung từ client."
+      ],
+      [
+        "p",
+        "Ngân hàng đề lớn nên phân trang qua content API, không nhúng toàn bộ vào Resources. Supabase lưu metadata; kho media/CDN phục vụ byte audio/video. Đây là hướng tổ chức được tài liệu pipeline đề xuất."
+      ]
+    ],
+    "image": null
+  },
+  {
+    "title": "21. Cấu trúc project và scene",
+    "lead": "Tổ chức theo chức năng và giữ nội dung trong asset.",
+    "parts": [
+      [
+        "table",
+        [
+          "Đường dẫn trong Unity project",
+          "Vai trò"
+        ],
+        [
+          [
+            "Assets/NihongoLife/Scripts",
+            "Core, Scenario, Player, UI, Exam và các mô-đun"
+          ],
+          [
+            "Assets/NihongoLife/Resources/Scenarios",
+            "14 kịch bản học tập"
+          ],
+          [
+            "Assets/NihongoLife/Resources/Exams",
+            "Hai đề mẫu và metadata"
+          ],
+          [
+            "Assets/NihongoLife/Resources/Restaurants",
+            "Thực đơn sushi Hibari"
+          ],
+          [
+            "Assets/NihongoLife/Resources/Control",
+            "Cấu hình campaign và hệ thống"
+          ],
+          [
+            "Assets/NihongoLife/Tests",
+            "Kiểm thử EditMode/PlayMode"
+          ],
+          [
+            "Docs / Tools",
+            "Thiết kế, pipeline và generator nội dung"
+          ]
+        ],
+        [
+          5300,
+          4060
+        ]
+      ],
+      [
+        "h",
+        "21.1. Scene trong build settings"
+      ],
+      [
+        "p",
+        "Snapshot EditorBuildSettings gồm 00_Bootstrap, 01_MainMenu, 90_TestSandbox, 20_StationDistrict, 30_SushiRestaurant, 40_ HIBARICLASS và 45_HomeBedroom được bật. 99_ControlRoom và 99_Trailer được tắt. Tên scene thực tế có thể khác tên được nhắc trong tài liệu cũ; build settings là nguồn đối chiếu."
+      ],
+      [
+        "h",
+        "21.2. Quy tắc repository"
+      ],
+      [
+        "p",
+        "Không thêm lệnh MenuItem; không tạo scene mới nếu chưa được duyệt; lưu nội dung hoàn tất trực tiếp vào scene/prefab/asset; không chồng môi trường thay thế; chỉ kết luận scene hoàn chỉnh khi đã kiểm tra hình ảnh và va chạm trong Play Mode. Việc làm tài liệu không thay đổi nguyên tắc này."
+      ]
+    ],
+    "image": null
+  },
+  {
+    "title": "22. Kiểm thử và phạm vi xác minh",
+    "lead": "Tách bằng chứng hiện có khỏi tiêu chí còn phải nghiệm thu.",
+    "parts": [
+      [
+        "table",
+        [
+          "Mức kiểm tra",
+          "Bằng chứng / tiêu chí"
+        ],
+        [
+          [
+            "Tĩnh",
+            "Đối chiếu tài liệu, script, asset và build settings"
+          ],
+          [
+            "Lịch sử tự động",
+            "editmode-results.xml: 7/7 Passed ngày 20/09/2026"
+          ],
+          [
+            "Ảnh báo cáo",
+            "Ảnh lấy từ phiên Unity Play Mode riêng khi capture thành công"
+          ],
+          [
+            "Gameplay",
+            "Cần kiểm tra quest, nhánh sai/đúng và save theo từng lượt"
+          ],
+          [
+            "Môi trường",
+            "Cần kiểm tra collider, cửa, spawn và lối đi"
+          ],
+          [
+            "Online/media",
+            "Cần backend thật, reconnect, quyền mic và CORS"
+          ]
+        ],
+        [
+          2500,
+          6860
+        ]
+      ],
+      [
+        "h",
+        "22.1. Lỗi tìm thấy khi chuẩn bị"
+      ],
+      [
+        "p",
+        "Bản Windows trong Build/x86 khởi chạy scene mẫu Agora nên không dùng làm ảnh minh chứng NihongoLife. Khi mở mã nguồn, Unity báo CS0234 vì HomeBedroomRuntime tham chiếu NihongoLife.Core.PlayerController. Lớp thực tế thuộc NihongoLife.Player; tham chiếu đã được chỉnh đúng để phục vụ chạy và chụp ảnh."
+      ],
+      [
+        "h",
+        "22.2. Bộ kiểm thử đề xuất"
+      ],
+      [
+        "p",
+        "Menu/chọn nhân vật; hội thoại với nhánh sai và thử lại; mua đồ không đủ tiền; nhà hàng chưa thanh toán; mở/đóng popup; đổi ngôn ngữ; chuyển zone hai chiều; save/reload; hết giờ thi; nộp trùng; tải audio lỗi; kết nối online gián đoạn."
+      ],
+      [
+        "h",
+        "22.3. Cách đọc kết quả"
+      ],
+      [
+        "p",
+        "Ảnh Play Mode chứng minh màn hình đã được hiển thị trong phiên chụp, không chứng minh toàn bộ campaign, collision hay backend đều đã đạt nghiệm thu. Kết quả tự động lịch sử không được ghi thành kết quả chạy mới ngày lập báo cáo."
+      ]
+    ],
+    "image": null
+  },
+  {
+    "title": "23. Nguồn tài nguyên và nhận diện",
+    "lead": "Dùng tài nguyên đúng nguồn và giữ ghi công.",
+    "parts": [
+      [
+        "p",
+        "Thông tin credit trong menu_about.asset ghi nhận Unity 6 URP, Supabase, Sushi Restaurant Kit của Quaternius, bộ kit Kenney, KayKit City Builder, Mixamo và Devion Games. Danh sách này là nguồn dự án khai báo; điều khoản của từng gói và các nội dung bổ sung cần được đối chiếu theo giấy phép đi kèm trước khi phân phối."
+      ],
+      [
+        "table",
+        [
+          "Tài nguyên",
+          "Cách sử dụng trong báo cáo"
+        ],
+        [
+          [
+            "Logo VTC Academy",
+            "Trích ảnh từ PPTX mẫu do người dùng cung cấp"
+          ],
+          [
+            "NihongoLife",
+            "Tên sản phẩm trình bày bằng chữ; loại nội dung Wolf Card"
+          ],
+          [
+            "Ảnh gameplay/UI",
+            "Chụp từ Unity Play Mode; ghi rõ nguồn phiên chụp"
+          ],
+          [
+            "Minh họa bìa",
+            "Ảnh concept tạo mới bằng AI; không coi là screenshot"
+          ],
+          [
+            "Thông tin học viên",
+            "Giữ theo báo cáo cũ của người dùng"
+          ]
+        ],
+        [
+          2700,
+          6660
+        ]
+      ],
+      [
+        "h",
+        "23.1. Tính nhất quán"
+      ],
+      [
+        "p",
+        "Thống nhất tên NihongoLife/Nihongo Life, địa danh Hibari-chō và danh tính du học sinh. Không giữ các mục Player tấn công, Enemy, Boss, Rigidbody2D, Tilemap hoặc card game của mẫu cũ vì không mô tả trọng tâm dự án này."
+      ],
+      [
+        "h",
+        "23.2. Dữ liệu nhạy cảm"
+      ],
+      [
+        "p",
+        "Không chèn cấu hình token/API key vào ảnh hoặc phụ lục. Khi trình bày dịch vụ cloud, chỉ nêu tên mô-đun và vai trò, không sao chép các bí mật có thể xuất hiện trong tài liệu tích hợp cũ."
+      ]
+    ],
+    "image": null
+  },
+  {
+    "title": "24. Kết luận và hướng phát triển",
+    "lead": "Một nền tảng học tiếng Nhật trong ngữ cảnh, với lộ trình hoàn thiện rõ.",
+    "parts": [
+      [
+        "h",
+        "24.1. Kết quả của đồ án"
+      ],
+      [
+        "p",
+        "NihongoLife kết hợp thế giới 3D, kịch bản N5 theo dữ liệu, giao tiếp rẽ nhánh, hoạt động đời sống và tiến trình học. Kiến trúc service và repository cho phép mở rộng nội dung mà vẫn giữ một vòng chơi nhất quán. UI được chia theo mục đích: khởi đầu, gameplay, quản lý, giao dịch, luyện thi và cộng đồng."
+      ],
+      [
+        "h",
+        "24.2. Giới hạn hiện tại"
+      ],
+      [
+        "p",
+        "Mức hoàn thiện phải được đánh giá theo phiên build và kiểm thử cụ thể. Nội dung có asset không đồng nghĩa đã chạy trọn luồng; dịch vụ có mã nguồn không đồng nghĩa đã vận hành production. Chất lượng Nhật ngữ, audio thật, trải nghiệm nhiều người chơi, media từ xa và đánh giá AI cần các bước nghiệm thu riêng."
+      ],
+      [
+        "h",
+        "24.3. Ưu tiên tiếp theo"
+      ],
+      [
+        "p",
+        "Ưu tiên 1: kiểm thử campaign và môi trường xuyên suốt, xử lý blocker. Ưu tiên 2: duyệt tiếng Nhật và bổ sung audio/media có quyền sử dụng. Ưu tiên 3: kiểm thử WebGL/mobile và tối ưu theo số đo. Ưu tiên 4: xác thực backend cho thi/xếp hạng và triển khai cộng đồng. Ưu tiên 5: nội dung N4, lộ trình học và tích hợp LMS khi các nền tảng hiện tại ổn định."
+      ],
+      [
+        "h",
+        "24.4. Tiêu chí giá trị"
+      ],
+      [
+        "p",
+        "Giá trị sản phẩm nằm ở việc người học hiểu tình huống, chọn được phản hồi và biết cách sửa lỗi. Các chỉ số học tập, độ ổn định và phản hồi người dùng cần được theo dõi cùng nhau để định hướng các vòng cải tiến tiếp theo."
+      ]
+    ],
+    "image": null
+  },
+  {
+    "title": "25. Tài liệu đối chiếu",
+    "lead": "Nguồn nội bộ được đọc cho bản báo cáo ngày 06/10/2026.",
+    "parts": [
+      [
+        "p",
+        "Các nguồn dưới đây là tài liệu và mã nguồn trong repository của người dùng. Báo cáo ưu tiên dữ liệu/script hiện tại khi tài liệu lịch sử và snapshot build có khác biệt; không dựa vào nguồn internet để khẳng định trạng thái triển khai."
+      ],
+      [
+        "table",
+        [
+          "Nguồn",
+          "Nội dung dùng đối chiếu"
+        ],
+        [
+          [
+            "README.md; Docs/ARCHITECTURE.md",
+            "Định vị và kiến trúc lõi"
+          ],
+          [
+            "Docs/STORY_BIBLE.md",
+            "Thế giới, nhân vật, callback và campaign"
+          ],
+          [
+            "Docs/CONTENT_GUIDE.md; SCENARIO_SYSTEM.md",
+            "Thiết kế nội dung và engine"
+          ],
+          [
+            "Docs/EXAM_SYSTEM.md",
+            "Luồng thi, loại câu hỏi, giới hạn chấm"
+          ],
+          [
+            "Docs/EXAM_CONTENT_PIPELINE.md",
+            "Metadata, media, cache và quy trình xuất bản"
+          ],
+          [
+            "Docs/PROGRESSION_AND_EXAM_INTEGRITY.md",
+            "Knowledge, XP, thi và xác thực server"
+          ],
+          [
+            "Docs/PROJECT_AUDIT.md",
+            "Rủi ro lịch sử; không coi là snapshot mới"
+          ],
+          [
+            "Assets/NihongoLife/Scripts/UI",
+            "Workflow và chức năng giao diện"
+          ],
+          [
+            "Resources/Scenarios, Exams, Menu",
+            "Nội dung thực tế và credit"
+          ],
+          [
+            "ProjectSettings/EditorBuildSettings.asset",
+            "Danh sách scene hiện tại"
+          ],
+          [
+            "editmode-results.xml",
+            "Kết quả kiểm thử lịch sử 20/09/2026"
+          ],
+          [
+            "AGENTS.md",
+            "Quy tắc triển khai và nghiệm thu scene"
+          ]
+        ],
+        [
+          5000,
+          4360
+        ]
+      ],
+      [
+        "p",
+        "Mẫu đầu vào: Bao_Cao/Project 3_ Capstone.docx và Bao_Cao/Wolf Card (1).pptx. Hai mẫu được dùng để lấy thông tin học viên, nhận diện học viện và cấu trúc báo cáo/thuyết trình; nội dung dự án cũ được thay bằng NihongoLife."
+      ]
+    ],
+    "image": null
+  }
+]
