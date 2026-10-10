@@ -5,6 +5,7 @@ Licensed material stays local: input PDFs and every output live under NihongoLif
 imported by Unity, never shipped). Output: LocalContent/IELTS/_sources/<book>/pNNN.txt (+ pNNN.png for checking).
 
     python Tools/exam/ielts_ocr.py "Cambridge IELTS 14.pdf" [first last]
+    python Tools/exam/ielts_ocr.py --columns cam12 first last   → pNNN.col.txt: two-column passages read column by column
 """
 import asyncio
 import os
@@ -48,6 +49,64 @@ async def ocr_png(engine, png_bytes):
     return "\n".join(out)
 
 
+def _layout(lines):
+    """(y, x, h, text) lines in reading order → text with an empty line wherever the vertical gap is a paragraph break."""
+    pitches = sorted(b[0] - a[0] for a, b in zip(lines, lines[1:]) if b[0] - a[0] > 5)
+    pitch = pitches[len(pitches) // 2] if pitches else 40
+    out = []
+    for k, (y, x, h, text) in enumerate(lines):
+        if k > 0 and y - lines[k - 1][0] > pitch * 1.55:
+            out.append("")
+        out.append(text)
+    return out
+
+
+async def ocr_columns(engine, png_bytes, width):
+    """Two-column page: full-width lines above the columns, then the left column, then the right column, then the
+    full-width lines below (page number). A line belongs to a column when it lies entirely on one side of the middle."""
+    stream = InMemoryRandomAccessStream()
+    writer = DataWriter(stream)
+    writer.write_bytes(png_bytes)
+    await writer.store_async()
+    stream.seek(0)
+    decoder = await BitmapDecoder.create_async(stream)
+    bitmap = await decoder.get_software_bitmap_async()
+    result = await engine.recognize_async(bitmap)
+    mid = width / 2
+    full, left, right = [], [], []
+    for line in result.lines:
+        words = list(line.words)
+        if not words:
+            continue
+        x0 = min(w.bounding_rect.x for w in words)
+        x1 = max(w.bounding_rect.x + w.bounding_rect.width for w in words)
+        y = min(w.bounding_rect.y for w in words)
+        h = max(w.bounding_rect.height for w in words)
+        item = (y, x0, h, line.text)
+        (right if x0 > mid - 20 else left if x1 < mid + 20 else full).append(item)
+    for col in (full, left, right):
+        col.sort(key=lambda t: (t[0], t[1]))
+    top = min([l[0] for l in left + right], default=10 ** 9)
+    above = [l for l in full if l[0] < top]
+    below = [l for l in full if l[0] >= top]
+    out = _layout(above) + [""] + _layout(left) + [""] + _layout(right) + [""] + _layout(below)
+    return "\n".join(out)
+
+
+async def columns(book, first, last):
+    engine = OcrEngine.try_create_from_user_profile_languages()
+    from PIL import Image
+    out = os.path.join(SOURCES, book)
+    for p in range(first, last + 1):
+        png = os.path.join(out, f"p{p:03d}.png")
+        with open(png, "rb") as fh:
+            data = fh.read()
+        text = await ocr_columns(engine, data, Image.open(png).size[0])
+        with open(os.path.join(out, f"p{p:03d}.col.txt"), "w", encoding="utf-8") as fh:
+            fh.write(text)
+    print(f"{book}: columns {first}-{last}")
+
+
 async def main(pdf_name, first=None, last=None):
     pdf = os.path.join(SOURCES, pdf_name)
     book = os.path.splitext(pdf_name)[0].replace("Cambridge IELTS ", "cam")
@@ -73,4 +132,7 @@ async def main(pdf_name, first=None, last=None):
 
 if __name__ == "__main__":
     args = sys.argv[1:]
+    if args[0] == "--columns":
+        asyncio.run(columns(args[1], int(args[2]), int(args[3])))
+        sys.exit()
     asyncio.run(main(args[0], int(args[1]) if len(args) > 1 else None, int(args[2]) if len(args) > 2 else None))

@@ -67,6 +67,7 @@ namespace NihongoLife.Tests
             Assert.NotNull(run, "The audited repository Run clip is missing.");
             Assert.IsTrue(run.isHumanMotion, "Run must be a genuine Humanoid clip before retargeting.");
             var graph = PlayableGraph.Create("NL_Humanoid_Run_Audit");
+            animator.gameObject.AddComponent<AnimationEventReceiver>();
             var output = AnimationPlayableOutput.Create(graph, "Run", animator);
             var playable = AnimationClipPlayable.Create(graph, run);
             playable.SetApplyFootIK(true);
@@ -80,6 +81,13 @@ namespace NihongoLife.Tests
             Assert.NotNull(player.GetComponent<CharacterController>());
             Assert.NotNull(player.GetComponent<PlayerInventory>());
             Object.Destroy(camera.gameObject);
+        }
+
+        private sealed class AnimationEventReceiver : MonoBehaviour
+        {
+            // The audited third-party clip contains this legitimate footstep event. The gameplay audio
+            // receiver lives on the player root, while the audit graph targets the nested visual Animator.
+            public void Footsteps() { }
         }
 
         private static IEnumerator ShowControllerState(Animator animator, Camera camera, string state, string shot)

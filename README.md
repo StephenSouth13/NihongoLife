@@ -280,6 +280,7 @@ Mỗi bộ kiểm thử Play Mode **điều khiển nhân vật bằng thao tác
 | `GameCenterPlayModeTests` | Kana Match trọn vòng, đổi quà |
 | `SchoolPlayModeTests` | Bàn thi, chọn JLPT/IELTS, làm bài, nhận xét |
 | `BedroomPlayModeTests` · `CityTown` · `ZoneTransition` · `Scenario` | Phòng trọ, lối vào các khu, chuyển khu hai chiều, chạy kịch bản |
+| `CharacterHumanoidAuditPlayModeTests` | Pilot Remy Humanoid: Avatar/rig, Idle, Walk, Run retarget, Talk, Sit; giữ nguyên controller, camera, collider, inventory và online |
 
 **Kết quả gần nhất (08/10/2026):** Play Mode **16/16** · EditMode **11/11** · hơn 150 ảnh tự chụp.
 
@@ -320,8 +321,8 @@ Quy tắc của repo (xem [`AGENTS.md`](AGENTS.md)): không dùng lệnh `[MenuI
 
 | | |
 |---|---|
-| 📘 **Báo cáo Capstone** | [`Bao_Cao/NihongoLife_Bao_Cao_Capstone.pdf`](Bao_Cao/NihongoLife_Bao_Cao_Capstone.pdf) · 75 trang, 13 sơ đồ UML |
-| 🎞️ **Slide thuyết trình** | [`Bao_Cao/NihongoLife_Thuyet_Trinh.pptx`](Bao_Cao/NihongoLife_Thuyet_Trinh.pptx) |
+| 📘 **Báo cáo Capstone v4** | [`DOCX`](Bao_Cao/NihongoLife_Bao_Cao_Capstone_v4.docx) · [`PDF`](Bao_Cao/NihongoLife_Bao_Cao_Capstone_v4.pdf) |
+| 🎞️ **Slide thuyết trình** | [`Bao_Cao/NihongoLife_Thuyet_Trinh_Capstone_v4.pptx`](Bao_Cao/NihongoLife_Thuyet_Trinh_Capstone_v4.pptx) |
 | 🎬 **Trailer** | [`Bao_Cao/NihongoLife_Trailer.mp4`](Bao_Cao/NihongoLife_Trailer.mp4) · 1080p, 67 giây |
 | 🧭 **Thiết kế** | [`ARCHITECTURE`](NihongoLife/Docs/ARCHITECTURE.md) · [`STORY_BIBLE`](NihongoLife/Docs/STORY_BIBLE.md) · [`SCENARIO_SYSTEM`](NihongoLife/Docs/SCENARIO_SYSTEM.md) · [`EXAM_SYSTEM`](NihongoLife/Docs/EXAM_SYSTEM.md) · [`ROADMAP`](NihongoLife/Docs/ROADMAP.md) |
 

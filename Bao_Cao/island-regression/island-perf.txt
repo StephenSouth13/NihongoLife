@@ -25,3 +25,8 @@ at TrainDoorInteraction: current=TrainDoorInteraction (NihongoLife.Island.Island
 total 78.1s
 scenes: 90_TestSandbox, 60_MidoriIsland active=60_MidoriIsland
 island objects: plots=6 animals=horse,dog,cow,donkey,alpaca counters=1 spots=7
+walk to store: closest 2.2 m, ended at (-1195.99, 0.00, -18.21)
+walk to farm: closest 2.2 m, ended at (-1223.55, 0.00, -0.98)
+walk to animal pen: closest 2.2 m, ended at (-1184.26, 0.00, 4.53)
+walk to lookout: closest 2.4 m, ended at (-1200.00, 0.00, 29.64)
+perf (editor, batchmode): frames=3838 avg=1.0ms p95=1.3ms max=2.1ms islandRenderers=255 batches=722 setPass=69 tris=598960

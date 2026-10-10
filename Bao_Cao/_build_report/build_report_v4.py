@@ -690,10 +690,22 @@ table(["Lỗi", "Nguyên nhân", "Cách sửa"], [
 ], [3.6, 3.8, 3.6], caption="Một số lỗi tiêu biểu đã sửa", font_size=10.5)
 h2("Hiệu năng")
 para("Đo trong Editor ở chế độ batch trên máy phát triển, camera nhìn bao quát Đảo Midori trong 4 giây: thời gian khung trung bình 1,4 ms, phân vị 95% là 3,7 ms, tối đa 9,5 ms, 248 renderer, khoảng 590 nghìn tam giác. Số tam giác tăng đáng kể sau khi thêm mô hình nhân vật cô Hana; với bản WebGL nên thay bằng mô hình nhẹ hơn. Số liệu Editor chỉ mang tính tham khảo, chưa thay thế được đo trên bản build.")
+h2("Audit hệ thống nhân vật Humanoid")
+para("Trước khi mở rộng câu cá và animation sinh hoạt, dự án thực hiện một pilot không phá vỡ scene trên nhân vật Remy trong 90_TestSandbox. Model có Avatar hợp lệ, Animator dùng NL_Humanoid, applyRootMotion tắt để PlayerController tiếp tục sở hữu chuyển động. Camera, CharacterController, PlayerInventory và dịch vụ online không bị thay thế. Idle, Walk, Talk và Sit chạy bằng clip Humanoid đã có; clip Run của gói Third Person Controller được retarget trực tiếp lên Avatar Remy để xác nhận tương thích xương.")
+table(["Hạng mục", "Kết quả audit"], [
+    ["Model / rig / Avatar", "Remy FBX; Avatar hợp lệ, isHuman=true; vật liệu URP đã gán trong NL_Player.prefab"],
+    ["Animator", "NL_Humanoid: Idle, Walk, Talking, Bow, Point, Sit, Lay; root motion tắt"],
+    ["Idle · Walk · Talk · Sit", "Đã vào state và chụp ảnh trong Play Mode trên scene hiện hữu"],
+    ["Run", "Clip Humanoid thật retarget thành công; controller gameplay chưa có state Run riêng"],
+    ["Gameplay cũ", "Giữ nguyên PlayerController, camera, capsule collider, inventory và online bootstrap"],
+], [3.7, 7.3], caption="Kết quả pilot nhân vật Remy", font_size=10.5)
+fig_pair(("../character-humanoid-audit/02_walk.png", "Walk — NL_Humanoid trong 90_TestSandbox"),
+         ("../character-humanoid-audit/03_run_retarget_pilot.png", "Run — Humanoid retarget pilot trên Avatar Remy"))
 h2("Hạn chế của việc kiểm thử")
 bullets(["Chưa chạy thử bản build WebGL và chưa đo hiệu năng trên bản build.",
          "Đồng bộ Supabase, gọi Agora giữa hai máy và micro thật chưa có kiểm thử tự động.",
          "Bài kiểm thử chạy ở chế độ khách: tiến trình giữ trong bộ nhớ; lưu xuống đĩa khi đăng nhập được kiểm tra bằng EditMode, chưa bằng Play Mode.",
+         "Controller gameplay chưa có state Run riêng; khi sprint hiện vẫn dùng Walk. Đây là animation còn thiếu cần xử lý trước farming, bê hàng, phục vụ và câu cá.",
          "Một số ảnh chụp trong cửa hàng tiện lợi có góc camera từ phía sau do vị trí camera của bài kiểm thử, không phản ánh góc nhìn khi chơi."])
 
 # ── Chapter 14
@@ -711,7 +723,8 @@ bullets(["Nội dung mới dừng ở N5; số kịch bản và loại công vi�
          "Mục Thời trang trống vì chưa có mô hình quần áo; đồ công nghệ mới là đồ sưu tầm.",
          "Dịch vụ online và bản WebGL chưa được kiểm thử đầy đủ."])
 h2("Hướng phát triển")
-bullets(["Thêm kịch bản N4, công việc mới (ga tàu, lớp học) và chuỗi nhiệm vụ cốt truyện gắn với Đảo Midori.",
+bullets(["Hoàn thiện bộ locomotion Humanoid nhất quán (Run riêng), sau đó mới bổ sung animation thật cho farming, bê hàng, phục vụ và câu cá; không dùng animation procedural để che clip thiếu.",
+         "Thêm kịch bản N4, công việc mới (ga tàu, lớp học) và chuỗi nhiệm vụ cốt truyện gắn với Đảo Midori.",
          "Thu âm hoặc cấp phép giọng đọc thật cho từ vựng; luyện phát âm cho câu trong ca làm.",
          "Trang trí phòng trọ bằng đồ công nghệ và thời trang đã mua.",
          "Kiểm thử bản WebGL, đồng bộ Supabase thật và đo hiệu năng trên máy cấu hình thấp."])

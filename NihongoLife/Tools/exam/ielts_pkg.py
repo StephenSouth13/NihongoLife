@@ -120,9 +120,10 @@ def _paragraphs(lines, fixes=None, labelled=False, short=0.82):
 AUDIO_DIR = os.path.join(ROOT, "Docs", "Exam", "IELTS", "CAMBRIDGE 11-19-20261009T150315Z-1-001", "CAMBRIDGE 11-19", "AUDIO LISTENING")
 
 
-def audio(book_number, track, package, end=None):
+def audio(book_number, track, package, end=None, member=None):
     """Copies one Cambridge track (e.g. "C14T2S1") into the package as OGG Vorbis (mono, 32 kHz, q4) → "audio/<track>.ogg".
-    `end` (seconds) trims a track that runs on into the next test (checked by listening / speech recognition)."""
+    `end` (seconds) trims a track that runs on into the next test (checked by listening / speech recognition).
+    `member`: the file name inside the zip when the book's tracks are not named like the track id."""
     import subprocess, tempfile, zipfile
     out_dir = os.path.join(IELTS, package, "audio")
     os.makedirs(out_dir, exist_ok=True)
@@ -130,7 +131,7 @@ def audio(book_number, track, package, end=None):
     if not os.path.exists(out):
         archive = next(os.path.join(AUDIO_DIR, f) for f in os.listdir(AUDIO_DIR) if f.lower() == f"audio cam {book_number}.zip")
         with zipfile.ZipFile(archive) as z, tempfile.TemporaryDirectory() as tmp:
-            member = next(n for n in z.namelist() if os.path.basename(n).upper().startswith(track.upper()))
+            member = next(n for n in z.namelist() if (os.path.basename(n) == member if member else os.path.basename(n).upper().startswith(track.upper())))
             src = z.extract(member, tmp)
             trim = ["-t", str(end)] if end else []
             subprocess.run(["ffmpeg", "-y", "-v", "error", "-i", src, *trim, "-ac", "1", "-ar", "32000", "-c:a", "libvorbis", "-q:a", "4", out], check=True)
