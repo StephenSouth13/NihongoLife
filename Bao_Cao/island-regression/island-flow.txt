@@ -1,4 +1,4 @@
-start yen=3000 slots=1/16
+start yen=3130 slots=1/16
 arrived island at (-1201.50, 0.20, -29.60) gap=0.000 floor=Platform
 at StoreInteraction: current=StoreInteraction (NihongoLife.Island.IslandShopCounter)
 click IslandShop/Confirm
@@ -18,8 +18,8 @@ talking to cow
 click AnimalCard/Feed
 click AnimalCard/Feed
 click AnimalCard/Pet
-animal max wander in 4s = 3.68 m
+animal max wander in 4s = 3.65 m
 words=13 achievements=first_harvest,first_sale
 at KioskInteraction: current=KioskInteraction (NihongoLife.Island.IslandTicketKiosk)
 at TrainDoorInteraction: current=TrainDoorInteraction (NihongoLife.Island.IslandTrainDoor)
-total 79.9s
+total 78.1s
