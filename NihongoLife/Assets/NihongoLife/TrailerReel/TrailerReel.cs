@@ -373,6 +373,7 @@ namespace NihongoLife.Trailer
 
         private IEnumerator Station()
         {
+            TaskJournalUI.Close();
             yield return Move(new Vector3(804.5f, 2.3f, 10.6f), new Vector3(790.5f, 1.3f, 8.4f), new Vector3(803f, 2.2f, 9.4f), new Vector3(799f, 1.2f, -1.5f), 4.5f);
         }
 

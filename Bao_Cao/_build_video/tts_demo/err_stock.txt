@@ -1,0 +1,24 @@
+Traceback (most recent call last):
+  File "<frozen runpy>", line 198, in _run_module_as_main
+  File "<frozen runpy>", line 88, in _run_code
+  File "C:\Users\Admin\AppData\Local\Programs\Python\Python311\Scripts\edge-tts.exe\__main__.py", line 7, in <module>
+  File "C:\Users\Admin\AppData\Local\Programs\Python\Python311\Lib\site-packages\edge_tts\util.py", line 141, in main
+    asyncio.run(amain())
+  File "C:\Users\Admin\AppData\Local\Programs\Python\Python311\Lib\asyncio\runners.py", line 190, in run
+    return runner.run(main)
+           ^^^^^^^^^^^^^^^^
+  File "C:\Users\Admin\AppData\Local\Programs\Python\Python311\Lib\asyncio\runners.py", line 118, in run
+    return self._loop.run_until_complete(task)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Admin\AppData\Local\Programs\Python\Python311\Lib\asyncio\base_events.py", line 654, in run_until_complete
+    return future.result()
+           ^^^^^^^^^^^^^^^
+  File "C:\Users\Admin\AppData\Local\Programs\Python\Python311\Lib\site-packages\edge_tts\util.py", line 136, in amain
+    await _run_tts(args)
+  File "C:\Users\Admin\AppData\Local\Programs\Python\Python311\Lib\site-packages\edge_tts\util.py", line 73, in _run_tts
+    async for chunk in communicate.stream():
+  File "C:\Users\Admin\AppData\Local\Programs\Python\Python311\Lib\site-packages\edge_tts\communicate.py", line 588, in stream
+    async for message in self.__stream():
+  File "C:\Users\Admin\AppData\Local\Programs\Python\Python311\Lib\site-packages\edge_tts\communicate.py", line 562, in __stream
+    raise NoAudioReceived(
+edge_tts.exceptions.NoAudioReceived: No audio was received. Please verify that your parameters are correct.
