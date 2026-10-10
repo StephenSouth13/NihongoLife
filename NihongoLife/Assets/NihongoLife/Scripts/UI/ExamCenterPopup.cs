@@ -162,7 +162,7 @@ namespace NihongoLife.UI
             AddText(card.transform, Pick(exam.descriptionVi, exam.descriptionEn, exam.descriptionEn), 15f, 22f, 48f, 640f, 44f, TextAlignmentOptions.TopLeft, FontStyles.Normal, true, Muted);
 
             string levelLabel = BuildLevelLabel(exam);
-            AddText(card.transform, levelLabel, 14f, 22f, 94f, 760f, 22f, TextAlignmentOptions.MidlineLeft, FontStyles.Bold, false, new Color(0.35f, 0.82f, 0.72f, 1f));
+            AddText(card.transform, levelLabel, 13f, 22f, 94f, 860f, 22f, TextAlignmentOptions.MidlineLeft, FontStyles.Bold, false, new Color(0.35f, 0.82f, 0.72f, 1f));
 
             string bestLabel = BuildBestLabel(exam, progress);
             AddText(card.transform, bestLabel, 14f, 22f, 120f, 760f, 24f, TextAlignmentOptions.MidlineLeft, FontStyles.Normal);
@@ -215,13 +215,18 @@ namespace NihongoLife.UI
         private string BuildLevelLabel(ExamDefinition exam)
         {
             if (exam == null) return string.Empty;
+            int questions = 0;
+            if (exam.sections != null) foreach (var section in exam.sections) if (section?.questions != null) questions += section.questions.Count;
+            // Honest scope: these built-in sets are short, written for the project, not official papers.
+            string scope = Pick($"Đề rút gọn tự soạn · {questions} câu · không phải đề chính thức", $"Short project-written set · {questions} questions · not an official paper", $"自作の短縮版 · {questions}問 · 公式問題ではありません");
             if (exam.examType != ExamType.Ielts)
-                return $"{Pick("Cap do", "Level", "レベル")}: {exam.level}";
+                return $"{Pick("Cap do", "Level", "レベル")}: {exam.level}   ·   {scope}";
+            scope += Pick("  ·  Writing/Speaking chấm bằng AI (cần mạng, chỉ ước tính)", "  ·  Writing/Speaking scored by AI (online, estimate only)", "  ·  ライティング/スピーキングはAI採点（オンライン・目安）");
 
             string band = exam.recommendedBandMax > 0f
                 ? $"IELTS {exam.recommendedBandMin:0.0}-{exam.recommendedBandMax:0.0}"
                 : $"IELTS {exam.recommendedBandMin:0.0}+";
-            return $"{Pick("Cap do", "Level", "レベル")}: {exam.learnerLevel}  |  {band}";
+            return $"{Pick("Cap do", "Level", "レベル")}: {exam.learnerLevel}  |  {band}   ·   {scope}";
         }
 
         private string BuildBestLabel(ExamDefinition exam, PlayerProgressDto progress)

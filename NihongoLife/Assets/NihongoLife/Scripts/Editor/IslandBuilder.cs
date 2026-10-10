@@ -573,13 +573,13 @@ namespace NihongoLife.EditorTools
             var group = Group(parent, "Sign_" + id);
             group.localPosition = position;
             group.localRotation = Quaternion.Euler(0f, yaw, 0f);
-            Block(group, "Post", new Vector3(0f, 0.9f, 0f), new Vector3(0.14f, 1.8f, 0.14f), _signWood, true);
+            Block(group, "Post", new Vector3(0f, 0.72f, 0f), new Vector3(0.14f, 1.44f, 0.14f), _signWood, true);
             Block(group, "Board", new Vector3(0f, 1.75f, 0f), new Vector3(1.9f, 0.62f, 0.07f), _signWood, false);
             // Text on both faces, so it reads correctly from either side.
-            Text(group, "JA_Front", word.ja, new Vector3(0f, 1.84f, -0.045f), 0f, 0.24f, new Color(0.98f, 0.95f, 0.85f), 1.8f);
-            Text(group, "EN_Front", word.en, new Vector3(0f, 1.6f, -0.045f), 0f, 0.11f, new Color(0.95f, 0.85f, 0.55f), 1.8f);
-            Text(group, "JA_Back", word.ja, new Vector3(0f, 1.84f, 0.045f), 180f, 0.24f, new Color(0.98f, 0.95f, 0.85f), 1.8f);
-            Text(group, "EN_Back", word.en, new Vector3(0f, 1.6f, 0.045f), 180f, 0.11f, new Color(0.95f, 0.85f, 0.55f), 1.8f);
+            Text(group, "JA_Front", word.ja, new Vector3(0f, 1.84f, -0.09f), 0f, 0.24f, new Color(0.98f, 0.95f, 0.85f), 1.8f);
+            Text(group, "EN_Front", word.en, new Vector3(0f, 1.6f, -0.09f), 0f, 0.11f, new Color(0.95f, 0.85f, 0.55f), 1.8f);
+            Text(group, "JA_Back", word.ja, new Vector3(0f, 1.84f, 0.09f), 180f, 0.24f, new Color(0.98f, 0.95f, 0.85f), 1.8f);
+            Text(group, "EN_Back", word.en, new Vector3(0f, 1.6f, 0.09f), 180f, 0.11f, new Color(0.95f, 0.85f, 0.55f), 1.8f);
             var trigger = Trigger(group, "WordInteraction", new Vector3(0f, 1f, 0f), new Vector3(1.6f, 2f, 1.6f));
             trigger.AddComponent<IslandWordSpot>().Configure(id);
         }

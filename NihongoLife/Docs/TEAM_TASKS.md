@@ -615,3 +615,36 @@ Phiên Codex 08/10 dừng giữa chừng vì hết lượt dùng. Các mục cò
   - ESC và × hỏi trước khi rời; HUD ẩn, phím tắt bị khoá trong lúc thi.
 - Exam Center (tab IELTS) hiện thẻ cho gói local, với các nút Tiếp tục / Luyện tập / Thi thử.
 - Test: `IeltsGraderTests` (5, dữ liệu giả lập) và `IeltsListeningPlayModeTests` (E2E; tự bỏ qua nếu máy không có gói local).
+
+## Cập nhật (2026-10-10, Claude) — Phase 4 tuyến tàu ↔ Đảo Xanh, Phase 5 `60_MidoriIsland`
+
+| Việc | Người làm | File được phép sửa | Kiểm tra khi ghép |
+|---|---|---|---|
+| Đảo Xanh: scene, nông trại, động vật, cửa hàng, UI Midori, tàu về | Claude | `Scripts/Island/**`, `Scripts/Editor/IslandBuilder.cs`, `Resources/Island/**`, `Generated/Island/**`, `Materials/Island/**`, `Scenes/60_MidoriIsland.unity`, test `Island*` | `IslandPlayModeTests` (2 test) + ảnh `Bao_Cao/island-regression` |
+| Icon item Đảo Xanh | Codex vẽ thumbnail, Claude duyệt và chép vào `Resources/Items` | Codex: `Generated/AssetPipeline/**` (chỉ đọc với Claude) | ảnh cửa hàng/balo |
+
+### Đã làm
+- **Tuyến tàu** (`World/StationTravelController.cs`): thêm ga cuối `みどりじま` (¥450, bằng `ticketPrice` trong catalog).
+  - Kimura có lựa chọn "みどりじまへ いきたいです"; máy bán vé tự liệt kê ga này.
+  - Chiều về: máy bán vé `IslandTicketKiosk` → soát vé ở cửa tàu `IslandTrainDoor` → màn hình đang chạy → tới `20_StationDistrict`.
+  - Không thu tiền 2 lần. Nếu hết tiền và không có gì để bán, người chơi được tặng một vé hỗ trợ, nên không bao giờ kẹt trên đảo.
+- **Dữ liệu** `Resources/Island/island_catalog.json`: giá, thời gian lớn, sản lượng, từ vựng JA/EN/VI, thức ăn của thú. Script không viết cứng con số nào.
+- **Lưu tiến độ** trong `PlayerProgressDto.island` (local + `progress_json` trên cloud), gồm ô ruộng, từ đã học, thú đã quen, thành tích, ngôn ngữ đang học. Cây lớn theo dấu thời gian UTC nên vẫn lớn khi người chơi rời đảo.
+- **Scene** `60_MidoriIsland` (đã được duyệt), dựng bằng `IslandBuilder.Build`, không dùng `[MenuItem]`.
+  - Gồm ga, quảng trường, 6 ô ruộng, chuồng 4 thú (bò, alpaca, lừa, ngựa) và chó Shiba quanh quảng trường, cửa hàng cạnh ga, điểm ngắm cảnh, 6 biển dạy tên địa điểm.
+  - Bờ biển có tường vô hình, kèm cơ chế đưa người chơi về ga nếu rơi khỏi đảo.
+  - Chỉ có một mặt trời: mặt trời của thành phố bị tắt khi đảo đang được nạp.
+- **UI Midori** (`Island/IslandUI.cs`): thanh công cụ (đổi ngôn ngữ học JA⇄EN, sổ tay, P = cửa hàng), banner chào mừng, thẻ ô ruộng có chọn hạt, thẻ thú, cửa hàng 4 tab, sổ tay tiến độ, toast.
+  - Tab Thời trang **để trống có giải thích**, vì dự án chưa có mô hình quần áo.
+  - Các cửa sổ đều đăng ký `UiModalStack` (ESC đóng được).
+
+### Ảnh hưởng tài sản dùng chung
+- `IslandBuilder` bật `loopTime` cho các clip Idle/Walk/Eating của FBX Quaternius `Cow`, `Alpaca`, `Donkey`, `Horse`, `ShibaInu`. Chó Shiba ngoài thành phố dùng chung file này nên giờ đi/đứng lặp mượt hơn.
+- `GameInputId.Shop` (phím P) được thêm vào **cuối** enum, nên các giá trị đã lưu không bị lệch.
+- `NPCNameplateSystem` không tạo nhãn thứ hai nữa nếu NPC đã có `Nameplate` dựng sẵn (trước đây Kimura bị chồng 2 nhãn).
+- Thẻ đề luyện có sẵn trong Exam Center giờ ghi rõ: "đề rút gọn tự soạn · N câu · không phải đề chính thức". Writing/Speaking chấm bằng AI, cần mạng, chỉ là ước tính.
+
+### Chưa làm / cần quyết định
+- Gói `Unity_6_Animals_Free_v2.3.unitypackage` (ithappy) **chưa import**, vì gói kèm demo HDRP; 5 thú Quaternius đã đủ hoạt ảnh.
+- Bình tưới không có model 3D nào trong dự án. Icon bình tưới do Claude vẽ (PIL), không lấy từ Codex.
+- Đồ công nghệ (laptop, TV) hiện chỉ là đồ sưu tầm, chưa đặt được vào phòng trọ.

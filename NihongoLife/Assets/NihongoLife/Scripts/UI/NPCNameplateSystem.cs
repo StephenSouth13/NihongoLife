@@ -33,6 +33,14 @@ namespace NihongoLife.UI
 
         private void CreateLabel(NPCController npc)
         {
+            // An NPC with a baked nameplate (e.g. Kimura at the ticket counter) keeps that one: adopt it so the
+            // toggle still works, instead of stacking a second label on top of it.
+            foreach (var existing in npc.GetComponentsInChildren<TextMeshPro>(true))
+            {
+                if (existing.name != "Nameplate") continue;
+                _labels[npc] = existing;
+                return;
+            }
             var objectLabel = new GameObject("NPCNameplate");
             objectLabel.transform.SetParent(npc.transform, false);
             objectLabel.transform.localPosition = Vector3.up * 2.25f;

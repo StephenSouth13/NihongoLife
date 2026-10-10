@@ -1,4 +1,4 @@
-start yen=3000 slots=0/16
+start yen=3000 slots=1/16
 arrived island at (-1201.50, 0.20, -29.60) gap=0.000 floor=Platform
 at StoreInteraction: current=StoreInteraction (NihongoLife.Island.IslandShopCounter)
 click IslandShop/Confirm
@@ -14,11 +14,12 @@ stage 3: phase=Ready model=Carrot_4
 click FarmCard/'Thu hoạch' → Thu hoạch 2 cà rốt — đã vào balo.  しゅうかくします！
 click IslandShop/Confirm
 at Animal_cow: current=Animal_cow (NihongoLife.Island.IslandAnimal)
+talking to cow
 click AnimalCard/Feed
 click AnimalCard/Feed
 click AnimalCard/Pet
-animal max wander in 4s = 3.54 m
-words=15 achievements=first_harvest,first_sale
+animal max wander in 4s = 3.68 m
+words=13 achievements=first_harvest,first_sale
 at KioskInteraction: current=KioskInteraction (NihongoLife.Island.IslandTicketKiosk)
 at TrainDoorInteraction: current=TrainDoorInteraction (NihongoLife.Island.IslandTrainDoor)
-total 79.5s
+total 77.5s

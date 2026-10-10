@@ -186,8 +186,13 @@ namespace NihongoLife.Tests
             var animator = cow.GetComponentInChildren<Animator>();
             Assert.NotNull(animator?.runtimeAnimatorController, "Animals use real animated models.");
             yield return StandAt(cow.transform, 1.8f);
+            // Animals wander: talk to whichever animal F actually targets (a farm animal that eats carrots).
+            var targeted = _player.GetComponent<InteractionDetector>().CurrentInteractable as IslandAnimal;
+            Assert.NotNull(targeted, "An animal is in reach after walking up to the herd.");
+            Assert.IsTrue(targeted.Def.foods.Contains("carrot"), $"{targeted.AnimalId} eats carrots.");
+            Note($"talking to {targeted.AnimalId}");
             yield return Press(GameInputId.Interact);
-            Assert.IsTrue(IslandUI.AnimalOpen, "F at the cow opens the animal card.");
+            Assert.IsTrue(IslandUI.AnimalOpen, "F at the animal opens its card.");
             Capture("15_animal_card");
             Click("AnimalCard", "Feed");
             Assert.AreEqual(1, IslandState.Record.fed);
@@ -197,7 +202,7 @@ namespace NihongoLife.Tests
             Click("AnimalCard", "Pet");
             yield return new WaitForSecondsRealtime(0.5f);
             Capture("16_animal_fed");
-            Assert.IsTrue(IslandState.Record.animalsMet.Contains("cow"));
+            Assert.IsTrue(IslandState.Record.animalsMet.Contains(targeted.AnimalId));
             Assert.IsTrue(UiModalStack.CloseTop());
             var walkers = Object.FindObjectsByType<IslandAnimal>(FindObjectsSortMode.None).Select(a => a.transform.position).ToList();
             yield return new WaitForSecondsRealtime(4f);
