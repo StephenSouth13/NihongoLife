@@ -1,48 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
-<test-run id="2" testcasecount="1" result="Failed(Child)" total="1" passed="0" failed="1" inconclusive="0" skipped="0" asserts="0" engine-version="3.5.0.0" clr-version="4.0.30319.42000" start-time="2026-10-10 13:38:39Z" end-time="2026-10-10 13:38:46Z" duration="7.1991336">
-  <test-suite type="TestSuite" id="1052" name="NihongoLife" fullname="NihongoLife" runstate="Runnable" testcasecount="27" result="Failed" site="Child" start-time="2026-10-10 13:38:39Z" end-time="2026-10-10 13:38:46Z" duration="7.199134" total="1" passed="0" failed="1" inconclusive="0" skipped="0" asserts="0">
+<test-run id="2" testcasecount="1" result="Passed" total="1" passed="1" failed="0" inconclusive="0" skipped="0" asserts="0" engine-version="3.5.0.0" clr-version="4.0.30319.42000" start-time="2026-10-10 17:38:14Z" end-time="2026-10-10 17:38:25Z" duration="10.6232822">
+  <test-suite type="TestSuite" id="1060" name="NihongoLife" fullname="NihongoLife" runstate="Runnable" testcasecount="32" result="Passed" start-time="2026-10-10 17:38:14Z" end-time="2026-10-10 17:38:25Z" duration="10.623282" total="1" passed="1" failed="0" inconclusive="0" skipped="0" asserts="0">
     <properties>
       <property name="platform" value="PlayMode" />
     </properties>
-    <failure>
-      <message><![CDATA[One or more child tests had errors]]></message>
-    </failure>
-    <test-suite type="Assembly" id="1046" name="NihongoLife.Tests.PlayMode.dll" fullname="D:/VTC_Academy/NihongoLife/NihongoLife/NihongoLife/Library/ScriptAssemblies/NihongoLife.Tests.PlayMode.dll" runstate="Runnable" testcasecount="27" result="Failed" site="Child" start-time="2026-10-10 13:38:39Z" end-time="2026-10-10 13:38:46Z" duration="7.188178" total="1" passed="0" failed="1" inconclusive="0" skipped="0" asserts="0">
+    <test-suite type="Assembly" id="1054" name="NihongoLife.Tests.PlayMode.dll" fullname="D:/VTC_Academy/NihongoLife/NihongoLife/NihongoLife/Library/ScriptAssemblies/NihongoLife.Tests.PlayMode.dll" runstate="Runnable" testcasecount="32" result="Passed" start-time="2026-10-10 17:38:14Z" end-time="2026-10-10 17:38:25Z" duration="10.609270" total="1" passed="1" failed="0" inconclusive="0" skipped="0" asserts="0">
       <properties>
-        <property name="_PID" value="18008" />
+        <property name="_PID" value="2140" />
         <property name="_APPDOMAIN" value="Unity Child Domain" />
         <property name="platform" value="PlayMode" />
         <property name="EditorOnly" value="False" />
       </properties>
-      <failure>
-        <message><![CDATA[One or more child tests had errors]]></message>
-      </failure>
-      <test-suite type="TestSuite" id="1047" name="NihongoLife" fullname="NihongoLife" runstate="Runnable" testcasecount="27" result="Failed" site="Child" start-time="2026-10-10 13:38:39Z" end-time="2026-10-10 13:38:46Z" duration="7.187316" total="1" passed="0" failed="1" inconclusive="0" skipped="0" asserts="0">
+      <test-suite type="TestSuite" id="1055" name="NihongoLife" fullname="NihongoLife" runstate="Runnable" testcasecount="32" result="Passed" start-time="2026-10-10 17:38:14Z" end-time="2026-10-10 17:38:25Z" duration="10.608223" total="1" passed="1" failed="0" inconclusive="0" skipped="0" asserts="0">
         <properties />
-        <failure>
-          <message><![CDATA[One or more child tests had errors]]></message>
-        </failure>
-        <test-suite type="TestSuite" id="1048" name="Tests" fullname="NihongoLife.Tests" runstate="Runnable" testcasecount="27" result="Failed" site="Child" start-time="2026-10-10 13:38:39Z" end-time="2026-10-10 13:38:46Z" duration="7.186590" total="1" passed="0" failed="1" inconclusive="0" skipped="0" asserts="0">
+        <test-suite type="TestSuite" id="1056" name="Tests" fullname="NihongoLife.Tests" runstate="Runnable" testcasecount="32" result="Passed" start-time="2026-10-10 17:38:14Z" end-time="2026-10-10 17:38:25Z" duration="10.607490" total="1" passed="1" failed="0" inconclusive="0" skipped="0" asserts="0">
           <properties />
-          <failure>
-            <message><![CDATA[One or more child tests had errors]]></message>
-          </failure>
-          <test-suite type="TestFixture" id="1004" name="CharacterHumanoidAuditPlayModeTests" fullname="NihongoLife.Tests.CharacterHumanoidAuditPlayModeTests" classname="NihongoLife.Tests.CharacterHumanoidAuditPlayModeTests" runstate="Runnable" testcasecount="1" result="Failed" site="Child" start-time="2026-10-10 13:38:39Z" end-time="2026-10-10 13:38:46Z" duration="7.183686" total="1" passed="0" failed="1" inconclusive="0" skipped="0" asserts="0">
+          <test-suite type="TestFixture" id="1004" name="CharacterHumanoidAuditPlayModeTests" fullname="NihongoLife.Tests.CharacterHumanoidAuditPlayModeTests" classname="NihongoLife.Tests.CharacterHumanoidAuditPlayModeTests" runstate="Runnable" testcasecount="1" result="Passed" start-time="2026-10-10 17:38:14Z" end-time="2026-10-10 17:38:25Z" duration="10.603713" total="1" passed="1" failed="0" inconclusive="0" skipped="0" asserts="0">
             <properties />
-            <failure>
-              <message><![CDATA[One or more child tests had errors]]></message>
-            </failure>
-            <test-case id="1005" name="Remy_HumanoidRetarget_IdleWalkRunTalkSit" fullname="NihongoLife.Tests.CharacterHumanoidAuditPlayModeTests.Remy_HumanoidRetarget_IdleWalkRunTalkSit" methodname="Remy_HumanoidRetarget_IdleWalkRunTalkSit" classname="NihongoLife.Tests.CharacterHumanoidAuditPlayModeTests" runstate="Runnable" seed="851714180" result="Failed" start-time="2026-10-10 13:38:39Z" end-time="2026-10-10 13:38:46Z" duration="7.167135" asserts="0">
+            <test-case id="1005" name="Remy_HumanoidRetarget_IdleWalkRunTalkSit" fullname="NihongoLife.Tests.CharacterHumanoidAuditPlayModeTests.Remy_HumanoidRetarget_IdleWalkRunTalkSit" methodname="Remy_HumanoidRetarget_IdleWalkRunTalkSit" classname="NihongoLife.Tests.CharacterHumanoidAuditPlayModeTests" runstate="Runnable" seed="65177858" result="Passed" start-time="2026-10-10 17:38:14Z" end-time="2026-10-10 17:38:25Z" duration="10.585623" asserts="0">
               <properties>
                 <property name="_JOINTYPE" value="UnityCombinatorial" />
                 <property name="retryIteration" value="0" />
                 <property name="repeatIteration" value="0" />
               </properties>
-              <failure>
-                <message><![CDATA[Unhandled log message: '[Error] 'Visual' AnimationEvent 'Footsteps' on animation 'Run' has no receiver! Are you missing a component?'. Use UnityEngine.TestTools.LogAssert.Expect]]></message>
-                <stack-trace><![CDATA[
-]]></stack-trace>
-              </failure>
               <output><![CDATA[[AppRoot] Initializing core services...
 [SceneFlowController] Initialized.
 [AudioService] Initialized AudioSources.
@@ -58,7 +38,7 @@
 [AppRoot] Using SupabaseOnlineWorldService (real online).
 [SupabaseOnlineWorld] Initialized.
 [CoopSessionService] Initialized.
-[ExamRepository] Loaded 2 exam(s) from Resources/Exams.
+[ExamRepository] Loaded 3 exam(s) from Resources/Exams.
 [AppRoot] Core services initialized successfully.
 [ScenarioManager] Starting scenario: ひばり町へようこそ (scenario.intro.arrival)
 [ScoringManager] Score tracking reset.
@@ -70,8 +50,6 @@
 [SupabaseVoiceSync] voice_lines table not provisioned yet — voice lines use the bundled clips.
 [SupabaseRealtime] WebSocket connected.
 [SupabaseRealtime] Joined channel: nihongolife-world
-'Visual' AnimationEvent 'Footsteps' on animation 'Run' has no receiver! Are you missing a component?
-'Visual' AnimationEvent 'Footsteps' on animation 'Run' has no receiver! Are you missing a component?
 Saving results to: C:/Users/Admin/AppData/LocalLow/DefaultCompany/NihongoLife\TestResults.xml
 ]]></output>
             </test-case>

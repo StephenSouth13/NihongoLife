@@ -9,6 +9,7 @@ imported by Unity, never shipped). Output: LocalContent/IELTS/_sources/<book>/pN
 """
 import asyncio
 import os
+import re
 import sys
 
 import fitz
@@ -83,13 +84,17 @@ async def ocr_columns(engine, png_bytes, width):
         y = min(w.bounding_rect.y for w in words)
         h = max(w.bounding_rect.height for w in words)
         item = (y, x0, h, line.text)
-        (right if x0 > mid - 20 else left if x1 < mid + 20 else full).append(item)
-    for col in (full, left, right):
-        col.sort(key=lambda t: (t[0], t[1]))
-    top = min([l[0] for l in left + right], default=10 ** 9)
-    above = [l for l in full if l[0] < top]
+        (right if x0 > mid - 20 else left if x1 < mid + width * 0.1 else full).append(item)
+    head = re.compile(r"^\s*(Test \d+|Reading|Listening|\d{1,3})\s*$")
+    # The columns start at the right column's first line (the running head aside); left-hand lines above it are the
+    # page heading and the passage introduction.
+    top = min([l[0] for l in right if not head.match(l[3])], default=10 ** 9) - 10
+    above = [l for l in full + left if l[0] < top]
+    left = [l for l in left if l[0] >= top]
     below = [l for l in full if l[0] >= top]
-    out = _layout(above) + [""] + _layout(left) + [""] + _layout(right) + [""] + _layout(below)
+    for col in (above, left, right, below):
+        col.sort(key=lambda t: (round(t[0] / 12), t[1]))
+    out = _layout(above) + [""] + _layout(left) + ["<col>"] + _layout(right) + [""] + _layout(below)  # <col>: column turn
     return "\n".join(out)
 
 

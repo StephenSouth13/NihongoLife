@@ -13,19 +13,26 @@ ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".."))
 IELTS = os.path.join(ROOT, "LocalContent", "IELTS")
 SOURCES = os.path.join(IELTS, "_sources")
 
-NOISE = re.compile(r"(fb\.co|facebook|louisquangvo|ieltsfocus|the1elts)", re.I)
+NOISE = re.compile(r"(fb\.co|facebook|louisquangvo|louis vo|0962004051|ieltsfocus|the1elts|giasuielts)", re.I)
 RUNNING_HEAD = re.compile(r"^\s*(Test \d|Reading|Listening|Writing|Speaking|\d{1,3})\s*$")
 
 
-def page_lines(book, pages):
-    """Lines of the OCR text of the given pages, without watermarks, running heads and page numbers."""
+def page_lines(book, pages, cols=False):
+    """Lines of the OCR text of the given pages, without watermarks, running heads and page numbers.
+    `cols`: read the column-by-column OCR (pNNN.col.txt, ielts_ocr.py --columns) of two-column passages."""
     out = []
     for p in pages:
-        with open(os.path.join(SOURCES, book, f"p{p:03d}.txt"), encoding="utf-8") as fh:
+        with open(os.path.join(SOURCES, book, f"p{p:03d}.col.txt" if cols else f"p{p:03d}.txt"), encoding="utf-8") as fh:
             started = False  # a gap before the first text of a page (under the running head) is not a paragraph break
             for raw in fh:
                 line = raw.strip()
                 if NOISE.search(line) or RUNNING_HEAD.match(line):
+                    continue
+                if line == "<col>":  # column turn: a paragraph break only when the column ends like a paragraph
+                    if out and out[-1] == "":  # the gap above a page number at the column foot
+                        out.pop()
+                    _turn(out)
+                    started = False  # nor is the gap under a running head at the column top
                     continue
                 if not line:  # paragraph break kept from the page layout (one marker at most)
                     if started and out and out[-1] != "":
@@ -35,12 +42,18 @@ def page_lines(book, pages):
                 out.append(line)
         if out and out[-1] == "":  # the gap above the page number is not a paragraph break either
             out.pop()
-        # Across the page turn: a paragraph ends there when the page's last line ends a sentence well short of the
-        # column width (justified text fills every other line).
-        page = [l for l in out[-60:] if l]
-        if page and re.search(r"[.?!'’\")]$", page[-1]) and len(page[-1]) < 0.88 * max(len(l) for l in page):
-            out.append("")
+        _turn(out)
     return out
+
+
+def _turn(out):
+    """Across a page or column turn a paragraph ends when the last line ends a sentence well short of the column
+    width (justified text fills every other line)."""
+    if out and out[-1] == "":
+        return
+    page = [l for l in out[-60:] if l]
+    if page and re.search(r"[.?!'’\")]$", page[-1]) and len(page[-1]) < 0.88 * max(len(l) for l in page):
+        out.append("")
 
 
 def between(lines, start, end=None):
@@ -50,8 +63,11 @@ def between(lines, start, end=None):
     return lines[i:j]
 
 
-def paragraphs(lines, fixes=None, labelled=False, short=0.82, starts=()):
-    """`starts`: line beginnings that open a new paragraph the layout did not reveal (checked on the page image)."""
+def paragraphs(lines, fixes=None, labelled=False, short=0.82, starts=(), joins=()):
+    """`starts`: line beginnings that open a new paragraph the layout did not reveal (checked on the page image).
+    `joins`: line beginnings that continue the paragraph across a page or column turn the layout took for a break."""
+    if joins:
+        lines = [l for k, l in enumerate(lines) if not (l == "" and k + 1 < len(lines) and any(lines[k + 1].startswith(j) for j in joins))]
     if starts:
         marked = []
         for line in lines:
