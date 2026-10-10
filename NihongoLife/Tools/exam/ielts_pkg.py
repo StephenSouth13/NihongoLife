@@ -14,19 +14,23 @@ IELTS = os.path.join(ROOT, "LocalContent", "IELTS")
 SOURCES = os.path.join(IELTS, "_sources")
 
 NOISE = re.compile(r"(fb\W{0,2}co|facebook|louis ?quang|lowsquang|ou/5quang|quang ?vo|louis vo|0962004051|ieltsfocus|ielts ?focus|the1elts|giasuielts|zalo|0847705973|ielts qu)", re.I)
+FOOTNOTE = re.compile(r"^(\*\s?|'(?=\w+:)|•\s?(?='\w+'?:))")  # *Mayan: … / 'Folklorists: … (OCR reads the asterisk as a quote)
 RUNNING_HEAD = re.compile(r"^\s*(Test \d|Reading|Listening|Writing|Speaking|\d{1,3})\s*$")
 
 
 def page_lines(book, pages, cols=False):
     """Lines of the OCR text of the given pages, without watermarks, running heads and page numbers.
     `cols`: read the column-by-column OCR (pNNN.col.txt, ielts_ocr.py --columns) of two-column passages."""
-    out = []
+    out, notes = [], []
     for p in pages:
         with open(os.path.join(SOURCES, book, f"p{p:03d}.col.txt" if cols else f"p{p:03d}.txt"), encoding="utf-8") as fh:
             started = False  # a gap before the first text of a page (under the running head) is not a paragraph break
             for raw in fh:
                 line = raw.strip()
                 if NOISE.search(line) or RUNNING_HEAD.match(line):
+                    continue
+                if FOOTNOTE.match(line):  # '*Mayan: …' at the page foot: kept apart so the text flows across the page turn
+                    notes.append("* " + FOOTNOTE.sub("", line, count=1))
                     continue
                 if line == "<col>":  # column turn: a paragraph break only when the column ends like a paragraph
                     if out and out[-1] == "":  # the gap above a page number at the column foot
@@ -43,6 +47,10 @@ def page_lines(book, pages, cols=False):
         if out and out[-1] == "":  # the gap above the page number is not a paragraph break either
             out.pop()
         _turn(out)
+    for note in notes:
+        if out and out[-1] != "":
+            out.append("")
+        out.append(note)
     return out
 
 
@@ -119,7 +127,7 @@ def _paragraphs(lines, fixes=None, labelled=False, short=0.82):
         paras.append(" ".join(cur))
     # Footnotes ("* word: …") and source credits repeat at the foot of every page: keep one copy, at the end.
     def is_note(p):
-        return p.startswith("* ") or p.startswith("This text is taken") or p.startswith("Source:")
+        return p.startswith("*") or p.startswith("This text is taken") or p.startswith("Source:")
     body = [p for p in paras if not is_note(p)]
     notes = []
     for p in paras:
@@ -188,9 +196,9 @@ def write(package, test, key):
     for part in test["parts"]:
         for g in part["groups"]:
             if g["type"] == "completion":
-                text = " ".join(l.get("text", "") + " " + l.get("label", "") for l in g.get("lines", []))
+                text = " ".join(l.get("text", "") for l in g.get("lines", []))  # gaps render in the text only, never in the label
                 for n in range(g["from"], g["to"] + 1):
-                    assert "{%d}" % n in text, f"gap {{{n}}} missing in completion group"
+                    assert "{%d}" % n in text, f"gap {{{n}}} missing in the text of a completion group"
     test.setdefault("schema", "nihongolife.ielts.v1")
     test.setdefault("localOnly", True)
     key.setdefault("schema", "nihongolife.ielts.key.v1")
