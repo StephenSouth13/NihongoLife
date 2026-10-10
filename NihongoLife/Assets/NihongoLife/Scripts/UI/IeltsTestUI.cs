@@ -45,7 +45,7 @@ namespace NihongoLife.UI
         private TMP_FontAsset _font;
 
         private Canvas _canvas;
-        private RectTransform _root;
+        private RectTransform _root, _header, _audioBar, _footer, _tabs;
         private TextMeshProUGUI _title, _modeChip, _timer, _audioStatus, _audioTime, _note;
         private readonly List<Button> _partTabs = new();
         private Button _playButton;
@@ -70,6 +70,7 @@ namespace NihongoLife.UI
         private bool _audioPlaying;
         private float _saveAt = -1f;
         private bool _playerWasLocked, _cameraWasLocked;
+        private float _layoutWidth = -1f;
 
         public bool IsOpen => _root != null && _root.gameObject.activeSelf;
         public bool IsSubmitted => _attempt != null && _attempt.submitted;
@@ -144,6 +145,7 @@ namespace NihongoLife.UI
 
             _title.text = $"<b>{_test.title}</b>  <size=70%><color=#9FB0C4>{(_test.localOnly ? "bản local · không phát hành" : "")}</color></size>";
             _modeChip.text = IsExam ? "CHẾ ĐỘ THI" : "LUYỆN TẬP";
+            ApplyResponsiveLayout(force: true);
             // The audio controls belong to Listening only; Reading/Writing keep just the part tabs.
             foreach (var audioOnly in new Component[] { _playButton, _progressTrack, _audioTime, _audioStatus })
                 if (audioOnly != null) audioOnly.gameObject.SetActive(IsListening);
@@ -333,6 +335,7 @@ namespace NihongoLife.UI
         private void Update()
         {
             if (!IsOpen || _attempt == null) return;
+            ApplyResponsiveLayout();
             if (!IsSubmitted) _attempt.elapsedSeconds += Time.unscaledDeltaTime;
 
             if (IsListening)
@@ -470,27 +473,29 @@ namespace NihongoLife.UI
             _root.GetComponent<Image>().color = Bg;
 
             // Header
-            var header = Strip(_root, "Header", 0f, 70f, top: true, new Color(0.08f, 0.1f, 0.13f, 1f));
-            _title = Text(header, "Title", "", 22f, Color.white, TextAlignmentOptions.MidlineLeft);
+            _header = Strip(_root, "Header", 0f, 70f, top: true, new Color(0.08f, 0.1f, 0.13f, 1f));
+            _title = Text(_header, "Title", "", 22f, Color.white, TextAlignmentOptions.MidlineLeft);
             Place(_title.rectTransform, 28f, 0f, 1000f, 70f, Vector2.zero);
-            _modeChip = Text(header, "Mode", "", 15f, NLUi.Gold, TextAlignmentOptions.Center, FontStyles.Bold);
+            _title.overflowMode = TextOverflowModes.Ellipsis;
+            _modeChip = Text(_header, "Mode", "", 15f, NLUi.Gold, TextAlignmentOptions.Center, FontStyles.Bold);
             Place(_modeChip.rectTransform, -560f, 0f, 160f, 70f, new Vector2(1f, 0f));
-            _timer = Text(header, "Timer", "", 17f, new Color(0.85f, 0.9f, 0.96f), TextAlignmentOptions.MidlineRight);
+            _timer = Text(_header, "Timer", "", 17f, new Color(0.85f, 0.9f, 0.96f), TextAlignmentOptions.MidlineRight);
             Place(_timer.rectTransform, -96f, 0f, 460f, 70f, new Vector2(1f, 0f));
-            NLUi.CloseButton(header, _font, RequestClose, 46f, 12f);
+            _timer.overflowMode = TextOverflowModes.Ellipsis;
+            NLUi.CloseButton(_header, _font, RequestClose, 46f, 12f);
 
             // Audio bar
-            var audioBar = Strip(_root, "AudioBar", 70f, 74f, top: true, new Color(0.065f, 0.085f, 0.11f, 1f));
-            var tabs = new GameObject("Tabs", typeof(RectTransform), typeof(HorizontalLayoutGroup)).GetComponent<RectTransform>();
-            tabs.SetParent(audioBar, false);
-            Place(tabs, 28f, 14f, 520f, 46f, Vector2.zero);
-            var tabLayout = tabs.GetComponent<HorizontalLayoutGroup>();
+            _audioBar = Strip(_root, "AudioBar", 70f, 74f, top: true, new Color(0.065f, 0.085f, 0.11f, 1f));
+            _tabs = new GameObject("Tabs", typeof(RectTransform), typeof(HorizontalLayoutGroup)).GetComponent<RectTransform>();
+            _tabs.SetParent(_audioBar, false);
+            Place(_tabs, 28f, 14f, 520f, 46f, Vector2.zero);
+            var tabLayout = _tabs.GetComponent<HorizontalLayoutGroup>();
             tabLayout.spacing = 8f; tabLayout.childForceExpandWidth = false; tabLayout.childControlWidth = true; tabLayout.childControlHeight = true;
-            _playButton = NLUi.Button(audioBar, "Play", "▶  Phát", _font, TogglePlay, Accent, 17f, Color.white, 46f);
+            _playButton = NLUi.Button(_audioBar, "Play", "▶  Phát", _font, TogglePlay, Accent, 17f, Color.white, 46f);
             _playLabel = _playButton.GetComponentInChildren<TextMeshProUGUI>();
             Place((RectTransform)_playButton.transform, 570f, 14f, 170f, 46f, Vector2.zero);
             _progressTrack = new GameObject("Progress", typeof(RectTransform), typeof(Image), typeof(EventTrigger)).GetComponent<RectTransform>();
-            _progressTrack.SetParent(audioBar, false);
+            _progressTrack.SetParent(_audioBar, false);
             Place(_progressTrack, 760f, 31f, 520f, 12f, Vector2.zero);
             _progressTrack.GetComponent<Image>().color = new Color(1f, 1f, 1f, 0.12f);
             var trigger = _progressTrack.GetComponent<EventTrigger>();
@@ -503,11 +508,11 @@ namespace NihongoLife.UI
             _progressFill.offsetMin = _progressFill.offsetMax = Vector2.zero;
             _progressFill.GetComponent<Image>().color = NLUi.Gold;
             _progressFill.GetComponent<Image>().raycastTarget = false;
-            _audioTime = Text(audioBar, "Time", "00:00 / 00:00", 16f, Color.white, TextAlignmentOptions.MidlineLeft);
+            _audioTime = Text(_audioBar, "Time", "00:00 / 00:00", 16f, Color.white, TextAlignmentOptions.MidlineLeft);
             Place(_audioTime.rectTransform, 1296f, 14f, 150f, 46f, Vector2.zero);
-            _audioStatus = Text(audioBar, "Status", "", 14f, NLUi.Muted, TextAlignmentOptions.MidlineLeft);
+            _audioStatus = Text(_audioBar, "Status", "", 14f, NLUi.Muted, TextAlignmentOptions.MidlineLeft);
             Place(_audioStatus.rectTransform, 760f, 44f, 520f, 26f, Vector2.zero);
-            _note = Text(audioBar, "Note", "", 13.5f, NLUi.Soft, TextAlignmentOptions.MidlineRight);
+            _note = Text(_audioBar, "Note", "", 13.5f, NLUi.Soft, TextAlignmentOptions.MidlineRight);
             _note.textWrappingMode = TextWrappingModes.Normal;
             Place(_note.rectTransform, -28f, 6f, 430f, 62f, new Vector2(1f, 0f));
 
@@ -520,24 +525,66 @@ namespace NihongoLife.UI
             _questionScroll = MakeScroll(_bodyArea, "QuestionScroll", out _questionContent);
 
             // Footer
-            var footer = Strip(_root, "Footer", 0f, 92f, top: false, new Color(0.08f, 0.1f, 0.13f, 1f));
+            _footer = Strip(_root, "Footer", 0f, 92f, top: false, new Color(0.08f, 0.1f, 0.13f, 1f));
             _navigator = new GameObject("Navigator", typeof(RectTransform), typeof(GridLayoutGroup)).GetComponent<RectTransform>();
-            _navigator.SetParent(footer, false);
+            _navigator.SetParent(_footer, false);
             Place(_navigator, 28f, 14f, 1220f, 64f, Vector2.zero);
             var grid = _navigator.GetComponent<GridLayoutGroup>();
             grid.cellSize = new Vector2(27f, 28f); grid.spacing = new Vector2(3.5f, 6f);
             grid.constraint = GridLayoutGroup.Constraint.FixedRowCount; grid.constraintCount = 2;
             grid.startAxis = GridLayoutGroup.Axis.Horizontal;
-            _prevButton = NLUi.Button(footer, "Prev", "‹  Phần trước", _font, () => ShowPart(_viewPart - 1), new Color(1f, 1f, 1f, 0.08f), 16f, Color.white, 50f);
+            _prevButton = NLUi.Button(_footer, "Prev", "‹  Phần trước", _font, () => ShowPart(_viewPart - 1), new Color(1f, 1f, 1f, 0.08f), 16f, Color.white, 50f);
             Place((RectTransform)_prevButton.transform, -470f, 21f, 150f, 50f, new Vector2(1f, 0f));
-            _nextButton = NLUi.Button(footer, "Next", "Phần sau  ›", _font, () => ShowPart(_viewPart + 1), new Color(1f, 1f, 1f, 0.08f), 16f, Color.white, 50f);
+            _nextButton = NLUi.Button(_footer, "Next", "Phần sau  ›", _font, () => ShowPart(_viewPart + 1), new Color(1f, 1f, 1f, 0.08f), 16f, Color.white, 50f);
             Place((RectTransform)_nextButton.transform, -310f, 21f, 150f, 50f, new Vector2(1f, 0f));
-            _submitButton = NLUi.Button(footer, "Submit", "Nộp bài", _font, RequestSubmit, NLUi.Gold, 18f, new Color(0.1f, 0.08f, 0.04f), 50f);
+            _submitButton = NLUi.Button(_footer, "Submit", "Nộp bài", _font, RequestSubmit, NLUi.Gold, 18f, new Color(0.1f, 0.08f, 0.04f), 50f);
             Place((RectTransform)_submitButton.transform, -28f, 21f, 260f, 50f, new Vector2(1f, 0f));
 
             BuildResults();
             BuildConfirm();
+            ApplyResponsiveLayout(force: true);
             _root.gameObject.SetActive(false);
+        }
+
+        /// <summary>Keeps the header, audio controls and footer readable on 4:3 and narrow game views.</summary>
+        private void ApplyResponsiveLayout(bool force = false)
+        {
+            if (_root == null || _header == null) return;
+            float width = _root.rect.width;
+            if (width <= 0f || (!force && Mathf.Abs(width - _layoutWidth) < 0.5f)) return;
+            _layoutWidth = width;
+
+            bool compact = width < 1540f;
+            float closeReserve = 74f;
+            float timerWidth = compact ? 330f : 410f;
+            float modeWidth = compact ? 116f : 140f;
+            Place(_timer.rectTransform, -closeReserve, 0f, timerWidth, 70f, new Vector2(1f, 0f));
+            Place(_modeChip.rectTransform, -(closeReserve + timerWidth + 12f), 0f, modeWidth, 70f, new Vector2(1f, 0f));
+            float titleRight = closeReserve + timerWidth + modeWidth + 40f;
+            Place(_title.rectTransform, 28f, 0f, Mathf.Max(240f, width - titleRight - 28f), 70f, Vector2.zero);
+
+            float tabsWidth = Mathf.Clamp(width * (compact ? 0.34f : 0.28f), 360f, 520f);
+            Place(_tabs, 28f, 14f, tabsWidth, 46f, Vector2.zero);
+            float playX = 28f + tabsWidth + 16f;
+            float noteWidth = compact ? 300f : 410f;
+            float playWidth = compact ? 138f : 170f;
+            Place((RectTransform)_playButton.transform, playX, 14f, playWidth, 46f, Vector2.zero);
+            float progressX = playX + playWidth + 18f;
+            float audioTimeWidth = compact ? 126f : 150f;
+            float noteLeft = width - noteWidth - 28f;
+            float progressWidth = Mathf.Max(150f, noteLeft - audioTimeWidth - 24f - progressX);
+            Place(_progressTrack, progressX, 31f, progressWidth, 12f, Vector2.zero);
+            Place(_audioStatus.rectTransform, progressX, 44f, progressWidth, 26f, Vector2.zero);
+            Place(_audioTime.rectTransform, progressX + progressWidth + 12f, 14f, audioTimeWidth, 46f, Vector2.zero);
+            Place(_note.rectTransform, -28f, 6f, noteWidth, 62f, new Vector2(1f, 0f));
+            _audioStatus.gameObject.SetActive(_test != null && IsListening && !compact);
+
+            float submitWidth = compact ? 190f : 230f;
+            float navWidth = Mathf.Max(300f, width - (compact ? 560f : 620f));
+            Place(_navigator, 28f, 14f, navWidth, 64f, Vector2.zero);
+            Place((RectTransform)_submitButton.transform, -28f, 21f, submitWidth, 50f, new Vector2(1f, 0f));
+            Place((RectTransform)_nextButton.transform, -(40f + submitWidth), 21f, 140f, 50f, new Vector2(1f, 0f));
+            Place((RectTransform)_prevButton.transform, -(192f + submitWidth), 21f, 140f, 50f, new Vector2(1f, 0f));
         }
 
         private void BuildTabs()
@@ -715,9 +762,10 @@ namespace NihongoLife.UI
                     else
                     {
                         var t = PaperText(row, segment, 17f, line.style == "example" ? FontStyles.Italic : FontStyles.Normal);
-                        t.textWrappingMode = TextWrappingModes.NoWrap;
+                        t.textWrappingMode = TextWrappingModes.Normal;
                         if (line.style == "example") t.color = PaperMuted;
-                        NLUi.Size(t, preferredWidth: t.GetPreferredValues(segment).x + 4f);
+                        var size = NLUi.Size(t, preferredWidth: Mathf.Min(480f, t.GetPreferredValues(segment, 480f, 0f).x + 4f), flexibleWidth: 1f);
+                        size.minWidth = 32f;
                     }
                 }
                 var filler = new GameObject("Fill", typeof(RectTransform), typeof(LayoutElement));
