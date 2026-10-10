@@ -694,3 +694,29 @@ Phiên Codex 08/10 dừng giữa chừng vì hết lượt dùng. Các mục cò
 - Mới kiểm thử phần gộp bản lưu cloud bằng unit test; chưa chạy với Supabase thật.
 - WebGL: pointer lock chỉ được cấp sau một lần click vào canvas. Trước đó vẫn kéo chuột phải để xoay camera. Chưa chạy thử bản build WebGL.
 - 438 icon của Codex chỉ dùng phần đã duyệt từng cái (8 + 4). Chưa gắn hàng loạt.
+
+## Cập nhật (2026-10-10 chiều, Claude) — Báo cáo Capstone v4, trailer v2, video demo, kịch bản
+
+Claude nhận tiếp phần Codex đang làm dở: báo cáo, trailer, demo và kịch bản. Các bản nháp của Codex trong `Bao_Cao/` được giữ nguyên, không ghi đè.
+
+| Việc | Người làm | File được phép sửa |
+|---|---|---|
+| Báo cáo v4, trailer v2, demo, kịch bản v2 | Claude | `Bao_Cao/_build_report/**`, `Bao_Cao/_build_video/**`, `TrailerReel/TrailerReel.cs`, `Tests/PlayMode/{TrailerRecordingTests,DemoRecordingTests}.cs` |
+
+### Đã làm
+- **Báo cáo:** `Bao_Cao/NihongoLife_Bao_Cao_Capstone_v4.docx` + `.pdf` (55 trang). File gốc giữ nguyên.
+- **Trailer:** `Bao_Cao/NihongoLife_Trailer_v2.mp4` (84,6 s, 1080p30, −15 LUFS).
+  - Ghi trong game qua `TrailerReel`, gồm 17 cảnh: làm thêm, sổ nhiệm vụ, tàu tới Đảo Midori, làm nông, vật nuôi, bán nông sản.
+  - Lời dẫn tiếng Nhật bằng TTS AI. Nhạc tự tổng hợp.
+  - Trailer cũ vẫn được giữ.
+- **Demo:** `Bao_Cao/NihongoLife_Gameplay_Demo.mp4`.
+  - `DemoRecordingTests.Demo_RecordFrames` (Explicit) vừa ghi hình vừa kiểm tra vòng lặp: thành phố → konbini → ga → Đảo Midori → về Hibari.
+  - Hiện con trỏ và phím vừa bấm. Thuyết minh tiếng Việt bằng TTS kèm phụ đề.
+  - Dựng bằng `Bao_Cao/_build_video/mix_video.py`.
+- **Kịch bản:** `Bao_Cao/NihongoLife_Kich_Ban_Trailer_v2.docx` và `NihongoLife_Kich_Ban_Demo_v2.docx` (+ PDF). Timecode và ảnh lấy từ chính bản ghi.
+- **Sửa Cài đặt:** núm thanh trượt cao 56 px che chữ "Nhạc nền / Hiệu ứng / Độ nhạy chuột". Đã sửa: `SettingsUI.CreateSlider` đặt `handle.sizeDelta.y = 0`.
+- `TrailerRecordingTests.FrameFolder` đọc biến `NL_FRAME_DIR` (ổ C: đầy, ghi khung hình sang D:).
+
+### Lưu ý
+- Ở batchmode, `WaitForEndOfFrame` không bao giờ chạy tiếp. Bộ ghi phải tự gọi `camera.Render()` sau `yield return null`.
+- Mỗi lúc chỉ một tiến trình Unity được mở project. Đã có lần Codex và Claude cùng chạy bản ghi demo; theo quyết định của người dùng, Claude làm tiếp phần video.

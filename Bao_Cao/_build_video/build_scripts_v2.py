@@ -327,7 +327,7 @@ d.add_heading("3.1. Bản tự động (đã dùng cho video này)", 2)
 bullets(d, [
     "Đóng Unity Editor, rồi chạy PlayMode test Explicit **DemoRecordingTests.Demo_RecordFrames** ở chế độ batchmode. Biến NL_DEMO_DIR chọn thư mục khung hình; NL_DEMO_VO trỏ tới tts_demo/durations.tsv để mỗi đoạn kéo dài ít nhất bằng câu thuyết minh của nó.",
     "Test vừa ghi hình vừa kiểm tra: ca konbini phải hoàn thành, ca nông trại phải đủ mục tiêu và được trả lương, vé tàu phải hợp lệ. Nếu một bước hỏng, test báo lỗi thay vì xuất video sai.",
-    "Dựng: **mix_video.py <frames> tts_demo bed_demo.wav NihongoLife_Gameplay_Demo.mp4 --subs --music 0.35**.",
+    "Dựng: **mix_video.py <frames> tts_demo bed_demo.wav NihongoLife_Gameplay_Demo.mp4 --subs --mvol 0.35**.",
 ])
 d.add_heading("3.2. Bản trình diễn trực tiếp khi bảo vệ", 2)
 bullets(d, [

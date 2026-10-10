@@ -383,7 +383,7 @@ namespace NihongoLife.Tests
             _rec.Recording = true;
 
             Beat("back");
-            yield return OrbitAround(6f);
+            yield return Frames(1f); // the platform is narrow: a steady shot, no orbit into the pillars
             yield return Hold();
 
             // ── End ──
@@ -501,8 +501,30 @@ namespace NihongoLife.Tests
             body.enabled = true;
             Physics.SyncTransforms();
             var camera = Object.FindFirstObjectByType<NihongoLife.Cameras.ThirdPersonCameraController>();
-            if (camera != null) camera.SetOrbit(facing.eulerAngles.y, 24f, 4.2f);
+            if (camera != null)
+            {
+                var (yaw, dist) = ClearOrbit(facing.eulerAngles.y, 24f);
+                camera.SetOrbit(yaw, 24f, dist);
+            }
             yield return Frames(0.5f);
+        }
+
+        /// <summary>First orbit (behind the player, then turning to the sides, then closer) whose line from the
+        /// player's head to the camera hits no wall — indoors (the konbini store room) the default orbit can sit
+        /// outside the building.</summary>
+        private (float yaw, float distance) ClearOrbit(float facingYaw, float pitch)
+        {
+            Vector3 head = _player.transform.position + Vector3.up * 1.5f;
+            foreach (float dist in new[] { 4.2f, 3.0f, 2.2f })
+                foreach (float turn in new[] { 0f, 35f, -35f, 70f, -70f, 110f, -110f })
+                {
+                    float yaw = facingYaw + turn;
+                    Vector3 dir = Quaternion.Euler(pitch, yaw, 0f) * Vector3.back;
+                    bool blocked = Physics.RaycastAll(head, dir, dist + 0.4f, ~0, QueryTriggerInteraction.Ignore)
+                        .Any(h => !h.collider.transform.IsChildOf(_player.transform));
+                    if (!blocked) return (yaw, dist);
+                }
+            return (facingYaw, 2.2f);
         }
 
         private IEnumerator Press(GameInputId id, string key)
