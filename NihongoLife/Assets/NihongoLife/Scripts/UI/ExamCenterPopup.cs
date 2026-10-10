@@ -181,7 +181,14 @@ namespace NihongoLife.UI
             card.transform.SetParent(_listRoot, false);
             card.GetComponent<LayoutElement>().preferredHeight = 154f;
             card.GetComponent<Image>().color = new Color(0.09f, 0.16f, 0.22f, 1f);
-            string skill = test.skill switch { "listening" => "Listening · 40 câu · 4 phần", "reading" => "Reading", "writing" => "Writing", "speaking" => "Speaking", _ => test.skill };
+            int questions = test.parts?.SelectMany(p => p.groups ?? System.Array.Empty<NihongoLife.Exam.Ielts.IeltsGroup>()).Select(g => g.to).DefaultIfEmpty(0).Max() ?? 0;
+            int partCount = test.parts?.Length ?? 0;
+            string skill = test.skill switch
+            {
+                "listening" => $"Listening · {questions} câu · {partCount} phần",
+                "reading" => $"Academic Reading · {questions} câu · {partCount} bài đọc · {test.timeLimitMinutes} phút",
+                "writing" => "Writing", "speaking" => "Speaking", _ => test.skill,
+            };
             AddText(card.transform, test.title, 22f, 22f, 14f, 640f, 32f, TextAlignmentOptions.MidlineLeft, FontStyles.Bold, false, Gold);
             AddText(card.transform, $"{skill}   ·   {(test.localOnly ? "Bản local — chỉ để kiểm thử trên máy này, không phát hành" : "")}", 15f, 22f, 50f, 640f, 24f, TextAlignmentOptions.MidlineLeft, FontStyles.Normal, false, Muted);
             var history = NihongoLife.Exam.Ielts.IeltsAttemptStore.LoadHistory().entries.FindAll(e => e.testId == test.id);
@@ -189,7 +196,9 @@ namespace NihongoLife.UI
             string best = history.Count > 0 ? $"Tốt nhất: {history.Max(h => h.rawScore)}/{history[0].maxScore} · band ước tính {history.Max(h => h.band):0.0}  ({history.Count} lần)" : "Chưa làm lần nào";
             string progress = saved != null && !saved.submitted ? $"   ·   Đang làm dở ({(saved.mode == "exam" ? "thi thử" : "luyện tập")}, {saved.responses.Count} câu)" : "";
             AddText(card.transform, best + progress, 14f, 22f, 86f, 640f, 24f, TextAlignmentOptions.MidlineLeft, FontStyles.Normal, false, new Color(0.35f, 0.82f, 0.72f, 1f));
-            AddText(card.transform, "Có audio · nộp bài để chấm theo đáp án gốc · xem lại từng câu", 13f, 22f, 116f, 640f, 22f, TextAlignmentOptions.MidlineLeft, FontStyles.Italic, false, Muted);
+            string how = test.skill == "listening" ? "Có audio · thi thử: nghe một lần, có 2 phút kiểm tra"
+                       : test.skill == "reading" ? "Bài đọc bên cạnh câu hỏi · thi thử: đếm ngược, hết giờ tự nộp" : "Theo cấu trúc đề thật";
+            AddText(card.transform, how + " · chấm theo đáp án gốc · xem lại từng câu", 13f, 22f, 116f, 640f, 22f, TextAlignmentOptions.MidlineLeft, FontStyles.Italic, false, Muted);
 
             // Buttons in a right-hand column, clear of the text (same column as the other exam cards).
             float y = 10f;

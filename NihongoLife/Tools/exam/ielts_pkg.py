@@ -70,13 +70,27 @@ def _paragraphs(lines, fixes=None, labelled=False, short=0.82):
     paras, cur = [], []
     has_breaks = "" in lines
     width = max((len(l) for l in lines), default=80)
+    fresh = True  # cur holds the start of a paragraph that began after a layout break
     for line in lines:
         if line == "":
-            if cur and not (labelled and len(cur) == 1):
+            if cur and not (labelled and len(cur) == 1 and cur[0].startswith("<b>")):
                 paras.append(" ".join(cur))
                 cur = []
+            fresh = True
             continue
         if labelled and re.fullmatch(r"[A-Z]", line):
+            # The margin label is often read after the first line of its paragraph: pull that line back in — when it
+            # opened a fresh block, or when it starts a sentence right after a line that ended one.
+            first = cur[-1] if cur else ""
+            starts_sentence = bool(first) and first[0].isupper() and not first.startswith("<b>") and not first.startswith("* ")
+            if starts_sentence and ((fresh and len(cur) == 1) or (len(cur) >= 2 and re.search(r"[.?!'’\")]$", cur[-2]))):
+                rest = cur[:-1]
+                if rest:
+                    paras.append(" ".join(rest))
+                cur = [f"<b>{line}</b>  ", first]
+                fresh = False
+                continue
+            fresh = False
             if cur:
                 paras.append(" ".join(cur))
             cur = [f"<b>{line}</b>  "]
@@ -87,11 +101,51 @@ def _paragraphs(lines, fixes=None, labelled=False, short=0.82):
             cur = []
     if cur:
         paras.append(" ".join(cur))
+    # Footnotes ("* word: …") and source credits repeat at the foot of every page: keep one copy, at the end.
+    def is_note(p):
+        return p.startswith("* ") or p.startswith("This text is taken") or p.startswith("Source:")
+    body = [p for p in paras if not is_note(p)]
+    notes = []
+    for p in paras:
+        if is_note(p) and not any(n[:40] == p[:40] for n in notes):
+            notes.append(p)
+    paras = body + notes
     text = "\n\n".join(re.sub(r"(?<=\S) {2,}(?=\S)", " ", p) for p in paras)
     text = re.sub(r"(\w)- (\w)", r"\1\2", text)  # words hyphenated across lines
     for a, b in fixes.items():
         text = text.replace(a, b)
     return text.strip()
+
+
+AUDIO_DIR = os.path.join(ROOT, "Docs", "Exam", "IELTS", "CAMBRIDGE 11-19-20261009T150315Z-1-001", "CAMBRIDGE 11-19", "AUDIO LISTENING")
+
+
+def audio(book_number, track, package, end=None):
+    """Copies one Cambridge track (e.g. "C14T2S1") into the package as OGG Vorbis (mono, 32 kHz, q4) → "audio/<track>.ogg".
+    `end` (seconds) trims a track that runs on into the next test (checked by listening / speech recognition)."""
+    import subprocess, tempfile, zipfile
+    out_dir = os.path.join(IELTS, package, "audio")
+    os.makedirs(out_dir, exist_ok=True)
+    out = os.path.join(out_dir, track + ".ogg")
+    if not os.path.exists(out):
+        archive = next(os.path.join(AUDIO_DIR, f) for f in os.listdir(AUDIO_DIR) if f.lower() == f"audio cam {book_number}.zip")
+        with zipfile.ZipFile(archive) as z, tempfile.TemporaryDirectory() as tmp:
+            member = next(n for n in z.namelist() if os.path.basename(n).upper().startswith(track.upper()))
+            src = z.extract(member, tmp)
+            trim = ["-t", str(end)] if end else []
+            subprocess.run(["ffmpeg", "-y", "-v", "error", "-i", src, *trim, "-ac", "1", "-ar", "32000", "-c:a", "libvorbis", "-q:a", "4", out], check=True)
+    return f"audio/{track}.ogg"
+
+
+def picture(book, page, box, package, name):
+    """Crops a plan / diagram from the page image (box = fractions l, t, r, b) into the package → "images/<name>.png"."""
+    from PIL import Image
+    out_dir = os.path.join(IELTS, package, "images")
+    os.makedirs(out_dir, exist_ok=True)
+    im = Image.open(os.path.join(SOURCES, book, f"p{page:03d}.png")).convert("RGB")
+    w, h = im.size
+    im.crop((int(box[0] * w), int(box[1] * h), int(box[2] * w), int(box[3] * h))).save(os.path.join(out_dir, name + ".png"))
+    return f"images/{name}.png"
 
 
 def opts(*pairs):

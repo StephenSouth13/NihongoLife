@@ -640,6 +640,35 @@ namespace NihongoLife.UI
             if (!string.IsNullOrWhiteSpace(group.instruction)) PaperText(parent, Emphasise(group.instruction), 17f, FontStyles.Italic);
             string limit = LimitText(group.limit);
             if (limit != null) PaperText(parent, limit, 17f, FontStyles.Italic);
+            if (!string.IsNullOrWhiteSpace(group.image)) GroupImage(parent, group.image);
+        }
+
+        private readonly Dictionary<string, Texture2D> _images = new();
+
+        /// <summary>A plan / map / diagram that belongs to the questions (Listening "label the plan", Reading diagrams).
+        /// Read from the package folder at runtime — never imported into the project.</summary>
+        private void GroupImage(RectTransform parent, string relative)
+        {
+            string path = System.IO.Path.GetFullPath(System.IO.Path.Combine(_package.Folder, relative));
+            if (!_images.TryGetValue(path, out var texture))
+            {
+                if (!System.IO.File.Exists(path)) { PaperText(parent, $"(Thiếu hình: {relative})", 15f, FontStyles.Italic); return; }
+                texture = new Texture2D(2, 2, TextureFormat.RGBA32, false);
+                texture.LoadImage(System.IO.File.ReadAllBytes(path));
+                _images[path] = texture;
+            }
+            const float width = 600f;
+            float height = width * texture.height / Mathf.Max(1f, texture.width);
+            var holder = new GameObject("GroupImage", typeof(RectTransform), typeof(LayoutElement)).GetComponent<RectTransform>();
+            holder.SetParent(parent, false);
+            holder.GetComponent<LayoutElement>().preferredHeight = height + 8f;
+            var image = new GameObject("Picture", typeof(RectTransform), typeof(RawImage)).GetComponent<RawImage>();
+            image.transform.SetParent(holder, false);
+            image.texture = texture;
+            image.raycastTarget = false;
+            var rect = image.rectTransform;
+            rect.anchorMin = rect.anchorMax = new Vector2(0.5f, 0.5f);
+            rect.sizeDelta = new Vector2(width, height);
         }
 
         private static string LimitText(string limit) => limit switch

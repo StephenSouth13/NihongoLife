@@ -50,6 +50,7 @@ namespace NihongoLife.Exam.Ielts
         public string heading;
         public string stem;           // mcq_multi question / writing task / speaking prompt
         public string optionsTitle;
+        public string image;          // plan / map / diagram inside the package (e.g. "images/plan.png"), loaded at runtime
         public int minWords;          // writing_task
         public int minutes;           // writing_task / speaking_part guidance
         public IeltsLine[] lines;

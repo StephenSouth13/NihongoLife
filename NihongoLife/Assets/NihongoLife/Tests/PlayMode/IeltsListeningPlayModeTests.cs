@@ -48,7 +48,7 @@ namespace NihongoLife.Tests
             yield return null;
             Invoke(center, "SelectTab", NihongoLife.Exam.ExamType.Ielts);
             yield return null;
-            var card = Object.FindObjectsByType<RectTransform>(FindObjectsSortMode.None).FirstOrDefault(r => r.name == "IeltsLocalCard");
+            var card = PackageCard(package);
             Assert.NotNull(card, "The local IELTS package appears in the IELTS tab.");
             Capture("00_exam_center");
             ClickLabel(card, "Luyện tập");
@@ -114,7 +114,7 @@ namespace NihongoLife.Tests
             yield return null;
             Invoke(center, "SelectTab", NihongoLife.Exam.ExamType.Ielts);
             yield return null;
-            card = Object.FindObjectsByType<RectTransform>(FindObjectsSortMode.None).First(r => r.name == "IeltsLocalCard");
+            card = PackageCard(package);
             ClickLabel(card, "Tiếp tục");
             yield return new WaitForSecondsRealtime(0.5f);
             Assert.IsTrue(ui.IsOpen);
@@ -201,6 +201,11 @@ namespace NihongoLife.Tests
             }
             yield return null;
         }
+
+        /// <summary>The Exam Center card of this package (there is one card per local package).</summary>
+        private static RectTransform PackageCard(IeltsLibrary.Package package) =>
+            Object.FindObjectsByType<RectTransform>(FindObjectsSortMode.None).FirstOrDefault(r => r.name == "IeltsLocalCard" &&
+                r.GetComponentsInChildren<TextMeshProUGUI>().Any(t => t.text.Contains(package.Test.title)));
 
         private static RectTransform Root(IeltsTestUI ui) => (RectTransform)ui.GetType().GetField("_root", BindingFlags.Instance | BindingFlags.NonPublic).GetValue(ui);
 
