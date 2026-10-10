@@ -372,7 +372,7 @@ namespace NihongoLife.World
         {
             Stop stop = System.Array.Find(Line, s => s.Id == stopId);
             if (stop == null) return;
-            ShowArrivalBanner(stop);
+            if (stop.Scene != WorldLocationCatalog.MidoriIslandScene) ShowArrivalBanner(stop); // the island shows its own welcome
             var scenario = ScenarioManager.Instance;
             if (stopId != "minato" || scenario == null || scenario.CurrentScenario == null || scenario.CurrentScenario.id != ScenarioId) return;
             scenario.CompleteObjective("obj_board");

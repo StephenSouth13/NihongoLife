@@ -141,7 +141,7 @@ namespace NihongoLife.Tests
                 string model = plot.GetComponentsInChildren<Transform>().FirstOrDefault(t => t.name.StartsWith(crop.model + "_"))?.name;
                 Note($"stage {stage}: phase={plot.CurrentPhase} model={model}");
                 Assert.AreEqual($"{crop.model}_{stage + 1}", model, "The crop model grows with each stage.");
-                if (stage < 3) { Assert.AreEqual(FarmPlot.Phase.NeedsWater, plot.CurrentPhase); ClickText("FarmCard", "Tưới nước"); }
+                if (stage < 3) { Assert.AreEqual(FarmPlot.Phase.NeedsWater, plot.CurrentPhase); yield return new WaitForSecondsRealtime(0.3f); ClickText("FarmCard", "Tưới nước"); }
                 if (stage == 2) { yield return new WaitForSecondsRealtime(0.3f); CaptureWorld("10_crop_stage3", plot.transform); }
             }
             Assert.AreEqual(FarmPlot.Phase.Ready, plot.CurrentPhase);
@@ -281,7 +281,7 @@ namespace NihongoLife.Tests
             {
                 _player = Object.FindFirstObjectByType<PlayerController>();
                 _flow = GameServices.TryGet(out SceneFlowController f) ? f : null;
-                if (_player != null && _flow != null && !_flow.IsLoading && SceneManager.GetActiveScene().name == WorldLocationCatalog.MidoriIslandScene && t > 3f) break;
+                if (_player != null && _flow != null && !_flow.IsLoading && !StandaloneZoneBootstrap.IsBooting && IslandRuntime.Active != null && SceneManager.GetActiveScene().name == WorldLocationCatalog.MidoriIslandScene && t > 3f) break;
                 yield return null;
             }
             Assert.AreEqual(WorldLocationCatalog.MidoriIslandScene, SceneManager.GetActiveScene().name, "Play in 60_MidoriIsland boots through the city and enters the island.");
@@ -291,6 +291,10 @@ namespace NihongoLife.Tests
             int suns = Object.FindObjectsByType<Light>(FindObjectsSortMode.None).Count(l => l.type == LightType.Directional && l.enabled && l.gameObject.activeInHierarchy);
             Assert.AreEqual(1, suns, "Exactly one sun lights the island.");
 
+            for (float t = 0f; t < 20f && (Object.FindObjectsByType<FarmPlot>(FindObjectsSortMode.None).Length < 6 || Object.FindObjectsByType<IslandAnimal>(FindObjectsSortMode.None).Length < 5); t += Time.unscaledDeltaTime) yield return null;
+            Note($"scenes: {string.Join(", ", Enumerable.Range(0, SceneManager.sceneCount).Select(i => SceneManager.GetSceneAt(i)).Select(sc => sc.name + (sc.isLoaded ? "" : "(loading)")))} active={SceneManager.GetActiveScene().name}");
+            Note($"island objects: plots={Object.FindObjectsByType<FarmPlot>(FindObjectsSortMode.None).Length} animals={string.Join(",", Object.FindObjectsByType<IslandAnimal>(FindObjectsSortMode.None).Select(x => x.AnimalId))} counters={Object.FindObjectsByType<IslandShopCounter>(FindObjectsSortMode.None).Length} spots={Object.FindObjectsByType<IslandWordSpot>(FindObjectsSortMode.None).Length}");
+            WriteLog("island-perf.txt");
             // Walk test: every key place is reachable on foot from the station along the paths (capsule moves, colliders block).
             var body = _player.GetComponent<CharacterController>();
             Vector3 O = new Vector3(-1200f, 0f, 0f);
@@ -428,7 +432,7 @@ namespace NihongoLife.Tests
         private void ClickText(string window, string label)
         {
             var button = Window(window).GetComponentsInChildren<Button>().FirstOrDefault(b => b.GetComponentInChildren<TextMeshProUGUI>()?.text.Contains(label) == true);
-            Assert.NotNull(button, $"Button '{label}' in {window}");
+            Assert.NotNull(button, $"Button '{label}' in {window}; buttons: " + string.Join(" | ", Window(window).GetComponentsInChildren<Button>().Select(x => x.name + ":" + x.GetComponentInChildren<TextMeshProUGUI>()?.text)) + "; texts: " + string.Join(" | ", Window(window).GetComponentsInChildren<TextMeshProUGUI>().Select(x => x.text)));
             button.onClick.Invoke();
             var feedback = Window(window).GetComponentsInChildren<TextMeshProUGUI>().Select(t => t.text).LastOrDefault(t => !string.IsNullOrEmpty(t));
             Note($"click {window}/'{label}' → {feedback}");

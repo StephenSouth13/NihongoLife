@@ -45,13 +45,17 @@ namespace NihongoLife.Island
             ui._font = NLUi.ResolveFont();
             ui._canvas = NLUi.CreateCanvas("IslandCanvas", 520, go.transform);
             ui._toasts = Column((RectTransform)ui._canvas.transform, "Toasts", 8f);
-            NLUi.Anchor(ui._toasts, new Vector2(1f, 1f), new Vector2(-28f, -120f), new Vector2(420f, 0f));
+            // Left column under the quest panel: never under the right-hand farm / animal cards.
+            NLUi.Anchor(ui._toasts, new Vector2(0f, 1f), new Vector2(28f, -215f), new Vector2(400f, 0f));
+            ui._toasts.pivot = new Vector2(0f, 1f);
             NLUi.FitContent(ui._toasts);
             return ui;
         }
 
         private void OnDestroy()
         {
+            IslandState.Changed -= RefreshToolbar;
+            IslandLanguage.Changed -= OnLanguage;
             if (_instance == this) _instance = null;
             LockPlayer(false, force: true);
         }
@@ -68,6 +72,7 @@ namespace NihongoLife.Island
 
         private RectTransform Card(string name, Vector2 anchor, Vector2 position, float width)
         {
+            if (name != "Welcome") { Discard(_welcome); _welcome = null; } // the welcome banner never sits over a window
             var card = NLUi.Panel(_canvas.transform, name, Cream, new RectOffset(0, 0, 0, 18), 0f);
             NLUi.Anchor(card, anchor, position, new Vector2(width, 0f));
             NLUi.FitContent(card);
@@ -131,8 +136,8 @@ namespace NihongoLife.Island
             if (!string.IsNullOrEmpty(reading)) Text(row, reading, size * 0.55f, Muted, FontStyles.Italic);
             var line = NLUi.Group(row, "Meaning", false, 8f, TextAnchor.MiddleLeft, false);
             TextMeshProUGUI meaning = null;
-            var reveal = Btn(line, "Nghĩa?", null, Cream2, Green, 30f, 13f);
-            NLUi.Size(reveal, 86f, 30f);
+            var reveal = Btn(line, "<b>Nghĩa?</b>", null, GreenSoft, Green, 30f, 13.5f);
+            NLUi.Size(reveal, 92f, 30f);
             meaning = Text(line, "", 15f, Muted);
             reveal.onClick.AddListener(() =>
             {
@@ -165,10 +170,18 @@ namespace NihongoLife.Island
             Cursor.visible = true;
         }
 
+        /// <summary>Hides a window at once and destroys it at the end of the frame (rebuilt windows never overlap their old copy).</summary>
+        private void Discard(RectTransform window)
+        {
+            if (window == null) return;
+            window.gameObject.SetActive(false);
+            Destroy(window.gameObject);
+        }
+
         private void Close(ref RectTransform window)
         {
             if (window == null) return;
-            Destroy(window.gameObject);
+            Discard(window);
             window = null;
             LockPlayer(false);
         }
@@ -215,7 +228,7 @@ namespace NihongoLife.Island
         public static void ShowWelcome()
         {
             var ui = Instance;
-            if (ui._welcome != null) Destroy(ui._welcome.gameObject);
+            ui.Discard(ui._welcome);
             var card = ui.Card("Welcome", new Vector2(0.5f, 1f), new Vector2(0f, -110f), 720f);
             card.pivot = new Vector2(0.5f, 1f);
             var head = NLUi.Panel(card, "Head", ui.WelcomeGreen(), new RectOffset(28, 28, 18, 16), 2f);
@@ -248,15 +261,13 @@ namespace NihongoLife.Island
 
         private void BuildToolbar()
         {
-            if (_toolbar != null) Destroy(_toolbar.gameObject);
+            if (_canvas == null) return;
+            Discard(_toolbar);
             _toolbar = NLUi.Panel(_canvas.transform, "IslandToolbar", Cream, new RectOffset(16, 16, 8, 8), 10f, vertical: false);
             NLUi.Anchor(_toolbar, new Vector2(0.5f, 1f), new Vector2(0f, -18f), new Vector2(0f, 60f));
             _toolbar.pivot = new Vector2(0.5f, 1f);
             ((HorizontalLayoutGroup)_toolbar.GetComponent<HorizontalOrVerticalLayoutGroup>()).childForceExpandWidth = false;
             NLUi.FitContent(_toolbar, width: true, height: false);
-            var title = Text(_toolbar, "<b>みどりじま</b>  <size=75%><color=#6B7566>Đảo Xanh</color></size>", 19f, Green);
-            title.textWrappingMode = TextWrappingModes.NoWrap;
-            NLUi.Size(title, 190f);
             foreach (var tool in IslandCatalog.Load().tools)
             {
                 bool owned = IslandEconomy.Owned(tool.id) > 0;
@@ -266,14 +277,14 @@ namespace NihongoLife.Island
                 if (!owned) icon.color = new Color(1f, 1f, 1f, 0.35f);
                 var label = Text(slot, IslandLanguage.Primary(tool.word), 15f, owned ? Ink : Muted);
                 label.textWrappingMode = TextWrappingModes.NoWrap;
-                NLUi.Size(label, 104f);
+                NLUi.Size(label, 78f);
             }
             var lang = Btn(_toolbar, $"Học: <b>{IslandLanguage.LanguageLabel}</b>  ⇄", ToggleLanguage, Green, Color.white, 44f, 16f);
-            NLUi.Size(lang, 170f, 44f);
-            var book = Btn(_toolbar, $"Sổ tay  ({IslandState.Record.words.Count} từ)", OpenProgress, Cream2, Green, 44f, 16f);
-            NLUi.Size(book, 160f, 44f);
+            NLUi.Size(lang, 160f, 44f);
+            var book = Btn(_toolbar, $"Sổ tay  ({DistinctWords().Count} từ)", OpenProgress, Cream2, Green, 44f, 16f);
+            NLUi.Size(book, 150f, 44f);
             var shop = Btn(_toolbar, "Cửa hàng · P", OpenShop, Gold, new Color(0.18f, 0.12f, 0.02f), 44f, 16f);
-            NLUi.Size(shop, 140f, 44f);
+            NLUi.Size(shop, 132f, 44f);
         }
 
         public static void ToggleLanguage()
@@ -308,10 +319,11 @@ namespace NihongoLife.Island
 
         private void BuildFarm(string feedback, bool error)
         {
-            if (_farmCard != null) Destroy(_farmCard.gameObject);
+            Discard(_farmCard);
             var plot = _plot;
             var catalog = IslandCatalog.Load();
             var phase = plot.CurrentPhase;
+            _lastPhase = phase; // the card always reflects this phase; Update rebuilds only on a real change
             var crop = plot.Crop;
             _farmCard = Card("FarmCard", new Vector2(1f, 0.5f), new Vector2(-28f, 20f), 460f);
             Header(_farmCard, $"{(IslandLanguage.Target == TargetLanguage.English ? "Field" : "はたけ")} {plot.Number}", "Ô RUỘNG · " + catalog.places.farm.ja, CloseFarm);
@@ -438,7 +450,8 @@ namespace NihongoLife.Island
             if (at == Vector3.zero || shader == null) return;
             var puff = new GameObject("FarmPuff").AddComponent<ParticleSystem>();
             puff.transform.position = at + Vector3.up * 0.3f;
-            var main = puff.main; main.startLifetime = 0.8f; main.startSpeed = 1.2f; main.startSize = 0.18f; main.duration = 0.4f; main.loop = false;
+            puff.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
+            var main = puff.main; main.startLifetime = 0.8f; main.startSpeed = 1.2f; main.startSize = new ParticleSystem.MinMaxCurve(0.05f, 0.11f); main.gravityModifier = 1.2f; main.duration = 0.4f; main.loop = false;
             main.startColor = new Color(0.6f, 0.45f, 0.3f, 0.9f);
             var emission = puff.emission; emission.rateOverTime = 0f; emission.SetBursts(new[] { new ParticleSystem.Burst(0f, 18) });
             var shape = puff.shape; shape.shapeType = ParticleSystemShapeType.Hemisphere; shape.radius = 0.5f;
@@ -499,7 +512,7 @@ namespace NihongoLife.Island
 
         private void BuildAnimal(string feedback, bool error)
         {
-            if (_animalCard != null) Destroy(_animalCard.gameObject);
+            Discard(_animalCard);
             var def = _animal.Def;
             var verbs = IslandCatalog.Load().verbs;
             _animalCard = Card("AnimalCard", new Vector2(1f, 0.5f), new Vector2(-28f, 20f), 440f);
@@ -604,7 +617,7 @@ namespace NihongoLife.Island
             if (result == IslandEconomy.Result.Ok)
             {
                 IslandState.Discover((entry.Sell ? "verb:" + verbs.sell.en : "verb:" + verbs.buy.en));
-                IslandState.Discover("item:" + entry.ItemId);
+                IslandState.Discover(WordKey(entry.ItemId));
                 if (entry.Sell && IslandEconomy.Owned(entry.ItemId) == 0) ui._shopSelected = null;
             }
             if (ui._shop != null) ui.BuildShop(message, result != IslandEconomy.Result.Ok);
@@ -613,12 +626,14 @@ namespace NihongoLife.Island
 
         private void BuildShop(string feedback, bool error)
         {
-            if (_shop != null) Destroy(_shop.gameObject);
+            Discard(_shop);
             var places = IslandCatalog.Load().places;
             _shop = Card("IslandShop", new Vector2(0.5f, 0.5f), Vector2.zero, 1120f);
             var header = Header(_shop, places.shop.ja + "  ·  " + places.shop.en, "CỬA HÀNG MIDORI", CloseShop);
             var wallet = NLUi.Pill(header, "Wallet", $"¥{IslandEconomy.Yen:N0}", _font, Gold, new Color(0.18f, 0.12f, 0.02f), 18f);
-            wallet.GetComponent<LayoutElement>().ignoreLayout = true;
+            var walletLayout = wallet.GetComponent<LayoutElement>();
+            if (walletLayout == null) walletLayout = wallet.gameObject.AddComponent<LayoutElement>();
+            walletLayout.ignoreLayout = true;
             NLUi.Anchor(wallet, new Vector2(1f, 0.5f), new Vector2(-70f, 0f), new Vector2(130f, 36f));
 
             var main = NLUi.Group(_shop, "Main", false, 18f, TextAnchor.UpperLeft, false);
@@ -722,13 +737,13 @@ namespace NihongoLife.Island
 
         private void BuildBook()
         {
-            if (_book != null) Destroy(_book.gameObject);
+            Discard(_book);
             var record = IslandState.Record;
             _book = Card("IslandNotebook", new Vector2(0.5f, 0.5f), Vector2.zero, 960f);
             Header(_book, "Sổ tay Đảo Xanh", "ノート · PROGRESS", CloseProgress);
             var body = Body(_book, 14f);
             var stats = NLUi.Group(body, "Stats", false, 12f, TextAnchor.MiddleLeft, true);
-            foreach (var (n, label) in new[] { (record.harvested.ToString(), "lần thu hoạch"), (record.sold.ToString(), "nông sản đã bán"), ($"¥{record.earned:N0}", "tiền kiếm được"), (record.words.Count.ToString(), "từ đã học"), (record.animalsMet.Count + "/5", "con vật quen") })
+            foreach (var (n, label) in new[] { (record.harvested.ToString(), "lần thu hoạch"), (record.sold.ToString(), "nông sản đã bán"), ($"¥{record.earned:N0}", "tiền kiếm được"), (DistinctWords().Count.ToString(), "từ đã học"), (record.animalsMet.Count + "/5", "con vật quen") })
             {
                 var tile = NLUi.Panel(stats, "Stat", Cream2, new RectOffset(14, 14, 10, 10), 0f);
                 Text(tile, n, 28f, Green, FontStyles.Bold);
@@ -741,7 +756,7 @@ namespace NihongoLife.Island
             grid.cellSize = new Vector2(176f, 62f); grid.spacing = new Vector2(8f, 8f);
             grid.constraint = GridLayoutGroup.Constraint.FixedColumnCount; grid.constraintCount = 5;
             gridGo.GetComponent<ContentSizeFitter>().verticalFit = ContentSizeFitter.FitMode.PreferredSize;
-            var words = record.words.Select(Lookup).Where(w => w != null).Take(25).ToList();
+            var words = DistinctWords().Take(25).ToList();
             if (words.Count == 0) Text(body, "Chưa có từ nào — trồng cây, cho thú ăn và mua sắm để học từ mới.", 15f, Muted);
             foreach (var w in words)
             {
@@ -766,6 +781,26 @@ namespace NihongoLife.Island
                 Text(tile, (done ? "<color=#2E6B45>✓</color> " : "<color=#9AA095>○</color> ") + def.Ja, 14.5f, done ? Ink : Muted, FontStyles.Bold);
                 Text(tile, def.Vi, 12.5f, Muted);
             }
+        }
+
+        /// <summary>Learned words without duplicates (a seed, its crop and its produce are one word).</summary>
+        private static List<IslandWord> DistinctWords()
+        {
+            var seen = new HashSet<IslandWord>();
+            var list = new List<IslandWord>();
+            foreach (var key in IslandState.Record.words)
+            {
+                var word = Lookup(key);
+                if (word != null && seen.Add(word)) list.Add(word);
+            }
+            return list;
+        }
+
+        /// <summary>Vocabulary key for a shop item: seeds and produce teach their crop's word.</summary>
+        private static string WordKey(string itemId)
+        {
+            var crop = IslandCatalog.Load().crops.FirstOrDefault(c => c.SeedItemId == itemId || c.ProduceItemId == itemId);
+            return crop != null ? "crop:" + crop.id : "item:" + itemId;
         }
 
         private static IslandWord Lookup(string key)
@@ -800,7 +835,7 @@ namespace NihongoLife.Island
         public static IEnumerator TravelScreen(string from, string to, float seconds)
         {
             var ui = Instance;
-            if (ui._travel != null) Destroy(ui._travel.gameObject);
+            ui.Discard(ui._travel);
             var root = new GameObject("TravelScreen", typeof(RectTransform), typeof(Image)).GetComponent<RectTransform>();
             root.SetParent(ui._canvas.transform, false);
             NLUi.Stretch(root);

@@ -120,7 +120,7 @@ namespace NihongoLife.EditorTools
                         var plant = (GameObject)PrefabUtility.InstantiatePrefab(model);
                         PrefabUtility.UnpackPrefabInstance(plant, PrefabUnpackMode.Completely, InteractionMode.AutomatedAction);
                         plant.transform.SetParent(root.transform, false);
-                        plant.transform.localScale = Vector3.one * scale;
+                        plant.transform.localScale *= scale;
                         plant.transform.localPosition = new Vector3(i % 2 == 0 ? -0.6f : 0.6f, 0f, i < 2 ? -0.6f : 0.6f);
                         plant.transform.localRotation = Quaternion.Euler(0f, i * 83f, 0f);
                         foreach (var c in plant.GetComponentsInChildren<Collider>(true)) Object.DestroyImmediate(c);
@@ -256,18 +256,22 @@ namespace NihongoLife.EditorTools
             for (int i = 0; i < 13; i++)
                 Model(station, Trains, "RailwayTrack_Straight", "Track_" + i, new Vector3(-95f + i * 10f, 0.1f, -34.6f), new Vector3(10f, 0.25f, 2.4f), 0f, false, false);
             // Waiting train back to Hibari (two cars).
-            Model(station, Trains, "HighSpeed_Front", "Train_Front", new Vector3(8.5f, 0.2f, -34.6f), new Vector3(13f, 3.3f, 3.1f), 90f, true, true);
-            Model(station, Trains, "HighSpeed_Wagon", "Train_Wagon", new Vector3(-4.8f, 0.2f, -34.6f), new Vector3(13f, 3.3f, 3.1f), 90f, true, true);
+            Model(station, Trains, "HighSpeed_Front", "Train_Front", new Vector3(8.5f, 0.2f, -34.6f), new Vector3(13f, 3.3f, 3.1f), 0f, true, true);
+            Model(station, Trains, "HighSpeed_Wagon", "Train_Wagon", new Vector3(-4.8f, 0.2f, -34.6f), new Vector3(13f, 3.3f, 3.1f), 0f, true, true);
 
             // Canopy.
             foreach (float x in new[] { -10f, -3.5f, 3.5f, 10f })
-                Block(station, "CanopyPost_" + x, new Vector3(x, 1.7f, -28.4f), new Vector3(0.25f, 3.0f, 0.25f), _stationPost, true);
-            Block(station, "CanopyRoof", new Vector3(0f, 3.3f, -29.8f), new Vector3(24f, 0.22f, 4.6f), _stationRoof, false);
-            Block(station, "CanopyFascia", new Vector3(0f, 3.05f, -27.5f), new Vector3(24f, 0.5f, 0.12f), _stationPost, false);
-            Text(station, "StationName_JA", "みどりじま", new Vector3(0f, 3.12f, -27.42f), 180f, 0.34f, new Color(0.13f, 0.32f, 0.22f), 8f);
-            Text(station, "StationName_EN", "MIDORI ISLAND · Đảo Xanh", new Vector3(5.6f, 3.08f, -27.42f), 180f, 0.15f, new Color(0.3f, 0.4f, 0.32f), 6f);
-            Text(station, "StationName_Platform", "みどりじま  ·  Midori Island\n<size=55%>ひばりゆき  →  Hibari</size>", new Vector3(0f, 2.75f, -32.0f), 0f, 0.26f, new Color(0.13f, 0.32f, 0.22f), 8f);
-            Block(station, "PlatformBoard", new Vector3(0f, 2.75f, -31.92f), new Vector3(5.2f, 0.95f, 0.06f), _stationPost, false);
+                Block(station, "CanopyPost_" + x, new Vector3(x, 2.4f, -28.0f), new Vector3(0.25f, 4.4f, 0.25f), _stationPost, true);
+            Block(station, "CanopyRoof", new Vector3(0f, 4.7f, -29.8f), new Vector3(24f, 0.22f, 4.6f), _stationRoof, false);
+            Block(station, "CanopyFascia", new Vector3(0f, 4.4f, -27.5f), new Vector3(24f, 0.6f, 0.12f), _stationPost, false);
+            Text(station, "StationName_JA", "みどりじま", new Vector3(0f, 4.47f, -27.42f), 180f, 0.34f, new Color(0.13f, 0.32f, 0.22f), 8f);
+            Text(station, "StationName_EN", "MIDORI ISLAND · Đảo Xanh", new Vector3(-5.6f, 4.43f, -27.42f), 180f, 0.15f, new Color(0.3f, 0.4f, 0.32f), 6f);
+            // Station name boards hang between the north posts, facing passengers who step off the train.
+            foreach (float x in new[] { -6.75f, 6.75f })
+            {
+                Block(station, "NameBoard_" + x, new Vector3(x, 3.1f, -27.9f), new Vector3(3.2f, 0.8f, 0.06f), _stationPost, false);
+                Text(station, "NameBoard_Text_" + x, "みどりじま\n<size=50%>Midori Island · ひばり ←</size>", new Vector3(x, 3.12f, -27.95f), 0f, 0.24f, new Color(0.13f, 0.32f, 0.22f), 3.1f);
+            }
             foreach (float x in new[] { -6.5f, 6.5f })
             {
                 Block(station, "Bench_" + x, new Vector3(x, 0.45f, -28.6f), new Vector3(2.2f, 0.12f, 0.6f), _signWood, true);
@@ -286,7 +290,6 @@ namespace NihongoLife.EditorTools
 
             var door = Trigger(station, "TrainDoorInteraction", new Vector3(-4.8f, 1.1f, -31.7f), new Vector3(3f, 2.2f, 1.6f));
             door.AddComponent<IslandTrainDoor>();
-            Text(station, "DoorHint", "ひばりゆき  <size=60%>Hibari</size>", new Vector3(-4.8f, 2.55f, -33.05f), 0f, 0.2f, new Color(0.98f, 0.92f, 0.7f), 3f);
 
             var spawn = new GameObject("Spawn_" + WorldLocationCatalog.MidoriStation);
             spawn.transform.SetParent(station, false);
@@ -358,7 +361,7 @@ namespace NihongoLife.EditorTools
                 float a = (i + 0.5f) * Mathf.PI * 2f / pieces;
                 Vector3 p = c + new Vector3(Mathf.Cos(a), 0f, Mathf.Sin(a)) * radius;
                 if (Mathf.Abs(p.x - c.x) < 1.6f && p.z < c.z) continue; // gate gap facing the path (south)
-                float yaw = -a * Mathf.Rad2Deg; // tangent
+                float yaw = -(a * Mathf.Rad2Deg + 90f); // local X (the fence run) along the circle tangent
                 Model(pen, Farm, "Fence2", "PenFence_" + i, p, new Vector3(3.1f, 1.2f, 3.1f), yaw, true, true, fitLongest: true);
             }
             Model(pen, Farm, "OpenBarn", "Stable", new Vector3(28.5f, 0f, 10f), new Vector3(7f, 5f, 6f), -90f, true, true);
