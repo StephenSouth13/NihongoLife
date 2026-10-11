@@ -87,6 +87,7 @@ namespace NihongoLife.Player
             if (resting && CurrentEnergy < maxEnergy && recoveryMultiplier > 0f)
             {
                 float rate = _moving ? walkingEnergyRecoveryPerSecond : passiveEnergyRecoveryPerSecond;
+                if (Core.WeatherCycle.PlayerInRain) rate *= 0.5f; // soaked: recovering is slower until you find shelter
                 CurrentEnergy = Mathf.Min(maxEnergy, CurrentEnergy + rate * recoveryMultiplier * Time.deltaTime);
             }
             if (CurrentEnergy <= 0f) IsExhausted = true;

@@ -48,6 +48,12 @@ MonoBehaviour:
   allowGeminiDirectClientCalls: 1
   geminiModel: gemini-flash-latest
   geminiApiKeyEnvironmentKey: NIHONGOLIFE_GEMINI_API_KEY
+  aiDailyRequestLimit: 40
+  aiMaxEssayWords: 700
+  aiMaxSpeakingSeconds: 480
+  aiRequestTimeoutSeconds: 60
+  agoraAppIdEnvironmentKey: AGORA_APP_ID
+  agoraAppId: 44f7d5dbf7054b8787da9313bad4305a
   enableOnlineSync: 1
   supabaseProjectUrl: https://pkxrtvlerjjiignmlebx.supabase.co
   supabaseAnonKey: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBreHJ0dmxlcmpqaWlnbm1sZWJ4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODg1Mzc1MDMsImV4cCI6MjEwNDExMzUwM30.m8UT0o6p4WXItZ3LcDt7QLs25uq28rm0bNS1f3cOYb4

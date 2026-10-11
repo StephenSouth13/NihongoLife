@@ -120,6 +120,8 @@ namespace NihongoLife.Exam.Ielts
         public IeltsAiExamination speakingExamination;
         /// <summary>Overall band of the original submission (0 until the Examiner has answered).</summary>
         public float overall;
+        /// <summary>The band went into the IELTS score history (once, from the original submission only).</summary>
+        public bool countedInHistory;
     }
 
     /// <summary>IELTS rounding rules, applied locally to whatever the model reports per criterion.</summary>

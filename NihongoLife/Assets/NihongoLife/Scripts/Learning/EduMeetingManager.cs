@@ -10,8 +10,8 @@ namespace NihongoLife.Learning
     public class EduMeetingManager : MonoBehaviour
     {
         public static EduMeetingManager Instance { get; private set; }
-        // Agora App IDs are public identifiers. Tokens come from the classroom host; no certificate belongs in the client.
-        [SerializeField] private string appId = "44f7d5dbf7054b8787da9313bad4305a";
+        // Agora App IDs are public identifiers, but they are configuration, not code: GameControlDatabase.agoraAppId or the
+        // environment variable it names (AGORA_APP_ID). Tokens come from the classroom host; no certificate in the client.
         private IRtcEngine _engine;
         private string _channel = "nihongolife-classroom", _token = "";
         private string _status = "Nhập cùng phòng với giáo viên. Phòng bảo mật cần token còn hạn.";
@@ -92,9 +92,10 @@ namespace NihongoLife.Learning
             {
                 if (_engine == null)
                 {
-                    string configuredId = Environment.GetEnvironmentVariable("AGORA_APP_ID");
+                    string appId = ConfiguredAppId();
+                    if (string.IsNullOrWhiteSpace(appId)) throw new InvalidOperationException("Chưa cấu hình Agora App ID (biến môi trường AGORA_APP_ID hoặc Control Database).");
                     _engine = RtcEngine.CreateAgoraRtcEngine();
-                    Check(_engine.Initialize(new RtcEngineContext { appId = string.IsNullOrWhiteSpace(configuredId) ? appId : configuredId }), "Khởi tạo Agora");
+                    Check(_engine.Initialize(new RtcEngineContext { appId = appId }), "Khởi tạo Agora");
                     _engine.InitEventHandler(new Events(this));
                     Check(_engine.EnableAudio(), "Bật micro");
                     Check(_engine.EnableVideo(), "Bật camera");
@@ -114,6 +115,24 @@ namespace NihongoLife.Learning
                 _status = ex.Message; _joining = false;
                 if (_engine != null) { _engine.Dispose(); _engine = null; }
             }
+        }
+
+        /// <summary>Agora App ID from the environment variable named in GameControlDatabase, else the database value.</summary>
+        public static string ConfiguredAppId()
+        {
+            string key = "AGORA_APP_ID", fallback = "";
+            if (NihongoLife.Core.GameServices.TryGet(out NihongoLife.Core.GameControlService control) && control.Database != null)
+            {
+                if (!string.IsNullOrWhiteSpace(control.Database.agoraAppIdEnvironmentKey)) key = control.Database.agoraAppIdEnvironmentKey;
+                fallback = control.Database.agoraAppId;
+            }
+            else
+            {
+                var db = Resources.Load<NihongoLife.Core.GameControlDatabase>("Control/NihongoLifeControlDatabase");
+                if (db != null) { if (!string.IsNullOrWhiteSpace(db.agoraAppIdEnvironmentKey)) key = db.agoraAppIdEnvironmentKey; fallback = db.agoraAppId; }
+            }
+            string fromEnv = Environment.GetEnvironmentVariable(key);
+            return string.IsNullOrWhiteSpace(fromEnv) ? fallback : fromEnv.Trim();
         }
 
         private static void Check(int code, string action)

@@ -31,6 +31,8 @@ namespace NihongoLife.Core
         private float _hour;
 
         public float Hour => _hour;
+        /// <summary>In-game day counter (advances at midnight); WeatherCycle plans each day's weather from it.</summary>
+        public int Day { get; private set; }
 
         private void Awake()
         {
@@ -43,7 +45,7 @@ namespace NihongoLife.Core
             if (!runCycle || cycleMinutes <= 0.01f) return;
 
             _hour += Time.deltaTime * 24f / (cycleMinutes * 60f);
-            if (_hour >= 24f) _hour -= 24f;
+            if (_hour >= 24f) { _hour -= 24f; Day++; }
             ApplyLighting();
         }
 

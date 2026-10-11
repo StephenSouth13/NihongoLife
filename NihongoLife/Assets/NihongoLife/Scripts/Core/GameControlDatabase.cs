@@ -62,6 +62,21 @@ namespace NihongoLife.Core
         public string geminiModel = "gemini-flash-latest";
         public string geminiApiKeyEnvironmentKey = "NIHONGOLIFE_GEMINI_API_KEY";
 
+        [Header("AI cost limits (IELTS Examiner / Coach)")]
+        [Tooltip("Paid AI requests per day on this device; cached answers are free and do not count.")]
+        public int aiDailyRequestLimit = 40;
+        [Tooltip("Longest essay sent to the AI, in words (an IELTS Task 2 is ~250-350).")]
+        public int aiMaxEssayWords = 700;
+        [Tooltip("Longest total Speaking audio sent in one request, in seconds (a full test is ~11-14 min of which ~6-7 is the candidate).")]
+        public int aiMaxSpeakingSeconds = 480;
+        public int aiRequestTimeoutSeconds = 60;
+
+        [Header("Agora (video classroom, microphone check)")]
+        [Tooltip("Environment variable holding the Agora App ID; the ID is never written in code.")]
+        public string agoraAppIdEnvironmentKey = "AGORA_APP_ID";
+        [Tooltip("Optional App ID for builds without the environment variable (an App ID is public; tokens are not).")]
+        public string agoraAppId = "";
+
         [Header("Online Database")]
         public bool enableOnlineSync = false;
 

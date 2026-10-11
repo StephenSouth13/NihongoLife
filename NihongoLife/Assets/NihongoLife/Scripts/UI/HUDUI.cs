@@ -219,6 +219,7 @@ namespace NihongoLife.UI
                 ("QuestButton", "N", "Nhiệm vụ", () => TaskJournalUI.Toggle()),
                 ("ExamButton", "K", "Luyện thi", () => TogglePopup(GetComponent<ExamCenterPopup>())),
                 ("NotebookButton", "L", "Sổ tay", () => NotebookUI.Toggle()),
+                ("OverviewButton", "H", "Góc nhìn", ToggleOverviewCamera),
                 ("SettingsButton", "O", "Cài đặt", () => _settingsUI?.ToggleFromEscape()),
             };
             _statusDock = StatusDock.Create(transform, font, buttons, () => SetCharacterVisible(false));
@@ -632,9 +633,47 @@ namespace NihongoLife.UI
             if (image != null) image.color = new Color(0.028f, 0.038f, 0.048f, 0.94f);
         }
 
+        // ─────────── Overview camera controls (Sims-style UCP: rotate ◀ ▶, zoom + -) ───────────
+
+        private RectTransform _overviewPanel;
+        private NihongoLife.Cameras.ThirdPersonCameraController _overviewCamera;
+
+        private void ToggleOverviewCamera()
+        {
+            if (_overviewCamera == null) _overviewCamera = FindFirstObjectByType<NihongoLife.Cameras.ThirdPersonCameraController>();
+            if (_overviewCamera == null) return;
+            if (!_overviewCamera.SetOverview(!_overviewCamera.OverviewMode)) HudFeed.Post("Góc nhìn trên cao chỉ dùng ngoài trời.", HudFeed.Kind.Info, 3f, "overview");
+        }
+
+        private void UpdateOverviewControls()
+        {
+            if (_overviewCamera == null || !_overviewCamera.isActiveAndEnabled) _overviewCamera = FindFirstObjectByType<NihongoLife.Cameras.ThirdPersonCameraController>();
+            bool show = _overviewCamera != null && _overviewCamera.OverviewMode && !UiModalStack.AnyOpen;
+            if (show && _overviewPanel == null)
+            {
+                var font = NLUi.ResolveFont();
+                _overviewPanel = NLUi.Panel(transform, "OverviewControls", new Color(0.04f, 0.05f, 0.07f, 0.82f), new RectOffset(10, 10, 10, 10), 8f, vertical: false);
+                NLUi.Anchor(_overviewPanel, new Vector2(1f, 0.5f), new Vector2(-24f, 0f), new Vector2(0f, 0f));
+                _overviewPanel.pivot = new Vector2(1f, 0.5f);
+                NLUi.FitContent(_overviewPanel, width: true, height: true);
+                void Add(string name, string label, System.Action click)
+                {
+                    var b = NLUi.Button(_overviewPanel, name, label, font, () => click(), new Color(0.16f, 0.2f, 0.26f), 22f, Color.white, 48f);
+                    NLUi.Size(b, 52f, 48f);
+                }
+                Add("RotateLeft", "◀", () => _overviewCamera?.RotateOverview(-1));
+                Add("RotateRight", "▶", () => _overviewCamera?.RotateOverview(1));
+                Add("ZoomIn", "+", () => _overviewCamera?.ZoomOverview(-1));
+                Add("ZoomOut", "-", () => _overviewCamera?.ZoomOverview(1));
+                Add("Exit", "H", () => _overviewCamera?.SetOverview(false));
+            }
+            if (_overviewPanel != null && _overviewPanel.gameObject.activeSelf != show) _overviewPanel.gameObject.SetActive(show);
+        }
+
         private void Update()
         {
             BindDialogue();
+            UpdateOverviewControls();
             // Prompt lane: the [F] prompt steps aside while a timed action runs or a window is open, and comes back after.
             bool suppressPrompt = TimedAction.Busy || UiModalStack.AnyOpen;
             if (promptPanel != null)

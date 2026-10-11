@@ -23,6 +23,10 @@ Material:
   m_SavedProperties:
     serializedVersion: 3
     m_TexEnvs:
+    - _CloudyTex:
+        m_Texture: {fileID: 2800000, guid: dc30100d968eb40139595e62e1154d84, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - _DayTex:
         m_Texture: {fileID: 2800000, guid: 8f901fa6558a64d4582f67b372616ba9, type: 3}
         m_Scale: {x: 1, y: 1}
@@ -36,6 +40,7 @@ Material:
     - _Exposure: 1
     - _HorizonGlow: 0
     - _Night: 0
+    - _Overcast: 0
     - _Rotation: 0
     - _SunSize: 0.9985
     m_Colors:

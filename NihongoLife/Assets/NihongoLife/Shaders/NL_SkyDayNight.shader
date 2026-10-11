@@ -7,7 +7,9 @@ Shader "NihongoLife/SkyDayNight"
     {
         _DayTex ("Day panorama", 2D) = "white" {}
         _NightTex ("Night panorama", 2D) = "black" {}
+        _CloudyTex ("Overcast panorama", 2D) = "gray" {}
         _Night ("Night blend", Range(0, 1)) = 0
+        _Overcast ("Overcast blend", Range(0, 1)) = 0
         _Tint ("Tint", Color) = (1, 1, 1, 1)
         _HorizonColor ("Horizon glow", Color) = (1, 0.55, 0.3, 1)
         _HorizonGlow ("Horizon glow strength", Range(0, 1)) = 0
@@ -31,7 +33,8 @@ Shader "NihongoLife/SkyDayNight"
 
             sampler2D _DayTex;
             sampler2D _NightTex;
-            float _Night, _HorizonGlow, _Exposure, _Rotation, _SunSize;
+            sampler2D _CloudyTex;
+            float _Night, _Overcast, _HorizonGlow, _Exposure, _Rotation, _SunSize;
             float4 _Tint, _HorizonColor, _SunDir, _SunColor;
 
             struct appdata { float4 vertex : POSITION; };
@@ -53,7 +56,9 @@ Shader "NihongoLife/SkyDayNight"
                 float2 uv = float2(frac(azimuth + 1.0), saturate(0.5 + elevation));
                 float3 day = tex2D(_DayTex, uv).rgb;
                 float3 night = tex2D(_NightTex, uv).rgb;
-                float3 sky = lerp(day, night, _Night) * _Tint.rgb;
+                // Overcast: the grey cloud panorama, darkened towards night.
+                float3 cloudy = tex2D(_CloudyTex, uv).rgb * lerp(0.95, 0.12, _Night);
+                float3 sky = lerp(lerp(day, night, _Night), cloudy, _Overcast) * _Tint.rgb;
 
                 // Warm band along the horizon at dawn and dusk, strongest towards the sun.
                 float towardsSun = saturate(dot(normalize(float3(d.x, 0, d.z) + 1e-4), normalize(float3(_SunDir.x, 0, _SunDir.z) + 1e-4)) * 0.5 + 0.5);
@@ -64,7 +69,7 @@ Shader "NihongoLife/SkyDayNight"
                 float3 sunDir = normalize(_SunDir.xyz);
                 float disc = smoothstep(_SunSize, _SunSize + 0.0008, dot(d, sunDir));
                 float halo = pow(saturate(dot(d, sunDir)), 64.0) * 0.25;
-                sky += _SunColor.rgb * (disc + halo) * step(0.0, d.y + 0.05);
+                sky += _SunColor.rgb * (disc + halo) * step(0.0, d.y + 0.05) * (1.0 - _Overcast * 0.9);
 
                 return fixed4(sky * _Exposure, 1);
             }

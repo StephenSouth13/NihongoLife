@@ -92,6 +92,7 @@ namespace NihongoLife.UI
             }
             if (_player == null || _camera == null || !_camera.isActiveAndEnabled) return false;
             if (_player.InputLocked || _camera.IsLocked) return false;
+            if (_camera.OverviewMode) return false; // the overview camera is pointer-driven, like The Sims
             if (CursorKeyHeld) return false;
             if (UiModalStack.AnyOpen || UiModalStack.IsTyping) return false;
             if (DialogueManager.Instance != null && DialogueManager.Instance.IsOpen) return false;

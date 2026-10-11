@@ -122,6 +122,7 @@ namespace NihongoLife.EditorTools
             material.shader = Shader.Find("NihongoLife/SkyDayNight");
             material.SetTexture("_DayTex", AssetDatabase.LoadAssetAtPath<Texture2D>(SkyDome + "skydoom.png"));
             material.SetTexture("_NightTex", AssetDatabase.LoadAssetAtPath<Texture2D>(SkyDome + "skydoom_night_s.png"));
+            material.SetTexture("_CloudyTex", AssetDatabase.LoadAssetAtPath<Texture2D>(SkyDome + "skydoom_cloudy.png"));
             EditorUtility.SetDirty(material);
             AssetDatabase.SaveAssets();
             return material;

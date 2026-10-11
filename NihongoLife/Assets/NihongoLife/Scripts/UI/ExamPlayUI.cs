@@ -17,7 +17,6 @@ namespace NihongoLife.UI
     /// </summary>
     public class ExamPlayUI : MenuPopupBase
     {
-        private const int RecordSampleRate = 44100;
         private const int MaxRecordSeconds = 120;
 
         // Header
@@ -75,8 +74,7 @@ namespace NihongoLife.UI
 
         // Speaking recording
         private bool _isRecording;
-        private string _micDevice;
-        private AudioClip _recordingClip;
+        private readonly MicRecorder _recorder = new MicRecorder();
         private Button _recordButton;
         private TextMeshProUGUI _recordStatusText;
 
@@ -800,21 +798,9 @@ namespace NihongoLife.UI
 
         private void StartRecording()
         {
-            if (Microphone.devices == null || Microphone.devices.Length == 0)
+            if (!_recorder.Start(MaxRecordSeconds))
             {
-                _recordStatusText.text = Pick("Không tìm thấy micro.", "No microphone found.", "マイクが見つかりません。");
-                return;
-            }
-
-            _micDevice = Microphone.devices[0];
-            try
-            {
-                _recordingClip = Microphone.Start(_micDevice, false, MaxRecordSeconds, RecordSampleRate);
-            }
-            catch (System.Exception ex)
-            {
-                Debug.LogWarning("[ExamPlayUI] Microphone start failed: " + ex.Message);
-                _recordStatusText.text = Pick("Không thể bắt đầu ghi âm.", "Could not start recording.", "録音を開始できません。");
+                _recordStatusText.text = _recorder.LastError ?? Pick("Không thể bắt đầu ghi âm.", "Could not start recording.", "録音を開始できません。");
                 return;
             }
 
@@ -825,28 +811,16 @@ namespace NihongoLife.UI
         private void StopRecordingAndSubmit(ExamManager manager)
         {
             if (!_isRecording) return;
-
-            int position = Microphone.GetPosition(_micDevice);
-            try { Microphone.End(_micDevice); }
-            catch (System.Exception ex) { Debug.LogWarning("[ExamPlayUI] Microphone stop failed: " + ex.Message); }
+            var samples = _recorder.Stop(out int frequency);
             _isRecording = false;
-
-            if (_recordingClip != null && position > 0)
-            {
-                var samples = new float[position];
-                _recordingClip.GetData(samples, 0);
-                manager.SubmitSpeakingRecording(samples, _recordingClip.frequency);
-            }
-            else
-            {
-                SetSpeakingUiState("idle");
-            }
+            if (samples.Length > 0) manager.SubmitSpeakingRecording(samples, frequency);
+            else SetSpeakingUiState("idle");
         }
 
         private void StopRecordingIfNeeded()
         {
             if (!_isRecording) return;
-            try { Microphone.End(_micDevice); } catch (System.Exception) { /* device already gone; nothing to clean up */ }
+            _recorder.Cancel();
             _isRecording = false;
         }
 

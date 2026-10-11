@@ -21,7 +21,7 @@ namespace NihongoLife.UI
     /// Answers save after every change and the attempt resumes where it was left. The answer key is loaded only
     /// when the test is submitted. Esc / × ask before leaving an unfinished attempt (UiModalStack, immersive).
     /// </summary>
-    public sealed class IeltsTestUI : MonoBehaviour
+    public sealed partial class IeltsTestUI : MonoBehaviour
     {
         public const string PracticeMode = "practice";
         public const string ExamMode = "exam";
@@ -137,6 +137,7 @@ namespace NihongoLife.UI
                 _highlights.Set(group.Key, group.Select(h => new HighlightSpan(h.start, h.end, h.color)).ToList(), notify: false);
             HighlightTool.SetMode(HighlightTool.ToolMode.Off);
             LastResult = null;
+            ResetProductive();
 
             bool wasOpen = IsOpen;
             _root.gameObject.SetActive(true);
@@ -214,7 +215,7 @@ namespace NihongoLife.UI
         }
 
         public int AnsweredCount => _answers.Count(kv => kv.Value.Length > 0);
-        public int QuestionCount => _test.parts.SelectMany(p => p.groups ?? Array.Empty<IeltsGroup>()).Where(g => g.type != "writing_task" && g.type != "speaking_part").Sum(g => g.to - g.from + 1);
+        public int QuestionCount => _test.parts.SelectMany(p => p.groups ?? Array.Empty<IeltsGroup>()).Where(g => IsProductive || g.type != "writing_task" && g.type != "speaking_part").Sum(g => g.to - g.from + 1);
 
         private void Save()
         {
@@ -225,6 +226,8 @@ namespace NihongoLife.UI
             _attempt.highlights = _highlights.All.SelectMany(kv => kv.Value.Select(h => new IeltsHighlight { key = kv.Key, start = h.start, end = h.end, color = h.color })).ToList();
             IeltsAttemptStore.SaveAttempt(_attempt);
             _saveAt = -1f;
+            LastSavedAt = DateTime.Now;
+            if (IsProductive && !IsSpeakingPaper) foreach (var refresh in _refreshers.Values.ToList()) refresh(); // "đã lưu lúc …" stamp
         }
 
         // ─────────── Navigation ───────────
@@ -389,6 +392,7 @@ namespace NihongoLife.UI
                     ? $"Kiểm tra lại: <b>{Clock(Mathf.Max(0f, _attempt.reviewRemaining))}</b>"
                     : $"Thời gian: <b>{Clock(_attempt.elapsedSeconds)}</b>   ·   Đã làm {AnsweredCount}/{QuestionCount}";
 
+            if (IsProductive) TickProductive();
             if (_saveAt > 0f && Time.unscaledTime >= _saveAt) Save();
             if (_audioPlaying && Time.frameCount % 120 == 0) Save();
         }
@@ -418,6 +422,7 @@ namespace NihongoLife.UI
 
         public void Close()
         {
+            StopMicIfRecording();
             Save();
             _audio.Stop();
             _audioPlaying = false;
@@ -438,6 +443,7 @@ namespace NihongoLife.UI
         public void SubmitNow()
         {
             if (IsSubmitted) return;
+            if (IsProductive) { SubmitProductive(); return; }
             Save();
             _audio.Stop();
             _audioPlaying = false;
@@ -945,43 +951,6 @@ namespace NihongoLife.UI
             }
             _refreshers[number] = Refresh;
             Refresh();
-        }
-
-        private void RenderWriting(RectTransform sheet, IeltsGroup group)
-        {
-            PaperText(sheet, group.heading ?? "Writing task", 20f, FontStyles.Bold);
-            if (group.minutes > 0) PaperText(sheet, $"You should spend about {group.minutes} minutes on this task.", 16.5f, FontStyles.Italic);
-            var prompt = Box(sheet, "Prompt");
-            PaperText(prompt, group.stem ?? "", 17.5f, FontStyles.Normal);
-            if (group.minWords > 0) PaperText(sheet, $"Write at least {group.minWords} words.", 16.5f, FontStyles.Italic);
-            int number = group.from;
-            _anchors[number] = sheet;
-            var input = MakeInput(sheet, 1060f, 420f, multiline: true);
-            input.text = GetAnswer(number);
-            var count = PaperText(sheet, "", 15f, FontStyles.Normal);
-            void Count(string v)
-            {
-                int words = Regex.Matches(v ?? "", @"[\p{L}\p{N}'’-]+").Count;
-                count.text = $"Số từ: <b>{words}</b>" + (group.minWords > 0 ? $"  /  tối thiểu {group.minWords}" : "");
-                count.color = group.minWords > 0 && words < group.minWords ? Bad : Good;
-            }
-            input.onValueChanged.AddListener(v => { SetAnswer(number, v); Count(v); });
-            Count(input.text);
-        }
-
-        private void RenderSpeaking(RectTransform sheet, IeltsGroup group)
-        {
-            PaperText(sheet, group.heading ?? "Speaking", 20f, FontStyles.Bold);
-            var prompt = Box(sheet, "Prompt");
-            PaperText(prompt, group.stem ?? "", 17.5f, FontStyles.Normal);
-#if UNITY_WEBGL && !UNITY_EDITOR
-            bool hasMic = false;
-#else
-            bool hasMic = Microphone.devices.Length > 0;
-#endif
-            PaperText(sheet, hasMic
-                ? "Ghi âm câu trả lời bằng nút Luyện phát âm (V). Phần chấm Speaking tự động chưa có — chỉ dùng để luyện."
-                : "Không tìm thấy micro: phần Speaking chỉ hiển thị đề để luyện nói.", 15f, FontStyles.Italic).color = PaperMuted;
         }
 
         // ─────────── Results ───────────

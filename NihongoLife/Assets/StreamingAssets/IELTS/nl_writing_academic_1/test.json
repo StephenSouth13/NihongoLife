@@ -1,0 +1,69 @@
+{
+ "schema": "nihongolife.ielts.v1",
+ "id": "nl_writing_academic_1",
+ "title": "IELTS Writing (Academic) · Đề luyện tập NL-1",
+ "skill": "writing",
+ "source": "Đề tự soạn bởi NihongoLife theo định dạng IELTS Academic Writing (không trích từ sách đề)",
+ "provenance": "self-authored; table figures are illustrative, not real statistics",
+ "localOnly": false,
+ "timeLimitMinutes": 60,
+ "parts": [
+  {
+   "number": 1,
+   "title": "Writing Task 1",
+   "groups": [
+    {
+     "type": "writing_task",
+     "from": 1,
+     "to": 1,
+     "heading": "WRITING TASK 1",
+     "minutes": 20,
+     "minWords": 150,
+     "stem": "The table below shows the number of adult learners (in thousands) taking Japanese language courses in four cities in 2015 and 2025, and the share of those learners who studied mainly online.\n\nSummarise the information by selecting and reporting the main features, and make comparisons where relevant.",
+     "lines": [
+      {
+       "label": "City",
+       "text": "2015 (thousands) | 2025 (thousands) | Studied mainly online (2025)",
+       "style": "table_head"
+      },
+      {
+       "label": "Tokyo",
+       "text": "32 | 41 | 18%",
+       "style": "table"
+      },
+      {
+       "label": "Hanoi",
+       "text": "9 | 27 | 46%",
+       "style": "table"
+      },
+      {
+       "label": "Bangkok",
+       "text": "11 | 15 | 39%",
+       "style": "table"
+      },
+      {
+       "label": "São Paulo",
+       "text": "7 | 6 | 52%",
+       "style": "table"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "number": 2,
+   "title": "Writing Task 2",
+   "groups": [
+    {
+     "type": "writing_task",
+     "from": 2,
+     "to": 2,
+     "heading": "WRITING TASK 2",
+     "minutes": 40,
+     "minWords": 250,
+     "stem": "Some people believe that learning a foreign language through games and simulations is more effective than studying it in a classroom. Others think that traditional lessons remain essential.\n\nDiscuss both these views and give your own opinion.\n\nGive reasons for your answer and include any relevant examples from your own knowledge or experience."
+    }
+   ]
+  }
+ ]
+}

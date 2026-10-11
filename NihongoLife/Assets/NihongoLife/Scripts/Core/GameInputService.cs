@@ -27,7 +27,10 @@ namespace NihongoLife.Core
         Settings,
         Shop,
         Journal,
-        FreeCursor
+        FreeCursor,
+        CameraMode,
+        CameraRotateLeft,
+        CameraRotateRight
     }
 
     public class GameInputService : MonoBehaviour, IGameService
@@ -109,6 +112,9 @@ namespace NihongoLife.Core
             AddButton(GameInputId.Shop, "Shop", "<Keyboard>/p");
             AddButton(GameInputId.Journal, "Journal", "<Keyboard>/n");
             AddButton(GameInputId.FreeCursor, "FreeCursor", "<Keyboard>/leftCtrl");
+            AddButton(GameInputId.CameraMode, "CameraMode", "<Keyboard>/h");
+            AddButton(GameInputId.CameraRotateLeft, "CameraRotateLeft", "<Keyboard>/comma");
+            AddButton(GameInputId.CameraRotateRight, "CameraRotateRight", "<Keyboard>/period");
         }
 
         private void AddButton(GameInputId id, string name, string keyboardPath, string gamepadPath = null)

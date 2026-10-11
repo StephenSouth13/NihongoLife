@@ -216,7 +216,9 @@ namespace NihongoLife.UI
                 (GameInputId.Inventory, "Balo", "Bag", "バッグ"), (GameInputId.Character, "Nhân vật", "Profile", "プロフィール"),
                 (GameInputId.Journal, "Sổ nhiệm vụ", "Task journal", "タスク"), (GameInputId.Map, "Bản đồ", "Map", "地図"),
                 (GameInputId.Shop, "Cửa hàng (đảo)", "Shop (island)", "ショップ"), (GameInputId.Chat, "Chat", "Chat", "チャット"),
-                (GameInputId.Settings, "Cài đặt", "Settings", "設定"), (GameInputId.Pause, "Đóng / quay lại", "Close / back", "閉じる・戻る")
+                (GameInputId.Settings, "Cài đặt", "Settings", "設定"), (GameInputId.Pause, "Đóng / quay lại", "Close / back", "閉じる・戻る"),
+                (GameInputId.CameraMode, "Góc nhìn trên cao", "Overview camera", "俯瞰カメラ"), (GameInputId.CameraRotateLeft, "Xoay góc nhìn trái", "Rotate view left", "左回転"),
+                (GameInputId.CameraRotateRight, "Xoay góc nhìn phải", "Rotate view right", "右回転")
             };
 
             for (int i = 0; i < rows.Length; i++)

@@ -8,12 +8,13 @@ namespace NihongoLife.Player
     {
         public const string PlayerPrefsKey = "NihongoLife.SelectedPlayableCharacter";
         public const string PlayerNamePrefsKey = "NihongoLife.PlayerDisplayName";
-        public const string DefaultId = "student";
+        /// <summary>The kids from Kids Characters for Survival are the player characters; Haruto is the default.</summary>
+        public const string DefaultId = "kid_haruto";
+        private const string KidsDefaultMigratedKey = "NihongoLife.KidsDefaultMigrated";
         public const string DefaultPlayerName = "Gakusei";
 
         private static readonly PlayableCharacter[] Characters =
         {
-            new PlayableCharacter("student", "Tanaka", "Học viên", "Characters/NL_Player", new Color(0.98f, 0.78f, 0.32f), true),
             // Kids Characters for Survival (ThirdParty/New Chac), built by KidsCharactersSetup.Build. They replace the
             // old "COMING SOON" slots, which only borrowed the cashier/guide/neighbor NPC models.
             new PlayableCharacter("kid_haruto", "Haruto", "Học sinh · ハルト", "Characters/Kids/NL_kid_haruto", new Color(0.38f, 0.74f, 0.95f), true),
@@ -23,7 +24,9 @@ namespace NihongoLife.Player
             new PlayableCharacter("kid_riku", "Riku", "Học sinh · リク", "Characters/Kids/NL_kid_riku", new Color(0.45f, 0.6f, 0.98f), true),
             new PlayableCharacter("kid_mio", "Mio", "Học sinh · ミオ", "Characters/Kids/NL_kid_mio", new Color(0.78f, 0.55f, 0.95f), true),
             new PlayableCharacter("kid_yuto", "Yuto", "Học sinh · ユウト", "Characters/Kids/NL_kid_yuto", new Color(0.4f, 0.8f, 0.8f), true),
-            new PlayableCharacter("kid_sakura", "Sakura", "Học sinh · サクラ", "Characters/Kids/NL_kid_sakura", new Color(0.98f, 0.6f, 0.75f), true)
+            new PlayableCharacter("kid_sakura", "Sakura", "Học sinh · サクラ", "Characters/Kids/NL_kid_sakura", new Color(0.98f, 0.6f, 0.75f), true),
+            // The original adult student (Remy) stays selectable.
+            new PlayableCharacter("student", "Tanaka", "Học viên", "Characters/NL_Player", new Color(0.98f, 0.78f, 0.32f), true)
         };
 
         public static int Count => Characters.Length;
@@ -40,15 +43,24 @@ namespace NihongoLife.Player
 
         public static PlayableCharacter GetSelected()
         {
+            // Saves made before the kids arrived stored the old default ("student"): move them to the new default once.
+            if (PlayerPrefs.GetInt(KidsDefaultMigratedKey, 0) == 0)
+            {
+                PlayerPrefs.SetInt(KidsDefaultMigratedKey, 1);
+                if (PlayerPrefs.GetString(PlayerPrefsKey, DefaultId) == "student") PlayerPrefs.SetString(PlayerPrefsKey, DefaultId);
+                PlayerPrefs.Save();
+            }
             string selectedId = PlayerPrefs.GetString(PlayerPrefsKey, DefaultId);
             PlayableCharacter selected = FindById(selectedId);
-            return selected.IsAvailable ? selected : Characters[0];
+            return selected.IsAvailable ? selected : FindById(DefaultId);
         }
 
         public static PlayableCharacter FindById(string id)
         {
             int index = IndexOf(id);
-            return index >= 0 ? Characters[index] : Characters[0];
+            if (index >= 0) return Characters[index];
+            int fallback = IndexOf(DefaultId);
+            return Characters[fallback >= 0 ? fallback : 0];
         }
 
         public static int IndexOf(string id)
@@ -144,6 +156,13 @@ namespace NihongoLife.Player
             if (animation != null)
             {
                 animation.SetAnimator(visual.GetComponentInChildren<Animator>(true));
+            }
+
+            // Only the player wears the ground ring (NPCs have name plates), in the character's own colour.
+            if (actor.GetComponent<PlayerController>() != null)
+            {
+                var marker = actor.GetComponent<PlayerMarker>() ?? actor.AddComponent<PlayerMarker>();
+                marker.Configure(character.AccentColor, 0.55f);
             }
 
             return true;

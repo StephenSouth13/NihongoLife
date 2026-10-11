@@ -38,6 +38,81 @@ namespace NihongoLife.Cameras
         [SerializeField] private float conversationRotationSharpness = 7f;
 
         [SerializeField] private float orbitDragMultiplier = 1.6f;
+
+        [Header("Overview (Sims-style, after FreeSims' WorldCamera)")]
+        [Tooltip("High three-quarter view: four 45° diagonals, three zoom levels; toggled with H, rotated with , and .")]
+        [SerializeField] private float overviewPitch = 52f;
+        [SerializeField] private float[] overviewDistances = { 9f, 15f, 24f };
+        [SerializeField] private float overviewTurnSpeed = 260f;
+        private bool _overview;
+        private int _overviewQuadrant;
+        private int _overviewZoom = 1;
+        private float _preOverviewYaw, _preOverviewPitch, _preOverviewDistance;
+
+        /// <summary>The Sims-style overview camera is active (cursor free, snap rotation, zoom levels).</summary>
+        public bool OverviewMode => _overview;
+        public int OverviewQuadrant => _overviewQuadrant;
+        public int OverviewZoom => _overviewZoom;
+        public float Yaw => _rotationX;
+
+        /// <summary>Turns the overview camera on or off (refused inside buildings, where it would see through the roof).</summary>
+        public bool SetOverview(bool on)
+        {
+            if (on == _overview) return true;
+            if (on && _isIndoor) return false;
+            if (on)
+            {
+                _preOverviewYaw = _rotationX; _preOverviewPitch = _rotationY; _preOverviewDistance = defaultDistance;
+                _overviewQuadrant = Mathf.RoundToInt((_rotationX - 45f) / 90f);
+            }
+            else
+            {
+                _rotationX = _preOverviewYaw; _rotationY = _preOverviewPitch;
+                defaultDistance = Mathf.Clamp(_preOverviewDistance, minDistance, maxDistance);
+            }
+            _overview = on;
+            return true;
+        }
+
+        public void RotateOverview(int steps) { if (_overview) _overviewQuadrant += steps; }
+        public void ZoomOverview(int steps) { if (_overview) _overviewZoom = Mathf.Clamp(_overviewZoom + steps, 0, overviewDistances.Length - 1); }
+
+        private void UpdateOverviewInput()
+        {
+            var input = NihongoLife.Core.GameInputService.Instance;
+            bool blocked = NihongoLife.UI.UiModalStack.BlocksHotkeys;
+            if (input != null && !blocked && input.WasPressed(NihongoLife.Core.GameInputId.CameraMode))
+            {
+                bool want = !_overview;
+                if (!SetOverview(want)) NihongoLife.UI.HudFeed.Post("Góc nhìn trên cao chỉ dùng ngoài trời.", NihongoLife.UI.HudFeed.Kind.Info, 3f, "overview");
+                else if (want) NihongoLife.UI.HudFeed.Post("Góc nhìn trên cao: , và . để xoay · cuộn chuột để phóng to/thu nhỏ · H để trở lại.", NihongoLife.UI.HudFeed.Kind.Info, 5f, "overview");
+            }
+            if (!_overview || input == null || blocked) return;
+            if (input.WasPressed(NihongoLife.Core.GameInputId.CameraRotateLeft)) RotateOverview(-1);
+            if (input.WasPressed(NihongoLife.Core.GameInputId.CameraRotateRight)) RotateOverview(1);
+        }
+
+        /// <summary>Glides to the current diagonal, pitch and zoom level (no free orbit, no wall collision pull-in).</summary>
+        private void UpdateOverviewCamera()
+        {
+            float targetYaw = _overviewQuadrant * 90f + 45f;
+            _rotationX = Mathf.MoveTowardsAngle(_rotationX, targetYaw, overviewTurnSpeed * Time.deltaTime);
+            _rotationY = Mathf.MoveTowards(_rotationY, overviewPitch, 90f * Time.deltaTime);
+            float targetDistance = overviewDistances[Mathf.Clamp(_overviewZoom, 0, overviewDistances.Length - 1)];
+            defaultDistance = Mathf.MoveTowards(defaultDistance, targetDistance, 30f * Time.deltaTime);
+            if (Mouse.current != null && !NihongoLife.UI.UiModalStack.AnyOpen)
+            {
+                bool overUi = UnityEngine.EventSystems.EventSystem.current != null && UnityEngine.EventSystems.EventSystem.current.IsPointerOverGameObject();
+                float scroll = overUi ? 0f : Mouse.current.scroll.ReadValue().y;
+                if (scroll > 0.01f) ZoomOverview(-1);
+                else if (scroll < -0.01f) ZoomOverview(1);
+            }
+            Vector3 targetPosition = target.position + targetOffset;
+            Vector3 finalPosition = targetPosition + Quaternion.Euler(_rotationY, _rotationX, 0f) * Vector3.back * defaultDistance;
+            _currentDistance = defaultDistance;
+            transform.position = Vector3.SmoothDamp(transform.position, finalPosition, ref _followVelocity, positionSmoothTime * 2f);
+            transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(targetPosition - transform.position, Vector3.up), 1f - Mathf.Exp(-10f * Time.deltaTime));
+        }
         private bool _orbiting;
         private float _rotationX = 0f;
         private float _rotationY = 20f;
@@ -88,6 +163,13 @@ namespace NihongoLife.Cameras
             if (_conversationTarget != null)
             {
                 UpdateConversationCamera();
+                return;
+            }
+
+            UpdateOverviewInput();
+            if (_overview && !_isLocked)
+            {
+                UpdateOverviewCamera();
                 return;
             }
 
@@ -204,6 +286,7 @@ namespace NihongoLife.Cameras
 
         public void SetIndoorMode(bool indoor)
         {
+            if (indoor) SetOverview(false);
             _isIndoor = indoor;
             defaultDistance = Mathf.Clamp(indoor ? indoorDistance : outdoorDistance, minDistance, maxDistance);
             _rotationY = Mathf.Clamp(indoor ? 22f : 16f, minYAngle, maxYAngle);

@@ -1,0 +1,107 @@
+{
+ "schema": "nihongolife.ielts.v1",
+ "id": "nl_speaking_1",
+ "title": "IELTS Speaking · Đề luyện tập NL-1",
+ "skill": "speaking",
+ "source": "Đề tự soạn bởi NihongoLife theo định dạng IELTS Speaking (3 phần)",
+ "provenance": "self-authored",
+ "localOnly": false,
+ "timeLimitMinutes": 14,
+ "parts": [
+  {
+   "number": 1,
+   "title": "Part 1",
+   "groups": [
+    {
+     "type": "speaking_part",
+     "from": 1,
+     "to": 4,
+     "heading": "PART 1 · Introduction and interview",
+     "minutes": 4,
+     "instruction": "The examiner asks about familiar topics. Answer each question in 2-4 sentences (up to 40 seconds).",
+     "items": [
+      {
+       "number": 1,
+       "text": "Let's talk about where you live. Do you live in a house or an apartment?"
+      },
+      {
+       "number": 2,
+       "text": "What do you like most about your neighbourhood?"
+      },
+      {
+       "number": 3,
+       "text": "Now let's talk about learning languages. How often do you practise a foreign language?"
+      },
+      {
+       "number": 4,
+       "text": "Do you prefer learning with an app or with a teacher? Why?"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "number": 2,
+   "title": "Part 2",
+   "groups": [
+    {
+     "type": "speaking_part",
+     "from": 5,
+     "to": 5,
+     "heading": "PART 2 · Long turn",
+     "minutes": 4,
+     "instruction": "You have one minute to prepare (you may make notes), then speak for one to two minutes.",
+     "stem": "Describe a time when you learned something useful outside school.",
+     "lines": [
+      {
+       "text": "what you learned"
+      },
+      {
+       "text": "where and how you learned it"
+      },
+      {
+       "text": "who helped you"
+      },
+      {
+       "text": "and explain why it was useful to you."
+      }
+     ],
+     "items": [
+      {
+       "number": 5,
+       "text": "Describe a time when you learned something useful outside school."
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "number": 3,
+   "title": "Part 3",
+   "groups": [
+    {
+     "type": "speaking_part",
+     "from": 6,
+     "to": 8,
+     "heading": "PART 3 · Discussion",
+     "minutes": 5,
+     "instruction": "Discuss more abstract ideas linked to Part 2. Give extended answers with reasons and examples (up to 75 seconds).",
+     "items": [
+      {
+       "number": 6,
+       "text": "Why do some adults find it difficult to learn new skills?"
+      },
+      {
+       "number": 7,
+       "text": "Do you think video games can teach useful real-world skills? Why or why not?"
+      },
+      {
+       "number": 8,
+       "text": "How might the way people learn change in the next twenty years?"
+      }
+     ]
+    }
+   ]
+  }
+ ]
+}

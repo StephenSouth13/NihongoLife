@@ -5,6 +5,19 @@ namespace NihongoLife.Cameras
     [RequireComponent(typeof(Collider))]
     public class StoreCameraZone : MonoBehaviour
     {
+        private static readonly System.Collections.Generic.List<StoreCameraZone> Zones = new();
+
+        /// <summary>True when <paramref name="position"/> is inside a shop's indoor zone (sheltered from the weather).</summary>
+        public static bool Contains(Vector3 position)
+        {
+            foreach (var zone in Zones)
+                if (zone != null && zone.isActiveAndEnabled && zone.GetComponent<Collider>().bounds.Contains(position)) return true;
+            return false;
+        }
+
+        private void OnEnable() => Zones.Add(this);
+        private void OnDisable() => Zones.Remove(this);
+
         private Camera _outdoorCamera;
         private Camera _indoorCamera;
 

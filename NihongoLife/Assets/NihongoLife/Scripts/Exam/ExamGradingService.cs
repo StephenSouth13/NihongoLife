@@ -34,7 +34,7 @@ namespace NihongoLife.Exam
     ///   back to a transparent, deterministic rubric (word count / keyword coverage) so the exam still
     ///   produces a result instead of hanging — the fallback feedback says plainly that it is not AI-graded.
     /// </summary>
-    public class ExamGradingService : MonoBehaviour, IGameService
+    public partial class ExamGradingService : MonoBehaviour, IGameService
     {
         [Serializable] private class InlineData { public string mimeType; public string data; }
         [Serializable] private class GeminiPart { public string text; public InlineData inlineData; }
@@ -130,7 +130,7 @@ namespace NihongoLife.Exam
                 yield break;
             }
 
-            byte[] wav = EncodeWav(samples, frequency);
+            byte[] wav = SpeechAudio.EncodeWav(samples, frequency);
             bool isIelts = exam != null && exam.examType == ExamType.Ielts;
             string task = string.IsNullOrWhiteSpace(question.taskInstructionsEn) ? question.promptEn : question.taskInstructionsEn;
             string prompt = isIelts
@@ -257,36 +257,6 @@ namespace NihongoLife.Exam
         {
             if (string.IsNullOrWhiteSpace(text)) return 0;
             return text.Split((char[])null, StringSplitOptions.RemoveEmptyEntries).Length;
-        }
-
-        /// <summary>Standard 16-bit PCM mono WAV, matching what Gemini's audio input expects.</summary>
-        private static byte[] EncodeWav(float[] samples, int frequency)
-        {
-            int sampleCount = samples.Length;
-            int byteCount = sampleCount * 2;
-            using (var stream = new System.IO.MemoryStream(44 + byteCount))
-            using (var writer = new System.IO.BinaryWriter(stream))
-            {
-                writer.Write(Encoding.ASCII.GetBytes("RIFF"));
-                writer.Write(36 + byteCount);
-                writer.Write(Encoding.ASCII.GetBytes("WAVE"));
-                writer.Write(Encoding.ASCII.GetBytes("fmt "));
-                writer.Write(16);
-                writer.Write((short)1);
-                writer.Write((short)1);
-                writer.Write(frequency);
-                writer.Write(frequency * 2);
-                writer.Write((short)2);
-                writer.Write((short)16);
-                writer.Write(Encoding.ASCII.GetBytes("data"));
-                writer.Write(byteCount);
-                for (int i = 0; i < sampleCount; i++)
-                {
-                    writer.Write((short)Mathf.Clamp(samples[i] * short.MaxValue, short.MinValue, short.MaxValue));
-                }
-
-                return stream.ToArray();
-            }
         }
     }
 }
