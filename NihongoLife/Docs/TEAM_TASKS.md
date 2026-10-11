@@ -829,3 +829,31 @@ Claude nhận tiếp phần Codex đang làm dở: báo cáo, trailer, demo và 
   - `EnvironmentViewsPlayModeTests` (ảnh ở `Bao_Cao/environment-regression`).
   - `KidsCharactersPlayModeTests` (ảnh ở `Bao_Cao/character-regression`).
   - `HudPlayerNamePlayModeTests`.
+
+## Cập nhật (2026-10-11 tối, Claude) — Bé là nhân vật chính, thời tiết, camera kiểu Sims, IELTS Writing/Speaking
+- **Nhân vật:**
+  - Mặc định là bé Haruto (`PlayableCharacterCatalog.DefaultId`). Save cũ đang lưu "student" được chuyển một lần.
+  - Tanaka/Remy nằm cuối danh sách.
+  - Người chơi có vòng chỉ báo dưới chân (`PlayerMarker`, màu của nhân vật); NPC không có. NPC người lớn giữ nguyên.
+- **Thời tiết** (`Core/WeatherCycle` trên AppRoot cạnh `DayNightCycle`):
+  - Mỗi ngày trong game: nắng, nhiều mây, hoặc một đợt mưa 1,5–4 giờ.
+  - `OutdoorSky`: mây trôi (`_Rotation`), trời xám (`skydoom_cloudy`), nắng yếu, sương dày, đèn bật sớm, mưa bằng particle (dừng ở mái, tắt trong cửa hàng), tiếng mưa tạo bằng code.
+  - Người chơi đứng ngoài mưa hồi thể lực ×0,5.
+  - NPC ngoài trời tạm ẩn khi mưa, trừ NPC kịch bản đang cần và NPC đang hội thoại; NPC trong nhà không bị ẩn.
+- **Camera trên cao kiểu Sims** (ý tưởng từ FreeSims `WorldCamera`/`UIUCP`, viết lại trong `ThirdPersonCameraController`):
+  - H bật/tắt, `,` `.` xoay 90°, cuộn chuột đổi 3 mức zoom; con trỏ tự do.
+  - Chế độ này không dùng trong nhà.
+  - HUD có nút "Góc nhìn" và bảng ◀ ▶ + - khi đang ở chế độ này.
+- **FreeSims:** đã chuyển ra `D:\VTC_Academy\NihongoLife\References\FreeSims-master` (650 file C# MonoGame làm hỏng biên dịch Unity). Không có asset dùng được vì game gốc cần file của EA.
+- **IELTS Writing/Speaking:**
+  - Đề tự soạn trong `StreamingAssets/IELTS`: `nl_writing_academic_1` (Task 1 dạng bảng + Task 2) và `nl_speaking_1` (Part 1/2/3).
+  - `IeltsTestUI.Productive.cs`: soạn bài, đếm từ, tự lưu, ghi âm từng câu, Part 2 có 1 phút chuẩn bị, giới hạn 40/120/75 giây.
+  - `ExamGradingService.Ielts.cs`: Examiner 4 tiêu chí (band tổng tính tại máy, Task 2 hệ số ×2); Coach góp ý từng câu và xem bản viết lại (không chấm band).
+  - Speaking gửi audio và số đo thời gian nói; Pronunciation chỉ chấm từ audio, nếu không chấm được thì ghi "chưa chấm".
+  - Kiểm soát chi phí (`GameControlDatabase`): `aiDailyRequestLimit`, giới hạn số từ và giây, cache theo nội dung, báo mất mạng, thử lại khi gặp 429/5xx.
+  - `MicRecorder` dùng chung (cả `ExamPlayUI`).
+  - App ID Agora chuyển sang Control Database hoặc biến môi trường `AGORA_APP_ID`.
+- **Test:**
+  - `IeltsProductivePlayModeTests`: AI thật, mất mạng/giới hạn lượt, micro thật, thiết bị ghi âm qua Agora.
+  - `WeatherCameraPlayerPlayModeTests`.
+  - `PlayModeSaveGuard`: giữ nguyên `progress.json` thật khi chạy test.

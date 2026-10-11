@@ -119,7 +119,7 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
---- !u!1 &1721118554
+--- !u!1 &2012631268
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -127,8 +127,8 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 1721118556}
-  - component: {fileID: 1721118555}
+  - component: {fileID: 2012631270}
+  - component: {fileID: 2012631269}
   m_Layer: 0
   m_Name: Code-based tests runner
   m_TagString: Untagged
@@ -136,13 +136,13 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &1721118555
+--- !u!114 &2012631269
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1721118554}
+  m_GameObject: {fileID: 2012631268}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 102e512f651ee834f951a2516c1ea3b8, type: 3}
@@ -170,7 +170,7 @@ MonoBehaviour:
     - testMode: 4
       assemblyNames: []
       groupNames:
-      - NihongoLife.Tests.WeatherCameraPlayerPlayModeTests|NihongoLife.Tests.IeltsProductivePlayModeTests
+      - ^(?!.*(DemoRecording|TrailerRecording)).*$
       categoryNames: []
       testNames: []
       synchronousOnly: 0
@@ -187,13 +187,13 @@ MonoBehaviour:
     repeatCount: 0
     automated: 0
     randomOrderSeed: 0
---- !u!4 &1721118556
+--- !u!4 &2012631270
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1721118554}
+  m_GameObject: {fileID: 2012631268}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
@@ -206,4 +206,4 @@ Transform:
 SceneRoots:
   m_ObjectHideFlags: 0
   m_Roots:
-  - {fileID: 1721118556}
+  - {fileID: 2012631270}
