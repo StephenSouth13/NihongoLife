@@ -33,11 +33,24 @@ namespace NihongoLife.Exam.Ielts
             }
         }
 
+        /// <summary>Packages that ship with the game (self-authored practice, e.g. Writing/Speaking): StreamingAssets/IELTS.</summary>
+        public static string BuiltInRoot => Path.Combine(Application.streamingAssetsPath, "IELTS");
+
         public static List<Package> Discover()
         {
             var packages = new List<Package>();
-            if (!Directory.Exists(Root)) return packages;
-            foreach (string folder in Directory.GetDirectories(Root))
+            foreach (string root in new[] { BuiltInRoot, Root })
+            {
+                if (!Directory.Exists(root)) continue;
+                DiscoverIn(root, packages);
+            }
+            packages.Sort((a, b) => string.CompareOrdinal(a.Id, b.Id));
+            return packages;
+        }
+
+        private static void DiscoverIn(string root, List<Package> packages)
+        {
+            foreach (string folder in Directory.GetDirectories(root))
             {
                 string path = Path.Combine(folder, "test.json");
                 if (!File.Exists(path)) continue;
@@ -52,8 +65,6 @@ namespace NihongoLife.Exam.Ielts
                     Debug.LogWarning($"[IeltsLibrary] Skipped package '{Path.GetFileName(folder)}': {exception.GetType().Name}");
                 }
             }
-            packages.Sort((a, b) => string.CompareOrdinal(a.Id, b.Id));
-            return packages;
         }
 
         /// <summary>Loads the answer key only when grading — the test screen never holds it before submission.</summary>
@@ -102,7 +113,7 @@ namespace NihongoLife.Exam.Ielts
     /// <summary>Saves the attempt in progress (answers, part, audio positions, timer) and the score history.</summary>
     public static class IeltsAttemptStore
     {
-        private static string Folder => Path.Combine(Application.persistentDataPath, "ielts");
+        public static string Folder => Path.Combine(Application.persistentDataPath, "ielts");
         private static string AttemptPath(string testId) => Path.Combine(Folder, testId + ".attempt.json");
         private static string HistoryPath => Path.Combine(Folder, "history.json");
 
