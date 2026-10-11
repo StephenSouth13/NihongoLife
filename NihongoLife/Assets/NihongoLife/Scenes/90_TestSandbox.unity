@@ -68187,6 +68187,224 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 7029154521298662290, guid: 5ec977e4c3ad6cc43a925cf509c85636, type: 3}
   m_PrefabInstance: {fileID: 736166568}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &736939721
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 736939723}
+  - component: {fileID: 736939722}
+  m_Layer: 0
+  m_Name: OutdoorSky
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &736939722
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 736939721}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6d45e63798a8ac74e8f3a7746f823741, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: NihongoLife::NihongoLife.Core.OutdoorSky
+  sun: {fileID: 1868325775}
+  sunYaw: 326
+  sunNoonIntensity: 1.45
+  skyMaterial: {fileID: 2100000, guid: 1dbd903f41a61d74abda42a73a0ee95a, type: 2}
+  drivesAmbientAndFog: 1
+  ambientMode: 3
+  ambientSky: {r: 0.72, g: 0.76, b: 0.78, a: 1}
+  ambientEquator: {r: 0.114, g: 0.125, b: 0.133, a: 1}
+  ambientGround: {r: 0.047, g: 0.043, b: 0.035, a: 1}
+  fogColor: {r: 0.74, g: 0.82, b: 0.86, a: 1}
+  fogDensity: 0.0045
+  nightLamps:
+  - {fileID: 17628349}
+  - {fileID: 90527278}
+  - {fileID: 102677358}
+  - {fileID: 104480673}
+  - {fileID: 137604090}
+  - {fileID: 147489658}
+  - {fileID: 149294308}
+  - {fileID: 164435905}
+  - {fileID: 286409057}
+  - {fileID: 304420608}
+  - {fileID: 318738497}
+  - {fileID: 429176926}
+  - {fileID: 450888559}
+  - {fileID: 488577647}
+  - {fileID: 490090527}
+  - {fileID: 497774654}
+  - {fileID: 521672631}
+  - {fileID: 524793631}
+  - {fileID: 577777606}
+  - {fileID: 659048678}
+  - {fileID: 662824039}
+  - {fileID: 692157896}
+  - {fileID: 769447827}
+  - {fileID: 866458864}
+  - {fileID: 892598424}
+  - {fileID: 894153212}
+  - {fileID: 903574828}
+  - {fileID: 904459582}
+  - {fileID: 908611511}
+  - {fileID: 937809413}
+  - {fileID: 953413470}
+  - {fileID: 985765424}
+  - {fileID: 993474411}
+  - {fileID: 1006906158}
+  - {fileID: 1035880336}
+  - {fileID: 1044894858}
+  - {fileID: 1053653107}
+  - {fileID: 1085950880}
+  - {fileID: 1086901063}
+  - {fileID: 1104523697}
+  - {fileID: 1116695861}
+  - {fileID: 1120284685}
+  - {fileID: 1130472668}
+  - {fileID: 1161161570}
+  - {fileID: 1163298008}
+  - {fileID: 1164979277}
+  - {fileID: 1167727165}
+  - {fileID: 1195017519}
+  - {fileID: 1216766129}
+  - {fileID: 1236812700}
+  - {fileID: 1238455379}
+  - {fileID: 1244722827}
+  - {fileID: 1262437848}
+  - {fileID: 1275229627}
+  - {fileID: 1312485991}
+  - {fileID: 1316098141}
+  - {fileID: 1317504690}
+  - {fileID: 1414810749}
+  - {fileID: 1451271289}
+  - {fileID: 1475239855}
+  - {fileID: 1477828419}
+  - {fileID: 1573149473}
+  - {fileID: 1597690988}
+  - {fileID: 1610094865}
+  - {fileID: 1727144606}
+  - {fileID: 1767883311}
+  - {fileID: 1802850521}
+  - {fileID: 1824144886}
+  - {fileID: 1850173989}
+  - {fileID: 1867676580}
+  - {fileID: 1887541925}
+  - {fileID: 1950085577}
+  - {fileID: 1974727956}
+  - {fileID: 2013763558}
+  - {fileID: 2029354564}
+  - {fileID: 2047668147}
+  - {fileID: 2066335999}
+  - {fileID: 2068874192}
+  - {fileID: 2132502259}
+  - {fileID: 2136712769}
+  lampIntensities:
+  - 1.7
+  - 1.7
+  - 0.55
+  - 1.7
+  - 1.7
+  - 1.7
+  - 1.7
+  - 1.7
+  - 1.7
+  - 1.7
+  - 1.7
+  - 1.7
+  - 1.7
+  - 1.7
+  - 1.7
+  - 1.7
+  - 1.7
+  - 1.7
+  - 1.7
+  - 1.7
+  - 1.7
+  - 1.7
+  - 1.7
+  - 1
+  - 1.7
+  - 1.7
+  - 1.7
+  - 1.7
+  - 1.7
+  - 1.7
+  - 1.7
+  - 1.7
+  - 1.7
+  - 1.7
+  - 1.7
+  - 1.7
+  - 1.7
+  - 1.7
+  - 1.7
+  - 1.7
+  - 1.7
+  - 1.7
+  - 1.7
+  - 1.7
+  - 1.7
+  - 1.7
+  - 1.7
+  - 1.7
+  - 1.7
+  - 1.7
+  - 1.7
+  - 0.7
+  - 0.8
+  - 1.7
+  - 0.8
+  - 1.7
+  - 1.7
+  - 1.7
+  - 1.7
+  - 1.7
+  - 1.7
+  - 1.7
+  - 1.7
+  - 1.7
+  - 1.7
+  - 1.7
+  - 1.7
+  - 1.7
+  - 0.55
+  - 1.7
+  - 0.8
+  - 1.7
+  - 1.7
+  - 1.7
+  - 1.7
+  - 1.7
+  - 0.6
+  - 1.7
+  - 1.7
+  - 1.7
+  lampGlows: []
+--- !u!4 &736939723
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 736939721}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &737821851
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -132275,224 +132493,6 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1382381263}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
---- !u!1 &1382776191
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1382776193}
-  - component: {fileID: 1382776192}
-  m_Layer: 0
-  m_Name: OutdoorSky
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &1382776192
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1382776191}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6d45e63798a8ac74e8f3a7746f823741, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: NihongoLife::NihongoLife.Core.OutdoorSky
-  sun: {fileID: 1868325775}
-  sunYaw: 326
-  sunNoonIntensity: 1.45
-  skyMaterial: {fileID: 2100000, guid: 1dbd903f41a61d74abda42a73a0ee95a, type: 2}
-  drivesAmbientAndFog: 1
-  ambientMode: 3
-  ambientSky: {r: 0.72, g: 0.76, b: 0.78, a: 1}
-  ambientEquator: {r: 0.114, g: 0.125, b: 0.133, a: 1}
-  ambientGround: {r: 0.047, g: 0.043, b: 0.035, a: 1}
-  fogColor: {r: 0.74, g: 0.82, b: 0.86, a: 1}
-  fogDensity: 0.0045
-  nightLamps:
-  - {fileID: 17628349}
-  - {fileID: 90527278}
-  - {fileID: 102677358}
-  - {fileID: 104480673}
-  - {fileID: 137604090}
-  - {fileID: 147489658}
-  - {fileID: 149294308}
-  - {fileID: 164435905}
-  - {fileID: 286409057}
-  - {fileID: 304420608}
-  - {fileID: 318738497}
-  - {fileID: 429176926}
-  - {fileID: 450888559}
-  - {fileID: 488577647}
-  - {fileID: 490090527}
-  - {fileID: 497774654}
-  - {fileID: 521672631}
-  - {fileID: 524793631}
-  - {fileID: 577777606}
-  - {fileID: 659048678}
-  - {fileID: 662824039}
-  - {fileID: 692157896}
-  - {fileID: 769447827}
-  - {fileID: 866458864}
-  - {fileID: 892598424}
-  - {fileID: 894153212}
-  - {fileID: 903574828}
-  - {fileID: 904459582}
-  - {fileID: 908611511}
-  - {fileID: 937809413}
-  - {fileID: 953413470}
-  - {fileID: 985765424}
-  - {fileID: 993474411}
-  - {fileID: 1006906158}
-  - {fileID: 1035880336}
-  - {fileID: 1044894858}
-  - {fileID: 1053653107}
-  - {fileID: 1085950880}
-  - {fileID: 1086901063}
-  - {fileID: 1104523697}
-  - {fileID: 1116695861}
-  - {fileID: 1120284685}
-  - {fileID: 1130472668}
-  - {fileID: 1161161570}
-  - {fileID: 1163298008}
-  - {fileID: 1164979277}
-  - {fileID: 1167727165}
-  - {fileID: 1195017519}
-  - {fileID: 1216766129}
-  - {fileID: 1236812700}
-  - {fileID: 1238455379}
-  - {fileID: 1244722827}
-  - {fileID: 1262437848}
-  - {fileID: 1275229627}
-  - {fileID: 1312485991}
-  - {fileID: 1316098141}
-  - {fileID: 1317504690}
-  - {fileID: 1414810749}
-  - {fileID: 1451271289}
-  - {fileID: 1475239855}
-  - {fileID: 1477828419}
-  - {fileID: 1573149473}
-  - {fileID: 1597690988}
-  - {fileID: 1610094865}
-  - {fileID: 1727144606}
-  - {fileID: 1767883311}
-  - {fileID: 1802850521}
-  - {fileID: 1824144886}
-  - {fileID: 1850173989}
-  - {fileID: 1867676580}
-  - {fileID: 1887541925}
-  - {fileID: 1950085577}
-  - {fileID: 1974727956}
-  - {fileID: 2013763558}
-  - {fileID: 2029354564}
-  - {fileID: 2047668147}
-  - {fileID: 2066335999}
-  - {fileID: 2068874192}
-  - {fileID: 2132502259}
-  - {fileID: 2136712769}
-  lampIntensities:
-  - 1.7
-  - 1.7
-  - 0.55
-  - 1.7
-  - 1.7
-  - 1.7
-  - 1.7
-  - 1.7
-  - 1.7
-  - 1.7
-  - 1.7
-  - 1.7
-  - 1.7
-  - 1.7
-  - 1.7
-  - 1.7
-  - 1.7
-  - 1.7
-  - 1.7
-  - 1.7
-  - 1.7
-  - 1.7
-  - 1.7
-  - 1
-  - 1.7
-  - 1.7
-  - 1.7
-  - 1.7
-  - 1.7
-  - 1.7
-  - 1.7
-  - 1.7
-  - 1.7
-  - 1.7
-  - 1.7
-  - 1.7
-  - 1.7
-  - 1.7
-  - 1.7
-  - 1.7
-  - 1.7
-  - 1.7
-  - 1.7
-  - 1.7
-  - 1.7
-  - 1.7
-  - 1.7
-  - 1.7
-  - 1.7
-  - 1.7
-  - 1.7
-  - 0.7
-  - 0.8
-  - 1.7
-  - 0.8
-  - 1.7
-  - 1.7
-  - 1.7
-  - 1.7
-  - 1.7
-  - 1.7
-  - 1.7
-  - 1.7
-  - 1.7
-  - 1.7
-  - 1.7
-  - 1.7
-  - 1.7
-  - 0.55
-  - 1.7
-  - 0.8
-  - 1.7
-  - 1.7
-  - 1.7
-  - 1.7
-  - 1.7
-  - 0.6
-  - 1.7
-  - 1.7
-  - 1.7
-  lampGlows: []
---- !u!4 &1382776193
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1382776191}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1383100679
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -200671,4 +200671,4 @@ SceneRoots:
   - {fileID: 171073641}
   - {fileID: 2027729510}
   - {fileID: 798660052}
-  - {fileID: 1382776193}
+  - {fileID: 736939723}

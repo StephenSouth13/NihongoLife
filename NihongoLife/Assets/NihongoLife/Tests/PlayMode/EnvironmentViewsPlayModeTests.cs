@@ -40,11 +40,12 @@ namespace NihongoLife.Tests
                 var player = Object.FindFirstObjectByType<PlayerController>();
                 var cam = Camera.main;
                 Assert.NotNull(cam, scene + " camera");
-                // Zones load over the city: only this scene's own doors.
+                // Zones load over the city (the zone may arrive a moment later): only this scene's own doors.
+                for (float t = 0f; t < 6f && scene != WorldLocationCatalog.MidoriIslandScene && !Object.FindObjectsByType<ScenePortal>(FindObjectsSortMode.None).Any(p => p.gameObject.scene.name == scene); t += Time.unscaledDeltaTime) yield return null;
                 var portals = Object.FindObjectsByType<ScenePortal>(FindObjectsSortMode.InstanceID).Where(p => p.gameObject.scene.name == scene).ToArray();
                 Object.FindFirstObjectByType<DayNightCycle>()?.SetHour(12f);
                 yield return null;
-                Debug.Log($"[Views] {scene}: {portals.Length} portals");
+                Debug.Log($"[Views] {scene}: {portals.Length} portals; loaded: {string.Join(", ", Enumerable.Range(0, SceneManager.sceneCount).Select(k => SceneManager.GetSceneAt(k).name))}; all portals: {string.Join(", ", Object.FindObjectsByType<ScenePortal>(FindObjectsInactive.Include, FindObjectsSortMode.None).Select(p => p.gameObject.scene.name + ":" + p.name + ":" + p.gameObject.activeInHierarchy))}");
                 int i = 0;
                 foreach (var portal in portals)
                 {
@@ -83,6 +84,33 @@ namespace NihongoLife.Tests
                     Shoot(cam, p - f * 7f + Vector3.up * 3.2f, p + f * 14f + Vector3.up * 2.5f, $"{Safe(scene)}_hour{hour:00.0}");
                 }
             }
+        }
+
+        /// <summary>Collision at the station exit: the player stands on the floor in front of the stairs and cannot walk
+        /// up them past the 出口 door (the way out is the door itself), nor through the stairwell walls.</summary>
+        [UnityTest]
+        public IEnumerator Station_ExitStairwellCollision()
+        {
+            yield return Load(WorldLocationCatalog.StationScene);
+            for (float t = 0f; t < 6f && !Object.FindObjectsByType<ScenePortal>(FindObjectsSortMode.None).Any(p => p.gameObject.scene.name == WorldLocationCatalog.StationScene); t += Time.unscaledDeltaTime) yield return null;
+            var player = Object.FindFirstObjectByType<PlayerController>();
+            var body = player.GetComponent<CharacterController>();
+            player.InputLocked = true;
+            body.enabled = false;
+            player.transform.position = new Vector3(800f, 0.4f, 10.4f);
+            body.enabled = true;
+            Physics.SyncTransforms();
+            for (int i = 0; i < 30; i++) { body.Move(Vector3.down * 0.1f); yield return null; }
+            float floorY = player.transform.position.y;
+            Assert.Greater(floorY, -0.2f, "Standing on the platform in front of the stairs");
+            for (int i = 0; i < 40; i++) { body.Move(new Vector3(0f, -0.05f, 0.15f)); yield return null; }
+            Assert.Less(player.transform.position.z, 12.9f, "Cannot climb past the exit door");
+            Assert.Greater(player.transform.position.y, floorY - 0.2f, "Did not fall through the stairs");
+            for (int i = 0; i < 40; i++) { body.Move(new Vector3(0.2f, -0.05f, 0f)); yield return null; }
+            Assert.Less(player.transform.position.x, 803f, "Tunnel wall east of the opening stops the player");
+            player.InputLocked = false;
+            var exit = Object.FindObjectsByType<ScenePortal>(FindObjectsSortMode.None).First(p => p.gameObject.scene.name == WorldLocationCatalog.StationScene);
+            Assert.Less(Vector3.Distance(exit.transform.position, new Vector3(800f, 1.1f, 9.8f)), 0.5f, "The 出口 door is in front of the stairs");
         }
 
         private static IEnumerator Load(string scene)

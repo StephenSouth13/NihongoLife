@@ -21,6 +21,10 @@ namespace NihongoLife.Tests
         {
             yield return SceneManager.LoadSceneAsync(WorldLocationCatalog.CityScene);
             yield return new WaitForSecondsRealtime(2f);
+            // The arrival narration is on screen at load (and blocks the map key): close it first.
+            var dm = NihongoLife.Dialogue.DialogueManager.Instance;
+            for (int guard = 0; guard < 40 && dm != null && dm.IsOpen; guard++) { dm.CancelDialogue(); if (dm.IsOpen) dm.ContinueDialogue(); }
+            yield return new WaitForSecondsRealtime(0.3f);
             var player = Object.FindFirstObjectByType<PlayerController>();
             var flow = Object.FindFirstObjectByType<SceneFlowController>();
             Assert.NotNull(player);

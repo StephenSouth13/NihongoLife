@@ -491,7 +491,7 @@ namespace NihongoLife.UI
             characterPreviewModel.name = "SelectedCharacterPreview";
             characterPreviewModel.transform.localPosition = Vector3.zero;
             characterPreviewModel.transform.localRotation = Quaternion.Euler(0f, 180f, 0f);
-            characterPreviewModel.transform.localScale = Vector3.one;
+            characterPreviewModel.transform.localScale = prefab.transform.localScale; // kids are built at 1.35×
             ApplyCharacterPreviewYaw(0f);
 
             foreach (var collider in characterPreviewModel.GetComponentsInChildren<Collider>(true))

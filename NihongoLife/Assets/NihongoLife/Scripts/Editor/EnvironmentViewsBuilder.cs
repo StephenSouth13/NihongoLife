@@ -394,7 +394,7 @@ namespace NihongoLife.EditorTools
             {
                 float z = Mathf.Lerp(z0, z1, (i + 0.5f) / steps);
                 float h = Mathf.Lerp(y0, y1, (i + 1f) / steps);
-                Block(stair, "Step_" + i, new Vector3(800f, (bottom + h) / 2f, z), new Vector3(opening - 0.2f, h - bottom, (z1 - z0) / steps + 0.01f), stepMat, false);
+                Block(stair, "Step_" + i, new Vector3(800f, (bottom + h) / 2f, z), new Vector3(opening - 0.2f, h - bottom, (z1 - z0) / steps + 0.01f), stepMat, true);
                 Block(stair, "Nosing_" + i, new Vector3(800f, h + 0.005f, z - (z1 - z0) / steps / 2f + 0.04f), new Vector3(opening - 0.2f, 0.02f, 0.08f), trimMat, false);
             }
             // Stairwell side walls and a short roof over the lower half (the upper half is open to the sky).
@@ -409,6 +409,16 @@ namespace NihongoLife.EditorTools
                     new Vector3(0.06f, 0.06f, Vector3.Distance(new Vector3(0f, y0, z0), new Vector3(0f, y1, z1))), trimMat, false);
                 rail.transform.rotation = Quaternion.Euler(-Mathf.Atan2(y1 - y0, z1 - z0) * Mathf.Rad2Deg, 0f, 0f);
             }
+            // The way out is the 出口 door (ExitToCity) at the foot of the stairs: the player cannot climb past the first steps.
+            var blocker = new GameObject("StairBlocker").AddComponent<BoxCollider>();
+            blocker.transform.SetParent(stair, false);
+            blocker.transform.position = new Vector3(800f, 1.5f, 12.9f);
+            blocker.size = new Vector3(opening, 3f, 0.3f);
+
+            // Daylight falls into the upper stairwell: those pieces are also lit by the street's sun (follows the cycle).
+            foreach (var r in stair.GetComponentsInChildren<Renderer>())
+                if (r.bounds.center.z > 15f || r.name.StartsWith("SideWall")) r.renderingLayerMask = 1u | StreetRenderingLayer;
+
             // "出口 · Exit" sign over the opening.
             var sign = Block(stair, "ExitSign", new Vector3(800f, 3.75f, wallCenter.z - 0.26f), new Vector3(2.6f, 0.55f, 0.06f),
                 AssetDatabase.LoadAssetAtPath<Material>("Assets/NihongoLife/Materials/City/Town_SignGlow.mat") ?? trimMat, false);

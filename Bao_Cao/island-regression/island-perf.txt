@@ -1,4 +1,4 @@
-start yen=3130 slots=1/16
+start yen=3000 slots=0/16
 arrived island at (-1201.50, 0.20, -29.60) gap=0.000 floor=Platform
 at StoreInteraction: current=StoreInteraction (NihongoLife.Island.IslandShopCounter)
 click IslandShop/Confirm
@@ -18,15 +18,15 @@ talking to cow
 click AnimalCard/Feed
 click AnimalCard/Feed
 click AnimalCard/Pet
-animal max wander in 4s = 3.65 m
+animal max wander in 4s = 3.68 m
 words=13 achievements=first_harvest,first_sale
 at KioskInteraction: current=KioskInteraction (NihongoLife.Island.IslandTicketKiosk)
 at TrainDoorInteraction: current=TrainDoorInteraction (NihongoLife.Island.IslandTrainDoor)
 total 78.1s
 scenes: 90_TestSandbox, 60_MidoriIsland active=60_MidoriIsland
-island objects: plots=6 animals=horse,dog,cow,donkey,alpaca counters=1 spots=7
-walk to store: closest 2.2 m, ended at (-1195.99, 0.00, -18.21)
-walk to farm: closest 2.2 m, ended at (-1223.55, 0.00, -0.98)
-walk to animal pen: closest 2.2 m, ended at (-1184.26, 0.00, 4.53)
+island objects: plots=6 animals=cow,donkey,horse,alpaca,dog counters=1 spots=7
+walk to store: closest 2.2 m, ended at (-1195.99, 0.00, -18.20)
+walk to farm: closest 2.2 m, ended at (-1223.55, 0.00, -0.97)
+walk to animal pen: closest 2.2 m, ended at (-1183.84, 0.00, 5.93)
 walk to lookout: closest 2.4 m, ended at (-1200.00, 0.00, 29.64)
-perf (editor, batchmode): frames=3838 avg=1.0ms p95=1.3ms max=2.1ms islandRenderers=255 batches=722 setPass=69 tris=598960
+perf (editor, batchmode): frames=2395 avg=1.7ms p95=3.1ms max=85.9ms islandRenderers=264 batches=16 setPass=8 tris=48390

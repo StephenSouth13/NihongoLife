@@ -58,7 +58,7 @@ namespace NihongoLife.Tests
                     yield return new WaitForSecondsRealtime(0.3f);
                     var passage = section.FindPassage(section.questions[0].passageId);
                     var texts = ui.GetComponentsInChildren<TextMeshProUGUI>(false).Select(t => t.text).ToList();
-                    Assert.IsTrue(texts.Any(t => t.Contains("聴解") || t.Contains("Nghe")), "The listening screen is visible");
+                    Assert.IsTrue(texts.Any(t => t.Contains("聴解") || t.Contains("Nghe") || t.Contains("Listening")), "The listening screen is visible (any UI language): " + string.Join(" | ", texts.Take(40)));
                     Assert.IsFalse(texts.Any(t => t.Contains("しりょう")), "The script is hidden while answering");
                     var play = ui.GetComponentsInChildren<Button>(false).First(b => b.GetComponentInChildren<TextMeshProUGUI>()?.text.StartsWith("Nghe") == true || b.GetComponentInChildren<TextMeshProUGUI>()?.text.StartsWith("Play") == true || b.GetComponentInChildren<TextMeshProUGUI>()?.text.StartsWith("再生") == true);
                     Assert.IsTrue(play.interactable, "Audio available");

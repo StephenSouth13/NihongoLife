@@ -3,6 +3,7 @@ using System.Collections;
 using System.IO;
 using System.Linq;
 using NihongoLife.Core;
+using NihongoLife.Player;
 using NihongoLife.UI;
 using NUnit.Framework;
 using TMPro;
@@ -49,6 +50,8 @@ namespace NihongoLife.Tests
             for (float t = 0f; t < 15f && Object.FindFirstObjectByType<AuthUI>() == null; t += Time.unscaledDeltaTime) yield return null;
             yield return new WaitForSecondsRealtime(1f);
             GameServices.TryGet(out IAuthService original);
+            string originalName = PlayerPrefs.GetString(PlayableCharacterCatalog.PlayerNamePrefsKey, PlayableCharacterCatalog.DefaultPlayerName);
+            var originalMode = PlayerSessionService.Instance != null ? PlayerSessionService.Instance.Mode : PlayerSessionMode.Guest;
             var fake = new FakeAuth();
             GameServices.Register<IAuthService>(fake);
             try
@@ -84,6 +87,10 @@ namespace NihongoLife.Tests
             finally
             {
                 if (original != null) GameServices.Register(original);
+                // Signing in switched the session to the fake account and copied its name: put both back.
+                PlayerPrefs.SetString(PlayableCharacterCatalog.PlayerNamePrefsKey, originalName);
+                PlayerPrefs.Save();
+                if (originalMode == PlayerSessionMode.Guest) PlayerSessionService.Instance?.BeginGuest();
             }
         }
 

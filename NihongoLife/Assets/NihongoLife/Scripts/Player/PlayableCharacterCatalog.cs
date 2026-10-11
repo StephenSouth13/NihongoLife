@@ -14,9 +14,16 @@ namespace NihongoLife.Player
         private static readonly PlayableCharacter[] Characters =
         {
             new PlayableCharacter("student", "Tanaka", "Học viên", "Characters/NL_Player", new Color(0.98f, 0.78f, 0.32f), true),
-            new PlayableCharacter("cashier", "Aki", "COMING SOON", "Characters/NL_Cashier", new Color(0.38f, 0.74f, 0.95f), false),
-            new PlayableCharacter("guide", "Lilly", "COMING SOON", "Characters/NL_Guide", new Color(0.95f, 0.52f, 0.34f), false),
-            new PlayableCharacter("neighbor", "Ren", "COMING SOON", "Characters/NL_Neighbor", new Color(0.54f, 0.86f, 0.54f), false)
+            // Kids Characters for Survival (ThirdParty/New Chac), built by KidsCharactersSetup.Build. They replace the
+            // old "COMING SOON" slots, which only borrowed the cashier/guide/neighbor NPC models.
+            new PlayableCharacter("kid_haruto", "Haruto", "Học sinh · ハルト", "Characters/Kids/NL_kid_haruto", new Color(0.38f, 0.74f, 0.95f), true),
+            new PlayableCharacter("kid_yui", "Yui", "Học sinh · ユイ", "Characters/Kids/NL_kid_yui", new Color(0.95f, 0.52f, 0.62f), true),
+            new PlayableCharacter("kid_sota", "Sota", "Học sinh · ソウタ", "Characters/Kids/NL_kid_sota", new Color(0.54f, 0.86f, 0.54f), true),
+            new PlayableCharacter("kid_hina", "Hina", "Học sinh · ヒナ", "Characters/Kids/NL_kid_hina", new Color(0.98f, 0.66f, 0.3f), true),
+            new PlayableCharacter("kid_riku", "Riku", "Học sinh · リク", "Characters/Kids/NL_kid_riku", new Color(0.45f, 0.6f, 0.98f), true),
+            new PlayableCharacter("kid_mio", "Mio", "Học sinh · ミオ", "Characters/Kids/NL_kid_mio", new Color(0.78f, 0.55f, 0.95f), true),
+            new PlayableCharacter("kid_yuto", "Yuto", "Học sinh · ユウト", "Characters/Kids/NL_kid_yuto", new Color(0.4f, 0.8f, 0.8f), true),
+            new PlayableCharacter("kid_sakura", "Sakura", "Học sinh · サクラ", "Characters/Kids/NL_kid_sakura", new Color(0.98f, 0.6f, 0.75f), true)
         };
 
         public static int Count => Characters.Length;

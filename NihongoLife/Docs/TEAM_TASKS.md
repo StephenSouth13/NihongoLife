@@ -803,3 +803,29 @@ Claude nhận tiếp phần Codex đang làm dở: báo cáo, trailer, demo và 
   - Nguyên nhân: `AuthUI` không có cách đóng. Các nút menu tạo sau còn vẽ đè lên lớp nền của bảng.
   - Sửa: bảng lên trên cùng khi mở; thêm nút × và Esc (`UiModalStack`); thêm nút Tiếp tục/Đăng xuất; tự đóng 1,2 s sau khi đăng nhập thành công; thẻ cao 570 để ô thông báo không thòi ra ngoài.
   - Test: `AuthPanelPlayModeTests` (auth giả, không cần mạng). Ảnh: `Bao_Cao/ui-regression/10_account_signed_in.png`.
+
+## Cập nhật (2026-10-11 tối, Claude) — Thẻ 2: cửa nhìn ra ngoài, trời ngày/đêm, tên HUD, Kids Characters
+- **Nhìn từ trong scene ra cửa** (`Editor/EnvironmentViewsBuilder.BuildAll`, batchmode, đã lưu vào scene):
+  - Sushi, lớp học, Game Center: ngoài cửa có bản sao đúng đoạn phố Hibari trước cửa tương ứng (`ExteriorView_Street`).
+    - Chỉ để nhìn, không có collider.
+    - Layer 28 `ExteriorView`, rendering layer bit 1, có mặt trời và đèn riêng, nên không chiếu vào phòng.
+  - Ga: tường hầm phía bắc (`TunnelNorthWall`) bị tắt, thay bằng 2 đoạn tường + một ô cửa và `ExitStairwell` (cầu thang lên phố, biển 出口, tay vịn).
+    - Phía trên là đoạn phố Hibari.
+    - Có `StairBlocker` chặn ngay chân cầu thang; rời ga vẫn bằng cửa `ExitToCity`.
+  - **Ảnh hưởng scene của Codex:** 20_StationDistrict, 30_SushiRestaurant, 40_ HIBARICLASS, 50_GameCenter (thêm root `ExteriorView_Street`, `OutdoorSky`; ga thêm `ExitStairwell`).
+- **Trời ngày/đêm:**
+  - Shader `NihongoLife/SkyDayNight` (trộn ảnh trời ngày/đêm skydoom của ZRNAssets, ánh hoàng hôn, mặt trời/mặt trăng) và component `OutdoorSky` (Core).
+  - `DayNightCycle` chỉ chiếu sáng scene có `OutdoorSky`. Trước đây nó áp sương/ambient vào cả phòng trong nhà và lấy nhầm đèn bất kỳ làm mặt trời.
+  - Sửa khoảng 22h→5h30 qua nửa đêm (trước đó bị lấy màu bình minh).
+  - Hibari: 80 đèn đường tắt ban ngày, bật lúc chạng vạng.
+  - Midori: thêm 12 đèn (`Midori_NightLamps`). Ambient và sương giữ đúng giao diện ban ngày đã dựng của từng scene.
+- **Tên trên HUD:**
+  - `PlayableCharacterCatalog.ResolvePlayerName`, thứ tự ưu tiên: tên đã chọn hoặc tên profile → tên trong save → tên tài khoản → "Gakusei". Không bao giờ dùng "Guest".
+  - `SupabaseProgressRepository` chuyển sang chế độ tài khoản khi phiên đăng nhập được khôi phục.
+- **Kids Characters for Survival** (đã nhập vào `ThirdParty/New Chac/ForSurvival`):
+  - 8 bé Humanoid (`Resources/Characters/Kids/NL_kid_*`, scale 1,35×), dùng `NL_Humanoid` qua override `NL_Kid_Boy`/`NL_Kid_Girl`: idle, walk, happy-talk là clip của gói; còn lại là clip Mixamo.
+  - Thay 3 ô COMING SOON trong danh sách nhân vật.
+- **Test:**
+  - `EnvironmentViewsPlayModeTests` (ảnh ở `Bao_Cao/environment-regression`).
+  - `KidsCharactersPlayModeTests` (ảnh ở `Bao_Cao/character-regression`).
+  - `HudPlayerNamePlayModeTests`.

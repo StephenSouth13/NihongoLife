@@ -399,15 +399,7 @@ namespace NihongoLife.UI
 
         protected override void OnClosed()
         {
-            var manager = ExamManager.Instance;
-            if (manager != null)
-            {
-                manager.OnStateChanged -= HandleStateChanged;
-                manager.OnTimerTick -= HandleTimerTick;
-                manager.OnExamFinished -= HandleExamFinished;
-                manager.OnGradingStatus -= HandleGradingStatus;
-            }
-
+            Unsubscribe();
             CommitActiveEssayIfAny();
             StopRecordingIfNeeded();
             HighlightTool.SetMode(HighlightTool.ToolMode.Off);
@@ -428,6 +420,20 @@ namespace NihongoLife.UI
             if (PanelObject == null || !PanelObject.activeSelf) return;
             RefreshAll();
             if (_resultsRoot.activeSelf && _lastResult != null) ShowResults(_lastResult);
+        }
+
+        /// <summary>ExamManager outlives scenes: a screen destroyed while open (scene unload) must not stay subscribed,
+        /// or the next exam would refresh its destroyed buttons.</summary>
+        protected override void OnDestroyed() => Unsubscribe();
+
+        private void Unsubscribe()
+        {
+            var manager = ExamManager.Instance;
+            if (manager == null) return;
+            manager.OnStateChanged -= HandleStateChanged;
+            manager.OnTimerTick -= HandleTimerTick;
+            manager.OnExamFinished -= HandleExamFinished;
+            manager.OnGradingStatus -= HandleGradingStatus;
         }
 
         private void HandleStateChanged() => RefreshAll();

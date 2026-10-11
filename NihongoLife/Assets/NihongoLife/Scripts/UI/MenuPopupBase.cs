@@ -101,8 +101,12 @@ namespace NihongoLife.UI
             if (GameServices.TryGet(out GameSettingsService settings)) settings.OnLanguageChanged += HandleGlobalLanguageChanged;
         }
 
+        /// <summary>Called when the popup is destroyed (e.g. its scene unloads), open or not.</summary>
+        protected virtual void OnDestroyed() { }
+
         private void OnDestroy()
         {
+            OnDestroyed();
             if (IsOpen) RestoreGameplay();
             if (GameServices.TryGet(out GameSettingsService settings)) settings.OnLanguageChanged -= HandleGlobalLanguageChanged;
         }
