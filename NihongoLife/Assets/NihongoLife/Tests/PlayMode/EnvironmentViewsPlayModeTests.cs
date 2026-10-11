@@ -40,7 +40,10 @@ namespace NihongoLife.Tests
                 var player = Object.FindFirstObjectByType<PlayerController>();
                 var cam = Camera.main;
                 Assert.NotNull(cam, scene + " camera");
-                var portals = Object.FindObjectsByType<ScenePortal>(FindObjectsSortMode.InstanceID);
+                // Zones load over the city: only this scene's own doors.
+                var portals = Object.FindObjectsByType<ScenePortal>(FindObjectsSortMode.InstanceID).Where(p => p.gameObject.scene.name == scene).ToArray();
+                Object.FindFirstObjectByType<DayNightCycle>()?.SetHour(12f);
+                yield return null;
                 Debug.Log($"[Views] {scene}: {portals.Length} portals");
                 int i = 0;
                 foreach (var portal in portals)
@@ -67,7 +70,7 @@ namespace NihongoLife.Tests
                 var cam = Camera.main;
                 Vector3 p = player.transform.position;
                 Vector3 f = Vector3.ProjectOnPlane(player.transform.forward, Vector3.up).normalized;
-                var outdoors = Object.FindFirstObjectByType<OutdoorSky>();
+                var outdoors = OutdoorSky.Active;
                 Assert.NotNull(outdoors, "OutdoorSky in " + scene);
                 foreach (float hour in new[] { 6f, 12f, 17.5f, 20f, 23.5f, 2f })
                 {

@@ -11,7 +11,19 @@ namespace NihongoLife.Core
     /// </summary>
     public sealed class OutdoorSky : MonoBehaviour
     {
-        public static OutdoorSky Active { get; private set; }
+        private static readonly System.Collections.Generic.List<OutdoorSky> Loaded = new();
+
+        /// <summary>Zones load additively over the city: the outdoors of the active scene wins, else the latest loaded.</summary>
+        public static OutdoorSky Active
+        {
+            get
+            {
+                var activeScene = UnityEngine.SceneManagement.SceneManager.GetActiveScene();
+                for (int i = Loaded.Count - 1; i >= 0; i--)
+                    if (Loaded[i] != null && Loaded[i].gameObject.scene == activeScene) return Loaded[i];
+                return Loaded.Count > 0 ? Loaded[Loaded.Count - 1] : null;
+            }
+        }
 
         [SerializeField] private Light sun;
         [SerializeField] private float sunYaw = -35f;
@@ -70,19 +82,30 @@ namespace NihongoLife.Core
 
         private void OnEnable()
         {
-            Active = this;
-            if (skyMaterial != null)
-            {
-                _sky = new Material(skyMaterial) { name = skyMaterial.name + " (day/night)" };
-                RenderSettings.skybox = _sky;
-            }
-            var cycle = FindFirstObjectByType<DayNightCycle>();
-            if (cycle != null) cycle.SetHour(cycle.Hour);
+            Loaded.Remove(this);
+            Loaded.Add(this);
+            if (skyMaterial != null && _sky == null) _sky = new Material(skyMaterial) { name = skyMaterial.name + " (day/night)" };
+            UnityEngine.SceneManagement.SceneManager.activeSceneChanged += HandleActiveSceneChanged;
+            Refresh();
         }
 
         private void OnDisable()
         {
-            if (Active == this) Active = null;
+            Loaded.Remove(this);
+            UnityEngine.SceneManagement.SceneManager.activeSceneChanged -= HandleActiveSceneChanged;
+            var next = Active;
+            if (next != null) next.Refresh();
+        }
+
+        private void HandleActiveSceneChanged(UnityEngine.SceneManagement.Scene _, UnityEngine.SceneManagement.Scene __) => Refresh();
+
+        /// <summary>When this is the active outdoors: its sky goes up and the cycle re-applies the current hour.</summary>
+        private void Refresh()
+        {
+            if (Active != this) return;
+            if (_sky != null) RenderSettings.skybox = _sky;
+            var cycle = FindFirstObjectByType<DayNightCycle>();
+            if (cycle != null) cycle.SetHour(cycle.Hour);
         }
 
         private void OnDestroy()
