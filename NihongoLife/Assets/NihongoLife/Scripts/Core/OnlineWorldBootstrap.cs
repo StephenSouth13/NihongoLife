@@ -7,12 +7,26 @@ namespace NihongoLife.Core
 {
     public class OnlineWorldBootstrap : MonoBehaviour
     {
-        [SerializeField] private float posePublishIntervalSeconds = 0.2f;
+        // The world service decides how often a pose actually goes out (≈6 Hz moving, every 3 s idle);
+        // this only has to feed it often enough.
+        [SerializeField] private float posePublishIntervalSeconds = 0.05f;
 
         private float _nextPublishTime;
         private Transform _playerTransform;
+        private IAuthService _auth;
 
         private void Start()
+        {
+            Connect();
+            if (GameServices.TryGet(out _auth)) _auth.OnAuthStateChanged += HandleAuthChanged;
+        }
+
+        private void OnDestroy()
+        {
+            if (_auth != null) _auth.OnAuthStateChanged -= HandleAuthChanged;
+        }
+
+        private void Connect()
         {
             if (!GameServices.TryGet(out IOnlineWorldService onlineWorld) || onlineWorld.IsConnected)
             {
@@ -32,6 +46,17 @@ namespace NihongoLife.Core
 
             onlineWorld.ConnectLocalPlayer(playerId, displayName);
             CachePlayerTransform();
+        }
+
+        /// <summary>Signing in or out changes who we are online (friends need the account id): reconnect.</summary>
+        private void HandleAuthChanged(AuthState state)
+        {
+            if (state != AuthState.SignedIn && state != AuthState.SignedOut) return;
+            if (!GameServices.TryGet(out IOnlineWorldService onlineWorld)) return;
+            string expected = _auth != null && _auth.IsAuthenticated ? _auth.UserId : SystemInfo.deviceUniqueIdentifier;
+            if (onlineWorld.IsConnected && onlineWorld.LocalPlayerId == expected) return;
+            onlineWorld.Disconnect();
+            Connect();
         }
 
         private void Update()

@@ -6,39 +6,28 @@ using NihongoLife.Core;
 namespace NihongoLife.Player
 {
     /// <summary>
-    /// Manages spawning, updating, and despawning of remote player avatars.
-    /// Listens to IOnlineWorldService events and maintains a pool of RemotePlayerAvatar instances.
-    /// Only displays players in the same scene, culled to maxVisiblePlayers.
+    /// Spawns, updates and removes RemotePlayerAvatar instances from IOnlineWorldService events (lives on AppRoot,
+    /// added by SupabaseOnlineWorldService). Only players in the same place are shown, and of those only the
+    /// <c>maxVisiblePlayers</c> nearest are drawn — the rest keep moving but have no model or name plate.
     /// </summary>
     public class RemotePlayerManager : MonoBehaviour
     {
         private readonly Dictionary<string, RemotePlayerAvatar> _avatars = new Dictionary<string, RemotePlayerAvatar>();
+        private readonly List<RemotePlayerAvatar> _sorted = new List<RemotePlayerAvatar>();
         private IOnlineWorldService _onlineWorld;
-        private string _localPlayerId;
         private int _maxVisible = 24;
+        private float _nextCull;
+        private Transform _root;
+
+        public int AvatarCount => _avatars.Count;
+        public int VisibleCount { get; private set; }
+        public IReadOnlyDictionary<string, RemotePlayerAvatar> Avatars => _avatars;
 
         private void Start()
         {
-            if (GameServices.TryGet(out _onlineWorld))
-            {
-                _onlineWorld.OnPlayerJoinedOrUpdated += HandlePlayerUpdate;
-                _onlineWorld.OnPlayerLeft += HandlePlayerLeft;
-            }
-
             if (GameServices.TryGet(out GameControlService control) && control.Database != null)
-            {
                 _maxVisible = Mathf.Max(4, control.Database.maxVisiblePlayers);
-            }
-
-            // Determine local player ID
-            if (GameServices.TryGet(out IAuthService auth) && auth.IsAuthenticated)
-            {
-                _localPlayerId = auth.UserId;
-            }
-            else
-            {
-                _localPlayerId = SystemInfo.deviceUniqueIdentifier;
-            }
+            SceneManager.activeSceneChanged += HandleActiveSceneChanged;
         }
 
         private void OnDestroy()
@@ -48,69 +37,76 @@ namespace NihongoLife.Player
                 _onlineWorld.OnPlayerJoinedOrUpdated -= HandlePlayerUpdate;
                 _onlineWorld.OnPlayerLeft -= HandlePlayerLeft;
             }
+            SceneManager.activeSceneChanged -= HandleActiveSceneChanged;
         }
+
+        private void Update()
+        {
+            if (_onlineWorld == null && GameServices.TryGet(out _onlineWorld))
+            {
+                _onlineWorld.OnPlayerJoinedOrUpdated += HandlePlayerUpdate;
+                _onlineWorld.OnPlayerLeft += HandlePlayerLeft;
+                foreach (var p in _onlineWorld.VisiblePlayers) HandlePlayerUpdate(p);
+            }
+            if (Time.unscaledTime >= _nextCull)
+            {
+                _nextCull = Time.unscaledTime + 0.5f;
+                CullToNearest();
+            }
+        }
+
+        private void HandleActiveSceneChanged(Scene from, Scene to) => ClearAll();
 
         private void HandlePlayerUpdate(OnlinePlayerSnapshot snapshot)
         {
-            // Don't create avatar for local player
-            if (snapshot.playerId == _localPlayerId) return;
-
-            // Only show players in the same scene
-            string currentScene = SceneManager.GetActiveScene().name;
-            if (snapshot.sceneName != currentScene)
+            if (snapshot == null || _onlineWorld == null || snapshot.playerId == _onlineWorld.LocalPlayerId || !snapshot.hasPose) return;
+            if (snapshot.sceneName != SceneManager.GetActiveScene().name)
             {
-                // Remove avatar if they left this scene
-                if (_avatars.ContainsKey(snapshot.playerId))
-                {
-                    DespawnAvatar(snapshot.playerId);
-                }
+                DespawnAvatar(snapshot.playerId);
                 return;
             }
-
-            // Limit visible players
-            if (!_avatars.ContainsKey(snapshot.playerId) && _avatars.Count >= _maxVisible)
-            {
-                return;
-            }
-
-            if (_avatars.TryGetValue(snapshot.playerId, out var existingAvatar))
-            {
-                existingAvatar.UpdateFromSnapshot(snapshot);
-            }
-            else
-            {
-                SpawnAvatar(snapshot);
-            }
+            if (_avatars.TryGetValue(snapshot.playerId, out var avatar) && avatar != null) avatar.UpdateFromSnapshot(snapshot);
+            else SpawnAvatar(snapshot);
         }
 
-        private void HandlePlayerLeft(string playerId)
-        {
-            DespawnAvatar(playerId);
-        }
+        private void HandlePlayerLeft(string playerId) => DespawnAvatar(playerId);
 
         private void SpawnAvatar(OnlinePlayerSnapshot snapshot)
         {
+            if (_root == null)
+            {
+                // Avatars live in the active scene so they go away with it and never follow the player into a menu.
+                _root = new GameObject("RemotePlayers").transform;
+                SceneManager.MoveGameObjectToScene(_root.gameObject, SceneManager.GetActiveScene());
+            }
             var go = new GameObject($"RemotePlayer_{snapshot.displayName}");
-            go.transform.SetParent(transform, false);
-            go.tag = "Untagged"; // Don't tag as Player
-
+            go.transform.SetParent(_root, false);
             var avatar = go.AddComponent<RemotePlayerAvatar>();
             avatar.Setup(snapshot);
-
             _avatars[snapshot.playerId] = avatar;
-            Debug.Log($"[RemotePlayerManager] Spawned avatar for {snapshot.displayName}");
+            _nextCull = 0f;
         }
 
         private void DespawnAvatar(string playerId)
         {
-            if (_avatars.TryGetValue(playerId, out var avatar))
+            if (!_avatars.TryGetValue(playerId, out var avatar)) return;
+            if (avatar != null) Destroy(avatar.gameObject);
+            _avatars.Remove(playerId);
+        }
+
+        private void CullToNearest()
+        {
+            var player = GameObject.FindWithTag("Player");
+            Vector3 origin = player != null ? player.transform.position : Camera.main != null ? Camera.main.transform.position : Vector3.zero;
+            _sorted.Clear();
+            foreach (var kv in _avatars) if (kv.Value != null) _sorted.Add(kv.Value);
+            _sorted.Sort((a, b) => (a.transform.position - origin).sqrMagnitude.CompareTo((b.transform.position - origin).sqrMagnitude));
+            VisibleCount = 0;
+            for (int i = 0; i < _sorted.Count; i++)
             {
-                if (avatar != null && avatar.gameObject != null)
-                {
-                    Debug.Log($"[RemotePlayerManager] Despawned avatar for {avatar.DisplayName}");
-                    Destroy(avatar.gameObject);
-                }
-                _avatars.Remove(playerId);
+                bool show = i < _maxVisible;
+                if (show) VisibleCount++;
+                if (_sorted[i].VisualVisible != show) _sorted[i].SetVisualVisible(show);
             }
         }
 
@@ -118,13 +114,10 @@ namespace NihongoLife.Player
         public void ClearAll()
         {
             foreach (var kvp in _avatars)
-            {
-                if (kvp.Value != null && kvp.Value.gameObject != null)
-                {
-                    Destroy(kvp.Value.gameObject);
-                }
-            }
+                if (kvp.Value != null) Destroy(kvp.Value.gameObject);
             _avatars.Clear();
+            if (_root != null) Destroy(_root.gameObject);
+            _root = null;
         }
     }
 }

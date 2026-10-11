@@ -14,6 +14,14 @@ namespace NihongoLife.Core
         public Vector3 position;
         public Quaternion rotation;
         public long serverTick;
+        /// <summary>PlayableCharacterCatalog id of the model this player picked.</summary>
+        public string characterId;
+        /// <summary>World shard the player is in ("" for local simulation).</summary>
+        public string shardTopic;
+        /// <summary>0 idle, 1 walking, 2 running (drives the remote animation).</summary>
+        public int moveState;
+        /// <summary>False until the first position arrives (the avatar is not shown before that).</summary>
+        public bool hasPose = true;
     }
 
     [Serializable]
@@ -30,6 +38,7 @@ namespace NihongoLife.Core
     public interface IOnlineWorldService : IGameService
     {
         bool IsConnected { get; }
+        string LocalPlayerId { get; }
         IReadOnlyList<OnlinePlayerSnapshot> VisiblePlayers { get; }
         IReadOnlyList<OnlineChatMessage> ChatHistory { get; }
 
@@ -53,6 +62,7 @@ namespace NihongoLife.Core
         private int _chatHistoryLimit = 80;
 
         public bool IsConnected { get; private set; }
+        public string LocalPlayerId => _localPlayerId;
         public IReadOnlyList<OnlinePlayerSnapshot> VisiblePlayers => _visiblePlayers;
         public IReadOnlyList<OnlineChatMessage> ChatHistory => _chatHistory;
 

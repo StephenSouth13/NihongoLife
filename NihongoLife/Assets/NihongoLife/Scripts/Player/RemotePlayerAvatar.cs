@@ -1,138 +1,215 @@
+using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using NihongoLife.Core;
+using NihongoLife.Interaction;
 
 namespace NihongoLife.Player
 {
     /// <summary>
-    /// Visual representation of a remote player in the world.
-    /// Shows a capsule with nametag and smoothly interpolates position/rotation.
+    /// Another player in the world: their own character model (PlayableCharacterCatalog), a name plate, and smooth
+    /// movement. Poses arrive ~6 times a second; the avatar is drawn <see cref="InterpolationDelay"/> behind the
+    /// newest one and interpolates between the two samples around that time, so it glides instead of stepping, and
+    /// briefly extrapolates when a packet is late. Press F near them for the social card (message, friend, group).
     /// </summary>
-    public class RemotePlayerAvatar : MonoBehaviour
+    public class RemotePlayerAvatar : MonoBehaviour, IInteractable
     {
+        public const float InterpolationDelay = 0.25f;
+
         public string PlayerId { get; private set; }
         public string DisplayName { get; private set; }
         public string SceneName { get; private set; }
+        public string CharacterId { get; private set; }
+        public bool VisualVisible { get; private set; } = true;
+        public int BufferedSamples => _samples.Count;
 
-        private Vector3 _targetPosition;
-        private Quaternion _targetRotation;
-        private float _smoothSpeed = 8f;
+        private struct Sample { public float t; public Vector3 p; public float yaw; public int move; }
+        private readonly List<Sample> _samples = new List<Sample>(24);
+
         private TextMeshPro _nameTag;
-        private CharacterAnimationController _animController;
+        private CharacterAnimationController _anim;
         private Vector3 _lastPosition;
-        private static readonly Color NameTagColor = new Color(0.3f, 0.95f, 0.98f, 1f);
-        private static readonly Color AvatarColor = new Color(0.35f, 0.6f, 0.85f, 0.92f);
+        private float _speed;
+        private GameObject _fallback;
+        private static readonly Color NameTagColor = new Color(0.86f, 0.97f, 1f, 1f);
 
         // ──────────────────────── Setup ────────────────────────
 
         public void Setup(OnlinePlayerSnapshot snapshot)
         {
             PlayerId = snapshot.playerId;
+            gameObject.layer = 0;
+            var trigger = gameObject.AddComponent<CapsuleCollider>();
+            trigger.isTrigger = true; // F can find them; nobody bumps into them
+            trigger.center = new Vector3(0f, 0.85f, 0f);
+            trigger.height = 1.7f;
+            trigger.radius = 0.35f;
+            CreateNameTag();
             UpdateFromSnapshot(snapshot);
-            CreateVisuals();
-
-            // Snap to position immediately on first setup
-            transform.position = _targetPosition;
-            transform.rotation = _targetRotation;
+            transform.SetPositionAndRotation(snapshot.position, snapshot.rotation);
+            _lastPosition = transform.position;
         }
 
         public void UpdateFromSnapshot(OnlinePlayerSnapshot snapshot)
         {
-            DisplayName = snapshot.displayName;
+            DisplayName = string.IsNullOrWhiteSpace(snapshot.displayName) ? "Learner" : snapshot.displayName;
             SceneName = snapshot.sceneName;
-            _targetPosition = snapshot.position;
-            _targetRotation = snapshot.rotation;
+            if (snapshot.characterId != CharacterId) ApplyCharacter(snapshot.characterId);
+            if (_nameTag != null) _nameTag.text = NameLabel();
 
-            if (_nameTag != null)
+            float now = Time.unscaledTime;
+            var s = new Sample { t = now, p = snapshot.position, yaw = snapshot.rotation.eulerAngles.y, move = snapshot.moveState };
+            if (_samples.Count > 0)
             {
-                _nameTag.text = DisplayName;
+                var last = _samples[_samples.Count - 1];
+                if ((s.p - last.p).sqrMagnitude < 0.0001f && Mathf.Abs(Mathf.DeltaAngle(s.yaw, last.yaw)) < 0.5f && s.move == last.move)
+                {
+                    // Idle keep-alive: refresh the time so we do not extrapolate, but do not grow the buffer.
+                    last.t = now;
+                    _samples[_samples.Count - 1] = last;
+                    return;
+                }
+                if ((s.p - last.p).sqrMagnitude > 64f) _samples.Clear(); // teleport (door, respawn): snap
             }
+            _samples.Add(s);
+            if (_samples.Count > 20) _samples.RemoveAt(0);
+            if (_samples.Count == 1) transform.SetPositionAndRotation(s.p, Quaternion.Euler(0f, s.yaw, 0f));
+        }
+
+        private string NameLabel()
+        {
+            string star = GameServices.TryGet(out SocialHub hub) && hub.IsFriend(PlayerId) ? "<color=#FFD45C>★</color> " : string.Empty;
+            return star + DisplayName;
+        }
+
+        private void ApplyCharacter(string characterId)
+        {
+            CharacterId = characterId;
+            var character = PlayableCharacterCatalog.FindById(string.IsNullOrEmpty(characterId) ? PlayableCharacterCatalog.DefaultId : characterId);
+            _anim = GetComponent<CharacterAnimationController>() ?? gameObject.AddComponent<CharacterAnimationController>();
+            if (PlayableCharacterCatalog.ApplyVisual(gameObject, character))
+            {
+                if (_fallback != null) Destroy(_fallback);
+                var animator = GetComponentInChildren<Animator>(true);
+                // Off-screen remote players skip bone updates — many avatars stay cheap.
+                if (animator != null) animator.cullingMode = AnimatorCullingMode.CullUpdateTransforms;
+                foreach (var r in GetComponentsInChildren<Renderer>(true))
+                    if (r != null && r.GetComponent<TextMeshPro>() == null) r.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.On;
+            }
+            else if (_fallback == null)
+            {
+                _fallback = GameObject.CreatePrimitive(PrimitiveType.Capsule);
+                _fallback.name = "Visual";
+                Destroy(_fallback.GetComponent<Collider>());
+                _fallback.transform.SetParent(transform, false);
+                _fallback.transform.localPosition = new Vector3(0f, 0.85f, 0f);
+                _fallback.transform.localScale = new Vector3(0.5f, 0.85f, 0.5f);
+            }
+            if (_nameTag != null) _nameTag.transform.localPosition = new Vector3(0f, NameHeight(), 0f);
+            SetVisualVisible(VisualVisible);
+        }
+
+        private float NameHeight()
+        {
+            var visual = transform.Find("Visual");
+            if (visual == null) return 2.0f;
+            bool any = false;
+            var b = new Bounds(transform.position, Vector3.zero);
+            foreach (var r in visual.GetComponentsInChildren<Renderer>(true))
+            {
+                if (!any) { b = r.bounds; any = true; } else b.Encapsulate(r.bounds);
+            }
+            return any ? Mathf.Clamp(b.max.y - transform.position.y + 0.25f, 1.2f, 2.6f) : 2.0f;
         }
 
         // ──────────────────────── Update ────────────────────────
 
         private void Update()
         {
-            // Smooth interpolation
-            transform.position = Vector3.Lerp(transform.position, _targetPosition, _smoothSpeed * Time.deltaTime);
-            transform.rotation = Quaternion.Slerp(transform.rotation, _targetRotation, _smoothSpeed * Time.deltaTime);
-
-            // Face nametag to camera
-            if (_nameTag != null && Camera.main != null)
+            if (_samples.Count > 0)
             {
-                _nameTag.transform.rotation = Quaternion.LookRotation(
-                    _nameTag.transform.position - Camera.main.transform.position);
+                float renderTime = Time.unscaledTime - InterpolationDelay;
+                Vector3 pos; float yaw;
+                if (_samples.Count == 1 || renderTime <= _samples[0].t)
+                {
+                    pos = _samples[0].p; yaw = _samples[0].yaw;
+                }
+                else
+                {
+                    int i = _samples.Count - 1;
+                    while (i > 0 && _samples[i - 1].t > renderTime) i--;
+                    var b = _samples[i];
+                    var a = _samples[Mathf.Max(0, i - 1)];
+                    if (renderTime >= b.t)
+                    {
+                        // Late packet: keep going the way they were moving, for at most a quarter second.
+                        var prev = _samples.Count >= 2 ? _samples[_samples.Count - 2] : b;
+                        float dt = Mathf.Max(0.001f, b.t - prev.t);
+                        Vector3 velocity = b.move == 0 ? Vector3.zero : (b.p - prev.p) / dt;
+                        pos = b.p + velocity * Mathf.Min(renderTime - b.t, 0.25f);
+                        yaw = b.yaw;
+                    }
+                    else
+                    {
+                        float k = Mathf.InverseLerp(a.t, b.t, renderTime);
+                        pos = Vector3.Lerp(a.p, b.p, k);
+                        yaw = Mathf.LerpAngle(a.yaw, b.yaw, k);
+                    }
+                    // Drop samples that are fully in the past.
+                    while (_samples.Count > 2 && _samples[1].t < renderTime) _samples.RemoveAt(0);
+                }
+                transform.position = pos;
+                transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.Euler(0f, yaw, 0f), 1f - Mathf.Exp(-14f * Time.deltaTime));
             }
 
-            // Simple speed-based animation
-            if (_animController != null)
-            {
-                float speed = (transform.position - _lastPosition).magnitude / Time.deltaTime;
-                _animController.SetSpeed(speed);
-            }
+            float frameSpeed = Time.deltaTime > 0f ? Vector3.ProjectOnPlane(transform.position - _lastPosition, Vector3.up).magnitude / Time.deltaTime : 0f;
+            _speed = Mathf.Lerp(_speed, frameSpeed, 1f - Mathf.Exp(-10f * Time.deltaTime));
             _lastPosition = transform.position;
+            if (_anim != null && VisualVisible) _anim.SetSpeed(_speed < 0.08f ? 0f : _speed);
+
+            var cam = Camera.main;
+            if (_nameTag != null && cam != null && VisualVisible)
+            {
+                _nameTag.transform.rotation = Quaternion.LookRotation(_nameTag.transform.position - cam.transform.position);
+                float d = Vector3.Distance(cam.transform.position, transform.position);
+                _nameTag.alpha = Mathf.Clamp01(1.4f - d / 28f);
+            }
         }
 
-        // ──────────────────────── Visuals ────────────────────────
-
-        private void CreateVisuals()
+        /// <summary>RemotePlayerManager hides far avatars beyond the visible cap.</summary>
+        public void SetVisualVisible(bool visible)
         {
-            // Check if visuals already exist
-            if (transform.Find("AvatarBody") != null) return;
+            VisualVisible = visible;
+            var visual = transform.Find("Visual");
+            if (visual != null && visual.gameObject.activeSelf != visible) visual.gameObject.SetActive(visible);
+            if (_nameTag != null) _nameTag.gameObject.SetActive(visible);
+        }
 
-            // Capsule body
-            var body = GameObject.CreatePrimitive(PrimitiveType.Capsule);
-            body.name = "AvatarBody";
-            body.transform.SetParent(transform, false);
-            body.transform.localPosition = new Vector3(0f, 1f, 0f);
-            body.transform.localScale = new Vector3(0.5f, 0.5f, 0.5f);
-
-            // Remove collider to avoid physics interference
-            var collider = body.GetComponent<Collider>();
-            if (collider != null) Destroy(collider);
-
-            // Set material color
-            var renderer = body.GetComponent<Renderer>();
-            if (renderer != null)
-            {
-                renderer.material = new Material(Shader.Find("Universal Render Pipeline/Lit"));
-                renderer.material.color = AvatarColor;
-            }
-
-            // Head sphere
-            var head = GameObject.CreatePrimitive(PrimitiveType.Sphere);
-            head.name = "AvatarHead";
-            head.transform.SetParent(transform, false);
-            head.transform.localPosition = new Vector3(0f, 1.65f, 0f);
-            head.transform.localScale = new Vector3(0.35f, 0.35f, 0.35f);
-
-            var headCollider = head.GetComponent<Collider>();
-            if (headCollider != null) Destroy(headCollider);
-
-            var headRenderer = head.GetComponent<Renderer>();
-            if (headRenderer != null)
-            {
-                headRenderer.material = new Material(Shader.Find("Universal Render Pipeline/Lit"));
-                headRenderer.material.color = new Color(0.92f, 0.78f, 0.65f, 1f);
-            }
-
-            // Nametag (TextMeshPro 3D)
-            var nameTagGo = new GameObject("NameTag");
-            nameTagGo.transform.SetParent(transform, false);
-            nameTagGo.transform.localPosition = new Vector3(0f, 2.15f, 0f);
-            nameTagGo.transform.localScale = Vector3.one * 0.08f;
-
-            _nameTag = nameTagGo.AddComponent<TextMeshPro>();
-            _nameTag.text = DisplayName;
-            _nameTag.fontSize = 36f;
+        private void CreateNameTag()
+        {
+            var go = new GameObject("NameTag");
+            go.transform.SetParent(transform, false);
+            go.transform.localPosition = new Vector3(0f, 2.0f, 0f);
+            go.transform.localScale = Vector3.one * 0.07f;
+            _nameTag = go.AddComponent<TextMeshPro>();
+            _nameTag.fontSize = 34f;
             _nameTag.alignment = TextAlignmentOptions.Center;
             _nameTag.color = NameTagColor;
-            _nameTag.outlineWidth = 0.2f;
-            _nameTag.outlineColor = new Color32(0, 0, 0, 180);
+            _nameTag.outlineWidth = 0.22f;
+            _nameTag.outlineColor = new Color32(10, 30, 50, 200);
             _nameTag.enableAutoSizing = false;
+            _nameTag.rectTransform.sizeDelta = new Vector2(40f, 6f);
+        }
 
-            // Try to get animation controller if there's a proper model
-            _animController = GetComponent<CharacterAnimationController>();
+        // ──────────────────────── IInteractable ────────────────────────
+
+        public string GetPromptJa() => $"{DisplayName} と交流する";
+        public string GetpromptEn() => $"Gặp {DisplayName} — nhắn tin, kết bạn, mời nhóm";
+        public Transform GetTransform() => transform;
+
+        public void Interact(GameObject player)
+        {
+            NihongoLife.UI.SocialChatWindow.ShowPlayerCard(PlayerId, DisplayName);
         }
     }
 }

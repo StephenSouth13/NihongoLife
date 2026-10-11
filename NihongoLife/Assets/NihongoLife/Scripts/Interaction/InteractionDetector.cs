@@ -1,8 +1,20 @@
 using System;
+using System.Collections.Generic;
+using NihongoLife.Core;
 using UnityEngine;
+using UnityEngine.EventSystems;
+using UnityEngine.InputSystem;
 
 namespace NihongoLife.Interaction
 {
+    /// <summary>
+    /// Picks what F talks to. In a crowd the choice has to be obvious and controllable:
+    /// · score = distance + how far it is from where the player faces and from the middle of the screen − door/priority
+    ///   bonus; the current target keeps a bonus (hysteresis) so it does not flicker between two people;
+    /// · Q cycles through everyone in reach (nearest first), a left click on someone selects them;
+    ///   a manual choice sticks until they leave reach or 6 s pass;
+    /// · InteractionHighlight marks the target in the world (arrow + "[F] name", "Q 2/4" when several).
+    /// </summary>
     public class InteractionDetector : MonoBehaviour
     {
         [Header("Detection Settings")]
@@ -11,21 +23,40 @@ namespace NihongoLife.Interaction
         [SerializeField] private float checkInterval = 0.1f;
         [SerializeField] private bool fallbackToAnyLayer = true;
 
+        private const float StickyBonus = 0.45f;
+        private const float ManualHoldSeconds = 6f;
+
         private float _nextCheckTime;
         private IInteractable _currentInteractable;
-        private readonly Collider[] _overlapBuffer = new Collider[32];
+        private IInteractable _manual;
+        private float _manualUntil;
+        private readonly Collider[] _overlapBuffer = new Collider[48];
+        private readonly List<(IInteractable item, float score)> _candidates = new List<(IInteractable, float)>();
+        private readonly HashSet<IInteractable> _seen = new HashSet<IInteractable>();
 
         public event Action<IInteractable> OnInteractableChanged;
 
         public IInteractable CurrentInteractable => _currentInteractable;
+        /// <summary>How many things are in reach (the HUD shows "Q: đổi (i/n)" when more than one).</summary>
+        public int CandidateCount => _candidates.Count;
+        public int CurrentIndex => _currentInteractable == null ? -1 : _candidates.FindIndex(c => c.item == _currentInteractable);
+        public IReadOnlyList<(IInteractable item, float score)> Candidates => _candidates;
 
         private void Awake()
         {
             detectionRadius = Mathf.Max(detectionRadius, 3.6f);
+            if (GetComponent<InteractionHighlight>() == null) gameObject.AddComponent<InteractionHighlight>();
         }
 
         private void Update()
         {
+            var input = GameInputService.Instance;
+            if (!NihongoLife.UI.UiModalStack.BlocksHotkeys)
+            {
+                if (input != null && input.WasPressed(GameInputId.CycleTarget)) CycleTarget();
+                if (Mouse.current != null && Mouse.current.leftButton.wasPressedThisFrame) TrySelectUnderCursor();
+            }
+
             if (Time.time >= _nextCheckTime)
             {
                 _nextCheckTime = Time.time + checkInterval;
@@ -36,82 +67,110 @@ namespace NihongoLife.Interaction
         private void DetectInteractables()
         {
             Vector3 detectionOrigin = transform.position + Vector3.up * 0.9f;
-            int colliderCount = Physics.OverlapSphereNonAlloc(
-                detectionOrigin,
-                detectionRadius,
-                _overlapBuffer,
-                interactableLayers,
-                QueryTriggerInteraction.Collide);
-
+            int colliderCount = Physics.OverlapSphereNonAlloc(detectionOrigin, detectionRadius, _overlapBuffer, interactableLayers, QueryTriggerInteraction.Collide);
             if (colliderCount == 0 && fallbackToAnyLayer)
-            {
-                colliderCount = Physics.OverlapSphereNonAlloc(
-                    detectionOrigin,
-                    detectionRadius,
-                    _overlapBuffer,
-                    Physics.AllLayers,
-                    QueryTriggerInteraction.Collide);
-            }
+                colliderCount = Physics.OverlapSphereNonAlloc(detectionOrigin, detectionRadius, _overlapBuffer, Physics.AllLayers, QueryTriggerInteraction.Collide);
 
-            IInteractable closestInteractable = null;
-            float minDistance = float.MaxValue;
-
+            var cam = Camera.main;
+            Vector3 camForward = cam != null ? Vector3.ProjectOnPlane(cam.transform.forward, Vector3.up).normalized : transform.forward;
+            _candidates.Clear();
+            _seen.Clear();
             for (int i = 0; i < colliderCount; i++)
             {
                 Collider col = _overlapBuffer[i];
                 if (col == null) continue;
+                var interactable = col.GetComponentInParent<IInteractable>() ?? col.GetComponent<IInteractable>();
+                if (interactable == null || !_seen.Add(interactable)) continue;
+                if (interactable is UnityEngine.Object unityObject && unityObject == null) continue;
+                if (interactable is IConditionalInteractable conditional && !conditional.IsInteractionAvailable) continue;
+                if (interactable is Component component && component.gameObject == gameObject) continue;
+                _candidates.Add((interactable, Score(interactable, camForward)));
+            }
+            _candidates.Sort((a, b) => a.score.CompareTo(b.score));
 
-                var interactable = col.GetComponentInParent<IInteractable>();
-                if (interactable == null)
+            IInteractable best = null;
+            if (_manual != null && Time.time < _manualUntil && _candidates.Exists(c => c.item == _manual)) best = _manual;
+            else
+            {
+                _manual = null;
+                float bestScore = float.MaxValue;
+                foreach (var (item, score) in _candidates)
                 {
-                    interactable = col.GetComponent<IInteractable>();
-                }
-
-                if (interactable != null)
-                {
-                    if (interactable is IConditionalInteractable conditional && !conditional.IsInteractionAvailable)
-                    {
-                        continue;
-                    }
-
-                    // Closest wins, but what the player faces and doors (IInteractionPriority) win ties, so a
-                    // light switch beside the genkan no longer steals F from the exit.
-                    Vector3 target = interactable.GetTransform().position;
-                    Vector3 flat = Vector3.ProjectOnPlane(target - transform.position, Vector3.up);
-                    float facing = flat.sqrMagnitude > 0.0001f ? Vector3.Dot(transform.forward, flat.normalized) : 1f;
-                    float horizontal = flat.magnitude;
-                    float dist = horizontal + (1f - facing) * 0.6f
-                        - (interactable is IInteractionPriority priority ? priority.InteractionPriority : 0f);
-                    if (dist < minDistance)
-                    {
-                        minDistance = dist;
-                        closestInteractable = interactable;
-                    }
+                    float s = item == _currentInteractable ? score - StickyBonus : score;
+                    if (s < bestScore) { bestScore = s; best = item; }
                 }
             }
+            SetCurrent(best);
+        }
 
-            if (closestInteractable != _currentInteractable)
+        /// <summary>Lower is better.</summary>
+        private float Score(IInteractable interactable, Vector3 camForward)
+        {
+            Vector3 target = interactable.GetTransform().position;
+            Vector3 flat = Vector3.ProjectOnPlane(target - transform.position, Vector3.up);
+            float horizontal = flat.magnitude;
+            Vector3 dir = horizontal > 0.001f ? flat / horizontal : transform.forward;
+            float facing = Vector3.Dot(transform.forward, dir);   // where the character looks
+            float view = Vector3.Dot(camForward, dir);             // where the camera (screen centre) looks
+            float priority = interactable is IInteractionPriority p ? p.InteractionPriority : 0f;
+            // Things behind the character are much less likely to be meant.
+            return horizontal + (1f - facing) * 0.75f + (1f - view) * 0.45f - priority;
+        }
+
+        private void SetCurrent(IInteractable next)
+        {
+            if (next == _currentInteractable) return;
+            _currentInteractable = next;
+            OnInteractableChanged?.Invoke(_currentInteractable);
+        }
+
+        /// <summary>Q: next thing in reach (nearest first), wrapping round.</summary>
+        public void CycleTarget()
+        {
+            DetectInteractables();
+            if (_candidates.Count < 2) return;
+            int index = CurrentIndex;
+            var next = _candidates[(index + 1) % _candidates.Count].item;
+            Select(next);
+        }
+
+        /// <summary>Makes something the target (click or cycle); it stays the target for a few seconds.</summary>
+        public void Select(IInteractable interactable)
+        {
+            if (interactable == null) return;
+            _manual = interactable;
+            _manualUntil = Time.time + ManualHoldSeconds;
+            SetCurrent(interactable);
+        }
+
+        private void TrySelectUnderCursor()
+        {
+            if (EventSystem.current != null && EventSystem.current.IsPointerOverGameObject()) return;
+            var cam = Camera.main;
+            if (cam == null) return;
+            Ray ray = cam.ScreenPointToRay(Mouse.current.position.ReadValue());
+            var hits = Physics.RaycastAll(ray, 60f, Physics.AllLayers, QueryTriggerInteraction.Collide);
+            Array.Sort(hits, (a, b) => a.distance.CompareTo(b.distance));
+            foreach (var hit in hits)
             {
-                _currentInteractable = closestInteractable;
-                OnInteractableChanged?.Invoke(_currentInteractable);
+                var interactable = hit.collider.GetComponentInParent<IInteractable>();
+                if (interactable == null) continue;
+                if (interactable is Component c && c.gameObject == gameObject) continue;
+                if (Vector3.Distance(interactable.GetTransform().position, transform.position) > detectionRadius * 1.5f) return;
+                DetectInteractables();
+                if (_candidates.Exists(x => x.item == interactable)) Select(interactable);
+                return;
             }
         }
 
         public void TriggerInteraction()
         {
-            if (_currentInteractable != null)
+            if (_currentInteractable == null) DetectInteractables();
+            if (_currentInteractable != null && !(_currentInteractable is UnityEngine.Object o && o == null))
             {
                 _currentInteractable.Interact(gameObject);
                 return;
             }
-
-            DetectInteractables();
-            if (_currentInteractable != null)
-            {
-                _currentInteractable.Interact(gameObject);
-                return;
-            }
-
             Debug.Log("[InteractionDetector] No interactable nearby. Move closer to an NPC, item, or door.");
         }
 

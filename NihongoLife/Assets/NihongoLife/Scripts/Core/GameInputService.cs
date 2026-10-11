@@ -30,7 +30,9 @@ namespace NihongoLife.Core
         FreeCursor,
         CameraMode,
         CameraRotateLeft,
-        CameraRotateRight
+        CameraRotateRight,
+        CycleTarget,
+        Social
     }
 
     public class GameInputService : MonoBehaviour, IGameService
@@ -115,6 +117,8 @@ namespace NihongoLife.Core
             AddButton(GameInputId.CameraMode, "CameraMode", "<Keyboard>/h");
             AddButton(GameInputId.CameraRotateLeft, "CameraRotateLeft", "<Keyboard>/comma");
             AddButton(GameInputId.CameraRotateRight, "CameraRotateRight", "<Keyboard>/period");
+            AddButton(GameInputId.CycleTarget, "CycleTarget", "<Keyboard>/q", "<Gamepad>/rightShoulder");
+            AddButton(GameInputId.Social, "Social", "<Keyboard>/u");
         }
 
         private void AddButton(GameInputId id, string name, string keyboardPath, string gamepadPath = null)

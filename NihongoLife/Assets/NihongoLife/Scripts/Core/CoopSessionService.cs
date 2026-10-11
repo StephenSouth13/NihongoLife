@@ -175,6 +175,8 @@ namespace NihongoLife.Core
 
                     _currentSession = null;
                     _participants.Clear();
+                    _coopChannel?.Leave();
+                    _coopChannel = null;
                     OnSessionEnded?.Invoke();
                     callback?.Invoke();
                 },
@@ -286,9 +288,13 @@ namespace NihongoLife.Core
         {
             if (_realtimeClient == null) return;
 
-            // We reuse the existing realtime client but listen for coop-specific broadcasts
-            _realtimeClient.OnBroadcastReceived += HandleCoopBroadcast;
+            // Each session has its own channel, so only its participants receive its events.
+            _coopChannel?.Leave();
+            _coopChannel = _realtimeClient.Join("coop:" + sessionId, string.Empty, true);
+            _coopChannel.OnBroadcast += (evt, payload) => HandleCoopBroadcast(evt, MiniJson.Serialize(payload ?? new System.Collections.Generic.Dictionary<string, object>()));
         }
+
+        private SupabaseRealtimeClient.Channel _coopChannel;
 
         private void HandleCoopBroadcast(string eventType, string payloadJson)
         {
@@ -307,8 +313,8 @@ namespace NihongoLife.Core
         /// <summary>Broadcast a co-op event to all participants.</summary>
         public void BroadcastCoopEvent(string eventType, string payloadJson)
         {
-            if (_realtimeClient == null || !_realtimeClient.IsConnected) return;
-            _realtimeClient.Broadcast($"coop_{eventType}", payloadJson);
+            if (_coopChannel == null) return;
+            _coopChannel.Send($"coop_{eventType}", string.IsNullOrEmpty(payloadJson) ? "{}" : payloadJson);
         }
 
         // ──────────────────────── Participants ────────────────────────

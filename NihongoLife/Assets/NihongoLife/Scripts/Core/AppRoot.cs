@@ -164,6 +164,11 @@ namespace NihongoLife.Core
             GameServices.Register<CoopSessionService>(coopSessionService);
             coopSessionService.Initialize();
 
+            // Community / group / private (E2E) chat and friends online, on top of the online world.
+            var socialHub = GetComponent<SocialHub>() ?? gameObject.AddComponent<SocialHub>();
+            GameServices.Register<SocialHub>(socialHub);
+            socialHub.Initialize();
+
             if (onlineWorldBootstrap == null)
             {
                 onlineWorldBootstrap = gameObject.AddComponent<OnlineWorldBootstrap>();

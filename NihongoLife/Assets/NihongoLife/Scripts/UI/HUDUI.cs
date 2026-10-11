@@ -685,7 +685,13 @@ namespace NihongoLife.UI
             bool dialogueOpen = dialoguePanel != null && dialoguePanel.activeSelf;
 
             RegisterModalPanels();
-            if (chatPanel != null && chatPanel.activeSelf) return; // typing: Esc (UiModalStack) closes the chat
+            bool socialOpen = SocialChatWindow.IsOpen || SocialChatWindow.CardOpen;
+            if (socialOpen != _socialWasOpen)
+            {
+                // Closed with Esc / × or opened by F on a player: keep the movement lock in step.
+                _socialWasOpen = socialOpen;
+                UpdateOverlayInputLock();
+            }
             if (UiModalStack.BlocksHotkeys) return;               // exam / text field: no B, M, Tab, O…
 
             if (!UiModalStack.BlocksHotkeys && input.WasPressed(GameInputId.Journal) && (dialoguePanel == null || !dialoguePanel.activeSelf))
@@ -725,6 +731,11 @@ namespace NihongoLife.UI
             {
                 SetChatVisible(true);
             }
+            if (input.WasPressed(GameInputId.Social) && (dialoguePanel == null || !dialoguePanel.activeSelf))
+            {
+                if (SocialChatWindow.IsOpen && SocialChatWindow.Instance.CurrentTab == SocialChatWindow.Tab.Friends) SetChatVisible(false);
+                else { SetChatVisible(true); SocialChatWindow.Instance.SelectTab(SocialChatWindow.Tab.Friends); }
+            }
 
             HandleDialogueKeyboard();
         }
@@ -737,7 +748,6 @@ namespace NihongoLife.UI
         {
             if (_modalPanelsRegistered) return;
             _modalPanelsRegistered = true;
-            UiModalStack.Register(this, () => chatPanel != null && chatPanel.activeSelf, () => SetChatVisible(false), "Chat");
             UiModalStack.Register(this, () => inventoryPanel != null && inventoryPanel.activeSelf, () => { SetInventoryVisible(false); UpdateOverlayInputLock(); }, "Bag");
             UiModalStack.Register(this, () => characterPanel != null && characterPanel.activeSelf, () => { SetCharacterVisible(false); UpdateOverlayInputLock(); }, "Character");
             UiModalStack.Register(this, () => _worldMap != null && _worldMap.IsVisible, () => { _worldMap.SetVisible(false); UpdateOverlayInputLock(); }, "Map");
@@ -843,31 +853,32 @@ namespace NihongoLife.UI
             UpdateOverlayInputLock();
         }
 
+        /// <summary>Enter opens the full chat window (SocialChatWindow: area, community, groups, private, friends);
+        /// the old single-channel panel stays hidden.</summary>
         private void SetChatVisible(bool visible)
         {
-            if (chatPanel == null) return;
-            chatPanel.SetActive(visible);
-
+            if (chatPanel != null && chatPanel.activeSelf) chatPanel.SetActive(false);
             if (visible)
             {
                 _worldMap?.SetVisible(false);
                 SetInventoryVisible(false);
                 SetCharacterVisible(false);
-                RefreshChatHistory();
-                chatInputField?.ActivateInputField();
+                SocialChatWindow.Open();
             }
-            else
+            else if (SocialChatWindow.IsOpen)
             {
-                chatInputField?.DeactivateInputField();
+                SocialChatWindow.Close();
             }
             UpdateOverlayInputLock();
         }
+
+        private bool _socialWasOpen;
 
         private void UpdateOverlayInputLock()
         {
             bool overlayOpen = (inventoryPanel != null && inventoryPanel.activeSelf) ||
                                (characterPanel != null && characterPanel.activeSelf) ||
-                               (chatPanel != null && chatPanel.activeSelf) ||
+                               SocialChatWindow.IsOpen || SocialChatWindow.CardOpen ||
                                (_worldMap != null && _worldMap.IsVisible);
             bool dialogueOpen = dialoguePanel != null && dialoguePanel.activeSelf;
             ScenarioManager.Instance?.SetPlayerInputLocked(overlayOpen || dialogueOpen);
