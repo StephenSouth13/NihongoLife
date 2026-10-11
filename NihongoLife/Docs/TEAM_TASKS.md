@@ -780,3 +780,15 @@ Claude nhận tiếp phần Codex đang làm dở: báo cáo, trailer, demo và 
 - Dữ liệu và logic giữ nguyên (`PlayerStatus`, `PlayerInventory`, đổi màu khi chỉ số thấp, ẩn khi có hội thoại).
 - Thẻ cảnh báo tự đặt lên trên widget.
 - Test: `HudStatusWidgetPlayModeTests`. Ảnh ở `Bao_Cao/hud-regression`.
+
+## Cập nhật (2026-10-11, Claude) — Ảnh thật cho giấy/sổ ở Hibari Mart
+- `Editor/ItemIconRenderer.cs` có thêm 2 lệnh batchmode (không có MenuItem):
+  - `RenderStationery` → `Resources/Items/<id>.png`;
+  - `PreviewStationery -iconOut <dir>` → chụp mọi model văn phòng phẩm để chọn.
+- Chung một góc camera (34°, −32°), ánh sáng và lề cắt 6%. Nền trong suốt, 512px.
+- Màu thật của pack Styloo: FBX mất texture palette, nên đọc `ImphenziaPalette01-256-Gradient` từ GLB cùng tên khi render. Không thêm asset texture mới.
+- Gán ảnh:
+  - `note_paper_12` ← `principal office/FBX/PRINCIPALOFFICEnotebook_001.fbx` (sổ lò xo xanh lá);
+  - `note_paper_30` ← `classroom/FBX/book__004.fbx` (vở bìa cứng xanh dương, đặt nằm).
+- **Thiếu model:** `note_paper_5` (ルーズリーフ, giấy rời 5 tờ) vẫn dùng glyph 紙. `postit` chỉ là một tờ giấy dán cong, không phải xấp giấy.
+- Test: `Notebook_PagesPaperAndSave` kiểm tra thẻ 12/30 có ảnh. `LoadCity` trong test đóng lời dẫn mở màn trước khi chụp.
