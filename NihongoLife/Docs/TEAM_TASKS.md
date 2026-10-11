@@ -793,3 +793,13 @@ Claude nhận tiếp phần Codex đang làm dở: báo cáo, trailer, demo và 
 - **Thiếu model:** `note_paper_5` (ルーズリーフ, giấy rời 5 tờ) vẫn dùng glyph 紙. `postit` chỉ là một tờ giấy dán cong, không phải xấp giấy.
 - Test: `Notebook_PagesPaperAndSave` kiểm tra thẻ 12/30 có ảnh. `LoadCity` trong test đóng lời dẫn mở màn trước khi chụp.
 - `KonbiniShopUI.ProductCard`: tên trên thẻ giờ chỉ một dòng, tự thu nhỏ chữ (tối thiểu 13). Tên dài như ルーズリーフ（5まい） không còn đè lên dòng nghĩa.
+
+## Cập nhật (2026-10-11 chiều, Claude) — Kẹt bảng tài khoản, chuột tự do trong konbini
+- **Chuột tự do khi vào konbini.**
+  - Nguyên nhân: `StoreCameraZone` bật camera trong nhà và tắt camera ngoài đường. `CursorDirector` vẫn giữ camera đã tắt nên coi như "không có camera chơi" và thả chuột.
+  - Sửa: `CursorDirector` tìm lại camera ngay khi camera đang giữ bị tắt.
+  - Test: `CursorFlowPlayModeTests` (ngoài đường → qua cửa → kệ hàng → Esc → quầy → trả tiền).
+- **Kẹt ở bảng "Signed in as".**
+  - Nguyên nhân: `AuthUI` không có cách đóng. Các nút menu tạo sau còn vẽ đè lên lớp nền của bảng.
+  - Sửa: bảng lên trên cùng khi mở; thêm nút × và Esc (`UiModalStack`); thêm nút Tiếp tục/Đăng xuất; tự đóng 1,2 s sau khi đăng nhập thành công; thẻ cao 570 để ô thông báo không thòi ra ngoài.
+  - Test: `AuthPanelPlayModeTests` (auth giả, không cần mạng). Ảnh: `Bao_Cao/ui-regression/10_account_signed_in.png`.

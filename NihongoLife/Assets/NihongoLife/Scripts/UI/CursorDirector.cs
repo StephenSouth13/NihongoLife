@@ -81,11 +81,14 @@ namespace NihongoLife.UI
         {
             if (ControlSettings.Scheme != ControlScheme.MouseLook) return false;
             if ((Application.isBatchMode || !Application.isFocused) && !AssumeFocusForTests) return false;
-            if (Time.unscaledTime >= _nextLookup || _player == null || _camera == null)
+            // The konbini swaps to its own interior camera (StoreCameraZone) and disables the street one: follow
+            // whichever camera controller is live right away, or the cursor would fall free on entering the store.
+            bool cameraGone = _camera == null || !_camera.isActiveAndEnabled;
+            if (Time.unscaledTime >= _nextLookup || _player == null || cameraGone)
             {
                 _nextLookup = Time.unscaledTime + 0.5f;
-                if (_player == null) _player = FindFirstObjectByType<PlayerController>();
-                if (_camera == null) _camera = FindFirstObjectByType<ThirdPersonCameraController>();
+                if (_player == null || !_player.isActiveAndEnabled) _player = FindFirstObjectByType<PlayerController>();
+                if (cameraGone) _camera = FindFirstObjectByType<ThirdPersonCameraController>();
             }
             if (_player == null || _camera == null || !_camera.isActiveAndEnabled) return false;
             if (_player.InputLocked || _camera.IsLocked) return false;

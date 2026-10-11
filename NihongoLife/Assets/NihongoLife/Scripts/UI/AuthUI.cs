@@ -23,6 +23,7 @@ namespace NihongoLife.UI
         private TextMeshProUGUI _titleText;
         private TextMeshProUGUI _userInfoText;
         private Button _logoutButton;
+        private Button _continueButton;
         private TMP_FontAsset _font;
         private bool _isRegistering = false;
 
@@ -53,15 +54,27 @@ namespace NihongoLife.UI
             if (_panel != null && _panel.activeSelf) UpdateState();
         }
 
+        public bool IsOpen => _panel != null && _panel.activeSelf;
+
         public void Show()
         {
-            if (_panel != null) _panel.SetActive(true);
+            if (_panel == null) return;
+            _panel.SetActive(true);
+            // The menu buttons are created after this panel; draw above them so they cannot cover the card.
+            _panel.transform.SetAsLastSibling();
+            UiModalStack.Register(this, () => IsOpen, Hide, "Auth");
             UpdateState();
         }
 
         public void Hide()
         {
             if (_panel != null) _panel.SetActive(false);
+        }
+
+        private System.Collections.IEnumerator CloseAfterSignIn()
+        {
+            yield return new WaitForSecondsRealtime(1.2f);
+            if (GameServices.TryGet(out IAuthService auth) && auth.IsAuthenticated) Hide();
         }
 
         // ──────────────────────── Build UI ────────────────────────
@@ -85,7 +98,7 @@ namespace NihongoLife.UI
             // Center card
             var card = CreateChild(_panel, "AuthCard");
             var cardRect = card.AddComponent<RectTransform>();
-            CenterRect(cardRect, new Vector2(440f, 520f));
+            CenterRect(cardRect, new Vector2(440f, 570f));
             var cardImage = card.AddComponent<Image>();
             cardImage.color = new Color(0.04f, 0.05f, 0.06f, 0.97f);
 
@@ -133,8 +146,15 @@ namespace NihongoLife.UI
             _userInfoText.color = new Color(0.88f, 0.93f, 1f, 1f);
 
             // Logout button
-            _logoutButton = CreateButton(card, "LogoutButton", new Vector2(0f, -40f), new Vector2(340f, 48f), "Sign Out", new Color(0.6f, 0.2f, 0.2f, 1f));
+            _logoutButton = CreateButton(card, "LogoutButton", new Vector2(0f, -100f), new Vector2(340f, 48f), "Sign Out", new Color(0.6f, 0.2f, 0.2f, 1f));
             _logoutButton.onClick.AddListener(OnLogoutClicked);
+
+            // Signed in: back to the menu (the panel also closes by itself shortly after signing in).
+            _continueButton = CreateButton(card, "ContinueButton", new Vector2(0f, -40f), new Vector2(340f, 48f), "Continue", new Color(0.18f, 0.56f, 0.34f, 1f));
+            _continueButton.onClick.AddListener(Hide);
+
+            // The way out is always visible, not only Esc.
+            NLUi.CloseButton(card.transform, _font, Hide, 40f, 10f);
 
             _panel.SetActive(false);
         }
@@ -156,9 +176,12 @@ namespace NihongoLife.UI
             // Logged in elements
             SetActive(_userInfoText, authenticated);
             SetActive(_logoutButton, authenticated);
+            SetActive(_continueButton, authenticated);
 
             if (authenticated && auth != null)
             {
+                _continueButton.GetComponentInChildren<TextMeshProUGUI>().text = Text("Tiếp tục", "Continue", "つづける");
+                _logoutButton.GetComponentInChildren<TextMeshProUGUI>().text = Text("Đăng xuất", "Sign Out", "ログアウト");
                 string langVi = "Đã đăng nhập";
                 string langEn = "Signed in as";
                 string label = Text(langVi, langEn, "ログイン中");
@@ -218,6 +241,7 @@ namespace NihongoLife.UI
                         _statusText.color = new Color(0.45f, 0.84f, 0.5f, 1f);
                         _statusText.text = Text("Đăng nhập thành công!", "Sign in successful!", "ログイン成功！");
                         UpdateState();
+                        if (isActiveAndEnabled) StartCoroutine(CloseAfterSignIn());
                     }
                     else
                     {
