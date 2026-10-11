@@ -6,7 +6,7 @@ const cors = {
   "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type",
 };
 
-type Body = { action?: string; roomId?: string };
+type Body = { action?: string; roomId?: string; requestId?: string };
 
 function reply(body: Record<string, unknown>, status = 200) {
   return new Response(JSON.stringify(body), {
@@ -48,19 +48,21 @@ Deno.serve(async (request) => {
   if (body.action === "role") return reply({ ok: true, role });
 
   if (body.action === "create") {
-    if (teacher) return reply({ ok: false, error: "Tài khoản giáo viên không tạo phòng chờ học viên." }, 403);
     const { data: existing } = await admin.from("speaking_rooms").select("*")
-      .eq("student_id", user.id).in("status", ["waiting", "matched"]).maybeSingle();
+      .eq("created_by", user.id).in("status", ["waiting", "matched"]).maybeSingle();
     if (existing) return reply({ ok: true, role, room: existing });
     const { data: profile } = await admin.from("profiles").select("display_name,avatar_url,bio,level,xp").eq("id", user.id).maybeSingle();
     const channel = `nl_${crypto.randomUUID().replaceAll("-", "")}`;
     const { data, error } = await admin.from("speaking_rooms").insert({
-      student_id: user.id,
-      student_name: String(profile?.display_name ?? displayName).slice(0, 80),
-      student_avatar_url: profile?.avatar_url ?? null,
-      student_bio: profile?.bio ?? null,
-      student_level: profile?.level ?? 1,
-      student_xp: profile?.xp ?? 0,
+      created_by: user.id, creator_role: teacher ? "teacher" : "student",
+      student_id: teacher ? null : user.id,
+      student_name: teacher ? "" : String(profile?.display_name ?? displayName).slice(0, 80),
+      student_avatar_url: teacher ? null : profile?.avatar_url ?? null,
+      student_bio: teacher ? null : profile?.bio ?? null,
+      student_level: teacher ? 1 : profile?.level ?? 1,
+      student_xp: teacher ? 0 : profile?.xp ?? 0,
+      teacher_id: teacher ? user.id : null,
+      teacher_name: teacher ? displayName : null,
       channel_name: channel,
     }).select("*").single();
     if (error) return reply({ ok: false, error: error.message }, 400);
@@ -68,8 +70,8 @@ Deno.serve(async (request) => {
   }
 
   if (body.action === "list") {
-    if (!teacher) return reply({ ok: false, error: "Chỉ giáo viên được xem danh sách phòng chờ." }, 403);
-    const { data, error } = await admin.from("speaking_rooms").select("*").eq("status", "waiting")
+    const wantedRole = teacher ? "student" : "teacher";
+    const { data, error } = await admin.from("speaking_rooms").select("*").eq("status", "waiting").eq("creator_role", wantedRole)
       .order("created_at", { ascending: true }).limit(30);
     const rooms = (data ?? []).map((room) => ({
       ...room, avatar_url: room.student_avatar_url, bio: room.student_bio,
@@ -79,9 +81,8 @@ Deno.serve(async (request) => {
   }
 
   if (body.action === "mine") {
-    const query = admin.from("speaking_rooms").select("*").in("status", ["waiting", "matched"])
-      .order("created_at", { ascending: false }).limit(1);
-    const { data, error } = teacher ? await query.eq("teacher_id", user.id) : await query.eq("student_id", user.id);
+    const query = admin.from("speaking_rooms").select("*").in("status", ["waiting", "matched"]).order("created_at", { ascending: false }).limit(1);
+    const { data, error } = teacher ? await query.eq("teacher_id", user.id) : await query.or(`student_id.eq.${user.id},created_by.eq.${user.id}`);
     return error ? reply({ ok: false, error: error.message }, 400) : reply({ ok: true, role, room: data?.[0] ?? null });
   }
 
@@ -93,6 +94,46 @@ Deno.serve(async (request) => {
     }).eq("id", body.roomId).eq("status", "waiting").select("*").maybeSingle();
     if (error || !data) return reply({ ok: false, error: error?.message ?? "Phòng đã được giáo viên khác nhận." }, 409);
     return issueToken(data, user.id, role);
+  }
+
+  if (body.action === "request_join") {
+    if (teacher) return reply({ ok: false, error: "Giáo viên không gửi yêu cầu học viên." }, 403);
+    if (!body.roomId) return reply({ ok: false, error: "Thiếu roomId." }, 400);
+    const { data: room } = await admin.from("speaking_rooms").select("*").eq("id", body.roomId).eq("status", "waiting").eq("creator_role", "teacher").maybeSingle();
+    if (!room) return reply({ ok: false, error: "Phòng giáo viên không còn mở." }, 404);
+    const { data: profile } = await admin.from("profiles").select("display_name,avatar_url,bio,level,xp").eq("id", user.id).maybeSingle();
+    const { error } = await admin.from("speaking_room_requests").upsert({
+      room_id: room.id, student_id: user.id, student_name: profile?.display_name ?? displayName,
+      student_avatar_url: profile?.avatar_url ?? null, student_bio: profile?.bio ?? null,
+      student_level: profile?.level ?? 1, student_xp: profile?.xp ?? 0, status: "pending",
+    }, { onConflict: "room_id,student_id" });
+    return error ? reply({ ok: false, error: error.message }, 400) : reply({ ok: true, role, room });
+  }
+
+  if (body.action === "requests") {
+    if (!teacher) return reply({ ok: false, error: "Chỉ giáo viên được duyệt yêu cầu." }, 403);
+    const { data: rooms } = await admin.from("speaking_rooms").select("id").eq("teacher_id", user.id).eq("status", "waiting");
+    const ids = (rooms ?? []).map((r) => r.id);
+    if (ids.length === 0) return reply({ ok: true, role, requests: [] });
+    const { data, error } = await admin.from("speaking_room_requests").select("*").in("room_id", ids).eq("status", "pending").order("created_at");
+    const requests = (data ?? []).map((item) => ({ ...item, avatar_url: item.student_avatar_url, bio: item.student_bio, level: item.student_level, xp: item.student_xp }));
+    return error ? reply({ ok: false, error: error.message }, 400) : reply({ ok: true, role, requests });
+  }
+
+  if (body.action === "approve") {
+    if (!teacher || !body.requestId) return reply({ ok: false, error: "Yêu cầu không hợp lệ." }, 403);
+    const { data: joinRequest } = await admin.from("speaking_room_requests").select("*").eq("id", body.requestId).eq("status", "pending").maybeSingle();
+    if (!joinRequest) return reply({ ok: false, error: "Yêu cầu đã được xử lý." }, 409);
+    const { data: room } = await admin.from("speaking_rooms").update({
+      student_id: joinRequest.student_id, student_name: joinRequest.student_name,
+      student_avatar_url: joinRequest.student_avatar_url, student_bio: joinRequest.student_bio,
+      student_level: joinRequest.student_level, student_xp: joinRequest.student_xp,
+      status: "matched", matched_at: new Date().toISOString(),
+    }).eq("id", joinRequest.room_id).eq("teacher_id", user.id).eq("status", "waiting").select("*").maybeSingle();
+    if (!room) return reply({ ok: false, error: "Phòng không còn nhận học viên." }, 409);
+    await admin.from("speaking_room_requests").update({ status: "accepted" }).eq("id", joinRequest.id);
+    await admin.from("speaking_room_requests").update({ status: "rejected" }).eq("room_id", room.id).neq("id", joinRequest.id).eq("status", "pending");
+    return issueToken(room, user.id, role);
   }
 
   if (body.action === "token") {

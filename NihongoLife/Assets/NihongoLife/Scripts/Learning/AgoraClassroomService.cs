@@ -23,6 +23,15 @@ namespace NihongoLife.Learning
         public string bio;
         public int level;
         public int xp;
+        public string creator_role;
+        public string created_by;
+    }
+
+    [Serializable]
+    public class AgoraJoinRequest
+    {
+        public string id, room_id, student_id, student_name, avatar_url, bio, status, created_at;
+        public int level, xp;
     }
 
     [Serializable]
@@ -33,6 +42,7 @@ namespace NihongoLife.Learning
         public string role;
         public AgoraWaitingRoom room;
         public AgoraWaitingRoom[] rooms;
+        public AgoraJoinRequest[] requests;
         public string token;
         public string channelName;
         public uint uid;
@@ -65,6 +75,11 @@ namespace NihongoLife.Learning
         public void GetMyRoom(Action<AgoraClassroomResponse> done) => Call("{\"action\":\"mine\"}", done);
         public void ClaimRoom(string roomId, Action<AgoraClassroomResponse> done) =>
             Call($"{{\"action\":\"claim\",\"roomId\":\"{Escape(roomId)}\"}}", done);
+        public void RequestJoin(string roomId, Action<AgoraClassroomResponse> done) =>
+            Call($"{{\"action\":\"request_join\",\"roomId\":\"{Escape(roomId)}\"}}", done);
+        public void ListJoinRequests(Action<AgoraClassroomResponse> done) => Call("{\"action\":\"requests\"}", done);
+        public void ApproveRequest(string requestId, Action<AgoraClassroomResponse> done) =>
+            Call($"{{\"action\":\"approve\",\"requestId\":\"{Escape(requestId)}\"}}", done);
         public void GetToken(string roomId, Action<AgoraClassroomResponse> done) =>
             Call($"{{\"action\":\"token\",\"roomId\":\"{Escape(roomId)}\"}}", done);
         public void CloseRoom(string roomId, Action<AgoraClassroomResponse> done) =>

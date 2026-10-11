@@ -21,6 +21,7 @@ namespace NihongoLife.Learning
         private string _accountRole = "student", _waitingRoomId = "";
         private uint _issuedUid;
         private List<AgoraWaitingRoom> _waitingRooms = new List<AgoraWaitingRoom>();
+        private List<AgoraJoinRequest> _joinRequests = new List<AgoraJoinRequest>();
         private AgoraWaitingRoom _selectedRoom;
         private float _nextRoomPoll;
         private bool _roomRequestPending;
@@ -40,6 +41,7 @@ namespace NihongoLife.Learning
         public bool HasWaitingRoom => !string.IsNullOrWhiteSpace(_waitingRoomId);
         public bool OnlineClassroomAvailable => _classroom != null && _classroom.IsAvailable;
         public IReadOnlyList<AgoraWaitingRoom> WaitingRooms => _waitingRooms;
+        public IReadOnlyList<AgoraJoinRequest> JoinRequests => _joinRequests;
         public AgoraWaitingRoom SelectedRoom => _selectedRoom;
 
         private void Awake()
@@ -98,27 +100,23 @@ namespace NihongoLife.Learning
             _classroom.GetRole(roleResponse =>
             {
                 _accountRole = roleResponse.ok && !string.IsNullOrWhiteSpace(roleResponse.role) ? roleResponse.role : "student";
-                if (IsTeacher)
+                _classroom.GetMyRoom(mine =>
                 {
+                    if (mine.ok && mine.room != null)
+                    {
+                        _waitingRoomId = mine.room.id;
+                        if (mine.room.status == "matched") { RequestRoomToken(mine.room.id); return; }
+                    }
+                    else _waitingRoomId = "";
                     _classroom.ListWaitingRooms(response =>
                     {
-                        _roomRequestPending = false;
-                        if (response.ok) _waitingRooms = new List<AgoraWaitingRoom>(response.rooms ?? Array.Empty<AgoraWaitingRoom>());
-                        else _status = response.error;
-                    });
-                }
-                else
-                {
-                    _classroom.GetMyRoom(response =>
-                    {
-                        _roomRequestPending = false;
                         if (!response.ok) { _status = response.error; return; }
-                        if (response.room == null) { _waitingRoomId = ""; return; }
-                        _waitingRoomId = response.room.id;
-                        if (response.room.status == "matched") RequestRoomToken(response.room.id);
-                        else _status = "Phòng chờ đã tạo. Đang chờ giáo viên nhận lớp...";
+                        _waitingRooms = new List<AgoraWaitingRoom>(response.rooms ?? Array.Empty<AgoraWaitingRoom>());
+                        if (IsTeacher && !string.IsNullOrWhiteSpace(_waitingRoomId))
+                            _classroom.ListJoinRequests(requests => { _roomRequestPending = false; _joinRequests = new List<AgoraJoinRequest>(requests.requests ?? Array.Empty<AgoraJoinRequest>()); });
+                        else _roomRequestPending = false;
                     });
-                }
+                });
             });
         }
 
@@ -190,6 +188,19 @@ namespace NihongoLife.Learning
         }
 
         public void SelectWaitingRoom(AgoraWaitingRoom room) => _selectedRoom = room;
+        public void RequestJoinRoom(string roomId)
+        {
+            if (_classroom == null || _roomRequestPending) return;
+            _roomRequestPending = true;
+            _classroom.RequestJoin(roomId, response => { _roomRequestPending = false; _status = response.ok ? "Đã gửi yêu cầu. Đang chờ giáo viên duyệt..." : response.error; });
+        }
+
+        public void ApproveJoinRequest(string requestId)
+        {
+            if (_classroom == null || _roomRequestPending) return;
+            _roomRequestPending = true;
+            _classroom.ApproveRequest(requestId, response => { _roomRequestPending = false; if (response.ok) JoinIssuedRoom(response); else _status = response.error; });
+        }
 
         public void JoinAgoraClassroom(string channelName, string token = "", uint uid = 0)
         {
