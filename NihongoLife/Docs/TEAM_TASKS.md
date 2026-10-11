@@ -747,3 +747,26 @@ Claude nhận tiếp phần Codex đang làm dở: báo cáo, trailer, demo và 
 - Không có model bình tưới, nên lúc tưới nhân vật chỉ làm động tác, không cầm gì.
 - Video demo đã dựng trước thay đổi này, vẫn có cảnh "xới bằng tay". `DemoRecordingTests` và lời thuyết minh đã cập nhật; cần ghi hình lại nếu muốn video khớp.
 - `CharacterHumanoidAuditPlayModeTests` (của Codex) lỗi: clip "Run" của Devion có AnimationEvent `Footsteps` mà không có component nhận.
+
+## Cập nhật (2026-10-11 sáng, Claude) — Tô sáng trong bài thi, Sổ tay, giấy ở Hibari Mart
+
+### Đã làm
+- **Tô sáng (highlight) khi làm bài** — `UI/TextHighlighter.cs`:
+  - Thanh công cụ trên header IELTS và JLPT: Tô sáng (3 màu), Xoá tô (tẩy), Xoá hết, → Sổ, Sổ tay.
+  - Kéo qua chữ để tô (tiếng Anh tự bắt trọn từ, tiếng Nhật giữ đúng ký tự kéo qua); bấm vào chỗ đã tô bằng tẩy để xoá.
+  - Bút tắt thì chữ không bắt chuột, cuộn và trả lời vẫn như cũ.
+  - IELTS lưu highlight trong `IeltsAttempt.highlights` (mở lại bài vẫn còn). JLPT giữ trong phiên chơi.
+- **Sổ tay** (phím **L**, nút "Sổ tay" trên HUD và trong bài thi) — `Notebook/NotebookService.cs`, `UI/NotebookUI.cs`:
+  - Sổ gáy xoắn, trang giấy kẻ dòng, kéo được để di chuyển; luôn hiện trên cả màn thi.
+  - Bắt đầu với 6 trang, mỗi trang tối đa 600 ký tự, tối đa 99 trang. Tẩy trang cần bấm 2 lần.
+  - Lưu trong `PlayerProgressDto.notebook`; khi gộp với cloud thì lấy bản sửa gần nhất.
+  - "→ Sổ" chép các đoạn đã tô sáng sang sổ.
+- **Giấy ở Hibari Mart** — tab mới `ぶんぼうぐ · Văn phòng phẩm` (`KonbiniSection.Stationery`):
+  - 5 / 12 / 30 trang, giá ¥120 / ¥260 / ¥580.
+  - Trả tiền xong số trang cộng thẳng vào sổ, không vào túi đồ.
+
+### Ảnh hưởng chung
+- `PlayerController`: không di chuyển hay nhảy khi đang gõ vào ô nhập chữ (`UiModalStack.IsTyping`).
+- HUD dock thêm nút L. Thanh nút cảm ứng tự co theo số nút.
+- `IeltsTestUI.PaperText` gắn highlighter cho chữ trong `RenderPart`.
+- Test: `NotebookHighlightPlayModeTests`. Ảnh chụp ở `Bao_Cao/notebook-regression`; ảnh có đề Cambridge chỉ lưu local.

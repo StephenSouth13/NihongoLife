@@ -117,6 +117,17 @@ namespace NihongoLife.Exam.Ielts
         public bool submitted;
         public int rawScore;
         public float band;
+        /// <summary>Text highlighted by the candidate (pen tool), per text block.</summary>
+        public List<IeltsHighlight> highlights = new();
+    }
+
+    [Serializable]
+    public sealed class IeltsHighlight
+    {
+        public string key;
+        public int start;
+        public int end;
+        public int color;
     }
 
     [Serializable]

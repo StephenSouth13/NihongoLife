@@ -239,7 +239,7 @@ namespace NihongoLife.UI
             }
 
             // Keys that are not rebindable, listed so every control is discoverable in one place.
-            var fixedKeys = CreateText(parent, "Chuột: xoay camera  ·  Lăn chuột: zoom  ·  Esc: đóng cửa sổ trên cùng  ·  K: luyện thi", 14, new Vector2(240f, -262f), new Vector2(620f, 28f), TextAlignmentOptions.Center);
+            var fixedKeys = CreateText(parent, "Chuột: xoay camera  ·  Lăn chuột: zoom  ·  Esc: đóng cửa sổ trên cùng  ·  K: luyện thi  ·  L: sổ tay", 14, new Vector2(240f, -262f), new Vector2(620f, 28f), TextAlignmentOptions.Center);
             fixedKeys.color = new Color(0.66f, 0.72f, 0.8f, 1f);
 
             RefreshBindingLabels();

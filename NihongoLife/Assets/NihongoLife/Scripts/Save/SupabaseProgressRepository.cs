@@ -345,6 +345,11 @@ namespace NihongoLife.Save
                 if (localWins) merged.quests[index] = localQuest;
             }
             merged.trackedQuestId = !string.IsNullOrWhiteSpace(cloud.trackedQuestId) ? cloud.trackedQuestId : local.trackedQuestId;
+            // Notebook: the copy written most recently wins (paper bought anywhere is never lost: keep the larger count).
+            long Latest(NihongoLife.Notebook.NotebookRecord r) { long t = -1; if (r?.entries != null) foreach (var p in r.entries) if (p != null && p.updatedUnix > t) t = p.updatedUnix; return t; }
+            var notebook = Latest(cloud.notebook) >= Latest(local.notebook) ? cloud.notebook : local.notebook;
+            merged.notebook = notebook ?? new NihongoLife.Notebook.NotebookRecord();
+            merged.notebook.pages = Mathf.Max(merged.notebook.pages, Mathf.Max(cloud.notebook?.pages ?? 0, local.notebook?.pages ?? 0));
 
             return merged;
         }

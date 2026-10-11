@@ -94,5 +94,7 @@ namespace NihongoLife.Data
         /// <summary>Quest / part-time job state (definitions: Resources/Progression/progression.json).</summary>
         public List<NihongoLife.Progression.QuestStateRecord> quests = new List<NihongoLife.Progression.QuestStateRecord>();
         public string trackedQuestId = string.Empty;
+        /// <summary>The paper notebook (L): limited pages, more paper from Hibari Mart's stationery shelf.</summary>
+        public NihongoLife.Notebook.NotebookRecord notebook = new NihongoLife.Notebook.NotebookRecord();
     }
 }

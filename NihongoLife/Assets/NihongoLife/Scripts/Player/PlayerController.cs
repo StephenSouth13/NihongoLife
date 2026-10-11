@@ -133,7 +133,9 @@ namespace NihongoLife.Player
 
         private void HandleMovement()
         {
-            Vector2 moveInput = _input != null ? _input.Move : Vector2.zero;
+            // Typing in a text field (notebook, chat, exam answers) must not walk the character with WASD.
+            bool typing = NihongoLife.UI.UiModalStack.IsTyping;
+            Vector2 moveInput = _input != null && !typing ? _input.Move : Vector2.zero;
             bool moving = moveInput.sqrMagnitude > 0.01f && !InputLocked;
             bool isRunning = moving && _input != null && _input.IsPressed(GameInputId.Sprint);
             var status = PlayerStatus.Instance;
@@ -208,7 +210,7 @@ namespace NihongoLife.Player
             }
 
             // Apply gravity
-            if (_isGrounded && _input != null && _input.WasPressed(GameInputId.Jump))
+            if (_isGrounded && _input != null && !NihongoLife.UI.UiModalStack.IsTyping && _input.WasPressed(GameInputId.Jump))
             {
                 _velocity.y = Mathf.Sqrt(jumpHeight * -2f * gravity);
             }

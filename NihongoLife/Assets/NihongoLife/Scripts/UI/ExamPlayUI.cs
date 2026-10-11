@@ -36,6 +36,9 @@ namespace NihongoLife.UI
         // Question (right panel)
         private RectTransform _questionPanel;
         private TextMeshProUGUI _promptText;
+        /// <summary>Highlights made during JLPT/IELTS-asset attempts (kept for the session).</summary>
+        private static readonly HighlightBook Highlights = new HighlightBook();
+        private RectTransform _highlightToolbar;
         private TextMeshProUGUI _promptReadingText;
         private RectTransform _answerRoot;
 
@@ -119,7 +122,7 @@ namespace NihongoLife.UI
             header.transform.SetParent(card, false);
             Place((RectTransform)header.transform, 24f, 76f, 1252f, 82f);
             header.GetComponent<Image>().color = new Color(0.08f, 0.12f, 0.16f, 0.98f);
-            _sectionTitleText = AddText(header.transform, string.Empty, 22f, 20f, 10f, 700f, 30f, TextAlignmentOptions.MidlineLeft, FontStyles.Bold, false, Gold);
+            _sectionTitleText = AddText(header.transform, string.Empty, 22f, 20f, 10f, 486f, 30f, TextAlignmentOptions.MidlineLeft, FontStyles.Bold, false, Gold);
             _progressText = AddText(header.transform, string.Empty, 13f, 520f, 46f, 330f, 20f, TextAlignmentOptions.MidlineLeft, FontStyles.Normal, false, Muted);
             AddText(header.transform, Pick("Bài thi đang làm", "Current exam", "受験中"), 12f, 20f, 43f, 360f, 20f, TextAlignmentOptions.MidlineLeft, FontStyles.Normal, false, Muted);
             var timerCard = new GameObject("TimerCard", typeof(RectTransform), typeof(Image));
@@ -128,6 +131,9 @@ namespace NihongoLife.UI
             timerCard.GetComponent<Image>().color = new Color(0.02f, 0.04f, 0.05f, 1f);
             AddText(timerCard.transform, Pick("THỜI GIAN", "TIME", "時間"), 11f, 14f, 7f, 90f, 18f, TextAlignmentOptions.MidlineLeft, FontStyles.Bold, false, Muted);
             _timerText = AddText(timerCard.transform, string.Empty, 21f, 96f, 5f, 210f, 42f, TextAlignmentOptions.MidlineRight, FontStyles.Bold, false, Gold);
+            _highlightToolbar = HighlightToolbar.Create(header.transform, Font, () => Highlights.Clear(), CopyHighlightsToNotebook, 34f);
+            HighlightToolbar.SetCompact(_highlightToolbar, true);
+            Place(_highlightToolbar, 516f, 8f, 372f, 34f);
 
             BuildPaletteRoot(card);
             BuildPassagePanel(card);
@@ -404,6 +410,17 @@ namespace NihongoLife.UI
 
             CommitActiveEssayIfAny();
             StopRecordingIfNeeded();
+            HighlightTool.SetMode(HighlightTool.ToolMode.Off);
+        }
+
+        private void CopyHighlightsToNotebook()
+        {
+            var snippets = Highlights.Snippets();
+            if (snippets.Count == 0) { HudFeed.Post("Tô sáng một đoạn trước, rồi bấm →Sổ để chép vào sổ tay.", HudFeed.Kind.Info, 3f); return; }
+            int left = NihongoLife.Notebook.NotebookService.Append(string.Join("\n", snippets.Select(x => "• " + x)), _sectionTitleText != null ? TextHighlighter.StripTags(_sectionTitleText.text) : "Bài thi");
+            HudFeed.Post(left > 0 ? $"Sổ tay hết chỗ — còn {left} ký tự chưa chép. Mua thêm giấy ở Hibari Mart." : $"Đã chép {snippets.Count} đoạn vào sổ tay.",
+                left > 0 ? HudFeed.Kind.Warning : HudFeed.Kind.Reward, 3.5f);
+            NotebookUI.Show();
         }
 
         protected override void OnLanguageApplied()
@@ -579,6 +596,7 @@ namespace NihongoLife.UI
             }
             float bodyHeight = EstimateTextHeight(body, 520f, 16f);
             var bodyText = AddText(_passageContent, body, 16f, 0f, 0f, 520f, bodyHeight, TextAlignmentOptions.TopLeft, FontStyles.Normal, true);
+            TextHighlighter.Bind(bodyText, Highlights, HighlightBook.KeyFor("passage/" + passage.id, body));
             bodyText.gameObject.AddComponent<LayoutElement>().preferredHeight = bodyHeight;
         }
 
@@ -626,6 +644,7 @@ namespace NihongoLife.UI
             }
 
             _promptText.text = Pick(question.promptVi, question.promptEn, question.promptJa);
+            TextHighlighter.Bind(_promptText, Highlights, HighlightBook.KeyFor("q/" + question.id, _promptText.text));
             _promptReadingText.text = question.promptReading ?? string.Empty;
             _promptReadingText.gameObject.SetActive(!string.IsNullOrWhiteSpace(question.promptReading));
 

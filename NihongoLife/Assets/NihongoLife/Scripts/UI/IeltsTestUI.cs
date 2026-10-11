@@ -71,6 +71,9 @@ namespace NihongoLife.UI
         private float _saveAt = -1f;
         private bool _playerWasLocked, _cameraWasLocked;
         private float _layoutWidth = -1f;
+        private readonly HighlightBook _highlights = new();
+        private RectTransform _toolbar;
+        private bool _highlightPaper;
 
         public bool IsOpen => _root != null && _root.gameObject.activeSelf;
         public bool IsSubmitted => _attempt != null && _attempt.submitted;
@@ -129,6 +132,10 @@ namespace NihongoLife.UI
             if (_attempt.partsFinished == null || _attempt.partsFinished.Length != parts) _attempt.partsFinished = new bool[parts];
             _answers.Clear();
             foreach (var r in _attempt.responses) _answers[r.number] = r.value;
+            _highlights.Clear();
+            foreach (var group in (_attempt.highlights ?? new List<IeltsHighlight>()).GroupBy(h => h.key))
+                _highlights.Set(group.Key, group.Select(h => new HighlightSpan(h.start, h.end, h.color)).ToList(), notify: false);
+            HighlightTool.SetMode(HighlightTool.ToolMode.Off);
             LastResult = null;
 
             bool wasOpen = IsOpen;
@@ -215,6 +222,7 @@ namespace NihongoLife.UI
             _attempt.partIndex = _viewPart;
             if (_audioPart >= 0 && _audio.clip != null) _attempt.audioPositions[_audioPart] = _audio.time;
             _attempt.responses = _answers.Select(kv => new IeltsResponse { number = kv.Key, value = kv.Value }).OrderBy(r => r.number).ToList();
+            _attempt.highlights = _highlights.All.SelectMany(kv => kv.Value.Select(h => new IeltsHighlight { key = kv.Key, start = h.start, end = h.end, color = h.color })).ToList();
             IeltsAttemptStore.SaveAttempt(_attempt);
             _saveAt = -1f;
         }
@@ -415,6 +423,7 @@ namespace NihongoLife.UI
             _audioPlaying = false;
             _confirm.gameObject.SetActive(false);
             _root.gameObject.SetActive(false);
+            HighlightTool.SetMode(HighlightTool.ToolMode.Off);
             LockGameplay(false);
         }
 
@@ -483,6 +492,8 @@ namespace NihongoLife.UI
             Place(_timer.rectTransform, -96f, 0f, 460f, 70f, new Vector2(1f, 0f));
             _timer.overflowMode = TextOverflowModes.Ellipsis;
             NLUi.CloseButton(_header, _font, RequestClose, 46f, 12f);
+            _toolbar = HighlightToolbar.Create(_header, _font, ClearHighlights, CopyHighlightsToNotebook, 40f);
+            _highlights.Changed += () => { if (_attempt != null && !IsSubmitted) _saveAt = Time.unscaledTime + 0.6f; };
 
             // Audio bar
             _audioBar = Strip(_root, "AudioBar", 70f, 74f, top: true, new Color(0.065f, 0.085f, 0.11f, 1f));
@@ -560,8 +571,11 @@ namespace NihongoLife.UI
             float modeWidth = compact ? 116f : 140f;
             Place(_timer.rectTransform, -closeReserve, 0f, timerWidth, 70f, new Vector2(1f, 0f));
             Place(_modeChip.rectTransform, -(closeReserve + timerWidth + 12f), 0f, modeWidth, 70f, new Vector2(1f, 0f));
-            float titleRight = closeReserve + timerWidth + modeWidth + 40f;
-            Place(_title.rectTransform, 28f, 0f, Mathf.Max(240f, width - titleRight - 28f), 70f, Vector2.zero);
+            HighlightToolbar.SetCompact(_toolbar, compact);
+            float toolbarWidth = LayoutUtility.GetPreferredWidth(_toolbar);
+            Place(_toolbar, -(closeReserve + timerWidth + modeWidth + 24f), 15f, toolbarWidth, 40f, new Vector2(1f, 0f));
+            float titleRight = closeReserve + timerWidth + modeWidth + toolbarWidth + 48f;
+            Place(_title.rectTransform, 28f, 0f, Mathf.Max(200f, width - titleRight - 28f), 70f, Vector2.zero);
 
             float tabsWidth = Mathf.Clamp(width * (compact ? 0.34f : 0.28f), 360f, 520f);
             Place(_tabs, 28f, 14f, tabsWidth, 46f, Vector2.zero);
@@ -634,6 +648,7 @@ namespace NihongoLife.UI
             foreach (Transform child in _passageContent) Destroy(child.gameObject);
             _anchors.Clear();
             _refreshers.Clear();
+            _highlightPaper = true; // every passage / question text below can be highlighted
 
             bool reading = !string.IsNullOrWhiteSpace(part.passage);
             _passageScroll.gameObject.SetActive(reading);
@@ -673,8 +688,30 @@ namespace NihongoLife.UI
                     default: PaperText(sheet, $"(Dạng câu hỏi chưa hỗ trợ: {group.type})", 16f, FontStyles.Italic).color = Bad; break;
                 }
             }
+            _highlightPaper = false;
             _questionScroll.verticalNormalizedPosition = 1f;
             if (_passageScroll.gameObject.activeSelf) _passageScroll.verticalNormalizedPosition = 1f;
+        }
+
+        // ─────────── Highlights ───────────
+
+        private void ClearHighlights()
+        {
+            if (_highlights.Count() == 0) { HudFeed.Post("Chưa có đoạn nào được tô sáng.", HudFeed.Kind.Info, 2.5f); return; }
+            ShowConfirm("Xoá mọi chỗ tô sáng?", $"Xoá {_highlights.Count()} chỗ tô sáng trong cả bài này. Câu trả lời không bị ảnh hưởng.", "Xoá hết",
+                () => { _confirm.gameObject.SetActive(false); _highlights.Clear(); });
+        }
+
+        /// <summary>Copies what is highlighted in the part on screen into the notebook (one bullet per highlight).</summary>
+        private void CopyHighlightsToNotebook()
+        {
+            var snippets = _highlights.Snippets(k => k.StartsWith("p" + _viewPart + "/"));
+            if (snippets.Count == 0) { HudFeed.Post("Tô sáng một đoạn trước, rồi bấm → Sổ để chép vào sổ tay.", HudFeed.Kind.Info, 3f); return; }
+            string text = string.Join("\n", snippets.Select(x => "• " + x));
+            int left = NihongoLife.Notebook.NotebookService.Append(text, $"{_test.title} · Phần {_test.parts[_viewPart].number}");
+            if (left > 0) HudFeed.Post($"Sổ tay hết chỗ — còn {left} ký tự chưa chép. Mua thêm giấy ở Hibari Mart.", HudFeed.Kind.Warning, 4f);
+            else HudFeed.Post($"Đã chép {snippets.Count} đoạn vào sổ tay (trang {NihongoLife.Notebook.NotebookService.CurrentPage + 1}).", HudFeed.Kind.Reward, 3f);
+            NotebookUI.Show();
         }
 
         private void GroupHeader(RectTransform parent, IeltsGroup group)
@@ -1061,6 +1098,8 @@ namespace NihongoLife.UI
             var t = NLUi.Label(parent, "T", value, size, PaperInk, _font, style);
             t.textWrappingMode = TextWrappingModes.Normal;
             t.richText = true;
+            if (_highlightPaper && !string.IsNullOrWhiteSpace(value))
+                TextHighlighter.Bind(t, _highlights, HighlightBook.KeyFor("p" + _viewPart, value));
             return t;
         }
 

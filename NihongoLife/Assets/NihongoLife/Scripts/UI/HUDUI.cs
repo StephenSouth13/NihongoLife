@@ -203,6 +203,7 @@ namespace NihongoLife.UI
                 }),
                 ("QuestButton", "N", "Nhiệm vụ", () => TaskJournalUI.Toggle()),
                 ("ExamButton", "K", "Luyện thi", () => TogglePopup(GetComponent<ExamCenterPopup>())),
+                ("NotebookButton", "L", "Sổ tay", () => NotebookUI.Toggle()),
                 ("SettingsButton", "O", "Cài đặt", () => _settingsUI?.ToggleFromEscape()),
             };
             _statusDock = StatusDock.Create(transform, font, buttons, () => SetCharacterVisible(false));

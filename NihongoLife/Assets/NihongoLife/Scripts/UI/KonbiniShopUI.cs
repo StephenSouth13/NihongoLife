@@ -117,6 +117,7 @@ namespace NihongoLife.UI
             if (product.food > 0) effects.Add($"No +{product.food:0}");
             if (product.drink > 0) effects.Add($"Nước +{product.drink:0}");
             if (product.energy > 0) effects.Add($"Năng lượng +{product.energy:0}");
+            if (product.notebookPages > 0) effects.Add($"Sổ tay +{product.notebookPages} trang (đang có {NihongoLife.Notebook.NotebookService.Pages}/{NihongoLife.Notebook.NotebookService.MaxPages})");
             _detailEffect.text = string.Join("  ·  ", effects);
             RefreshQuantity();
             NotifyScenario(product, ScenarioNodeType.InspectItem);
@@ -144,13 +145,24 @@ namespace NihongoLife.UI
                 Cue(GameAudioCue.UiError);
                 return false;
             }
-            int refused = 0;
+            int refused = 0, sheets = 0;
             foreach (var line in KonbiniBasket.Items.ToList())
             {
                 var p = KonbiniCatalog.Find(line.Key);
                 for (int i = 0; i < line.Value; i++)
+                {
+                    if (p.notebookPages > 0)
+                    {
+                        // Paper goes straight into the notebook; a full binder refunds what does not fit.
+                        int added = NihongoLife.Notebook.NotebookService.AddPages(p.notebookPages);
+                        sheets += added;
+                        if (added < p.notebookPages) refused += Mathf.RoundToInt(p.price * (p.notebookPages - added) / (float)p.notebookPages);
+                        continue;
+                    }
                     if (!inventory.AddItem(p.id, p.japanese, p.vietnamese, p.price, 1, false, p.useType, p.food, p.drink, p.energy)) refused += p.price;
+                }
             }
+            if (sheets > 0) HudFeed.Post($"Sổ tay +{sheets} trang (giờ có {NihongoLife.Notebook.NotebookService.Pages} trang) — mở bằng phím L.", HudFeed.Kind.Info, 4f);
             if (refused > 0) inventory.AddYen(refused);
             foreach (var line in KonbiniBasket.Items) NihongoLife.Progression.QuestService.Raise("buy", line.Key, line.Value);
             if (total > refused) NihongoLife.Progression.QuestService.Raise("buy", "konbini", 1);

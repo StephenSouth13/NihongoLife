@@ -6,7 +6,7 @@ using NihongoLife.Player;
 
 namespace NihongoLife.Shop
 {
-    public enum KonbiniSection { Onigiri, Snacks, Drinks, Hot }
+    public enum KonbiniSection { Onigiri, Snacks, Drinks, Hot, Stationery }
 
     [Serializable]
     public sealed class KonbiniProduct
@@ -23,10 +23,13 @@ namespace NihongoLife.Shop
         /// <summary>Item id the konbini scenario asks for (onigiri / water / tea), or empty.</summary>
         public string scenarioItemId;
         public Color tint;
+        /// <summary>Stationery: sheets added to the notebook when paid for (they never go into the bag).</summary>
+        public int notebookPages;
 
         public KonbiniProduct(string id, string japanese, string reading, string vietnamese, string glyph, int price, KonbiniSection section,
-            ItemUseType useType, float food, float drink, float energy, string scenarioItemId, Color tint)
+            ItemUseType useType, float food, float drink, float energy, string scenarioItemId, Color tint, int notebookPages = 0)
         {
+            this.notebookPages = notebookPages;
             this.id = id; this.japanese = japanese; this.reading = reading; this.vietnamese = vietnamese; this.glyph = glyph;
             this.price = price; this.section = section; this.useType = useType; this.food = food; this.drink = drink; this.energy = energy;
             this.scenarioItemId = scenarioItemId; this.tint = tint;
@@ -42,6 +45,7 @@ namespace NihongoLife.Shop
         private static readonly Color SweetTint = new Color(0.96f, 0.68f, 0.72f);
         private static readonly Color DrinkTint = new Color(0.62f, 0.82f, 0.96f);
         private static readonly Color HotTint = new Color(0.98f, 0.6f, 0.42f);
+        private static readonly Color PaperTint = new Color(0.86f, 0.9f, 0.98f);
 
         public static readonly IReadOnlyList<KonbiniProduct> Products = new List<KonbiniProduct>
         {
@@ -61,6 +65,9 @@ namespace NihongoLife.Shop
             new KonbiniProduct("karaage", "からあげ", "からあげ", "Gà rán Nhật", "唐", 220, KonbiniSection.Hot, ItemUseType.Food, 40f, 0f, 18f, "", HotTint),
             new KonbiniProduct("nikuman", "にくまん", "にくまん", "Bánh bao nhân thịt", "肉", 160, KonbiniSection.Hot, ItemUseType.Food, 32f, 0f, 12f, "", HotTint),
             new KonbiniProduct("oden", "おでん", "おでん", "Lẩu oden", "煮", 250, KonbiniSection.Hot, ItemUseType.Food, 36f, 14f, 14f, "", HotTint),
+            new KonbiniProduct("note_paper_5", "ルーズリーフ（5まい）", "ルーズリーフ ごまい", "Giấy rời · +5 trang sổ tay", "紙", 120, KonbiniSection.Stationery, ItemUseType.None, 0f, 0f, 0f, "", PaperTint, 5),
+            new KonbiniProduct("note_paper_12", "ノートのかみ（12まい）", "ノートの かみ じゅうにまい", "Tập giấy · +12 trang sổ tay", "帳", 260, KonbiniSection.Stationery, ItemUseType.None, 0f, 0f, 0f, "", PaperTint, 12),
+            new KonbiniProduct("note_paper_30", "ノート（30まい）", "ノート さんじゅうまい", "Vở dày · +30 trang sổ tay", "冊", 580, KonbiniSection.Stationery, ItemUseType.None, 0f, 0f, 0f, "", PaperTint, 30),
         };
 
         public static IEnumerable<KonbiniProduct> InSection(KonbiniSection section) => Products.Where(p => p.section == section);
@@ -71,6 +78,7 @@ namespace NihongoLife.Shop
             KonbiniSection.Onigiri => "おにぎり・パン",
             KonbiniSection.Snacks => "おかし",
             KonbiniSection.Drinks => "のみもの",
+            KonbiniSection.Stationery => "ぶんぼうぐ",
             _ => "ホットスナック",
         };
 
@@ -79,6 +87,7 @@ namespace NihongoLife.Shop
             KonbiniSection.Onigiri => "Cơm nắm · Bánh mì",
             KonbiniSection.Snacks => "Bánh kẹo",
             KonbiniSection.Drinks => "Đồ uống",
+            KonbiniSection.Stationery => "Văn phòng phẩm",
             _ => "Đồ ăn nóng",
         };
     }

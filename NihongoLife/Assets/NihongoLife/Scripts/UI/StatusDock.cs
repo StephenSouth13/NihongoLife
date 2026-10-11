@@ -106,13 +106,13 @@ namespace NihongoLife.UI
             if (HudCanvasFitter.IsTouchLayout(false))
             {
                 var bar = NLUi.Group(dock, "ActionBar", false, 8f, TextAnchor.MiddleRight, false);
-                NLUi.Anchor(bar, new Vector2(1f, 0f), new Vector2(-24f, 190f), new Vector2(760f, 64f));
+                NLUi.Anchor(bar, new Vector2(1f, 0f), new Vector2(-24f, 190f), new Vector2(buttons.Count * 112f, 64f));
                 bar.pivot = new Vector2(1f, 0f);
                 ((HorizontalLayoutGroup)bar.GetComponent<HorizontalOrVerticalLayoutGroup>()).childForceExpandWidth = false;
                 foreach (var (name, _, label, action) in buttons)
                 {
                     var button = NLUi.Button(bar, name, label, _font, () => action?.Invoke(), NLUi.Ink, 16f, NLUi.Text, 62f);
-                    NLUi.Size(button, 112f, 62f);
+                    NLUi.Size(button, 104f, 62f);
                 }
             }
 
