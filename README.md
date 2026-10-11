@@ -136,6 +136,18 @@ Lật thẻ ghép cặp **hiragana, katakana, kanji N5, đồ ăn và từ vựn
 
 **Chỉ số sống chạy như thật.** Chạy (Shift) tốn **14 thể lực/giây** và không hồi khi đang chạy. Hết thể lực thì bị khoá chạy tới khi hồi đủ 25 điểm, và HUD nháy đỏ "Hết sức". Đi và chạy làm đói, khát nhanh hơn; ăn uống và ngủ để hồi.
 
+### 🎛️ Player HUD mới
+
+HUD thường trực đã được gom thành một hệ thống thống nhất, ưu tiên giữ vùng giữa màn hình thoáng để quan sát và tương tác:
+
+- **Góc trái dưới:** ảnh chân dung lấy trực tiếp từ model 3D đang điều khiển, tên nhân vật, địa điểm, cấp độ/EXP, ví tiền và 5 vòng chỉ số **Sức khỏe · Thể lực · No · Khát · Tỉnh táo**.
+- **Góc trái trên:** chỉ hiện một mục tiêu đang theo dõi; danh sách đầy đủ nằm trong Sổ nhiệm vụ.
+- **Giữa phía trên:** thanh trạng thái theo khu vực và tối đa ba thông báo ngắn; thông báo trùng được cập nhật thay vì xếp chồng.
+- **Giữa phía dưới:** một lời nhắc tương tác theo ngữ cảnh. HUD tự mờ khi hội thoại hoặc hoạt động toàn màn hình mở.
+- **Desktop:** bỏ dãy nút tắt gây che màn hình; dùng phím tắt. **Thiết bị cảm ứng:** vẫn có action bar và điều khiển ảo vì không có bàn phím.
+
+Khi một nhu cầu xuống dưới ngưỡng nguy hiểm, HUD chỉ bật một cảnh báo ngắn phía trên thẻ trạng thái. Cửa sổ nhân vật mở bằng <kbd>Tab</kbd> hiển thị model 3D, tiến trình, tiền, kiến thức, ca làm và vốn từ mà không thay đổi `PlayerController`, camera, inventory hay save/online. Xem [thiết kế và quy tắc Player HUD](NihongoLife/Docs/PLAYER_HUD.md).
+
 ### 🌱 Trồng trọt bằng nông cụ và câu cá ở đảo Midori
 
 Nông trại không có thao tác “tay không”: phải mua và mang đúng **cuốc/xẻng/bình tưới**. Quy trình hoàn chỉnh là xới đất → gieo hạt → tưới từng giai đoạn → thu hoạch; công cụ hao độ bền sau thao tác thành công, có thể hỏng và tự chuyển sang món dự phòng. Huỷ giữa chừng không làm thay đổi ruộng và không trừ độ bền.
@@ -340,8 +352,8 @@ Quy tắc của repo (xem [`AGENTS.md`](AGENTS.md)): không dùng lệnh `[MenuI
 |---|---|
 | 📘 **Báo cáo Capstone v4** | [`DOCX`](Bao_Cao/NihongoLife_Bao_Cao_Capstone_v4.docx) · [`PDF`](Bao_Cao/NihongoLife_Bao_Cao_Capstone_v4.pdf) |
 | 🎞️ **Slide thuyết trình** | [`Bao_Cao/NihongoLife_Thuyet_Trinh_Capstone_v4.pptx`](Bao_Cao/NihongoLife_Thuyet_Trinh_Capstone_v4.pptx) |
-| 🎬 **Trailer** | [`Bao_Cao/NihongoLife_Trailer.mp4`](Bao_Cao/NihongoLife_Trailer.mp4) · 1080p, 67 giây |
-| 🧭 **Thiết kế** | [`ARCHITECTURE`](NihongoLife/Docs/ARCHITECTURE.md) · [`STORY_BIBLE`](NihongoLife/Docs/STORY_BIBLE.md) · [`SCENARIO_SYSTEM`](NihongoLife/Docs/SCENARIO_SYSTEM.md) · [`EXAM_SYSTEM`](NihongoLife/Docs/EXAM_SYSTEM.md) · [`ROADMAP`](NihongoLife/Docs/ROADMAP.md) |
+| 🎬 **Video** | [`Trailer v2`](Bao_Cao/NihongoLife_Trailer_v2.mp4) · 1080p30, 1:25 · [`Gameplay Demo`](Bao_Cao/NihongoLife_Gameplay_Demo.mp4) · 1080p30, 4:18 |
+| 🧭 **Thiết kế** | [`ARCHITECTURE`](NihongoLife/Docs/ARCHITECTURE.md) · [`PLAYER_HUD`](NihongoLife/Docs/PLAYER_HUD.md) · [`STORY_BIBLE`](NihongoLife/Docs/STORY_BIBLE.md) · [`SCENARIO_SYSTEM`](NihongoLife/Docs/SCENARIO_SYSTEM.md) · [`EXAM_SYSTEM`](NihongoLife/Docs/EXAM_SYSTEM.md) · [`ROADMAP`](NihongoLife/Docs/ROADMAP.md) |
 | 🎣 **Gameplay mới** | [`FISHING_FARMING_TOOLS`](NihongoLife/Docs/FISHING_FARMING_TOOLS.md) · [`EXAM_CONTENT_PIPELINE`](NihongoLife/Docs/EXAM_CONTENT_PIPELINE.md) |
 
 ## 🙏 Ghi công

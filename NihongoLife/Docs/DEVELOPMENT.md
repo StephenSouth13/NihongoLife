@@ -24,15 +24,15 @@ Open the Unity Test Runner window (**Window -> General -> Test Runner**):
 
 ## HUD & Responsive UI Standard
 
-Mục tiêu: HUD gọn, đẹp, đọc được trên mọi thiết bị (máy tính, tablet, điện thoại ngang/dọc) khi đưa lên website. Áp dụng cho mọi UI mới.
+Mục tiêu: HUD gọn, đẹp và đọc được trên desktop, tablet, điện thoại ngang/dọc và WebGL. Kiến trúc hiện tại được mô tả đầy đủ trong [`PLAYER_HUD.md`](PLAYER_HUD.md).
 
-1. **UI của HUD phải nằm trong scene** (đúng như `AGENTS.md`), không dựng lúc chạy. Nhìn Scene view phải giống Play Mode trên máy tính. Cấu trúc gameplay: `Canvas` (có `HudCanvasFitter`) > `SafeArea` (có `HudSafeArea`) > `HUDPanel` > các panel.
-2. **Không đặt vị trí/kích thước bằng code lúc chạy** cho panel HUD (đã bỏ `RepairRuntimeLayout`). Chỉnh trực tiếp `RectTransform` trong scene.
-3. **Co giãn theo thiết bị** làm bằng 3 component dùng chung: `HudCanvasFitter` (chọn độ phân giải tham chiếu: máy tính 1080p, thiết bị cảm ứng ~540-720 theo chiều cao CSS, chế độ Expand nên luôn thấy đủ vùng thiết kế), `HudSafeArea` (tránh tai thỏ/thanh trình duyệt), `HudFitRect` (panel cố định kích thước tự thu nhỏ để vừa màn hình; trên màn lớn giữ nguyên kích thước thiết kế). Panel dựng lúc chạy (menu, shop) gắn `HudFitRect` ngay khi tạo.
-4. **Neo theo cạnh**: mỗi phần tử neo vào góc/cạnh gần nhất (mission góc trái trên, chỉ số + thông báo cột phải trên, hội thoại giữa dưới) — không dùng vị trí tuyệt đối theo tâm màn hình.
-5. **Chỉ số nhân vật** nằm trong `HudRightColumn/VitalsCard` (`HudVitalsCard`: Lv/EXP, ví, Máu/Năng lượng/No/Khát; thanh đỏ nhấp nháy khi dưới 25%). Thêm chỉ số mới: nhân đôi 1 hàng trong scene, thêm vào danh sách `rows`, mở rộng `ReadValue`.
-6. **Thông báo** nằm trong `HudRightColumn/NotificationTray` (3 khe cố định, `HudNotificationTray`). Hệ thống nào cần báo chỉ gọi `HudNotificationTray.Instance.Post(id, tiêu đề, phụ đề, onClick, tone)` và `Clear(id)`; không tự dựng chip riêng.
-7. **Kiểm tra bắt buộc** khi đổi HUD: Game view ở 1920x1080, 1366x768, 2560x1080 (ultrawide), 1024x768 (4:3), 844x390 và 390x844 (điện thoại ngang/dọc; bật `forceTouchLayout` trên `HudCanvasFitter` để giả lập cảm ứng), rồi mở hội thoại, túi đồ, hồ sơ, thực đơn nhà hàng và thông báo hóa đơn — không panel nào tràn màn hình hay đè nhau.
+1. `HUDUI` là đầu mối kết nối gameplay. `StatusDock` dựng HUD thường trực dùng chung cho mọi zone; không tạo thêm một HUD cạnh tranh trong scene con.
+2. Bố cục cố định theo mức ưu tiên: trạng thái ở trái dưới, mục tiêu ở trái trên, zone bar/feed ở giữa trên, prompt tương tác ở giữa dưới, cửa sổ ngữ cảnh ở giữa/phải.
+3. `HudCanvasFitter`, `HudSafeArea` và `HudFitRect` chịu trách nhiệm scale, safe area và chống tràn. Không sửa layout bằng độ phân giải cụ thể trong `Update`.
+4. Chỉ số nhân vật nằm trong `StatusDock`: portrait model thật, Lv/EXP, ví và năm vòng Sức khỏe/Thể lực/No/Khát/Tỉnh táo. Cảnh báo chỉ xuất hiện khi một chỉ số dưới 20%.
+5. Thông báo ngắn dùng `HudFeed.Post(text, kind, seconds, key)`. Feed tối đa ba card, gộp cùng `key`, tạm dừng timer khi cửa sổ mở và ẩn trong hoạt động toàn màn hình.
+6. Desktop dùng phím tắt và không hiện action bar. Touch layout giữ action bar, joystick và nút tương tác. Hội thoại/full-screen activity làm dock mờ hoặc ẩn để tránh che nội dung.
+7. Kiểm tra bắt buộc khi đổi HUD: 1920×1080, 1366×768, 2560×1080, 1024×768, 844×390 và 390×844; mở hội thoại, inventory, cửa sổ nhân vật, bản đồ, nhiệm vụ, shop và thông báo liên tiếp để xác nhận không tràn hoặc đè nhau.
 
 ## Audio
 
