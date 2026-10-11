@@ -949,3 +949,49 @@ Claude nhận tiếp phần Codex đang làm dở: báo cáo, trailer, demo và 
   - Muốn 1000+ người cùng lúc phải nâng gói Supabase (gói hiện tại vượt giới hạn ở khoảng 20 người di chuyển, 6 Hz, cùng một shard; giới hạn kết nối khoảng 200) hoặc chuyển phần đồng bộ vị trí sang game server riêng (Nakama/Colyseus/Photon). Kiến trúc shard và chat hiện tại giữ được.
   - RLS bảng `friendships` chưa kiểm được bằng tài khoản thật (test bạn bè dùng `DebugSetFriends` + lobby thật).
   - Tin cộng đồng/nhóm/khu vực chưa có chữ ký nên có thể giả tên người gửi. Tin riêng có chữ ký.
+
+## Thẻ việc (2026-10-12, Claude giao) — cổng mở khóa địa điểm, Cửa hàng & Cẩm nang, đồng bộ Kids, tài liệu
+> Quy tắc AGENTS.md: không thêm `[MenuItem]`, không tạo scene mới, lưu kết quả vào scene/prefab, kiểm Play Mode kèm ảnh. Trước khi viết mới, kiểm tra hệ thống đã có: `ScenarioCampaignManager`, `TaskJournalUI` (N), `SceneFlowController`, `ScenePortal`, `WorldMapUI`, `KonbiniShopUI`, `PlayableCharacterCatalog`.
+
+### Thẻ A — Mở khóa địa điểm theo điểm kiến thức (ưu tiên cao)
+- Lúc đầu chỉ mở Hibari Mart (cửa hàng tiện lợi) và trường `40_ HIBARICLASS`. Các nơi khác cần đủ "điểm kiến thức" (XP từ bài học, bài thi, nhiệm vụ) mới mở dần: Ga `20_StationDistrict` → Sushi `30` → Game Center `50` → Đảo `60`.
+- Ngưỡng điểm đặt trong `GameControlDatabase`, không viết cứng trong code.
+- Kiểm tra mở khóa tại `ScenePortal` / `SceneFlowController`, một chỗ duy nhất. Cửa còn khóa hiện "Cần N điểm — còn thiếu M", kèm gợi ý nhiệm vụ.
+- Sổ nhiệm vụ (N) thêm khu "Mở khóa": thanh tiến độ tới địa điểm kế tiếp và danh sách việc cho điểm. Bản đồ hiện ổ khóa trên địa điểm chưa mở.
+- Save cũ: người đã vào một địa điểm thì giữ quyền vào nơi đó.
+- Test: tạo save mới thì chỉ vào được Mart và trường; cộng điểm thì Ga mở. Chụp ảnh cửa khóa, Sổ nhiệm vụ, bản đồ.
+
+### Thẻ B — UI tiền và Cửa hàng
+- Chip tiền trên HUD (`StatusDock`): mỗi lần có thay đổi thì hiện "+¥/−¥" bay lên kèm lý do (mua đồ, phí phòng khám, lương làm thêm); bấm vào chip mở lịch sử 20 giao dịch gần nhất.
+- `KonbiniShopUI`:
+  - Các tab danh mục: Đồ ăn, Đồ uống, Văn phòng phẩm, Thuốc/Sức khỏe, Đồ dùng.
+  - Thẻ sản phẩm có ảnh (thumbnail thật), giá, hiệu ứng lên chỉ số (đói/khát/máu…) và câu tiếng Nhật mẫu.
+  - Có giỏ hàng và tổng tiền; nút "Thanh toán" chuyển sang hội thoại với thu ngân.
+
+### Thẻ C — Cẩm nang địa điểm trong bản đồ
+- Mở bản đồ (M), chọn một địa điểm → trang cẩm nang: ảnh chụp thật của địa điểm (chụp lại bằng PlayMode), ý nghĩa văn hóa (ví dụ konbini ở Nhật), cách tương tác (phím, nhiệm vụ có ở đó), từ vựng/câu mẫu, điều kiện mở khóa (nối với Thẻ A).
+- Nội dung đặt trong ScriptableObject `LocationGuide` cho mỗi địa điểm (dựa trên `WorldLocationCatalog`), không viết cứng trong UI.
+
+### Thẻ D — Chỉ dùng nhân vật Kids, bỏ Remy/người lớn cũ
+- Đã làm: người chơi là Kids (`PlayableCharacterCatalog`), người chơi khác online cũng dùng model Kids.
+- Còn lại:
+  - Bỏ mục "student" (Tanaka/Remy, `Characters/NL_Player`) khỏi danh sách chọn; save cũ chọn "student" thì chuyển sang `kid_haruto`.
+  - Tìm mọi chỗ còn dùng Remy: clip `Remy@*` trong `CharacterAnimationController`, NPC dùng model người lớn. Thay bằng clip/controller của Kids rồi mới xóa asset (kiểm GUID bằng grep trước khi xóa).
+  - Tỉ lệ: bé đang được scale 1,35. Đo chiều cao so với cửa, quầy, bàn học, ghế ở 20/30/40/45/60; điều chỉnh để mắt bé ngang mặt quầy. Lưu thay đổi vào prefab, không chỉnh lúc chạy.
+  - Chạy lại `KidsCharactersPlayModeTests` và chụp ảnh trước/sau.
+
+### Thẻ E — Tài liệu, PPTX, video
+- Cập nhật báo cáo Capstone và PPTX: thêm online (shard, chat, E2E, voice), cổng mở khóa, cẩm nang, số liệu load test (bảng ở mục 2026-10-11 khuya).
+- Thay ảnh cũ bằng ảnh trong `Bao_Cao/online-regression`, `hud-regression`, `environment-regression`.
+- Quay lại video demo bằng `DemoRecording` sau khi xong Thẻ A–D. Xóa bản cũ chỉ sau khi bản mới đã được kiểm.
+
+### Xem xét thay đổi chưa commit của Codex (va chạm ở 20 và 40)
+- `HibariClassroomRuntime.NormalizeDeskColliders`:
+  - Đúng chỗ bị kẹt: collider của bàn và ghế dài khoảng 2 m nên chặn kín lối đi giữa các dãy.
+  - Nhưng hàm sửa collider lúc chạy. Theo AGENTS.md, nên lưu kích thước collider thẳng vào scene `40_ HIBARICLASS`.
+  - Size đang đặt theo hệ tọa độ local của bàn: nếu bàn nào có scale khác 1 thì kích thước sẽ sai, cần kiểm.
+- `StationTravelController.CachePlatformTrain`:
+  - Nay tìm mọi Transform có tên bắt đầu bằng `HighspeedTrain_`.
+  - Nếu object con cũng có tên như vậy, cả cha lẫn con đều bị dời → con lệch gấp đôi. Chỉ nên lấy các gốc (bỏ object có cha cũng khớp tên).
+  - Chưa có test va chạm/tàu chạy cho thay đổi này. Cần chạy `StationTravel*` và test đi bộ qua lối giữa các dãy bàn ở lớp học.
+- **Test IELTS Reading 48 đề quá 180 s** (sáng 59 s; mở mỗi đề 1,2 s, mỗi phần 0,2–0,35 s). Không phải do phần online. Cần tìm nguyên nhân trong `IeltsTestUI` (các commit sau 07:30 ngày 11/10).
