@@ -32,7 +32,10 @@ def config():
 
 
 class Bot:
-    def __init__(self, index, topic, url, key, stats):
+    def __init__(self, index, topic, url, key, stats, shard_size=1):
+        # Same rule as SupabaseOnlineWorldService.MovingSendInterval: 6 Hz alone, slower as the shard fills.
+        self.moving_interval = min(max(1 / 6 * max(1, shard_size / 10), 1 / 6), 0.5)
+        self.backoff_until, self.backoff = 0.0, 1.0
         self.id = f"loadbot_{index}"
         self.topic = "realtime:" + topic
         self.url, self.key, self.stats = url, key, stats
@@ -48,7 +51,8 @@ class Bot:
     async def send(self, event, payload):
         await self.ws.send(json.dumps({"topic": self.topic, "event": event, "payload": payload, "ref": self.next_ref(), "join_ref": "1"}))
 
-    async def run(self, seconds, start_barrier):
+    async def run(self, seconds, start_barrier, delay=0.0):
+        await asyncio.sleep(delay)  # players do not all connect in the same millisecond
         try:
             self.ws = await websockets.connect(self.url, max_queue=None, ping_interval=20)
         except Exception as e:
@@ -80,7 +84,8 @@ class Bot:
                 self.stats["send_errors"] += 1
                 self.stats["error_samples"].append(f"send: {e}")
                 break
-            await asyncio.sleep(1 / 6 if self.moving else 3.0)
+            interval = self.moving_interval * (self.backoff if time.time() < self.backoff_until else 1.0)
+            await asyncio.sleep(interval if self.moving else 3.0)
         await asyncio.sleep(2.0)  # let the last messages arrive
         reader.cancel()
         try:
@@ -104,6 +109,10 @@ class Bot:
                 elif ev == "phx_reply" and payload.get("status") != "ok":
                     self.stats["server_errors"] += 1
                     self.stats["error_samples"].append(json.dumps(payload)[:200])
+                elif ev == "system" and "Too many" in str(payload.get("message")):
+                    self.stats["rate_limited"] += 1
+                    self.backoff = min(self.backoff * 2, 4.0) if time.time() < self.backoff_until else 2.0
+                    self.backoff_until = time.time() + 20
                 elif ev in ("phx_error", "phx_close") or (ev == "system" and payload.get("status") == "error"):
                     self.stats["server_errors"] += 1
                     self.stats["error_samples"].append(f"{ev}: {json.dumps(payload)[:200]}")
@@ -115,11 +124,11 @@ class Bot:
 
 async def stage(n, seconds, url, key):
     topic = f"w:loadtest_{int(time.time())}_{n}:0"
-    stats = {"sent": 0, "received": 0, "latency": [], "presence": 0, "server_errors": 0, "connect_errors": 0, "send_errors": 0, "error_samples": []}
+    stats = {"sent": 0, "received": 0, "latency": [], "presence": 0, "server_errors": 0, "rate_limited": 0, "connect_errors": 0, "send_errors": 0, "error_samples": []}
     barrier = asyncio.Event()
-    bots = [Bot(i, topic, url, key, stats) for i in range(n)]
-    tasks = [asyncio.create_task(b.run(seconds, barrier)) for b in bots]
-    await asyncio.sleep(2.5)  # everyone connected and joined
+    bots = [Bot(i, topic, url, key, stats, n) for i in range(n)]
+    tasks = [asyncio.create_task(b.run(seconds, barrier, i * 0.05)) for i, b in enumerate(bots)]
+    await asyncio.sleep(2.5 + n * 0.05)  # everyone connected and joined
     barrier.set()
     await asyncio.gather(*tasks)
     expected = stats["sent"] * (n - 1)
@@ -132,7 +141,7 @@ async def stage(n, seconds, url, key):
         "latency_ms_p50": round(statistics.median(lat)) if lat else None,
         "latency_ms_p95": round(lat[int(len(lat) * 0.95) - 1]) if lat else None,
         "latency_ms_max": round(lat[-1]) if lat else None,
-        "server_errors": stats["server_errors"], "connect_errors": stats["connect_errors"], "send_errors": stats["send_errors"],
+        "rate_limit_notices": stats["rate_limited"], "server_errors": stats["server_errors"], "connect_errors": stats["connect_errors"], "send_errors": stats["send_errors"],
         "realtime_messages_used": used,
         "error_samples": stats["error_samples"][:5],
     }

@@ -24,6 +24,8 @@ namespace NihongoLife.Core
         private Task _keyTask;
 
         public bool Ready => _rsa != null;
+        /// <summary>How long the last key pair took to make (0 when loaded from PlayerPrefs).</summary>
+        public float GenerationSeconds { get; private set; }
         public string PublicKey { get; private set; }
         public string SafetyCode => SafetyCodeOf(PublicKey);
 
@@ -34,14 +36,21 @@ namespace NihongoLife.Core
             string saved = PlayerPrefs.GetString(PrefsKey + prefsSuffix, string.Empty);
             if (!string.IsNullOrEmpty(saved))
             {
-                try { Adopt(Import(saved, true)); return; }
+                try
+                {
+                    var loaded = Import(saved, true);
+                    if (loaded.KeySize >= 2048) { Adopt(loaded); return; }
+                    loaded.Dispose(); // an old, too-short key: make a new one
+                }
                 catch (Exception ex) { Debug.LogWarning($"[ChatCrypto] Saved key unreadable, making a new one: {ex.Message}"); }
             }
             _keyTask = Task.Run(() =>
             {
-                var rsa = RSA.Create();
-                rsa.KeySize = 2048;
+                // Explicit 2048-bit provider: on Mono, RSA.Create() + KeySize = 2048 silently stays at 1024.
+                var watch = System.Diagnostics.Stopwatch.StartNew();
+                RSA rsa = new RSACryptoServiceProvider(2048);
                 rsa.ExportParameters(true); // forces generation off the main thread
+                GenerationSeconds = (float)watch.Elapsed.TotalSeconds;
                 return rsa;
             }).ContinueWith(t =>
             {
@@ -61,6 +70,7 @@ namespace NihongoLife.Core
             PlayerPrefs.SetString(PrefsKey + suffix, Export(rsa.ExportParameters(true), true));
             PlayerPrefs.Save();
             Adopt(rsa);
+            Debug.Log($"[ChatCrypto] New RSA-2048 key pair in {GenerationSeconds:0.0} s. Safety code {SafetyCode}.");
         }
 
         private void Adopt(RSA rsa)
@@ -170,7 +180,7 @@ namespace NihongoLife.Core
             {
                 p.D = F(2); p.P = F(3); p.Q = F(4); p.DP = F(5); p.DQ = F(6); p.InverseQ = F(7);
             }
-            var rsa = RSA.Create();
+            RSA rsa = new RSACryptoServiceProvider();
             rsa.ImportParameters(p);
             return rsa;
         }

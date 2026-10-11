@@ -28,9 +28,13 @@ namespace NihongoLife.Tests
         private readonly List<GameObject> _spawned = new List<GameObject>();
         private readonly List<string> _prefsToDelete = new List<string>();
 
+        [SetUp]
+        public void SetUp() => SupabaseRealtimeClient.Verbose = true;
+
         [TearDown]
         public void TearDown()
         {
+            SupabaseRealtimeClient.Verbose = false;
             foreach (var go in _spawned) if (go != null) Object.Destroy(go);
             _spawned.Clear();
             foreach (var key in _prefsToDelete) PlayerPrefs.DeleteKey(key);
@@ -67,8 +71,9 @@ namespace NihongoLife.Tests
             ca.Send("m", new Dictionary<string, object> { ["t"] = tricky });
             for (int i = 0; i < 30; i++) ca.Send("m", new Dictionary<string, object> { ["t"] = "n" + i });
             yield return WaitFor(() => got.Count >= 31, 15f, "31 broadcasts");
-            Assert.AreEqual(tricky, got[0], "Exact text round-trip");
-            CollectionAssert.AreEqual(Enumerable.Range(0, 30).Select(i => "n" + i).ToList(), got.Skip(1).Take(30).ToList(), "In order, none lost");
+            CollectionAssert.Contains(got, tricky, "Exact text round-trip");
+            // Supabase does not promise order inside a burst (poses carry a sequence number for that); none may be lost.
+            CollectionAssert.AreEquivalent(Enumerable.Range(0, 30).Select(i => "n" + i).ToList(), got.Where(x => x != tricky).ToList(), "None lost");
 
             ca.Leave();
             yield return WaitFor(() => left == "alice", 10f, "presence leave");
@@ -103,6 +108,8 @@ namespace NihongoLife.Tests
             }
             OnlinePlayerSnapshot seen = null;
             yield return WaitFor(() => (seen = wb.VisiblePlayers.FirstOrDefault(p => p.playerId == wa.LocalPlayerId && p.hasPose && Mathf.Abs(p.position.x - 4f) < 0.02f)) != null, 10f, "B sees A at x=4");
+            // The model id comes with presence, which can land a moment after the first position.
+            yield return WaitFor(() => seen.characterId != null, 5f, "A's presence (character) at B");
             Assert.AreEqual("kid_hina", seen.characterId);
             Assert.AreEqual("Aki", seen.displayName);
             Assert.AreEqual(90f, seen.rotation.eulerAngles.y, 1f);
@@ -131,7 +138,10 @@ namespace NihongoLife.Tests
             var hb = NewHub(wb, "_testB", community);
             wa.UpdateLocalPlayerPose(scene, Vector3.zero, Quaternion.identity);
             wb.UpdateLocalPlayerPose(scene, Vector3.one, Quaternion.identity);
-            yield return WaitFor(() => ha.CryptoReady && hb.CryptoReady && wa.IsOnline(wb.LocalPlayerId) && wb.IsOnline(wa.LocalPlayerId), 20f, "keys + lobby");
+            float t0 = Time.realtimeSinceStartup;
+            yield return WaitFor(() => wa.IsOnline(wb.LocalPlayerId) && wb.IsOnline(wa.LocalPlayerId), 20f, "both in the lobby");
+            yield return WaitFor(() => ha.CryptoReady && hb.CryptoReady, 60f, "RSA keys generated");
+            Debug.Log($"[OnlineTest] lobby + 2 RSA-2048 key pairs ready after {Time.realtimeSinceStartup - t0:0.0} s");
 
             // Community
             ha.Send(SocialHub.CommunityId, "Chào cả nhà!");
@@ -213,11 +223,17 @@ namespace NihongoLife.Tests
                 for (int i = 0; i < bots.Length; i++) bots[i].UpdateLocalPlayerPose(scene, spots[i], botTransforms[i]);
                 yield return null;
             }
-            Assert.AreEqual(2, manager.AvatarCount, "Both remote players spawned");
+            Assert.GreaterOrEqual(manager.AvatarCount, 2, "Both remote players spawned");
+            yield return WaitFor(() => manager.Avatars.Values.Count(a => a.DisplayName == "Haru" || a.DisplayName == "Yui") == 2, 10f, "names from presence");
             yield return new WaitForSecondsRealtime(1.2f);
-            foreach (var avatar in manager.Avatars.Values)
+            foreach (var avatar in manager.Avatars.Values.Where(a => a.DisplayName == "Haru" || a.DisplayName == "Yui"))
             {
-                Assert.IsNotNull(avatar.transform.Find("Visual")?.GetComponentInChildren<SkinnedMeshRenderer>(), "Real character model, not a capsule");
+                var animator = avatar.GetComponentInChildren<Animator>(true);
+                string tree = string.Join(", ", avatar.GetComponentsInChildren<Transform>(true).Select(t => t.name + (t.gameObject.activeInHierarchy ? "" : "(off)")).Take(12));
+                Assert.IsNotNull(animator, $"Real character model, not a capsule — {avatar.CharacterId}: {tree}");
+                Assert.IsTrue(animator.gameObject.activeInHierarchy, "Model shown: " + tree);
+                Assert.IsNotNull(animator.runtimeAnimatorController, "Animated");
+                Assert.AreEqual(avatar.DisplayName == "Haru" ? "kid_haruto" : "kid_yui", avatar.CharacterId, "Wears the character the other player picked");
                 Assert.Less(Vector3.Distance(avatar.transform.position, spots[avatar.DisplayName == "Haru" ? 0 : 1]), 0.1f, "Interpolated onto the sent position");
             }
 

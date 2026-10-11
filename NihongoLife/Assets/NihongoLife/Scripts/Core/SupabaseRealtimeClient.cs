@@ -50,6 +50,8 @@ namespace NihongoLife.Core
             /// <summary>The full member list was (re)received after join.</summary>
             public event Action OnPresenceSync;
             public event Action OnJoined;
+            /// <summary>The server said this channel sends too much ("Too many messages per second").</summary>
+            public event Action OnRateLimited;
 
             internal Channel(SupabaseRealtimeClient owner, string topic, string presenceKey, bool self)
             {
@@ -96,11 +98,14 @@ namespace NihongoLife.Core
             internal void RaiseLeave(string key) => OnPresenceLeave?.Invoke(key);
             internal void RaiseSync() => OnPresenceSync?.Invoke();
             internal void RaiseJoined() => OnJoined?.Invoke();
+            internal void RaiseRateLimited() => OnRateLimited?.Invoke();
         }
 
         // ──────────────────────── State ────────────────────────
 
-        public bool IsConnected => _socket != null && _socket.State == WebSocketState.Open;
+        /// <summary>Socket open and the send/receive threads running (frames can go out).</summary>
+        public bool IsConnected => _ready && _socket != null && _socket.State == WebSocketState.Open;
+        private volatile bool _ready;
         public int ReconnectAttempts { get; private set; }
         public int SentFrames { get; private set; }
         public int ReceivedFrames { get; private set; }
@@ -129,6 +134,7 @@ namespace NihongoLife.Core
         private float _reconnectAt = -1f;
         private float _reconnectDelay = 2f;
         private volatile bool _socketDropped;
+        private volatile string _closeReason;
         private int _messageRef;
 
         private readonly Queue<string> _incoming = new Queue<string>();
@@ -138,6 +144,19 @@ namespace NihongoLife.Core
         private SemaphoreSlim _outgoingSignal;
 
         private const int ReceiveBufferSize = 16384;
+
+        /// <summary>Logs every connect, join and close (tests, debugging a live session).</summary>
+        public static bool Verbose;
+
+        static SupabaseRealtimeClient()
+        {
+            // Mono's ClientWebSocket goes through ServicePoint, which allows 2 connections per host by default;
+            // a websocket holds its connection for life, so a third socket (tests, bots) would wait forever.
+            if (System.Net.ServicePointManager.DefaultConnectionLimit < 64) System.Net.ServicePointManager.DefaultConnectionLimit = 64;
+            // ConnectAsync (TLS handshake) still runs on the pool; give it room so the first connect is not slow either.
+            ThreadPool.GetMinThreads(out int worker, out int io);
+            if (worker < 32 || io < 32) ThreadPool.SetMinThreads(Math.Max(worker, 32), Math.Max(io, 32));
+        }
         private const int MaxPendingFramesPerChannel = 64;
 
         // ──────────────────────── Setup ────────────────────────
@@ -182,7 +201,8 @@ namespace NihongoLife.Core
         {
             if (channel == null || channel.Closed) return;
             channel.Closed = true;
-            if (channel.Joined && IsConnected) Enqueue(Frame(channel.FullTopic, "phx_leave", "{}", channel.JoinRef));
+            // Also when the join is still pending, so the server does not keep a half-open member.
+            if (channel.JoinRef != null && IsConnected) Enqueue(Frame(channel.FullTopic, "phx_leave", "{}", NextRef(), channel.JoinRef));
             channel.Joined = false;
             foreach (var key in new List<string>(channel.PresenceMetas.Keys)) channel.RaiseLeave(key);
             channel.PresenceMetas.Clear();
@@ -226,7 +246,8 @@ namespace NihongoLife.Core
                 request.timeout = 10;
                 yield return request.SendWebRequest();
                 bool ok = request.result == UnityEngine.Networking.UnityWebRequest.Result.Success;
-                if (!ok) Debug.LogWarning($"[SupabaseRealtime] Broadcast POST failed: {request.responseCode} {request.error}");
+                if (!ok) Debug.LogWarning($"[SupabaseRealtime] Broadcast POST failed: {request.responseCode} {request.error} {request.downloadHandler?.text}");
+                else if (Verbose) Debug.Log($"[SupabaseRealtime] {name}: POST broadcast {request.responseCode} ({body.Length} bytes)");
                 done?.Invoke(ok);
             }
         }
@@ -287,6 +308,7 @@ namespace NihongoLife.Core
         private void CloseSocket()
         {
             bool wasOpen = IsConnected;
+            _ready = false;
             _wantConnected = false;
             _reconnectAt = -1f;
             _cancellation?.Cancel();
@@ -308,13 +330,17 @@ namespace NihongoLife.Core
             _cancellation?.Cancel();
             var cancellation = new CancellationTokenSource();
             _cancellation = cancellation;
+            _ready = false;
             var socket = new ClientWebSocket();
             socket.Options.KeepAliveInterval = TimeSpan.FromSeconds(20);
             _socket = socket;
 
+            if (Verbose) Debug.Log($"[SupabaseRealtime] {name}: connecting ({_channels.Count} channels)");
+            float connectStarted = Time.realtimeSinceStartup;
             Task connectTask;
-            try { connectTask = socket.ConnectAsync(new Uri(Url), cancellation.Token); }
-            catch (Exception ex) { connectTask = Task.FromException(ex); }
+            // Off the main thread: Mono resolves DNS and starts TLS synchronously inside ConnectAsync (a 1–2 s hitch).
+            var uri = new Uri(Url);
+            connectTask = Task.Run(() => socket.ConnectAsync(uri, cancellation.Token));
             while (!connectTask.IsCompleted) yield return null;
             _connecting = false;
 
@@ -327,13 +353,16 @@ namespace NihongoLife.Core
                 yield break;
             }
 
+            if (Verbose) Debug.Log($"[SupabaseRealtime] {name}: connected in {Time.realtimeSinceStartup - connectStarted:0.00} s");
             _reconnectDelay = 2f;
             _socketDropped = false;
+            _closeReason = null;
             _pendingHeartbeatRef = null;
             _nextHeartbeat = Time.unscaledTime + HeartbeatInterval;
             _outgoingSignal = new SemaphoreSlim(0);
             StartSendLoop(socket, cancellation.Token, _outgoingSignal);
             StartReceiveLoop(socket, cancellation.Token);
+            _ready = true;
             OnConnected?.Invoke();
 
             foreach (var c in _channels.Values) SendJoin(c);
@@ -381,7 +410,8 @@ namespace NihongoLife.Core
 
             if (_wantConnected && !_connecting && _socket != null && (_socketDropped || _socket.State != WebSocketState.Open))
             {
-                Debug.LogWarning("[SupabaseRealtime] Connection lost — reconnecting.");
+                _ready = false;
+                Debug.LogWarning($"[SupabaseRealtime] {name}: connection lost ({_closeReason ?? _socket.State.ToString()}) — reconnecting.");
                 _cancellation?.Cancel();
                 _socket = null;
                 foreach (var c in _channels.Values) c.Joined = false;
@@ -461,10 +491,12 @@ namespace NihongoLife.Core
                 switch (evt)
                 {
                     case "phx_reply":
+                        if (msgRef != null && msgRef != channel.JoinRef && payload.Str("status") != "ok")
+                            Debug.LogWarning($"[SupabaseRealtime] {name}: {channel.Topic} refused a message: {MiniJson.Serialize(payload)}");
                         if (msgRef != null && msgRef == channel.JoinRef)
                         {
                             string status = payload.Str("status");
-                            if (status == "ok") HandleJoined(channel);
+                            if (status == "ok") { HandleJoined(channel); if (Verbose) Debug.Log($"[SupabaseRealtime] {name}: joined {channel.Topic}"); }
                             else
                             {
                                 Debug.LogWarning($"[SupabaseRealtime] Join {channel.Topic} refused: {MiniJson.Serialize(payload)}");
@@ -474,6 +506,9 @@ namespace NihongoLife.Core
                         break;
                     case "phx_error":
                     case "phx_close":
+                        // A close/error for an older join of this topic (rejoin, quick leave + join) is not about us.
+                        if (msg.Str("join_ref") != null && msg.Str("join_ref") != channel.JoinRef) break;
+                        if (Verbose || evt == "phx_error") Debug.LogWarning($"[SupabaseRealtime] {name}: {evt} on {channel.Topic} {MiniJson.Serialize(payload)}");
                         if (channel.Joined && !channel.Closed)
                         {
                             channel.Joined = false;
@@ -481,7 +516,8 @@ namespace NihongoLife.Core
                         }
                         break;
                     case "system":
-                        if (payload.Str("status") == "error") Debug.LogWarning($"[SupabaseRealtime] {channel.Topic}: {payload.Str("message")}");
+                        if ((payload.Str("message") ?? "").IndexOf("Too many", StringComparison.OrdinalIgnoreCase) >= 0) channel.RaiseRateLimited();
+                        if (payload.Str("status") != "ok" || Verbose) Debug.LogWarning($"[SupabaseRealtime] {name}: system on {channel.Topic}: {MiniJson.Serialize(payload)}");
                         break;
                     case "broadcast":
                         channel.RaiseBroadcast(payload.Str("event"), payload.Obj("payload"));
@@ -598,22 +634,34 @@ namespace NihongoLife.Core
             _outgoingSignal?.Release();
         }
 
+        private static void StartThread(string name, Action body)
+        {
+            var thread = new Thread(() => body()) { IsBackground = true, Name = name };
+            thread.Start();
+        }
+
         private void StartSendLoop(ClientWebSocket socket, CancellationToken token, SemaphoreSlim signal)
         {
-            Task.Run(async () =>
+            // Dedicated threads, not the thread pool: Mono's ClientWebSocket blocks a thread per read/write, and a few
+            // sockets were enough to starve the pool (join replies arrived many seconds late).
+            StartThread("RealtimeSend", () =>
             {
                 try
                 {
                     while (!token.IsCancellationRequested && socket.State == WebSocketState.Open)
                     {
-                        await signal.WaitAsync(token).ConfigureAwait(false);
-                        byte[] bytes;
-                        lock (_outgoingLock)
+                        signal.Wait(token);
+                        // Drain everything queued: the signal count and the queue length need not match.
+                        while (true)
                         {
-                            if (_outgoing.Count == 0) continue;
-                            bytes = _outgoing.Dequeue();
+                            byte[] bytes;
+                            lock (_outgoingLock)
+                            {
+                                if (_outgoing.Count == 0) break;
+                                bytes = _outgoing.Dequeue();
+                            }
+                            socket.SendAsync(new ArraySegment<byte>(bytes), WebSocketMessageType.Text, true, token).GetAwaiter().GetResult();
                         }
-                        await socket.SendAsync(new ArraySegment<byte>(bytes), WebSocketMessageType.Text, true, token).ConfigureAwait(false);
                     }
                 }
                 catch (OperationCanceledException) { }
@@ -630,7 +678,7 @@ namespace NihongoLife.Core
 
         private void StartReceiveLoop(ClientWebSocket socket, CancellationToken token)
         {
-            Task.Run(async () =>
+            StartThread("RealtimeReceive", () =>
             {
                 var buffer = new byte[ReceiveBufferSize];
                 var bytes = new List<byte>(ReceiveBufferSize);
@@ -642,12 +690,16 @@ namespace NihongoLife.Core
                         WebSocketReceiveResult result;
                         do
                         {
-                            result = await socket.ReceiveAsync(new ArraySegment<byte>(buffer), token).ConfigureAwait(false);
+                            result = socket.ReceiveAsync(new ArraySegment<byte>(buffer), token).GetAwaiter().GetResult();
                             for (int i = 0; i < result.Count; i++) bytes.Add(buffer[i]);
                         }
                         while (!result.EndOfMessage);
 
-                        if (result.MessageType == WebSocketMessageType.Close) break;
+                        if (result.MessageType == WebSocketMessageType.Close)
+                        {
+                            _closeReason = $"server closed: {socket.CloseStatus} {socket.CloseStatusDescription}";
+                            break;
+                        }
                         // Decode whole frames only: a UTF-8 character can straddle two reads.
                         string message = Encoding.UTF8.GetString(bytes.ToArray());
                         lock (_incomingLock) _incoming.Enqueue(message);
@@ -656,7 +708,7 @@ namespace NihongoLife.Core
                 catch (OperationCanceledException) { }
                 catch (Exception ex)
                 {
-                    if (!token.IsCancellationRequested) Debug.LogWarning($"[SupabaseRealtime] Receive failed: {ex.Message}");
+                    if (!token.IsCancellationRequested) { _closeReason = "receive failed: " + ex.Message; Debug.LogWarning($"[SupabaseRealtime] Receive failed: {ex.Message}"); }
                 }
                 if (!token.IsCancellationRequested) _socketDropped = true;
             });

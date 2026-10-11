@@ -67,7 +67,9 @@ namespace NihongoLife.Interaction
         private void DetectInteractables()
         {
             Vector3 detectionOrigin = transform.position + Vector3.up * 0.9f;
-            int colliderCount = Physics.OverlapSphereNonAlloc(detectionOrigin, detectionRadius, _overlapBuffer, interactableLayers, QueryTriggerInteraction.Collide);
+            // Other players (RemotePlayerAvatar) live on Default: always include it, or a nearby NPC on the
+            // interactable layer would hide everyone else.
+            int colliderCount = Physics.OverlapSphereNonAlloc(detectionOrigin, detectionRadius, _overlapBuffer, interactableLayers | 1, QueryTriggerInteraction.Collide);
             if (colliderCount == 0 && fallbackToAnyLayer)
                 colliderCount = Physics.OverlapSphereNonAlloc(detectionOrigin, detectionRadius, _overlapBuffer, Physics.AllLayers, QueryTriggerInteraction.Collide);
 

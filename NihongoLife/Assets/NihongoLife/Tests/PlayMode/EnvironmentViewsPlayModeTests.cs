@@ -21,6 +21,9 @@ namespace NihongoLife.Tests
     /// </summary>
     public class EnvironmentViewsPlayModeTests
     {
+        [TearDown]
+        public void ReleaseWeather() => WeatherCycle.Instance?.Force(null);
+
         private static string Folder => Environment.GetEnvironmentVariable("NL_VIEWS_OUT")
             ?? Path.GetFullPath(Path.Combine(Application.dataPath, "../../Bao_Cao/environment-regression"));
 
@@ -73,12 +76,15 @@ namespace NihongoLife.Tests
                 Vector3 f = Vector3.ProjectOnPlane(player.transform.forward, Vector3.up).normalized;
                 var outdoors = OutdoorSky.Active;
                 Assert.NotNull(outdoors, "OutdoorSky in " + scene);
+                // Clear sky: on a rainy or overcast day the lamps rightly come on early (covered by the weather tests).
+                WeatherCycle.Instance?.Force(WeatherCycle.Kind.Clear);
                 foreach (float hour in new[] { 6f, 12f, 17.5f, 20f, 23.5f, 2f })
                 {
                     cycle.SetHour(hour);
                     yield return null;
                     yield return null;
-                    Debug.Log($"[Views] {scene} {hour:00.0}h daylight={outdoors.Daylight:0.00} lampsOn={outdoors.LampsOn} sun={RenderSettings.sun?.intensity:0.00} amb={RenderSettings.ambientLight} fog={RenderSettings.fogDensity:0.0000}");
+                    outdoors = OutdoorSky.Active; // the sky the cycle lights now (the island's, once it is the active scene)
+                    Debug.Log($"[Views] {scene} sky={outdoors.gameObject.scene.name} {hour:00.0}h daylight={outdoors.Daylight:0.00} lampsOn={outdoors.LampsOn} sun={RenderSettings.sun?.intensity:0.00} amb={RenderSettings.ambientLight} fog={RenderSettings.fogDensity:0.0000}");
                     if (hour >= 23f || hour < 3f) Assert.Greater(outdoors.LampsOn, 0, "Lamps are on at night in " + scene);
                     if (Mathf.Approximately(hour, 12f)) Assert.AreEqual(0, outdoors.LampsOn, "Lamps are off at noon in " + scene);
                     Shoot(cam, p - f * 7f + Vector3.up * 3.2f, p + f * 14f + Vector3.up * 2.5f, $"{Safe(scene)}_hour{hour:00.0}");

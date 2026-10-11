@@ -47,8 +47,34 @@ namespace NihongoLife.Core
         private float _lastSentAt = -10f;
         private int _lastSentMove;
         private const float MovingInterval = 1f / 6f;
+        private float _backoffUntil = -1f, _backoff = 1f;
+
+        /// <summary>
+        /// Seconds between poses while walking. A full shard shares the realtime budget: 6 Hz alone or with a few
+        /// people, ~3 Hz with 20, 2 Hz from 30 on; doubled for 20 s each time the server says "too many messages".
+        /// (Measured on the current Supabase plan: 20 walkers at 6 Hz already hit its per-second limit.)
+        /// </summary>
+        public float MovingSendInterval
+        {
+            get
+            {
+                int members = _shard?.MemberCount ?? 1;
+                float interval = Mathf.Clamp(MovingInterval * Mathf.Max(1f, members / 10f), MovingInterval, 0.5f);
+                if (Time.unscaledTime < _backoffUntil) interval *= _backoff;
+                return Mathf.Min(interval, 1.5f);
+            }
+        }
+
+        private void HandleRateLimited()
+        {
+            _backoff = Time.unscaledTime < _backoffUntil ? Mathf.Min(_backoff * 2f, 4f) : 2f;
+            _backoffUntil = Time.unscaledTime + 20f;
+            Debug.LogWarning($"[OnlineWorld] Server rate limit on {_shard?.Topic}: poses every {MovingSendInterval:0.00} s for 20 s.");
+        }
         private const float IdleInterval = 3f;
         private float _lastChatAt = -10f;
+        private int _poseSeq;
+        private readonly Dictionary<string, int> _lastSeq = new Dictionary<string, int>();
 
         public bool IsConnected { get; private set; }
         public string LocalPlayerId => _localPlayerId;
@@ -265,6 +291,7 @@ namespace NihongoLife.Core
             _shard.OnPresenceJoin += HandleShardJoin;
             _shard.OnPresenceLeave += HandleShardLeave;
             _shard.OnJoined += HandleShardJoined;
+            _shard.OnRateLimited += HandleRateLimited;
             if (_local != null) { _local.sceneName = scene; _local.shardTopic = _shard.Topic; }
             TrackShard();
             TrackLobby();
@@ -297,6 +324,7 @@ namespace NihongoLife.Core
             _shard.OnPresenceJoin -= HandleShardJoin;
             _shard.OnPresenceLeave -= HandleShardLeave;
             _shard.OnJoined -= HandleShardJoined;
+            _shard.OnRateLimited -= HandleRateLimited;
             _shard.Leave();
             _shard = null;
             for (int i = _visiblePlayers.Count - 1; i >= 0; i--)
@@ -331,6 +359,7 @@ namespace NihongoLife.Core
         {
             if (!_byId.TryGetValue(id, out var p) || p == _local) return;
             _byId.Remove(id);
+            _lastSeq.Remove(id);
             _visiblePlayers.Remove(p);
             OnPlayerLeft?.Invoke(id);
         }
@@ -354,13 +383,15 @@ namespace NihongoLife.Core
 
             if (_shard == null || !_shard.Joined) return;
             bool changed = moved > 0.05f || Mathf.Abs(Mathf.DeltaAngle(yaw, _lastSentYaw)) > 4f || move != _lastSentMove;
-            float wait = changed ? MovingInterval : IdleInterval;
+            float wait = changed ? MovingSendInterval : IdleInterval;
             if (now - _lastSentAt < wait) return;
             _lastSentAt = now;
             _lastSentPos = position;
             _lastSentYaw = yaw;
             _lastSentMove = move;
-            _shard.Send("p", EncodePose(_localPlayerId, position, yaw, move));
+            var pose = EncodePose(_localPlayerId, position, yaw, move);
+            pose["s"] = ++_poseSeq; // the server may reorder a burst: receivers drop older poses
+            _shard.Send("p", pose);
         }
 
         public static Dictionary<string, object> EncodePose(string id, Vector3 position, float yaw, int move)
@@ -382,6 +413,13 @@ namespace NihongoLife.Core
             if (string.IsNullOrEmpty(id) || id == _localPlayerId) return;
             if (evt == "p")
             {
+                int seq = (int)payload.Num("s", -1);
+                if (seq >= 0)
+                {
+                    // Older than what we have (late packet) — unless they restarted (much lower number).
+                    if (_lastSeq.TryGetValue(id, out int last) && seq <= last && last - seq < 1000) return;
+                    _lastSeq[id] = seq;
+                }
                 var p = GetOrAdd(id);
                 p.position = new Vector3((float)payload.Num("x") / 100f, (float)payload.Num("y") / 100f, (float)payload.Num("z") / 100f);
                 p.rotation = Quaternion.Euler(0f, (float)payload.Num("r"), 0f);

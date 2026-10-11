@@ -18,6 +18,9 @@ namespace NihongoLife.Interaction
         private Material _ringMaterial;
         private float _labelHeight = 2.1f;
         private IInteractable _shown;
+        private float _nextKeyRefresh;
+        private string _interactKey = "F", _cycleKey = "Q", _shownName, _shownKey;
+        private int _shownCount = -1, _shownIndex = -1;
 
         public bool Visible => _root != null && _root.gameObject.activeSelf;
         public string LabelText => _label != null ? _label.text : string.Empty;
@@ -47,7 +50,9 @@ namespace NihongoLife.Interaction
             labelGo.transform.SetParent(_root, false);
             labelGo.transform.localScale = Vector3.one * 0.06f;
             _label = labelGo.AddComponent<TextMeshPro>();
-            _label.fontSize = 30f;
+            var font = NihongoLife.UI.NLUi.ResolveFont(); // Vietnamese/Japanese names and ▼
+            if (font != null) _label.font = font;
+            _label.fontSize = 34f;
             _label.alignment = TextAlignmentOptions.Center;
             _label.color = Gold;
             _label.outlineWidth = 0.25f;
@@ -74,7 +79,8 @@ namespace NihongoLife.Interaction
             if (target != _shown)
             {
                 _shown = target;
-                _labelHeight = TopOf(t) + 0.45f;
+                // Above the head and above a name plate (people and NPCs carry one ~0.3 m over the head).
+                _labelHeight = TopOf(t) + 0.95f;
             }
 
             Vector3 basePos = t.position;
@@ -84,13 +90,24 @@ namespace NihongoLife.Interaction
             _ring.position = basePos + Vector3.up * 0.04f;
             _ring.localScale = new Vector3(1.15f * pulse, 1.15f * pulse, 1f);
 
-            string key = GameInputService.GetOrCreate().GetBindingLabel(GameInputId.Interact);
+            // Key labels are slow to ask for (Input System display strings) and setting TMP text rebuilds its mesh:
+            // refresh the keys once a second and the text only when it changes.
+            if (Time.unscaledTime >= _nextKeyRefresh)
+            {
+                _nextKeyRefresh = Time.unscaledTime + 1f;
+                var input = GameInputService.GetOrCreate();
+                _interactKey = input.GetBindingLabel(GameInputId.Interact);
+                _cycleKey = input.GetBindingLabel(GameInputId.CycleTarget);
+            }
             string name = NameOf(target);
             int count = _detector.CandidateCount;
-            string cycle = count > 1
-                ? $"\n<size=70%><color=#E8F1FF>{GameInputService.GetOrCreate().GetBindingLabel(GameInputId.CycleTarget)} đổi · {_detector.CurrentIndex + 1}/{count}</color></size>"
-                : string.Empty;
-            _label.text = $"▼ <b>[{key}]</b> {name}{cycle}";
+            int index = _detector.CurrentIndex + 1;
+            if (name != _shownName || count != _shownCount || index != _shownIndex || _interactKey != _shownKey)
+            {
+                _shownName = name; _shownCount = count; _shownIndex = index; _shownKey = _interactKey;
+                string cycle = count > 1 ? $"\n<size=70%><color=#E8F1FF>{_cycleKey} đổi · {index}/{count}</color></size>" : string.Empty;
+                _label.text = $"▼ <b>[{_interactKey}]</b> {name}{cycle}";
+            }
             float bob = Mathf.Sin(Time.time * 3f) * 0.05f;
             _label.transform.position = new Vector3(t.position.x, t.position.y + _labelHeight + bob, t.position.z);
             var cam = Camera.main;

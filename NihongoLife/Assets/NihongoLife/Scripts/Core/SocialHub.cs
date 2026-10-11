@@ -112,6 +112,7 @@ namespace NihongoLife.Core
             _friendService = GetComponent<FriendService>() ?? FindFirstObjectByType<FriendService>();
             if (_friendService == null) { _friendService = gameObject.AddComponent<FriendService>(); _friendService.Initialize(); }
             _friendService.OnFriendsUpdated += HandleFriendsUpdated;
+            _crypto.EnsureKeys(_keySuffix); // first launch makes a key pair in the background, long before the first DM
         }
 
         /// <summary>Tests: a hub bound to its own world service / realtime client.</summary>
@@ -150,7 +151,7 @@ namespace NihongoLife.Core
                 foreach (var peer in new List<string>(_outbox.Keys))
                 {
                     if (_pins.ContainsKey(peer)) FlushOutbox(peer);
-                    else RequestKey(peer);
+                    else if (!_keyRequestSent.Contains(peer)) RequestKey(peer);
                 }
             }
             if (!_crypto.Ready) _outboxKicked = false;
@@ -473,6 +474,21 @@ namespace NihongoLife.Core
             return c;
         }
 
+        private readonly Dictionary<string, float> _incomingCalls = new Dictionary<string, float>();
+
+        /// <summary>The peer rang us in the last minute.</summary>
+        public bool HasIncomingCall(string peerId) => _incomingCalls.TryGetValue(peerId, out float at) && Time.unscaledTime - at < 60f;
+
+        public void ClearIncomingCall(string peerId) => _incomingCalls.Remove(peerId);
+
+        /// <summary>Rings the other person (they join the same private voice room when they press “Nghe”).</summary>
+        public void NotifyCall(string peerId)
+        {
+            if (_online == null || string.IsNullOrEmpty(peerId)) return;
+            SendInbox(peerId, "call", new Dictionary<string, object>());
+            AddSystem(DirectId(peerId), $"Đang gọi {NameOf(peerId)}…");
+        }
+
         public string PeerSafetyCode(string peerId) => _pins.TryGetValue(peerId, out var pk) ? ChatCrypto.SafetyCodeOf(pk) : null;
 
         private bool SendDirect(string peerId, string text)
@@ -509,6 +525,7 @@ namespace NihongoLife.Core
         {
             _keyRequestedAt[peerId] = Time.unscaledTime;
             if (!_crypto.Ready) return; // sent from Update once the key pair exists
+            _keyRequestSent.Add(peerId);
             SendInbox(peerId, "kq", new Dictionary<string, object> { ["pk"] = _crypto.PublicKey });
         }
 
@@ -522,9 +539,12 @@ namespace NihongoLife.Core
             SendInbox(peerId, "dm", envelope);
         }
 
+        private readonly HashSet<string> _keyRequestSent = new HashSet<string>();
+
         private void FlushOutbox(string peerId)
         {
             _keyRequestedAt.Remove(peerId);
+            _keyRequestSent.Remove(peerId);
             if (!_outbox.TryGetValue(peerId, out var list) || !_pins.TryGetValue(peerId, out var pk)) return;
             _outbox.Remove(peerId);
             foreach (var m in list) DeliverDirect(peerId, pk, m);
@@ -543,6 +563,7 @@ namespace NihongoLife.Core
             if (string.IsNullOrEmpty(from) || from == LocalId || IsBlocked(from)) return;
             string name = SupabaseOnlineWorldService.Clean(p.Str("n", "Learner"));
             Remember(from, name);
+            if (SupabaseRealtimeClient.Verbose) Debug.Log($"[SocialHub] {LocalId}: inbox {evt} from {from} (pinned: {_pins.ContainsKey(from)}, keys ready: {_crypto.Ready})");
             switch (evt)
             {
                 case "kq": // key request: pin theirs, answer with ours
@@ -579,6 +600,12 @@ namespace NihongoLife.Core
                     NihongoLife.UI.HudFeed.Post($"{name} mời bạn vào nhóm “{invite.GroupName}” — mở Chat (Enter) › Nhóm.", NihongoLife.UI.HudFeed.Kind.Info, 6f, "invite");
                     break;
                 }
+                case "call":
+                    _incomingCalls[from] = Time.unscaledTime;
+                    OpenDirect(from, name);
+                    AddSystem(DirectId(from), $"{name} đang gọi thoại — bấm “Nghe” để trả lời.");
+                    NihongoLife.UI.HudFeed.Post($"{name} đang gọi thoại cho bạn — Chat › Riêng tư › Nghe.", NihongoLife.UI.HudFeed.Kind.Info, 8f, "call");
+                    break;
                 case "fr":
                     NihongoLife.UI.HudFeed.Post($"{name} muốn kết bạn với bạn — xem tab Bạn bè.", NihongoLife.UI.HudFeed.Kind.Info, 6f, "friend");
                     if (CanUseFriends) _friendService.RefreshFriends();

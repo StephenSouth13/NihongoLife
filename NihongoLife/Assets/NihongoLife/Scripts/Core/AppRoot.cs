@@ -175,6 +175,8 @@ namespace NihongoLife.Core
             }
 
             // Persistent voice and live classroom controls are available in every gameplay scene.
+            if (GetComponent<NihongoLife.Learning.VoiceChatService>() == null)
+                gameObject.AddComponent<NihongoLife.Learning.VoiceChatService>();
             if (GetComponent<NihongoLife.Learning.SpeechPracticeController>() == null)
                 gameObject.AddComponent<NihongoLife.Learning.SpeechPracticeController>();
             if (FindFirstObjectByType<NihongoLife.Learning.EduMeetingManager>() == null)

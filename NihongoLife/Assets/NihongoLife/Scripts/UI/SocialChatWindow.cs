@@ -108,13 +108,7 @@ namespace NihongoLife.UI
 
         private void Update()
         {
-            if (_hub == null && GameServices.TryGet(out _hub))
-            {
-                _hub.OnConversationsChanged += MarkDirty;
-                _hub.OnFriendsChanged += MarkDirty;
-                _hub.OnMessage += HandleMessage;
-            }
-            if (_hub == null) return;
+            if (!EnsureHub()) return;
             Build();
             UpdateLauncher();
             if (!IsOpen) return;
@@ -143,6 +137,23 @@ namespace NihongoLife.UI
                 _hub.OnMessage -= HandleMessage;
             }
             if (_instance == this) _instance = null;
+        }
+
+        private bool _subscribed;
+
+        /// <summary>Finds SocialHub and subscribes once (the player card can be the first thing that needs it).</summary>
+        private bool EnsureHub()
+        {
+            if (_hub == null) GameServices.TryGet(out _hub);
+            if (_hub == null) return false;
+            if (!_subscribed)
+            {
+                _subscribed = true;
+                _hub.OnConversationsChanged += MarkDirty;
+                _hub.OnFriendsChanged += MarkDirty;
+                _hub.OnMessage += HandleMessage;
+            }
+            return true;
         }
 
         private void MarkDirty() => _dirty = true;
@@ -194,7 +205,7 @@ namespace NihongoLife.UI
             NLUi.Size(body, -1f, 560f, 1f, 560f);
 
             var listPanel = NLUi.Panel(body, "List", NLUi.Card, new RectOffset(12, 12, 12, 12), 8f);
-            NLUi.Size(listPanel, 330f, 560f);
+            NLUi.Size(listPanel, 340f, 560f, 0f); // fixed: the scroll view inside would otherwise make it share the spare width
             _listHeader = NLUi.Label(listPanel, "ListHeader", "", 16f, NLUi.Soft, _font, FontStyles.Bold);
             _listContent = Scroll(listPanel, "ListScroll", 380f, out _);
             // Built once (not inside the list that refreshes), so the typed group name survives refreshes.
@@ -220,7 +231,7 @@ namespace NihongoLife.UI
             NLUi.Size(_input, -1f, 46f, 1f);
             _input.onSubmit.AddListener(_ => SendCurrent());
             var send = NLUi.Button(inputRow, "Send", "Gửi", _font, SendCurrent, NLUi.Gold, 18f, new Color(0.1f, 0.08f, 0.04f), 46f);
-            NLUi.Size(send, 96f, 46f);
+            NLUi.Size(send, 110f, 46f, 0f);
 
             _friendsPane = NLUi.Panel(body, "FriendsPane", NLUi.Card, new RectOffset(14, 14, 12, 12), 8f);
             NLUi.Size(_friendsPane, -1f, 560f, 1f);
@@ -303,8 +314,55 @@ namespace NihongoLife.UI
             _launcher.gameObject.SetActive(false);
         }
 
+        private RectTransform _voiceBar;
+        private TextMeshProUGUI _voiceText;
+        private Image _voiceDot;
+
+        private void BuildVoiceBar()
+        {
+            _voiceBar = NLUi.Panel(_canvas.transform, "VoiceBar", new Color(0.06f, 0.09f, 0.12f, 0.92f), new RectOffset(14, 10, 6, 6), 10f, false);
+            NLUi.Anchor(_voiceBar, new Vector2(0f, 0f), new Vector2(24f, 352f), new Vector2(520f, 42f));
+            ((HorizontalLayoutGroup)_voiceBar.GetComponent<HorizontalOrVerticalLayoutGroup>()).childForceExpandWidth = false;
+            var dot = new GameObject("Mic", typeof(RectTransform), typeof(Image));
+            dot.transform.SetParent(_voiceBar, false);
+            _voiceDot = dot.GetComponent<Image>();
+            _voiceDot.sprite = HudGraphics.Ring;
+            NLUi.Size(dot.transform, 22f, 22f);
+            _voiceText = NLUi.Label(_voiceBar, "Text", "", 16f, NLUi.Text, _font, FontStyles.Normal, TextAlignmentOptions.MidlineLeft);
+            _voiceText.textWrappingMode = TextWrappingModes.NoWrap;
+            var off = NLUi.Button(_voiceBar, "Leave", "Tắt", _font, () => NihongoLife.Learning.VoiceChatService.Instance?.Leave(), NLUi.Bad, 14f, null, 30f);
+            NLUi.Size(off, 64f, 30f);
+            NLUi.FitContent(_voiceBar, width: true, height: false);
+            _voiceBar.gameObject.SetActive(false);
+        }
+
+        private void UpdateVoiceBar()
+        {
+            var voice = NihongoLife.Learning.VoiceChatService.Instance;
+            if (_voiceBar == null) BuildVoiceBar();
+            bool show = voice != null && voice.Current != NihongoLife.Learning.VoiceChatService.Mode.Off;
+            if (_voiceBar.gameObject.activeSelf != show) _voiceBar.gameObject.SetActive(show);
+            if (!show) return;
+            _voiceDot.color = voice.Talking ? new Color(1f, 0.35f, 0.3f) : voice.Joined ? Online : NLUi.Muted;
+            var talkers = new List<string>();
+            foreach (uint uid in voice.Speaking) { string n = NameForUid(uid); if (n != null) talkers.Add(n); if (talkers.Count == 3) break; }
+            _voiceText.text = voice.Talking ? "<b>Đang nói…</b>  " + voice.Status
+                : voice.Status + (talkers.Count > 0 ? "  ·  <color=#5BD98A>" + string.Join(", ", talkers) + "</color>" : "");
+        }
+
+        private string NameForUid(uint uid)
+        {
+            if (_hub == null) return null;
+            if (GameServices.TryGet(out IOnlineWorldService w))
+                foreach (var p in w.VisiblePlayers) if (NihongoLife.Learning.VoiceChatService.AgoraUid(p.playerId) == uid) return p.displayName;
+            foreach (var g in _hub.Groups) foreach (var id in g.MemberIds) if (NihongoLife.Learning.VoiceChatService.AgoraUid(id) == uid) return g.MemberName(id);
+            foreach (var c in _hub.ConversationsOf(SocialHub.Kind.Direct)) if (NihongoLife.Learning.VoiceChatService.AgoraUid(c.PeerId) == uid) return c.Title;
+            return "Ai đó";
+        }
+
         private void UpdateLauncher()
         {
+            UpdateVoiceBar();
             if (_launcher == null) return;
             int unread = _hub.TotalUnread;
             int invites = _hub.Invites.Count;
@@ -514,6 +572,7 @@ namespace NihongoLife.UI
                 case SocialHub.Kind.Area:
                     _paneTitle.text = "Khu vực";
                     _paneInfo.text = "Những người cùng địa điểm (cùng phòng) với bạn sẽ thấy. Không lưu lại.";
+                    VoiceButton(NihongoLife.Learning.VoiceChatService.Mode.Area, "Voice khu vực", v => v.JoinArea());
                     break;
                 case SocialHub.Kind.Community:
                     _paneTitle.text = "Cộng đồng";
@@ -527,6 +586,7 @@ namespace NihongoLife.UI
                     if (g != null) foreach (var id in g.MemberIds) names.Add(id == _hub.LocalId ? "Bạn" : g.MemberName(id));
                     _paneInfo.text = $"{names.Count} thành viên: {string.Join(", ", names)} · Tin nhắn chỉ hiện khi đang online.";
                     string gid = c.GroupId;
+                    VoiceButton(NihongoLife.Learning.VoiceChatService.Mode.Group, "Voice nhóm", v => v.JoinGroup(gid));
                     SmallButton(_paneActions, "Mời bạn bè", () => { SelectTab(Tab.Friends); });
                     SmallButton(_paneActions, "Rời nhóm", () => { _hub.LeaveGroup(gid); SelectTab(Tab.Groups); }, NLUi.Bad);
                     break;
@@ -537,6 +597,13 @@ namespace NihongoLife.UI
                     string code = _hub.PeerSafetyCode(c.PeerId);
                     _paneInfo.text = $"<color=#5BD98A>Mã hóa đầu-cuối</color> · Mã an toàn của bạn {_hub.SafetyCode} · của {c.Title} {(code ?? "(chưa trao đổi)")}";
                     string peer = c.PeerId, peerName = c.Title;
+                    string me = _hub.LocalId;
+                    VoiceButton(NihongoLife.Learning.VoiceChatService.Mode.Call, _hub.HasIncomingCall(peer) ? "Nghe" : "Gọi thoại", v =>
+                    {
+                        if (!_hub.HasIncomingCall(peer)) _hub.NotifyCall(peer);
+                        _hub.ClearIncomingCall(peer);
+                        v.Call(me, peer);
+                    });
                     if (!_hub.IsFriend(peer) && _hub.CanUseFriends) SmallButton(_paneActions, "Kết bạn", () => _hub.AddFriend(peer));
                     bool blocked = _hub.IsBlocked(peer);
                     SmallButton(_paneActions, blocked ? "Bỏ chặn" : "Chặn", () => { _hub.SetBlocked(peer, !blocked); _dirty = true; }, blocked ? TabOff : NLUi.Bad);
@@ -545,10 +612,19 @@ namespace NihongoLife.UI
             }
         }
 
+        /// <summary>Join / leave a voice room from the conversation header.</summary>
+        private void VoiceButton(NihongoLife.Learning.VoiceChatService.Mode mode, string label, Action<NihongoLife.Learning.VoiceChatService> join)
+        {
+            var voice = NihongoLife.Learning.VoiceChatService.Instance;
+            if (voice == null) return;
+            if (voice.Current == mode && (voice.Joined || voice.Busy)) SmallButton(_paneActions, mode == NihongoLife.Learning.VoiceChatService.Mode.Call ? "Kết thúc" : "Tắt voice", () => { voice.Leave(); _dirty = true; }, NLUi.Bad);
+            else SmallButton(_paneActions, label, () => { join(voice); _dirty = true; }, NLUi.Good);
+        }
+
         private void SmallButton(Transform parent, string label, Action onClick, Color? color = null)
         {
             var b = NLUi.Button(parent, label, label, _font, onClick, color ?? new Color(0.22f, 0.27f, 0.33f, 1f), 15f, null, 34f);
-            NLUi.Size(b, 116f, 34f);
+            NLUi.Size(b, label.Length > 10 ? 150f : 116f, 34f, 0f);
         }
 
         private void RefreshMessages()
@@ -619,7 +695,7 @@ namespace NihongoLife.UI
                 string id = _friendIdInput.text.Trim();
                 if (id.Length > 0) { _hub.AddFriend(id); _friendIdInput.text = string.Empty; }
             }, NLUi.Gold, 15f, new Color(0.1f, 0.08f, 0.04f), 40f);
-            NLUi.Size(send, 140f, 40f);
+            NLUi.Size(send, 150f, 40f, 0f);
             NLUi.Divider(_friendsPane);
             _friendsContent = Scroll(_friendsPane, "FriendList", 400f, out _);
         }
@@ -694,7 +770,7 @@ namespace NihongoLife.UI
         private void RebuildCard()
         {
             Clear(_cardBody);
-            if (_hub == null) GameServices.TryGet(out _hub);
+            EnsureHub();
             string id = _cardPlayerId, name = _cardPlayerName;
             NLUi.Label(_cardBody, "Name", name, 26f, NLUi.Gold, _font, FontStyles.Bold);
             var online = GameServices.TryGet(out IOnlineWorldService w) ? w as SupabaseOnlineWorldService : null;

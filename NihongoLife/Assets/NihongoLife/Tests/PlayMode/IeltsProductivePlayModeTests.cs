@@ -224,7 +224,9 @@ namespace NihongoLife.Tests
             var recorder = new MicRecorder();
             Assert.IsTrue(recorder.Start(3), recorder.LastError);
             float peakLevel = 0f;
-            for (float t = 0f; t < 2f; t += Time.unscaledDeltaTime) { peakLevel = Mathf.Max(peakLevel, recorder.Level); yield return null; }
+            // Wall-clock time: one long frame after loading the city used to end this loop almost at once.
+            float until = Time.realtimeSinceStartup + 2.2f;
+            while (Time.realtimeSinceStartup < until) { peakLevel = Mathf.Max(peakLevel, recorder.Level); yield return null; }
             var samples = recorder.Stop(out int rate);
             Assert.Greater(samples.Length, rate, "About two seconds captured");
             float peak = samples.Max(Mathf.Abs);

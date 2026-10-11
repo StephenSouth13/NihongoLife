@@ -925,7 +925,8 @@ namespace NihongoLife.UI
                 ? Text($"{modeLabel}: {onlineCount} người chơi  |  Enter: chat", $"{modeLabel}: {onlineCount} player(s)  |  Enter: chat", $"{modeLabel}: {onlineCount}人  |  Enter: チャット")
                 : Text($"{modeLabel}: chưa kết nối", $"{modeLabel}: offline", $"{modeLabel}: オフライン");
             onlineStatusText.text = status;
-            onlineStatusText.gameObject.SetActive(isRealOnline && onlineCount > 1);
+            // The chat window (Enter) shows who is online and where; this corner line overlapped the city signs.
+            onlineStatusText.gameObject.SetActive(false);
         }
 
         private void RefreshChatHistory()

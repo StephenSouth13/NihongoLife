@@ -870,3 +870,82 @@ Claude nhận tiếp phần Codex đang làm dở: báo cáo, trailer, demo và 
 - **`ExamMailboxUI`:** Esc đóng (`UiModalStack`); khung chi tiết cuộn được thay vì cắt bằng "…"; nút "Xem bài đầy đủ" mở `IeltsTestUI.OpenSaved(record)` (điểm 4 tiêu chí, Coach, viết lại, ghi âm).
 - **Test:** `SpeakingLoungeCameraPlayModeTests` (webcam thật qua Agora: ảnh 960×540 có nội dung thật; bật/tắt; hộp thư → bài đầy đủ; Esc). Ảnh có webcam chỉ lưu ở `LocalContent/_captures` (git bỏ qua).
 - **Chưa kiểm được:** cuộc gọi hai người thật (học viên ↔ giáo viên) qua Supabase function `agora-classroom` — cần function đã deploy và hai tài khoản.
+
+## Cập nhật (2026-10-11 khuya, Claude) — Nhu cầu & thời tiết, cầu vồng; online thật: shard, chat nhóm/riêng mã hóa, bạn bè, chọn mục tiêu F, voice
+- **Nhu cầu & thời tiết (HUD):**
+  - Mưa êm hơn (âm lượng trong nhà 0,035, ngoài trời 0,11; lọc thấp hai tầng).
+  - Cầu vồng 60% sau mưa ban ngày, kéo dài 1 giờ trong game, cung kép 42°/51° đối diện mặt trời (`NL_SkyDayNight`, `WeatherCycle.Rainbow`).
+  - Ảnh hưởng thời tiết lên chỉ số:
+    - Ướt mưa → `Wetness`; từ 0,7 trở lên là cảm lạnh: mất máu từ từ, mau buồn ngủ ×1,6.
+    - Nắng gắt (11–15 giờ, trời quang, ngoài trời): khát ×1,6.
+    - Đứng trong mưa: hồi thể lực ×0,5.
+  - Cảnh báo trước khi phạt (`StatusDock`):
+    - Vòng chỉ số chuyển hổ phách khi dưới 30%; đỏ nhấp nháy và đập dưới 15%.
+    - Chip ghi rõ hình phạt sắp đến; viền màn hình đỏ khi máu thấp, tối dần khi sắp ngủ gục.
+  - Hình phạt (`StatusConsequences`):
+    - Đói 0: đi chậm ×0,8. Khát 0: không chạy được.
+    - Máu 0: ngất, +3 giờ, phí phòng khám min(800, 10% tiền).
+    - Buồn ngủ 100: chậm ×0,7; sau 40 giây gục ngủ +6 giờ.
+- **Realtime (`Core/SupabaseRealtimeClient`) viết lại.** Bản cũ không hoạt động: không đọc được khóa `"event"`, gửi song song trên một socket, tách JSON bằng đếm ngoặc.
+  - Nhiều kênh trên một socket; `MiniJson` là bộ đọc/ghi JSON chuẩn.
+  - Đọc/ghi socket bằng thread riêng. ClientWebSocket của Mono chặn thread, làm nghẽn thread pool và các join bị trả lời muộn hàng chục giây.
+  - Hàng đợi gửi xả hết mỗi lần thức. Lỗi cũ: heartbeat chen trước làm `phx_join` kẹt trong hàng đợi.
+  - Tự kết nối lại 2→30 giây và join lại mọi kênh; bỏ qua `phx_close` của lần join cũ.
+  - `PostBroadcast` gửi qua REST, không cần join kênh.
+  - API cũ `Connect/Broadcast/TrackPresence` vẫn giữ. `CoopSessionService` nay dùng kênh riêng `coop:{sessionId}`.
+- **Thế giới online (`SupabaseOnlineWorldService`):**
+  - `nl:lobby`: presence cho biết ai online, ở đâu, shard nào.
+  - Shard `w:{scene}:{n}`, tối đa 40 người. Thành viên cùng nhóm được xếp chung shard. Phòng ngủ là phòng riêng.
+  - Vị trí: mét × 100, góc theo độ, có số thứ tự `s` để bỏ gói đến muộn.
+  - Tần suất gửi vị trí: 6 Hz khi ít người, giảm dần còn 2 Hz khi shard đông. Server báo "Too many messages" thì gửi chậm ×2 trong 20 giây. Đứng yên: 3 giây/lần.
+  - Chat khu vực không lưu DB; thẻ rich-text bị vô hiệu.
+  - `RemotePlayerManager` nay chạy thật (trước đây không được tạo ở đâu): model nhân vật người kia chọn, bảng tên, nội suy trễ thích ứng 0,15–0,9 giây, chỉ vẽ 24 người gần nhất.
+- **`SocialHub` + `UI/SocialChatWindow`** (Enter: chat, U: bạn bè):
+  - Các tab Khu vực / Cộng đồng (`nl:community`) / Nhóm (`grp:{id}`, tối đa 20, mời qua hộp thư) / Riêng tư / Bạn bè.
+  - Tất cả tạm thời, không lưu server.
+  - Tin riêng: mã hóa đầu-cuối.
+    - RSA-2048 + AES-256-CBC + HMAC-SHA256, có chữ ký; gửi tới `inbox:{id}` qua REST.
+    - Khóa ghim lần đầu (TOFU) và có "mã an toàn" để hai bên so.
+    - Chỉ gửi được khi cả hai online.
+    - Sinh khóa mất khoảng 10 giây trên Mono; chạy nền lúc khởi động, một lần cho mỗi máy.
+  - Bạn bè = bảng `friendships` + lobby, hiện online/offline và nơi đang ở. Cần đăng nhập; khách vẫn chat được.
+  - Chặn người chơi lưu trong PlayerPrefs.
+  - Thẻ người chơi (F hoặc bấm tên): Nhắn riêng / Kết bạn / Mời nhóm / Chặn.
+  - Nút báo tin mới và lời mời ở góc trái HUD. Bảng chat cũ của HUD và dòng "Online: N" bị ẩn.
+- **Chọn mục tiêu F trong đám đông** (`InteractionDetector` + `InteractionHighlight`):
+  - Chấm điểm theo khoảng cách, hướng nhân vật và tâm màn hình. Mục tiêu hiện tại được ưu tiên để không nhảy qua lại.
+  - Q chuyển mục tiêu tiếp theo; bấm chuột vào người để chọn (giữ 6 giây).
+  - Vòng vàng dưới chân và nhãn "▼ [F] Tên · Q đổi i/n".
+  - Luôn quét cả layer Default. Trước đây có NPC ở gần là người chơi khác bị bỏ qua.
+- **Voice (`Learning/VoiceChatService`, Agora):**
+  - Voice khu vực theo shard, âm thanh không gian: nghe trong 18 m, tối đa 6 giọng gần nhất.
+  - Voice nhóm; gọi riêng (chuông qua hộp thư, nút Nghe).
+  - Giữ T để nói: mặc định ở vai audience, chỉ phát khi giữ phím.
+  - Khử ồn AI (AINS balanced), profile giọng nói phòng chat.
+  - Tự nhường engine khi mở phòng Speaking.
+  - Token lấy từ Edge Function mới `supabase/functions/agora-voice` (chỉ chấp nhận phòng `nlv_/nlg_/nld_`; không sửa `agora-classroom`).
+- **Phím mới:** Q đổi mục tiêu, U bạn bè & tin nhắn, T giữ để nói. Đã có trong Cài đặt › Phím.
+- **Test:**
+  - `OnlineSocialPlayModeTests` (Supabase thật, 4/4 qua):
+    - realtime: presence, 31 tin, chữ có `{}` `"` tiếng Nhật/emoji;
+    - hai người cùng shard: vị trí chính xác đến cm, model, chat khu vực;
+    - cộng đồng, nhóm, tin riêng: kênh nghe trộm chỉ thấy bản mã; chặn; bạn bè online → offline;
+    - trong thành phố: avatar thật, nhận mục tiêu F, Q đổi, thẻ người chơi, cửa sổ chat.
+  - Ảnh: `Bao_Cao/online-regression`.
+  - `NeedsWeatherPlayModeTests` 3/3; ảnh `Bao_Cao/hud-regression/needs_*`, `environment-regression/rainbow_15h.jpg`.
+- **Load test** (`Tools/online_load_test.py`, cùng giao thức với game; gói Supabase hiện tại):
+
+  | Lần đo | Người/shard | Tin đến nơi | Trễ p50 / p95 | Ghi chú |
+  |---|---|---|---|---|
+  | Trước khi chỉnh tần suất | 20 | 97,8% | — | Đã bị báo "Too many messages per second" |
+  | Trước khi chỉnh tần suất | 40 | 92% | — | |
+  | Sau khi chỉnh | 20 | 97,9% | 96 / 407 ms | Không còn lỗi giới hạn |
+  | Sau khi chỉnh | 40 | 96,8% | 131 / 457 ms | Không còn lỗi giới hạn |
+  | Sau khi chỉnh | 60 kết nối từ cùng một máy | — | — | 39/60 bị từ chối kết nối |
+
+  Tổng cộng dùng khoảng 80 nghìn realtime message.
+- **Cần làm tiếp:**
+  - Deploy voice: `supabase functions deploy agora-voice` (dùng chung secrets AGORA_APP_ID / AGORA_APP_CERTIFICATE). Voice chưa được thử với hai người thật.
+  - Muốn 1000+ người cùng lúc phải nâng gói Supabase (gói hiện tại vượt giới hạn ở khoảng 20 người di chuyển, 6 Hz, cùng một shard; giới hạn kết nối khoảng 200) hoặc chuyển phần đồng bộ vị trí sang game server riêng (Nakama/Colyseus/Photon). Kiến trúc shard và chat hiện tại giữ được.
+  - RLS bảng `friendships` chưa kiểm được bằng tài khoản thật (test bạn bè dùng `DebugSetFriends` + lobby thật).
+  - Tin cộng đồng/nhóm/khu vực chưa có chữ ký nên có thể giả tên người gửi. Tin riêng có chữ ký.

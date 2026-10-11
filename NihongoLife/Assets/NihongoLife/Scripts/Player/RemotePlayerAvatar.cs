@@ -14,7 +14,10 @@ namespace NihongoLife.Player
     /// </summary>
     public class RemotePlayerAvatar : MonoBehaviour, IInteractable
     {
+        /// <summary>Default delay; the avatar widens it when poses arrive less often (busy shard, rate limit).</summary>
         public const float InterpolationDelay = 0.25f;
+        private float _delay = InterpolationDelay;
+        private float _avgGap = 1f / 6f;
 
         public string PlayerId { get; private set; }
         public string DisplayName { get; private set; }
@@ -45,6 +48,7 @@ namespace NihongoLife.Player
             trigger.height = 1.7f;
             trigger.radius = 0.35f;
             CreateNameTag();
+            ApplyCharacter(snapshot.characterId); // even before presence says which one: default model, swapped later
             UpdateFromSnapshot(snapshot);
             transform.SetPositionAndRotation(snapshot.position, snapshot.rotation);
             _lastPosition = transform.position;
@@ -54,7 +58,7 @@ namespace NihongoLife.Player
         {
             DisplayName = string.IsNullOrWhiteSpace(snapshot.displayName) ? "Learner" : snapshot.displayName;
             SceneName = snapshot.sceneName;
-            if (snapshot.characterId != CharacterId) ApplyCharacter(snapshot.characterId);
+            if (!string.IsNullOrEmpty(snapshot.characterId) && snapshot.characterId != CharacterId) ApplyCharacter(snapshot.characterId);
             if (_nameTag != null) _nameTag.text = NameLabel();
 
             float now = Time.unscaledTime;
@@ -70,6 +74,12 @@ namespace NihongoLife.Player
                     return;
                 }
                 if ((s.p - last.p).sqrMagnitude > 64f) _samples.Clear(); // teleport (door, respawn): snap
+            }
+            if (_samples.Count > 0 && s.move != 0)
+            {
+                float gap = now - _samples[_samples.Count - 1].t;
+                if (gap < 2f) _avgGap = Mathf.Lerp(_avgGap, gap, 0.2f);
+                _delay = Mathf.Clamp(_avgGap * 1.6f, 0.15f, 0.9f);
             }
             _samples.Add(s);
             if (_samples.Count > 20) _samples.RemoveAt(0);
@@ -128,7 +138,7 @@ namespace NihongoLife.Player
         {
             if (_samples.Count > 0)
             {
-                float renderTime = Time.unscaledTime - InterpolationDelay;
+                float renderTime = Time.unscaledTime - _delay;
                 Vector3 pos; float yaw;
                 if (_samples.Count == 1 || renderTime <= _samples[0].t)
                 {
@@ -192,6 +202,8 @@ namespace NihongoLife.Player
             go.transform.localPosition = new Vector3(0f, 2.0f, 0f);
             go.transform.localScale = Vector3.one * 0.07f;
             _nameTag = go.AddComponent<TextMeshPro>();
+            var font = NihongoLife.UI.NLUi.ResolveFont(); // names are Vietnamese / Japanese
+            if (font != null) _nameTag.font = font;
             _nameTag.fontSize = 34f;
             _nameTag.alignment = TextAlignmentOptions.Center;
             _nameTag.color = NameTagColor;
@@ -204,7 +216,7 @@ namespace NihongoLife.Player
         // ──────────────────────── IInteractable ────────────────────────
 
         public string GetPromptJa() => $"{DisplayName} と交流する";
-        public string GetpromptEn() => $"Gặp {DisplayName} — nhắn tin, kết bạn, mời nhóm";
+        public string GetpromptEn() => "Gặp người chơi này — nhắn tin, kết bạn, mời nhóm";
         public Transform GetTransform() => transform;
 
         public void Interact(GameObject player)
