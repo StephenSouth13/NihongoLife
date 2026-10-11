@@ -29,6 +29,11 @@ namespace NihongoLife.Core
         private SupabaseClient _supabaseClient;
         private string _channelTopic;
         private float _heartbeatInterval = 30f;
+        // Reconnection after an unexpected drop (server restart, Wi-Fi change): 2 s, 4 s, 8 s … at most 30 s.
+        private bool _wantConnected;
+        private float _reconnectAt = -1f;
+        private float _reconnectDelay = 2f;
+        public int ReconnectAttempts { get; private set; }
         private float _nextHeartbeat;
         private int _messageRef = 0;
         private bool _joined = false;
@@ -54,11 +59,15 @@ namespace NihongoLife.Core
             }
 
             _channelTopic = channelTopic;
+            _wantConnected = true;
+            _reconnectDelay = 2f;
             StartCoroutine(ConnectCoroutine());
         }
 
         public void Disconnect()
         {
+            _wantConnected = false;
+            _reconnectAt = -1f;
             _joined = false;
             _cancellation?.Cancel();
 
@@ -84,7 +93,7 @@ namespace NihongoLife.Core
         {
             if (!IsConnected || !_joined) return;
 
-            string message = BuildMessage("realtime:broadcast", "broadcast", $"{{\"type\":\"broadcast\",\"event\":\"{eventType}\",\"payload\":{payloadJson}}}");
+            string message = BuildMessage($"realtime:{_channelTopic}", "broadcast", $"{{\"type\":\"broadcast\",\"event\":\"{eventType}\",\"payload\":{payloadJson}}}");
             SendSocketMessage(message);
         }
 
@@ -115,11 +124,14 @@ namespace NihongoLife.Core
                 yield return null;
             }
 
-            if (connectTask.IsFaulted || _socket.State != WebSocketState.Open)
+            if (connectTask.IsCanceled || _cancellation.IsCancellationRequested || !_wantConnected) yield break; // closed on purpose (scene change, quit)
+            if (connectTask.IsFaulted || _socket == null || _socket.State != WebSocketState.Open)
             {
-                Debug.LogError($"[SupabaseRealtime] Connection failed: {connectTask.Exception?.GetBaseException()?.Message}");
+                Debug.LogWarning($"[SupabaseRealtime] Connection failed: {connectTask.Exception?.GetBaseException()?.Message} — retrying in {_reconnectDelay:0} s");
+                ScheduleReconnect();
                 yield break;
             }
+            _reconnectDelay = 2f;
 
             Debug.Log("[SupabaseRealtime] WebSocket connected.");
             OnConnected?.Invoke();
@@ -167,12 +179,34 @@ namespace NihongoLife.Core
                 }
             }
 
+            // The socket dropped without us asking: rejoin with backoff.
+            if (_wantConnected && _reconnectAt < 0f && _joined && (_socket == null || _socket.State != WebSocketState.Open))
+            {
+                _joined = false;
+                OnDisconnected?.Invoke();
+                Debug.LogWarning("[SupabaseRealtime] Connection lost — reconnecting.");
+                ScheduleReconnect();
+            }
+            if (_reconnectAt > 0f && Time.unscaledTime >= _reconnectAt)
+            {
+                _reconnectAt = -1f;
+                ReconnectAttempts++;
+                StartCoroutine(ConnectCoroutine());
+            }
+
             // Heartbeat
             if (IsConnected && Time.unscaledTime >= _nextHeartbeat)
             {
                 _nextHeartbeat = Time.unscaledTime + _heartbeatInterval;
                 SendHeartbeat();
             }
+        }
+
+        private void ScheduleReconnect()
+        {
+            if (!_wantConnected) return;
+            _reconnectAt = Time.unscaledTime + _reconnectDelay;
+            _reconnectDelay = Mathf.Min(30f, _reconnectDelay * 2f);
         }
 
         private void OnDestroy()

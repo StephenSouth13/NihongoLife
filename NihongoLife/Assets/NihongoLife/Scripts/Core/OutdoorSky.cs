@@ -53,6 +53,7 @@ namespace NihongoLife.Core
         private static readonly int EmissionId = Shader.PropertyToID("_EmissionColor");
         private static readonly int OvercastId = Shader.PropertyToID("_Overcast");
         private static readonly int RotationId = Shader.PropertyToID("_Rotation");
+        private static readonly int RainbowId = Shader.PropertyToID("_Rainbow");
         private float _cloudRotation;
         private ParticleSystem _rainFx;
         private AudioSource _rainAudio;
@@ -146,7 +147,8 @@ namespace NihongoLife.Core
             bool inside = NihongoLife.Cameras.StoreCameraZone.Contains(cam.transform.position);
             var emission = _rainFx.emission;
             emission.rateOverTime = inside ? 0f : 1600f * Rain;
-            _rainAudio.volume = Rain * (inside ? 0.12f : 0.32f);
+            float swell = 0.85f + 0.15f * Mathf.PerlinNoise(Time.time * 0.23f, 0.5f);
+            _rainAudio.volume = Rain * (inside ? 0.035f : 0.11f) * swell;
         }
 
         private void BuildRain()
@@ -185,12 +187,14 @@ namespace NihongoLife.Core
             const int rate = 22050;
             var data = new float[rate * 2];
             var random = new System.Random(7);
-            float low = 0f;
+            float low = 0f, lower = 0f;
             for (int i = 0; i < data.Length; i++)
             {
                 float white = (float)(random.NextDouble() * 2.0 - 1.0);
-                low += 0.35f * (white - low);
-                data[i] = (white * 0.35f + low * 0.65f) * 0.6f;
+                // Two low-pass stages: the patter of drops without the harsh white-noise hiss.
+                low += 0.12f * (white - low);
+                lower += 0.05f * (low - lower);
+                data[i] = (low * 0.55f + lower * 0.9f) * 0.9f;
             }
             for (int i = 0; i < 2000; i++) { float t = i / 2000f; data[i] *= t; data[data.Length - 1 - i] *= t; }
             var clip = AudioClip.Create("RainNoise", data.Length, 1, rate, false);
@@ -254,6 +258,7 @@ namespace NihongoLife.Core
                 _sky.SetFloat(HorizonGlowId, 0.75f * glow);
                 _sky.SetFloat(ExposureId, Mathf.Lerp(0.9f, 1.05f, Daylight) * Mathf.Lerp(1f, 0.85f, overcast));
                 _sky.SetFloat(OvercastId, overcast);
+                _sky.SetFloat(RainbowId, weather != null ? weather.Rainbow * Mathf.Clamp01(Daylight * 1.4f) * (1f - 0.7f * overcast) : 0f);
                 Vector3 toSun = sun != null ? -(Quaternion.Euler(angle, sunYaw, 0f) * Vector3.forward) : Vector3.up;
                 bool moon = elevation < 0f;
                 _sky.SetVector(SunDirId, moon ? -toSun : toSun);

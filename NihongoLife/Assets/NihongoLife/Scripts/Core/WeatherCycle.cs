@@ -39,6 +39,19 @@ namespace NihongoLife.Core
         public float Overcast { get; private set; }
         /// <summary>0 dry … 1 heavy rain.</summary>
         public float Rain { get; private set; }
+        /// <summary>0 … 1: a rainbow after a daytime shower (opposite the sun), fading in and out.</summary>
+        public float Rainbow { get; private set; }
+        private float _rainbowUntilHour = -1f;
+        private bool _rainbowForced;
+        [SerializeField, Range(0f, 1f)] private float rainbowChance = 0.6f;
+
+        /// <summary>Tests/debug: show (or hide) a rainbow now, for one in-game hour.</summary>
+        public void ForceRainbow(bool on)
+        {
+            _rainbowForced = on;
+            _rainbowUntilHour = on && _cycle != null ? _cycle.Hour + 1f : -1f;
+            if (!on) Rainbow = 0f;
+        }
         public bool IsRaining => Rain > 0.15f;
         public Kind Today => _forced ?? _dayKind;
         public int HiddenNpcCount => _hiddenNpcs.Count;
@@ -71,13 +84,26 @@ namespace NihongoLife.Core
                 _nextNpcCheck = Time.unscaledTime + 1f;
                 UpdateNpcs();
             }
+            UpdateRainbow();
             if (IsRaining != _wasRaining)
             {
+                // A shower that ends in daylight often leaves a rainbow behind.
+                float hourNow = _cycle != null ? _cycle.Hour : 12f;
+                if (!IsRaining && hourNow >= 8f && hourNow <= 17f && Random.value < rainbowChance) _rainbowUntilHour = hourNow + 1f;
                 _wasRaining = IsRaining;
                 NihongoLife.UI.HudFeed.Post(IsRaining
                     ? "Trời bắt đầu mưa — mọi người ngoài phố đã vào trú. Đứng ngoài mưa bạn hồi thể lực chậm hơn."
                     : "Trời tạnh mưa.", IsRaining ? NihongoLife.UI.HudFeed.Kind.Warning : NihongoLife.UI.HudFeed.Kind.Info, 4f, "weather");
             }
+        }
+
+        private void UpdateRainbow()
+        {
+            float hour = _cycle != null ? _cycle.Hour : 12f;
+            bool active = _rainbowUntilHour > 0f && hour < _rainbowUntilHour && hour >= 7.5f && hour <= 18f && Rain < 0.35f;
+            if (!active && !_rainbowForced) _rainbowUntilHour = -1f;
+            float target = active || (_rainbowForced && _rainbowUntilHour > 0f) ? 1f : 0f;
+            Rainbow = Mathf.MoveTowards(Rainbow, target, Time.deltaTime / 6f);
         }
 
         private void Evaluate()

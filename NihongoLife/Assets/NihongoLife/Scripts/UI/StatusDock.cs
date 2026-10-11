@@ -72,6 +72,12 @@ namespace NihongoLife.UI
         private readonly Dictionary<Image, float> _fillTargets = new();
         private TMP_FontAsset _font;
         private CanvasGroup _dockGroup;
+        private RectTransform _weatherChip;
+        private TextMeshProUGUI _weatherText;
+        /// <summary>The need currently shown in the warning chip (tests).</summary>
+        public string CriticalNeed { get; private set; }
+        public string WarningText => _warningText != null && _warning.gameObject.activeSelf ? _warningText.text : null;
+        public string WeatherEffectText => _weatherChip != null && _weatherChip.gameObject.activeSelf ? _weatherText.text : null;
         private TextMeshProUGUI _name, _level, _wallet, _levelBadge;
         private Image _expFill;
         private readonly Dictionary<string, Ring> _rings = new();
@@ -109,6 +115,7 @@ namespace NihongoLife.UI
             dock.SetParent(root, false);
             NLUi.Stretch(dock);
             _dockGroup = dock.GetComponent<CanvasGroup>();
+            BuildVignette(root);
 
             BuildStatusWidget(dock);
             BuildObjectiveChip(dock);
@@ -366,11 +373,78 @@ namespace NihongoLife.UI
             }
         }
 
+        /// <summary>Normal colour → amber under 30 % → red flashing under 15 %, flashing faster as it nears 0.</summary>
         private static Color Urgency(Color normal, float value01)
         {
             if (value01 >= 0.5f) return normal;
-            if (value01 >= 0.2f) return Color.Lerp(new Color(0.96f, 0.68f, 0.22f), normal, (value01 - 0.2f) / 0.3f);
-            return Color.Lerp(new Color(0.95f, 0.3f, 0.3f), new Color(0.6f, 0.15f, 0.15f), Mathf.PingPong(Time.unscaledTime * 2.5f, 1f));
+            if (value01 >= PlayerStatus.DangerThreshold) return Color.Lerp(new Color(0.96f, 0.68f, 0.22f), normal, Mathf.Clamp01((value01 - 0.3f) / 0.2f));
+            return Color.Lerp(new Color(1f, 0.32f, 0.3f), new Color(0.45f, 0.1f, 0.1f), Flash(value01));
+        }
+
+        private static float Flash(float value01) =>
+            Mathf.PingPong(Time.unscaledTime * Mathf.Lerp(7f, 2.5f, value01 / PlayerStatus.DangerThreshold), 1f);
+
+        /// <summary>Screen-edge glow: red pulse when health is in danger, dark edges while nodding off.</summary>
+        private void BuildVignette(RectTransform root)
+        {
+            const int size = 128;
+            var texture = new Texture2D(size, size, TextureFormat.RGBA32, false) { wrapMode = TextureWrapMode.Clamp, name = "HudVignette" };
+            for (int y = 0; y < size; y++)
+                for (int x = 0; x < size; x++)
+                {
+                    float dx = (x + 0.5f) / size * 2f - 1f, dy = (y + 0.5f) / size * 2f - 1f;
+                    float d = Mathf.Max(Mathf.Abs(dx), Mathf.Abs(dy)) * 0.55f + new Vector2(dx, dy).magnitude * 0.45f;
+                    texture.SetPixel(x, y, new Color(1f, 1f, 1f, Mathf.SmoothStep(0f, 1f, Mathf.InverseLerp(0.62f, 1.08f, d))));
+                }
+            texture.Apply();
+            var go = new GameObject("DangerVignette", typeof(RectTransform), typeof(RawImage));
+            go.transform.SetParent(root, false);
+            go.transform.SetAsFirstSibling();
+            NLUi.Stretch((RectTransform)go.transform);
+            var image = go.GetComponent<RawImage>();
+            image.texture = texture;
+            image.raycastTarget = false;
+            image.color = new Color(1f, 0f, 0f, 0f);
+            _vignetteRaw = image;
+        }
+
+        private RawImage _vignetteRaw;
+
+        private void UpdateVignette(PlayerStatus status, bool hide)
+        {
+            if (_vignetteRaw == null) return;
+            float health = status.CurrentHealth / Mathf.Max(1f, status.MaxHealth);
+            Color target = new Color(1f, 0f, 0f, 0f);
+            if (!hide && health < PlayerStatus.DangerThreshold)
+                target = new Color(0.85f, 0.05f, 0.05f, Mathf.Lerp(0.18f, 0.55f, 1f - health / PlayerStatus.DangerThreshold) * (0.55f + 0.45f * Flash(health)));
+            else if (!hide && status.Sleepiness >= 100f)
+                target = new Color(0.02f, 0.02f, 0.05f, Mathf.Lerp(0.35f, 0.85f, status.NoddingOffSeconds / PlayerStatus.FallAsleepAfterSeconds) * (0.75f + 0.25f * Mathf.PingPong(Time.unscaledTime * 0.7f, 1f)));
+            _vignetteRaw.color = Color.Lerp(_vignetteRaw.color, target, Time.unscaledDeltaTime * 8f);
+        }
+
+        public float DangerVignetteAlpha => _vignetteRaw != null ? _vignetteRaw.color.a : 0f;
+
+        private void UpdateWeatherChip(PlayerStatus status, bool hide)
+        {
+            if (_weatherChip == null)
+            {
+                _weatherChip = NLUi.Panel(_warning.parent, "WeatherEffect", new Color(0.12f, 0.2f, 0.32f, 0.92f), new RectOffset(14, 14, 6, 6), 0f, vertical: false);
+                NLUi.Anchor(_weatherChip, Vector2.zero, Vector2.zero, Vector2.zero);
+                _weatherChip.pivot = Vector2.zero;
+                NLUi.FitContent(_weatherChip, width: true, height: true);
+                _weatherText = NLUi.Label(_weatherChip, "Text", "", 15f, Color.white, _font, FontStyles.Bold);
+                _weatherText.textWrappingMode = TextWrappingModes.NoWrap;
+            }
+            string text = null;
+            if (status.HasCold) text = "雨  Bị cảm lạnh vì ướt mưa — mất máu từ từ, mau buồn ngủ. Vào nhà cho khô.";
+            else if (NihongoLife.Core.WeatherCycle.PlayerInRain) text = $"雨  Đang ướt mưa ({status.Wetness * 100f:0}%) — hồi thể lực chậm một nửa";
+            else if (status.InHotSun) text = "晴  Nắng gắt buổi trưa — khát nhanh hơn, nhớ uống nước";
+            bool show = text != null && !hide;
+            if (_weatherChip.gameObject.activeSelf != show) _weatherChip.gameObject.SetActive(show);
+            if (!show) return;
+            _weatherText.text = text;
+            float y = 24f + (StatusWidget != null ? StatusWidget.rect.height : 160f) + 10f + (_warning.gameObject.activeSelf ? _warning.rect.height + 8f : 0f);
+            _weatherChip.anchoredPosition = new Vector2(24f, y);
         }
 
         // ─────────── Character window (Tab) ───────────
@@ -441,24 +515,47 @@ namespace NihongoLife.UI
             var status = PlayerStatus.Instance;
             if (status == null) return;
             string critical = null;
+            float criticalValue = 1f;
             foreach (var (key, _, vi, color) in Needs)
             {
                 float value = Value01(status, key);
-                if (_rings.TryGetValue(key, out Ring ring)) { ring.Fill.color = Urgency(color, value); ring.Icon.color = ring.Fill.color; ring.Value.color = ring.Fill.color; }
+                if (_rings.TryGetValue(key, out Ring ring))
+                {
+                    ring.Fill.color = Urgency(color, value); ring.Icon.color = ring.Fill.color; ring.Value.color = ring.Fill.color;
+                    // In danger the whole ring throbs, not only its colour.
+                    float pulse = value < PlayerStatus.DangerThreshold ? 1f + 0.09f * Flash(value) : 1f;
+                    ring.Fill.transform.parent.localScale = Vector3.one * pulse;
+                }
                 if (_characterBars.TryGetValue(key, out Bar bar)) bar.Fill.color = Urgency(color, value);
-                if (value < 0.2f && critical == null) critical = key;
+                // The most urgent need wins the chip (health first when equal).
+                if (value < 0.3f && value < criticalValue) { critical = key; criticalValue = value; }
             }
-            if (status.IsExhausted) critical ??= "exhausted";
+            if (status.IsExhausted && critical == null) critical = "exhausted";
+            CriticalNeed = critical;
             _warning.gameObject.SetActive(critical != null && !hide);
             if (StatusWidget != null) _warning.anchoredPosition = new Vector2(24f, 24f + StatusWidget.rect.height + 10f);
-            if (critical != null) _warningText.text = critical switch
+            if (critical != null)
             {
-                "health" => "体  Sức khỏe yếu — nghỉ ngơi và ăn uống",
-                "energy" or "exhausted" => "元  Hết sức — đi chậm lại hoặc nghỉ",
-                "hunger" => "食  Đói — mua đồ ăn ở konbini",
-                "thirst" => "水  Khát — uống nước",
-                _ => "眠  Buồn ngủ — về phòng ngủ một giấc",
-            };
+                bool zero = criticalValue <= 0.001f;
+                _warningText.text = (critical, zero) switch
+                {
+                    ("health", _) => criticalValue < PlayerStatus.DangerThreshold ? $"体  SẮP NGẤT ({criticalValue * 100f:0}%) — ăn, uống hoặc ngủ ngay! Ngất sẽ mất 3 giờ và tiền viện phí" : "体  Sức khỏe yếu — nghỉ ngơi và ăn uống",
+                    ("hunger", true) => "食  ĐANG ĐÓI LẢ — mất máu dần và đi chậm 20%. Mua đồ ăn ở konbini!",
+                    ("hunger", false) => $"食  Đói ({criticalValue * 100f:0}%) — khi về 0 sẽ mất máu và đi chậm",
+                    ("thirst", true) => "水  ĐANG KHÁT KHÔ — mất máu dần, không chạy được. Uống nước ngay!",
+                    ("thirst", false) => $"水  Khát ({criticalValue * 100f:0}%) — khi về 0 sẽ mất máu, không chạy được",
+                    ("rest", true) => $"眠  GỤC NGÃ SAU {Mathf.Max(0f, PlayerStatus.FallAsleepAfterSeconds - status.NoddingOffSeconds):0}s — về phòng ngủ ngay!",
+                    ("rest", false) => $"眠  Buồn ngủ (tỉnh táo {criticalValue * 100f:0}%) — khi về 0 sẽ đi chậm rồi ngủ gục ngoài đường",
+                    _ => "元  Hết sức — đi chậm lại hoặc nghỉ một chút",
+                };
+                // The chip flashes with the danger, faster as the value nears 0.
+                var chipImage = _warning.GetComponent<Image>();
+                if (chipImage != null) chipImage.color = criticalValue < PlayerStatus.DangerThreshold
+                    ? Color.Lerp(new Color(0.75f, 0.12f, 0.1f, 0.97f), new Color(0.35f, 0.05f, 0.05f, 0.97f), Flash(criticalValue))
+                    : new Color(0.55f, 0.32f, 0.08f, 0.95f);
+            }
+            UpdateVignette(status, hide);
+            UpdateWeatherChip(status, hide);
         }
 
         private static float Value01(PlayerStatus status, string key) => key switch

@@ -45,7 +45,26 @@ namespace NihongoLife.Player
 
         /// <summary>True from the moment energy hits 0 until it has recovered to <c>sprintAgainAtEnergy</c>.</summary>
         public bool IsExhausted { get; private set; }
-        public bool CanSprint => !IsExhausted && CurrentEnergy > 0f;
+        public bool CanSprint => !IsExhausted && CurrentEnergy > 0f && Thirst > 0f;
+
+        // ─────────── Penalties and weather (read by PlayerController, StatusDock, StatusConsequences) ───────────
+
+        /// <summary>Below this share a need flashes red on the HUD and the warning says what is about to happen.</summary>
+        public const float DangerThreshold = 0.15f;
+        /// <summary>0 dry … 1 soaked: rises in the rain outdoors, dries under a roof.</summary>
+        public float Wetness { get; private set; }
+        /// <summary>Soaked for a while: a cold slowly costs health and makes you sleepy.</summary>
+        public bool HasCold => Wetness >= 0.7f;
+        /// <summary>Clear midday sun outdoors: thirst drains faster.</summary>
+        public bool InHotSun { get; private set; }
+        /// <summary>Seconds spent at 100 % sleepiness (passing out after <see cref="FallAsleepAfterSeconds"/>).</summary>
+        public float NoddingOffSeconds { get; private set; }
+        public const float FallAsleepAfterSeconds = 40f;
+        /// <summary>Walking speed factor from penalties: hunger at 0 (×0.8), falling asleep (×0.7).</summary>
+        public float MoveSpeedMultiplier => (Hunger <= 0f ? 0.8f : 1f) * (Sleepiness >= 100f ? 0.7f : 1f);
+        /// <summary>Raised when health reaches 0 (StatusConsequences plays the faint and the clinic).</summary>
+        public event Action OnCollapsed;
+        private bool _collapsed;
         public bool IsSprinting => _sprinting;
 
         /// <summary>Called every frame by the PlayerController so needs follow what the body is doing.</summary>
@@ -66,6 +85,7 @@ namespace NihongoLife.Player
                 return;
             }
             Instance = this;
+            if (GetComponent<StatusConsequences>() == null) gameObject.AddComponent<StatusConsequences>();
             PlayerName = PlayableCharacterCatalog.ResolvePlayerName(null);
             LoadProgress();
         }
@@ -76,9 +96,12 @@ namespace NihongoLife.Player
             // Moving burns more food and water than standing; sprinting burns a lot more.
             float hungerRate = _sprinting ? 4f : _moving ? 1.5f : 1f;
             float thirstRate = _sprinting ? 5f : _moving ? 1.5f : 1f;
+            UpdateWeatherExposure();
+            if (InHotSun) thirstRate *= 1.6f;
             Hunger = Mathf.Max(0f, Hunger - hungerDrainPerMinute * hungerRate * Time.deltaTime / 60f);
             Thirst = Mathf.Max(0f, Thirst - thirstDrainPerMinute * thirstRate * Time.deltaTime / 60f);
-            Sleepiness = Mathf.Min(100f, Sleepiness + sleepinessGainPerMinute * (_sprinting ? 2f : 1f) * Time.deltaTime / 60f);
+            Sleepiness = Mathf.Min(100f, Sleepiness + sleepinessGainPerMinute * (_sprinting ? 2f : 1f) * (HasCold ? 1.6f : 1f) * Time.deltaTime / 60f);
+            NoddingOffSeconds = Sleepiness >= 100f ? NoddingOffSeconds + Time.deltaTime : 0f;
 
             // Energy only comes back once the player has stopped sprinting for a moment; hungry or thirsty
             // bodies recover slower.
@@ -97,6 +120,9 @@ namespace NihongoLife.Player
             {
                 CurrentHealth = Mathf.Max(0f, CurrentHealth - exhaustedHealthLossPerSecond * Time.deltaTime);
             }
+            if (HasCold) CurrentHealth = Mathf.Max(0f, CurrentHealth - 0.12f * Time.deltaTime);
+            if (CurrentHealth <= 0f && !_collapsed) { _collapsed = true; OnCollapsed?.Invoke(); }
+            else if (CurrentHealth > 0f) _collapsed = false;
 
             _statusNotifyTimer += Time.deltaTime;
             if (_statusNotifyTimer >= 0.25f)
@@ -104,6 +130,46 @@ namespace NihongoLife.Player
                 _statusNotifyTimer = 0f;
                 OnStatusChanged?.Invoke();
             }
+        }
+
+        private void UpdateWeatherExposure()
+        {
+            var weather = Core.WeatherCycle.Instance;
+            bool raining = Core.WeatherCycle.PlayerInRain;
+            // About 45 s of rain soaks you; it takes about 90 s under a roof to dry.
+            Wetness = Mathf.Clamp01(Wetness + (raining ? Time.deltaTime / 45f : -Time.deltaTime / 90f));
+            var cycle = weather != null ? weather.GetComponent<Core.DayNightCycle>() : null;
+            var outdoors = Core.OutdoorSky.Active;
+            InHotSun = weather != null && cycle != null && outdoors != null && outdoors.DrivesAmbientAndFog && weather.Overcast < 0.2f &&
+                       cycle.Hour >= 11f && cycle.Hour <= 15f && !Core.WeatherCycle.IsSheltered(transform.position);
+        }
+
+        /// <summary>After fainting: the clinic patched you up (StatusConsequences applies time and fee).</summary>
+        public void RecoverAfterCollapse()
+        {
+            CurrentHealth = Mathf.Max(CurrentHealth, maxHealth * 0.45f);
+            CurrentEnergy = Mathf.Max(CurrentEnergy, maxEnergy * 0.5f);
+            Hunger = Mathf.Max(Hunger, 35f);
+            Thirst = Mathf.Max(Thirst, 40f);
+            Sleepiness = Mathf.Min(Sleepiness, 40f);
+            Wetness = 0f;
+            NoddingOffSeconds = 0f;
+            IsExhausted = false;
+            _collapsed = false;
+            OnStatusChanged?.Invoke();
+            SaveProgress();
+        }
+
+        /// <summary>Tests and debug: put the needs in a given state.</summary>
+        public void DebugSetNeeds(float? health = null, float? energy = null, float? hunger = null, float? thirst = null, float? sleepiness = null, float? wetness = null)
+        {
+            if (health.HasValue) CurrentHealth = Mathf.Clamp(health.Value, 0f, maxHealth);
+            if (energy.HasValue) CurrentEnergy = Mathf.Clamp(energy.Value, 0f, maxEnergy);
+            if (hunger.HasValue) Hunger = Mathf.Clamp(hunger.Value, 0f, 100f);
+            if (thirst.HasValue) Thirst = Mathf.Clamp(thirst.Value, 0f, 100f);
+            if (sleepiness.HasValue) Sleepiness = Mathf.Clamp(sleepiness.Value, 0f, 100f);
+            if (wetness.HasValue) Wetness = Mathf.Clamp01(wetness.Value);
+            OnStatusChanged?.Invoke();
         }
 
         public void SetPlayerName(string playerName)

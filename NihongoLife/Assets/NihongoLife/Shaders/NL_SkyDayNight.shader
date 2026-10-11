@@ -10,6 +10,7 @@ Shader "NihongoLife/SkyDayNight"
         _CloudyTex ("Overcast panorama", 2D) = "gray" {}
         _Night ("Night blend", Range(0, 1)) = 0
         _Overcast ("Overcast blend", Range(0, 1)) = 0
+        _Rainbow ("Rainbow", Range(0, 1)) = 0
         _Tint ("Tint", Color) = (1, 1, 1, 1)
         _HorizonColor ("Horizon glow", Color) = (1, 0.55, 0.3, 1)
         _HorizonGlow ("Horizon glow strength", Range(0, 1)) = 0
@@ -34,7 +35,7 @@ Shader "NihongoLife/SkyDayNight"
             sampler2D _DayTex;
             sampler2D _NightTex;
             sampler2D _CloudyTex;
-            float _Night, _Overcast, _HorizonGlow, _Exposure, _Rotation, _SunSize;
+            float _Night, _Overcast, _Rainbow, _HorizonGlow, _Exposure, _Rotation, _SunSize;
             float4 _Tint, _HorizonColor, _SunDir, _SunColor;
 
             struct appdata { float4 vertex : POSITION; };
@@ -64,6 +65,27 @@ Shader "NihongoLife/SkyDayNight"
                 float towardsSun = saturate(dot(normalize(float3(d.x, 0, d.z) + 1e-4), normalize(float3(_SunDir.x, 0, _SunDir.z) + 1e-4)) * 0.5 + 0.5);
                 float band = exp(-abs(d.y) * 9.0) * _HorizonGlow * (0.45 + 0.55 * towardsSun);
                 sky = lerp(sky, _HorizonColor.rgb, saturate(band));
+
+                // Rainbow: a 42° arc around the point opposite the sun, violet inside, red outside, with a faint
+                // secondary bow at 51° (colours reversed). The centre is held a little below the horizon so the arc
+                // stands in the sky at any hour (a real midday rainbow would sit under the horizon).
+                if (_Rainbow > 0.001)
+                {
+                    float3 anti = normalize(float3(-_SunDir.x, 0.0, -_SunDir.z) + 1e-4);
+                    float3 centre = normalize(anti - float3(0, 0.28, 0));
+                    float angle = degrees(acos(clamp(dot(d, centre), -1.0, 1.0)));
+                    float t = (angle - 39.6) / 3.2;                       // 0 violet … 1 red
+                    float bow = saturate(1.0 - abs(t * 2.0 - 1.0));
+                    bow = smoothstep(0.0, 0.35, bow);
+                    float h = (1.0 - saturate(t)) * 0.8;                  // hue: red (0) outside … violet (0.8) inside
+                    float3 spectrum = saturate(float3(abs(h * 6.0 - 3.0) - 1.0, 2.0 - abs(h * 6.0 - 2.0), 2.0 - abs(h * 6.0 - 4.0)));
+                    float t2 = (angle - 50.0) / 3.6;
+                    float bow2 = smoothstep(0.0, 0.35, saturate(1.0 - abs(t2 * 2.0 - 1.0))) * 0.35;
+                    float h2 = saturate(t2) * 0.8;                        // secondary bow: colours reversed
+                    float3 spectrum2 = saturate(float3(abs(h2 * 6.0 - 3.0) - 1.0, 2.0 - abs(h2 * 6.0 - 2.0), 2.0 - abs(h2 * 6.0 - 4.0)));
+                    float above = saturate(d.y * 12.0);                  // fades into the horizon
+                    sky += (spectrum * bow + spectrum2 * bow2) * 0.42 * _Rainbow * above;
+                }
 
                 // Sun (day) or moon (night) disc.
                 float3 sunDir = normalize(_SunDir.xyz);
