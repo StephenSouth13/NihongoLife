@@ -62,6 +62,7 @@ namespace NihongoLife.Home
 
             if (lieAnchor != null) player.transform.SetPositionAndRotation(lieAnchor.position, lieAnchor.rotation);
             if (animation != null) animation.SetResting(true);
+            StartCoroutine(SettleOnMattress(player));
             if (room != null) room.SetRoomLights(false, true);
 
             if (room != null) yield return room.FadeToNight("おやすみなさい", "Chúc ngủ ngon…");
@@ -88,6 +89,25 @@ namespace NihongoLife.Home
             if (body != null) body.enabled = true;
             if (controller != null) controller.InputLocked = false;
             _busy = false;
+        }
+
+        /// <summary>
+        /// The lie anchor is the hips of an adult body; characters with other proportions (the chibi kids, whose big head
+        /// rests lower than their hips) are lifted so the lowest point of the body rests on the mattress, never in it.
+        /// </summary>
+        private IEnumerator SettleOnMattress(GameObject player)
+        {
+            yield return new WaitForSeconds(0.35f); // the lying pose has blended in
+            if (lieAnchor == null || player == null) yield break;
+            float mattress = float.NegativeInfinity;
+            foreach (var hit in Physics.RaycastAll(lieAnchor.position + Vector3.up * 1.2f, Vector3.down, 2.5f, Physics.DefaultRaycastLayers, QueryTriggerInteraction.Ignore))
+                if (!hit.transform.IsChildOf(player.transform)) mattress = Mathf.Max(mattress, hit.point.y);
+            if (float.IsNegativeInfinity(mattress)) yield break;
+            float lowest = float.PositiveInfinity;
+            foreach (var skin in player.GetComponentsInChildren<SkinnedMeshRenderer>()) lowest = Mathf.Min(lowest, skin.bounds.min.y);
+            if (float.IsPositiveInfinity(lowest)) yield break;
+            float lift = mattress - 0.01f - lowest;
+            if (lift > 0f) player.transform.position += Vector3.up * lift;
         }
     }
 }

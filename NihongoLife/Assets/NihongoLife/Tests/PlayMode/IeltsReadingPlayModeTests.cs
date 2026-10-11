@@ -89,7 +89,8 @@ namespace NihongoLife.Tests
             yield return SceneManager.LoadSceneAsync(WorldLocationCatalog.CityScene);
             yield return new WaitForSecondsRealtime(2f);
             var report = new List<string>();
-            foreach (var package in packages)
+            // Writing/Speaking papers have no answer key (the AI Examiner scores them): covered by IeltsProductivePlayModeTests.
+            foreach (var package in packages.Where(p => p.Test.skill != "writing" && p.Test.skill != "speaking"))
             {
                 var key = IeltsLibrary.LoadKey(package);
                 Assert.NotNull(key, package.Id + ": key.json");
