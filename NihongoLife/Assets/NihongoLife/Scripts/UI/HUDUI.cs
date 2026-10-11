@@ -96,7 +96,6 @@ namespace NihongoLife.UI
                 }
             }
 
-            BindDialogue();
 
             if (ScenarioManager.Instance != null)
             {
@@ -131,6 +130,7 @@ namespace NihongoLife.UI
             }
 
             HideDialogue();
+            BindDialogue(); // after HideDialogue: re-shows a dialogue that opened while the scene was loading
             HidePrompt();
             EnsureQuestMarker();
             WireMissionPanelClick();
