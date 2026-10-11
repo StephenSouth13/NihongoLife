@@ -63,6 +63,25 @@ namespace NihongoLife.UI
         private DialogueView _dialogueView;
         private InventoryWindow _inventoryWindow;
 
+        private DialogueManager _boundDialogue;
+
+        /// <summary>Subscribes to the dialogue manager and shows a dialogue that was already open before the HUD
+        /// existed — otherwise the dock hides for a dialogue nobody can see and the screen stays empty.</summary>
+        private void BindDialogue()
+        {
+            var manager = DialogueManager.Instance;
+            if (manager == null || manager == _boundDialogue) return;
+            if (_boundDialogue != null)
+            {
+                _boundDialogue.OnDialogueUpdated -= DisplayDialogue;
+                _boundDialogue.OnDialogueClosed -= HideDialogue;
+            }
+            _boundDialogue = manager;
+            manager.OnDialogueUpdated += DisplayDialogue;
+            manager.OnDialogueClosed += HideDialogue;
+            if (manager.IsOpen && (dialoguePanel == null || !dialoguePanel.activeSelf)) manager.RefreshView();
+        }
+
         private void Start()
         {
             EnsureDialogueView();
@@ -77,11 +96,7 @@ namespace NihongoLife.UI
                 }
             }
 
-            if (DialogueManager.Instance != null)
-            {
-                DialogueManager.Instance.OnDialogueUpdated += DisplayDialogue;
-                DialogueManager.Instance.OnDialogueClosed += HideDialogue;
-            }
+            BindDialogue();
 
             if (ScenarioManager.Instance != null)
             {
@@ -619,6 +634,7 @@ namespace NihongoLife.UI
 
         private void Update()
         {
+            BindDialogue();
             // Prompt lane: the [F] prompt steps aside while a timed action runs or a window is open, and comes back after.
             bool suppressPrompt = TimedAction.Busy || UiModalStack.AnyOpen;
             if (promptPanel != null)

@@ -258,6 +258,10 @@ namespace NihongoLife.Dialogue
             callback?.Invoke(endedOn);
         }
 
+        /// <summary>Re-sends the open dialogue to the UI — for a HUD that subscribed after the dialogue started
+        /// (the intro scenario opens its first line while the scene is still loading).</summary>
+        public void RefreshView() => UpdateDialogueUI();
+
         private void UpdateDialogueUI()
         {
             if (_currentNode == null) return;
