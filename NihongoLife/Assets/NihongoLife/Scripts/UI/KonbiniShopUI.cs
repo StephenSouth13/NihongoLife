@@ -394,7 +394,13 @@ namespace NihongoLife.UI
             NLUi.Size(tile, preferredHeight: 116f);
             var tileGlyph = NLUi.Label(tile, "Glyph", product.glyph, 42f, new Color(0.15f, 0.12f, 0.1f), _font, FontStyles.Bold, TextAlignmentOptions.Center);
             ItemIcons.Apply(tileGlyph, product.id, 4f);
-            NLUi.Label(card, "Name", product.japanese, 20f, NLUi.Text, _font, FontStyles.Bold);
+            // One line: long names such as ルーズリーフ（5まい） shrink instead of wrapping onto the meaning.
+            var cardName = NLUi.Label(card, "Name", product.japanese, 20f, NLUi.Text, _font, FontStyles.Bold);
+            cardName.textWrappingMode = TextWrappingModes.NoWrap;
+            cardName.enableAutoSizing = true;
+            cardName.fontSizeMin = 13f;
+            cardName.fontSizeMax = 20f;
+            cardName.overflowMode = TextOverflowModes.Ellipsis;
             NLUi.Label(card, "Meaning", product.vietnamese, 15f, NLUi.Muted, _font);
             NLUi.Label(card, "Price", $"¥{product.price}", 19f, NLUi.Gold, _font, FontStyles.Bold);
             var button = card.gameObject.AddComponent<Button>();

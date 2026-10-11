@@ -792,3 +792,4 @@ Claude nhận tiếp phần Codex đang làm dở: báo cáo, trailer, demo và 
   - `note_paper_30` ← `classroom/FBX/book__004.fbx` (vở bìa cứng xanh dương, đặt nằm).
 - **Thiếu model:** `note_paper_5` (ルーズリーフ, giấy rời 5 tờ) vẫn dùng glyph 紙. `postit` chỉ là một tờ giấy dán cong, không phải xấp giấy.
 - Test: `Notebook_PagesPaperAndSave` kiểm tra thẻ 12/30 có ảnh. `LoadCity` trong test đóng lời dẫn mở màn trước khi chụp.
+- `KonbiniShopUI.ProductCard`: tên trên thẻ giờ chỉ một dòng, tự thu nhỏ chữ (tối thiểu 13). Tên dài như ルーズリーフ（5まい） không còn đè lên dòng nghĩa.
