@@ -86,10 +86,26 @@ namespace NihongoLife.UI
         {
             _font = NLUi.ResolveFont();
             var canvas = NLUi.CreateCanvas("ExamMailboxCanvas", 175, transform);
-            var toggle = NLUi.Button(canvas.transform, "MailboxToggle", "✉  Bài chấm", _font, () => SetOpen(!_open),
-                new Color(0.12f, 0.17f, 0.23f, 0.96f), 17f, minHeight: 48f);
-            NLUi.Anchor((RectTransform)toggle.transform, new Vector2(1f, 1f), new Vector2(-120f, -84f), new Vector2(180f, 48f));
-            _badge = toggle.GetComponentInChildren<TMP_Text>();
+            var toggleObject = new GameObject("NotificationBell", typeof(RectTransform), typeof(Image), typeof(Button), typeof(DraggableHudIcon));
+            toggleObject.transform.SetParent(canvas.transform, false);
+            var toggleRect = (RectTransform)toggleObject.transform;
+            NLUi.Anchor(toggleRect, new Vector2(1f, 1f), new Vector2(-74f, -84f), new Vector2(62f, 62f));
+            var toggleImage = toggleObject.GetComponent<Image>();
+            toggleImage.sprite = UIStyleKit.RoundedSprite(); toggleImage.type = Image.Type.Sliced;
+            var toggle = toggleObject.GetComponent<Button>(); toggle.targetGraphic = toggleImage;
+            UIStyleKit.StyleButton(toggle, new Color(0.08f, 0.13f, 0.19f, 0.97f), new Color(0.16f, 0.24f, 0.32f, 1f), new Color(0.95f, 0.72f, 0.25f, 1f));
+            toggle.onClick.AddListener(() => SetOpen(!_open));
+            var iconObject = new GameObject("Bell", typeof(RectTransform), typeof(Image));
+            iconObject.transform.SetParent(toggleRect, false);
+            var iconRect = (RectTransform)iconObject.transform; NLUi.Anchor(iconRect, new Vector2(0.5f, 0.5f), Vector2.zero, new Vector2(34f, 34f));
+            iconObject.GetComponent<Image>().sprite = HudIcons.Bell; iconObject.GetComponent<Image>().color = NLUi.Gold; iconObject.GetComponent<Image>().raycastTarget = false;
+            var badgeRoot = NLUi.Panel(toggleRect, "UnreadBadge", new Color(0.88f, 0.22f, 0.18f, 1f));
+            NLUi.Anchor(badgeRoot, new Vector2(1f, 1f), new Vector2(3f, 3f), new Vector2(25f, 25f));
+            badgeRoot.pivot = new Vector2(1f, 1f);
+            _badge = NLUi.Label(badgeRoot, "Count", "", 13f, Color.white, _font, FontStyles.Bold, TextAlignmentOptions.Center);
+            NLUi.Stretch(_badge.rectTransform);
+            badgeRoot.SetAsLastSibling();
+            toggleObject.GetComponent<DraggableHudIcon>().Initialize("NL.ExamMailbox.IconPosition");
 
             _window = new GameObject("MailboxWindow", typeof(RectTransform), typeof(Image));
             _window.transform.SetParent(canvas.transform, false);
@@ -146,7 +162,37 @@ namespace NihongoLife.UI
         {
             if (_badge == null) return;
             int unread = IeltsProductiveStore.All(null).Count(r => !Seen().Contains(r.id));
-            _badge.text = unread > 0 ? $"✉  Bài chấm  <color=#F2B83F>{unread}</color>" : "✉  Bài chấm";
+            _badge.transform.parent.gameObject.SetActive(unread > 0);
+            _badge.text = unread > 99 ? "99+" : unread.ToString();
+        }
+    }
+
+    public sealed class DraggableHudIcon : MonoBehaviour, UnityEngine.EventSystems.IBeginDragHandler, UnityEngine.EventSystems.IDragHandler, UnityEngine.EventSystems.IEndDragHandler
+    {
+        private RectTransform _rect;
+        private Canvas _canvas;
+        private string _key;
+
+        public void Initialize(string key)
+        {
+            _key = key; _rect = (RectTransform)transform; _canvas = GetComponentInParent<Canvas>();
+            if (PlayerPrefs.HasKey(_key + ".x"))
+                _rect.anchoredPosition = new Vector2(PlayerPrefs.GetFloat(_key + ".x"), PlayerPrefs.GetFloat(_key + ".y"));
+        }
+
+        public void OnBeginDrag(UnityEngine.EventSystems.PointerEventData eventData) { }
+        public void OnDrag(UnityEngine.EventSystems.PointerEventData eventData)
+        {
+            float scale = _canvas != null ? _canvas.scaleFactor : 1f;
+            _rect.anchoredPosition += eventData.delta / Mathf.Max(0.01f, scale);
+            float half = 31f;
+            _rect.position = new Vector3(Mathf.Clamp(_rect.position.x, half, Screen.width - half), Mathf.Clamp(_rect.position.y, half, Screen.height - half), _rect.position.z);
+        }
+        public void OnEndDrag(UnityEngine.EventSystems.PointerEventData eventData)
+        {
+            PlayerPrefs.SetFloat(_key + ".x", _rect.anchoredPosition.x);
+            PlayerPrefs.SetFloat(_key + ".y", _rect.anchoredPosition.y);
+            PlayerPrefs.Save();
         }
     }
 }

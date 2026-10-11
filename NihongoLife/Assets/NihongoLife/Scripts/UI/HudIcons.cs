@@ -21,6 +21,7 @@ namespace NihongoLife.UI
         public static Sprite Moon => Get("moon", MoonShape);
         public static Sprite Pin => Get("pin", PinShape);
         public static Sprite Wallet => Get("wallet", WalletShape);
+        public static Sprite Bell => Get("bell", BellShape);
 
         private static Sprite Get(string name, Func<Vector2, float> shape)
         {
@@ -151,6 +152,14 @@ namespace NihongoLife.UI
             float dot = Circle(p, new Vector2(0.52f, -0.08f), 0.07f);
             float outline = Mathf.Max(body, -Box(p, new Vector2(-0.04f, -0.08f), new Vector2(0.6f, 0.4f), 0.06f));
             return Union(Mathf.Max(Union(outline, flap, clasp), -dot));
+        }
+
+        private static float BellShape(Vector2 p)
+        {
+            float dome = Circle(p, new Vector2(0f, 0.18f), 0.48f);
+            float body = Mathf.Max(dome, -(p.y + 0.34f));
+            float rim = Box(p, new Vector2(0f, -0.34f), new Vector2(0.64f, 0.10f), 0.08f);
+            return Union(body, rim, Circle(p, new Vector2(0f, -0.57f), 0.13f), Circle(p, new Vector2(0f, 0.72f), 0.10f));
         }
     }
 }

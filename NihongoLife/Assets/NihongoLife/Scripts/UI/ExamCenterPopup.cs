@@ -25,6 +25,8 @@ namespace NihongoLife.UI
         private TextMeshProUGUI _ieltsTabLabel;
         private RectTransform _listRoot;
         private TextMeshProUGUI _emptyText;
+        private readonly List<Button> _skillButtons = new List<Button>();
+        private string _ieltsSkill = "all";
 
         protected override bool LocksGameplay => true;
 
@@ -49,7 +51,7 @@ namespace NihongoLife.UI
 
             var scrollRoot = new GameObject("List", typeof(RectTransform), typeof(Image), typeof(ScrollRect));
             scrollRoot.transform.SetParent(card, false);
-            Place((RectTransform)scrollRoot.transform, 36f, 160f, 1108f, 500f);
+            Place((RectTransform)scrollRoot.transform, 36f, 214f, 1108f, 446f);
             scrollRoot.GetComponent<Image>().color = new Color(0.03f, 0.04f, 0.05f, 0.7f);
 
             var viewport = new GameObject("Viewport", typeof(RectTransform), typeof(RectMask2D));
@@ -84,6 +86,16 @@ namespace NihongoLife.UI
             scroll.movementType = ScrollRect.MovementType.Clamped;
 
             _emptyText = AddLocalizedText(card, "Chưa có bài luyện thi nào ở mục này.", "No practice test in this category yet.", "このカテゴリーにはまだ試験がありません。", 18f, 36f, 620f, 1108f, 40f, TextAlignmentOptions.Center, FontStyles.Normal, false, Muted);
+
+            string[] skills = { "all", "listening", "reading", "writing", "speaking" };
+            string[] labels = { "TẤT CẢ", "LISTENING", "READING", "WRITING", "SPEAKING" };
+            for (int i = 0; i < skills.Length; i++)
+            {
+                string skill = skills[i];
+                var button = AddButton(card, labels[i], 36f + i * 222f, 160f, 208f, 40f, false, 15f);
+                button.onClick.AddListener(() => { _ieltsSkill = skill; RebuildList(); });
+                _skillButtons.Add(button);
+            }
         }
 
         protected override void Update()
@@ -120,6 +132,7 @@ namespace NihongoLife.UI
             _jlptTabLabel.color = jlpt ? DarkText : Color.white;
             _ieltsTabLabel.text = "IELTS";
             _ieltsTabLabel.color = !jlpt ? DarkText : Color.white;
+            foreach (var button in _skillButtons) button.gameObject.SetActive(!jlpt);
 
             RebuildList();
         }
@@ -144,6 +157,16 @@ namespace NihongoLife.UI
 
             exams.Sort((a, b) => string.CompareOrdinal(a.level, b.level));
             var localPackages = _tab == ExamType.Ielts ? NihongoLife.Exam.Ielts.IeltsLibrary.Discover() : new List<NihongoLife.Exam.Ielts.IeltsLibrary.Package>();
+            if (_ieltsSkill != "all") localPackages = localPackages.Where(p => p.Test.skill == _ieltsSkill).ToList();
+            localPackages = localPackages.OrderBy(p => p.Test.skill == "writing" ? 0 : p.Test.skill == "speaking" ? 1 : p.Test.skill == "listening" ? 2 : 3).ToList();
+            string[] skillIds = { "all", "listening", "reading", "writing", "speaking" };
+            for (int i = 0; i < _skillButtons.Count; i++)
+            {
+                bool selected = skillIds[i] == _ieltsSkill;
+                UIStyleKit.StyleButton(_skillButtons[i], selected ? Gold : new Color(0.10f, 0.14f, 0.18f, 1f),
+                    selected ? UIStyleKit.AccentGoldHover : UIStyleKit.PanelHover, UIStyleKit.PanelPressed);
+                _skillButtons[i].GetComponentInChildren<TextMeshProUGUI>().color = selected ? DarkText : Color.white;
+            }
             _emptyText.gameObject.SetActive(exams.Count == 0 && localPackages.Count == 0);
             foreach (var package in localPackages) BuildLocalIeltsCard(package);
 
