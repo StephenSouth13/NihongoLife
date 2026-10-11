@@ -674,12 +674,12 @@ namespace NihongoLife.World
 
         private void CachePlatformTrain()
         {
-            string[] names = { "HighSpeed_Front", "HighSpeed_Wagon_A", "HighSpeed_Wagon_B" };
-            foreach (string trainName in names)
+            foreach (Transform item in FindObjectsByType<Transform>(FindObjectsInactive.Include, FindObjectsSortMode.None))
             {
-                GameObject item = GameObject.Find(trainName);
-                if (item == null) continue;
-                _platformTrain.Add((item.transform, item.transform.position));
+                if (item == null || item.gameObject.scene != gameObject.scene ||
+                    !item.name.StartsWith("HighspeedTrain_", System.StringComparison.OrdinalIgnoreCase)) continue;
+
+                _platformTrain.Add((item, item.position));
                 foreach (Collider collider in item.GetComponentsInChildren<Collider>(true))
                     if (collider != null && !collider.isTrigger) _trainColliders.Add(collider);
             }

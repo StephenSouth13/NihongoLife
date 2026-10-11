@@ -26,10 +26,27 @@ namespace NihongoLife.School
         {
             if (!string.Equals(UnityEngine.SceneManagement.SceneManager.GetActiveScene().name, "40_ HIBARICLASS", StringComparison.OrdinalIgnoreCase)) return;
             if (applyMaterials) ApplyClassroomMaterials();
+            NormalizeDeskColliders();
             if (installSeatInteractions) InstallSeats();
             if (installExamStation) InstallExamStation();
             EnsureSchoolOverlay();
             InstallExitSign();
+        }
+
+        private void NormalizeDeskColliders()
+        {
+            foreach (Transform child in GetComponentsInChildren<Transform>(true))
+            {
+                if (!child.name.StartsWith("StudentDesk_", StringComparison.OrdinalIgnoreCase)) continue;
+                BoxCollider collider = child.GetComponent<BoxCollider>();
+                if (collider == null) continue;
+
+                // The authored collider was generated from the complete desk + chair group. It was
+                // therefore almost two metres deep and closed every aisle between the desk rows.
+                // Keep a solid collider around the actual desk while chair interaction remains a trigger.
+                collider.center = new Vector3(0f, 0.5f, 0.18f);
+                collider.size = new Vector3(1.6f, 1f, 0.82f);
+            }
         }
 
         private void ApplyClassroomMaterials()
