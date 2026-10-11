@@ -351,6 +351,20 @@ namespace NihongoLife.UI
             StartCoroutine(GradeProductive());
         }
 
+        /// <summary>Opens a submitted paper from anywhere (the exam mailbox): its test screen with the full results —
+        /// criteria, coaching, rewrites, recordings — and "Chấm lại" if it was never graded.</summary>
+        public static IeltsTestUI OpenSaved(IeltsProductiveRecord record)
+        {
+            if (record == null) return null;
+            var package = IeltsLibrary.Discover().FirstOrDefault(p => p.Id == record.testId);
+            if (package == null) return null;
+            var ui = Open(package, record.mode == ExamMode ? ExamMode : PracticeMode, resume: false);
+            ui._attempt.submitted = true;
+            ui._submitButton.interactable = false;
+            ui.ShowSavedRecord(record);
+            return ui;
+        }
+
         /// <summary>Opens a saved paper (e.g. to grade it again once online).</summary>
         public void ShowSavedRecord(IeltsProductiveRecord record)
         {

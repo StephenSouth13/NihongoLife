@@ -73,6 +73,7 @@ namespace NihongoLife.UI
             }
             _open = open;
             _window.SetActive(open);
+            if (open) UiModalStack.Register(this, () => _open, () => SetOpen(false), "Exam mailbox");
             if (open) { Refresh(); UIStyleKit.PlayShowAnimation(_window); }
         }
 
@@ -123,9 +124,23 @@ namespace NihongoLife.UI
 
             _list = NLUi.Group(rect, "Messages", true, 8f);
             NLUi.Anchor(_list, new Vector2(0f, 1f), new Vector2(28f, -112f), new Vector2(240f, 500f)); _list.pivot = new Vector2(0f, 1f);
-            _detail = NLUi.Label(rect, "Detail", "Chọn một thư để xem phản hồi.", 16f, NLUi.Text, _font);
-            NLUi.Anchor(_detail.rectTransform, new Vector2(0f, 1f), new Vector2(290f, -112f), new Vector2(280f, 500f)); _detail.rectTransform.pivot = new Vector2(0f, 1f);
-            _detail.overflowMode = TextOverflowModes.Ellipsis;
+            // Detail: scrolls (long examiner feedback used to be cut with "…"), with a button to the full results.
+            var detailScroll = new GameObject("DetailScroll", typeof(RectTransform), typeof(ScrollRect), typeof(RectMask2D), typeof(Image));
+            detailScroll.transform.SetParent(rect, false);
+            var detailRect = (RectTransform)detailScroll.transform;
+            NLUi.Anchor(detailRect, new Vector2(0f, 1f), new Vector2(290f, -112f), new Vector2(282f, 452f)); detailRect.pivot = new Vector2(0f, 1f);
+            detailScroll.GetComponent<Image>().color = new Color(0f, 0f, 0f, 0.12f);
+            _detail = NLUi.Label(detailRect, "Detail", "Chọn một thư để xem phản hồi.", 16f, NLUi.Text, _font);
+            var detailText = _detail.rectTransform;
+            detailText.anchorMin = new Vector2(0f, 1f); detailText.anchorMax = new Vector2(1f, 1f); detailText.pivot = new Vector2(0.5f, 1f);
+            detailText.offsetMin = new Vector2(8f, 0f); detailText.offsetMax = new Vector2(-8f, 0f);
+            _detail.gameObject.AddComponent<ContentSizeFitter>().verticalFit = ContentSizeFitter.FitMode.PreferredSize;
+            var scroll = detailScroll.GetComponent<ScrollRect>();
+            scroll.content = detailText; scroll.viewport = detailRect; scroll.horizontal = false; scroll.scrollSensitivity = 30f;
+            _openFull = NLUi.Button(rect, "OpenFullResult", "Xem bài đầy đủ", _font, () => OpenFull(), NLUi.Gold, 16f, new Color(0.08f, 0.07f, 0.04f), 46f);
+            var openRect = (RectTransform)_openFull.transform;
+            NLUi.Anchor(openRect, new Vector2(0f, 1f), new Vector2(290f, -576f), new Vector2(282f, 46f)); openRect.pivot = new Vector2(0f, 1f);
+            _openFull.gameObject.SetActive(false);
             _window.SetActive(false);
             RefreshBadge();
         }
@@ -145,9 +160,23 @@ namespace NihongoLife.UI
             RefreshBadge();
         }
 
+        private Button _openFull;
+        private IeltsProductiveRecord _shown;
+
+        /// <summary>The selected mail's paper in the test screen: criteria, coach, rewrites, recordings.</summary>
+        private void OpenFull()
+        {
+            if (_shown == null) return;
+            SetOpen(false);
+            if (IeltsTestUI.OpenSaved(_shown) == null)
+                HudFeed.Post("Không tìm thấy đề của bài này trên máy.", HudFeed.Kind.Warning, 3f);
+        }
+
         private void Show(IeltsProductiveRecord record)
         {
             if (record == null) return;
+            _shown = record;
+            if (_openFull != null) _openFull.gameObject.SetActive(true);
             string summary = record.skill == "writing"
                 ? string.Join("\n\n", record.writing.Select(t => $"Task {t.task} · {t.words} từ · Band {(t.examination?.overall ?? 0f):0.0}\n{t.examination?.summary ?? t.examination?.error ?? "Chưa có phản hồi"}"))
                 : record.speakingExamination?.summary ?? record.speakingExamination?.error ?? "Chưa có phản hồi";

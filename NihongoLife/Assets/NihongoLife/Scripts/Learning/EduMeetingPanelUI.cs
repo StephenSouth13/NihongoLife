@@ -16,6 +16,10 @@ namespace NihongoLife.Learning
         private TMP_FontAsset _font;
         private float _nextRefresh;
         private string _signature;
+        private RectTransform _stage, _remoteFrame, _localFrame;
+        private RawImage _remoteView, _localView;
+        private TextMeshProUGUI _remotePlaceholder, _localPlaceholder;
+        private bool _boundViews;
 
         private void Awake()
         {
@@ -27,11 +31,15 @@ namespace NihongoLife.Learning
         {
             if (_root == null || _manager == null) return;
             if (_root.activeSelf != _manager.IsOpen) _root.SetActive(_manager.IsOpen);
+            if (!_boundViews) { _manager.BindVideoViews(_localView, _remoteView); _boundViews = true; }
+            LayoutStage();
             if (!_manager.IsOpen || Time.unscaledTime < _nextRefresh) return;
             _nextRefresh = Time.unscaledTime + 0.35f;
             string signature = string.Join("|", _manager.Status, _manager.IsTeacherAccount, _manager.IsBusy,
                 _manager.IsInClassroom, _manager.IsMuted, _manager.HasWaitingRoom,
-                _manager.SelectedRoom?.id, string.Join(",", _manager.WaitingRooms.Select(r => r.id)));
+                _manager.SelectedRoom?.id, string.Join(",", _manager.WaitingRooms.Select(r => r.id)),
+                _manager.IsCameraPreviewing, _manager.IsCameraOn, _manager.HasRemoteVideo, _manager.CameraDeviceCount,
+                string.Join(",", _manager.JoinRequests.Select(r => r.id)));
             if (signature != _signature) { _signature = signature; Rebuild(); }
         }
 
@@ -58,7 +66,77 @@ namespace NihongoLife.Learning
 
             _content = new GameObject("DynamicContent", typeof(RectTransform)).GetComponent<RectTransform>();
             _content.SetParent(card, false); Place(_content, 36f, 158f, 1048f, 516f);
+            BuildVideoStage(card);
             _root.SetActive(false);
+        }
+
+        // ─────────── Video stage (persistent: Agora draws into these pictures, rebuilds never touch them) ───────────
+
+        private void BuildVideoStage(RectTransform card)
+        {
+            _stage = new GameObject("VideoStage", typeof(RectTransform)).GetComponent<RectTransform>();
+            _stage.SetParent(card, false);
+            Place(_stage, 36f, 240f, 640f, 360f);
+            _remoteFrame = Frame(_stage, "RemoteVideo", out _remoteView, out _remotePlaceholder, "Đang chờ người cùng phòng bật camera…");
+            NLUi.Stretch(_remoteFrame);
+            _localFrame = Frame(_stage, "MyCamera", out _localView, out _localPlaceholder, "Camera đang tắt");
+            _stage.gameObject.SetActive(false);
+        }
+
+        private RectTransform Frame(RectTransform parent, string name, out RawImage view, out TextMeshProUGUI placeholder, string text)
+        {
+            var frame = NLUi.Panel(parent, name, new Color(0.02f, 0.03f, 0.04f, 1f));
+            var outline = frame.gameObject.AddComponent<Outline>();
+            outline.effectColor = new Color(1f, 1f, 1f, 0.12f);
+            placeholder = NLUi.Label(frame, "Placeholder", text, 16f, NLUi.Muted, _font, alignment: TextAlignmentOptions.Center);
+            NLUi.Stretch(placeholder.rectTransform);
+            view = new GameObject("View", typeof(RectTransform), typeof(RawImage)).GetComponent<RawImage>();
+            view.transform.SetParent(frame, false);
+            NLUi.Stretch(view.rectTransform);
+            view.raycastTarget = false;
+            view.color = Color.white;
+            // Agora frames arrive upside down on RawImage: flip vertically.
+            view.uvRect = new Rect(0f, 1f, 1f, -1f);
+            return frame;
+        }
+
+        /// <summary>In a call: the other person large, own camera as a corner picture. Camera check: own camera large.</summary>
+        private void LayoutStage()
+        {
+            bool show = _manager.IsOpen && (_manager.IsInClassroom || _manager.IsCameraPreviewing);
+            if (_stage.gameObject.activeSelf != show) _stage.gameObject.SetActive(show);
+            if (!show) return;
+            bool checkOnly = !_manager.IsInClassroom;
+            _remoteFrame.gameObject.SetActive(!checkOnly);
+            var local = _localFrame;
+            if (checkOnly) { NLUi.Stretch(local); }
+            else
+            {
+                local.anchorMin = local.anchorMax = local.pivot = new Vector2(1f, 0f);
+                local.anchoredPosition = new Vector2(-12f, 12f);
+                local.sizeDelta = new Vector2(224f, 126f);
+                local.SetAsLastSibling();
+            }
+            _remoteView.enabled = _manager.HasRemoteVideo;
+            _remotePlaceholder.text = _manager.RemoteUid == 0 ? "Đang chờ người cùng phòng vào lớp…" : "Người cùng phòng đang tắt camera";
+            _localView.enabled = _manager.IsCameraOn && _manager.CameraDeviceCount != 0;
+            _localPlaceholder.text = _manager.CameraDeviceCount == 0 ? "Không có camera" : "Camera đang tắt";
+        }
+
+        private void BuildCallControls(bool inCall)
+        {
+            var panel = NLUi.Panel(_content, "CallControls", new Color(0.055f, 0.09f, 0.125f, 1f)); Place(panel, 660f, 82f, 388f, 350f);
+            var head = NLUi.Label(panel, "Head", inCall ? "ĐANG TRONG LỚP" : "KIỂM TRA CAMERA & MICRO", 18f, NLUi.Gold, _font, FontStyles.Bold); Place(head.rectTransform, 22f, 18f, 340f, 30f);
+            var tip = NLUi.Label(panel, "Tip", inCall ? "Nói rõ, nhìn vào camera. Bạn có thể tắt camera bất cứ lúc nào." : "Xem khung hình, ánh sáng và quyền camera trước khi vào lớp.", 14f, NLUi.Muted, _font); Place(tip.rectTransform, 22f, 52f, 344f, 48f);
+            float y = 112f;
+            ButtonAt(panel, "Camera", _manager.IsCameraOn ? "TẮT CAMERA" : "BẬT CAMERA", 22f, y, 344f, 50f, () => _manager.ToggleCamera(), new Color(0.12f, 0.19f, 0.25f)); y += 60f;
+            if (_manager.CameraDeviceCount > 1) { ButtonAt(panel, "SwitchCamera", "ĐỔI CAMERA", 22f, y, 344f, 50f, () => _manager.SwitchCamera(), new Color(0.12f, 0.19f, 0.25f)); y += 60f; }
+            if (inCall)
+            {
+                ButtonAt(panel, "Mic", _manager.IsMuted ? "BẬT MICRO" : "TẮT MICRO", 22f, y, 344f, 50f, () => _manager.ToggleMicrophone(), new Color(0.12f, 0.19f, 0.25f)); y += 60f;
+                ButtonAt(panel, "Leave", "RỜI CUỘC GỌI", 22f, y, 344f, 50f, () => _manager.LeaveClassroom(), new Color(0.55f, 0.13f, 0.12f));
+            }
+            else ButtonAt(panel, "StopCheck", "XONG — TẮT CAMERA", 22f, y, 344f, 50f, () => _manager.StopCameraCheck(), new Color(0.3f, 0.34f, 0.4f));
         }
 
         private void Rebuild()
@@ -73,17 +151,12 @@ namespace NihongoLife.Learning
             var statusText = NLUi.Label(status, "Message", _manager.Status, 15f, NLUi.Muted, _font);
             Place(statusText.rectTransform, 225f, 13f, 790f, 38f);
 
+            if (_manager.IsInClassroom || _manager.IsCameraPreviewing) { BuildCallControls(_manager.IsInClassroom); return; }
             if (!_manager.OnlineClassroomAvailable) BuildOffline();
             else if (_manager.IsTeacherAccount) BuildTeacher();
             else BuildStudent();
-
-            if (_manager.IsInClassroom)
-            {
-                ButtonAt(_content, "Mic", _manager.IsMuted ? "BẬT MICRO" : "TẮT MICRO", 610f, 450f, 190f, 52f,
-                    () => _manager.ToggleMicrophone(), new Color(0.12f, 0.19f, 0.25f));
-                ButtonAt(_content, "Leave", "RỜI CUỘC GỌI", 816f, 450f, 216f, 52f,
-                    () => _manager.LeaveClassroom(), new Color(0.55f, 0.13f, 0.12f));
-            }
+            // The camera check works without signing in: it only opens the local camera.
+            ButtonAt(_content, "CameraCheck", "KIỂM TRA CAMERA & MICRO", 0f, 450f, 330f, 52f, () => _manager.StartCameraCheck(), new Color(0.12f, 0.19f, 0.25f));
         }
 
         private void BuildOffline()
@@ -91,7 +164,7 @@ namespace NihongoLife.Learning
             var box = NLUi.Panel(_content, "LoginRequired", new Color(0.07f, 0.10f, 0.14f, 1f)); Place(box, 0f, 82f, 1048f, 350f);
             var icon = NLUi.Label(box, "Icon", "LIVE", 46f, NLUi.Gold, _font, FontStyles.Bold, TextAlignmentOptions.Center); Place(icon.rectTransform, 440f, 42f, 168f, 100f);
             var title = NLUi.Label(box, "Title", "Đăng nhập để vào Speaking Lounge", 26f, NLUi.Text, _font, FontStyles.Bold, TextAlignmentOptions.Center); Place(title.rectTransform, 170f, 155f, 708f, 42f);
-            var text = NLUi.Label(box, "Text", "Học viên tạo phòng chờ; giáo viên xem hồ sơ rồi nhận lớp.\nToken Agora được cấp tự động, không cần nhập mã phòng thủ công.", 17f, NLUi.Muted, _font, alignment: TextAlignmentOptions.Center); Place(text.rectTransform, 170f, 210f, 708f, 80f);
+            var text = NLUi.Label(box, "Text", "Học viên tạo phòng chờ; giáo viên xem hồ sơ rồi nhận lớp.\nToken Agora được cấp tự động, không cần nhập mã phòng thủ công.\nBạn vẫn có thể kiểm tra camera và micro ngay bây giờ.", 17f, NLUi.Muted, _font, alignment: TextAlignmentOptions.Center); Place(text.rectTransform, 170f, 210f, 708f, 80f);
         }
 
         private void BuildStudent()
@@ -103,6 +176,14 @@ namespace NihongoLife.Learning
                 ButtonAt(hero, "Cancel", "HỦY PHÒNG CHỜ", 374f, 235f, 300f, 58f, () => _manager.CloseWaitingRoom(), new Color(0.34f, 0.13f, 0.13f));
             else
                 ButtonAt(hero, "Create", "TẠO PHÒNG CHỜ SPEAKING", 324f, 235f, 400f, 58f, () => _manager.CreateWaitingRoom(), NLUi.Gold, new Color(0.08f, 0.08f, 0.09f));
+            // Classes opened by teachers: ask to join (the teacher approves).
+            var open = _manager.WaitingRooms.Where(r => r.creator_role == "teacher" && r.status != "closed").Take(2).ToList();
+            for (int i = 0; i < open.Count; i++)
+            {
+                var room = open[i];
+                ButtonAt(hero, "Join_" + room.id, $"XIN VÀO LỚP CỦA {(string.IsNullOrWhiteSpace(room.teacher_name) ? "GIÁO VIÊN" : room.teacher_name.ToUpperInvariant())}",
+                    224f + i * 310f, 302f, 290f, 40f, () => _manager.RequestJoinRoom(room.id), new Color(0.12f, 0.24f, 0.2f));
+            }
         }
 
         private void BuildTeacher()
@@ -117,6 +198,14 @@ namespace NihongoLife.Learning
                 string label = $"{Initials(room.student_name)}     {room.student_name}\n<size=13><color=#9FB2C5>Level {Mathf.Max(1, room.level)}  ·  {Mathf.Max(0, room.xp)} XP</color></size>";
                 ButtonAt(list, "Student_" + room.id, label, 20f, 68f + index * 66f, 457f, 56f, () => _manager.SelectWaitingRoom(captured),
                     _manager.SelectedRoom?.id == room.id ? new Color(0.25f, 0.19f, 0.06f) : new Color(0.09f, 0.14f, 0.19f));
+                index++;
+            }
+            foreach (var request in _manager.JoinRequests.Take(Mathf.Max(0, 4 - index)))
+            {
+                var captured = request;
+                var label = NLUi.Label(list, "Request_" + request.id, $"{request.student_name}  <size=13><color=#9FB2C5>xin vào lớp · Level {Mathf.Max(1, request.level)}</color></size>", 16f, NLUi.Text, _font);
+                Place(label.rectTransform, 20f, 76f + index * 66f, 300f, 40f);
+                ButtonAt(list, "Approve_" + request.id, "DUYỆT", 330f, 68f + index * 66f, 147f, 56f, () => _manager.ApproveJoinRequest(captured.id), NLUi.Good, new Color(0.05f, 0.08f, 0.06f));
                 index++;
             }
             if (index == 0)

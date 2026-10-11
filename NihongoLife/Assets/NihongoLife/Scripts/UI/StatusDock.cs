@@ -382,10 +382,10 @@ namespace NihongoLife.UI
             NLUi.FitContent(_characterWindow);
             ((HorizontalLayoutGroup)_characterWindow.GetComponent<HorizontalOrVerticalLayoutGroup>()).childForceExpandWidth = false;
 
-            var stage = NLUi.Panel(_characterWindow, "ModelCard", new Color(0.07f, 0.09f, 0.12f, 1f), new RectOffset(0, 0, 0, 0), 0f);
+            var stage = NLUi.Panel(_characterWindow, "ModelCard", new Color(0.86f, 0.91f, 0.97f, 1f), new RectOffset(0, 0, 0, 0), 0f);
             NLUi.Size(stage, 280f, 440f);
             _preview = ProfilePreview.Create(stage, new Vector2(280f, 404f));
-            var hint = NLUi.Label(stage, "DragHint", "Kéo chuột để xoay", 14f, NLUi.Muted, _font, FontStyles.Normal, TextAlignmentOptions.Center);
+            var hint = NLUi.Label(stage, "DragHint", "Kéo chuột để xoay", 14f, new Color(0.32f, 0.4f, 0.5f), _font, FontStyles.Normal, TextAlignmentOptions.Center);
             NLUi.Size(hint, preferredHeight: 36f);
 
             var info = NLUi.Group(_characterWindow, "Info", true, 10f, TextAnchor.UpperLeft);

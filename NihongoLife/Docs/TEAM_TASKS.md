@@ -857,3 +857,16 @@ Claude nhận tiếp phần Codex đang làm dở: báo cáo, trailer, demo và 
   - `IeltsProductivePlayModeTests`: AI thật, mất mạng/giới hạn lượt, micro thật, thiết bị ghi âm qua Agora.
   - `WeatherCameraPlayerPlayModeTests`.
   - `PlayModeSaveGuard`: giữ nguyên `progress.json` thật khi chạy test.
+
+## Cập nhật (2026-10-11 tối, Claude hỗ trợ Codex) — Speaking Lounge: camera, nút; hộp thư kết quả
+- **Lỗi camera không hiện:** video Agora nằm trên canvas riêng (thứ tự 150), bị nền và thẻ Lounge (canvas 180) che. Đã bỏ canvas riêng.
+  - `EduMeetingPanelUI` có `VideoStage` cố định trong thẻ (không bị dựng lại khi làm mới), Agora vẽ thẳng vào đó qua `EduMeetingManager.BindVideoViews`.
+  - Trong lớp: video người kia lớn, camera mình nhỏ ở góc; có chữ chờ khi chưa có video.
+- **`EduMeetingManager`** (chỉ sửa phần video; phần join-request đang làm của Codex giữ nguyên):
+  - `EnsureEngine` dùng chung cho kiểm tra camera và vào lớp.
+  - `StartCameraCheck` / `StopCameraCheck` (dùng `StartPreview`, không cần đăng nhập), `ToggleCamera`.
+  - `CameraDeviceCount`: báo khi máy không có camera. `HasRemoteVideo` theo `OnRemoteVideoStateChanged`.
+- **Nút trong `EduMeetingPanelUI`:** "Kiểm tra camera & micro"; bật/tắt camera, đổi camera, micro, rời lớp; "Xin vào lớp của …" (học viên, `RequestJoinRoom`); "Duyệt" (giáo viên, `ApproveJoinRequest` / `JoinRequests`).
+- **`ExamMailboxUI`:** Esc đóng (`UiModalStack`); khung chi tiết cuộn được thay vì cắt bằng "…"; nút "Xem bài đầy đủ" mở `IeltsTestUI.OpenSaved(record)` (điểm 4 tiêu chí, Coach, viết lại, ghi âm).
+- **Test:** `SpeakingLoungeCameraPlayModeTests` (webcam thật qua Agora: ảnh 960×540 có nội dung thật; bật/tắt; hộp thư → bài đầy đủ; Esc). Ảnh có webcam chỉ lưu ở `LocalContent/_captures` (git bỏ qua).
+- **Chưa kiểm được:** cuộc gọi hai người thật (học viên ↔ giáo viên) qua Supabase function `agora-classroom` — cần function đã deploy và hai tài khoản.

@@ -27,7 +27,10 @@ namespace NihongoLife.Learning
         private bool _roomRequestPending;
         private GameObject _videoRoot;
         private VideoSurface _remote;
+        private VideoSurface _local;
+        private RawImage _localView, _remoteView;
         private uint _remoteUid;
+        private bool _remoteVideo, _cameraOn = true, _previewing;
         private NihongoLife.Player.PlayerController _player;
         private NihongoLife.Cameras.ThirdPersonCameraController _camera;
         private bool _oldPlayerLock, _oldCameraLock, _oldVisible;
@@ -43,6 +46,14 @@ namespace NihongoLife.Learning
         public IReadOnlyList<AgoraWaitingRoom> WaitingRooms => _waitingRooms;
         public IReadOnlyList<AgoraJoinRequest> JoinRequests => _joinRequests;
         public AgoraWaitingRoom SelectedRoom => _selectedRoom;
+        /// <summary>Own camera shown (in a call, or the pre-call camera check).</summary>
+        public bool IsCameraPreviewing => _previewing;
+        public bool IsCameraOn => _cameraOn;
+        /// <summary>The other person in the call is sending video (otherwise the panel shows a placeholder).</summary>
+        public bool HasRemoteVideo => _remoteUid != 0 && _remoteVideo;
+        public uint RemoteUid => _remoteUid;
+        public int CameraDeviceCount { get; private set; } = -1;
+        public RawImage LocalView => _localView;
 
         private void Awake()
         {
@@ -223,16 +234,7 @@ namespace NihongoLife.Learning
             }
             try
             {
-                if (_engine == null)
-                {
-                    string appId = ConfiguredAppId();
-                    if (string.IsNullOrWhiteSpace(appId)) throw new InvalidOperationException("Chưa cấu hình Agora App ID (biến môi trường AGORA_APP_ID hoặc Control Database).");
-                    _engine = RtcEngine.CreateAgoraRtcEngine();
-                    Check(_engine.Initialize(new RtcEngineContext { appId = appId }), "Khởi tạo Agora");
-                    _engine.InitEventHandler(new Events(this));
-                    Check(_engine.EnableAudio(), "Bật micro");
-                    Check(_engine.EnableVideo(), "Bật camera");
-                }
+                EnsureEngine();
                 var options = new ChannelMediaOptions();
                 options.channelProfile.SetValue(CHANNEL_PROFILE_TYPE.CHANNEL_PROFILE_COMMUNICATION);
                 options.clientRoleType.SetValue(CLIENT_ROLE_TYPE.CLIENT_ROLE_BROADCASTER);
@@ -268,31 +270,100 @@ namespace NihongoLife.Learning
             return string.IsNullOrWhiteSpace(fromEnv) ? fallback : fromEnv.Trim();
         }
 
+        /// <summary>Creates the Agora engine once (audio + video), for the camera check and for calls.</summary>
+        private void EnsureEngine()
+        {
+            if (_engine != null) return;
+            string appId = ConfiguredAppId();
+            if (string.IsNullOrWhiteSpace(appId)) throw new InvalidOperationException("Chưa cấu hình Agora App ID (biến môi trường AGORA_APP_ID hoặc Control Database).");
+            _engine = RtcEngine.CreateAgoraRtcEngine();
+            Check(_engine.Initialize(new RtcEngineContext { appId = appId }), "Khởi tạo Agora");
+            _engine.InitEventHandler(new Events(this));
+            Check(_engine.EnableAudio(), "Bật micro");
+            Check(_engine.EnableVideo(), "Bật camera");
+            var devices = _engine.GetVideoDeviceManager()?.EnumerateVideoDevices();
+            CameraDeviceCount = devices?.Length ?? 0;
+        }
+
+        // ─────────── Video views (owned by EduMeetingPanelUI, fed by Agora) ───────────
+
+        /// <summary>The lounge panel gives the two pictures the call is drawn into (no separate canvas behind the panel).</summary>
+        public void BindVideoViews(RawImage local, RawImage remote)
+        {
+            _localView = local;
+            _remoteView = remote;
+            _local = Surface(local, _local);
+            _remote = Surface(remote, _remote);
+            if (_previewing || IsInClassroom) { _local.SetForUser(0, "", VIDEO_SOURCE_TYPE.VIDEO_SOURCE_CAMERA_PRIMARY); _local.SetEnable(_cameraOn); }
+            if (_remoteUid != 0) { _remote.SetForUser(_remoteUid, _channel, VIDEO_SOURCE_TYPE.VIDEO_SOURCE_REMOTE); _remote.SetEnable(true); }
+        }
+
+        private static VideoSurface Surface(RawImage view, VideoSurface old)
+        {
+            if (view == null) return old;
+            var surface = view.GetComponent<VideoSurface>() ?? view.gameObject.AddComponent<VideoSurface>();
+            surface.SetEnable(false);
+            return surface;
+        }
+
+        /// <summary>"Kiểm tra camera": the local camera shows before any call, to check framing, light and permission.</summary>
+        public void StartCameraCheck()
+        {
+            if (_previewing || IsInClassroom) return;
+            StartCoroutine(CameraCheckRoutine());
+        }
+
+        private IEnumerator CameraCheckRoutine()
+        {
+            _status = "Đang mở camera...";
+            yield return Application.RequestUserAuthorization(UserAuthorization.WebCam | UserAuthorization.Microphone);
+            if (!Application.HasUserAuthorization(UserAuthorization.WebCam)) { _status = "Chưa được cấp quyền camera. Hãy cho phép trong cài đặt quyền riêng tư của hệ điều hành."; yield break; }
+            try
+            {
+                EnsureEngine();
+                if (CameraDeviceCount == 0) { _status = "Không tìm thấy camera trên máy này. Bạn vẫn có thể vào lớp chỉ với micro."; yield break; }
+                Check(_engine.StartPreview(), "Mở camera");
+                _previewing = true;
+                _cameraOn = true;
+                if (_local != null) { _local.SetForUser(0, "", VIDEO_SOURCE_TYPE.VIDEO_SOURCE_CAMERA_PRIMARY); _local.SetEnable(true); }
+                _status = "Camera đang bật — kiểm tra khung hình và ánh sáng trước khi vào lớp.";
+            }
+            catch (Exception ex) { _status = ex.Message; _previewing = false; }
+        }
+
+        public void StopCameraCheck()
+        {
+            if (!_previewing || IsInClassroom) return;
+            if (_engine != null) _engine.StopPreview();
+            if (_local != null) _local.SetEnable(false);
+            _previewing = false;
+            _status = "Đã tắt camera.";
+        }
+
+        /// <summary>Camera on/off in a call (others see a placeholder) or during the check.</summary>
+        public void ToggleCamera()
+        {
+            if (_engine == null) return;
+            bool on = !_cameraOn;
+            int code = IsInClassroom ? _engine.MuteLocalVideoStream(!on) : 0;
+            if (code != 0) { _status = "Không đổi được camera: " + code; return; }
+            if (on) _engine.StartPreview(); else _engine.StopPreview();
+            _cameraOn = on;
+            if (_local != null) _local.SetEnable(on);
+            _status = on ? "Camera đã bật." : "Camera đã tắt — người cùng phòng chỉ nghe thấy bạn.";
+        }
+
         private static void Check(int code, string action)
         {
             if (code != 0) throw new InvalidOperationException(action + " thất bại (" + code + "). Kiểm tra App ID, token và thiết bị.");
         }
 
+        /// <summary>A call started: the own camera goes into the panel's small picture (the call video used to be a
+        /// separate canvas drawn underneath the lounge card, so nobody could see it).</summary>
         private void CreateVideo()
         {
-            if (_videoRoot != null) return;
-            _videoRoot = new GameObject("LiveClassroomVideo", typeof(Canvas));
-            _videoRoot.transform.SetParent(transform, false);
-            var canvas = _videoRoot.GetComponent<Canvas>();
-            canvas.renderMode = RenderMode.ScreenSpaceOverlay; canvas.sortingOrder = 150;
-            _remote = CreateSurface("Teacher", new Vector2(0.5f, 0.55f), new Vector2(640, 360));
-            var local = CreateSurface("MyCamera", new Vector2(0.85f, 0.8f), new Vector2(240, 135));
-            local.SetForUser(); local.SetEnable(true);
-            _videoRoot.SetActive(_open);
-        }
-
-        private VideoSurface CreateSurface(string name, Vector2 anchor, Vector2 size)
-        {
-            var go = new GameObject(name, typeof(RectTransform), typeof(RawImage));
-            go.transform.SetParent(_videoRoot.transform, false);
-            var rect = (RectTransform)go.transform; rect.anchorMin = rect.anchorMax = anchor; rect.sizeDelta = size;
-            go.GetComponent<RawImage>().raycastTarget = false;
-            var surface = go.AddComponent<VideoSurface>(); surface.SetEnable(false); return surface;
+            _previewing = true;
+            if (_local != null) { _local.SetForUser(0, "", VIDEO_SOURCE_TYPE.VIDEO_SOURCE_CAMERA_PRIMARY); _local.SetEnable(_cameraOn); }
         }
 
         private sealed class Events : IRtcEngineEventHandler
@@ -307,14 +378,24 @@ namespace NihongoLife.Learning
             }
             public override void OnUserJoined(RtcConnection connection, uint remoteUid, int elapsed)
             {
-                _owner.CreateVideo(); _owner._remoteUid = remoteUid;
-                _owner._remote.SetForUser(remoteUid, connection.channelId, VIDEO_SOURCE_TYPE.VIDEO_SOURCE_REMOTE);
-                _owner._remote.SetEnable(true); _owner._status = "Đã kết nối người cùng phòng.";
+                _owner.CreateVideo(); _owner._remoteUid = remoteUid; _owner._remoteVideo = true;
+                if (_owner._remote != null)
+                {
+                    _owner._remote.SetForUser(remoteUid, connection.channelId, VIDEO_SOURCE_TYPE.VIDEO_SOURCE_REMOTE);
+                    _owner._remote.SetEnable(true);
+                }
+                _owner._status = "Đã kết nối người cùng phòng.";
+            }
+            public override void OnRemoteVideoStateChanged(RtcConnection connection, uint remoteUid, REMOTE_VIDEO_STATE state, REMOTE_VIDEO_STATE_REASON reason, int elapsed)
+            {
+                if (remoteUid != _owner._remoteUid) return;
+                _owner._remoteVideo = state == REMOTE_VIDEO_STATE.REMOTE_VIDEO_STATE_DECODING || state == REMOTE_VIDEO_STATE.REMOTE_VIDEO_STATE_STARTING;
             }
             public override void OnUserOffline(RtcConnection connection, uint remoteUid, USER_OFFLINE_REASON_TYPE reason)
             {
                 if (_owner._remoteUid != remoteUid) return;
                 if (_owner._remote != null) _owner._remote.SetEnable(false);
+                _owner._remoteUid = 0; _owner._remoteVideo = false;
                 _owner._status = "Người cùng phòng đã rời cuộc gọi.";
             }
             public override void OnError(int err, string msg)
@@ -344,7 +425,10 @@ namespace NihongoLife.Learning
             IsInClassroom = false; _muted = false; _remoteUid = 0;
             if (_engine != null) _engine.MuteLocalAudioStream(false);
             if (_videoRoot != null) Destroy(_videoRoot);
-            _videoRoot = null; _remote = null; _status = "Đã rời phòng.";
+            _videoRoot = null; _remoteVideo = false; _previewing = false;
+            if (_remote != null) _remote.SetEnable(false);
+            if (_local != null) _local.SetEnable(false);
+            _status = "Đã rời phòng.";
             if (_classroom != null && !string.IsNullOrWhiteSpace(_waitingRoomId)) CloseWaitingRoom();
         }
         public void ToggleMicrophone()

@@ -102,7 +102,7 @@ namespace NihongoLife.UI
         {
             if (_clone == null || _camera == null) return;
             Frame();
-            _camera.Render();
+            using (StudioLight.Use(_clone.transform)) _camera.Render();
             _image.texture = _texture;
             _image.color = Color.white;
             HasPortrait = true;
@@ -111,29 +111,37 @@ namespace NihongoLife.UI
             _stage.gameObject.SetActive(false);
         }
 
-        /// <summary>Head-and-shoulders framing from the humanoid head bone (or the top of the model's bounds).</summary>
+        /// <summary>
+        /// Face-and-shoulders framing measured on the actual head: from the head bone (base of the skull) to the top of
+        /// the model. Proportions differ a lot — an adult's head is ~1/7 of the body, the chibi kids' ~1/2 — so the head
+        /// size, not the body height, sets the distance; the camera sits at eye level (a camera above the eyes put the
+        /// kids' fringe and caps over their eyes).
+        /// </summary>
         private void Frame()
         {
             var animator = _clone.GetComponentInChildren<Animator>(true);
-            Vector3 head;
             Transform headBone = animator != null && animator.isHuman ? animator.GetBoneTransform(HumanBodyBones.Head) : null;
-            float height = 1.7f;
             var bounds = new Bounds(_stage.position + Vector3.up, Vector3.zero);
             bool any = false;
             foreach (var r in _clone.GetComponentsInChildren<Renderer>())
             {
                 if (!any) { bounds = r.bounds; any = true; } else bounds.Encapsulate(r.bounds);
             }
-            if (any) height = Mathf.Max(0.5f, bounds.max.y - _stage.position.y);
-            head = headBone != null ? headBone.position + Vector3.up * height * 0.035f : new Vector3(_stage.position.x, bounds.max.y - height * 0.08f, _stage.position.z);
-            // The model faces +Z: shoot from the front, slightly from above, with the head a little above centre.
-            float distance = height * 0.58f;
+            float height = any ? Mathf.Max(0.5f, bounds.max.y - _stage.position.y) : 1.7f;
+            float baseY = headBone != null ? headBone.position.y : bounds.max.y - height * 0.16f;
+            float headSize = Mathf.Clamp(bounds.max.y - baseY, height * 0.1f, height * 0.6f);
+            // Eyes sit a little under the middle of the head; frame from the shoulders to just above the crown.
+            float eyeY = baseY + headSize * 0.42f;
+            Vector3 centre = new Vector3(bounds.center.x, baseY + headSize * 0.38f, bounds.center.z);
+            float visible = headSize * 1.75f;
+            const float fov = 26f;
+            float distance = visible * 0.5f / Mathf.Tan(fov * 0.5f * Mathf.Deg2Rad) + bounds.extents.z * 0.5f;
             var forward = _clone.transform.forward;
-            _camera.transform.position = head + forward * distance + Vector3.up * height * 0.02f;
-            _camera.transform.LookAt(head - Vector3.up * height * 0.035f);
-            _camera.fieldOfView = 26f;
+            _camera.transform.position = new Vector3(centre.x, eyeY, centre.z) + forward * distance;
+            _camera.transform.LookAt(centre);
+            _camera.fieldOfView = fov;
             _camera.nearClipPlane = 0.05f;
-            _camera.farClipPlane = distance + 2f;
+            _camera.farClipPlane = distance + 3f;
         }
 
         private void EnsureStage()

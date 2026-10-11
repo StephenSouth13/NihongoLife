@@ -23,6 +23,9 @@ namespace NihongoLife.UI
         private GameObject _clone;
         private int _cloneSourceId;
         private float _yaw = 0f; // model faces +Z, the camera looks back at it from +Z
+        private Vector2 _size = new Vector2(280f, 404f);
+        private StudioLight.CameraHook _studio;
+        private static readonly Color Backdrop = new Color(0.86f, 0.91f, 0.97f, 1f);
 
         public bool HasModel => _clone != null;
         public float Yaw => _yaw;
@@ -34,6 +37,7 @@ namespace NihongoLife.UI
             var element = go.GetComponent<LayoutElement>();
             element.preferredWidth = size.x; element.preferredHeight = size.y; element.minWidth = size.x; element.minHeight = size.y;
             var preview = go.AddComponent<ProfilePreview>();
+            preview._size = size;
             preview._image = go.GetComponent<RawImage>();
             preview._image.color = Color.white;
             preview._image.raycastTarget = true;
@@ -71,9 +75,9 @@ namespace NihongoLife.UI
         {
             if (_stage != null) return;
             if (_image == null) _image = GetComponent<RawImage>(); // OnEnable can run before Create() assigns it
-            var rect = (RectTransform)transform;
-            int w = Mathf.Max(256, Mathf.RoundToInt(rect.rect.width > 1f ? rect.rect.width * 1.5f : 600f));
-            int h = Mathf.Max(256, Mathf.RoundToInt(rect.rect.height > 1f ? rect.rect.height * 1.5f : 780f));
+            // Same aspect as the picture on screen (the layout may not be built yet, so the requested size is used):
+            // a texture of another shape squeezed the character.
+            int w = Mathf.RoundToInt(_size.x * 2f), h = Mathf.RoundToInt(_size.y * 2f);
             _texture = new RenderTexture(w, h, 24, RenderTextureFormat.ARGB32) { name = "ProfilePreviewRT", antiAliasing = 4 };
             _image.texture = _texture;
 
@@ -89,13 +93,14 @@ namespace NihongoLife.UI
             cameraGo.transform.LookAt(_stage.position + Vector3.up * 0.92f);
             _camera = cameraGo.AddComponent<Camera>();
             _camera.clearFlags = CameraClearFlags.SolidColor;
-            _camera.backgroundColor = new Color(0.07f, 0.09f, 0.12f, 1f);
+            _camera.backgroundColor = Backdrop; // light, friendly studio backdrop instead of a near-black void
             _camera.cullingMask = 1 << StageLayer;
             _camera.fieldOfView = 30f;
             _camera.nearClipPlane = 0.1f;
             _camera.farClipPlane = 12f;
             _camera.targetTexture = _texture;
             _camera.depth = -10f;
+            _studio = new StudioLight.CameraHook(_camera, () => _clone != null ? _turntable : null);
 
             // Short-range key / rim lights: they cannot reach the world 1200 m above.
             AddLight(new Vector3(1.6f, 2.6f, 2.4f), 9f, new Color(1f, 0.95f, 0.88f), 7f);
@@ -108,7 +113,7 @@ namespace NihongoLife.UI
             floor.transform.SetParent(_stage, false);
             floor.transform.localScale = new Vector3(1.6f, 0.01f, 1.6f);
             var r = floor.GetComponent<Renderer>();
-            r.material.color = new Color(0.16f, 0.2f, 0.26f);
+            r.material.color = new Color(0.72f, 0.8f, 0.9f);
             floor.layer = StageLayer;
         }
 
@@ -147,10 +152,32 @@ namespace NihongoLife.UI
                 foreach (var p in animator.parameters)
                     if (p.type == AnimatorControllerParameterType.Float && p.name == "Speed") animator.SetFloat("Speed", 0f);
             }
+            FrameCamera();
+        }
+
+        /// <summary>Whole body in the picture whatever the character's size (adult ~1.75 m, kids ~1.35 m).</summary>
+        private void FrameCamera()
+        {
+            if (_clone == null || _camera == null) return;
+            float height = 1.7f;
+            bool any = false;
+            var bounds = new Bounds();
+            foreach (var r in _clone.GetComponentsInChildren<Renderer>())
+            {
+                if (!any) { bounds = r.bounds; any = true; } else bounds.Encapsulate(r.bounds);
+            }
+            if (any) height = Mathf.Max(0.6f, bounds.max.y - _stage.position.y);
+            float visible = height * 1.18f;
+            float distance = visible * 0.5f / Mathf.Tan(_camera.fieldOfView * 0.5f * Mathf.Deg2Rad);
+            float centreY = height * 0.5f;
+            _camera.transform.localPosition = new Vector3(0f, centreY + height * 0.08f, distance);
+            _camera.transform.LookAt(_stage.position + Vector3.up * centreY);
+            _camera.farClipPlane = distance + 4f;
         }
 
         private void OnDestroy()
         {
+            _studio?.Dispose();
             if (_stage != null) Destroy(_stage.gameObject);
             if (_texture != null) { _texture.Release(); Destroy(_texture); }
         }
