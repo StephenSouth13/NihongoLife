@@ -20,6 +20,10 @@ namespace NihongoLife.UI
         private TMP_Text _badge;
         private TMP_FontAsset _font;
         private bool _open;
+        private NihongoLife.Player.PlayerController _player;
+        private NihongoLife.Cameras.ThirdPersonCameraController _camera;
+        private bool _oldPlayerLock, _oldCameraLock, _oldCursorVisible;
+        private CursorLockMode _oldCursorLock;
 
         private void Awake()
         {
@@ -46,6 +50,27 @@ namespace NihongoLife.UI
 
         public void SetOpen(bool open)
         {
+            if (_open == open) return;
+            if (open)
+            {
+                _player = FindFirstObjectByType<NihongoLife.Player.PlayerController>();
+                _camera = FindFirstObjectByType<NihongoLife.Cameras.ThirdPersonCameraController>();
+                _oldPlayerLock = _player != null && _player.InputLocked;
+                _oldCameraLock = _camera != null && _camera.IsLocked;
+                _oldCursorLock = Cursor.lockState;
+                _oldCursorVisible = Cursor.visible;
+                if (_player != null) _player.InputLocked = true;
+                if (_camera != null) _camera.IsLocked = true;
+                Cursor.lockState = CursorLockMode.None;
+                Cursor.visible = true;
+            }
+            else
+            {
+                if (_player != null) _player.InputLocked = _oldPlayerLock;
+                if (_camera != null) _camera.IsLocked = _oldCameraLock;
+                Cursor.lockState = _oldCursorLock;
+                Cursor.visible = _oldCursorVisible;
+            }
             _open = open;
             _window.SetActive(open);
             if (open) { Refresh(); UIStyleKit.PlayShowAnimation(_window); }
