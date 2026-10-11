@@ -99,6 +99,14 @@ namespace NihongoLife.Tests
                 var paper = KonbiniCatalog.Find("note_paper_12");
                 shop.Select(paper);
                 yield return new WaitForSecondsRealtime(0.2f);
+                // Notebook paper cards show the pictures rendered from the pack's notebook/book models.
+                foreach (var id in new[] { "note_paper_12", "note_paper_30" })
+                {
+                    Assert.NotNull(ItemIcons.Get(id), id + " picture");
+                    var card = Object.FindObjectsByType<RectTransform>(FindObjectsSortMode.None).First(t => t.name == "Card_" + id);
+                    var icon = card.GetComponentsInChildren<Image>(false).FirstOrDefault(i => i.name == "ItemIcon");
+                    Assert.IsTrue(icon != null && icon.sprite == ItemIcons.Get(id), id + " card shows its picture");
+                }
                 yield return Capture("03_stationery_shelf");
                 shop.AddSelectedToBasket();
                 Assert.IsTrue(shop.Pay());
@@ -224,6 +232,10 @@ namespace NihongoLife.Tests
         {
             yield return SceneManager.LoadSceneAsync(WorldLocationCatalog.CityScene);
             for (float t = 0f; t < 25f && (Object.FindFirstObjectByType<PlayerController>() == null || PlayerInventory.Instance == null || t < 2f); t += Time.unscaledDeltaTime) yield return null;
+            // The arrival narration opens on load; close it so it does not sit behind the captured windows.
+            var dm = NihongoLife.Dialogue.DialogueManager.Instance;
+            for (int guard = 0; guard < 40 && dm != null && dm.IsOpen; guard++) { dm.CancelDialogue(); if (dm.IsOpen) dm.ContinueDialogue(); }
+            yield return null;
         }
 
         private static TextMeshProUGUI Paragraph(IeltsTestUI ui) =>

@@ -145,8 +145,8 @@ namespace NihongoLife.EditorTools
         // note_paper_5 (loose-leaf sheets) has no model in the project; it keeps its 紙 glyph until one is added.
         private static readonly (string id, (string model, Vector3 offset, Vector3 euler)[] parts)[] Stationery =
         {
-            ("note_paper_12", new[] { (Office + "PRINCIPALOFFICEnotebook.fbx", Vector3.zero, Vector3.zero) }),
-            ("note_paper_30", new[] { (Classroom + "book__001.fbx", Vector3.zero, new Vector3(90f, 0f, 0f)) }),
+            ("note_paper_12", new[] { (Office + "PRINCIPALOFFICEnotebook_001.fbx", Vector3.zero, Vector3.zero) }),
+            ("note_paper_30", new[] { (Classroom + "book__004.fbx", Vector3.zero, new Vector3(90f, 0f, 0f)) }),
         };
 
         /// <summary>The stationery products with one camera, light and framing (each model fills the same frame),
@@ -215,7 +215,10 @@ namespace NihongoLife.EditorTools
         {
             private readonly Camera _camera;
             private readonly Vector3 _view;
-            private readonly RenderTexture _target = new(Size, Size, 24, RenderTextureFormat.ARGB32) { antiAliasing = 8 };
+            private const int Shot = Size * 2;
+            private const float Margin = 0.06f;
+            private readonly RenderTexture _target = new(Shot, Shot, 24, RenderTextureFormat.ARGB32) { antiAliasing = 8 };
+            private readonly Texture2D _shot = new(Shot, Shot, TextureFormat.RGBA32, false);
             private readonly Texture2D _readback = new(Size, Size, TextureFormat.RGBA32, false);
             private readonly Dictionary<Material, Material> _converted = new();
             private readonly Dictionary<string, Material> _paletteMaterials = new();
@@ -308,13 +311,54 @@ namespace NihongoLife.EditorTools
                 _camera.targetTexture = _target;
                 _camera.Render();
                 RenderTexture.active = _target;
-                _readback.ReadPixels(new Rect(0, 0, Size, Size), 0, 0);
-                _readback.Apply();
+                _shot.ReadPixels(new Rect(0, 0, Shot, Shot), 0, 0);
+                _shot.Apply();
                 RenderTexture.active = null;
                 _camera.targetTexture = null;
+                Trim();
                 Directory.CreateDirectory(Path.GetDirectoryName(file));
                 File.WriteAllBytes(file, _readback.EncodeToPNG());
                 Object.DestroyImmediate(root);
+            }
+
+            /// <summary>Crops the 2× shot to the subject's silhouette plus a fixed margin, square and centred, then
+            /// downsamples to the icon size: flat items fill the card like upright ones.</summary>
+            private void Trim()
+            {
+                var pixels = _shot.GetPixels32();
+                int minX = Shot, minY = Shot, maxX = -1, maxY = -1;
+                for (int y = 0; y < Shot; y++)
+                for (int x = 0; x < Shot; x++)
+                {
+                    if (pixels[y * Shot + x].a < 8) continue;
+                    minX = Mathf.Min(minX, x); maxX = Mathf.Max(maxX, x);
+                    minY = Mathf.Min(minY, y); maxY = Mathf.Max(maxY, y);
+                }
+                if (maxX < 0) { minX = minY = 0; maxX = maxY = Shot - 1; }
+                int side = Mathf.CeilToInt(Mathf.Max(maxX - minX + 1, maxY - minY + 1) * (1f + 2f * Margin));
+                int left = (minX + maxX + 1 - side) / 2, bottom = (minY + maxY + 1 - side) / 2;
+                var crop = new Texture2D(side, side, TextureFormat.RGBA32, false) { filterMode = FilterMode.Bilinear };
+                var clear = new Color32[side * side];
+                for (int y = 0; y < side; y++)
+                {
+                    int sy = bottom + y;
+                    if (sy < 0 || sy >= Shot) continue;
+                    for (int x = 0; x < side; x++)
+                    {
+                        int sx = left + x;
+                        if (sx >= 0 && sx < Shot) clear[y * side + x] = pixels[sy * Shot + sx];
+                    }
+                }
+                crop.SetPixels32(clear);
+                crop.Apply();
+                var small = RenderTexture.GetTemporary(Size, Size, 0, RenderTextureFormat.ARGB32, RenderTextureReadWrite.sRGB);
+                Graphics.Blit(crop, small);
+                RenderTexture.active = small;
+                _readback.ReadPixels(new Rect(0, 0, Size, Size), 0, 0);
+                _readback.Apply();
+                RenderTexture.active = null;
+                RenderTexture.ReleaseTemporary(small);
+                Object.DestroyImmediate(crop);
             }
 
             private Material Urp(Material source)
@@ -331,6 +375,7 @@ namespace NihongoLife.EditorTools
             public void Dispose()
             {
                 Object.DestroyImmediate(_readback);
+                Object.DestroyImmediate(_shot);
                 _target.Release();
             }
         }
