@@ -66,7 +66,7 @@ namespace NihongoLife.Player
                 return;
             }
             Instance = this;
-            PlayerName = PlayableCharacterCatalog.GetPlayerName();
+            PlayerName = PlayableCharacterCatalog.ResolvePlayerName(null);
             LoadProgress();
         }
 
@@ -211,7 +211,8 @@ namespace NihongoLife.Player
             if (!Core.GameServices.TryGet(out Save.IProgressRepository repository)) return;
             var progress = repository.GetProgress();
             if (progress == null) return;
-            if (!string.IsNullOrWhiteSpace(progress.displayName)) PlayerName = progress.displayName;
+            // Never the "Guest" placeholder of a guest save: see PlayableCharacterCatalog.ResolvePlayerName.
+            PlayerName = PlayableCharacterCatalog.ResolvePlayerName(progress.displayName);
             // progress.xp is the total XP. Older saves stored XP inside the level: never drop a level on load.
             var table = NihongoLife.Progression.ProgressionCatalog.Load();
             TotalExp = Mathf.Max(0, progress.xp);

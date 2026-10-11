@@ -39,6 +39,9 @@ namespace NihongoLife.Save
 
                 if (_authService.IsAuthenticated)
                 {
+                    // A session restored before this repository subscribed: still an account session, so the
+                    // game reads the account's save (not the "Guest" one).
+                    PlayerSessionService.GetOrCreate()?.BeginAccount(_authService.UserId, _authService.DisplayName);
                     SyncFromCloud();
                 }
             }

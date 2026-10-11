@@ -72,7 +72,29 @@ namespace NihongoLife.Player
         public static string GetPlayerName()
         {
             string savedName = PlayerPrefs.GetString(PlayerNamePrefsKey, DefaultPlayerName);
-            return string.IsNullOrWhiteSpace(savedName) ? DefaultPlayerName : savedName.Trim();
+            return string.IsNullOrWhiteSpace(savedName) || IsPlaceholderName(savedName) ? DefaultPlayerName : savedName.Trim();
+        }
+
+        /// <summary>Names that only mean "nobody chose a name yet" (guest saves, anonymous accounts, old defaults).</summary>
+        public static bool IsPlaceholderName(string name)
+        {
+            if (string.IsNullOrWhiteSpace(name)) return true;
+            string n = name.Trim();
+            return n == DefaultPlayerName || n == "Học viên Nihongo"
+                || string.Equals(n, "Guest", StringComparison.OrdinalIgnoreCase) || string.Equals(n, "Player", StringComparison.OrdinalIgnoreCase);
+        }
+
+        /// <summary>
+        /// The character's name shown on the HUD: the name chosen on this device (character select, or the profile
+        /// name copied in at sign-in) → the name in the save → the signed-in account's name → the default.
+        /// </summary>
+        public static string ResolvePlayerName(string savedDisplayName)
+        {
+            string chosen = GetPlayerName();
+            if (!IsPlaceholderName(chosen)) return chosen;
+            if (!IsPlaceholderName(savedDisplayName)) return savedDisplayName.Trim();
+            if (GameServices.TryGet(out IAuthService auth) && auth.IsAuthenticated && !IsPlaceholderName(auth.DisplayName)) return auth.DisplayName.Trim();
+            return DefaultPlayerName;
         }
 
         public static GameObject LoadPrefab(PlayableCharacter character)

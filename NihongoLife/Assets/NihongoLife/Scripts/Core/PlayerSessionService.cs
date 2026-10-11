@@ -63,7 +63,8 @@ namespace NihongoLife.Core
         public void BeginAccount(string userId, string displayName)
         {
             Mode = PlayerSessionMode.Account;
-            if (!string.IsNullOrWhiteSpace(displayName)) PlayableCharacterCatalog.SavePlayerName(displayName.Trim());
+            // The profile name becomes the character's name, unless it is only "Guest"/anonymous.
+            if (!PlayableCharacterCatalog.IsPlaceholderName(displayName)) PlayableCharacterCatalog.SavePlayerName(displayName.Trim());
             PlayerPrefs.Save();
             OnModeChanged?.Invoke(Mode);
         }

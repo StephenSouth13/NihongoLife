@@ -17,7 +17,6 @@ namespace NihongoLife.Core
 
     public class DayNightCycle : MonoBehaviour
     {
-        [SerializeField] private Light sun;
         [SerializeField] private float cycleMinutes = 8f;
         [SerializeField, Range(0f, 24f)] private float startHour = 15.5f;
         [SerializeField] private bool runCycle = true;
@@ -36,11 +35,6 @@ namespace NihongoLife.Core
         private void Awake()
         {
             _hour = startHour;
-            if (sun == null)
-            {
-                sun = RenderSettings.sun != null ? RenderSettings.sun : FindFirstObjectByType<Light>();
-            }
-
             ApplyLighting();
         }
 
@@ -59,56 +53,37 @@ namespace NihongoLife.Core
             ApplyLighting();
         }
 
+        /// <summary>Only scenes with an OutdoorSky are lit by the cycle (Hibari, Midori, the street outside interior
+        /// doors); room lighting in interiors stays as built. The old fallback (any Light became the sun) is gone.</summary>
         private void ApplyLighting()
         {
-            if (sun == null)
-            {
-                sun = RenderSettings.sun != null ? RenderSettings.sun : FindFirstObjectByType<Light>();
-            }
-
-            var key = EvaluateTimeline(_hour);
-
-            RenderSettings.ambientMode = UnityEngine.Rendering.AmbientMode.Flat;
-            RenderSettings.ambientLight = key.ambientColor;
-            RenderSettings.fog = true;
-            RenderSettings.fogColor = key.fogColor;
-            RenderSettings.fogDensity = key.fogDensity;
-
-            if (sun == null) return;
-
-            float sunAngle = (_hour / 24f) * 360f - 90f;
-            sun.transform.rotation = Quaternion.Euler(sunAngle, -35f, 0f);
-            sun.color = key.sunColor;
-            sun.intensity = key.sunIntensity;
+            var outdoors = OutdoorSky.Active;
+            if (outdoors == null) return;
+            outdoors.Apply(_hour, EvaluateTimeline(_hour), EvaluateTimeline(13f));
         }
 
-        private DayNightTimelineKey EvaluateTimeline(float hour)
+        /// <summary>Colour key for an hour; the night between the last key (22:00) and the first (5:30) wraps over midnight.</summary>
+        public DayNightTimelineKey EvaluateTimeline(float hour)
         {
-            if (timeline == null || timeline.Count == 0)
-            {
-                return new DayNightTimelineKey();
-            }
-
+            if (timeline == null || timeline.Count == 0) return new DayNightTimelineKey();
             timeline.Sort((a, b) => a.hour.CompareTo(b.hour));
-            DayNightTimelineKey previous = timeline[0];
-            DayNightTimelineKey next = timeline[timeline.Count - 1];
-
-            for (int i = 0; i < timeline.Count; i++)
+            DayNightTimelineKey first = timeline[0], last = timeline[timeline.Count - 1];
+            DayNightTimelineKey previous, next;
+            float from, to, h = hour;
+            if (hour < first.hour || hour >= last.hour)
             {
-                if (timeline[i].hour <= hour) previous = timeline[i];
-                if (timeline[i].hour >= hour)
-                {
-                    next = timeline[i];
-                    break;
-                }
+                previous = last; next = first;
+                from = last.hour; to = first.hour + 24f;
+                if (h < first.hour) h += 24f;
             }
-
-            if (next.hour < previous.hour || Mathf.Approximately(previous.hour, next.hour))
+            else
             {
-                return previous;
+                int i = 0;
+                while (i < timeline.Count - 1 && timeline[i + 1].hour <= hour) i++;
+                previous = timeline[i]; next = timeline[Mathf.Min(i + 1, timeline.Count - 1)];
+                from = previous.hour; to = next.hour;
             }
-
-            float t = Mathf.InverseLerp(previous.hour, next.hour, hour);
+            float t = to > from ? Mathf.InverseLerp(from, to, h) : 0f;
             return new DayNightTimelineKey
             {
                 hour = hour,
