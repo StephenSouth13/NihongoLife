@@ -171,6 +171,17 @@ namespace NihongoLife.Exam.Ielts
         {
             Directory.CreateDirectory(Folder);
             File.WriteAllText(Path.Combine(Folder, record.id + ".json"), JsonUtility.ToJson(record, true));
+            // Writing text + assessment is also carried by the normal progress repository, so a signed-in
+            // learner keeps the complete marked paper across devices. Speaking audio itself remains local.
+            if (NihongoLife.Core.GameServices.TryGet(out NihongoLife.Save.IProgressRepository repository))
+            {
+                var progress = repository.GetProgress();
+                progress.productiveAttempts ??= new List<IeltsProductiveRecord>();
+                int index = progress.productiveAttempts.FindIndex(item => item.id == record.id);
+                if (index >= 0) progress.productiveAttempts[index] = record;
+                else progress.productiveAttempts.Add(record);
+                repository.SaveProgress(progress);
+            }
         }
 
         public static IeltsProductiveRecord Load(string id)
@@ -183,8 +194,7 @@ namespace NihongoLife.Exam.Ielts
         public static List<IeltsProductiveRecord> All(string skill)
         {
             var list = new List<IeltsProductiveRecord>();
-            if (!Directory.Exists(Folder)) return list;
-            foreach (string file in Directory.GetFiles(Folder, "*.json"))
+            foreach (string file in Directory.Exists(Folder) ? Directory.GetFiles(Folder, "*.json") : Array.Empty<string>())
             {
                 try
                 {
@@ -192,6 +202,11 @@ namespace NihongoLife.Exam.Ielts
                     if (record != null && (skill == null || record.skill == skill)) list.Add(record);
                 }
                 catch (Exception e) { Debug.LogWarning($"[IeltsProductiveStore] Skipped {Path.GetFileName(file)}: {e.GetType().Name}"); }
+            }
+            if (NihongoLife.Core.GameServices.TryGet(out NihongoLife.Save.IProgressRepository repository))
+            {
+                foreach (var record in repository.GetProgress().productiveAttempts ?? new List<IeltsProductiveRecord>())
+                    if (record != null && (skill == null || record.skill == skill) && list.All(item => item.id != record.id)) list.Add(record);
             }
             return list.OrderBy(r => r.finishedUtc, StringComparer.Ordinal).ToList();
         }

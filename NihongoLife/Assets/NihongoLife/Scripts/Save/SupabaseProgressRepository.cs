@@ -261,6 +261,9 @@ namespace NihongoLife.Save
                 storyFlags = cloud.storyFlags != null ? new System.Collections.Generic.List<string>(cloud.storyFlags) : new System.Collections.Generic.List<string>(),
                 bestScores = new System.Collections.Generic.List<ScenarioScoreRecord>(cloud.bestScores),
                 examAttempts = cloud.examAttempts != null ? new System.Collections.Generic.List<ExamAttemptRecord>(cloud.examAttempts) : new System.Collections.Generic.List<ExamAttemptRecord>(),
+                productiveAttempts = cloud.productiveAttempts != null
+                    ? new System.Collections.Generic.List<NihongoLife.Exam.Ielts.IeltsProductiveRecord>(cloud.productiveAttempts)
+                    : new System.Collections.Generic.List<NihongoLife.Exam.Ielts.IeltsProductiveRecord>(),
                 masteryLevels = new System.Collections.Generic.List<MasteryRecord>(cloud.masteryLevels),
                 careers = cloud.careers != null
                     ? new System.Collections.Generic.List<CareerRecord>(cloud.careers)
@@ -304,6 +307,14 @@ namespace NihongoLife.Save
             {
                 bool alreadyPresent = merged.examAttempts.Exists(a => a.examId == localAttempt.examId && a.completedAtUtcTicks == localAttempt.completedAtUtcTicks);
                 if (!alreadyPresent) merged.examAttempts.Add(localAttempt);
+            }
+
+            foreach (var localPaper in local.productiveAttempts ?? new System.Collections.Generic.List<NihongoLife.Exam.Ielts.IeltsProductiveRecord>())
+            {
+                int index = merged.productiveAttempts.FindIndex(p => p.id == localPaper.id);
+                if (index < 0) merged.productiveAttempts.Add(localPaper);
+                else if (string.CompareOrdinal(localPaper.finishedUtc, merged.productiveAttempts[index].finishedUtc) >= 0)
+                    merged.productiveAttempts[index] = localPaper;
             }
 
             foreach (var localCareer in local.careers ?? new System.Collections.Generic.List<CareerRecord>())

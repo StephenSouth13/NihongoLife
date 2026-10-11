@@ -174,6 +174,13 @@ namespace NihongoLife.Core
                 gameObject.AddComponent<NihongoLife.Learning.SpeechPracticeController>();
             if (FindFirstObjectByType<NihongoLife.Learning.EduMeetingManager>() == null)
                 gameObject.AddComponent<NihongoLife.Learning.EduMeetingManager>();
+            if (GetComponent<NihongoLife.Learning.AgoraClassroomService>() == null)
+                gameObject.AddComponent<NihongoLife.Learning.AgoraClassroomService>();
+            if (GetComponent<ProfileService>() == null)
+            {
+                var profiles = gameObject.AddComponent<ProfileService>();
+                profiles.Initialize();
+            }
 
             // 9. Exam Center (JLPT / IELTS practice tests) — independent of the story scenario system.
             var examRepo = new ExamRepository();
@@ -187,6 +194,8 @@ namespace NihongoLife.Core
             var examManager = gameObject.AddComponent<ExamManager>();
             GameServices.Register<ExamManager>(examManager);
             examManager.Initialize();
+            if (GetComponent<NihongoLife.UI.ExamMailboxUI>() == null)
+                gameObject.AddComponent<NihongoLife.UI.ExamMailboxUI>();
 
             Debug.Log("[AppRoot] Core services initialized successfully.");
 

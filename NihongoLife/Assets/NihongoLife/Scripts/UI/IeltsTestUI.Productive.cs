@@ -414,6 +414,7 @@ namespace NihongoLife.UI
             IeltsProductiveStore.Save(record);
             IsGrading = false;
             ShowProductiveResults();
+            ExamMailboxUI.NotifyGraded(record);
         }
 
         /// <summary>AI Coach on the original text of a task.</summary>

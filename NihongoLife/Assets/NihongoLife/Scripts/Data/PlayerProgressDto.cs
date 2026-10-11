@@ -83,6 +83,8 @@ namespace NihongoLife.Data
         public List<string> completedScenarios = new List<string>();
         public List<string> storyFlags = new List<string>();
         public List<ExamAttemptRecord> examAttempts = new List<ExamAttemptRecord>();
+        /// <summary>Submitted IELTS Writing/Speaking papers and AI feedback, synced with cloud progress.</summary>
+        public List<NihongoLife.Exam.Ielts.IeltsProductiveRecord> productiveAttempts = new List<NihongoLife.Exam.Ielts.IeltsProductiveRecord>();
         public List<ScenarioScoreRecord> bestScores = new List<ScenarioScoreRecord>();
         public List<MasteryRecord> masteryLevels = new List<MasteryRecord>();
         public List<ReviewRecord> reviewItems = new List<ReviewRecord>();

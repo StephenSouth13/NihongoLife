@@ -76,6 +76,8 @@ namespace NihongoLife.Core
         public string agoraAppIdEnvironmentKey = "AGORA_APP_ID";
         [Tooltip("Optional App ID for builds without the environment variable (an App ID is public; tokens are not).")]
         public string agoraAppId = "";
+        [Tooltip("Optional override for the authenticated Agora room/token API. Empty uses <Supabase URL>/functions/v1/agora-classroom.")]
+        public string agoraClassroomApiUrl = "";
 
         [Header("Online Database")]
         public bool enableOnlineSync = false;

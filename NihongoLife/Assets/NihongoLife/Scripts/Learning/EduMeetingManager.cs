@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using Agora.Rtc;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -16,6 +17,13 @@ namespace NihongoLife.Learning
         private string _channel = "nihongolife-classroom", _token = "";
         private string _status = "Nhập cùng phòng với giáo viên. Phòng bảo mật cần token còn hạn.";
         private bool _open, _joining, _muted;
+        private AgoraClassroomService _classroom;
+        private string _accountRole = "student", _waitingRoomId = "";
+        private uint _issuedUid;
+        private List<AgoraWaitingRoom> _waitingRooms = new List<AgoraWaitingRoom>();
+        private AgoraWaitingRoom _selectedRoom;
+        private float _nextRoomPoll;
+        private bool _roomRequestPending;
         private GameObject _videoRoot;
         private VideoSurface _remote;
         private uint _remoteUid;
@@ -35,8 +43,12 @@ namespace NihongoLife.Learning
 
         private void Update()
         {
-            if (Keyboard.current == null) return;
-            if (Keyboard.current.f8Key.wasPressedThisFrame && !NihongoLife.UI.UiModalStack.BlocksHotkeys) SetOpen(!_open);
+            if (Keyboard.current != null && Keyboard.current.f8Key.wasPressedThisFrame && !NihongoLife.UI.UiModalStack.BlocksHotkeys) SetOpen(!_open);
+            if (_open && !_roomRequestPending && !IsInClassroom && Time.unscaledTime >= _nextRoomPoll)
+            {
+                _nextRoomPoll = Time.unscaledTime + 4f;
+                RefreshClassroomLobby();
+            }
         }
 
         public void SetOpen(bool open)
@@ -58,7 +70,106 @@ namespace NihongoLife.Learning
             }
             _open = open;
             if (_videoRoot != null) _videoRoot.SetActive(open);
+            if (open)
+            {
+                if (_classroom == null) _classroom = FindFirstObjectByType<AgoraClassroomService>();
+                _nextRoomPoll = 0f;
+                RefreshClassroomLobby();
+            }
             LateUpdate();
+        }
+
+        private bool IsTeacher => _accountRole == "teacher" || _accountRole == "admin";
+
+        private void RefreshClassroomLobby()
+        {
+            if (_classroom == null) _classroom = FindFirstObjectByType<AgoraClassroomService>();
+            if (_classroom == null || !_classroom.IsAvailable || _roomRequestPending) return;
+            _roomRequestPending = true;
+            _classroom.GetRole(roleResponse =>
+            {
+                _accountRole = roleResponse.ok && !string.IsNullOrWhiteSpace(roleResponse.role) ? roleResponse.role : "student";
+                if (IsTeacher)
+                {
+                    _classroom.ListWaitingRooms(response =>
+                    {
+                        _roomRequestPending = false;
+                        if (response.ok) _waitingRooms = new List<AgoraWaitingRoom>(response.rooms ?? Array.Empty<AgoraWaitingRoom>());
+                        else _status = response.error;
+                    });
+                }
+                else
+                {
+                    _classroom.GetMyRoom(response =>
+                    {
+                        _roomRequestPending = false;
+                        if (!response.ok) { _status = response.error; return; }
+                        if (response.room == null) { _waitingRoomId = ""; return; }
+                        _waitingRoomId = response.room.id;
+                        if (response.room.status == "matched") RequestRoomToken(response.room.id);
+                        else _status = "Phòng chờ đã tạo. Đang chờ giáo viên nhận lớp...";
+                    });
+                }
+            });
+        }
+
+        private void CreateWaitingRoom()
+        {
+            if (_classroom == null || _roomRequestPending) return;
+            _roomRequestPending = true;
+            _classroom.CreateRoom(response =>
+            {
+                _roomRequestPending = false;
+                if (!response.ok) { _status = response.error; return; }
+                _waitingRoomId = response.room?.id ?? "";
+                _status = "Đã tạo phòng chờ. Giáo viên có thể chọn vào phòng.";
+            });
+        }
+
+        private void ClaimWaitingRoom(string roomId)
+        {
+            if (_classroom == null || _roomRequestPending) return;
+            _roomRequestPending = true;
+            _classroom.ClaimRoom(roomId, response =>
+            {
+                _roomRequestPending = false;
+                if (!response.ok) { _status = response.error; return; }
+                JoinIssuedRoom(response);
+            });
+        }
+
+        private void RequestRoomToken(string roomId)
+        {
+            if (_classroom == null || _roomRequestPending || _joining) return;
+            _roomRequestPending = true;
+            _classroom.GetToken(roomId, response =>
+            {
+                _roomRequestPending = false;
+                if (!response.ok) { _status = response.error; return; }
+                JoinIssuedRoom(response);
+            });
+        }
+
+        private void JoinIssuedRoom(AgoraClassroomResponse response)
+        {
+            if (response == null || string.IsNullOrWhiteSpace(response.token) || string.IsNullOrWhiteSpace(response.channelName))
+            {
+                _status = "Máy chủ không cấp đủ channel/token Agora.";
+                return;
+            }
+            _waitingRoomId = response.room?.id ?? _waitingRoomId;
+            JoinAgoraClassroom(response.channelName, response.token, response.uid);
+        }
+
+        private void CloseWaitingRoom()
+        {
+            if (_classroom == null || string.IsNullOrWhiteSpace(_waitingRoomId)) return;
+            string id = _waitingRoomId;
+            _classroom.CloseRoom(id, response =>
+            {
+                if (response.ok) { _waitingRoomId = ""; _status = "Đã đóng phòng chờ."; }
+                else _status = response.error;
+            });
         }
 
         private void LateUpdate()
@@ -69,12 +180,12 @@ namespace NihongoLife.Learning
             Cursor.lockState = CursorLockMode.None; Cursor.visible = true;
         }
 
-        public void JoinAgoraClassroom(string channelName, string token = "")
+        public void JoinAgoraClassroom(string channelName, string token = "", uint uid = 0)
         {
             SetOpen(true);
             if (IsInClassroom || _joining) return;
             if (string.IsNullOrWhiteSpace(channelName)) { _status = "Vui lòng nhập tên phòng."; return; }
-            _channel = channelName.Trim(); _token = token ?? "";
+            _channel = channelName.Trim(); _token = token ?? ""; _issuedUid = uid;
             StartCoroutine(JoinWithPermission());
         }
 
@@ -107,7 +218,7 @@ namespace NihongoLife.Learning
                 options.publishMicrophoneTrack.SetValue(true);
                 options.autoSubscribeAudio.SetValue(true);
                 options.autoSubscribeVideo.SetValue(true);
-                Check(_engine.JoinChannel(_token, _channel, 0, options), "Vào phòng");
+                Check(_engine.JoinChannel(_token, _channel, _issuedUid, options), "Vào phòng");
                 _status = "Đang kết nối Agora...";
             }
             catch (Exception ex)
@@ -189,6 +300,19 @@ namespace NihongoLife.Learning
                 _owner._joining = false;
                 _owner._status = "Agora lỗi " + err + ": " + msg + ". Kiểm tra token còn hạn và đúng phòng/App ID.";
             }
+            public override void OnTokenPrivilegeWillExpire(RtcConnection connection, string token)
+            {
+                if (_owner._classroom == null || string.IsNullOrWhiteSpace(_owner._waitingRoomId)) return;
+                _owner._classroom.GetToken(_owner._waitingRoomId, response =>
+                {
+                    if (response.ok && !string.IsNullOrWhiteSpace(response.token) && _owner._engine != null)
+                    {
+                        int code = _owner._engine.RenewToken(response.token);
+                        _owner._status = code == 0 ? "Đã gia hạn phiên lớp học." : "Không gia hạn được token Agora: " + code;
+                    }
+                    else _owner._status = response.error ?? "Không gia hạn được token Agora.";
+                });
+            }
         }
 
         public void LeaveClassroom()
@@ -199,6 +323,7 @@ namespace NihongoLife.Learning
             if (_engine != null) _engine.MuteLocalAudioStream(false);
             if (_videoRoot != null) Destroy(_videoRoot);
             _videoRoot = null; _remote = null; _status = "Đã rời phòng.";
+            if (_classroom != null && !string.IsNullOrWhiteSpace(_waitingRoomId)) CloseWaitingRoom();
         }
         public void ToggleMicrophone()
         {
@@ -221,13 +346,58 @@ namespace NihongoLife.Learning
         private void OnGUI()
         {
             if (!_open) { GUI.Label(new Rect(24, Screen.height - 82, 400, 25), "[F8] Gọi video / lớp học trực tiếp"); return; }
-            GUILayout.BeginArea(new Rect(20, 20, Mathf.Min(620, Screen.width - 40), 240), GUI.skin.box);
-            GUILayout.Label("LỚP HỌC TRỰC TIẾP · AGORA");
+            var panelStyle = new GUIStyle(GUI.skin.box) { padding = new RectOffset(22, 22, 18, 18) };
+            var titleStyle = new GUIStyle(GUI.skin.label) { fontSize = 22, fontStyle = FontStyle.Bold };
+            titleStyle.normal.textColor = new Color(0.95f, 0.72f, 0.25f);
+            var mutedStyle = new GUIStyle(GUI.skin.label) { fontSize = 13, wordWrap = true };
+            mutedStyle.normal.textColor = new Color(0.68f, 0.76f, 0.84f);
+            GUILayout.BeginArea(new Rect(20, 20, Mathf.Min(720, Screen.width - 40), Mathf.Min(620, Screen.height - 40)), panelStyle);
+            GUILayout.Label("SPEAKING LOUNGE  ·  AGORA", titleStyle);
             GUILayout.Label(_status);
-            GUI.enabled = !_joining && !IsInClassroom;
-            GUILayout.Label("Tên phòng"); _channel = GUILayout.TextField(_channel);
-            GUILayout.Label("Token do người tổ chức cung cấp (nếu phòng bảo mật)"); _token = GUILayout.PasswordField(_token, '*');
-            if (GUILayout.Button("Vào phòng · bật camera và micro")) JoinAgoraClassroom(_channel, _token);
+            GUILayout.Label(IsTeacher ? "GIÁO VIÊN  •  Chọn học viên và kiểm tra hồ sơ trước khi nhận lớp" : "HỌC VIÊN  •  Tạo một phòng chờ riêng tư", mutedStyle);
+            GUI.enabled = !_joining && !IsInClassroom && !_roomRequestPending;
+            if (_classroom != null && _classroom.IsAvailable)
+            {
+                if (IsTeacher)
+                {
+                    GUILayout.Label("Phòng học viên đang chờ:");
+                    if (_waitingRooms.Count == 0) GUILayout.Label("Chưa có phòng chờ.");
+                    foreach (var room in _waitingRooms)
+                        if (GUILayout.Button($"●  {(string.IsNullOrWhiteSpace(room.student_name) ? "Học viên" : room.student_name)}     Lv.{Mathf.Max(1, room.level)}  ·  {Mathf.Max(0, room.xp)} XP", GUILayout.Height(48)))
+                            _selectedRoom = room;
+                    if (_selectedRoom != null)
+                    {
+                        GUILayout.Space(10);
+                        GUILayout.BeginVertical(GUI.skin.box);
+                        string initials = string.IsNullOrWhiteSpace(_selectedRoom.student_name) ? "HV" : _selectedRoom.student_name.Substring(0, 1).ToUpperInvariant();
+                        GUILayout.Label($"{initials}     {_selectedRoom.student_name}", titleStyle);
+                        GUILayout.Label($"Cấp độ {_selectedRoom.level}   •   {_selectedRoom.xp} XP", mutedStyle);
+                        GUILayout.Label(string.IsNullOrWhiteSpace(_selectedRoom.bio) ? "Học viên chưa viết phần giới thiệu." : _selectedRoom.bio, mutedStyle);
+                        GUILayout.Label("Mã hồ sơ: " + _selectedRoom.student_id, mutedStyle);
+                        if (GUILayout.Button("XÁC NHẬN NHẬN LỚP VỚI HỌC VIÊN NÀY", GUILayout.Height(52))) ClaimWaitingRoom(_selectedRoom.id);
+                        if (GUILayout.Button("Đóng hồ sơ")) _selectedRoom = null;
+                        GUILayout.EndVertical();
+                    }
+                    if (GUILayout.Button("Làm mới danh sách")) RefreshClassroomLobby();
+                }
+                else if (string.IsNullOrWhiteSpace(_waitingRoomId))
+                {
+                    if (GUILayout.Button("Tạo phòng chờ Speaking")) CreateWaitingRoom();
+                }
+                else
+                {
+                    GUILayout.Label("Đang chờ giáo viên nhận lớp...");
+                    if (GUILayout.Button("Hủy phòng chờ")) CloseWaitingRoom();
+                }
+            }
+            else
+            {
+                GUILayout.Label("Đăng nhập online để tạo hoặc nhận phòng Speaking.");
+                GUILayout.Label("Chế độ kiểm thử thủ công");
+                GUILayout.Label("Tên phòng"); _channel = GUILayout.TextField(_channel);
+                GUILayout.Label("Token"); _token = GUILayout.PasswordField(_token, '*');
+                if (GUILayout.Button("Vào phòng")) JoinAgoraClassroom(_channel, _token);
+            }
             GUI.enabled = true;
             GUILayout.BeginHorizontal();
             if (IsInClassroom && GUILayout.Button(_muted ? "Bật micro" : "Tắt micro")) ToggleMicrophone();
