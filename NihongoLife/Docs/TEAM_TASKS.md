@@ -770,3 +770,13 @@ Claude nhận tiếp phần Codex đang làm dở: báo cáo, trailer, demo và 
 - HUD dock thêm nút L. Thanh nút cảm ứng tự co theo số nút.
 - `IeltsTestUI.PaperText` gắn highlighter cho chữ trong `RenderPart`.
 - Test: `NotebookHighlightPlayModeTests`. Ảnh chụp ở `Bao_Cao/notebook-regression`; ảnh có đề Cambridge chỉ lưu local.
+
+## Cập nhật (2026-10-11, Claude) — Nâng cấp Player HUD (StatusDock)
+- Ảnh đại diện lấy từ model 3D thật của nhân vật (`UI/HudPortrait.cs`): clone "Visual" lên sân khấu riêng (layer 30, y −1600), chụp một lần vào RenderTexture 256px, rồi tắt sân khấu. Chỉ chụp lại khi đổi model.
+- Bố cục mới của `StatusDock.BuildStatusWidget`:
+  - portrait có badge Lv; tên và địa điểm (icon ghim); ví ¥ viền vàng;
+  - 5 vòng tiến trình có icon và % (vẽ bằng code trong `UI/HudIcons.cs`), không có chữ dưới vòng;
+  - nền kính tối.
+- Dữ liệu và logic giữ nguyên (`PlayerStatus`, `PlayerInventory`, đổi màu khi chỉ số thấp, ẩn khi có hội thoại).
+- Thẻ cảnh báo tự đặt lên trên widget.
+- Test: `HudStatusWidgetPlayModeTests`. Ảnh ở `Bao_Cao/hud-regression`.

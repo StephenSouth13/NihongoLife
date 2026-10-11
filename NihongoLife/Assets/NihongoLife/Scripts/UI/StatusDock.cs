@@ -44,11 +44,21 @@ namespace NihongoLife.UI
 
         private readonly struct Ring
         {
-            public Ring(Image fill, TextMeshProUGUI glyph, Color color) { Fill = fill; Glyph = glyph; Color = color; }
+            public Ring(Image fill, Image icon, TextMeshProUGUI value, Color color) { Fill = fill; Icon = icon; Value = value; Color = color; }
             public Image Fill { get; }
-            public TextMeshProUGUI Glyph { get; }
+            public Image Icon { get; }
+            public TextMeshProUGUI Value { get; }
             public Color Color { get; }
         }
+
+        private static Sprite NeedIcon(string key) => key switch
+        {
+            "health" => HudIcons.Heart,
+            "energy" => HudIcons.Runner,
+            "hunger" => HudIcons.ForkKnife,
+            "thirst" => HudIcons.Drop,
+            _ => HudIcons.Moon,
+        };
 
         private static readonly (string key, string glyph, string vi, Color color)[] Needs =
         {
@@ -76,6 +86,7 @@ namespace NihongoLife.UI
         private TextMeshProUGUI _statYen, _statKnowledge, _statShifts, _statWords;
         private Image _characterExp;
         private ProfilePreview _preview;
+        private HudPortrait _portrait;
         private PlayerStatus _boundStatus;
         private PlayerInventory _boundInventory;
 
@@ -123,44 +134,84 @@ namespace NihongoLife.UI
 
         private void BuildStatusWidget(RectTransform dock)
         {
-            var widget = NLUi.Panel(dock, "StatusWidget", new Color(0.04f, 0.055f, 0.07f, 0.9f), new RectOffset(14, 18, 12, 12), 14f, vertical: false);
+            // Dark glass card: portrait | name, place, wallet / five need gauges.
+            var widget = NLUi.Panel(dock, "StatusWidget", new Color(0.04f, 0.05f, 0.07f, 0.9f), new RectOffset(14, 20, 14, 14), 18f, vertical: false);
             NLUi.Anchor(widget, Vector2.zero, new Vector2(24f, 24f), new Vector2(0f, 0f));
             widget.pivot = Vector2.zero;
-            ((HorizontalLayoutGroup)widget.GetComponent<HorizontalOrVerticalLayoutGroup>()).childForceExpandWidth = false;
+            var widgetLayout = (HorizontalLayoutGroup)widget.GetComponent<HorizontalOrVerticalLayoutGroup>();
+            widgetLayout.childForceExpandWidth = false;
+            widgetLayout.childAlignment = TextAnchor.MiddleLeft;
             NLUi.FitContent(widget, width: true, height: true);
+            var edge = widget.gameObject.AddComponent<Outline>();
+            edge.effectColor = new Color(1f, 1f, 1f, 0.07f);
+            edge.effectDistance = new Vector2(1f, -1f);
+            var shadow = widget.gameObject.AddComponent<Shadow>();
+            shadow.effectColor = new Color(0f, 0f, 0f, 0.35f);
+            shadow.effectDistance = new Vector2(0f, -4f);
             StatusWidget = widget;
 
-            // Portrait: gold disc with the learner glyph and a level badge.
-            var portrait = new GameObject("Portrait", typeof(RectTransform), typeof(Image), typeof(LayoutElement)).GetComponent<RectTransform>();
+            // Portrait of the real player model in a framed circle, with the level badge on its rim.
+            const float portraitSize = 100f;
+            var portrait = new GameObject("Portrait", typeof(RectTransform), typeof(LayoutElement)).GetComponent<RectTransform>();
             portrait.SetParent(widget, false);
             var portraitLayout = portrait.GetComponent<LayoutElement>();
-            portraitLayout.preferredWidth = portraitLayout.minWidth = 70f; portraitLayout.preferredHeight = portraitLayout.minHeight = 70f;
-            var disc = portrait.GetComponent<Image>(); disc.sprite = HudGraphics.Disc; disc.color = NLUi.Gold;
-            var glyph = NLUi.Label(portrait, "Glyph", "学", 32f, NLUi.Ink, _font, FontStyles.Bold, TextAlignmentOptions.Center);
-            NLUi.Stretch(glyph.rectTransform);
-            var badge = new GameObject("LevelBadge", typeof(RectTransform), typeof(Image)).GetComponent<RectTransform>();
-            badge.SetParent(portrait, false);
-            badge.anchorMin = badge.anchorMax = new Vector2(1f, 0f); badge.pivot = new Vector2(0.75f, 0.25f); badge.sizeDelta = new Vector2(30f, 30f);
-            var badgeImage = badge.GetComponent<Image>(); badgeImage.sprite = HudGraphics.Disc; badgeImage.color = new Color(0.55f, 0.45f, 0.95f);
-            _levelBadge = NLUi.Label(badge, "Level", "1", 15f, Color.white, _font, FontStyles.Bold, TextAlignmentOptions.Center);
-            NLUi.Stretch(_levelBadge.rectTransform);
+            portraitLayout.preferredWidth = portraitLayout.minWidth = portraitSize; portraitLayout.preferredHeight = portraitLayout.minHeight = portraitSize;
+            var mask = new GameObject("Mask", typeof(RectTransform), typeof(Image), typeof(Mask)).GetComponent<RectTransform>();
+            mask.SetParent(portrait, false);
+            NLUi.Stretch(mask, 4f);
+            var maskImage = mask.GetComponent<Image>();
+            maskImage.sprite = HudGraphics.Disc;
+            maskImage.color = new Color(0.33f, 0.52f, 0.62f, 1f); // shown until the first photo is taken
+            maskImage.raycastTarget = false;
+            _portrait = HudPortrait.Create(mask);
+            var frame = new GameObject("Frame", typeof(RectTransform), typeof(Image)).GetComponent<Image>();
+            frame.transform.SetParent(portrait, false);
+            NLUi.Stretch(frame.rectTransform);
+            frame.sprite = HudGraphics.Hairline; frame.color = new Color(1f, 1f, 1f, 0.9f); frame.raycastTarget = false;
 
-            var column = NLUi.Group(widget, "Column", true, 6f, TextAnchor.UpperLeft, false);
-            var top = NLUi.Group(column, "Top", false, 10f, TextAnchor.MiddleLeft, false);
-            _name = NLUi.Label(top, "Name", "", 18f, NLUi.Text, _font, FontStyles.Bold);
+            var badge = new GameObject("LevelBadge", typeof(RectTransform), typeof(Image), typeof(Outline)).GetComponent<RectTransform>();
+            badge.SetParent(portrait, false);
+            badge.anchorMin = badge.anchorMax = new Vector2(1f, 0f); badge.pivot = new Vector2(0.72f, 0.22f); badge.sizeDelta = new Vector2(40f, 40f);
+            var badgeImage = badge.GetComponent<Image>(); badgeImage.sprite = HudGraphics.Disc; badgeImage.color = new Color(0.47f, 0.36f, 0.9f);
+            var badgeEdge = badge.GetComponent<Outline>(); badgeEdge.effectColor = new Color(1f, 1f, 1f, 0.85f); badgeEdge.effectDistance = new Vector2(1.5f, -1.5f);
+            var lv = NLUi.Label(badge, "Lv", "Lv.", 10f, new Color(1f, 1f, 1f, 0.85f), _font, FontStyles.Bold, TextAlignmentOptions.Top);
+            NLUi.Stretch(lv.rectTransform); lv.rectTransform.offsetMax = new Vector2(0f, -5f);
+            _levelBadge = NLUi.Label(badge, "Level", "1", 17f, Color.white, _font, FontStyles.Bold, TextAlignmentOptions.Bottom);
+            NLUi.Stretch(_levelBadge.rectTransform); _levelBadge.rectTransform.offsetMin = new Vector2(0f, 3f);
+            _levelBadge.textWrappingMode = TextWrappingModes.NoWrap;
+
+            var column = NLUi.Group(widget, "Column", true, 8f, TextAnchor.UpperLeft, false);
+            var top = NLUi.Group(column, "Top", false, 18f, TextAnchor.MiddleLeft, false);
+            var identity = NLUi.Group(top, "Identity", true, 2f, TextAnchor.UpperLeft, false);
+            _name = NLUi.Label(identity, "Name", "", 22f, NLUi.Text, _font, FontStyles.Bold);
             _name.textWrappingMode = TextWrappingModes.NoWrap;
-            _level = NLUi.Label(top, "Place", "", 14f, NLUi.Muted, _font);
+            _name.characterSpacing = 1f;
+            var placeRow = NLUi.Group(identity, "PlaceRow", false, 5f, TextAnchor.MiddleLeft, false);
+            Icon(placeRow, "Pin", HudIcons.Pin, 14f, NLUi.Muted);
+            _level = NLUi.Label(placeRow, "Place", "", 14f, NLUi.Muted, _font);
             _level.textWrappingMode = TextWrappingModes.NoWrap;
-            _expFill = BarFill(column, "Exp", new Color(0.55f, 0.45f, 0.95f), 4f);
-            var rings = NLUi.Group(column, "Needs", false, 8f, TextAnchor.MiddleLeft, false);
-            foreach (var (key, needGlyph, _, color) in Needs) _rings[key] = MakeRing(rings, key, needGlyph, color);
-            _wallet = NLUi.Label(rings, "Wallet", "", 16f, NLUi.Gold, _font, FontStyles.Bold);
+            var spacer = new GameObject("Spacer", typeof(RectTransform), typeof(LayoutElement));
+            spacer.transform.SetParent(top, false);
+            spacer.GetComponent<LayoutElement>().flexibleWidth = 1f;
+            var wallet = NLUi.Panel(top, "WalletPill", new Color(0.12f, 0.1f, 0.05f, 0.85f), new RectOffset(12, 16, 6, 6), 8f, vertical: false);
+            var walletLayout = (HorizontalLayoutGroup)wallet.GetComponent<HorizontalOrVerticalLayoutGroup>();
+            walletLayout.childForceExpandWidth = false; walletLayout.childAlignment = TextAnchor.MiddleCenter;
+            var walletEdge = wallet.gameObject.AddComponent<Outline>();
+            walletEdge.effectColor = new Color(0.95f, 0.75f, 0.32f, 0.7f); walletEdge.effectDistance = new Vector2(1.2f, -1.2f);
+            Icon(wallet, "WalletIcon", HudIcons.Wallet, 20f, NLUi.Gold);
+            _wallet = NLUi.Label(wallet, "Wallet", "", 19f, NLUi.Gold, _font, FontStyles.Bold);
             _wallet.textWrappingMode = TextWrappingModes.NoWrap;
-            _wallet.margin = new Vector4(6f, 0f, 0f, 0f);
+            NLUi.FitContent(wallet, width: true, height: true);
+
+            _expFill = BarFill(column, "Exp", new Color(0.55f, 0.45f, 0.95f), 3f);
+            NLUi.Size(_expFill.transform.parent, flexibleWidth: 1f);
+            NLUi.Size(top, flexibleWidth: 1f);
+            var rings = NLUi.Group(column, "Needs", false, 12f, TextAnchor.MiddleLeft, false);
+            foreach (var (key, _, _, color) in Needs) _rings[key] = MakeRing(rings, key, color);
 
             // Critical warning chip, above the widget, only while a need is below 20 %.
             _warning = NLUi.Panel(dock, "NeedWarning", new Color(0.55f, 0.13f, 0.12f, 0.95f), new RectOffset(16, 16, 8, 8), 0f, vertical: false);
-            NLUi.Anchor(_warning, Vector2.zero, new Vector2(24f, 150f), new Vector2(0f, 0f));
+            NLUi.Anchor(_warning, Vector2.zero, new Vector2(24f, 190f), new Vector2(0f, 0f));
             _warning.pivot = Vector2.zero;
             NLUi.FitContent(_warning, width: true, height: true);
             _warningText = NLUi.Label(_warning, "Text", "", 16f, Color.white, _font, FontStyles.Bold);
@@ -168,22 +219,46 @@ namespace NihongoLife.UI
             _warning.gameObject.SetActive(false);
         }
 
-        private Ring MakeRing(RectTransform parent, string key, string glyph, Color color)
+        private static Image Icon(Transform parent, string name, Sprite sprite, float size, Color color)
         {
+            var image = new GameObject(name, typeof(RectTransform), typeof(Image), typeof(LayoutElement)).GetComponent<Image>();
+            image.transform.SetParent(parent, false);
+            image.sprite = sprite; image.color = color; image.raycastTarget = false; image.preserveAspect = true;
+            var element = image.GetComponent<LayoutElement>();
+            element.preferredWidth = element.minWidth = size; element.preferredHeight = element.minHeight = size;
+            return image;
+        }
+
+        /// <summary>One need gauge: a slim progress ring with the need's icon and its percentage inside.</summary>
+        private Ring MakeRing(RectTransform parent, string key, Color color)
+        {
+            const float size = 60f;
             var holder = new GameObject("Need_" + key, typeof(RectTransform), typeof(LayoutElement)).GetComponent<RectTransform>();
             holder.SetParent(parent, false);
             var element = holder.GetComponent<LayoutElement>();
-            element.preferredWidth = element.minWidth = 40f; element.preferredHeight = element.minHeight = 40f;
+            element.preferredWidth = element.minWidth = size; element.preferredHeight = element.minHeight = size;
+            var plate = new GameObject("Plate", typeof(RectTransform), typeof(Image)).GetComponent<Image>();
+            plate.transform.SetParent(holder, false); NLUi.Stretch(plate.rectTransform, 3f);
+            plate.sprite = HudGraphics.Disc; plate.color = new Color(1f, 1f, 1f, 0.04f); plate.raycastTarget = false;
             var back = new GameObject("Track", typeof(RectTransform), typeof(Image)).GetComponent<Image>();
             back.transform.SetParent(holder, false); NLUi.Stretch(back.rectTransform);
-            back.sprite = HudGraphics.Ring; back.color = new Color(1f, 1f, 1f, 0.12f); back.raycastTarget = false;
+            back.sprite = HudGraphics.Gauge; back.color = new Color(1f, 1f, 1f, 0.1f); back.raycastTarget = false;
             var fill = new GameObject("Fill", typeof(RectTransform), typeof(Image)).GetComponent<Image>();
             fill.transform.SetParent(holder, false); NLUi.Stretch(fill.rectTransform);
-            fill.sprite = HudGraphics.Ring; fill.color = color; fill.raycastTarget = false;
+            fill.sprite = HudGraphics.Gauge; fill.color = color; fill.raycastTarget = false;
             fill.type = Image.Type.Filled; fill.fillMethod = Image.FillMethod.Radial360; fill.fillOrigin = (int)Image.Origin360.Top; fill.fillClockwise = true;
-            var label = NLUi.Label(holder, "Glyph", glyph, 15f, color, _font, FontStyles.Bold, TextAlignmentOptions.Center);
-            NLUi.Stretch(label.rectTransform);
-            return new Ring(fill, label, color);
+            var icon = new GameObject("Icon", typeof(RectTransform), typeof(Image)).GetComponent<Image>();
+            icon.transform.SetParent(holder, false);
+            icon.rectTransform.anchorMin = icon.rectTransform.anchorMax = new Vector2(0.5f, 0.5f);
+            icon.rectTransform.anchoredPosition = new Vector2(0f, 8f);
+            icon.rectTransform.sizeDelta = new Vector2(22f, 22f);
+            icon.sprite = NeedIcon(key); icon.color = color; icon.raycastTarget = false; icon.preserveAspect = true;
+            var value = NLUi.Label(holder, "Value", "", 11f, color, _font, FontStyles.Bold, TextAlignmentOptions.Center);
+            value.textWrappingMode = TextWrappingModes.NoWrap;
+            value.rectTransform.anchorMin = value.rectTransform.anchorMax = new Vector2(0.5f, 0.5f);
+            value.rectTransform.anchoredPosition = new Vector2(0f, -10f);
+            value.rectTransform.sizeDelta = new Vector2(size, 18f);
+            return new Ring(fill, icon, value, color);
         }
 
         // ─────────── Tracked objective chip ───────────
@@ -369,12 +444,13 @@ namespace NihongoLife.UI
             foreach (var (key, _, vi, color) in Needs)
             {
                 float value = Value01(status, key);
-                if (_rings.TryGetValue(key, out Ring ring)) { ring.Fill.color = Urgency(color, value); ring.Glyph.color = ring.Fill.color; }
+                if (_rings.TryGetValue(key, out Ring ring)) { ring.Fill.color = Urgency(color, value); ring.Icon.color = ring.Fill.color; ring.Value.color = ring.Fill.color; }
                 if (_characterBars.TryGetValue(key, out Bar bar)) bar.Fill.color = Urgency(color, value);
                 if (value < 0.2f && critical == null) critical = key;
             }
             if (status.IsExhausted) critical ??= "exhausted";
             _warning.gameObject.SetActive(critical != null && !hide);
+            if (StatusWidget != null) _warning.anchoredPosition = new Vector2(24f, 24f + StatusWidget.rect.height + 10f);
             if (critical != null) _warningText.text = critical switch
             {
                 "health" => "体  Sức khỏe yếu — nghỉ ngơi và ăn uống",
@@ -435,7 +511,12 @@ namespace NihongoLife.UI
             _wallet.text = $"¥{yen:N0}";
             SetFill(_expFill, status.MaxExp > 0 ? status.CurrentExp / (float)status.MaxExp : 0f);
             foreach (var (key, _, _, _) in Needs)
-                if (_rings.TryGetValue(key, out Ring ring)) SetFill(ring.Fill, Value01(status, key));
+            {
+                if (!_rings.TryGetValue(key, out Ring ring)) continue;
+                float need = Value01(status, key);
+                SetFill(ring.Fill, need);
+                ring.Value.text = $"{Mathf.RoundToInt(Mathf.Clamp01(need) * 100f)}%";
+            }
 
             if (_characterWindow == null || !_characterWindow.gameObject.activeInHierarchy) return;
             _characterName.text = status.PlayerName;
