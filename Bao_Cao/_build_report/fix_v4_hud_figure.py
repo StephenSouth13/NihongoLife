@@ -13,7 +13,7 @@ d = docx.Document(DOCX)
 # 1. Remove the separate figure (picture paragraph + its caption) added earlier.
 paras = d.paragraphs
 for i, p in enumerate(paras):
-    if p.text.startswith("Hình 10.2. Player HUD: portrait"):
+    if p.style.name == "Caption" and p.text.startswith("Hình 10.2. Player HUD: portrait"):
         pic = paras[i - 1]
         assert pic._element.xpath(".//pic:pic"), "picture paragraph expected before the caption"
         pic._element.getparent().remove(pic._element)
