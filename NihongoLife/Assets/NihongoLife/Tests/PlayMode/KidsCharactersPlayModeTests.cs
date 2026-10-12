@@ -60,7 +60,7 @@ namespace NihongoLife.Tests
             Directory.CreateDirectory(Folder);
             try
             {
-                foreach (var id in new[] { "student", "kid_haruto", "kid_yui", "kid_sota", "kid_hina", "kid_riku", "kid_mio", "kid_yuto", "kid_sakura" })
+                foreach (var id in new[] { "kid_haruto", "kid_yui", "kid_sota", "kid_hina", "kid_riku", "kid_mio", "kid_yuto", "kid_sakura" })
                 {
                     var character = PlayableCharacterCatalog.FindById(id);
                     Assert.AreEqual(id, character.Id);
@@ -79,7 +79,7 @@ namespace NihongoLife.Tests
                     var bounds = Bounds(visual);
                     float feet = bounds.min.y; // soles (the Foot bone is the ankle)
                     Debug.Log($"[Kids] {id}: height {bounds.size.y:0.00} m, feet {feet - player.transform.position.y:0.00} m above the root, controller {animator.runtimeAnimatorController.name}");
-                    Assert.That(bounds.size.y, Is.InRange(id == "student" ? 1.5f : 1.2f, 2f), id + ": height");
+                    Assert.That(bounds.size.y, Is.InRange(1.2f, 2f), id + ": height");
                     Assert.That(feet - player.transform.position.y, Is.InRange(-0.08f, 0.08f), id + ": feet on the ground");
 
                     var tiles = new List<Texture2D>();
@@ -126,7 +126,7 @@ namespace NihongoLife.Tests
             var original = PlayableCharacterCatalog.GetSelected();
             try
             {
-                foreach (var id in new[] { "student", "kid_haruto", "kid_yui" })
+                foreach (var id in new[] { "kid_haruto", "kid_yui" })
                 {
                     Assert.IsTrue(PlayableCharacterCatalog.ApplyVisual(player.gameObject, PlayableCharacterCatalog.FindById(id)));
                     yield return null;

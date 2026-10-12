@@ -27,7 +27,7 @@ namespace NihongoLife.Player
             if (OwnsCompany) return false;
             if (PlayerStatus.Instance == null || PlayerStatus.Instance.Knowledge < CompanyKnowledgeRequirement)
                 return Fail($"Can {CompanyKnowledgeRequirement} diem kien thuc de mo cong ty.");
-            if (PlayerInventory.Instance == null || !PlayerInventory.Instance.SpendYen(CompanyCapitalRequirement))
+            if (PlayerInventory.Instance == null || !PlayerInventory.Instance.SpendYen(CompanyCapitalRequirement, "Vốn mở công ty"))
                 return Fail($"Can Y{CompanyCapitalRequirement} von khoi nghiep.");
 
             Business = new BusinessRecord

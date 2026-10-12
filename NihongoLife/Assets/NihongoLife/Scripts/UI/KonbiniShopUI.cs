@@ -139,7 +139,7 @@ namespace NihongoLife.UI
             var inventory = PlayerInventory.Instance;
             int total = KonbiniBasket.Total;
             if (inventory == null || KonbiniBasket.IsEmpty) return false;
-            if (!inventory.SpendYen(total))
+            if (!inventory.SpendYen(total, "Mua ở Hibari Mart"))
             {
                 Feedback($"Không đủ tiền — cần ¥{total}, bạn có ¥{inventory.Yen}.", NLUi.Bad);
                 Cue(GameAudioCue.UiError);
@@ -163,7 +163,7 @@ namespace NihongoLife.UI
                 }
             }
             if (sheets > 0) HudFeed.Post($"Sổ tay +{sheets} trang (giờ có {NihongoLife.Notebook.NotebookService.Pages} trang) — mở bằng phím L.", HudFeed.Kind.Info, 4f);
-            if (refused > 0) inventory.AddYen(refused);
+            if (refused > 0) inventory.AddYen(refused, "Hoàn tiền (balo đầy)");
             foreach (var line in KonbiniBasket.Items) NihongoLife.Progression.QuestService.Raise("buy", line.Key, line.Value);
             if (total > refused) NihongoLife.Progression.QuestService.Raise("buy", "konbini", 1);
             KonbiniBasket.Clear();

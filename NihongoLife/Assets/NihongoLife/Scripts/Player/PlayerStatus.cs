@@ -1,5 +1,6 @@
 using System;
 using UnityEngine;
+using NihongoLife.Core;
 
 namespace NihongoLife.Player
 {
@@ -266,9 +267,21 @@ namespace NihongoLife.Player
         public void AddKnowledge(int amount)
         {
             if (amount <= 0) return;
+            int before = Knowledge;
             Knowledge += amount;
+            // Crossing a threshold opens a new place: say so.
+            foreach (var unlock in LocationUnlocks.All)
+                if (unlock != null && before < unlock.requiredKnowledge && Knowledge >= unlock.requiredKnowledge)
+                    NihongoLife.UI.HudFeed.Post($"Đã mở khóa: {WorldLocationCatalog.Get(unlock.sceneName).VietnameseName}! Xem trên bản đồ (M).", NihongoLife.UI.HudFeed.Kind.Reward, 6f, "unlock");
             OnStatusChanged?.Invoke();
             SaveProgress();
+        }
+
+        /// <summary>Tests: set the knowledge points directly (not saved).</summary>
+        public void DebugSetKnowledge(int value)
+        {
+            Knowledge = Mathf.Max(0, value);
+            OnStatusChanged?.Invoke();
         }
 
         public bool HasKnowledge(int required) => Knowledge >= Mathf.Max(0, required);

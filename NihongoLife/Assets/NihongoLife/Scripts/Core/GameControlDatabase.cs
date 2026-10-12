@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 using NihongoLife.Scenario;
@@ -13,6 +14,13 @@ namespace NihongoLife.Core
         public string remoteUrl;
         public AudioType remoteAudioType = AudioType.MPEG;
         public string englishIpa;
+    }
+
+    [Serializable]
+    public class LocationUnlock
+    {
+        public string sceneName;
+        public int requiredKnowledge;
     }
 
     [CreateAssetMenu(fileName = "NihongoLifeControlDatabase", menuName = "NihongoLife/Control Database")]
@@ -78,6 +86,16 @@ namespace NihongoLife.Core
         public string agoraAppId = "";
         [Tooltip("Optional override for the authenticated Agora room/token API. Empty uses <Supabase URL>/functions/v1/agora-classroom.")]
         public string agoraClassroomApiUrl = "";
+
+        [Header("Location Unlocks")]
+        [Tooltip("Knowledge points needed to enter each place. Hibari Mart (in the city), the school and home are always open.")]
+        public LocationUnlock[] locationUnlocks =
+        {
+            new LocationUnlock { sceneName = WorldLocationCatalog.StationScene, requiredKnowledge = 40 },
+            new LocationUnlock { sceneName = WorldLocationCatalog.SushiRestaurantScene, requiredKnowledge = 90 },
+            new LocationUnlock { sceneName = WorldLocationCatalog.GameCenterScene, requiredKnowledge = 160 },
+            new LocationUnlock { sceneName = WorldLocationCatalog.MidoriIslandScene, requiredKnowledge = 250 }
+        };
 
         [Header("Online Database")]
         public bool enableOnlineSync = false;

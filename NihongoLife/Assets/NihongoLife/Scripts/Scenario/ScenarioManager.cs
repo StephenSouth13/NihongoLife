@@ -537,7 +537,7 @@ namespace NihongoLife.Scenario
                     breakdown.rewardKnowledge = knowledgeReward;
                     breakdown.rewardYen = yenReward;
                     breakdown.firstCompletion = firstCompletion;
-                    if (yenReward > 0) Player.PlayerInventory.Instance?.AddYen(yenReward);
+                    if (yenReward > 0) Player.PlayerInventory.Instance?.AddYen(yenReward, "Thưởng tình huống");
                     if (firstCompletion && currentScenario.rewardItems != null && Player.PlayerInventory.Instance != null) { foreach (string itemId in currentScenario.rewardItems) Player.PlayerInventory.Instance.AddItem(itemId, itemId, itemId, 0, 1, false, Player.ItemUseType.None); }
                     // XP (level) and knowledge are separate; level thresholds come from the progression data.
                     int xpGain = Mathf.Max(10, knowledgeReward / 2);
@@ -629,7 +629,7 @@ namespace NihongoLife.Scenario
             }
 
             int total = Mathf.Max(497, inventory.GetCartTotalYen());
-            if (!inventory.SpendYen(total))
+            if (!inventory.SpendYen(total, "Thanh toán"))
             {
                 Debug.LogWarning("[ScenarioManager] Checkout blocked: not enough yen.");
                 ScoringManager.Instance?.AddScore("TaskCompletion", -30, "Không đủ tiền thanh toán", "checkout_no_money");

@@ -136,28 +136,32 @@ namespace NihongoLife.Player
             return true;
         }
 
-        public bool SpendYen(int amount)
+        public bool SpendYen(int amount, string reason = null)
         {
             amount = Mathf.Max(0, amount);
             if (Yen < amount) return false;
 
             Yen -= amount;
+            NihongoLife.Core.WalletLedger.Record(-amount, reason ?? "Chi tiêu", Yen);
             OnInventoryChanged?.Invoke();
             SaveWallet();
             return true;
         }
 
-        public void AddYen(int amount)
+        public void AddYen(int amount, string reason = null)
         {
             if (amount <= 0) return;
             Yen += amount;
+            NihongoLife.Core.WalletLedger.Record(amount, reason ?? "Nhận tiền", Yen);
             OnInventoryChanged?.Invoke();
             SaveWallet();
         }
 
-        public void ApplyFine(int amount)
+        public void ApplyFine(int amount, string reason = null)
         {
+            int before = Yen;
             Yen = Mathf.Max(0, Yen - Mathf.Max(0, amount));
+            if (before != Yen) NihongoLife.Core.WalletLedger.Record(Yen - before, reason ?? "Tiền phạt", Yen);
             OnInventoryChanged?.Invoke();
             SaveWallet();
         }

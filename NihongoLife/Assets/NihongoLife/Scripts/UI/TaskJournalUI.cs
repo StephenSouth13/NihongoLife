@@ -118,6 +118,14 @@ namespace NihongoLife.UI
             _list.anchorMin = new Vector2(0f, 1f); _list.anchorMax = new Vector2(1f, 1f); _list.pivot = new Vector2(0.5f, 1f);
             _list.offsetMin = new Vector2(10f, 0f); _list.offsetMax = new Vector2(-10f, -10f);
             NLUi.FitContent(_list);
+            // The list can be longer than the panel (unlock card + quests): clip and scroll it.
+            listPanel.gameObject.AddComponent<RectMask2D>();
+            var scroll = listPanel.gameObject.AddComponent<ScrollRect>();
+            scroll.content = _list;
+            scroll.viewport = listPanel;
+            scroll.horizontal = false;
+            scroll.movementType = ScrollRect.MovementType.Clamped;
+            scroll.scrollSensitivity = 30f;
 
             var detailPanel = new GameObject("DetailPanel", typeof(RectTransform), typeof(Image)).GetComponent<RectTransform>();
             detailPanel.SetParent(card, false);
@@ -188,6 +196,7 @@ namespace NihongoLife.UI
                 _selectedKey = (entries.FirstOrDefault(e => e.Section == "active") ?? entries.FirstOrDefault(e => e.Section == "available") ?? entries.FirstOrDefault())?.Key;
 
             Clear(_list);
+            UnlockProgress();
             foreach (var (section, label) in new[] { ("active", "ĐANG LÀM"), ("available", "CÓ THỂ NHẬN"), ("completed", "ĐÃ XONG") })
             {
                 var group = entries.Where(e => e.Section == section).ToList();
@@ -232,6 +241,35 @@ namespace NihongoLife.UI
         private static string StoryTitle(ScenarioDefinition s) => string.IsNullOrWhiteSpace(s.titleVi) ? s.titleEn : s.titleVi;
 
         // ─────────── Detail ───────────
+
+        /// <summary>Where knowledge takes you next: a progress bar to the next place and the list of places.</summary>
+        private void UnlockProgress()
+        {
+            var card = NLUi.Panel(_list, "Unlocks", new Color(0.12f, 0.16f, 0.2f, 1f), new RectOffset(14, 14, 10, 12), 6f);
+            int knowledge = LocationUnlocks.Knowledge;
+            var next = LocationUnlocks.Next();
+            NLUi.Label(card, "Title", $"MỞ KHÓA ĐỊA ĐIỂM  <color=#A8B4C4>· {knowledge} điểm kiến thức</color>", 13f, NLUi.Gold, _font, FontStyles.Bold);
+            if (next != null)
+            {
+                string place = WorldLocationCatalog.Get(next.sceneName).VietnameseName;
+                NLUi.Label(card, "Next", $"Tiếp theo: <b>{place}</b> — còn {LocationUnlocks.Missing(next.sceneName)} điểm", 15f, NLUi.Text, _font);
+                var track = NLUi.Panel(card, "Track", new Color(1f, 1f, 1f, 0.08f));
+                NLUi.Size(track, -1f, 10f);
+                var fill = NLUi.Panel(track, "Fill", NLUi.Gold);
+                float t = Mathf.Clamp01(knowledge / (float)Mathf.Max(1, next.requiredKnowledge));
+                fill.anchorMin = Vector2.zero; fill.anchorMax = new Vector2(t, 1f); fill.offsetMin = fill.offsetMax = Vector2.zero;
+            }
+            else NLUi.Label(card, "Next", "Bạn đã mở mọi địa điểm!", 15f, NLUi.Good, _font);
+            var lines = new System.Text.StringBuilder("<size=85%>✓ Hibari Mart · Trường Hibari · Nhà trọ — luôn mở");
+            foreach (var u in LocationUnlocks.All)
+            {
+                bool open = LocationUnlocks.IsUnlocked(u.sceneName);
+                lines.Append('\n').Append(open ? "<color=#7BD88F>✓</color> " : "<color=#FF9A80>×</color> ")
+                     .Append(WorldLocationCatalog.Get(u.sceneName).VietnameseName).Append(open ? "" : $" — cần {u.requiredKnowledge}");
+            }
+            NLUi.Label(card, "List", lines.Append("</size>").ToString(), 15f, NLUi.Muted, _font);
+            NLUi.Label(card, "How", "<size=80%>Kiếm điểm: học ở trường, bàn học ở nhà, nhiệm vụ, hội thoại tình huống.</size>", 14f, NLUi.Muted, _font);
+        }
 
         private void RefreshDetailOnly()
         {

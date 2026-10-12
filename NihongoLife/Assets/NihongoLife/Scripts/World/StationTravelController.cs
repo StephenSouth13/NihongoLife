@@ -250,7 +250,7 @@ namespace NihongoLife.World
             if (HasTicket) { Announce("きっぷは もう あります。", $"Bạn đã có vé đi {TicketStop.Vi}."); return false; }
             Stop stop = Line[index];
             var inventory = PlayerInventory.Instance;
-            if (inventory == null || !inventory.SpendYen(stop.Price))
+            if (inventory == null || !inventory.SpendYen(stop.Price, "Vé tàu"))
             {
                 Announce("おかねが たりません。", $"Không đủ tiền. Vé đi {stop.Vi} giá ¥{stop.Price}.");
                 Cue(GameAudioCue.UiError);
@@ -258,7 +258,7 @@ namespace NihongoLife.World
             }
             if (!inventory.AddItem(TicketItemId, $"きっぷ（{stop.Ja}）", $"Vé tàu Hibari → {stop.Vi}", stop.Price, 1))
             {
-                inventory.AddYen(stop.Price);
+                inventory.AddYen(stop.Price, "Hoàn vé tàu");
                 Announce("バッグが いっぱいです。", "Balo đã đầy, không nhận được vé.");
                 return false;
             }
@@ -678,6 +678,11 @@ namespace NihongoLife.World
             {
                 if (item == null || item.gameObject.scene != gameObject.scene ||
                     !item.name.StartsWith("HighspeedTrain_", System.StringComparison.OrdinalIgnoreCase)) continue;
+                // Only the top object of each car: a child with the same prefix would otherwise move twice.
+                bool nested = false;
+                for (var p = item.parent; p != null && !nested; p = p.parent)
+                    nested = p.name.StartsWith("HighspeedTrain_", System.StringComparison.OrdinalIgnoreCase);
+                if (nested) continue;
 
                 _platformTrain.Add((item, item.position));
                 foreach (Collider collider in item.GetComponentsInChildren<Collider>(true))

@@ -63,32 +63,15 @@ namespace NihongoLife.Editor
             EnsureFolderExists("Assets/NihongoLife/Animations");
             EnsureFolderExists(PREFAB_DIR);
 
-            string playerPath = ResolveCharacterPath(REMY_PATH);
-            string cashierPath = ResolveCharacterPath(ELIZABETH_PATH, REMY_PATH);
-            string guidePath = ResolveCharacterPath(LILLY_PATH, playerPath);
-            string neighborPath = ResolveCharacterPath(EMINEM_PATH, REMY_PATH);
-
-            ConfigureModel(playerPath);
-            ConfigureModel(cashierPath);
-            ConfigureModel(guidePath);
-            ConfigureModel(neighborPath);
-
+            // Only the shared humanoid animations and NL_Humanoid.controller are built here now. The character
+            // prefabs (NL_Player/Cashier/Guide/Neighbor) are Kids, made by KidsCharactersSetup.Build + BuildNpcs; the
+            // adult Mixamo models they used to come from were removed.
             ConfigureAnimation(ANIM_IDLE, true);
             ConfigureAnimation(ANIM_WALK, true, true);
             ConfigureAnimation(ANIM_TALK, true);
             ConfigureAnimation(ANIM_BOW, false);
             ConfigureAnimation(ANIM_POINT, false);
-
             GenerateAnimatorController();
-
-            // skipIfExists=true by default: re-running "Build Character System" must never wipe manual
-            // tweaks already made on these prefabs. Use "Force Rebuild Legacy Characters" to intentionally reset.
-            bool skipIfExists = !forceRebuildLegacyPrefabs;
-            CreateVisualPrefab(playerPath, "NL_Player", 1.72f, skipIfExists);
-            CreateVisualPrefab(cashierPath, "NL_Cashier", 1.68f, skipIfExists);
-            CreateVisualPrefab(guidePath, "NL_Guide", 1.70f, skipIfExists);
-            CreateVisualPrefab(neighborPath, "NL_Neighbor", 1.76f, skipIfExists);
-            ScanNewCharacters();
 
             AssetDatabase.SaveAssets();
             Debug.Log("[CharacterBuilder] Character system built successfully.");

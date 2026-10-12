@@ -17,7 +17,10 @@ namespace NihongoLife.Interaction
         public string TargetSpawnId => targetSpawnId;
         public float InteractionPriority => 0.75f;
         public string GetPromptJa() => promptJa;
-        public string GetpromptEn() => promptEn;
+        public string GetpromptEn() => !exitsZone && !string.IsNullOrEmpty(targetScene) && !LocationUnlocks.IsUnlocked(targetScene)
+            ? $"Đã khóa — cần {LocationUnlocks.Required(targetScene)} điểm kiến thức (thiếu {LocationUnlocks.Missing(targetScene)})"
+            : promptEn;
+        public string TargetScene => targetScene;
         public Transform GetTransform() => transform;
 
         private void Awake() => GetComponent<Collider>().isTrigger = true;

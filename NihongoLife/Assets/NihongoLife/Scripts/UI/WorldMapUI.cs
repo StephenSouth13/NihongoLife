@@ -26,6 +26,22 @@ namespace NihongoLife.UI
             public Vector2 Pixel;
             public Color Color;
             public bool HasWorld => !float.IsNaN(World.x);
+            /// <summary>Scene behind this place (for unlocks and the guide), null for spots inside a scene.</summary>
+            public string Scene => SceneOfType(Type);
+            public bool Locked => Scene != null && !LocationUnlocks.IsUnlocked(Scene);
+        }
+
+        public static string SceneOfType(string type)
+        {
+            switch (type)
+            {
+                case "STATION": return WorldLocationCatalog.StationScene;
+                case "SUSHI": return WorldLocationCatalog.SushiRestaurantScene;
+                case "ARCADE": return WorldLocationCatalog.GameCenterScene;
+                case "SCHOOL": return WorldLocationCatalog.SchoolScene;
+                case "HOME": return WorldLocationCatalog.HomeBedroomScene;
+                default: return null;
+            }
         }
 
         private const float MapW = 960f, MapH = 560f, Inset = 40f;
@@ -67,6 +83,10 @@ namespace NihongoLife.UI
             NLUi.Anchor(_header.rectTransform, new Vector2(0f, 1f), new Vector2(36f, -26f), new Vector2(700f, 44f));
             _location = NLUi.Label(window, "Location", "", 18f, NLUi.Muted, _font);
             NLUi.Anchor(_location.rectTransform, new Vector2(0f, 1f), new Vector2(38f, -70f), new Vector2(700f, 28f));
+
+            var guide = NLUi.Button(window, "GuideButton", "Cẩm nang địa điểm", _font, () => LocationGuideUI.Open(), NLUi.Gold, 17f, NLUi.Ink, 44f);
+            NLUi.Anchor((RectTransform)guide.transform, new Vector2(1f, 0f), new Vector2(-30f, 22f), new Vector2(230f, 44f));
+            ((RectTransform)guide.transform).pivot = new Vector2(1f, 0f);
 
             var close = NLUi.Button(window, "Close", "×", _font, () => SetVisible(false), NLUi.Card, 26f, null, 48f);
             NLUi.Anchor((RectTransform)close.transform, new Vector2(1f, 1f), new Vector2(-26f, -24f), new Vector2(56f, 52f));
@@ -341,11 +361,13 @@ namespace NihongoLife.UI
 
         private void DrawPlace(MapPlace place)
         {
-            var marker = NLUi.Panel(_mapArea, "Place_" + place.Type, place.Color);
+            bool locked = place.Locked;
+            var marker = NLUi.Panel(_mapArea, "Place_" + place.Type, locked ? new Color(0.42f, 0.45f, 0.5f) : place.Color);
             NLUi.Anchor(marker, new Vector2(0.5f, 0.5f), place.Pixel, new Vector2(46f, 46f));
             marker.GetComponent<Image>().raycastTarget = false;
             NLUi.Stretch(NLUi.Label(marker, "Glyph", place.Glyph, 26f, new Color(0.08f, 0.1f, 0.12f), _font, FontStyles.Bold, TextAlignmentOptions.Center).rectTransform);
             string text = string.IsNullOrEmpty(place.Short) ? place.Name : place.Short;
+            if (locked) text += $" · khóa {LocationUnlocks.Required(place.Scene)}đ";
             var label = NLUi.Pill(marker, "Label", text, _font, new Color(0.05f, 0.07f, 0.09f, 0.88f), NLUi.Text, 15f);
             // Below the marker by default; flip above when that would cover a neighbour's label.
             float width = text.Length * 16f + 34f;
@@ -367,11 +389,17 @@ namespace NihongoLife.UI
                 ((HorizontalLayoutGroup)row.GetComponent<HorizontalOrVerticalLayoutGroup>()).childForceExpandWidth = false;
                 var dot = NLUi.Pill(row, "Glyph", place.Glyph, _font, place.Color, new Color(0.08f, 0.1f, 0.12f), 18f);
                 NLUi.Size(dot, preferredWidth: 38f);
-                var name = NLUi.Label(row, "Name", place.Name, 17f, NLUi.Text, _font);
+                string rowName = place.Locked
+                    ? $"{place.Name}\n<size=80%><color=#FF9A80>Đã khóa · cần {LocationUnlocks.Required(place.Scene)} điểm (thiếu {LocationUnlocks.Missing(place.Scene)})</color></size>"
+                    : place.Name;
+                var name = NLUi.Label(row, "Name", rowName, 17f, place.Locked ? NLUi.Muted : NLUi.Text, _font);
                 NLUi.Size(name, flexibleWidth: 1f);
                 var distance = NLUi.Label(row, "Distance", "", 15f, NLUi.Gold, _font, FontStyles.Bold, TextAlignmentOptions.Right);
                 distance.textWrappingMode = TextWrappingModes.NoWrap;
                 NLUi.Size(distance, preferredWidth: 58f);
+                // "?" opens this place in the guide (photo, what it is, how to use it, phrases).
+                var info = NLUi.Button(row, "Guide_" + place.Type, "?", _font, () => LocationGuideUI.Open(p.Type), NLUi.Card, 16f, NLUi.Gold, 30f);
+                NLUi.Size(info, 34f, 30f, 0f);
                 if (place.HasWorld)
                 {
                     var button = row.gameObject.AddComponent<Button>();

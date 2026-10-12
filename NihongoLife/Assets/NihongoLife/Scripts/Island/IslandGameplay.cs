@@ -45,8 +45,8 @@ namespace NihongoLife.Island
             if (inventory == null || quantity <= 0) return Result.Unknown;
             if (!CanStore(itemId)) return Result.BagFull;
             int total = unitPrice * quantity;
-            if (!inventory.SpendYen(total)) return Result.NoMoney;
-            if (!Give(itemId, quantity)) { inventory.AddYen(total); return Result.BagFull; }
+            if (!inventory.SpendYen(total, "Mua ở cửa hàng đảo")) return Result.NoMoney;
+            if (!Give(itemId, quantity)) { inventory.AddYen(total, "Hoàn tiền (balo đầy)"); return Result.BagFull; }
             NihongoLife.Progression.QuestService.Raise("buy", itemId, quantity);
             NihongoLife.Progression.QuestService.Raise("buy", "midori_store", quantity);
             return Result.Ok;
@@ -58,7 +58,7 @@ namespace NihongoLife.Island
             if (inventory == null || quantity <= 0) return Result.Unknown;
             if (inventory.GetItemQuantity(itemId) < quantity) return Result.NotOwned;
             if (!inventory.RemoveItem(itemId, quantity)) return Result.NotOwned;
-            inventory.AddYen(unitPrice * quantity);
+            inventory.AddYen(unitPrice * quantity, "Bán nông sản");
             var record = IslandState.Record;
             record.sold += quantity;
             record.earned += unitPrice * quantity;

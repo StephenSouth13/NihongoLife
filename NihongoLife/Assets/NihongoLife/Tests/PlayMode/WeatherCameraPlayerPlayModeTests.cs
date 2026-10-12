@@ -136,7 +136,7 @@ namespace NihongoLife.Tests
                 PlayerPrefs.SetInt("NihongoLife.KidsDefaultMigrated", 0);
                 Assert.AreEqual("kid_haruto", PlayableCharacterCatalog.GetSelected().Id, "Old default → Haruto");
                 PlayerPrefs.SetString(key, "student");
-                Assert.AreEqual("student", PlayableCharacterCatalog.GetSelected().Id, "Choosing Tanaka afterwards is respected");
+                Assert.AreEqual("kid_haruto", PlayableCharacterCatalog.GetSelected().Id, "The adult Tanaka is gone: always a Kid");
                 PlayerPrefs.SetString(key, "kid_haruto");
 
                 yield return LoadCity();

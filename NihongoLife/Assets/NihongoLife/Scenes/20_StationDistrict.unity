@@ -9267,7 +9267,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e68ebcbc17f897546bc941685607e046, type: 3}
   m_Name: 
   m_EditorClassIdentifier: NihongoLife::NihongoLife.Core.CharacterAnimationController
-  _animator: {fileID: 1028679521}
+  _animator: {fileID: 0}
   speedParam: Speed
   isTalkingParam: IsTalking
   bowParam: Bow
@@ -14831,11 +14831,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 2524393249881064951, guid: bade1be4060dffa49b7d97b8b3777616, type: 3}
   m_PrefabInstance: {fileID: 312181874}
   m_PrefabAsset: {fileID: 0}
---- !u!95 &312181876 stripped
-Animator:
-  m_CorrespondingSourceObject: {fileID: 5970080416116596824, guid: bade1be4060dffa49b7d97b8b3777616, type: 3}
-  m_PrefabInstance: {fileID: 312181874}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &314547971
 GameObject:
   m_ObjectHideFlags: 0
@@ -15777,7 +15772,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e68ebcbc17f897546bc941685607e046, type: 3}
   m_Name: 
   m_EditorClassIdentifier: NihongoLife::NihongoLife.Core.CharacterAnimationController
-  _animator: {fileID: 658194835}
+  _animator: {fileID: 0}
   speedParam: Speed
   isTalkingParam: IsTalking
   bowParam: Bow
@@ -16733,7 +16728,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e68ebcbc17f897546bc941685607e046, type: 3}
   m_Name: 
   m_EditorClassIdentifier: NihongoLife::NihongoLife.Core.CharacterAnimationController
-  _animator: {fileID: 1844420773}
+  _animator: {fileID: 0}
   speedParam: Speed
   isTalkingParam: IsTalking
   bowParam: Bow
@@ -16918,11 +16913,6 @@ PrefabInstance:
 --- !u!4 &362627807 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 5712569708338321974, guid: 098043d503c8c0445a6dfab0095cca2e, type: 3}
-  m_PrefabInstance: {fileID: 362627806}
-  m_PrefabAsset: {fileID: 0}
---- !u!95 &362627808 stripped
-Animator:
-  m_CorrespondingSourceObject: {fileID: 7147017985358340004, guid: 098043d503c8c0445a6dfab0095cca2e, type: 3}
   m_PrefabInstance: {fileID: 362627806}
   m_PrefabAsset: {fileID: 0}
 --- !u!1 &363974376
@@ -22390,7 +22380,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e68ebcbc17f897546bc941685607e046, type: 3}
   m_Name: 
   m_EditorClassIdentifier: NihongoLife::NihongoLife.Core.CharacterAnimationController
-  _animator: {fileID: 726250927}
+  _animator: {fileID: 0}
   speedParam: Speed
   isTalkingParam: IsTalking
   bowParam: Bow
@@ -27238,7 +27228,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5712569708338321974, guid: 098043d503c8c0445a6dfab0095cca2e, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: 0.35
       objectReference: {fileID: 0}
     - target: {fileID: 5712569708338321974, guid: 098043d503c8c0445a6dfab0095cca2e, type: 3}
       propertyPath: m_LocalPosition.z
@@ -27284,11 +27274,6 @@ PrefabInstance:
 --- !u!4 &658194834 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 5712569708338321974, guid: 098043d503c8c0445a6dfab0095cca2e, type: 3}
-  m_PrefabInstance: {fileID: 658194833}
-  m_PrefabAsset: {fileID: 0}
---- !u!95 &658194835 stripped
-Animator:
-  m_CorrespondingSourceObject: {fileID: 7147017985358340004, guid: 098043d503c8c0445a6dfab0095cca2e, type: 3}
   m_PrefabInstance: {fileID: 658194833}
   m_PrefabAsset: {fileID: 0}
 --- !u!1 &665342518
@@ -29414,11 +29399,6 @@ PrefabInstance:
 --- !u!4 &726250926 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 2457435814879500997, guid: da0efc4364a49f946b0a1e1580d59006, type: 3}
-  m_PrefabInstance: {fileID: 726250925}
-  m_PrefabAsset: {fileID: 0}
---- !u!95 &726250927 stripped
-Animator:
-  m_CorrespondingSourceObject: {fileID: 2395651667011294326, guid: da0efc4364a49f946b0a1e1580d59006, type: 3}
   m_PrefabInstance: {fileID: 726250925}
   m_PrefabAsset: {fileID: 0}
 --- !u!1 &727187044
@@ -40742,11 +40722,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 2457435814879500997, guid: da0efc4364a49f946b0a1e1580d59006, type: 3}
   m_PrefabInstance: {fileID: 1028679519}
   m_PrefabAsset: {fileID: 0}
---- !u!95 &1028679521 stripped
-Animator:
-  m_CorrespondingSourceObject: {fileID: 2395651667011294326, guid: da0efc4364a49f946b0a1e1580d59006, type: 3}
-  m_PrefabInstance: {fileID: 1028679519}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1028711660
 GameObject:
   m_ObjectHideFlags: 0
@@ -41911,11 +41886,6 @@ PrefabInstance:
 --- !u!4 &1045112514 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 5712569708338321974, guid: 098043d503c8c0445a6dfab0095cca2e, type: 3}
-  m_PrefabInstance: {fileID: 1045112513}
-  m_PrefabAsset: {fileID: 0}
---- !u!95 &1045112515 stripped
-Animator:
-  m_CorrespondingSourceObject: {fileID: 7147017985358340004, guid: 098043d503c8c0445a6dfab0095cca2e, type: 3}
   m_PrefabInstance: {fileID: 1045112513}
   m_PrefabAsset: {fileID: 0}
 --- !u!1 &1046817732
@@ -53079,7 +53049,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e68ebcbc17f897546bc941685607e046, type: 3}
   m_Name: 
   m_EditorClassIdentifier: NihongoLife::NihongoLife.Core.CharacterAnimationController
-  _animator: {fileID: 1045112515}
+  _animator: {fileID: 0}
   speedParam: Speed
   isTalkingParam: IsTalking
   bowParam: Bow
@@ -57121,7 +57091,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e68ebcbc17f897546bc941685607e046, type: 3}
   m_Name: 
   m_EditorClassIdentifier: NihongoLife::NihongoLife.Core.CharacterAnimationController
-  _animator: {fileID: 1746907414}
+  _animator: {fileID: 0}
   speedParam: Speed
   isTalkingParam: IsTalking
   bowParam: Bow
@@ -60500,7 +60470,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e68ebcbc17f897546bc941685607e046, type: 3}
   m_Name: 
   m_EditorClassIdentifier: NihongoLife::NihongoLife.Core.CharacterAnimationController
-  _animator: {fileID: 312181876}
+  _animator: {fileID: 0}
   speedParam: Speed
   isTalkingParam: IsTalking
   bowParam: Bow
@@ -69854,7 +69824,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e68ebcbc17f897546bc941685607e046, type: 3}
   m_Name: 
   m_EditorClassIdentifier: NihongoLife::NihongoLife.Core.CharacterAnimationController
-  _animator: {fileID: 362627808}
+  _animator: {fileID: 0}
   speedParam: Speed
   isTalkingParam: IsTalking
   bowParam: Bow
@@ -71515,11 +71485,6 @@ PrefabInstance:
 --- !u!4 &1746907413 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 5712569708338321974, guid: 098043d503c8c0445a6dfab0095cca2e, type: 3}
-  m_PrefabInstance: {fileID: 1746907412}
-  m_PrefabAsset: {fileID: 0}
---- !u!95 &1746907414 stripped
-Animator:
-  m_CorrespondingSourceObject: {fileID: 7147017985358340004, guid: 098043d503c8c0445a6dfab0095cca2e, type: 3}
   m_PrefabInstance: {fileID: 1746907412}
   m_PrefabAsset: {fileID: 0}
 --- !u!1 &1751035160
@@ -75481,7 +75446,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e68ebcbc17f897546bc941685607e046, type: 3}
   m_Name: 
   m_EditorClassIdentifier: NihongoLife::NihongoLife.Core.CharacterAnimationController
-  _animator: {fileID: 2072321631}
+  _animator: {fileID: 0}
   speedParam: Speed
   isTalkingParam: IsTalking
   bowParam: Bow
@@ -75830,11 +75795,6 @@ PrefabInstance:
 --- !u!4 &1844420772 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 2457435814879500997, guid: da0efc4364a49f946b0a1e1580d59006, type: 3}
-  m_PrefabInstance: {fileID: 1844420771}
-  m_PrefabAsset: {fileID: 0}
---- !u!95 &1844420773 stripped
-Animator:
-  m_CorrespondingSourceObject: {fileID: 2395651667011294326, guid: da0efc4364a49f946b0a1e1580d59006, type: 3}
   m_PrefabInstance: {fileID: 1844420771}
   m_PrefabAsset: {fileID: 0}
 --- !u!1 &1846464061
@@ -86236,11 +86196,6 @@ PrefabInstance:
 --- !u!4 &2072321630 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 2524393249881064951, guid: bade1be4060dffa49b7d97b8b3777616, type: 3}
-  m_PrefabInstance: {fileID: 2072321629}
-  m_PrefabAsset: {fileID: 0}
---- !u!95 &2072321631 stripped
-Animator:
-  m_CorrespondingSourceObject: {fileID: 5970080416116596824, guid: bade1be4060dffa49b7d97b8b3777616, type: 3}
   m_PrefabInstance: {fileID: 2072321629}
   m_PrefabAsset: {fileID: 0}
 --- !u!1 &2075445058

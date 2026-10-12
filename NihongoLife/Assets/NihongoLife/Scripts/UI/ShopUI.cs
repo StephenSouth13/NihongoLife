@@ -112,7 +112,7 @@ namespace NihongoLife.UI
             }
 
             int price = Mathf.Max(0, item.PriceYen);
-            if (!inventory.SpendYen(price))
+            if (!inventory.SpendYen(price, "Mua đồ"))
             {
                 SetFeedback("Không đủ tiền để mua món này.", new Color(1f, 0.72f, 0.3f));
                 RefreshBalance();
@@ -124,7 +124,7 @@ namespace NihongoLife.UI
             int quantityAfter = inventory.GetItemQuantity(item.ItemId);
             if (quantityAfter <= quantityBefore)
             {
-                inventory.AddYen(price);
+                inventory.AddYen(price, "Hoàn tiền");
                 SetFeedback("Không thể mua món này lúc này. Tiền đã được hoàn lại.", new Color(1f, 0.52f, 0.42f));
                 RefreshBalance();
                 return;

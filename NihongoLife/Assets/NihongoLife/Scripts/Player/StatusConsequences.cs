@@ -69,7 +69,7 @@ namespace NihongoLife.Player
                 var inventory = controller != null ? controller.GetComponent<PlayerInventory>() : FindFirstObjectByType<PlayerInventory>();
                 int yen = inventory != null ? inventory.Yen : 0;
                 LastFee = Mathf.Min(MaxClinicFee, Mathf.RoundToInt(yen * 0.1f));
-                if (LastFee > 0 && inventory != null) inventory.SpendYen(LastFee);
+                if (LastFee > 0 && inventory != null) inventory.SpendYen(LastFee, "Phí phòng khám");
                 cycle?.SetHour(cycle.Hour + 3f);
                 _status.RecoverAfterCollapse();
                 CollapseCount++;

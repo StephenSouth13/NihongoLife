@@ -56,6 +56,7 @@ namespace NihongoLife.Core
         public void EnterZone(string sceneName, string spawnId, string displayName)
         {
             if (_isLoading || !CanLoad(sceneName) || !string.IsNullOrEmpty(_activeZoneSceneName)) return;
+            if (!PassesUnlock(sceneName)) return;
             StartCoroutine(EnterZoneRoutine(sceneName, spawnId, displayName));
         }
 
@@ -64,6 +65,7 @@ namespace NihongoLife.Core
         public void TransferZone(string sceneName, string spawnId, string displayName, System.Action onArrived = null)
         {
             if (_isLoading || !CanLoad(sceneName)) return;
+            if (!PassesUnlock(sceneName)) return;
             if (string.IsNullOrEmpty(_activeZoneSceneName))
             {
                 StartCoroutine(EnterZoneRoutine(sceneName, spawnId, displayName, onArrived));
@@ -79,6 +81,19 @@ namespace NihongoLife.Core
         }
 
         public string GetCurrentSceneName() => SceneManager.GetActiveScene().name;
+
+        /// <summary>The one place where locked locations are refused (LocationUnlocks); an entered place stays open.</summary>
+        private static bool PassesUnlock(string sceneName)
+        {
+            if (!LocationUnlocks.IsUnlocked(sceneName))
+            {
+                NihongoLife.UI.HudFeed.Post("Chưa mở: " + LocationUnlocks.LockedMessage(sceneName), NihongoLife.UI.HudFeed.Kind.Warning, 6f, "unlock");
+                if (GameServices.TryGet(out NihongoLife.Audio.IAudioService audio)) audio.PlayCue(NihongoLife.Audio.GameAudioCue.UiError, 0.7f);
+                return false;
+            }
+            LocationUnlocks.MarkVisited(sceneName);
+            return true;
+        }
 
         private IEnumerator LoadSingleRoutine(string sceneName, string displayName)
         {

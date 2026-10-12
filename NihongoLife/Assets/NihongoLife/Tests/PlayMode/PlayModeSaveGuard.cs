@@ -14,10 +14,14 @@ namespace NihongoLife.Tests
         private static string SavePath => Path.Combine(Application.persistentDataPath, "progress.json");
         private static string BackupPath => Path.Combine(Application.temporaryCachePath, "progress.before-tests.json");
         private bool _hadSave;
+        private string _ledger;
 
         [OneTimeSetUp]
         public void KeepSave()
         {
+            // Most tests walk through every place; LocationUnlocksPlayModeTests switches the gate back on.
+            NihongoLife.Core.LocationUnlocks.Bypass = true;
+            _ledger = PlayerPrefs.GetString("NL.WalletLedger.v1", "");
             _hadSave = File.Exists(SavePath);
             if (_hadSave) File.Copy(SavePath, BackupPath, true);
         }
@@ -25,6 +29,8 @@ namespace NihongoLife.Tests
         [OneTimeTearDown]
         public void RestoreSave()
         {
+            NihongoLife.Core.LocationUnlocks.Bypass = false;
+            PlayerPrefs.SetString("NL.WalletLedger.v1", _ledger ?? ""); // tests' purchases do not stay in the player's wallet history
             if (_hadSave && File.Exists(BackupPath)) File.Copy(BackupPath, SavePath, true);
             else if (!_hadSave && File.Exists(SavePath)) File.Delete(SavePath);
         }

@@ -67,6 +67,88 @@ namespace NihongoLife.EditorTools
             }
         }
 
+        /// <summary>
+        /// Every character becomes a Kid: the NPC prefabs placed in the scenes (cashier, guide, neighbour) and the old
+        /// player prefab keep their root object (so scene instances, NPC components and positions stay) and get a Kid
+        /// model as their only child instead of the Mixamo adults (Lilly, Remy). Run with -executeMethod after Build().
+        /// </summary>
+        public static void BuildNpcs()
+        {
+            try
+            {
+                // Staff (cashiers, station staff, chefs, teachers) work behind counters sized for adults: they are the
+                // "big kids", ~1.25× (≈1.7 m) so their faces clear the counter. Neighbours stay child-sized.
+                var map = new (string prefab, string kid, float scale)[]
+                {
+                    ("NL_Cashier", "kid_mio", 1.25f), ("NL_Guide", "kid_sota", 1.25f), ("NL_Neighbor", "kid_sakura", 1f), ("NL_Player", "kid_haruto", 1f)
+                };
+                foreach (var folder in new[] { "Assets/NihongoLife/Prefabs/Characters/", "Assets/NihongoLife/Resources/Characters/" })
+                {
+                    foreach (var (prefabName, kid, scale) in map)
+                    {
+                        string path = folder + prefabName + ".prefab";
+                        if (AssetDatabase.LoadAssetAtPath<GameObject>(path) == null) continue;
+                        var kidPrefab = AssetDatabase.LoadAssetAtPath<GameObject>(PrefabFolder + "NL_" + kid + ".prefab");
+                        if (kidPrefab == null) throw new System.Exception("Missing kid prefab " + kid + " — run Build() first.");
+                        var root = PrefabUtility.LoadPrefabContents(path);
+                        for (int i = root.transform.childCount - 1; i >= 0; i--) Object.DestroyImmediate(root.transform.GetChild(i).gameObject);
+                        foreach (var a in root.GetComponents<Animator>()) Object.DestroyImmediate(a);
+                        var model = (GameObject)PrefabUtility.InstantiatePrefab(kidPrefab, root.transform);
+                        model.name = "Model";
+                        model.transform.localPosition = Vector3.zero;
+                        model.transform.localRotation = Quaternion.identity;
+                        model.transform.localScale = kidPrefab.transform.localScale * scale;
+                        PrefabUtility.SaveAsPrefabAsset(root, path);
+                        PrefabUtility.UnloadPrefabContents(root);
+                        Debug.Log($"[KidsSetup] {path} → {kid}");
+                    }
+                }
+                AssetDatabase.SaveAssets();
+                if (Application.isBatchMode) EditorApplication.Exit(0);
+            }
+            catch (System.Exception e)
+            {
+                Debug.LogException(e);
+                if (Application.isBatchMode) EditorApplication.Exit(1);
+                else throw;
+            }
+        }
+
+        /// <summary>
+        /// The ticket booth counter at Hibari Station is adult chest height: the staff member (Kimura) stands on a step
+        /// behind it so a Kid's face clears it. Saved into 20_StationDistrict. Run with -executeMethod.
+        /// </summary>
+        public static void RaiseStationStaff()
+        {
+            try
+            {
+                var scene = UnityEditor.SceneManagement.EditorSceneManager.OpenScene("Assets/NihongoLife/Scenes/20_StationDistrict.unity");
+                int raised = 0;
+                foreach (var npc in Object.FindObjectsByType<NihongoLife.NPC.NPCController>(FindObjectsInactive.Include, FindObjectsSortMode.None))
+                {
+                    if (npc.gameObject.scene != scene || npc.NpcId == null || npc.DisplayName == null) continue;
+                    if (npc.DisplayName.IndexOf("Kimura", System.StringComparison.OrdinalIgnoreCase) < 0) continue;
+                    var model = npc.transform.GetComponentInChildren<Animator>(true);
+                    if (model == null) continue;
+                    var t = model.transform.parent != null && model.transform.parent != npc.transform ? model.transform.parent : model.transform;
+                    if (t.localPosition.y > 0.2f) continue; // already on the step
+                    t.localPosition += Vector3.up * 0.35f / Mathf.Max(0.01f, npc.transform.lossyScale.y);
+                    EditorUtility.SetDirty(t);
+                    raised++;
+                }
+                UnityEditor.SceneManagement.EditorSceneManager.MarkSceneDirty(scene);
+                UnityEditor.SceneManagement.EditorSceneManager.SaveScene(scene);
+                Debug.Log($"[KidsSetup] Station staff raised: {raised}");
+                if (Application.isBatchMode) EditorApplication.Exit(raised > 0 ? 0 : 1);
+            }
+            catch (System.Exception e)
+            {
+                Debug.LogException(e);
+                if (Application.isBatchMode) EditorApplication.Exit(1);
+                else throw;
+            }
+        }
+
         /// <summary>NL_Humanoid with the pack's own idle, walk and happy idle (talking) for boys or girls.</summary>
         private static AnimatorOverrideController Override(string gender)
         {

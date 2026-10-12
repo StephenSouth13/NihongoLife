@@ -282,7 +282,7 @@ namespace NihongoLife.Interaction
         private void Pay()
         {
             var inventory = PlayerInventory.Instance;
-            if (inventory != null && !inventory.SpendYen(_total))
+            if (inventory != null && !inventory.SpendYen(_total, "Ăn ở nhà hàng"))
             {
                 ShowStaff(null, null, null, null, null, "すみません、お金が足りないようです。", "すみません、おかねがたりないようです。",
                     $"Xin lỗi, dường như bạn không đủ tiền (cần ¥{_total:N0}). Bạn có thể làm ca ở quầy (JobPoint) để kiếm thêm tiền rồi quay lại thanh toán.", 6f);

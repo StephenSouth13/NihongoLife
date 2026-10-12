@@ -254,7 +254,7 @@ namespace NihongoLife.Progression
             var rewards = quest.rewards ?? new QuestRewards();
             if (rewards.xp > 0) PlayerStatus.Instance?.AddExp(rewards.xp);
             if (rewards.knowledge > 0) PlayerStatus.Instance?.AddKnowledge(rewards.knowledge);
-            if (rewards.yen > 0) PlayerInventory.Instance?.AddYen(rewards.yen);
+            if (rewards.yen > 0) PlayerInventory.Instance?.AddYen(rewards.yen, "Thưởng nhiệm vụ");
             if (PlayerStatus.Instance == null)
             {
                 progress.xp += rewards.xp;

@@ -1,0 +1,58 @@
+{
+  "places": [
+    {
+      "type": "KONBINI", "ja": "ひばりマート", "vi": "Siêu thị tiện lợi Hibari Mart",
+      "about": "Konbini (コンビニ) mở 24/7 ở mọi góc phố Nhật: cơm nắm, bento, đồ uống, đóng tiền điện nước, gửi bưu kiện. Ở Hibari đây là nơi đầu tiên bạn tự lo bữa ăn và học cách mua bán bằng tiếng Nhật.",
+      "how": ["Lấy hàng trên kệ (F) rồi mang tới quầy thu ngân", "Thu ngân hỏi túi, hâm nóng — trả lời bằng tiếng Nhật", "Bảng アルバイト: nhận việc làm thêm kiếm ¥", "Đồ ăn/uống hồi chỉ số đói, khát trên HUD"],
+      "phrases": [["袋はいりますか？", "Bạn có cần túi không?"], ["温めますか？", "Có cần hâm nóng không?"], ["これをください。", "Cho tôi cái này."]]
+    },
+    {
+      "type": "SCHOOL", "ja": "ひばり日本語学院", "vi": "Trường Nhật ngữ Hibari",
+      "about": "Nơi kiếm điểm kiến thức chính: bài học theo chủ đề, góc luyện thi JLPT/IELTS và giáo viên nhận xét. Điểm kiến thức mở khóa ga, nhà hàng, trung tâm trò chơi và Đảo Xanh.",
+      "how": ["Ngồi vào bàn (F) để học bài", "Bàn thi: làm đề JLPT/IELTS, nhận điểm và nhận xét", "Phòng Speaking: luyện nói với giáo viên qua video"],
+      "phrases": [["おはようございます。", "Chào buổi sáng."], ["質問があります。", "Em có câu hỏi."], ["もう一度お願いします。", "Xin nói lại một lần nữa."]]
+    },
+    {
+      "type": "HOME", "ja": "ひばりハイツ", "vi": "Nhà trọ Hibari Heights",
+      "about": "Căn phòng của bạn: ngủ để hồi sức, nấu và ăn, bàn học ôn từ vựng mỗi ngày. Nhà là phòng riêng — không ai online vào được.",
+      "how": ["Giường (F): ngủ, qua đêm, hồi buồn ngủ", "Tủ lạnh và bồn rửa: ăn uống, rửa tay", "Bàn học: câu hỏi ôn tập, cộng điểm kiến thức"],
+      "phrases": [["ただいま。", "Tôi về rồi."], ["おやすみなさい。", "Chúc ngủ ngon."], ["いただきます。", "Mời mọi người (trước khi ăn)."]]
+    },
+    {
+      "type": "STATION", "ja": "ひばり駅", "vi": "Ga Hibari",
+      "about": "Tàu ở Nhật đúng giờ đến từng phút. Tại ga bạn học mua vé, qua cổng soát vé và đi tàu tới Đảo Xanh (Midori).",
+      "how": ["Mua vé ở máy hoặc hỏi nhân viên Kimura", "Qua cổng (改札), chờ ở sân ga đúng số", "Lên tàu khi cửa mở — đi tới Đảo Xanh"],
+      "phrases": [["切符を一枚ください。", "Cho tôi một vé."], ["次の電車は何時ですか？", "Chuyến tàu kế tiếp lúc mấy giờ?"], ["何番線ですか？", "Sân ga số mấy?"]]
+    },
+    {
+      "type": "SUSHI", "ja": "ひばり寿司", "vi": "Nhà hàng Sushi Hibari",
+      "about": "Quán sushi khu phố: gọi món theo thực đơn, phép lịch sự khi ăn và trả tiền. Có thể làm thêm phục vụ bàn.",
+      "how": ["Ngồi vào bàn, xem bảng thực đơn", "Gọi món với nhân viên bằng câu tiếng Nhật", "Trả tiền ở quầy; nhận việc phục vụ ở bảng アルバイト"],
+      "phrases": [["いらっしゃいませ。", "Xin mời quý khách."], ["おすすめは何ですか？", "Món nào ngon nên thử?"], ["お会計お願いします。", "Cho tôi thanh toán."]]
+    },
+    {
+      "type": "ARCADE", "ja": "ゲームセンター", "vi": "Game Center Hibari",
+      "about": "ゲーセン — trung tâm trò chơi kiểu Nhật. Các máy trò chơi luyện kana, từ vựng và gọi món; điểm cao đổi quà ở quầy.",
+      "how": ["Đứng trước máy và nhấn F để chơi", "Kana Match, Word Shooter, Order Rush", "Quầy đổi quà: dùng vé thắng được"],
+      "phrases": [["もう一回！", "Chơi lại lần nữa!"], ["景品と交換したいです。", "Tôi muốn đổi quà."]]
+    },
+    {
+      "type": "MIDORI", "ja": "みどりじま", "vi": "Đảo Xanh (Midori)",
+      "about": "Hòn đảo nông thôn: trồng trọt, câu cá, chợ đảo. Cuộc sống chậm và từ vựng về thiên nhiên, mùa vụ.",
+      "how": ["Đi tàu từ Ga Hibari", "Ruộng: cuốc đất, gieo hạt, tưới và thu hoạch", "Câu cá ở bến; bán nông sản ở cửa hàng đảo"],
+      "phrases": [["いい天気ですね。", "Trời đẹp quá nhỉ."], ["魚が釣れた！", "Câu được cá rồi!"]]
+    },
+    {
+      "type": "PLAZA", "ja": "けいじばん", "vi": "Bảng tin khu phố",
+      "about": "Bảng tin của khu phố: thông báo sự kiện, quy định đổ rác, việc cần người giúp.",
+      "how": ["Đọc bảng (F) để xem tin mới", "Nhận nhiệm vụ giúp hàng xóm"],
+      "phrases": [["ゴミの日は何曜日ですか？", "Ngày đổ rác là thứ mấy?"]]
+    },
+    {
+      "type": "PARK", "ja": "こうえん", "vi": "Công viên",
+      "about": "Công viên khu phố — nơi gặp gỡ người chơi khác, trò chuyện và nghỉ ngơi.",
+      "how": ["Gặp người chơi khác: nhấn F để nhắn tin, kết bạn", "Enter mở chat khu vực"],
+      "phrases": [["はじめまして。", "Rất vui được gặp bạn."], ["友達になりませんか？", "Làm bạn với nhau nhé?"]]
+    }
+  ]
+}

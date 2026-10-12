@@ -38,7 +38,7 @@ namespace NihongoLife.Tests
             float sunBefore = sun != null ? sun.intensity : 0f;
             try
             {
-                foreach (var id in new[] { "kid_haruto", "kid_yui", "student" })
+                foreach (var id in new[] { "kid_haruto", "kid_yui", "kid_sota" })
                 {
                     int shots = portrait.ShotCount;
                     PlayableCharacterCatalog.ApplyVisual(player.gameObject, PlayableCharacterCatalog.FindById(id));

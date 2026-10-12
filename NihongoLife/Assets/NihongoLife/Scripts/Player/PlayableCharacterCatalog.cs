@@ -24,9 +24,8 @@ namespace NihongoLife.Player
             new PlayableCharacter("kid_riku", "Riku", "Học sinh · リク", "Characters/Kids/NL_kid_riku", new Color(0.45f, 0.6f, 0.98f), true),
             new PlayableCharacter("kid_mio", "Mio", "Học sinh · ミオ", "Characters/Kids/NL_kid_mio", new Color(0.78f, 0.55f, 0.95f), true),
             new PlayableCharacter("kid_yuto", "Yuto", "Học sinh · ユウト", "Characters/Kids/NL_kid_yuto", new Color(0.4f, 0.8f, 0.8f), true),
-            new PlayableCharacter("kid_sakura", "Sakura", "Học sinh · サクラ", "Characters/Kids/NL_kid_sakura", new Color(0.98f, 0.6f, 0.75f), true),
-            // The original adult student (Remy) stays selectable.
-            new PlayableCharacter("student", "Tanaka", "Học viên", "Characters/NL_Player", new Color(0.98f, 0.78f, 0.32f), true)
+            new PlayableCharacter("kid_sakura", "Sakura", "Học sinh · サクラ", "Characters/Kids/NL_kid_sakura", new Color(0.98f, 0.6f, 0.75f), true)
+            // The adult Mixamo student (Tanaka/Remy) is gone: everyone in the game is a Kid now.
         };
 
         public static int Count => Characters.Length;
@@ -51,6 +50,7 @@ namespace NihongoLife.Player
                 PlayerPrefs.Save();
             }
             string selectedId = PlayerPrefs.GetString(PlayerPrefsKey, DefaultId);
+            if (selectedId == "student") { selectedId = DefaultId; PlayerPrefs.SetString(PlayerPrefsKey, DefaultId); }
             PlayableCharacter selected = FindById(selectedId);
             return selected.IsAvailable ? selected : FindById(DefaultId);
         }

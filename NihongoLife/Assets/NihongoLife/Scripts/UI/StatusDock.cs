@@ -209,6 +209,9 @@ namespace NihongoLife.UI
             _wallet = NLUi.Label(wallet, "Wallet", "", 19f, NLUi.Gold, _font, FontStyles.Bold);
             _wallet.textWrappingMode = TextWrappingModes.NoWrap;
             NLUi.FitContent(wallet, width: true, height: true);
+            // +¥/−¥ with the reason rises from the chip; a click lists the last transactions.
+            wallet.GetComponent<Image>().raycastTarget = true;
+            wallet.gameObject.AddComponent<WalletFeedback>().Configure(_font);
 
             _expFill = BarFill(column, "Exp", new Color(0.55f, 0.45f, 0.95f), 3f);
             NLUi.Size(_expFill.transform.parent, flexibleWidth: 1f);

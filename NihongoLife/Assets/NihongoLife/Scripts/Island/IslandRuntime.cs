@@ -116,10 +116,10 @@ namespace NihongoLife.Island
                 inventory.AddItem(TicketItemId, "きっぷ（ひばり）", "Vé tàu Midori → Hibari (vé hỗ trợ)", 0, 1);
                 return "Bạn không còn tiền và không có gì để bán — nhân viên ga tặng một vé hỗ trợ về Hibari.";
             }
-            if (!inventory.SpendYen(Price)) return $"Không đủ tiền (vé ¥{Price}).";
+            if (!inventory.SpendYen(Price, "Vé tàu")) return $"Không đủ tiền (vé ¥{Price}).";
             if (!inventory.AddItem(TicketItemId, "きっぷ（ひばり）", "Vé tàu Midori → Hibari", Price, 1))
             {
-                inventory.AddYen(Price);
+                inventory.AddYen(Price, "Hoàn vé tàu");
                 return "Balo đầy, không nhận được vé.";
             }
             return null;
