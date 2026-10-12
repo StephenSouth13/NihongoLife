@@ -12,6 +12,9 @@ namespace NihongoLife.Player
     [RequireComponent(typeof(CharacterController))]
     public class PlayerController : MonoBehaviour
     {
+        /// <summary>Sprinting this frame (KidMoodAnimator plays the run clip).</summary>
+        public bool IsRunning { get; private set; }
+
         [Header("Movement Settings")]
         [SerializeField] private float walkSpeed = 2.8f;
         [SerializeField] private float runSpeed = 5.2f;
@@ -144,6 +147,7 @@ namespace NihongoLife.Player
                 // Exhausted players walk until they have caught their breath (see PlayerStatus.IsExhausted).
                 isRunning = status.CanSprint && status.ConsumeEnergy(runEnergyCostPerSecond * Time.deltaTime);
             }
+            IsRunning = isRunning;
 
             if (!IsGameplayCamera(_mainCamera))
             {

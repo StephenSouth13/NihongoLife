@@ -1,0 +1,35 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4b14bedd67132e04ab4f23f17815875b, type: 3}
+  m_Name: NL_KidAnimationSet
+  m_EditorClassIdentifier: NihongoLife::NihongoLife.Player.KidAnimationSet
+  walkKey: {fileID: -203655887218126122, guid: dfbfdb2d8df07d742b6810ef01e5c7d4, type: 3}
+  idleKey: {fileID: -203655887218126122, guid: d18fdce112f4b254e9094f6509f1cd6d, type: 3}
+  layKey: {fileID: -203655887218126122, guid: 790dd288c68a8724e8f9970dd3a102e4, type: 3}
+  boy:
+    walk: {fileID: 7400000, guid: 1ab83572e7615462eb7ce2080b6494e7, type: 2}
+    idle: {fileID: 7400000, guid: 7d064e73e42684c7e81064aab0b3ffa9, type: 2}
+    run: {fileID: 7400000, guid: ea419646920e34685b6d54e21d8a18e6, type: 2}
+    walkTired: {fileID: 7400000, guid: 1753730050d8a4c72991df90eb7c3afe, type: 2}
+    idleTired: {fileID: 7400000, guid: e8ca1c98bd1354aeea436d9df6cf87d5, type: 2}
+    walkHurt: {fileID: 7400000, guid: e536849e027db40b2964232a73cd9dad, type: 2}
+    idleHurt: {fileID: 7400000, guid: 0484b2e3fd9d44b53aac0d5ac581fc9a, type: 2}
+    faint: {fileID: 7400000, guid: e7f48d33f99b84487a88b1c4b662336f, type: 2}
+  girl:
+    walk: {fileID: 7400000, guid: c449c1ae9e9be41bdbc995d55dd747a4, type: 2}
+    idle: {fileID: 7400000, guid: 10764a837a7a643d998c698810aa8c82, type: 2}
+    run: {fileID: 7400000, guid: 3b78f4c9b45854e1381f1653c02cb6ea, type: 2}
+    walkTired: {fileID: 7400000, guid: edd5d7d518142465fa0e5e6ecc060e2a, type: 2}
+    idleTired: {fileID: 7400000, guid: 61ee1a9d507da4d2fa107f342813d1cc, type: 2}
+    walkHurt: {fileID: 7400000, guid: 7168207c2239e45258f7c0629a1d37db, type: 2}
+    idleHurt: {fileID: 7400000, guid: c2db9f449aea5493193ed1a2e9192b2c, type: 2}
+    faint: {fileID: 7400000, guid: c3ca803ca40204d23b7182468573ee0a, type: 2}

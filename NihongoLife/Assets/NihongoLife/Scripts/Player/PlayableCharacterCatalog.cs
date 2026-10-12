@@ -158,6 +158,10 @@ namespace NihongoLife.Player
                 animation.SetAnimator(visual.GetComponentInChildren<Animator>(true));
             }
 
+            // Running, tired, hurt and fainting clips from the Kids pack (player; other online players get the run).
+            if ((actor.GetComponent<PlayerController>() != null || actor.GetComponent<RemotePlayerAvatar>() != null) && actor.GetComponent<KidMoodAnimator>() == null)
+                actor.AddComponent<KidMoodAnimator>();
+
             // Only the player wears the ground ring (NPCs have name plates), in the character's own colour.
             if (actor.GetComponent<PlayerController>() != null)
             {

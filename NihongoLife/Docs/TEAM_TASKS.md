@@ -1042,3 +1042,21 @@ Claude nhận tiếp phần Codex đang làm dở: báo cáo, trailer, demo và 
   - đoạn gieo hạt nay xới ô chưa xới trước khi gieo (luật trồng trọt đã đổi sau lần quay trước);
   - thuyết minh mới: `tts_demo/{map,guide,chat}.mp3`.
 - **Trailer** `Bao_Cao/NihongoLife_Trailer_v3.mp4` (84,6 giây): quay lại, toàn bộ nhân vật là Kids. Đã xóa trailer v2 (vẫn có trong git).
+
+## Cập nhật (2026-10-12 chiều, Claude) — Animation trạng thái cho Kids, dọn rác
+- **Animation đã có và đang dùng:** đi, đứng, nói, cúi chào (hội thoại và biểu cảm), chỉ tay, ngồi, nằm, nhảy, câu cá (quăng cần, chờ), cuốc, gieo, tưới, thu hoạch, dọn ô, bê thùng, xếp kệ.
+- **Mới — `Player/KidMoodAnimator`:** đổi clip của các state Walk/Idle/Lay theo trạng thái nhân vật, trên một override riêng của từng nhân vật (không sửa `NL_Humanoid`).
+  - Chạy nhanh → `move_run`.
+  - Buồn ngủ ≥ 85 hoặc thể lực ≤ 10 → đi/đứng mệt (`*_tired`).
+  - Máu ≤ 25% → đi/đứng khập khiễng (`*_injure`).
+  - Ngất hoặc ngủ gục (`StatusConsequences`) → `faint_forward`.
+  - Người chơi online khác cũng chạy bằng clip chạy khi họ di chuyển nhanh.
+  - Clip lấy từ `Resources/Characters/Kids/NL_KidAnimationSet.asset` (`KidsCharactersSetup.BuildAnimationSet`).
+  - `KidAnimationEvents` nhận sự kiện `FootstepEffect` có sẵn trong clip chạy.
+  - Test `KidMoodPlayModeTests`; ảnh `Bao_Cao/character-regression/mood_*.jpg`.
+- **Đã dọn:**
+  - `_work`: khung hình video (2,3 GB), wav, mp4 trung gian, log; giữ `progress_backup.json`.
+  - Log và XML kết quả test cũ ở gốc repo; đã gỡ khỏi git.
+  - `_build_report/_v5_images`, các file `err_*.txt` của TTS, ảnh của nhân vật người lớn cũ.
+  - Test chẩn đoán `PerfProbePlayModeTests`.
+  - Các gói nén đã giải nén sẵn trong Assets: `Kenney/zip`, `Kids characters for Survival.unitypackage` (49 MB), `Unity_6_Animals_Free_v2.3.unitypackage` (11 MB).

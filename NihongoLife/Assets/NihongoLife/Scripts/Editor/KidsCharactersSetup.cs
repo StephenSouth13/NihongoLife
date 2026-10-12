@@ -149,6 +149,55 @@ namespace NihongoLife.EditorTools
             }
         }
 
+        /// <summary>
+        /// Resources/Characters/Kids/NL_KidAnimationSet.asset: the Kids clips KidMoodAnimator swaps in (run, tired,
+        /// hurt, faint) and the NL_Humanoid motions they replace. Run with -executeMethod.
+        /// </summary>
+        public static void BuildAnimationSet()
+        {
+            try
+            {
+                var controller = AssetDatabase.LoadAssetAtPath<UnityEditor.Animations.AnimatorController>(BaseController);
+                AnimationClip Motion(string state)
+                {
+                    foreach (var layer in controller.layers)
+                        foreach (var s in layer.stateMachine.states)
+                            if (s.state.name == state) return s.state.motion as AnimationClip;
+                    throw new System.Exception("No state " + state + " in " + BaseController);
+                }
+                string path = PrefabFolder + "NL_KidAnimationSet.asset";
+                var set = AssetDatabase.LoadAssetAtPath<NihongoLife.Player.KidAnimationSet>(path);
+                if (set == null) { set = ScriptableObject.CreateInstance<NihongoLife.Player.KidAnimationSet>(); AssetDatabase.CreateAsset(set, path); }
+                set.walkKey = Motion("Walk");
+                set.idleKey = Motion("Idle");
+                set.layKey = Motion("Lay");
+                foreach (var gender in new[] { "boy", "girl" })
+                {
+                    AnimationClip Kid(string clip)
+                    {
+                        var c = AssetDatabase.LoadAssetAtPath<AnimationClip>(Root + $"AnimationClips/{gender}_Humanoid/{gender}_{clip}.anim");
+                        if (c == null) throw new System.Exception($"Missing {gender}_{clip}");
+                        return c;
+                    }
+                    var g = gender == "boy" ? set.boy : set.girl;
+                    g.walk = Kid("move_walk"); g.idle = Kid("idle0"); g.run = Kid("move_run");
+                    g.walkTired = Kid("move_walk_tired"); g.idleTired = Kid("idle_tired");
+                    g.walkHurt = Kid("move_walk_injure"); g.idleHurt = Kid("idle_injure");
+                    g.faint = Kid("faint_forward");
+                }
+                EditorUtility.SetDirty(set);
+                AssetDatabase.SaveAssets();
+                Debug.Log($"[KidsSetup] Animation set: walk={set.walkKey?.name} idle={set.idleKey?.name} lay={set.layKey?.name}");
+                if (Application.isBatchMode) EditorApplication.Exit(0);
+            }
+            catch (System.Exception e)
+            {
+                Debug.LogException(e);
+                if (Application.isBatchMode) EditorApplication.Exit(1);
+                else throw;
+            }
+        }
+
         /// <summary>NL_Humanoid with the pack's own idle, walk and happy idle (talking) for boys or girls.</summary>
         private static AnimatorOverrideController Override(string gender)
         {
