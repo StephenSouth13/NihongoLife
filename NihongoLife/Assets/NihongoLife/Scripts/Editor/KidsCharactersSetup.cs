@@ -198,6 +198,61 @@ namespace NihongoLife.EditorTools
             }
         }
 
+        /// <summary>
+        /// Gives the actions Kid-made motions instead of retargeted adult Mixamo clips, and adds the one-shot states
+        /// the game plays: shelf / harvest / pick-up = item_get, planting = crouch, hoe = hammer swing, rod cast =
+        /// overhead swing, eating / drinking = treat_own. NL_Humanoid holds the boy clips; NL_Kid_Girl maps each to
+        /// the girl's version. Run with -executeMethod (after Build).
+        /// </summary>
+        public static void BuildActionStates()
+        {
+            try
+            {
+                var controller = AssetDatabase.LoadAssetAtPath<UnityEditor.Animations.AnimatorController>(BaseController);
+                var machine = controller.layers[0].stateMachine;
+                AnimationClip Boy(string clip) => AssetDatabase.LoadAssetAtPath<AnimationClip>(Root + $"AnimationClips/boy_Humanoid/boy_{clip}.anim")
+                                                  ?? throw new System.Exception("Missing boy_" + clip);
+                var motions = new (string state, string clip)[]
+                {
+                    ("Work_Shelf", "action_item_get"), ("Work_Harvest", "action_item_get"), ("Work_Plant", "idle_crouch"),
+                    ("Work_Hoe", "action_hammer"), ("Fish_Cast", "action_board_attack_r"),
+                    ("Pickup", "action_item_get"), ("UseItem", "action_treat_own"),
+                };
+                foreach (var (stateName, clip) in motions)
+                {
+                    UnityEditor.Animations.AnimatorState state = null;
+                    foreach (var s in machine.states) if (s.state.name == stateName) state = s.state;
+                    if (state == null) state = machine.AddState(stateName, new Vector3(600f, 40f * machine.states.Length, 0f));
+                    state.motion = Boy(clip);
+                    state.writeDefaultValues = true;
+                }
+                EditorUtility.SetDirty(controller);
+
+                // Girls: every boy_* clip in the controller → girl_* of the same name.
+                var girl = AssetDatabase.LoadAssetAtPath<AnimatorOverrideController>(OverrideFolder + "NL_Kid_Girl.overrideController");
+                var overrides = new System.Collections.Generic.List<System.Collections.Generic.KeyValuePair<AnimationClip, AnimationClip>>();
+                girl.GetOverrides(overrides);
+                for (int i = 0; i < overrides.Count; i++)
+                {
+                    var key = overrides[i].Key;
+                    if (key == null || !key.name.StartsWith("boy_")) continue;
+                    var g = AssetDatabase.LoadAssetAtPath<AnimationClip>(Root + "AnimationClips/girl_Humanoid/girl_" + key.name.Substring(4) + ".anim");
+                    if (g != null) overrides[i] = new System.Collections.Generic.KeyValuePair<AnimationClip, AnimationClip>(key, g);
+                }
+                girl.ApplyOverrides(overrides);
+                EditorUtility.SetDirty(girl);
+                AssetDatabase.SaveAssets();
+                Debug.Log("[KidsSetup] Action states: " + string.Join(", ", motions.Select(m => m.state + "=" + m.clip)));
+                if (Application.isBatchMode) EditorApplication.Exit(0);
+            }
+            catch (System.Exception e)
+            {
+                Debug.LogException(e);
+                if (Application.isBatchMode) EditorApplication.Exit(1);
+                else throw;
+            }
+        }
+
         /// <summary>NL_Humanoid with the pack's own idle, walk and happy idle (talking) for boys or girls.</summary>
         private static AnimatorOverrideController Override(string gender)
         {

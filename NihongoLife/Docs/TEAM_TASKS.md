@@ -1060,3 +1060,22 @@ Claude nhận tiếp phần Codex đang làm dở: báo cáo, trailer, demo và 
   - `_build_report/_v5_images`, các file `err_*.txt` của TTS, ảnh của nhân vật người lớn cũ.
   - Test chẩn đoán `PerfProbePlayModeTests`.
   - Các gói nén đã giải nén sẵn trong Assets: `Kenney/zip`, `Kids characters for Survival.unitypackage` (49 MB), `Unity_6_Animals_Free_v2.3.unitypackage` (11 MB).
+- **Động tác dùng clip gốc của Kids** (`KidsCharactersSetup.BuildActionStates`, ghi thẳng vào `NL_Humanoid` và `NL_Kid_Girl`):
+
+  | State | Clip mới |
+  |---|---|
+  | Work_Shelf, Work_Harvest | `action_item_get` |
+  | Work_Plant | `idle_crouch` (ngồi xổm thật) |
+  | Work_Hoe | `action_hammer` |
+  | Fish_Cast | `action_board_attack_r` (vung qua vai) |
+  | Pickup (mới) | `action_item_get` — nhặt đồ bằng F, bỏ hàng vào giỏ ở Hibari Mart |
+  | UseItem (mới) | `action_treat_own` — mọi lần ăn/uống qua `RestoreNeeds`, trừ khi đang ngồi |
+
+  - Cúi chào: Kids không có clip cúi chào, nên `CharacterAnimationController.ApplyBowLean` nghiêng spine, chest và neck thêm khoảng 38° trong lúc cúi (đo được: cổ 2° → 32–36°).
+  - `PlayGesture(state, seconds)` phát một động tác ngắn rồi tự trở về đứng.
+  - Test `KidActionPosesPlayModeTests`; ảnh `Bao_Cao/character-regression/action_*.jpg`.
+- **Báo cáo v5:** đã thay 26 ảnh gameplay còn nhân vật Remy (người lớn) bằng ảnh chụp lại với Kids, cắt đúng tỉ lệ ảnh cũ. Mục 13.4 (pilot Remy) được viết lại cho Kids v5. Hình 1.1 và các sơ đồ giữ nguyên.
+- **Bộ pitching** (Slides trên claude.ai, tải được PPTX/PDF): https://claude.ai/artifact/RGdYJ9QRUcbAiQVUkijoDz
+  - 16 slide; trọng tâm là trung tâm luyện thi (JLPT N5, IELTS Writing/Speaking có AI chấm). Mỗi slide có lời nói gợi ý.
+  - Logo: NihongoLife, GZV Ltd, Quang Dũng Nihongo; không dùng logo VTC.
+  - Ảnh đều chụp từ game bản Kids.

@@ -67,6 +67,53 @@ namespace NihongoLife.Core
             ApplyPresentationMotion();
             ApplyHeadLook();
             TickConversationGestures();
+            ApplyBowLean();
+        }
+
+        // ─────────── Bow and one-shot gestures ───────────
+
+        private float _bowTime = -1f;
+        private const float BowSeconds = 1.3f;
+        private Coroutine _gesture;
+
+        /// <summary>The Kids rigs have a huge head and a short spine: the bow clip alone barely shows. While a bow
+        /// plays, the spine, chest and neck lean forward (up to ~38° in total) on top of the animation.</summary>
+        private void ApplyBowLean()
+        {
+            if (_bowTime < 0f || _animator == null || !_animator.isHuman) return;
+            _bowTime += Time.deltaTime;
+            if (_bowTime > BowSeconds) { _bowTime = -1f; return; }
+            float k = Mathf.Sin(Mathf.Clamp01(_bowTime / BowSeconds) * Mathf.PI); // down and back up
+            Vector3 axis = transform.right;
+            foreach (var (bone, degrees) in new[] { (HumanBodyBones.Spine, 14f), (HumanBodyBones.Chest, 12f), (HumanBodyBones.Neck, 12f) })
+            {
+                var t = _animator.GetBoneTransform(bone);
+                if (t != null) t.rotation = Quaternion.AngleAxis(degrees * k, axis) * t.rotation;
+            }
+        }
+
+        public bool IsBowing => _bowTime >= 0f;
+
+        /// <summary>
+        /// A short body action that returns to standing by itself: "Pickup" (taking something), "UseItem" (eating,
+        /// drinking). Skipped while sitting, lying or in a work pose, so it never breaks a seated meal or a tool action.
+        /// </summary>
+        public bool PlayGesture(string state, float seconds)
+        {
+            if (_workState != null || _animator == null || !_animator.isActiveAndEnabled) return false;
+            var info = _animator.GetCurrentAnimatorStateInfo(0);
+            if (info.IsName(sitStateName) || info.IsName(restStateName)) return false;
+            if (!PlayWork(state)) return false;
+            if (_gesture != null) StopCoroutine(_gesture);
+            _gesture = StartCoroutine(EndGesture(state, seconds));
+            return true;
+        }
+
+        private System.Collections.IEnumerator EndGesture(string state, float seconds)
+        {
+            yield return new WaitForSeconds(seconds);
+            if (_workState == state) StopWork();
+            _gesture = null;
         }
 
         private void OnDestroy() => StopDirectAnimation();
@@ -120,6 +167,7 @@ namespace NihongoLife.Core
             if (_animator != null && _hasBow && _animator.gameObject.activeInHierarchy)
             {
                 _animator.SetTrigger(_bowHash);
+                _bowTime = 0f;
             }
         }
 

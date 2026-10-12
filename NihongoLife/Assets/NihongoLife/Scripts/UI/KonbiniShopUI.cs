@@ -130,6 +130,8 @@ namespace NihongoLife.UI
             KonbiniBasket.Add(_selected.id, _quantity);
             Feedback($"かごに いれました: {_selected.japanese} ×{_quantity}", NLUi.Good);
             Cue(GameAudioCue.Pickup);
+            // The kid reaches up and takes it from the shelf.
+            FindFirstObjectByType<NihongoLife.Player.PlayerController>()?.GetComponent<CharacterAnimationController>()?.PlayGesture("Pickup", 1.1f);
             NotifyScenario(_selected, ScenarioNodeType.CollectItem);
         }
 

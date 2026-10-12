@@ -245,6 +245,8 @@ namespace NihongoLife.Player
 
         public void RestoreNeeds(float food, float drink, float energy)
         {
+            // Eating or drinking shows on the body (hand to mouth), unless seated at a table.
+            if (food > 0f || drink > 0f) GetComponent<CharacterAnimationController>()?.PlayGesture("UseItem", 1.6f);
             Hunger = Mathf.Clamp(Hunger + food, 0f, 100f);
             Thirst = Mathf.Clamp(Thirst + drink, 0f, 100f);
             CurrentEnergy = Mathf.Clamp(CurrentEnergy + energy, 0f, maxEnergy);

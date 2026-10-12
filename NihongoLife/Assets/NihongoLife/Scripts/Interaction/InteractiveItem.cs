@@ -64,6 +64,7 @@ namespace NihongoLife.Interaction
             }
 
             if (GameServices.TryGet(out IAudioService audio)) audio.PlayCue(GameAudioCue.Pickup, 0.75f);
+            player?.GetComponent<CharacterAnimationController>()?.PlayGesture("Pickup", 1.1f);
 
             if (destroyOnInteract)
             {
