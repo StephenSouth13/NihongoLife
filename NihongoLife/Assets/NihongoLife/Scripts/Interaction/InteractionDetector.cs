@@ -23,7 +23,7 @@ namespace NihongoLife.Interaction
         [SerializeField] private float checkInterval = 0.1f;
         [SerializeField] private bool fallbackToAnyLayer = true;
 
-        private const float StickyBonus = 0.45f;
+        private const float StickyBonus = 0.2f; // enough to stop flicker, small enough that walking up to something new wins
         private const float ManualHoldSeconds = 6f;
 
         private float _nextCheckTime;

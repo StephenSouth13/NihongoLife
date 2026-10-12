@@ -119,7 +119,7 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
---- !u!1 &1691669182
+--- !u!1 &21356715
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -127,8 +127,8 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 1691669184}
-  - component: {fileID: 1691669183}
+  - component: {fileID: 21356717}
+  - component: {fileID: 21356716}
   m_Layer: 0
   m_Name: Code-based tests runner
   m_TagString: Untagged
@@ -136,13 +136,13 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &1691669183
+--- !u!114 &21356716
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1691669182}
+  m_GameObject: {fileID: 21356715}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 102e512f651ee834f951a2516c1ea3b8, type: 3}
@@ -170,7 +170,7 @@ MonoBehaviour:
     - testMode: 4
       assemblyNames: []
       groupNames:
-      - ^(?!.*(DemoRecording|TrailerRecording|GuidePhotos|PerfProbe)).*$
+      - DemoRecordingTests.Demo_RecordFrames
       categoryNames: []
       testNames: []
       synchronousOnly: 0
@@ -187,13 +187,13 @@ MonoBehaviour:
     repeatCount: 0
     automated: 0
     randomOrderSeed: 0
---- !u!4 &1691669184
+--- !u!4 &21356717
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1691669182}
+  m_GameObject: {fileID: 21356715}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
@@ -206,4 +206,4 @@ Transform:
 SceneRoots:
   m_ObjectHideFlags: 0
   m_Roots:
-  - {fileID: 1691669184}
+  - {fileID: 21356717}

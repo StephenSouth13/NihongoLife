@@ -139,6 +139,37 @@ namespace NihongoLife.Tests
             yield return Click("Accept");
             yield return Hold();
             UiModalStack.CloseTop();
+
+            // Map with the places a new learner has not unlocked yet, then the location guide.
+            int knowledge = PlayerStatus.Instance.Knowledge;
+            LocationUnlocks.Bypass = false;
+            LocationUnlocks.ResetVisits();
+            PlayerStatus.Instance.DebugSetKnowledge(20);
+            Beat("map");
+            yield return Press(GameInputId.Map, "M");
+            yield return Hold();
+            Beat("guide");
+            var guideButton = GameObject.Find("GuideButton");
+            if (guideButton != null) yield return _rec.PointTo((RectTransform)guideButton.transform, false);
+            LocationGuideUI.Open("KONBINI");
+            yield return HoldMinus(2.5f);
+            LocationGuideUI.Open("STATION");
+            yield return Hold();
+            LocationGuideUI.Close();
+            _rec.Key("Esc");
+            UiModalStack.CloseTop();
+            PlayerStatus.Instance.DebugSetKnowledge(knowledge);
+            LocationUnlocks.Bypass = true;
+            yield return Frames(0.4f);
+
+            // Chat with other players (area, community, groups, private, friends).
+            Beat("chat");
+            yield return Press(GameInputId.Chat, "Enter");
+            yield return HoldMinus(3f);
+            SocialChatWindow.Instance?.SelectTab(SocialChatWindow.Tab.Friends);
+            yield return Hold();
+            SocialChatWindow.Close();
+            yield return Frames(0.4f);
             CursorDirector.AssumeFocusForTests = false;
 
             // ── 2. Konbini shift ──
@@ -293,6 +324,7 @@ namespace NihongoLife.Tests
             {
                 IslandUI.OpenFarm(plot);
                 yield return Frames(0.5f);
+                if (!plot.Record.tilled) { yield return ClickFarm("Xới đất"); yield return WaitWork(); }
                 yield return Click("Plant_carrot"); yield return WaitWork();
                 yield return ClickFarm("Tưới nước"); yield return WaitWork();
                 IslandUI.CloseFarm();

@@ -995,3 +995,38 @@ Claude nhận tiếp phần Codex đang làm dở: báo cáo, trailer, demo và 
   - Nếu object con cũng có tên như vậy, cả cha lẫn con đều bị dời → con lệch gấp đôi. Chỉ nên lấy các gốc (bỏ object có cha cũng khớp tên).
   - Chưa có test va chạm/tàu chạy cho thay đổi này. Cần chạy `StationTravel*` và test đi bộ qua lối giữa các dãy bàn ở lớp học.
 - **Test IELTS Reading 48 đề quá 180 s** (sáng 59 s; mở mỗi đề 1,2 s, mỗi phần 0,2–0,35 s). Không phải do phần online. Cần tìm nguyên nhân trong `IeltsTestUI` (các commit sau 07:30 ngày 11/10).
+
+## Cập nhật (2026-10-12, Claude) — Đã làm Thẻ A–E (trừ quay video)
+- **A. Mở khóa địa điểm** (`Core/LocationUnlocks`):
+  - Ngưỡng trong `GameControlDatabase.locationUnlocks`: Ga 40, Sushi 90, Game Center 160, Đảo 250.
+  - Hibari Mart, trường và nhà luôn mở.
+  - Chặn tại một chỗ: `SceneFlowController.EnterZone/TransferZone`. Nơi đã vào thì giữ mở (PlayerPrefs `NL.Unlocked.*`). Bước kịch bản đang cần thì không chặn.
+  - Cửa (`ScenePortal`) ghi "Đã khóa — cần N (thiếu M)".
+  - Bản đồ: điểm xám + "khóa Nđ". Sổ nhiệm vụ (N): khối "MỞ KHÓA ĐỊA ĐIỂM" có thanh tiến độ; danh sách nhiệm vụ nay cuộn được.
+  - Đủ điểm thì HUD báo "Đã mở khóa…".
+  - Test đặt `LocationUnlocks.Bypass = true` (trong `PlayModeSaveGuard`); `LocationUnlocksPlayModeTests` tắt cờ này.
+- **B. Ví:**
+  - `WalletLedger`: mọi `AddYen/SpendYen/ApplyFine` nay có lý do; 17 chỗ gọi đã thêm lý do.
+  - `WalletFeedback` trên chip tiền: "+¥/−¥ lý do" bay lên, chip đổi màu; bấm vào xem lịch sử.
+  - Test không làm bẩn lịch sử ví thật (`PlayModeSaveGuard` lưu và trả lại).
+  - Konbini vốn đã có danh mục, ảnh và giỏ hàng nên giữ nguyên.
+- **C. Cẩm nang** (`UI/LocationGuideUI`):
+  - Mở từ bản đồ: nút "Cẩm nang địa điểm" và dấu "?" ở từng dòng.
+  - Nội dung trong `Resources/Guide/locations.json`.
+  - Ảnh `Resources/Guide/*.jpg` chụp bằng `GuidePhotosPlayModeTests` (Explicit; chạy lại khi địa điểm thay đổi). Bảng tin và công viên chưa có ảnh.
+- **D. Kids 100%:**
+  - `KidsCharactersSetup.BuildNpcs` (`-executeMethod`): NL_Cashier/Guide/Neighbor/Player (cả Prefabs lẫn Resources) có model Kids, giữ nguyên object gốc nên các NPC trong scene tự đổi theo.
+  - Nhân viên ×1,25 (≈1,7 m) để cao hơn quầy. `RaiseStationStaff` nâng Kimura 0,35 m trong scene 20.
+  - Đã bỏ "student/Tanaka" khỏi danh sách chọn; save cũ chuyển sang Haruto.
+  - Đã xóa `ThirdParty/Mixamo/Characters` (Remy/Lilly/Elizabeth/Eminem, 1,1 GB) và `CharacterMaterialFixer`.
+  - `CharacterBuilder` nay chỉ dựng animation và `NL_Humanoid`. Clip `Remy@*` được giữ.
+  - Test: `KidsNpcScalePlayModeTests`; Kids, Portrait và Weather đều qua.
+- **Thay đổi của Codex ở scene 20:** `CachePlatformTrain` nay bỏ các object con cũng có tên `HighspeedTrain_` (trước đó bị dời hai lần). Hàm chỉnh collider bàn ở 40 giữ nguyên (sửa lúc chạy).
+- **E. Tài liệu:**
+  - `Bao_Cao/NihongoLife_Bao_Cao_Capstone_v5.docx`: thêm các mục 5.4, 8.7, 8.8, 10.6, 10.7, 11.5, 13.6.
+  - `NihongoLife_Thuyet_Trinh_Capstone_v5.pptx`: sửa các slide Online, Nhân vật, Kiểm thử, Lộ trình; thêm "Mở khóa & Cẩm nang" và "Xã hội online".
+  - Đã xóa bản v4 (vẫn có trong git). Script dựng lại: `Bao_Cao/_build_report/build_*_v5.py`.
+- **Chưa làm:**
+  - Chạy lại toàn bộ Play Mode sau đợt này: Unity Editor đang mở project nên batchmode không chạy được. Con số trên slide/báo cáo (59/65) là của lần chạy trước.
+  - Quay lại video demo/trailer (cần `DemoRecording` trong batchmode).
+  - Test IELTS Reading vẫn quá 180 giây.

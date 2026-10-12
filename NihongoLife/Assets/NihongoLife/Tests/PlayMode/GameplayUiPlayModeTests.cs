@@ -295,13 +295,14 @@ namespace NihongoLife.Tests
             var dm = DialogueManager.Instance;
             while (dm.IsOpen) { dm.CancelDialogue(); if (dm.IsOpen) dm.ContinueDialogue(); yield return null; }
 
-            // Every neighbour-model character must render with its textures (they used to be pure white).
-            var neighbourRenderers = Object.FindObjectsByType<SkinnedMeshRenderer>(FindObjectsSortMode.None)
-                .Where(r => r.sharedMaterials.Any(m => m != null && m.name.StartsWith("NL_Neighbor_"))).ToArray();
-            Assert.IsNotEmpty(neighbourRenderers, "The city should have neighbour-model NPCs.");
+            // Every NPC is a Kid now: their models must render with textures (never plain white).
+            var neighbourRenderers = Object.FindObjectsByType<NPCController>(FindObjectsSortMode.None)
+                .Where(n => n.gameObject.scene == SceneManager.GetActiveScene())
+                .SelectMany(n => n.GetComponentsInChildren<SkinnedMeshRenderer>()).ToArray();
+            Assert.IsNotEmpty(neighbourRenderers, "The city should have NPCs with Kid models.");
             foreach (var r in neighbourRenderers)
-                foreach (var m in r.sharedMaterials.Where(m => m != null && m.name.StartsWith("NL_Neighbor_") && !m.name.Contains("Cornea")))
-                    Assert.NotNull(m.GetTexture("_BaseMap"), m.name + " has no texture");
+                foreach (var m in r.sharedMaterials.Where(m => m != null))
+                    Assert.IsTrue(m.GetTexturePropertyNames().Any(n => m.GetTexture(n) != null), m.name + " has no texture");
             Component npc = neighbourRenderers[0].GetComponentInParent<NPCController>();
             if (npc == null) npc = neighbourRenderers[0];
             Teleport(player, npc.transform.position + npc.transform.forward * 2.2f, npc.transform.eulerAngles.y + 180f);

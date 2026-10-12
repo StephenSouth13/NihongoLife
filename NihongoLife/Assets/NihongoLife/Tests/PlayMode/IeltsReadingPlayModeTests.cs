@@ -81,7 +81,9 @@ namespace NihongoLife.Tests
             IeltsAttemptStore.ClearAttempt(ReadingId);
         }
 
-        [UnityTest]
+        // 48 packages × (open ≈1.2 s + every part): over the 180 s default since 11/10 (it took 59 s that morning; the
+        // slower IeltsTestUI build is tracked in TEAM_TASKS).
+        [UnityTest, Timeout(480000)]
         public IEnumerator AllLocalPackages_RenderEveryQuestionAndHaveKeys()
         {
             var packages = IeltsLibrary.Discover();

@@ -1,6 +1,6 @@
 <div align="center">
 
-<img src="docs/readme/hero.png" alt="NihongoLife — ひばり町で、日本語と暮らそう" width="100%"/>
+<img src="Bao_Cao/character-regression/poses_kid_haruto.jpg" alt="NihongoLife — Haruto với bộ animation Kids" width="100%"/>
 
 <br/>
 
@@ -10,7 +10,7 @@
 [![Supabase](https://img.shields.io/badge/Supabase-online-3FCF8E?logo=supabase&logoColor=white)](#-dịch-vụ-trực-tuyến)
 [![Gemini](https://img.shields.io/badge/Gemini-AI-8E75B2?logo=googlegemini&logoColor=white)](#-dịch-vụ-trực-tuyến)
 [![Agora](https://img.shields.io/badge/Agora-RTC-099DFD)](#-dịch-vụ-trực-tuyến)
-[![Play Mode](https://img.shields.io/badge/Play_Mode-16%2F16_passed-2E9E6B)](#-kiểm-thử)
+[![Play Mode](https://img.shields.io/badge/Play_Mode-rerun_pending-F2B233)](#-kiểm-thử)
 [![EditMode](https://img.shields.io/badge/EditMode-11%2F11_passed-2E9E6B)](#-kiểm-thử)
 [![License: MIT](https://img.shields.io/badge/License-MIT-F2B233.svg)](LICENSE)
 
@@ -56,6 +56,21 @@ Xem trước **438 icon PNG thật** của NihongoLife ngay trong README. Galler
 <td align="center" width="25%"><h3>7</h3>khu vực chơi được<br/><sub>phố · konbini · phòng trọ · ga · sushi · trường · Game Center</sub></td>
 <td align="center" width="25%"><h3>3</h3>ngôn ngữ giao diện<br/><sub>Tiếng Việt · English · 日本語</sub></td>
 <td align="center" width="25%"><h3>5</h3>nhóm kỹ năng được chấm<br/><sub>từ vựng · ngữ pháp · nghe · phản xạ · hoàn thành</sub></td>
+</tr>
+</table>
+
+### 👧 Nhân vật Kids — diện mạo thống nhất
+
+Người chơi, nhân vật online và các NPC chính hiện dùng chung dòng model **Kids Characters for Survival**. Tám nhân vật Humanoid có thể dùng animation riêng của gói và các clip được retarget qua `NL_Humanoid`; model người lớn Remy/Tanaka, Lilly, Elizabeth và Eminem đã được loại khỏi dự án. Save cũ chọn `student` được tự động chuyển sang **Haruto**, nên người chơi không cần tạo lại hồ sơ.
+
+<table>
+<tr>
+<td width="50%"><img src="Bao_Cao/character-regression/poses_kid_haruto.jpg" alt="Haruto với các animation Kids"/><p align="center"><sub>Haruto · bộ pose và animation đã kiểm tra trong Play Mode</sub></p></td>
+<td width="50%"><img src="Bao_Cao/character-regression/poses_kid_yui.jpg" alt="Yui với các animation Kids"/><p align="center"><sub>Yui · cùng rig Humanoid và hệ controller thống nhất</sub></p></td>
+</tr>
+<tr>
+<td width="50%"><img src="Bao_Cao/character-regression/npc_station_1.jpg" alt="NPC Kids tại nhà ga"/><p align="center"><sub>Kimura tại quầy ga · tỷ lệ đã chỉnh theo môi trường</sub></p></td>
+<td width="50%"><img src="Bao_Cao/character-regression/npc_sushi_1.jpg" alt="NPC Kids tại nhà hàng sushi"/><p align="center"><sub>NPC tại nhà hàng · model Kids dùng xuyên suốt thế giới</sub></p></td>
 </tr>
 </table>
 
@@ -148,6 +163,15 @@ HUD thường trực đã được gom thành một hệ thống thống nhất,
 
 Khi một nhu cầu xuống dưới ngưỡng nguy hiểm, HUD chỉ bật một cảnh báo ngắn phía trên thẻ trạng thái. Cửa sổ nhân vật mở bằng <kbd>Tab</kbd> hiển thị model 3D, tiến trình, tiền, kiến thức, ca làm và vốn từ mà không thay đổi `PlayerController`, camera, inventory hay save/online. Xem [thiết kế và quy tắc Player HUD](NihongoLife/Docs/PLAYER_HUD.md).
 
+### 🔓 Tiến trình, mở khóa và cẩm nang địa điểm
+
+Điểm kiến thức từ bài học, bài thi và nhiệm vụ mở dần thế giới: **Ga Hibari 40 điểm → Sushi Hibari 90 điểm → Game Center 160 điểm → đảo Midori 250 điểm**. Hibari Mart, trường và nhà luôn mở; địa điểm người chơi từng ghé vẫn được giữ mở khi nâng cấp save cũ.
+
+- Bản đồ <kbd>M</kbd> hiển thị địa điểm đang khóa, số điểm cần và phần còn thiếu.
+- Sổ nhiệm vụ <kbd>N</kbd> có thanh tiến độ mở khóa cùng gợi ý hoạt động nhận điểm.
+- Cẩm nang địa điểm trên bản đồ giới thiệu văn hóa, cách tương tác, từ vựng và câu mẫu.
+- Chip tiền ghi rõ khoản cộng/trừ cùng lý do; bấm vào để xem lịch sử giao dịch gần nhất.
+
 ### 🌱 Trồng trọt bằng nông cụ và câu cá ở đảo Midori
 
 Nông trại không có thao tác “tay không”: phải mua và mang đúng **cuốc/xẻng/bình tưới**. Quy trình hoàn chỉnh là xới đất → gieo hạt → tưới từng giai đoạn → thu hoạch; công cụ hao độ bền sau thao tác thành công, có thể hỏng và tự chuyển sang món dự phòng. Huỷ giữa chừng không làm thay đổi ruộng và không trừ độ bền.
@@ -164,9 +188,7 @@ Không còn mép bản đồ hay khoảng đen ở chân trời: khu nhà ngoạ
 <img src="docs/readme/horizon_night.jpg" width="32%" alt="Ban đêm"/>
 </p>
 
-Nhân vật đi **thẳng lưng, bước rộng bằng hông** nhờ `PostureStabilizer` chỉnh xương sau Animator. Đo trên chu kỳ đi thật: vai lệch 6,3° → 2,1°, khoảng cách hai bàn chân hẹp nhất 6 cm → 15 cm.
-
-<p align="center"><img src="docs/readme/posture.jpg" width="80%" alt="Dáng đi trước và sau"/></p>
+Các model Kids dùng chung avatar `NL_Humanoid` và controller/override theo giới tính. Animation đi, chạy, hội thoại, ngồi, thao tác nông cụ và câu cá được retarget mà không thay đổi controller, collider, inventory hoặc đồng bộ online.
 
 ---
 
@@ -306,12 +328,12 @@ Mỗi bộ kiểm thử Play Mode **điều khiển nhân vật bằng thao tác
 | `GameCenterPlayModeTests` | Kana Match trọn vòng, đổi quà |
 | `SchoolPlayModeTests` | Bàn thi, chọn JLPT/IELTS, làm bài, nhận xét |
 | `BedroomPlayModeTests` · `CityTown` · `ZoneTransition` · `Scenario` | Phòng trọ, lối vào các khu, chuyển khu hai chiều, chạy kịch bản |
-| `CharacterHumanoidAuditPlayModeTests` | Pilot Remy Humanoid: Avatar/rig, Idle, Walk, Run retarget, Talk, Sit; giữ nguyên controller, camera, collider, inventory và online |
+| `KidsCharactersPlayModeTests` · `KidsNpcScalePlayModeTests` | 8 nhân vật Kids, avatar/rig, animation, portrait, NPC theo khu vực và tỷ lệ với quầy/cửa/bàn ghế |
 | `FishingFarmPlayModeTests` | Nông cụ/độ bền, huỷ thao tác, trồng–tưới–thu hoạch, quăng/kéo cần, bắt–bán–lưu cá và ảnh Play Mode |
 | `JlptMockPlayModeTests` | JLPT mock 2: 67 câu, audio một lượt, thang điểm 180, lưu lượt thi và phân tích nhóm yếu |
 | `IeltsReadingPlayModeTests` · `IeltsListeningPlayModeTests` | Package IELTS cục bộ 40 câu, timer, audio, làm tiếp, tự nộp, chấm raw/band và khoá input/HUD |
 
-**Kết quả gần nhất (08/10/2026):** Play Mode **16/16** · EditMode **11/11** · hơn 150 ảnh tự chụp.
+**Mốc kiểm thử gần nhất trước đợt đồng bộ Kids (12/10/2026):** Play Mode **59/65**. Các bộ Kids, portrait và weather đã qua; toàn bộ Play Mode vẫn cần chạy lại sau thay đổi mới nhất. README không tuyên bố scene hoàn tất khi chưa có vòng kiểm tra hình ảnh và va chạm mới.
 
 <details>
 <summary><b>Chạy kiểm thử và builder bằng dòng lệnh</b></summary>
@@ -350,15 +372,15 @@ Quy tắc của repo (xem [`AGENTS.md`](AGENTS.md)): không dùng lệnh `[MenuI
 
 | | |
 |---|---|
-| 📘 **Báo cáo Capstone v4** | [`DOCX`](Bao_Cao/NihongoLife_Bao_Cao_Capstone_v4.docx) · [`PDF`](Bao_Cao/NihongoLife_Bao_Cao_Capstone_v4.pdf) |
-| 🎞️ **Slide thuyết trình** | [`Bao_Cao/NihongoLife_Thuyet_Trinh_Capstone_v4.pptx`](Bao_Cao/NihongoLife_Thuyet_Trinh_Capstone_v4.pptx) |
+| 📘 **Báo cáo Capstone v5** | [`DOCX`](Bao_Cao/NihongoLife_Bao_Cao_Capstone_v5.docx) |
+| 🎞️ **Slide thuyết trình v5** | [`Bao_Cao/NihongoLife_Thuyet_Trinh_Capstone_v5.pptx`](Bao_Cao/NihongoLife_Thuyet_Trinh_Capstone_v5.pptx) |
 | 🎬 **Video** | [`Trailer v2`](Bao_Cao/NihongoLife_Trailer_v2.mp4) · 1080p30, 1:25 · [`Gameplay Demo`](Bao_Cao/NihongoLife_Gameplay_Demo.mp4) · 1080p30, 4:18 |
 | 🧭 **Thiết kế** | [`ARCHITECTURE`](NihongoLife/Docs/ARCHITECTURE.md) · [`PLAYER_HUD`](NihongoLife/Docs/PLAYER_HUD.md) · [`STORY_BIBLE`](NihongoLife/Docs/STORY_BIBLE.md) · [`SCENARIO_SYSTEM`](NihongoLife/Docs/SCENARIO_SYSTEM.md) · [`EXAM_SYSTEM`](NihongoLife/Docs/EXAM_SYSTEM.md) · [`ROADMAP`](NihongoLife/Docs/ROADMAP.md) |
 | 🎣 **Gameplay mới** | [`FISHING_FARMING_TOOLS`](NihongoLife/Docs/FISHING_FARMING_TOOLS.md) · [`EXAM_CONTENT_PIPELINE`](NihongoLife/Docs/EXAM_CONTENT_PIPELINE.md) |
 
 ## 🙏 Ghi công
 
-[Unity](https://unity.com/) · [Kenney](https://kenney.nl/) · [Quaternius](https://quaternius.com/) · [KayKit](https://kaylousberg.itch.io/) · [Mixamo](https://www.mixamo.com/) · [Noto Sans JP](https://fonts.google.com/noto/specimen/Noto+Sans+JP) · [Supabase](https://supabase.com/) · [Google Gemini](https://ai.google.dev/) · [Agora](https://www.agora.io/) · [GZV](https://www.gzv.one/gzver/quach-thanh-long)
+[Unity](https://unity.com/) · Kids Characters for Survival · [Kenney](https://kenney.nl/) · [Quaternius](https://quaternius.com/) · [KayKit](https://kaylousberg.itch.io/) · [Mixamo](https://www.mixamo.com/) *(animation retargeting)* · [Noto Sans JP](https://fonts.google.com/noto/specimen/Noto+Sans+JP) · [Supabase](https://supabase.com/) · [Google Gemini](https://ai.google.dev/) · [Agora](https://www.agora.io/) · [GZV](https://www.gzv.one/gzver/quach-thanh-long)
 
 ---
 
