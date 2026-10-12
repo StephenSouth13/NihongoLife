@@ -1030,3 +1030,15 @@ Claude nhận tiếp phần Codex đang làm dở: báo cáo, trailer, demo và 
   - Chạy lại toàn bộ Play Mode sau đợt này: Unity Editor đang mở project nên batchmode không chạy được. Con số trên slide/báo cáo (59/65) là của lần chạy trước.
   - Quay lại video demo/trailer (cần `DemoRecording` trong batchmode).
   - Test IELTS Reading vẫn quá 180 giây.
+
+## Cập nhật (2026-10-12 trưa, Claude) — Chạy lại toàn bộ test, quay lại video
+- **Toàn bộ Play Mode:** 65/65 test chạy được đều qua. Riêng `IeltsProductive…Speaking_RecordedSpeech_RealAi_FourCriteria` cho kết quả "không kết luận"; 4 test quay video/chụp ảnh là Explicit nên chạy riêng.
+  - `GameplayUiPlayModeTests.Emote…`: trước kiểm texture của model Eminem (đã xóa); nay kiểm mọi NPC Kids có texture.
+  - `IeltsReadingPlayModeTests.AllLocalPackages…`: Timeout 480 s. Lần này chạy 248 s; sáng 11/10 chỉ 59 s, nên việc dựng `IeltsTestUI` chậm đi vẫn chưa rõ nguyên nhân.
+  - Slide và báo cáo v5 đã ghi 65/65.
+- **Chọn mục tiêu F:** mức ưu tiên giữ mục tiêu giảm 0,45 → 0,2 m, để khi đi tới một thứ mới gần hơn thì F chọn thứ mới.
+- **Video demo** `Bao_Cao/NihongoLife_Gameplay_Demo.mp4` (4 phút 51 giây, 1080p, có thuyết minh và phụ đề):
+  - thêm 3 đoạn: bản đồ có địa điểm khóa, cẩm nang địa điểm, cửa sổ chat;
+  - đoạn gieo hạt nay xới ô chưa xới trước khi gieo (luật trồng trọt đã đổi sau lần quay trước);
+  - thuyết minh mới: `tts_demo/{map,guide,chat}.mp3`.
+- **Trailer** `Bao_Cao/NihongoLife_Trailer_v3.mp4` (84,6 giây): quay lại, toàn bộ nhân vật là Kids. Đã xóa trailer v2 (vẫn có trong git).
