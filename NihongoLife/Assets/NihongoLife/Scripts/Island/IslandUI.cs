@@ -386,7 +386,7 @@ namespace NihongoLife.Island
                     PhraseCard(body, tool.verb, "CÂU HÀNH ĐỘNG");
                     if (IslandTools.Usable(tool.id))
                         ActionButton(actions, $"Tưới nước  ·  {IslandLanguage.Primary(tool.word)}  ·  {FarmActionTimes.Water:0.#}s  ·  {IslandTools.Label(tool.id)}", tool.id,
-                            () => Work("Đang tưới nước…", IslandLanguage.Primary(tool.word), FarmActionTimes.Water, () => Do(plot.Water(), tool.verb, "Đã tưới — cây bắt đầu lớn."), "Work_Water"));
+                            () => Work("Đang tưới nước…", IslandLanguage.Primary(tool.word), FarmActionTimes.Water, () => Do(plot.Water(), tool.verb, "Đã tưới — cây bắt đầu lớn."), "Work_Water", "tool_watering_can"));
                     else NeedTool(actions, "Không có bình tưới (じょうろ) thì không mang nước được — mua ở cửa hàng Midori (P).");
                     break;
                 }

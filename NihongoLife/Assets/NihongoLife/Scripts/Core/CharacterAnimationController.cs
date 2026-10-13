@@ -68,6 +68,46 @@ namespace NihongoLife.Core
             ApplyHeadLook();
             TickConversationGestures();
             ApplyBowLean();
+            AimHeldProp();
+        }
+
+        /// <summary>
+        /// The hand alone points a tool the wrong way on Kid arms (the fishing rod stood straight up like a flagpole
+        /// while waiting, and finished the cast pointing sideways at the ground; the watering can never tipped). For
+        /// these states the tool's shaft is aimed after the animation: the rod out over the water while waiting, along
+        /// the swinging arm (raised behind, then forward and up) while casting or reeling, the can tipped forward to
+        /// pour. The grip stays in the hand.
+        /// </summary>
+        private void AimHeldProp()
+        {
+            if (_heldProp == null || _workState == null) return;
+            var hand = Bone(HumanBodyBones.RightHand);
+            if (hand == null) return;
+            Transform body = transform;
+            Vector3 shaft, hang;
+            switch (_workState)
+            {
+                case "Fish_Wait":
+                    shaft = body.forward * 0.78f + body.up * 0.58f + body.right * 0.12f;
+                    hang = Vector3.down;
+                    break;
+                case "Fish_Cast":
+                    var shoulder = Bone(HumanBodyBones.RightUpperArm);
+                    if (shoulder == null) return;
+                    shaft = (hand.position - shoulder.position).normalized + body.up * 0.55f + body.forward * 0.45f;
+                    hang = Vector3.down;
+                    break;
+                case "Work_Water":
+                    shaft = body.forward * 0.85f + body.up * -0.5f;
+                    hang = Vector3.down;
+                    break;
+                default:
+                    return;
+            }
+            shaft.Normalize();
+            Vector3 forward = Vector3.ProjectOnPlane(hang, shaft);
+            if (forward.sqrMagnitude < 0.0001f) forward = Vector3.ProjectOnPlane(body.forward, shaft);
+            _heldProp.transform.rotation = Quaternion.LookRotation(forward.normalized, shaft);
         }
 
         // ─────────── Bow and one-shot gestures ───────────

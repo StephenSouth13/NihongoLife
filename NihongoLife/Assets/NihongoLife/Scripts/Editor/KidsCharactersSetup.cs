@@ -254,6 +254,85 @@ namespace NihongoLife.EditorTools
         }
 
         /// <summary>
+        /// No art pack has a watering can, so watering was mimed empty-handed. Builds a small green can (body, top
+        /// handle, spout with a rose) as Held_tool_watering_can, in the Held tool convention: origin at the grip on the
+        /// top handle, +Y along the handle bar (the thumb), the body hanging along +Z (the fingers), spout forward.
+        /// Registers it in the Midori IslandModelLibrary and saves the scene. Run with -executeMethod.
+        /// </summary>
+        public static void BuildWateringCan()
+        {
+            try
+            {
+                const string dir = "Assets/NihongoLife/Generated/Island/Fishing";
+                const string path = dir + "/Held_tool_watering_can.prefab";
+                const string matPath = dir + "/WateringCan_Green.mat";
+                var mat = AssetDatabase.LoadAssetAtPath<Material>(matPath);
+                if (mat == null)
+                {
+                    mat = new Material(Shader.Find("Universal Render Pipeline/Lit")) { name = "WateringCan_Green" };
+                    AssetDatabase.CreateAsset(mat, matPath);
+                }
+                mat.SetColor("_BaseColor", new Color(0.30f, 0.66f, 0.42f));
+                mat.SetFloat("_Smoothness", 0.45f);
+                EditorUtility.SetDirty(mat);
+
+                var root = new GameObject("Held_tool_watering_can");
+                GameObject Part(PrimitiveType type, string name, Vector3 pos, Vector3 euler, Vector3 scale)
+                {
+                    var g = GameObject.CreatePrimitive(type);
+                    g.name = name;
+                    Object.DestroyImmediate(g.GetComponent<Collider>());
+                    g.transform.SetParent(root.transform, false);
+                    g.transform.localPosition = pos;
+                    g.transform.localEulerAngles = euler;
+                    g.transform.localScale = scale;
+                    var r = g.GetComponent<MeshRenderer>();
+                    r.sharedMaterial = mat;
+                    r.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.On;
+                    return g;
+                }
+                // Body: an upright drum below the hand (its axis along Z, the top toward the grip).
+                Part(PrimitiveType.Cylinder, "Body", new Vector3(0f, 0f, 0.15f), new Vector3(90f, 0f, 0f), new Vector3(0.17f, 0.08f, 0.17f));
+                // Top handle: a bar along Y in the fist, with two posts down to the body.
+                Part(PrimitiveType.Cylinder, "Handle", Vector3.zero, Vector3.zero, new Vector3(0.025f, 0.075f, 0.025f));
+                Part(PrimitiveType.Cube, "PostFront", new Vector3(0f, 0.065f, 0.035f), Vector3.zero, new Vector3(0.022f, 0.022f, 0.07f));
+                Part(PrimitiveType.Cube, "PostBack", new Vector3(0f, -0.065f, 0.035f), Vector3.zero, new Vector3(0.022f, 0.022f, 0.07f));
+                // Spout: from the lower front of the body, forward (+Y) and up toward the grip side, ending in a rose.
+                Part(PrimitiveType.Cylinder, "Spout", new Vector3(0f, 0.15f, 0.17f), new Vector3(-55f, 0f, 0f), new Vector3(0.025f, 0.09f, 0.025f));
+                Part(PrimitiveType.Cylinder, "Rose", new Vector3(0f, 0.225f, 0.12f), new Vector3(-55f, 0f, 0f), new Vector3(0.05f, 0.012f, 0.05f));
+                var tip = new GameObject("Tip").transform; // where water comes out
+                tip.SetParent(root.transform, false);
+                tip.localPosition = new Vector3(0f, 0.235f, 0.11f);
+                var prefab = PrefabUtility.SaveAsPrefabAsset(root, path);
+                Object.DestroyImmediate(root);
+
+                var scene = UnityEditor.SceneManagement.EditorSceneManager.OpenScene("Assets/NihongoLife/Scenes/60_MidoriIsland.unity", UnityEditor.SceneManagement.OpenSceneMode.Single);
+                var library = Object.FindFirstObjectByType<NihongoLife.Island.IslandModelLibrary>(FindObjectsInactive.Include);
+                if (library == null) throw new System.Exception("No IslandModelLibrary in 60_MidoriIsland");
+                var so = new SerializedObject(library);
+                var list = so.FindProperty("entries");
+                int index = -1;
+                for (int i = 0; i < list.arraySize; i++)
+                    if (list.GetArrayElementAtIndex(i).FindPropertyRelative("name").stringValue == "Held_tool_watering_can") index = i;
+                if (index < 0) { index = list.arraySize; list.InsertArrayElementAtIndex(index); }
+                var e = list.GetArrayElementAtIndex(index);
+                e.FindPropertyRelative("name").stringValue = "Held_tool_watering_can";
+                e.FindPropertyRelative("prefab").objectReferenceValue = prefab;
+                so.ApplyModifiedPropertiesWithoutUndo();
+                UnityEditor.SceneManagement.EditorSceneManager.SaveScene(scene);
+                AssetDatabase.SaveAssets();
+                Debug.Log("[KidsSetup] Watering can built and registered");
+                if (Application.isBatchMode) EditorApplication.Exit(0);
+            }
+            catch (System.Exception ex)
+            {
+                Debug.LogException(ex);
+                if (Application.isBatchMode) EditorApplication.Exit(1);
+                else throw;
+            }
+        }
+
+        /// <summary>
         /// The player's CharacterController was still adult-sized (2 m tall, 0.35 m radius) around a 1.33 m Kid: it
         /// stopped short of walls, could not pass narrow gaps and bumped into things above the Kid's head. Sets
         /// height 1.4, radius 0.27, step 0.3 on every PlayerController in the build scenes, saved into the scenes.
