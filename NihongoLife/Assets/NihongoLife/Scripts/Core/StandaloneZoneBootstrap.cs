@@ -108,10 +108,11 @@ namespace NihongoLife.Core
                 spawn != null ? spawn.rotation : Quaternion.identity);
 
             var controller = player.AddComponent<CharacterController>();
-            controller.height = 2f;
-            controller.radius = 0.35f;
-            controller.center = Vector3.up;
-            controller.stepOffset = 0.35f;
+            // Kid-sized (the Kids models stand about 1.33 m tall), same as the player saved in 90_TestSandbox.
+            controller.height = 1.4f;
+            controller.radius = 0.27f;
+            controller.center = new Vector3(0f, 0.7f, 0f);
+            controller.stepOffset = 0.3f;
 
             var ground = new GameObject("GroundCheck").transform;
             ground.SetParent(player.transform, false);

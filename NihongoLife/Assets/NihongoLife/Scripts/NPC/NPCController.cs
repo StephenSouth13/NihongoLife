@@ -43,6 +43,7 @@ namespace NihongoLife.NPC
 
         private void Awake()
         {
+            if (GetComponent<NihongoLife.Player.FootGrounder>() == null) gameObject.AddComponent<NihongoLife.Player.FootGrounder>();
             _navAgent = GetComponent<NavMeshAgent>();
             _patrol = GetComponent<NPCStreetPatrol>();
             _animation = GetComponent<CharacterAnimationController>();

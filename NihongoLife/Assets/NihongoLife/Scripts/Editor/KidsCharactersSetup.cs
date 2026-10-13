@@ -253,6 +253,56 @@ namespace NihongoLife.EditorTools
             }
         }
 
+        /// <summary>
+        /// The player's CharacterController was still adult-sized (2 m tall, 0.35 m radius) around a 1.33 m Kid: it
+        /// stopped short of walls, could not pass narrow gaps and bumped into things above the Kid's head. Sets
+        /// height 1.4, radius 0.27, step 0.3 on every PlayerController in the build scenes, saved into the scenes.
+        /// Run with -executeMethod.
+        /// </summary>
+        public static void FitPlayerColliders()
+        {
+            try
+            {
+                int changed = 0;
+                foreach (var entry in EditorBuildSettings.scenes)
+                {
+                    if (!entry.enabled || string.IsNullOrEmpty(entry.path)) continue;
+                    var scene = UnityEditor.SceneManagement.EditorSceneManager.OpenScene(entry.path, UnityEditor.SceneManagement.OpenSceneMode.Single);
+                    bool dirty = false;
+                    foreach (var player in Object.FindObjectsByType<NihongoLife.Player.PlayerController>(FindObjectsInactive.Include, FindObjectsSortMode.None))
+                    {
+                        var cc = player.GetComponent<CharacterController>();
+                        if (cc == null) continue;
+                        Undo.RecordObject(cc, "Kid collider");
+                        cc.height = 1.4f;
+                        cc.radius = 0.27f;
+                        cc.stepOffset = 0.3f;
+                        cc.center = new Vector3(0f, 0.7f, 0f); // PlayerController lifts it by the skin width at runtime
+                        EditorUtility.SetDirty(cc);
+                        dirty = true;
+                        changed++;
+                        Debug.Log($"[KidsSetup] {entry.path}: {player.name} collider → kid size");
+                    }
+                    if (dirty) UnityEditor.SceneManagement.EditorSceneManager.SaveScene(scene);
+                }
+                foreach (var path in new[] { "Assets/NihongoLife/Prefabs/Characters/NL_Player.prefab" })
+                {
+                    var root = PrefabUtility.LoadPrefabContents(path);
+                    var cc = root.GetComponent<CharacterController>();
+                    if (cc != null) { cc.height = 1.4f; cc.radius = 0.27f; cc.stepOffset = 0.3f; cc.center = new Vector3(0f, 0.7f, 0f); PrefabUtility.SaveAsPrefabAsset(root, path); changed++; }
+                    PrefabUtility.UnloadPrefabContents(root);
+                }
+                Debug.Log($"[KidsSetup] Player colliders fitted: {changed}");
+                if (Application.isBatchMode) EditorApplication.Exit(0);
+            }
+            catch (System.Exception e)
+            {
+                Debug.LogException(e);
+                if (Application.isBatchMode) EditorApplication.Exit(1);
+                else throw;
+            }
+        }
+
         /// <summary>NL_Humanoid with the pack's own idle, walk and happy idle (talking) for boys or girls.</summary>
         private static AnimatorOverrideController Override(string gender)
         {
