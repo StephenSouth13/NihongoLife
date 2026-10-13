@@ -1079,3 +1079,20 @@ Claude nhận tiếp phần Codex đang làm dở: báo cáo, trailer, demo và 
   - 16 slide; trọng tâm là trung tâm luyện thi (JLPT N5, IELTS Writing/Speaking có AI chấm). Mỗi slide có lời nói gợi ý.
   - Logo: NihongoLife, GZV Ltd, Quang Dũng Nihongo; không dùng logo VTC.
   - Ảnh đều chụp từ game bản Kids.
+
+## Cập nhật (2026-10-13, Claude) — Chân lún xuống đất, collider người chơi, dụng cụ trong tay
+
+**Chân lún.** Clip Kids hạ hông thấp hơn tư thế gốc nên đế giày lún 2–3,5 cm. Thêm `Scripts/Player/FootGrounder.cs`: khi đứng yên (không ngồi/nằm/làm việc, có mặt đất ngay dưới), đo đáy SkinnedMesh so với gốc nhân vật rồi nâng/hạ model (giới hạn ±15 cm), giữ nguyên độ lệch cố ý (nhân viên ga đứng bục). Gắn trong `PlayableCharacterCatalog.ApplyVisual` (người chơi, người chơi online) và `NPCController.Awake`. Kết quả (`Bao_Cao/character-regression/feet_report.txt`): đứng −0,2 cm, đi +0,4…+1,2 cm, chạy +1,1…+2,6 cm. Test `FootGroundingPlayModeTests` chặn: đứng trong khoảng −1,5…+3 cm, mọi trạng thái > −3 cm; ảnh chụp từ phía trước.
+
+**Collider người chơi cỡ người lớn.** CharacterController của người chơi vẫn cao 2 m, bán kính 0,35 m quanh bé Kids 1,33 m → dừng sớm trước tường, không lọt khe hẹp. Đổi thành cao 1,4 / bán kính 0,27 / bậc 0,3:
+- `KidsCharactersSetup.FitPlayerColliders()` (-executeMethod) — đã lưu vào `90_TestSandbox.unity` (scene duy nhất có sẵn Player).
+- `StandaloneZoneBootstrap` (tạo Player khi Play thẳng một scene khu vực) dùng cùng kích thước.
+
+**Dụng cụ trong tay.**
+- Không có art bình tưới → `KidsCharactersSetup.BuildWateringCan()` dựng bình tưới xanh từ primitive (`Generated/Island/Fishing/Held_tool_watering_can.prefab` + `WateringCan_Green.mat`), đăng ký vào `IslandModelLibrary` trong `60_MidoriIsland.unity`. `IslandUI` tưới cây giờ cầm bình (`"tool_watering_can"`).
+- `CharacterAnimationController.AimHeldProp()`: chỉnh hướng dụng cụ sau animation — chờ cá: cần chĩa ra mặt nước (trước đây dựng đứng như cột cờ); quăng câu: cần vung từ sau đầu ra trước-lên theo thời gian clip (trước đây kết thúc chĩa xuống đất); tưới: bình nghiêng về trước.
+- `KidActionPosesPlayModeTests` chạy trên Midori (có model dụng cụ), bắt buộc dụng cụ có trong tay, mỗi hành động chụp dải 3 khung (đầu/giữa/cuối): `Bao_Cao/character-regression/action_*.jpg`.
+
+**Online.** Lượt chạy toàn bộ hôm nay: 4 test `OnlineSocialPlayModeTests` hỏng vì server Supabase Realtime (`pkxrtvlerjjiignmlebx`) trả `phx_error … channel_crash` khi join kênh presence; sáng 12/10 cùng test này đạt. Lỗi phía server, không liên quan thay đổi trên — kiểm tra trạng thái project trên dashboard Supabase.
+
+**Còn lại.** Cuốc đất dùng `action_hammer` (giơ qua vai, nhát bổ nhỏ); nhổ cỏ, cho ăn, bê đồ, ngồi, nằm vẫn là clip Mixamo retarget (pack Kids không có clip tương ứng).
