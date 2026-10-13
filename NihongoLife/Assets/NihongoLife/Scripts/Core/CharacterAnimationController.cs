@@ -75,7 +75,7 @@ namespace NihongoLife.Core
         /// The hand alone points a tool the wrong way on Kid arms (the fishing rod stood straight up like a flagpole
         /// while waiting, and finished the cast pointing sideways at the ground; the watering can never tipped). For
         /// these states the tool's shaft is aimed after the animation: the rod out over the water while waiting, along
-        /// the swinging arm (raised behind, then forward and up) while casting or reeling, the can tipped forward to
+        /// a swing from behind the head to forward and up while casting or reeling, the can tipped forward to
         /// pour. The grip stays in the hand.
         /// </summary>
         private void AimHeldProp()
@@ -92,13 +92,13 @@ namespace NihongoLife.Core
                     hang = Vector3.down;
                     break;
                 case "Fish_Cast":
-                    var shoulder = Bone(HumanBodyBones.RightUpperArm);
-                    if (shoulder == null) return;
-                    shaft = (hand.position - shoulder.position).normalized + body.up * 0.55f + body.forward * 0.45f;
+                    // Over the clip: raised behind the head, whipped forward, held out over the water.
+                    float k = _animator != null ? Mathf.SmoothStep(0f, 1f, Mathf.Clamp01((_animator.GetCurrentAnimatorStateInfo(0).normalizedTime - 0.1f) / 0.45f)) : 1f;
+                    shaft = Vector3.Slerp(-body.forward * 0.45f + body.up * 0.9f, body.forward * 0.8f + body.up * 0.5f, k) + body.right * 0.1f;
                     hang = Vector3.down;
                     break;
                 case "Work_Water":
-                    shaft = body.forward * 0.85f + body.up * -0.5f;
+                    shaft = body.forward * 0.95f - body.up * 0.22f;
                     hang = Vector3.down;
                     break;
                 default:
