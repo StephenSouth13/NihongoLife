@@ -1969,8 +1969,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 2.1721458, y: 0.99999994, z: 1.7282485}
-  m_Center: {x: 0, y: 0.49999997, z: 0}
+  m_Size: {x: 2.1417236, y: 0.99999994, z: 1.5366678}
+  m_Center: {x: -2.0090334, y: 0.49999997, z: 0.891796}
 --- !u!1 &176471094
 GameObject:
   m_ObjectHideFlags: 0
@@ -2581,8 +2581,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 2.1721458, y: 0.99999994, z: 1.7282485}
-  m_Center: {x: 0, y: 0.49999997, z: 0}
+  m_Size: {x: 2.1605835, y: 0.99999994, z: 1.6460786}
+  m_Center: {x: -1.9786685, y: 0.49999997, z: 0.96845293}
 --- !u!1 &226325400
 GameObject:
   m_ObjectHideFlags: 0
@@ -2991,6 +2991,7 @@ GameObject:
   m_Component:
   - component: {fileID: 234689309}
   - component: {fileID: 234689310}
+  - component: {fileID: 234689311}
   m_Layer: 28
   m_Name: WarmRoadLight
   m_TagString: Untagged
@@ -3078,6 +3079,35 @@ Light:
   m_LightUnit: 1
   m_LuxAtDistance: 1
   m_EnableSpotReflector: 1
+--- !u!114 &234689311
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 234689308}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 474bcb49853aa07438625e644c072ee6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.RenderPipelines.Universal.Runtime::UnityEngine.Rendering.Universal.UniversalAdditionalLightData
+  m_UsePipelineSettings: 1
+  m_AdditionalLightsShadowResolutionTier: 2
+  m_CustomShadowLayers: 0
+  m_LightCookieSize: {x: 1, y: 1}
+  m_LightCookieOffset: {x: 0, y: 0}
+  m_SoftShadowQuality: 0
+  m_RenderingLayersMask:
+    serializedVersion: 0
+    m_Bits: 1
+  m_ShadowRenderingLayersMask:
+    serializedVersion: 0
+    m_Bits: 1
+  m_Version: 4
+  m_LightLayerMask: 1
+  m_ShadowLayerMask: 1
+  m_RenderingLayers: 1
+  m_ShadowRenderingLayers: 1
 --- !u!1001 &257499555
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3376,7 +3406,7 @@ Transform:
   m_GameObject: {fileID: 262094342}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: 0.6926088, z: -0, w: -0.7213135}
-  m_LocalPosition: {x: 1002.81, y: -0.02, z: 3.66}
+  m_LocalPosition: {x: 1002.814, y: -0.02, z: 3.746}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -3432,7 +3462,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e68ebcbc17f897546bc941685607e046, type: 3}
   m_Name: 
   m_EditorClassIdentifier: NihongoLife::NihongoLife.Core.CharacterAnimationController
-  _animator: {fileID: 1317454581}
+  _animator: {fileID: 0}
   speedParam: Speed
   isTalkingParam: IsTalking
   bowParam: Bow
@@ -4261,8 +4291,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 2.1721458, y: 0.99999994, z: 1.7282485}
-  m_Center: {x: 0, y: 0.49999997, z: 0}
+  m_Size: {x: 2.315796, y: 0.99999994, z: 1.4842151}
+  m_Center: {x: -2.043518, y: 0.49999997, z: 1.0479966}
 --- !u!1 &331438664
 GameObject:
   m_ObjectHideFlags: 0
@@ -4273,6 +4303,7 @@ GameObject:
   m_Component:
   - component: {fileID: 331438665}
   - component: {fileID: 331438666}
+  - component: {fileID: 331438667}
   m_Layer: 28
   m_Name: WarmRoadLight
   m_TagString: Untagged
@@ -4360,6 +4391,35 @@ Light:
   m_LightUnit: 1
   m_LuxAtDistance: 1
   m_EnableSpotReflector: 1
+--- !u!114 &331438667
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 331438664}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 474bcb49853aa07438625e644c072ee6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.RenderPipelines.Universal.Runtime::UnityEngine.Rendering.Universal.UniversalAdditionalLightData
+  m_UsePipelineSettings: 1
+  m_AdditionalLightsShadowResolutionTier: 2
+  m_CustomShadowLayers: 0
+  m_LightCookieSize: {x: 1, y: 1}
+  m_LightCookieOffset: {x: 0, y: 0}
+  m_SoftShadowQuality: 0
+  m_RenderingLayersMask:
+    serializedVersion: 0
+    m_Bits: 1
+  m_ShadowRenderingLayersMask:
+    serializedVersion: 0
+    m_Bits: 1
+  m_Version: 4
+  m_LightLayerMask: 1
+  m_ShadowLayerMask: 1
+  m_RenderingLayers: 1
+  m_ShadowRenderingLayers: 1
 --- !u!1 &332347738
 GameObject:
   m_ObjectHideFlags: 0
@@ -4982,6 +5042,7 @@ GameObject:
   m_Component:
   - component: {fileID: 365279087}
   - component: {fileID: 365279088}
+  - component: {fileID: 365279089}
   m_Layer: 28
   m_Name: WarmRoadLight
   m_TagString: Untagged
@@ -5069,6 +5130,35 @@ Light:
   m_LightUnit: 1
   m_LuxAtDistance: 1
   m_EnableSpotReflector: 1
+--- !u!114 &365279089
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 365279086}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 474bcb49853aa07438625e644c072ee6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.RenderPipelines.Universal.Runtime::UnityEngine.Rendering.Universal.UniversalAdditionalLightData
+  m_UsePipelineSettings: 1
+  m_AdditionalLightsShadowResolutionTier: 2
+  m_CustomShadowLayers: 0
+  m_LightCookieSize: {x: 1, y: 1}
+  m_LightCookieOffset: {x: 0, y: 0}
+  m_SoftShadowQuality: 0
+  m_RenderingLayersMask:
+    serializedVersion: 0
+    m_Bits: 1
+  m_ShadowRenderingLayersMask:
+    serializedVersion: 0
+    m_Bits: 1
+  m_Version: 4
+  m_LightLayerMask: 1
+  m_ShadowLayerMask: 1
+  m_RenderingLayers: 1
+  m_ShadowRenderingLayers: 1
 --- !u!1 &365868718
 GameObject:
   m_ObjectHideFlags: 0
@@ -7521,6 +7611,7 @@ GameObject:
   m_Component:
   - component: {fileID: 504696196}
   - component: {fileID: 504696197}
+  - component: {fileID: 504696198}
   m_Layer: 28
   m_Name: WarmRoadLight
   m_TagString: Untagged
@@ -7608,6 +7699,35 @@ Light:
   m_LightUnit: 1
   m_LuxAtDistance: 1
   m_EnableSpotReflector: 1
+--- !u!114 &504696198
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 504696195}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 474bcb49853aa07438625e644c072ee6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.RenderPipelines.Universal.Runtime::UnityEngine.Rendering.Universal.UniversalAdditionalLightData
+  m_UsePipelineSettings: 1
+  m_AdditionalLightsShadowResolutionTier: 2
+  m_CustomShadowLayers: 0
+  m_LightCookieSize: {x: 1, y: 1}
+  m_LightCookieOffset: {x: 0, y: 0}
+  m_SoftShadowQuality: 0
+  m_RenderingLayersMask:
+    serializedVersion: 0
+    m_Bits: 1
+  m_ShadowRenderingLayersMask:
+    serializedVersion: 0
+    m_Bits: 1
+  m_Version: 4
+  m_LightLayerMask: 1
+  m_ShadowLayerMask: 1
+  m_RenderingLayers: 1
+  m_ShadowRenderingLayers: 1
 --- !u!1 &516583001
 GameObject:
   m_ObjectHideFlags: 0
@@ -9102,8 +9222,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 2.1721458, y: 0.99999994, z: 1.7282485}
-  m_Center: {x: 0, y: 0.49999997, z: 0}
+  m_Size: {x: 2.340454, y: 0.99999994, z: 1.7196758}
+  m_Center: {x: -1.9961548, y: 0.49999997, z: 1.0017473}
 --- !u!1 &621687974
 GameObject:
   m_ObjectHideFlags: 0
@@ -9114,6 +9234,7 @@ GameObject:
   m_Component:
   - component: {fileID: 621687975}
   - component: {fileID: 621687976}
+  - component: {fileID: 621687977}
   m_Layer: 28
   m_Name: WarmRoadLight
   m_TagString: Untagged
@@ -9201,6 +9322,35 @@ Light:
   m_LightUnit: 1
   m_LuxAtDistance: 1
   m_EnableSpotReflector: 1
+--- !u!114 &621687977
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 621687974}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 474bcb49853aa07438625e644c072ee6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.RenderPipelines.Universal.Runtime::UnityEngine.Rendering.Universal.UniversalAdditionalLightData
+  m_UsePipelineSettings: 1
+  m_AdditionalLightsShadowResolutionTier: 2
+  m_CustomShadowLayers: 0
+  m_LightCookieSize: {x: 1, y: 1}
+  m_LightCookieOffset: {x: 0, y: 0}
+  m_SoftShadowQuality: 0
+  m_RenderingLayersMask:
+    serializedVersion: 0
+    m_Bits: 1
+  m_ShadowRenderingLayersMask:
+    serializedVersion: 0
+    m_Bits: 1
+  m_Version: 4
+  m_LightLayerMask: 1
+  m_ShadowLayerMask: 1
+  m_RenderingLayers: 1
+  m_ShadowRenderingLayers: 1
 --- !u!1 &639679714
 GameObject:
   m_ObjectHideFlags: 0
@@ -9695,8 +9845,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 2.1721458, y: 0.99999994, z: 1.7282485}
-  m_Center: {x: 0, y: 0.49999997, z: 0}
+  m_Size: {x: 2.2733765, y: 0.99999994, z: 1.737453}
+  m_Center: {x: -2.0348818, y: 0.49999997, z: 0.96212876}
 --- !u!1 &667579976
 GameObject:
   m_ObjectHideFlags: 0
@@ -10728,6 +10878,7 @@ GameObject:
   m_Component:
   - component: {fileID: 785353293}
   - component: {fileID: 785353294}
+  - component: {fileID: 785353295}
   m_Layer: 28
   m_Name: WarmRoadLight
   m_TagString: Untagged
@@ -10815,6 +10966,35 @@ Light:
   m_LightUnit: 1
   m_LuxAtDistance: 1
   m_EnableSpotReflector: 1
+--- !u!114 &785353295
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 785353292}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 474bcb49853aa07438625e644c072ee6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.RenderPipelines.Universal.Runtime::UnityEngine.Rendering.Universal.UniversalAdditionalLightData
+  m_UsePipelineSettings: 1
+  m_AdditionalLightsShadowResolutionTier: 2
+  m_CustomShadowLayers: 0
+  m_LightCookieSize: {x: 1, y: 1}
+  m_LightCookieOffset: {x: 0, y: 0}
+  m_SoftShadowQuality: 0
+  m_RenderingLayersMask:
+    serializedVersion: 0
+    m_Bits: 1
+  m_ShadowRenderingLayersMask:
+    serializedVersion: 0
+    m_Bits: 1
+  m_Version: 4
+  m_LightLayerMask: 1
+  m_ShadowLayerMask: 1
+  m_RenderingLayers: 1
+  m_ShadowRenderingLayers: 1
 --- !u!1 &789191348
 GameObject:
   m_ObjectHideFlags: 0
@@ -10916,6 +11096,7 @@ GameObject:
   m_Component:
   - component: {fileID: 790034142}
   - component: {fileID: 790034141}
+  - component: {fileID: 790034143}
   m_Layer: 28
   m_Name: WarmRoadLight
   m_TagString: Untagged
@@ -11003,6 +11184,35 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1679199195}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &790034143
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 790034140}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 474bcb49853aa07438625e644c072ee6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.RenderPipelines.Universal.Runtime::UnityEngine.Rendering.Universal.UniversalAdditionalLightData
+  m_UsePipelineSettings: 1
+  m_AdditionalLightsShadowResolutionTier: 2
+  m_CustomShadowLayers: 0
+  m_LightCookieSize: {x: 1, y: 1}
+  m_LightCookieOffset: {x: 0, y: 0}
+  m_SoftShadowQuality: 0
+  m_RenderingLayersMask:
+    serializedVersion: 0
+    m_Bits: 1
+  m_ShadowRenderingLayersMask:
+    serializedVersion: 0
+    m_Bits: 1
+  m_Version: 4
+  m_LightLayerMask: 1
+  m_ShadowLayerMask: 1
+  m_RenderingLayers: 1
+  m_ShadowRenderingLayers: 1
 --- !u!1 &793298105
 GameObject:
   m_ObjectHideFlags: 0
@@ -11193,6 +11403,7 @@ GameObject:
   m_Component:
   - component: {fileID: 801376330}
   - component: {fileID: 801376331}
+  - component: {fileID: 801376332}
   m_Layer: 28
   m_Name: WarmRoadLight
   m_TagString: Untagged
@@ -11280,6 +11491,35 @@ Light:
   m_LightUnit: 1
   m_LuxAtDistance: 1
   m_EnableSpotReflector: 1
+--- !u!114 &801376332
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 801376329}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 474bcb49853aa07438625e644c072ee6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.RenderPipelines.Universal.Runtime::UnityEngine.Rendering.Universal.UniversalAdditionalLightData
+  m_UsePipelineSettings: 1
+  m_AdditionalLightsShadowResolutionTier: 2
+  m_CustomShadowLayers: 0
+  m_LightCookieSize: {x: 1, y: 1}
+  m_LightCookieOffset: {x: 0, y: 0}
+  m_SoftShadowQuality: 0
+  m_RenderingLayersMask:
+    serializedVersion: 0
+    m_Bits: 1
+  m_ShadowRenderingLayersMask:
+    serializedVersion: 0
+    m_Bits: 1
+  m_Version: 4
+  m_LightLayerMask: 1
+  m_ShadowLayerMask: 1
+  m_RenderingLayers: 1
+  m_ShadowRenderingLayers: 1
 --- !u!1 &806772303
 GameObject:
   m_ObjectHideFlags: 0
@@ -11654,6 +11894,7 @@ GameObject:
   m_Component:
   - component: {fileID: 845644682}
   - component: {fileID: 845644683}
+  - component: {fileID: 845644684}
   m_Layer: 28
   m_Name: WarmRoadLight
   m_TagString: Untagged
@@ -11741,6 +11982,35 @@ Light:
   m_LightUnit: 1
   m_LuxAtDistance: 1
   m_EnableSpotReflector: 1
+--- !u!114 &845644684
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 845644681}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 474bcb49853aa07438625e644c072ee6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.RenderPipelines.Universal.Runtime::UnityEngine.Rendering.Universal.UniversalAdditionalLightData
+  m_UsePipelineSettings: 1
+  m_AdditionalLightsShadowResolutionTier: 2
+  m_CustomShadowLayers: 0
+  m_LightCookieSize: {x: 1, y: 1}
+  m_LightCookieOffset: {x: 0, y: 0}
+  m_SoftShadowQuality: 0
+  m_RenderingLayersMask:
+    serializedVersion: 0
+    m_Bits: 1
+  m_ShadowRenderingLayersMask:
+    serializedVersion: 0
+    m_Bits: 1
+  m_Version: 4
+  m_LightLayerMask: 1
+  m_ShadowLayerMask: 1
+  m_RenderingLayers: 1
+  m_ShadowRenderingLayers: 1
 --- !u!1 &854461511
 GameObject:
   m_ObjectHideFlags: 0
@@ -12928,8 +13198,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 2.1721458, y: 0.99999994, z: 1.7282485}
-  m_Center: {x: 0, y: 0.49999997, z: 0}
+  m_Size: {x: 2.2114868, y: 0.99999994, z: 1.7182529}
+  m_Center: {x: -1.9895325, y: 0.49999997, z: 0.9852203}
 --- !u!1 &951150559
 GameObject:
   m_ObjectHideFlags: 0
@@ -14323,8 +14593,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 2.1721458, y: 0.99999994, z: 1.7282485}
-  m_Center: {x: 0, y: 0.49999997, z: 0}
+  m_Size: {x: 2.208374, y: 0.99999994, z: 1.7148118}
+  m_Center: {x: -1.9746094, y: 0.49999997, z: 0.95545506}
 --- !u!1 &1039025100
 GameObject:
   m_ObjectHideFlags: 0
@@ -14335,6 +14605,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1039025101}
   - component: {fileID: 1039025102}
+  - component: {fileID: 1039025103}
   m_Layer: 28
   m_Name: WarmRoadLight
   m_TagString: Untagged
@@ -14422,6 +14693,35 @@ Light:
   m_LightUnit: 1
   m_LuxAtDistance: 1
   m_EnableSpotReflector: 1
+--- !u!114 &1039025103
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1039025100}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 474bcb49853aa07438625e644c072ee6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.RenderPipelines.Universal.Runtime::UnityEngine.Rendering.Universal.UniversalAdditionalLightData
+  m_UsePipelineSettings: 1
+  m_AdditionalLightsShadowResolutionTier: 2
+  m_CustomShadowLayers: 0
+  m_LightCookieSize: {x: 1, y: 1}
+  m_LightCookieOffset: {x: 0, y: 0}
+  m_SoftShadowQuality: 0
+  m_RenderingLayersMask:
+    serializedVersion: 0
+    m_Bits: 1
+  m_ShadowRenderingLayersMask:
+    serializedVersion: 0
+    m_Bits: 1
+  m_Version: 4
+  m_LightLayerMask: 1
+  m_ShadowLayerMask: 1
+  m_RenderingLayers: 1
+  m_ShadowRenderingLayers: 1
 --- !u!1 &1045088166
 GameObject:
   m_ObjectHideFlags: 0
@@ -14648,6 +14948,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1066633572}
   - component: {fileID: 1066633573}
+  - component: {fileID: 1066633574}
   m_Layer: 28
   m_Name: WarmRoadLight
   m_TagString: Untagged
@@ -14735,6 +15036,35 @@ Light:
   m_LightUnit: 1
   m_LuxAtDistance: 1
   m_EnableSpotReflector: 1
+--- !u!114 &1066633574
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1066633571}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 474bcb49853aa07438625e644c072ee6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.RenderPipelines.Universal.Runtime::UnityEngine.Rendering.Universal.UniversalAdditionalLightData
+  m_UsePipelineSettings: 1
+  m_AdditionalLightsShadowResolutionTier: 2
+  m_CustomShadowLayers: 0
+  m_LightCookieSize: {x: 1, y: 1}
+  m_LightCookieOffset: {x: 0, y: 0}
+  m_SoftShadowQuality: 0
+  m_RenderingLayersMask:
+    serializedVersion: 0
+    m_Bits: 1
+  m_ShadowRenderingLayersMask:
+    serializedVersion: 0
+    m_Bits: 1
+  m_Version: 4
+  m_LightLayerMask: 1
+  m_ShadowLayerMask: 1
+  m_RenderingLayers: 1
+  m_ShadowRenderingLayers: 1
 --- !u!1 &1068132402
 GameObject:
   m_ObjectHideFlags: 0
@@ -16175,8 +16505,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 2.1721458, y: 0.99999994, z: 1.7282485}
-  m_Center: {x: 0, y: 0.49999997, z: 0}
+  m_Size: {x: 2.180664, y: 0.99999994, z: 1.7068721}
+  m_Center: {x: -1.9928589, y: 0.49999997, z: 0.944689}
 --- !u!1 &1225722783
 GameObject:
   m_ObjectHideFlags: 0
@@ -16713,6 +17043,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1246005231}
   - component: {fileID: 1246005232}
+  - component: {fileID: 1246005233}
   m_Layer: 28
   m_Name: WarmRoadLight
   m_TagString: Untagged
@@ -16800,6 +17131,35 @@ Light:
   m_LightUnit: 1
   m_LuxAtDistance: 1
   m_EnableSpotReflector: 1
+--- !u!114 &1246005233
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1246005230}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 474bcb49853aa07438625e644c072ee6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.RenderPipelines.Universal.Runtime::UnityEngine.Rendering.Universal.UniversalAdditionalLightData
+  m_UsePipelineSettings: 1
+  m_AdditionalLightsShadowResolutionTier: 2
+  m_CustomShadowLayers: 0
+  m_LightCookieSize: {x: 1, y: 1}
+  m_LightCookieOffset: {x: 0, y: 0}
+  m_SoftShadowQuality: 0
+  m_RenderingLayersMask:
+    serializedVersion: 0
+    m_Bits: 1
+  m_ShadowRenderingLayersMask:
+    serializedVersion: 0
+    m_Bits: 1
+  m_Version: 4
+  m_LightLayerMask: 1
+  m_ShadowLayerMask: 1
+  m_RenderingLayers: 1
+  m_ShadowRenderingLayers: 1
 --- !u!1 &1251077298
 GameObject:
   m_ObjectHideFlags: 0
@@ -18803,7 +19163,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2524393249881064951, guid: bade1be4060dffa49b7d97b8b3777616, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -3.55
+      value: -0.025
       objectReference: {fileID: 0}
     - target: {fileID: 2524393249881064951, guid: bade1be4060dffa49b7d97b8b3777616, type: 3}
       propertyPath: m_LocalPosition.y
@@ -18811,7 +19171,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2524393249881064951, guid: bade1be4060dffa49b7d97b8b3777616, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 2524393249881064951, guid: bade1be4060dffa49b7d97b8b3777616, type: 3}
       propertyPath: m_LocalRotation.w
@@ -18855,11 +19215,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 2524393249881064951, guid: bade1be4060dffa49b7d97b8b3777616, type: 3}
   m_PrefabInstance: {fileID: 1317454579}
   m_PrefabAsset: {fileID: 0}
---- !u!95 &1317454581 stripped
-Animator:
-  m_CorrespondingSourceObject: {fileID: 5970080416116596824, guid: bade1be4060dffa49b7d97b8b3777616, type: 3}
-  m_PrefabInstance: {fileID: 1317454579}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1318833041
 GameObject:
   m_ObjectHideFlags: 0
@@ -18870,6 +19225,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1318833042}
   - component: {fileID: 1318833043}
+  - component: {fileID: 1318833044}
   m_Layer: 28
   m_Name: WarmRoadLight
   m_TagString: Untagged
@@ -18957,6 +19313,35 @@ Light:
   m_LightUnit: 1
   m_LuxAtDistance: 1
   m_EnableSpotReflector: 1
+--- !u!114 &1318833044
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1318833041}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 474bcb49853aa07438625e644c072ee6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.RenderPipelines.Universal.Runtime::UnityEngine.Rendering.Universal.UniversalAdditionalLightData
+  m_UsePipelineSettings: 1
+  m_AdditionalLightsShadowResolutionTier: 2
+  m_CustomShadowLayers: 0
+  m_LightCookieSize: {x: 1, y: 1}
+  m_LightCookieOffset: {x: 0, y: 0}
+  m_SoftShadowQuality: 0
+  m_RenderingLayersMask:
+    serializedVersion: 0
+    m_Bits: 1
+  m_ShadowRenderingLayersMask:
+    serializedVersion: 0
+    m_Bits: 1
+  m_Version: 4
+  m_LightLayerMask: 1
+  m_ShadowLayerMask: 1
+  m_RenderingLayers: 1
+  m_ShadowRenderingLayers: 1
 --- !u!1 &1345335195
 GameObject:
   m_ObjectHideFlags: 0
@@ -19597,6 +19982,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1376466988}
   - component: {fileID: 1376466989}
+  - component: {fileID: 1376466990}
   m_Layer: 28
   m_Name: WarmRoadLight
   m_TagString: Untagged
@@ -19684,6 +20070,35 @@ Light:
   m_LightUnit: 1
   m_LuxAtDistance: 1
   m_EnableSpotReflector: 1
+--- !u!114 &1376466990
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1376466987}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 474bcb49853aa07438625e644c072ee6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.RenderPipelines.Universal.Runtime::UnityEngine.Rendering.Universal.UniversalAdditionalLightData
+  m_UsePipelineSettings: 1
+  m_AdditionalLightsShadowResolutionTier: 2
+  m_CustomShadowLayers: 0
+  m_LightCookieSize: {x: 1, y: 1}
+  m_LightCookieOffset: {x: 0, y: 0}
+  m_SoftShadowQuality: 0
+  m_RenderingLayersMask:
+    serializedVersion: 0
+    m_Bits: 1
+  m_ShadowRenderingLayersMask:
+    serializedVersion: 0
+    m_Bits: 1
+  m_Version: 4
+  m_LightLayerMask: 1
+  m_ShadowLayerMask: 1
+  m_RenderingLayers: 1
+  m_ShadowRenderingLayers: 1
 --- !u!1 &1377872857
 GameObject:
   m_ObjectHideFlags: 0
@@ -20240,7 +20655,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e68ebcbc17f897546bc941685607e046, type: 3}
   m_Name: 
   m_EditorClassIdentifier: NihongoLife::NihongoLife.Core.CharacterAnimationController
-  _animator: {fileID: 1703678775}
+  _animator: {fileID: 0}
   speedParam: Speed
   isTalkingParam: IsTalking
   bowParam: Bow
@@ -21634,6 +22049,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1551794729}
   - component: {fileID: 1551794730}
+  - component: {fileID: 1551794731}
   m_Layer: 28
   m_Name: WarmRoadLight
   m_TagString: Untagged
@@ -21721,6 +22137,35 @@ Light:
   m_LightUnit: 1
   m_LuxAtDistance: 1
   m_EnableSpotReflector: 1
+--- !u!114 &1551794731
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1551794728}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 474bcb49853aa07438625e644c072ee6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.RenderPipelines.Universal.Runtime::UnityEngine.Rendering.Universal.UniversalAdditionalLightData
+  m_UsePipelineSettings: 1
+  m_AdditionalLightsShadowResolutionTier: 2
+  m_CustomShadowLayers: 0
+  m_LightCookieSize: {x: 1, y: 1}
+  m_LightCookieOffset: {x: 0, y: 0}
+  m_SoftShadowQuality: 0
+  m_RenderingLayersMask:
+    serializedVersion: 0
+    m_Bits: 1
+  m_ShadowRenderingLayersMask:
+    serializedVersion: 0
+    m_Bits: 1
+  m_Version: 4
+  m_LightLayerMask: 1
+  m_ShadowLayerMask: 1
+  m_RenderingLayers: 1
+  m_ShadowRenderingLayers: 1
 --- !u!1 &1559368718
 GameObject:
   m_ObjectHideFlags: 0
@@ -21731,6 +22176,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1559368719}
   - component: {fileID: 1559368720}
+  - component: {fileID: 1559368721}
   m_Layer: 28
   m_Name: WarmRoadLight
   m_TagString: Untagged
@@ -21818,6 +22264,35 @@ Light:
   m_LightUnit: 1
   m_LuxAtDistance: 1
   m_EnableSpotReflector: 1
+--- !u!114 &1559368721
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1559368718}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 474bcb49853aa07438625e644c072ee6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.RenderPipelines.Universal.Runtime::UnityEngine.Rendering.Universal.UniversalAdditionalLightData
+  m_UsePipelineSettings: 1
+  m_AdditionalLightsShadowResolutionTier: 2
+  m_CustomShadowLayers: 0
+  m_LightCookieSize: {x: 1, y: 1}
+  m_LightCookieOffset: {x: 0, y: 0}
+  m_SoftShadowQuality: 0
+  m_RenderingLayersMask:
+    serializedVersion: 0
+    m_Bits: 1
+  m_ShadowRenderingLayersMask:
+    serializedVersion: 0
+    m_Bits: 1
+  m_Version: 4
+  m_LightLayerMask: 1
+  m_ShadowLayerMask: 1
+  m_RenderingLayers: 1
+  m_ShadowRenderingLayers: 1
 --- !u!1 &1562106332
 GameObject:
   m_ObjectHideFlags: 0
@@ -22152,6 +22627,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1598262479}
   - component: {fileID: 1598262480}
+  - component: {fileID: 1598262481}
   m_Layer: 28
   m_Name: ExteriorFill
   m_TagString: Untagged
@@ -22239,6 +22715,35 @@ Light:
   m_LightUnit: 1
   m_LuxAtDistance: 1
   m_EnableSpotReflector: 1
+--- !u!114 &1598262481
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1598262478}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 474bcb49853aa07438625e644c072ee6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.RenderPipelines.Universal.Runtime::UnityEngine.Rendering.Universal.UniversalAdditionalLightData
+  m_UsePipelineSettings: 1
+  m_AdditionalLightsShadowResolutionTier: 2
+  m_CustomShadowLayers: 0
+  m_LightCookieSize: {x: 1, y: 1}
+  m_LightCookieOffset: {x: 0, y: 0}
+  m_SoftShadowQuality: 0
+  m_RenderingLayersMask:
+    serializedVersion: 0
+    m_Bits: 1
+  m_ShadowRenderingLayersMask:
+    serializedVersion: 0
+    m_Bits: 1
+  m_Version: 4
+  m_LightLayerMask: 1
+  m_ShadowLayerMask: 1
+  m_RenderingLayers: 1
+  m_ShadowRenderingLayers: 1
 --- !u!1 &1601606200
 GameObject:
   m_ObjectHideFlags: 0
@@ -23887,11 +24392,6 @@ PrefabInstance:
 --- !u!4 &1703678774 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 2457435814879500997, guid: da0efc4364a49f946b0a1e1580d59006, type: 3}
-  m_PrefabInstance: {fileID: 1703678773}
-  m_PrefabAsset: {fileID: 0}
---- !u!95 &1703678775 stripped
-Animator:
-  m_CorrespondingSourceObject: {fileID: 2395651667011294326, guid: da0efc4364a49f946b0a1e1580d59006, type: 3}
   m_PrefabInstance: {fileID: 1703678773}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1706720432
@@ -26544,8 +27044,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 2.1721458, y: 0.99999994, z: 1.7282485}
-  m_Center: {x: 0, y: 0.49999997, z: 0}
+  m_Size: {x: 2.1351929, y: 0.99999994, z: 1.644557}
+  m_Center: {x: -1.9816592, y: 0.49999997, z: 0.9701245}
 --- !u!1 &1887739700
 GameObject:
   m_ObjectHideFlags: 0
@@ -26588,6 +27088,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1914292099}
   - component: {fileID: 1914292100}
+  - component: {fileID: 1914292101}
   m_Layer: 28
   m_Name: ExteriorSun
   m_TagString: Untagged
@@ -26675,6 +27176,35 @@ Light:
   m_LightUnit: 1
   m_LuxAtDistance: 1
   m_EnableSpotReflector: 1
+--- !u!114 &1914292101
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1914292098}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 474bcb49853aa07438625e644c072ee6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.RenderPipelines.Universal.Runtime::UnityEngine.Rendering.Universal.UniversalAdditionalLightData
+  m_UsePipelineSettings: 1
+  m_AdditionalLightsShadowResolutionTier: 2
+  m_CustomShadowLayers: 0
+  m_LightCookieSize: {x: 1, y: 1}
+  m_LightCookieOffset: {x: 0, y: 0}
+  m_SoftShadowQuality: 0
+  m_RenderingLayersMask:
+    serializedVersion: 0
+    m_Bits: 1
+  m_ShadowRenderingLayersMask:
+    serializedVersion: 0
+    m_Bits: 1
+  m_Version: 4
+  m_LightLayerMask: 1
+  m_ShadowLayerMask: 1
+  m_RenderingLayers: 1
+  m_ShadowRenderingLayers: 1
 --- !u!1 &1919294109
 GameObject:
   m_ObjectHideFlags: 0
@@ -26775,6 +27305,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1921134616}
   - component: {fileID: 1921134617}
+  - component: {fileID: 1921134618}
   m_Layer: 28
   m_Name: WarmRoadLight
   m_TagString: Untagged
@@ -26862,6 +27393,35 @@ Light:
   m_LightUnit: 1
   m_LuxAtDistance: 1
   m_EnableSpotReflector: 1
+--- !u!114 &1921134618
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1921134615}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 474bcb49853aa07438625e644c072ee6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.RenderPipelines.Universal.Runtime::UnityEngine.Rendering.Universal.UniversalAdditionalLightData
+  m_UsePipelineSettings: 1
+  m_AdditionalLightsShadowResolutionTier: 2
+  m_CustomShadowLayers: 0
+  m_LightCookieSize: {x: 1, y: 1}
+  m_LightCookieOffset: {x: 0, y: 0}
+  m_SoftShadowQuality: 0
+  m_RenderingLayersMask:
+    serializedVersion: 0
+    m_Bits: 1
+  m_ShadowRenderingLayersMask:
+    serializedVersion: 0
+    m_Bits: 1
+  m_Version: 4
+  m_LightLayerMask: 1
+  m_ShadowLayerMask: 1
+  m_RenderingLayers: 1
+  m_ShadowRenderingLayers: 1
 --- !u!1 &1928218845
 GameObject:
   m_ObjectHideFlags: 0
@@ -27184,8 +27744,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 2.1721458, y: 0.99999994, z: 1.7282485}
-  m_Center: {x: 0, y: 0.49999997, z: 0}
+  m_Size: {x: 2.197815, y: 0.99999994, z: 1.6040854}
+  m_Center: {x: -1.9889221, y: 0.49999997, z: 1.0419321}
 --- !u!1 &1947763654
 GameObject:
   m_ObjectHideFlags: 0
@@ -28784,8 +29344,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 2.1721458, y: 0.99999994, z: 1.7282485}
-  m_Center: {x: 0, y: 0.49999997, z: 0}
+  m_Size: {x: 2.1818848, y: 0.99999994, z: 1.674083}
+  m_Center: {x: -2.003479, y: 0.49999997, z: 0.9874456}
 --- !u!1 &2064950989
 GameObject:
   m_ObjectHideFlags: 0
@@ -28838,8 +29398,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 2.1721458, y: 0.99999994, z: 1.7282485}
-  m_Center: {x: 0, y: 0.49999997, z: 0}
+  m_Size: {x: 2.1793213, y: 0.99999994, z: 1.6647701}
+  m_Center: {x: -1.9907227, y: 0.49999997, z: 0.98716164}
 --- !u!1 &2071050673
 GameObject:
   m_ObjectHideFlags: 0
