@@ -99,3 +99,14 @@ NihongoLife/LocalContent/
 
 # Python bytecode
 __pycache__/
+
+# Secrets: Supabase service_role / secret keys, local env files. Never commit.
+.env
+*.env
+.env.*
+!.env.example
+**/supabase/.env
+**/supabase/.temp/
+*service_role*
+*.secret.json
+**/Secrets/
