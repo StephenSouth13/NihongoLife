@@ -269,6 +269,9 @@ namespace NihongoLife.UI
             return rect;
         }
 
+        /// <summary>Top-left placement of a label.</summary>
+        public static RectTransform Place(TMP_Text text, float x, float y, float w, float h) => Place(text.rectTransform, x, y, w, h);
+
         /// <summary>Anchored placement (anchor = pivot), e.g. (1,1) top-right with x negative to the left.</summary>
         public static RectTransform Pin(RectTransform rect, Vector2 anchor, float x, float y, float w, float h)
         {

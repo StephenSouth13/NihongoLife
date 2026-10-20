@@ -16,9 +16,13 @@ MonoBehaviour:
   kind: 0
   titleJa: "\u304B\u306A\u30DE\u30C3\u30C1"
   titleVi: Kana Match
+  titleEn: Kana Match
   descriptionVi: "L\u1EADt th\u1EBB v\xE0 gh\xE9p c\u1EB7p: ch\u1EEF \u2194 c\xE1ch
-    \u0111\u1ECDc, t\u1EEB \u2194 h\xECnh, ti\u1EBFng Nh\u1EADt \u2194 ti\u1EBFng
-    Vi\u1EC7t."
+    \u0111\u1ECDc, t\u1EEB \u2194 h\xECnh, ti\u1EBFng Nh\u1EADt \u2194 ngh\u0129a."
+  descriptionEn: "Flip cards and match pairs: character \u2194 reading, word \u2194
+    picture, Japanese \u2194 meaning."
+  descriptionJa: "\u30AB\u30FC\u30C9\u3092\u3081\u304F\u3063\u3066\u30DA\u30A2\u3092\u4F5C\u308D\u3046\uFF1A\u6587\u5B57
+    \u2194 \u8AAD\u307F\u65B9\u3001\u3053\u3068\u3070 \u2194 \u7D75\u3002"
   playable: 1
   contentSets:
   - {fileID: 11400000, guid: 25f61ec1b2aa4864caca02215798e31e, type: 2}

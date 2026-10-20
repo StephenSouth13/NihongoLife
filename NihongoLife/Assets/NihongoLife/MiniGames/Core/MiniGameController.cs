@@ -117,13 +117,21 @@ namespace NihongoLife.MiniGames
             if (_gameBehaviour != null) Destroy(_gameBehaviour);
             switch (kind)
             {
-                case MiniGameKind.KanaMatch:
-                    var kana = gameObject.AddComponent<KanaMatchGame>();
-                    _gameBehaviour = kana;
-                    return kana;
-                default:
-                    return null; // Word Shooter / Order Rush: definitions exist, gameplay comes next
+                case MiniGameKind.KanaMatch: return Attach<KanaMatchGame>();
+                case MiniGameKind.WordShooter: return Attach<WordShooterGame>();
+                case MiniGameKind.OrderRush: return Attach<OrderRushGame>();
+                case MiniGameKind.KanaRain: return Attach<KanaRainGame>();
+                case MiniGameKind.UfoCatcher: return Attach<UfoCatcherGame>();
+                case MiniGameKind.BasketCount: return Attach<BasketCountGame>();
+                default: return null;
             }
+        }
+
+        private T Attach<T>() where T : MonoBehaviour, IMiniGame
+        {
+            var game = gameObject.AddComponent<T>();
+            _gameBehaviour = game;
+            return game;
         }
 
         /// <summary>The "×" button: quits the running game (counts as an abort) or closes the result card.</summary>
@@ -159,11 +167,11 @@ namespace NihongoLife.MiniGames
             var scoring = ScoringManager.Instance;
             if (scoring != null)
             {
-                scoring.AddScore("Vocabulary", result.correctCount * 5, $"{result.gameId}: {result.correctCount} đúng", source);
-                scoring.AddScore("ResponseAccuracy", Mathf.RoundToInt(result.accuracy * 100f), $"{result.gameId}: chính xác {result.accuracy:P0}", source);
-                scoring.AddScore("TaskCompletion", result.completed ? 100 : 0, $"{result.gameId}: hoàn thành trong {result.completionSeconds:0}s", source);
+                scoring.AddScore("Vocabulary", result.correctCount * 5, Loc.Triple($"{result.gameId}: {result.correctCount} đúng", $"{result.gameId}: {result.correctCount} correct", $"{result.gameId}: {result.correctCount}問正解"), source);
+                scoring.AddScore("ResponseAccuracy", Mathf.RoundToInt(result.accuracy * 100f), Loc.Triple($"{result.gameId}: chính xác {result.accuracy:P0}", $"{result.gameId}: accuracy {result.accuracy:P0}", $"{result.gameId}: 正確さ {result.accuracy:P0}"), source);
+                scoring.AddScore("TaskCompletion", result.completed ? 100 : 0, Loc.Triple($"{result.gameId}: hoàn thành trong {result.completionSeconds:0}s", $"{result.gameId}: finished in {result.completionSeconds:0}s", $"{result.gameId}: {result.completionSeconds:0}秒でクリア"), source);
                 if (result.incorrectCount > 0)
-                    scoring.AddScore("Vocabulary", -2 * result.incorrectCount, $"{result.gameId}: {result.incorrectCount} lần sai", source);
+                    scoring.AddScore("Vocabulary", -2 * result.incorrectCount, Loc.Triple($"{result.gameId}: {result.incorrectCount} lần sai", $"{result.gameId}: {result.incorrectCount} mistakes", $"{result.gameId}: {result.incorrectCount}回まちがい"), source);
                 result.submittedToScoring = true;
             }
 
@@ -192,7 +200,8 @@ namespace NihongoLife.MiniGames
             _resultTitle = NLUi.Label(_resultPanel, "Title", "", 40f, NLUi.Gold, _font, FontStyles.Bold, TextAlignmentOptions.Center);
             NLUi.Divider(_resultPanel);
             _resultBody = NLUi.Label(_resultPanel, "Body", "", 21f, NLUi.Text, _font, FontStyles.Normal, TextAlignmentOptions.Left);
-            NLUi.Button(_resultPanel, "Continue", "つづける · Tiếp tục khám phá", _font, Close, new Color(0.16f, 0.45f, 0.32f), 22f, null, 58f);
+            var next = NLUi.Button(_resultPanel, "Continue", "", _font, Close, new Color(0.16f, 0.45f, 0.32f), 22f, null, 58f);
+            LocText.Set(next.GetComponentInChildren<TextMeshProUGUI>(), "Tiếp tục khám phá", "Keep exploring", "つづける");
             _resultPanel.gameObject.SetActive(false);
         }
 
@@ -201,24 +210,26 @@ namespace NihongoLife.MiniGames
             _resultPanel.gameObject.SetActive(true);
             _resultPanel.SetAsLastSibling();
             string stars = result.completed ? $"\n<size=80%><color=#F2B233>{new string('★', result.stars)}</color><color=#3A4250>{new string('★', 3 - result.stars)}</color></size>" : string.Empty;
-            _resultTitle.text = (result.completed ? "クリア！ <size=60%><color=#E8EEF6>Hoàn thành</color></size>" : "ちゅうだん <size=60%><color=#E8EEF6>Đã dừng</color></size>") + stars;
+            _resultTitle.text = (result.completed ? "クリア！" + Sub(Loc.T("Hoàn thành", "Complete", "")) : "ちゅうだん" + Sub(Loc.T("Đã dừng", "Stopped", ""))) + stars;
             var body = new System.Text.StringBuilder();
-            body.AppendLine($"<color=#A8B4C4>Điểm</color>  <b>{result.score}</b>      <color=#A8B4C4>Chính xác</color>  <b>{result.accuracy:P0}</b>      <color=#A8B4C4>Thời gian</color>  <b>{result.completionSeconds:0}s</b>");
-            body.AppendLine($"<color=#A8B4C4>Đúng</color>  {result.correctCount}      <color=#A8B4C4>Sai</color>  {result.incorrectCount}");
+            body.AppendLine($"<color=#A8B4C4>{Loc.T("Điểm", "Score", "スコア")}</color>  <b>{result.score}</b>      <color=#A8B4C4>{Loc.T("Chính xác", "Accuracy", "正確さ")}</color>  <b>{result.accuracy:P0}</b>      <color=#A8B4C4>{Loc.T("Thời gian", "Time", "時間")}</color>  <b>{result.completionSeconds:0}s</b>");
+            body.AppendLine($"<color=#A8B4C4>{Loc.T("Đúng", "Correct", "正解")}</color>  {result.correctCount}      <color=#A8B4C4>{Loc.T("Sai", "Wrong", "まちがい")}</color>  {result.incorrectCount}");
             if (result.completed)
             {
-                body.AppendLine($"<color=#7BD88F>+{result.expReward} EXP   +{result.knowledgeReward} Kiến thức   · đã ghi vào hồ sơ học tập</color>");
-                body.AppendLine($"<color=#F2B233>チケット +{result.tickets}</color>  <color=#A8B4C4>(đổi quà ở quầy けいひん)</color>   ·   <color=#A8B4C4>Combo cao nhất</color> x{result.bestCombo}" +
-                                (result.newRecord ? "   <color=#FF7FB0><b>きろく こうしん！ Kỷ lục mới</b></color>" : string.Empty));
+                body.AppendLine($"<color=#7BD88F>+{result.expReward} EXP   " + Loc.F("+{0} Kiến thức   · đã ghi vào hồ sơ học tập", "+{0} knowledge   · saved to your learning record", "知識 +{0}   · 学習記録に保存しました", result.knowledgeReward) + "</color>");
+                body.AppendLine($"<color=#F2B233>{Loc.T("Vé thưởng", "Tickets", "チケット")} +{result.tickets}</color>  <color=#A8B4C4>({Loc.T("đổi quà ở quầy quà", "swap them at the prize counter", "けいひんカウンターで こうかん")})</color>   ·   <color=#A8B4C4>{Loc.T("Combo cao nhất", "Best combo", "最高コンボ")}</color> x{result.bestCombo}" +
+                                (result.newRecord ? $"   <color=#FF7FB0><b>{Loc.T("Kỷ lục mới!", "New record!", "きろく こうしん！")}</b></color>" : string.Empty));
             }
             if (result.mistakes.Count > 0)
             {
-                body.AppendLine("\n<color=#F2B233>Cần ôn lại</color>");
+                body.AppendLine($"\n<color=#F2B233>{Loc.T("Cần ôn lại", "To review", "ふくしゅう")}</color>");
                 foreach (var mistake in result.mistakes.GetRange(0, Mathf.Min(4, result.mistakes.Count)))
                     body.AppendLine("  · " + mistake.note);
             }
             _resultBody.text = body.ToString();
         }
+
+        private static string Sub(string text) => string.IsNullOrEmpty(text) ? "" : $" <size=60%><color=#E8EEF6>{text}</color></size>";
 
         public void Close()
         {

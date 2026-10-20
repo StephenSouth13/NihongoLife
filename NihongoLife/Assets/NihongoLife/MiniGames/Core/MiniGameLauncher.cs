@@ -1,3 +1,4 @@
+using NihongoLife.Core;
 using NihongoLife.Interaction;
 using NihongoLife.Scenario;
 using UnityEngine;
@@ -26,8 +27,8 @@ namespace NihongoLife.MiniGames
         }
 
         public string GetPromptJa() => definition != null ? definition.titleJa : "ゲーム";
-        public string GetpromptEn() => definition == null ? "Chơi"
-            : definition.playable ? $"Chơi {definition.titleVi}" : $"{definition.titleVi} — sắp ra mắt";
+        public string GetpromptEn() => definition == null ? Loc.T("Chơi", "Play", "あそぶ")
+            : definition.playable ? Loc.F("Chơi {0}", "Play {0}", "{0}で あそぶ", definition.Title) : Loc.F("{0} — sắp ra mắt", "{0} — coming soon", "{0} — じゅんびちゅう", definition.Title);
         public Transform GetTransform() => transform;
 
         public void Interact(GameObject player)
@@ -39,9 +40,10 @@ namespace NihongoLife.MiniGames
                 {
                     new ScenarioNode
                     {
-                        id = "soon", nodeType = ScenarioNodeType.Dialogue, speakerName = definition.titleJa + " · " + definition.titleVi,
+                        id = "soon", nodeType = ScenarioNodeType.Dialogue, speakerName = definition.titleJa,
                         textJa = "じゅんびちゅう です。またね！", textReading = "じゅんびちゅう です。またね！",
-                        textEn = "Máy này đang được lắp đặt — quay lại sau nhé! Hãy thử Kana Match.",
+                        textVi = "Máy này đang được lắp đặt — quay lại sau nhé!",
+                        textEn = "This machine is still being set up — come back later!",
                         choices = new System.Collections.Generic.List<DialogueChoice>()
                     }
                 }, "soon", null);

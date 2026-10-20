@@ -63,6 +63,8 @@ namespace NihongoLife.MiniGames
         private int _bestCombo;
         private int _liveScore;
         public const string TicketItemId = "game_ticket";
+        /// <summary>The ticket's bag name in all three languages.</summary>
+        public static string TicketName => Loc.Triple("Vé thưởng Game Center — đổi quà ở quầy けいひん", "Game Center ticket — swap at the prize counter", "ゲームセンターのチケット — けいひんと こうかん");
 
         public int Combo => _combo;
         public int LiveScore => _liveScore;
@@ -103,16 +105,16 @@ namespace NihongoLife.MiniGames
             NLUi.Anchor(panel, new Vector2(0.5f, 0.5f), Vector2.zero, new Vector2(760f, 0f));
             NLUi.FitContent(panel);
             NLUi.Label(panel, "Kicker", "ゲームセンター ひばり", 18f, NLUi.Gold, _font, FontStyles.Bold, TextAlignmentOptions.Center);
-            NLUi.Label(panel, "Title", $"{_definition.titleJa}  <size=60%><color=#E8EEF6>{_definition.titleVi}</color></size>", 46f, NLUi.Text, _font, FontStyles.Bold, TextAlignmentOptions.Center);
-            NLUi.Label(panel, "Desc", _definition.descriptionVi, 19f, NLUi.Muted, _font, FontStyles.Normal, TextAlignmentOptions.Center);
+            NLUi.Label(panel, "Title", _definition.titleJa + (Loc.IsJapanese ? "" : $"  <size=60%><color=#E8EEF6>{_definition.Title}</color></size>"), 46f, NLUi.Text, _font, FontStyles.Bold, TextAlignmentOptions.Center);
+            NLUi.Label(panel, "Desc", _definition.Description, 19f, NLUi.Muted, _font, FontStyles.Normal, TextAlignmentOptions.Center);
             NLUi.Divider(panel);
-            foreach (var set in _definition.contentSets.Where(s => s != null && s.pairs.Count >= 2))
+            foreach (var set in _definition.contentSets.Where(s => s != null && s.pairs.Count >= 2 && s.AvailableInCurrentLanguage))
             {
                 var chosen = set;
-                NLUi.Button(panel, "Set_" + set.id, $"{set.titleJa}   <size=75%><color=#A8B4C4>{set.titleVi}</color></size>", _font,
+                NLUi.Button(panel, "Set_" + set.id, set.titleJa + (Loc.IsJapanese ? "" : $"   <size=75%><color=#A8B4C4>{set.Title}</color></size>"), _font,
                     () => StartRound(chosen), new Color(0.13f, 0.32f, 0.45f), 24f, null, 60f);
             }
-            NLUi.Label(panel, "Hint", "Esc · thoát máy", 15f, NLUi.Muted, _font, FontStyles.Normal, TextAlignmentOptions.Center);
+            NLUi.Label(panel, "Hint", Loc.T("Esc · thoát máy", "Esc · leave the machine", "Esc · やめる"), 15f, NLUi.Muted, _font, FontStyles.Normal, TextAlignmentOptions.Center);
         }
 
         // ─────────── Round ───────────
@@ -179,7 +181,7 @@ namespace NihongoLife.MiniGames
             NLUi.FitContent(frame);
 
             var header = NLUi.Group(frame, "Header", false, 12f, TextAnchor.MiddleLeft, false);
-            NLUi.Size(NLUi.Label(header, "Title", $"{_definition.titleJa} · <size=70%><color=#A8B4C4>{_set.titleVi}</color></size>", 28f, NLUi.Text, _font, FontStyles.Bold), flexibleWidth: 1f);
+            NLUi.Size(NLUi.Label(header, "Title", _definition.titleJa + $" · <size=70%><color=#A8B4C4>{(Loc.IsJapanese ? _set.titleJa : _set.Title)}</color></size>", 28f, NLUi.Text, _font, FontStyles.Bold), flexibleWidth: 1f);
             _timerText = NLUi.Pill(header, "Timer", "", _font, new Color(1f, 1f, 1f, 0.08f), NLUi.Gold, 19f).GetComponentInChildren<TextMeshProUGUI>();
             _attemptText = NLUi.Pill(header, "Attempts", "", _font, new Color(1f, 1f, 1f, 0.08f), NLUi.Text, 19f).GetComponentInChildren<TextMeshProUGUI>();
             _pairText = NLUi.Pill(header, "Pairs", "", _font, new Color(1f, 1f, 1f, 0.08f), NLUi.Good, 19f).GetComponentInChildren<TextMeshProUGUI>();
@@ -214,7 +216,7 @@ namespace NihongoLife.MiniGames
             deck = deck.OrderBy(_ => UnityEngine.Random.value).ToList();
             foreach (var (pair, sideA) in deck) _cards.Add(CreateCard(grid, pair, sideA, _cards.Count));
 
-            NLUi.Label(frame, "Hint", "Lật 2 thẻ cùng cặp nghĩa · Esc để thoát", 15f, NLUi.Muted, _font, FontStyles.Normal, TextAlignmentOptions.Center);
+            NLUi.Label(frame, "Hint", Loc.T("Lật 2 thẻ cùng cặp nghĩa · Esc để thoát", "Flip two cards that belong together · Esc to quit", "ペアになる2まいをめくろう · Escでやめる"), 15f, NLUi.Muted, _font, FontStyles.Normal, TextAlignmentOptions.Center);
             RefreshHeader();
         }
 
@@ -257,25 +259,18 @@ namespace NihongoLife.MiniGames
             }
             else
             {
-                string value = sideA ? pair.a : pair.b;
+                string value = sideA ? pair.a : pair.Clue(_set.type);
                 float size = value.Length <= 2 ? 64f : value.Length <= 5 ? 40f : 26f;
                 var text = NLUi.Label(front, "Text", value, size, new Color(0.12f, 0.14f, 0.2f), _font, FontStyles.Bold, TextAlignmentOptions.Center);
                 NLUi.Stretch(text.rectTransform, 8f);
             }
-            var side = NLUi.Label(front, "Side", sideA ? "日本語" : TagFor(_set.type), 12f, new Color(0.35f, 0.4f, 0.5f), _font, FontStyles.Bold, TextAlignmentOptions.Top);
+            var side = NLUi.Label(front, "Side", sideA ? "日本語" : _set.SideBTag, 12f, new Color(0.35f, 0.4f, 0.5f), _font, FontStyles.Bold, TextAlignmentOptions.Top);
             NLUi.Stretch(side.rectTransform, 6f);
             front.gameObject.SetActive(false);
 
             return new Card { PairIndex = pairIndex, IsSideA = sideA, Rect = rect, Background = background, Front = front.gameObject, Back = back.gameObject };
         }
 
-        private static string TagFor(KanaPairType type) => type switch
-        {
-            KanaPairType.HiraganaRomaji or KanaPairType.KatakanaRomaji => "ROMAJI",
-            KanaPairType.KanjiReading => "よみかた",
-            KanaPairType.WordImage => "HÌNH",
-            _ => "TIẾNG VIỆT"
-        };
 
         /// <summary>Flips card <paramref name="index"/> (mouse click, or tests).</summary>
         public void Pick(int index)
@@ -324,7 +319,7 @@ namespace NihongoLife.MiniGames
             {
                 expectedTargetId = expected.targetId,
                 chosenTargetId = chosen.targetId,
-                note = $"{expected.a} = {(string.IsNullOrEmpty(expected.imageB) ? expected.b : expected.hintVi)}  (không phải {(first.IsSideA == second.IsSideA ? chosen.a : Describe(chosen, second.IsSideA))})"
+                note = $"{expected.a} = {(string.IsNullOrEmpty(expected.imageB) ? expected.Clue(_set.type) : expected.Meaning)}  " + Loc.F("(không phải {0})", "(not {0})", "（{0}ではない）", first.IsSideA == second.IsSideA ? chosen.a : Describe(chosen, second.IsSideA))
             });
             first.Background.color = CardWrong;
             second.Background.color = CardWrong;
@@ -340,7 +335,7 @@ namespace NihongoLife.MiniGames
             _busy = false;
         }
 
-        private static string Describe(KanaPair pair, bool sideA) => sideA ? pair.a : string.IsNullOrEmpty(pair.imageB) ? pair.b : pair.hintVi;
+        private string Describe(KanaPair pair, bool sideA) => sideA ? pair.a : string.IsNullOrEmpty(pair.imageB) ? pair.Clue(_set.type) : pair.Meaning;
 
         private IEnumerator Complete()
         {
@@ -366,10 +361,10 @@ namespace NihongoLife.MiniGames
         {
             if (_timerText == null) return;
             float left = Mathf.Max(0f, _definition.timeLimitSeconds - _elapsed);
-            _timerText.text = $"時間 {Mathf.FloorToInt(left / 60f)}:{Mathf.FloorToInt(left % 60f):00}";
-            _attemptText.text = $"Lượt {_attempts}";
-            _pairText.text = $"Cặp {_matchedPairs}/{_pairs.Count}";
-            if (_scoreText != null) _scoreText.text = _combo >= 2 ? $"{_liveScore} điểm · x{_combo}" : $"{_liveScore} điểm";
+            _timerText.text = $"{Loc.T("Thời gian", "Time", "時間")} {Mathf.FloorToInt(left / 60f)}:{Mathf.FloorToInt(left % 60f):00}";
+            _attemptText.text = Loc.F("Lượt {0}", "Turns {0}", "{0}回", _attempts);
+            _pairText.text = Loc.F("Cặp {0}/{1}", "Pairs {0}/{1}", "ペア {0}/{1}", _matchedPairs, _pairs.Count);
+            if (_scoreText != null) _scoreText.text = Loc.F("{0} điểm", "{0} pts", "{0}点", _liveScore) + (_combo >= 2 ? $" · x{_combo}" : "");
             if (_progressFill != null) _progressFill.anchorMax = new Vector2(_pairs.Count > 0 ? _matchedPairs / (float)_pairs.Count : 0f, 1f);
         }
 
@@ -402,7 +397,7 @@ namespace NihongoLife.MiniGames
             if (completed && _set != null)
             {
                 result.tickets = TicketsFor(result);
-                PlayerInventory.Instance?.AddItem(TicketItemId, "チケット", "Vé thưởng Game Center — đổi quà ở quầy けいひん", 0, result.tickets);
+                PlayerInventory.Instance?.AddItem(TicketItemId, "チケット", TicketName, 0, result.tickets);
                 if (result.score > PlayerPrefs.GetInt(BestKey(_set.id), 0))
                 {
                     result.newRecord = true;

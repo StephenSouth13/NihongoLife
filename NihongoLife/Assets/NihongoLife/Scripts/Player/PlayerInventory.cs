@@ -83,6 +83,9 @@ namespace NihongoLife.Player
             }
         }
 
+        /// <summary>Game Center tickets are a currency saved up for big prizes: they stack far beyond normal items.</summary>
+        private int StackLimit(string itemId) => itemId == "game_ticket" ? 999 : maxStackSize;
+
         public bool AddItem(string itemId, string displayNameJa, string displayNameEn, int priceYen, int quantity = 1, bool isLitter = false,
             ItemUseType useType = ItemUseType.None, float foodRestore = 0f, float drinkRestore = 0f, float energyRestore = 0f)
         {
@@ -98,7 +101,7 @@ namespace NihongoLife.Player
                     displayNameJa = displayNameJa,
                     displayNameEn = displayNameEn,
                     priceYen = Mathf.Max(0, priceYen),
-                    quantity = Mathf.Min(quantity, maxStackSize),
+                    quantity = Mathf.Min(quantity, StackLimit(itemId)),
                     isLitter = isLitter,
                     useType = useType,
                     foodRestore = Mathf.Max(0f, foodRestore),
@@ -108,8 +111,8 @@ namespace NihongoLife.Player
             }
             else
             {
-                if (existing.quantity >= maxStackSize) return false;
-                existing.quantity = Mathf.Min(existing.quantity + quantity, maxStackSize);
+                if (existing.quantity >= StackLimit(itemId)) return false;
+                existing.quantity = Mathf.Min(existing.quantity + quantity, StackLimit(itemId));
             }
 
             OnInventoryChanged?.Invoke();

@@ -16,12 +16,16 @@ MonoBehaviour:
   kind: 2
   titleJa: "\u30AA\u30FC\u30C0\u30FC\u30E9\u30C3\u30B7\u30E5"
   titleVi: Order Rush
+  titleEn: Order Rush
   descriptionVi: "Kh\xE1ch g\u1ECDi m\xF3n b\u1EB1ng ti\u1EBFng Nh\u1EADt \u2014
-    ch\u1ECDn \u0111\xFAng m\xF3n tr\u01B0\u1EDBc khi h\u1EBFt gi\u1EDD (s\u1EAFp
-    ra m\u1EAFt)."
-  playable: 0
-  contentSets:
-  - {fileID: 11400000, guid: 4e11c5ac95210e84ba8c18ff569b8063, type: 2}
+    ch\u1ECDn \u0111\xFAng m\xF3n, \u0111\xFAng s\u1ED1 l\u01B0\u1EE3ng tr\u01B0\u1EDBc
+    khi kh\xE1ch h\u1EBFt ki\xEAn nh\u1EABn."
+  descriptionEn: "Customers order in Japanese \u2014 serve the right dishes in the
+    right numbers before they lose patience."
+  descriptionJa: "\u304A\u5BA2\u3055\u3093\u306E\u6CE8\u6587\u3092\u805E\u3044\u3066\u3001\u6B63\u3057\u3044\u6599\u7406\u3068\u6570\u3092
+    \u3059\u3070\u3084\u304F\u51FA\u305D\u3046\uFF01"
+  playable: 1
+  contentSets: []
   pairsPerRound: 6
   timeLimitSeconds: 120
   expPerCorrect: 3

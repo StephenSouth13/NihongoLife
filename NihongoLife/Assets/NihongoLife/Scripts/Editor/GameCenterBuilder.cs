@@ -58,6 +58,76 @@ namespace NihongoLife.EditorTools
             }
         }
 
+        /// <summary>
+        /// Arcade upgrade on the existing 50_GameCenter (the scene is not rebuilt, so its later hand edits stay):
+        /// refreshes the content assets (three languages, Word Shooter and Order Rush now playable, Kana Rain, UFO Catcher,
+        /// Basket Count), and wires the new games to machines already in the room — Kana Rain on the retro wall cabinet,
+        /// UFO Catcher on the middle claw machine, Basket Count on the first basketball machine — each with a marquee.
+        /// Run: Unity -batchmode -executeMethod NihongoLife.EditorTools.GameCenterBuilder.UpgradeArcade
+        /// </summary>
+        public static void UpgradeArcade()
+        {
+            try
+            {
+                CreateMaterials();
+                var definitions = BuildContent();
+                var scene = EditorSceneManager.OpenScene(ScenePath, OpenSceneMode.Single);
+                var all = scene.GetRootGameObjects().SelectMany(r => r.GetComponentsInChildren<Transform>(true)).ToList();
+                Transform Find(string name) => all.FirstOrDefault(t => t.name == name) ?? throw new InvalidOperationException(name + " not found in " + ScenePath);
+                var decor = Find("Decor");
+                foreach (var (id, badge) in new[] { ("word_shooter", "NEW!"), ("order_rush", "NEW!") })
+                {
+                    var marquee = Find("MarqueeVI_" + id).GetComponent<TextMeshPro>();
+                    marquee.text = $"{definitions[id].titleVi} · {badge}";
+                    marquee.color = new Color(1f, 0.85f, 0.4f);
+                }
+                AttachGame(Find("Cabinet_W2"), decor, definitions["kana_rain"], _neonGold);
+                AttachGame(Find("Claw_2"), decor, definitions["ufo_catcher"], _neonPink);
+                AttachGame(Find("Basketball_1"), decor, definitions["basket_count"], _neonCyan);
+                EditorSceneManager.MarkSceneDirty(scene);
+                if (!EditorSceneManager.SaveScene(scene)) throw new InvalidOperationException("Could not save " + ScenePath);
+                AssetDatabase.SaveAssets();
+                Debug.Log("[GameCenterBuilder] Arcade upgraded: " + string.Join(", ", definitions.Values.Where(d => d.playable).Select(d => d.id)));
+                if (Application.isBatchMode) EditorApplication.Exit(0);
+            }
+            catch (Exception exception)
+            {
+                Debug.LogException(exception);
+                if (Application.isBatchMode) EditorApplication.Exit(1);
+                else throw;
+            }
+        }
+
+        /// <summary>A launcher in front of an existing machine (its holder faces the player along +forward), a camera
+        /// view point and a marquee with the game's Japanese title. Re-running replaces the previous pieces.</summary>
+        private static void AttachGame(Transform machine, Transform decor, MiniGameDefinition definition, Material neon)
+        {
+            foreach (var stale in new[] { machine.Find("MiniGameLauncher_" + definition.id), decor.Find("GameMarquee_" + definition.id) })
+                if (stale != null) Object.DestroyImmediate(stale.gameObject);
+            var collider = machine.GetComponent<BoxCollider>();
+            float top = collider != null ? machine.TransformPoint(collider.center + Vector3.up * collider.size.y * 0.5f).y : machine.position.y + 2f;
+            Vector3 front = machine.forward;
+            var launcher = new GameObject("MiniGameLauncher_" + definition.id) { layer = InteractableLayer };
+            launcher.transform.SetParent(machine, false);
+            launcher.transform.SetPositionAndRotation(machine.position + front * 1.05f + Vector3.up, machine.rotation);
+            var trigger = launcher.AddComponent<BoxCollider>();
+            trigger.isTrigger = true;
+            trigger.size = new Vector3(1.6f, 2f, 1.4f);
+            var view = new GameObject("ViewPoint").transform;
+            view.SetParent(launcher.transform, false);
+            view.position = machine.position + front * 1.9f + Vector3.up * 1.6f;
+            view.rotation = Quaternion.LookRotation(machine.position + Vector3.up * 1.35f - view.position);
+            launcher.AddComponent<MiniGameLauncher>().Configure(definition, view);
+
+            var marquee = Group(decor, "GameMarquee_" + definition.id);
+            marquee.SetPositionAndRotation(machine.position + front * 0.15f + Vector3.up * (top - machine.position.y + 0.45f), Quaternion.Euler(0f, machine.eulerAngles.y - 180f, 0f));
+            Block(marquee, "Back", Vector3.zero, new Vector3(1.9f, 0.6f, 0.05f), _signBack, false);
+            Block(marquee, "Frame", new Vector3(0f, 0f, 0.035f), new Vector3(2.0f, 0.7f, 0.02f), neon, false);
+            Text(marquee, "JA", definition.titleJa, new Vector3(0f, 0.08f, -0.06f), 0f, 0.2f, Color.white, 1.8f);
+            Text(marquee, "VI", definition.titleVi + " · NEW!", new Vector3(0f, -0.16f, -0.06f), 0f, 0.09f, new Color(1f, 0.85f, 0.4f), 1.8f);
+            foreach (var r in marquee.GetComponentsInChildren<Renderer>(true)) r.shadowCastingMode = ShadowCastingMode.Off;
+        }
+
         private static void CreateMaterials()
         {
             var colormap = AssetDatabase.LoadAssetAtPath<Texture2D>(Arcade + "Textures/colormap.png");
@@ -81,63 +151,84 @@ namespace NihongoLife.EditorTools
         private static Dictionary<string, MiniGameDefinition> BuildContent()
         {
             EnsureFolder(DataDir);
-            var hiragana = PairSet("pairs_hiragana", "hiragana_basic", KanaPairType.HiraganaRomaji, "ひらがな", "Hiragana ↔ Romaji", "kana.hiragana.",
+            var hiragana = PairSet("pairs_hiragana", "hiragana_basic", KanaPairType.HiraganaRomaji, "ひらがな", "Hiragana ↔ Romaji", "Hiragana ↔ Romaji", "kana.hiragana.",
                 ("あ", "a"), ("い", "i"), ("う", "u"), ("え", "e"), ("お", "o"), ("か", "ka"), ("き", "ki"), ("く", "ku"),
                 ("け", "ke"), ("こ", "ko"), ("さ", "sa"), ("し", "shi"), ("す", "su"), ("せ", "se"), ("そ", "so"), ("た", "ta"));
-            var katakana = PairSet("pairs_katakana", "katakana_basic", KanaPairType.KatakanaRomaji, "カタカナ", "Katakana ↔ Romaji", "kana.katakana.",
+            var katakana = PairSet("pairs_katakana", "katakana_basic", KanaPairType.KatakanaRomaji, "カタカナ", "Katakana ↔ Romaji", "Katakana ↔ Romaji", "kana.katakana.",
                 ("ア", "a"), ("イ", "i"), ("ウ", "u"), ("エ", "e"), ("オ", "o"), ("カ", "ka"), ("キ", "ki"), ("ク", "ku"),
                 ("ケ", "ke"), ("コ", "ko"), ("サ", "sa"), ("シ", "shi"), ("ス", "su"), ("セ", "se"), ("ソ", "so"), ("タ", "ta"));
-            var kanji = PairSet("pairs_kanji_n5", "kanji_n5", KanaPairType.KanjiReading, "かんじ N5", "Kanji ↔ cách đọc", "kanji.",
+            var kanji = PairSet("pairs_kanji_n5", "kanji_n5", KanaPairType.KanjiReading, "かんじ N5", "Kanji ↔ cách đọc", "Kanji ↔ reading", "kanji.",
                 ("山", "やま"), ("川", "かわ"), ("木", "き"), ("水", "みず"), ("火", "ひ"), ("月", "つき"), ("人", "ひと"), ("口", "くち"),
                 ("目", "め"), ("耳", "みみ"), ("手", "て"), ("足", "あし"), ("花", "はな"), ("雨", "あめ"), ("空", "そら"), ("犬", "いぬ"));
-            var words = PairSet("pairs_word_image", "word_image", KanaPairType.WordImage, "たべもの", "Từ ↔ Hình (đồ ăn)", "vocab.food.");
+            var words = PairSet("pairs_word_image", "word_image", KanaPairType.WordImage, "たべもの", "Từ ↔ Hình (đồ ăn)", "Word ↔ picture (food)", "vocab.food.");
             words.pairs = new List<KanaPair>
             {
-                Word("りんご", "ringo", "táo"), Word("バナナ", "banana", "chuối"), Word("パン", "pan", "bánh mì"), Word("ケーキ", "keeki", "bánh kem"),
-                Word("にんじん", "ninjin", "cà rốt"), Word("さかな", "sakana", "cá"), Word("たまご", "tamago", "trứng"), Word("ぶどう", "budou", "nho"),
-                Word("おちゃ", "ocha", "trà"), Word("コーヒー", "koohii", "cà phê"), Word("おにぎり", "onigiri", "cơm nắm"), Word("すし", "sushi", "sushi"),
-                Word("すいか", "suika", "dưa hấu"), Word("いちご", "ichigo", "dâu tây"), Word("アイス", "aisu", "kem"), Word("トマト", "tomato", "cà chua"),
+                Word("りんご", "ringo", "táo", "apple"), Word("バナナ", "banana", "chuối", "banana"), Word("パン", "pan", "bánh mì", "bread"), Word("ケーキ", "keeki", "bánh kem", "cake"),
+                Word("にんじん", "ninjin", "cà rốt", "carrot"), Word("さかな", "sakana", "cá", "fish"), Word("たまご", "tamago", "trứng", "egg"), Word("ぶどう", "budou", "nho", "grapes"),
+                Word("おちゃ", "ocha", "trà", "tea"), Word("コーヒー", "koohii", "cà phê", "coffee"), Word("おにぎり", "onigiri", "cơm nắm", "rice ball"), Word("すし", "sushi", "sushi", "sushi"),
+                Word("すいか", "suika", "dưa hấu", "watermelon"), Word("いちご", "ichigo", "dâu tây", "strawberry"), Word("アイス", "aisu", "kem", "ice cream"), Word("トマト", "tomato", "cà chua", "tomato"),
             };
             EditorUtility.SetDirty(words);
-            var meaning = PairSet("pairs_ja_vi", "ja_vi_daily", KanaPairType.JapaneseVietnamese, "ことば", "Nhật ↔ Việt (giao tiếp)", "vocab.daily.",
+            var meaning = PairSet("pairs_ja_vi", "ja_vi_daily", KanaPairType.JapaneseVietnamese, "ことば", "Nhật ↔ Việt (giao tiếp)", "Japanese ↔ English (everyday)", "vocab.daily.",
                 ("こんにちは", "Xin chào"), ("ありがとう", "Cảm ơn"), ("すみません", "Xin lỗi"), ("おはよう", "Chào buổi sáng"),
                 ("おやすみ", "Chúc ngủ ngon"), ("いただきます", "Mời ăn cơm"), ("がっこう", "Trường học"), ("えき", "Nhà ga"),
                 ("でんしゃ", "Tàu điện"), ("ともだち", "Bạn bè"), ("せんせい", "Giáo viên"), ("みず", "Nước"),
                 ("おかね", "Tiền"), ("いえ", "Nhà"), ("ねこ", "Con mèo"), ("いぬ", "Con chó"));
+            var english = new Dictionary<string, string>
+            {
+                ["こんにちは"] = "Hello", ["ありがとう"] = "Thank you", ["すみません"] = "Excuse me", ["おはよう"] = "Good morning",
+                ["おやすみ"] = "Good night", ["いただきます"] = "Let's eat", ["がっこう"] = "School", ["えき"] = "Station",
+                ["でんしゃ"] = "Train", ["ともだち"] = "Friend", ["せんせい"] = "Teacher", ["みず"] = "Water",
+                ["おかね"] = "Money", ["いえ"] = "House", ["ねこ"] = "Cat", ["いぬ"] = "Dog",
+            };
+            foreach (var pair in meaning.pairs) pair.bEn = english.TryGetValue(pair.a, out string en) ? en : pair.b;
+            EditorUtility.SetDirty(meaning);
 
             var result = new Dictionary<string, MiniGameDefinition>
             {
-                ["kana_match"] = Definition("minigame_kana_match", "kana_match", MiniGameKind.KanaMatch, "かなマッチ", "Kana Match",
-                    "Lật thẻ và ghép cặp: chữ ↔ cách đọc, từ ↔ hình, tiếng Nhật ↔ tiếng Việt.", true, 8, 150f,
-                    hiragana, katakana, kanji, words, meaning),
-                ["word_shooter"] = Definition("minigame_word_shooter", "word_shooter", MiniGameKind.WordShooter, "ワードシューター", "Word Shooter",
-                    "Nghe hoặc đọc một từ rồi bắn đúng mục tiêu (sắp ra mắt).", false, 10, 90f, words, kanji, meaning),
-                ["order_rush"] = Definition("minigame_order_rush", "order_rush", MiniGameKind.OrderRush, "オーダーラッシュ", "Order Rush",
-                    "Khách gọi món bằng tiếng Nhật — chọn đúng món trước khi hết giờ (sắp ra mắt).", false, 6, 120f, words),
+                ["kana_match"] = Definition("minigame_kana_match", "kana_match", MiniGameKind.KanaMatch, "かなマッチ", "Kana Match", "Kana Match",
+                    ("Lật thẻ và ghép cặp: chữ ↔ cách đọc, từ ↔ hình, tiếng Nhật ↔ nghĩa.", "Flip cards and match pairs: character ↔ reading, word ↔ picture, Japanese ↔ meaning.", "カードをめくってペアを作ろう：文字 ↔ 読み方、ことば ↔ 絵。"),
+                    true, 8, 150f, hiragana, katakana, kanji, words, meaning),
+                ["word_shooter"] = Definition("minigame_word_shooter", "word_shooter", MiniGameKind.WordShooter, "ワードシューター", "Word Shooter", "Word Shooter",
+                    ("Bong bóng từ tiếng Nhật bay qua — bắn đúng từ hợp với gợi ý trước khi nó bay mất.", "Japanese word bubbles float by — shoot the one that matches the clue before it gets away.", "ことばの風船が とんでくる！ヒントに合うことばを うちおとそう。"),
+                    true, 10, 90f, words, kanji, meaning, hiragana, katakana),
+                ["order_rush"] = Definition("minigame_order_rush", "order_rush", MiniGameKind.OrderRush, "オーダーラッシュ", "Order Rush", "Order Rush",
+                    ("Khách gọi món bằng tiếng Nhật — chọn đúng món, đúng số lượng trước khi khách hết kiên nhẫn.", "Customers order in Japanese — serve the right dishes in the right numbers before they lose patience.", "お客さんの注文を聞いて、正しい料理と数を すばやく出そう！"),
+                    true, 6, 120f),
+                ["kana_rain"] = Definition("minigame_kana_rain", "kana_rain", MiniGameKind.KanaRain, "かなレイン", "Kana Rain", "Kana Rain",
+                    ("Mưa chữ kana! Gõ romaji để phá từng chữ trước khi chạm đất — luyện đọc kana thật nhanh.", "It's raining kana! Type the romaji to burst each one before it lands — fast kana reading practice.", "かなの雨！ローマ字を入力して、地面につく前に消そう。"),
+                    true, 10, 90f, hiragana, katakana),
+                ["ufo_catcher"] = Definition("minigame_ufo_catcher", "ufo_catcher", MiniGameKind.UfoCatcher, "UFOキャッチャー", "UFO Catcher", "UFO Catcher",
+                    ("Máy gắp thú biết nói tiếng Nhật: nghe gọi tên món nào thì gắp đúng món đó.", "A claw machine that speaks Japanese: grab the prize it calls out.", "よばれた けいひんを アームで とろう！"),
+                    true, 8, 75f),
+                ["basket_count"] = Definition("minigame_basket_count", "basket_count", MiniGameKind.BasketCount, "かずバスケ", "Basket Count", "Basket Count",
+                    ("Ném bóng vào rổ ghi đúng số được đọc bằng tiếng Nhật — từ 1 đến 999.", "Shoot into the hoop with the number called in Japanese — from 1 to 999.", "日本語の数を読んで、同じ数字のゴールにシュート！"),
+                    true, 10, 75f),
             };
             return result;
         }
 
-        private static KanaPair Word(string ja, string image, string vi) =>
-            new KanaPair { targetId = "vocab.food." + image, a = ja, b = vi, imageB = "MiniGames/Words/" + image, hintVi = vi };
+        private static KanaPair Word(string ja, string image, string vi, string en) =>
+            new KanaPair { targetId = "vocab.food." + image, a = ja, b = vi, bEn = en, imageB = "MiniGames/Words/" + image, hintVi = vi };
 
-        private static KanaPairSet PairSet(string file, string id, KanaPairType type, string titleJa, string titleVi, string prefix, params (string a, string b)[] pairs)
+        private static KanaPairSet PairSet(string file, string id, KanaPairType type, string titleJa, string titleVi, string titleEn, string prefix, params (string a, string b)[] pairs)
         {
             string path = $"{DataDir}/{file}.asset";
             var set = AssetDatabase.LoadAssetAtPath<KanaPairSet>(path);
             if (set == null) { set = ScriptableObject.CreateInstance<KanaPairSet>(); AssetDatabase.CreateAsset(set, path); }
-            set.id = id; set.type = type; set.titleJa = titleJa; set.titleVi = titleVi;
+            set.id = id; set.type = type; set.titleJa = titleJa; set.titleVi = titleVi; set.titleEn = titleEn;
             set.pairs = pairs.Select(p => new KanaPair { targetId = prefix + (type == KanaPairType.KanjiReading || type == KanaPairType.JapaneseVietnamese ? p.a : p.b), a = p.a, b = p.b, hintVi = p.b }).ToList();
             EditorUtility.SetDirty(set);
             return set;
         }
 
-        private static MiniGameDefinition Definition(string file, string id, MiniGameKind kind, string ja, string vi, string description, bool playable, int pairs, float time, params KanaPairSet[] sets)
+        private static MiniGameDefinition Definition(string file, string id, MiniGameKind kind, string ja, string vi, string en, (string vi, string en, string ja) description, bool playable, int pairs, float time, params KanaPairSet[] sets)
         {
             string path = $"{DataDir}/{file}.asset";
             var definition = AssetDatabase.LoadAssetAtPath<MiniGameDefinition>(path);
             if (definition == null) { definition = ScriptableObject.CreateInstance<MiniGameDefinition>(); AssetDatabase.CreateAsset(definition, path); }
-            definition.id = id; definition.kind = kind; definition.titleJa = ja; definition.titleVi = vi; definition.descriptionVi = description;
+            definition.id = id; definition.kind = kind; definition.titleJa = ja; definition.titleVi = vi; definition.titleEn = en;
+            definition.descriptionVi = description.vi; definition.descriptionEn = description.en; definition.descriptionJa = description.ja;
             definition.playable = playable; definition.pairsPerRound = pairs; definition.timeLimitSeconds = time;
             definition.contentSets = sets.ToList();
             EditorUtility.SetDirty(definition);
