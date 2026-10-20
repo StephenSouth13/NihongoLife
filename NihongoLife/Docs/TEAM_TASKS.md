@@ -1115,3 +1115,62 @@ Claude nhận tiếp phần Codex đang làm dở: báo cáo, trailer, demo và 
 **Khác:** `Scripts/Editor/ReleaseBuild.cs` (file mới chưa commit) thiếu `using UnityEditor.Build;` làm project không compile — đã thêm. IELTS Reading test giờ ~7 s, toàn bộ gói IELTS 51 s. Slide pitch: điền vai trò Quang Dũng Nihongo = "Đối tác chuyên môn tiếng Nhật · góp ý nội dung N5–JLPT" — **chờ chủ dự án xác nhận**.
 
 **Kết quả test:** EditMode 25/25; PlayMode 33/34 rồi sửa → Bedroom, CollisionWalk (5), Station, City, Zone, Feet, WorldFeel, ExamUiShowcase (vi/en/ja), SpeakingLive, OnlineSocial (4), GameCenter, IELTS đều đạt.
+
+## Cập nhật (2026-10-20 chiều, Claude) — Animation Kids mượt hơn, Game Center 6 trò chơi 3 ngôn ngữ
+
+**Animation.**
+- `Scripts/Editor/KidMotionBuilder.cs` (`-executeMethod NihongoLife.EditorTools.KidMotionBuilder.Build`): thay clip Mixamo người lớn còn lại trong `NL_Humanoid`:
+  - Work_Clear (nhổ cỏ) = `action_release_trapped`; Work_Feed (cho ăn) = `idle_crouch_treated`.
+  - Work_Carry / Work_Hold / Fish_Wait = `idle_flashlight`; Work_Water = `action_treat`.
+  - Point = `action_switch_r`; Bow = `idle0` + nghiêng người.
+  - Sit / Lay = clip ghép `Animations/Kids/Kid_Sit.anim`, `Kid_Sleep.anim`: tư thế thân theo muscle, đầu và nhịp thở của Kids, không còn đứng cứng.
+  - `NL_KidAnimationSet.layKey` → Kid_Sleep (ngất vẫn hoạt động).
+- **Chân trượt:** chibi bước ~0,3 m mà game chạy 2,8–5,2 m/s. Trạng thái Walk nay có `MoveScale` (`CharacterAnimationController.CadenceFor`): ~1,7× khi đi, ~1,9× khi chạy. Độ trượt 92/95% → 82/80%.
+  - Test `FootSlipPlayModeTests` (báo cáo `Bao_Cao/character-regression/foot_slip.txt`).
+  - Muốn hết trượt hẳn phải giảm tốc độ đi/chạy, đó là quyết định gameplay.
+- **Chọn clip:** `AnimationCandidateSheetTests` render bảng 5 khung (`NL_SHEET_CLIPS=clip1,clip2`), ra `Bao_Cao/anim-candidates/`.
+- `KidActionPosesPlayModeTests` chụp thêm Work_Clear, Work_Feed.
+
+**Game Center** (`MiniGames/`; scene `50_GameCenter` chỉ được bổ sung bằng `GameCenterBuilder.UpgradeArcade`, không dựng lại — bầu trời và chỉnh sửa khác giữ nguyên):
+- Khung chung `Core/ArcadeGame.cs`: chọn bộ từ → 3-2-1 → điểm, combo, mạng, thời gian → kết quả (sao, vé, kỷ lục, mastery). Mọi chữ qua `Loc`.
+- Trò mới (`MiniGames/Arcade/`):
+
+  | Trò | Máy | Cách chơi |
+  |---|---|---|
+  | ワードシューター Word Shooter | máy giữa | bắn bong bóng từ theo gợi ý (nghĩa / cách đọc / hình) |
+  | オーダーラッシュ Order Rush | quầy | khách gọi món bằng tiếng Nhật (ひとつ/ふたつ…), chọn món + số lượng |
+  | かなレイン Kana Rain | `Cabinet_W2` | gõ romaji phá kana đang rơi (shi/si, tsu/tu… đều đúng) |
+  | UFOキャッチャー UFO Catcher | `Claw_2` | 「〜を とって！」, thả càng gắp đúng món |
+  | かずバスケ Basket Count | `Basketball_1` | số đọc bằng tiếng Nhật (giao diện Nhật: chữ Hán) → ném vào rổ đúng; 1–10 → 999 |
+
+- Kana Match, bảng kết quả, máy, quầy đổi quà: 3 ngôn ngữ.
+  - Bộ "Nhật ↔ nghĩa" ẩn ở giao diện tiếng Nhật.
+  - `KanaPair.bEn`, `KanaPairSet.titleEn`, `MiniGameDefinition.titleEn/descriptionEn/descriptionJa`.
+- Quầy quà thêm: gấu khổng lồ (40 vé), mèo bông, daruma, fūrin, hình dán.
+- **Lỗi đã sửa:** vé bị kẹt ở 20 (giới hạn chồng của balo) — `game_ticket` giờ chồng tới 999.
+- Test `ArcadeGamesPlayModeTests`: 5 trò × vi/en/ja, đúng/sai qua đường chơi thật, nộp kết quả, có vé, không lẫn tiếng Việt ở en/ja. Ảnh `Bao_Cao/arcade/`.
+
+## TASK-N (Codex) — Render art cho Game Center (Claude đã làm xong gameplay, chỉ cần hình)
+
+Mục tiêu: thay hình tạm (icon, sprite đồ ăn có sẵn) bằng art thống nhất, dễ thương, đúng phong cách Kids low-poly. Game tự dùng hình mới nếu có file đúng đường dẫn (thứ tự ưu tiên trong code), **không cần sửa code**.
+
+**Kiểm tra trước:** đường dẫn đã tồn tại chưa (`Assets/NihongoLife/Resources/MiniGames/...`). Không ghi đè `MiniGames/Words/*.png` đang dùng.
+
+1. **Thú bông cho UFO Catcher:** `Resources/MiniGames/Prizes/<id>.png`, 256×256, PNG nền trong suốt, góc nhìn 3/4, có bóng mềm dưới đáy.
+   - id: `kuma` (gấu), `neko` (mèo), `inu` (chó), `usagi` (thỏ), `tori` (chim), `sakana` (cá bông), `ringo`, `ichigo`, `hoshi` (sao), `hana` (hoa), `kagi` (chìa khoá), `okashi` (túi kẹo).
+   - Danh sách trong `UfoCatcherGame.Catalog`.
+2. **Món ăn cho Order Rush:** `Resources/MiniGames/Food/<id>.png`, 256×256, cùng phong cách.
+   - id: `onigiri`, `sushi`, `pan`, `keeki`, `ocha`, `koohii`, `tamago`, `sakana`, `ringo`, `aisu`, `karaage`, `nikuman`, `ramen` (quan trọng: hiện chỉ là icon), `ichigo`.
+   - Danh sách trong `OrderRushGame.Menu`.
+3. **Icon quà mới ở quầy đổi:** `Resources/Items/<id>.png` (128×128, như các icon Items hiện có): `prize_plush_big`, `prize_neko_plush`, `prize_daruma`, `prize_furin`, `prize_sticker`.
+4. **Logo/thẻ tiêu đề từng trò:** `Resources/MiniGames/Logos/<game_id>.png`, 1024×512, chữ Nhật lớn + họa tiết.
+   - game_id: `kana_match`, `word_shooter`, `order_rush`, `kana_rain`, `ufo_catcher`, `basket_count`.
+   - Sau khi có file, báo Claude để gắn vào thẻ bắt đầu (`ArcadeGame.ShowStartCard`).
+5. **(Tuỳ chọn, 3D)** Thú bông nhỏ (prefab low-poly) đặt trong 3 máy gắp `Claw_1..3` của `50_GameCenter`, và bảng số trên 2 máy bóng rổ.
+   - Chỉ thêm vào scene có sẵn qua một builder `-executeMethod`, không tạo scene mới, không `[MenuItem]`.
+   - Collider: chỉ trigger hoặc không có, để `CollisionWalkPlayModeTests.GameCenter_AllInteractablesReachable` vẫn đạt.
+
+**Nghiệm thu:**
+- `ArcadeGamesPlayModeTests` và `GameCenterPlayModeTests` đạt.
+- Ảnh trong `Bao_Cao/arcade/*.jpg` cho thấy hình mới ở UFO Catcher và Order Rush.
+- Ghi tên file đã thêm vào TEAM_TASKS.

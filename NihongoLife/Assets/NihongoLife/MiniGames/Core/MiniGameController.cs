@@ -105,6 +105,7 @@ namespace NihongoLife.MiniGames
             Cursor.lockState = CursorLockMode.None;
             Cursor.visible = true;
 
+            _gameRoot.gameObject.SetActive(true);
             _game = game;
             _game.Finished += HandleFinished;
             _game.Begin(launcher.Definition, _gameRoot);
@@ -207,6 +208,7 @@ namespace NihongoLife.MiniGames
 
         private void ShowResult(MiniGameResult result)
         {
+            _gameRoot.gameObject.SetActive(false); // the result card stands alone, not over the board
             _resultPanel.gameObject.SetActive(true);
             _resultPanel.SetAsLastSibling();
             string stars = result.completed ? $"\n<size=80%><color=#F2B233>{new string('★', result.stars)}</color><color=#3A4250>{new string('★', 3 - result.stars)}</color></size>" : string.Empty;
