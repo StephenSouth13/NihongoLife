@@ -10,7 +10,7 @@ namespace NihongoLife.EditorTools
 {
     /// <summary>
     /// Game Center pictures rendered from the project's own low-poly models (TASK-N), so the arcade, the Order Rush
-    /// menu and the prize counter show real food and plush toys instead of placeholder icons:
+    /// menu and the prize counter show real food and plush toys (the Sushi kit's panda stands in for the bear; Kenney's bear is a wall trophy) instead of placeholder icons:
     /// Resources/MiniGames/Food/&lt;dish&gt;.png and Resources/MiniGames/Prizes/&lt;prize&gt;.png (256×256, transparent,
     /// three-quarter view, soft shadow) plus the big plush on the prize shelf (Resources/Items/prize_plush_big.png).
     /// Ids without a fitting model (neko, tori, hoshi, kagi) are left to the games' existing fallbacks.
@@ -20,7 +20,6 @@ namespace NihongoLife.EditorTools
     {
         private const string Sushi = "Assets/ThirdParty/Sushi Restaurant Kit - May 2023-20260920T035054Z-1-001/Sushi Restaurant Kit - May 2023/";
         private const string Kenney = "Assets/ThirdParty/Kenney/kenney_food-kit/Models/FBX format/";
-        private const string Furniture = "Assets/ThirdParty/Kenney/kenney_furniture-kit/Models/FBX format/";
         private const string FoodPack = "Assets/ThirdParty/Ultimate Food Pack - Oct 2019-20260920T035121Z-1-001/Ultimate Food Pack - Oct 2019/FBX/";
         private const string Animals = "Assets/ThirdParty/Ultimate Animated Animals - July 2021-20260920T035520Z-1-001/Ultimate Animated Animals - July 2021/FBX/";
         private const string Out = "Assets/NihongoLife/Resources/";
@@ -28,7 +27,7 @@ namespace NihongoLife.EditorTools
         // (output path, model, yaw, pitch)
         private static readonly (string path, string model, float yaw, float pitch)[] Jobs =
         {
-            ("MiniGames/Food/onigiri", Sushi + "Food/FBX/Food_Onigiri.fbx", 160f, 10f),
+            ("MiniGames/Food/onigiri", Sushi + "Food/FBX/Food_Onigiri.fbx", 0f, 10f),
             ("MiniGames/Food/sushi", Sushi + "Food/FBX/Food_SalmonNigiri.fbx", 150f, 20f),
             ("MiniGames/Food/pan", Kenney + "bread.fbx", 150f, 15f),
             ("MiniGames/Food/keeki", Kenney + "cake.fbx", 150f, 18f),
@@ -43,7 +42,7 @@ namespace NihongoLife.EditorTools
             ("MiniGames/Food/ramen", Sushi + "Food/FBX/Food_Ramen.fbx", 150f, 28f),
             ("MiniGames/Food/ichigo", Kenney + "strawberry.fbx", 150f, 10f),
 
-            ("MiniGames/Prizes/kuma", Furniture + "bear.fbx", 160f, 8f),
+            ("MiniGames/Prizes/kuma", Sushi + "Characters/Normal/FBX/Panda.fbx", 160f, 6f),
             ("MiniGames/Prizes/inu", Animals + "ShibaInu.fbx", 130f, 8f),
             ("MiniGames/Prizes/usagi", Sushi + "Characters/Normal/FBX/Rabbit_Pink.fbx", 160f, 6f),
             ("MiniGames/Prizes/sakana", Kenney + "fish.fbx", 90f, 10f),
@@ -52,7 +51,7 @@ namespace NihongoLife.EditorTools
             ("MiniGames/Prizes/hana", Sushi + "Decoration/FBX/Decoration_SakuraFlower.fbx", 150f, 30f),
             ("MiniGames/Prizes/okashi", Kenney + "lollypop.fbx", 150f, 8f),
 
-            ("Items/prize_plush_big", Furniture + "bear.fbx", 160f, 8f),
+            ("Items/prize_plush_big", Sushi + "Characters/Normal/FBX/Panda.fbx", 160f, 6f),
         };
 
         public static void Build()
@@ -82,7 +81,22 @@ namespace NihongoLife.EditorTools
             }
         }
 
-        private static void Render(GameObject source, string file, int size, float yaw, float pitch)
+        /// <summary>Angle check: renders the models named in NL_ART_PREVIEW (comma list of model paths) at 8 yaws into _work/art-preview.</summary>
+        public static void Preview()
+        {
+            string dir = Path.GetFullPath(Path.Combine(Application.dataPath, "../../../_work/art-preview"));
+            Directory.CreateDirectory(dir);
+            foreach (string path in (Environment.GetEnvironmentVariable("NL_ART_PREVIEW") ?? "").Split(','))
+            {
+                var model = AssetDatabase.LoadAssetAtPath<GameObject>(path.Trim());
+                if (model == null) { Debug.LogWarning("[ArcadeArtBuilder] preview: missing " + path); continue; }
+                for (int yaw = 0; yaw < 360; yaw += 45)
+                    Render(model, Path.Combine(dir, $"{model.name}_{yaw:000}.png"), 192, yaw, 15f, false);
+            }
+            if (Application.isBatchMode) EditorApplication.Exit(0);
+        }
+
+        private static void Render(GameObject source, string file, int size, float yaw, float pitch, bool import = true)
         {
             const int super = 2; // render larger, then downsample for clean edges
             var stage = new GameObject("ArtStage") { transform = { position = new Vector3(0f, -800f, 0f) } };
@@ -125,6 +139,7 @@ namespace NihongoLife.EditorTools
             var result = WithShadow(Downsample(raw, size));
             File.WriteAllBytes(file, result.EncodeToPNG());
             Object.DestroyImmediate(raw); Object.DestroyImmediate(result);
+            if (!import) return;
             AssetDatabase.ImportAsset(file);
             if (AssetImporter.GetAtPath(file) is TextureImporter importer)
             {

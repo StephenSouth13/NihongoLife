@@ -91,6 +91,9 @@ namespace NihongoLife.Scenario
         {
             var progress = Progress;
             if (progress == null || string.IsNullOrEmpty(progress.activeScenarioId) || IsDone(progress.activeScenarioId)) return null;
+            // Only story quests count (a side or test scenario left in the save is not "the story"), and only ids the
+            // campaign lists — so an unknown id is never looked up (the repository logs an error for those).
+            if (!Campaign.Contains(progress.activeScenarioId)) return null;
             return Repository?.GetScenarioById(progress.activeScenarioId);
         }
 

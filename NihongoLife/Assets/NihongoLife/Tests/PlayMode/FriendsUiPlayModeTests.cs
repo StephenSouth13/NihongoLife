@@ -33,7 +33,10 @@ namespace NihongoLife.Tests
         [UnityTest]
         public IEnumerator FriendsWindow_ThreeLanguagesAndResolutions()
         {
-            GameServices.Clear();
+            // Stand in a signed-in account and fresh settings; the real services are put back at the end (never Clear:
+            // later tests in the same run need the bootstrap services).
+            GameServices.TryGet(out IAuthService realAuth);
+            GameServices.TryGet(out GameSettingsService realSettings);
             GameServices.Register<IAuthService>(new SignedInAuth());
             var settingsGo = new GameObject("FriendsTestSettings");
             var settings = settingsGo.AddComponent<GameSettingsService>();
@@ -122,7 +125,8 @@ namespace NihongoLife.Tests
             UnityEngine.Object.Destroy(cameraGo);
             UnityEngine.Object.Destroy(serviceGo);
             UnityEngine.Object.Destroy(settingsGo);
-            GameServices.Clear();
+            if (realAuth != null) GameServices.Register(realAuth); else GameServices.Unregister<IAuthService>();
+            if (realSettings != null) GameServices.Register(realSettings); else GameServices.Unregister<GameSettingsService>();
         }
 
         private static Button Find(Transform root, string name)

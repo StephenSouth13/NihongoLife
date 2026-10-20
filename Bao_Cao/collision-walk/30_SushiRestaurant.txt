@@ -1,16 +1,16 @@
 30_SushiRestaurant: start (500.00, 0.00, -6.60) · capsule h=1.4 r=0.27 step=0.36 · 5515 reachable cells
-  OK   SushiChefInteractable 'SushiChef_Ota' at (499.97, 0.02, 7.75) — nearest walkable 0.06 m
-  OK   ScenePortal 'ExitToCity' at (500.00, 1.10, -8.00) — nearest walkable 0.00 m
-  OK   RestaurantTable 'DiningTableService_B' at (503.80, 0.00, -2.40) — nearest walkable 1.00 m
-  OK   RestaurantTable 'DiningTableService_A' at (496.20, 0.00, -2.40) — nearest walkable 1.00 m
-  OK   NPCController 'SushiChefOta' at (500.00, 0.05, 5.00) — nearest walkable 0.57 m
   OK   RestaurantMenuBoard 'RestaurantMenuBoard_Sushi' at (504.20, 1.60, -8.62) — nearest walkable 0.42 m
+  OK   NPCController 'SushiChefOta' at (500.00, 0.05, 5.00) — nearest walkable 0.57 m
+  OK   RestaurantTable 'DiningTableService_B' at (503.80, 0.00, -2.40) — nearest walkable 1.00 m
+  OK   SushiChefInteractable 'SushiChef_Ota' at (500.02, 0.02, 7.75) — nearest walkable 0.05 m
+  OK   RestaurantTable 'DiningTableService_A' at (496.20, 0.00, -2.40) — nearest walkable 1.00 m
+  OK   ScenePortal 'ExitToCity' at (500.00, 1.10, -8.00) — nearest walkable 0.00 m
   OK   JobStation 'Interaction' at (497.80, 1.25, -5.80) — nearest walkable 0.00 m
   OK   NPCController 'SushiStaffAoki' at (500.00, 0.05, -5.00) — nearest walkable 0.57 m
-  walk → SushiStaffAoki: 9 cells, ended 0.24 m from goal
+  walk → SushiStaffAoki: 9 cells, ended 0.25 m from goal
   walk → ExitToCity: 8 cells, ended 0.25 m from goal
   walk → Interaction: 16 cells, ended 0.25 m from goal
-  walk → RestaurantMenuBoard_Sushi: 30 cells, ended 0.25 m from goal
+  walk → RestaurantMenuBoard_Sushi: 30 cells, ended 0.24 m from goal
   walk → DiningTableService_B: 36 cells, ended 0.25 m from goal
   walk → DiningTableService_A: 40 cells, ended 0.25 m from goal
   walk → SushiChefOta: 109 cells, ended 0.25 m from goal

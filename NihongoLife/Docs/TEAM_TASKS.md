@@ -1254,3 +1254,56 @@ Mục tiêu: thay hình tạm (icon, sprite đồ ăn có sẵn) bằng art th�
 - Thêm 8 mục `jp_*` vào `Assets/NihongoLife/Resources/Island/island_catalog.json`: torii, đèn đá, sakura, tre, ao koi, hòm thư, ghế endai và đèn chōchin. Tái sử dụng FBX low-poly của `Assets/ThirdParty/Sushi Restaurant Kit - May 2023-20260920T035054Z-1-001/` (không thêm glTF).
 - Đã chạy `IslandBuilder.BuildDecor`: tạo `Assets/NihongoLife/Generated/Island/Decor/Decor_jp_*.prefab`, `Assets/NihongoLife/Resources/Items/decor_jp_*.png` và đăng ký vào `IslandModelLibrary` trong `60_MidoriIsland.unity`.
 - Kiểm chứng: `FriendsUiPlayModeTests` 1/1 đạt; `IslandDecorPlayModeTests` 1/1 đạt; `IslandPlayModeTests` 2/2 đạt khi chạy có graphics. Lượt `-nographics` của `IslandPlayModeTests` không dùng làm kết quả vì `HudPortrait` không thể tạo RenderTexture.
+
+## Cập nhật (2026-10-20 khuya, Claude) — Cốt truyện mở đầu + chơi tự do; hoàn tất TASK-O và TASK-N
+
+**Cốt truyện → tự do** (`Scripts/Scenario/StoryDirector.cs`; chi tiết ở STORY_BIBLE mục 13):
+
+Lỗi đã sửa:
+- Nút Bắt đầu ở menu luôn chạy `konbini.buy_onigiri`. Quest này cần đã xong buổi học, nên với save mới không có truyện nào chạy.
+- Mỗi lần vào thành phố, `intro.arrival` lại chạy lại.
+- `UIManager` (DontDestroyOnLoad) chỉ đăng ký sự kiện lúc khởi động. Vì vậy trong luồng chơi thật, màn kết quả quest **không bao giờ hiện**. Nay nó bám theo ScenarioManager hiện tại (`EnsureScenarioSubscription`, `ResolvePanels`).
+- Hộp thoại còn treo khi quest kết thúc: thêm `DialogueManager.CloseFinishedStory`.
+
+Phần mở đầu (5 quest, tới `GameControlDatabase.prologueEndScenarioId`):
+- Quest tự nối nhau.
+- Việc làm thêm, nông trại, nhiệm vụ hằng ngày bị khoá: `QuestService.Requirement`.
+
+Sau phần mở đầu:
+- `FreePlayCardUI` hiện một lần.
+- HUD chỉ bước truyện tiếp theo hoặc số điểm còn thiếu: fallback trong `StatusDock`.
+- Sổ nhiệm vụ liệt kê các bước truyện còn thiếu điểm, kèm lý do (`TaskJournalUI.SelectStory`).
+
+Màn kết quả `ResultUI` vẽ lại bằng UiKit:
+- Chương, tiêu đề, điểm và số sao, các thanh điểm từng phần, phần thưởng, dòng "cốt truyện tiếp".
+- Nút chính đổi theo tình huống: "Nhiệm vụ tiếp theo" / "Thử lại" / "Tiếp tục khám phá". Không còn đẩy người chơi về menu.
+
+Cân bằng điểm kiến thức của quest truyện: trước 150–190/quest (742 sau phần mở đầu, mở mọi khoá ngay), nay 12–20/quest.
+
+`StoryDirector.Bypass` được bật trong `PlayModeSaveGuard`; chỉ `StoryFlowPlayModeTests` tắt nó.
+
+Test `StoryFlowPlayModeTests` (ảnh trong `Bao_Cao/story-flow/`) đi qua:
+- save mới → màn mở đầu tự chạy → 5 quest nối nhau qua nút thật trên màn kết quả;
+- thẻ chế độ tự do → việc làm thêm mở → HUD chương 3 → sổ nhiệm vụ;
+- vào lại thành phố thì không quest nào tự chạy.
+
+**TASK-O** (Codex làm phần lớn trước khi hết token; Claude hoàn tất):
+- FriendsUI: 3 tab, các nút Nhắn tin / Thăm đảo / Xoá hai bước, Chấp nhận / Từ chối, sao chép ID. Codex làm.
+- Claude bổ sung:
+  - `FriendService.ResolveDetails` lấy tên thật và cấp độ (`profiles`), cùng tim đảo (`island_showcases`) chỉ bằng 2 request.
+  - Dòng bạn hiện cấp độ, "♥ N · có đảo", online/ngoại tuyến (`SupabaseOnlineWorldService.IsOnline`).
+  - Nút Thăm đảo tắt khi biết chắc bạn chưa đăng đảo. Nút gọn lại, không tràn.
+- `FriendsUiPlayModeTests`:
+  - Lỗi đã sửa: test gọi `GameServices.Clear()` và để ngôn ngữ ở tiếng Nhật, làm hỏng dây chuyền khoảng 20 test sau nó. Nay test trả lại đúng dịch vụ (thêm `GameServices.Unregister`) và đặt lại tiếng Việt.
+  - Đã thêm kiểm tra tab Lời mời / Thêm bạn, thông tin đảo, và lỗi Thăm đảo hiện ngay trong dòng.
+- Đồ trang trí kiểu Nhật (Codex): 8 món `jp_*` dùng model của Sushi Restaurant Kit. Test `IslandDecorPlayModeTests.Island_JapaneseDecor` mua, đặt, kiểm chiều cao và chạm đất, rồi chụp cận cảnh `Bao_Cao/island-decor/jp_*.png`.
+
+**TASK-N** (`Scripts/Editor/ArcadeArtBuilder.cs`, chạy `-executeMethod NihongoLife.EditorTools.ArcadeArtBuilder.Build`; `Preview` render một model ở 8 góc vào `_work/art-preview`):
+- 14 món ăn → `Resources/MiniGames/Food`.
+- 8 thú bông/quà → `Resources/MiniGames/Prizes`:
+  - kuma dùng gấu trúc của Sushi Kit, vì `bear.fbx` của Kenney là đầu gấu treo tường;
+  - inu = Shiba; usagi = thỏ hồng; hana = hoa anh đào; okashi = kẹo mút.
+- `Items/prize_plush_big.png`.
+- Ảnh render từ model thật, 256 px, góc 3/4, bóng mềm.
+- Chưa có model, giữ hình dự phòng: neko, tori, hoshi, kagi, `prize_neko_plush`, `prize_daruma`, `prize_furin`, `prize_sticker`.
+- 6 logo trò chơi (`Resources/MiniGames/Logos/*.png`, 1024×512) tạo bằng `_work/arcade_logos.py` với font NotoSansJP. Logo hiện trên thẻ bắt đầu (`ArcadeGame.StartHeader`, `KanaMatchGame.ShowSetPicker`).

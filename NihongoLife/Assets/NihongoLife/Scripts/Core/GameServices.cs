@@ -46,6 +46,9 @@ namespace NihongoLife.Core
             return false;
         }
 
+        /// <summary>Removes one service (tests that stand in a fake put the real one back or remove theirs).</summary>
+        public static void Unregister<T>() where T : class, IGameService => Services.Remove(typeof(T));
+
         public static void Clear()
         {
             Services.Clear();

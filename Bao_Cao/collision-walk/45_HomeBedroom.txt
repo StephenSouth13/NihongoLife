@@ -1,13 +1,13 @@
 45_HomeBedroom: start (-2.20, 0.00, -1.65) · capsule h=1.4 r=0.27 step=0.36 · 586 reachable cells
   OK   BedroomRestInteractable 'BedRestPoint' at (-2.30, 0.60, 1.82) — nearest walkable 0.70 m
-  OK   HomeNeedsStation 'FridgePoint' at (-2.72, 0.90, -1.50) — nearest walkable 0.13 m
   OK   StudyDeskInteractable 'StudyDeskPoint' at (1.60, 0.80, 1.89) — nearest walkable 0.61 m
   OK   RoomLightSwitch 'LightSwitchPoint' at (-1.62, 1.10, -2.55) — nearest walkable 0.38 m
   OK   ScenePortal 'ExitToCity' at (-2.40, 1.00, -2.70) — nearest walkable 0.10 m
   OK   HomeNeedsStation 'SinkPoint' at (-2.62, 0.90, -0.66) — nearest walkable 0.06 m
+  OK   HomeNeedsStation 'FridgePoint' at (-2.72, 0.90, -1.50) — nearest walkable 0.13 m
   walk → FridgePoint: 4 cells, ended 0.25 m from goal
   walk → LightSwitchPoint: 7 cells, ended 0.25 m from goal
-  walk → ExitToCity: 7 cells, ended 0.24 m from goal
+  walk → ExitToCity: 7 cells, ended 0.25 m from goal
   walk → SinkPoint: 8 cells, ended 0.25 m from goal
   walk → BedRestPoint: 21 cells, ended 0.25 m from goal
   walk → StudyDeskPoint: 40 cells, ended 0.25 m from goal
