@@ -166,9 +166,11 @@ namespace NihongoLife.School
             panel.GetComponent<Image>().color = new Color(0.035f, 0.08f, 0.11f, 0.94f);
 
             TMP_FontAsset font = TMP_Settings.defaultFontAsset;
-            TextMeshProUGUI title = CreateLabel(panel.transform, "HIBARI JAPANESE SCHOOL", 20f, new Color(0.98f, 0.75f, 0.28f, 1f), new Vector2(20f, -14f), new Vector2(350f, 28f), font);
+            TextMeshProUGUI title = CreateLabel(panel.transform, "", 20f, new Color(0.98f, 0.75f, 0.28f, 1f), new Vector2(20f, -14f), new Vector2(350f, 28f), font);
             title.fontStyle = FontStyles.Bold;
-            CreateLabel(panel.transform, "ひばり日本語学院  •  Lớp học đang hoạt động", 13f, new Color(0.73f, 0.86f, 0.9f, 1f), new Vector2(20f, -48f), new Vector2(350f, 22f), font);
+            LocText.Set(title, "TRƯỜNG NHẬT NGỮ HIBARI", "HIBARI JAPANESE SCHOOL", "ひばり日本語学院");
+            var sub = CreateLabel(panel.transform, "", 13f, new Color(0.73f, 0.86f, 0.9f, 1f), new Vector2(20f, -48f), new Vector2(350f, 22f), font);
+            LocText.Set(sub, "Lớp さくら · đang mở", "Sakura class · in session", "さくらクラス · 授業中");
             var stripe = new GameObject("Accent", typeof(RectTransform), typeof(Image));
             stripe.transform.SetParent(panel.transform, false);
             RectTransform stripeRect = (RectTransform)stripe.transform;
@@ -178,6 +180,8 @@ namespace NihongoLife.School
             stripeRect.anchoredPosition = new Vector2(0f, 0f);
             stripeRect.sizeDelta = new Vector2(390f, 4f);
             stripe.GetComponent<Image>().color = new Color(0.2f, 0.75f, 0.65f, 1f);
+            // A name plate only: it must never take clicks meant for the exam cards and windows under it.
+            foreach (var graphic in root.GetComponentsInChildren<Graphic>(true)) graphic.raycastTarget = false;
         }
 
         private static TextMeshProUGUI CreateLabel(Transform parent, string value, float size, Color color, Vector2 position, Vector2 dimensions, TMP_FontAsset font)
