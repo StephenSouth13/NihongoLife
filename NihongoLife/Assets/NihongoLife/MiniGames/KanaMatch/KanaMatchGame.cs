@@ -104,8 +104,22 @@ namespace NihongoLife.MiniGames
             var panel = NLUi.Panel(_root, "SetPicker", NLUi.Ink, new RectOffset(44, 44, 34, 34), 14f);
             NLUi.Anchor(panel, new Vector2(0.5f, 0.5f), Vector2.zero, new Vector2(760f, 0f));
             NLUi.FitContent(panel);
-            NLUi.Label(panel, "Kicker", "ゲームセンター ひばり", 18f, NLUi.Gold, _font, FontStyles.Bold, TextAlignmentOptions.Center);
-            NLUi.Label(panel, "Title", _definition.titleJa + (Loc.IsJapanese ? "" : $"  <size=60%><color=#E8EEF6>{_definition.Title}</color></size>"), 46f, NLUi.Text, _font, FontStyles.Bold, TextAlignmentOptions.Center);
+            var logo = Resources.Load<Texture2D>("MiniGames/Logos/" + GameId); // title card (ArcadeArt / TASK-N)
+            if (logo != null)
+            {
+                var image = new GameObject("Logo", typeof(RectTransform), typeof(Image), typeof(LayoutElement));
+                image.transform.SetParent(panel, false);
+                var img = image.GetComponent<Image>();
+                img.sprite = Sprite.Create(logo, new Rect(0, 0, logo.width, logo.height), new Vector2(0.5f, 0.5f), 100f);
+                img.preserveAspect = true; img.raycastTarget = false;
+                var size = image.GetComponent<LayoutElement>(); size.preferredHeight = 200f; size.preferredWidth = 400f;
+                if (!Loc.IsJapanese) NLUi.Label(panel, "Title", _definition.Title, 17f, NLUi.Muted, _font, FontStyles.Bold, TextAlignmentOptions.Center);
+            }
+            else
+            {
+                NLUi.Label(panel, "Kicker", "ゲームセンター ひばり", 18f, NLUi.Gold, _font, FontStyles.Bold, TextAlignmentOptions.Center);
+                NLUi.Label(panel, "Title", _definition.titleJa + (Loc.IsJapanese ? "" : $"  <size=60%><color=#E8EEF6>{_definition.Title}</color></size>"), 46f, NLUi.Text, _font, FontStyles.Bold, TextAlignmentOptions.Center);
+            }
             NLUi.Label(panel, "Desc", _definition.Description, 19f, NLUi.Muted, _font, FontStyles.Normal, TextAlignmentOptions.Center);
             NLUi.Divider(panel);
             foreach (var set in _definition.contentSets.Where(s => s != null && s.pairs.Count >= 2 && s.AvailableInCurrentLanguage))

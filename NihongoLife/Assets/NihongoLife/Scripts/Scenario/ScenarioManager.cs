@@ -597,8 +597,11 @@ namespace NihongoLife.Scenario
             float qualityMultiplier = Mathf.Lerp(0.45f, 1.35f, accuracy);
             float firstClearMultiplier = firstCompletion ? 1f : 0.25f;
             float progression = 1f + (chapter - 1) * 0.18f + (difficulty - 1) * 0.12f;
-            int baseReward = Mathf.Max(20, scenario.baseKnowledgeReward) + targets * 8;
-            return Mathf.Max(5, Mathf.RoundToInt(baseReward * progression * qualityMultiplier * firstClearMultiplier));
+            // Same scale as the rest of the game (a lesson 8, a job shift 6, a learning task 12, places open at 40–250):
+            // a story quest is worth ~12–20, the whole opening ~60–75, so the story opens chapter 3 at once while the
+            // station, the game centre and the island still come from free play (StoryDirector).
+            int baseReward = Mathf.Max(6, scenario.baseKnowledgeReward / 10) + targets;
+            return Mathf.Max(3, Mathf.RoundToInt(baseReward * progression * qualityMultiplier * firstClearMultiplier));
         }
 
         private bool UsesExplicitObjectiveTracking()

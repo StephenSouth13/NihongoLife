@@ -17,6 +17,7 @@ namespace NihongoLife.Island
         public Transform GetTransform() => transform;
         public void Interact(GameObject player)
         {
+            if (IslandVisit.Active) { IslandUI.Toast(Loc.T("Khách thăm đi tàu miễn phí — ra cửa tàu và nhấn F để về.", "Visitors ride for free — go to the train door and press F to go back.", "お客さんは無料です — 電車のドアでFを押して帰りましょう。")); return; }
             string error = IslandTrainService.BuyTicket();
             if (error == null) IslandUI.Toast(Loc.F("Đã mua vé về Hibari (−¥{0}). Ra cửa tàu và nhấn F để lên tàu.", "Ticket to Hibari bought (−¥{0}). Go to the train door and press F.", "ひばり行きの切符を買いました（−¥{0}）。電車のドアでFを押しましょう。", IslandTrainService.Price));
             else IslandUI.Toast(error, !IslandTrainService.HasTicket);

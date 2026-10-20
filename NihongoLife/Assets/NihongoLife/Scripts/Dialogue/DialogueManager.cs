@@ -208,6 +208,14 @@ namespace NihongoLife.Dialogue
         /// NPC again resumes exactly where the player left.</summary>
         /// <summary>Called when the player changes zone: closes an open dialogue the same way × does
         /// (scenario lines are paused and can be resumed with R, local conversations end).</summary>
+        /// <summary>The story quest ended (Complete / Fail node): close its dialogue without keeping it as paused.</summary>
+        public void CloseFinishedStory()
+        {
+            if (!IsOpen || !_currentIsScenarioNode || _conversation != null) return;
+            CloseDialogue(true, false);
+            _pausedStoryNode = null;
+        }
+
         public void SuspendForTravel()
         {
             if (IsOpen) CancelDialogue();

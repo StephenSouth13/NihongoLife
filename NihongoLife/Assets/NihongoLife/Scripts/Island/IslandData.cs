@@ -36,6 +36,22 @@ namespace NihongoLife.Island
         public string Note => Loc.Pick(note, string.IsNullOrEmpty(noteEn) ? note : noteEn, string.IsNullOrEmpty(noteJa) ? note : noteJa);
     }
 
+    /// <summary>
+    /// A decoration the player buys at the Midori Store and places on the island (tree, flowers, bench, lamp, well…).
+    /// <c>source</c> is the model the editor builder turns into Generated/Island/Decor/Decor_&lt;id&gt;.prefab;
+    /// <c>height</c> the size it is placed at, <c>footprint</c> the space it needs, <c>solid</c> whether it blocks walking.
+    /// </summary>
+    [Serializable]
+    public sealed class IslandDecorDef
+    {
+        public string id, category, source, icon;
+        public int price;
+        public float height, footprint;
+        public bool solid;
+        public IslandWord word;
+        public string ItemId => "decor_" + id;
+    }
+
     [Serializable]
     public sealed class IslandVerbs { public IslandWord plant, harvest, feed, pet, buy, sell, fish; }
 
@@ -55,6 +71,7 @@ namespace NihongoLife.Island
         public IslandAnimalDef[] animals;
         public IslandProduct[] products;
         public IslandPlaces places;
+        public IslandDecorDef[] decor;
 
         private static IslandCatalog _cached;
 
@@ -73,6 +90,7 @@ namespace NihongoLife.Island
         public IslandAnimalDef Animal(string id) => animals?.FirstOrDefault(a => a.id == id);
         public IslandFish Fish(string id) => fish?.FirstOrDefault(f => f.id == id);
         public IslandCrop CropBySeed(string seedItemId) => crops?.FirstOrDefault(c => c.SeedItemId == seedItemId);
+        public IslandDecorDef Decor(string id) => decor?.FirstOrDefault(d => d.id == id || d.ItemId == id);
 
         /// <summary>Japanese / Vietnamese names the inventory shows for an island item id.</summary>
         public bool TryDescribe(string itemId, out string ja, out string vi, out int price)
@@ -187,7 +205,14 @@ namespace NihongoLife.Island
         public int fed;
         public int fished;
         public List<ToolWear> toolWear = new();   // uses left on the tool currently in use, per tool item
+        public List<DecorPlacement> decor = new();     // decorations standing on the island
+        public List<DecorStock> decorStock = new();    // bought, not placed yet
+        public int likes;                              // hearts from visiting friends (last value from the server)
     }
+
+    /// <summary>One placed decoration, in island-local metres (relative to the island centre) and degrees.</summary>
+    [Serializable] public sealed class DecorPlacement { public string id; public float x, z, yaw; }
+    [Serializable] public sealed class DecorStock { public string id; public int count; }
 
     [Serializable]
     public sealed class ToolWear { public string itemId; public int usesLeft; }
@@ -209,6 +234,7 @@ namespace NihongoLife.Island
         {
             get
             {
+                if (IslandVisit.Active && IslandVisit.Record != null) return IslandVisit.Record; // a friend's island: read-only
                 var progress = Progress;
                 if (progress == null) return _fallback ??= new IslandRecord();
                 if (progress.island == null) progress.island = new IslandRecord();
@@ -218,6 +244,7 @@ namespace NihongoLife.Island
 
         public static void Save()
         {
+            if (IslandVisit.Active) { Changed?.Invoke(); return; } // visiting: nothing of the friend's island is saved
             if (GameServices.TryGet(out IProgressRepository repository))
             {
                 var progress = repository.GetProgress();

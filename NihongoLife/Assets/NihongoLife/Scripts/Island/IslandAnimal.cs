@@ -118,6 +118,7 @@ namespace NihongoLife.Island
         public Transform GetTransform() => transform;
         public void Interact(GameObject player)
         {
+            if (IslandVisit.ReadOnlyNotice()) return;
             Hold(player.transform, 6f);
             Meet();
             IslandUI.OpenAnimal(this);

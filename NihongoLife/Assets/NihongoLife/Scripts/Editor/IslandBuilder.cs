@@ -51,6 +51,7 @@ namespace NihongoLife.EditorTools
                 CreateMaterials();
                 var library = BuildCropPrefabs();
                 library.AddRange(BuildFishingPrefabs());
+                library.AddRange(BuildDecorPrefabs());
                 BuildScene(library);
                 UpdateBuildSettings();
                 AssetDatabase.SaveAssets();
@@ -157,6 +158,7 @@ namespace NihongoLife.EditorTools
             var nature = Group(root.transform, "Nature");
             var signs = Group(root.transform, "Signs");
             var bounds = Group(root.transform, "Bounds");
+            Group(root.transform, "Decor").gameObject.AddComponent<IslandDecorRuntime>().Configure(O, IslandRX, IslandRZ);
 
             BuildGround(ground, bounds);
             var spawn = BuildStation(station);
@@ -688,7 +690,7 @@ namespace NihongoLife.EditorTools
         }
 
         /// <summary>Imported FBX/OBJ materials that are not URP are replaced by URP Simple Lit copies (colour + texture kept).</summary>
-        private static void ConvertMaterials(GameObject root)
+        internal static void ConvertMaterials(GameObject root)
         {
             foreach (var renderer in root.GetComponentsInChildren<Renderer>(true))
             {

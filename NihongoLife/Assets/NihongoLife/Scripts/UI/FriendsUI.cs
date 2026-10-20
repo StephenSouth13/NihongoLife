@@ -1,236 +1,376 @@
-using System.Text;
+using System;
+using NihongoLife.Core;
+using NihongoLife.Island;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
-using NihongoLife.Core;
 
 namespace NihongoLife.UI
 {
-    /// <summary>
-    /// Friends panel — shows friends list, pending requests, and add friend functionality.
-    /// </summary>
-    public class FriendsUI : MonoBehaviour
+    /// <summary>Responsive friends window used by the main menu.</summary>
+    public sealed class FriendsUI : MonoBehaviour
     {
+        private enum Tab { Friends, Requests, Add }
+
         private GameObject _panel;
-        private TextMeshProUGUI _titleText;
-        private TextMeshProUGUI _friendsListText;
-        private TextMeshProUGUI _pendingText;
-        private TMP_InputField _addFriendInput;
-        private Button _addButton;
-        private Button _closeButton;
-        private TMP_FontAsset _font;
+        private RectTransform _card, _content;
+        private TextMeshProUGUI _title, _subtitle, _status;
+        private TMP_InputField _friendIdInput;
+        private Button _friendsTab, _requestsTab, _addTab;
+        private FriendService _service;
+        private Tab _tab;
+        private string _confirmRemoveId;
+        private int _screenWidth, _screenHeight;
+
+        public bool IsOpen => _panel != null && _panel.activeSelf;
 
         public void Initialize(TMP_FontAsset font)
         {
-            if (GameServices.TryGet(out GameSettingsService languageSettings)) languageSettings.OnLanguageChanged += HandleGlobalLanguageChanged;
-
-            _font = font;
+            if (font != null) UiKit.Font = font;
             BuildUI();
-        }
-
-        private void OnDestroy()
-        {
-            if (GameServices.TryGet(out GameSettingsService settings)) settings.OnLanguageChanged -= HandleGlobalLanguageChanged;
-        }
-
-        private void HandleGlobalLanguageChanged(GameLanguage _)
-        {
-            if (_panel != null && _panel.activeSelf) RefreshContent();
+            Loc.Watch(this, RefreshContent);
         }
 
         public void Show()
         {
-            if (_panel != null) _panel.SetActive(true);
+            if (_panel == null) BuildUI();
+            _panel.SetActive(true);
+            _confirmRemoveId = null;
+            UpdateResponsiveLayout(true);
+            UiModalStack.Register(this, () => IsOpen, Hide, "Friends");
             RefreshContent();
         }
 
         public void Hide()
         {
             if (_panel != null) _panel.SetActive(false);
+            _confirmRemoveId = null;
+        }
+
+        private void Update()
+        {
+            if (IsOpen) UpdateResponsiveLayout(false);
         }
 
         private void BuildUI()
         {
-            _panel = new GameObject("FriendsPanel");
+            _panel = new GameObject("FriendsPanel", typeof(RectTransform), typeof(Image));
             _panel.transform.SetParent(transform, false);
-            var rect = _panel.AddComponent<RectTransform>();
-            rect.anchorMin = Vector2.zero;
-            rect.anchorMax = Vector2.one;
-            rect.offsetMin = Vector2.zero;
-            rect.offsetMax = Vector2.zero;
+            _panel.layer = 5;
+            var overlay = (RectTransform)_panel.transform;
+            UiKit.Fill(overlay);
+            _panel.GetComponent<Image>().color = UiTheme.Backdrop;
 
-            _panel.AddComponent<Image>().color = new Color(0.01f, 0.015f, 0.02f, 0.92f);
+            _card = UiKit.Card(overlay, "FriendsWindow", UiTheme.Ink, 22, 0.65f).rectTransform;
+            _card.anchorMin = _card.anchorMax = _card.pivot = new Vector2(0.5f, 0.5f);
+            UiKit.Border(_card, UiTheme.Line, 22);
+            UiKit.CloseButton(_card, Hide, 20f);
 
-            var card = new GameObject("Card");
-            card.transform.SetParent(_panel.transform, false);
-            var cardRect = card.AddComponent<RectTransform>();
-            Center(cardRect, new Vector2(480f, 520f));
-            card.AddComponent<Image>().color = new Color(0.035f, 0.045f, 0.055f, 0.97f);
+            var icon = UiKit.Icon(_card, "groups", UiTheme.Gold, 34f);
+            UiKit.Place(icon.rectTransform, 28f, 24f, 34f, 34f);
+            _title = UiKit.Label(_card, "Title", "", 27f, UiTheme.Text, FontStyles.Bold);
+            UiKit.Place(_title, 76f, 20f, 700f, 36f);
+            _subtitle = UiKit.Label(_card, "Subtitle", "", 14f, UiTheme.Muted);
+            UiKit.Place(_subtitle, 76f, 55f, 760f, 24f);
 
-            _titleText = MakeText(card, "Title", new Vector2(0f, 220f), new Vector2(420f, 38f), 24f);
-            _titleText.fontStyle = FontStyles.Bold;
-            _titleText.color = new Color(1f, 0.91f, 0.54f, 1f);
+            var tabs = UiKit.Rect(_card, "Tabs");
+            UiKit.Place(tabs, 28f, 96f, 760f, 44f);
+            UiKit.RowLayout(tabs, 8f);
+            _friendsTab = TabButton(tabs, "Friends", "Bạn bè", "Friends", "フレンド", "groups", Tab.Friends);
+            _requestsTab = TabButton(tabs, "Requests", "Lời mời", "Requests", "申請", "person_add", Tab.Requests);
+            _addTab = TabButton(tabs, "Add", "Thêm bạn", "Add friend", "フレンド追加", "add", Tab.Add);
 
-            _friendsListText = MakeText(card, "FriendsList", new Vector2(0f, 60f), new Vector2(420f, 240f), 15f);
-            _friendsListText.alignment = TextAlignmentOptions.TopLeft;
-            _friendsListText.color = new Color(0.88f, 0.93f, 1f, 1f);
-            _friendsListText.lineSpacing = 6f;
-
-            _pendingText = MakeText(card, "Pending", new Vector2(0f, -100f), new Vector2(420f, 80f), 13f);
-            _pendingText.alignment = TextAlignmentOptions.TopLeft;
-            _pendingText.color = new Color(0.95f, 0.72f, 0.25f, 1f);
-
-            // Add friend input
-            var inputGo = new GameObject("AddInput");
-            inputGo.transform.SetParent(card.transform, false);
-            var inputRect = inputGo.AddComponent<RectTransform>();
-            Center(inputRect, new Vector2(300f, 40f));
-            inputRect.anchoredPosition = new Vector2(-40f, -190f);
-            inputGo.AddComponent<Image>().color = new Color(0.09f, 0.11f, 0.13f, 1f);
-
-            _addFriendInput = inputGo.AddComponent<TMP_InputField>();
-            _addFriendInput.lineType = TMP_InputField.LineType.SingleLine;
-
-            var inputText = MakeText(inputGo, "Text", Vector2.zero, new Vector2(280f, 32f), 14f);
-            inputText.alignment = TextAlignmentOptions.MidlineLeft;
-            inputText.margin = new Vector4(10, 0, 10, 0);
-            _addFriendInput.textComponent = inputText;
-            _addFriendInput.textViewport = inputRect;
-
-            var ph = MakeText(inputGo, "Placeholder", Vector2.zero, new Vector2(280f, 32f), 14f);
-            ph.text = "User ID...";
-            ph.alignment = TextAlignmentOptions.MidlineLeft;
-            ph.margin = new Vector4(10, 0, 10, 0);
-            ph.color = new Color(0.5f, 0.55f, 0.6f, 0.7f);
-            _addFriendInput.placeholder = ph;
-
-            _addButton = MakeButton(card, "AddBtn", new Vector2(140f, -190f), new Vector2(80f, 40f), Text("Thêm", "Add", "追加"));
-            _addButton.onClick.AddListener(OnAddFriend);
-
-            _closeButton = MakeButton(card, "CloseBtn", new Vector2(210f, 220f), new Vector2(40f, 40f), "X");
-            _closeButton.onClick.AddListener(Hide);
-
+            var body = UiKit.Card(_card, "Body", UiTheme.Surface, 16).rectTransform;
+            body.anchorMin = Vector2.zero;
+            body.anchorMax = Vector2.one;
+            body.offsetMin = new Vector2(28f, 28f);
+            body.offsetMax = new Vector2(-28f, -156f);
+            _content = UiKit.Scroll(body, "FriendScroll", out _, 10f, new RectOffset(14, 14, 14, 14));
+            UiKit.Fill((RectTransform)_content.parent.parent, 0f, 0f, 0f, 38f);
+            _status = UiKit.Label(body, "Status", "", 13.5f, UiTheme.Muted, wrap: true);
+            UiKit.Strip(_status.rectTransform, false, 0f, 38f, 16f, 16f);
             _panel.SetActive(false);
+        }
+
+        private Button TabButton(Transform parent, string name, string vi, string en, string ja, string icon, Tab tab)
+        {
+            var button = UiKit.Button(parent, name, vi, en, ja, () => SelectTab(tab), UiKit.Kind.Ghost, icon, 15f);
+            UiKit.Size(button, 210f, 44f);
+            return button;
+        }
+
+        private void SelectTab(Tab tab)
+        {
+            _tab = tab;
+            _confirmRemoveId = null;
+            RefreshContent();
         }
 
         private void RefreshContent()
         {
-            _titleText.text = Text("Bạn bè", "Friends", "フレンド");
+            if (_panel == null) return;
+            _title.text = Loc.T("Bạn bè", "Friends", "フレンド");
+            _subtitle.text = Loc.T("Kết nối, nhắn tin và ghé thăm đảo của nhau", "Connect, chat, and visit each other's islands", "つながって、話して、お互いの島を訪ねましょう");
+            UiKit.SetKind(_friendsTab, _tab == Tab.Friends ? UiKit.Kind.Primary : UiKit.Kind.Ghost);
+            UiKit.SetKind(_requestsTab, _tab == Tab.Requests ? UiKit.Kind.Primary : UiKit.Kind.Ghost);
+            UiKit.SetKind(_addTab, _tab == Tab.Add ? UiKit.Kind.Primary : UiKit.Kind.Ghost);
+            UiKit.Clear(_content);
+            SetStatus(Loc.T("Đang cập nhật…", "Updating…", "更新中…"), UiTheme.Muted);
 
-            var friendService = FindFirstObjectByType<FriendService>();
-            if (friendService == null)
+            if (!GameServices.TryGet(out IAuthService auth) || !auth.IsAuthenticated)
             {
-                _friendsListText.text = Text("Chưa kết nối.", "Not connected.", "接続されていません。");
-                _pendingText.text = string.Empty;
+                BuildSignedOutState();
                 return;
             }
-
-            friendService.RefreshFriends(() =>
+            _service = FindFirstObjectByType<FriendService>();
+            if (_service == null)
             {
-                // Friends list
-                if (friendService.Friends.Count == 0)
-                {
-                    _friendsListText.text = Text("Chưa có bạn bè. Thêm bạn bằng User ID!", "No friends yet. Add someone by User ID!", "まだフレンドがいません。IDで追加しましょう！");
-                }
-                else
-                {
-                    var sb = new StringBuilder();
-                    sb.AppendLine($"<b>{Text("Danh sách bạn bè", "Friends List", "フレンドリスト")}</b>\n");
-                    foreach (var f in friendService.Friends)
-                    {
-                        string name = !string.IsNullOrWhiteSpace(f.friendDisplayName) ? f.friendDisplayName : ShortId(f.friendUserId);
-                        sb.AppendLine($"• <color=#74d680>{name}</color>");
-                    }
-                    _friendsListText.text = sb.ToString();
-                }
-
-                // Pending requests
-                if (friendService.PendingRequests.Count == 0)
-                {
-                    _pendingText.text = string.Empty;
-                }
-                else
-                {
-                    var sb = new StringBuilder();
-                    sb.AppendLine($"<b>{Text("Lời mời kết bạn", "Pending Requests", "保留中のリクエスト")}</b>");
-                    foreach (var p in friendService.PendingRequests)
-                    {
-                        sb.AppendLine($"• {ShortId(p.requester_id)}...");
-                    }
-                    _pendingText.text = sb.ToString();
-                }
+                BuildUnavailableState();
+                return;
+            }
+            if (_tab == Tab.Add)
+            {
+                BuildAddFriend(auth);
+                return;
+            }
+            _service.RefreshFriends(() =>
+            {
+                if (!IsOpen) return;
+                UiKit.Clear(_content);
+                if (_tab == Tab.Friends) BuildFriends(); else BuildRequests();
             });
         }
 
-        private void OnAddFriend()
+        private void BuildFriends()
         {
-            string userId = _addFriendInput.text.Trim();
-            if (string.IsNullOrWhiteSpace(userId)) return;
-
-            var friendService = FindFirstObjectByType<FriendService>();
-            if (friendService == null) return;
-
-            friendService.SendFriendRequest(userId, success =>
+            SetStatus(Loc.F("{0} bạn bè", "{0} friends", "フレンド {0}人", _service.Friends.Count), UiTheme.Muted);
+            if (_service.Friends.Count == 0)
             {
-                _addFriendInput.text = string.Empty;
+                EmptyState("group_add", Loc.T("Chưa có bạn bè", "No friends yet", "フレンドはまだいません"),
+                    Loc.T("Mở tab Thêm bạn và nhập User ID để gửi lời mời.", "Open Add friend and enter a User ID to send a request.", "「フレンド追加」でユーザーIDを入力して申請できます。"),
+                    Loc.T("Thêm bạn", "Add friend", "フレンド追加"), () => SelectTab(Tab.Add));
+                return;
+            }
+            foreach (var friend in _service.Friends) BuildFriendRow(friend);
+        }
+
+        private void BuildFriendRow(FriendEntry friend)
+        {
+            string id = friend.friendUserId;
+            string name = string.IsNullOrWhiteSpace(friend.friendDisplayName) ? ShortId(id) : friend.friendDisplayName;
+            var card = UiKit.Card(_content, "Friend_" + friend.id, UiTheme.Raised, 14);
+            UiKit.Size(card, -1f, 94f, 1f);
+            var avatar = UiKit.Avatar(card.transform, "Avatar", name, 52f, new Color(0.22f, 0.42f, 0.5f, 1f), Color.white);
+            UiKit.Place(avatar.rectTransform, 16f, 20f, 52f, 52f);
+            bool online = IsOnline(id);
+            var dot = UiKit.Image(avatar.transform, "Presence", online ? UiTheme.Good : new Color(0.42f, 0.46f, 0.52f, 1f), UiKit.Circle);
+            UiKit.Pin(dot.rectTransform, new Vector2(1f, 0f), -2f, 2f, 13f, 13f);
+            var nameLabel = UiKit.Label(card.transform, "Name", name + (friend.friendLevel > 0 ? $"  <size=72%><color=#F7BD3D>Lv {friend.friendLevel}</color></size>" : ""), 18f, UiTheme.Text, FontStyles.Bold);
+            nameLabel.overflowMode = TextOverflowModes.Ellipsis;
+            UiKit.Place(nameLabel, 82f, 14f, 230f, 28f);
+            string island = !friend.islandChecked && !friend.HasIsland ? Loc.F("ID · {0}", "ID · {0}", "ID · {0}", ShortId(id))
+                : friend.HasIsland ? Loc.F("♥ {0} · có đảo để thăm", "♥ {0} · island to visit", "♥ {0} · 島あり", friend.islandLikes)
+                : Loc.T("Chưa đăng đảo", "No island yet", "島はまだありません");
+            UiKit.Place(UiKit.Label(card.transform, "Island", island, 12.5f, friend.HasIsland ? UiTheme.Gold : UiTheme.Muted), 82f, 42f, 230f, 20f);
+            UiKit.Place(UiKit.Label(card.transform, "Online", online ? Loc.T("Đang online", "Online now", "オンライン") : Loc.T("Ngoại tuyến", "Offline", "オフライン"), 12f, online ? UiTheme.Good : UiTheme.Muted), 82f, 62f, 230f, 18f);
+
+            var actions = UiKit.Rect(card.transform, "Actions");
+            actions.anchorMin = new Vector2(0.34f, 0f);
+            actions.anchorMax = Vector2.one;
+            actions.offsetMin = new Vector2(0f, 18f);
+            actions.offsetMax = new Vector2(-14f, -18f);
+            UiKit.RowLayout(actions, 8f, null, TextAnchor.MiddleRight);
+            ActionButton(actions, "Message", "Nhắn tin", "Message", "メッセージ", "chat", UiKit.Kind.Secondary, () => OpenDirect(id, name));
+            var visit = ActionButton(actions, "Visit", "Thăm đảo", "Visit island", "島を訪ねる", "home", UiKit.Kind.Success, () => VisitIsland(friend, name, card.transform));
+            visit.interactable = friend.HasIsland || !friend.islandChecked; // known to have no island: nothing to visit
+            bool confirm = _confirmRemoveId == friend.id;
+            ActionButton(actions, "Remove", confirm ? "Xác nhận xoá" : "Xoá", confirm ? "Confirm remove" : "Remove", confirm ? "削除を確認" : "削除", "delete", UiKit.Kind.Danger, () => RemoveFriend(friend));
+        }
+
+        private void BuildRequests()
+        {
+            SetStatus(Loc.F("{0} lời mời đang chờ", "{0} pending requests", "保留中の申請 {0}件", _service.PendingRequests.Count), UiTheme.Muted);
+            if (_service.PendingRequests.Count == 0)
+            {
+                EmptyState("mark_chat_unread", Loc.T("Không có lời mời mới", "No new requests", "新しい申請はありません"), Loc.T("Lời mời kết bạn mới sẽ xuất hiện tại đây.", "New friend requests will appear here.", "新しいフレンド申請はここに表示されます。"));
+                return;
+            }
+            foreach (var request in _service.PendingRequests)
+            {
+                string name = string.IsNullOrWhiteSpace(request.friendDisplayName) ? ShortId(request.friendUserId) : request.friendDisplayName;
+                var card = UiKit.Card(_content, "Request_" + request.id, UiTheme.Raised, 14);
+                UiKit.Size(card, -1f, 82f, 1f);
+                var avatar = UiKit.Avatar(card.transform, "Avatar", name, 48f, new Color(0.35f, 0.28f, 0.48f, 1f), Color.white);
+                UiKit.Place(avatar.rectTransform, 16f, 17f, 48f, 48f);
+                UiKit.Place(UiKit.Label(card.transform, "Name", name, 17f, UiTheme.Text, FontStyles.Bold), 78f, 15f, 300f, 26f);
+                UiKit.Place(UiKit.Label(card.transform, "RequestText", Loc.T("Muốn kết bạn với bạn", "Sent you a friend request", "フレンド申請が届いています"), 13f, UiTheme.Muted), 78f, 42f, 300f, 22f);
+                var actions = UiKit.Rect(card.transform, "Actions");
+                UiKit.Pin(actions, new Vector2(1f, 0.5f), -14f, 0f, 290f, 48f);
+                UiKit.RowLayout(actions, 8f, null, TextAnchor.MiddleRight);
+                ActionButton(actions, "Accept", "Chấp nhận", "Accept", "承認", "check_circle", UiKit.Kind.Success, () => _service.AcceptFriendRequest(request.id, _ => RefreshContent()));
+                ActionButton(actions, "Decline", "Từ chối", "Decline", "拒否", "close", UiKit.Kind.Ghost, () => _service.RemoveFriend(request.id, _ => RefreshContent()));
+            }
+        }
+
+        private void BuildAddFriend(IAuthService auth)
+        {
+            SetStatus(Loc.T("Dùng User ID chính xác của người bạn muốn kết nối.", "Use the exact User ID of the person you want to connect with.", "追加したい相手の正確なユーザーIDを入力してください。"), UiTheme.Muted);
+            UiKit.Size(UiKit.Label(_content, "Intro", "Gửi lời mời kết bạn", "Send a friend request", "フレンド申請を送る", 22f, UiTheme.Text, FontStyles.Bold), -1f, 34f, 1f);
+            UiKit.Size(UiKit.Label(_content, "Hint", "Nhập User ID. Người kia sẽ thấy lời mời trong tab Lời mời.", "Enter a User ID. They will see it in Requests.", "ユーザーIDを入力すると、相手の「申請」タブに表示されます。", 14f, UiTheme.TextSoft, wrap: true), -1f, 48f, 1f);
+
+            var inputCard = UiKit.Card(_content, "FriendIdCard", UiTheme.Sunken, 12);
+            UiKit.Size(inputCard, -1f, 56f, 1f);
+            _friendIdInput = CreateInput(inputCard.transform);
+            var send = UiKit.Button(inputCard.transform, "Send", "Gửi lời mời", "Send request", "申請する", SendFriendRequest, UiKit.Kind.Primary, "person_add", 14f);
+            UiKit.Pin((RectTransform)send.transform, new Vector2(1f, 0.5f), -8f, 0f, 180f, 40f);
+
+            var own = UiKit.Card(_content, "OwnId", new Color(0.12f, 0.2f, 0.24f, 1f), 14);
+            UiKit.Size(own, -1f, 92f, 1f);
+            UiKit.Place(UiKit.Label(own.transform, "OwnTitle", "User ID của bạn", "Your User ID", "あなたのユーザーID", 13f, UiTheme.Muted, FontStyles.Bold), 18f, 13f, 500f, 22f);
+            UiKit.Place(UiKit.Label(own.transform, "OwnValue", auth.UserId, 15f, UiTheme.Text), 18f, 40f, 620f, 30f);
+            var copy = UiKit.Button(own.transform, "Copy", "Sao chép ID", "Copy ID", "IDをコピー", () =>
+            {
+                GUIUtility.systemCopyBuffer = auth.UserId;
+                SetStatus(Loc.T("Đã sao chép User ID.", "User ID copied.", "ユーザーIDをコピーしました。"), UiTheme.Good);
+            }, UiKit.Kind.Secondary, "checklist", 14f);
+            UiKit.Pin((RectTransform)copy.transform, new Vector2(1f, 0.5f), -14f, 0f, 165f, 42f);
+        }
+
+        private TMP_InputField CreateInput(Transform parent)
+        {
+            var root = UiKit.Rect(parent, "Input");
+            root.anchorMin = Vector2.zero; root.anchorMax = Vector2.one;
+            root.offsetMin = new Vector2(14f, 7f); root.offsetMax = new Vector2(-202f, -7f);
+            var input = root.gameObject.AddComponent<TMP_InputField>();
+            input.lineType = TMP_InputField.LineType.SingleLine; input.characterLimit = 64;
+            var text = UiKit.Label(root, "Text", "", 15f, UiTheme.Text);
+            UiKit.Fill(text.rectTransform, 8f, 0f, 8f, 0f);
+            var placeholder = UiKit.Label(root, "Placeholder", "User ID…", 15f, UiTheme.Muted);
+            UiKit.Fill(placeholder.rectTransform, 8f, 0f, 8f, 0f);
+            input.textViewport = root; input.textComponent = text; input.placeholder = placeholder;
+            return input;
+        }
+
+        private Button ActionButton(Transform parent, string name, string vi, string en, string ja, string icon, UiKit.Kind kind, Action action)
+        {
+            var button = UiKit.Button(parent, name, vi, en, ja, action, kind, icon, 13f, 10);
+            UiKit.Size(button, 128f, 44f);
+            return button;
+        }
+
+        private void OpenDirect(string id, string name)
+        {
+            SocialChatWindow.Ensure();
+            FindFirstObjectByType<SocialHub>()?.OpenDirect(id, name);
+            Hide();
+            SocialChatWindow.Open(SocialChatWindow.Tab.Direct, SocialHub.DirectId(id));
+        }
+
+        private void VisitIsland(FriendEntry friend, string name, Transform row)
+        {
+            SetRowError(row, Loc.T("Đang tìm đảo…", "Finding island…", "島を探しています…"), UiTheme.Muted);
+            IslandVisit.Visit(friend.friendUserId, name, error =>
+            {
+                if (string.IsNullOrEmpty(error)) Hide(); else SetRowError(row, error, UiTheme.Bad);
+            });
+        }
+
+        private void RemoveFriend(FriendEntry friend)
+        {
+            if (_confirmRemoveId != friend.id)
+            {
+                _confirmRemoveId = friend.id;
                 RefreshContent();
+                return;
+            }
+            _confirmRemoveId = null;
+            _service.RemoveFriend(friend.id, success =>
+            {
+                if (success) RefreshContent(); else SetStatus(Loc.T("Không thể xoá bạn lúc này.", "Could not remove this friend.", "フレンドを削除できませんでした。"), UiTheme.Bad);
             });
         }
 
-        // ──────────────────────── Helpers ────────────────────────
-
-        private static void Center(RectTransform r, Vector2 s)
+        private void SendFriendRequest()
         {
-            r.anchorMin = r.anchorMax = r.pivot = new Vector2(0.5f, 0.5f);
-            r.anchoredPosition = Vector2.zero;
-            r.sizeDelta = s;
+            string id = _friendIdInput != null ? _friendIdInput.text.Trim() : "";
+            if (string.IsNullOrEmpty(id))
+            {
+                SetStatus(Loc.T("Hãy nhập User ID.", "Enter a User ID.", "ユーザーIDを入力してください。"), UiTheme.Warn);
+                return;
+            }
+            _service.SendFriendRequest(id, success =>
+            {
+                if (success)
+                {
+                    _friendIdInput.text = "";
+                    SetStatus(Loc.T("Đã gửi lời mời kết bạn.", "Friend request sent.", "フレンド申請を送りました。"), UiTheme.Good);
+                }
+                else SetStatus(Loc.T("Không thể gửi lời mời. Kiểm tra ID và kết nối mạng.", "Could not send the request. Check the ID and connection.", "申請を送れませんでした。IDと接続を確認してください。"), UiTheme.Bad);
+            });
         }
 
-        private TextMeshProUGUI MakeText(GameObject p, string n, Vector2 pos, Vector2 size, float fs)
+        private void BuildSignedOutState()
         {
-            var go = new GameObject(n);
-            go.transform.SetParent(p.transform, false);
-            var r = go.AddComponent<RectTransform>();
-            r.anchorMin = r.anchorMax = r.pivot = new Vector2(0.5f, 0.5f);
-            r.anchoredPosition = pos;
-            r.sizeDelta = size;
-            var t = go.AddComponent<TextMeshProUGUI>();
-            if (_font != null) t.font = _font;
-            t.fontSize = fs;
-            t.alignment = TextAlignmentOptions.Center;
-            t.color = Color.white;
-            t.enableAutoSizing = true;
-            t.fontSizeMin = fs * 0.6f;
-            t.fontSizeMax = fs;
-            return t;
+            SetStatus(Loc.T("Cần đăng nhập để sử dụng danh sách bạn bè.", "Sign in to use the friends list.", "フレンドリストを使うにはログインが必要です。"), UiTheme.Warn);
+            EmptyState("account_circle", Loc.T("Đăng nhập để gặp bạn bè", "Sign in to meet friends", "ログインしてフレンドと会おう"),
+                Loc.T("Sau khi đăng nhập, bạn có thể nhắn tin, nhận lời mời và thăm đảo của bạn bè.", "After signing in, you can chat, receive requests, and visit friends' islands.", "ログインすると、メッセージ、申請、フレンドの島への訪問ができます。"),
+                Loc.T("Đăng nhập", "Sign in", "ログイン"), () => { Hide(); GetComponent<AuthUI>()?.Show(); });
         }
 
-        private Button MakeButton(GameObject p, string n, Vector2 pos, Vector2 size, string label)
+        private void BuildUnavailableState()
         {
-            var go = new GameObject(n);
-            go.transform.SetParent(p.transform, false);
-            var r = go.AddComponent<RectTransform>();
-            r.anchorMin = r.anchorMax = r.pivot = new Vector2(0.5f, 0.5f);
-            r.anchoredPosition = pos;
-            r.sizeDelta = size;
-            go.AddComponent<Image>().color = new Color(0.12f, 0.15f, 0.18f, 1f);
-            var btn = go.AddComponent<Button>();
-            go.AddComponent<UIHoverScale>();
-            var txt = MakeText(go, "Lbl", Vector2.zero, new Vector2(size.x - 8f, size.y - 6f), 15f);
-            txt.text = label;
-            txt.fontStyle = FontStyles.Bold;
-            return btn;
+            SetStatus(Loc.T("Dịch vụ bạn bè chưa sẵn sàng.", "Friends service is unavailable.", "フレンドサービスを利用できません。"), UiTheme.Bad);
+            EmptyState("cloud", Loc.T("Không thể kết nối", "Unable to connect", "接続できません"), Loc.T("Kiểm tra kết nối mạng rồi mở lại cửa sổ này.", "Check your connection and reopen this window.", "接続を確認して、この画面を開き直してください。"));
         }
 
-        private static string Text(string vi, string en, string ja)
+        private void EmptyState(string iconName, string title, string detail, string action = null, Action onAction = null)
         {
-            return GameServices.TryGet(out GameSettingsService s) ? s.Text(vi, en, ja) : vi;
+            var card = UiKit.Card(_content, "Empty", UiTheme.Sunken, 16);
+            UiKit.Size(card, -1f, action == null ? 210f : 260f, 1f);
+            var icon = UiKit.Icon(card.transform, iconName, UiTheme.Gold, 48f);
+            UiKit.Pin(icon.rectTransform, new Vector2(0.5f, 1f), 0f, -30f, 48f, 48f);
+            UiKit.Place(UiKit.Label(card.transform, "Heading", title, 20f, UiTheme.Text, FontStyles.Bold, TextAlignmentOptions.Center), 24f, 92f, 840f, 30f);
+            UiKit.Place(UiKit.Label(card.transform, "Detail", detail, 14f, UiTheme.TextSoft, FontStyles.Normal, TextAlignmentOptions.Top, true), 70f, 128f, 750f, 62f);
+            if (action != null)
+            {
+                var button = UiKit.Button(card.transform, "Action", action, onAction, UiKit.Kind.Primary, "arrow_forward", 15f);
+                UiKit.Pin((RectTransform)button.transform, new Vector2(0.5f, 0f), 0f, 22f, 190f, 42f);
+            }
+        }
+
+        private void SetRowError(Transform row, string message, Color color)
+        {
+            if (row == null) return;
+            var label = row.Find("RowStatus")?.GetComponent<TextMeshProUGUI>() ?? UiKit.Label(row, "RowStatus", "", 12f, color, wrap: true);
+            label.color = color; label.text = message ?? "";
+            UiKit.Pin(label.rectTransform, new Vector2(0f, 0f), 82f, 5f, 430f, 18f);
+        }
+
+        private void SetStatus(string text, Color color)
+        {
+            if (_status == null) return;
+            _status.text = text ?? ""; _status.color = color;
+        }
+
+        private void UpdateResponsiveLayout(bool force)
+        {
+            if (_card == null || (!force && _screenWidth == Screen.width && _screenHeight == Screen.height)) return;
+            _screenWidth = Screen.width; _screenHeight = Screen.height;
+            var parent = _card.parent as RectTransform;
+            Vector2 area = parent != null ? parent.rect.size : new Vector2(1920f, 1080f);
+            _card.sizeDelta = new Vector2(Mathf.Min(1040f, Mathf.Max(760f, area.x - 48f)), Mathf.Min(680f, Mathf.Max(520f, area.y - 36f)));
+        }
+
+        private static bool IsOnline(string userId)
+        {
+            var world = FindFirstObjectByType<SupabaseOnlineWorldService>();
+            return world != null && !string.IsNullOrEmpty(userId) && world.IsOnline(userId);
         }
 
         private static string ShortId(string id)
         {
-            if (string.IsNullOrWhiteSpace(id)) return "Player";
-            return id.Length <= 8 ? id : id.Substring(0, 8);
+            if (string.IsNullOrWhiteSpace(id)) return Loc.T("Người chơi", "Player", "プレイヤー");
+            return id.Length <= 12 ? id : id.Substring(0, 8) + "…";
         }
     }
 }

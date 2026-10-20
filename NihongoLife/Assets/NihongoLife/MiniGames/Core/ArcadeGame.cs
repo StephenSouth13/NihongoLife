@@ -84,11 +84,34 @@ namespace NihongoLife.MiniGames
             return card.rectTransform;
         }
 
+        /// <summary>The game's title card (Resources/MiniGames/Logos/&lt;GameId&gt;.png, ArcadeArt / TASK-N), or null.</summary>
+        protected Sprite Logo
+        {
+            get
+            {
+                var tex = Resources.Load<Texture2D>("MiniGames/Logos/" + GameId);
+                return tex != null ? Sprite.Create(tex, new Rect(0, 0, tex.width, tex.height), new Vector2(0.5f, 0.5f), 100f) : null;
+            }
+        }
+
         private RectTransform StartHeader(RectTransform card, float width)
         {
-            UiKit.Place(UiKit.Label(card, "Kicker", "ゲームセンター ひばり", 16f, Accent, FontStyles.Bold, TextAlignmentOptions.Center), 0f, 26f, width, 24f);
-            UiKit.Place(UiKit.Label(card, "Title", () => Definition.titleJa + (Loc.IsJapanese ? "" : $"  <size=55%><color={UiTheme.Hex(UiTheme.TextSoft)}>{Definition.Title}</color></size>"),
-                44f, UiTheme.Text, FontStyles.Bold, TextAlignmentOptions.Center), 0f, 56f, width, 60f);
+            var logo = Logo;
+            if (logo != null)
+            {
+                // The title card sits on the window's top edge and replaces the kicker and title lines.
+                var image = UiKit.Image(card, "Logo", Color.white, logo);
+                image.preserveAspect = true;
+                UiKit.Pin(image.rectTransform, new Vector2(0.5f, 1f), 0f, 96f, 400f, 200f);
+                if (!Loc.IsJapanese)
+                    UiKit.Place(UiKit.Label(card, "Title", () => Definition.Title, 15f, UiTheme.TextSoft, FontStyles.Bold, TextAlignmentOptions.Center), 0f, 100f, width, 20f);
+            }
+            else
+            {
+                UiKit.Place(UiKit.Label(card, "Kicker", "ゲームセンター ひばり", 16f, Accent, FontStyles.Bold, TextAlignmentOptions.Center), 0f, 26f, width, 24f);
+                UiKit.Place(UiKit.Label(card, "Title", () => Definition.titleJa + (Loc.IsJapanese ? "" : $"  <size=55%><color={UiTheme.Hex(UiTheme.TextSoft)}>{Definition.Title}</color></size>"),
+                    44f, UiTheme.Text, FontStyles.Bold, TextAlignmentOptions.Center), 0f, 56f, width, 60f);
+            }
             UiKit.Place(UiKit.Label(card, "Desc", () => Definition.Description, 18f, UiTheme.TextSoft, FontStyles.Normal, TextAlignmentOptions.Center, true), 40f, 122f, width - 80f, 52f);
             var how = UiKit.Card(card, "HowTo", UiTheme.Surface, 14, 0f, false);
             UiKit.Place(how.rectTransform, 40f, 182f, width - 80f, 58f);

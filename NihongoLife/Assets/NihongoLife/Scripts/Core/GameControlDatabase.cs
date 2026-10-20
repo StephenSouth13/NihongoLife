@@ -28,6 +28,8 @@ namespace NihongoLife.Core
     {
         [Header("Game Flow")]
         public string activeScenarioId = "scenario.street.first_talk";
+        [Tooltip("Last quest of the guided opening; free play (jobs, farm, daily tasks, story in any order) opens after it.")]
+        public string prologueEndScenarioId = "scenario.konbini.buy_onigiri";
         public GameLanguage defaultLanguage = GameLanguage.Vietnamese;
 
         [Header("Menu")]

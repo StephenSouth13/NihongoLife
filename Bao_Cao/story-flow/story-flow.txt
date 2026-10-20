@@ -1,0 +1,9 @@
+opening: scenario.intro.arrival → scenario.street.first_talk → scenario.house1.greeting → scenario.school.self_intro → scenario.konbini.buy_onigiri
+scenario.intro.arrival done → result button: next
+scenario.street.first_talk done → result button: next
+scenario.house1.greeting done → result button: next
+scenario.school.self_intro done → result button: next
+scenario.konbini.buy_onigiri done → result button: explore
+knowledge after the opening: 83; next scenario.house2.lostcat blocker: none
+HUD: ◆ CỐT TRUYỆN · Chương 3 · 近所とレストラン | Giúp cô Suzuki tìm mèo  ·  Nhà Suzuki | Sẵn sàng · N mở sổ nhiệm vụ để bắt đầu
+journal shows scenario.town.summer_festival: Xong "Mua vé và đi tàu ở ga Hibari" trước.

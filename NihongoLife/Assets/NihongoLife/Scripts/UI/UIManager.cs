@@ -39,20 +39,46 @@ namespace NihongoLife.UI
 
             ConfigureInitialUIState();
 
-            // Connect Scenario events
-            if (ScenarioManager.Instance != null)
+            EnsureScenarioSubscription();
+        }
+
+        // This manager lives across scenes (DontDestroyOnLoad, usually created before the town exists), while each town
+        // load brings its own ScenarioManager and panels — so follow the current ones instead of binding once at Start.
+        private ScenarioManager _subscribed;
+
+        private void Update() => EnsureScenarioSubscription();
+
+        private void EnsureScenarioSubscription()
+        {
+            if (_subscribed == ScenarioManager.Instance) return;
+            if (_subscribed != null)
             {
-                ScenarioManager.Instance.OnScenarioStarted += HandleScenarioStarted;
-                ScenarioManager.Instance.OnScenarioFinished += HandleScenarioFinished;
+                _subscribed.OnScenarioStarted -= HandleScenarioStarted;
+                _subscribed.OnScenarioFinished -= HandleScenarioFinished;
             }
+            _subscribed = ScenarioManager.Instance;
+            if (_subscribed != null)
+            {
+                _subscribed.OnScenarioStarted += HandleScenarioStarted;
+                _subscribed.OnScenarioFinished += HandleScenarioFinished;
+            }
+        }
+
+        /// <summary>Panels destroyed with an old scene are found again in the loaded ones (inactive included).</summary>
+        private void ResolvePanels()
+        {
+            if (resultPanel == null) resultPanel = FindFirstObjectByType<ResultUI>(FindObjectsInactive.Include);
+            if (hudPanel == null) hudPanel = FindFirstObjectByType<HUDUI>(FindObjectsInactive.Include);
+            if (statusPanel == null) statusPanel = FindFirstObjectByType<StatusUI>(FindObjectsInactive.Include);
+            if (inventoryPanel == null) inventoryPanel = FindFirstObjectByType<InventoryUI>(FindObjectsInactive.Include);
         }
 
         private void OnDestroy()
         {
-            if (ScenarioManager.Instance != null)
+            if (_subscribed != null)
             {
-                ScenarioManager.Instance.OnScenarioStarted -= HandleScenarioStarted;
-                ScenarioManager.Instance.OnScenarioFinished -= HandleScenarioFinished;
+                _subscribed.OnScenarioStarted -= HandleScenarioStarted;
+                _subscribed.OnScenarioFinished -= HandleScenarioFinished;
             }
         }
 
@@ -89,6 +115,7 @@ namespace NihongoLife.UI
 
         public void ShowHUDOnly()
         {
+            ResolvePanels();
             if (mainMenuPanel != null) mainMenuPanel.gameObject.SetActive(false);
             if (hudPanel != null) hudPanel.gameObject.SetActive(true);
             if (resultPanel != null) resultPanel.gameObject.SetActive(false);
@@ -98,6 +125,7 @@ namespace NihongoLife.UI
 
         public void ShowResultScreen(ScoreBreakdownDto breakdown)
         {
+            ResolvePanels();
             if (mainMenuPanel != null) mainMenuPanel.gameObject.SetActive(false);
             if (hudPanel != null) hudPanel.gameObject.SetActive(false);
             if (statusPanel != null) statusPanel.gameObject.SetActive(false);
@@ -136,6 +164,7 @@ namespace NihongoLife.UI
 
         private void HandleScenarioFinished(ScoreBreakdownDto breakdown)
         {
+            NihongoLife.Dialogue.DialogueManager.Instance?.CloseFinishedStory();
             ShowResultScreen(breakdown);
         }
     }

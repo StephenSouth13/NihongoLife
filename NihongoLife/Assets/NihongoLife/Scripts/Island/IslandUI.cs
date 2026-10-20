@@ -307,6 +307,14 @@ namespace NihongoLife.Island
 
         // ─────────── Toolbar ───────────
 
+        public static void HideToolbar()
+        {
+            if (_instance == null) return;
+            _instance.Discard(_instance._toolbar);
+            _instance._toolbar = null;
+            IslandState.Changed -= _instance.RefreshToolbar;
+        }
+
         public static void ShowToolbar()
         {
             var ui = Instance;
@@ -360,6 +368,8 @@ namespace NihongoLife.Island
             NLUi.Size(book, 186f, 46f);
             var shop = IconBtn(_toolbar, "Shop", "storefront", Loc.T("Cửa hàng · P", "Store · P", "お店 · P"), OpenShop, Gold, new Color(0.18f, 0.11f, 0.02f), 46f, 15f);
             NLUi.Size(shop, 158f, 46f);
+            var decorate = IconBtn(_toolbar, "Decorate", "yard", Loc.T("Trang trí", "Decorate", "かざる"), () => IslandDecorRuntime.Instance?.BeginEdit(), Green, Color.white, 46f, 15f);
+            NLUi.Size(decorate, 150f, 46f);
         }
 
         public static void ToggleLanguage()
@@ -575,6 +585,8 @@ namespace NihongoLife.Island
             if (crop != null) return itemId == crop.SeedItemId ? Loc.F("hạt {0}", "{0} seeds", "{0}の種", IslandLanguage.Name(crop.word)) : IslandLanguage.Name(crop.word);
             var fish = c.Fish(itemId);
             if (fish != null) return IslandLanguage.Name(fish.word);
+            var decor = c.Decor(itemId);
+            if (decor != null) return IslandLanguage.Name(decor.word);
             var product = c.products?.FirstOrDefault(p => p.itemId == itemId);
             return product != null ? IslandLanguage.Name(product.word) : itemId;
         }
@@ -800,6 +812,14 @@ namespace NihongoLife.Island
                     foreach (var p in c.products.Where(p => p.category == "technology"))
                         list.Add(new ShopEntry { ItemId = p.itemId, Word = p.word, Price = p.price, Info = p.Note });
                     break;
+                case "decor":
+                    foreach (var d in c.decor ?? Array.Empty<IslandDecorDef>())
+                        list.Add(new ShopEntry { ItemId = d.ItemId, Word = d.word, Price = d.price,
+                            Info = Loc.F("Đồ trang trí · vào kho trang trí (không chiếm balo) · đang có {0}, đã đặt {1}. Bấm \"Trang trí\" trên thanh công cụ để đặt.",
+                                "Decoration · goes to your decor stock (not the bag) · {0} in stock, {1} placed. Press \"Decorate\" on the toolbar to place it.",
+                                "かざり · かざりの倉庫へ（かばんは使わない）· 在庫{0}、設置{1}。ツールバーの「かざる」で置けます。",
+                                IslandDecor.Stock(d.id), IslandDecor.Placed.Count(p => p.id == d.id)) });
+                    break;
                 case "sell":
                     foreach (var crop in c.crops.Where(cr => IslandEconomy.Owned(cr.ProduceItemId) > 0))
                         list.Add(new ShopEntry { ItemId = crop.ProduceItemId, Word = crop.word, Price = crop.sellPrice, Sell = true,
@@ -823,7 +843,9 @@ namespace NihongoLife.Island
             var entry = Entries(ui._shopTab).FirstOrDefault(e => e.ItemId == ui._shopSelected);
             if (entry == null) return IslandEconomy.Result.Unknown;
             var verbs = IslandCatalog.Load().verbs;
-            var result = entry.Sell ? IslandEconomy.Sell(entry.ItemId, entry.Price, ui._shopQty) : IslandEconomy.Buy(entry.ItemId, entry.Price, ui._shopQty);
+            var result = entry.Sell ? IslandEconomy.Sell(entry.ItemId, entry.Price, ui._shopQty)
+                : ui._shopTab == "decor" ? IslandDecor.Buy(entry.ItemId, ui._shopQty)
+                : IslandEconomy.Buy(entry.ItemId, entry.Price, ui._shopQty);
             string name = IslandLanguage.Name(entry.Word);
             string message = result switch
             {
@@ -848,6 +870,7 @@ namespace NihongoLife.Island
         {
             ("agriculture", "agriculture", "Nông nghiệp", "Farming", "農業"),
             ("fashion", "checkroom", "Thời trang", "Fashion", "ファッション"),
+            ("decor", "yard", "Trang trí", "Decor", "かざり"),
             ("technology", "devices", "Công nghệ", "Technology", "テクノロジー"),
             ("sell", "sell", "Bán", "Sell", "売る"),
             ("prices", "price_check", "Bảng giá & lãi", "Prices & profit", "価格と利益"),
@@ -1115,6 +1138,8 @@ namespace NihongoLife.Island
         {
             var crop = IslandCatalog.Load().crops.FirstOrDefault(c => c.SeedItemId == itemId || c.ProduceItemId == itemId);
             if (crop != null) return "crop:" + crop.id;
+            var decor = IslandCatalog.Load().Decor(itemId);
+            if (decor != null) return "decor:" + decor.id;
             return IslandCatalog.Load().Fish(itemId) != null ? "fish:" + itemId : "item:" + itemId;
         }
 
@@ -1127,6 +1152,7 @@ namespace NihongoLife.Island
             switch (kind)
             {
                 case "crop": return c.Crop(id)?.word;
+                case "decor": return c.Decor(id)?.word;
                 case "animal": return c.Animal(id)?.word;
                 case "fish": return c.Fish(id)?.word;
                 case "item":

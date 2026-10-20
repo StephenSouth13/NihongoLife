@@ -161,7 +161,7 @@ namespace NihongoLife.Island
         public string GetpromptEn() => Loc.F("Ô ruộng {0} — {1}", "Field {0} — {1}", "はたけ{0} — {1}", number, PhaseLabel(CurrentPhase));
         public Transform GetTransform() => transform;
         public float InteractionPriority => 0.4f;
-        public void Interact(GameObject player) => IslandUI.OpenFarm(this);
+        public void Interact(GameObject player) { if (!IslandVisit.ReadOnlyNotice()) IslandUI.OpenFarm(this); }
 
         public static string PhaseLabel(Phase phase) => phase switch
         {

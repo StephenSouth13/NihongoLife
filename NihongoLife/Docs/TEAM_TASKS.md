@@ -1174,3 +1174,83 @@ Mục tiêu: thay hình tạm (icon, sprite đồ ăn có sẵn) bằng art th�
 - `ArcadeGamesPlayModeTests` và `GameCenterPlayModeTests` đạt.
 - Ảnh trong `Bao_Cao/arcade/*.jpg` cho thấy hình mới ở UFO Catcher và Order Rush.
 - Ghi tên file đã thêm vào TEAM_TASKS.
+
+## Cập nhật (2026-10-20 tối, Claude) — Trang trí đảo Midori, thăm đảo bạn bè
+
+**Trang trí đảo.**
+- Catalog: `Resources/Island/island_catalog.json` → mảng `decor` (24 món).
+  - Gồm cây, cây dừa, hoa, bụi, chậu, đá, khúc gỗ, ghế, đèn đường, lửa trại, biển chỉ đường, thùng, rương, hàng rào, lều, giếng.
+  - Mỗi món là một từ vựng (`word` ja/reading/en/vi), học được khi mua (`decor:<id>`).
+- Dữ liệu: `IslandData.cs` có `IslandDecorDef`, `DecorPlacement` (x, z theo tâm đảo, yaw), `DecorStock`.
+  - `IslandRecord.decor` / `decorStock` / `likes` lưu chung save đảo.
+- Logic: `Scripts/Island/IslandDecor.cs` — `Buy` (trừ ví chung, vào kho trang trí, không chiếm balo), `Place`, `Move`, `Store`; tối đa 80 món.
+- Builder: `Scripts/Editor/IslandDecorBuilder.cs` (`-executeMethod NihongoLife.EditorTools.IslandBuilder.BuildDecor`), chỉ bổ sung, không dựng lại scene.
+  - Tạo prefab `Generated/Island/Decor/Decor_<id>.prefab`: vật liệu URP, gốc ở mặt đất.
+    - Collider thân cây cho cây cao; collider khối cho đồ cứng.
+    - Trigger cho hoa/đá phẳng (đi xuyên được).
+  - Render icon `Resources/Items/decor_<id>.png`.
+  - Đăng ký `decor:<id>` vào `IslandModelLibrary` (thêm `Put`).
+  - Gắn `IslandDecorRuntime` vào nhóm `Decor` trong `60_MidoriIsland`.
+  - `IslandBuilder.Build` đầy đủ cũng gọi phần này.
+- Cửa hàng Midori có tab **Trang trí**. Thanh công cụ đảo có nút **Trang trí**.
+- Chế độ trang trí (`Scripts/Island/IslandDecorRuntime.cs`):
+  - Camera riêng nhìn từ trên: WASD/mũi tên để di chuyển, lăn chuột để phóng to.
+  - Thanh kho ở dưới. Bóng mờ (ghost) đi theo chuột, vòng xanh = đặt được, vòng đỏ = vướng. Q/E xoay 45°.
+  - Bấm vào món đã đặt để di chuyển; Delete hoặc nút "Cất vào kho" để cất lại.
+  - Không cho đặt trên đường, quảng trường, ruộng, nhà, món khác, vùng tương tác, mép bãi biển.
+
+**Thăm đảo** (`Scripts/Island/IslandVisit.cs`):
+- `IslandShowcaseService` đăng bố cục đảo lên Supabase bảng `island_showcases`.
+  - Đăng khi đảo thay đổi (≤ 1 lần/20 s), khi bấm "Xong" và khi rời đảo.
+  - Chỉ chạy khi đã đăng nhập.
+- `IslandVisit.Visit(userId, displayName)`: tải showcase rồi vào đảo của bạn, chỉ xem.
+  - Ruộng, cửa hàng, thú, cầu câu và trang trí đều từ chối với thông báo; không lưu gì.
+  - Thanh trên cùng: "Đảo của X", số đồ, số lần thu hoạch, số từ, ❤ (một lần, `rpc/like_island`), nút "Về".
+- Đang ở đảo mình thì đổi đảo tại chỗ, không có màn tải. Từ cảnh khác thì chuyển cảnh sang đảo, "Về" trả lại cảnh cũ.
+- Cửa tàu trên đảo bạn = về, vé miễn phí.
+- **Migration** `supabase/migrations/20261020_island_showcases.sql` (người dùng cần áp vào project Supabase):
+  - Tạo `island_showcases`, `island_likes` (RLS).
+  - Hàm `like_island(target)` (security definer).
+  - Trigger khiến chủ đảo không tự sửa số tim.
+- Test `IslandDecorPlayModeTests.Island_DecorateAndVisit` (đạt), ảnh `Bao_Cao/island-decor/`:
+  - Mua 2 cây và 5 món, tiền trừ đúng, học từ.
+  - Bị chặn ở quảng trường, đường chính, mép đảo, chồng lên món khác.
+  - Đặt, xoay, di chuyển, cất.
+  - Va chạm thật: giếng chặn người, luống hoa đi xuyên.
+  - Lưu qua JSON và respawn; showcase.
+  - Thăm đảo "Hana" (3 món), mọi thứ bị khoá, thả tim, về lại đảo mình.
+
+## TASK-O (Codex) — Giao diện danh sách bạn bè + mô hình trang trí kiểu Nhật
+
+**Kiểm tra trước:** đọc `Scripts/UI/FriendsUI.cs` (hiện chỉ in danh sách bằng `StringBuilder`, dòng 116–160), `Scripts/Core/FriendService.cs` (`Friends`, `PendingRequests`, `FriendEntry.friendUserId/friendDisplayName`), `Scripts/Island/IslandVisit.cs`. Không sửa `IslandVisit`, `IslandDecorRuntime`, `IslandDecor` (Claude giữ) — cần API mới thì ghi vào đây.
+
+1. **Thiết kế lại `FriendsUI`** (mở từ `MainMenuUI`, dòng 93) bằng `UiKit` / `UiTheme` như các cửa sổ mới (`ExamPlayUI`, `IslandUI`). Mọi chữ qua `Loc.T` (vi/en/ja), không lẫn ngôn ngữ.
+   - Ba tab: **Bạn bè** · **Lời mời** · **Thêm bạn**.
+   - Mỗi dòng bạn có:
+     - avatar chữ cái (`UiKit.Avatar`), tên, chấm online (chưa có service presence trong `Scripts/Core` — bỏ qua, chỉ chừa chỗ);
+     - nút **Nhắn tin** (mở `SocialChatWindow` kênh Direct nếu có API);
+     - nút **Thăm đảo** gọi `NihongoLife.Island.IslandVisit.Visit(f.friendUserId, name, error => …)`. Lỗi thì hiện chữ đỏ trong dòng; thành công thì đóng cửa sổ.
+     - nút **Xoá bạn** (xác nhận 2 bước).
+   - Lời mời: Chấp nhận / Từ chối (`AcceptFriendRequest`, `RemoveFriend`).
+   - Thêm bạn: ô nhập User ID + nút Sao chép ID của mình.
+   - Không có mạng hoặc chưa đăng nhập: thẻ trống, lời giải thích và nút Đăng nhập. Không để màn hình trống.
+   - Bố cục đúng ở 1920×1080, 1366×768, 1024×600.
+2. **(Tuỳ chọn)** Trong `PlayerProfileUI`, nếu xem hồ sơ người khác thì thêm nút **Thăm đảo**.
+3. **Mô hình trang trí kiểu Nhật** (low-poly, cùng phong cách đảo):
+   - Danh sách: torii nhỏ, đèn đá 石灯籠, cây anh đào 桜, khóm tre 竹, ao cá koi 池, hòm thư ポスト, ghế gỗ kiểu Nhật 縁台, đèn lồng 提灯.
+   - Đặt model (FBX/OBJ, không dùng glTF vì dự án không có importer) ở `Assets/ThirdParty/<pack>/`.
+   - Thêm mục vào mảng `decor` của `Resources/Island/island_catalog.json`, đúng mẫu các mục có sẵn: `id`, `category`, `source`, `price`, `height`, `footprint`, `solid`, `word{ja,reading,en,vi}`, `icon` là tên Material Symbol có trong `Resources/UI/Icons`.
+   - Chạy `-executeMethod NihongoLife.EditorTools.IslandBuilder.BuildDecor` để tạo prefab và icon. Không sửa scene bằng tay, không `[MenuItem]`.
+
+**Nghiệm thu:**
+- Chạy `IslandDecorPlayModeTests` và `IslandPlayModeTests`; cả hai phải đạt.
+- Chụp FriendsUI ở 3 ngôn ngữ × 3 độ phân giải, lưu vào `Bao_Cao/friends-ui/`.
+- Món kiểu Nhật xuất hiện ở tab Trang trí và đặt được trên đảo.
+- Ghi tên file đã thêm vào TEAM_TASKS.
+
+**Hoàn thành (2026-10-20, Codex):**
+- Viết lại `Assets/NihongoLife/Scripts/UI/FriendsUI.cs`: 3 tab responsive, avatar + chỗ trạng thái, nhắn tin riêng, thăm đảo có lỗi theo dòng, xoá xác nhận hai bước, chấp nhận/từ chối lời mời, thêm bạn + sao chép ID, và trạng thái đăng nhập/mất dịch vụ; toàn bộ vi/en/ja qua `Loc`.
+- Thêm `Assets/NihongoLife/Tests/PlayMode/FriendsUiPlayModeTests.cs`; ảnh nghiệm thu nằm trong `Bao_Cao/friends-ui/` (`friends_{vi,en,ja}_{1920x1080,1366x768,1024x600}.png`).
+- Thêm 8 mục `jp_*` vào `Assets/NihongoLife/Resources/Island/island_catalog.json`: torii, đèn đá, sakura, tre, ao koi, hòm thư, ghế endai và đèn chōchin. Tái sử dụng FBX low-poly của `Assets/ThirdParty/Sushi Restaurant Kit - May 2023-20260920T035054Z-1-001/` (không thêm glTF).
+- Đã chạy `IslandBuilder.BuildDecor`: tạo `Assets/NihongoLife/Generated/Island/Decor/Decor_jp_*.prefab`, `Assets/NihongoLife/Resources/Items/decor_jp_*.png` và đăng ký vào `IslandModelLibrary` trong `60_MidoriIsland.unity`.
+- Kiểm chứng: `FriendsUiPlayModeTests` 1/1 đạt; `IslandDecorPlayModeTests` 1/1 đạt; `IslandPlayModeTests` 2/2 đạt khi chạy có graphics. Lượt `-nographics` của `IslandPlayModeTests` không dùng làm kết quả vì `HudPortrait` không thể tạo RenderTexture.

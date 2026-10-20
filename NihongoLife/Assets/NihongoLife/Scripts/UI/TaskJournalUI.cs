@@ -88,6 +88,8 @@ namespace NihongoLife.UI
         }
 
         public static void Select(string questId) { if (IsOpen) { _instance._selectedKey = "q:" + questId; _instance.Rebuild(); } }
+        /// <summary>Shows a story quest (story filter), e.g. the next chapter step.</summary>
+        public static void SelectStory(string scenarioId) { if (IsOpen) { _instance._selectedKey = "s:" + scenarioId; _instance._filter = "story"; _instance.Rebuild(); } }
 
         private void Build(RectTransform canvas)
         {
@@ -170,10 +172,15 @@ namespace NihongoLife.UI
                 entries.Add(new Entry { Quest = quest, Section = section });
             }
             var current = ScenarioManager.Instance != null ? ScenarioManager.Instance.CurrentScenario : null;
+            if (current != null && StoryDirector.IsDone(current.id)) current = null; // finished: listed under completed
             if (current != null) entries.Add(new Entry { Story = current, Section = "active" });
             if (GameServices.TryGet(out ScenarioCampaignManager campaign))
                 foreach (var scenario in campaign.GetAvailableBranches())
                     if (scenario != null && scenario != current) entries.Add(new Entry { Story = scenario, Section = "available" });
+            // Next story steps that only wait for knowledge: shown with what is missing, so the goal is visible.
+            foreach (var scenario in StoryDirector.Remaining())
+                if (scenario != current && entries.All(e => e.Story != scenario) && (scenario.requiredScenarioIds ?? new List<string>()).All(StoryDirector.IsDone))
+                    entries.Add(new Entry { Story = scenario, Section = "available" });
             var progress = GameServices.TryGet(out IProgressRepository repository) ? repository.GetProgress() : null;
             if (progress?.completedScenarios != null && GameServices.TryGet(out IScenarioRepository scenarios))
                 foreach (var scenario in scenarios.GetAllScenarios())
@@ -379,7 +386,13 @@ namespace NihongoLife.UI
                 }
             }
             if (s.rewardYen > 0) NLUi.Pill(_detail, "RewardYen", Loc.Yen(s.rewardYen), _font, NLUi.Gold, NLUi.Ink, 16f);
-            if (entry.Section == "available")
+            string blocker = entry.Section == "available" ? StoryDirector.Blocker(s) : null;
+            if (blocker != null)
+            {
+                NLUi.Label(_detail, "StoryBlocker", blocker, 16f, NLUi.Gold, _font, FontStyles.Bold).textWrappingMode = TextWrappingModes.Normal;
+                NLUi.Label(_detail, "StoryBlockerHint", Loc.T("Học ở trường, bàn học, khu thi cử, làm thêm hay chơi Game Center đều cho điểm kiến thức.", "School, your desk, the exam hall, jobs and the Game Center all give knowledge.", "学校・机・試験・アルバイト・ゲームセンターで知識ポイントがたまります。"), 15f, NLUi.Soft, _font).textWrappingMode = TextWrappingModes.Normal;
+            }
+            else if (entry.Section == "available")
             {
                 var start = NLUi.Button(_detail, "StartStory", Loc.T("Bắt đầu", "Start", "始める"), _font, () =>
                 {

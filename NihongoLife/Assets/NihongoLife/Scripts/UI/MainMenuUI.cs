@@ -441,7 +441,9 @@ namespace NihongoLife.UI
         private void BeginGameWithSelectedCharacter()
         {
             menuMusic?.FadeOut(1f);
-            ScenarioSceneInitializer.QueueLaunch(targetScenarioId);
+            // The town decides what to play (StoryDirector): the interrupted quest, the next prologue step, or free play.
+            var story = StoryDirector.AutoStart();
+            if (story != null) ScenarioSceneInitializer.QueueLaunch(story.id);
             if (GameServices.TryGet(out SceneFlowController sceneFlow)) sceneFlow.LoadScene(targetGameplayScene);
             else UnityEngine.SceneManagement.SceneManager.LoadScene(targetGameplayScene);
         }

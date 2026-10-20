@@ -406,5 +406,479 @@
       "en": "fishing pier",
       "vi": "bến câu cá"
     }
-  }
+  },
+  "decor": [
+    {
+      "id": "tree",
+      "category": "plant",
+      "source": "Assets/みどり島 – Midori Island (Đảo Xanh)/Survival Kit-zip/Tree/tree.obj",
+      "price": 300,
+      "height": 4.2,
+      "footprint": 1.6,
+      "solid": true,
+      "word": {
+        "ja": "き",
+        "reading": "ki",
+        "en": "tree",
+        "vi": "cây"
+      },
+      "icon": "forest"
+    },
+    {
+      "id": "tree_large",
+      "category": "plant",
+      "source": "Assets/みどり島 – Midori Island (Đảo Xanh)/Survival Kit-zip/Tree Large/treeLarge.obj",
+      "price": 600,
+      "height": 6.0,
+      "footprint": 2.2,
+      "solid": true,
+      "word": {
+        "ja": "たいぼく",
+        "reading": "taiboku",
+        "en": "big tree",
+        "vi": "cây đại thụ"
+      },
+      "icon": "forest"
+    },
+    {
+      "id": "tree_small",
+      "category": "plant",
+      "source": "Assets/ThirdParty/Kenney/kenney_city-kit-suburban_20/Models/FBX format/tree-small.fbx",
+      "price": 200,
+      "height": 2.6,
+      "footprint": 1.2,
+      "solid": true,
+      "word": {
+        "ja": "わかぎ",
+        "reading": "wakagi",
+        "en": "young tree",
+        "vi": "cây non"
+      },
+      "icon": "nature_people"
+    },
+    {
+      "id": "tree_round",
+      "category": "plant",
+      "source": "Assets/ThirdParty/Kenney/kenney_city-kit-suburban_20/Models/FBX format/tree-large.fbx",
+      "price": 450,
+      "height": 4.0,
+      "footprint": 1.8,
+      "solid": true,
+      "word": {
+        "ja": "まるい き",
+        "reading": "marui ki",
+        "en": "round tree",
+        "vi": "cây tán tròn"
+      },
+      "icon": "forest"
+    },
+    {
+      "id": "palm",
+      "category": "plant",
+      "source": "Assets/みどり島 – Midori Island (Đảo Xanh)/Ultimate Crops Pack/FBX/PalmTree_4.fbx",
+      "price": 450,
+      "height": 4.6,
+      "footprint": 1.6,
+      "solid": true,
+      "word": {
+        "ja": "やしの き",
+        "reading": "yashi no ki",
+        "en": "palm tree",
+        "vi": "cây dừa"
+      },
+      "icon": "yard"
+    },
+    {
+      "id": "flower",
+      "category": "plant",
+      "source": "Assets/みどり島 – Midori Island (Đảo Xanh)/Ultimate Crops Pack/FBX/Flower_1.fbx",
+      "price": 60,
+      "height": 0.6,
+      "footprint": 0.6,
+      "solid": false,
+      "word": {
+        "ja": "はな",
+        "reading": "hana",
+        "en": "flower",
+        "vi": "bông hoa"
+      },
+      "icon": "local_florist"
+    },
+    {
+      "id": "flower_bed",
+      "category": "plant",
+      "source": "Assets/みどり島 – Midori Island (Đảo Xanh)/Ultimate Crops Pack/FBX/Flower_3.fbx",
+      "price": 90,
+      "height": 0.7,
+      "footprint": 0.8,
+      "solid": false,
+      "word": {
+        "ja": "かだん",
+        "reading": "kadan",
+        "en": "flower bed",
+        "vi": "luống hoa"
+      },
+      "icon": "local_florist"
+    },
+    {
+      "id": "bouquet",
+      "category": "plant",
+      "source": "Assets/みどり島 – Midori Island (Đảo Xanh)/Ultimate Crops Pack/FBX/Flowers_Harvested.fbx",
+      "price": 120,
+      "height": 0.6,
+      "footprint": 0.6,
+      "solid": false,
+      "word": {
+        "ja": "はなたば",
+        "reading": "hanataba",
+        "en": "bouquet",
+        "vi": "bó hoa"
+      },
+      "icon": "local_florist"
+    },
+    {
+      "id": "berry_bush",
+      "category": "plant",
+      "source": "Assets/みどり島 – Midori Island (Đảo Xanh)/Ultimate Crops Pack/FBX/BushBerries_4.fbx",
+      "price": 150,
+      "height": 1.1,
+      "footprint": 1.0,
+      "solid": true,
+      "word": {
+        "ja": "ベリーの しげみ",
+        "reading": "berii no shigemi",
+        "en": "berry bush",
+        "vi": "bụi dâu"
+      },
+      "icon": "spa"
+    },
+    {
+      "id": "bush",
+      "category": "plant",
+      "source": "Assets/ThirdParty/KayKit-City-Builder-Bits-1.0-main/KayKit-City-Builder-Bits-1.0-main/addons/kaykit_city_builder_bits/Assets/obj/bush.obj",
+      "price": 120,
+      "height": 1.0,
+      "footprint": 1.0,
+      "solid": true,
+      "word": {
+        "ja": "しげみ",
+        "reading": "shigemi",
+        "en": "bush",
+        "vi": "bụi cây"
+      },
+      "icon": "spa"
+    },
+    {
+      "id": "potted_plant",
+      "category": "plant",
+      "source": "Assets/ThirdParty/Kenney/kenney_furniture-kit/Models/FBX format/pottedPlant.fbx",
+      "price": 180,
+      "height": 1.0,
+      "footprint": 0.6,
+      "solid": true,
+      "word": {
+        "ja": "はちうえ",
+        "reading": "hachiue",
+        "en": "potted plant",
+        "vi": "chậu cây"
+      },
+      "icon": "potted_plant"
+    },
+    {
+      "id": "planter",
+      "category": "plant",
+      "source": "Assets/ThirdParty/Kenney/kenney_city-kit-suburban_20/Models/FBX format/planter.fbx",
+      "price": 160,
+      "height": 0.8,
+      "footprint": 1.0,
+      "solid": true,
+      "word": {
+        "ja": "プランター",
+        "reading": "purantaa",
+        "en": "planter",
+        "vi": "bồn hoa"
+      },
+      "icon": "potted_plant"
+    },
+    {
+      "id": "rock",
+      "category": "nature",
+      "source": "Assets/みどり島 – Midori Island (Đảo Xanh)/Survival Kit-zip/Rock/rockA.obj",
+      "price": 120,
+      "height": 0.9,
+      "footprint": 1.0,
+      "solid": true,
+      "word": {
+        "ja": "いし",
+        "reading": "ishi",
+        "en": "stone",
+        "vi": "hòn đá"
+      },
+      "icon": "landscape"
+    },
+    {
+      "id": "rock_flat",
+      "category": "nature",
+      "source": "Assets/みどり島 – Midori Island (Đảo Xanh)/Survival Kit-zip/Rock Flat Grass/rockFlatGrass.obj",
+      "price": 100,
+      "height": 0.4,
+      "footprint": 1.2,
+      "solid": false,
+      "word": {
+        "ja": "ひらいし",
+        "reading": "hiraishi",
+        "en": "flat stone",
+        "vi": "đá phẳng"
+      },
+      "icon": "landscape"
+    },
+    {
+      "id": "log",
+      "category": "nature",
+      "source": "Assets/みどり島 – Midori Island (Đảo Xanh)/Survival Kit-zip/Tree Fall/treeFall.obj",
+      "price": 250,
+      "height": 0.7,
+      "footprint": 1.6,
+      "solid": true,
+      "word": {
+        "ja": "まるた",
+        "reading": "maruta",
+        "en": "log",
+        "vi": "khúc gỗ"
+      },
+      "icon": "forest"
+    },
+    {
+      "id": "bench",
+      "category": "furniture",
+      "source": "Assets/ThirdParty/KayKit-City-Builder-Bits-1.0-main/KayKit-City-Builder-Bits-1.0-main/addons/kaykit_city_builder_bits/Assets/obj/bench.obj",
+      "price": 350,
+      "height": 1.0,
+      "footprint": 1.4,
+      "solid": true,
+      "word": {
+        "ja": "ベンチ",
+        "reading": "benchi",
+        "en": "bench",
+        "vi": "ghế băng"
+      },
+      "icon": "chair"
+    },
+    {
+      "id": "streetlight",
+      "category": "light",
+      "source": "Assets/ThirdParty/KayKit-City-Builder-Bits-1.0-main/KayKit-City-Builder-Bits-1.0-main/addons/kaykit_city_builder_bits/Assets/obj/streetlight.obj",
+      "price": 500,
+      "height": 3.4,
+      "footprint": 0.6,
+      "solid": true,
+      "word": {
+        "ja": "がいとう",
+        "reading": "gaitou",
+        "en": "street lamp",
+        "vi": "đèn đường"
+      },
+      "icon": "lightbulb"
+    },
+    {
+      "id": "campfire",
+      "category": "light",
+      "source": "Assets/みどり島 – Midori Island (Đảo Xanh)/Survival Kit-zip/Campfire/campfire.obj",
+      "price": 300,
+      "height": 0.6,
+      "footprint": 1.0,
+      "solid": true,
+      "word": {
+        "ja": "たきび",
+        "reading": "takibi",
+        "en": "campfire",
+        "vi": "lửa trại"
+      },
+      "icon": "local_fire_department"
+    },
+    {
+      "id": "signpost",
+      "category": "furniture",
+      "source": "Assets/みどり島 – Midori Island (Đảo Xanh)/Survival Kit-zip/Signpost/signpost.obj",
+      "price": 200,
+      "height": 1.8,
+      "footprint": 0.6,
+      "solid": true,
+      "word": {
+        "ja": "かんばん",
+        "reading": "kanban",
+        "en": "signpost",
+        "vi": "biển chỉ đường"
+      },
+      "icon": "signpost"
+    },
+    {
+      "id": "barrel",
+      "category": "furniture",
+      "source": "Assets/みどり島 – Midori Island (Đảo Xanh)/Survival Kit-zip/Barrel/barrel.obj",
+      "price": 120,
+      "height": 1.0,
+      "footprint": 0.7,
+      "solid": true,
+      "word": {
+        "ja": "たる",
+        "reading": "taru",
+        "en": "barrel",
+        "vi": "thùng gỗ"
+      },
+      "icon": "inventory_2"
+    },
+    {
+      "id": "chest",
+      "category": "furniture",
+      "source": "Assets/みどり島 – Midori Island (Đảo Xanh)/Survival Kit-zip/Chest/chest.obj",
+      "price": 400,
+      "height": 0.8,
+      "footprint": 0.9,
+      "solid": true,
+      "word": {
+        "ja": "たからばこ",
+        "reading": "takarabako",
+        "en": "treasure chest",
+        "vi": "rương báu"
+      },
+      "icon": "redeem"
+    },
+    {
+      "id": "fence",
+      "category": "structure",
+      "source": "Assets/みどり島 – Midori Island (Đảo Xanh)/Survival Kit-zip/Fence Frame/fence.obj",
+      "price": 60,
+      "height": 1.0,
+      "footprint": 1.4,
+      "solid": true,
+      "word": {
+        "ja": "さく",
+        "reading": "saku",
+        "en": "fence",
+        "vi": "hàng rào"
+      },
+      "icon": "fence"
+    },
+    {
+      "id": "tent",
+      "category": "structure",
+      "source": "Assets/みどり島 – Midori Island (Đảo Xanh)/Survival Kit-zip/Tent/tentClosed.obj",
+      "price": 700,
+      "height": 2.2,
+      "footprint": 2.6,
+      "solid": true,
+      "word": {
+        "ja": "テント",
+        "reading": "tento",
+        "en": "tent",
+        "vi": "lều"
+      },
+      "icon": "camping"
+    },
+    {
+      "id": "well",
+      "category": "structure",
+      "source": "Assets/みどり島 – Midori Island (Đảo Xanh)/Farm Building/FBX/Well.fbx",
+      "price": 900,
+      "height": 2.6,
+      "footprint": 2.0,
+      "solid": true,
+      "word": {
+        "ja": "いど",
+        "reading": "ido",
+        "en": "well",
+        "vi": "giếng"
+      },
+      "icon": "water_drop"
+    },
+    {
+      "id": "jp_torii",
+      "category": "structure",
+      "source": "Assets/ThirdParty/Sushi Restaurant Kit - May 2023-20260920T035054Z-1-001/Sushi Restaurant Kit - May 2023/Environment/FBX/Environment_ToriiGate.fbx",
+      "price": 1800,
+      "height": 3.8,
+      "footprint": 3.4,
+      "solid": true,
+      "word": { "ja": "とりい", "reading": "torii", "en": "small torii gate", "vi": "cổng torii nhỏ" },
+      "icon": "cottage"
+    },
+    {
+      "id": "jp_stone_lantern",
+      "category": "light",
+      "source": "Assets/ThirdParty/Sushi Restaurant Kit - May 2023-20260920T035054Z-1-001/Sushi Restaurant Kit - May 2023/Decoration/FBX/Decoration_Light.fbx",
+      "price": 750,
+      "height": 1.45,
+      "footprint": 0.8,
+      "solid": true,
+      "word": { "ja": "いしどうろう", "reading": "ishidōrō", "en": "stone lantern", "vi": "đèn đá" },
+      "icon": "lightbulb"
+    },
+    {
+      "id": "jp_sakura",
+      "category": "plant",
+      "source": "Assets/ThirdParty/Sushi Restaurant Kit - May 2023-20260920T035054Z-1-001/Sushi Restaurant Kit - May 2023/Decoration/FBX/Decoration_SakuraTree.fbx",
+      "price": 1200,
+      "height": 4.8,
+      "footprint": 2.2,
+      "solid": true,
+      "word": { "ja": "さくら", "reading": "sakura", "en": "cherry blossom tree", "vi": "cây anh đào" },
+      "icon": "local_florist"
+    },
+    {
+      "id": "jp_bamboo",
+      "category": "plant",
+      "source": "Assets/ThirdParty/Sushi Restaurant Kit - May 2023-20260920T035054Z-1-001/Sushi Restaurant Kit - May 2023/Decoration/FBX/Decoration_Bamboo.fbx",
+      "price": 520,
+      "height": 3.2,
+      "footprint": 1.3,
+      "solid": true,
+      "word": { "ja": "たけ", "reading": "take", "en": "bamboo grove", "vi": "khóm tre" },
+      "icon": "forest"
+    },
+    {
+      "id": "jp_koi_pond",
+      "category": "nature",
+      "source": "Assets/ThirdParty/Sushi Restaurant Kit - May 2023-20260920T035054Z-1-001/Sushi Restaurant Kit - May 2023/Decoration/FBX/Decoration_Fish.fbx",
+      "price": 1400,
+      "height": 0.45,
+      "footprint": 2.6,
+      "solid": false,
+      "word": { "ja": "こいの いけ", "reading": "koi no ike", "en": "koi pond", "vi": "ao cá koi" },
+      "icon": "water"
+    },
+    {
+      "id": "jp_mailbox",
+      "category": "furniture",
+      "source": "Assets/ThirdParty/Sushi Restaurant Kit - May 2023-20260920T035054Z-1-001/Sushi Restaurant Kit - May 2023/Decoration/FBX/Decoration_Sign_3.fbx",
+      "price": 480,
+      "height": 1.25,
+      "footprint": 0.65,
+      "solid": true,
+      "word": { "ja": "ポスト", "reading": "posuto", "en": "mailbox", "vi": "hòm thư" },
+      "icon": "mark_chat_unread"
+    },
+    {
+      "id": "jp_engawa_bench",
+      "category": "furniture",
+      "source": "Assets/ThirdParty/Sushi Restaurant Kit - May 2023-20260920T035054Z-1-001/Sushi Restaurant Kit - May 2023/Environment/FBX/Environment_Bench.fbx",
+      "price": 650,
+      "height": 0.72,
+      "footprint": 1.8,
+      "solid": true,
+      "word": { "ja": "えんだい", "reading": "endai", "en": "Japanese wooden bench", "vi": "ghế gỗ kiểu Nhật" },
+      "icon": "chair"
+    },
+    {
+      "id": "jp_chochin",
+      "category": "light",
+      "source": "Assets/ThirdParty/Sushi Restaurant Kit - May 2023-20260920T035054Z-1-001/Sushi Restaurant Kit - May 2023/Decoration/FBX/Decoration_WallLight.fbx",
+      "price": 420,
+      "height": 1.1,
+      "footprint": 0.55,
+      "solid": false,
+      "word": { "ja": "ちょうちん", "reading": "chōchin", "en": "paper lantern", "vi": "đèn lồng giấy" },
+      "icon": "light_mode"
+    }
+  ]
 }

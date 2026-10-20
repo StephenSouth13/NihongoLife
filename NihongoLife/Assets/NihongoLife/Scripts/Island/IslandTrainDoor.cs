@@ -17,6 +17,7 @@ namespace NihongoLife.Island
         public Transform GetTransform() => transform;
         public void Interact(GameObject player)
         {
+            if (IslandVisit.Active) { IslandVisit.End(); return; } // visitors go back where they came from
             string error = IslandTrainService.Depart(this);
             if (error != null) IslandUI.Toast(error, true);
         }

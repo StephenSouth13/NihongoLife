@@ -49,6 +49,14 @@ namespace NihongoLife.Island
         {
             // Wait for the scene transition fade to finish so the banner is not hidden behind it.
             yield return new WaitForSecondsRealtime(0.6f);
+            if (IslandVisit.Active)
+            {
+                // A friend's island: no starter kit, no toolbar — the visit bar (IslandDecorRuntime) takes over.
+                IslandUI.Toast(NihongoLife.Core.Loc.F("Bạn đang thăm đảo của {0} — chỉ xem, không dùng ruộng hay cửa hàng. Thả tim nếu bạn thích!", "You are visiting {0}'s island — look around; the fields and store are theirs. Leave a heart if you like it!",
+                    "{0}さんの島に来ています — 見るだけです。気に入ったらハートを！", IslandVisit.Current.display_name));
+                IslandAchievements.Unlocked += OnAchievement;
+                yield break;
+            }
             var record = IslandState.Record;
             bool firstVisit = !record.welcomed;
             if (IslandEconomy.GiveStarterKit())
@@ -68,7 +76,7 @@ namespace NihongoLife.Island
         private void Update()
         {
             var input = GameInputService.Instance;
-            if (input != null && input.WasPressed(GameInputId.Shop) && !UiModalStack.IsTyping)
+            if (input != null && input.WasPressed(GameInputId.Shop) && !UiModalStack.IsTyping && !IslandVisit.Active)
             {
                 if (IslandUI.ShopOpen) IslandUI.CloseShop();
                 else if (!UiModalStack.AnyOpen) IslandUI.OpenShop();

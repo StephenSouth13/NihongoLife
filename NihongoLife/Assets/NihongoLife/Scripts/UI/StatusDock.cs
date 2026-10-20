@@ -325,6 +325,11 @@ namespace NihongoLife.UI
                     int done = scenario.Objectives.Count(o => o.state == ObjectiveState.Completed);
                     info = ("◆ " + NihongoLife.Core.Loc.T("CỐT TRUYỆN", "STORY", "ストーリー"), title, NihongoLife.Core.Loc.F("{0}/{1} mục · N mở sổ nhiệm vụ", "{0}/{1} steps · N opens the task journal", "{0}/{1} · Nでタスク帳", done, scenario.Objectives.Count));
                 }
+                // No quest running: point at the next story step (or what it still needs).
+                else if (scenario == null || scenario.CurrentScenario == null || StoryDirector.IsDone(scenario.CurrentScenario.id))
+                {
+                    try { info = StoryDirector.Hud(); } catch (Exception e) { Debug.LogException(e); }
+                }
             }
             _objective.gameObject.SetActive(info != null);
             if (info == null) return;

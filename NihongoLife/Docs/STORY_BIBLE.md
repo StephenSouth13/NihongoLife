@@ -185,3 +185,38 @@ Lựa chọn của người chơi được lưu bằng cờ (`DialogueChoice.set
 `intro.arrival` (31 node), `street.first_talk` (28), `house1.greeting` (41), `school.self_intro` (22), `house2.lostcat` (27), `house3.garbage` (27), `restaurant.sushi_dining` (74), `restaurant.order_ramen` (36), `station.buy_ticket` (32), `town.summer_festival` (55, hub 4 cuộc trò chuyện + bài phát biểu + kết thúc theo lựa chọn). Ramen và ga được viết dạng hội thoại thuần (không cần khu vực trong scene), nên **cả campaign chạy được từ mở màn đến lễ hội** mà không chờ dựng scene.
 
 **Cập nhật 2026-09-22 — toàn bộ 14 quest giờ đã viết sâu.** `konbini.buy_onigiri` viết lại thành 28 node (giữ nguyên cơ chế `GoToArea`/`InspectItem`/`CollectItem` và id `node_transaction_done` mà `ScenarioManager.cs` kiểm tra trực tiếp). Ba quest từng dựng bằng code (`cat_followup`, `recycling_morning`, `evening_shift`) đã chuyển thành asset thật, có callback bằng cờ vào quest trước: `cat_followup` đọc `cat.promised`/`cat.shrine_hint`; `recycling_morning` đọc `sato.appointment`; `evening_shift` là quest nghề đầu tiên (câu hỏi kính ngữ ございます với khách). `BuiltInStoryScenarioCatalog.CreateAll()` nay để trống (asset luôn được ưu tiên nạp trước), giữ lại các hàm `Create*` riêng để tham khảo.
+
+## 13. Cốt truyện mở đầu + chơi tự do (cập nhật 2026-10-20)
+
+Code: `Scripts/Scenario/StoryDirector.cs`. Điểm kết thúc phần mở đầu: `GameControlDatabase.prologueEndScenarioId` (mặc định `scenario.konbini.buy_onigiri`).
+
+**Phần mở đầu (dẫn dắt).** Gồm 5 quest: `intro.arrival` → `street.first_talk` → `house1.greeting` → `school.self_intro` → `konbini.buy_onigiri`.
+- Ván mới, hoặc vào lại thị trấn khi chưa xong mở đầu: quest tiếp theo tự chạy.
+- Màn kết quả có nút "Nhiệm vụ tiếp theo".
+- Làm thêm, nông trại, nhiệm vụ hằng ngày bị khoá, kèm lời nhắc theo dõi CỐT TRUYỆN.
+
+**Chơi tự do (sau quest konbini).**
+- Thẻ "Hibari giờ là nhà của bạn" hiện một lần (`FreePlayCardUI`), đặt cờ `story.free_play`.
+- Chương 3 mở song song: mèo của Suzuki, luật đổ rác, ramen, sushi, ca tối konbini…
+- Người chơi tự chọn thứ tự, bắt đầu từ Sổ nhiệm vụ (N). Không quest nào tự chạy nữa, trừ quest đang làm dở.
+- HUD góc trên trái luôn chỉ bước truyện tiếp theo, hoặc số điểm kiến thức còn thiếu.
+- Màn kết quả có nút "Tiếp tục khám phá" để về thị trấn, không đẩy về menu.
+
+**Thang điểm kiến thức** (đã cân lại để cốt truyện và chơi tự do cùng thang):
+
+| Nguồn | Điểm |
+|---|---|
+| Một quest truyện | khoảng 12–20 (`ScenarioManager.CalculateKnowledgeReward`) |
+| Toàn bộ phần mở đầu | khoảng 60–80 |
+| Một buổi học | 8 |
+| Một ca làm thêm | 6 |
+| Nhiệm vụ học tập | 12 |
+
+| Mốc mở khoá | Điểm cần |
+|---|---|
+| Ga | 40 — mở ngay sau phần mở đầu |
+| Quest chương 3 | 40–60 |
+| Quest ga Hibari | 80 |
+| Lễ hội | 150 |
+| Game Center | 160 |
+| Đảo Midori | 250 — cần chơi tự do |

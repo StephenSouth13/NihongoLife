@@ -22,6 +22,7 @@ namespace NihongoLife.Tests
         {
             // Most tests walk through every place; LocationUnlocksPlayModeTests switches the gate back on.
             NihongoLife.Core.LocationUnlocks.Bypass = true;
+            NihongoLife.Scenario.StoryDirector.Bypass = true; // StoryFlowPlayModeTests switches the story back on
             _ledger = PlayerPrefs.GetString("NL.WalletLedger.v1", "");
             // Tests read Vietnamese text; the player's own interface language is put back afterwards.
             _language = PlayerPrefs.GetInt(NihongoLife.Core.Loc.PrefsKey, 0);
@@ -34,6 +35,7 @@ namespace NihongoLife.Tests
         public void RestoreSave()
         {
             NihongoLife.Core.LocationUnlocks.Bypass = false;
+            NihongoLife.Scenario.StoryDirector.Bypass = false;
             NihongoLife.Core.Loc.Set((NihongoLife.Core.GameLanguage)Mathf.Clamp(_language, 0, 2));
             PlayerPrefs.SetString("NL.WalletLedger.v1", _ledger ?? ""); // tests' purchases do not stay in the player's wallet history
             if (_hadSave && File.Exists(BackupPath)) File.Copy(BackupPath, SavePath, true);

@@ -15,6 +15,6 @@ namespace NihongoLife.Island
         public string GetPromptJa() => IslandLanguage.Target == TargetLanguage.English ? "Midori Store" : "みどりしょうてん";
         public string GetpromptEn() => Loc.T("Mở cửa hàng Midori (P)", "Open the Midori Store (P)", "みどりしょうてんを開く（P）");
         public Transform GetTransform() => transform;
-        public void Interact(GameObject player) => IslandUI.OpenShop();
+        public void Interact(GameObject player) { if (!IslandVisit.ReadOnlyNotice()) IslandUI.OpenShop(); }
     }
 }
