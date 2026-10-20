@@ -48,6 +48,7 @@ namespace NihongoLife.Tests
             var record = IslandState.Record;
             record.decor.Clear(); record.decorStock.Clear();
             runtime.Respawn();
+            int walletBefore = PlayerInventory.Instance.Yen;
             PlayerInventory.Instance.AddYen(20000, Loc.Triple("Kiểm thử", "Test", "テスト"));
 
             // ── Shop: Decor tab ──
@@ -215,8 +216,9 @@ namespace NihongoLife.Tests
             Assert.IsNull(GameObject.Find("VisitBar"));
             Capture("14_back_home");
 
-            // Leave the save as it was.
+            // Leave the save as it was (layout and wallet: later tests count on the real balance).
             IslandState.Record.decor.Clear(); IslandState.Record.decorStock.Clear(); IslandState.Save();
+            RestoreWallet(walletBefore);
             WriteLog();
         }
 
@@ -236,6 +238,7 @@ namespace NihongoLife.Tests
             var record = IslandState.Record;
             record.decor.Clear(); record.decorStock.Clear();
             runtime.Respawn();
+            int walletBefore = PlayerInventory.Instance.Yen;
             PlayerInventory.Instance.AddYen(50000, Loc.Triple("Kiểm thử", "Test", "テスト"));
             var japanese = IslandCatalog.Load().decor.Where(d => d.id.StartsWith("jp_")).ToList();
             Assert.GreaterOrEqual(japanese.Count, 8, "The Japanese set is in the catalog.");
@@ -267,7 +270,17 @@ namespace NihongoLife.Tests
                 CaptureWorld("jp_" + def.id.Substring(3), piece.transform, Mathf.Clamp(def.height * 2.2f, 3.5f, 11f));
             }
             IslandState.Record.decor.Clear(); IslandState.Record.decorStock.Clear(); IslandState.Save();
+            RestoreWallet(walletBefore);
             WriteLog();
+        }
+
+        private static void RestoreWallet(int yen)
+        {
+            var bag = PlayerInventory.Instance;
+            if (bag == null) return;
+            int diff = bag.Yen - yen;
+            if (diff > 0) bag.SpendYen(diff, Loc.Triple("Kiểm thử", "Test", "テスト"));
+            else if (diff < 0) bag.AddYen(-diff, Loc.Triple("Kiểm thử", "Test", "テスト"));
         }
 
         /// <summary>Free island-local spots for the selected piece, spread out over the island.</summary>

@@ -1297,6 +1297,10 @@ Test `StoryFlowPlayModeTests` (ảnh trong `Bao_Cao/story-flow/`) đi qua:
   - Lỗi đã sửa: test gọi `GameServices.Clear()` và để ngôn ngữ ở tiếng Nhật, làm hỏng dây chuyền khoảng 20 test sau nó. Nay test trả lại đúng dịch vụ (thêm `GameServices.Unregister`) và đặt lại tiếng Việt.
   - Đã thêm kiểm tra tab Lời mời / Thêm bạn, thông tin đảo, và lỗi Thăm đảo hiện ngay trong dòng.
 - Đồ trang trí kiểu Nhật (Codex): 8 món `jp_*` dùng model của Sushi Restaurant Kit. Test `IslandDecorPlayModeTests.Island_JapaneseDecor` mua, đặt, kiểm chiều cao và chạm đất, rồi chụp cận cảnh `Bao_Cao/island-decor/jp_*.png`.
+  - Claude sửa sau khi xem ảnh:
+    - "ao cá koi" vốn là tấm gỗ hình con cá, nay dựng thành ao thật (`composite:koi_pond` trong `IslandDecorBuilder.KoiPond`: mặt nước URP, 16 viên đá, 2 cá koi);
+    - "đèn đá" thực ra là đèn khung gỗ, nên đổi từ vựng thành とうろう (đèn lồng vườn);
+    - cây có tán rộng (anh đào) không còn bị thu nhỏ theo bề ngang.
 
 **TASK-N** (`Scripts/Editor/ArcadeArtBuilder.cs`, chạy `-executeMethod NihongoLife.EditorTools.ArcadeArtBuilder.Build`; `Preview` render một model ở 8 góc vào `_work/art-preview`):
 - 14 món ăn → `Resources/MiniGames/Food`.

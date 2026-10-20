@@ -811,7 +811,7 @@
       "height": 1.45,
       "footprint": 0.8,
       "solid": true,
-      "word": { "ja": "いしどうろう", "reading": "ishidōrō", "en": "stone lantern", "vi": "đèn đá" },
+      "word": { "ja": "とうろう", "reading": "tōrō", "en": "garden lantern", "vi": "đèn lồng vườn" },
       "icon": "lightbulb"
     },
     {
@@ -839,9 +839,9 @@
     {
       "id": "jp_koi_pond",
       "category": "nature",
-      "source": "Assets/ThirdParty/Sushi Restaurant Kit - May 2023-20260920T035054Z-1-001/Sushi Restaurant Kit - May 2023/Decoration/FBX/Decoration_Fish.fbx",
+      "source": "composite:koi_pond",
       "price": 1400,
-      "height": 0.45,
+      "height": 0.32,
       "footprint": 2.6,
       "solid": false,
       "word": { "ja": "こいの いけ", "reading": "koi no ike", "en": "koi pond", "vi": "ao cá koi" },

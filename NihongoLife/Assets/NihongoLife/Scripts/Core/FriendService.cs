@@ -206,6 +206,7 @@ namespace NihongoLife.Core
         /// <summary>Tests: fill the lists without a server.</summary>
         public void SetForTests(IEnumerable<FriendEntry> friends, IEnumerable<FriendEntry> requests)
         {
+            _client = null; // offline: refreshes keep these lists instead of asking the server
             _friends.Clear(); _pendingRequests.Clear();
             if (friends != null) _friends.AddRange(friends);
             if (requests != null) _pendingRequests.AddRange(requests);

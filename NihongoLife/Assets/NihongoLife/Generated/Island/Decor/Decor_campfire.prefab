@@ -144,7 +144,7 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 0.9173662, y: 0.6, z: 0.57437956}
   m_Center: {x: 0, y: 0.3, z: 0}
---- !u!1 &2123583441197611532
+--- !u!1 &3667687015085089966
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -152,9 +152,9 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 3655467613221927551}
-  - component: {fileID: 6985216333387039606}
-  - component: {fileID: 1348608731014672917}
+  - component: {fileID: 5721112797695987908}
+  - component: {fileID: 1807675191147016282}
+  - component: {fileID: 2401916616619539697}
   m_Layer: 0
   m_Name: campfire
   m_TagString: Untagged
@@ -162,13 +162,13 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &3655467613221927551
+--- !u!4 &5721112797695987908
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2123583441197611532}
+  m_GameObject: {fileID: 3667687015085089966}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: -0, y: 0, z: 0}
@@ -177,21 +177,21 @@ Transform:
   m_Children: []
   m_Father: {fileID: 3767305016647941814}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!33 &6985216333387039606
+--- !u!33 &1807675191147016282
 MeshFilter:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2123583441197611532}
+  m_GameObject: {fileID: 3667687015085089966}
   m_Mesh: {fileID: -8596161025015594471, guid: 9dd937797af615645bfa35e5d93162a0, type: 3}
---- !u!23 &1348608731014672917
+--- !u!23 &2401916616619539697
 MeshRenderer:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2123583441197611532}
+  m_GameObject: {fileID: 3667687015085089966}
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
@@ -354,7 +354,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 9073148335432216595}
-  - {fileID: 3655467613221927551}
+  - {fileID: 5721112797695987908}
   - {fileID: 954188327325631077}
   - {fileID: 5177646701237128169}
   m_Father: {fileID: 4882345217451890165}

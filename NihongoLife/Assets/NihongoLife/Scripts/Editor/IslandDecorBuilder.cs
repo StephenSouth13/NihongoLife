@@ -76,8 +76,80 @@ namespace NihongoLife.EditorTools
             return entries;
         }
 
+        /// <summary>
+        /// No pond model in the packs, so it is put together: a round pool of water (URP Lit, glossy teal) sunk a little
+        /// into the grass, a ring of rocks around it and two koi on the surface. Walk-through (trigger) like flowers.
+        /// </summary>
+        private static GameObject KoiPond(IslandDecorDef def)
+        {
+            var root = new GameObject("Decor_" + def.id);
+            float r = def.footprint * 0.5f;
+
+            var water = GameObject.CreatePrimitive(PrimitiveType.Cylinder);
+            water.name = "Water";
+            Object.DestroyImmediate(water.GetComponent<Collider>());
+            water.transform.SetParent(root.transform, false);
+            water.transform.localScale = new Vector3(r * 1.7f, 0.03f, r * 1.7f);
+            water.transform.localPosition = new Vector3(0f, 0.05f, 0f);
+            string matPath = GenDir + "/Materials/KoiPondWater.mat";
+            var mat = AssetDatabase.LoadAssetAtPath<Material>(matPath);
+            if (mat == null) { mat = new Material(Shader.Find("Universal Render Pipeline/Lit")); AssetDatabase.CreateAsset(mat, matPath); }
+            mat.SetColor("_BaseColor", new Color(0.18f, 0.52f, 0.62f, 1f));
+            mat.SetFloat("_Smoothness", 0.92f);
+            mat.SetFloat("_Metallic", 0.05f);
+            EditorUtility.SetDirty(mat);
+            water.GetComponent<Renderer>().sharedMaterial = mat;
+
+            var rock = AssetDatabase.LoadAssetAtPath<GameObject>(Survival + "Rock/rockA.obj") ?? throw new InvalidOperationException("Missing rockA.obj");
+            for (int i = 0; i < 16; i++)
+            {
+                float a = i / 16f * Mathf.PI * 2f;
+                var stone = (GameObject)PrefabUtility.InstantiatePrefab(rock);
+                PrefabUtility.UnpackPrefabInstance(stone, PrefabUnpackMode.Completely, InteractionMode.AutomatedAction);
+                stone.name = "Stone" + i;
+                stone.transform.SetParent(root.transform, false);
+                foreach (var c in stone.GetComponentsInChildren<Collider>(true)) Object.DestroyImmediate(c);
+                Bounds sb = BoundsOf(stone);
+                float s = (0.22f + 0.1f * Mathf.Abs(Mathf.Sin(i * 2.3f))) / Mathf.Max(0.01f, sb.size.y);
+                stone.transform.localScale *= s;
+                stone.transform.localRotation = Quaternion.Euler(0f, i * 47f, 0f);
+                stone.transform.localPosition = new Vector3(Mathf.Cos(a) * r * 0.92f, 0f, Mathf.Sin(a) * r * 0.95f);
+                sb = BoundsOf(stone);
+                stone.transform.position += Vector3.up * (-sb.min.y - 0.05f);
+            }
+
+            var koi = AssetDatabase.LoadAssetAtPath<GameObject>(FishPack + "Koi.fbx") ?? throw new InvalidOperationException("Missing Koi.fbx");
+            for (int i = 0; i < 2; i++)
+            {
+                var fish = (GameObject)PrefabUtility.InstantiatePrefab(koi);
+                PrefabUtility.UnpackPrefabInstance(fish, PrefabUnpackMode.Completely, InteractionMode.AutomatedAction);
+                fish.name = "Koi" + i;
+                fish.transform.SetParent(root.transform, false);
+                foreach (var c in fish.GetComponentsInChildren<Collider>(true)) Object.DestroyImmediate(c);
+                foreach (var an in fish.GetComponentsInChildren<Animator>(true)) Object.DestroyImmediate(an);
+                Bounds fb = BoundsOf(fish);
+                fish.transform.localScale *= Mathf.Min(0.62f / Mathf.Max(0.01f, Mathf.Max(fb.size.x, fb.size.z)), 0.2f / Mathf.Max(0.01f, fb.size.y)); // long and flat on the water
+                fish.transform.localRotation = Quaternion.Euler(0f, i == 0 ? 35f : 215f, 0f);
+                fish.transform.localPosition = new Vector3(i == 0 ? -0.3f : 0.35f, 0f, i == 0 ? 0.2f : -0.25f);
+                fb = BoundsOf(fish);
+                fish.transform.position += Vector3.up * (0.02f - fb.min.y); // floating on the surface
+            }
+
+            ConvertMaterials(root);
+            foreach (var rd in root.GetComponentsInChildren<Renderer>(true)) { rd.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.On; rd.receiveShadows = true; }
+            water.GetComponent<Renderer>().shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.Off;
+            var pick = root.AddComponent<BoxCollider>();
+            pick.isTrigger = true;
+            pick.center = new Vector3(0f, 0.25f, 0f);
+            pick.size = new Vector3(def.footprint, 0.5f, def.footprint);
+            var prefab = PrefabUtility.SaveAsPrefabAsset(root, $"{GenDir}/Decor/Decor_{def.id}.prefab");
+            Object.DestroyImmediate(root);
+            return prefab;
+        }
+
         private static GameObject DecorPrefab(IslandDecorDef def)
         {
+            if (def.source == "composite:koi_pond") return KoiPond(def);
             var source = AssetDatabase.LoadAssetAtPath<GameObject>(def.source) ?? throw new InvalidOperationException("Missing decor model " + def.source);
             var root = new GameObject("Decor_" + def.id);
             var model = (GameObject)PrefabUtility.InstantiatePrefab(source);
@@ -89,8 +161,10 @@ namespace NihongoLife.EditorTools
             Bounds b = BoundsOf(model);
             float scale = def.height / Mathf.Max(0.001f, b.size.y);
             // Very wide models (fence, log, flat rock) keep to about their footprint.
+            // (Trees keep their height: their canopy is meant to spread past the trunk's footprint.)
             float wide = Mathf.Max(b.size.x, b.size.z) * scale;
-            if (wide > def.footprint * 1.8f) scale *= def.footprint * 1.8f / wide;
+            bool tree = def.category == "plant" && def.height > 2f;
+            if (!tree && wide > def.footprint * 1.8f) scale *= def.footprint * 1.8f / wide;
             model.transform.localScale *= scale;
             b = BoundsOf(model);
             model.transform.position += new Vector3(-b.center.x, -b.min.y, -b.center.z);

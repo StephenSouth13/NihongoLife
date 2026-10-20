@@ -26,6 +26,13 @@ namespace NihongoLife.UI
             }
             Instance = this;
             DontDestroyOnLoad(gameObject);
+            SceneManager.activeSceneChanged += OnActiveSceneChanged;
+        }
+
+        /// <summary>Leaving for another place closes a result card still open (it belongs to where the quest ended).</summary>
+        private void OnActiveSceneChanged(Scene from, Scene to)
+        {
+            if (resultPanel != null && resultPanel.gameObject.activeInHierarchy) resultPanel.BackToTown();
         }
 
         private void Start()
@@ -75,6 +82,7 @@ namespace NihongoLife.UI
 
         private void OnDestroy()
         {
+            if (Instance == this) SceneManager.activeSceneChanged -= OnActiveSceneChanged;
             if (_subscribed != null)
             {
                 _subscribed.OnScenarioStarted -= HandleScenarioStarted;

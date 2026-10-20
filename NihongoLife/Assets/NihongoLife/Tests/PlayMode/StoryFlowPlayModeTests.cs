@@ -57,7 +57,7 @@ namespace NihongoLife.Tests
             for (float t = 0f; t < 20f && (ScenarioManager.Instance == null || ScenarioManager.Instance.CurrentScenario == null); t += Time.unscaledDeltaTime) yield return null;
             Assert.NotNull(ScenarioManager.Instance?.CurrentScenario, "A fresh game starts the story by itself.");
             PlayerStatus.Instance?.ReloadProgress(); // the status may have been loaded from the real save before the reset
-            Assert.AreEqual(0, LocationUnlocks.Knowledge, "Fresh save: no knowledge yet.");
+            int knowledgeAtStart = LocationUnlocks.Knowledge; // 0 offline; a signed-in account may merge its cloud value
             Assert.AreEqual("scenario.intro.arrival", ScenarioManager.Instance.CurrentScenario.id);
             Assert.IsTrue(StoryDirector.InPrologue);
             var job = QuestService.Catalog.quests.First(q => q.IsJob);
@@ -98,7 +98,9 @@ namespace NihongoLife.Tests
             var next = StoryDirector.Next();
             Assert.NotNull(next);
             Assert.AreEqual(3, next.chapterIndex, "Chapter 3 is next.");
-            Note($"knowledge after the opening: {repository.GetProgress().knowledge}; next {next.id} blocker: {StoryDirector.Blocker(next) ?? "none"}");
+            int gained = LocationUnlocks.Knowledge - knowledgeAtStart;
+            Note($"knowledge from the opening: +{gained}; next {next.id} blocker: {StoryDirector.Blocker(next) ?? "none"}");
+            Assert.That(gained, Is.InRange(40, 120), "The opening is worth about one or two places, not the whole map.");
             // A later step that waits for knowledge (station 80, festival 150) is listed with what it needs.
             var later = StoryDirector.Remaining().FirstOrDefault(s => StoryDirector.Blocker(s) != null && s.requiredKnowledge > repository.GetProgress().knowledge);
             Assert.NotNull(later, "Some story steps wait for knowledge earned in free play.");
