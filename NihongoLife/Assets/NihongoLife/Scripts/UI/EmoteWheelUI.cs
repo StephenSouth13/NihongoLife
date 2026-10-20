@@ -81,7 +81,7 @@ namespace NihongoLife.UI
             pill.sizeDelta = new Vector2(520f, 0f);
             NLUi.FitContent(pill);
             _phrase = NLUi.Label(pill, "Text", "", 24f, NLUi.Text, font, FontStyles.Bold, TextAlignmentOptions.Center);
-            NLUi.Label(pill, "Hint", "Rê chuột / 1–8 để chọn  ·  thả E để dùng  ·  Esc huỷ", 15f, NLUi.Muted, font, FontStyles.Normal, TextAlignmentOptions.Center);
+            LocText.Set(NLUi.Label(pill, "Hint", "", 15f, NLUi.Muted, font, FontStyles.Normal, TextAlignmentOptions.Center), "Rê chuột / 1–8 để chọn  ·  thả E để dùng  ·  Esc huỷ", "Move the mouse / 1–8 to choose  ·  release E to use  ·  Esc cancels", "マウス／1〜8で選択 · Eを離して使う · Escでキャンセル");
             _root.gameObject.SetActive(false);
         }
 
@@ -124,12 +124,12 @@ namespace NihongoLife.UI
                 var emote = EmoteCatalog.All[_selected];
                 _centerIcon.sprite = EmoteCatalog.Icon(emote.Id);
                 _centerIcon.color = Color.white;
-                _phrase.text = $"{emote.Ja}  <size=70%><color=#A8B4C4>{emote.Reading} · {emote.Vi}</color></size>";
+                _phrase.text = $"{emote.Ja}  <size=70%><color=#A8B4C4>{emote.Reading}" + (string.IsNullOrEmpty(emote.Meaning) ? "" : $" · {emote.Meaning}") + "</color></size>";
             }
             else
             {
                 _centerIcon.color = new Color(1f, 1f, 1f, 0f);
-                _phrase.text = "<color=#A8B4C4>Chọn một biểu cảm</color>";
+                _phrase.text = "<color=#A8B4C4>" + NihongoLife.Core.Loc.T("Chọn một biểu cảm", "Choose an emote", "エモートを選んでください") + "</color>";
             }
         }
 

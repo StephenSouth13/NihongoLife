@@ -10,3 +10,11 @@ and validate the graph (dangling links, unreachable nodes, objectives that never
 
 After generating, you may keep editing the assets directly in Unity. Do not do both: regenerating overwrites hand edits.
 Not part of the game build (plain Python, no Unity menu, no editor commands).
+
+## Languages (2026-10-20)
+
+Each asset holds Vietnamese (`titleVi`, `textVi`, `descriptionVi`), English (`titleEn`, `textEn`, `descriptionEn`) and
+Japanese. The game shows only the chosen interface language (`Loc`); the Japanese line is the learning target.
+`gen_*.py` still writes the Vietnamese into the `...En` keys, so after regenerating a quest run
+`python i18n/apply_en.py <asset>`: it moves the Vietnamese to the `...Vi` keys and adds the English from
+`i18n/en/<quest>.json`. Keep that file in step when you change a quest's Vietnamese lines.

@@ -13,7 +13,7 @@ namespace NihongoLife.Island
     public sealed class IslandShopCounter : MonoBehaviour, IInteractable
     {
         public string GetPromptJa() => IslandLanguage.Target == TargetLanguage.English ? "Midori Store" : "みどりしょうてん";
-        public string GetpromptEn() => "Mở cửa hàng Midori (P)";
+        public string GetpromptEn() => Loc.T("Mở cửa hàng Midori (P)", "Open the Midori Store (P)", "みどりしょうてんを開く（P）");
         public Transform GetTransform() => transform;
         public void Interact(GameObject player) => IslandUI.OpenShop();
     }

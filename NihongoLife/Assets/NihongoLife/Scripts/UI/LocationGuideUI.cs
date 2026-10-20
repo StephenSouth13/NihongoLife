@@ -15,7 +15,16 @@ namespace NihongoLife.UI
     public sealed class LocationGuideUI : MonoBehaviour
     {
         [Serializable] private sealed class GuideFile { public Place[] places; }
-        [Serializable] public sealed class Place { public string type, ja, vi, about; public string[] how; public string[][] phrases; }
+        [Serializable] public sealed class Place
+        {
+            public string type, ja, vi, en, about, aboutEn, aboutJa; public string[] how, howEn, howJa; public string[][] phrases; public string[] phrasesEn;
+
+            /// <summary>Name, description, how-to lines and phrase meanings in the interface language.</summary>
+            public string Name => NihongoLife.Core.Loc.Pick(vi, en, ja);
+            public string About => NihongoLife.Core.Loc.Pick(about, aboutEn, aboutJa);
+            public string[] How => NihongoLife.Core.Loc.IsJapanese && howJa?.Length > 0 ? howJa : NihongoLife.Core.Loc.IsEnglish && howEn?.Length > 0 ? howEn : how;
+            public string PhraseMeaning(int i) => NihongoLife.Core.Loc.IsJapanese ? "" : NihongoLife.Core.Loc.IsEnglish && phrasesEn != null && i < phrasesEn.Length ? phrasesEn[i] : phrases[i][1];
+        }
 
         private static LocationGuideUI _instance;
         public static bool IsOpen => _instance != null && _instance._window != null && _instance._window.gameObject.activeSelf;
@@ -56,7 +65,9 @@ namespace NihongoLife.UI
             var card = NLUi.Panel(dim, "Card", NLUi.Ink);
             NLUi.Anchor(card, new Vector2(0.5f, 0.5f), Vector2.zero, new Vector2(1240f, 720f));
             NLUi.CloseButton(card, _font, Close, 44f, 12f);
-            var title = NLUi.Label(card, "Title", "Cẩm nang địa điểm  <size=70%><color=#A8B4C4>ガイドブック · bấm từng nơi để xem</color></size>", 28f, NLUi.Gold, _font, FontStyles.Bold);
+            var title = NLUi.Label(card, "Title", "", 28f, NLUi.Gold, _font, FontStyles.Bold);
+            LocText.Set(title, () => NihongoLife.Core.Loc.T("Cẩm nang địa điểm", "Place guide", "ガイドブック") + "  <size=70%><color=#A8B4C4>" + NihongoLife.Core.Loc.T("bấm từng nơi để xem", "pick a place to read about it", "場所を選んでください") + "</color></size>");
+            NihongoLife.Core.Loc.Watch(this, () => { if (IsOpen) Show(_type); });
             NLUi.Anchor(title.rectTransform, new Vector2(0f, 1f), new Vector2(28f, -20f), new Vector2(1000f, 44f));
             title.rectTransform.pivot = new Vector2(0f, 1f);
 
@@ -66,8 +77,10 @@ namespace NihongoLife.UI
             foreach (var p in _places)
             {
                 var place = p;
-                var b = NLUi.Button(_tabs, "Tab_" + p.type, p.vi, _font, () => Show(place.type), NLUi.Card, 16f, null, 52f);
-                b.GetComponentInChildren<TextMeshProUGUI>().alignment = TextAlignmentOptions.MidlineLeft;
+                var b = NLUi.Button(_tabs, "Tab_" + p.type, p.Name, _font, () => Show(place.type), NLUi.Card, 16f, null, 52f);
+                var tabText = b.GetComponentInChildren<TextMeshProUGUI>();
+                tabText.alignment = TextAlignmentOptions.MidlineLeft;
+                LocText.Set(tabText, () => place.Name);
             }
 
             var photoGo = new GameObject("Photo", typeof(RectTransform), typeof(RawImage));
@@ -95,16 +108,24 @@ namespace NihongoLife.UI
             foreach (var o in root.Arr("places") ?? new List<object>())
             {
                 if (!(o is Dictionary<string, object> d)) continue;
-                var place = new Place { type = d.Str("type"), ja = d.Str("ja"), vi = d.Str("vi"), about = d.Str("about") };
-                var how = new List<string>();
-                foreach (var h in d.Arr("how") ?? new List<object>()) how.Add(h as string);
-                place.how = how.ToArray();
+                var place = new Place { type = d.Str("type"), ja = d.Str("ja"), vi = d.Str("vi"), en = d.Str("en"), about = d.Str("about"), aboutEn = d.Str("aboutEn"), aboutJa = d.Str("aboutJa") };
+                place.how = Strings(d, "how");
+                place.howEn = Strings(d, "howEn");
+                place.howJa = Strings(d, "howJa");
+                place.phrasesEn = Strings(d, "phrasesEn");
                 var phrases = new List<string[]>();
                 foreach (var ph in d.Arr("phrases") ?? new List<object>())
                     if (ph is List<object> pair && pair.Count >= 2) phrases.Add(new[] { pair[0] as string, pair[1] as string });
                 place.phrases = phrases.ToArray();
                 _places.Add(place);
             }
+        }
+
+        private static string[] Strings(Dictionary<string, object> d, string key)
+        {
+            var list = new List<string>();
+            foreach (var item in d.Arr(key) ?? new List<object>()) list.Add(item as string);
+            return list.ToArray();
         }
 
         private void Show(string type)
@@ -125,16 +146,21 @@ namespace NihongoLife.UI
             for (int i = _content.childCount - 1; i >= 0; i--) Destroy(_content.GetChild(i).gameObject);
             string scene = place.type == "MIDORI" ? WorldLocationCatalog.MidoriIslandScene : WorldMapUI.SceneOfType(place.type);
             string status = scene == null || LocationUnlocks.Required(scene) == 0
-                ? "<color=#7BD88F>Luôn mở</color>"
-                : LocationUnlocks.IsUnlocked(scene) ? "<color=#7BD88F>Đã mở</color>"
-                : $"<color=#FF9A80>Đã khóa — cần {LocationUnlocks.Required(scene)} điểm kiến thức (thiếu {LocationUnlocks.Missing(scene)})</color>";
-            NLUi.Label(_content, "Name", $"<b>{place.ja}</b>  ·  {place.vi}   <size=70%>{status}</size>", 24f, NLUi.Text, _font);
-            NLUi.Label(_content, "About", place.about, 17f, NLUi.Soft, _font);
-            var how = new System.Text.StringBuilder("<b>Cách tương tác</b>");
-            foreach (var h in place.how) how.Append("\n•  ").Append(h);
+                ? "<color=#7BD88F>" + NihongoLife.Core.Loc.T("Luôn mở", "Always open", "いつでも行ける") + "</color>"
+                : LocationUnlocks.IsUnlocked(scene) ? "<color=#7BD88F>" + NihongoLife.Core.Loc.T("Đã mở", "Unlocked", "解放済み") + "</color>"
+                : "<color=#FF9A80>" + NihongoLife.Core.Loc.F("Đã khóa — cần {0} điểm kiến thức (thiếu {1})", "Locked — needs {0} knowledge points ({1} to go)", "未開放 — 知識ポイント{0}が必要（あと{1}）", LocationUnlocks.Required(scene), LocationUnlocks.Missing(scene)) + "</color>";
+            NLUi.Label(_content, "Name", (NihongoLife.Core.Loc.IsJapanese ? $"<b>{place.ja}</b>" : $"<b>{place.ja}</b>  ·  {place.Name}") + $"   <size=70%>{status}</size>", 24f, NLUi.Text, _font);
+            NLUi.Label(_content, "About", place.About, 17f, NLUi.Soft, _font);
+            var how = new System.Text.StringBuilder("<b>" + NihongoLife.Core.Loc.T("Cách tương tác", "How to use it", "使い方") + "</b>");
+            foreach (var h in place.How) how.Append("\n•  ").Append(h);
             NLUi.Label(_content, "How", how.ToString(), 16f, NLUi.Text, _font);
-            var phrases = new System.Text.StringBuilder("<b>Câu hữu ích</b>");
-            foreach (var ph in place.phrases) phrases.Append("\n").Append(ph[0]).Append("  <color=#A8B4C4>— ").Append(ph[1]).Append("</color>");
+            var phrases = new System.Text.StringBuilder("<b>" + NihongoLife.Core.Loc.T("Câu hữu ích", "Useful phrases", "便利なフレーズ") + "</b>");
+            for (int i = 0; i < place.phrases.Length; i++)
+            {
+                string meaning = place.PhraseMeaning(i);
+                phrases.Append("\n").Append(place.phrases[i][0]);
+                if (!string.IsNullOrEmpty(meaning)) phrases.Append("  <color=#A8B4C4>— ").Append(meaning).Append("</color>");
+            }
             NLUi.Label(_content, "Phrases", phrases.ToString(), 16f, NLUi.Text, _font);
 
             // Beside the photo: a short summary column.
@@ -145,7 +171,7 @@ namespace NihongoLife.UI
             side.anchoredPosition = new Vector2(810f, -80f);
             side.sizeDelta = new Vector2(400f, 270f);
             NLUi.Label(side, "Big", place.ja, 40f, NLUi.Gold, _font, FontStyles.Bold);
-            NLUi.Label(side, "Vi", place.vi, 20f, NLUi.Text, _font);
+            if (!NihongoLife.Core.Loc.IsJapanese) NLUi.Label(side, "Vi", place.Name, 20f, NLUi.Text, _font);
             NLUi.Label(side, "Status", status, 16f, NLUi.Text, _font);
         }
 

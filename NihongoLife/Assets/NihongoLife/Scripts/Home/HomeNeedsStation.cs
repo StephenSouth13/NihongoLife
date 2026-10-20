@@ -21,7 +21,7 @@ namespace NihongoLife.Home
 
         public Kind StationKind => kind;
         public string GetPromptJa() => kind == Kind.Sink ? "みずを のむ" : "れいぞうこを あける";
-        public string GetpromptEn() => kind == Kind.Sink ? "Uống nước" : "Mở tủ lạnh (ăn đồ đã mua)";
+        public string GetpromptEn() => kind == Kind.Sink ? NihongoLife.Core.Loc.T("Uống nước", "Drink water", "みずを のむ") : NihongoLife.Core.Loc.T("Mở tủ lạnh (ăn đồ đã mua)", "Open the fridge (eat what you bought)", "れいぞうこを あける");
         public Transform GetTransform() => transform;
 
         public void Configure(Kind stationKind) => kind = stationKind;
@@ -37,12 +37,12 @@ namespace NihongoLife.Home
                 if (status == null) return;
                 if (status.Thirst >= 98f)
                 {
-                    room?.ShowToast("のどが かわいて いません", "Bạn chưa khát.");
+                    room?.ShowToast("のどが かわいて いません", NihongoLife.Core.Loc.Triple("Bạn chưa khát.", "You're not thirsty.", ""));
                     return;
                 }
                 status.RestoreNeeds(0f, waterThirstRestore, 0f);
                 Play(GameAudioCue.Pickup);
-                room?.ShowToast("みずを のみました", $"Đã uống nước · Nước +{waterThirstRestore:0}");
+                room?.ShowToast("みずを のみました", NihongoLife.Core.Loc.Triple($"Đã uống nước · Nước +{waterThirstRestore:0}", $"Drank water · Thirst +{waterThirstRestore:0}", $"水分 +{waterThirstRestore:0}"));
                 return;
             }
 
@@ -55,15 +55,15 @@ namespace NihongoLife.Home
 
             if (food == null || status == null)
             {
-                room?.ShowToast("れいぞうこは からっぽです", "Tủ lạnh trống — hãy mua onigiri hoặc đồ uống ở konbini.");
+                room?.ShowToast("れいぞうこは からっぽです", NihongoLife.Core.Loc.Triple("Tủ lạnh trống — hãy mua onigiri hoặc đồ uống ở konbini.", "The fridge is empty — buy onigiri or drinks at the konbini.", "コンビニでおにぎりや飲み物を買いましょう。"));
                 return;
             }
 
-            string name = food.displayNameJa;
+            string name = string.IsNullOrEmpty(food.displayNameJa) ? food.Name : food.displayNameJa; // the Japanese word is the one to learn
             inventory.RemoveItem(food.itemId);
             status.RestoreNeeds(food.foodRestore, food.drinkRestore, food.energyRestore);
             room?.ShowToast(food.useType == ItemUseType.Drink ? "いただきます" : "いただきます！",
-                $"Đã dùng {name} · No +{food.foodRestore:0} · Nước +{food.drinkRestore:0}");
+                NihongoLife.Core.Loc.Triple($"Đã dùng {name} · No +{food.foodRestore:0} · Nước +{food.drinkRestore:0}", $"Had {name} · Food +{food.foodRestore:0} · Drink +{food.drinkRestore:0}", $"{name} · 満腹 +{food.foodRestore:0} · 水分 +{food.drinkRestore:0}"));
         }
 
         private static void Play(GameAudioCue cue)

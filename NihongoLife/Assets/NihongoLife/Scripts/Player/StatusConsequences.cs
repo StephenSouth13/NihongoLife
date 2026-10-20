@@ -58,8 +58,8 @@ namespace NihongoLife.Player
             if (controller != null) controller.InputLocked = true;
             animation?.SetResting(true);
             EnsureOverlay();
-            _title.text = faint ? "Bạn đã ngất…" : "Bạn ngủ gục giữa đường…";
-            _body.text = faint ? "Cơ thể kiệt sức vì đói, khát hoặc bệnh. Người qua đường đã gọi phòng khám Hibari." : "Thức quá lâu nên cơ thể tự tắt nguồn.";
+            _title.text = faint ? NihongoLife.Core.Loc.T("Bạn đã ngất…", "You fainted…", "倒れてしまいました…") : NihongoLife.Core.Loc.T("Bạn ngủ gục giữa đường…", "You fell asleep in the street…", "道で眠ってしまいました…");
+            _body.text = faint ? NihongoLife.Core.Loc.T("Cơ thể kiệt sức vì đói, khát hoặc bệnh. Người qua đường đã gọi phòng khám Hibari.", "Your body gave out from hunger, thirst or illness. A passer-by called Hibari Clinic.", "空腹やのどの渇き、病気で体が限界でした。通りかかった人がひばりクリニックを呼びました。") : NihongoLife.Core.Loc.T("Thức quá lâu nên cơ thể tự tắt nguồn.", "You stayed up too long and your body shut down.", "起きすぎて、体が勝手に眠ってしまいました。");
             yield return Fade(1f, 1.4f);
             yield return new WaitForSecondsRealtime(1.2f);
 
@@ -69,25 +69,25 @@ namespace NihongoLife.Player
                 var inventory = controller != null ? controller.GetComponent<PlayerInventory>() : FindFirstObjectByType<PlayerInventory>();
                 int yen = inventory != null ? inventory.Yen : 0;
                 LastFee = Mathf.Min(MaxClinicFee, Mathf.RoundToInt(yen * 0.1f));
-                if (LastFee > 0 && inventory != null) inventory.SpendYen(LastFee, "Phí phòng khám");
+                if (LastFee > 0 && inventory != null) inventory.SpendYen(LastFee, NihongoLife.Core.Loc.Triple("Phí phòng khám", "Clinic fee", "診察料"));
                 cycle?.SetHour(cycle.Hour + 3f);
                 _status.RecoverAfterCollapse();
                 CollapseCount++;
-                _title.text = "Tỉnh lại sau 3 giờ";
-                _body.text = $"Phòng khám đã chữa cho bạn. Viện phí: ¥{LastFee}.\nHãy ăn uống và ngủ đủ — các vòng chỉ số nhấp nháy đỏ là lúc phải lo ngay.";
+                _title.text = NihongoLife.Core.Loc.T("Tỉnh lại sau 3 giờ", "You wake up 3 hours later", "3時間後に目が覚めました");
+                _body.text = NihongoLife.Core.Loc.F("Phòng khám đã chữa cho bạn. Viện phí: {0}.\nHãy ăn uống và ngủ đủ — các vòng chỉ số nhấp nháy đỏ là lúc phải lo ngay.", "The clinic treated you. Fee: {0}.\nEat, drink and sleep enough — a status ring flashing red means act now.", "クリニックで治療を受けました。料金：{0}。\nしっかり食べて、飲んで、寝ましょう。リングが赤く点滅したらすぐ対処を。", NihongoLife.Core.Loc.Yen(LastFee));
             }
             else
             {
                 cycle?.SetHour(cycle.Hour + 6f);
                 _status.Sleep(6f);
-                _title.text = "Tỉnh dậy sau 6 giờ";
-                _body.text = "Bạn đã ngủ bù, nhưng mất nửa ngày. Lần sau hãy về phòng ngủ khi vòng Tỉnh táo chuyển đỏ.";
+                _title.text = NihongoLife.Core.Loc.T("Tỉnh dậy sau 6 giờ", "You wake up 6 hours later", "6時間後に目が覚めました");
+                _body.text = NihongoLife.Core.Loc.T("Bạn đã ngủ bù, nhưng mất nửa ngày. Lần sau hãy về phòng ngủ khi vòng Tỉnh táo chuyển đỏ.", "You caught up on sleep, but lost half a day. Next time, go home to bed when the Alertness ring turns red.", "眠りは取り戻せましたが、半日が過ぎました。次は「眠気」のリングが赤くなったら部屋で寝ましょう。");
             }
             yield return new WaitForSecondsRealtime(2.2f);
             animation?.SetResting(false);
             yield return Fade(0f, 1f);
             if (controller != null) controller.InputLocked = wasLocked;
-            NihongoLife.UI.HudFeed.Post(faint ? $"Đã trả viện phí ¥{LastFee}." : "Bạn đã ngủ 6 giờ ngoài đường.", NihongoLife.UI.HudFeed.Kind.Warning, 5f);
+            NihongoLife.UI.HudFeed.Post(faint ? NihongoLife.Core.Loc.F("Đã trả viện phí {0}.", "Paid the clinic fee of {0}.", "診察料{0}を払いました。", NihongoLife.Core.Loc.Yen(LastFee)) : NihongoLife.Core.Loc.T("Bạn đã ngủ 6 giờ ngoài đường.", "You slept 6 hours in the street.", "道で6時間眠りました。"), NihongoLife.UI.HudFeed.Kind.Warning, 5f);
             _busy = false;
         }
 

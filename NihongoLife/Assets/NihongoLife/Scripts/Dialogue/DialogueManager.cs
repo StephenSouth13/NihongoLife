@@ -271,7 +271,7 @@ namespace NihongoLife.Dialogue
                 speakerName = _currentNode.speakerName,
                 textJa = _currentNode.textJa,
                 textReading = _currentNode.textReading,
-                textEn = _currentNode.textEn,
+                textEn = _currentNode.Gloss,
                 textRomaji = _currentNode.textRomaji,
                 textEnglishIpa = ResolveEnglishIpa(_currentNode),
                 choices = _currentNode.choices,

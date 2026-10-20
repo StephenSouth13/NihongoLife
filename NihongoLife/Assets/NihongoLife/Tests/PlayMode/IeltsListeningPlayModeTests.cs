@@ -204,8 +204,8 @@ namespace NihongoLife.Tests
 
         /// <summary>The Exam Center card of this package (there is one card per local package).</summary>
         private static RectTransform PackageCard(IeltsLibrary.Package package) =>
-            Object.FindObjectsByType<RectTransform>(FindObjectsSortMode.None).FirstOrDefault(r => r.name == "IeltsLocalCard" &&
-                r.GetComponentsInChildren<TextMeshProUGUI>().Any(t => t.text.Contains(package.Test.title)));
+            Object.FindObjectsByType<RectTransform>(FindObjectsSortMode.None).FirstOrDefault(r => r.name == "ExamCard" &&
+                r.GetComponentsInChildren<TextMeshProUGUI>().Any(t => t.text.Contains(package.Test.DisplayTitle)));
 
         private static RectTransform Root(IeltsTestUI ui) => (RectTransform)ui.GetType().GetField("_root", BindingFlags.Instance | BindingFlags.NonPublic).GetValue(ui);
 

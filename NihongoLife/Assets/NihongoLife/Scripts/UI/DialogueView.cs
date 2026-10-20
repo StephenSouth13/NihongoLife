@@ -94,7 +94,7 @@ namespace NihongoLife.UI
             _hint = NLUi.Label(_box, "Hint", "", 15f, NLUi.Muted, _font, FontStyles.Normal, TextAlignmentOptions.Right);
             _closeButton = NLUi.CloseButton(_box, _font, Leave, 42f, 14f);
             _root.gameObject.SetActive(false);
-            _resumeButton = NLUi.Button(canvas, "ResumeDialogue", "Tiếp hội thoại · R", _font,
+            _resumeButton = NLUi.Button(canvas, "ResumeDialogue", NihongoLife.Core.Loc.T("Tiếp hội thoại · R", "Resume conversation · R", "会話を続ける · R"), _font,
                 () => DialogueManager.Instance?.ResumeDialogue(), NLUi.Card, 20f, null, 52f);
             NLUi.Anchor((RectTransform)_resumeButton.transform, new Vector2(0.5f, 0f), new Vector2(0f, 104f), new Vector2(280f, 52f));
             _resumeButton.gameObject.SetActive(false);
@@ -108,13 +108,13 @@ namespace NihongoLife.UI
             _root.gameObject.SetActive(true);
             _root.SetAsLastSibling();
 
-            string speaker = string.IsNullOrWhiteSpace(data.speakerName) ? "ナレーション · Lời dẫn" : data.speakerName;
+            string speaker = string.IsNullOrWhiteSpace(data.speakerName) ? NihongoLife.Core.Loc.T("Lời dẫn", "Narration", "ナレーション") : data.speakerName;
             _speaker.text = speaker;
             _mode.text = data.learningMode switch
             {
-                LearningMode.GuidedPractice => "Chế độ: Hướng dẫn",
-                LearningMode.Practice => "Chế độ: Luyện tập",
-                _ => "Chế độ: Kiểm tra"
+                LearningMode.GuidedPractice => NihongoLife.Core.Loc.T("Chế độ: Hướng dẫn", "Mode: Guided", "モード：ガイド"),
+                LearningMode.Practice => NihongoLife.Core.Loc.T("Chế độ: Luyện tập", "Mode: Practice", "モード：練習"),
+                _ => NihongoLife.Core.Loc.T("Chế độ: Kiểm tra", "Mode: Test", "モード：テスト")
             };
 
             _japanese.text = data.textJa ?? string.Empty;
@@ -147,8 +147,8 @@ namespace NihongoLife.UI
                     var texts = NLUi.Group(card, "Texts", true, 2f);
                     NLUi.Size(texts, flexibleWidth: 1f);
                     NLUi.Label(texts, "Ja", choices[i].textJa, 23f, NLUi.Text, _font);
-                    if (!assessment && guided && !string.IsNullOrWhiteSpace(choices[i].textEn))
-                        NLUi.Label(texts, "Meaning", choices[i].textEn, 16f, NLUi.Muted, _font);
+                    if (!assessment && guided && !string.IsNullOrWhiteSpace(choices[i].Gloss))
+                        NLUi.Label(texts, "Meaning", choices[i].Gloss, 16f, NLUi.Muted, _font);
                     var button = card.gameObject.AddComponent<Button>();
                     button.targetGraphic = card.GetComponent<Image>();
                     button.transition = Selectable.Transition.None;
@@ -178,8 +178,8 @@ namespace NihongoLife.UI
 
         private void RefreshHint(bool hasChoices)
         {
-            string main = hasChoices ? "<color=#F2B233>1–" + _choices.Count + "</color> chọn  ·  <color=#F2B233>↑↓ Enter</color> xác nhận" : "<color=#F2B233>Enter / Space</color> ▶ tiếp tục";
-            string leave = _canLeave ? "   ·   <color=#F2B233>Esc</color> rời cuộc trò chuyện" : string.Empty;
+            string main = hasChoices ? "<color=#F2B233>1–" + _choices.Count + "</color> " + NihongoLife.Core.Loc.T("chọn", "choose", "選ぶ") + "  ·  <color=#F2B233>↑↓ Enter</color> " + NihongoLife.Core.Loc.T("xác nhận", "confirm", "決定") : "<color=#F2B233>Enter / Space</color> ▶ " + NihongoLife.Core.Loc.T("tiếp tục", "continue", "つぎへ");
+            string leave = _canLeave ? "   ·   <color=#F2B233>Esc</color> " + NihongoLife.Core.Loc.T("rời cuộc trò chuyện", "leave the conversation", "会話をやめる") : string.Empty;
             _hint.text = main + leave;
         }
 

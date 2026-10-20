@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
-using UnityEngine.Serialization;
 
 namespace NihongoLife.Scenario
 {
@@ -25,23 +24,24 @@ namespace NihongoLife.Scenario
         public string id;
         public string titleJa;
 
-        // New content should provide all three labels. Existing assets used titleEn
-        // for the former Vietnamese value, so the runtime keeps titleEn as a fallback.
         public string titleVi;
-        
         public string titleEn;
-        
         public bool isOptional;
+
+        /// <summary>The objective in the interface language.</summary>
+        public string Title => NihongoLife.Core.Loc.Pick(titleVi, titleEn, titleJa);
     }
 
     [Serializable]
     public class DialogueChoice
     {
         public string textJa;
-        
-        [FormerlySerializedAs("textVi")]
+        public string textVi;
         public string textEn;
-        
+
+        /// <summary>Meaning of the Japanese answer in the interface language (empty in the Japanese interface).</summary>
+        public string Gloss => NihongoLife.Core.Loc.Gloss(textVi, textEn);
+
         public string nextNodeId;
         
         // Scoring and Learning modifications
@@ -76,10 +76,12 @@ namespace NihongoLife.Scenario
         public string speakerId;
         public string textJa;
         public string textReading; // Furigana/Hiragana helper
-        
-        [FormerlySerializedAs("textVi")]
+        public string textVi;
         public string textEn;
-        
+
+        /// <summary>Meaning of the Japanese line in the interface language (empty in the Japanese interface).</summary>
+        public string Gloss => NihongoLife.Core.Loc.Gloss(textVi, textEn);
+
         public string textRomaji;
         public string textEnglishIpa;
         public string animationCue;
@@ -105,19 +107,19 @@ namespace NihongoLife.Scenario
         public int version = 1;
         public string titleJa;
 
-        // New scenario assets should fill all three languages. Legacy titleEn values
-        // are retained as the Vietnamese fallback until content is migrated.
         public string titleVi;
-        
         public string titleEn;
-        
-        [TextArea(3, 5)] 
-        public string descriptionJa;
-        
-        [FormerlySerializedAs("descriptionVi")]
-        [TextArea(3, 5)] 
-        public string descriptionEn;
-        
+
+        [TextArea(3, 5)] public string descriptionJa;
+        [TextArea(3, 5)] public string descriptionVi;
+        [TextArea(3, 5)] public string descriptionEn;
+
+        /// <summary>Title, description, briefing and place hint in the interface language.</summary>
+        public string DisplayTitle => NihongoLife.Core.Loc.Pick(titleVi, titleEn, titleJa);
+        public string Description => NihongoLife.Core.Loc.Pick(descriptionVi, descriptionEn, descriptionJa);
+        public string Briefing => NihongoLife.Core.Loc.Pick(briefingVi, briefingEn, briefingJa);
+        public string LocationHint => NihongoLife.Core.Loc.Pick(locationHintVi, locationHintEn, locationHintJa);
+
         public int chapterIndex = 1;
 
         [Header("Branching Story")]

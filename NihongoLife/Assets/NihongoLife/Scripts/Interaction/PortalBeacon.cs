@@ -19,7 +19,7 @@ namespace NihongoLife.Interaction
         private float _baseArrowY;
         private float _alpha;
 
-        public static void Attach(ScenePortal portal, string title, string action, bool exit)
+        public static void Attach(ScenePortal portal, System.Func<string> title, System.Func<string> action, bool exit)
         {
             if (portal == null || portal.GetComponentInChildren<PortalBeacon>(true) != null) return;
             var root = new GameObject("PortalBeacon");
@@ -36,12 +36,12 @@ namespace NihongoLife.Interaction
             root.AddComponent<PortalBeacon>().Build(title, action, exit);
         }
 
-        private void Build(string title, string action, bool exit)
+        private void Build(System.Func<string> title, System.Func<string> action, bool exit)
         {
             TMP_FontAsset font = null; // TMP default font; NotoSansJP is its project-wide fallback
             string accent = exit ? "#7FD3FF" : "#F2B233";
-            _sign = CreateText("Sign", font, 3.2f,
-                $"<mark=#0B0F16D9 padding=\"40,40,18,18\"><b>{title}</b>\n<size=70%><color={accent}>[F]</color> {action}</size></mark>");
+            _sign = CreateText("Sign", font, 3.2f, "");
+            NihongoLife.UI.LocText.Set(_sign, () => $"<mark=#0B0F16D9 padding=\"40,40,18,18\"><b>{title()}</b>\n<size=70%><color={accent}>[F]</color> {action()}</size></mark>");
             _arrow = CreateText("Arrow", font, 4.2f, $"<color={accent}>▼</color>");
             _arrow.transform.localPosition = Vector3.down * 0.7f;
             _baseArrowY = _arrow.transform.localPosition.y;

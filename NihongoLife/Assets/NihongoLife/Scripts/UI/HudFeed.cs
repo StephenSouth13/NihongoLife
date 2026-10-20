@@ -57,6 +57,7 @@ namespace NihongoLife.UI
         public static void Post(string text, Kind kind = Kind.Info, float seconds = 4.5f, string key = null)
         {
             if (string.IsNullOrWhiteSpace(text)) return;
+            text = NihongoLife.Core.Loc.Resolve(text); // stored three-language messages show in the current language
             var feed = Instance;
             if (key != null)
             {

@@ -22,15 +22,21 @@ namespace NihongoLife.Progression
         public int count = 1;
         /// <summary>Counts only once every other objective is complete (e.g. "report to the manager").</summary>
         public bool afterAll;
-        public string textVi, textEn;
+        public string textVi, textEn, textJa;
+        public string Text => NihongoLife.Core.Loc.Pick(textVi, textEn, textJa);
     }
 
     [Serializable]
     public sealed class QuestDefinition
     {
         public string id, category;
-        public string titleVi, titleEn, titleJa, descriptionVi, descriptionEn;
-        public string giverNpc, giverNameVi, locationVi, scene;
+        public string titleVi, titleEn, titleJa, descriptionVi, descriptionEn, descriptionJa;
+        public string giverNpc, giverNameVi, giverNameEn, giverNameJa, locationVi, locationEn, locationJa, scene;
+        // In the interface language only.
+        public string Title => NihongoLife.Core.Loc.Pick(titleVi, titleEn, titleJa);
+        public string Description => NihongoLife.Core.Loc.Pick(descriptionVi, descriptionEn, descriptionJa);
+        public string GiverName => NihongoLife.Core.Loc.Pick(giverNameVi, giverNameEn, giverNameJa);
+        public string Location => NihongoLife.Core.Loc.Pick(locationVi, locationEn, locationJa);
         public int minLevel = 1, minKnowledge;
         public string[] requiresQuests = Array.Empty<string>();
         public bool repeatable;

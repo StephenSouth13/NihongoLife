@@ -15,9 +15,11 @@ MonoBehaviour:
   id: scenario.restaurant.sushi_dining
   version: 1
   titleJa: "すし店で食事"
-  titleEn: "Dùng bữa ở quán sushi"
+  titleVi: "Dùng bữa ở quán sushi"
+  titleEn: "Dinner at the sushi restaurant"
   descriptionJa: "ひばり寿司で、あいさつ、注文、会計まで練習しましょう。"
-  descriptionEn: "Luyện toàn bộ quy trình ở quán sushi Hibari: chào hỏi, chọn chỗ, hỏi món đặc sản, báo dị ứng, gọi món, ăn, thanh toán và ra về."
+  descriptionVi: "Luyện toàn bộ quy trình ở quán sushi Hibari: chào hỏi, chọn chỗ, hỏi món đặc sản, báo dị ứng, gọi món, ăn, thanh toán và ra về."
+  descriptionEn: "Practise the whole visit at Hibari Sushi: greeting, choosing a seat, asking about specials, mentioning allergies, ordering, eating, paying and leaving."
   chapterIndex: 3
   questType: main
   giverNpcId: npc_sushi_staff
@@ -52,27 +54,33 @@ MonoBehaviour:
   objectives:
   - id: obj_enter
     titleJa: "店に入ってあいさつする"
-    titleEn: "Vào quán và đáp lời chào"
+    titleVi: "Vào quán và đáp lời chào"
+    titleEn: "Enter and answer the greeting"
     isOptional: 0
   - id: obj_seat
     titleJa: "席を決める"
-    titleEn: "Chọn chỗ ngồi"
+    titleVi: "Chọn chỗ ngồi"
+    titleEn: "Choose a seat"
     isOptional: 0
   - id: obj_order
     titleJa: "注文する"
-    titleEn: "Gọi món"
+    titleVi: "Gọi món"
+    titleEn: "Order"
     isOptional: 0
   - id: obj_eat
     titleJa: "食事をする"
-    titleEn: "Thưởng thức bữa ăn"
+    titleVi: "Thưởng thức bữa ăn"
+    titleEn: "Enjoy your meal"
     isOptional: 0
   - id: obj_pay
     titleJa: "お会計をする"
-    titleEn: "Thanh toán"
+    titleVi: "Thanh toán"
+    titleEn: "Pay"
     isOptional: 0
   - id: obj_leave
     titleJa: "あいさつして店を出る"
-    titleEn: "Chào và rời quán"
+    titleVi: "Chào và rời quán"
+    titleEn: "Say goodbye and leave"
     isOptional: 0
   nodes:
   - id: n_arrive
@@ -83,7 +91,8 @@ MonoBehaviour:
     speakerId: 
     textJa: "夕方、ひばり寿司に着きました。"
     textReading: "ゆうがた、ひばりずしにつきました。"
-    textEn: "Chiều tối, bạn đến quán Hibari Sushi."
+    textVi: "Chiều tối, bạn đến quán Hibari Sushi."
+    textEn: "In the early evening, you arrive at Hibari Sushi."
     textRomaji: "Yuugata, Hibari zushi ni tsukimashita."
     textEnglishIpa: 
     animationCue: 
@@ -100,14 +109,16 @@ MonoBehaviour:
     speakerId: npc_sushi_staff
     textJa: "いらっしゃいませ！何名様ですか。"
     textReading: "いらっしゃいませ！なんめいさまですか。"
-    textEn: "Xin chào quý khách! Quý khách đi mấy người ạ?"
+    textVi: "Xin chào quý khách! Quý khách đi mấy người ạ?"
+    textEn: "Welcome! How many people?"
     textRomaji: "Irasshaimase! Nanmeisama desu ka?"
     textEnglishIpa: 
     animationCue: bow
     voiceClip: {fileID: 0}
     choices:
     - textJa: "一人です。"
-      textEn: "Một người ạ."
+      textVi: "Một người ạ."
+      textEn: "Just one, please."
       nextNodeId: n_seat_offer
       scoreModifiers:
       - category: Grammar
@@ -119,7 +130,8 @@ MonoBehaviour:
       vocabularyTags:
       - vocab.n5.hitori
     - textJa: "一人。"
-      textEn: "Một người."
+      textVi: "Một người."
+      textEn: "One person."
       nextNodeId: n_welcome_short
       scoreModifiers:
       - category: ResponseAccuracy
@@ -130,7 +142,8 @@ MonoBehaviour:
       vocabularyTags:
       - vocab.n5.hitori
     - textJa: "一つです。"
-      textEn: "Một cái ạ."
+      textVi: "Một cái ạ."
+      textEn: "One thing, please."
       nextNodeId: n_welcome_wrong
       scoreModifiers:
       - category: Grammar
@@ -149,7 +162,8 @@ MonoBehaviour:
     speakerId: npc_sushi_staff
     textJa: "一名様ですね。「一人です」と言うと、もっとていねいですよ。"
     textReading: "いちめいさまですね。「ひとりです」というと、もっとていねいですよ。"
-    textEn: "Một người ạ. Nói \"hitori desu\" sẽ lịch sự hơn đấy."
+    textVi: "Một người ạ. Nói \"hitori desu\" sẽ lịch sự hơn đấy."
+    textEn: "One person. \"Hitori desu\" sounds more polite."
     textRomaji: "Ichimeisama desu ne. \"Hitori desu\" to iu to, motto teinei desu yo."
     textEnglishIpa: 
     animationCue: talk
@@ -166,7 +180,8 @@ MonoBehaviour:
     speakerId: npc_sushi_staff
     textJa: "あ、人は「一人、二人」と数えますよ。もう一度どうぞ。"
     textReading: "あ、ひとは「ひとり、ふたり」とかぞえますよ。もういちどどうぞ。"
-    textEn: "À, khi đếm người thì nói \"hitori, futari\" nhé. Mời quý khách nói lại."
+    textVi: "À, khi đếm người thì nói \"hitori, futari\" nhé. Mời quý khách nói lại."
+    textEn: "Ah, when counting people we say \"hitori, futari\". Please say it again."
     textRomaji: "A, hito wa \"hitori, futari\" to kazoemasu yo. Mou ichido douzo."
     textEnglishIpa: 
     animationCue: point
@@ -183,14 +198,16 @@ MonoBehaviour:
     speakerId: npc_sushi_staff
     textJa: "カウンターとテーブルがあります。どちらがいいですか。"
     textReading: "カウンターとテーブルがあります。どちらがいいですか。"
-    textEn: "Quán có quầy và bàn. Quý khách muốn ngồi chỗ nào ạ?"
+    textVi: "Quán có quầy và bàn. Quý khách muốn ngồi chỗ nào ạ?"
+    textEn: "We have the counter and tables. Where would you like to sit?"
     textRomaji: "Kauntaa to teeburu ga arimasu. Dochira ga ii desu ka?"
     textEnglishIpa: 
     animationCue: talk
     voiceClip: {fileID: 0}
     choices:
     - textJa: "カウンターでお願いします。"
-      textEn: "Cho tôi ngồi ở quầy nhé."
+      textVi: "Cho tôi ngồi ở quầy nhé."
+      textEn: "The counter, please."
       nextNodeId: n_counter
       scoreModifiers:
       - category: Grammar
@@ -201,7 +218,8 @@ MonoBehaviour:
       vocabularyTags:
       - vocab.n5.kauntaa
     - textJa: "テーブルでお願いします。"
-      textEn: "Cho tôi ngồi ở bàn nhé."
+      textVi: "Cho tôi ngồi ở bàn nhé."
+      textEn: "A table, please."
       nextNodeId: n_table
       scoreModifiers:
       - category: Grammar
@@ -212,7 +230,8 @@ MonoBehaviour:
       vocabularyTags:
       - vocab.n5.teeburu
     - textJa: "どちらでもいいです。"
-      textEn: "Chỗ nào cũng được ạ."
+      textVi: "Chỗ nào cũng được ạ."
+      textEn: "Anywhere is fine."
       nextNodeId: n_seat_any
       scoreModifiers:
       - category: ResponseAccuracy
@@ -222,7 +241,8 @@ MonoBehaviour:
       - grammar.n5.dochira
       vocabularyTags: []
     - textJa: "カウンターをください。"
-      textEn: "Cho tôi cái quầy."
+      textVi: "Cho tôi cái quầy."
+      textEn: "Give me the counter."
       nextNodeId: n_seat_wrong
       scoreModifiers:
       - category: Grammar
@@ -241,7 +261,8 @@ MonoBehaviour:
     speakerId: npc_sushi_chef
     textJa: "いらっしゃい！今日はいい魚がありますよ。どうぞ、ここへ。"
     textReading: "いらっしゃい！きょうはいいさかながありますよ。どうぞ、ここへ。"
-    textEn: "Chào mừng! Hôm nay có cá ngon lắm đấy. Mời ngồi đây."
+    textVi: "Chào mừng! Hôm nay có cá ngon lắm đấy. Mời ngồi đây."
+    textEn: "Welcome! We have great fish today. Have a seat here."
     textRomaji: "Irasshai! Kyou wa ii sakana ga arimasu yo. Douzo, koko e."
     textEnglishIpa: 
     animationCue: talk
@@ -258,7 +279,8 @@ MonoBehaviour:
     speakerId: npc_sushi_staff
     textJa: "こちらのテーブルへどうぞ。"
     textReading: "こちらのテーブルへどうぞ。"
-    textEn: "Mời quý khách ngồi bàn này ạ."
+    textVi: "Mời quý khách ngồi bàn này ạ."
+    textEn: "Please take this table."
     textRomaji: "Kochira no teeburu e douzo."
     textEnglishIpa: 
     animationCue: point
@@ -275,7 +297,8 @@ MonoBehaviour:
     speakerId: npc_sushi_staff
     textJa: "では、カウンターへどうぞ。大将の前です。"
     textReading: "では、カウンターへどうぞ。たいしょうのまえです。"
-    textEn: "Vậy mời quý khách ngồi quầy ạ. Ngay trước mặt đầu bếp (taishou, cách gọi kính trọng dành cho bếp trưởng)."
+    textVi: "Vậy mời quý khách ngồi quầy ạ. Ngay trước mặt đầu bếp (taishou, cách gọi kính trọng dành cho bếp trưởng)."
+    textEn: "Then please sit at the counter. Right in front of the chef (taishou, a respectful way to address the head chef)."
     textRomaji: "Dewa, kauntaa e douzo. Taishou no mae desu."
     textEnglishIpa: 
     animationCue: point
@@ -292,7 +315,8 @@ MonoBehaviour:
     speakerId: npc_sushi_staff
     textJa: "「カウンターをください」ではありませんよ。席は「〜でお願いします」と言います。もう一度どうぞ。"
     textReading: "「カウンターをください」ではありませんよ。せきは「〜でおねがいします」といいます。もういちどどうぞ。"
-    textEn: "Không phải \"kauntaa wo kudasai\" đâu ạ. Khi chọn chỗ ngồi, hãy nói \"~ de onegaishimasu\". Mời quý khách nói lại."
+    textVi: "Không phải \"kauntaa wo kudasai\" đâu ạ. Khi chọn chỗ ngồi, hãy nói \"~ de onegaishimasu\". Mời quý khách nói lại."
+    textEn: "Not \"kauntaa wo kudasai\". When choosing a seat, say \"~ de onegaishimasu\". Please say it again."
     textRomaji: "\"Kauntaa wo kudasai\" dewa arimasen yo. Seki wa \"~ de onegaishimasu\" to iimasu. Mou ichido douzo."
     textEnglishIpa: 
     animationCue: point
@@ -309,14 +333,16 @@ MonoBehaviour:
     speakerId: npc_sushi_staff
     textJa: "おしぼりとお茶です。どうぞ。"
     textReading: "おしぼりとおちゃです。どうぞ。"
-    textEn: "Khăn ướt và trà ạ. Mời quý khách."
+    textVi: "Khăn ướt và trà ạ. Mời quý khách."
+    textEn: "A hot towel and tea. Here you are."
     textRomaji: "Oshibori to ocha desu. Douzo."
     textEnglishIpa: 
     animationCue: bow
     voiceClip: {fileID: 0}
     choices:
     - textJa: "ありがとうございます。"
-      textEn: "Cảm ơn ạ."
+      textVi: "Cảm ơn ạ."
+      textEn: "Thank you."
       nextNodeId: n_towel_ok
       scoreModifiers:
       - category: Vocabulary
@@ -326,7 +352,8 @@ MonoBehaviour:
       vocabularyTags:
       - vocab.n5.arigatou_gozaimasu
     - textJa: "どうも。"
-      textEn: "Cảm ơn."
+      textVi: "Cảm ơn."
+      textEn: "Thanks."
       nextNodeId: n_towel_casual
       scoreModifiers:
       - category: ResponseAccuracy
@@ -336,7 +363,8 @@ MonoBehaviour:
       vocabularyTags:
       - vocab.n5.arigatou_gozaimasu
     - textJa: "いただきます。"
-      textEn: "Xin phép được ăn ạ."
+      textVi: "Xin phép được ăn ạ."
+      textEn: "I'll gladly eat."
       nextNodeId: n_towel_wrong
       scoreModifiers:
       - category: ResponseAccuracy
@@ -355,7 +383,8 @@ MonoBehaviour:
     speakerId: npc_sushi_staff
     textJa: "いえいえ。メニューはそちらのボードにあります。ゆっくり見てくださいね。"
     textReading: "いえいえ。メニューはそちらのボードにあります。ゆっくりみてくださいね。"
-    textEn: "Không có gì ạ. Thực đơn ở bảng bên kia, quý khách cứ xem thong thả nhé. (Gợi ý: lại gần bảng thực đơn trong quán và nhấn E để xem chi tiết từng món.)"
+    textVi: "Không có gì ạ. Thực đơn ở bảng bên kia, quý khách cứ xem thong thả nhé. (Gợi ý: lại gần bảng thực đơn trong quán và nhấn E để xem chi tiết từng món.)"
+    textEn: "You're welcome. The menu is on the board over there, take your time. (Tip: walk up to the menu board in the restaurant and press E to see each dish in detail.)"
     textRomaji: "Ie ie. Menyuu wa sochira no boodo ni arimasu. Yukkuri mite kudasai ne."
     textEnglishIpa: 
     animationCue: bow
@@ -372,7 +401,8 @@ MonoBehaviour:
     speakerId: npc_sushi_staff
     textJa: "いえいえ。「ありがとうございます」と言うと、もっとていねいですよ。メニューはそちらのボードにあります。"
     textReading: "いえいえ。「ありがとうございます」というと、もっとていねいですよ。メニューはそちらのボードにあります。"
-    textEn: "Không có gì ạ. Nói \"arigatou gozaimasu\" sẽ lịch sự hơn. Thực đơn ở bảng bên kia ạ. (Gợi ý: lại gần bảng thực đơn trong quán và nhấn E để xem chi tiết từng món.)"
+    textVi: "Không có gì ạ. Nói \"arigatou gozaimasu\" sẽ lịch sự hơn. Thực đơn ở bảng bên kia ạ. (Gợi ý: lại gần bảng thực đơn trong quán và nhấn E để xem chi tiết từng món.)"
+    textEn: "You're welcome. \"Arigatou gozaimasu\" is more polite. The menu is on the board over there. (Tip: walk up to the menu board in the restaurant and press E to see each dish in detail.)"
     textRomaji: "Ie ie. \"Arigatou gozaimasu\" to iu to, motto teinei desu yo. Menyuu wa sochira no boodo ni arimasu."
     textEnglishIpa: 
     animationCue: talk
@@ -389,7 +419,8 @@ MonoBehaviour:
     speakerId: npc_sushi_staff
     textJa: "あ、「いただきます」は食べるときに言いますよ。ここは「ありがとうございます」ですね。"
     textReading: "あ、「いただきます」はたべるときにいいますよ。ここは「ありがとうございます」ですね。"
-    textEn: "À, \"itadakimasu\" chỉ nói khi bắt đầu ăn thôi ạ. Ở đây phải nói \"arigatou gozaimasu\"."
+    textVi: "À, \"itadakimasu\" chỉ nói khi bắt đầu ăn thôi ạ. Ở đây phải nói \"arigatou gozaimasu\"."
+    textEn: "Ah, \"itadakimasu\" is only said when you start eating. Here you should say \"arigatou gozaimasu\"."
     textRomaji: "A, \"itadakimasu\" wa taberu toki ni iimasu yo. Koko wa \"arigatou gozaimasu\" desu ne."
     textEnglishIpa: 
     animationCue: point
@@ -406,14 +437,16 @@ MonoBehaviour:
     speakerId: npc_sushi_staff
     textJa: "ご注文はお決まりですか。"
     textReading: "ごちゅうもんはおきまりですか。"
-    textEn: "Quý khách đã chọn món chưa ạ?"
+    textVi: "Quý khách đã chọn món chưa ạ?"
+    textEn: "Are you ready to order?"
     textRomaji: "Gochuumon wa okimari desu ka?"
     textEnglishIpa: 
     animationCue: talk
     voiceClip: {fileID: 0}
     choices:
     - textJa: "おすすめは何ですか。"
-      textEn: "Món nào được gợi ý ạ?"
+      textVi: "Món nào được gợi ý ạ?"
+      textEn: "What do you recommend?"
       nextNodeId: n_recommend
       scoreModifiers:
       - category: Vocabulary
@@ -424,7 +457,8 @@ MonoBehaviour:
       vocabularyTags:
       - vocab.n5.osusume
     - textJa: "まぐろとサーモンをください。"
-      textEn: "Cho tôi cá ngừ và cá hồi."
+      textVi: "Cho tôi cá ngừ và cá hồi."
+      textEn: "Tuna and salmon, please."
       nextNodeId: n_order_nigiri
       scoreModifiers:
       - category: Grammar
@@ -437,7 +471,8 @@ MonoBehaviour:
       - vocab.n5.maguro
       - vocab.n5.sake
     - textJa: "まぐろとサーモンください。"
-      textEn: "Cho tôi cá ngừ và cá hồi."
+      textVi: "Cho tôi cá ngừ và cá hồi."
+      textEn: "Tuna and salmon, please."
       nextNodeId: n_order_casual
       scoreModifiers:
       - category: Grammar
@@ -449,7 +484,8 @@ MonoBehaviour:
       - vocab.n5.maguro
       - vocab.n5.sake
     - textJa: "すみません、まだです。"
-      textEn: "Xin lỗi, tôi chưa chọn xong."
+      textVi: "Xin lỗi, tôi chưa chọn xong."
+      textEn: "Sorry, I haven't decided yet."
       nextNodeId: n_not_yet
       scoreModifiers:
       - category: ResponseAccuracy
@@ -459,7 +495,8 @@ MonoBehaviour:
       vocabularyTags:
       - vocab.n5.sumimasen
     - textJa: "まぐろは食べます。"
-      textEn: "Tôi ăn cá ngừ."
+      textVi: "Tôi ăn cá ngừ."
+      textEn: "I eat tuna."
       nextNodeId: n_order_wrong
       scoreModifiers:
       - category: Grammar
@@ -478,7 +515,8 @@ MonoBehaviour:
     speakerId: npc_sushi_staff
     textJa: "はい、ゆっくりどうぞ。決まったらお呼びください。"
     textReading: "はい、ゆっくりどうぞ。きまったらおよびください。"
-    textEn: "Vâng, cứ thong thả ạ. Chọn xong thì gọi tôi nhé."
+    textVi: "Vâng, cứ thong thả ạ. Chọn xong thì gọi tôi nhé."
+    textEn: "Sure, take your time. Call me when you've decided."
     textRomaji: "Hai, yukkuri douzo. Kimattara oyobi kudasai."
     textEnglishIpa: 
     animationCue: bow
@@ -495,7 +533,8 @@ MonoBehaviour:
     speakerId: npc_sushi_staff
     textJa: "注文のときは「〜をください」と言いますよ。もう一度どうぞ。"
     textReading: "ちゅうもんのときは「〜をください」といいますよ。もういちどどうぞ。"
-    textEn: "Khi gọi món thì nói \"~ wo kudasai\" nhé. Mời quý khách gọi lại."
+    textVi: "Khi gọi món thì nói \"~ wo kudasai\" nhé. Mời quý khách gọi lại."
+    textEn: "When ordering, say \"~ wo kudasai\". Please order again."
     textRomaji: "Chuumon no toki wa \"~ wo kudasai\" to iimasu yo. Mou ichido douzo."
     textEnglishIpa: 
     animationCue: point
@@ -512,14 +551,16 @@ MonoBehaviour:
     speakerId: npc_sushi_chef
     textJa: "今日のおすすめは、うな丼とちらし寿司です。うな丼は、あまいたれがおいしいですよ。ちらし寿司は、いろいろな魚が入っています。"
     textReading: "きょうのおすすめは、うなどんとちらしずしです。うなどんは、あまいたれがおいしいですよ。ちらしずしは、いろいろなさかながはいっています。"
-    textEn: "Món gợi ý hôm nay là unadon và chirashi zushi. Unadon có sốt ngọt rất ngon. Chirashi có nhiều loại cá bên trong."
+    textVi: "Món gợi ý hôm nay là unadon và chirashi zushi. Unadon có sốt ngọt rất ngon. Chirashi có nhiều loại cá bên trong."
+    textEn: "Today's specials are unadon and chirashi zushi. The unadon has a delicious sweet sauce. The chirashi has lots of different fish in it."
     textRomaji: "Kyou no osusume wa, unadon to chirashi zushi desu. Unadon wa, amai tare ga oishii desu yo. Chirashi zushi wa, iroiro na sakana ga haitte imasu."
     textEnglishIpa: 
     animationCue: talk
     voiceClip: {fileID: 0}
     choices:
     - textJa: "うな丼をお願いします。"
-      textEn: "Cho tôi unadon nhé."
+      textVi: "Cho tôi unadon nhé."
+      textEn: "The unadon, please."
       nextNodeId: n_order_unadon
       scoreModifiers:
       - category: Grammar
@@ -530,7 +571,8 @@ MonoBehaviour:
       vocabularyTags:
       - vocab.n5.unagi
     - textJa: "ちらし寿司をお願いします。"
-      textEn: "Cho tôi chirashi zushi nhé."
+      textVi: "Cho tôi chirashi zushi nhé."
+      textEn: "The chirashi zushi, please."
       nextNodeId: n_order_chirashi
       scoreModifiers:
       - category: Grammar
@@ -541,7 +583,8 @@ MonoBehaviour:
       vocabularyTags:
       - vocab.n5.chirashi
     - textJa: "アレルギーがあります。"
-      textEn: "Tôi bị dị ứng."
+      textVi: "Tôi bị dị ứng."
+      textEn: "I have an allergy."
       nextNodeId: n_allergy_ask
       scoreModifiers:
       - category: ResponseAccuracy
@@ -552,7 +595,8 @@ MonoBehaviour:
       vocabularyTags:
       - vocab.n5.arerugii
     - textJa: "おいしいです。"
-      textEn: "Ngon quá ạ."
+      textVi: "Ngon quá ạ."
+      textEn: "It's delicious."
       nextNodeId: n_recommend_wrong
       scoreModifiers:
       - category: ResponseAccuracy
@@ -571,7 +615,8 @@ MonoBehaviour:
     speakerId: npc_sushi_chef
     textJa: "まだ食べていませんよ。どちらにしますか。"
     textReading: "まだたべていませんよ。どちらにしますか。"
-    textEn: "Quý khách chưa ăn mà. Quý khách chọn món nào ạ?"
+    textVi: "Quý khách chưa ăn mà. Quý khách chọn món nào ạ?"
+    textEn: "You haven't eaten yet. Which dish would you like?"
     textRomaji: "Mada tabete imasen yo. Dochira ni shimasu ka?"
     textEnglishIpa: 
     animationCue: talk
@@ -588,14 +633,16 @@ MonoBehaviour:
     speakerId: npc_sushi_chef
     textJa: "アレルギーですか。何のアレルギーですか。"
     textReading: "アレルギーですか。なんのアレルギーですか。"
-    textEn: "Dị ứng à? Quý khách dị ứng với gì ạ?"
+    textVi: "Dị ứng à? Quý khách dị ứng với gì ạ?"
+    textEn: "An allergy? What are you allergic to?"
     textRomaji: "Arerugii desu ka. Nan no arerugii desu ka?"
     textEnglishIpa: 
     animationCue: point
     voiceClip: {fileID: 0}
     choices:
     - textJa: "えびです。"
-      textEn: "Tôm ạ."
+      textVi: "Tôm ạ."
+      textEn: "Shrimp."
       nextNodeId: n_allergy_shrimp
       scoreModifiers:
       - category: Vocabulary
@@ -605,7 +652,8 @@ MonoBehaviour:
       vocabularyTags:
       - vocab.n5.ebi
     - textJa: "たまごです。"
-      textEn: "Trứng ạ."
+      textVi: "Trứng ạ."
+      textEn: "Eggs."
       nextNodeId: n_allergy_egg
       scoreModifiers:
       - category: Vocabulary
@@ -625,7 +673,8 @@ MonoBehaviour:
     speakerId: npc_sushi_chef
     textJa: "えびですね。ちらし寿司にはえびが入っています。うな丼は大丈夫ですよ。"
     textReading: "えびですね。ちらしずしにはえびがはいっています。うなどんはだいじょうぶですよ。"
-    textEn: "Tôm nhỉ. Chirashi có tôm bên trong. Unadon thì không sao đâu ạ."
+    textVi: "Tôm nhỉ. Chirashi có tôm bên trong. Unadon thì không sao đâu ạ."
+    textEn: "Shrimp. The chirashi has shrimp in it. The unadon is fine."
     textRomaji: "Ebi desu ne. Chirashi zushi ni wa ebi ga haitte imasu. Unadon wa daijoubu desu yo."
     textEnglishIpa: 
     animationCue: point
@@ -642,7 +691,8 @@ MonoBehaviour:
     speakerId: npc_sushi_chef
     textJa: "たまごですね。ちらし寿司にはたまごやきが入っています。うな丼は大丈夫ですよ。"
     textReading: "たまごですね。ちらしずしにはたまごやきがはいっています。うなどんはだいじょうぶですよ。"
-    textEn: "Trứng nhỉ. Chirashi có trứng cuộn bên trong. Unadon thì không sao đâu ạ."
+    textVi: "Trứng nhỉ. Chirashi có trứng cuộn bên trong. Unadon thì không sao đâu ạ."
+    textEn: "Eggs. The chirashi has rolled omelette in it. The unadon is fine."
     textRomaji: "Tamago desu ne. Chirashi zushi ni wa tamagoyaki ga haitte imasu. Unadon wa daijoubu desu yo."
     textEnglishIpa: 
     animationCue: point
@@ -659,14 +709,16 @@ MonoBehaviour:
     speakerId: npc_sushi_chef
     textJa: "では、どれにしますか。"
     textReading: "では、どれにしますか。"
-    textEn: "Vậy quý khách chọn món nào ạ?"
+    textVi: "Vậy quý khách chọn món nào ạ?"
+    textEn: "So, which dish would you like?"
     textRomaji: "Dewa, dore ni shimasu ka?"
     textEnglishIpa: 
     animationCue: talk
     voiceClip: {fileID: 0}
     choices:
     - textJa: "うな丼をお願いします。"
-      textEn: "Cho tôi unadon nhé."
+      textVi: "Cho tôi unadon nhé."
+      textEn: "The unadon, please."
       nextNodeId: n_order_unadon
       scoreModifiers:
       - category: Grammar
@@ -677,7 +729,8 @@ MonoBehaviour:
       vocabularyTags:
       - vocab.n5.unagi
     - textJa: "まぐろとサーモンをください。"
-      textEn: "Cho tôi cá ngừ và cá hồi."
+      textVi: "Cho tôi cá ngừ và cá hồi."
+      textEn: "Tuna and salmon, please."
       nextNodeId: n_order_nigiri
       scoreModifiers:
       - category: Grammar
@@ -690,7 +743,8 @@ MonoBehaviour:
       - vocab.n5.maguro
       - vocab.n5.sake
     - textJa: "ちらし寿司をお願いします。"
-      textEn: "Cho tôi chirashi zushi nhé."
+      textVi: "Cho tôi chirashi zushi nhé."
+      textEn: "The chirashi zushi, please."
       nextNodeId: n_allergy_warn
       scoreModifiers:
       - category: ResponseAccuracy
@@ -709,7 +763,8 @@ MonoBehaviour:
     speakerId: npc_sushi_chef
     textJa: "それにはえびとたまごが入っていますよ。あぶないですから、ほかのものにしましょう。"
     textReading: "それにはえびとたまごがはいっていますよ。あぶないですから、ほかのものにしましょう。"
-    textEn: "Món đó có tôm và trứng đấy ạ. Nguy hiểm nên mình chọn món khác nhé."
+    textVi: "Món đó có tôm và trứng đấy ạ. Nguy hiểm nên mình chọn món khác nhé."
+    textEn: "That one has shrimp and egg in it. It's not safe, so let's choose another dish."
     textRomaji: "Sore ni wa ebi to tamago ga haitte imasu yo. Abunai desu kara, hoka no mono ni shimashou."
     textEnglishIpa: 
     animationCue: point
@@ -726,7 +781,8 @@ MonoBehaviour:
     speakerId: npc_sushi_staff
     textJa: "かしこまりました。うな丼ですね。少々お待ちください。"
     textReading: "かしこまりました。うなどんですね。しょうしょうおまちください。"
-    textEn: "Vâng ạ. Quý khách gọi unadon nhỉ. Xin chờ một chút."
+    textVi: "Vâng ạ. Quý khách gọi unadon nhỉ. Xin chờ một chút."
+    textEn: "Certainly. One unadon. Please wait a moment."
     textRomaji: "Kashikomarimashita. Unadon desu ne. Shoushou omachi kudasai."
     textEnglishIpa: 
     animationCue: bow
@@ -743,7 +799,8 @@ MonoBehaviour:
     speakerId: npc_sushi_staff
     textJa: "かしこまりました。ちらし寿司ですね。少々お待ちください。"
     textReading: "かしこまりました。ちらしずしですね。しょうしょうおまちください。"
-    textEn: "Vâng ạ. Quý khách gọi chirashi zushi nhỉ. Xin chờ một chút."
+    textVi: "Vâng ạ. Quý khách gọi chirashi zushi nhỉ. Xin chờ một chút."
+    textEn: "Certainly. One chirashi zushi. Please wait a moment."
     textRomaji: "Kashikomarimashita. Chirashi zushi desu ne. Shoushou omachi kudasai."
     textEnglishIpa: 
     animationCue: bow
@@ -760,7 +817,8 @@ MonoBehaviour:
     speakerId: npc_sushi_staff
     textJa: "かしこまりました。まぐろとサーモンですね。"
     textReading: "かしこまりました。まぐろとサーモンですね。"
-    textEn: "Vâng ạ. Cá ngừ và cá hồi nhỉ."
+    textVi: "Vâng ạ. Cá ngừ và cá hồi nhỉ."
+    textEn: "Certainly. Tuna and salmon."
     textRomaji: "Kashikomarimashita. Maguro to saamon desu ne."
     textEnglishIpa: 
     animationCue: bow
@@ -777,7 +835,8 @@ MonoBehaviour:
     speakerId: npc_sushi_staff
     textJa: "かしこまりました。「まぐろとサーモンをください」と言うと、もっとていねいですよ。"
     textReading: "かしこまりました。「まぐろとサーモンをください」というと、もっとていねいですよ。"
-    textEn: "Vâng ạ. Nói \"maguro to saamon wo kudasai\" sẽ lịch sự hơn đấy."
+    textVi: "Vâng ạ. Nói \"maguro to saamon wo kudasai\" sẽ lịch sự hơn đấy."
+    textEn: "Certainly. \"Maguro to saamon wo kudasai\" sounds more polite."
     textRomaji: "Kashikomarimashita. \"Maguro to saamon wo kudasai\" to iu to, motto teinei desu yo."
     textEnglishIpa: 
     animationCue: talk
@@ -794,14 +853,16 @@ MonoBehaviour:
     speakerId: npc_sushi_chef
     textJa: "わさびは大丈夫ですか。"
     textReading: "わさびはだいじょうぶですか。"
-    textEn: "Quý khách dùng wasabi được không ạ?"
+    textVi: "Quý khách dùng wasabi được không ạ?"
+    textEn: "Is wasabi okay for you?"
     textRomaji: "Wasabi wa daijoubu desu ka?"
     textEnglishIpa: 
     animationCue: talk
     voiceClip: {fileID: 0}
     choices:
     - textJa: "大丈夫です。"
-      textEn: "Được ạ."
+      textVi: "Được ạ."
+      textEn: "Yes, it's fine."
       nextNodeId: n_wasabi_ok
       scoreModifiers:
       - category: Grammar
@@ -812,7 +873,8 @@ MonoBehaviour:
       vocabularyTags:
       - vocab.n5.wasabi
     - textJa: "わさびなしでお願いします。"
-      textEn: "Cho tôi không wasabi nhé."
+      textVi: "Cho tôi không wasabi nhé."
+      textEn: "No wasabi, please."
       nextNodeId: n_wasabi_none
       scoreModifiers:
       - category: Grammar
@@ -823,7 +885,8 @@ MonoBehaviour:
       vocabularyTags:
       - vocab.n5.wasabi
     - textJa: "わさびをください。"
-      textEn: "Cho tôi wasabi."
+      textVi: "Cho tôi wasabi."
+      textEn: "Give me wasabi."
       nextNodeId: n_wasabi_wrong
       scoreModifiers:
       - category: ResponseAccuracy
@@ -842,7 +905,8 @@ MonoBehaviour:
     speakerId: npc_sushi_chef
     textJa: "はい、ふつうにしますね。"
     textReading: "はい、ふつうにしますね。"
-    textEn: "Vâng, tôi làm như bình thường nhé."
+    textVi: "Vâng, tôi làm như bình thường nhé."
+    textEn: "Okay, I'll make it as usual."
     textRomaji: "Hai, futsuu ni shimasu ne."
     textEnglishIpa: 
     animationCue: talk
@@ -859,7 +923,8 @@ MonoBehaviour:
     speakerId: npc_sushi_chef
     textJa: "わかりました。わさびなしですね。"
     textReading: "わかりました。わさびなしですね。"
-    textEn: "Tôi hiểu rồi ạ. Không wasabi nhé."
+    textVi: "Tôi hiểu rồi ạ. Không wasabi nhé."
+    textEn: "I understand. No wasabi."
     textRomaji: "Wakarimashita. Wasabi nashi desu ne."
     textEnglishIpa: 
     animationCue: bow
@@ -876,7 +941,8 @@ MonoBehaviour:
     speakerId: npc_sushi_chef
     textJa: "あ、たくさんですか？いえ、「大丈夫です」か「なしでお願いします」ですよ。"
     textReading: "あ、たくさんですか？いえ、「だいじょうぶです」か「なしでおねがいします」ですよ。"
-    textEn: "À, quý khách muốn nhiều à? Không, phải trả lời \"daijoubu desu\" hoặc \"nashi de onegaishimasu\" cơ ạ."
+    textVi: "À, quý khách muốn nhiều à? Không, phải trả lời \"daijoubu desu\" hoặc \"nashi de onegaishimasu\" cơ ạ."
+    textEn: "Ah, you want lots of it? No, you should answer \"daijoubu desu\" or \"nashi de onegaishimasu\"."
     textRomaji: "A, takusan desu ka? Ie, \"daijoubu desu\" ka \"nashi de onegaishimasu\" desu yo."
     textEnglishIpa: 
     animationCue: point
@@ -893,7 +959,8 @@ MonoBehaviour:
     speakerId: npc_sushi_chef
     textJa: "お待たせしました。まぐろとサーモンです。しょうゆは、さかなにつけてください。どうぞ。"
     textReading: "おまたせしました。まぐろとサーモンです。しょうゆは、さかなにつけてください。どうぞ。"
-    textEn: "Xin lỗi đã để quý khách chờ. Cá ngừ và cá hồi ạ. Nước tương thì chấm vào phần cá nhé. Mời quý khách."
+    textVi: "Xin lỗi đã để quý khách chờ. Cá ngừ và cá hồi ạ. Nước tương thì chấm vào phần cá nhé. Mời quý khách."
+    textEn: "Sorry to keep you waiting. Tuna and salmon. Dip the fish side in the soy sauce. Enjoy."
     textRomaji: "Omatase shimashita. Maguro to saamon desu. Shouyu wa, sakana ni tsukete kudasai. Douzo."
     textEnglishIpa: 
     animationCue: point
@@ -910,7 +977,8 @@ MonoBehaviour:
     speakerId: npc_sushi_staff
     textJa: "お待たせしました。うな丼です。お味噌汁もどうぞ。"
     textReading: "おまたせしました。うなどんです。おみそしるもどうぞ。"
-    textEn: "Xin lỗi đã để quý khách chờ. Unadon ạ. Có cả súp miso, mời quý khách."
+    textVi: "Xin lỗi đã để quý khách chờ. Unadon ạ. Có cả súp miso, mời quý khách."
+    textEn: "Sorry to keep you waiting. Unadon. It comes with miso soup. Enjoy."
     textRomaji: "Omatase shimashita. Unadon desu. Omisoshiru mo douzo."
     textEnglishIpa: 
     animationCue: bow
@@ -927,7 +995,8 @@ MonoBehaviour:
     speakerId: npc_sushi_staff
     textJa: "お待たせしました。ちらし寿司です。お味噌汁もどうぞ。"
     textReading: "おまたせしました。ちらしずしです。おみそしるもどうぞ。"
-    textEn: "Xin lỗi đã để quý khách chờ. Chirashi zushi ạ. Có cả súp miso, mời quý khách."
+    textVi: "Xin lỗi đã để quý khách chờ. Chirashi zushi ạ. Có cả súp miso, mời quý khách."
+    textEn: "Sorry to keep you waiting. Chirashi zushi. It comes with miso soup. Enjoy."
     textRomaji: "Omatase shimashita. Chirashi zushi desu. Omisoshiru mo douzo."
     textEnglishIpa: 
     animationCue: bow
@@ -944,14 +1013,16 @@ MonoBehaviour:
     speakerId: npc_sushi_chef
     textJa: "ごゆっくりどうぞ。"
     textReading: "ごゆっくりどうぞ。"
-    textEn: "Xin mời quý khách dùng bữa thong thả ạ."
+    textVi: "Xin mời quý khách dùng bữa thong thả ạ."
+    textEn: "Please enjoy your meal."
     textRomaji: "Goyukkuri douzo."
     textEnglishIpa: 
     animationCue: bow
     voiceClip: {fileID: 0}
     choices:
     - textJa: "いただきます。"
-      textEn: "Xin phép được ăn ạ."
+      textVi: "Xin phép được ăn ạ."
+      textEn: "I'll gladly eat."
       nextNodeId: nn_taste
       scoreModifiers:
       - category: Vocabulary
@@ -961,7 +1032,8 @@ MonoBehaviour:
       vocabularyTags:
       - vocab.n5.itadakimasu
     - textJa: "ありがとうございます。"
-      textEn: "Cảm ơn ạ."
+      textVi: "Cảm ơn ạ."
+      textEn: "Thank you."
       nextNodeId: nn_eat_thanks
       scoreModifiers:
       - category: ResponseAccuracy
@@ -971,7 +1043,8 @@ MonoBehaviour:
       vocabularyTags:
       - vocab.n5.arigatou_gozaimasu
     - textJa: "いただきました。"
-      textEn: "Tôi đã ăn xong rồi ạ."
+      textVi: "Tôi đã ăn xong rồi ạ."
+      textEn: "I've finished eating."
       nextNodeId: nn_eat_wrong
       scoreModifiers:
       - category: Grammar
@@ -990,7 +1063,8 @@ MonoBehaviour:
     speakerId: npc_sushi_chef
     textJa: "いえいえ。食べるときは「いただきます」と言いましょう。どうぞ。"
     textReading: "いえいえ。たべるときは「いただきます」といいましょう。どうぞ。"
-    textEn: "Không có gì ạ. Khi bắt đầu ăn hãy nói \"itadakimasu\" nhé. Mời quý khách."
+    textVi: "Không có gì ạ. Khi bắt đầu ăn hãy nói \"itadakimasu\" nhé. Mời quý khách."
+    textEn: "You're welcome. When you start eating, say \"itadakimasu\". Enjoy."
     textRomaji: "Ie ie. Taberu toki wa \"itadakimasu\" to iimashou. Douzo."
     textEnglishIpa: 
     animationCue: talk
@@ -1007,7 +1081,8 @@ MonoBehaviour:
     speakerId: npc_sushi_chef
     textJa: "あ、まだ食べていませんよ。食べる前は「いただきます」です。"
     textReading: "あ、まだたべていませんよ。たべるまえは「いただきます」です。"
-    textEn: "À, quý khách chưa ăn mà. Trước khi ăn thì nói \"itadakimasu\" ạ."
+    textVi: "À, quý khách chưa ăn mà. Trước khi ăn thì nói \"itadakimasu\" ạ."
+    textEn: "Ah, you haven't eaten yet. Before eating, you say \"itadakimasu\"."
     textRomaji: "A, mada tabete imasen yo. Taberu mae wa \"itadakimasu\" desu."
     textEnglishIpa: 
     animationCue: point
@@ -1024,14 +1099,16 @@ MonoBehaviour:
     speakerId: npc_sushi_chef
     textJa: "どうですか。おいしいですか。"
     textReading: "どうですか。おいしいですか。"
-    textEn: "Thế nào ạ? Có ngon không ạ?"
+    textVi: "Thế nào ạ? Có ngon không ạ?"
+    textEn: "How is it? Is it good?"
     textRomaji: "Dou desu ka. Oishii desu ka?"
     textEnglishIpa: 
     animationCue: talk
     voiceClip: {fileID: 0}
     choices:
     - textJa: "おいしいです。"
-      textEn: "Ngon ạ."
+      textVi: "Ngon ạ."
+      textEn: "It's delicious."
       nextNodeId: nn_finish
       scoreModifiers:
       - category: Vocabulary
@@ -1041,7 +1118,8 @@ MonoBehaviour:
       vocabularyTags:
       - vocab.n5.oishii
     - textJa: "おいしかったです。"
-      textEn: "Đã ngon ạ."
+      textVi: "Đã ngon ạ."
+      textEn: "It was delicious."
       nextNodeId: nn_taste_past
       scoreModifiers:
       - category: ResponseAccuracy
@@ -1051,7 +1129,8 @@ MonoBehaviour:
       vocabularyTags:
       - vocab.n5.oishii
     - textJa: "まずいです。"
-      textEn: "Dở ạ."
+      textVi: "Dở ạ."
+      textEn: "It's bad."
       nextNodeId: nn_taste_wrong
       scoreModifiers:
       - category: ResponseAccuracy
@@ -1070,7 +1149,8 @@ MonoBehaviour:
     speakerId: npc_sushi_chef
     textJa: "ありがとうございます。食べているときは「おいしいです」、食べたあとは「おいしかったです」ですよ。"
     textReading: "ありがとうございます。たべているときは「おいしいです」、たべたあとは「おいしかったです」ですよ。"
-    textEn: "Cảm ơn quý khách. Khi đang ăn thì nói \"oishii desu\", ăn xong thì nói \"oishikatta desu\" nhé."
+    textVi: "Cảm ơn quý khách. Khi đang ăn thì nói \"oishii desu\", ăn xong thì nói \"oishikatta desu\" nhé."
+    textEn: "Thank you. While eating say \"oishii desu\", and after you finish say \"oishikatta desu\"."
     textRomaji: "Arigatou gozaimasu. Tabete iru toki wa \"oishii desu\", tabeta ato wa \"oishikatta desu\" desu yo."
     textEnglishIpa: 
     animationCue: bow
@@ -1087,7 +1167,8 @@ MonoBehaviour:
     speakerId: npc_sushi_chef
     textJa: "えっ！それは失礼ですよ。「おいしいです」と言いましょう。"
     textReading: "えっ！それはしつれいですよ。「おいしいです」といいましょう。"
-    textEn: "Ơ! Thế là thất lễ đấy ạ. Hãy nói \"oishii desu\" nhé."
+    textVi: "Ơ! Thế là thất lễ đấy ạ. Hãy nói \"oishii desu\" nhé."
+    textEn: "Oh! That's rude. Please say \"oishii desu\"."
     textRomaji: "E! Sore wa shitsurei desu yo. \"Oishii desu\" to iimashou."
     textEnglishIpa: 
     animationCue: point
@@ -1104,14 +1185,16 @@ MonoBehaviour:
     speakerId: 
     textJa: "食べ終わりました。店員さんを呼びましょう。"
     textReading: "たべおわりました。てんいんさんをよびましょう。"
-    textEn: "Bạn đã ăn xong. Hãy gọi nhân viên để thanh toán."
+    textVi: "Bạn đã ăn xong. Hãy gọi nhân viên để thanh toán."
+    textEn: "You've finished eating. Call a staff member to pay."
     textRomaji: "Tabeowarimashita. Tenin-san wo yobimashou."
     textEnglishIpa: 
     animationCue: 
     voiceClip: {fileID: 0}
     choices:
     - textJa: "すみません、お会計をお願いします。"
-      textEn: "Xin lỗi, cho tôi thanh toán ạ."
+      textVi: "Xin lỗi, cho tôi thanh toán ạ."
+      textEn: "Excuse me, the bill, please."
       nextNodeId: nn_total
       scoreModifiers:
       - category: Grammar
@@ -1123,7 +1206,8 @@ MonoBehaviour:
       - vocab.n5.okaikei
       - vocab.n5.sumimasen
     - textJa: "いくらですか。"
-      textEn: "Bao nhiêu tiền ạ?"
+      textVi: "Bao nhiêu tiền ạ?"
+      textEn: "How much is it?"
       nextNodeId: nn_total_asked
       scoreModifiers:
       - category: ResponseAccuracy
@@ -1133,7 +1217,8 @@ MonoBehaviour:
       vocabularyTags:
       - vocab.n5.ikura
     - textJa: "お金をください。"
-      textEn: "Cho tôi tiền."
+      textVi: "Cho tôi tiền."
+      textEn: "Give me money."
       nextNodeId: nn_bill_wrong
       scoreModifiers:
       - category: Grammar
@@ -1152,7 +1237,8 @@ MonoBehaviour:
     speakerId: npc_sushi_staff
     textJa: "はい。お会計は530円です。"
     textReading: "はい。おかいけいはごひゃくさんじゅうえんです。"
-    textEn: "Vâng. Tổng cộng là 530 yên ạ."
+    textVi: "Vâng. Tổng cộng là 530 yên ạ."
+    textEn: "Certainly. That will be 530 yen in total."
     textRomaji: "Hai. Okaikei wa gohyaku sanjuu-en desu."
     textEnglishIpa: 
     animationCue: talk
@@ -1169,7 +1255,8 @@ MonoBehaviour:
     speakerId: npc_sushi_staff
     textJa: "「お会計をお願いします」と言うと、もっといいですよ。530円です。"
     textReading: "「おかいけいをおねがいします」というと、もっといいですよ。ごひゃくさんじゅうえんです。"
-    textEn: "Nói \"okaikei wo onegaishimasu\" sẽ hay hơn đấy ạ. Tổng cộng là 530 yên ạ."
+    textVi: "Nói \"okaikei wo onegaishimasu\" sẽ hay hơn đấy ạ. Tổng cộng là 530 yên ạ."
+    textEn: "\"Okaikei wo onegaishimasu\" sounds better. That will be 530 yen in total."
     textRomaji: "\"Okaikei wo onegaishimasu\" to iu to, motto ii desu yo. gohyaku sanjuu-en desu."
     textEnglishIpa: 
     animationCue: talk
@@ -1186,7 +1273,8 @@ MonoBehaviour:
     speakerId: npc_sushi_staff
     textJa: "えっ？お金をもらうんですか？お会計は「お会計をお願いします」ですよ。"
     textReading: "えっ？おかねをもらうんですか？おかいけいは「おかいけいをおねがいします」ですよ。"
-    textEn: "Ơ? Quý khách muốn lấy tiền của tôi sao? Xin thanh toán thì nói \"okaikei wo onegaishimasu\" nhé."
+    textVi: "Ơ? Quý khách muốn lấy tiền của tôi sao? Xin thanh toán thì nói \"okaikei wo onegaishimasu\" nhé."
+    textEn: "Huh? You want my money? To ask for the bill, say \"okaikei wo onegaishimasu\"."
     textRomaji: "E? Okane wo morau n desu ka? Okaikei wa \"okaikei wo onegaishimasu\" desu yo."
     textEnglishIpa: 
     animationCue: point
@@ -1203,14 +1291,16 @@ MonoBehaviour:
     speakerId: npc_sushi_staff
     textJa: "現金ですか、カードですか。"
     textReading: "げんきんですか、カードですか。"
-    textEn: "Quý khách trả bằng tiền mặt hay thẻ ạ?"
+    textVi: "Quý khách trả bằng tiền mặt hay thẻ ạ?"
+    textEn: "Will you pay in cash or by card?"
     textRomaji: "Genkin desu ka, kaado desu ka?"
     textEnglishIpa: 
     animationCue: talk
     voiceClip: {fileID: 0}
     choices:
     - textJa: "現金でお願いします。"
-      textEn: "Tôi trả bằng tiền mặt ạ."
+      textVi: "Tôi trả bằng tiền mặt ạ."
+      textEn: "I'll pay in cash."
       nextNodeId: nn_change
       scoreModifiers:
       - category: Grammar
@@ -1221,7 +1311,8 @@ MonoBehaviour:
       vocabularyTags:
       - vocab.n5.genkin
     - textJa: "カードで払えますか。"
-      textEn: "Tôi trả bằng thẻ được không ạ?"
+      textVi: "Tôi trả bằng thẻ được không ạ?"
+      textEn: "Can I pay by card?"
       nextNodeId: nn_card_no
       scoreModifiers:
       - category: ResponseAccuracy
@@ -1231,7 +1322,8 @@ MonoBehaviour:
       vocabularyTags:
       - vocab.n5.kaado
     - textJa: "払います。"
-      textEn: "Tôi trả."
+      textVi: "Tôi trả."
+      textEn: "I pay."
       nextNodeId: nn_pay_short
       scoreModifiers:
       - category: Grammar
@@ -1251,7 +1343,8 @@ MonoBehaviour:
     speakerId: npc_sushi_staff
     textJa: "はい。現金ですね。"
     textReading: "はい。げんきんですね。"
-    textEn: "Vâng. Tiền mặt nhỉ ạ."
+    textVi: "Vâng. Tiền mặt nhỉ ạ."
+    textEn: "Certainly. Cash, then."
     textRomaji: "Hai. Genkin desu ne."
     textEnglishIpa: 
     animationCue: talk
@@ -1268,14 +1361,16 @@ MonoBehaviour:
     speakerId: npc_sushi_staff
     textJa: "すみません、カードは使えません。現金だけです。"
     textReading: "すみません、カードはつかえません。げんきんだけです。"
-    textEn: "Xin lỗi, quán không dùng thẻ được ạ. Chỉ nhận tiền mặt."
+    textVi: "Xin lỗi, quán không dùng thẻ được ạ. Chỉ nhận tiền mặt."
+    textEn: "Sorry, we don't take cards. Cash only."
     textRomaji: "Sumimasen, kaado wa tsukaemasen. Genkin dake desu."
     textEnglishIpa: 
     animationCue: bow
     voiceClip: {fileID: 0}
     choices:
     - textJa: "はい、現金で払います。"
-      textEn: "Vâng, tôi trả bằng tiền mặt."
+      textVi: "Vâng, tôi trả bằng tiền mặt."
+      textEn: "Okay, I'll pay in cash."
       nextNodeId: nn_change
       scoreModifiers:
       - category: Grammar
@@ -1286,7 +1381,8 @@ MonoBehaviour:
       vocabularyTags:
       - vocab.n5.genkin
     - textJa: "いいえ、カードです。"
-      textEn: "Không, tôi dùng thẻ."
+      textVi: "Không, tôi dùng thẻ."
+      textEn: "No, I'll use a card."
       nextNodeId: nn_card_again
       scoreModifiers:
       - category: ResponseAccuracy
@@ -1305,7 +1401,8 @@ MonoBehaviour:
     speakerId: npc_sushi_staff
     textJa: "すみません、本当にカードは使えません。現金でお願いします。"
     textReading: "すみません、ほんとうにカードはつかえません。げんきんでおねがいします。"
-    textEn: "Xin lỗi, thật sự quán không dùng được thẻ ạ. Xin quý khách trả bằng tiền mặt."
+    textVi: "Xin lỗi, thật sự quán không dùng được thẻ ạ. Xin quý khách trả bằng tiền mặt."
+    textEn: "Sorry, we really can't take cards. Please pay in cash."
     textRomaji: "Sumimasen, hontou ni kaado wa tsukaemasen. Genkin de onegaishimasu."
     textEnglishIpa: 
     animationCue: point
@@ -1322,7 +1419,8 @@ MonoBehaviour:
     speakerId: npc_sushi_staff
     textJa: "はい、530円ですね。ありがとうございます。"
     textReading: "はい、ごひゃくさんじゅうえんですね。ありがとうございます。"
-    textEn: "Vâng, Tổng cộng là 530 yên ạ nhỉ. Xin cảm ơn quý khách."
+    textVi: "Vâng, Tổng cộng là 530 yên ạ nhỉ. Xin cảm ơn quý khách."
+    textEn: "Yes, 530 yen in total. Thank you very much."
     textRomaji: "Hai, gohyaku sanjuu-en desu ne. Arigatou gozaimasu."
     textEnglishIpa: 
     animationCue: bow
@@ -1339,14 +1437,16 @@ MonoBehaviour:
     speakerId: 
     textJa: "店を出ます。何と言いますか。"
     textReading: "みせをでます。なんといいますか。"
-    textEn: "Bạn rời quán. Bạn sẽ nói gì?"
+    textVi: "Bạn rời quán. Bạn sẽ nói gì?"
+    textEn: "You leave the restaurant. What do you say?"
     textRomaji: "Mise wo demasu. Nan to iimasu ka?"
     textEnglishIpa: 
     animationCue: 
     voiceClip: {fileID: 0}
     choices:
     - textJa: "ごちそうさまでした。"
-      textEn: "Cảm ơn vì bữa ăn ngon ạ."
+      textVi: "Cảm ơn vì bữa ăn ngon ạ."
+      textEn: "Thank you for the delicious meal."
       nextNodeId: nn_leave_ok
       scoreModifiers:
       - category: Vocabulary
@@ -1356,7 +1456,8 @@ MonoBehaviour:
       vocabularyTags:
       - vocab.n5.gochisousama_deshita
     - textJa: "さようなら。"
-      textEn: "Tạm biệt ạ."
+      textVi: "Tạm biệt ạ."
+      textEn: "Goodbye."
       nextNodeId: nn_leave_casual
       scoreModifiers:
       - category: ResponseAccuracy
@@ -1366,7 +1467,8 @@ MonoBehaviour:
       vocabularyTags:
       - vocab.n5.sayounara
     - textJa: "いただきます。"
-      textEn: "Xin phép được ăn ạ."
+      textVi: "Xin phép được ăn ạ."
+      textEn: "I'll gladly eat."
       nextNodeId: nn_leave_wrong
       scoreModifiers:
       - category: ResponseAccuracy
@@ -1385,7 +1487,8 @@ MonoBehaviour:
     speakerId: npc_sushi_chef
     textJa: "ありがとうございました。またどうぞ。"
     textReading: "ありがとうございました。またどうぞ。"
-    textEn: "Xin cảm ơn quý khách. Mời quý khách quay lại ạ."
+    textVi: "Xin cảm ơn quý khách. Mời quý khách quay lại ạ."
+    textEn: "Thank you very much. Please come again."
     textRomaji: "Arigatou gozaimashita. Mata douzo."
     textEnglishIpa: 
     animationCue: bow
@@ -1402,7 +1505,8 @@ MonoBehaviour:
     speakerId: npc_sushi_staff
     textJa: "ありがとうございました。店を出るときは「ごちそうさまでした」と言うと、うれしいです。"
     textReading: "ありがとうございました。みせをでるときは「ごちそうさまでした」というと、うれしいです。"
-    textEn: "Xin cảm ơn quý khách. Khi rời quán, nếu quý khách nói \"gochisousama deshita\" chúng tôi sẽ rất vui ạ."
+    textVi: "Xin cảm ơn quý khách. Khi rời quán, nếu quý khách nói \"gochisousama deshita\" chúng tôi sẽ rất vui ạ."
+    textEn: "Thank you very much. When you leave, we'd be very happy if you said \"gochisousama deshita\"."
     textRomaji: "Arigatou gozaimashita. Mise wo deru toki wa \"gochisousama deshita\" to iu to, ureshii desu."
     textEnglishIpa: 
     animationCue: talk
@@ -1419,7 +1523,8 @@ MonoBehaviour:
     speakerId: npc_sushi_staff
     textJa: "あ、「いただきます」は食べる前ですよ。「ごちそうさまでした」ですね。"
     textReading: "あ、「いただきます」はたべるまえですよ。「ごちそうさまでした」ですね。"
-    textEn: "À, \"itadakimasu\" là lời trước khi ăn ạ. Khi ra về thì nói \"gochisousama deshita\" nhé."
+    textVi: "À, \"itadakimasu\" là lời trước khi ăn ạ. Khi ra về thì nói \"gochisousama deshita\" nhé."
+    textEn: "Ah, \"itadakimasu\" is said before eating. When you leave, say \"gochisousama deshita\"."
     textRomaji: "A, \"itadakimasu\" wa taberu mae desu yo. \"Gochisousama deshita\" desu ne."
     textEnglishIpa: 
     animationCue: point
@@ -1436,14 +1541,16 @@ MonoBehaviour:
     speakerId: npc_sushi_staff
     textJa: "ごゆっくりどうぞ。"
     textReading: "ごゆっくりどうぞ。"
-    textEn: "Xin mời quý khách dùng bữa thong thả ạ."
+    textVi: "Xin mời quý khách dùng bữa thong thả ạ."
+    textEn: "Please enjoy your meal."
     textRomaji: "Goyukkuri douzo."
     textEnglishIpa: 
     animationCue: bow
     voiceClip: {fileID: 0}
     choices:
     - textJa: "いただきます。"
-      textEn: "Xin phép được ăn ạ."
+      textVi: "Xin phép được ăn ạ."
+      textEn: "I'll gladly eat."
       nextNodeId: nd_taste
       scoreModifiers:
       - category: Vocabulary
@@ -1453,7 +1560,8 @@ MonoBehaviour:
       vocabularyTags:
       - vocab.n5.itadakimasu
     - textJa: "ありがとうございます。"
-      textEn: "Cảm ơn ạ."
+      textVi: "Cảm ơn ạ."
+      textEn: "Thank you."
       nextNodeId: nd_eat_thanks
       scoreModifiers:
       - category: ResponseAccuracy
@@ -1463,7 +1571,8 @@ MonoBehaviour:
       vocabularyTags:
       - vocab.n5.arigatou_gozaimasu
     - textJa: "いただきました。"
-      textEn: "Tôi đã ăn xong rồi ạ."
+      textVi: "Tôi đã ăn xong rồi ạ."
+      textEn: "I've finished eating."
       nextNodeId: nd_eat_wrong
       scoreModifiers:
       - category: Grammar
@@ -1482,7 +1591,8 @@ MonoBehaviour:
     speakerId: npc_sushi_staff
     textJa: "いえいえ。食べるときは「いただきます」と言いましょう。どうぞ。"
     textReading: "いえいえ。たべるときは「いただきます」といいましょう。どうぞ。"
-    textEn: "Không có gì ạ. Khi bắt đầu ăn hãy nói \"itadakimasu\" nhé. Mời quý khách."
+    textVi: "Không có gì ạ. Khi bắt đầu ăn hãy nói \"itadakimasu\" nhé. Mời quý khách."
+    textEn: "You're welcome. When you start eating, say \"itadakimasu\". Enjoy."
     textRomaji: "Ie ie. Taberu toki wa \"itadakimasu\" to iimashou. Douzo."
     textEnglishIpa: 
     animationCue: talk
@@ -1499,7 +1609,8 @@ MonoBehaviour:
     speakerId: npc_sushi_staff
     textJa: "あ、まだ食べていませんよ。食べる前は「いただきます」です。"
     textReading: "あ、まだたべていませんよ。たべるまえは「いただきます」です。"
-    textEn: "À, quý khách chưa ăn mà. Trước khi ăn thì nói \"itadakimasu\" ạ."
+    textVi: "À, quý khách chưa ăn mà. Trước khi ăn thì nói \"itadakimasu\" ạ."
+    textEn: "Ah, you haven't eaten yet. Before eating, you say \"itadakimasu\"."
     textRomaji: "A, mada tabete imasen yo. Taberu mae wa \"itadakimasu\" desu."
     textEnglishIpa: 
     animationCue: point
@@ -1516,14 +1627,16 @@ MonoBehaviour:
     speakerId: npc_sushi_chef
     textJa: "どうですか。おいしいですか。"
     textReading: "どうですか。おいしいですか。"
-    textEn: "Thế nào ạ? Có ngon không ạ?"
+    textVi: "Thế nào ạ? Có ngon không ạ?"
+    textEn: "How is it? Is it good?"
     textRomaji: "Dou desu ka. Oishii desu ka?"
     textEnglishIpa: 
     animationCue: talk
     voiceClip: {fileID: 0}
     choices:
     - textJa: "おいしいです。"
-      textEn: "Ngon ạ."
+      textVi: "Ngon ạ."
+      textEn: "It's delicious."
       nextNodeId: nd_finish
       scoreModifiers:
       - category: Vocabulary
@@ -1533,7 +1646,8 @@ MonoBehaviour:
       vocabularyTags:
       - vocab.n5.oishii
     - textJa: "おいしかったです。"
-      textEn: "Đã ngon ạ."
+      textVi: "Đã ngon ạ."
+      textEn: "It was delicious."
       nextNodeId: nd_taste_past
       scoreModifiers:
       - category: ResponseAccuracy
@@ -1543,7 +1657,8 @@ MonoBehaviour:
       vocabularyTags:
       - vocab.n5.oishii
     - textJa: "まずいです。"
-      textEn: "Dở ạ."
+      textVi: "Dở ạ."
+      textEn: "It's bad."
       nextNodeId: nd_taste_wrong
       scoreModifiers:
       - category: ResponseAccuracy
@@ -1562,7 +1677,8 @@ MonoBehaviour:
     speakerId: npc_sushi_chef
     textJa: "ありがとうございます。食べているときは「おいしいです」、食べたあとは「おいしかったです」ですよ。"
     textReading: "ありがとうございます。たべているときは「おいしいです」、たべたあとは「おいしかったです」ですよ。"
-    textEn: "Cảm ơn quý khách. Khi đang ăn thì nói \"oishii desu\", ăn xong thì nói \"oishikatta desu\" nhé."
+    textVi: "Cảm ơn quý khách. Khi đang ăn thì nói \"oishii desu\", ăn xong thì nói \"oishikatta desu\" nhé."
+    textEn: "Thank you. While eating say \"oishii desu\", and after you finish say \"oishikatta desu\"."
     textRomaji: "Arigatou gozaimasu. Tabete iru toki wa \"oishii desu\", tabeta ato wa \"oishikatta desu\" desu yo."
     textEnglishIpa: 
     animationCue: bow
@@ -1579,7 +1695,8 @@ MonoBehaviour:
     speakerId: npc_sushi_chef
     textJa: "えっ！それは失礼ですよ。「おいしいです」と言いましょう。"
     textReading: "えっ！それはしつれいですよ。「おいしいです」といいましょう。"
-    textEn: "Ơ! Thế là thất lễ đấy ạ. Hãy nói \"oishii desu\" nhé."
+    textVi: "Ơ! Thế là thất lễ đấy ạ. Hãy nói \"oishii desu\" nhé."
+    textEn: "Oh! That's rude. Please say \"oishii desu\"."
     textRomaji: "E! Sore wa shitsurei desu yo. \"Oishii desu\" to iimashou."
     textEnglishIpa: 
     animationCue: point
@@ -1596,14 +1713,16 @@ MonoBehaviour:
     speakerId: 
     textJa: "食べ終わりました。店員さんを呼びましょう。"
     textReading: "たべおわりました。てんいんさんをよびましょう。"
-    textEn: "Bạn đã ăn xong. Hãy gọi nhân viên để thanh toán."
+    textVi: "Bạn đã ăn xong. Hãy gọi nhân viên để thanh toán."
+    textEn: "You've finished eating. Call a staff member to pay."
     textRomaji: "Tabeowarimashita. Tenin-san wo yobimashou."
     textEnglishIpa: 
     animationCue: 
     voiceClip: {fileID: 0}
     choices:
     - textJa: "すみません、お会計をお願いします。"
-      textEn: "Xin lỗi, cho tôi thanh toán ạ."
+      textVi: "Xin lỗi, cho tôi thanh toán ạ."
+      textEn: "Excuse me, the bill, please."
       nextNodeId: nd_total
       scoreModifiers:
       - category: Grammar
@@ -1615,7 +1734,8 @@ MonoBehaviour:
       - vocab.n5.okaikei
       - vocab.n5.sumimasen
     - textJa: "いくらですか。"
-      textEn: "Bao nhiêu tiền ạ?"
+      textVi: "Bao nhiêu tiền ạ?"
+      textEn: "How much is it?"
       nextNodeId: nd_total_asked
       scoreModifiers:
       - category: ResponseAccuracy
@@ -1625,7 +1745,8 @@ MonoBehaviour:
       vocabularyTags:
       - vocab.n5.ikura
     - textJa: "お金をください。"
-      textEn: "Cho tôi tiền."
+      textVi: "Cho tôi tiền."
+      textEn: "Give me money."
       nextNodeId: nd_bill_wrong
       scoreModifiers:
       - category: Grammar
@@ -1644,7 +1765,8 @@ MonoBehaviour:
     speakerId: npc_sushi_staff
     textJa: "はい。お会計は1,100円です。"
     textReading: "はい。おかいけいはせんひゃくえんです。"
-    textEn: "Vâng. Tổng cộng là 1.100 yên ạ."
+    textVi: "Vâng. Tổng cộng là 1.100 yên ạ."
+    textEn: "Certainly. That will be 1,100 yen in total."
     textRomaji: "Hai. Okaikei wa sen hyaku-en desu."
     textEnglishIpa: 
     animationCue: talk
@@ -1661,7 +1783,8 @@ MonoBehaviour:
     speakerId: npc_sushi_staff
     textJa: "「お会計をお願いします」と言うと、もっといいですよ。1,100円です。"
     textReading: "「おかいけいをおねがいします」というと、もっといいですよ。せんひゃくえんです。"
-    textEn: "Nói \"okaikei wo onegaishimasu\" sẽ hay hơn đấy ạ. Tổng cộng là 1.100 yên ạ."
+    textVi: "Nói \"okaikei wo onegaishimasu\" sẽ hay hơn đấy ạ. Tổng cộng là 1.100 yên ạ."
+    textEn: "\"Okaikei wo onegaishimasu\" sounds better. That will be 1,100 yen in total."
     textRomaji: "\"Okaikei wo onegaishimasu\" to iu to, motto ii desu yo. sen hyaku-en desu."
     textEnglishIpa: 
     animationCue: talk
@@ -1678,7 +1801,8 @@ MonoBehaviour:
     speakerId: npc_sushi_staff
     textJa: "えっ？お金をもらうんですか？お会計は「お会計をお願いします」ですよ。"
     textReading: "えっ？おかねをもらうんですか？おかいけいは「おかいけいをおねがいします」ですよ。"
-    textEn: "Ơ? Quý khách muốn lấy tiền của tôi sao? Xin thanh toán thì nói \"okaikei wo onegaishimasu\" nhé."
+    textVi: "Ơ? Quý khách muốn lấy tiền của tôi sao? Xin thanh toán thì nói \"okaikei wo onegaishimasu\" nhé."
+    textEn: "Huh? You want my money? To ask for the bill, say \"okaikei wo onegaishimasu\"."
     textRomaji: "E? Okane wo morau n desu ka? Okaikei wa \"okaikei wo onegaishimasu\" desu yo."
     textEnglishIpa: 
     animationCue: point
@@ -1695,14 +1819,16 @@ MonoBehaviour:
     speakerId: npc_sushi_staff
     textJa: "現金ですか、カードですか。"
     textReading: "げんきんですか、カードですか。"
-    textEn: "Quý khách trả bằng tiền mặt hay thẻ ạ?"
+    textVi: "Quý khách trả bằng tiền mặt hay thẻ ạ?"
+    textEn: "Will you pay in cash or by card?"
     textRomaji: "Genkin desu ka, kaado desu ka?"
     textEnglishIpa: 
     animationCue: talk
     voiceClip: {fileID: 0}
     choices:
     - textJa: "現金でお願いします。"
-      textEn: "Tôi trả bằng tiền mặt ạ."
+      textVi: "Tôi trả bằng tiền mặt ạ."
+      textEn: "I'll pay in cash."
       nextNodeId: nd_change
       scoreModifiers:
       - category: Grammar
@@ -1713,7 +1839,8 @@ MonoBehaviour:
       vocabularyTags:
       - vocab.n5.genkin
     - textJa: "カードで払えますか。"
-      textEn: "Tôi trả bằng thẻ được không ạ?"
+      textVi: "Tôi trả bằng thẻ được không ạ?"
+      textEn: "Can I pay by card?"
       nextNodeId: nd_card_no
       scoreModifiers:
       - category: ResponseAccuracy
@@ -1723,7 +1850,8 @@ MonoBehaviour:
       vocabularyTags:
       - vocab.n5.kaado
     - textJa: "払います。"
-      textEn: "Tôi trả."
+      textVi: "Tôi trả."
+      textEn: "I pay."
       nextNodeId: nd_pay_short
       scoreModifiers:
       - category: Grammar
@@ -1743,7 +1871,8 @@ MonoBehaviour:
     speakerId: npc_sushi_staff
     textJa: "はい。現金ですね。"
     textReading: "はい。げんきんですね。"
-    textEn: "Vâng. Tiền mặt nhỉ ạ."
+    textVi: "Vâng. Tiền mặt nhỉ ạ."
+    textEn: "Certainly. Cash, then."
     textRomaji: "Hai. Genkin desu ne."
     textEnglishIpa: 
     animationCue: talk
@@ -1760,14 +1889,16 @@ MonoBehaviour:
     speakerId: npc_sushi_staff
     textJa: "すみません、カードは使えません。現金だけです。"
     textReading: "すみません、カードはつかえません。げんきんだけです。"
-    textEn: "Xin lỗi, quán không dùng thẻ được ạ. Chỉ nhận tiền mặt."
+    textVi: "Xin lỗi, quán không dùng thẻ được ạ. Chỉ nhận tiền mặt."
+    textEn: "Sorry, we don't take cards. Cash only."
     textRomaji: "Sumimasen, kaado wa tsukaemasen. Genkin dake desu."
     textEnglishIpa: 
     animationCue: bow
     voiceClip: {fileID: 0}
     choices:
     - textJa: "はい、現金で払います。"
-      textEn: "Vâng, tôi trả bằng tiền mặt."
+      textVi: "Vâng, tôi trả bằng tiền mặt."
+      textEn: "Okay, I'll pay in cash."
       nextNodeId: nd_change
       scoreModifiers:
       - category: Grammar
@@ -1778,7 +1909,8 @@ MonoBehaviour:
       vocabularyTags:
       - vocab.n5.genkin
     - textJa: "いいえ、カードです。"
-      textEn: "Không, tôi dùng thẻ."
+      textVi: "Không, tôi dùng thẻ."
+      textEn: "No, I'll use a card."
       nextNodeId: nd_card_again
       scoreModifiers:
       - category: ResponseAccuracy
@@ -1797,7 +1929,8 @@ MonoBehaviour:
     speakerId: npc_sushi_staff
     textJa: "すみません、本当にカードは使えません。現金でお願いします。"
     textReading: "すみません、ほんとうにカードはつかえません。げんきんでおねがいします。"
-    textEn: "Xin lỗi, thật sự quán không dùng được thẻ ạ. Xin quý khách trả bằng tiền mặt."
+    textVi: "Xin lỗi, thật sự quán không dùng được thẻ ạ. Xin quý khách trả bằng tiền mặt."
+    textEn: "Sorry, we really can't take cards. Please pay in cash."
     textRomaji: "Sumimasen, hontou ni kaado wa tsukaemasen. Genkin de onegaishimasu."
     textEnglishIpa: 
     animationCue: point
@@ -1814,7 +1947,8 @@ MonoBehaviour:
     speakerId: npc_sushi_staff
     textJa: "はい、1,100円ですね。ありがとうございます。"
     textReading: "はい、せんひゃくえんですね。ありがとうございます。"
-    textEn: "Vâng, Tổng cộng là 1.100 yên ạ nhỉ. Xin cảm ơn quý khách."
+    textVi: "Vâng, Tổng cộng là 1.100 yên ạ nhỉ. Xin cảm ơn quý khách."
+    textEn: "Yes, 1,100 yen in total. Thank you very much."
     textRomaji: "Hai, sen hyaku-en desu ne. Arigatou gozaimasu."
     textEnglishIpa: 
     animationCue: bow
@@ -1831,14 +1965,16 @@ MonoBehaviour:
     speakerId: 
     textJa: "店を出ます。何と言いますか。"
     textReading: "みせをでます。なんといいますか。"
-    textEn: "Bạn rời quán. Bạn sẽ nói gì?"
+    textVi: "Bạn rời quán. Bạn sẽ nói gì?"
+    textEn: "You leave the restaurant. What do you say?"
     textRomaji: "Mise wo demasu. Nan to iimasu ka?"
     textEnglishIpa: 
     animationCue: 
     voiceClip: {fileID: 0}
     choices:
     - textJa: "ごちそうさまでした。"
-      textEn: "Cảm ơn vì bữa ăn ngon ạ."
+      textVi: "Cảm ơn vì bữa ăn ngon ạ."
+      textEn: "Thank you for the delicious meal."
       nextNodeId: nd_leave_ok
       scoreModifiers:
       - category: Vocabulary
@@ -1848,7 +1984,8 @@ MonoBehaviour:
       vocabularyTags:
       - vocab.n5.gochisousama_deshita
     - textJa: "さようなら。"
-      textEn: "Tạm biệt ạ."
+      textVi: "Tạm biệt ạ."
+      textEn: "Goodbye."
       nextNodeId: nd_leave_casual
       scoreModifiers:
       - category: ResponseAccuracy
@@ -1858,7 +1995,8 @@ MonoBehaviour:
       vocabularyTags:
       - vocab.n5.sayounara
     - textJa: "いただきます。"
-      textEn: "Xin phép được ăn ạ."
+      textVi: "Xin phép được ăn ạ."
+      textEn: "I'll gladly eat."
       nextNodeId: nd_leave_wrong
       scoreModifiers:
       - category: ResponseAccuracy
@@ -1877,7 +2015,8 @@ MonoBehaviour:
     speakerId: npc_sushi_chef
     textJa: "ありがとうございました。またどうぞ。"
     textReading: "ありがとうございました。またどうぞ。"
-    textEn: "Xin cảm ơn quý khách. Mời quý khách quay lại ạ."
+    textVi: "Xin cảm ơn quý khách. Mời quý khách quay lại ạ."
+    textEn: "Thank you very much. Please come again."
     textRomaji: "Arigatou gozaimashita. Mata douzo."
     textEnglishIpa: 
     animationCue: bow
@@ -1894,7 +2033,8 @@ MonoBehaviour:
     speakerId: npc_sushi_staff
     textJa: "ありがとうございました。店を出るときは「ごちそうさまでした」と言うと、うれしいです。"
     textReading: "ありがとうございました。みせをでるときは「ごちそうさまでした」というと、うれしいです。"
-    textEn: "Xin cảm ơn quý khách. Khi rời quán, nếu quý khách nói \"gochisousama deshita\" chúng tôi sẽ rất vui ạ."
+    textVi: "Xin cảm ơn quý khách. Khi rời quán, nếu quý khách nói \"gochisousama deshita\" chúng tôi sẽ rất vui ạ."
+    textEn: "Thank you very much. When you leave, we'd be very happy if you said \"gochisousama deshita\"."
     textRomaji: "Arigatou gozaimashita. Mise wo deru toki wa \"gochisousama deshita\" to iu to, ureshii desu."
     textEnglishIpa: 
     animationCue: talk
@@ -1911,7 +2051,8 @@ MonoBehaviour:
     speakerId: npc_sushi_staff
     textJa: "あ、「いただきます」は食べる前ですよ。「ごちそうさまでした」ですね。"
     textReading: "あ、「いただきます」はたべるまえですよ。「ごちそうさまでした」ですね。"
-    textEn: "À, \"itadakimasu\" là lời trước khi ăn ạ. Khi ra về thì nói \"gochisousama deshita\" nhé."
+    textVi: "À, \"itadakimasu\" là lời trước khi ăn ạ. Khi ra về thì nói \"gochisousama deshita\" nhé."
+    textEn: "Ah, \"itadakimasu\" is said before eating. When you leave, say \"gochisousama deshita\"."
     textRomaji: "A, \"itadakimasu\" wa taberu mae desu yo. \"Gochisousama deshita\" desu ne."
     textEnglishIpa: 
     animationCue: point
@@ -1928,7 +2069,8 @@ MonoBehaviour:
     speakerId: npc_sushi_chef
     textJa: "今日は「一人です」「〜でお願いします」「〜をください」「お会計をお願いします」「ごちそうさまでした」を使いましたね。上手でした。また来てください。"
     textReading: "きょうは「ひとりです」「〜でおねがいします」「〜をください」「おかいけいをおねがいします」「ごちそうさまでした」をつかいましたね。じょうずでした。またきてください。"
-    textEn: "Hôm nay bạn đã dùng \"hitori desu\", \"~ de onegaishimasu\", \"~ wo kudasai\", \"okaikei wo onegaishimasu\" và \"gochisousama deshita\". Bạn làm rất tốt. Hãy quay lại nhé."
+    textVi: "Hôm nay bạn đã dùng \"hitori desu\", \"~ de onegaishimasu\", \"~ wo kudasai\", \"okaikei wo onegaishimasu\" và \"gochisousama deshita\". Bạn làm rất tốt. Hãy quay lại nhé."
+    textEn: "Today you used \"hitori desu\", \"~ de onegaishimasu\", \"~ wo kudasai\", \"okaikei wo onegaishimasu\" and \"gochisousama deshita\". Great job. Come back again!"
     textRomaji: "Kyou wa \"hitori desu\" \"~ de onegaishimasu\" \"~ wo kudasai\" \"okaikei wo onegaishimasu\" \"gochisousama deshita\" wo tsukaimashita ne. Jouzu deshita. Mata kite kudasai."
     textEnglishIpa: 
     animationCue: bow

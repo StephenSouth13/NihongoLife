@@ -11,7 +11,7 @@ namespace NihongoLife.School
     {
         public float InteractionPriority => 0.5f;
         public string GetPromptJa() => "しけんを うける";
-        public string GetpromptEn() => "Làm bài thi JLPT / IELTS";
+        public string GetpromptEn() => NihongoLife.Core.Loc.T("Làm bài thi JLPT / IELTS", "Take a JLPT / IELTS test", "JLPT・IELTSの試験を受ける");
         public Transform GetTransform() => transform;
 
         public void Interact(GameObject player)

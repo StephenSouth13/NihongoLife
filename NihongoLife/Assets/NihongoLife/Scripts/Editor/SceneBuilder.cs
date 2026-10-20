@@ -173,6 +173,8 @@ namespace NihongoLife.Editor
             uiSo.ApplyModifiedProperties();
 
             EditorSceneManager.SaveScene(scene, path);
+            // The finished menu layout (what Play shows) is baked into the scene, not arranged at runtime.
+            if (path == NihongoLife.EditorTools.MenuSyncCheck.ScenePath) NihongoLife.EditorTools.MainMenuBaker.BakeScene();
         }
 
         private static void BuildSandboxScene(string path)

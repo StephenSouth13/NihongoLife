@@ -200,7 +200,7 @@ namespace NihongoLife.Player
             TotalExp += amount;
             ApplyLevelFromTotal();
             for (int l = levelBefore; l < Level; l++) { maxHealth += 10f; CurrentHealth = maxHealth; }
-            if (Level > levelBefore) NihongoLife.UI.HudFeed.Post($"Lên cấp {Level}!", NihongoLife.UI.HudFeed.Kind.Reward, 6f);
+            if (Level > levelBefore) NihongoLife.UI.HudFeed.Post(NihongoLife.Core.Loc.F("Lên cấp {0}!", "Level up! Level {0}", "レベル{0}になりました！", Level), NihongoLife.UI.HudFeed.Kind.Reward, 6f);
             SaveProgress();
             OnStatusChanged?.Invoke();
         }
@@ -274,7 +274,7 @@ namespace NihongoLife.Player
             // Crossing a threshold opens a new place: say so.
             foreach (var unlock in LocationUnlocks.All)
                 if (unlock != null && before < unlock.requiredKnowledge && Knowledge >= unlock.requiredKnowledge)
-                    NihongoLife.UI.HudFeed.Post($"Đã mở khóa: {WorldLocationCatalog.Get(unlock.sceneName).VietnameseName}! Xem trên bản đồ (M).", NihongoLife.UI.HudFeed.Kind.Reward, 6f, "unlock");
+                    NihongoLife.UI.HudFeed.Post(NihongoLife.Core.Loc.F("Đã mở khóa: {0}! Xem trên bản đồ (M).", "Unlocked: {0}! See it on the map (M).", "{0}が解放されました！地図（M）で見られます。", WorldLocationCatalog.Get(unlock.sceneName).DisplayName), NihongoLife.UI.HudFeed.Kind.Reward, 6f, "unlock");
             OnStatusChanged?.Invoke();
             SaveProgress();
         }

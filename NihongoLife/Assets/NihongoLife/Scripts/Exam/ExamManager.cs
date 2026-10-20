@@ -243,7 +243,7 @@ namespace NihongoLife.Exam
                 if (RequiresAiGrading(section))
                 {
                     aiSectionsDone++;
-                    OnGradingStatus?.Invoke($"Đang chấm {Localize(section)} ({aiSectionsDone}/{aiSectionCount})...");
+                    OnGradingStatus?.Invoke(NihongoLife.Core.Loc.F("Đang chấm {0} ({1}/{2})...", "Grading {0} ({1}/{2})...", "{0}を採点中（{1}/{2}）...", Localize(section), aiSectionsDone, aiSectionCount));
                     yield return GradeAiSection(section, gradingService, sectionResult);
                 }
                 else
@@ -305,7 +305,7 @@ namespace NihongoLife.Exam
                     }
                     else
                     {
-                        grade = new ExamAiGrade { band = 0f, feedback = "Dịch vụ chấm bài chưa sẵn sàng." };
+                        grade = new ExamAiGrade { band = 0f, feedback = NihongoLife.Core.Loc.T("Dịch vụ chấm bài chưa sẵn sàng.", "The grading service is not ready.", "採点サービスの準備ができていません。") };
                         done = true;
                     }
                 }
@@ -319,7 +319,7 @@ namespace NihongoLife.Exam
                     }
                     else
                     {
-                        grade = new ExamAiGrade { band = 0f, feedback = "Dịch vụ chấm bài chưa sẵn sàng." };
+                        grade = new ExamAiGrade { band = 0f, feedback = NihongoLife.Core.Loc.T("Dịch vụ chấm bài chưa sẵn sàng.", "The grading service is not ready.", "採点サービスの準備ができていません。") };
                         done = true;
                     }
                 }

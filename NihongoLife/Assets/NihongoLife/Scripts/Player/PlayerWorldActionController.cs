@@ -95,7 +95,7 @@ namespace NihongoLife.Player
             PlayerPrefs.SetInt(OffenseKey, count);
 
             int fine = offense == CivicOffense.AssaultNpc ? 500 : 100;
-            PlayerInventory.Instance?.ApplyFine(fine, "Tiền phạt");
+            PlayerInventory.Instance?.ApplyFine(fine, NihongoLife.Core.Loc.Triple("Tiền phạt", "Fine", "罰金"));
 
             // Repeated serious violations restrict gameplay locally. A real account ban
             // must be validated by the authoritative backend, never by the client alone.

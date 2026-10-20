@@ -15,9 +15,11 @@ MonoBehaviour:
   id: scenario.town.summer_festival
   version: 2
   titleJa: "ひばり町の夏祭り"
-  titleEn: "Lễ hội mùa hè ở Hibari-chō"
+  titleVi: "Lễ hội mùa hè ở Hibari-chō"
+  titleEn: "Summer festival in Hibari-chō"
   descriptionJa: "夏祭りの夜。町の人たちと話して、みんなの前であいさつしましょう。"
-  descriptionEn: "Đêm lễ hội mùa hè. Gặp lại những người bạn bạn đã giúp đỡ, thử ramen của chú Yamada và phát biểu trước cả khu phố; mọi điều bạn từng làm đều được mọi người nhớ."
+  descriptionVi: "Đêm lễ hội mùa hè. Gặp lại những người bạn bạn đã giúp đỡ, thử ramen của chú Yamada và phát biểu trước cả khu phố; mọi điều bạn từng làm đều được mọi người nhớ."
+  descriptionEn: "The night of the summer festival. Meet the friends you helped, try Mr. Yamada's ramen and give a speech to the whole neighbourhood; everyone remembers what you have done."
   chapterIndex: 4
   questType: main
   giverNpcId: npc_neighbor_3
@@ -49,27 +51,33 @@ MonoBehaviour:
   objectives:
   - id: obj_arrive
     titleJa: "夏祭りに着く"
-    titleEn: "Đến lễ hội mùa hè"
+    titleVi: "Đến lễ hội mùa hè"
+    titleEn: "Get to the summer festival"
     isOptional: 0
   - id: obj_tanaka
     titleJa: "田中さんと話す"
-    titleEn: "Trò chuyện với bác Tanaka"
+    titleVi: "Trò chuyện với bác Tanaka"
+    titleEn: "Talk with Mr. Tanaka"
     isOptional: 0
   - id: obj_suzuki
     titleJa: "鈴木さんと話す"
-    titleEn: "Trò chuyện với cô Suzuki"
+    titleVi: "Trò chuyện với cô Suzuki"
+    titleEn: "Talk with Ms. Suzuki"
     isOptional: 0
   - id: obj_yamada
     titleJa: "山田さんのラーメンを食べる"
-    titleEn: "Ăn ramen của chú Yamada"
+    titleVi: "Ăn ramen của chú Yamada"
+    titleEn: "Eat Mr. Yamada's ramen"
     isOptional: 0
   - id: obj_school
     titleJa: "森田先生とキムさんに会う"
-    titleEn: "Gặp cô Morita và bạn Kim"
+    titleVi: "Gặp cô Morita và bạn Kim"
+    titleEn: "Meet Ms. Morita and Kim"
     isOptional: 0
   - id: obj_speech
     titleJa: "みんなの前であいさつする"
-    titleEn: "Phát biểu trước mọi người"
+    titleVi: "Phát biểu trước mọi người"
+    titleEn: "Give a speech to everyone"
     isOptional: 0
   nodes:
   - id: n_arrive
@@ -80,7 +88,8 @@ MonoBehaviour:
     speakerId: 
     textJa: "夏祭りの夜。ひばり神社は、ちょうちんの光でいっぱいです。"
     textReading: "なつまつりのよる。ひばりじんじゃは、ちょうちんのひかりでいっぱいです。"
-    textEn: "Đêm lễ hội mùa hè. Đền Hibari ngập tràn ánh sáng của những chiếc đèn lồng."
+    textVi: "Đêm lễ hội mùa hè. Đền Hibari ngập tràn ánh sáng của những chiếc đèn lồng."
+    textEn: "The night of the summer festival. Hibari Shrine is full of the light of paper lanterns."
     textRomaji: "Natsu matsuri no yoru. Hibari jinja wa, chouchin no hikari de ippai desu."
     textEnglishIpa: 
     animationCue: 
@@ -99,7 +108,8 @@ MonoBehaviour:
     speakerId: npc_neighbor_3
     textJa: "皆さん、こんばんは。今年も、夏祭りが始まります。今日は、新しい仲間もいますよ。"
     textReading: "みなさん、こんばんは。ことしも、なつまつりがはじまります。きょうは、あたらしいなかまもいますよ。"
-    textEn: "Chào mọi người. Năm nay lễ hội mùa hè lại bắt đầu. Hôm nay cũng có một người bạn mới nữa đấy."
+    textVi: "Chào mọi người. Năm nay lễ hội mùa hè lại bắt đầu. Hôm nay cũng có một người bạn mới nữa đấy."
+    textEn: "Hello, everyone. The summer festival begins again this year. And today we have a new friend with us."
     textRomaji: "Minasan, konbanwa. Kotoshi mo, natsu matsuri ga hajimarimasu. Kyou wa, atarashii nakama mo imasu yo."
     textEnglishIpa: 
     animationCue: talk
@@ -118,35 +128,40 @@ MonoBehaviour:
     speakerId: 
     textJa: "お祭りには、知っている人がたくさんいます。だれと話しますか。"
     textReading: "おまつりには、しっているひとがたくさんいます。だれとはなしますか。"
-    textEn: "Ở lễ hội có rất nhiều người bạn quen. Bạn muốn nói chuyện với ai?"
+    textVi: "Ở lễ hội có rất nhiều người bạn quen. Bạn muốn nói chuyện với ai?"
+    textEn: "There are lots of familiar faces at the festival. Who do you want to talk to?"
     textRomaji: "Omatsuri ni wa, shitte iru hito ga takusan imasu. Dare to hanashimasu ka?"
     textEnglishIpa: 
     animationCue: 
     voiceClip: {fileID: 0}
     choices:
     - textJa: "田中さんと話します。"
-      textEn: "Nói chuyện với bác Tanaka."
+      textVi: "Nói chuyện với bác Tanaka."
+      textEn: "Talk to Mr. Tanaka."
       nextNodeId: t_start
       scoreModifiers: []
       grammarTags: []
       vocabularyTags: []
       setFlags: []
     - textJa: "鈴木さんと話します。"
-      textEn: "Nói chuyện với cô Suzuki."
+      textVi: "Nói chuyện với cô Suzuki."
+      textEn: "Talk to Ms. Suzuki."
       nextNodeId: b_s1
       scoreModifiers: []
       grammarTags: []
       vocabularyTags: []
       setFlags: []
     - textJa: "山田さんの屋台へ行きます。"
-      textEn: "Đến quầy hàng của chú Yamada."
+      textVi: "Đến quầy hàng của chú Yamada."
+      textEn: "Go to Mr. Yamada's stall."
       nextNodeId: b_y
       scoreModifiers: []
       grammarTags: []
       vocabularyTags: []
       setFlags: []
     - textJa: "森田先生とキムさんに会います。"
-      textEn: "Gặp cô Morita và bạn Kim."
+      textVi: "Gặp cô Morita và bạn Kim."
+      textEn: "Meet Ms. Morita and Kim."
       nextNodeId: b_m
       scoreModifiers: []
       grammarTags: []
@@ -184,14 +199,16 @@ MonoBehaviour:
     speakerId: npc_neighbor_1
     textJa: "やあ、来ましたね。今日は、ゆかたを着ましたよ。"
     textReading: "やあ、きましたね。きょうは、ゆかたをきましたよ。"
-    textEn: "Chào, bạn đến rồi nhỉ. Hôm nay tôi mặc yukata đấy."
+    textVi: "Chào, bạn đến rồi nhỉ. Hôm nay tôi mặc yukata đấy."
+    textEn: "Hello, you made it. I'm wearing a yukata today."
     textRomaji: "Yaa, kimashita ne. Kyou wa, yukata wo kimashita yo."
     textEnglishIpa: 
     animationCue: talk
     voiceClip: {fileID: 0}
     choices:
     - textJa: "ゆかた、似合いますね。"
-      textEn: "Bác mặc yukata hợp quá ạ."
+      textVi: "Bác mặc yukata hợp quá ạ."
+      textEn: "The yukata really suits you."
       nextNodeId: b_t1
       scoreModifiers:
       - category: Vocabulary
@@ -204,7 +221,8 @@ MonoBehaviour:
       - vocab.n5.niau
       setFlags: []
     - textJa: "ゆかたですね。"
-      textEn: "Là yukata nhỉ."
+      textVi: "Là yukata nhỉ."
+      textEn: "It's a yukata."
       nextNodeId: b_t1
       scoreModifiers:
       - category: ResponseAccuracy
@@ -215,7 +233,8 @@ MonoBehaviour:
       - vocab.n5.yukata
       setFlags: []
     - textJa: "ゆかたは暑いです。"
-      textEn: "Yukata nóng lắm."
+      textVi: "Yukata nóng lắm."
+      textEn: "Yukata are so hot."
       nextNodeId: t_wrong1
       scoreModifiers:
       - category: ResponseAccuracy
@@ -237,7 +256,8 @@ MonoBehaviour:
     speakerId: npc_neighbor_1
     textJa: "あはは、夏ですから、少し暑いですね。でも、ゆかたは、いいですよ。"
     textReading: "あはは、なつですから、すこしあついですね。でも、ゆかたは、いいですよ。"
-    textEn: "Haha, mùa hè nên cũng hơi nóng thật. Nhưng yukata đẹp lắm đấy."
+    textVi: "Haha, mùa hè nên cũng hơi nóng thật. Nhưng yukata đẹp lắm đấy."
+    textEn: "Haha, it is summer, so it's a bit hot. But yukata are beautiful."
     textRomaji: "Ahaha, natsu desu kara, sukoshi atsui desu ne. Demo, yukata wa, ii desu yo."
     textEnglishIpa: 
     animationCue: talk
@@ -275,7 +295,8 @@ MonoBehaviour:
     speakerId: npc_neighbor_1
     textJa: "私たちは、もう友達ですね。今日は、みんなに「私の友達です」と紹介しますよ。"
     textReading: "わたしたちは、もうともだちですね。きょうは、みんなに「わたしのともだちです」としょうかいしますよ。"
-    textEn: "Chúng ta đã là bạn rồi nhỉ. Hôm nay tôi sẽ giới thiệu bạn với mọi người là \"bạn của tôi\"."
+    textVi: "Chúng ta đã là bạn rồi nhỉ. Hôm nay tôi sẽ giới thiệu bạn với mọi người là \"bạn của tôi\"."
+    textEn: "We're friends now, aren't we? Today I'll introduce you to everyone as \"my friend\"."
     textRomaji: "Watashitachi wa, mou tomodachi desu ne. Kyou wa, minna ni \"watashi no tomodachi desu\" to shoukai shimasu yo."
     textEnglishIpa: 
     animationCue: bow
@@ -294,7 +315,8 @@ MonoBehaviour:
     speakerId: npc_neighbor_1
     textJa: "この町の人は、みんな、あなたを知っていますよ。"
     textReading: "このまちのひとは、みんな、あなたをしっていますよ。"
-    textEn: "Mọi người trong khu phố này ai cũng biết bạn rồi đấy."
+    textVi: "Mọi người trong khu phố này ai cũng biết bạn rồi đấy."
+    textEn: "Everyone in this neighbourhood already knows you."
     textRomaji: "Kono machi no hito wa, minna, anata wo shitte imasu yo."
     textEnglishIpa: 
     animationCue: talk
@@ -313,14 +335,16 @@ MonoBehaviour:
     speakerId: npc_neighbor_1
     textJa: "この町は、どうですか。"
     textReading: "このまちは、どうですか。"
-    textEn: "Bạn thấy khu phố này thế nào?"
+    textVi: "Bạn thấy khu phố này thế nào?"
+    textEn: "What do you think of this neighbourhood?"
     textRomaji: "Kono machi wa, dou desu ka?"
     textEnglishIpa: 
     animationCue: talk
     voiceClip: {fileID: 0}
     choices:
     - textJa: "この町が好きです。人がやさしいです。"
-      textEn: "Cháu thích khu phố này. Mọi người rất tử tế ạ."
+      textVi: "Cháu thích khu phố này. Mọi người rất tử tế ạ."
+      textEn: "I like this neighbourhood. Everyone is very kind."
       nextNodeId: t_end
       scoreModifiers:
       - category: Grammar
@@ -335,7 +359,8 @@ MonoBehaviour:
       - fest.met_tanaka
       - fest.said_love_town
     - textJa: "まだ、ちょっと不安です。でも、がんばります。"
-      textEn: "Cháu vẫn hơi lo. Nhưng cháu sẽ cố gắng ạ."
+      textVi: "Cháu vẫn hơi lo. Nhưng cháu sẽ cố gắng ạ."
+      textEn: "I'm still a little worried. But I'll do my best."
       nextNodeId: t_end_honest
       scoreModifiers:
       - category: ResponseAccuracy
@@ -348,7 +373,8 @@ MonoBehaviour:
       setFlags:
       - fest.met_tanaka
     - textJa: "つまらないです。"
-      textEn: "Chán lắm ạ."
+      textVi: "Chán lắm ạ."
+      textEn: "It's boring."
       nextNodeId: t_wrong2
       scoreModifiers:
       - category: ResponseAccuracy
@@ -370,7 +396,8 @@ MonoBehaviour:
     speakerId: npc_neighbor_1
     textJa: "えっ！…ふふ、お祭りは、これからですよ。もう一度、聞きますね。"
     textReading: "えっ！…ふふ、おまつりは、これからですよ。もういちど、ききますね。"
-    textEn: "Hả! ...Hì, lễ hội mới bắt đầu thôi mà. Tôi hỏi lại nhé."
+    textVi: "Hả! ...Hì, lễ hội mới bắt đầu thôi mà. Tôi hỏi lại nhé."
+    textEn: "What! ...Heh, the festival has only just started. Let me ask again."
     textRomaji: "Ee! ...Fufu, omatsuri wa, korekara desu yo. Mou ichido, kikimasu ne."
     textEnglishIpa: 
     animationCue: talk
@@ -389,7 +416,8 @@ MonoBehaviour:
     speakerId: npc_neighbor_1
     textJa: "うれしいですね。この町も、あなたが好きですよ。"
     textReading: "うれしいですね。このまちも、あなたがすきですよ。"
-    textEn: "Vui quá nhỉ. Khu phố này cũng quý mến bạn đấy."
+    textVi: "Vui quá nhỉ. Khu phố này cũng quý mến bạn đấy."
+    textEn: "I'm so glad. This neighbourhood is fond of you too."
     textRomaji: "Ureshii desu ne. Kono machi mo, anata ga suki desu yo."
     textEnglishIpa: 
     animationCue: bow
@@ -408,7 +436,8 @@ MonoBehaviour:
     speakerId: npc_neighbor_1
     textJa: "だいじょうぶ。この町には、友達がたくさんいますよ。"
     textReading: "だいじょうぶ。このまちには、ともだちがたくさんいますよ。"
-    textEn: "Không sao đâu. Khu phố này có rất nhiều bạn bè đấy."
+    textVi: "Không sao đâu. Khu phố này có rất nhiều bạn bè đấy."
+    textEn: "It's all right. You have lots of friends in this neighbourhood."
     textRomaji: "Daijoubu. Kono machi ni wa, tomodachi ga takusan imasu yo."
     textEnglishIpa: 
     animationCue: bow
@@ -465,7 +494,8 @@ MonoBehaviour:
     speakerId: npc_neighbor_2
     textJa: "ミケが、見つかりました！神社の近くにいました。あなたが教えてくれた場所です！"
     textReading: "ミケが、みつかりました！じんじゃのちかくにいました。あなたがおしえてくれたばしょです！"
-    textEn: "Tìm thấy Mike rồi! Nó ở gần đền thờ. Chính là chỗ mà bạn đã nhắc cho tôi đấy!"
+    textVi: "Tìm thấy Mike rồi! Nó ở gần đền thờ. Chính là chỗ mà bạn đã nhắc cho tôi đấy!"
+    textEn: "We found Mike! She was near the shrine. Exactly where you told me!"
     textRomaji: "Mike ga, mitsukarimashita! Jinja no chikaku ni imashita. Anata ga oshiete kureta basho desu!"
     textEnglishIpa: 
     animationCue: bow
@@ -484,7 +514,8 @@ MonoBehaviour:
     speakerId: npc_neighbor_2
     textJa: "ミケは、自分で帰ってきました。心配してくれて、ありがとうございました。"
     textReading: "ミケは、じぶんでかえってきました。しんぱいしてくれて、ありがとうございました。"
-    textEn: "Mike đã tự về nhà rồi. Cảm ơn bạn đã lo lắng cho tôi."
+    textVi: "Mike đã tự về nhà rồi. Cảm ơn bạn đã lo lắng cho tôi."
+    textEn: "Mike came home on her own. Thank you for worrying about me."
     textRomaji: "Mike wa, jibun de kaette kimashita. Shinpai shite kurete, arigatou gozaimashita."
     textEnglishIpa: 
     animationCue: bow
@@ -503,7 +534,8 @@ MonoBehaviour:
     speakerId: npc_neighbor_2
     textJa: "ミケは、帰ってきました。今日は、元気です。"
     textReading: "ミケは、かえってきました。きょうは、げんきです。"
-    textEn: "Mike đã về rồi. Hôm nay nó khỏe lắm."
+    textVi: "Mike đã về rồi. Hôm nay nó khỏe lắm."
+    textEn: "Mike is back. She's full of energy today."
     textRomaji: "Mike wa, kaette kimashita. Kyou wa, genki desu."
     textEnglishIpa: 
     animationCue: talk
@@ -522,14 +554,16 @@ MonoBehaviour:
     speakerId: npc_neighbor_2
     textJa: "ほら、あそこ。ミケも、お祭りに来ましたよ。赤いリボンをしています。"
     textReading: "ほら、あそこ。ミケも、おまつりにきましたよ。あかいリボンをしています。"
-    textEn: "Kìa, ở đằng kia. Mike cũng đến lễ hội rồi. Nó đang đeo chiếc nơ đỏ."
+    textVi: "Kìa, ở đằng kia. Mike cũng đến lễ hội rồi. Nó đang đeo chiếc nơ đỏ."
+    textEn: "Look, over there. Mike came to the festival too. She's wearing her red ribbon."
     textRomaji: "Hora, asoko. Mike mo, omatsuri ni kimashita yo. Akai ribon wo shite imasu."
     textEnglishIpa: 
     animationCue: point
     voiceClip: {fileID: 0}
     choices:
     - textJa: "よかったですね！"
-      textEn: "Thật tốt quá ạ!"
+      textVi: "Thật tốt quá ạ!"
+      textEn: "That's wonderful!"
       nextNodeId: s_end
       scoreModifiers:
       - category: Vocabulary
@@ -542,7 +576,8 @@ MonoBehaviour:
       setFlags:
       - fest.met_suzuki
     - textJa: "そうですか。"
-      textEn: "Vậy ạ."
+      textVi: "Vậy ạ."
+      textEn: "I see."
       nextNodeId: s_end
       scoreModifiers:
       - category: ResponseAccuracy
@@ -553,7 +588,8 @@ MonoBehaviour:
       setFlags:
       - fest.met_suzuki
     - textJa: "猫は、嫌いです。"
-      textEn: "Cháu không thích mèo."
+      textVi: "Cháu không thích mèo."
+      textEn: "I don't like cats."
       nextNodeId: s_wrong
       scoreModifiers:
       - category: ResponseAccuracy
@@ -575,7 +611,8 @@ MonoBehaviour:
     speakerId: npc_neighbor_2
     textJa: "あ…そうですか。でも、ミケは、あなたが好きですよ。"
     textReading: "あ…そうですか。でも、ミケは、あなたがすきですよ。"
-    textEn: "À... vậy à. Nhưng Mike thì quý bạn lắm đấy."
+    textVi: "À... vậy à. Nhưng Mike thì quý bạn lắm đấy."
+    textEn: "Ah... I see. But Mike really likes you."
     textRomaji: "A... sou desu ka. Demo, Mike wa, anata ga suki desu yo."
     textEnglishIpa: 
     animationCue: talk
@@ -594,7 +631,8 @@ MonoBehaviour:
     speakerId: npc_neighbor_2
     textJa: "ありがとうございます、ありがとうございます！"
     textReading: "ありがとうございます、ありがとうございます！"
-    textEn: "Cảm ơn bạn, cảm ơn bạn nhiều lắm!"
+    textVi: "Cảm ơn bạn, cảm ơn bạn nhiều lắm!"
+    textEn: "Thank you, thank you so much!"
     textRomaji: "Arigatou gozaimasu, arigatou gozaimasu!"
     textEnglishIpa: 
     animationCue: bow
@@ -632,7 +670,8 @@ MonoBehaviour:
     speakerId: npc_ramen_owner
     textJa: "おっ、また来たね！いつものラーメンかい？"
     textReading: "おっ、またきたね！いつものラーメンかい？"
-    textEn: "Ồ, lại đến rồi à! Vẫn tô ramen quen thuộc chứ?"
+    textVi: "Ồ, lại đến rồi à! Vẫn tô ramen quen thuộc chứ?"
+    textEn: "Oh, you're back! The usual bowl of ramen?"
     textRomaji: "O, mata kita ne! Itsumo no raamen kai?"
     textEnglishIpa: 
     animationCue: talk
@@ -651,7 +690,8 @@ MonoBehaviour:
     speakerId: npc_ramen_owner
     textJa: "いらっしゃい！新しい学生さんだね。ラーメン、食べていくかい？"
     textReading: "いらっしゃい！あたらしいがくせいさんだね。ラーメン、たべていくかい？"
-    textEn: "Xin chào! Học viên mới nhỉ. Ăn tô ramen rồi hẵng đi chứ?"
+    textVi: "Xin chào! Học viên mới nhỉ. Ăn tô ramen rồi hẵng đi chứ?"
+    textEn: "Hello! You're the new student, right? Have a bowl of ramen before you go?"
     textRomaji: "Irasshai! Atarashii gakusei-san da ne. Raamen, tabete iku kai?"
     textEnglishIpa: 
     animationCue: talk
@@ -670,14 +710,16 @@ MonoBehaviour:
     speakerId: 
     textJa: "ラーメンを注文します。何と言いますか。"
     textReading: "ラーメンをちゅうもんします。なんといいますか。"
-    textEn: "Bạn gọi một tô ramen. Bạn sẽ nói gì?"
+    textVi: "Bạn gọi một tô ramen. Bạn sẽ nói gì?"
+    textEn: "You order a bowl of ramen. What do you say?"
     textRomaji: "Raamen wo chuumon shimasu. Nan to iimasu ka?"
     textEnglishIpa: 
     animationCue: 
     voiceClip: {fileID: 0}
     choices:
     - textJa: "ラーメンを一つください。"
-      textEn: "Cho cháu một tô ramen ạ."
+      textVi: "Cho cháu một tô ramen ạ."
+      textEn: "One bowl of ramen, please."
       nextNodeId: y_serve
       scoreModifiers:
       - category: Grammar
@@ -691,7 +733,8 @@ MonoBehaviour:
       - vocab.n5.hitotsu
       setFlags: []
     - textJa: "ラーメン、一つ。"
-      textEn: "Ramen, một tô."
+      textVi: "Ramen, một tô."
+      textEn: "Ramen, one bowl."
       nextNodeId: y_serve_casual
       scoreModifiers:
       - category: ResponseAccuracy
@@ -703,7 +746,8 @@ MonoBehaviour:
       - vocab.n5.raamen
       setFlags: []
     - textJa: "ラーメンをいただきます。"
-      textEn: "Cháu xin phép dùng ramen ạ."
+      textVi: "Cháu xin phép dùng ramen ạ."
+      textEn: "I'll gladly have the ramen."
       nextNodeId: y_wrong
       scoreModifiers:
       - category: Grammar
@@ -725,7 +769,8 @@ MonoBehaviour:
     speakerId: npc_ramen_owner
     textJa: "ははは、いいよ。でも、「ください」をつけると、もっといいね。"
     textReading: "ははは、いいよ。でも、「ください」をつけると、もっといいね。"
-    textEn: "Haha, được thôi. Nhưng thêm \"kudasai\" vào thì còn hay hơn nữa."
+    textVi: "Haha, được thôi. Nhưng thêm \"kudasai\" vào thì còn hay hơn nữa."
+    textEn: "Haha, sure. But adding \"kudasai\" would be even better."
     textRomaji: "Hahaha, ii yo. Demo, \"kudasai\" wo tsukeru to, motto ii ne."
     textEnglishIpa: 
     animationCue: talk
@@ -744,7 +789,8 @@ MonoBehaviour:
     speakerId: npc_ramen_owner
     textJa: "おいおい、まだ食べてないよ。注文は、「ください」だよ。"
     textReading: "おいおい、まだたべてないよ。ちゅうもんは、「ください」だよ。"
-    textEn: "Này này, chưa ăn mà. Gọi món thì phải nói \"kudasai\" chứ."
+    textVi: "Này này, chưa ăn mà. Gọi món thì phải nói \"kudasai\" chứ."
+    textEn: "Hey now, you haven't eaten yet. To order, you say \"kudasai\"."
     textRomaji: "Oi oi, mada tabetenai yo. Chuumon wa, \"kudasai\" da yo."
     textEnglishIpa: 
     animationCue: point
@@ -763,14 +809,16 @@ MonoBehaviour:
     speakerId: npc_ramen_owner
     textJa: "はい、おまち！熱いから、気をつけてね。"
     textReading: "はい、おまち！あついから、きをつけてね。"
-    textEn: "Đây, xong rồi! Nóng đấy, cẩn thận nhé."
+    textVi: "Đây, xong rồi! Nóng đấy, cẩn thận nhé."
+    textEn: "Here you go! It's hot, be careful."
     textRomaji: "Hai, omachi! Atsui kara, ki wo tsukete ne."
     textEnglishIpa: 
     animationCue: point
     voiceClip: {fileID: 0}
     choices:
     - textJa: "いただきます。"
-      textEn: "Cháu xin phép dùng ạ."
+      textVi: "Cháu xin phép dùng ạ."
+      textEn: "I'll gladly have some."
       nextNodeId: y_eat
       scoreModifiers:
       - category: Vocabulary
@@ -781,7 +829,8 @@ MonoBehaviour:
       - vocab.n5.itadakimasu
       setFlags: []
     - textJa: "ありがとうございます。いただきます。"
-      textEn: "Cháu cảm ơn. Cháu xin phép dùng ạ."
+      textVi: "Cháu cảm ơn. Cháu xin phép dùng ạ."
+      textEn: "Thank you. I'll gladly have some."
       nextNodeId: y_eat
       scoreModifiers:
       - category: Vocabulary
@@ -805,14 +854,16 @@ MonoBehaviour:
     speakerId: npc_ramen_owner
     textJa: "どうだい？おいしいかい？"
     textReading: "どうだい？おいしいかい？"
-    textEn: "Thế nào? Ngon không?"
+    textVi: "Thế nào? Ngon không?"
+    textEn: "Well? Is it good?"
     textRomaji: "Dou dai? Oishii kai?"
     textEnglishIpa: 
     animationCue: talk
     voiceClip: {fileID: 0}
     choices:
     - textJa: "とてもおいしいです！"
-      textEn: "Rất ngon ạ!"
+      textVi: "Rất ngon ạ!"
+      textEn: "It's delicious!"
       nextNodeId: y_end
       scoreModifiers:
       - category: Vocabulary
@@ -825,7 +876,8 @@ MonoBehaviour:
       setFlags:
       - fest.met_yamada
     - textJa: "おいしいです。"
-      textEn: "Ngon ạ."
+      textVi: "Ngon ạ."
+      textEn: "It's good."
       nextNodeId: y_end
       scoreModifiers:
       - category: Vocabulary
@@ -838,7 +890,8 @@ MonoBehaviour:
       setFlags:
       - fest.met_yamada
     - textJa: "ふつうです。"
-      textEn: "Bình thường ạ."
+      textVi: "Bình thường ạ."
+      textEn: "It's okay."
       nextNodeId: y_plain
       scoreModifiers:
       - category: ResponseAccuracy
@@ -860,7 +913,8 @@ MonoBehaviour:
     speakerId: npc_ramen_owner
     textJa: "ふつう！？ははは、正直だね。もう一度、食べてみて。"
     textReading: "ふつう！？ははは、しょうじきだね。もういちど、たべてみて。"
-    textEn: "Bình thường ư?! Haha, thật thà quá. Ăn thử lại xem."
+    textVi: "Bình thường ư?! Haha, thật thà quá. Ăn thử lại xem."
+    textEn: "Just okay?! Haha, how honest. Try it again."
     textRomaji: "Futsuu!? Hahaha, shoujiki da ne. Mou ichido, tabete mite."
     textEnglishIpa: 
     animationCue: talk
@@ -879,7 +933,8 @@ MonoBehaviour:
     speakerId: npc_ramen_owner
     textJa: "そうだろう！また、いつでも来てね。"
     textReading: "そうだろう！また、いつでもきてね。"
-    textEn: "Đúng không nào! Lúc nào cũng ghé lại nhé."
+    textVi: "Đúng không nào! Lúc nào cũng ghé lại nhé."
+    textEn: "Right? Come by any time."
     textRomaji: "Sou darou! Mata, itsu demo kite ne."
     textEnglishIpa: 
     animationCue: bow
@@ -917,7 +972,8 @@ MonoBehaviour:
     speakerId: npc_teacher_morita
     textJa: "はじめて会った日、あなたは、少し緊張していましたね。今は、ずいぶん上手に話せますよ。"
     textReading: "はじめてあったひ、あなたは、すこしきんちょうしていましたね。いまは、ずいぶんじょうずにはなせますよ。"
-    textEn: "Hôm gặp nhau lần đầu, bạn đã hơi căng thẳng nhỉ. Bây giờ bạn nói giỏi lên rất nhiều rồi đấy."
+    textVi: "Hôm gặp nhau lần đầu, bạn đã hơi căng thẳng nhỉ. Bây giờ bạn nói giỏi lên rất nhiều rồi đấy."
+    textEn: "When we first met, you were a bit nervous. Now you speak so much better."
     textRomaji: "Hajimete atta hi, anata wa, sukoshi kinchou shite imashita ne. Ima wa, zuibun jouzu ni hanasemasu yo."
     textEnglishIpa: 
     animationCue: bow
@@ -936,7 +992,8 @@ MonoBehaviour:
     speakerId: npc_teacher_morita
     textJa: "日本語が、とても上手になりましたね。がんばりましたね。"
     textReading: "にほんごが、とてもじょうずになりましたね。がんばりましたね。"
-    textEn: "Tiếng Nhật của bạn đã giỏi lên nhiều rồi nhỉ. Bạn đã rất cố gắng."
+    textVi: "Tiếng Nhật của bạn đã giỏi lên nhiều rồi nhỉ. Bạn đã rất cố gắng."
+    textEn: "Your Japanese has really improved. You've worked very hard."
     textRomaji: "Nihongo ga, totemo jouzu ni narimashita ne. Ganbarimashita ne."
     textEnglishIpa: 
     animationCue: bow
@@ -955,14 +1012,16 @@ MonoBehaviour:
     speakerId: npc_classmate_kim
     textJa: "私も、がんばっています！まちがえても、笑いますよ。あはは！いっしょに、がんばりましょう！"
     textReading: "わたしも、がんばっています！まちがえても、わらいますよ。あはは！いっしょに、がんばりましょう！"
-    textEn: "Tớ cũng đang cố gắng đây! Nói sai thì tớ cũng chỉ cười thôi. Haha! Cùng cố gắng nhé!"
+    textVi: "Tớ cũng đang cố gắng đây! Nói sai thì tớ cũng chỉ cười thôi. Haha! Cùng cố gắng nhé!"
+    textEn: "I'm doing my best too! When I make mistakes, I just laugh. Haha! Let's keep at it together!"
     textRomaji: "Watashi mo, ganbatte imasu! Machigaete mo, waraimasu yo. Ahaha! Issho ni, ganbarimashou!"
     textEnglishIpa: 
     animationCue: talk
     voiceClip: {fileID: 0}
     choices:
     - textJa: "はい、いっしょにがんばりましょう。"
-      textEn: "Ừ, cùng cố gắng nhé."
+      textVi: "Ừ, cùng cố gắng nhé."
+      textEn: "Yeah, let's keep at it together."
       nextNodeId: m_end
       scoreModifiers:
       - category: Grammar
@@ -987,7 +1046,8 @@ MonoBehaviour:
       setFlags:
       - fest.met_school
     - textJa: "私は、もうがんばりません。"
-      textEn: "Tớ không cố gắng nữa đâu."
+      textVi: "Tớ không cố gắng nữa đâu."
+      textEn: "I'm not trying anymore."
       nextNodeId: m_wrong
       scoreModifiers:
       - category: ResponseAccuracy
@@ -1009,7 +1069,8 @@ MonoBehaviour:
     speakerId: npc_classmate_kim
     textJa: "えっ！だめですよ！…あはは、じょうだんですよね？"
     textReading: "えっ！だめですよ！…あはは、じょうだんですよね？"
-    textEn: "Hả! Không được đâu! ...Haha, cậu nói đùa đúng không?"
+    textVi: "Hả! Không được đâu! ...Haha, cậu nói đùa đúng không?"
+    textEn: "What! No way! ...Haha, you're joking, right?"
     textRomaji: "Ee! Dame desu yo! ...Ahaha, joudan desu yo ne?"
     textEnglishIpa: 
     animationCue: talk
@@ -1028,7 +1089,8 @@ MonoBehaviour:
     speakerId: npc_teacher_morita
     textJa: "みなさん、この学生は、いいクラスメートです。"
     textReading: "みなさん、このがくせいは、いいクラスメートです。"
-    textEn: "Mọi người ơi, học viên này là một bạn học rất tốt."
+    textVi: "Mọi người ơi, học viên này là một bạn học rất tốt."
+    textEn: "Everyone, this student is a wonderful classmate."
     textRomaji: "Minasan, kono gakusei wa, ii kurasumeeto desu."
     textEnglishIpa: 
     animationCue: bow
@@ -1047,7 +1109,8 @@ MonoBehaviour:
     speakerId: npc_neighbor_3
     textJa: "皆さん、ちょっと聞いてください。この学生さんが、あいさつをします。"
     textReading: "みなさん、ちょっときいてください。このがくせいさんが、あいさつをします。"
-    textEn: "Mọi người ơi, xin hãy lắng nghe. Học viên này sẽ phát biểu đôi lời."
+    textVi: "Mọi người ơi, xin hãy lắng nghe. Học viên này sẽ phát biểu đôi lời."
+    textEn: "Everyone, please listen. This student is going to say a few words."
     textRomaji: "Minasan, chotto kiite kudasai. Kono gakusei-san ga, aisatsu wo shimasu."
     textEnglishIpa: 
     animationCue: talk
@@ -1066,14 +1129,16 @@ MonoBehaviour:
     speakerId: 
     textJa: "たくさんの人が、あなたを見ています。まず、あいさつです。"
     textReading: "たくさんのひとが、あなたをみています。まず、あいさつです。"
-    textEn: "Rất nhiều người đang nhìn bạn. Trước hết là lời chào."
+    textVi: "Rất nhiều người đang nhìn bạn. Trước hết là lời chào."
+    textEn: "Lots of people are looking at you. First, a greeting."
     textRomaji: "Takusan no hito ga, anata wo mite imasu. Mazu, aisatsu desu."
     textEnglishIpa: 
     animationCue: 
     voiceClip: {fileID: 0}
     choices:
     - textJa: "みなさん、こんばんは。"
-      textEn: "Xin chào mọi người, chào buổi tối ạ."
+      textVi: "Xin chào mọi người, chào buổi tối ạ."
+      textEn: "Good evening, everyone."
       nextNodeId: f_s2
       scoreModifiers:
       - category: Vocabulary
@@ -1085,7 +1150,8 @@ MonoBehaviour:
       - vocab.n5.konbanwa
       setFlags: []
     - textJa: "こんにちは、みんな。"
-      textEn: "Chào các bạn."
+      textVi: "Chào các bạn."
+      textEn: "Hi, guys."
       nextNodeId: f_s1_casual
       scoreModifiers:
       - category: ResponseAccuracy
@@ -1096,7 +1162,8 @@ MonoBehaviour:
       - vocab.n5.konnichiwa
       setFlags: []
     - textJa: "さようなら。"
-      textEn: "Tạm biệt."
+      textVi: "Tạm biệt."
+      textEn: "Goodbye."
       nextNodeId: f_s1_wrong
       scoreModifiers:
       - category: Vocabulary
@@ -1118,7 +1185,8 @@ MonoBehaviour:
     speakerId: 
     textJa: "今は夜ですから、「こんばんは」ですね。もう一度、言いましょう。"
     textReading: "いまはよるですから、「こんばんは」ですね。もういちど、いいましょう。"
-    textEn: "Bây giờ là buổi tối nên phải nói \"konbanwa\". Ta nói lại nhé."
+    textVi: "Bây giờ là buổi tối nên phải nói \"konbanwa\". Ta nói lại nhé."
+    textEn: "It's evening now, so you should say \"konbanwa\". Let's say it again."
     textRomaji: "Ima wa yoru desu kara, \"konbanwa\" desu ne. Mou ichido, iimashou."
     textEnglishIpa: 
     animationCue: 
@@ -1137,7 +1205,8 @@ MonoBehaviour:
     speakerId: 
     textJa: "まだ、始まったばかりですよ。「みなさん、こんばんは」と言いましょう。"
     textReading: "まだ、はじまったばかりですよ。「みなさん、こんばんは」といいましょう。"
-    textEn: "Mới bắt đầu thôi mà. Hãy nói \"minasan, konbanwa\" nhé."
+    textVi: "Mới bắt đầu thôi mà. Hãy nói \"minasan, konbanwa\" nhé."
+    textEn: "You've only just started. Say \"minasan, konbanwa\"."
     textRomaji: "Mada, hajimatta bakari desu yo. \"Minasan, konbanwa\" to iimashou."
     textEnglishIpa: 
     animationCue: 
@@ -1156,14 +1225,16 @@ MonoBehaviour:
     speakerId: 
     textJa: "次に、この町の人に、お礼を言います。"
     textReading: "つぎに、このまちのひとに、おれいをいいます。"
-    textEn: "Tiếp theo, bạn nói lời cảm ơn với người dân khu phố này."
+    textVi: "Tiếp theo, bạn nói lời cảm ơn với người dân khu phố này."
+    textEn: "Next, you thank the people of this neighbourhood."
     textRomaji: "Tsugi ni, kono machi no hito ni, orei wo iimasu."
     textEnglishIpa: 
     animationCue: 
     voiceClip: {fileID: 0}
     choices:
     - textJa: "この町の人は、とてもやさしいです。ありがとうございます。"
-      textEn: "Người dân khu phố này rất tử tế. Cảm ơn mọi người ạ."
+      textVi: "Người dân khu phố này rất tử tế. Cảm ơn mọi người ạ."
+      textEn: "The people of this neighbourhood are very kind. Thank you, everyone."
       nextNodeId: f_s3
       scoreModifiers:
       - category: Grammar
@@ -1177,7 +1248,8 @@ MonoBehaviour:
       setFlags:
       - fest.said_thanks
     - textJa: "ありがとう。"
-      textEn: "Cảm ơn."
+      textVi: "Cảm ơn."
+      textEn: "Thanks."
       nextNodeId: f_s2_casual
       scoreModifiers:
       - category: ResponseAccuracy
@@ -1187,7 +1259,8 @@ MonoBehaviour:
       vocabularyTags: []
       setFlags: []
     - textJa: "ごめんなさい。"
-      textEn: "Xin lỗi ạ."
+      textVi: "Xin lỗi ạ."
+      textEn: "I'm sorry."
       nextNodeId: f_s2_wrong
       scoreModifiers:
       - category: Vocabulary
@@ -1209,7 +1282,8 @@ MonoBehaviour:
     speakerId: 
     textJa: "もう少し、長く言いましょう。「この町の人は、やさしいです」と。"
     textReading: "もうすこし、ながくいいましょう。「このまちのひとは、やさしいです」と。"
-    textEn: "Hãy nói dài hơn một chút, ví dụ \"kono machi no hito wa, yasashii desu\" (người trong khu phố này rất tử tế)."
+    textVi: "Hãy nói dài hơn một chút, ví dụ \"kono machi no hito wa, yasashii desu\" (người trong khu phố này rất tử tế)."
+    textEn: "Say a little more, for example \"kono machi no hito wa, yasashii desu\" (the people of this neighbourhood are kind)."
     textRomaji: "Mou sukoshi, nagaku iimashou. \"Kono machi no hito wa, yasashii desu\" to."
     textEnglishIpa: 
     animationCue: 
@@ -1228,7 +1302,8 @@ MonoBehaviour:
     speakerId: 
     textJa: "ここは、お礼の時間です。「ありがとうございます」ですよ。"
     textReading: "ここは、おれいのじかんです。「ありがとうございます」ですよ。"
-    textEn: "Đây là lúc nói lời cảm ơn. Câu cần nói là \"arigatou gozaimasu\" nhé."
+    textVi: "Đây là lúc nói lời cảm ơn. Câu cần nói là \"arigatou gozaimasu\" nhé."
+    textEn: "This is the time to say thank you. The phrase is \"arigatou gozaimasu\"."
     textRomaji: "Koko wa, orei no jikan desu. \"Arigatou gozaimasu\" desu yo."
     textEnglishIpa: 
     animationCue: 
@@ -1247,14 +1322,16 @@ MonoBehaviour:
     speakerId: 
     textJa: "最後に、これからのことを言います。"
     textReading: "さいごに、これからのことをいいます。"
-    textEn: "Cuối cùng, bạn nói về tương lai."
+    textVi: "Cuối cùng, bạn nói về tương lai."
+    textEn: "Finally, you talk about the future."
     textRomaji: "Saigo ni, korekara no koto wo iimasu."
     textEnglishIpa: 
     animationCue: 
     voiceClip: {fileID: 0}
     choices:
     - textJa: "これからも、日本語をがんばります。よろしくお願いします。"
-      textEn: "Từ nay cháu cũng sẽ cố gắng học tiếng Nhật. Xin mọi người tiếp tục giúp đỡ ạ."
+      textVi: "Từ nay cháu cũng sẽ cố gắng học tiếng Nhật. Xin mọi người tiếp tục giúp đỡ ạ."
+      textEn: "From now on I'll keep studying Japanese. I hope you'll keep helping me."
       nextNodeId: b_end1
       scoreModifiers:
       - category: Grammar
@@ -1268,7 +1345,8 @@ MonoBehaviour:
       setFlags:
       - fest.said_promise
     - textJa: "がんばります。"
-      textEn: "Cháu sẽ cố gắng ạ."
+      textVi: "Cháu sẽ cố gắng ạ."
+      textEn: "I'll do my best."
       nextNodeId: f_s3_short
       scoreModifiers:
       - category: ResponseAccuracy
@@ -1279,7 +1357,8 @@ MonoBehaviour:
       - vocab.n5.ganbaru
       setFlags: []
     - textJa: "もう、帰ります。"
-      textEn: "Cháu về đây ạ."
+      textVi: "Cháu về đây ạ."
+      textEn: "I'm going home now."
       nextNodeId: f_s3_wrong
       scoreModifiers:
       - category: ResponseAccuracy
@@ -1301,7 +1380,8 @@ MonoBehaviour:
     speakerId: 
     textJa: "みんなが、あなたの言葉を待っています。もう少し、言いましょう。"
     textReading: "みんなが、あなたのことばをまっています。もうすこし、いいましょう。"
-    textEn: "Mọi người đang chờ lời của bạn. Hãy nói thêm một chút nhé."
+    textVi: "Mọi người đang chờ lời của bạn. Hãy nói thêm một chút nhé."
+    textEn: "Everyone is waiting for your words. Say a little more."
     textRomaji: "Minna ga, anata no kotoba wo matte imasu. Mou sukoshi, iimashou."
     textEnglishIpa: 
     animationCue: 
@@ -1320,7 +1400,8 @@ MonoBehaviour:
     speakerId: 
     textJa: "まだ、花火が始まっていませんよ。もう一度、言いましょう。"
     textReading: "まだ、はなびがはじまっていませんよ。もういちど、いいましょう。"
-    textEn: "Pháo hoa còn chưa bắt đầu mà. Ta nói lại nhé."
+    textVi: "Pháo hoa còn chưa bắt đầu mà. Ta nói lại nhé."
+    textEn: "The fireworks haven't even started yet. Let's say it again."
     textRomaji: "Mada, hanabi ga hajimatte imasen yo. Mou ichido, iimashou."
     textEnglishIpa: 
     animationCue: 
@@ -1377,7 +1458,8 @@ MonoBehaviour:
     speakerId: npc_neighbor_3
     textJa: "あなたは、ゴミのルールも、ちゃんと守りました。みなさん、この人は、町の大切な仲間です。"
     textReading: "あなたは、ゴミのルールも、ちゃんとまもりました。みなさん、このひとは、まちのたいせつななかまです。"
-    textEn: "Bạn đã giữ đúng cả quy tắc đổ rác. Mọi người ơi, người này là một người bạn đồng hành quý giá của khu phố."
+    textVi: "Bạn đã giữ đúng cả quy tắc đổ rác. Mọi người ơi, người này là một người bạn đồng hành quý giá của khu phố."
+    textEn: "You even kept the garbage rules. Everyone, this person is a precious member of our neighbourhood."
     textRomaji: "Anata wa, gomi no ruuru mo, chanto mamorimashita. Minasan, kono hito wa, machi no taisetsu na nakama desu."
     textEnglishIpa: 
     animationCue: bow
@@ -1396,7 +1478,8 @@ MonoBehaviour:
     speakerId: npc_neighbor_3
     textJa: "最初は、心配しました。でも、今は、だいじょうぶ。あなたは、町の仲間です。"
     textReading: "さいしょは、しんぱいしました。でも、いまは、だいじょうぶ。あなたは、まちのなかまです。"
-    textEn: "Lúc đầu tôi có lo lắng. Nhưng bây giờ thì ổn rồi. Bạn là một người của khu phố này."
+    textVi: "Lúc đầu tôi có lo lắng. Nhưng bây giờ thì ổn rồi. Bạn là một người của khu phố này."
+    textEn: "At first I was worried. But now it's fine. You are one of us in this neighbourhood."
     textRomaji: "Saisho wa, shinpai shimashita. Demo, ima wa, daijoubu. Anata wa, machi no nakama desu."
     textEnglishIpa: 
     animationCue: bow
@@ -1415,7 +1498,8 @@ MonoBehaviour:
     speakerId: npc_neighbor_3
     textJa: "ありがとうございます。あなたは、この町の仲間です。"
     textReading: "ありがとうございます。あなたは、このまちのなかまです。"
-    textEn: "Cảm ơn bạn. Bạn là một người của khu phố này."
+    textVi: "Cảm ơn bạn. Bạn là một người của khu phố này."
+    textEn: "Thank you. You are one of us in this neighbourhood."
     textRomaji: "Arigatou gozaimasu. Anata wa, kono machi no nakama desu."
     textEnglishIpa: 
     animationCue: bow
@@ -1434,7 +1518,8 @@ MonoBehaviour:
     speakerId: 
     textJa: "そのとき、夜空に大きな花火が上がりました。ドン！みんなの笑い声が、ひろがります。"
     textReading: "そのとき、よぞらにおおきなはなびがあがりました。ドン！みんなのわらいごえが、ひろがります。"
-    textEn: "Đúng lúc đó, một chùm pháo hoa lớn bừng lên trên bầu trời đêm. Đùng! Tiếng cười của mọi người lan ra."
+    textVi: "Đúng lúc đó, một chùm pháo hoa lớn bừng lên trên bầu trời đêm. Đùng! Tiếng cười của mọi người lan ra."
+    textEn: "Just then, a huge firework bursts across the night sky. Boom! Everyone's laughter spreads."
     textRomaji: "Sono toki, yozora ni ookina hanabi ga agarimashita. Don! Minna no waraigoe ga, hirogarimasu."
     textEnglishIpa: 
     animationCue: 
@@ -1453,7 +1538,8 @@ MonoBehaviour:
     speakerId: 
     textJa: "はじめて来た日から、三か月。ここは、もう、あなたの町です。"
     textReading: "はじめてきたひから、さんかげつ。ここは、もう、あなたのまちです。"
-    textEn: "Ba tháng kể từ ngày đầu tiên bạn đến. Nơi này giờ đã là thị trấn của bạn."
+    textVi: "Ba tháng kể từ ngày đầu tiên bạn đến. Nơi này giờ đã là thị trấn của bạn."
+    textEn: "Three months since the day you first arrived. This place is your town now."
     textRomaji: "Hajimete kita hi kara, sankagetsu. Koko wa, mou, anata no machi desu."
     textEnglishIpa: 
     animationCue: 

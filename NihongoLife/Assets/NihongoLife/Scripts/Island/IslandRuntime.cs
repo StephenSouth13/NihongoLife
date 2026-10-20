@@ -52,18 +52,18 @@ namespace NihongoLife.Island
             var record = IslandState.Record;
             bool firstVisit = !record.welcomed;
             if (IslandEconomy.GiveStarterKit())
-                IslandUI.Toast("Quà chào mừng: cuốc, bình tưới và 3 túi hạt cà rốt đã vào balo.");
+                IslandUI.Toast(NihongoLife.Core.Loc.T("Quà chào mừng: cuốc, bình tưới và 3 túi hạt cà rốt đã vào balo.", "Welcome gift: a hoe, a watering can and 3 bags of carrot seeds are in your bag.", "ようこそのプレゼント：くわ、じょうろ、にんじんの種3袋をかばんに入れました。"));
             record.welcomed = true;
             IslandState.Discover("place:island");
             IslandUI.ShowToolbar();
             IslandUI.ShowWelcome();
-            if (!firstVisit) IslandUI.Toast("Cây trồng vẫn lớn trong lúc bạn đi vắng — ghé ruộng xem nhé.");
+            if (!firstVisit) IslandUI.Toast(NihongoLife.Core.Loc.T("Cây trồng vẫn lớn trong lúc bạn đi vắng — ghé ruộng xem nhé.", "Your crops kept growing while you were away — go and check the fields.", "留守の間も作物は育っています。畑を見に行きましょう。"));
             IslandAchievements.Unlocked += OnAchievement;
         }
 
         private void OnDestroy() => IslandAchievements.Unlocked -= OnAchievement;
 
-        private static void OnAchievement(IslandAchievements.Def def) => IslandUI.Toast($"Thành tích mới: {def.Ja} — {def.Vi}");
+        private static void OnAchievement(IslandAchievements.Def def) => IslandUI.Toast(NihongoLife.Core.Loc.T("Thành tích mới: ", "New achievement: ", "新しい実績：") + def.Title);
 
         private void Update()
         {
@@ -82,7 +82,7 @@ namespace NihongoLife.Island
                 if (controller != null) controller.enabled = false;
                 player.transform.SetPositionAndRotation(respawn.position, respawn.rotation);
                 if (controller != null) controller.enabled = true;
-                IslandUI.Toast("Bạn đã ra khỏi đảo — đưa về ga Midori.", true);
+                IslandUI.Toast(NihongoLife.Core.Loc.T("Bạn đã ra khỏi đảo — đưa về ga Midori.", "You left the island — brought back to Midori Station.", "島の外に出たので、みどり駅に戻りました。"), true);
             }
         }
     }
@@ -105,22 +105,22 @@ namespace NihongoLife.Island
         public static string BuyTicket()
         {
             var inventory = PlayerInventory.Instance;
-            if (inventory == null) return "Không tìm thấy balo.";
-            if (HasTicket) return "Bạn đã có vé về Hibari — ra cửa tàu và nhấn F.";
-            if (!IslandEconomy.CanStore(TicketItemId)) return "Balo đầy — bán bớt nông sản ở cửa hàng rồi mua vé.";
+            if (inventory == null) return NihongoLife.Core.Loc.T("Không tìm thấy balo.", "Bag not found.", "かばんが見つかりません。");
+            if (HasTicket) return NihongoLife.Core.Loc.T("Bạn đã có vé về Hibari — ra cửa tàu và nhấn F.", "You already have a ticket to Hibari — go to the train door and press F.", "ひばりへのきっぷはもうあります。電車のドアでFを押してください。");
+            if (!IslandEconomy.CanStore(TicketItemId)) return NihongoLife.Core.Loc.T("Balo đầy — bán bớt nông sản ở cửa hàng rồi mua vé.", "Your bag is full — sell some produce at the store, then buy a ticket.", "かばんがいっぱいです。お店で作物を売ってからきっぷを買いましょう。");
             if (inventory.Yen < Price)
             {
                 bool canSell = false;
                 foreach (var crop in IslandCatalog.Load().crops) if (IslandEconomy.Owned(crop.ProduceItemId) > 0) canSell = true;
-                if (canSell) return $"Không đủ tiền (vé ¥{Price}, bạn có ¥{inventory.Yen}). Bán nông sản ở cửa hàng Midori trước nhé.";
-                inventory.AddItem(TicketItemId, "きっぷ（ひばり）", "Vé tàu Midori → Hibari (vé hỗ trợ)", 0, 1);
-                return "Bạn không còn tiền và không có gì để bán — nhân viên ga tặng một vé hỗ trợ về Hibari.";
+                if (canSell) return NihongoLife.Core.Loc.F("Không đủ tiền (vé {0}, bạn có {1}). Bán nông sản ở cửa hàng Midori trước nhé.", "Not enough money (ticket {0}, you have {1}). Sell produce at the Midori Store first.", "お金が足りません（きっぷ{0}、所持金{1}）。先にみどりしょうてんで作物を売りましょう。", NihongoLife.Core.Loc.Yen(Price), NihongoLife.Core.Loc.Yen(inventory.Yen));
+                inventory.AddItem(TicketItemId, "きっぷ（ひばり）", NihongoLife.Core.Loc.Triple("Vé tàu Midori → Hibari (vé hỗ trợ)", "Train ticket Midori → Hibari (help ticket)", "きっぷ（みどりじま → ひばり・サポート）"), 0, 1);
+                return NihongoLife.Core.Loc.T("Bạn không còn tiền và không có gì để bán — nhân viên ga tặng một vé hỗ trợ về Hibari.", "You have no money and nothing to sell — the station staff give you a help ticket to Hibari.", "お金も売る物もないので、駅員さんがひばりまでのサポートきっぷをくれました。");
             }
-            if (!inventory.SpendYen(Price, "Vé tàu")) return $"Không đủ tiền (vé ¥{Price}).";
-            if (!inventory.AddItem(TicketItemId, "きっぷ（ひばり）", "Vé tàu Midori → Hibari", Price, 1))
+            if (!inventory.SpendYen(Price, NihongoLife.Core.Loc.Triple("Vé tàu", "Train ticket", "きっぷ"))) return NihongoLife.Core.Loc.F("Không đủ tiền (vé {0}).", "Not enough money (ticket {0}).", "お金が足りません（きっぷ{0}）。", NihongoLife.Core.Loc.Yen(Price));
+            if (!inventory.AddItem(TicketItemId, "きっぷ（ひばり）", NihongoLife.Core.Loc.Triple("Vé tàu Midori → Hibari", "Train ticket Midori → Hibari", "きっぷ（みどりじま → ひばり）"), Price, 1))
             {
-                inventory.AddYen(Price, "Hoàn vé tàu");
-                return "Balo đầy, không nhận được vé.";
+                inventory.AddYen(Price, NihongoLife.Core.Loc.Triple("Hoàn vé tàu", "Ticket refund", "きっぷの払い戻し"));
+                return NihongoLife.Core.Loc.T("Balo đầy, không nhận được vé.", "Your bag is full, so you can't take the ticket.", "かばんがいっぱいで、きっぷを受け取れません。");
             }
             return null;
         }
@@ -128,11 +128,11 @@ namespace NihongoLife.Island
         /// <summary>Validates the ticket and rides back to Hibari; returns an error message or null when the trip starts.</summary>
         public static string Depart(MonoBehaviour host)
         {
-            if (_departing) return "Tàu đang khởi hành.";
-            if (!HasTicket) return "Cần vé về Hibari — mua ở máy bán vé cạnh sân ga.";
+            if (_departing) return NihongoLife.Core.Loc.T("Tàu đang khởi hành.", "The train is departing.", "電車が出発します。");
+            if (!HasTicket) return NihongoLife.Core.Loc.T("Cần vé về Hibari — mua ở máy bán vé cạnh sân ga.", "You need a ticket to Hibari — buy one at the machine by the platform.", "ひばりへのきっぷが必要です。ホームの横の券売機で買いましょう。");
             SceneFlowController flow = null;
             if (!GameServices.TryGet(out flow)) flow = Object.FindFirstObjectByType<SceneFlowController>();
-            if (flow == null) return "Không tìm thấy hệ thống chuyển cảnh.";
+            if (flow == null) return NihongoLife.Core.Loc.T("Không tìm thấy hệ thống chuyển cảnh.", "Scene transition system not found.", "シーン切り替えが見つかりません。");
             _departing = true;
             host.StartCoroutine(Ride(flow));
             return null;
@@ -143,10 +143,10 @@ namespace NihongoLife.Island
             var player = Object.FindFirstObjectByType<PlayerController>();
             if (player != null) player.InputLocked = true;
             IslandUI.CloseFarm(); IslandUI.CloseShop(); IslandUI.CloseAnimal(); IslandUI.CloseProgress();
-            yield return IslandUI.TravelScreen("みどりじま · Đảo Xanh", "ひばり · Ga Hibari", RideSeconds);
+            yield return IslandUI.TravelScreen(NihongoLife.Core.Loc.T("Đảo Xanh", "Midori Island", "みどりじま"), NihongoLife.Core.Loc.T("Ga Hibari", "Hibari Station", "ひばりえき"), RideSeconds);
             PlayerInventory.Instance?.RemoveItem(TicketItemId);
             IslandState.Save();
-            flow.TransferZone(WorldLocationCatalog.StationScene, WorldLocationCatalog.StationEntrance, "ひばりえき / Ga Hibari", () =>
+            flow.TransferZone(WorldLocationCatalog.StationScene, WorldLocationCatalog.StationEntrance, NihongoLife.Core.Loc.T("Ga Hibari", "Hibari Station", "ひばりえき"), () =>
             {
                 _departing = false;
                 var p = Object.FindFirstObjectByType<PlayerController>();

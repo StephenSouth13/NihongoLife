@@ -34,21 +34,21 @@ namespace NihongoLife.UI
 
             if (yenText != null)
             {
-                yenText.text = $"Ví tiền: ¥{PlayerInventory.Instance.Yen}";
+                yenText.text = NihongoLife.Core.Loc.T("Ví tiền: ", "Wallet: ", "財布：") + NihongoLife.Core.Loc.Yen(PlayerInventory.Instance.Yen);
             }
 
             if (inventoryText != null)
             {
                 if (PlayerInventory.Instance.Items.Count == 0)
                 {
-                    inventoryText.text = "Túi đồ trống.";
+                    inventoryText.text = NihongoLife.Core.Loc.T("Túi đồ trống.", "Your bag is empty.", "かばんはからっぽです。");
                 }
                 else
                 {
                     StringBuilder sb = new StringBuilder();
                     foreach (var item in PlayerInventory.Instance.Items)
                     {
-                        sb.AppendLine($"- {item.displayNameJa} ({item.displayNameEn}) x{item.quantity}");
+                        sb.AppendLine($"- {item.Name} x{item.quantity}");
                     }
                     inventoryText.text = sb.ToString();
                 }

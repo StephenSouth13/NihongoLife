@@ -100,21 +100,21 @@ namespace NihongoLife.UI
             var inventory = PlayerInventory.Instance;
             if (item == null || !item.gameObject.activeInHierarchy)
             {
-                SetFeedback("Món này hiện đã hết hàng.", new Color(1f, 0.52f, 0.42f));
+                SetFeedback(NihongoLife.Core.Loc.T("Món này hiện đã hết hàng.", "This item is sold out.", "この商品は売り切れです。"), new Color(1f, 0.52f, 0.42f));
                 RebuildRows();
                 return;
             }
 
             if (inventory == null)
             {
-                SetFeedback("Không tìm thấy túi đồ của người chơi.", new Color(1f, 0.52f, 0.42f));
+                SetFeedback(NihongoLife.Core.Loc.T("Không tìm thấy túi đồ của người chơi.", "Player bag not found.", "かばんが見つかりません。"), new Color(1f, 0.52f, 0.42f));
                 return;
             }
 
             int price = Mathf.Max(0, item.PriceYen);
-            if (!inventory.SpendYen(price, "Mua đồ"))
+            if (!inventory.SpendYen(price, NihongoLife.Core.Loc.Triple("Mua đồ", "Purchase", "買い物")))
             {
-                SetFeedback("Không đủ tiền để mua món này.", new Color(1f, 0.72f, 0.3f));
+                SetFeedback(NihongoLife.Core.Loc.T("Không đủ tiền để mua món này.", "Not enough money for this item.", "お金が足りません。"), new Color(1f, 0.72f, 0.3f));
                 RefreshBalance();
                 return;
             }
@@ -124,13 +124,13 @@ namespace NihongoLife.UI
             int quantityAfter = inventory.GetItemQuantity(item.ItemId);
             if (quantityAfter <= quantityBefore)
             {
-                inventory.AddYen(price, "Hoàn tiền");
-                SetFeedback("Không thể mua món này lúc này. Tiền đã được hoàn lại.", new Color(1f, 0.52f, 0.42f));
+                inventory.AddYen(price, NihongoLife.Core.Loc.Triple("Hoàn tiền", "Refund", "返金"));
+                SetFeedback(NihongoLife.Core.Loc.T("Không thể mua món này lúc này. Tiền đã được hoàn lại.", "Can't buy this right now. Your money was refunded.", "今は買えません。お金は返しました。"), new Color(1f, 0.52f, 0.42f));
                 RefreshBalance();
                 return;
             }
 
-            SetFeedback($"Đã mua {DisplayName(item)}.", new Color(0.45f, 0.86f, 0.55f));
+            SetFeedback(NihongoLife.Core.Loc.F("Đã mua {0}.", "Bought {0}.", "{0}を買いました。", DisplayName(item)), new Color(0.45f, 0.86f, 0.55f));
             RefreshBalance();
             RebuildRows();
         }
@@ -204,7 +204,7 @@ namespace NihongoLife.UI
 
             if (_rowsRoot.childCount == 0)
             {
-                var empty = CreateText(_rowsRoot, "Empty", "Hết hàng / 売り切れ", Vector2.zero, new Vector2(0f, 64f), 20f, FontStyles.Normal);
+                var empty = CreateText(_rowsRoot, "Empty", NihongoLife.Core.Loc.T("Hết hàng", "Sold out", "売り切れ"), Vector2.zero, new Vector2(0f, 64f), 20f, FontStyles.Normal);
                 empty.alignment = TextAlignmentOptions.Center;
             }
         }
@@ -235,7 +235,7 @@ namespace NihongoLife.UI
         {
             if (_balanceText == null) return;
             int yen = PlayerInventory.Instance != null ? PlayerInventory.Instance.Yen : 0;
-            _balanceText.text = $"Số dư: <color=#F1B83F>¥{yen:N0}</color>";
+            _balanceText.text = NihongoLife.Core.Loc.T("Số dư: ", "Balance: ", "残高：") + $"<color=#F1B83F>{NihongoLife.Core.Loc.Yen(yen)}</color>";
         }
 
         private void SetFeedback(string message, Color color)
@@ -247,7 +247,7 @@ namespace NihongoLife.UI
 
         private static string DisplayName(InteractiveItem item)
         {
-            return !string.IsNullOrWhiteSpace(item.DisplayNameEn) ? item.DisplayNameEn : item.DisplayNameJa;
+            return new NihongoLife.Player.InventoryEntry { itemId = item.ItemId, displayNameJa = item.DisplayNameJa, displayNameEn = item.DisplayNameEn }.Name;
         }
 
         private static Canvas ResolveCanvas()

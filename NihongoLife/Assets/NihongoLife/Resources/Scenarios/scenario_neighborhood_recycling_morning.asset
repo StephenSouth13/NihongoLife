@@ -15,9 +15,11 @@ MonoBehaviour:
   id: scenario.neighborhood.recycling_morning
   version: 2
   titleJa: "資源ごみの朝"
-  titleEn: "Buổi sáng phân loại rác tái chế"
+  titleVi: "Buổi sáng phân loại rác tái chế"
+  titleEn: "Recycling morning"
   descriptionJa: "佐藤さんと資源ごみの分け方を確認しましょう。"
-  descriptionEn: "Cùng bác Sato kiểm tra cách phân loại rác tái chế: chai nhựa, lon, chai thủy tinh và giấy cũ."
+  descriptionVi: "Cùng bác Sato kiểm tra cách phân loại rác tái chế: chai nhựa, lon, chai thủy tinh và giấy cũ."
+  descriptionEn: "Check how to sort recycling with Mr. Sato: plastic bottles, cans, glass bottles and old paper."
   chapterIndex: 3
   questType: community
   giverNpcId: npc_neighbor_3
@@ -47,11 +49,13 @@ MonoBehaviour:
   objectives:
   - id: obj_meet
     titleJa: "佐藤さんに会う"
-    titleEn: "Gặp lại trưởng khu phố Sato"
+    titleVi: "Gặp lại trưởng khu phố Sato"
+    titleEn: "Meet neighbourhood head Mr. Sato again"
     isOptional: 0
   - id: obj_learn_recycling
     titleJa: "分別を確認する"
-    titleEn: "Học quy tắc phân loại rác tái chế"
+    titleVi: "Học quy tắc phân loại rác tái chế"
+    titleEn: "Learn the recycling sorting rules"
     isOptional: 0
   nodes:
   - id: node_find_sato
@@ -100,7 +104,8 @@ MonoBehaviour:
     speakerId: npc_neighbor_3
     textJa: "おはようございます。約束どおり、来てくれましたね。今日は、資源ごみの日です。"
     textReading: "おはようございます。やくそくどおり、きてくれましたね。きょうは、しげんごみのひです。"
-    textEn: "Chào buổi sáng. Bạn đến đúng như đã hẹn nhỉ. Hôm nay là ngày đổ rác tái chế."
+    textVi: "Chào buổi sáng. Bạn đến đúng như đã hẹn nhỉ. Hôm nay là ngày đổ rác tái chế."
+    textEn: "Good morning. You came just as we agreed. Today is recycling day."
     textRomaji: "Ohayou gozaimasu. Yakusoku doori, kite kuremashita ne. Kyou wa, shigen gomi no hi desu."
     textEnglishIpa: 
     animationCue: talk
@@ -119,7 +124,8 @@ MonoBehaviour:
     speakerId: npc_neighbor_3
     textJa: "おはようございます。今日は、資源ごみの日です。少し、手伝ってもらえますか。"
     textReading: "おはようございます。きょうは、しげんごみのひです。すこし、てつだってもらえますか。"
-    textEn: "Chào buổi sáng. Hôm nay là ngày đổ rác tái chế. Bạn giúp tôi một chút được không?"
+    textVi: "Chào buổi sáng. Hôm nay là ngày đổ rác tái chế. Bạn giúp tôi một chút được không?"
+    textEn: "Good morning. Today is recycling day. Could you help me a little?"
     textRomaji: "Ohayou gozaimasu. Kyou wa, shigen gomi no hi desu. Sukoshi, tetsudatte moraemasu ka?"
     textEnglishIpa: 
     animationCue: talk
@@ -138,14 +144,16 @@ MonoBehaviour:
     speakerId: npc_neighbor_3
     textJa: "このペットボトルは、どう出しますか。"
     textReading: "このペットボトルは、どうだしますか。"
-    textEn: "Chai nhựa này thì phải bỏ như thế nào?"
+    textVi: "Chai nhựa này thì phải bỏ như thế nào?"
+    textEn: "How should I throw out this plastic bottle?"
     textRomaji: "Kono petto botoru wa, dou dashimasu ka?"
     textEnglishIpa: 
     animationCue: point
     voiceClip: {fileID: 0}
     choices:
     - textJa: "ふたを外して、洗ってください。"
-      textEn: "Hãy tháo nắp rồi rửa sạch ạ."
+      textVi: "Hãy tháo nắp rồi rửa sạch ạ."
+      textEn: "Take off the cap and rinse it."
       nextNodeId: n_label
       scoreModifiers:
       - category: Grammar
@@ -158,7 +166,8 @@ MonoBehaviour:
       - vocab.n5.arau
       setFlags: []
     - textJa: "そのまま捨ててください。"
-      textEn: "Cứ vứt nguyên như vậy đi ạ."
+      textVi: "Cứ vứt nguyên như vậy đi ạ."
+      textEn: "Just throw it out as it is."
       nextNodeId: n_sort_hint
       scoreModifiers:
       - category: ResponseAccuracy
@@ -180,7 +189,8 @@ MonoBehaviour:
     speakerId: npc_neighbor_3
     textJa: "そのままでは出せません。ふたを外して、洗います。"
     textReading: "そのままではだせません。ふたをはずして、あらいます。"
-    textEn: "Không thể bỏ nguyên như vậy được. Ta tháo nắp rồi rửa sạch."
+    textVi: "Không thể bỏ nguyên như vậy được. Ta tháo nắp rồi rửa sạch."
+    textEn: "You can't throw it out as it is. Take off the cap and rinse it."
     textRomaji: "Sono mama dewa dasemasen. Futa wo hazushite, araimasu."
     textEnglishIpa: 
     animationCue: point
@@ -199,14 +209,16 @@ MonoBehaviour:
     speakerId: npc_neighbor_3
     textJa: "ラベルも外さなければなりませんか。"
     textReading: "ラベルもはずさなければなりませんか。"
-    textEn: "Có bắt buộc phải tháo cả nhãn không nhỉ?"
+    textVi: "Có bắt buộc phải tháo cả nhãn không nhỉ?"
+    textEn: "Do we have to take the label off too?"
     textRomaji: "Raberu mo hazusanakereba narimasen ka?"
     textEnglishIpa: 
     animationCue: point
     voiceClip: {fileID: 0}
     choices:
     - textJa: "はい、外さなければなりません。"
-      textEn: "Vâng, bắt buộc phải tháo ạ."
+      textVi: "Vâng, bắt buộc phải tháo ạ."
+      textEn: "Yes, we have to take it off."
       nextNodeId: n_where_sort
       scoreModifiers:
       - category: Grammar
@@ -218,7 +230,8 @@ MonoBehaviour:
       - vocab.n5.raberu
       setFlags: []
     - textJa: "いいえ、外します。"
-      textEn: "Không, tháo ạ."
+      textVi: "Không, tháo ạ."
+      textEn: "No, take it off."
       nextNodeId: n_grammar_hint
       scoreModifiers:
       - category: Grammar
@@ -240,7 +253,8 @@ MonoBehaviour:
     speakerId: npc_neighbor_3
     textJa: "必要なことを聞かれたら、「〜なければなりません」と答えますよ。もう一度、どうぞ。"
     textReading: "ひつようなことをきかれたら、「〜なければなりません」とこたえますよ。もういちど、どうぞ。"
-    textEn: "Khi được hỏi về việc bắt buộc, ta trả lời bằng mẫu \"~ nakereba narimasen\". Mời bạn nói lại."
+    textVi: "Khi được hỏi về việc bắt buộc, ta trả lời bằng mẫu \"~ nakereba narimasen\". Mời bạn nói lại."
+    textEn: "When asked whether something is required, answer with \"~ nakereba narimasen\". Please say it again."
     textRomaji: "Hitsuyou na koto wo kikaretara, \"~ nakereba narimasen\" to kotaemasu yo. Mou ichido, douzo."
     textEnglishIpa: 
     animationCue: point
@@ -259,14 +273,16 @@ MonoBehaviour:
     speakerId: npc_neighbor_3
     textJa: "缶と、ビンと、古紙は、それぞれ違う袋に入れます。この缶は、どこに入れますか。"
     textReading: "かんと、ビンと、こしは、それぞれちがうふくろにいれます。このかんは、どこにいれますか。"
-    textEn: "Lon, chai thủy tinh và giấy cũ thì bỏ vào các túi khác nhau. Cái lon này thì bỏ vào đâu?"
+    textVi: "Lon, chai thủy tinh và giấy cũ thì bỏ vào các túi khác nhau. Cái lon này thì bỏ vào đâu?"
+    textEn: "Cans, glass bottles and old paper go in separate bags. Where does this can go?"
     textRomaji: "Kan to, bin to, koshi wa, sorezore chigau fukuro ni iremasu. Kono kan wa, doko ni iremasu ka?"
     textEnglishIpa: 
     animationCue: point
     voiceClip: {fileID: 0}
     choices:
     - textJa: "缶の袋に入れます。"
-      textEn: "Bỏ vào túi đựng lon ạ."
+      textVi: "Bỏ vào túi đựng lon ạ."
+      textEn: "In the bag for cans."
       nextNodeId: n_day
       scoreModifiers:
       - category: Vocabulary
@@ -277,7 +293,8 @@ MonoBehaviour:
       - vocab.n5.kan
       setFlags: []
     - textJa: "ビンの袋に入れます。"
-      textEn: "Bỏ vào túi đựng chai thủy tinh ạ."
+      textVi: "Bỏ vào túi đựng chai thủy tinh ạ."
+      textEn: "In the bag for glass bottles."
       nextNodeId: n_sort_wrong2
       scoreModifiers:
       - category: Vocabulary
@@ -299,7 +316,8 @@ MonoBehaviour:
     speakerId: npc_neighbor_3
     textJa: "それは、缶ですよ。ビンではありません。缶の袋に入れてくださいね。"
     textReading: "それは、かんですよ。ビンではありません。かんのふくろにいれてくださいね。"
-    textEn: "Đó là lon đấy. Không phải chai thủy tinh. Xin hãy bỏ vào túi đựng lon nhé."
+    textVi: "Đó là lon đấy. Không phải chai thủy tinh. Xin hãy bỏ vào túi đựng lon nhé."
+    textEn: "That's a can. Not a glass bottle. Please put it in the bag for cans."
     textRomaji: "Sore wa, kan desu yo. Bin dewa arimasen. Kan no fukuro ni irete kudasai ne."
     textEnglishIpa: 
     animationCue: point
@@ -318,14 +336,16 @@ MonoBehaviour:
     speakerId: npc_neighbor_3
     textJa: "資源ごみは、何曜日に出せますか。"
     textReading: "しげんごみは、なんようびにだせますか。"
-    textEn: "Rác tái chế thì có thể bỏ vào thứ mấy?"
+    textVi: "Rác tái chế thì có thể bỏ vào thứ mấy?"
+    textEn: "Which day can recycling go out?"
     textRomaji: "Shigen gomi wa, nan youbi ni dasemasu ka?"
     textEnglishIpa: 
     animationCue: talk
     voiceClip: {fileID: 0}
     choices:
     - textJa: "水曜日の朝です。"
-      textEn: "Sáng thứ Tư ạ."
+      textVi: "Sáng thứ Tư ạ."
+      textEn: "Wednesday morning."
       nextNodeId: n_end
       scoreModifiers:
       - category: Vocabulary
@@ -336,7 +356,8 @@ MonoBehaviour:
       - vocab.n5.suiyoubi
       setFlags: []
     - textJa: "毎晩です。"
-      textEn: "Mỗi tối ạ."
+      textVi: "Mỗi tối ạ."
+      textEn: "Every evening."
       nextNodeId: n_day_hint
       scoreModifiers:
       - category: Vocabulary
@@ -358,7 +379,8 @@ MonoBehaviour:
     speakerId: npc_neighbor_3
     textJa: "回収は、水曜日の朝だけですよ。もう一度、どうぞ。"
     textReading: "かいしゅうは、すいようびのあさだけですよ。もういちど、どうぞ。"
-    textEn: "Chỉ thu gom vào sáng thứ Tư thôi đấy. Mời bạn nói lại."
+    textVi: "Chỉ thu gom vào sáng thứ Tư thôi đấy. Mời bạn nói lại."
+    textEn: "It's only collected on Wednesday morning. Please say it again."
     textRomaji: "Kaishuu wa, suiyoubi no asa dake desu yo. Mou ichido, douzo."
     textEnglishIpa: 
     animationCue: point
@@ -377,7 +399,8 @@ MonoBehaviour:
     speakerId: npc_neighbor_3
     textJa: "完璧です。これで町をきれいにできますね。"
     textReading: "かんぺきです。これでまちをきれいにできますね。"
-    textEn: "Hoàn hảo. Vậy là chúng ta có thể giữ khu phố sạch đẹp rồi nhỉ."
+    textVi: "Hoàn hảo. Vậy là chúng ta có thể giữ khu phố sạch đẹp rồi nhỉ."
+    textEn: "Perfect. Now we can keep the neighbourhood clean and tidy."
     textRomaji: "Kanpeki desu. Kore de machi wo kirei ni dekimasu ne."
     textEnglishIpa: 
     animationCue: bow
@@ -396,7 +419,8 @@ MonoBehaviour:
     speakerId: 
     textJa: "今日のポイント：「〜てください」「〜なければなりません」「何曜日ですか」。"
     textReading: "きょうのポイント：「〜てください」「〜なければなりません」「なんようびですか」。"
-    textEn: "Tóm tắt: \"~ te kudasai\" (hãy ~), \"~ nakereba narimasen\" (bắt buộc phải ~), \"nan youbi desu ka\" (thứ mấy?). Nhớ: lon, chai thủy tinh và giấy cũ bỏ vào túi riêng, thu gom sáng thứ Tư."
+    textVi: "Tóm tắt: \"~ te kudasai\" (hãy ~), \"~ nakereba narimasen\" (bắt buộc phải ~), \"nan youbi desu ka\" (thứ mấy?). Nhớ: lon, chai thủy tinh và giấy cũ bỏ vào túi riêng, thu gom sáng thứ Tư."
+    textEn: "Summary: \"~ te kudasai\" (please ~), \"~ nakereba narimasen\" (must ~), \"nan youbi desu ka\" (which day?). Remember: cans, glass bottles and old paper go in separate bags, collected on Wednesday morning."
     textRomaji: "Kyou no pointo: \"~ te kudasai\" \"~ nakereba narimasen\" \"nan youbi desu ka\"."
     textEnglishIpa: 
     animationCue: 

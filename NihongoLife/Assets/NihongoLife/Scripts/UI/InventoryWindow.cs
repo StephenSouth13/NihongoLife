@@ -95,7 +95,7 @@ namespace NihongoLife.UI
             var inventory = PlayerInventory.Instance;
             var items = inventory != null ? inventory.Items : null;
             int used = items != null ? items.Count : 0;
-            _slotsText.text = $"{used}/{(inventory != null ? inventory.MaxSlots : SlotCount)} ô";
+            _slotsText.text = $"{used}/{(inventory != null ? inventory.MaxSlots : SlotCount)}";
             _walletText.text = inventory != null ? $"¥{inventory.Yen:N0}" : "¥--";
             for (int i = 0; i < _slots.Count; i++)
             {
@@ -154,8 +154,8 @@ namespace NihongoLife.UI
             _dropButton.gameObject.SetActive(has);
             if (!has)
             {
-                _detailName.text = "Chọn một ô đồ";
-                _detailInfo.text = "Phím 1–9 hoặc bấm chuột để chọn · E dùng · Delete bỏ";
+                _detailName.text = NihongoLife.Core.Loc.T("Chọn một ô đồ", "Pick a slot", "アイテムを選んでください");
+                _detailInfo.text = NihongoLife.Core.Loc.T("Phím 1–9 hoặc bấm chuột để chọn · E dùng · Delete bỏ", "Keys 1–9 or click to pick · E use · Delete drop", "1〜9キーかクリックで選択 · Eで使う · Deleteで捨てる");
                 _detailEffect.text = string.Empty;
                 return;
             }
@@ -163,14 +163,16 @@ namespace NihongoLife.UI
             _detailTile.color = tint;
             _detailGlyph.text = glyph;
             ItemIcons.Apply(_detailGlyph, entry.itemId, 6f);
-            _detailName.text = entry.displayNameJa;
-            _detailInfo.text = $"{entry.displayNameEn}\nSố lượng: {entry.quantity}   ·   Giá: ¥{entry.priceYen}";
+            // The Japanese name is the word to learn; the line below gives its name in the interface language.
+            _detailName.text = string.IsNullOrEmpty(entry.displayNameJa) ? entry.Name : entry.displayNameJa;
+            string local = NihongoLife.Core.Loc.IsJapanese ? "" : entry.Name + "\n";
+            _detailInfo.text = local + NihongoLife.Core.Loc.F("Số lượng: {0}   ·   Giá: {1}", "Quantity: {0}   ·   Price: {1}", "数量：{0}   ·   値段：{1}", entry.quantity, NihongoLife.Core.Loc.Yen(entry.priceYen));
             var effects = new List<string>();
-            if (entry.foodRestore > 0) effects.Add($"No +{entry.foodRestore:0}");
-            if (entry.drinkRestore > 0) effects.Add($"Nước +{entry.drinkRestore:0}");
-            if (entry.energyRestore > 0) effects.Add($"Thể lực +{entry.energyRestore:0}");
-            _detailEffect.text = effects.Count > 0 ? string.Join("  ·  ", effects) : "Không dùng được — giữ trong balo.";
-            _useLabel.text = entry.useType == ItemUseType.Drink ? "のむ  ·  Uống (E)" : "たべる  ·  Ăn (E)";
+            if (entry.foodRestore > 0) effects.Add(NihongoLife.Core.Loc.T("No", "Food", "満腹") + $" +{entry.foodRestore:0}");
+            if (entry.drinkRestore > 0) effects.Add(NihongoLife.Core.Loc.T("Nước", "Drink", "水分") + $" +{entry.drinkRestore:0}");
+            if (entry.energyRestore > 0) effects.Add(NihongoLife.Core.Loc.T("Thể lực", "Stamina", "元気") + $" +{entry.energyRestore:0}");
+            _detailEffect.text = effects.Count > 0 ? string.Join("  ·  ", effects) : NihongoLife.Core.Loc.T("Không dùng được — giữ trong balo.", "Can't be used — keep it in your bag.", "使えません。かばんに入れておきましょう。");
+            _useLabel.text = entry.useType == ItemUseType.Drink ? NihongoLife.Core.Loc.T("Uống (E)", "Drink (E)", "のむ（E）") : NihongoLife.Core.Loc.T("Ăn (E)", "Eat (E)", "たべる（E）");
         }
 
         private void RefreshBars()
@@ -216,9 +218,10 @@ namespace NihongoLife.UI
 
             var header = NLUi.Group(window, "Header", false, 12f, TextAnchor.MiddleLeft);
             ((HorizontalLayoutGroup)header.GetComponent<HorizontalOrVerticalLayoutGroup>()).childForceExpandWidth = false;
-            var title = NLUi.Label(header, "Title", "バッグ  <size=70%><color=#A8B4C4>Balo của bạn</color></size>", 30f, NLUi.Text, _font, FontStyles.Bold);
+            var title = LocText.Set(NLUi.Label(header, "Title", "", 30f, NLUi.Text, _font, FontStyles.Bold), "Balo của bạn", "Your bag", "バッグ");
+            Loc.Watch(this, Refresh);
             NLUi.Size(title, flexibleWidth: 1f);
-            _slotsText = NLUi.Pill(header, "Slots", "0/16 ô", _font, new Color(1f, 1f, 1f, 0.08f), NLUi.Muted, 18f).GetComponentInChildren<TextMeshProUGUI>();
+            _slotsText = NLUi.Pill(header, "Slots", "0/16", _font, new Color(1f, 1f, 1f, 0.08f), NLUi.Muted, 18f).GetComponentInChildren<TextMeshProUGUI>();
             _walletText = NLUi.Pill(header, "Wallet", "¥0", _font, new Color(1f, 1f, 1f, 0.08f), NLUi.Gold, 20f).GetComponentInChildren<TextMeshProUGUI>();
             NLUi.Label(header, "Hint", "B / Esc", 15f, NLUi.Muted, _font).textWrappingMode = TextWrappingModes.NoWrap;
             var closeSpace = new GameObject("CloseSpace", typeof(RectTransform));
@@ -248,16 +251,17 @@ namespace NihongoLife.UI
             _detailInfo = NLUi.Label(detail, "Info", "", 18f, NLUi.Muted, _font);
             _detailEffect = NLUi.Label(detail, "Effect", "", 18f, NLUi.Soft, _font);
             var actions = NLUi.Group(detail, "Actions", false, 10f, TextAnchor.MiddleLeft);
-            _useButton = NLUi.Button(actions, "Use", "たべる  ·  Ăn (E)", _font, UseSelected, new Color(0.18f, 0.5f, 0.32f), 19f, null, 50f);
+            _useButton = NLUi.Button(actions, "Use", NihongoLife.Core.Loc.T("Ăn (E)", "Eat (E)", "たべる（E）"), _font, UseSelected, new Color(0.18f, 0.5f, 0.32f), 19f, null, 50f);
             _useLabel = _useButton.GetComponentInChildren<TextMeshProUGUI>();
-            _dropButton = NLUi.Button(actions, "Drop", "すてる  ·  Bỏ (Del)", _font, DropSelected, new Color(0.35f, 0.16f, 0.15f), 19f, null, 50f);
+            _dropButton = NLUi.Button(actions, "Drop", "", _font, DropSelected, new Color(0.35f, 0.16f, 0.15f), 19f, null, 50f);
+            LocText.Set(_dropButton.GetComponentInChildren<TextMeshProUGUI>(), "Bỏ (Del)", "Drop (Del)", "すてる（Del）");
 
             NLUi.Divider(detail);
-            NLUi.Label(detail, "VitalsTitle", "からだ  <size=75%><color=#A8B4C4>Thể trạng</color></size>", 20f, NLUi.Text, _font, FontStyles.Bold);
-            Bar(detail, "food", "おなか · No");
-            Bar(detail, "drink", "のど · Nước");
-            Bar(detail, "energy", "げんき · Thể lực");
-            Bar(detail, "rest", "ねむけ · Tỉnh táo");
+            LocText.Set(NLUi.Label(detail, "VitalsTitle", "", 20f, NLUi.Text, _font, FontStyles.Bold), "Thể trạng", "Condition", "からだ");
+            Bar(detail, "food", () => Loc.T("No", "Fullness", "おなか"));
+            Bar(detail, "drink", () => Loc.T("Nước", "Thirst", "のど"));
+            Bar(detail, "energy", () => Loc.T("Thể lực", "Stamina", "げんき"));
+            Bar(detail, "rest", () => Loc.T("Tỉnh táo", "Alertness", "ねむけ"));
             _root.gameObject.SetActive(false);
         }
 
@@ -284,11 +288,11 @@ namespace NihongoLife.UI
             _slots.Add((slot.GetComponent<Image>(), tile.GetComponent<Image>(), glyph, qty, name));
         }
 
-        private void Bar(Transform parent, string key, string label)
+        private void Bar(Transform parent, string key, System.Func<string> label)
         {
             var row = NLUi.Group(parent, "Bar_" + key, false, 10f, TextAnchor.MiddleLeft);
             ((HorizontalLayoutGroup)row.GetComponent<HorizontalOrVerticalLayoutGroup>()).childForceExpandWidth = false;
-            var name = NLUi.Label(row, "Label", label, 16f, NLUi.Muted, _font);
+            var name = LocText.Set(NLUi.Label(row, "Label", "", 16f, NLUi.Muted, _font), label);
             NLUi.Size(name, preferredWidth: 170f);
             var track = NLUi.Panel(row, "Track", new Color(1f, 1f, 1f, 0.08f));
             NLUi.Size(track, preferredWidth: 200f, preferredHeight: 14f, flexibleWidth: 1f);

@@ -84,8 +84,8 @@ namespace NihongoLife.Cameras
             if (input != null && !blocked && input.WasPressed(NihongoLife.Core.GameInputId.CameraMode))
             {
                 bool want = !_overview;
-                if (!SetOverview(want)) NihongoLife.UI.HudFeed.Post("Góc nhìn trên cao chỉ dùng ngoài trời.", NihongoLife.UI.HudFeed.Kind.Info, 3f, "overview");
-                else if (want) NihongoLife.UI.HudFeed.Post("Góc nhìn trên cao: , và . để xoay · cuộn chuột để phóng to/thu nhỏ · H để trở lại.", NihongoLife.UI.HudFeed.Kind.Info, 5f, "overview");
+                if (!SetOverview(want)) NihongoLife.UI.HudFeed.Post(NihongoLife.Core.Loc.T("Góc nhìn trên cao chỉ dùng ngoài trời.", "The overhead view only works outdoors.", "上からの視点は屋外だけで使えます。"), NihongoLife.UI.HudFeed.Kind.Info, 3f, "overview");
+                else if (want) NihongoLife.UI.HudFeed.Post(NihongoLife.Core.Loc.T("Góc nhìn trên cao: , và . để xoay · cuộn chuột để phóng to/thu nhỏ · H để trở lại.", "Overhead view: , and . to rotate · scroll to zoom · H to go back.", "上からの視点：「,」「.」で回転 · ホイールでズーム · Hで戻る。"), NihongoLife.UI.HudFeed.Kind.Info, 5f, "overview");
             }
             if (!_overview || input == null || blocked) return;
             if (input.WasPressed(NihongoLife.Core.GameInputId.CameraRotateLeft)) RotateOverview(-1);

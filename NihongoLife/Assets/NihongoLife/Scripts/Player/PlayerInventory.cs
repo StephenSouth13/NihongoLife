@@ -26,6 +26,9 @@ namespace NihongoLife.Player
         public float foodRestore;
         public float drinkRestore;
         public float energyRestore;
+
+        /// <summary>The item's name in the interface language (see <see cref="ItemNames"/>).</summary>
+        public string Name => ItemNames.Of(this);
     }
 
     public class PlayerInventory : MonoBehaviour
@@ -142,7 +145,7 @@ namespace NihongoLife.Player
             if (Yen < amount) return false;
 
             Yen -= amount;
-            NihongoLife.Core.WalletLedger.Record(-amount, reason ?? "Chi tiêu", Yen);
+            NihongoLife.Core.WalletLedger.Record(-amount, reason ?? NihongoLife.Core.Loc.Triple("Chi tiêu", "Spending", "支出"), Yen);
             OnInventoryChanged?.Invoke();
             SaveWallet();
             return true;
@@ -152,7 +155,7 @@ namespace NihongoLife.Player
         {
             if (amount <= 0) return;
             Yen += amount;
-            NihongoLife.Core.WalletLedger.Record(amount, reason ?? "Nhận tiền", Yen);
+            NihongoLife.Core.WalletLedger.Record(amount, reason ?? NihongoLife.Core.Loc.Triple("Nhận tiền", "Income", "収入"), Yen);
             OnInventoryChanged?.Invoke();
             SaveWallet();
         }
@@ -161,7 +164,7 @@ namespace NihongoLife.Player
         {
             int before = Yen;
             Yen = Mathf.Max(0, Yen - Mathf.Max(0, amount));
-            if (before != Yen) NihongoLife.Core.WalletLedger.Record(Yen - before, reason ?? "Tiền phạt", Yen);
+            if (before != Yen) NihongoLife.Core.WalletLedger.Record(Yen - before, reason ?? NihongoLife.Core.Loc.Triple("Tiền phạt", "Fine", "罰金"), Yen);
             OnInventoryChanged?.Invoke();
             SaveWallet();
         }

@@ -92,8 +92,8 @@ namespace NihongoLife.Core
                 if (!IsRaining && hourNow >= 8f && hourNow <= 17f && Random.value < rainbowChance) _rainbowUntilHour = hourNow + 1f;
                 _wasRaining = IsRaining;
                 NihongoLife.UI.HudFeed.Post(IsRaining
-                    ? "Trời bắt đầu mưa — mọi người ngoài phố đã vào trú. Đứng ngoài mưa bạn hồi thể lực chậm hơn."
-                    : "Trời tạnh mưa.", IsRaining ? NihongoLife.UI.HudFeed.Kind.Warning : NihongoLife.UI.HudFeed.Kind.Info, 4f, "weather");
+                    ? NihongoLife.Core.Loc.T("Trời bắt đầu mưa — mọi người ngoài phố đã vào trú. Đứng ngoài mưa bạn hồi thể lực chậm hơn.", "It's starting to rain — people outside have taken shelter. Standing in the rain slows your stamina recovery.", "雨が降ってきました。外の人は雨宿りしています。雨の中では元気の回復が遅くなります。")
+                    : NihongoLife.Core.Loc.T("Trời tạnh mưa.", "The rain has stopped.", "雨がやみました。"), IsRaining ? NihongoLife.UI.HudFeed.Kind.Warning : NihongoLife.UI.HudFeed.Kind.Info, 4f, "weather");
             }
         }
 

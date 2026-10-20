@@ -1096,3 +1096,22 @@ Claude nhận tiếp phần Codex đang làm dở: báo cáo, trailer, demo và 
 **Online.** Lượt chạy toàn bộ hôm nay: 4 test `OnlineSocialPlayModeTests` hỏng vì server Supabase Realtime (`pkxrtvlerjjiignmlebx`) trả `phx_error … channel_crash` khi join kênh presence; sáng 12/10 cùng test này đạt. Lỗi phía server, không liên quan thay đổi trên — kiểm tra trạng thái project trên dashboard Supabase.
 
 **Còn lại.** Cuốc đất dùng `action_hammer` (giơ qua vai, nhát bổ nhỏ); nhổ cỏ, cho ăn, bê đồ, ngồi, nằm vẫn là clip Mixamo retarget (pack Kids không có clip tương ứng).
+
+## Cập nhật (2026-10-20, Claude) — Một ngôn ngữ cho toàn game, test đi xuyên collider, bậc sân ga
+
+**Ngôn ngữ (Việt / Anh / Nhật, đổi giữa chừng là đổi toàn bộ).** Mọi chữ giao diện qua `Core/Loc.cs` (`T/F/Pick/Gloss`, `Triple/Resolve` cho chữ lưu lại, `Watch` + `UI/LocText.cs` để vẽ lại khi đổi). Quy tắc: giao diện chỉ một ngôn ngữ; câu tiếng Nhật là nội dung học, dòng nghĩa theo ngôn ngữ giao diện (không có ở giao diện tiếng Nhật).
+- **Kịch bản:** 14 asset trong `Resources/Scenarios` trước đây để tiếng Việt trong `textEn/titleEn/descriptionEn`. Nay có `textVi/titleVi/descriptionVi` + tiếng Anh thật (817 câu). Code đọc qua `node.Gloss`, `choice.Gloss`, `objective.Title`, `scenario.DisplayTitle/Description/Briefing/LocationHint`. **Sinh lại bằng `Tools/story/gen_*.py` thì phải chạy `python Tools/story/i18n/apply_en.py <asset>`** (xem README trong đó).
+- Đã chuyển: sổ nhiệm vụ, việc làm thêm, chat/voice (thông báo hệ thống lưu 3 ngôn ngữ), câu cá, đảo, ga tàu, chuyển cảnh, nhà hàng, thanh trạng thái, balo (`Player/ItemNames.cs`: tên vật phẩm theo ngôn ngữ, kể cả đồ đã lưu), Hibari Mart (`KonbiniProduct.Name/Meaning`), nhà trọ (từ vựng bàn học 3 ngôn ngữ), cẩm nang địa điểm (`Guide/locations.json` có en/aboutEn/aboutJa/howEn/howJa/phrasesEn), bản đồ, lớp học, cài đặt, admin.
+- **Chữ gợi ý `[F]`:** `Interaction/InteractionPrompt.Of()` — mọi nơi hiện prompt đều đi qua đây; bảng `Known` dịch các prompt gõ sẵn trong scene.
+- **Biển chữ trong scene** (biển đường, cửa hàng, máy game…): `UI/SceneTextLocalizer.cs` dịch lúc load scene và khi đổi ngôn ngữ, không sửa file scene. Thêm biển mới có tiếng Việt → thêm cụm vào bảng `Phrases`.
+- AI chấm IELTS viết nhận xét bằng ngôn ngữ giao diện.
+- Chưa dịch (người chơi không thấy): `reason` của điểm trong kịch bản (chỉ ghi log).
+
+**Test đi xuyên collider** `Tests/PlayMode/CollisionWalkPlayModeTests.cs`: ga, trường, sushi, phòng trọ, game center. Dò sàn bằng capsule người chơi (cao 1,4 · bán kính 0,27 · bậc), mọi vật tương tác phải có chỗ đứng trong 1,9 m, rồi đi thật bằng `CharacterController.Move`. Báo cáo + collider chắn: `Bao_Cao/collision-walk/*.txt`.
+- Lỗi tìm ra: mép `PlatformNorthExtension` ở ga cao 0,31 m > bậc 0,3 của người chơi → đi bộ không lên được sân ga (test cũ teleport nên không thấy). Đã đổi `stepOffset` 0,36 trong `90_TestSandbox.unity`, `StandaloneZoneBootstrap`, `KidsCharactersSetup`.
+
+**Ảnh chụp UI:** chữ 3D (TMP overlay shader) vẽ đè lên canvas ở chế độ chụp → `ExamUiShowcasePlayModeTests.Capture` tắt chúng khi chụp (trong game thật không bị).
+
+**Khác:** `Scripts/Editor/ReleaseBuild.cs` (file mới chưa commit) thiếu `using UnityEditor.Build;` làm project không compile — đã thêm. IELTS Reading test giờ ~7 s, toàn bộ gói IELTS 51 s. Slide pitch: điền vai trò Quang Dũng Nihongo = "Đối tác chuyên môn tiếng Nhật · góp ý nội dung N5–JLPT" — **chờ chủ dự án xác nhận**.
+
+**Kết quả test:** EditMode 25/25; PlayMode 33/34 rồi sửa → Bedroom, CollisionWalk (5), Station, City, Zone, Feet, WorldFeel, ExamUiShowcase (vi/en/ja), SpeakingLive, OnlineSocial (4), GameCenter, IELTS đều đạt.

@@ -15,9 +15,11 @@ MonoBehaviour:
   id: scenario.house2.lostcat
   version: 2
   titleJa: "鈴木さんの猫を探す"
-  titleEn: "Giúp cô Suzuki tìm mèo"
+  titleVi: "Giúp cô Suzuki tìm mèo"
+  titleEn: "Help Ms. Suzuki find her cat"
   descriptionJa: "鈴木さんの猫が、昨日からいません。話を聞いて、手伝いましょう。"
-  descriptionEn: "Con mèo Mike của cô Suzuki mất từ hôm qua. Hỏi thăm, nghe tả đặc điểm và nhận lời giúp."
+  descriptionVi: "Con mèo Mike của cô Suzuki mất từ hôm qua. Hỏi thăm, nghe tả đặc điểm và nhận lời giúp."
+  descriptionEn: "Ms. Suzuki's cat Mike has been missing since yesterday. Ask about it, understand the description and offer to help."
   chapterIndex: 3
   questType: community
   giverNpcId: npc_neighbor_2
@@ -47,15 +49,18 @@ MonoBehaviour:
   objectives:
   - id: obj_meet
     titleJa: "鈴木さんに会う"
-    titleEn: "Gặp cô Suzuki"
+    titleVi: "Gặp cô Suzuki"
+    titleEn: "Meet Ms. Suzuki"
     isOptional: 0
   - id: obj_describe
     titleJa: "ミケのようすを聞き取る"
-    titleEn: "Nghe hiểu đặc điểm của Mike"
+    titleVi: "Nghe hiểu đặc điểm của Mike"
+    titleEn: "Understand what Mike looks like"
     isOptional: 0
   - id: obj_help
     titleJa: "手伝うと言う"
-    titleEn: "Nhận lời giúp tìm mèo"
+    titleVi: "Nhận lời giúp tìm mèo"
+    titleEn: "Offer to help find the cat"
     isOptional: 0
   nodes:
   - id: node_find_suzuki
@@ -85,14 +90,16 @@ MonoBehaviour:
     speakerId: npc_neighbor_2
     textJa: "あの…すみません。私の猫を見ませんでしたか。"
     textReading: "あの…すみません。わたしのねこをみませんでしたか。"
-    textEn: "À... xin lỗi. Bạn có thấy con mèo của tôi không?"
+    textVi: "À... xin lỗi. Bạn có thấy con mèo của tôi không?"
+    textEn: "Ah... excuse me. Have you seen my cat?"
     textRomaji: "Ano... sumimasen. Watashi no neko wo mimasen deshita ka."
     textEnglishIpa: 
     animationCue: talk
     voiceClip: {fileID: 0}
     choices:
     - textJa: "いいえ、見ませんでした。どんな猫ですか。"
-      textEn: "Không, tôi không thấy. Mèo thế nào ạ?"
+      textVi: "Không, tôi không thấy. Mèo thế nào ạ?"
+      textEn: "No, I haven't. What does the cat look like?"
       nextNodeId: n_describe
       scoreModifiers:
       - category: Grammar
@@ -106,7 +113,8 @@ MonoBehaviour:
       setFlags:
       - cat.asked
     - textJa: "見ませんでした。"
-      textEn: "Tôi không thấy."
+      textVi: "Tôi không thấy."
+      textEn: "I haven't seen it."
       nextNodeId: n_open_short
       scoreModifiers:
       - category: ResponseAccuracy
@@ -118,7 +126,8 @@ MonoBehaviour:
       - vocab.n5.neko
       setFlags: []
     - textJa: "猫は好きです。"
-      textEn: "Tôi thích mèo."
+      textVi: "Tôi thích mèo."
+      textEn: "I like cats."
       nextNodeId: n_open_wrong
       scoreModifiers:
       - category: ResponseAccuracy
@@ -140,7 +149,8 @@ MonoBehaviour:
     speakerId: npc_neighbor_2
     textJa: "そうですか…。ミケは、白と茶色と黒の猫です。昨日から、いません。"
     textReading: "そうですか…。ミケは、しろとちゃいろとくろのねこです。きのうから、いません。"
-    textEn: "Vậy à... Con Mike là mèo ba màu trắng, nâu và đen. Nó mất từ hôm qua rồi."
+    textVi: "Vậy à... Con Mike là mèo ba màu trắng, nâu và đen. Nó mất từ hôm qua rồi."
+    textEn: "I see... Mike is a calico cat: white, brown and black. She's been missing since yesterday."
     textRomaji: "Sou desu ka.... Mike wa, shiro to chairo to kuro no neko desu. Kinou kara, imasen."
     textEnglishIpa: 
     animationCue: talk
@@ -159,7 +169,8 @@ MonoBehaviour:
     speakerId: npc_neighbor_2
     textJa: "あ、ありがとう…。でも、今は、うちの猫がいなくて…。"
     textReading: "あ、ありがとう…。でも、いまは、うちのねこがいなくて…。"
-    textEn: "À, cảm ơn... Nhưng bây giờ mèo nhà tôi đi mất rồi..."
+    textVi: "À, cảm ơn... Nhưng bây giờ mèo nhà tôi đi mất rồi..."
+    textEn: "Ah, thank you... But my cat has gone missing now..."
     textRomaji: "A, arigatou.... Demo, ima wa, uchi no neko ga inakute...."
     textEnglishIpa: 
     animationCue: talk
@@ -178,7 +189,8 @@ MonoBehaviour:
     speakerId: npc_neighbor_2
     textJa: "ミケです。白と茶色と黒の猫です。"
     textReading: "ミケです。しろとちゃいろとくろのねこです。"
-    textEn: "Tên nó là Mike. Là con mèo ba màu trắng, nâu và đen."
+    textVi: "Tên nó là Mike. Là con mèo ba màu trắng, nâu và đen."
+    textEn: "Her name is Mike. She's a calico cat, white, brown and black."
     textRomaji: "Mike desu. Shiro to chairo to kuro no neko desu."
     textEnglishIpa: 
     animationCue: talk
@@ -197,7 +209,8 @@ MonoBehaviour:
     speakerId: npc_neighbor_2
     textJa: "首に、赤いリボンがあります。大きい猫ではありません。小さいです。"
     textReading: "くびに、あかいリボンがあります。おおきいねこではありません。ちいさいです。"
-    textEn: "Ở cổ nó có một chiếc nơ đỏ. Nó không phải mèo to. Nó nhỏ thôi."
+    textVi: "Ở cổ nó có một chiếc nơ đỏ. Nó không phải mèo to. Nó nhỏ thôi."
+    textEn: "She has a red ribbon on her neck. She's not a big cat. She's small."
     textRomaji: "Kubi ni, akai ribon ga arimasu. Ookii neko dewa arimasen. Chiisai desu."
     textEnglishIpa: 
     animationCue: point
@@ -216,14 +229,16 @@ MonoBehaviour:
     speakerId: npc_neighbor_2
     textJa: "分かりましたか。ミケは、何色の猫ですか。"
     textReading: "わかりましたか。ミケは、なにいろのねこですか。"
-    textEn: "Bạn hiểu chưa? Mike là mèo màu gì nhỉ?"
+    textVi: "Bạn hiểu chưa? Mike là mèo màu gì nhỉ?"
+    textEn: "Did you get that? What colour is Mike?"
     textRomaji: "Wakarimashita ka. Mike wa, nani iro no neko desu ka?"
     textEnglishIpa: 
     animationCue: talk
     voiceClip: {fileID: 0}
     choices:
     - textJa: "白と茶色と黒の猫です。"
-      textEn: "Là mèo màu trắng, nâu và đen ạ."
+      textVi: "Là mèo màu trắng, nâu và đen ạ."
+      textEn: "She's white, brown and black."
       nextNodeId: n_check_ribbon
       scoreModifiers:
       - category: Vocabulary
@@ -237,7 +252,8 @@ MonoBehaviour:
       - vocab.n5.kuro
       setFlags: []
     - textJa: "もう一度お願いします。"
-      textEn: "Phiền bạn nói lại một lần nữa ạ."
+      textVi: "Phiền bạn nói lại một lần nữa ạ."
+      textEn: "Could you say that once more, please?"
       nextNodeId: n_color_repeat
       scoreModifiers:
       - category: ResponseAccuracy
@@ -248,7 +264,8 @@ MonoBehaviour:
       - vocab.n5.mou_ichido
       setFlags: []
     - textJa: "白い猫です。"
-      textEn: "Là mèo trắng ạ."
+      textVi: "Là mèo trắng ạ."
+      textEn: "She's a white cat."
       nextNodeId: n_color_wrong
       scoreModifiers:
       - category: Vocabulary
@@ -270,7 +287,8 @@ MonoBehaviour:
     speakerId: npc_neighbor_2
     textJa: "はい。白、茶色、黒。三つの色です。ミケです。"
     textReading: "はい。しろ、ちゃいろ、くろ。みっつのいろです。ミケです。"
-    textEn: "Vâng. Trắng, nâu, đen. Ba màu. Đó là Mike."
+    textVi: "Vâng. Trắng, nâu, đen. Ba màu. Đó là Mike."
+    textEn: "Yes. White, brown, black. Three colours. That's Mike."
     textRomaji: "Hai. Shiro, chairo, kuro. Mittsu no iro desu. Mike desu."
     textEnglishIpa: 
     animationCue: point
@@ -289,7 +307,8 @@ MonoBehaviour:
     speakerId: npc_neighbor_2
     textJa: "白だけではありませんよ。白と、茶色と、黒です。三つの色です。"
     textReading: "しろだけではありませんよ。しろと、ちゃいろと、くろです。みっつのいろです。"
-    textEn: "Không chỉ có màu trắng đâu. Là trắng, nâu và đen. Ba màu."
+    textVi: "Không chỉ có màu trắng đâu. Là trắng, nâu và đen. Ba màu."
+    textEn: "Not just white. White, brown and black. Three colours."
     textRomaji: "Shiro dake dewa arimasen yo. Shiro to, chairo to, kuro desu. Mittsu no iro desu."
     textEnglishIpa: 
     animationCue: point
@@ -308,14 +327,16 @@ MonoBehaviour:
     speakerId: npc_neighbor_2
     textJa: "そうです！ミケの首には、何がありますか。"
     textReading: "そうです！ミケのくびには、なにがありますか。"
-    textEn: "Đúng rồi! Ở cổ Mike có gì nào?"
+    textVi: "Đúng rồi! Ở cổ Mike có gì nào?"
+    textEn: "That's right! What does Mike have on her neck?"
     textRomaji: "Sou desu! Mike no kubi ni wa, nani ga arimasu ka?"
     textEnglishIpa: 
     animationCue: talk
     voiceClip: {fileID: 0}
     choices:
     - textJa: "赤いリボンがあります。"
-      textEn: "Có một chiếc nơ đỏ ạ."
+      textVi: "Có một chiếc nơ đỏ ạ."
+      textEn: "A red ribbon."
       nextNodeId: n_when
       scoreModifiers:
       - category: Grammar
@@ -329,7 +350,8 @@ MonoBehaviour:
       setFlags:
       - cat.described
     - textJa: "青い鈴があります。"
-      textEn: "Có một chiếc chuông xanh ạ."
+      textVi: "Có một chiếc chuông xanh ạ."
+      textEn: "A blue bell."
       nextNodeId: n_ribbon_wrong
       scoreModifiers:
       - category: Vocabulary
@@ -339,7 +361,8 @@ MonoBehaviour:
       vocabularyTags: []
       setFlags: []
     - textJa: "もう一度お願いします。"
-      textEn: "Phiền bạn nói lại một lần nữa ạ."
+      textVi: "Phiền bạn nói lại một lần nữa ạ."
+      textEn: "Could you say that once more, please?"
       nextNodeId: n_ribbon_repeat
       scoreModifiers:
       - category: ResponseAccuracy
@@ -362,7 +385,8 @@ MonoBehaviour:
     speakerId: npc_neighbor_2
     textJa: "ちがいますよ。赤い、リボンです。首に、赤いリボンがあります。"
     textReading: "ちがいますよ。あかい、リボンです。くびに、あかいリボンがあります。"
-    textEn: "Không phải đâu. Là nơ đỏ. Ở cổ có một chiếc nơ đỏ."
+    textVi: "Không phải đâu. Là nơ đỏ. Ở cổ có một chiếc nơ đỏ."
+    textEn: "No. It's a red ribbon. She has a red ribbon on her neck."
     textRomaji: "Chigaimasu yo. Akai, ribon desu. Kubi ni, akai ribon ga arimasu."
     textEnglishIpa: 
     animationCue: point
@@ -381,7 +405,8 @@ MonoBehaviour:
     speakerId: npc_neighbor_2
     textJa: "はい。首に、赤い、リボン。きのう、私がつけました。"
     textReading: "はい。くびに、あかい、リボン。きのう、わたしがつけました。"
-    textEn: "Vâng. Ở cổ, một chiếc nơ đỏ. Hôm qua chính tôi đã buộc cho nó."
+    textVi: "Vâng. Ở cổ, một chiếc nơ đỏ. Hôm qua chính tôi đã buộc cho nó."
+    textEn: "Yes. On her neck, a red ribbon. I tied it on her myself yesterday."
     textRomaji: "Hai. Kubi ni, akai, ribon. Kinou, watashi ga tsukemashita."
     textEnglishIpa: 
     animationCue: point
@@ -400,14 +425,16 @@ MonoBehaviour:
     speakerId: npc_neighbor_2
     textJa: "昨日の夜、窓を開けました。それから、ミケがいません。"
     textReading: "きのうのよる、まどをあけました。それから、ミケがいません。"
-    textEn: "Tối qua tôi mở cửa sổ. Từ đó, Mike không thấy đâu nữa."
+    textVi: "Tối qua tôi mở cửa sổ. Từ đó, Mike không thấy đâu nữa."
+    textEn: "Last night I opened the window. Since then, Mike has been gone."
     textRomaji: "Kinou no yoru, mado wo akemashita. Sorekara, Mike ga imasen."
     textEnglishIpa: 
     animationCue: talk
     voiceClip: {fileID: 0}
     choices:
     - textJa: "いつからいませんか。"
-      textEn: "Nó mất từ khi nào ạ?"
+      textVi: "Nó mất từ khi nào ạ?"
+      textEn: "Since when has she been missing?"
       nextNodeId: n_when_answer
       scoreModifiers:
       - category: Grammar
@@ -419,7 +446,8 @@ MonoBehaviour:
       - vocab.n5.itsu
       setFlags: []
     - textJa: "いつですか。"
-      textEn: "Khi nào ạ?"
+      textVi: "Khi nào ạ?"
+      textEn: "When?"
       nextNodeId: n_when_answer
       scoreModifiers:
       - category: ResponseAccuracy
@@ -430,7 +458,8 @@ MonoBehaviour:
       - vocab.n5.itsu
       setFlags: []
     - textJa: "どこですか。"
-      textEn: "Ở đâu ạ?"
+      textVi: "Ở đâu ạ?"
+      textEn: "Where?"
       nextNodeId: n_when_wrong
       scoreModifiers:
       - category: Grammar
@@ -452,7 +481,8 @@ MonoBehaviour:
     speakerId: npc_neighbor_2
     textJa: "「どこ」は場所です。時間は、「いつ」ですよ。"
     textReading: "「どこ」はばしょです。じかんは、「いつ」ですよ。"
-    textEn: "\"Doko\" là hỏi nơi chốn. Hỏi thời gian thì dùng \"itsu\" nhé."
+    textVi: "\"Doko\" là hỏi nơi chốn. Hỏi thời gian thì dùng \"itsu\" nhé."
+    textEn: "\"Doko\" asks about a place. To ask about time, use \"itsu\"."
     textRomaji: "\"Doko\" wa basho desu. Jikan wa, \"itsu\" desu yo."
     textEnglishIpa: 
     animationCue: point
@@ -471,7 +501,8 @@ MonoBehaviour:
     speakerId: npc_neighbor_2
     textJa: "昨日の夜、八時ごろからです。もう、二十時間です。"
     textReading: "きのうのよる、はちじごろからです。もう、にじゅうじかんです。"
-    textEn: "Từ khoảng tám giờ tối qua. Đã hai mươi tiếng rồi."
+    textVi: "Từ khoảng tám giờ tối qua. Đã hai mươi tiếng rồi."
+    textEn: "Since about eight last night. It's been twenty hours already."
     textRomaji: "Kinou no yoru, hachiji goro kara desu. Mou, nijuu jikan desu."
     textEnglishIpa: 
     animationCue: talk
@@ -490,14 +521,16 @@ MonoBehaviour:
     speakerId: npc_neighbor_2
     textJa: "ミケは、よく神社の近くに行きます。公園にも行きます。"
     textReading: "ミケは、よくじんじゃのちかくにいきます。こうえんにもいきます。"
-    textEn: "Mike hay đi đến gần đền thờ. Nó cũng hay ra công viên."
+    textVi: "Mike hay đi đến gần đền thờ. Nó cũng hay ra công viên."
+    textEn: "Mike often goes near the shrine. She also likes the park."
     textRomaji: "Mike wa, yoku jinja no chikaku ni ikimasu. Kouen ni mo ikimasu."
     textEnglishIpa: 
     animationCue: point
     voiceClip: {fileID: 0}
     choices:
     - textJa: "神社の近くですね。分かりました。"
-      textEn: "Gần đền thờ nhỉ. Tôi hiểu rồi ạ."
+      textVi: "Gần đền thờ nhỉ. Tôi hiểu rồi ạ."
+      textEn: "Near the shrine. I understand."
       nextNodeId: n_help
       scoreModifiers:
       - category: Vocabulary
@@ -511,7 +544,8 @@ MonoBehaviour:
       setFlags:
       - cat.shrine_hint
     - textJa: "公園ですね。分かりました。"
-      textEn: "Công viên nhỉ. Tôi hiểu rồi ạ."
+      textVi: "Công viên nhỉ. Tôi hiểu rồi ạ."
+      textEn: "The park. I understand."
       nextNodeId: n_help
       scoreModifiers:
       - category: Vocabulary
@@ -524,7 +558,8 @@ MonoBehaviour:
       setFlags:
       - cat.park_hint
     - textJa: "神社は嫌いです。"
-      textEn: "Tôi không thích đền thờ."
+      textVi: "Tôi không thích đền thờ."
+      textEn: "I don't like shrines."
       nextNodeId: n_place_wrong
       scoreModifiers:
       - category: ResponseAccuracy
@@ -546,7 +581,8 @@ MonoBehaviour:
     speakerId: npc_neighbor_2
     textJa: "あ…そうですか。でも、ミケは神社が好きなんです。もう一度、聞いてください。"
     textReading: "あ…そうですか。でも、ミケはじんじゃがすきなんです。もういちど、きいてください。"
-    textEn: "À... vậy à. Nhưng Mike lại thích đền thờ lắm. Bạn nghe lại giúp tôi nhé."
+    textVi: "À... vậy à. Nhưng Mike lại thích đền thờ lắm. Bạn nghe lại giúp tôi nhé."
+    textEn: "Ah... I see. But Mike loves the shrine. Please listen once more."
     textRomaji: "A... sou desu ka. Demo, Mike wa jinja ga suki nan desu. Mou ichido, kiite kudasai."
     textEnglishIpa: 
     animationCue: talk
@@ -565,14 +601,16 @@ MonoBehaviour:
     speakerId: npc_neighbor_2
     textJa: "ああ、どうしよう…。ミケが、さむくないでしょうか。"
     textReading: "ああ、どうしよう…。ミケが、さむくないでしょうか。"
-    textEn: "Ôi, biết làm sao đây... Không biết Mike có bị lạnh không nữa."
+    textVi: "Ôi, biết làm sao đây... Không biết Mike có bị lạnh không nữa."
+    textEn: "Oh, what should I do... I wonder if Mike is cold."
     textRomaji: "Aa, dou shiyou.... Mike ga, samukunai deshou ka."
     textEnglishIpa: 
     animationCue: talk
     voiceClip: {fileID: 0}
     choices:
     - textJa: "私も探しましょうか。"
-      textEn: "Để tôi cũng đi tìm giúp nhé?"
+      textVi: "Để tôi cũng đi tìm giúp nhé?"
+      textEn: "Shall I help you look for her?"
       nextNodeId: n_help_yes
       scoreModifiers:
       - category: Grammar
@@ -585,7 +623,8 @@ MonoBehaviour:
       setFlags:
       - cat.offered_help
     - textJa: "がんばってください。"
-      textEn: "Cố lên nhé."
+      textVi: "Cố lên nhé."
+      textEn: "Good luck."
       nextNodeId: n_help_cheer
       scoreModifiers:
       - category: ResponseAccuracy
@@ -596,7 +635,8 @@ MonoBehaviour:
       vocabularyTags: []
       setFlags: []
     - textJa: "猫は自分で帰りますよ。"
-      textEn: "Mèo sẽ tự về thôi."
+      textVi: "Mèo sẽ tự về thôi."
+      textEn: "The cat will come back on her own."
       nextNodeId: n_help_wrong
       scoreModifiers:
       - category: ResponseAccuracy
@@ -618,7 +658,8 @@ MonoBehaviour:
     speakerId: npc_neighbor_2
     textJa: "ありがとう…。でも、私一人では、ちょっと…。"
     textReading: "ありがとう…。でも、わたしひとりでは、ちょっと…。"
-    textEn: "Cảm ơn bạn... Nhưng một mình tôi thì hơi... khó."
+    textVi: "Cảm ơn bạn... Nhưng một mình tôi thì hơi... khó."
+    textEn: "Thank you... But on my own it's a bit... hard."
     textRomaji: "Arigatou.... Demo, watashi hitori de wa, chotto...."
     textEnglishIpa: 
     animationCue: talk
@@ -637,7 +678,8 @@ MonoBehaviour:
     speakerId: npc_neighbor_2
     textJa: "そう…でしょうか。でも、私は、心配です。"
     textReading: "そう…でしょうか。でも、わたしは、しんぱいです。"
-    textEn: "Vậy... sao. Nhưng tôi thì rất lo."
+    textVi: "Vậy... sao. Nhưng tôi thì rất lo."
+    textEn: "I... see. But I'm really worried."
     textRomaji: "Sou... deshou ka. Demo, watashi wa, shinpai desu."
     textEnglishIpa: 
     animationCue: talk
@@ -656,7 +698,8 @@ MonoBehaviour:
     speakerId: npc_neighbor_2
     textJa: "本当ですか！ありがとうございます、ありがとうございます！"
     textReading: "ほんとうですか！ありがとうございます、ありがとうございます！"
-    textEn: "Thật sao! Cảm ơn bạn, cảm ơn bạn nhiều lắm!"
+    textVi: "Thật sao! Cảm ơn bạn, cảm ơn bạn nhiều lắm!"
+    textEn: "Really! Thank you, thank you so much!"
     textRomaji: "Hontou desu ka! Arigatou gozaimasu, arigatou gozaimasu!"
     textEnglishIpa: 
     animationCue: bow
@@ -675,14 +718,16 @@ MonoBehaviour:
     speakerId: npc_neighbor_2
     textJa: "ミケを見たら、教えてください。私の家は、あの青い屋根の家です。"
     textReading: "ミケをみたら、おしえてください。わたしのいえは、あのあおいやねのいえです。"
-    textEn: "Nếu bạn thấy Mike, xin hãy báo cho tôi. Nhà tôi là căn có mái xanh kia."
+    textVi: "Nếu bạn thấy Mike, xin hãy báo cho tôi. Nhà tôi là căn có mái xanh kia."
+    textEn: "If you see Mike, please tell me. My house is the one with the blue roof over there."
     textRomaji: "Mike wo mitara, oshiete kudasai. Watashi no ie wa, ano aoi yane no ie desu."
     textEnglishIpa: 
     animationCue: point
     voiceClip: {fileID: 0}
     choices:
     - textJa: "はい、見たら、すぐ教えます。"
-      textEn: "Vâng, nếu thấy tôi sẽ báo ngay ạ."
+      textVi: "Vâng, nếu thấy tôi sẽ báo ngay ạ."
+      textEn: "Yes, if I see her I'll tell you right away."
       nextNodeId: n_bye
       scoreModifiers:
       - category: Grammar
@@ -695,7 +740,8 @@ MonoBehaviour:
       setFlags:
       - cat.promised
     - textJa: "はい、たぶん。"
-      textEn: "Vâng, chắc vậy."
+      textVi: "Vâng, chắc vậy."
+      textEn: "Yes, probably."
       nextNodeId: n_bye_weak
       scoreModifiers:
       - category: ResponseAccuracy
@@ -705,7 +751,8 @@ MonoBehaviour:
       vocabularyTags: []
       setFlags: []
     - textJa: "いいえ、忙しいです。"
-      textEn: "Không, tôi bận."
+      textVi: "Không, tôi bận."
+      textEn: "No, I'm busy."
       nextNodeId: n_promise_wrong
       scoreModifiers:
       - category: ResponseAccuracy
@@ -727,7 +774,8 @@ MonoBehaviour:
     speakerId: npc_neighbor_2
     textJa: "はい…。お願いします。"
     textReading: "はい…。おねがいします。"
-    textEn: "Vâng... Nhờ bạn nhé."
+    textVi: "Vâng... Nhờ bạn nhé."
+    textEn: "Yes... I'm counting on you."
     textRomaji: "Hai.... Onegaishimasu."
     textEnglishIpa: 
     animationCue: talk
@@ -746,7 +794,8 @@ MonoBehaviour:
     speakerId: npc_neighbor_2
     textJa: "え…さっき、探しましょうかと言いましたよね…。"
     textReading: "え…さっき、さがしましょうかといいましたよね…。"
-    textEn: "Hả... lúc nãy bạn còn nói \"để tôi tìm giúp\" mà..."
+    textVi: "Hả... lúc nãy bạn còn nói \"để tôi tìm giúp\" mà..."
+    textEn: "Huh... a moment ago you said \"I'll help you look\"..."
     textRomaji: "E... sakki, sagashimashou ka to iimashita yo ne...."
     textEnglishIpa: 
     animationCue: talk
@@ -765,7 +814,8 @@ MonoBehaviour:
     speakerId: npc_neighbor_2
     textJa: "ありがとうございます。ミケも、きっとうれしいです。"
     textReading: "ありがとうございます。ミケも、きっとうれしいです。"
-    textEn: "Cảm ơn bạn. Chắc chắn Mike cũng sẽ rất vui."
+    textVi: "Cảm ơn bạn. Chắc chắn Mike cũng sẽ rất vui."
+    textEn: "Thank you. I'm sure Mike will be very happy too."
     textRomaji: "Arigatou gozaimasu. Mike mo, kitto ureshii desu."
     textEnglishIpa: 
     animationCue: bow
@@ -784,7 +834,8 @@ MonoBehaviour:
     speakerId: 
     textJa: "今日のポイント：「どんな〜ですか」「〜ませんでした」「〜ましょうか」。"
     textReading: "きょうのポイント：「どんな〜ですか」「〜ませんでした」「〜ましょうか」。"
-    textEn: "Tóm tắt: \"donna ~ desu ka\" (~ như thế nào?), \"~ masen deshita\" (đã không ~), \"~ mashou ka\" (để tôi ~ nhé?). Hãy để ý đến ngôi đền và công viên khi đi dạo!"
+    textVi: "Tóm tắt: \"donna ~ desu ka\" (~ như thế nào?), \"~ masen deshita\" (đã không ~), \"~ mashou ka\" (để tôi ~ nhé?). Hãy để ý đến ngôi đền và công viên khi đi dạo!"
+    textEn: "Summary: \"donna ~ desu ka\" (what kind of ~?), \"~ masen deshita\" (did not ~), \"~ mashou ka\" (shall I ~?). Keep an eye on the shrine and the park on your walks!"
     textRomaji: "Kyou no pointo: \"donna ~ desu ka\" \"~ masen deshita\" \"~ mashou ka\"."
     textEnglishIpa: 
     animationCue: 

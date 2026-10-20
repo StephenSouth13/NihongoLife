@@ -45,8 +45,8 @@ namespace NihongoLife.Island
             if (inventory == null || quantity <= 0) return Result.Unknown;
             if (!CanStore(itemId)) return Result.BagFull;
             int total = unitPrice * quantity;
-            if (!inventory.SpendYen(total, "Mua ở cửa hàng đảo")) return Result.NoMoney;
-            if (!Give(itemId, quantity)) { inventory.AddYen(total, "Hoàn tiền (balo đầy)"); return Result.BagFull; }
+            if (!inventory.SpendYen(total, Loc.Triple("Mua ở cửa hàng đảo", "Island store purchase", "島のお店で購入"))) return Result.NoMoney;
+            if (!Give(itemId, quantity)) { inventory.AddYen(total, Loc.Triple("Hoàn tiền (balo đầy)", "Refund (bag full)", "返金（バッグがいっぱい）")); return Result.BagFull; }
             NihongoLife.Progression.QuestService.Raise("buy", itemId, quantity);
             NihongoLife.Progression.QuestService.Raise("buy", "midori_store", quantity);
             return Result.Ok;
@@ -58,7 +58,7 @@ namespace NihongoLife.Island
             if (inventory == null || quantity <= 0) return Result.Unknown;
             if (inventory.GetItemQuantity(itemId) < quantity) return Result.NotOwned;
             if (!inventory.RemoveItem(itemId, quantity)) return Result.NotOwned;
-            inventory.AddYen(unitPrice * quantity, "Bán nông sản");
+            inventory.AddYen(unitPrice * quantity, Loc.Triple("Bán nông sản", "Sold produce", "作物を販売"));
             var record = IslandState.Record;
             record.sold += quantity;
             record.earned += unitPrice * quantity;
@@ -84,16 +84,16 @@ namespace NihongoLife.Island
 
     public static class IslandAchievements
     {
-        public sealed class Def { public string Id, Vi, Ja; public Func<IslandRecord, bool> Done; }
+        public sealed class Def { public string Id, Vi, En, Ja; public Func<IslandRecord, bool> Done; public string Title => Loc.T(Vi, En, Ja); }
 
         public static readonly Def[] All =
         {
-            new Def { Id = "first_harvest", Ja = "はじめての しゅうかく", Vi = "Lần thu hoạch đầu tiên", Done = r => r.harvested >= 1 },
-            new Def { Id = "farmer", Ja = "のうか デビュー", Vi = "Thu hoạch 10 lần", Done = r => r.harvested >= 10 },
-            new Def { Id = "first_fish", Ja = "はじめての つり", Vi = "Câu được con cá đầu tiên", Done = r => r.fished >= 1 },
-            new Def { Id = "first_sale", Ja = "はじめての うりあげ", Vi = "Bán nông sản lần đầu", Done = r => r.sold >= 1 },
-            new Def { Id = "animal_friend", Ja = "どうぶつの ともだち", Vi = "Làm quen cả 5 con vật", Done = r => r.animalsMet.Count >= 5 },
-            new Def { Id = "word_collector", Ja = "ことば あつめ", Vi = "Học 15 từ trên đảo", Done = r => r.words.Count >= 15 },
+            new Def { Id = "first_harvest", Ja = "はじめての しゅうかく", Vi = "Lần thu hoạch đầu tiên", En = "First harvest", Done = r => r.harvested >= 1 },
+            new Def { Id = "farmer", Ja = "のうか デビュー", Vi = "Thu hoạch 10 lần", En = "10 harvests", Done = r => r.harvested >= 10 },
+            new Def { Id = "first_fish", Ja = "はじめての つり", Vi = "Câu được con cá đầu tiên", En = "First fish caught", Done = r => r.fished >= 1 },
+            new Def { Id = "first_sale", Ja = "はじめての うりあげ", Vi = "Bán nông sản lần đầu", En = "First sale", Done = r => r.sold >= 1 },
+            new Def { Id = "animal_friend", Ja = "どうぶつの ともだち", Vi = "Làm quen cả 5 con vật", En = "Friends with all 5 animals", Done = r => r.animalsMet.Count >= 5 },
+            new Def { Id = "word_collector", Ja = "ことば あつめ", Vi = "Học 15 từ trên đảo", En = "15 island words learned", Done = r => r.words.Count >= 15 },
         };
 
         public static event Action<Def> Unlocked;

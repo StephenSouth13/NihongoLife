@@ -259,7 +259,7 @@ namespace NihongoLife.UI
                 var button = row.GetComponent<Button>();
                 UIStyleKit.StyleButton(button, UIStyleKit.PanelBase, UIStyleKit.PanelHover, UIStyleKit.PanelPressed);
 
-                string title = Pick(scenario.titleEn, scenario.titleEn, scenario.titleJa);
+                string title = scenario.DisplayTitle;
                 var text = AddText(row.transform, $"<b>{title}</b>\n<size=78%><color=#A9B7C4>{TypeLabel(scenario)}  ·  {Pick("Chương", "Chapter", "第")} {scenario.chapterIndex}</color></size>", 19f, 0f, 0f, 380f, 74f, TextAlignmentOptions.MidlineLeft, FontStyles.Normal, false);
                 var textRect = text.rectTransform;
                 textRect.anchorMin = Vector2.zero;
@@ -294,11 +294,11 @@ namespace NihongoLife.UI
             bool completed = progress.completed.Contains(scenario.id);
 
             var sb = new StringBuilder();
-            sb.Append("<size=140%><b>").Append(Pick(scenario.titleEn, scenario.titleEn, scenario.titleJa)).Append("</b></size>\n");
+            sb.Append("<size=140%><b>").Append(scenario.DisplayTitle).Append("</b></size>\n");
             sb.Append("<color=#A9B7C4>").Append(scenario.titleJa).Append("   ·   ").Append(TypeLabel(scenario)).Append("</color>\n\n");
 
-            string briefing = Pick(scenario.briefingVi, scenario.briefingEn, scenario.briefingJa);
-            if (string.IsNullOrWhiteSpace(briefing)) briefing = Pick(scenario.descriptionEn, scenario.descriptionEn, scenario.descriptionJa);
+            string briefing = scenario.Briefing;
+            if (string.IsNullOrWhiteSpace(briefing)) briefing = scenario.Description;
             if (!string.IsNullOrWhiteSpace(briefing)) sb.Append(briefing).Append("\n\n");
 
             if (!string.IsNullOrWhiteSpace(scenario.giverNpcId))
@@ -306,7 +306,7 @@ namespace NihongoLife.UI
                 sb.Append("<color=#F2B840><b>").Append(Pick("Người giao", "Given by", "依頼人")).Append(":</b></color> ").Append(NpcName(scenario.giverNpcId)).Append('\n');
             }
 
-            string where = Pick(scenario.locationHintVi, scenario.locationHintEn, scenario.locationHintJa);
+            string where = scenario.LocationHint;
             if (!string.IsNullOrWhiteSpace(where))
             {
                 sb.Append("<color=#F2B840><b>").Append(Pick("Địa điểm", "Where", "場所")).Append(":</b></color> ").Append(where).Append('\n');
@@ -331,13 +331,13 @@ namespace NihongoLife.UI
                 }
 
                 string optional = objective.isOptional ? Pick(" (tùy chọn)", " (optional)", "（任意）") : string.Empty;
-                sb.Append("<color=").Append(color).Append('>').Append(mark).Append("  ").Append(Pick(objective.titleEn, objective.titleEn, objective.titleJa)).Append(optional).Append("</color>\n");
+                sb.Append("<color=").Append(color).Append('>').Append(mark).Append("  ").Append(objective.Title).Append(optional).Append("</color>\n");
             }
 
             sb.Append('\n').Append("<color=#F2B840><b>").Append(Pick("Phần thưởng", "Rewards", "報酬")).Append(":</b></color> ");
             int targets = scenario.learningTargets != null ? scenario.learningTargets.Count : 0;
             sb.Append("~").Append(Mathf.Max(20, scenario.baseKnowledgeReward) + targets * 8).Append(' ').Append(Pick("kiến thức", "knowledge", "知識"));
-            if (scenario.rewardYen > 0) sb.Append("   +¥").Append(scenario.rewardYen.ToString("N0"));
+            if (scenario.rewardYen > 0) sb.Append("   +").Append(NihongoLife.Core.Loc.Yen(scenario.rewardYen));
             sb.Append('\n');
 
             string requirement = RequirementText(scenario, progress);
@@ -419,7 +419,7 @@ namespace NihongoLife.UI
                 foreach (string id in scenario.requiredScenarioIds)
                 {
                     var required = repository?.GetScenarioById(id);
-                    string name = required != null ? Pick(required.titleEn, required.titleEn, required.titleJa) : id;
+                    string name = required != null ? required.DisplayTitle : id;
                     parts.Add($"{(progress.completed.Contains(id) ? "✓" : "✕")} {name}");
                 }
             }

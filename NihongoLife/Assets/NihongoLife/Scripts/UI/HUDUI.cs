@@ -268,7 +268,7 @@ namespace NihongoLife.UI
                 var rect = (RectTransform)toggle;
                 rect.anchoredPosition = new Vector2(-24f, -24f);
                 var label = toggle.GetComponentInChildren<TextMeshProUGUI>();
-                if (label != null) { label.color = NLUi.Muted; label.text = "◉  Tên nhân vật"; }
+                if (label != null) { label.color = NLUi.Muted; LocText.Set(label, "◉  Tên nhân vật", "◉  Names", "◉  名前"); }
             }
             if (onlineStatusText != null) onlineStatusText.color = NLUi.Muted;
         }
@@ -599,7 +599,7 @@ namespace NihongoLife.UI
             var image = objectButton.AddComponent<Image>(); image.color = new Color(0.025f, 0.04f, 0.06f, 0.9f);
             var button = objectButton.AddComponent<Button>(); button.targetGraphic = image;
             var label = new GameObject("Label").AddComponent<TextMeshProUGUI>();
-            label.transform.SetParent(objectButton.transform, false); label.text = "◉  Tên nhân vật";
+            label.transform.SetParent(objectButton.transform, false); LocText.Set(label, "◉  Tên nhân vật", "◉  Names", "◉  名前");
             label.fontSize = 15f; label.alignment = TextAlignmentOptions.Center; label.color = Color.white;
             label.rectTransform.anchorMin = Vector2.zero; label.rectTransform.anchorMax = Vector2.one; label.rectTransform.sizeDelta = Vector2.zero;
             button.onClick.AddListener(() => NPCNameplateSystem.Instance?.Toggle());
@@ -642,7 +642,7 @@ namespace NihongoLife.UI
         {
             if (_overviewCamera == null) _overviewCamera = FindFirstObjectByType<NihongoLife.Cameras.ThirdPersonCameraController>();
             if (_overviewCamera == null) return;
-            if (!_overviewCamera.SetOverview(!_overviewCamera.OverviewMode)) HudFeed.Post("Góc nhìn trên cao chỉ dùng ngoài trời.", HudFeed.Kind.Info, 3f, "overview");
+            if (!_overviewCamera.SetOverview(!_overviewCamera.OverviewMode)) HudFeed.Post(NihongoLife.Core.Loc.T("Góc nhìn trên cao chỉ dùng ngoài trời.", "The overhead view only works outdoors.", "上からの視点は屋外だけで使えます。"), HudFeed.Kind.Info, 3f, "overview");
         }
 
         private void UpdateOverviewControls()
@@ -965,10 +965,10 @@ namespace NihongoLife.UI
             _inventoryDetailText.alignment = TextAlignmentOptions.TopLeft;
             _inventoryDetailText.color = new Color(0.82f, 0.9f, 0.94f, 1f);
 
-            CreateInventoryButton("Chi tiết", new Vector2(430f, -190f), () => RefreshInventoryDetail());
-            CreateInventoryButton("Bỏ ra", new Vector2(540f, -190f), DropSelectedInventoryItem);
-            CreateInventoryButton("Chia nhỏ", new Vector2(650f, -190f), SplitSelectedInventoryItem);
-            CreateInventoryButton("Sắp xếp", new Vector2(760f, -190f), SortInventory);
+            CreateInventoryButton(NihongoLife.Core.Loc.T("Chi tiết", "Details", "詳細"), new Vector2(430f, -190f), () => RefreshInventoryDetail());
+            CreateInventoryButton(NihongoLife.Core.Loc.T("Bỏ ra", "Drop", "捨てる"), new Vector2(540f, -190f), DropSelectedInventoryItem);
+            CreateInventoryButton(NihongoLife.Core.Loc.T("Chia nhỏ", "Split", "分ける"), new Vector2(650f, -190f), SplitSelectedInventoryItem);
+            CreateInventoryButton(NihongoLife.Core.Loc.T("Sắp xếp", "Sort", "並べ替え"), new Vector2(760f, -190f), SortInventory);
         }
 
         private void CreateInventoryButton(string label, Vector2 position, UnityEngine.Events.UnityAction action)
@@ -1026,7 +1026,7 @@ namespace NihongoLife.UI
                 _inventoryDetailText.text = Text("Chọn một ô đồ để xem chi tiết.", "Select an item to view details.", "アイテムを選択してください。");
                 return;
             }
-            string name = string.IsNullOrWhiteSpace(item.displayNameEn) ? item.displayNameJa : item.displayNameEn;
+            string name = item.Name;
             _inventoryDetailText.text = $"<size=120%><b>{name}</b></size>\n" +
                 $"{Text("Số lượng", "Quantity", "数量")}: {item.quantity}\n" +
                 $"{Text("Giá trị", "Value", "価格")}: ¥{item.priceYen:N0}\n" +
@@ -1102,7 +1102,7 @@ namespace NihongoLife.UI
 
             if (characterStatsText != null)
             {
-                string learnerName = "Học viên Nihongo";
+                string learnerName = NihongoLife.Core.Loc.T("Học viên Nihongo", "Nihongo learner", "日本語の学生");
                 int level = 1;
                 if (GameServices.TryGet(out Save.IProgressRepository progressRepo))
                 {
@@ -1162,7 +1162,7 @@ namespace NihongoLife.UI
                 if (i < inventory.Items.Count)
                 {
                     var item = inventory.Items[i];
-                    string name = string.IsNullOrEmpty(item.displayNameJa) ? item.displayNameEn : item.displayNameJa;
+                    string name = item.Name;
                     string kind = item.useType == ItemUseType.Food ? " [FOOD]" : item.useType == ItemUseType.Drink ? " [DRINK]" : string.Empty;
                     builder.Append($"<color=#f1c75b>[{i + 1:00}]</color> <b>{name}</b>{kind}  x{item.quantity}/{inventory.MaxStackSize}");
                 }
@@ -1202,9 +1202,7 @@ namespace NihongoLife.UI
             promptPanel.SetActive(true);
             HudPrompt.ContextualVisible = true;
             string key = GameInputService.GetOrCreate().GetBindingLabel(GameInputId.Interact);
-            bool japanese = GameServices.TryGet(out GameSettingsService settings)
-                && settings.Language == GameLanguage.Japanese;
-            promptText.text = $"<color=#F2B233><b>[ {key} ]</b></color>   {(japanese ? interactable.GetPromptJa() : interactable.GetpromptEn())}";
+            promptText.text = $"<color=#F2B233><b>[ {key} ]</b></color>   {InteractionPrompt.Of(interactable)}";
         }
 
         private void HidePrompt()
@@ -1258,18 +1256,13 @@ namespace NihongoLife.UI
         private string ObjectiveText(RuntimeObjective objective)
         {
             if (objective == null) return string.Empty;
-            // Legacy assets may have Vietnamese text serialized in titleEn.
-            string vi = string.IsNullOrWhiteSpace(objective.titleVi) ? objective.titleEn : objective.titleVi;
-            string en = string.IsNullOrWhiteSpace(objective.titleEn) ? vi : objective.titleEn;
-            return Text(vi, en, objective.titleJa);
+            return objective.Title;
         }
 
         private string ScenarioText(ScenarioDefinition scenario)
         {
             if (scenario == null) return string.Empty;
-            string vi = string.IsNullOrWhiteSpace(scenario.titleVi) ? scenario.titleEn : scenario.titleVi;
-            string en = string.IsNullOrWhiteSpace(scenario.titleEn) ? vi : scenario.titleEn;
-            return Text(vi, en, scenario.titleJa);
+            return scenario.DisplayTitle;
         }
 
         /// <summary>The scene-authored dialogue panel stacked fixed-size text boxes that overflowed on long
@@ -1329,8 +1322,8 @@ namespace NihongoLife.UI
                     if (btnText != null)
                     {
                         ConfigureText(btnText, 11f, 16f);
-                        btnText.text = data.learningMode == LearningMode.GuidedPractice
-                            ? $"{choice.textJa}\n<size=80%><color=#8fa3b8>({choice.textEn})</color></size>"
+                        btnText.text = data.learningMode == LearningMode.GuidedPractice && !string.IsNullOrWhiteSpace(choice.Gloss)
+                            ? $"{choice.textJa}\n<size=80%><color=#8fa3b8>({choice.Gloss})</color></size>"
                             : choice.textJa;
                     }
 

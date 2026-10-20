@@ -119,8 +119,8 @@ namespace NihongoLife.School
             RectTransform panelRect = (RectTransform)panel.transform;
             panelRect.sizeDelta = new Vector2(420f, 100f);
             panel.GetComponent<Image>().color = new Color(0.02f, 0.06f, 0.08f, 0.94f);
-            CreateLabel(panel.transform, "EXIT TO CITY", 25f, new Color(0.98f, 0.75f, 0.28f, 1f), new Vector2(-190f, -12f), new Vector2(380f, 38f), TMP_Settings.defaultFontAsset).alignment = TextAlignmentOptions.Center;
-            CreateLabel(panel.transform, "Ra phố  •  Nhấn [F] để rời trường", 14f, Color.white, new Vector2(-190f, -48f), new Vector2(380f, 26f), TMP_Settings.defaultFontAsset).alignment = TextAlignmentOptions.Center;
+            CreateLabel(panel.transform, NihongoLife.Core.Loc.T("RA PHỐ", "EXIT TO CITY", "出口"), 25f, new Color(0.98f, 0.75f, 0.28f, 1f), new Vector2(-190f, -12f), new Vector2(380f, 38f), TMP_Settings.defaultFontAsset).alignment = TextAlignmentOptions.Center;
+            CreateLabel(panel.transform, NihongoLife.Core.Loc.T("Nhấn [F] để rời trường", "Press [F] to leave the school", "[F]で学校を出る"), 14f, Color.white, new Vector2(-190f, -48f), new Vector2(380f, 26f), TMP_Settings.defaultFontAsset).alignment = TextAlignmentOptions.Center;
         }
 
         private Transform FindTransform(string exactName)

@@ -102,8 +102,8 @@ namespace NihongoLife.UI
             void Count(string v)
             {
                 int words = SpeechAudio.CountWords(v);
-                count.text = $"Số từ: <b>{words}</b>" + (group.minWords > 0 ? $"  /  tối thiểu {group.minWords}" : "") +
-                             (LastSavedAt != default ? $"   ·   <color=#5C6B7A>đã lưu tự động lúc {LastSavedAt:HH:mm:ss}</color>" : "");
+                count.text = $"{Loc.T("Số từ", "Words", "語数")}: <b>{words}</b>" + (group.minWords > 0 ? $"  /  {Loc.T("tối thiểu", "minimum", "最低")} {group.minWords}" : "") +
+                             (LastSavedAt != default ? $"   ·   <color=#5C6B7A>{Loc.T("đã lưu tự động lúc", "autosaved at", "自動保存")} {LastSavedAt:HH:mm:ss}</color>" : "");
                 count.color = group.minWords > 0 && words < group.minWords ? Bad : Good;
             }
             input.onValueChanged.AddListener(v => { SetAnswer(number, v); Count(v); });
@@ -135,6 +135,7 @@ namespace NihongoLife.UI
         {
             int part = Array.FindIndex(_test.parts, p => p.groups != null && p.groups.Contains(group)) + 1;
             part = part > 0 ? _test.parts[part - 1].number : 1;
+            if (part == 1 && !IsSubmitted) LiveExamBanner(sheet);
             if (!RepeatsPartTitle(group)) PaperText(sheet, group.heading ?? "Speaking", 20f, FontStyles.Bold);
             if (!string.IsNullOrEmpty(group.instruction)) PaperText(sheet, group.instruction, 16f, FontStyles.Italic).color = PaperMuted;
             if (part == 2 && !string.IsNullOrEmpty(group.stem))
@@ -148,9 +149,13 @@ namespace NihongoLife.UI
                 }
             }
             if (!MicRecorder.HasDevice)
-                PaperText(sheet, "Không tìm thấy micro trên máy này: hãy cắm micro rồi mở lại bài. Bạn vẫn xem được đề để luyện nói.", 15.5f, FontStyles.Bold).color = Bad;
+                PaperText(sheet, Loc.T("Không tìm thấy micro trên máy này: hãy cắm micro rồi mở lại bài. Bạn vẫn xem được đề để luyện nói.",
+                    "No microphone found: plug one in and reopen the test. You can still read the questions to practise.",
+                    "マイクが見つかりません。接続してから開き直してください。問題を見て練習することはできます。"), 15.5f, FontStyles.Bold).color = Bad;
             else if (!_micAllowed)
-                PaperText(sheet, "Game chưa được cấp quyền micro. Hãy cho phép trong cài đặt quyền riêng tư của hệ điều hành rồi mở lại bài.", 15.5f, FontStyles.Bold).color = Bad;
+                PaperText(sheet, Loc.T("Game chưa được cấp quyền micro. Hãy cho phép trong cài đặt quyền riêng tư của hệ điều hành rồi mở lại bài.",
+                    "The game has no microphone permission. Allow it in the system privacy settings, then reopen the test.",
+                    "マイクの許可がありません。OSのプライバシー設定で許可してから開き直してください。"), 15.5f, FontStyles.Bold).color = Bad;
 
             foreach (var item in group.items ?? Array.Empty<IeltsItem>())
             {
@@ -160,11 +165,11 @@ namespace NihongoLife.UI
                 if (part != 2) PaperText(box, $"<b>{number}.</b>  {item.text}", 17.5f, FontStyles.Normal);
                 var row = Row(box, "Controls", 12f);
                 var speakingRow = new SpeakingRow { Part = part, MaxSeconds = MaxSecondsForPart(part) };
-                speakingRow.Record = NLUi.Button(row, "Record_" + number, "● Ghi âm", _font, () => ToggleRecording(number), Bad, 16f, Color.white, 44f);
-                NLUi.Size(speakingRow.Record, 200f, 44f);
-                speakingRow.RecordLabel = speakingRow.Record.GetComponentInChildren<TextMeshProUGUI>();
-                speakingRow.Play = NLUi.Button(row, "Play_" + number, "▶ Nghe lại", _font, () => PlayTake(number), Accent, 16f, Color.white, 44f);
-                NLUi.Size(speakingRow.Play, 160f, 44f);
+                speakingRow.Record = UiKit.Button(row, "Record_" + number, null, null, null, () => ToggleRecording(number), UiKit.Kind.Danger, "mic", 15.5f, 22);
+                UiKit.Size(speakingRow.Record, 200f, 44f);
+                speakingRow.RecordLabel = UiKit.LabelOf(speakingRow.Record);
+                speakingRow.Play = UiKit.Button(row, "Play_" + number, "Nghe lại", "Play back", "再生", () => PlayTake(number), UiKit.Kind.Accent, "play_arrow", 15.5f, 22);
+                UiKit.Size(speakingRow.Play, 160f, 44f);
                 var meterBack = new GameObject("Meter", typeof(RectTransform), typeof(Image), typeof(LayoutElement)).GetComponent<RectTransform>();
                 meterBack.SetParent(row, false);
                 meterBack.GetComponent<Image>().color = new Color(0.86f, 0.87f, 0.85f, 1f);
@@ -179,13 +184,39 @@ namespace NihongoLife.UI
                 NLUi.Size(speakingRow.Status, 420f);
                 if (part == 2)
                 {
-                    var prep = NLUi.Button(row, "Prepare_" + number, "Chuẩn bị 1 phút", _font, () => StartPreparation(number), NLUi.Gold, 15f, new Color(0.1f, 0.08f, 0.04f), 44f);
-                    NLUi.Size(prep, 180f, 44f);
+                    var prep = UiKit.Button(row, "Prepare_" + number, "Chuẩn bị 1 phút", "Prepare 1 min", "準備1分", () => StartPreparation(number), UiKit.Kind.Primary, "hourglass_top", 14.5f, 22);
+                    UiKit.Size(prep, 190f, 44f);
                 }
                 _speakingRows[number] = speakingRow;
                 _refreshers[number] = () => RefreshSpeakingRow(number);
                 RefreshSpeakingRow(number);
             }
+        }
+
+        /// <summary>"Be examined by a teacher, live" — the AI cannot fully judge pronunciation from a recording.</summary>
+        private void LiveExamBanner(RectTransform sheet)
+        {
+            var banner = Box(sheet, "LiveExamBanner");
+            banner.GetComponent<Image>().color = new Color(1f, 0.95f, 0.96f, 1f);
+            var row = Row(banner, "Row", 16f);
+            var text = PaperText(row, Loc.T("<b>Muốn được chấm đủ cả phát âm?</b> Thi trực tiếp với giám khảo qua video — câu hỏi, đồng hồ và band hiện realtime, kết quả vào hộp thư.",
+                "<b>Want pronunciation marked too?</b> Take it live with an examiner on video — questions, timers and bands appear in real time; the result goes to your mailbox.",
+                "<b>発音まで採点してほしい？</b>試験官とビデオでライブ受験できます。質問・タイマー・バンドがリアルタイムで表示され、結果はボックスに届きます。"), 15f, FontStyles.Normal);
+            UiKit.Size(text, 760f, -1f, 1f);
+            var button = UiKit.Button(row, "LiveExam", "Thi với giám khảo", "Live with examiner", "試験官とライブ", OpenLiveExam, UiKit.Kind.Danger, "co_present", 15f);
+            UiKit.Size(button, 230f, 46f);
+        }
+
+        private void OpenLiveExam()
+        {
+            var meeting = NihongoLife.Learning.EduMeetingManager.Instance ?? FindFirstObjectByType<NihongoLife.Learning.EduMeetingManager>();
+            if (meeting == null)
+            {
+                HudFeed.Post(Loc.T("Phòng thi trực tuyến chỉ có ở trường Hibari.", "The live exam room is at Hibari school.", "ライブ試験室はひばり学院にあります。"), HudFeed.Kind.Warning, 3.5f);
+                return;
+            }
+            Close();
+            meeting.OpenForSpeakingExam(_test.id, _test.DisplayTitle);
         }
 
         private void RefreshSpeakingRow(int number)
@@ -195,15 +226,17 @@ namespace NihongoLife.UI
             bool preparing = _prepNumber == number && _prepUntil > 0f;
             TryParseTake(GetAnswer(number), out string file, out float seconds);
             bool hasTake = file != null;
-            row.RecordLabel.text = recording ? "■ Dừng" : hasTake ? "● Ghi lại" : "● Ghi âm";
+            row.RecordLabel.text = recording ? Loc.T("Dừng", "Stop", "停止") : hasTake ? Loc.T("Ghi lại", "Re-record", "録り直す") : Loc.T("Ghi âm", "Record", "録音");
             // Exam mode: one take per question, as in the real test.
             row.Record.interactable = !IsSubmitted && MicRecorder.HasDevice && _micAllowed && !preparing &&
                                       (recording || _recordingNumber < 0) && (!hasTake || !IsExam || recording);
             row.Play.interactable = hasTake && !recording;
-            if (preparing) row.Status.text = $"Chuẩn bị: <b>{Mathf.CeilToInt(_prepUntil - Time.unscaledTime)}</b>s — ghi âm tự bắt đầu khi hết giờ";
-            else if (recording) row.Status.text = $"<color=#D0453A>● Đang ghi</color>  {_mic.Elapsed:0}s / {row.MaxSeconds}s";
+            if (preparing) row.Status.text = Loc.F("Chuẩn bị: <b>{0}</b>s — ghi âm tự bắt đầu khi hết giờ", "Preparing: <b>{0}</b>s — recording starts when time is up", "準備中：<b>{0}</b>秒 — 時間になると録音が始まります", Mathf.CeilToInt(_prepUntil - Time.unscaledTime));
+            else if (recording) row.Status.text = $"<color=#D0453A>● {Loc.T("Đang ghi", "Recording", "録音中")}</color>  {_mic.Elapsed:0}s / {row.MaxSeconds}s";
             else if (!string.IsNullOrEmpty(_mic.LastError) && _recordingNumber == -2 - number) row.Status.text = $"<color=#D0453A>{_mic.LastError}</color>";
-            else row.Status.text = hasTake ? $"Đã ghi <b>{seconds:0}s</b>" + (IsExam ? "" : " — có thể ghi lại") : $"Chưa ghi âm (tối đa {row.MaxSeconds}s)";
+            else row.Status.text = hasTake
+                ? Loc.F("Đã ghi <b>{0:0}s</b>", "Recorded <b>{0:0}s</b>", "録音済み <b>{0:0}秒</b>", seconds) + (IsExam ? "" : Loc.T(" — có thể ghi lại", " — you can re-record", " — 録り直せます"))
+                : Loc.F("Chưa ghi âm (tối đa {0}s)", "Not recorded (max {0}s)", "未録音（最大{0}秒）", row.MaxSeconds);
         }
 
         private void StartPreparation(int number)
@@ -385,8 +418,9 @@ namespace NihongoLife.UI
             ShowProductiveResults();
             if (!GameServices.TryGet(out ExamGradingService grading))
             {
-                foreach (var task in record.writing) task.examination = new IeltsAiExamination { error = "Dịch vụ chấm điểm chưa sẵn sàng (hãy mở bài từ trong game)." };
-                if (record.skill == "speaking") record.speakingExamination = new IeltsAiExamination { error = "Dịch vụ chấm điểm chưa sẵn sàng (hãy mở bài từ trong game)." };
+                string notReady = Loc.T("Dịch vụ chấm điểm chưa sẵn sàng (hãy mở bài từ trong game).", "The marking service is not ready (open the paper from inside the game).", "採点サービスが準備できていません（ゲーム内から開いてください）。");
+                foreach (var task in record.writing) task.examination = new IeltsAiExamination { error = notReady };
+                if (record.skill == "speaking") record.speakingExamination = new IeltsAiExamination { error = notReady };
             }
             else if (record.skill == "writing")
             {
@@ -483,15 +517,27 @@ namespace NihongoLife.UI
             rect.anchorMin = Vector2.zero; rect.anchorMax = Vector2.one; rect.offsetMin = new Vector2(0f, 12f); rect.offsetMax = new Vector2(0f, -12f);
 
             var summary = Box(content, "Summary");
-            PaperText(summary, record.skill == "writing" ? "KẾT QUẢ WRITING · AI EXAMINER" : "KẾT QUẢ SPEAKING · AI EXAMINER", 15f, FontStyles.Bold).color = Accent;
-            string overall = IsGrading ? "<i>Đang chấm…</i>" : record.overall > 0f ? $"<size=170%><b>{record.overall:0.0}</b></size>" : "<i>Chưa có band</i>";
-            PaperText(summary, $"Band ước tính: {overall}", 22f, FontStyles.Normal).name = "OverallBand";
+            bool live = record.mode == "live";
+            PaperText(summary, record.skill == "writing" ? Loc.T("KẾT QUẢ VIẾT · AI EXAMINER", "WRITING RESULT · AI EXAMINER", "ライティング結果 · AI試験官")
+                             : live ? Loc.T("KẾT QUẢ NÓI · GIÁM KHẢO", "SPEAKING RESULT · EXAMINER", "スピーキング結果 · 試験官")
+                             : Loc.T("KẾT QUẢ NÓI · AI EXAMINER", "SPEAKING RESULT · AI EXAMINER", "スピーキング結果 · AI試験官"), 15f, FontStyles.Bold).color = Accent;
+            string overall = IsGrading ? $"<i>{Loc.T("Đang chấm…", "Marking…", "採点中…")}</i>" : record.overall > 0f ? $"<size=170%><b>{record.overall:0.0}</b></size>" : $"<i>{Loc.T("Chưa có band", "No band yet", "バンドはまだありません")}</i>";
+            PaperText(summary, $"{(live ? Loc.T("Band", "Band", "バンド") : Loc.T("Band ước tính", "Estimated band", "推定バンド"))}: {overall}", 22f, FontStyles.Normal).name = "OverallBand";
             if (record.skill == "writing" && record.writing.Count > 1 && record.overall > 0f)
-                PaperText(summary, "Band Writing = (Task 1 + 2 × Task 2) / 3, làm tròn theo quy tắc IELTS. Band mỗi task = trung bình 4 tiêu chí, làm tròn xuống nửa band.", 14.5f, FontStyles.Italic).color = PaperMuted;
+                PaperText(summary, Loc.T("Band Viết = (Task 1 + 2 × Task 2) / 3, làm tròn theo quy tắc IELTS. Band mỗi task = trung bình 4 tiêu chí, làm tròn xuống nửa band.",
+                    "Writing band = (Task 1 + 2 × Task 2) / 3, IELTS rounding. Each task = mean of its 4 criteria, rounded down to the half band.",
+                    "ライティングのバンド =（Task 1 + 2 × Task 2）÷ 3、IELTSの丸め。各タスク = 4項目の平均を0.5刻みで切り捨て。"), 14.5f, FontStyles.Italic).color = PaperMuted;
             if (record.skill == "speaking" && record.speakingExamination != null && record.speakingExamination.criteria.Any(c => c.code == "P" && !c.assessed))
-                PaperText(summary, "<b>Band chưa gồm Phát âm:</b> AI không nghe đủ rõ để đánh giá Pronunciation từ bản ghi, nên band chỉ tính trên 3 tiêu chí còn lại.", 15f, FontStyles.Normal).color = Bad;
-            PaperText(summary, "Band do AI ước tính theo mô tả tiêu chí IELTS công khai — không phải kết quả chính thức. Chỉ bài làm gốc được chấm; bản viết lại chỉ để luyện, không tính vào band.", 14.5f, FontStyles.Italic).color = PaperMuted;
-            PaperText(summary, $"Lượt chấm AI còn lại hôm nay: <b>{ExamGradingService.RequestsLeftToday}</b> (kết quả đã chấm được lưu lại, xem lại không tốn lượt).", 14.5f, FontStyles.Normal).color = PaperMuted;
+                PaperText(summary, Loc.T("<b>Band chưa gồm Phát âm:</b> AI không nghe đủ rõ để đánh giá Phát âm từ bản ghi, nên band chỉ tính trên 3 tiêu chí còn lại.",
+                    "<b>Band without Pronunciation:</b> the AI could not hear the recording well enough to judge Pronunciation, so the band uses the other 3 criteria.",
+                    "<b>発音を含まないバンド：</b>録音から発音を評価できなかったため、残り3項目で算出しています。"), 15f, FontStyles.Normal).color = Bad;
+            if (!live)
+            {
+                PaperText(summary, Loc.T("Band do AI ước tính theo mô tả tiêu chí IELTS công khai — không phải kết quả chính thức. Chỉ bài làm gốc được chấm; bản viết lại chỉ để luyện, không tính vào band.",
+                    "The band is an AI estimate from the public IELTS criteria — not an official result. Only the original is marked; rewrites are for practice and never banded.",
+                    "バンドは公開されたIELTS基準によるAIの推定で、公式結果ではありません。採点は最初の答案のみで、書き直しは練習用です。"), 14.5f, FontStyles.Italic).color = PaperMuted;
+                PaperText(summary, Loc.F("Lượt chấm AI còn lại hôm nay: <b>{0}</b> (kết quả đã chấm được lưu lại, xem lại không tốn lượt).", "AI markings left today: <b>{0}</b> (marked results are saved; viewing them again is free).", "本日のAI採点の残り回数：<b>{0}</b>（採点結果は保存され、見直しは無料です）。", ExamGradingService.RequestsLeftToday), 14.5f, FontStyles.Normal).color = PaperMuted;
+            }
 
             if (record.skill == "writing") foreach (var task in record.writing) WritingTaskResult(content, task);
             else SpeakingResult(content, record);
@@ -500,9 +546,10 @@ namespace NihongoLife.UI
 
             var buttons = Row(content, "Buttons", 12f);
             bool failed = !IsGrading && (record.skill == "writing" ? record.writing.Any(t => t.examination == null || !t.examination.Ok) : record.speakingExamination == null || !record.speakingExamination.Ok);
-            if (failed) NLUi.Size(NLUi.Button(buttons, "Regrade", "Chấm lại", _font, RegradeProductive, NLUi.Gold, 17f, new Color(0.1f, 0.08f, 0.04f), 50f), 180f, 50f);
-            NLUi.Size(NLUi.Button(buttons, "Again", "Làm bài mới (luyện tập)", _font, () => Begin(_package, PracticeMode, false), Accent, 17f, Color.white, 50f), 270f, 50f);
-            NLUi.Size(NLUi.Button(buttons, "Close", "Đóng", _font, Close, new Color(0.3f, 0.34f, 0.4f), 17f, Color.white, 50f), 140f, 50f);
+            if (failed && !live) UiKit.Size(UiKit.Button(buttons, "Regrade", "Chấm lại", "Mark again", "再採点", RegradeProductive, UiKit.Kind.Primary, "refresh", 16f), 190f, 50f);
+            UiKit.Size(UiKit.Button(buttons, "Again", "Làm bài mới (luyện tập)", "New paper (practice)", "新しく練習する", () => Begin(_package, PracticeMode, false), UiKit.Kind.Accent, "replay", 16f), 280f, 50f);
+            if (record.skill == "speaking") UiKit.Size(UiKit.Button(buttons, "Live", "Thi với giám khảo", "Live with examiner", "試験官とライブ", () => OpenLiveExam(), UiKit.Kind.Danger, "co_present", 16f), 240f, 50f);
+            UiKit.Size(UiKit.Button(buttons, "Close", "Đóng", "Close", "閉じる", Close, UiKit.Kind.Secondary, "close", 16f), 160f, 50f);
             Canvas.ForceUpdateCanvases();
             view.verticalNormalizedPosition = scroll;
         }
@@ -515,7 +562,7 @@ namespace NihongoLife.UI
                 row.gameObject.AddComponent<Image>().color = new Color(0.96f, 0.97f, 0.99f, 1f);
                 Cell(row, $"<b>{c.code}</b>", 60f, FontStyles.Normal);
                 Cell(row, c.name ?? "", 250f, FontStyles.Normal);
-                var band = Cell(row, c.assessed ? $"<size=130%><b>{c.band:0.0}</b></size>" : "<i>chưa chấm</i>", 110f, FontStyles.Normal);
+                var band = Cell(row, c.assessed ? $"<size=130%><b>{c.band:0.0}</b></size>" : $"<i>{Loc.T("chưa chấm", "not marked", "未採点")}</i>", 110f, FontStyles.Normal);
                 band.name = "Band_" + c.code;
                 Cell(row, c.explanation ?? "", 640f, FontStyles.Normal);
             }
@@ -526,45 +573,47 @@ namespace NihongoLife.UI
             var box = Box(content, "Task" + task.task);
             box.name = "TaskResult_" + task.task;
             var exam = task.examination;
-            string band = exam != null && exam.Ok ? $"Band task: <b>{exam.overall:0.0}</b>" : "";
-            PaperText(box, $"<b>WRITING TASK {task.task}</b>   ·   {task.words} từ{(task.words < task.minWords ? $" <color=#D0453A>(dưới {task.minWords})</color>" : "")}   {band}", 18f, FontStyles.Normal);
-            if (exam == null) PaperText(box, IsGrading ? "<i>Đang chờ AI Examiner…</i>" : "<i>Chưa chấm.</i>", 16f, FontStyles.Normal);
+            string band = exam != null && exam.Ok ? $"{Loc.T("Band task", "Task band", "タスクのバンド")}: <b>{exam.overall:0.0}</b>" : "";
+            PaperText(box, $"<b>WRITING TASK {task.task}</b>   ·   {task.words} {Loc.T("từ", "words", "語")}{(task.words < task.minWords ? $" <color=#D0453A>({Loc.T("dưới", "under", "未満")} {task.minWords})</color>" : "")}   {band}", 18f, FontStyles.Normal);
+            if (exam == null) PaperText(box, IsGrading ? $"<i>{Loc.T("Đang chờ AI Examiner…", "Waiting for the AI Examiner…", "AI試験官を待っています…")}</i>" : $"<i>{Loc.T("Chưa chấm.", "Not marked yet.", "未採点です。")}</i>", 16f, FontStyles.Normal);
             else if (!exam.Ok) PaperText(box, "⚠ " + exam.error, 16f, FontStyles.Bold).color = Bad;
             else
             {
                 CriteriaTable(box, exam);
-                if (!string.IsNullOrEmpty(exam.summary)) PaperText(box, "<b>Nhận xét chung:</b> " + exam.summary, 16f, FontStyles.Normal);
-                if (exam.fromCache) PaperText(box, "(kết quả đã lưu — không tốn lượt chấm)", 13.5f, FontStyles.Italic).color = PaperMuted;
+                if (!string.IsNullOrEmpty(exam.summary)) PaperText(box, $"<b>{Loc.T("Nhận xét chung", "Overall comment", "総評")}:</b> " + exam.summary, 16f, FontStyles.Normal);
+                if (exam.fromCache) PaperText(box, Loc.T("(kết quả đã lưu — không tốn lượt chấm)", "(saved result — no marking used)", "（保存済みの結果 — 採点回数は使いません）"), 13.5f, FontStyles.Italic).color = PaperMuted;
             }
 
             // The original text, with the Coach's sentences marked.
-            PaperText(box, "<b>Bài gốc của bạn</b>", 16.5f, FontStyles.Normal);
+            PaperText(box, $"<b>{Loc.T("Bài gốc của bạn", "Your original essay", "あなたの元の答案")}</b>", 16.5f, FontStyles.Normal);
             var marked = new HashSet<int>((task.coach?.issues ?? new List<IeltsCoachIssue>()).Select(i => i.sentence));
             var sentences = ExamGradingService.SplitSentences(task.original);
-            string essay = sentences.Count == 0 ? "<i>(bỏ trống)</i>" : string.Join(" ", sentences.Select((s, i) => marked.Contains(i + 1) ? $"<mark=#F4C43066><b><size=80%>[{i + 1}]</size></b> {Escape(s)}</mark>" : Escape(s)));
+            string essay = sentences.Count == 0 ? $"<i>{Loc.T("(bỏ trống)", "(blank)", "（空欄）")}</i>" : string.Join(" ", sentences.Select((s, i) => marked.Contains(i + 1) ? $"<mark=#F4C43066><b><size=80%>[{i + 1}]</size></b> {Escape(s)}</mark>" : Escape(s)));
             PaperText(box, essay, 16.5f, FontStyles.Normal).name = "OriginalEssay_" + task.task;
 
             // AI Coach.
             if (task.coach == null)
             {
                 var coachRow = Row(box, "CoachRow", 12f);
-                NLUi.Size(NLUi.Button(coachRow, "Coach_" + task.task, "AI Coach: góp ý từng câu", _font, () => RequestCoach(task.number), Accent, 16f, Color.white, 46f), 300f, 46f);
+                UiKit.Size(UiKit.Button(coachRow, "Coach_" + task.task, "AI Coach: góp ý từng câu", "AI Coach: sentence by sentence", "AIコーチ：一文ずつ添削", () => RequestCoach(task.number), UiKit.Kind.Accent, "auto_awesome", 15.5f), 320f, 46f);
                 return;
             }
-            CoachReport(box, task.coach, "AI COACH · bài gốc");
+            CoachReport(box, task.coach, Loc.T("AI COACH · bài gốc", "AI COACH · original", "AIコーチ · 元の答案"));
             if (!task.coach.Ok || task.coach.overallAdvice == "…") return;
 
             // Rewrite.
-            PaperText(box, "<b>Viết lại</b> — sửa theo góp ý rồi gửi để Coach xem lại. Bản viết lại được lưu nhưng <b>không chấm band</b>.", 16f, FontStyles.Normal);
+            PaperText(box, Loc.T("<b>Viết lại</b> — sửa theo góp ý rồi gửi để Coach xem lại. Bản viết lại được lưu nhưng <b>không chấm band</b>.",
+                "<b>Rewrite</b> — fix it following the comments, then send it to the Coach. Rewrites are saved but <b>never banded</b>.",
+                "<b>書き直し</b> — コメントに沿って直し、コーチに送ります。書き直しは保存されますが<b>バンドは付きません</b>。"), 16f, FontStyles.Normal);
             var input = MakeInput(box, 1060f, 280f, multiline: true);
             input.name = "Rewrite_" + task.task;
             string draft = _rewriteDrafts.TryGetValue(task.number, out string d) ? d : task.rewrites.Count > 0 ? task.rewrites[^1].text : task.original;
             input.text = draft;
             input.onValueChanged.AddListener(v => _rewriteDrafts[task.number] = v);
             var row = Row(box, "RewriteRow", 12f);
-            NLUi.Size(NLUi.Button(row, "SendRewrite_" + task.task, "Gửi bản viết lại cho Coach", _font, () => SubmitRewrite(task.number, input.text), Good, 16f, Color.white, 46f), 320f, 46f);
+            UiKit.Size(UiKit.Button(row, "SendRewrite_" + task.task, "Gửi bản viết lại cho Coach", "Send the rewrite to the Coach", "書き直しをコーチに送る", () => SubmitRewrite(task.number, input.text), UiKit.Kind.Success, "send", 15.5f), 340f, 46f);
             for (int i = 0; i < task.rewrites.Count; i++)
-                CoachReport(box, task.rewrites[i].coach, $"AI COACH · bản viết lại {i + 1} ({SpeechAudio.CountWords(task.rewrites[i].text)} từ)");
+                CoachReport(box, task.rewrites[i].coach, Loc.F("AI COACH · bản viết lại {0} ({1} từ)", "AI COACH · rewrite {0} ({1} words)", "AIコーチ · 書き直し{0}（{1}語）", i + 1, SpeechAudio.CountWords(task.rewrites[i].text)));
         }
 
         private void CoachReport(RectTransform parent, IeltsCoachReport report, string title)
@@ -574,41 +623,45 @@ namespace NihongoLife.UI
             PaperText(box, $"<b>{title}</b>", 16f, FontStyles.Normal).color = Accent;
             if (report == null) return;
             if (!report.Ok) { PaperText(box, "⚠ " + report.error, 15.5f, FontStyles.Bold).color = Bad; return; }
-            if (report.overallAdvice == "…") { PaperText(box, "<i>Đang nhờ AI Coach đọc…</i>", 15.5f, FontStyles.Normal); return; }
-            if (report.issues.Count == 0) PaperText(box, "Không tìm thấy lỗi đáng kể.", 15.5f, FontStyles.Normal);
+            if (report.overallAdvice == "…") { PaperText(box, $"<i>{Loc.T("Đang nhờ AI Coach đọc…", "The AI Coach is reading…", "AIコーチが読んでいます…")}</i>", 15.5f, FontStyles.Normal); return; }
+            if (report.issues.Count == 0) PaperText(box, Loc.T("Không tìm thấy lỗi đáng kể.", "No significant problems found.", "大きな問題は見つかりませんでした。"), 15.5f, FontStyles.Normal);
             foreach (var issue in report.issues)
             {
                 var item = Column(box, "Issue", 2f);
-                PaperText(item, $"<b>Câu {issue.sentence}</b> · <color=#5C6B7A>{issue.category}</color> · {Escape(issue.problem)}", 15.5f, FontStyles.Normal);
+                PaperText(item, $"<b>{Loc.F("Câu {0}", "Sentence {0}", "{0}文目", issue.sentence)}</b> · <color=#5C6B7A>{issue.category}</color> · {Escape(issue.problem)}", 15.5f, FontStyles.Normal);
                 PaperText(item, $"<color=#B53A2E><s>{Escape(issue.original)}</s></color>   →   <color=#2C8A55><b>{Escape(issue.suggestion)}</b></color>", 15.5f, FontStyles.Normal);
                 PaperText(item, Escape(issue.explanation), 14.5f, FontStyles.Normal).color = PaperMuted;
             }
-            if (!string.IsNullOrEmpty(report.overallAdvice)) PaperText(box, "<b>Lời khuyên:</b> " + Escape(report.overallAdvice), 15.5f, FontStyles.Normal);
+            if (!string.IsNullOrEmpty(report.overallAdvice)) PaperText(box, $"<b>{Loc.T("Lời khuyên", "Advice", "アドバイス")}:</b> " + Escape(report.overallAdvice), 15.5f, FontStyles.Normal);
         }
 
         private void SpeakingResult(RectTransform content, IeltsProductiveRecord record)
         {
             var exam = record.speakingExamination;
             var box = Box(content, "SpeakingCriteria");
-            if (exam == null) PaperText(box, IsGrading ? "<i>Đang gửi bản ghi cho AI Examiner…</i>" : "<i>Chưa chấm.</i>", 16f, FontStyles.Normal);
+            if (exam == null) PaperText(box, IsGrading ? $"<i>{Loc.T("Đang gửi bản ghi cho AI Examiner…", "Sending the recordings to the AI Examiner…", "録音をAI試験官に送っています…")}</i>" : $"<i>{Loc.T("Chưa chấm.", "Not marked yet.", "未採点です。")}</i>", 16f, FontStyles.Normal);
             else if (!exam.Ok) PaperText(box, "⚠ " + exam.error, 16f, FontStyles.Bold).color = Bad;
             else
             {
                 CriteriaTable(box, exam);
-                if (!string.IsNullOrEmpty(exam.summary)) PaperText(box, "<b>Nhận xét chung:</b> " + exam.summary, 16f, FontStyles.Normal);
-                PaperText(box, "Fluency dựa thêm vào số đo thời gian nói đo trực tiếp từ âm thanh trên máy bạn; Pronunciation chỉ chấm từ âm thanh (không suy ra từ transcript).", 14f, FontStyles.Italic).color = PaperMuted;
+                if (!string.IsNullOrEmpty(exam.summary)) PaperText(box, $"<b>{Loc.T("Nhận xét chung", "Overall comment", "総評")}:</b> " + exam.summary, 16f, FontStyles.Normal);
+                if (record.mode != "live")
+                    PaperText(box, Loc.T("Độ trôi chảy dựa thêm vào số đo thời gian nói đo trực tiếp từ âm thanh trên máy bạn; Phát âm chỉ chấm từ âm thanh (không suy ra từ bản chép lời).",
+                        "Fluency also uses speech timing measured from the audio on your device; Pronunciation is judged from the audio only (never from the transcript).",
+                        "流暢さは端末で音声から測った発話時間も使います。発音は音声のみで評価します（書き起こしからは推測しません）。"), 14f, FontStyles.Italic).color = PaperMuted;
             }
             foreach (var answer in record.speaking)
             {
                 var item = Box(content, "Answer" + answer.number);
-                PaperText(item, $"<b>Part {answer.part} · Câu {answer.number}.</b> {Escape(answer.question)}", 16.5f, FontStyles.Normal);
-                if (string.IsNullOrEmpty(answer.audioFile)) { PaperText(item, "<i>Không có bản ghi.</i>", 15f, FontStyles.Normal).color = Bad; continue; }
+                PaperText(item, $"<b>Part {answer.part} · {Loc.F("Câu {0}", "Question {0}", "問{0}", answer.number)}.</b> {Escape(answer.question)}", 16.5f, FontStyles.Normal);
+                if (string.IsNullOrEmpty(answer.audioFile)) { PaperText(item, $"<i>{Loc.T("Không có bản ghi.", "No recording.", "録音がありません。")}</i>", 15f, FontStyles.Normal).color = Bad; continue; }
                 var row = Row(item, "Row", 12f);
                 int number = answer.number;
-                NLUi.Size(NLUi.Button(row, "PlayResult_" + number, "▶ Nghe", _font, () => PlayTake(number), Accent, 15f, Color.white, 40f), 120f, 40f);
+                UiKit.Size(UiKit.Button(row, "PlayResult_" + number, "Nghe", "Play", "再生", () => PlayTake(number), UiKit.Kind.Accent, "play_arrow", 14.5f), 130f, 40f);
                 var m = answer.metrics ?? new IeltsSpeakingMetrics();
-                Cell(row, $"{m.seconds:0}s ghi · {m.speechSeconds:0}s có tiếng nói · {m.pauses} lần ngừng >0,5s (dài nhất {m.longestPause:0.0}s)" + (m.wordsPerMinute > 0f ? $" · {m.wordsPerMinute:0} từ/phút" : ""), 900f, FontStyles.Normal).color = PaperMuted;
-                PaperText(item, string.IsNullOrEmpty(answer.transcript) ? "<i>Transcript: (chưa có)</i>" : "<b>Transcript:</b> " + Escape(answer.transcript), 15.5f, FontStyles.Normal).name = "Transcript_" + number;
+                Cell(row, Loc.F("{0:0}s ghi · {1:0}s có tiếng nói · {2} lần ngừng >0,5s (dài nhất {3:0.0}s)", "{0:0}s recorded · {1:0}s of speech · {2} pauses >0.5s (longest {3:0.0}s)", "録音{0:0}秒 · 発話{1:0}秒 · 0.5秒超の間 {2}回（最長{3:0.0}秒）", m.seconds, m.speechSeconds, m.pauses, m.longestPause)
+                    + (m.wordsPerMinute > 0f ? Loc.F(" · {0:0} từ/phút", " · {0:0} words/min", " · 毎分{0:0}語", m.wordsPerMinute) : ""), 900f, FontStyles.Normal).color = PaperMuted;
+                PaperText(item, string.IsNullOrEmpty(answer.transcript) ? $"<i>{Loc.T("Bản chép lời: (chưa có)", "Transcript: (none yet)", "書き起こし：（まだありません）")}</i>" : $"<b>{Loc.T("Bản chép lời", "Transcript", "書き起こし")}:</b> " + Escape(answer.transcript), 15.5f, FontStyles.Normal).name = "Transcript_" + number;
             }
         }
 
@@ -617,14 +670,17 @@ namespace NihongoLife.UI
         {
             var records = IeltsProductiveStore.All(skill).Where(r => r.overall > 0f).ToList();
             var box = Box(content, "Progress");
-            PaperText(box, $"<b>TIẾN BỘ {skill.ToUpperInvariant()}</b>  <size=80%>(chỉ tính bài gốc)</size>", 16f, FontStyles.Normal).color = Accent;
-            if (records.Count == 0) { PaperText(box, "Chưa có bài nào được chấm.", 15f, FontStyles.Normal); return; }
+            string skillName = skill == "writing" ? Loc.T("VIẾT", "WRITING", "ライティング") : Loc.T("NÓI", "SPEAKING", "スピーキング");
+            PaperText(box, $"<b>{Loc.T("TIẾN BỘ", "PROGRESS", "上達の記録")} · {skillName}</b>  <size=80%>{Loc.T("(chỉ tính bài gốc)", "(original papers only)", "（元の答案のみ）")}</size>", 16f, FontStyles.Normal).color = Accent;
+            if (records.Count == 0) { PaperText(box, Loc.T("Chưa có bài nào được chấm.", "No marked paper yet.", "採点済みの答案はまだありません。"), 15f, FontStyles.Normal); return; }
             string line = string.Join("   →   ", records.TakeLast(8).Select(r => $"{(DateTime.TryParse(r.finishedUtc, out var t) ? t.ToLocalTime().ToString("dd/MM") : "?")}: <b>{r.overall:0.0}</b>"));
             PaperText(box, line, 16f, FontStyles.Normal);
             if (records.Count >= 2)
             {
                 float change = records[^1].overall - records[^2].overall;
-                PaperText(box, change > 0f ? $"Tăng <b>+{change:0.0}</b> so với bài trước." : change < 0f ? $"Giảm <b>{change:0.0}</b> so với bài trước." : "Giữ nguyên so với bài trước.", 15f, FontStyles.Normal).color = change >= 0f ? Good : Bad;
+                PaperText(box, change > 0f ? Loc.F("Tăng <b>+{0:0.0}</b> so với bài trước.", "Up <b>+{0:0.0}</b> on the previous paper.", "前回より<b>+{0:0.0}</b>上がりました。", change)
+                             : change < 0f ? Loc.F("Giảm <b>{0:0.0}</b> so với bài trước.", "Down <b>{0:0.0}</b> on the previous paper.", "前回より<b>{0:0.0}</b>下がりました。", change)
+                             : Loc.T("Giữ nguyên so với bài trước.", "Same as the previous paper.", "前回と同じです。"), 15f, FontStyles.Normal).color = change >= 0f ? Good : Bad;
             }
         }
 

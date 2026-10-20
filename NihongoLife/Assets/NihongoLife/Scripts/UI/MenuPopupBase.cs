@@ -28,10 +28,10 @@ namespace NihongoLife.UI
 
         private static Sprite _circleSprite;
 
-        protected static readonly Color Gold = new Color(0.95f, 0.72f, 0.25f, 1f);
-        protected static readonly Color Muted = new Color(0.66f, 0.72f, 0.78f, 1f);
-        protected static readonly Color Surface = new Color(0.09f, 0.11f, 0.135f, 1f);
-        protected static readonly Color DarkText = new Color(0.08f, 0.06f, 0.02f, 1f);
+        protected static readonly Color Gold = UiTheme.Gold;
+        protected static readonly Color Muted = UiTheme.Muted;
+        protected static readonly Color Surface = UiTheme.Surface;
+        protected static readonly Color DarkText = UiTheme.OnGold;
 
         private readonly List<LocalizedLabel> _localized = new List<LocalizedLabel>();
         private int _escapeHandledFrame = -1;
@@ -98,7 +98,7 @@ namespace NihongoLife.UI
             }
 
             // Live language switching: re-localize immediately, even while this popup is open.
-            if (GameServices.TryGet(out GameSettingsService settings)) settings.OnLanguageChanged += HandleGlobalLanguageChanged;
+            Loc.Watch(this, ApplyLanguage);
         }
 
         /// <summary>Called when the popup is destroyed (e.g. its scene unloads), open or not.</summary>
@@ -108,10 +108,7 @@ namespace NihongoLife.UI
         {
             OnDestroyed();
             if (IsOpen) RestoreGameplay();
-            if (GameServices.TryGet(out GameSettingsService settings)) settings.OnLanguageChanged -= HandleGlobalLanguageChanged;
         }
-
-        private void HandleGlobalLanguageChanged(GameLanguage _) => ApplyLanguage();
 
         public void Show()
         {
@@ -165,46 +162,40 @@ namespace NihongoLife.UI
             rect.offsetMin = rect.offsetMax = Vector2.zero;
 
             var backdrop = PanelObject.GetComponent<Image>();
-            backdrop.color = new Color(0.01f, 0.014f, 0.02f, 0.86f);
+            backdrop.color = UiTheme.Backdrop;
             var backdropButton = PanelObject.GetComponent<Button>();
             backdropButton.transition = Selectable.Transition.None;
             backdropButton.targetGraphic = backdrop;
             backdropButton.onClick.AddListener(Hide);
 
-            var card = new GameObject("Card", typeof(RectTransform), typeof(Image));
-            card.transform.SetParent(PanelObject.transform, false);
+            var cardImage = UiKit.Card(PanelObject.transform, "Card", UiTheme.Ink, 22, shadow: 0.55f);
+            var card = cardImage.gameObject;
             Card = (RectTransform)card.transform;
             Card.anchorMin = Card.anchorMax = Card.pivot = new Vector2(0.5f, 0.5f);
             Card.sizeDelta = CardSize;
-            UIStyleKit.StylePanel(Card, new Color(0.055f, 0.068f, 0.082f, 1f));
-            card.GetComponent<Image>().raycastTarget = true;
+            cardImage.raycastTarget = true;
             card.AddComponent<HudFitRect>().Configure(0.96f, 0.94f, Vector2.zero, 0.4f);
+            // Hairline under the header and a warm glow along the top edge.
+            var glow = UiKit.Image(Card, "TopGlow", UiKit.Alpha(UiTheme.Gold, 0.055f), UiKit.VerticalFade);
+            UiKit.Strip(glow.rectTransform, true, 0f, 96f, 22f, 22f);
+            var hairline = UiKit.Image(Card, "HeaderLine", UiTheme.Line);
+            UiKit.Strip(hairline.rectTransform, true, 92f, 1f, 32f, 32f);
 
             GetTitle(out string vi, out string en, out string ja);
-            AddLocalizedText(Card, vi, en, ja, 36f, 36f, 30f, CardSize.x - 140f, 56f, TextAlignmentOptions.MidlineLeft, FontStyles.Bold);
+            var title = AddLocalizedText(Card, vi, en, ja, 30f, 36f, 22f, CardSize.x - 150f, 56f, TextAlignmentOptions.MidlineLeft, FontStyles.Bold);
+            title.characterSpacing = 1f;
 
-            var close = AddButton(Card, "X", 0f, 0f, 56f, 46f, true);
-            var closeRect = (RectTransform)close.transform;
-            closeRect.anchorMin = closeRect.anchorMax = closeRect.pivot = new Vector2(1f, 1f);
-            closeRect.anchoredPosition = new Vector2(-20f, -26f);
-            close.GetComponentInChildren<TextMeshProUGUI>().fontSize = 26f;
-            close.onClick.AddListener(Hide);
+            UiKit.CloseButton(Card, Hide, 26f);
         }
 
         // ──────────────────────── Localization ────────────────────────
 
-        protected static string Pick(string vi, string en, string ja)
-        {
-            GameLanguage language = GameServices.TryGet(out GameSettingsService settings) ? settings.Language : GameLanguage.Vietnamese;
-            string value = language == GameLanguage.English ? en : language == GameLanguage.Japanese ? ja : vi;
-            if (string.IsNullOrWhiteSpace(value)) value = !string.IsNullOrWhiteSpace(vi) ? vi : !string.IsNullOrWhiteSpace(en) ? en : ja;
-            return value ?? string.Empty;
-        }
+        protected static string Pick(string vi, string en, string ja) => Loc.Pick(vi, en, ja);
 
         protected void Localize(TextMeshProUGUI text, string vi, string en, string ja)
         {
             _localized.Add(new LocalizedLabel { text = text, vi = vi, en = en, ja = ja });
-            text.text = Pick(vi, en, ja);
+            LocText.Set(text, vi, en, ja);
         }
 
         private void ApplyLanguage()
@@ -286,10 +277,13 @@ namespace NihongoLife.UI
             go.transform.SetParent(parent, false);
             Place((RectTransform)go.transform, x, y, width, height);
             var button = go.GetComponent<Button>();
-            if (gold) UIStyleKit.StyleButton(button, UIStyleKit.AccentGold, UIStyleKit.AccentGoldHover, UIStyleKit.AccentGoldPressed);
-            else UIStyleKit.StyleButton(button, new Color(0.13f, 0.17f, 0.2f, 1f), UIStyleKit.PanelHover, UIStyleKit.PanelPressed);
+            if (gold) UIStyleKit.StyleButton(button, UiTheme.Gold, UiKit.Lighten(UiTheme.Gold, 0.12f), UiTheme.GoldDeep);
+            else UIStyleKit.StyleButton(button, UiTheme.Raised, UiKit.Lighten(UiTheme.Raised, 0.08f), UiTheme.Sunken);
+            var buttonImage = go.GetComponent<Image>();
+            buttonImage.sprite = UiKit.Rounded(12);
+            buttonImage.type = Image.Type.Sliced;
 
-            var text = AddText(go.transform, label, fontSize, 0f, 0f, width, height, TextAlignmentOptions.Center, FontStyles.Bold, false, gold ? DarkText : Color.white);
+            var text = AddText(go.transform, label, fontSize, 0f, 0f, width, height, TextAlignmentOptions.Center, FontStyles.Bold, false, gold ? UiTheme.OnGold : UiTheme.Text);
             var textRect = text.rectTransform;
             textRect.anchorMin = Vector2.zero;
             textRect.anchorMax = Vector2.one;

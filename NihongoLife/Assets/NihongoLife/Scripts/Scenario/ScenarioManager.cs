@@ -30,6 +30,9 @@ namespace NihongoLife.Scenario
         public string titleEn;
         public bool isOptional;
         public ObjectiveState state;
+
+        /// <summary>The objective in the interface language.</summary>
+        public string Title => NihongoLife.Core.Loc.Pick(titleVi, titleEn, titleJa);
     }
 
     public class ScenarioManager : MonoBehaviour
@@ -297,7 +300,7 @@ namespace NihongoLife.Scenario
             if (isItemNode && _currentNode.targetItemId == itemId)
             {
                 Debug.Log($"[ScenarioManager] Objective item interaction successful: {itemId}");
-                ScoringManager.Instance?.AddScore("TaskCompletion", 15, $"Đã tìm thấy vật phẩm: {item.GetpromptEn()}", itemId);
+                ScoringManager.Instance?.AddScore("TaskCompletion", 15, NihongoLife.Core.Loc.Triple("Đã tìm thấy vật phẩm: " + NihongoLife.Interaction.InteractionPrompt.Of(item), "Found item: " + NihongoLife.Interaction.InteractionPrompt.Of(item), "見つけたもの：" + item.GetPromptJa()), itemId);
 
                 if (!string.IsNullOrEmpty(_currentNode.objectiveIdToComplete))
                 {
@@ -311,18 +314,19 @@ namespace NihongoLife.Scenario
             if (isItemNode)
             {
                 Debug.Log($"[ScenarioManager] Objective item interaction incorrect: {itemId}");
-                ScoringManager.Instance?.AddScore("Vocabulary", -5, "Chọn nhầm vật phẩm", itemId);
-                ScoringManager.Instance?.AddScore("ResponseAccuracy", -10, "Chọn sai vật phẩm mục tiêu", itemId);
+                ScoringManager.Instance?.AddScore("Vocabulary", -5, NihongoLife.Core.Loc.Triple("Chọn nhầm vật phẩm", "Picked the wrong item", "ちがう物を選んだ"), itemId);
+                ScoringManager.Instance?.AddScore("ResponseAccuracy", -10, NihongoLife.Core.Loc.Triple("Chọn sai vật phẩm mục tiêu", "Wrong target item", "目的とちがう物"), itemId);
 
                 var warningNode = new ScenarioNode
                 {
                     id = "temp_warning_wrong_item",
                     nodeType = ScenarioNodeType.Dialogue,
-                    speakerName = "Hệ thống",
+                    speakerName = NihongoLife.Core.Loc.T("Hệ thống", "System", "システム"),
                     speakerId = "system",
                     textJa = "これは違います。おにぎりを探してください。",
                     textReading = "これはちがいます。おにぎりをさがしてください。",
-                    textEn = "Đây không phải vật phẩm được yêu cầu. Hãy tìm cơm nắm!",
+                    textVi = "Đây không phải vật phẩm được yêu cầu. Hãy tìm cơm nắm!",
+                    textEn = "This is not the requested item. Find the rice ball!",
                     textRomaji = "Kore wa chigaimasu. Onigiri wo sagashite kudasai.",
                     nextNodeId = _currentNode.id
                 };
@@ -537,7 +541,7 @@ namespace NihongoLife.Scenario
                     breakdown.rewardKnowledge = knowledgeReward;
                     breakdown.rewardYen = yenReward;
                     breakdown.firstCompletion = firstCompletion;
-                    if (yenReward > 0) Player.PlayerInventory.Instance?.AddYen(yenReward, "Thưởng tình huống");
+                    if (yenReward > 0) Player.PlayerInventory.Instance?.AddYen(yenReward, NihongoLife.Core.Loc.Triple("Thưởng tình huống", "Story reward", "ストーリーの報酬"));
                     if (firstCompletion && currentScenario.rewardItems != null && Player.PlayerInventory.Instance != null) { foreach (string itemId in currentScenario.rewardItems) Player.PlayerInventory.Instance.AddItem(itemId, itemId, itemId, 0, 1, false, Player.ItemUseType.None); }
                     // XP (level) and knowledge are separate; level thresholds come from the progression data.
                     int xpGain = Mathf.Max(10, knowledgeReward / 2);
@@ -624,20 +628,20 @@ namespace NihongoLife.Scenario
             if (!inventory.HasItem("onigiri"))
             {
                 Debug.LogWarning("[ScenarioManager] Checkout blocked: onigiri is not in the player's inventory.");
-                ScoringManager.Instance?.AddScore("TaskCompletion", -30, "Thanh toán khi chưa có hàng", "checkout_missing_item");
+                ScoringManager.Instance?.AddScore("TaskCompletion", -30, NihongoLife.Core.Loc.Triple("Thanh toán khi chưa có hàng", "Paid before taking the item", "商品を取らずに会計した"), "checkout_missing_item");
                 return;
             }
 
             int total = Mathf.Max(497, inventory.GetCartTotalYen());
-            if (!inventory.SpendYen(total, "Thanh toán"))
+            if (!inventory.SpendYen(total, NihongoLife.Core.Loc.Triple("Thanh toán", "Payment", "お会計")))
             {
                 Debug.LogWarning("[ScenarioManager] Checkout blocked: not enough yen.");
-                ScoringManager.Instance?.AddScore("TaskCompletion", -30, "Không đủ tiền thanh toán", "checkout_no_money");
+                ScoringManager.Instance?.AddScore("TaskCompletion", -30, NihongoLife.Core.Loc.Triple("Không đủ tiền thanh toán", "Not enough money to pay", "お金が足りない"), "checkout_no_money");
                 return;
             }
 
             inventory.RemoveItem("onigiri");
-            ScoringManager.Instance?.AddScore("TaskCompletion", 25, $"Đã thanh toán {total} yen", "checkout_paid");
+            ScoringManager.Instance?.AddScore("TaskCompletion", 25, NihongoLife.Core.Loc.Triple($"Đã thanh toán {total} yen", $"Paid {total} yen", $"{total}円払った"), "checkout_paid");
         }
 
         public void SetPlayerInputLocked(bool locked)

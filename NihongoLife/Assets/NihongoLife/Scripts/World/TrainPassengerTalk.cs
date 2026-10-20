@@ -19,7 +19,16 @@ namespace NihongoLife.World
         }
 
         public string GetPromptJa() => "はなしかける";
-        public string GetpromptEn() => "Nói chuyện với " + displayName;
+        public string GetpromptEn() => NihongoLife.Core.Loc.F("Nói chuyện với {0}", "Talk to the {0}", "{0}に話しかける", Name);
+
+        private string Name => displayName switch
+        {
+            "bà cụ" => NihongoLife.Core.Loc.T("bà cụ", "elderly woman", "おばあさん"),
+            "nhân viên văn phòng" => NihongoLife.Core.Loc.T("nhân viên văn phòng", "office worker", "かいしゃいん"),
+            "học sinh" => NihongoLife.Core.Loc.T("học sinh", "student", "がくせい"),
+            "Hành khách" => NihongoLife.Core.Loc.T("hành khách", "passenger", "じょうきゃく"),
+            _ => displayName,
+        };
         public Transform GetTransform() => transform;
 
         public void Interact(GameObject player)

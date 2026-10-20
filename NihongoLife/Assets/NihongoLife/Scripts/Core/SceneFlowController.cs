@@ -74,7 +74,7 @@ namespace NihongoLife.Core
             StartCoroutine(TransferZoneRoutine(sceneName, spawnId, displayName, onArrived));
         }
 
-        public void ExitZone(string sceneName, string citySpawnId, string displayName = "街へ戻る / Trở lại thành phố")
+        public void ExitZone(string sceneName, string citySpawnId, string displayName = null)
         {
             if (_isLoading) return;
             StartCoroutine(ExitZoneRoutine(sceneName, citySpawnId, displayName));
@@ -87,7 +87,7 @@ namespace NihongoLife.Core
         {
             if (!LocationUnlocks.IsUnlocked(sceneName))
             {
-                NihongoLife.UI.HudFeed.Post("Chưa mở: " + LocationUnlocks.LockedMessage(sceneName), NihongoLife.UI.HudFeed.Kind.Warning, 6f, "unlock");
+                NihongoLife.UI.HudFeed.Post(NihongoLife.Core.Loc.T("Chưa mở: ", "Locked: ", "未開放：") + LocationUnlocks.LockedMessage(sceneName), NihongoLife.UI.HudFeed.Kind.Warning, 6f, "unlock");
                 if (GameServices.TryGet(out NihongoLife.Audio.IAudioService audio)) audio.PlayCue(NihongoLife.Audio.GameAudioCue.UiError, 0.7f);
                 return false;
             }
@@ -99,20 +99,20 @@ namespace NihongoLife.Core
         {
             _isLoading = true;
             LockPlayer(true);
-            yield return FadeIn(displayName);
+            yield return FadeIn(Title(sceneName, displayName));
             AsyncOperation operation = SceneManager.LoadSceneAsync(sceneName, LoadSceneMode.Single);
             if (operation == null)
             {
-                yield return FailAndRelease($"Không tìm thấy scene {sceneName}");
+                yield return FailAndRelease(NihongoLife.Core.Loc.F("Không tìm thấy scene {0}", "Scene {0} not found", "シーン{0}が見つかりません", sceneName));
                 yield break;
             }
             operation.allowSceneActivation = false;
             while (operation.progress < 0.9f)
             {
-                SetProgress(operation.progress / 0.9f, "Đang chuẩn bị khu vực...");
+                SetProgress(operation.progress / 0.9f, NihongoLife.Core.Loc.T("Đang chuẩn bị khu vực...", "Preparing the area...", "エリアを準備中..."));
                 yield return null;
             }
-            SetProgress(1f, "Sẵn sàng");
+            SetProgress(1f, NihongoLife.Core.Loc.T("Sẵn sàng", "Ready", "準備完了"));
             yield return new WaitForSecondsRealtime(0.18f);
             operation.allowSceneActivation = true;
             while (!operation.isDone) yield return null;
@@ -128,7 +128,7 @@ namespace NihongoLife.Core
         {
             _isLoading = true;
             LockPlayer(true);
-            yield return FadeIn(displayName);
+            yield return FadeIn(Title(sceneName, displayName));
 
             Scene host = SceneManager.GetActiveScene();
             if (!host.IsValid() || !host.isLoaded || string.Equals(host.name, sceneName, System.StringComparison.OrdinalIgnoreCase))
@@ -145,12 +145,12 @@ namespace NihongoLife.Core
                 AsyncOperation load = SceneManager.LoadSceneAsync(sceneName, LoadSceneMode.Additive);
                 if (load == null)
                 {
-                    yield return FailAndRelease($"Không tìm thấy zone {sceneName}");
+                    yield return FailAndRelease(NihongoLife.Core.Loc.F("Không tìm thấy khu vực {0}", "Area {0} not found", "エリア{0}が見つかりません", sceneName));
                     yield break;
                 }
                 while (!load.isDone)
                 {
-                    SetProgress(Mathf.Clamp01(load.progress / 0.9f), "Đang mở khu vực...");
+                    SetProgress(Mathf.Clamp01(load.progress / 0.9f), NihongoLife.Core.Loc.T("Đang mở khu vực...", "Opening the area...", "エリアを開いています..."));
                     yield return null;
                 }
                 zone = SceneManager.GetSceneByName(sceneName);
@@ -178,7 +178,7 @@ namespace NihongoLife.Core
                 foreach (var preview in root.GetComponentsInChildren<ZonePreviewCamera>(true))
                     preview.gameObject.SetActive(false);
             _activeZoneSceneName = zone.name;
-            SetProgress(1f, "Đã đến nơi");
+            SetProgress(1f, NihongoLife.Core.Loc.T("Đã đến nơi", "Arrived", "到着しました"));
             yield return FadeOut();
             LockPlayer(false);
             _isLoading = false;
@@ -189,7 +189,7 @@ namespace NihongoLife.Core
         {
             _isLoading = true;
             LockPlayer(true);
-            yield return FadeIn(displayName);
+            yield return FadeIn(Title(sceneName, displayName));
 
             Scene from = SceneManager.GetSceneByName(_activeZoneSceneName);
             Scene to = SceneManager.GetSceneByName(sceneName);
@@ -199,12 +199,12 @@ namespace NihongoLife.Core
                 AsyncOperation load = SceneManager.LoadSceneAsync(sceneName, LoadSceneMode.Additive);
                 if (load == null)
                 {
-                    yield return FailAndRelease($"Không tìm thấy zone {sceneName}");
+                    yield return FailAndRelease(NihongoLife.Core.Loc.F("Không tìm thấy khu vực {0}", "Area {0} not found", "エリア{0}が見つかりません", sceneName));
                     yield break;
                 }
                 while (!load.isDone)
                 {
-                    SetProgress(Mathf.Clamp01(load.progress / 0.9f), "Đang tới nơi...");
+                    SetProgress(Mathf.Clamp01(load.progress / 0.9f), NihongoLife.Core.Loc.T("Đang tới nơi...", "On the way...", "移動中..."));
                     yield return null;
                 }
                 to = SceneManager.GetSceneByName(sceneName);
@@ -232,7 +232,7 @@ namespace NihongoLife.Core
                 while (unload != null && !unload.isDone) yield return null;
             }
             _activeZoneSceneName = to.name;
-            SetProgress(1f, "Đã đến nơi");
+            SetProgress(1f, NihongoLife.Core.Loc.T("Đã đến nơi", "Arrived", "到着しました"));
             yield return FadeOut();
             LockPlayer(false);
             _isLoading = false;
@@ -243,7 +243,7 @@ namespace NihongoLife.Core
         {
             _isLoading = true;
             LockPlayer(true);
-            yield return FadeIn(displayName);
+            yield return FadeIn(Title(sceneName, displayName));
 
             string zoneName = string.IsNullOrWhiteSpace(_activeZoneSceneName) ? sceneName : _activeZoneSceneName;
             Scene zone = SceneManager.GetSceneByName(zoneName);
@@ -269,13 +269,13 @@ namespace NihongoLife.Core
                 AsyncOperation unload = SceneManager.UnloadSceneAsync(zone);
                 while (unload != null && !unload.isDone)
                 {
-                    SetProgress(unload.progress, "Đang trở lại thành phố...");
+                    SetProgress(unload.progress, NihongoLife.Core.Loc.T("Đang trở lại thành phố...", "Returning to town...", "町に戻っています..."));
                     yield return null;
                 }
             }
             _activeZoneSceneName = null;
             _hostSceneName = null;
-            SetProgress(1f, "Đã đến nơi");
+            SetProgress(1f, NihongoLife.Core.Loc.T("Đã đến nơi", "Arrived", "到着しました"));
             yield return FadeOut();
             LockPlayer(false);
             _isLoading = false;
@@ -347,7 +347,7 @@ namespace NihongoLife.Core
         {
             EnsureOverlay();
             _placeName.text = displayName;
-            SetProgress(0f, "Đang di chuyển...");
+            SetProgress(0f, NihongoLife.Core.Loc.T("Đang di chuyển...", "Travelling...", "移動中..."));
             _overlay.blocksRaycasts = true;
             for (float t = 0f; t < 0.38f; t += Time.unscaledDeltaTime)
             {
@@ -472,15 +472,20 @@ namespace NihongoLife.Core
             rect.offsetMin = rect.offsetMax = Vector2.zero;
         }
 
-        private static string FriendlyName(string sceneName) => sceneName switch
+        private static string FriendlyName(string sceneName) => sceneName == "01_MainMenu" ? "NIHONGO LIFE" : Title(sceneName, null);
+
+        /// <summary>
+        /// The place name on the loading screen, in the interface language: the location catalog when it knows the
+        /// scene, otherwise the caller's text (a <see cref="Loc.Triple"/>, or a scene-authored "日本語 / Tiếng Việt" pair).
+        /// </summary>
+        private static string Title(string sceneName, string displayName)
         {
-            "01_MainMenu" => "NIHONGO LIFE",
-            "90_TestSandbox" => "日本の町 / Thành phố Nihongo",
-            "20_StationDistrict" => "駅前 / Khu nhà ga",
-            "30_SushiRestaurant" => "すし店 / Nhà hàng sushi",
-            "40_ HIBARICLASS" => "ひばり日本語学院 / Trường Nhật ngữ Hibari",
-            "45_HomeBedroom" => "Your Bedroom / Phòng riêng",
-            _ => sceneName
-        };
+            if (WorldLocationCatalog.Has(sceneName)) return WorldLocationCatalog.Get(sceneName).DisplayName;
+            if (string.IsNullOrEmpty(displayName)) return sceneName ?? "";
+            if (NihongoLife.Core.Loc.IsTriple(displayName)) return NihongoLife.Core.Loc.Resolve(displayName);
+            int split = displayName.IndexOf(" / ", System.StringComparison.Ordinal);
+            if (split < 0) return displayName;
+            return NihongoLife.Core.Loc.IsJapanese ? displayName.Substring(0, split) : displayName.Substring(split + 3);
+        }
     }
 }

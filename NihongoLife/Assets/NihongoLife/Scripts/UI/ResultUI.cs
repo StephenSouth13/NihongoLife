@@ -52,7 +52,7 @@ namespace NihongoLife.UI
 
             // Resolve scenario names
             string titleJa = "ミッション完了";
-            string titleEn = "Nhiệm vụ hoàn thành";
+            string titleEn = NihongoLife.Core.Loc.T("Nhiệm vụ hoàn thành", "Mission complete", "ミッション完了");
 
             if (GameServices.TryGet(out IScenarioRepository repo))
             {
@@ -60,13 +60,13 @@ namespace NihongoLife.UI
                 if (definition != null)
                 {
                     titleJa = definition.titleJa;
-                    titleEn = definition.titleEn;
+                    titleEn = definition.DisplayTitle;
                 }
             }
 
             if (missionTitleText != null)
             {
-                missionTitleText.text = $"{titleJa}\n<size=70%>{titleEn}</size>";
+                missionTitleText.text = NihongoLife.Core.Loc.IsJapanese || titleEn == titleJa ? titleJa : $"{titleJa}\n<size=70%>{titleEn}</size>";
             }
 
             if (overallScoreText != null)
@@ -74,15 +74,15 @@ namespace NihongoLife.UI
                 overallScoreText.text = $"{breakdown.overallScore} / 100";
                 if (breakdown.success && (breakdown.rewardYen > 0 || breakdown.rewardKnowledge > 0))
                 {
-                    overallScoreText.text += $"\n<size=55%>+{breakdown.rewardKnowledge} kiến thức" + (breakdown.rewardYen > 0 ? $"   +¥{breakdown.rewardYen:N0}" : string.Empty) + "</size>";
+                    overallScoreText.text += "\n<size=55%>" + NihongoLife.Core.Loc.F("+{0} kiến thức", "+{0} knowledge", "知識 +{0}", breakdown.rewardKnowledge) + (breakdown.rewardYen > 0 ? "   +" + NihongoLife.Core.Loc.Yen(breakdown.rewardYen) : string.Empty) + "</size>";
                 }
             }
 
             if (returnToMenuButtonText != null)
             {
                 returnToMenuButtonText.text = string.IsNullOrEmpty(_nextScenarioId)
-                    ? (_lastResultWasSuccess ? "Về menu" : "Thử lại")
-                    : "Nhiệm tiếp theo";
+                    ? (_lastResultWasSuccess ? NihongoLife.Core.Loc.T("Về menu", "Back to menu", "メニューへ") : NihongoLife.Core.Loc.T("Thử lại", "Try again", "もう一度"))
+                    : NihongoLife.Core.Loc.T("Nhiệm vụ tiếp theo", "Next mission", "次のミッション");
             }
 
             // Find categories and populate

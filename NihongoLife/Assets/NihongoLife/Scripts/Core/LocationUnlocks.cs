@@ -87,9 +87,10 @@ namespace NihongoLife.Core
 
         public static string LockedMessage(string sceneName)
         {
-            string place = WorldLocationCatalog.Get(sceneName).VietnameseName;
-            return $"{place} cần {Required(sceneName)} điểm kiến thức — bạn còn thiếu {Missing(sceneName)}. " +
-                   "Học ở Trường Hibari, làm bài ở bàn học hoặc nhiệm vụ trong Sổ (N) để mở.";
+            string place = WorldLocationCatalog.Get(sceneName).DisplayName;
+            return NihongoLife.Core.Loc.F("{0} cần {1} điểm kiến thức — bạn còn thiếu {2}. Học ở Trường Hibari, làm bài ở bàn học hoặc nhiệm vụ trong Sổ (N) để mở.",
+                "{0} needs {1} knowledge points — you are {2} short. Study at Hibari School, at your desk, or do tasks in the journal (N) to unlock it.",
+                "{0}には知識ポイントが{1}必要です（あと{2}）。ひばり学校や机で勉強したり、タスク帳（N）のタスクで集めましょう。", place, Required(sceneName), Missing(sceneName));
         }
 
         private static bool StoryNeeds(string sceneName)

@@ -85,10 +85,10 @@ namespace NihongoLife.Island
         {
             food = null;
             var def = Def;
-            if (def.foods == null || def.foods.Length == 0) return "Bé này không ăn nông sản — hãy vuốt ve nhé.";
+            if (def.foods == null || def.foods.Length == 0) return Loc.T("Bé này không ăn nông sản — hãy vuốt ve nhé.", "This one does not eat produce — give it a pat instead.", "この子は作物を食べません。なでてあげましょう。");
             foreach (string f in def.foods)
                 if (IslandEconomy.Owned(f) > 0) { food = f; break; }
-            if (food == null) return $"Cần {string.Join(" hoặc ", def.foods.Select(f => IslandCatalog.Load().Crop(f)?.word.vi ?? f))} để cho ăn — thu hoạch ở ruộng nhé.";
+            if (food == null) return Loc.F("Cần {0} để cho ăn — thu hoạch ở ruộng nhé.", "You need {0} to feed it — harvest some in the field.", "えさに{0}が必要です。畑で収穫しましょう。", string.Join(Loc.T(" hoặc ", " or ", "か"), def.foods.Select(f => IslandLanguage.Name(IslandCatalog.Load().Crop(f)?.word) ?? f)));
             PlayerInventory.Instance.RemoveItem(food);
             if (_animator != null) _animator.SetTrigger("Eat");
             var record = IslandState.Record; record.fed++;
@@ -114,7 +114,7 @@ namespace NihongoLife.Island
         }
 
         public string GetPromptJa() => IslandLanguage.Primary(Def?.word);
-        public string GetpromptEn() => $"Làm quen với {Def?.word.vi}";
+        public string GetpromptEn() => Loc.F("Làm quen với {0}", "Meet the {0}", "{0}とふれあう", IslandLanguage.Name(Def?.word));
         public Transform GetTransform() => transform;
         public void Interact(GameObject player)
         {
