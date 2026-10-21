@@ -1,4 +1,7 @@
 {
 	"name": "AgoraRtcSDK",
-	"allowUnsafeCode": true
+	"allowUnsafeCode": true,
+	"excludePlatforms": [
+		"WebGL"
+	]
 }

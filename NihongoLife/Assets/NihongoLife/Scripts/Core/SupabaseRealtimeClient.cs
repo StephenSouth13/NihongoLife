@@ -296,9 +296,20 @@ namespace NihongoLife.Core
 
         // ──────────────────────── Socket ────────────────────────
 
+#if UNITY_WEBGL && !UNITY_EDITOR
+        private bool _webNoticeShown;
+#endif
+
         private void EnsureSocket()
         {
             if (!Configured) return;
+#if UNITY_WEBGL && !UNITY_EDITOR
+            // ClientWebSocket and the dedicated send/receive threads do not exist in the browser. Until a browser
+            // WebSocket transport is added, the web build stays off realtime (REST features still work) instead of
+            // retrying a connection that cannot open.
+            if (!_webNoticeShown) { _webNoticeShown = true; Debug.Log("[SupabaseRealtime] Web build: realtime is not available yet."); }
+            return;
+#endif
             _wantConnected = true;
             if (IsConnected || _connecting || _reconnectAt > 0f) return;
             _reconnectDelay = 2f;

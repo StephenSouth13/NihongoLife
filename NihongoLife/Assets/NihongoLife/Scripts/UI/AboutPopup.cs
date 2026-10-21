@@ -10,7 +10,7 @@ using NihongoLife.Data;
 namespace NihongoLife.UI
 {
     /// <summary>
-    /// "About me" popup: creator profile (name, role, bio, website button, credits) on the left and a
+    /// "About us" popup: the team and its founders (name, role, bio, founder rows, team page button, credits) on the left and a
     /// screenshot gallery on the right (fade transitions, arrows, dots, autoplay, click for a full-size
     /// lightbox). Profile text comes from Resources/Menu/menu_about.asset; the gallery shows every
     /// PNG/JPG placed in Resources/MenuGallery, so adding a screenshot is just dropping a file in.
@@ -39,6 +39,7 @@ namespace NihongoLife.UI
         private TextMeshProUGUI _emptyText;
         private TextMeshProUGUI _websiteLabel;
         private TextMeshProUGUI _creditsText;
+        private readonly List<(TextMeshProUGUI text, MenuAboutFounder founder)> _founderRoles = new List<(TextMeshProUGUI, MenuAboutFounder)>();
         private Image _shot;
         private CanvasGroup _shotGroup;
         private GameObject _frameRoot;
@@ -54,9 +55,9 @@ namespace NihongoLife.UI
 
         protected override void GetTitle(out string vi, out string en, out string ja)
         {
-            vi = "Về tôi";
-            en = "About me";
-            ja = "作者について";
+            vi = "Về chúng tôi";
+            en = "About us";
+            ja = "私たちについて";
         }
 
         protected override void Build(RectTransform card)
@@ -74,15 +75,42 @@ namespace NihongoLife.UI
             AddText(card, displayName, 24f, 166f, 128f, 264f, 40f, TextAlignmentOptions.MidlineLeft, FontStyles.Bold, false, Gold);
             _roleText = AddText(card, string.Empty, 16f, 166f, 170f, 264f, 28f, TextAlignmentOptions.MidlineLeft, FontStyles.Normal, false, Muted);
 
-            _bioText = AddText(card, string.Empty, 16f, 58f, 240f, 360f, 190f, TextAlignmentOptions.TopLeft, FontStyles.Normal, true);
+            bool hasFounders = _definition != null && _definition.founders != null && _definition.founders.Count > 0;
+            _bioText = AddText(card, string.Empty, hasFounders ? 13f : 16f, 58f, 222f, 360f, hasFounders ? 98f : 190f, TextAlignmentOptions.TopLeft, FontStyles.Normal, true);
+
+            // Founders: one row each (monogram, name, role); a row opens that founder's page.
+            float rowsBottom = 430f;
+            if (hasFounders)
+            {
+                AddLocalizedText(card, "Nhà sáng lập", "Founders", "創設者", 13f, 58f, 328f, 360f, 20f, TextAlignmentOptions.MidlineLeft, FontStyles.Bold, false, Gold);
+                _founderRoles.Clear();
+                int count = Mathf.Min(_definition.founders.Count, 4);
+                for (int i = 0; i < count; i++)
+                {
+                    var founder = _definition.founders[i];
+                    if (founder == null || string.IsNullOrWhiteSpace(founder.name)) continue;
+                    float y = 352f + i * 48f;
+                    var row = AddButton(card, string.Empty, 56f, y, 364f, 44f, false, 14f);
+                    string founderUrl = founder.url;
+                    if (!string.IsNullOrWhiteSpace(founderUrl)) row.onClick.AddListener(() => Application.OpenURL(founderUrl));
+                    row.name = "Founder_" + i;
+                    AddCircle(card, "FounderAvatar_" + i, 64f, y + 6f, 32f, Gold);
+                    string initials = string.IsNullOrWhiteSpace(founder.monogram) ? founder.name.Substring(0, 1) : founder.monogram;
+                    AddText(card, initials, 13f, 64f, y + 6f, 32f, 32f, TextAlignmentOptions.Center, FontStyles.Bold, false, new Color(0.08f, 0.1f, 0.12f, 1f));
+                    AddText(card, founder.name, 15f, 106f, y + 2f, 300f, 22f, TextAlignmentOptions.MidlineLeft, FontStyles.Bold, false);
+                    _founderRoles.Add((AddText(card, string.Empty, 12f, 106f, y + 22f, 300f, 18f, TextAlignmentOptions.MidlineLeft, FontStyles.Normal, false, Muted), founder));
+                    rowsBottom = y + 44f;
+                }
+            }
 
             string url = _definition != null && !string.IsNullOrWhiteSpace(_definition.websiteUrl) ? _definition.websiteUrl : "https://quachthanhlong.com";
-            var website = AddButton(card, string.Empty, 56f, 446f, 364f, 50f, true, 19f);
+            float websiteY = hasFounders ? rowsBottom + 12f : 446f;
+            var website = AddButton(card, string.Empty, 56f, websiteY, 364f, hasFounders ? 42f : 50f, true, hasFounders ? 17f : 19f);
             _websiteLabel = website.GetComponentInChildren<TextMeshProUGUI>();
             website.onClick.AddListener(() => Application.OpenURL(url));
 
-            float linkY = 506f;
-            if (_definition != null && _definition.links != null)
+            float linkY = websiteY + 60f;
+            if (!hasFounders && _definition != null && _definition.links != null)
             {
                 int shown = 0;
                 foreach (var link in _definition.links)
@@ -95,12 +123,13 @@ namespace NihongoLife.UI
                 }
             }
 
-            AddLocalizedText(card, "Nguồn và công nghệ", "Credits and tech", "クレジット", 13f, 58f, 552f, 360f, 20f, TextAlignmentOptions.MidlineLeft, FontStyles.Bold, false, Gold);
-            _creditsText = AddText(card, string.Empty, 12f, 58f, 574f, 360f, 70f, TextAlignmentOptions.TopLeft, FontStyles.Normal, true, Muted);
+            float creditsY = hasFounders ? websiteY + 52f : 552f;
+            AddLocalizedText(card, "Nguồn và công nghệ", "Credits and tech", "クレジット", 13f, 58f, creditsY, 360f, 20f, TextAlignmentOptions.MidlineLeft, FontStyles.Bold, false, Gold);
+            _creditsText = AddText(card, string.Empty, 12f, 58f, creditsY + 22f, 360f, 652f - creditsY - 26f, TextAlignmentOptions.TopLeft, FontStyles.Normal, true, Muted);
             _creditsText.lineSpacing = 2f;
 
             // ── Right column: screenshot gallery ──
-            AddLocalizedText(card, "Ảnh chụp màn hình", "Screenshots", "スクリーンショット", 22f, 464f, 100f, 400f, 34f, TextAlignmentOptions.MidlineLeft, FontStyles.Bold);
+            AddLocalizedText(card, "Hình ảnh", "Gallery", "ギャラリー", 22f, 464f, 100f, 400f, 34f, TextAlignmentOptions.MidlineLeft, FontStyles.Bold);
             _counterText = AddText(card, string.Empty, 17f, 1030f, 104f, 114f, 28f, TextAlignmentOptions.MidlineRight, FontStyles.Bold, false, Gold);
 
             var frame = AddRounded(card, "Frame", 464f, 144f, 680f, 382f, new Color(0.03f, 0.04f, 0.05f, 1f));
@@ -194,6 +223,7 @@ namespace NihongoLife.UI
         {
             if (_roleText != null) _roleText.text = _definition != null ? Pick(_definition.roleVi, _definition.roleEn, _definition.roleJa) : "Creator of Nihongo Life";
             if (_bioText != null) _bioText.text = BioText();
+            foreach (var (text, founder) in _founderRoles) if (text != null) text.text = Pick(founder.roleVi, founder.roleEn, founder.roleJa);
             if (_websiteLabel != null) _websiteLabel.text = (_definition != null ? Pick(_definition.websiteButtonVi, _definition.websiteButtonEn, _definition.websiteButtonJa) : "Visit website");
             if (_creditsText != null) _creditsText.text = CreditsText();
             if (_emptyText != null) _emptyText.text = "日本語ライフ\n<size=42%><color=#A9B7C4>" + Pick("Ảnh chụp màn hình sẽ sớm có ở đây", "Screenshots are coming soon", "スクリーンショットは近日公開") + "</color></size>";

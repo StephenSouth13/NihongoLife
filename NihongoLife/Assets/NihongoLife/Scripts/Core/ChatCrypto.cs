@@ -44,6 +44,12 @@ namespace NihongoLife.Core
                 }
                 catch (Exception ex) { Debug.LogWarning($"[ChatCrypto] Saved key unreadable, making a new one: {ex.Message}"); }
             }
+#if UNITY_WEBGL && !UNITY_EDITOR
+            // No worker threads on the web: a 2048-bit key would freeze the page for seconds. Encrypted DMs need the
+            // realtime connection, which the web build does not have yet, so no key is made there.
+            Debug.Log("[ChatCrypto] Web build: no key pair (encrypted messages are in the desktop version).");
+            return;
+#endif
             _keyTask = Task.Run(() =>
             {
                 // Explicit 2048-bit provider: on Mono, RSA.Create() + KeySize = 2048 silently stays at 1024.

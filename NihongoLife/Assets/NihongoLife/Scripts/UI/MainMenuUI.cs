@@ -186,7 +186,7 @@ namespace NihongoLife.UI
             Label(guideButton, "Cách chơi", "How to play", "遊び方");
             Label(settingsButton, "Cài đặt", "Settings", "設定");
             Label(quitButton, "Thoát", "Quit", "終了");
-            Label(aboutButton, "Về tác giả", "About", "作者について");
+            Label(aboutButton, "Về chúng tôi", "About us", "私たちについて");
             bool signedIn = GameServices.TryGet(out IAuthService auth) && auth.IsAuthenticated;
             if (signedIn) Label(loginButton, "Tài khoản", "Account", "アカウント");
             else Label(loginButton, "Đăng nhập", "Sign in", "ログイン");
