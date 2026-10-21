@@ -112,9 +112,9 @@ namespace NihongoLife.Learning
                 Fail(NihongoLife.Core.Loc.Triple("Đang mở phòng Speaking — đóng phòng đó để dùng voice.", "A Speaking room is open — close it to use voice.", "スピーキングルームが開いています。ボイスを使うには閉じてください。"));
                 return;
             }
-            if (!GameServices.TryGet(out IAuthService auth) || !auth.IsAuthenticated)
+            if (!GameServices.TryGet(out IAuthService auth) || !OnlineAccess.IsRegistered)
             {
-                Fail(NihongoLife.Core.Loc.Triple("Voice cần đăng nhập (tài khoản hoặc khách ẩn danh) để máy chủ cấp quyền vào phòng.", "Voice needs you to sign in (account or anonymous guest) so the server can let you into the room.", "ボイスにはサインイン（アカウントかゲスト）が必要です。"));
+                Fail(NihongoLife.Core.Loc.Triple("Voice cần tài khoản đã đăng ký và đăng nhập (chế độ Khách chơi ngoại tuyến).", "Voice needs a registered account, signed in (guests play offline).", "ボイスには登録済みアカウントでのログインが必要です（ゲストはオフライン）。"));
                 return;
             }
             Leave();

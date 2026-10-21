@@ -60,7 +60,7 @@ namespace NihongoLife.Core
         /// <summary>Create a new co-op session for a scenario.</summary>
         public void CreateSession(string scenarioId, int maxPlayers = 2, Action<bool> callback = null)
         {
-            if (_client == null || !_client.IsConfigured || !GameServices.TryGet(out IAuthService auth) || !auth.IsAuthenticated)
+            if (_client == null || !_client.IsConfigured || !GameServices.TryGet(out IAuthService auth) || !OnlineAccess.IsRegistered)
             {
                 callback?.Invoke(false);
                 return;
@@ -97,7 +97,7 @@ namespace NihongoLife.Core
         /// <summary>Join an existing co-op session.</summary>
         public void JoinSession(string sessionId, Action<bool> callback = null)
         {
-            if (_client == null || !GameServices.TryGet(out IAuthService auth) || !auth.IsAuthenticated)
+            if (_client == null || !GameServices.TryGet(out IAuthService auth) || !OnlineAccess.IsRegistered)
             {
                 callback?.Invoke(false);
                 return;

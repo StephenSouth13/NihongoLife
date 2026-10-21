@@ -38,6 +38,8 @@ namespace NihongoLife.EditorTools
         // Relative to the tile (tile k sits at z + 100k).
         private const float AveN = -6.4f, AveS = -13.6f, WalkN = -2.6f, WalkS = -17.4f, AveC = -10f;
         private const float LaneW = 0.7f, LaneE = 6.3f;
+        // Stop lines 2 m before the crossing; StreetTraffic stops each car's front bumper behind them.
+        private const float StopEastX = LaneW - 2f, StopWestX = LaneE + 2f;
         private const float AlleyN0 = 12.8f, AlleyN1 = 16f, AlleyS0 = -34.6f, AlleyS1 = -31.4f;
         private static readonly string[] OldPieces = { "road_straight", "road_crossroad", "road_side", "road_crossing", "driveway_short", "traffic_light", "road_intersection" };
         private static readonly string[] DestinationBuildings = { "StreetBuilding_N_2", "StreetBuilding_N_3", "StreetBuilding_N_7", "StreetBuilding_S_4", "StreetBuilding_S_5" };
@@ -219,20 +221,33 @@ namespace NihongoLife.EditorTools
                 paint.Quad(XMin, LaneW - 0.4f, dz + z - 0.075f, dz + z + 0.075f, y);
                 paint.Quad(LaneE + 0.4f, XMax, dz + z - 0.075f, dz + z + 0.075f, y);
             }
-            for (float x = XMin + 1f; x < XMax - 3f; x += 8f)                                   // dashed centre line, 5 m on / 3 m off
-            {
-                float x1 = Mathf.Min(x + 5f, XMax);
-                if (x1 > LaneW - 3f && x < LaneE + 3f) continue;
-                paint.Quad(x, x1, dz + AveC - 0.075f, dz + AveC + 0.075f, y);
-            }
-            for (float x = LaneW + 0.2f; x + 0.45f <= LaneE - 0.1f; x += 0.9f)               // zebra
-                paint.Quad(x, x + 0.45f, dz + AveS + 0.5f, dz + AveN - 0.5f, y);
-            paint.Quad(-1.15f, -0.85f, dz + AveC, dz + AveN - 0.35f, y);                         // stop line, eastbound (north lane)
-            paint.Quad(7.85f, 8.15f, dz + AveS + 0.35f, dz + AveC, y);                            // stop line, westbound
+            // Centre line: solid for 30 m on each side of the crossing (no overtaking there), dashed 5 m on / 3 m off beyond.
+            float solidW = StopEastX - 28f, solidE = StopWestX + 28f;
+            paint.Quad(solidW, StopEastX, dz + AveC - 0.075f, dz + AveC + 0.075f, y);
+            paint.Quad(StopWestX, solidE, dz + AveC - 0.075f, dz + AveC + 0.075f, y);
+            for (float x = solidW - 3f; x - 5f > XMin; x -= 8f) paint.Quad(x - 5f, x, dz + AveC - 0.075f, dz + AveC + 0.075f, y);
+            for (float x = solidE + 3f; x + 5f < XMax; x += 8f) paint.Quad(x, x + 5f, dz + AveC - 0.075f, dz + AveC + 0.075f, y);
+            // Zebra: bars along the road (the way cars drive), 0.45 m wide with 0.45 m gaps, across the whole roadway.
+            for (float z = AveS + 0.5f; z + 0.45f <= AveN - 0.45f; z += 0.9f)
+                paint.Quad(LaneW + 0.2f, LaneE - 0.2f, dz + z, dz + z + 0.45f, y);
+            paint.Quad(StopEastX - 0.15f, StopEastX + 0.15f, dz + AveC, dz + AveN - 0.35f, y);   // stop line, eastbound (north lane)
+            paint.Quad(StopWestX - 0.15f, StopWestX + 0.15f, dz + AveS + 0.35f, dz + AveC, y);   // stop line, westbound (south lane)
+            Arrow(paint, new Vector3(StopEastX - 12f, y, dz + AveC + 1.6f), 1f);                // lane arrows: straight on
+            Arrow(paint, new Vector3(StopWestX + 12f, y, dz + AveC - 1.6f), -1f);
             Diamond(paint, new Vector3(-24f, y, dz - 8.4f));                                    // ◇ crossing ahead
             Diamond(paint, new Vector3(-12f, y, dz - 8.4f));
             Diamond(paint, new Vector3(19f, y, dz - 11.6f));
             Diamond(paint, new Vector3(31f, y, dz - 11.6f));
+        }
+
+        /// <summary>A straight-on lane arrow pointing along +x (dir 1) or -x (dir -1).</summary>
+        private static void Arrow(Batch b, Vector3 tail, float dir)
+        {
+            var head = tail + Vector3.right * (3.2f * dir);
+            b.Strip(tail, head - Vector3.right * (0.4f * dir), 0.18f);
+            var baseL = head - Vector3.right * (1.1f * dir) + Vector3.forward * 0.55f;
+            var baseR = head - Vector3.right * (1.1f * dir) - Vector3.forward * 0.55f;
+            b.Strip(baseL, head, 0.16f); b.Strip(baseR, head, 0.16f);
         }
 
         private static void Diamond(Batch b, Vector3 centre)
@@ -514,7 +529,7 @@ namespace NihongoLife.EditorTools
         {
             var group = Group(c.root, "Traffic");
             var traffic = group.gameObject.AddComponent<StreetTraffic>();
-            traffic.Configure(AveC + 1.6f, AveC - 1.6f, XMin + 0.5f, XMax - 0.5f, Rect.MinMaxRect(LaneW, AveS, LaneE, AveN), -1f, 8f);
+            traffic.Configure(AveC + 1.6f, AveC - 1.6f, XMin + 0.5f, XMax - 0.5f, Rect.MinMaxRect(LaneW, AveS, LaneE, AveN), StopEastX, StopWestX);
 
             // Signals: horizontal car signals (青・黄・赤) on both sides, walking-figure signals at both ends.
             CarSignal(traffic, group, new Vector3(-1.6f, 0f, AveN + 0.7f), 270f);

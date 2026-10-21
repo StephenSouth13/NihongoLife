@@ -71,6 +71,13 @@ namespace NihongoLife.UI
             if (_panel != null) _panel.SetActive(false);
         }
 
+        /// <summary>A guest reached for an online feature: the panel opens with the reason (register, then sign in).</summary>
+        public void ShowForOnline()
+        {
+            Show();
+            SetStatus(OnlineAccess.Reason, false);
+        }
+
         private System.Collections.IEnumerator CloseAfterSignIn()
         {
             yield return new WaitForSecondsRealtime(1.2f);
@@ -199,7 +206,7 @@ namespace NihongoLife.UI
                 _signUpButton.GetComponentInChildren<TextMeshProUGUI>().text = _isRegistering
                     ? Text("Tạo tài khoản", "Create Account", "アカウント作成")
                     : Text("Đăng ký mới", "Register", "新規登録");
-                _guestButton.GetComponentInChildren<TextMeshProUGUI>().text = Text("Chơi thử (Guest)", "Play as Guest", "ゲストとしてプレイ");
+                _guestButton.GetComponentInChildren<TextMeshProUGUI>().text = Text("Chơi Khách (ngoại tuyến)", "Play as Guest (offline)", "ゲストで遊ぶ（オフライン）");
             }
 
             if (_statusPanel != null) _statusPanel.gameObject.SetActive(!string.IsNullOrWhiteSpace(_statusText.text));

@@ -11,9 +11,9 @@ namespace NihongoLife.EditorTools
     /// <summary>
     /// Game Center pictures rendered from the project's own low-poly models (TASK-N), so the arcade, the Order Rush
     /// menu and the prize counter show real food and plush toys (the Sushi kit's panda stands in for the bear; Kenney's bear is a wall trophy) instead of placeholder icons:
-    /// Resources/MiniGames/Food/&lt;dish&gt;.png and Resources/MiniGames/Prizes/&lt;prize&gt;.png (256×256, transparent,
-    /// three-quarter view, soft shadow) plus the big plush on the prize shelf (Resources/Items/prize_plush_big.png).
-    /// Ids without a fitting model (neko, tori, hoshi, kagi) are left to the games' existing fallbacks.
+    /// Resources/MiniGames/Food/&lt;dish&gt;.png (256×256, transparent, three-quarter view, soft shadow) plus the big
+    /// plush on the prize shelf (Resources/Items/prize_plush_big.png). The UFO catcher's plush set is drawn in one style
+    /// by Tools/art/ufo_catcher_art.py (Resources/MiniGames/UfoCatcher).
     /// Run: -executeMethod NihongoLife.EditorTools.ArcadeArtBuilder.Build
     /// </summary>
     public static class ArcadeArtBuilder
@@ -42,14 +42,6 @@ namespace NihongoLife.EditorTools
             ("MiniGames/Food/ramen", Sushi + "Food/FBX/Food_Ramen.fbx", 150f, 28f),
             ("MiniGames/Food/ichigo", Kenney + "strawberry.fbx", 150f, 10f),
 
-            ("MiniGames/Prizes/kuma", Sushi + "Characters/Normal/FBX/Panda.fbx", 160f, 6f),
-            ("MiniGames/Prizes/inu", Animals + "ShibaInu.fbx", 130f, 8f),
-            ("MiniGames/Prizes/usagi", Sushi + "Characters/Normal/FBX/Rabbit_Pink.fbx", 160f, 6f),
-            ("MiniGames/Prizes/sakana", Kenney + "fish.fbx", 90f, 10f),
-            ("MiniGames/Prizes/ringo", Kenney + "apple.fbx", 150f, 10f),
-            ("MiniGames/Prizes/ichigo", Kenney + "strawberry.fbx", 150f, 10f),
-            ("MiniGames/Prizes/hana", Sushi + "Decoration/FBX/Decoration_SakuraFlower.fbx", 150f, 30f),
-            ("MiniGames/Prizes/okashi", Kenney + "lollypop.fbx", 150f, 8f),
 
             ("Items/prize_plush_big", Sushi + "Characters/Normal/FBX/Panda.fbx", 160f, 6f),
         };

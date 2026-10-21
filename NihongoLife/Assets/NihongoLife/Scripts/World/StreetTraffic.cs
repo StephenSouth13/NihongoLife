@@ -21,6 +21,8 @@ namespace NihongoLife.World
             public int direction = 1;      // +1 east, -1 west
             public float cruise = 7f;
             [System.NonSerialized] public float speed;
+            /// <summary>Centre to front bumper (from the renderers), so the bumper, not the middle, stops at the line.</summary>
+            [System.NonSerialized] public float halfLength = 2.3f;
         }
 
         [System.Serializable]
@@ -67,7 +69,16 @@ namespace NihongoLife.World
 
         private void Start()
         {
-            foreach (var c in cars) c.speed = c.cruise;
+            foreach (var c in cars)
+            {
+                c.speed = c.cruise;
+                if (c.body == null) continue;
+                var renderers = c.body.GetComponentsInChildren<Renderer>();
+                if (renderers.Length == 0) continue;
+                var b = renderers[0].bounds;
+                foreach (var r in renderers) b.Encapsulate(r.bounds);
+                c.halfLength = Mathf.Max(1.2f, b.extents.x); // cars drive along x
+            }
             ApplyLamps();
             if (chirp != null && chirp.clip == null) chirp.clip = MakeChirp();
         }
@@ -101,21 +112,25 @@ namespace NihongoLife.World
             {
                 if (other == car || other.body == null || other.direction != car.direction) continue;
                 float ahead = (other.body.localPosition.x - x) * dir;
-                if (ahead > 0f && ahead < 7.5f) target = Mathf.Min(target, Mathf.Max(0f, (ahead - 5.5f) * 2f));
+                float gap = ahead - car.halfLength - other.halfLength;  // bumper to bumper
+                if (ahead > 0f && gap < 3f) target = Mathf.Min(target, Mathf.Max(0f, (gap - 1.2f) * 2f));
             }
             // Stop line on yellow / red.
             float stopX = dir > 0 ? stopEastX : stopWestX;
             float toLine = (stopX - x) * dir;
-            if (!CarsMayGo && toLine > -0.5f && toLine < 14f) target = Mathf.Min(target, Mathf.Max(0f, toLine - 0.3f) * 1.2f);
+            // The bumper stops 0.4 m behind the line; a car whose bumper already passed it (on yellow) drives on.
+            float bumperToLine = toLine - car.halfLength;
+            bool beforeLine = bumperToLine > -0.3f && bumperToLine < 14f;
+            if (!CarsMayGo && beforeLine) target = Mathf.Min(target, Braking(bumperToLine - 0.4f));
             // The player in front of the car, or on the crossing ahead of it.
             if (_player != null)
             {
                 Vector3 p = transform.InverseTransformPoint(_player.position);
                 float laneZ = dir > 0 ? laneEastZ : laneWestZ;
                 float front = (p.x - x) * dir;
-                if (Mathf.Abs(p.z - laneZ) < 2.4f && front > 0f && front < 9f) target = Mathf.Min(target, Mathf.Max(0f, front - 3.2f));
+                if (Mathf.Abs(p.z - laneZ) < 2.4f && front > 0f && front < 9f + car.halfLength) target = Mathf.Min(target, Braking(front - car.halfLength - 1f));
                 bool onCrossing = p.x > crossX0 - 0.6f && p.x < crossX1 + 0.6f && p.z > crossZ0 && p.z < crossZ1;
-                if (onCrossing && toLine > -0.5f && toLine < 14f) target = Mathf.Min(target, Mathf.Max(0f, toLine - 0.3f) * 1.2f);
+                if (onCrossing && beforeLine) target = Mathf.Min(target, Braking(bumperToLine - 0.4f));
             }
 
             car.speed = Mathf.MoveTowards(car.speed, target, (target < car.speed ? 9f : 3f) * dt);
@@ -126,6 +141,9 @@ namespace NihongoLife.World
             if (car.wheels != null)
                 foreach (var w in car.wheels) if (w != null) w.Rotate(car.body.right, car.speed * dt / 0.33f * Mathf.Rad2Deg, Space.World); // spin about the axle
         }
+
+        /// <summary>Speed that still stops within <paramref name="distance"/> at an even 3.5 m/s² (0 once there).</summary>
+        private static float Braking(float distance) => distance <= 0.03f ? 0f : Mathf.Sqrt(2f * 3.5f * distance);
 
         private void ApplyLamps()
         {

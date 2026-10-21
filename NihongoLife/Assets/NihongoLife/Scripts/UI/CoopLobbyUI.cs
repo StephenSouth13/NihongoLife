@@ -122,12 +122,12 @@ namespace NihongoLife.UI
                 return;
             }
 
-            if (!GameServices.TryGet(out IAuthService auth) || !auth.IsAuthenticated)
+            if (!GameServices.TryGet(out IAuthService auth) || !OnlineAccess.IsRegistered)
             {
                 _sessionListText.text = Text(
-                    "Ban can dang nhap truoc khi tao hoac tham gia phong online.",
-                    "Sign in before creating or joining an online room.",
-                    "オンラインルームを作成・参加する前にログインしてください。");
+                    "Phòng online cần tài khoản đã đăng ký và đăng nhập. Chế độ Khách chơi ngoại tuyến.",
+                    "Online rooms need a registered account, signed in. Guests play offline.",
+                    "オンラインルームには登録済みアカウントでのログインが必要です。ゲストはオフラインです。");
                 _lobbyInfoText.text = string.Empty;
                 ClearSessionButtons();
                 SetActive(_createButton, false);

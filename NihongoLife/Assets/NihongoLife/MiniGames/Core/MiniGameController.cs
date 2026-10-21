@@ -218,7 +218,7 @@ namespace NihongoLife.MiniGames
             body.AppendLine($"<color=#A8B4C4>{Loc.T("Đúng", "Correct", "正解")}</color>  {result.correctCount}      <color=#A8B4C4>{Loc.T("Sai", "Wrong", "まちがい")}</color>  {result.incorrectCount}");
             if (result.completed)
             {
-                body.AppendLine($"<color=#7BD88F>+{result.expReward} EXP   " + Loc.F("+{0} Kiến thức   · đã ghi vào hồ sơ học tập", "+{0} knowledge   · saved to your learning record", "知識 +{0}   · 学習記録に保存しました", result.knowledgeReward) + "</color>");
+                body.AppendLine($"<color=#7BD88F>+{result.expReward} EXP   " + Loc.F("+{0} trí tuệ   · đã ghi vào hồ sơ học tập", "+{0} knowledge   · saved to your learning record", "知識 +{0}   · 学習記録に保存しました", result.knowledgeReward) + "</color>");
                 body.AppendLine($"<color=#F2B233>{Loc.T("Vé thưởng", "Tickets", "チケット")} +{result.tickets}</color>  <color=#A8B4C4>({Loc.T("đổi quà ở quầy quà", "swap them at the prize counter", "けいひんカウンターで こうかん")})</color>   ·   <color=#A8B4C4>{Loc.T("Combo cao nhất", "Best combo", "最高コンボ")}</color> x{result.bestCombo}" +
                                 (result.newRecord ? $"   <color=#FF7FB0><b>{Loc.T("Kỷ lục mới!", "New record!", "きろく こうしん！")}</b></color>" : string.Empty));
             }

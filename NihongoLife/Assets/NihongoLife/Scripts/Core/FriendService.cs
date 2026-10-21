@@ -45,7 +45,7 @@ namespace NihongoLife.Core
         /// <summary>Send a friend request to another user by their ID.</summary>
         public void SendFriendRequest(string targetUserId, Action<bool> callback = null)
         {
-            if (_client == null || !_client.IsConfigured || !GameServices.TryGet(out IAuthService auth) || !auth.IsAuthenticated)
+            if (_client == null || !_client.IsConfigured || !GameServices.TryGet(out IAuthService auth) || !OnlineAccess.IsRegistered)
             {
                 callback?.Invoke(false);
                 return;
@@ -122,7 +122,7 @@ namespace NihongoLife.Core
         /// <summary>Refresh the full friends list and pending requests from Supabase.</summary>
         public void RefreshFriends(Action callback = null)
         {
-            if (_client == null || !_client.IsConfigured || !GameServices.TryGet(out IAuthService auth) || !auth.IsAuthenticated)
+            if (_client == null || !_client.IsConfigured || !GameServices.TryGet(out IAuthService auth) || !OnlineAccess.IsRegistered)
             {
                 callback?.Invoke();
                 return;

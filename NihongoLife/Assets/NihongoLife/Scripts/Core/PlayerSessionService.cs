@@ -16,7 +16,14 @@ namespace NihongoLife.Core
         public static PlayerSessionService Instance => _instance;
         public PlayerSessionMode Mode { get; private set; } = PlayerSessionMode.Guest;
         public bool CanPersist => Mode == PlayerSessionMode.Account;
-        public PlayerProgressDto GuestProgress => _guestProgress ??= new PlayerProgressDto { playerId = "guest", displayName = "Guest" };
+        public PlayerProgressDto GuestProgress => _guestProgress ??= LoadGuest();
+
+        /// <summary>
+        /// A guest plays the whole game offline, so its progress is kept on this device (guest_progress.json) between
+        /// sessions. PlayMode tests turn this off (PlayModeSaveGuard) so they never touch a real guest save.
+        /// </summary>
+        public static bool PersistGuest = true;
+        public static string GuestSavePath => System.IO.Path.Combine(Application.persistentDataPath, "guest_progress.json");
 
         public event Action<PlayerSessionMode> OnModeChanged;
 
@@ -39,7 +46,7 @@ namespace NihongoLife.Core
             if (_instance == this) return;
             _instance = this;
             Mode = PlayerSessionMode.Guest;
-            _guestProgress = new PlayerProgressDto { playerId = "guest", displayName = "Guest" };
+            _guestProgress = LoadGuest();
         }
 
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
@@ -53,10 +60,11 @@ namespace NihongoLife.Core
 
         private static void HandleApplicationQuitting() => _isShuttingDown = true;
 
+        /// <summary>Play as a guest: offline, continuing this device's guest save.</summary>
         public void BeginGuest()
         {
             Mode = PlayerSessionMode.Guest;
-            _guestProgress = new PlayerProgressDto { playerId = "guest", displayName = "Guest" };
+            _guestProgress = LoadGuest();
             OnModeChanged?.Invoke(Mode);
         }
 
@@ -71,7 +79,60 @@ namespace NihongoLife.Core
 
         public void UpdateGuestProgress(PlayerProgressDto progress)
         {
-            if (Mode == PlayerSessionMode.Guest && progress != null) _guestProgress = progress;
+            if (Mode != PlayerSessionMode.Guest || progress == null) return;
+            _guestProgress = progress;
+            SaveGuest(progress);
+        }
+
+        /// <summary>
+        /// The guest's progress when it is worth carrying into a newly registered account (something was played),
+        /// else null. Read while still in guest mode, before <see cref="BeginAccount"/>.
+        /// </summary>
+        public PlayerProgressDto GuestProgressToCarry()
+        {
+            var guest = GuestProgress;
+            bool played = guest != null && (guest.completedScenarios.Count > 0 || guest.knowledge > 0 || guest.xp > 0
+                || !string.IsNullOrEmpty(guest.activeScenarioId) || (guest.storyFlags != null && guest.storyFlags.Count > 0));
+            return played ? guest : null;
+        }
+
+        /// <summary>After the guest's progress moved into an account: the next guest starts fresh.</summary>
+        public void ClearGuestProgress()
+        {
+            _guestProgress = NewGuest();
+            if (!PersistGuest) return;
+            try { if (System.IO.File.Exists(GuestSavePath)) System.IO.File.Delete(GuestSavePath); }
+            catch (Exception ex) { Debug.LogWarning("[PlayerSession] Guest save not cleared: " + ex.Message); }
+            NihongoLife.Save.LocalProgressRepository.FlushWebStorage();
+        }
+
+        private static PlayerProgressDto NewGuest() => new PlayerProgressDto { playerId = "guest", displayName = "Guest" };
+
+        private static PlayerProgressDto LoadGuest()
+        {
+            if (!PersistGuest) return NewGuest();
+            try
+            {
+                if (!System.IO.File.Exists(GuestSavePath)) return NewGuest();
+                var loaded = JsonUtility.FromJson<PlayerProgressDto>(System.IO.File.ReadAllText(GuestSavePath));
+                return loaded ?? NewGuest();
+            }
+            catch (Exception ex)
+            {
+                Debug.LogWarning("[PlayerSession] Guest save unreadable, starting fresh: " + ex.Message);
+                return NewGuest();
+            }
+        }
+
+        private static void SaveGuest(PlayerProgressDto progress)
+        {
+            if (!PersistGuest) return;
+            try
+            {
+                System.IO.File.WriteAllText(GuestSavePath, JsonUtility.ToJson(progress));
+                NihongoLife.Save.LocalProgressRepository.FlushWebStorage();
+            }
+            catch (Exception ex) { Debug.LogWarning("[PlayerSession] Guest save failed: " + ex.Message); }
         }
 
         private void OnApplicationQuit() => _isShuttingDown = true;

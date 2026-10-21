@@ -35,6 +35,7 @@ namespace NihongoLife.Tests
         public void TearDown()
         {
             SupabaseRealtimeClient.Verbose = false;
+            OnlineAccess.Bypass = false;
             foreach (var go in _spawned) if (go != null) Object.Destroy(go);
             _spawned.Clear();
             foreach (var key in _prefsToDelete) PlayerPrefs.DeleteKey(key);
@@ -199,6 +200,7 @@ namespace NihongoLife.Tests
         [UnityTest]
         public IEnumerator City_RemotePlayers_TargetingAndChatWindow()
         {
+            OnlineAccess.Bypass = true; // the test device has no registered account; the game keeps guests offline
             yield return LoadCity();
             Assert.IsTrue(GameServices.TryGet(out IOnlineWorldService world) && world is SupabaseOnlineWorldService, "Online is enabled in the control database");
             var online = (SupabaseOnlineWorldService)world;

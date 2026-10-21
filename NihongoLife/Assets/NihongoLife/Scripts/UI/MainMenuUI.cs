@@ -93,7 +93,7 @@ namespace NihongoLife.UI
             Wire(leaderboardButton, () => leaderboardUI.Show());
             friendsUI = gameObject.AddComponent<FriendsUI>();
             friendsUI.Initialize(font);
-            Wire(friendsButton, () => friendsUI.Show());
+            Wire(friendsButton, () => { if (OnlineAccess.IsRegistered) friendsUI.Show(); else authUI.ShowForOnline(); });
             profileUI = gameObject.AddComponent<PlayerProfileUI>();
             profileUI.Initialize(font);
             Wire(profileButton, () => profileUI.ShowOwnProfile());
@@ -431,6 +431,8 @@ namespace NihongoLife.UI
 
         private void OnOnlineClicked()
         {
+            // Online is for registered, signed-in accounts; a guest is invited to register / sign in.
+            if (!OnlineAccess.IsRegistered) { HideInfoPopups(); authUI.ShowForOnline(); return; }
             startOnlineAfterCharacterConfirm = true;
             HideInfoPopups();
             if (characterSelectPanel != null)

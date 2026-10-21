@@ -58,17 +58,26 @@ namespace NihongoLife.Tests
             // Red: cars stop at the line.
             traffic.ForcePhase(StreetTraffic.Phase.WalkGreen);
             // Cars that can still stop in time (≥ 6 m before the line) must not cross it on red.
-            var waiting = traffic.Cars.Where(c => (c.direction > 0 ? -1f - c.body.localPosition.x : c.body.localPosition.x - 8f) > 6f
-                                                && (c.direction > 0 ? -1f - c.body.localPosition.x : c.body.localPosition.x - 8f) < 40f).ToList();
+            // Stop lines 2 m before the zebra (x -1.3 eastbound, 8.3 westbound); distances are from the front bumper.
+            float BumperToLine(StreetTraffic.Car c) => (c.direction > 0 ? -1.3f - c.body.localPosition.x : c.body.localPosition.x - 8.3f) - c.halfLength;
+            var waiting = traffic.Cars.Where(c => BumperToLine(c) > 6f && BumperToLine(c) < 40f).ToList();
             yield return new WaitForSecondsRealtime(6f);
             foreach (var car in waiting)
             {
-                float toLine = car.direction > 0 ? -1f - car.body.localPosition.x : car.body.localPosition.x - 8f;
-                Assert.Greater(toLine, -0.6f, $"{car.body.name} ran the red light.");
+                float toLine = BumperToLine(car);
+                Assert.Greater(toLine, -0.3f, $"{car.body.name} ran the red light (bumper {toLine:0.00} m past the line).");
                 if (toLine < 2f) Assert.Less(car.speed, 0.3f, $"{car.body.name} waits at the line.");
             }
             Assert.IsNotEmpty(waiting, "Some car was approaching the crossing.");
+            foreach (var car in traffic.Cars.Where(c => c.speed < 0.3f))
+            {
+                float x = car.body.localPosition.x;
+                bool onZebra = x + car.halfLength > 0.7f && x - car.halfLength < 6.3f;
+                Assert.IsFalse(onZebra, $"{car.body.name} waits on the zebra crossing (x {x:0.00}, half {car.halfLength:0.00}). Cars: "
+                    + string.Join("; ", traffic.Cars.Select(o => $"{o.body.name} x{o.body.localPosition.x:0.0} d{o.direction} v{o.speed:0.0} h{o.halfLength:0.0}")));
+            }
             CaptureFrom("01_crossing_walk_phase", new Vector3(3.5f, 1.6f, -19.5f), new Vector3(3.5f, 1.2f, 0f));
+            CaptureFrom("07_crossing_red_from_above", new Vector3(3.5f, 9f, -24f), new Vector3(3.5f, 0f, -10f));
 
             // Player on the zebra: cars on green still stop.
             Teleport(new Vector3(3.5f, 0.08f, -10f), 0f);
