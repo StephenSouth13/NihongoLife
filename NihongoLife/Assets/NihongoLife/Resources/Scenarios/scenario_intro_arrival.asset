@@ -15,9 +15,11 @@ MonoBehaviour:
   id: scenario.intro.arrival
   version: 2
   titleJa: "ひばり町へようこそ"
-  titleEn: "Chào mừng đến Hibari-chō"
+  titleVi: "Chào mừng đến Hibari-chō"
+  titleEn: "Welcome to Hibari-chō"
   descriptionJa: "ひばり駅に着いた夜。看板を読み、学校のメッセージに返事をして、部屋に帰りましょう。"
-  descriptionEn: "Đêm đầu tiên ở Hibari: đọc biển ga, hiểu tin nhắn của trường, chào người dân và về nhà."
+  descriptionVi: "Đêm đầu tiên ở Hibari: đọc biển ga, hiểu tin nhắn của trường, chào người dân và về nhà."
+  descriptionEn: "Your first night in Hibari: read the station signs, understand the school's message, greet the locals and get home."
   chapterIndex: 0
   questType: main
   giverNpcId: ""
@@ -46,15 +48,18 @@ MonoBehaviour:
   objectives:
   - id: obj_arrive
     titleJa: "駅を出て、町に着く"
-    titleEn: "Ra khỏi ga và đến thị trấn"
+    titleVi: "Ra khỏi ga và đến thị trấn"
+    titleEn: "Leave the station and reach the town"
     isOptional: 0
   - id: obj_read
     titleJa: "学校のメッセージを読む"
-    titleEn: "Đọc tin nhắn của trường"
+    titleVi: "Đọc tin nhắn của trường"
+    titleEn: "Read the message from the school"
     isOptional: 0
   - id: obj_home
     titleJa: "部屋に着く"
-    titleEn: "Về đến căn phòng của mình"
+    titleVi: "Về đến căn phòng của mình"
+    titleEn: "Get back to your room"
     isOptional: 0
   nodes:
   - id: n_open
@@ -65,7 +70,8 @@ MonoBehaviour:
     speakerId: 
     textJa: "八月の夕方。ひばり駅に着きました。"
     textReading: "はちがつのゆうがた。ひばりえきにつきました。"
-    textEn: "Chiều tháng Tám. Bạn xuống tàu ở ga Hibari."
+    textVi: "Chiều tháng Tám. Bạn xuống tàu ở ga Hibari."
+    textEn: "An August afternoon. You get off the train at Hibari Station."
     textRomaji: "Hachigatsu no yuugata. Hibari eki ni tsukimashita."
     textEnglishIpa: 
     animationCue: 
@@ -84,7 +90,8 @@ MonoBehaviour:
     speakerId: 
     textJa: "大きなかばんを持って、はじめて一人で日本に来ました。ここが、これから住む町です。"
     textReading: "おおきなかばんをもって、はじめてひとりでにほんにきました。ここが、これからすむまちです。"
-    textEn: "Kéo theo chiếc vali lớn, lần đầu tiên bạn một mình đến Nhật. Đây là nơi bạn sẽ sống từ nay."
+    textVi: "Kéo theo chiếc vali lớn, lần đầu tiên bạn một mình đến Nhật. Đây là nơi bạn sẽ sống từ nay."
+    textEn: "Pulling a big suitcase, you have come to Japan alone for the first time. This is where you will live from now on."
     textRomaji: "Ookina kaban wo motte, hajimete hitori de Nihon ni kimashita. Koko ga, korekara sumu machi desu."
     textEnglishIpa: 
     animationCue: 
@@ -103,14 +110,16 @@ MonoBehaviour:
     speakerId: 
     textJa: "むねがどきどきします。今、どんな気持ちですか。"
     textReading: "むねがどきどきします。いま、どんなきもちですか。"
-    textEn: "Tim bạn đập thình thịch. Lúc này bạn thấy thế nào?"
+    textVi: "Tim bạn đập thình thịch. Lúc này bạn thấy thế nào?"
+    textEn: "Your heart is pounding. How do you feel right now?"
     textRomaji: "Mune ga dokidoki shimasu. Ima, donna kimochi desu ka?"
     textEnglishIpa: 
     animationCue: 
     voiceClip: {fileID: 0}
     choices:
     - textJa: "わくわくします。"
-      textEn: "Tôi thấy háo hức."
+      textVi: "Tôi thấy háo hức."
+      textEn: "I'm excited."
       nextNodeId: n_feel_excited
       scoreModifiers:
       - category: Vocabulary
@@ -123,7 +132,8 @@ MonoBehaviour:
       setFlags:
       - feel.excited
     - textJa: "ちょっと不安です。"
-      textEn: "Tôi hơi lo lắng."
+      textVi: "Tôi hơi lo lắng."
+      textEn: "I'm a little worried."
       nextNodeId: n_feel_nervous
       scoreModifiers:
       - category: Vocabulary
@@ -136,7 +146,8 @@ MonoBehaviour:
       setFlags:
       - feel.nervous
     - textJa: "疲れました。"
-      textEn: "Tôi mệt rồi."
+      textVi: "Tôi mệt rồi."
+      textEn: "I'm tired."
       nextNodeId: n_feel_tired
       scoreModifiers:
       - category: Vocabulary
@@ -161,7 +172,8 @@ MonoBehaviour:
     speakerId: 
     textJa: "新しい町。新しい生活。早く歩いてみたいです。"
     textReading: "あたらしいまち。あたらしいせいかつ。はやくあるいてみたいです。"
-    textEn: "Thị trấn mới. Cuộc sống mới. Bạn muốn đi thử ngay."
+    textVi: "Thị trấn mới. Cuộc sống mới. Bạn muốn đi thử ngay."
+    textEn: "A new town. A new life. You want to go and explore right away."
     textRomaji: "Atarashii machi. Atarashii seikatsu. Hayaku aruite mitai desu."
     textEnglishIpa: 
     animationCue: 
@@ -180,7 +192,8 @@ MonoBehaviour:
     speakerId: 
     textJa: "日本語がうまく話せるでしょうか。でも、だいじょうぶ。まず、一歩ずつ。"
     textReading: "にほんごがうまくはなせるでしょうか。でも、だいじょうぶ。まず、いっぽずつ。"
-    textEn: "Liệu mình có nói tiếng Nhật giỏi không nhỉ? Nhưng không sao. Cứ từng bước một."
+    textVi: "Liệu mình có nói tiếng Nhật giỏi không nhỉ? Nhưng không sao. Cứ từng bước một."
+    textEn: "Will I be able to speak Japanese well? But it's fine. One step at a time."
     textRomaji: "Nihongo ga umaku hanaseru deshou ka. Demo, daijoubu. Mazu, ippo zutsu."
     textEnglishIpa: 
     animationCue: 
@@ -199,7 +212,8 @@ MonoBehaviour:
     speakerId: 
     textJa: "今日は早く休みたいです。でも、その前にやることがあります。"
     textReading: "きょうははやくやすみたいです。でも、そのまえにやることがあります。"
-    textEn: "Hôm nay bạn muốn nghỉ sớm. Nhưng trước đó còn việc phải làm."
+    textVi: "Hôm nay bạn muốn nghỉ sớm. Nhưng trước đó còn việc phải làm."
+    textEn: "You want to rest early today. But there are things to do first."
     textRomaji: "Kyou wa hayaku yasumitai desu. Demo, sono mae ni yaru koto ga arimasu."
     textEnglishIpa: 
     animationCue: 
@@ -218,14 +232,16 @@ MonoBehaviour:
     speakerId: 
     textJa: "駅の中に、大きな看板がいくつかあります。外に出たいです。どれを見ますか。"
     textReading: "えきのなかに、おおきなかんばんがいくつかあります。そとにでたいです。どれをみますか。"
-    textEn: "Trong ga có vài tấm biển lớn. Bạn muốn ra ngoài. Bạn nhìn tấm nào?"
+    textVi: "Trong ga có vài tấm biển lớn. Bạn muốn ra ngoài. Bạn nhìn tấm nào?"
+    textEn: "There are a few big signs in the station. You want to go outside. Which one do you look at?"
     textRomaji: "Eki no naka ni, ookina kanban ga ikutsu ka arimasu. Soto ni detai desu. Dore wo mimasu ka?"
     textEnglishIpa: 
     animationCue: 
     voiceClip: {fileID: 0}
     choices:
     - textJa: "「出口」を見ます。"
-      textEn: "Tôi nhìn biển \"deguchi\" (lối ra)."
+      textVi: "Tôi nhìn biển \"deguchi\" (lối ra)."
+      textEn: "I look at the \"deguchi\" (exit) sign."
       nextNodeId: n_exit_ok
       scoreModifiers:
       - category: Vocabulary
@@ -236,7 +252,8 @@ MonoBehaviour:
       - vocab.n5.deguchi
       setFlags: []
     - textJa: "「入口」を見ます。"
-      textEn: "Tôi nhìn biển \"iriguchi\" (lối vào)."
+      textVi: "Tôi nhìn biển \"iriguchi\" (lối vào)."
+      textEn: "I look at the \"iriguchi\" (entrance) sign."
       nextNodeId: n_exit_wrong
       scoreModifiers:
       - category: Vocabulary
@@ -246,7 +263,8 @@ MonoBehaviour:
       vocabularyTags: []
       setFlags: []
     - textJa: "駅員さんに聞きます。"
-      textEn: "Tôi hỏi nhân viên nhà ga."
+      textVi: "Tôi hỏi nhân viên nhà ga."
+      textEn: "I ask a station attendant."
       nextNodeId: n_exit_ask
       scoreModifiers:
       - category: ResponseAccuracy
@@ -269,7 +287,8 @@ MonoBehaviour:
     speakerId: 
     textJa: "「入」は中に入る、「出」は外に出る。「入口」は入るところです。もう一度見ましょう。"
     textReading: "「にゅう」はなかにはいる、「しゅつ」はそとにでる。「いりぐち」ははいるところです。もういちどみましょう。"
-    textEn: "「入」là vào trong, 「出」là ra ngoài. 「入口」là chỗ để đi vào. Ta xem lại nhé."
+    textVi: "「入」là vào trong, 「出」là ra ngoài. 「入口」là chỗ để đi vào. Ta xem lại nhé."
+    textEn: "「入」 means going in, 「出」 means going out. 「入口」 is the way in. Let's look again."
     textRomaji: "\"Nyuu\" wa naka ni hairu, \"shutsu\" wa soto ni deru. \"Iriguchi\" wa hairu tokoro desu. Mou ichido mimashou."
     textEnglishIpa: 
     animationCue: 
@@ -288,7 +307,8 @@ MonoBehaviour:
     speakerId: 
     textJa: "駅員さんは、あの緑の看板を指さしました。「出口」と書いてあります。"
     textReading: "えきいんさんは、あのみどりのかんばんをゆびさしました。「でぐち」とかいてあります。"
-    textEn: "Nhân viên nhà ga chỉ vào tấm biển xanh lá kia. Trên đó viết 「出口」 (lối ra)."
+    textVi: "Nhân viên nhà ga chỉ vào tấm biển xanh lá kia. Trên đó viết 「出口」 (lối ra)."
+    textEn: "The station attendant points to that green sign. It says 「出口」 (exit)."
     textRomaji: "Ekiin-san wa, ano midori no kanban wo yubisashimashita. \"Deguchi\" to kaite arimasu."
     textEnglishIpa: 
     animationCue: 
@@ -307,7 +327,8 @@ MonoBehaviour:
     speakerId: 
     textJa: "あの緑の看板に「出口」と書いてあります。そちらへ行きましょう。"
     textReading: "あのみどりのかんばんに「でぐち」とかいてあります。そちらへいきましょう。"
-    textEn: "Trên tấm biển xanh lá kia có viết 「出口」. Đi về phía đó nào."
+    textVi: "Trên tấm biển xanh lá kia có viết 「出口」. Đi về phía đó nào."
+    textEn: "That green sign says 「出口」. Let's head that way."
     textRomaji: "Ano midori no kanban ni \"deguchi\" to kaite arimasu. Sochira e ikimashou."
     textEnglishIpa: 
     animationCue: 
@@ -326,7 +347,8 @@ MonoBehaviour:
     speakerId: 
     textJa: "外は、ゆうやけがきれいな町でした。さくらの並木道が長くのびています。"
     textReading: "そとは、ゆうやけがきれいなまちでした。さくらのなみきみちがながくのびています。"
-    textEn: "Bên ngoài là một thị trấn có hoàng hôn rất đẹp. Con đường trồng anh đào kéo dài phía trước."
+    textVi: "Bên ngoài là một thị trấn có hoàng hôn rất đẹp. Con đường trồng anh đào kéo dài phía trước."
+    textEn: "Outside is a town with a beautiful sunset. A street lined with cherry trees stretches ahead."
     textRomaji: "Soto wa, yuuyake ga kirei na machi deshita. Sakura no namikimichi ga nagaku nobite imasu."
     textEnglishIpa: 
     animationCue: 
@@ -345,7 +367,8 @@ MonoBehaviour:
     speakerId: 
     textJa: "スマホが鳴りました。学校からのメッセージです。"
     textReading: "スマホがなりました。がっこうからのメッセージです。"
-    textEn: "Điện thoại kêu lên. Là tin nhắn từ trường."
+    textVi: "Điện thoại kêu lên. Là tin nhắn từ trường."
+    textEn: "Your phone buzzes. It's a message from the school."
     textRomaji: "Sumaho ga narimashita. Gakkou kara no messeeji desu."
     textEnglishIpa: 
     animationCue: 
@@ -364,7 +387,8 @@ MonoBehaviour:
     speakerId: 
     textJa: "「ひばり日本語学院です。ようこそ！明日の朝九時に、学校へ来てください。」"
     textReading: "「ひばりにほんごがくいんです。ようこそ！あしたのあさくじに、がっこうへきてください。」"
-    textEn: "\"Đây là Học viện tiếng Nhật Hibari. Chào mừng bạn! Sáng mai lúc 9 giờ, xin hãy đến trường.\""
+    textVi: "\"Đây là Học viện tiếng Nhật Hibari. Chào mừng bạn! Sáng mai lúc 9 giờ, xin hãy đến trường.\""
+    textEn: "\"This is Hibari Japanese Academy. Welcome! Please come to school tomorrow morning at 9.\""
     textRomaji: "\"Hibari Nihongo Gakuin desu. Youkoso! Ashita no asa kuji ni, gakkou e kite kudasai.\""
     textEnglishIpa: 
     animationCue: 
@@ -383,14 +407,16 @@ MonoBehaviour:
     speakerId: 
     textJa: "学校へ行くのは、いつですか。"
     textReading: "がっこうへいくのは、いつですか。"
-    textEn: "Khi nào bạn phải đến trường?"
+    textVi: "Khi nào bạn phải đến trường?"
+    textEn: "When do you have to go to school?"
     textRomaji: "Gakkou e iku no wa, itsu desu ka?"
     textEnglishIpa: 
     animationCue: 
     voiceClip: {fileID: 0}
     choices:
     - textJa: "明日の朝九時です。"
-      textEn: "Là 9 giờ sáng mai."
+      textVi: "Là 9 giờ sáng mai."
+      textEn: "Tomorrow morning at 9."
       nextNodeId: n_message_ok
       scoreModifiers:
       - category: Vocabulary
@@ -403,7 +429,8 @@ MonoBehaviour:
       - vocab.n5.kuji
       setFlags: []
     - textJa: "今日の夜九時です。"
-      textEn: "Là 9 giờ tối nay."
+      textVi: "Là 9 giờ tối nay."
+      textEn: "Tonight at 9."
       nextNodeId: n_message_wrong
       scoreModifiers:
       - category: Vocabulary
@@ -413,7 +440,8 @@ MonoBehaviour:
       vocabularyTags: []
       setFlags: []
     - textJa: "来週の月曜日です。"
-      textEn: "Là thứ Hai tuần sau."
+      textVi: "Là thứ Hai tuần sau."
+      textEn: "Next Monday."
       nextNodeId: n_message_wrong
       scoreModifiers:
       - category: Vocabulary
@@ -435,7 +463,8 @@ MonoBehaviour:
     speakerId: 
     textJa: "もう一度、メッセージを読みましょう。「明日の朝九時に」と書いてあります。"
     textReading: "もういちど、メッセージをよみましょう。「あしたのあさくじに」とかいてあります。"
-    textEn: "Đọc lại tin nhắn nào. Trong đó viết 「明日の朝九時に」 (9 giờ sáng mai)."
+    textVi: "Đọc lại tin nhắn nào. Trong đó viết 「明日の朝九時に」 (9 giờ sáng mai)."
+    textEn: "Read the message again. It says 「明日の朝九時に」 (tomorrow morning at 9)."
     textRomaji: "Mou ichido, messeeji wo yomimashou. \"Ashita no asa kuji ni\" to kaite arimasu."
     textEnglishIpa: 
     animationCue: 
@@ -454,7 +483,8 @@ MonoBehaviour:
     speakerId: 
     textJa: "そうです。明日の朝九時。忘れないように、スマホにメモしましょう。"
     textReading: "そうです。あしたのあさくじ。わすれないように、スマホにメモしましょう。"
-    textEn: "Đúng rồi. 9 giờ sáng mai. Để khỏi quên, hãy ghi vào điện thoại nhé."
+    textVi: "Đúng rồi. 9 giờ sáng mai. Để khỏi quên, hãy ghi vào điện thoại nhé."
+    textEn: "That's right. Tomorrow morning at 9. Put it in your phone so you don't forget."
     textRomaji: "Sou desu. Ashita no asa kuji. Wasurenai you ni, sumaho ni memo shimashou."
     textEnglishIpa: 
     animationCue: 
@@ -473,14 +503,16 @@ MonoBehaviour:
     speakerId: 
     textJa: "学校に返事を送ります。何と書きますか。"
     textReading: "がっこうにへんじをおくります。なんとかきますか。"
-    textEn: "Bạn gửi tin trả lời cho trường. Bạn sẽ viết gì?"
+    textVi: "Bạn gửi tin trả lời cho trường. Bạn sẽ viết gì?"
+    textEn: "You reply to the school. What do you write?"
     textRomaji: "Gakkou ni henji wo okurimasu. Nan to kakimasu ka?"
     textEnglishIpa: 
     animationCue: 
     voiceClip: {fileID: 0}
     choices:
     - textJa: "分かりました。よろしくお願いします。"
-      textEn: "Tôi đã hiểu. Xin nhờ thầy cô giúp đỡ ạ."
+      textVi: "Tôi đã hiểu. Xin nhờ thầy cô giúp đỡ ạ."
+      textEn: "I understand. Thank you for your help."
       nextNodeId: n_reply_ok
       scoreModifiers:
       - category: Grammar
@@ -505,7 +537,8 @@ MonoBehaviour:
       vocabularyTags: []
       setFlags: []
     - textJa: "分かりません。"
-      textEn: "Tôi không hiểu."
+      textVi: "Tôi không hiểu."
+      textEn: "I don't understand."
       nextNodeId: n_reply_wrong
       scoreModifiers:
       - category: ResponseAccuracy
@@ -527,7 +560,8 @@ MonoBehaviour:
     speakerId: 
     textJa: "友達には「OK」でいいですが、学校には「分かりました」と書きましょう。"
     textReading: "ともだちには「オーケー」でいいですが、がっこうには「わかりました」とかきましょう。"
-    textEn: "Với bạn bè thì \"OK\" là được, nhưng với nhà trường hãy viết 「分かりました」 nhé."
+    textVi: "Với bạn bè thì \"OK\" là được, nhưng với nhà trường hãy viết 「分かりました」 nhé."
+    textEn: "\"OK\" is fine with friends, but to the school write 「分かりました」."
     textRomaji: "Tomodachi ni wa \"OK\" de ii desu ga, gakkou ni wa \"wakarimashita\" to kakimashou."
     textEnglishIpa: 
     animationCue: 
@@ -546,7 +580,8 @@ MonoBehaviour:
     speakerId: 
     textJa: "でも、もう分かりましたよね。「分かりました」と書きましょう。"
     textReading: "でも、もうわかりましたよね。「わかりました」とかきましょう。"
-    textEn: "Nhưng bạn đã hiểu rồi mà. Hãy viết 「分かりました」 nhé."
+    textVi: "Nhưng bạn đã hiểu rồi mà. Hãy viết 「分かりました」 nhé."
+    textEn: "But you did understand. Write 「分かりました」."
     textRomaji: "Demo, mou wakarimashita yo ne. \"Wakarimashita\" to kakimashou."
     textEnglishIpa: 
     animationCue: 
@@ -565,7 +600,8 @@ MonoBehaviour:
     speakerId: 
     textJa: "すぐに返事が来ました。「ありがとうございます。あしたお会いしましょう。」"
     textReading: "すぐにへんじがきました。「ありがとうございます。あしたおあいしましょう。」"
-    textEn: "Tin trả lời đến ngay. \"Cảm ơn bạn. Ngày mai chúng ta gặp nhau nhé.\""
+    textVi: "Tin trả lời đến ngay. \"Cảm ơn bạn. Ngày mai chúng ta gặp nhau nhé.\""
+    textEn: "A reply comes right away. \"Thank you. See you tomorrow.\""
     textRomaji: "Sugu ni henji ga kimashita. \"Arigatou gozaimasu. Ashita oai shimashou.\""
     textEnglishIpa: 
     animationCue: 
@@ -584,7 +620,8 @@ MonoBehaviour:
     speakerId: 
     textJa: "さくら通りを歩きます。パン屋さんのいいにおい。犬の散歩をする人。"
     textReading: "さくらどおりをあるきます。パンやさんのいいにおい。いぬのさんぽをするひと。"
-    textEn: "Bạn đi bộ trên phố Sakura. Mùi bánh mì thơm từ tiệm bánh. Có người dắt chó đi dạo."
+    textVi: "Bạn đi bộ trên phố Sakura. Mùi bánh mì thơm từ tiệm bánh. Có người dắt chó đi dạo."
+    textEn: "You walk along Sakura Street. Bread smells good from the bakery. Someone is walking a dog."
     textRomaji: "Sakura-doori wo arukimasu. Panya-san no ii nioi. Inu no sanpo wo suru hito."
     textEnglishIpa: 
     animationCue: 
@@ -603,14 +640,16 @@ MonoBehaviour:
     speakerId: 
     textJa: "犬を連れたおばあさんと目が合いました。ほほえんでいます。どうしますか。"
     textReading: "いぬをつれたおばあさんとめがあいました。ほほえんでいます。どうしますか。"
-    textEn: "Ánh mắt bạn chạm vào một bà cụ dắt chó. Bà đang mỉm cười. Bạn sẽ làm gì?"
+    textVi: "Ánh mắt bạn chạm vào một bà cụ dắt chó. Bà đang mỉm cười. Bạn sẽ làm gì?"
+    textEn: "You catch the eye of an old woman walking her dog. She is smiling. What do you do?"
     textRomaji: "Inu wo tsureta obaasan to me ga aimashita. Hohoende imasu. Dou shimasu ka?"
     textEnglishIpa: 
     animationCue: 
     voiceClip: {fileID: 0}
     choices:
     - textJa: "「こんばんは」と言います。"
-      textEn: "Bạn nói \"konbanwa\"."
+      textVi: "Bạn nói \"konbanwa\"."
+      textEn: "You say \"konbanwa\"."
       nextNodeId: n_greet_ok
       scoreModifiers:
       - category: Vocabulary
@@ -622,7 +661,8 @@ MonoBehaviour:
       setFlags:
       - intro.greeted_stranger
     - textJa: "頭を下げます。"
-      textEn: "Bạn cúi đầu chào."
+      textVi: "Bạn cúi đầu chào."
+      textEn: "You bow."
       nextNodeId: n_greet_bow
       scoreModifiers:
       - category: ResponseAccuracy
@@ -632,7 +672,8 @@ MonoBehaviour:
       vocabularyTags: []
       setFlags: []
     - textJa: "見ないで、通ります。"
-      textEn: "Bạn lờ đi rồi đi qua."
+      textVi: "Bạn lờ đi rồi đi qua."
+      textEn: "You ignore her and walk past."
       nextNodeId: n_greet_pass
       scoreModifiers:
       - category: ResponseAccuracy
@@ -654,7 +695,8 @@ MonoBehaviour:
     speakerId: 
     textJa: "おばあさんは「こんばんは。いい夕方ですね」と言って、笑いました。"
     textReading: "おばあさんは「こんばんは。いいゆうがたですね」といって、わらいました。"
-    textEn: "Bà cụ nói \"Chào buổi tối. Chiều nay thật đẹp nhỉ\" rồi mỉm cười."
+    textVi: "Bà cụ nói \"Chào buổi tối. Chiều nay thật đẹp nhỉ\" rồi mỉm cười."
+    textEn: "The old woman says \"Good evening. What a lovely evening\" and smiles."
     textRomaji: "Obaasan wa \"Konbanwa. Ii yuugata desu ne\" to itte, waraimashita."
     textEnglishIpa: 
     animationCue: 
@@ -673,7 +715,8 @@ MonoBehaviour:
     speakerId: 
     textJa: "おばあさんも頭を下げました。言葉がなくても、気持ちは伝わります。"
     textReading: "おばあさんもあたまをさげました。ことばがなくても、きもちはつたわります。"
-    textEn: "Bà cụ cũng cúi đầu. Dù không có lời nào, tấm lòng vẫn được truyền đến."
+    textVi: "Bà cụ cũng cúi đầu. Dù không có lời nào, tấm lòng vẫn được truyền đến."
+    textEn: "The old woman bows too. Even without words, the feeling gets across."
     textRomaji: "Obaasan mo atama wo sagemashita. Kotoba ga nakute mo, kimochi wa tsutawarimasu."
     textEnglishIpa: 
     animationCue: 
@@ -692,7 +735,8 @@ MonoBehaviour:
     speakerId: 
     textJa: "おばあさんは少しさびしそうでした。明日は、自分からあいさつしてみましょう。"
     textReading: "おばあさんはすこしさびしそうでした。あしたは、じぶんからあいさつしてみましょう。"
-    textEn: "Bà cụ có vẻ hơi buồn. Ngày mai hãy thử chủ động chào trước nhé."
+    textVi: "Bà cụ có vẻ hơi buồn. Ngày mai hãy thử chủ động chào trước nhé."
+    textEn: "The old woman looks a little sad. Tomorrow, try greeting people first."
     textRomaji: "Obaasan wa sukoshi sabishisou deshita. Ashita wa, jibun kara aisatsu shite mimashou."
     textEnglishIpa: 
     animationCue: 
@@ -711,7 +755,8 @@ MonoBehaviour:
     speakerId: 
     textJa: "ひばりハイツの へやに かえりましょう。"
     textReading: "ひばりハイツの へやに かえりましょう。"
-    textEn: "Hãy về phòng trọ ở Hibari Heights."
+    textVi: "Hãy về phòng trọ ở Hibari Heights."
+    textEn: "Go back to your room at Hibari Heights."
     textRomaji: "Hibari Haitsu no heya ni kaerimashou."
     textEnglishIpa: 
     animationCue: 
@@ -730,7 +775,8 @@ MonoBehaviour:
     speakerId: 
     textJa: "小さな部屋のドアを開けました。電気をつけると、白い机とベッドがあります。"
     textReading: "ちいさなへやのドアをあけました。でんきをつけると、しろいつくえとベッドがあります。"
-    textEn: "Bạn mở cửa căn phòng nhỏ. Bật đèn lên, có một chiếc bàn trắng và một chiếc giường."
+    textVi: "Bạn mở cửa căn phòng nhỏ. Bật đèn lên, có một chiếc bàn trắng và một chiếc giường."
+    textEn: "You open the door of your small room. When you turn on the light, there's a white desk and a bed."
     textRomaji: "Chiisana heya no doa wo akemashita. Denki wo tsukeru to, shiroi tsukue to beddo ga arimasu."
     textEnglishIpa: 
     animationCue: 
@@ -749,14 +795,16 @@ MonoBehaviour:
     speakerId: 
     textJa: "「ただいま」と言ってみますか。"
     textReading: "「ただいま」といってみますか。"
-    textEn: "Bạn có thử nói \"tadaima\" (con/tôi về rồi) không?"
+    textVi: "Bạn có thử nói \"tadaima\" (con/tôi về rồi) không?"
+    textEn: "Do you try saying \"tadaima\" (I'm home)?"
     textRomaji: "\"Tadaima\" to itte mimasu ka?"
     textEnglishIpa: 
     animationCue: 
     voiceClip: {fileID: 0}
     choices:
     - textJa: "「ただいま」と言います。"
-      textEn: "Bạn nói \"tadaima\"."
+      textVi: "Bạn nói \"tadaima\"."
+      textEn: "You say \"tadaima\"."
       nextNodeId: n_home_tadaima
       scoreModifiers:
       - category: Vocabulary
@@ -768,7 +816,8 @@ MonoBehaviour:
       setFlags:
       - intro.said_tadaima
     - textJa: "何も言いません。"
-      textEn: "Bạn không nói gì."
+      textVi: "Bạn không nói gì."
+      textEn: "You say nothing."
       nextNodeId: n_home_silent
       scoreModifiers:
       - category: ResponseAccuracy
@@ -790,7 +839,8 @@ MonoBehaviour:
     speakerId: 
     textJa: "だれもいません。でも、小さな声で言うと、少し、ほっとしました。"
     textReading: "だれもいません。でも、ちいさなこえでいうと、すこし、ほっとしました。"
-    textEn: "Không có ai cả. Nhưng nói bằng giọng nhỏ, bạn thấy yên lòng hơn một chút."
+    textVi: "Không có ai cả. Nhưng nói bằng giọng nhỏ, bạn thấy yên lòng hơn một chút."
+    textEn: "There's nobody here. But saying it quietly makes you feel a little calmer."
     textRomaji: "Dare mo imasen. Demo, chiisana koe de iu to, sukoshi, hotto shimashita."
     textEnglishIpa: 
     animationCue: 
@@ -809,7 +859,8 @@ MonoBehaviour:
     speakerId: 
     textJa: "部屋は静かです。でも、明日から、この町がにぎやかになります。"
     textReading: "へやはしずかです。でも、あしたから、このまちがにぎやかになります。"
-    textEn: "Căn phòng yên tĩnh. Nhưng từ ngày mai, thị trấn này sẽ trở nên náo nhiệt."
+    textVi: "Căn phòng yên tĩnh. Nhưng từ ngày mai, thị trấn này sẽ trở nên náo nhiệt."
+    textEn: "The room is quiet. But from tomorrow, this town will come alive."
     textRomaji: "Heya wa shizuka desu. Demo, ashita kara, kono machi ga nigiyaka ni narimasu."
     textEnglishIpa: 
     animationCue: 
@@ -828,7 +879,8 @@ MonoBehaviour:
     speakerId: 
     textJa: "おやすみなさい。明日から、ひばり町の生活が始まります。"
     textReading: "おやすみなさい。あしたから、ひばりちょうのせいかつがはじまります。"
-    textEn: "Chúc ngủ ngon. Từ ngày mai, cuộc sống ở Hibari-chō bắt đầu."
+    textVi: "Chúc ngủ ngon. Từ ngày mai, cuộc sống ở Hibari-chō bắt đầu."
+    textEn: "Good night. Your life in Hibari-chō begins tomorrow."
     textRomaji: "Oyasuminasai. Ashita kara, Hibari-chou no seikatsu ga hajimarimasu."
     textEnglishIpa: 
     animationCue: 

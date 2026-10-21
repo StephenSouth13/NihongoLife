@@ -1,20 +1,33 @@
 {
   "schema": "nihongolife.progression.v1",
   "levels": {
-    "xpToNext": [100, 160, 240, 340, 460, 600, 760, 940, 1140, 1360, 1600, 1860]
+    "xpToNext": [
+      100,
+      160,
+      240,
+      340,
+      460,
+      600,
+      760,
+      940,
+      1140,
+      1360,
+      1600,
+      1860
+    ]
   },
   "quests": [
     {
       "id": "job_konbini_shift",
       "category": "job",
-      "titleVi": "Làm thêm ở ひばりマート",
+      "titleVi": "Làm thêm ở Hibari Mart",
       "titleEn": "Part-time shift at Hibari Mart",
       "titleJa": "ひばりマートで アルバイト",
       "descriptionVi": "Chị Ito cần người phụ một ca: lấy thùng hàng trong kho, xếp lên kệ, chỉ đường cho khách và tính tiền đúng ở quầy.",
       "descriptionEn": "Ito needs help for one shift: carry stock from the back room, restock shelves, help customers find items and ring up a purchase.",
       "giverNpc": "npc_cashier",
       "giverNameVi": "Chị Ito (thu ngân)",
-      "locationVi": "Siêu thị tiện lợi ひばりマート, phố chính Hibari",
+      "locationVi": "Cửa hàng tiện lợi Hibari Mart, phố chính Hibari",
       "scene": "90_TestSandbox",
       "minLevel": 1,
       "minKnowledge": 0,
@@ -23,24 +36,69 @@
       "cooldownMinutes": 5,
       "grantOnAccept": [],
       "objectives": [
-        { "id": "restock", "event": "restock", "target": "konbini_shelf", "count": 3, "afterAll": false, "textVi": "Lấy thùng hàng trong kho và xếp lên 3 kệ", "textEn": "Restock 3 shelves from the back room" },
-        { "id": "assist", "event": "assist", "target": "konbini_customer", "count": 2, "afterAll": false, "textVi": "Chỉ đúng chỗ món hàng cho 2 khách", "textEn": "Help 2 customers find an item" },
-        { "id": "checkout", "event": "checkout", "target": "konbini_register", "count": 1, "afterAll": false, "textVi": "Tính đúng tiền 1 lần ở quầy", "textEn": "Ring up 1 purchase correctly" },
-        { "id": "report", "event": "talk", "target": "npc_cashier", "count": 1, "afterAll": true, "textVi": "Báo cáo với chị Ito để nhận lương", "textEn": "Report to Ito to get paid" }
+        {
+          "id": "restock",
+          "event": "restock",
+          "target": "konbini_shelf",
+          "count": 3,
+          "afterAll": false,
+          "textVi": "Lấy thùng hàng trong kho và xếp lên 3 kệ",
+          "textEn": "Restock 3 shelves from the back room",
+          "textJa": "倉庫の荷物を3つの棚に並べる"
+        },
+        {
+          "id": "assist",
+          "event": "assist",
+          "target": "konbini_customer",
+          "count": 2,
+          "afterAll": false,
+          "textVi": "Chỉ đúng chỗ món hàng cho 2 khách",
+          "textEn": "Help 2 customers find an item",
+          "textJa": "お客さん2人に商品の場所を教える"
+        },
+        {
+          "id": "checkout",
+          "event": "checkout",
+          "target": "konbini_register",
+          "count": 1,
+          "afterAll": false,
+          "textVi": "Tính đúng tiền 1 lần ở quầy",
+          "textEn": "Ring up 1 purchase correctly",
+          "textJa": "レジで1回正しく会計する"
+        },
+        {
+          "id": "report",
+          "event": "talk",
+          "target": "npc_cashier",
+          "count": 1,
+          "afterAll": true,
+          "textVi": "Báo cáo với chị Ito để nhận lương",
+          "textEn": "Report to Ito to get paid",
+          "textJa": "伊藤さんに報告して給料をもらう"
+        }
       ],
-      "rewards": { "yen": 600, "xp": 40, "knowledge": 6 }
+      "rewards": {
+        "yen": 600,
+        "xp": 40,
+        "knowledge": 6
+      },
+      "descriptionJa": "伊藤さんがシフトの手伝いを探しています：倉庫から荷物を運んで棚に並べ、お客さんに場所を教え、レジで正しく会計します。",
+      "giverNameEn": "Ito (cashier)",
+      "giverNameJa": "伊藤さん（レジ係）",
+      "locationEn": "Hibari Mart convenience store, Hibari main street",
+      "locationJa": "ひばりマート（ひばり本通り）"
     },
     {
       "id": "job_sushi_shift",
       "category": "job",
-      "titleVi": "Phục vụ ở ひばり寿司",
+      "titleVi": "Phục vụ ở nhà hàng Sushi Hibari",
       "titleEn": "Serving shift at Sushi Hibari",
       "titleJa": "ひばり寿司で ホールの しごと",
       "descriptionVi": "Anh Aoki cần người chạy bàn: nghe khách gọi món tiếng Nhật, lấy đúng món ở quầy bếp và mang tới đúng bàn.",
       "descriptionEn": "Aoki needs a server: understand the Japanese order, pick up the right dish at the pass and bring it to the right table.",
       "giverNpc": "npc_sushi_staff",
       "giverNameVi": "Anh Aoki (nhân viên quán)",
-      "locationVi": "Nhà hàng ひばり寿司, ga Minato",
+      "locationVi": "Nhà hàng Sushi Hibari, ga Minato",
       "scene": "30_SushiRestaurant",
       "minLevel": 1,
       "minKnowledge": 0,
@@ -49,11 +107,47 @@
       "cooldownMinutes": 5,
       "grantOnAccept": [],
       "objectives": [
-        { "id": "order", "event": "order", "target": "sushi_table", "count": 2, "afterAll": false, "textVi": "Nhận đúng món khách gọi ở 2 bàn", "textEn": "Take 2 orders correctly" },
-        { "id": "serve", "event": "serve", "target": "sushi_table", "count": 2, "afterAll": false, "textVi": "Mang đúng món tới 2 bàn", "textEn": "Serve 2 dishes to the right tables" },
-        { "id": "report", "event": "talk", "target": "npc_sushi_staff", "count": 1, "afterAll": true, "textVi": "Báo cáo với anh Aoki để nhận lương", "textEn": "Report to Aoki to get paid" }
+        {
+          "id": "order",
+          "event": "order",
+          "target": "sushi_table",
+          "count": 2,
+          "afterAll": false,
+          "textVi": "Nhận đúng món khách gọi ở 2 bàn",
+          "textEn": "Take 2 orders correctly",
+          "textJa": "2つのテーブルで正しく注文を受ける"
+        },
+        {
+          "id": "serve",
+          "event": "serve",
+          "target": "sushi_table",
+          "count": 2,
+          "afterAll": false,
+          "textVi": "Mang đúng món tới 2 bàn",
+          "textEn": "Serve 2 dishes to the right tables",
+          "textJa": "2つのテーブルに正しく料理を運ぶ"
+        },
+        {
+          "id": "report",
+          "event": "talk",
+          "target": "npc_sushi_staff",
+          "count": 1,
+          "afterAll": true,
+          "textVi": "Báo cáo với anh Aoki để nhận lương",
+          "textEn": "Report to Aoki to get paid",
+          "textJa": "青木さんに報告して給料をもらう"
+        }
       ],
-      "rewards": { "yen": 700, "xp": 45, "knowledge": 6 }
+      "rewards": {
+        "yen": 700,
+        "xp": 45,
+        "knowledge": 6
+      },
+      "descriptionJa": "青木さんがホール係を探しています：日本語の注文を聞き取り、カウンターで正しい料理を受け取り、正しいテーブルへ運びます。",
+      "giverNameEn": "Aoki (restaurant staff)",
+      "giverNameJa": "青木さん（店員）",
+      "locationEn": "Sushi Hibari, Minato station",
+      "locationJa": "ひばり寿司（みなと駅）"
     },
     {
       "id": "job_farm_shift",
@@ -72,15 +166,74 @@
       "requiresQuests": [],
       "repeatable": true,
       "cooldownMinutes": 5,
-      "grantOnAccept": [ { "itemId": "seed_carrot", "quantity": 2 } ],
-      "objectives": [
-        { "id": "till", "event": "till", "target": "*", "count": 2, "afterAll": false, "textVi": "Xới 2 ô ruộng", "textEn": "Till 2 plots" },
-        { "id": "plant", "event": "plant", "target": "*", "count": 2, "afterAll": false, "textVi": "Gieo 2 hạt giống", "textEn": "Plant 2 seeds" },
-        { "id": "water", "event": "water", "target": "*", "count": 2, "afterAll": false, "textVi": "Tưới nước 2 lần", "textEn": "Water crops twice" },
-        { "id": "feed", "event": "feed", "target": "*", "count": 1, "afterAll": false, "textVi": "Cho 1 con vật ăn", "textEn": "Feed 1 animal" },
-        { "id": "report", "event": "talk", "target": "npc_farm_manager", "count": 1, "afterAll": true, "textVi": "Báo cáo với cô Hana để nhận lương", "textEn": "Report to Hana to get paid" }
+      "grantOnAccept": [
+        {
+          "itemId": "seed_carrot",
+          "quantity": 2
+        }
       ],
-      "rewards": { "yen": 500, "xp": 40, "knowledge": 4 }
+      "objectives": [
+        {
+          "id": "till",
+          "event": "till",
+          "target": "*",
+          "count": 2,
+          "afterAll": false,
+          "textVi": "Xới 2 ô ruộng",
+          "textEn": "Till 2 plots",
+          "textJa": "2区画を耕す"
+        },
+        {
+          "id": "plant",
+          "event": "plant",
+          "target": "*",
+          "count": 2,
+          "afterAll": false,
+          "textVi": "Gieo 2 hạt giống",
+          "textEn": "Plant 2 seeds",
+          "textJa": "種を2つまく"
+        },
+        {
+          "id": "water",
+          "event": "water",
+          "target": "*",
+          "count": 2,
+          "afterAll": false,
+          "textVi": "Tưới nước 2 lần",
+          "textEn": "Water crops twice",
+          "textJa": "2回水やりをする"
+        },
+        {
+          "id": "feed",
+          "event": "feed",
+          "target": "*",
+          "count": 1,
+          "afterAll": false,
+          "textVi": "Cho 1 con vật ăn",
+          "textEn": "Feed 1 animal",
+          "textJa": "動物1匹にえさをあげる"
+        },
+        {
+          "id": "report",
+          "event": "talk",
+          "target": "npc_farm_manager",
+          "count": 1,
+          "afterAll": true,
+          "textVi": "Báo cáo với cô Hana để nhận lương",
+          "textEn": "Report to Hana to get paid",
+          "textJa": "花さんに報告して給料をもらう"
+        }
+      ],
+      "rewards": {
+        "yen": 500,
+        "xp": 40,
+        "knowledge": 4
+      },
+      "descriptionJa": "花さんからにんじんの種を2袋もらいます：2区画を耕し、種をまき、水をあげ、動物1匹にえさをあげます。耕すにはくわ、水やりにはじょうろが必要で、道具は使うと少しずつ減ります。",
+      "giverNameEn": "Hana (farm manager)",
+      "giverNameJa": "花さん（農場の管理人）",
+      "locationEn": "Midori Island farm, by the fields",
+      "locationJa": "みどりじま農場（畑のそば）"
     },
     {
       "id": "farm_first_harvest",
@@ -101,10 +254,37 @@
       "cooldownMinutes": 0,
       "grantOnAccept": [],
       "objectives": [
-        { "id": "harvest", "event": "harvest", "target": "*", "count": 2, "afterAll": false, "textVi": "Thu hoạch 2 lần", "textEn": "Harvest twice" },
-        { "id": "sell", "event": "sell", "target": "*", "count": 2, "afterAll": false, "textVi": "Bán 2 nông sản", "textEn": "Sell 2 produce" }
+        {
+          "id": "harvest",
+          "event": "harvest",
+          "target": "*",
+          "count": 2,
+          "afterAll": false,
+          "textVi": "Thu hoạch 2 lần",
+          "textEn": "Harvest twice",
+          "textJa": "2回収穫する"
+        },
+        {
+          "id": "sell",
+          "event": "sell",
+          "target": "*",
+          "count": 2,
+          "afterAll": false,
+          "textVi": "Bán 2 nông sản",
+          "textEn": "Sell 2 produce",
+          "textJa": "作物を2つ売る"
+        }
       ],
-      "rewards": { "yen": 150, "xp": 35, "knowledge": 3 }
+      "rewards": {
+        "yen": 150,
+        "xp": 35,
+        "knowledge": 3
+      },
+      "descriptionJa": "みどりじまで2回育てて収穫し、みどりしょうてんで作物を売りましょう。",
+      "giverNameEn": "Hana (farm manager)",
+      "giverNameJa": "花さん（農場の管理人）",
+      "locationEn": "Farm and Midori Store, Midori Island",
+      "locationJa": "農場とみどりしょうてん（みどりじま）"
     },
     {
       "id": "farm_first_catch",
@@ -116,7 +296,7 @@
       "descriptionEn": "Buy a fishing rod at the Midori Store, catch 2 fish at the pier north of the island, then sell one.",
       "giverNpc": "",
       "giverNameVi": "Bến câu Đảo Xanh",
-      "locationVi": "Bến câu (つりば), phía bắc Đảo Xanh",
+      "locationVi": "Bến câu phía bắc Đảo Xanh",
       "scene": "60_MidoriIsland",
       "minLevel": 1,
       "minKnowledge": 0,
@@ -125,10 +305,37 @@
       "cooldownMinutes": 0,
       "grantOnAccept": [],
       "objectives": [
-        { "id": "fish", "event": "fish", "target": "*", "count": 2, "afterAll": false, "textVi": "Câu được 2 con cá", "textEn": "Catch 2 fish" },
-        { "id": "sell", "event": "sell", "target": "fish_*", "count": 1, "afterAll": false, "textVi": "Bán 1 con cá ở cửa hàng Midori", "textEn": "Sell 1 fish at the Midori Store" }
+        {
+          "id": "fish",
+          "event": "fish",
+          "target": "*",
+          "count": 2,
+          "afterAll": false,
+          "textVi": "Câu được 2 con cá",
+          "textEn": "Catch 2 fish",
+          "textJa": "魚を2匹釣る"
+        },
+        {
+          "id": "sell",
+          "event": "sell",
+          "target": "fish_*",
+          "count": 1,
+          "afterAll": false,
+          "textVi": "Bán 1 con cá ở cửa hàng Midori",
+          "textEn": "Sell 1 fish at the Midori Store",
+          "textJa": "みどりしょうてんで魚を1匹売る"
+        }
       ],
-      "rewards": { "yen": 100, "xp": 30, "knowledge": 3 }
+      "rewards": {
+        "yen": 100,
+        "xp": 30,
+        "knowledge": 3
+      },
+      "descriptionJa": "みどりしょうてんで釣りざおを買い、島の北の釣り場で魚を2匹釣って、1匹売りましょう。",
+      "giverNameEn": "Midori Island pier",
+      "giverNameJa": "みどりじまの釣り場",
+      "locationEn": "The pier, north of Midori Island",
+      "locationJa": "釣り場（みどりじまの北）"
     },
     {
       "id": "learn_island_words",
@@ -149,9 +356,27 @@
       "cooldownMinutes": 0,
       "grantOnAccept": [],
       "objectives": [
-        { "id": "words", "event": "learn", "target": "*", "count": 8, "afterAll": false, "textVi": "Học 8 từ mới trên đảo", "textEn": "Learn 8 new island words" }
+        {
+          "id": "words",
+          "event": "learn",
+          "target": "*",
+          "count": 8,
+          "afterAll": false,
+          "textVi": "Học 8 từ mới trên đảo",
+          "textEn": "Learn 8 new island words",
+          "textJa": "島で新しい言葉を8つ覚える"
+        }
       ],
-      "rewards": { "yen": 0, "xp": 30, "knowledge": 12 }
+      "rewards": {
+        "yen": 0,
+        "xp": 30,
+        "knowledge": 12
+      },
+      "descriptionJa": "島で新しい言葉を8つ覚えましょう：場所の看板、動物、買い物、畑仕事。",
+      "giverNameEn": "Self-study",
+      "giverNameJa": "自習",
+      "locationEn": "All over Midori Island",
+      "locationJa": "みどりじま全体"
     },
     {
       "id": "daily_konbini_meal",
@@ -163,7 +388,7 @@
       "descriptionEn": "Spend your own money on food or a drink at the konbini.",
       "giverNpc": "",
       "giverNameVi": "Việc hằng ngày",
-      "locationVi": "Siêu thị tiện lợi ひばりマート",
+      "locationVi": "Cửa hàng tiện lợi Hibari Mart",
       "scene": "90_TestSandbox",
       "minLevel": 1,
       "minKnowledge": 0,
@@ -172,9 +397,27 @@
       "cooldownMinutes": 1440,
       "grantOnAccept": [],
       "objectives": [
-        { "id": "buy", "event": "buy", "target": "konbini", "count": 1, "afterAll": false, "textVi": "Mua 1 món ở konbini", "textEn": "Buy 1 item at the konbini" }
+        {
+          "id": "buy",
+          "event": "buy",
+          "target": "konbini",
+          "count": 1,
+          "afterAll": false,
+          "textVi": "Mua 1 món ở konbini",
+          "textEn": "Buy 1 item at the konbini",
+          "textJa": "コンビニで1つ買う"
+        }
       ],
-      "rewards": { "yen": 0, "xp": 10, "knowledge": 1 }
+      "rewards": {
+        "yen": 0,
+        "xp": 10,
+        "knowledge": 1
+      },
+      "descriptionJa": "自分でかせいだお金で、コンビニの食べ物か飲み物を買いましょう。",
+      "giverNameEn": "Daily task",
+      "giverNameJa": "毎日のこと",
+      "locationEn": "Hibari Mart convenience store",
+      "locationJa": "ひばりマート"
     }
   ]
 }

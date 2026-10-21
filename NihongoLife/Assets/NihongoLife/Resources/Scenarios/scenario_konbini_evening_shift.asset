@@ -15,9 +15,11 @@ MonoBehaviour:
   id: scenario.konbini.evening_shift
   version: 2
   titleJa: "コンビニの夕方シフト"
-  titleEn: "Ca tối ở cửa hàng tiện lợi"
+  titleVi: "Ca tối ở cửa hàng tiện lợi"
+  titleEn: "Evening shift at the convenience store"
   descriptionJa: "伊藤さんを手伝って、商品と接客表現を確認しましょう。"
-  descriptionEn: "Giúp chị Ito kiểm tra hàng hóa và luyện cách nói chuyện với khách hàng vào ca tối."
+  descriptionVi: "Giúp chị Ito kiểm tra hàng hóa và luyện cách nói chuyện với khách hàng vào ca tối."
+  descriptionEn: "Help Ms. Ito check the stock and practise talking with customers on the evening shift."
   chapterIndex: 3
   questType: career
   giverNpcId: npc_cashier
@@ -46,7 +48,8 @@ MonoBehaviour:
   objectives:
   - id: obj_help_cashier
     titleJa: "伊藤さんを手伝う"
-    titleEn: "Giúp chị Ito chuẩn bị ca tối"
+    titleVi: "Giúp chị Ito chuẩn bị ca tối"
+    titleEn: "Help Ms. Ito get ready for the evening shift"
     isOptional: 0
   nodes:
   - id: node_find_ito
@@ -76,14 +79,16 @@ MonoBehaviour:
     speakerId: npc_cashier
     textJa: "あ、いつもありがとうございます。夕方の準備を、手伝ってもらえますか。"
     textReading: "あ、いつもありがとうございます。ゆうがたのじゅんびを、てつだってもらえますか。"
-    textEn: "À, cảm ơn bạn lúc nào cũng ghé qua. Bạn giúp tôi chuẩn bị cho ca tối được không?"
+    textVi: "À, cảm ơn bạn lúc nào cũng ghé qua. Bạn giúp tôi chuẩn bị cho ca tối được không?"
+    textEn: "Ah, thanks for always dropping by. Could you help me get ready for the evening shift?"
     textRomaji: "A, itsumo arigatou gozaimasu. Yuugata no junbi wo, tetsudatte moraemasu ka?"
     textEnglishIpa: 
     animationCue: talk
     voiceClip: {fileID: 0}
     choices:
     - textJa: "はい、何をすればいいですか。"
-      textEn: "Vâng, cháu nên làm gì ạ?"
+      textVi: "Vâng, cháu nên làm gì ạ?"
+      textEn: "Yes, what should I do?"
       nextNodeId: n_water
       scoreModifiers:
       - category: Grammar
@@ -94,7 +99,8 @@ MonoBehaviour:
       vocabularyTags: []
       setFlags: []
     - textJa: "はい、何をしますかでした？"
-      textEn: "Vâng, đã làm gì vậy?"
+      textVi: "Vâng, đã làm gì vậy?"
+      textEn: "Yes, what did you do?"
       nextNodeId: n_offer_hint
       scoreModifiers:
       - category: Grammar
@@ -116,7 +122,8 @@ MonoBehaviour:
     speakerId: npc_cashier
     textJa: "仕事を聞くときは、「何をすればいいですか」と言うと自然ですよ。"
     textReading: "しごとをきくときは、「なにをすればいいですか」というとしぜんですよ。"
-    textEn: "Khi hỏi việc cần làm, nói \"nani wo sureba ii desu ka\" sẽ tự nhiên hơn."
+    textVi: "Khi hỏi việc cần làm, nói \"nani wo sureba ii desu ka\" sẽ tự nhiên hơn."
+    textEn: "When asking what to do, \"nani wo sureba ii desu ka\" sounds more natural."
     textRomaji: "Shigoto wo kiku toki wa, \"nani wo sureba ii desu ka\" to iu to shizen desu yo."
     textEnglishIpa: 
     animationCue: talk
@@ -135,14 +142,16 @@ MonoBehaviour:
     speakerId: npc_cashier
     textJa: "水は、まだありますか。"
     textReading: "みずは、まだありますか。"
-    textEn: "Nước vẫn còn hàng chứ?"
+    textVi: "Nước vẫn còn hàng chứ?"
+    textEn: "Do we still have water in stock?"
     textRomaji: "Mizu wa, mada arimasu ka?"
     textEnglishIpa: 
     animationCue: point
     voiceClip: {fileID: 0}
     choices:
     - textJa: "はい、まだあります。"
-      textEn: "Vâng, vẫn còn ạ."
+      textVi: "Vâng, vẫn còn ạ."
+      textEn: "Yes, there's still some."
       nextNodeId: n_onigiri
       scoreModifiers:
       - category: Grammar
@@ -153,7 +162,8 @@ MonoBehaviour:
       vocabularyTags: []
       setFlags: []
     - textJa: "はい、もうありません。"
-      textEn: "Vâng, đã hết rồi ạ."
+      textVi: "Vâng, đã hết rồi ạ."
+      textEn: "Yes, it's sold out."
       nextNodeId: n_quantity_hint
       scoreModifiers:
       - category: Grammar
@@ -175,7 +185,8 @@ MonoBehaviour:
     speakerId: npc_cashier
     textJa: "棚にありますから、「まだあります」ですね。よく見てくださいね。"
     textReading: "たなにありますから、「まだあります」ですね。よくみてくださいね。"
-    textEn: "Vì vẫn còn trên kệ nên phải là \"mada arimasu\" (vẫn còn) nhé. Bạn xem kỹ lại nhé."
+    textVi: "Vì vẫn còn trên kệ nên phải là \"mada arimasu\" (vẫn còn) nhé. Bạn xem kỹ lại nhé."
+    textEn: "It's still on the shelf, so it should be \"mada arimasu\" (there's still some). Look carefully again."
     textRomaji: "Tana ni arimasu kara, \"mada arimasu\" desu ne. Yoku mite kudasai ne."
     textEnglishIpa: 
     animationCue: point
@@ -194,14 +205,16 @@ MonoBehaviour:
     speakerId: npc_cashier
     textJa: "おにぎりは少ないですね。どうしますか。"
     textReading: "おにぎりはすくないですね。どうしますか。"
-    textEn: "Cơm nắm còn ít nhỉ. Ta nên làm gì?"
+    textVi: "Cơm nắm còn ít nhỉ. Ta nên làm gì?"
+    textEn: "We're low on rice balls. What should we do?"
     textRomaji: "Onigiri wa sukunai desu ne. Dou shimasu ka?"
     textEnglishIpa: 
     animationCue: point
     voiceClip: {fileID: 0}
     choices:
     - textJa: "追加したほうがいいです。"
-      textEn: "Nên bổ sung thêm ạ."
+      textVi: "Nên bổ sung thêm ạ."
+      textEn: "We should restock them."
       nextNodeId: n_customer
       scoreModifiers:
       - category: Grammar
@@ -213,7 +226,8 @@ MonoBehaviour:
       - vocab.n5.tsuika
       setFlags: []
     - textJa: "追加しないです。"
-      textEn: "Không cần bổ sung ạ."
+      textVi: "Không cần bổ sung ạ."
+      textEn: "No need to restock."
       nextNodeId: n_restock_hint
       scoreModifiers:
       - category: ResponseAccuracy
@@ -235,7 +249,8 @@ MonoBehaviour:
     speakerId: npc_cashier
     textJa: "少ないときは、追加したほうがいいですね。お客様が困りますから。"
     textReading: "すくないときは、ついかしたほうがいいですね。おきゃくさまがこまりますから。"
-    textEn: "Khi hàng còn ít thì nên bổ sung thêm nhé. Vì khách hàng sẽ gặp khó khăn nếu hết hàng."
+    textVi: "Khi hàng còn ít thì nên bổ sung thêm nhé. Vì khách hàng sẽ gặp khó khăn nếu hết hàng."
+    textEn: "When stock is low we should restock. Customers will have trouble if we run out."
     textRomaji: "Sukunai toki wa, tsuika shita hou ga ii desu ne. Okyakusama ga komarimasu kara."
     textEnglishIpa: 
     animationCue: point
@@ -254,14 +269,16 @@ MonoBehaviour:
     speakerId: npc_cashier
     textJa: "もし、お客様に「おにぎりはありますか」と聞かれたら、何と答えますか。"
     textReading: "もし、おきゃくさまに「おにぎりはありますか」ときかれたら、なんとこたえますか。"
-    textEn: "Nếu khách hỏi \"onigiri wa arimasu ka\" (có cơm nắm không), bạn sẽ đáp gì?"
+    textVi: "Nếu khách hỏi \"onigiri wa arimasu ka\" (có cơm nắm không), bạn sẽ đáp gì?"
+    textEn: "If a customer asks \"onigiri wa arimasu ka\" (do you have rice balls?), what do you answer?"
     textRomaji: "Moshi, okyakusama ni \"onigiri wa arimasu ka\" to kikaretara, nan to kotaemasu ka?"
     textEnglishIpa: 
     animationCue: talk
     voiceClip: {fileID: 0}
     choices:
     - textJa: "はい、あちらにございます。"
-      textEn: "Vâng, ở đằng kia ạ."
+      textVi: "Vâng, ở đằng kia ạ."
+      textEn: "Yes, they're over there."
       nextNodeId: n_phrase
       scoreModifiers:
       - category: Grammar
@@ -273,7 +290,8 @@ MonoBehaviour:
       - vocab.n5.achira
       setFlags: []
     - textJa: "はい、あります。"
-      textEn: "Vâng, có ạ."
+      textVi: "Vâng, có ạ."
+      textEn: "Yes, we have them."
       nextNodeId: n_customer_hint
       scoreModifiers:
       - category: ResponseAccuracy
@@ -296,7 +314,8 @@ MonoBehaviour:
     speakerId: npc_cashier
     textJa: "お客様には、「ございます」を使うと、もっとていねいですよ。"
     textReading: "おきゃくさまには、「ございます」をつかうと、もっとていねいですよ。"
-    textEn: "Với khách hàng, dùng \"gozaimasu\" sẽ lịch sự hơn đấy."
+    textVi: "Với khách hàng, dùng \"gozaimasu\" sẽ lịch sự hơn đấy."
+    textEn: "With customers, \"gozaimasu\" is more polite."
     textRomaji: "Okyakusama ni wa, \"gozaimasu\" wo tsukau to, motto teinei desu yo."
     textEnglishIpa: 
     animationCue: talk
@@ -315,14 +334,16 @@ MonoBehaviour:
     speakerId: npc_cashier
     textJa: "最後に、お客様を迎える言葉は。"
     textReading: "さいごに、おきゃくさまをむかえることばは。"
-    textEn: "Cuối cùng, câu dùng để chào đón khách là gì nhỉ?"
+    textVi: "Cuối cùng, câu dùng để chào đón khách là gì nhỉ?"
+    textEn: "Finally, what's the phrase for welcoming customers?"
     textRomaji: "Saigo ni, okyakusama wo mukaeru kotoba wa?"
     textEnglishIpa: 
     animationCue: talk
     voiceClip: {fileID: 0}
     choices:
     - textJa: "いらっしゃいませ。"
-      textEn: "Kính chào quý khách."
+      textVi: "Kính chào quý khách."
+      textEn: "Welcome!"
       nextNodeId: n_end
       scoreModifiers:
       - category: Vocabulary
@@ -333,7 +354,8 @@ MonoBehaviour:
       - vocab.n5.irasshaimase
       setFlags: []
     - textJa: "行ってきます。"
-      textEn: "Con đi đây."
+      textVi: "Con đi đây."
+      textEn: "I'm off."
       nextNodeId: n_greeting_hint
       scoreModifiers:
       - category: Vocabulary
@@ -355,7 +377,8 @@ MonoBehaviour:
     speakerId: npc_cashier
     textJa: "お店では、「いらっしゃいませ」と言いますよ。"
     textReading: "おみせでは、「いらっしゃいませ」といいますよ。"
-    textEn: "Ở cửa hàng thì ta nói \"irasshaimase\" nhé."
+    textVi: "Ở cửa hàng thì ta nói \"irasshaimase\" nhé."
+    textEn: "In a shop we say \"irasshaimase\"."
     textRomaji: "Omise de wa, \"irasshaimase\" to iimasu yo."
     textEnglishIpa: 
     animationCue: talk
@@ -374,7 +397,8 @@ MonoBehaviour:
     speakerId: npc_cashier
     textJa: "よくできました。夕方の準備は完了です。ありがとうございました。"
     textReading: "よくできました。ゆうがたのじゅんびはかんりょうです。ありがとうございました。"
-    textEn: "Bạn làm tốt lắm. Việc chuẩn bị ca tối đã xong. Cảm ơn bạn nhiều nhé."
+    textVi: "Bạn làm tốt lắm. Việc chuẩn bị ca tối đã xong. Cảm ơn bạn nhiều nhé."
+    textEn: "Great work. The evening shift is all set. Thank you so much."
     textRomaji: "Yoku dekimashita. Yuugata no junbi wa kanryou desu. Arigatou gozaimashita."
     textEnglishIpa: 
     animationCue: bow
@@ -393,7 +417,8 @@ MonoBehaviour:
     speakerId: npc_cashier
     textJa: "お礼に、これをどうぞ。"
     textReading: "おれいに、これをどうぞ。"
-    textEn: "Để cảm ơn, mời bạn nhận cái này."
+    textVi: "Để cảm ơn, mời bạn nhận cái này."
+    textEn: "As thanks, please take this."
     textRomaji: "Orei ni, kore wo douzo."
     textEnglishIpa: 
     animationCue: point
@@ -412,7 +437,8 @@ MonoBehaviour:
     speakerId: 
     textJa: "今日のポイント：「まだあります」「〜たほうがいいです」「いらっしゃいませ」。"
     textReading: "きょうのポイント：「まだあります」「〜たほうがいいです」「いらっしゃいませ」。"
-    textEn: "Tóm tắt: \"mada arimasu\" (vẫn còn), \"~ ta hou ga ii desu\" (nên làm ~), \"irasshaimase\" (câu chào đón khách). Với khách hàng, nhớ dùng \"gozaimasu\" thay cho \"arimasu\"."
+    textVi: "Tóm tắt: \"mada arimasu\" (vẫn còn), \"~ ta hou ga ii desu\" (nên làm ~), \"irasshaimase\" (câu chào đón khách). Với khách hàng, nhớ dùng \"gozaimasu\" thay cho \"arimasu\"."
+    textEn: "Summary: \"mada arimasu\" (there's still some), \"~ ta hou ga ii desu\" (you should ~), \"irasshaimase\" (welcoming customers). With customers, remember to use \"gozaimasu\" instead of \"arimasu\"."
     textRomaji: "Kyou no pointo: \"mada arimasu\" \"~ ta hou ga ii desu\" \"irasshaimase\"."
     textEnglishIpa: 
     animationCue: 

@@ -355,7 +355,7 @@ namespace NihongoLife.EditorTools
                         Undo.RecordObject(cc, "Kid collider");
                         cc.height = 1.4f;
                         cc.radius = 0.27f;
-                        cc.stepOffset = 0.3f;
+                        cc.stepOffset = 0.36f;
                         cc.center = new Vector3(0f, 0.7f, 0f); // PlayerController lifts it by the skin width at runtime
                         EditorUtility.SetDirty(cc);
                         dirty = true;
@@ -368,7 +368,7 @@ namespace NihongoLife.EditorTools
                 {
                     var root = PrefabUtility.LoadPrefabContents(path);
                     var cc = root.GetComponent<CharacterController>();
-                    if (cc != null) { cc.height = 1.4f; cc.radius = 0.27f; cc.stepOffset = 0.3f; cc.center = new Vector3(0f, 0.7f, 0f); PrefabUtility.SaveAsPrefabAsset(root, path); changed++; }
+                    if (cc != null) { cc.height = 1.4f; cc.radius = 0.27f; cc.stepOffset = 0.36f; cc.center = new Vector3(0f, 0.7f, 0f); PrefabUtility.SaveAsPrefabAsset(root, path); changed++; }
                     PrefabUtility.UnloadPrefabContents(root);
                 }
                 Debug.Log($"[KidsSetup] Player colliders fitted: {changed}");

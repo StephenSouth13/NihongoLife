@@ -15,9 +15,11 @@ MonoBehaviour:
   id: scenario.neighborhood.cat_followup
   version: 2
   titleJa: "猫の手がかり"
-  titleEn: "Manh mối về chú mèo"
+  titleVi: "Manh mối về chú mèo"
+  titleEn: "A clue about the cat"
   descriptionJa: "鈴木さんに新しい手がかりを伝えましょう。"
-  descriptionEn: "Báo cho cô Suzuki manh mối mới về Mike và luyện cách mô tả vị trí, đặc điểm bằng tiếng Nhật."
+  descriptionVi: "Báo cho cô Suzuki manh mối mới về Mike và luyện cách mô tả vị trí, đặc điểm bằng tiếng Nhật."
+  descriptionEn: "Tell Ms. Suzuki a new clue about Mike and practise describing places and features in Japanese."
   chapterIndex: 3
   questType: community
   giverNpcId: npc_neighbor_2
@@ -47,11 +49,13 @@ MonoBehaviour:
   objectives:
   - id: obj_meet
     titleJa: "鈴木さんに会う"
-    titleEn: "Gặp lại cô Suzuki"
+    titleVi: "Gặp lại cô Suzuki"
+    titleEn: "Meet Ms. Suzuki again"
     isOptional: 0
   - id: obj_report_cat_clue
     titleJa: "手がかりを伝える"
-    titleEn: "Báo manh mối cho Suzuki"
+    titleVi: "Báo manh mối cho Suzuki"
+    titleEn: "Tell Ms. Suzuki the clue"
     isOptional: 0
   nodes:
   - id: node_find_suzuki
@@ -100,7 +104,8 @@ MonoBehaviour:
     speakerId: npc_neighbor_2
     textJa: "あ、この間、手伝うと言ってくれた方ですね！ミケのこと、何か分かりましたか。"
     textReading: "あ、このあいだ、てつだうといってくれたかたですね！ミケのこと、なにかわかりましたか。"
-    textEn: "À, là người hôm trước đã hứa giúp tôi phải không! Bạn có biết được gì về Mike chưa?"
+    textVi: "À, là người hôm trước đã hứa giúp tôi phải không! Bạn có biết được gì về Mike chưa?"
+    textEn: "Ah, you're the one who promised to help me the other day! Have you found out anything about Mike?"
     textRomaji: "A, kono aida, tetsudau to itte kureta kata desu ne! Mike no koto, nanika wakarimashita ka."
     textEnglishIpa: 
     animationCue: talk
@@ -119,7 +124,8 @@ MonoBehaviour:
     speakerId: npc_neighbor_2
     textJa: "あの…すみません。うちの猫が、まだ見つからないんです。"
     textReading: "あの…すみません。うちのねこが、まだみつからないんです。"
-    textEn: "À... xin lỗi bạn. Con mèo nhà tôi vẫn chưa tìm thấy."
+    textVi: "À... xin lỗi bạn. Con mèo nhà tôi vẫn chưa tìm thấy."
+    textEn: "Ah... sorry. My cat still hasn't been found."
     textRomaji: "Ano... sumimasen. Uchi no neko ga, mada mitsukaranai n desu."
     textEnglishIpa: 
     animationCue: talk
@@ -138,14 +144,16 @@ MonoBehaviour:
     speakerId: npc_neighbor_2
     textJa: "猫について、何か分かりましたか。"
     textReading: "ねこについて、なにかわかりましたか。"
-    textEn: "Bạn đã tìm được manh mối gì về chú mèo chưa?"
+    textVi: "Bạn đã tìm được manh mối gì về chú mèo chưa?"
+    textEn: "Have you found any clues about the cat?"
     textRomaji: "Neko ni tsuite, nanika wakarimashita ka?"
     textEnglishIpa: 
     animationCue: talk
     voiceClip: {fileID: 0}
     choices:
     - textJa: "公園の近くで見ました。"
-      textEn: "Tôi đã thấy nó gần công viên."
+      textVi: "Tôi đã thấy nó gần công viên."
+      textEn: "I saw her near the park."
       nextNodeId: b_where_hint
       scoreModifiers:
       - category: Grammar
@@ -158,7 +166,8 @@ MonoBehaviour:
       - vocab.n5.kouen
       setFlags: []
     - textJa: "猫は公園です。"
-      textEn: "Con mèo là công viên."
+      textVi: "Con mèo là công viên."
+      textEn: "The cat is the park."
       nextNodeId: n_correction
       scoreModifiers:
       - category: Grammar
@@ -180,7 +189,8 @@ MonoBehaviour:
     speakerId: npc_neighbor_2
     textJa: "場所を言うときは、「〜の近くで見ました」と言うと自然ですよ。もう一度、どうぞ。"
     textReading: "ばしょをいうときは、「〜のちかくでみました」というとしぜんですよ。もういちど、どうぞ。"
-    textEn: "Khi nói vị trí, dùng mẫu \"~ no chikaku de mimashita\" (đã thấy gần ~) sẽ tự nhiên hơn. Mời bạn nói lại."
+    textVi: "Khi nói vị trí, dùng mẫu \"~ no chikaku de mimashita\" (đã thấy gần ~) sẽ tự nhiên hơn. Mời bạn nói lại."
+    textEn: "When talking about a place, \"~ no chikaku de mimashita\" (I saw it near ~) sounds more natural. Please say it again."
     textRomaji: "Basho wo iu toki wa, \"~ no chikaku de mimashita\" to iu to shizen desu yo. Mou ichido, douzo."
     textEnglishIpa: 
     animationCue: talk
@@ -218,7 +228,8 @@ MonoBehaviour:
     speakerId: npc_neighbor_2
     textJa: "神社の近くですか。前に、ミケはそこが好きだと言いましたね。"
     textReading: "じんじゃのちかくですか。まえに、ミケはそこがすきだといいましたね。"
-    textEn: "Gần đền thờ à. Lúc trước tôi có nói Mike thích chỗ đó nhỉ."
+    textVi: "Gần đền thờ à. Lúc trước tôi có nói Mike thích chỗ đó nhỉ."
+    textEn: "Near the shrine. I told you before that Mike likes it there, didn't I?"
     textRomaji: "Jinja no chikaku desu ka. Mae ni, Mike wa soko ga suki da to iimashita ne."
     textEnglishIpa: 
     animationCue: talk
@@ -237,7 +248,8 @@ MonoBehaviour:
     speakerId: npc_neighbor_2
     textJa: "公園ですか。そういえば、ミケは公園にもよく行きますね。"
     textReading: "こうえんですか。そういえば、ミケはこうえんにもよくいきますね。"
-    textEn: "Công viên à. À phải rồi, Mike cũng hay đi công viên nhỉ."
+    textVi: "Công viên à. À phải rồi, Mike cũng hay đi công viên nhỉ."
+    textEn: "The park. Oh right, Mike often goes to the park too."
     textRomaji: "Kouen desu ka. Souieba, Mike wa kouen ni mo yoku ikimasu ne."
     textEnglishIpa: 
     animationCue: talk
@@ -256,14 +268,16 @@ MonoBehaviour:
     speakerId: npc_neighbor_2
     textJa: "どんな猫でしたか？"
     textReading: "どんなねこでしたか？"
-    textEn: "Đó là một chú mèo như thế nào?"
+    textVi: "Đó là một chú mèo như thế nào?"
+    textEn: "What kind of cat was it?"
     textRomaji: "Donna neko deshita ka?"
     textEnglishIpa: 
     animationCue: talk
     voiceClip: {fileID: 0}
     choices:
     - textJa: "小さくて、白い猫でした。"
-      textEn: "Đó là một chú mèo nhỏ, màu trắng."
+      textVi: "Đó là một chú mèo nhỏ, màu trắng."
+      textEn: "It was a small white cat."
       nextNodeId: n_ask_ribbon
       scoreModifiers:
       - category: Grammar
@@ -276,7 +290,8 @@ MonoBehaviour:
       - vocab.n5.shiroi
       setFlags: []
     - textJa: "白いと小さい猫でした。"
-      textEn: "Một chú mèo trắng và nhỏ."
+      textVi: "Một chú mèo trắng và nhỏ."
+      textEn: "A white and small cat."
       nextNodeId: n_adjective_hint
       scoreModifiers:
       - category: Grammar
@@ -298,7 +313,8 @@ MonoBehaviour:
     speakerId: npc_neighbor_2
     textJa: "い形容詞をつなぐ時は「小さくて」と言いますよ。もう一度、どうぞ。"
     textReading: "いけいようしをつなぐときは「ちいさくて」といいますよ。もういちど、どうぞ。"
-    textEn: "Khi nối tính từ đuôi い, hãy nói \"chiisakute\" nhé. Mời bạn nói lại."
+    textVi: "Khi nối tính từ đuôi い, hãy nói \"chiisakute\" nhé. Mời bạn nói lại."
+    textEn: "When joining い-adjectives, say \"chiisakute\". Please say it again."
     textRomaji: "I-keiyoushi wo tsunagu toki wa \"chiisakute\" to iimasu yo. Mou ichido, douzo."
     textEnglishIpa: 
     animationCue: point
@@ -317,14 +333,16 @@ MonoBehaviour:
     speakerId: npc_neighbor_2
     textJa: "そうです、ミケです！首に、赤いリボンをしていましたか。"
     textReading: "そうです、ミケです！くびに、あかいリボンをしていましたか。"
-    textEn: "Đúng rồi, chính là Mike! Nó có đeo chiếc nơ đỏ ở cổ không?"
+    textVi: "Đúng rồi, chính là Mike! Nó có đeo chiếc nơ đỏ ở cổ không?"
+    textEn: "That's right, that's Mike! Was she wearing a red ribbon on her neck?"
     textRomaji: "Sou desu, Mike desu! Kubi ni, akai ribon wo shite imashita ka?"
     textEnglishIpa: 
     animationCue: talk
     voiceClip: {fileID: 0}
     choices:
     - textJa: "はい、赤いリボンをしていました。"
-      textEn: "Vâng, nó có đeo một chiếc nơ đỏ ạ."
+      textVi: "Vâng, nó có đeo một chiếc nơ đỏ ạ."
+      textEn: "Yes, she was wearing a red ribbon."
       nextNodeId: n_direction
       scoreModifiers:
       - category: Grammar
@@ -337,7 +355,8 @@ MonoBehaviour:
       setFlags:
       - cat.described
     - textJa: "覚えていません。"
-      textEn: "Tôi không nhớ rõ."
+      textVi: "Tôi không nhớ rõ."
+      textEn: "I don't remember well."
       nextNodeId: n_direction
       scoreModifiers:
       - category: ResponseAccuracy
@@ -360,14 +379,16 @@ MonoBehaviour:
     speakerId: npc_neighbor_2
     textJa: "公園のどちら側ですか。"
     textReading: "こうえんのどちらがわですか。"
-    textEn: "Nó ở phía nào của công viên?"
+    textVi: "Nó ở phía nào của công viên?"
+    textEn: "Which side of the park was she on?"
     textRomaji: "Kouen no dochira gawa desu ka?"
     textEnglishIpa: 
     animationCue: talk
     voiceClip: {fileID: 0}
     choices:
     - textJa: "コンビニの向かい側です。"
-      textEn: "Ở phía đối diện cửa hàng tiện lợi ạ."
+      textVi: "Ở phía đối diện cửa hàng tiện lợi ạ."
+      textEn: "On the side across from the convenience store."
       nextNodeId: n_thanks
       scoreModifiers:
       - category: Grammar
@@ -380,7 +401,8 @@ MonoBehaviour:
       setFlags:
       - cat.direction_given
     - textJa: "コンビニの中です。"
-      textEn: "Ở bên trong cửa hàng tiện lợi ạ."
+      textVi: "Ở bên trong cửa hàng tiện lợi ạ."
+      textEn: "Inside the convenience store."
       nextNodeId: n_verify
       scoreModifiers:
       - category: ResponseAccuracy
@@ -402,14 +424,16 @@ MonoBehaviour:
     speakerId: npc_neighbor_2
     textJa: "お店の中ではなく、向かい側ですね？"
     textReading: "おみせのなかではなく、むかいがわですね？"
-    textEn: "Không phải bên trong cửa hàng, mà là phía đối diện đúng không ạ?"
+    textVi: "Không phải bên trong cửa hàng, mà là phía đối diện đúng không ạ?"
+    textEn: "Not inside the store, you mean across from it, right?"
     textRomaji: "Omise no naka dewa naku, mukaigawa desu ne?"
     textEnglishIpa: 
     animationCue: talk
     voiceClip: {fileID: 0}
     choices:
     - textJa: "はい、向かい側です。"
-      textEn: "Vâng, phía đối diện ạ."
+      textVi: "Vâng, phía đối diện ạ."
+      textEn: "Yes, across from it."
       nextNodeId: n_thanks
       scoreModifiers:
       - category: ResponseAccuracy
@@ -432,7 +456,8 @@ MonoBehaviour:
     speakerId: npc_neighbor_2
     textJa: "助かりました。一緒に探してくれて、ありがとうございます。"
     textReading: "たすかりました。いっしょにさがしてくれて、ありがとうございます。"
-    textEn: "Bạn giúp tôi nhiều lắm. Cảm ơn vì đã cùng tôi tìm kiếm."
+    textVi: "Bạn giúp tôi nhiều lắm. Cảm ơn vì đã cùng tôi tìm kiếm."
+    textEn: "You've helped me so much. Thank you for searching with me."
     textRomaji: "Tasukarimashita. Issho ni sagashite kurete, arigatou gozaimasu."
     textEnglishIpa: 
     animationCue: bow
@@ -451,7 +476,8 @@ MonoBehaviour:
     speakerId: npc_neighbor_2
     textJa: "今から、向かい側を見に行きます。あなたも、良かったら来てください。"
     textReading: "いまから、むかいがわをみにいきます。あなたも、よかったらきてください。"
-    textEn: "Bây giờ tôi sẽ đi xem phía đối diện. Nếu tiện thì bạn cùng đi nhé."
+    textVi: "Bây giờ tôi sẽ đi xem phía đối diện. Nếu tiện thì bạn cùng đi nhé."
+    textEn: "I'll go and look across the way now. Come with me if you can."
     textRomaji: "Ima kara, mukaigawa wo mi ni ikimasu. Anata mo, yokattara kite kudasai."
     textEnglishIpa: 
     animationCue: talk
@@ -470,7 +496,8 @@ MonoBehaviour:
     speakerId: 
     textJa: "今日のポイント：「〜の近くで見ました」「小さくて、白い」「〜の向かい側です」。"
     textReading: "きょうのポイント：「〜のちかくでみました」「ちいさくて、しろい」「〜のむかいがわです」。"
-    textEn: "Tóm tắt: \"~ no chikaku de mimashita\" (đã thấy gần ~), nối tính từ đuôi い bằng 〜くて, \"~ no mukaigawa desu\" (ở phía đối diện ~)."
+    textVi: "Tóm tắt: \"~ no chikaku de mimashita\" (đã thấy gần ~), nối tính từ đuôi い bằng 〜くて, \"~ no mukaigawa desu\" (ở phía đối diện ~)."
+    textEn: "Summary: \"~ no chikaku de mimashita\" (I saw it near ~), joining い-adjectives with 〜くて, \"~ no mukaigawa desu\" (it's across from ~)."
     textRomaji: "Kyou no pointo: \"~ no chikaku de mimashita\" \"chiisakute, shiroi\" \"~ no mukaigawa desu\"."
     textEnglishIpa: 
     animationCue: 

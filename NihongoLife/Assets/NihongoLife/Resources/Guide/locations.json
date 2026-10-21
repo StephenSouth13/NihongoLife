@@ -1,58 +1,363 @@
 {
   "places": [
     {
-      "type": "KONBINI", "ja": "ひばりマート", "vi": "Siêu thị tiện lợi Hibari Mart",
+      "type": "KONBINI",
+      "ja": "ひばりマート",
+      "vi": "Siêu thị tiện lợi Hibari Mart",
       "about": "Konbini (コンビニ) mở 24/7 ở mọi góc phố Nhật: cơm nắm, bento, đồ uống, đóng tiền điện nước, gửi bưu kiện. Ở Hibari đây là nơi đầu tiên bạn tự lo bữa ăn và học cách mua bán bằng tiếng Nhật.",
-      "how": ["Lấy hàng trên kệ (F) rồi mang tới quầy thu ngân", "Thu ngân hỏi túi, hâm nóng — trả lời bằng tiếng Nhật", "Bảng アルバイト: nhận việc làm thêm kiếm ¥", "Đồ ăn/uống hồi chỉ số đói, khát trên HUD"],
-      "phrases": [["袋はいりますか？", "Bạn có cần túi không?"], ["温めますか？", "Có cần hâm nóng không?"], ["これをください。", "Cho tôi cái này."]]
+      "how": [
+        "Lấy hàng trên kệ (F) rồi mang tới quầy thu ngân",
+        "Thu ngân hỏi túi, hâm nóng — trả lời bằng tiếng Nhật",
+        "Bảng アルバイト: nhận việc làm thêm kiếm ¥",
+        "Đồ ăn/uống hồi chỉ số đói, khát trên HUD"
+      ],
+      "phrases": [
+        [
+          "袋はいりますか？",
+          "Bạn có cần túi không?"
+        ],
+        [
+          "温めますか？",
+          "Có cần hâm nóng không?"
+        ],
+        [
+          "これをください。",
+          "Cho tôi cái này."
+        ]
+      ],
+      "en": "Hibari Mart convenience store",
+      "aboutEn": "A konbini (コンビニ) is open 24/7 on every Japanese street corner: rice balls, bento, drinks, paying bills, sending parcels. In Hibari it is the first place where you feed yourself and learn to shop in Japanese.",
+      "aboutJa": "コンビニは日本の町のどこにでもある24時間営業のお店です。おにぎり、お弁当、飲み物、公共料金の支払い、荷物の発送もできます。ひばり町で最初に自分で食事を用意し、日本語で買い物を覚える場所です。",
+      "howEn": [
+        "Pick items from the shelves (F) and take them to the register",
+        "The cashier asks about a bag or heating — answer in Japanese",
+        "アルバイト board: take a part-time job to earn ¥",
+        "Food and drinks restore hunger and thirst on the HUD"
+      ],
+      "howJa": [
+        "棚から商品を取って（F）レジへ持っていく",
+        "レジで袋や温めを聞かれたら日本語で答える",
+        "アルバイトの掲示板で仕事を受けてお金をかせぐ",
+        "食べ物と飲み物で空腹とのどの渇きが回復する"
+      ],
+      "phrasesEn": [
+        "Do you need a bag?",
+        "Shall I heat it up?",
+        "This one, please."
+      ]
     },
     {
-      "type": "SCHOOL", "ja": "ひばり日本語学院", "vi": "Trường Nhật ngữ Hibari",
-      "about": "Nơi kiếm điểm kiến thức chính: bài học theo chủ đề, góc luyện thi JLPT/IELTS và giáo viên nhận xét. Điểm kiến thức mở khóa ga, nhà hàng, trung tâm trò chơi và Đảo Xanh.",
-      "how": ["Ngồi vào bàn (F) để học bài", "Bàn thi: làm đề JLPT/IELTS, nhận điểm và nhận xét", "Phòng Speaking: luyện nói với giáo viên qua video"],
-      "phrases": [["おはようございます。", "Chào buổi sáng."], ["質問があります。", "Em có câu hỏi."], ["もう一度お願いします。", "Xin nói lại một lần nữa."]]
+      "type": "SCHOOL",
+      "ja": "ひばり日本語学院",
+      "vi": "Trường Nhật ngữ Hibari",
+      "about": "Nơi kiếm điểm trí tuệ chính: bài học theo chủ đề, góc luyện thi JLPT/IELTS và giáo viên nhận xét. Điểm trí tuệ mở khóa ga, nhà hàng, trung tâm trò chơi và Đảo Xanh.",
+      "how": [
+        "Ngồi vào bàn (F) để học bài",
+        "Bàn thi: làm đề JLPT/IELTS, nhận điểm và nhận xét",
+        "Phòng Speaking: luyện nói với giáo viên qua video"
+      ],
+      "phrases": [
+        [
+          "おはようございます。",
+          "Chào buổi sáng."
+        ],
+        [
+          "質問があります。",
+          "Em có câu hỏi."
+        ],
+        [
+          "もう一度お願いします。",
+          "Xin nói lại một lần nữa."
+        ]
+      ],
+      "en": "Hibari Japanese School",
+      "aboutEn": "The main place to earn knowledge points: themed lessons, a JLPT/IELTS practice corner and teacher feedback. Knowledge unlocks the station, the restaurant, the game center and Midori Island.",
+      "aboutJa": "知識ポイントを集める中心の場所です。テーマ別の授業、JLPT・IELTSの練習コーナー、先生のコメントがあります。知識ポイントで駅、レストラン、ゲームセンター、みどりじまが開きます。",
+      "howEn": [
+        "Sit at a desk (F) to take a lesson",
+        "Exam desk: take JLPT/IELTS tests, get scores and feedback",
+        "Speaking room: practise speaking with a teacher on video"
+      ],
+      "howJa": [
+        "机にすわって（F）授業を受ける",
+        "試験の机：JLPT・IELTSを受けて点数とコメントをもらう",
+        "スピーキングルーム：ビデオで先生と話す練習"
+      ],
+      "phrasesEn": [
+        "Good morning.",
+        "I have a question.",
+        "Could you say that once more?"
+      ]
     },
     {
-      "type": "HOME", "ja": "ひばりハイツ", "vi": "Nhà trọ Hibari Heights",
+      "type": "HOME",
+      "ja": "ひばりハイツ",
+      "vi": "Nhà trọ Hibari Heights",
       "about": "Căn phòng của bạn: ngủ để hồi sức, nấu và ăn, bàn học ôn từ vựng mỗi ngày. Nhà là phòng riêng — không ai online vào được.",
-      "how": ["Giường (F): ngủ, qua đêm, hồi buồn ngủ", "Tủ lạnh và bồn rửa: ăn uống, rửa tay", "Bàn học: câu hỏi ôn tập, cộng điểm kiến thức"],
-      "phrases": [["ただいま。", "Tôi về rồi."], ["おやすみなさい。", "Chúc ngủ ngon."], ["いただきます。", "Mời mọi người (trước khi ăn)."]]
+      "how": [
+        "Giường (F): ngủ, qua đêm, hồi buồn ngủ",
+        "Tủ lạnh và bồn rửa: ăn uống, rửa tay",
+        "Bàn học: câu hỏi ôn tập, cộng điểm trí tuệ"
+      ],
+      "phrases": [
+        [
+          "ただいま。",
+          "Tôi về rồi."
+        ],
+        [
+          "おやすみなさい。",
+          "Chúc ngủ ngon."
+        ],
+        [
+          "いただきます。",
+          "Mời mọi người (trước khi ăn)."
+        ]
+      ],
+      "en": "Hibari Heights (your room)",
+      "aboutEn": "Your room: sleep to recover, eat, and review vocabulary at your desk every day. Home is a private room — nobody online can come in.",
+      "aboutJa": "自分の部屋です。寝て回復し、食事をし、毎日机で言葉を復習します。家は個室なので、オンラインの人は入れません。",
+      "howEn": [
+        "Bed (F): sleep through the night and recover",
+        "Fridge and sink: eat, drink, wash your hands",
+        "Desk: review questions for knowledge points"
+      ],
+      "howJa": [
+        "ベッド（F）：寝て夜を過ごし、眠気を回復",
+        "冷蔵庫と流し：食べる・飲む・手を洗う",
+        "机：復習問題で知識ポイント"
+      ],
+      "phrasesEn": [
+        "I'm home.",
+        "Good night.",
+        "Let's eat (before a meal)."
+      ]
     },
     {
-      "type": "STATION", "ja": "ひばり駅", "vi": "Ga Hibari",
+      "type": "STATION",
+      "ja": "ひばり駅",
+      "vi": "Ga Hibari",
       "about": "Tàu ở Nhật đúng giờ đến từng phút. Tại ga bạn học mua vé, qua cổng soát vé và đi tàu tới Đảo Xanh (Midori).",
-      "how": ["Mua vé ở máy hoặc hỏi nhân viên Kimura", "Qua cổng (改札), chờ ở sân ga đúng số", "Lên tàu khi cửa mở — đi tới Đảo Xanh"],
-      "phrases": [["切符を一枚ください。", "Cho tôi một vé."], ["次の電車は何時ですか？", "Chuyến tàu kế tiếp lúc mấy giờ?"], ["何番線ですか？", "Sân ga số mấy?"]]
+      "how": [
+        "Mua vé ở máy hoặc hỏi nhân viên Kimura",
+        "Qua cổng (改札), chờ ở sân ga đúng số",
+        "Lên tàu khi cửa mở — đi tới Đảo Xanh"
+      ],
+      "phrases": [
+        [
+          "切符を一枚ください。",
+          "Cho tôi một vé."
+        ],
+        [
+          "次の電車は何時ですか？",
+          "Chuyến tàu kế tiếp lúc mấy giờ?"
+        ],
+        [
+          "何番線ですか？",
+          "Sân ga số mấy?"
+        ]
+      ],
+      "en": "Hibari Station",
+      "aboutEn": "Trains in Japan run on time to the minute. At the station you learn to buy a ticket, pass the ticket gate and ride to Midori Island.",
+      "aboutJa": "日本の電車は分単位で時間どおりに走ります。駅ではきっぷを買い、改札を通り、みどりじまへ行く方法を学びます。",
+      "howEn": [
+        "Buy a ticket at the machine or ask Kimura",
+        "Go through the gate (改札) and wait on the right platform",
+        "Board when the doors open — ride to Midori Island"
+      ],
+      "howJa": [
+        "券売機で買うか、駅員の木村さんに聞く",
+        "改札を通って、正しいホームで待つ",
+        "ドアが開いたら乗って、みどりじまへ"
+      ],
+      "phrasesEn": [
+        "One ticket, please.",
+        "What time is the next train?",
+        "Which platform is it?"
+      ]
     },
     {
-      "type": "SUSHI", "ja": "ひばり寿司", "vi": "Nhà hàng Sushi Hibari",
+      "type": "SUSHI",
+      "ja": "ひばり寿司",
+      "vi": "Nhà hàng Sushi Hibari",
       "about": "Quán sushi khu phố: gọi món theo thực đơn, phép lịch sự khi ăn và trả tiền. Có thể làm thêm phục vụ bàn.",
-      "how": ["Ngồi vào bàn, xem bảng thực đơn", "Gọi món với nhân viên bằng câu tiếng Nhật", "Trả tiền ở quầy; nhận việc phục vụ ở bảng アルバイト"],
-      "phrases": [["いらっしゃいませ。", "Xin mời quý khách."], ["おすすめは何ですか？", "Món nào ngon nên thử?"], ["お会計お願いします。", "Cho tôi thanh toán."]]
+      "how": [
+        "Ngồi vào bàn, xem bảng thực đơn",
+        "Gọi món với nhân viên bằng câu tiếng Nhật",
+        "Trả tiền ở quầy; nhận việc phục vụ ở bảng アルバイト"
+      ],
+      "phrases": [
+        [
+          "いらっしゃいませ。",
+          "Xin mời quý khách."
+        ],
+        [
+          "おすすめは何ですか？",
+          "Món nào ngon nên thử?"
+        ],
+        [
+          "お会計お願いします。",
+          "Cho tôi thanh toán."
+        ]
+      ],
+      "en": "Sushi Hibari",
+      "aboutEn": "The neighbourhood sushi restaurant: order from the menu, table manners and paying. You can also work as a server.",
+      "aboutJa": "町のおすし屋さんです。メニューから注文し、食事のマナーと会計を学びます。ホールのアルバイトもできます。",
+      "howEn": [
+        "Sit at a table and read the menu board",
+        "Order from the staff in Japanese",
+        "Pay at the counter; take a server job at the アルバイト board"
+      ],
+      "howJa": [
+        "テーブルにすわってメニューを見る",
+        "日本語で店員さんに注文する",
+        "レジで払う。アルバイトの掲示板でホールの仕事を受ける"
+      ],
+      "phrasesEn": [
+        "Welcome!",
+        "What do you recommend?",
+        "The bill, please."
+      ]
     },
     {
-      "type": "ARCADE", "ja": "ゲームセンター", "vi": "Game Center Hibari",
+      "type": "ARCADE",
+      "ja": "ゲームセンター",
+      "vi": "Game Center Hibari",
       "about": "ゲーセン — trung tâm trò chơi kiểu Nhật. Các máy trò chơi luyện kana, từ vựng và gọi món; điểm cao đổi quà ở quầy.",
-      "how": ["Đứng trước máy và nhấn F để chơi", "Kana Match, Word Shooter, Order Rush", "Quầy đổi quà: dùng vé thắng được"],
-      "phrases": [["もう一回！", "Chơi lại lần nữa!"], ["景品と交換したいです。", "Tôi muốn đổi quà."]]
+      "how": [
+        "Đứng trước máy và nhấn F để chơi",
+        "Kana Match, Word Shooter, Order Rush",
+        "Quầy đổi quà: dùng vé thắng được"
+      ],
+      "phrases": [
+        [
+          "もう一回！",
+          "Chơi lại lần nữa!"
+        ],
+        [
+          "景品と交換したいです。",
+          "Tôi muốn đổi quà."
+        ]
+      ],
+      "en": "Game Center Hibari",
+      "aboutEn": "ゲーセン — a Japanese-style arcade. The machines train kana, vocabulary and ordering; high scores win prizes at the counter.",
+      "aboutJa": "日本のゲームセンターです。ゲームでかな、言葉、注文の練習ができます。高得点のチケットはカウンターで景品と交換できます。",
+      "howEn": [
+        "Stand in front of a machine and press F to play",
+        "Kana Match, Word Shooter, Order Rush",
+        "Prize counter: use the tickets you won"
+      ],
+      "howJa": [
+        "ゲーム機の前でFを押して遊ぶ",
+        "かなマッチ、ワードシューター、オーダーラッシュ",
+        "景品カウンター：かせいだチケットを使う"
+      ],
+      "phrasesEn": [
+        "One more time!",
+        "I'd like to exchange this for a prize."
+      ]
     },
     {
-      "type": "MIDORI", "ja": "みどりじま", "vi": "Đảo Xanh (Midori)",
+      "type": "MIDORI",
+      "ja": "みどりじま",
+      "vi": "Đảo Xanh (Midori)",
       "about": "Hòn đảo nông thôn: trồng trọt, câu cá, chợ đảo. Cuộc sống chậm và từ vựng về thiên nhiên, mùa vụ.",
-      "how": ["Đi tàu từ Ga Hibari", "Ruộng: cuốc đất, gieo hạt, tưới và thu hoạch", "Câu cá ở bến; bán nông sản ở cửa hàng đảo"],
-      "phrases": [["いい天気ですね。", "Trời đẹp quá nhỉ."], ["魚が釣れた！", "Câu được cá rồi!"]]
+      "how": [
+        "Đi tàu từ Ga Hibari",
+        "Ruộng: cuốc đất, gieo hạt, tưới và thu hoạch",
+        "Câu cá ở bến; bán nông sản ở cửa hàng đảo"
+      ],
+      "phrases": [
+        [
+          "いい天気ですね。",
+          "Trời đẹp quá nhỉ."
+        ],
+        [
+          "魚が釣れた！",
+          "Câu được cá rồi!"
+        ]
+      ],
+      "en": "Midori Island",
+      "aboutEn": "A country island: farming, fishing and the island market. A slower life and vocabulary about nature and the seasons.",
+      "aboutJa": "いなかの島です。畑仕事、釣り、島の市場があります。ゆっくりした生活の中で、自然や季節の言葉を学びます。",
+      "howEn": [
+        "Take the train from Hibari Station",
+        "Fields: till, sow, water and harvest",
+        "Fish at the pier; sell produce at the island store"
+      ],
+      "howJa": [
+        "ひばり駅から電車で行く",
+        "畑：耕す・種をまく・水をやる・収穫する",
+        "釣り場で釣りをし、島のお店で作物を売る"
+      ],
+      "phrasesEn": [
+        "Lovely weather, isn't it?",
+        "I caught a fish!"
+      ]
     },
     {
-      "type": "PLAZA", "ja": "けいじばん", "vi": "Bảng tin khu phố",
+      "type": "PLAZA",
+      "ja": "けいじばん",
+      "vi": "Bảng tin khu phố",
       "about": "Bảng tin của khu phố: thông báo sự kiện, quy định đổ rác, việc cần người giúp.",
-      "how": ["Đọc bảng (F) để xem tin mới", "Nhận nhiệm vụ giúp hàng xóm"],
-      "phrases": [["ゴミの日は何曜日ですか？", "Ngày đổ rác là thứ mấy?"]]
+      "how": [
+        "Đọc bảng (F) để xem tin mới",
+        "Nhận nhiệm vụ giúp hàng xóm"
+      ],
+      "phrases": [
+        [
+          "ゴミの日は何曜日ですか？",
+          "Ngày đổ rác là thứ mấy?"
+        ]
+      ],
+      "en": "Neighbourhood notice board",
+      "aboutEn": "The neighbourhood notice board: event news, garbage rules and requests for help.",
+      "aboutJa": "町の掲示板です。イベントのお知らせ、ごみのルール、手伝いの募集がのっています。",
+      "howEn": [
+        "Read the board (F) for news",
+        "Take tasks to help your neighbours"
+      ],
+      "howJa": [
+        "掲示板を読む（F）",
+        "ご近所を手伝うタスクを受ける"
+      ],
+      "phrasesEn": [
+        "Which day is garbage day?"
+      ]
     },
     {
-      "type": "PARK", "ja": "こうえん", "vi": "Công viên",
+      "type": "PARK",
+      "ja": "こうえん",
+      "vi": "Công viên",
       "about": "Công viên khu phố — nơi gặp gỡ người chơi khác, trò chuyện và nghỉ ngơi.",
-      "how": ["Gặp người chơi khác: nhấn F để nhắn tin, kết bạn", "Enter mở chat khu vực"],
-      "phrases": [["はじめまして。", "Rất vui được gặp bạn."], ["友達になりませんか？", "Làm bạn với nhau nhé?"]]
+      "how": [
+        "Gặp người chơi khác: nhấn F để nhắn tin, kết bạn",
+        "Enter mở chat khu vực"
+      ],
+      "phrases": [
+        [
+          "はじめまして。",
+          "Rất vui được gặp bạn."
+        ],
+        [
+          "友達になりませんか？",
+          "Làm bạn với nhau nhé?"
+        ]
+      ],
+      "en": "Park",
+      "aboutEn": "The neighbourhood park — a place to meet other players, chat and relax.",
+      "aboutJa": "町の公園です。ほかのプレイヤーと会って話したり、休んだりできます。",
+      "howEn": [
+        "Meet other players: press F to message or add a friend",
+        "Enter opens area chat"
+      ],
+      "howJa": [
+        "ほかのプレイヤーと会う：Fでメッセージや友だち申請",
+        "Enterでエリアチャット"
+      ],
+      "phrasesEn": [
+        "Nice to meet you.",
+        "Shall we be friends?"
+      ]
     }
   ]
 }

@@ -35,6 +35,7 @@ namespace NihongoLife.Exam
         public string titleJa;
         [TextArea(2, 4)] public string descriptionVi;
         [TextArea(2, 4)] public string descriptionEn;
+        [TextArea(2, 4)] public string descriptionJa;
         public List<ExamSection> sections = new List<ExamSection>();
 
         [Header("JLPT pass criteria (ignored for IELTS)")]

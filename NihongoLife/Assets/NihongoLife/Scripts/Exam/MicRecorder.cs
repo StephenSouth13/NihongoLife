@@ -50,13 +50,13 @@ namespace NihongoLife.Exam
         {
             LastError = null;
             if (IsRecording) return true;
-            if (!HasDevice) { LastError = "Không tìm thấy micro. Hãy cắm micro hoặc tai nghe có micro rồi thử lại."; return false; }
-            if (!Application.HasUserAuthorization(UserAuthorization.Microphone)) { LastError = "Game chưa được cấp quyền dùng micro. Hãy cho phép trong cài đặt quyền riêng tư của hệ điều hành."; return false; }
+            if (!HasDevice) { LastError = NihongoLife.Core.Loc.T("Không tìm thấy micro. Hãy cắm micro hoặc tai nghe có micro rồi thử lại.", "No microphone found. Plug in a microphone or headset and try again.", "マイクが見つかりません。マイクかヘッドセットをつないでもう一度試してください。"); return false; }
+            if (!Application.HasUserAuthorization(UserAuthorization.Microphone)) { LastError = NihongoLife.Core.Loc.T("Game chưa được cấp quyền dùng micro. Hãy cho phép trong cài đặt quyền riêng tư của hệ điều hành.", "The game has no microphone permission. Allow it in your system privacy settings.", "マイクの許可がありません。OSのプライバシー設定で許可してください。"); return false; }
             _device = Microphone.devices[0];
             _maxSeconds = Mathf.Clamp(maxSeconds, 1, 600);
             try { _clip = Microphone.Start(_device, false, _maxSeconds, SampleRate); }
-            catch (Exception e) { LastError = "Không mở được micro: " + e.Message; return false; }
-            if (_clip == null) { LastError = "Micro không trả về dữ liệu (thiết bị đang bận?)."; return false; }
+            catch (Exception e) { LastError = NihongoLife.Core.Loc.T("Không mở được micro: ", "Could not open the microphone: ", "マイクを開けません：") + e.Message; return false; }
+            if (_clip == null) { LastError = NihongoLife.Core.Loc.T("Micro không trả về dữ liệu (thiết bị đang bận?).", "The microphone returned no data (device busy?).", "マイクからデータがありません（使用中？）。"); return false; }
             IsRecording = true;
             _startedAt = Time.unscaledTime;
             return true;

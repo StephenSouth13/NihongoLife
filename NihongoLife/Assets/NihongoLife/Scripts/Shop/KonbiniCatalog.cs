@@ -26,6 +26,13 @@ namespace NihongoLife.Shop
         /// <summary>Stationery: sheets added to the notebook when paid for (they never go into the bag).</summary>
         public int notebookPages;
 
+        /// <summary>English name (from <see cref="KonbiniCatalog"/>).</summary>
+        public string english => KonbiniCatalog.English(id);
+        /// <summary>The product name in the interface language.</summary>
+        public string Name => NihongoLife.Core.Loc.Pick(vietnamese, english, japanese);
+        /// <summary>Meaning of the Japanese name in the interface language (empty in the Japanese interface).</summary>
+        public string Meaning => NihongoLife.Core.Loc.Gloss(vietnamese, english);
+
         public KonbiniProduct(string id, string japanese, string reading, string vietnamese, string glyph, int price, KonbiniSection section,
             ItemUseType useType, float food, float drink, float energy, string scenarioItemId, Color tint, int notebookPages = 0)
         {
@@ -68,6 +75,30 @@ namespace NihongoLife.Shop
             new KonbiniProduct("note_paper_5", "ルーズリーフ（5まい）", "ルーズリーフ ごまい", "Giấy rời · +5 trang sổ tay", "紙", 120, KonbiniSection.Stationery, ItemUseType.None, 0f, 0f, 0f, "", PaperTint, 5),
             new KonbiniProduct("note_paper_12", "ノートのかみ（12まい）", "ノートの かみ じゅうにまい", "Tập giấy · +12 trang sổ tay", "帳", 260, KonbiniSection.Stationery, ItemUseType.None, 0f, 0f, 0f, "", PaperTint, 12),
             new KonbiniProduct("note_paper_30", "ノート（30まい）", "ノート さんじゅうまい", "Vở dày · +30 trang sổ tay", "冊", 580, KonbiniSection.Stationery, ItemUseType.None, 0f, 0f, 0f, "", PaperTint, 30),
+        };
+
+        private static readonly Dictionary<string, string> EnglishNames = new Dictionary<string, string>
+        {
+            ["onigiri_ume"] = "Pickled plum rice ball", ["onigiri_sake"] = "Salmon rice ball", ["onigiri_tuna"] = "Tuna mayo rice ball",
+            ["sandwich_egg"] = "Egg sandwich", ["melonpan"] = "Melon bread", ["pocky"] = "Pocky sticks", ["senbei"] = "Rice crackers",
+            ["ice_cream"] = "Ice lolly", ["water"] = "Mineral water", ["tea"] = "Green tea", ["orange_juice"] = "Orange juice",
+            ["coffee"] = "Canned coffee", ["milk"] = "Milk", ["karaage"] = "Japanese fried chicken", ["nikuman"] = "Pork bun",
+            ["oden"] = "Oden hot pot", ["note_paper_5"] = "Loose-leaf paper · +5 notebook pages",
+            ["note_paper_12"] = "Paper pad · +12 notebook pages", ["note_paper_30"] = "Thick notebook · +30 notebook pages",
+        };
+
+        public static string English(string id) => id != null && EnglishNames.TryGetValue(id, out string name) ? name : id;
+
+        /// <summary>Shelf section name in the interface language.</summary>
+        public static string SectionName(KonbiniSection s) => NihongoLife.Core.Loc.IsJapanese ? SectionJa(s) : NihongoLife.Core.Loc.IsEnglish ? SectionEn(s) : SectionVi(s);
+
+        public static string SectionEn(KonbiniSection s) => s switch
+        {
+            KonbiniSection.Onigiri => "Rice balls · Bread",
+            KonbiniSection.Snacks => "Snacks",
+            KonbiniSection.Drinks => "Drinks",
+            KonbiniSection.Stationery => "Stationery",
+            _ => "Hot food",
         };
 
         public static IEnumerable<KonbiniProduct> InSection(KonbiniSection section) => Products.Where(p => p.section == section);

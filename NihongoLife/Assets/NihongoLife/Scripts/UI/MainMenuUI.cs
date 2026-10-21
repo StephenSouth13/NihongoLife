@@ -1,13 +1,20 @@
-using TMPro;
-using UnityEngine;
-using UnityEngine.UI;
+using System.Linq;
 using NihongoLife.Audio;
 using NihongoLife.Core;
 using NihongoLife.Player;
 using NihongoLife.Scenario;
+using TMPro;
+using UnityEngine;
+using UnityEngine.UI;
 
 namespace NihongoLife.UI
 {
+    /// <summary>
+    /// Main menu. The layout lives in the 01_MainMenu scene (built by MainMenuBaker) and is never moved or restyled at
+    /// runtime, so the Editor and Play look the same; this component only translates the texts (Vietnamese, English
+    /// or Japanese — the language switch at the top right changes the whole game at once), wires the buttons, adds
+    /// hover feedback and opens the popups and the character selection.
+    /// </summary>
     public class MainMenuUI : MonoBehaviour
     {
         [Header("Buttons")]
@@ -31,270 +38,22 @@ namespace NihongoLife.UI
         [SerializeField] private string targetGameplayScene = "90_TestSandbox";
         [SerializeField] private string targetScenarioId = "scenario.konbini.buy_onigiri";
 
-        private void Start()
-        {
-            EnsureSettingsService();
-            AutoBindExistingMenu();
-            ImproveMenuPresentation();
-            CleanExistingLayout();
-            StyleCoreButtons();
-            EnsureLanguageSelector();
-            EnsureMenuInfoPanels();
-
-            if (startButton != null) startButton.onClick.AddListener(OnStartClicked);
-            if (quitButton != null) quitButton.onClick.AddListener(OnQuitClicked);
-            if (vietnameseButton != null) vietnameseButton.onClick.AddListener(() => SetLanguage(GameLanguage.Vietnamese));
-            if (englishButton != null) englishButton.onClick.AddListener(() => SetLanguage(GameLanguage.English));
-            if (japaneseButton != null) japaneseButton.onClick.AddListener(() => SetLanguage(GameLanguage.Japanese));
-            if (guideButton != null) guideButton.onClick.AddListener(() => guidePopup?.Show());
-            if (aboutButton != null) aboutButton.onClick.AddListener(() => aboutPopup?.Show());
-
-            if (GameServices.TryGet(out GameSettingsService settings))
-            {
-                settings.OnLanguageChanged += HandleLanguageChanged;
-            }
-
-            EnsureSettingsUI();
-            menuMusic = gameObject.GetComponent<MenuMusicController>();
-            if (menuMusic == null) menuMusic = gameObject.AddComponent<MenuMusicController>();
-            EnsureSocialUI();
-            EnsureCharacterSelectUI();
-            RefreshTexts();
-            DisplayProfileStats();
-        }
-
-        private void Update()
-        {
-        }
-
-        private void ImproveMenuPresentation()
-        {
-            var overlay = GetComponent<Image>();
-            if (overlay != null)
-            {
-                overlay.color = new Color(0.03f, 0.035f, 0.04f, 0.08f);
-            }
-
-            RenderSettings.ambientMode = UnityEngine.Rendering.AmbientMode.Flat;
-            RenderSettings.ambientLight = new Color(0.72f, 0.76f, 0.78f, 1f);
-            RenderSettings.fog = true;
-            RenderSettings.fogColor = new Color(0.74f, 0.82f, 0.86f, 1f);
-            RenderSettings.fogDensity = 0.0045f;
-
-            var dayNight = FindFirstObjectByType<DayNightCycle>();
-            if (dayNight != null)
-            {
-                dayNight.SetHour(9f);
-            }
-
-            var sun = RenderSettings.sun != null ? RenderSettings.sun : FindFirstObjectByType<Light>();
-            if (sun != null)
-            {
-                sun.intensity = 1.45f;
-                sun.color = new Color(1f, 0.95f, 0.84f, 1f);
-                sun.transform.rotation = Quaternion.Euler(42f, -34f, 0f);
-                RenderSettings.sun = sun;
-            }
-
-            var orbit = Camera.main != null ? Camera.main.GetComponent<MenuCameraOrbit>() : null;
-            if (orbit != null)
-            {
-                orbit.Configure(44f, 15.5f, 2.15f, 205f, 3.1f);
-            }
-        }
-
-        private void OnDestroy()
-        {
-            if (GameServices.TryGet(out GameSettingsService settings))
-            {
-                settings.OnLanguageChanged -= HandleLanguageChanged;
-            }
-
-            if (characterPreviewTexture != null)
-            {
-                characterPreviewTexture.Release();
-                Destroy(characterPreviewTexture);
-            }
-
-            if (characterPreviewStage != null)
-            {
-                Destroy(characterPreviewStage);
-            }
-        }
-
-        private void EnsureSettingsService()
-        {
-            if (GameServices.TryGet(out GameSettingsService _)) return;
-
-            var existing = FindFirstObjectByType<GameSettingsService>();
-            if (existing == null)
-            {
-                var go = new GameObject("GameSettingsService");
-                existing = go.AddComponent<GameSettingsService>();
-                DontDestroyOnLoad(go);
-            }
-
-            existing.Initialize();
-            GameServices.Register<GameSettingsService>(existing);
-        }
-
-        private void AutoBindExistingMenu()
-        {
-            if (startButton == null) startButton = transform.Find("StartButton")?.GetComponent<Button>();
-            if (quitButton == null) quitButton = transform.Find("QuitButton")?.GetComponent<Button>();
-            if (titleText == null) titleText = transform.Find("TitleText")?.GetComponent<TextMeshProUGUI>();
-            if (subtitleText == null) subtitleText = transform.Find("SubtitleText")?.GetComponent<TextMeshProUGUI>();
-            if (profileText == null) profileText = transform.Find("ProfileText")?.GetComponent<TextMeshProUGUI>();
-            if (guideButton == null) guideButton = transform.Find("GuideButton")?.GetComponent<Button>();
-            if (aboutButton == null) aboutButton = transform.Find("AboutButton")?.GetComponent<Button>();
-            if (startButtonText == null && startButton != null) startButtonText = startButton.GetComponentInChildren<TextMeshProUGUI>();
-            if (quitButtonText == null && quitButton != null) quitButtonText = quitButton.GetComponentInChildren<TextMeshProUGUI>();
-        }
-
-        private void CleanExistingLayout()
-        {
-            MoveRect(titleText, new Vector2(0f, 220f), new Vector2(1000f, 92f));
-            MoveRect(subtitleText, new Vector2(0f, 148f), new Vector2(980f, 42f));
-            MoveRect(startButton, new Vector2(0f, 48f), new Vector2(320f, 62f));
-            MoveRect(quitButton, new Vector2(0f, -30f), new Vector2(320f, 56f));
-
-            if (profileText != null)
-            {
-                profileText.enableAutoSizing = true;
-                profileText.fontSizeMin = 12f;
-                profileText.fontSizeMax = 17f;
-                profileText.textWrappingMode = TextWrappingModes.Normal;
-                MoveRect(profileText, new Vector2(0f, -292f), new Vector2(900f, 132f));
-            }
-        }
-
-        private void StyleCoreButtons()
-        {
-            // Start = primary call-to-action (warm gold accent, matches the story's
-            // lantern-lit-town mood). Quit = muted secondary so it never competes for
-            // attention.
-            UIStyleKit.StyleButton(startButton, UIStyleKit.AccentGold, UIStyleKit.AccentGoldHover, UIStyleKit.AccentGoldPressed);
-            UIStyleKit.StyleButton(quitButton, UIStyleKit.PanelBase, UIStyleKit.PanelHover, UIStyleKit.PanelPressed);
-
-            if (startButtonText != null) startButtonText.color = new Color(0.08f, 0.06f, 0.02f, 1f);
-        }
-
-        private Button settingsButton;
+        private Button settingsButton, loginButton, leaderboardButton, friendsButton, profileButton, onlineButton;
         private SettingsUI settingsUI;
-        private Button loginButton;
         private AuthUI authUI;
-
-        private MenuMusicController menuMusic;
-        private GuidePopup guidePopup;
-        private AboutPopup aboutPopup;
-
-        private void EnsureMenuInfoPanels()
-        {
-            TMP_FontAsset font = titleText != null ? titleText.font : null;
-
-            guideButton ??= FindMenuButton("GuideButton");
-            aboutButton ??= FindMenuButton("AboutButton");
-            guideButton ??= CreateLanguageButton("GuideButton", "How", new Vector2(-112f, -230f), font);
-            aboutButton ??= CreateLanguageButton("AboutButton", "About", new Vector2(112f, -230f), font);
-            MoveRect(guideButton, new Vector2(-112f, -230f), new Vector2(170f, 46f));
-            MoveRect(aboutButton, new Vector2(112f, -230f), new Vector2(170f, 46f));
-
-            // Beautiful popups replace the old side panels (GuidePanel / CreditsPanel are no longer created).
-            guidePopup = gameObject.AddComponent<GuidePopup>();
-            guidePopup.Initialize(font);
-            aboutPopup = gameObject.AddComponent<AboutPopup>();
-            aboutPopup.Initialize(font);
-        }
-
-        private void EnsureLanguageSelector()
-        {
-            TMP_FontAsset font = titleText != null ? titleText.font : null;
-            languageLabelText ??= transform.Find("LanguageLabel")?.GetComponent<TextMeshProUGUI>();
-            vietnameseButton ??= FindMenuButton("LanguageVietnameseButton");
-            englishButton ??= FindMenuButton("LanguageEnglishButton");
-            japaneseButton ??= FindMenuButton("LanguageJapaneseButton");
-
-            if (languageLabelText == null)
-            {
-                languageLabelText = CreateMenuText("LanguageLabel", new Vector2(0f, -118f), new Vector2(560f, 32f), 19f, font);
-            }
-
-            languageLabelText.color = new Color(1f, 0.91f, 0.54f);
-            MoveRect(languageLabelText, new Vector2(0f, -118f), new Vector2(560f, 32f));
-
-            vietnameseButton ??= CreateLanguageButton("LanguageVietnameseButton", "VI", new Vector2(-132f, -166f), font);
-            englishButton ??= CreateLanguageButton("LanguageEnglishButton", "EN", new Vector2(0f, -166f), font);
-            japaneseButton ??= CreateLanguageButton("LanguageJapaneseButton", "JP", new Vector2(132f, -166f), font);
-        }
-
-        private void EnsureSettingsUI()
-        {
-            TMP_FontAsset font = titleText != null ? titleText.font : null;
-
-            // Settings UI script attached to MainMenuPanel
-            settingsUI = gameObject.AddComponent<SettingsUI>();
-            settingsUI.Initialize(font);
-
-            // Settings Button
-            settingsButton = FindMenuButton("SettingsButton")
-                ?? CreateLanguageButton("SettingsButton", "Cài đặt", new Vector2(400f, 200f), font);
-            MoveRect(settingsButton, new Vector2(420f, 220f), new Vector2(140f, 44f));
-            var txt = settingsButton.transform.Find("Text").GetComponent<TextMeshProUGUI>();
-            txt.text = "Cài đặt";
-
-            SetButtonText(settingsButton, Text("Cài đặt", "Settings", "設定"));
-            settingsButton.onClick.AddListener(() => settingsUI.Show());
-
-            // Auth UI
-            authUI = gameObject.AddComponent<AuthUI>();
-            authUI.Initialize(font);
-
-            // Login/Account Button
-            loginButton = FindMenuButton("LoginButton")
-                ?? CreateLanguageButton("LoginButton", "Login", new Vector2(-420f, 220f), font);
-            MoveRect(loginButton, new Vector2(-420f, 220f), new Vector2(140f, 44f));
-            UpdateLoginButtonText();
-            loginButton.onClick.AddListener(() => authUI.Show());
-
-            if (GameServices.TryGet(out IAuthService auth))
-            {
-                auth.OnAuthStateChanged += _ =>
-                {
-                    UpdateLoginButtonText();
-                    DisplayProfileStats();
-                };
-            }
-        }
-
-        private void UpdateLoginButtonText()
-        {
-            if (loginButton == null) return;
-            bool authenticated = GameServices.TryGet(out IAuthService auth) && auth.IsAuthenticated;
-            SetButtonText(loginButton, authenticated
-                ? Text("Tài khoản", "Account", "アカウント")
-                : Text("Đăng nhập", "Login", "ログイン"));
-        }
-
-        // ──────────────────────── Social UI ────────────────────────
-
-        private Button leaderboardButton;
-        private Button friendsButton;
-        private Button profileButton;
-        private Button onlineButton;
         private LeaderboardUI leaderboardUI;
         private FriendsUI friendsUI;
         private PlayerProfileUI profileUI;
         private CoopLobbyUI coopLobbyUI;
+        private MenuMusicController menuMusic;
+        private GuidePopup guidePopup;
+        private AboutPopup aboutPopup;
+
         private GameObject characterSelectPanel;
         private RawImage characterPreviewImage;
-        private TextMeshProUGUI characterSelectTitleText;
-        private TextMeshProUGUI characterNameText;
-        private TextMeshProUGUI characterTaglineText;
+        private TextMeshProUGUI characterNameText, characterTaglineText;
         private TMP_InputField playerNameInput;
-        private Button previousCharacterButton;
-        private Button nextCharacterButton;
-        private Button confirmCharacterButton;
-        private Button closeCharacterButton;
+        private Button previousCharacterButton, nextCharacterButton, confirmCharacterButton, closeCharacterButton;
         private RenderTexture characterPreviewTexture;
         private Camera characterPreviewCamera;
         private GameObject characterPreviewStage;
@@ -302,155 +61,314 @@ namespace NihongoLife.UI
         private int selectedCharacterIndex;
         private bool startOnlineAfterCharacterConfirm;
 
-        private void EnsureSocialUI()
+        private void Start()
         {
-            TMP_FontAsset font = titleText != null ? titleText.font : null;
+            EnsureSettingsService();
+            Bind();
+            var font = titleText != null ? titleText.font : UiKit.Font;
 
-            // Leaderboard
+            Wire(startButton, OnStartClicked);
+            Wire(quitButton, OnQuitClicked);
+            Wire(vietnameseButton, () => Loc.Set(GameLanguage.Vietnamese));
+            Wire(englishButton, () => Loc.Set(GameLanguage.English));
+            Wire(japaneseButton, () => Loc.Set(GameLanguage.Japanese));
+
+            guidePopup = gameObject.AddComponent<GuidePopup>();
+            guidePopup.Initialize(font);
+            aboutPopup = gameObject.AddComponent<AboutPopup>();
+            aboutPopup.Initialize(font);
+            Wire(guideButton, () => guidePopup.Show());
+            Wire(aboutButton, () => aboutPopup.Show());
+
+            settingsUI = gameObject.AddComponent<SettingsUI>();
+            settingsUI.Initialize(font);
+            Wire(settingsButton, () => settingsUI.Show());
+            authUI = gameObject.AddComponent<AuthUI>();
+            authUI.Initialize(font);
+            Wire(loginButton, () => authUI.Show());
+            if (GameServices.TryGet(out IAuthService auth)) auth.OnAuthStateChanged += _ => { Translate(); DisplayProfileStats(); };
+
             leaderboardUI = gameObject.AddComponent<LeaderboardUI>();
             leaderboardUI.Initialize(font);
-            leaderboardButton = FindMenuButton("LeaderboardBtn")
-                ?? CreateLanguageButton("LeaderboardBtn", "Rank", new Vector2(-280f, -230f), font);
-            MoveRect(leaderboardButton, new Vector2(-280f, -230f), new Vector2(130f, 46f));
-            SetButtonText(leaderboardButton, Text("Xếp hạng", "Ranking", "ランキング"));
-            leaderboardButton.onClick.AddListener(() => leaderboardUI.Show());
-
-            // Friends
+            Wire(leaderboardButton, () => leaderboardUI.Show());
             friendsUI = gameObject.AddComponent<FriendsUI>();
             friendsUI.Initialize(font);
-            friendsButton = FindMenuButton("FriendsBtn")
-                ?? CreateLanguageButton("FriendsBtn", "Friends", new Vector2(280f, -230f), font);
-            MoveRect(friendsButton, new Vector2(280f, -230f), new Vector2(130f, 46f));
-            SetButtonText(friendsButton, Text("Bạn bè", "Friends", "フレンド"));
-            friendsButton.onClick.AddListener(() => friendsUI.Show());
-
-            // Profile
+            Wire(friendsButton, () => friendsUI.Show());
             profileUI = gameObject.AddComponent<PlayerProfileUI>();
             profileUI.Initialize(font);
-            profileButton = FindMenuButton("ProfileBtn")
-                ?? CreateLanguageButton("ProfileBtn", "Profile", new Vector2(0f, -290f), font);
-            MoveRect(profileButton, new Vector2(0f, -290f), new Vector2(130f, 46f));
-            SetButtonText(profileButton, Text("Hồ sơ", "Profile", "プロフィール"));
-            profileButton.onClick.AddListener(() => profileUI.ShowOwnProfile());
-
+            Wire(profileButton, () => profileUI.ShowOwnProfile());
             coopLobbyUI = gameObject.AddComponent<CoopLobbyUI>();
             coopLobbyUI.Initialize(font);
-            onlineButton = FindMenuButton("OnlineBtn")
-                ?? CreateLanguageButton("OnlineBtn", "Online", new Vector2(0f, -350f), font);
-            MoveRect(onlineButton, new Vector2(0f, -350f), new Vector2(150f, 46f));
-            SetButtonText(onlineButton, Text("Online", "Online", "オンライン"));
-            onlineButton.onClick.AddListener(OnOnlineClicked);
+            Wire(onlineButton, OnOnlineClicked);
+
+            menuMusic = gameObject.GetComponent<MenuMusicController>() ?? gameObject.AddComponent<MenuMusicController>();
+            var dayNight = FindFirstObjectByType<DayNightCycle>();
+            if (dayNight != null) dayNight.SetHour(9f); // the menu is always a bright morning
+
+            BuildCharacterSelect(font);
+            Translate();
+            DisplayProfileStats();
+            Loc.Watch(this, () => { Translate(); DisplayProfileStats(); });
         }
 
-        private void EnsureCharacterSelectUI()
+        private void OnDestroy()
         {
-            TMP_FontAsset font = titleText != null ? titleText.font : null;
+            if (characterPreviewTexture != null) { characterPreviewTexture.Release(); Destroy(characterPreviewTexture); }
+            if (characterPreviewStage != null) Destroy(characterPreviewStage);
+        }
+
+        private void EnsureSettingsService()
+        {
+            if (GameServices.TryGet(out GameSettingsService _)) return;
+            var existing = FindFirstObjectByType<GameSettingsService>();
+            if (existing == null)
+            {
+                var go = new GameObject("GameSettingsService");
+                existing = go.AddComponent<GameSettingsService>();
+                DontDestroyOnLoad(go);
+            }
+            existing.Initialize();
+            GameServices.Register<GameSettingsService>(existing);
+        }
+
+        /// <summary>Finds the baked elements by name (the scene owns their place and look).</summary>
+        private void Bind()
+        {
+            startButton ??= Find<Button>("StartButton");
+            quitButton ??= Find<Button>("QuitButton");
+            guideButton ??= Find<Button>("GuideButton");
+            aboutButton ??= Find<Button>("AboutButton");
+            vietnameseButton ??= Find<Button>("LanguageVietnameseButton");
+            englishButton ??= Find<Button>("LanguageEnglishButton");
+            japaneseButton ??= Find<Button>("LanguageJapaneseButton");
+            settingsButton = Find<Button>("SettingsButton");
+            loginButton = Find<Button>("LoginButton");
+            leaderboardButton = Find<Button>("LeaderboardBtn");
+            friendsButton = Find<Button>("FriendsBtn");
+            profileButton = Find<Button>("ProfileBtn");
+            onlineButton = Find<Button>("OnlineBtn");
+            titleText ??= Find<TextMeshProUGUI>("TitleText");
+            subtitleText ??= Find<TextMeshProUGUI>("SubtitleText");
+            profileText ??= Find<TextMeshProUGUI>("ProfileText");
+        }
+
+        private T Find<T>(string name) where T : Component
+        {
+            foreach (var t in GetComponentsInChildren<Transform>(true))
+                if (t.name == name && t.TryGetComponent(out T c)) return c;
+            return null;
+        }
+
+        /// <summary>Click + hover feedback that keeps the saved resting look.</summary>
+        private static void Wire(Button button, System.Action click)
+        {
+            if (button == null) return;
+            if (click != null) button.onClick.AddListener(() => click());
+            if (button.GetComponent<UiHover>() == null) button.gameObject.AddComponent<UiHover>();
+            if (button.GetComponent<UIButtonAudio>() == null) button.gameObject.AddComponent<UIButtonAudio>();
+        }
+
+        // ─────────── Texts ───────────
+
+        private void Translate()
+        {
+            var database = GameServices.TryGet(out GameControlService control) ? control.Database : null;
+            if (titleText != null) titleText.text = database != null && !string.IsNullOrEmpty(database.menuTitle) ? database.menuTitle : "NIHONGO LIFE";
+            if (subtitleText != null)
+                subtitleText.text = database != null
+                    ? Loc.Pick(database.menuSubtitleVi, database.menuSubtitleEn, database.menuSubtitleJa)
+                    : Loc.T("Sống một ngày ở Nhật — học tiếng Nhật qua từng việc nhỏ", "Live a day in Japan — learn Japanese one small task at a time", "日本で一日を過ごしながら、日本語を少しずつ学ぼう");
+            Label(startButton, "Bắt đầu", "Start", "はじめる");
+            Label(onlineButton, "Chơi online", "Play online", "オンライン");
+            Label(profileButton, "Hồ sơ", "Profile", "プロフィール");
+            Label(friendsButton, "Bạn bè", "Friends", "フレンド");
+            Label(leaderboardButton, "Xếp hạng", "Ranking", "ランキング");
+            Label(guideButton, "Cách chơi", "How to play", "遊び方");
+            Label(settingsButton, "Cài đặt", "Settings", "設定");
+            Label(quitButton, "Thoát", "Quit", "終了");
+            Label(aboutButton, "Về tác giả", "About", "作者について");
+            bool signedIn = GameServices.TryGet(out IAuthService auth) && auth.IsAuthenticated;
+            if (signedIn) Label(loginButton, "Tài khoản", "Account", "アカウント");
+            else Label(loginButton, "Đăng nhập", "Sign in", "ログイン");
+            if (languageLabelText != null) languageLabelText.text = Loc.T("Ngôn ngữ", "Language", "言語");
+            SetSelected(vietnameseButton, Loc.IsVietnamese);
+            SetSelected(englishButton, Loc.IsEnglish);
+            SetSelected(japaneseButton, Loc.IsJapanese);
+            if (characterSelectPanel != null) TranslateCharacterSelect();
+        }
+
+        private static void Label(Button button, string vi, string en, string ja)
+        {
+            var label = button != null ? button.GetComponentInChildren<TextMeshProUGUI>(true) : null;
+            if (label != null) label.text = Loc.T(vi, en, ja);
+        }
+
+        /// <summary>The chosen language is the gold pill; the others are glass.</summary>
+        private static void SetSelected(Button button, bool selected)
+        {
+            if (button == null) return;
+            Color bg = selected ? UiTheme.Gold : new Color(1f, 1f, 1f, 0f);
+            Color fg = selected ? UiTheme.OnGold : UiTheme.Text;
+            var hover = button.GetComponent<UiHover>();
+            if (hover != null) hover.SetBase(bg); else if (button.targetGraphic is Image image) image.color = bg;
+            foreach (var t in button.GetComponentsInChildren<TextMeshProUGUI>(true)) t.color = fg;
+        }
+
+        /// <summary>The baked story card: chapter, next quest and how far the opening / the whole story is.</summary>
+        private void DisplayStoryCard()
+        {
+            var card = transform.Find("StoryCard");
+            if (card == null) return;
+            var kicker = card.Find("Kicker")?.GetComponent<TextMeshProUGUI>();
+            var title = card.Find("Title")?.GetComponent<TextMeshProUGUI>();
+            var detail = card.Find("Detail")?.GetComponent<TextMeshProUGUI>();
+            var fill = card.Find("Track/Fill") as RectTransform;
+            var campaign = NihongoLife.Scenario.StoryDirector.Campaign;
+            int done = campaign.Count(NihongoLife.Scenario.StoryDirector.IsDone);
+            float ratio = campaign.Count > 0 ? done / (float)campaign.Count : 0f;
+            var next = NihongoLife.Scenario.StoryDirector.Next();
+            if (kicker != null) kicker.text = Loc.T("CỐT TRUYỆN", "STORY", "ストーリー") + (next != null ? "  ·  " + NihongoLife.Scenario.StoryDirector.ChapterName(next.chapterIndex) : "");
+            if (title != null)
+                title.text = NihongoLife.Scenario.StoryDirector.StoryComplete ? Loc.T("Đã xong mùa xuân – hè ở Hibari!", "Spring–summer in Hibari: done!", "ひばりの春〜夏、クリア！")
+                    : next != null ? (Loc.IsJapanese ? next.titleJa : $"{next.titleJa}  <size=72%><color=#C7D0DC>{next.DisplayTitle}</color></size>")
+                    : Loc.T("Bắt đầu câu chuyện ở Hibari", "Begin your story in Hibari", "ひばりの物語をはじめよう");
+            if (detail != null)
+                detail.text = NihongoLife.Scenario.StoryDirector.InPrologue
+                    ? Loc.F("Mở đầu {0}/{1}  ·  xong sẽ mở chế độ tự do", "Opening {0}/{1}  ·  free play opens after it", "オープニング {0}/{1} · 終わると自由行動", NihongoLife.Scenario.StoryDirector.PrologueProgress().done, NihongoLife.Scenario.StoryDirector.PrologueProgress().total)
+                    : Loc.F("{0}/{1} nhiệm vụ cốt truyện  ·  chế độ tự do đang mở", "{0}/{1} story quests  ·  free play is open", "ストーリー {0}/{1} · 自由行動中", done, campaign.Count);
+            if (fill != null) { fill.anchorMax = new Vector2(Mathf.Max(0.02f, ratio), 1f); fill.offsetMax = Vector2.zero; }
+        }
+
+        private void DisplayProfileStats()
+        {
+            DisplayStoryCard();
+            if (profileText == null) return;
+            string details = "";
+            if (GameServices.TryGet(out Save.IProgressRepository progressRepo))
+            {
+                var progress = progressRepo.GetProgress();
+                string name = progress.displayName;
+                if (GameServices.TryGet(out IAuthService authSvc) && authSvc.IsAuthenticated && !string.IsNullOrWhiteSpace(authSvc.DisplayName)) name = authSvc.DisplayName;
+                details = $"<b><color=#F7BD3D>{Loc.T("Học viên", "Learner", "学習者")}</color></b>  {name}   ·   {Loc.T("Cấp", "Level", "レベル")} {progress.level} ({progress.xp} XP)   ·   " +
+                          Loc.F("{0} tình huống đã hoàn thành", "{0} scenarios completed", "完了したシナリオ {0}", progress.completedScenarios.Count) + "\n";
+            }
+            details += Loc.T("WASD di chuyển  ·  F tương tác  ·  B balo  ·  M bản đồ  ·  Tab nhân vật",
+                             "WASD move  ·  F interact  ·  B bag  ·  M map  ·  Tab character",
+                             "WASD 移動  ·  F 調べる  ·  B バッグ  ·  M 地図  ·  Tab キャラ");
+            profileText.text = details.Trim();
+        }
+
+        // ─────────── Character selection ───────────
+
+        private void BuildCharacterSelect(TMP_FontAsset font)
+        {
             selectedCharacterIndex = PlayableCharacterCatalog.IndexOf(PlayerPrefs.GetString(PlayableCharacterCatalog.PlayerPrefsKey, PlayableCharacterCatalog.DefaultId));
             if (selectedCharacterIndex < 0) selectedCharacterIndex = 0;
 
-            characterSelectPanel = new GameObject("CharacterSelectPanel");
-            characterSelectPanel.transform.SetParent(transform, false);
-            var panelRect = characterSelectPanel.AddComponent<RectTransform>();
-            MoveRect(panelRect, new Vector2(0f, 0f), new Vector2(930f, 560f));
-            characterSelectPanel.AddComponent<Image>().color = new Color(0.025f, 0.032f, 0.036f, 0.94f);
-            UIStyleKit.StylePanel(panelRect, new Color(0.025f, 0.032f, 0.036f, 0.94f));
+            var dim = UiKit.Image(transform, "CharacterSelectPanel", UiTheme.Backdrop, null, true);
+            characterSelectPanel = dim.gameObject;
+            UiKit.Fill(dim.rectTransform);
+            var card = UiKit.Card(dim.transform, "Card", UiTheme.Ink, 24, 0.6f).rectTransform;
+            UiKit.Pin(card, new Vector2(0.5f, 0.5f), 0f, 0f, 1040f, 620f);
 
-            characterSelectTitleText = CreateMenuText("Title", new Vector2(0f, 226f), new Vector2(760f, 48f), 30f, font);
-            characterSelectTitleText.transform.SetParent(characterSelectPanel.transform, false);
-            characterSelectTitleText.text = Text("Chọn nhân vật", "Choose your character", "キャラクター選択");
-            characterSelectTitleText.fontStyle = FontStyles.Bold;
-            characterSelectTitleText.color = new Color(1f, 0.91f, 0.58f, 1f);
+            var title = UiKit.Label(card, "Title", "", 30f, UiTheme.Text, FontStyles.Bold);
+            UiKit.Place(title.rectTransform, 40f, 30f, 700f, 46f);
+            var frame = UiKit.Card(card, "PreviewFrame", new Color(0.05f, 0.07f, 0.1f, 1f), 20, 0f, false).rectTransform;
+            UiKit.Place(frame, 40f, 96f, 440f, 490f);
+            var preview = new GameObject("Preview", typeof(RectTransform), typeof(RawImage)).GetComponent<RawImage>();
+            preview.transform.SetParent(frame, false);
+            UiKit.Fill(preview.rectTransform, 10f, 10f, 10f, 10f);
+            characterPreviewImage = preview;
+            preview.gameObject.AddComponent<CharacterPreviewDragRotate>().Configure(ApplyCharacterPreviewYaw);
+            var hint = UiKit.Label(frame, "DragHint", "Kéo để xoay", "Drag to turn", "ドラッグで回転", 13f, UiTheme.Muted, FontStyles.Italic, TextAlignmentOptions.Center);
+            UiKit.Pin(hint.rectTransform, new Vector2(0.5f, 0f), 0f, 16f, 300f, 22f);
 
-            characterNameText = CreateMenuText("CharacterName", new Vector2(250f, 96f), new Vector2(300f, 44f), 28f, font);
-            characterNameText.transform.SetParent(characterSelectPanel.transform, false);
-            characterNameText.fontStyle = FontStyles.Bold;
+            characterNameText = UiKit.Label(card, "CharacterName", "", 36f, UiTheme.Gold, FontStyles.Bold);
+            UiKit.Place(characterNameText.rectTransform, 520f, 120f, 460f, 52f);
+            characterTaglineText = UiKit.Label(card, "CharacterTagline", "", 16f, UiTheme.TextSoft, FontStyles.Normal, TextAlignmentOptions.TopLeft, wrap: true);
+            UiKit.Place(characterTaglineText.rectTransform, 520f, 178f, 460f, 70f);
 
-            characterTaglineText = CreateMenuText("CharacterTagline", new Vector2(250f, 46f), new Vector2(360f, 42f), 16f, font);
-            characterTaglineText.transform.SetParent(characterSelectPanel.transform, false);
-            characterTaglineText.color = new Color(0.9f, 0.95f, 1f, 1f);
+            previousCharacterButton = UiKit.IconButton(card, "PreviousCharacterButton", "chevron_left", () => SelectCharacter(selectedCharacterIndex - 1), UiKit.Kind.Secondary, 52f, 28f);
+            UiKit.Place((RectTransform)previousCharacterButton.transform, 520f, 262f, 52f, 52f);
+            nextCharacterButton = UiKit.IconButton(card, "NextCharacterButton", "chevron_right", () => SelectCharacter(selectedCharacterIndex + 1), UiKit.Kind.Secondary, 52f, 28f);
+            UiKit.Place((RectTransform)nextCharacterButton.transform, 584f, 262f, 52f, 52f);
 
-            playerNameInput = CreateInputField("PlayerNameInput", new Vector2(250f, -28f), new Vector2(300f, 44f), font);
-            playerNameInput.transform.SetParent(characterSelectPanel.transform, false);
-            MoveRect(playerNameInput.GetComponent<RectTransform>(), new Vector2(250f, -28f), new Vector2(300f, 44f));
+            var nameLabel = UiKit.Label(card, "NameLabel", "Tên của bạn", "Your name", "あなたの名前", 13f, UiTheme.Muted, FontStyles.Bold);
+            UiKit.Place(nameLabel.rectTransform, 520f, 340f, 460f, 20f);
+            playerNameInput = NameInput(card, font);
+            UiKit.Place((RectTransform)playerNameInput.transform, 520f, 364f, 460f, 52f);
             playerNameInput.text = PlayableCharacterCatalog.GetPlayerName();
 
-            var previewFrame = new GameObject("PreviewFrame");
-            previewFrame.transform.SetParent(characterSelectPanel.transform, false);
-            var frameRect = previewFrame.AddComponent<RectTransform>();
-            MoveRect(frameRect, new Vector2(-170f, -12f), new Vector2(390f, 430f));
-            previewFrame.AddComponent<Image>().color = new Color(0.08f, 0.1f, 0.11f, 1f);
-
-            var previewGo = new GameObject("Preview");
-            previewGo.transform.SetParent(previewFrame.transform, false);
-            var previewRect = previewGo.AddComponent<RectTransform>();
-            MoveRect(previewRect, Vector2.zero, new Vector2(370f, 410f));
-            characterPreviewImage = previewGo.AddComponent<RawImage>();
-            var dragRotate = previewGo.AddComponent<CharacterPreviewDragRotate>();
-            dragRotate.Configure(ApplyCharacterPreviewYaw);
-
-            previousCharacterButton = CreateLanguageButton("PreviousCharacterButton", "<", new Vector2(52f, -34f), font);
-            previousCharacterButton.transform.SetParent(characterSelectPanel.transform, false);
-            MoveRect(previousCharacterButton, new Vector2(52f, -34f), new Vector2(58f, 58f));
-
-            nextCharacterButton = CreateLanguageButton("NextCharacterButton", ">", new Vector2(448f, -34f), font);
-            nextCharacterButton.transform.SetParent(characterSelectPanel.transform, false);
-            MoveRect(nextCharacterButton, new Vector2(448f, -34f), new Vector2(58f, 58f));
-
-            confirmCharacterButton = CreateLanguageButton("ConfirmCharacterButton", "Play", new Vector2(250f, -120f), font);
-            confirmCharacterButton.transform.SetParent(characterSelectPanel.transform, false);
-            MoveRect(confirmCharacterButton, new Vector2(250f, -120f), new Vector2(260f, 58f));
-            UIStyleKit.StyleButton(confirmCharacterButton, UIStyleKit.AccentGold, UIStyleKit.AccentGoldHover, UIStyleKit.AccentGoldPressed);
-
-            closeCharacterButton = CreateLanguageButton("CloseCharacterButton", "Back", new Vector2(250f, -190f), font);
-            closeCharacterButton.transform.SetParent(characterSelectPanel.transform, false);
-            MoveRect(closeCharacterButton, new Vector2(250f, -190f), new Vector2(180f, 46f));
-
-            previousCharacterButton.onClick.AddListener(() => SelectCharacter(selectedCharacterIndex - 1));
-            nextCharacterButton.onClick.AddListener(() => SelectCharacter(selectedCharacterIndex + 1));
-            confirmCharacterButton.onClick.AddListener(ConfirmCharacterAndStart);
-            closeCharacterButton.onClick.AddListener(() => characterSelectPanel.SetActive(false));
+            confirmCharacterButton = UiKit.Button(card, "ConfirmCharacterButton", null, null, null, ConfirmCharacterAndStart, UiKit.Kind.Primary, "play_arrow", 19f, 16);
+            UiKit.Place((RectTransform)confirmCharacterButton.transform, 520f, 446f, 460f, 62f);
+            closeCharacterButton = UiKit.Button(card, "CloseCharacterButton", null, null, null, () => characterSelectPanel.SetActive(false), UiKit.Kind.Ghost, "arrow_back", 16f, 16);
+            UiKit.Place((RectTransform)closeCharacterButton.transform, 520f, 520f, 200f, 48f);
 
             CreateCharacterPreviewStage();
             characterSelectPanel.SetActive(false);
+            TranslateCharacterSelect();
             SelectCharacter(selectedCharacterIndex);
+        }
+
+        private void TranslateCharacterSelect()
+        {
+            var title = characterSelectPanel.transform.Find("Card/Title")?.GetComponent<TextMeshProUGUI>();
+            if (title != null) title.text = Loc.T("Chọn nhân vật", "Choose your character", "キャラクター選択");
+            UiKit.SetLabel(closeCharacterButton, Loc.T("Quay lại", "Back", "戻る"));
+            if (playerNameInput != null && playerNameInput.placeholder is TextMeshProUGUI ph) ph.text = Loc.T("Tên nhân vật", "Character name", "名前");
+            SelectCharacter(selectedCharacterIndex);
+        }
+
+        private TMP_InputField NameInput(RectTransform parent, TMP_FontAsset font)
+        {
+            var bg = UiKit.Card(parent, "PlayerNameInput", UiTheme.Sunken, 14, 0f, true);
+            UiKit.Border(bg.rectTransform, new Color(1f, 1f, 1f, 0.14f), 14);
+            var input = bg.gameObject.AddComponent<TMP_InputField>();
+            var area = UiKit.Rect(bg.transform, "TextArea");
+            UiKit.Fill(area, 16f, 6f, 16f, 6f);
+            area.gameObject.AddComponent<RectMask2D>();
+            var text = UiKit.Label(area, "Text", "", 18f, UiTheme.Text);
+            UiKit.Fill(text.rectTransform);
+            var placeholder = UiKit.Label(area, "Placeholder", "", 17f, UiTheme.Muted, FontStyles.Italic);
+            UiKit.Fill(placeholder.rectTransform);
+            input.textViewport = area;
+            input.textComponent = text;
+            input.placeholder = placeholder;
+            input.characterLimit = 24;
+            input.lineType = TMP_InputField.LineType.SingleLine;
+            input.fontAsset = font;
+            input.pointSize = 18f;
+            UiUserContent.Mark(text);
+            return input;
         }
 
         private void CreateCharacterPreviewStage()
         {
             if (Application.isBatchMode) return;
-
-            characterPreviewTexture = new RenderTexture(768, 900, 24, RenderTextureFormat.ARGB32)
-            {
-                name = "CharacterSelectPreviewTexture",
-                antiAliasing = 4
-            };
+            characterPreviewTexture = new RenderTexture(768, 900, 24, RenderTextureFormat.ARGB32) { name = "CharacterSelectPreviewTexture", antiAliasing = 4 };
             characterPreviewTexture.Create();
             if (characterPreviewImage != null) characterPreviewImage.texture = characterPreviewTexture;
-
             characterPreviewStage = new GameObject("CharacterSelectPreviewStage");
             characterPreviewStage.transform.position = new Vector3(0f, -500f, 0f);
             DontDestroyOnLoad(characterPreviewStage);
-
             var cameraGo = new GameObject("PreviewCamera");
             cameraGo.transform.SetParent(characterPreviewStage.transform, false);
             cameraGo.transform.localPosition = new Vector3(0f, 1.35f, 4.2f);
             cameraGo.transform.localRotation = Quaternion.Euler(5f, 180f, 0f);
             characterPreviewCamera = cameraGo.AddComponent<Camera>();
             characterPreviewCamera.clearFlags = CameraClearFlags.SolidColor;
-            characterPreviewCamera.backgroundColor = new Color(0.02f, 0.026f, 0.03f, 1f);
+            characterPreviewCamera.backgroundColor = new Color(0.05f, 0.07f, 0.1f, 1f);
             characterPreviewCamera.fieldOfView = 30f;
             characterPreviewCamera.nearClipPlane = 0.05f;
             characterPreviewCamera.farClipPlane = 20f;
             characterPreviewCamera.targetTexture = characterPreviewTexture;
-
-            CreatePreviewLight("KeyLight", new Vector3(-2.2f, 4f, 2.4f), Quaternion.Euler(52f, -32f, 0f), 3.2f, new Color(1f, 0.93f, 0.78f, 1f));
-            CreatePreviewLight("RimLight", new Vector3(2.8f, 2.8f, -2f), Quaternion.Euler(34f, 136f, 0f), 1.8f, new Color(0.48f, 0.74f, 1f, 1f));
+            PreviewLight("KeyLight", new Vector3(-2.2f, 4f, 2.4f), Quaternion.Euler(52f, -32f, 0f), 3.2f, new Color(1f, 0.93f, 0.78f, 1f));
+            PreviewLight("RimLight", new Vector3(2.8f, 2.8f, -2f), Quaternion.Euler(34f, 136f, 0f), 1.8f, new Color(0.48f, 0.74f, 1f, 1f));
         }
 
-        private void CreatePreviewLight(string name, Vector3 position, Quaternion rotation, float intensity, Color color)
+        private void PreviewLight(string name, Vector3 position, Quaternion rotation, float intensity, Color color)
         {
             if (characterPreviewStage == null) return;
-
             var lightGo = new GameObject(name);
             lightGo.transform.SetParent(characterPreviewStage.transform, false);
             lightGo.transform.localPosition = position;
@@ -465,39 +383,25 @@ namespace NihongoLife.UI
         {
             int count = PlayableCharacterCatalog.Count;
             if (count <= 0) return;
-
             selectedCharacterIndex = (index % count + count) % count;
             var character = PlayableCharacterCatalog.Get(selectedCharacterIndex);
-            if (characterNameText != null)
-            {
-                characterNameText.text = character.DisplayName;
-                characterNameText.color = character.AccentColor;
-            }
+            if (characterNameText != null) { characterNameText.text = character.DisplayName; characterNameText.color = character.AccentColor; }
             if (characterTaglineText != null) characterTaglineText.text = character.Tagline;
-            confirmCharacterButton.interactable = character.IsAvailable;
-            SetButtonText(confirmCharacterButton, character.IsAvailable
-                ? Text("Chọn nhân vật này", "Play as this character", "このキャラで始める")
-                : "COMING SOON");
-
-            if (characterPreviewModel != null)
+            if (confirmCharacterButton != null)
             {
-                Destroy(characterPreviewModel);
+                confirmCharacterButton.interactable = character.IsAvailable;
+                UiKit.SetLabel(confirmCharacterButton, character.IsAvailable ? Loc.T("Chọn nhân vật này", "Play as this character", "このキャラで始める") : Loc.T("Sắp ra mắt", "Coming soon", "近日公開"));
             }
-
+            if (characterPreviewModel != null) Destroy(characterPreviewModel);
             var prefab = PlayableCharacterCatalog.LoadPrefab(character);
             if (prefab == null || characterPreviewStage == null) return;
-
             characterPreviewModel = Instantiate(prefab, characterPreviewStage.transform);
             characterPreviewModel.name = "SelectedCharacterPreview";
             characterPreviewModel.transform.localPosition = Vector3.zero;
             characterPreviewModel.transform.localRotation = Quaternion.Euler(0f, 180f, 0f);
             characterPreviewModel.transform.localScale = prefab.transform.localScale; // kids are built at 1.35×
             ApplyCharacterPreviewYaw(0f);
-
-            foreach (var collider in characterPreviewModel.GetComponentsInChildren<Collider>(true))
-            {
-                Destroy(collider);
-            }
+            foreach (var collider in characterPreviewModel.GetComponentsInChildren<Collider>(true)) Destroy(collider);
         }
 
         private void ApplyCharacterPreviewYaw(float yaw)
@@ -506,176 +410,7 @@ namespace NihongoLife.UI
             characterPreviewModel.transform.localRotation = Quaternion.Euler(0f, 180f + Mathf.Clamp(yaw, -90f, 90f), 0f);
         }
 
-        private TMP_InputField CreateInputField(string name, Vector2 position, Vector2 size, TMP_FontAsset font)
-        {
-            var go = new GameObject(name);
-            go.transform.SetParent(transform, false);
-            var rect = go.AddComponent<RectTransform>();
-            MoveRect(rect, position, size);
-
-            var image = go.AddComponent<Image>();
-            image.color = new Color(0.07f, 0.085f, 0.095f, 0.96f);
-
-            var input = go.AddComponent<TMP_InputField>();
-            input.characterLimit = 24;
-            input.lineType = TMP_InputField.LineType.SingleLine;
-
-            var text = CreateMenuText("Text", Vector2.zero, new Vector2(size.x - 28f, size.y - 10f), 17f, font);
-            text.transform.SetParent(go.transform, false);
-            MoveRect(text.rectTransform, Vector2.zero, new Vector2(size.x - 28f, size.y - 10f));
-            text.alignment = TextAlignmentOptions.MidlineLeft;
-            text.color = Color.white;
-            input.textComponent = text;
-
-            var placeholder = CreateMenuText("Placeholder", Vector2.zero, new Vector2(size.x - 28f, size.y - 10f), 15f, font);
-            placeholder.transform.SetParent(go.transform, false);
-            MoveRect(placeholder.rectTransform, Vector2.zero, new Vector2(size.x - 28f, size.y - 10f));
-            placeholder.alignment = TextAlignmentOptions.MidlineLeft;
-            placeholder.color = new Color(0.72f, 0.78f, 0.84f, 0.75f);
-            placeholder.text = Text("Tên nhân vật", "Character name", "名前");
-            input.placeholder = placeholder;
-
-            return input;
-        }
-
-        private TextMeshProUGUI CreateMenuText(string name, Vector2 position, Vector2 size, float fontSize, TMP_FontAsset font)
-        {
-            var go = new GameObject(name);
-            go.transform.SetParent(transform, false);
-            var rect = go.AddComponent<RectTransform>();
-            rect.anchorMin = new Vector2(0.5f, 0.5f);
-            rect.anchorMax = new Vector2(0.5f, 0.5f);
-            rect.anchoredPosition = position;
-            rect.sizeDelta = size;
-
-            var text = go.AddComponent<TextMeshProUGUI>();
-            if (font != null) text.font = font;
-            text.fontSize = fontSize;
-            text.alignment = TextAlignmentOptions.Center;
-            text.color = Color.white;
-            return text;
-        }
-
-
-
-        private Button CreateLanguageButton(string name, string label, Vector2 position, TMP_FontAsset font)
-        {
-            var go = new GameObject(name);
-            go.transform.SetParent(transform, false);
-            var rect = go.AddComponent<RectTransform>();
-            rect.anchorMin = new Vector2(0.5f, 0.5f);
-            rect.anchorMax = new Vector2(0.5f, 0.5f);
-            rect.anchoredPosition = position;
-            rect.sizeDelta = new Vector2(92f, 44f);
-
-            go.AddComponent<Image>();
-            var button = go.AddComponent<Button>();
-            UIStyleKit.StyleButton(button, UIStyleKit.PanelBase, UIStyleKit.PanelHover, UIStyleKit.PanelPressed);
-
-            var text = CreateMenuText("Text", Vector2.zero, new Vector2(74f, 32f), 18f, font);
-            text.transform.SetParent(go.transform, false);
-            text.text = label;
-            return button;
-        }
-
-        private Button FindMenuButton(string name)
-        {
-            return transform.Find(name)?.GetComponent<Button>();
-        }
-
-        private void SetLanguage(GameLanguage language)
-        {
-            if (GameServices.TryGet(out GameSettingsService settings))
-            {
-                settings.SetLanguage(language);
-            }
-            else
-            {
-                PlayerPrefs.SetInt("NihongoLife.UiLanguage", (int)language);
-                PlayerPrefs.Save();
-            }
-
-            RefreshTexts();
-            DisplayProfileStats();
-        }
-
-        private void HandleLanguageChanged(GameLanguage language)
-        {
-            RefreshTexts();
-            DisplayProfileStats();
-        }
-
-        private void RefreshTexts()
-        {
-            GameLanguage language = GetLanguage();
-
-            GameControlDatabase database = GameServices.TryGet(out GameControlService controlService) ? controlService.Database : null;
-
-            if (titleText != null)
-            {
-                titleText.text = database != null && !string.IsNullOrEmpty(database.menuTitle)
-                    ? database.menuTitle
-                    : language == GameLanguage.Japanese ? "日本語 LIFE" : "NIHONGO LIFE";
-            }
-            if (subtitleText != null)
-            {
-                subtitleText.text = database != null
-                    ? language switch
-                    {
-                        GameLanguage.English => database.menuSubtitleEn,
-                        GameLanguage.Japanese => database.menuSubtitleJa,
-                        _ => database.menuSubtitleVi
-                    }
-                    : language switch
-                {
-                    GameLanguage.English => "A polished Japanese town for real shopping practice",
-                    GameLanguage.Japanese => "コンビニで買い物を練習する街",
-                    _ => "Khu phố học tiếng Nhật qua mua hàng thật"
-                };
-            }
-
-            if (startButtonText != null) startButtonText.text = Text("Bắt đầu", "Start", "始める");
-            if (quitButtonText != null) quitButtonText.text = Text("Thoát", "Quit", "終了");
-            if (languageLabelText != null) languageLabelText.text = Text("Ngôn ngữ giao diện", "Interface language", "表示言語");
-            SetButtonText(guideButton, Text("Cách chơi", "How to play", "遊び方"));
-            SetButtonText(aboutButton, Text("Về tôi", "About me", "作者"));
-            SetButtonText(settingsButton, Text("Cài đặt", "Settings", "設定"));
-            SetButtonText(onlineButton, Text("Online", "Online", "オンライン"));
-            SetButtonText(closeCharacterButton, Text("Quay lại", "Back", "戻る"));
-            SetButtonText(confirmCharacterButton, Text("Chọn nhân vật này", "Play as this character", "このキャラで始める"));
-            if (characterSelectTitleText != null) characterSelectTitleText.text = Text("Chọn nhân vật", "Choose your character", "キャラクター選択");
-
-            SetButtonSelected(vietnameseButton, language == GameLanguage.Vietnamese);
-            SetButtonSelected(englishButton, language == GameLanguage.English);
-            SetButtonSelected(japaneseButton, language == GameLanguage.Japanese);
-        }
-
-
-
-        private void DisplayProfileStats()
-        {
-            if (profileText == null) return;
-
-            string details = string.Empty;
-            if (GameServices.TryGet(out Save.IProgressRepository progressRepo))
-            {
-                var progress = progressRepo.GetProgress();
-                string name = progress.displayName;
-                if (GameServices.TryGet(out IAuthService authSvc) && authSvc.IsAuthenticated && !string.IsNullOrWhiteSpace(authSvc.DisplayName))
-                {
-                    name = authSvc.DisplayName;
-                }
-                details =
-                    $"{Text("Học viên", "Learner", "学習者")}: {name}\n" +
-                    $"{Text("Cấp độ", "Level", "レベル")}: {progress.level} (XP: {progress.xp})\n" +
-                    $"{Text("Đã hoàn thành", "Completed", "完了")}: {progress.completedScenarios.Count}\n";
-            }
-
-            details += "\nWASD / Shift  |  E " + Text("tương tác", "interact", "話す") +
-                       "  |  B " + Text("balo", "bag", "バッグ") +
-                       "  |  Tab " + Text("nhân vật", "character", "キャラ");
-            profileText.text = details.Trim();
-        }
+        // ─────────── Flow ───────────
 
         private void HideInfoPopups()
         {
@@ -686,16 +421,12 @@ namespace NihongoLife.UI
         private void OnStartClicked()
         {
             startOnlineAfterCharacterConfirm = false;
-            if (characterSelectPanel == null)
-            {
-                BeginGameWithSelectedCharacter();
-                return;
-            }
-
+            if (characterSelectPanel == null) { BeginGameWithSelectedCharacter(); return; }
             HideInfoPopups();
             characterSelectPanel.SetActive(true);
+            characterSelectPanel.transform.SetAsLastSibling();
             SelectCharacter(selectedCharacterIndex);
-            UIStyleKit.PlayShowAnimation(characterSelectPanel);
+            UIStyleKit.PlayShowAnimation(characterSelectPanel.transform.Find("Card").gameObject);
         }
 
         private void OnOnlineClicked()
@@ -705,11 +436,11 @@ namespace NihongoLife.UI
             if (characterSelectPanel != null)
             {
                 characterSelectPanel.SetActive(true);
+                characterSelectPanel.transform.SetAsLastSibling();
                 SelectCharacter(selectedCharacterIndex);
-                UIStyleKit.PlayShowAnimation(characterSelectPanel);
+                UIStyleKit.PlayShowAnimation(characterSelectPanel.transform.Find("Card").gameObject);
                 return;
             }
-
             ShowOnlineLobby();
         }
 
@@ -725,122 +456,25 @@ namespace NihongoLife.UI
                 ShowOnlineLobby();
                 return;
             }
-
             BeginGameWithSelectedCharacter();
         }
 
         private void ShowOnlineLobby()
         {
             startOnlineAfterCharacterConfirm = false;
-            if (coopLobbyUI == null)
-            {
-                TMP_FontAsset font = titleText != null ? titleText.font : null;
-                coopLobbyUI = gameObject.AddComponent<CoopLobbyUI>();
-                coopLobbyUI.Initialize(font);
-            }
-
             coopLobbyUI.Show();
         }
 
         private void BeginGameWithSelectedCharacter()
         {
             menuMusic?.FadeOut(1f);
-            ScenarioSceneInitializer.QueueLaunch(targetScenarioId);
-
-            if (GameServices.TryGet(out SceneFlowController sceneFlow))
-            {
-                sceneFlow.LoadScene(targetGameplayScene);
-            }
-            else
-            {
-                UnityEngine.SceneManagement.SceneManager.LoadScene(targetGameplayScene);
-            }
+            // The town decides what to play (StoryDirector): the interrupted quest, the next prologue step, or free play.
+            var story = StoryDirector.AutoStart();
+            if (story != null) ScenarioSceneInitializer.QueueLaunch(story.id);
+            if (GameServices.TryGet(out SceneFlowController sceneFlow)) sceneFlow.LoadScene(targetGameplayScene);
+            else UnityEngine.SceneManagement.SceneManager.LoadScene(targetGameplayScene);
         }
 
-        private void OnQuitClicked()
-        {
-            Application.Quit();
-        }
-
-        private string Text(string vi, string en, string ja)
-        {
-            return GameServices.TryGet(out GameSettingsService settings) ? settings.Text(vi, en, ja) : vi;
-        }
-
-        private GameLanguage GetLanguage()
-        {
-            return GameServices.TryGet(out GameSettingsService settings)
-                ? settings.Language
-                : (GameLanguage)Mathf.Clamp(PlayerPrefs.GetInt("NihongoLife.UiLanguage", 0), 0, 2);
-        }
-
-        private static void MoveRect(TextMeshProUGUI text, Vector2 position, Vector2 size)
-        {
-            if (text == null) return;
-            MoveRect(text.rectTransform, position, size);
-        }
-
-        private static void MoveRect(Button button, Vector2 position, Vector2 size)
-        {
-            if (button == null) return;
-            MoveRect(button.GetComponent<RectTransform>(), position, size);
-        }
-
-        private static void MoveRect(RectTransform rect, Vector2 position, Vector2 size)
-        {
-            if (rect == null) return;
-            rect.anchorMin = new Vector2(0.5f, 0.5f);
-            rect.anchorMax = new Vector2(0.5f, 0.5f);
-            rect.pivot = new Vector2(0.5f, 0.5f);
-            rect.anchoredPosition = position;
-            rect.sizeDelta = size;
-        }
-
-        private static void SetButtonSelected(Button button, bool selected)
-        {
-            if (button == null) return;
-
-            Color baseColor = selected ? UIStyleKit.AccentGold : UIStyleKit.PanelBase;
-            var swap = button.GetComponent<ButtonColorSwap>();
-            if (swap != null)
-            {
-                swap.SetBaseColor(baseColor);
-                return;
-            }
-
-            var image = button.GetComponent<Image>();
-            if (image != null)
-            {
-                image.color = baseColor;
-            }
-        }
-
-        private static void SetButtonText(Button button, string text)
-        {
-            if (button == null) return;
-            var label = button.GetComponentInChildren<TextMeshProUGUI>();
-            if (label == null) return;
-
-            label.text = text;
-            label.enableAutoSizing = true;
-            label.fontSizeMin = 10f;
-            label.fontSizeMax = 18f;
-            label.overflowMode = TextOverflowModes.Ellipsis;
-
-            var labelRect = label.GetComponent<RectTransform>();
-            var buttonRect = button.GetComponent<RectTransform>();
-            if (labelRect != null && buttonRect != null)
-            {
-                labelRect.anchorMin = new Vector2(0.5f, 0.5f);
-                labelRect.anchorMax = new Vector2(0.5f, 0.5f);
-                labelRect.pivot = new Vector2(0.5f, 0.5f);
-                labelRect.anchoredPosition = Vector2.zero;
-                labelRect.sizeDelta = new Vector2(Mathf.Max(48f, buttonRect.sizeDelta.x - 24f), buttonRect.sizeDelta.y - 10f);
-            }
-        }
-
-
-
-
+        private void OnQuitClicked() => Application.Quit();
     }
 }

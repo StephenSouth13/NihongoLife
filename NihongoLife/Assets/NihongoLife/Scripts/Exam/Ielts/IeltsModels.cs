@@ -18,7 +18,15 @@ namespace NihongoLife.Exam.Ielts
         public string schema;
         public string id;
         public string title;
+        /// <summary>Optional title per interface language (self-authored packages); licensed books keep <see cref="title"/>.</summary>
+        public string titleVi, titleEn, titleJa;
         public string skill;          // listening | reading | writing | speaking
+
+        /// <summary>The title in the interface language (falls back to <see cref="title"/>).</summary>
+        public string DisplayTitle => NihongoLife.Core.Loc.Pick(
+            string.IsNullOrEmpty(titleVi) ? title : titleVi,
+            string.IsNullOrEmpty(titleEn) ? title : titleEn,
+            string.IsNullOrEmpty(titleJa) ? title : titleJa);
         public string source;
         public string provenance;
         public bool localOnly;

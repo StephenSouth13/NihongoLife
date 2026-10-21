@@ -42,7 +42,9 @@ namespace NihongoLife.Tests
             eventSystem.RaycastAll(pointer, hits);
             Assert.IsTrue(hits.Count > 0, "Mouse must hit the exam UI.");
             var target = UnityEngine.EventSystems.ExecuteEvents.GetEventHandler<UnityEngine.EventSystems.IPointerClickHandler>(hits[0].gameObject);
-            Assert.AreSame(button.gameObject, target, "The exam button must be the top clickable surface.");
+            string Path(Transform t) => t == null ? "" : Path(t.parent) + "/" + t.name;
+            Assert.AreSame(button.gameObject, target, "The exam button must be the top clickable surface. Top hits: "
+                + string.Join(" | ", hits.Take(3).Select(h => Path(h.gameObject.transform) + " (canvas order " + (h.gameObject.GetComponentInParent<Canvas>()?.rootCanvas.sortingOrder ?? -1) + ")")));
             UnityEngine.EventSystems.ExecuteEvents.Execute(target, pointer, UnityEngine.EventSystems.ExecuteEvents.pointerClickHandler);
         }
 

@@ -52,16 +52,16 @@ namespace NihongoLife.Island
         public static string Begin(FishingSpot spot, GameObject playerObject)
         {
             if (Active) { Pull(); return null; }
-            if (TimedAction.Busy) return "Đang làm việc khác.";
+            if (TimedAction.Busy) return NihongoLife.Core.Loc.T("Đang làm việc khác.", "You're busy with something else.", "ほかのことをしています。");
             if (!IslandTools.Usable(RodId))
             {
                 var rod = IslandCatalog.Load().Tool(RodId);
-                string msg = $"Cần có {IslandLanguage.Primary(rod?.word)} (cần câu) — mua ở cửa hàng Midori (¥{rod?.price}).";
+                string msg = NihongoLife.Core.Loc.F("Cần có {0} (cần câu) — mua ở cửa hàng Midori ({1}).", "You need a {0} (fishing rod) — buy one at the Midori Store ({1}).", "{0}（釣りざお）が必要です。みどりしょうてんで買えます（{1}）。", IslandLanguage.Primary(rod?.word), NihongoLife.Core.Loc.Yen(rod?.price ?? 0));
                 IslandUI.Toast(msg, true);
                 return msg;
             }
             var player = playerObject != null ? playerObject.GetComponentInParent<PlayerController>() : FindFirstObjectByType<PlayerController>();
-            if (player == null) return "Không tìm thấy người chơi.";
+            if (player == null) return NihongoLife.Core.Loc.T("Không tìm thấy người chơi.", "Player not found.", "プレイヤーが見つかりません。");
             var host = Instance;
             host._spot = spot;
             host._player = player;
@@ -76,13 +76,13 @@ namespace NihongoLife.Island
         {
             if (_instance == null) return;
             if (_instance._phase == Phase.Bite) _instance._phase = Phase.Reeling;
-            else if (_instance._phase == Phase.Waiting) _instance.EndEarly("Chưa có cá cắn câu — kéo lên quá sớm.");
+            else if (_instance._phase == Phase.Waiting) _instance.EndEarly(NihongoLife.Core.Loc.T("Chưa có cá cắn câu — kéo lên quá sớm.", "Nothing had bitten yet — you pulled too early.", "まだかかっていません。引くのが早すぎました。"));
         }
 
         public static void Cancel()
         {
             if (_instance == null || !Active) return;
-            _instance.EndEarly("Đã thu dây — không câu nữa.");
+            _instance.EndEarly(NihongoLife.Core.Loc.T("Đã thu dây — không câu nữa.", "Line reeled in — stopped fishing.", "糸を巻き上げました。釣りをやめます。"));
         }
 
         private static IslandFishing Instance
@@ -99,9 +99,9 @@ namespace NihongoLife.Island
                 NLUi.FitContent(ui._card);
                 ui._title = NLUi.Label(ui._card, "Title", "", 20f, NLUi.Text, font, FontStyles.Bold);
                 ui._detail = NLUi.Label(ui._card, "Detail", "", 15f, NLUi.Muted, font);
-                ui._pullButton = NLUi.Button(ui._card, "Pull", "Kéo cần  [F]", font, Pull, NLUi.Gold, 19f, NLUi.Ink, 46f);
+                ui._pullButton = NLUi.Button(ui._card, "Pull", NihongoLife.Core.Loc.T("Kéo cần", "Reel in", "引く") + "  [F]", font, Pull, NLUi.Gold, 19f, NLUi.Ink, 46f);
                 ui._pullLabel = ui._pullButton.GetComponentInChildren<TextMeshProUGUI>();
-                NLUi.Label(ui._card, "Hint", "Esc để thu dây", 13f, NLUi.Muted, font);
+                NLUi.Label(ui._card, "Hint", NihongoLife.Core.Loc.T("Esc để thu dây", "Esc to reel in and stop", "Escで糸を巻き上げる"), 13f, NLUi.Muted, font);
                 ui._card.gameObject.SetActive(false);
                 UiModalStack.Register(ui, () => Active, Cancel, "Fishing");
                 _instance = ui;
@@ -129,7 +129,7 @@ namespace NihongoLife.Island
             // Frame the cast: behind the shoulder, looking out over the water.
             var follow = FindFirstObjectByType<NihongoLife.Cameras.ThirdPersonCameraController>();
             if (follow != null) follow.SetOrbit(_player.transform.eulerAngles.y - 28f, 14f, 4.2f);
-            Show("Đang quăng câu…", IslandLanguage.Primary(catalog.Tool(RodId)?.verb), false);
+            Show(NihongoLife.Core.Loc.T("Đang quăng câu…", "Casting…", "投げています…"), IslandLanguage.Primary(catalog.Tool(RodId)?.verb), false);
 
             // Cast.
             _phase = Phase.Casting;
@@ -155,7 +155,7 @@ namespace NihongoLife.Island
             // Wait for a bite.
             _phase = Phase.Waiting;
             if (posed) _animation.PlayWork("Fish_Wait");
-            Show("Chờ cá cắn câu…", "Đừng kéo vội — đợi phao chìm xuống.", true, "Kéo cần  [F]");
+            Show(NihongoLife.Core.Loc.T("Chờ cá cắn câu…", "Waiting for a bite…", "魚がかかるのを待っています…"), NihongoLife.Core.Loc.T("Đừng kéo vội — đợi phao chìm xuống.", "Don't pull yet — wait for the float to sink.", "まだ引かないで。うきが沈むまで待ちましょう。"), true, NihongoLife.Core.Loc.T("Kéo cần", "Reel in", "引く") + "  [F]");
             float delay = BiteDelayOverride ?? UnityEngine.Random.Range(2.5f, 6f);
             for (float t = 0f; t < delay; t += Time.deltaTime)
             {
@@ -166,18 +166,18 @@ namespace NihongoLife.Island
 
             // Bite: the float goes under; pull within the window.
             _phase = Phase.Bite;
-            Show("！ Cá cắn câu — kéo ngay!", "Bấm F hoặc nút bên dưới.", true, "KÉO!  [F]");
+            Show(NihongoLife.Core.Loc.T("！ Cá cắn câu — kéo ngay!", "！ A bite — pull now!", "！ かかった！今すぐ引いて！"), NihongoLife.Core.Loc.T("Bấm F hoặc nút bên dưới.", "Press F or the button below.", "Fか下のボタンを押してください。"), true, NihongoLife.Core.Loc.T("KÉO!", "PULL!", "引け！") + "  [F]");
             for (float t = 0f; t < BiteWindow && _phase == Phase.Bite; t += Time.deltaTime)
             {
                 _float.transform.position = to + Vector3.down * (0.12f + 0.05f * Mathf.Sin(t * 22f));
                 yield return null;
             }
-            if (_phase == Phase.Bite) { EndEarly("Cá đã thoát… Lần sau kéo nhanh hơn nhé."); yield break; }
+            if (_phase == Phase.Bite) { EndEarly(NihongoLife.Core.Loc.T("Cá đã thoát… Lần sau kéo nhanh hơn nhé.", "It got away… Pull faster next time.", "逃げられました…次はもっと早く引きましょう。")); yield break; }
             if (_phase != Phase.Reeling) yield break;
 
             // Reel: lift the rod, the fish comes out of the water.
             var fish = PickFish(catalog);
-            Show("Đang kéo cá lên…", "", false);
+            Show(NihongoLife.Core.Loc.T("Đang kéo cá lên…", "Reeling it in…", "引き上げています…"), "", false);
             if (posed) _animation.PlayWork("Fish_Cast", 0.15f);
             _shownFish = SpawnFish(fish);
             Vector3 start = to, end = ShowPoint();
@@ -195,7 +195,8 @@ namespace NihongoLife.Island
             if (_float != null) { Destroy(_float); _float = null; }
             if (_line != null) { Destroy(_line.gameObject); _line = null; }
             string result = Reward(fish);
-            Show(result == null ? $"Câu được {IslandLanguage.Primary(fish.word)}!" : "Thả cá về biển", result ?? $"{fish.word.vi} · bán ¥{fish.sellPrice} ở cửa hàng Midori", false);
+            Show(result == null ? NihongoLife.Core.Loc.F("Câu được {0}!", "You caught a {0}!", "{0}が釣れた！", IslandLanguage.Primary(fish.word)) : NihongoLife.Core.Loc.T("Thả cá về biển", "Released back to the sea", "海に放しました"),
+                result ?? NihongoLife.Core.Loc.F("{0} · bán {1} ở cửa hàng Midori", "{0} · sells for {1} at the Midori Store", "{0} · みどりしょうてんで{1}で売れます", IslandLanguage.Name(fish.word), NihongoLife.Core.Loc.Yen(fish.sellPrice)), false);
             for (float t = 0f; t < ShowSeconds; t += Time.deltaTime)
             {
                 if (_shownFish != null) _shownFish.transform.Rotate(0f, 90f * Time.deltaTime, 0f, Space.World);
@@ -206,18 +207,18 @@ namespace NihongoLife.Island
 
         private string Reward(IslandFish fish)
         {
-            if (_rewarded || fish == null) return "Không có cá.";
+            if (_rewarded || fish == null) return NihongoLife.Core.Loc.T("Không có cá.", "No fish.", "魚がいません。");
             _rewarded = true;
-            if (!IslandEconomy.CanStore(fish.id)) { IslandUI.Toast("Balo đầy — đã thả cá về biển.", true); return "Balo đầy — không giữ được cá."; }
-            if (!IslandEconomy.Give(fish.id, 1)) return "Không cất được cá vào balo.";
+            if (!IslandEconomy.CanStore(fish.id)) { IslandUI.Toast(NihongoLife.Core.Loc.T("Balo đầy — đã thả cá về biển.", "Bag full — the fish was released.", "かばんがいっぱいなので、魚を海に放しました。"), true); return NihongoLife.Core.Loc.T("Balo đầy — không giữ được cá.", "Bag full — you can't keep the fish.", "かばんがいっぱいで魚を持てません。"); }
+            if (!IslandEconomy.Give(fish.id, 1)) return NihongoLife.Core.Loc.T("Không cất được cá vào balo.", "Couldn't put the fish in your bag.", "魚をかばんに入れられませんでした。");
             var record = IslandState.Record;
             record.fished++;
             IslandState.Save();
             IslandAchievements.Check();
             IslandState.Discover("fish:" + fish.id);
-            IslandUI.WordToast(fish.word, "Câu được");
+            IslandUI.WordToast(fish.word, NihongoLife.Core.Loc.T("Câu được", "Caught", "釣れた"));
             NihongoLife.Progression.QuestService.Raise("fish", fish.id);
-            HudFeed.Post($"Câu được {fish.word.ja} ({fish.word.vi}) — đã vào balo.", HudFeed.Kind.Reward, 4f);
+            HudFeed.Post(NihongoLife.Core.Loc.F("Câu được {0} — đã vào balo.", "Caught: {0} — it's in your bag.", "{0}が釣れました。かばんに入れました。", IslandLanguage.Primary(fish.word) + (IslandLanguage.Helper(fish.word) is string h && h.Length > 0 ? $" ({h})" : "")), HudFeed.Kind.Reward, 4f);
             Caught?.Invoke(fish);
             return null;
         }

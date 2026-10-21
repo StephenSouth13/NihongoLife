@@ -105,7 +105,7 @@ namespace NihongoLife.Interaction
             if (name != _shownName || count != _shownCount || index != _shownIndex || _interactKey != _shownKey)
             {
                 _shownName = name; _shownCount = count; _shownIndex = index; _shownKey = _interactKey;
-                string cycle = count > 1 ? $"\n<size=70%><color=#E8F1FF>{_cycleKey} đổi · {index}/{count}</color></size>" : string.Empty;
+                string cycle = count > 1 ? $"\n<size=70%><color=#E8F1FF>{_cycleKey} {NihongoLife.Core.Loc.T("đổi", "switch", "切替")} · {index}/{count}</color></size>" : string.Empty;
                 _label.text = $"▼ <b>[{_interactKey}]</b> {name}{cycle}";
             }
             float bob = Mathf.Sin(Time.time * 3f) * 0.05f;

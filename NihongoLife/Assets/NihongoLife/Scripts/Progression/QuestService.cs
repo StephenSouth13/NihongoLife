@@ -81,13 +81,15 @@ namespace NihongoLife.Progression
         /// <summary>Why the quest cannot be accepted yet (null when it can).</summary>
         public static string Requirement(QuestDefinition quest)
         {
+            if (NihongoLife.Scenario.StoryDirector.GatesFreePlay)
+                return NihongoLife.Core.Loc.T("Mở sau phần mở đầu cốt truyện — làm tiếp nhiệm vụ CỐT TRUYỆN ở góc trên trái.", "Opens after the story's opening — follow the STORY task at the top left.", "ストーリーのオープニングの後に開きます — 左上のストーリーを進めましょう。");
             var status = PlayerStatus.Instance;
             int level = status != null ? status.Level : Catalog.LevelFor(Progress?.xp ?? 0);
             int knowledge = status != null ? status.Knowledge : Progress?.knowledge ?? 0;
-            if (level < quest.minLevel) return $"Cần cấp {quest.minLevel} (bạn đang cấp {level}).";
-            if (knowledge < quest.minKnowledge) return $"Cần {quest.minKnowledge} điểm kiến thức (bạn có {knowledge}).";
+            if (level < quest.minLevel) return NihongoLife.Core.Loc.F("Cần cấp {0} (bạn đang cấp {1}).", "Needs level {0} (you are level {1}).", "レベル{0}が必要です（今はレベル{1}）。", quest.minLevel, level);
+            if (knowledge < quest.minKnowledge) return NihongoLife.Core.Loc.F("Cần {0} điểm trí tuệ (bạn có {1}).", "Needs {0} knowledge points (you have {1}).", "知識ポイントが{0}必要です（今は{1}）。", quest.minKnowledge, knowledge);
             foreach (var required in quest.requiresQuests ?? Array.Empty<string>())
-                if ((State(required)?.timesCompleted ?? 0) == 0) return $"Cần hoàn thành \"{Catalog.Quest(required)?.titleVi ?? required}\" trước.";
+                if ((State(required)?.timesCompleted ?? 0) == 0) return NihongoLife.Core.Loc.F("Cần hoàn thành \"{0}\" trước.", "Finish \"{0}\" first.", "先に「{0}」を終えましょう。", Catalog.Quest(required)?.Title ?? required);
             return null;
         }
 
@@ -103,18 +105,18 @@ namespace NihongoLife.Progression
         {
             var quest = Catalog.Quest(questId);
             var progress = Progress;
-            if (quest == null || progress == null) return "Không tìm thấy nhiệm vụ.";
+            if (quest == null || progress == null) return NihongoLife.Core.Loc.T("Không tìm thấy nhiệm vụ.", "Task not found.", "タスクが見つかりません。");
             switch (Availability(quest))
             {
-                case QuestAvailability.Active: return "Bạn đang làm việc này rồi.";
-                case QuestAvailability.Completed: return "Việc này đã hoàn thành.";
-                case QuestAvailability.Cooldown: return $"Ca tiếp theo mở sau {Mathf.CeilToInt((float)CooldownLeft(quest).TotalMinutes)} phút.";
+                case QuestAvailability.Active: return NihongoLife.Core.Loc.T("Bạn đang làm việc này rồi.", "You are already doing this.", "もう進行中です。");
+                case QuestAvailability.Completed: return NihongoLife.Core.Loc.T("Việc này đã hoàn thành.", "This is already done.", "これはもう完了しています。");
+                case QuestAvailability.Cooldown: return NihongoLife.Core.Loc.F("Ca tiếp theo mở sau {0} phút.", "The next shift opens in {0} min.", "次のシフトは{0}分後です。", Mathf.CeilToInt((float)CooldownLeft(quest).TotalMinutes));
                 case QuestAvailability.Locked: return Requirement(quest);
             }
-            if (quest.IsJob && Active.Any(q => q.IsJob)) return "Mỗi lúc chỉ làm một ca — hoàn thành hoặc huỷ ca đang làm trước.";
+            if (quest.IsJob && Active.Any(q => q.IsJob)) return NihongoLife.Core.Loc.T("Mỗi lúc chỉ làm một ca — hoàn thành hoặc huỷ ca đang làm trước.", "One shift at a time — finish or quit your current shift first.", "シフトは一度に一つだけです。今のシフトを終えるか、やめてください。");
             var inventory = PlayerInventory.Instance;
             foreach (var grant in quest.grantOnAccept ?? Array.Empty<QuestItemGrant>())
-                if (inventory == null || (!inventory.HasItem(grant.itemId) && inventory.IsFull)) return "Balo đầy — cần chỗ để nhận đồ nghề.";
+                if (inventory == null || (!inventory.HasItem(grant.itemId) && inventory.IsFull)) return NihongoLife.Core.Loc.T("Balo đầy — cần chỗ để nhận đồ nghề.", "Your bag is full — make room for the work tools.", "かばんがいっぱいです。道具を受け取る場所を空けてください。");
 
             progress.quests ??= new List<QuestStateRecord>();
             var state = progress.quests.Find(s => s.questId == quest.id);
@@ -127,7 +129,7 @@ namespace NihongoLife.Progression
                 progress.trackedQuestId = quest.id;
             Save();
             foreach (var grant in quest.grantOnAccept ?? Array.Empty<QuestItemGrant>()) GiveItem(grant.itemId, grant.quantity);
-            HudFeed.Post($"Đã nhận: {quest.titleVi}", HudFeed.Kind.Info);
+            HudFeed.Post(NihongoLife.Core.Loc.T("Đã nhận: ", "Accepted: ", "受けました：") + quest.Title, HudFeed.Kind.Info);
             Changed?.Invoke();
             return null;
         }
@@ -143,7 +145,7 @@ namespace NihongoLife.Progression
                 progress.quests.Add(new QuestStateRecord { questId = questId, status = "completed", timesCompleted = state.timesCompleted, completedTicks = state.completedTicks, cooldownUntilTicks = state.cooldownUntilTicks, rewardClaimed = true });
             if (progress.trackedQuestId == questId) progress.trackedQuestId = Active.FirstOrDefault()?.id ?? string.Empty;
             Save();
-            HudFeed.Post($"Đã huỷ: {Catalog.Quest(questId)?.titleVi}", HudFeed.Kind.Warning);
+            HudFeed.Post(NihongoLife.Core.Loc.T("Đã huỷ: ", "Abandoned: ", "やめました：") + Catalog.Quest(questId)?.Title, HudFeed.Kind.Warning);
             Changed?.Invoke();
             return true;
         }
@@ -254,7 +256,7 @@ namespace NihongoLife.Progression
             var rewards = quest.rewards ?? new QuestRewards();
             if (rewards.xp > 0) PlayerStatus.Instance?.AddExp(rewards.xp);
             if (rewards.knowledge > 0) PlayerStatus.Instance?.AddKnowledge(rewards.knowledge);
-            if (rewards.yen > 0) PlayerInventory.Instance?.AddYen(rewards.yen, "Thưởng nhiệm vụ");
+            if (rewards.yen > 0) PlayerInventory.Instance?.AddYen(rewards.yen, NihongoLife.Core.Loc.Triple("Thưởng nhiệm vụ", "Task reward", "タスクの報酬"));
             if (PlayerStatus.Instance == null)
             {
                 progress.xp += rewards.xp;
@@ -263,8 +265,8 @@ namespace NihongoLife.Progression
                 if (PlayerInventory.Instance == null) progress.yen += rewards.yen;
             }
             Save();
-            string pay = string.Join("  ·  ", new[] { rewards.yen > 0 ? $"+¥{rewards.yen:N0}" : null, rewards.xp > 0 ? $"+{rewards.xp} XP" : null, rewards.knowledge > 0 ? $"+{rewards.knowledge} kiến thức" : null }.Where(x => x != null));
-            HudFeed.Post($"Hoàn thành: {quest.titleVi}   {pay}", HudFeed.Kind.Reward, 6f);
+            string pay = string.Join("  ·  ", new[] { rewards.yen > 0 ? "+" + NihongoLife.Core.Loc.Yen(rewards.yen) : null, rewards.xp > 0 ? $"+{rewards.xp} XP" : null, rewards.knowledge > 0 ? NihongoLife.Core.Loc.F("+{0} trí tuệ", "+{0} knowledge", "知識 +{0}", rewards.knowledge) : null }.Where(x => x != null));
+            HudFeed.Post(NihongoLife.Core.Loc.T("Hoàn thành: ", "Completed: ", "完了：") + $"{quest.Title}   {pay}", HudFeed.Kind.Reward, 6f);
             Completed?.Invoke(quest);
         }
 
@@ -297,8 +299,8 @@ namespace NihongoLife.Progression
             if (next < 0) return null;
             var o = quest.objectives[next];
             int done = quest.objectives.Where((x, i) => state.progress[i] >= x.count).Count();
-            string kicker = quest.IsJob ? "◆ LÀM THÊM" : quest.category == "farm" ? "◆ NÔNG TRẠI" : quest.category == "learning" ? "◆ HỌC TẬP" : "◆ NHIỆM VỤ";
-            return ($"{kicker} · {quest.titleVi}", $"{o.textVi}  ({state.progress[next]}/{o.count})", $"{done}/{quest.objectives.Length} mục  ·  N mở sổ nhiệm vụ");
+            string kicker = "◆ " + (quest.IsJob ? NihongoLife.Core.Loc.T("LÀM THÊM", "PART-TIME JOB", "アルバイト") : quest.category == "farm" ? NihongoLife.Core.Loc.T("NÔNG TRẠI", "FARM", "農場") : quest.category == "learning" ? NihongoLife.Core.Loc.T("HỌC TẬP", "LEARNING", "勉強") : NihongoLife.Core.Loc.T("NHIỆM VỤ", "TASK", "タスク"));
+            return ($"{kicker} · {quest.Title}", $"{o.Text}  ({state.progress[next]}/{o.count})", NihongoLife.Core.Loc.F("{0}/{1} mục  ·  N mở sổ nhiệm vụ", "{0}/{1} steps  ·  N opens the task journal", "{0}/{1}  ·  Nでタスク帳", done, quest.objectives.Length));
         }
 
         /// <summary>"*" matches anything, "fish_*" any target with that prefix, otherwise an exact (case-insensitive) match.</summary>

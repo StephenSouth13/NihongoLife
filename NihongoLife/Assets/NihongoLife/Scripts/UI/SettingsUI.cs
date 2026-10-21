@@ -244,7 +244,7 @@ namespace NihongoLife.UI
             }
 
             // Keys that are not rebindable, listed so every control is discoverable in one place.
-            var fixedKeys = CreateText(parent, "Chuột: xoay camera  ·  Lăn chuột: zoom  ·  Esc: đóng cửa sổ trên cùng  ·  K: luyện thi  ·  L: sổ tay", 14, new Vector2(240f, -262f), new Vector2(620f, 28f), TextAlignmentOptions.Center);
+            var fixedKeys = CreateText(parent, NihongoLife.Core.Loc.T("Chuột: xoay camera  ·  Lăn chuột: zoom  ·  Esc: đóng cửa sổ trên cùng  ·  K: luyện thi  ·  L: sổ tay", "Mouse: rotate camera  ·  Wheel: zoom  ·  Esc: close the top window  ·  K: exams  ·  L: notebook", "マウス：カメラ回転 · ホイール：ズーム · Esc：いちばん上の画面を閉じる · K：試験 · L：ノート"), 14, new Vector2(240f, -262f), new Vector2(620f, 28f), TextAlignmentOptions.Center);
             fixedKeys.color = new Color(0.66f, 0.72f, 0.8f, 1f);
 
             RefreshBindingLabels();
@@ -446,6 +446,9 @@ namespace NihongoLife.UI
             slider.direction = Slider.Direction.LeftToRight;
             slider.minValue = 0f;
             slider.maxValue = 1f;
+            // Mouse only: with keyboard navigation, walking keys (A / ←) pressed while the panel is open slid
+            // the volume down to 0 without anyone noticing.
+            slider.navigation = new Navigation { mode = Navigation.Mode.None };
 
             valueText = CreateText(parent, "0%", 17f, position + new Vector2(230f, 0f), new Vector2(70f, 30f), TextAlignmentOptions.MidlineRight);
             valueText.color = UIStyleKit.AccentGold;

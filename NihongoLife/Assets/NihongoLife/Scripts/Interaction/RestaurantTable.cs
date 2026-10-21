@@ -92,9 +92,9 @@ namespace NihongoLife.Interaction
             if (_state == ServiceState.ReadyToPay && Time.time >= _nextReminderTime)
             {
                 _nextReminderTime = Time.time + 30f;
-                ShowStaff("bill_reminder", null, null, null, null,
+                ShowStaff("bill_reminder", null, null, null, null, null,
                     "お客様、お会計をお願いします。", "おきゃくさま、おかいけいをおねがいします。",
-                    "Quý khách ơi, xin mời thanh toán tại bàn ạ.", 6f);
+                    "Quý khách ơi, xin mời thanh toán tại bàn ạ.", "Excuse me, please pay at your table.", 6f);
             }
         }
 
@@ -103,19 +103,21 @@ namespace NihongoLife.Interaction
             switch (_state)
             {
                 case ServiceState.ReadyToPay:
-                    ShowStaff("exit_blocked", null, null, null, null,
+                    ShowStaff("exit_blocked", null, null, null, null, null,
                         "お客様、お会計がまだです。テーブルでお願いします。", "おきゃくさま、おかいけいがまだです。テーブルでおねがいします。",
-                        "Quý khách ơi, quý khách chưa thanh toán ạ. Xin thanh toán tại bàn. (Ở Nhật, rời quán mà không trả tiền - 食い逃げ - là vi phạm pháp luật.)", 8f);
+                        "Quý khách ơi, quý khách chưa thanh toán ạ. Xin thanh toán tại bàn. (Ở Nhật, rời quán mà không trả tiền - 食い逃げ - là vi phạm pháp luật.)",
+                        "Excuse me, you haven't paid yet. Please pay at your table. (In Japan, leaving without paying - 食い逃げ - is against the law.)", 8f);
                     break;
                 case ServiceState.Preparing:
-                    ShowStaff(null, null, null, null, null,
+                    ShowStaff(null, null, null, null, null, null,
                         "お客様、お料理はもうすぐです。少々お待ちください。", "おきゃくさま、おりょうりはもうすぐです。しょうしょうおまちください。",
-                        "Món của quý khách sắp xong rồi ạ. Xin đợi một chút.", 6f);
+                        "Món của quý khách sắp xong rồi ạ. Xin đợi một chút.", "Your food is almost ready. Please wait a moment.", 6f);
                     break;
                 default:
-                    ShowStaff(null, null, null, null, null,
+                    ShowStaff(null, null, null, null, null, null,
                         "お客様、お料理とお会計がまだです。", "おきゃくさま、おりょうりとおかいけいがまだです。",
-                        "Quý khách chưa dùng xong món và chưa thanh toán ạ. Hãy ăn xong (E ở bàn), thanh toán rồi hãy ra về.", 7f);
+                        "Quý khách chưa dùng xong món và chưa thanh toán ạ. Hãy ăn xong (E ở bàn), thanh toán rồi hãy ra về.",
+                        "You haven't finished your meal or paid yet. Finish eating (E at the table) and pay before you leave.", 7f);
                     break;
             }
         }
@@ -138,10 +140,10 @@ namespace NihongoLife.Interaction
         {
             switch (_state)
             {
-                case ServiceState.Idle: return "Xem thực đơn và gọi món";
-                case ServiceState.Served: return "Ăn (いただきます)";
-                case ServiceState.ReadyToPay: return $"Thanh toán ¥{_total:N0}";
-                default: return "Vui lòng đợi món";
+                case ServiceState.Idle: return NihongoLife.Core.Loc.T("Xem thực đơn và gọi món", "See the menu and order", "メニューを見て注文する");
+                case ServiceState.Served: return NihongoLife.Core.Loc.T("Ăn", "Eat", "いただきます");
+                case ServiceState.ReadyToPay: return NihongoLife.Core.Loc.T("Thanh toán ", "Pay ", "お会計 ") + NihongoLife.Core.Loc.Yen(_total);
+                default: return NihongoLife.Core.Loc.T("Vui lòng đợi món", "Please wait for your food", "少々お待ちください");
             }
         }
 
@@ -213,20 +215,21 @@ namespace NihongoLife.Interaction
             _state = ServiceState.Preparing;
 
             var confirm = BuildOrderSentence();
-            ShowStaff("order_confirm", "{order}", confirm.ja, confirm.reading, confirm.vi,
+            ShowStaff("order_confirm", "{order}", confirm.ja, confirm.reading, confirm.vi, confirm.en,
                 "かしこまりました。{order}ですね。少々お待ちください。", "かしこまりました。{order}ですね。しょうしょうおまちください。",
-                "Vâng ạ. {order}, đúng không ạ? Xin quý khách đợi một chút.", 6f);
+                "Vâng ạ. {order}, đúng không ạ? Xin quý khách đợi một chút.", "Certainly. {order}, is that right? Please wait a moment.", 6f);
 
             StartCoroutine(PrepareRoutine(Mathf.Min(prepBaseSeconds + prepSecondsPerItem * quantity, 12f)));
             return true;
         }
 
         /// <summary>The order as the staff repeats it, e.g. まぐろ二つ、サーモン一つ.</summary>
-        public (string ja, string reading, string vi) BuildOrderSentence()
+        public (string ja, string reading, string vi, string en) BuildOrderSentence()
         {
             var ja = new StringBuilder();
             var reading = new StringBuilder();
             var vi = new StringBuilder();
+            var en = new StringBuilder();
             for (int i = 0; i < _order.Count; i++)
             {
                 var line = _order[i];
@@ -234,9 +237,10 @@ namespace NihongoLife.Interaction
                 ja.Append(sep).Append(StripParentheses(line.dish.nameJa)).Append(JapaneseNumber.CountKanji(line.quantity));
                 reading.Append(sep).Append(StripParentheses(string.IsNullOrWhiteSpace(line.dish.reading) ? line.dish.nameJa : line.dish.reading)).Append(JapaneseNumber.CountReading(line.quantity));
                 vi.Append(i == 0 ? string.Empty : ", ").Append(line.quantity).Append(" x ").Append(StripParentheses(string.IsNullOrWhiteSpace(line.dish.nameVi) ? line.dish.nameJa : line.dish.nameVi));
+                en.Append(i == 0 ? string.Empty : ", ").Append(line.quantity).Append(" x ").Append(StripParentheses(string.IsNullOrWhiteSpace(line.dish.nameEn) ? line.dish.nameJa : line.dish.nameEn));
             }
 
-            return (ja.ToString(), reading.ToString(), vi.ToString());
+            return (ja.ToString(), reading.ToString(), vi.ToString(), en.ToString());
         }
 
         private IEnumerator PrepareRoutine(float seconds)
@@ -244,9 +248,9 @@ namespace NihongoLife.Interaction
             yield return new WaitForSeconds(seconds);
             SpawnServedDishes();
             _state = ServiceState.Served;
-            ShowStaff("served", null, null, null, null,
+            ShowStaff("served", null, null, null, null, null,
                 "お待たせしました。ごゆっくりどうぞ。", "おまたせしました。ごゆっくりどうぞ。",
-                "Để quý khách đợi lâu rồi. Xin mời dùng bữa thong thả.", 6f);
+                "Để quý khách đợi lâu rồi. Xin mời dùng bữa thong thả.", "Sorry to keep you waiting. Enjoy your meal.", 6f);
         }
 
         // ──────────────────────── Eating and paying ────────────────────────
@@ -254,7 +258,7 @@ namespace NihongoLife.Interaction
         private IEnumerator EatRoutine()
         {
             _state = ServiceState.Eating;
-            ShowStaff(null, null, null, null, null, "いただきます！", "いただきます！", "Mời cả nhà (câu nói trước khi ăn).", eatSeconds);
+            ShowStaff(null, null, null, null, null, null, "いただきます！", "いただきます！", "Mời cả nhà (câu nói trước khi ăn).", "Let's eat (said before a meal).", eatSeconds);
 
             float hunger = 0f;
             float thirst = 0f;
@@ -276,24 +280,25 @@ namespace NihongoLife.Interaction
             PlayerStatus.Instance?.RestoreNeeds(hunger, thirst, 0f);
             _state = ServiceState.ReadyToPay;
             _nextReminderTime = Time.time + 25f;
-            ShowStaff(null, null, null, null, null, "ごちそうさまでした。", "ごちそうさまでした。", "Cảm ơn vì bữa ăn (câu nói sau khi ăn). Bấm E để thanh toán.", 5f);
+            ShowStaff(null, null, null, null, null, null, "ごちそうさまでした。", "ごちそうさまでした。", "Cảm ơn vì bữa ăn (câu nói sau khi ăn). Bấm E để thanh toán.", "Thank you for the meal (said after eating). Press E to pay.", 5f);
         }
 
         private void Pay()
         {
             var inventory = PlayerInventory.Instance;
-            if (inventory != null && !inventory.SpendYen(_total, "Ăn ở nhà hàng"))
+            if (inventory != null && !inventory.SpendYen(_total, NihongoLife.Core.Loc.Triple("Ăn ở nhà hàng", "Restaurant meal", "レストランの食事")))
             {
-                ShowStaff(null, null, null, null, null, "すみません、お金が足りないようです。", "すみません、おかねがたりないようです。",
-                    $"Xin lỗi, dường như bạn không đủ tiền (cần ¥{_total:N0}). Bạn có thể làm ca ở quầy (JobPoint) để kiếm thêm tiền rồi quay lại thanh toán.", 6f);
+                ShowStaff(null, null, null, null, null, null, "すみません、お金が足りないようです。", "すみません、おかねがたりないようです。",
+                    $"Xin lỗi, dường như bạn không đủ tiền (cần ¥{_total:N0}). Bạn có thể làm ca ở quầy (JobPoint) để kiếm thêm tiền rồi quay lại thanh toán.",
+                    $"Sorry, it seems you don't have enough money (¥{_total:N0} needed). You can work a shift at the counter (JobPoint) to earn more, then come back to pay.", 6f);
                 return;
             }
 
             string totalJa = JapaneseNumber.ToKanji(_total) + "円";
             string totalReading = JapaneseNumber.ToReading(_total) + "えん";
-            ShowStaff("bill", "{total}", totalJa, totalReading, $"¥{_total:N0}",
+            ShowStaff("bill", "{total}", totalJa, totalReading, $"¥{_total:N0}", $"¥{_total:N0}",
                 "お会計は{total}です。ありがとうございました。またお越しください。", "おかいけいは{total}です。ありがとうございました。またおこしください。",
-                "Tổng cộng là {total}. Cảm ơn quý khách, xin mời quý khách quay lại lần sau.", 7f);
+                "Tổng cộng là {total}. Cảm ơn quý khách, xin mời quý khách quay lại lần sau.", "That comes to {total}. Thank you very much, please come again.", 7f);
 
             _order.Clear();
             _total = 0;
@@ -468,25 +473,25 @@ namespace NihongoLife.Interaction
         /// Shows a staff line. Data-driven: if the menu asset has a service line for <paramref name="key"/>
         /// it wins; the fallback strings keep older menu assets working.
         /// </summary>
-        private void ShowStaff(string key, string placeholder, string valueJa, string valueReading, string valueVi,
-            string fallbackJa, string fallbackReading, string fallbackVi, float seconds)
+        private void ShowStaff(string key, string placeholder, string valueJa, string valueReading, string valueVi, string valueEn,
+            string fallbackJa, string fallbackReading, string fallbackVi, string fallbackEn, float seconds)
         {
             var line = _menu != null && key != null ? _menu.GetServiceLine(key) : null;
             string ja = line != null && !string.IsNullOrWhiteSpace(line.ja) ? line.ja : fallbackJa;
             string reading = line != null && !string.IsNullOrWhiteSpace(line.reading) ? line.reading : fallbackReading;
             string vi = line != null && !string.IsNullOrWhiteSpace(line.vi) ? line.vi : fallbackVi;
-            string en = line != null && !string.IsNullOrWhiteSpace(line.en) ? line.en : null;
+            string en = line != null && !string.IsNullOrWhiteSpace(line.en) ? line.en : fallbackEn;
 
             if (placeholder != null)
             {
                 ja = ja.Replace(placeholder, valueJa ?? string.Empty);
                 reading = reading.Replace(placeholder, valueReading ?? string.Empty);
                 vi = vi.Replace(placeholder, valueVi ?? string.Empty);
-                if (en != null) en = en.Replace(placeholder, valueVi ?? string.Empty);
+                if (en != null) en = en.Replace(placeholder, valueEn ?? valueVi ?? string.Empty);
             }
 
             string speaker = _menu != null && !string.IsNullOrWhiteSpace(_menu.staffNameJa) ? _menu.staffNameJa + "さん" : "店員";
-            RestaurantMenuUI.GetOrCreate().ShowStaffLine(speaker, ja, reading, Localize(vi, en ?? vi, ja), seconds);
+            RestaurantMenuUI.GetOrCreate().ShowStaffLine(speaker, ja, reading, NihongoLife.Core.Loc.Gloss(vi, en ?? vi), seconds);
         }
 
         private static string Localize(string vi, string en, string ja) => RestaurantMenuUI.Localize(vi, en, ja);

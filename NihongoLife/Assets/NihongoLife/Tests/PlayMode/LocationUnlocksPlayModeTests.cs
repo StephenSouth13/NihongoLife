@@ -22,6 +22,7 @@ namespace NihongoLife.Tests
     {
         private static string Out => Path.GetFullPath(Path.Combine(Application.dataPath, "../../Bao_Cao/unlock-regression"));
         private int _savedKnowledge = -1;
+        private System.Collections.Generic.List<string> _savedCompleted;
 
         [TearDown]
         public void TearDown()
@@ -29,6 +30,11 @@ namespace NihongoLife.Tests
             LocationUnlocks.Bypass = true;
             LocationUnlocks.ResetVisits();
             if (_savedKnowledge >= 0 && PlayerStatus.Instance != null) PlayerStatus.Instance.DebugSetKnowledge(_savedKnowledge);
+            if (_savedCompleted != null && GameServices.TryGet(out NihongoLife.Save.IProgressRepository repo))
+            {
+                var p = repo.GetProgress(); p.completedScenarios.Clear(); p.completedScenarios.AddRange(_savedCompleted); repo.SaveProgress(p);
+            }
+            MapUnlockCardUI.Close();
             TaskJournalUI.Close();
         }
 
@@ -45,11 +51,18 @@ namespace NihongoLife.Tests
             var status = PlayerStatus.Instance;
             _savedKnowledge = status.Knowledge;
             status.DebugSetKnowledge(10);
+            // The roadmap: the opening and the sushi dinner are done; the station still needs 160 knowledge.
+            var repo = GameServices.Get<NihongoLife.Save.IProgressRepository>();
+            var progress = repo.GetProgress();
+            _savedCompleted = new System.Collections.Generic.List<string>(progress.completedScenarios);
+            foreach (var id in new[] { "scenario.intro.arrival", "scenario.street.first_talk", "scenario.house1.greeting", "scenario.school.self_intro", "scenario.konbini.buy_onigiri", "scenario.restaurant.sushi_dining" })
+                if (!progress.completedScenarios.Contains(id)) progress.completedScenarios.Add(id);
+            repo.SaveProgress(progress);
 
             Assert.IsTrue(LocationUnlocks.IsUnlocked(WorldLocationCatalog.SchoolScene), "School always open");
             Assert.IsFalse(LocationUnlocks.IsUnlocked(WorldLocationCatalog.StationScene), "Station locked at 10 points");
-            Assert.AreEqual(30, LocationUnlocks.Missing(WorldLocationCatalog.StationScene));
-            Assert.AreEqual(WorldLocationCatalog.StationScene, LocationUnlocks.Next().sceneName);
+            Assert.AreEqual(150, LocationUnlocks.Missing(WorldLocationCatalog.StationScene));
+            Assert.AreEqual(WorldLocationCatalog.SushiRestaurantScene, LocationUnlocks.Next().sceneName, "Sushi Hibari (80) is the next stage.");
 
             var portal = Object.FindObjectsByType<ScenePortal>(FindObjectsSortMode.None).FirstOrDefault(p => p.TargetScene == WorldLocationCatalog.StationScene);
             Assert.NotNull(portal, "Station door in the city");
@@ -82,7 +95,7 @@ namespace NihongoLife.Tests
             LocationGuideUI.Close();
 
             // Enough knowledge: the station opens.
-            status.AddKnowledge(30);
+            status.AddKnowledge(150);
             Assert.IsTrue(LocationUnlocks.IsUnlocked(WorldLocationCatalog.StationScene));
             yield return new WaitForSecondsRealtime(0.3f);
             Capture("unlocked_toast");

@@ -1,0 +1,30 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8cd7292b80d74e04db4a79c2979f607a, type: 3}
+  m_Name: minigame_ufo_catcher
+  m_EditorClassIdentifier: NihongoLife.MiniGames::NihongoLife.MiniGames.MiniGameDefinition
+  id: ufo_catcher
+  kind: 4
+  titleJa: "UFO\u30AD\u30E3\u30C3\u30C1\u30E3\u30FC"
+  titleVi: UFO Catcher
+  titleEn: UFO Catcher
+  descriptionVi: "M\xE1y g\u1EAFp th\xFA bi\u1EBFt n\xF3i ti\u1EBFng Nh\u1EADt: nghe
+    g\u1ECDi t\xEAn m\xF3n n\xE0o th\xEC g\u1EAFp \u0111\xFAng m\xF3n \u0111\xF3."
+  descriptionEn: 'A claw machine that speaks Japanese: grab the prize it calls out.'
+  descriptionJa: "\u3088\u3070\u308C\u305F \u3051\u3044\u3072\u3093\u3092 \u30A2\u30FC\u30E0\u3067
+    \u3068\u308D\u3046\uFF01"
+  playable: 1
+  contentSets: []
+  pairsPerRound: 8
+  timeLimitSeconds: 75
+  expPerCorrect: 3
+  knowledgePerRound: 4

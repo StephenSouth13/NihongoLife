@@ -13,13 +13,14 @@ namespace NihongoLife.Island
     public sealed class IslandTicketKiosk : MonoBehaviour, IInteractable
     {
         public string GetPromptJa() => IslandLanguage.Target == TargetLanguage.English ? $"Ticket to Hibari ¥{IslandTrainService.Price}" : $"ひばりゆき きっぷ ¥{IslandTrainService.Price}";
-        public string GetpromptEn() => IslandTrainService.HasTicket ? "Đã có vé — ra cửa tàu" : $"Mua vé về Hibari (¥{IslandTrainService.Price})";
+        public string GetpromptEn() => IslandTrainService.HasTicket ? Loc.T("Đã có vé — ra cửa tàu", "You have a ticket — go to the train door", "切符があります — 電車のドアへ") : Loc.F("Mua vé về Hibari (¥{0})", "Buy a ticket to Hibari (¥{0})", "ひばり行きの切符を買う（¥{0}）", IslandTrainService.Price);
         public Transform GetTransform() => transform;
         public void Interact(GameObject player)
         {
+            if (IslandVisit.Active) { IslandUI.Toast(Loc.T("Khách thăm đi tàu miễn phí — ra cửa tàu và nhấn F để về.", "Visitors ride for free — go to the train door and press F to go back.", "お客さんは無料です — 電車のドアでFを押して帰りましょう。")); return; }
             string error = IslandTrainService.BuyTicket();
-            if (error == null) IslandUI.Toast($"Đã mua vé về Hibari (−¥{IslandTrainService.Price}). Ra cửa tàu và nhấn F để lên tàu.");
-            else IslandUI.Toast(error, !error.StartsWith("Bạn không còn tiền"));
+            if (error == null) IslandUI.Toast(Loc.F("Đã mua vé về Hibari (−¥{0}). Ra cửa tàu và nhấn F để lên tàu.", "Ticket to Hibari bought (−¥{0}). Go to the train door and press F.", "ひばり行きの切符を買いました（−¥{0}）。電車のドアでFを押しましょう。", IslandTrainService.Price));
+            else IslandUI.Toast(error, !IslandTrainService.HasTicket);
         }
     }
 }

@@ -89,7 +89,7 @@ namespace NihongoLife.Learning
         {
             if (!IsAvailable || string.IsNullOrWhiteSpace(_endpoint))
             {
-                done?.Invoke(new AgoraClassroomResponse { ok = false, error = "Cần đăng nhập và cấu hình Supabase để dùng phòng Speaking." });
+                done?.Invoke(new AgoraClassroomResponse { ok = false, error = NihongoLife.Core.Loc.T("Cần đăng nhập và cấu hình Supabase để dùng phòng Speaking.", "Sign in and configure Supabase to use the Speaking room.", "スピーキングルームにはログインとSupabaseの設定が必要です。") });
                 return;
             }
             StartCoroutine(Request(json, done));
@@ -109,9 +109,9 @@ namespace NihongoLife.Learning
                 AgoraClassroomResponse response = null;
                 try { response = JsonUtility.FromJson<AgoraClassroomResponse>(request.downloadHandler.text); }
                 catch (Exception ex) { Debug.LogWarning("[AgoraClassroom] Invalid response: " + ex.Message); }
-                if (response == null) response = new AgoraClassroomResponse { ok = false, error = request.error ?? "Phản hồi máy chủ không hợp lệ." };
+                if (response == null) response = new AgoraClassroomResponse { ok = false, error = request.error ?? NihongoLife.Core.Loc.T("Phản hồi máy chủ không hợp lệ.", "Invalid server response.", "サーバーの応答が不正です。") };
                 if (request.result != UnityWebRequest.Result.Success && string.IsNullOrWhiteSpace(response.error))
-                    response.error = $"Máy chủ phòng học trả lỗi {request.responseCode}.";
+                    response.error = NihongoLife.Core.Loc.F("Máy chủ phòng học trả lỗi {0}.", "The classroom server returned error {0}.", "教室サーバーのエラー {0}。", request.responseCode);
                 done?.Invoke(response);
             }
         }

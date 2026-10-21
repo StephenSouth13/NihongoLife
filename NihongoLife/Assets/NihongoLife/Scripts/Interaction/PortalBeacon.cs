@@ -19,7 +19,7 @@ namespace NihongoLife.Interaction
         private float _baseArrowY;
         private float _alpha;
 
-        public static void Attach(ScenePortal portal, string title, string action, bool exit)
+        public static void Attach(ScenePortal portal, System.Func<string> title, System.Func<string> action, bool exit)
         {
             if (portal == null || portal.GetComponentInChildren<PortalBeacon>(true) != null) return;
             var root = new GameObject("PortalBeacon");
@@ -36,12 +36,15 @@ namespace NihongoLife.Interaction
             root.AddComponent<PortalBeacon>().Build(title, action, exit);
         }
 
-        private void Build(string title, string action, bool exit)
+        private void Build(System.Func<string> title, System.Func<string> action, bool exit)
         {
             TMP_FontAsset font = null; // TMP default font; NotoSansJP is its project-wide fallback
             string accent = exit ? "#7FD3FF" : "#F2B233";
-            _sign = CreateText("Sign", font, 3.2f,
-                $"<mark=#0B0F16D9 padding=\"40,40,18,18\"><b>{title}</b>\n<size=70%><color={accent}>[F]</color> {action}</size></mark>");
+            _sign = CreateText("Sign", font, 3.2f, "");
+            _buildSign = () => $"<mark=#0B0F16D9 padding=\"40,40,18,18\"><b>{title()}</b>\n<size=70%><color={accent}>[F]</color> {action()}</size></mark>";
+            NihongoLife.UI.LocText.Set(_sign, _buildSign);
+            // A door's lock line ("Đã khóa — cần …") goes away the moment the place opens.
+            NihongoLife.Core.LocationUnlocks.Unlocked += OnPlaceUnlocked;
             _arrow = CreateText("Arrow", font, 4.2f, $"<color={accent}>▼</color>");
             _arrow.transform.localPosition = Vector3.down * 0.7f;
             _baseArrowY = _arrow.transform.localPosition.y;
@@ -75,6 +78,12 @@ namespace NihongoLife.Interaction
             return text;
         }
 
+        private System.Func<string> _buildSign;
+
+        private void OnPlaceUnlocked(NihongoLife.Core.LocationUnlock _) { if (_sign != null && _buildSign != null) NihongoLife.UI.LocText.Set(_sign, _buildSign); }
+
+        private void OnDestroy() => NihongoLife.Core.LocationUnlocks.Unlocked -= OnPlaceUnlocked;
+
         private void LateUpdate()
         {
             var camera = Camera.main;
@@ -99,6 +108,8 @@ namespace NihongoLife.Interaction
         private void SetAlpha(float alpha)
         {
             if (_sign != null) _sign.alpha = alpha;
+            // Colour tags ([F], ▼, the dark plate) ignore TMP alpha, so the sign also shrinks away while fading.
+            transform.localScale = Vector3.one * Mathf.SmoothStep(0f, 1f, alpha);
             if (_arrow != null) _arrow.alpha = alpha;
             if (_light != null) _light.intensity = 1.6f * alpha;
             bool visible = alpha > 0.01f;

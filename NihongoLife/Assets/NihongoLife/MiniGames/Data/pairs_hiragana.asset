@@ -16,84 +16,101 @@ MonoBehaviour:
   type: 0
   titleJa: "\u3072\u3089\u304C\u306A"
   titleVi: "Hiragana \u2194 Romaji"
+  titleEn: "Hiragana \u2194 Romaji"
   pairs:
   - targetId: kana.hiragana.a
     a: "\u3042"
     b: a
+    bEn: 
     imageB: 
     hintVi: a
   - targetId: kana.hiragana.i
     a: "\u3044"
     b: i
+    bEn: 
     imageB: 
     hintVi: i
   - targetId: kana.hiragana.u
     a: "\u3046"
     b: u
+    bEn: 
     imageB: 
     hintVi: u
   - targetId: kana.hiragana.e
     a: "\u3048"
     b: e
+    bEn: 
     imageB: 
     hintVi: e
   - targetId: kana.hiragana.o
     a: "\u304A"
     b: o
+    bEn: 
     imageB: 
     hintVi: o
   - targetId: kana.hiragana.ka
     a: "\u304B"
     b: ka
+    bEn: 
     imageB: 
     hintVi: ka
   - targetId: kana.hiragana.ki
     a: "\u304D"
     b: ki
+    bEn: 
     imageB: 
     hintVi: ki
   - targetId: kana.hiragana.ku
     a: "\u304F"
     b: ku
+    bEn: 
     imageB: 
     hintVi: ku
   - targetId: kana.hiragana.ke
     a: "\u3051"
     b: ke
+    bEn: 
     imageB: 
     hintVi: ke
   - targetId: kana.hiragana.ko
     a: "\u3053"
     b: ko
+    bEn: 
     imageB: 
     hintVi: ko
   - targetId: kana.hiragana.sa
     a: "\u3055"
     b: sa
+    bEn: 
     imageB: 
     hintVi: sa
   - targetId: kana.hiragana.shi
     a: "\u3057"
     b: shi
+    bEn: 
     imageB: 
     hintVi: shi
   - targetId: kana.hiragana.su
     a: "\u3059"
     b: su
+    bEn: 
     imageB: 
     hintVi: su
   - targetId: kana.hiragana.se
     a: "\u305B"
     b: se
+    bEn: 
     imageB: 
     hintVi: se
   - targetId: kana.hiragana.so
     a: "\u305D"
     b: so
+    bEn: 
     imageB: 
     hintVi: so
   - targetId: kana.hiragana.ta
     a: "\u305F"
     b: ta
+    bEn: 
     imageB: 
     hintVi: ta

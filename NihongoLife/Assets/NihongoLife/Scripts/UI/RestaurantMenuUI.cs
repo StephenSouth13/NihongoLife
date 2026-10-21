@@ -605,7 +605,9 @@ namespace NihongoLife.UI
             sb.Append("<color=#F1B83F><b>").Append(Pick("Bạn nói với nhân viên:", "You tell the staff:", "店員さんに言うこと:")).Append("</b></color>\n");
             sb.Append("<size=130%><b>すみません、").Append(ja).Append("お願いします。</b></size>\n");
             sb.Append("<color=#AFC0CF>すみません、").Append(reading).Append("おねがいします。</color>\n");
-            sb.Append(Pick("Xin lỗi, cho tôi các món trên.", "Excuse me, I would like the items above, please.", string.Empty)).Append("\n\n");
+            string orderMeaning = NihongoLife.Core.Loc.Gloss("Xin lỗi, cho tôi các món trên.", "Excuse me, I would like the items above, please.");
+            if (!string.IsNullOrEmpty(orderMeaning)) sb.Append(orderMeaning);
+            sb.Append("\n\n");
             sb.Append("<size=85%><color=#AFC0CF>").Append(Pick("Mẹo: số lượng đếm bằng ひとつ、ふたつ、みっつ... (1 đến 10). Nhân viên sẽ đọc lại đơn để xác nhận; thanh toán khi ăn xong (お会計).", "Tip: count with ひとつ、ふたつ、みっつ... (1 to 10). The staff repeats your order to confirm; you pay after eating (お会計).", "ヒント: ひとつ、ふたつ、みっつ…と数えます。食べたあとでお会計です。")).Append("</color></size>");
             return sb.ToString();
         }

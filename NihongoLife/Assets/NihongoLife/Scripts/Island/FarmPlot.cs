@@ -89,9 +89,9 @@ namespace NihongoLife.Island
 
         public string Till()
         {
-            if (Record.tilled) return "Đất đã được xới rồi.";
+            if (Record.tilled) return Loc.T("Đất đã được xới rồi.", "The soil is already tilled.", "もう耕してあります。");
             string tool = FarmActionTimes.Till().toolId;
-            if (tool == null) return "Cần cuốc (くわ) hoặc xẻng (シャベル) để xới — mua ở cửa hàng Midori.";
+            if (tool == null) return Loc.T("Cần cuốc hoặc xẻng để xới — mua ở cửa hàng Midori.", "You need a hoe or a shovel to till — buy one at the Midori Store.", "耕すにはくわかシャベルが必要です。みどりしょうてんで買えます。");
             var r = Record; r.tilled = true; r.cropId = null; r.stage = 0; r.watered = false;
             IslandState.Save(); Refresh(true);
             IslandTools.Wear(tool);
@@ -102,10 +102,10 @@ namespace NihongoLife.Island
         public string Plant(string cropId)
         {
             var crop = IslandCatalog.Load().Crop(cropId);
-            if (crop == null) return "Không có loại hạt này.";
-            if (!Record.tilled) return "Hãy xới đất bằng cuốc trước.";
-            if (!string.IsNullOrEmpty(Record.cropId)) return "Ô này đã có cây.";
-            if (!PlayerInventory.Instance.RemoveItem(crop.SeedItemId)) return $"Hết hạt {crop.word.vi} — mua thêm ở cửa hàng.";
+            if (crop == null) return Loc.T("Không có loại hạt này.", "There is no such seed.", "その種はありません。");
+            if (!Record.tilled) return Loc.T("Hãy xới đất bằng cuốc trước.", "Till the soil with a hoe first.", "先にくわで耕しましょう。");
+            if (!string.IsNullOrEmpty(Record.cropId)) return Loc.T("Ô này đã có cây.", "Something is already growing here.", "ここにはもう植えてあります。");
+            if (!PlayerInventory.Instance.RemoveItem(crop.SeedItemId)) return Loc.F("Hết hạt {0} — mua thêm ở cửa hàng.", "Out of {0} seeds — buy more at the store.", "{0}の種がありません。お店で買いましょう。", IslandLanguage.Name(crop.word));
             var r = Record; r.cropId = cropId; r.stage = 0; r.watered = false;
             IslandState.Discover("crop:" + cropId);
             IslandState.Save(); Refresh(true);
@@ -116,10 +116,10 @@ namespace NihongoLife.Island
         public string Water()
         {
             var phase = CurrentPhase;
-            if (phase == Phase.Untilled || phase == Phase.Tilled) return "Chưa có gì để tưới — hãy gieo hạt trước.";
-            if (phase == Phase.Ready) return "Cây đã chín, thu hoạch thôi!";
-            if (phase == Phase.Growing) return "Cây vừa được tưới, đợi cây lớn đã.";
-            if (!IslandTools.Usable("tool_watering_can")) return "Cần bình tưới (じょうろ) — mua ở cửa hàng Midori.";
+            if (phase == Phase.Untilled || phase == Phase.Tilled) return Loc.T("Chưa có gì để tưới — hãy gieo hạt trước.", "Nothing to water yet — plant seeds first.", "まだ水をあげるものがありません。先に種をまきましょう。");
+            if (phase == Phase.Ready) return Loc.T("Cây đã chín, thu hoạch thôi!", "It is ripe — harvest it!", "実りました。収穫しましょう！");
+            if (phase == Phase.Growing) return Loc.T("Cây vừa được tưới, đợi cây lớn đã.", "Just watered — wait for it to grow.", "水やりしたばかりです。育つのを待ちましょう。");
+            if (!IslandTools.Usable("tool_watering_can")) return Loc.T("Cần bình tưới — mua ở cửa hàng Midori.", "You need a watering can — buy one at the Midori Store.", "じょうろが必要です。みどりしょうてんで買えます。");
             var r = Record; r.watered = true; r.stageStartTicks = IslandState.UtcNow.Ticks;
             IslandState.Save(); Refresh(true);
             IslandTools.Wear("tool_watering_can");
@@ -130,10 +130,10 @@ namespace NihongoLife.Island
         public string Harvest(out int amount)
         {
             amount = 0;
-            if (CurrentPhase != Phase.Ready) return "Cây chưa chín.";
+            if (CurrentPhase != Phase.Ready) return Loc.T("Cây chưa chín.", "Not ripe yet.", "まだ実っていません。");
             var crop = Crop;
-            if (!IslandEconomy.CanStore(crop.ProduceItemId)) return "Balo đầy — bán bớt nông sản trước.";
-            if (!IslandEconomy.Give(crop.ProduceItemId, crop.yield)) return "Balo đầy — bán bớt nông sản trước.";
+            if (!IslandEconomy.CanStore(crop.ProduceItemId)) return Loc.T("Balo đầy — bán bớt nông sản trước.", "Your bag is full — sell some produce first.", "バッグがいっぱいです。先に作物を売りましょう。");
+            if (!IslandEconomy.Give(crop.ProduceItemId, crop.yield)) return Loc.T("Balo đầy — bán bớt nông sản trước.", "Your bag is full — sell some produce first.", "バッグがいっぱいです。先に作物を売りましょう。");
             amount = crop.yield;
             var r = Record; r.cropId = null; r.stage = 0; r.watered = false; r.tilled = false;
             var island = IslandState.Record; island.harvested++;
@@ -146,9 +146,9 @@ namespace NihongoLife.Island
 
         public string Clear()
         {
-            if (string.IsNullOrEmpty(Record.cropId)) return "Ô đất đang trống.";
+            if (string.IsNullOrEmpty(Record.cropId)) return Loc.T("Ô đất đang trống.", "The plot is empty.", "畑は空いています。");
             string tool = FarmActionTimes.Clear().toolId;
-            if (tool == null) return "Cần xẻng (シャベル) hoặc cuốc để dọn ô.";
+            if (tool == null) return Loc.T("Cần xẻng hoặc cuốc để dọn ô.", "You need a shovel or a hoe to clear the plot.", "畑を片づけるにはシャベルかくわが必要です。");
             var r = Record; r.cropId = null; r.stage = 0; r.watered = false; r.tilled = true;
             IslandState.Save(); Refresh(true);
             IslandTools.Wear(tool);
@@ -158,18 +158,18 @@ namespace NihongoLife.Island
         // ── Interaction ──
 
         public string GetPromptJa() => IslandLanguage.Target == TargetLanguage.English ? $"Field {number}" : $"はたけ {number}";
-        public string GetpromptEn() => $"Ô ruộng {number} — {PhaseLabel(CurrentPhase)}";
+        public string GetpromptEn() => Loc.F("Ô ruộng {0} — {1}", "Field {0} — {1}", "はたけ{0} — {1}", number, PhaseLabel(CurrentPhase));
         public Transform GetTransform() => transform;
         public float InteractionPriority => 0.4f;
-        public void Interact(GameObject player) => IslandUI.OpenFarm(this);
+        public void Interact(GameObject player) { if (!IslandVisit.ReadOnlyNotice()) IslandUI.OpenFarm(this); }
 
         public static string PhaseLabel(Phase phase) => phase switch
         {
-            Phase.Untilled => "cần xới đất",
-            Phase.Tilled => "sẵn sàng gieo hạt",
-            Phase.NeedsWater => "cần tưới nước",
-            Phase.Growing => "đang lớn",
-            Phase.Ready => "đã chín, thu hoạch được",
+            Phase.Untilled => Loc.T("cần xới đất", "needs tilling", "耕す必要あり"),
+            Phase.Tilled => Loc.T("sẵn sàng gieo hạt", "ready for seeds", "種まきできます"),
+            Phase.NeedsWater => Loc.T("cần tưới nước", "needs water", "水やりが必要"),
+            Phase.Growing => Loc.T("đang lớn", "growing", "成長中"),
+            Phase.Ready => Loc.T("đã chín, thu hoạch được", "ripe — ready to harvest", "収穫できます"),
             _ => "",
         };
 

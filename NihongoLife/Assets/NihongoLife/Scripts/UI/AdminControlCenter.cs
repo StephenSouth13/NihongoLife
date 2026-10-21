@@ -47,10 +47,10 @@ namespace NihongoLife.UI
 
         private void BuildLoginScreen()
         {
-            AddText(Card, "Vui lòng nhập mã PIN Quản trị viên", 32, 0, -200, 1000, 50, TextAlignmentOptions.Center, FontStyles.Normal, false, Color.white);
+            AddText(Card, NihongoLife.Core.Loc.T("Vui lòng nhập mã PIN Quản trị viên", "Enter the administrator PIN", "管理者PINを入力してください"), 32, 0, -200, 1000, 50, TextAlignmentOptions.Center, FontStyles.Normal, false, Color.white);
             
             // Note: In a real UI builder we'd use a TMP_InputField. Here we simulate a simple click to bypass for Editor speed.
-            var btn = AddButton(Card, "XÁC NHẬN (Bấm vào đây để vào Admin)", 300, -300, 400, 60, true);
+            var btn = AddButton(Card, NihongoLife.Core.Loc.T("XÁC NHẬN (Bấm vào đây để vào Admin)", "CONFIRM (enter Admin)", "確認（管理画面へ）"), 300, -300, 400, 60, true);
             btn.onClick.AddListener(() => 
             {
                 _isAuthenticated = true;
@@ -70,28 +70,28 @@ namespace NihongoLife.UI
         private void BuildDashboard()
         {
             // Left Panel: Online Players
-            AddText(Card, "NGƯỜI CHƠI ĐANG ONLINE (Realtime)", 24, 30, -80, 400, 40, TextAlignmentOptions.Left, FontStyles.Normal, false, Color.white);
+            AddText(Card, NihongoLife.Core.Loc.T("NGƯỜI CHƠI ĐANG ONLINE (Realtime)", "PLAYERS ONLINE (realtime)", "オンラインのプレイヤー（リアルタイム）"), 24, 30, -80, 400, 40, TextAlignmentOptions.Left, FontStyles.Normal, false, Color.white);
             
             var listBg = AddImage(Card, "ListBG", 30, -120, 350, 500, new Color(0.1f, 0.1f, 0.15f), UIStyleKit.RoundedSprite());
             _playerListContainer = listBg.transform;
 
             // Right Panel: Player Details & Edit
-            AddText(Card, "BẢNG ĐIỀU KHIỂN QUYỀN LỰC", 24, 420, -80, 500, 40, TextAlignmentOptions.Left, FontStyles.Normal, false, UIStyleKit.AccentGold);
-            _selectedPlayerText = AddText(Card, "Chưa chọn người chơi nào.", 20, 420, -130, 500, 60, TextAlignmentOptions.Left, FontStyles.Normal, false, Color.white);
+            AddText(Card, NihongoLife.Core.Loc.T("BẢNG ĐIỀU KHIỂN QUYỀN LỰC", "ADMIN CONTROLS", "管理コントロール"), 24, 420, -80, 500, 40, TextAlignmentOptions.Left, FontStyles.Normal, false, UIStyleKit.AccentGold);
+            _selectedPlayerText = AddText(Card, NihongoLife.Core.Loc.T("Chưa chọn người chơi nào.", "No player selected.", "プレイヤーが選ばれていません。"), 20, 420, -130, 500, 60, TextAlignmentOptions.Left, FontStyles.Normal, false, Color.white);
 
-            AddText(Card, "Tiền (Yen):", 20, 420, -220, 200, 40, TextAlignmentOptions.Left, FontStyles.Normal, false, Color.white);
+            AddText(Card, NihongoLife.Core.Loc.T("Tiền (Yen):", "Money (yen):", "お金（円）："), 20, 420, -220, 200, 40, TextAlignmentOptions.Left, FontStyles.Normal, false, Color.white);
             _yenInput = CreateAdminInput("YenInput", 520, -220, 200, 40);
 
-            AddText(Card, "Kiến thức:", 20, 420, -280, 200, 40, TextAlignmentOptions.Left, FontStyles.Normal, false, Color.white);
+            AddText(Card, NihongoLife.Core.Loc.T("Trí tuệ:", "Knowledge:", "知識："), 20, 420, -280, 200, 40, TextAlignmentOptions.Left, FontStyles.Normal, false, Color.white);
             _knowledgeInput = CreateAdminInput("KnowledgeInput", 520, -280, 200, 40);
 
-            var applyBtn = AddButton(Card, "Áp dụng & Ghi đè DB", 420, -350, 300, 50, true);
+            var applyBtn = AddButton(Card, NihongoLife.Core.Loc.T("Áp dụng & Ghi đè DB", "Apply & overwrite DB", "適用してDBを上書き"), 420, -350, 300, 50, true);
             applyBtn.onClick.AddListener(ApplyChangesToSelectedPlayer);
 
-            var kickBtn = AddButton(Card, "Đá khỏi Server (Kick)", 420, -420, 300, 50, false);
+            var kickBtn = AddButton(Card, NihongoLife.Core.Loc.T("Đá khỏi Server (Kick)", "Kick from server", "サーバーからキック"), 420, -420, 300, 50, false);
             kickBtn.GetComponentInChildren<TextMeshProUGUI>().color = Color.red;
 
-            var teleportBtn = AddButton(Card, "Dịch chuyển tới người này", 420, -490, 300, 50, false);
+            var teleportBtn = AddButton(Card, NihongoLife.Core.Loc.T("Dịch chuyển tới người này", "Teleport to this player", "このプレイヤーへ移動"), 420, -490, 300, 50, false);
             teleportBtn.onClick.AddListener(TeleportToPlayer);
 
             InvokeRepeating(nameof(RefreshOnlinePlayers), 0f, 2f);
@@ -143,7 +143,7 @@ namespace NihongoLife.UI
         private void SelectPlayer(OnlinePlayerSnapshot p)
         {
             _selectedPlayerId = p.playerId;
-            _selectedPlayerText.text = $"Đang chọn: <b>{p.displayName}</b>\nVị trí: {p.sceneName} ({p.position.x:F1}, {p.position.y:F1}, {p.position.z:F1})";
+            _selectedPlayerText.text = NihongoLife.Core.Loc.F("Đang chọn: <b>{0}</b>\nVị trí: {1} ({2:F1}, {3:F1}, {4:F1})", "Selected: <b>{0}</b>\nPosition: {1} ({2:F1}, {3:F1}, {4:F1})", "選択中：<b>{0}</b>\n位置：{1}（{2:F1}, {3:F1}, {4:F1}）", p.displayName, p.sceneName, p.position.x, p.position.y, p.position.z);
             // In a real scenario, we'd fetch their exact stats from DB here.
             _yenInput.text = "99999"; 
             _knowledgeInput.text = "1000";
@@ -158,12 +158,12 @@ namespace NihongoLife.UI
 
             // Notice: To actually update another user's data on Supabase, the Admin client needs 
             // either a Service Role key or an Edge Function. Here we simulate the logic.
-            Debug.Log($"[Admin] Bắn lệnh cập nhật lên DB cho user {_selectedPlayerId}: Yên={newYen}, Kiến thức={newK}");
+            Debug.Log($"[Admin] Bắn lệnh cập nhật lên DB cho user {_selectedPlayerId}: Yên={newYen}, Trí tuệ={newK}");
             
             // To notify the user locally if they are in the same scene, we can send a system chat:
             if (GameServices.TryGet(out IOnlineWorldService online))
             {
-                online.SendChatMessage("town", $"[HỆ THỐNG] Admin vừa buff tài nguyên cho user {_selectedPlayerId}!");
+                online.SendChatMessage("town", NihongoLife.Core.Loc.F("[HỆ THỐNG] Admin vừa buff tài nguyên cho user {0}!", "[SYSTEM] An admin just boosted resources for user {0}!", "［システム］管理者がユーザー{0}の資源を増やしました！", _selectedPlayerId));
             }
         }
 

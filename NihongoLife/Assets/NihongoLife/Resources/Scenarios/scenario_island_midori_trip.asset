@@ -1,0 +1,772 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3ba8f435ab5427145b206cd2a4f4ea7c, type: 3}
+  m_Name: scenario_island_midori_trip
+  m_EditorClassIdentifier: NihongoLife::NihongoLife.Scenario.ScenarioDefinition
+  id: scenario.island.midori_trip
+  version: 2
+  titleJa: "みどり島の畑へ"
+  titleVi: "Ra ruộng trên đảo Midori"
+  titleEn: "To the Fields of Midori Island"
+  descriptionJa: "田中さんと電車でみどり島へ。おばあちゃんの畑で、たがやす・まく・水をやるを学びます。"
+  descriptionVi: "Cùng bác Tanaka đi tàu ra đảo Midori: mua vé, ngắm biển từ cửa sổ tàu, học cách xới đất, gieo hạt, tưới nước ở ruộng của bà."
+  descriptionEn: "Take the train to Midori Island with Mr. Tanaka: buy the ticket, watch the sea from the window, and learn to till, sow and water in his grandmother's field."
+  chapterIndex: 5
+  questType: main
+  giverNpcId: npc_neighbor_1
+  briefingVi: "Tanaka mời bạn ra ruộng của bà anh ấy trên đảo Midori. Đi tàu, ngắm biển, học xới đất, gieo hạt, tưới nước."
+  briefingEn: "Tanaka invites you to his grandmother's field on Midori Island. Take the train, watch the sea, learn to till, sow and water."
+  briefingJa: "田中さんがみどり島のおばあちゃんの畑にさそってくれます。電車で行って、たがやす・まく・水をやるを学びます。"
+  locationHintVi: "Gặp Tanaka ở phố, rồi Đảo Xanh"
+  locationHintEn: "Meet Tanaka in town, then Midori Island"
+  locationHintJa: "町で田中さん → みどり島"
+  rewardYen: 500
+  branchId: main
+  requiredKnowledge: 320
+  requiredScenarioIds:
+  - scenario.arcade.kim_invite
+  unlockScenarioIds:
+  - scenario.town.summer_festival
+  repeatable: 0
+  supportsCoOp: 0
+  minPlayers: 1
+  maxPlayers: 2
+  learningTargets:
+  - grammar.n5.nan_de
+  - grammar.n5.ga_miemasu
+  - grammar.n5.te_mo_ii
+  - vocab.n5.hatake
+  - vocab.n5.shima
+  objectives:
+  - id: obj_meet
+    titleJa: "田中さんに会う"
+    titleVi: "Gặp bác Tanaka"
+    titleEn: "Meet Mr. Tanaka"
+    isOptional: 0
+  - id: obj_station
+    titleJa: "ひばり駅で切符を買う"
+    titleVi: "Mua vé ở ga Hibari"
+    titleEn: "Buy a ticket at Hibari Station"
+    isOptional: 0
+  - id: obj_arrive
+    titleJa: "みどり島に着く"
+    titleVi: "Đến đảo Midori"
+    titleEn: "Arrive at Midori Island"
+    isOptional: 0
+  - id: obj_field
+    titleJa: "畑をもらう"
+    titleVi: "Nhận mảnh ruộng của bà"
+    titleEn: "Receive Grandma's field"
+    isOptional: 0
+  nodes:
+  - id: node_find_tanaka
+    nodeType: 6
+    nextNodeId: n_hello
+    objectiveIdToComplete: obj_meet
+    speakerName: 
+    speakerId: 
+    textJa: 
+    textReading: 
+    textEn: 
+    textRomaji: 
+    textEnglishIpa: 
+    animationCue: 
+    voiceClip: {fileID: 0}
+    choices: []
+    flagCondition: 
+    flagJumpNodeId: 
+    targetItemId: 
+    targetNpcId: npc_neighbor_1
+    targetAreaId: 
+  - id: n_hello
+    nodeType: 7
+    nextNodeId: n_hello_plain
+    objectiveIdToComplete: 
+    speakerName: 
+    speakerId: 
+    textJa: 
+    textReading: 
+    textEn: 
+    textRomaji: 
+    textEnglishIpa: 
+    animationCue: 
+    voiceClip: {fileID: 0}
+    choices: []
+    flagCondition: "kim.friend"
+    flagJumpNodeId: n_hello_kim
+    targetItemId: 
+    targetNpcId: 
+    targetAreaId: 
+  - id: n_hello_kim
+    nodeType: 0
+    nextNodeId: 
+    objectiveIdToComplete: 
+    speakerName: Tanaka
+    speakerId: npc_neighbor_1
+    textJa: "こんにちは。キムさんと、ゲームセンターに行ったんですね。たのしかったですか。"
+    textReading: "こんにちは。キムさんと、ゲームセンターにいったんですね。たのしかったですか。"
+    textVi: "Chào cháu. Nghe nói cháu đi Game Center với Kim à. Có vui không?"
+    textEn: "Hello. I hear you went to the Game Center with Kim. Was it fun?"
+    textRomaji: "Konnichiwa. Kimu-san to, geemu sentaa ni itta n desu ne. Tanoshikatta desu ka."
+    textEnglishIpa: 
+    animationCue: talk
+    voiceClip: {fileID: 0}
+    choices:
+    - textJa: "はい、とてもたのしかったです。"
+      textVi: "Vâng, vui lắm ạ."
+      textEn: "Yes, it was a lot of fun."
+      nextNodeId: n_invite
+      scoreModifiers:
+      - category: Grammar
+        value: 8
+        reason: "Trả lời bằng quá khứ たのしかったです"
+      grammarTags:
+      - grammar.n5.i_adj_past
+      vocabularyTags:
+      - vocab.n5.tanoshii
+      setFlags: []
+    flagCondition: 
+    flagJumpNodeId: 
+    targetItemId: 
+    targetNpcId: 
+    targetAreaId: 
+  - id: n_hello_plain
+    nodeType: 0
+    nextNodeId: 
+    objectiveIdToComplete: 
+    speakerName: Tanaka
+    speakerId: npc_neighbor_1
+    textJa: "こんにちは。さいきん、日本語が、じょうずになりましたね。"
+    textReading: "こんにちは。さいきん、にほんごが、じょうずになりましたね。"
+    textVi: "Chào cháu. Dạo này tiếng Nhật của cháu giỏi lên nhiều đấy."
+    textEn: "Hello. Your Japanese has really improved lately."
+    textRomaji: "Konnichiwa. Saikin, nihongo ga, jouzu ni narimashita ne."
+    textEnglishIpa: 
+    animationCue: talk
+    voiceClip: {fileID: 0}
+    choices:
+    - textJa: "いいえ、まだまだです。"
+      textVi: "Dạ không, cháu còn kém lắm ạ."
+      textEn: "Oh no, I still have a long way to go."
+      nextNodeId: n_invite
+      scoreModifiers:
+      - category: ResponseAccuracy
+        value: 10
+        reason: "Khiêm tốn kiểu Nhật khi được khen: まだまだです"
+      grammarTags: []
+      vocabularyTags:
+      - vocab.n5.madamada
+      setFlags: []
+    - textJa: "はい、じょうずです。"
+      textVi: "Vâng, cháu giỏi ạ."
+      textEn: "Yes, I'm good."
+      nextNodeId: n_invite_proud
+      scoreModifiers:
+      - category: ResponseAccuracy
+        value: 2
+        reason: "Nhận lời khen thẳng thắn; người Nhật thường khiêm tốn hơn"
+      grammarTags: []
+      vocabularyTags: []
+      setFlags: []
+    flagCondition: 
+    flagJumpNodeId: 
+    targetItemId: 
+    targetNpcId: 
+    targetAreaId: 
+  - id: n_invite_proud
+    nodeType: 0
+    nextNodeId: n_invite
+    objectiveIdToComplete: 
+    speakerName: Tanaka
+    speakerId: npc_neighbor_1
+    textJa: "ははは、元気ですね。日本では、「まだまだです」と言う人が多いですよ。"
+    textReading: "ははは、げんきですね。にほんでは、「まだまだです」というひとがおおいですよ。"
+    textVi: "Haha, tự tin ghê. Ở Nhật nhiều người hay nói 「まだまだです」 (còn kém lắm) đấy."
+    textEn: "Haha, confident! In Japan many people say 「まだまだです」 (still a long way to go)."
+    textRomaji: "Hahaha, genki desu ne. Nihon de wa, \"madamada desu\" to iu hito ga ooi desu yo."
+    textEnglishIpa: 
+    animationCue: talk
+    voiceClip: {fileID: 0}
+    choices: []
+    flagCondition: 
+    flagJumpNodeId: 
+    targetItemId: 
+    targetNpcId: 
+    targetAreaId: 
+  - id: n_invite
+    nodeType: 0
+    nextNodeId: 
+    objectiveIdToComplete: 
+    speakerName: Tanaka
+    speakerId: npc_neighbor_1
+    textJa: "じつは、わたしのおばあちゃんが、みどり島に畑を持っています。週末、いっしょに行きませんか。"
+    textReading: "じつは、わたしのおばあちゃんが、みどりじまにはたけをもっています。しゅうまつ、いっしょにいきませんか。"
+    textVi: "Thật ra bà của bác có một mảnh ruộng trên đảo Midori. Cuối tuần cháu đi cùng không?"
+    textEn: "Actually, my grandmother has a field on Midori Island. Would you like to come with me this weekend?"
+    textRomaji: "Jitsu wa, watashi no obaachan ga, Midori-jima ni hatake wo motte imasu. Shuumatsu, issho ni ikimasen ka."
+    textEnglishIpa: 
+    animationCue: talk
+    voiceClip: {fileID: 0}
+    choices:
+    - textJa: "ぜひ行きたいです！何で行きますか。"
+      textVi: "Cháu rất muốn đi ạ! Mình đi bằng gì ạ?"
+      textEn: "I'd love to go! How do we get there?"
+      nextNodeId: n_how
+      scoreModifiers:
+      - category: Grammar
+        value: 10
+        reason: "Nhận lời bằng ぜひ〜たいです và hỏi phương tiện bằng 何で"
+      grammarTags:
+      - grammar.n5.tai_desu
+      - grammar.n5.nan_de
+      vocabularyTags:
+      - vocab.n5.shuumatsu
+      setFlags:
+      - island.invited
+    - textJa: "はい、行きます。"
+      textVi: "Vâng, cháu đi ạ."
+      textEn: "Yes, I'll go."
+      nextNodeId: n_how
+      scoreModifiers:
+      - category: ResponseAccuracy
+        value: 6
+        reason: "Nhận lời được; thêm ぜひ thì thể hiện háo hức hơn"
+      grammarTags: []
+      vocabularyTags: []
+      setFlags:
+      - island.invited
+    - textJa: "畑は、なんですか。"
+      textVi: "Ruộng là gì ạ?"
+      textEn: "What is a 'hatake'?"
+      nextNodeId: n_field_word
+      scoreModifiers:
+      - category: Vocabulary
+        value: 6
+        reason: "Hỏi nghĩa từ mới bằng 〜は、なんですか"
+      grammarTags: []
+      vocabularyTags:
+      - vocab.n5.hatake
+      setFlags: []
+    flagCondition: 
+    flagJumpNodeId: 
+    targetItemId: 
+    targetNpcId: 
+    targetAreaId: 
+  - id: n_field_word
+    nodeType: 0
+    nextNodeId: n_invite
+    objectiveIdToComplete: 
+    speakerName: Tanaka
+    speakerId: npc_neighbor_1
+    textJa: "畑は、やさいを作るところです。トマトや、にんじんを作りますよ。"
+    textReading: "はたけは、やさいをつくるところです。トマトや、にんじんをつくりますよ。"
+    textVi: "Ruộng (hatake) là nơi trồng rau. Trồng cà chua, cà rốt đấy."
+    textEn: "A hatake is a place where you grow vegetables. Tomatoes, carrots and so on."
+    textRomaji: "Hatake wa, yasai wo tsukuru tokoro desu. Tomato ya, ninjin wo tsukurimasu yo."
+    textEnglishIpa: 
+    animationCue: point
+    voiceClip: {fileID: 0}
+    choices: []
+    flagCondition: 
+    flagJumpNodeId: 
+    targetItemId: 
+    targetNpcId: 
+    targetAreaId: 
+  - id: n_how
+    nodeType: 0
+    nextNodeId: 
+    objectiveIdToComplete: 
+    speakerName: Tanaka
+    speakerId: npc_neighbor_1
+    textJa: "電車で行きます。ひばり駅から、みどり島まで、一時間ぐらいです。切符、一人で買えますか。"
+    textReading: "でんしゃでいきます。ひばりえきから、みどりじままで、いちじかんぐらいです。きっぷ、ひとりでかえますか。"
+    textVi: "Mình đi tàu. Từ ga Hibari đến đảo Midori mất khoảng một tiếng. Cháu tự mua vé được không?"
+    textEn: "We'll take the train. From Hibari Station to Midori Island it's about an hour. Can you buy a ticket by yourself?"
+    textRomaji: "Densha de ikimasu. Hibari eki kara, Midori-jima made, ichijikan gurai desu. Kippu, hitori de kaemasu ka."
+    textEnglishIpa: 
+    animationCue: talk
+    voiceClip: {fileID: 0}
+    choices:
+    - textJa: "はい、木村さんに、ならいました。"
+      textVi: "Dạ được, cháu đã học với anh Kimura rồi ạ."
+      textEn: "Yes, Mr. Kimura taught me."
+      nextNodeId: n_station
+      scoreModifiers:
+      - category: Grammar
+        value: 10
+        reason: "Nhắc lại việc đã học bằng 〜に、ならいました"
+      grammarTags:
+      - grammar.n5.ni_naraimashita
+      vocabularyTags: []
+      setFlags:
+      - island.ticket_self
+    - textJa: "ちょっと、むずかしいです。"
+      textVi: "Hơi khó ạ."
+      textEn: "It's a little difficult."
+      nextNodeId: n_station_help
+      scoreModifiers:
+      - category: ResponseAccuracy
+        value: 6
+        reason: "Nói thật khó khăn của mình một cách lịch sự"
+      grammarTags: []
+      vocabularyTags:
+      - vocab.n5.muzukashii
+      setFlags: []
+    flagCondition: 
+    flagJumpNodeId: 
+    targetItemId: 
+    targetNpcId: 
+    targetAreaId: 
+  - id: n_station_help
+    nodeType: 0
+    nextNodeId: n_station
+    objectiveIdToComplete: 
+    speakerName: Tanaka
+    speakerId: npc_neighbor_1
+    textJa: "だいじょうぶ。いっしょに行きましょう。わたしが、となりにいますよ。"
+    textReading: "だいじょうぶ。いっしょにいきましょう。わたしが、となりにいますよ。"
+    textVi: "Không sao. Mình đi cùng nhau. Bác đứng ngay bên cạnh mà."
+    textEn: "No problem. Let's go together. I'll be right next to you."
+    textRomaji: "Daijoubu. Issho ni ikimashou. Watashi ga, tonari ni imasu yo."
+    textEnglishIpa: 
+    animationCue: bow
+    voiceClip: {fileID: 0}
+    choices: []
+    flagCondition: 
+    flagJumpNodeId: 
+    targetItemId: 
+    targetNpcId: 
+    targetAreaId: 
+  - id: n_station
+    nodeType: 0
+    nextNodeId: n_ticket
+    objectiveIdToComplete: obj_station
+    speakerName: 
+    speakerId: 
+    textJa: "週末、ひばり駅。けんばいきで、「みどり島」のボタンをさがします。"
+    textReading: "しゅうまつ、ひばりえき。けんばいきで、「みどりじま」のボタンをさがします。"
+    textVi: "Cuối tuần, ga Hibari. Bạn tìm nút 「みどり島」 trên máy bán vé."
+    textEn: "The weekend, Hibari Station. You look for the 「みどり島」 button on the ticket machine."
+    textRomaji: "Shuumatsu, Hibari eki. Kenbaiki de, \"Midori-jima\" no botan wo sagashimasu."
+    textEnglishIpa: 
+    animationCue: 
+    voiceClip: {fileID: 0}
+    choices: []
+    flagCondition: 
+    flagJumpNodeId: 
+    targetItemId: 
+    targetNpcId: 
+    targetAreaId: 
+  - id: n_ticket
+    nodeType: 0
+    nextNodeId: 
+    objectiveIdToComplete: 
+    speakerName: Tanaka
+    speakerId: npc_neighbor_1
+    textJa: "みどり島までは、六百五十円です。いくら入れますか。"
+    textReading: "みどりじままでは、ろっぴゃくごじゅうえんです。いくらいれますか。"
+    textVi: "Đến đảo Midori là 650 yên. Cháu bỏ vào bao nhiêu?"
+    textEn: "To Midori Island it's 650 yen. How much will you put in?"
+    textRomaji: "Midori-jima made wa, roppyaku gojuu en desu. Ikura iremasu ka."
+    textEnglishIpa: 
+    animationCue: point
+    voiceClip: {fileID: 0}
+    choices:
+    - textJa: "六百五十円、入れます。"
+      textVi: "Cháu bỏ 650 yên ạ."
+      textEn: "I'll put in 650 yen."
+      nextNodeId: n_train
+      scoreModifiers:
+      - category: Vocabulary
+        value: 10
+        reason: "Đọc đúng số tiền 六百五十 (ろっぴゃくごじゅう)"
+      grammarTags: []
+      vocabularyTags:
+      - vocab.n5.roppyaku
+      - vocab.n5.gojuu
+      setFlags:
+      - island.ticket_ok
+    - textJa: "五百六十円、入れます。"
+      textVi: "Cháu bỏ 560 yên ạ."
+      textEn: "I'll put in 560 yen."
+      nextNodeId: n_ticket_wrong
+      scoreModifiers:
+      - category: Vocabulary
+        value: -6
+        reason: "Nhầm thứ tự chữ số: 650 khác 560"
+      grammarTags: []
+      vocabularyTags: []
+      setFlags: []
+    flagCondition: 
+    flagJumpNodeId: 
+    targetItemId: 
+    targetNpcId: 
+    targetAreaId: 
+  - id: n_ticket_wrong
+    nodeType: 0
+    nextNodeId: n_ticket
+    objectiveIdToComplete: 
+    speakerName: Tanaka
+    speakerId: npc_neighbor_1
+    textJa: "あれ、たりませんよ。ろっぴゃく、ごじゅう。六百五十円です。"
+    textReading: "あれ、たりませんよ。ろっぴゃく、ごじゅう。ろっぴゃくごじゅうえんです。"
+    textVi: "Ơ, không đủ đâu. Sáu trăm, năm mươi. Là 650 yên."
+    textEn: "Oops, that's not enough. Six hundred, fifty. It's 650 yen."
+    textRomaji: "Are, tarimasen yo. Roppyaku, gojuu. Roppyaku gojuu en desu."
+    textEnglishIpa: 
+    animationCue: point
+    voiceClip: {fileID: 0}
+    choices: []
+    flagCondition: 
+    flagJumpNodeId: 
+    targetItemId: 
+    targetNpcId: 
+    targetAreaId: 
+  - id: n_train
+    nodeType: 0
+    nextNodeId: n_sea
+    objectiveIdToComplete: 
+    speakerName: 
+    speakerId: 
+    textJa: "電車がうごきだしました。まどの外に、青い海が見えます。"
+    textReading: "でんしゃがうごきだしました。まどのそとに、あおいうみがみえます。"
+    textVi: "Tàu bắt đầu chạy. Ngoài cửa sổ có thể thấy biển xanh."
+    textEn: "The train starts moving. Outside the window you can see the blue sea."
+    textRomaji: "Densha ga ugokidashimashita. Mado no soto ni, aoi umi ga miemasu."
+    textEnglishIpa: 
+    animationCue: 
+    voiceClip: {fileID: 0}
+    choices: []
+    flagCondition: 
+    flagJumpNodeId: 
+    targetItemId: 
+    targetNpcId: 
+    targetAreaId: 
+  - id: n_sea
+    nodeType: 0
+    nextNodeId: 
+    objectiveIdToComplete: 
+    speakerName: Tanaka
+    speakerId: npc_neighbor_1
+    textJa: "海が見えますね。何が見えますか。"
+    textReading: "うみがみえますね。なにがみえますか。"
+    textVi: "Thấy biển rồi nhỉ. Cháu thấy gì nào?"
+    textEn: "You can see the sea, can't you. What can you see?"
+    textRomaji: "Umi ga miemasu ne. Nani ga miemasu ka."
+    textEnglishIpa: 
+    animationCue: point
+    voiceClip: {fileID: 0}
+    choices:
+    - textJa: "海と、小さい島が見えます。"
+      textVi: "Cháu thấy biển và một hòn đảo nhỏ ạ."
+      textEn: "I can see the sea and a small island."
+      nextNodeId: n_arrive
+      scoreModifiers:
+      - category: Grammar
+        value: 10
+        reason: "Dùng 〜が見えます để nói điều mình nhìn thấy"
+      grammarTags:
+      - grammar.n5.ga_miemasu
+      vocabularyTags:
+      - vocab.n5.umi
+      - vocab.n5.shima
+      setFlags: []
+    - textJa: "海を見ます。"
+      textVi: "Cháu nhìn biển."
+      textEn: "I look at the sea."
+      nextNodeId: n_sea_hint
+      scoreModifiers:
+      - category: Grammar
+        value: 3
+        reason: "見ます là chủ động nhìn; điều lọt vào mắt thì dùng 〜が見えます"
+      grammarTags: []
+      vocabularyTags: []
+      setFlags: []
+    flagCondition: 
+    flagJumpNodeId: 
+    targetItemId: 
+    targetNpcId: 
+    targetAreaId: 
+  - id: n_sea_hint
+    nodeType: 0
+    nextNodeId: n_arrive
+    objectiveIdToComplete: 
+    speakerName: Tanaka
+    speakerId: npc_neighbor_1
+    textJa: "そうですね。でも、ここでは「海が見えます」と言いますよ。"
+    textReading: "そうですね。でも、ここでは「うみがみえます」といいますよ。"
+    textVi: "Đúng rồi. Nhưng ở đây người ta nói 「海が見えます」 (thấy biển) đấy."
+    textEn: "That's right. But here we say 「海が見えます」 (I can see the sea)."
+    textRomaji: "Sou desu ne. Demo, koko de wa \"umi ga miemasu\" to iimasu yo."
+    textEnglishIpa: 
+    animationCue: talk
+    voiceClip: {fileID: 0}
+    choices: []
+    flagCondition: 
+    flagJumpNodeId: 
+    targetItemId: 
+    targetNpcId: 
+    targetAreaId: 
+  - id: n_arrive
+    nodeType: 0
+    nextNodeId: n_farm
+    objectiveIdToComplete: obj_arrive
+    speakerName: 
+    speakerId: 
+    textJa: "みどり島に着きました。駅の前に、ひろい畑があります。"
+    textReading: "みどりじまにつきました。えきのまえに、ひろいはたけがあります。"
+    textVi: "Đã đến đảo Midori. Trước ga là cánh đồng rộng."
+    textEn: "You've arrived at Midori Island. In front of the station there are wide fields."
+    textRomaji: "Midori-jima ni tsukimashita. Eki no mae ni, hiroi hatake ga arimasu."
+    textEnglishIpa: 
+    animationCue: 
+    voiceClip: {fileID: 0}
+    choices: []
+    flagCondition: 
+    flagJumpNodeId: 
+    targetItemId: 
+    targetNpcId: 
+    targetAreaId: 
+  - id: n_farm
+    nodeType: 0
+    nextNodeId: 
+    objectiveIdToComplete: 
+    speakerName: Tanaka
+    speakerId: npc_neighbor_1
+    textJa: "おばあちゃんは、いま、畑で水をやっています。わたしたちも、たねをまきましょう。"
+    textReading: "おばあちゃんは、いま、はたけでみずをやっています。わたしたちも、たねをまきましょう。"
+    textVi: "Bà đang tưới nước ngoài ruộng. Mình cũng gieo hạt nhé."
+    textEn: "Grandma is watering the field right now. Let's sow some seeds too."
+    textRomaji: "Obaachan wa, ima, hatake de mizu wo yatte imasu. Watashitachi mo, tane wo makimashou."
+    textEnglishIpa: 
+    animationCue: point
+    voiceClip: {fileID: 0}
+    choices:
+    - textJa: "はい。まず、何をしますか。"
+      textVi: "Vâng. Đầu tiên làm gì ạ?"
+      textEn: "Okay. What do we do first?"
+      nextNodeId: n_steps
+      scoreModifiers:
+      - category: Grammar
+        value: 10
+        reason: "Hỏi thứ tự công việc bằng まず、何をしますか"
+      grammarTags: []
+      vocabularyTags:
+      - vocab.n5.mazu
+      setFlags: []
+    - textJa: "たねを食べますか。"
+      textVi: "Mình ăn hạt ạ?"
+      textEn: "Do we eat the seeds?"
+      nextNodeId: n_seed_wrong
+      scoreModifiers:
+      - category: Vocabulary
+        value: -4
+        reason: "たね là hạt giống để gieo (まく), không phải để ăn"
+      grammarTags: []
+      vocabularyTags: []
+      setFlags: []
+    flagCondition: 
+    flagJumpNodeId: 
+    targetItemId: 
+    targetNpcId: 
+    targetAreaId: 
+  - id: n_seed_wrong
+    nodeType: 0
+    nextNodeId: n_farm
+    objectiveIdToComplete: 
+    speakerName: Tanaka
+    speakerId: npc_neighbor_1
+    textJa: "ははは、たねは食べません。土に「まきます」。"
+    textReading: "ははは、たねはたべません。つちに「まきます」。"
+    textVi: "Haha, hạt giống không ăn đâu. Mình 「まきます」 (gieo) xuống đất."
+    textEn: "Haha, we don't eat seeds. We 「まきます」 (sow) them into the soil."
+    textRomaji: "Hahaha, tane wa tabemasen. Tsuchi ni \"makimasu\"."
+    textEnglishIpa: 
+    animationCue: talk
+    voiceClip: {fileID: 0}
+    choices: []
+    flagCondition: 
+    flagJumpNodeId: 
+    targetItemId: 
+    targetNpcId: 
+    targetAreaId: 
+  - id: n_steps
+    nodeType: 0
+    nextNodeId: n_steps_check
+    objectiveIdToComplete: 
+    speakerName: Tanaka
+    speakerId: npc_neighbor_1
+    textJa: "まず、くわで土をたがやします。つぎに、たねをまいて、さいごに、水をやります。"
+    textReading: "まず、くわでつちをたがやします。つぎに、たねをまいて、さいごに、みずをやります。"
+    textVi: "Đầu tiên dùng cuốc xới đất. Tiếp theo gieo hạt, cuối cùng tưới nước."
+    textEn: "First, you till the soil with a hoe. Next, you sow the seeds, and finally you water them."
+    textRomaji: "Mazu, kuwa de tsuchi wo tagayashimasu. Tsugi ni, tane wo maite, saigo ni, mizu wo yarimasu."
+    textEnglishIpa: 
+    animationCue: point
+    voiceClip: {fileID: 0}
+    choices: []
+    flagCondition: 
+    flagJumpNodeId: 
+    targetItemId: 
+    targetNpcId: 
+    targetAreaId: 
+  - id: n_steps_check
+    nodeType: 0
+    nextNodeId: 
+    objectiveIdToComplete: 
+    speakerName: Tanaka
+    speakerId: npc_neighbor_1
+    textJa: "さいごに、何をしますか。"
+    textReading: "さいごに、なにをしますか。"
+    textVi: "Cuối cùng thì làm gì?"
+    textEn: "What do we do last?"
+    textRomaji: "Saigo ni, nani wo shimasu ka."
+    textEnglishIpa: 
+    animationCue: talk
+    voiceClip: {fileID: 0}
+    choices:
+    - textJa: "水をやります。"
+      textVi: "Tưới nước ạ."
+      textEn: "We water them."
+      nextNodeId: n_gift
+      scoreModifiers:
+      - category: Vocabulary
+        value: 10
+        reason: "Nhớ đúng thứ tự: たがやす → まく → 水をやる"
+      grammarTags:
+      - grammar.n5.te_form_sequence
+      vocabularyTags:
+      - vocab.n5.mizu
+      setFlags:
+      - tanaka.farm
+    - textJa: "たねをまきます。"
+      textVi: "Gieo hạt ạ."
+      textEn: "We sow the seeds."
+      nextNodeId: n_steps_wrong
+      scoreModifiers:
+      - category: Vocabulary
+        value: -4
+        reason: "Gieo hạt là bước thứ hai, cuối cùng là tưới nước"
+      grammarTags: []
+      vocabularyTags: []
+      setFlags: []
+    flagCondition: 
+    flagJumpNodeId: 
+    targetItemId: 
+    targetNpcId: 
+    targetAreaId: 
+  - id: n_steps_wrong
+    nodeType: 0
+    nextNodeId: n_steps_check
+    objectiveIdToComplete: 
+    speakerName: Tanaka
+    speakerId: npc_neighbor_1
+    textJa: "それは、つぎです。まず、たがやす。つぎに、まく。さいごに…？"
+    textReading: "それは、つぎです。まず、たがやす。つぎに、まく。さいごに…？"
+    textVi: "Đó là bước tiếp theo. Đầu tiên xới, tiếp theo gieo. Cuối cùng là…?"
+    textEn: "That's the next step. First, till. Next, sow. And last…?"
+    textRomaji: "Sore wa, tsugi desu. Mazu, tagayasu. Tsugi ni, maku. Saigo ni…?"
+    textEnglishIpa: 
+    animationCue: point
+    voiceClip: {fileID: 0}
+    choices: []
+    flagCondition: 
+    flagJumpNodeId: 
+    targetItemId: 
+    targetNpcId: 
+    targetAreaId: 
+  - id: n_gift
+    nodeType: 0
+    nextNodeId: 
+    objectiveIdToComplete: 
+    speakerName: Tanaka
+    speakerId: npc_neighbor_1
+    textJa: "おばあちゃんが、「この畑、使っていいよ」と言っています。あなたの畑ですよ！"
+    textReading: "おばあちゃんが、「このはたけ、つかっていいよ」といっています。あなたのはたけですよ！"
+    textVi: "Bà nói 「ruộng này, cháu cứ dùng đi」. Đây là ruộng của cháu đấy!"
+    textEn: "Grandma says, “You can use this field.” It's your field now!"
+    textRomaji: "Obaachan ga, \"kono hatake, tsukatte ii yo\" to itte imasu. Anata no hatake desu yo!"
+    textEnglishIpa: 
+    animationCue: bow
+    voiceClip: {fileID: 0}
+    choices:
+    - textJa: "ほんとうですか。ありがとうございます！大切にします。"
+      textVi: "Thật ạ? Cháu cảm ơn ạ! Cháu sẽ chăm sóc cẩn thận."
+      textEn: "Really? Thank you so much! I'll take good care of it."
+      nextNodeId: n_recap
+      scoreModifiers:
+      - category: Grammar
+        value: 10
+        reason: "Cảm ơn và hứa bằng 大切にします"
+      grammarTags: []
+      vocabularyTags:
+      - vocab.n5.taisetsu
+      - vocab.n5.arigatou_gozaimasu
+      setFlags:
+      - island.field
+    - textJa: "ありがとう。"
+      textVi: "Cảm ơn."
+      textEn: "Thanks."
+      nextNodeId: n_recap
+      scoreModifiers:
+      - category: ResponseAccuracy
+        value: 3
+        reason: "Với người lớn tuổi nên dùng ありがとうございます"
+      grammarTags: []
+      vocabularyTags: []
+      setFlags:
+      - island.field
+    flagCondition: 
+    flagJumpNodeId: 
+    targetItemId: 
+    targetNpcId: 
+    targetAreaId: 
+  - id: n_recap
+    nodeType: 0
+    nextNodeId: n_complete
+    objectiveIdToComplete: obj_field
+    speakerName: 
+    speakerId: 
+    textJa: "きょうのポイント：「〜で行きます」「〜が見えます」「まず・つぎに・さいごに」「〜てもいい」。"
+    textReading: "きょうのポイント：「〜でいきます」「〜がみえます」「まず・つぎに・さいごに」「〜てもいい」。"
+    textVi: "Tóm tắt: 〜で行きます (đi bằng), 〜が見えます (nhìn thấy), まず・つぎに・さいごに (trình tự), 〜てもいい (được phép). Ruộng của bạn trên đảo đã sẵn sàng!"
+    textEn: "Today's points: ~de ikimasu (go by), ~ga miemasu (can see), mazu / tsugi ni / saigo ni (in order), ~te mo ii (you may). Your field on the island is ready!"
+    textRomaji: "Kyou no pointo: \"~de ikimasu\" \"~ga miemasu\" \"mazu, tsugi ni, saigo ni\" \"~te mo ii\"."
+    textEnglishIpa: 
+    animationCue: 
+    voiceClip: {fileID: 0}
+    choices: []
+    flagCondition: 
+    flagJumpNodeId: 
+    targetItemId: 
+    targetNpcId: 
+    targetAreaId: 
+  - id: n_complete
+    nodeType: 4
+    nextNodeId: 
+    objectiveIdToComplete: 
+    speakerName: 
+    speakerId: 
+    textJa: 
+    textReading: 
+    textEn: 
+    textRomaji: 
+    textEnglishIpa: 
+    animationCue: 
+    voiceClip: {fileID: 0}
+    choices: []
+    flagCondition: 
+    flagJumpNodeId: 
+    targetItemId: 
+    targetNpcId: 
+    targetAreaId: 
+  startNodeId: node_find_tanaka

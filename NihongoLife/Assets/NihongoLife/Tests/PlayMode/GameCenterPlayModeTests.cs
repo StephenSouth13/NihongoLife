@@ -97,6 +97,7 @@ namespace NihongoLife.Tests
             // 6–7) Interact: movement locks, the camera frames the machine.
             Assert.AreSame(launcher, player.GetComponent<InteractionDetector>().CurrentInteractable as MiniGameLauncher, "F at the cabinet must offer Kana Match.");
             Vector3 beforeGame = player.transform.position;
+            int ticketsBefore = PlayerInventory.Instance != null ? PlayerInventory.Instance.GetItemQuantity(KanaMatchGame.TicketItemId) : 0;
             launcher.Interact(player.gameObject);
             yield return new WaitForSecondsRealtime(0.8f);
             var controller = MiniGameController.Instance;
@@ -149,7 +150,7 @@ namespace NihongoLife.Tests
                 Assert.Greater(LearningMasteryManager.Instance.GetMastery(result.masteredTargetIds[0]), 50f, "Mastered kana gain mastery.");
             Assert.AreEqual(2, result.stars, "8/9 accuracy earns two stars.");
             Assert.Greater(result.tickets, 0, "A cleared round pays tickets.");
-            Assert.AreEqual(result.tickets, PlayerInventory.Instance.GetItemQuantity(KanaMatchGame.TicketItemId));
+            Assert.AreEqual(ticketsBefore + result.tickets, PlayerInventory.Instance.GetItemQuantity(KanaMatchGame.TicketItemId));
             Capture("08_result");
 
             // 11) Back to normal third-person play at the same spot (the × on the result card).

@@ -14,7 +14,7 @@ namespace NihongoLife.Shop
         public KonbiniSection Section => section;
         public void Configure(KonbiniSection value) => section = value;
         public string GetPromptJa() => KonbiniCatalog.SectionJa(section) + "を みる";
-        public string GetpromptEn() => "Xem kệ " + KonbiniCatalog.SectionVi(section);
+        public string GetpromptEn() => NihongoLife.Core.Loc.F("Xem kệ {0}", "Browse the {0} shelf", "{0}の棚を見る", KonbiniCatalog.SectionName(section));
         public Transform GetTransform() => transform;
 
         private void Awake() => GetComponent<Collider>().isTrigger = true;

@@ -1,3 +1,4 @@
+using NihongoLife.Core;
 using System.Linq;
 using NihongoLife.UI;
 
@@ -31,7 +32,7 @@ namespace NihongoLife.Island
         public static string Label(string toolId)
         {
             int max = Max(toolId);
-            return max <= 0 || IslandEconomy.Owned(toolId) <= 0 ? "" : $"bền {Left(toolId)}/{max}";
+            return max <= 0 || IslandEconomy.Owned(toolId) <= 0 ? "" : Loc.F("bền {0}/{1}", "{0}/{1} uses", "残り{0}/{1}回", Left(toolId), max);
         }
 
         /// <summary>One finished use. Returns a message when the tool broke, otherwise null.</summary>
@@ -50,15 +51,16 @@ namespace NihongoLife.Island
                 NihongoLife.Player.PlayerInventory.Instance.RemoveItem(toolId, 1);
                 wear.usesLeft = max; // a spare in the bag starts fresh
                 bool spare = IslandEconomy.Owned(toolId) > 0;
-                message = $"{IslandLanguage.Primary(tool?.word)} ({tool?.word.vi}) đã hỏng sau {max} lần dùng" +
-                          (spare ? " — đang dùng cái dự phòng." : $" — mua cái mới ở cửa hàng Midori (¥{tool?.price}).");
+                message = Loc.F("{0} đã hỏng sau {1} lần dùng", "Your {0} broke after {1} uses", "{0}が{1}回使って壊れました", IslandLanguage.Name(tool?.word), max) +
+                    (spare ? Loc.T(" — đang dùng cái dự phòng.", " — using the spare one.", " — 予備を使います。")
+                           : Loc.F(" — mua cái mới ở cửa hàng Midori (¥{0}).", " — buy a new one at the Midori Store (¥{0}).", " — みどりしょうてんで新しいのを買えます（¥{0}）。", tool?.price));
                 IslandUI.Toast(message, !spare);
                 HudFeed.Post(message, HudFeed.Kind.Warning, 5f);
             }
             else if (wear.usesLeft == 5)
             {
                 var tool = IslandCatalog.Load().Tool(toolId);
-                HudFeed.Post($"{tool?.word.ja} sắp hỏng — còn 5 lần dùng.", HudFeed.Kind.Warning, 4f);
+                HudFeed.Post(Loc.F("{0} sắp hỏng — còn 5 lần dùng.", "Your {0} is wearing out — 5 uses left.", "{0}がもうすぐ壊れます — 残り5回。", IslandLanguage.Name(tool?.word)), HudFeed.Kind.Warning, 4f);
             }
             IslandState.Save();
             return message;

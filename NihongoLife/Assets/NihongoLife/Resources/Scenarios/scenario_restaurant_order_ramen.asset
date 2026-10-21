@@ -15,9 +15,11 @@ MonoBehaviour:
   id: scenario.restaurant.order_ramen
   version: 2
   titleJa: "やまだ食堂でラーメン"
-  titleEn: "Ăn ramen ở quán Yamada"
+  titleVi: "Ăn ramen ở quán Yamada"
+  titleEn: "Ramen at Yamada's"
   descriptionJa: "田中さんと、やまだ食堂へ行きましょう。券売機、注文、水、食べ方を練習します。"
-  descriptionEn: "Cùng bác Tanaka đến quán ramen của chú Yamada: mua vé ở máy, chọn độ cứng mì, tự lấy nước, cách ăn và cách nói khi ra về."
+  descriptionVi: "Cùng bác Tanaka đến quán ramen của chú Yamada: mua vé ở máy, chọn độ cứng mì, tự lấy nước, cách ăn và cách nói khi ra về."
+  descriptionEn: "Go with Mr. Tanaka to Mr. Yamada's ramen shop: buy a ticket at the machine, choose how firm your noodles are, get your own water, learn how to eat and what to say when you leave."
   chapterIndex: 3
   questType: side
   giverNpcId: npc_neighbor_1
@@ -47,23 +49,28 @@ MonoBehaviour:
   objectives:
   - id: obj_meet
     titleJa: "田中さんに会う"
-    titleEn: "Gặp bác Tanaka"
+    titleVi: "Gặp bác Tanaka"
+    titleEn: "Meet Mr. Tanaka"
     isOptional: 0
   - id: obj_arrive
     titleJa: "やまだ食堂に着く"
-    titleEn: "Đến quán Yamada"
+    titleVi: "Đến quán Yamada"
+    titleEn: "Get to Yamada's"
     isOptional: 0
   - id: obj_ticket
     titleJa: "券売機で券を買う"
-    titleEn: "Mua vé ở máy bán vé"
+    titleVi: "Mua vé ở máy bán vé"
+    titleEn: "Buy a ticket at the ticket machine"
     isOptional: 0
   - id: obj_eat
     titleJa: "ラーメンを食べる"
-    titleEn: "Thưởng thức ramen"
+    titleVi: "Thưởng thức ramen"
+    titleEn: "Enjoy your ramen"
     isOptional: 0
   - id: obj_pay
     titleJa: "お礼を言って店を出る"
-    titleEn: "Cảm ơn và rời quán"
+    titleVi: "Cảm ơn và rời quán"
+    titleEn: "Say thank you and leave"
     isOptional: 0
   nodes:
   - id: node_find_tanaka
@@ -93,14 +100,16 @@ MonoBehaviour:
     speakerId: npc_neighbor_1
     textJa: "おなかがすきましたね。ラーメンを食べに行きませんか。おいしい店を知っていますよ。"
     textReading: "おなかがすきましたね。ラーメンをたべにいきませんか。おいしいみせをしっていますよ。"
-    textEn: "Đói bụng rồi nhỉ. Mình đi ăn ramen nhé? Tôi biết một quán rất ngon đấy."
+    textVi: "Đói bụng rồi nhỉ. Mình đi ăn ramen nhé? Tôi biết một quán rất ngon đấy."
+    textEn: "I'm getting hungry. Shall we go and eat ramen? I know a really good place."
     textRomaji: "Onaka ga sukimashita ne. Raamen wo tabe ni ikimasen ka. Oishii mise wo shitte imasu yo."
     textEnglishIpa: 
     animationCue: talk
     voiceClip: {fileID: 0}
     choices:
     - textJa: "はい、ぜひ行きましょう。"
-      textEn: "Vâng, nhất định phải đi rồi ạ."
+      textVi: "Vâng, nhất định phải đi rồi ạ."
+      textEn: "Yes, I'd love to go."
       nextNodeId: n_walk
       scoreModifiers:
       - category: Grammar
@@ -114,7 +123,8 @@ MonoBehaviour:
       setFlags:
       - ramen.invited
     - textJa: "はい、行きます。"
-      textEn: "Vâng, cháu đi ạ."
+      textVi: "Vâng, cháu đi ạ."
+      textEn: "Yes, I'll come."
       nextNodeId: n_walk
       scoreModifiers:
       - category: ResponseAccuracy
@@ -127,7 +137,8 @@ MonoBehaviour:
       setFlags:
       - ramen.invited
     - textJa: "ラーメンは、食べません。"
-      textEn: "Cháu không ăn ramen."
+      textVi: "Cháu không ăn ramen."
+      textEn: "I don't eat ramen."
       nextNodeId: n_invite_wrong
       scoreModifiers:
       - category: ResponseAccuracy
@@ -149,7 +160,8 @@ MonoBehaviour:
     speakerId: npc_neighbor_1
     textJa: "あ、そうですか。でも、うどんも、ありますよ。もう一度、どうですか。"
     textReading: "あ、そうですか。でも、うどんも、ありますよ。もういちど、どうですか。"
-    textEn: "À, vậy à. Nhưng quán còn có cả udon nữa đấy. Bạn nghĩ lại nhé?"
+    textVi: "À, vậy à. Nhưng quán còn có cả udon nữa đấy. Bạn nghĩ lại nhé?"
+    textEn: "Ah, I see. But they have udon too. Will you think about it?"
     textRomaji: "A, sou desu ka. Demo, udon mo, arimasu yo. Mou ichido, dou desu ka."
     textEnglishIpa: 
     animationCue: talk
@@ -168,7 +180,8 @@ MonoBehaviour:
     speakerId: 
     textJa: "さくら通りを歩いて、小さな店の前に着きました。赤いのれんに、「やまだ食堂」と書いてあります。"
     textReading: "さくらどおりをあるいて、ちいさなみせのまえにつきました。あかいのれんに、「やまだしょくどう」とかいてあります。"
-    textEn: "Đi dọc phố Sakura, bạn đến trước một quán nhỏ. Trên tấm rèm đỏ có viết 「やまだ食堂」."
+    textVi: "Đi dọc phố Sakura, bạn đến trước một quán nhỏ. Trên tấm rèm đỏ có viết 「やまだ食堂」."
+    textEn: "Walking down Sakura Street, you reach a small shop. The red curtain says 「やまだ食堂」."
     textRomaji: "Sakura-doori wo aruite, chiisana mise no mae ni tsukimashita. Akai noren ni, \"Yamada shokudou\" to kaite arimasu."
     textEnglishIpa: 
     animationCue: 
@@ -187,7 +200,8 @@ MonoBehaviour:
     speakerId: npc_neighbor_1
     textJa: "「食堂」は、ごはんを食べる店です。ここは、山田さんの店ですよ。"
     textReading: "「しょくどう」は、ごはんをたべるみせです。ここは、やまださんのみせですよ。"
-    textEn: "「食堂」 là quán để ăn cơm. Đây là quán của chú Yamada đấy."
+    textVi: "「食堂」 là quán để ăn cơm. Đây là quán của chú Yamada đấy."
+    textEn: "「食堂」 is a place to eat meals. This is Mr. Yamada's shop."
     textRomaji: "\"Shokudou\" wa, gohan wo taberu mise desu. Koko wa, Yamada-san no mise desu yo."
     textEnglishIpa: 
     animationCue: point
@@ -206,14 +220,16 @@ MonoBehaviour:
     speakerId: npc_ramen_owner
     textJa: "いらっしゃい！あれ、田中さん。今日は、お友達と？"
     textReading: "いらっしゃい！あれ、たなかさん。きょうは、おともだちと？"
-    textEn: "Xin chào! Ơ kìa, bác Tanaka. Hôm nay đi cùng bạn à?"
+    textVi: "Xin chào! Ơ kìa, bác Tanaka. Hôm nay đi cùng bạn à?"
+    textEn: "Welcome! Oh, Mr. Tanaka. Brought a friend today?"
     textRomaji: "Irasshai! Are, Tanaka-san. Kyou wa, otomodachi to?"
     textEnglishIpa: 
     animationCue: talk
     voiceClip: {fileID: 0}
     choices:
     - textJa: "はじめまして。よろしくお願いします。"
-      textEn: "Rất vui được gặp chú. Xin chú giúp đỡ ạ."
+      textVi: "Rất vui được gặp chú. Xin chú giúp đỡ ạ."
+      textEn: "Nice to meet you. Thank you for having me."
       nextNodeId: n_ticket_intro
       scoreModifiers:
       - category: Vocabulary
@@ -226,7 +242,8 @@ MonoBehaviour:
       setFlags:
       - yamada.introduced
     - textJa: "こんにちは。"
-      textEn: "Xin chào ạ."
+      textVi: "Xin chào ạ."
+      textEn: "Hello."
       nextNodeId: n_ticket_intro
       scoreModifiers:
       - category: ResponseAccuracy
@@ -259,7 +276,8 @@ MonoBehaviour:
     speakerId: npc_ramen_owner
     textJa: "ははは、元気だね。でも、まず、あいさつだよ。"
     textReading: "ははは、げんきだね。でも、まず、あいさつだよ。"
-    textEn: "Haha, khỏe khoắn nhỉ. Nhưng trước hết phải chào hỏi đã chứ."
+    textVi: "Haha, khỏe khoắn nhỉ. Nhưng trước hết phải chào hỏi đã chứ."
+    textEn: "Haha, full of energy. But first, a proper greeting."
     textRomaji: "Hahaha, genki da ne. Demo, mazu, aisatsu da yo."
     textEnglishIpa: 
     animationCue: talk
@@ -278,7 +296,8 @@ MonoBehaviour:
     speakerId: npc_neighbor_1
     textJa: "この店は、先に券売機で、券を買います。メニューは、これです。"
     textReading: "このみせは、さきにけんばいきで、けんをかいます。メニューは、これです。"
-    textEn: "Quán này phải mua vé ở máy bán vé trước. Thực đơn đây này."
+    textVi: "Quán này phải mua vé ở máy bán vé trước. Thực đơn đây này."
+    textEn: "Here you buy a ticket at the ticket machine first. Here's the menu."
     textRomaji: "Kono mise wa, saki ni kenbaiki de, ken wo kaimasu. Menyuu wa, kore desu."
     textEnglishIpa: 
     animationCue: point
@@ -297,7 +316,8 @@ MonoBehaviour:
     speakerId: 
     textJa: "券売機のボタン：しょうゆ 八百円　みそ 九百円　しお 八百円　ぎょうざ 四百円　大盛り 百円"
     textReading: "けんばいきのボタン：しょうゆ はっぴゃくえん　みそ きゅうひゃくえん　しお はっぴゃくえん　ぎょうざ よんひゃくえん　おおもり ひゃくえん"
-    textEn: "Các nút của máy: shoyu 800 yên, miso 900 yên, shio 800 yên, gyoza 400 yên, thêm mì (oomori) 100 yên."
+    textVi: "Các nút của máy: shoyu 800 yên, miso 900 yên, shio 800 yên, gyoza 400 yên, thêm mì (oomori) 100 yên."
+    textEn: "The machine's buttons: shoyu 800 yen, miso 900 yen, shio 800 yen, gyoza 400 yen, extra noodles (oomori) 100 yen."
     textRomaji: "Kenbaiki no botan: shouyu happyaku en, miso kyuuhyaku en, shio happyaku en, gyouza yonhyaku en, oomori hyaku en"
     textEnglishIpa: 
     animationCue: 
@@ -316,14 +336,16 @@ MonoBehaviour:
     speakerId: npc_neighbor_1
     textJa: "どのラーメンにしますか。私は、しょうゆです。"
     textReading: "どのラーメンにしますか。わたしは、しょうゆです。"
-    textEn: "Bạn chọn ramen nào? Tôi chọn vị shoyu."
+    textVi: "Bạn chọn ramen nào? Tôi chọn vị shoyu."
+    textEn: "Which ramen will you have? I'll have shoyu."
     textRomaji: "Dono raamen ni shimasu ka. Watashi wa, shouyu desu."
     textEnglishIpa: 
     animationCue: talk
     voiceClip: {fileID: 0}
     choices:
     - textJa: "みそラーメンにします。"
-      textEn: "Cháu chọn ramen miso ạ."
+      textVi: "Cháu chọn ramen miso ạ."
+      textEn: "I'll have miso ramen."
       nextNodeId: n_pay_miso
       scoreModifiers:
       - category: Grammar
@@ -336,7 +358,8 @@ MonoBehaviour:
       setFlags:
       - ramen.miso
     - textJa: "しょうゆラーメンにします。"
-      textEn: "Cháu chọn ramen shoyu ạ."
+      textVi: "Cháu chọn ramen shoyu ạ."
+      textEn: "I'll have shoyu ramen."
       nextNodeId: n_pay_shoyu
       scoreModifiers:
       - category: Grammar
@@ -349,7 +372,8 @@ MonoBehaviour:
       setFlags:
       - ramen.shoyu
     - textJa: "しおラーメンにします。"
-      textEn: "Cháu chọn ramen shio ạ."
+      textVi: "Cháu chọn ramen shio ạ."
+      textEn: "I'll have shio ramen."
       nextNodeId: n_pay_shoyu
       scoreModifiers:
       - category: Grammar
@@ -362,7 +386,8 @@ MonoBehaviour:
       setFlags:
       - ramen.shio
     - textJa: "ラーメンをいただきます。"
-      textEn: "Cháu xin phép dùng ramen ạ."
+      textVi: "Cháu xin phép dùng ramen ạ."
+      textEn: "I'll gladly have the ramen."
       nextNodeId: n_flavor_wrong
       scoreModifiers:
       - category: Grammar
@@ -384,7 +409,8 @@ MonoBehaviour:
     speakerId: npc_neighbor_1
     textJa: "まだ、食べませんよ。「〜にします」と言いましょう。どれにしますか。"
     textReading: "まだ、たべませんよ。「〜にします」といいましょう。どれにしますか。"
-    textEn: "Chưa ăn đâu mà. Hãy nói \"~ ni shimasu\" (tôi chọn ~). Bạn chọn món nào?"
+    textVi: "Chưa ăn đâu mà. Hãy nói \"~ ni shimasu\" (tôi chọn ~). Bạn chọn món nào?"
+    textEn: "We haven't started eating yet. Say \"~ ni shimasu\" (I'll have ~). Which one will you have?"
     textRomaji: "Mada, tabemasen yo. \"~ ni shimasu\" to iimashou. Dore ni shimasu ka?"
     textEnglishIpa: 
     animationCue: point
@@ -403,14 +429,16 @@ MonoBehaviour:
     speakerId: npc_neighbor_1
     textJa: "ぎょうざも食べますか。ぎょうざは四百円です。みそラーメンと、ぜんぶで、いくらですか。"
     textReading: "ぎょうざもたべますか。ぎょうざはよんひゃくえんです。みそラーメンと、ぜんぶで、いくらですか。"
-    textEn: "Bạn có ăn cả gyoza không? Gyoza 400 yên. Cùng với ramen miso thì tổng cộng là bao nhiêu?"
+    textVi: "Bạn có ăn cả gyoza không? Gyoza 400 yên. Cùng với ramen miso thì tổng cộng là bao nhiêu?"
+    textEn: "Will you have gyoza too? Gyoza is 400 yen. With the miso ramen, how much is that in total?"
     textRomaji: "Gyouza mo tabemasu ka. Gyouza wa yonhyaku en desu. Miso raamen to, zenbu de, ikura desu ka?"
     textEnglishIpa: 
     animationCue: talk
     voiceClip: {fileID: 0}
     choices:
     - textJa: "千三百円です。"
-      textEn: "Là 1.300 yên ạ."
+      textVi: "Là 1.300 yên ạ."
+      textEn: "1,300 yen."
       nextNodeId: n_buy
       scoreModifiers:
       - category: Vocabulary
@@ -424,7 +452,8 @@ MonoBehaviour:
       - vocab.n5.en
       setFlags: []
     - textJa: "千二百円です。"
-      textEn: "Là 1.200 yên ạ."
+      textVi: "Là 1.200 yên ạ."
+      textEn: "1,200 yen."
       nextNodeId: n_sum_wrong_miso
       scoreModifiers:
       - category: Vocabulary
@@ -434,7 +463,8 @@ MonoBehaviour:
       vocabularyTags: []
       setFlags: []
     - textJa: "もう一度お願いします。"
-      textEn: "Phiền bác nói lại một lần nữa ạ."
+      textVi: "Phiền bác nói lại một lần nữa ạ."
+      textEn: "Could you say that once more, please?"
       nextNodeId: n_pay_miso
       scoreModifiers:
       - category: ResponseAccuracy
@@ -457,7 +487,8 @@ MonoBehaviour:
     speakerId: npc_neighbor_1
     textJa: "みそは九百円、ぎょうざは四百円。九百と四百で、千三百円ですよ。"
     textReading: "みそはきゅうひゃくえん、ぎょうざはよんひゃくえん。きゅうひゃくとよんひゃくで、せんさんびゃくえんですよ。"
-    textEn: "Miso 900 yên, gyoza 400 yên. 900 cộng 400 là 1.300 yên đấy."
+    textVi: "Miso 900 yên, gyoza 400 yên. 900 cộng 400 là 1.300 yên đấy."
+    textEn: "Miso is 900 yen, gyoza is 400 yen. 900 plus 400 is 1,300 yen."
     textRomaji: "Miso wa kyuuhyaku en, gyouza wa yonhyaku en. Kyuuhyaku to yonhyaku de, sen sanbyaku en desu yo."
     textEnglishIpa: 
     animationCue: point
@@ -476,14 +507,16 @@ MonoBehaviour:
     speakerId: npc_neighbor_1
     textJa: "ぎょうざも食べますか。ぎょうざは四百円です。ラーメンと、ぜんぶで、いくらですか。"
     textReading: "ぎょうざもたべますか。ぎょうざはよんひゃくえんです。ラーメンと、ぜんぶで、いくらですか。"
-    textEn: "Bạn có ăn cả gyoza không? Gyoza 400 yên. Cùng với ramen thì tổng cộng là bao nhiêu?"
+    textVi: "Bạn có ăn cả gyoza không? Gyoza 400 yên. Cùng với ramen thì tổng cộng là bao nhiêu?"
+    textEn: "Will you have gyoza too? Gyoza is 400 yen. With the ramen, how much is that in total?"
     textRomaji: "Gyouza mo tabemasu ka. Gyouza wa yonhyaku en desu. Raamen to, zenbu de, ikura desu ka?"
     textEnglishIpa: 
     animationCue: talk
     voiceClip: {fileID: 0}
     choices:
     - textJa: "千二百円です。"
-      textEn: "Là 1.200 yên ạ."
+      textVi: "Là 1.200 yên ạ."
+      textEn: "1,200 yen."
       nextNodeId: n_buy
       scoreModifiers:
       - category: Vocabulary
@@ -497,7 +530,8 @@ MonoBehaviour:
       - vocab.n5.en
       setFlags: []
     - textJa: "千三百円です。"
-      textEn: "Là 1.300 yên ạ."
+      textVi: "Là 1.300 yên ạ."
+      textEn: "1,300 yen."
       nextNodeId: n_sum_wrong_shoyu
       scoreModifiers:
       - category: Vocabulary
@@ -507,7 +541,8 @@ MonoBehaviour:
       vocabularyTags: []
       setFlags: []
     - textJa: "もう一度お願いします。"
-      textEn: "Phiền bác nói lại một lần nữa ạ."
+      textVi: "Phiền bác nói lại một lần nữa ạ."
+      textEn: "Could you say that once more, please?"
       nextNodeId: n_pay_shoyu
       scoreModifiers:
       - category: ResponseAccuracy
@@ -530,7 +565,8 @@ MonoBehaviour:
     speakerId: npc_neighbor_1
     textJa: "ラーメンは八百円、ぎょうざは四百円。八百と四百で、千二百円ですよ。"
     textReading: "ラーメンははっぴゃくえん、ぎょうざはよんひゃくえん。はっぴゃくとよんひゃくで、せんにひゃくえんですよ。"
-    textEn: "Ramen 800 yên, gyoza 400 yên. 800 cộng 400 là 1.200 yên đấy."
+    textVi: "Ramen 800 yên, gyoza 400 yên. 800 cộng 400 là 1.200 yên đấy."
+    textEn: "Ramen is 800 yen, gyoza is 400 yen. 800 plus 400 is 1,200 yen."
     textRomaji: "Raamen wa happyaku en, gyouza wa yonhyaku en. Happyaku to yonhyaku de, sen nihyaku en desu yo."
     textEnglishIpa: 
     animationCue: point
@@ -549,7 +585,8 @@ MonoBehaviour:
     speakerId: 
     textJa: "お金を入れて、ボタンを押しました。券が二枚、出てきました。"
     textReading: "おかねをいれて、ボタンをおしました。けんがにまい、でてきました。"
-    textEn: "Bạn bỏ tiền vào rồi bấm nút. Hai tấm vé được nhả ra."
+    textVi: "Bạn bỏ tiền vào rồi bấm nút. Hai tấm vé được nhả ra."
+    textEn: "You put the money in and press the buttons. Two tickets come out."
     textRomaji: "Okane wo irete, botan wo oshimashita. Ken ga nimai, dete kimashita."
     textEnglishIpa: 
     animationCue: 
@@ -568,14 +605,16 @@ MonoBehaviour:
     speakerId: npc_ramen_owner
     textJa: "はい、券をお願いします。麺の硬さは、どうする？"
     textReading: "はい、けんをおねがいします。めんのかたさは、どうする？"
-    textEn: "Vâng, cho tôi xin vé nhé. Mì thì để độ cứng thế nào?"
+    textVi: "Vâng, cho tôi xin vé nhé. Mì thì để độ cứng thế nào?"
+    textEn: "Okay, your tickets please. How firm would you like your noodles?"
     textRomaji: "Hai, ken wo onegaishimasu. Men no katasa wa, dou suru?"
     textEnglishIpa: 
     animationCue: talk
     voiceClip: {fileID: 0}
     choices:
     - textJa: "ふつうでお願いします。"
-      textEn: "Cho cháu độ cứng bình thường ạ."
+      textVi: "Cho cháu độ cứng bình thường ạ."
+      textEn: "Regular, please."
       nextNodeId: n_water
       scoreModifiers:
       - category: Grammar
@@ -587,7 +626,8 @@ MonoBehaviour:
       - vocab.n5.futsuu
       setFlags: []
     - textJa: "かためでお願いします。"
-      textEn: "Cho cháu mì cứng vừa ạ."
+      textVi: "Cho cháu mì cứng vừa ạ."
+      textEn: "Medium-firm, please."
       nextNodeId: n_water
       scoreModifiers:
       - category: Grammar
@@ -599,7 +639,8 @@ MonoBehaviour:
       - vocab.n5.katame
       setFlags: []
     - textJa: "かたいです。"
-      textEn: "Cứng."
+      textVi: "Cứng."
+      textEn: "Firm."
       nextNodeId: n_counter_wrong
       scoreModifiers:
       - category: Grammar
@@ -621,7 +662,8 @@ MonoBehaviour:
     speakerId: npc_ramen_owner
     textJa: "ははは、「〜でお願いします」だよ。もう一度！"
     textReading: "ははは、「〜でおねがいします」だよ。もういちど！"
-    textEn: "Haha, phải nói \"~ de onegaishimasu\" chứ. Nói lại đi!"
+    textVi: "Haha, phải nói \"~ de onegaishimasu\" chứ. Nói lại đi!"
+    textEn: "Haha, you should say \"~ de onegaishimasu\". Say it again!"
     textRomaji: "Hahaha, \"~ de onegaishimasu\" da yo. Mou ichido!"
     textEnglishIpa: 
     animationCue: point
@@ -640,14 +682,16 @@ MonoBehaviour:
     speakerId: npc_neighbor_1
     textJa: "お水は、セルフです。あそこにありますよ。"
     textReading: "おみずは、セルフです。あそこにありますよ。"
-    textEn: "Nước thì tự phục vụ. Ở đằng kia đấy."
+    textVi: "Nước thì tự phục vụ. Ở đằng kia đấy."
+    textEn: "Water is self-service. It's over there."
     textRomaji: "Omizu wa, serufu desu. Asoko ni arimasu yo."
     textEnglishIpa: 
     animationCue: point
     voiceClip: {fileID: 0}
     choices:
     - textJa: "ありがとうございます。私が入れます。"
-      textEn: "Cảm ơn bác. Để cháu rót ạ."
+      textVi: "Cảm ơn bác. Để cháu rót ạ."
+      textEn: "Thank you. I'll pour it."
       nextNodeId: n_eat
       scoreModifiers:
       - category: Grammar
@@ -660,7 +704,8 @@ MonoBehaviour:
       - vocab.n5.serufu
       setFlags: []
     - textJa: "お水は、どこですか。"
-      textEn: "Nước ở đâu ạ?"
+      textVi: "Nước ở đâu ạ?"
+      textEn: "Where is the water?"
       nextNodeId: n_water_again
       scoreModifiers:
       - category: Grammar
@@ -672,7 +717,8 @@ MonoBehaviour:
       - vocab.n5.omizu
       setFlags: []
     - textJa: "店員さん、お水をください。"
-      textEn: "Nhân viên ơi, cho tôi nước."
+      textVi: "Nhân viên ơi, cho tôi nước."
+      textEn: "Excuse me, staff, water please."
       nextNodeId: n_water_wrong
       scoreModifiers:
       - category: ResponseAccuracy
@@ -694,7 +740,8 @@ MonoBehaviour:
     speakerId: npc_neighbor_1
     textJa: "ふふ、あそこですよ。あの青いコップの隣です。"
     textReading: "ふふ、あそこですよ。あのあおいコップのとなりです。"
-    textEn: "Hì, ở đằng kia kìa. Bên cạnh chiếc cốc màu xanh."
+    textVi: "Hì, ở đằng kia kìa. Bên cạnh chiếc cốc màu xanh."
+    textEn: "Heh, it's over there. Next to the blue cup."
     textRomaji: "Fufu, asoko desu yo. Ano aoi koppu no tonari desu."
     textEnglishIpa: 
     animationCue: point
@@ -713,7 +760,8 @@ MonoBehaviour:
     speakerId: npc_neighbor_1
     textJa: "ここは、セルフの店です。自分で入れましょう。"
     textReading: "ここは、セルフのみせです。じぶんでいれましょう。"
-    textEn: "Đây là quán tự phục vụ. Mình tự rót nhé."
+    textVi: "Đây là quán tự phục vụ. Mình tự rót nhé."
+    textEn: "It's self-service here. Let's pour our own."
     textRomaji: "Koko wa, serufu no mise desu. Jibun de iremashou."
     textEnglishIpa: 
     animationCue: point
@@ -732,14 +780,16 @@ MonoBehaviour:
     speakerId: npc_ramen_owner
     textJa: "はい、おまち！熱いから、気をつけてね。"
     textReading: "はい、おまち！あついから、きをつけてね。"
-    textEn: "Đây, xong rồi! Nóng đấy, cẩn thận nhé."
+    textVi: "Đây, xong rồi! Nóng đấy, cẩn thận nhé."
+    textEn: "Here you go! It's hot, be careful."
     textRomaji: "Hai, omachi! Atsui kara, ki wo tsukete ne."
     textEnglishIpa: 
     animationCue: point
     voiceClip: {fileID: 0}
     choices:
     - textJa: "いただきます。"
-      textEn: "Cháu xin phép dùng ạ."
+      textVi: "Cháu xin phép dùng ạ."
+      textEn: "I'll gladly have some."
       nextNodeId: n_slurp
       scoreModifiers:
       - category: Vocabulary
@@ -750,7 +800,8 @@ MonoBehaviour:
       - vocab.n5.itadakimasu
       setFlags: []
     - textJa: "ありがとうございます。いただきます。"
-      textEn: "Cháu cảm ơn. Cháu xin phép dùng ạ."
+      textVi: "Cháu cảm ơn. Cháu xin phép dùng ạ."
+      textEn: "Thank you. I'll gladly have some."
       nextNodeId: n_slurp
       scoreModifiers:
       - category: Vocabulary
@@ -774,14 +825,16 @@ MonoBehaviour:
     speakerId: npc_neighbor_1
     textJa: "ラーメンは、音を立てて食べてもいいですよ。日本では、おいしいという意味です。"
     textReading: "ラーメンは、おとをたててたべてもいいですよ。にほんでは、おいしいといういみです。"
-    textEn: "Ăn ramen thì phát ra tiếng húp cũng được đấy. Ở Nhật, điều đó có nghĩa là \"ngon\"."
+    textVi: "Ăn ramen thì phát ra tiếng húp cũng được đấy. Ở Nhật, điều đó có nghĩa là \"ngon\"."
+    textEn: "It's fine to slurp when you eat ramen. In Japan it means \"delicious\"."
     textRomaji: "Raamen wa, oto wo tatete tabete mo ii desu yo. Nihon de wa, oishii to iu imi desu."
     textEnglishIpa: 
     animationCue: talk
     voiceClip: {fileID: 0}
     choices:
     - textJa: "音を立ててもいいんですか。"
-      textEn: "Phát ra tiếng cũng được ạ?"
+      textVi: "Phát ra tiếng cũng được ạ?"
+      textEn: "It's okay to make noise?"
       nextNodeId: n_taste
       scoreModifiers:
       - category: Grammar
@@ -793,7 +846,8 @@ MonoBehaviour:
       - vocab.n5.oto
       setFlags: []
     - textJa: "音は、だめです。"
-      textEn: "Tiếng động thì không được."
+      textVi: "Tiếng động thì không được."
+      textEn: "Making noise is not allowed."
       nextNodeId: n_slurp_wrong
       scoreModifiers:
       - category: Grammar
@@ -815,7 +869,8 @@ MonoBehaviour:
     speakerId: npc_neighbor_1
     textJa: "いいえ、ラーメンは、いいんですよ。食べてみてください。"
     textReading: "いいえ、ラーメンは、いいんですよ。たべてみてください。"
-    textEn: "Không phải đâu, với ramen thì được đấy. Bạn thử ăn xem."
+    textVi: "Không phải đâu, với ramen thì được đấy. Bạn thử ăn xem."
+    textEn: "No, with ramen it's fine. Give it a try."
     textRomaji: "Iie, raamen wa, ii n desu yo. Tabete mite kudasai."
     textEnglishIpa: 
     animationCue: point
@@ -834,14 +889,16 @@ MonoBehaviour:
     speakerId: npc_ramen_owner
     textJa: "どうだい、味は？"
     textReading: "どうだい、あじは？"
-    textEn: "Sao nào, vị thế nào?"
+    textVi: "Sao nào, vị thế nào?"
+    textEn: "Well, how does it taste?"
     textRomaji: "Dou dai, aji wa?"
     textEnglishIpa: 
     animationCue: talk
     voiceClip: {fileID: 0}
     choices:
     - textJa: "とてもおいしいです！スープが熱いです。"
-      textEn: "Rất ngon ạ! Nước dùng nóng lắm."
+      textVi: "Rất ngon ạ! Nước dùng nóng lắm."
+      textEn: "It's delicious! The broth is so hot."
       nextNodeId: n_kaedama
       scoreModifiers:
       - category: Vocabulary
@@ -856,7 +913,8 @@ MonoBehaviour:
       setFlags:
       - yamada.friend
     - textJa: "おいしいです。"
-      textEn: "Ngon ạ."
+      textVi: "Ngon ạ."
+      textEn: "It's good."
       nextNodeId: n_kaedama
       scoreModifiers:
       - category: Vocabulary
@@ -869,7 +927,8 @@ MonoBehaviour:
       setFlags:
       - yamada.friend
     - textJa: "ふつうです。"
-      textEn: "Bình thường ạ."
+      textVi: "Bình thường ạ."
+      textEn: "It's okay."
       nextNodeId: n_taste_wrong
       scoreModifiers:
       - category: ResponseAccuracy
@@ -891,7 +950,8 @@ MonoBehaviour:
     speakerId: npc_ramen_owner
     textJa: "ふつう！？ははは、正直だね。もう少し、食べてみて。"
     textReading: "ふつう！？ははは、しょうじきだね。もうすこし、たべてみて。"
-    textEn: "Bình thường ư?! Haha, thật thà quá. Ăn thêm chút nữa xem."
+    textVi: "Bình thường ư?! Haha, thật thà quá. Ăn thêm chút nữa xem."
+    textEn: "Just okay?! Haha, how honest. Have a bit more."
     textRomaji: "Futsuu!? Hahaha, shoujiki da ne. Mou sukoshi, tabete mite."
     textEnglishIpa: 
     animationCue: talk
@@ -910,14 +970,16 @@ MonoBehaviour:
     speakerId: npc_ramen_owner
     textJa: "麺が、もう少しほしいなら、替え玉もあるよ。百円だ。"
     textReading: "めんが、もうすこしほしいなら、かえだまもあるよ。ひゃくえんだ。"
-    textEn: "Nếu bạn muốn thêm chút mì thì có kaedama (mì thêm) nữa đấy. 100 yên."
+    textVi: "Nếu bạn muốn thêm chút mì thì có kaedama (mì thêm) nữa đấy. 100 yên."
+    textEn: "If you want a little more noodles, there's kaedama (extra noodles). 100 yen."
     textRomaji: "Men ga, mou sukoshi hoshii nara, kaedama mo aru yo. Hyaku en da."
     textEnglishIpa: 
     animationCue: talk
     voiceClip: {fileID: 0}
     choices:
     - textJa: "おなかがいっぱいです。だいじょうぶです。"
-      textEn: "Cháu no rồi. Không cần đâu ạ."
+      textVi: "Cháu no rồi. Không cần đâu ạ."
+      textEn: "I'm full. No thank you."
       nextNodeId: n_leave
       scoreModifiers:
       - category: Grammar
@@ -930,7 +992,8 @@ MonoBehaviour:
       - vocab.n5.ippai
       setFlags: []
     - textJa: "はい、もう少し食べたいです。"
-      textEn: "Vâng, cháu muốn ăn thêm một chút ạ."
+      textVi: "Vâng, cháu muốn ăn thêm một chút ạ."
+      textEn: "Yes, I'd like a little more."
       nextNodeId: n_kaedama_yes
       scoreModifiers:
       - category: Grammar
@@ -942,7 +1005,8 @@ MonoBehaviour:
       - vocab.n5.taberu
       setFlags: []
     - textJa: "いりません。"
-      textEn: "Không cần."
+      textVi: "Không cần."
+      textEn: "Don't need it."
       nextNodeId: n_kaedama_blunt
       scoreModifiers:
       - category: ResponseAccuracy
@@ -964,7 +1028,8 @@ MonoBehaviour:
     speakerId: npc_ramen_owner
     textJa: "いいね！じゃあ、百円の券を、もう一枚買ってね。"
     textReading: "いいね！じゃあ、ひゃくえんのけんを、もういちまいかってね。"
-    textEn: "Hay lắm! Vậy thì mua thêm một tấm vé 100 yên nhé."
+    textVi: "Hay lắm! Vậy thì mua thêm một tấm vé 100 yên nhé."
+    textEn: "Great! Then buy one more 100-yen ticket."
     textRomaji: "Ii ne! Jaa, hyaku en no ken wo, mou ichimai katte ne."
     textEnglishIpa: 
     animationCue: talk
@@ -983,7 +1048,8 @@ MonoBehaviour:
     speakerId: npc_ramen_owner
     textJa: "ははは、はっきりしてるね。じゃあ、いいよ。"
     textReading: "ははは、はっきりしてるね。じゃあ、いいよ。"
-    textEn: "Haha, thẳng thắn nhỉ. Thôi được rồi."
+    textVi: "Haha, thẳng thắn nhỉ. Thôi được rồi."
+    textEn: "Haha, straight to the point. All right then."
     textRomaji: "Hahaha, hakkiri shiteru ne. Jaa, ii yo."
     textEnglishIpa: 
     animationCue: talk
@@ -1002,7 +1068,8 @@ MonoBehaviour:
     speakerId: 
     textJa: "ラーメンを食べ終わりました。おなかも心も、いっぱいです。お店を出ます。"
     textReading: "ラーメンをたべおわりました。おなかもこころも、いっぱいです。おみせをでます。"
-    textEn: "Bạn ăn xong tô ramen. Bụng no, lòng cũng đầy ắp. Bạn ra khỏi quán."
+    textVi: "Bạn ăn xong tô ramen. Bụng no, lòng cũng đầy ắp. Bạn ra khỏi quán."
+    textEn: "You finish your bowl of ramen. Your stomach is full, and so is your heart. You leave the shop."
     textRomaji: "Raamen wo tabe owarimashita. Onaka mo kokoro mo, ippai desu. Omise wo demasu."
     textEnglishIpa: 
     animationCue: 
@@ -1021,14 +1088,16 @@ MonoBehaviour:
     speakerId: npc_ramen_owner
     textJa: "毎度あり！また来てね。"
     textReading: "まいどあり！またきてね。"
-    textEn: "Cảm ơn quý khách! Lại đến nhé."
+    textVi: "Cảm ơn quý khách! Lại đến nhé."
+    textEn: "Thank you very much! Come again."
     textRomaji: "Maido ari! Mata kite ne."
     textEnglishIpa: 
     animationCue: talk
     voiceClip: {fileID: 0}
     choices:
     - textJa: "ごちそうさまでした。おいしかったです。"
-      textEn: "Cảm ơn về bữa ăn ạ. Ngon lắm ạ."
+      textVi: "Cảm ơn về bữa ăn ạ. Ngon lắm ạ."
+      textEn: "Thank you for the meal. It was delicious."
       nextNodeId: n_end
       scoreModifiers:
       - category: Vocabulary
@@ -1042,7 +1111,8 @@ MonoBehaviour:
       setFlags:
       - yamada.regular
     - textJa: "ありがとう。"
-      textEn: "Cảm ơn."
+      textVi: "Cảm ơn."
+      textEn: "Thanks."
       nextNodeId: n_bye_casual
       scoreModifiers:
       - category: ResponseAccuracy
@@ -1052,7 +1122,8 @@ MonoBehaviour:
       vocabularyTags: []
       setFlags: []
     - textJa: "いただきます。"
-      textEn: "Cháu xin phép dùng ạ."
+      textVi: "Cháu xin phép dùng ạ."
+      textEn: "I'll gladly have some."
       nextNodeId: n_bye_wrong
       scoreModifiers:
       - category: Vocabulary
@@ -1074,7 +1145,8 @@ MonoBehaviour:
     speakerId: npc_ramen_owner
     textJa: "はいよ。「ごちそうさまでした」と言うと、うれしいね。"
     textReading: "はいよ。「ごちそうさまでした」というと、うれしいね。"
-    textEn: "Ừ. Nếu nói \"gochisousama deshita\" thì tôi vui lắm đấy."
+    textVi: "Ừ. Nếu nói \"gochisousama deshita\" thì tôi vui lắm đấy."
+    textEn: "Yes. If you say \"gochisousama deshita\" it makes me very happy."
     textRomaji: "Hai yo. \"Gochisousama deshita\" to iu to, ureshii ne."
     textEnglishIpa: 
     animationCue: talk
@@ -1093,7 +1165,8 @@ MonoBehaviour:
     speakerId: npc_ramen_owner
     textJa: "ははは、もう食べたよ！「ごちそうさまでした」だ。"
     textReading: "ははは、もうたべたよ！「ごちそうさまでした」だ。"
-    textEn: "Haha, ăn xong rồi mà! Phải nói \"gochisousama deshita\" chứ."
+    textVi: "Haha, ăn xong rồi mà! Phải nói \"gochisousama deshita\" chứ."
+    textEn: "Haha, you've already eaten! You should say \"gochisousama deshita\"."
     textRomaji: "Hahaha, mou tabeta yo! \"Gochisousama deshita\" da."
     textEnglishIpa: 
     animationCue: point
@@ -1112,7 +1185,8 @@ MonoBehaviour:
     speakerId: npc_neighbor_1
     textJa: "ここは、私のお気に入りの店です。これから、いつでも来てくださいね。"
     textReading: "ここは、わたしのおきにいりのみせです。これから、いつでもきてくださいね。"
-    textEn: "Đây là quán yêu thích của tôi. Từ nay bạn cứ ghé bất cứ lúc nào nhé."
+    textVi: "Đây là quán yêu thích của tôi. Từ nay bạn cứ ghé bất cứ lúc nào nhé."
+    textEn: "This is my favourite place. Come by any time from now on."
     textRomaji: "Koko wa, watashi no okiniiri no mise desu. Korekara, itsu demo kite kudasai ne."
     textEnglishIpa: 
     animationCue: bow
@@ -1131,7 +1205,8 @@ MonoBehaviour:
     speakerId: 
     textJa: "今日のポイント：「〜にします」「〜でお願いします」「ぜんぶで、いくらですか」。"
     textReading: "きょうのポイント：「〜にします」「〜でおねがいします」「ぜんぶで、いくらですか」。"
-    textEn: "Tóm tắt: \"~ ni shimasu\" (tôi chọn ~), \"~ de onegaishimasu\" (cho tôi ~), \"zenbu de, ikura desu ka\" (tất cả là bao nhiêu?). Ở quán ramen: mua vé ở máy, nước tự phục vụ, húp xì xụp là được!"
+    textVi: "Tóm tắt: \"~ ni shimasu\" (tôi chọn ~), \"~ de onegaishimasu\" (cho tôi ~), \"zenbu de, ikura desu ka\" (tất cả là bao nhiêu?). Ở quán ramen: mua vé ở máy, nước tự phục vụ, húp xì xụp là được!"
+    textEn: "Summary: \"~ ni shimasu\" (I'll have ~), \"~ de onegaishimasu\" (~, please), \"zenbu de, ikura desu ka\" (how much altogether?). At a ramen shop: buy a ticket at the machine, water is self-service, and slurping is fine!"
     textRomaji: "Kyou no pointo: \"~ ni shimasu\" \"~ de onegaishimasu\" \"zenbu de, ikura desu ka\"."
     textEnglishIpa: 
     animationCue: 

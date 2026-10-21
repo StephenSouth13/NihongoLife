@@ -2,85 +2,883 @@
   "schema": "nihongolife.island.v1",
   "ticketPrice": 450,
   "starterKit": [
-    { "itemId": "tool_hoe", "quantity": 1 },
-    { "itemId": "tool_watering_can", "quantity": 1 },
-    { "itemId": "seed_carrot", "quantity": 3 }
+    {
+      "itemId": "tool_hoe",
+      "quantity": 1
+    },
+    {
+      "itemId": "tool_watering_can",
+      "quantity": 1
+    },
+    {
+      "itemId": "seed_carrot",
+      "quantity": 3
+    }
   ],
   "crops": [
-    { "id": "carrot",  "model": "Carrot",  "secondsPerStage": 20, "seedPrice": 40,  "sellPrice": 35, "yield": 2,
-      "word": { "ja": "にんじん", "reading": "ninjin", "en": "carrot", "vi": "cà rốt" } },
-    { "id": "tomato",  "model": "Tomato",  "secondsPerStage": 30, "seedPrice": 60,  "sellPrice": 50, "yield": 2,
-      "word": { "ja": "トマト", "reading": "tomato", "en": "tomato", "vi": "cà chua" } },
-    { "id": "corn",    "model": "Corn",    "secondsPerStage": 40, "seedPrice": 80,  "sellPrice": 65, "yield": 2,
-      "word": { "ja": "とうもろこし", "reading": "tōmorokoshi", "en": "corn", "vi": "ngô" } },
-    { "id": "pumpkin", "model": "Pumpkin", "secondsPerStage": 50, "seedPrice": 100, "sellPrice": 90, "yield": 2,
-      "word": { "ja": "かぼちゃ", "reading": "kabocha", "en": "pumpkin", "vi": "bí ngô" } }
+    {
+      "id": "carrot",
+      "model": "Carrot",
+      "secondsPerStage": 20,
+      "seedPrice": 40,
+      "sellPrice": 35,
+      "yield": 2,
+      "word": {
+        "ja": "にんじん",
+        "reading": "ninjin",
+        "en": "carrot",
+        "vi": "cà rốt"
+      }
+    },
+    {
+      "id": "tomato",
+      "model": "Tomato",
+      "secondsPerStage": 30,
+      "seedPrice": 60,
+      "sellPrice": 50,
+      "yield": 2,
+      "word": {
+        "ja": "トマト",
+        "reading": "tomato",
+        "en": "tomato",
+        "vi": "cà chua"
+      }
+    },
+    {
+      "id": "corn",
+      "model": "Corn",
+      "secondsPerStage": 40,
+      "seedPrice": 80,
+      "sellPrice": 65,
+      "yield": 2,
+      "word": {
+        "ja": "とうもろこし",
+        "reading": "tōmorokoshi",
+        "en": "corn",
+        "vi": "ngô"
+      }
+    },
+    {
+      "id": "pumpkin",
+      "model": "Pumpkin",
+      "secondsPerStage": 50,
+      "seedPrice": 100,
+      "sellPrice": 90,
+      "yield": 2,
+      "word": {
+        "ja": "かぼちゃ",
+        "reading": "kabocha",
+        "en": "pumpkin",
+        "vi": "bí ngô"
+      }
+    }
   ],
   "tools": [
-    { "id": "tool_hoe", "action": "till", "price": 200, "durability": 40,
-      "word": { "ja": "くわ", "reading": "kuwa", "en": "hoe", "vi": "cái cuốc" },
-      "verb": { "ja": "つちを たがやします。", "reading": "tsuchi o tagayashimasu", "en": "I till the soil.", "vi": "Tôi xới đất." } },
-    { "id": "tool_watering_can", "action": "water", "price": 150, "durability": 60,
-      "word": { "ja": "じょうろ", "reading": "jōro", "en": "watering can", "vi": "bình tưới" },
-      "verb": { "ja": "みずを あげます。", "reading": "mizu o agemasu", "en": "I water the plant.", "vi": "Tôi tưới nước." } },
-    { "id": "tool_shovel", "action": "clear", "price": 180, "durability": 30,
-      "word": { "ja": "シャベル", "reading": "shaberu", "en": "shovel", "vi": "cái xẻng" },
-      "verb": { "ja": "つちを ほります。", "reading": "tsuchi o horimasu", "en": "I dig the soil.", "vi": "Tôi đào đất." } },
-    { "id": "tool_fishing_rod", "action": "fish", "price": 300, "durability": 50,
-      "word": { "ja": "つりざお", "reading": "tsurizao", "en": "fishing rod", "vi": "cần câu" },
-      "verb": { "ja": "つりを します。", "reading": "tsuri o shimasu", "en": "I go fishing.", "vi": "Tôi đi câu cá." } }
+    {
+      "id": "tool_hoe",
+      "action": "till",
+      "price": 200,
+      "durability": 40,
+      "word": {
+        "ja": "くわ",
+        "reading": "kuwa",
+        "en": "hoe",
+        "vi": "cái cuốc"
+      },
+      "verb": {
+        "ja": "つちを たがやします。",
+        "reading": "tsuchi o tagayashimasu",
+        "en": "I till the soil.",
+        "vi": "Tôi xới đất."
+      }
+    },
+    {
+      "id": "tool_watering_can",
+      "action": "water",
+      "price": 150,
+      "durability": 60,
+      "word": {
+        "ja": "じょうろ",
+        "reading": "jōro",
+        "en": "watering can",
+        "vi": "bình tưới"
+      },
+      "verb": {
+        "ja": "みずを あげます。",
+        "reading": "mizu o agemasu",
+        "en": "I water the plant.",
+        "vi": "Tôi tưới nước."
+      }
+    },
+    {
+      "id": "tool_shovel",
+      "action": "clear",
+      "price": 180,
+      "durability": 30,
+      "word": {
+        "ja": "シャベル",
+        "reading": "shaberu",
+        "en": "shovel",
+        "vi": "cái xẻng"
+      },
+      "verb": {
+        "ja": "つちを ほります。",
+        "reading": "tsuchi o horimasu",
+        "en": "I dig the soil.",
+        "vi": "Tôi đào đất."
+      }
+    },
+    {
+      "id": "tool_fishing_rod",
+      "action": "fish",
+      "price": 300,
+      "durability": 50,
+      "word": {
+        "ja": "つりざお",
+        "reading": "tsurizao",
+        "en": "fishing rod",
+        "vi": "cần câu"
+      },
+      "verb": {
+        "ja": "つりを します。",
+        "reading": "tsuri o shimasu",
+        "en": "I go fishing.",
+        "vi": "Tôi đi câu cá."
+      }
+    }
   ],
   "fish": [
-    { "id": "fish_hirame", "model": "Flatfish",   "sellPrice": 110, "weight": 32,
-      "word": { "ja": "ひらめ", "reading": "hirame", "en": "flounder", "vi": "cá bơn" } },
-    { "id": "fish_tai",    "model": "RedSnapper", "sellPrice": 140, "weight": 30,
-      "word": { "ja": "たい", "reading": "tai", "en": "sea bream", "vi": "cá tráp đỏ" } },
-    { "id": "fish_fugu",   "model": "Puffer",     "sellPrice": 180, "weight": 26,
-      "word": { "ja": "ふぐ", "reading": "fugu", "en": "pufferfish", "vi": "cá nóc" } },
-    { "id": "fish_maguro", "model": "Tuna",       "sellPrice": 420, "weight": 12,
-      "word": { "ja": "まぐろ", "reading": "maguro", "en": "tuna", "vi": "cá ngừ" } }
+    {
+      "id": "fish_hirame",
+      "model": "Flatfish",
+      "sellPrice": 110,
+      "weight": 32,
+      "word": {
+        "ja": "ひらめ",
+        "reading": "hirame",
+        "en": "flounder",
+        "vi": "cá bơn"
+      }
+    },
+    {
+      "id": "fish_tai",
+      "model": "RedSnapper",
+      "sellPrice": 140,
+      "weight": 30,
+      "word": {
+        "ja": "たい",
+        "reading": "tai",
+        "en": "sea bream",
+        "vi": "cá tráp đỏ"
+      }
+    },
+    {
+      "id": "fish_fugu",
+      "model": "Puffer",
+      "sellPrice": 180,
+      "weight": 26,
+      "word": {
+        "ja": "ふぐ",
+        "reading": "fugu",
+        "en": "pufferfish",
+        "vi": "cá nóc"
+      }
+    },
+    {
+      "id": "fish_maguro",
+      "model": "Tuna",
+      "sellPrice": 420,
+      "weight": 12,
+      "word": {
+        "ja": "まぐろ",
+        "reading": "maguro",
+        "en": "tuna",
+        "vi": "cá ngừ"
+      }
+    }
   ],
   "verbs": {
-    "plant":   { "ja": "たねを うえます。", "reading": "tane o uemasu", "en": "I plant the seeds.", "vi": "Tôi gieo hạt." },
-    "harvest": { "ja": "しゅうかくします！", "reading": "shūkaku shimasu", "en": "I harvest it!", "vi": "Tôi thu hoạch!" },
-    "feed":    { "ja": "えさを あげます。", "reading": "esa o agemasu", "en": "I feed it.", "vi": "Tôi cho ăn." },
-    "pet":     { "ja": "なでます。", "reading": "nademasu", "en": "I pet it.", "vi": "Tôi vuốt ve." },
-    "buy":     { "ja": "かいます。", "reading": "kaimasu", "en": "I buy it.", "vi": "Tôi mua." },
-    "sell":    { "ja": "うります。", "reading": "urimasu", "en": "I sell it.", "vi": "Tôi bán." },
-    "fish":    { "ja": "さかなを つりました！", "reading": "sakana o tsurimashita", "en": "I caught a fish!", "vi": "Tôi câu được cá!" }
+    "plant": {
+      "ja": "たねを うえます。",
+      "reading": "tane o uemasu",
+      "en": "I plant the seeds.",
+      "vi": "Tôi gieo hạt."
+    },
+    "harvest": {
+      "ja": "しゅうかくします！",
+      "reading": "shūkaku shimasu",
+      "en": "I harvest it!",
+      "vi": "Tôi thu hoạch!"
+    },
+    "feed": {
+      "ja": "えさを あげます。",
+      "reading": "esa o agemasu",
+      "en": "I feed it.",
+      "vi": "Tôi cho ăn."
+    },
+    "pet": {
+      "ja": "なでます。",
+      "reading": "nademasu",
+      "en": "I pet it.",
+      "vi": "Tôi vuốt ve."
+    },
+    "buy": {
+      "ja": "かいます。",
+      "reading": "kaimasu",
+      "en": "I buy it.",
+      "vi": "Tôi mua."
+    },
+    "sell": {
+      "ja": "うります。",
+      "reading": "urimasu",
+      "en": "I sell it.",
+      "vi": "Tôi bán."
+    },
+    "fish": {
+      "ja": "さかなを つりました！",
+      "reading": "sakana o tsurimashita",
+      "en": "I caught a fish!",
+      "vi": "Tôi câu được cá!"
+    }
   },
   "animals": [
-    { "id": "cow",    "model": "Cow",      "foods": ["corn", "carrot"],
-      "word": { "ja": "うし", "reading": "ushi", "en": "cow", "vi": "con bò" },
-      "sound": { "ja": "モー", "en": "Moo", "vi": "Ò ò" } },
-    { "id": "alpaca", "model": "Alpaca",   "foods": ["carrot", "corn"],
-      "word": { "ja": "アルパカ", "reading": "arupaka", "en": "alpaca", "vi": "lạc đà alpaca" },
-      "sound": { "ja": "フン", "en": "Hmm", "vi": "Hừm" } },
-    { "id": "donkey", "model": "Donkey",   "foods": ["carrot"],
-      "word": { "ja": "ロバ", "reading": "roba", "en": "donkey", "vi": "con lừa" },
-      "sound": { "ja": "ヒーホー", "en": "Hee-haw", "vi": "Hí hô" } },
-    { "id": "horse",  "model": "Horse",    "foods": ["carrot"],
-      "word": { "ja": "うま", "reading": "uma", "en": "horse", "vi": "con ngựa" },
-      "sound": { "ja": "ヒヒーン", "en": "Neigh", "vi": "Hí hí" } },
-    { "id": "dog",    "model": "ShibaInu", "foods": [],
-      "word": { "ja": "いぬ", "reading": "inu", "en": "dog", "vi": "con chó" },
-      "sound": { "ja": "ワン", "en": "Woof", "vi": "Gâu" } }
+    {
+      "id": "cow",
+      "model": "Cow",
+      "foods": [
+        "corn",
+        "carrot"
+      ],
+      "word": {
+        "ja": "うし",
+        "reading": "ushi",
+        "en": "cow",
+        "vi": "con bò"
+      },
+      "sound": {
+        "ja": "モー",
+        "en": "Moo",
+        "vi": "Ò ò"
+      }
+    },
+    {
+      "id": "alpaca",
+      "model": "Alpaca",
+      "foods": [
+        "carrot",
+        "corn"
+      ],
+      "word": {
+        "ja": "アルパカ",
+        "reading": "arupaka",
+        "en": "alpaca",
+        "vi": "lạc đà alpaca"
+      },
+      "sound": {
+        "ja": "フン",
+        "en": "Hmm",
+        "vi": "Hừm"
+      }
+    },
+    {
+      "id": "donkey",
+      "model": "Donkey",
+      "foods": [
+        "carrot"
+      ],
+      "word": {
+        "ja": "ロバ",
+        "reading": "roba",
+        "en": "donkey",
+        "vi": "con lừa"
+      },
+      "sound": {
+        "ja": "ヒーホー",
+        "en": "Hee-haw",
+        "vi": "Hí hô"
+      }
+    },
+    {
+      "id": "horse",
+      "model": "Horse",
+      "foods": [
+        "carrot"
+      ],
+      "word": {
+        "ja": "うま",
+        "reading": "uma",
+        "en": "horse",
+        "vi": "con ngựa"
+      },
+      "sound": {
+        "ja": "ヒヒーン",
+        "en": "Neigh",
+        "vi": "Hí hí"
+      }
+    },
+    {
+      "id": "dog",
+      "model": "ShibaInu",
+      "foods": [],
+      "word": {
+        "ja": "いぬ",
+        "reading": "inu",
+        "en": "dog",
+        "vi": "con chó"
+      },
+      "sound": {
+        "ja": "ワン",
+        "en": "Woof",
+        "vi": "Gâu"
+      }
+    }
   ],
   "products": [
-    { "itemId": "tech_laptop", "category": "technology", "price": 1200,
-      "word": { "ja": "ノートパソコン", "reading": "nōto pasokon", "en": "laptop", "vi": "máy tính xách tay" },
-      "note": "Đồ sưu tầm — để trong balo. Đặt trang trí phòng trọ sẽ có ở bản sau." },
-    { "itemId": "tech_tv", "category": "technology", "price": 1500,
-      "word": { "ja": "テレビ", "reading": "terebi", "en": "television", "vi": "ti vi" },
-      "note": "Đồ sưu tầm — để trong balo. Đặt trang trí phòng trọ sẽ có ở bản sau." }
+    {
+      "itemId": "tech_laptop",
+      "category": "technology",
+      "price": 1200,
+      "word": {
+        "ja": "ノートパソコン",
+        "reading": "nōto pasokon",
+        "en": "laptop",
+        "vi": "máy tính xách tay"
+      },
+      "note": "Đồ sưu tầm — để trong balo. Đặt trang trí phòng trọ sẽ có ở bản sau.",
+      "noteEn": "Collectible — kept in your bag. Decorating your room comes in a later version.",
+      "noteJa": "コレクション — バッグに入ります。部屋に飾る機能は今後追加されます。"
+    },
+    {
+      "itemId": "tech_tv",
+      "category": "technology",
+      "price": 1500,
+      "word": {
+        "ja": "テレビ",
+        "reading": "terebi",
+        "en": "television",
+        "vi": "ti vi"
+      },
+      "note": "Đồ sưu tầm — để trong balo. Đặt trang trí phòng trọ sẽ có ở bản sau.",
+      "noteEn": "Collectible — kept in your bag. Decorating your room comes in a later version.",
+      "noteJa": "コレクション — バッグに入ります。部屋に飾る機能は今後追加されます。"
+    }
   ],
   "places": {
-    "island":  { "ja": "みどりじま", "reading": "midori-jima", "en": "Midori Island", "vi": "Đảo Xanh" },
-    "station": { "ja": "みどりじまえき", "reading": "midori-jima eki", "en": "Midori Island Station", "vi": "Ga Đảo Xanh" },
-    "farm":    { "ja": "はたけ", "reading": "hatake", "en": "field", "vi": "ruộng" },
-    "shop":    { "ja": "みどりしょうてん", "reading": "midori shōten", "en": "Midori Store", "vi": "Cửa hàng Midori" },
-    "barn":    { "ja": "なや", "reading": "naya", "en": "barn", "vi": "chuồng trại" },
-    "view":    { "ja": "てんぼうだい", "reading": "tenbōdai", "en": "lookout", "vi": "đài ngắm cảnh" },
-    "pier":    { "ja": "つりば", "reading": "tsuriba", "en": "fishing pier", "vi": "bến câu cá" }
-  }
+    "island": {
+      "ja": "みどりじま",
+      "reading": "midori-jima",
+      "en": "Midori Island",
+      "vi": "Đảo Xanh"
+    },
+    "station": {
+      "ja": "みどりじまえき",
+      "reading": "midori-jima eki",
+      "en": "Midori Island Station",
+      "vi": "Ga Đảo Xanh"
+    },
+    "farm": {
+      "ja": "はたけ",
+      "reading": "hatake",
+      "en": "field",
+      "vi": "ruộng"
+    },
+    "shop": {
+      "ja": "みどりしょうてん",
+      "reading": "midori shōten",
+      "en": "Midori Store",
+      "vi": "Cửa hàng Midori"
+    },
+    "barn": {
+      "ja": "なや",
+      "reading": "naya",
+      "en": "barn",
+      "vi": "chuồng trại"
+    },
+    "view": {
+      "ja": "てんぼうだい",
+      "reading": "tenbōdai",
+      "en": "lookout",
+      "vi": "đài ngắm cảnh"
+    },
+    "pier": {
+      "ja": "つりば",
+      "reading": "tsuriba",
+      "en": "fishing pier",
+      "vi": "bến câu cá"
+    }
+  },
+  "decor": [
+    {
+      "id": "tree",
+      "category": "plant",
+      "source": "Assets/みどり島 – Midori Island (Đảo Xanh)/Survival Kit-zip/Tree/tree.obj",
+      "price": 300,
+      "height": 4.2,
+      "footprint": 1.6,
+      "solid": true,
+      "word": {
+        "ja": "き",
+        "reading": "ki",
+        "en": "tree",
+        "vi": "cây"
+      },
+      "icon": "forest"
+    },
+    {
+      "id": "tree_large",
+      "category": "plant",
+      "source": "Assets/みどり島 – Midori Island (Đảo Xanh)/Survival Kit-zip/Tree Large/treeLarge.obj",
+      "price": 600,
+      "height": 6.0,
+      "footprint": 2.2,
+      "solid": true,
+      "word": {
+        "ja": "たいぼく",
+        "reading": "taiboku",
+        "en": "big tree",
+        "vi": "cây đại thụ"
+      },
+      "icon": "forest"
+    },
+    {
+      "id": "tree_small",
+      "category": "plant",
+      "source": "Assets/ThirdParty/Kenney/kenney_city-kit-suburban_20/Models/FBX format/tree-small.fbx",
+      "price": 200,
+      "height": 2.6,
+      "footprint": 1.2,
+      "solid": true,
+      "word": {
+        "ja": "わかぎ",
+        "reading": "wakagi",
+        "en": "young tree",
+        "vi": "cây non"
+      },
+      "icon": "nature_people"
+    },
+    {
+      "id": "tree_round",
+      "category": "plant",
+      "source": "Assets/ThirdParty/Kenney/kenney_city-kit-suburban_20/Models/FBX format/tree-large.fbx",
+      "price": 450,
+      "height": 4.0,
+      "footprint": 1.8,
+      "solid": true,
+      "word": {
+        "ja": "まるい き",
+        "reading": "marui ki",
+        "en": "round tree",
+        "vi": "cây tán tròn"
+      },
+      "icon": "forest"
+    },
+    {
+      "id": "palm",
+      "category": "plant",
+      "source": "Assets/みどり島 – Midori Island (Đảo Xanh)/Ultimate Crops Pack/FBX/PalmTree_4.fbx",
+      "price": 450,
+      "height": 4.6,
+      "footprint": 1.6,
+      "solid": true,
+      "word": {
+        "ja": "やしの き",
+        "reading": "yashi no ki",
+        "en": "palm tree",
+        "vi": "cây dừa"
+      },
+      "icon": "yard"
+    },
+    {
+      "id": "flower",
+      "category": "plant",
+      "source": "Assets/みどり島 – Midori Island (Đảo Xanh)/Ultimate Crops Pack/FBX/Flower_1.fbx",
+      "price": 60,
+      "height": 0.6,
+      "footprint": 0.6,
+      "solid": false,
+      "word": {
+        "ja": "はな",
+        "reading": "hana",
+        "en": "flower",
+        "vi": "bông hoa"
+      },
+      "icon": "local_florist"
+    },
+    {
+      "id": "flower_bed",
+      "category": "plant",
+      "source": "Assets/みどり島 – Midori Island (Đảo Xanh)/Ultimate Crops Pack/FBX/Flower_3.fbx",
+      "price": 90,
+      "height": 0.7,
+      "footprint": 0.8,
+      "solid": false,
+      "word": {
+        "ja": "かだん",
+        "reading": "kadan",
+        "en": "flower bed",
+        "vi": "luống hoa"
+      },
+      "icon": "local_florist"
+    },
+    {
+      "id": "bouquet",
+      "category": "plant",
+      "source": "Assets/みどり島 – Midori Island (Đảo Xanh)/Ultimate Crops Pack/FBX/Flowers_Harvested.fbx",
+      "price": 120,
+      "height": 0.6,
+      "footprint": 0.6,
+      "solid": false,
+      "word": {
+        "ja": "はなたば",
+        "reading": "hanataba",
+        "en": "bouquet",
+        "vi": "bó hoa"
+      },
+      "icon": "local_florist"
+    },
+    {
+      "id": "berry_bush",
+      "category": "plant",
+      "source": "Assets/みどり島 – Midori Island (Đảo Xanh)/Ultimate Crops Pack/FBX/BushBerries_4.fbx",
+      "price": 150,
+      "height": 1.1,
+      "footprint": 1.0,
+      "solid": true,
+      "word": {
+        "ja": "ベリーの しげみ",
+        "reading": "berii no shigemi",
+        "en": "berry bush",
+        "vi": "bụi dâu"
+      },
+      "icon": "spa"
+    },
+    {
+      "id": "bush",
+      "category": "plant",
+      "source": "Assets/ThirdParty/KayKit-City-Builder-Bits-1.0-main/KayKit-City-Builder-Bits-1.0-main/addons/kaykit_city_builder_bits/Assets/obj/bush.obj",
+      "price": 120,
+      "height": 1.0,
+      "footprint": 1.0,
+      "solid": true,
+      "word": {
+        "ja": "しげみ",
+        "reading": "shigemi",
+        "en": "bush",
+        "vi": "bụi cây"
+      },
+      "icon": "spa"
+    },
+    {
+      "id": "potted_plant",
+      "category": "plant",
+      "source": "Assets/ThirdParty/Kenney/kenney_furniture-kit/Models/FBX format/pottedPlant.fbx",
+      "price": 180,
+      "height": 1.0,
+      "footprint": 0.6,
+      "solid": true,
+      "word": {
+        "ja": "はちうえ",
+        "reading": "hachiue",
+        "en": "potted plant",
+        "vi": "chậu cây"
+      },
+      "icon": "potted_plant"
+    },
+    {
+      "id": "planter",
+      "category": "plant",
+      "source": "Assets/ThirdParty/Kenney/kenney_city-kit-suburban_20/Models/FBX format/planter.fbx",
+      "price": 160,
+      "height": 0.8,
+      "footprint": 1.0,
+      "solid": true,
+      "word": {
+        "ja": "プランター",
+        "reading": "purantaa",
+        "en": "planter",
+        "vi": "bồn hoa"
+      },
+      "icon": "potted_plant"
+    },
+    {
+      "id": "rock",
+      "category": "nature",
+      "source": "Assets/みどり島 – Midori Island (Đảo Xanh)/Survival Kit-zip/Rock/rockA.obj",
+      "price": 120,
+      "height": 0.9,
+      "footprint": 1.0,
+      "solid": true,
+      "word": {
+        "ja": "いし",
+        "reading": "ishi",
+        "en": "stone",
+        "vi": "hòn đá"
+      },
+      "icon": "landscape"
+    },
+    {
+      "id": "rock_flat",
+      "category": "nature",
+      "source": "Assets/みどり島 – Midori Island (Đảo Xanh)/Survival Kit-zip/Rock Flat Grass/rockFlatGrass.obj",
+      "price": 100,
+      "height": 0.4,
+      "footprint": 1.2,
+      "solid": false,
+      "word": {
+        "ja": "ひらいし",
+        "reading": "hiraishi",
+        "en": "flat stone",
+        "vi": "đá phẳng"
+      },
+      "icon": "landscape"
+    },
+    {
+      "id": "log",
+      "category": "nature",
+      "source": "Assets/みどり島 – Midori Island (Đảo Xanh)/Survival Kit-zip/Tree Fall/treeFall.obj",
+      "price": 250,
+      "height": 0.7,
+      "footprint": 1.6,
+      "solid": true,
+      "word": {
+        "ja": "まるた",
+        "reading": "maruta",
+        "en": "log",
+        "vi": "khúc gỗ"
+      },
+      "icon": "forest"
+    },
+    {
+      "id": "bench",
+      "category": "furniture",
+      "source": "Assets/ThirdParty/KayKit-City-Builder-Bits-1.0-main/KayKit-City-Builder-Bits-1.0-main/addons/kaykit_city_builder_bits/Assets/obj/bench.obj",
+      "price": 350,
+      "height": 1.0,
+      "footprint": 1.4,
+      "solid": true,
+      "word": {
+        "ja": "ベンチ",
+        "reading": "benchi",
+        "en": "bench",
+        "vi": "ghế băng"
+      },
+      "icon": "chair"
+    },
+    {
+      "id": "streetlight",
+      "category": "light",
+      "source": "Assets/ThirdParty/KayKit-City-Builder-Bits-1.0-main/KayKit-City-Builder-Bits-1.0-main/addons/kaykit_city_builder_bits/Assets/obj/streetlight.obj",
+      "price": 500,
+      "height": 3.4,
+      "footprint": 0.6,
+      "solid": true,
+      "word": {
+        "ja": "がいとう",
+        "reading": "gaitou",
+        "en": "street lamp",
+        "vi": "đèn đường"
+      },
+      "icon": "lightbulb"
+    },
+    {
+      "id": "campfire",
+      "category": "light",
+      "source": "Assets/みどり島 – Midori Island (Đảo Xanh)/Survival Kit-zip/Campfire/campfire.obj",
+      "price": 300,
+      "height": 0.6,
+      "footprint": 1.0,
+      "solid": true,
+      "word": {
+        "ja": "たきび",
+        "reading": "takibi",
+        "en": "campfire",
+        "vi": "lửa trại"
+      },
+      "icon": "local_fire_department"
+    },
+    {
+      "id": "signpost",
+      "category": "furniture",
+      "source": "Assets/みどり島 – Midori Island (Đảo Xanh)/Survival Kit-zip/Signpost/signpost.obj",
+      "price": 200,
+      "height": 1.8,
+      "footprint": 0.6,
+      "solid": true,
+      "word": {
+        "ja": "かんばん",
+        "reading": "kanban",
+        "en": "signpost",
+        "vi": "biển chỉ đường"
+      },
+      "icon": "signpost"
+    },
+    {
+      "id": "barrel",
+      "category": "furniture",
+      "source": "Assets/みどり島 – Midori Island (Đảo Xanh)/Survival Kit-zip/Barrel/barrel.obj",
+      "price": 120,
+      "height": 1.0,
+      "footprint": 0.7,
+      "solid": true,
+      "word": {
+        "ja": "たる",
+        "reading": "taru",
+        "en": "barrel",
+        "vi": "thùng gỗ"
+      },
+      "icon": "inventory_2"
+    },
+    {
+      "id": "chest",
+      "category": "furniture",
+      "source": "Assets/みどり島 – Midori Island (Đảo Xanh)/Survival Kit-zip/Chest/chest.obj",
+      "price": 400,
+      "height": 0.8,
+      "footprint": 0.9,
+      "solid": true,
+      "word": {
+        "ja": "たからばこ",
+        "reading": "takarabako",
+        "en": "treasure chest",
+        "vi": "rương báu"
+      },
+      "icon": "redeem"
+    },
+    {
+      "id": "fence",
+      "category": "structure",
+      "source": "Assets/みどり島 – Midori Island (Đảo Xanh)/Survival Kit-zip/Fence Frame/fence.obj",
+      "price": 60,
+      "height": 1.0,
+      "footprint": 1.4,
+      "solid": true,
+      "word": {
+        "ja": "さく",
+        "reading": "saku",
+        "en": "fence",
+        "vi": "hàng rào"
+      },
+      "icon": "fence"
+    },
+    {
+      "id": "tent",
+      "category": "structure",
+      "source": "Assets/みどり島 – Midori Island (Đảo Xanh)/Survival Kit-zip/Tent/tentClosed.obj",
+      "price": 700,
+      "height": 2.2,
+      "footprint": 2.6,
+      "solid": true,
+      "word": {
+        "ja": "テント",
+        "reading": "tento",
+        "en": "tent",
+        "vi": "lều"
+      },
+      "icon": "camping"
+    },
+    {
+      "id": "well",
+      "category": "structure",
+      "source": "Assets/みどり島 – Midori Island (Đảo Xanh)/Farm Building/FBX/Well.fbx",
+      "price": 900,
+      "height": 2.6,
+      "footprint": 2.0,
+      "solid": true,
+      "word": {
+        "ja": "いど",
+        "reading": "ido",
+        "en": "well",
+        "vi": "giếng"
+      },
+      "icon": "water_drop"
+    },
+    {
+      "id": "jp_torii",
+      "category": "structure",
+      "source": "Assets/ThirdParty/Sushi Restaurant Kit - May 2023-20260920T035054Z-1-001/Sushi Restaurant Kit - May 2023/Environment/FBX/Environment_ToriiGate.fbx",
+      "price": 1800,
+      "height": 3.8,
+      "footprint": 3.4,
+      "solid": true,
+      "word": { "ja": "とりい", "reading": "torii", "en": "small torii gate", "vi": "cổng torii nhỏ" },
+      "icon": "cottage"
+    },
+    {
+      "id": "jp_stone_lantern",
+      "category": "light",
+      "source": "Assets/ThirdParty/Sushi Restaurant Kit - May 2023-20260920T035054Z-1-001/Sushi Restaurant Kit - May 2023/Decoration/FBX/Decoration_Light.fbx",
+      "price": 750,
+      "height": 1.45,
+      "footprint": 0.8,
+      "solid": true,
+      "word": { "ja": "とうろう", "reading": "tōrō", "en": "garden lantern", "vi": "đèn lồng vườn" },
+      "icon": "lightbulb"
+    },
+    {
+      "id": "jp_sakura",
+      "category": "plant",
+      "source": "Assets/ThirdParty/Sushi Restaurant Kit - May 2023-20260920T035054Z-1-001/Sushi Restaurant Kit - May 2023/Decoration/FBX/Decoration_SakuraTree.fbx",
+      "price": 1200,
+      "height": 4.8,
+      "footprint": 2.2,
+      "solid": true,
+      "word": { "ja": "さくら", "reading": "sakura", "en": "cherry blossom tree", "vi": "cây anh đào" },
+      "icon": "local_florist"
+    },
+    {
+      "id": "jp_bamboo",
+      "category": "plant",
+      "source": "Assets/ThirdParty/Sushi Restaurant Kit - May 2023-20260920T035054Z-1-001/Sushi Restaurant Kit - May 2023/Decoration/FBX/Decoration_Bamboo.fbx",
+      "price": 520,
+      "height": 3.2,
+      "footprint": 1.3,
+      "solid": true,
+      "word": { "ja": "たけ", "reading": "take", "en": "bamboo grove", "vi": "khóm tre" },
+      "icon": "forest"
+    },
+    {
+      "id": "jp_koi_pond",
+      "category": "nature",
+      "source": "composite:koi_pond",
+      "price": 1400,
+      "height": 0.32,
+      "footprint": 2.6,
+      "solid": false,
+      "word": { "ja": "こいの いけ", "reading": "koi no ike", "en": "koi pond", "vi": "ao cá koi" },
+      "icon": "water"
+    },
+    {
+      "id": "jp_mailbox",
+      "category": "furniture",
+      "source": "Assets/ThirdParty/Sushi Restaurant Kit - May 2023-20260920T035054Z-1-001/Sushi Restaurant Kit - May 2023/Decoration/FBX/Decoration_Sign_3.fbx",
+      "price": 480,
+      "height": 1.25,
+      "footprint": 0.65,
+      "solid": true,
+      "word": { "ja": "ポスト", "reading": "posuto", "en": "mailbox", "vi": "hòm thư" },
+      "icon": "mark_chat_unread"
+    },
+    {
+      "id": "jp_engawa_bench",
+      "category": "furniture",
+      "source": "Assets/ThirdParty/Sushi Restaurant Kit - May 2023-20260920T035054Z-1-001/Sushi Restaurant Kit - May 2023/Environment/FBX/Environment_Bench.fbx",
+      "price": 650,
+      "height": 0.72,
+      "footprint": 1.8,
+      "solid": true,
+      "word": { "ja": "えんだい", "reading": "endai", "en": "Japanese wooden bench", "vi": "ghế gỗ kiểu Nhật" },
+      "icon": "chair"
+    },
+    {
+      "id": "jp_chochin",
+      "category": "light",
+      "source": "Assets/ThirdParty/Sushi Restaurant Kit - May 2023-20260920T035054Z-1-001/Sushi Restaurant Kit - May 2023/Decoration/FBX/Decoration_WallLight.fbx",
+      "price": 420,
+      "height": 1.1,
+      "footprint": 0.55,
+      "solid": false,
+      "word": { "ja": "ちょうちん", "reading": "chōchin", "en": "paper lantern", "vi": "đèn lồng giấy" },
+      "icon": "light_mode"
+    }
+  ]
 }

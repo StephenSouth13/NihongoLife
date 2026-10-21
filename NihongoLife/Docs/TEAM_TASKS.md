@@ -1096,3 +1096,333 @@ Claude nhận tiếp phần Codex đang làm dở: báo cáo, trailer, demo và 
 **Online.** Lượt chạy toàn bộ hôm nay: 4 test `OnlineSocialPlayModeTests` hỏng vì server Supabase Realtime (`pkxrtvlerjjiignmlebx`) trả `phx_error … channel_crash` khi join kênh presence; sáng 12/10 cùng test này đạt. Lỗi phía server, không liên quan thay đổi trên — kiểm tra trạng thái project trên dashboard Supabase.
 
 **Còn lại.** Cuốc đất dùng `action_hammer` (giơ qua vai, nhát bổ nhỏ); nhổ cỏ, cho ăn, bê đồ, ngồi, nằm vẫn là clip Mixamo retarget (pack Kids không có clip tương ứng).
+
+## Cập nhật (2026-10-20, Claude) — Một ngôn ngữ cho toàn game, test đi xuyên collider, bậc sân ga
+
+**Ngôn ngữ (Việt / Anh / Nhật, đổi giữa chừng là đổi toàn bộ).** Mọi chữ giao diện qua `Core/Loc.cs` (`T/F/Pick/Gloss`, `Triple/Resolve` cho chữ lưu lại, `Watch` + `UI/LocText.cs` để vẽ lại khi đổi). Quy tắc: giao diện chỉ một ngôn ngữ; câu tiếng Nhật là nội dung học, dòng nghĩa theo ngôn ngữ giao diện (không có ở giao diện tiếng Nhật).
+- **Kịch bản:** 14 asset trong `Resources/Scenarios` trước đây để tiếng Việt trong `textEn/titleEn/descriptionEn`. Nay có `textVi/titleVi/descriptionVi` + tiếng Anh thật (817 câu). Code đọc qua `node.Gloss`, `choice.Gloss`, `objective.Title`, `scenario.DisplayTitle/Description/Briefing/LocationHint`. **Sinh lại bằng `Tools/story/gen_*.py` thì phải chạy `python Tools/story/i18n/apply_en.py <asset>`** (xem README trong đó).
+- Đã chuyển: sổ nhiệm vụ, việc làm thêm, chat/voice (thông báo hệ thống lưu 3 ngôn ngữ), câu cá, đảo, ga tàu, chuyển cảnh, nhà hàng, thanh trạng thái, balo (`Player/ItemNames.cs`: tên vật phẩm theo ngôn ngữ, kể cả đồ đã lưu), Hibari Mart (`KonbiniProduct.Name/Meaning`), nhà trọ (từ vựng bàn học 3 ngôn ngữ), cẩm nang địa điểm (`Guide/locations.json` có en/aboutEn/aboutJa/howEn/howJa/phrasesEn), bản đồ, lớp học, cài đặt, admin.
+- **Chữ gợi ý `[F]`:** `Interaction/InteractionPrompt.Of()` — mọi nơi hiện prompt đều đi qua đây; bảng `Known` dịch các prompt gõ sẵn trong scene.
+- **Biển chữ trong scene** (biển đường, cửa hàng, máy game…): `UI/SceneTextLocalizer.cs` dịch lúc load scene và khi đổi ngôn ngữ, không sửa file scene. Thêm biển mới có tiếng Việt → thêm cụm vào bảng `Phrases`.
+- AI chấm IELTS viết nhận xét bằng ngôn ngữ giao diện.
+- Chưa dịch (người chơi không thấy): `reason` của điểm trong kịch bản (chỉ ghi log).
+
+**Test đi xuyên collider** `Tests/PlayMode/CollisionWalkPlayModeTests.cs`: ga, trường, sushi, phòng trọ, game center. Dò sàn bằng capsule người chơi (cao 1,4 · bán kính 0,27 · bậc), mọi vật tương tác phải có chỗ đứng trong 1,9 m, rồi đi thật bằng `CharacterController.Move`. Báo cáo + collider chắn: `Bao_Cao/collision-walk/*.txt`.
+- Lỗi tìm ra: mép `PlatformNorthExtension` ở ga cao 0,31 m > bậc 0,3 của người chơi → đi bộ không lên được sân ga (test cũ teleport nên không thấy). Đã đổi `stepOffset` 0,36 trong `90_TestSandbox.unity`, `StandaloneZoneBootstrap`, `KidsCharactersSetup`.
+
+**Ảnh chụp UI:** chữ 3D (TMP overlay shader) vẽ đè lên canvas ở chế độ chụp → `ExamUiShowcasePlayModeTests.Capture` tắt chúng khi chụp (trong game thật không bị).
+
+**Khác:** `Scripts/Editor/ReleaseBuild.cs` (file mới chưa commit) thiếu `using UnityEditor.Build;` làm project không compile — đã thêm. IELTS Reading test giờ ~7 s, toàn bộ gói IELTS 51 s. Slide pitch: điền vai trò Quang Dũng Nihongo = "Đối tác chuyên môn tiếng Nhật · góp ý nội dung N5–JLPT" — **chờ chủ dự án xác nhận**.
+
+**Kết quả test:** EditMode 25/25; PlayMode 33/34 rồi sửa → Bedroom, CollisionWalk (5), Station, City, Zone, Feet, WorldFeel, ExamUiShowcase (vi/en/ja), SpeakingLive, OnlineSocial (4), GameCenter, IELTS đều đạt.
+
+## Cập nhật (2026-10-20 chiều, Claude) — Animation Kids mượt hơn, Game Center 6 trò chơi 3 ngôn ngữ
+
+**Animation.**
+- `Scripts/Editor/KidMotionBuilder.cs` (`-executeMethod NihongoLife.EditorTools.KidMotionBuilder.Build`): thay clip Mixamo người lớn còn lại trong `NL_Humanoid`:
+  - Work_Clear (nhổ cỏ) = `action_release_trapped`; Work_Feed (cho ăn) = `idle_crouch_treated`.
+  - Work_Carry / Work_Hold / Fish_Wait = `idle_flashlight`; Work_Water = `action_treat`.
+  - Point = `action_switch_r`; Bow = `idle0` + nghiêng người.
+  - Sit / Lay = clip ghép `Animations/Kids/Kid_Sit.anim`, `Kid_Sleep.anim`: tư thế thân theo muscle, đầu và nhịp thở của Kids, không còn đứng cứng.
+  - `NL_KidAnimationSet.layKey` → Kid_Sleep (ngất vẫn hoạt động).
+- **Chân trượt:** chibi bước ~0,3 m mà game chạy 2,8–5,2 m/s. Trạng thái Walk nay có `MoveScale` (`CharacterAnimationController.CadenceFor`): ~1,7× khi đi, ~1,9× khi chạy. Độ trượt 92/95% → 82/80%.
+  - Test `FootSlipPlayModeTests` (báo cáo `Bao_Cao/character-regression/foot_slip.txt`).
+  - Muốn hết trượt hẳn phải giảm tốc độ đi/chạy, đó là quyết định gameplay.
+- **Chọn clip:** `AnimationCandidateSheetTests` render bảng 5 khung (`NL_SHEET_CLIPS=clip1,clip2`), ra `Bao_Cao/anim-candidates/`.
+- `KidActionPosesPlayModeTests` chụp thêm Work_Clear, Work_Feed.
+
+**Game Center** (`MiniGames/`; scene `50_GameCenter` chỉ được bổ sung bằng `GameCenterBuilder.UpgradeArcade`, không dựng lại — bầu trời và chỉnh sửa khác giữ nguyên):
+- Khung chung `Core/ArcadeGame.cs`: chọn bộ từ → 3-2-1 → điểm, combo, mạng, thời gian → kết quả (sao, vé, kỷ lục, mastery). Mọi chữ qua `Loc`.
+- Trò mới (`MiniGames/Arcade/`):
+
+  | Trò | Máy | Cách chơi |
+  |---|---|---|
+  | ワードシューター Word Shooter | máy giữa | bắn bong bóng từ theo gợi ý (nghĩa / cách đọc / hình) |
+  | オーダーラッシュ Order Rush | quầy | khách gọi món bằng tiếng Nhật (ひとつ/ふたつ…), chọn món + số lượng |
+  | かなレイン Kana Rain | `Cabinet_W2` | gõ romaji phá kana đang rơi (shi/si, tsu/tu… đều đúng) |
+  | UFOキャッチャー UFO Catcher | `Claw_2` | 「〜を とって！」, thả càng gắp đúng món |
+  | かずバスケ Basket Count | `Basketball_1` | số đọc bằng tiếng Nhật (giao diện Nhật: chữ Hán) → ném vào rổ đúng; 1–10 → 999 |
+
+- Kana Match, bảng kết quả, máy, quầy đổi quà: 3 ngôn ngữ.
+  - Bộ "Nhật ↔ nghĩa" ẩn ở giao diện tiếng Nhật.
+  - `KanaPair.bEn`, `KanaPairSet.titleEn`, `MiniGameDefinition.titleEn/descriptionEn/descriptionJa`.
+- Quầy quà thêm: gấu khổng lồ (40 vé), mèo bông, daruma, fūrin, hình dán.
+- **Lỗi đã sửa:** vé bị kẹt ở 20 (giới hạn chồng của balo) — `game_ticket` giờ chồng tới 999.
+- Test `ArcadeGamesPlayModeTests`: 5 trò × vi/en/ja, đúng/sai qua đường chơi thật, nộp kết quả, có vé, không lẫn tiếng Việt ở en/ja. Ảnh `Bao_Cao/arcade/`.
+
+## TASK-N (Codex) — Render art cho Game Center (Claude đã làm xong gameplay, chỉ cần hình)
+
+Mục tiêu: thay hình tạm (icon, sprite đồ ăn có sẵn) bằng art thống nhất, dễ thương, đúng phong cách Kids low-poly. Game tự dùng hình mới nếu có file đúng đường dẫn (thứ tự ưu tiên trong code), **không cần sửa code**.
+
+**Kiểm tra trước:** đường dẫn đã tồn tại chưa (`Assets/NihongoLife/Resources/MiniGames/...`). Không ghi đè `MiniGames/Words/*.png` đang dùng.
+
+1. **Thú bông cho UFO Catcher:** `Resources/MiniGames/Prizes/<id>.png`, 256×256, PNG nền trong suốt, góc nhìn 3/4, có bóng mềm dưới đáy.
+   - id: `kuma` (gấu), `neko` (mèo), `inu` (chó), `usagi` (thỏ), `tori` (chim), `sakana` (cá bông), `ringo`, `ichigo`, `hoshi` (sao), `hana` (hoa), `kagi` (chìa khoá), `okashi` (túi kẹo).
+   - Danh sách trong `UfoCatcherGame.Catalog`.
+2. **Món ăn cho Order Rush:** `Resources/MiniGames/Food/<id>.png`, 256×256, cùng phong cách.
+   - id: `onigiri`, `sushi`, `pan`, `keeki`, `ocha`, `koohii`, `tamago`, `sakana`, `ringo`, `aisu`, `karaage`, `nikuman`, `ramen` (quan trọng: hiện chỉ là icon), `ichigo`.
+   - Danh sách trong `OrderRushGame.Menu`.
+3. **Icon quà mới ở quầy đổi:** `Resources/Items/<id>.png` (128×128, như các icon Items hiện có): `prize_plush_big`, `prize_neko_plush`, `prize_daruma`, `prize_furin`, `prize_sticker`.
+4. **Logo/thẻ tiêu đề từng trò:** `Resources/MiniGames/Logos/<game_id>.png`, 1024×512, chữ Nhật lớn + họa tiết.
+   - game_id: `kana_match`, `word_shooter`, `order_rush`, `kana_rain`, `ufo_catcher`, `basket_count`.
+   - Sau khi có file, báo Claude để gắn vào thẻ bắt đầu (`ArcadeGame.ShowStartCard`).
+5. **(Tuỳ chọn, 3D)** Thú bông nhỏ (prefab low-poly) đặt trong 3 máy gắp `Claw_1..3` của `50_GameCenter`, và bảng số trên 2 máy bóng rổ.
+   - Chỉ thêm vào scene có sẵn qua một builder `-executeMethod`, không tạo scene mới, không `[MenuItem]`.
+   - Collider: chỉ trigger hoặc không có, để `CollisionWalkPlayModeTests.GameCenter_AllInteractablesReachable` vẫn đạt.
+
+**Nghiệm thu:**
+- `ArcadeGamesPlayModeTests` và `GameCenterPlayModeTests` đạt.
+- Ảnh trong `Bao_Cao/arcade/*.jpg` cho thấy hình mới ở UFO Catcher và Order Rush.
+- Ghi tên file đã thêm vào TEAM_TASKS.
+
+## Cập nhật (2026-10-20 tối, Claude) — Trang trí đảo Midori, thăm đảo bạn bè
+
+**Trang trí đảo.**
+- Catalog: `Resources/Island/island_catalog.json` → mảng `decor` (24 món).
+  - Gồm cây, cây dừa, hoa, bụi, chậu, đá, khúc gỗ, ghế, đèn đường, lửa trại, biển chỉ đường, thùng, rương, hàng rào, lều, giếng.
+  - Mỗi món là một từ vựng (`word` ja/reading/en/vi), học được khi mua (`decor:<id>`).
+- Dữ liệu: `IslandData.cs` có `IslandDecorDef`, `DecorPlacement` (x, z theo tâm đảo, yaw), `DecorStock`.
+  - `IslandRecord.decor` / `decorStock` / `likes` lưu chung save đảo.
+- Logic: `Scripts/Island/IslandDecor.cs` — `Buy` (trừ ví chung, vào kho trang trí, không chiếm balo), `Place`, `Move`, `Store`; tối đa 80 món.
+- Builder: `Scripts/Editor/IslandDecorBuilder.cs` (`-executeMethod NihongoLife.EditorTools.IslandBuilder.BuildDecor`), chỉ bổ sung, không dựng lại scene.
+  - Tạo prefab `Generated/Island/Decor/Decor_<id>.prefab`: vật liệu URP, gốc ở mặt đất.
+    - Collider thân cây cho cây cao; collider khối cho đồ cứng.
+    - Trigger cho hoa/đá phẳng (đi xuyên được).
+  - Render icon `Resources/Items/decor_<id>.png`.
+  - Đăng ký `decor:<id>` vào `IslandModelLibrary` (thêm `Put`).
+  - Gắn `IslandDecorRuntime` vào nhóm `Decor` trong `60_MidoriIsland`.
+  - `IslandBuilder.Build` đầy đủ cũng gọi phần này.
+- Cửa hàng Midori có tab **Trang trí**. Thanh công cụ đảo có nút **Trang trí**.
+- Chế độ trang trí (`Scripts/Island/IslandDecorRuntime.cs`):
+  - Camera riêng nhìn từ trên: WASD/mũi tên để di chuyển, lăn chuột để phóng to.
+  - Thanh kho ở dưới. Bóng mờ (ghost) đi theo chuột, vòng xanh = đặt được, vòng đỏ = vướng. Q/E xoay 45°.
+  - Bấm vào món đã đặt để di chuyển; Delete hoặc nút "Cất vào kho" để cất lại.
+  - Không cho đặt trên đường, quảng trường, ruộng, nhà, món khác, vùng tương tác, mép bãi biển.
+
+**Thăm đảo** (`Scripts/Island/IslandVisit.cs`):
+- `IslandShowcaseService` đăng bố cục đảo lên Supabase bảng `island_showcases`.
+  - Đăng khi đảo thay đổi (≤ 1 lần/20 s), khi bấm "Xong" và khi rời đảo.
+  - Chỉ chạy khi đã đăng nhập.
+- `IslandVisit.Visit(userId, displayName)`: tải showcase rồi vào đảo của bạn, chỉ xem.
+  - Ruộng, cửa hàng, thú, cầu câu và trang trí đều từ chối với thông báo; không lưu gì.
+  - Thanh trên cùng: "Đảo của X", số đồ, số lần thu hoạch, số từ, ❤ (một lần, `rpc/like_island`), nút "Về".
+- Đang ở đảo mình thì đổi đảo tại chỗ, không có màn tải. Từ cảnh khác thì chuyển cảnh sang đảo, "Về" trả lại cảnh cũ.
+- Cửa tàu trên đảo bạn = về, vé miễn phí.
+- **Migration** `supabase/migrations/20261020_island_showcases.sql` (người dùng cần áp vào project Supabase):
+  - Tạo `island_showcases`, `island_likes` (RLS).
+  - Hàm `like_island(target)` (security definer).
+  - Trigger khiến chủ đảo không tự sửa số tim.
+- Test `IslandDecorPlayModeTests.Island_DecorateAndVisit` (đạt), ảnh `Bao_Cao/island-decor/`:
+  - Mua 2 cây và 5 món, tiền trừ đúng, học từ.
+  - Bị chặn ở quảng trường, đường chính, mép đảo, chồng lên món khác.
+  - Đặt, xoay, di chuyển, cất.
+  - Va chạm thật: giếng chặn người, luống hoa đi xuyên.
+  - Lưu qua JSON và respawn; showcase.
+  - Thăm đảo "Hana" (3 món), mọi thứ bị khoá, thả tim, về lại đảo mình.
+
+## TASK-O (Codex) — Giao diện danh sách bạn bè + mô hình trang trí kiểu Nhật
+
+**Kiểm tra trước:** đọc `Scripts/UI/FriendsUI.cs` (hiện chỉ in danh sách bằng `StringBuilder`, dòng 116–160), `Scripts/Core/FriendService.cs` (`Friends`, `PendingRequests`, `FriendEntry.friendUserId/friendDisplayName`), `Scripts/Island/IslandVisit.cs`. Không sửa `IslandVisit`, `IslandDecorRuntime`, `IslandDecor` (Claude giữ) — cần API mới thì ghi vào đây.
+
+1. **Thiết kế lại `FriendsUI`** (mở từ `MainMenuUI`, dòng 93) bằng `UiKit` / `UiTheme` như các cửa sổ mới (`ExamPlayUI`, `IslandUI`). Mọi chữ qua `Loc.T` (vi/en/ja), không lẫn ngôn ngữ.
+   - Ba tab: **Bạn bè** · **Lời mời** · **Thêm bạn**.
+   - Mỗi dòng bạn có:
+     - avatar chữ cái (`UiKit.Avatar`), tên, chấm online (chưa có service presence trong `Scripts/Core` — bỏ qua, chỉ chừa chỗ);
+     - nút **Nhắn tin** (mở `SocialChatWindow` kênh Direct nếu có API);
+     - nút **Thăm đảo** gọi `NihongoLife.Island.IslandVisit.Visit(f.friendUserId, name, error => …)`. Lỗi thì hiện chữ đỏ trong dòng; thành công thì đóng cửa sổ.
+     - nút **Xoá bạn** (xác nhận 2 bước).
+   - Lời mời: Chấp nhận / Từ chối (`AcceptFriendRequest`, `RemoveFriend`).
+   - Thêm bạn: ô nhập User ID + nút Sao chép ID của mình.
+   - Không có mạng hoặc chưa đăng nhập: thẻ trống, lời giải thích và nút Đăng nhập. Không để màn hình trống.
+   - Bố cục đúng ở 1920×1080, 1366×768, 1024×600.
+2. **(Tuỳ chọn)** Trong `PlayerProfileUI`, nếu xem hồ sơ người khác thì thêm nút **Thăm đảo**.
+3. **Mô hình trang trí kiểu Nhật** (low-poly, cùng phong cách đảo):
+   - Danh sách: torii nhỏ, đèn đá 石灯籠, cây anh đào 桜, khóm tre 竹, ao cá koi 池, hòm thư ポスト, ghế gỗ kiểu Nhật 縁台, đèn lồng 提灯.
+   - Đặt model (FBX/OBJ, không dùng glTF vì dự án không có importer) ở `Assets/ThirdParty/<pack>/`.
+   - Thêm mục vào mảng `decor` của `Resources/Island/island_catalog.json`, đúng mẫu các mục có sẵn: `id`, `category`, `source`, `price`, `height`, `footprint`, `solid`, `word{ja,reading,en,vi}`, `icon` là tên Material Symbol có trong `Resources/UI/Icons`.
+   - Chạy `-executeMethod NihongoLife.EditorTools.IslandBuilder.BuildDecor` để tạo prefab và icon. Không sửa scene bằng tay, không `[MenuItem]`.
+
+**Nghiệm thu:**
+- Chạy `IslandDecorPlayModeTests` và `IslandPlayModeTests`; cả hai phải đạt.
+- Chụp FriendsUI ở 3 ngôn ngữ × 3 độ phân giải, lưu vào `Bao_Cao/friends-ui/`.
+- Món kiểu Nhật xuất hiện ở tab Trang trí và đặt được trên đảo.
+- Ghi tên file đã thêm vào TEAM_TASKS.
+
+**Hoàn thành (2026-10-20, Codex):**
+- Viết lại `Assets/NihongoLife/Scripts/UI/FriendsUI.cs`: 3 tab responsive, avatar + chỗ trạng thái, nhắn tin riêng, thăm đảo có lỗi theo dòng, xoá xác nhận hai bước, chấp nhận/từ chối lời mời, thêm bạn + sao chép ID, và trạng thái đăng nhập/mất dịch vụ; toàn bộ vi/en/ja qua `Loc`.
+- Thêm `Assets/NihongoLife/Tests/PlayMode/FriendsUiPlayModeTests.cs`; ảnh nghiệm thu nằm trong `Bao_Cao/friends-ui/` (`friends_{vi,en,ja}_{1920x1080,1366x768,1024x600}.png`).
+- Thêm 8 mục `jp_*` vào `Assets/NihongoLife/Resources/Island/island_catalog.json`: torii, đèn đá, sakura, tre, ao koi, hòm thư, ghế endai và đèn chōchin. Tái sử dụng FBX low-poly của `Assets/ThirdParty/Sushi Restaurant Kit - May 2023-20260920T035054Z-1-001/` (không thêm glTF).
+- Đã chạy `IslandBuilder.BuildDecor`: tạo `Assets/NihongoLife/Generated/Island/Decor/Decor_jp_*.prefab`, `Assets/NihongoLife/Resources/Items/decor_jp_*.png` và đăng ký vào `IslandModelLibrary` trong `60_MidoriIsland.unity`.
+- Kiểm chứng: `FriendsUiPlayModeTests` 1/1 đạt; `IslandDecorPlayModeTests` 1/1 đạt; `IslandPlayModeTests` 2/2 đạt khi chạy có graphics. Lượt `-nographics` của `IslandPlayModeTests` không dùng làm kết quả vì `HudPortrait` không thể tạo RenderTexture.
+
+## Cập nhật (2026-10-20 khuya, Claude) — Cốt truyện mở đầu + chơi tự do; hoàn tất TASK-O và TASK-N
+
+**Cốt truyện → tự do** (`Scripts/Scenario/StoryDirector.cs`; chi tiết ở STORY_BIBLE mục 13):
+
+Lỗi đã sửa:
+- Nút Bắt đầu ở menu luôn chạy `konbini.buy_onigiri`. Quest này cần đã xong buổi học, nên với save mới không có truyện nào chạy.
+- Mỗi lần vào thành phố, `intro.arrival` lại chạy lại.
+- `UIManager` (DontDestroyOnLoad) chỉ đăng ký sự kiện lúc khởi động. Vì vậy trong luồng chơi thật, màn kết quả quest **không bao giờ hiện**. Nay nó bám theo ScenarioManager hiện tại (`EnsureScenarioSubscription`, `ResolvePanels`).
+- Hộp thoại còn treo khi quest kết thúc: thêm `DialogueManager.CloseFinishedStory`.
+
+Phần mở đầu (5 quest, tới `GameControlDatabase.prologueEndScenarioId`):
+- Quest tự nối nhau.
+- Việc làm thêm, nông trại, nhiệm vụ hằng ngày bị khoá: `QuestService.Requirement`.
+
+Sau phần mở đầu:
+- `FreePlayCardUI` hiện một lần.
+- HUD chỉ bước truyện tiếp theo hoặc số điểm còn thiếu: fallback trong `StatusDock`.
+- Sổ nhiệm vụ liệt kê các bước truyện còn thiếu điểm, kèm lý do (`TaskJournalUI.SelectStory`).
+
+Màn kết quả `ResultUI` vẽ lại bằng UiKit:
+- Chương, tiêu đề, điểm và số sao, các thanh điểm từng phần, phần thưởng, dòng "cốt truyện tiếp".
+- Nút chính đổi theo tình huống: "Nhiệm vụ tiếp theo" / "Thử lại" / "Tiếp tục khám phá". Không còn đẩy người chơi về menu.
+
+Cân bằng điểm kiến thức của quest truyện: trước 150–190/quest (742 sau phần mở đầu, mở mọi khoá ngay), nay 12–20/quest.
+
+`StoryDirector.Bypass` được bật trong `PlayModeSaveGuard`; chỉ `StoryFlowPlayModeTests` tắt nó.
+
+Test `StoryFlowPlayModeTests` (ảnh trong `Bao_Cao/story-flow/`) đi qua:
+- save mới → màn mở đầu tự chạy → 5 quest nối nhau qua nút thật trên màn kết quả;
+- thẻ chế độ tự do → việc làm thêm mở → HUD chương 3 → sổ nhiệm vụ;
+- vào lại thành phố thì không quest nào tự chạy.
+
+**TASK-O** (Codex làm phần lớn trước khi hết token; Claude hoàn tất):
+- FriendsUI: 3 tab, các nút Nhắn tin / Thăm đảo / Xoá hai bước, Chấp nhận / Từ chối, sao chép ID. Codex làm.
+- Claude bổ sung:
+  - `FriendService.ResolveDetails` lấy tên thật và cấp độ (`profiles`), cùng tim đảo (`island_showcases`) chỉ bằng 2 request.
+  - Dòng bạn hiện cấp độ, "♥ N · có đảo", online/ngoại tuyến (`SupabaseOnlineWorldService.IsOnline`).
+  - Nút Thăm đảo tắt khi biết chắc bạn chưa đăng đảo. Nút gọn lại, không tràn.
+- `FriendsUiPlayModeTests`:
+  - Lỗi đã sửa: test gọi `GameServices.Clear()` và để ngôn ngữ ở tiếng Nhật, làm hỏng dây chuyền khoảng 20 test sau nó. Nay test trả lại đúng dịch vụ (thêm `GameServices.Unregister`) và đặt lại tiếng Việt.
+  - Đã thêm kiểm tra tab Lời mời / Thêm bạn, thông tin đảo, và lỗi Thăm đảo hiện ngay trong dòng.
+- Đồ trang trí kiểu Nhật (Codex): 8 món `jp_*` dùng model của Sushi Restaurant Kit. Test `IslandDecorPlayModeTests.Island_JapaneseDecor` mua, đặt, kiểm chiều cao và chạm đất, rồi chụp cận cảnh `Bao_Cao/island-decor/jp_*.png`.
+  - Claude sửa sau khi xem ảnh:
+    - "ao cá koi" vốn là tấm gỗ hình con cá, nay dựng thành ao thật (`composite:koi_pond` trong `IslandDecorBuilder.KoiPond`: mặt nước URP, 16 viên đá, 2 cá koi);
+    - "đèn đá" thực ra là đèn khung gỗ, nên đổi từ vựng thành とうろう (đèn lồng vườn);
+    - cây có tán rộng (anh đào) không còn bị thu nhỏ theo bề ngang.
+
+**TASK-N** (`Scripts/Editor/ArcadeArtBuilder.cs`, chạy `-executeMethod NihongoLife.EditorTools.ArcadeArtBuilder.Build`; `Preview` render một model ở 8 góc vào `_work/art-preview`):
+- 14 món ăn → `Resources/MiniGames/Food`.
+- 8 thú bông/quà → `Resources/MiniGames/Prizes`:
+  - kuma dùng gấu trúc của Sushi Kit, vì `bear.fbx` của Kenney là đầu gấu treo tường;
+  - inu = Shiba; usagi = thỏ hồng; hana = hoa anh đào; okashi = kẹo mút.
+- `Items/prize_plush_big.png`.
+- Ảnh render từ model thật, 256 px, góc 3/4, bóng mềm.
+- Chưa có model, giữ hình dự phòng: neko, tori, hoshi, kagi, `prize_neko_plush`, `prize_daruma`, `prize_furin`, `prize_sticker`.
+- 6 logo trò chơi (`Resources/MiniGames/Logos/*.png`, 1024×512) tạo bằng `_work/arcade_logos.py` với font NotoSansJP. Logo hiện trên thẻ bắt đầu (`ArcadeGame.StartHeader`, `KanaMatchGame.ShowSetPicker`).
+
+## Cập nhật (2026-10-21, Claude) — Âm thanh hoàn chỉnh, đường phố 90 làm lại, nâng cấp UI
+
+**Âm thanh** (nguồn và giấy phép: `Docs/AUDIO_CREDITS.md`)
+- **Giọng nói:**
+  - Đủ 410/410 câu thoại NPC và lời dẫn của 14 quest đều có giọng tiếng Nhật thật (Microsoft neural TTS: Keita, Nanami, Emma Multilingual cho Kim), mỗi nhân vật được chỉnh tốc độ và cao độ riêng.
+  - Tạo bằng `_work/voice_gen.py` vào `Resources/Voice/ja/<quest>/<node>.mp3`. Script chạy lại an toàn: câu nào sửa thì chỉ tạo lại câu đó.
+  - `DialogueManager.LoadDropInVoiceClip` tìm theo thư mục của từng quest, vì id node trùng nhau giữa các quest. Câu nào chưa có file vẫn dùng tiếng bíp cũ.
+- **Nhạc và âm thanh môi trường:**
+  - Tất cả CC0, tải từ OpenGameArt bằng `_work/audio_fetch.py` (script kiểm giấy phép trước khi tải), xử lý bằng `_work/audio_process.py`: chuẩn hoá -18 LUFS; âm thanh môi trường cắt vòng 60 s nối mượt.
+  - Nhạc: menu (koto), thị trấn ngày và đêm, konbini, sushi, trường, ga, Game Center, đảo, phòng ngủ.
+  - Âm thanh môi trường: chim (ngày), dế (đêm), chim và gió (đảo).
+  - Jingle: hoàn thành quest, mua hàng, mở khoá, lên cấp.
+- **`Audio/Soundscape.cs`:**
+  - Chọn nhạc theo cảnh, giờ trong game, và trong/ngoài konbini (`ThirdPersonCameraController.IsIndoor`).
+  - Chuyển bài có crossfade, giảm nhạc khi có giọng thoại, tắt hẳn khi đang thi JLPT/IELTS.
+- Nhạc và âm thanh môi trường import ở chế độ Streaming (`AutoOptimizationProcessor`).
+- Test `SoundscapePlayModeTests`.
+
+**Đường phố 90** (`Editor/CityStreetBuilder.cs`, chạy `-executeMethod NihongoLife.EditorTools.CityStreetBuilder.Build`; thêm `NL_STREET_SCENE=01_MainMenu` để dựng lại cảnh nền menu)
+- **Đã gỡ:**
+  - Lưới ô đường Kenney cũ: đường xuyên qua mọi khu nhà, khoảng 180 mảnh vỉa hè.
+  - Vạch làn, vạch qua đường, lối xe vào nhà, mảng đất sau nhà, công viên nhỏ và hàng rào cũ.
+  - 2 căn nhà trùng nhau ở chỗ nối giữa các tile.
+  - 16 vật thể bị mất vật liệu (hiện màu hồng) đã được gán lại vật liệu.
+- **Đại lộ Sakura-dōri:**
+  - 2 làn, xe chạy bên trái; vạch mép, vạch giữa nét đứt, ◇ báo trước chỗ qua đường.
+  - Vạch zebra kèm đèn giao thông ngang 3 màu và đèn đi bộ hình người có tiếng "piyo piyo".
+  - Vỉa hè lát gạch có bó vỉa, nắp cống.
+- **Ngõ dọc (路地):** vạch 路側帯, chữ 止まれ và vạch dừng trước khi ra đại lộ; thêm các ngõ sau.
+- **Lô nhà:** mỗi nhà một lô, tường gạch block có collider ở hai bên và phía sau, sân sỏi, dải cỏ, trụ cổng. Mặt trước của các điểm đến và konbini để trống.
+- **Khu phía sau:** dãy nhà nền, công viên Hibari (lối vào từ ngõ sau), bãi đỗ xe tính tiền có xe đậu.
+- **Đồ phố:** gương cầu lồi, máy bán hàng tự động. Texture đều tạo bằng code (`Generated/City/Textures`).
+- **Xe cộ** (`World/StreetTraffic.cs`):
+  - 6 xe KayKit mỗi tile, bánh xe quay.
+  - Xe giữ khoảng cách, dừng ở vạch khi đèn đỏ, dừng nhường người chơi trên vạch qua đường hoặc đứng trước xe.
+- `Editor/SceneSurvey.cs`: khảo sát cảnh (cây phân cấp, bản đồ từ trên xuống, tìm vật liệu lỗi), chỉ đọc, không lưu cảnh.
+- Test `StreetTrafficPlayModeTests` (ảnh trong `Bao_Cao/street-regression/`):
+  - lưới cũ đã bị gỡ;
+  - xe chạy đúng làn, không chui vào nhà, không vượt đèn đỏ, dừng nhường người chơi;
+  - người chơi đi từ điểm xuất phát qua vạch đến konbini;
+  - cả 5 cổng vẫn đi bộ tới được.
+
+**UI**
+- **Menu chính:**
+  - Nút phụ đổi sang nền kính tối, đọc rõ trên nền thành phố.
+  - Thêm thẻ "Cốt truyện" (chương, quest tiếp theo, thanh tiến độ) do `MainMenuUI.DisplayStoryCard` điền từ `StoryDirector`. Thẻ được nướng vào cảnh bởi `MainMenuBaker`.
+  - Nền menu là đường phố mới, có xe chạy.
+- **Khung gợi ý tương tác:** nền kính bo góc, phím bấm dạng keycap vàng (`HUDUI`).
+- **Bản đồ (M):** vẽ đúng đường phố mới; "Công viên Hibari" dời tới công viên mới.
+- **Lỗi đã sửa:**
+  - Biển "HIBARI JAPANESE SCHOOL" gắn vào canvas tồn tại xuyên cảnh nên vẫn ở giữa màn hình thành phố. Nay biển có canvas riêng, mất theo cảnh trường, chữ theo ngôn ngữ đã chọn, đặt ở góc phải.
+  - Thông báo HUD lọt sang menu chính: nay bị xoá khi về menu.
+
+## Cập nhật (2026-10-21 tối, Claude) — Lộ trình mở bản đồ theo trí tuệ + 2 quest cửa ngõ
+
+Chi tiết thiết kế: `STORY_BIBLE.md` mục 14.
+
+**Lộ trình**
+- Đầu game chỉ vào được Hibari Mart, trường và phòng trọ.
+- Các khu sau mở theo trí tuệ cộng quest truyện trước đó: Sushi 100, Ga 160, Game Center 240, Đảo 320. Lễ hội cần 380.
+- Khu đã mở lưu bằng cờ `map.<scene>` trong save, không còn lưu PlayerPrefs theo máy.
+
+**File code**
+- `Core/LocationUnlocks.cs`: viết lại toàn bộ — chặng, `Evaluate`, sự kiện `Unlocked`, `ShortStatus`, chuyển save cũ lặng lẽ.
+- `Core/GameControlDatabase.cs`:
+  - `LocationUnlock` có thêm quest yêu cầu, quest cửa ngõ, ảnh, tiêu đề và lời kể 3 ngôn ngữ.
+  - **`locationUnlocks` mặc định để trống** (trước đây giá trị cũ 40/90/160/250 của field ghi đè mặc định mới).
+- Gọi `Evaluate` từ:
+  - `PlayerStatus.AddKnowledge` (bỏ toast ngưỡng cũ);
+  - `ScenarioManager` (khi quest bắt đầu và kết thúc);
+  - `SceneFlowController` (khi vào cảnh).
+- `Exam/ExamManager.cs`: bài thi cho trí tuệ (`KnowledgeFor`, cờ `exam.done:<id>`).
+- `UI/MapUnlockCardUI.cs` (mới): thẻ khu vực mới mở.
+- `UI/TaskJournalUI.cs`: khung LỘ TRÌNH MỞ BẢN ĐỒ.
+- Chữ khoá theo `ShortStatus` ở các file:
+  - `ScenePortal`
+  - `LocationGuideUI`
+  - `WorldMapUI`
+- `Interaction/PortalBeacon.cs`: biển cổng vẽ lại khi có khu mở.
+- `StoryFlags.Remove`.
+
+**Nội dung**
+- Hai quest mới:
+  - `scenario_arcade_kim_invite.asset` (chương 4);
+  - `scenario_island_midori_trip.asset` (chương 5).
+- Có bản tiếng Anh, giọng đọc (`_work/voice_gen.py`, nay có 455 câu), metadata (`Tools/story/quest_meta_roadmap.py`), thứ tự campaign trong `NihongoLifeControlDatabase.asset`.
+- Đổi tên "kiến thức" → "trí tuệ" trong giao diện tiếng Việt (13 file, kể cả `locations.json`).
+
+**Test**
+- `MapProgressionPlayModeTests` (mới): save mới trong thành phố thật.
+  - Ngày đầu chỉ Mart, trường, phòng mở.
+  - Phần mở đầu cho 83 trí tuệ, chưa đủ mở Sushi. Lên 100 thì Sushi mở, thẻ hiện, biển cổng bỏ dòng khoá.
+  - Ga chờ quest sushi.
+  - Chơi trọn hội thoại của Kim và chuyến đảo; Tanaka nhắc Kim.
+  - Trí tuệ về 0 thì các khu vẫn mở.
+  - Trí tuệ từ bài thi đúng công thức.
+- `LocationUnlocksPlayModeTests` đã cập nhật theo quy tắc mới.
+
+**Ảnh hưởng tài nguyên dùng chung (cho Codex/Antigravity)**
+- Đừng điền lại `locationUnlocks` trong database nếu không cố ý ghi đè lộ trình.
+- Quest mới cần mở một khu phải thêm chặng trong `LocationUnlocks.Defaults`, không check PlayerPrefs riêng.
+
+**Giai đoạn sau:** mua bán xe đạp / xe máy / ô tô để đi các thành phố lớn. Mỗi thành phố là một chặng mới, có điều kiện phương tiện.
+
+**Sửa thêm (cùng ngày)**
+- **Cửa ga ở cảnh 90:**
+  - Khối đen phẳng `EntranceDark` (4.2×2.6 m) đã được thay bằng `StationDoors`: cửa kính tự động 4 cánh, sảnh có đèn, bảng 発車案内, 2 máy bán vé.
+  - Code: `CityTownBuilder.StationDoors`. Chỉ vá cửa ga bằng `-executeMethod NihongoLife.EditorTools.CityTownBuilder.PatchStationEntrance`; `Build` cũng dùng hàm này.
+- **Biển cổng (`PortalBeacon`):** thu nhỏ dần khi mờ đi, vì các tag màu ([F], ▼, nền tối) không ăn theo alpha của TMP.
+- **Nhạc nền:**
+  - Nguyên nhân mất tiếng: PlayerPrefs `Volume_BGM` / `Volume_SFX` trên máy dev đã bị kéo về 0. Đã đặt lại mặc định.
+  - Thanh trượt âm lượng trong Cài đặt không còn nhận điều hướng bàn phím, nên bấm A/← khi đang mở bảng không làm tụt âm lượng nữa.
+  - Mức nhạc tăng từ 0.55 lên 0.7.
+  - `SoundscapePlayModeTests` giờ kiểm tra cả âm lượng thực (> 0.5), không chỉ kiểm tra "đang phát".

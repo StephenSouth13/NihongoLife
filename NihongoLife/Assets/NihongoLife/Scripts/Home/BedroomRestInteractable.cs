@@ -26,7 +26,7 @@ namespace NihongoLife.Home
 
         public bool IsInteractionAvailable => !_busy;
         public string GetPromptJa() => "ねる";
-        public string GetpromptEn() => "Đi ngủ";
+        public string GetpromptEn() => NihongoLife.Core.Loc.T("Đi ngủ", "Go to sleep", "ねる");
         public Transform GetTransform() => transform;
 
         public void Configure(Transform lie, Transform stand)
@@ -65,7 +65,7 @@ namespace NihongoLife.Home
             StartCoroutine(SettleOnMattress(player));
             if (room != null) room.SetRoomLights(false, true);
 
-            if (room != null) yield return room.FadeToNight("おやすみなさい", "Chúc ngủ ngon…");
+            if (room != null) yield return room.FadeToNight("おやすみなさい", NihongoLife.Core.Loc.Gloss("Chúc ngủ ngon…", "Good night…"));
             else yield return new WaitForSeconds(1.5f);
 
             if (status != null) status.Sleep(sleepHours);
@@ -79,11 +79,11 @@ namespace NihongoLife.Home
             if (room != null) room.SetRoomLights(true, true);
 
             string summary = status == null ? string.Empty :
-                $"Tỉnh táo {restBefore:0} → {status.Restfulness:0}   ·   Năng lượng {energyBefore:0} → {status.CurrentEnergy:0}";
+                NihongoLife.Core.Loc.F("Tỉnh táo {0:0} → {1:0}   ·   Năng lượng {2:0} → {3:0}", "Alertness {0:0} → {1:0}   ·   Energy {2:0} → {3:0}", "眠気 {0:0} → {1:0}   ·   元気 {2:0} → {3:0}", restBefore, status.Restfulness, energyBefore, status.CurrentEnergy);
             if (room != null)
             {
                 room.ResetDailyActivities();
-                yield return room.FadeToMorning("おはようございます！", $"Chào buổi sáng! {wakeUpHour:00}:00", summary);
+                yield return room.FadeToMorning("おはようございます！", NihongoLife.Core.Loc.T("Chào buổi sáng! ", "Good morning! ", "") + $"{wakeUpHour:00}:00", summary);
             }
 
             if (body != null) body.enabled = true;

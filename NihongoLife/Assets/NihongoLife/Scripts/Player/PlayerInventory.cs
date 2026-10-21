@@ -26,6 +26,9 @@ namespace NihongoLife.Player
         public float foodRestore;
         public float drinkRestore;
         public float energyRestore;
+
+        /// <summary>The item's name in the interface language (see <see cref="ItemNames"/>).</summary>
+        public string Name => ItemNames.Of(this);
     }
 
     public class PlayerInventory : MonoBehaviour
@@ -80,6 +83,9 @@ namespace NihongoLife.Player
             }
         }
 
+        /// <summary>Game Center tickets are a currency saved up for big prizes: they stack far beyond normal items.</summary>
+        private int StackLimit(string itemId) => itemId == "game_ticket" ? 999 : maxStackSize;
+
         public bool AddItem(string itemId, string displayNameJa, string displayNameEn, int priceYen, int quantity = 1, bool isLitter = false,
             ItemUseType useType = ItemUseType.None, float foodRestore = 0f, float drinkRestore = 0f, float energyRestore = 0f)
         {
@@ -95,7 +101,7 @@ namespace NihongoLife.Player
                     displayNameJa = displayNameJa,
                     displayNameEn = displayNameEn,
                     priceYen = Mathf.Max(0, priceYen),
-                    quantity = Mathf.Min(quantity, maxStackSize),
+                    quantity = Mathf.Min(quantity, StackLimit(itemId)),
                     isLitter = isLitter,
                     useType = useType,
                     foodRestore = Mathf.Max(0f, foodRestore),
@@ -105,8 +111,8 @@ namespace NihongoLife.Player
             }
             else
             {
-                if (existing.quantity >= maxStackSize) return false;
-                existing.quantity = Mathf.Min(existing.quantity + quantity, maxStackSize);
+                if (existing.quantity >= StackLimit(itemId)) return false;
+                existing.quantity = Mathf.Min(existing.quantity + quantity, StackLimit(itemId));
             }
 
             OnInventoryChanged?.Invoke();
@@ -142,7 +148,7 @@ namespace NihongoLife.Player
             if (Yen < amount) return false;
 
             Yen -= amount;
-            NihongoLife.Core.WalletLedger.Record(-amount, reason ?? "Chi tiêu", Yen);
+            NihongoLife.Core.WalletLedger.Record(-amount, reason ?? NihongoLife.Core.Loc.Triple("Chi tiêu", "Spending", "支出"), Yen);
             OnInventoryChanged?.Invoke();
             SaveWallet();
             return true;
@@ -152,7 +158,7 @@ namespace NihongoLife.Player
         {
             if (amount <= 0) return;
             Yen += amount;
-            NihongoLife.Core.WalletLedger.Record(amount, reason ?? "Nhận tiền", Yen);
+            NihongoLife.Core.WalletLedger.Record(amount, reason ?? NihongoLife.Core.Loc.Triple("Nhận tiền", "Income", "収入"), Yen);
             OnInventoryChanged?.Invoke();
             SaveWallet();
         }
@@ -161,7 +167,7 @@ namespace NihongoLife.Player
         {
             int before = Yen;
             Yen = Mathf.Max(0, Yen - Mathf.Max(0, amount));
-            if (before != Yen) NihongoLife.Core.WalletLedger.Record(Yen - before, reason ?? "Tiền phạt", Yen);
+            if (before != Yen) NihongoLife.Core.WalletLedger.Record(Yen - before, reason ?? NihongoLife.Core.Loc.Triple("Tiền phạt", "Fine", "罰金"), Yen);
             OnInventoryChanged?.Invoke();
             SaveWallet();
         }

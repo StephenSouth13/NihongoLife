@@ -216,7 +216,7 @@ namespace NihongoLife.Player
         // ──────────────────────── IInteractable ────────────────────────
 
         public string GetPromptJa() => $"{DisplayName} と交流する";
-        public string GetpromptEn() => "Gặp người chơi này — nhắn tin, kết bạn, mời nhóm";
+        public string GetpromptEn() => NihongoLife.Core.Loc.T("Gặp người chơi này — nhắn tin, kết bạn, mời nhóm", "Meet this player — message, add friend, invite to group", "このプレイヤーと交流 — メッセージ・友だち・グループ招待");
         public Transform GetTransform() => transform;
 
         public void Interact(GameObject player)

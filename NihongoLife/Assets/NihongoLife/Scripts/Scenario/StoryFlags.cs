@@ -27,6 +27,14 @@ namespace NihongoLife.Scenario
             return progress != null && progress.storyFlags != null && progress.storyFlags.Contains(flag.Trim());
         }
 
+        /// <summary>Removes a flag (tests resetting map progress).</summary>
+        public static void Remove(string flag)
+        {
+            if (string.IsNullOrWhiteSpace(flag) || !GameServices.TryGet(out IProgressRepository repository)) return;
+            var progress = repository.GetProgress();
+            if (progress?.storyFlags != null && progress.storyFlags.Remove(flag.Trim())) repository.SaveProgress(progress);
+        }
+
         public static void Set(string flag)
         {
             SetAll(new[] { flag });

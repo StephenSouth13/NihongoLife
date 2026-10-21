@@ -60,6 +60,28 @@ namespace NihongoLife.UI
             _ => HudIcons.Moon,
         };
 
+        private static string DockLabel(string name, string fallback) => name switch
+        {
+            "BagButton" => NihongoLife.Core.Loc.T("Balo", "Bag", "バッグ"),
+            "CharacterButton" => NihongoLife.Core.Loc.T("Nhân vật", "Character", "キャラ"),
+            "MapButton" => NihongoLife.Core.Loc.T("Bản đồ", "Map", "地図"),
+            "QuestButton" => NihongoLife.Core.Loc.T("Nhiệm vụ", "Tasks", "タスク"),
+            "ExamButton" => NihongoLife.Core.Loc.T("Luyện thi", "Exams", "試験"),
+            "NotebookButton" => NihongoLife.Core.Loc.T("Sổ tay", "Notebook", "ノート"),
+            "OverviewButton" => NihongoLife.Core.Loc.T("Góc nhìn", "View", "視点"),
+            "SettingsButton" => NihongoLife.Core.Loc.T("Cài đặt", "Settings", "設定"),
+            _ => fallback,
+        };
+
+        private static string NeedName(string key) => key switch
+        {
+            "health" => NihongoLife.Core.Loc.T("Sức khỏe", "Health", "体力"),
+            "energy" => NihongoLife.Core.Loc.T("Thể lực", "Stamina", "元気"),
+            "hunger" => NihongoLife.Core.Loc.T("No", "Fullness", "満腹"),
+            "thirst" => NihongoLife.Core.Loc.T("Khát", "Thirst", "のど"),
+            _ => NihongoLife.Core.Loc.T("Tỉnh táo", "Alertness", "眠気"),
+        };
+
         private static readonly (string key, string glyph, string vi, Color color)[] Needs =
         {
             ("health", "体", "Sức khỏe", new Color(0.92f, 0.38f, 0.38f)),
@@ -130,6 +152,8 @@ namespace NihongoLife.UI
                 foreach (var (name, _, label, action) in buttons)
                 {
                     var button = NLUi.Button(bar, name, label, _font, () => action?.Invoke(), NLUi.Ink, 16f, NLUi.Text, 62f);
+                    string buttonName = name, fallback = label;
+                    LocText.Set(button.GetComponentInChildren<TextMeshProUGUI>(), () => DockLabel(buttonName, fallback));
                     NLUi.Size(button, 104f, 62f);
                 }
             }
@@ -203,9 +227,9 @@ namespace NihongoLife.UI
             var wallet = NLUi.Panel(top, "WalletPill", new Color(0.12f, 0.1f, 0.05f, 0.85f), new RectOffset(12, 16, 6, 6), 8f, vertical: false);
             var walletLayout = (HorizontalLayoutGroup)wallet.GetComponent<HorizontalOrVerticalLayoutGroup>();
             walletLayout.childForceExpandWidth = false; walletLayout.childAlignment = TextAnchor.MiddleCenter;
-            var walletEdge = wallet.gameObject.AddComponent<Outline>();
-            walletEdge.effectColor = new Color(0.95f, 0.75f, 0.32f, 0.7f); walletEdge.effectDistance = new Vector2(1.2f, -1.2f);
-            Icon(wallet, "WalletIcon", HudIcons.Wallet, 20f, NLUi.Gold);
+            wallet.GetComponent<Image>().sprite = UiKit.Rounded(16);
+            UiKit.Border(wallet, new Color(0.95f, 0.75f, 0.32f, 0.75f), 16);
+            Icon(wallet, "WalletIcon", UiIcons.Coin, 26f, Color.white); // the gold yen coin
             _wallet = NLUi.Label(wallet, "Wallet", "", 19f, NLUi.Gold, _font, FontStyles.Bold);
             _wallet.textWrappingMode = TextWrappingModes.NoWrap;
             NLUi.FitContent(wallet, width: true, height: true);
@@ -297,9 +321,14 @@ namespace NihongoLife.UI
                 var objective = scenario != null ? scenario.Objectives.FirstOrDefault(o => o.state == ObjectiveState.Active) : null;
                 if (objective != null)
                 {
-                    string title = string.IsNullOrWhiteSpace(objective.titleVi) ? objective.titleEn : objective.titleVi;
+                    string title = objective.Title;
                     int done = scenario.Objectives.Count(o => o.state == ObjectiveState.Completed);
-                    info = ("◆ CỐT TRUYỆN", title, $"{done}/{scenario.Objectives.Count} mục · N mở sổ nhiệm vụ");
+                    info = ("◆ " + NihongoLife.Core.Loc.T("CỐT TRUYỆN", "STORY", "ストーリー"), title, NihongoLife.Core.Loc.F("{0}/{1} mục · N mở sổ nhiệm vụ", "{0}/{1} steps · N opens the task journal", "{0}/{1} · Nでタスク帳", done, scenario.Objectives.Count));
+                }
+                // No quest running: point at the next story step (or what it still needs).
+                else if (scenario == null || scenario.CurrentScenario == null || StoryDirector.IsDone(scenario.CurrentScenario.id))
+                {
+                    try { info = StoryDirector.Hud(); } catch (Exception e) { Debug.LogException(e); }
                 }
             }
             _objective.gameObject.SetActive(info != null);
@@ -314,8 +343,12 @@ namespace NihongoLife.UI
         private Bar BarRow(RectTransform parent, string icon, string label, Color color)
         {
             var row = NLUi.Group(parent, "Row_" + label, false, 8f, TextAnchor.MiddleLeft, false);
-            NLUi.Size(NLUi.Label(row, "Icon", icon, 16f, color, _font, FontStyles.Bold, TextAlignmentOptions.Center), 22f);
-            NLUi.Size(NLUi.Label(row, "Label", label, 16f, NLUi.Muted, _font), 96f);
+            var glyph = new GameObject("Icon", typeof(RectTransform), typeof(Image), typeof(LayoutElement)).GetComponent<Image>();
+            glyph.transform.SetParent(row, false);
+            glyph.sprite = NeedIcon(icon); glyph.color = color; glyph.preserveAspect = true; glyph.raycastTarget = false;
+            var glyphSize = glyph.GetComponent<LayoutElement>(); glyphSize.preferredWidth = glyphSize.preferredHeight = 20f;
+            string need = icon;
+            NLUi.Size(LocText.Set(NLUi.Label(row, "Label", "", 16f, NLUi.Muted, _font), () => NeedName(need)), 96f);
             var track = new GameObject("Track", typeof(RectTransform), typeof(Image), typeof(LayoutElement)).GetComponent<RectTransform>();
             track.SetParent(row, false);
             track.GetComponent<Image>().color = new Color(1f, 1f, 1f, 0.08f);
@@ -439,9 +472,9 @@ namespace NihongoLife.UI
                 _weatherText.textWrappingMode = TextWrappingModes.NoWrap;
             }
             string text = null;
-            if (status.HasCold) text = "雨  Bị cảm lạnh vì ướt mưa — mất máu từ từ, mau buồn ngủ. Vào nhà cho khô.";
-            else if (NihongoLife.Core.WeatherCycle.PlayerInRain) text = $"雨  Đang ướt mưa ({status.Wetness * 100f:0}%) — hồi thể lực chậm một nửa";
-            else if (status.InHotSun) text = "晴  Nắng gắt buổi trưa — khát nhanh hơn, nhớ uống nước";
+            if (status.HasCold) text = NihongoLife.Core.Loc.T("Bị cảm lạnh vì ướt mưa — mất máu từ từ, mau buồn ngủ. Vào nhà cho khô.", "You caught a cold in the rain — health drains slowly and you tire fast. Go inside and dry off.", "雨でかぜをひきました。体力が少しずつ減り、眠くなりやすいです。家に入って乾かしましょう。");
+            else if (NihongoLife.Core.WeatherCycle.PlayerInRain) text = NihongoLife.Core.Loc.F("Đang ướt mưa ({0:0}%) — hồi thể lực chậm một nửa", "Getting wet in the rain ({0:0}%) — stamina recovers at half speed", "雨にぬれています（{0:0}%）— 元気の回復が半分になります", status.Wetness * 100f);
+            else if (status.InHotSun) text = NihongoLife.Core.Loc.T("Nắng gắt buổi trưa — khát nhanh hơn, nhớ uống nước", "Strong midday sun — you get thirsty faster, drink water", "昼の強い日差し — のどが渇きやすいので水を飲みましょう");
             bool show = text != null && !hide;
             if (_weatherChip.gameObject.activeSelf != show) _weatherChip.gameObject.SetActive(show);
             if (!show) return;
@@ -462,7 +495,8 @@ namespace NihongoLife.UI
             var stage = NLUi.Panel(_characterWindow, "ModelCard", new Color(0.86f, 0.91f, 0.97f, 1f), new RectOffset(0, 0, 0, 0), 0f);
             NLUi.Size(stage, 280f, 440f);
             _preview = ProfilePreview.Create(stage, new Vector2(280f, 404f));
-            var hint = NLUi.Label(stage, "DragHint", "Kéo chuột để xoay", 14f, new Color(0.32f, 0.4f, 0.5f), _font, FontStyles.Normal, TextAlignmentOptions.Center);
+            var hint = NLUi.Label(stage, "DragHint", "", 14f, new Color(0.32f, 0.4f, 0.5f), _font, FontStyles.Normal, TextAlignmentOptions.Center);
+            LocText.Set(hint, "Kéo chuột để xoay", "Drag to rotate", "ドラッグで回転");
             NLUi.Size(hint, preferredHeight: 36f);
 
             var info = NLUi.Group(_characterWindow, "Info", true, 10f, TextAnchor.UpperLeft);
@@ -470,7 +504,7 @@ namespace NihongoLife.UI
             var header = NLUi.Group(info, "Header", false, 14f, TextAnchor.MiddleLeft, false);
             var names = NLUi.Group(header, "Names", true, 2f, TextAnchor.MiddleLeft);
             NLUi.Size(names, flexibleWidth: 1f);
-            NLUi.Label(names, "Kicker", "じぶん · Hồ sơ nhân vật", 15f, NLUi.Gold, _font, FontStyles.Bold);
+            LocText.Set(NLUi.Label(names, "Kicker", "", 15f, NLUi.Gold, _font, FontStyles.Bold), "Hồ sơ nhân vật", "Character profile", "じぶんのプロフィール");
             _characterName = NLUi.Label(names, "Name", "", 28f, NLUi.Text, _font, FontStyles.Bold);
             _characterLevel = NLUi.Label(names, "Level", "", 16f, NLUi.Muted, _font);
             var closeSpace = new GameObject("CloseSpace", typeof(RectTransform));
@@ -481,24 +515,24 @@ namespace NihongoLife.UI
 
             // Progress tiles: money, knowledge, work, vocabulary — four separate ideas, never merged into XP.
             var tiles = NLUi.Group(info, "Tiles", false, 8f, TextAnchor.MiddleLeft, true);
-            _statYen = Tile(tiles, "Tiền", NLUi.Gold);
-            _statKnowledge = Tile(tiles, "Kiến thức", new Color(0.45f, 0.8f, 0.95f));
-            _statShifts = Tile(tiles, "Ca làm thêm", new Color(0.55f, 0.85f, 0.55f));
-            _statWords = Tile(tiles, "Từ đã học", new Color(0.85f, 0.65f, 0.95f));
+            _statYen = Tile(tiles, "Yen", NLUi.Gold, () => NihongoLife.Core.Loc.T("Tiền", "Money", "お金"));
+            _statKnowledge = Tile(tiles, "Knowledge", new Color(0.45f, 0.8f, 0.95f), () => NihongoLife.Core.Loc.T("Trí tuệ", "Knowledge", "知識"));
+            _statShifts = Tile(tiles, "Shifts", new Color(0.55f, 0.85f, 0.55f), () => NihongoLife.Core.Loc.T("Ca làm thêm", "Job shifts", "シフト"));
+            _statWords = Tile(tiles, "Words", new Color(0.85f, 0.65f, 0.95f), () => NihongoLife.Core.Loc.T("Từ đã học", "Words learned", "覚えた言葉"));
 
-            NLUi.Label(info, "NeedsTitle", "Nhu cầu", 17f, NLUi.Soft, _font, FontStyles.Bold);
-            foreach (var (key, glyph, vi, color) in Needs) _characterBars[key] = BarRow(info, glyph, vi, color);
+            LocText.Set(NLUi.Label(info, "NeedsTitle", "", 17f, NLUi.Soft, _font, FontStyles.Bold), "Nhu cầu", "Needs", "ステータス");
+            foreach (var (key, glyph, vi, color) in Needs) _characterBars[key] = BarRow(info, key, vi, color);
             _characterInfo = NLUi.Label(info, "Details", "", 16f, NLUi.Text, _font);
             _characterInfo.textWrappingMode = TextWrappingModes.Normal;
             _characterWindow.gameObject.SetActive(false);
         }
 
-        private TextMeshProUGUI Tile(RectTransform parent, string label, Color color)
+        private TextMeshProUGUI Tile(RectTransform parent, string id, Color color, Func<string> label)
         {
-            var tile = NLUi.Panel(parent, "Tile_" + label, new Color(1f, 1f, 1f, 0.05f), new RectOffset(12, 12, 8, 8), 0f);
+            var tile = NLUi.Panel(parent, "Tile_" + id, new Color(1f, 1f, 1f, 0.05f), new RectOffset(12, 12, 8, 8), 0f);
             var value = NLUi.Label(tile, "Value", "0", 22f, color, _font, FontStyles.Bold);
             value.textWrappingMode = TextWrappingModes.NoWrap;
-            NLUi.Label(tile, "Label", label, 13f, NLUi.Muted, _font);
+            LocText.Set(NLUi.Label(tile, "Label", "", 13f, NLUi.Muted, _font), label);
             return value;
         }
 
@@ -542,14 +576,16 @@ namespace NihongoLife.UI
                 bool zero = criticalValue <= 0.001f;
                 _warningText.text = (critical, zero) switch
                 {
-                    ("health", _) => criticalValue < PlayerStatus.DangerThreshold ? $"体  SẮP NGẤT ({criticalValue * 100f:0}%) — ăn, uống hoặc ngủ ngay! Ngất sẽ mất 3 giờ và tiền viện phí" : "体  Sức khỏe yếu — nghỉ ngơi và ăn uống",
-                    ("hunger", true) => "食  ĐANG ĐÓI LẢ — mất máu dần và đi chậm 20%. Mua đồ ăn ở konbini!",
-                    ("hunger", false) => $"食  Đói ({criticalValue * 100f:0}%) — khi về 0 sẽ mất máu và đi chậm",
-                    ("thirst", true) => "水  ĐANG KHÁT KHÔ — mất máu dần, không chạy được. Uống nước ngay!",
-                    ("thirst", false) => $"水  Khát ({criticalValue * 100f:0}%) — khi về 0 sẽ mất máu, không chạy được",
-                    ("rest", true) => $"眠  GỤC NGÃ SAU {Mathf.Max(0f, PlayerStatus.FallAsleepAfterSeconds - status.NoddingOffSeconds):0}s — về phòng ngủ ngay!",
-                    ("rest", false) => $"眠  Buồn ngủ (tỉnh táo {criticalValue * 100f:0}%) — khi về 0 sẽ đi chậm rồi ngủ gục ngoài đường",
-                    _ => "元  Hết sức — đi chậm lại hoặc nghỉ một chút",
+                    ("health", _) => criticalValue < PlayerStatus.DangerThreshold
+                        ? NihongoLife.Core.Loc.F("SẮP NGẤT ({0:0}%) — ăn, uống hoặc ngủ ngay! Ngất sẽ mất 3 giờ và tiền viện phí", "ABOUT TO FAINT ({0:0}%) — eat, drink or sleep now! Fainting costs 3 hours and a clinic fee", "倒れそう（{0:0}%）— すぐ食べる・飲む・寝る！倒れると3時間と診察料を失います", criticalValue * 100f)
+                        : NihongoLife.Core.Loc.T("Sức khỏe yếu — nghỉ ngơi và ăn uống", "Low health — rest, eat and drink", "体力が低い — 休んで、食べて、飲みましょう"),
+                    ("hunger", true) => NihongoLife.Core.Loc.T("ĐANG ĐÓI LẢ — mất máu dần và đi chậm 20%. Mua đồ ăn ở konbini!", "STARVING — losing health and 20% slower. Buy food at the konbini!", "お腹がペコペコ — 体力が減り、20%遅くなります。コンビニで食べ物を！"),
+                    ("hunger", false) => NihongoLife.Core.Loc.F("Đói ({0:0}%) — khi về 0 sẽ mất máu và đi chậm", "Hungry ({0:0}%) — at 0 you lose health and slow down", "空腹（{0:0}%）— 0になると体力が減り、遅くなります", criticalValue * 100f),
+                    ("thirst", true) => NihongoLife.Core.Loc.T("ĐANG KHÁT KHÔ — mất máu dần, không chạy được. Uống nước ngay!", "PARCHED — losing health and can't run. Drink water now!", "のどがカラカラ — 体力が減り、走れません。すぐ水を！"),
+                    ("thirst", false) => NihongoLife.Core.Loc.F("Khát ({0:0}%) — khi về 0 sẽ mất máu, không chạy được", "Thirsty ({0:0}%) — at 0 you lose health and can't run", "のどが渇いた（{0:0}%）— 0になると体力が減り、走れません", criticalValue * 100f),
+                    ("rest", true) => NihongoLife.Core.Loc.F("GỤC NGÃ SAU {0:0}s — về phòng ngủ ngay!", "COLLAPSING IN {0:0}s — go to bed now!", "あと{0:0}秒で倒れます — すぐ部屋で寝て！", Mathf.Max(0f, PlayerStatus.FallAsleepAfterSeconds - status.NoddingOffSeconds)),
+                    ("rest", false) => NihongoLife.Core.Loc.F("Buồn ngủ (tỉnh táo {0:0}%) — khi về 0 sẽ đi chậm rồi ngủ gục ngoài đường", "Sleepy ({0:0}% alert) — at 0 you slow down, then fall asleep in the street", "眠い（{0:0}%）— 0になると遅くなり、道で眠ってしまいます", criticalValue * 100f),
+                    _ => NihongoLife.Core.Loc.T("Hết sức — đi chậm lại hoặc nghỉ một chút", "Exhausted — slow down or take a short rest", "へとへと — ゆっくり歩くか、少し休みましょう"),
                 };
                 // The chip flashes with the danger, faster as the value nears 0.
                 var chipImage = _warning.GetComponent<Image>();
@@ -608,7 +644,7 @@ namespace NihongoLife.UI
             _name.text = status.PlayerName;
             _level.text = place;
             _levelBadge.text = status.Level.ToString();
-            _wallet.text = $"¥{yen:N0}";
+            _wallet.text = yen.ToString("N0", System.Globalization.CultureInfo.InvariantCulture);
             SetFill(_expFill, status.MaxExp > 0 ? status.CurrentExp / (float)status.MaxExp : 0f);
             foreach (var (key, _, _, _) in Needs)
             {
@@ -620,7 +656,7 @@ namespace NihongoLife.UI
 
             if (_characterWindow == null || !_characterWindow.gameObject.activeInHierarchy) return;
             _characterName.text = status.PlayerName;
-            _characterLevel.text = $"Cấp {status.Level}  ·  {status.CurrentExp}/{status.MaxExp} XP tới cấp {status.Level + 1}";
+            _characterLevel.text = NihongoLife.Core.Loc.F("Cấp {0}  ·  {1}/{2} XP tới cấp {3}", "Level {0}  ·  {1}/{2} XP to level {3}", "レベル{0}  ·  レベル{3}まで {1}/{2} XP", status.Level, status.CurrentExp, status.MaxExp, status.Level + 1);
             SetFill(_characterExp, status.MaxExp > 0 ? status.CurrentExp / (float)status.MaxExp : 0f);
             foreach (var (key, _, _, _) in Needs)
             {
@@ -631,16 +667,16 @@ namespace NihongoLife.UI
             var progress = GameServices.TryGet(out IProgressRepository repository) ? repository.GetProgress() : null;
             int shifts = progress?.careers?.Sum(c => c.totalShifts) ?? 0;
             int words = (progress?.island?.words?.Count ?? 0) + (progress?.masteryLevels?.Count ?? 0);
-            _statYen.text = $"¥{yen:N0}";
+            _statYen.text = NihongoLife.Core.Loc.Yen(yen);
             _statKnowledge.text = status.Knowledge.ToString();
             _statShifts.text = shifts.ToString();
             _statWords.text = words.ToString();
             (string kicker, string text, string progress)? tracked = null;
             try { tracked = HudObjective.Provider?.Invoke(); } catch { }
             _characterInfo.text =
-                $"<color=#A8B4C4>Đang ở</color>  {WorldLocationCatalog.Get(SceneManager.GetActiveScene().name).DisplayName}      " +
-                $"<color=#A8B4C4>Balo</color>  {(inventory != null ? inventory.Items.Count : 0)}/{(inventory != null ? inventory.MaxSlots : 0)} ô\n" +
-                $"<color=#A8B4C4>Đang theo dõi</color>  {(tracked != null ? tracked.Value.text : "—")}";
+                $"<color=#A8B4C4>{NihongoLife.Core.Loc.T("Đang ở", "Location", "現在地")}</color>  {WorldLocationCatalog.Get(SceneManager.GetActiveScene().name).DisplayName}      " +
+                $"<color=#A8B4C4>{NihongoLife.Core.Loc.T("Balo", "Bag", "かばん")}</color>  {(inventory != null ? inventory.Items.Count : 0)}/{(inventory != null ? inventory.MaxSlots : 0)}\n" +
+                $"<color=#A8B4C4>{NihongoLife.Core.Loc.T("Đang theo dõi", "Tracking", "追跡中")}</color>  {(tracked != null ? tracked.Value.text : "—")}";
         }
 
         private void OnDestroy()

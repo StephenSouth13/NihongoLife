@@ -25,7 +25,7 @@ namespace NihongoLife.Core
         {
             if (amount == 0) return;
             Load();
-            var e = new Entry { amount = amount, reason = string.IsNullOrWhiteSpace(reason) ? "Khác" : reason, balance = balance, ticks = DateTime.Now.Ticks };
+            var e = new Entry { amount = amount, reason = string.IsNullOrWhiteSpace(reason) ? NihongoLife.Core.Loc.Triple("Khác", "Other", "その他") : reason, balance = balance, ticks = DateTime.Now.Ticks };
             _store.entries.Insert(0, e);
             if (_store.entries.Count > Keep) _store.entries.RemoveRange(Keep, _store.entries.Count - Keep);
             PlayerPrefs.SetString(Key, JsonUtility.ToJson(_store));

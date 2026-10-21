@@ -200,7 +200,7 @@ namespace NihongoLife.Player
             TotalExp += amount;
             ApplyLevelFromTotal();
             for (int l = levelBefore; l < Level; l++) { maxHealth += 10f; CurrentHealth = maxHealth; }
-            if (Level > levelBefore) NihongoLife.UI.HudFeed.Post($"Lên cấp {Level}!", NihongoLife.UI.HudFeed.Kind.Reward, 6f);
+            if (Level > levelBefore) NihongoLife.UI.HudFeed.Post(NihongoLife.Core.Loc.F("Lên cấp {0}!", "Level up! Level {0}", "レベル{0}になりました！", Level), NihongoLife.UI.HudFeed.Kind.Reward, 6f);
             SaveProgress();
             OnStatusChanged?.Invoke();
         }
@@ -269,14 +269,11 @@ namespace NihongoLife.Player
         public void AddKnowledge(int amount)
         {
             if (amount <= 0) return;
-            int before = Knowledge;
             Knowledge += amount;
-            // Crossing a threshold opens a new place: say so.
-            foreach (var unlock in LocationUnlocks.All)
-                if (unlock != null && before < unlock.requiredKnowledge && Knowledge >= unlock.requiredKnowledge)
-                    NihongoLife.UI.HudFeed.Post($"Đã mở khóa: {WorldLocationCatalog.Get(unlock.sceneName).VietnameseName}! Xem trên bản đồ (M).", NihongoLife.UI.HudFeed.Kind.Reward, 6f, "unlock");
             OnStatusChanged?.Invoke();
             SaveProgress();
+            // Enough knowledge may open the next stage of the map (MapUnlockCardUI announces it).
+            LocationUnlocks.Evaluate();
         }
 
         /// <summary>Tests: set the knowledge points directly (not saved).</summary>

@@ -15,9 +15,11 @@ MonoBehaviour:
   id: scenario.konbini.buy_onigiri
   version: 2
   titleJa: "コンビニでおにぎりを買う"
-  titleEn: "Mua cơm nắm ở cửa hàng tiện lợi"
+  titleVi: "Mua cơm nắm ở cửa hàng tiện lợi"
+  titleEn: "Buy a rice ball at the convenience store"
   descriptionJa: "ひばりコンビニで、おにぎりと飲み物を見て、お会計をしましょう。"
-  descriptionEn: "Vào cửa hàng Hibari, tìm đúng món trên kệ, mua cơm nắm và thanh toán bằng tiếng Nhật."
+  descriptionVi: "Vào cửa hàng Hibari, tìm đúng món trên kệ, mua cơm nắm và thanh toán bằng tiếng Nhật."
+  descriptionEn: "Go into Hibari Mart, find the right item on the shelf, buy a rice ball and pay in Japanese."
   chapterIndex: 2
   questType: main
   giverNpcId: npc_cashier
@@ -49,27 +51,33 @@ MonoBehaviour:
   objectives:
   - id: obj_enter_store
     titleJa: "コンビニに入る"
-    titleEn: "Vào cửa hàng tiện lợi"
+    titleVi: "Vào cửa hàng tiện lợi"
+    titleEn: "Enter the convenience store"
     isOptional: 0
   - id: obj_check_drink
     titleJa: "飲み物のたなを確認する"
-    titleEn: "Kiểm tra kệ đồ uống"
+    titleVi: "Kiểm tra kệ đồ uống"
+    titleEn: "Check the drinks shelf"
     isOptional: 0
   - id: obj_confirm_item
     titleJa: "買うものを選ぶ"
-    titleEn: "Chọn đúng món cần mua"
+    titleVi: "Chọn đúng món cần mua"
+    titleEn: "Choose the right item to buy"
     isOptional: 0
   - id: obj_find_onigiri
     titleJa: "おにぎりを見つける"
-    titleEn: "Tìm và lấy cơm nắm"
+    titleVi: "Tìm và lấy cơm nắm"
+    titleEn: "Find and pick up a rice ball"
     isOptional: 0
   - id: obj_go_to_cashier
     titleJa: "レジへ行く"
-    titleEn: "Đi đến quầy thu ngân"
+    titleVi: "Đi đến quầy thu ngân"
+    titleEn: "Go to the register"
     isOptional: 0
   - id: obj_pay
     titleJa: "お金を払う"
-    titleEn: "Thanh toán"
+    titleVi: "Thanh toán"
+    titleEn: "Pay"
     isOptional: 0
   nodes:
   - id: node_start
@@ -99,14 +107,16 @@ MonoBehaviour:
     speakerId: npc_cashier
     textJa: "いらっしゃいませ！"
     textReading: "いらっしゃいませ！"
-    textEn: "Xin chào quý khách!"
+    textVi: "Xin chào quý khách!"
+    textEn: "Welcome!"
     textRomaji: "Irasshaimase!"
     textEnglishIpa: 
     animationCue: bow
     voiceClip: {fileID: 0}
     choices:
     - textJa: "こんにちは。"
-      textEn: "Xin chào ạ."
+      textVi: "Xin chào ạ."
+      textEn: "Hello."
       nextNodeId: n_task
       scoreModifiers:
       - category: Vocabulary
@@ -117,7 +127,8 @@ MonoBehaviour:
       - vocab.n5.konnichiwa
       setFlags: []
     - textJa: "どうも。"
-      textEn: "Chào."
+      textVi: "Chào."
+      textEn: "Hi."
       nextNodeId: n_greet_casual
       scoreModifiers:
       - category: ResponseAccuracy
@@ -139,7 +150,8 @@ MonoBehaviour:
     speakerId: npc_cashier
     textJa: "いらっしゃいませ。ごゆっくりどうぞ。"
     textReading: "いらっしゃいませ。ごゆっくりどうぞ。"
-    textEn: "Xin chào quý khách. Mời quý khách xem thong thả ạ."
+    textVi: "Xin chào quý khách. Mời quý khách xem thong thả ạ."
+    textEn: "Welcome. Please take your time."
     textRomaji: "Irasshaimase. Goyukkuri douzo."
     textEnglishIpa: 
     animationCue: bow
@@ -158,7 +170,8 @@ MonoBehaviour:
     speakerId: 
     textJa: "今日は、おにぎりと飲み物を買いに来ました。お店の中を見てみましょう。"
     textReading: "きょうは、おにぎりとのみものをかいにきました。おみせのなかをみてみましょう。"
-    textEn: "Hôm nay bạn đến mua cơm nắm và đồ uống. Hãy xem xung quanh cửa hàng."
+    textVi: "Hôm nay bạn đến mua cơm nắm và đồ uống. Hãy xem xung quanh cửa hàng."
+    textEn: "Today you came to buy a rice ball and a drink. Look around the store."
     textRomaji: "Kyou wa, onigiri to nomimono wo kai ni kimashita. Omise no naka wo mite mimashou."
     textEnglishIpa: 
     animationCue: 
@@ -196,7 +209,8 @@ MonoBehaviour:
     speakerId: 
     textJa: "冷蔵庫に、水、お茶、ジュースがあります。「水」と書いてあるラベルを見つけました。"
     textReading: "れいぞうこに、みず、おちゃ、ジュースがあります。「みず」とかいてあるラベルをみつけました。"
-    textEn: "Trong tủ lạnh có nước, trà và nước ép. Bạn tìm thấy nhãn có ghi 「水」 (nước)."
+    textVi: "Trong tủ lạnh có nước, trà và nước ép. Bạn tìm thấy nhãn có ghi 「水」 (nước)."
+    textEn: "The fridge has water, tea and juice. You find the label that says 「水」 (water)."
     textRomaji: "Reizouko ni, mizu, ocha, juusu ga arimasu. \"Mizu\" to kaite aru raberu wo mitsukemashita."
     textEnglishIpa: 
     animationCue: 
@@ -215,7 +229,8 @@ MonoBehaviour:
     speakerId: npc_cashier
     textJa: "何かお探しですか。"
     textReading: "なにかおさがしですか。"
-    textEn: "Quý khách đang tìm gì ạ?"
+    textVi: "Quý khách đang tìm gì ạ?"
+    textEn: "What are you looking for?"
     textRomaji: "Nani ka osagashi desu ka?"
     textEnglishIpa: 
     animationCue: talk
@@ -234,14 +249,16 @@ MonoBehaviour:
     speakerId: 
     textJa: "今日買うものはどれですか？"
     textReading: "きょうかうものはどれですか？"
-    textEn: "Hôm nay bạn cần mua món nào?"
+    textVi: "Hôm nay bạn cần mua món nào?"
+    textEn: "What do you need to buy today?"
     textRomaji: "Kyou kau mono wa dore desu ka?"
     textEnglishIpa: 
     animationCue: 
     voiceClip: {fileID: 0}
     choices:
     - textJa: "おにぎりをください。"
-      textEn: "Cho tôi cơm nắm ạ."
+      textVi: "Cho tôi cơm nắm ạ."
+      textEn: "A rice ball, please."
       nextNodeId: node_confirm_item_done
       scoreModifiers:
       - category: Grammar
@@ -253,7 +270,8 @@ MonoBehaviour:
       - vocab.n5.onigiri
       setFlags: []
     - textJa: "パンをください。"
-      textEn: "Cho tôi bánh mì ạ."
+      textVi: "Cho tôi bánh mì ạ."
+      textEn: "Bread, please."
       nextNodeId: node_confirm_item_hint
       scoreModifiers:
       - category: Vocabulary
@@ -263,7 +281,8 @@ MonoBehaviour:
       vocabularyTags: []
       setFlags: []
     - textJa: "お茶をください。"
-      textEn: "Cho tôi trà ạ."
+      textVi: "Cho tôi trà ạ."
+      textEn: "Tea, please."
       nextNodeId: node_confirm_item_hint
       scoreModifiers:
       - category: Vocabulary
@@ -273,7 +292,8 @@ MonoBehaviour:
       vocabularyTags: []
       setFlags: []
     - textJa: "水をください。"
-      textEn: "Cho tôi nước ạ."
+      textVi: "Cho tôi nước ạ."
+      textEn: "Water, please."
       nextNodeId: node_confirm_item_hint
       scoreModifiers:
       - category: ResponseAccuracy
@@ -295,7 +315,8 @@ MonoBehaviour:
     speakerId: npc_cashier
     textJa: "今日はおにぎりを買います。棚を見てくださいね。"
     textReading: "きょうはおにぎりをかいます。たなをみてくださいね。"
-    textEn: "Hôm nay nhiệm vụ là mua cơm nắm. Mời quý khách xem trên kệ hàng nhé."
+    textVi: "Hôm nay nhiệm vụ là mua cơm nắm. Mời quý khách xem trên kệ hàng nhé."
+    textEn: "Today's task is to buy a rice ball. Please look on the shelf."
     textRomaji: "Kyou wa onigiri wo kaimasu. Tana wo mite kudasai ne."
     textEnglishIpa: 
     animationCue: point
@@ -314,7 +335,8 @@ MonoBehaviour:
     speakerId: npc_cashier
     textJa: "はい、おにぎりですね。あちらの棚にありますよ。"
     textReading: "はい、おにぎりですね。あちらのたなにありますよ。"
-    textEn: "Vâng, cơm nắm nhỉ. Ở kệ đằng kia có đấy ạ."
+    textVi: "Vâng, cơm nắm nhỉ. Ở kệ đằng kia có đấy ạ."
+    textEn: "Yes, a rice ball. They're on that shelf over there."
     textRomaji: "Hai, onigiri desu ne. Achira no tana ni arimasu yo."
     textEnglishIpa: 
     animationCue: point
@@ -333,7 +355,8 @@ MonoBehaviour:
     speakerId: 
     textJa: "おにぎりの棚に、うめ、さけ、こんぶ、と書いてあります。"
     textReading: "おにぎりのたなに、うめ、さけ、こんぶ、とかいてあります。"
-    textEn: "Trên kệ có ghi các vị: ume (mơ muối), sake (cá hồi), konbu (rong biển)."
+    textVi: "Trên kệ có ghi các vị: ume (mơ muối), sake (cá hồi), konbu (rong biển)."
+    textEn: "The shelf shows the flavours: ume (pickled plum), sake (salmon), konbu (kelp)."
     textRomaji: "Onigiri no tana ni, ume, sake, konbu, to kaite arimasu."
     textEnglishIpa: 
     animationCue: 
@@ -371,7 +394,8 @@ MonoBehaviour:
     speakerId: 
     textJa: "さけのおにぎりを、かごに入れました。"
     textReading: "さけのおにぎりを、かごにいれました。"
-    textEn: "Bạn bỏ một cái onigiri vị cá hồi vào giỏ."
+    textVi: "Bạn bỏ một cái onigiri vị cá hồi vào giỏ."
+    textEn: "You put a salmon onigiri in your basket."
     textRomaji: "Sake no onigiri wo, kago ni iremashita."
     textEnglishIpa: 
     animationCue: 
@@ -409,14 +433,16 @@ MonoBehaviour:
     speakerId: npc_cashier
     textJa: "お決まりですか。"
     textReading: "おきまりですか。"
-    textEn: "Quý khách đã chọn xong chưa ạ?"
+    textVi: "Quý khách đã chọn xong chưa ạ?"
+    textEn: "Are you ready?"
     textRomaji: "Okimari desu ka?"
     textEnglishIpa: 
     animationCue: talk
     voiceClip: {fileID: 0}
     choices:
     - textJa: "はい、これをお願いします。"
-      textEn: "Vâng, cho tôi cái này ạ."
+      textVi: "Vâng, cho tôi cái này ạ."
+      textEn: "Yes, this one, please."
       nextNodeId: node_cashier_prompt_bag
       scoreModifiers:
       - category: Grammar
@@ -427,7 +453,8 @@ MonoBehaviour:
       vocabularyTags: []
       setFlags: []
     - textJa: "はい。"
-      textEn: "Vâng."
+      textVi: "Vâng."
+      textEn: "Yes."
       nextNodeId: node_cashier_prompt_bag
       scoreModifiers:
       - category: ResponseAccuracy
@@ -449,14 +476,16 @@ MonoBehaviour:
     speakerId: npc_cashier
     textJa: "袋は要りますか？"
     textReading: "ふくろはいりますか？"
-    textEn: "Quý khách có cần túi không?"
+    textVi: "Quý khách có cần túi không?"
+    textEn: "Do you need a bag?"
     textRomaji: "Fukuro wa irimasu ka?"
     textEnglishIpa: 
     animationCue: talk
     voiceClip: {fileID: 0}
     choices:
     - textJa: "はい、お願いします。"
-      textEn: "Vâng, xin cho tôi ạ."
+      textVi: "Vâng, xin cho tôi ạ."
+      textEn: "Yes, please."
       nextNodeId: n_bag_yes
       scoreModifiers:
       - category: Vocabulary
@@ -468,7 +497,8 @@ MonoBehaviour:
       - vocab.n5.fukuro
       setFlags: []
     - textJa: "いいえ、大丈夫です。"
-      textEn: "Không, tôi ổn rồi ạ."
+      textVi: "Không, tôi ổn rồi ạ."
+      textEn: "No, I'm fine."
       nextNodeId: n_bag_no
       scoreModifiers:
       - category: Vocabulary
@@ -480,7 +510,8 @@ MonoBehaviour:
       - vocab.n5.fukuro
       setFlags: []
     - textJa: "袋を要ります。"
-      textEn: "Tôi cần một túi."
+      textVi: "Tôi cần một túi."
+      textEn: "I need one bag."
       nextNodeId: node_bag_wrong_grammar
       scoreModifiers:
       - category: Grammar
@@ -502,7 +533,8 @@ MonoBehaviour:
     speakerId: npc_cashier
     textJa: "すみません、袋は要りますか、ということですね。かしこまりました。"
     textReading: "すみません、ふくろはいりますか、ということですね。かしこまりました。"
-    textEn: "Xin lỗi, ý quý khách là 「袋は要りますか」 đúng không ạ. Tôi hiểu rồi ạ."
+    textVi: "Xin lỗi, ý quý khách là 「袋は要りますか」 đúng không ạ. Tôi hiểu rồi ạ."
+    textEn: "Sorry, you mean 「袋は要りますか」, right? I understand."
     textRomaji: "Sumimasen, fukuro wa irimasu ka, to iu koto desu ne. Kashikomarimashita."
     textEnglishIpa: 
     animationCue: point
@@ -521,7 +553,8 @@ MonoBehaviour:
     speakerId: npc_cashier
     textJa: "かしこまりました。袋代3円になります。"
     textReading: "かしこまりました。ふくろだいさんえんになります。"
-    textEn: "Vâng ạ. Tiền túi là 3 yên."
+    textVi: "Vâng ạ. Tiền túi là 3 yên."
+    textEn: "Certainly. The bag is 3 yen."
     textRomaji: "Kashikomarimashita. Fukurodai san-en ni narimasu."
     textEnglishIpa: 
     animationCue: talk
@@ -540,7 +573,8 @@ MonoBehaviour:
     speakerId: npc_cashier
     textJa: "かしこまりました。"
     textReading: "かしこまりました。"
-    textEn: "Vâng, tôi hiểu rồi ạ."
+    textVi: "Vâng, tôi hiểu rồi ạ."
+    textEn: "Yes, I understand."
     textRomaji: "Kashikomarimashita."
     textEnglishIpa: 
     animationCue: talk
@@ -559,14 +593,16 @@ MonoBehaviour:
     speakerId: npc_cashier
     textJa: "お会計は、497円です。"
     textReading: "おかいけいは、よんひゃくきゅうじゅうななえんです。"
-    textEn: "Tổng cộng là 497 yên ạ."
+    textVi: "Tổng cộng là 497 yên ạ."
+    textEn: "That will be 497 yen in total."
     textRomaji: "Okaikei wa, yonhyaku kyuujuu nana en desu."
     textEnglishIpa: 
     animationCue: talk
     voiceClip: {fileID: 0}
     choices:
     - textJa: "497円ですね。分かりました。"
-      textEn: "497 yên nhỉ. Cháu hiểu rồi ạ."
+      textVi: "497 yên nhỉ. Cháu hiểu rồi ạ."
+      textEn: "497 yen. I understand."
       nextNodeId: node_pay_choice
       scoreModifiers:
       - category: Vocabulary
@@ -579,7 +615,8 @@ MonoBehaviour:
       - vocab.n5.en
       setFlags: []
     - textJa: "もう一度お願いします。"
-      textEn: "Phiền chị nói lại một lần nữa ạ."
+      textVi: "Phiền chị nói lại một lần nữa ạ."
+      textEn: "Could you say that once more, please?"
       nextNodeId: n_total_repeat
       scoreModifiers:
       - category: ResponseAccuracy
@@ -590,7 +627,8 @@ MonoBehaviour:
       - vocab.n5.mou_ichido
       setFlags: []
     - textJa: "598円ですね。"
-      textEn: "598 yên nhỉ."
+      textVi: "598 yên nhỉ."
+      textEn: "598 yen, right?"
       nextNodeId: n_total_wrong
       scoreModifiers:
       - category: Vocabulary
@@ -612,7 +650,8 @@ MonoBehaviour:
     speakerId: npc_cashier
     textJa: "はい。四百、九十七円です。"
     textReading: "はい。よんひゃく、きゅうじゅうななえんです。"
-    textEn: "Vâng ạ. Bốn trăm, chín mươi bảy yên."
+    textVi: "Vâng ạ. Bốn trăm, chín mươi bảy yên."
+    textEn: "Yes. Four hundred and ninety-seven yen."
     textRomaji: "Hai. Yonhyaku, kyuujuu nana en desu."
     textEnglishIpa: 
     animationCue: point
@@ -631,7 +670,8 @@ MonoBehaviour:
     speakerId: npc_cashier
     textJa: "いいえ、497円ですよ。もう一度、聞いてくださいね。"
     textReading: "いいえ、よんひゃくきゅうじゅうななえんですよ。もういちど、きいてくださいね。"
-    textEn: "Không đâu ạ, là 497 yên. Mời quý khách nghe lại nhé."
+    textVi: "Không đâu ạ, là 497 yên. Mời quý khách nghe lại nhé."
+    textEn: "No, it's 497 yen. Please listen again."
     textRomaji: "Iie, yonhyaku kyuujuu nana en desu yo. Mou ichido, kiite kudasai ne."
     textEnglishIpa: 
     animationCue: point
@@ -650,14 +690,16 @@ MonoBehaviour:
     speakerId: 
     textJa: "支払方法を選択してください。"
     textReading: "しはらいほうほうをせんたくしてください。"
-    textEn: "Hãy chọn phương thức thanh toán."
+    textVi: "Hãy chọn phương thức thanh toán."
+    textEn: "Please choose how to pay."
     textRomaji: "Shiharai houhou wo sentaku shite kudasai."
     textEnglishIpa: 
     animationCue: 
     voiceClip: {fileID: 0}
     choices:
     - textJa: "これでお願いします。"
-      textEn: "Cho tôi thanh toán bằng cái này ạ."
+      textVi: "Cho tôi thanh toán bằng cái này ạ."
+      textEn: "I'll pay with this, please."
       nextNodeId: n_pay_confirm
       scoreModifiers:
       - category: Grammar
@@ -668,7 +710,8 @@ MonoBehaviour:
       vocabularyTags: []
       setFlags: []
     - textJa: "カードで払います。"
-      textEn: "Tôi thanh toán bằng thẻ ạ."
+      textVi: "Tôi thanh toán bằng thẻ ạ."
+      textEn: "I'll pay by card."
       nextNodeId: n_pay_confirm
       scoreModifiers:
       - category: Vocabulary
@@ -692,7 +735,8 @@ MonoBehaviour:
     speakerId: npc_cashier
     textJa: "はい、確かに。"
     textReading: "はい、たしかに。"
-    textEn: "Vâng, tôi đã nhận đủ ạ."
+    textVi: "Vâng, tôi đã nhận đủ ạ."
+    textEn: "Yes, I've received the exact amount."
     textRomaji: "Hai, tashika ni."
     textEnglishIpa: 
     animationCue: point
@@ -711,7 +755,8 @@ MonoBehaviour:
     speakerId: npc_cashier
     textJa: "ありがとうございます。またお越しくださいませ。"
     textReading: "ありがとうございます。またおこしくださいませ。"
-    textEn: "Xin cảm ơn quý khách. Hẹn gặp lại quý khách lần sau ạ."
+    textVi: "Xin cảm ơn quý khách. Hẹn gặp lại quý khách lần sau ạ."
+    textEn: "Thank you very much. Please come again."
     textRomaji: "Arigatou gozaimasu. Mata okoshi kudasaimase."
     textEnglishIpa: 
     animationCue: bow
@@ -730,14 +775,16 @@ MonoBehaviour:
     speakerId: 
     textJa: "レシートを受け取って、お店を出ます。何と言いますか。"
     textReading: "レシートをうけとって、おみせをでます。なんといいますか。"
-    textEn: "Bạn nhận hóa đơn rồi ra khỏi cửa hàng. Bạn nói gì?"
+    textVi: "Bạn nhận hóa đơn rồi ra khỏi cửa hàng. Bạn nói gì?"
+    textEn: "You take the receipt and leave the store. What do you say?"
     textRomaji: "Reshiito wo uketotte, omise wo demasu. Nan to iimasu ka?"
     textEnglishIpa: 
     animationCue: 
     voiceClip: {fileID: 0}
     choices:
     - textJa: "ありがとうございました。"
-      textEn: "Cảm ơn chị ạ."
+      textVi: "Cảm ơn chị ạ."
+      textEn: "Thank you."
       nextNodeId: n_recap
       scoreModifiers:
       - category: Vocabulary
@@ -748,7 +795,8 @@ MonoBehaviour:
       - vocab.n5.arigatou_gozaimashita
       setFlags: []
     - textJa: "さようなら。"
-      textEn: "Tạm biệt."
+      textVi: "Tạm biệt."
+      textEn: "Goodbye."
       nextNodeId: n_recap
       scoreModifiers:
       - category: ResponseAccuracy
@@ -770,7 +818,8 @@ MonoBehaviour:
     speakerId: 
     textJa: "今日のポイント：「〜をください」「〜は要りますか」「〜でお願いします」。"
     textReading: "きょうのポイント：「〜をください」「〜はいりますか」「〜でおねがいします」。"
-    textEn: "Tóm tắt: \"~ wo kudasai\" (cho tôi ~), \"~ wa irimasu ka\" (bạn có cần ~ không?), \"~ de onegaishimasu\" (thanh toán bằng ~). Nhớ đọc kỹ nhãn hàng trước khi chọn!"
+    textVi: "Tóm tắt: \"~ wo kudasai\" (cho tôi ~), \"~ wa irimasu ka\" (bạn có cần ~ không?), \"~ de onegaishimasu\" (thanh toán bằng ~). Nhớ đọc kỹ nhãn hàng trước khi chọn!"
+    textEn: "Summary: \"~ wo kudasai\" (~, please), \"~ wa irimasu ka\" (do you need ~?), \"~ de onegaishimasu\" (pay by ~). Remember to read labels carefully before choosing!"
     textRomaji: "Kyou no pointo: \"~ wo kudasai\" \"~ wa irimasu ka\" \"~ de onegaishimasu\"."
     textEnglishIpa: 
     animationCue: 

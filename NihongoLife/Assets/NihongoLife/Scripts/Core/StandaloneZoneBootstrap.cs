@@ -112,7 +112,7 @@ namespace NihongoLife.Core
             controller.height = 1.4f;
             controller.radius = 0.27f;
             controller.center = new Vector3(0f, 0.7f, 0f);
-            controller.stepOffset = 0.3f;
+            controller.stepOffset = 0.36f; // the station platform edge is 0.31 m
 
             var ground = new GameObject("GroundCheck").transform;
             ground.SetParent(player.transform, false);
