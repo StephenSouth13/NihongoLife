@@ -516,7 +516,7 @@ namespace NihongoLife.UI
             // Progress tiles: money, knowledge, work, vocabulary — four separate ideas, never merged into XP.
             var tiles = NLUi.Group(info, "Tiles", false, 8f, TextAnchor.MiddleLeft, true);
             _statYen = Tile(tiles, "Yen", NLUi.Gold, () => NihongoLife.Core.Loc.T("Tiền", "Money", "お金"));
-            _statKnowledge = Tile(tiles, "Knowledge", new Color(0.45f, 0.8f, 0.95f), () => NihongoLife.Core.Loc.T("Kiến thức", "Knowledge", "知識"));
+            _statKnowledge = Tile(tiles, "Knowledge", new Color(0.45f, 0.8f, 0.95f), () => NihongoLife.Core.Loc.T("Trí tuệ", "Knowledge", "知識"));
             _statShifts = Tile(tiles, "Shifts", new Color(0.55f, 0.85f, 0.55f), () => NihongoLife.Core.Loc.T("Ca làm thêm", "Job shifts", "シフト"));
             _statWords = Tile(tiles, "Words", new Color(0.85f, 0.65f, 0.95f), () => NihongoLife.Core.Loc.T("Từ đã học", "Words learned", "覚えた言葉"));
 

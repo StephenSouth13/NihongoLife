@@ -446,6 +446,9 @@ namespace NihongoLife.UI
             slider.direction = Slider.Direction.LeftToRight;
             slider.minValue = 0f;
             slider.maxValue = 1f;
+            // Mouse only: with keyboard navigation, walking keys (A / ←) pressed while the panel is open slid
+            // the volume down to 0 without anyone noticing.
+            slider.navigation = new Navigation { mode = Navigation.Mode.None };
 
             valueText = CreateText(parent, "0%", 17f, position + new Vector2(230f, 0f), new Vector2(70f, 30f), TextAlignmentOptions.MidlineRight);
             valueText.color = UIStyleKit.AccentGold;

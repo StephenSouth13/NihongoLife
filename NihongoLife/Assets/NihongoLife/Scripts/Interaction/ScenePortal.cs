@@ -18,7 +18,7 @@ namespace NihongoLife.Interaction
         public float InteractionPriority => 0.75f;
         public string GetPromptJa() => promptJa;
         public string GetpromptEn() => !exitsZone && !string.IsNullOrEmpty(targetScene) && !LocationUnlocks.IsUnlocked(targetScene)
-            ? NihongoLife.Core.Loc.F("Đã khóa — cần {0} điểm kiến thức (thiếu {1})", "Locked — needs {0} knowledge points ({1} to go)", "未開放 — 知識ポイント{0}が必要（あと{1}）", LocationUnlocks.Required(targetScene), LocationUnlocks.Missing(targetScene))
+            ? LocationUnlocks.ShortStatus(targetScene)
             : promptEn;
         public string TargetScene => targetScene;
         public Transform GetTransform() => transform;

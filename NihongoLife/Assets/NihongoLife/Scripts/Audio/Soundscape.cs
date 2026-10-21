@@ -69,7 +69,7 @@ namespace NihongoLife.Audio
             }
             // Crossfade: the old clip fades out, then the new one starts and fades in.
             float quiet = Ducking();
-            Fade(_music, ref _musicGain, _wantMusic, "Music", 0.55f * Bgm * quiet, () => MusicKey = _wantMusic);
+            Fade(_music, ref _musicGain, _wantMusic, "Music", 0.7f * Bgm * quiet, () => MusicKey = _wantMusic);
             Fade(_ambience, ref _ambienceGain, _wantAmbience, "Ambience", 0.6f * Bgm * (Exam ? 0f : 1f), () => AmbienceKey = _wantAmbience);
         }
 

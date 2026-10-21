@@ -279,7 +279,7 @@ namespace NihongoLife.UI
             string message = _tab == Tab.Active
                 ? Pick("Bạn chưa có nhiệm vụ đang làm. Mở tab 'Có thể nhận' để chọn một nhiệm vụ.", "No active quest. Open 'Available' to pick one.", "進行中のクエストはありません。「受けられる」から選びましょう。")
                 : _tab == Tab.Available
-                    ? Pick("Chưa có nhiệm vụ mới. Hãy hoàn thành nhiệm vụ hiện tại hoặc tích lũy thêm kiến thức.", "Nothing new yet. Finish your current quest or earn more knowledge.", "新しいクエストはまだありません。今のクエストを終えるか、知識を増やしましょう。")
+                    ? Pick("Chưa có nhiệm vụ mới. Hãy hoàn thành nhiệm vụ hiện tại hoặc tích lũy thêm trí tuệ.", "Nothing new yet. Finish your current quest or earn more knowledge.", "新しいクエストはまだありません。今のクエストを終えるか、知識を増やしましょう。")
                     : Pick("Bạn chưa hoàn thành nhiệm vụ nào.", "No completed quests yet.", "完了したクエストはまだありません。");
             _detailText.text = $"<color=#A9B7C4>{message}</color>";
             _actionButton.gameObject.SetActive(false);
@@ -336,7 +336,7 @@ namespace NihongoLife.UI
 
             sb.Append('\n').Append("<color=#F2B840><b>").Append(Pick("Phần thưởng", "Rewards", "報酬")).Append(":</b></color> ");
             int targets = scenario.learningTargets != null ? scenario.learningTargets.Count : 0;
-            sb.Append("~").Append(Mathf.Max(20, scenario.baseKnowledgeReward) + targets * 8).Append(' ').Append(Pick("kiến thức", "knowledge", "知識"));
+            sb.Append("~").Append(Mathf.Max(20, scenario.baseKnowledgeReward) + targets * 8).Append(' ').Append(Pick("trí tuệ", "knowledge", "知識"));
             if (scenario.rewardYen > 0) sb.Append("   +").Append(NihongoLife.Core.Loc.Yen(scenario.rewardYen));
             sb.Append('\n');
 
@@ -410,7 +410,7 @@ namespace NihongoLife.UI
             if (scenario.requiredKnowledge > 0)
             {
                 bool ok = progress.knowledge >= scenario.requiredKnowledge;
-                parts.Add($"{(ok ? "✓" : "✕")} {scenario.requiredKnowledge} {Pick("kiến thức", "knowledge", "知識")}");
+                parts.Add($"{(ok ? "✓" : "✕")} {scenario.requiredKnowledge} {Pick("trí tuệ", "knowledge", "知識")}");
             }
 
             if (scenario.requiredScenarioIds != null)

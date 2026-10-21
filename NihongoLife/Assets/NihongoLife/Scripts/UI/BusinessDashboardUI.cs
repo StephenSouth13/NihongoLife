@@ -66,7 +66,7 @@ namespace NihongoLife.UI
             if (BusinessSystem.Instance == null || !BusinessSystem.Instance.OwnsCompany)
             {
                 _companyNameText.text = NihongoLife.Core.Loc.T("Bạn chưa có công ty.", "You don't have a company yet.", "まだ会社がありません。");
-                _statsText.text = NihongoLife.Core.Loc.T("Hãy học lên 300 Điểm Kiến Thức và tiết kiệm 50,000 Yen để khởi nghiệp!", "Reach 300 knowledge points and save ¥50,000 to start a business!", "知識ポイント300と50,000円をためて起業しましょう！");
+                _statsText.text = NihongoLife.Core.Loc.T("Hãy học lên 300 Điểm Trí Tuệ và tiết kiệm 50,000 Yen để khởi nghiệp!", "Reach 300 knowledge points and save ¥50,000 to start a business!", "知識ポイント300と50,000円をためて起業しましょう！");
                 _hireButton.interactable = false;
                 _partnerButton.interactable = false;
                 return;

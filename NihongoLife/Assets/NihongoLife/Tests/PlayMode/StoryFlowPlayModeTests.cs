@@ -122,7 +122,7 @@ namespace NihongoLife.Tests
                 TaskJournalUI.SelectStory(later.id);
                 yield return new WaitForSecondsRealtime(0.4f);
                 Note($"journal shows {later.id}: {StoryDirector.Blocker(later)}");
-                if (StoryDirector.Blocker(later).Contains("kiến thức")) Assert.NotNull(GameObject.Find("StoryBlocker"), "The journal says what the story step needs.");
+                if (StoryDirector.Blocker(later).Contains("trí tuệ")) Assert.NotNull(GameObject.Find("StoryBlocker"), "The journal says what the story step needs.");
                 Capture("06b_journal_story_needs_knowledge");
             }
             TaskJournalUI.Close();

@@ -145,10 +145,10 @@ namespace NihongoLife.UI
 
             for (int i = _content.childCount - 1; i >= 0; i--) Destroy(_content.GetChild(i).gameObject);
             string scene = place.type == "MIDORI" ? WorldLocationCatalog.MidoriIslandScene : WorldMapUI.SceneOfType(place.type);
-            string status = scene == null || LocationUnlocks.Required(scene) == 0
+            string status = scene == null || !LocationUnlocks.IsGated(scene)
                 ? "<color=#7BD88F>" + NihongoLife.Core.Loc.T("Luôn mở", "Always open", "いつでも行ける") + "</color>"
                 : LocationUnlocks.IsUnlocked(scene) ? "<color=#7BD88F>" + NihongoLife.Core.Loc.T("Đã mở", "Unlocked", "解放済み") + "</color>"
-                : "<color=#FF9A80>" + NihongoLife.Core.Loc.F("Đã khóa — cần {0} điểm kiến thức (thiếu {1})", "Locked — needs {0} knowledge points ({1} to go)", "未開放 — 知識ポイント{0}が必要（あと{1}）", LocationUnlocks.Required(scene), LocationUnlocks.Missing(scene)) + "</color>";
+                : "<color=#FF9A80>" + LocationUnlocks.ShortStatus(scene) + "</color>";
             NLUi.Label(_content, "Name", (NihongoLife.Core.Loc.IsJapanese ? $"<b>{place.ja}</b>" : $"<b>{place.ja}</b>  ·  {place.Name}") + $"   <size=70%>{status}</size>", 24f, NLUi.Text, _font);
             NLUi.Label(_content, "About", place.About, 17f, NLUi.Soft, _font);
             var how = new System.Text.StringBuilder("<b>" + NihongoLife.Core.Loc.T("Cách tương tác", "How to use it", "使い方") + "</b>");

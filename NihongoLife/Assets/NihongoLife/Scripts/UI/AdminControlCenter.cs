@@ -82,7 +82,7 @@ namespace NihongoLife.UI
             AddText(Card, NihongoLife.Core.Loc.T("Tiền (Yen):", "Money (yen):", "お金（円）："), 20, 420, -220, 200, 40, TextAlignmentOptions.Left, FontStyles.Normal, false, Color.white);
             _yenInput = CreateAdminInput("YenInput", 520, -220, 200, 40);
 
-            AddText(Card, NihongoLife.Core.Loc.T("Kiến thức:", "Knowledge:", "知識："), 20, 420, -280, 200, 40, TextAlignmentOptions.Left, FontStyles.Normal, false, Color.white);
+            AddText(Card, NihongoLife.Core.Loc.T("Trí tuệ:", "Knowledge:", "知識："), 20, 420, -280, 200, 40, TextAlignmentOptions.Left, FontStyles.Normal, false, Color.white);
             _knowledgeInput = CreateAdminInput("KnowledgeInput", 520, -280, 200, 40);
 
             var applyBtn = AddButton(Card, NihongoLife.Core.Loc.T("Áp dụng & Ghi đè DB", "Apply & overwrite DB", "適用してDBを上書き"), 420, -350, 300, 50, true);
@@ -158,7 +158,7 @@ namespace NihongoLife.UI
 
             // Notice: To actually update another user's data on Supabase, the Admin client needs 
             // either a Service Role key or an Edge Function. Here we simulate the logic.
-            Debug.Log($"[Admin] Bắn lệnh cập nhật lên DB cho user {_selectedPlayerId}: Yên={newYen}, Kiến thức={newK}");
+            Debug.Log($"[Admin] Bắn lệnh cập nhật lên DB cho user {_selectedPlayerId}: Yên={newYen}, Trí tuệ={newK}");
             
             // To notify the user locally if they are in the same scene, we can send a system chat:
             if (GameServices.TryGet(out IOnlineWorldService online))

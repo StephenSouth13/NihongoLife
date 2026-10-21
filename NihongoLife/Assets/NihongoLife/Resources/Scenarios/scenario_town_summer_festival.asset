@@ -31,9 +31,10 @@ MonoBehaviour:
   locationHintJa: "ひばり神社"
   rewardYen: 1000
   branchId: main
-  requiredKnowledge: 150
+  requiredKnowledge: 380
   requiredScenarioIds:
   - scenario.station.buy_ticket
+  - scenario.island.midori_trip
   - scenario.neighborhood.cat_followup
   - scenario.neighborhood.recycling_morning
   - scenario.restaurant.order_ramen

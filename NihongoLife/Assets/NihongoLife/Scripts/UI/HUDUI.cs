@@ -1161,7 +1161,7 @@ namespace NihongoLife.UI
                           $"{StatLine(Text("Năng lượng", "Energy", "元気"), status.CurrentEnergy, status.MaxEnergy, "#64b5f6")}\n" +
                           $"{StatLine(Text("No", "Hunger", "満腹"), status.Hunger, 100f, "#f2b84b")}\n" +
                           $"{StatLine(Text("Khát", "Thirst", "水分"), status.Thirst, 100f, "#4dd0c8")}\n" +
-                          $"<color=#b79cff>{Text("Kiến thức", "Knowledge", "知識")}: {status.Knowledge}</color>\n"
+                          $"<color=#b79cff>{Text("Trí tuệ", "Knowledge", "知識")}: {status.Knowledge}</color>\n"
                         : string.Empty) +
                     $"<color=#f1c75b>{Text("Tiền mặt", "Cash", "所持金")}</color>: ¥{inventory.Yen}\n" +
                     $"<color=#f1c75b>{Text("Mục tiêu", "Goal", "目標")}</color>: {goalText}\n\n" +

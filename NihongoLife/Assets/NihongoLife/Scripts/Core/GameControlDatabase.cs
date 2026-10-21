@@ -20,7 +20,18 @@ namespace NihongoLife.Core
     public class LocationUnlock
     {
         public string sceneName;
+        /// <summary>Trí tuệ (knowledge points) the player needs.</summary>
         public int requiredKnowledge;
+        /// <summary>Story quests that must be finished first.</summary>
+        public string[] requiredScenarioIds = new string[0];
+        /// <summary>Opens as soon as this quest has started (e.g. the room you move into during the arrival).</summary>
+        public string startedByScenarioId;
+        /// <summary>The story quest that takes the player there the first time (shown on the unlock card).</summary>
+        public string gatewayScenarioId;
+        /// <summary>Guide photo key (Resources/Guide/&lt;key&gt;.jpg) and the stage name / why it opens, in three languages.</summary>
+        public string guideKey;
+        public string titleVi, titleEn, titleJa;
+        public string storyVi, storyEn, storyJa;
     }
 
     [CreateAssetMenu(fileName = "NihongoLifeControlDatabase", menuName = "NihongoLife/Control Database")]
@@ -55,6 +66,8 @@ namespace NihongoLife.Core
             "scenario.neighborhood.recycling_morning",
             "scenario.konbini.evening_shift",
             "scenario.station.buy_ticket",
+            "scenario.arcade.kim_invite",
+            "scenario.island.midori_trip",
             "scenario.town.summer_festival"
         };
         public bool continueCampaignInGameplayScene = true;
@@ -90,14 +103,8 @@ namespace NihongoLife.Core
         public string agoraClassroomApiUrl = "";
 
         [Header("Location Unlocks")]
-        [Tooltip("Knowledge points needed to enter each place. Hibari Mart (in the city), the school and home are always open.")]
-        public LocationUnlock[] locationUnlocks =
-        {
-            new LocationUnlock { sceneName = WorldLocationCatalog.StationScene, requiredKnowledge = 40 },
-            new LocationUnlock { sceneName = WorldLocationCatalog.SushiRestaurantScene, requiredKnowledge = 90 },
-            new LocationUnlock { sceneName = WorldLocationCatalog.GameCenterScene, requiredKnowledge = 160 },
-            new LocationUnlock { sceneName = WorldLocationCatalog.MidoriIslandScene, requiredKnowledge = 250 }
-        };
+        [Tooltip("Optional override of the map roadmap. Empty uses LocationUnlocks' defaults (Sushi 100, Station 160, Game Center 240, Island 320, each also behind a story quest). Hibari Mart, the school and the city are always open.")]
+        public LocationUnlock[] locationUnlocks = new LocationUnlock[0];
 
         [Header("Online Database")]
         public bool enableOnlineSync = false;

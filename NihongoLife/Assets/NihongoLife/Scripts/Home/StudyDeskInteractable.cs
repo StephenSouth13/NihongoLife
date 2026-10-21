@@ -170,7 +170,7 @@ namespace NihongoLife.Home
                 status.AddKnowledge(gained);
             }
             room.ShowToast(correct == questions.Count ? "まんてん！" : "おつかれさまでした",
-                NihongoLife.Core.Loc.Triple($"Đúng {correct}/{questions.Count} · Kiến thức +{gained} · Năng lượng −{energyCost:0}", $"Correct {correct}/{questions.Count} · Knowledge +{gained} · Energy −{energyCost:0}", $"正解 {correct}/{questions.Count} · 知識 +{gained} · 元気 −{energyCost:0}"));
+                NihongoLife.Core.Loc.Triple($"Đúng {correct}/{questions.Count} · Trí tuệ +{gained} · Năng lượng −{energyCost:0}", $"Correct {correct}/{questions.Count} · Knowledge +{gained} · Energy −{energyCost:0}", $"正解 {correct}/{questions.Count} · 知識 +{gained} · 元気 −{energyCost:0}"));
             _busy = false;
         }
     }

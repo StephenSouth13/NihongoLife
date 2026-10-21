@@ -92,6 +92,7 @@ namespace NihongoLife.Core
                 return false;
             }
             LocationUnlocks.MarkVisited(sceneName);
+            LocationUnlocks.Evaluate();
             return true;
         }
 

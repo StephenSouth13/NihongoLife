@@ -46,11 +46,11 @@ namespace NihongoLife.UI
         private static readonly (string icon, Color color, string vi, string en, string ja, string dVi, string dEn, string dJa)[] Tiles =
         {
             ("menu_book", UiTheme.Gold, "Cốt truyện tiếp tục", "The story goes on", "ストーリーはつづく",
-                "Chương 3 mở nhiều việc cùng lúc: mèo của Suzuki, luật đổ rác, ramen, sushi. Mỗi việc cần một ít điểm kiến thức.",
+                "Chương 3 mở nhiều việc cùng lúc: mèo của Suzuki, luật đổ rác, ramen, sushi. Mỗi việc cần một ít điểm trí tuệ.",
                 "Chapter 3 opens several quests at once: Suzuki's cat, garbage rules, ramen, sushi. Each needs some knowledge.",
                 "第3章は同時にいくつも：鈴木さんのねこ、ごみのルール、ラーメン、すし。それぞれ知識ポイントが必要。"),
             ("school", UiTheme.Teal, "Học & thi", "Study & exams", "勉強・試験",
-                "Trường Hibari, bàn học ở nhà, khu thi JLPT / IELTS: cách nhanh nhất để có điểm kiến thức.",
+                "Trường Hibari, bàn học ở nhà, khu thi JLPT / IELTS: cách nhanh nhất để có điểm trí tuệ.",
                 "Hibari School, your desk at home, the JLPT / IELTS exam hall: the fastest way to earn knowledge.",
                 "ひばり学校、家の机、JLPT・IELTSの試験：知識ポイントがいちばん早くたまる。"),
             ("work", UiTheme.Good, "Làm thêm", "Part-time jobs", "アルバイト",
@@ -58,7 +58,7 @@ namespace NihongoLife.UI
                 "Shifts at the konbini, the sushi bar and the farm: money, experience and polite Japanese with customers.",
                 "コンビニ・すし屋・農場のシフト：お金と経験、接客の敬語。"),
             ("agriculture", new Color(0.45f, 0.78f, 0.35f), "Ga & đảo Midori", "Station & Midori Island", "駅・みどり島",
-                "Mở theo điểm kiến thức. Trên đảo: trồng rau, câu cá, nuôi thú, trang trí đảo và thăm đảo bạn bè.",
+                "Mở theo điểm trí tuệ. Trên đảo: trồng rau, câu cá, nuôi thú, trang trí đảo và thăm đảo bạn bè.",
                 "Open with knowledge. On the island: grow vegetables, fish, keep animals, decorate it and visit friends' islands.",
                 "知識ポイントで開く。島では野菜・つり・動物・島のかざり・友だちの島へ。"),
             ("sports_esports", UiTheme.Live, "Game Center", "Game Center", "ゲームセンター",
@@ -81,7 +81,7 @@ namespace NihongoLife.UI
 
             UiKit.Place(UiKit.Label(rect, "Kicker", "PHẦN MỞ ĐẦU ĐÃ XONG", "THE OPENING IS DONE", "オープニングおわり", 15f, UiTheme.Gold, FontStyles.Bold), 48f, 34f, 600f, 22f);
             UiKit.Place(UiKit.Label(rect, "Title", "Hibari giờ là nhà của bạn — tự do khám phá!", "Hibari is home now — explore freely!", "ひばりはもうあなたの町 — 自由に歩こう！", 34f, UiTheme.Text, FontStyles.Bold), 48f, 60f, 1020f, 48f);
-            var sub = UiKit.Label(rect, "Sub", "Từ giờ bạn tự chọn làm gì, theo thứ tự nào cũng được. Điểm kiến thức mở các chương tiếp theo và các địa điểm mới.",
+            var sub = UiKit.Label(rect, "Sub", "Từ giờ bạn tự chọn làm gì, theo thứ tự nào cũng được. Điểm trí tuệ mở các chương tiếp theo và các địa điểm mới.",
                 "From now on you choose what to do, in any order. Knowledge opens the next chapters and new places.",
                 "これからは何を、どの順番でしても大丈夫。知識ポイントで次の章や新しい場所が開きます。", 17f, UiTheme.TextSoft, FontStyles.Normal, TextAlignmentOptions.TopLeft, true);
             UiKit.Place(sub, 48f, 112f, 1020f, 50f);

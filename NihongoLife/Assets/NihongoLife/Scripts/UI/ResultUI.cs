@@ -125,7 +125,7 @@ namespace NihongoLife.UI
 
             // Rewards
             float rx = 44f, ry = 400f;
-            if (ok && b.rewardKnowledge > 0) rx = Chip(card, rx, ry, "school", UiTheme.Teal, Loc.F("+{0} kiến thức", "+{0} knowledge", "知識 +{0}", b.rewardKnowledge));
+            if (ok && b.rewardKnowledge > 0) rx = Chip(card, rx, ry, "school", UiTheme.Teal, Loc.F("+{0} trí tuệ", "+{0} knowledge", "知識 +{0}", b.rewardKnowledge));
             if (ok && b.rewardYen > 0) rx = Chip(card, rx, ry, "payments", UiTheme.Gold, "+" + Loc.Yen(b.rewardYen));
             if (ok && !b.firstCompletion) Chip(card, rx, ry, "replay", UiTheme.Muted, Loc.T("Chơi lại — thưởng ít hơn", "Replay — smaller reward", "再挑戦 — 報酬は少なめ"));
 

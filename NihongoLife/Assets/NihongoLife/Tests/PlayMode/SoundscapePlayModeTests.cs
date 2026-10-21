@@ -42,6 +42,14 @@ namespace NihongoLife.Tests
             var sources = Soundscape.Instance.GetComponents<AudioSource>();
             Assert.IsTrue(sources.Any(s => s.isPlaying && s.clip != null && s.clip.name.StartsWith("city_") && s.clip.length > 60f), "A town track is playing.");
             Debug.Log($"[Soundscape] town music {Soundscape.Instance.MusicKey}, ambience {Soundscape.Instance.AmbienceKey}");
+            // Audible, not just playing: at the default music setting the town track reaches a real level.
+            float savedBgm = PlayerPrefs.GetFloat("Volume_BGM", 0.5f);
+            PlayerPrefs.SetFloat("Volume_BGM", 0.5f);
+            var townTrack = sources.First(s => s.isPlaying && s.clip != null && s.clip.name.StartsWith("city_") && s.clip.length > 60f);
+            for (float t = 0f; t < 5f && townTrack.volume < 0.5f; t += Time.unscaledDeltaTime) yield return null;
+            Debug.Log($"[Soundscape] town music volume {townTrack.volume:0.00} (saved setting {savedBgm:0.00})");
+            Assert.Greater(townTrack.volume, 0.5f, "The town music is audible at the default setting.");
+            PlayerPrefs.SetFloat("Volume_BGM", savedBgm);
 
             // 3. A story line speaks with its recorded voice.
             var repo = GameServices.Get<IScenarioRepository>();

@@ -131,6 +131,7 @@ namespace NihongoLife.Scenario
 
             ScoringManager.Instance?.ResetScore();
             OnScenarioStarted?.Invoke(currentScenario);
+            NihongoLife.Core.LocationUnlocks.Evaluate(); // a quest can open a place as it starts (the arrival opens the room)
 
             string startId = scenario.startNodeId;
             if (string.IsNullOrEmpty(startId) && scenario.nodes != null && scenario.nodes.Count > 0)
@@ -586,6 +587,7 @@ namespace NihongoLife.Scenario
             ClearActiveProgress();
 
             OnScenarioFinished?.Invoke(breakdown);
+            NihongoLife.Core.LocationUnlocks.Evaluate(); // a finished quest may open the next stage of the map
         }
 
         private static int CalculateKnowledgeReward(ScenarioDefinition scenario, ScoreBreakdownDto score, bool firstCompletion)

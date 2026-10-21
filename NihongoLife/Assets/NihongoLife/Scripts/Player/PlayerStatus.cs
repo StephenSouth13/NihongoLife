@@ -269,17 +269,11 @@ namespace NihongoLife.Player
         public void AddKnowledge(int amount)
         {
             if (amount <= 0) return;
-            int before = Knowledge;
             Knowledge += amount;
-            // Crossing a threshold opens a new place: say so.
-            foreach (var unlock in LocationUnlocks.All)
-                if (unlock != null && before < unlock.requiredKnowledge && Knowledge >= unlock.requiredKnowledge)
-                {
-                    NihongoLife.Audio.Soundscape.Jingle("unlock");
-                    NihongoLife.UI.HudFeed.Post(NihongoLife.Core.Loc.F("Đã mở khóa: {0}! Xem trên bản đồ (M).", "Unlocked: {0}! See it on the map (M).", "{0}が解放されました！地図（M）で見られます。", WorldLocationCatalog.Get(unlock.sceneName).DisplayName), NihongoLife.UI.HudFeed.Kind.Reward, 6f, "unlock");
-                }
             OnStatusChanged?.Invoke();
             SaveProgress();
+            // Enough knowledge may open the next stage of the map (MapUnlockCardUI announces it).
+            LocationUnlocks.Evaluate();
         }
 
         /// <summary>Tests: set the knowledge points directly (not saved).</summary>

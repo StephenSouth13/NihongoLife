@@ -1364,3 +1364,65 @@ Test `StoryFlowPlayModeTests` (ảnh trong `Bao_Cao/story-flow/`) đi qua:
 - **Lỗi đã sửa:**
   - Biển "HIBARI JAPANESE SCHOOL" gắn vào canvas tồn tại xuyên cảnh nên vẫn ở giữa màn hình thành phố. Nay biển có canvas riêng, mất theo cảnh trường, chữ theo ngôn ngữ đã chọn, đặt ở góc phải.
   - Thông báo HUD lọt sang menu chính: nay bị xoá khi về menu.
+
+## Cập nhật (2026-10-21 tối, Claude) — Lộ trình mở bản đồ theo trí tuệ + 2 quest cửa ngõ
+
+Chi tiết thiết kế: `STORY_BIBLE.md` mục 14.
+
+**Lộ trình**
+- Đầu game chỉ vào được Hibari Mart, trường và phòng trọ.
+- Các khu sau mở theo trí tuệ cộng quest truyện trước đó: Sushi 100, Ga 160, Game Center 240, Đảo 320. Lễ hội cần 380.
+- Khu đã mở lưu bằng cờ `map.<scene>` trong save, không còn lưu PlayerPrefs theo máy.
+
+**File code**
+- `Core/LocationUnlocks.cs`: viết lại toàn bộ — chặng, `Evaluate`, sự kiện `Unlocked`, `ShortStatus`, chuyển save cũ lặng lẽ.
+- `Core/GameControlDatabase.cs`:
+  - `LocationUnlock` có thêm quest yêu cầu, quest cửa ngõ, ảnh, tiêu đề và lời kể 3 ngôn ngữ.
+  - **`locationUnlocks` mặc định để trống** (trước đây giá trị cũ 40/90/160/250 của field ghi đè mặc định mới).
+- Gọi `Evaluate` từ:
+  - `PlayerStatus.AddKnowledge` (bỏ toast ngưỡng cũ);
+  - `ScenarioManager` (khi quest bắt đầu và kết thúc);
+  - `SceneFlowController` (khi vào cảnh).
+- `Exam/ExamManager.cs`: bài thi cho trí tuệ (`KnowledgeFor`, cờ `exam.done:<id>`).
+- `UI/MapUnlockCardUI.cs` (mới): thẻ khu vực mới mở.
+- `UI/TaskJournalUI.cs`: khung LỘ TRÌNH MỞ BẢN ĐỒ.
+- Chữ khoá theo `ShortStatus` ở các file:
+  - `ScenePortal`
+  - `LocationGuideUI`
+  - `WorldMapUI`
+- `Interaction/PortalBeacon.cs`: biển cổng vẽ lại khi có khu mở.
+- `StoryFlags.Remove`.
+
+**Nội dung**
+- Hai quest mới:
+  - `scenario_arcade_kim_invite.asset` (chương 4);
+  - `scenario_island_midori_trip.asset` (chương 5).
+- Có bản tiếng Anh, giọng đọc (`_work/voice_gen.py`, nay có 455 câu), metadata (`Tools/story/quest_meta_roadmap.py`), thứ tự campaign trong `NihongoLifeControlDatabase.asset`.
+- Đổi tên "kiến thức" → "trí tuệ" trong giao diện tiếng Việt (13 file, kể cả `locations.json`).
+
+**Test**
+- `MapProgressionPlayModeTests` (mới): save mới trong thành phố thật.
+  - Ngày đầu chỉ Mart, trường, phòng mở.
+  - Phần mở đầu cho 83 trí tuệ, chưa đủ mở Sushi. Lên 100 thì Sushi mở, thẻ hiện, biển cổng bỏ dòng khoá.
+  - Ga chờ quest sushi.
+  - Chơi trọn hội thoại của Kim và chuyến đảo; Tanaka nhắc Kim.
+  - Trí tuệ về 0 thì các khu vẫn mở.
+  - Trí tuệ từ bài thi đúng công thức.
+- `LocationUnlocksPlayModeTests` đã cập nhật theo quy tắc mới.
+
+**Ảnh hưởng tài nguyên dùng chung (cho Codex/Antigravity)**
+- Đừng điền lại `locationUnlocks` trong database nếu không cố ý ghi đè lộ trình.
+- Quest mới cần mở một khu phải thêm chặng trong `LocationUnlocks.Defaults`, không check PlayerPrefs riêng.
+
+**Giai đoạn sau:** mua bán xe đạp / xe máy / ô tô để đi các thành phố lớn. Mỗi thành phố là một chặng mới, có điều kiện phương tiện.
+
+**Sửa thêm (cùng ngày)**
+- **Cửa ga ở cảnh 90:**
+  - Khối đen phẳng `EntranceDark` (4.2×2.6 m) đã được thay bằng `StationDoors`: cửa kính tự động 4 cánh, sảnh có đèn, bảng 発車案内, 2 máy bán vé.
+  - Code: `CityTownBuilder.StationDoors`. Chỉ vá cửa ga bằng `-executeMethod NihongoLife.EditorTools.CityTownBuilder.PatchStationEntrance`; `Build` cũng dùng hàm này.
+- **Biển cổng (`PortalBeacon`):** thu nhỏ dần khi mờ đi, vì các tag màu ([F], ▼, nền tối) không ăn theo alpha của TMP.
+- **Nhạc nền:**
+  - Nguyên nhân mất tiếng: PlayerPrefs `Volume_BGM` / `Volume_SFX` trên máy dev đã bị kéo về 0. Đã đặt lại mặc định.
+  - Thanh trượt âm lượng trong Cài đặt không còn nhận điều hướng bàn phím, nên bấm A/← khi đang mở bảng không làm tụt âm lượng nữa.
+  - Mức nhạc tăng từ 0.55 lên 0.7.
+  - `SoundscapePlayModeTests` giờ kiểm tra cả âm lượng thực (> 0.5), không chỉ kiểm tra "đang phát".

@@ -252,32 +252,42 @@ namespace NihongoLife.UI
         // ─────────── Detail ───────────
 
         /// <summary>Where knowledge takes you next: a progress bar to the next place and the list of places.</summary>
+        /// <summary>
+        /// Lộ trình mở bản đồ: Hibari Mart and the school are always open; every other place is a stage that needs
+        /// Trí tuệ and the story quest before it (LocationUnlocks). The next stage is highlighted with its bar.
+        /// </summary>
         private void UnlockProgress()
         {
             var card = NLUi.Panel(_list, "Unlocks", new Color(0.12f, 0.16f, 0.2f, 1f), new RectOffset(14, 14, 10, 12), 6f);
             int knowledge = LocationUnlocks.Knowledge;
             var next = LocationUnlocks.Next();
-            NLUi.Label(card, "Title", Loc.F("MỞ KHÓA ĐỊA ĐIỂM  <color=#A8B4C4>· {0} điểm kiến thức</color>", "UNLOCK PLACES  <color=#A8B4C4>· {0} knowledge points</color>", "場所の解放  <color=#A8B4C4>· 知識ポイント {0}</color>", knowledge), 13f, NLUi.Gold, _font, FontStyles.Bold);
-            if (next != null)
-            {
-                string place = WorldLocationCatalog.Get(next.sceneName).DisplayName;
-                NLUi.Label(card, "Next", Loc.F("Tiếp theo: <b>{0}</b> — còn {1} điểm", "Next: <b>{0}</b> — {1} points to go", "次は <b>{0}</b> — あと{1}ポイント", place, LocationUnlocks.Missing(next.sceneName)), 15f, NLUi.Text, _font);
-                var track = NLUi.Panel(card, "Track", new Color(1f, 1f, 1f, 0.08f));
-                NLUi.Size(track, -1f, 10f);
-                var fill = NLUi.Panel(track, "Fill", NLUi.Gold);
-                float t = Mathf.Clamp01(knowledge / (float)Mathf.Max(1, next.requiredKnowledge));
-                fill.anchorMin = Vector2.zero; fill.anchorMax = new Vector2(t, 1f); fill.offsetMin = fill.offsetMax = Vector2.zero;
-            }
-            else NLUi.Label(card, "Next", Loc.T("Bạn đã mở mọi địa điểm!", "You have unlocked every place!", "すべての場所を解放しました！"), 15f, NLUi.Good, _font);
-            var lines = new System.Text.StringBuilder("<size=85%>" + Loc.T("✓ Hibari Mart · Trường Hibari · Nhà trọ — luôn mở", "✓ Hibari Mart · Hibari School · Home — always open", "✓ ひばりマート・ひばり学校・家 — いつでも行ける"));
+            NLUi.Label(card, "Title", Loc.F("LỘ TRÌNH MỞ BẢN ĐỒ  <color=#A8B4C4>· {0} trí tuệ</color>", "MAP ROADMAP  <color=#A8B4C4>· {0} knowledge</color>", "マップの開放  <color=#A8B4C4>· 知識 {0}</color>", knowledge), 13f, NLUi.Gold, _font, FontStyles.Bold);
+            NLUi.Label(card, "Always", "<size=85%><color=#7BD88F>✓</color> " + Loc.T("Hibari Mart · Trường Hibari — luôn mở", "Hibari Mart · Hibari School — always open", "ひばりマート・ひばり学校 — いつでも行ける") + "</size>", 15f, NLUi.Muted, _font);
             foreach (var u in LocationUnlocks.All)
             {
+                if (u == null) continue;
                 bool open = LocationUnlocks.IsUnlocked(u.sceneName);
-                lines.Append('\n').Append(open ? "<color=#7BD88F>✓</color> " : "<color=#FF9A80>×</color> ")
-                     .Append(WorldLocationCatalog.Get(u.sceneName).DisplayName).Append(open ? "" : Loc.F(" — cần {0}", " — needs {0}", " — {0}ポイント必要", u.requiredKnowledge));
+                bool isNext = next != null && next.sceneName == u.sceneName;
+                var row = NLUi.Panel(card, "Stage_" + u.sceneName, isNext ? new Color(0.97f, 0.74f, 0.24f, 0.12f) : new Color(1f, 1f, 1f, 0.03f), new RectOffset(10, 10, 6, 7), 3f);
+                row.GetComponent<Image>().sprite = UiKit.Rounded(10);
+                string place = WorldLocationCatalog.Get(u.sceneName).DisplayName;
+                NLUi.Label(row, "Name", (open ? "<color=#7BD88F>✓</color> " : isNext ? "<color=#F7BD3D>▶</color> " : "<color=#8B95A3>×</color> ") + $"<b>{place}</b>  <size=80%><color=#A8B4C4>{LocationUnlocks.StageTitle(u)}</color></size>", 15f, open ? NLUi.Muted : NLUi.Text, _font);
+                if (open) continue;
+                if (u.requiredKnowledge > 0)
+                {
+                    var bar = NLUi.Panel(row, "Track", new Color(1f, 1f, 1f, 0.08f));
+                    NLUi.Size(bar, -1f, 7f);
+                    var fill = NLUi.Panel(bar, "Fill", knowledge >= u.requiredKnowledge ? NLUi.Good : NLUi.Gold);
+                    fill.anchorMin = Vector2.zero; fill.anchorMax = new Vector2(Mathf.Clamp01(knowledge / (float)u.requiredKnowledge), 1f); fill.offsetMin = fill.offsetMax = Vector2.zero;
+                    NLUi.Label(row, "Knowledge", "<size=80%>" + Loc.F("Trí tuệ {0}/{1}", "Knowledge {0}/{1}", "知識 {0}/{1}", Mathf.Min(knowledge, u.requiredKnowledge), u.requiredKnowledge) + "</size>", 13f, NLUi.Muted, _font);
+                }
+                foreach (var id in u.requiredScenarioIds ?? System.Array.Empty<string>())
+                {
+                    bool done = StoryDirector.IsDone(id);
+                    NLUi.Label(row, "Req", "<size=80%>" + (done ? "<color=#7BD88F>✓</color> " : "○ ") + LocationUnlocks.QuestTitle(id) + "</size>", 13f, done ? NLUi.Muted : NLUi.Soft, _font);
+                }
             }
-            NLUi.Label(card, "List", lines.Append("</size>").ToString(), 15f, NLUi.Muted, _font);
-            NLUi.Label(card, "How", "<size=80%>" + Loc.T("Kiếm điểm: học ở trường, bàn học ở nhà, nhiệm vụ, hội thoại tình huống.", "Earn points: classes at school, the study desk at home, tasks and story conversations.", "ポイントの集め方：学校の授業、家の机での勉強、タスク、ストーリーの会話。") + "</size>", 14f, NLUi.Muted, _font);
+            NLUi.Label(card, "How", "<size=80%>" + Loc.T("Tăng trí tuệ: học ở Trường Hibari, bài thi JLPT, bàn học ở nhà, nhiệm vụ và cốt truyện.", "Raise knowledge: classes at Hibari School, JLPT exams, the study desk at home, tasks and the story.", "知識の上げ方：ひばり学校の授業、JLPT模試、家の机、タスク、ストーリー。") + "</size>", 14f, NLUi.Muted, _font);
         }
 
         private void RefreshDetailOnly()
@@ -299,7 +309,7 @@ namespace NihongoLife.UI
             string requirement = QuestService.Requirement(quest);
             NLUi.Label(_detail, "Info",
                 Loc.F("<color=#A8B4C4>Giao việc</color>  {0}      <color=#A8B4C4>Ở đâu</color>  {1}\n", "<color=#A8B4C4>Given by</color>  {0}      <color=#A8B4C4>Where</color>  {1}\n", "<color=#A8B4C4>依頼者</color>  {0}      <color=#A8B4C4>場所</color>  {1}\n", quest.GiverName, quest.Location) +
-                Loc.F("<color=#A8B4C4>Yêu cầu</color>  Cấp {0}", "<color=#A8B4C4>Requires</color>  Level {0}", "<color=#A8B4C4>条件</color>  レベル{0}", quest.minLevel) + (quest.minKnowledge > 0 ? Loc.F(" · {0} kiến thức", " · {0} knowledge", " · 知識{0}", quest.minKnowledge) : "") +
+                Loc.F("<color=#A8B4C4>Yêu cầu</color>  Cấp {0}", "<color=#A8B4C4>Requires</color>  Level {0}", "<color=#A8B4C4>条件</color>  レベル{0}", quest.minLevel) + (quest.minKnowledge > 0 ? Loc.F(" · {0} trí tuệ", " · {0} knowledge", " · 知識{0}", quest.minKnowledge) : "") +
                 (requirement == null ? "  <color=#74D680>✓ " + Loc.T("đủ điều kiện", "requirements met", "条件クリア") + "</color>" : $"  <color=#FF8A7A>✕ {requirement}</color>") +
                 (quest.repeatable ? Loc.F("      <color=#A8B4C4>Lặp lại</color>  sau {0} phút", "      <color=#A8B4C4>Repeats</color>  after {0} min", "      <color=#A8B4C4>くり返し</color>  {0}分後", quest.cooldownMinutes) : ""), 15f, NLUi.Text, _font).textWrappingMode = TextWrappingModes.Normal;
 
@@ -321,7 +331,7 @@ namespace NihongoLife.UI
             NLUi.Label(tiles, "RewardsTitle", Loc.T("Phần thưởng", "Rewards", "報酬"), 15f, NLUi.Muted, _font);
             if (rewards.yen > 0) NLUi.Pill(tiles, "RewardYen", Loc.Yen(rewards.yen), _font, NLUi.Gold, NLUi.Ink, 16f);
             if (rewards.xp > 0) NLUi.Pill(tiles, "RewardXp", $"+{rewards.xp} XP", _font, new Color(0.55f, 0.45f, 0.95f), Color.white, 16f);
-            if (rewards.knowledge > 0) NLUi.Pill(tiles, "RewardKnowledge", Loc.F("+{0} kiến thức", "+{0} knowledge", "知識 +{0}", rewards.knowledge), _font, new Color(0.3f, 0.62f, 0.82f), Color.white, 16f);
+            if (rewards.knowledge > 0) NLUi.Pill(tiles, "RewardKnowledge", Loc.F("+{0} trí tuệ", "+{0} knowledge", "知識 +{0}", rewards.knowledge), _font, new Color(0.3f, 0.62f, 0.82f), Color.white, 16f);
             foreach (var grant in quest.grantOnAccept ?? Array.Empty<QuestItemGrant>())
             {
                 var holder = NLUi.Group(tiles, "Grant_" + grant.itemId, false, 4f, TextAnchor.MiddleLeft, false);
@@ -390,7 +400,7 @@ namespace NihongoLife.UI
             if (blocker != null)
             {
                 NLUi.Label(_detail, "StoryBlocker", blocker, 16f, NLUi.Gold, _font, FontStyles.Bold).textWrappingMode = TextWrappingModes.Normal;
-                NLUi.Label(_detail, "StoryBlockerHint", Loc.T("Học ở trường, bàn học, khu thi cử, làm thêm hay chơi Game Center đều cho điểm kiến thức.", "School, your desk, the exam hall, jobs and the Game Center all give knowledge.", "学校・机・試験・アルバイト・ゲームセンターで知識ポイントがたまります。"), 15f, NLUi.Soft, _font).textWrappingMode = TextWrappingModes.Normal;
+                NLUi.Label(_detail, "StoryBlockerHint", Loc.T("Học ở trường, bàn học, khu thi cử, làm thêm hay chơi Game Center đều cho điểm trí tuệ.", "School, your desk, the exam hall, jobs and the Game Center all give knowledge.", "学校・机・試験・アルバイト・ゲームセンターで知識ポイントがたまります。"), 15f, NLUi.Soft, _font).textWrappingMode = TextWrappingModes.Normal;
             }
             else if (entry.Section == "available")
             {

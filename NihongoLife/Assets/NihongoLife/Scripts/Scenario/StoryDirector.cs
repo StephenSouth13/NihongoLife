@@ -122,7 +122,7 @@ namespace NihongoLife.Scenario
                     return Loc.F("Xong \"{0}\" trước.", "Finish \"{0}\" first.", "先に「{0}」を終えましょう。", r != null ? r.DisplayTitle : required);
                 }
             if (progress.knowledge < scenario.requiredKnowledge)
-                return Loc.F("Cần {0} điểm kiến thức — còn thiếu {1}.", "Needs {0} knowledge — {1} to go.", "知識ポイント{0}が必要（あと{1}）。", scenario.requiredKnowledge, scenario.requiredKnowledge - progress.knowledge);
+                return Loc.F("Cần {0} điểm trí tuệ — còn thiếu {1}.", "Needs {0} knowledge — {1} to go.", "知識ポイント{0}が必要（あと{1}）。", scenario.requiredKnowledge, scenario.requiredKnowledge - progress.knowledge);
             return null;
         }
 

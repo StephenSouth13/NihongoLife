@@ -31,11 +31,11 @@ MonoBehaviour:
   locationHintJa: "ひばり駅"
   rewardYen: 300
   branchId: main
-  requiredKnowledge: 80
+  requiredKnowledge: 160
   requiredScenarioIds:
   - scenario.restaurant.sushi_dining
   unlockScenarioIds:
-  - scenario.town.summer_festival
+  - scenario.arcade.kim_invite
   repeatable: 0
   supportsCoOp: 0
   minPlayers: 1

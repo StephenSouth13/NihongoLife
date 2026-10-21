@@ -370,7 +370,7 @@ namespace NihongoLife.UI
             marker.GetComponent<Image>().raycastTarget = false;
             NLUi.Stretch(NLUi.Label(marker, "Glyph", place.Glyph, 26f, new Color(0.08f, 0.1f, 0.12f), _font, FontStyles.Bold, TextAlignmentOptions.Center).rectTransform);
             string text = string.IsNullOrEmpty(place.Short) ? place.Name : place.Short;
-            if (locked) text += NihongoLife.Core.Loc.F(" · khóa {0}đ", " · locked {0} pts", " · 未開放 {0}点", LocationUnlocks.Required(place.Scene));
+            if (locked) text += NihongoLife.Core.Loc.T(" · khóa", " · locked", " · 未開放");
             var label = NLUi.Pill(marker, "Label", text, _font, new Color(0.05f, 0.07f, 0.09f, 0.88f), NLUi.Text, 15f);
             // Below the marker by default; flip above when that would cover a neighbour's label.
             float width = text.Length * 16f + 34f;
@@ -393,7 +393,7 @@ namespace NihongoLife.UI
                 var dot = NLUi.Pill(row, "Glyph", place.Glyph, _font, place.Color, new Color(0.08f, 0.1f, 0.12f), 18f);
                 NLUi.Size(dot, preferredWidth: 38f);
                 string rowName = place.Locked
-                    ? $"{place.Name}\n<size=80%><color=#FF9A80>" + NihongoLife.Core.Loc.F("Đã khóa · cần {0} điểm (thiếu {1})", "Locked · needs {0} points ({1} to go)", "未開放 · {0}点必要（あと{1}）", LocationUnlocks.Required(place.Scene), LocationUnlocks.Missing(place.Scene)) + "</color></size>"
+                    ? $"{place.Name}\n<size=80%><color=#FF9A80>" + LocationUnlocks.ShortStatus(place.Scene) + "</color></size>"
                     : place.Name;
                 var name = NLUi.Label(row, "Name", rowName, 17f, place.Locked ? NLUi.Muted : NLUi.Text, _font);
                 NLUi.Size(name, flexibleWidth: 1f);

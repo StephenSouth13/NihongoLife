@@ -87,7 +87,7 @@ namespace NihongoLife.Progression
             int level = status != null ? status.Level : Catalog.LevelFor(Progress?.xp ?? 0);
             int knowledge = status != null ? status.Knowledge : Progress?.knowledge ?? 0;
             if (level < quest.minLevel) return NihongoLife.Core.Loc.F("Cần cấp {0} (bạn đang cấp {1}).", "Needs level {0} (you are level {1}).", "レベル{0}が必要です（今はレベル{1}）。", quest.minLevel, level);
-            if (knowledge < quest.minKnowledge) return NihongoLife.Core.Loc.F("Cần {0} điểm kiến thức (bạn có {1}).", "Needs {0} knowledge points (you have {1}).", "知識ポイントが{0}必要です（今は{1}）。", quest.minKnowledge, knowledge);
+            if (knowledge < quest.minKnowledge) return NihongoLife.Core.Loc.F("Cần {0} điểm trí tuệ (bạn có {1}).", "Needs {0} knowledge points (you have {1}).", "知識ポイントが{0}必要です（今は{1}）。", quest.minKnowledge, knowledge);
             foreach (var required in quest.requiresQuests ?? Array.Empty<string>())
                 if ((State(required)?.timesCompleted ?? 0) == 0) return NihongoLife.Core.Loc.F("Cần hoàn thành \"{0}\" trước.", "Finish \"{0}\" first.", "先に「{0}」を終えましょう。", Catalog.Quest(required)?.Title ?? required);
             return null;
@@ -265,7 +265,7 @@ namespace NihongoLife.Progression
                 if (PlayerInventory.Instance == null) progress.yen += rewards.yen;
             }
             Save();
-            string pay = string.Join("  ·  ", new[] { rewards.yen > 0 ? "+" + NihongoLife.Core.Loc.Yen(rewards.yen) : null, rewards.xp > 0 ? $"+{rewards.xp} XP" : null, rewards.knowledge > 0 ? NihongoLife.Core.Loc.F("+{0} kiến thức", "+{0} knowledge", "知識 +{0}", rewards.knowledge) : null }.Where(x => x != null));
+            string pay = string.Join("  ·  ", new[] { rewards.yen > 0 ? "+" + NihongoLife.Core.Loc.Yen(rewards.yen) : null, rewards.xp > 0 ? $"+{rewards.xp} XP" : null, rewards.knowledge > 0 ? NihongoLife.Core.Loc.F("+{0} trí tuệ", "+{0} knowledge", "知識 +{0}", rewards.knowledge) : null }.Where(x => x != null));
             HudFeed.Post(NihongoLife.Core.Loc.T("Hoàn thành: ", "Completed: ", "完了：") + $"{quest.Title}   {pay}", HudFeed.Kind.Reward, 6f);
             Completed?.Invoke(quest);
         }

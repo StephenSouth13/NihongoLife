@@ -94,6 +94,13 @@ Cảnh dẫn nhập thuần narration trước Chapter 1, chạy tự động kh
 1. `scenario.station.buy_ticket` *(MỚI — cần viết)* — Hỏi đường và mua vé tại ga, với Kimura.
 2. `scenario.town.summer_festival` *(MỚI — cảnh kết)* — Toàn bộ NPC cũ (Tanaka, Suzuki đã tìm được mèo, Sato, Yamada, nhân viên konbini) xuất hiện lại tại lễ hội, cảm ơn/ghi nhận người chơi đã hòa nhập vào khu phố. Đây là màn kết game, mang tính tổng kết cảm xúc, không cần learning target mới. Morita-sensei và Kim cũng xuất hiện lại ở đây (cô nhận xét cả lớp đã tiến bộ).
 
+### Chương 4–5 trên lộ trình bản đồ (đã viết 2026-10-21)
+Giữa quest ga và lễ hội có thêm 2 quest. Chúng mở Game Center và đảo Midori (xem mục 14):
+- `scenario.arcade.kim_invite`: Kim rủ ra Game Center;
+- `scenario.island.midori_trip`: Tanaka mời ra ruộng của bà trên đảo.
+
+Lễ hội giờ cần chuyến đảo và 380 trí tuệ.
+
 ### 4.5 Mở rộng: cuộc sống trường học (kế hoạch, chưa viết)
 
 Trường học là "xương sống học tập" chạy song song với đời sống khu phố: mỗi chapter có thêm 1 bài ở lớp dùng đúng ngữ pháp/từ vựng của chapter đó, để người học vừa **học có hệ thống trong lớp** vừa **dùng ngay ngoài đời**. Mỗi bài bám chuẩn Edu Dialogue ở `CONTENT_GUIDE.md`.
@@ -199,10 +206,10 @@ Code: `Scripts/Scenario/StoryDirector.cs`. Điểm kết thúc phần mở đầ
 - Thẻ "Hibari giờ là nhà của bạn" hiện một lần (`FreePlayCardUI`), đặt cờ `story.free_play`.
 - Chương 3 mở song song: mèo của Suzuki, luật đổ rác, ramen, sushi, ca tối konbini…
 - Người chơi tự chọn thứ tự, bắt đầu từ Sổ nhiệm vụ (N). Không quest nào tự chạy nữa, trừ quest đang làm dở.
-- HUD góc trên trái luôn chỉ bước truyện tiếp theo, hoặc số điểm kiến thức còn thiếu.
+- HUD góc trên trái luôn chỉ bước truyện tiếp theo, hoặc số điểm trí tuệ còn thiếu.
 - Màn kết quả có nút "Tiếp tục khám phá" để về thị trấn, không đẩy về menu.
 
-**Thang điểm kiến thức** (đã cân lại để cốt truyện và chơi tự do cùng thang):
+**Thang điểm trí tuệ** (đã cân lại để cốt truyện và chơi tự do cùng thang):
 
 | Nguồn | Điểm |
 |---|---|
@@ -212,11 +219,62 @@ Code: `Scripts/Scenario/StoryDirector.cs`. Điểm kết thúc phần mở đầ
 | Một ca làm thêm | 6 |
 | Nhiệm vụ học tập | 12 |
 
-| Mốc mở khoá | Điểm cần |
+Mốc mở khoá: xem mục 14 (thay bảng cũ: ga 40, Game Center 160, đảo 250).
+
+## 14. Lộ trình mở bản đồ theo trí tuệ (cập nhật 2026-10-21)
+
+Code: `Scripts/Core/LocationUnlocks.cs` (giá trị mặc định nằm trong code; muốn ghi đè thì điền `GameControlDatabase.locationUnlocks`, để trống thì dùng mặc định). Trong giao diện tiếng Việt, "kiến thức" đổi tên thành **trí tuệ**.
+
+**Đầu game chỉ vào được Hibari Mart và trường Hibari** (cùng đường phố). Phòng trọ mở khi quest đến nơi (`intro.arrival`) bắt đầu. Mỗi khu còn lại cần **đủ trí tuệ VÀ đã xong quest truyện trước nó**. Khi mở, khu đó có một quest "cửa ngõ" dẫn người chơi vào.
+
+| Khu | Trí tuệ | Cần xong | Quest cửa ngõ |
+|---|---|---|---|
+| Hibari Mart, trường Hibari, đường phố | — | — | — |
+| Phòng trọ | — | `intro.arrival` bắt đầu | — |
+| Sushi Hibari | 100 | `konbini.buy_onigiri` (hết phần mở đầu) | `restaurant.sushi_dining` |
+| Ga Hibari | 160 | `restaurant.sushi_dining` | `station.buy_ticket` |
+| Game Center | 240 | `station.buy_ticket` | `arcade.kim_invite` (MỚI) |
+| Đảo Midori | 320 | `arcade.kim_invite` | `island.midori_trip` (MỚI) |
+| Lễ hội (quest kết) | 380 | ga, chuyến đảo, mèo (`cat_followup`), đổ rác buổi sáng, ramen | — |
+
+Riêng phần mở đầu đã cho khoảng 83 trí tuệ. Vì vậy Sushi đặt ở 100, để người chơi phải học thêm ít nhất 1 buổi hoặc 1 bài thi rồi mới vào được.
+
+**Nguồn trí tuệ:**
+
+| Nguồn | Trí tuệ |
 |---|---|
-| Ga | 40 — mở ngay sau phần mở đầu |
-| Quest chương 3 | 40–60 |
-| Quest ga Hibari | 80 |
-| Lễ hội | 150 |
-| Game Center | 160 |
-| Đảo Midori | 250 — cần chơi tự do |
+| Buổi học ở trường | 8 |
+| Học ở bàn trong phòng | theo số lượt mỗi ngày |
+| Thi JLPT/IELTS lần đầu | tối đa 40 × tỉ lệ điểm, ít nhất 5 |
+| Thi lại có kỷ lục mới | 8 |
+| Thi lại không có kỷ lục mới | 3 |
+| Quest truyện | max(6, thưởng/10) + số mục tiêu |
+| Làm thêm, nhiệm vụ học | 6 / 12 |
+
+`ExamManager.KnowledgeFor` tính trí tuệ cho bài thi. Cờ `exam.done:<id>` ghi lại bài thi đã làm lần đầu.
+
+**Ghi nhớ khu đã mở:**
+- Khu đã mở được ghi trong save bằng cờ truyện `map.<scene>` (đồng bộ cloud như các cờ khác). Khi trí tuệ giảm, khu đã mở vẫn mở.
+- Save cũ (đã qua phần mở đầu, chưa có cờ `map.*`) được ghi cờ lặng lẽ, không bật hàng loạt thẻ.
+- Chỗ mà bước truyện đang chạy cần đến thì không bao giờ bị khoá.
+
+**Giao diện:**
+- `MapUnlockCardUI`: thẻ "KHU VỰC MỚI ĐÃ MỞ" gồm ảnh, tên Nhật và tên theo ngôn ngữ, tiêu đề chặng, lời kể, quest cửa ngõ, nút "Xem bản đồ". Có jingle mở khoá. Thẻ chờ nếu đang mở hội thoại hoặc màn kết quả.
+- Cửa, biển cổng (`PortalBeacon`), bản đồ (M) và cẩm nang ghi rõ "Đã khóa — cần N trí tuệ (thiếu M) · xong «quest»". Biển cổng tự cập nhật ngay khi khu mở.
+- Sổ nhiệm vụ (N) có khung **LỘ TRÌNH MỞ BẢN ĐỒ**: mỗi chặng có ✓/▶/×, thanh trí tuệ, các quest cần xong.
+
+**Hai quest mới** (sinh bằng `Tools/story/gen_kim_invite.py`, `gen_midori_trip.py`; metadata bằng `quest_meta_roadmap.py`; có giọng đọc):
+- `scenario.arcade.kim_invite` (chương 4, 26 node): sau giờ học, Kim (lớp さくら) rủ ra Game Center.
+  - Học: rủ rê 〜ませんか, đếm lần 〜回, đếm vé 〜まい, đổi quà.
+  - Nói tử tế với Kim thì đặt cờ `kim.friend`.
+  - Thưởng ¥300.
+- `scenario.island.midori_trip` (chương 5, 24 node): Tanaka mời ra ruộng của bà trên đảo Midori.
+  - Học: đi tàu, ngắm biển, たがやす・まく・水をやる.
+  - Nếu có `kim.friend`, Tanaka nhắc chuyện Game Center (nhánh `n_hello_kim`).
+  - Thưởng ¥500.
+
+**Giai đoạn sau (chưa làm):** cửa hàng xe đạp / xe máy / ô tô để đi giữa các thành phố lớn. Hướng nối vào hệ thống này:
+- mỗi thành phố mới là một chặng trong `LocationUnlocks`, có thêm điều kiện "có phương tiện";
+- quest cửa ngõ là quest mua hoặc thi bằng lái.
+
+Test: `MapProgressionPlayModeTests` (ảnh trong `Bao_Cao/map-progression/`) và `LocationUnlocksPlayModeTests`.
