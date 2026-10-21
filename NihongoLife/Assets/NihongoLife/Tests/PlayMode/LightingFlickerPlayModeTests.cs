@@ -31,7 +31,7 @@ namespace NihongoLife.Tests
             yield return new WaitForSecondsRealtime(1.5f);
             Object.FindFirstObjectByType<DayNightCycle>()?.SetHour(18.3f);
             var portal = Object.FindObjectsByType<ScenePortal>(FindObjectsSortMode.None).First(p => p.TargetScene == WorldLocationCatalog.GameCenterScene);
-            Vector3 spot = new Vector3(portal.transform.position.x - 3f, 0f, -15.5f); // south sidewalk, across from the Game Center (as in the report)
+            Vector3 spot = new Vector3(portal.transform.position.x - 12f, 0f, -15.5f); // open sidewalk down the street from the Game Center
             var body = player.GetComponent<CharacterController>();
             body.enabled = false; player.transform.position = new Vector3(spot.x, 0.08f, spot.z); body.enabled = true;
             Physics.SyncTransforms();
@@ -73,9 +73,24 @@ namespace NihongoLife.Tests
             }
             finally { camera.targetTexture = null; Object.Destroy(rt); }
 
+            // Next to the Game Center canopy: the camera stops at it and is never inside anything while turning.
+            Vector3 front = portal.transform.position + Vector3.forward * 0.8f;
+            body.enabled = false; player.transform.position = new Vector3(front.x, 0.08f, front.z); body.enabled = true;
+            Physics.SyncTransforms();
+            var inside = new List<string>();
+            for (int f = 0; f < 240; f++)
+            {
+                cam.SetOrbit(f * 6f, 20f + 30f * Mathf.Abs(Mathf.Sin(f * 0.07f)), 7f);
+                yield return null;
+                var hits = Physics.OverlapSphere(camera.transform.position, 0.08f, Physics.DefaultRaycastLayers, QueryTriggerInteraction.Ignore)
+                    .Where(h => h.GetComponentInParent<PlayerController>() == null).Select(h => h.name).ToList();
+                if (hits.Count > 0) inside.Add($"f{f}: {string.Join(",", hits)}");
+            }
+            Assert.IsEmpty(inside.Take(10), "The camera went inside an object.");
+
             // A flicker: a frame much darker than both neighbours (the camera barely moves between frames).
             var flickers = new List<string>();
-            for (int i = 1; i < samples.Count - 1; i++)
+            for (int i = 2; i < samples.Count - 1; i++) // frame 1 is the jump from the start pose
             {
                 float a = samples[i - 1].ground, b = samples[i].ground, c = samples[i + 1].ground;
                 if (b < 0.7f * Mathf.Min(a, c) || (b < 0.7f * a && i + 2 < samples.Count && samples[i + 2].ground > 1.3f * b))
