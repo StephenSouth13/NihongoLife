@@ -66,7 +66,7 @@ Shader "Unlit/RendererShader601WithAlpha"
                 fixed4 color = fixed4(tex2D(_MainTex, uv).r, tex2D(_UTex, uv).r, tex2D(_VTex, uv).r, 1.0);    
                 color = mul(_yuv2rgb,color);
                 color.a = tex2D(_ATex, i.texcoord).r;
-                UNITY_APPLY_FOG(i.fogCoord, col);
+                UNITY_APPLY_FOG(i.fogCoord, color);
                 return color;
             }
             ENDCG
