@@ -96,6 +96,28 @@ namespace NihongoLife.EditorTools
                     y += h + RowGap + (primary ? 6f : 0f);
                 }
 
+                // Story card: where the story stands (filled by MainMenuUI from StoryDirector).
+                var card = Img(panel.transform, "StoryCard", new Color(0.035f, 0.05f, 0.08f, 0.82f), Load(Art + "round_22.png"));
+                TopLeft(card.rectTransform, ColumnX + ColumnW + 28f, ListTop, 430f, 170f);
+                var cardBorder = Img(card.transform, "Border", new Color(0.97f, 0.74f, 0.24f, 0.35f), Load(Art + "stroke_16.png"));
+                Stretch(cardBorder.rectTransform, 0f, 0f, 0f, 0f);
+                var cardIcon = Img(card.transform, "Icon", UiTheme.Gold, Load(Icons + "ic_menu_book.png"));
+                cardIcon.preserveAspect = true;
+                TopLeft(cardIcon.rectTransform, 22f, 20f, 26f, 26f);
+                var kicker = Text(card.transform, "Kicker", "CỐT TRUYỆN", font, 14f, UiTheme.Gold, FontStyles.Bold, TextAlignmentOptions.MidlineLeft);
+                TopLeft(kicker.rectTransform, 58f, 20f, 350f, 26f);
+                var storyTitle = Text(card.transform, "Title", "", font, 21f, Color.white, FontStyles.Bold, TextAlignmentOptions.TopLeft);
+                storyTitle.textWrappingMode = TextWrappingModes.Normal;
+                TopLeft(storyTitle.rectTransform, 22f, 54f, 386f, 56f);
+                var detail = Text(card.transform, "Detail", "", font, 14f, UiTheme.TextSoft, FontStyles.Normal, TextAlignmentOptions.TopLeft);
+                detail.textWrappingMode = TextWrappingModes.Normal;
+                TopLeft(detail.rectTransform, 22f, 110f, 386f, 26f);
+                var track = Img(card.transform, "Track", new Color(1f, 1f, 1f, 0.1f), Load(Art + "round_8.png"));
+                TopLeft(track.rectTransform, 22f, 144f, 386f, 8f);
+                var fill = Img(track.transform, "Fill", UiTheme.Gold, Load(Art + "round_8.png"));
+                fill.rectTransform.anchorMin = Vector2.zero; fill.rectTransform.anchorMax = new Vector2(0.2f, 1f);
+                fill.rectTransform.offsetMin = fill.rectTransform.offsetMax = Vector2.zero;
+
                 // About link + learner line
                 var about = Pill(panel.transform, "AboutButton", "Về tác giả", font, false, "info", 0.78f);
                 TopRight((RectTransform)about.transform, -696f, 40f, 196f, 52f);
@@ -203,7 +225,7 @@ namespace NihongoLife.EditorTools
 
         private static Button MenuButton(Transform parent, string name, string icon, string label, TMP_FontAsset font, bool primary, float height)
         {
-            Color bg = primary ? UiTheme.Gold : new Color(1f, 1f, 1f, 0.07f);
+            Color bg = primary ? UiTheme.Gold : new Color(0.035f, 0.05f, 0.08f, 0.78f); // dark glass: readable over the town
             Color fg = primary ? UiTheme.OnGold : UiTheme.Text;
             var image = Img(parent, name, bg, Load(Art + "round_16.png"));
             image.raycastTarget = true;

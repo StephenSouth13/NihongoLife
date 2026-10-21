@@ -1,3 +1,4 @@
+using System.Linq;
 using NihongoLife.Audio;
 using NihongoLife.Core;
 using NihongoLife.Player;
@@ -213,8 +214,34 @@ namespace NihongoLife.UI
             foreach (var t in button.GetComponentsInChildren<TextMeshProUGUI>(true)) t.color = fg;
         }
 
+        /// <summary>The baked story card: chapter, next quest and how far the opening / the whole story is.</summary>
+        private void DisplayStoryCard()
+        {
+            var card = transform.Find("StoryCard");
+            if (card == null) return;
+            var kicker = card.Find("Kicker")?.GetComponent<TextMeshProUGUI>();
+            var title = card.Find("Title")?.GetComponent<TextMeshProUGUI>();
+            var detail = card.Find("Detail")?.GetComponent<TextMeshProUGUI>();
+            var fill = card.Find("Track/Fill") as RectTransform;
+            var campaign = NihongoLife.Scenario.StoryDirector.Campaign;
+            int done = campaign.Count(NihongoLife.Scenario.StoryDirector.IsDone);
+            float ratio = campaign.Count > 0 ? done / (float)campaign.Count : 0f;
+            var next = NihongoLife.Scenario.StoryDirector.Next();
+            if (kicker != null) kicker.text = Loc.T("CỐT TRUYỆN", "STORY", "ストーリー") + (next != null ? "  ·  " + NihongoLife.Scenario.StoryDirector.ChapterName(next.chapterIndex) : "");
+            if (title != null)
+                title.text = NihongoLife.Scenario.StoryDirector.StoryComplete ? Loc.T("Đã xong mùa xuân – hè ở Hibari!", "Spring–summer in Hibari: done!", "ひばりの春〜夏、クリア！")
+                    : next != null ? (Loc.IsJapanese ? next.titleJa : $"{next.titleJa}  <size=72%><color=#C7D0DC>{next.DisplayTitle}</color></size>")
+                    : Loc.T("Bắt đầu câu chuyện ở Hibari", "Begin your story in Hibari", "ひばりの物語をはじめよう");
+            if (detail != null)
+                detail.text = NihongoLife.Scenario.StoryDirector.InPrologue
+                    ? Loc.F("Mở đầu {0}/{1}  ·  xong sẽ mở chế độ tự do", "Opening {0}/{1}  ·  free play opens after it", "オープニング {0}/{1} · 終わると自由行動", NihongoLife.Scenario.StoryDirector.PrologueProgress().done, NihongoLife.Scenario.StoryDirector.PrologueProgress().total)
+                    : Loc.F("{0}/{1} nhiệm vụ cốt truyện  ·  chế độ tự do đang mở", "{0}/{1} story quests  ·  free play is open", "ストーリー {0}/{1} · 自由行動中", done, campaign.Count);
+            if (fill != null) { fill.anchorMax = new Vector2(Mathf.Max(0.02f, ratio), 1f); fill.offsetMax = Vector2.zero; }
+        }
+
         private void DisplayProfileStats()
         {
+            DisplayStoryCard();
             if (profileText == null) return;
             string details = "";
             if (GameServices.TryGet(out Save.IProgressRepository progressRepo))

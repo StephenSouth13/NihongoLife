@@ -242,18 +242,21 @@ namespace NihongoLife.UI
         private void CityMap()
         {
             _header.text = L("BẢN ĐỒ HIBARI-CHŌ", "HIBARI-CHŌ MAP", "ひばり町 地図");
-            _worldMin = new(-42, -32); _worldMax = new(58, 20);
-            Road(MapPos(8f, -10f), MapSize(100f, 9f));
-            Road(MapPos(0f, -6f), MapSize(9f, 52f));
-            Road(MapPos(-12f, -6f), MapSize(5f, 52f));
-            Road(MapPos(12f, -6f), MapSize(5f, 52f));
+            // Streets as CityStreetBuilder lays them: Sakura-dōri (with its sidewalks), the side lane north–south,
+            // the back alley west behind the north row, and the park behind it.
+            _worldMin = new(-50, -36); _worldMax = new(58, 48);
+            Road(MapPos(4f, -10f), MapSize(108f, 14f));
+            Road(MapPos(3.5f, -26f), MapSize(5.6f, 20f));
+            Road(MapPos(3.5f, 29f), MapSize(5.6f, 37f));
+            Road(MapPos(-24.6f, 14.4f), MapSize(51f, 3.2f));
+            Road(MapPos(-46f, 21f), MapSize(2f, 10f));
             AddWorld(L("Siêu thị Hibari Mart", "Hibari Mart", "ひばりマート"), "KONBINI", "店", 0f, 4f, new(.2f, .76f, .66f), "ひばりマート");
             AddWorld(L("Bảng tin khu phố", "Notice board", "けいじばん"), "PLAZA", "掲", -8f, 1.5f, new(.85f, .7f, .4f), "けいじばん");
             AddWorld(L("Sushi Hibari", "Sushi Hibari", "ひばり寿司"), "SUSHI", "寿", -18f, 0.3f, new(.94f, .42f, .36f), "すし");
             AddWorld(L("Nhà trọ Hibari Heights", "Hibari Heights (home)", "ひばりハイツ"), "HOME", "家", -30f, 1.3f, new(.62f, .76f, .38f), "いえ");
             AddWorld(L("Ga Hibari", "Hibari Station", "ひばり駅"), "STATION", "駅", 24f, 0.3f, new(.3f, .62f, .94f), "えき");
             AddWorld(L("Trường Nhật ngữ Hibari", "Hibari Japanese School", "ひばり日本語学院"), "SCHOOL", "学", 18f, -20f, new(.2f, .55f, .32f), "がっこう");
-            AddWorld(L("Công viên", "Park", "こうえん"), "PARK", "園", 48f, -4f, new(.42f, .72f, .4f), "こうえん");
+            AddWorld(L("Công viên Hibari", "Hibari Park", "ひばり公園"), "PARK", "園", -40f, 40f, new(.42f, .72f, .4f), "こうえん");
             AddWorld(L("Game Center Hibari", "Game Center Hibari", "ゲームセンター"), "ARCADE", "遊", -6f, -20.5f, new(.92f, .36f, .72f), "ゲーセン");
         }
 

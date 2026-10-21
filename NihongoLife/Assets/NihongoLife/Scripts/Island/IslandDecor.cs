@@ -52,6 +52,7 @@ namespace NihongoLife.Island
             NihongoLife.Progression.QuestService.Raise("buy", def.ItemId, quantity);
             NihongoLife.Progression.QuestService.Raise("buy", "midori_store", quantity);
             IslandState.Save();
+            NihongoLife.Audio.Soundscape.Jingle("purchase");
             return IslandEconomy.Result.Ok;
         }
 

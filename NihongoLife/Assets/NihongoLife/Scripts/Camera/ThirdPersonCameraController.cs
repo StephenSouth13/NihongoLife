@@ -284,6 +284,8 @@ namespace NihongoLife.Cameras
             _distanceVelocity = 0f;
         }
 
+        public bool IsIndoor => _isIndoor;
+
         public void SetIndoorMode(bool indoor)
         {
             if (indoor) SetOverview(false);

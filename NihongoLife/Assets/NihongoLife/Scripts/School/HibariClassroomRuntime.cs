@@ -147,21 +147,25 @@ namespace NihongoLife.School
             return material;
         }
 
+        private Canvas _overlayCanvas;
+
         private void EnsureSchoolOverlay()
         {
-            if (GameObject.Find("HibariSchoolOverlay") != null) return;
-            Canvas canvas = FindFirstObjectByType<Canvas>();
-            if (canvas == null) return;
-
+            if (_overlayCanvas != null) return;
+            // Its own canvas, owned by this classroom: it goes away with the school scene (it used to be parented to
+            // whatever canvas came first — often the persistent HUD feed — and then stayed on screen in the town).
+            _overlayCanvas = NLUi.CreateCanvas("HibariSchoolOverlayCanvas", 60);
+            _overlayCanvas.transform.SetParent(transform, false);
             var root = new GameObject("HibariSchoolOverlay", typeof(RectTransform));
-            root.transform.SetParent(canvas.transform, false);
+            root.transform.SetParent(_overlayCanvas.transform, false);
+            UiKit.Fill((RectTransform)root.transform);
             var panel = new GameObject("SchoolIdentity", typeof(RectTransform), typeof(Image));
             panel.transform.SetParent(root.transform, false);
             RectTransform rect = (RectTransform)panel.transform;
-            rect.anchorMin = new Vector2(0f, 1f);
-            rect.anchorMax = new Vector2(0f, 1f);
-            rect.pivot = new Vector2(0f, 1f);
-            rect.anchoredPosition = new Vector2(24f, -24f);
+            rect.anchorMin = new Vector2(1f, 1f);
+            rect.anchorMax = new Vector2(1f, 1f);
+            rect.pivot = new Vector2(1f, 1f);
+            rect.anchoredPosition = new Vector2(-24f, -120f);
             rect.sizeDelta = new Vector2(390f, 92f);
             panel.GetComponent<Image>().color = new Color(0.035f, 0.08f, 0.11f, 0.94f);
 

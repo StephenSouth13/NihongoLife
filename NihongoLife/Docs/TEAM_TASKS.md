@@ -1311,3 +1311,56 @@ Test `StoryFlowPlayModeTests` (ảnh trong `Bao_Cao/story-flow/`) đi qua:
 - Ảnh render từ model thật, 256 px, góc 3/4, bóng mềm.
 - Chưa có model, giữ hình dự phòng: neko, tori, hoshi, kagi, `prize_neko_plush`, `prize_daruma`, `prize_furin`, `prize_sticker`.
 - 6 logo trò chơi (`Resources/MiniGames/Logos/*.png`, 1024×512) tạo bằng `_work/arcade_logos.py` với font NotoSansJP. Logo hiện trên thẻ bắt đầu (`ArcadeGame.StartHeader`, `KanaMatchGame.ShowSetPicker`).
+
+## Cập nhật (2026-10-21, Claude) — Âm thanh hoàn chỉnh, đường phố 90 làm lại, nâng cấp UI
+
+**Âm thanh** (nguồn và giấy phép: `Docs/AUDIO_CREDITS.md`)
+- **Giọng nói:**
+  - Đủ 410/410 câu thoại NPC và lời dẫn của 14 quest đều có giọng tiếng Nhật thật (Microsoft neural TTS: Keita, Nanami, Emma Multilingual cho Kim), mỗi nhân vật được chỉnh tốc độ và cao độ riêng.
+  - Tạo bằng `_work/voice_gen.py` vào `Resources/Voice/ja/<quest>/<node>.mp3`. Script chạy lại an toàn: câu nào sửa thì chỉ tạo lại câu đó.
+  - `DialogueManager.LoadDropInVoiceClip` tìm theo thư mục của từng quest, vì id node trùng nhau giữa các quest. Câu nào chưa có file vẫn dùng tiếng bíp cũ.
+- **Nhạc và âm thanh môi trường:**
+  - Tất cả CC0, tải từ OpenGameArt bằng `_work/audio_fetch.py` (script kiểm giấy phép trước khi tải), xử lý bằng `_work/audio_process.py`: chuẩn hoá -18 LUFS; âm thanh môi trường cắt vòng 60 s nối mượt.
+  - Nhạc: menu (koto), thị trấn ngày và đêm, konbini, sushi, trường, ga, Game Center, đảo, phòng ngủ.
+  - Âm thanh môi trường: chim (ngày), dế (đêm), chim và gió (đảo).
+  - Jingle: hoàn thành quest, mua hàng, mở khoá, lên cấp.
+- **`Audio/Soundscape.cs`:**
+  - Chọn nhạc theo cảnh, giờ trong game, và trong/ngoài konbini (`ThirdPersonCameraController.IsIndoor`).
+  - Chuyển bài có crossfade, giảm nhạc khi có giọng thoại, tắt hẳn khi đang thi JLPT/IELTS.
+- Nhạc và âm thanh môi trường import ở chế độ Streaming (`AutoOptimizationProcessor`).
+- Test `SoundscapePlayModeTests`.
+
+**Đường phố 90** (`Editor/CityStreetBuilder.cs`, chạy `-executeMethod NihongoLife.EditorTools.CityStreetBuilder.Build`; thêm `NL_STREET_SCENE=01_MainMenu` để dựng lại cảnh nền menu)
+- **Đã gỡ:**
+  - Lưới ô đường Kenney cũ: đường xuyên qua mọi khu nhà, khoảng 180 mảnh vỉa hè.
+  - Vạch làn, vạch qua đường, lối xe vào nhà, mảng đất sau nhà, công viên nhỏ và hàng rào cũ.
+  - 2 căn nhà trùng nhau ở chỗ nối giữa các tile.
+  - 16 vật thể bị mất vật liệu (hiện màu hồng) đã được gán lại vật liệu.
+- **Đại lộ Sakura-dōri:**
+  - 2 làn, xe chạy bên trái; vạch mép, vạch giữa nét đứt, ◇ báo trước chỗ qua đường.
+  - Vạch zebra kèm đèn giao thông ngang 3 màu và đèn đi bộ hình người có tiếng "piyo piyo".
+  - Vỉa hè lát gạch có bó vỉa, nắp cống.
+- **Ngõ dọc (路地):** vạch 路側帯, chữ 止まれ và vạch dừng trước khi ra đại lộ; thêm các ngõ sau.
+- **Lô nhà:** mỗi nhà một lô, tường gạch block có collider ở hai bên và phía sau, sân sỏi, dải cỏ, trụ cổng. Mặt trước của các điểm đến và konbini để trống.
+- **Khu phía sau:** dãy nhà nền, công viên Hibari (lối vào từ ngõ sau), bãi đỗ xe tính tiền có xe đậu.
+- **Đồ phố:** gương cầu lồi, máy bán hàng tự động. Texture đều tạo bằng code (`Generated/City/Textures`).
+- **Xe cộ** (`World/StreetTraffic.cs`):
+  - 6 xe KayKit mỗi tile, bánh xe quay.
+  - Xe giữ khoảng cách, dừng ở vạch khi đèn đỏ, dừng nhường người chơi trên vạch qua đường hoặc đứng trước xe.
+- `Editor/SceneSurvey.cs`: khảo sát cảnh (cây phân cấp, bản đồ từ trên xuống, tìm vật liệu lỗi), chỉ đọc, không lưu cảnh.
+- Test `StreetTrafficPlayModeTests` (ảnh trong `Bao_Cao/street-regression/`):
+  - lưới cũ đã bị gỡ;
+  - xe chạy đúng làn, không chui vào nhà, không vượt đèn đỏ, dừng nhường người chơi;
+  - người chơi đi từ điểm xuất phát qua vạch đến konbini;
+  - cả 5 cổng vẫn đi bộ tới được.
+
+**UI**
+- **Menu chính:**
+  - Nút phụ đổi sang nền kính tối, đọc rõ trên nền thành phố.
+  - Thêm thẻ "Cốt truyện" (chương, quest tiếp theo, thanh tiến độ) do `MainMenuUI.DisplayStoryCard` điền từ `StoryDirector`. Thẻ được nướng vào cảnh bởi `MainMenuBaker`.
+  - Nền menu là đường phố mới, có xe chạy.
+- **Khung gợi ý tương tác:** nền kính bo góc, phím bấm dạng keycap vàng (`HUDUI`).
+- **Bản đồ (M):** vẽ đúng đường phố mới; "Công viên Hibari" dời tới công viên mới.
+- **Lỗi đã sửa:**
+  - Biển "HIBARI JAPANESE SCHOOL" gắn vào canvas tồn tại xuyên cảnh nên vẫn ở giữa màn hình thành phố. Nay biển có canvas riêng, mất theo cảnh trường, chữ theo ngôn ngữ đã chọn, đặt ở góc phải.
+  - Thông báo HUD lọt sang menu chính: nay bị xoá khi về menu.

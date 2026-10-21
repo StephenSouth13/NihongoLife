@@ -49,6 +49,7 @@ namespace NihongoLife.Island
             if (!Give(itemId, quantity)) { inventory.AddYen(total, Loc.Triple("Hoàn tiền (balo đầy)", "Refund (bag full)", "返金（バッグがいっぱい）")); return Result.BagFull; }
             NihongoLife.Progression.QuestService.Raise("buy", itemId, quantity);
             NihongoLife.Progression.QuestService.Raise("buy", "midori_store", quantity);
+            NihongoLife.Audio.Soundscape.Jingle("purchase");
             return Result.Ok;
         }
 

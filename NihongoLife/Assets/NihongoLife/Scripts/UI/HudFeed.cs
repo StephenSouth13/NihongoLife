@@ -101,6 +101,14 @@ namespace NihongoLife.UI
 
         private void Update()
         {
+            // The main menu shows no gameplay notifications: anything left from the game is dropped there.
+            string scene = UnityEngine.SceneManagement.SceneManager.GetActiveScene().name;
+            if (scene == "01_MainMenu" || scene == "00_Bootstrap")
+            {
+                foreach (var (card, _, _) in _cards) if (card != null) Destroy(card.gameObject);
+                _cards.Clear(); _keys.Clear();
+                return;
+            }
             // While a window is open the feed steps aside (never over a card) and its timers wait.
             bool paused = UiModalStack.AnyOpen;
             for (int i = _cards.Count - 1; i >= 0; i--)

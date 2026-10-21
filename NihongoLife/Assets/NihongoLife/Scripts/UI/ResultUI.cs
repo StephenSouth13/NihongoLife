@@ -58,6 +58,7 @@ namespace NihongoLife.UI
             else if (_lastResultWasSuccess) _nextScenarioId = FindNextScenarioId(_completedScenarioId);
             _freePlayJustOpened = _lastResultWasSuccess && _completedScenarioId == StoryDirector.PrologueEnd && !StoryDirector.FreePlayAnnounced;
 
+            if (_lastResultWasSuccess) NihongoLife.Audio.Soundscape.Jingle("quest_complete");
             ScenarioDefinition definition = null;
             if (GameServices.TryGet(out IScenarioRepository repo)) definition = repo.GetScenarioById(breakdown.scenarioId);
             Build(breakdown, definition);

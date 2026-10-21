@@ -19,6 +19,7 @@ namespace NihongoLife.UI
     {
         [Header("Interaction Tooltip")]
         [SerializeField] private GameObject promptPanel;
+        private TextMeshProUGUI _keyCap;
         [SerializeField] private TextMeshProUGUI promptText;
 
         [Header("Objectives Overlay")]
@@ -257,8 +258,23 @@ namespace NihongoLife.UI
                 rect.pivot = new Vector2(0.5f, 0f);
                 rect.anchoredPosition = new Vector2(0f, 104f);
                 var image = promptPanel.GetComponent<Image>();
-                if (image != null) image.color = NLUi.Ink;
-                if (promptText != null) { promptText.fontSize = Mathf.Max(promptText.fontSize, 20f); promptText.color = NLUi.Text; }
+                if (image != null) { image.sprite = UiKit.Rounded(18); image.type = Image.Type.Sliced; image.color = new Color(0.035f, 0.05f, 0.075f, 0.88f); }
+                if (promptPanel.transform.Find("Border") == null) UiKit.Border(rect, new Color(1f, 1f, 1f, 0.1f), 18);
+                // A gold key cap on the left (the key), the action on the right.
+                if (_keyCap == null)
+                {
+                    var cap = UiKit.Card(promptPanel.transform, "KeyCap", UiTheme.Gold, 10);
+                    cap.raycastTarget = false;
+                    UiKit.Pin(cap.rectTransform, new Vector2(0f, 0.5f), 12f, 0f, 38f, 34f);
+                    _keyCap = UiKit.Label(cap.transform, "Key", "F", 18f, UiTheme.OnGold, FontStyles.Bold, TextAlignmentOptions.Center);
+                    UiKit.Fill(_keyCap.rectTransform);
+                }
+                if (promptText != null)
+                {
+                    promptText.fontSize = Mathf.Max(promptText.fontSize, 20f); promptText.color = NLUi.Text;
+                    promptText.alignment = TextAlignmentOptions.MidlineLeft;
+                    var pr = promptText.rectTransform; pr.anchorMin = Vector2.zero; pr.anchorMax = Vector2.one; pr.offsetMin = new Vector2(62f, 0f); pr.offsetMax = new Vector2(-16f, 0f);
+                }
             }
             var toggle = GetComponentInParent<Canvas>()?.transform.Find("ToggleNPCNames");
             if (toggle != null)
@@ -1202,7 +1218,8 @@ namespace NihongoLife.UI
             promptPanel.SetActive(true);
             HudPrompt.ContextualVisible = true;
             string key = GameInputService.GetOrCreate().GetBindingLabel(GameInputId.Interact);
-            promptText.text = $"<color=#F2B233><b>[ {key} ]</b></color>   {InteractionPrompt.Of(interactable)}";
+            if (_keyCap != null) _keyCap.text = key;
+            promptText.text = _keyCap != null ? InteractionPrompt.Of(interactable) : $"<color=#F2B233><b>[ {key} ]</b></color>   {InteractionPrompt.Of(interactable)}";
         }
 
         private void HidePrompt()

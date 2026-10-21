@@ -147,6 +147,7 @@ namespace NihongoLife.UI
                 Cue(GameAudioCue.UiError);
                 return false;
             }
+            NihongoLife.Audio.Soundscape.Jingle("purchase");
             int refused = 0, sheets = 0;
             foreach (var line in KonbiniBasket.Items.ToList())
             {
