@@ -14,6 +14,12 @@ namespace NihongoLife.Core
         // Resolved display names (populated client-side)
         public string friendDisplayName;
         public string friendUserId;
+        // Resolved from profiles / island_showcases (0 / -1 when unknown)
+        public int friendLevel;
+        public int islandLikes = -1;          // -1: no island published yet
+        public string islandUpdatedAt;
+        public bool islandChecked;            // the showcase query answered (so "no island" is known, not a network gap)
+        public bool HasIsland => islandLikes >= 0;
     }
 
     /// <summary>
@@ -39,7 +45,7 @@ namespace NihongoLife.Core
         /// <summary>Send a friend request to another user by their ID.</summary>
         public void SendFriendRequest(string targetUserId, Action<bool> callback = null)
         {
-            if (_client == null || !_client.IsConfigured || !GameServices.TryGet(out IAuthService auth) || !auth.IsAuthenticated)
+            if (_client == null || !_client.IsConfigured || !GameServices.TryGet(out IAuthService auth) || !OnlineAccess.IsRegistered)
             {
                 callback?.Invoke(false);
                 return;
@@ -116,7 +122,7 @@ namespace NihongoLife.Core
         /// <summary>Refresh the full friends list and pending requests from Supabase.</summary>
         public void RefreshFriends(Action callback = null)
         {
-            if (_client == null || !_client.IsConfigured || !GameServices.TryGet(out IAuthService auth) || !auth.IsAuthenticated)
+            if (_client == null || !_client.IsConfigured || !GameServices.TryGet(out IAuthService auth) || !OnlineAccess.IsRegistered)
             {
                 callback?.Invoke();
                 return;
@@ -148,8 +154,11 @@ namespace NihongoLife.Core
                         }
                     }
 
-                    OnFriendsUpdated?.Invoke();
-                    callback?.Invoke();
+                    ResolveDetails(() =>
+                    {
+                        OnFriendsUpdated?.Invoke();
+                        callback?.Invoke();
+                    });
                 },
                 (code, error) =>
                 {
@@ -157,6 +166,57 @@ namespace NihongoLife.Core
                     callback?.Invoke();
                 });
         }
+
+        /// <summary>Names and levels (profiles) and islands (island_showcases) of everyone listed, two requests in all.</summary>
+        private void ResolveDetails(Action done)
+        {
+            var everyone = new List<FriendEntry>(_friends);
+            everyone.AddRange(_pendingRequests);
+            if (everyone.Count == 0) { done(); return; }
+            var ids = new List<string>();
+            foreach (var e in everyone) if (!string.IsNullOrEmpty(e.friendUserId) && !ids.Contains(e.friendUserId)) ids.Add(e.friendUserId);
+            string list = string.Join(",", ids);
+            int pending = 2;
+            void Step() { if (--pending == 0) done(); }
+
+            _client.Get(_client.RestUrl("profiles") + $"?id=in.({list})&select=id,display_name,level", json =>
+            {
+                var rows = JsonUtility.FromJson<ProfileRows>("{\"items\":" + json + "}");
+                foreach (var row in rows?.items ?? Array.Empty<ProfileRow>())
+                    foreach (var e in everyone)
+                        if (e.friendUserId == row.id)
+                        {
+                            if (!string.IsNullOrWhiteSpace(row.display_name)) e.friendDisplayName = row.display_name;
+                            e.friendLevel = row.level;
+                        }
+                Step();
+            }, (code, error) => { Debug.LogWarning($"[FriendService] Profiles failed: {error}"); Step(); });
+
+            _client.Get(_client.RestUrl("island_showcases") + $"?user_id=in.({list})&select=user_id,likes,updated_at", json =>
+            {
+                var rows = JsonUtility.FromJson<IslandRows>("{\"items\":" + json + "}");
+                foreach (var e in everyone) e.islandChecked = true;
+                foreach (var row in rows?.items ?? Array.Empty<IslandRow>())
+                    foreach (var e in everyone)
+                        if (e.friendUserId == row.user_id) { e.islandLikes = Mathf.Max(0, row.likes); e.islandUpdatedAt = row.updated_at; }
+                Step();
+            }, (code, error) => { Debug.LogWarning($"[FriendService] Islands failed: {error}"); Step(); });
+        }
+
+        /// <summary>Tests: fill the lists without a server.</summary>
+        public void SetForTests(IEnumerable<FriendEntry> friends, IEnumerable<FriendEntry> requests)
+        {
+            _client = null; // offline: refreshes keep these lists instead of asking the server
+            _friends.Clear(); _pendingRequests.Clear();
+            if (friends != null) _friends.AddRange(friends);
+            if (requests != null) _pendingRequests.AddRange(requests);
+            OnFriendsUpdated?.Invoke();
+        }
+
+        [Serializable] private sealed class ProfileRow { public string id, display_name; public int level; }
+        [Serializable] private sealed class ProfileRows { public ProfileRow[] items; }
+        [Serializable] private sealed class IslandRow { public string user_id, updated_at; public int likes; }
+        [Serializable] private sealed class IslandRows { public IslandRow[] items; }
 
         private static List<FriendEntry> ParseFriendEntries(string json)
         {

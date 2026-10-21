@@ -11,6 +11,18 @@ namespace NihongoLife.Data
         public string url;
     }
 
+    /// <summary>One of the game's founders, shown as a row in the About popup (the row opens <see cref="url"/>).</summary>
+    [Serializable]
+    public class MenuAboutFounder
+    {
+        public string name;
+        public string monogram;
+        public string roleVi;
+        public string roleEn;
+        public string roleJa;
+        public string url;
+    }
+
     /// <summary>Optional localized caption for one screenshot, matched by texture file name (without extension).</summary>
     [Serializable]
     public class MenuGalleryCaption
@@ -43,6 +55,9 @@ namespace NihongoLife.Data
         [TextArea(3, 8)] public string bioEn;
         [TextArea(3, 8)] public string bioJa;
         public List<MenuAboutLink> links = new List<MenuAboutLink>();
+
+        [Header("Founders")]
+        public List<MenuAboutFounder> founders = new List<MenuAboutFounder>();
 
         [Header("Credits")]
         public List<string> credits = new List<string>();

@@ -24,6 +24,7 @@ namespace NihongoLife.Tests
             ("Pickup", null, 0.45f), ("UseItem", null, 0.5f), ("Work_Shelf", null, 0.45f), ("Work_Hoe", "tool_hoe", 0.35f),
             ("Work_Plant", null, 0.5f), ("Work_Harvest", null, 0.45f), ("Fish_Cast", "tool_fishing_rod", 0.3f),
             ("Fish_Wait", "tool_fishing_rod", 0.5f), ("Work_Water", "tool_watering_can", 0.5f), ("Work_Carry", null, 0.5f),
+            ("Work_Clear", null, 0.4f), ("Work_Feed", null, 0.5f),
         };
 
         [UnityTest, Timeout(300000)]

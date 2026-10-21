@@ -63,7 +63,7 @@ namespace NihongoLife.Exam
 
             // Divisions below their minimum first: they fail the test regardless of the total.
             foreach (var g in record.groups.Where(g => g.scored < g.passMin))
-                report.advice.Add($"⚠ {GroupTitle(exam, g.groupId)}: {g.scored}/{g.max} — dưới điểm liệt {g.passMin}. Dù tổng điểm đủ vẫn chưa đậu.");
+                report.advice.Add("⚠ " + NihongoLife.Core.Loc.F("{0}: {1}/{2} — dưới điểm liệt {3}. Dù tổng điểm đủ vẫn chưa đậu.", "{0}: {1}/{2} — below the section minimum of {3}. You fail even if the total is enough.", "{0}：{1}/{2} — 基準点{3}未満です。合計点が足りていても不合格です。", GroupTitle(exam, g.groupId), g.scored, g.max, g.passMin));
 
             // For each division, the weakest もんだい with points still to win, and what fixing some of it is worth.
             var suggestions = new List<(float gain, string text)>();
@@ -82,17 +82,19 @@ namespace NihongoLife.Exam
 
                 int newGroup = Scale(g.rawCorrect + k, g.rawMax, g.max);
                 int newTotal = total - g.scored + newGroup;
-                string text = $"{Name(weakest)}: đúng {weakest.correct}/{weakest.total}. Làm đúng thêm {k} câu → {GroupTitle(exam, g.groupId)} từ {g.scored} lên {newGroup}/{g.max}; " +
-                              $"tổng từ {total} lên {newTotal}/{totalMax} — {Status(newTotal, pass, Replace(record.groups, g.groupId, newGroup))}.";
-                if (k < need) text += $" (もんだい này chỉ còn {weakest.Wrong} câu sai — cần cải thiện thêm phần khác.)";
+                string text = NihongoLife.Core.Loc.F("{0}: đúng {1}/{2}. Làm đúng thêm {3} câu → {4} từ {5} lên {6}/{7}; tổng từ {8} lên {9}/{10} — {11}.",
+                                     "{0}: {1}/{2} correct. {3} more correct → {4} from {5} to {6}/{7}; total from {8} to {9}/{10} — {11}.",
+                                     "{0}：{1}/{2}問正解。あと{3}問正解すると → {4}が{5}から{6}/{7}に、合計が{8}から{9}/{10}に — {11}。",
+                                     Name(weakest), weakest.correct, weakest.total, k, GroupTitle(exam, g.groupId), g.scored, newGroup, g.max, total, newTotal, totalMax, Status(newTotal, pass, Replace(record.groups, g.groupId, newGroup)));
+                if (k < need) text += NihongoLife.Core.Loc.F(" (Phần này chỉ còn {0} câu sai — cần cải thiện thêm phần khác.)", " (Only {0} wrong answers left here — improve other parts too.)", "（このもんだいの間違いは残り{0}問です。ほかの部分も伸ばしましょう。）", weakest.Wrong);
                 suggestions.Add((newTotal - total, text));
             }
             report.advice.AddRange(suggestions.OrderByDescending(s => s.gain).Select(s => s.text));
 
             var strongest = report.mondai.Where(m => m.total >= 2).OrderByDescending(m => m.Accuracy).FirstOrDefault();
             if (strongest != null && strongest.Accuracy >= 0.8f)
-                report.advice.Add($"Điểm mạnh: {Name(strongest)} ({strongest.correct}/{strongest.total}). Giữ phong độ phần này.");
-            report.advice.Add("Điểm quy đổi tuyến tính để luyện tập; JLPT thật dùng điểm quy chuẩn (scaled score) nên có thể lệch vài điểm.");
+                report.advice.Add(NihongoLife.Core.Loc.F("Điểm mạnh: {0} ({1}/{2}). Giữ phong độ phần này.", "Strength: {0} ({1}/{2}). Keep it up.", "得意：{0}（{1}/{2}）。この調子で。", Name(strongest), strongest.correct, strongest.total));
+            report.advice.Add(NihongoLife.Core.Loc.T("Điểm quy đổi tuyến tính để luyện tập; JLPT thật dùng điểm quy chuẩn (scaled score) nên có thể lệch vài điểm.", "Scores are converted linearly for practice; the real JLPT uses scaled scores, so it may differ by a few points.", "練習用に点数を直線的に換算しています。本番のJLPTは尺度得点なので、数点ずれることがあります。"));
             return report;
         }
 
@@ -100,12 +102,12 @@ namespace NihongoLife.Exam
         public static string Status(int total, int pass, IEnumerable<ExamGroupResult> groups)
         {
             var below = groups?.Where(g => g.scored < g.passMin).ToList() ?? new List<ExamGroupResult>();
-            if (total < pass) return $"chưa đạt (cần {pass})";
-            if (below.Count > 0) return "tổng đủ nhưng có phần dưới điểm liệt";
+            if (total < pass) return NihongoLife.Core.Loc.F("chưa đạt (cần {0})", "not passed (needs {0})", "不合格（{0}点必要）", pass);
+            if (below.Count > 0) return NihongoLife.Core.Loc.T("tổng đủ nhưng có phần dưới điểm liệt", "total is enough but a section is below its minimum", "合計は足りているが基準点未満の分野あり");
             int margin = total - pass;
-            if (margin < 10) return $"đạt sát ngưỡng {pass} — nguy hiểm";
-            if (margin < 25) return "khá an toàn";
-            return "an toàn";
+            if (margin < 10) return NihongoLife.Core.Loc.F("đạt sát ngưỡng {0} — nguy hiểm", "just over the {0} pass mark — risky", "合格点{0}ぎりぎり — 危険", pass);
+            if (margin < 25) return NihongoLife.Core.Loc.T("khá an toàn", "fairly safe", "まあ安全");
+            return NihongoLife.Core.Loc.T("an toàn", "safe", "安全");
         }
 
         private static IEnumerable<ExamGroupResult> Replace(List<ExamGroupResult> groups, string id, int scored) =>
@@ -119,7 +121,7 @@ namespace NihongoLife.Exam
             return rawMax - raw;
         }
 
-        private static string Name(MondaiStat m) => m.mondaiId == "_" ? m.titleJa : $"{m.titleJa}" + (string.IsNullOrEmpty(m.titleVi) ? "" : $" ({m.titleVi})");
+        private static string Name(MondaiStat m) => m.mondaiId == "_" || !NihongoLife.Core.Loc.IsVietnamese || string.IsNullOrEmpty(m.titleVi) ? m.titleJa : $"{m.titleJa} ({m.titleVi})";
 
         public static string GroupTitle(ExamDefinition exam, string groupId)
         {

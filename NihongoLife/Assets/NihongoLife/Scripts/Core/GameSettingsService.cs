@@ -3,37 +3,25 @@ using UnityEngine;
 
 namespace NihongoLife.Core
 {
+    /// <summary>Settings service; the interface language itself lives in <see cref="Loc"/> (one source for every screen).</summary>
     public class GameSettingsService : MonoBehaviour, IGameService
     {
-        private const string LanguageKey = "NihongoLife.UiLanguage";
-
         public event Action<GameLanguage> OnLanguageChanged;
 
-        public GameLanguage Language { get; private set; } = GameLanguage.Vietnamese;
+        public GameLanguage Language => Loc.Language;
 
         public void Initialize()
         {
-            Language = (GameLanguage)Mathf.Clamp(PlayerPrefs.GetInt(LanguageKey, (int)GameLanguage.Vietnamese), 0, 2);
+            Loc.Changed -= RaiseChanged;
+            Loc.Changed += RaiseChanged;
         }
 
-        public void SetLanguage(GameLanguage language)
-        {
-            if (Language == language) return;
+        private void OnDestroy() => Loc.Changed -= RaiseChanged;
 
-            Language = language;
-            PlayerPrefs.SetInt(LanguageKey, (int)language);
-            PlayerPrefs.Save();
-            OnLanguageChanged?.Invoke(Language);
-        }
+        private void RaiseChanged() => OnLanguageChanged?.Invoke(Loc.Language);
 
-        public string Text(string vi, string en, string ja)
-        {
-            return Language switch
-            {
-                GameLanguage.English => en,
-                GameLanguage.Japanese => ja,
-                _ => vi
-            };
-        }
+        public void SetLanguage(GameLanguage language) => Loc.Set(language);
+
+        public string Text(string vi, string en, string ja) => Loc.T(vi, en, ja);
     }
 }

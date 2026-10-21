@@ -41,8 +41,8 @@ namespace NihongoLife.Exam
         {
             var result = new IeltsAiExamination { createdUtc = DateTime.UtcNow.ToString("o") };
             int words = SpeechAudio.CountWords(task.original);
-            if (words < 20) { result.error = "Bài viết quá ngắn (dưới 20 từ) để chấm theo tiêu chí IELTS."; done?.Invoke(result); yield break; }
-            if (words > Limits.maxEssayWords) { result.error = $"Bài viết dài {words} từ, vượt giới hạn {Limits.maxEssayWords} từ cho một lần chấm."; done?.Invoke(result); yield break; }
+            if (words < 20) { result.error = NihongoLife.Core.Loc.T("Bài viết quá ngắn (dưới 20 từ) để chấm theo tiêu chí IELTS.", "The essay is too short (under 20 words) to grade on the IELTS criteria.", "IELTSの基準で採点するには短すぎます（20語未満）。"); done?.Invoke(result); yield break; }
+            if (words > Limits.maxEssayWords) { result.error = NihongoLife.Core.Loc.F("Bài viết dài {0} từ, vượt giới hạn {1} từ cho một lần chấm.", "The essay has {0} words, over the {1}-word limit for one grading.", "{0}語あり、1回の採点の上限{1}語を超えています。", words, Limits.maxEssayWords); done?.Invoke(result); yield break; }
 
             string first = task.task == 1 ? "TA" : "TR";
             string firstName = task.task == 1 ? "Task Achievement" : "Task Response";
@@ -52,9 +52,9 @@ namespace NihongoLife.Exam
                 $"Candidate's text ({words} words):\n<<<\n{task.original}\n>>>\n\n" +
                 $"Give a band 0-9 in 0.5 steps for each criterion: {first} ({firstName}), CC (Coherence and Cohesion), LR (Lexical Resource), GRA (Grammatical Range and Accuracy). " +
                 (words < task.minWords ? $"The text is under {task.minWords} words: apply the under-length penalty to {first}. " : "") +
-                "For each criterion explain in Vietnamese (2-4 sentences) why it gets that band, quoting short phrases from the text as evidence. " +
+                "For each criterion explain in " + FeedbackLanguage + " (2-4 sentences) why it gets that band, quoting short phrases from the text as evidence. " +
                 "Do not invent content that is not in the text. Do not give an overall band.\n" +
-                "Reply with JSON only: {\"criteria\":[{\"code\":\"" + first + "\",\"name\":\"" + firstName + "\",\"band\":6.0,\"explanation\":\"...\"},{\"code\":\"CC\",...},{\"code\":\"LR\",...},{\"code\":\"GRA\",...}],\"summary\":\"<2-3 sentences in Vietnamese: main strength and the most important thing to improve>\"}";
+                "Reply with JSON only: {\"criteria\":[{\"code\":\"" + first + "\",\"name\":\"" + firstName + "\",\"band\":6.0,\"explanation\":\"...\"},{\"code\":\"CC\",...},{\"code\":\"LR\",...},{\"code\":\"GRA\",...}],\"summary\":\"<2-3 sentences in " + FeedbackLanguage + ": main strength and the most important thing to improve>\"}";
 
             string text = null, error = null; bool cached = false;
             yield return RequestJson("writing-examiner", prompt, null, 1600, (t, e, c) => { text = t; error = e; cached = c; });
@@ -62,7 +62,7 @@ namespace NihongoLife.Exam
             result.model = Model;
             if (error != null) { result.error = error; done?.Invoke(result); yield break; }
             var parsed = Parse<ExaminerReply>(text);
-            if (parsed?.criteria == null || parsed.criteria.Count < 4) { result.error = "AI trả về kết quả không đúng định dạng. Hãy thử chấm lại."; done?.Invoke(result); yield break; }
+            if (parsed?.criteria == null || parsed.criteria.Count < 4) { result.error = NihongoLife.Core.Loc.T("AI trả về kết quả không đúng định dạng. Hãy thử chấm lại.", "The AI returned a result in the wrong format. Please grade again.", "AIの結果の形式が正しくありません。もう一度採点してください。"); done?.Invoke(result); yield break; }
             foreach (var c in parsed.criteria) { c.band = IeltsBands.Clamp(c.band); c.assessed = true; }
             result.criteria = parsed.criteria;
             result.summary = parsed.summary;
@@ -78,27 +78,27 @@ namespace NihongoLife.Exam
         {
             var report = new IeltsCoachReport { createdUtc = DateTime.UtcNow.ToString("o") };
             int words = SpeechAudio.CountWords(text);
-            if (words < 5) { report.error = "Chưa có nội dung để góp ý."; done?.Invoke(report); yield break; }
-            if (words > Limits.maxEssayWords) { report.error = $"Bài dài {words} từ, vượt giới hạn {Limits.maxEssayWords} từ."; done?.Invoke(report); yield break; }
+            if (words < 5) { report.error = NihongoLife.Core.Loc.T("Chưa có nội dung để góp ý.", "There is nothing to give feedback on yet.", "まだコメントする内容がありません。"); done?.Invoke(report); yield break; }
+            if (words > Limits.maxEssayWords) { report.error = NihongoLife.Core.Loc.F("Bài dài {0} từ, vượt giới hạn {1} từ.", "The text has {0} words, over the {1}-word limit.", "{0}語あり、上限{1}語を超えています。", words, Limits.maxEssayWords); done?.Invoke(report); yield break; }
             var sentences = SplitSentences(text);
             var numbered = new StringBuilder();
             for (int i = 0; i < sentences.Count; i++) numbered.Append('[').Append(i + 1).Append("] ").AppendLine(sentences[i]);
             string prompt =
-                "You are a supportive IELTS writing coach for a Vietnamese learner. Find the concrete problems in the sentences below " +
+                "You are a supportive IELTS writing coach for a learner who reads " + FeedbackLanguage + ". Find the concrete problems in the sentences below " +
                 "(grammar, vocabulary/word choice, spelling, punctuation, cohesion, and task relevance). Report at most 12 issues, most important first; skip sentences with no real problem.\n" +
                 $"Writing Task {task.task}. Task:\n{task.prompt}\n\n" +
                 (original != null ? $"This is the learner's REWRITE after earlier feedback. Earlier version for reference:\n<<<\n{original}\n>>>\nAlso say in overallAdvice what improved and what still needs work.\n\n" : "") +
                 "Numbered sentences:\n" + numbered + "\n" +
                 "For each issue: sentence = the [number]; original = the exact words with the problem; category = grammar|vocabulary|spelling|punctuation|cohesion|task; " +
-                "problem = short label; explanation = why it is wrong or weak, in Vietnamese; suggestion = the corrected wording (English). Do not give any band score.\n" +
-                "Reply with JSON only: {\"issues\":[{\"sentence\":1,\"original\":\"...\",\"category\":\"grammar\",\"problem\":\"...\",\"explanation\":\"...\",\"suggestion\":\"...\"}],\"overallAdvice\":\"<2-4 sentences in Vietnamese>\"}";
+                "problem = short label; explanation = why it is wrong or weak, in " + FeedbackLanguage + "; suggestion = the corrected wording (English). Do not give any band score.\n" +
+                "Reply with JSON only: {\"issues\":[{\"sentence\":1,\"original\":\"...\",\"category\":\"grammar\",\"problem\":\"...\",\"explanation\":\"...\",\"suggestion\":\"...\"}],\"overallAdvice\":\"<2-4 sentences in " + FeedbackLanguage + ">\"}";
 
             string reply = null, error = null; bool cached = false;
             yield return RequestJson("writing-coach", prompt, null, 3000, (t, e, c) => { reply = t; error = e; cached = c; });
             report.fromCache = cached;
             if (error != null) { report.error = error; done?.Invoke(report); yield break; }
             var parsed = Parse<CoachReply>(reply);
-            if (parsed == null) { report.error = "AI trả về góp ý không đúng định dạng. Hãy thử lại."; done?.Invoke(report); yield break; }
+            if (parsed == null) { report.error = NihongoLife.Core.Loc.T("AI trả về góp ý không đúng định dạng. Hãy thử lại.", "The AI feedback came back in the wrong format. Please try again.", "AIのコメントの形式が正しくありません。もう一度試してください。"); done?.Invoke(report); yield break; }
             report.issues = (parsed.issues ?? new List<IeltsCoachIssue>()).Where(i => !string.IsNullOrWhiteSpace(i.original)).ToList();
             report.overallAdvice = parsed.overallAdvice;
             done?.Invoke(report);
@@ -121,9 +121,9 @@ namespace NihongoLife.Exam
         {
             var result = new IeltsAiExamination { createdUtc = DateTime.UtcNow.ToString("o"), model = Model };
             var usable = takes.Where(t => t.Samples != null && t.Samples.Length > 0).ToList();
-            if (usable.Count == 0) { result.error = "Chưa có câu trả lời nào được ghi âm."; done?.Invoke(result); yield break; }
+            if (usable.Count == 0) { result.error = NihongoLife.Core.Loc.T("Chưa có câu trả lời nào được ghi âm.", "No answers have been recorded yet.", "まだ録音された答えがありません。"); done?.Invoke(result); yield break; }
             float total = usable.Sum(t => t.Samples.Length / (float)t.Frequency);
-            if (total > Limits.maxSpeakingSeconds) { result.error = $"Tổng thời lượng ghi âm {total:0}s vượt giới hạn {Limits.maxSpeakingSeconds}s cho một lần chấm."; done?.Invoke(result); yield break; }
+            if (total > Limits.maxSpeakingSeconds) { result.error = NihongoLife.Core.Loc.F("Tổng thời lượng ghi âm {0:0}s vượt giới hạn {1}s cho một lần chấm.", "Total recording time {0:0}s is over the {1}s limit for one grading.", "録音の合計{0:0}秒が、1回の採点の上限{1}秒を超えています。", total, Limits.maxSpeakingSeconds); done?.Invoke(result); yield break; }
 
             var audio = new List<(string label, byte[] wav)>();
             var intro = new StringBuilder();
@@ -140,22 +140,22 @@ namespace NihongoLife.Exam
                 "2) Give a band 0-9 in 0.5 steps for FC (Fluency and Coherence), LR (Lexical Resource), GRA (Grammatical Range and Accuracy), using the transcripts and the measured timing as evidence.\n" +
                 "3) Give P (Pronunciation) ONLY from what you actually hear in the audio (intelligibility, individual sounds, word and sentence stress, intonation, chunking). " +
                 "Never infer pronunciation from the transcript. If the audio is too short, silent, synthetic-sounding or noisy to judge, set \"assessed\": false for P and say why.\n" +
-                "Explain each criterion in Vietnamese (2-4 sentences) with short quotes as evidence. Do not give an overall band.\n" +
-                "Reply with JSON only: {\"answers\":[{\"number\":1,\"transcript\":\"...\"}],\"criteria\":[{\"code\":\"FC\",\"name\":\"Fluency and Coherence\",\"band\":6.0,\"explanation\":\"...\",\"assessed\":true},{\"code\":\"LR\",...},{\"code\":\"GRA\",...},{\"code\":\"P\",\"name\":\"Pronunciation\",...}],\"summary\":\"<2-3 sentences in Vietnamese>\"}";
+                "Explain each criterion in " + FeedbackLanguage + " (2-4 sentences) with short quotes as evidence. Do not give an overall band.\n" +
+                "Reply with JSON only: {\"answers\":[{\"number\":1,\"transcript\":\"...\"}],\"criteria\":[{\"code\":\"FC\",\"name\":\"Fluency and Coherence\",\"band\":6.0,\"explanation\":\"...\",\"assessed\":true},{\"code\":\"LR\",...},{\"code\":\"GRA\",...},{\"code\":\"P\",\"name\":\"Pronunciation\",...}],\"summary\":\"<2-3 sentences in " + FeedbackLanguage + ">\"}";
 
             string reply = null, error = null; bool cached = false;
             yield return RequestJson("speaking-examiner", prompt, audio, 3000, (t, e, c) => { reply = t; error = e; cached = c; });
             result.fromCache = cached;
             if (error != null) { result.error = error; done?.Invoke(result); yield break; }
             var parsed = Parse<SpeakingReply>(reply);
-            if (parsed?.criteria == null || parsed.criteria.Count < 3) { result.error = "AI trả về kết quả Speaking không đúng định dạng. Hãy thử chấm lại."; done?.Invoke(result); yield break; }
+            if (parsed?.criteria == null || parsed.criteria.Count < 3) { result.error = NihongoLife.Core.Loc.T("AI trả về kết quả Speaking không đúng định dạng. Hãy thử chấm lại.", "The AI Speaking result came back in the wrong format. Please grade again.", "AIのスピーキング結果の形式が正しくありません。もう一度採点してください。"); done?.Invoke(result); yield break; }
             foreach (var c in parsed.criteria)
             {
                 c.band = IeltsBands.Clamp(c.band);
                 if (c.code != "P") c.assessed = true; // only Pronunciation can be "not assessed"
             }
             var p = parsed.criteria.FirstOrDefault(c => c.code == "P");
-            if (p == null) parsed.criteria.Add(new IeltsCriterionScore { code = "P", name = "Pronunciation", assessed = false, explanation = "AI không đánh giá được phát âm từ bản ghi này." });
+            if (p == null) parsed.criteria.Add(new IeltsCriterionScore { code = "P", name = "Pronunciation", assessed = false, explanation = NihongoLife.Core.Loc.T("AI không đánh giá được phát âm từ bản ghi này.", "The AI could not assess pronunciation from this recording.", "この録音からは発音を評価できませんでした。") });
             result.criteria = parsed.criteria;
             result.summary = parsed.summary;
             result.overall = IeltsBands.Speaking(result.criteria);
@@ -198,6 +198,9 @@ namespace NihongoLife.Exam
         public static int RequestsLeftToday => Mathf.Max(0, Limits.daily - RequestsToday);
         private static string CacheFolder => Path.Combine(Application.persistentDataPath, "ai_cache");
 
+        /// <summary>The language the AI writes its explanations in: the interface language.</summary>
+        private static string FeedbackLanguage => NihongoLife.Core.Loc.T("Vietnamese", "English", "Japanese");
+
         /// <summary>Sends one JSON-mode request (text prompt plus optional WAV parts). done(text, error, fromCache).</summary>
         private IEnumerator RequestJson(string kind, string prompt, List<(string label, byte[] wav)> audio, int maxTokens, Action<string, string, bool> done)
         {
@@ -207,18 +210,18 @@ namespace NihongoLife.Exam
 
             if (!TryGetConfig(out string apiKey, out string model))
             {
-                done(null, "Chưa cấu hình AI (Gemini): cần biến môi trường với API key và bật Gemini trong Control Database. Bài làm vẫn được lưu để chấm sau.", false);
+                done(null, NihongoLife.Core.Loc.T("Chưa cấu hình AI (Gemini): cần biến môi trường với API key và bật Gemini trong Control Database. Bài làm vẫn được lưu để chấm sau.", "AI (Gemini) is not configured: it needs an API key environment variable and Gemini enabled in the Control Database. Your work is saved to grade later.", "AI（Gemini）が設定されていません。APIキーの環境変数とControl DatabaseでのGemini有効化が必要です。解答は保存され、後で採点できます。"), false);
                 yield break;
             }
             if (Application.internetReachability == NetworkReachability.NotReachable && string.IsNullOrEmpty(EndpointOverride))
             {
-                done(null, "Không có kết nối mạng. Bài làm đã được lưu — hãy bấm \"Chấm lại\" khi có mạng.", false);
+                done(null, NihongoLife.Core.Loc.T("Không có kết nối mạng. Bài làm đã được lưu — hãy bấm \"Chấm lại\" khi có mạng.", "No network connection. Your work is saved — press \"Grade again\" when you are online.", "ネットに接続されていません。解答は保存しました。オンラインになったら「再採点」を押してください。"), false);
                 yield break;
             }
             var limits = Limits;
             if (RequestsToday >= limits.daily)
             {
-                done(null, $"Đã dùng hết {limits.daily} lượt chấm AI hôm nay (giới hạn chi phí). Bài làm đã được lưu — chấm tiếp vào ngày mai.", false);
+                done(null, NihongoLife.Core.Loc.F("Đã dùng hết {0} lượt chấm AI hôm nay (giới hạn chi phí). Bài làm đã được lưu — chấm tiếp vào ngày mai.", "You have used all {0} AI gradings for today (cost limit). Your work is saved — grade it tomorrow.", "今日のAI採点{0}回をすべて使いました（費用の上限）。解答は保存しました。明日採点してください。", limits.daily), false);
                 yield break;
             }
 
@@ -246,7 +249,7 @@ namespace NihongoLife.Exam
                 if (request.result == UnityWebRequest.Result.Success)
                 {
                     string text = ExtractText(request.downloadHandler.text);
-                    if (string.IsNullOrWhiteSpace(text)) { done(null, "AI không trả về nội dung (có thể bị bộ lọc an toàn chặn). Hãy thử lại.", false); yield break; }
+                    if (string.IsNullOrWhiteSpace(text)) { done(null, NihongoLife.Core.Loc.T("AI không trả về nội dung (có thể bị bộ lọc an toàn chặn). Hãy thử lại.", "The AI returned nothing (it may have been blocked by the safety filter). Please try again.", "AIから返答がありません（安全フィルターの可能性）。もう一度試してください。"), false); yield break; }
                     Directory.CreateDirectory(CacheFolder);
                     File.WriteAllText(cachePath, text);
                     done(text, null, false);
@@ -258,11 +261,11 @@ namespace NihongoLife.Exam
                 if (retry) { yield return new WaitForSecondsRealtime(2.5f); continue; }
                 done(null, code switch
                 {
-                    0 => "Không kết nối được tới dịch vụ AI (mất mạng hoặc hết thời gian chờ). Bài làm đã được lưu — hãy chấm lại sau.",
-                    400 => "Dịch vụ AI từ chối yêu cầu (dữ liệu quá lớn hoặc model không hỗ trợ). Hãy rút ngắn bài/ghi âm rồi thử lại.",
-                    401 or 403 => "API key AI không hợp lệ hoặc chưa được cấp quyền.",
-                    429 => "Dịch vụ AI đang giới hạn tần suất (hoặc hết hạn mức). Hãy thử lại sau ít phút.",
-                    _ => $"Dịch vụ AI lỗi ({code}). Hãy thử lại sau."
+                    0 => NihongoLife.Core.Loc.T("Không kết nối được tới dịch vụ AI (mất mạng hoặc hết thời gian chờ). Bài làm đã được lưu — hãy chấm lại sau.", "Could not reach the AI service (offline or timed out). Your work is saved — grade it again later.", "AIサービスに接続できません（オフラインかタイムアウト）。解答は保存しました。後で再採点してください。"),
+                    400 => NihongoLife.Core.Loc.T("Dịch vụ AI từ chối yêu cầu (dữ liệu quá lớn hoặc model không hỗ trợ). Hãy rút ngắn bài/ghi âm rồi thử lại.", "The AI service refused the request (too much data or unsupported model). Shorten the text/recording and try again.", "AIサービスが要求を拒否しました（データが大きすぎるか非対応のモデル）。短くしてもう一度試してください。"),
+                    401 or 403 => NihongoLife.Core.Loc.T("API key AI không hợp lệ hoặc chưa được cấp quyền.", "The AI API key is invalid or not authorised.", "AIのAPIキーが無効か、権限がありません。"),
+                    429 => NihongoLife.Core.Loc.T("Dịch vụ AI đang giới hạn tần suất (hoặc hết hạn mức). Hãy thử lại sau ít phút.", "The AI service is rate-limiting (or out of quota). Try again in a few minutes.", "AIサービスの利用制限中です（または上限に達しました）。数分後にもう一度。"),
+                    _ => NihongoLife.Core.Loc.F("Dịch vụ AI lỗi ({0}). Hãy thử lại sau.", "AI service error ({0}). Please try again later.", "AIサービスのエラー（{0}）。後でもう一度試してください。", code)
                 }, false);
                 yield break;
             }

@@ -37,6 +37,8 @@ namespace NihongoLife.Core
                 [MidoriIslandScene] = new LocationInfo("midori_island", "Midori Island", "Đảo Xanh", "みどり島")
             };
 
+        public static bool Has(string sceneName) => !string.IsNullOrWhiteSpace(sceneName) && Locations.ContainsKey(sceneName);
+
         public static LocationInfo Get(string sceneName)
         {
             return !string.IsNullOrWhiteSpace(sceneName) && Locations.TryGetValue(sceneName, out LocationInfo location)
@@ -59,6 +61,7 @@ namespace NihongoLife.Core
         public string EnglishName { get; }
         public string VietnameseName { get; }
         public string JapaneseName { get; }
-        public string DisplayName => $"{JapaneseName} / {VietnameseName}";
+        /// <summary>The place name in the interface language only.</summary>
+        public string DisplayName => Loc.Pick(VietnameseName, EnglishName, JapaneseName);
     }
 }

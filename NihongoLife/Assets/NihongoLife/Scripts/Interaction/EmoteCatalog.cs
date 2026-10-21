@@ -17,6 +17,13 @@ namespace NihongoLife.Interaction
         public string Reading { get; }
         public string Vi { get; }
         public EmoteGesture Gesture { get; }
+
+        /// <summary>Meaning of the phrase in the interface language (empty in the Japanese interface).</summary>
+        public string Meaning => NihongoLife.Core.Loc.Gloss(Vi, Id switch
+        {
+            "hello" => "Hello!", "thanks" => "Thanks!", "wow" => "Wow!", "fun" => "This is fun!", "yatta" => "Yes, I did it!",
+            "oyasumi" => "Good night", "huh" => "Huh? What?", "sorry" => "Sorry", _ => Vi,
+        });
     }
 
     /// <summary>The eight emotes of the hold-E wheel, clockwise from the top. Each one is a short

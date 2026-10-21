@@ -555,7 +555,7 @@ namespace NihongoLife.EditorTools
             Block(g, "SignBoard", new Vector3(0f, 3.75f, -2.75f), new Vector3(4.6f, 0.9f, 0.15f), _blueSign, false);
             Text(g, "Sign_JA", "ひばり駅", new Vector3(0f, 3.88f, -2.84f), 0f, 0.42f, Color.white, 4.4f);
             Text(g, "Sign_VI", "HIBARI STATION · Ga tàu điện", new Vector3(0f, 3.52f, -2.84f), 0f, 0.14f, new Color(0.85f, 0.92f, 1f), 4.4f);
-            Block(g, "EntranceDark", new Vector3(0f, 1.3f, -0.02f), new Vector3(4.2f, 2.6f, 0.06f), _dark, false);
+            StationDoors(g);
             for (int i = 0; i < 3; i++)
             {
                 float x = -1.3f + i * 1.3f;
@@ -565,6 +565,71 @@ namespace NihongoLife.EditorTools
             Block(g, "RouteMap", new Vector3(-2.7f, 1.5f, -0.1f), new Vector3(1.2f, 0.8f, 0.05f), _white, false);
             Text(g, "RouteMap_Text", "<b>ろせんず</b>\nひばり → さくら → みどり", new Vector3(-2.7f, 1.5f, -0.14f), 0f, 0.07f, new Color(0.12f, 0.24f, 0.5f), 1.1f);
             PointLight(g, "CanopyLight", new Vector3(0f, 2.8f, -1.6f), 6f, 1.0f, new Color(0.92f, 0.96f, 1f));
+        }
+
+        /// <summary>
+        /// The station doorway: a lit concourse seen through automatic glass doors (ticket machines, departure board,
+        /// ceiling lights), instead of a flat black slab. Everything sits on the facade plane (z ≤ 0), no colliders.
+        /// </summary>
+        private static void StationDoors(Transform g)
+        {
+            var lobby = Lit(MatDir, "Town_StationLobby", new Color(0.93f, 0.91f, 0.86f), 0.2f, new Color(0.42f, 0.4f, 0.36f));
+            var lobbyFloor = Lit(MatDir, "Town_StationLobbyFloor", new Color(0.7f, 0.7f, 0.68f), 0.5f);
+            var board = Lit(MatDir, "Town_DepartureBoard", new Color(0.05f, 0.06f, 0.08f), 0.5f);
+            var machine = Lit(MatDir, "Town_TicketMachine", new Color(0.2f, 0.45f, 0.75f), 0.4f);
+            var group = Group(g, "StationDoors");
+            Block(group, "Lobby_Back", new Vector3(0f, 1.3f, -0.01f), new Vector3(4.2f, 2.6f, 0.04f), lobby, false);
+            Block(group, "Lobby_Floor", new Vector3(0f, 0.2f, -0.035f), new Vector3(4.2f, 0.4f, 0.01f), lobbyFloor, false);
+            Block(group, "Lobby_CeilingLight", new Vector3(0f, 2.48f, -0.04f), new Vector3(3.6f, 0.06f, 0.02f), _ceilingPanel, false);
+            Block(group, "DepartureBoard", new Vector3(0f, 2.05f, -0.04f), new Vector3(1.9f, 0.5f, 0.02f), board, false);
+            Text(group, "DepartureBoard_Text", "<b>発車案内</b>  10:24 さくら  10:31 みどり", new Vector3(0f, 2.05f, -0.06f), 0f, 0.1f, new Color(1f, 0.62f, 0.18f), 1.8f);
+            foreach (float x in new[] { -1.55f, 1.55f })
+            {
+                Block(group, "TicketMachine_" + (x < 0 ? "L" : "R"), new Vector3(x, 0.75f, -0.05f), new Vector3(0.62f, 1.3f, 0.04f), machine, false);
+                Text(group, "TicketMachine_Text_" + (x < 0 ? "L" : "R"), "きっぷ", new Vector3(x, 1.25f, -0.08f), 0f, 0.1f, Color.white, 0.6f);
+            }
+            // Aluminium frame with four glass leaves; the middle two are the automatic doors.
+            foreach (float x in new[] { -2.1f, -1.05f, 0f, 1.05f, 2.1f })
+                Block(group, "DoorMullion_" + x.ToString("0.00"), new Vector3(x, 1.2f, -0.13f), new Vector3(0.07f, 2.4f, 0.07f), _metal, false);
+            Block(group, "DoorHeader", new Vector3(0f, 2.43f, -0.13f), new Vector3(4.27f, 0.12f, 0.09f), _metal, false);
+            Block(group, "DoorSill", new Vector3(0f, 0.015f, -0.13f), new Vector3(4.27f, 0.03f, 0.12f), _metal, false);
+            for (int i = 0; i < 4; i++)
+                Block(group, "DoorGlass_" + i, new Vector3(-1.575f + i * 1.05f, 1.2f, -0.13f), new Vector3(0.98f, 2.34f, 0.02f), _glass, false);
+            foreach (float x in new[] { -0.52f, 0.52f })
+                Text(group, "AutoDoor_Text_" + (x < 0 ? "L" : "R"), "自動ドア", new Vector3(x, 1.3f, -0.15f), 0f, 0.08f, new Color(0.15f, 0.3f, 0.6f), 0.9f);
+            PointLight(group, "LobbyLight", new Vector3(0f, 2.9f, -1.3f), 4f, 0.35f, new Color(1f, 0.95f, 0.85f));
+        }
+
+        /// <summary>
+        /// Headless patch for an existing 90_TestSandbox: swaps the old black EntranceDark slab of the station for
+        /// <see cref="StationDoors"/> without rebuilding the rest of the town. -executeMethod
+        /// NihongoLife.EditorTools.CityTownBuilder.PatchStationEntrance
+        /// </summary>
+        public static void PatchStationEntrance()
+        {
+            try
+            {
+                var scene = EditorSceneManager.OpenScene(ScenePath, OpenSceneMode.Single);
+                CreateMaterials();
+                var gate = GameObject.Find("Town_Destinations/Entrance_Station");
+                if (gate == null) throw new InvalidOperationException("Entrance_Station not found.");
+                foreach (string old in new[] { "EntranceDark", "StationDoors" })
+                {
+                    var t = gate.transform.Find(old);
+                    if (t != null) Object.DestroyImmediate(t.gameObject);
+                }
+                StationDoors(gate.transform);
+                EditorSceneManager.MarkSceneDirty(scene);
+                if (!EditorSceneManager.SaveScene(scene, ScenePath)) throw new InvalidOperationException("Scene save failed.");
+                Debug.Log("[CityTownBuilder] Station entrance patched.");
+                if (Application.isBatchMode) EditorApplication.Exit(0);
+            }
+            catch (Exception exception)
+            {
+                Debug.LogException(exception);
+                if (Application.isBatchMode) EditorApplication.Exit(1);
+                else throw;
+            }
         }
 
         private static void SushiFront(Transform g, Destination d)

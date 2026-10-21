@@ -208,13 +208,13 @@ namespace NihongoLife.Core
             {
                 var response = JsonUtility.FromJson<SupabaseClient.SupabaseSessionResponse>(json);
                 if (response != null && response.user == null && string.IsNullOrWhiteSpace(response.access_token))
-                    return "Email này đã tồn tại hoặc đang chờ xác minh. Hãy xác minh email rồi đăng nhập, hoặc dùng email khác.";
+                    return NihongoLife.Core.Loc.T("Email này đã tồn tại hoặc đang chờ xác minh. Hãy xác minh email rồi đăng nhập, hoặc dùng email khác.", "This email already exists or is waiting for verification. Verify it and sign in, or use another email.", "このメールは登録済みか確認待ちです。確認してからログインするか、別のメールを使ってください。");
             }
             catch (Exception exception)
             {
                 Debug.LogWarning($"[SupabaseAuth] Sign-up response parse failed: {exception.Message}");
             }
-            return "Supabase không trả về tài khoản hợp lệ. Kiểm tra Email provider và Project URL/anon key.";
+            return NihongoLife.Core.Loc.T("Supabase không trả về tài khoản hợp lệ. Kiểm tra Email provider và Project URL/anon key.", "Supabase did not return a valid account. Check the Email provider and the Project URL/anon key.", "Supabaseから有効なアカウントが返りません。Emailプロバイダーとプロジェクト URL/anon key を確認してください。");
         }
 
         // ──────────────────────── Sign Out ────────────────────────

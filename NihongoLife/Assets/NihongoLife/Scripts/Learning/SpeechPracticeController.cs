@@ -91,12 +91,12 @@ namespace NihongoLife.Learning
             if (_isRecording || _permissionPending || _analyzing) return;
             if (DialogueManager.Instance == null || !DialogueManager.Instance.TryGetCurrentPracticePhrase(out _, out _))
             {
-                _lastResult = "Hãy mở hội thoại với NPC trước để có câu luyện phát âm.";
+                _lastResult = NihongoLife.Core.Loc.T("Hãy mở hội thoại với NPC trước để có câu luyện phát âm.", "Talk to an NPC first to get a line to practise.", "まずNPCと話して、練習する文をもらいましょう。");
                 return;
             }
             if (EduMeetingManager.Instance != null && EduMeetingManager.Instance.IsInClassroom)
             {
-                _lastResult = "Micro đang dùng cho cuộc gọi. Rời cuộc gọi để luyện phát âm.";
+                _lastResult = NihongoLife.Core.Loc.T("Micro đang dùng cho cuộc gọi. Rời cuộc gọi để luyện phát âm.", "The microphone is in use by a call. Leave the call to practise.", "マイクは通話で使用中です。通話を終えてから練習しましょう。");
                 return;
             }
             if (!Application.HasUserAuthorization(UserAuthorization.Microphone))
@@ -148,7 +148,7 @@ namespace NihongoLife.Learning
                 return;
             }
 
-            if (_recording == null) { _lastResult = "Không khởi động được micro."; return; }
+            if (_recording == null) { _lastResult = NihongoLife.Core.Loc.T("Không khởi động được micro.", "Could not start the microphone.", "マイクを起動できません。"); return; }
             _lastSamplePosition = 0;
             _recordingStartedAt = Time.realtimeSinceStartup;
             _isRecording = true;

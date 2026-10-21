@@ -30,7 +30,27 @@ namespace NihongoLife.Island
     /// <summary>A fish caught at the pier: model name (fish pack FBX), sell price and catch weight (relative odds).</summary>
     [Serializable] public sealed class IslandFish { public string id, model; public int sellPrice, weight; public IslandWord word; }
     [Serializable] public sealed class IslandAnimalDef { public string id, model; public string[] foods; public IslandWord word; public IslandSound sound; }
-    [Serializable] public sealed class IslandProduct { public string itemId, category, note; public int price; public IslandWord word; }
+    [Serializable] public sealed class IslandProduct
+    {
+        public string itemId, category, note, noteEn, noteJa; public int price; public IslandWord word;
+        public string Note => Loc.Pick(note, string.IsNullOrEmpty(noteEn) ? note : noteEn, string.IsNullOrEmpty(noteJa) ? note : noteJa);
+    }
+
+    /// <summary>
+    /// A decoration the player buys at the Midori Store and places on the island (tree, flowers, bench, lamp, well…).
+    /// <c>source</c> is the model the editor builder turns into Generated/Island/Decor/Decor_&lt;id&gt;.prefab;
+    /// <c>height</c> the size it is placed at, <c>footprint</c> the space it needs, <c>solid</c> whether it blocks walking.
+    /// </summary>
+    [Serializable]
+    public sealed class IslandDecorDef
+    {
+        public string id, category, source, icon;
+        public int price;
+        public float height, footprint;
+        public bool solid;
+        public IslandWord word;
+        public string ItemId => "decor_" + id;
+    }
 
     [Serializable]
     public sealed class IslandVerbs { public IslandWord plant, harvest, feed, pet, buy, sell, fish; }
@@ -51,6 +71,7 @@ namespace NihongoLife.Island
         public IslandAnimalDef[] animals;
         public IslandProduct[] products;
         public IslandPlaces places;
+        public IslandDecorDef[] decor;
 
         private static IslandCatalog _cached;
 
@@ -69,6 +90,7 @@ namespace NihongoLife.Island
         public IslandAnimalDef Animal(string id) => animals?.FirstOrDefault(a => a.id == id);
         public IslandFish Fish(string id) => fish?.FirstOrDefault(f => f.id == id);
         public IslandCrop CropBySeed(string seedItemId) => crops?.FirstOrDefault(c => c.SeedItemId == seedItemId);
+        public IslandDecorDef Decor(string id) => decor?.FirstOrDefault(d => d.id == id || d.ItemId == id);
 
         /// <summary>Japanese / Vietnamese names the inventory shows for an island item id.</summary>
         public bool TryDescribe(string itemId, out string ja, out string vi, out int price)
@@ -86,6 +108,22 @@ namespace NihongoLife.Island
             var product = products?.FirstOrDefault(p => p.itemId == itemId);
             if (product != null) { ja = product.word.ja; vi = Capitalise(product.word.vi); price = product.price; return true; }
             return false;
+        }
+
+        /// <summary>The item's name in the interface language, or null when the island does not sell or grow it.</summary>
+        public string LocalName(string itemId)
+        {
+            foreach (var c in crops ?? Array.Empty<IslandCrop>())
+            {
+                if (c.SeedItemId == itemId) return Loc.F("Hạt giống {0}", "{0} seeds", "{0}のたね", IslandLanguage.Name(c.word));
+                if (c.ProduceItemId == itemId) return Capitalise(IslandLanguage.Name(c.word));
+            }
+            var caught = Fish(itemId);
+            if (caught != null) return Capitalise(IslandLanguage.Name(caught.word));
+            var tool = Tool(itemId);
+            if (tool != null) return Capitalise(IslandLanguage.Name(tool.word));
+            var product = products?.FirstOrDefault(p => p.itemId == itemId);
+            return product != null ? Capitalise(IslandLanguage.Name(product.word)) : null;
         }
 
         private static string Capitalise(string s) => string.IsNullOrEmpty(s) ? s : char.ToUpperInvariant(s[0]) + s.Substring(1);
@@ -125,9 +163,17 @@ namespace NihongoLife.Island
         public static string Primary(IslandWord w) => w == null ? "" : Target == TargetLanguage.English ? w.en : w.ja;
         /// <summary>Reading aid for the primary line (romaji for Japanese; none for English).</summary>
         public static string Reading(IslandWord w) => w == null || Target == TargetLanguage.English ? "" : w.reading;
-        public static string Helper(IslandWord w) => w?.vi ?? "";
+        /// <summary>The meaning in the interface language (empty when it would just repeat the learned word).</summary>
+        public static string Helper(IslandWord w) => w == null ? "" : Name(w) == Primary(w) ? "" : Name(w);
+        /// <summary>The thing's name in the interface language (Vietnamese / English / Japanese).</summary>
+        public static string Name(IslandWord w) => w == null ? "" : Loc.Pick(w.vi, w.en, w.ja);
+        /// <summary><see cref="Name"/> starting with a capital letter (labels and titles; sentences use Name).</summary>
+        public static string Title(IslandWord w) => Capitalize(Name(w));
+        public static string Capitalize(string s) => string.IsNullOrEmpty(s) ? s ?? "" : char.ToUpper(s[0]) + s.Substring(1);
+        /// <summary>The learned word differs from the interface name (then the word card is shown).</summary>
+        public static bool ShowsTarget(IslandWord w) => w != null && Primary(w) != Name(w);
         public static string Sound(IslandSound s) => s == null ? "" : Target == TargetLanguage.English ? s.en : s.ja;
-        public static string LanguageLabel => Target == TargetLanguage.English ? "English" : "日本語";
+        public static string LanguageLabel => Target == TargetLanguage.English ? Loc.T("Tiếng Anh", "English", "英語") : Loc.T("Tiếng Nhật", "Japanese", "日本語");
     }
 
     // ─────────── Saved island progress (inside PlayerProgressDto → local save + cloud progress_json) ───────────
@@ -159,7 +205,14 @@ namespace NihongoLife.Island
         public int fed;
         public int fished;
         public List<ToolWear> toolWear = new();   // uses left on the tool currently in use, per tool item
+        public List<DecorPlacement> decor = new();     // decorations standing on the island
+        public List<DecorStock> decorStock = new();    // bought, not placed yet
+        public int likes;                              // hearts from visiting friends (last value from the server)
     }
+
+    /// <summary>One placed decoration, in island-local metres (relative to the island centre) and degrees.</summary>
+    [Serializable] public sealed class DecorPlacement { public string id; public float x, z, yaw; }
+    [Serializable] public sealed class DecorStock { public string id; public int count; }
 
     [Serializable]
     public sealed class ToolWear { public string itemId; public int usesLeft; }
@@ -181,6 +234,7 @@ namespace NihongoLife.Island
         {
             get
             {
+                if (IslandVisit.Active && IslandVisit.Record != null) return IslandVisit.Record; // a friend's island: read-only
                 var progress = Progress;
                 if (progress == null) return _fallback ??= new IslandRecord();
                 if (progress.island == null) progress.island = new IslandRecord();
@@ -190,6 +244,7 @@ namespace NihongoLife.Island
 
         public static void Save()
         {
+            if (IslandVisit.Active) { Changed?.Invoke(); return; } // visiting: nothing of the friend's island is saved
             if (GameServices.TryGet(out IProgressRepository repository))
             {
                 var progress = repository.GetProgress();

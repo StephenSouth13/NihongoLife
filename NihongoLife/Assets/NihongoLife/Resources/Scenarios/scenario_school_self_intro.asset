@@ -15,9 +15,11 @@ MonoBehaviour:
   id: scenario.school.self_intro
   version: 1
   titleJa: 自己紹介
-  titleEn: Tự giới thiệu ở lớp
+  titleVi: Tự giới thiệu ở lớp
+  titleEn: "Introducing yourself in class"
   descriptionJa: 先生とクラスのみんなに自己紹介をしましょう。
-  descriptionEn: Buổi học đầu tiên tại ひばり日本語学院. Chào cô giáo và tự giới thiệu trước lớp.
+  descriptionVi: Buổi học đầu tiên tại ひばり日本語学院. Chào cô giáo và tự giới thiệu trước lớp.
+  descriptionEn: "Your first lesson at ひばり日本語学院. Greet the teacher and introduce yourself to the class."
   chapterIndex: 1
   questType: main
   giverNpcId: npc_teacher_morita
@@ -50,19 +52,23 @@ MonoBehaviour:
   objectives:
   - id: obj_greet_teacher
     titleJa: 先生にあいさつする
-    titleEn: Chào cô giáo
+    titleVi: Chào cô giáo
+    titleEn: "Greet the teacher"
     isOptional: 0
   - id: obj_say_name
     titleJa: 名前を言う
-    titleEn: Giới thiệu tên
+    titleVi: Giới thiệu tên
+    titleEn: "Say your name"
     isOptional: 0
   - id: obj_say_country
     titleJa: 国を言う
-    titleEn: Nói mình đến từ nước nào
+    titleVi: Nói mình đến từ nước nào
+    titleEn: "Say which country you come from"
     isOptional: 0
   - id: obj_say_hobby
     titleJa: しゅみを言う
-    titleEn: Nói sở thích
+    titleVi: Nói sở thích
+    titleEn: "Talk about your hobby"
     isOptional: 0
   nodes:
   - id: node_class_start
@@ -73,14 +79,16 @@ MonoBehaviour:
     speakerId: npc_teacher_morita
     textJa: みなさん、おはようございます。今日は自己紹介をしましょう。
     textReading: みなさん、おはようございます。きょうはじこしょうかいをしましょう。
-    textEn: Chào buổi sáng cả lớp. Hôm nay chúng ta cùng tự giới thiệu nhé.
+    textVi: Chào buổi sáng cả lớp. Hôm nay chúng ta cùng tự giới thiệu nhé.
+    textEn: "Good morning, everyone. Today let's introduce ourselves."
     textRomaji: Minasan, ohayou gozaimasu. Kyou wa jikoshoukai wo shimashou.
     textEnglishIpa:
     animationCue: talk
     voiceClip: {fileID: 0}
     choices:
     - textJa: おはようございます。
-      textEn: Em chào cô ạ.
+      textVi: Em chào cô ạ.
+      textEn: "Good morning, teacher."
       nextNodeId: node_greet_ok
       scoreModifiers:
       - category: Vocabulary
@@ -90,7 +98,8 @@ MonoBehaviour:
       vocabularyTags:
       - vocab.n5.ohayou_gozaimasu
     - textJa: おはよう。
-      textEn: Chào cô.
+      textVi: Chào cô.
+      textEn: "Morning."
       nextNodeId: node_greet_casual
       scoreModifiers:
       - category: ResponseAccuracy
@@ -100,7 +109,8 @@ MonoBehaviour:
       vocabularyTags:
       - vocab.n5.ohayou_gozaimasu
     - textJa: こんばんは。
-      textEn: Chào buổi tối ạ.
+      textVi: Chào buổi tối ạ.
+      textEn: "Good evening."
       nextNodeId: node_greet_wrong
       scoreModifiers:
       - category: ResponseAccuracy
@@ -119,7 +129,8 @@ MonoBehaviour:
     speakerId: npc_teacher_morita
     textJa: おはようございます。いいあいさつですね。
     textReading: おはようございます。いいあいさつですね。
-    textEn: Chào em. Lời chào hay lắm.
+    textVi: Chào em. Lời chào hay lắm.
+    textEn: "Good morning. What a nice greeting."
     textRomaji: Ohayou gozaimasu. Ii aisatsu desu ne.
     textEnglishIpa:
     animationCue: bow
@@ -136,7 +147,8 @@ MonoBehaviour:
     speakerId: npc_teacher_morita
     textJa: おはようございます。先生には「おはようございます」と言いましょう。
     textReading: おはようございます。せんせいには「おはようございます」といいましょう。
-    textEn: Cô chào em. Với giáo viên, hãy nói "ohayou gozaimasu" nhé.
+    textVi: Cô chào em. Với giáo viên, hãy nói "ohayou gozaimasu" nhé.
+    textEn: "Good morning. With teachers, say \"ohayou gozaimasu\"."
     textRomaji: Ohayou gozaimasu. Sensei ni wa "ohayou gozaimasu" to iimashou.
     textEnglishIpa:
     animationCue: talk
@@ -153,7 +165,8 @@ MonoBehaviour:
     speakerId: npc_teacher_morita
     textJa: こんばんは？今は朝ですよ。「おはようございます」ですね。もう一度どうぞ。
     textReading: こんばんは？いまはあさですよ。「おはようございます」ですね。もういちどどうぞ。
-    textEn: Em nói konbanwa à? Bây giờ là buổi sáng đấy. Phải là "ohayou gozaimasu" nhé. Mời em thử lại.
+    textVi: Em nói konbanwa à? Bây giờ là buổi sáng đấy. Phải là "ohayou gozaimasu" nhé. Mời em thử lại.
+    textEn: "You said konbanwa? It's morning now. It should be \"ohayou gozaimasu\". Please try again."
     textRomaji: Konbanwa? Ima wa asa desu yo. "Ohayou gozaimasu" desu ne. Mou ichido douzo.
     textEnglishIpa:
     animationCue: point
@@ -170,14 +183,16 @@ MonoBehaviour:
     speakerId: npc_teacher_morita
     textJa: では、お名前をお願いします。
     textReading: では、おなまえをおねがいします。
-    textEn: Vậy em cho cô biết tên nhé.
+    textVi: Vậy em cho cô biết tên nhé.
+    textEn: "Now, tell me your name."
     textRomaji: Dewa, onamae wo onegaishimasu.
     textEnglishIpa:
     animationCue: talk
     voiceClip: {fileID: 0}
     choices:
     - textJa: はじめまして。わたしは［なまえ］です。
-      textEn: Rất hân hạnh. Em tên là [tên của bạn].
+      textVi: Rất hân hạnh. Em tên là [tên của bạn].
+      textEn: "Nice to meet you. My name is [your name]."
       nextNodeId: node_name_ok
       scoreModifiers:
       - category: Grammar
@@ -189,7 +204,8 @@ MonoBehaviour:
       vocabularyTags:
       - vocab.n5.namae
     - textJa: わたしは［なまえ］です。
-      textEn: Em tên là [tên của bạn].
+      textVi: Em tên là [tên của bạn].
+      textEn: "My name is [your name]."
       nextNodeId: node_name_short
       scoreModifiers:
       - category: Grammar
@@ -200,7 +216,8 @@ MonoBehaviour:
       vocabularyTags:
       - vocab.n5.namae
     - textJa: ［なまえ］はわたしです。
-      textEn: 'Tên của bạn là em (đảo ngược câu).'
+      textVi: 'Tên của bạn là em (đảo ngược câu).'
+      textEn: "Your name is me (sentence reversed)."
       nextNodeId: node_name_wrong
       scoreModifiers:
       - category: Grammar
@@ -219,7 +236,8 @@ MonoBehaviour:
     speakerId: npc_teacher_morita
     textJa: とても上手ですね。「はじめまして」から始めると、ていねいです。
     textReading: とてもじょうずですね。「はじめまして」からはじめると、ていねいです。
-    textEn: Em nói rất giỏi. Bắt đầu bằng "hajimemashite" nghe rất lịch sự.
+    textVi: Em nói rất giỏi. Bắt đầu bằng "hajimemashite" nghe rất lịch sự.
+    textEn: "You said that very well. Starting with \"hajimemashite\" sounds very polite."
     textRomaji: Totemo jouzu desu ne. "Hajimemashite" kara hajimeru to, teinei desu.
     textEnglishIpa:
     animationCue: bow
@@ -236,7 +254,8 @@ MonoBehaviour:
     speakerId: npc_teacher_morita
     textJa: いいですね。でも、はじめに「はじめまして」と言いましょう。
     textReading: いいですね。でも、はじめに「はじめまして」といいましょう。
-    textEn: Được đấy. Nhưng đầu tiên hãy nói "hajimemashite" nhé.
+    textVi: Được đấy. Nhưng đầu tiên hãy nói "hajimemashite" nhé.
+    textEn: "Good. But first, say \"hajimemashite\"."
     textRomaji: Ii desu ne. Demo, hajime ni "hajimemashite" to iimashou.
     textEnglishIpa:
     animationCue: talk
@@ -253,7 +272,8 @@ MonoBehaviour:
     speakerId: npc_teacher_morita
     textJa: あれ？「わたしは［なまえ］です」と言いましょう。もう一度どうぞ。
     textReading: あれ？「わたしは［なまえ］です」といいましょう。もういちどどうぞ。
-    textEn: Ơ? Em hãy nói "watashi wa [tên] desu" (tôi là …) nhé. Mời em thử lại.
+    textVi: Ơ? Em hãy nói "watashi wa [tên] desu" (tôi là …) nhé. Mời em thử lại.
+    textEn: "Hm? Please say \"watashi wa [name] desu\" (I am ...). Please try again."
     textRomaji: Are? "Watashi wa [namae] desu" to iimashou. Mou ichido douzo.
     textEnglishIpa:
     animationCue: point
@@ -270,14 +290,16 @@ MonoBehaviour:
     speakerId: npc_teacher_morita
     textJa: どこから来ましたか。
     textReading: どこからきましたか。
-    textEn: Em đến từ đâu vậy?
+    textVi: Em đến từ đâu vậy?
+    textEn: "Where are you from?"
     textRomaji: Doko kara kimashita ka?
     textEnglishIpa:
     animationCue: talk
     voiceClip: {fileID: 0}
     choices:
     - textJa: ベトナムから来ました。
-      textEn: Em đến từ Việt Nam ạ.
+      textVi: Em đến từ Việt Nam ạ.
+      textEn: "I'm from Vietnam."
       nextNodeId: node_country_ok
       scoreModifiers:
       - category: Grammar
@@ -287,7 +309,8 @@ MonoBehaviour:
       - grammar.n5.kara_kimashita
       vocabularyTags: []
     - textJa: ベトナムです。
-      textEn: Việt Nam ạ.
+      textVi: Việt Nam ạ.
+      textEn: "Vietnam."
       nextNodeId: node_country_short
       scoreModifiers:
       - category: Grammar
@@ -297,7 +320,8 @@ MonoBehaviour:
       - grammar.n5.wa_desu
       vocabularyTags: []
     - textJa: ベトナムに来ました。
-      textEn: Em đã đến Việt Nam.
+      textVi: Em đã đến Việt Nam.
+      textEn: "I went to Vietnam."
       nextNodeId: node_country_wrong
       scoreModifiers:
       - category: Grammar
@@ -316,7 +340,8 @@ MonoBehaviour:
     speakerId: npc_teacher_morita
     textJa: ベトナムから来ましたね。遠いところから、ようこそ。
     textReading: ベトナムからきましたね。とおいところから、ようこそ。
-    textEn: Em đến từ Việt Nam nhỉ. Chào mừng em từ nơi xa đến.
+    textVi: Em đến từ Việt Nam nhỉ. Chào mừng em từ nơi xa đến.
+    textEn: "You're from Vietnam. Welcome, you've come a long way."
     textRomaji: Betonamu kara kimashita ne. Tooi tokoro kara, youkoso.
     textEnglishIpa:
     animationCue: bow
@@ -333,7 +358,8 @@ MonoBehaviour:
     speakerId: npc_teacher_morita
     textJa: ベトナムですね。「ベトナムから来ました」と言うと、もっといいですよ。
     textReading: ベトナムですね。「ベトナムからきました」というと、もっといいですよ。
-    textEn: Việt Nam nhỉ. Nói "Betonamu kara kimashita" sẽ tốt hơn nữa đấy.
+    textVi: Việt Nam nhỉ. Nói "Betonamu kara kimashita" sẽ tốt hơn nữa đấy.
+    textEn: "Vietnam. \"Betonamu kara kimashita\" would be even better."
     textRomaji: Betonamu desu ne. "Betonamu kara kimashita" to iu to, motto ii desu yo.
     textEnglishIpa:
     animationCue: talk
@@ -350,7 +376,8 @@ MonoBehaviour:
     speakerId: npc_teacher_morita
     textJa: もう少しですね。どこから来たかを言うときは、「から」です。もう一度どうぞ。
     textReading: もうすこしですね。どこからきたかをいうときは、「から」です。もういちどどうぞ。
-    textEn: Gần đúng rồi. Khi nói mình đến từ đâu thì dùng "kara". Mời em thử lại.
+    textVi: Gần đúng rồi. Khi nói mình đến từ đâu thì dùng "kara". Mời em thử lại.
+    textEn: "Almost. When saying where you're from, use \"kara\". Please try again."
     textRomaji: Mou sukoshi desu ne. Doko kara kita ka wo iu toki wa, "kara" desu. Mou ichido douzo.
     textEnglishIpa:
     animationCue: point
@@ -367,14 +394,16 @@ MonoBehaviour:
     speakerId: npc_teacher_morita
     textJa: しゅみは何ですか。
     textReading: しゅみはなんですか。
-    textEn: Sở thích của em là gì?
+    textVi: Sở thích của em là gì?
+    textEn: "What's your hobby?"
     textRomaji: Shumi wa nan desu ka?
     textEnglishIpa:
     animationCue: talk
     voiceClip: {fileID: 0}
     choices:
     - textJa: しゅみは料理です。
-      textEn: Sở thích của em là nấu ăn.
+      textVi: Sở thích của em là nấu ăn.
+      textEn: "My hobby is cooking."
       nextNodeId: node_hobby_cooking
       scoreModifiers:
       - category: Grammar
@@ -386,7 +415,8 @@ MonoBehaviour:
       - vocab.n5.shumi
       - vocab.n5.ryouri
     - textJa: しゅみは音楽です。
-      textEn: Sở thích của em là âm nhạc.
+      textVi: Sở thích của em là âm nhạc.
+      textEn: "My hobby is music."
       nextNodeId: node_hobby_music
       scoreModifiers:
       - category: Grammar
@@ -398,7 +428,8 @@ MonoBehaviour:
       - vocab.n5.shumi
       - vocab.n5.ongaku
     - textJa: 料理。
-      textEn: Nấu ăn.
+      textVi: Nấu ăn.
+      textEn: "Cooking."
       nextNodeId: node_hobby_short
       scoreModifiers:
       - category: Grammar
@@ -408,7 +439,8 @@ MonoBehaviour:
       vocabularyTags:
       - vocab.n5.ryouri
     - textJa: しゅみは何ですか。
-      textEn: Sở thích của cô là gì ạ?
+      textVi: Sở thích của cô là gì ạ?
+      textEn: "What's your hobby, teacher?"
       nextNodeId: node_hobby_wrong
       scoreModifiers:
       - category: ResponseAccuracy
@@ -427,7 +459,8 @@ MonoBehaviour:
     speakerId: npc_classmate_kim
     textJa: 私も料理が好きです。いっしょに食べましょう。
     textReading: わたしもりょうりがすきです。いっしょにたべましょう。
-    textEn: Mình cũng thích nấu ăn. Cùng ăn nhé.
+    textVi: Mình cũng thích nấu ăn. Cùng ăn nhé.
+    textEn: "I like cooking too. Let's eat together sometime."
     textRomaji: Watashi mo ryouri ga suki desu. Issho ni tabemashou.
     textEnglishIpa:
     animationCue: talk
@@ -444,7 +477,8 @@ MonoBehaviour:
     speakerId: npc_classmate_kim
     textJa: 音楽ですか。いいですね。私も好きです。
     textReading: おんがくですか。いいですね。わたしもすきです。
-    textEn: Âm nhạc à. Hay nhỉ. Mình cũng thích.
+    textVi: Âm nhạc à. Hay nhỉ. Mình cũng thích.
+    textEn: "Music. Lovely. I like it too."
     textRomaji: Ongaku desu ka. Ii desu ne. Watashi mo suki desu.
     textEnglishIpa:
     animationCue: talk
@@ -461,7 +495,8 @@ MonoBehaviour:
     speakerId: npc_teacher_morita
     textJa: いいですね。「しゅみは〜です」と言うと、もっといいですよ。
     textReading: いいですね。「しゅみは〜です」というと、もっといいですよ。
-    textEn: Hay đấy. Nói "shumi wa ~ desu" sẽ tốt hơn nữa.
+    textVi: Hay đấy. Nói "shumi wa ~ desu" sẽ tốt hơn nữa.
+    textEn: "Nice. \"Shumi wa ~ desu\" would be even better."
     textRomaji: Ii desu ne. "Shumi wa ~ desu" to iu to, motto ii desu yo.
     textEnglishIpa:
     animationCue: talk
@@ -478,7 +513,8 @@ MonoBehaviour:
     speakerId: npc_teacher_morita
     textJa: それは先生の質問ですよ。「しゅみは〜です」と言いましょう。もう一度どうぞ。
     textReading: それはせんせいのしつもんですよ。「しゅみは〜です」といいましょう。もういちどどうぞ。
-    textEn: Đó là câu hỏi của cô đấy. Em hãy trả lời bằng "shumi wa ~ desu" nhé. Mời em thử lại.
+    textVi: Đó là câu hỏi của cô đấy. Em hãy trả lời bằng "shumi wa ~ desu" nhé. Mời em thử lại.
+    textEn: "That's my question to you. Please answer with \"shumi wa ~ desu\". Please try again."
     textRomaji: Sore wa sensei no shitsumon desu yo. "Shumi wa ~ desu" to iimashou. Mou ichido douzo.
     textEnglishIpa:
     animationCue: point
@@ -495,14 +531,16 @@ MonoBehaviour:
     speakerId: npc_teacher_morita
     textJa: 最後に、クラスのみなさんにあいさつをしましょう。
     textReading: さいごに、クラスのみなさんにあいさつをしましょう。
-    textEn: Cuối cùng, hãy chào cả lớp nhé.
+    textVi: Cuối cùng, hãy chào cả lớp nhé.
+    textEn: "Finally, greet the whole class."
     textRomaji: Saigo ni, kurasu no minasan ni aisatsu wo shimashou.
     textEnglishIpa:
     animationCue: talk
     voiceClip: {fileID: 0}
     choices:
     - textJa: よろしくお願いします。
-      textEn: Rất mong được mọi người giúp đỡ ạ.
+      textVi: Rất mong được mọi người giúp đỡ ạ.
+      textEn: "I look forward to working with you all."
       nextNodeId: node_closing_ok
       scoreModifiers:
       - category: Grammar
@@ -512,7 +550,8 @@ MonoBehaviour:
       - grammar.n5.yoroshiku
       vocabularyTags: []
     - textJa: よろしく。
-      textEn: Mong được giúp đỡ.
+      textVi: Mong được giúp đỡ.
+      textEn: "Nice to meet you all."
       nextNodeId: node_closing_casual
       scoreModifiers:
       - category: ResponseAccuracy
@@ -522,7 +561,8 @@ MonoBehaviour:
       - grammar.n5.yoroshiku
       vocabularyTags: []
     - textJa: さようなら。
-      textEn: Tạm biệt.
+      textVi: Tạm biệt.
+      textEn: "Goodbye."
       nextNodeId: node_closing_wrong
       scoreModifiers:
       - category: ResponseAccuracy
@@ -541,7 +581,8 @@ MonoBehaviour:
     speakerId: npc_teacher_morita
     textJa: こちらこそ、よろしくお願いします。今日は「はじめまして」と「〜から来ました」と「しゅみは〜です」を使いましたね。上手でした。
     textReading: こちらこそ、よろしくおねがいします。きょうは「はじめまして」と「〜からきました」と「しゅみは〜です」をつかいましたね。じょうずでした。
-    textEn: Cô cũng mong được giúp đỡ em. Hôm nay em đã dùng "hajimemashite", "~kara kimashita" và "shumi wa ~ desu". Em làm rất tốt.
+    textVi: Cô cũng mong được giúp đỡ em. Hôm nay em đã dùng "hajimemashite", "~kara kimashita" và "shumi wa ~ desu". Em làm rất tốt.
+    textEn: "I look forward to working with you too. Today you used \"hajimemashite\", \"~kara kimashita\" and \"shumi wa ~ desu\". Well done."
     textRomaji: Kochira koso, yoroshiku onegaishimasu. Kyou wa "hajimemashite" to "~kara kimashita" to "shumi wa ~ desu" wo tsukaimashita ne. Jouzu deshita.
     textEnglishIpa:
     animationCue: bow
@@ -558,7 +599,8 @@ MonoBehaviour:
     speakerId: npc_teacher_morita
     textJa: 「よろしく」は友だちに言います。先生やクラスには「よろしくお願いします」と言いましょう。
     textReading: 「よろしく」はともだちにいいます。せんせいやクラスには「よろしくおねがいします」といいましょう。
-    textEn: Câu "yoroshiku" chỉ nói với bạn bè. Với giáo viên và cả lớp, hãy nói "yoroshiku onegaishimasu" nhé.
+    textVi: Câu "yoroshiku" chỉ nói với bạn bè. Với giáo viên và cả lớp, hãy nói "yoroshiku onegaishimasu" nhé.
+    textEn: "\"Yoroshiku\" on its own is only for friends. With the teacher and the class, say \"yoroshiku onegaishimasu\"."
     textRomaji: Yoroshiku wa tomodachi ni iimasu. Sensei ya kurasu ni wa "yoroshiku onegaishimasu" to iimashou.
     textEnglishIpa:
     animationCue: talk
@@ -575,7 +617,8 @@ MonoBehaviour:
     speakerId: npc_teacher_morita
     textJa: さようなら？今ははじめのあいさつですよ。「よろしくお願いします」と言いましょう。もう一度どうぞ。
     textReading: さようなら？いまははじめのあいさつですよ。「よろしくおねがいします」といいましょう。もういちどどうぞ。
-    textEn: Em nói sayounara à? Bây giờ là lời chào lúc mới gặp đấy. Hãy nói "yoroshiku onegaishimasu" nhé. Mời em thử lại.
+    textVi: Em nói sayounara à? Bây giờ là lời chào lúc mới gặp đấy. Hãy nói "yoroshiku onegaishimasu" nhé. Mời em thử lại.
+    textEn: "You said sayounara? This is a greeting for when you first meet. Say \"yoroshiku onegaishimasu\". Please try again."
     textRomaji: Sayounara? Ima wa hajime no aisatsu desu yo. "Yoroshiku onegaishimasu" to iimashou. Mou ichido douzo.
     textEnglishIpa:
     animationCue: point

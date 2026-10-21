@@ -147,8 +147,9 @@ namespace NihongoLife.World
     public sealed class SushiChefInteractable : MonoBehaviour, IInteractable
     {
         private int _line;
+        private static string ChefName => NihongoLife.Core.Loc.T("Bác Ota", "Chef Ota", "太田さん");
         public string GetPromptJa() => "職人と話す";
-        public string GetpromptEn() => "Nói chuyện với đầu bếp";
+        public string GetpromptEn() => NihongoLife.Core.Loc.T("Nói chuyện với đầu bếp", "Talk to the chef", "職人と話す");
         public Transform GetTransform() => transform;
 
         public void Interact(GameObject player)
@@ -157,21 +158,18 @@ namespace NihongoLife.World
             switch (_line++ % 3)
             {
                 case 0:
-                    ui.ShowStaffLine("Ota", "いらっしゃいませ。", "Irasshaimase.", Pick("Chào mừng quý khách.", "Welcome to Sushi Hibari."), 5f);
+                    ui.ShowStaffLine(ChefName, "いらっしゃいませ。", "Irasshaimase.", Pick("Chào mừng quý khách.", "Welcome to Sushi Hibari."), 5f);
                     break;
                 case 1:
-                    ui.ShowStaffLine("Ota", "おすすめはサーモンです。", "Osusume wa saamon desu.", Pick("Món đề xuất hôm nay là sushi cá hồi.", "Today's recommendation is salmon sushi."), 6f);
+                    ui.ShowStaffLine(ChefName, "おすすめはサーモンです。", "Osusume wa saamon desu.", Pick("Món đề xuất hôm nay là sushi cá hồi.", "Today's recommendation is salmon sushi."), 6f);
                     break;
                 default:
-                    ui.ShowStaffLine("Ota", "ご注文はお決まりですか。", "Gochuumon wa okimari desu ka?", Pick("Bạn đã chọn món chưa? Hãy xem thực đơn hoặc ngồi vào bàn.", "Are you ready to order? Check the menu or take a seat."), 7f);
+                    ui.ShowStaffLine(ChefName, "ご注文はお決まりですか。", "Gochuumon wa okimari desu ka?", Pick("Bạn đã chọn món chưa? Hãy xem thực đơn hoặc ngồi vào bàn.", "Are you ready to order? Check the menu or take a seat."), 7f);
                     break;
             }
         }
 
-        private static string Pick(string vi, string en)
-        {
-            if (!GameServices.TryGet(out GameSettingsService settings)) return vi;
-            return settings.Language == GameLanguage.English ? en : vi;
-        }
+        /// <summary>Meaning of the chef's Japanese line in the interface language (none in the Japanese interface).</summary>
+        private static string Pick(string vi, string en) => NihongoLife.Core.Loc.Gloss(vi, en);
     }
 }

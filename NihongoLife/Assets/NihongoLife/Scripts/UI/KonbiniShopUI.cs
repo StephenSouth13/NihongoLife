@@ -87,7 +87,7 @@ namespace NihongoLife.UI
             Show();
             _browse.gameObject.SetActive(false);
             _checkout.gameObject.SetActive(true);
-            _title.text = "ひばりマート  ·  <color=#F2B233>レジ</color>  <size=70%><color=#A8B4C4>Quầy thanh toán</color></size>";
+            _title.text = NihongoLife.Core.Loc.T("Hibari Mart  ·  <color=#F2B233>Quầy thanh toán</color>", "Hibari Mart  ·  <color=#F2B233>Register</color>", "ひばりマート  ·  <color=#F2B233>レジ</color>");
             RebuildCheckout();
         }
 
@@ -111,13 +111,13 @@ namespace NihongoLife.UI
             ItemIcons.Apply(_detailGlyph, product.id, 6f);
             _detailName.text = product.japanese;
             _detailReading.text = product.reading;
-            _detailMeaning.text = product.vietnamese;
-            _detailPrice.text = $"¥{product.price}";
+            _detailMeaning.text = product.Meaning;
+            _detailPrice.text = NihongoLife.Core.Loc.Yen(product.price);
             var effects = new List<string>();
-            if (product.food > 0) effects.Add($"No +{product.food:0}");
-            if (product.drink > 0) effects.Add($"Nước +{product.drink:0}");
-            if (product.energy > 0) effects.Add($"Năng lượng +{product.energy:0}");
-            if (product.notebookPages > 0) effects.Add($"Sổ tay +{product.notebookPages} trang (đang có {NihongoLife.Notebook.NotebookService.Pages}/{NihongoLife.Notebook.NotebookService.MaxPages})");
+            if (product.food > 0) effects.Add(NihongoLife.Core.Loc.T("No", "Food", "満腹") + $" +{product.food:0}");
+            if (product.drink > 0) effects.Add(NihongoLife.Core.Loc.T("Nước", "Drink", "水分") + $" +{product.drink:0}");
+            if (product.energy > 0) effects.Add(NihongoLife.Core.Loc.T("Năng lượng", "Energy", "元気") + $" +{product.energy:0}");
+            if (product.notebookPages > 0) effects.Add(NihongoLife.Core.Loc.F("Sổ tay +{0} trang (đang có {1}/{2})", "Notebook +{0} pages (you have {1}/{2})", "ノート +{0}ページ（今 {1}/{2}）", product.notebookPages, NihongoLife.Notebook.NotebookService.Pages, NihongoLife.Notebook.NotebookService.MaxPages));
             _detailEffect.text = string.Join("  ·  ", effects);
             RefreshQuantity();
             NotifyScenario(product, ScenarioNodeType.InspectItem);
@@ -141,12 +141,13 @@ namespace NihongoLife.UI
             var inventory = PlayerInventory.Instance;
             int total = KonbiniBasket.Total;
             if (inventory == null || KonbiniBasket.IsEmpty) return false;
-            if (!inventory.SpendYen(total, "Mua ở Hibari Mart"))
+            if (!inventory.SpendYen(total, NihongoLife.Core.Loc.Triple("Mua ở Hibari Mart", "Shopping at Hibari Mart", "ひばりマートで買い物")))
             {
-                Feedback($"Không đủ tiền — cần ¥{total}, bạn có ¥{inventory.Yen}.", NLUi.Bad);
+                Feedback(NihongoLife.Core.Loc.F("Không đủ tiền — cần {0}, bạn có {1}.", "Not enough money — you need {0} and have {1}.", "お金が足りません。{0}必要で、所持金は{1}です。", NihongoLife.Core.Loc.Yen(total), NihongoLife.Core.Loc.Yen(inventory.Yen)), NLUi.Bad);
                 Cue(GameAudioCue.UiError);
                 return false;
             }
+            NihongoLife.Audio.Soundscape.Jingle("purchase");
             int refused = 0, sheets = 0;
             foreach (var line in KonbiniBasket.Items.ToList())
             {
@@ -164,8 +165,8 @@ namespace NihongoLife.UI
                     if (!inventory.AddItem(p.id, p.japanese, p.vietnamese, p.price, 1, false, p.useType, p.food, p.drink, p.energy)) refused += p.price;
                 }
             }
-            if (sheets > 0) HudFeed.Post($"Sổ tay +{sheets} trang (giờ có {NihongoLife.Notebook.NotebookService.Pages} trang) — mở bằng phím L.", HudFeed.Kind.Info, 4f);
-            if (refused > 0) inventory.AddYen(refused, "Hoàn tiền (balo đầy)");
+            if (sheets > 0) HudFeed.Post(NihongoLife.Core.Loc.F("Sổ tay +{0} trang (giờ có {1} trang) — mở bằng phím L.", "Notebook +{0} pages (now {1}) — open it with L.", "ノート +{0}ページ（今{1}ページ）— Lキーで開けます。", sheets, NihongoLife.Notebook.NotebookService.Pages), HudFeed.Kind.Info, 4f);
+            if (refused > 0) inventory.AddYen(refused, NihongoLife.Core.Loc.Triple("Hoàn tiền (balo đầy)", "Refund (bag full)", "返金（かばんがいっぱい）"));
             foreach (var line in KonbiniBasket.Items) NihongoLife.Progression.QuestService.Raise("buy", line.Key, line.Value);
             if (total > refused) NihongoLife.Progression.QuestService.Raise("buy", "konbini", 1);
             KonbiniBasket.Clear();
@@ -213,20 +214,20 @@ namespace NihongoLife.UI
         {
             var dm = DialogueManager.Instance;
             if (dm == null) return;
-            ScenarioNode Line(string id, string ja, string reading, string vi, string next) => new ScenarioNode
+            ScenarioNode Line(string id, string ja, string reading, string vi, string en, string next) => new ScenarioNode
             {
-                id = id, nodeType = ScenarioNodeType.Dialogue, speakerId = "npc_cashier", speakerName = "いとう · Ito",
-                textJa = ja, textReading = reading, textEn = vi, nextNodeId = next, animationCue = "bow"
+                id = id, nodeType = ScenarioNodeType.Dialogue, speakerId = "npc_cashier", speakerName = NihongoLife.Core.Loc.T("Chị Ito", "Ito", "いとうさん"),
+                textJa = ja, textReading = reading, textVi = vi, textEn = en, nextNodeId = next, animationCue = "bow"
             };
-            var total_ = Line("pay_total", $"ありがとうございます。ぜんぶで {total}えん です。", $"ありがとうございます。ぜんぶで {total}えん です。", $"Cảm ơn quý khách. Tổng cộng {total} yên.", "pay_bag");
-            var bag = Line("pay_bag", "ふくろは おつけしますか。", "ふくろは おつけしますか。", "Quý khách có lấy túi không ạ?", null);
+            var total_ = Line("pay_total", $"ありがとうございます。ぜんぶで {total}えん です。", $"ありがとうございます。ぜんぶで {total}えん です。", $"Cảm ơn quý khách. Tổng cộng {total} yên.", $"Thank you. That's {total} yen in total.", "pay_bag");
+            var bag = Line("pay_bag", "ふくろは おつけしますか。", "ふくろは おつけしますか。", "Quý khách có lấy túi không ạ?", "Would you like a bag?", null);
             bag.choices = new List<DialogueChoice>
             {
-                new DialogueChoice { textJa = "はい、おねがいします。", textEn = "Vâng, cho tôi xin túi.", nextNodeId = "pay_yes" },
-                new DialogueChoice { textJa = "いいえ、だいじょうぶです。", textEn = "Không cần đâu ạ.", nextNodeId = "pay_no" },
+                new DialogueChoice { textJa = "はい、おねがいします。", textVi = "Vâng, cho tôi xin túi.", textEn = "Yes, please.", nextNodeId = "pay_yes" },
+                new DialogueChoice { textJa = "いいえ、だいじょうぶです。", textVi = "Không cần đâu ạ.", textEn = "No, I'm fine.", nextNodeId = "pay_no" },
             };
-            var yes = Line("pay_yes", "かしこまりました。ありがとうございました！", "かしこまりました。ありがとうございました！", "Vâng ạ. Cảm ơn quý khách!", null);
-            var no = Line("pay_no", "ありがとうございました！また おこしください。", "ありがとうございました！また おこしください。", "Cảm ơn quý khách! Hẹn gặp lại.", null);
+            var yes = Line("pay_yes", "かしこまりました。ありがとうございました！", "かしこまりました。ありがとうございました！", "Vâng ạ. Cảm ơn quý khách!", "Certainly. Thank you very much!", null);
+            var no = Line("pay_no", "ありがとうございました！また おこしください。", "ありがとうございました！また おこしください。", "Cảm ơn quý khách! Hẹn gặp lại.", "Thank you very much! Please come again.", null);
             dm.StartConversation(new[] { total_, bag, yes, no }, "pay_total", ended =>
             {
                 if (ended == null || ended == "cancel") return;
@@ -237,7 +238,7 @@ namespace NihongoLife.UI
         private void RefreshQuantity()
         {
             if (_selected == null) return;
-            _quantityText.text = $"{_quantity}   <size=70%><color=#A8B4C4>= ¥{_selected.price * _quantity}</color></size>";
+            _quantityText.text = $"{_quantity}   <size=70%><color=#A8B4C4>= {NihongoLife.Core.Loc.Yen(_selected.price * _quantity)}</color></size>";
         }
 
         private void RefreshBasket()
@@ -245,11 +246,11 @@ namespace NihongoLife.UI
             if (_basketLine == null) return;
             int count = KonbiniBasket.Count;
             _basketLine.text = count == 0
-                ? "かご (giỏ): trống"
-                : $"かご (giỏ): <color=#F2B233>{count} món · ¥{KonbiniBasket.Total}</color>   →   mang ra <b>レジ</b> gặp chị Ito để thanh toán";
-            if (PlayerInventory.Instance != null) _wallet.text = $"¥{PlayerInventory.Instance.Yen:N0}";
+                ? NihongoLife.Core.Loc.T("Giỏ: trống", "Basket: empty", "かご：からっぽ")
+                : NihongoLife.Core.Loc.F("Giỏ: <color=#F2B233>{0} món · {1}</color>   →   mang ra quầy gặp chị Ito để thanh toán", "Basket: <color=#F2B233>{0} items · {1}</color>   →   take it to the register to pay Ito", "かご：<color=#F2B233>{0}点 · {1}</color>   →   レジで いとうさんに払いましょう", count, NihongoLife.Core.Loc.Yen(KonbiniBasket.Total));
+            if (PlayerInventory.Instance != null) _wallet.text = NihongoLife.Core.Loc.Yen(PlayerInventory.Instance.Yen);
             _chip.gameObject.SetActive(count > 0 && !IsOpen);
-            _chipText.text = $"かご  {count}  ·  ¥{KonbiniBasket.Total}\n<size=70%><color=#A8B4C4>Thanh toán ở レジ</color></size>";
+            _chipText.text = NihongoLife.Core.Loc.T("Giỏ", "Basket", "かご") + $"  {count}  ·  {NihongoLife.Core.Loc.Yen(KonbiniBasket.Total)}\n<size=70%><color=#A8B4C4>" + NihongoLife.Core.Loc.T("Thanh toán ở quầy", "Pay at the register", "レジで払う") + "</color></size>";
             if (IsCheckout) RebuildCheckout();
         }
 
@@ -264,9 +265,9 @@ namespace NihongoLife.UI
                 var glyph = NLUi.Pill(row, "Glyph", p.glyph, _font, p.tint, new Color(0.15f, 0.12f, 0.1f), 22f);
                 NLUi.Size(glyph, 56f, 56f);
                 ItemIcons.Apply(glyph.GetComponentInChildren<TextMeshProUGUI>(), p.id, 3f);
-                var name = NLUi.Label(row, "Name", $"{p.japanese}  <size=75%><color=#A8B4C4>{p.vietnamese}</color></size>", 21f, NLUi.Text, _font);
+                var name = NLUi.Label(row, "Name", p.japanese + (string.IsNullOrEmpty(p.Meaning) ? "" : $"  <size=75%><color=#A8B4C4>{p.Meaning}</color></size>"), 21f, NLUi.Text, _font);
                 NLUi.Size(name, flexibleWidth: 1f);
-                var qty = NLUi.Label(row, "Qty", $"×{line.Value}   ¥{p.price * line.Value}", 21f, NLUi.Soft, _font, FontStyles.Bold, TextAlignmentOptions.Right);
+                var qty = NLUi.Label(row, "Qty", $"×{line.Value}   {NihongoLife.Core.Loc.Yen(p.price * line.Value)}", 21f, NLUi.Soft, _font, FontStyles.Bold, TextAlignmentOptions.Right);
                 NLUi.Size(qty, preferredWidth: 180f);
                 string id = p.id;
                 var remove = NLUi.Button(row, "Remove", "×", _font, () => KonbiniBasket.Remove(id), new Color(0.3f, 0.12f, 0.12f), 20f, null, 40f);
@@ -276,8 +277,8 @@ namespace NihongoLife.UI
             }
             int wallet = PlayerInventory.Instance != null ? PlayerInventory.Instance.Yen : 0;
             _checkoutTotal.text = KonbiniBasket.IsEmpty
-                ? "Giỏ hàng trống."
-                : $"ごうけい (Tổng cộng): <color=#F2B233><b>¥{KonbiniBasket.Total}</b></color>     ·     Bạn có ¥{wallet:N0} → còn ¥{Mathf.Max(0, wallet - KonbiniBasket.Total):N0}";
+                ? NihongoLife.Core.Loc.T("Giỏ hàng trống.", "The basket is empty.", "かごはからっぽです。")
+                : NihongoLife.Core.Loc.F("Tổng cộng: <color=#F2B233><b>{0}</b></color>     ·     Bạn có {1} → còn {2}", "Total: <color=#F2B233><b>{0}</b></color>     ·     You have {1} → {2} left", "ごうけい：<color=#F2B233><b>{0}</b></color>     ·     所持金 {1} → 残り {2}", NihongoLife.Core.Loc.Yen(KonbiniBasket.Total), NihongoLife.Core.Loc.Yen(wallet), NihongoLife.Core.Loc.Yen(Mathf.Max(0, wallet - KonbiniBasket.Total)));
         }
 
         private void Feedback(string message, Color color)
@@ -330,7 +331,8 @@ namespace NihongoLife.UI
             foreach (KonbiniSection s in System.Enum.GetValues(typeof(KonbiniSection)))
             {
                 var section = s;
-                var tab = NLUi.Button(tabs, "Tab_" + s, $"{KonbiniCatalog.SectionJa(s)}  <size=75%>{KonbiniCatalog.SectionVi(s)}</size>", _font, () => ShowSection(section), NLUi.Card, 18f, null, 44f);
+                var tab = NLUi.Button(tabs, "Tab_" + s, "", _font, () => ShowSection(section), NLUi.Card, 18f, null, 44f);
+                LocText.Set(tab.GetComponentInChildren<TextMeshProUGUI>(), () => KonbiniCatalog.SectionJa(section) + (Loc.IsJapanese ? "" : $"  <size=75%>{KonbiniCatalog.SectionName(section)}</size>"));
                 _tabs[s] = tab.GetComponent<Image>();
             }
 
@@ -363,7 +365,7 @@ namespace NihongoLife.UI
             _quantityText = NLUi.Label(qtyRow, "Value", "1", 26f, NLUi.Text, _font, FontStyles.Bold, TextAlignmentOptions.Center);
             NLUi.Size(_quantityText, preferredWidth: 150f);
             NLUi.Size(NLUi.Button(qtyRow, "Plus", "+", _font, () => { _quantity = Mathf.Min(9, _quantity + 1); RefreshQuantity(); }, NLUi.CardHover, 26f, null, 46f), preferredWidth: 56f);
-            NLUi.Button(detail, "AddToBasket", "かごに いれる  ·  Thêm vào giỏ", _font, AddSelectedToBasket, new Color(0.18f, 0.5f, 0.32f), 21f, null, 54f);
+            NLUi.Button(detail, "AddToBasket", NihongoLife.Core.Loc.T("Thêm vào giỏ", "Add to basket", "かごに いれる"), _font, AddSelectedToBasket, new Color(0.18f, 0.5f, 0.32f), 21f, null, 54f);
 
             var footer = NLUi.Panel(_browse, "Footer", new Color(1f, 1f, 1f, 0.05f), new RectOffset(18, 18, 10, 10), 6f);
             _basketLine = NLUi.Label(footer, "Basket", "", 19f, NLUi.Text, _font);
@@ -371,13 +373,13 @@ namespace NihongoLife.UI
 
             // Checkout page
             _checkout = NLUi.Group(_window, "Checkout", true, 12f);
-            NLUi.Label(_checkout, "Heading", "レジ  ·  <size=75%><color=#A8B4C4>Thanh toán với chị Ito</color></size>", 26f, NLUi.Gold, _font, FontStyles.Bold);
+            LocText.Set(NLUi.Label(_checkout, "Heading", "", 26f, NLUi.Gold, _font, FontStyles.Bold), "Thanh toán với chị Ito", "Pay Ito at the register", "レジで いとうさんに払う");
             _checkoutLines = NLUi.Group(_checkout, "Lines", true, 8f);
             _checkoutTotal = NLUi.Label(_checkout, "Total", "", 22f, NLUi.Text, _font);
             var actions = NLUi.Group(_checkout, "Actions", false, 12f, TextAnchor.MiddleRight);
             ((HorizontalLayoutGroup)actions.GetComponent<HorizontalOrVerticalLayoutGroup>()).childForceExpandWidth = false;
-            NLUi.Button(actions, "Continue", "かいものを つづける · Mua tiếp", _font, () => OpenSection(_section), NLUi.Card, 19f, null, 52f);
-            NLUi.Button(actions, "Pay", "はらう · Thanh toán", _font, () => Pay(), new Color(0.18f, 0.5f, 0.32f), 21f, null, 52f);
+            NLUi.Button(actions, "Continue", NihongoLife.Core.Loc.T("Mua tiếp", "Keep shopping", "かいものを つづける"), _font, () => OpenSection(_section), NLUi.Card, 19f, null, 52f);
+            NLUi.Button(actions, "Pay", NihongoLife.Core.Loc.T("Thanh toán", "Pay", "はらう"), _font, () => Pay(), new Color(0.18f, 0.5f, 0.32f), 21f, null, 52f);
             _checkout.gameObject.SetActive(false);
             _window.gameObject.SetActive(false);
 

@@ -119,8 +119,8 @@ namespace NihongoLife.School
             RectTransform panelRect = (RectTransform)panel.transform;
             panelRect.sizeDelta = new Vector2(420f, 100f);
             panel.GetComponent<Image>().color = new Color(0.02f, 0.06f, 0.08f, 0.94f);
-            CreateLabel(panel.transform, "EXIT TO CITY", 25f, new Color(0.98f, 0.75f, 0.28f, 1f), new Vector2(-190f, -12f), new Vector2(380f, 38f), TMP_Settings.defaultFontAsset).alignment = TextAlignmentOptions.Center;
-            CreateLabel(panel.transform, "Ra phố  •  Nhấn [F] để rời trường", 14f, Color.white, new Vector2(-190f, -48f), new Vector2(380f, 26f), TMP_Settings.defaultFontAsset).alignment = TextAlignmentOptions.Center;
+            CreateLabel(panel.transform, NihongoLife.Core.Loc.T("RA PHỐ", "EXIT TO CITY", "出口"), 25f, new Color(0.98f, 0.75f, 0.28f, 1f), new Vector2(-190f, -12f), new Vector2(380f, 38f), TMP_Settings.defaultFontAsset).alignment = TextAlignmentOptions.Center;
+            CreateLabel(panel.transform, NihongoLife.Core.Loc.T("Nhấn [F] để rời trường", "Press [F] to leave the school", "[F]で学校を出る"), 14f, Color.white, new Vector2(-190f, -48f), new Vector2(380f, 26f), TMP_Settings.defaultFontAsset).alignment = TextAlignmentOptions.Center;
         }
 
         private Transform FindTransform(string exactName)
@@ -147,28 +147,34 @@ namespace NihongoLife.School
             return material;
         }
 
+        private Canvas _overlayCanvas;
+
         private void EnsureSchoolOverlay()
         {
-            if (GameObject.Find("HibariSchoolOverlay") != null) return;
-            Canvas canvas = FindFirstObjectByType<Canvas>();
-            if (canvas == null) return;
-
+            if (_overlayCanvas != null) return;
+            // Its own canvas, owned by this classroom: it goes away with the school scene (it used to be parented to
+            // whatever canvas came first — often the persistent HUD feed — and then stayed on screen in the town).
+            _overlayCanvas = NLUi.CreateCanvas("HibariSchoolOverlayCanvas", 60);
+            _overlayCanvas.transform.SetParent(transform, false);
             var root = new GameObject("HibariSchoolOverlay", typeof(RectTransform));
-            root.transform.SetParent(canvas.transform, false);
+            root.transform.SetParent(_overlayCanvas.transform, false);
+            UiKit.Fill((RectTransform)root.transform);
             var panel = new GameObject("SchoolIdentity", typeof(RectTransform), typeof(Image));
             panel.transform.SetParent(root.transform, false);
             RectTransform rect = (RectTransform)panel.transform;
-            rect.anchorMin = new Vector2(0f, 1f);
-            rect.anchorMax = new Vector2(0f, 1f);
-            rect.pivot = new Vector2(0f, 1f);
-            rect.anchoredPosition = new Vector2(24f, -24f);
+            rect.anchorMin = new Vector2(1f, 1f);
+            rect.anchorMax = new Vector2(1f, 1f);
+            rect.pivot = new Vector2(1f, 1f);
+            rect.anchoredPosition = new Vector2(-24f, -120f);
             rect.sizeDelta = new Vector2(390f, 92f);
             panel.GetComponent<Image>().color = new Color(0.035f, 0.08f, 0.11f, 0.94f);
 
             TMP_FontAsset font = TMP_Settings.defaultFontAsset;
-            TextMeshProUGUI title = CreateLabel(panel.transform, "HIBARI JAPANESE SCHOOL", 20f, new Color(0.98f, 0.75f, 0.28f, 1f), new Vector2(20f, -14f), new Vector2(350f, 28f), font);
+            TextMeshProUGUI title = CreateLabel(panel.transform, "", 20f, new Color(0.98f, 0.75f, 0.28f, 1f), new Vector2(20f, -14f), new Vector2(350f, 28f), font);
             title.fontStyle = FontStyles.Bold;
-            CreateLabel(panel.transform, "ひばり日本語学院  •  Lớp học đang hoạt động", 13f, new Color(0.73f, 0.86f, 0.9f, 1f), new Vector2(20f, -48f), new Vector2(350f, 22f), font);
+            LocText.Set(title, "TRƯỜNG NHẬT NGỮ HIBARI", "HIBARI JAPANESE SCHOOL", "ひばり日本語学院");
+            var sub = CreateLabel(panel.transform, "", 13f, new Color(0.73f, 0.86f, 0.9f, 1f), new Vector2(20f, -48f), new Vector2(350f, 22f), font);
+            LocText.Set(sub, "Lớp さくら · đang mở", "Sakura class · in session", "さくらクラス · 授業中");
             var stripe = new GameObject("Accent", typeof(RectTransform), typeof(Image));
             stripe.transform.SetParent(panel.transform, false);
             RectTransform stripeRect = (RectTransform)stripe.transform;
@@ -178,6 +184,8 @@ namespace NihongoLife.School
             stripeRect.anchoredPosition = new Vector2(0f, 0f);
             stripeRect.sizeDelta = new Vector2(390f, 4f);
             stripe.GetComponent<Image>().color = new Color(0.2f, 0.75f, 0.65f, 1f);
+            // A name plate only: it must never take clicks meant for the exam cards and windows under it.
+            foreach (var graphic in root.GetComponentsInChildren<Graphic>(true)) graphic.raycastTarget = false;
         }
 
         private static TextMeshProUGUI CreateLabel(Transform parent, string value, float size, Color color, Vector2 position, Vector2 dimensions, TMP_FontAsset font)

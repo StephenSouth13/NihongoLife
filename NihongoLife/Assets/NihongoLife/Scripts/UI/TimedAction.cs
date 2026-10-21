@@ -60,7 +60,7 @@ namespace NihongoLife.UI
                 ui._fill.transform.SetParent(track, false);
                 ui._fill.color = NLUi.Gold;
                 var r = ui._fill.rectTransform; r.anchorMin = Vector2.zero; r.anchorMax = new Vector2(0f, 1f); r.offsetMin = r.offsetMax = Vector2.zero;
-                NLUi.Label(ui._card, "Hint", "Esc để dừng", 13f, NLUi.Muted, font);
+                NLUi.Label(ui._card, "Hint", NihongoLife.Core.Loc.T("Esc để dừng", "Esc to stop", "Escで中止"), 13f, NLUi.Muted, font);
                 ui._card.gameObject.SetActive(false);
                 UiModalStack.Register(ui, () => Busy, () => Cancel(), "Timed action");
                 // The work belongs to the scene it started in (a plot, a shelf): leaving the scene drops it unfinished.
@@ -97,7 +97,7 @@ namespace NihongoLife.UI
             _instance.Finish();
             var cancel = _instance._onCancel;
             _instance._onCancel = null;
-            HudFeed.Post("Đã dừng — chưa làm xong nên không tính.", HudFeed.Kind.Warning, 3f);
+            HudFeed.Post(NihongoLife.Core.Loc.T("Đã dừng — chưa làm xong nên không tính.", "Stopped — it wasn't finished, so it doesn't count.", "中止しました。終わっていないので数えません。"), HudFeed.Kind.Warning, 3f);
             cancel?.Invoke();
         }
 

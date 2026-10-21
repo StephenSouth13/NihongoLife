@@ -15,13 +15,19 @@ namespace NihongoLife.Tests
         private static string BackupPath => Path.Combine(Application.temporaryCachePath, "progress.before-tests.json");
         private bool _hadSave;
         private string _ledger;
+        private int _language;
 
         [OneTimeSetUp]
         public void KeepSave()
         {
             // Most tests walk through every place; LocationUnlocksPlayModeTests switches the gate back on.
             NihongoLife.Core.LocationUnlocks.Bypass = true;
+            NihongoLife.Scenario.StoryDirector.Bypass = true; // StoryFlowPlayModeTests switches the story back on
+            NihongoLife.Core.PlayerSessionService.PersistGuest = false; // tests never read or write the real guest save
             _ledger = PlayerPrefs.GetString("NL.WalletLedger.v1", "");
+            // Tests read Vietnamese text; the player's own interface language is put back afterwards.
+            _language = PlayerPrefs.GetInt(NihongoLife.Core.Loc.PrefsKey, 0);
+            NihongoLife.Core.Loc.Set(NihongoLife.Core.GameLanguage.Vietnamese);
             _hadSave = File.Exists(SavePath);
             if (_hadSave) File.Copy(SavePath, BackupPath, true);
         }
@@ -30,6 +36,8 @@ namespace NihongoLife.Tests
         public void RestoreSave()
         {
             NihongoLife.Core.LocationUnlocks.Bypass = false;
+            NihongoLife.Scenario.StoryDirector.Bypass = false;
+            NihongoLife.Core.Loc.Set((NihongoLife.Core.GameLanguage)Mathf.Clamp(_language, 0, 2));
             PlayerPrefs.SetString("NL.WalletLedger.v1", _ledger ?? ""); // tests' purchases do not stay in the player's wallet history
             if (_hadSave && File.Exists(BackupPath)) File.Copy(BackupPath, SavePath, true);
             else if (!_hadSave && File.Exists(SavePath)) File.Delete(SavePath);

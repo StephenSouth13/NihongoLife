@@ -1,3 +1,4 @@
+using NihongoLife.Core;
 using NihongoLife.Interaction;
 using UnityEngine;
 
@@ -9,8 +10,8 @@ namespace NihongoLife.Island
         [Tooltip("Where the float lands on the water.")] public Transform castTarget;
 
         public string GetPromptJa() => IslandLanguage.Primary(IslandCatalog.Load().places?.pier) is { Length: > 0 } p ? p : "つりば";
-        public string GetpromptEn() => IslandEconomy.Owned(IslandFishing.RodId) > 0 ? "Câu cá" : "Câu cá (cần có cần câu)";
+        public string GetpromptEn() => IslandEconomy.Owned(IslandFishing.RodId) > 0 ? Loc.T("Câu cá", "Fish", "つりをする") : Loc.T("Câu cá (cần có cần câu)", "Fish (needs a fishing rod)", "つりをする（つりざおが必要）");
         public Transform GetTransform() => transform;
-        public void Interact(GameObject player) => IslandFishing.Begin(this, player);
+        public void Interact(GameObject player) { if (!IslandVisit.ReadOnlyNotice()) IslandFishing.Begin(this, player); }
     }
 }

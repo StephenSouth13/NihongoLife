@@ -15,9 +15,11 @@ MonoBehaviour:
   id: scenario.station.buy_ticket
   version: 2
   titleJa: "駅で切符を買う"
-  titleEn: "Mua vé và đi tàu ở ga Hibari"
+  titleVi: "Mua vé và đi tàu ở ga Hibari"
+  titleEn: "Buy a ticket and ride the train at Hibari Station"
   descriptionJa: "ひばり駅で切符を買って、ミナト駅まで行きましょう。駅員さんに聞いて、ホームでアナウンスを聞き取ります。"
-  descriptionEn: "Mua vé tại ga Hibari để đến Minato: nói nơi muốn đến, đọc giá vé, dùng máy bán vé, hỏi đường ray, nghe thông báo và cư xử đúng trên tàu."
+  descriptionVi: "Mua vé tại ga Hibari để đến Minato: nói nơi muốn đến, đọc giá vé, dùng máy bán vé, hỏi đường ray, nghe thông báo và cư xử đúng trên tàu."
+  descriptionEn: "Buy a ticket at Hibari Station to Minato: say where you want to go, read the fare, use the ticket machine, ask for the platform, understand the announcement and behave well on the train."
   chapterIndex: 4
   questType: main
   giverNpcId: npc_station_staff
@@ -29,11 +31,11 @@ MonoBehaviour:
   locationHintJa: "ひばり駅"
   rewardYen: 300
   branchId: main
-  requiredKnowledge: 80
+  requiredKnowledge: 160
   requiredScenarioIds:
   - scenario.restaurant.sushi_dining
   unlockScenarioIds:
-  - scenario.town.summer_festival
+  - scenario.arcade.kim_invite
   repeatable: 0
   supportsCoOp: 0
   minPlayers: 1
@@ -47,23 +49,28 @@ MonoBehaviour:
   objectives:
   - id: obj_arrive
     titleJa: "駅に着く"
-    titleEn: "Đến nhà ga"
+    titleVi: "Đến nhà ga"
+    titleEn: "Get to the station"
     isOptional: 0
   - id: obj_ask
     titleJa: "駅員さんに行き先を伝える"
-    titleEn: "Nói với nhân viên nhà ga nơi bạn muốn đến"
+    titleVi: "Nói với nhân viên nhà ga nơi bạn muốn đến"
+    titleEn: "Tell the station attendant where you want to go"
     isOptional: 0
   - id: obj_ticket
     titleJa: "券売機で切符を買う"
-    titleEn: "Mua vé ở máy bán vé"
+    titleVi: "Mua vé ở máy bán vé"
+    titleEn: "Buy a ticket at the ticket machine"
     isOptional: 0
   - id: obj_platform
     titleJa: "ホームを確認する"
-    titleEn: "Xác nhận đúng đường ray"
+    titleVi: "Xác nhận đúng đường ray"
+    titleEn: "Check you have the right platform"
     isOptional: 0
   - id: obj_board
     titleJa: "電車に乗ってミナト駅に着く"
-    titleEn: "Lên tàu và đến ga Minato"
+    titleVi: "Lên tàu và đến ga Minato"
+    titleEn: "Board the train and get to Minato Station"
     isOptional: 0
   nodes:
   - id: n_arrive
@@ -74,7 +81,8 @@ MonoBehaviour:
     speakerId: 
     textJa: "ひばり駅です。今日は、電車に乗って、ミナト駅まで海を見に行きます。"
     textReading: "ひばりえきです。きょうは、でんしゃにのって、ミナトえきまでうみをみにいきます。"
-    textEn: "Ga Hibari. Hôm nay bạn sẽ đi tàu đến ga Minato để ngắm biển."
+    textVi: "Ga Hibari. Hôm nay bạn sẽ đi tàu đến ga Minato để ngắm biển."
+    textEn: "Hibari Station. Today you're taking the train to Minato Station to see the sea."
     textRomaji: "Hibari eki desu. Kyou wa, densha ni notte, Minato eki made umi wo mi ni ikimasu."
     textEnglishIpa: 
     animationCue: 
@@ -93,14 +101,16 @@ MonoBehaviour:
     speakerId: npc_station_staff
     textJa: "いらっしゃいませ。ご案内しましょうか。"
     textReading: "いらっしゃいませ。ごあんないしましょうか。"
-    textEn: "Xin chào quý khách. Tôi hướng dẫn giúp quý khách nhé?"
+    textVi: "Xin chào quý khách. Tôi hướng dẫn giúp quý khách nhé?"
+    textEn: "Hello. Can I help you?"
     textRomaji: "Irasshaimase. Goannai shimashou ka."
     textEnglishIpa: 
     animationCue: talk
     voiceClip: {fileID: 0}
     choices:
     - textJa: "ミナト駅へ行きたいです。"
-      textEn: "Tôi muốn đến ga Minato ạ."
+      textVi: "Tôi muốn đến ga Minato ạ."
+      textEn: "I'd like to go to Minato Station."
       nextNodeId: n_fare
       scoreModifiers:
       - category: Grammar
@@ -114,7 +124,8 @@ MonoBehaviour:
       - vocab.n5.minato
       setFlags: []
     - textJa: "ミナト駅へ行きます。"
-      textEn: "Tôi sẽ đi đến ga Minato."
+      textVi: "Tôi sẽ đi đến ga Minato."
+      textEn: "I will go to Minato Station."
       nextNodeId: n_counter_flat
       scoreModifiers:
       - category: ResponseAccuracy
@@ -126,7 +137,8 @@ MonoBehaviour:
       - vocab.n5.eki
       setFlags: []
     - textJa: "ミナト駅、どこ？"
-      textEn: "Ga Minato, ở đâu?"
+      textVi: "Ga Minato, ở đâu?"
+      textEn: "Minato Station, where?"
       nextNodeId: n_counter_wrong
       scoreModifiers:
       - category: ResponseAccuracy
@@ -148,7 +160,8 @@ MonoBehaviour:
     speakerId: npc_station_staff
     textJa: "はい、ミナト駅ですね。切符が必要ですか。「行きたいです」と言うと、分かりやすいですよ。"
     textReading: "はい、ミナトえきですね。きっぷがひつようですか。「いきたいです」というと、わかりやすいですよ。"
-    textEn: "Vâng, ga Minato nhỉ. Quý khách cần vé không ạ? Nói \"ikitai desu\" (tôi muốn đi) thì dễ hiểu hơn đấy ạ."
+    textVi: "Vâng, ga Minato nhỉ. Quý khách cần vé không ạ? Nói \"ikitai desu\" (tôi muốn đi) thì dễ hiểu hơn đấy ạ."
+    textEn: "Yes, Minato Station. Do you need a ticket? Saying \"ikitai desu\" (I want to go) is easier to understand."
     textRomaji: "Hai, Minato eki desu ne. Kippu ga hitsuyou desu ka. \"Ikitai desu\" to iu to, wakariyasui desu yo."
     textEnglishIpa: 
     animationCue: talk
@@ -167,7 +180,8 @@ MonoBehaviour:
     speakerId: npc_station_staff
     textJa: "失礼ですが、「ミナト駅へ行きたいです」と、お話しください。"
     textReading: "しつれいですが、「ミナトえきへいきたいです」と、おはなしください。"
-    textEn: "Xin thất lễ, xin quý khách hãy nói \"Minato eki e ikitai desu\" (tôi muốn đến ga Minato) ạ."
+    textVi: "Xin thất lễ, xin quý khách hãy nói \"Minato eki e ikitai desu\" (tôi muốn đến ga Minato) ạ."
+    textEn: "Excuse me, please say \"Minato eki e ikitai desu\" (I want to go to Minato Station)."
     textRomaji: "Shitsurei desu ga, \"Minato eki e ikitai desu\" to, ohanashi kudasai."
     textEnglishIpa: 
     animationCue: point
@@ -186,7 +200,8 @@ MonoBehaviour:
     speakerId: npc_station_staff
     textJa: "ミナト駅までは、三百二十円です。二十分ぐらいです。"
     textReading: "ミナトえきまでは、さんびゃくにじゅうえんです。にじゅっぷんぐらいです。"
-    textEn: "Đến ga Minato giá 320 yên. Mất khoảng 20 phút."
+    textVi: "Đến ga Minato giá 320 yên. Mất khoảng 20 phút."
+    textEn: "It's 320 yen to Minato Station. It takes about 20 minutes."
     textRomaji: "Minato eki made wa, sanbyaku nijuu en desu. Nijuppun gurai desu."
     textEnglishIpa: 
     animationCue: talk
@@ -205,14 +220,16 @@ MonoBehaviour:
     speakerId: npc_station_staff
     textJa: "おわかりですか。ミナト駅までは、いくらですか。"
     textReading: "おわかりですか。ミナトえきまでは、いくらですか。"
-    textEn: "Quý khách đã rõ chưa ạ? Đến ga Minato là bao nhiêu tiền?"
+    textVi: "Quý khách đã rõ chưa ạ? Đến ga Minato là bao nhiêu tiền?"
+    textEn: "Did you get that? How much is it to Minato Station?"
     textRomaji: "Owakari desu ka. Minato eki made wa, ikura desu ka?"
     textEnglishIpa: 
     animationCue: talk
     voiceClip: {fileID: 0}
     choices:
     - textJa: "三百二十円です。"
-      textEn: "Là 320 yên ạ."
+      textVi: "Là 320 yên ạ."
+      textEn: "320 yen."
       nextNodeId: n_machine
       scoreModifiers:
       - category: Vocabulary
@@ -225,7 +242,8 @@ MonoBehaviour:
       - vocab.n5.nijuu
       setFlags: []
     - textJa: "二百三十円です。"
-      textEn: "Là 230 yên ạ."
+      textVi: "Là 230 yên ạ."
+      textEn: "230 yen."
       nextNodeId: n_fare_wrong
       scoreModifiers:
       - category: Vocabulary
@@ -235,7 +253,8 @@ MonoBehaviour:
       vocabularyTags: []
       setFlags: []
     - textJa: "もう一度お願いします。"
-      textEn: "Phiền anh nói lại một lần nữa ạ."
+      textVi: "Phiền anh nói lại một lần nữa ạ."
+      textEn: "Could you say that once more, please?"
       nextNodeId: n_fare_repeat
       scoreModifiers:
       - category: ResponseAccuracy
@@ -258,7 +277,8 @@ MonoBehaviour:
     speakerId: npc_station_staff
     textJa: "三百二十円です。三、百、二、十。もう一度、お願いします。"
     textReading: "さんびゃくにじゅうえんです。さん、ひゃく、に、じゅう。もういちど、おねがいします。"
-    textEn: "Là 320 yên. Ba, trăm, hai, mươi. Xin quý khách nói lại ạ."
+    textVi: "Là 320 yên. Ba, trăm, hai, mươi. Xin quý khách nói lại ạ."
+    textEn: "It's 320 yen. Three, hundred, twen-ty. Please say it again."
     textRomaji: "Sanbyaku nijuu en desu. San, hyaku, ni, juu. Mou ichido, onegaishimasu."
     textEnglishIpa: 
     animationCue: point
@@ -277,7 +297,8 @@ MonoBehaviour:
     speakerId: npc_station_staff
     textJa: "はい。三百二十円です。三百と、二十です。"
     textReading: "はい。さんびゃくにじゅうえんです。さんびゃくと、にじゅうです。"
-    textEn: "Vâng. 320 yên. Ba trăm và hai mươi ạ."
+    textVi: "Vâng. 320 yên. Ba trăm và hai mươi ạ."
+    textEn: "Yes. 320 yen. Three hundred and twenty."
     textRomaji: "Hai. Sanbyaku nijuu en desu. Sanbyaku to, nijuu desu."
     textEnglishIpa: 
     animationCue: point
@@ -296,7 +317,8 @@ MonoBehaviour:
     speakerId: npc_station_staff
     textJa: "切符は、あの券売機で買います。まず、お金を入れます。それから、行き先のボタンを押します。"
     textReading: "きっぷは、あのけんばいきでかいます。まず、おかねをいれます。それから、いきさきのボタンをおします。"
-    textEn: "Vé thì mua ở máy bán vé kia. Trước tiên, bỏ tiền vào. Sau đó, bấm nút điểm đến."
+    textVi: "Vé thì mua ở máy bán vé kia. Trước tiên, bỏ tiền vào. Sau đó, bấm nút điểm đến."
+    textEn: "You buy tickets at that machine. First, put the money in. Then press the button for your destination."
     textRomaji: "Kippu wa, ano kenbaiki de kaimasu. Mazu, okane wo iremasu. Sorekara, ikisaki no botan wo oshimasu."
     textEnglishIpa: 
     animationCue: point
@@ -315,14 +337,16 @@ MonoBehaviour:
     speakerId: 
     textJa: "券売機の前に来ました。最初に、何をしますか。"
     textReading: "けんばいきのまえにきました。さいしょに、なにをしますか。"
-    textEn: "Bạn đứng trước máy bán vé. Việc đầu tiên bạn làm là gì?"
+    textVi: "Bạn đứng trước máy bán vé. Việc đầu tiên bạn làm là gì?"
+    textEn: "You stand in front of the ticket machine. What do you do first?"
     textRomaji: "Kenbaiki no mae ni kimashita. Saisho ni, nani wo shimasu ka?"
     textEnglishIpa: 
     animationCue: 
     voiceClip: {fileID: 0}
     choices:
     - textJa: "まず、お金を入れます。"
-      textEn: "Trước tiên tôi bỏ tiền vào."
+      textVi: "Trước tiên tôi bỏ tiền vào."
+      textEn: "First I put the money in."
       nextNodeId: n_machine_ok
       scoreModifiers:
       - category: Grammar
@@ -335,7 +359,8 @@ MonoBehaviour:
       - vocab.n5.ireru
       setFlags: []
     - textJa: "まず、ボタンを押します。"
-      textEn: "Trước tiên tôi bấm nút."
+      textVi: "Trước tiên tôi bấm nút."
+      textEn: "First I press the button."
       nextNodeId: n_machine_wrong
       scoreModifiers:
       - category: Grammar
@@ -357,7 +382,8 @@ MonoBehaviour:
     speakerId: npc_station_staff
     textJa: "ボタンは、お金を入れてからです。まず、お金を入れてください。"
     textReading: "ボタンは、おかねをいれてからです。まず、おかねをいれてください。"
-    textEn: "Nút chỉ bấm sau khi bỏ tiền. Trước tiên xin hãy bỏ tiền vào ạ."
+    textVi: "Nút chỉ bấm sau khi bỏ tiền. Trước tiên xin hãy bỏ tiền vào ạ."
+    textEn: "You press the button only after putting money in. Please put the money in first."
     textRomaji: "Botan wa, okane wo irete kara desu. Mazu, okane wo irete kudasai."
     textEnglishIpa: 
     animationCue: point
@@ -376,7 +402,8 @@ MonoBehaviour:
     speakerId: 
     textJa: "五百円玉を入れて、「ミナト」のボタンを押しました。切符と、おつりの百八十円が出ました。"
     textReading: "ごひゃくえんだまをいれて、「ミナト」のボタンをおしました。きっぷと、おつりのひゃくはちじゅうえんがでました。"
-    textEn: "Bạn bỏ đồng 500 yên vào rồi bấm nút 「ミナト」. Vé và tiền thừa 180 yên được nhả ra."
+    textVi: "Bạn bỏ đồng 500 yên vào rồi bấm nút 「ミナト」. Vé và tiền thừa 180 yên được nhả ra."
+    textEn: "You put in a 500-yen coin and press the 「ミナト」 button. A ticket and 180 yen change come out."
     textRomaji: "Gohyaku en dama wo irete, \"Minato\" no botan wo oshimashita. Kippu to, otsuri no hyaku hachijuu en ga demashita."
     textEnglishIpa: 
     animationCue: 
@@ -395,14 +422,16 @@ MonoBehaviour:
     speakerId: npc_station_staff
     textJa: "何か、ご質問はありますか。"
     textReading: "なにか、ごしつもんはありますか。"
-    textEn: "Quý khách còn câu hỏi nào không ạ?"
+    textVi: "Quý khách còn câu hỏi nào không ạ?"
+    textEn: "Do you have any other questions?"
     textRomaji: "Nani ka, goshitsumon wa arimasu ka?"
     textEnglishIpa: 
     animationCue: talk
     voiceClip: {fileID: 0}
     choices:
     - textJa: "何番線ですか。"
-      textEn: "Là đường ray số mấy ạ?"
+      textVi: "Là đường ray số mấy ạ?"
+      textEn: "Which platform is it?"
       nextNodeId: n_platform_answer
       scoreModifiers:
       - category: Grammar
@@ -414,7 +443,8 @@ MonoBehaviour:
       - vocab.n5.bansen
       setFlags: []
     - textJa: "電車は、どこですか。"
-      textEn: "Tàu ở đâu ạ?"
+      textVi: "Tàu ở đâu ạ?"
+      textEn: "Where is the train?"
       nextNodeId: n_platform_vague
       scoreModifiers:
       - category: ResponseAccuracy
@@ -426,7 +456,8 @@ MonoBehaviour:
       - vocab.n5.densha
       setFlags: []
     - textJa: "トイレは、どこですか。"
-      textEn: "Nhà vệ sinh ở đâu ạ?"
+      textVi: "Nhà vệ sinh ở đâu ạ?"
+      textEn: "Where is the toilet?"
       nextNodeId: n_platform_wrong
       scoreModifiers:
       - category: ResponseAccuracy
@@ -448,7 +479,8 @@ MonoBehaviour:
     speakerId: npc_station_staff
     textJa: "ミナト行きは、二番線です。次は、「何番線ですか」と聞いてくださいね。"
     textReading: "ミナトゆきは、にばんせんです。つぎは、「なんばんせんですか」ときいてくださいね。"
-    textEn: "Tàu đi Minato ở đường ray số 2. Lần sau hãy hỏi \"nanbansen desu ka\" (đường ray số mấy) nhé."
+    textVi: "Tàu đi Minato ở đường ray số 2. Lần sau hãy hỏi \"nanbansen desu ka\" (đường ray số mấy) nhé."
+    textEn: "The train to Minato is on platform 2. Next time, ask \"nanbansen desu ka\" (which platform?)."
     textRomaji: "Minato yuki wa, nibansen desu. Tsugi wa, \"nanbansen desu ka\" to kiite kudasai ne."
     textEnglishIpa: 
     animationCue: talk
@@ -467,7 +499,8 @@ MonoBehaviour:
     speakerId: npc_station_staff
     textJa: "トイレは、あちらです。ミナト行きは、二番線ですよ。"
     textReading: "トイレは、あちらです。ミナトゆきは、にばんせんですよ。"
-    textEn: "Nhà vệ sinh ở phía kia ạ. Tàu đi Minato ở đường ray số 2 đấy ạ."
+    textVi: "Nhà vệ sinh ở phía kia ạ. Tàu đi Minato ở đường ray số 2 đấy ạ."
+    textEn: "The toilet is over there. The train to Minato is on platform 2."
     textRomaji: "Toire wa, achira desu. Minato yuki wa, nibansen desu yo."
     textEnglishIpa: 
     animationCue: point
@@ -486,7 +519,8 @@ MonoBehaviour:
     speakerId: npc_station_staff
     textJa: "ミナト行きは、二番線です。階段を上がってください。"
     textReading: "ミナトゆきは、にばんせんです。かいだんをあがってください。"
-    textEn: "Tàu đi Minato ở đường ray số 2. Xin hãy đi lên cầu thang ạ."
+    textVi: "Tàu đi Minato ở đường ray số 2. Xin hãy đi lên cầu thang ạ."
+    textEn: "The train to Minato is on platform 2. Please go up the stairs."
     textRomaji: "Minato yuki wa, nibansen desu. Kaidan wo agatte kudasai."
     textEnglishIpa: 
     animationCue: point
@@ -505,14 +539,16 @@ MonoBehaviour:
     speakerId: npc_station_staff
     textJa: "ミナト行きは、何番線ですか。"
     textReading: "ミナトゆきは、なんばんせんですか。"
-    textEn: "Tàu đi Minato ở đường ray số mấy nhỉ?"
+    textVi: "Tàu đi Minato ở đường ray số mấy nhỉ?"
+    textEn: "Which platform is the train to Minato on?"
     textRomaji: "Minato yuki wa, nanbansen desu ka?"
     textEnglishIpa: 
     animationCue: talk
     voiceClip: {fileID: 0}
     choices:
     - textJa: "二番線です。"
-      textEn: "Số 2 ạ."
+      textVi: "Số 2 ạ."
+      textEn: "Number 2."
       nextNodeId: n_time
       scoreModifiers:
       - category: Vocabulary
@@ -523,7 +559,8 @@ MonoBehaviour:
       - vocab.n5.nibansen
       setFlags: []
     - textJa: "三番線です。"
-      textEn: "Số 3 ạ."
+      textVi: "Số 3 ạ."
+      textEn: "Number 3."
       nextNodeId: n_platform_wrong2
       scoreModifiers:
       - category: Vocabulary
@@ -545,7 +582,8 @@ MonoBehaviour:
     speakerId: npc_station_staff
     textJa: "三番線は、反対の方向です。ミナト行きは、二番線ですよ。"
     textReading: "さんばんせんは、はんたいのほうこうです。ミナトゆきは、にばんせんですよ。"
-    textEn: "Đường ray số 3 đi hướng ngược lại. Tàu đi Minato là đường ray số 2 ạ."
+    textVi: "Đường ray số 3 đi hướng ngược lại. Tàu đi Minato là đường ray số 2 ạ."
+    textEn: "Platform 3 goes the other way. The train to Minato is on platform 2."
     textRomaji: "Sanbansen wa, hantai no houkou desu. Minato yuki wa, nibansen desu yo."
     textEnglishIpa: 
     animationCue: point
@@ -564,14 +602,16 @@ MonoBehaviour:
     speakerId: npc_station_staff
     textJa: "次の電車は、十時十五分です。あと五分ですよ。"
     textReading: "つぎのでんしゃは、じゅうじじゅうごふんです。あとごふんですよ。"
-    textEn: "Chuyến tàu tiếp theo là 10 giờ 15 phút. Còn 5 phút nữa thôi ạ."
+    textVi: "Chuyến tàu tiếp theo là 10 giờ 15 phút. Còn 5 phút nữa thôi ạ."
+    textEn: "The next train is at 10:15. Only 5 more minutes."
     textRomaji: "Tsugi no densha wa, juuji juugo fun desu. Ato gofun desu yo."
     textEnglishIpa: 
     animationCue: talk
     voiceClip: {fileID: 0}
     choices:
     - textJa: "十時十五分ですね。ありがとうございます。"
-      textEn: "10 giờ 15 phút nhỉ. Cảm ơn anh ạ."
+      textVi: "10 giờ 15 phút nhỉ. Cảm ơn anh ạ."
+      textEn: "10:15. Thank you."
       nextNodeId: n_announce
       scoreModifiers:
       - category: Vocabulary
@@ -584,7 +624,8 @@ MonoBehaviour:
       - vocab.n5.fun
       setFlags: []
     - textJa: "十一時十五分ですね。"
-      textEn: "11 giờ 15 phút nhỉ."
+      textVi: "11 giờ 15 phút nhỉ."
+      textEn: "11:15, right?"
       nextNodeId: n_time_wrong
       scoreModifiers:
       - category: Vocabulary
@@ -594,7 +635,8 @@ MonoBehaviour:
       vocabularyTags: []
       setFlags: []
     - textJa: "何時ですか。"
-      textEn: "Mấy giờ ạ?"
+      textVi: "Mấy giờ ạ?"
+      textEn: "What time is it?"
       nextNodeId: n_time
       scoreModifiers:
       - category: ResponseAccuracy
@@ -617,7 +659,8 @@ MonoBehaviour:
     speakerId: npc_station_staff
     textJa: "十時十五分です。十一時ではありません。あと五分ですよ。"
     textReading: "じゅうじじゅうごふんです。じゅういちじではありません。あとごふんですよ。"
-    textEn: "Là 10 giờ 15 phút, không phải 11 giờ. Còn 5 phút nữa thôi ạ."
+    textVi: "Là 10 giờ 15 phút, không phải 11 giờ. Còn 5 phút nữa thôi ạ."
+    textEn: "It's 10:15, not 11. Only 5 more minutes."
     textRomaji: "Juuji juugo fun desu. Juuichiji dewa arimasen. Ato gofun desu yo."
     textEnglishIpa: 
     animationCue: point
@@ -636,7 +679,8 @@ MonoBehaviour:
     speakerId: 
     textJa: "ホームに立ちました。アナウンスが流れます。「まもなく、二番線に、ミナト行きが参ります。あぶないですから、白い線の内側まで、お下がりください。」"
     textReading: "ホームにたちました。アナウンスがながれます。「まもなく、にばんせんに、ミナトゆきがまいります。あぶないですから、しろいせんのうちがわまで、おさがりください。」"
-    textEn: "Bạn đứng trên sân ga. Có thông báo vang lên: \"Chỉ ít phút nữa, tàu đi Minato sẽ vào đường ray số 2. Vì nguy hiểm, xin quý khách lùi vào trong vạch trắng.\""
+    textVi: "Bạn đứng trên sân ga. Có thông báo vang lên: \"Chỉ ít phút nữa, tàu đi Minato sẽ vào đường ray số 2. Vì nguy hiểm, xin quý khách lùi vào trong vạch trắng.\""
+    textEn: "You stand on the platform. An announcement plays: \"The train for Minato will arrive at platform 2 shortly. For your safety, please stand behind the white line.\""
     textRomaji: "Hoomu ni tachimashita. Anaunsu ga nagaremasu. \"Mamonaku, nibansen ni, Minato yuki ga mairimasu. Abunai desu kara, shiroi sen no uchigawa made, osagari kudasai.\""
     textEnglishIpa: 
     animationCue: 
@@ -655,14 +699,16 @@ MonoBehaviour:
     speakerId: 
     textJa: "アナウンスで、何と言いましたか。どうしますか。"
     textReading: "アナウンスで、なんといいましたか。どうしますか。"
-    textEn: "Thông báo nói gì? Bạn sẽ làm gì?"
+    textVi: "Thông báo nói gì? Bạn sẽ làm gì?"
+    textEn: "What did the announcement say? What will you do?"
     textRomaji: "Anaunsu de, nan to iimashita ka. Dou shimasu ka?"
     textEnglishIpa: 
     animationCue: 
     voiceClip: {fileID: 0}
     choices:
     - textJa: "白い線の後ろに下がります。"
-      textEn: "Tôi lùi ra phía sau vạch trắng."
+      textVi: "Tôi lùi ra phía sau vạch trắng."
+      textEn: "I step back behind the white line."
       nextNodeId: n_train
       scoreModifiers:
       - category: Vocabulary
@@ -676,7 +722,8 @@ MonoBehaviour:
       setFlags:
       - station.safety_ok
     - textJa: "線の前に立ちます。"
-      textEn: "Tôi đứng sát trước vạch."
+      textVi: "Tôi đứng sát trước vạch."
+      textEn: "I stand right in front of the line."
       nextNodeId: n_announce_wrong
       scoreModifiers:
       - category: Vocabulary
@@ -686,7 +733,8 @@ MonoBehaviour:
       vocabularyTags: []
       setFlags: []
     - textJa: "もう一度、聞きます。"
-      textEn: "Tôi nghe lại lần nữa."
+      textVi: "Tôi nghe lại lần nữa."
+      textEn: "I listen once more."
       nextNodeId: n_announce_repeat
       scoreModifiers:
       - category: ResponseAccuracy
@@ -708,7 +756,8 @@ MonoBehaviour:
     speakerId: 
     textJa: "あぶない！電車が来ます。「お下がりください」は、後ろに下がってください、という意味です。"
     textReading: "あぶない！でんしゃがきます。「おさがりください」は、うしろにさがってください、といういみです。"
-    textEn: "Nguy hiểm! Tàu sắp vào. 「お下がりください」 nghĩa là hãy lùi ra phía sau."
+    textVi: "Nguy hiểm! Tàu sắp vào. 「お下がりください」 nghĩa là hãy lùi ra phía sau."
+    textEn: "Danger! The train is coming in. 「お下がりください」 means please step back."
     textRomaji: "Abunai! Densha ga kimasu. \"Osagari kudasai\" wa, ushiro ni sagatte kudasai, to iu imi desu."
     textEnglishIpa: 
     animationCue: 
@@ -727,7 +776,8 @@ MonoBehaviour:
     speakerId: 
     textJa: "アナウンスは、もう終わりました。電車が来ます。白い線の後ろに下がりましょう。"
     textReading: "アナウンスは、もうおわりました。でんしゃがきます。しろいせんのうしろにさがりましょう。"
-    textEn: "Thông báo đã kết thúc. Tàu sắp vào rồi. Hãy lùi ra sau vạch trắng nào."
+    textVi: "Thông báo đã kết thúc. Tàu sắp vào rồi. Hãy lùi ra sau vạch trắng nào."
+    textEn: "The announcement has ended. The train is about to arrive. Step back behind the white line."
     textRomaji: "Anaunsu wa, mou owarimashita. Densha ga kimasu. Shiroi sen no ushiro ni sagarimashou."
     textEnglishIpa: 
     animationCue: 
@@ -746,7 +796,8 @@ MonoBehaviour:
     speakerId: 
     textJa: "電車は、すいています。でも、次の駅で、お年寄りが乗ってきました。優先席の前に、立っています。"
     textReading: "でんしゃは、すいています。でも、つぎのえきで、おとしよりがのってきました。ゆうせんせきのまえに、たっています。"
-    textEn: "Tàu khá vắng. Nhưng ở ga tiếp theo, một cụ già bước lên. Cụ đang đứng trước ghế ưu tiên."
+    textVi: "Tàu khá vắng. Nhưng ở ga tiếp theo, một cụ già bước lên. Cụ đang đứng trước ghế ưu tiên."
+    textEn: "The train is fairly empty. But at the next station, an elderly person gets on and stands in front of the priority seats."
     textRomaji: "Densha wa, suite imasu. Demo, tsugi no eki de, otoshiyori ga notte kimashita. Yuusenseki no mae ni, tatte imasu."
     textEnglishIpa: 
     animationCue: 
@@ -765,14 +816,16 @@ MonoBehaviour:
     speakerId: 
     textJa: "あなたは、席に座っています。どうしますか。"
     textReading: "あなたは、せきにすわっています。どうしますか。"
-    textEn: "Bạn đang ngồi trên ghế. Bạn sẽ làm gì?"
+    textVi: "Bạn đang ngồi trên ghế. Bạn sẽ làm gì?"
+    textEn: "You're sitting down. What do you do?"
     textRomaji: "Anata wa, seki ni suwatte imasu. Dou shimasu ka?"
     textEnglishIpa: 
     animationCue: 
     voiceClip: {fileID: 0}
     choices:
     - textJa: "「どうぞ、座ってください」と言います。"
-      textEn: "Bạn nói \"douzo, suwatte kudasai\" (mời cụ ngồi)."
+      textVi: "Bạn nói \"douzo, suwatte kudasai\" (mời cụ ngồi)."
+      textEn: "You say \"douzo, suwatte kudasai\" (please, have a seat)."
       nextNodeId: n_seat_yes
       scoreModifiers:
       - category: Grammar
@@ -786,7 +839,8 @@ MonoBehaviour:
       setFlags:
       - station.gave_seat
     - textJa: "寝たふりをします。"
-      textEn: "Bạn giả vờ ngủ."
+      textVi: "Bạn giả vờ ngủ."
+      textEn: "You pretend to sleep."
       nextNodeId: n_seat_no
       scoreModifiers:
       - category: ResponseAccuracy
@@ -796,7 +850,8 @@ MonoBehaviour:
       vocabularyTags: []
       setFlags: []
     - textJa: "スマホを見ます。"
-      textEn: "Bạn cúi xuống xem điện thoại."
+      textVi: "Bạn cúi xuống xem điện thoại."
+      textEn: "You look down at your phone."
       nextNodeId: n_seat_no
       scoreModifiers:
       - category: ResponseAccuracy
@@ -818,7 +873,8 @@ MonoBehaviour:
     speakerId: 
     textJa: "お年寄りは、「ありがとう。やさしい人ですね」と言って、ほほえみました。"
     textReading: "おとしよりは、「ありがとう。やさしいひとですね」といって、ほほえみました。"
-    textEn: "Cụ già nói \"Cảm ơn cháu. Cháu thật là người tốt bụng\" rồi mỉm cười."
+    textVi: "Cụ già nói \"Cảm ơn cháu. Cháu thật là người tốt bụng\" rồi mỉm cười."
+    textEn: "The elderly person says \"Thank you. You're very kind\" and smiles."
     textRomaji: "Otoshiyori wa, \"Arigatou. Yasashii hito desu ne\" to itte, hohoemimashita."
     textEnglishIpa: 
     animationCue: 
@@ -837,7 +893,8 @@ MonoBehaviour:
     speakerId: 
     textJa: "お年寄りは、少しつらそうです。次の駅で、ほかの人が席をゆずりました。あなたも、次は、声をかけてみましょう。"
     textReading: "おとしよりは、すこしつらそうです。つぎのえきで、ほかのひとがせきをゆずりました。あなたも、つぎは、こえをかけてみましょう。"
-    textEn: "Cụ già trông có vẻ hơi mệt. Ở ga tiếp theo, một người khác đã nhường ghế. Lần sau bạn cũng hãy thử lên tiếng nhé."
+    textVi: "Cụ già trông có vẻ hơi mệt. Ở ga tiếp theo, một người khác đã nhường ghế. Lần sau bạn cũng hãy thử lên tiếng nhé."
+    textEn: "The elderly person looks a little tired. At the next station, someone else gives up their seat. Next time, try speaking up too."
     textRomaji: "Otoshiyori wa, sukoshi tsurasou desu. Tsugi no eki de, hoka no hito ga seki wo yuzurimashita. Anata mo, tsugi wa, koe wo kakete mimashou."
     textEnglishIpa: 
     animationCue: 
@@ -856,7 +913,8 @@ MonoBehaviour:
     speakerId: 
     textJa: "ミナト駅に着きました。ドアが開くと、海のにおいがします。"
     textReading: "ミナトえきにつきました。ドアがあくと、うみのにおいがします。"
-    textEn: "Bạn đến ga Minato. Cửa tàu mở ra, mùi biển ùa vào."
+    textVi: "Bạn đến ga Minato. Cửa tàu mở ra, mùi biển ùa vào."
+    textEn: "You arrive at Minato Station. The doors open and the smell of the sea rushes in."
     textRomaji: "Minato eki ni tsukimashita. Doa ga aku to, umi no nioi ga shimasu."
     textEnglishIpa: 
     animationCue: 
@@ -875,7 +933,8 @@ MonoBehaviour:
     speakerId: 
     textJa: "帰りの最終電車は、夜の十一時です。忘れないでくださいね。"
     textReading: "かえりのさいしゅうでんしゃは、よるのじゅういちじです。わすれないでくださいね。"
-    textEn: "Chuyến tàu cuối để về là lúc 11 giờ đêm. Đừng quên nhé."
+    textVi: "Chuyến tàu cuối để về là lúc 11 giờ đêm. Đừng quên nhé."
+    textEn: "The last train home is at 11 p.m. Don't forget."
     textRomaji: "Kaeri no saishuu densha wa, yoru no juuichiji desu. Wasurenai de kudasai ne."
     textEnglishIpa: 
     animationCue: 
@@ -894,7 +953,8 @@ MonoBehaviour:
     speakerId: 
     textJa: "今日のポイント：「〜たいです」「何番線ですか」「まず、それから」。"
     textReading: "きょうのポイント：「〜たいです」「なんばんせんですか」「まず、それから」。"
-    textEn: "Tóm tắt: \"~ tai desu\" (tôi muốn ~), \"nanbansen desu ka\" (đường ray số mấy?), \"mazu, sorekara\" (trước tiên..., sau đó...). Ở ga: lùi ra sau vạch trắng, nhường ghế cho người cần."
+    textVi: "Tóm tắt: \"~ tai desu\" (tôi muốn ~), \"nanbansen desu ka\" (đường ray số mấy?), \"mazu, sorekara\" (trước tiên..., sau đó...). Ở ga: lùi ra sau vạch trắng, nhường ghế cho người cần."
+    textEn: "Summary: \"~ tai desu\" (I want to ~), \"nanbansen desu ka\" (which platform?), \"mazu, sorekara\" (first..., then...). At the station: stay behind the white line, and offer your seat to those who need it."
     textRomaji: "Kyou no pointo: \"~ tai desu\" \"nanbansen desu ka\" \"mazu, sorekara\"."
     textEnglishIpa: 
     animationCue: 

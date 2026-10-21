@@ -111,7 +111,7 @@ namespace NihongoLife.Tests
             int can = IslandTools.Left("tool_watering_can");
             IslandUI.OpenFarm(plots[1]);
             ClickFarm("Tưới nước");
-            yield return AssertWork("Work_Water", false, "44_water");
+            yield return AssertWork("Work_Water", true, "44_water"); // watering can in hand
             yield return WaitWork();
             yield return AssertIdle();
             Assert.AreEqual(can - 1, IslandTools.Left("tool_watering_can"), "Watering wears the can");

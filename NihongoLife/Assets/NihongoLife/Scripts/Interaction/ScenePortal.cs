@@ -18,7 +18,7 @@ namespace NihongoLife.Interaction
         public float InteractionPriority => 0.75f;
         public string GetPromptJa() => promptJa;
         public string GetpromptEn() => !exitsZone && !string.IsNullOrEmpty(targetScene) && !LocationUnlocks.IsUnlocked(targetScene)
-            ? $"Đã khóa — cần {LocationUnlocks.Required(targetScene)} điểm kiến thức (thiếu {LocationUnlocks.Missing(targetScene)})"
+            ? LocationUnlocks.ShortStatus(targetScene)
             : promptEn;
         public string TargetScene => targetScene;
         public Transform GetTransform() => transform;
@@ -27,8 +27,17 @@ namespace NihongoLife.Interaction
 
         private void Start()
         {
-            string title = exitsZone ? "出口 · Ra phố" : displayName.Replace(" / ", " · ");
-            PortalBeacon.Attach(this, title, exitsZone ? "Trở lại thành phố" : promptEn, exitsZone);
+            PortalBeacon.Attach(this, () => exitsZone ? NihongoLife.Core.Loc.T("Ra phố", "Exit to the street", "出口") : PlaceName(),
+                () => InteractionPrompt.Of(this), exitsZone);
+        }
+
+        /// <summary>The destination's name in the interface language (catalog first, then the scene-authored "日本語 / Tiếng Việt" label).</summary>
+        private string PlaceName()
+        {
+            if (WorldLocationCatalog.Has(targetScene)) return WorldLocationCatalog.Get(targetScene).DisplayName;
+            int split = displayName != null ? displayName.IndexOf(" / ", System.StringComparison.Ordinal) : -1;
+            if (split < 0) return displayName;
+            return NihongoLife.Core.Loc.IsJapanese ? displayName.Substring(0, split) : displayName.Substring(split + 3);
         }
 
         public void Configure(string scene, string spawnId, string locationName, bool exit)

@@ -8,6 +8,17 @@ namespace NihongoLife.Save
     public class LocalProgressRepository : IProgressRepository
     {
         private PlayerProgressDto _cachedProgress;
+#if UNITY_WEBGL && !UNITY_EDITOR
+        [System.Runtime.InteropServices.DllImport("__Internal")] private static extern void NL_SyncPersistentData(); // Plugins/WebGL/NihongoLifeWeb.jslib
+#endif
+        /// <summary>WebGL: files in persistentDataPath live in IndexedDB; flush so they survive a page reload. No-op elsewhere.</summary>
+        public static void FlushWebStorage()
+        {
+#if UNITY_WEBGL && !UNITY_EDITOR
+            NL_SyncPersistentData();
+#endif
+        }
+
         private string SavePath => Path.Combine(Application.persistentDataPath, "progress.json");
 
         public void Initialize()
@@ -99,6 +110,7 @@ namespace NihongoLife.Save
             {
                 string json = JsonUtility.ToJson(_cachedProgress, true);
                 File.WriteAllText(SavePath, json);
+                FlushWebStorage();
                 Debug.Log("[LocalProgressRepository] Saved progress to disk.");
             }
             catch (System.Exception ex)

@@ -16,13 +16,21 @@ MonoBehaviour:
   kind: 1
   titleJa: "\u30EF\u30FC\u30C9\u30B7\u30E5\u30FC\u30BF\u30FC"
   titleVi: Word Shooter
-  descriptionVi: "Nghe ho\u1EB7c \u0111\u1ECDc m\u1ED9t t\u1EEB r\u1ED3i b\u1EAFn
-    \u0111\xFAng m\u1EE5c ti\xEAu (s\u1EAFp ra m\u1EAFt)."
-  playable: 0
+  titleEn: Word Shooter
+  descriptionVi: "Bong b\xF3ng t\u1EEB ti\u1EBFng Nh\u1EADt bay qua \u2014 b\u1EAFn
+    \u0111\xFAng t\u1EEB h\u1EE3p v\u1EDBi g\u1EE3i \xFD tr\u01B0\u1EDBc khi n\xF3
+    bay m\u1EA5t."
+  descriptionEn: "Japanese word bubbles float by \u2014 shoot the one that matches
+    the clue before it gets away."
+  descriptionJa: "\u3053\u3068\u3070\u306E\u98A8\u8239\u304C \u3068\u3093\u3067\u304F\u308B\uFF01\u30D2\u30F3\u30C8\u306B\u5408\u3046\u3053\u3068\u3070\u3092
+    \u3046\u3061\u304A\u3068\u305D\u3046\u3002"
+  playable: 1
   contentSets:
   - {fileID: 11400000, guid: 4e11c5ac95210e84ba8c18ff569b8063, type: 2}
   - {fileID: 11400000, guid: 7ab00ab706bb59e46bd2f806ad67c152, type: 2}
   - {fileID: 11400000, guid: 0c2812a7c27ad314ab294e9e02927910, type: 2}
+  - {fileID: 11400000, guid: 25f61ec1b2aa4864caca02215798e31e, type: 2}
+  - {fileID: 11400000, guid: 278b97930c6f619429be8006d027c8c2, type: 2}
   pairsPerRound: 10
   timeLimitSeconds: 90
   expPerCorrect: 3

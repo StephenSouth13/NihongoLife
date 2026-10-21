@@ -14,16 +14,18 @@ namespace NihongoLife.Scenario
 
         private void Start()
         {
-            if (runOnStart)
-            {
-                if (PlayerPrefs.GetInt(PendingLaunchKey, 0) == 1)
-                {
-                    scenarioId = PlayerPrefs.GetString(ScenarioIdKey, scenarioId);
-                }
+            if (!runOnStart) return;
+            string requested = PlayerPrefs.GetInt(PendingLaunchKey, 0) == 1 ? PlayerPrefs.GetString(ScenarioIdKey, null) : null;
+            ClearPendingLaunch();
 
-                ClearPendingLaunch();
-                TriggerScenarioStart();
-            }
+            // An explicit launch (co-op lobby practising together, tests) always wins, even for a finished quest.
+            ScenarioDefinition pick = null;
+            if (!string.IsNullOrEmpty(requested) && GameServices.TryGet(out IScenarioRepository repo)) pick = repo.GetScenarioById(requested);
+            // Otherwise the story decides: resume an interrupted quest, or the next prologue step; free play starts nothing.
+            if (pick == null && StoryDirector.Campaign.Count > 0) pick = StoryDirector.AutoStart();
+            else if (pick == null && !StoryDirector.Bypass) { TriggerScenarioStart(); return; } // no campaign configured: the scene's own scenario
+            if (pick != null && ScenarioManager.Instance != null && ScenarioManager.Instance.CurrentScenario?.id != pick.id)
+                ScenarioManager.Instance.StartScenario(pick);
         }
 
         public static void QueueLaunch(string requestedScenarioId)

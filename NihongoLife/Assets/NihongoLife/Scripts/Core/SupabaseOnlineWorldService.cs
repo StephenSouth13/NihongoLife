@@ -463,7 +463,7 @@ namespace NihongoLife.Core
             }
             if (Time.unscaledTime - _lastChatAt < 0.8f)
             {
-                SendSystemMessage("area", "Bạn gửi hơi nhanh — chờ một chút nhé.");
+                SendSystemMessage("area", NihongoLife.Core.Loc.Triple("Bạn gửi hơi nhanh — chờ một chút nhé.", "You're sending too fast — wait a moment.", "送信が速すぎます。少し待ってください。"));
                 return;
             }
             _lastChatAt = Time.unscaledTime;
@@ -477,7 +477,7 @@ namespace NihongoLife.Core
                 sentAtUtcTicks = DateTime.UtcNow.Ticks
             };
             AddChatMessage(message);
-            if (_shard == null) { SendSystemMessage("area", "Ở đây chỉ có mình bạn (phòng riêng) — tin khu vực không gửi đi."); return; }
+            if (_shard == null) { SendSystemMessage("area", NihongoLife.Core.Loc.Triple("Ở đây chỉ có mình bạn (phòng riêng) — tin khu vực không gửi đi.", "You're alone here (private room) — area messages aren't sent.", "ここはあなただけです（個室）。エリアメッセージは送られません。")); return; }
             _shard.Send("c", new Dictionary<string, object> { ["i"] = _localPlayerId, ["n"] = _localDisplayName, ["t"] = text, ["id"] = message.messageId });
         }
 

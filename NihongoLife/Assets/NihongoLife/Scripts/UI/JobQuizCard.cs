@@ -73,7 +73,8 @@ namespace NihongoLife.UI
             if (!string.IsNullOrEmpty(reading)) NLUi.Label(ui._card, "Reading", reading, 16f, NLUi.Muted, ui._font, FontStyles.Italic);
             var meaningRow = NLUi.Group(ui._card, "MeaningRow", false, 10f, TextAnchor.MiddleLeft, false);
             var meaning = NLUi.Label(meaningRow, "Meaning", "", 16f, NLUi.Soft, ui._font);
-            var reveal = NLUi.Button(meaningRow, "RevealMeaning", "Nghĩa?", ui._font, null, new Color(1f, 1f, 1f, 0.08f), 14f, NLUi.Text, 32f);
+            meaningRow.gameObject.SetActive(!string.IsNullOrEmpty(meaningVi));
+            var reveal = NLUi.Button(meaningRow, "RevealMeaning", NihongoLife.Core.Loc.T("Nghĩa?", "Meaning?", "意味"), ui._font, null, new Color(1f, 1f, 1f, 0.08f), 14f, NLUi.Text, 32f);
             NLUi.Size(reveal, 96f, 32f);
             reveal.onClick.AddListener(() => { meaning.text = meaningVi; reveal.gameObject.SetActive(false); });
             NLUi.Divider(ui._card);
@@ -96,7 +97,7 @@ namespace NihongoLife.UI
                 button.onClick.AddListener(() =>
                 {
                     if (choice.Correct) { Close(success: true, chosen: choice); return; }
-                    feedback.text = string.IsNullOrEmpty(choice.WrongHint) ? "Chưa đúng — thử lại nhé." : choice.WrongHint;
+                    feedback.text = string.IsNullOrEmpty(choice.WrongHint) ? NihongoLife.Core.Loc.T("Chưa đúng — thử lại nhé.", "Not quite — try again.", "ちがいます。もう一度。") : choice.WrongHint;
                     button.interactable = false;
                 });
             }

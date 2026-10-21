@@ -33,7 +33,9 @@ namespace NihongoLife.Learning
 
         public Mode Current { get; private set; } = Mode.Off;
         public string Channel { get; private set; }
-        public string Status { get; private set; } = "Voice đang tắt.";
+        /// <summary>Current voice state in the interface language.</summary>
+        public string Status => NihongoLife.Core.Loc.Resolve(_status);
+        private string _status = NihongoLife.Core.Loc.Triple("Voice đang tắt.", "Voice is off.", "ボイスはオフです。");
         public bool Joined { get; private set; }
         public bool Talking { get; private set; }
         public bool OpenMic { get; set; }
@@ -63,7 +65,7 @@ namespace NihongoLife.Learning
         {
             if (!(GameServices.TryGet(out IOnlineWorldService w) && w is SupabaseOnlineWorldService online) || online.ShardTopic == null)
             {
-                Fail("Voice khu vực cần kết nối online và đang ở nơi công cộng.");
+                Fail(NihongoLife.Core.Loc.Triple("Voice khu vực cần kết nối online và đang ở nơi công cộng.", "Area voice needs an online connection and a public place.", "エリアボイスはオンライン接続と公共の場所が必要です。"));
                 return;
             }
             Join(Mode.Area, "nlv_" + Sanitize(online.ShardTopic.Substring(2)), null);
@@ -88,7 +90,7 @@ namespace NihongoLife.Learning
             Channel = null;
             _speaking.Clear();
             _remotes.Clear();
-            SetStatus("Voice đang tắt.");
+            SetStatus(NihongoLife.Core.Loc.Triple("Voice đang tắt.", "Voice is off.", "ボイスはオフです。"));
         }
 
         public static uint AgoraUid(string userId)
@@ -107,12 +109,12 @@ namespace NihongoLife.Learning
             if (Channel == channel && Joined) return;
             if (NihongoLife.Learning.EduMeetingManager.Instance != null && NihongoLife.Learning.EduMeetingManager.Instance.IsOpen)
             {
-                Fail("Đang mở phòng Speaking — đóng phòng đó để dùng voice.");
+                Fail(NihongoLife.Core.Loc.Triple("Đang mở phòng Speaking — đóng phòng đó để dùng voice.", "A Speaking room is open — close it to use voice.", "スピーキングルームが開いています。ボイスを使うには閉じてください。"));
                 return;
             }
-            if (!GameServices.TryGet(out IAuthService auth) || !auth.IsAuthenticated)
+            if (!GameServices.TryGet(out IAuthService auth) || !OnlineAccess.IsRegistered)
             {
-                Fail("Voice cần đăng nhập (tài khoản hoặc khách ẩn danh) để máy chủ cấp quyền vào phòng.");
+                Fail(NihongoLife.Core.Loc.Triple("Voice cần tài khoản đã đăng ký và đăng nhập (chế độ Khách chơi ngoại tuyến).", "Voice needs a registered account, signed in (guests play offline).", "ボイスには登録済みアカウントでのログインが必要です（ゲストはオフライン）。"));
                 return;
             }
             Leave();
@@ -122,23 +124,23 @@ namespace NihongoLife.Learning
         private IEnumerator JoinRoutine(Mode mode, string channel, IAuthService auth)
         {
             Busy = true;
-            SetStatus("Đang xin quyền micro…");
+            SetStatus(NihongoLife.Core.Loc.Triple("Đang xin quyền micro…", "Asking for microphone permission…", "マイクの許可を求めています…"));
             yield return Application.RequestUserAuthorization(UserAuthorization.Microphone);
             if (!Application.HasUserAuthorization(UserAuthorization.Microphone))
             {
                 Busy = false;
-                Fail("Chưa được cấp quyền micro. Bật micro cho game trong cài đặt hệ điều hành.");
+                Fail(NihongoLife.Core.Loc.Triple("Chưa được cấp quyền micro. Bật micro cho game trong cài đặt hệ điều hành.", "No microphone permission. Allow the microphone for the game in your system settings.", "マイクが許可されていません。OSの設定でゲームのマイクを許可してください。"));
                 yield break;
             }
 
-            SetStatus("Đang lấy vé vào phòng voice…");
+            SetStatus(NihongoLife.Core.Loc.Triple("Đang lấy vé vào phòng voice…", "Getting a voice room ticket…", "ボイスルームのチケットを取得中…"));
             string token = null, error = null;
             uint uid = 0;
             yield return FetchToken(channel, auth, (t, u, e) => { token = t; uid = u; error = e; });
             if (token == null)
             {
                 Busy = false;
-                Fail(error ?? "Không lấy được vé vào phòng voice.");
+                Fail(error ?? NihongoLife.Core.Loc.Triple("Không lấy được vé vào phòng voice.", "Couldn't get a voice room ticket.", "ボイスルームのチケットを取得できませんでした。"));
                 yield break;
             }
 
@@ -162,12 +164,12 @@ namespace NihongoLife.Learning
                 }
                 _engine.EnableSpatialAudio(spatial);
                 int code = _engine.JoinChannel(token, channel, uid, options);
-                if (code != 0) throw new InvalidOperationException("Vào phòng voice thất bại (" + code + ").");
+                if (code != 0) throw new InvalidOperationException(NihongoLife.Core.Loc.Triple($"Vào phòng voice thất bại ({code}).", $"Joining the voice room failed ({code}).", $"ボイスルームに入れませんでした（{code}）。"));
                 _token = token;
                 _uid = uid;
                 Channel = channel;
                 Current = mode;
-                SetStatus("Đang kết nối voice…");
+                SetStatus(NihongoLife.Core.Loc.Triple("Đang kết nối voice…", "Connecting voice…", "ボイスに接続中…"));
             }
             catch (Exception ex)
             {
@@ -181,7 +183,7 @@ namespace NihongoLife.Learning
         private IEnumerator FetchToken(string channel, IAuthService auth, Action<string, uint, string> done)
         {
             var client = FindFirstObjectByType<SupabaseClient>();
-            if (client == null || !client.IsConfigured) { done(null, 0, "Chưa cấu hình Supabase."); yield break; }
+            if (client == null || !client.IsConfigured) { done(null, 0, NihongoLife.Core.Loc.Triple("Chưa cấu hình Supabase.", "Supabase is not configured.", "Supabaseが設定されていません。")); yield break; }
             string url = client.ProjectUrl.TrimEnd('/') + "/functions/v1/agora-voice";
             using var request = new UnityWebRequest(url, "POST");
             request.uploadHandler = new UploadHandlerRaw(Encoding.UTF8.GetBytes("{\"channel\":" + MiniJson.Quote(channel) + "}"));
@@ -194,12 +196,12 @@ namespace NihongoLife.Learning
             var body = MiniJson.ParseObject(request.downloadHandler?.text);
             if (request.responseCode == 404)
             {
-                done(null, 0, "Máy chủ chưa triển khai hàm agora-voice (supabase functions deploy agora-voice).");
+                done(null, 0, NihongoLife.Core.Loc.Triple("Máy chủ chưa triển khai hàm agora-voice (supabase functions deploy agora-voice).", "The server has no agora-voice function yet (supabase functions deploy agora-voice).", "サーバーにagora-voice関数がありません（supabase functions deploy agora-voice）。"));
                 yield break;
             }
             if (request.result != UnityWebRequest.Result.Success || body == null || !body.Bool("ok"))
             {
-                done(null, 0, body.Str("error") ?? $"Máy chủ voice trả lỗi {request.responseCode}.");
+                done(null, 0, body.Str("error") ?? NihongoLife.Core.Loc.Triple($"Máy chủ voice trả lỗi {request.responseCode}.", $"The voice server returned error {request.responseCode}.", $"ボイスサーバーのエラー {request.responseCode}"));
                 yield break;
             }
             done(body.Str("token"), (uint)body.Num("uid"), null);
@@ -209,10 +211,10 @@ namespace NihongoLife.Learning
         {
             if (_engine != null) return;
             string appId = EduMeetingManager.ConfiguredAppId();
-            if (string.IsNullOrWhiteSpace(appId)) throw new InvalidOperationException("Chưa cấu hình Agora App ID.");
+            if (string.IsNullOrWhiteSpace(appId)) throw new InvalidOperationException(NihongoLife.Core.Loc.Triple("Chưa cấu hình Agora App ID.", "Agora App ID is not configured.", "Agora App IDが設定されていません。"));
             _engine = RtcEngine.CreateAgoraRtcEngine();
             int code = _engine.Initialize(new RtcEngineContext { appId = appId, channelProfile = CHANNEL_PROFILE_TYPE.CHANNEL_PROFILE_LIVE_BROADCASTING, audioScenario = AUDIO_SCENARIO_TYPE.AUDIO_SCENARIO_CHATROOM });
-            if (code != 0) { _engine = null; throw new InvalidOperationException("Khởi tạo Agora thất bại (" + code + ")."); }
+            if (code != 0) { _engine = null; throw new InvalidOperationException(NihongoLife.Core.Loc.Triple($"Khởi tạo Agora thất bại ({code}).", $"Agora failed to start ({code}).", $"Agoraを起動できませんでした（{code}）。")); }
             _engine.InitEventHandler(new Events(this));
             _engine.EnableAudio();
             _engine.DisableVideo();
@@ -249,7 +251,7 @@ namespace NihongoLife.Learning
             {
                 Leave();
                 ReleaseEngine();
-                SetStatus("Voice tạm dừng trong phòng Speaking.");
+                SetStatus(NihongoLife.Core.Loc.Triple("Voice tạm dừng trong phòng Speaking.", "Voice is paused in the Speaking room.", "スピーキングルームではボイスを一時停止します。"));
                 return;
             }
             if (!Joined || _engine == null) return;
@@ -259,7 +261,7 @@ namespace NihongoLife.Learning
             {
                 _nextAreaCheck = Time.unscaledTime + 2f;
                 string shard = GameServices.TryGet(out IOnlineWorldService w) && w is SupabaseOnlineWorldService o ? o.ShardTopic : null;
-                if (shard == null) { Leave(); SetStatus("Voice khu vực tắt trong phòng riêng."); return; }
+                if (shard == null) { Leave(); SetStatus(NihongoLife.Core.Loc.Triple("Voice khu vực tắt trong phòng riêng.", "Area voice is off in private rooms.", "個室ではエリアボイスはオフです。")); return; }
                 if ("nlv_" + Sanitize(shard.Substring(2)) != Channel) { JoinArea(); return; }
             }
 
@@ -317,7 +319,7 @@ namespace NihongoLife.Learning
 
         private void SetStatus(string status)
         {
-            Status = status;
+            _status = status;
             OnStateChanged?.Invoke();
         }
 
@@ -360,9 +362,9 @@ namespace NihongoLife.Learning
                 string key = GameInputService.GetOrCreate().GetBindingLabel(GameInputId.PushToTalk);
                 _owner.SetStatus(_owner.Current switch
                 {
-                    Mode.Area => $"Voice khu vực · giữ {key} để nói · nghe người trong {HearingRange:0} m",
-                    Mode.Group => $"Voice nhóm · giữ {key} để nói",
-                    _ => $"Đang gọi · giữ {key} để nói"
+                    Mode.Area => NihongoLife.Core.Loc.Triple($"Voice khu vực · giữ {key} để nói · nghe người trong {HearingRange:0} m", $"Area voice · hold {key} to talk · hear people within {HearingRange:0} m", $"エリアボイス · {key}を押して話す · {HearingRange:0}m以内が聞こえます"),
+                    Mode.Group => NihongoLife.Core.Loc.Triple($"Voice nhóm · giữ {key} để nói", $"Group voice · hold {key} to talk", $"グループボイス · {key}を押して話す"),
+                    _ => NihongoLife.Core.Loc.Triple($"Đang gọi · giữ {key} để nói", $"In a call · hold {key} to talk", $"通話中 · {key}を押して話す")
                 });
             });
 
@@ -381,7 +383,7 @@ namespace NihongoLife.Learning
                 _owner.OnStateChanged?.Invoke();
             });
 
-            public override void OnError(int err, string msg) => _owner.Post(() => _owner.SetStatus($"Voice lỗi {err}: {msg}"));
+            public override void OnError(int err, string msg) => _owner.Post(() => _owner.SetStatus(NihongoLife.Core.Loc.Triple($"Voice lỗi {err}: {msg}", $"Voice error {err}: {msg}", $"ボイスエラー {err}: {msg}")));
 
             public override void OnTokenPrivilegeWillExpire(RtcConnection connection, string token) => _owner.Post(() =>
             {

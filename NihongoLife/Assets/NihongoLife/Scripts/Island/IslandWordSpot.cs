@@ -23,12 +23,12 @@ namespace NihongoLife.Island
             }
         }
         public string GetPromptJa() => IslandLanguage.Primary(Word);
-        public string GetpromptEn() => "Học tên địa điểm";
+        public string GetpromptEn() => Loc.T("Học tên địa điểm", "Learn the place name", "場所の名前を覚える");
         public Transform GetTransform() => transform;
         public void Interact(GameObject player)
         {
-            if (IslandState.Discover("place:" + placeId)) IslandUI.WordToast(Word, "Địa điểm mới");
-            else IslandUI.WordToast(Word, "Địa điểm");
+            if (IslandState.Discover("place:" + placeId)) IslandUI.WordToast(Word, Loc.T("Địa điểm mới", "New place", "新しい場所"));
+            else IslandUI.WordToast(Word, Loc.T("Địa điểm", "Place", "場所"));
             IslandAchievements.Check();
         }
     }

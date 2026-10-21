@@ -243,7 +243,7 @@ namespace NihongoLife.Exam
                 if (RequiresAiGrading(section))
                 {
                     aiSectionsDone++;
-                    OnGradingStatus?.Invoke($"Đang chấm {Localize(section)} ({aiSectionsDone}/{aiSectionCount})...");
+                    OnGradingStatus?.Invoke(NihongoLife.Core.Loc.F("Đang chấm {0} ({1}/{2})...", "Grading {0} ({1}/{2})...", "{0}を採点中（{1}/{2}）...", Localize(section), aiSectionsDone, aiSectionCount));
                     yield return GradeAiSection(section, gradingService, sectionResult);
                 }
                 else
@@ -260,7 +260,30 @@ namespace NihongoLife.Exam
             yield return SaveResult(result);
 
             OnGradingStatus?.Invoke(string.Empty);
+            AwardKnowledge(result);
             OnExamFinished?.Invoke(result);
+        }
+
+        /// <summary>Knowledge reward of a finished mock exam (Trí tuệ opens the map, LocationUnlocks): the first
+        /// completion of an exam is worth up to 40 by the share of points scored, a new personal best 8, any retry 3.</summary>
+        public static int KnowledgeFor(ExamAttemptResult result, bool firstTime)
+        {
+            if (result?.record == null) return 0;
+            float share = result.record.totalMaxScore > 0 ? Mathf.Clamp01(result.record.totalScore / (float)result.record.totalMaxScore) : 0f;
+            if (firstTime) return Mathf.Max(5, Mathf.RoundToInt(40f * share));
+            return result.isBestAttempt ? 8 : 3;
+        }
+
+        private static void AwardKnowledge(ExamAttemptResult result)
+        {
+            if (result?.exam == null) return;
+            string flag = "exam.done:" + result.exam.id;
+            bool first = !NihongoLife.Scenario.StoryFlags.Has(flag);
+            int gained = KnowledgeFor(result, first);
+            if (gained <= 0) return;
+            NihongoLife.Scenario.StoryFlags.Set(flag);
+            NihongoLife.Player.PlayerStatus.Instance?.AddKnowledge(gained);
+            NihongoLife.UI.HudFeed.Post(NihongoLife.Core.Loc.F("Bài thi xong · +{0} trí tuệ", "Exam finished · +{0} knowledge", "試験終了 · 知識 +{0}", gained), NihongoLife.UI.HudFeed.Kind.Reward, 6f, "exam_knowledge");
         }
 
         private static bool RequiresAiGrading(ExamSection section)
@@ -305,7 +328,7 @@ namespace NihongoLife.Exam
                     }
                     else
                     {
-                        grade = new ExamAiGrade { band = 0f, feedback = "Dịch vụ chấm bài chưa sẵn sàng." };
+                        grade = new ExamAiGrade { band = 0f, feedback = NihongoLife.Core.Loc.T("Dịch vụ chấm bài chưa sẵn sàng.", "The grading service is not ready.", "採点サービスの準備ができていません。") };
                         done = true;
                     }
                 }
@@ -319,7 +342,7 @@ namespace NihongoLife.Exam
                     }
                     else
                     {
-                        grade = new ExamAiGrade { band = 0f, feedback = "Dịch vụ chấm bài chưa sẵn sàng." };
+                        grade = new ExamAiGrade { band = 0f, feedback = NihongoLife.Core.Loc.T("Dịch vụ chấm bài chưa sẵn sàng.", "The grading service is not ready.", "採点サービスの準備ができていません。") };
                         done = true;
                     }
                 }

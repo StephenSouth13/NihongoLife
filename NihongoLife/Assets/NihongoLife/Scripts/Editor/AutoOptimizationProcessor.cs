@@ -38,6 +38,9 @@ namespace NihongoLife.Editor
             }
 
             settings.loadType = AudioClipLoadType.CompressedInMemory; // Tiết kiệm RAM
+            // Nhạc nền và âm thanh môi trường dài (Soundscape): phát kiểu Streaming, không nạp cả bài vào RAM.
+            string lower = assetPath.ToLower();
+            if (lower.Contains("/audio/music/") || lower.Contains("/audio/ambience/")) settings.loadType = AudioClipLoadType.Streaming;
             settings.compressionFormat = AudioCompressionFormat.Vorbis;
             settings.quality = 0.5f; // Chất lượng vừa đủ nghe rõ
 

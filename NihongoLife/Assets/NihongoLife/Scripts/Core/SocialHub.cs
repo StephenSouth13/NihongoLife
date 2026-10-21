@@ -89,7 +89,7 @@ namespace NihongoLife.Core
         public IReadOnlyList<Friend> Friends => _friends;
         public IEnumerable<Group> Groups => _groups.Values;
         public bool IsRealOnline => _online != null && _online.IsConnected;
-        public bool CanUseFriends => _friendService != null && GameServices.TryGet(out IAuthService auth) && auth.IsAuthenticated;
+        public bool CanUseFriends => _friendService != null && OnlineAccess.IsRegistered;
         public string LocalId => _world?.LocalPlayerId;
         public string SafetyCode => _crypto.SafetyCode;
         public bool CryptoReady => _crypto.Ready;
@@ -107,8 +107,8 @@ namespace NihongoLife.Core
         {
             LoadPins();
             LoadBlocked();
-            GetConversation(AreaId, Kind.Area, "Khu vực");
-            GetConversation(CommunityId, Kind.Community, "Cộng đồng");
+            GetConversation(AreaId, Kind.Area, NihongoLife.Core.Loc.T("Khu vực", "Area", "エリア"));
+            GetConversation(CommunityId, Kind.Community, NihongoLife.Core.Loc.T("Cộng đồng", "Community", "コミュニティ"));
             _friendService = GetComponent<FriendService>() ?? FindFirstObjectByType<FriendService>();
             if (_friendService == null) { _friendService = gameObject.AddComponent<FriendService>(); _friendService.Initialize(); }
             _friendService.OnFriendsUpdated += HandleFriendsUpdated;
@@ -121,8 +121,8 @@ namespace NihongoLife.Core
             _keySuffix = keySuffix;
             _world = online;
             _online = online;
-            GetConversation(AreaId, Kind.Area, "Khu vực");
-            GetConversation(CommunityId, Kind.Community, "Cộng đồng");
+            GetConversation(AreaId, Kind.Area, NihongoLife.Core.Loc.T("Khu vực", "Area", "エリア"));
+            GetConversation(CommunityId, Kind.Community, NihongoLife.Core.Loc.T("Cộng đồng", "Community", "コミュニティ"));
         }
 
         private string _keySuffix = string.Empty;
@@ -166,7 +166,7 @@ namespace NihongoLife.Core
                     if (_outbox.TryGetValue(peer, out var waiting) && waiting.Count > 0)
                     {
                         _outbox.Remove(peer);
-                        AddSystem(DirectId(peer), $"{NameOf(peer)} không phản hồi (có thể đã offline). Tin nhắn riêng chỉ gửi được khi cả hai cùng online — không lưu trên máy chủ.");
+                        AddSystem(DirectId(peer), Tri("{0} không phản hồi (có thể đã offline). Tin nhắn riêng chỉ gửi được khi cả hai cùng online — không lưu trên máy chủ.", "{0} is not responding (maybe offline). Private messages only go through while you are both online — nothing is stored on the server.", "{0}さんから応答がありません（オフラインかもしれません）。個人メッセージは二人ともオンラインのときだけ届き、サーバーには保存されません。", NameOf(peer)));
                     }
                 }
             }
@@ -279,6 +279,10 @@ namespace NihongoLife.Core
             sentAtUtcTicks = DateTime.UtcNow.Ticks
         };
 
+        /// <summary>A system line stored in all three languages, so it follows later language changes.</summary>
+        private static string Tri(string vi, string en, string ja, params object[] args) =>
+            NihongoLife.Core.Loc.Triple(string.Format(vi, args), string.Format(en, args), string.Format(ja, args));
+
         private void AddSystem(string conversationId, string text)
         {
             var c = Get(conversationId);
@@ -305,7 +309,7 @@ namespace NihongoLife.Core
             if (conversationId == AreaId || conversationId == "town") { _world.SendChatMessage(AreaId, text); return true; }
             if (_online == null || _realtime == null)
             {
-                AddSystem(conversationId, "Cần kết nối online để dùng kênh này.");
+                AddSystem(conversationId, NihongoLife.Core.Loc.Triple("Cần kết nối online để dùng kênh này.", "You need to be online to use this channel.", "このチャンネルを使うにはオンライン接続が必要です。"));
                 return false;
             }
             if (conversationId == CommunityId) return SendCommunity(text);
@@ -318,7 +322,7 @@ namespace NihongoLife.Core
         {
             if (Time.unscaledTime - last < gap)
             {
-                AddSystem(conversationId, "Bạn gửi hơi nhanh — chờ một chút nhé.");
+                AddSystem(conversationId, NihongoLife.Core.Loc.Triple("Bạn gửi hơi nhanh — chờ một chút nhé.", "You're sending too fast — wait a moment.", "送信が速すぎます。少し待ってください。"));
                 return true;
             }
             last = Time.unscaledTime;
@@ -356,7 +360,7 @@ namespace NihongoLife.Core
             if (name.Length > 32) name = name.Substring(0, 32);
             string id = Guid.NewGuid().ToString("N").Substring(0, 10);
             var g = JoinGroup(id, name, LocalId);
-            AddSystem(GroupConversationId(id), $"Đã tạo nhóm “{name}”. Mời bạn bè từ tab Bạn bè hoặc khi đứng gần ai đó (F).");
+            AddSystem(GroupConversationId(id), Tri("Đã tạo nhóm “{0}”. Mời bạn bè từ tab Bạn bè hoặc khi đứng gần ai đó (F).", "Group “{0}” created. Invite friends from the Friends tab or when standing next to someone (F).", "グループ「{0}」を作りました。友だちタブから、または近くの人に（F）招待できます。", name));
             return g;
         }
 
@@ -370,13 +374,13 @@ namespace NihongoLife.Core
             g.Channel.OnPresenceJoin += (key, meta) =>
             {
                 Remember(key, meta.Str("n", "Learner"));
-                if (key != LocalId && !_announced.Contains(g.Id + key)) { _announced.Add(g.Id + key); AddSystem(GroupConversationId(id), $"{meta.Str("n", "Learner")} đã vào nhóm."); }
+                if (key != LocalId && !_announced.Contains(g.Id + key)) { _announced.Add(g.Id + key); AddSystem(GroupConversationId(id), Tri("{0} đã vào nhóm.", "{0} joined the group.", "{0}さんがグループに入りました。", meta.Str("n", "Learner"))); }
                 OnConversationsChanged?.Invoke();
             };
             g.Channel.OnPresenceLeave += key =>
             {
                 _announced.Remove(g.Id + key);
-                if (key != LocalId) AddSystem(GroupConversationId(id), $"{NameOf(key)} đã rời nhóm.");
+                if (key != LocalId) AddSystem(GroupConversationId(id), Tri("{0} đã rời nhóm.", "{0} left the group.", "{0}さんがグループを抜けました。", NameOf(key)));
             };
             _groups[id] = g;
             GetConversation(GroupConversationId(id), Kind.Group, name).GroupId = id;
@@ -402,9 +406,9 @@ namespace NihongoLife.Core
         {
             var g = GetGroup(groupId);
             if (g == null || string.IsNullOrEmpty(peerId) || peerId == LocalId) return false;
-            if (g.MemberCount >= MaxGroupMembers) { AddSystem(GroupConversationId(groupId), $"Nhóm đã đủ {MaxGroupMembers} người."); return false; }
+            if (g.MemberCount >= MaxGroupMembers) { AddSystem(GroupConversationId(groupId), Tri("Nhóm đã đủ {0} người.", "The group is full ({0} people).", "グループは{0}人でいっぱいです。", MaxGroupMembers)); return false; }
             SendInbox(peerId, "inv", new Dictionary<string, object> { ["g"] = g.Id, ["gn"] = g.Name });
-            AddSystem(GroupConversationId(groupId), $"Đã gửi lời mời tới {NameOf(peerId)}.");
+            AddSystem(GroupConversationId(groupId), Tri("Đã gửi lời mời tới {0}.", "Invitation sent to {0}.", "{0}さんに招待を送りました。", NameOf(peerId)));
             return true;
         }
 
@@ -486,21 +490,21 @@ namespace NihongoLife.Core
         {
             if (_online == null || string.IsNullOrEmpty(peerId)) return;
             SendInbox(peerId, "call", new Dictionary<string, object>());
-            AddSystem(DirectId(peerId), $"Đang gọi {NameOf(peerId)}…");
+            AddSystem(DirectId(peerId), Tri("Đang gọi {0}…", "Calling {0}…", "{0}さんに発信中…", NameOf(peerId)));
         }
 
         public string PeerSafetyCode(string peerId) => _pins.TryGetValue(peerId, out var pk) ? ChatCrypto.SafetyCodeOf(pk) : null;
 
         private bool SendDirect(string peerId, string text)
         {
-            if (IsBlocked(peerId)) { AddSystem(DirectId(peerId), "Bạn đã chặn người này. Bỏ chặn để nhắn tin."); return false; }
+            if (IsBlocked(peerId)) { AddSystem(DirectId(peerId), NihongoLife.Core.Loc.Triple("Bạn đã chặn người này. Bỏ chặn để nhắn tin.", "You blocked this person. Unblock them to send messages.", "この人をブロックしています。メッセージを送るにはブロックを解除してください。")); return false; }
             if (TooFast(ref _lastDmAt, 0.5f, DirectId(peerId))) return false;
             var c = OpenDirect(peerId, NameOf(peerId));
             var m = Make(c.Id, LocalId, _online.LocalDisplayName, text);
             Append(c, m, false);
             if (!_online.IsOnline(peerId))
             {
-                AddSystem(c.Id, $"{NameOf(peerId)} đang offline — tin nhắn riêng chỉ gửi được khi cả hai cùng online.");
+                AddSystem(c.Id, Tri("{0} đang offline — tin nhắn riêng chỉ gửi được khi cả hai cùng online.", "{0} is offline — private messages only go through while you are both online.", "{0}さんはオフラインです。個人メッセージは二人ともオンラインのときだけ届きます。", NameOf(peerId)));
                 return false;
             }
             if (!_crypto.Ready)
@@ -533,7 +537,7 @@ namespace NihongoLife.Core
         {
             Dictionary<string, object> envelope;
             try { envelope = _crypto.Seal(m.text, peerKey); }
-            catch (Exception ex) { AddSystem(DirectId(peerId), "Không mã hóa được tin nhắn: " + ex.Message); return; }
+            catch (Exception ex) { AddSystem(DirectId(peerId), Tri("Không mã hóa được tin nhắn: {0}", "Could not encrypt the message: {0}", "メッセージを暗号化できませんでした：{0}", ex.Message)); return; }
             envelope["id"] = m.messageId;
             envelope["pk"] = _crypto.PublicKey;
             SendInbox(peerId, "dm", envelope);
@@ -586,28 +590,28 @@ namespace NihongoLife.Core
                     var c = OpenDirect(from, name);
                     if (c.Messages.Exists(x => x.messageId == p.Str("id"))) return;
                     Append(c, Make(c.Id, from, name, text, p.Str("id")), true);
-                    if (ActiveConversationId != c.Id) NihongoLife.UI.HudFeed.Post($"Tin riêng từ {name}: {Shorten(text)}", NihongoLife.UI.HudFeed.Kind.Info, 4f, "dm");
+                    if (ActiveConversationId != c.Id) NihongoLife.UI.HudFeed.Post(NihongoLife.Core.Loc.F("Tin riêng từ {0}: {1}", "Message from {0}: {1}", "{0}さんからのメッセージ：{1}", name, Shorten(text)), NihongoLife.UI.HudFeed.Kind.Info, 4f, "dm");
                     break;
                 }
                 case "inv":
                 {
                     string g = p.Str("g", "");
                     if (g.Length == 0 || _groups.ContainsKey(g) || _invites.Exists(x => x.GroupId == g)) return;
-                    var invite = new Invite { GroupId = g, GroupName = SupabaseOnlineWorldService.Clean(p.Str("gn", "Nhóm")), FromId = from, FromName = name };
+                    var invite = new Invite { GroupId = g, GroupName = SupabaseOnlineWorldService.Clean(p.Str("gn", NihongoLife.Core.Loc.T("Nhóm", "Group", "グループ"))), FromId = from, FromName = name };
                     _invites.Add(invite);
                     OnInvite?.Invoke(invite);
                     OnConversationsChanged?.Invoke();
-                    NihongoLife.UI.HudFeed.Post($"{name} mời bạn vào nhóm “{invite.GroupName}” — mở Chat (Enter) › Nhóm.", NihongoLife.UI.HudFeed.Kind.Info, 6f, "invite");
+                    NihongoLife.UI.HudFeed.Post(NihongoLife.Core.Loc.F("{0} mời bạn vào nhóm “{1}” — mở Chat (Enter) › Nhóm.", "{0} invites you to the group “{1}” — open Chat (Enter) › Groups.", "{0}さんが「{1}」に招待しています — チャット（Enter）› グループ", name, invite.GroupName), NihongoLife.UI.HudFeed.Kind.Info, 6f, "invite");
                     break;
                 }
                 case "call":
                     _incomingCalls[from] = Time.unscaledTime;
                     OpenDirect(from, name);
-                    AddSystem(DirectId(from), $"{name} đang gọi thoại — bấm “Nghe” để trả lời.");
-                    NihongoLife.UI.HudFeed.Post($"{name} đang gọi thoại cho bạn — Chat › Riêng tư › Nghe.", NihongoLife.UI.HudFeed.Kind.Info, 8f, "call");
+                    AddSystem(DirectId(from), Tri("{0} đang gọi thoại — bấm “Nghe” để trả lời.", "{0} is calling — press “Answer” to pick up.", "{0}さんから音声通話です。「出る」を押してください。", name));
+                    NihongoLife.UI.HudFeed.Post(NihongoLife.Core.Loc.F("{0} đang gọi thoại cho bạn — Chat › Riêng tư › Nghe.", "{0} is calling you — Chat › Private › Answer.", "{0}さんから通話 — チャット › 個人 › 出る", name), NihongoLife.UI.HudFeed.Kind.Info, 8f, "call");
                     break;
                 case "fr":
-                    NihongoLife.UI.HudFeed.Post($"{name} muốn kết bạn với bạn — xem tab Bạn bè.", NihongoLife.UI.HudFeed.Kind.Info, 6f, "friend");
+                    NihongoLife.UI.HudFeed.Post(NihongoLife.Core.Loc.F("{0} muốn kết bạn với bạn — xem tab Bạn bè.", "{0} wants to be friends — see the Friends tab.", "{0}さんから友だち申請 — 友だちタブを見てください。", name), NihongoLife.UI.HudFeed.Kind.Info, 6f, "friend");
                     if (CanUseFriends) _friendService.RefreshFriends();
                     break;
             }
@@ -621,7 +625,7 @@ namespace NihongoLife.Core
             {
                 if (known == publicKey) return true;
                 OpenDirect(peerId, NameOf(peerId));
-                AddSystem(DirectId(peerId), $"⚠ Khóa bảo mật của {NameOf(peerId)} đã đổi (cài lại game hoặc máy khác). Mã an toàn mới: {ChatCrypto.SafetyCodeOf(publicKey)}.");
+                AddSystem(DirectId(peerId), Tri("⚠ Khóa bảo mật của {0} đã đổi (cài lại game hoặc máy khác). Mã an toàn mới: {1}.", "⚠ {0}'s security key changed (reinstalled the game or a different device). New safety code: {1}.", "⚠ {0}さんのセキュリティキーが変わりました（再インストールか別の端末）。新しい安全コード：{1}", NameOf(peerId), ChatCrypto.SafetyCodeOf(publicKey)));
             }
             _pins[peerId] = publicKey;
             SavePins();
@@ -641,7 +645,7 @@ namespace NihongoLife.Core
             if (!CanUseFriends || string.IsNullOrEmpty(peerId)) return;
             _friendService.SendFriendRequest(peerId, ok =>
             {
-                NihongoLife.UI.HudFeed.Post(ok ? $"Đã gửi lời mời kết bạn tới {NameOf(peerId)}." : "Không gửi được lời mời kết bạn.", ok ? NihongoLife.UI.HudFeed.Kind.Info : NihongoLife.UI.HudFeed.Kind.Warning, 4f, "friend");
+                NihongoLife.UI.HudFeed.Post(ok ? NihongoLife.Core.Loc.F("Đã gửi lời mời kết bạn tới {0}.", "Friend request sent to {0}.", "{0}さんに友だち申請を送りました。", NameOf(peerId)) : NihongoLife.Core.Loc.T("Không gửi được lời mời kết bạn.", "Could not send the friend request.", "友だち申請を送れませんでした。"), ok ? NihongoLife.UI.HudFeed.Kind.Info : NihongoLife.UI.HudFeed.Kind.Warning, 4f, "friend");
                 if (ok && _online != null) SendInbox(peerId, "fr", new Dictionary<string, object>());
             });
         }

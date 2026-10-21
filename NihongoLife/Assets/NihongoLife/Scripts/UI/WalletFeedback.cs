@@ -40,7 +40,7 @@ namespace NihongoLife.UI
             Floating++;
             float lane = (Floating - 1) * 26f; // several changes at once stack instead of overlapping
             bool gain = e.amount > 0;
-            var label = NLUi.Label(transform, "Delta", $"<b>{(gain ? "+" : "−")}¥{Math.Abs(e.amount):N0}</b>  <size=75%>{e.reason}</size>", 20f,
+            var label = NLUi.Label(transform, "Delta", $"<b>{(gain ? "+" : "−")}¥{Math.Abs(e.amount):N0}</b>  <size=75%>{Loc.Resolve(e.reason)}</size>", 20f,
                 gain ? new Color(0.45f, 0.95f, 0.55f) : new Color(1f, 0.5f, 0.42f), _font, FontStyles.Normal, TextAlignmentOptions.Left);
             label.textWrappingMode = TextWrappingModes.NoWrap;
             label.outlineWidth = 0.2f;
@@ -89,12 +89,20 @@ namespace NihongoLife.UI
         private void BuildHistory()
         {
             var canvas = NLUi.CreateCanvas("WalletHistoryCanvas", 560, transform.root);
-            _history = NLUi.Panel(canvas.transform, "WalletHistory", NLUi.Ink, new RectOffset(18, 18, 14, 16), 8f);
-            NLUi.Anchor(_history, new Vector2(0f, 0f), new Vector2(24f, 220f), new Vector2(460f, 10f));
+            _history = NLUi.Panel(canvas.transform, "WalletHistory", UiTheme.Ink, new RectOffset(62, 18, 16, 18), 8f);
+            _history.GetComponent<Image>().sprite = UiKit.Rounded(18);
+            NLUi.Anchor(_history, new Vector2(0f, 0f), new Vector2(24f, 220f), new Vector2(520f, 10f));
             NLUi.FitContent(_history);
-            NLUi.Label(_history, "Title", "Lịch sử ví  <size=70%><color=#A8B4C4>さいふ · 30 giao dịch gần nhất</color></size>", 22f, NLUi.Gold, _font, FontStyles.Bold);
-            _historyText = NLUi.Label(_history, "Lines", "", 16f, NLUi.Text, _font);
-            NLUi.CloseButton(_history, _font, () => { HistoryOpen = false; _history.gameObject.SetActive(false); }, 34f, 8f);
+            var coin = UiKit.Image(_history, "Coin", Color.white, UiIcons.CoinLarge);
+            coin.gameObject.AddComponent<LayoutElement>().ignoreLayout = true;
+            UiKit.Pin(coin.rectTransform, new Vector2(0f, 1f), 16f, -14f, 36f, 36f);
+            var title = NLUi.Label(_history, "Title", "", 21f, NLUi.Gold, _font, FontStyles.Bold);
+            LocText.Set(title, "Lịch sử ví  <size=70%><color=#A8B4C4>12 giao dịch gần nhất</color></size>", "Wallet history  <size=70%><color=#A8B4C4>last 12 transactions</color></size>", "財布の履歴  <size=70%><color=#A8B4C4>最近の12件</color></size>");
+            _historyText = NLUi.Label(_history, "Lines", "", 15.5f, NLUi.Text, _font);
+            var close = UiKit.IconButton(_history, "CloseX", "close", () => { HistoryOpen = false; _history.gameObject.SetActive(false); }, UiKit.Kind.Ghost, 34f, 18f);
+            close.gameObject.AddComponent<LayoutElement>().ignoreLayout = true;
+            UiKit.Pin((RectTransform)close.transform, new Vector2(1f, 1f), -10f, -10f, 34f, 34f);
+            Loc.Watch(this, () => { if (HistoryOpen) RefreshHistory(); });
             UiModalStack.Register(this, () => HistoryOpen, () => { HistoryOpen = false; _history.gameObject.SetActive(false); }, "WalletHistory");
             _history.gameObject.SetActive(false);
         }
@@ -103,14 +111,14 @@ namespace NihongoLife.UI
         {
             var sb = new StringBuilder();
             var entries = WalletLedger.Entries;
-            if (entries.Count == 0) sb.Append("<color=#A8B4C4>Chưa có giao dịch. Làm thêm, nhiệm vụ và bán nông sản để có tiền.</color>");
+            if (entries.Count == 0) sb.Append("<color=#A8B4C4>" + Loc.T("Chưa có giao dịch. Làm thêm, nhiệm vụ và bán nông sản để có tiền.", "No transactions yet. Part-time jobs, quests and selling produce earn money.", "まだ取引はありません。アルバイト・クエスト・作物の販売でお金をかせげます。") + "</color>");
             for (int i = 0; i < entries.Count && i < 12; i++)
             {
                 var e = entries[i];
                 string when = new DateTime(e.ticks).ToString("dd/MM HH:mm");
                 string amount = e.amount > 0 ? $"<color=#7BE38E>+¥{e.amount:N0}</color>" : $"<color=#FF8A75>−¥{-e.amount:N0}</color>";
                 if (i > 0) sb.Append('\n');
-                sb.Append($"<color=#8A96A3>{when}</color>  {amount}  {e.reason}  <color=#8A96A3>→ ¥{e.balance:N0}</color>");
+                sb.Append($"<color=#8A96A3>{when}</color>  {amount}  {Loc.Resolve(e.reason)}  <color=#8A96A3>→ ¥{e.balance:N0}</color>");
             }
             _historyText.text = sb.ToString();
         }

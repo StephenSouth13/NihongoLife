@@ -183,7 +183,8 @@ namespace NihongoLife.UI
 
             // Title row
             var top = NLUi.Group(root, "Top", false, 10f, TextAnchor.MiddleLeft);
-            var title = NLUi.Label(top, "Title", "Trò chuyện", 26f, NLUi.Gold, _font, FontStyles.Bold);
+            var title = NLUi.Label(top, "Title", "", 26f, NLUi.Gold, _font, FontStyles.Bold);
+            LocText.Set(title, "Trò chuyện", "Chat", "チャット");
             NLUi.Size(title, 220f, 40f);
             _status = NLUi.Label(top, "Status", "", 16f, NLUi.Muted, _font, FontStyles.Normal, TextAlignmentOptions.MidlineLeft);
             NLUi.Size(_status, -1f, 40f, 1f);
@@ -192,11 +193,11 @@ namespace NihongoLife.UI
 
             // Tabs
             var tabs = NLUi.Group(root, "Tabs", false, 8f, TextAnchor.MiddleLeft);
-            AddTab(tabs, Tab.Area, "Khu vực");
-            AddTab(tabs, Tab.Community, "Cộng đồng");
-            AddTab(tabs, Tab.Groups, "Nhóm");
-            AddTab(tabs, Tab.Direct, "Riêng tư");
-            AddTab(tabs, Tab.Friends, "Bạn bè");
+            AddTab(tabs, Tab.Area, "Khu vực", "Nearby", "周辺");
+            AddTab(tabs, Tab.Community, "Cộng đồng", "Community", "コミュニティ");
+            AddTab(tabs, Tab.Groups, "Nhóm", "Groups", "グループ");
+            AddTab(tabs, Tab.Direct, "Riêng tư", "Direct", "個別");
+            AddTab(tabs, Tab.Friends, "Bạn bè", "Friends", "フレンド");
 
             // Body: list column + chat pane (or the friends pane)
             var body = NLUi.Group(root, "Body", false, 12f, TextAnchor.UpperLeft);
@@ -210,10 +211,13 @@ namespace NihongoLife.UI
             _listContent = Scroll(listPanel, "ListScroll", 380f, out _);
             // Built once (not inside the list that refreshes), so the typed group name survives refreshes.
             _listFooter = NLUi.Panel(listPanel, "CreateGroup", new Color(0.09f, 0.11f, 0.14f, 1f), new RectOffset(10, 10, 8, 10), 6f);
-            NLUi.Label(_listFooter, "Label", "Tạo nhóm trò chuyện mới", 15f, NLUi.Muted, _font);
-            _groupNameInput = MakeInput(_listFooter, "GroupName", "Tên nhóm (vd. Nhóm ôn N4)", 32);
+            LocText.Set(NLUi.Label(_listFooter, "Label", "", 15f, NLUi.Muted, _font), "Tạo nhóm trò chuyện mới", "Create a new chat group", "新しいグループを作る");
+            _groupNameInput = MakeInput(_listFooter, "GroupName", "", 32);
+            LocText.Set((TMP_Text)_groupNameInput.placeholder, "Tên nhóm (vd. Nhóm ôn N4)", "Group name (e.g. N4 study group)", "グループ名（例：N4勉強会）");
             NLUi.Size(_groupNameInput, -1f, 40f);
-            NLUi.Size(NLUi.Button(_listFooter, "CreateGroupButton", "+ Tạo nhóm", _font, CreateGroupFromInput, NLUi.Gold, 16f, new Color(0.1f, 0.08f, 0.04f), 38f), -1f, 38f);
+            var createGroup = NLUi.Button(_listFooter, "CreateGroupButton", "", _font, CreateGroupFromInput, NLUi.Gold, 16f, new Color(0.1f, 0.08f, 0.04f), 38f);
+            NLUi.Size(createGroup, -1f, 38f);
+            LocText.Set(createGroup.GetComponentInChildren<TextMeshProUGUI>(), "+ Tạo nhóm", "+ Create group", "+ グループ作成");
             _listFooter.gameObject.SetActive(false);
 
             _chatPane = NLUi.Panel(body, "ChatPane", NLUi.Card, new RectOffset(14, 14, 12, 12), 8f);
@@ -227,10 +231,12 @@ namespace NihongoLife.UI
             NLUi.Divider(_chatPane);
             _messagesContent = Scroll(_chatPane, "Messages", 410f, out _messagesScroll);
             var inputRow = NLUi.Group(_chatPane, "InputRow", false, 8f, TextAnchor.MiddleLeft);
-            _input = MakeInput(inputRow, "ChatInput", "Nhập tin nhắn… (Enter để gửi)", SupabaseOnlineWorldService.MaxChatLength);
+            _input = MakeInput(inputRow, "ChatInput", "", SupabaseOnlineWorldService.MaxChatLength);
+            LocText.Set((TMP_Text)_input.placeholder, "Nhập tin nhắn… (Enter để gửi)", "Type a message… (Enter to send)", "メッセージを入力…（Enterで送信）");
             NLUi.Size(_input, -1f, 46f, 1f);
             _input.onSubmit.AddListener(_ => SendCurrent());
-            var send = NLUi.Button(inputRow, "Send", "Gửi", _font, SendCurrent, NLUi.Gold, 18f, new Color(0.1f, 0.08f, 0.04f), 46f);
+            var send = NLUi.Button(inputRow, "Send", "", _font, SendCurrent, NLUi.Gold, 18f, new Color(0.1f, 0.08f, 0.04f), 46f);
+            LocText.Set(send.GetComponentInChildren<TextMeshProUGUI>(), "Gửi", "Send", "送信");
             NLUi.Size(send, 110f, 46f, 0f);
 
             _friendsPane = NLUi.Panel(body, "FriendsPane", NLUi.Card, new RectOffset(14, 14, 12, 12), 8f);
@@ -240,13 +246,15 @@ namespace NihongoLife.UI
 
             BuildCard();
             _window.gameObject.SetActive(false);
+            // Lists, pane and messages are redrawn in the new language on a switch.
+            Loc.Watch(this, () => { _dirty = true; _messagesDirty = true; if (CardOpen) RebuildCard(); });
             UiModalStack.Register(this, () => IsOpen, Close, "SocialChat");
             UiModalStack.Register(this, () => CardOpen, HidePlayerCard, "PlayerCard");
         }
 
-        private void AddTab(Transform parent, Tab tab, string label)
+        private void AddTab(Transform parent, Tab tab, string vi, string en, string ja)
         {
-            var button = NLUi.Button(parent, "Tab_" + tab, label, _font, () => SelectTab(tab), TabOff, 17f, null, 40f);
+            var button = NLUi.Button(parent, "Tab_" + tab, Loc.T(vi, en, ja), _font, () => SelectTab(tab), TabOff, 17f, null, 40f);
             NLUi.Size(button, 150f, 40f);
             _tabLabels[tab] = button.GetComponentInChildren<TextMeshProUGUI>();
             _tabImages[tab] = button.GetComponent<Image>();
@@ -330,7 +338,7 @@ namespace NihongoLife.UI
             NLUi.Size(dot.transform, 22f, 22f);
             _voiceText = NLUi.Label(_voiceBar, "Text", "", 16f, NLUi.Text, _font, FontStyles.Normal, TextAlignmentOptions.MidlineLeft);
             _voiceText.textWrappingMode = TextWrappingModes.NoWrap;
-            var off = NLUi.Button(_voiceBar, "Leave", "Tắt", _font, () => NihongoLife.Learning.VoiceChatService.Instance?.Leave(), NLUi.Bad, 14f, null, 30f);
+            var off = NLUi.Button(_voiceBar, "Leave", Loc.T("Tắt", "Off", "切る"), _font, () => NihongoLife.Learning.VoiceChatService.Instance?.Leave(), NLUi.Bad, 14f, null, 30f);
             NLUi.Size(off, 64f, 30f);
             NLUi.FitContent(_voiceBar, width: true, height: false);
             _voiceBar.gameObject.SetActive(false);
@@ -346,7 +354,7 @@ namespace NihongoLife.UI
             _voiceDot.color = voice.Talking ? new Color(1f, 0.35f, 0.3f) : voice.Joined ? Online : NLUi.Muted;
             var talkers = new List<string>();
             foreach (uint uid in voice.Speaking) { string n = NameForUid(uid); if (n != null) talkers.Add(n); if (talkers.Count == 3) break; }
-            _voiceText.text = voice.Talking ? "<b>Đang nói…</b>  " + voice.Status
+            _voiceText.text = voice.Talking ? "<b>" + Loc.T("Đang nói…", "Speaking…", "話しています…") + "</b>  " + voice.Status
                 : voice.Status + (talkers.Count > 0 ? "  ·  <color=#5BD98A>" + string.Join(", ", talkers) + "</color>" : "");
         }
 
@@ -357,7 +365,7 @@ namespace NihongoLife.UI
                 foreach (var p in w.VisiblePlayers) if (NihongoLife.Learning.VoiceChatService.AgoraUid(p.playerId) == uid) return p.displayName;
             foreach (var g in _hub.Groups) foreach (var id in g.MemberIds) if (NihongoLife.Learning.VoiceChatService.AgoraUid(id) == uid) return g.MemberName(id);
             foreach (var c in _hub.ConversationsOf(SocialHub.Kind.Direct)) if (NihongoLife.Learning.VoiceChatService.AgoraUid(c.PeerId) == uid) return c.Title;
-            return "Ai đó";
+            return Loc.T("Ai đó", "Someone", "だれか");
         }
 
         private void UpdateLauncher()
@@ -370,7 +378,7 @@ namespace NihongoLife.UI
             if (_launcher.gameObject.activeSelf != show) _launcher.gameObject.SetActive(show);
             if (!show) return;
             string key = GameInputService.GetOrCreate().GetBindingLabel(GameInputId.Chat);
-            _launcherText.text = invites > 0 && unread == 0 ? $"● {invites} lời mời nhóm  ·  {key}" : $"● {unread} tin nhắn mới  ·  {key}";
+            _launcherText.text = invites > 0 && unread == 0 ? "● " + Loc.F("{0} lời mời nhóm", "{0} group invites", "グループ招待 {0}件", invites) + $"  ·  {key}" : "● " + Loc.F("{0} tin nhắn mới", "{0} new messages", "新着メッセージ {0}件", unread) + $"  ·  {key}";
         }
 
         // ──────────────────────── Tabs ────────────────────────
@@ -430,17 +438,17 @@ namespace NihongoLife.UI
                     Tab.Friends => _hub.Friends.Count(f => f.IncomingRequest),
                     _ => 0
                 };
-                string name = kv.Key switch { Tab.Area => "Khu vực", Tab.Community => "Cộng đồng", Tab.Groups => "Nhóm", Tab.Direct => "Riêng tư", _ => "Bạn bè" };
+                string name = kv.Key switch { Tab.Area => Loc.T("Khu vực", "Nearby", "周辺"), Tab.Community => Loc.T("Cộng đồng", "Community", "コミュニティ"), Tab.Groups => Loc.T("Nhóm", "Groups", "グループ"), Tab.Direct => Loc.T("Riêng tư", "Direct", "個別"), _ => Loc.T("Bạn bè", "Friends", "フレンド") };
                 label.text = badge > 0 ? $"{name} <color={(on ? "#7A1E10" : "#FF7A5C")}>●{badge}</color>" : name;
             }
 
             var online = _hub != null && GameServices.TryGet(out IOnlineWorldService w) ? w as SupabaseOnlineWorldService : null;
             if (online != null && online.IsConnected)
             {
-                string room = online.ShardTopic != null ? $"phòng {online.ShardTopic.Substring(online.ShardTopic.LastIndexOf(':') + 1)} ({online.ShardMemberCount}/{SupabaseOnlineWorldService.ShardCapacity})" : "phòng riêng";
-                _status.text = $"<color=#5BD98A>●</color> Online · {online.OnlineCount} người đang chơi · {room}  ·  tin nhắn không lưu lại";
+                string room = online.ShardTopic != null ? Loc.F("phòng {0} ({1}/{2})", "room {0} ({1}/{2})", "ルーム{0}（{1}/{2}）", online.ShardTopic.Substring(online.ShardTopic.LastIndexOf(':') + 1), online.ShardMemberCount, SupabaseOnlineWorldService.ShardCapacity) : Loc.T("phòng riêng", "private room", "個室");
+                _status.text = "<color=#5BD98A>●</color> " + Loc.F("Online · {0} người đang chơi · {1}  ·  tin nhắn không lưu lại", "Online · {0} playing · {1}  ·  messages are not stored", "オンライン · {0}人がプレイ中 · {1}  ·  メッセージは保存されません", online.OnlineCount, room);
             }
-            else _status.text = "<color=#9AA5B1>●</color> Ngoại tuyến — chỉ có chat khu vực mô phỏng";
+            else _status.text = "<color=#9AA5B1>●</color> " + Loc.T("Ngoại tuyến — chỉ có chat khu vực mô phỏng", "Offline — simulated nearby chat only", "オフライン — 周辺チャット（シミュレーション）のみ");
         }
 
         // ──────────────────────── List column ────────────────────────
@@ -469,39 +477,39 @@ namespace NihongoLife.UI
                     if (p.playerId == world.LocalPlayerId) continue;
                     n++;
                     string id = p.playerId, name = p.displayName;
-                    PersonRow(_listContent, name, "đang ở quanh đây", true, () => ShowPlayerCard(id, name));
+                    PersonRow(_listContent, name, Loc.T("đang ở quanh đây", "nearby", "近くにいます"), true, () => ShowPlayerCard(id, name));
                 }
             }
-            _listHeader.text = $"Quanh đây ({n})";
-            if (n == 0) Note(_listContent, "Chưa có ai trong khu vực này. Người chơi khác cùng địa điểm sẽ hiện ở đây — bấm vào tên để nhắn riêng, kết bạn hoặc mời nhóm.");
+            _listHeader.text = Loc.F("Quanh đây ({0})", "Nearby ({0})", "近く（{0}）", n);
+            if (n == 0) Note(_listContent, Loc.T("Chưa có ai trong khu vực này. Người chơi khác cùng địa điểm sẽ hiện ở đây — bấm vào tên để nhắn riêng, kết bạn hoặc mời nhóm.", "Nobody around yet. Players in the same place appear here — click a name to message, add as a friend or invite to a group.", "まだ近くにだれもいません。同じ場所のプレイヤーがここに表示されます — 名前をクリックしてメッセージ・フレンド申請・グループ招待ができます。"));
         }
 
         private void ListCommunity()
         {
             var online = GameServices.TryGet(out IOnlineWorldService w) ? w as SupabaseOnlineWorldService : null;
-            _listHeader.text = online != null ? $"Đang online: {online.OnlineCount}" : "Cộng đồng";
-            Note(_listContent, "Kênh chung cho tất cả người chơi đang online.\n\n• Tin nhắn chỉ hiện trong lúc bạn đang chơi, không lưu lại.\n• Lịch sự, không chia sẻ thông tin cá nhân.\n• Bấm vào tên người gửi để nhắn riêng, kết bạn hoặc chặn.");
+            _listHeader.text = online != null ? Loc.F("Đang online: {0}", "Online: {0}", "オンライン：{0}", online.OnlineCount) : Loc.T("Cộng đồng", "Community", "コミュニティ");
+            Note(_listContent, Loc.T("Kênh chung cho tất cả người chơi đang online.\n\n• Tin nhắn chỉ hiện trong lúc bạn đang chơi, không lưu lại.\n• Lịch sự, không chia sẻ thông tin cá nhân.\n• Bấm vào tên người gửi để nhắn riêng, kết bạn hoặc chặn.", "One channel for everyone online.\n\n• Messages show only while you play and are not stored.\n• Be polite and do not share personal information.\n• Click a sender's name to message, add as a friend or block.", "オンラインの全員が使える共通チャンネルです。\n\n• メッセージはプレイ中だけ表示され、保存されません。\n• 礼儀正しく、個人情報は共有しないでください。\n• 送信者の名前をクリックすると、メッセージ・フレンド申請・ブロックができます。"));
         }
 
         private void ListGroups()
         {
-            _listHeader.text = "Nhóm của bạn";
+            _listHeader.text = Loc.T("Nhóm của bạn", "Your groups", "あなたのグループ");
             foreach (var invite in new List<SocialHub.Invite>(_hub.Invites))
             {
                 var row = NLUi.Panel(_listContent, "Invite", new Color(0.26f, 0.2f, 0.08f, 1f), new RectOffset(10, 10, 8, 8), 6f);
-                NLUi.Label(row, "Text", $"<b>{invite.FromName}</b> mời bạn vào nhóm “{invite.GroupName}”", 15f, NLUi.Text, _font);
+                NLUi.Label(row, "Text", Loc.F("<b>{0}</b> mời bạn vào nhóm “{1}”", "<b>{0}</b> invites you to “{1}”", "<b>{0}</b>さんが「{1}」に招待しています", invite.FromName, invite.GroupName), 15f, NLUi.Text, _font);
                 var buttons = NLUi.Group(row, "Buttons", false, 6f, TextAnchor.MiddleLeft, false);
                 var captured = invite;
-                NLUi.Size(NLUi.Button(buttons, "Accept", "Vào nhóm", _font, () => { _hub.AcceptInvite(captured); SelectTab(Tab.Groups, SocialHub.GroupConversationId(captured.GroupId)); }, NLUi.Good, 15f, null, 34f), 120f, 34f);
-                NLUi.Size(NLUi.Button(buttons, "Decline", "Bỏ qua", _font, () => _hub.DeclineInvite(captured), TabOff, 15f, null, 34f), 100f, 34f);
+                NLUi.Size(NLUi.Button(buttons, "Accept", Loc.T("Vào nhóm", "Join", "参加"), _font, () => { _hub.AcceptInvite(captured); SelectTab(Tab.Groups, SocialHub.GroupConversationId(captured.GroupId)); }, NLUi.Good, 15f, null, 34f), 120f, 34f);
+                NLUi.Size(NLUi.Button(buttons, "Decline", Loc.T("Bỏ qua", "Ignore", "無視"), _font, () => _hub.DeclineInvite(captured), TabOff, 15f, null, 34f), 100f, 34f);
             }
             foreach (var c in _hub.ConversationsOf(SocialHub.Kind.Group))
             {
                 var g = _hub.GetGroup(c.GroupId);
                 string id = c.Id;
-                ConversationRow(_listContent, c.Title, $"{g?.MemberCount ?? 1} thành viên", c.Unread, id == _conversationId, () => SelectTab(Tab.Groups, id));
+                ConversationRow(_listContent, c.Title, Loc.F("{0} thành viên", "{0} members", "メンバー{0}人", g?.MemberCount ?? 1), c.Unread, id == _conversationId, () => SelectTab(Tab.Groups, id));
             }
-            if (!_hub.IsRealOnline) Note(_listContent, "Nhóm cần kết nối online.");
+            if (!_hub.IsRealOnline) Note(_listContent, Loc.T("Nhóm cần kết nối online.", "Groups need an online connection.", "グループにはオンライン接続が必要です。"));
         }
 
         private void CreateGroupFromInput()
@@ -515,7 +523,7 @@ namespace NihongoLife.UI
 
         private void ListDirect()
         {
-            _listHeader.text = "Tin nhắn riêng";
+            _listHeader.text = Loc.T("Tin nhắn riêng", "Direct messages", "個別メッセージ");
             var list = _hub.ConversationsOf(SocialHub.Kind.Direct);
             var online = GameServices.TryGet(out IOnlineWorldService w) ? w as SupabaseOnlineWorldService : null;
             foreach (var c in list)
@@ -524,13 +532,13 @@ namespace NihongoLife.UI
                 bool isOnline = online != null && online.IsOnline(c.PeerId);
                 ConversationRow(_listContent, (isOnline ? "<color=#5BD98A>●</color> " : "<color=#6B7580>●</color> ") + c.Title, isOnline ? "online" : "offline", c.Unread, id == _conversationId, () => SelectTab(Tab.Direct, id));
             }
-            if (list.Count == 0) Note(_listContent, "Chưa có cuộc trò chuyện riêng.\nMở tab Bạn bè và bấm “Nhắn”, hoặc đến gần ai đó và nhấn F.\n\nTin nhắn riêng được mã hóa đầu-cuối: chỉ hai bạn đọc được.");
+            if (list.Count == 0) Note(_listContent, Loc.T("Chưa có cuộc trò chuyện riêng.\nMở tab Bạn bè và bấm “Nhắn”, hoặc đến gần ai đó và nhấn F.\n\nTin nhắn riêng được mã hóa đầu-cuối: chỉ hai bạn đọc được.", "No direct conversations yet.\nOpen Friends and press “Message”, or walk up to someone and press F.\n\nDirect messages are end-to-end encrypted: only the two of you can read them.", "個別の会話はまだありません。\nフレンドタブで「メッセージ」を押すか、だれかに近づいてFを押しましょう。\n\n個別メッセージはエンドツーエンドで暗号化され、二人だけが読めます。"));
         }
 
         private void ListFriendsSide()
         {
-            _listHeader.text = "Bạn của bạn";
-            Note(_listContent, "Bạn bè đang online hiện ở trên cùng, kèm nơi họ đang ở.\n\nKết bạn: đến gần người chơi và nhấn F › Kết bạn, hoặc nhập ID của họ bên phải.");
+            _listHeader.text = Loc.T("Bạn của bạn", "Your friends", "あなたのフレンド");
+            Note(_listContent, Loc.T("Bạn bè đang online hiện ở trên cùng, kèm nơi họ đang ở.\n\nKết bạn: đến gần người chơi và nhấn F › Kết bạn, hoặc nhập ID của họ bên phải.", "Friends online are listed first, with where they are.\n\nAdd a friend: walk up to a player and press F › Add friend, or enter their ID on the right.", "オンラインのフレンドが上に、いる場所と一緒に表示されます。\n\nフレンド申請：プレイヤーに近づいてF ›フレンド申請、または右側にIDを入力します。"));
         }
 
         private void PersonRow(Transform parent, string name, string sub, bool online, Action onClick)
@@ -563,50 +571,50 @@ namespace NihongoLife.UI
             _input.interactable = canType;
             if (c == null)
             {
-                _paneTitle.text = _tab == Tab.Groups ? "Chưa chọn nhóm" : "Chưa chọn cuộc trò chuyện";
-                _paneInfo.text = _tab == Tab.Groups ? "Tạo nhóm mới hoặc chấp nhận lời mời ở cột bên trái." : "Chọn một người ở cột bên trái.";
+                _paneTitle.text = _tab == Tab.Groups ? Loc.T("Chưa chọn nhóm", "No group selected", "グループ未選択") : Loc.T("Chưa chọn cuộc trò chuyện", "No conversation selected", "会話未選択");
+                _paneInfo.text = _tab == Tab.Groups ? Loc.T("Tạo nhóm mới hoặc chấp nhận lời mời ở cột bên trái.", "Create a group or accept an invite on the left.", "左側でグループを作るか招待を受けましょう。") : Loc.T("Chọn một người ở cột bên trái.", "Pick someone on the left.", "左側で相手を選びましょう。");
                 return;
             }
             switch (c.Kind)
             {
                 case SocialHub.Kind.Area:
-                    _paneTitle.text = "Khu vực";
-                    _paneInfo.text = "Những người cùng địa điểm (cùng phòng) với bạn sẽ thấy. Không lưu lại.";
-                    VoiceButton(NihongoLife.Learning.VoiceChatService.Mode.Area, "Voice khu vực", v => v.JoinArea());
+                    _paneTitle.text = Loc.T("Khu vực", "Nearby", "周辺");
+                    _paneInfo.text = Loc.T("Những người cùng địa điểm (cùng phòng) với bạn sẽ thấy. Không lưu lại.", "Seen by people in the same place (same room). Not stored.", "同じ場所（同じルーム）の人に見えます。保存されません。");
+                    VoiceButton(NihongoLife.Learning.VoiceChatService.Mode.Area, Loc.T("Voice khu vực", "Nearby voice", "周辺ボイス"), v => v.JoinArea());
                     break;
                 case SocialHub.Kind.Community:
-                    _paneTitle.text = "Cộng đồng";
-                    _paneInfo.text = "Mọi người đang online đều thấy. Không lưu lại.";
+                    _paneTitle.text = Loc.T("Cộng đồng", "Community", "コミュニティ");
+                    _paneInfo.text = Loc.T("Mọi người đang online đều thấy. Không lưu lại.", "Everyone online sees it. Not stored.", "オンラインの全員に見えます。保存されません。");
                     break;
                 case SocialHub.Kind.Group:
                 {
                     var g = _hub.GetGroup(c.GroupId);
                     _paneTitle.text = c.Title;
                     var names = new List<string>();
-                    if (g != null) foreach (var id in g.MemberIds) names.Add(id == _hub.LocalId ? "Bạn" : g.MemberName(id));
-                    _paneInfo.text = $"{names.Count} thành viên: {string.Join(", ", names)} · Tin nhắn chỉ hiện khi đang online.";
+                    if (g != null) foreach (var id in g.MemberIds) names.Add(id == _hub.LocalId ? Loc.T("Bạn", "You", "あなた") : g.MemberName(id));
+                    _paneInfo.text = Loc.F("{0} thành viên: {1} · Tin nhắn chỉ hiện khi đang online.", "{0} members: {1} · Messages show only while online.", "メンバー{0}人：{1} · メッセージはオンライン中のみ表示。", names.Count, string.Join(", ", names));
                     string gid = c.GroupId;
-                    VoiceButton(NihongoLife.Learning.VoiceChatService.Mode.Group, "Voice nhóm", v => v.JoinGroup(gid));
-                    SmallButton(_paneActions, "Mời bạn bè", () => { SelectTab(Tab.Friends); });
-                    SmallButton(_paneActions, "Rời nhóm", () => { _hub.LeaveGroup(gid); SelectTab(Tab.Groups); }, NLUi.Bad);
+                    VoiceButton(NihongoLife.Learning.VoiceChatService.Mode.Group, Loc.T("Voice nhóm", "Group voice", "グループボイス"), v => v.JoinGroup(gid));
+                    SmallButton(_paneActions, Loc.T("Mời bạn bè", "Invite friends", "フレンドを招待"), () => { SelectTab(Tab.Friends); });
+                    SmallButton(_paneActions, Loc.T("Rời nhóm", "Leave group", "グループを抜ける"), () => { _hub.LeaveGroup(gid); SelectTab(Tab.Groups); }, NLUi.Bad);
                     break;
                 }
                 case SocialHub.Kind.Direct:
                 {
                     _paneTitle.text = c.Title;
                     string code = _hub.PeerSafetyCode(c.PeerId);
-                    _paneInfo.text = $"<color=#5BD98A>Mã hóa đầu-cuối</color> · Mã an toàn của bạn {_hub.SafetyCode} · của {c.Title} {(code ?? "(chưa trao đổi)")}";
+                    _paneInfo.text = $"<color=#5BD98A>{Loc.T("Mã hóa đầu-cuối", "End-to-end encrypted", "エンドツーエンド暗号化")}</color> · " + Loc.F("Mã an toàn của bạn {0} · của {1} {2}", "Your safety code {0} · {1}'s {2}", "あなたの安全コード {0} · {1}さん {2}", _hub.SafetyCode, c.Title, code ?? Loc.T("(chưa trao đổi)", "(not exchanged yet)", "（未交換）"));
                     string peer = c.PeerId, peerName = c.Title;
                     string me = _hub.LocalId;
-                    VoiceButton(NihongoLife.Learning.VoiceChatService.Mode.Call, _hub.HasIncomingCall(peer) ? "Nghe" : "Gọi thoại", v =>
+                    VoiceButton(NihongoLife.Learning.VoiceChatService.Mode.Call, _hub.HasIncomingCall(peer) ? Loc.T("Nghe", "Answer", "応答") : Loc.T("Gọi thoại", "Voice call", "音声通話"), v =>
                     {
                         if (!_hub.HasIncomingCall(peer)) _hub.NotifyCall(peer);
                         _hub.ClearIncomingCall(peer);
                         v.Call(me, peer);
                     });
-                    if (!_hub.IsFriend(peer) && _hub.CanUseFriends) SmallButton(_paneActions, "Kết bạn", () => _hub.AddFriend(peer));
+                    if (!_hub.IsFriend(peer) && _hub.CanUseFriends) SmallButton(_paneActions, Loc.T("Kết bạn", "Add friend", "フレンド申請"), () => _hub.AddFriend(peer));
                     bool blocked = _hub.IsBlocked(peer);
-                    SmallButton(_paneActions, blocked ? "Bỏ chặn" : "Chặn", () => { _hub.SetBlocked(peer, !blocked); _dirty = true; }, blocked ? TabOff : NLUi.Bad);
+                    SmallButton(_paneActions, blocked ? Loc.T("Bỏ chặn", "Unblock", "ブロック解除") : Loc.T("Chặn", "Block", "ブロック"), () => { _hub.SetBlocked(peer, !blocked); _dirty = true; }, blocked ? TabOff : NLUi.Bad);
                     break;
                 }
             }
@@ -617,7 +625,7 @@ namespace NihongoLife.UI
         {
             var voice = NihongoLife.Learning.VoiceChatService.Instance;
             if (voice == null) return;
-            if (voice.Current == mode && (voice.Joined || voice.Busy)) SmallButton(_paneActions, mode == NihongoLife.Learning.VoiceChatService.Mode.Call ? "Kết thúc" : "Tắt voice", () => { voice.Leave(); _dirty = true; }, NLUi.Bad);
+            if (voice.Current == mode && (voice.Joined || voice.Busy)) SmallButton(_paneActions, mode == NihongoLife.Learning.VoiceChatService.Mode.Call ? Loc.T("Kết thúc", "Hang up", "終了") : Loc.T("Tắt voice", "Voice off", "ボイスを切る"), () => { voice.Leave(); _dirty = true; }, NLUi.Bad);
             else SmallButton(_paneActions, label, () => { join(voice); _dirty = true; }, NLUi.Good);
         }
 
@@ -634,7 +642,7 @@ namespace NihongoLife.UI
             var c = _hub?.Get(_conversationId);
             if (c == null) return;
             if (c.Messages.Count == 0)
-                Note(_messagesContent, c.Kind == SocialHub.Kind.Direct ? "Hãy gửi lời chào! Tin nhắn được mã hóa trên máy bạn trước khi gửi đi." : "Chưa có tin nhắn. Hãy bắt đầu cuộc trò chuyện!");
+                Note(_messagesContent, c.Kind == SocialHub.Kind.Direct ? Loc.T("Hãy gửi lời chào! Tin nhắn được mã hóa trên máy bạn trước khi gửi đi.", "Say hello! Messages are encrypted on your device before they are sent.", "あいさつを送りましょう！メッセージは送信前に端末で暗号化されます。") : Loc.T("Chưa có tin nhắn. Hãy bắt đầu cuộc trò chuyện!", "No messages yet. Start the conversation!", "まだメッセージはありません。会話を始めましょう！"));
             string me = _hub.LocalId;
             foreach (var m in c.Messages)
             {
@@ -643,9 +651,9 @@ namespace NihongoLife.UI
                 var row = NLUi.Group(_messagesContent, "Row", false, 0f, mine ? TextAnchor.UpperRight : TextAnchor.UpperLeft, false);
                 var bubble = NLUi.Panel(row, "Bubble", system ? SystemTint : mine ? Mine : Theirs, new RectOffset(12, 12, 6, 8), 2f);
                 string time = new DateTime(m.sentAtUtcTicks, DateTimeKind.Utc).ToLocalTime().ToString("HH:mm");
-                string who = system ? "<color=#E8C46A>NihongoLife</color>" : mine ? "<color=#9FD8F0>Bạn</color>" : $"<color=#F2C75B>{m.senderDisplayName}</color>";
+                string who = system ? "<color=#E8C46A>NihongoLife</color>" : mine ? $"<color=#9FD8F0>{Loc.T("Bạn", "You", "あなた")}</color>" : $"<color=#F2C75B>{m.senderDisplayName}</color>";
                 NLUi.Label(bubble, "Meta", $"<b>{who}</b>  <size=80%><color=#8A96A3>{time}</color></size>", 14f, NLUi.Text, _font);
-                var text = NLUi.Label(bubble, "Text", m.text, 17f, system ? NLUi.Soft : NLUi.Text, _font);
+                var text = NLUi.Label(bubble, "Text", system ? Loc.Resolve(m.text) : m.text, 17f, system ? NLUi.Soft : NLUi.Text, _font);
                 text.richText = system; // players cannot inject tags
                 var fitter = bubble.gameObject.AddComponent<LayoutElement>();
                 fitter.preferredWidth = Mathf.Min(560f, 60f + m.text.Length * 9.5f);
@@ -684,13 +692,15 @@ namespace NihongoLife.UI
         private void BuildFriendsPane()
         {
             var head = NLUi.Group(_friendsPane, "Head", false, 8f, TextAnchor.MiddleLeft);
-            var t = NLUi.Label(head, "Title", "Bạn bè", 20f, NLUi.Text, _font, FontStyles.Bold);
+            var t = NLUi.Label(head, "Title", "", 20f, NLUi.Text, _font, FontStyles.Bold);
+            LocText.Set(t, "Bạn bè", "Friends", "フレンド");
             NLUi.Size(t, -1f, 36f, 1f);
             _friendsInfo = NLUi.Label(_friendsPane, "Info", "", 14f, NLUi.Muted, _font);
             var add = NLUi.Group(_friendsPane, "Add", false, 8f, TextAnchor.MiddleLeft);
-            _friendIdInput = MakeInput(add, "FriendId", "Nhập ID người chơi để gửi lời mời kết bạn", 64);
+            _friendIdInput = MakeInput(add, "FriendId", "", 64);
+            LocText.Set((TMP_Text)_friendIdInput.placeholder, "Nhập ID người chơi để gửi lời mời kết bạn", "Enter a player ID to send a friend request", "プレイヤーIDを入力してフレンド申請");
             NLUi.Size(_friendIdInput, -1f, 40f, 1f);
-            var send = NLUi.Button(add, "AddFriend", "Gửi lời mời", _font, () =>
+            var send = NLUi.Button(add, "AddFriend", Loc.T("Gửi lời mời", "Send request", "申請する"), _font, () =>
             {
                 string id = _friendIdInput.text.Trim();
                 if (id.Length > 0) { _hub.AddFriend(id); _friendIdInput.text = string.Empty; }
@@ -704,12 +714,12 @@ namespace NihongoLife.UI
         {
             string id = _hub.LocalId ?? "—";
             _friendsInfo.text = _hub.CanUseFriends
-                ? $"ID của bạn: <color=#F2C75B>{id}</color>  ·  Mã an toàn tin nhắn: {_hub.SafetyCode}"
-                : "Đăng nhập tài khoản để kết bạn và xem bạn bè online. (Chế độ khách vẫn chat khu vực, cộng đồng, nhóm và nhắn riêng.)";
+                ? Loc.F("ID của bạn: <color=#F2C75B>{0}</color>  ·  Mã an toàn tin nhắn: {1}", "Your ID: <color=#F2C75B>{0}</color>  ·  Message safety code: {1}", "あなたのID：<color=#F2C75B>{0}</color>  ·  メッセージ安全コード：{1}", id, _hub.SafetyCode)
+                : Loc.T("Đăng nhập tài khoản để kết bạn và xem bạn bè online. (Chế độ khách vẫn chat khu vực, cộng đồng, nhóm và nhắn riêng.)", "Sign in to add friends and see who is online. (Guests can still use nearby, community, group and direct chat.)", "ログインするとフレンド申請やオンライン状況が使えます。（ゲストでも周辺・コミュニティ・グループ・個別チャットは使えます。）");
             Clear(_friendsContent);
             if (_hub.Friends.Count == 0)
             {
-                Note(_friendsContent, _hub.CanUseFriends ? "Chưa có bạn bè. Đến gần ai đó và nhấn F › Kết bạn." : "Danh sách bạn bè cần đăng nhập.");
+                Note(_friendsContent, _hub.CanUseFriends ? Loc.T("Chưa có bạn bè. Đến gần ai đó và nhấn F › Kết bạn.", "No friends yet. Walk up to someone and press F › Add friend.", "まだフレンドはいません。だれかに近づいてF ›フレンド申請。") : Loc.T("Danh sách bạn bè cần đăng nhập.", "The friends list needs a signed-in account.", "フレンドリストにはログインが必要です。"));
                 return;
             }
             foreach (var f in _hub.Friends)
@@ -722,16 +732,16 @@ namespace NihongoLife.UI
                 var friend = f;
                 if (f.IncomingRequest)
                 {
-                    SmallButton(row, "Đồng ý", () => _hub.AcceptFriend(friend), NLUi.Good);
-                    SmallButton(row, "Từ chối", () => _hub.RemoveFriend(friend), TabOff);
+                    SmallButton(row, Loc.T("Đồng ý", "Accept", "承認"), () => _hub.AcceptFriend(friend), NLUi.Good);
+                    SmallButton(row, Loc.T("Từ chối", "Decline", "拒否"), () => _hub.RemoveFriend(friend), TabOff);
                     continue;
                 }
                 if (f.Online)
                 {
-                    SmallButton(row, "Nhắn", () => { _hub.OpenDirect(friend.UserId, friend.Name); SelectTab(Tab.Direct, SocialHub.DirectId(friend.UserId)); FocusInput(); });
-                    SmallButton(row, "Mời nhóm", () => InviteToMyGroup(friend.UserId, friend.Name));
+                    SmallButton(row, Loc.T("Nhắn", "Message", "メッセージ"), () => { _hub.OpenDirect(friend.UserId, friend.Name); SelectTab(Tab.Direct, SocialHub.DirectId(friend.UserId)); FocusInput(); });
+                    SmallButton(row, Loc.T("Mời nhóm", "Invite", "招待"), () => InviteToMyGroup(friend.UserId, friend.Name));
                 }
-                SmallButton(row, "Xóa bạn", () => _hub.RemoveFriend(friend), NLUi.Bad);
+                SmallButton(row, Loc.T("Xóa bạn", "Remove", "削除"), () => _hub.RemoveFriend(friend), NLUi.Bad);
             }
         }
 
@@ -752,7 +762,7 @@ namespace NihongoLife.UI
                 groupId = g.Id;
             }
             _hub.InviteToGroup(groupId, peerId);
-            HudFeed.Post($"Đã mời {peerName} vào nhóm.", HudFeed.Kind.Info, 3f, "invite");
+            HudFeed.Post(Loc.F("Đã mời {0} vào nhóm.", "Invited {0} to the group.", "{0}さんをグループに招待しました。", peerName), HudFeed.Kind.Info, 3f, "invite");
         }
 
         // ──────────────────────── Player card ────────────────────────
@@ -777,17 +787,17 @@ namespace NihongoLife.UI
             bool isFriend = _hub != null && _hub.IsFriend(id);
             bool blocked = _hub != null && _hub.IsBlocked(id);
             string where = online != null && online.TryGetOnline(id, out _, out _, out string scene, out _) && !string.IsNullOrEmpty(scene)
-                ? "Đang ở " + WorldLocationCatalog.Get(scene).VietnameseName : "Người chơi";
+                ? Loc.T("Đang ở ", "At ", "現在地：") + WorldLocationCatalog.Get(scene).DisplayName : Loc.T("Người chơi", "Player", "プレイヤー");
             NLUi.Label(_cardBody, "Sub", $"{where}{(isFriend ? " · <color=#FFD45C>★ Bạn bè</color>" : "")}{(blocked ? " · <color=#FF7A5C>đã chặn</color>" : "")}", 16f, NLUi.Muted, _font);
             if (_hub == null) return;
-            CardButton("Nhắn tin riêng (mã hóa)", () => { HidePlayerCard(); _hub.OpenDirect(id, name); Open(Tab.Direct, SocialHub.DirectId(id)); }, NLUi.Gold, true);
+            CardButton(Loc.T("Nhắn tin riêng (mã hóa)", "Direct message (encrypted)", "個別メッセージ（暗号化）"), () => { HidePlayerCard(); _hub.OpenDirect(id, name); Open(Tab.Direct, SocialHub.DirectId(id)); }, NLUi.Gold, true);
             if (!isFriend)
             {
-                if (_hub.CanUseFriends) CardButton("Kết bạn", () => { _hub.AddFriend(id); HidePlayerCard(); }, NLUi.Good);
-                else CardButton("Kết bạn (cần đăng nhập)", null, TabOff);
+                if (_hub.CanUseFriends) CardButton(Loc.T("Kết bạn", "Add friend", "フレンド申請"), () => { _hub.AddFriend(id); HidePlayerCard(); }, NLUi.Good);
+                else CardButton(Loc.T("Kết bạn (cần đăng nhập)", "Add friend (sign in first)", "フレンド申請（ログインが必要）"), null, TabOff);
             }
-            CardButton("Mời vào nhóm", () => { InviteToMyGroup(id, name); HidePlayerCard(); }, new Color(0.22f, 0.27f, 0.33f, 1f));
-            CardButton(blocked ? "Bỏ chặn" : "Chặn (ẩn tin nhắn & lời mời)", () => { _hub.SetBlocked(id, !blocked); RebuildCard(); }, blocked ? TabOff : new Color(0.45f, 0.16f, 0.14f, 1f));
+            CardButton(Loc.T("Mời vào nhóm", "Invite to group", "グループに招待"), () => { InviteToMyGroup(id, name); HidePlayerCard(); }, new Color(0.22f, 0.27f, 0.33f, 1f));
+            CardButton(blocked ? Loc.T("Bỏ chặn", "Unblock", "ブロック解除") : Loc.T("Chặn (ẩn tin nhắn & lời mời)", "Block (hide messages & invites)", "ブロック（メッセージと招待を非表示）"), () => { _hub.SetBlocked(id, !blocked); RebuildCard(); }, blocked ? TabOff : new Color(0.45f, 0.16f, 0.14f, 1f));
         }
 
         private void CardButton(string label, Action onClick, Color color, bool dark = false)

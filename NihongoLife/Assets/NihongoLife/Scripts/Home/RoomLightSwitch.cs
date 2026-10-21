@@ -19,7 +19,7 @@ namespace NihongoLife.Home
 
         public bool IsLit => lit;
         public string GetPromptJa() => lit ? "でんきを けす" : "でんきを つける";
-        public string GetpromptEn() => lit ? "Tắt đèn" : "Bật đèn";
+        public string GetpromptEn() => lit ? NihongoLife.Core.Loc.T("Tắt đèn", "Turn off the light", "でんきを けす") : NihongoLife.Core.Loc.T("Bật đèn", "Turn on the light", "でんきを つける");
         public Transform GetTransform() => transform;
 
         public void Configure(Light[] lights, Renderer[] shades, Transform toggleKnob)
@@ -38,7 +38,7 @@ namespace NihongoLife.Home
         public void Interact(GameObject player)
         {
             SetLit(!lit, true);
-            HomeBedroomRuntime.Instance?.ShowToast(lit ? "でんきを つけました" : "でんきを けしました", lit ? "Đã bật đèn." : "Đã tắt đèn.");
+            HomeBedroomRuntime.Instance?.ShowToast(lit ? "でんきを つけました" : "でんきを けしました", lit ? NihongoLife.Core.Loc.Triple("Đã bật đèn.", "Light on.", "") : NihongoLife.Core.Loc.Triple("Đã tắt đèn.", "Light off.", ""));
         }
 
         public void SetLit(bool value, bool playSound)

@@ -46,6 +46,8 @@ namespace NihongoLife.Core
         private bool _hasTalking;
         private bool _hasBow;
         private bool _hasPoint;
+        private bool _hasMoveScale;
+        private static readonly int MoveScaleHash = Animator.StringToHash("MoveScale");
         private bool _isSitting;
         private bool _rigWarningLogged;
         private PlayableGraph _directAnimationGraph;
@@ -179,8 +181,13 @@ namespace NihongoLife.Core
             {
                 float normalizedSpeed = Mathf.Clamp01(_currentSpeed / Mathf.Max(0.01f, fullSpeedReference));
                 _animator.SetFloat(_speedHash, normalizedSpeed, speedDampTime, Time.deltaTime);
+                // Kid legs are short: the faster the body moves, the quicker the steps, so planted feet slide less.
+                if (_hasMoveScale) _animator.SetFloat(MoveScaleHash, CadenceFor(_currentSpeed), 0.15f, Time.deltaTime);
             }
         }
+
+        /// <summary>Walk/run playback speed for a ground speed (m/s): ~0.9× strolling, ~1.7× walking, ~1.9× sprinting.</summary>
+        public static float CadenceFor(float speed) => speed > 4f ? Mathf.Clamp(0.9f + 0.2f * speed, 1f, 2f) : Mathf.Clamp(0.55f + 0.55f * speed, 0.8f, 2.2f);
 
         public void SetTalking(bool isTalking)
         {
@@ -410,6 +417,7 @@ namespace NihongoLife.Core
             _hasTalking = false;
             _hasBow = false;
             _hasPoint = false;
+            _hasMoveScale = false;
 
             // Runtime-spawned actors receive their visual immediately after this component
             // is created, so a temporarily missing Animator is a valid initialization state.
@@ -434,6 +442,7 @@ namespace NihongoLife.Core
                 else if (parameter.nameHash == _isTalkingHash && parameter.type == AnimatorControllerParameterType.Bool) _hasTalking = true;
                 else if (parameter.nameHash == _bowHash && parameter.type == AnimatorControllerParameterType.Trigger) _hasBow = true;
                 else if (parameter.nameHash == _pointHash && parameter.type == AnimatorControllerParameterType.Trigger) _hasPoint = true;
+                else if (parameter.nameHash == MoveScaleHash && parameter.type == AnimatorControllerParameterType.Float) _hasMoveScale = true;
             }
 
             if (!_hasSpeed || !_hasTalking || !_hasBow || !_hasPoint)

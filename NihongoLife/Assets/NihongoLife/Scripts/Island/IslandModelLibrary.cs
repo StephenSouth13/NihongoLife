@@ -17,6 +17,12 @@ namespace NihongoLife.Island
         public static IslandModelLibrary Instance { get; private set; }
 
         public void Set(List<Entry> list) => entries = list;
+        /// <summary>Adds or replaces one entry (incremental builders, e.g. IslandDecorBuilder).</summary>
+        public void Put(string name, GameObject prefab)
+        {
+            entries.RemoveAll(e => e.name == name);
+            entries.Add(new Entry { name = name, prefab = prefab });
+        }
         private void Awake() => Instance = this;
         private void OnDestroy() { if (Instance == this) Instance = null; }
 

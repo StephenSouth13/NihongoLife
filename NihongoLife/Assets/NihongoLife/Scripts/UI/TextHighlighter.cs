@@ -1,4 +1,5 @@
 using System;
+using NihongoLife.Core;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -333,11 +334,20 @@ namespace NihongoLife.UI
         private static bool IsWordChar(char c) => c < 0x2E80 && (char.IsLetterOrDigit(c) || c == '\'' || c == '’' || c == '-');
     }
 
-    /// <summary>The compact pen / colours / eraser / clear / notebook strip shown in the exam headers.</summary>
+    /// <summary>The pen / colours / eraser / clear / notebook strip shown in the exam headers (icons + labels in the
+    /// interface language; compact = shorter labels for narrow headers).</summary>
     public static class HighlightToolbar
     {
-        private static readonly Color Idle = new Color(1f, 1f, 1f, 0.08f);
-        private static readonly Color On = new Color(0.16f, 0.45f, 0.72f, 1f);
+        private sealed class State : MonoBehaviour { public bool Compact; }
+
+        private static readonly (string name, string icon, string[] full, string[] compact, float fullWidth, float compactWidth)[] Tools =
+        {
+            ("Pen", "ink_highlighter", new[] { "Tô sáng", "Highlight", "マーカー" }, new[] { "Tô", "Pen", "ペン" }, 118f, 70f),
+            ("Eraser", "ink_eraser", new[] { "Xoá tô", "Erase", "消す" }, new[] { "Tẩy", "Erase", "消す" }, 104f, 76f),
+            ("ClearAll", "delete_sweep", new[] { "Xoá hết", "Clear all", "全消去" }, new[] { "Xoá", "Clear", "全消" }, 108f, 76f),
+            ("CopyToNotebook", "note_add", new[] { "Chép vào sổ", "To notebook", "ノートへ" }, new[] { "→Sổ", "→Note", "→帳" }, 128f, 78f),
+            ("Notebook", "book_2", new[] { "Sổ tay", "Notebook", "ノート" }, new[] { "Sổ", "Notes", "帳" }, 106f, 66f),
+        };
 
         /// <summary>Builds the strip under <paramref name="parent"/>. <paramref name="clearAll"/> clears this exam's
         /// highlights; <paramref name="copyToNotebook"/> copies the highlighted passages into the notebook.</summary>
@@ -350,8 +360,9 @@ namespace NihongoLife.UI
             layout.childControlHeight = true;
             // Sizes itself from its buttons whenever it is laid out (it may be built while its screen is hidden).
             NLUi.FitContent(row, width: true, height: false);
+            var state = row.gameObject.AddComponent<State>();
 
-            var pen = Tool(row, "Pen", "Tô sáng", font, height, 104f, () =>
+            var pen = Tool(row, state, 0, height, () =>
                 HighlightTool.SetMode(HighlightTool.Mode == HighlightTool.ToolMode.Pen ? HighlightTool.ToolMode.Off : HighlightTool.ToolMode.Pen));
             var swatches = new List<Image>();
             for (int i = 0; i < HighlightTool.Colors.Length; i++)
@@ -360,35 +371,30 @@ namespace NihongoLife.UI
                 var go = new GameObject("Color" + i, typeof(RectTransform), typeof(Image), typeof(Button), typeof(LayoutElement));
                 go.transform.SetParent(row, false);
                 var image = go.GetComponent<Image>();
-                image.sprite = UIStyleKit.RoundedSprite();
-                image.type = Image.Type.Sliced;
+                image.sprite = UiKit.Circle;
                 var c = HighlightTool.Colors[i];
                 image.color = new Color(c.r, c.g, c.b, 1f);
                 go.GetComponent<Button>().onClick.AddListener(() => HighlightTool.SetColor(index));
                 var element = go.GetComponent<LayoutElement>();
-                element.preferredWidth = element.minWidth = height * 0.62f;
-                element.preferredHeight = height * 0.62f;
+                element.preferredWidth = element.minWidth = height * 0.56f;
+                element.preferredHeight = height * 0.56f;
                 swatches.Add(image);
             }
-            var eraser = Tool(row, "Eraser", "Xoá tô", font, height, 90f, () =>
+            var eraser = Tool(row, state, 1, height, () =>
                 HighlightTool.SetMode(HighlightTool.Mode == HighlightTool.ToolMode.Eraser ? HighlightTool.ToolMode.Off : HighlightTool.ToolMode.Eraser));
-            if (clearAll != null) Tool(row, "ClearAll", "Xoá hết", font, height, 84f, clearAll);
-            if (copyToNotebook != null) Tool(row, "CopyToNotebook", "→ Sổ", font, height, 70f, copyToNotebook);
-            Tool(row, "Notebook", "Sổ tay", font, height, 82f, () => NotebookUI.Toggle());
+            if (clearAll != null) Tool(row, state, 2, height, clearAll);
+            if (copyToNotebook != null) Tool(row, state, 3, height, copyToNotebook);
+            Tool(row, state, 4, height, () => NotebookUI.Toggle());
 
             void Refresh()
             {
                 if (pen == null) { HighlightTool.Changed -= Refresh; return; }
-                pen.color = HighlightTool.Mode == HighlightTool.ToolMode.Pen ? On : Idle;
-                eraser.color = HighlightTool.Mode == HighlightTool.ToolMode.Eraser ? new Color(0.72f, 0.3f, 0.26f, 1f) : Idle;
+                UiKit.SetKind(pen, HighlightTool.Mode == HighlightTool.ToolMode.Pen ? UiKit.Kind.Accent : UiKit.Kind.Ghost);
+                UiKit.SetKind(eraser, HighlightTool.Mode == HighlightTool.ToolMode.Eraser ? UiKit.Kind.Danger : UiKit.Kind.Ghost);
                 for (int i = 0; i < swatches.Count; i++)
                 {
                     bool selected = HighlightTool.Mode == HighlightTool.ToolMode.Pen && HighlightTool.ColorIndex == i;
-                    swatches[i].transform.localScale = selected ? Vector3.one * 1.18f : Vector3.one * 0.9f;
-                    var outline = swatches[i].GetComponent<Outline>();
-                    if (outline == null) outline = swatches[i].gameObject.AddComponent<Outline>();
-                    outline.effectColor = selected ? Color.white : new Color(0f, 0f, 0f, 0.35f);
-                    outline.effectDistance = selected ? new Vector2(2f, -2f) : new Vector2(1f, -1f);
+                    swatches[i].transform.localScale = selected ? Vector3.one * 1.2f : Vector3.one * 0.86f;
                 }
             }
             HighlightTool.Changed += Refresh;
@@ -396,34 +402,32 @@ namespace NihongoLife.UI
             return row;
         }
 
-        private static readonly (string name, string full, float fullWidth, string compact, float compactWidth)[] Labels =
-        {
-            ("Pen", "Tô sáng", 104f, "Tô", 52f), ("Eraser", "Xoá tô", 90f, "Tẩy", 56f), ("ClearAll", "Xoá hết", 84f, "Xoá", 56f),
-            ("CopyToNotebook", "→ Sổ", 70f, "→Sổ", 56f), ("Notebook", "Sổ tay", 82f, "Sổ", 48f),
-        };
-
         /// <summary>Short labels for narrow screens (the strip shares the exam header with the title and timer).</summary>
         public static void SetCompact(RectTransform toolbar, bool compact)
         {
             if (toolbar == null) return;
-            foreach (var (name, full, fullWidth, shortLabel, shortWidth) in Labels)
+            var state = toolbar.GetComponent<State>();
+            if (state != null) state.Compact = compact;
+            foreach (var tool in Tools)
             {
-                var child = toolbar.Find(name);
+                var child = toolbar.Find(tool.name);
                 if (child == null) continue;
-                var label = child.GetComponentInChildren<TextMeshProUGUI>();
-                if (label != null) label.text = compact ? shortLabel : full;
-                NLUi.Size(child, compact ? shortWidth : fullWidth);
+                var label = UiKit.LabelOf(child.GetComponent<Button>());
+                if (label != null) LocText.Set(label, () => Pick(state != null && state.Compact ? tool.compact : tool.full));
+                NLUi.Size(child, compact ? tool.compactWidth : tool.fullWidth);
             }
             LayoutRebuilder.ForceRebuildLayoutImmediate(toolbar);
         }
 
-        private static Image Tool(Transform row, string name, string label, TMP_FontAsset font, float height, float width, Action onClick)
+        private static string Pick(string[] labels) => Loc.T(labels[0], labels[1], labels[2]);
+
+        private static Button Tool(Transform row, State state, int index, float height, Action onClick)
         {
-            var button = NLUi.Button(row, name, label, font, onClick, Idle, 14.5f, Color.white, height);
-            NLUi.Size(button, width, height);
-            var group = button.GetComponent<HorizontalOrVerticalLayoutGroup>();
-            if (group != null) group.padding = new RectOffset(8, 8, 4, 4);
-            return button.GetComponent<Image>();
+            var tool = Tools[index];
+            var button = UiKit.Button(row, tool.name, null, null, null, onClick, UiKit.Kind.Ghost, tool.icon, 13.5f, Mathf.RoundToInt(height * 0.5f));
+            LocText.Set(UiKit.LabelOf(button), () => Pick(state.Compact ? tool.compact : tool.full));
+            UiKit.Size(button, tool.fullWidth, height);
+            return button;
         }
     }
 }

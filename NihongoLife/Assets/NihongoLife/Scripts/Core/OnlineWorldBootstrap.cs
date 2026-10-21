@@ -14,6 +14,8 @@ namespace NihongoLife.Core
         private float _nextPublishTime;
         private Transform _playerTransform;
         private IAuthService _auth;
+        /// <summary>Connect was held back because the player is a guest: connect as soon as online is allowed.</summary>
+        private bool _heldForGuest;
 
         private void Start()
         {
@@ -32,6 +34,9 @@ namespace NihongoLife.Core
             {
                 return;
             }
+            // The real online world is for registered, signed-in accounts; guests play offline (OnlineAccess).
+            _heldForGuest = onlineWorld is SupabaseOnlineWorldService && !OnlineAccess.IsRegistered;
+            if (_heldForGuest) return;
 
             string playerId = SystemInfo.deviceUniqueIdentifier;
             string displayName = PlayableCharacterCatalog.GetPlayerName();
@@ -53,6 +58,12 @@ namespace NihongoLife.Core
         {
             if (state != AuthState.SignedIn && state != AuthState.SignedOut) return;
             if (!GameServices.TryGet(out IOnlineWorldService onlineWorld)) return;
+            if (onlineWorld is SupabaseOnlineWorldService && !OnlineAccess.IsRegistered)
+            {
+                if (onlineWorld.IsConnected) onlineWorld.Disconnect(); // signed out: back to offline
+                _heldForGuest = true;
+                return;
+            }
             string expected = _auth != null && _auth.IsAuthenticated ? _auth.UserId : SystemInfo.deviceUniqueIdentifier;
             if (onlineWorld.IsConnected && onlineWorld.LocalPlayerId == expected) return;
             onlineWorld.Disconnect();
@@ -61,6 +72,7 @@ namespace NihongoLife.Core
 
         private void Update()
         {
+            if (_heldForGuest && OnlineAccess.IsRegistered) Connect();
             if (Time.unscaledTime < _nextPublishTime) return;
             _nextPublishTime = Time.unscaledTime + posePublishIntervalSeconds;
 

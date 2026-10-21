@@ -142,7 +142,7 @@ namespace NihongoLife.UI
             }
             _applying = false;
             int pages = NotebookService.Pages, used = NotebookService.UsedPages;
-            _usage.text = $"Đã viết <b>{used}</b>/{pages} trang";
+            _usage.text = NihongoLife.Core.Loc.F("Đã viết <b>{0}</b>/{1} trang", "<b>{0}</b>/{1} pages written", "<b>{0}</b>/{1}ページ使用", used, pages);
             _pageLabel.text = $"Trang <b>{page + 1}</b> / {pages}";
             _prev.interactable = page > 0;
             _next.interactable = page < pages - 1;
@@ -169,7 +169,7 @@ namespace NihongoLife.UI
             UpdateMeter();
             _stamp.text = DateTimeOffset.Now.ToString("dd/MM  HH:mm");
             int used = NotebookService.UsedPages;
-            _usage.text = $"Đã viết <b>{used}</b>/{NotebookService.Pages} trang";
+            _usage.text = NihongoLife.Core.Loc.F("Đã viết <b>{0}</b>/{1} trang", "<b>{0}</b>/{1} pages written", "<b>{0}</b>/{1}ページ使用", used, NotebookService.Pages);
             _hint.gameObject.SetActive(used >= NotebookService.Pages);
             RefreshChipStates();
             LayoutRules();
@@ -180,7 +180,7 @@ namespace NihongoLife.UI
             int length = _body.text.Length;
             float fill = length / (float)NotebookService.PageChars;
             string color = fill >= 1f ? "#C0473F" : fill >= 0.85f ? "#C98A1E" : "#6F7684";
-            _meter.text = $"<color={color}>{length} / {NotebookService.PageChars}</color> ký tự";
+            _meter.text = $"<color={color}>{length} / {NotebookService.PageChars}</color> " + NihongoLife.Core.Loc.T("ký tự", "characters", "文字");
         }
 
         private void GoTo(int page)
@@ -197,7 +197,7 @@ namespace NihongoLife.UI
             if (_eraseArmedUntil < 0f)
             {
                 _eraseArmedUntil = Time.unscaledTime + 3f;
-                _eraseLabel.text = "Bấm lại để xoá";
+                _eraseLabel.text = NihongoLife.Core.Loc.T("Bấm lại để xoá", "Click again to erase", "もう一度押すと消えます");
                 _erase.GetComponent<Image>().color = new Color(0.78f, 0.28f, 0.24f, 1f);
                 _eraseLabel.color = Color.white;
                 return;
@@ -211,7 +211,7 @@ namespace NihongoLife.UI
         {
             _eraseArmedUntil = -1f;
             if (_erase == null) return;
-            _eraseLabel.text = "Tẩy trang";
+            _eraseLabel.text = NihongoLife.Core.Loc.T("Tẩy trang", "Erase page", "ページを消す");
             _erase.GetComponent<Image>().color = new Color(0.13f, 0.17f, 0.27f, 0.08f);
             _eraseLabel.color = Ink;
         }
@@ -325,7 +325,8 @@ namespace NihongoLife.UI
             band.anchoredPosition = Vector2.zero; band.sizeDelta = new Vector2(0f, 64f);
             band.GetComponent<Image>().color = new Color(0f, 0f, 0f, 0.001f);
             band.GetComponent<NotebookDragHandle>().Target = _window;
-            var heading = NLUi.Label(band, "Heading", "<color=#F5C75C>ノート</color>  Sổ tay", 22f, Color.white, _font, FontStyles.Bold, TextAlignmentOptions.MidlineLeft);
+            var heading = NLUi.Label(band, "Heading", "", 22f, Color.white, _font, FontStyles.Bold, TextAlignmentOptions.MidlineLeft);
+            LocText.Set(heading, () => "<color=#F5C75C>" + NihongoLife.Core.Loc.T("Sổ tay", "Notebook", "ノート") + "</color>");
             Place(heading.rectTransform, 22f, 0f, 220f, 64f, top: true);
             _usage = NLUi.Label(band, "Usage", "", 14f, new Color(0.82f, 0.88f, 0.86f), _font, FontStyles.Normal, TextAlignmentOptions.MidlineRight);
             Place(_usage.rectTransform, -64f, 0f, 170f, 64f, top: true, right: true);
@@ -363,7 +364,7 @@ namespace NihongoLife.UI
             var marginImage = margin.GetComponent<Image>();
             marginImage.color = Margin; marginImage.raycastTarget = false;
 
-            _title = Input(paper, "TitleField", "Tiêu đề trang…", 21f, FontStyles.Bold, multiline: false, NotebookService.TitleChars);
+            _title = Input(paper, "TitleField", NihongoLife.Core.Loc.T("Tiêu đề trang…", "Page title…", "ページのタイトル…"), 21f, FontStyles.Bold, multiline: false, NotebookService.TitleChars);
             Place((RectTransform)_title.transform, 50f, 14f, -64f, 40f, top: true, stretch: true);
             var titleRule = new GameObject("TitleRule", typeof(RectTransform), typeof(Image)).GetComponent<RectTransform>();
             titleRule.SetParent(paper, false);
@@ -372,7 +373,7 @@ namespace NihongoLife.UI
             _stamp = NLUi.Label(paper, "Stamp", "", 12.5f, InkMuted, _font, FontStyles.Italic, TextAlignmentOptions.MidlineRight);
             Place(_stamp.rectTransform, -16f, 56f, 160f, 22f, top: true, right: true);
 
-            _body = Input(paper, "BodyField", "Viết ghi chú… (từ mới, mẹo làm bài, đáp án cần xem lại)", 18.5f, FontStyles.Normal, multiline: true, NotebookService.PageChars);
+            _body = Input(paper, "BodyField", NihongoLife.Core.Loc.T("Viết ghi chú… (từ mới, mẹo làm bài, đáp án cần xem lại)", "Write notes… (new words, test tips, answers to review)", "メモを書く…（新しい言葉、テストのコツ、見直す答え）"), 18.5f, FontStyles.Normal, multiline: true, NotebookService.PageChars);
             var bodyRect = (RectTransform)_body.transform;
             bodyRect.anchorMin = Vector2.zero; bodyRect.anchorMax = Vector2.one;
             bodyRect.offsetMin = new Vector2(50f, 92f); bodyRect.offsetMax = new Vector2(-14f, -82f);
@@ -390,7 +391,7 @@ namespace NihongoLife.UI
             _body.onValueChanged.AddListener(_ => OnEdited());
 
             // Footer of the sheet.
-            _hint = NLUi.Label(paper, "Hint", "Hết giấy rồi! Mua thêm ở <b>Hibari Mart</b> → quầy <b>Văn phòng phẩm</b>, hoặc tẩy một trang cũ.", 13f,
+            _hint = NLUi.Label(paper, "Hint", NihongoLife.Core.Loc.T("Hết giấy rồi! Mua thêm ở <b>Hibari Mart</b> → quầy <b>Văn phòng phẩm</b>, hoặc tẩy một trang cũ.", "Out of paper! Buy more at <b>Hibari Mart</b> → <b>Stationery</b>, or erase an old page.", "紙がなくなりました！<b>ひばりマート</b>の<b>ぶんぼうぐ</b>で買うか、古いページを消しましょう。"), 13f,
                 new Color(0.62f, 0.33f, 0.18f), _font, FontStyles.Italic, TextAlignmentOptions.MidlineLeft);
             Place(_hint.rectTransform, 50f, 52f, -64f, 36f, top: false, stretch: true);
             _meter = NLUi.Label(paper, "Meter", "", 12.5f, InkMuted, _font, FontStyles.Normal, TextAlignmentOptions.MidlineLeft);
@@ -402,7 +403,7 @@ namespace NihongoLife.UI
             Place(_pageLabel.rectTransform, 206f, 12f, 96f, 34f, top: false);
             _next = SmallButton(paper, "Next", "›", () => GoTo(NotebookService.CurrentPage + 1), 34f);
             Place((RectTransform)_next.transform, 304f, 12f, 34f, 34f, top: false);
-            _erase = SmallButton(paper, "Erase", "Tẩy trang", EraseClicked, 34f);
+            _erase = SmallButton(paper, "Erase", NihongoLife.Core.Loc.T("Tẩy trang", "Erase page", "ページを消す"), EraseClicked, 34f);
             _eraseLabel = _erase.GetComponentInChildren<TextMeshProUGUI>();
             _eraseLabel.fontSize = 13f;
             _eraseLabel.textWrappingMode = TextWrappingModes.NoWrap;

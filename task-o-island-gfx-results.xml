@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+<test-run id="2" testcasecount="2" result="Passed" total="2" passed="2" failed="0" inconclusive="0" skipped="0" asserts="0" engine-version="3.5.0.0" clr-version="4.0.30319.42000" start-time="2026-10-20 06:40:56Z" end-time="2026-10-20 06:43:17Z" duration="140.9890832">
+  <test-suite type="TestSuite" id="1143" name="NihongoLife" fullname="NihongoLife" runstate="Runnable" testcasecount="84" result="Passed" start-time="2026-10-20 06:40:56Z" end-time="2026-10-20 06:43:17Z" duration="140.989083" total="2" passed="2" failed="0" inconclusive="0" skipped="0" asserts="0">
+    <properties>
+      <property name="platform" value="PlayMode" />
+    </properties>
+    <test-suite type="Assembly" id="1136" name="NihongoLife.Tests.PlayMode.dll" fullname="D:/VTC_Academy/NihongoLife/NihongoLife/NihongoLife/Library/ScriptAssemblies/NihongoLife.Tests.PlayMode.dll" runstate="Runnable" testcasecount="84" result="Passed" start-time="2026-10-20 06:40:56Z" end-time="2026-10-20 06:43:17Z" duration="140.977775" total="2" passed="2" failed="0" inconclusive="0" skipped="0" asserts="0">
+      <properties>
+        <property name="_PID" value="21184" />
+        <property name="_APPDOMAIN" value="Unity Child Domain" />
+        <property name="platform" value="PlayMode" />
+        <property name="EditorOnly" value="False" />
+      </properties>
+      <test-suite type="TestSuite" id="1137" name="NihongoLife" fullname="NihongoLife" runstate="Runnable" testcasecount="84" result="Passed" start-time="2026-10-20 06:40:56Z" end-time="2026-10-20 06:43:17Z" duration="140.976169" total="2" passed="2" failed="0" inconclusive="0" skipped="0" asserts="0">
+        <properties />
+        <test-suite type="SetUpFixture" id="1110" name="Tests" fullname="NihongoLife.Tests.PlayModeSaveGuard" classname="NihongoLife.Tests.PlayModeSaveGuard" runstate="Runnable" testcasecount="84" result="Passed" start-time="2026-10-20 06:40:56Z" end-time="2026-10-20 06:43:17Z" duration="140.974254" total="2" passed="2" failed="0" inconclusive="0" skipped="0" asserts="0">
+          <properties />
+          <test-suite type="TestFixture" id="1071" name="IslandPlayModeTests" fullname="NihongoLife.Tests.IslandPlayModeTests" classname="NihongoLife.Tests.IslandPlayModeTests" runstate="Runnable" testcasecount="2" result="Passed" start-time="2026-10-20 06:40:56Z" end-time="2026-10-20 06:43:17Z" duration="140.962007" total="2" passed="2" failed="0" inconclusive="0" skipped="0" asserts="0">
+            <properties />
+            <test-case id="1072" name="MidoriIsland_FullAcceptanceFlow" fullname="NihongoLife.Tests.IslandPlayModeTests.MidoriIsland_FullAcceptanceFlow" methodname="MidoriIsland_FullAcceptanceFlow" classname="NihongoLife.Tests.IslandPlayModeTests" runstate="Runnable" seed="41328825" result="Passed" start-time="2026-10-20 06:40:56Z" end-time="2026-10-20 06:42:16Z" duration="80.139174" asserts="0">
+              <properties>
+                <property name="_JOINTYPE" value="UnityCombinatorial" />
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+              <output><![CDATA[[AppRoot] Initializing core services...
+[SceneFlowController] Initialized.
+[AudioService] Initialized AudioSources.
+[GameServices] Service GameInputService is already registered. Overwriting.
+[GameServices] Service PlayerSessionService is already registered. Overwriting.
+[SupabaseClient] Configured for https://pkxrtvlerjjiignmlebx.supabase.co
+[SupabaseAuth] Initialized.
+[AppRoot] Supabase Auth service registered.
+[AppRoot] Using SupabaseProgressRepository (cloud save).
+[LocalProgressRepository] Initialized. Save path: C:/Users/Admin/AppData/LocalLow/VTC Academy/NihongoLife\progress.json
+[SupabaseProgressRepo] Initialized with local fallback.
+[LocalScenarioRepository] Loaded 14 scenarios from Resources/Scenarios.
+[AppRoot] Using SupabaseOnlineWorldService (real online).
+[CoopSessionService] Initialized.
+[FriendService] Initialized.
+[ProfileService] Initialized.
+[ExamRepository] Loaded 3 exam(s) from Resources/Exams.
+[AppRoot] Core services initialized successfully.
+[ScenarioManager] Starting scenario: ひばり町へようこそ (scenario.intro.arrival)
+[ScoringManager] Score tracking reset.
+[ScenarioManager] Transitioning to Node: n_open (Type: Dialogue)
+[ScenarioManager] Objective Completed: 駅を出て、町に着く
+[DialogueManager] Starting dialogue node: n_open
+[OnlineWorld] Guest (ad0ed602544428b9b09a4ab9c21abcf14785c5af) going online.
+[OnlineWorld] Joined w:90_testsandbox:0
+[IslandTest] start yen=3000 slots=0/16
+[OnlineWorld] Joined w:20_stationdistrict:0
+[SupabaseVoiceSync] voice_lines table not provisioned yet — voice lines use the bundled clips.
+[OnlineWorld] Joined w:60_midoriisland:0
+[IslandTest] arrived island at (-1201.50, 0.20, -29.60) gap=0.000 floor=Platform
+[IslandTest] at StoreInteraction: current=StoreInteraction (NihongoLife.Island.IslandShopCounter)
+[IslandTest] click IslandShop/Confirm
+[IslandTest] at FarmPlot_1: current=FarmPlot_1 (NihongoLife.Island.FarmPlot)
+[IslandTest] click FarmCard/'Xới đất' → Đã xới đất.
+[IslandTest] click FarmCard/Plant_carrot
+[IslandTest] click FarmCard/'Tưới nước' → Đã tưới — cây bắt đầu lớn.
+[IslandTest] stage 1: phase=NeedsWater model=Carrot_2
+[IslandTest] click FarmCard/'Tưới nước' → Đã tưới — cây bắt đầu lớn.
+[IslandTest] stage 2: phase=NeedsWater model=Carrot_3
+[IslandTest] click FarmCard/'Tưới nước' → Đã tưới — cây bắt đầu lớn.
+[IslandTest] stage 3: phase=Ready model=Carrot_4
+[IslandTest] click FarmCard/'Thu hoạch' → Thu hoạch 2 cà rốt — đã vào balo. Bán ở cửa hàng Midori.
+[IslandTest] click IslandShop/Confirm
+[IslandTest] at Animal_cow: current=Animal_cow (NihongoLife.Island.IslandAnimal)
+[IslandTest] talking to cow
+[IslandTest] click AnimalCard/Feed
+[IslandTest] click AnimalCard/Feed
+[IslandTest] click AnimalCard/Pet
+[IslandTest] animal max wander in 4s = 2.59 m
+[IslandTest] words=13 achievements=first_harvest,first_sale
+[IslandTest] at KioskInteraction: current=KioskInteraction (NihongoLife.Island.IslandTicketKiosk)
+[IslandTest] at TrainDoorInteraction: current=TrainDoorInteraction (NihongoLife.Island.IslandTrainDoor)
+[OnlineWorld] Joined w:20_stationdistrict:0
+[OnlineWorld] Joined w:60_midoriisland:0
+[OnlineWorld] Joined w:20_stationdistrict:0
+[SupabaseRealtime] AppRoot: system on nl:lobby: {"message":"Client presence rate limit exceeded","status":"error","extension":"system","channel":"nl:lobby"}
+[IslandTest] total 80.1s
+]]></output>
+            </test-case>
+            <test-case id="1073" name="MidoriIsland_PerformanceAndLayout" fullname="NihongoLife.Tests.IslandPlayModeTests.MidoriIsland_PerformanceAndLayout" methodname="MidoriIsland_PerformanceAndLayout" classname="NihongoLife.Tests.IslandPlayModeTests" runstate="Runnable" seed="584043878" result="Passed" start-time="2026-10-20 06:42:16Z" end-time="2026-10-20 06:43:17Z" duration="60.807476" asserts="0">
+              <properties>
+                <property name="_JOINTYPE" value="UnityCombinatorial" />
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+              <output><![CDATA[[ScenarioManager] Starting scenario: ひばり町へようこそ (scenario.intro.arrival)
+[ScoringManager] Score tracking reset.
+[ScenarioManager] Transitioning to Node: n_open (Type: Dialogue)
+[DialogueManager] Starting dialogue node: n_open
+[StandaloneZoneBootstrap] Booted through 90_TestSandbox; entering 60_MidoriIsland.
+[OnlineWorld] Joined w:90_testsandbox:0
+[OnlineWorld] Joined w:60_midoriisland:0
+[IslandTest] scenes: 90_TestSandbox, 60_MidoriIsland active=60_MidoriIsland
+[IslandTest] island objects: plots=6 animals=dog,alpaca,cow,donkey,horse counters=1 spots=7
+[IslandTest] walk to store: closest 2.2 m, ended at (-1195.98, 0.00, -18.21)
+[IslandTest] walk to farm: closest 2.2 m, ended at (-1223.55, 0.00, -0.98)
+[IslandTest] walk to animal pen: closest 2.2 m, ended at (-1183.74, 0.00, 5.55)
+[IslandTest] walk to lookout: closest 2.3 m, ended at (-1200.00, 0.00, 29.72)
+[IslandTest] perf (editor, batchmode): frames=3501 avg=1.1ms p95=1.6ms max=3.7ms islandRenderers=261 batches=8 setPass=8 tris=13862
+Saving results to: C:/Users/Admin/AppData/LocalLow/VTC Academy/NihongoLife\TestResults.xml
+]]></output>
+            </test-case>
+          </test-suite>
+        </test-suite>
+      </test-suite>
+    </test-suite>
+  </test-suite>
+</test-run>

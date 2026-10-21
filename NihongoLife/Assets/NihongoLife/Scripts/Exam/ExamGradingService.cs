@@ -77,11 +77,11 @@ namespace NihongoLife.Exam
                 ? "You are an IELTS Writing examiner. Score the essay below against the four official IELTS Writing criteria " +
                   "(Task Response, Coherence and Cohesion, Lexical Resource, Grammatical Range and Accuracy) and return one overall band 0-9 in 0.5 steps.\n" +
                   $"Task:\n{task}\n\nEssay ({CountWords(essayText)} words):\n{essayText}\n\n" +
-                  "Return JSON only: {\"band\": <number>, \"feedback\": \"<3-5 sentences of specific, actionable feedback, in Vietnamese>\"}."
+                  "Return JSON only: {\"band\": <number>, \"feedback\": \"<3-5 sentences of specific, actionable feedback, in " + NihongoLife.Core.Loc.T("Vietnamese", "English", "Japanese") + ">\"}."
                 : "You are a Japanese-language writing tutor grading an N5-level learner's short written answer.\n" +
                   $"Task:\n{task}\n\nLearner's answer:\n{essayText}\n\n" +
                   "Score how well it completes the task on a 0-9 scale (9 = excellent for this level). " +
-                  "Return JSON only: {\"band\": <number>, \"feedback\": \"<3-5 sentences of specific, actionable feedback, in Vietnamese>\"}.";
+                  "Return JSON only: {\"band\": <number>, \"feedback\": \"<3-5 sentences of specific, actionable feedback, in " + NihongoLife.Core.Loc.T("Vietnamese", "English", "Japanese") + ">\"}.";
 
             yield return SendTextPrompt(prompt, apiKey, model, grade =>
             {
@@ -98,8 +98,9 @@ namespace NihongoLife.Exam
             return new ExamAiGrade
             {
                 band = band,
-                feedback = $"Chấm tự động không dùng AI (chưa cấu hình Gemini): chỉ dựa trên độ dài bài viết ({words}/{minWords} từ). " +
-                           "Đây KHÔNG phải điểm đánh giá chất lượng thật — hãy nhờ giáo viên hoặc bật Gemini để có nhận xét thật.",
+                feedback = NihongoLife.Core.Loc.F("Chấm tự động không dùng AI (chưa cấu hình Gemini): chỉ dựa trên độ dài bài viết ({0}/{1} từ). Đây KHÔNG phải điểm đánh giá chất lượng thật — hãy nhờ giáo viên hoặc bật Gemini để có nhận xét thật.",
+                    "Automatic score without AI (Gemini is not configured): based only on length ({0}/{1} words). This is NOT a real quality score — ask a teacher or enable Gemini for real feedback.",
+                    "AIなしの自動採点（Gemini未設定）：文章の長さ（{0}/{1}語）だけで判定しています。本当の評価ではありません。先生に頼むかGeminiを有効にしてください。", words, minWords),
                 transcript = string.Empty
             };
         }
@@ -115,7 +116,7 @@ namespace NihongoLife.Exam
         {
             if (samples == null || samples.Length == 0)
             {
-                onComplete?.Invoke(new ExamAiGrade { band = 0f, feedback = "Không có bản ghi âm nào để chấm.", transcript = string.Empty });
+                onComplete?.Invoke(new ExamAiGrade { band = 0f, feedback = NihongoLife.Core.Loc.T("Không có bản ghi âm nào để chấm.", "There is no recording to grade.", "採点する録音がありません。"), transcript = string.Empty });
                 yield break;
             }
 
@@ -125,7 +126,7 @@ namespace NihongoLife.Exam
                 {
                     band = 0f,
                     transcript = string.Empty,
-                    feedback = "Chưa cấu hình Gemini nên không thể chuyển giọng nói thành văn bản để chấm. Phần Speaking chỉ ghi âm để bạn tự nghe lại — hãy nhờ giáo viên nhận xét phát âm."
+                    feedback = NihongoLife.Core.Loc.T("Chưa cấu hình Gemini nên không thể chuyển giọng nói thành văn bản để chấm. Phần Speaking chỉ ghi âm để bạn tự nghe lại — hãy nhờ giáo viên nhận xét phát âm.", "Gemini is not configured, so speech cannot be transcribed for grading. Speaking is only recorded for you to listen back — ask a teacher about your pronunciation.", "Geminiが未設定のため、音声を文字にして採点できません。録音は自分で聞き直すためのものです。発音は先生に見てもらいましょう。")
                 });
                 yield break;
             }
@@ -137,11 +138,11 @@ namespace NihongoLife.Exam
                 ? "First, transcribe the spoken English in the attached audio exactly as spoken (keep hesitations like 'um' out, just the words).\n" +
                   $"Speaking task the candidate was answering:\n{task}\n\n" +
                   "Then, judging ONLY the content of the transcript (coherence, vocabulary range, grammatical range) — you cannot hear pronunciation or fluency from a transcript, so do not claim to assess them — estimate an IELTS Speaking content band 0-9 in 0.5 steps.\n" +
-                  "Return JSON only: {\"transcript\": \"<text>\", \"band\": <number>, \"feedback\": \"<3-5 sentences, in Vietnamese, noting this band reflects content only, not pronunciation/fluency>\"}."
+                  "Return JSON only: {\"transcript\": \"<text>\", \"band\": <number>, \"feedback\": \"<3-5 sentences, in " + NihongoLife.Core.Loc.T("Vietnamese", "English", "Japanese") + ", noting this band reflects content only, not pronunciation/fluency>\"}."
                 : "Transcribe the spoken Japanese in the attached audio.\n" +
                   $"Task the learner was answering:\n{task}\n\n" +
                   "Judging only the content, score 0-9 (9 = excellent for an N5 learner). " +
-                  "Return JSON only: {\"transcript\": \"<text>\", \"band\": <number>, \"feedback\": \"<3-5 sentences, in Vietnamese>\"}.";
+                  "Return JSON only: {\"transcript\": \"<text>\", \"band\": <number>, \"feedback\": \"<3-5 sentences, in " + NihongoLife.Core.Loc.T("Vietnamese", "English", "Japanese") + ">\"}.";
 
             var request = new GeminiRequest
             {
@@ -160,7 +161,7 @@ namespace NihongoLife.Exam
 
             yield return SendRequest(request, apiKey, model, grade =>
             {
-                onComplete?.Invoke(grade ?? new ExamAiGrade { band = 0f, feedback = "Gemini không phản hồi được. Hãy thử lại.", transcript = string.Empty });
+                onComplete?.Invoke(grade ?? new ExamAiGrade { band = 0f, feedback = NihongoLife.Core.Loc.T("Gemini không phản hồi được. Hãy thử lại.", "Gemini did not respond. Please try again.", "Geminiから応答がありません。もう一度試してください。"), transcript = string.Empty });
             });
         }
 

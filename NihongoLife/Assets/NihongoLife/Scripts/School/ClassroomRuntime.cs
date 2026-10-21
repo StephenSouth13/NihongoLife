@@ -92,7 +92,7 @@ namespace NihongoLife.School
             ExamCeremonyActive = true;
             for (int i = 0; i < roomLights.Count; i++) if (roomLights[i] != null) roomLights[i].intensity = _roomIntensity[i] * 0.35f;
             if (examSpotlight != null) examSpotlight.enabled = true;
-            Banner("しけん かいし！", "Bắt đầu làm bài · " + (_exams.CurrentExam != null ? _exams.CurrentExam.titleVi : "Đề thi"), NLUi.Gold, 3f);
+            Banner("しけん かいし！", NihongoLife.Core.Loc.T("Bắt đầu làm bài · ", "The test begins · ", "試験開始 · ") + ExamTitle(_exams.CurrentExam), NLUi.Gold, 3f);
         }
 
         private void HandleFinished(ExamAttemptResult result)
@@ -108,19 +108,22 @@ namespace NihongoLife.School
             if (score > PlayerPrefs.GetInt(BestScoreKey, 0)) { PlayerPrefs.SetInt(BestScoreKey, score); PlayerPrefs.Save(); }
             RefreshBlackboard();
             Banner(passed ? "ごうかく！" : "おつかれさま！",
-                $"{(result.exam != null ? result.exam.titleVi : "Đề thi")} · {score} điểm · {(passed ? "Đạt" : "Chưa đạt — ôn lại phần sai nhé")}",
+                ExamTitle(result.exam) + " · " + NihongoLife.Core.Loc.F("{0} điểm", "{0} points", "{0}点", score) + " · " + (passed ? NihongoLife.Core.Loc.T("Đạt", "Passed", "合格") : NihongoLife.Core.Loc.T("Chưa đạt — ôn lại phần sai nhé", "Not passed — review what you got wrong", "不合格 — まちがえたところを復習しよう")),
                 passed ? new Color(0.45f, 0.9f, 0.6f) : new Color(1f, 0.7f, 0.35f), 6f);
             if (passed) StartCoroutine(Confetti());
             PlayerStatus.Instance?.AddKnowledge(passed ? 8 : 3);
             StartCoroutine(TeacherComment(passed, score));
         }
 
+        private static string ExamTitle(NihongoLife.Exam.ExamDefinition exam) =>
+            exam == null ? NihongoLife.Core.Loc.T("Đề thi", "Test", "試験") : NihongoLife.Core.Loc.Pick(exam.titleVi, exam.titleEn, string.IsNullOrEmpty(exam.titleJa) ? exam.titleEn : exam.titleJa);
+
         private IEnumerator TeacherComment(bool passed, int score)
         {
             yield return new WaitForSecondsRealtime(1.2f);
             var dm = DialogueManager.Instance;
             if (dm == null || dm.IsOpen) yield break;
-            const string teacher = "もりた せんせい · Cô Morita";
+            string teacher = NihongoLife.Core.Loc.T("Cô Morita", "Ms. Morita", "もりた せんせい");
             dm.StartConversation(new[]
             {
                 new ScenarioNode
@@ -128,8 +131,9 @@ namespace NihongoLife.School
                     id = "exam_comment", nodeType = ScenarioNodeType.Dialogue, speakerName = teacher,
                     textJa = passed ? "よく できました！この ちょうしで がんばりましょう。" : "だいじょうぶ。まちがえた ところを いっしょに ふくしゅう しましょう。",
                     textReading = passed ? "よく できました！この ちょうしで がんばりましょう。" : "だいじょうぶ。まちがえた ところを いっしょに ふくしゅう しましょう。",
-                    textEn = passed ? $"Làm tốt lắm! ({score} điểm) Cứ giữ phong độ này nhé." : $"Không sao đâu. ({score} điểm) Mình cùng ôn lại phần làm sai nhé.",
-                    choices = new List<DialogueChoice> { new DialogueChoice { textJa = "はい、ありがとうございます！", textEn = "Vâng, em cảm ơn cô!", nextNodeId = "" } }
+                    textVi = passed ? $"Làm tốt lắm! ({score} điểm) Cứ giữ phong độ này nhé." : $"Không sao đâu. ({score} điểm) Mình cùng ôn lại phần làm sai nhé.",
+                    textEn = passed ? $"Well done! ({score} points) Keep it up." : $"It's all right. ({score} points) Let's review the parts you got wrong together.",
+                    choices = new List<DialogueChoice> { new DialogueChoice { textJa = "はい、ありがとうございます！", textVi = "Vâng, em cảm ơn cô!", textEn = "Yes, thank you!", nextNodeId = "" } }
                 }
             }, "exam_comment", null);
         }

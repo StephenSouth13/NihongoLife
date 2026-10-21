@@ -38,8 +38,10 @@ namespace NihongoLife.Tests.PlayMode
                 ?.Invoke(center, new object[] { ExamType.Ielts });
             yield return new WaitForSecondsRealtime(0.5f);
             var labels = center.GetComponentsInChildren<TMP_Text>(false).Select(t => t.text).ToList();
-            Assert.IsTrue(labels.Any(t => t.Contains("WRITING")), "Writing filter is visible");
-            Assert.IsTrue(labels.Any(t => t.Contains("SPEAKING")), "Speaking filter is visible");
+            var filters = center.GetComponentsInChildren<UnityEngine.UI.Button>(false).Select(b => b.name).ToList();
+            Assert.IsTrue(filters.Contains("Skill_writing"), "Writing filter is visible");
+            Assert.IsTrue(filters.Contains("Skill_speaking"), "Speaking filter is visible");
+            Assert.IsTrue(labels.Any(t => t.Contains("VIẾT")) && labels.Any(t => t.Contains("NÓI")), "Filters are labelled in the interface language");
             Assert.IsTrue(labels.Any(t => t.Contains("IELTS Writing")), "Writing package card is visible");
             Assert.IsTrue(labels.Any(t => t.Contains("IELTS Speaking")), "Speaking package card is visible");
             Capture("ielts-writing-speaking.png");

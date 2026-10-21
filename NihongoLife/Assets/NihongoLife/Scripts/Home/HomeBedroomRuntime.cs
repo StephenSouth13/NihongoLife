@@ -151,7 +151,7 @@ namespace NihongoLife.Home
         public IEnumerator FadeToNight(string title, string subtitle)
         {
             BuildCanvas();
-            _sleepMessage.text = $"<size=140%>{title}</size>\n<color=#B8C4D6>{subtitle}</color>\n\n<size=160%>Z z z</size>";
+            _sleepMessage.text = $"<size=140%>{title}</size>\n<color=#B8C4D6>{NihongoLife.Core.Loc.Resolve(subtitle)}</color>\n\n<size=160%>Z z z</size>";
             yield return Fade(_sleepFade, 1f, 1.1f);
             yield return new WaitForSeconds(1.6f);
         }
@@ -159,17 +159,20 @@ namespace NihongoLife.Home
         public IEnumerator FadeToMorning(string title, string subtitle, string summary)
         {
             BuildCanvas();
-            _sleepMessage.text = $"<size=140%>{title}</size>\n<color=#F2B233>{subtitle}</color>\n\n<size=80%><color=#B8C4D6>{summary}</color></size>";
+            _sleepMessage.text = $"<size=140%>{title}</size>\n<color=#F2B233>{NihongoLife.Core.Loc.Resolve(subtitle)}</color>\n\n<size=80%><color=#B8C4D6>{NihongoLife.Core.Loc.Resolve(summary)}</color></size>";
             yield return new WaitForSeconds(2.2f);
             yield return Fade(_sleepFade, 0f, 0.9f);
         }
 
         // ─────────── Toast ───────────
 
-        public void ShowToast(string japanese, string vietnamese)
+        /// <summary>A short toast: the Japanese phrase plus its meaning in the interface language (pass a <see cref="NihongoLife.Core.Loc.Triple"/> or plain text).</summary>
+        public void ShowToast(string japanese, string meaning)
         {
             BuildCanvas();
-            _toastText.text = string.IsNullOrEmpty(japanese) ? vietnamese : $"<color=#F2B233>{japanese}</color>   {vietnamese}";
+            meaning = NihongoLife.Core.Loc.Resolve(meaning);
+            if (NihongoLife.Core.Loc.IsJapanese && !string.IsNullOrEmpty(japanese) && !NihongoLife.Core.Loc.IsJapaneseText(meaning)) meaning = "";
+            _toastText.text = string.IsNullOrEmpty(japanese) ? meaning : $"<color=#F2B233>{japanese}</color>   {meaning}";
             if (_toastRoutine != null) StopCoroutine(_toastRoutine);
             _toastRoutine = StartCoroutine(ToastRoutine());
         }
@@ -194,13 +197,13 @@ namespace NihongoLife.Home
             for (int q = 0; q < questions.Count; q++)
             {
                 StudyWord word = questions[q];
-                var options = new List<string> { word.meaning, word.distractorA, word.distractorB };
+                var options = new List<string> { word.Meaning, word.DistractorA, word.DistractorB };
                 Shuffle(options);
-                int answerIndex = options.IndexOf(word.meaning);
-                _studyProgress.text = $"Câu {q + 1}/{questions.Count}   ·   Đúng {correct}";
+                int answerIndex = options.IndexOf(word.Meaning);
+                _studyProgress.text = NihongoLife.Core.Loc.F("Câu {0}/{1}   ·   Đúng {2}", "Question {0}/{1}   ·   Correct {2}", "{0}/{1}問   ·   正解 {2}", q + 1, questions.Count, correct);
                 _studyWord.text = word.japanese;
                 _studyReading.text = word.reading;
-                _studyFeedback.text = "Chọn nghĩa đúng (chuột hoặc phím 1 · 2 · 3)";
+                _studyFeedback.text = NihongoLife.Core.Loc.T("Chọn nghĩa đúng (chuột hoặc phím 1 · 2 · 3)", "Pick the right meaning (mouse or keys 1 · 2 · 3)", "正しい意味を選んでください（マウスか1・2・3キー）");
                 _studyFeedback.color = Muted;
                 for (int i = 0; i < _studyButtons.Count; i++)
                 {
@@ -218,8 +221,8 @@ namespace NihongoLife.Home
                 _studyButtons[answerIndex].GetComponent<Image>().color = Correct;
                 if (!ok) _studyButtons[_studyAnswer].GetComponent<Image>().color = Wrong;
                 _studyFeedback.text = ok
-                    ? $"せいかい！ Đúng rồi — {word.example}"
-                    : $"ざんねん… “{word.japanese}” nghĩa là “{word.meaning}”. {word.example}";
+                    ? "せいかい！ " + NihongoLife.Core.Loc.T("Đúng rồi — ", "Correct — ", "") + word.example
+                    : "ざんねん… " + NihongoLife.Core.Loc.F("“{0}” nghĩa là “{1}”. ", "“{0}” means “{1}”. ", "「{0}」は「{1}」です。", word.japanese, word.Meaning) + word.example;
                 _studyFeedback.color = ok ? Correct : Wrong;
                 yield return new WaitForSeconds(ok ? 1.3f : 2.4f);
             }
@@ -281,7 +284,7 @@ namespace NihongoLife.Home
             _promptChip.gameObject.SetActive(show);
             if (!show) return;
             string key = GameInputService.GetOrCreate().GetBindingLabel(GameInputId.Interact);
-            _promptText.text = $"<color=#F2B233>[{key}]</color>  {current.GetPromptJa()}  <color=#B8C4D6>· {current.GetpromptEn()}</color>";
+            _promptText.text = $"<color=#F2B233>[{key}]</color>  {NihongoLife.Interaction.InteractionPrompt.Of(current)}";
         }
 
         // ─────────── Camera ───────────
@@ -328,7 +331,8 @@ namespace NihongoLife.Home
             _titleCard.alpha = 0f;
             var titleJa = Label(title, roomTitleJa, 34, Color.white, TextAlignmentOptions.Center);
             Place(titleJa.rectTransform, new Vector2(0.5f, 1f), new Vector2(0f, -8f), new Vector2(520f, 56f));
-            var titleVi = Label(title, roomTitleVi, 19, new Color(0.95f, 0.72f, 0.25f), TextAlignmentOptions.Center);
+            var titleVi = Label(title, "", 19, new Color(0.95f, 0.72f, 0.25f), TextAlignmentOptions.Center);
+            LocText.Set(titleVi, () => NihongoLife.Core.Loc.T(roomTitleVi, "Your room · Hibari-chō 2-14", "ひばり町2-14"));
             Place(titleVi.rectTransform, new Vector2(0.5f, 0f), new Vector2(0f, 14f), new Vector2(520f, 32f));
 
             // Interaction prompt (standalone only) — bottom centre.
@@ -364,7 +368,8 @@ namespace NihongoLife.Home
         {
             var card = Panel(root, "StudyCard", new Vector2(0.5f, 0.5f), new Vector2(0f, 10f), new Vector2(760f, 560f), UIStyleKit.PanelBase);
             _studyRoot = card.gameObject;
-            var header = Label(card, "勉強する  ·  Ôn từ vựng N5", 28, new Color(0.95f, 0.72f, 0.25f), TextAlignmentOptions.Left);
+            var header = Label(card, "", 28, new Color(0.95f, 0.72f, 0.25f), TextAlignmentOptions.Left);
+            LocText.Set(header, "Ôn từ vựng N5", "N5 vocabulary review", "勉強する · N5の言葉");
             Place(header.rectTransform, new Vector2(0.5f, 1f), new Vector2(0f, -40f), new Vector2(680f, 40f));
             _studyProgress = Label(card, string.Empty, 18, Muted, TextAlignmentOptions.Right);
             Place(_studyProgress.rectTransform, new Vector2(0.5f, 1f), new Vector2(0f, -42f), new Vector2(680f, 36f));

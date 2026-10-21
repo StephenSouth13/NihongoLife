@@ -64,7 +64,10 @@ namespace NihongoLife.Tests
             Assert.AreEqual($"{expected}%", health.Find("Value").GetComponent<TextMeshProUGUI>().text);
             Assert.AreEqual(5, dock.StatusWidget.Find("Column/Needs").childCount, "Five needs");
             Assert.IsFalse(dock.StatusWidget.GetComponentsInChildren<TextMeshProUGUI>(true).Any(t => t.text == "Thể lực" || t.text == "Khát"), "No labels under the gauges");
-            StringAssert.Contains("¥", dock.StatusWidget.GetComponentsInChildren<TextMeshProUGUI>(true).First(t => t.name == "Wallet").text);
+            // The gold yen coin stands for "¥"; the amount is the number beside it.
+            var walletIcon = dock.StatusWidget.GetComponentsInChildren<UnityEngine.UI.Image>(true).First(i => i.name == "WalletIcon");
+            Assert.AreEqual(NihongoLife.UI.UiIcons.Coin, walletIcon.sprite, "The wallet shows the yen coin");
+            StringAssert.IsMatch(@"^[0-9,]+$", dock.StatusWidget.GetComponentsInChildren<TextMeshProUGUI>(true).First(t => t.name == "Wallet").text);
 
             foreach (var (w, h) in new[] { (1920, 1080), (1366, 768) })
             {

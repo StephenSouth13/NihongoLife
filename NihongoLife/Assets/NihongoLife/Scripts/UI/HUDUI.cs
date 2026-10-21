@@ -19,6 +19,7 @@ namespace NihongoLife.UI
     {
         [Header("Interaction Tooltip")]
         [SerializeField] private GameObject promptPanel;
+        private TextMeshProUGUI _keyCap;
         [SerializeField] private TextMeshProUGUI promptText;
 
         [Header("Objectives Overlay")]
@@ -257,8 +258,23 @@ namespace NihongoLife.UI
                 rect.pivot = new Vector2(0.5f, 0f);
                 rect.anchoredPosition = new Vector2(0f, 104f);
                 var image = promptPanel.GetComponent<Image>();
-                if (image != null) image.color = NLUi.Ink;
-                if (promptText != null) { promptText.fontSize = Mathf.Max(promptText.fontSize, 20f); promptText.color = NLUi.Text; }
+                if (image != null) { image.sprite = UiKit.Rounded(18); image.type = Image.Type.Sliced; image.color = new Color(0.035f, 0.05f, 0.075f, 0.88f); }
+                if (promptPanel.transform.Find("Border") == null) UiKit.Border(rect, new Color(1f, 1f, 1f, 0.1f), 18);
+                // A gold key cap on the left (the key), the action on the right.
+                if (_keyCap == null)
+                {
+                    var cap = UiKit.Card(promptPanel.transform, "KeyCap", UiTheme.Gold, 10);
+                    cap.raycastTarget = false;
+                    UiKit.Pin(cap.rectTransform, new Vector2(0f, 0.5f), 12f, 0f, 38f, 34f);
+                    _keyCap = UiKit.Label(cap.transform, "Key", "F", 18f, UiTheme.OnGold, FontStyles.Bold, TextAlignmentOptions.Center);
+                    UiKit.Fill(_keyCap.rectTransform);
+                }
+                if (promptText != null)
+                {
+                    promptText.fontSize = Mathf.Max(promptText.fontSize, 20f); promptText.color = NLUi.Text;
+                    promptText.alignment = TextAlignmentOptions.MidlineLeft;
+                    var pr = promptText.rectTransform; pr.anchorMin = Vector2.zero; pr.anchorMax = Vector2.one; pr.offsetMin = new Vector2(62f, 0f); pr.offsetMax = new Vector2(-16f, 0f);
+                }
             }
             var toggle = GetComponentInParent<Canvas>()?.transform.Find("ToggleNPCNames");
             if (toggle != null)
@@ -268,7 +284,7 @@ namespace NihongoLife.UI
                 var rect = (RectTransform)toggle;
                 rect.anchoredPosition = new Vector2(-24f, -24f);
                 var label = toggle.GetComponentInChildren<TextMeshProUGUI>();
-                if (label != null) { label.color = NLUi.Muted; label.text = "◉  Tên nhân vật"; }
+                if (label != null) { label.color = NLUi.Muted; LocText.Set(label, "◉  Tên nhân vật", "◉  Names", "◉  名前"); }
             }
             if (onlineStatusText != null) onlineStatusText.color = NLUi.Muted;
         }
@@ -599,7 +615,7 @@ namespace NihongoLife.UI
             var image = objectButton.AddComponent<Image>(); image.color = new Color(0.025f, 0.04f, 0.06f, 0.9f);
             var button = objectButton.AddComponent<Button>(); button.targetGraphic = image;
             var label = new GameObject("Label").AddComponent<TextMeshProUGUI>();
-            label.transform.SetParent(objectButton.transform, false); label.text = "◉  Tên nhân vật";
+            label.transform.SetParent(objectButton.transform, false); LocText.Set(label, "◉  Tên nhân vật", "◉  Names", "◉  名前");
             label.fontSize = 15f; label.alignment = TextAlignmentOptions.Center; label.color = Color.white;
             label.rectTransform.anchorMin = Vector2.zero; label.rectTransform.anchorMax = Vector2.one; label.rectTransform.sizeDelta = Vector2.zero;
             button.onClick.AddListener(() => NPCNameplateSystem.Instance?.Toggle());
@@ -642,7 +658,7 @@ namespace NihongoLife.UI
         {
             if (_overviewCamera == null) _overviewCamera = FindFirstObjectByType<NihongoLife.Cameras.ThirdPersonCameraController>();
             if (_overviewCamera == null) return;
-            if (!_overviewCamera.SetOverview(!_overviewCamera.OverviewMode)) HudFeed.Post("Góc nhìn trên cao chỉ dùng ngoài trời.", HudFeed.Kind.Info, 3f, "overview");
+            if (!_overviewCamera.SetOverview(!_overviewCamera.OverviewMode)) HudFeed.Post(NihongoLife.Core.Loc.T("Góc nhìn trên cao chỉ dùng ngoài trời.", "The overhead view only works outdoors.", "上からの視点は屋外だけで使えます。"), HudFeed.Kind.Info, 3f, "overview");
         }
 
         private void UpdateOverviewControls()
@@ -965,10 +981,10 @@ namespace NihongoLife.UI
             _inventoryDetailText.alignment = TextAlignmentOptions.TopLeft;
             _inventoryDetailText.color = new Color(0.82f, 0.9f, 0.94f, 1f);
 
-            CreateInventoryButton("Chi tiết", new Vector2(430f, -190f), () => RefreshInventoryDetail());
-            CreateInventoryButton("Bỏ ra", new Vector2(540f, -190f), DropSelectedInventoryItem);
-            CreateInventoryButton("Chia nhỏ", new Vector2(650f, -190f), SplitSelectedInventoryItem);
-            CreateInventoryButton("Sắp xếp", new Vector2(760f, -190f), SortInventory);
+            CreateInventoryButton(NihongoLife.Core.Loc.T("Chi tiết", "Details", "詳細"), new Vector2(430f, -190f), () => RefreshInventoryDetail());
+            CreateInventoryButton(NihongoLife.Core.Loc.T("Bỏ ra", "Drop", "捨てる"), new Vector2(540f, -190f), DropSelectedInventoryItem);
+            CreateInventoryButton(NihongoLife.Core.Loc.T("Chia nhỏ", "Split", "分ける"), new Vector2(650f, -190f), SplitSelectedInventoryItem);
+            CreateInventoryButton(NihongoLife.Core.Loc.T("Sắp xếp", "Sort", "並べ替え"), new Vector2(760f, -190f), SortInventory);
         }
 
         private void CreateInventoryButton(string label, Vector2 position, UnityEngine.Events.UnityAction action)
@@ -1026,7 +1042,7 @@ namespace NihongoLife.UI
                 _inventoryDetailText.text = Text("Chọn một ô đồ để xem chi tiết.", "Select an item to view details.", "アイテムを選択してください。");
                 return;
             }
-            string name = string.IsNullOrWhiteSpace(item.displayNameEn) ? item.displayNameJa : item.displayNameEn;
+            string name = item.Name;
             _inventoryDetailText.text = $"<size=120%><b>{name}</b></size>\n" +
                 $"{Text("Số lượng", "Quantity", "数量")}: {item.quantity}\n" +
                 $"{Text("Giá trị", "Value", "価格")}: ¥{item.priceYen:N0}\n" +
@@ -1102,7 +1118,7 @@ namespace NihongoLife.UI
 
             if (characterStatsText != null)
             {
-                string learnerName = "Học viên Nihongo";
+                string learnerName = NihongoLife.Core.Loc.T("Học viên Nihongo", "Nihongo learner", "日本語の学生");
                 int level = 1;
                 if (GameServices.TryGet(out Save.IProgressRepository progressRepo))
                 {
@@ -1145,7 +1161,7 @@ namespace NihongoLife.UI
                           $"{StatLine(Text("Năng lượng", "Energy", "元気"), status.CurrentEnergy, status.MaxEnergy, "#64b5f6")}\n" +
                           $"{StatLine(Text("No", "Hunger", "満腹"), status.Hunger, 100f, "#f2b84b")}\n" +
                           $"{StatLine(Text("Khát", "Thirst", "水分"), status.Thirst, 100f, "#4dd0c8")}\n" +
-                          $"<color=#b79cff>{Text("Kiến thức", "Knowledge", "知識")}: {status.Knowledge}</color>\n"
+                          $"<color=#b79cff>{Text("Trí tuệ", "Knowledge", "知識")}: {status.Knowledge}</color>\n"
                         : string.Empty) +
                     $"<color=#f1c75b>{Text("Tiền mặt", "Cash", "所持金")}</color>: ¥{inventory.Yen}\n" +
                     $"<color=#f1c75b>{Text("Mục tiêu", "Goal", "目標")}</color>: {goalText}\n\n" +
@@ -1162,7 +1178,7 @@ namespace NihongoLife.UI
                 if (i < inventory.Items.Count)
                 {
                     var item = inventory.Items[i];
-                    string name = string.IsNullOrEmpty(item.displayNameJa) ? item.displayNameEn : item.displayNameJa;
+                    string name = item.Name;
                     string kind = item.useType == ItemUseType.Food ? " [FOOD]" : item.useType == ItemUseType.Drink ? " [DRINK]" : string.Empty;
                     builder.Append($"<color=#f1c75b>[{i + 1:00}]</color> <b>{name}</b>{kind}  x{item.quantity}/{inventory.MaxStackSize}");
                 }
@@ -1202,9 +1218,8 @@ namespace NihongoLife.UI
             promptPanel.SetActive(true);
             HudPrompt.ContextualVisible = true;
             string key = GameInputService.GetOrCreate().GetBindingLabel(GameInputId.Interact);
-            bool japanese = GameServices.TryGet(out GameSettingsService settings)
-                && settings.Language == GameLanguage.Japanese;
-            promptText.text = $"<color=#F2B233><b>[ {key} ]</b></color>   {(japanese ? interactable.GetPromptJa() : interactable.GetpromptEn())}";
+            if (_keyCap != null) _keyCap.text = key;
+            promptText.text = _keyCap != null ? InteractionPrompt.Of(interactable) : $"<color=#F2B233><b>[ {key} ]</b></color>   {InteractionPrompt.Of(interactable)}";
         }
 
         private void HidePrompt()
@@ -1258,18 +1273,13 @@ namespace NihongoLife.UI
         private string ObjectiveText(RuntimeObjective objective)
         {
             if (objective == null) return string.Empty;
-            // Legacy assets may have Vietnamese text serialized in titleEn.
-            string vi = string.IsNullOrWhiteSpace(objective.titleVi) ? objective.titleEn : objective.titleVi;
-            string en = string.IsNullOrWhiteSpace(objective.titleEn) ? vi : objective.titleEn;
-            return Text(vi, en, objective.titleJa);
+            return objective.Title;
         }
 
         private string ScenarioText(ScenarioDefinition scenario)
         {
             if (scenario == null) return string.Empty;
-            string vi = string.IsNullOrWhiteSpace(scenario.titleVi) ? scenario.titleEn : scenario.titleVi;
-            string en = string.IsNullOrWhiteSpace(scenario.titleEn) ? vi : scenario.titleEn;
-            return Text(vi, en, scenario.titleJa);
+            return scenario.DisplayTitle;
         }
 
         /// <summary>The scene-authored dialogue panel stacked fixed-size text boxes that overflowed on long
@@ -1329,8 +1339,8 @@ namespace NihongoLife.UI
                     if (btnText != null)
                     {
                         ConfigureText(btnText, 11f, 16f);
-                        btnText.text = data.learningMode == LearningMode.GuidedPractice
-                            ? $"{choice.textJa}\n<size=80%><color=#8fa3b8>({choice.textEn})</color></size>"
+                        btnText.text = data.learningMode == LearningMode.GuidedPractice && !string.IsNullOrWhiteSpace(choice.Gloss)
+                            ? $"{choice.textJa}\n<size=80%><color=#8fa3b8>({choice.Gloss})</color></size>"
                             : choice.textJa;
                     }
 
