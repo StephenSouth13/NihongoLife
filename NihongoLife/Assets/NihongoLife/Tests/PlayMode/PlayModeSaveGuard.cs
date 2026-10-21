@@ -23,6 +23,7 @@ namespace NihongoLife.Tests
             // Most tests walk through every place; LocationUnlocksPlayModeTests switches the gate back on.
             NihongoLife.Core.LocationUnlocks.Bypass = true;
             NihongoLife.Scenario.StoryDirector.Bypass = true; // StoryFlowPlayModeTests switches the story back on
+            NihongoLife.Core.PlayerSessionService.PersistGuest = false; // tests never read or write the real guest save
             _ledger = PlayerPrefs.GetString("NL.WalletLedger.v1", "");
             // Tests read Vietnamese text; the player's own interface language is put back afterwards.
             _language = PlayerPrefs.GetInt(NihongoLife.Core.Loc.PrefsKey, 0);

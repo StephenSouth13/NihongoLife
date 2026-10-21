@@ -1460,3 +1460,31 @@ Chi tiết thiết kế: `STORY_BIBLE.md` mục 14.
 - **Phụ đề menu:** "Mô phỏng học tiếng Nhật · The Next Generation" (trước đây ghi "bởi quachthanhlong.com").
 - **Code:** `MenuAboutFounder` (`MenuAboutDefinition`) và các dòng nhà sáng lập trong `AboutPopup`.
 - **Test:** `AboutTeamPlayModeTests` (ảnh trong `Bao_Cao/about-team/`).
+
+## Cập nhật (2026-10-21, Claude) — Khách chơi đầy đủ ngoại tuyến, online chỉ cho tài khoản đã đăng ký
+**Luật** (`Core/OnlineAccess.cs`): được online = **đã đăng nhập bằng tài khoản đã đăng ký** (có email). Khách và phiên ẩn danh đều là khách.
+
+**Khách**
+- Chơi đầy đủ: cốt truyện, lộ trình mở bản đồ theo trí tuệ, trường, thi.
+- Save lưu trên máy ở `guest_progress.json` (`PlayerSessionService`). Trước đây save khách chỉ nằm trong RAM, mất khi thoát game.
+- Nút trên màn đăng nhập: "Chơi Khách (ngoại tuyến)".
+
+**Chặn online cho khách**
+- `OnlineWorldBootstrap` không nối thế giới online cho khách (trước đây nối bằng mã thiết bị). Khi người chơi đăng nhập tài khoản đã đăng ký thì tự nối.
+- Bấm "Chơi online" / "Bạn bè" trên menu → mở bảng đăng nhập kèm lý do (`AuthUI.ShowForOnline`).
+- Các tính năng khác cũng chặn khách: voice, phòng co-op, bạn bè, thăm/like đảo, phòng Speaking (Agora), gửi điểm xếp hạng. Xem bảng xếp hạng thì ai cũng được.
+
+**Chuyển save sang tài khoản**
+- Khách đăng ký và đăng nhập vào **tài khoản mới** (cloud chưa có save) → tiến trình khách trở thành tiến trình của tài khoản, rồi save khách được xoá.
+- Tài khoản đã có save thì giữ nguyên save đó (`SupabaseProgressRepository`).
+
+**Test**
+- Mới: `GuestOfflinePlayModeTests` (ảnh trong `Bao_Cao/guest-online/`).
+- `OnlineSocialPlayModeTests.City_RemotePlayers` bật `OnlineAccess.Bypass` (máy test không có tài khoản).
+- `PlayModeSaveGuard` tắt `PlayerSessionService.PersistGuest`, để test không đụng save khách thật.
+
+**Gộp `Dung--branch` vào `main`** (fast-forward, chưa push):
+- Cảnh `40_ HIBARICLASS` hoàn chỉnh (collider bàn học).
+- Sửa shader Agora.
+- Build mở bằng `01_MainMenu`; cảnh này có AppRoot riêng nên vẫn chạy đúng.
+- WebGL strip High. Đã thêm `Assets/NihongoLife/link.xml` giữ nguyên assembly của game.

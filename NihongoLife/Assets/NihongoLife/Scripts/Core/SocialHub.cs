@@ -89,7 +89,7 @@ namespace NihongoLife.Core
         public IReadOnlyList<Friend> Friends => _friends;
         public IEnumerable<Group> Groups => _groups.Values;
         public bool IsRealOnline => _online != null && _online.IsConnected;
-        public bool CanUseFriends => _friendService != null && GameServices.TryGet(out IAuthService auth) && auth.IsAuthenticated;
+        public bool CanUseFriends => _friendService != null && OnlineAccess.IsRegistered;
         public string LocalId => _world?.LocalPlayerId;
         public string SafetyCode => _crypto.SafetyCode;
         public bool CryptoReady => _crypto.Ready;

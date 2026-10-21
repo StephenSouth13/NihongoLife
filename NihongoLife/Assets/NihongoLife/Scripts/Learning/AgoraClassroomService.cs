@@ -56,7 +56,7 @@ namespace NihongoLife.Learning
         private IAuthService _auth;
         private string _endpoint;
 
-        public bool IsAvailable => _client != null && _client.IsConfigured && _auth != null && _auth.IsAuthenticated;
+        public bool IsAvailable => _client != null && _client.IsConfigured && _auth != null && OnlineAccess.IsRegistered;
 
         private void Awake()
         {

@@ -65,7 +65,7 @@ namespace NihongoLife.Core
         public void UpdateMyScore(string displayName, int totalXp, int scenariosCompleted, float averageScore)
         {
             if (_client == null || !_client.IsConfigured) return;
-            if (!GameServices.TryGet(out IAuthService auth) || !auth.IsAuthenticated) return;
+            if (!GameServices.TryGet(out IAuthService auth) || !OnlineAccess.IsRegistered) return; // ranking: registered accounts only
 
             string url = _client.RestUrl("leaderboard");
             string body = $"{{\"user_id\":\"{auth.UserId}\",\"display_name\":\"{EscapeJson(displayName)}\",\"total_xp\":{totalXp},\"scenarios_completed\":{scenariosCompleted},\"average_score\":{averageScore:F1},\"updated_at\":\"{DateTime.UtcNow:o}\"}}";

@@ -117,7 +117,7 @@ namespace NihongoLife.UI
             UiKit.Clear(_content);
             SetStatus(Loc.T("Đang cập nhật…", "Updating…", "更新中…"), UiTheme.Muted);
 
-            if (!GameServices.TryGet(out IAuthService auth) || !auth.IsAuthenticated)
+            if (!GameServices.TryGet(out IAuthService auth) || !OnlineAccess.IsRegistered)
             {
                 BuildSignedOutState();
                 return;
@@ -311,10 +311,10 @@ namespace NihongoLife.UI
 
         private void BuildSignedOutState()
         {
-            SetStatus(Loc.T("Cần đăng nhập để sử dụng danh sách bạn bè.", "Sign in to use the friends list.", "フレンドリストを使うにはログインが必要です。"), UiTheme.Warn);
+            SetStatus(Loc.T("Bạn bè cần tài khoản đã đăng ký và đăng nhập. Chế độ Khách chơi ngoại tuyến.", "Friends need a registered account, signed in. Guests play offline.", "フレンドには登録済みアカウントでのログインが必要です。ゲストはオフラインです。"), UiTheme.Warn);
             EmptyState("account_circle", Loc.T("Đăng nhập để gặp bạn bè", "Sign in to meet friends", "ログインしてフレンドと会おう"),
                 Loc.T("Sau khi đăng nhập, bạn có thể nhắn tin, nhận lời mời và thăm đảo của bạn bè.", "After signing in, you can chat, receive requests, and visit friends' islands.", "ログインすると、メッセージ、申請、フレンドの島への訪問ができます。"),
-                Loc.T("Đăng nhập", "Sign in", "ログイン"), () => { Hide(); GetComponent<AuthUI>()?.Show(); });
+                Loc.T("Đăng ký / Đăng nhập", "Register / Sign in", "登録・ログイン"), () => { Hide(); var auth = GetComponent<AuthUI>() ?? FindFirstObjectByType<AuthUI>(); auth?.ShowForOnline(); });
         }
 
         private void BuildUnavailableState()

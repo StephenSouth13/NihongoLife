@@ -255,7 +255,7 @@ namespace NihongoLife.Island
         {
             client = UnityEngine.Object.FindFirstObjectByType<SupabaseClient>();
             if (!GameServices.TryGet(out auth)) auth = UnityEngine.Object.FindFirstObjectByType<SupabaseAuthService>();
-            return client != null && client.IsConfigured && auth != null && auth.IsAuthenticated;
+            return client != null && client.IsConfigured && auth != null && OnlineAccess.IsRegistered;
         }
 
         [Serializable] private sealed class Row { public string user_id, display_name, layout_json, updated_at; }

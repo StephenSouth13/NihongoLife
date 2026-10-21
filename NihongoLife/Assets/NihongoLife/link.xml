@@ -1,0 +1,5 @@
+<!-- WebGL uses managed stripping level High: keep the game's own assemblies whole (reflection, JsonUtility DTOs, AddComponent by type). -->
+<linker>
+  <assembly fullname="NihongoLife" preserve="all"/>
+  <assembly fullname="NihongoLife.MiniGames" preserve="all"/>
+</linker>

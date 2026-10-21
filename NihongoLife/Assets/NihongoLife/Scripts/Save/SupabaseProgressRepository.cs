@@ -19,6 +19,8 @@ namespace NihongoLife.Save
         private SupabaseClient _client;
         private IAuthService _authService;
         private bool _cloudSyncPending = false;
+        /// <summary>A guest's progress waiting to move into the account that just signed in (only if that account is new).</summary>
+        private PlayerProgressDto _guestCarry;
 
         public SupabaseProgressRepository(SupabaseClient client)
         {
@@ -105,7 +107,10 @@ namespace NihongoLife.Save
         {
             if (state == AuthState.SignedIn || state == AuthState.TokenRefreshed)
             {
-                PlayerSessionService.Instance?.BeginAccount(_authService.UserId, _authService.DisplayName);
+                var session = PlayerSessionService.Instance;
+                if (state == AuthState.SignedIn && session != null && session.Mode == PlayerSessionMode.Guest)
+                    _guestCarry = session.GuestProgressToCarry();
+                session?.BeginAccount(_authService.UserId, _authService.DisplayName);
                 if (_cloudSyncPending)
                 {
                     UploadToCloud(_cachedProgress);
@@ -128,11 +133,27 @@ namespace NihongoLife.Save
                 json =>
                 {
                     var cloudProgress = ParseCloudProgress(json);
+                    var carry = _guestCarry;
+                    _guestCarry = null;
                     if (cloudProgress != null)
                     {
+                        // An account that already has a save keeps it; the guest save stays for guest play.
                         _cachedProgress = MergeProgress(_cachedProgress, cloudProgress);
                         _localFallback.SaveProgress(_cachedProgress);
                         Debug.Log("[SupabaseProgressRepo] Synced from cloud.");
+                    }
+                    else if (carry != null)
+                    {
+                        // A new account: what the player did as a guest becomes the account's progress.
+                        carry.playerId = _authService.UserId;
+                        if (!string.IsNullOrWhiteSpace(_authService.DisplayName)) carry.displayName = _authService.DisplayName;
+                        _cachedProgress = carry;
+                        _localFallback.SaveProgress(_cachedProgress);
+                        UploadToCloud(_cachedProgress);
+                        PlayerSessionService.Instance?.ClearGuestProgress();
+                        NihongoLife.UI.HudFeed.Post(Loc.T("Tiến trình chơi Khách đã được chuyển vào tài khoản của bạn.", "Your guest progress moved into your account.", "ゲストの進行がアカウントに引き継がれました。"),
+                            NihongoLife.UI.HudFeed.Kind.Reward, 5f, "account");
+                        Debug.Log("[SupabaseProgressRepo] Guest progress carried into the new account.");
                     }
                 },
                 (code, error) =>
