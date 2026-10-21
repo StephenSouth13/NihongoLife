@@ -16,10 +16,14 @@ namespace NihongoLife.Editor
     {
         private const string DefaultAppId = "com.vtcacademy.nihongolife";
 
+        private const string CityScenePath = "Assets/NihongoLife/Scenes/90_TestSandbox.unity";
+
         private static readonly string[] ProductionScenes =
         {
             "Assets/NihongoLife/Scenes/00_Bootstrap.unity",
             "Assets/NihongoLife/Scenes/01_MainMenu.unity",
+            // The town is the game's hub (WorldLocationCatalog.CityScene); "TestSandbox" is only its historical name.
+            CityScenePath,
             "Assets/NihongoLife/Scenes/20_StationDistrict.unity",
             "Assets/NihongoLife/Scenes/30_SushiRestaurant.unity",
             "Assets/NihongoLife/Scenes/40_ HIBARICLASS.unity",
@@ -32,7 +36,7 @@ namespace NihongoLife.Editor
         {
             ConfigureCommon();
             PlayerSettings.WebGL.compressionFormat = WebGLCompressionFormat.Brotli;
-            PlayerSettings.WebGL.decompressionFallback = false;
+            PlayerSettings.WebGL.decompressionFallback = true; // loads on any host (itch.io, GitHub Pages), not only servers that send Content-Encoding: br
             PlayerSettings.WebGL.dataCaching = true;
             PlayerSettings.WebGL.debugSymbolMode = WebGLDebugSymbolMode.Off;
             PlayerSettings.WebGL.exceptionSupport = WebGLExceptionSupport.ExplicitlyThrownExceptionsOnly;
@@ -96,7 +100,7 @@ namespace NihongoLife.Editor
             var missing = ProductionScenes.Where(scene => !File.Exists(scene)).ToArray();
             if (missing.Length > 0)
                 throw new BuildFailedException("Missing production scenes: " + string.Join(", ", missing));
-            if (ProductionScenes.Any(scene => scene.Contains("Test", StringComparison.OrdinalIgnoreCase)))
+            if (ProductionScenes.Any(scene => scene != CityScenePath && scene.Contains("Test", StringComparison.OrdinalIgnoreCase)))
                 throw new BuildFailedException("A test scene is included in the production scene list.");
         }
 

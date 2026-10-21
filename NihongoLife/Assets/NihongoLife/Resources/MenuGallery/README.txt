@@ -1,7 +1,7 @@
 MENU GALLERY (About popup screenshots)
 
 Drop PNG or JPG screenshots into this folder. They appear automatically in the main-menu
-"Ve toi / About me" popup, sorted by file name:
+"Ve chung toi / About us" popup, sorted by file name:
 
   01_Menu.png
   02_Sushi restaurant.png

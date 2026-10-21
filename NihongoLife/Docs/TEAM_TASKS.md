@@ -1426,3 +1426,37 @@ Chi tiết thiết kế: `STORY_BIBLE.md` mục 14.
   - Thanh trượt âm lượng trong Cài đặt không còn nhận điều hướng bàn phím, nên bấm A/← khi đang mở bảng không làm tụt âm lượng nữa.
   - Mức nhạc tăng từ 0.55 lên 0.7.
   - `SoundscapePlayModeTests` giờ kiểm tra cả âm lượng thực (> 0.5), không chỉ kiểm tra "đang phát".
+
+## Cập nhật (2026-10-21 khuya, Claude) — Rà soát trước khi build WebGL (không build)
+
+**Lỗi chặn build đã sửa**
+- **Agora:**
+  - `AgoraRtcSDK.asmdef` loại WebGL (`excludePlatforms`), vì plugin chỉ có native.
+  - Bản web dùng `Learning/AgoraWebShim.cs` + `Learning/VideoSurface.cs` (chỉ biên dịch khi WebGL). Tạo engine thì báo "Voice và lớp học video chỉ có trên bản PC/Mac".
+- **Micro:** `UnityEngine.Microphone` không tồn tại trên WebGL (CS0103). `Exam/WebMicrophone.cs` thay thế cho `MicRecorder` và `SpeechPracticeController`, báo "không có micro".
+- **Danh sách cảnh:** `ReleaseBuild.ProductionScenes` thiếu cảnh thành phố `90_TestSandbox` (bị luật "không có cảnh Test" loại). Đã thêm, và luật này chừa riêng cảnh thành phố.
+- **Kiểm tra:** biên dịch thử với define `NL_WEBGL_CHECK` và bỏ tham chiếu Agora → 0 lỗi. Đã trả cấu hình về bình thường, biên dịch lại 0 lỗi.
+
+**Tránh treo hoặc lỗi khi chạy trên web**
+- `SupabaseRealtimeClient`: trên web không mở `ClientWebSocket` và thread (trình duyệt không có).
+  - Mất trên web: realtime (presence, chat trực tiếp, co-op, hub Speaking).
+  - Vẫn chạy: REST (đăng nhập, lưu cloud, bảng xếp hạng).
+  - Cần một transport WebSocket qua jslib nếu muốn online trên web.
+- `ChatCrypto`: trên web không sinh khoá RSA (sinh trên luồng chính sẽ treo trang vài giây).
+- `LocalProgressRepository`: gọi `FS.syncfs` sau khi lưu (`Plugins/WebGL/NihongoLifeWeb.jslib`), để save còn sau khi tải lại trang.
+- Player Settings: bật **Decompression Fallback** (Brotli). Không có fallback thì itch.io / GitHub Pages không tải được.
+
+**Lưu ý khi build bằng Build Profiles:** bỏ chọn `99_ControlRoom` và `99_Trailer` (không cảnh nào trong game load tới; chỉ để test/quay trailer).
+
+## Cập nhật (2026-10-21, Claude) — Ghi nhận 3 nhà sáng lập
+- **Đổi tên:** popup "Về tác giả" → **"Về chúng tôi"** (nút trên menu và tiêu đề).
+- **Nhóm:** The Next Generation (VTC Academy). Nút "Xem đội ngũ" mở trang team của website.
+- **Nhà sáng lập** (`menu_about.asset` → `founders`, mỗi dòng mở GitHub của người đó):
+  - Quách Thành Long: Trưởng nhóm · Lập trình web & game;
+  - Nguyễn Lê Gia Huy: Nhân vật, animation & gameplay;
+  - Lương Nguyễn Tấn Dũng: Nhân vật, animation & gameplay.
+- Trần Công Thuận **không** nằm trong danh sách sáng lập của game.
+- **Ảnh:** ảnh nhận Giải Triển vọng của cả nhóm lên đầu bộ ảnh (`01_team_award_2025`), có chú thích tên 3 người. Ảnh tốt nghiệp xếp thứ 2.
+- **Phụ đề menu:** "Mô phỏng học tiếng Nhật · The Next Generation" (trước đây ghi "bởi quachthanhlong.com").
+- **Code:** `MenuAboutFounder` (`MenuAboutDefinition`) và các dòng nhà sáng lập trong `AboutPopup`.
+- **Test:** `AboutTeamPlayModeTests` (ảnh trong `Bao_Cao/about-team/`).
