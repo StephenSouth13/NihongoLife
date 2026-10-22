@@ -248,6 +248,7 @@ namespace NihongoLife.UI
             reduceMotionLabel.fontSizeMax = 15f;
             ParkInLayout(motion.transform, 40f);
             motion.onClick.AddListener(() => { MotionSettings.Toggle(); RefreshControlButtons(); });
+            TouchControlSettingsSection.Build(column, uiFont);
         }
 
         private void BuildBindings(RectTransform column)

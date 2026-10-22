@@ -775,7 +775,8 @@ namespace NihongoLife.UI
         {
             if (_graphic == null || !Interactable) return;
             _graphic.color = UiKit.Darken(_base.a < 0.2f ? new Color(1f, 1f, 1f, _base.a + 0.06f) : _base, 0.12f);
-            if (!NihongoLife.Core.MotionSettings.ReduceMotion) transform.localScale = _scale * 0.97f;
+            if (!NihongoLife.Core.MotionSettings.ReduceMotion)
+                transform.localScale = new Vector3(_scale.x * 1.06f, _scale.y * 0.9f, _scale.z);
         }
 
         public void OnPointerUp(UnityEngine.EventSystems.PointerEventData e)

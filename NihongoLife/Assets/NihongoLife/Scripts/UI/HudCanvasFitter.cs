@@ -1,3 +1,4 @@
+using NihongoLife.Core;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -24,7 +25,9 @@ namespace NihongoLife.UI
         private Vector2Int _lastResolution;
         private float _lastDpi;
 
-        public static bool IsTouchLayout(bool forced) => forced || Application.isMobilePlatform;
+        public static bool IsTouchLayout(bool forced) =>
+            forced || Application.isMobilePlatform || UnityEngine.Device.SystemInfo.deviceType == DeviceType.Handheld
+            || UnityEngine.Device.Application.isMobilePlatform || WebGLPointer.Coarse;
 
         private void OnEnable()
         {

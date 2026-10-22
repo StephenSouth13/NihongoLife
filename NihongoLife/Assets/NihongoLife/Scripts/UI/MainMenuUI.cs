@@ -117,11 +117,15 @@ namespace NihongoLife.UI
             if (titleText != null && titleText.GetComponent<MenuTitleShimmer>() == null)
                 titleText.gameObject.AddComponent<MenuTitleShimmer>();
             MenuSakura.Ensure(transform);
+            ResponsiveCanvasFit.Ensure(transform);
+            SafeAreaInset.Ensure(transform);
+            MenuResponsive.Ensure((RectTransform)transform);
             BuildModeSelect(font);
             BuildCharacterSelect(font);
             Translate();
             DisplayProfileStats();
             Loc.Watch(this, () => { Translate(); DisplayProfileStats(); RefreshModeStatus(); });
+            MenuButtonFeel.Dress(transform);
             StartCoroutine(PlayEntrance());
         }
 

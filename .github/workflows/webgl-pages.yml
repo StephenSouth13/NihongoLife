@@ -1,0 +1,25 @@
+# Does not compile Unity. Hosted runners have no Unity license.
+# Build locally (docs/WEBGL_DEPLOY.md), then publish the output folder.
+# This job only checks a build when one is already in the checkout.
+name: WebGL hosting check
+
+on:
+  workflow_dispatch:
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Remind
+        run: |
+          echo "Unity is built on a licensed machine with NihongoLife.Editor.ReleaseBuild.BuildWebGL."
+          echo "Do not set Content-Encoding: br. Decompression fallback is on."
+          echo "See docs/WEBGL_DEPLOY.md."
+      - name: Check an uploaded build, if present
+        run: |
+          if [ -f Build/Release/WebGL/index.html ]; then
+            bash tools/publish-webgl.sh Build/Release/WebGL --check
+          else
+            echo "No Build/Release/WebGL in the checkout. That is expected for source."
+          fi
