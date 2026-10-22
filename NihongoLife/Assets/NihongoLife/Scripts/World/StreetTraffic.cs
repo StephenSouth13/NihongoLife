@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using NihongoLife.Player;
 using UnityEngine;
+using NihongoLife.Core;
 
 namespace NihongoLife.World
 {
@@ -96,7 +97,7 @@ namespace NihongoLife.World
             if (_phase == Phase.WalkFlash) Blink();
             if (_phase == Phase.WalkGreen && chirp != null && Time.time >= _nextChirp) { chirp.Play(); _nextChirp = Time.time + 1.1f; }
 
-            if (_player == null) { var p = FindFirstObjectByType<PlayerController>(); if (p != null) _player = p.transform; }
+            if (_player == null) { var p = SceneRefs.Find<PlayerController>(); if (p != null) _player = p.transform; }
             foreach (var car in cars) Drive(car, dt);
         }
 

@@ -47,7 +47,7 @@ namespace NihongoLife.Home
             }
 
             Play(GameAudioCue.DoorOpen);
-            var inventory = PlayerInventory.Instance != null ? PlayerInventory.Instance : FindFirstObjectByType<PlayerInventory>();
+            var inventory = PlayerInventory.Instance != null ? PlayerInventory.Instance : SceneRefs.Find<PlayerInventory>();
             InventoryEntry food = null;
             if (inventory != null)
                 foreach (var item in inventory.Items)

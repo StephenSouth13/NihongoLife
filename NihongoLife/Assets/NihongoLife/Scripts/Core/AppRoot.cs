@@ -179,7 +179,7 @@ namespace NihongoLife.Core
                 gameObject.AddComponent<NihongoLife.Learning.VoiceChatService>();
             if (GetComponent<NihongoLife.Learning.SpeechPracticeController>() == null)
                 gameObject.AddComponent<NihongoLife.Learning.SpeechPracticeController>();
-            if (FindFirstObjectByType<NihongoLife.Learning.EduMeetingManager>() == null)
+            if (SceneRefs.Find<NihongoLife.Learning.EduMeetingManager>() == null)
                 gameObject.AddComponent<NihongoLife.Learning.EduMeetingManager>();
             if (GetComponent<NihongoLife.Learning.AgoraClassroomService>() == null)
                 gameObject.AddComponent<NihongoLife.Learning.AgoraClassroomService>();

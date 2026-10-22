@@ -31,7 +31,7 @@ namespace NihongoLife.Core
         {
             if (_instance != null) return _instance;
             if (_isShuttingDown) return null;
-            var existing = FindFirstObjectByType<PlayerSessionService>();
+            var existing = SceneRefs.Find<PlayerSessionService>();
             if (existing != null) { existing.Initialize(); return existing; }
             var go = new GameObject("PlayerSessionService");
             DontDestroyOnLoad(go);

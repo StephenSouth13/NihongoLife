@@ -34,10 +34,10 @@ namespace NihongoLife.Scenario
         /// <summary>Creates (or reuses) the controller when a co-op session is running and binds it to the scenario.</summary>
         public static CoopScenarioController EnsureFor(ScenarioDefinition scenario, GameObject host)
         {
-            var session = FindFirstObjectByType<CoopSessionService>();
+            var session = SceneRefs.Find<CoopSessionService>();
             if (session == null || !session.InSession) return null;
 
-            var controller = FindFirstObjectByType<CoopScenarioController>();
+            var controller = SceneRefs.Find<CoopScenarioController>();
             if (controller == null) controller = host.AddComponent<CoopScenarioController>();
             controller.Initialize(scenario);
             return controller;
@@ -48,7 +48,7 @@ namespace NihongoLife.Scenario
             Detach();
             _choiceCount = 0;
             _scenario = scenario;
-            _sessionService = FindFirstObjectByType<CoopSessionService>();
+            _sessionService = SceneRefs.Find<CoopSessionService>();
 
             if (GameServices.TryGet(out IAuthService auth) && auth.IsAuthenticated)
             {

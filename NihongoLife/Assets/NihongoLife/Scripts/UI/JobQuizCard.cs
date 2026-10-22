@@ -4,6 +4,7 @@ using NihongoLife.Player;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using NihongoLife.Core;
 
 namespace NihongoLife.UI
 {
@@ -55,7 +56,7 @@ namespace NihongoLife.UI
             CurrentChoices = new List<Choice>(choices);
             if (ui._player == null)
             {
-                ui._player = FindFirstObjectByType<PlayerController>();
+                ui._player = SceneRefs.Find<PlayerController>();
                 if (ui._player != null) { ui._wasLocked = ui._player.InputLocked; ui._player.InputLocked = true; }
             }
 

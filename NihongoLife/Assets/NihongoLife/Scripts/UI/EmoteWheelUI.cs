@@ -5,6 +5,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
+using NihongoLife.Core;
 
 namespace NihongoLife.UI
 {
@@ -34,9 +35,9 @@ namespace NihongoLife.UI
 
         public static EmoteWheelUI GetOrCreate()
         {
-            var existing = FindFirstObjectByType<EmoteWheelUI>(FindObjectsInactive.Include);
+            var existing = SceneRefs.Find<EmoteWheelUI>(FindObjectsInactive.Include);
             if (existing != null) return existing;
-            var hud = FindFirstObjectByType<HUDUI>();
+            var hud = SceneRefs.Find<HUDUI>();
             var canvas = NLUi.CreateCanvas("EmoteWheelCanvas", 700, hud != null ? hud.transform : null);
             if (hud == null) DontDestroyOnLoad(canvas.gameObject);
             var wheel = canvas.gameObject.AddComponent<EmoteWheelUI>();

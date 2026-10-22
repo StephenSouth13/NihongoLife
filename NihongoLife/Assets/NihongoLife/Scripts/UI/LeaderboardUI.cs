@@ -105,7 +105,7 @@ namespace NihongoLife.UI
         {
             _titleText.text = Text("Bảng xếp hạng", "Leaderboard", "ランキング");
 
-            var leaderboard = FindFirstObjectByType<LeaderboardService>();
+            var leaderboard = SceneRefs.Find<LeaderboardService>();
             if (leaderboard == null)
             {
                 _contentText.text = Text("Chưa kết nối online.", "Not connected online.", "オンラインに接続されていません。");

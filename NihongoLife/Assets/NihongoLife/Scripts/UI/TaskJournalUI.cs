@@ -72,7 +72,7 @@ namespace NihongoLife.UI
             if (!ui._root.gameObject.activeSelf)
             {
                 ui._root.gameObject.SetActive(true);
-                ui._player = FindFirstObjectByType<PlayerController>();
+                ui._player = SceneRefs.Find<PlayerController>();
                 if (ui._player != null) { ui._wasLocked = ui._player.InputLocked; ui._player.InputLocked = true; }
             }
             ui._root.SetAsLastSibling();

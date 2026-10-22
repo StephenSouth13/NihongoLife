@@ -118,8 +118,8 @@ namespace NihongoLife.Learning
             if (_open == open) return;
             if (open)
             {
-                _player = FindFirstObjectByType<NihongoLife.Player.PlayerController>();
-                _camera = FindFirstObjectByType<NihongoLife.Cameras.ThirdPersonCameraController>();
+                _player = SceneRefs.Find<NihongoLife.Player.PlayerController>();
+                _camera = SceneRefs.Find<NihongoLife.Cameras.ThirdPersonCameraController>();
                 _oldPlayerLock = _player != null && _player.InputLocked;
                 _oldCameraLock = _camera != null && _camera.IsLocked;
                 _oldCursor = Cursor.lockState; _oldVisible = Cursor.visible;
@@ -134,7 +134,7 @@ namespace NihongoLife.Learning
             if (_videoRoot != null) _videoRoot.SetActive(open);
             if (open)
             {
-                if (_classroom == null) _classroom = FindFirstObjectByType<AgoraClassroomService>();
+                if (_classroom == null) _classroom = SceneRefs.Find<AgoraClassroomService>();
                 _nextRoomPoll = 0f;
                 RefreshClassroomLobby();
             }
@@ -161,7 +161,7 @@ namespace NihongoLife.Learning
         public void RefreshClassroomLobby()
         {
             if (_previewCall) return;
-            if (_classroom == null) _classroom = FindFirstObjectByType<AgoraClassroomService>();
+            if (_classroom == null) _classroom = SceneRefs.Find<AgoraClassroomService>();
             if (_classroom == null || !_classroom.IsAvailable || _roomRequestPending) return;
             _roomRequestPending = true;
             _classroom.GetRole(roleResponse =>
@@ -435,7 +435,7 @@ namespace NihongoLife.Learning
             }
         }
 
-        /// <summary>Agora App ID from the environment variable named in GameControlDatabase, else the database value.</summary>
+        /// <summary>Agora App ID from the environment variable named in GameControlDatabase, then LocalSecrets/secrets.json, then the database value.</summary>
         public static string ConfiguredAppId()
         {
             string key = "AGORA_APP_ID", fallback = "";
@@ -449,8 +449,7 @@ namespace NihongoLife.Learning
                 var db = Resources.Load<GameControlDatabase>("Control/NihongoLifeControlDatabase");
                 if (db != null) { if (!string.IsNullOrWhiteSpace(db.agoraAppIdEnvironmentKey)) key = db.agoraAppIdEnvironmentKey; fallback = db.agoraAppId; }
             }
-            string fromEnv = Environment.GetEnvironmentVariable(key);
-            return string.IsNullOrWhiteSpace(fromEnv) ? fallback : fromEnv.Trim();
+            return LocalSecrets.Resolve(string.IsNullOrWhiteSpace(key) ? "AGORA_APP_ID" : key, fallback);
         }
 
         /// <summary>Creates the Agora engine once (audio + video), for the camera check and for calls.</summary>
@@ -459,8 +458,8 @@ namespace NihongoLife.Learning
             if (_engine != null) return;
             string appId = ConfiguredAppId();
             if (string.IsNullOrWhiteSpace(appId))
-                throw new InvalidOperationException(Loc.T("Chưa cấu hình Agora App ID (biến môi trường AGORA_APP_ID hoặc Control Database).",
-                    "Agora App ID is not configured (AGORA_APP_ID or the Control Database).", "Agora App IDが設定されていません（AGORA_APP_ID または Control Database）。"));
+                throw new InvalidOperationException(Loc.T("Chưa cấu hình Agora App ID (AGORA_APP_ID, LocalSecrets/secrets.json, hoặc Control Database).",
+                    "Agora App ID is not configured (AGORA_APP_ID, LocalSecrets/secrets.json, or the Control Database).", "Agora App IDが設定されていません（AGORA_APP_ID、LocalSecrets/secrets.json、または Control Database）。"));
             _engine = RtcEngine.CreateAgoraRtcEngine();
             Check(_engine.Initialize(new RtcEngineContext { appId = appId }), "init");
             _engine.InitEventHandler(new Events(this));

@@ -87,7 +87,7 @@ namespace NihongoLife.Dialogue
             _generatedVoiceSource.spatialBlend = 0f;
 
             // Try to find co-op controller
-            _coopController = FindFirstObjectByType<CoopScenarioController>();
+            _coopController = SceneRefs.Find<CoopScenarioController>();
             if (_coopController != null)
             {
                 _coopController.OnNodeSyncReceived += HandleCoopNodeSync;
@@ -97,7 +97,7 @@ namespace NihongoLife.Dialogue
 
         private void BindCoopController()
         {
-            var controller = FindFirstObjectByType<CoopScenarioController>();
+            var controller = SceneRefs.Find<CoopScenarioController>();
             if (controller == null || controller == _coopController) return;
 
             if (_coopController != null)

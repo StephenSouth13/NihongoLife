@@ -182,7 +182,7 @@ namespace NihongoLife.Learning
 
         private IEnumerator FetchToken(string channel, IAuthService auth, Action<string, uint, string> done)
         {
-            var client = FindFirstObjectByType<SupabaseClient>();
+            var client = SceneRefs.Find<SupabaseClient>();
             if (client == null || !client.IsConfigured) { done(null, 0, NihongoLife.Core.Loc.Triple("Chưa cấu hình Supabase.", "Supabase is not configured.", "Supabaseが設定されていません。")); yield break; }
             string url = client.ProjectUrl.TrimEnd('/') + "/functions/v1/agora-voice";
             using var request = new UnityWebRequest(url, "POST");
@@ -295,7 +295,7 @@ namespace NihongoLife.Learning
             Transform ear = cam != null ? cam.transform : player.transform;
             Vector3 p = player.transform.position + Vector3.up * 1.5f;
             _spatial.UpdateSelfPosition(V(p), V(ear.forward), V(ear.right), V(ear.up));
-            var manager = FindFirstObjectByType<NihongoLife.Player.RemotePlayerManager>();
+            var manager = SceneRefs.Find<NihongoLife.Player.RemotePlayerManager>();
             if (manager == null) return;
             foreach (var kv in manager.Avatars)
             {

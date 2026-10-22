@@ -105,16 +105,16 @@ namespace NihongoLife.Home
         /// Start runs while the loading screen is still up, before the player is moved to the spawn).</summary>
         private IEnumerator EntranceShot()
         {
-            var flow = FindFirstObjectByType<SceneFlowController>();
+            var flow = SceneRefs.Find<SceneFlowController>();
             while (flow != null && flow.IsLoading) yield return null;
             yield return null;
             StartCoroutine(ShowTitleCard());
             // Arriving home completes "go home" steps (intro: 「ただいま」 must happen in the room, not at the konbini).
             ScenarioManager.Instance?.OnAreaEntered(WorldLocationCatalog.HomeBedroomEntrance);
-            if (_camera == null) _camera = FindFirstObjectByType<ThirdPersonCameraController>();
+            if (_camera == null) _camera = SceneRefs.Find<ThirdPersonCameraController>();
             if (_camera == null) yield break;
             SetIndoorCamera(true);
-            var player = FindFirstObjectByType<PlayerController>();
+            var player = SceneRefs.Find<PlayerController>();
             bool wasLocked = _camera.IsLocked;
             _camera.IsLocked = true;
             if (player != null) player.InputLocked = true;
@@ -259,9 +259,9 @@ namespace NihongoLife.Home
 
         private void SetGameplayLocked(bool locked)
         {
-            var player = FindFirstObjectByType<PlayerController>();
+            var player = SceneRefs.Find<PlayerController>();
             if (player != null) player.InputLocked = locked;
-            if (_camera == null) _camera = FindFirstObjectByType<ThirdPersonCameraController>();
+            if (_camera == null) _camera = SceneRefs.Find<ThirdPersonCameraController>();
             if (_camera != null) _camera.IsLocked = locked;
             Cursor.lockState = CursorLockMode.None; // Sims-style: the cursor stays free in gameplay
             Cursor.visible = true;
@@ -278,7 +278,7 @@ namespace NihongoLife.Home
                 return;
             }
 
-            if (_detector == null) _detector = FindFirstObjectByType<InteractionDetector>();
+            if (_detector == null) _detector = SceneRefs.Find<InteractionDetector>();
             IInteractable current = _detector != null ? _detector.CurrentInteractable : null;
             bool show = current != null && (current as MonoBehaviour) != null;
             _promptChip.gameObject.SetActive(show);
@@ -303,7 +303,7 @@ namespace NihongoLife.Home
 
         private void SetIndoorCamera(bool indoor)
         {
-            if (_camera == null) _camera = FindFirstObjectByType<ThirdPersonCameraController>();
+            if (_camera == null) _camera = SceneRefs.Find<ThirdPersonCameraController>();
             if (_camera != null) _camera.SetIndoorMode(indoor);
         }
 
@@ -313,7 +313,7 @@ namespace NihongoLife.Home
         {
             if (_canvas != null) return;
             if (font == null) font = TMP_Settings.defaultFontAsset;
-            _hasCityHud = FindFirstObjectByType<HUDUI>() != null;
+            _hasCityHud = SceneRefs.Find<HUDUI>() != null;
 
             var root = new GameObject("HomeRoomCanvas", typeof(RectTransform), typeof(Canvas), typeof(CanvasScaler), typeof(GraphicRaycaster));
             root.transform.SetParent(transform, false);

@@ -60,7 +60,7 @@ namespace NihongoLife.Island
                 IslandUI.Toast(msg, true);
                 return msg;
             }
-            var player = playerObject != null ? playerObject.GetComponentInParent<PlayerController>() : FindFirstObjectByType<PlayerController>();
+            var player = playerObject != null ? playerObject.GetComponentInParent<PlayerController>() : SceneRefs.Find<PlayerController>();
             if (player == null) return NihongoLife.Core.Loc.T("Không tìm thấy người chơi.", "Player not found.", "プレイヤーが見つかりません。");
             var host = Instance;
             host._spot = spot;
@@ -127,7 +127,7 @@ namespace NihongoLife.Island
             _player.InputLocked = true;
             FaceWater();
             // Frame the cast: behind the shoulder, looking out over the water.
-            var follow = FindFirstObjectByType<NihongoLife.Cameras.ThirdPersonCameraController>();
+            var follow = SceneRefs.Find<NihongoLife.Cameras.ThirdPersonCameraController>();
             if (follow != null) follow.SetOrbit(_player.transform.eulerAngles.y - 28f, 14f, 4.2f);
             Show(NihongoLife.Core.Loc.T("Đang quăng câu…", "Casting…", "投げています…"), IslandLanguage.Primary(catalog.Tool(RodId)?.verb), false);
 

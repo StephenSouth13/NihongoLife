@@ -83,7 +83,7 @@ namespace NihongoLife.UI
         {
             if (_instance != null) return _instance;
 
-            var existing = FindFirstObjectByType<RestaurantMenuUI>();
+            var existing = SceneRefs.Find<RestaurantMenuUI>();
             if (existing != null)
             {
                 _instance = existing;
@@ -867,14 +867,14 @@ namespace NihongoLife.UI
 
         private static TMP_FontAsset ResolveFont()
         {
-            var anyText = FindFirstObjectByType<TextMeshProUGUI>();
+            var anyText = SceneRefs.Find<TextMeshProUGUI>();
             return anyText != null && anyText.font != null ? anyText.font : TMP_Settings.defaultFontAsset;
         }
 
         private static Canvas ResolveCanvas()
         {
-            var hud = FindFirstObjectByType<HUDUI>();
-            Canvas canvas = hud != null ? hud.GetComponentInParent<Canvas>() : FindFirstObjectByType<Canvas>();
+            var hud = SceneRefs.Find<HUDUI>();
+            Canvas canvas = hud != null ? hud.GetComponentInParent<Canvas>() : SceneRefs.Find<Canvas>();
             if (canvas != null) return canvas;
 
             var canvasObject = new GameObject("RestaurantMenuCanvas", typeof(Canvas), typeof(CanvasScaler), typeof(GraphicRaycaster));

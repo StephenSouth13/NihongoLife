@@ -72,8 +72,8 @@ namespace NihongoLife.UI
             if (_open == open) return;
             if (open)
             {
-                _player = FindFirstObjectByType<NihongoLife.Player.PlayerController>();
-                _camera = FindFirstObjectByType<NihongoLife.Cameras.ThirdPersonCameraController>();
+                _player = SceneRefs.Find<NihongoLife.Player.PlayerController>();
+                _camera = SceneRefs.Find<NihongoLife.Cameras.ThirdPersonCameraController>();
                 _oldPlayerLock = _player != null && _player.InputLocked;
                 _oldCameraLock = _camera != null && _camera.IsLocked;
                 _oldCursorLock = Cursor.lockState;

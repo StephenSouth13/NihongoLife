@@ -87,8 +87,8 @@ namespace NihongoLife.UI
             if (Time.unscaledTime >= _nextLookup || _player == null || cameraGone)
             {
                 _nextLookup = Time.unscaledTime + 0.5f;
-                if (_player == null || !_player.isActiveAndEnabled) _player = FindFirstObjectByType<PlayerController>();
-                if (cameraGone) _camera = FindFirstObjectByType<ThirdPersonCameraController>();
+                if (_player == null || !_player.isActiveAndEnabled) _player = SceneRefs.Find<PlayerController>();
+                if (cameraGone) _camera = SceneRefs.Find<ThirdPersonCameraController>();
             }
             if (_player == null || _camera == null || !_camera.isActiveAndEnabled) return false;
             if (_player.InputLocked || _camera.IsLocked) return false;

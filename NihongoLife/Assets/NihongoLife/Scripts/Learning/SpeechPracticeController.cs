@@ -230,7 +230,7 @@ namespace NihongoLife.Learning
             }
 
             GameControlDatabase database = controls.Database;
-            string apiKey = Environment.GetEnvironmentVariable(database.geminiApiKeyEnvironmentKey);
+            string apiKey = LocalSecrets.Resolve(database.geminiApiKeyEnvironmentKey, null);
             if (!database.enableGeminiConversation || !database.allowGeminiDirectClientCalls || string.IsNullOrWhiteSpace(apiKey))
             {
                 _lastResult = $"Set {database.geminiApiKeyEnvironmentKey} to enable real speech recognition.";

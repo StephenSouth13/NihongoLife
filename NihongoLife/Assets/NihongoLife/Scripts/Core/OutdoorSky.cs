@@ -114,7 +114,7 @@ namespace NihongoLife.Core
         {
             if (Active != this) return;
             if (_sky != null) RenderSettings.skybox = _sky;
-            var cycle = FindFirstObjectByType<DayNightCycle>();
+            var cycle = SceneRefs.Find<DayNightCycle>();
             if (cycle != null) cycle.SetHour(cycle.Hour);
         }
 

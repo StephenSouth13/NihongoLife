@@ -115,7 +115,7 @@ namespace NihongoLife.UI
             SetActive(_saveButton, _isOwnProfile);
             SetActive(_addFriendButton, !_isOwnProfile);
 
-            var profileService = FindFirstObjectByType<ProfileService>();
+            var profileService = SceneRefs.Find<ProfileService>();
             if (profileService == null)
             {
                 ShowOfflineProfile();
@@ -162,7 +162,7 @@ namespace NihongoLife.UI
 
         private void OnSaveClicked()
         {
-            var profileService = FindFirstObjectByType<ProfileService>();
+            var profileService = SceneRefs.Find<ProfileService>();
             if (profileService == null) return;
 
             profileService.UpdateProfile(_nameInput.text.Trim(), _bioInput.text.Trim(), success =>
@@ -178,7 +178,7 @@ namespace NihongoLife.UI
         {
             if (string.IsNullOrWhiteSpace(_viewingUserId)) return;
 
-            var friendService = FindFirstObjectByType<FriendService>();
+            var friendService = SceneRefs.Find<FriendService>();
             friendService?.SendFriendRequest(_viewingUserId);
         }
 

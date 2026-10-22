@@ -102,7 +102,7 @@ namespace NihongoLife.UI
             Wire(onlineButton, OnOnlineClicked);
 
             menuMusic = gameObject.GetComponent<MenuMusicController>() ?? gameObject.AddComponent<MenuMusicController>();
-            var dayNight = FindFirstObjectByType<DayNightCycle>();
+            var dayNight = SceneRefs.Find<DayNightCycle>();
             if (dayNight != null) dayNight.SetHour(9f); // the menu is always a bright morning
 
             BuildCharacterSelect(font);
@@ -120,7 +120,7 @@ namespace NihongoLife.UI
         private void EnsureSettingsService()
         {
             if (GameServices.TryGet(out GameSettingsService _)) return;
-            var existing = FindFirstObjectByType<GameSettingsService>();
+            var existing = SceneRefs.Find<GameSettingsService>();
             if (existing == null)
             {
                 var go = new GameObject("GameSettingsService");

@@ -69,7 +69,7 @@ namespace NihongoLife.Home
             else yield return new WaitForSeconds(1.5f);
 
             if (status != null) status.Sleep(sleepHours);
-            var cycle = FindFirstObjectByType<DayNightCycle>();
+            var cycle = SceneRefs.Find<DayNightCycle>();
             if (cycle != null) cycle.SetHour(wakeUpHour);
 
             yield return new WaitForSeconds(0.6f);

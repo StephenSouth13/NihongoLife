@@ -31,18 +31,19 @@ namespace NihongoLife.Core
                 yield break;
             }
 
-            if (string.IsNullOrWhiteSpace(control.Database.supabaseProjectUrl)
-                || string.IsNullOrWhiteSpace(control.Database.supabaseAnonKey))
+            string projectUrl = control.Database.ResolveSupabaseProjectUrl();
+            string anonKey = control.Database.ResolveSupabaseAnonKey();
+            if (string.IsNullOrWhiteSpace(projectUrl) || string.IsNullOrWhiteSpace(anonKey))
             {
-                Debug.LogWarning("[SupabaseVoiceSync] Online sync is enabled but Supabase project URL or anon key is empty.");
+                Debug.LogWarning("[SupabaseVoiceSync] Online sync is enabled but Supabase project URL or anon key is empty. Voice lines stay local.");
                 yield break;
             }
 
-            string url = control.Database.supabaseProjectUrl.TrimEnd('/') + "/rest/v1/voice_lines?select=id&limit=1";
+            string url = projectUrl.TrimEnd('/') + "/rest/v1/voice_lines?select=id&limit=1";
             using (UnityWebRequest request = UnityWebRequest.Get(url))
             {
-                request.SetRequestHeader("apikey", control.Database.supabaseAnonKey);
-                request.SetRequestHeader("Authorization", "Bearer " + control.Database.supabaseAnonKey);
+                request.SetRequestHeader("apikey", anonKey);
+                request.SetRequestHeader("Authorization", "Bearer " + anonKey);
                 yield return request.SendWebRequest();
 
                 if (request.result == UnityWebRequest.Result.Success)

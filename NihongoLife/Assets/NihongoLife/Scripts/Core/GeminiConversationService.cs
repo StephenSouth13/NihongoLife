@@ -71,7 +71,7 @@ namespace NihongoLife.Core
                 if (!GameServices.TryGet(out GameControlService control) || control.Database == null) return false;
                 var database = control.Database;
                 if (!database.enableGeminiConversation || !database.allowGeminiDirectClientCalls) return false;
-                return !string.IsNullOrWhiteSpace(Environment.GetEnvironmentVariable(database.geminiApiKeyEnvironmentKey));
+                return !string.IsNullOrWhiteSpace(LocalSecrets.Resolve(database.geminiApiKeyEnvironmentKey, null));
             }
         }
 
@@ -96,7 +96,7 @@ namespace NihongoLife.Core
             }
 
             var database = control.Database;
-            string apiKey = Environment.GetEnvironmentVariable(database.geminiApiKeyEnvironmentKey);
+            string apiKey = LocalSecrets.Resolve(database.geminiApiKeyEnvironmentKey, null);
             if (!database.enableGeminiConversation || !database.allowGeminiDirectClientCalls || string.IsNullOrWhiteSpace(apiKey))
             {
                 onError?.Invoke("Gemini is disabled or missing API key.");

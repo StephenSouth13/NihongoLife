@@ -57,7 +57,7 @@ namespace NihongoLife.Core
         public static GameInputService GetOrCreate()
         {
             if (_instance != null) return _instance;
-            var existing = FindFirstObjectByType<GameInputService>();
+            var existing = SceneRefs.Find<GameInputService>();
             if (existing != null)
             {
                 existing.Initialize();

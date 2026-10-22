@@ -311,7 +311,7 @@ namespace NihongoLife.Core
 
         private static bool MovePlayerToSpawn(Scene scene, string spawnId)
         {
-            var player = FindFirstObjectByType<PlayerController>();
+            var player = SceneRefs.Find<PlayerController>();
             if (player == null)
             {
                 Debug.LogWarning("[SceneFlowController] Player was not found during scene transition.");
@@ -326,7 +326,7 @@ namespace NihongoLife.Core
                     if (controller != null) controller.enabled = false;
                     player.transform.SetPositionAndRotation(spawn.transform.position, spawn.transform.rotation);
                     if (controller != null) controller.enabled = true;
-                    var camera = FindFirstObjectByType<ThirdPersonCameraController>();
+                    var camera = SceneRefs.Find<ThirdPersonCameraController>();
                     if (camera != null)
                     {
                         camera.ClearConversationTarget();
@@ -393,7 +393,7 @@ namespace NihongoLife.Core
                 var dialogue = NihongoLife.Dialogue.DialogueManager.Instance;
                 if (dialogue != null) dialogue.SuspendForTravel();
             }
-            var player = FindFirstObjectByType<PlayerController>();
+            var player = SceneRefs.Find<PlayerController>();
             if (player != null) player.InputLocked = locked;
         }
 

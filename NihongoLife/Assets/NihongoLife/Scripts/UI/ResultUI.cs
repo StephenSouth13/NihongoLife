@@ -220,7 +220,7 @@ namespace NihongoLife.UI
         /// <summary>Closes the result and returns to the town (free play); the first time, the free-play card follows.</summary>
         public void BackToTown()
         {
-            var manager = FindFirstObjectByType<UIManager>();
+            var manager = SceneRefs.Find<UIManager>();
             if (manager != null) manager.ShowHUDOnly();
             else gameObject.SetActive(false);
             if (_freePlayJustOpened) { _freePlayJustOpened = false; FreePlayCardUI.ShowOnce(); } // the cursor itself is CursorDirector's

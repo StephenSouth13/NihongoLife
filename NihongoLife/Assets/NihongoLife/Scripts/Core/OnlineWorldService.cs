@@ -78,7 +78,7 @@ namespace NihongoLife.Core
             }
 
             // Hook up to Vivox Text Chat if available
-            var vivox = UnityEngine.Object.FindFirstObjectByType<NihongoLife.Audio.VivoxVoiceManager>();
+            var vivox = SceneRefs.Find<NihongoLife.Audio.VivoxVoiceManager>();
             if (vivox != null)
             {
                 vivox.OnTextMessageReceived += OnVivoxMessageReceived;
@@ -150,7 +150,7 @@ namespace NihongoLife.Core
             if (!IsConnected || string.IsNullOrWhiteSpace(text)) return;
 
             // Broadcast to Vivox so other players see it
-            var vivox = UnityEngine.Object.FindFirstObjectByType<NihongoLife.Audio.VivoxVoiceManager>();
+            var vivox = SceneRefs.Find<NihongoLife.Audio.VivoxVoiceManager>();
             if (vivox != null)
             {
                 vivox.SendTextMessage(text.Trim());

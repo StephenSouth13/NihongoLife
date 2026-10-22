@@ -52,7 +52,7 @@ namespace NihongoLife.Player
         private IEnumerator Blackout(bool faint)
         {
             _busy = true;
-            var controller = FindFirstObjectByType<PlayerController>();
+            var controller = SceneRefs.Find<PlayerController>();
             var animation = controller != null ? controller.GetComponentInChildren<CharacterAnimationController>() : null;
             bool wasLocked = controller != null && controller.InputLocked;
             if (controller != null) controller.InputLocked = true;
@@ -63,10 +63,10 @@ namespace NihongoLife.Player
             yield return Fade(1f, 1.4f);
             yield return new WaitForSecondsRealtime(1.2f);
 
-            var cycle = FindFirstObjectByType<DayNightCycle>();
+            var cycle = SceneRefs.Find<DayNightCycle>();
             if (faint)
             {
-                var inventory = controller != null ? controller.GetComponent<PlayerInventory>() : FindFirstObjectByType<PlayerInventory>();
+                var inventory = controller != null ? controller.GetComponent<PlayerInventory>() : SceneRefs.Find<PlayerInventory>();
                 int yen = inventory != null ? inventory.Yen : 0;
                 LastFee = Mathf.Min(MaxClinicFee, Mathf.RoundToInt(yen * 0.1f));
                 if (LastFee > 0 && inventory != null) inventory.SpendYen(LastFee, NihongoLife.Core.Loc.Triple("Phí phòng khám", "Clinic fee", "診察料"));

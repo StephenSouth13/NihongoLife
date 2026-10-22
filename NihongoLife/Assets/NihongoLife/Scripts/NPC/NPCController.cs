@@ -109,7 +109,7 @@ namespace NihongoLife.NPC
 
         private void StartSmartFallbackDialogue()
         {
-            var gemini = FindFirstObjectByType<GeminiConversationService>();
+            var gemini = SceneRefs.Find<GeminiConversationService>();
             if (gemini != null && gemini.IsConfigured)
             {
                 gemini.RequestNpcReply(this, "The player approached and used the interact action to talk.",

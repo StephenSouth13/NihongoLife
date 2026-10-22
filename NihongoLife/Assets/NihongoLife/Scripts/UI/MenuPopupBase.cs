@@ -116,8 +116,8 @@ namespace NihongoLife.UI
             UiModalStack.Register(this, () => IsOpen, () => { if (!HandleEscape()) Hide(); }, GetType().Name, immersive: LocksGameplay);
             if (LocksGameplay)
             {
-                _modalPlayer = FindFirstObjectByType<NihongoLife.Player.PlayerController>();
-                _modalCamera = FindFirstObjectByType<NihongoLife.Cameras.ThirdPersonCameraController>();
+                _modalPlayer = SceneRefs.Find<NihongoLife.Player.PlayerController>();
+                _modalCamera = SceneRefs.Find<NihongoLife.Cameras.ThirdPersonCameraController>();
                 _playerWasLocked = _modalPlayer != null && _modalPlayer.InputLocked;
                 _cameraWasLocked = _modalCamera != null && _modalCamera.IsLocked;
                 _previousCursorLock = Cursor.lockState;

@@ -316,7 +316,7 @@ namespace NihongoLife.Player
             UnityEngine.Camera taggedCamera = UnityEngine.Camera.main;
             if (IsGameplayCamera(taggedCamera)) return taggedCamera;
 
-            var controller = FindFirstObjectByType<ThirdPersonCameraController>();
+            var controller = SceneRefs.Find<ThirdPersonCameraController>();
             return controller != null ? controller.GetComponent<UnityEngine.Camera>() : null;
         }
     }

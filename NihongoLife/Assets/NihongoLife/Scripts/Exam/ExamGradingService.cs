@@ -52,7 +52,7 @@ namespace NihongoLife.Exam
                 if (!GameServices.TryGet(out GameControlService control) || control.Database == null) return false;
                 var db = control.Database;
                 if (!db.enableGeminiConversation || !db.allowGeminiDirectClientCalls) return false;
-                return !string.IsNullOrWhiteSpace(Environment.GetEnvironmentVariable(db.geminiApiKeyEnvironmentKey));
+                return !string.IsNullOrWhiteSpace(LocalSecrets.Resolve(db.geminiApiKeyEnvironmentKey, null));
             }
         }
 
@@ -174,7 +174,7 @@ namespace NihongoLife.Exam
             if (!GameServices.TryGet(out GameControlService control) || control.Database == null) return false;
             var db = control.Database;
             if (!db.enableGeminiConversation || !db.allowGeminiDirectClientCalls) return false;
-            apiKey = Environment.GetEnvironmentVariable(db.geminiApiKeyEnvironmentKey);
+            apiKey = LocalSecrets.Resolve(db.geminiApiKeyEnvironmentKey, null);
             model = string.IsNullOrWhiteSpace(db.geminiModel) ? model : db.geminiModel;
             return !string.IsNullOrWhiteSpace(apiKey);
         }

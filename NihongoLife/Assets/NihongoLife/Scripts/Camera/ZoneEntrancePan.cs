@@ -1,6 +1,7 @@
 using System.Collections;
 using UnityEngine;
 using NihongoLife.Player;
+using NihongoLife.Core;
 
 namespace NihongoLife.Cameras
 {
@@ -25,10 +26,10 @@ namespace NihongoLife.Cameras
 
         private IEnumerator PanRoutine()
         {
-            var cameraController = FindFirstObjectByType<ThirdPersonCameraController>();
+            var cameraController = SceneRefs.Find<ThirdPersonCameraController>();
             if (cameraController == null) yield break;
 
-            var player = FindFirstObjectByType<PlayerController>();
+            var player = SceneRefs.Find<PlayerController>();
             if (player != null) player.enabled = false;
 
             bool wasLocked = cameraController.IsLocked;
