@@ -108,7 +108,7 @@ namespace NihongoLife.Audio
         {
             string scene = SceneManager.GetActiveScene().name;
             float hour = 12f;
-            var cycle = FindFirstObjectByType<DayNightCycle>();
+            var cycle = SceneRefs.Find<DayNightCycle>();
             if (cycle != null) hour = cycle.Hour;
             bool night = hour < 6f || hour >= 18.5f;
             bool raining = WeatherCycle.Instance != null && WeatherCycle.Instance.IsRaining;

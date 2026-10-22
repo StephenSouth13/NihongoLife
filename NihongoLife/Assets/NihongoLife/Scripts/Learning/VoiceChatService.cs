@@ -50,6 +50,8 @@ namespace NihongoLife.Learning
         private readonly HashSet<uint> _speaking = new HashSet<uint>();
         private readonly HashSet<uint> _remotes = new HashSet<uint>();
         private float _nextPositions, _nextAreaCheck;
+        private Transform _listener;
+        private NihongoLife.Player.RemotePlayerManager _remotePlayers;
 
         public event Action OnStateChanged;
 
@@ -126,12 +128,17 @@ namespace NihongoLife.Learning
             Busy = true;
             SetStatus(NihongoLife.Core.Loc.Triple("Đang xin quyền micro…", "Asking for microphone permission…", "マイクの許可を求めています…"));
             yield return Application.RequestUserAuthorization(UserAuthorization.Microphone);
+#if UNITY_WEBGL && !UNITY_EDITOR
+            // The browser prompt is getUserMedia inside the Agora Web SDK, on push-to-talk.
+            // Application.HasUserAuthorization stays false on some WebGL builds and would block voice before that prompt.
+#else
             if (!Application.HasUserAuthorization(UserAuthorization.Microphone))
             {
                 Busy = false;
                 Fail(NihongoLife.Core.Loc.Triple("Chưa được cấp quyền micro. Bật micro cho game trong cài đặt hệ điều hành.", "No microphone permission. Allow the microphone for the game in your system settings.", "マイクが許可されていません。OSの設定でゲームのマイクを許可してください。"));
                 yield break;
             }
+#endif
 
             SetStatus(NihongoLife.Core.Loc.Triple("Đang lấy vé vào phòng voice…", "Getting a voice room ticket…", "ボイスルームのチケットを取得中…"));
             string token = null, error = null;
@@ -182,7 +189,7 @@ namespace NihongoLife.Learning
 
         private IEnumerator FetchToken(string channel, IAuthService auth, Action<string, uint, string> done)
         {
-            var client = FindFirstObjectByType<SupabaseClient>();
+            var client = SceneRefs.Find<SupabaseClient>();
             if (client == null || !client.IsConfigured) { done(null, 0, NihongoLife.Core.Loc.Triple("Chưa cấu hình Supabase.", "Supabase is not configured.", "Supabaseが設定されていません。")); yield break; }
             string url = client.ProjectUrl.TrimEnd('/') + "/functions/v1/agora-voice";
             using var request = new UnityWebRequest(url, "POST");
@@ -218,7 +225,8 @@ namespace NihongoLife.Learning
             _engine.InitEventHandler(new Events(this));
             _engine.EnableAudio();
             _engine.DisableVideo();
-            _engine.SetAudioProfile(AUDIO_PROFILE_TYPE.AUDIO_PROFILE_SPEECH_STANDARD, AUDIO_SCENARIO_TYPE.AUDIO_SCENARIO_CHATROOM);
+            // Scenario is already on RtcEngineContext. The two-argument SetAudioProfile is obsolete.
+            _engine.SetAudioProfile(AUDIO_PROFILE_TYPE.AUDIO_PROFILE_SPEECH_STANDARD);
             _engine.SetAINSMode(true, AUDIO_AINS_MODE.AINS_MODE_BALANCED); // fans, keyboards, street noise
             _engine.EnableAudioVolumeIndication(250, 3, true);
             _spatial = _engine.GetLocalSpatialAudioEngine();
@@ -289,13 +297,18 @@ namespace NihongoLife.Learning
 
         private void UpdatePositions()
         {
+            if (_listener == null)
+            {
+                var player = GameObject.FindWithTag("Player");
+                if (player == null) return;
+                _listener = player.transform;
+            }
             var cam = Camera.main;
-            var player = GameObject.FindWithTag("Player");
-            if (player == null) return;
-            Transform ear = cam != null ? cam.transform : player.transform;
-            Vector3 p = player.transform.position + Vector3.up * 1.5f;
+            Transform ear = cam != null ? cam.transform : _listener;
+            Vector3 p = _listener.position + Vector3.up * 1.5f;
             _spatial.UpdateSelfPosition(V(p), V(ear.forward), V(ear.right), V(ear.up));
-            var manager = FindFirstObjectByType<NihongoLife.Player.RemotePlayerManager>();
+            if (_remotePlayers == null) _remotePlayers = SceneRefs.Find<NihongoLife.Player.RemotePlayerManager>();
+            var manager = _remotePlayers;
             if (manager == null) return;
             foreach (var kv in manager.Avatars)
             {

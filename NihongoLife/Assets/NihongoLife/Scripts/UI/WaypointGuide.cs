@@ -2,6 +2,7 @@ using NihongoLife.Player;
 using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using NihongoLife.Core;
 
 namespace NihongoLife.UI
 {
@@ -103,7 +104,7 @@ namespace NihongoLife.UI
             if (SceneManager.GetActiveScene().name != _scene) { SetActive(false); return; }
             if (_player == null)
             {
-                var player = FindFirstObjectByType<PlayerController>();
+                var player = SceneRefs.Find<PlayerController>();
                 if (player == null) return;
                 _player = player.transform;
             }

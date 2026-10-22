@@ -2,6 +2,7 @@ using NihongoLife.Player;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
+using NihongoLife.Core;
 
 namespace NihongoLife.UI
 {
@@ -65,7 +66,7 @@ namespace NihongoLife.UI
         private void LateUpdate()
         {
             // Rebuild the clone if the player (or their selected character) changed.
-            var player = FindFirstObjectByType<PlayerController>();
+            var player = SceneRefs.Find<PlayerController>();
             Transform visual = player != null ? player.transform.Find("Visual") : null;
             int id = visual != null ? visual.gameObject.GetInstanceID() : 0;
             if (id != _cloneSourceId) BuildClone(visual, id);

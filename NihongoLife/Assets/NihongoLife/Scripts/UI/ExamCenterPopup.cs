@@ -397,7 +397,7 @@ namespace NihongoLife.UI
         private void OpenLive(IeltsTest test)
         {
             Hide();
-            var meeting = NihongoLife.Learning.EduMeetingManager.Instance ?? FindFirstObjectByType<NihongoLife.Learning.EduMeetingManager>();
+            var meeting = NihongoLife.Learning.EduMeetingManager.Instance ?? SceneRefs.Find<NihongoLife.Learning.EduMeetingManager>();
             if (meeting == null)
             {
                 HudFeed.Post(Loc.T("Phòng thi trực tuyến chỉ có ở trường Hibari.", "The live exam room is at Hibari school.", "ライブ試験室はひばり学院にあります。"), HudFeed.Kind.Warning, 3.5f);
@@ -413,14 +413,14 @@ namespace NihongoLife.UI
             else
             {
                 Hide();
-                (NihongoLife.Learning.EduMeetingManager.Instance ?? FindFirstObjectByType<NihongoLife.Learning.EduMeetingManager>())?.SetOpen(true);
+                (NihongoLife.Learning.EduMeetingManager.Instance ?? SceneRefs.Find<NihongoLife.Learning.EduMeetingManager>())?.SetOpen(true);
             }
         }
 
         private void OpenMailbox()
         {
             Hide();
-            FindFirstObjectByType<ExamMailboxUI>()?.SetOpen(true);
+            SceneRefs.Find<ExamMailboxUI>()?.SetOpen(true);
         }
 
         private void StartExam(ExamDefinition exam)

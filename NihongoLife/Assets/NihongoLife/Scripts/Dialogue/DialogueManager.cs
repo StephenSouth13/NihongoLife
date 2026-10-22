@@ -9,6 +9,8 @@ using NihongoLife.Learning;
 using NihongoLife.Audio;
 using NihongoLife.Core;
 using NihongoLife.Cameras;
+using NihongoLife.Player;
+using NihongoLife.UI;
 
 namespace NihongoLife.Dialogue
 {
@@ -34,6 +36,7 @@ namespace NihongoLife.Dialogue
         [SerializeField] private float generatedVoiceVolume = 0.85f;
 
         private ScenarioNode _currentNode;
+        private string _toneFor;
         private AudioSource _generatedVoiceSource;
         private NihongoLife.NPC.NPCController _speakingNpc;
 
@@ -87,7 +90,7 @@ namespace NihongoLife.Dialogue
             _generatedVoiceSource.spatialBlend = 0f;
 
             // Try to find co-op controller
-            _coopController = FindFirstObjectByType<CoopScenarioController>();
+            _coopController = SceneRefs.Find<CoopScenarioController>();
             if (_coopController != null)
             {
                 _coopController.OnNodeSyncReceived += HandleCoopNodeSync;
@@ -97,7 +100,7 @@ namespace NihongoLife.Dialogue
 
         private void BindCoopController()
         {
-            var controller = FindFirstObjectByType<CoopScenarioController>();
+            var controller = SceneRefs.Find<CoopScenarioController>();
             if (controller == null || controller == _coopController) return;
 
             if (_coopController != null)
@@ -287,6 +290,12 @@ namespace NihongoLife.Dialogue
             };
 
             OnDialogueUpdated?.Invoke(displayData);
+            if (_toneFor != _currentNode.id)
+            {
+                _toneFor = _currentNode.id;
+                string hint = SocialStanding.DialogueHint(_currentNode.speakerId);
+                if (!string.IsNullOrEmpty(hint)) HudFeed.Post(hint, HudFeed.Kind.Info, 3.2f, "mood-talk");
+            }
         }
 
         public void SelectChoice(int choiceIndex)
@@ -309,13 +318,19 @@ namespace NihongoLife.Dialogue
             Debug.Log($"[DialogueManager] Selected choice index {choiceIndex}: {selectedChoice.textJa}");
 
             // 1. Process scoring event modifiers
+            int answerScore = 0;
+            string answerReason = "";
             if (ScoringManager.Instance != null && selectedChoice.scoreModifiers != null)
             {
                 foreach (var modifier in selectedChoice.scoreModifiers)
                 {
                     ScoringManager.Instance.AddScore(modifier.category, modifier.value, modifier.reason, _currentNode.id);
+                    answerScore += modifier.value;
+                    if (!string.IsNullOrEmpty(modifier.reason)) answerReason += " " + modifier.reason;
                 }
             }
+            string npcId = !string.IsNullOrEmpty(_currentNode.speakerId) ? _currentNode.speakerId : _currentNode.speakerName;
+            SocialStanding.NoteAnswer(npcId, answerScore, answerReason);
 
             // 2. Process mastery additions
             if (LearningMasteryManager.Instance != null)

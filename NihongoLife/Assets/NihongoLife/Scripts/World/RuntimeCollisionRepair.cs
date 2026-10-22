@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using NihongoLife.NPC;
 using NihongoLife.Scenario;
 using UnityEngine;
+using NihongoLife.Core;
 
 namespace NihongoLife.World
 {
@@ -140,9 +141,9 @@ namespace NihongoLife.World
 
         public static void BuildStoreInterior()
         {
-            if (GameObject.Find("StoreDoor") == null) return;
+            if (SceneRefs.FindNamed("StoreDoor") == null) return;
 
-            var existingShell = GameObject.Find("StoreInteriorShell");
+            var existingShell = SceneRefs.FindNamed("StoreInteriorShell");
             if (existingShell != null)
             {
                 // Keep one authored store only. The old runtime shell duplicated

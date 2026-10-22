@@ -1,6 +1,7 @@
 using System;
 using NihongoLife.Data;
 using NihongoLife.Player;
+using NihongoLife.Scenario;
 using UnityEngine;
 
 namespace NihongoLife.Core
@@ -31,7 +32,7 @@ namespace NihongoLife.Core
         {
             if (_instance != null) return _instance;
             if (_isShuttingDown) return null;
-            var existing = FindFirstObjectByType<PlayerSessionService>();
+            var existing = SceneRefs.Find<PlayerSessionService>();
             if (existing != null) { existing.Initialize(); return existing; }
             var go = new GameObject("PlayerSessionService");
             DontDestroyOnLoad(go);
@@ -75,6 +76,27 @@ namespace NihongoLife.Core
             if (!PlayableCharacterCatalog.IsPlaceholderName(displayName)) PlayableCharacterCatalog.SavePlayerName(displayName.Trim());
             PlayerPrefs.Save();
             OnModeChanged?.Invoke(Mode);
+        }
+
+        /// <summary>
+        /// Offline exploration. Uses the existing guest save (<see cref="BeginGuest"/>) and the existing
+        /// unlock bypasses so places, story gates and level locks do not apply. Online play calls
+        /// <see cref="BeginProgressionPlay"/>, which restores the normal campaign.
+        /// </summary>
+        public void BeginOfflinePlay()
+        {
+            BeginGuest();
+            LocationUnlocks.Bypass = true;
+            StoryDirector.Bypass = true;
+        }
+
+        /// <summary>Online / story play: the account save when signed in, with level and place gates on.</summary>
+        public void BeginProgressionPlay()
+        {
+            LocationUnlocks.Bypass = false;
+            StoryDirector.Bypass = false;
+            if (GameServices.TryGet(out IAuthService auth) && auth.IsAuthenticated)
+                BeginAccount(auth.UserId, auth.DisplayName);
         }
 
         public void UpdateGuestProgress(PlayerProgressDto progress)

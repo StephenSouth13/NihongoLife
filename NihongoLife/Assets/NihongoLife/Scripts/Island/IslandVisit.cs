@@ -159,8 +159,8 @@ namespace NihongoLife.Island
 
         private static void Travel(string scene, string spawn, string title)
         {
-            if (!GameServices.TryGet(out SceneFlowController flow)) flow = UnityEngine.Object.FindFirstObjectByType<SceneFlowController>();
-            if (flow == null) { SceneManager.LoadScene(scene); return; }
+            if (!GameServices.TryGet(out SceneFlowController flow)) flow = SceneRefs.Find<SceneFlowController>();
+            if (flow == null) { SceneContentLoader.LoadFallback(scene); return; }
             if (string.IsNullOrEmpty(spawn)) flow.LoadScene(scene, title);
             else flow.TransferZone(scene, spawn, title);
         }
@@ -253,8 +253,8 @@ namespace NihongoLife.Island
 
         private static bool TryClient(out SupabaseClient client, out IAuthService auth)
         {
-            client = UnityEngine.Object.FindFirstObjectByType<SupabaseClient>();
-            if (!GameServices.TryGet(out auth)) auth = UnityEngine.Object.FindFirstObjectByType<SupabaseAuthService>();
+            client = SceneRefs.Find<SupabaseClient>();
+            if (!GameServices.TryGet(out auth)) auth = SceneRefs.Find<SupabaseAuthService>();
             return client != null && client.IsConfigured && auth != null && OnlineAccess.IsRegistered;
         }
 

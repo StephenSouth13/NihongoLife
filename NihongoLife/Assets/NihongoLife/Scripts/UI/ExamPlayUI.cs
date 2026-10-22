@@ -63,7 +63,7 @@ namespace NihongoLife.UI
 
         public static ExamPlayUI GetOrCreate(Transform host)
         {
-            var existing = FindFirstObjectByType<ExamPlayUI>(FindObjectsInactive.Include);
+            var existing = SceneRefs.Find<ExamPlayUI>(FindObjectsInactive.Include);
             if (existing != null) return existing;
             var instance = host.gameObject.AddComponent<ExamPlayUI>();
             instance.Initialize(UiKit.Font);

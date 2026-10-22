@@ -24,7 +24,7 @@ namespace NihongoLife.Core
 
         private static void HandleSceneLoaded(Scene scene, LoadSceneMode mode)
         {
-            if (_bootingThroughCity || FindFirstObjectByType<PlayerController>() != null) return;
+            if (_bootingThroughCity || SceneRefs.Find<PlayerController>() != null) return;
             string targetSpawn = scene.name switch
             {
                 WorldLocationCatalog.StationScene => WorldLocationCatalog.StationEntrance,
@@ -65,6 +65,14 @@ namespace NihongoLife.Core
         private System.Collections.IEnumerator BootRoutine()
         {
             yield return null; // let the zone finish its first frame before it is replaced
+            yield return SceneContentLoader.EnsureAvailable(WorldLocationCatalog.CityScene, null);
+            if (!string.IsNullOrEmpty(SceneContentLoader.LastError))
+            {
+                Debug.LogError("[StandaloneZoneBootstrap] " + SceneContentLoader.LastError);
+                _bootingThroughCity = false;
+                Destroy(gameObject);
+                yield break;
+            }
             AsyncOperation load = SceneManager.LoadSceneAsync(WorldLocationCatalog.CityScene, LoadSceneMode.Single);
             while (load != null && !load.isDone) yield return null;
 
@@ -72,8 +80,8 @@ namespace NihongoLife.Core
             SceneFlowController flow = null;
             while (Time.realtimeSinceStartup < timeout)
             {
-                if (!GameServices.TryGet(out flow)) flow = FindFirstObjectByType<SceneFlowController>();
-                if (flow != null && !flow.IsLoading && FindFirstObjectByType<PlayerController>() != null) break;
+                if (!GameServices.TryGet(out flow)) flow = SceneRefs.Find<SceneFlowController>();
+                if (flow != null && !flow.IsLoading && SceneRefs.Find<PlayerController>() != null) break;
                 yield return null;
             }
             _bootingThroughCity = false;
@@ -93,7 +101,7 @@ namespace NihongoLife.Core
             if (!string.IsNullOrEmpty(_zoneToEnter)) return;
             // A zone opened on its own is being booted through the city: the bare fallback player is not needed.
             if (_bootingThroughCity) return;
-            PlayerController existingPlayer = FindFirstObjectByType<PlayerController>();
+            PlayerController existingPlayer = SceneRefs.Find<PlayerController>();
             if (existingPlayer != null)
             {
                 DisablePreviewCameras();

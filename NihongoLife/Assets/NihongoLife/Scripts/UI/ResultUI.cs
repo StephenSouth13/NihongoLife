@@ -156,6 +156,19 @@ namespace NihongoLife.UI
                 var town = UiKit.Button(card, "BackToTown", "Về thị trấn", "Back to town", "町へもどる", BackToTown, UiKit.Kind.Secondary, "home", 16f);
                 UiKit.Pin((RectTransform)town.transform, new Vector2(1f, 0f), -330f, 30f, 200f, 54f);
             }
+            UiModalStack.Register(this, () => _card != null, CloseFromEscape, "Results");
+        }
+
+        /// <summary>Esc does the same as the main button, then closes the card so it cannot stay on top of the town.</summary>
+        private void CloseFromEscape()
+        {
+            var card = _card;
+            OnContinueClicked();
+            if (card != null && _card == card)
+            {
+                Destroy(card.gameObject);
+                _card = null;
+            }
         }
 
         private static float Chip(RectTransform card, float x, float y, string icon, Color color, string text)
@@ -220,7 +233,7 @@ namespace NihongoLife.UI
         /// <summary>Closes the result and returns to the town (free play); the first time, the free-play card follows.</summary>
         public void BackToTown()
         {
-            var manager = FindFirstObjectByType<UIManager>();
+            var manager = SceneRefs.Find<UIManager>();
             if (manager != null) manager.ShowHUDOnly();
             else gameObject.SetActive(false);
             if (_freePlayJustOpened) { _freePlayJustOpened = false; FreePlayCardUI.ShowOnce(); } // the cursor itself is CursorDirector's
@@ -232,7 +245,7 @@ namespace NihongoLife.UI
             Cursor.lockState = CursorLockMode.None;
             Cursor.visible = true;
             if (GameServices.TryGet(out SceneFlowController sceneFlow)) sceneFlow.LoadScene("01_MainMenu");
-            else UnityEngine.SceneManagement.SceneManager.LoadScene("01_MainMenu");
+            else SceneContentLoader.LoadFallback("01_MainMenu");
         }
 
         private static string FindNextScenarioId(string currentScenarioId)

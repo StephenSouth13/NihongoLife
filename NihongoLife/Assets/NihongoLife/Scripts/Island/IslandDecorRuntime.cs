@@ -165,7 +165,7 @@ namespace NihongoLife.Island
         {
             if (Editing || IslandVisit.Active) return;
             Editing = true;
-            _player = FindFirstObjectByType<PlayerController>();
+            _player = SceneRefs.Find<PlayerController>();
             if (_player != null) _player.InputLocked = true;
             // The decorating camera: looks down on the island and pans freely (the follow camera rests meanwhile).
             var camera = Camera.main;

@@ -60,7 +60,7 @@ namespace NihongoLife.Learning
 
         private void Awake()
         {
-            _client = FindFirstObjectByType<SupabaseClient>();
+            _client = SceneRefs.Find<SupabaseClient>();
             GameServices.TryGet(out _auth);
             var db = Resources.Load<GameControlDatabase>("Control/NihongoLifeControlDatabase");
             if (db != null && !string.IsNullOrWhiteSpace(db.agoraClassroomApiUrl))

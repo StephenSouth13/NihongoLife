@@ -209,7 +209,7 @@ namespace NihongoLife.UI
 
         private void OpenLiveExam()
         {
-            var meeting = NihongoLife.Learning.EduMeetingManager.Instance ?? FindFirstObjectByType<NihongoLife.Learning.EduMeetingManager>();
+            var meeting = NihongoLife.Learning.EduMeetingManager.Instance ?? SceneRefs.Find<NihongoLife.Learning.EduMeetingManager>();
             if (meeting == null)
             {
                 HudFeed.Post(Loc.T("Phòng thi trực tuyến chỉ có ở trường Hibari.", "The live exam room is at Hibari school.", "ライブ試験室はひばり学院にあります。"), HudFeed.Kind.Warning, 3.5f);

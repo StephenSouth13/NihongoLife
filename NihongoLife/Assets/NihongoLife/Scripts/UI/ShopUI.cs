@@ -6,6 +6,7 @@ using UnityEngine.UI;
 using NihongoLife.Interaction;
 using NihongoLife.Player;
 using NihongoLife.Scenario;
+using NihongoLife.Core;
 
 namespace NihongoLife.UI
 {
@@ -24,7 +25,7 @@ namespace NihongoLife.UI
         {
             if (_instance != null) return _instance;
 
-            var existing = FindFirstObjectByType<ShopUI>();
+            var existing = SceneRefs.Find<ShopUI>();
             if (existing != null)
             {
                 _instance = existing;
@@ -252,8 +253,8 @@ namespace NihongoLife.UI
 
         private static Canvas ResolveCanvas()
         {
-            var hud = FindFirstObjectByType<HUDUI>();
-            Canvas canvas = hud != null ? hud.GetComponentInParent<Canvas>() : FindFirstObjectByType<Canvas>();
+            var hud = SceneRefs.Find<HUDUI>();
+            Canvas canvas = hud != null ? hud.GetComponentInParent<Canvas>() : SceneRefs.Find<Canvas>();
             if (canvas != null) return canvas;
 
             var canvasObject = new GameObject("ShopCanvas", typeof(Canvas), typeof(CanvasScaler), typeof(GraphicRaycaster));

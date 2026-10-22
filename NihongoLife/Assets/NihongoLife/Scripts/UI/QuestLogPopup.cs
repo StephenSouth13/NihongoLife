@@ -108,7 +108,7 @@ namespace NihongoLife.UI
             _trackButton = AddButton(card, string.Empty, 740f, 588f, 220f, 52f, false, 18f);
             _trackLabel = _trackButton.GetComponentInChildren<TextMeshProUGUI>();
             Localize(_trackLabel, "Chỉ đường", "Show the way", "道案内");
-            _trackButton.onClick.AddListener(() => FindFirstObjectByType<QuestDirectionMarker>()?.ShowCurrentObjectiveTarget());
+            _trackButton.onClick.AddListener(() => SceneRefs.Find<QuestDirectionMarker>()?.ShowCurrentObjectiveTarget());
 
             _hintText = AddText(card, string.Empty, 14f, 976f, 596f, 168f, 40f, TextAlignmentOptions.MidlineLeft, FontStyles.Normal, true, Muted);
             _hintText.text = "J / ESC";
@@ -406,6 +406,7 @@ namespace NihongoLife.UI
 
         private string RequirementText(ScenarioDefinition scenario, PlayerProgressLite progress)
         {
+            if (StoryDirector.Bypass) return string.Empty;
             var parts = new List<string>();
             if (scenario.requiredKnowledge > 0)
             {

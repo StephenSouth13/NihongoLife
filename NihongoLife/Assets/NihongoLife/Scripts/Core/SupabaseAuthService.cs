@@ -37,7 +37,7 @@ namespace NihongoLife.Core
             _client = GetComponent<SupabaseClient>();
             if (_client == null)
             {
-                _client = FindFirstObjectByType<SupabaseClient>();
+                _client = SceneRefs.Find<SupabaseClient>();
             }
 
             if (_client == null || !_client.IsConfigured)

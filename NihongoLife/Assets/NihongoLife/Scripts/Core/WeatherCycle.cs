@@ -42,6 +42,8 @@ namespace NihongoLife.Core
         /// <summary>0 … 1: a rainbow after a daytime shower (opposite the sun), fading in and out.</summary>
         public float Rainbow { get; private set; }
         private float _rainbowUntilHour = -1f;
+        private float _rainbowFrom = -1f;
+        private float _rainbowScheduledUntil = -1f;
         private bool _rainbowForced;
         [SerializeField, Range(0f, 1f)] private float rainbowChance = 0.6f;
 
@@ -75,7 +77,7 @@ namespace NihongoLife.Core
 
         private void Update()
         {
-            if (_cycle == null) _cycle = GetComponent<DayNightCycle>() ?? FindFirstObjectByType<DayNightCycle>();
+            if (_cycle == null) _cycle = GetComponent<DayNightCycle>() ?? SceneRefs.Find<DayNightCycle>();
             if (_forced.HasValue && _forcedBlend < 1f) _forcedBlend = Mathf.Min(1f, _forcedBlend + Time.deltaTime / 4f);
             Evaluate();
             UpdatePlayerExposure();
@@ -100,8 +102,10 @@ namespace NihongoLife.Core
         private void UpdateRainbow()
         {
             float hour = _cycle != null ? _cycle.Hour : 12f;
-            bool active = _rainbowUntilHour > 0f && hour < _rainbowUntilHour && hour >= 7.5f && hour <= 18f && Rain < 0.35f;
-            if (!active && !_rainbowForced) _rainbowUntilHour = -1f;
+            bool postRain = _rainbowUntilHour > 0f && hour < _rainbowUntilHour;
+            bool scheduled = _rainbowFrom >= 0f && hour >= _rainbowFrom && hour < _rainbowScheduledUntil;
+            bool active = (postRain || scheduled) && hour >= 7.5f && hour <= 18f && Rain < 0.35f;
+            if (!postRain && !_rainbowForced) _rainbowUntilHour = -1f;
             float target = active || (_rainbowForced && _rainbowUntilHour > 0f) ? 1f : 0f;
             Rainbow = Mathf.MoveTowards(Rainbow, target, Time.deltaTime / 6f);
         }
@@ -142,6 +146,14 @@ namespace NihongoLife.Core
             _dayKind = roll < rainChance ? Kind.Rain : roll < rainChance + overcastChance ? Kind.Overcast : Kind.Clear;
             _rainStart = 8f + (float)random.NextDouble() * 12f;
             _rainEnd = _rainStart + 1.5f + (float)random.NextDouble() * 2.5f;
+            // A clear or overcast day sometimes puts a rainbow up on its own, not only after rain.
+            _rainbowFrom = -1f;
+            _rainbowScheduledUntil = -1f;
+            if (_dayKind != Kind.Rain && random.NextDouble() < 0.22)
+            {
+                _rainbowFrom = 9f + (float)random.NextDouble() * 6f;
+                _rainbowScheduledUntil = _rainbowFrom + 1.1f;
+            }
         }
 
         // ─────────── Gameplay ───────────

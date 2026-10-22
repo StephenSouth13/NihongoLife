@@ -53,7 +53,7 @@ namespace NihongoLife.Interaction
             if (exitsZone && ExitGuard.TryBlock()) return;
 
             SceneFlowController flow = null;
-            if (!GameServices.TryGet(out flow)) flow = FindFirstObjectByType<SceneFlowController>();
+            if (!GameServices.TryGet(out flow)) flow = SceneRefs.Find<SceneFlowController>();
             if (flow == null || string.IsNullOrWhiteSpace(targetScene)) return;
             if (GameServices.TryGet(out IAudioService audio)) audio.PlayCue(GameAudioCue.Portal, 0.8f);
             if (exitsZone) flow.ExitZone(targetScene, targetSpawnId, displayName);

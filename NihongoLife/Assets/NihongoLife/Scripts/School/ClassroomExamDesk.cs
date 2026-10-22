@@ -1,6 +1,7 @@
 using NihongoLife.Interaction;
 using NihongoLife.UI;
 using UnityEngine;
+using NihongoLife.Core;
 
 namespace NihongoLife.School
 {
@@ -16,7 +17,7 @@ namespace NihongoLife.School
 
         public void Interact(GameObject player)
         {
-            var exams = FindFirstObjectByType<ExamCenterPopup>(FindObjectsInactive.Include);
+            var exams = SceneRefs.Find<ExamCenterPopup>(FindObjectsInactive.Include);
             if (exams == null) return;
             ClassroomRuntime.Instance?.OnExamDeskUsed();
             exams.Show();

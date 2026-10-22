@@ -170,11 +170,11 @@ namespace NihongoLife.Learning
         {
             if (_lobby != null) return;
             ResolveIdentity();
-            var world = FindFirstObjectByType<SupabaseOnlineWorldService>();
+            var world = SceneRefs.Find<SupabaseOnlineWorldService>();
             _realtime = world != null ? world.Realtime : null;
             if (_realtime == null)
             {
-                var client = FindFirstObjectByType<SupabaseClient>();
+                var client = SceneRefs.Find<SupabaseClient>();
                 if (client == null || !client.IsConfigured) return;
                 var go = new GameObject("SpeakingRealtime");
                 DontDestroyOnLoad(go);

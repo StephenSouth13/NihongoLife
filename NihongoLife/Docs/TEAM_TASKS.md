@@ -136,19 +136,19 @@ Sau khi vào đúng area, các node `Dialogue` tiếp theo (`speakerId: npc_rame
 
 **Không làm**: không tự điền `supabaseProjectUrl`/`supabaseAnonKey`, không tự tạo Supabase project, không tự sửa schema — phần backend là của Claude.
 
-**CẬP NHẬT (2026-09-16, đã xong phần backend)**: Claude đã tạo xong Supabase project thật `nihongolife` (region ap-southeast-1), apply migration đủ 8 bảng (`profiles`, `player_progress`, `scenario_scores`, `chat_messages`, `coop_sessions`, `coop_participants`, `friendships`, `leaderboard`) kèm RLS policy cho từng bảng (đã chạy security advisor, không có cảnh báo), và đã điền `supabaseProjectUrl` + `supabaseAnonKey` + bật `enableOnlineSync: 1` vào `Assets/NihongoLife/Resources/Control/NihongoLifeControlDatabase.asset`. Nghĩa là **giờ có thể test thật** (không chỉ audit tĩnh nữa) — nhắc lưu ý khi audit/test:
+**CẬP NHẬT (2026-09-16, đã xong phần backend)**: Claude đã tạo xong một Supabase project cũ (`<OLD_SUPABASE_PROJECT_REF>`, không còn dùng), apply migration đủ 8 bảng (`profiles`, `player_progress`, `scenario_scores`, `chat_messages`, `coop_sessions`, `coop_participants`, `friendships`, `leaderboard`) kèm RLS policy cho từng bảng (đã chạy security advisor, không có cảnh báo), và đã điền `supabaseProjectUrl` + `supabaseAnonKey` + bật `enableOnlineSync: 1` vào `Assets/NihongoLife/Resources/Control/NihongoLifeControlDatabase.asset`. Nghĩa là **giờ có thể test thật** (không chỉ audit tĩnh nữa) — nhắc lưu ý khi audit/test:
 - `chat_messages.user_id` cố tình để kiểu `text` (không phải `uuid` FK) vì người chơi có thể chat mà chưa đăng nhập (dùng `SystemInfo.deviceUniqueIdentifier`) — không phải bug, đừng "sửa" thành uuid.
 - Các bảng còn lại (`profiles`, `player_progress`, `coop_*`, `friendships`, `leaderboard`) đều yêu cầu người chơi đã đăng nhập thật qua `SupabaseAuthService`/`AuthUI` (RLS check `auth.uid()`) — nếu test mà chưa đăng nhập, các tính năng đó sẽ fail có chủ đích (không phải lỗi).
 - ~~Nếu Realtime Broadcast (`chat_message`) không nhận được ở client khác... báo lại cho Claude~~ **Đã tự kiểm tra và loại trừ (2026-09-24)**: `SupabaseRealtimeClient.JoinChannel()` không set `"private": true` trong config, nghĩa là dùng kênh broadcast công khai — không cần policy `realtime.messages`, không phải cấu hình còn thiếu. Nếu chat vẫn không nhận được ở client khác thì là bug code, không phải backend.
 - 6 field cũ `supabaseHost/postgresPort/databaseName/userName/passwordEnvironmentKey/requireSsl` trong `GameControlDatabase.cs` là tàn dư từ hướng tiếp cận Postgres-direct-connection cũ, không còn dùng (đã xác nhận `SupabaseClient` chỉ dùng REST qua `supabaseProjectUrl`/`supabaseAnonKey`) — an toàn để bỏ qua, không cần dọn trong task này.
 
-**CẬP NHẬT (2026-09-24, đổi sang project Supabase mới)**: chủ dự án tự tạo 1 project Supabase khác (`pkxrtvlerjjiignmlebx`, ngoài tài khoản mà tool Supabase của Claude truy cập được) và yêu cầu chuyển sang dùng project này thay cho `nihongolife` (`kcxhynckzlkrkomnmucp`). Claude đã:
-- Điền lại `supabaseProjectUrl`/`supabaseAnonKey` trong `NihongoLifeControlDatabase.asset` trỏ sang project mới.
+**CẬP NHẬT (2026-09-24, đổi sang project Supabase mới)**: chủ dự án tự tạo 1 project Supabase khác (`<SUPABASE_PROJECT_REF>`, ngoài tài khoản mà tool Supabase của Claude truy cập được) và yêu cầu chuyển sang dùng project này thay cho project cũ (`<OLD_SUPABASE_PROJECT_REF>`). Claude đã:
+- Điền lại `supabaseProjectUrl`/`supabaseAnonKey` trong `NihongoLifeControlDatabase.asset` trỏ sang project mới. Những giá trị đó không còn nằm trong asset; xem `LocalSecrets/secrets.example.json`.
 - Dựng lại y hệt schema cũ (8 bảng + 25 RLS policy + index) sang project mới bằng kết nối Postgres trực tiếp (psql, connection string chủ dự án cung cấp) — đã xác minh lại số bảng/policy khớp 100% với project cũ.
 - Xác nhận: không có trigger nào trên `auth.users` (profiles/player_progress/leaderboard được client tự insert lần đầu, không tự sinh qua trigger — đúng như policy `*_upsert_own` đã thiết kế), không có Storage bucket nào được dùng (`avatar_url` chỉ là text field).
 - Chủ dự án đã tự bật Anonymous Sign-Ins cho project mới qua Dashboard.
 - **Chưa làm** (ngoài khả năng của Claude với project này): lịch sử "Migrations" trên Dashboard sẽ không hiện bản ghi vì áp schema bằng kết nối trực tiếp thay vì Supabase CLI/Management API — chỉ là vấn đề hiển thị, không ảnh hưởng schema thật.
-- Project `nihongolife` (`kcxhynckzlkrkomnmucp`) cũ coi như không dùng nữa — không cần dọn, chỉ cần biết là project đang chạy đã đổi.
+- Project cũ (`<OLD_SUPABASE_PROJECT_REF>`) coi như không dùng nữa — không cần dọn, chỉ cần biết là project đang chạy đã đổi.
 
 ---
 
@@ -1093,7 +1093,7 @@ Claude nhận tiếp phần Codex đang làm dở: báo cáo, trailer, demo và 
 - `CharacterAnimationController.AimHeldProp()`: chỉnh hướng dụng cụ sau animation — chờ cá: cần chĩa ra mặt nước (trước đây dựng đứng như cột cờ); quăng câu: cần vung từ sau đầu ra trước-lên theo thời gian clip (trước đây kết thúc chĩa xuống đất); tưới: bình nghiêng về trước.
 - `KidActionPosesPlayModeTests` chạy trên Midori (có model dụng cụ), bắt buộc dụng cụ có trong tay, mỗi hành động chụp dải 3 khung (đầu/giữa/cuối): `Bao_Cao/character-regression/action_*.jpg`.
 
-**Online.** Lượt chạy toàn bộ hôm nay: 4 test `OnlineSocialPlayModeTests` hỏng vì server Supabase Realtime (`pkxrtvlerjjiignmlebx`) trả `phx_error … channel_crash` khi join kênh presence; sáng 12/10 cùng test này đạt. Lỗi phía server, không liên quan thay đổi trên — kiểm tra trạng thái project trên dashboard Supabase.
+**Online.** Lượt chạy toàn bộ hôm nay: 4 test `OnlineSocialPlayModeTests` hỏng vì server Supabase Realtime (`<SUPABASE_PROJECT_REF>`) trả `phx_error … channel_crash` khi join kênh presence; sáng 12/10 cùng test này đạt. Lỗi phía server, không liên quan thay đổi trên — kiểm tra trạng thái project trên dashboard Supabase.
 
 **Còn lại.** Cuốc đất dùng `action_hammer` (giơ qua vai, nhát bổ nhỏ); nhổ cỏ, cho ăn, bê đồ, ngồi, nằm vẫn là clip Mixamo retarget (pack Kids không có clip tương ứng).
 

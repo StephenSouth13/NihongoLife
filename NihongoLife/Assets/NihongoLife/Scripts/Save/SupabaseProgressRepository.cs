@@ -386,6 +386,20 @@ namespace NihongoLife.Save
             merged.notebook = notebook ?? new NihongoLife.Notebook.NotebookRecord();
             merged.notebook.pages = Mathf.Max(merged.notebook.pages, Mathf.Max(cloud.notebook?.pages ?? 0, local.notebook?.pages ?? 0));
 
+            // Calendar: keep the further day. Hour, birthday and age come from that save.
+            if (local.calendarStarted || cloud.calendarStarted)
+            {
+                merged.calendarStarted = true;
+                bool localAhead = local.calendarStarted && (!cloud.calendarStarted || local.calendarDay > cloud.calendarDay);
+                var src = localAhead ? local : cloud;
+                merged.calendarDay = Mathf.Max(local.calendarStarted ? local.calendarDay : 0, cloud.calendarStarted ? cloud.calendarDay : 0);
+                merged.calendarHour = src.calendarHour;
+                merged.birthdayMonth = src.birthdayMonth >= 1 && src.birthdayMonth <= 12 ? src.birthdayMonth : 4;
+                merged.birthdayDay = src.birthdayDay > 0 ? src.birthdayDay : 15;
+                merged.ageAtEpoch = src.ageAtEpoch > 0 ? src.ageAtEpoch : 16;
+            }
+
+            NihongoLife.Player.SocialStanding.Merge(merged, local, cloud);
             return merged;
         }
 

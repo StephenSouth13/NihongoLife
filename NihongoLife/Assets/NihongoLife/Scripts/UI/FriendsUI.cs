@@ -122,7 +122,7 @@ namespace NihongoLife.UI
                 BuildSignedOutState();
                 return;
             }
-            _service = FindFirstObjectByType<FriendService>();
+            _service = SceneRefs.Find<FriendService>();
             if (_service == null)
             {
                 BuildUnavailableState();
@@ -261,7 +261,7 @@ namespace NihongoLife.UI
         private void OpenDirect(string id, string name)
         {
             SocialChatWindow.Ensure();
-            FindFirstObjectByType<SocialHub>()?.OpenDirect(id, name);
+            SceneRefs.Find<SocialHub>()?.OpenDirect(id, name);
             Hide();
             SocialChatWindow.Open(SocialChatWindow.Tab.Direct, SocialHub.DirectId(id));
         }
@@ -314,7 +314,7 @@ namespace NihongoLife.UI
             SetStatus(Loc.T("Bạn bè cần tài khoản đã đăng ký và đăng nhập. Chế độ Khách chơi ngoại tuyến.", "Friends need a registered account, signed in. Guests play offline.", "フレンドには登録済みアカウントでのログインが必要です。ゲストはオフラインです。"), UiTheme.Warn);
             EmptyState("account_circle", Loc.T("Đăng nhập để gặp bạn bè", "Sign in to meet friends", "ログインしてフレンドと会おう"),
                 Loc.T("Sau khi đăng nhập, bạn có thể nhắn tin, nhận lời mời và thăm đảo của bạn bè.", "After signing in, you can chat, receive requests, and visit friends' islands.", "ログインすると、メッセージ、申請、フレンドの島への訪問ができます。"),
-                Loc.T("Đăng ký / Đăng nhập", "Register / Sign in", "登録・ログイン"), () => { Hide(); var auth = GetComponent<AuthUI>() ?? FindFirstObjectByType<AuthUI>(); auth?.ShowForOnline(); });
+                Loc.T("Đăng ký / Đăng nhập", "Register / Sign in", "登録・ログイン"), () => { Hide(); var auth = GetComponent<AuthUI>() ?? SceneRefs.Find<AuthUI>(); auth?.ShowForOnline(); });
         }
 
         private void BuildUnavailableState()
@@ -363,7 +363,7 @@ namespace NihongoLife.UI
 
         private static bool IsOnline(string userId)
         {
-            var world = FindFirstObjectByType<SupabaseOnlineWorldService>();
+            var world = SceneRefs.Find<SupabaseOnlineWorldService>();
             return world != null && !string.IsNullOrEmpty(userId) && world.IsOnline(userId);
         }
 
