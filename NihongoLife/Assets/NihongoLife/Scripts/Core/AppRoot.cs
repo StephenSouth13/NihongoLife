@@ -90,6 +90,7 @@ namespace NihongoLife.Core
                 dayNightCycle = gameObject.AddComponent<DayNightCycle>();
             }
             if (GetComponent<WeatherCycle>() == null) gameObject.AddComponent<WeatherCycle>();
+            if (GetComponent<NihongoLife.Player.KidExpressionCrowd>() == null) gameObject.AddComponent<NihongoLife.Player.KidExpressionCrowd>();
 
             // Determine if online features are enabled
             bool onlineEnabled = controlService.Database != null && controlService.Database.enableOnlineSync;

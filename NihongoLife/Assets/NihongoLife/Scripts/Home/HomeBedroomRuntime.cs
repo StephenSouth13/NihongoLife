@@ -57,6 +57,7 @@ namespace NihongoLife.Home
         private readonly List<Button> _studyButtons = new List<Button>();
         private readonly List<TextMeshProUGUI> _studyLabels = new List<TextMeshProUGUI>();
         private int _studyAnswer = -1;
+        private bool _studyCancel;
 
         public bool IsStudyOpen => _studyRoot != null && _studyRoot.activeSelf;
         public string CurrentStudyJapanese => _studyWord != null ? _studyWord.text : string.Empty;
@@ -190,12 +191,14 @@ namespace NihongoLife.Home
         public IEnumerator RunStudySession(IReadOnlyList<StudyWord> questions, Action<int> onFinished)
         {
             BuildCanvas();
+            _studyCancel = false;
             SetGameplayLocked(true);
             _studyRoot.SetActive(true);
             UIStyleKit.PlayShowAnimation(_studyRoot);
             int correct = 0;
             for (int q = 0; q < questions.Count; q++)
             {
+                if (_studyCancel) { AbortStudy(); yield break; }
                 StudyWord word = questions[q];
                 var options = new List<string> { word.Meaning, word.DistractorA, word.DistractorB };
                 Shuffle(options);
@@ -203,7 +206,7 @@ namespace NihongoLife.Home
                 _studyProgress.text = NihongoLife.Core.Loc.F("Câu {0}/{1}   ·   Đúng {2}", "Question {0}/{1}   ·   Correct {2}", "{0}/{1}問   ·   正解 {2}", q + 1, questions.Count, correct);
                 _studyWord.text = word.japanese;
                 _studyReading.text = word.reading;
-                _studyFeedback.text = NihongoLife.Core.Loc.T("Chọn nghĩa đúng (chuột hoặc phím 1 · 2 · 3)", "Pick the right meaning (mouse or keys 1 · 2 · 3)", "正しい意味を選んでください（マウスか1・2・3キー）");
+                _studyFeedback.text = NihongoLife.Core.Loc.T("Chọn nghĩa đúng (chuột, phím 1 · 2 · 3, hoặc Esc để đóng)", "Pick the right meaning (mouse, keys 1 · 2 · 3, or Esc to close)", "正しい意味を選んでください（マウス、1・2・3キー、Escで閉じる）");
                 _studyFeedback.color = Muted;
                 for (int i = 0; i < _studyButtons.Count; i++)
                 {
@@ -213,18 +216,29 @@ namespace NihongoLife.Home
                 }
 
                 _studyAnswer = -1;
-                while (_studyAnswer < 0) yield return null;
+                while (_studyAnswer < 0)
+                {
+                    if (_studyCancel) { AbortStudy(); yield break; }
+                    yield return null;
+                }
 
                 bool ok = _studyAnswer == answerIndex;
                 if (ok) correct++;
                 foreach (var b in _studyButtons) b.interactable = false;
                 _studyButtons[answerIndex].GetComponent<Image>().color = Correct;
-                if (!ok) _studyButtons[_studyAnswer].GetComponent<Image>().color = Wrong;
+                if (!ok && _studyAnswer >= 0 && _studyAnswer < _studyButtons.Count) _studyButtons[_studyAnswer].GetComponent<Image>().color = Wrong;
                 _studyFeedback.text = ok
                     ? "せいかい！ " + NihongoLife.Core.Loc.T("Đúng rồi — ", "Correct — ", "") + word.example
                     : "ざんねん… " + NihongoLife.Core.Loc.F("“{0}” nghĩa là “{1}”. ", "“{0}” means “{1}”. ", "「{0}」は「{1}」です。", word.japanese, word.Meaning) + word.example;
                 _studyFeedback.color = ok ? Correct : Wrong;
-                yield return new WaitForSeconds(ok ? 1.3f : 2.4f);
+                float wait = ok ? 1.3f : 2.4f;
+                float elapsed = 0f;
+                while (elapsed < wait)
+                {
+                    if (_studyCancel) { AbortStudy(); yield break; }
+                    elapsed += Time.deltaTime;
+                    yield return null;
+                }
             }
 
             _studyRoot.SetActive(false);
@@ -232,10 +246,26 @@ namespace NihongoLife.Home
             onFinished?.Invoke(correct);
         }
 
+        /// <summary>Esc closes the review without spending energy or counting the session.</summary>
+        public void CancelStudy()
+        {
+            _studyCancel = true;
+            if (!IsStudyOpen) return;
+            if (_studyRoot != null) _studyRoot.SetActive(false);
+            SetGameplayLocked(false);
+        }
+
+        private void AbortStudy()
+        {
+            _studyCancel = false;
+            if (_studyRoot != null) _studyRoot.SetActive(false);
+            SetGameplayLocked(false);
+        }
+
         private void HandleStudyKeys()
         {
             var keyboard = UnityEngine.InputSystem.Keyboard.current;
-            if (keyboard == null || _studyAnswer >= 0) return;
+            if (keyboard == null || _studyCancel || _studyAnswer >= 0) return;
             if (keyboard.digit1Key.wasPressedThisFrame || keyboard.numpad1Key.wasPressedThisFrame) PickAnswer(0);
             else if (keyboard.digit2Key.wasPressedThisFrame || keyboard.numpad2Key.wasPressedThisFrame) PickAnswer(1);
             else if (keyboard.digit3Key.wasPressedThisFrame || keyboard.numpad3Key.wasPressedThisFrame) PickAnswer(2);
@@ -395,6 +425,7 @@ namespace NihongoLife.Home
             Place(_studyFeedback.rectTransform, new Vector2(0.5f, 0f), new Vector2(0f, 34f), new Vector2(680f, 56f));
             _studyFeedback.textWrappingMode = TextWrappingModes.Normal;
             _studyRoot.SetActive(false);
+            UiModalStack.Register(this, () => IsStudyOpen, CancelStudy, "Vocabulary review");
         }
 
         private IEnumerator ShowTitleCard()

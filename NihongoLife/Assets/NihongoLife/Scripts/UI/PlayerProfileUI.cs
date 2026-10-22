@@ -2,6 +2,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 using NihongoLife.Core;
+using NihongoLife.Player;
 
 namespace NihongoLife.UI
 {
@@ -102,6 +103,7 @@ namespace NihongoLife.UI
             _closeButton.onClick.AddListener(Hide);
 
             _panel.SetActive(false);
+            UiModalStack.Register(this, () => _panel != null && _panel.activeSelf, Hide, "Profile");
         }
 
         private void LoadProfile()
@@ -136,7 +138,9 @@ namespace NihongoLife.UI
                     $"<color=#f1c75b>{Text("Cấp độ", "Level", "レベル")}</color>: {profile.level}\n" +
                     $"<color=#f1c75b>XP</color>: {profile.xp}\n" +
                     $"<color=#f1c75b>{Text("Chương", "Chapter", "チャプター")}</color>: {profile.current_chapter}\n" +
-                    $"\n<color=#8fa3b8>{(string.IsNullOrWhiteSpace(profile.bio) ? Text("Chưa có bio", "No bio yet", "自己紹介未設定") : profile.bio)}</color>";
+                    $"\n<color=#8fa3b8>{(string.IsNullOrWhiteSpace(profile.bio) ? Text("Chưa có bio", "No bio yet", "自己紹介未設定") : profile.bio)}</color>" +
+                    CalendarLine() +
+                    (_isOwnProfile ? "\n<color=#8fa3b8>" + SocialStanding.ProfileBlock + "</color>" : "");
 
                 if (_isOwnProfile)
                 {
@@ -144,6 +148,12 @@ namespace NihongoLife.UI
                     _bioInput.text = profile.bio ?? string.Empty;
                 }
             });
+        }
+
+        private static string CalendarLine()
+        {
+            var cycle = DayNightCycle.Active;
+            return cycle == null ? "" : "\n<color=#8fa3b8>" + cycle.ProfileLine + "</color>";
         }
 
         private void ShowOfflineProfile()
@@ -156,7 +166,9 @@ namespace NihongoLife.UI
                     $"<color=#f1c75b>{Text("Cấp độ", "Level", "レベル")}</color>: {p.level}\n" +
                     $"<color=#f1c75b>XP</color>: {p.xp}\n" +
                     $"<color=#f1c75b>{Text("Hoàn thành", "Completed", "完了")}</color>: {p.completedScenarios.Count}\n" +
-                    $"\n<color=#8fa3b8>{Text("Chế độ offline", "Offline mode", "オフラインモード")}</color>";
+                    $"\n<color=#8fa3b8>{Text("Chế độ offline", "Offline mode", "オフラインモード")}</color>" +
+                    CalendarLine() +
+                    "\n<color=#8fa3b8>" + (PlayerStatus.Instance != null ? SocialStanding.ProfileBlock : SocialStanding.ProfileBlockFrom(p)) + "</color>";
             }
         }
 

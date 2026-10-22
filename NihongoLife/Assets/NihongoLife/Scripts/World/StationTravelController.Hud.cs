@@ -36,13 +36,14 @@ namespace NihongoLife.World
             NLUi.Stretch(_stationHud);
 
             var route = NLUi.Panel(_stationHud, "RouteCard", NLUi.Ink, new RectOffset(20, 20, 12, 12), 2f);
-            NLUi.Anchor(route, new Vector2(1f, 1f), new Vector2(-28f, -96f), new Vector2(400f, 0f));
+            // Bottom-right, clear of the objective chip (top-left), the feed (top-centre) and live toasts (top-right).
+            NLUi.Anchor(route, new Vector2(1f, 0f), new Vector2(-24f, 118f), new Vector2(300f, 0f));
             NLUi.FitContent(route);
             _routeText = NLUi.Label(route, "Route", "ひばり  →  ？", 24f, NLUi.Text, _font, FontStyles.Bold);
             _statusText = NLUi.Label(route, "Status", "", 17f, NLUi.Muted, _font);
 
             var steps = NLUi.Group(_stationHud, "TravelSteps", false, 8f, TextAnchor.MiddleCenter, false);
-            NLUi.Anchor(steps, new Vector2(0.5f, 1f), new Vector2(0f, -22f), new Vector2(900f, 44f));
+            NLUi.Anchor(steps, new Vector2(0.5f, 1f), new Vector2(120f, -18f), new Vector2(560f, 44f));
             ((HorizontalLayoutGroup)steps.GetComponent<HorizontalOrVerticalLayoutGroup>()).childForceExpandWidth = false;
             string[] labels = { StepLabel(0), StepLabel(1), StepLabel(2), StepLabel(3) };
             for (int i = 0; i < labels.Length; i++)
@@ -54,11 +55,7 @@ namespace NihongoLife.World
                 _steps.Add((pill.GetComponent<Image>(), pillText));
             }
 
-            _toast = NLUi.Panel(_hudRoot, "Announcement", NLUi.Ink, new RectOffset(26, 26, 14, 14), 4f);
-            NLUi.Anchor(_toast, new Vector2(0.5f, 0f), new Vector2(0f, 150f), new Vector2(980f, 0f));
-            NLUi.FitContent(_toast);
-            _toastText = NLUi.Label(_toast, "Text", "", 21f, NLUi.Text, _font, FontStyles.Normal, TextAlignmentOptions.Center);
-            _toast.gameObject.SetActive(false);
+            // Announcements already go to HudFeed. A second 980px card here sat on the prompt and the status dock.
             BuildOnboardHud();
             BuildTicketPanel();
         }
@@ -68,8 +65,8 @@ namespace NihongoLife.World
         /// and a clickable window-view action. A caption frames the window view.</summary>
         private void BuildOnboardHud()
         {
-            _onboardHud = NLUi.Panel(_hudRoot, "OnboardHUD", new Color(0.03f, 0.04f, 0.06f, 0.95f), new RectOffset(24, 24, 14, 16), 10f);
-            NLUi.Anchor(_onboardHud, new Vector2(0.5f, 1f), new Vector2(0f, -16f), new Vector2(1060f, 0f));
+            _onboardHud = NLUi.Panel(_hudRoot, "OnboardHUD", NLUi.Ink, new RectOffset(18, 18, 10, 12), 8f);
+            NLUi.Anchor(_onboardHud, new Vector2(0.5f, 1f), new Vector2(0f, -12f), new Vector2(700f, 0f));
             NLUi.FitContent(_onboardHud);
 
             var ledRow = NLUi.Panel(_onboardHud, "LED", new Color(0f, 0f, 0f, 1f), new RectOffset(22, 22, 8, 8), 0f, false);
@@ -84,7 +81,7 @@ namespace NihongoLife.World
 
             var diagram = new GameObject("LineDiagram", typeof(RectTransform), typeof(LayoutElement)).GetComponent<RectTransform>();
             diagram.SetParent(_onboardHud, false);
-            diagram.GetComponent<LayoutElement>().preferredHeight = 84f;
+            diagram.GetComponent<LayoutElement>().preferredHeight = 72f;
             _lineTrack = Bar(diagram, "Track", new Color(1f, 1f, 1f, 0.14f), 0.08f, 0.92f, 8f);
             _lineDone = Bar(diagram, "TrackDone", new Color(0.3f, 0.78f, 0.52f), 0.08f, 0.08f, 8f);
             for (int i = 0; i < Line.Length; i++)
@@ -197,6 +194,9 @@ namespace NihongoLife.World
 
         private void RefreshHud()
         {
+            if (_stationHud != null && _stationHud.gameObject.activeSelf == _onboard) _stationHud.gameObject.SetActive(!_onboard);
+            if (_onboardHud != null && _onboardHud.gameObject.activeSelf != _onboard) _onboardHud.gameObject.SetActive(_onboard);
+            NihongoLife.UI.HudFeed.SetClearance(_onboard ? 214f : 92f);
             if (_routeText == null) return;
             if (_onboard)
             {

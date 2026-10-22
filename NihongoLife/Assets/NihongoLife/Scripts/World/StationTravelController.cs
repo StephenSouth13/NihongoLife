@@ -150,6 +150,8 @@ namespace NihongoLife.World
         public bool IsTicketMachineOpen => _ticketWindow != null && _ticketWindow.gameObject.activeSelf;
         public bool IsWindowViewOpen => _windowCamera != null && _windowCamera.enabled;
         public Camera WindowCamera => _windowCamera;
+        public Transform PlatformSpawn => platformSpawn;
+        public GameObject CarriageInterior => _carriageInterior;
 
         /// <summary>World centre of the carriage (the builder moves the carriage far from the hall).</summary>
         public Vector3 CarriageCenter => carriageSpawn != null && carriageSpawn.parent != null
@@ -185,6 +187,7 @@ namespace NihongoLife.World
             CachePlatformFixtures();
             EnsureStationStaff();
             NormalizeStationInteractions();
+            if (GetComponent<StationCarriageLife>() == null) gameObject.AddComponent<StationCarriageLife>();
             RefreshHud();
         }
 
@@ -318,6 +321,7 @@ namespace NihongoLife.World
 
         private void OnDestroy()
         {
+            NihongoLife.UI.HudFeed.SetClearance(92f);
             if (_hudRoot != null) Destroy(_hudRoot.gameObject);
         }
     }

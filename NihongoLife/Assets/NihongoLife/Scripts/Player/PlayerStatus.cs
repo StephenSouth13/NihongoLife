@@ -125,10 +125,13 @@ namespace NihongoLife.Player
             if (CurrentHealth <= 0f && !_collapsed) { _collapsed = true; OnCollapsed?.Invoke(); }
             else if (CurrentHealth > 0f) _collapsed = false;
 
+            SocialStanding.AdvanceHours(Time.deltaTime / 60f);
             _statusNotifyTimer += Time.deltaTime;
             if (_statusNotifyTimer >= 0.25f)
             {
                 _statusNotifyTimer = 0f;
+                float health01 = maxHealth <= 0f ? 1f : CurrentHealth / maxHealth;
+                SocialStanding.ReflectNeeds(Hunger, Thirst, Sleepiness, CurrentEnergy, health01);
                 OnStatusChanged?.Invoke();
             }
         }
@@ -143,6 +146,15 @@ namespace NihongoLife.Player
             var outdoors = Core.OutdoorSky.Active;
             InHotSun = weather != null && cycle != null && outdoors != null && outdoors.DrivesAmbientAndFog && weather.Overcast < 0.2f &&
                        cycle.Hour >= 11f && cycle.Hour <= 15f && !Core.WeatherCycle.IsSheltered(transform.position);
+        }
+
+        /// <summary>A bump from the street. Does not write the save on every tick — the usual autosave still runs.</summary>
+        public void ApplyHarm(float amount)
+        {
+            if (amount <= 0f || _collapsed) return;
+            CurrentHealth = Mathf.Max(0f, CurrentHealth - amount);
+            if (CurrentHealth <= 0f) { _collapsed = true; OnCollapsed?.Invoke(); }
+            OnStatusChanged?.Invoke();
         }
 
         /// <summary>After fainting: the clinic patched you up (StatusConsequences applies time and fee).</summary>
@@ -196,6 +208,7 @@ namespace NihongoLife.Player
         public void AddExp(int amount)
         {
             if (amount <= 0) return;
+            amount = SocialStanding.ScaleXp(amount);
             int levelBefore = Level;
             TotalExp += amount;
             ApplyLevelFromTotal();
@@ -262,6 +275,7 @@ namespace NihongoLife.Player
             CurrentEnergy = Mathf.Clamp(maxEnergy, 0f, maxEnergy);
             IsExhausted = false;
             CurrentHealth = Mathf.Min(maxHealth, CurrentHealth + 8f);
+            SocialStanding.OnRested();
             OnStatusChanged?.Invoke();
             SaveProgress();
         }
@@ -270,6 +284,7 @@ namespace NihongoLife.Player
         {
             if (amount <= 0) return;
             Knowledge += amount;
+            SocialStanding.AddMoodlet("studied", SocialMood.Inspired, 0.4f, 1f);
             OnStatusChanged?.Invoke();
             SaveProgress();
             // Enough knowledge may open the next stage of the map (MapUnlockCardUI announces it).
@@ -304,6 +319,7 @@ namespace NihongoLife.Player
             Thirst = Mathf.Clamp(progress.thirst, 0f, 100f);
             IsExhausted = CurrentEnergy <= 0f;
             Sleepiness = Mathf.Clamp(progress.sleepiness, 0f, 100f);
+            SocialStanding.Load(progress);
         }
 
         public void ReloadProgress()
@@ -326,6 +342,8 @@ namespace NihongoLife.Player
             progress.hunger = Hunger;
             progress.thirst = Thirst;
             progress.sleepiness = Sleepiness;
+            Core.DayNightCycle.Active?.WriteTo(progress);
+            SocialStanding.WriteTo(progress);
             repository.SaveProgress(progress);
         }
     }
