@@ -116,6 +116,15 @@ Check at 16:9, 16:10, 4:3, and ultrawide:
 3. Character select: drag a full turn with mouse and touch, the turn buttons step, idle spin runs when you are not dragging, and the model fills the frame. Esc closes character select, then the mode card.
 4. Offline enters the town with sushi, the station, the arcade, and the island open, on the guest save, with no forced prologue. Online without secrets stays on the mode card. Online while signed in opens the co-op lobby with story gates on.
 
+## Responsive menu, touch controls, and the hosting page
+
+Unity was not run for this pass. `docs/WEBGL_DEPLOY.md` is the publish guide. `tools/publish-webgl.sh` checks a finished WebGL folder. `.github/workflows/webgl-pages.yml` does not compile Unity.
+
+- Menu buttons get a shine sweep, a press ripple, a focus ring, a short entrance, and a hover sound when the button does not already play one. Press squash stays on the existing hover components. Reduce motion (`nl.reduceMotion`) snaps those effects.
+- The main menu canvas uses a phone reference when the short side is 500px or less, so landscape phones are not treated as ultrawide. At 1920×1080 and 1366×768 the baked positions stay put (the menu sync test reads the Start button). Shorter or narrower canvases repack the column. Popups keep `MenuSafeFrame`. Gameplay panels keep `HudFitRect`. The HUD canvas gets `HudCanvasFitter` at play if the scene did not have one, which switches that canvas to Expand.
+- Touch controls are created by the gameplay HUD: move stick, drag look, pinch zoom, Interact, Jump, Run, Map, Bag, Chat, push-to-talk, Menu, and Hide. Auto is on for phones, tablets, and coarse WebGL pointers. Settings can force them on or off, and can change size, opacity, and hand. Hide is for the current session. Keyboard and mouse are unchanged. On a desktop the look pad does not steal clicks.
+- The WebGL template is a full-viewport page with a branded loader, fullscreen, a portrait hint, safe-area padding, and favicon / Open Graph image. `ReleaseBuild` also writes `vercel.json`. Do not send `Content-Encoding: br`.
+
 ## Deleted scratch files
 
 GUID scan of `NihongoLife/Assets` (text references only; `Resources/`, `StreamingAssets`, plugins, and editor folders excluded from the delete set). Audio was not deleted: dialogue, JLPT/IELTS, and NPC lines are loaded by name from data tables.

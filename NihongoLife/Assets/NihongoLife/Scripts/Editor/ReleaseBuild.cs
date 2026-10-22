@@ -148,6 +148,32 @@ namespace NihongoLife.Editor
                 "  </FilesMatch>\n" +
                 "</IfModule>\n" +
                 "# Do not add \"Header set Content-Encoding br\" while WebGL decompression fallback is enabled.\n");
+            // Vercel reads vercel.json from the published folder. Same rule: do not set Content-Encoding.
+            File.WriteAllText(Path.Combine(output, "vercel.json"),
+                "{\n" +
+                "  \"headers\": [\n" +
+                "    { \"source\": \"/Build/(.*).wasm\", \"headers\": [\n" +
+                "      { \"key\": \"Content-Type\", \"value\": \"application/wasm\" },\n" +
+                "      { \"key\": \"Cache-Control\", \"value\": \"public, max-age=31536000, immutable\" }\n" +
+                "    ]},\n" +
+                "    { \"source\": \"/Build/(.*).js\", \"headers\": [\n" +
+                "      { \"key\": \"Content-Type\", \"value\": \"application/javascript\" },\n" +
+                "      { \"key\": \"Cache-Control\", \"value\": \"public, max-age=31536000, immutable\" }\n" +
+                "    ]},\n" +
+                "    { \"source\": \"/Build/(.*)\", \"headers\": [\n" +
+                "      { \"key\": \"Cache-Control\", \"value\": \"public, max-age=31536000, immutable\" }\n" +
+                "    ]},\n" +
+                "    { \"source\": \"/zones/index.json\", \"headers\": [\n" +
+                "      { \"key\": \"Cache-Control\", \"value\": \"no-cache\" }\n" +
+                "    ]},\n" +
+                "    { \"source\": \"/zones/(.*)\", \"headers\": [\n" +
+                "      { \"key\": \"Cache-Control\", \"value\": \"public, max-age=31536000, immutable\" }\n" +
+                "    ]},\n" +
+                "    { \"source\": \"/index.html\", \"headers\": [\n" +
+                "      { \"key\": \"Cache-Control\", \"value\": \"no-cache\" }\n" +
+                "    ]}\n" +
+                "  ]\n" +
+                "}\n");
         }
 
         private static void ValidateScenes()

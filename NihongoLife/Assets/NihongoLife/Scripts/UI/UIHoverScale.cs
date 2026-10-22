@@ -44,7 +44,7 @@ namespace NihongoLife.UI
         public void OnPointerDown(PointerEventData eventData)
         {
             if (NihongoLife.Core.MotionSettings.ReduceMotion) return;
-            targetScale = originalScale * pressScale;
+            targetScale = new Vector3(originalScale.x * 1.06f, originalScale.y * 0.9f, originalScale.z);
         }
 
         public void OnPointerUp(PointerEventData eventData)
