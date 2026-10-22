@@ -101,6 +101,13 @@ namespace NihongoLife.Core
             _isLoading = true;
             LockPlayer(true);
             yield return FadeIn(Title(sceneName, displayName));
+            yield return SceneContentLoader.EnsureAvailable(sceneName, progress =>
+                SetProgress(Mathf.Clamp01(progress), NihongoLife.Core.Loc.T("Đang tải khu vực...", "Downloading the area...", "エリアをダウンロード中...")));
+            if (!string.IsNullOrEmpty(SceneContentLoader.LastError))
+            {
+                yield return FailAndRelease(SceneContentLoader.LastError);
+                yield break;
+            }
             AsyncOperation operation = SceneManager.LoadSceneAsync(sceneName, LoadSceneMode.Single);
             if (operation == null)
             {
@@ -143,6 +150,13 @@ namespace NihongoLife.Core
             bool newlyLoaded = !zone.isLoaded;
             if (newlyLoaded)
             {
+                yield return SceneContentLoader.EnsureAvailable(sceneName, progress =>
+                    SetProgress(Mathf.Clamp01(progress), NihongoLife.Core.Loc.T("Đang tải khu vực...", "Downloading the area...", "エリアをダウンロード中...")));
+                if (!string.IsNullOrEmpty(SceneContentLoader.LastError))
+                {
+                    yield return FailAndRelease(SceneContentLoader.LastError);
+                    yield break;
+                }
                 AsyncOperation load = SceneManager.LoadSceneAsync(sceneName, LoadSceneMode.Additive);
                 if (load == null)
                 {
@@ -197,6 +211,13 @@ namespace NihongoLife.Core
             bool newlyLoaded = !to.isLoaded;
             if (newlyLoaded)
             {
+                yield return SceneContentLoader.EnsureAvailable(sceneName, progress =>
+                    SetProgress(Mathf.Clamp01(progress), NihongoLife.Core.Loc.T("Đang tải khu vực...", "Downloading the area...", "エリアをダウンロード中...")));
+                if (!string.IsNullOrEmpty(SceneContentLoader.LastError))
+                {
+                    yield return FailAndRelease(SceneContentLoader.LastError);
+                    yield break;
+                }
                 AsyncOperation load = SceneManager.LoadSceneAsync(sceneName, LoadSceneMode.Additive);
                 if (load == null)
                 {

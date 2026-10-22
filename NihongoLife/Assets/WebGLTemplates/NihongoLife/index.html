@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+  <title>{{{ PRODUCT_NAME }}}</title>
+  <link rel="stylesheet" href="TemplateData/style.css">
+</head>
+<body>
+  <div id="unity-container">
+    <canvas id="unity-canvas" tabindex="-1"></canvas>
+    <div id="unity-loading">
+      <div id="unity-loading-title">{{{ PRODUCT_NAME }}}</div>
+      <div id="unity-progress"><div id="unity-progress-bar"></div></div>
+      <div id="unity-loading-text">Loading…</div>
+    </div>
+    <div id="unity-warning"></div>
+  </div>
+  <script>
+    var canvas = document.querySelector("#unity-canvas");
+    var loading = document.querySelector("#unity-loading");
+    var bar = document.querySelector("#unity-progress-bar");
+    var loadingText = document.querySelector("#unity-loading-text");
+    var warning = document.querySelector("#unity-warning");
+
+    function unityShowBanner(msg, type) {
+      warning.textContent = msg || "";
+      warning.style.display = msg ? "block" : "none";
+    }
+
+    var buildUrl = "Build";
+    var loaderUrl = buildUrl + "/{{{ LOADER_FILENAME }}}";
+    var config = {
+      dataUrl: buildUrl + "/{{{ DATA_FILENAME }}}",
+      frameworkUrl: buildUrl + "/{{{ FRAMEWORK_FILENAME }}}",
+      codeUrl: buildUrl + "/{{{ CODE_FILENAME }}}",
+#if MEMORY_FILENAME
+      memoryUrl: buildUrl + "/{{{ MEMORY_FILENAME }}}",
+#endif
+#if SYMBOLS_FILENAME
+      symbolsUrl: buildUrl + "/{{{ SYMBOLS_FILENAME }}}",
+#endif
+      streamingAssetsUrl: "StreamingAssets",
+      companyName: {{{ JSON.stringify(COMPANY_NAME) }}},
+      productName: {{{ JSON.stringify(PRODUCT_NAME) }}},
+      productVersion: {{{ JSON.stringify(PRODUCT_VERSION) }}},
+      showBanner: unityShowBanner,
+    };
+
+    // Cap HiDPI. The in-game Web graphics button writes the same localStorage key; it applies on the next load.
+    var dprCap = 1.5;
+    try {
+      var stored = parseFloat(localStorage.getItem("nihongo.webgl.dprCap"));
+      if (!isNaN(stored) && stored >= 0.5 && stored <= 3) dprCap = stored;
+    } catch (e) {}
+    config.devicePixelRatio = Math.min(window.devicePixelRatio || 1, dprCap);
+
+    var script = document.createElement("script");
+    script.src = loaderUrl;
+    script.onload = function () {
+      createUnityInstance(canvas, config, function (progress) {
+        bar.style.width = (100 * progress) + "%";
+        loadingText.textContent = progress < 1 ? ("Loading " + Math.round(progress * 100) + "%") : "Starting…";
+      }).then(function (instance) {
+        loading.style.display = "none";
+        window.unityInstance = instance;
+        window.nihongoDprCap = dprCap;
+      }).catch(function (message) {
+        loadingText.textContent = String(message);
+        console.error(message);
+      });
+    };
+    script.onerror = function () {
+      loadingText.textContent = "Could not load the game. Check that the Build folder is next to this page and that the server allows .wasm and .unityweb.";
+    };
+    document.body.appendChild(script);
+  </script>
+</body>
+</html>

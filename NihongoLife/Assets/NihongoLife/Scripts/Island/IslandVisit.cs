@@ -160,7 +160,7 @@ namespace NihongoLife.Island
         private static void Travel(string scene, string spawn, string title)
         {
             if (!GameServices.TryGet(out SceneFlowController flow)) flow = SceneRefs.Find<SceneFlowController>();
-            if (flow == null) { SceneManager.LoadScene(scene); return; }
+            if (flow == null) { SceneContentLoader.LoadFallback(scene); return; }
             if (string.IsNullOrEmpty(spawn)) flow.LoadScene(scene, title);
             else flow.TransferZone(scene, spawn, title);
         }

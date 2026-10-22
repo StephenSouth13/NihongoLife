@@ -36,7 +36,10 @@ namespace NihongoLife.UI
 
         [Header("Settings")]
         [SerializeField] private string targetGameplayScene = "90_TestSandbox";
+        // Kept on the serialized menu. StoryDirector.AutoStart picks the quest; this id is the old fixed launch.
+#pragma warning disable CS0414
         [SerializeField] private string targetScenarioId = "scenario.konbini.buy_onigiri";
+#pragma warning restore CS0414
 
         private Button settingsButton, loginButton, leaderboardButton, friendsButton, profileButton, onlineButton;
         private SettingsUI settingsUI;
@@ -474,7 +477,7 @@ namespace NihongoLife.UI
             var story = StoryDirector.AutoStart();
             if (story != null) ScenarioSceneInitializer.QueueLaunch(story.id);
             if (GameServices.TryGet(out SceneFlowController sceneFlow)) sceneFlow.LoadScene(targetGameplayScene);
-            else UnityEngine.SceneManagement.SceneManager.LoadScene(targetGameplayScene);
+            else SceneContentLoader.LoadFallback(targetGameplayScene);
         }
 
         private void OnQuitClicked() => Application.Quit();

@@ -339,7 +339,7 @@ namespace NihongoLife.UI
             }
             else
             {
-                UnityEngine.SceneManagement.SceneManager.LoadScene("90_TestSandbox");
+                SceneContentLoader.LoadFallback("90_TestSandbox");
             }
         }
 

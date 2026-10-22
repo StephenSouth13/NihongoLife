@@ -232,7 +232,7 @@ namespace NihongoLife.UI
             Cursor.lockState = CursorLockMode.None;
             Cursor.visible = true;
             if (GameServices.TryGet(out SceneFlowController sceneFlow)) sceneFlow.LoadScene("01_MainMenu");
-            else UnityEngine.SceneManagement.SceneManager.LoadScene("01_MainMenu");
+            else SceneContentLoader.LoadFallback("01_MainMenu");
         }
 
         private static string FindNextScenarioId(string currentScenarioId)

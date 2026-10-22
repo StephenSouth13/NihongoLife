@@ -161,12 +161,14 @@ namespace NihongoLife.Core
 
         static SupabaseRealtimeClient()
         {
+#if !UNITY_WEBGL || UNITY_EDITOR
             // Mono's ClientWebSocket goes through ServicePoint, which allows 2 connections per host by default;
             // a websocket holds its connection for life, so a third socket (tests, bots) would wait forever.
             if (System.Net.ServicePointManager.DefaultConnectionLimit < 64) System.Net.ServicePointManager.DefaultConnectionLimit = 64;
             // ConnectAsync (TLS handshake) still runs on the pool; give it room so the first connect is not slow either.
             ThreadPool.GetMinThreads(out int worker, out int io);
             if (worker < 32 || io < 32) ThreadPool.SetMinThreads(Math.Max(worker, 32), Math.Max(io, 32));
+#endif
         }
         private const int MaxPendingFramesPerChannel = 64;
 
@@ -520,7 +522,8 @@ namespace NihongoLife.Core
 
         public void OnWebGLRealtimeMessage(string message)
         {
-            if (!string.IsNullOrEmpty(message)) _incoming.Enqueue(message);
+            if (string.IsNullOrEmpty(message)) return;
+            lock (_incomingLock) _incoming.Enqueue(message);
         }
 
         public void OnWebGLRealtimeClose(string reason)

@@ -39,6 +39,7 @@ namespace NihongoLife.UI
         private TextMeshProUGUI sensitivityValue;
         private Button invertButton, schemeButton;
         private TextMeshProUGUI schemeHint;
+        private TextMeshProUGUI webGlGraphicsLabel;
         private readonly Dictionary<GameInputId, TextMeshProUGUI> bindingLabels = new Dictionary<GameInputId, TextMeshProUGUI>();
         private readonly List<LocalizedLabel> localized = new List<LocalizedLabel>();
 
@@ -181,6 +182,21 @@ namespace NihongoLife.UI
             var close = CreateButton(card.transform, string.Empty, new Vector2(130f, -318f), new Vector2(220f, 48f), true);
             Localize(close.GetComponentInChildren<TextMeshProUGUI>(), "Đóng", "Close", "閉じる");
             close.onClick.AddListener(Hide);
+            if (Application.platform == RuntimePlatform.WebGLPlayer)
+            {
+                var graphics = CreateButton(card.transform, string.Empty, new Vector2(400f, -318f), new Vector2(250f, 48f), false);
+                webGlGraphicsLabel = graphics.GetComponentInChildren<TextMeshProUGUI>();
+                webGlGraphicsLabel.fontSize = 14f;
+                webGlGraphicsLabel.enableAutoSizing = true;
+                webGlGraphicsLabel.fontSizeMin = 10f;
+                webGlGraphicsLabel.fontSizeMax = 14f;
+                graphics.onClick.AddListener(() =>
+                {
+                    WebGLGraphicsSettings.Cycle();
+                    RefreshWebGlGraphics();
+                    NihongoLife.UI.HudFeed.Post(WebGLGraphicsSettings.ReloadHint(), NihongoLife.UI.HudFeed.Kind.Info, 4f, "webgl-graphics");
+                });
+            }
 
             var x = CreateButton(card.transform, "X", Vector2.zero, new Vector2(56f, 46f), true);
             var xRect = (RectTransform)x.transform;
@@ -309,6 +325,13 @@ namespace NihongoLife.UI
             sfxSlider.SetValueWithoutNotify(PlayerPrefs.GetFloat("Volume_SFX", 0.8f));
             UpdateValueText(bgmValue, bgmSlider.value);
             UpdateValueText(sfxValue, sfxSlider.value);
+            RefreshWebGlGraphics();
+        }
+
+        private void RefreshWebGlGraphics()
+        {
+            if (webGlGraphicsLabel == null) return;
+            webGlGraphicsLabel.text = Pick(WebGLGraphicsSettings.LabelVi(), WebGLGraphicsSettings.LabelEn(), WebGLGraphicsSettings.LabelJa());
         }
 
         private void RefreshControlButtons()
