@@ -38,8 +38,15 @@ namespace NihongoLife.Editor
             PlayerSettings.WebGL.compressionFormat = WebGLCompressionFormat.Brotli;
             PlayerSettings.WebGL.decompressionFallback = true; // loads on any host (itch.io, GitHub Pages), not only servers that send Content-Encoding: br
             PlayerSettings.WebGL.dataCaching = true;
+            PlayerSettings.WebGL.nameFilesAsHashes = true;
             PlayerSettings.WebGL.debugSymbolMode = WebGLDebugSymbolMode.Off;
             PlayerSettings.WebGL.exceptionSupport = WebGLExceptionSupport.ExplicitlyThrownExceptionsOnly;
+            // A 32 MB heap grows repeatedly while the first world is loading. Each WebAssembly growth copies memory
+            // and presents as a long hitch in the browser. Start at a realistic footprint and retain bounded growth.
+            PlayerSettings.WebGL.initialMemorySize = 256;
+            PlayerSettings.WebGL.maximumMemorySize = 2048;
+            PlayerSettings.WebGL.memoryGrowthMode = WebGLMemoryGrowthMode.Geometric;
+            PlayerSettings.WebGL.powerPreference = WebGLPowerPreference.HighPerformance;
 
             Build(BuildTarget.WebGL, Path.Combine(BuildRoot(), "WebGL"), BuildOptions.None);
         }
@@ -92,7 +99,26 @@ namespace NihongoLife.Editor
 
             if (report.summary.result != BuildResult.Succeeded)
                 throw new BuildFailedException($"{target} build failed: {report.summary.result} ({report.summary.totalErrors} errors).");
+            if (target == BuildTarget.WebGL) WriteWebHostingFiles(output);
             Debug.Log($"[ReleaseBuild] {target} ready at {output}; {report.summary.totalSize / (1024f * 1024f):F1} MB.");
+        }
+
+        private static void WriteWebHostingFiles(string output)
+        {
+            // Netlify/Cloudflare Pages read _headers. Apache reads .htaccess. Hashed data/code can be cached forever;
+            // index/loader stay revalidated so a deployment never mixes old and new build files.
+            File.WriteAllText(Path.Combine(output, "_headers"),
+                "/Build/*\n  Cache-Control: public, max-age=31536000, immutable\n" +
+                "/index.html\n  Cache-Control: no-cache\n");
+            File.WriteAllText(Path.Combine(output, ".htaccess"),
+                "<IfModule mod_headers.c>\n" +
+                "  <FilesMatch \\\"\\.(data|wasm|js|unityweb)$\\\">\n" +
+                "    Header set Cache-Control \\\"public, max-age=31536000, immutable\\\"\n" +
+                "  </FilesMatch>\n" +
+                "  <FilesMatch \\\"^(index\\.html|.*loader.*\\.js)$\\\">\n" +
+                "    Header set Cache-Control \\\"no-cache\\\"\n" +
+                "  </FilesMatch>\n" +
+                "</IfModule>\n");
         }
 
         private static void ValidateScenes()
