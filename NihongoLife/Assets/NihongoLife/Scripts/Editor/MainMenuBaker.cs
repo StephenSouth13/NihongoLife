@@ -181,6 +181,7 @@ namespace NihongoLife.EditorTools
                     }
                 }
 
+                MenuChrome.Arrange((RectTransform)panel.transform);
                 EditorSceneManager.MarkSceneDirty(scene);
                 EditorSceneManager.SaveScene(scene);
                 Debug.Log("[MainMenuBaker] 01_MainMenu baked: " + string.Join(", ", panel.transform.Cast<Transform>().Select(t => t.name)));

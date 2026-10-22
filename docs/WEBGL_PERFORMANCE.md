@@ -97,6 +97,25 @@ Unity 6000.3.12f1, a hosted build (or `localhost` with the generated `_headers` 
 7. Both join the same voice channel. Each browser shows a microphone prompt. Speech is audible both ways. Leave and rejoin. A missing App ID or a 404 from `agora-voice` shows the localized error and leaves the rest of the game playable.
 8. Console: the warnings fixed here should be gone (`SetAudioProfile` obsolete, CS0414 on the station and menu fields, `SetManagedStrippingLevel(BuildTargetGroup)`). Agora and Devion package warnings can remain.
 
+## Main menu
+
+Unity was not run for this pass. Play `01_MainMenu` locally. Once, run `NihongoLife.EditorTools.MainMenuBaker.Bake` so the Editor scene stores the same top bar Play builds. There is no new scene and no menu item.
+
+Start opens a mode card, then character select, then the game.
+
+- **Offline** uses the existing guest save (`guest_progress.json` via `PlayerSessionService.BeginGuest`) and the existing unlock bypass (`LocationUnlocks.Bypass` and `StoryDirector.Bypass`). Places, story quests, jobs, and the company knowledge check are open. The prologue is not forced. Online progression is unchanged: the co-op lobby and zone loads call `BeginProgressionPlay`, which turns those bypasses off and uses the account save when signed in.
+- The sidebar **Play online** button still sends a guest to the account panel and a registered account to character select, then the lobby.
+- If Supabase is not configured, the mode card says so and Offline still starts.
+- Settings scrolls the key list inside the card. The language row (VI / EN / JP), About, and Sign in share one top bar. Reduce motion is in Settings (`nl.reduceMotion`). It snaps menu entrance, popup scale, button hover scale, title shimmer, sakura, the town camera orbit, and the scene fade.
+- Effects stay on the CPU and unlit meshes: no extra post-processing. WebGL uses the WebGL quality level, a smaller character preview, two preview lights, and ten petals.
+
+Check at 16:9, 16:10, 4:3, and ultrawide:
+
+1. VI / EN / JP, About, and Sign in stay inside the screen. The learner line stays in the left column.
+2. Settings: text stays inside the card, the X is in the header, the key list scrolls, Reset and Close stay visible. Toggle reduce motion and confirm the motion above stops.
+3. Character select: drag a full turn with mouse and touch, the turn buttons step, idle spin runs when you are not dragging, and the model fills the frame. Esc closes character select, then the mode card.
+4. Offline enters the town with sushi, the station, the arcade, and the island open, on the guest save, with no forced prologue. Online without secrets stays on the mode card. Online while signed in opens the co-op lobby with story gates on.
+
 ## Deleted scratch files
 
 GUID scan of `NihongoLife/Assets` (text references only; `Resources/`, `StreamingAssets`, plugins, and editor folders excluded from the delete set). Audio was not deleted: dialogue, JLPT/IELTS, and NPC lines are loaded by name from data tables.

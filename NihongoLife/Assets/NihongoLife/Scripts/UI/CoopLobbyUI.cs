@@ -328,6 +328,7 @@ namespace NihongoLife.UI
 
         private static void LoadCoopGameplay(string scenarioId)
         {
+            PlayerSessionService.GetOrCreate()?.BeginProgressionPlay();
             if (!string.IsNullOrWhiteSpace(scenarioId))
             {
                 ScenarioSceneInitializer.QueueLaunch(scenarioId);

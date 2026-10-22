@@ -113,6 +113,7 @@ namespace NihongoLife.Scenario
         /// <summary>Why a story quest cannot start yet (null when it can).</summary>
         public static string Blocker(ScenarioDefinition scenario)
         {
+            if (Bypass) return null;
             var progress = Progress;
             if (scenario == null || progress == null) return Loc.T("Chưa sẵn sàng.", "Not ready.", "準備中です。");
             foreach (var required in scenario.requiredScenarioIds ?? new List<string>())

@@ -406,6 +406,7 @@ namespace NihongoLife.UI
 
         private string RequirementText(ScenarioDefinition scenario, PlayerProgressLite progress)
         {
+            if (StoryDirector.Bypass) return string.Empty;
             var parts = new List<string>();
             if (scenario.requiredKnowledge > 0)
             {
