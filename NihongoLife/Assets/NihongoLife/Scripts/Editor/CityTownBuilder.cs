@@ -548,11 +548,11 @@ namespace NihongoLife.EditorTools
 
         private static void StationGate(Transform g, Destination d)
         {
-            Block(g, "Canopy", new Vector3(0f, 3.2f, -1.4f), new Vector3(7.2f, 0.22f, 3.0f), _wallGray, false);
+            Block(g, "Canopy", new Vector3(0f, 3.2f, -1.4f), new Vector3(7.2f, 0.22f, 3.0f), _wallGray, true); // collider: the camera stops at it
             Block(g, "CanopyEdge", new Vector3(0f, 3.05f, -2.85f), new Vector3(7.2f, 0.3f, 0.1f), _blue, false);
             foreach (float x in new[] { -3.3f, 3.3f })
                 Block(g, "Pillar_" + (x < 0 ? "L" : "R"), new Vector3(x, 1.55f, -2.6f), new Vector3(0.3f, 3.1f, 0.3f), _metal, true);
-            Block(g, "SignBoard", new Vector3(0f, 3.75f, -2.75f), new Vector3(4.6f, 0.9f, 0.15f), _blueSign, false);
+            Block(g, "SignBoard", new Vector3(0f, 3.75f, -2.75f), new Vector3(4.6f, 0.9f, 0.15f), _blueSign, true);
             Text(g, "Sign_JA", "ひばり駅", new Vector3(0f, 3.88f, -2.84f), 0f, 0.42f, Color.white, 4.4f);
             Text(g, "Sign_VI", "HIBARI STATION · Ga tàu điện", new Vector3(0f, 3.52f, -2.84f), 0f, 0.14f, new Color(0.85f, 0.92f, 1f), 4.4f);
             StationDoors(g);
@@ -631,6 +631,43 @@ namespace NihongoLife.EditorTools
                 else throw;
             }
         }
+
+        /// <summary>
+        /// Patch for the built town (and the menu's copy): overhead entrance pieces (canopies, sign boards — all above
+        /// head height) get colliders so the third-person camera stops at them instead of passing through, and the
+        /// GameplayGround slab under the street surfaces stops casting shadows (it sat 1–2 cm under the paving and,
+        /// with a low sun, shadowed it in some frames). -executeMethod NihongoLife.EditorTools.CityTownBuilder.PatchCameraAndGround
+        /// (NL_STREET_SCENE=01_MainMenu for the menu).
+        /// </summary>
+        public static void PatchCameraAndGround()
+        {
+            try
+            {
+                string path = $"Assets/NihongoLife/Scenes/{Environment.GetEnvironmentVariable("NL_STREET_SCENE") ?? "90_TestSandbox"}.unity";
+                var scene = EditorSceneManager.OpenScene(path, OpenSceneMode.Single);
+                int colliders = 0, grounds = 0;
+                foreach (var root in scene.GetRootGameObjects())
+                    foreach (var t in root.GetComponentsInChildren<Transform>(true))
+                    {
+                        bool overhead = t.parent != null && t.parent.name.StartsWith("Entrance_") && (t.name == "Canopy" || t.name == "SignBoard" || t.name == "Signboard" || t.name == "CanopyEdge");
+                        if (overhead && t.GetComponent<Collider>() == null && t.GetComponent<MeshRenderer>() != null && RendererBoundsMinY(t) > 2.2f) { t.gameObject.AddComponent<BoxCollider>(); colliders++; }
+                        if (t.name == "GameplayGround" && t.GetComponent<MeshRenderer>() is MeshRenderer r && r.shadowCastingMode != UnityEngine.Rendering.ShadowCastingMode.Off)
+                        { r.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.Off; grounds++; }
+                    }
+                EditorSceneManager.MarkSceneDirty(scene);
+                if (!EditorSceneManager.SaveScene(scene, path)) throw new InvalidOperationException("Scene save failed.");
+                Debug.Log($"[CityTownBuilder] {path}: {colliders} overhead colliders, {grounds} ground slab(s) without shadows.");
+                if (Application.isBatchMode) EditorApplication.Exit(0);
+            }
+            catch (Exception exception)
+            {
+                Debug.LogException(exception);
+                if (Application.isBatchMode) EditorApplication.Exit(1);
+                else throw;
+            }
+        }
+
+        private static float RendererBoundsMinY(Transform t) => t.GetComponent<Renderer>().bounds.min.y;
 
         private static void SushiFront(Transform g, Destination d)
         {

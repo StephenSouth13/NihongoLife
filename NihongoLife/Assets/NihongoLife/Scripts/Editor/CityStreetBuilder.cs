@@ -148,6 +148,8 @@ namespace NihongoLife.EditorTools
             public Transform walls;
             public readonly List<Rect> lots = new();
             public readonly List<Rect> reserved = new();
+            /// <summary>Footprints walls may never cross: every building on the tile and the reserved areas.</summary>
+            public readonly List<Rect> solids = new();
             public Batch B(Material m, float uv) { if (!batches.TryGetValue(m, out var b)) batches[m] = b = new Batch(uv); return b; }
         }
 
@@ -167,6 +169,11 @@ namespace NihongoLife.EditorTools
                 var go = GameObject.Find(name);
                 if (go != null && k == 0) c.reserved.Add(ToRect(RendererBounds(go.transform), 0.4f));
             }
+            var store = tile.Find("KonbiniStoreAsset");
+            if (store != null && store.gameObject.activeSelf) c.reserved.Add(ToRect(RendererBounds(store), 0.4f));
+            c.solids.AddRange(c.reserved);
+            foreach (Transform t in tile)
+                if (t.gameObject.activeSelf && t.name.StartsWith("StreetBuilding_")) c.solids.Add(ToRect(RendererBounds(t), -0.05f));
 
             // Ground layers.
             c.B(_laneAsphalt, 4f).Quad(XMin, XMax, dz - 55f, dz + 45f, 0.004f);                       // residential asphalt base
@@ -305,6 +312,9 @@ namespace NihongoLife.EditorTools
             else r = Rect.MinMaxRect(frontEdge, b.min.z - 0.9f, b.max.x + 1.2f, b.max.z + 0.9f);
             var house = ToRect(b, 0f);
             foreach (var other in c.lots.Concat(c.reserved)) r = Trim(r, other, house);
+            // A lot that still overlaps a reserved area (the konbini, the plaza, the station) is dropped: a fenced
+            // yard must never reach into a shop.
+            if (c.reserved.Any(x => x.Overlaps(r))) return;
             if (r.width < 3f || r.height < 3f) return;
             c.lots.Add(r);
 
@@ -343,7 +353,39 @@ namespace NihongoLife.EditorTools
             return options.Count == 0 ? r : options.OrderByDescending(o => o.width * o.height).First();
         }
 
+        /// <summary>A block wall from a to b, minus every stretch that would run through a building or a reserved area.</summary>
         private static void Wall(Ctx c, Vector2 a, Vector2 b)
+        {
+            var gaps = new List<(float t0, float t1)>();
+            foreach (var solid in c.solids)
+                if (ClipSegment(a, b, solid, out float t0, out float t1)) gaps.Add((t0, t1));
+            float from = 0f;
+            foreach (var (t0, t1) in gaps.OrderBy(g => g.t0))
+            {
+                if (t0 > from) WallPiece(c, Vector2.Lerp(a, b, from), Vector2.Lerp(a, b, t0));
+                from = Mathf.Max(from, t1);
+            }
+            if (from < 1f) WallPiece(c, Vector2.Lerp(a, b, from), b);
+        }
+
+        /// <summary>The part of segment a→b inside rect r, as parameters [t0, t1] (Liang–Barsky).</summary>
+        private static bool ClipSegment(Vector2 a, Vector2 b, Rect r, out float t0, out float t1)
+        {
+            t0 = 0f; t1 = 1f;
+            Vector2 d = b - a;
+            float[] p = { -d.x, d.x, -d.y, d.y };
+            float[] q = { a.x - r.xMin, r.xMax - a.x, a.y - r.yMin, r.yMax - a.y };
+            for (int i = 0; i < 4; i++)
+            {
+                if (Mathf.Abs(p[i]) < 1e-6f) { if (q[i] < 0f) return false; continue; }
+                float t = q[i] / p[i];
+                if (p[i] < 0f) t0 = Mathf.Max(t0, t); else t1 = Mathf.Min(t1, t);
+                if (t0 > t1) return false;
+            }
+            return t1 - t0 > 1e-4f;
+        }
+
+        private static void WallPiece(Ctx c, Vector2 a, Vector2 b)
         {
             const float h = 1.15f, t = 0.15f;
             if ((b - a).magnitude < 0.3f) return;
