@@ -55,7 +55,20 @@ namespace NihongoLife.Tests
                 Assert.IsEmpty(hits.Where(h => h.name.StartsWith("Collision_") || h.name == "Wall").Select(h => h.name), "A car is inside a building or wall.");
             }
 
-            // Red: cars stop at the line.
+            // No yard wall runs through a shop: the konbini (shell and its interior) holds no wall collider.
+            foreach (var shopName in new[] { "Town_Konbini", "KonbiniStoreAsset" })
+            {
+                var shop = shopName == "Town_Konbini" ? GameObject.Find(shopName) : tile.Find(shopName)?.gameObject;
+                if (shop == null) continue;
+                var renderers = shop.GetComponentsInChildren<Renderer>();
+                var box = renderers[0].bounds; foreach (var r in renderers) box.Encapsulate(r.bounds);
+                box.Expand(new Vector3(-0.4f, 0f, -0.4f));
+                var inside = tile.Find("Streetscape/WallColliders").GetComponentsInChildren<Collider>().Where(w => w.bounds.Intersects(box)).Select(w => w.bounds.center.ToString("0.0")).ToList();
+                Assert.IsEmpty(inside, $"Yard walls run through {shopName}.");
+            }
+
+            // Red: cars stop at the line (the player waits far up the north sidewalk, so only the light counts).
+            Teleport(new Vector3(40f, 0.08f, -3.5f), 0f);
             traffic.ForcePhase(StreetTraffic.Phase.WalkGreen);
             // Cars that can still stop in time (≥ 6 m before the line) must not cross it on red.
             // Stop lines 2 m before the zebra (x -1.3 eastbound, 8.3 westbound); distances are from the front bumper.

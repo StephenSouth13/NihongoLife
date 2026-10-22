@@ -121,6 +121,8 @@ namespace NihongoLife.Cameras
         private Vector3 _followVelocity;
         private bool _isLocked = false;
         private bool _isIndoor = false;
+        private Vector3 _pivot, _pivotVelocity;
+        private bool _pivotReady;
         private Transform _conversationTarget;
         private Vector3 _conversationVelocity;
         private float _conversationSide = 1f;
@@ -219,8 +221,12 @@ namespace NihongoLife.Cameras
                 }
             }
 
-            // Determine target position
-            Vector3 targetPosition = target.position + targetOffset;
+            // The pivot (the player's head) follows smoothly; the orbit angles apply at once, so turning the camera
+            // fast stays on its circle instead of cutting a chord through houses (and never lags behind the mouse).
+            Vector3 headPosition = target.position + targetOffset;
+            if (!_pivotReady || (_pivot - headPosition).sqrMagnitude > 25f) { _pivot = headPosition; _pivotVelocity = Vector3.zero; _pivotReady = true; }
+            _pivot = Vector3.SmoothDamp(_pivot, headPosition, ref _pivotVelocity, positionSmoothTime);
+            Vector3 targetPosition = _pivot;
 
             // Calculate rotation and position
             Quaternion rotation = Quaternion.Euler(_rotationY, _rotationX, 0);
@@ -235,7 +241,9 @@ namespace NihongoLife.Cameras
                 targetDistance = Mathf.Clamp(hit.distance - collisionPadding, minDistance, defaultDistance);
             }
 
-            _currentDistance = Mathf.SmoothDamp(_currentDistance, targetDistance, ref _distanceVelocity, distanceSmoothTime);
+            // Something between the player and the camera: move in at once (never through it); ease back out.
+            if (targetDistance < _currentDistance) { _currentDistance = targetDistance; _distanceVelocity = 0f; }
+            else _currentDistance = Mathf.SmoothDamp(_currentDistance, targetDistance, ref _distanceVelocity, distanceSmoothTime * 3f);
 
             // Final position
             Vector3 finalPosition = targetPosition + desiredDirection * _currentDistance;
@@ -259,13 +267,7 @@ namespace NihongoLife.Cameras
             }
             else
             {
-                transform.position = Vector3.SmoothDamp(transform.position, finalPosition, ref _followVelocity, positionSmoothTime);
-                Vector3 lookDirection = targetPosition - transform.position;
-                if (lookDirection.sqrMagnitude > 0.001f)
-                {
-                    float rotationT = 1f - Mathf.Exp(-18f * Time.deltaTime);
-                    transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(lookDirection, Vector3.up), rotationT);
-                }
+                transform.SetPositionAndRotation(finalPosition, Quaternion.LookRotation(targetPosition - finalPosition, Vector3.up));
             }
         }
 

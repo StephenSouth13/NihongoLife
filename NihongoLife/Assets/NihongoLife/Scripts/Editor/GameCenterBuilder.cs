@@ -465,11 +465,11 @@ namespace NihongoLife.EditorTools
             var group = Group(destinations, "Entrance_GameCenter");
             group.SetPositionAndRotation(new Vector3(building.position.x, 0f, frontZ), Quaternion.Euler(0f, 180f, 0f));
             // Local space: +X along the facade, −Z toward the street.
-            Block(group, "Canopy", new Vector3(0f, 3.1f, -1.2f), new Vector3(7.4f, 0.2f, 2.6f), _signBack, false);
+            Block(group, "Canopy", new Vector3(0f, 3.1f, -1.2f), new Vector3(7.4f, 0.2f, 2.6f), _signBack, true); // collider: the camera stops at it (above head height)
             Block(group, "CanopyNeon", new Vector3(0f, 2.98f, -2.48f), new Vector3(7.4f, 0.08f, 0.06f), _neonPink, false);
             foreach (float x in new[] { -3.5f, 3.5f })
                 Block(group, "Pillar_" + (x < 0 ? "L" : "R"), new Vector3(x, 1.5f, -2.3f), new Vector3(0.25f, 3.0f, 0.25f), _neonCyan, true);
-            Block(group, "SignBoard", new Vector3(0f, 3.85f, -2.45f), new Vector3(6.2f, 1.1f, 0.15f), _signBack, false);
+            Block(group, "SignBoard", new Vector3(0f, 3.85f, -2.45f), new Vector3(6.2f, 1.1f, 0.15f), _signBack, true);
             Block(group, "SignFrame", new Vector3(0f, 3.85f, -2.53f), new Vector3(6.4f, 1.25f, 0.02f), _neonPink, false);
             Text(group, "Sign_JA", "ゲームセンター", new Vector3(0f, 3.98f, -2.6f), 0f, 0.5f, new Color(1f, 0.45f, 0.82f), 6f);
             Text(group, "Sign_VI", "GAME CENTER HIBARI · Trung tâm trò chơi", new Vector3(0f, 3.55f, -2.6f), 0f, 0.15f, new Color(0.55f, 0.92f, 1f), 6f);
