@@ -27,7 +27,16 @@ A `partial class` must stay inside one assembly. UI and world partials live next
 
 `AppRoot` in the bootstrap scene registers services in `GameServices` (scene flow, audio, settings, input, saves, control database). Gameplay reads those services instead of constructing them.
 
-`GameControlDatabase` (`Resources/Control/NihongoLifeControlDatabase.asset`) holds scenario order, language, and feature flags. Supabase, Agora, and Gemini secrets are **not** stored in that asset. `LocalSecrets` reads environment variables, then `NihongoLife/LocalSecrets/secrets.json`. Empty config leaves saves local, NPC lines authored, and Agora idle.
+`GameControlDatabase` (`Resources/Control/NihongoLifeControlDatabase.asset`) holds scenario order, language, and feature flags. Supabase, Agora, and Gemini secrets are **not** stored in that asset. `LocalSecrets` reads an environment variable, then the same name in `NihongoLife/LocalSecrets/secrets.json` (copy `secrets.example.json`). A value that still contains `<...>` is ignored. Empty config leaves saves local, NPC lines authored, and Agora idle.
+
+| `secrets.json` field | What to paste |
+|---|---|
+| `NIHONGOLIFE_SUPABASE_URL` | `https://<SUPABASE_PROJECT_REF>.supabase.co` |
+| `NIHONGOLIFE_SUPABASE_ANON_KEY` | Supabase **anon** key, not `service_role` |
+| `AGORA_APP_ID` | Agora App ID, not the certificate |
+| `NIHONGOLIFE_GEMINI_API_KEY` | Gemini API key |
+
+`supabaseHost` on the control database is a leftover direct-Postgres field. It stays empty in git. The REST client does not read it.
 
 `ScenarioManager` runs a `ScenarioDefinition` (objectives and dialogue), not a separate manager per shop or house. `DialogueManager` shows Japanese, reading, romaji, and translation according to the learning mode. `LearningMasteryManager` records N5 vocabulary and grammar.
 
@@ -35,7 +44,16 @@ Zones (street, konbini, room, station, sushi, school, game center, Midori island
 
 `AppRoot` ở scene bootstrap đăng ký dịch vụ trong `GameServices` (chuyển scene, âm thanh, cài đặt, input, lưu game, control database). Gameplay lấy dịch vụ từ đó.
 
-`GameControlDatabase` giữ thứ tự kịch bản, ngôn ngữ và cờ tính năng. Khoá Supabase, Agora và Gemini **không** nằm trong asset đó. `LocalSecrets` đọc biến môi trường, rồi `NihongoLife/LocalSecrets/secrets.json`. Thiếu cấu hình thì lưu cục bộ, NPC dùng câu soạn sẵn, Agora không gọi.
+`GameControlDatabase` giữ thứ tự kịch bản, ngôn ngữ và cờ tính năng. Khoá Supabase, Agora và Gemini **không** nằm trong asset đó. `LocalSecrets` đọc biến môi trường, rồi đúng tên đó trong `NihongoLife/LocalSecrets/secrets.json` (copy từ `secrets.example.json`). Giá trị còn chứa `<...>` bị bỏ qua. Thiếu cấu hình thì lưu cục bộ, NPC dùng câu soạn sẵn, Agora không gọi.
+
+| Trường trong `secrets.json` | Dán gì |
+|---|---|
+| `NIHONGOLIFE_SUPABASE_URL` | `https://<SUPABASE_PROJECT_REF>.supabase.co` |
+| `NIHONGOLIFE_SUPABASE_ANON_KEY` | Khoá **anon** của Supabase, không phải `service_role` |
+| `AGORA_APP_ID` | Agora App ID, không phải certificate |
+| `NIHONGOLIFE_GEMINI_API_KEY` | Khoá API Gemini |
+
+`supabaseHost` trên control database là field Postgres trực tiếp còn sót. Trong git để trống. Client REST không đọc field này.
 
 `ScenarioManager` chạy một `ScenarioDefinition` (mục tiêu và hội thoại), không có manager riêng cho từng cửa hàng. `DialogueManager` hiện tiếng Nhật, cách đọc, romaji và bản dịch theo chế độ học. `LearningMasteryManager` ghi vốn từ và ngữ pháp N5.
 

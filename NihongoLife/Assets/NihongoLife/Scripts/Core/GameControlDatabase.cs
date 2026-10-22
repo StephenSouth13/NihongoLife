@@ -122,7 +122,8 @@ namespace NihongoLife.Core
         public string supabaseProjectUrl = "";
         [Tooltip("Optional anon-key fallback. Prefer NIHONGOLIFE_SUPABASE_ANON_KEY or LocalSecrets/secrets.json. Leave empty in git.")]
         public string supabaseAnonKey = "";
-        public string supabaseHost = "aws-0-ap-northeast-2.pooler.supabase.com";
+        [Tooltip("Legacy direct-Postgres host. SupabaseClient does not use it. Leave empty in git. A pooler, if you still connect that way, looks like aws-0-<region>.pooler.supabase.com and the user is postgres.<SUPABASE_PROJECT_REF>.")]
+        public string supabaseHost = "";
         public int postgresPort = 5432;
         public string databaseName = "postgres";
         public string userName = "";

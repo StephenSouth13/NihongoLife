@@ -10,7 +10,7 @@ NihongoLife là game mô phỏng cuộc sống trên Unity 6000.3.12f1 (URP) cho
 
 1. Install [Unity 6000.3.12f1](https://unity.com/releases/editor/whats-new/6000.3.12f1) and [Git LFS](https://git-lfs.com/) (`git lfs install`) before you add or change large binary assets.
 2. Clone the repo and open `NihongoLife/` (the Unity project). Press Play on `Assets/NihongoLife/Scenes/00_Bootstrap.unity`. There is no setup menu.
-3. Optional online / AI: copy `NihongoLife/LocalSecrets/secrets.example.json` to `NihongoLife/LocalSecrets/secrets.json` and fill in your own Supabase URL, anon key, Agora App ID, and Gemini key. Environment variables with the same names override the file. Without them the game stays offline. Never commit `secrets.json` or paste keys into scenes, ScriptableObjects, or pull requests.
+3. Optional online / AI: copy `NihongoLife/LocalSecrets/secrets.example.json` to `NihongoLife/LocalSecrets/secrets.json`. The example shows the four fields: `NIHONGOLIFE_SUPABASE_URL` (`https://<SUPABASE_PROJECT_REF>.supabase.co`), `NIHONGOLIFE_SUPABASE_ANON_KEY` (anon key, not service_role), `AGORA_APP_ID` (App ID, not the certificate), `NIHONGOLIFE_GEMINI_API_KEY`. Replace the `<...>` placeholders. Environment variables with the same names override the file. Unreplaced placeholders are ignored and the game stays offline. Never commit `secrets.json` or paste keys into scenes, ScriptableObjects, or pull requests.
 
 ### Rules that keep the game shippable
 
@@ -38,7 +38,7 @@ Use the pull request template. Describe player-visible behavior, list scenes you
 
 1. Cài Unity **6000.3.12f1** và Git LFS (`git lfs install`) trước khi thêm hoặc sửa asset nhị phân lớn.
 2. Clone repo và mở thư mục `NihongoLife/`. Bấm Play ở `Assets/NihongoLife/Scenes/00_Bootstrap.unity`. Không có bước setup trong menu.
-3. Online / AI (tuỳ chọn): copy `NihongoLife/LocalSecrets/secrets.example.json` thành `secrets.json` cùng thư mục, rồi điền URL Supabase, anon key, Agora App ID và khoá Gemini của bạn. Biến môi trường cùng tên được ưu tiên hơn file. Không có khoá thì game chạy offline. Không commit `secrets.json`, không dán khoá vào scene, ScriptableObject hay pull request.
+3. Online / AI (tuỳ chọn): copy `NihongoLife/LocalSecrets/secrets.example.json` thành `secrets.json` cùng thư mục. File mẫu có bốn trường: `NIHONGOLIFE_SUPABASE_URL` (`https://<SUPABASE_PROJECT_REF>.supabase.co`), `NIHONGOLIFE_SUPABASE_ANON_KEY` (khoá anon, không phải service_role), `AGORA_APP_ID` (App ID, không phải certificate), `NIHONGOLIFE_GEMINI_API_KEY`. Thay các placeholder `<...>`. Biến môi trường cùng tên được ưu tiên hơn file. Placeholder chưa thay bị bỏ qua và game chạy offline. Không commit `secrets.json`, không dán khoá vào scene, ScriptableObject hay pull request.
 
 ### Quy tắc để game vẫn chạy được
 

@@ -27,11 +27,11 @@ namespace NihongoLife.Core
             if (!string.IsNullOrWhiteSpace(environmentKey))
             {
                 string fromEnv = Environment.GetEnvironmentVariable(environmentKey);
-                if (!string.IsNullOrWhiteSpace(fromEnv)) return fromEnv.Trim();
+                if (IsPresent(fromEnv)) return fromEnv.Trim();
                 string fromFile = ReadFileValue(environmentKey);
-                if (!string.IsNullOrWhiteSpace(fromFile)) return fromFile.Trim();
+                if (IsPresent(fromFile)) return fromFile.Trim();
             }
-            return string.IsNullOrWhiteSpace(assetFallback) ? string.Empty : assetFallback.Trim();
+            return IsPresent(assetFallback) ? assetFallback.Trim() : string.Empty;
         }
 
         static string ReadFileValue(string environmentKey)
@@ -93,9 +93,16 @@ namespace NihongoLife.Core
 
         static string First(string a, string b)
         {
-            if (!string.IsNullOrWhiteSpace(a)) return a;
-            if (!string.IsNullOrWhiteSpace(b)) return b;
+            if (IsPresent(a)) return a;
+            if (IsPresent(b)) return b;
             return null;
+        }
+
+        /// <summary>Empty strings and example placeholders such as <c>&lt;SUPABASE_PROJECT_REF&gt;</c> are not credentials.</summary>
+        static bool IsPresent(string value)
+        {
+            if (string.IsNullOrWhiteSpace(value)) return false;
+            return value.IndexOf('<') < 0 || value.IndexOf('>') < 0;
         }
 
         [Serializable]

@@ -205,10 +205,10 @@ git clone https://github.com/StephenSouth13/NihongoLife.git
 3. *(Tuỳ chọn)* Bật Supabase, Agora và Gemini: copy `NihongoLife/LocalSecrets/secrets.example.json` thành `secrets.json` (file này không được commit) và điền giá trị, hoặc đặt biến môi trường rồi mở lại Unity:
 
    ```powershell
-   setx NIHONGOLIFE_GEMINI_API_KEY "<khoá-của-bạn>"
-   setx NIHONGOLIFE_SUPABASE_URL "https://<project>.supabase.co"
-   setx NIHONGOLIFE_SUPABASE_ANON_KEY "<anon-key>"
-   setx AGORA_APP_ID "<app-id>"
+   setx NIHONGOLIFE_SUPABASE_URL "https://<SUPABASE_PROJECT_REF>.supabase.co"
+   setx NIHONGOLIFE_SUPABASE_ANON_KEY "<SUPABASE_ANON_KEY>"
+   setx AGORA_APP_ID "<AGORA_APP_ID>"
+   setx NIHONGOLIFE_GEMINI_API_KEY "<GEMINI_API_KEY>"
    ```
 
 > [!NOTE]
