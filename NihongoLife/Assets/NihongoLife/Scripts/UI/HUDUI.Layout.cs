@@ -136,15 +136,7 @@ namespace NihongoLife.UI
                 }
             }
             var toggle = GetComponentInParent<Canvas>()?.transform.Find("ToggleNPCNames");
-            if (toggle != null)
-            {
-                var image = toggle.GetComponent<Image>();
-                if (image != null) image.color = NLUi.Ink;
-                var rect = (RectTransform)toggle;
-                rect.anchoredPosition = new Vector2(-24f, -24f);
-                var label = toggle.GetComponentInChildren<TextMeshProUGUI>();
-                if (label != null) { label.color = NLUi.Muted; LocText.Set(label, "◉  Tên nhân vật", "◉  Names", "◉  名前"); }
-            }
+            if (toggle != null) toggle.gameObject.SetActive(false);
             if (onlineStatusText != null) onlineStatusText.color = NLUi.Muted;
         }
 
@@ -462,22 +454,21 @@ namespace NihongoLife.UI
 
         private void EnsureNameplateToggle()
         {
+            // Nameplates stay. The extra top-right "Tên nhân vật" chip duplicated the player card, so it is not created.
             if (NPCNameplateSystem.Instance == null) gameObject.AddComponent<NPCNameplateSystem>();
             var canvas = GetComponentInParent<Canvas>();
-            if (canvas == null || canvas.transform.Find("ToggleNPCNames") != null) return;
-            var objectButton = new GameObject("ToggleNPCNames");
-            objectButton.transform.SetParent(canvas.transform, false);
-            var rect = objectButton.AddComponent<RectTransform>();
-            rect.anchorMin = rect.anchorMax = new Vector2(1f, 1f); rect.pivot = new Vector2(1f, 1f);
-            // Sits left of the top-right wallet (WalletText spans x -248..-28) so the two never overlap.
-            rect.anchoredPosition = new Vector2(-262f, -24f); rect.sizeDelta = new Vector2(150f, 40f);
-            var image = objectButton.AddComponent<Image>(); image.color = new Color(0.025f, 0.04f, 0.06f, 0.9f);
-            var button = objectButton.AddComponent<Button>(); button.targetGraphic = image;
-            var label = new GameObject("Label").AddComponent<TextMeshProUGUI>();
-            label.transform.SetParent(objectButton.transform, false); LocText.Set(label, "◉  Tên nhân vật", "◉  Names", "◉  名前");
-            label.fontSize = 15f; label.alignment = TextAlignmentOptions.Center; label.color = Color.white;
-            label.rectTransform.anchorMin = Vector2.zero; label.rectTransform.anchorMax = Vector2.one; label.rectTransform.sizeDelta = Vector2.zero;
-            button.onClick.AddListener(() => NPCNameplateSystem.Instance?.Toggle());
+            if (canvas == null) return;
+            HideNameToggles(canvas.transform);
+        }
+
+        private static void HideNameToggles(Transform root)
+        {
+            for (int i = 0; i < root.childCount; i++)
+            {
+                var child = root.GetChild(i);
+                if (child.name == "ToggleNPCNames") child.gameObject.SetActive(false);
+                else HideNameToggles(child);
+            }
         }
 
         private static void StyleInfoPanel(GameObject panel, Vector2 anchor, Vector2 position, Vector2 size)

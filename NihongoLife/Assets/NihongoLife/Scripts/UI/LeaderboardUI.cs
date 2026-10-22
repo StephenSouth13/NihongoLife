@@ -99,6 +99,7 @@ namespace NihongoLife.UI
             _refreshButton.onClick.AddListener(RefreshContent);
 
             _panel.SetActive(false);
+            UiModalStack.Register(this, () => _panel != null && _panel.activeSelf, Hide, "Leaderboard");
         }
 
         private void RefreshContent()

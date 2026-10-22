@@ -100,7 +100,7 @@ namespace NihongoLife.UI
         public string CriticalNeed { get; private set; }
         public string WarningText => _warningText != null && _warning.gameObject.activeSelf ? _warningText.text : null;
         public string WeatherEffectText => _weatherChip != null && _weatherChip.gameObject.activeSelf ? _weatherText.text : null;
-        private TextMeshProUGUI _name, _level, _wallet, _levelBadge;
+        private TextMeshProUGUI _name, _level, _wallet, _levelBadge, _calendar;
         private Image _expFill;
         private readonly Dictionary<string, Ring> _rings = new();
         private RectTransform _warning;
@@ -221,6 +221,12 @@ namespace NihongoLife.UI
             Icon(placeRow, "Pin", HudIcons.Pin, 14f, NLUi.Muted);
             _level = NLUi.Label(placeRow, "Place", "", 14f, NLUi.Muted, _font);
             _level.textWrappingMode = TextWrappingModes.NoWrap;
+            _calendar = NLUi.Label(identity, "Calendar", "", 13f, new Color(0.62f, 0.68f, 0.76f, 1f), _font);
+            _calendar.textWrappingMode = TextWrappingModes.Normal;
+            _calendar.raycastTarget = false;
+            var calendarLayout = _calendar.gameObject.AddComponent<LayoutElement>();
+            calendarLayout.preferredWidth = 260f;
+            calendarLayout.minHeight = 16f;
             var spacer = new GameObject("Spacer", typeof(RectTransform), typeof(LayoutElement));
             spacer.transform.SetParent(top, false);
             spacer.GetComponent<LayoutElement>().flexibleWidth = 1f;
@@ -643,6 +649,12 @@ namespace NihongoLife.UI
             string place = WorldLocationCatalog.Get(SceneManager.GetActiveScene().name).VietnameseName;
             _name.text = status.PlayerName;
             _level.text = place;
+            var cycle = NihongoLife.Core.DayNightCycle.Active;
+            if (_calendar != null)
+            {
+                _calendar.text = cycle != null ? cycle.HudCompact : "";
+                _calendar.gameObject.SetActive(!string.IsNullOrEmpty(_calendar.text));
+            }
             _levelBadge.text = status.Level.ToString();
             _wallet.text = yen.ToString("N0", System.Globalization.CultureInfo.InvariantCulture);
             SetFill(_expFill, status.MaxExp > 0 ? status.CurrentExp / (float)status.MaxExp : 0f);
@@ -673,10 +685,12 @@ namespace NihongoLife.UI
             _statWords.text = words.ToString();
             (string kicker, string text, string progress)? tracked = null;
             try { tracked = HudObjective.Provider?.Invoke(); } catch { }
+            string calendar = cycle != null ? "\n<color=#A8B4C4>" + cycle.ProfileLine + "</color>" : "";
             _characterInfo.text =
                 $"<color=#A8B4C4>{NihongoLife.Core.Loc.T("Đang ở", "Location", "現在地")}</color>  {WorldLocationCatalog.Get(SceneManager.GetActiveScene().name).DisplayName}      " +
                 $"<color=#A8B4C4>{NihongoLife.Core.Loc.T("Balo", "Bag", "かばん")}</color>  {(inventory != null ? inventory.Items.Count : 0)}/{(inventory != null ? inventory.MaxSlots : 0)}\n" +
-                $"<color=#A8B4C4>{NihongoLife.Core.Loc.T("Đang theo dõi", "Tracking", "追跡中")}</color>  {(tracked != null ? tracked.Value.text : "—")}";
+                $"<color=#A8B4C4>{NihongoLife.Core.Loc.T("Đang theo dõi", "Tracking", "追跡中")}</color>  {(tracked != null ? tracked.Value.text : "—")}" +
+                calendar;
         }
 
         private void OnDestroy()

@@ -145,6 +145,15 @@ namespace NihongoLife.Player
                        cycle.Hour >= 11f && cycle.Hour <= 15f && !Core.WeatherCycle.IsSheltered(transform.position);
         }
 
+        /// <summary>A bump from the street. Does not write the save on every tick — the usual autosave still runs.</summary>
+        public void ApplyHarm(float amount)
+        {
+            if (amount <= 0f || _collapsed) return;
+            CurrentHealth = Mathf.Max(0f, CurrentHealth - amount);
+            if (CurrentHealth <= 0f) { _collapsed = true; OnCollapsed?.Invoke(); }
+            OnStatusChanged?.Invoke();
+        }
+
         /// <summary>After fainting: the clinic patched you up (StatusConsequences applies time and fee).</summary>
         public void RecoverAfterCollapse()
         {
@@ -326,6 +335,7 @@ namespace NihongoLife.Player
             progress.hunger = Hunger;
             progress.thirst = Thirst;
             progress.sleepiness = Sleepiness;
+            Core.DayNightCycle.Active?.WriteTo(progress);
             repository.SaveProgress(progress);
         }
     }

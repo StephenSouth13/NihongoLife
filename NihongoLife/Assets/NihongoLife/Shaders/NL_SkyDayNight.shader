@@ -19,6 +19,7 @@ Shader "NihongoLife/SkyDayNight"
         _SunDir ("Sun direction (to the sun)", Vector) = (0, 1, 0, 0)
         _SunColor ("Sun disc color", Color) = (1, 0.95, 0.8, 1)
         _SunSize ("Sun disc size", Range(0.9, 1)) = 0.9985
+        _MoonPhase ("Moon phase (0 new, 0.5 full)", Range(0, 1)) = 0.5
     }
     SubShader
     {
@@ -35,7 +36,7 @@ Shader "NihongoLife/SkyDayNight"
             sampler2D _DayTex;
             sampler2D _NightTex;
             sampler2D _CloudyTex;
-            float _Night, _Overcast, _Rainbow, _HorizonGlow, _Exposure, _Rotation, _SunSize;
+            float _Night, _Overcast, _Rainbow, _HorizonGlow, _Exposure, _Rotation, _SunSize, _MoonPhase;
             float4 _Tint, _HorizonColor, _SunDir, _SunColor;
 
             struct appdata { float4 vertex : POSITION; };
@@ -87,11 +88,21 @@ Shader "NihongoLife/SkyDayNight"
                     sky += (spectrum * bow + spectrum2 * bow2) * 0.42 * _Rainbow * above;
                 }
 
-                // Sun (day) or moon (night) disc.
+                // Sun by day, moon by night. _MoonPhase is 0 at the new moon, 0.5 at the full moon, 1 at the next new moon.
+                // Daytime passes 0.5 so the sun stays a full disc. A new moon hides the disc and its halo.
                 float3 sunDir = normalize(_SunDir.xyz);
-                float disc = smoothstep(_SunSize, _SunSize + 0.0008, dot(d, sunDir));
-                float halo = pow(saturate(dot(d, sunDir)), 64.0) * 0.25;
-                sky += _SunColor.rgb * (disc + halo) * step(0.0, d.y + 0.05) * (1.0 - _Overcast * 0.9);
+                float facing = dot(d, sunDir);
+                float disc = smoothstep(_SunSize, _SunSize + 0.0008, facing);
+                float halo = pow(saturate(facing), 64.0) * 0.25;
+                float illum = -cos(_MoonPhase * 6.2831853); // -1 new, 0 half, +1 full
+                float3 axisUp = abs(sunDir.y) > 0.92 ? float3(1.0, 0.0, 0.0) : float3(0.0, 1.0, 0.0);
+                float3 moonRight = normalize(cross(sunDir, axisUp));
+                float limb = max(0.004, sqrt(max(1e-5, 1.0 - _SunSize * _SunSize)));
+                float ndc = dot(d - sunDir * facing, moonRight) / limb;
+                float bow = sqrt(saturate(1.0 - illum * illum));
+                float lit = smoothstep(-0.12, 0.12, ndc * max(bow, 0.08) + illum);
+                float visible = smoothstep(-0.97, -0.8, illum);
+                sky += _SunColor.rgb * (disc * lit + halo * lit) * visible * step(0.0, d.y + 0.05) * (1.0 - _Overcast * 0.9);
 
                 return fixed4(sky * _Exposure, 1);
             }

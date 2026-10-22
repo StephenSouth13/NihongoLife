@@ -98,5 +98,12 @@ namespace NihongoLife.Data
         public string trackedQuestId = string.Empty;
         /// <summary>The paper notebook (L): limited pages, more paper from Hibari Mart's stationery shelf.</summary>
         public NihongoLife.Notebook.NotebookRecord notebook = new NihongoLife.Notebook.NotebookRecord();
+        /// <summary>In-game calendar. False on older saves so the first launch does not jump the clock.</summary>
+        public bool calendarStarted;
+        public int calendarDay;
+        public float calendarHour;
+        public int birthdayMonth = 4;
+        public int birthdayDay = 15;
+        public int ageAtEpoch = 16;
     }
 }

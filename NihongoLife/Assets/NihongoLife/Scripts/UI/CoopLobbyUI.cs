@@ -103,6 +103,7 @@ namespace NihongoLife.UI
             _closeButton.onClick.AddListener(Hide);
 
             _panel.SetActive(false);
+            UiModalStack.Register(this, () => _panel != null && _panel.activeSelf, Hide, "Co-op lobby");
         }
 
         private void RefreshView()
