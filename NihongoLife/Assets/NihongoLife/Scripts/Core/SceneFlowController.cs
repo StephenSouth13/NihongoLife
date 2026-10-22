@@ -101,6 +101,13 @@ namespace NihongoLife.Core
             _isLoading = true;
             LockPlayer(true);
             yield return FadeIn(Title(sceneName, displayName));
+            yield return SceneContentLoader.EnsureAvailable(sceneName, progress =>
+                SetProgress(Mathf.Clamp01(progress), NihongoLife.Core.Loc.T("Đang tải khu vực...", "Downloading the area...", "エリアをダウンロード中...")));
+            if (!string.IsNullOrEmpty(SceneContentLoader.LastError))
+            {
+                yield return FailAndRelease(SceneContentLoader.LastError);
+                yield break;
+            }
             AsyncOperation operation = SceneManager.LoadSceneAsync(sceneName, LoadSceneMode.Single);
             if (operation == null)
             {
@@ -143,6 +150,13 @@ namespace NihongoLife.Core
             bool newlyLoaded = !zone.isLoaded;
             if (newlyLoaded)
             {
+                yield return SceneContentLoader.EnsureAvailable(sceneName, progress =>
+                    SetProgress(Mathf.Clamp01(progress), NihongoLife.Core.Loc.T("Đang tải khu vực...", "Downloading the area...", "エリアをダウンロード中...")));
+                if (!string.IsNullOrEmpty(SceneContentLoader.LastError))
+                {
+                    yield return FailAndRelease(SceneContentLoader.LastError);
+                    yield break;
+                }
                 AsyncOperation load = SceneManager.LoadSceneAsync(sceneName, LoadSceneMode.Additive);
                 if (load == null)
                 {
@@ -197,6 +211,13 @@ namespace NihongoLife.Core
             bool newlyLoaded = !to.isLoaded;
             if (newlyLoaded)
             {
+                yield return SceneContentLoader.EnsureAvailable(sceneName, progress =>
+                    SetProgress(Mathf.Clamp01(progress), NihongoLife.Core.Loc.T("Đang tải khu vực...", "Downloading the area...", "エリアをダウンロード中...")));
+                if (!string.IsNullOrEmpty(SceneContentLoader.LastError))
+                {
+                    yield return FailAndRelease(SceneContentLoader.LastError);
+                    yield break;
+                }
                 AsyncOperation load = SceneManager.LoadSceneAsync(sceneName, LoadSceneMode.Additive);
                 if (load == null)
                 {
@@ -350,6 +371,11 @@ namespace NihongoLife.Core
             _placeName.text = displayName;
             SetProgress(0f, NihongoLife.Core.Loc.T("Đang di chuyển...", "Travelling...", "移動中..."));
             _overlay.blocksRaycasts = true;
+            if (MotionSettings.ReduceMotion)
+            {
+                _overlay.alpha = 1f;
+                yield break;
+            }
             for (float t = 0f; t < 0.38f; t += Time.unscaledDeltaTime)
             {
                 _overlay.alpha = Mathf.SmoothStep(0f, 1f, t / 0.38f);
@@ -360,6 +386,12 @@ namespace NihongoLife.Core
 
         private IEnumerator FadeOut()
         {
+            if (MotionSettings.ReduceMotion)
+            {
+                _overlay.alpha = 0f;
+                _overlay.blocksRaycasts = false;
+                yield break;
+            }
             for (float t = 0f; t < 0.5f; t += Time.unscaledDeltaTime)
             {
                 _overlay.alpha = Mathf.SmoothStep(1f, 0f, t / 0.5f);

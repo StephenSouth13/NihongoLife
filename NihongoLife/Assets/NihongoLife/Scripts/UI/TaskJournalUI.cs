@@ -307,10 +307,13 @@ namespace NihongoLife.UI
             NLUi.Label(_detail, "Title", quest.Title, 26f, NLUi.Text, _font, FontStyles.Bold).textWrappingMode = TextWrappingModes.Normal;
             NLUi.Label(_detail, "Description", quest.Description, 16f, NLUi.Soft, _font).textWrappingMode = TextWrappingModes.Normal;
             string requirement = QuestService.Requirement(quest);
+            string requirementLine = StoryDirector.Bypass
+                ? "<color=#74D680>✓ " + Loc.T("Mở sẵn — không khoá cấp", "Open — no level lock", "開放済み — レベル制限なし") + "</color>"
+                : Loc.F("<color=#A8B4C4>Yêu cầu</color>  Cấp {0}", "<color=#A8B4C4>Requires</color>  Level {0}", "<color=#A8B4C4>条件</color>  レベル{0}", quest.minLevel) + (quest.minKnowledge > 0 ? Loc.F(" · {0} trí tuệ", " · {0} knowledge", " · 知識{0}", quest.minKnowledge) : "") +
+                  (requirement == null ? "  <color=#74D680>✓ " + Loc.T("đủ điều kiện", "requirements met", "条件クリア") + "</color>" : $"  <color=#FF8A7A>✕ {requirement}</color>");
             NLUi.Label(_detail, "Info",
                 Loc.F("<color=#A8B4C4>Giao việc</color>  {0}      <color=#A8B4C4>Ở đâu</color>  {1}\n", "<color=#A8B4C4>Given by</color>  {0}      <color=#A8B4C4>Where</color>  {1}\n", "<color=#A8B4C4>依頼者</color>  {0}      <color=#A8B4C4>場所</color>  {1}\n", quest.GiverName, quest.Location) +
-                Loc.F("<color=#A8B4C4>Yêu cầu</color>  Cấp {0}", "<color=#A8B4C4>Requires</color>  Level {0}", "<color=#A8B4C4>条件</color>  レベル{0}", quest.minLevel) + (quest.minKnowledge > 0 ? Loc.F(" · {0} trí tuệ", " · {0} knowledge", " · 知識{0}", quest.minKnowledge) : "") +
-                (requirement == null ? "  <color=#74D680>✓ " + Loc.T("đủ điều kiện", "requirements met", "条件クリア") + "</color>" : $"  <color=#FF8A7A>✕ {requirement}</color>") +
+                requirementLine +
                 (quest.repeatable ? Loc.F("      <color=#A8B4C4>Lặp lại</color>  sau {0} phút", "      <color=#A8B4C4>Repeats</color>  after {0} min", "      <color=#A8B4C4>くり返し</color>  {0}分後", quest.cooldownMinutes) : ""), 15f, NLUi.Text, _font).textWrappingMode = TextWrappingModes.Normal;
 
             NLUi.Label(_detail, "ObjectivesTitle", Loc.T("Mục tiêu", "Objectives", "目標"), 17f, NLUi.Text, _font, FontStyles.Bold);

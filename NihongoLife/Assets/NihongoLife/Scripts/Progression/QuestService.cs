@@ -81,6 +81,8 @@ namespace NihongoLife.Progression
         /// <summary>Why the quest cannot be accepted yet (null when it can).</summary>
         public static string Requirement(QuestDefinition quest)
         {
+            // Offline exploration turns StoryDirector.Bypass on: no prologue, level or knowledge lock.
+            if (NihongoLife.Scenario.StoryDirector.Bypass) return null;
             if (NihongoLife.Scenario.StoryDirector.GatesFreePlay)
                 return NihongoLife.Core.Loc.T("Mở sau phần mở đầu cốt truyện — làm tiếp nhiệm vụ CỐT TRUYỆN ở góc trên trái.", "Opens after the story's opening — follow the STORY task at the top left.", "ストーリーのオープニングの後に開きます — 左上のストーリーを進めましょう。");
             var status = PlayerStatus.Instance;

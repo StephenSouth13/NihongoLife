@@ -39,6 +39,9 @@ namespace NihongoLife.UI
         private TextMeshProUGUI sensitivityValue;
         private Button invertButton, schemeButton;
         private TextMeshProUGUI schemeHint;
+        private TextMeshProUGUI webGlGraphicsLabel;
+        private TextMeshProUGUI reduceMotionLabel;
+        private Button closeButton;
         private readonly Dictionary<GameInputId, TextMeshProUGUI> bindingLabels = new Dictionary<GameInputId, TextMeshProUGUI>();
         private readonly List<LocalizedLabel> localized = new List<LocalizedLabel>();
 
@@ -84,6 +87,8 @@ namespace NihongoLife.UI
             panelObj.transform.SetAsLastSibling();
             PlayCue(GameAudioCue.UiOpen, 0.8f);
             UIStyleKit.PlayShowAnimation(cardRect != null ? cardRect.gameObject : panelObj);
+            if (closeButton != null && UnityEngine.EventSystems.EventSystem.current != null)
+                UnityEngine.EventSystems.EventSystem.current.SetSelectedGameObject(closeButton.gameObject);
         }
 
         public void Hide()
@@ -119,7 +124,6 @@ namespace NihongoLife.UI
             rect.anchorMax = Vector2.one;
             rect.offsetMin = rect.offsetMax = Vector2.zero;
 
-            // Backdrop: dims the menu and closes the modal when clicked outside the card.
             var backdrop = panelObj.GetComponent<Image>();
             backdrop.color = new Color(0.01f, 0.014f, 0.02f, 0.86f);
             var backdropButton = panelObj.GetComponent<Button>();
@@ -127,84 +131,132 @@ namespace NihongoLife.UI
             backdropButton.targetGraphic = backdrop;
             backdropButton.onClick.AddListener(Hide);
 
-            var card = new GameObject("Card", typeof(RectTransform), typeof(Image));
+            var card = new GameObject("Card", typeof(RectTransform), typeof(Image), typeof(VerticalLayoutGroup));
             card.transform.SetParent(panelObj.transform, false);
             cardRect = (RectTransform)card.transform;
-            cardRect.anchorMin = cardRect.anchorMax = cardRect.pivot = new Vector2(0.5f, 0.5f);
-            cardRect.sizeDelta = new Vector2(1180f, 740f);
             UIStyleKit.StylePanel(cardRect, new Color(0.055f, 0.068f, 0.082f, 1f));
             card.GetComponent<Image>().raycastTarget = true;
-            card.AddComponent<HudFitRect>().Configure(0.96f, 0.94f, Vector2.zero, 0.4f);
+            var frame = card.AddComponent<MenuSafeFrame>();
+            frame.Configure(new Vector2(1080f, 720f), new Vector2(640f, 440f), new Vector2(40f, 28f));
+            var cardLayout = card.GetComponent<VerticalLayoutGroup>();
+            cardLayout.padding = new RectOffset(22, 22, 18, 16);
+            cardLayout.spacing = 10f;
+            cardLayout.childControlWidth = true;
+            cardLayout.childControlHeight = true;
+            cardLayout.childForceExpandWidth = true;
+            cardLayout.childForceExpandHeight = false;
 
-            Label(card.transform, "Cài đặt", "Settings", "設定", 36, new Vector2(0f, 325f), new Vector2(700f, 52f), TextAlignmentOptions.Center, true);
-            // Left column: audio, language, camera.
-            Label(card.transform, "Âm thanh", "Audio", "音", 22, new Vector2(-360f, 262f), new Vector2(360f, 40f), TextAlignmentOptions.Center, true);
-            Label(card.transform, "Nhạc nền", "Music", "BGM", 16, new Vector2(-360f, 222f), new Vector2(300f, 32f), TextAlignmentOptions.Center, false);
-            bgmSlider = CreateSlider(card.transform, new Vector2(-380f, 190f), out bgmValue);
-            Label(card.transform, "Hiệu ứng", "Sound effects", "効果音", 16, new Vector2(-360f, 152f), new Vector2(300f, 32f), TextAlignmentOptions.Center, false);
-            sfxSlider = CreateSlider(card.transform, new Vector2(-380f, 120f), out sfxValue);
-            Label(card.transform, "Ngôn ngữ", "Language", "言語", 18, new Vector2(-360f, 74f), new Vector2(300f, 32f), TextAlignmentOptions.Center, true);
-            CreateLanguageButton(card.transform, "VI", GameLanguage.Vietnamese, new Vector2(-465f, 34f));
-            CreateLanguageButton(card.transform, "EN", GameLanguage.English, new Vector2(-360f, 34f));
-            CreateLanguageButton(card.transform, "JP", GameLanguage.Japanese, new Vector2(-255f, 34f));
-            Label(card.transform, "Camera & chuột", "Camera & mouse", "カメラ・マウス", 22, new Vector2(-360f, -22f), new Vector2(360f, 40f), TextAlignmentOptions.Center, true);
-            Label(card.transform, "Độ nhạy chuột", "Mouse sensitivity", "マウス感度", 16, new Vector2(-360f, -62f), new Vector2(300f, 32f), TextAlignmentOptions.Center, false);
-            sensitivitySlider = CreateSlider(card.transform, new Vector2(-380f, -94f), out sensitivityValue);
+            var header = Row(card.transform, "Header", 56f, false);
+            var title = Label(header, "Cài đặt", "Settings", "設定", 28, Vector2.zero, new Vector2(400f, 40f), TextAlignmentOptions.MidlineLeft, true);
+            StretchInLayout(title.rectTransform, 1f, 40f);
+            var x = CreateButton(header, "X", Vector2.zero, new Vector2(44f, 40f), true);
+            x.name = "CloseX";
+            StretchInLayout(x.GetComponent<RectTransform>(), 0f, 40f, 44f);
+            x.GetComponentInChildren<TextMeshProUGUI>().fontSize = 22f;
+            x.onClick.AddListener(Hide);
+
+            var body = Row(card.transform, "Body", 200f, true);
+            var left = ScrollColumn(body, "Options", 340f);
+            var right = ScrollColumn(body, "Bindings", 0f);
+
+            BuildOptions(left);
+            BuildBindings(right);
+
+            var footer = Row(card.transform, "Footer", 52f, false);
+            var reset = CreateButton(footer, string.Empty, Vector2.zero, new Vector2(200f, 44f), false);
+            Localize(reset.GetComponentInChildren<TextMeshProUGUI>(), "Mặc định", "Reset keys", "初期化");
+            StretchInLayout(reset.GetComponent<RectTransform>(), 1f, 44f);
+            reset.onClick.AddListener(() => input.ResetBindings());
+            closeButton = CreateButton(footer, string.Empty, Vector2.zero, new Vector2(200f, 44f), true);
+            Localize(closeButton.GetComponentInChildren<TextMeshProUGUI>(), "Đóng", "Close", "閉じる");
+            StretchInLayout(closeButton.GetComponent<RectTransform>(), 1f, 44f);
+            closeButton.onClick.AddListener(Hide);
+            if (Application.platform == RuntimePlatform.WebGLPlayer)
+            {
+                var graphics = CreateButton(footer, string.Empty, Vector2.zero, new Vector2(220f, 44f), false);
+                StretchInLayout(graphics.GetComponent<RectTransform>(), 1.2f, 44f);
+                webGlGraphicsLabel = graphics.GetComponentInChildren<TextMeshProUGUI>();
+                webGlGraphicsLabel.fontSize = 14f;
+                webGlGraphicsLabel.enableAutoSizing = true;
+                webGlGraphicsLabel.fontSizeMin = 10f;
+                webGlGraphicsLabel.fontSizeMax = 14f;
+                graphics.onClick.AddListener(() =>
+                {
+                    WebGLGraphicsSettings.Cycle();
+                    RefreshWebGlGraphics();
+                    HudFeed.Post(WebGLGraphicsSettings.ReloadHint(), HudFeed.Kind.Info, 4f, "webgl-graphics");
+                });
+            }
+
+            RefreshValues();
+        }
+
+        private void BuildOptions(RectTransform column)
+        {
+            Label(column, "Âm thanh", "Audio", "音", 20, Vector2.zero, new Vector2(300f, 28f), TextAlignmentOptions.MidlineLeft, true);
+            Label(column, "Nhạc nền", "Music", "BGM", 15, Vector2.zero, new Vector2(300f, 22f), TextAlignmentOptions.MidlineLeft, false);
+            bgmSlider = CreateSlider(column, Vector2.zero, out bgmValue);
+            ParkInLayout(bgmSlider.transform, 36f);
+            Label(column, "Hiệu ứng", "Sound effects", "効果音", 15, Vector2.zero, new Vector2(300f, 22f), TextAlignmentOptions.MidlineLeft, false);
+            sfxSlider = CreateSlider(column, Vector2.zero, out sfxValue);
+            ParkInLayout(sfxSlider.transform, 36f);
+            bgmSlider.onValueChanged.AddListener(OnBgmChanged);
+            sfxSlider.onValueChanged.AddListener(OnSfxChanged);
+
+            Label(column, "Ngôn ngữ", "Language", "言語", 18, Vector2.zero, new Vector2(300f, 26f), TextAlignmentOptions.MidlineLeft, true);
+            var languages = Row(column, "Languages", 40f, false);
+            CreateLanguageButton(languages, "VI", GameLanguage.Vietnamese, Vector2.zero);
+            CreateLanguageButton(languages, "EN", GameLanguage.English, Vector2.zero);
+            CreateLanguageButton(languages, "JP", GameLanguage.Japanese, Vector2.zero);
+            foreach (RectTransform child in languages)
+                StretchInLayout(child, 1f, 36f);
+
+            Label(column, "Camera & chuột", "Camera & mouse", "カメラ・マウス", 18, Vector2.zero, new Vector2(300f, 26f), TextAlignmentOptions.MidlineLeft, true);
+            Label(column, "Độ nhạy chuột", "Mouse sensitivity", "マウス感度", 15, Vector2.zero, new Vector2(300f, 22f), TextAlignmentOptions.MidlineLeft, false);
+            sensitivitySlider = CreateSlider(column, Vector2.zero, out sensitivityValue);
+            ParkInLayout(sensitivitySlider.transform, 36f);
             sensitivitySlider.minValue = ControlSettings.MinSensitivity;
             sensitivitySlider.maxValue = ControlSettings.MaxSensitivity;
             sensitivitySlider.onValueChanged.AddListener(v => { ControlSettings.MouseSensitivity = v; sensitivityValue.text = $"{v:0.0}x"; });
-            invertButton = CreateButton(card.transform, string.Empty, new Vector2(-465f, -146f), new Vector2(210f, 40f), false);
+
+            var toggles = Row(column, "Toggles", 42f, false);
+            invertButton = CreateButton(toggles, string.Empty, Vector2.zero, new Vector2(160f, 40f), false);
             invertButton.name = "InvertY";
+            StretchInLayout(invertButton.GetComponent<RectTransform>(), 1f, 40f);
             invertButton.onClick.AddListener(() => { ControlSettings.InvertY = !ControlSettings.InvertY; RefreshControlButtons(); });
-            schemeButton = CreateButton(card.transform, string.Empty, new Vector2(-245f, -146f), new Vector2(210f, 40f), false);
+            schemeButton = CreateButton(toggles, string.Empty, Vector2.zero, new Vector2(160f, 40f), false);
             schemeButton.name = "ControlScheme";
+            StretchInLayout(schemeButton.GetComponent<RectTransform>(), 1f, 40f);
             schemeButton.onClick.AddListener(() =>
             {
                 ControlSettings.Scheme = ControlSettings.Scheme == ControlScheme.MouseLook ? ControlScheme.ClickToMove : ControlScheme.MouseLook;
                 RefreshControlButtons();
             });
-            schemeHint = CreateText(card.transform, string.Empty, 14, new Vector2(-355f, -210f), new Vector2(440f, 64f), TextAlignmentOptions.Center);
+
+            schemeHint = CreateText(column, string.Empty, 14, Vector2.zero, new Vector2(300f, 64f), TextAlignmentOptions.TopLeft);
             schemeHint.textWrappingMode = TextWrappingModes.Normal;
             schemeHint.enableAutoSizing = false;
             schemeHint.color = new Color(0.66f, 0.72f, 0.8f, 1f);
-            // Right column: every key, rebindable.
-            Label(card.transform, "Phím điều khiển", "Key bindings", "キー操作", 22, new Vector2(240f, 262f), new Vector2(600f, 40f), TextAlignmentOptions.Center, true);
-            Label(card.transform, "Bấm vào ô phím để đổi. Giữ Ctrl để hiện con trỏ khi đang chơi.", "Click a key to rebind. Hold Ctrl for a cursor during play.", "キーをクリックして変更。Ctrlでカーソル表示。", 14, new Vector2(240f, 230f), new Vector2(600f, 28f), TextAlignmentOptions.Center, false);
+            ParkInLayout(schemeHint.transform, 72f);
 
-            bgmSlider.onValueChanged.AddListener(OnBgmChanged);
-            sfxSlider.onValueChanged.AddListener(OnSfxChanged);
-
-            // Footer and close controls first, so they exist even if binding rows fail below.
-            var reset = CreateButton(card.transform, string.Empty, new Vector2(-130f, -318f), new Vector2(220f, 48f), false);
-            Localize(reset.GetComponentInChildren<TextMeshProUGUI>(), "Mặc định", "Reset keys", "初期化");
-            reset.onClick.AddListener(() => input.ResetBindings());
-            var close = CreateButton(card.transform, string.Empty, new Vector2(130f, -318f), new Vector2(220f, 48f), true);
-            Localize(close.GetComponentInChildren<TextMeshProUGUI>(), "Đóng", "Close", "閉じる");
-            close.onClick.AddListener(Hide);
-
-            var x = CreateButton(card.transform, "X", Vector2.zero, new Vector2(56f, 46f), true);
-            var xRect = (RectTransform)x.transform;
-            xRect.anchorMin = xRect.anchorMax = xRect.pivot = new Vector2(1f, 1f);
-            xRect.anchoredPosition = new Vector2(-18f, -18f);
-            x.GetComponentInChildren<TextMeshProUGUI>().fontSize = 26f;
-            x.onClick.AddListener(Hide);
-
-            CreateBindingRows(card.transform);
-            RefreshValues();
+            var motion = CreateButton(column, string.Empty, Vector2.zero, new Vector2(300f, 40f), false);
+            motion.name = "ReduceMotion";
+            reduceMotionLabel = motion.GetComponentInChildren<TextMeshProUGUI>();
+            reduceMotionLabel.fontSize = 15f;
+            reduceMotionLabel.enableAutoSizing = true;
+            reduceMotionLabel.fontSizeMin = 11f;
+            reduceMotionLabel.fontSizeMax = 15f;
+            ParkInLayout(motion.transform, 40f);
+            motion.onClick.AddListener(() => { MotionSettings.Toggle(); RefreshControlButtons(); });
         }
 
-        private void CreateLanguageButton(Transform parent, string label, GameLanguage language, Vector2 position)
+        private void BuildBindings(RectTransform column)
         {
-            Button button = CreateButton(parent, label, position, new Vector2(88f, 38f), false);
-            button.onClick.AddListener(() =>
-            {
-                if (GameServices.TryGet(out GameSettingsService settings)) settings.SetLanguage(language);
-                ApplyLanguage();
-            });
-        }
+            Label(column, "Phím điều khiển", "Key bindings", "キー操作", 20, Vector2.zero, new Vector2(400f, 28f), TextAlignmentOptions.MidlineLeft, true);
+            var hint = Label(column, "Bấm vào ô phím để đổi. Giữ Ctrl để hiện con trỏ khi đang chơi.", "Click a key to rebind. Hold Ctrl for a cursor during play.", "キーをクリックして変更。Ctrlでカーソル表示。", 14, Vector2.zero, new Vector2(400f, 40f), TextAlignmentOptions.TopLeft, false);
+            hint.textWrappingMode = TextWrappingModes.Normal;
+            ParkInLayout(hint.transform, 44f);
 
-        private void CreateBindingRows(Transform parent)
-        {
             var rows = new (GameInputId id, string vi, string en, string ja)[]
             {
                 (GameInputId.MoveUp, "Đi tới", "Forward", "前進"), (GameInputId.MoveDown, "Đi lùi", "Backward", "後退"),
@@ -226,13 +278,14 @@ namespace NihongoLife.UI
 
             for (int i = 0; i < rows.Length; i++)
             {
-                int column = i / 10;
-                int row = i % 10;
-                float x = 0f + column * 300f;
-                float y = 190f - row * 44f;
-                Label(parent, rows[i].vi, rows[i].en, rows[i].ja, 15, new Vector2(x, y), new Vector2(150f, 38f), TextAlignmentOptions.MidlineLeft, false);
-                var button = CreateButton(parent, string.Empty, new Vector2(x + 145f, y), new Vector2(118f, 36f), false);
+                var line = Row(column, "BindRow", 40f, false);
+                var name = Label(line, rows[i].vi, rows[i].en, rows[i].ja, 15, Vector2.zero, new Vector2(180f, 36f), TextAlignmentOptions.MidlineLeft, false);
+                name.textWrappingMode = TextWrappingModes.Normal;
+                name.overflowMode = TextOverflowModes.Ellipsis;
+                StretchInLayout(name.rectTransform, 1f, 36f);
+                var button = CreateButton(line, string.Empty, Vector2.zero, new Vector2(118f, 34f), false);
                 button.name = "Bind_" + rows[i].id;
+                StretchInLayout(button.GetComponent<RectTransform>(), 0f, 34f, 124f);
                 var value = button.GetComponentInChildren<TextMeshProUGUI>();
                 value.fontSize = 14f;
                 value.enableAutoSizing = true;
@@ -243,11 +296,122 @@ namespace NihongoLife.UI
                 button.onClick.AddListener(() => BeginRebind(captured));
             }
 
-            // Keys that are not rebindable, listed so every control is discoverable in one place.
-            var fixedKeys = CreateText(parent, NihongoLife.Core.Loc.T("Chuột: xoay camera  ·  Lăn chuột: zoom  ·  Esc: đóng cửa sổ trên cùng  ·  K: luyện thi  ·  L: sổ tay", "Mouse: rotate camera  ·  Wheel: zoom  ·  Esc: close the top window  ·  K: exams  ·  L: notebook", "マウス：カメラ回転 · ホイール：ズーム · Esc：いちばん上の画面を閉じる · K：試験 · L：ノート"), 14, new Vector2(240f, -262f), new Vector2(620f, 28f), TextAlignmentOptions.Center);
+            var fixedKeys = CreateText(column, string.Empty, 13, Vector2.zero, new Vector2(400f, 56f), TextAlignmentOptions.TopLeft);
+            fixedKeys.textWrappingMode = TextWrappingModes.Normal;
             fixedKeys.color = new Color(0.66f, 0.72f, 0.8f, 1f);
-
+            Localize(fixedKeys, "Chuột: xoay camera · Lăn chuột: zoom · Esc: đóng cửa sổ trên cùng · K: luyện thi · L: sổ tay", "Mouse: rotate camera · Wheel: zoom · Esc: close the top window · K: exams · L: notebook", "マウス：カメラ回転 · ホイール：ズーム · Esc：いちばん上の画面を閉じる · K：試験 · L：ノート");
+            ParkInLayout(fixedKeys.transform, 64f);
             RefreshBindingLabels();
+        }
+
+        private static RectTransform Row(Transform parent, string name, float height, bool flexible)
+        {
+            var go = new GameObject(name, typeof(RectTransform), typeof(HorizontalLayoutGroup), typeof(LayoutElement));
+            go.transform.SetParent(parent, false);
+            var layout = go.GetComponent<HorizontalLayoutGroup>();
+            layout.spacing = 10f;
+            layout.childAlignment = TextAnchor.MiddleLeft;
+            layout.childControlWidth = true;
+            layout.childControlHeight = true;
+            layout.childForceExpandWidth = false;
+            layout.childForceExpandHeight = true;
+            layout.padding = new RectOffset(2, 2, 0, 0);
+            var element = go.GetComponent<LayoutElement>();
+            element.minHeight = height;
+            element.preferredHeight = height;
+            element.flexibleHeight = flexible ? 1f : 0f;
+            element.flexibleWidth = 1f;
+            return (RectTransform)go.transform;
+        }
+
+        private RectTransform ScrollColumn(Transform parent, string name, float preferredWidth)
+        {
+            var go = new GameObject(name, typeof(RectTransform), typeof(Image), typeof(ScrollRect), typeof(LayoutElement));
+            go.transform.SetParent(parent, false);
+            var image = go.GetComponent<Image>();
+            image.color = new Color(1f, 1f, 1f, 0.03f);
+            image.raycastTarget = true;
+            var element = go.GetComponent<LayoutElement>();
+            element.flexibleWidth = preferredWidth > 0f ? 0f : 1f;
+            element.preferredWidth = preferredWidth > 0f ? preferredWidth : 420f;
+            element.minWidth = preferredWidth > 0f ? 260f : 220f;
+            element.flexibleHeight = 1f;
+
+            var viewportGo = new GameObject("Viewport", typeof(RectTransform), typeof(Image), typeof(RectMask2D));
+            viewportGo.transform.SetParent(go.transform, false);
+            var viewport = (RectTransform)viewportGo.transform;
+            viewport.anchorMin = Vector2.zero;
+            viewport.anchorMax = Vector2.one;
+            viewport.offsetMin = new Vector2(8f, 8f);
+            viewport.offsetMax = new Vector2(-8f, -8f);
+            viewportGo.GetComponent<Image>().color = new Color(1f, 1f, 1f, 0.01f);
+
+            var contentGo = new GameObject("Content", typeof(RectTransform), typeof(VerticalLayoutGroup), typeof(ContentSizeFitter));
+            contentGo.transform.SetParent(viewport, false);
+            var content = (RectTransform)contentGo.transform;
+            content.anchorMin = new Vector2(0f, 1f);
+            content.anchorMax = new Vector2(1f, 1f);
+            content.pivot = new Vector2(0.5f, 1f);
+            content.anchoredPosition = Vector2.zero;
+            content.sizeDelta = new Vector2(0f, 0f);
+            var stack = contentGo.GetComponent<VerticalLayoutGroup>();
+            stack.spacing = 6f;
+            stack.padding = new RectOffset(4, 8, 4, 8);
+            stack.childControlWidth = true;
+            stack.childControlHeight = true;
+            stack.childForceExpandWidth = true;
+            stack.childForceExpandHeight = false;
+            var fit = contentGo.GetComponent<ContentSizeFitter>();
+            fit.horizontalFit = ContentSizeFitter.FitMode.Unconstrained;
+            fit.verticalFit = ContentSizeFitter.FitMode.PreferredSize;
+
+            var scroll = go.GetComponent<ScrollRect>();
+            scroll.viewport = viewport;
+            scroll.content = content;
+            scroll.horizontal = false;
+            scroll.vertical = true;
+            scroll.movementType = ScrollRect.MovementType.Clamped;
+            scroll.scrollSensitivity = 28f;
+            return content;
+        }
+
+        private static void StretchInLayout(RectTransform rect, float flexibleWidth, float height, float preferredWidth = -1f)
+        {
+            if (rect == null) return;
+            var element = rect.GetComponent<LayoutElement>() ?? rect.gameObject.AddComponent<LayoutElement>();
+            element.flexibleWidth = flexibleWidth;
+            element.minHeight = height;
+            element.preferredHeight = height;
+            if (preferredWidth > 0f) element.preferredWidth = preferredWidth;
+            if (rect.GetComponent<TextMeshProUGUI>() != null) return;
+            var text = rect.GetComponentInChildren<TextMeshProUGUI>();
+            if (text != null)
+            {
+                var textRect = text.rectTransform;
+                textRect.anchorMin = Vector2.zero;
+                textRect.anchorMax = Vector2.one;
+                textRect.offsetMin = new Vector2(8f, 2f);
+                textRect.offsetMax = new Vector2(-8f, -2f);
+            }
+        }
+
+        private static void ParkInLayout(Transform target, float height)
+        {
+            if (target == null) return;
+            var element = target.GetComponent<LayoutElement>() ?? target.gameObject.AddComponent<LayoutElement>();
+            element.minHeight = height;
+            element.preferredHeight = height;
+            element.flexibleWidth = 1f;
+        }
+
+        private void CreateLanguageButton(Transform parent, string label, GameLanguage language, Vector2 position)
+        {
+            Button button = CreateButton(parent, label, position, new Vector2(88f, 38f), false);
+            button.onClick.AddListener(() =>
+            {
+                if (GameServices.TryGet(out GameSettingsService settings)) settings.SetLanguage(language);
+                ApplyLanguage();
+            });
         }
 
         // ──────────────────────── Behaviour ────────────────────────
@@ -309,6 +473,13 @@ namespace NihongoLife.UI
             sfxSlider.SetValueWithoutNotify(PlayerPrefs.GetFloat("Volume_SFX", 0.8f));
             UpdateValueText(bgmValue, bgmSlider.value);
             UpdateValueText(sfxValue, sfxSlider.value);
+            RefreshWebGlGraphics();
+        }
+
+        private void RefreshWebGlGraphics()
+        {
+            if (webGlGraphicsLabel == null) return;
+            webGlGraphicsLabel.text = Pick(WebGLGraphicsSettings.LabelVi(), WebGLGraphicsSettings.LabelEn(), WebGLGraphicsSettings.LabelJa());
         }
 
         private void RefreshControlButtons()
@@ -321,6 +492,8 @@ namespace NihongoLife.UI
                 schemeHint.text = ControlSettings.Scheme == ControlScheme.MouseLook
                     ? Pick("Chuột xoay camera, con trỏ ẩn. Giữ Ctrl để dùng chuột; mở cửa sổ (Tab, N, B…) cũng hiện con trỏ.", "Mouse turns the camera. Hold Ctrl or open a window for the cursor.", "マウスで視点操作。Ctrlでカーソル。")
                     : Pick("Con trỏ luôn hiện: click chuột trái để đi tới, giữ chuột phải/giữa để xoay camera.", "Cursor always visible: left click to walk, right/middle drag to turn.", "左クリックで移動、右ドラッグで視点。");
+            if (reduceMotionLabel != null)
+                reduceMotionLabel.text = Pick(MotionSettings.LabelVi(), MotionSettings.LabelEn(), MotionSettings.LabelJa());
         }
 
         private float _lastTickTime;
@@ -450,7 +623,11 @@ namespace NihongoLife.UI
             // the volume down to 0 without anyone noticing.
             slider.navigation = new Navigation { mode = Navigation.Mode.None };
 
-            valueText = CreateText(parent, "0%", 17f, position + new Vector2(230f, 0f), new Vector2(70f, 30f), TextAlignmentOptions.MidlineRight);
+            valueText = CreateText(go.transform, "0%", 16f, Vector2.zero, new Vector2(64f, 28f), TextAlignmentOptions.MidlineRight);
+            var valueRect = valueText.rectTransform;
+            valueRect.anchorMin = valueRect.anchorMax = valueRect.pivot = new Vector2(1f, 0.5f);
+            valueRect.anchoredPosition = new Vector2(-2f, 0f);
+            valueRect.sizeDelta = new Vector2(64f, 28f);
             valueText.color = UIStyleKit.AccentGold;
             return slider;
         }

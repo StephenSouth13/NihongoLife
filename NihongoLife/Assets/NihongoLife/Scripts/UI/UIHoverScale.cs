@@ -20,14 +20,19 @@ namespace NihongoLife.UI
 
         private void Update()
         {
-            if (transform.localScale != targetScale)
+            if (NihongoLife.Core.MotionSettings.ReduceMotion)
             {
-                transform.localScale = Vector3.Lerp(transform.localScale, targetScale, Time.deltaTime * scaleSpeed);
+                targetScale = originalScale;
+                if (originalScale.sqrMagnitude > 0.001f) transform.localScale = originalScale;
+                return;
             }
+            if (transform.localScale != targetScale)
+                transform.localScale = Vector3.Lerp(transform.localScale, targetScale, Time.unscaledDeltaTime * scaleSpeed);
         }
 
         public void OnPointerEnter(PointerEventData eventData)
         {
+            if (NihongoLife.Core.MotionSettings.ReduceMotion) return;
             targetScale = originalScale * hoverScale;
         }
 
@@ -38,11 +43,13 @@ namespace NihongoLife.UI
 
         public void OnPointerDown(PointerEventData eventData)
         {
+            if (NihongoLife.Core.MotionSettings.ReduceMotion) return;
             targetScale = originalScale * pressScale;
         }
 
         public void OnPointerUp(PointerEventData eventData)
         {
+            if (NihongoLife.Core.MotionSettings.ReduceMotion) { targetScale = originalScale; return; }
             targetScale = eventData.pointerEnter == gameObject ? originalScale * hoverScale : originalScale;
         }
     }

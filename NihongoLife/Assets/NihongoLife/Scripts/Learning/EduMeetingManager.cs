@@ -410,11 +410,15 @@ namespace NihongoLife.Learning
             _joining = true;
             SetStatus("Đang xin quyền micro và camera...", "Asking for microphone and camera permission…", "マイクとカメラの許可を求めています…");
             yield return Application.RequestUserAuthorization(UserAuthorization.Microphone | UserAuthorization.WebCam);
+#if UNITY_WEBGL && !UNITY_EDITOR
+            // Agora Web SDK calls getUserMedia while joining. Unity's permission flags are not reliable in the browser.
+#else
             if (!Application.HasUserAuthorization(UserAuthorization.Microphone) || !Application.HasUserAuthorization(UserAuthorization.WebCam))
             {
                 SetStatus("Chưa được cấp quyền micro/camera. Kiểm tra quyền trong hệ điều hành.", "No microphone/camera permission. Check the system privacy settings.", "マイク/カメラの許可がありません。OSの設定を確認してください。");
                 _joining = false; yield break;
             }
+#endif
             try
             {
                 EnsureEngine();
@@ -501,11 +505,15 @@ namespace NihongoLife.Learning
         {
             SetStatus("Đang mở camera...", "Opening the camera…", "カメラを起動しています…");
             yield return Application.RequestUserAuthorization(UserAuthorization.WebCam | UserAuthorization.Microphone);
+#if UNITY_WEBGL && !UNITY_EDITOR
+            // The Web SDK prompts for the camera when the preview track is created.
+#else
             if (!Application.HasUserAuthorization(UserAuthorization.WebCam))
             {
                 SetStatus("Chưa được cấp quyền camera. Hãy cho phép trong cài đặt quyền riêng tư của hệ điều hành.", "No camera permission. Allow it in the system privacy settings.", "カメラの許可がありません。OSのプライバシー設定で許可してください。");
                 yield break;
             }
+#endif
             try
             {
                 EnsureEngine();

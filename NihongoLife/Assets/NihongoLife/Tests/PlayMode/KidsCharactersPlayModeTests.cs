@@ -160,7 +160,7 @@ namespace NihongoLife.Tests
             }
         }
 
-        /// <summary>The real path: main menu → Start → character select → a kid → Play → Hibari with that kid.</summary>
+        /// <summary>The real path: main menu → Start → Offline → character select → a kid → Play → Hibari with that kid.</summary>
         [UnityTest]
         public IEnumerator Kids_PickedInCharacterSelect_PlaysInHibari()
         {
@@ -173,6 +173,8 @@ namespace NihongoLife.Tests
                 yield return new WaitForSecondsRealtime(1f);
                 var menu = Object.FindFirstObjectByType<MainMenuUI>();
                 Button(menu.transform, "StartButton").onClick.Invoke();
+                yield return null;
+                Button(menu.transform, "OfflineModeButton").onClick.Invoke();
                 yield return null;
                 var panel = menu.transform.Find("CharacterSelectPanel") ?? Object.FindObjectsByType<Transform>(FindObjectsSortMode.None).First(t => t.name == "CharacterSelectPanel");
                 Assert.IsTrue(panel.gameObject.activeInHierarchy, "Character select opens");

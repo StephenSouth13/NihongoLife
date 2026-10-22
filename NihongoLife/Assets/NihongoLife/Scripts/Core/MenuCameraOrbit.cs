@@ -37,7 +37,7 @@ namespace NihongoLife.Core
 
         private void LateUpdate()
         {
-            if (target == null) return;
+            if (target == null || MotionSettings.ReduceMotion) return;
             _angle += orbitSpeed * Time.deltaTime;
             ApplyPosition();
         }

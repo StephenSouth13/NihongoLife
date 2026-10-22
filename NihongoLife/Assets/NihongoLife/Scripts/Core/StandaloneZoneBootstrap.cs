@@ -65,6 +65,14 @@ namespace NihongoLife.Core
         private System.Collections.IEnumerator BootRoutine()
         {
             yield return null; // let the zone finish its first frame before it is replaced
+            yield return SceneContentLoader.EnsureAvailable(WorldLocationCatalog.CityScene, null);
+            if (!string.IsNullOrEmpty(SceneContentLoader.LastError))
+            {
+                Debug.LogError("[StandaloneZoneBootstrap] " + SceneContentLoader.LastError);
+                _bootingThroughCity = false;
+                Destroy(gameObject);
+                yield break;
+            }
             AsyncOperation load = SceneManager.LoadSceneAsync(WorldLocationCatalog.CityScene, LoadSceneMode.Single);
             while (load != null && !load.isDone) yield return null;
 

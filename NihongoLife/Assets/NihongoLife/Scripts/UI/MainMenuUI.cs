@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Linq;
 using NihongoLife.Audio;
 using NihongoLife.Core;
@@ -5,15 +6,15 @@ using NihongoLife.Player;
 using NihongoLife.Scenario;
 using TMPro;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 namespace NihongoLife.UI
 {
     /// <summary>
-    /// Main menu. The layout lives in the 01_MainMenu scene (built by MainMenuBaker) and is never moved or restyled at
-    /// runtime, so the Editor and Play look the same; this component only translates the texts (Vietnamese, English
-    /// or Japanese — the language switch at the top right changes the whole game at once), wires the buttons, adds
-    /// hover feedback and opens the popups and the character selection.
+    /// Main menu. The left column is baked by MainMenuBaker. At play, the top-right language row is gathered so it
+    /// stays on screen, and Start opens offline or online before character select. Texts follow Vietnamese, English
+    /// or Japanese.
     /// </summary>
     public class MainMenuUI : MonoBehaviour
     {
@@ -36,7 +37,10 @@ namespace NihongoLife.UI
 
         [Header("Settings")]
         [SerializeField] private string targetGameplayScene = "90_TestSandbox";
+        // Kept on the serialized menu. StoryDirector.AutoStart picks the quest; this id is the old fixed launch.
+#pragma warning disable CS0414
         [SerializeField] private string targetScenarioId = "scenario.konbini.buy_onigiri";
+#pragma warning restore CS0414
 
         private Button settingsButton, loginButton, leaderboardButton, friendsButton, profileButton, onlineButton;
         private SettingsUI settingsUI;
@@ -50,6 +54,10 @@ namespace NihongoLife.UI
         private AboutPopup aboutPopup;
 
         private GameObject characterSelectPanel;
+        private GameObject modeSelectPanel;
+        private TextMeshProUGUI modeStatusText;
+        private Button modeOfflineButton, modeOnlineButton;
+        private CharacterPreviewDragRotate characterDrag;
         private RawImage characterPreviewImage;
         private TextMeshProUGUI characterNameText, characterTaglineText;
         private TMP_InputField playerNameInput;
@@ -105,10 +113,40 @@ namespace NihongoLife.UI
             var dayNight = SceneRefs.Find<DayNightCycle>();
             if (dayNight != null) dayNight.SetHour(9f); // the menu is always a bright morning
 
+            MenuChrome.Arrange((RectTransform)transform);
+            if (titleText != null && titleText.GetComponent<MenuTitleShimmer>() == null)
+                titleText.gameObject.AddComponent<MenuTitleShimmer>();
+            MenuSakura.Ensure(transform);
+            BuildModeSelect(font);
             BuildCharacterSelect(font);
             Translate();
             DisplayProfileStats();
-            Loc.Watch(this, () => { Translate(); DisplayProfileStats(); });
+            Loc.Watch(this, () => { Translate(); DisplayProfileStats(); RefreshModeStatus(); });
+            StartCoroutine(PlayEntrance());
+        }
+
+        private IEnumerator PlayEntrance()
+        {
+            var group = GetComponent<CanvasGroup>() ?? gameObject.AddComponent<CanvasGroup>();
+            if (MotionSettings.ReduceMotion)
+            {
+                group.alpha = 1f;
+                yield break;
+            }
+            group.alpha = 0f;
+            var rect = (RectTransform)transform;
+            Vector2 end = rect.anchoredPosition;
+            Vector2 start = end + new Vector2(0f, -16f);
+            const float duration = 0.42f;
+            for (float t = 0f; t < duration; t += Time.unscaledDeltaTime)
+            {
+                float eased = 1f - Mathf.Pow(1f - Mathf.Clamp01(t / duration), 3f);
+                group.alpha = eased;
+                rect.anchoredPosition = Vector2.LerpUnclamped(start, end, eased);
+                yield return null;
+            }
+            group.alpha = 1f;
+            rect.anchoredPosition = end;
         }
 
         private void OnDestroy()
@@ -258,6 +296,96 @@ namespace NihongoLife.UI
             profileText.text = details.Trim();
         }
 
+        // ─────────── Mode select ───────────
+
+        private void BuildModeSelect(TMP_FontAsset font)
+        {
+            var dim = UiKit.Image(transform, "ModeSelectPanel", UiTheme.Backdrop, null, true);
+            modeSelectPanel = dim.gameObject;
+            UiKit.Fill(dim.rectTransform);
+            var card = UiKit.Card(dim.transform, "Card", UiTheme.Ink, 24, 0.6f).rectTransform;
+            card.gameObject.AddComponent<MenuSafeFrame>().Configure(new Vector2(860f, 480f), new Vector2(560f, 400f), new Vector2(40f, 32f));
+            var title = UiKit.Label(card, "Title", "", 28f, UiTheme.Text, FontStyles.Bold);
+            Box(title.rectTransform, 0.05f, 0.84f, 0.72f, 0.96f);
+            modeStatusText = UiKit.Label(card, "Status", "", 15f, UiTheme.TextSoft, FontStyles.Normal, TextAlignmentOptions.TopLeft, wrap: true);
+            Box(modeStatusText.rectTransform, 0.05f, 0.70f, 0.95f, 0.84f);
+
+            modeOfflineButton = UiKit.Button(card, "OfflineModeButton", "Ngoại tuyến", "Offline", "オフライン", ChooseOffline, UiKit.Kind.Primary, "play_arrow", 20f, 16);
+            Box((RectTransform)modeOfflineButton.transform, 0.05f, 0.28f, 0.48f, 0.66f);
+            modeOnlineButton = UiKit.Button(card, "OnlineModeButton", "Trực tuyến", "Online", "オンライン", ChooseOnline, UiKit.Kind.Secondary, "public", 20f, 16);
+            Box((RectTransform)modeOnlineButton.transform, 0.52f, 0.28f, 0.95f, 0.66f);
+            var offlineHint = UiKit.Label(card, "OfflineHint", "", 13f, UiTheme.Muted, FontStyles.Normal, TextAlignmentOptions.TopLeft, wrap: true);
+            Box(offlineHint.rectTransform, 0.05f, 0.16f, 0.48f, 0.28f);
+            var onlineHint = UiKit.Label(card, "OnlineHint", "", 13f, UiTheme.Muted, FontStyles.Normal, TextAlignmentOptions.TopLeft, wrap: true);
+            Box(onlineHint.rectTransform, 0.52f, 0.16f, 0.95f, 0.28f);
+            var back = UiKit.Button(card, "ModeBack", "Quay lại", "Back", "戻る", () => modeSelectPanel.SetActive(false), UiKit.Kind.Ghost, "arrow_back", 16f, 16);
+            Box((RectTransform)back.transform, 0.05f, 0.04f, 0.28f, 0.14f);
+
+            modeSelectPanel.SetActive(false);
+            UiModalStack.Register(this, () => modeSelectPanel.activeSelf && (characterSelectPanel == null || !characterSelectPanel.activeSelf), () => modeSelectPanel.SetActive(false), "ModeSelect");
+            RefreshModeStatus();
+        }
+
+        private void RefreshModeStatus()
+        {
+            if (modeSelectPanel == null) return;
+            var title = modeSelectPanel.transform.Find("Card/Title")?.GetComponent<TextMeshProUGUI>();
+            if (title != null) title.text = Loc.T("Chọn cách chơi", "How do you want to play?", "遊び方を選ぶ");
+            var offlineHint = modeSelectPanel.transform.Find("Card/OfflineHint")?.GetComponent<TextMeshProUGUI>();
+            if (offlineHint != null) offlineHint.text = Loc.T("Một người, lưu trên máy này. Mọi nơi và nhiệm vụ đều mở — không khoá cấp.", "Single player, saved on this device. Every place and task is open — no level locks.", "ひとり用、この端末に保存。場所もタスクも全部開放、レベル制限なし。");
+            var onlineHint = modeSelectPanel.transform.Find("Card/OnlineHint")?.GetComponent<TextMeshProUGUI>();
+            if (onlineHint != null) onlineHint.text = Loc.T("Cốt truyện bình thường, bạn bè, phòng và voice.", "The normal story, plus friends, rooms and voice.", "通常のストーリー、フレンド、部屋、ボイス。");
+            var back = modeSelectPanel.transform.Find("Card/ModeBack")?.GetComponent<Button>();
+            if (back != null) UiKit.SetLabel(back, Loc.T("Quay lại", "Back", "戻る"));
+            if (modeOfflineButton != null) UiKit.SetLabel(modeOfflineButton, Loc.T("Ngoại tuyến", "Offline", "オフライン"));
+            if (modeOnlineButton != null) UiKit.SetLabel(modeOnlineButton, Loc.T("Trực tuyến", "Online", "オンライン"));
+            if (modeStatusText == null) return;
+            bool configured = OnlineServerReady();
+            bool signedIn = OnlineAccess.IsRegistered;
+            if (!configured)
+                modeStatusText.text = Loc.T("Máy chủ chưa được cấu hình. Ngoại tuyến vẫn chơi được.", "The server is not configured yet. Offline play still works.", "サーバー未設定。オフラインでは遊べます。");
+            else if (!signedIn)
+                modeStatusText.text = Loc.T("Trực tuyến cần đăng nhập. Ngoại tuyến không cần.", "Online needs a sign-in. Offline does not.", "オンラインはログインが必要。オフラインはそのまま。");
+            else
+                modeStatusText.text = Loc.T("Đã đăng nhập. Phòng, bạn bè và voice sẵn sàng.", "Signed in. Rooms, friends and voice are ready.", "ログイン済み。部屋・フレンド・ボイスが使えます。");
+        }
+
+        private void OpenModeSelect()
+        {
+            if (modeSelectPanel == null) { OpenCharacterSelect(); return; }
+            HideInfoPopups();
+            if (characterSelectPanel != null) characterSelectPanel.SetActive(false);
+            RefreshModeStatus();
+            modeSelectPanel.SetActive(true);
+            modeSelectPanel.transform.SetAsLastSibling();
+            UIStyleKit.PlayShowAnimation(modeSelectPanel.transform.Find("Card").gameObject);
+            if (modeOfflineButton != null && EventSystem.current != null)
+                EventSystem.current.SetSelectedGameObject(modeOfflineButton.gameObject);
+        }
+
+        private void ChooseOffline()
+        {
+            startOnlineAfterCharacterConfirm = false;
+            if (modeSelectPanel != null) modeSelectPanel.SetActive(false);
+            OpenCharacterSelect();
+        }
+
+        private void ChooseOnline()
+        {
+            bool configured = OnlineServerReady();
+            RefreshModeStatus();
+            if (!configured) return;
+            if (!OnlineAccess.IsRegistered)
+            {
+                HideInfoPopups();
+                authUI.ShowForOnline();
+                return;
+            }
+            startOnlineAfterCharacterConfirm = true;
+            if (modeSelectPanel != null) modeSelectPanel.SetActive(false);
+            OpenCharacterSelect();
+        }
+
         // ─────────── Character selection ───────────
 
         private void BuildCharacterSelect(TMP_FontAsset font)
@@ -269,45 +397,60 @@ namespace NihongoLife.UI
             characterSelectPanel = dim.gameObject;
             UiKit.Fill(dim.rectTransform);
             var card = UiKit.Card(dim.transform, "Card", UiTheme.Ink, 24, 0.6f).rectTransform;
-            UiKit.Pin(card, new Vector2(0.5f, 0.5f), 0f, 0f, 1040f, 620f);
+            card.gameObject.AddComponent<MenuSafeFrame>().Configure(new Vector2(1080f, 660f), new Vector2(720f, 500f), new Vector2(36f, 28f));
 
-            var title = UiKit.Label(card, "Title", "", 30f, UiTheme.Text, FontStyles.Bold);
-            UiKit.Place(title.rectTransform, 40f, 30f, 700f, 46f);
+            var title = UiKit.Label(card, "Title", "", 28f, UiTheme.Text, FontStyles.Bold);
+            Box(title.rectTransform, 0.04f, 0.88f, 0.7f, 0.97f);
             var frame = UiKit.Card(card, "PreviewFrame", new Color(0.05f, 0.07f, 0.1f, 1f), 20, 0f, false).rectTransform;
-            UiKit.Place(frame, 40f, 96f, 440f, 490f);
+            Box(frame, 0.04f, 0.08f, 0.48f, 0.86f);
             var preview = new GameObject("Preview", typeof(RectTransform), typeof(RawImage)).GetComponent<RawImage>();
             preview.transform.SetParent(frame, false);
-            UiKit.Fill(preview.rectTransform, 10f, 10f, 10f, 10f);
+            UiKit.Fill(preview.rectTransform, 8f, 8f, 8f, 36f);
             characterPreviewImage = preview;
-            preview.gameObject.AddComponent<CharacterPreviewDragRotate>().Configure(ApplyCharacterPreviewYaw);
+            characterDrag = preview.gameObject.AddComponent<CharacterPreviewDragRotate>();
+            characterDrag.Configure(ApplyCharacterPreviewYaw);
             var hint = UiKit.Label(frame, "DragHint", "Kéo để xoay", "Drag to turn", "ドラッグで回転", 13f, UiTheme.Muted, FontStyles.Italic, TextAlignmentOptions.Center);
-            UiKit.Pin(hint.rectTransform, new Vector2(0.5f, 0f), 0f, 16f, 300f, 22f);
+            Box(hint.rectTransform, 0.08f, 0.02f, 0.55f, 0.1f);
+            var turnLeft = UiKit.Button(frame, "TurnLeft", "↺", "↺", "↺", () => characterDrag.AddYaw(-40f), UiKit.Kind.Secondary, null, 18f, 12);
+            Box((RectTransform)turnLeft.transform, 0.58f, 0.02f, 0.76f, 0.12f);
+            var turnRight = UiKit.Button(frame, "TurnRight", "↻", "↻", "↻", () => characterDrag.AddYaw(40f), UiKit.Kind.Secondary, null, 18f, 12);
+            Box((RectTransform)turnRight.transform, 0.78f, 0.02f, 0.96f, 0.12f);
 
-            characterNameText = UiKit.Label(card, "CharacterName", "", 36f, UiTheme.Gold, FontStyles.Bold);
-            UiKit.Place(characterNameText.rectTransform, 520f, 120f, 460f, 52f);
+            characterNameText = UiKit.Label(card, "CharacterName", "", 32f, UiTheme.Gold, FontStyles.Bold);
+            Box(characterNameText.rectTransform, 0.52f, 0.74f, 0.96f, 0.86f);
             characterTaglineText = UiKit.Label(card, "CharacterTagline", "", 16f, UiTheme.TextSoft, FontStyles.Normal, TextAlignmentOptions.TopLeft, wrap: true);
-            UiKit.Place(characterTaglineText.rectTransform, 520f, 178f, 460f, 70f);
+            Box(characterTaglineText.rectTransform, 0.52f, 0.62f, 0.96f, 0.74f);
 
             previousCharacterButton = UiKit.IconButton(card, "PreviousCharacterButton", "chevron_left", () => SelectCharacter(selectedCharacterIndex - 1), UiKit.Kind.Secondary, 52f, 28f);
-            UiKit.Place((RectTransform)previousCharacterButton.transform, 520f, 262f, 52f, 52f);
+            Box((RectTransform)previousCharacterButton.transform, 0.52f, 0.50f, 0.60f, 0.60f);
             nextCharacterButton = UiKit.IconButton(card, "NextCharacterButton", "chevron_right", () => SelectCharacter(selectedCharacterIndex + 1), UiKit.Kind.Secondary, 52f, 28f);
-            UiKit.Place((RectTransform)nextCharacterButton.transform, 584f, 262f, 52f, 52f);
+            Box((RectTransform)nextCharacterButton.transform, 0.62f, 0.50f, 0.70f, 0.60f);
 
             var nameLabel = UiKit.Label(card, "NameLabel", "Tên của bạn", "Your name", "あなたの名前", 13f, UiTheme.Muted, FontStyles.Bold);
-            UiKit.Place(nameLabel.rectTransform, 520f, 340f, 460f, 20f);
+            Box(nameLabel.rectTransform, 0.52f, 0.44f, 0.96f, 0.50f);
             playerNameInput = NameInput(card, font);
-            UiKit.Place((RectTransform)playerNameInput.transform, 520f, 364f, 460f, 52f);
+            Box((RectTransform)playerNameInput.transform, 0.52f, 0.34f, 0.96f, 0.44f);
             playerNameInput.text = PlayableCharacterCatalog.GetPlayerName();
 
             confirmCharacterButton = UiKit.Button(card, "ConfirmCharacterButton", null, null, null, ConfirmCharacterAndStart, UiKit.Kind.Primary, "play_arrow", 19f, 16);
-            UiKit.Place((RectTransform)confirmCharacterButton.transform, 520f, 446f, 460f, 62f);
+            Box((RectTransform)confirmCharacterButton.transform, 0.52f, 0.18f, 0.96f, 0.32f);
             closeCharacterButton = UiKit.Button(card, "CloseCharacterButton", null, null, null, () => characterSelectPanel.SetActive(false), UiKit.Kind.Ghost, "arrow_back", 16f, 16);
-            UiKit.Place((RectTransform)closeCharacterButton.transform, 520f, 520f, 200f, 48f);
+            Box((RectTransform)closeCharacterButton.transform, 0.52f, 0.06f, 0.78f, 0.16f);
 
             CreateCharacterPreviewStage();
             characterSelectPanel.SetActive(false);
+            UiModalStack.Register(this, () => characterSelectPanel.activeSelf, () => characterSelectPanel.SetActive(false), "CharacterSelect");
             TranslateCharacterSelect();
             SelectCharacter(selectedCharacterIndex);
+        }
+
+        private static void Box(RectTransform rect, float xMin, float yMin, float xMax, float yMax)
+        {
+            if (rect == null) return;
+            rect.anchorMin = new Vector2(xMin, yMin);
+            rect.anchorMax = new Vector2(xMax, yMax);
+            rect.offsetMin = rect.offsetMax = Vector2.zero;
+            rect.pivot = new Vector2(0.5f, 0.5f);
         }
 
         private void TranslateCharacterSelect()
@@ -345,7 +488,12 @@ namespace NihongoLife.UI
         private void CreateCharacterPreviewStage()
         {
             if (Application.isBatchMode) return;
-            characterPreviewTexture = new RenderTexture(768, 900, 24, RenderTextureFormat.ARGB32) { name = "CharacterSelectPreviewTexture", antiAliasing = 4 };
+            bool web = Application.platform == RuntimePlatform.WebGLPlayer;
+            characterPreviewTexture = new RenderTexture(web ? 512 : 768, web ? 600 : 900, 16, RenderTextureFormat.ARGB32)
+            {
+                name = "CharacterSelectPreviewTexture",
+                antiAliasing = web ? 1 : 2
+            };
             characterPreviewTexture.Create();
             if (characterPreviewImage != null) characterPreviewImage.texture = characterPreviewTexture;
             characterPreviewStage = new GameObject("CharacterSelectPreviewStage");
@@ -353,17 +501,19 @@ namespace NihongoLife.UI
             DontDestroyOnLoad(characterPreviewStage);
             var cameraGo = new GameObject("PreviewCamera");
             cameraGo.transform.SetParent(characterPreviewStage.transform, false);
-            cameraGo.transform.localPosition = new Vector3(0f, 1.35f, 4.2f);
-            cameraGo.transform.localRotation = Quaternion.Euler(5f, 180f, 0f);
+            cameraGo.transform.localPosition = new Vector3(0f, 1.05f, 2.4f);
+            cameraGo.transform.localRotation = Quaternion.Euler(8f, 180f, 0f);
             characterPreviewCamera = cameraGo.AddComponent<Camera>();
             characterPreviewCamera.clearFlags = CameraClearFlags.SolidColor;
-            characterPreviewCamera.backgroundColor = new Color(0.05f, 0.07f, 0.1f, 1f);
-            characterPreviewCamera.fieldOfView = 30f;
+            characterPreviewCamera.backgroundColor = new Color(0.07f, 0.09f, 0.13f, 1f);
+            characterPreviewCamera.fieldOfView = 24f;
             characterPreviewCamera.nearClipPlane = 0.05f;
             characterPreviewCamera.farClipPlane = 20f;
             characterPreviewCamera.targetTexture = characterPreviewTexture;
-            PreviewLight("KeyLight", new Vector3(-2.2f, 4f, 2.4f), Quaternion.Euler(52f, -32f, 0f), 3.2f, new Color(1f, 0.93f, 0.78f, 1f));
-            PreviewLight("RimLight", new Vector3(2.8f, 2.8f, -2f), Quaternion.Euler(34f, 136f, 0f), 1.8f, new Color(0.48f, 0.74f, 1f, 1f));
+            PreviewLight("KeyLight", new Vector3(-1.6f, 3.2f, 2.2f), Quaternion.Euler(48f, -28f, 0f), 2.4f, new Color(1f, 0.95f, 0.86f, 1f));
+            PreviewLight("FillLight", new Vector3(1.4f, 2.2f, 2.6f), Quaternion.Euler(30f, 24f, 0f), 1.1f, new Color(0.85f, 0.9f, 1f, 1f));
+            if (Application.platform != RuntimePlatform.WebGLPlayer)
+                PreviewLight("RimLight", new Vector3(1.8f, 2.4f, -1.6f), Quaternion.Euler(28f, 140f, 0f), 1.6f, new Color(1f, 0.82f, 0.55f, 1f));
         }
 
         private void PreviewLight(string name, Vector3 position, Quaternion rotation, float intensity, Color color)
@@ -400,14 +550,32 @@ namespace NihongoLife.UI
             characterPreviewModel.transform.localPosition = Vector3.zero;
             characterPreviewModel.transform.localRotation = Quaternion.Euler(0f, 180f, 0f);
             characterPreviewModel.transform.localScale = prefab.transform.localScale; // kids are built at 1.35×
-            ApplyCharacterPreviewYaw(0f);
+            if (characterDrag != null) characterDrag.SetYaw(0f);
+            else ApplyCharacterPreviewYaw(0f);
             foreach (var collider in characterPreviewModel.GetComponentsInChildren<Collider>(true)) Destroy(collider);
+            FrameCharacterPreview();
+        }
+
+        private void FrameCharacterPreview()
+        {
+            if (characterPreviewModel == null || characterPreviewCamera == null || characterPreviewStage == null) return;
+            var renderers = characterPreviewModel.GetComponentsInChildren<Renderer>();
+            if (renderers.Length == 0) return;
+            Bounds bounds = renderers[0].bounds;
+            for (int i = 1; i < renderers.Length; i++) bounds.Encapsulate(renderers[i].bounds);
+            float height = Mathf.Max(0.6f, bounds.size.y);
+            float fov = 24f;
+            characterPreviewCamera.fieldOfView = fov;
+            float distance = (height * 0.62f) / Mathf.Tan(fov * 0.5f * Mathf.Deg2Rad);
+            Vector3 localCenter = characterPreviewStage.transform.InverseTransformPoint(bounds.center);
+            characterPreviewCamera.transform.localPosition = new Vector3(localCenter.x, localCenter.y, localCenter.z + distance);
+            characterPreviewCamera.transform.LookAt(bounds.center);
         }
 
         private void ApplyCharacterPreviewYaw(float yaw)
         {
             if (characterPreviewModel == null) return;
-            characterPreviewModel.transform.localRotation = Quaternion.Euler(0f, 180f + Mathf.Clamp(yaw, -90f, 90f), 0f);
+            characterPreviewModel.transform.localRotation = Quaternion.Euler(0f, 180f + yaw, 0f);
         }
 
         // ─────────── Flow ───────────
@@ -418,15 +586,24 @@ namespace NihongoLife.UI
             aboutPopup?.Hide();
         }
 
-        private void OnStartClicked()
+        private static bool OnlineServerReady()
         {
-            startOnlineAfterCharacterConfirm = false;
+            var client = SceneRefs.Find<SupabaseClient>();
+            return client != null && client.IsConfigured;
+        }
+
+        private void OnStartClicked() => OpenModeSelect();
+
+        private void OpenCharacterSelect()
+        {
             if (characterSelectPanel == null) { BeginGameWithSelectedCharacter(); return; }
             HideInfoPopups();
             characterSelectPanel.SetActive(true);
             characterSelectPanel.transform.SetAsLastSibling();
             SelectCharacter(selectedCharacterIndex);
             UIStyleKit.PlayShowAnimation(characterSelectPanel.transform.Find("Card").gameObject);
+            if (confirmCharacterButton != null && EventSystem.current != null)
+                EventSystem.current.SetSelectedGameObject(confirmCharacterButton.gameObject);
         }
 
         private void OnOnlineClicked()
@@ -437,10 +614,7 @@ namespace NihongoLife.UI
             HideInfoPopups();
             if (characterSelectPanel != null)
             {
-                characterSelectPanel.SetActive(true);
-                characterSelectPanel.transform.SetAsLastSibling();
-                SelectCharacter(selectedCharacterIndex);
-                UIStyleKit.PlayShowAnimation(characterSelectPanel.transform.Find("Card").gameObject);
+                OpenCharacterSelect();
                 return;
             }
             ShowOnlineLobby();
@@ -464,17 +638,19 @@ namespace NihongoLife.UI
         private void ShowOnlineLobby()
         {
             startOnlineAfterCharacterConfirm = false;
+            PlayerSessionService.GetOrCreate()?.BeginProgressionPlay();
             coopLobbyUI.Show();
         }
 
         private void BeginGameWithSelectedCharacter()
         {
             menuMusic?.FadeOut(1f);
-            // The town decides what to play (StoryDirector): the interrupted quest, the next prologue step, or free play.
+            // Offline uses the guest save and turns the existing unlock bypasses on, so nothing is level-gated.
+            PlayerSessionService.GetOrCreate()?.BeginOfflinePlay();
             var story = StoryDirector.AutoStart();
             if (story != null) ScenarioSceneInitializer.QueueLaunch(story.id);
             if (GameServices.TryGet(out SceneFlowController sceneFlow)) sceneFlow.LoadScene(targetGameplayScene);
-            else UnityEngine.SceneManagement.SceneManager.LoadScene(targetGameplayScene);
+            else SceneContentLoader.LoadFallback(targetGameplayScene);
         }
 
         private void OnQuitClicked() => Application.Quit();

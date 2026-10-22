@@ -328,6 +328,7 @@ namespace NihongoLife.UI
 
         private static void LoadCoopGameplay(string scenarioId)
         {
+            PlayerSessionService.GetOrCreate()?.BeginProgressionPlay();
             if (!string.IsNullOrWhiteSpace(scenarioId))
             {
                 ScenarioSceneInitializer.QueueLaunch(scenarioId);
@@ -339,7 +340,7 @@ namespace NihongoLife.UI
             }
             else
             {
-                UnityEngine.SceneManagement.SceneManager.LoadScene("90_TestSandbox");
+                SceneContentLoader.LoadFallback("90_TestSandbox");
             }
         }
 

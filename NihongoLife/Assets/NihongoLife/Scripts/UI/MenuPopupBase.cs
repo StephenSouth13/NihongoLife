@@ -34,7 +34,6 @@ namespace NihongoLife.UI
         protected static readonly Color DarkText = UiTheme.OnGold;
 
         private readonly List<LocalizedLabel> _localized = new List<LocalizedLabel>();
-        private int _escapeHandledFrame = -1;
 
         protected GameObject PanelObject { get; private set; }
         protected RectTransform Card { get; private set; }

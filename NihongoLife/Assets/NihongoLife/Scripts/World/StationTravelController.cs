@@ -41,11 +41,15 @@ namespace NihongoLife.World
     {
         [SerializeField] private Transform platformSpawn;
         [SerializeField] private Transform carriageSpawn;
+        // Kept so existing station scenes keep their serialized values. Fares come from Stop.Price,
+        // each leg from LegSeconds, and the window scroll from TrainWindowScenery.
+#pragma warning disable CS0414
         [SerializeField] private Transform sceneryRoot;
         [SerializeField] private int ticketPrice = 320;
         [SerializeField] private float rideDuration = 18f;
         [SerializeField] private float scenerySpeed = 8f;
         [SerializeField] private float sceneryLoopWidth = 48f;
+#pragma warning restore CS0414
         [SerializeField] private float serviceInterval = 60f;
         [SerializeField] private float boardingWindow = 15f;
         [SerializeField] private float trainTravelDistance = 75f;

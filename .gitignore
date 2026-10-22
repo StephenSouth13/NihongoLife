@@ -125,3 +125,12 @@ NihongoLife/playmode-results*.xml
 NihongoLife/editmode-results*.xml
 NihongoLife/test_results.xml
 NihongoLife/test_results_playmode.xml
+
+# Agent scratch and WebGL zone-bundle staging (the player build copies zones/ next to index.html).
+.claude/
+.codex/
+.codex*/
+**/.utmp
+*.mtl.bak
+*.mtl.bak.meta
+NihongoLife/WebGLZoneBundles/
