@@ -373,6 +373,8 @@ namespace NihongoLife.World
                 _horn.Play();
             }
             ShowBubble(car);
+            SocialStanding.AddNotoriety(4, "blocking-traffic", 8f);
+            SocialStanding.AddMoodlet("honked", SocialMood.Embarrassed, 0.55f, 0.7f);
         }
 
         private void ShowBubble(Car car)

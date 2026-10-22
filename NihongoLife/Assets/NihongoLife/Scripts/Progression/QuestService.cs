@@ -255,6 +255,8 @@ namespace NihongoLife.Progression
 
             var rewards = quest.rewards ?? new QuestRewards();
             if (rewards.xp > 0) PlayerStatus.Instance?.AddExp(rewards.xp);
+            SocialStanding.AddReputation(3, "help");
+            SocialStanding.AddMoodlet("helped", SocialMood.Proud, 0.5f, 1.5f);
             if (rewards.knowledge > 0) PlayerStatus.Instance?.AddKnowledge(rewards.knowledge);
             if (rewards.yen > 0) PlayerInventory.Instance?.AddYen(rewards.yen, NihongoLife.Core.Loc.Triple("Thưởng nhiệm vụ", "Task reward", "タスクの報酬"));
             if (PlayerStatus.Instance == null)

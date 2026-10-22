@@ -29,6 +29,7 @@ namespace NihongoLife.World
             if (!IsTrainBoarding) { Announce("でんしゃは まだ きません。", NihongoLife.Core.Loc.Gloss($"Tàu chưa vào ga — còn khoảng {SecondsUntilArrival():0} giây.", $"The train isn't here yet — about {SecondsUntilArrival():0} seconds.")); return; }
             if (_carriageInterior != null) _carriageInterior.SetActive(true);
             ShuffleCommuters();
+            GetComponent<StationCarriageLife>()?.OnBoarded();
             Teleport(player, carriageSpawn);
             var camera = SceneRefs.Find<Cameras.ThirdPersonCameraController>();
             if (camera != null && carriageSpawn != null)

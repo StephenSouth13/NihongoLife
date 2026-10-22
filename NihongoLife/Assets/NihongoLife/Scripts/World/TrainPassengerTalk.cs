@@ -34,6 +34,8 @@ namespace NihongoLife.World
 
         public void Interact(GameObject player)
         {
+            string hint = NihongoLife.Player.SocialStanding.DialogueHint("station_" + passengerId);
+            if (!string.IsNullOrEmpty(hint)) NihongoLife.UI.HudFeed.Post(hint, NihongoLife.UI.HudFeed.Kind.Info, 3f, "greet-" + passengerId);
             var station = SceneRefs.Find<StationTravelController>();
             if (station != null) station.TalkToPassenger(passengerId);
         }

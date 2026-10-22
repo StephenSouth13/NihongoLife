@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using NihongoLife.Exam;
+using NihongoLife.Player;
 
 namespace NihongoLife.Data
 {
@@ -105,5 +106,11 @@ namespace NihongoLife.Data
         public int birthdayMonth = 4;
         public int birthdayDay = 15;
         public int ageAtEpoch = 16;
+        /// <summary>Danh tiếng / 名声. Polite answers, giving up a seat, helping. Not a level gate.</summary>
+        public int reputation;
+        /// <summary>Tai tiếng / 悪名. Blocking cars, rudeness, littering.</summary>
+        public int notoriety;
+        public List<NpcAffinityRecord> affinities = new List<NpcAffinityRecord>();
+        public List<MoodletRecord> moodlets = new List<MoodletRecord>();
     }
 }

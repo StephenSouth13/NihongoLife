@@ -399,6 +399,7 @@ namespace NihongoLife.Save
                 merged.ageAtEpoch = src.ageAtEpoch > 0 ? src.ageAtEpoch : 16;
             }
 
+            NihongoLife.Player.SocialStanding.Merge(merged, local, cloud);
             return merged;
         }
 

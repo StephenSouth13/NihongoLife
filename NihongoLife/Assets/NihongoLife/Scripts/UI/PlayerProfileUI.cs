@@ -2,6 +2,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 using NihongoLife.Core;
+using NihongoLife.Player;
 
 namespace NihongoLife.UI
 {
@@ -138,7 +139,8 @@ namespace NihongoLife.UI
                     $"<color=#f1c75b>XP</color>: {profile.xp}\n" +
                     $"<color=#f1c75b>{Text("Chương", "Chapter", "チャプター")}</color>: {profile.current_chapter}\n" +
                     $"\n<color=#8fa3b8>{(string.IsNullOrWhiteSpace(profile.bio) ? Text("Chưa có bio", "No bio yet", "自己紹介未設定") : profile.bio)}</color>" +
-                    CalendarLine();
+                    CalendarLine() +
+                    (_isOwnProfile ? "\n<color=#8fa3b8>" + SocialStanding.ProfileBlock + "</color>" : "");
 
                 if (_isOwnProfile)
                 {
@@ -165,7 +167,8 @@ namespace NihongoLife.UI
                     $"<color=#f1c75b>XP</color>: {p.xp}\n" +
                     $"<color=#f1c75b>{Text("Hoàn thành", "Completed", "完了")}</color>: {p.completedScenarios.Count}\n" +
                     $"\n<color=#8fa3b8>{Text("Chế độ offline", "Offline mode", "オフラインモード")}</color>" +
-                    CalendarLine();
+                    CalendarLine() +
+                    "\n<color=#8fa3b8>" + (PlayerStatus.Instance != null ? SocialStanding.ProfileBlock : SocialStanding.ProfileBlockFrom(p)) + "</color>";
             }
         }
 

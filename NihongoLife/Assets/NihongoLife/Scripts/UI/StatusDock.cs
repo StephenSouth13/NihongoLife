@@ -100,7 +100,7 @@ namespace NihongoLife.UI
         public string CriticalNeed { get; private set; }
         public string WarningText => _warningText != null && _warning.gameObject.activeSelf ? _warningText.text : null;
         public string WeatherEffectText => _weatherChip != null && _weatherChip.gameObject.activeSelf ? _weatherText.text : null;
-        private TextMeshProUGUI _name, _level, _wallet, _levelBadge, _calendar;
+        private TextMeshProUGUI _name, _level, _wallet, _levelBadge, _calendar, _mood;
         private Image _expFill;
         private readonly Dictionary<string, Ring> _rings = new();
         private RectTransform _warning;
@@ -227,6 +227,12 @@ namespace NihongoLife.UI
             var calendarLayout = _calendar.gameObject.AddComponent<LayoutElement>();
             calendarLayout.preferredWidth = 260f;
             calendarLayout.minHeight = 16f;
+            _mood = NLUi.Label(identity, "Mood", "", 13f, new Color(0.78f, 0.72f, 0.55f, 1f), _font);
+            _mood.textWrappingMode = TextWrappingModes.Normal;
+            _mood.raycastTarget = false;
+            var moodLayout = _mood.gameObject.AddComponent<LayoutElement>();
+            moodLayout.preferredWidth = 260f;
+            moodLayout.minHeight = 16f;
             var spacer = new GameObject("Spacer", typeof(RectTransform), typeof(LayoutElement));
             spacer.transform.SetParent(top, false);
             spacer.GetComponent<LayoutElement>().flexibleWidth = 1f;
@@ -655,6 +661,11 @@ namespace NihongoLife.UI
                 _calendar.text = cycle != null ? cycle.HudCompact : "";
                 _calendar.gameObject.SetActive(!string.IsNullOrEmpty(_calendar.text));
             }
+            if (_mood != null)
+            {
+                _mood.text = SocialStanding.HudLine;
+                _mood.gameObject.SetActive(!string.IsNullOrEmpty(_mood.text));
+            }
             _levelBadge.text = status.Level.ToString();
             _wallet.text = yen.ToString("N0", System.Globalization.CultureInfo.InvariantCulture);
             SetFill(_expFill, status.MaxExp > 0 ? status.CurrentExp / (float)status.MaxExp : 0f);
@@ -690,7 +701,8 @@ namespace NihongoLife.UI
                 $"<color=#A8B4C4>{NihongoLife.Core.Loc.T("Đang ở", "Location", "現在地")}</color>  {WorldLocationCatalog.Get(SceneManager.GetActiveScene().name).DisplayName}      " +
                 $"<color=#A8B4C4>{NihongoLife.Core.Loc.T("Balo", "Bag", "かばん")}</color>  {(inventory != null ? inventory.Items.Count : 0)}/{(inventory != null ? inventory.MaxSlots : 0)}\n" +
                 $"<color=#A8B4C4>{NihongoLife.Core.Loc.T("Đang theo dõi", "Tracking", "追跡中")}</color>  {(tracked != null ? tracked.Value.text : "—")}" +
-                calendar;
+                calendar +
+                "\n<color=#A8B4C4>" + SocialStanding.ProfileBlock + "</color>";
         }
 
         private void OnDestroy()
