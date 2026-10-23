@@ -1524,3 +1524,21 @@ Chi tiết thiết kế: `STORY_BIBLE.md` mục 14.
 
 ## TASK-M (Grok) — Trailer v4, demo v3, kế hoạch marketing 12 tuần
 Giao việc đầy đủ trong `Docs/GROK_TASK_TRAILER_MARKETING.md` (bối cảnh, luật, công cụ có sẵn, 3 sản phẩm, tiêu chí nghiệm thu). Không sửa gameplay; chỉ sửa `TrailerReel.cs`, hai test quay phim và các file marketing.
+
+## Cập nhật (2026-10-23 chiều, Claude) — Rà lỗi còn lại và nợ kỹ thuật
+- **Build WebGL bị chặn:** `AgoraWebShim.cs` (namespace `Agora.Rtc`) gọi `AgoraWebEvents` mà thiếu namespace `NihongoLife.Learning`, nên với build target WebGL không biên dịch được. Đã sửa và đã biên dịch thử với target WebGL.
+- **Save tách theo tài khoản** (`progress_<userId>.json`, `PlayerSessionService.AccountId`):
+  - Trước đây mọi tài khoản trên một máy dùng chung `progress.json`, nên ở máy dùng chung tài khoản sau bị gộp cờ cốt truyện và quest của tài khoản trước lên cloud.
+  - Khi khôi phục phiên, cache khách bị gộp vào tài khoản. Cả hai đã sửa.
+  - Test mới trong `GuestOfflinePlayModeTests`.
+- **Bảo mật server:**
+  - `agora-voice` và `agora-classroom` từ chối người dùng ẩn danh.
+  - Cuộc gọi riêng (`nld_…`) chỉ cấp token cho đúng 2 người: server tính lại tên phòng từ người gọi và `peer`. Trước đây ai biết 2 id đều nghe lén được.
+  - Id nhóm voice phải dài ít nhất 10 ký tự.
+  - Migration `20261023_registered_only_online.sql`: `is_registered()`; showcase đảo và thả tim chỉ cho tài khoản đăng ký.
+  - **Cần deploy:** `supabase functions deploy agora-voice agora-classroom` và áp dụng migration.
+- **Hiệu năng mỗi khung:**
+  - `NPCNameplateSystem` không còn `FindObjectsByType` mỗi khung.
+  - `MenuButtonFeel`, `FootGrounder`, `KidMoodAnimator` không còn `GetComponent(s)InChildren` mỗi khung.
+- **`CharacterAnimationController`:** cử chỉ bị chặn khi đang nằm hoặc ngồi, và trigger cử chỉ còn treo được xoá khi vào tư thế.
+- **Test:** thẻ mở khu trong test lộ trình chờ hội thoại kết thúc (đúng thiết kế); test đóng hội thoại còn mở trước khi chờ.

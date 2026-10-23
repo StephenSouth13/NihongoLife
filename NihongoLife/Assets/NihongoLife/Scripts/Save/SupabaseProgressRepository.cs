@@ -21,6 +21,7 @@ namespace NihongoLife.Save
         private bool _cloudSyncPending = false;
         /// <summary>A guest's progress waiting to move into the account that just signed in (only if that account is new).</summary>
         private PlayerProgressDto _guestCarry;
+        private string _cachedAccount;
 
         public SupabaseProgressRepository(SupabaseClient client)
         {
@@ -58,9 +59,11 @@ namespace NihongoLife.Save
             if (session == null) return _cachedProgress ??= new PlayerProgressDto();
             if (!session.CanPersist)
                 return session.GuestProgress;
-            if (_cachedProgress == null)
+            // Another account took over the session (sign-in, Start): its own save, never the previous account's.
+            if (_cachedProgress == null || _cachedAccount != session.AccountId)
             {
                 _cachedProgress = _localFallback.GetProgress();
+                _cachedAccount = session.AccountId;
             }
             return _cachedProgress;
         }
@@ -72,10 +75,11 @@ namespace NihongoLife.Save
             if (!session.CanPersist)
             {
                 session.UpdateGuestProgress(progress);
-                _cachedProgress = progress;
+                _cachedProgress = null; // the guest save lives in the session; the account cache reloads when needed
                 return;
             }
             _cachedProgress = progress;
+            _cachedAccount = session.AccountId;
 
             // Always save locally first
             _localFallback.SaveProgress(progress);
