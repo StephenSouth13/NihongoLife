@@ -1542,3 +1542,12 @@ Giao việc đầy đủ trong `Docs/GROK_TASK_TRAILER_MARKETING.md` (bối cả
   - `MenuButtonFeel`, `FootGrounder`, `KidMoodAnimator` không còn `GetComponent(s)InChildren` mỗi khung.
 - **`CharacterAnimationController`:** cử chỉ bị chặn khi đang nằm hoặc ngồi, và trigger cử chỉ còn treo được xoá khi vào tư thế.
 - **Test:** thẻ mở khu trong test lộ trình chờ hội thoại kết thúc (đúng thiết kế); test đóng hội thoại còn mở trước khi chờ.
+
+## Cập nhật (2026-10-23 tối, Claude) — Tắt nhạc nền / âm thanh môi trường
+- Người chơi thấy tiếng chim/dế đôi khi ồn, nên Cài đặt → Âm thanh có thêm:
+  - nút **Nhạc nền: Bật/Tắt**;
+  - nút **Môi trường: Bật/Tắt** (chim, dế, gió, mưa, tiếng người ngoài phố);
+  - thanh **âm lượng môi trường** riêng (mặc định 0.5 = độ to cũ).
+- Mã: `Scripts/Audio/AudioPrefs.cs` (PlayerPrefs `Audio_MusicOn`, `Audio_AmbienceOn`, `Volume_Ambience`; giá trị được cache, đọc mỗi khung không tốn). Các nơi đọc giá trị: `Soundscape`, `TownAmbientAudio`, `AudioService` (nhạc menu), mưa trong `OutdoorSky`. UI ở `SettingsUI`.
+- Thêm nguồn ambience mới thì nhân âm lượng với `AudioPrefs.AmbienceGain`; nguồn nhạc mới thì `mute = !AudioPrefs.MusicOn`.
+- Test: `SoundscapePlayModeTests` (tắt thì nhạc và ambience câm, bật lại thì có tiếng).

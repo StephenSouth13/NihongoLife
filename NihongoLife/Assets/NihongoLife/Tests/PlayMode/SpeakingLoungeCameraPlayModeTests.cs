@@ -35,6 +35,11 @@ namespace NihongoLife.Tests
         public IEnumerator Lounge_CameraCheck_ShowsRealWebcamInsideTheCard()
         {
             if (WebCamTexture.devices.Length == 0) Assert.Inconclusive("No webcam on this machine.");
+#if UNITY_WEBGL
+            // With the WebGL build target the editor compiles the browser stand-in (AgoraWebShim), whose camera is an
+            // HTML element in the web page — there is no native camera texture to check here.
+            Assert.Inconclusive("Build target is WebGL: the native Agora camera check runs with the desktop / Android target.");
+#endif
             yield return LoadCity();
             var meeting = Object.FindFirstObjectByType<EduMeetingManager>();
             Assert.NotNull(meeting, "Speaking lounge");
@@ -59,7 +64,8 @@ namespace NihongoLife.Tests
                 variance = Variance(meeting.LocalView != null ? meeting.LocalView.texture : null);
             }
             var view = meeting.LocalView;
-            Debug.Log($"[Lounge] camera texture {view.texture?.width}x{view.texture?.height}, variance {variance:0.00000}, status: {meeting.Status}");
+            var texture = view.texture; // Unity fake null: no `?.` on a texture that may be missing
+            Debug.Log($"[Lounge] camera texture {(texture != null ? texture.width + "x" + texture.height : "none")}, variance {variance:0.00000}, status: {meeting.Status}");
             Assert.NotNull(view.texture, "Agora draws the camera into the lounge picture");
             Assert.Greater(variance, 0.0005f, "A real image (not a black frame)");
             Assert.IsTrue(view.isActiveAndEnabled, "The picture is visible");

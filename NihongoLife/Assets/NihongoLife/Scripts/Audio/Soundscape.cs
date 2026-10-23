@@ -70,7 +70,10 @@ namespace NihongoLife.Audio
             // Crossfade: the old clip fades out, then the new one starts and fades in.
             float quiet = Ducking();
             Fade(_music, ref _musicGain, _wantMusic, "Music", 0.7f * Bgm * quiet, () => MusicKey = _wantMusic);
-            Fade(_ambience, ref _ambienceGain, _wantAmbience, "Ambience", 0.6f * Bgm * (Exam ? 0f : 1f), () => AmbienceKey = _wantAmbience);
+            // Ambience (birds, insects, wind) has its own switch and volume in Settings (AudioPrefs).
+            Fade(_ambience, ref _ambienceGain, _wantAmbience, "Ambience", 0.6f * AudioPrefs.AmbienceGain * (Exam ? 0f : 1f), () => AmbienceKey = _wantAmbience);
+            _music.mute = !AudioPrefs.MusicOn;
+            _ambience.mute = !AudioPrefs.AmbienceOn;
         }
 
         private void Fade(AudioSource source, ref float gain, string want, string folder, float target, System.Action started)

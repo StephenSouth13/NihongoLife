@@ -63,13 +63,15 @@ namespace NihongoLife.Audio
         {
             // Follow the BGM slider from Settings (the shared AudioService is not used for this source).
             if (_bgmSource.clip != null) _bgmSource.volume = bgmVolume * Mathf.Clamp01(PlayerPrefs.GetFloat("Volume_BGM", 0.5f) * 2f);
+            _bgmSource.mute = !AudioPrefs.MusicOn;
+            _streetSource.mute = !AudioPrefs.AmbienceOn; // street voices are ambience
 
             if (Time.time < _nextStreetVoiceTime) return;
 
             AudioClip clip = PickStreetVoiceClip();
             if (clip != null)
             {
-                _streetSource.PlayOneShot(clip, streetVoiceVolume);
+                _streetSource.PlayOneShot(clip, streetVoiceVolume * Mathf.Min(1.5f, AudioPrefs.AmbienceGain));
             }
             ScheduleNextStreetVoice();
         }

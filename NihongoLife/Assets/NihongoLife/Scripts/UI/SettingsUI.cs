@@ -31,6 +31,9 @@ namespace NihongoLife.UI
         private Slider sfxSlider;
         private TextMeshProUGUI bgmValue;
         private TextMeshProUGUI sfxValue;
+        private Slider ambienceSlider;
+        private TextMeshProUGUI ambienceValue;
+        private Button musicSwitch, ambienceSwitch;
         private TMP_FontAsset uiFont;
         private GameInputService input;
         private bool rebinding;
@@ -202,6 +205,20 @@ namespace NihongoLife.UI
             ParkInLayout(sfxSlider.transform, 36f);
             bgmSlider.onValueChanged.AddListener(OnBgmChanged);
             sfxSlider.onValueChanged.AddListener(OnSfxChanged);
+            // Ambience (birds, insects, wind, street voices) has its own volume, and both it and the music switch off.
+            Label(column, "Âm thanh môi trường (chim, dế, phố)", "Ambience (birds, insects, street)", "環境音（鳥・虫・街）", 15, Vector2.zero, new Vector2(300f, 22f), TextAlignmentOptions.MidlineLeft, false);
+            ambienceSlider = CreateSlider(column, Vector2.zero, out ambienceValue);
+            ParkInLayout(ambienceSlider.transform, 36f);
+            ambienceSlider.onValueChanged.AddListener(v => { UpdateValueText(ambienceValue, v); NihongoLife.Audio.AudioPrefs.AmbienceVolume = v; });
+            var switches = Row(column, "AudioSwitches", 40f, false);
+            musicSwitch = CreateButton(switches, string.Empty, Vector2.zero, new Vector2(200f, 36f), false);
+            musicSwitch.name = "MusicSwitch";
+            musicSwitch.onClick.AddListener(() => { NihongoLife.Audio.AudioPrefs.MusicOn = !NihongoLife.Audio.AudioPrefs.MusicOn; RefreshAudioSwitches(); });
+            ambienceSwitch = CreateButton(switches, string.Empty, Vector2.zero, new Vector2(200f, 36f), false);
+            ambienceSwitch.name = "AmbienceSwitch";
+            ambienceSwitch.onClick.AddListener(() => { NihongoLife.Audio.AudioPrefs.AmbienceOn = !NihongoLife.Audio.AudioPrefs.AmbienceOn; RefreshAudioSwitches(); });
+            foreach (RectTransform child in switches)
+                StretchInLayout(child, 1f, 36f);
 
             Label(column, "Ngôn ngữ", "Language", "言語", 18, Vector2.zero, new Vector2(300f, 26f), TextAlignmentOptions.MidlineLeft, true);
             var languages = Row(column, "Languages", 40f, false);
@@ -474,7 +491,24 @@ namespace NihongoLife.UI
             sfxSlider.SetValueWithoutNotify(PlayerPrefs.GetFloat("Volume_SFX", 0.8f));
             UpdateValueText(bgmValue, bgmSlider.value);
             UpdateValueText(sfxValue, sfxSlider.value);
+            if (ambienceSlider != null)
+            {
+                ambienceSlider.SetValueWithoutNotify(NihongoLife.Audio.AudioPrefs.AmbienceVolume);
+                UpdateValueText(ambienceValue, ambienceSlider.value);
+            }
+            RefreshAudioSwitches();
             RefreshWebGlGraphics();
+        }
+
+        private void RefreshAudioSwitches()
+        {
+            bool music = NihongoLife.Audio.AudioPrefs.MusicOn, ambience = NihongoLife.Audio.AudioPrefs.AmbienceOn;
+            if (musicSwitch != null)
+                musicSwitch.GetComponentInChildren<TextMeshProUGUI>().text = music ? Pick("Nhạc nền: Bật", "Music: On", "BGM: オン") : Pick("Nhạc nền: Tắt", "Music: Off", "BGM: オフ");
+            if (ambienceSwitch != null)
+                ambienceSwitch.GetComponentInChildren<TextMeshProUGUI>().text = ambience ? Pick("Môi trường: Bật", "Ambience: On", "環境音: オン") : Pick("Môi trường: Tắt", "Ambience: Off", "環境音: オフ");
+            if (bgmSlider != null) bgmSlider.interactable = music;
+            if (ambienceSlider != null) ambienceSlider.interactable = ambience;
         }
 
         private void RefreshWebGlGraphics()

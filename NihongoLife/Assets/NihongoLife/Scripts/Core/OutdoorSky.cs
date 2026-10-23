@@ -152,7 +152,7 @@ namespace NihongoLife.Core
             var emission = _rainFx.emission;
             emission.rateOverTime = inside ? 0f : 1600f * Rain;
             float swell = 0.85f + 0.15f * Mathf.PerlinNoise(Time.time * 0.23f, 0.5f);
-            _rainAudio.volume = Rain * (inside ? 0.035f : 0.11f) * swell;
+            _rainAudio.volume = Rain * (inside ? 0.035f : 0.11f) * swell * NihongoLife.Audio.AudioPrefs.AmbienceGain; // rain is ambience (Settings)
         }
 
         private void BuildRain()
