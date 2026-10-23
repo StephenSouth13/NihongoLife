@@ -1,8 +1,8 @@
-#if (UNITY_WEBGL && !UNITY_EDITOR) || NL_WEBGL_CHECK
-// WebGL stand-in for the native Agora Unity SDK (excluded from WebGL via AgoraRtcSDK.asmdef).
-// VoiceChatService and EduMeetingManager keep calling Agora.Rtc. The browser engine below talks to
-// NihongoAgora.jslib, which loads Agora's Web SDK the first time a call or voice room is joined.
-// NL_WEBGL_CHECK compiles this file in the editor only when the native Agora reference is removed.
+#if UNITY_WEBGL
+// WebGL stand-in for the native Agora Unity SDK. AgoraRtcSDK.asmdef excludePlatforms includes WebGL,
+// so the editor (WebGL build target) and the WebGL player both compile this file instead of Agora.Rtc.
+// VoiceChatService and EduMeetingManager keep calling Agora.Rtc. The player talks to NihongoAgora.jslib;
+// the editor uses the empty stubs below (jslib is not available until the browser build).
 using System;
 using System.Globalization;
 using System.Runtime.InteropServices;

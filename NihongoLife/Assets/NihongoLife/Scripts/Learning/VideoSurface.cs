@@ -1,4 +1,4 @@
-#if (UNITY_WEBGL && !UNITY_EDITOR) || NL_WEBGL_CHECK
+#if UNITY_WEBGL
 // Web build stand-in for Agora's VideoSurface. The browser draws the camera into an HTML element
 // positioned over this RawImage; WebGL cannot cheaply copy a MediaStream into a Unity texture.
 using Agora.Rtc;

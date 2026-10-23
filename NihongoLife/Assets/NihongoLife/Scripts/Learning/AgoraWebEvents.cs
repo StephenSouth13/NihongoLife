@@ -1,4 +1,4 @@
-#if (UNITY_WEBGL && !UNITY_EDITOR) || NL_WEBGL_CHECK
+#if UNITY_WEBGL
 using System;
 using System.Globalization;
 using Agora.Rtc;
