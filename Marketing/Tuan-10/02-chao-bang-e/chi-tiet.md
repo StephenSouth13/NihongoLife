@@ -59,7 +59,7 @@ Việc người đọc làm tiếp: một hành động. Nếu CTA còn là mã 
 - Khung chữ: nhãn «Biểu cảm», headline «Giữ E / để chào bằng tiếng Nhật», dòng phụ «Vòng biểu cảm có câu đi kèm.».
 - Font Montserrat. Nền chữ là đêm `#0B0F17`, nhãn vàng `#F7BD3D`, lấy từ UiTheme.
 - Không thêm sao, không thêm số người chơi, không logo kỳ thi.
-- Video chưa có trong git. Làm theo CAN_QUAY.md. Khung hình để ổ D, không commit mp4.
+- Video chưa có trong git. Làm theo CAN_QUAY.md. File dựng để `Marketing/Video/Theo-Tuan/Tuan-10/` và ổ D, không commit mp4.
 - Cảnh cần quay:
 - 6 giây · Vòng biểu cảm · Giữ E · phụ đề: Chào bằng một câu có sẵn.
 

@@ -25,7 +25,7 @@ Mã link nằm ở `LINKS.md`. Trang đội ngũ đã có URL thật. Link chơi
 | `Tuan-01` … `Tuan-12` | Bài sẵn caption và ảnh |
 | `PressKit/` | Mô tả Việt / Anh, tờ sự thật, chỗ trống tiểu sử |
 | `Templates/` | HTML, CSS và script dựng lại ảnh cùng PDF |
-| `Video/` | Video không nằm trong git. File nặng để ổ D |
+| `Video/` | Trailer, teaser, demo, clip dọc 9:16, footage thô và clip theo tuần. `*.mp4` `*.mov` `*.webm` `*.mkv` bị bỏ qua bởi `Video/.gitignore`. Chỉ mục độ dài và trạng thái: `Video/README.md`. File nặng để ổ D |
 
 ## Dựng lại ảnh và PDF
 
@@ -50,4 +50,4 @@ Bản Word (bìa, mục lục, bảng): `python3 Marketing/Templates/docx_kit.py
 - Không đưa secret, khoá Supabase, Agora App ID, đề thi bản quyền vào thư mục này.
 - Không sửa code gameplay từ bộ marketing.
 
-Brief giao việc nằm ở `NihongoLife/Docs/GROK_TASK_TRAILER_MARKETING.md`. Trailer và demo gameplay chưa quay trong đợt này vì máy làm bộ kit không chạy Unity. Danh sách cảnh quay nằm cạnh từng bài và trong `Video/README.md`.
+Brief giao việc nằm ở `NihongoLife/Docs/GROK_TASK_TRAILER_MARKETING.md`. Trailer v4, teaser 30 giây, teaser dọc 15 giây và demo v3 chưa có file. Trong repo còn trailer v3, demo cũ và hai GIF README: nhân vật người lớn, không đăng lên bài hiện tại. Bảng đủ nằm ở `Video/README.md`.

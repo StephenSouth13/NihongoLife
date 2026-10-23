@@ -59,7 +59,7 @@ Việc người đọc làm tiếp: một hành động. Nếu CTA còn là mã 
 - Khung chữ: nhãn «Chat», headline «Chat khu vực / khi đang online», dòng phụ «Tin hiện lúc bạn chơi, không lưu thành nhật ký.».
 - Font Montserrat. Nền chữ là đêm `#0B0F17`, nhãn vàng `#F7BD3D`, lấy từ UiTheme.
 - Không thêm sao, không thêm số người chơi, không logo kỳ thi.
-- Video chưa có trong git. Làm theo CAN_QUAY.md. Khung hình để ổ D, không commit mp4.
+- Video chưa có trong git. Làm theo CAN_QUAY.md. File dựng để `Marketing/Video/Theo-Tuan/Tuan-06/` và ổ D, không commit mp4.
 - Cảnh cần quay:
 - 8 giây · Mở chat khu vực · UI thật, đã cắt banner dev · phụ đề: Một kênh cho người đang online.
 

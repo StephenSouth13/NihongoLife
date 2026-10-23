@@ -59,7 +59,7 @@ Việc người đọc làm tiếp: một hành động. Nếu CTA còn là mã 
 - Khung chữ: nhãn «Hibari-chō», headline «Hoàng hôn xuống / đèn phố bật», dòng phụ «Cùng một phố, khác một giờ.».
 - Font Montserrat. Nền chữ là đêm `#0B0F17`, nhãn vàng `#F7BD3D`, lấy từ UiTheme.
 - Không thêm sao, không thêm số người chơi, không logo kỳ thi.
-- Video chưa có trong git. Làm theo CAN_QUAY.md. Khung hình để ổ D, không commit mp4.
+- Video chưa có trong git. Làm theo CAN_QUAY.md. File dựng để `Marketing/Video/Theo-Tuan/Tuan-05/` và ổ D, không commit mp4.
 - Cảnh cần quay:
 - 0–4 giây · Phố lúc hoàng hôn · Crane chậm, không giật · phụ đề: Học tiếng Nhật bằng cách sống ở Nhật.
 - 3 giây · Đèn đường · Cắt gần một cột đèn · phụ đề: Ở lại tới tối.

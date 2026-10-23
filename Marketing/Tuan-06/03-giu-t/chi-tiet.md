@@ -59,7 +59,7 @@ Việc người đọc làm tiếp: một hành động. Nếu CTA còn là mã 
 - Khung chữ: nhãn «Voice · PC», headline «Giữ T để nói / với người đứng gần», dòng phụ «Voice khu vực trên bản máy tính.».
 - Font Montserrat. Nền chữ là đêm `#0B0F17`, nhãn vàng `#F7BD3D`, lấy từ UiTheme.
 - Không thêm sao, không thêm số người chơi, không logo kỳ thi.
-- Video chưa có trong git. Làm theo CAN_QUAY.md. Khung hình để ổ D, không commit mp4.
+- Video chưa có trong git. Làm theo CAN_QUAY.md. File dựng để `Marketing/Video/Theo-Tuan/Tuan-06/` và ổ D, không commit mp4.
 - Cảnh cần quay:
 - 5 giây · Thanh voice · Khi giữ T · phụ đề: Giữ T để nói.
 - 5 giây · Hai người cách vài mét · Nghe tiếng theo khoảng cách · phụ đề: Nghe người đứng gần.

@@ -16,6 +16,8 @@ Mốc tuần (là mục tiêu, không phải số đã đạt): Mốc: 10 ngư�
 
 Mở thư mục bài, đọc `chi-tiet.md` (giờ đăng, ba hook, cách trả lời, cách đo), rồi copy `caption.txt`. Ảnh `fb-1080.png` hoặc `fb-1350.png`. Story dùng `story-1920.png` nếu có. Thay `{{LINK_CHOI}}`, `{{LINK_FANPAGE}}`, `{{LINK_DISCORD}}` trước khi dán.
 
+Clip tuần, nếu quay, để ở `Video/Theo-Tuan/Tuan-08/`. Mp4 không commit. Bài nào cần clip và quy cách nằm trong README thư mục đó.
+
 ### 15/12 · 01-dang-ielts
 
 - Hook: Lớp Hibari có bài luyện viết theo dạng IELTS.

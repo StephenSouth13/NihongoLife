@@ -61,7 +61,7 @@ Việc người đọc làm tiếp: một hành động. Nếu CTA còn là mã 
 - Khung chữ: nhãn «Người thật», headline «Kết bạn / rồi rủ nhau học», dòng phụ «Danh thiếp, nhắn riêng, chặn nếu cần.».
 - Font Montserrat. Nền chữ là đêm `#0B0F17`, nhãn vàng `#F7BD3D`, lấy từ UiTheme.
 - Không thêm sao, không thêm số người chơi, không logo kỳ thi.
-- Video chưa có trong git. Làm theo CAN_QUAY.md. Khung hình để ổ D, không commit mp4.
+- Video chưa có trong git. Làm theo CAN_QUAY.md. File dựng để `Marketing/Video/Theo-Tuan/Tuan-08/` và ổ D, không commit mp4.
 - Cảnh cần quay:
 - 6 giây · Danh sách bạn · UI bạn bè thật · phụ đề: Kết bạn, rồi rủ nhau học.
 - 4 giây · Lời mời · Bấm kết bạn · phụ đề: Rủ một câu tiếng Nhật.

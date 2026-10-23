@@ -198,7 +198,7 @@ HOOKS = {
         "Đừng thêm máy thứ bảy trên caption.",
     ),
     "03-dao-midori": (
-        "Đảo Midori có nông trại và chỗ câu. Ảnh thật sẽ đăng khi quay xong.",
+        "Đảo Midori có nông trại và chỗ câu. Ảnh luống đã có. Clip cuốc, gieo, câu vẫn chờ quay.",
         "Cuốc, gieo, tưới. Câu cá cần cần câu. Không làm tay không.",
         "Bài này cố ý không ghép cảnh phố vào làm đảo.",
     ),
@@ -274,7 +274,7 @@ REPLIES = {
     "game": [
         "Sáu máy đúng tên trong game. Bạn chơi máy nào thì kể tên máy đó.",
         "Khách vào được cả phố, ngoại tuyến. Tài khoản thì đi theo trí tuệ.",
-        "Ảnh đảo chưa có thì bọn mình không ghép cảnh khác. Có footage sẽ đăng sau.",
+        "Ảnh đảo đã có: bé trên luống. Clip cuốc, gieo, câu vẫn chờ quay. Không ghép cảnh phố vào làm đảo.",
     ],
     "duhoc": [
         "320 yên trong bài là giá trong tình huống ga của game, không phải giá tàu ngoài đời.",
@@ -333,7 +333,9 @@ def render(post: dict, start) -> str:
     if post.get("slug") == "03-dao-midori":
         visual.append("Ba dòng việc trên thẻ là việc có trong game: cuốc/xẻng/bình tưới, gieo rồi tưới, câu cá cần cần câu.")
     if post.get("footage") or post.get("layout") == "need":
-        visual.append("Video chưa có trong git. Làm theo CAN_QUAY.md. Khung hình để ổ D, không commit mp4.")
+        visual.append(
+            f"Video chưa có trong git. Làm theo CAN_QUAY.md. File dựng để `Marketing/Video/Theo-Tuan/Tuan-{post['week']:02d}/` và ổ D, không commit mp4."
+        )
         visual.append("Cảnh cần quay:")
         rows = list(post.get("footage") or [])
         if post.get("layout") == "need":

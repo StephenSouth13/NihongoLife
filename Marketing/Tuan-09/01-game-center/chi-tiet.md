@@ -59,7 +59,7 @@ Việc người đọc làm tiếp: một hành động. Nếu CTA còn là mã 
 - Khung chữ: nhãn «Sau giờ học», headline «Tan học / Kim rủ Game Center», dòng phụ «Ghép kana, lấy sao, đổi vé.».
 - Font Montserrat. Nền chữ là đêm `#0B0F17`, nhãn vàng `#F7BD3D`, lấy từ UiTheme.
 - Không thêm sao, không thêm số người chơi, không logo kỳ thi.
-- Video chưa có trong git. Làm theo CAN_QUAY.md. Khung hình để ổ D, không commit mp4.
+- Video chưa có trong git. Làm theo CAN_QUAY.md. File dựng để `Marketing/Video/Theo-Tuan/Tuan-09/` và ổ D, không commit mp4.
 - Cảnh cần quay:
 - 4 giây · Kim rủ · Hội thoại thật · phụ đề: Đi Game Center không?
 - 8 giây · Một ván Kana Match · Thấy thẻ kana · phụ đề: Ghép hiragana.
@@ -88,7 +88,7 @@ Trả trong ngày. Giữ nguyên câu hỏi của họ. Không thêm điểm, kh
 
 1. Sáu máy đúng tên trong game. Bạn chơi máy nào thì kể tên máy đó.
 2. Khách vào được cả phố, ngoại tuyến. Tài khoản thì đi theo trí tuệ.
-3. Ảnh đảo chưa có thì bọn mình không ghép cảnh khác. Có footage sẽ đăng sau.
+3. Ảnh đảo đã có: bé trên luống. Clip cuốc, gieo, câu vẫn chờ quay. Không ghép cảnh phố vào làm đảo.
 4. Nếu họ gửi ảnh màn hình: «Bọn mình chỉ đăng lại khi bạn trả lời đăng được. Tên tài khoản bạn muốn xoá thì nói một tiếng.»
 5. Nếu họ hỏi chứng chỉ hoặc band: «Trong game là luyện tập. Không quy đổi thành kết quả thi.»
 

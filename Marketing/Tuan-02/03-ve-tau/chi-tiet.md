@@ -61,7 +61,7 @@ Việc người đọc làm tiếp: một hành động. Nếu CTA còn là mã 
 - Khung chữ: nhãn «Ga Hibari», headline «Hỏi giá vé / đi ga Minato», dòng phụ «Trong truyện, vé tới Minato là 320 yên.».
 - Font Montserrat. Nền chữ là đêm `#0B0F17`, nhãn vàng `#F7BD3D`, lấy từ UiTheme.
 - Không thêm sao, không thêm số người chơi, không logo kỳ thi.
-- Video chưa có trong git. Làm theo CAN_QUAY.md. Khung hình để ổ D, không commit mp4.
+- Video chưa có trong git. Làm theo CAN_QUAY.md. File dựng để `Marketing/Video/Theo-Tuan/Tuan-02/` và ổ D, không commit mp4.
 - Cảnh cần quay:
 - 8 giây · Quầy vé · Đối mặt anh Kimura · phụ đề: Đến Minato bao nhiêu yên?
 - 8 giây · Cổng và sân · Đi theo người chơi · phụ đề: Sân số 2.

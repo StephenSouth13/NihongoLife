@@ -59,7 +59,7 @@ Việc người đọc làm tiếp: một hành động. Nếu CTA còn là mã 
 - Khung chữ: nhãn «Thử thách», headline «Luyện một đề / theo dạng N5», dòng phụ «Trong lớp. Điểm chỉ tính trong game.».
 - Font Montserrat. Nền chữ là đêm `#0B0F17`, nhãn vàng `#F7BD3D`, lấy từ UiTheme.
 - Không thêm sao, không thêm số người chơi, không logo kỳ thi.
-- Video chưa có trong git. Làm theo CAN_QUAY.md. Khung hình để ổ D, không commit mp4.
+- Video chưa có trong git. Làm theo CAN_QUAY.md. File dựng để `Marketing/Video/Theo-Tuan/Tuan-07/` và ổ D, không commit mp4.
 - Cảnh cần quay:
 - 4 giây · Ngồi bàn · Tay bấm F · phụ đề: Ngồi vào bàn thi.
 - 10 giây · Làm vài câu · Thấy đồng hồ · phụ đề: Luyện theo dạng N5.

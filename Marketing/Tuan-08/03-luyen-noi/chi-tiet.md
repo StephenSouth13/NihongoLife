@@ -59,7 +59,7 @@ Việc người đọc làm tiếp: một hành động. Nếu CTA còn là mã 
 - Khung chữ: nhãn «Phần nói», headline «Luyện phần nói / ngay trong game», dòng phụ «Ảnh luyện nói trong game. Phòng giáo viên là việc khác.».
 - Font Montserrat. Nền chữ là đêm `#0B0F17`, nhãn vàng `#F7BD3D`, lấy từ UiTheme.
 - Không thêm sao, không thêm số người chơi, không logo kỳ thi.
-- Video chưa có trong git. Làm theo CAN_QUAY.md. Khung hình để ổ D, không commit mp4.
+- Video chưa có trong git. Làm theo CAN_QUAY.md. File dựng để `Marketing/Video/Theo-Tuan/Tuan-08/` và ổ D, không commit mp4.
 - Cảnh cần quay:
 - 10 giây · Phòng Speaking với giáo viên · Chỉ khi Agora đã cấu hình · phụ đề: Nói với người thật, trên PC.
 

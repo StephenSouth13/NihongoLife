@@ -87,7 +87,7 @@ Trả trong ngày. Giữ nguyên câu hỏi của họ. Không thêm điểm, kh
 
 1. Sáu máy đúng tên trong game. Bạn chơi máy nào thì kể tên máy đó.
 2. Khách vào được cả phố, ngoại tuyến. Tài khoản thì đi theo trí tuệ.
-3. Ảnh đảo chưa có thì bọn mình không ghép cảnh khác. Có footage sẽ đăng sau.
+3. Ảnh đảo đã có: bé trên luống. Clip cuốc, gieo, câu vẫn chờ quay. Không ghép cảnh phố vào làm đảo.
 4. Nếu họ gửi ảnh màn hình: «Bọn mình chỉ đăng lại khi bạn trả lời đăng được. Tên tài khoản bạn muốn xoá thì nói một tiếng.»
 5. Nếu họ hỏi chứng chỉ hoặc band: «Trong game là luyện tập. Không quy đổi thành kết quả thi.»
 

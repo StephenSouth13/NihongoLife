@@ -169,7 +169,7 @@ def write_posts(build: Path, images: bool, slugs: list[str] | None = None) -> No
 
 Ảnh đăng Facebook của bài này {'là thẻ chữ ghi CẦN ẢNH MỚI, vì chưa có ảnh nhân vật bé hoặc cảnh này' if post.get('layout') == 'need' else 'dùng ảnh chụp thật: `' + shot + '`'}.{dropped}
 
-Video chưa có trong git. Quay bằng `TrailerReel` / test `Trailer_RecordFrames`. Khung hình và mp4 để ở `D:/VTC_Academy/NihongoLife/_work/marketing/`. Không commit file nặng.
+Video chưa có trong git. Quay bằng `TrailerReel` / test `Trailer_RecordFrames`. File dựng của bài để `Marketing/Video/Theo-Tuan/Tuan-{post['week']:02d}/`. Khung hình thô và mp4 gốc để `D:/VTC_Academy/NihongoLife/_work/marketing/`. Không commit file nặng.
 
 | Thời lượng | Cảnh | Góc máy | Phụ đề | Ghi chú |
 |---|---|---|---|---|
@@ -222,6 +222,8 @@ def write_week_readmes() -> None:
             "## Bài đăng",
             "",
             "Mở thư mục bài, đọc `chi-tiet.md` (giờ đăng, ba hook, cách trả lời, cách đo), rồi copy `caption.txt`. Ảnh `fb-1080.png` hoặc `fb-1350.png`. Story dùng `story-1920.png` nếu có. Thay `{{LINK_CHOI}}`, `{{LINK_FANPAGE}}`, `{{LINK_DISCORD}}` trước khi dán.",
+            "",
+            f"Clip tuần, nếu quay, để ở `Video/Theo-Tuan/Tuan-{n:02d}/`. Mp4 không commit. Bài nào cần clip và quy cách nằm trong README thư mục đó.",
             "",
         ]
         for post in by_week[n]:

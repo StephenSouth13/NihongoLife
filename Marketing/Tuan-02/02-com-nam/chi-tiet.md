@@ -59,7 +59,7 @@ Việc người đọc làm tiếp: một hành động. Nếu CTA còn là mã 
 - Khung chữ: nhãn «Konbini», headline «Mua cơm nắm / bằng tiếng Nhật», dòng phụ «Kệ có ảnh món, tên Nhật và giá yên.».
 - Font Montserrat. Nền chữ là đêm `#0B0F17`, nhãn vàng `#F7BD3D`, lấy từ UiTheme.
 - Không thêm sao, không thêm số người chơi, không logo kỳ thi.
-- Video chưa có trong git. Làm theo CAN_QUAY.md. Khung hình để ổ D, không commit mp4.
+- Video chưa có trong git. Làm theo CAN_QUAY.md. File dựng để `Marketing/Video/Theo-Tuan/Tuan-02/` và ổ D, không commit mp4.
 - Cảnh cần quay:
 - 5–12 giây · Vào Hibari Mart · Đi theo sau nhân vật tới kệ cơm nắm · phụ đề: Mua cơm nắm bằng tiếng Nhật.
 - 8 giây · Quầy tính tiền · Gần chị Ito · phụ đề: こんにちは. Trả lời câu hỏi túi.
