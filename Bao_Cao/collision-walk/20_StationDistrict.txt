@@ -1,13 +1,11 @@
-20_StationDistrict: start (800.00, 0.00, 9.20) · capsule h=1.4 r=0.27 step=0.36 · 48708 reachable cells
-  OK   StationTravelInteractable 'ProductionTicketMachine' at (796.40, 1.30, 7.91) — nearest walkable 0.69 m
-  OK   StationTravelInteractable 'BoardTrainDoor' at (799.50, 1.15, 0.90) — nearest walkable 0.91 m
-  OK   NPCController 'StationTicketClerk' at (790.00, 0.06, 9.35) — nearest walkable 0.05 m
-  OK   StationTravelInteractable 'GateRightValidator' at (801.25, 0.82, 5.50) — nearest walkable 1.10 m
+20_StationDistrict: start (800.00, 0.00, 9.20) · capsule h=1.4 r=0.27 step=0.36 · 48753 reachable cells
   OK   StationTravelInteractable 'GateScanner' at (801.25, 1.50, 5.50) — nearest walkable 1.10 m
+  OK   StationTravelInteractable 'BoardTrainDoor' at (799.50, 1.15, 0.90) — nearest walkable 0.91 m
+  OK   StationTravelInteractable 'GateRightValidator' at (801.25, 0.82, 5.50) — nearest walkable 1.10 m
   OK   ScenePortal 'ExitToCity' at (800.00, 1.10, 9.80) — nearest walkable 0.00 m
+  OK   NPCController 'StationTicketClerk' at (790.00, 0.06, 9.35) — nearest walkable 0.05 m
   walk → ExitToCity: 4 cells, ended 0.04 m from goal
+  walk → GateScanner: 446 cells, ended 0.25 m from goal
   walk → GateRightValidator: 446 cells, ended 0.24 m from goal
-  walk → GateScanner: 446 cells, ended 0.23 m from goal
-  walk → ProductionTicketMachine: 22 cells, ended 0.23 m from goal
   walk → BoardTrainDoor: 469 cells, ended 0.24 m from goal
-  walk → StationTicketClerk: 52 cells, ended 0.23 m from goal
+  walk → StationTicketClerk: 52 cells, ended 0.24 m from goal

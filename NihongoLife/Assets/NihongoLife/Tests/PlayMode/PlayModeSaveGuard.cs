@@ -29,9 +29,12 @@ namespace NihongoLife.Tests
             // Tests read Vietnamese text; the player's own interface language is put back afterwards.
             _language = PlayerPrefs.GetInt(NihongoLife.Core.Loc.PrefsKey, 0);
             NihongoLife.Core.Loc.Set(NihongoLife.Core.GameLanguage.Vietnamese);
+            _accountSaves = new System.Collections.Generic.HashSet<string>(Directory.GetFiles(Application.persistentDataPath, "progress_*.json"));
             _hadSave = File.Exists(SavePath);
             if (_hadSave) File.Copy(SavePath, BackupPath, true);
         }
+
+        private System.Collections.Generic.HashSet<string> _accountSaves;
 
         [OneTimeTearDown]
         public void RestoreSave()
@@ -42,6 +45,11 @@ namespace NihongoLife.Tests
             PlayerPrefs.SetString("NL.WalletLedger.v1", _ledger ?? ""); // tests' purchases do not stay in the player's wallet history
             if (_hadSave && File.Exists(BackupPath)) File.Copy(BackupPath, SavePath, true);
             else if (!_hadSave && File.Exists(SavePath)) File.Delete(SavePath);
+            // Per-account saves made by tests' fake accounts go; the player's own account saves stay untouched.
+            foreach (var file in Directory.GetFiles(Application.persistentDataPath, "progress_*.json"))
+                if (_accountSaves == null || !_accountSaves.Contains(file)) File.Delete(file);
+            NihongoLife.Core.PlayerSessionService.GuestFullAccess = true;
+            NihongoLife.Core.PlayerSessionService.PersistGuest = true;
         }
     }
 }

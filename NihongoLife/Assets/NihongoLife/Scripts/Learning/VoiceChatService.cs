@@ -120,8 +120,12 @@ namespace NihongoLife.Learning
                 return;
             }
             Leave();
+            _callPeer = mode == Mode.Call ? context : null;
             StartCoroutine(JoinRoutine(mode, channel, auth));
         }
+
+        /// <summary>The other person of a private call: the server rebuilds the room name from the caller and this id.</summary>
+        private string _callPeer;
 
         private IEnumerator JoinRoutine(Mode mode, string channel, IAuthService auth)
         {
@@ -193,7 +197,10 @@ namespace NihongoLife.Learning
             if (client == null || !client.IsConfigured) { done(null, 0, NihongoLife.Core.Loc.Triple("Chưa cấu hình Supabase.", "Supabase is not configured.", "Supabaseが設定されていません。")); yield break; }
             string url = client.ProjectUrl.TrimEnd('/') + "/functions/v1/agora-voice";
             using var request = new UnityWebRequest(url, "POST");
-            request.uploadHandler = new UploadHandlerRaw(Encoding.UTF8.GetBytes("{\"channel\":" + MiniJson.Quote(channel) + "}"));
+            // A private call also names the peer: the server only issues the token when the room name is the one for
+            // (caller, peer), so nobody can compute a call's name from two player ids and listen in.
+            string peer = channel.StartsWith("nld_", StringComparison.Ordinal) && !string.IsNullOrEmpty(_callPeer) ? ",\"peer\":" + MiniJson.Quote(_callPeer) : "";
+            request.uploadHandler = new UploadHandlerRaw(Encoding.UTF8.GetBytes("{\"channel\":" + MiniJson.Quote(channel) + peer + "}"));
             request.downloadHandler = new DownloadHandlerBuffer();
             request.SetRequestHeader("Content-Type", "application/json");
             request.SetRequestHeader("apikey", client.AnonKey);

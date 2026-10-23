@@ -65,13 +65,18 @@ namespace NihongoLife.Core
         public void BeginGuest()
         {
             Mode = PlayerSessionMode.Guest;
+            AccountId = string.Empty;
             _guestProgress = LoadGuest();
             OnModeChanged?.Invoke(Mode);
         }
 
+        /// <summary>The signed-in account whose save is in use (empty for a guest). Each account has its own local save.</summary>
+        public string AccountId { get; private set; } = string.Empty;
+
         public void BeginAccount(string userId, string displayName)
         {
             Mode = PlayerSessionMode.Account;
+            AccountId = userId ?? string.Empty;
             // The profile name becomes the character's name, unless it is only "Guest"/anonymous.
             if (!PlayableCharacterCatalog.IsPlaceholderName(displayName)) PlayableCharacterCatalog.SavePlayerName(displayName.Trim());
             PlayerPrefs.Save();

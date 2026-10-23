@@ -25,10 +25,16 @@ namespace NihongoLife.Player
         private Vector3 _lastPosition;
         private float _speed, _nextCheck;
 
+        private float _nextBind;
+
         private void Update()
         {
-            var animator = GetComponentInChildren<Animator>();
-            if (animator != _animator) Bind(animator); // a new model (character changed)
+            if (_animator == null || Time.unscaledTime >= _nextBind) // a new model (character changed)
+            {
+                _nextBind = Time.unscaledTime + 0.5f;
+                var animator = GetComponentInChildren<Animator>();
+                if (animator != _animator) Bind(animator);
+            }
             if (_overrides == null) return;
 
             float dt = Mathf.Max(Time.deltaTime, 0.0001f);

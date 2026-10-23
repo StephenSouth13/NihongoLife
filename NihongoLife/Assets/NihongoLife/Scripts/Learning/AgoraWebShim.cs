@@ -174,7 +174,7 @@ namespace Agora.Rtc
         public AgoraWebRtcEngine()
         {
             _spatial = new Spatial();
-            AgoraWebEvents.Ensure(this);
+            NihongoLife.Learning.AgoraWebEvents.Ensure(this);
         }
 
         internal void SetHandler(IRtcEngineEventHandler handler) => _handler = handler;
@@ -186,7 +186,7 @@ namespace Agora.Rtc
         {
             if (context == null || string.IsNullOrWhiteSpace(context.appId)) return -2;
             _profile = context.channelProfile;
-            AgoraWebEvents.Ensure(this);
+            NihongoLife.Learning.AgoraWebEvents.Ensure(this);
             return AgoraWebNative.NL_AgoraInitialize(context.appId);
         }
 

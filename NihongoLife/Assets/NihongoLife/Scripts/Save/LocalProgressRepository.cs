@@ -19,7 +19,23 @@ namespace NihongoLife.Save
 #endif
         }
 
-        private string SavePath => Path.Combine(Application.persistentDataPath, "progress.json");
+        /// <summary>
+        /// One save per account (progress_&lt;account&gt;.json): on a shared machine (a school lab) a second account must
+        /// never start from — and merge into the cloud — the previous account's save. The legacy progress.json is no
+        /// longer read; the cloud copy is each account's source of truth.
+        /// </summary>
+        private string SavePath => SavePathFor(_cacheAccount);
+
+        public static string SavePathFor(string account)
+        {
+            if (string.IsNullOrEmpty(account)) return Path.Combine(Application.persistentDataPath, "progress.json");
+            var safe = new System.Text.StringBuilder(account.Length);
+            foreach (char c in account) safe.Append(char.IsLetterOrDigit(c) || c == '-' ? c : '_');
+            return Path.Combine(Application.persistentDataPath, "progress_" + safe + ".json");
+        }
+
+        /// <summary>The account the cached progress belongs to; a different signed-in account reloads its own save.</summary>
+        private string _cacheAccount = string.Empty;
 
         public void Initialize()
         {
@@ -35,7 +51,7 @@ namespace NihongoLife.Save
             {
                 return session.GuestProgress;
             }
-            if (_cachedProgress == null)
+            if (_cachedProgress == null || _cacheAccount != session.AccountId)
             {
                 LoadFromDisk();
             }
@@ -51,6 +67,7 @@ namespace NihongoLife.Save
                 session.UpdateGuestProgress(progress);
                 return;
             }
+            if (_cacheAccount != session.AccountId) _cacheAccount = session.AccountId;
             _cachedProgress = progress;
             SaveToDisk();
         }
@@ -82,6 +99,7 @@ namespace NihongoLife.Save
                 _cachedProgress = session.GuestProgress;
                 return;
             }
+            _cacheAccount = session.AccountId;
             try
             {
                 if (File.Exists(SavePath))

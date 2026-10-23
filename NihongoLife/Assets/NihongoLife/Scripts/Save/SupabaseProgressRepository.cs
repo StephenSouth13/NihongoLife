@@ -44,6 +44,7 @@ namespace NihongoLife.Save
                     // A session restored before this repository subscribed: still an account session, so the
                     // game reads the account's save (not the "Guest" one).
                     PlayerSessionService.GetOrCreate()?.BeginAccount(_authService.UserId, _authService.DisplayName);
+                    _cachedProgress = _localFallback.GetProgress(); // this account's own save, not the guest one loaded above
                     SyncFromCloud();
                 }
             }
@@ -111,6 +112,7 @@ namespace NihongoLife.Save
                 if (state == AuthState.SignedIn && session != null && session.Mode == PlayerSessionMode.Guest)
                     _guestCarry = session.GuestProgressToCarry();
                 session?.BeginAccount(_authService.UserId, _authService.DisplayName);
+                _cachedProgress = _localFallback.GetProgress(); // the signed-in account's own local save
                 if (_cloudSyncPending)
                 {
                     UploadToCloud(_cachedProgress);
