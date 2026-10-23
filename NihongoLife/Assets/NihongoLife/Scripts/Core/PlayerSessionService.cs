@@ -79,22 +79,22 @@ namespace NihongoLife.Core
         }
 
         /// <summary>
-        /// Offline exploration. Uses the existing guest save (<see cref="BeginGuest"/>) and the existing
-        /// unlock bypasses so places, story gates and level locks do not apply. Online play calls
-        /// <see cref="BeginProgressionPlay"/>, which restores the normal campaign.
+        /// The rule for the map and the story: a guest (offline, no account signed in) has the whole town open — no
+        /// knowledge gates, no forced story — while a signed-in account plays the campaign (LocationUnlocks roadmap,
+        /// StoryDirector opening). Derived from <see cref="Mode"/>, never from which menu button was pressed, so it
+        /// also holds when the town is started directly and when a guest signs in later.
         /// </summary>
-        public void BeginOfflinePlay()
-        {
-            BeginGuest();
-            LocationUnlocks.Bypass = true;
-            StoryDirector.Bypass = true;
-        }
+        public static bool OpenWorld => GuestFullAccess && (_instance == null || _instance.Mode == PlayerSessionMode.Guest);
 
-        /// <summary>Online / story play: the account save when signed in, with level and place gates on.</summary>
+        /// <summary>PlayMode tests that check the campaign gates in a guest session turn this off (PlayModeSaveGuard).</summary>
+        public static bool GuestFullAccess = true;
+
+        /// <summary>Offline exploration with the guest save (the whole town is open: <see cref="OpenWorld"/>).</summary>
+        public void BeginOfflinePlay() => BeginGuest();
+
+        /// <summary>Story / online play: the account save when a registered account is signed in.</summary>
         public void BeginProgressionPlay()
         {
-            LocationUnlocks.Bypass = false;
-            StoryDirector.Bypass = false;
             if (GameServices.TryGet(out IAuthService auth) && auth.IsAuthenticated)
                 BeginAccount(auth.UserId, auth.DisplayName);
         }

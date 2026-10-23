@@ -27,6 +27,8 @@ namespace NihongoLife.World
             [System.NonSerialized] public float speed;
             /// <summary>Pivot to the further bumper along the street, so the whole car stays behind the line.</summary>
             [System.NonSerialized] public float halfLength = 2.3f;
+            /// <summary>Lane centre to the car's side (from the renderers).</summary>
+            [System.NonSerialized] public float halfWidth = 0.95f;
             [System.NonSerialized] public bool entering;
             [System.NonSerialized] public Transform visual;
             [System.NonSerialized] public Vector3 visualBase = Vector3.one;
@@ -54,7 +56,8 @@ namespace NihongoLife.World
         /// <summary>Bumper stops this far behind the painted stop line.</summary>
         public const float LineClearance = 0.6f;
         const float FollowGap = 2.7f;
-        const float LaneHalfWidth = 1.15f;
+        /// <summary>A person this close to the car's side counts as in its path (body radius + a step).</summary>
+        const float SideMargin = 0.55f;
 
         [SerializeField] private float laneEastZ = -8.4f, laneWestZ = -11.6f;
         [SerializeField] private float xMin = -64f, xMax = 64f;
@@ -240,6 +243,7 @@ namespace NihongoLife.World
 
             if (isLeadBlock && (playerInLane || playerOnCrossing)) ReactToPlayer(car, dt, ahead);
             else car.blockedFor = 0f;
+            if (hasPlayer) SeparateFromPlayer(car, playerLocal);
         }
 
         private void ReactToPlayer(Car car, float dt, float ahead)
@@ -259,16 +263,42 @@ namespace NihongoLife.World
                 status.ApplyHarm(blockDamagePerSecond * 0.5f);
                 car.harmReadyAt = Time.time + 0.5f;
             }
-            if (ahead < 0.85f && car.speed > 1.6f && Time.time >= car.hitReadyAt)
+        }
+
+        /// <summary>
+        /// The car body touches the player (walked into its side, stepped out too late, or climbed on it): the car
+        /// stops, the player is set beside the car on the kerb side and nudged towards the pavement. A kinematic car
+        /// must never push the CharacterController — Unity resolves that overlap upwards and the player ends up
+        /// riding the car (and from there on the roofs).
+        /// </summary>
+        private void SeparateFromPlayer(Car car, Vector3 playerLocal)
+        {
+            if (_playerBody == null || car.body == null) return;
+            Vector3 c = car.body.localPosition;
+            var capsule = _playerBody.GetComponent<CharacterController>();
+            float radius = capsule != null ? capsule.radius : 0.3f;
+            // Actually touching: the capsule overlaps the car's footprint (a person on the centre line next to the lane is not).
+            bool alongside = Mathf.Abs(playerLocal.x - c.x) < car.halfLength + radius;
+            bool beside = Mathf.Abs(playerLocal.z - c.z) < car.halfWidth + radius - 0.05f;
+            if (!alongside || !beside || playerLocal.y > c.y + 2.2f) return;
+
+            car.speed = 0f;
+            // Kerb side of this lane: eastbound (north lane) → north pavement, westbound → south pavement.
+            float side = car.direction > 0 ? 1f : -1f;
+            float kerbZ = car.direction > 0 ? crossZ1 + 0.9f : crossZ0 - 0.9f;
+            float z = Mathf.Clamp(c.z + side * (car.halfWidth + 0.5f), Mathf.Min(c.z, kerbZ), Mathf.Max(c.z, kerbZ));
+            Vector3 world = transform.TransformPoint(new Vector3(playerLocal.x, c.y + 0.08f, z));
+            var controller = _playerBody.GetComponent<CharacterController>();
+            if (controller != null) controller.enabled = false;
+            _playerBody.transform.position = world;
+            if (controller != null) controller.enabled = true;
+            Physics.SyncTransforms();
+            _playerBody.Knockback(transform.TransformDirection(Vector3.forward * side) * hitKnockSpeed * 0.6f);
+
+            if (Time.time >= car.hitReadyAt)
             {
-                car.speed = 0f;
                 car.hitReadyAt = Time.time + 1.45f;
-                status?.ApplyHarm(hitDamage);
-                if (_playerBody != null)
-                {
-                    Vector3 away = transform.TransformDirection(Vector3.right * -car.direction);
-                    _playerBody.Knockback(away * hitKnockSpeed + Vector3.up * 2.6f);
-                }
+                PlayerStatus.Instance?.ApplyHarm(hitDamage);
                 if (Time.time >= car.hornReadyAt - 1f) { Honk(car); car.hornReadyAt = Time.time + hornCooldown; }
             }
         }
@@ -285,7 +315,7 @@ namespace NihongoLife.World
             float laneZ = car.direction > 0 ? laneEastZ : laneWestZ;
             float bumper = BumperX(car.body.localPosition.x, car.direction, car.halfLength);
             ahead = (playerLocal.x - bumper) * car.direction;
-            return Mathf.Abs(playerLocal.z - laneZ) < LaneHalfWidth && ahead > -0.35f && ahead < 14f;
+            return Mathf.Abs(playerLocal.z - laneZ) < car.halfWidth + SideMargin && ahead > -0.35f && ahead < 14f;
         }
 
         private bool OnCrossing(Vector3 p) =>
@@ -295,7 +325,7 @@ namespace NihongoLife.World
         {
             var renderers = car.body.GetComponentsInChildren<Renderer>();
             if (renderers.Length == 0) { car.halfLength = 2.2f; return; }
-            float min = float.MaxValue, max = float.MinValue;
+            float min = float.MaxValue, max = float.MinValue, zMin = float.MaxValue, zMax = float.MinValue;
             foreach (var r in renderers)
             {
                 if (r is ParticleSystemRenderer) continue;
@@ -304,11 +334,15 @@ namespace NihongoLife.World
                 for (int i = 0; i < 8; i++)
                 {
                     Vector3 world = c + new Vector3((i & 1) == 0 ? -e.x : e.x, (i & 2) == 0 ? -e.y : e.y, (i & 4) == 0 ? -e.z : e.z);
-                    float lx = transform.InverseTransformPoint(world).x;
-                    if (lx < min) min = lx;
-                    if (lx > max) max = lx;
+                    Vector3 local = transform.InverseTransformPoint(world);
+                    if (local.x < min) min = local.x;
+                    if (local.x > max) max = local.x;
+                    if (local.z < zMin) zMin = local.z;
+                    if (local.z > zMax) zMax = local.z;
                 }
             }
+            float laneCentre = car.body.localPosition.z;
+            car.halfWidth = Mathf.Clamp(Mathf.Max(zMax - laneCentre, laneCentre - zMin), 0.7f, 1.3f);
             float pivot = car.body.localPosition.x;
             float front = car.direction > 0 ? max - pivot : pivot - min;
             float rear = car.direction > 0 ? pivot - min : max - pivot;
@@ -401,7 +435,11 @@ namespace NihongoLife.World
         private void EnsureHorn()
         {
             if (_horn != null) return;
-            _horn = gameObject.AddComponent<AudioSource>();
+            // Its own child object: the horn is moved to the honking car, and moving this component's transform would
+            // carry the whole Traffic root — every car — along with it (cars "jumped" onto pavements and roofs).
+            var hornObject = new GameObject("Horn");
+            hornObject.transform.SetParent(transform, false);
+            _horn = hornObject.AddComponent<AudioSource>();
             _horn.playOnAwake = false;
             _horn.spatialBlend = 1f;
             _horn.minDistance = 4f;

@@ -1488,3 +1488,39 @@ Chi tiết thiết kế: `STORY_BIBLE.md` mục 14.
 - Sửa shader Agora.
 - Build mở bằng `01_MainMenu`; cảnh này có AppRoot riêng nên vẫn chạy đúng.
 - WebGL strip High. Đã thêm `Assets/NihongoLife/link.xml` giữ nguyên assembly của game.
+
+## Cập nhật (2026-10-23, Claude) — Sửa xe "bay" lên vỉa hè/mái nhà, khách full map, luật cho agent
+
+**Xe bay khỏi làn, chạy trên vỉa hè và mái nhà** (lỗi từ commit 9115381a)
+- **Nguyên nhân:** `StreetTraffic` gắn `AudioSource` còi vào chính gốc Traffic, rồi dời transform của còi tới chiếc xe đang bóp còi. Mỗi lần bóp còi, cả gốc Traffic cùng mọi xe bị kéo theo (+1,1 m và lệch làn).
+- **Đã sửa:** còi là một GameObject con riêng (`Horn`).
+
+**Xe đụng người**
+- Xe phát hiện người trên toàn bề rộng thân xe (`halfWidth` đo từ renderer).
+- `SeparateFromPlayer` đặt người chơi ra ngoài sườn xe về phía lề và hất nhẹ ngang. Không còn bị xe kinematic đẩy lên nóc.
+- `PlayerController.Knockback` chỉ nhảy lên khi được yêu cầu.
+
+**Khách = full map**
+- Luật suy ra từ phiên chơi: `PlayerSessionService.OpenWorld` (khách → mở toàn bộ bản đồ, không bị giữ ở cốt truyện mở đầu).
+- `BeginOfflinePlay` / `BeginProgressionPlay` không còn đặt cờ `Bypass`.
+- Nút Bắt đầu: tài khoản đã đăng nhập vào lộ trình của tài khoản, khách vào ngoại tuyến. Trước đây nút này đổi cả tài khoản sang save khách.
+
+**Test**
+- Mới: `TrafficLanePlayModeTests` (xe ở yên trong làn suốt 1 phút; xe đụng người; người trên nóc xe; gốc Traffic không bao giờ di chuyển).
+- `GuestOfflinePlayModeTests`: thêm kiểm tra khách full map, tài khoản theo lộ trình.
+- `StreetTrafficPlayModeTests`: đo theo đầu xe.
+
+**`AGENTS.md`:** viết lại thành bộ luật sản phẩm và các bất biến kỹ thuật cho mọi agent.
+
+**Sửa thêm sau khi chạy toàn bộ test trên main (27 test PlayMode trượt sau các commit của Cursor)**
+- **Unity fake-null:** 30 chỗ `GetComponent<T>() ?? …` đổi thành `.OrNull() ?? …` (`Core/UnityNull.cs`). Trước đó menu chính ném `MissingComponentException: CanvasGroup`, làm hỏng dây chuyền khoảng 12 test.
+- **`TownEdge` chỉ có ở thành phố:** trước đây đảo, ga, quán (có `HorizonBackdrop`) cũng bị coi là "thị trấn". Nhấn F ở chỗ câu cá, quầy, Kimura, bảng việc bị nuốt để đi tới ga, và người chơi bị kẹp trong vùng biên nhỏ nên không chạy được.
+- **`ResultUI`:** modal "Results" chỉ tính là mở khi thẻ đang hiển thị. Trước đó nó mở mãi sau khi về thị trấn, chặn thẻ mở khu, phím Esc và nút toàn cảnh.
+- **`TouchControlOverlay`:** chỉ thả input khi overlay vừa ẩn. Trước đó nó xoá joystick và nút mỗi khung khi overlay ẩn.
+- **`KidExpression`:** chỉ cúi chào / chỉ tay khi nhân vật rảnh. Trước đó học xong đi ngủ thì nhân vật đứng dậy chỉ tay trên giường.
+- **Test cập nhật:**
+  - `MenuSyncPlayModeTests`: menu giờ responsive, nên kiểm tra nút Bắt đầu nằm trên màn hình, đủ to, không bị che.
+  - `SpeakingLoungeCamera` và `OnlineSocial.City`: ra Inconclusive khi máy chưa có `LocalSecrets/secrets.json`.
+
+## TASK-M (Grok) — Trailer v4, demo v3, kế hoạch marketing 12 tuần
+Giao việc đầy đủ trong `Docs/GROK_TASK_TRAILER_MARKETING.md` (bối cảnh, luật, công cụ có sẵn, 3 sản phẩm, tiêu chí nghiệm thu). Không sửa gameplay; chỉ sửa `TrailerReel.cs`, hai test quay phim và các file marketing.

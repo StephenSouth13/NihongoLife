@@ -23,7 +23,7 @@ namespace NihongoLife.UI
         public static TMP_Text Set(TMP_Text text, string vi, string en, string ja)
         {
             if (text == null) return null;
-            var loc = text.GetComponent<LocText>() ?? text.gameObject.AddComponent<LocText>();
+            var loc = text.GetComponent<LocText>().OrNull() ?? text.gameObject.AddComponent<LocText>();
             loc._text = text;
             loc._vi = vi; loc._en = en; loc._ja = ja; loc._build = null;
             loc.Subscribe();
@@ -34,7 +34,7 @@ namespace NihongoLife.UI
         public static TMP_Text Set(TMP_Text text, Func<string> build)
         {
             if (text == null) return null;
-            var loc = text.GetComponent<LocText>() ?? text.gameObject.AddComponent<LocText>();
+            var loc = text.GetComponent<LocText>().OrNull() ?? text.gameObject.AddComponent<LocText>();
             loc._text = text;
             loc._build = build; loc._vi = loc._en = loc._ja = null;
             loc.Subscribe();

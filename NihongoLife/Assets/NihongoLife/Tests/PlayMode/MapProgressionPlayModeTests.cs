@@ -94,6 +94,8 @@ namespace NihongoLife.Tests
             PlayerStatus.Instance.AddKnowledge(1);
             Assert.IsTrue(LocationUnlocks.IsUnlocked(WorldLocationCatalog.SushiRestaurantScene), "100 opens Sushi Hibari.");
             for (float t = 0f; t < 5f && MapUnlockCardUI.Open == null; t += Time.unscaledDeltaTime) yield return null;
+            if (MapUnlockCardUI.Open == null)
+                Note($"card blocked: modal {UiModalStack.TopName}, dialogue {NihongoLife.Dialogue.DialogueManager.Instance?.IsOpen}, result {Object.FindFirstObjectByType<ResultUI>()?.isActiveAndEnabled}, freeplay {FreePlayCardUI.Open != null}, queued {MapUnlockCardUI.QueueCount}, scene {SceneManager.GetActiveScene().name}");
             Assert.NotNull(MapUnlockCardUI.Open, "The unlock card shows.");
             Assert.AreEqual(WorldLocationCatalog.SushiRestaurantScene, MapUnlockCardUI.Open.Stage.sceneName);
             StringAssert.DoesNotContain("Đã khóa", sushiDoor.GetpromptEn(), "The door prompt drops the lock.");

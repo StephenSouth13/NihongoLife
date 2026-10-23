@@ -153,7 +153,7 @@ namespace NihongoLife.UI
             Color bg = on ? UiKit.Alpha(UiKit.Lighten(UiTheme.Surface, 0.04f), 1f) : UiTheme.Surface;
             if (swap != null) swap.Configure((Image)tile.targetGraphic, bg, UiTheme.Raised, UiTheme.Sunken);
             tile.transform.Find("Selected")?.gameObject.SetActive(on);
-            var outline = tile.GetComponent<Outline>() ?? UiKit.Outline((RectTransform)tile.transform, UiKit.Alpha(color, 0.5f), 1.4f);
+            var outline = tile.GetComponent<Outline>().OrNull() ?? UiKit.Outline((RectTransform)tile.transform, UiKit.Alpha(color, 0.5f), 1.4f);
             outline.enabled = on;
         }
 

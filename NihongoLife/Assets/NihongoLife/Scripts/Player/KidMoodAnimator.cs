@@ -55,7 +55,7 @@ namespace NihongoLife.Player
             _overrides = new AnimatorOverrideController(source) { name = source.name }; // same name: code and tests read it to know the rig
             animator.runtimeAnimatorController = _overrides;
             _player = GetComponent<PlayerController>();
-            _consequences = GetComponent<StatusConsequences>() ?? SceneRefs.Find<StatusConsequences>();
+            _consequences = GetComponent<StatusConsequences>().OrNull() ?? SceneRefs.Find<StatusConsequences>();
             Apply(Mood.Normal); // spell the Kid walk/idle out on this layer too, so later swaps always restore them
         }
 

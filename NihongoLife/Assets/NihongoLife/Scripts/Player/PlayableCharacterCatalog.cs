@@ -167,7 +167,7 @@ namespace NihongoLife.Player
             // Only the player wears the ground ring (NPCs have name plates), in the character's own colour.
             if (actor.GetComponent<PlayerController>() != null)
             {
-                var marker = actor.GetComponent<PlayerMarker>() ?? actor.AddComponent<PlayerMarker>();
+                var marker = actor.GetComponent<PlayerMarker>().OrNull() ?? actor.AddComponent<PlayerMarker>();
                 marker.Configure(character.AccentColor, 0.55f);
             }
 

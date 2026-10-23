@@ -47,7 +47,7 @@ namespace NihongoLife.EditorTools
                     var instance = (GameObject)PrefabUtility.InstantiatePrefab(source);
                     instance.name = "NL_" + id;
                     instance.transform.localScale = Vector3.one * KidScale;
-                    var animator = instance.GetComponent<Animator>() ?? instance.AddComponent<Animator>();
+                    var animator = instance.GetComponent<Animator>().OrNull() ?? instance.AddComponent<Animator>();
                     animator.runtimeAnimatorController = model.StartsWith("Girl") ? girl : boy;
                     animator.applyRootMotion = false;
                     animator.cullingMode = AnimatorCullingMode.AlwaysAnimate;
@@ -439,7 +439,7 @@ namespace NihongoLife.EditorTools
                               $"mats={string.Join("|", renderers.SelectMany(r => r.sharedMaterials).Where(m => m != null).Select(m => m.name + ":" + m.shader.name).Distinct())}");
                 if (avatar != null && avatar.isHuman)
                 {
-                    var animator = instance.GetComponent<Animator>() ?? instance.AddComponent<Animator>();
+                    var animator = instance.GetComponent<Animator>().OrNull() ?? instance.AddComponent<Animator>();
                     animator.avatar = avatar;
                     var missing = new[] { HumanBodyBones.Hips, HumanBodyBones.Spine, HumanBodyBones.Chest, HumanBodyBones.Neck, HumanBodyBones.Head, HumanBodyBones.LeftUpperArm, HumanBodyBones.LeftHand, HumanBodyBones.RightHand, HumanBodyBones.LeftUpperLeg, HumanBodyBones.LeftFoot, HumanBodyBones.RightFoot, HumanBodyBones.LeftToes }
                         .Where(bone => animator.GetBoneTransform(bone) == null).ToArray();

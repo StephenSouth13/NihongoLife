@@ -52,13 +52,12 @@ namespace NihongoLife.World
             go.AddComponent<TownEdge>();
         }
 
-        private static bool IsTown(Scene scene)
-        {
-            if (scene.name == WorldLocationCatalog.CityScene) return true;
-            foreach (var root in scene.GetRootGameObjects())
-                if (root.GetComponentInChildren<HorizonBackdrop>(true) != null) return true;
-            return false;
-        }
+        /// <summary>
+        /// Only the town has an edge to walk out of. Zones (island, station, shops) also carry a HorizonBackdrop for the
+        /// view through their doors; treating them as the town made their counters and fishing spots "the edge", and F
+        /// there travelled to the station instead of using them.
+        /// </summary>
+        private static bool IsTown(Scene scene) => scene.name == WorldLocationCatalog.CityScene;
 
         private void OnEnable()
         {
@@ -113,6 +112,7 @@ namespace NihongoLife.World
         {
             var edge = Active;
             if (edge == null || !edge._ready || !edge._nearEdge) return false;
+            if (SceneManager.GetActiveScene() != edge.gameObject.scene) return false; // in a zone, F belongs to the zone
             if (!LocationUnlocks.IsUnlocked(WorldLocationCatalog.StationScene)) return false;
             if (!GameServices.TryGet(out SceneFlowController flow) || flow.IsLoading) return false;
             flow.EnterZone(WorldLocationCatalog.StationScene, WorldLocationCatalog.StationEntrance,

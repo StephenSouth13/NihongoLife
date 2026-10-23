@@ -42,7 +42,7 @@ namespace NihongoLife.UI
             Prefer(about, 196f, 48f, 140f);
             Prefer(login, 188f, 48f, 140f);
             PrepareLanguageBar(lang);
-            var langElement = lang.GetComponent<LayoutElement>() ?? lang.gameObject.AddComponent<LayoutElement>();
+            var langElement = lang.GetComponent<LayoutElement>().OrNull() ?? lang.gameObject.AddComponent<LayoutElement>();
             langElement.preferredWidth = 460f;
             langElement.minWidth = 280f;
             langElement.preferredHeight = 48f;
@@ -83,7 +83,7 @@ namespace NihongoLife.UI
             {
                 bool button = child.name.IndexOf("Button", System.StringComparison.Ordinal) >= 0;
                 bool hidden = child.name == "LanguageLabel";
-                var element = child.GetComponent<LayoutElement>() ?? child.gameObject.AddComponent<LayoutElement>();
+                var element = child.GetComponent<LayoutElement>().OrNull() ?? child.gameObject.AddComponent<LayoutElement>();
                 element.ignoreLayout = hidden;
                 element.minWidth = button ? 72f : 28f;
                 element.preferredWidth = button ? 120f : 28f;
@@ -102,7 +102,7 @@ namespace NihongoLife.UI
         private static void Prefer(RectTransform rect, float width, float height, float minWidth)
         {
             if (rect == null) return;
-            var element = rect.GetComponent<LayoutElement>() ?? rect.gameObject.AddComponent<LayoutElement>();
+            var element = rect.GetComponent<LayoutElement>().OrNull() ?? rect.gameObject.AddComponent<LayoutElement>();
             element.preferredWidth = width;
             element.minWidth = minWidth;
             element.preferredHeight = height;

@@ -672,7 +672,7 @@ namespace NihongoLife.UI
 
         public static LayoutElement Size(Component c, float w = -1f, float h = -1f, float flexW = -1f, float flexH = -1f)
         {
-            var le = c.GetComponent<LayoutElement>() ?? c.gameObject.AddComponent<LayoutElement>();
+            var le = c.GetComponent<LayoutElement>().OrNull() ?? c.gameObject.AddComponent<LayoutElement>();
             if (w >= 0f) { le.preferredWidth = w; le.minWidth = w; }
             if (h >= 0f) { le.preferredHeight = h; le.minHeight = h; }
             if (flexW >= 0f) le.flexibleWidth = flexW;

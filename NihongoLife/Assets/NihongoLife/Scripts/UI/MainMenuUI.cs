@@ -109,7 +109,7 @@ namespace NihongoLife.UI
             coopLobbyUI.Initialize(font);
             Wire(onlineButton, OnOnlineClicked);
 
-            menuMusic = gameObject.GetComponent<MenuMusicController>() ?? gameObject.AddComponent<MenuMusicController>();
+            menuMusic = gameObject.GetComponent<MenuMusicController>().OrNull() ?? gameObject.AddComponent<MenuMusicController>();
             var dayNight = SceneRefs.Find<DayNightCycle>();
             if (dayNight != null) dayNight.SetHour(9f); // the menu is always a bright morning
 
@@ -131,7 +131,7 @@ namespace NihongoLife.UI
 
         private IEnumerator PlayEntrance()
         {
-            var group = GetComponent<CanvasGroup>() ?? gameObject.AddComponent<CanvasGroup>();
+            var group = GetComponent<CanvasGroup>().OrNull() ?? gameObject.AddComponent<CanvasGroup>();
             if (MotionSettings.ReduceMotion)
             {
                 group.alpha = 1f;
@@ -649,8 +649,10 @@ namespace NihongoLife.UI
         private void BeginGameWithSelectedCharacter()
         {
             menuMusic?.FadeOut(1f);
-            // Offline uses the guest save and turns the existing unlock bypasses on, so nothing is level-gated.
-            PlayerSessionService.GetOrCreate()?.BeginOfflinePlay();
+            // A signed-in account continues its campaign; otherwise offline guest play with the whole town open.
+            var session = PlayerSessionService.GetOrCreate();
+            if (OnlineAccess.IsRegistered) session?.BeginProgressionPlay();
+            else session?.BeginOfflinePlay();
             var story = StoryDirector.AutoStart();
             if (story != null) ScenarioSceneInitializer.QueueLaunch(story.id);
             if (GameServices.TryGet(out SceneFlowController sceneFlow)) sceneFlow.LoadScene(targetGameplayScene);

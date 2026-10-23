@@ -314,7 +314,7 @@ namespace NihongoLife.UI
             SetStatus(Loc.T("Bạn bè cần tài khoản đã đăng ký và đăng nhập. Chế độ Khách chơi ngoại tuyến.", "Friends need a registered account, signed in. Guests play offline.", "フレンドには登録済みアカウントでのログインが必要です。ゲストはオフラインです。"), UiTheme.Warn);
             EmptyState("account_circle", Loc.T("Đăng nhập để gặp bạn bè", "Sign in to meet friends", "ログインしてフレンドと会おう"),
                 Loc.T("Sau khi đăng nhập, bạn có thể nhắn tin, nhận lời mời và thăm đảo của bạn bè.", "After signing in, you can chat, receive requests, and visit friends' islands.", "ログインすると、メッセージ、申請、フレンドの島への訪問ができます。"),
-                Loc.T("Đăng ký / Đăng nhập", "Register / Sign in", "登録・ログイン"), () => { Hide(); var auth = GetComponent<AuthUI>() ?? SceneRefs.Find<AuthUI>(); auth?.ShowForOnline(); });
+                Loc.T("Đăng ký / Đăng nhập", "Register / Sign in", "登録・ログイン"), () => { Hide(); var auth = GetComponent<AuthUI>().OrNull() ?? SceneRefs.Find<AuthUI>(); auth?.ShowForOnline(); });
         }
 
         private void BuildUnavailableState()
@@ -341,7 +341,7 @@ namespace NihongoLife.UI
         private void SetRowError(Transform row, string message, Color color)
         {
             if (row == null) return;
-            var label = row.Find("RowStatus")?.GetComponent<TextMeshProUGUI>() ?? UiKit.Label(row, "RowStatus", "", 12f, color, wrap: true);
+            var label = row.Find("RowStatus")?.GetComponent<TextMeshProUGUI>().OrNull() ?? UiKit.Label(row, "RowStatus", "", 12f, color, wrap: true);
             label.color = color; label.text = message ?? "";
             UiKit.Pin(label.rectTransform, new Vector2(0f, 0f), 82f, 5f, 430f, 18f);
         }

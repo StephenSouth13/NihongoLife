@@ -104,7 +104,7 @@ namespace NihongoLife.UI
                 _entrance = -1f;
                 return;
             }
-            _group = GetComponent<CanvasGroup>() ?? gameObject.AddComponent<CanvasGroup>();
+            _group = GetComponent<CanvasGroup>().OrNull() ?? gameObject.AddComponent<CanvasGroup>();
             _group.alpha = 0f;
         }
 

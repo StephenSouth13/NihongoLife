@@ -172,6 +172,8 @@ namespace NihongoLife.UI
             Look(primary.delta.ReadValue());
         }
 
+        bool _wasShown;
+
         void Apply()
         {
             if (!TouchControlPrefs.WantsVisible) _sessionHidden = false;
@@ -187,7 +189,10 @@ namespace NihongoLife.UI
                 || WebGLPointer.Coarse;
             if (_look != null) _look.raycastTarget = shown && touchDevice;
             if (_restore != null) _restore.SetActive(TouchControlPrefs.WantsVisible && _sessionHidden);
-            if (!shown) ReleaseAll();
+            // Release what the overlay held once, when it hides — not every frame while hidden: that wiped any other
+            // source of the mobile move / buttons (the legacy on-screen controls, tests) every frame.
+            if (!shown && _wasShown) ReleaseAll();
+            _wasShown = shown;
             Layout();
         }
 

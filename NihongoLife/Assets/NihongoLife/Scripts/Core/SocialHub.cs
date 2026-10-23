@@ -109,7 +109,7 @@ namespace NihongoLife.Core
             LoadBlocked();
             GetConversation(AreaId, Kind.Area, NihongoLife.Core.Loc.T("Khu vực", "Area", "エリア"));
             GetConversation(CommunityId, Kind.Community, NihongoLife.Core.Loc.T("Cộng đồng", "Community", "コミュニティ"));
-            _friendService = GetComponent<FriendService>() ?? SceneRefs.Find<FriendService>();
+            _friendService = GetComponent<FriendService>().OrNull() ?? SceneRefs.Find<FriendService>();
             if (_friendService == null) { _friendService = gameObject.AddComponent<FriendService>(); _friendService.Initialize(); }
             _friendService.OnFriendsUpdated += HandleFriendsUpdated;
             _crypto.EnsureKeys(_keySuffix); // first launch makes a key pair in the background, long before the first DM

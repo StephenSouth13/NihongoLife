@@ -65,12 +65,18 @@ namespace NihongoLife.Player
             _hasClickDestination = true;
         }
 
-        /// <summary>A car (or similar) shoves the player. The hop is held for a moment so the ground check does not cancel it.</summary>
+        /// <summary>
+        /// A car (or similar) shoves the player along the ground. Only an upward component makes a hop, held for a
+        /// moment so the ground check does not cancel it.
+        /// </summary>
         public void Knockback(Vector3 worldVelocity)
         {
             _knock = new Vector3(worldVelocity.x, 0f, worldVelocity.z);
-            _velocity.y = Mathf.Max(_velocity.y, Mathf.Max(2.8f, worldVelocity.y));
-            _knockUntil = Time.time + 0.35f;
+            if (worldVelocity.y > 0f)
+            {
+                _velocity.y = Mathf.Max(_velocity.y, worldVelocity.y);
+                _knockUntil = Time.time + 0.35f;
+            }
             _hasClickDestination = false;
         }
 

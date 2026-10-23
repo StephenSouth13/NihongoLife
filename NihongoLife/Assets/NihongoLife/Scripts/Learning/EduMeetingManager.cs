@@ -489,7 +489,7 @@ namespace NihongoLife.Learning
         private static VideoSurface Surface(RawImage view, VideoSurface old)
         {
             if (view == null) return old;
-            var surface = view.GetComponent<VideoSurface>() ?? view.gameObject.AddComponent<VideoSurface>();
+            var surface = view.GetComponent<VideoSurface>().OrNull() ?? view.gameObject.AddComponent<VideoSurface>();
             surface.SetEnable(false);
             return surface;
         }

@@ -156,7 +156,9 @@ namespace NihongoLife.UI
                 var town = UiKit.Button(card, "BackToTown", "Về thị trấn", "Back to town", "町へもどる", BackToTown, UiKit.Kind.Secondary, "home", 16f);
                 UiKit.Pin((RectTransform)town.transform, new Vector2(1f, 0f), -330f, 30f, 200f, 54f);
             }
-            UiModalStack.Register(this, () => _card != null, CloseFromEscape, "Results");
+            // Open only while the card is on screen: BackToTown hides this UI without destroying the card, and a
+            // "Results" entry that stayed open blocked Esc, the map-unlock card and every "no overlay" check.
+            UiModalStack.Register(this, () => _card != null && _card.gameObject.activeInHierarchy, CloseFromEscape, "Results");
         }
 
         /// <summary>Esc does the same as the main button, then closes the card so it cannot stay on top of the town.</summary>

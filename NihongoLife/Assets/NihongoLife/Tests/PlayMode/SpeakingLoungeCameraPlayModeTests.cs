@@ -42,6 +42,12 @@ namespace NihongoLife.Tests
             yield return new WaitForSecondsRealtime(0.6f);
             var check = Buttons().FirstOrDefault(b => b.name == "CameraCheck");
             Assert.NotNull(check, "Camera check button in the lounge");
+            // Agora needs an App ID from LocalSecrets/secrets.json (or AGORA_APP_ID); without it this machine cannot run the check.
+            if (string.IsNullOrWhiteSpace(NihongoLife.Learning.EduMeetingManager.ConfiguredAppId()))
+            {
+                meeting.SetOpen(false); // never leave the lounge open for the next test
+                Assert.Inconclusive("No Agora App ID on this machine (LocalSecrets/secrets.json or AGORA_APP_ID).");
+            }
             check.onClick.Invoke();
             for (float t = 0f; t < 8f && !meeting.IsCameraPreviewing; t += Time.unscaledDeltaTime) yield return null;
             Assert.IsTrue(meeting.IsCameraPreviewing, "Camera check started: " + meeting.Status);

@@ -379,7 +379,7 @@ namespace NihongoLife.UI
         private static void StretchInLayout(RectTransform rect, float flexibleWidth, float height, float preferredWidth = -1f)
         {
             if (rect == null) return;
-            var element = rect.GetComponent<LayoutElement>() ?? rect.gameObject.AddComponent<LayoutElement>();
+            var element = rect.GetComponent<LayoutElement>().OrNull() ?? rect.gameObject.AddComponent<LayoutElement>();
             element.flexibleWidth = flexibleWidth;
             element.minHeight = height;
             element.preferredHeight = height;
@@ -399,7 +399,7 @@ namespace NihongoLife.UI
         private static void ParkInLayout(Transform target, float height)
         {
             if (target == null) return;
-            var element = target.GetComponent<LayoutElement>() ?? target.gameObject.AddComponent<LayoutElement>();
+            var element = target.GetComponent<LayoutElement>().OrNull() ?? target.gameObject.AddComponent<LayoutElement>();
             element.minHeight = height;
             element.preferredHeight = height;
             element.flexibleWidth = 1f;

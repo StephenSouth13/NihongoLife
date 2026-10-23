@@ -30,7 +30,7 @@ namespace NihongoLife.Player
         public static KidExpression On(GameObject actor)
         {
             if (actor == null) return null;
-            return actor.GetComponent<KidExpression>() ?? actor.AddComponent<KidExpression>();
+            return actor.GetComponent<KidExpression>().OrNull() ?? actor.AddComponent<KidExpression>();
         }
 
         public void Play(SocialMood mood, float seconds = 3.5f)
@@ -47,6 +47,23 @@ namespace NihongoLife.Player
             if (mood != _shown) Show(mood, mood != SocialMood.Neutral);
             Place();
             if (_bubble != null) _bubble.gameObject.SetActive(Time.time < _bubbleUntil);
+        }
+
+        /// <summary>
+        /// A bow / point gesture replaces the body animation, so it only plays while the character is free: not
+        /// sleeping or fainted (input locked), sitting, working, or talking. (A mood from studying used to make the
+        /// player stand up and point while lying in bed.)
+        /// </summary>
+        private bool FreeToEmote()
+        {
+            var seat = GetComponent<NihongoLife.World.SeatedPassenger>().OrNull();
+            if (seat != null && seat.IsSitting) return false;
+            var player = GetComponent<PlayerController>().OrNull();
+            if (player != null && player.InputLocked) return false;
+            var animation = GetComponent<CharacterAnimationController>().OrNull();
+            if (animation != null && !string.IsNullOrEmpty(animation.CurrentWork)) return false;
+            var dialogue = NihongoLife.Dialogue.DialogueManager.Instance;
+            return dialogue == null || !dialogue.IsOpen;
         }
 
         private SocialMood MoodNow()
@@ -66,7 +83,7 @@ namespace NihongoLife.Player
             if (flash)
             {
                 _bubbleUntil = Time.time + 3.2f;
-                    if (Time.time >= _nextEmote && GetComponent<NihongoLife.World.SeatedPassenger>()?.IsSitting != true)
+                if (Time.time >= _nextEmote && FreeToEmote())
                 {
                     var animation = GetComponent<CharacterAnimationController>();
                     if (animation != null && (mood == SocialMood.Embarrassed || mood == SocialMood.Proud))

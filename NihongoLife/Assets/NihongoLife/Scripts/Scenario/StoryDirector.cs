@@ -63,7 +63,10 @@ namespace NihongoLife.Scenario
         public static bool InPrologue => Progress != null && !IsDone(PrologueEnd) && Campaign.Contains(PrologueEnd);
 
         /// <summary>Jobs, farm and daily tasks wait for the end of the prologue.</summary>
-        public static bool GatesFreePlay => !Bypass && InPrologue;
+        public static bool GatesFreePlay => !Off && InPrologue;
+
+        /// <summary>The story leads only in an account's campaign: not in tests that bypass it, not for offline guests.</summary>
+        private static bool Off => Bypass || NihongoLife.Core.PlayerSessionService.OpenWorld;
 
         public static bool StoryComplete => Progress != null && Campaign.Count > 0 && Campaign.All(IsDone);
 
@@ -113,7 +116,7 @@ namespace NihongoLife.Scenario
         /// <summary>Why a story quest cannot start yet (null when it can).</summary>
         public static string Blocker(ScenarioDefinition scenario)
         {
-            if (Bypass) return null;
+            if (Off) return null;
             var progress = Progress;
             if (scenario == null || progress == null) return Loc.T("Chưa sẵn sàng.", "Not ready.", "準備中です。");
             foreach (var required in scenario.requiredScenarioIds ?? new List<string>())
@@ -144,7 +147,7 @@ namespace NihongoLife.Scenario
         /// <summary>What to start on entering the town: an interrupted quest always; the next one only in the prologue.</summary>
         public static ScenarioDefinition AutoStart()
         {
-            if (Bypass) return null;
+            if (Off) return null;
             var interrupted = Interrupted();
             if (interrupted != null) return interrupted;
             if (!InPrologue) return null;

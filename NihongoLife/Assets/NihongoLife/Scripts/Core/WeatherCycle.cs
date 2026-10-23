@@ -77,7 +77,7 @@ namespace NihongoLife.Core
 
         private void Update()
         {
-            if (_cycle == null) _cycle = GetComponent<DayNightCycle>() ?? SceneRefs.Find<DayNightCycle>();
+            if (_cycle == null) _cycle = GetComponent<DayNightCycle>().OrNull() ?? SceneRefs.Find<DayNightCycle>();
             if (_forced.HasValue && _forcedBlend < 1f) _forcedBlend = Mathf.Min(1f, _forcedBlend + Time.deltaTime / 4f);
             Evaluate();
             UpdatePlayerExposure();

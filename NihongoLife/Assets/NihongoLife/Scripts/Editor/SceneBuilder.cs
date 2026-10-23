@@ -130,7 +130,7 @@ namespace NihongoLife.Editor
             RenderSettings.fogDensity = 0.0045f;
 
             var lightGo = GameObject.Find("Directional Light") ?? new GameObject("Directional Light");
-            var light = lightGo.GetComponent<Light>() ?? lightGo.AddComponent<Light>();
+            var light = lightGo.GetComponent<Light>().OrNull() ?? lightGo.AddComponent<Light>();
             light.type = LightType.Directional;
             light.color = new Color(1f, 0.95f, 0.84f, 1f);
             light.intensity = 1.45f;

@@ -34,7 +34,7 @@ namespace NihongoLife.Editor
 
             var cameraGo = GameObject.Find("Main Camera") ?? new GameObject("Main Camera");
             cameraGo.tag = "MainCamera";
-            var camera = cameraGo.GetComponent<Camera>() ?? cameraGo.AddComponent<Camera>();
+            var camera = cameraGo.GetComponent<Camera>().OrNull() ?? cameraGo.AddComponent<Camera>();
             camera.clearFlags = CameraClearFlags.Skybox;
             camera.fieldOfView = 38f;
             camera.nearClipPlane = 0.3f;
@@ -45,7 +45,7 @@ namespace NihongoLife.Editor
                 cameraGo.AddComponent<AudioListener>();
             }
 
-            var orbit = cameraGo.GetComponent<MenuCameraOrbit>() ?? cameraGo.AddComponent<MenuCameraOrbit>();
+            var orbit = cameraGo.GetComponent<MenuCameraOrbit>().OrNull() ?? cameraGo.AddComponent<MenuCameraOrbit>();
             orbit.Configure(44f, 15.5f, 2.15f, 205f, 3.1f);
             orbit.SetTarget(target.transform);
         }
