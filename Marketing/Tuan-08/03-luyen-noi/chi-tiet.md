@@ -15,7 +15,7 @@ Bài nằm trong tuần 08. Người đọc xong phải làm được một vi�
 ## Định dạng
 
 - Kênh chính: Facebook fanpage.
-- Ảnh vuông 1080 và ảnh dọc 1080×1350. Thẻ chữ có dòng CẦN ẢNH MỚI. Không dùng ảnh nhân vật cũ.
+- Ảnh vuông 1080 và ảnh dọc 1080×1350.
 - File trong thư mục: caption.txt, fb-1080.png, fb-1350.png, chi-tiet.md, CAN_QUAY.md.
 - TikTok và nhóm học chỉ dùng lại caption này khi lịch Excel bảo đăng, và khi đã có hình thật nếu dòng đó ghi «Cần quay».
 
@@ -40,7 +40,7 @@ Dán nguyên khối dưới đây sau khi thay mã link. Bản giống `caption.
 ```
 Có bài luyện nói trong game. Phòng video với giáo viên là một cửa khác, trên bản máy tính.
 
-Ảnh luyện nói cũ có nhân vật người lớn, đã bỏ. Bài này là thẻ CẦN ẢNH MỚI. Đó không phải cuộc gọi với giáo viên. Phòng Speaking dùng video trên PC khi máy đã cấu hình. Bản web không có micro theo kiểu ứng dụng máy tính. Bọn mình không đăng một khung hình giả để cho có.
+Ảnh bài này là phòng luyện nói trong game, người chơi là một bé. Đó không phải cuộc gọi với giáo viên. Phòng Speaking dùng video trên PC khi máy đã cấu hình. Bản web không có micro theo kiểu ứng dụng máy tính. Bọn mình không đăng một khung hình giả để cho có.
 
 Khi nào quay được phòng thật, video để ở ổ D và gắn link, không nhét file nặng vào git.
 
@@ -55,15 +55,12 @@ Việc người đọc làm tiếp: một hành động. Nếu CTA còn là mã 
 
 ## Hình và cảnh
 
-- Ảnh đăng dùng nền `(không dùng ảnh — thẻ chữ)`.
-- Khung chữ: nhãn «Phần nói», headline «Luyện phần nói / ngay trong game», dòng phụ «Thẻ chữ. Ảnh luyện nói cũ đã bỏ.».
+- Ảnh đăng dùng nền `Marketing/HinhAnh/Thi-JLPT-IELTS/ielts-noi.jpg`.
+- Khung chữ: nhãn «Phần nói», headline «Luyện phần nói / ngay trong game», dòng phụ «Ảnh luyện nói trong game. Phòng giáo viên là việc khác.».
 - Font Montserrat. Nền chữ là đêm `#0B0F17`, nhãn vàng `#F7BD3D`, lấy từ UiTheme.
 - Không thêm sao, không thêm số người chơi, không logo kỳ thi.
-- Nhãn vàng trên thẻ: CẦN ẢNH MỚI. Không đăng `Bao_Cao/ielts-productive/06_speaking_part1.jpg` — nhân vật trong ảnh đó không còn là người chơi.
-- Người chơi hiện tại là tám bé: Haruto (mặc định), Yui, Sota, Hina, Riku, Mio, Yuto, Sakura. Prefab `Resources/Characters/Kids/NL_kid_*`.
 - Video chưa có trong git. Làm theo CAN_QUAY.md. Khung hình để ổ D, không commit mp4.
 - Cảnh cần quay:
-- 8 giây · Nhân vật bé đang chọn · Haruto là mặc định · phụ đề: CẦN ẢNH MỚI
 - 10 giây · Phòng Speaking với giáo viên · Chỉ khi Agora đã cấu hình · phụ đề: Nói với người thật, trên PC.
 
 ## Từ khoá và hashtag

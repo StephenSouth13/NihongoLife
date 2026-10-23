@@ -15,8 +15,8 @@ Bài nằm trong tuần 04. Người đọc xong phải làm được một vi�
 ## Định dạng
 
 - Kênh chính: Facebook fanpage.
-- Ảnh vuông 1080 và ảnh dọc 1080×1350, kèm story 1080×1920. Thẻ chữ có dòng CẦN ẢNH MỚI. Không dùng ảnh nhân vật cũ.
-- File trong thư mục: caption.txt, fb-1080.png, fb-1350.png, chi-tiet.md, story-1920.png, CAN_QUAY.md.
+- Ảnh vuông 1080 và ảnh dọc 1080×1350, kèm story 1080×1920.
+- File trong thư mục: caption.txt, fb-1080.png, fb-1350.png, chi-tiet.md, story-1920.png.
 - TikTok và nhóm học chỉ dùng lại caption này khi lịch Excel bảo đăng, và khi đã có hình thật nếu dòng đó ghi «Cần quay».
 
 ## Ngày và giờ
@@ -55,15 +55,11 @@ Việc người đọc làm tiếp: một hành động. Nếu CTA còn là mã 
 
 ## Hình và cảnh
 
-- Ảnh đăng dùng nền `(không dùng ảnh — thẻ chữ)`.
+- Ảnh đăng dùng nền `Marketing/HinhAnh/BoiCanh/phong-hoc.png`.
 - Khung chữ: nhãn «Hỏi thật», headline «Bạn đang kẹt / chỗ nào trong N5?», dòng phụ «Viết một chỗ. Bọn mình đọc.».
 - Font Montserrat. Nền chữ là đêm `#0B0F17`, nhãn vàng `#F7BD3D`, lấy từ UiTheme.
 - Không thêm sao, không thêm số người chơi, không logo kỳ thi.
-- Nhãn vàng trên thẻ: CẦN ẢNH MỚI. Không đăng `docs/readme/study.jpg` — nhân vật trong ảnh đó không còn là người chơi.
-- Người chơi hiện tại là tám bé: Haruto (mặc định), Yui, Sota, Hina, Riku, Mio, Yuto, Sakura. Prefab `Resources/Characters/Kids/NL_kid_*`.
-- Video chưa có trong git. Làm theo CAN_QUAY.md. Khung hình để ổ D, không commit mp4.
-- Cảnh cần quay:
-- 8 giây · Nhân vật bé đang chọn · Haruto là mặc định · phụ đề: CẦN ẢNH MỚI
+- Bài này đăng bằng ảnh tĩnh đã có. Không cần footage mới để bấm đăng.
 
 ## Từ khoá và hashtag
 

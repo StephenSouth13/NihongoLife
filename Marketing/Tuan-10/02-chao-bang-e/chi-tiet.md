@@ -15,7 +15,7 @@ Bài nằm trong tuần 10. Người đọc xong phải làm được một vi�
 ## Định dạng
 
 - Kênh chính: Facebook fanpage.
-- Ảnh vuông 1080 và ảnh dọc 1080×1350. Thẻ chữ có dòng CẦN ẢNH MỚI. Không dùng ảnh nhân vật cũ.
+- Ảnh vuông 1080 và ảnh dọc 1080×1350.
 - File trong thư mục: caption.txt, fb-1080.png, fb-1350.png, chi-tiet.md, CAN_QUAY.md.
 - TikTok và nhóm học chỉ dùng lại caption này khi lịch Excel bảo đăng, và khi đã có hình thật nếu dòng đó ghi «Cần quay».
 
@@ -40,7 +40,7 @@ Dán nguyên khối dưới đây sau khi thay mã link. Bản giống `caption.
 ```
 Chưa kịp gõ chat? Giữ E và chào bằng một câu có sẵn.
 
-Vòng biểu cảm gắn với câu tiếng Nhật. Dùng khi đứng cạnh người khác hoặc chỉ để tập miệng. Ảnh vòng cũ có người chơi người lớn, đã bỏ. Bài này là thẻ CẦN ẢNH MỚI cho tới khi chụp lại với một bé.
+Vòng biểu cảm gắn với câu tiếng Nhật. Dùng khi đứng cạnh người khác hoặc chỉ để tập miệng. Ảnh trong bài là vòng biểu cảm trong game, bé đang chọn một câu.
 
 Chat chữ và voice là cửa khác, cần tài khoản và bản máy tính. Biểu cảm thì làm được cả khi chơi một mình.
 
@@ -55,15 +55,12 @@ Việc người đọc làm tiếp: một hành động. Nếu CTA còn là mã 
 
 ## Hình và cảnh
 
-- Ảnh đăng dùng nền `(không dùng ảnh — thẻ chữ)`.
+- Ảnh đăng dùng nền `Marketing/HinhAnh/UI-Menu/bieu-cam.png`.
 - Khung chữ: nhãn «Biểu cảm», headline «Giữ E / để chào bằng tiếng Nhật», dòng phụ «Vòng biểu cảm có câu đi kèm.».
 - Font Montserrat. Nền chữ là đêm `#0B0F17`, nhãn vàng `#F7BD3D`, lấy từ UiTheme.
 - Không thêm sao, không thêm số người chơi, không logo kỳ thi.
-- Nhãn vàng trên thẻ: CẦN ẢNH MỚI. Không đăng `docs/readme/emote.jpg` — nhân vật trong ảnh đó không còn là người chơi.
-- Người chơi hiện tại là tám bé: Haruto (mặc định), Yui, Sota, Hina, Riku, Mio, Yuto, Sakura. Prefab `Resources/Characters/Kids/NL_kid_*`.
 - Video chưa có trong git. Làm theo CAN_QUAY.md. Khung hình để ổ D, không commit mp4.
 - Cảnh cần quay:
-- 8 giây · Nhân vật bé đang chọn · Haruto là mặc định · phụ đề: CẦN ẢNH MỚI
 - 6 giây · Vòng biểu cảm · Giữ E · phụ đề: Chào bằng một câu có sẵn.
 
 ## Từ khoá và hashtag

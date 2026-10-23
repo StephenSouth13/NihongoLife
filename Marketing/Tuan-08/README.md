@@ -10,7 +10,7 @@ Mốc tuần (là mục tiêu, không phải số đã đạt): Mốc: 10 ngư�
 
 - Long: Kiểm tra voice Agora trên PC trước giờ hẹn. Web chưa cấu hình thì nói trước, không để người học bấm im.
 - Huy: Caption nào nói IELTS cũng có câu «không phải kết quả chính thức». Mời một nhóm nhỏ, không mua review.
-- Dũng: Quay phòng nói trên PC nếu vào được. Ảnh luyện nói cũ là người lớn, đã bỏ. Chưa có ảnh bé thì giữ thẻ CẦN ẢNH MỚI.
+- Dũng: Ảnh luyện nói đã có, bé ngồi trong phòng. Video phòng với giáo viên vẫn theo CAN_QUAY nếu chưa quay.
 
 ## Bài đăng
 

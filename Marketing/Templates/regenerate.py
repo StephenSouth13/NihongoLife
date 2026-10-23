@@ -149,6 +149,7 @@ def write_posts(build: Path, images: bool, slugs: list[str] | None = None) -> No
         folder.mkdir(parents=True, exist_ok=True)
         (folder / "caption.txt").write_text(post["caption"].strip() + "\n", encoding="utf-8")
         (folder / "chi-tiet.md").write_text(render_chi_tiet(post, START), encoding="utf-8")
+        can_quay = folder / "CAN_QUAY.md"
         if post.get("footage") or post.get("layout") == "need":
             rows_src = list(post.get("footage") or [])
             if post.get("layout") == "need":
@@ -163,7 +164,7 @@ def write_posts(build: Path, images: bool, slugs: list[str] | None = None) -> No
             shot = post.get("shot") or "(không có — thẻ chữ, không lấy cảnh khác thế vào)"
             old = post.get("shot_source") or ""
             dropped = f"\nẢnh cũ đã bỏ: `{old}`. Trong đó là nhân vật người lớn trước khi đổi sang tám bé.\n" if post.get("layout") == "need" and old and not old.startswith("(") else ""
-            (folder / "CAN_QUAY.md").write_text(
+            can_quay.write_text(
                 f"""# Cần quay
 
 Ảnh đăng Facebook của bài này {'là thẻ chữ ghi CẦN ẢNH MỚI, vì chưa có ảnh nhân vật bé hoặc cảnh này' if post.get('layout') == 'need' else 'dùng ảnh chụp thật: `' + shot + '`'}.{dropped}
@@ -178,6 +179,8 @@ Không chèn UI giả, không thêm điểm, không thêm người chơi không 
 """,
                 encoding="utf-8",
             )
+        elif can_quay.exists():
+            can_quay.unlink()
         if not images or (slugs and post["slug"] not in slugs):
             continue
         jobs = [("sq", "fb-1080.png", 1080, 1080), ("pt", "fb-1350.png", 1080, 1350)]
@@ -426,7 +429,7 @@ def write_pdf() -> None:
     body = markdown.markdown(src, extensions=["tables", "extra", "sane_lists"])
     cover = """
     <section class="cover">
-      <img class="bg" src="file:///workspace/Marketing/HinhAnh/BoiCanh/pho-hoang-hon.jpg" alt="">
+      <img class="bg" src="file:///workspace/Marketing/HinhAnh/BoiCanh/pho-spawn.png" alt="">
       <div class="veil"></div>
       <div class="inner">
         <div class="mark">NL</div>

@@ -55,7 +55,7 @@ Việc người đọc làm tiếp: một hành động. Nếu CTA còn là mã 
 
 ## Hình và cảnh
 
-- Ảnh đăng dùng nền `Marketing/HinhAnh/BoiCanh/pho-ngay.jpg`.
+- Ảnh đăng dùng nền `Marketing/HinhAnh/BoiCanh/pho-spawn.png`.
 - Khung chữ: nhãn «Cộng đồng», headline «Phần học cốt lõi / vẫn miễn phí», dòng phụ «Mã nguồn mở. Không khoá bài N5 sau quảng cáo.».
 - Font Montserrat. Nền chữ là đêm `#0B0F17`, nhãn vàng `#F7BD3D`, lấy từ UiTheme.
 - Không thêm sao, không thêm số người chơi, không logo kỳ thi.

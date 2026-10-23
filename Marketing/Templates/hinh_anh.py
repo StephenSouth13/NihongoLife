@@ -14,17 +14,119 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[2]
 HINH = ROOT / "Marketing" / "HinhAnh"
 
-# Ảnh không có model người chơi cũ. Phố là môi trường hiện tại, nhìn xa.
+# Ảnh Play Mode sau khi người chơi là tám bé. Nguồn chủ yếu là Bao_Cao/*-regression.
 COPIES = [
-    ("BoiCanh/pho-ngay.jpg", "docs/readme/horizon_day.jpg", "Phố Hibari-chō ban ngày, nhìn dọc đường. Không có mặt nhân vật."),
-    ("BoiCanh/pho-hoang-hon.jpg", "docs/readme/horizon_dusk.jpg", "Phố Hibari-chō lúc hoàng hôn. Không có mặt nhân vật."),
-    ("BoiCanh/pho-dem.jpg", "docs/readme/horizon_night.jpg", "Phố Hibari-chō ban đêm, đèn cửa sổ. Không có mặt nhân vật."),
-    ("Thi-JLPT-IELTS/ielts-viet.jpg", "Bao_Cao/ielts-productive/02_writing_examiner.jpg", "Màn luyện viết theo dạng IELTS. Chỉ chữ và nhận xét, không có model 3D."),
-    ("Logo-Brand/giai-trien-vong-2025.jpg", "NihongoLife/Assets/NihongoLife/Resources/MenuGallery/01_team_award_2025.jpg", "Ảnh thật ba nhà sáng lập với giấy khen Giải Triển vọng 2025. Không phải nhân vật trong game."),
+    ("NhanVat/haruto-pose.jpg", "Bao_Cao/character-regression/poses_kid_haruto.jpg", "Haruto, tám tư thế. Nền kiểm tra animation, không phải cảnh phố."),
+    ("NhanVat/yui-pose.jpg", "Bao_Cao/character-regression/poses_kid_yui.jpg", "Yui, tám tư thế. Cùng rig với Haruto."),
+    ("NhanVat/menu-chon-haruto.jpg", "Bao_Cao/character-regression/menu_character_select_haruto.jpg", "Màn chọn nhân vật, Haruto đang được chọn. Tám bé có trong danh sách."),
+    ("NhanVat/chan-dung-haruto.png", "Bao_Cao/hud-regression/portrait_kid_haruto.png", "Chân dung HUD của Haruto."),
+    ("NhanVat/tam-trang-met.jpg", "Bao_Cao/character-regression/mood_tired.jpg", "Haruto tư thế mệt. Tâm trạng trong SocialStanding."),
+    ("BoiCanh/pho-spawn.png", "Bao_Cao/city-regression/01_spawn.png", "Haruto đứng giữa phố Hibari-chō, có xe và biển Nhật."),
+    ("BoiCanh/pho-vach.png", "Bao_Cao/street-regression/01_crossing_walk_phase.png", "Haruto qua vạch kẻ đường. Ảnh gốc còn danh sách dev ở mép, nên bài tuần 1 dùng pho-spawn.png."),
+    ("BoiCanh/pho-ngay.jpg", "docs/readme/horizon_day.jpg", "Phố ban ngày, nhìn dọc đường. Không có mặt nhân vật."),
+    ("BoiCanh/pho-hoang-hon.jpg", "docs/readme/horizon_dusk.jpg", "Phố lúc hoàng hôn. Không có mặt nhân vật."),
+    ("BoiCanh/pho-dem.jpg", "docs/readme/horizon_night.jpg", "Phố ban đêm. Không có mặt nhân vật."),
+    ("BoiCanh/phong-sang.png", "Bao_Cao/bedroom-regression/11_morning.png", "Buổi sáng trong phòng, đồng hồ 7:00, bé ngồi giường."),
+    ("BoiCanh/phong-hoc.png", "Bao_Cao/bedroom-regression/06_study_card.png", "Bé ngồi bàn trong phòng, thẻ từ trên màn hình."),
+    ("BoiCanh/phong-tro.png", "Bao_Cao/bedroom-regression/02_room_overview.png", "Nhìn phòng trọ, bé trong phòng."),
+    ("BoiCanh/konbini.png", "Bao_Cao/ui-regression/02_shop_onigiri.png", "Bé đứng kệ cơm nắm trong Hibari Mart."),
+    ("BoiCanh/ga-320.png", "Bao_Cao/ui-regression/12_station_fare.png", "Quầy vé, giá tới Minato 320 yên, bé ở ga."),
+    ("BoiCanh/dao-nong-trai.png", "Bao_Cao/island-regression/07_farm_untilled.png", "Đảo Midori, bé cầm cuốc trước luống."),
+    ("BoiCanh/dao-toan-canh.png", "Bao_Cao/island-regression/18_island_overview.png", "Toàn cảnh đảo Midori, cổng torii."),
+    ("BoiCanh/sushi.png", "Bao_Cao/lifeloop-regression/20_sushi_order.png", "Bé ở quầy sushi, menu gọi món."),
+    ("BoiCanh/lop.png", "Bao_Cao/school-regression/07_classroom.png", "Lớp Hibari, bé và cô giáo."),
+    ("BoiCanh/game-center.png", "Bao_Cao/gamecenter-regression/05_board.png", "Bé chơi bàn kana trong Game Center."),
+    ("BoiCanh/quay-qua.png", "Bao_Cao/gamecenter-regression/09b_prize_counter.png", "Quầy đổi quà Game Center, bé đứng trước quầy."),
+    ("UI-Menu/hoi-thoai.png", "Bao_Cao/ui-regression/01_dialogue_box.png", "Hội thoại: câu Nhật, cách đọc, nghĩa Việt. Bé trong cảnh."),
+    ("UI-Menu/ban-do.png", "Bao_Cao/map-progression/04_map_all_open.png", "Bản đồ khách, các khu đã mở."),
+    ("UI-Menu/lo-trinh.png", "Bao_Cao/map-progression/02_journal_roadmap.png", "Sổ lộ trình tài khoản, mốc trí tuệ."),
+    ("UI-Menu/balo.png", "Bao_Cao/ui-regression/07_bag.png", "Balo đang mở, bé đứng trong phố."),
+    ("UI-Menu/bieu-cam.png", "Bao_Cao/ui-regression/24_emote_wheel.png", "Vòng biểu cảm, bé giơ tay."),
+    ("UI-Menu/thanh-toan.png", "Bao_Cao/ui-regression/05_checkout.png", "Quầy tính tiền, bé trả tiền."),
+    ("UI-Menu/doi.png", "Bao_Cao/hud-regression/needs_hunger_8.jpg", "HUD đói và khát, chân dung bé."),
+    ("Online-GiaoTiep/choi-chung.png", "Bao_Cao/guest-online/02_registered_online.png", "Vài người chơi trong phố, tài khoản đã đăng ký."),
+    ("Online-GiaoTiep/chat.jpg", "Bao_Cao/online-regression/chat_area.jpg", "Chat khu vực, avatar là bé."),
+    ("Online-GiaoTiep/the-nguoi-choi.jpg", "Bao_Cao/online-regression/player_card.jpg", "Thẻ người chơi, model bé, có danh tiếng."),
+    ("Online-GiaoTiep/ban-be.png", "Bao_Cao/friends-ui/friends_vi_1920x1080.png", "Màn bạn bè tiếng Việt."),
+    ("Thi-JLPT-IELTS/jlpt-tu-vung.jpg", "Bao_Cao/jlpt-regression/01_vocab_question.jpg", "Câu từ vựng dạng JLPT, bé ngồi bàn."),
+    ("Thi-JLPT-IELTS/ket-qua-lop.png", "Bao_Cao/school-regression/05_result.png", "Kết quả bài trong lớp, bé và cô giáo."),
+    ("Thi-JLPT-IELTS/hanh-lang.png", "Bao_Cao/school-regression/03_exam_centre.png", "Hành lang khu thi, bé đi vào."),
+    ("Thi-JLPT-IELTS/ielts-viet.jpg", "Bao_Cao/ielts-productive/02_writing_examiner.jpg", "Màn luyện viết theo dạng IELTS. Không có model 3D."),
+    ("Thi-JLPT-IELTS/ielts-noi.jpg", "Bao_Cao/ielts-productive/06_speaking_part1.jpg", "Phòng luyện nói, bé ngồi đối diện."),
+    ("Logo-Brand/giai-trien-vong-2025.jpg", "NihongoLife/Assets/NihongoLife/Resources/MenuGallery/01_team_award_2025.jpg", "Ảnh thật ba nhà sáng lập với giấy khen Giải Triển vọng 2025."),
     ("Logo-Brand/logo-dark.png", "Bao_Cao/Logo/logo_dark.png", "Logo chữ trên nền tối."),
     ("Logo-Brand/logo-light.png", "Bao_Cao/Logo/logo_light.png", "Logo chữ trên nền sáng."),
     ("Logo-Brand/logo-mark.png", "Bao_Cao/Logo/logo_mark.png", "Dấu NL."),
 ]
+
+# Bài nào dùng ảnh nào. Khoá là slug.
+SLUG_SHOT = {
+    "01-song-o-nhat": "Bao_Cao/city-regression/01_spawn.png",
+    "02-chon-sai": "Bao_Cao/ui-regression/01_dialogue_box.png",
+    "03-cau-nhat-nghia-viet": "Bao_Cao/ui-regression/01_dialogue_box.png",
+    "01-bay-gio-sang": "Bao_Cao/bedroom-regression/11_morning.png",
+    "02-com-nam": "Bao_Cao/ui-regression/02_shop_onigiri.png",
+    "03-ve-tau": "Bao_Cao/ui-regression/12_station_fare.png",
+    "01-moi-choi-thu": "Bao_Cao/city-regression/01_spawn.png",
+    "02-khach-mo-pho": "Bao_Cao/map-progression/04_map_all_open.png",
+    "03-lo-trinh": "Bao_Cao/map-progression/02_journal_roadmap.png",
+    "01-ket-cho-nao": "Bao_Cao/bedroom-regression/06_study_card.png",
+    "02-cach-doc": "Bao_Cao/ui-regression/01_dialogue_box.png",
+    "03-mot-viec": "Bao_Cao/bedroom-regression/02_room_overview.png",
+    "01-ra-mat-web": "Bao_Cao/character-regression/menu_character_select_haruto.jpg",
+    "02-hoang-hon": "docs/readme/horizon_dusk.jpg",
+    "03-lop-hibari": "Bao_Cao/school-regression/07_classroom.png",
+    "01-gio-choi-chung": "Bao_Cao/guest-online/02_registered_online.png",
+    "02-chat-khu-vuc": "Bao_Cao/online-regression/chat_area.jpg",
+    "03-giu-t": "Bao_Cao/online-regression/player_card.jpg",
+    "01-dang-n5": "Bao_Cao/jlpt-regression/01_vocab_question.jpg",
+    "02-tri-tue": "Bao_Cao/school-regression/05_result.png",
+    "03-mo-sushi": "Bao_Cao/lifeloop-regression/20_sushi_order.png",
+    "01-dang-ielts": "Bao_Cao/ielts-productive/02_writing_examiner.jpg",
+    "02-ket-ban": "Bao_Cao/friends-ui/friends_vi_1920x1080.png",
+    "03-luyen-noi": "Bao_Cao/ielts-productive/06_speaking_part1.jpg",
+    "01-game-center": "Bao_Cao/gamecenter-regression/05_board.png",
+    "02-sau-may": "Bao_Cao/gamecenter-regression/09b_prize_counter.png",
+    "03-dao-midori": "Bao_Cao/island-regression/07_farm_untilled.png",
+    "01-an-chay-ngu": "Bao_Cao/hud-regression/needs_hunger_8.jpg",
+    "02-chao-bang-e": "Bao_Cao/ui-regression/24_emote_wheel.png",
+    "03-dem-pho": "docs/readme/horizon_night.jpg",
+    "01-buoi-clb": "docs/readme/horizon_day.jpg",
+    "02-khoe-cau": "Bao_Cao/ui-regression/05_checkout.png",
+    "03-trung-tam": "Bao_Cao/school-regression/03_exam_centre.png",
+    "01-mot-khu-pho": "docs/readme/horizon_dusk.jpg",
+    "02-giai-trien-vong": "NihongoLife/Assets/NihongoLife/Resources/MenuGallery/01_team_award_2025.jpg",
+    "03-van-mien-phi": "Bao_Cao/city-regression/01_spawn.png",
+}
+
+# Cắt thanh dev dưới mép. UI full màn và ảnh giấy khen không cắt.
+TRIM = {
+    "01-song-o-nhat": (0.0, 0.0, 0.08, 0.0),
+    "02-chon-sai": (0.0, 0.0, 0.12, 0.0),
+    "03-cau-nhat-nghia-viet": (0.0, 0.0, 0.12, 0.0),
+    "01-bay-gio-sang": (0.0, 0.0, 0.10, 0.0),
+    "02-com-nam": (0.0, 0.0, 0.10, 0.0),
+    "03-ve-tau": (0.0, 0.0, 0.10, 0.0),
+    "01-moi-choi-thu": (0.0, 0.0, 0.10, 0.0),
+    "01-ket-cho-nao": (0.0, 0.0, 0.10, 0.0),
+    "02-cach-doc": (0.0, 0.0, 0.12, 0.0),
+    "03-mot-viec": (0.0, 0.0, 0.10, 0.0),
+    "03-lop-hibari": (0.0, 0.0, 0.10, 0.0),
+    "01-gio-choi-chung": (0.0, 0.0, 0.10, 0.0),
+    "02-chat-khu-vuc": (0.0, 0.0, 0.10, 0.0),
+    "03-giu-t": (0.0, 0.0, 0.08, 0.0),
+    "01-dang-n5": (0.0, 0.0, 0.08, 0.0),
+    "02-tri-tue": (0.0, 0.0, 0.10, 0.0),
+    "03-mo-sushi": (0.0, 0.0, 0.10, 0.0),
+    "03-luyen-noi": (0.0, 0.0, 0.10, 0.0),
+    "01-game-center": (0.0, 0.0, 0.10, 0.0),
+    "02-sau-may": (0.0, 0.0, 0.10, 0.0),
+    "03-dao-midori": (0.0, 0.0, 0.10, 0.0),
+    "02-chao-bang-e": (0.0, 0.0, 0.10, 0.0),
+    "02-khoe-cau": (0.0, 0.0, 0.10, 0.0),
+    "03-trung-tam": (0.0, 0.0, 0.10, 0.0),
+    "03-van-mien-phi": (0.0, 0.0, 0.10, 0.0),
+}
 
 SHOT_MAP = {src: f"Marketing/HinhAnh/{dest}" for dest, src, _why in COPIES}
 
@@ -89,11 +191,15 @@ NEED_SHOT = {
 
 def apply_shots(posts: list[dict]) -> None:
     for post in posts:
-        shot = post.get("shot") or ""
+        shot = SLUG_SHOT.get(post["slug"], post.get("shot") or "")
         if shot in SHOT_MAP:
             post["art_status"] = "current"
             post["shot_source"] = shot
             post["shot"] = SHOT_MAP[shot]
+            if post.get("layout") in ("need", "type"):
+                post.pop("layout", None)
+            if post["slug"] in TRIM:
+                post["trim"] = TRIM[post["slug"]]
         else:
             post["art_status"] = "need"
             post["shot_source"] = shot or "(chưa có file pixel)"
@@ -113,7 +219,7 @@ def _write_readme(posts: list[dict]) -> None:
         "",
         "Người lớn Mixamo id `student` (Tanaka/Remy) đã bỏ khỏi danh sách chọn. Ảnh nào thấy model đó thì không đăng.",
         "",
-        "File chụp tám bé trong `Bao_Cao/character-regression/` đang là con trỏ Git LFS, máy này không có pixel, nên không chép vào đây và không gắn lên bài.",
+        "Ảnh Play Mode của tám bé lấy từ `Bao_Cao/` (character-regression, ui-regression, city, school, island, online, JLPT, IELTS). Bản đã chép vào đây là pixel, không phải con trỏ LFS.",
         "",
         "## Đang dùng",
         "",
@@ -122,7 +228,7 @@ def _write_readme(posts: list[dict]) -> None:
     ]
     for dest, src, what in COPIES:
         rel = f"Marketing/HinhAnh/{dest}"
-        used = ", ".join(by_shot.get(rel, [])) or "— (logo, hoặc bìa Word)"
+        used = ", ".join(by_shot.get(rel, [])) or "README gốc, hoặc ảnh dự phòng trong thư mục này"
         if dest.startswith("Logo-Brand/logo"):
             used = "Press kit và `Logo-Brand`. Không gắn lên bài Facebook tuần."
         if dest.endswith("giai-trien-vong-2025.jpg"):
@@ -134,14 +240,11 @@ def _write_readme(posts: list[dict]) -> None:
         "",
         "## Thư mục chưa có ảnh",
         "",
-        "- `NhanVat/` — cần chân dung và cảnh chơi của tám bé. Chưa có pixel trong bản checkout này.",
-        "- `UI-Menu/` — menu cũ `01_menu.png` là model thấp khối, đã loại. Cần chụp menu và màn chọn tám bé.",
-        "- `Online-GiaoTiep/` — ảnh online cũ là nhân vật người lớn. Cần chụp lại chat, bạn bè, giữ phím T.",
         "- `Mockup-Template/` — thẻ Facebook sinh từ `Templates/card.html`. Không lưu ảnh nhân vật cũ làm mẫu.",
         "",
         "## Đã loại",
         "",
-        "Không chép vào thư mục này. Bài tương ứng là thẻ **CẦN ẢNH MỚI**.",
+        "Ảnh `docs/readme/` và `Bao_Cao/HinhAnh_Game/` đời trước có người chơi người lớn hoặc menu thấp khối. Bài không dùng các file đó. Ảnh thay thế là bản Play Mode của tám bé, liệt ở bảng trên.",
         "",
         "| Nguồn cũ | Vì sao bỏ | Bài | Cần chụp |",
         "|---|---|---|---|",
@@ -171,24 +274,40 @@ def main() -> None:
         target = HINH / dest
         source = ROOT / src
         target.parent.mkdir(parents=True, exist_ok=True)
-        if not source.is_file() or source.stat().st_size < 800:
+        if not source.is_file():
             raise SystemExit(f"missing source {source}")
-        head = source.read_bytes()[:20]
+        head = source.read_bytes()[:30]
         if head.startswith(b"version https://git-lfs"):
-            raise SystemExit(f"lfs pointer, not pixels: {source}")
-        shutil.copyfile(source, target)
-    for folder, note in (
-        ("NhanVat", "Chưa có ảnh tám bé. Xem README thư mục cha.\n"),
-        ("UI-Menu", "Chưa có menu hiện tại. `Bao_Cao/HinhAnh_Game/01_menu.png` là màn chọn nhân vật kiểu người lớn / low-poly cũ, đã loại. Cần chụp menu và màn chọn Haruto cùng bảy bé kia.\n"),
-        ("Online-GiaoTiep", "Chưa có ảnh online với bé. Ảnh cũ đã loại.\n"),
-        ("Mockup-Template", "Thẻ sinh từ Templates/card.html. Không để ảnh nhân vật cũ ở đây.\n"),
-    ):
-        path = HINH / folder
-        path.mkdir(parents=True, exist_ok=True)
-        (path / "CHUA_CO.md").write_text("# " + folder + "\n\n" + note, encoding="utf-8")
+            if not (target.exists() and target.stat().st_size > 800 and not target.read_bytes()[:30].startswith(b"version https://git-lfs")):
+                raise SystemExit(f"lfs pointer, not pixels: {source}")
+        else:
+            shutil.copyfile(source, target)
+        if dest == "BoiCanh/pho-vach.png":
+            _crop_vach(target)
+    for folder in ("NhanVat", "UI-Menu", "Online-GiaoTiep", "BoiCanh", "Thi-JLPT-IELTS", "Logo-Brand"):
+        stale = HINH / folder / "CHUA_CO.md"
+        if stale.exists():
+            stale.unlink()
+    mock = HINH / "Mockup-Template"
+    mock.mkdir(parents=True, exist_ok=True)
+    (mock / "CHUA_CO.md").write_text(
+        "# Mockup-Template\n\n"
+        "Thẻ Facebook sinh từ `Marketing/Templates/card.html`. Không để ảnh nhân vật cũ ở đây.\n",
+        encoding="utf-8",
+    )
     _write_readme(POSTS)
     need = sum(1 for p in POSTS if p.get("art_status") == "need")
     print("copied", len(COPIES), "need posts", need)
+
+
+def _crop_vach(target: Path) -> None:
+    """Danh sách dev nằm mép trái của ảnh vạch kẻ đường. Cắt trước khi đưa lên README."""
+    from PIL import Image
+    im = Image.open(target).convert("RGB")
+    w, h = im.size
+    if w < 1400:
+        return
+    im.crop((int(w * 0.34), int(h * 0.02), int(w * 0.99), int(h * 0.90))).save(target, quality=90)
 
 
 if __name__ == "__main__":

@@ -58,7 +58,7 @@ Việc người đọc làm tiếp: một hành động. Nếu CTA còn là mã 
 
 ## Hình và cảnh
 
-- Ảnh đăng dùng nền `Marketing/HinhAnh/BoiCanh/pho-hoang-hon.jpg`.
+- Ảnh đăng dùng nền `Marketing/HinhAnh/BoiCanh/pho-spawn.png`.
 - Khung chữ: nhãn «Mở đầu», headline «Học tiếng Nhật / bằng cách sống ở Nhật», dòng phụ «Khu phố Hibari-chō. Mỗi việc trong ngày là một câu nói.».
 - Font Montserrat. Nền chữ là đêm `#0B0F17`, nhãn vàng `#F7BD3D`, lấy từ UiTheme.
 - Không thêm sao, không thêm số người chơi, không logo kỳ thi.

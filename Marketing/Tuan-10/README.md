@@ -10,7 +10,7 @@ Mốc tuần (là mục tiêu, không phải số đã đạt): Mốc: 40% số 
 
 - Long: Xem lỗi web tuần ra mắt còn ai báo. Cập nhật một dòng «đã biết / chưa sửa» cho Huy trả lời.
 - Huy: Đăng 3 bài, kể cả 31/12 và 2/1. Nghỉ đăng thì báo trước, không biến mất.
-- Dũng: Quay vòng biểu cảm giữ E, câu tiếng Nhật hiện trên vòng, người chơi là một bé. Không dùng emote.jpg cũ.
+- Dũng: Ảnh vòng biểu cảm đã có, bé giơ tay. Không dùng emote.jpg cũ.
 
 ## Bài đăng
 

@@ -20,7 +20,7 @@ WEEKS = [
         "kpi": "3 bài ra đúng ngày. Mỗi bài có ít nhất một câu tiếng Nhật kèm nghĩa trong caption.",
         "long": "Nháp một trang «cách mở game» 5 bước, để tuần ra mắt chỉ việc gắn link. Không đụng code gameplay.",
         "huy": "Đăng 3 bài Tuan-02. Ghim bài cơm nắm. Soạn lời mời Discord, chưa spam nhóm trường.",
-        "dung": "Quay chuỗi quầy konbini và ga với một trong tám bé. Ảnh tĩnh cũ là người lớn, đã bỏ. Bài là thẻ CẦN ẢNH MỚI.",
+        "dung": "Ảnh konbini và ga đã có trong Marketing/HinhAnh, người chơi là bé. Video cả đoạn vẫn theo CAN_QUAY nếu quay clip.",
     },
     {
         "n": 3,
@@ -30,7 +30,7 @@ WEEKS = [
         "kpi": "Mốc: 30 người ghi danh chơi thử. Đây là mục tiêu, không phải số đã có.",
         "long": "Chuẩn bị bản build để gửi người thử (web hoặc PC). Ghi máy yếu cần biết trước: WebGL nặng.",
         "huy": "Đăng bài mời. Thu tên + máy (web/PC) bằng form hoặc tin nhắn. Không hứa quà nếu chưa có quà.",
-        "dung": "Chụp menu và màn chọn tám bé (Haruto mặc định). Không dùng `01_menu.png` — model cũ.",
+        "dung": "Ảnh màn chọn nhân vật đã có: Haruto đang được chọn. Không dùng `01_menu.png`.",
     },
     {
         "n": 4,
@@ -80,7 +80,7 @@ WEEKS = [
         "kpi": "Mốc: 10 người làm một phần Reading hoặc Listening; 1 buổi voice hoặc chat có người ngoài đội.",
         "long": "Kiểm tra voice Agora trên PC trước giờ hẹn. Web chưa cấu hình thì nói trước, không để người học bấm im.",
         "huy": "Caption nào nói IELTS cũng có câu «không phải kết quả chính thức». Mời một nhóm nhỏ, không mua review.",
-        "dung": "Quay phòng nói trên PC nếu vào được. Ảnh luyện nói cũ là người lớn, đã bỏ. Chưa có ảnh bé thì giữ thẻ CẦN ẢNH MỚI.",
+        "dung": "Ảnh luyện nói đã có, bé ngồi trong phòng. Video phòng với giáo viên vẫn theo CAN_QUAY nếu chưa quay.",
     },
     {
         "n": 9,
@@ -89,7 +89,7 @@ WEEKS = [
         "goal": "Cho thấy học bằng trò chơi, và nói thật là ảnh đảo vẫn chờ quay.",
         "kpi": "Mốc: 20 người kể một máy họ đã chơi (Kana Match, UFO, Kana Rain, Order Rush, Word Shooter, Basket Count).",
         "long": "Liệt kê 6 máy đúng tên trong game lên một ghi chú ngắn để caption không bịa thêm trò.",
-        "huy": "Bài Game Center và bài đảo là thẻ CẦN ẢNH MỚI. Không ghép phố hay ảnh người lớn vào đảo.",
+        "huy": "Đăng Game Center và đảo bằng ảnh trong Marketing/HinhAnh. Ảnh đảo là luống trên Midori, không lấy phố thế vào.",
         "dung": "Quay đảo: cuốc, gieo, tưới, câu cá. Khung hình để ổ D, không commit video.",
     },
     {
@@ -100,7 +100,7 @@ WEEKS = [
         "kpi": "Mốc: 40% số người đã đăng ký trong 4 tuần trước còn mở game một lần. Chưa đo được thì ghi «chưa đo», không điền tạm.",
         "long": "Xem lỗi web tuần ra mắt còn ai báo. Cập nhật một dòng «đã biết / chưa sửa» cho Huy trả lời.",
         "huy": "Đăng 3 bài, kể cả 31/12 và 2/1. Nghỉ đăng thì báo trước, không biến mất.",
-        "dung": "Quay vòng biểu cảm giữ E, câu tiếng Nhật hiện trên vòng, người chơi là một bé. Không dùng emote.jpg cũ.",
+        "dung": "Ảnh vòng biểu cảm đã có, bé giơ tay. Không dùng emote.jpg cũ.",
     },
     {
         "n": 11,
@@ -120,7 +120,7 @@ WEEKS = [
         "kpi": "Buổi tổng kết thứ Hai có đủ 3 người. Bảng đo điền số thật hoặc «chưa đo». Chốt có làm tiếp giờ chơi chung hay không.",
         "long": "Xuất số UTM 12 tuần. Viết 5 dòng «tháng sau làm gì» chỉ gồm việc đã có người nhận.",
         "huy": "Đăng bài tổng kết và bài giải thưởng đúng chữ trên giấy khen. Không thêm giải khác.",
-        "dung": "Gói 10 khung với tám bé (phố, hội thoại, thi, tàu, Game Center, menu chọn nhân vật). Không gửi lại ảnh Tanaka/Remy.",
+        "dung": "Ảnh sạch đã nằm ở Marketing/HinhAnh. Không gửi ảnh Tanaka/Remy.",
     },
 ]
 
@@ -218,7 +218,7 @@ Trong tình huống ga, anh Kimura báo giá 三百二十円 (320 yên), khoản
 
 Với tài khoản đang đi lộ trình, ga mở khi đủ 160 trí tuệ và đã ăn ở quán sushi. Khách ngoại tuyến đi được cả phố.
 
-Ảnh tàu cũ có người chơi người lớn, đã bỏ. Bài này là thẻ chữ ghi CẦN ẢNH MỚI cho tới khi quay lại với một trong tám bé. Video cả đoạn mua vé vẫn chờ quay.
+Ảnh quầy vé trong bài là ảnh trong game: giá 三百二十円, người chơi là một bé. Video cả đoạn mua vé vẫn chờ quay.
 
 #NihongoLife #HocTiengNhat #DiTau #GaHibari #TiengNhatN5"""),
 
@@ -316,7 +316,7 @@ Bọn mình làm game này vì lịch học đã đầy. Bài đăng cũng vậy
 
 NihongoLife chạy bằng Unity, bản web WebGL và bản Windows. Vào phố Hibari-chō, học bằng việc hàng ngày. Phần học cốt lõi không bán lẻ từng bài.
 
-Nếu dòng dưới còn là mã {{LINK_CHOI}} thì Long chưa gắn link. Đừng đăng bài này cho tới khi có URL thật. Ảnh menu cũ không còn đúng tám bé. Thẻ Facebook ghi CẦN ẢNH MỚI cho tới khi có màn chọn nhân vật hiện tại.
+Nếu dòng dưới còn là mã {{LINK_CHOI}} thì Long chưa gắn link. Đừng đăng bài này cho tới khi có URL thật. Ảnh trong bài là màn chọn nhân vật hiện tại, Haruto đang được chọn.
 
 {{LINK_CHOI}}
 
@@ -385,7 +385,7 @@ Giờ mặc định đội đề xuất: 20:00 thứ Bảy. Đổi giờ thì s�
 
 Kênh chung hiện với người đang online. Tin không lưu thành nhật ký sau khi bạn thoát. Lịch sự, không gửi thông tin cá nhân. Bấm tên người gửi để nhắn riêng, kết bạn hoặc chặn.
 
-Ảnh chat cũ có nhân vật người lớn, đã bỏ. Bài này là thẻ CẦN ẢNH MỚI. Video sạch vẫn cần quay lại.
+Ảnh chat trong bài là màn chat hiện tại, avatar là bé. Video sạch vẫn cần quay lại nếu muốn clip.
 
 #NihongoLife #HocTiengNhat #Chat #HibariCho #Online"""),
     dict(week=6, slug="03-giu-t", dow=5, kicker="Voice · PC",
@@ -486,7 +486,7 @@ Bọn mình không có người kiểm duyệt trực 24 giờ. Giờ chơi chun
 #NihongoLife #HocTiengNhat #KetBan #LuyenNoi #HibariCho"""),
     dict(week=8, slug="03-luyen-noi", dow=5, kicker="Phần nói",
          lines=["Luyện phần nói", "ngay trong game"],
-         sub="Thẻ chữ. Ảnh luyện nói cũ đã bỏ.",
+         sub="Ảnh luyện nói trong game. Phòng giáo viên là việc khác.",
          cta="Micro trên bản máy tính", meta="PC",
          shot="Bao_Cao/ielts-productive/06_speaking_part1.jpg", pos="center 45%", zoom="1.05",
          footage=[
@@ -495,7 +495,7 @@ Bọn mình không có người kiểm duyệt trực 24 giờ. Giờ chơi chun
          hook="Có bài luyện nói trong game. Phòng với giáo viên thì quay riêng, trên PC.",
          caption="""Có bài luyện nói trong game. Phòng video với giáo viên là một cửa khác, trên bản máy tính.
 
-Ảnh luyện nói cũ có nhân vật người lớn, đã bỏ. Bài này là thẻ CẦN ẢNH MỚI. Đó không phải cuộc gọi với giáo viên. Phòng Speaking dùng video trên PC khi máy đã cấu hình. Bản web không có micro theo kiểu ứng dụng máy tính. Bọn mình không đăng một khung hình giả để cho có.
+Ảnh bài này là phòng luyện nói trong game, người chơi là một bé. Đó không phải cuộc gọi với giáo viên. Phòng Speaking dùng video trên PC khi máy đã cấu hình. Bản web không có micro theo kiểu ứng dụng máy tính. Bọn mình không đăng một khung hình giả để cho có.
 
 Khi nào quay được phòng thật, video để ở ổ D và gắn link, không nhét file nặng vào git.
 
@@ -515,7 +515,7 @@ Khi nào quay được phòng thật, video để ở ổ D và gắn link, khô
 
 Tài khoản mở được nơi này khi đủ 240 trí tuệ và đã đi tàu. Trong truyện, Kim rủ bạn đếm lần chơi, đếm vé, và nói thứ mình muốn. Kana Match lật thẻ hiragana, katakana, kanji N5 và từ vựng. Hết ván có sao, độ chính xác và vé.
 
-Vé đổi quà ở quầy của Aoi. Ảnh kết quả cũ có người chơi người lớn, đã bỏ. Bài này là thẻ CẦN ẢNH MỚI.
+Vé đổi quà ở quầy của Aoi. Ảnh trong bài là bàn kana trong Game Center, người chơi là một bé.
 
 #NihongoLife #HocTiengNhat #GameCenter #Kana #TiengNhatN5"""),
     dict(week=9, slug="02-sau-may", dow=3, kicker="Sáu máy",
@@ -528,26 +528,25 @@ Vé đổi quà ở quầy của Aoi. Ảnh kết quả cũ có người chơi n
 
 Đúng tên trong game: Kana Match, Word Shooter, Order Rush, Kana Rain, UFO Catcher, Basket Count. Vé thắng mang ra quầy đổi quà. Kết quả ghi vào hồ sơ học, cùng chỗ với các bài hội thoại.
 
-Bọn mình không thêm máy thứ bảy trên bài đăng. Ảnh quầy quà cũ có người chơi người lớn, đã bỏ. Bài này là thẻ CẦN ẢNH MỚI. Cận cảnh gắp thú vẫn chờ quay.
+Bọn mình không thêm máy thứ bảy trên bài đăng. Ảnh quầy trong bài là quầy đổi quà trong game, người chơi là một bé. Cận cảnh gắp thú vẫn chờ quay nếu muốn clip.
 
 #NihongoLife #HocTiengNhat #GameCenter #KanaMatch #HibariCho"""),
     dict(week=9, slug="03-dao-midori", dow=5, kicker="Đảo Midori", layout="type",
          lines=["Đảo Midori", "cuốc, gieo, câu cá"],
-         sub="Ảnh đảo chưa có trong bản đăng. Dưới đây là việc thật trong game.",
-         cta="Ảnh sẽ đăng khi quay xong", meta="Chưa có hình giả",
-         shot="", pos="center", zoom="1",
-         bullets=["Mua đúng cuốc, xẻng, bình tưới", "Gieo, tưới, rồi mới thu", "Câu cá cần có cần câu"],
+         sub="Bé cầm cuốc trên luống. Gieo và câu là việc tiếp theo.",
+         cta="Đảo mở ở 320 trí tuệ với tài khoản", meta="Midori",
+         shot="", pos="center 42%", zoom="1.04",
          footage=[
              ("6 giây", "Nhìn toàn đảo", "Từ cao, trời trong", "Đảo Midori.", "Không dùng ảnh phố để thế."),
              ("8 giây", "Xới và gieo", "Thấy nông cụ trên tay", "Không làm tay không.", "Công cụ hao độ bền khi làm xong."),
              ("8 giây", "Câu cá", "Quăng phao, kéo đúng lúc", "Kéo bằng F.", "Kéo sớm thì không có cá."),
          ],
-         hook="Đảo Midori có nông trại và chỗ câu. Ảnh thật sẽ đăng khi quay xong.",
-         caption="""Đảo Midori có nông trại và chỗ câu. Ảnh thật sẽ đăng khi quay xong.
+         hook="Đảo Midori có nông trại và chỗ câu.",
+         caption="""Đảo Midori có nông trại và chỗ câu.
 
 Bài này cố ý không ghép một cảnh khác. Việc trong game, với tài khoản: đảo mở ở 320 trí tuệ, sau buổi Game Center với Kim. Trồng trọt cần mua đúng cuốc, xẻng hoặc bình tưới. Làm dở thì ruộng không đổi và không mất độ bền. Câu cá cần cần câu. Kéo đúng lúc mới có cá. Cá vào balo, bán được ở cửa hàng trên đảo.
 
-Khách ngoại tuyến vào đảo được. File ảnh đảo trong repo hiện chưa tải đủ nên bọn mình không dùng.
+Khách ngoại tuyến vào đảo được. Ảnh trong bài là luống trên đảo, người chơi là một bé.
 
 #NihongoLife #HocTiengNhat #DaoMidori #NongTrai #HibariCho"""),
 
@@ -575,7 +574,7 @@ HUD có sức khỏe, thể lực, no, khát, tỉnh táo. Chạy tốn thể l�
          hook="Chưa kịp gõ chat? Giữ E và chào bằng một câu có sẵn.",
          caption="""Chưa kịp gõ chat? Giữ E và chào bằng một câu có sẵn.
 
-Vòng biểu cảm gắn với câu tiếng Nhật. Dùng khi đứng cạnh người khác hoặc chỉ để tập miệng. Ảnh vòng cũ có người chơi người lớn, đã bỏ. Bài này là thẻ CẦN ẢNH MỚI cho tới khi chụp lại với một bé.
+Vòng biểu cảm gắn với câu tiếng Nhật. Dùng khi đứng cạnh người khác hoặc chỉ để tập miệng. Ảnh trong bài là vòng biểu cảm trong game, bé đang chọn một câu.
 
 Chat chữ và voice là cửa khác, cần tài khoản và bản máy tính. Biểu cảm thì làm được cả khi chơi một mình.
 

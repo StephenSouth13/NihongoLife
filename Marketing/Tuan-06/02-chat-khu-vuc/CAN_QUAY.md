@@ -1,14 +1,11 @@
 # Cần quay
 
-Ảnh đăng Facebook của bài này là thẻ chữ ghi CẦN ẢNH MỚI, vì chưa có ảnh nhân vật bé hoặc cảnh này.
-Ảnh cũ đã bỏ: `Bao_Cao/online-regression/chat_area.jpg`. Trong đó là nhân vật người lớn trước khi đổi sang tám bé.
-
+Ảnh đăng Facebook của bài này dùng ảnh chụp thật: `Marketing/HinhAnh/Online-GiaoTiep/chat.jpg`.
 
 Video chưa có trong git. Quay bằng `TrailerReel` / test `Trailer_RecordFrames`. Khung hình và mp4 để ở `D:/VTC_Academy/NihongoLife/_work/marketing/`. Không commit file nặng.
 
 | Thời lượng | Cảnh | Góc máy | Phụ đề | Ghi chú |
 |---|---|---|---|---|
-| 8 giây | Nhân vật bé đang chọn | Haruto là mặc định, hoặc bé đang chọn | CẦN ẢNH MỚI | Không dùng lại ảnh người lớn Tanaka/Remy. |
 | 8 giây | Mở chat khu vực | UI thật, đã cắt banner dev | Một kênh cho người đang online. | Không gõ mật khẩu, không gõ tên người thật ngoài đội. |
 
 Không chèn UI giả, không thêm điểm, không thêm người chơi không có trên màn hình.

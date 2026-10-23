@@ -10,7 +10,7 @@ Mốc tuần (là mục tiêu, không phải số đã đạt): Mốc: 30 ngư�
 
 - Long: Chuẩn bị bản build để gửi người thử (web hoặc PC). Ghi máy yếu cần biết trước: WebGL nặng.
 - Huy: Đăng bài mời. Thu tên + máy (web/PC) bằng form hoặc tin nhắn. Không hứa quà nếu chưa có quà.
-- Dũng: Chụp menu và màn chọn tám bé (Haruto mặc định). Không dùng `01_menu.png` — model cũ.
+- Dũng: Ảnh màn chọn nhân vật đã có: Haruto đang được chọn. Không dùng `01_menu.png`.
 
 ## Bài đăng
 

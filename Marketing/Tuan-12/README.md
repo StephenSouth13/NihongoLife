@@ -10,7 +10,7 @@ Mốc tuần (là mục tiêu, không phải số đã đạt): Buổi tổng k�
 
 - Long: Xuất số UTM 12 tuần. Viết 5 dòng «tháng sau làm gì» chỉ gồm việc đã có người nhận.
 - Huy: Đăng bài tổng kết và bài giải thưởng đúng chữ trên giấy khen. Không thêm giải khác.
-- Dũng: Gói 10 khung với tám bé (phố, hội thoại, thi, tàu, Game Center, menu chọn nhân vật). Không gửi lại ảnh Tanaka/Remy.
+- Dũng: Ảnh sạch đã nằm ở Marketing/HinhAnh. Không gửi ảnh Tanaka/Remy.
 
 ## Bài đăng
 

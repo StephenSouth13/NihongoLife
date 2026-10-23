@@ -9,7 +9,7 @@ Mốc tuần (là mục tiêu, không phải số đã đạt): Mốc: 20 ngư�
 ## Việc của từng người
 
 - Long: Liệt kê 6 máy đúng tên trong game lên một ghi chú ngắn để caption không bịa thêm trò.
-- Huy: Bài Game Center và bài đảo là thẻ CẦN ẢNH MỚI. Không ghép phố hay ảnh người lớn vào đảo.
+- Huy: Đăng Game Center và đảo bằng ảnh trong Marketing/HinhAnh. Ảnh đảo là luống trên Midori, không lấy phố thế vào.
 - Dũng: Quay đảo: cuốc, gieo, tưới, câu cá. Khung hình để ổ D, không commit video.
 
 ## Bài đăng
@@ -28,5 +28,5 @@ Mở thư mục bài, đọc `chi-tiet.md` (giờ đăng, ba hook, cách trả l
 
 ### 26/12 · 03-dao-midori
 
-- Hook: Đảo Midori có nông trại và chỗ câu. Ảnh thật sẽ đăng khi quay xong.
+- Hook: Đảo Midori có nông trại và chỗ câu.
 - File: chi-tiet.md, caption.txt, fb-1080.png, fb-1350.png, CAN_QUAY.md

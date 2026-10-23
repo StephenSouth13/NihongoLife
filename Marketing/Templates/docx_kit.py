@@ -1011,7 +1011,7 @@ def build_twelve(toc):
         "Học tiếng Nhật bằng cách sống ở Nhật.",
         "26.10.2026  —  17.01.2027",
         "Cộng đồng mở  ·  VTC Academy",
-        ROOT / "Marketing/HinhAnh/BoiCanh/pho-hoang-hon.jpg",
+        ROOT / "Marketing/HinhAnh/BoiCanh/pho-spawn.png",
     )
     b.start_body()
     b.toc(toc)

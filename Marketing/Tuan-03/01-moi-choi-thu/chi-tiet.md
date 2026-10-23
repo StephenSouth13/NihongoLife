@@ -57,7 +57,7 @@ Việc người đọc làm tiếp: một hành động. Nếu CTA còn là mã 
 
 ## Hình và cảnh
 
-- Ảnh đăng dùng nền `Marketing/HinhAnh/BoiCanh/pho-ngay.jpg`.
+- Ảnh đăng dùng nền `Marketing/HinhAnh/BoiCanh/pho-spawn.png`.
 - Khung chữ: nhãn «Beta kín», headline «Muốn chơi thử / cùng bọn mình?», dòng phụ «Một nhóm nhỏ, trước khi mở rộng.».
 - Font Montserrat. Nền chữ là đêm `#0B0F17`, nhãn vàng `#F7BD3D`, lấy từ UiTheme.
 - Không thêm sao, không thêm số người chơi, không logo kỳ thi.

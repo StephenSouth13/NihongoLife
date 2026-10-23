@@ -4,7 +4,7 @@ Bộ này là lịch làm việc, không phải báo cáo thành tích. Mọi co
 
 Câu của game, giữ nguyên trên mọi bài: **học tiếng Nhật bằng cách sống ở Nhật.**
 
-![Phố Hibari-chō lúc hoàng hôn, không có nhân vật cận](../../../Marketing/HinhAnh/BoiCanh/pho-hoang-hon.jpg)
+![Haruto đứng giữa phố Hibari-chō](../../../Marketing/HinhAnh/BoiCanh/pho-spawn.png)
 
 ## 1. Mục tiêu
 
@@ -112,7 +112,7 @@ Hai mươi tư hướng dưới đây đã được xếp vào lịch. Hook là 
 | 29 | Khoe một câu bạn vừa nói được. | Chỉ đăng lại khi được phép |
 | 30 | Phần học cốt lõi vẫn miễn phí. | MIT, chưa có cửa hàng |
 
-Ảnh hội thoại cũ có nhân vật người lớn (Tanaka/Remy) đã bỏ. Bài hội thoại trên fanpage là thẻ **CẦN ẢNH MỚI** cho tới khi có khung với một trong tám bé.
+Ảnh hội thoại trên fanpage là khung trong game với một trong tám bé (Haruto mặc định). File nằm ở `Marketing/HinhAnh/UI-Menu/hoi-thoai.png`.
 
 ## 6. Mười hai tuần
 
@@ -216,7 +216,7 @@ Tách bài luyện đề và nói chuyện online.
 
 Mốc mục tiêu: 10 người làm Reading hoặc Listening; một buổi voice hoặc chat có người ngoài đội.
 
-Ảnh bàn thi cũ có nhân vật người lớn đã bỏ. Cần chụp lại lớp Hibari với bé đang làm bài.
+Ảnh lớp và bài thi là chụp Play Mode hiện tại, người chơi là bé. File nằm ở `Marketing/HinhAnh/Thi-JLPT-IELTS/`.
 
 ### Tuần 9 · 21–27/12 · Game Center và đảo
 
@@ -365,7 +365,7 @@ Trang đội ngũ đang sống: https://website-the-next-generation-o323.vercel.
 | Nhạc CC0 | `Docs/AUDIO_CREDITS.md` |
 | Giấy phép MIT | `LICENSE` |
 
-Ảnh đảo và ảnh tám bé trong `Bao_Cao/character-regression/` đang là con trỏ Git LFS, chưa có pixel trên máy này. Những bài chưa có ảnh đúng người chơi là thẻ chữ ghi CẦN ẢNH MỚI. Không lấy cảnh khác thế vào. Danh sách quay nằm cạnh caption, file `CAN_QUAY.md`. Ảnh còn dùng nằm ở `Marketing/HinhAnh/`.
+Ảnh đăng lấy từ bản Play Mode của tám bé, đã chép vào `Marketing/HinhAnh/`. Video clip vẫn để ở ổ D khi nào quay; bài nào cần clip thì có `CAN_QUAY.md`. Không lấy cảnh phố thế cho đảo.
 
 ## 13. Sau mười hai tuần
 

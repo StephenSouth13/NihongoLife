@@ -4,7 +4,7 @@ Dành cho anh Huy khi đăng. Giờ Việt Nam (ICT). Chân dung là người gi
 
 ## Mục tiêu
 
-Đảo Midori có nông trại và chỗ câu. Ảnh thật sẽ đăng khi quay xong.
+Đảo Midori có nông trại và chỗ câu.
 
 Bài nằm trong tuần 09. Người đọc xong phải làm được một việc: hiểu câu trong caption, hoặc bấm đúng chỗ (link, bình luận, giờ chơi). Không xin họ «ủng hộ fanpage» suông.
 
@@ -15,7 +15,7 @@ Bài nằm trong tuần 09. Người đọc xong phải làm được một vi�
 ## Định dạng
 
 - Kênh chính: Facebook fanpage.
-- Ảnh vuông 1080 và ảnh dọc 1080×1350. Thẻ chữ có dòng CẦN ẢNH MỚI. Không dùng ảnh nhân vật cũ.
+- Ảnh vuông 1080 và ảnh dọc 1080×1350.
 - File trong thư mục: caption.txt, fb-1080.png, fb-1350.png, chi-tiet.md, CAN_QUAY.md.
 - TikTok và nhóm học chỉ dùng lại caption này khi lịch Excel bảo đăng, và khi đã có hình thật nếu dòng đó ghi «Cần quay».
 
@@ -38,33 +38,30 @@ Dùng cách 1 trên Facebook. Cách 2 khi đăng lại story. Cách 3 khi đọc
 Dán nguyên khối dưới đây sau khi thay mã link. Bản giống `caption.txt`.
 
 ```
-Đảo Midori có nông trại và chỗ câu. Ảnh thật sẽ đăng khi quay xong.
+Đảo Midori có nông trại và chỗ câu.
 
 Bài này cố ý không ghép một cảnh khác. Việc trong game, với tài khoản: đảo mở ở 320 trí tuệ, sau buổi Game Center với Kim. Trồng trọt cần mua đúng cuốc, xẻng hoặc bình tưới. Làm dở thì ruộng không đổi và không mất độ bền. Câu cá cần cần câu. Kéo đúng lúc mới có cá. Cá vào balo, bán được ở cửa hàng trên đảo.
 
-Khách ngoại tuyến vào đảo được. File ảnh đảo trong repo hiện chưa tải đủ nên bọn mình không dùng.
+Khách ngoại tuyến vào đảo được. Ảnh trong bài là luống trên đảo, người chơi là một bé.
 
 #NihongoLife #HocTiengNhat #DaoMidori #NongTrai #HibariCho
 ```
 
 ## CTA
 
-**Ảnh sẽ đăng khi quay xong**
+**Đảo mở ở 320 trí tuệ với tài khoản**
 
 Việc người đọc làm tiếp: một hành động. Nếu CTA còn là mã `{{LINK_*}}` thì chưa được đăng. Link đội ngũ đã có thì mới dán URL đó. Không bịa link chơi.
 
 ## Hình và cảnh
 
-- Ảnh đăng dùng nền `(không dùng ảnh — thẻ chữ)`.
-- Khung chữ: nhãn «Đảo Midori», headline «Đảo Midori / cuốc, gieo, câu cá», dòng phụ «Ảnh đảo chưa có trong bản đăng. Dưới đây là việc thật trong game.».
+- Ảnh đăng dùng nền `Marketing/HinhAnh/BoiCanh/dao-nong-trai.png`.
+- Khung chữ: nhãn «Đảo Midori», headline «Đảo Midori / cuốc, gieo, câu cá», dòng phụ «Bé cầm cuốc trên luống. Gieo và câu là việc tiếp theo.».
 - Font Montserrat. Nền chữ là đêm `#0B0F17`, nhãn vàng `#F7BD3D`, lấy từ UiTheme.
 - Không thêm sao, không thêm số người chơi, không logo kỳ thi.
-- Nhãn vàng trên thẻ: CẦN ẢNH MỚI. Không đăng `(chưa có file pixel)` — nhân vật trong ảnh đó không còn là người chơi.
-- Người chơi hiện tại là tám bé: Haruto (mặc định), Yui, Sota, Hina, Riku, Mio, Yuto, Sakura. Prefab `Resources/Characters/Kids/NL_kid_*`.
 - Ba dòng việc trên thẻ là việc có trong game: cuốc/xẻng/bình tưới, gieo rồi tưới, câu cá cần cần câu.
 - Video chưa có trong git. Làm theo CAN_QUAY.md. Khung hình để ổ D, không commit mp4.
 - Cảnh cần quay:
-- 8 giây · Nhân vật bé đang chọn · Haruto là mặc định · phụ đề: CẦN ẢNH MỚI
 - 6 giây · Nhìn toàn đảo · Từ cao, trời trong · phụ đề: Đảo Midori.
 - 8 giây · Xới và gieo · Thấy nông cụ trên tay · phụ đề: Không làm tay không.
 - 8 giây · Câu cá · Quăng phao, kéo đúng lúc · phụ đề: Kéo bằng F.
