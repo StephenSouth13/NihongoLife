@@ -14,19 +14,19 @@ Mốc tuần (là mục tiêu, không phải số đã đạt): Mốc: 10 ngư�
 
 ## Bài đăng
 
-Mở thư mục bài, copy `caption.txt`, đăng ảnh `fb-1080.png` (vuông) hoặc `fb-1350.png` (dọc). Story dùng `story-1920.png` nếu có. Thay `{{LINK_CHOI}}`, `{{LINK_FANPAGE}}`, `{{LINK_DISCORD}}` trước khi dán.
+Mở thư mục bài, đọc `chi-tiet.md` (giờ đăng, ba hook, cách trả lời, cách đo), rồi copy `caption.txt`. Ảnh `fb-1080.png` hoặc `fb-1350.png`. Story dùng `story-1920.png` nếu có. Thay `{{LINK_CHOI}}`, `{{LINK_FANPAGE}}`, `{{LINK_DISCORD}}` trước khi dán.
 
 ### 15/12 · 01-dang-ielts
 
 - Hook: Lớp Hibari có bài luyện viết theo dạng IELTS.
-- File: caption.txt, fb-1080.png, fb-1350.png, story-1920.png
+- File: chi-tiet.md, caption.txt, fb-1080.png, fb-1350.png, story-1920.png
 
 ### 17/12 · 02-ket-ban
 
 - Hook: Kết bạn trong phố, rồi rủ nhau một câu tiếng Nhật.
-- File: caption.txt, fb-1080.png, fb-1350.png, CAN_QUAY.md
+- File: chi-tiet.md, caption.txt, fb-1080.png, fb-1350.png, CAN_QUAY.md
 
 ### 19/12 · 03-luyen-noi
 
 - Hook: Có bài luyện nói trong game. Phòng với giáo viên thì quay riêng, trên PC.
-- File: caption.txt, fb-1080.png, fb-1350.png, CAN_QUAY.md
+- File: chi-tiet.md, caption.txt, fb-1080.png, fb-1350.png, CAN_QUAY.md

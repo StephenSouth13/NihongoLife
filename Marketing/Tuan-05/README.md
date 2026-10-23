@@ -14,19 +14,19 @@ Mốc tuần (là mục tiêu, không phải số đã đạt): Mốc tuần ra 
 
 ## Bài đăng
 
-Mở thư mục bài, copy `caption.txt`, đăng ảnh `fb-1080.png` (vuông) hoặc `fb-1350.png` (dọc). Story dùng `story-1920.png` nếu có. Thay `{{LINK_CHOI}}`, `{{LINK_FANPAGE}}`, `{{LINK_DISCORD}}` trước khi dán.
+Mở thư mục bài, đọc `chi-tiet.md` (giờ đăng, ba hook, cách trả lời, cách đo), rồi copy `caption.txt`. Ảnh `fb-1080.png` hoặc `fb-1350.png`. Story dùng `story-1920.png` nếu có. Thay `{{LINK_CHOI}}`, `{{LINK_FANPAGE}}`, `{{LINK_DISCORD}}` trước khi dán.
 
 ### 24/11 · 01-ra-mat-web
 
 - Hook: Hôm nay chơi được trên web và trên máy tính.
-- File: caption.txt, fb-1080.png, fb-1350.png, story-1920.png
+- File: chi-tiet.md, caption.txt, fb-1080.png, fb-1350.png, story-1920.png
 
 ### 26/11 · 02-hoang-hon
 
 - Hook: Ở lại phố tới lúc đèn đường bật.
-- File: caption.txt, fb-1080.png, fb-1350.png, CAN_QUAY.md
+- File: chi-tiet.md, caption.txt, fb-1080.png, fb-1350.png, CAN_QUAY.md
 
 ### 28/11 · 03-lop-hibari
 
 - Hook: Ngồi vào lớp Hibari và luyện một đề, ngay trong game.
-- File: caption.txt, fb-1080.png, fb-1350.png
+- File: chi-tiet.md, caption.txt, fb-1080.png, fb-1350.png

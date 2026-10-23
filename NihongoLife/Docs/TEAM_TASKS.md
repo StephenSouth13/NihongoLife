@@ -1532,3 +1532,7 @@ Không sửa gameplay, cảnh, prefab, `TrailerReel.cs` hay test quay phim. Máy
 Đã thêm bộ đăng bài ở `Marketing/`: kế hoạch Markdown + PDF, lịch Excel từng ngày từ 26/10/2026, caption và ảnh Facebook 12 tuần từ ảnh chụp thật trong repo, press kit, màu theo `UiTheme`. Ảnh đảo và một số ảnh arcade trong checkout chỉ là con trỏ Git LFS nên bài đảo là thẻ chữ, kèm `CAN_QUAY.md`, không ghép cảnh khác.
 
 Bản kế hoạch cũng nằm ở `Docs/marketing/KE_HOACH_MARKETING_12_TUAN.md`. PDF và Excel giao báo cáo nằm ở `Bao_Cao/marketing/`. Không có secret, không có số người chơi bịa.
+
+## Cập nhật (2026-10-23, Grok) — Chi tiết bài và kế hoạch năm
+
+Thêm `chi-tiet.md` cho 36 bài (giờ đăng, ba hook, từ khoá, cách trả lời, cách đo) và `Marketing/TuKhoa/`. Thêm `Marketing/KeHoachNam/` từ 18/01/2027 đến 16/01/2028: bốn mùa, sự kiện, checklist Long/Huy/Dũng, PDF cùng kiểu 12 tuần, sheet `Nam` trong Excel. Không sửa gameplay. Ngày JLPT ghi là cửa sổ chuẩn bị, không phải lịch thi chính thức.

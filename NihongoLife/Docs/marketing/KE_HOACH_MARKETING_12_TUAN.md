@@ -366,3 +366,9 @@ Trang đội ngũ đang sống: https://website-the-next-generation-o323.vercel.
 | Giấy phép MIT | `LICENSE` |
 
 Ảnh đảo và một số ảnh arcade trong repo đang là con trỏ Git LFS, chưa có pixel. Những bài đó dùng thẻ chữ hoặc ảnh cảnh khác đúng tên cảnh. Danh sách quay nằm cạnh caption, file `CAN_QUAY.md`.
+
+## 13. Sau mười hai tuần
+
+Kế hoạch năm nằm ở `Marketing/KeHoachNam/`, từ 18/01/2027 đến 16/01/2028. File đó sẽ được sửa thường xuyên. Đừng chép số của 12 tuần sang năm nếu ô vẫn là «chưa đo».
+
+Mỗi bài Facebook có `chi-tiet.md`: giờ đăng, ba câu mở, cách trả lời, cách đo. Từ khoá cả năm nằm ở `Marketing/TuKhoa/`.

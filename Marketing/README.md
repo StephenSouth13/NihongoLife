@@ -7,7 +7,7 @@ Lịch bắt đầu **thứ Hai 26/10/2026**, hết **chủ Nhật 17/01/2027**.
 ## Cách đăng một bài Facebook
 
 1. Mở `Tuan-XX/README.md` xem chủ đề tuần và việc của Long, Huy, Dũng.
-2. Vào thư mục bài. Mở `caption.txt`, thay các mã link rồi copy.
+2. Vào thư mục bài. Đọc `chi-tiet.md` (giờ, ba hook, trả lời, cách đo). Mở `caption.txt`, thay các mã link rồi copy.
 3. Đăng `fb-1080.png` (vuông) hoặc `fb-1350.png` (dọc 4:5). Story dùng `story-1920.png` nếu thư mục có file đó.
 4. Bài nào có `CAN_QUAY.md` thì ảnh tĩnh đăng được, video thì chưa. Đừng ghép cảnh giả.
 
@@ -18,7 +18,9 @@ Mã link nằm ở `LINKS.md`. Trang đội ngũ đã có URL thật. Link chơi
 | Chỗ | Việc |
 |---|---|
 | `Brand/` | Màu lấy từ UI game, font Montserrat (OFL), cách dùng logo, giọng văn |
-| `KeHoach/` | Kế hoạch 12 tuần (Markdown + PDF) và lịch Excel từng ngày |
+| `KeHoach/` | Kế hoạch 12 tuần (Markdown + PDF) và lịch Excel. Sheet `Nam` là năm sau đó |
+| `KeHoachNam/` | Kế hoạch 18/01/2027–16/01/2028, bốn mùa, sự kiện, checklist. Sẽ sửa thường xuyên |
+| `TuKhoa/` | Ngân hàng từ khoá: cốt lõi, đuôi dài, Facebook, TikTok, YouTube, Google |
 | `Tuan-01` … `Tuan-12` | Bài sẵn caption và ảnh |
 | `PressKit/` | Mô tả Việt / Anh, tờ sự thật, chỗ trống tiểu sử |
 | `Templates/` | HTML, CSS và script dựng lại ảnh cùng PDF |
@@ -32,7 +34,7 @@ Từ gốc repo:
 python3 Marketing/Templates/regenerate.py
 ```
 
-Script đọc `Templates/posts.py` và `KeHoach/KeHoach_Marketing_12_Tuan.md`, ghi đè caption, ảnh PNG, Excel và PDF. Sửa câu ở `posts.py` rồi chạy lại. Sửa tay `caption.txt` sẽ mất nếu chạy lại script.
+Script đọc `Templates/posts.py`, `chi_tiet.py`, `tukhoa.py`, `nam.py` và kế hoạch 12 tuần, rồi ghi đè caption, `chi-tiet.md`, ảnh PNG, Excel, PDF 12 tuần, PDF năm, `TuKhoa/Ngan_Hang_Tu_Khoa.md` và checklist trong `KeHoachNam/`. Sửa câu ở các file Python đó rồi chạy lại. Sửa tay caption, chi tiết bài hoặc checklist sẽ mất nếu chạy lại script. File `KeHoachNam/KeHoach_Nam_2026-2027.md` viết tay; script chỉ in lại PDF.
 
 Chỉ PDF: `--only-pdf`. Chỉ lịch và chữ, không render ảnh: `--skip-images`.
 

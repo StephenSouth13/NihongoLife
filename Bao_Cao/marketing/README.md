@@ -9,3 +9,5 @@ Trong thư mục này, sau khi chạy script:
 - `CREDITS.md`
 
 Video và khung hình thô không commit. Xem `Marketing/Video/README.md`. Ổ để file: `D:/VTC_Academy/NihongoLife/_work/marketing/`.
+
+Kế hoạch năm (sau 12 tuần) nằm ở `Marketing/KeHoachNam/`, kèm PDF. Sheet `Nam` nằm trong file Excel của thư mục này sau khi chạy script.

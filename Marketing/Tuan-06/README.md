@@ -14,19 +14,19 @@ Mốc tuần (là mục tiêu, không phải số đã đạt): Mốc: một bu�
 
 ## Bài đăng
 
-Mở thư mục bài, copy `caption.txt`, đăng ảnh `fb-1080.png` (vuông) hoặc `fb-1350.png` (dọc). Story dùng `story-1920.png` nếu có. Thay `{{LINK_CHOI}}`, `{{LINK_FANPAGE}}`, `{{LINK_DISCORD}}` trước khi dán.
+Mở thư mục bài, đọc `chi-tiet.md` (giờ đăng, ba hook, cách trả lời, cách đo), rồi copy `caption.txt`. Ảnh `fb-1080.png` hoặc `fb-1350.png`. Story dùng `story-1920.png` nếu có. Thay `{{LINK_CHOI}}`, `{{LINK_FANPAGE}}`, `{{LINK_DISCORD}}` trước khi dán.
 
 ### 01/12 · 01-gio-choi-chung
 
 - Hook: Tối nay vào phố cùng nhau. Một giờ, cho đỡ vắng.
-- File: caption.txt, fb-1080.png, fb-1350.png, story-1920.png, CAN_QUAY.md
+- File: chi-tiet.md, caption.txt, fb-1080.png, fb-1350.png, story-1920.png, CAN_QUAY.md
 
 ### 03/12 · 02-chat-khu-vuc
 
 - Hook: Một kênh chat cho người đang đứng trong phố.
-- File: caption.txt, fb-1080.png, fb-1350.png, CAN_QUAY.md
+- File: chi-tiet.md, caption.txt, fb-1080.png, fb-1350.png, CAN_QUAY.md
 
 ### 05/12 · 03-giu-t
 
 - Hook: Giữ T để nói. Người đứng gần nghe thấy.
-- File: caption.txt, fb-1080.png, fb-1350.png, CAN_QUAY.md
+- File: chi-tiet.md, caption.txt, fb-1080.png, fb-1350.png, CAN_QUAY.md
