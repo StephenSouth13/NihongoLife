@@ -3,6 +3,7 @@ using NihongoLife.Player;
 using NihongoLife.Save;
 using NihongoLife.World;
 using NUnit.Framework;
+using UnityEngine;
 
 namespace NihongoLife.Tests
 {
