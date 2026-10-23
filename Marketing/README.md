@@ -18,9 +18,9 @@ Mã link nằm ở `LINKS.md`. Trang đội ngũ đã có URL thật. Link chơi
 | Chỗ | Việc |
 |---|---|
 | `Brand/` | Màu lấy từ UI game, font Montserrat (OFL), cách dùng logo, giọng văn |
-| `KeHoach/` | Kế hoạch 12 tuần (Markdown + PDF) và lịch Excel. Sheet `Nam` là năm sau đó |
-| `KeHoachNam/` | Kế hoạch 18/01/2027–16/01/2028, bốn mùa, sự kiện, checklist. Sẽ sửa thường xuyên |
-| `TuKhoa/` | Ngân hàng từ khoá: cốt lõi, đuôi dài, Facebook, TikTok, YouTube, Google |
+| `KeHoach/` | Kế hoạch 12 tuần: Markdown, PDF, Word (`.docx`) và lịch Excel. Sheet `Nam` là năm sau đó |
+| `KeHoachNam/` | Kế hoạch 18/01/2027–16/01/2028, bốn mùa, sự kiện, checklist. Có bản Word. Sẽ sửa thường xuyên |
+| `TuKhoa/` | Ngân hàng từ khoá: Markdown và Word. Cốt lõi, đuôi dài, Facebook, TikTok, YouTube, Google |
 | `Tuan-01` … `Tuan-12` | Bài sẵn caption và ảnh |
 | `PressKit/` | Mô tả Việt / Anh, tờ sự thật, chỗ trống tiểu sử |
 | `Templates/` | HTML, CSS và script dựng lại ảnh cùng PDF |
@@ -37,6 +37,8 @@ python3 Marketing/Templates/regenerate.py
 Script đọc `Templates/posts.py`, `chi_tiet.py`, `tukhoa.py`, `nam.py` và kế hoạch 12 tuần, rồi ghi đè caption, `chi-tiet.md`, ảnh PNG, Excel, PDF 12 tuần, PDF năm, `TuKhoa/Ngan_Hang_Tu_Khoa.md` và checklist trong `KeHoachNam/`. Sửa câu ở các file Python đó rồi chạy lại. Sửa tay caption, chi tiết bài hoặc checklist sẽ mất nếu chạy lại script. File `KeHoachNam/KeHoach_Nam_2026-2027.md` viết tay; script chỉ in lại PDF.
 
 Chỉ PDF: `--only-pdf`. Chỉ lịch và chữ, không render ảnh: `--skip-images`.
+
+Bản Word (bìa, mục lục, bảng): `python3 Marketing/Templates/docx_kit.py`. Font trong file là Montserrat. Máy chưa có font thì cài file trong `Brand/fonts/`.
 
 ## Luật khi viết thêm bài
 
