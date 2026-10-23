@@ -80,12 +80,17 @@ namespace NihongoLife.Tests
                 Vector3 look = p + Vector3.up * 1.4f;
                 for (int i = 0; i < 10; i++) yield return null;
                 try { npc.Interact(_player.gameObject); } catch (System.Exception e) { Debug.LogWarning($"[DialogueRec] {npc.NpcId} {e.Message}"); continue; }
-                for (int i = 0; i < 15; i++) yield return null;
+                for (int i = 0; i < 45; i++) yield return null;
                 var dm = DialogueManager.Instance;
+                if (dm != null && !dm.IsOpen)
+                {
+                    try { typeof(NPCController).GetMethod("StartFallbackDialogue", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance).Invoke(npc, new object[] { null }); } catch (System.Exception e) { Debug.LogWarning($"[DialogueRec] fallback {npc.NpcId}: {e.Message}"); }
+                    for (int i = 0; i < 10; i++) yield return null;
+                }
                 if (dm == null || !dm.IsOpen) { Debug.Log($"[DialogueRec] {npc.NpcId} no dialogue"); continue; }
                 string dir = Path.Combine(Root, $"{tag}_{npc.NpcId}"); Directory.CreateDirectory(dir);
                 int idx = 0;
-                for (int beat = 0; beat < 3 && dm.IsOpen; beat++)
+                for (int beat = 0; beat < 2 && dm.IsOpen; beat++)
                 {
                     for (int fr = 0; fr < 120; fr++)
                     {
@@ -114,7 +119,7 @@ namespace NihongoLife.Tests
             System.Func<string, Component> find = n => Object.FindObjectsByType<MonoBehaviour>(FindObjectsInactive.Include, FindObjectsSortMode.None).FirstOrDefault(m => m.GetType().Name == n);
             System.Action<object, string, object[]> call = (o, m, a) => { if (o == null) { Debug.Log($"[DialogueRec] missing target for {m}"); return; } try { o.GetType().GetMethod(m, System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.Static)?.Invoke(o, a); } catch (System.Exception e) { Debug.LogWarning($"[DialogueRec] {m}: {e.InnerException?.Message ?? e.Message}"); } };
             var beats = new (string id, System.Action open, System.Action close)[] {
-                ("ui_settings", () => call(find("SettingsUI"), "Show", null), () => call(find("SettingsUI"), "Hide", null)),
+                ("ui_settings", () => { var su = (object)find("SettingsUI") ?? hud?.GetType().GetField("_settingsUI", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance)?.GetValue(hud); Debug.Log($"[DialogueRec] settings target {su}"); call(su, "Show", null); }, () => call(find("SettingsUI"), "Hide", null)),
                 ("ui_inventory", () => call(hud, "SetInventoryVisible", new object[]{true}), () => call(hud, "SetInventoryVisible", new object[]{false})),
                 ("ui_map", () => call(find("WorldMapUI"), "SetVisible", new object[]{true}), () => call(find("WorldMapUI"), "SetVisible", new object[]{false})),
                 ("ui_journal", () => TaskJournalUI.Open(), () => TaskJournalUI.Close()),
