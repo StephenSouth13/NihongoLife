@@ -55,7 +55,7 @@ Việc người đọc làm tiếp: một hành động. Nếu CTA còn là mã 
 
 ## Hình và cảnh
 
-- Ảnh đăng dùng nền `Bao_Cao/ielts-productive/02_writing_examiner.jpg`.
+- Ảnh đăng dùng nền `Marketing/HinhAnh/Thi-JLPT-IELTS/ielts-viet.jpg`.
 - Khung chữ: nhãn «Dạng IELTS», headline «Luyện viết / theo dạng IELTS», dòng phụ «Bài trong game. Không phải bài thi thật.».
 - Font Montserrat. Nền chữ là đêm `#0B0F17`, nhãn vàng `#F7BD3D`, lấy từ UiTheme.
 - Không thêm sao, không thêm số người chơi, không logo kỳ thi.

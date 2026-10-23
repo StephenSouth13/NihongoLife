@@ -309,12 +309,14 @@ def render(post: dict, start) -> str:
     kind = "Ảnh vuông 1080 và ảnh dọc 1080×1350"
     if post.get("story"):
         kind += ", kèm story 1080×1920"
-    if post.get("layout") == "type":
+    if post.get("layout") == "need":
+        kind += ". Thẻ chữ có dòng CẦN ẢNH MỚI. Không dùng ảnh nhân vật cũ"
+    elif post.get("layout") == "type":
         kind += ". Nền là thẻ chữ, không có ảnh giả của đảo"
     files = ["caption.txt", "fb-1080.png", "fb-1350.png", "chi-tiet.md"]
     if post.get("story"):
         files.append("story-1920.png")
-    if post.get("footage"):
+    if post.get("footage") or post.get("layout") == "need":
         files.append("CAN_QUAY.md")
     shot = post.get("shot") or "(không dùng ảnh — thẻ chữ)"
     lines = " / ".join(post["lines"])
@@ -324,12 +326,19 @@ def render(post: dict, start) -> str:
         "Font Montserrat. Nền chữ là đêm `#0B0F17`, nhãn vàng `#F7BD3D`, lấy từ UiTheme.",
         "Không thêm sao, không thêm số người chơi, không logo kỳ thi.",
     ]
-    if post.get("layout") == "type":
+    if post.get("layout") == "need":
+        old = post.get("shot_source") or "ảnh cũ"
+        visual.append(f"Nhãn vàng trên thẻ: CẦN ẢNH MỚI. Không đăng `{old}` — nhân vật trong ảnh đó không còn là người chơi.")
+        visual.append("Người chơi hiện tại là tám bé: Haruto (mặc định), Yui, Sota, Hina, Riku, Mio, Yuto, Sakura. Prefab `Resources/Characters/Kids/NL_kid_*`.")
+    if post.get("slug") == "03-dao-midori":
         visual.append("Ba dòng việc trên thẻ là việc có trong game: cuốc/xẻng/bình tưới, gieo rồi tưới, câu cá cần cần câu.")
-    if post.get("footage"):
+    if post.get("footage") or post.get("layout") == "need":
         visual.append("Video chưa có trong git. Làm theo CAN_QUAY.md. Khung hình để ổ D, không commit mp4.")
         visual.append("Cảnh cần quay:")
-        for row in post["footage"]:
+        rows = list(post.get("footage") or [])
+        if post.get("layout") == "need":
+            rows.insert(0, ("8 giây", "Nhân vật bé đang chọn", "Haruto là mặc định", "CẦN ẢNH MỚI"))
+        for row in rows:
             visual.append(f"- {row[0]} · {row[1]} · {row[2]} · phụ đề: {row[3]}")
     else:
         visual.append("Bài này đăng bằng ảnh tĩnh đã có. Không cần footage mới để bấm đăng.")

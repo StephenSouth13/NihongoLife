@@ -106,7 +106,7 @@ Luật: không bịa số, không logo kỳ thi, không hứa tính năng chưa 
 
 | Hạn | Ngày | Người | Việc | Chỗ |
 |---|---|---|---|---|
-| T-10 | 21/10/2027 | Dũng | Quyết định dùng horizon_night hay hoãn. Không vẽ bí ngô. | `SuKien/Halloween` |
+| T-10 | 21/10/2027 | Dũng | Quyết định dùng Marketing/HinhAnh/BoiCanh/pho-dem.jpg hay hoãn. Không vẽ bí ngô. | `SuKien/Halloween` |
 | T-3 | 28/10/2027 | Huy | Caption không hứa sự kiện hóa trang trong game. | `SuKien/Halloween` |
 | T-0 | 31/10/2027 | Huy | Đăng 18:30 nếu còn ảnh. Không thì hoãn và ghi trên lịch. | `SuKien/Halloween` |
 | T+1 | 01/11/2027 | Long | Không đo riêng nếu bài hoãn. Ghi hoãn. | `SuKien/Halloween` |

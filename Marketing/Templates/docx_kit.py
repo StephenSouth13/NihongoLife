@@ -1011,7 +1011,7 @@ def build_twelve(toc):
         "Học tiếng Nhật bằng cách sống ở Nhật.",
         "26.10.2026  —  17.01.2027",
         "Cộng đồng mở  ·  VTC Academy",
-        ROOT / "docs/readme/horizon_dusk.jpg",
+        ROOT / "Marketing/HinhAnh/BoiCanh/pho-hoang-hon.jpg",
     )
     b.start_body()
     b.toc(toc)
@@ -1034,7 +1034,7 @@ def build_year(toc):
         "Từ 18/01/2027 đến 16/01/2028. Sửa sau mỗi tháng và sau mỗi sự kiện.",
         "18.01.2027  —  16.01.2028",
         "Cộng đồng mở  ·  VTC Academy",
-        ROOT / "docs/readme/horizon_day.jpg",
+        ROOT / "Marketing/HinhAnh/BoiCanh/pho-ngay.jpg",
     )
     b.start_body()
     b.toc(toc)
@@ -1082,7 +1082,7 @@ def build_keywords(toc):
         "Cốt lõi, đuôi dài, Facebook, TikTok, YouTube và câu người học gõ trên Google.",
         "Dùng kèm kế hoạch 12 tuần và kế hoạch năm",
         "Không phải số liệu  ·  không logo kỳ thi",
-        ROOT / "docs/readme/dialogue.jpg",
+        ROOT / "Marketing/HinhAnh/BoiCanh/pho-ngay.jpg",
     )
     b.start_body()
     b.toc(toc)

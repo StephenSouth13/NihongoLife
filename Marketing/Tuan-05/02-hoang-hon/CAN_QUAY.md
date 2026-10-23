@@ -1,6 +1,6 @@
 # Cần quay
 
-Ảnh đăng Facebook của bài này dùng ảnh chụp thật: `docs/readme/horizon_dusk.jpg`.
+Ảnh đăng Facebook của bài này dùng ảnh chụp thật: `Marketing/HinhAnh/BoiCanh/pho-hoang-hon.jpg`.
 
 Video chưa có trong git. Quay bằng `TrailerReel` / test `Trailer_RecordFrames`. Khung hình và mp4 để ở `D:/VTC_Academy/NihongoLife/_work/marketing/`. Không commit file nặng.
 

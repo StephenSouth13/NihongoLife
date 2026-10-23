@@ -17,6 +17,7 @@ Mã link nằm ở `LINKS.md`. Trang đội ngũ đã có URL thật. Link chơi
 
 | Chỗ | Việc |
 |---|---|
+| `HinhAnh/` | Ảnh nguồn đã lọc. Nhân vật cũ không nằm ở đây. Chỉ mục trong `HinhAnh/README.md` |
 | `Brand/` | Màu lấy từ UI game, font Montserrat (OFL), cách dùng logo, giọng văn |
 | `KeHoach/` | Kế hoạch 12 tuần: Markdown, PDF, Word (`.docx`) và lịch Excel. Sheet `Nam` là năm sau đó |
 | `KeHoachNam/` | Kế hoạch 18/01/2027–16/01/2028, bốn mùa, sự kiện, checklist. Có bản Word. Sẽ sửa thường xuyên |

@@ -98,7 +98,7 @@ def quantize(path: Path) -> None:
 
 
 def shot_uri(post: dict, build: Path) -> str:
-    if post.get("layout") == "type" or not post.get("shot"):
+    if post.get("layout") in ("type", "need") or not post.get("shot"):
         return "data:image/gif;base64,R0lGODlhAQABAAAAACwAAAAAAQABAAA="
     src = ROOT / post["shot"]
     trim = post.get("trim")
@@ -123,8 +123,10 @@ def card_html(post: dict, kind: str, shot: str) -> str:
         ) + "</div>"
     size = "size-s" if max(len(line) for line in post["lines"]) > 20 else ""
     cls = {"sq": "sq", "pt": "pt", "st": "st"}[kind]
-    if post.get("layout") == "type":
+    if post.get("layout") in ("type", "need"):
         cls += " type"
+    if post.get("layout") == "need":
+        cls += " need"
     return (CARD
             .replace("{{TITLE}}", html.escape(post["hook"]))
             .replace("{{CLASS}}", cls)
@@ -147,16 +149,24 @@ def write_posts(build: Path, images: bool, slugs: list[str] | None = None) -> No
         folder.mkdir(parents=True, exist_ok=True)
         (folder / "caption.txt").write_text(post["caption"].strip() + "\n", encoding="utf-8")
         (folder / "chi-tiet.md").write_text(render_chi_tiet(post, START), encoding="utf-8")
-        if post.get("footage"):
+        if post.get("footage") or post.get("layout") == "need":
+            rows_src = list(post.get("footage") or [])
+            if post.get("layout") == "need":
+                rows_src.insert(0, (
+                    "8 giây", "Nhân vật bé đang chọn", "Haruto là mặc định, hoặc bé đang chọn",
+                    "CẦN ẢNH MỚI", "Không dùng lại ảnh người lớn Tanaka/Remy.",
+                ))
             rows = "\n".join(
                 f"| {html.escape(a)} | {html.escape(b)} | {html.escape(c)} | {html.escape(d)} | {html.escape(e)} |"
-                for a, b, c, d, e in post["footage"]
+                for a, b, c, d, e in rows_src
             )
             shot = post.get("shot") or "(không có — thẻ chữ, không lấy cảnh khác thế vào)"
+            old = post.get("shot_source") or ""
+            dropped = f"\nẢnh cũ đã bỏ: `{old}`. Trong đó là nhân vật người lớn trước khi đổi sang tám bé.\n" if post.get("layout") == "need" and old and not old.startswith("(") else ""
             (folder / "CAN_QUAY.md").write_text(
                 f"""# Cần quay
 
-Ảnh đăng Facebook của bài này {'là thẻ chữ, vì repo chưa có ảnh thật của cảnh này' if post.get('layout') == 'type' else 'dùng ảnh chụp thật: `' + shot + '`'}.
+Ảnh đăng Facebook của bài này {'là thẻ chữ ghi CẦN ẢNH MỚI, vì chưa có ảnh nhân vật bé hoặc cảnh này' if post.get('layout') == 'need' else 'dùng ảnh chụp thật: `' + shot + '`'}.{dropped}
 
 Video chưa có trong git. Quay bằng `TrailerReel` / test `Trailer_RecordFrames`. Khung hình và mp4 để ở `D:/VTC_Academy/NihongoLife/_work/marketing/`. Không commit file nặng.
 
@@ -175,7 +185,10 @@ Không chèn UI giả, không thêm điểm, không thêm người chơi không 
             jobs.append(("st", "story-1920.png", 1080, 1920))
         for kind, name, w, h in jobs:
             html_path = build / f"{post['week']:02d}-{post['slug']}-{kind}.html"
-            html_path.write_text(card_html(post, kind, shot_uri(post, build)), encoding="utf-8")
+            page = card_html(post, kind, shot_uri(post, build))
+            # HTML nằm trong thư mục tạm. CSS phải trỏ tuyệt đối, nếu không Chrome vẽ trang trắng và hiện cả dòng CẦN ẢNH MỚI.
+            page = page.replace('href="cards.css"', f'href="{(TPL / "cards.css").resolve().as_uri()}"')
+            html_path.write_text(page, encoding="utf-8")
             dest = folder / name
             render_png(html_path, dest, w, h)
             quantize(dest)
@@ -242,7 +255,8 @@ def calendar_rows() -> list[dict]:
                     "topic": post["kicker"], "hook": post["hook"],
                     "caption": f"{folder}/caption.txt", "asset": asset,
                     "cta": post["cta"], "owner": "Huy",
-                    "kpi": week["kpi"], "status": "Sẵn sàng — điền link",
+                    "kpi": week["kpi"],
+                    "status": "Cần quay" if post.get("layout") == "need" else "Sẵn sàng — điền link",
                 })
             if dow == 0:
                 rows.append({
@@ -284,7 +298,7 @@ def calendar_rows() -> list[dict]:
                     "asset": f"Tuan-{n:02d}/{hero['slug']}/CAN_QUAY.md" if need or hero.get("footage") else f"Tuan-{n:02d}/{hero['slug']}/story-1920.png",
                     "cta": "Xem caption, đừng thêm số", "owner": "Dũng quay · Huy đăng khi có hình",
                     "kpi": week["kpi"],
-                    "status": "Cần quay" if hero.get("footage") or hero.get("layout") == "type" else "Dùng story khi đã quay lời",
+                    "status": "Cần quay" if hero.get("footage") or hero.get("layout") in ("type", "need") else "Dùng story khi đã quay lời",
                 })
             if dow == 6:
                 rows.append({
@@ -412,7 +426,7 @@ def write_pdf() -> None:
     body = markdown.markdown(src, extensions=["tables", "extra", "sane_lists"])
     cover = """
     <section class="cover">
-      <img class="bg" src="file:///workspace/docs/readme/horizon_dusk.jpg" alt="">
+      <img class="bg" src="file:///workspace/Marketing/HinhAnh/BoiCanh/pho-hoang-hon.jpg" alt="">
       <div class="veil"></div>
       <div class="inner">
         <div class="mark">NL</div>
@@ -445,7 +459,7 @@ def write_year_pdf() -> None:
     body = markdown.markdown(src, extensions=["tables", "extra", "sane_lists"])
     cover = """
     <section class="cover">
-      <img class="bg" src="file:///workspace/docs/readme/horizon_day.jpg" alt="">
+      <img class="bg" src="file:///workspace/Marketing/HinhAnh/BoiCanh/pho-ngay.jpg" alt="">
       <div class="veil"></div>
       <div class="inner">
         <div class="mark">NL</div>
@@ -501,7 +515,9 @@ def main() -> None:
         shutil.copy(pdf, bao / "Ke_Hoach_Marketing_12_Tuan.pdf")
         docs = ROOT / "NihongoLife" / "Docs" / "marketing"
         docs.mkdir(parents=True, exist_ok=True)
-        shutil.copy(MKT / "KeHoach" / "KeHoach_Marketing_12_Tuan.md", docs / "KE_HOACH_MARKETING_12_TUAN.md")
+        copied = (MKT / "KeHoach" / "KeHoach_Marketing_12_Tuan.md").read_text(encoding="utf-8")
+        copied = copied.replace("../HinhAnh/", "../../../Marketing/HinhAnh/")
+        (docs / "KE_HOACH_MARKETING_12_TUAN.md").write_text(copied, encoding="utf-8")
     shutil.rmtree(build, ignore_errors=True)
 
 

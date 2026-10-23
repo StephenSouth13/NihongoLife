@@ -55,7 +55,7 @@ Việc người đọc làm tiếp: một hành động. Nếu CTA còn là mã 
 
 ## Hình và cảnh
 
-- Ảnh đăng dùng nền `docs/readme/horizon_dusk.jpg`.
+- Ảnh đăng dùng nền `Marketing/HinhAnh/BoiCanh/pho-hoang-hon.jpg`.
 - Khung chữ: nhãn «Hibari-chō», headline «Hoàng hôn xuống / đèn phố bật», dòng phụ «Cùng một phố, khác một giờ.».
 - Font Montserrat. Nền chữ là đêm `#0B0F17`, nhãn vàng `#F7BD3D`, lấy từ UiTheme.
 - Không thêm sao, không thêm số người chơi, không logo kỳ thi.

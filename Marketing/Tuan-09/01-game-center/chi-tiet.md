@@ -15,7 +15,7 @@ Bài nằm trong tuần 09. Người đọc xong phải làm được một vi�
 ## Định dạng
 
 - Kênh chính: Facebook fanpage.
-- Ảnh vuông 1080 và ảnh dọc 1080×1350, kèm story 1080×1920.
+- Ảnh vuông 1080 và ảnh dọc 1080×1350, kèm story 1080×1920. Thẻ chữ có dòng CẦN ẢNH MỚI. Không dùng ảnh nhân vật cũ.
 - File trong thư mục: caption.txt, fb-1080.png, fb-1350.png, chi-tiet.md, story-1920.png, CAN_QUAY.md.
 - TikTok và nhóm học chỉ dùng lại caption này khi lịch Excel bảo đăng, và khi đã có hình thật nếu dòng đó ghi «Cần quay».
 
@@ -42,7 +42,7 @@ Tan học, Kim rủ ra Game Center.
 
 Tài khoản mở được nơi này khi đủ 240 trí tuệ và đã đi tàu. Trong truyện, Kim rủ bạn đếm lần chơi, đếm vé, và nói thứ mình muốn. Kana Match lật thẻ hiragana, katakana, kanji N5 và từ vựng. Hết ván có sao, độ chính xác và vé.
 
-Vé đổi quà ở quầy của Aoi. Ảnh kết quả trong bài là ảnh thật.
+Vé đổi quà ở quầy của Aoi. Ảnh kết quả cũ có người chơi người lớn, đã bỏ. Bài này là thẻ CẦN ẢNH MỚI.
 
 #NihongoLife #HocTiengNhat #GameCenter #Kana #TiengNhatN5
 ```
@@ -55,12 +55,15 @@ Việc người đọc làm tiếp: một hành động. Nếu CTA còn là mã 
 
 ## Hình và cảnh
 
-- Ảnh đăng dùng nền `docs/readme/kana_result.jpg`.
+- Ảnh đăng dùng nền `(không dùng ảnh — thẻ chữ)`.
 - Khung chữ: nhãn «Sau giờ học», headline «Tan học / Kim rủ Game Center», dòng phụ «Ghép kana, lấy sao, đổi vé.».
 - Font Montserrat. Nền chữ là đêm `#0B0F17`, nhãn vàng `#F7BD3D`, lấy từ UiTheme.
 - Không thêm sao, không thêm số người chơi, không logo kỳ thi.
+- Nhãn vàng trên thẻ: CẦN ẢNH MỚI. Không đăng `docs/readme/kana_result.jpg` — nhân vật trong ảnh đó không còn là người chơi.
+- Người chơi hiện tại là tám bé: Haruto (mặc định), Yui, Sota, Hina, Riku, Mio, Yuto, Sakura. Prefab `Resources/Characters/Kids/NL_kid_*`.
 - Video chưa có trong git. Làm theo CAN_QUAY.md. Khung hình để ổ D, không commit mp4.
 - Cảnh cần quay:
+- 8 giây · Nhân vật bé đang chọn · Haruto là mặc định · phụ đề: CẦN ẢNH MỚI
 - 4 giây · Kim rủ · Hội thoại thật · phụ đề: Đi Game Center không?
 - 8 giây · Một ván Kana Match · Thấy thẻ kana · phụ đề: Ghép hiragana.
 

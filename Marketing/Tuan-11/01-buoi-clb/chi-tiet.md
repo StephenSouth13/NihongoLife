@@ -55,7 +55,7 @@ Việc người đọc làm tiếp: một hành động. Nếu CTA còn là mã 
 
 ## Hình và cảnh
 
-- Ảnh đăng dùng nền `docs/readme/horizon_day.jpg`.
+- Ảnh đăng dùng nền `Marketing/HinhAnh/BoiCanh/pho-ngay.jpg`.
 - Khung chữ: nhãn «CLB», headline «Một buổi CLB / cùng vào một phố», dòng phụ «Xin phép người phụ trách trước.».
 - Font Montserrat. Nền chữ là đêm `#0B0F17`, nhãn vàng `#F7BD3D`, lấy từ UiTheme.
 - Không thêm sao, không thêm số người chơi, không logo kỳ thi.

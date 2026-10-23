@@ -11,7 +11,7 @@ Chỉ những điều đối chiếu được trong repo vào ngày làm bộ n�
 | Giấy phép mã | MIT, bản quyền 2026 Stephen South | `LICENSE` |
 | Nhóm | The Next Generation, VTC Academy | `TEAM_TASKS.md` 2026-10-21 |
 | Nhà sáng lập | Quách Thành Long; Nguyễn Lê Gia Huy; Lương Nguyễn Tấn Dũng | `menu_about` theo `AGENTS.md` |
-| Giải | Giải Triển vọng, Unique Project 2025, VTC Academy | Brief và ảnh `01_team_award_2025.jpg` |
+| Giải | Giải Triển vọng, Unique Project 2025, VTC Academy | Brief và ảnh `Marketing/HinhAnh/Logo-Brand/giai-trien-vong-2025.jpg` |
 | Khách | Ngoại tuyến, cả phố mở, save trên máy | `PlayerSessionService`, `AGENTS.md` |
 | Tài khoản | Lộ trình trí tuệ + online | `LocationUnlocks`, `OnlineAccess` |
 | Mốc mở | Sushi 100, ga 160, Game Center 240, đảo 320 | `LocationUnlocks.cs` |

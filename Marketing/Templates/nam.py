@@ -241,7 +241,7 @@ EVENTS = [
         ],
         "keywords": ["đêm ở Nhật", "Halloween tiếng Nhật", "chào buổi tối", "夜"],
         "tasks": [
-            task("T-10", date(2027, 10, 21), "Dũng", "Quyết định dùng horizon_night hay hoãn. Không vẽ bí ngô."),
+            task("T-10", date(2027, 10, 21), "Dũng", "Quyết định dùng Marketing/HinhAnh/BoiCanh/pho-dem.jpg hay hoãn. Không vẽ bí ngô."),
             task("T-3", date(2027, 10, 28), "Huy", "Caption không hứa sự kiện hóa trang trong game."),
             task("T-0", date(2027, 10, 31), "Huy", "Đăng 18:30 nếu còn ảnh. Không thì hoãn và ghi trên lịch."),
             task("T+1", date(2027, 11, 1), "Long", "Không đo riêng nếu bài hoãn. Ghi hoãn."),

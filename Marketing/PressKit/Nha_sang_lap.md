@@ -28,4 +28,4 @@ Tiểu sử — chỗ trống, chưa có câu nào được duyệt:
 
 > [Anh Dũng điền 3–5 câu. Không thêm tên thứ tư vào credit.]
 
-Ảnh cả nhóm nhận giấy khen: `NihongoLife/Assets/NihongoLife/Resources/MenuGallery/01_team_award_2025.jpg`.
+Ảnh cả nhóm nhận giấy khen: `Marketing/HinhAnh/Logo-Brand/giai-trien-vong-2025.jpg` (bản gốc trong game: `NihongoLife/Assets/NihongoLife/Resources/MenuGallery/01_team_award_2025.jpg`).

@@ -56,7 +56,7 @@ Việc người đọc làm tiếp: một hành động. Nếu CTA còn là mã 
 
 ## Hình và cảnh
 
-- Ảnh đăng dùng nền `docs/readme/horizon_dusk.jpg`.
+- Ảnh đăng dùng nền `Marketing/HinhAnh/BoiCanh/pho-hoang-hon.jpg`.
 - Khung chữ: nhãn «Tuần 12», headline «Mười hai tuần / một khu phố», dòng phụ «Cảm ơn người đã chơi thử và người đã chỉ chỗ lệch.».
 - Font Montserrat. Nền chữ là đêm `#0B0F17`, nhãn vàng `#F7BD3D`, lấy từ UiTheme.
 - Không thêm sao, không thêm số người chơi, không logo kỳ thi.

@@ -4,7 +4,7 @@ Bộ này là lịch làm việc, không phải báo cáo thành tích. Mọi co
 
 Câu của game, giữ nguyên trên mọi bài: **học tiếng Nhật bằng cách sống ở Nhật.**
 
-![Phố Hibari-chō lúc hoàng hôn, ảnh trong game](../../docs/readme/horizon_dusk.jpg)
+![Phố Hibari-chō lúc hoàng hôn, không có nhân vật cận](../../../Marketing/HinhAnh/BoiCanh/pho-hoang-hon.jpg)
 
 ## 1. Mục tiêu
 
@@ -112,7 +112,7 @@ Hai mươi tư hướng dưới đây đã được xếp vào lịch. Hook là 
 | 29 | Khoe một câu bạn vừa nói được. | Chỉ đăng lại khi được phép |
 | 30 | Phần học cốt lõi vẫn miễn phí. | MIT, chưa có cửa hàng |
 
-![Hội thoại: câu Nhật và nghĩa tiếng Việt](../../docs/readme/dialogue.jpg)
+Ảnh hội thoại cũ có nhân vật người lớn (Tanaka/Remy) đã bỏ. Bài hội thoại trên fanpage là thẻ **CẦN ẢNH MỚI** cho tới khi có khung với một trong tám bé.
 
 ## 6. Mười hai tuần
 
@@ -216,7 +216,7 @@ Tách bài luyện đề và nói chuyện online.
 
 Mốc mục tiêu: 10 người làm Reading hoặc Listening; một buổi voice hoặc chat có người ngoài đội.
 
-![Bàn thi trong lớp Hibari](../../docs/readme/exam_desk.jpg)
+Ảnh bàn thi cũ có nhân vật người lớn đã bỏ. Cần chụp lại lớp Hibari với bé đang làm bài.
 
 ### Tuần 9 · 21–27/12 · Game Center và đảo
 
@@ -337,7 +337,7 @@ Bài tuần 12 nói đúng cam kết này.
 
 ## 11. Kit truyền thông rút gọn
 
-Bản đủ, tiếng Việt và tiếng Anh, nằm trong `PressKit/`. Ảnh dùng lại file trong `docs/readme/` và các tuần. Logo: `Bao_Cao/Logo/`. Không chế logo mới giả dạng kỳ thi.
+Bản đủ, tiếng Việt và tiếng Anh, nằm trong `PressKit/`. Ảnh đang dùng nằm ở `Marketing/HinhAnh/`. Logo: `HinhAnh/Logo-Brand/`. Không dùng ảnh nhân vật người lớn đã bỏ. Không chế logo mới giả dạng kỳ thi.
 
 Ba nhà sáng lập, đúng danh sách trong game:
 
@@ -365,7 +365,7 @@ Trang đội ngũ đang sống: https://website-the-next-generation-o323.vercel.
 | Nhạc CC0 | `Docs/AUDIO_CREDITS.md` |
 | Giấy phép MIT | `LICENSE` |
 
-Ảnh đảo và một số ảnh arcade trong repo đang là con trỏ Git LFS, chưa có pixel. Những bài đó dùng thẻ chữ hoặc ảnh cảnh khác đúng tên cảnh. Danh sách quay nằm cạnh caption, file `CAN_QUAY.md`.
+Ảnh đảo và ảnh tám bé trong `Bao_Cao/character-regression/` đang là con trỏ Git LFS, chưa có pixel trên máy này. Những bài chưa có ảnh đúng người chơi là thẻ chữ ghi CẦN ẢNH MỚI. Không lấy cảnh khác thế vào. Danh sách quay nằm cạnh caption, file `CAN_QUAY.md`. Ảnh còn dùng nằm ở `Marketing/HinhAnh/`.
 
 ## 13. Sau mười hai tuần
 

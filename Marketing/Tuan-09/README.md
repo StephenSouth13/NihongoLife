@@ -9,7 +9,7 @@ Mốc tuần (là mục tiêu, không phải số đã đạt): Mốc: 20 ngư�
 ## Việc của từng người
 
 - Long: Liệt kê 6 máy đúng tên trong game lên một ghi chú ngắn để caption không bịa thêm trò.
-- Huy: Đăng Game Center bằng ảnh thật. Bài đảo dùng thẻ chữ, không ghép cảnh khác làm đảo.
+- Huy: Bài Game Center và bài đảo là thẻ CẦN ẢNH MỚI. Không ghép phố hay ảnh người lớn vào đảo.
 - Dũng: Quay đảo: cuốc, gieo, tưới, câu cá. Khung hình để ổ D, không commit video.
 
 ## Bài đăng

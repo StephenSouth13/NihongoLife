@@ -57,7 +57,7 @@ Việc người đọc làm tiếp: một hành động. Nếu CTA còn là mã 
 
 ## Hình và cảnh
 
-- Ảnh đăng dùng nền `NihongoLife/Assets/NihongoLife/Resources/MenuGallery/01_team_award_2025.jpg`.
+- Ảnh đăng dùng nền `Marketing/HinhAnh/Logo-Brand/giai-trien-vong-2025.jpg`.
 - Khung chữ: nhãn «Trong đội», headline «Giải Triển vọng / của cả nhóm», dòng phụ «Unique Project 2025 · VTC Academy.».
 - Font Montserrat. Nền chữ là đêm `#0B0F17`, nhãn vàng `#F7BD3D`, lấy từ UiTheme.
 - Không thêm sao, không thêm số người chơi, không logo kỳ thi.

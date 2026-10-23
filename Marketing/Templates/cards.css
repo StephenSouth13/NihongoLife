@@ -45,6 +45,18 @@ body { font-family: "Montserrat", sans-serif; color: var(--text); }
   transform: scale(var(--zoom, 1.06));
   transform-origin: center center;
 }
+.card .stamp { display: none; }
+.card.need .stamp {
+  display: inline-block;
+  margin: 0 0 14px;
+  padding: 8px 14px 10px;
+  background: #F7BD3D;
+  color: #1F1405;
+  font-weight: 800;
+  font-size: 28px;
+  line-height: 1.25;
+  letter-spacing: 0.04em;
+}
 .card.type .photo { display: none; }
 .card.type .scrim {
   background:

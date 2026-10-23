@@ -10,7 +10,7 @@ Mốc tuần (là mục tiêu, không phải số đã đạt): 3 bài ra đúng
 
 - Long: Nháp một trang «cách mở game» 5 bước, để tuần ra mắt chỉ việc gắn link. Không đụng code gameplay.
 - Huy: Đăng 3 bài Tuan-02. Ghim bài cơm nắm. Soạn lời mời Discord, chưa spam nhóm trường.
-- Dũng: Quay chuỗi quầy konbini và ga nếu làm được Trailer_RecordFrames. Ảnh tĩnh đã có trong bài.
+- Dũng: Quay chuỗi quầy konbini và ga với một trong tám bé. Ảnh tĩnh cũ là người lớn, đã bỏ. Bài là thẻ CẦN ẢNH MỚI.
 
 ## Bài đăng
 

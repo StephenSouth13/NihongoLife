@@ -15,8 +15,8 @@ Bài nằm trong tuần 09. Người đọc xong phải làm được một vi�
 ## Định dạng
 
 - Kênh chính: Facebook fanpage.
-- Ảnh vuông 1080 và ảnh dọc 1080×1350.
-- File trong thư mục: caption.txt, fb-1080.png, fb-1350.png, chi-tiet.md.
+- Ảnh vuông 1080 và ảnh dọc 1080×1350. Thẻ chữ có dòng CẦN ẢNH MỚI. Không dùng ảnh nhân vật cũ.
+- File trong thư mục: caption.txt, fb-1080.png, fb-1350.png, chi-tiet.md, CAN_QUAY.md.
 - TikTok và nhóm học chỉ dùng lại caption này khi lịch Excel bảo đăng, và khi đã có hình thật nếu dòng đó ghi «Cần quay».
 
 ## Ngày và giờ
@@ -42,7 +42,7 @@ Sáu máy trong Game Center. Chọn một máy, chơi một ván.
 
 Đúng tên trong game: Kana Match, Word Shooter, Order Rush, Kana Rain, UFO Catcher, Basket Count. Vé thắng mang ra quầy đổi quà. Kết quả ghi vào hồ sơ học, cùng chỗ với các bài hội thoại.
 
-Bọn mình không thêm máy thứ bảy trên bài đăng. Ảnh quầy quà là ảnh thật. Cận cảnh gắp thú vẫn chờ quay.
+Bọn mình không thêm máy thứ bảy trên bài đăng. Ảnh quầy quà cũ có người chơi người lớn, đã bỏ. Bài này là thẻ CẦN ẢNH MỚI. Cận cảnh gắp thú vẫn chờ quay.
 
 #NihongoLife #HocTiengNhat #GameCenter #KanaMatch #HibariCho
 ```
@@ -55,11 +55,15 @@ Việc người đọc làm tiếp: một hành động. Nếu CTA còn là mã 
 
 ## Hình và cảnh
 
-- Ảnh đăng dùng nền `docs/readme/prize.jpg`.
+- Ảnh đăng dùng nền `(không dùng ảnh — thẻ chữ)`.
 - Khung chữ: nhãn «Sáu máy», headline «Sáu máy chơi / để nhớ chữ», dòng phụ «Kana Match, Word Shooter, Order Rush, Kana Rain, UFO Catcher, Basket Count.».
 - Font Montserrat. Nền chữ là đêm `#0B0F17`, nhãn vàng `#F7BD3D`, lấy từ UiTheme.
 - Không thêm sao, không thêm số người chơi, không logo kỳ thi.
-- Bài này đăng bằng ảnh tĩnh đã có. Không cần footage mới để bấm đăng.
+- Nhãn vàng trên thẻ: CẦN ẢNH MỚI. Không đăng `docs/readme/prize.jpg` — nhân vật trong ảnh đó không còn là người chơi.
+- Người chơi hiện tại là tám bé: Haruto (mặc định), Yui, Sota, Hina, Riku, Mio, Yuto, Sakura. Prefab `Resources/Characters/Kids/NL_kid_*`.
+- Video chưa có trong git. Làm theo CAN_QUAY.md. Khung hình để ổ D, không commit mp4.
+- Cảnh cần quay:
+- 8 giây · Nhân vật bé đang chọn · Haruto là mặc định · phụ đề: CẦN ẢNH MỚI
 
 ## Từ khoá và hashtag
 

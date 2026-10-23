@@ -4,7 +4,7 @@ Mười hai tuần từ 26/10/2026 đến 17/01/2027 là đợt mở. Kế hoạ
 
 Số trong 12 tuần chỉ mang sang đây khi ô đó đã có số thật. Ô «chưa đo» vẫn là chưa đo.
 
-![Phố Hibari-chō ban ngày](../../docs/readme/horizon_day.jpg)
+![Phố Hibari-chō ban ngày, không có nhân vật cận](../HinhAnh/BoiCanh/pho-ngay.jpg)
 
 ## 1. Bốn quý
 

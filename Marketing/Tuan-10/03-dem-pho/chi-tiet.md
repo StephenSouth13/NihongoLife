@@ -55,7 +55,7 @@ Việc người đọc làm tiếp: một hành động. Nếu CTA còn là mã 
 
 ## Hình và cảnh
 
-- Ảnh đăng dùng nền `docs/readme/horizon_night.jpg`.
+- Ảnh đăng dùng nền `Marketing/HinhAnh/BoiCanh/pho-dem.jpg`.
 - Khung chữ: nhãn «Ban đêm», headline «Đêm ở Hibari / cửa sổ còn sáng», dòng phụ «Phố không tắt hết khi hết giờ học.».
 - Font Montserrat. Nền chữ là đêm `#0B0F17`, nhãn vàng `#F7BD3D`, lấy từ UiTheme.
 - Không thêm sao, không thêm số người chơi, không logo kỳ thi.
