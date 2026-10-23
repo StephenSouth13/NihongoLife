@@ -1,0 +1,6 @@
+# Ảnh và font của bộ kit nằm thẳng trong git, không qua Git LFS.
+# Tải nhánh về là có pixel. Ngoài thư mục này, *.png *.jpg *.ttf vẫn dùng LFS.
+*.png !filter !diff !merge -text
+*.jpg !filter !diff !merge -text
+*.jpeg !filter !diff !merge -text
+*.ttf !filter !diff !merge -text
