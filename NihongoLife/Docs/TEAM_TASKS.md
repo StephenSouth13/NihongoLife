@@ -1524,3 +1524,11 @@ Chi tiết thiết kế: `STORY_BIBLE.md` mục 14.
 
 ## TASK-M (Grok) — Trailer v4, demo v3, kế hoạch marketing 12 tuần
 Giao việc đầy đủ trong `Docs/GROK_TASK_TRAILER_MARKETING.md` (bối cảnh, luật, công cụ có sẵn, 3 sản phẩm, tiêu chí nghiệm thu). Không sửa gameplay; chỉ sửa `TrailerReel.cs`, hai test quay phim và các file marketing.
+
+## Cập nhật (2026-10-23, Grok) — Bộ marketing 12 tuần, chưa quay trailer
+
+Không sửa gameplay, cảnh, prefab, `TrailerReel.cs` hay test quay phim. Máy làm việc này không có Unity và không có ổ D, nên không xuất trailer v4, teaser hay demo v3. Video khi quay để ở `D:/VTC_Academy/NihongoLife/_work/marketing/` (xem `Marketing/Video/README.md`).
+
+Đã thêm bộ đăng bài ở `Marketing/`: kế hoạch Markdown + PDF, lịch Excel từng ngày từ 26/10/2026, caption và ảnh Facebook 12 tuần từ ảnh chụp thật trong repo, press kit, màu theo `UiTheme`. Ảnh đảo và một số ảnh arcade trong checkout chỉ là con trỏ Git LFS nên bài đảo là thẻ chữ, kèm `CAN_QUAY.md`, không ghép cảnh khác.
+
+Bản kế hoạch cũng nằm ở `Docs/marketing/KE_HOACH_MARKETING_12_TUAN.md`. PDF và Excel giao báo cáo nằm ở `Bao_Cao/marketing/`. Không có secret, không có số người chơi bịa.

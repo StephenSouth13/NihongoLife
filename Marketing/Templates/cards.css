@@ -1,0 +1,210 @@
+/* NihongoLife social cards. Colours from UiTheme in UiKit.cs. */
+@font-face { font-family: "Montserrat"; src: url("../Brand/fonts/Montserrat-Regular.ttf") format("truetype"); font-weight: 400; font-style: normal; }
+@font-face { font-family: "Montserrat"; src: url("../Brand/fonts/Montserrat-Medium.ttf") format("truetype"); font-weight: 500; font-style: normal; }
+@font-face { font-family: "Montserrat"; src: url("../Brand/fonts/Montserrat-SemiBold.ttf") format("truetype"); font-weight: 600; font-style: normal; }
+@font-face { font-family: "Montserrat"; src: url("../Brand/fonts/Montserrat-Bold.ttf") format("truetype"); font-weight: 700; font-style: normal; }
+@font-face { font-family: "Montserrat"; src: url("../Brand/fonts/Montserrat-ExtraBold.ttf") format("truetype"); font-weight: 800; font-style: normal; }
+@font-face { font-family: "Noto Sans JP"; src: url("../Brand/fonts/NotoSansJP-Medium-subset.ttf") format("truetype"); font-weight: 500; font-style: normal; }
+@font-face { font-family: "Noto Sans JP"; src: url("../Brand/fonts/NotoSansJP-Bold-subset.ttf") format("truetype"); font-weight: 700; font-style: normal; }
+
+:root {
+  --ink: #111721;
+  --sunken: #0B0F17;
+  --surface: #1A212E;
+  --gold: #F7BD3D;
+  --gold-deep: #DB941F;
+  --on-gold: #1F1405;
+  --text: #F2F5FA;
+  --soft: #C7D1E0;
+  --muted: #94A3B8;
+  --teal: #29B899;
+  --line: rgba(255,255,255,0.14);
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { width: 1080px; height: 100%; background: var(--sunken); overflow: hidden; }
+body { font-family: "Montserrat", sans-serif; color: var(--text); }
+
+.card {
+  position: relative;
+  width: 1080px;
+  overflow: hidden;
+  background: var(--sunken);
+}
+.card.sq { height: 1080px; }
+.card.pt { height: 1350px; }
+.card.st { height: 1920px; }
+
+.photo {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: var(--pos, center 45%);
+  transform: scale(var(--zoom, 1.06));
+  transform-origin: center center;
+}
+.card.type .photo { display: none; }
+.card.type .scrim {
+  background:
+    radial-gradient(900px 520px at 18% 0%, rgba(247,189,61,0.16), transparent 60%),
+    linear-gradient(165deg, #1A212E 0%, #111721 42%, #0B0F17 100%);
+}
+.bullets {
+  margin-top: 22px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  max-width: 860px;
+}
+.bullets span {
+  display: block;
+  font-weight: 600;
+  font-size: 26px;
+  line-height: 1.35;
+  color: var(--text);
+  padding: 2px 0 2px 22px;
+  border-left: 3px solid var(--gold);
+}
+.scrim {
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(180deg, rgba(11,15,23,0.72) 0%, rgba(11,15,23,0.18) 18%, rgba(11,15,23,0.05) 38%, rgba(11,15,23,0.35) 58%, rgba(11,15,23,0.88) 78%, #0B0F17 100%);
+}
+.card.st .scrim {
+  background:
+    linear-gradient(180deg, rgba(11,15,23,0.78) 0%, rgba(11,15,23,0.28) 16%, rgba(11,15,23,0.08) 34%, rgba(11,15,23,0.12) 52%, rgba(11,15,23,0.72) 72%, #0B0F17 100%);
+}
+
+.top {
+  position: absolute;
+  left: 64px;
+  right: 64px;
+  top: 52px;
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  z-index: 2;
+}
+.mark {
+  width: 54px;
+  height: 54px;
+  border-radius: 14px;
+  background: var(--gold);
+  color: var(--on-gold);
+  font-weight: 800;
+  font-size: 22px;
+  letter-spacing: -0.04em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: none;
+}
+.brand-block { display: flex; flex-direction: column; gap: 2px; padding-top: 2px; }
+.brand {
+  font-weight: 800;
+  font-size: 22px;
+  letter-spacing: 0.16em;
+  line-height: 1.15;
+}
+.jp {
+  font-family: "Noto Sans JP", sans-serif;
+  font-weight: 500;
+  font-size: 16px;
+  letter-spacing: 0.18em;
+  color: var(--gold);
+  line-height: 1.4;
+  padding-top: 2px;
+}
+.week-chip {
+  margin-left: auto;
+  border: 1px solid var(--line);
+  background: rgba(17,23,33,0.55);
+  color: var(--soft);
+  border-radius: 999px;
+  padding: 10px 16px 8px;
+  font-size: 15px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  line-height: 1.2;
+  text-transform: uppercase;
+}
+
+.copy {
+  position: absolute;
+  left: 64px;
+  right: 64px;
+  bottom: 48px;
+  z-index: 2;
+}
+.card.st .copy { bottom: 250px; top: auto; }
+.kicker {
+  display: inline-block;
+  color: var(--on-gold);
+  background: var(--gold);
+  font-weight: 700;
+  font-size: 18px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  line-height: 1.2;
+  padding: 8px 14px 7px;
+  border-radius: 999px;
+  margin-bottom: 22px;
+}
+h1 {
+  font-weight: 800;
+  font-size: 72px;
+  line-height: 1.16;
+  letter-spacing: -0.03em;
+  max-width: 960px;
+  text-wrap: balance;
+  padding-top: 6px;
+}
+h1 .ln { display: block; padding-top: 0.06em; padding-bottom: 0.02em; }
+.sub {
+  margin-top: 18px;
+  font-weight: 500;
+  font-size: 28px;
+  line-height: 1.35;
+  color: var(--soft);
+  max-width: 900px;
+  padding-top: 4px;
+}
+.foot {
+  margin-top: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  padding-top: 18px;
+  border-top: 1px solid rgba(247,189,61,0.45);
+}
+.cta {
+  font-weight: 700;
+  font-size: 22px;
+  letter-spacing: 0.01em;
+  line-height: 1.3;
+  color: var(--gold);
+  padding-top: 2px;
+}
+.meta {
+  font-weight: 600;
+  font-size: 16px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--muted);
+  line-height: 1.3;
+  text-align: right;
+  padding-top: 2px;
+}
+
+.card.pt h1 { font-size: 76px; }
+.card.pt .copy { bottom: 64px; }
+.card.st h1 { font-size: 80px; }
+.card.st .top { top: 210px; }
+.card.st .sub { font-size: 32px; }
+.card.size-s h1 { font-size: 60px; }
+.card.pt.size-s h1 { font-size: 64px; }
+.card.st.size-s h1 { font-size: 68px; }

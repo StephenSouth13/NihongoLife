@@ -1,0 +1,89 @@
+@font-face { font-family: "Montserrat"; src: url("../Brand/fonts/Montserrat-Regular.ttf") format("truetype"); font-weight: 400; }
+@font-face { font-family: "Montserrat"; src: url("../Brand/fonts/Montserrat-Medium.ttf") format("truetype"); font-weight: 500; }
+@font-face { font-family: "Montserrat"; src: url("../Brand/fonts/Montserrat-SemiBold.ttf") format("truetype"); font-weight: 600; }
+@font-face { font-family: "Montserrat"; src: url("../Brand/fonts/Montserrat-Bold.ttf") format("truetype"); font-weight: 700; }
+@font-face { font-family: "Montserrat"; src: url("../Brand/fonts/Montserrat-ExtraBold.ttf") format("truetype"); font-weight: 800; }
+@font-face { font-family: "Noto Sans JP"; src: url("../Brand/fonts/NotoSansJP-Medium-subset.ttf") format("truetype"); font-weight: 500; }
+
+:root {
+  --ink: #111721;
+  --sunken: #0B0F17;
+  --gold: #F7BD3D;
+  --gold-deep: #DB941F;
+  --on-gold: #1F1405;
+  --text: #1A212E;
+  --muted: #5C6B7E;
+  --line: #E4D7B8;
+  --paper: #F7F4EE;
+  --soft: #C7D1E0;
+}
+
+@page { size: A4; margin: 16mm 15mm 18mm; }
+@page :first { margin: 0; }
+
+* { box-sizing: border-box; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+html, body { margin: 0; padding: 0; background: white; color: var(--text); font-family: "Montserrat", sans-serif; font-size: 11pt; line-height: 1.45; }
+body { background: white; }
+
+.cover {
+  position: relative;
+  width: 210mm;
+  height: 297mm;
+  overflow: hidden;
+  background: var(--sunken);
+  color: #F2F5FA;
+  page-break-after: always;
+}
+.cover img.bg {
+  position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: center 40%;
+}
+.cover .veil {
+  position: absolute; inset: 0;
+  background: linear-gradient(180deg, rgba(11,15,23,0.55) 0%, rgba(11,15,23,0.2) 32%, rgba(11,15,23,0.78) 68%, #0B0F17 100%);
+}
+.cover .inner { position: absolute; left: 16mm; right: 16mm; top: 18mm; bottom: 16mm; }
+.mark {
+  width: 14mm; height: 14mm; border-radius: 4mm; background: var(--gold); color: var(--on-gold);
+  font-weight: 800; font-size: 12pt; display: flex; align-items: center; justify-content: center;
+}
+.brand { margin-top: 5mm; font-weight: 800; letter-spacing: 0.16em; font-size: 12pt; }
+.jp { font-family: "Noto Sans JP", sans-serif; color: var(--gold); letter-spacing: 0.14em; margin-top: 1mm; font-size: 10pt; }
+.cover h1 {
+  position: absolute; left: 0; right: 0; bottom: 42mm;
+  font-size: 34pt; line-height: 1.12; font-weight: 800; letter-spacing: -0.03em; margin: 0;
+  padding-top: 0.06em;
+}
+.cover .sub { position: absolute; left: 0; right: 0; bottom: 28mm; color: var(--soft); font-size: 13pt; font-weight: 500; margin: 0; }
+.cover .meta {
+  position: absolute; left: 0; right: 0; bottom: 0;
+  border-top: 0.6mm solid var(--gold); padding-top: 4mm;
+  display: flex; justify-content: space-between; gap: 8mm;
+  font-size: 9pt; letter-spacing: 0.04em; color: var(--gold); font-weight: 600;
+}
+
+.doc { padding: 0; }
+.doc h2 {
+  font-size: 16pt; line-height: 1.25; font-weight: 800; color: var(--ink);
+  margin: 8mm 0 3mm; padding-top: 1mm; border-bottom: 0.5mm solid var(--gold); padding-bottom: 2mm;
+  break-after: avoid;
+}
+.doc h3 { font-size: 12.5pt; line-height: 1.3; font-weight: 700; color: var(--ink); margin: 5mm 0 2mm; break-after: avoid; }
+.doc p { margin: 0 0 2.5mm; }
+.doc strong { font-weight: 700; }
+.doc ul, .doc ol { margin: 0 0 3mm; padding-left: 5mm; }
+.doc li { margin: 0 0 1.2mm; padding-top: 0.04em; }
+.doc a { color: var(--ink); text-decoration: none; }
+.doc blockquote {
+  margin: 3mm 0; padding: 3mm 4mm; background: #111721; color: #F2F5FA;
+  border-left: 1.4mm solid var(--gold); font-weight: 600; font-size: 11.5pt; line-height: 1.4;
+}
+.doc table { width: 100%; border-collapse: collapse; margin: 2mm 0 4mm; font-size: 9pt; line-height: 1.35; break-inside: auto; }
+.doc th { background: #111721; color: var(--gold); font-weight: 700; text-align: left; padding: 2mm 2mm 1.6mm; vertical-align: top; }
+.doc td { border-bottom: 0.2mm solid var(--line); padding: 1.8mm 2mm 1.5mm; vertical-align: top; }
+.doc tr { break-inside: avoid; }
+.doc tr:nth-child(even) td { background: #FBF6EC; }
+.doc img { width: 100%; height: auto; border-radius: 2mm; margin: 2mm 0; }
+.pagebreak { break-before: page; height: 0; }
+.kicker { color: var(--gold-deep); font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; font-size: 8.5pt; margin: 0 0 2mm; }
+.note { font-size: 9pt; color: var(--muted); }
+footer.running { display: none; }
