@@ -1,6 +1,18 @@
 <div align="center">
 
-<img src="Bao_Cao/character-regression/poses_kid_haruto.jpg" alt="NihongoLife — Haruto với bộ animation Kids" width="100%"/>
+<img src="docs/readme/teaser.gif" alt="Teaser 6 giây: phố Hibari-chō trong trailer v4b" width="100%"/>
+
+<br/>
+
+[Trailer v4b · 720p · 67 giây](docs/readme/preview_v4b_720p.mp4) · [Kênh YouTube](https://www.youtube.com/channel/UCAKp-_EsasxPY2oa-4CzWtQ)
+
+<br/>
+
+Music: "Ishikari Lore" by Kevin MacLeod (incompetech.com), licensed under CC BY 4.0
+
+<br/>
+
+<sub>Nhạc và tiếng môi trường trong game là CC0, ghi ở <a href="NihongoLife/Docs/AUDIO_CREDITS.md">AUDIO_CREDITS.md</a>. Track của trailer này là CC BY 4.0, khác quy ước đó.</sub>
 
 <br/>
 
@@ -16,6 +28,9 @@
 
 **Học tiếng Nhật bằng cách sống ở Nhật.**
 *Learn Japanese by living in Japan · 日本で暮らして、日本語を学ぼう*
+
+<img src="docs/readme/v4b_logo.jpg" alt="Logo NihongoLife, cổng torii trong bong bóng thoại" width="320"/>
+<br/><sub>Thẻ logo trong trailer: NihongoLife · 日本語ライフ · Learn Japanese by living in Japan · 暮らして学ぶ、日本語</sub>
 
 <a href="https://www.gzv.one/gzver/quach-thanh-long"><img src="NihongoLife/Docs/partners/gzv.one.png" alt="GZV — Quách Thành Long" width="150"/></a>
 
@@ -37,14 +52,12 @@ Xem trước **438 icon PNG thật** của NihongoLife ngay trong README. Galler
 
 Để dùng bản tương tác, clone hoặc tải toàn bộ repo, rồi mở `NihongoLife/Docs/AssetPipeline/Preview/index.html` bằng trình duyệt. Không cần chạy Unity hay server. README trên GitHub hiển thị ảnh xem trước; file HTML trên trang mã nguồn GitHub không chạy trực tiếp.
 
-*Đây là bản xem xét asset và cửa hàng mẫu; chất lượng hình ảnh vẫn chờ chủ dự án duyệt.*
-
 ---
 
-<div align="center">
-<img src="docs/readme/gif_city.gif" alt="Bay qua phố Hibari-chō rồi đi bộ trên phố" width="80%"/>
-<br/><sub><i>Phố Hibari-chō: khu phố Nhật thu nhỏ, nơi mọi bài học diễn ra.</i></sub>
-</div>
+<p align="center">
+<img src="docs/readme/v4b_town.jpg" width="88%" alt="Phố Hibari-chō nhìn từ trên cao, nhà mái xanh"/>
+<br/><sub>Phố Hibari-chō trong trailer v4b. Dòng chữ trên hình: «Học tiếng Nhật bằng cách sống.» / «Learn Japanese by living it.»</sub>
+</p>
 
 ## 🌸 NihongoLife là gì?
 
@@ -53,7 +66,7 @@ Xem trước **438 icon PNG thật** của NihongoLife ngay trong README. Galler
 <table>
 <tr>
 <td align="center" width="25%"><h3>14</h3>kịch bản N5<br/><sub>từ ngày đầu tới lễ hội mùa hè</sub></td>
-<td align="center" width="25%"><h3>7</h3>khu vực chơi được<br/><sub>phố · konbini · phòng trọ · ga · sushi · trường · Game Center</sub></td>
+<td align="center" width="25%"><h3>7</h3>scene chơi được<br/><sub>phố (có konbini) · phòng trọ · ga · sushi · trường · Game Center · đảo Midori</sub></td>
 <td align="center" width="25%"><h3>3</h3>ngôn ngữ giao diện<br/><sub>Tiếng Việt · English · 日本語</sub></td>
 <td align="center" width="25%"><h3>5</h3>nhóm kỹ năng được chấm<br/><sub>từ vựng · ngữ pháp · nghe · phản xạ · hoàn thành</sub></td>
 </tr>
@@ -80,18 +93,19 @@ Người chơi, nhân vật online và các NPC chính hiện dùng chung dòng 
 
 ### 💬 Hội thoại N5 có phản hồi
 
-Một khung hội thoại dùng chung cho mọi nơi: câu tiếng Nhật hiện dần, kèm **cách đọc, romaji và nghĩa tiếng Việt** (tuỳ chế độ Hướng dẫn / Luyện tập / Kiểm tra). Chọn đáp án bằng phím 1–4 hoặc chuột. Chọn sai thì NPC giải thích và cho thử lại. Nút **×** đóng hội thoại bất cứ lúc nào mà không mất bước truyện; nhấn **R** để tiếp tục.
+Một khung hội thoại dùng chung cho mọi nơi: câu tiếng Nhật hiện dần, kèm **cách đọc, romaji và nghĩa tiếng Việt** (tuỳ chế độ Hướng dẫn / Luyện tập / Kiểm tra). Chọn đáp án bằng phím số hoặc chuột. Chọn sai thì NPC giải thích và cho thử lại. Nút **×** đóng hội thoại bất cứ lúc nào mà không mất bước truyện; nhấn **R** để tiếp tục.
 
-<p align="center"><img src="docs/readme/dialogue.jpg" width="85%" alt="Hộp thoại dùng chung"/></p>
+<p align="center"><img src="docs/readme/v4b_station_dialogue.jpg" width="85%" alt="Hội thoại với Kimura tại Ga Hibari"/>
+<br/><sub>Ga Hibari · Kimura (nhân viên ga): 「いらっしゃいませ。どちらまでですか。」 Năm lựa chọn trên hình: ga Minato, ga Gakuen-mae, Đảo Xanh (Midori), câu cộc lốc, và từ chối lịch sự.</sub></p>
 
-### 🏪 Mua sắm ở ひばりマート
+### 🏪 Mua sắm và làm thêm ở ひばりマート
 
-Đi tới từng kệ, xem **ảnh thật của từng món**, chọn số lượng, bỏ vào giỏ rồi ra quầy レジ. Chị Ito tính tiền, hỏi có cần túi không, và bạn trả lời bằng tiếng Nhật.
+Đi tới từng kệ, xem tên tiếng Nhật, nghĩa và giá, chọn số lượng, bỏ vào giỏ rồi ra quầy. Chị Ito (nhân viên thu ngân, `npc_cashier`) tính tiền. Ca làm thêm là việc khác: khách hỏi một món đang ở đâu, bạn chỉ đúng kệ. Món trong câu hỏi đổi theo ca; khung hình dưới là lần khách hỏi sữa.
 
 <table>
 <tr>
-<td width="50%"><img src="docs/readme/shop.jpg" alt="Kệ cơm nắm"/><p align="center"><sub>Kệ cơm nắm: ảnh, tên Nhật, giá ¥</sub></p></td>
-<td width="50%"><img src="docs/readme/checkout.jpg" alt="Quầy thanh toán"/><p align="center"><sub>Quầy レジ: giỏ hàng có ảnh, tổng tiền</sub></p></td>
+<td width="50%"><img src="docs/readme/v4b_shop.jpg" alt="Kệ cơm nắm và bánh mì tại Hibari Mart"/><p align="center"><sub>Kệ おにぎり・パン tại ひばりマート: tên Nhật, nghĩa Việt, giá yên</sub></p></td>
+<td width="50%"><img src="docs/readme/v4b_job.jpg" alt="Ca làm thêm: khách hỏi sữa ở đâu"/><p align="center"><sub>Làm thêm · ひばりマート. Khách: 「すみません、ぎゅうにゅうは どこですか。」</sub></p></td>
 </tr>
 </table>
 
@@ -99,15 +113,17 @@ Một khung hội thoại dùng chung cho mọi nơi: câu tiếng Nhật hiện
 
 ### 🚃 Đi tàu như người Nhật
 
-Hỏi anh Kimura ở quầy vé (¥320, sân số 2), mua vé, qua cổng soát vé, chờ tàu và lên tàu. Trên tàu có bảng LED, sơ đồ tuyến và hành khách để bắt chuyện; nhấn **Q** để ngắm cảnh qua cửa sổ. Xuống ở Gakuen-mae để tới trường hoặc ở Minato để ăn sushi.
+Hỏi Kimura ở quầy vé, mua vé, qua cổng soát vé rồi lên tàu. Tuyến trong `StationTravelController`: Gakuen-mae ¥180, Minato ¥320, Đảo Midori ¥450, sân số 2. Xuống ở Gakuen-mae để tới trường hoặc ở Minato để tới quán sushi. Trên tàu có thể ngắm cảnh bằng <kbd>Q</kbd>.
 
-<table>
-<tr>
-<td width="33%"><img src="docs/readme/station.jpg" alt="Quầy vé"/><p align="center"><sub>Hỏi giá ở quầy vé</sub></p></td>
-<td width="33%"><img src="docs/readme/train.jpg" alt="Trên tàu"/><p align="center"><sub>HUD trên tàu</sub></p></td>
-<td width="33%"><img src="docs/readme/window.jpg" alt="Ngắm cảnh"/><p align="center"><sub>Q · ngắm cảnh</sub></p></td>
-</tr>
-</table>
+<p align="center"><img src="docs/readme/v4b_train.jpg" width="85%" alt="Tàu tới Đảo Midori"/>
+<br/><sub>Trong trailer: «Tàu tới Đảo Midori» / «Train to Midori Island» / 「みどり島行きの電車」.</sub></p>
+
+### 🍣 Quán sushi
+
+Aoki chào khách tại quán. Bảng tuyển việc trên hình ghi phục vụ ¥700/ca, cùng mức trong `JobSiteBuilder` cho quán sushi.
+
+<p align="center"><img src="docs/readme/v4b_aoki.jpg" width="85%" alt="Aoki chào khách và bảng tuyển phục vụ"/>
+<br/><sub>Aoki: 「いらっしゃいませ。何名様ですか。」 Bảng 「アルバイト ぼしゅう」: tuyển phục vụ · ¥700/ca. Danh sách địa điểm mở bên cạnh.</sub></p>
 
 ### 🏫 Lớp học Hibari và luyện thi JLPT / IELTS
 
@@ -115,22 +131,23 @@ Ngồi vào bàn thi trong lớp hoặc mở nhanh bằng <kbd>K</kbd>, chọn *
 
 > IELTS dùng package cục bộ trong `LocalContent/IELTS/` (không đưa tài liệu có bản quyền vào Git). Điểm trong game chỉ phục vụ luyện tập, không phải kết quả JLPT/IELTS chính thức. Xem [tài liệu hệ thống thi](NihongoLife/Docs/EXAM_SYSTEM.md).
 
+Trailer v4b không có màn hình đề thi. Hai khung dưới là lớp và câu luyện tự giới thiệu.
+
 <table>
 <tr>
-<td width="33%"><img src="docs/readme/exam_desk.jpg" alt="Bàn thi"/><p align="center"><sub>Bàn thi · F</sub></p></td>
-<td width="33%"><img src="docs/readme/exam_centre.jpg" alt="Chọn đề"/><p align="center"><sub>Chọn đề JLPT / IELTS</sub></p></td>
-<td width="33%"><img src="docs/readme/teacher.jpg" alt="Nhận xét"/><p align="center"><sub>Cô Morita nhận xét</sub></p></td>
+<td width="50%"><img src="docs/readme/v4b_school.jpg" alt="Trường Hibari"/><p align="center"><sub>Trường Hibari / Hibari School / ひばり日本語学校</sub></p></td>
+<td width="50%"><img src="docs/readme/v4b_morita.jpg" alt="Cô Morita luyện tự giới thiệu"/><p align="center"><sub>Cô Morita: 「自己紹介の練習をしましょう。」</sub></p></td>
 </tr>
 </table>
 
 ### 🕹️ Game Center: Kana Match
 
-Lật thẻ ghép cặp **hiragana, katakana, kanji N5, đồ ăn và từ vựng**. Có đếm ngược 3-2-1, combo, điểm trực tiếp, sao và vé thưởng; đổi vé lấy quà ở quầy của Aoi. Kết quả được ghi vào cùng hồ sơ học tập với các kịch bản.
+Kana Match lật thẻ ghép cặp: hiragana–romaji, katakana–romaji, kanji–cách đọc, từ–hình, tiếng Nhật–tiếng Việt. Có đồng hồ, điểm và vé thưởng; đổi vé lấy quà ở quầy của Aoi. Khung hình trailer là ván hiragana đang chơi, không phải bảng kết quả hay quầy quà.
 
 <table>
 <tr>
-<td width="55%"><img src="docs/readme/gif_kana.gif" alt="Kana Match"/></td>
-<td width="45%"><img src="docs/readme/kana_result.jpg" alt="Kết quả"/><p align="center"><sub>Bảng kết quả: sao, độ chính xác, vé</sub></p><img src="docs/readme/prize.jpg" alt="Quầy quà"/><p align="center"><sub>Quầy đổi quà</sub></p></td>
+<td width="50%"><img src="docs/readme/v4b_gamecenter.jpg" alt="Máy Word Shooter trong Game Center"/><p align="center"><sub>Game Center, máy Word Shooter</sub></p></td>
+<td width="50%"><img src="docs/readme/v4b_kana.jpg" alt="Kana Match, thẻ hiragana"/><p align="center"><sub>かなマッチ · Hiragana. Trên hình: lượt 3, cặp 2/8, 225 điểm, hệ số x2</sub></p></td>
 </tr>
 </table>
 
@@ -138,16 +155,13 @@ Lật thẻ ghép cặp **hiragana, katakana, kanji N5, đồ ăn và từ vựn
 
 <table>
 <tr>
-<td width="33%"><img src="docs/readme/bedroom.jpg" alt="Phòng trọ"/><p align="center"><sub>Phòng trọ 1K: học, nấu, ngủ</sub></p></td>
-<td width="33%"><img src="docs/readme/study.jpg" alt="Học bài"/><p align="center"><sub>Thẻ học bài ở bàn</sub></p></td>
-<td width="33%"><img src="docs/readme/morning.jpg" alt="Buổi sáng"/><p align="center"><sub>Ngủ dậy lúc 07:00</sub></p></td>
-</tr>
-<tr>
-<td width="33%"><img src="docs/readme/bag.jpg" alt="Balo"/><p align="center"><sub>Balo [B]: ăn, bỏ, xem thể trạng</sub></p></td>
-<td width="33%"><img src="docs/readme/map.jpg" alt="Bản đồ"/><p align="center"><sub>Bản đồ [M] + chỉ đường</sub></p></td>
-<td width="33%"><img src="docs/readme/emote.jpg" alt="Biểu cảm"/><p align="center"><sub>Giữ E: vòng biểu cảm có câu Nhật</sub></p></td>
+<td width="50%"><img src="docs/readme/v4b_bedroom.jpg" alt="Phòng của bạn"/><p align="center"><sub>Phòng của bạn / Your Bedroom / わたしの部屋. Trên hình: giường, đèn, bàn, laptop và bảng hiragana.</sub></p></td>
+<td width="50%"><img src="docs/readme/v4b_bag.jpg" alt="Balo và thể trạng"/><p align="center"><sub>Balo: chọn ô bằng phím 1–9. Thể trạng trên hình: no, nước, thể lực, tỉnh táo.</sub></p></td>
 </tr>
 </table>
+
+<p align="center"><img src="docs/readme/v4b_friends.jpg" width="80%" alt="Thẻ tiêu đề kết bạn và học trực tuyến"/>
+<br/><sub>Thẻ tiêu đề trong trailer: «Kết bạn &amp; học cùng nhau trực tuyến» / «Make friends, learn together online» / 「友だちと一緒に学ぼう」. Đây là thẻ chữ, không phải cảnh hai người chơi đang online.</sub></p>
 
 **Chỉ số sống chạy như thật.** Chạy (Shift) tốn **14 thể lực/giây** và không hồi khi đang chạy. Hết thể lực thì bị khoá chạy tới khi hồi đủ 25 điểm, và HUD nháy đỏ "Hết sức". Đi và chạy làm đói, khát nhanh hơn; ăn uống và ngủ để hồi.
 
@@ -165,7 +179,7 @@ Khi một nhu cầu xuống dưới ngưỡng nguy hiểm, HUD chỉ bật một
 
 ### 🔓 Tiến trình, mở khóa và cẩm nang địa điểm
 
-Điểm kiến thức từ bài học, bài thi và nhiệm vụ mở dần thế giới: **Ga Hibari 40 điểm → Sushi Hibari 90 điểm → Game Center 160 điểm → đảo Midori 250 điểm**. Hibari Mart, trường và nhà luôn mở; địa điểm người chơi từng ghé vẫn được giữ mở khi nâng cấp save cũ.
+Với tài khoản đã đăng ký, **trí tuệ** (từ bài học, bài thi và nhiệm vụ) cùng nhiệm vụ truyện mở dần bản đồ, theo `LocationUnlocks`: Sushi Hibari **100** (sau lần mua ở konbini) → Ga Hibari **160** (sau bữa sushi) → Game Center **240** (sau chuyến tàu) → đảo Midori **320** (sau Game Center). Hibari Mart và trường mở từ đầu; phòng trọ mở khi cốt truyện đến nơi. Khách chơi ngoại tuyến thì cả phố mở (`PlayerSessionService.OpenWorld`). Địa điểm đã mở được giữ trong save.
 
 - Bản đồ <kbd>M</kbd> hiển thị địa điểm đang khóa, số điểm cần và phần còn thiếu.
 - Sổ nhiệm vụ <kbd>N</kbd> có thanh tiến độ mở khóa cùng gợi ý hoạt động nhận điểm.
@@ -176,17 +190,17 @@ Khi một nhu cầu xuống dưới ngưỡng nguy hiểm, HUD chỉ bật một
 
 Nông trại không có thao tác “tay không”: phải mua và mang đúng **cuốc/xẻng/bình tưới**. Quy trình hoàn chỉnh là xới đất → gieo hạt → tưới từng giai đoạn → thu hoạch; công cụ hao độ bền sau thao tác thành công, có thể hỏng và tự chuyển sang món dự phòng. Huỷ giữa chừng không làm thay đổi ruộng và không trừ độ bền.
 
-Ở cầu tàu, người chơi cần **cần câu** để quăng phao, chờ cá cắn và kéo bằng <kbd>F</kbd> đúng cửa sổ thời gian. Kéo sớm, để cá thoát, huỷ hoặc đầy balo đều không nhận cá. Cá bắt được đi vào inventory dùng chung, lưu cùng hồ sơ, tính nhiệm vụ/thành tựu và có thể bán tại cửa hàng Midori. Xem [chi tiết farming, công cụ và fishing](NihongoLife/Docs/FISHING_FARMING_TOOLS.md).
+Ở cầu tàu, người chơi cần **cần câu** để quăng phao, chờ cá cắn và kéo bằng <kbd>F</kbd> đúng cửa sổ thời gian. Kéo sớm, để cá thoát, huỷ hoặc đầy balo đều không nhận cá. Cá bắt được đi vào inventory dùng chung, lưu cùng hồ sơ, tính nhiệm vụ/thành tựu và có thể bán tại cửa hàng Midori. Trailer v4b có cảnh xới đất, không có cảnh câu cá. Xem [chi tiết farming, công cụ và fishing](NihongoLife/Docs/FISHING_FARMING_TOOLS.md).
+
+<p align="center">
+<img src="docs/readme/v4b_island.jpg" width="44%" alt="Đảo Midori: ga, tàu và nông trại"/>
+<img src="docs/readme/v4b_farm.jpg" width="44%" alt="Xới đất tại nông trại Đảo Xanh"/>
+<br/><sub>Đảo Midori trong trailer, rồi nông trại Đảo Xanh: ô ruộng chưa xới, câu 「つちをたがやします」.</sub>
+</p>
 
 ### 🌅 Thế giới liền mạch
 
-Không còn mép bản đồ hay khoảng đen ở chân trời: khu nhà ngoại ô, đồi và sương đổi màu theo giờ trong ngày, cửa sổ sáng đèn khi trời tối.
-
-<p align="center">
-<img src="docs/readme/horizon_day.jpg" width="32%" alt="Ban ngày"/>
-<img src="docs/readme/horizon_dusk.jpg" width="32%" alt="Hoàng hôn"/>
-<img src="docs/readme/horizon_night.jpg" width="32%" alt="Ban đêm"/>
-</p>
+Không còn mép bản đồ hay khoảng đen ở chân trời: khu nhà ngoại ô, đồi và sương đổi màu theo giờ trong ngày, cửa sổ sáng đèn khi trời tối. Trailer v4b không cắt riêng ba khung ngày, hoàng hôn và đêm.
 
 Các model Kids dùng chung avatar `NL_Humanoid` và controller/override theo giới tính. Animation đi, chạy, hội thoại, ngồi, thao tác nông cụ và câu cá được retarget mà không thay đổi controller, collider, inventory hoặc đồng bộ online.
 
@@ -314,7 +328,7 @@ NihongoLife/                         ← repo
 │   │   └── Tests/                   PlayMode (13 bộ) · EditMode
 │   └── Docs/                        ARCHITECTURE · STORY_BIBLE · SCENARIO_SYSTEM · TEAM_TASKS …
 ├── Bao_Cao/                         báo cáo Capstone, slide, trailer, ảnh kiểm thử
-└── docs/readme/                     hình ảnh cho README này
+└── docs/readme/                     ảnh README, teaser và trailer v4b
 ```
 
 ---
@@ -382,13 +396,18 @@ Quy tắc của repo (xem [`AGENTS.md`](AGENTS.md) và [`CONTRIBUTING.md`](CONTR
 |---|---|
 | 📘 **Báo cáo Capstone v5** | [`DOCX`](Bao_Cao/NihongoLife_Bao_Cao_Capstone_v5.docx) |
 | 🎞️ **Slide thuyết trình v5** | [`Bao_Cao/NihongoLife_Thuyet_Trinh_Capstone_v5.pptx`](Bao_Cao/NihongoLife_Thuyet_Trinh_Capstone_v5.pptx) |
-| 🎬 **Video** | [`Trailer v2`](Bao_Cao/NihongoLife_Trailer_v2.mp4) · 1080p30, 1:25 · [`Gameplay Demo`](Bao_Cao/NihongoLife_Gameplay_Demo.mp4) · 1080p30, 4:18 |
+| 🎬 **Video** | [`Trailer v4b`](docs/readme/preview_v4b_720p.mp4) · 720p, 67 giây · [YouTube](https://www.youtube.com/channel/UCAKp-_EsasxPY2oa-4CzWtQ) · [`Gameplay Demo`](Bao_Cao/NihongoLife_Gameplay_Demo.mp4) · 1080p30, 4:18 |
 | 🧭 **Thiết kế** | [`ARCHITECTURE` (người mới)](docs/ARCHITECTURE.md) · [`ARCHITECTURE` (Unity)](NihongoLife/Docs/ARCHITECTURE.md) · [`PLAYER_HUD`](NihongoLife/Docs/PLAYER_HUD.md) · [`STORY_BIBLE`](NihongoLife/Docs/STORY_BIBLE.md) · [`SCENARIO_SYSTEM`](NihongoLife/Docs/SCENARIO_SYSTEM.md) · [`EXAM_SYSTEM`](NihongoLife/Docs/EXAM_SYSTEM.md) · [`ROADMAP`](NihongoLife/Docs/ROADMAP.md) |
 | 🎣 **Gameplay mới** | [`FISHING_FARMING_TOOLS`](NihongoLife/Docs/FISHING_FARMING_TOOLS.md) · [`EXAM_CONTENT_PIPELINE`](NihongoLife/Docs/EXAM_CONTENT_PIPELINE.md) |
 
 ## 🙏 Ghi công
 
 [Unity](https://unity.com/) · Kids Characters for Survival · [Kenney](https://kenney.nl/) · [Quaternius](https://quaternius.com/) · [KayKit](https://kaylousberg.itch.io/) · [Mixamo](https://www.mixamo.com/) *(animation retargeting)* · [Noto Sans JP](https://fonts.google.com/noto/specimen/Noto+Sans+JP) · [Supabase](https://supabase.com/) · [Google Gemini](https://ai.google.dev/) · [Agora](https://www.agora.io/) · [GZV](https://www.gzv.one/gzver/quach-thanh-long)
+
+Music: "Ishikari Lore" by Kevin MacLeod (incompetech.com), licensed under CC BY 4.0
+
+<p align="center"><img src="docs/readme/v4b_end.jpg" width="70%" alt="Thẻ kết trailer: NihongoLife, chơi trên PC và web"/>
+<br/><sub>Thẻ kết trailer v4b: «Học tiếng Nhật bằng cách sống ở Nhật» và «Chơi trên PC &amp; Web». Repo chưa ghi URL chơi web công khai.</sub></p>
 
 ---
 
@@ -422,7 +441,7 @@ Nếu bạn thấy **NihongoLife** hữu ích và muốn đồng hành cùng s�
 
 **Quách Thành Long** · K24GD03 · Project 3 Capstone · VTC Academy · 2026
 <br/>
-[quachthanhlong.com](https://quachthanhlong.com/) · [GZV Profile](https://www.gzv.one/gzver/quach-thanh-long)
+[quachthanhlong.com](https://quachthanhlong.com/) · [GZV Profile](https://www.gzv.one/gzver/quach-thanh-long) · [YouTube](https://www.youtube.com/channel/UCAKp-_EsasxPY2oa-4CzWtQ)
 <br/>
 Giảng viên hướng dẫn: Nguyễn Ngọc Chấn
 
