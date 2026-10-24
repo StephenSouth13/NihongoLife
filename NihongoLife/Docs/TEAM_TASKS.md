@@ -12,6 +12,8 @@ Phân công công việc giữa 3 "nhân sự" AI: **Claude** (nội dung + qu�
 
 Nếu bạn thấy hợp hơn thì đổi chéo Codex/Antigravity — 2 task độc lập với nhau nên hoán đổi không ảnh hưởng gì.
 
+**Cập nhật (2026-10-24)**: README lấy khung ngắn của PR #11, gắn teaser, trailer v4b (`docs/readme/preview_v4b_720p.mp4`, 720p, 67 giây), YouTube, và 8 still. Đã xoá still không dùng. Không khôi phục `gif_city.gif`, ghi chú chờ duyệt, hay ảnh nhân vật cũ. Nhạc trailer là CC BY ("Ishikari Lore", Kevin MacLeod) — khác CC0 trong `Docs/AUDIO_CREDITS.md`; chưa gỡ, chờ chủ dự án quyết.
+
 **Cập nhật (2026-09-17)**: Chủ dự án không muốn auto-build khi mở Unity và cũng không muốn quay lại menu `NihongoLife/...`. Đã bỏ hệ `AutoBuildOnLoad`/`[InitializeOnLoad]`. Từ giờ build theo từng bước có chủ đích: gọi trực tiếp từng hàm build từ script tạm, test, hoặc batch step rõ ràng, ví dụ `CharacterBuilder.BuildCharacterSystem()` rồi mới tới `TrailerSceneBuilder.BuildTrailerSceneSafe()` khi thật sự cần.
 
 **Không còn auto-installer/editor setup cho scene gameplay**: không commit script kiểu `GameplayAreaInstaller`/`SafeGameplayAreaInstaller`, không để bất kỳ editor auto-run nào tự mở và ghi `90_TestSandbox.unity`. Ramen/station phải được chỉnh trực tiếp trong scene thật hoặc bằng script tạm không commit.
