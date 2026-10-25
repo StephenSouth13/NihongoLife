@@ -107,61 +107,14 @@ namespace NihongoLife.NPC
             }
         }
 
-        private void StartSmartFallbackDialogue()
-        {
-            var gemini = SceneRefs.Find<GeminiConversationService>();
-            if (gemini != null && gemini.IsConfigured)
-            {
-                gemini.RequestNpcReply(this, "The player approached and used the interact action to talk.",
-                    StartAiDialogue,
-                    error =>
-                    {
-                        Debug.LogWarning($"[NPCController] Gemini fallback failed for {npcId}: {error}");
-                        StartFallbackDialogue();
-                    });
-                return;
-            }
+        /// <summary>NPC small talk is pre-written and offline (ScriptedNpcDialogue): the NPC always answers, with no
+        /// network or AI call. GeminiConversationService is no longer used here.</summary>
+        private void StartSmartFallbackDialogue() => StartFallbackDialogue();
 
-            StartFallbackDialogue();
-        }
-
-        private void StartAiDialogue(AiNpcReply reply)
-        {
-            if (DialogueManager.Instance == null)
-            {
-                return;
-            }
-
-            DialogueManager.Instance.StartDialogue(new ScenarioNode
-            {
-                id = "ai_fallback_" + npcId,
-                nodeType = ScenarioNodeType.Dialogue,
-                speakerName = string.IsNullOrEmpty(displayName) ? gameObject.name : displayName,
-                speakerId = npcId,
-                textJa = string.IsNullOrWhiteSpace(reply.japanese) ? fallbackJa : reply.japanese,
-                textReading = string.IsNullOrWhiteSpace(reply.reading) ? fallbackReading : reply.reading,
-                textEn = string.IsNullOrWhiteSpace(reply.translation) ? fallbackEn : reply.translation,
-                textRomaji = string.IsNullOrWhiteSpace(reply.romaji) ? fallbackRomaji : reply.romaji,
-                animationCue = "talk"
-            });
-        }
-
-        private void StartFallbackDialogue(string geminiReply = null)
+        private void StartFallbackDialogue()
         {
             if (DialogueManager.Instance == null) return;
-
-            DialogueManager.Instance.StartDialogue(new ScenarioNode
-            {
-                id = "fallback_" + npcId,
-                nodeType = ScenarioNodeType.Dialogue,
-                speakerName = string.IsNullOrEmpty(displayName) ? gameObject.name : displayName,
-                speakerId = npcId,
-                textJa = fallbackJa,
-                textReading = fallbackReading,
-                textEn = string.IsNullOrWhiteSpace(geminiReply) ? fallbackEn : geminiReply,
-                textRomaji = fallbackRomaji,
-                animationCue = "talk"
-            });
+            DialogueManager.Instance.StartDialogue(ScriptedNpcDialogue.NextNode(npcId, string.IsNullOrEmpty(displayName) ? gameObject.name : displayName));
         }
 
         public void StopInteracting()

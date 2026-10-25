@@ -77,6 +77,12 @@ namespace NihongoLife.Dialogue
             set => currentMode = value;
         }
 
+        private void OnDestroy()
+        {
+            NihongoLife.Core.Loc.Changed -= RefreshView;
+            if (Instance == this) Instance = null;
+        }
+
         private void Awake()
         {
             if (Instance != null && Instance != this)
@@ -85,6 +91,7 @@ namespace NihongoLife.Dialogue
                 return;
             }
             Instance = this;
+            NihongoLife.Core.Loc.Changed += RefreshView; // redraw the open line (gloss) when the language changes
             _generatedVoiceSource = gameObject.AddComponent<AudioSource>();
             _generatedVoiceSource.playOnAwake = false;
             _generatedVoiceSource.spatialBlend = 0f;
