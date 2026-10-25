@@ -57,7 +57,7 @@ namespace NihongoLife.Exam
                 "Reply with JSON only: {\"criteria\":[{\"code\":\"" + first + "\",\"name\":\"" + firstName + "\",\"band\":6.0,\"explanation\":\"...\"},{\"code\":\"CC\",...},{\"code\":\"LR\",...},{\"code\":\"GRA\",...}],\"summary\":\"<2-3 sentences in " + FeedbackLanguage + ": main strength and the most important thing to improve>\"}";
 
             string text = null, error = null; bool cached = false;
-            yield return RequestJson("writing-examiner", prompt, null, 1600, (t, e, c) => { text = t; error = e; cached = c; });
+            yield return RequestJson("writing-examiner", prompt, null, 4096, (t, e, c) => { text = t; error = e; cached = c; });
             result.fromCache = cached;
             result.model = Model;
             if (error != null) { result.error = error; done?.Invoke(result); yield break; }
@@ -94,7 +94,7 @@ namespace NihongoLife.Exam
                 "Reply with JSON only: {\"issues\":[{\"sentence\":1,\"original\":\"...\",\"category\":\"grammar\",\"problem\":\"...\",\"explanation\":\"...\",\"suggestion\":\"...\"}],\"overallAdvice\":\"<2-4 sentences in " + FeedbackLanguage + ">\"}";
 
             string reply = null, error = null; bool cached = false;
-            yield return RequestJson("writing-coach", prompt, null, 3000, (t, e, c) => { reply = t; error = e; cached = c; });
+            yield return RequestJson("writing-coach", prompt, null, 8192, (t, e, c) => { reply = t; error = e; cached = c; });
             report.fromCache = cached;
             if (error != null) { report.error = error; done?.Invoke(report); yield break; }
             var parsed = Parse<CoachReply>(reply);
@@ -144,7 +144,7 @@ namespace NihongoLife.Exam
                 "Reply with JSON only: {\"answers\":[{\"number\":1,\"transcript\":\"...\"}],\"criteria\":[{\"code\":\"FC\",\"name\":\"Fluency and Coherence\",\"band\":6.0,\"explanation\":\"...\",\"assessed\":true},{\"code\":\"LR\",...},{\"code\":\"GRA\",...},{\"code\":\"P\",\"name\":\"Pronunciation\",...}],\"summary\":\"<2-3 sentences in " + FeedbackLanguage + ">\"}";
 
             string reply = null, error = null; bool cached = false;
-            yield return RequestJson("speaking-examiner", prompt, audio, 3000, (t, e, c) => { reply = t; error = e; cached = c; });
+            yield return RequestJson("speaking-examiner", prompt, audio, 8192, (t, e, c) => { reply = t; error = e; cached = c; });
             result.fromCache = cached;
             if (error != null) { result.error = error; done?.Invoke(result); yield break; }
             var parsed = Parse<SpeakingReply>(reply);
@@ -271,7 +271,7 @@ namespace NihongoLife.Exam
             }
         }
 
-        private static string BuildBody(string prompt, List<(string label, byte[] wav)> audio, int maxTokens)
+        internal static string BuildBody(string prompt, List<(string label, byte[] wav)> audio, int maxTokens)
         {
             var sb = new StringBuilder();
             sb.Append("{\"contents\":[{\"role\":\"user\",\"parts\":[");
@@ -282,7 +282,10 @@ namespace NihongoLife.Exam
                     sb.Append(",{\"text\":").Append(Json(label)).Append('}');
                     sb.Append(",{\"inlineData\":{\"mimeType\":\"audio/wav\",\"data\":\"").Append(Convert.ToBase64String(wav)).Append("\"}}");
                 }
-            sb.Append("]}],\"generationConfig\":{\"responseMimeType\":\"application/json\",\"temperature\":0.2,\"maxOutputTokens\":").Append(maxTokens).Append("}}");
+            // thinkingBudget 0: thinking models otherwise spend the output budget on hidden reasoning and the JSON
+            // gets cut off (finishReason MAX_TOKENS), which then fails to parse.
+            sb.Append("]}],\"generationConfig\":{\"responseMimeType\":\"application/json\",\"temperature\":0.2,\"maxOutputTokens\":").Append(maxTokens)
+              .Append(",\"thinkingConfig\":{\"thinkingBudget\":0}}}");
             return sb.ToString();
         }
 
