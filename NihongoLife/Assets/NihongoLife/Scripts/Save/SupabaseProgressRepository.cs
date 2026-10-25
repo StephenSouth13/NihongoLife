@@ -281,6 +281,7 @@ namespace NihongoLife.Save
                 hunger = cloud.hunger,
                 thirst = cloud.thirst,
                 knowledge = Mathf.Max(local.knowledge, cloud.knowledge),
+                aiFreeGradesUsed = Mathf.Max(local.aiFreeGradesUsed, cloud.aiFreeGradesUsed),
                 yen = cloud.yen,
                 activeJobRole = !string.IsNullOrWhiteSpace(cloud.activeJobRole) ? cloud.activeJobRole : local.activeJobRole,
                 business = cloud.business ?? local.business ?? new BusinessRecord(),

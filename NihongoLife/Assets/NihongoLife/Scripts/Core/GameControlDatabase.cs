@@ -94,6 +94,16 @@ namespace NihongoLife.Core
         public int aiMaxSpeakingSeconds = 480;
         public int aiRequestTimeoutSeconds = 60;
 
+        [Header("Exam AI grading (Writing / Speaking)")]
+        [Tooltip("Automatic AI grading when an exam or IELTS Writing/Speaking paper is submitted. Off: answers are only saved (pending review), no AI call, no quota, no network.")]
+        public bool aiGradingEnabled = false;
+        [Tooltip("Lets the learner ask for an optional AI grade of one saved submission (free uses first, then in-game yen).")]
+        public bool allowOnDemandAiGrading = true;
+        [Tooltip("Free on-demand AI gradings per player save.")]
+        public int aiFreeGradings = 3;
+        [Tooltip("In-game yen per on-demand AI grading once the free uses are spent (never real money).")]
+        public int aiGradingPriceYen = 50;
+
         [Header("Agora (video classroom, microphone check)")]
         [Tooltip("Environment variable holding the Agora App ID. LocalSecrets/secrets.json is checked when the variable is empty.")]
         public string agoraAppIdEnvironmentKey = "AGORA_APP_ID";

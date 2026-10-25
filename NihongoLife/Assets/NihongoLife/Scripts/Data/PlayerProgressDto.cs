@@ -110,6 +110,8 @@ namespace NihongoLife.Data
         public int reputation;
         /// <summary>Tai tiếng / 悪名. Blocking cars, rudeness, littering.</summary>
         public int notoriety;
+        /// <summary>Free on-demand AI exam gradings already used by this player (see ExamAiSettings.FreeGradings).</summary>
+        public int aiFreeGradesUsed;
         public List<NpcAffinityRecord> affinities = new List<NpcAffinityRecord>();
         public List<MoodletRecord> moodlets = new List<MoodletRecord>();
     }

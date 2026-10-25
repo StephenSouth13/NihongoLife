@@ -379,9 +379,77 @@ namespace NihongoLife.UI
             _attempt.submitted = true;
             IeltsAttemptStore.ClearAttempt(_test.id);
             IeltsProductiveStore.Save(record);
+            SaveSubmissionManifest(record);
             ProductiveRecord = record;
             _submitButton.interactable = false;
-            StartCoroutine(GradeProductive());
+            // AI grading is off by default: the paper is only recorded (pending review), no AI call, no network.
+            if (ExamAiSettings.AiGradingEnabled) StartCoroutine(GradeProductive());
+            else ShowProductiveResults();
+        }
+
+        /// <summary>Mirror of the submitted paper in persistentDataPath/exam_submissions/&lt;test&gt;/&lt;timestamp&gt;/ (manifest.json + essays / WAVs).</summary>
+        private static void SaveSubmissionManifest(IeltsProductiveRecord record)
+        {
+            try
+            {
+                var m = ExamSubmissionStore.Begin(record.testId, "Ielts-" + record.skill, DateTime.UtcNow);
+                foreach (var task in record.writing)
+                    ExamSubmissionStore.AddWriting(m, "task" + task.task + "_q" + task.number, task.prompt, task.original);
+                foreach (var answer in record.speaking)
+                {
+                    string wav = string.IsNullOrEmpty(answer.audioFile) ? null : Path.Combine(IeltsProductiveStore.AudioFolder(record.id), answer.audioFile);
+                    ExamSubmissionStore.AddSpeakingFile(m, "part" + answer.part + "_q" + answer.number, answer.question, wav, answer.metrics?.seconds ?? 0f);
+                }
+                ExamSubmissionStore.Save(m);
+            }
+            catch (Exception e) { Debug.LogWarning("[IELTS] Could not save the submission manifest: " + e.Message); }
+        }
+
+        private static bool IsGraded(IeltsProductiveRecord record) => record != null &&
+            (record.skill == "writing" ? record.writing.Count > 0 && record.writing.All(t => t.examination != null && t.examination.Ok) : record.speakingExamination != null && record.speakingExamination.Ok);
+
+        /// <summary>Optional AI grade of this saved paper: confirm with the free uses left / price and balance first.
+        /// The free use or yen is only kept when the grade succeeds; any failure refunds it.</summary>
+        public void RequestPaidGrade()
+        {
+            if (ProductiveRecord == null || IsGrading) return;
+            if (!GameServices.TryGet(out NihongoLife.Save.IProgressRepository repository) || repository.GetProgress() == null) return;
+            var progress = repository.GetProgress();
+            var wallet = new PlayerYenWallet(progress);
+            var quote = AiGradeCredits.Quote(progress, wallet, ExamAiSettings.FreeGradings, ExamAiSettings.PriceYen);
+            string title = ExamPendingText.T(ExamPendingText.ConfirmTitle);
+            if (!quote.CanProceed)
+            {
+                ShowConfirm(title, ExamPendingText.F(ExamPendingText.NotEnough, Loc.Yen(quote.cost), Loc.Yen(quote.balance)), Loc.T("Đóng", "Close", "閉じる"), () => _confirm.gameObject.SetActive(false));
+                return;
+            }
+            string body = quote.free
+                ? ExamPendingText.F(ExamPendingText.ConfirmFree, quote.freeLeft, quote.freeTotal, Loc.Yen(quote.balance))
+                : ExamPendingText.F(ExamPendingText.ConfirmPaid, Loc.Yen(quote.cost), Loc.Yen(quote.balance));
+            ShowConfirm(title, body, ExamPendingText.T(ExamPendingText.Yes), () =>
+            {
+                _confirm.gameObject.SetActive(false);
+                var ticket = AiGradeCredits.Reserve(progress, wallet, ExamAiSettings.FreeGradings, ExamAiSettings.PriceYen);
+                repository.SaveProgress(progress);
+                if (ticket == null) return;
+                StartCoroutine(PaidGrade(ticket, repository));
+            });
+        }
+
+        private IEnumerator PaidGrade(AiGradeTicket ticket, NihongoLife.Save.IProgressRepository repository)
+        {
+            yield return GradeProductive();
+            bool ok = IsGraded(ProductiveRecord); // 2xx + valid JSON criteria
+
+            var progress = repository.GetProgress();
+            if (ok) AiGradeCredits.Commit(ticket);
+            else
+            {
+                AiGradeCredits.Refund(ticket);
+                NihongoLife.UI.HudFeed.Post(ExamPendingText.T(ExamPendingText.Refunded), NihongoLife.UI.HudFeed.Kind.Warning, 5f, "ai_grade_refund");
+            }
+            if (progress != null) repository.SaveProgress(progress);
+            ShowProductiveResults();
         }
 
         /// <summary>Opens a submitted paper from anywhere (the exam mailbox): its test screen with the full results —
@@ -521,7 +589,8 @@ namespace NihongoLife.UI
             PaperText(summary, record.skill == "writing" ? Loc.T("KẾT QUẢ VIẾT · AI EXAMINER", "WRITING RESULT · AI EXAMINER", "ライティング結果 · AI試験官")
                              : live ? Loc.T("KẾT QUẢ NÓI · GIÁM KHẢO", "SPEAKING RESULT · EXAMINER", "スピーキング結果 · 試験官")
                              : Loc.T("KẾT QUẢ NÓI · AI EXAMINER", "SPEAKING RESULT · AI EXAMINER", "スピーキング結果 · AI試験官"), 15f, FontStyles.Bold).color = Accent;
-            string overall = IsGrading ? $"<i>{Loc.T("Đang chấm…", "Marking…", "採点中…")}</i>" : record.overall > 0f ? $"<size=170%><b>{record.overall:0.0}</b></size>" : $"<i>{Loc.T("Chưa có band", "No band yet", "バンドはまだありません")}</i>";
+            string overall = IsGrading ? $"<i>{Loc.T("Đang chấm…", "Marking…", "採点中…")}</i>" : record.overall > 0f ? $"<size=170%><b>{record.overall:0.0}</b></size>"
+                : !IsGraded(record) ? $"<i>{ExamPendingText.T(ExamPendingText.Pending)}</i>" : $"<i>{Loc.T("Chưa có band", "No band yet", "バンドはまだありません")}</i>";
             PaperText(summary, $"{(live ? Loc.T("Band", "Band", "バンド") : Loc.T("Band ước tính", "Estimated band", "推定バンド"))}: {overall}", 22f, FontStyles.Normal).name = "OverallBand";
             if (record.skill == "writing" && record.writing.Count > 1 && record.overall > 0f)
                 PaperText(summary, Loc.T("Band Viết = (Task 1 + 2 × Task 2) / 3, làm tròn theo quy tắc IELTS. Band mỗi task = trung bình 4 tiêu chí, làm tròn xuống nửa band.",
@@ -546,7 +615,10 @@ namespace NihongoLife.UI
 
             var buttons = Row(content, "Buttons", 12f);
             bool failed = !IsGrading && (record.skill == "writing" ? record.writing.Any(t => t.examination == null || !t.examination.Ok) : record.speakingExamination == null || !record.speakingExamination.Ok);
-            if (failed && !live) UiKit.Size(UiKit.Button(buttons, "Regrade", "Chấm lại", "Mark again", "再採点", RegradeProductive, UiKit.Kind.Primary, "refresh", 16f), 190f, 50f);
+            if (failed && !live && ExamAiSettings.AiGradingEnabled) UiKit.Size(UiKit.Button(buttons, "Regrade", "Chấm lại", "Mark again", "再採点", RegradeProductive, UiKit.Kind.Primary, "refresh", 16f), 190f, 50f);
+            else if (failed && !live && ExamAiSettings.OnDemandGradingAllowed)
+                UiKit.Size(UiKit.Button(buttons, "GradeWithAi", ExamPendingText.GradeButton[0], ExamPendingText.GradeButton[1], ExamPendingText.GradeButton[2], RequestPaidGrade, UiKit.Kind.Primary, "auto_awesome", 16f), 220f, 50f);
+            if (failed && !IsGrading && !ExamAiSettings.AiGradingEnabled) PaperText(summary, ExamPendingText.T(ExamPendingText.Saved), 14.5f, FontStyles.Italic).color = PaperMuted;
             UiKit.Size(UiKit.Button(buttons, "Again", "Làm bài mới (luyện tập)", "New paper (practice)", "新しく練習する", () => Begin(_package, PracticeMode, false), UiKit.Kind.Accent, "replay", 16f), 280f, 50f);
             if (record.skill == "speaking") UiKit.Size(UiKit.Button(buttons, "Live", "Thi với giám khảo", "Live with examiner", "試験官とライブ", () => OpenLiveExam(), UiKit.Kind.Danger, "co_present", 16f), 240f, 50f);
             UiKit.Size(UiKit.Button(buttons, "Close", "Đóng", "Close", "閉じる", Close, UiKit.Kind.Secondary, "close", 16f), 160f, 50f);

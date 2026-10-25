@@ -780,7 +780,9 @@ namespace NihongoLife.UI
             var ringRoot = (RectTransform)ring.transform.parent;
             ringRoot.name = "Ring";
             UiKit.Place(ringRoot, 40f, 20f, 150f, 150f);
-            var big = UiKit.Label(ringRoot, "Value", jlpt ? record.totalScore.ToString() : record.estimatedBand.ToString("0.0"), 40f, UiTheme.Text, FontStyles.Bold, TextAlignmentOptions.Center);
+            bool pending = record.pendingReview;
+            bool noObjective = pending && !ExamPendingRules.AnyObjective(record.sections);
+            var big = UiKit.Label(ringRoot, "Value", noObjective ? "—" : jlpt ? record.totalScore.ToString() : record.estimatedBand.ToString("0.0"), 40f, UiTheme.Text, FontStyles.Bold, TextAlignmentOptions.Center);
             UiKit.Fill(big.rectTransform, 0f, 0f, 0f, 18f);
             var small = UiKit.Label(ringRoot, "Of", jlpt ? "/ " + record.totalMaxScore : "Band", 13f, UiTheme.Muted, FontStyles.Bold, TextAlignmentOptions.Center);
             UiKit.Fill(small.rectTransform, 0f, 92f, 0f, 0f);
@@ -793,15 +795,19 @@ namespace NihongoLife.UI
                 _resultsSubText.text = Loc.F("Tổng điểm {0}/{1} · cần {2} điểm và không phần nào dưới điểm liệt.",
                     "Total {0}/{1} · pass needs {2} points and no division under its minimum.",
                     "総合 {0}/{1}点 · 合格には{2}点以上かつ各区分の基準点が必要です。", record.totalScore, record.totalMaxScore, exam != null ? exam.jlptTotalPassScore : 80);
+                if (pending) _resultsSubText.text += "\n" + ExamPendingText.T(ExamPendingText.Saved);
             }
             else
             {
-                _resultsHeadlineText.text = $"Band {record.estimatedBand:0.0}";
+                _resultsHeadlineText.text = noObjective ? ExamPendingText.T(ExamPendingText.OverallPending)
+                    : pending ? $"Band {record.estimatedBand:0.0} · {ExamPendingText.T(ExamPendingText.ObjectiveOnly)}"
+                    : $"Band {record.estimatedBand:0.0}";
                 _resultsHeadlineText.color = UiTheme.Gold;
                 _resultsSubText.text = Loc.T(
                     "Band ước tính để luyện tập — không phải điểm IELTS chính thức và không liên kết với IELTS/British Council/IDP.",
                     "An estimated band for practice — not an official IELTS score and not affiliated with IELTS/British Council/IDP.",
                     "練習用の推定バンドです。公式のIELTSスコアではなく、IELTS/British Council/IDPとは無関係です。");
+                if (pending) _resultsSubText.text += "\n" + ExamPendingText.T(ExamPendingText.Saved);
             }
 
             UiKit.Clear(_resultsSectionList);
@@ -826,8 +832,7 @@ namespace NihongoLife.UI
                 {
                     var section = exam.FindSection(sectionResult.sectionId);
                     string title = section != null ? Loc.Pick(section.titleVi, section.titleEn, section.titleJa) : sectionResult.sectionId;
-                    float band = sectionResult.aiGraded ? sectionResult.scoredPoints / 10f : (sectionResult.maxPoints > 0 ? (float)sectionResult.scoredPoints / sectionResult.maxPoints * 9f : 0f);
-                    var line = UiKit.Label(_resultsSectionList, "Section_" + sectionResult.sectionId, $"{title}: <b>Band {band:0.0}</b>", 14f, UiTheme.TextSoft);
+                    var line = UiKit.Label(_resultsSectionList, "Section_" + sectionResult.sectionId, $"{title}: <b>{ExamPendingRules.SectionScoreLabel(sectionResult)}</b>", 14f, sectionResult.pendingReview ? UiTheme.Muted : UiTheme.TextSoft);
                     UiKit.Place(line.rectTransform, 0f, y, 400f, 24f);
                     y += 28f;
                 }

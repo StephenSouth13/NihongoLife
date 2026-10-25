@@ -12,6 +12,8 @@ namespace NihongoLife.Exam
         /// <summary>AI (or fallback rubric) feedback text for Essay/SpeakingPrompt sections; empty for objective sections.</summary>
         public string feedback;
         public bool aiGraded;
+        /// <summary>Writing/Speaking saved but not graded yet (AI grading off): no score, excluded from totals.</summary>
+        public bool pendingReview;
     }
 
     [Serializable]
@@ -44,6 +46,10 @@ namespace NihongoLife.Exam
         public List<ExamQuestionRecord> answers = new List<ExamQuestionRecord>();
         /// <summary>JLPT scoring divisions (得点区分) when the exam defines them.</summary>
         public List<ExamGroupResult> groups = new List<ExamGroupResult>();
+        /// <summary>Some sections are pending review; totalScore / estimatedBand cover the objective sections only.</summary>
+        public bool pendingReview;
+        /// <summary>Folder of the saved Writing/Speaking submission (manifest.json), when any.</summary>
+        public string submissionFolder;
     }
 
     [Serializable]
