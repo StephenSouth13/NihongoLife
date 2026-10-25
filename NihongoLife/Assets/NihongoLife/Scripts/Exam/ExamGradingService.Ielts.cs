@@ -284,8 +284,8 @@ namespace NihongoLife.Exam
                 request.timeout = AiGradingTimeouts.HttpSeconds(audio != null && audio.Count > 0);
                 yield return request.SendWebRequest();
 
-                // A request that reached the service counts against the daily limit, answered or not.
-                if (request.result != UnityWebRequest.Result.ConnectionError)
+                // Only a successful (2xx) answer counts against the daily limit; errors, rate limits and timeouts do not.
+                if (request.responseCode >= 200 && request.responseCode < 300)
                 {
                     PlayerPrefs.SetInt(CounterKey, RequestsToday + 1);
                     PlayerPrefs.Save();
