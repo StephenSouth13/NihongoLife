@@ -359,7 +359,7 @@ namespace NihongoLife.Exam
             return sb.Append('"').ToString();
         }
 
-        [Serializable] private class ReplyPart { public string text; }
+        [Serializable] private class ReplyPart { public string text; public bool thought; }
         [Serializable] private class ReplyContent { public ReplyPart[] parts; }
         [Serializable] private class ReplyCandidate { public ReplyContent content; public string finishReason; }
         [Serializable] private class Reply { public ReplyCandidate[] candidates; }
@@ -376,7 +376,7 @@ namespace NihongoLife.Exam
                 var reply = JsonUtility.FromJson<Reply>(responseJson);
                 finishReason = reply?.candidates != null && reply.candidates.Length > 0 ? reply.candidates[0].finishReason : null;
                 var parts = reply?.candidates != null && reply.candidates.Length > 0 ? reply.candidates[0].content?.parts : null;
-                return parts == null ? null : string.Concat(parts.Select(p => p.text));
+                return parts == null ? null : string.Concat(parts.Where(p => p != null && !p.thought).Select(p => p.text));
             }
             catch (Exception e) { Debug.LogWarning("[ExamGradingService] Unreadable reply: " + e.Message); return null; }
         }

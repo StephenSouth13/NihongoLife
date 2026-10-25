@@ -40,7 +40,9 @@ namespace NihongoLife.Exam
         [Serializable] private class GeminiPart { public string text; public InlineData inlineData; }
         [Serializable] private class GeminiContent { public GeminiPart[] parts; }
         [Serializable] private class GeminiRequest { public GeminiContent[] contents; }
-        [Serializable] private class GeminiCandidate { public GeminiContent content; }
+        [Serializable] private class GeminiReplyPart { public string text; public bool thought; }
+        [Serializable] private class GeminiReplyContent { public GeminiReplyPart[] parts; }
+        [Serializable] private class GeminiCandidate { public GeminiReplyContent content; }
         [Serializable] private class GeminiResponse { public GeminiCandidate[] candidates; }
 
         public void Initialize() { }
@@ -225,14 +227,23 @@ namespace NihongoLife.Exam
             return false;
         }
 
+        /// <summary>The answer text: every part joined, skipping the model's "thought" parts (thinking models can put
+        /// reasoning first and split the JSON over several parts).</summary>
+        private static string JoinAnswerParts(GeminiReplyPart[] parts)
+        {
+            if (parts == null) return null;
+            var sb = new StringBuilder();
+            foreach (var part in parts)
+                if (part != null && !part.thought && !string.IsNullOrEmpty(part.text)) sb.Append(part.text);
+            return sb.ToString();
+        }
+
         private static ExamAiGrade ParseGrade(string responseJson)
         {
             try
             {
                 var response = JsonUtility.FromJson<GeminiResponse>(responseJson);
-                string text = response?.candidates != null && response.candidates.Length > 0
-                    ? response.candidates[0].content?.parts?[0].text
-                    : null;
+                string text = JoinAnswerParts(response?.candidates != null && response.candidates.Length > 0 ? response.candidates[0].content?.parts : null);
                 if (string.IsNullOrWhiteSpace(text)) return null;
 
                 string jsonPart = ExtractJsonObject(text.Trim());
