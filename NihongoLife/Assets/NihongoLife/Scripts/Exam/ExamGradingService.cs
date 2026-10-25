@@ -200,7 +200,7 @@ namespace NihongoLife.Exam
                 request.downloadHandler = new DownloadHandlerBuffer();
                 request.SetRequestHeader("Content-Type", "application/json");
                 request.SetRequestHeader("x-goog-api-key", apiKey);
-                request.timeout = 45;
+                request.timeout = AiGradingTimeouts.HttpSeconds(HasAudio(requestBody));
 
                 yield return request.SendWebRequest();
 
@@ -213,6 +213,16 @@ namespace NihongoLife.Exam
 
                 onComplete?.Invoke(ParseGrade(request.downloadHandler.text));
             }
+        }
+
+        private static bool HasAudio(GeminiRequest body)
+        {
+            if (body?.contents == null) return false;
+            foreach (var content in body.contents)
+                if (content?.parts != null)
+                    foreach (var part in content.parts)
+                        if (part?.inlineData != null && !string.IsNullOrEmpty(part.inlineData.data)) return true;
+            return false;
         }
 
         private static ExamAiGrade ParseGrade(string responseJson)

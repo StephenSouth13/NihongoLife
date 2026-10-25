@@ -178,14 +178,13 @@ namespace NihongoLife.Exam
         {
             get
             {
-                var l = new LimitSet { daily = 40, maxEssayWords = 700, maxSpeakingSeconds = 480, timeout = 60 };
+                var l = new LimitSet { daily = 40, maxEssayWords = 700, maxSpeakingSeconds = 480, timeout = AiGradingTimeouts.TextSeconds };
                 if (GameServices.TryGet(out GameControlService control) && control.Database != null)
                 {
                     var db = control.Database;
                     l.daily = Mathf.Max(0, db.aiDailyRequestLimit);
                     l.maxEssayWords = Mathf.Max(50, db.aiMaxEssayWords);
                     l.maxSpeakingSeconds = Mathf.Max(30, db.aiMaxSpeakingSeconds);
-                    l.timeout = Mathf.Clamp(db.aiRequestTimeoutSeconds, 10, 180);
                 }
                 return l;
             }
@@ -282,7 +281,7 @@ namespace NihongoLife.Exam
                 request.downloadHandler = new DownloadHandlerBuffer();
                 request.SetRequestHeader("Content-Type", "application/json");
                 request.SetRequestHeader("x-goog-api-key", apiKey);
-                request.timeout = limits.timeout;
+                request.timeout = AiGradingTimeouts.HttpSeconds(audio != null && audio.Count > 0);
                 yield return request.SendWebRequest();
 
                 // A request that reached the service counts against the daily limit, answered or not.

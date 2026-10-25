@@ -265,7 +265,7 @@ namespace NihongoLife.Learning
                 request.downloadHandler = new DownloadHandlerBuffer();
                 request.SetRequestHeader("Content-Type", "application/json");
                 request.SetRequestHeader("x-goog-api-key", apiKey);
-                request.timeout = 30;
+                request.timeout = NihongoLife.Exam.AiGradingTimeouts.AudioSeconds;
                 yield return request.SendWebRequest();
 
                 if (request.result != UnityWebRequest.Result.Success)
