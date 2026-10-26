@@ -1576,3 +1576,57 @@ Giao việc đầy đủ trong `Docs/GROK_TASK_TRAILER_MARKETING.md` (bối cả
 - Mã: `Scripts/Audio/AudioPrefs.cs` (PlayerPrefs `Audio_MusicOn`, `Audio_AmbienceOn`, `Volume_Ambience`; giá trị được cache, đọc mỗi khung không tốn). Các nơi đọc giá trị: `Soundscape`, `TownAmbientAudio`, `AudioService` (nhạc menu), mưa trong `OutdoorSky`. UI ở `SettingsUI`.
 - Thêm nguồn ambience mới thì nhân âm lượng với `AudioPrefs.AmbienceGain`; nguồn nhạc mới thì `mute = !AudioPrefs.MusicOn`.
 - Test: `SoundscapePlayModeTests` (tắt thì nhạc và ambience câm, bật lại thì có tiếng).
+
+## Cập nhật (2026-10-26, Claude) — Sửa máu, trailer, cổng soát vé, cảnh tàu, khối lơ lửng ngoài phố
+- **Máu không hồi (kẹt 0% dù no, đủ nước):**
+  - Trước đây `PlayerStatus` không có hồi máu.
+  - Màn ngất bị cắt ngang thì `StatusConsequences._busy` kẹt mãi.
+  - Nay máu tự hồi khi no và nước ≥ 30% (đứng yên nhanh gấp đôi, ~4 phút từ 0 lên đầy); ăn uống hồi ngay; ngủ 8 giờ hồi đầy.
+  - Màn ngất bị cắt thì reset và trả điều khiển; còn 0 máu thì ngất lại.
+  - Test `NeedsWeatherPlayModeTests.Health_HealsWhenFed_AndAStuckFaintRecovers`.
+- **Trailer 99_Trailer:**
+  - Trailer quay trên save thật, nên ngất giữa trailer và ghi đè save.
+  - Nay dùng save tạm trong bộ nhớ (`Core/IntroTrailer.cs`).
+  - Có nút **Bỏ qua** (Esc / Enter / Space).
+  - Khách chơi lần đầu trên máy tự xem một lần rồi vào game.
+  - Bật `99_Trailer` trong Build Settings.
+  - Test `IntroTrailerPlayModeTests`.
+- **Cổng soát vé ga Hibari:**
+  - Lối chính bị chặn bởi collider vô hình của 6 toa tàu trang trí nằm ngang qua sân ga (`HighSpeed_*`, `Opposite_HighSpeed_*`); hai bên cổng lại đi vòng được.
+  - `StationGateBuilder` dựng 3 cabin / 2 làn có cánh (`World/TicketGate.cs`), đầu đọc IC, biển 改札, lan can ngang sân ga; gỡ collider của các toa.
+  - Có vé thì đi vào làn là tự chạm vé và mở; từ sân ga đi ra luôn mở.
+  - Test `StationGatePlayModeTests` (đi bộ thật).
+- **Cảnh ngoài cửa sổ tàu:**
+  - `StationTrainBuilder.RebuildWindowScenery`: hàng rào bê tông, ruộng lúa có bờ, đường làng, cột điện gỗ, hai hàng nhà ở 25 m / 45 m, đồi.
+  - Mọi lớp trôi cùng tốc độ tàu.
+  - Camera cửa sổ đặt sát kính.
+- **Thông báo "đường ra khỏi Hibari-chō" hiện trong ga / trên tàu:** `TownEdge` chỉ phản ứng khi phố là scene đang chơi.
+- **Khối đỏ / kem lơ lửng ngoài phố:**
+  - 436 mảnh trang trí mặt tiền cũ (`FacadeTrim`, `WarmWindow_L/R`, `DoorMat` dưới `StreetBuilding_*`) đặt lệch khỏi tường.
+  - Đã gỡ khỏi 90_TestSandbox và 01_MainMenu (`CityFacadeAccentCleanup`); `VisualEnvironmentBuilder` không tạo lại.
+  - Test `CityTownPlayModeTests`.
+- **"Some objects were not cleaned up … GameInputService":** `TouchControlOverlay.OnDisable` tạo service mới khi đóng scene; nay chỉ dùng service đang có.
+- **Việc sau (anh Long quyết):** phòng khám Hibari chưa có trong phố. Màn ngất hiện chỉ kể "người qua đường gọi phòng khám" rồi trừ viện phí. Sau này thêm khu phòng khám và tuyến nhiệm vụ riêng.
+
+## Cập nhật (2026-10-26 tối, Claude) — Nghề nghiệp từ cấp 10 (kiểu The Sims 3/4)
+- **Mở ở cấp 10** (khách và tài khoản): thẻ "Hướng nghiệp" tự mở một lần; sau đó mở từ nút **Nghề nghiệp** trong Sổ nhiệm vụ (N).
+- **3 nghề**, mỗi nghề gắn với ca làm thêm có sẵn:
+  - Bán lẻ (Hibari Mart): Quản lý cửa hàng / Thu mua.
+  - Ẩm thực (Sushi Hibari): Đầu bếp sushi / Quản lý nhà hàng.
+  - Nông nghiệp (Midori): Trồng trọt / Chăn nuôi.
+- **Thang bậc:** 6 bậc (3 chung + 3 theo nhánh), rẽ nhánh ở bậc 4. Chức danh vi/en/ja, lương nghề cộng thêm vào tiền công ca.
+- **Lịch làm** theo thứ và giờ trong game.
+- **Hiệu suất:**
+  - Ca đúng giờ cho đủ phần hiệu suất (×1.25 khi tâm trạng tốt, ×0.75 khi mệt/căng/bực); ca ngoài giờ được một nửa, không có lương nghề.
+  - Có mặt trong giờ làm mà bỏ ca thì −15.
+- **Thăng chức:** đầy hiệu suất và đủ trí tuệ thì có phỏng vấn tiếng Nhật (sai được giải thích, thử lại).
+- **Sự kiện nơi làm** (35% sau ca đúng giờ): lựa chọn tiếng Nhật ảnh hưởng hiệu suất, danh tiếng, tâm trạng.
+- **Dữ liệu:** `Resources/Progression/careers.json` (thêm nghề / bậc / phỏng vấn / sự kiện không cần sửa code). Save: `PlayerProgressDto.career`; cloud lấy bản mới nhất (`updatedTicks`).
+- **Mã:** `Progression/CareerCatalog.cs`, `Progression/CareerService.cs` (+ `CareerClock`), `UI/CareerUI.cs`.
+- **Test:** `CareerCatalogTests` (EditMode), `CareerPlayModeTests`. Ảnh: `Bao_Cao/career/`.
+- **IELTS:** `Writing_OfflineAndDailyLimit_SaveAndExplain` lỗi từ khi chấm AI mặc định tắt (commit 0302b557). Test nay bật `ExamAiSettings.AutoGradingOverride` trong phần kiểm mất mạng.
+- **Định hướng (anh Long):**
+  - Đảo Midori chủ yếu là nông trại.
+  - Sau này dựng **đảo Phú Quốc** (Việt Nam) riêng: rất rộng, gần tỉ lệ thật, UI đầy đủ, theo bản đồ đã gửi (Dương Đông, An Thới, Hàm Ninh, Gành Dầu, Bãi Sao, cáp treo Hòn Thơm, VinWonders, quần đảo An Thới…).
+  - Chưa làm cho tới khi anh yêu cầu.
+- **Phòng khám Hibari + tuyến nhiệm vụ:** để sau (xem mục 2026-10-26 ở trên).

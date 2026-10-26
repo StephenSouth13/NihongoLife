@@ -241,9 +241,9 @@ namespace NihongoLife.EditorTools
             CreateBlock(root.transform, "SafetyLine", origin + new Vector3(0f, 0.33f, 0.55f), new Vector3(30f, 0.035f, 0.28f), new Color(0.95f, 0.72f, 0.12f));
             for (int i = -2; i <= 2; i++)
                 Place(Train, "RailwayTrack_Straight", root.transform, $"Track_{i}", origin + new Vector3(i * 6f, 0f, -3.2f), new Vector3(6.2f, 0.28f, 2.1f), Quaternion.identity, true);
-            Place(Train, "HighSpeed_Front", root.transform, "HighSpeed_Front", origin + new Vector3(-10f, 0.1f, -3.2f), new Vector3(12f, 3.2f, 3f), Quaternion.identity, true);
-            Place(Train, "HighSpeed_Wagon", root.transform, "HighSpeed_Wagon_A", origin + new Vector3(0f, 0.1f, -3.2f), new Vector3(12f, 3.2f, 3f), Quaternion.identity, true);
-            Place(Train, "HighSpeed_Wagon", root.transform, "HighSpeed_Wagon_B", origin + new Vector3(10f, 0.1f, -3.2f), new Vector3(12f, 3.2f, 3f), Quaternion.identity, true);
+            Place(Train, "HighSpeed_Front", root.transform, "HighSpeed_Front", origin + new Vector3(-10f, 0.1f, -3.2f), new Vector3(12f, 3.2f, 3f), Quaternion.identity, false); // on the track: a collider here stood across the platform
+            Place(Train, "HighSpeed_Wagon", root.transform, "HighSpeed_Wagon_A", origin + new Vector3(0f, 0.1f, -3.2f), new Vector3(12f, 3.2f, 3f), Quaternion.identity, false); // on the track: a collider here stood across the platform
+            Place(Train, "HighSpeed_Wagon", root.transform, "HighSpeed_Wagon_B", origin + new Vector3(10f, 0.1f, -3.2f), new Vector3(12f, 3.2f, 3f), Quaternion.identity, false); // on the track: a collider here stood across the platform
             Place(Sushi, "Environment_Bench", root.transform, "PlatformBench_A", origin + new Vector3(-6f, 0.3f, 4f), new Vector3(2.4f, 1.0f, 0.8f), Quaternion.Euler(0f, 180f, 0f), true);
             Place(Sushi, "Environment_Bench", root.transform, "PlatformBench_B", origin + new Vector3(3f, 0.3f, 4f), new Vector3(2.4f, 1.0f, 0.8f), Quaternion.Euler(0f, 180f, 0f), true);
             Place(Sushi, "Environment_Arch", root.transform, "TicketGateArch", origin + new Vector3(0f, 0.3f, 8.5f), new Vector3(4f, 3.3f, 1.2f), Quaternion.identity, true);

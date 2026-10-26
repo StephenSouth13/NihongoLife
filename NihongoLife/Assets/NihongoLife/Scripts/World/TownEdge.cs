@@ -126,11 +126,13 @@ namespace NihongoLife.World
             if (!_ready) return;
             TintToFog();
             var player = PlayerStatus.Instance;
-            if (player == null || player.gameObject.scene != gameObject.scene) { _nearEdge = false; return; }
+            // Only while the town itself is being played: zones (station, train, shops) sit far outside the town's
+            // bounds in the same scene, and "outside" must never read as "at the edge" (the note showed on the train).
+            if (player == null || player.gameObject.scene != gameObject.scene || SceneManager.GetActiveScene() != gameObject.scene) { _nearEdge = false; return; }
             Vector3 p = player.transform.position;
             float dx = Mathf.Min(p.x - _bounds.min.x, _bounds.max.x - p.x);
             float dz = Mathf.Min(p.z - _bounds.min.z, _bounds.max.z - p.z);
-            _nearEdge = dx < 7f || dz < 7f;
+            _nearEdge = dx > -3f && dz > -3f && (dx < 7f || dz < 7f);
             if (!_nearEdge || Time.unscaledTime < _nextNote) return;
             _nextNote = Time.unscaledTime + 9f;
             bool station = LocationUnlocks.IsUnlocked(WorldLocationCatalog.StationScene);

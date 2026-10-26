@@ -61,11 +61,16 @@ namespace NihongoLife.Trailer
         private void Awake()
         {
             DontDestroyOnLoad(gameObject);
+            // The reel films the real town on a throw-away save: the player's own save is never touched and needs
+            // do not drain (no fainting in the trailer).
+            IntroTrailer.Begin();
             BuildOverlay();
         }
 
         private void Start()
         {
+            // Viewers can skip; a recording (ReturnToMenuWhenDone = false) films without the button.
+            if (_skip != null) _skip.gameObject.SetActive(ReturnToMenuWhenDone || IntroTrailer.HasContinuation);
             if (playOnStart) StartCoroutine(Run());
         }
 
@@ -74,6 +79,73 @@ namespace NihongoLife.Trailer
         private void Update()
         {
             if (ShouldRecord) Elapsed += Time.deltaTime;
+            if (Finished || _skip == null || !_skip.gameObject.activeSelf || Time.unscaledTime - _startedAt < 0.5f) return;
+            var keyboard = UnityEngine.InputSystem.Keyboard.current;
+            if (keyboard != null && (keyboard.escapeKey.wasPressedThisFrame || keyboard.enterKey.wasPressedThisFrame || keyboard.spaceKey.wasPressedThisFrame))
+                Skip();
+        }
+
+        private float _startedAt;
+        private Button _skip;
+        private bool _ending;
+
+        /// <summary>Stops the reel at once and goes on (into the game for the intro, else to the menu).</summary>
+        public void Skip()
+        {
+            if (Finished) return;
+            StopAllCoroutines();
+            End();
+        }
+
+        private void End()
+        {
+            if (_ending) return;
+            _ending = true;
+            Finished = true;
+            ShouldRecord = false;
+            CloseShowcaseUi();
+            if (_music != null) _music.Stop();
+            if (IntroTrailer.HasContinuation)
+            {
+                // The intro before a guest's first game: real save back, then the game scene loads.
+                Destroy(_overlay.gameObject);
+                IntroTrailer.Finish();
+                Destroy(gameObject);
+                return;
+            }
+            IntroTrailer.Finish();
+            if (ReturnToMenuWhenDone && Application.CanStreamedLevelBeLoaded(sceneAfterTrailer))
+            {
+                Destroy(_overlay.gameObject);
+                SceneManager.LoadScene(sceneAfterTrailer);
+                Destroy(gameObject);
+            }
+        }
+
+        private void OnDestroy()
+        {
+            // Destroyed some other way (quit, test teardown): the real save comes back, nothing else runs.
+            if (!_ending && IntroTrailer.Playing) IntroTrailer.Finish(continueGame: false);
+        }
+
+        /// <summary>Persistent showcase windows the reel opened must not stay open in the game.</summary>
+        private void CloseShowcaseUi()
+        {
+            CancelDialogue();
+            try
+            {
+                MiniGameController.Instance?.Close();
+                JobQuizCard.Close();
+                TaskJournalUI.Close();
+                IslandUI.CloseFarm();
+                IslandUI.CloseAnimal();
+                IslandUI.CloseShop();
+                var shop = FindFirstObjectByType<KonbiniShopUI>();
+                if (shop != null) shop.Close();
+                var wheel = FindFirstObjectByType<EmoteWheelUI>();
+                if (wheel != null) wheel.Close();
+            }
+            catch (Exception e) { Debug.LogWarning("[TrailerReel] closing showcase UI: " + e.Message); }
         }
 
         private void LateUpdate() => HideGameChrome();
@@ -82,6 +154,7 @@ namespace NihongoLife.Trailer
 
         private IEnumerator Run()
         {
+            _startedAt = Time.unscaledTime;
             Black(1f);
             yield return LoadCity();
             StartMusic();
@@ -109,15 +182,7 @@ namespace NihongoLife.Trailer
             yield return Zone(WorldLocationCatalog.GameCenterScene, WorldLocationCatalog.GameCenterEntrance);
             yield return Shot("kana", 4.5f, KanaMatch(), "かなマッチ", "Lật thẻ, ghép cặp, học chữ");
             yield return Shot("end", 7.0f, EndCard());
-
-            Finished = true;
-            ShouldRecord = false;
-            if (ReturnToMenuWhenDone && Application.CanStreamedLevelBeLoaded(sceneAfterTrailer))
-            {
-                Destroy(_overlay.gameObject);
-                SceneManager.LoadScene(sceneAfterTrailer);
-                Destroy(gameObject);
-            }
+            End();
         }
 
         /// <summary>Runs one shot: fade in, the body (camera move + staging), caption, fade out at the end.</summary>
@@ -614,7 +679,35 @@ namespace NihongoLife.Trailer
             _fade.color = Color.black;
             _fade.raycastTarget = false;
             _titleCard.SetAsLastSibling();
+            BuildSkipButton(root);
             SetLayer(_overlay.transform, LayerMask.NameToLayer("UI"));
+        }
+
+        private void BuildSkipButton(RectTransform root)
+        {
+            var rect = new GameObject("SkipButton", typeof(RectTransform), typeof(Image), typeof(Button)).GetComponent<RectTransform>();
+            rect.SetParent(root, false);
+            rect.anchorMin = rect.anchorMax = rect.pivot = new Vector2(1f, 0f);
+            rect.anchoredPosition = new Vector2(-40f, 28f);
+            rect.sizeDelta = new Vector2(230f, 56f);
+            var image = rect.GetComponent<Image>();
+            image.color = new Color(1f, 1f, 1f, 0.14f);
+            var label = NLUi.Label(rect, "Label", Loc.T("Bỏ qua  ▶▶", "Skip  ▶▶", "スキップ  ▶▶"), 24f, Color.white, _font, FontStyles.Bold, TextAlignmentOptions.Center);
+            NLUi.Stretch(label.rectTransform);
+            label.raycastTarget = false;
+            var hint = NLUi.Label(rect, "Hint", "Esc", 14f, new Color(1f, 1f, 1f, 0.55f), _font, FontStyles.Normal, TextAlignmentOptions.Center);
+            hint.rectTransform.anchorMin = hint.rectTransform.anchorMax = new Vector2(0.5f, 0f);
+            hint.rectTransform.pivot = new Vector2(0.5f, 1f);
+            hint.rectTransform.anchoredPosition = new Vector2(0f, -2f);
+            hint.rectTransform.sizeDelta = new Vector2(200f, 20f);
+            hint.raycastTarget = false;
+            _skip = rect.GetComponent<Button>();
+            _skip.targetGraphic = image;
+            var colors = _skip.colors;
+            colors.highlightedColor = new Color(1f, 1f, 1f, 1.8f);
+            _skip.colors = colors;
+            _skip.onClick.AddListener(Skip);
+            rect.SetAsLastSibling();
         }
 
         private RectTransform BuildEndCard()
@@ -640,6 +733,7 @@ namespace NihongoLife.Trailer
             credit.rectTransform.sizeDelta = new Vector2(1200f, 40f);
             _fade.transform.SetAsLastSibling();
             card.SetAsLastSibling();
+            if (_skip != null) _skip.transform.SetAsLastSibling();
             SetLayer(card, LayerMask.NameToLayer("UI"));
             return card;
         }

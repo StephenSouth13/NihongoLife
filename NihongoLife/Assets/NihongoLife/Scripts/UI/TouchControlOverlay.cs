@@ -279,7 +279,10 @@ namespace NihongoLife.UI
 
         void ReleaseAll()
         {
-            var input = GameInputService.GetOrCreate();
+            // Called from OnDisable too: on scene close the service may already be gone, and creating one here
+            // would leave a stray "GameInputService" object behind ("Some objects were not cleaned up").
+            var input = GameInputService.Instance;
+            if (input == null) return;
             input.SetMobileMove(Vector2.zero);
             for (int i = 0; i < _held.Length; i++) input.SetMobileButton(_held[i], false);
         }

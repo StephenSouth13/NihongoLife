@@ -105,6 +105,10 @@ namespace NihongoLife.UI
         }
 
         public static int VisibleCount => _instance == null ? 0 : _instance._cards.Count;
+
+        /// <summary>True while a card posted with this key is still showing.</summary>
+        public static bool HasKey(string key) =>
+            _instance != null && _instance._cards.Exists(c => c.card != null && _instance._keys.TryGetValue(c.card, out string k) && k == key);
         public static string LatestText => _instance == null || _instance._cards.Count == 0 ? null : _instance._lastText;
 
         private void Update()

@@ -109,6 +109,10 @@ namespace NihongoLife.UI
             LocText.Set(title, () => Loc.T("Sổ nhiệm vụ", "Task journal", "タスク帳") + "  <size=65%><color=#A8B4C4>[N]</color></size>");
             Place(title.rectTransform, 28f, 22f, 800f, 44f);
             NLUi.CloseButton(card, _font, Close, 46f, 18f);
+            // Careers (from level 10) live in their own window, one click from the journal.
+            var career = NLUi.Button(card, "CareerButton", "", _font, () => { Close(); CareerUI.Open(); }, new Color(0.2f, 0.42f, 0.6f), 16f, Color.white, 40f);
+            LocText.Set(career.GetComponentInChildren<TextMeshProUGUI>(), () => Loc.T("Nghề nghiệp", "Career", "仕事"));
+            Place((RectTransform)career.transform, 880f, 24f, 170f, 40f);
 
             _filters = NLUi.Group(card, "Filters", false, 8f, TextAnchor.MiddleLeft, false);
             Place(_filters, 28f, 76f, 1080f, 40f);

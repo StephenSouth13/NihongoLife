@@ -135,6 +135,7 @@ namespace NihongoLife.Tests
             ui.SetAnswer(1, Task1 + unique);
             ui.SetAnswer(2, Task2 + unique);
             ExamGradingService.EndpointOverride = "http://127.0.0.1:9/unreachable";
+            ExamAiSettings.AutoGradingOverride = true; // AI marking is off by default (pending review); this checks the AI path offline
             try
             {
                 ui.SubmitNow();
@@ -151,7 +152,7 @@ namespace NihongoLife.Tests
                 yield return null;
                 Capture("05_writing_offline");
             }
-            finally { ExamGradingService.EndpointOverride = null; }
+            finally { ExamGradingService.EndpointOverride = null; ExamAiSettings.AutoGradingOverride = null; }
 
             // Daily cost limit: when today's quota is used up, nothing is sent.
             var control = GameServices.TryGet(out GameControlService c) ? c : null;

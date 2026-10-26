@@ -653,10 +653,18 @@ namespace NihongoLife.UI
             var session = PlayerSessionService.GetOrCreate();
             if (OnlineAccess.IsRegistered) session?.BeginProgressionPlay();
             else session?.BeginOfflinePlay();
+            // A guest's first game on this device opens with the intro trailer (skippable); the town loads after it.
+            string scene = targetGameplayScene;
+            if (!OnlineAccess.IsRegistered && IntroTrailer.PlayBefore(() => EnterTown(scene))) return;
+            EnterTown(scene);
+        }
+
+        private static void EnterTown(string scene)
+        {
             var story = StoryDirector.AutoStart();
             if (story != null) ScenarioSceneInitializer.QueueLaunch(story.id);
-            if (GameServices.TryGet(out SceneFlowController sceneFlow)) sceneFlow.LoadScene(targetGameplayScene);
-            else SceneContentLoader.LoadFallback(targetGameplayScene);
+            if (GameServices.TryGet(out SceneFlowController sceneFlow)) sceneFlow.LoadScene(scene);
+            else SceneContentLoader.LoadFallback(scene);
         }
 
         private void OnQuitClicked() => Application.Quit();

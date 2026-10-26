@@ -387,6 +387,11 @@ namespace NihongoLife.Save
                 if (localWins) merged.quests[index] = localQuest;
             }
             merged.trackedQuestId = !string.IsNullOrWhiteSpace(cloud.trackedQuestId) ? cloud.trackedQuestId : local.trackedQuestId;
+            // Career: the most recently changed record wins (a quit or a promotion on another device is kept).
+            var localCareerState = local.career ?? new NihongoLife.Progression.CareerState();
+            var cloudCareerState = cloud.career ?? new NihongoLife.Progression.CareerState();
+            merged.career = localCareerState.updatedTicks > cloudCareerState.updatedTicks ? localCareerState : cloudCareerState;
+            merged.career.prompted = localCareerState.prompted || cloudCareerState.prompted;
             // Notebook: the copy written most recently wins (paper bought anywhere is never lost: keep the larger count).
             long Latest(NihongoLife.Notebook.NotebookRecord r) { long t = -1; if (r?.entries != null) foreach (var p in r.entries) if (p != null && p.updatedUnix > t) t = p.updatedUnix; return t; }
             var notebook = Latest(cloud.notebook) >= Latest(local.notebook) ? cloud.notebook : local.notebook;

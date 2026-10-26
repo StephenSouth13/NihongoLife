@@ -23,6 +23,8 @@ namespace NihongoLife.Player
         private TextMeshProUGUI _title, _body;
 
         public bool IsBusy => _busy;
+        private PlayerController _lockedController;              // locked by the running blackout, released if it is cut short
+        private CharacterAnimationController _restingAnimation;
         public int LastFee { get; private set; }
         public int CollapseCount { get; private set; }
 
@@ -40,13 +42,28 @@ namespace NihongoLife.Player
 
         private void Update()
         {
-            if (!_busy && _status != null && _status.NoddingOffSeconds >= PlayerStatus.FallAsleepAfterSeconds)
-                StartCoroutine(Blackout(false));
+            if (_busy || _status == null || NihongoLife.Core.IntroTrailer.Playing) return;
+            // Health still at 0 (the event fired while a blackout could not run, or a save loaded at 0): faint now.
+            if (_status.CurrentHealth <= 0f) StartCoroutine(Blackout(true));
+            else if (_status.NoddingOffSeconds >= PlayerStatus.FallAsleepAfterSeconds) StartCoroutine(Blackout(false));
+        }
+
+        private void OnDisable()
+        {
+            // A scene change or a disabled player stops the coroutine half way: never stay "busy" with a black
+            // screen, or the player is stuck at 0 health forever (no faint, no clinic).
+            if (!_busy) return;
+            _busy = false;
+            if (_overlay != null) { _overlay.alpha = 0f; _overlay.blocksRaycasts = false; }
+            if (_lockedController != null) _lockedController.InputLocked = false; // we locked it: give control back
+            if (_restingAnimation != null) _restingAnimation.SetResting(false);
+            _lockedController = null;
+            _restingAnimation = null;
         }
 
         private void HandleCollapse()
         {
-            if (!_busy) StartCoroutine(Blackout(true));
+            if (!_busy && isActiveAndEnabled && !NihongoLife.Core.IntroTrailer.Playing) StartCoroutine(Blackout(true));
         }
 
         private IEnumerator Blackout(bool faint)
@@ -56,6 +73,8 @@ namespace NihongoLife.Player
             var animation = controller != null ? controller.GetComponentInChildren<CharacterAnimationController>() : null;
             bool wasLocked = controller != null && controller.InputLocked;
             if (controller != null) controller.InputLocked = true;
+            _lockedController = wasLocked ? null : controller;
+            _restingAnimation = animation;
             animation?.SetResting(true);
             EnsureOverlay();
             _title.text = faint ? NihongoLife.Core.Loc.T("Bạn đã ngất…", "You fainted…", "倒れてしまいました…") : NihongoLife.Core.Loc.T("Bạn ngủ gục giữa đường…", "You fell asleep in the street…", "道で眠ってしまいました…");
@@ -87,6 +106,8 @@ namespace NihongoLife.Player
             animation?.SetResting(false);
             yield return Fade(0f, 1f);
             if (controller != null) controller.InputLocked = wasLocked;
+            _lockedController = null;
+            _restingAnimation = null;
             NihongoLife.UI.HudFeed.Post(faint ? NihongoLife.Core.Loc.F("Đã trả viện phí {0}.", "Paid the clinic fee of {0}.", "診察料{0}を払いました。", NihongoLife.Core.Loc.Yen(LastFee)) : NihongoLife.Core.Loc.T("Bạn đã ngủ 6 giờ ngoài đường.", "You slept 6 hours in the street.", "道で6時間眠りました。"), NihongoLife.UI.HudFeed.Kind.Warning, 5f);
             _busy = false;
         }
