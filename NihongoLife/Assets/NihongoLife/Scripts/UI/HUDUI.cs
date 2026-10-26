@@ -156,6 +156,7 @@ namespace NihongoLife.UI
             EnsureTutorial();
             EnsureQuestLog();
             EnsureExamCenter();
+            EnsureStudyHub();
             EnsureMobileControls();
         }
 
