@@ -34,6 +34,12 @@ NihongoLife hỗ trợ package schema `nihongolife.ielts.v1` được nạp lúc
 
 Đề seed Academic Practice 1 vẫn có Writing/Speaking trong engine chung. Gemini có thể hỗ trợ phản hồi nội dung khi được cấu hình; fallback chỉ dựa trên quy tắc đơn giản và phải được ghi là điểm luyện tập. Không tuyên bố hệ thống chấm chính xác phát âm, ngữ điệu hoặc band IELTS chính thức.
 
+## English Foundations (A1–C1)
+
+Ngoài luyện thi IELTS, Exam Center có tab **ENGLISH** dành cho tiếng Anh tổng quát. Curriculum tự soạn trong `EnglishCourseCatalog` có 20 unit/60 câu, phủ ma trận A1–C1 × Nghe–Nói–Đọc–Viết; mẫu câu, ngữ pháp và điền từ là trọng tâm nằm trong các kỹ năng. `EnglishPracticeUI` hiển thị bài tương tác, phản hồi và giải thích. Bài nghe ưu tiên WAV local bị Git ignore, dùng Web Speech API khi chạy WebGL và luôn có transcript hỗ trợ.
+
+Xem thiết kế nội dung và quy tắc mở rộng tại [ENGLISH_COURSE.md](ENGLISH_COURSE.md).
+
 ## Thêm nội dung
 
 - JLPT: dùng `Tools/exam/exam_lib.py` và các generator `gen_jlpt_*.py` để tạo YAML Unity nhất quán.

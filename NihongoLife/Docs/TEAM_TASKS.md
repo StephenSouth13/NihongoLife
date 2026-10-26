@@ -1525,6 +1525,31 @@ Chi tiết thiết kế: `STORY_BIBLE.md` mục 14.
 ## TASK-M (Grok) — Trailer v4, demo v3, kế hoạch marketing 12 tuần
 Giao việc đầy đủ trong `Docs/GROK_TASK_TRAILER_MARKETING.md` (bối cảnh, luật, công cụ có sẵn, 3 sản phẩm, tiêu chí nghiệm thu). Không sửa gameplay; chỉ sửa `TrailerReel.cs`, hai test quay phim và các file marketing.
 
+## Cập nhật (2026-10-25, Codex) — Viết lại README sản phẩm
+
+- Viết lại toàn bộ `README.md` theo hướng landing page dự án: định vị game, vòng lặp học, gameplay, chế độ khách/tài khoản, kiến trúc, cài đặt, test và đóng góp.
+- Thêm mục video dẫn tới kênh YouTube chính thức `@NihongoLifeGame`; dùng GIF gameplay trong repo làm preview vì GitHub README không hỗ trợ trình phát YouTube iframe.
+- Thêm hướng phát triển theo bốn trụ cột: nội dung học, thế giới sống động, online/cộng đồng và WebGL/khả năng tiếp cận; không đặt ngày phát hành chưa được xác nhận.
+- Chỉ dùng media đang tồn tại trong `docs/readme/`, giữ đúng luật sản phẩm về khách mở toàn thị trấn, campaign tài khoản, từ “trí tuệ” và đúng ba nhà sáng lập.
+- Kiểm tra: rà liên kết/ảnh cục bộ và cấu trúc Markdown; không đổi code hoặc scene nên không cần chạy Unity test.
+
+## Cập nhật (2026-10-25, Codex) — English Foundations A1–C1 và rà kho IELTS
+
+- Rà `LocalContent/IELTS`: 48 package local Cambridge 12–17; tất cả package Reading/Listening có đủ 40 widget, 40 đáp án, không thiếu audio Listening và đều `localOnly`. Không đưa nội dung sách vào Git.
+- Thêm tab **ENGLISH** cạnh JLPT/IELTS trong `ExamCenterPopup`, định vị rõ English Foundations là lộ trình tổng quát còn IELTS là luyện thi.
+- Thêm starter curriculum tự soạn trong `EnglishCourseCatalog`: 10 bài, 30 câu, phủ CEFR A1/A2/B1/B2/C1 và đủ mẫu câu, ngữ pháp, điền từ, đọc hiểu, nghe.
+- Thêm `EnglishPracticeUI`: câu hỏi tương tác, phản hồi đúng/sai, giải thích và tổng kết; nghe dùng Web Speech API trên WebGL, có transcript hỗ trợ.
+- Tài liệu: `Docs/ENGLISH_COURSE.md`, cập nhật `EXAM_SYSTEM.md` và README. Capture đã xem tại `Bao_Cao/english-course/`.
+- Test: WebGL compile 0 `error CS`; `EnglishCourseTests` 2/2 pass; `EnglishCoursePlayModeTests` 1/1 pass.
+
+## Cập nhật (2026-10-25, Codex) — Hoàn thiện ma trận English 4 kỹ năng
+
+- Mở rộng starter curriculum thành 20 unit/60 câu: mỗi cấp A1, A2, B1, B2, C1 đều có đủ Listening, Speaking, Reading và Writing; grammar, pattern, gap-fill và vocabulary được tích hợp theo kỹ năng.
+- Exam Center có filter Nghe/Nói/Đọc/Viết và chip kỹ năng trên từng card; lộ trình được trình bày như 5 quyển/chặng từ First Steps tới Academic Explorer.
+- Thêm `EnglishAudioLibrary`: desktop ưu tiên WAV local, WebGL fallback sang Web Speech API, transcript luôn sẵn có.
+- Thêm manifest và tool sinh 15 audio từ script tự soạn. File nằm ở `LocalContent/English/audio` (~5,45 MB), đã Git ignore; repo chỉ giữ tool/manifest nhẹ.
+- Nguồn British Council/VOA/American English chỉ dùng để tham khảo khung CEFR/phương pháp; không chép bài hoặc audio của họ.
+
 ## Cập nhật (2026-10-23 chiều, Claude) — Rà lỗi còn lại và nợ kỹ thuật
 - **Build WebGL bị chặn:** `AgoraWebShim.cs` (namespace `Agora.Rtc`) gọi `AgoraWebEvents` mà thiếu namespace `NihongoLife.Learning`, nên với build target WebGL không biên dịch được. Đã sửa và đã biên dịch thử với target WebGL.
 - **Save tách theo tài khoản** (`progress_<userId>.json`, `PlayerSessionService.AccountId`):

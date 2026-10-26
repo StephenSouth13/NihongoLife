@@ -5,6 +5,7 @@ using NihongoLife.Core;
 using NihongoLife.Data;
 using NihongoLife.Exam;
 using NihongoLife.Exam.Ielts;
+using NihongoLife.English;
 using NihongoLife.Save;
 using TMPro;
 using UnityEngine;
@@ -24,11 +25,14 @@ namespace NihongoLife.UI
         private const float W = 1380f, H = 870f, RailW = 286f;
 
         private ExamType _tab = ExamType.Jlpt;
-        private Button _jlptTab, _ieltsTab;
+        private Button _jlptTab, _ieltsTab, _englishTab;
         private RectTransform _hero, _filters, _listRoot;
         private TextMeshProUGUI _emptyText;
         private readonly List<Button> _skillButtons = new List<Button>();
+        private readonly List<string> _filterIds = new List<string>();
         private string _ieltsSkill = "all";
+        private string _englishSkill = "all";
+        private bool _english;
         private RectTransform _stats;
 
         protected override bool LocksGameplay => true;
@@ -52,6 +56,7 @@ namespace NihongoLife.UI
             float y = 112f;
             _jlptTab = RailTile(card, "JlptTab", "JLPT", "Năng lực tiếng Nhật", "Japanese proficiency", "日本語能力試験", "translate", UiTheme.Jlpt, y, () => SelectTab(ExamType.Jlpt)); y += 96f;
             _ieltsTab = RailTile(card, "IeltsTab", "IELTS", "Tiếng Anh học thuật", "Academic English", "アカデミック英語", "language", UiTheme.Ielts, y, () => SelectTab(ExamType.Ielts)); y += 96f;
+            _englishTab = RailTile(card, "EnglishTab", "ENGLISH", "Cơ bản đến nâng cao", "Foundations to advanced", "基礎から上級", "school", UiTheme.Teal, y, SelectEnglish); y += 96f;
             RailTile(card, "LiveTab", Loc.T("Thi trực tuyến", "Live exam", "ライブ試験"), "Speaking với giám khảo", "Speaking with an examiner", "試験官とスピーキング", "co_present", UiTheme.Live, y, OpenLiveExam, fixedTitle: false,
                 titleVi: "Thi trực tuyến", titleEn: "Live exam", titleJa: "ライブ試験"); y += 96f;
             RailTile(card, "MailTab", Loc.T("Hộp thư", "Mailbox", "ボックス"), "Kết quả đã chấm", "Marked results", "採点結果", "inbox", UiTheme.Gold, y, OpenMailbox, fixedTitle: false,
@@ -68,20 +73,7 @@ namespace NihongoLife.UI
             _filters = UiKit.Rect(card, "Filters");
             UiKit.Place(_filters, x, 276f, w, 40f);
             UiKit.RowLayout(_filters, 10f);
-            string[] skills = { "all", "listening", "reading", "writing", "speaking" };
-            string[][] labels =
-            {
-                new[] { "TẤT CẢ", "ALL", "すべて" }, new[] { "NGHE", "LISTENING", "リスニング" }, new[] { "ĐỌC", "READING", "リーディング" },
-                new[] { "VIẾT", "WRITING", "ライティング" }, new[] { "NÓI", "SPEAKING", "スピーキング" },
-            };
-            string[] icons = { "checklist", "headphones", "menu_book", "edit_note", "mic" };
-            for (int i = 0; i < skills.Length; i++)
-            {
-                string skill = skills[i];
-                var b = UiKit.Button(_filters, "Skill_" + skill, labels[i][0], labels[i][1], labels[i][2], () => { _ieltsSkill = skill; RebuildList(); }, UiKit.Kind.Ghost, icons[i], 13.5f, 18);
-                UiKit.Size(b, 168f, 38f);
-                _skillButtons.Add(b);
-            }
+            BuildSkillFilters(false);
 
             var scrollContent = UiKit.Scroll(card, "List", out var scroll, 14f, new RectOffset(2, 10, 2, 16));
             _listRoot = scrollContent;
@@ -136,11 +128,28 @@ namespace NihongoLife.UI
 
         private void SelectTab(ExamType tab)
         {
+            _english = false;
             _tab = tab;
             bool jlpt = tab == ExamType.Jlpt;
             SetTile(_jlptTab, jlpt, UiTheme.Jlpt);
             SetTile(_ieltsTab, !jlpt, UiTheme.Ielts);
+            SetTile(_englishTab, false, UiTheme.Teal);
             _filters.gameObject.SetActive(!jlpt);
+            if (!jlpt) BuildSkillFilters(false);
+            BuildHero();
+            BuildStats();
+            RebuildList();
+        }
+
+        private void SelectEnglish()
+        {
+            _english = true;
+            SetTile(_jlptTab, false, UiTheme.Jlpt);
+            SetTile(_ieltsTab, false, UiTheme.Ielts);
+            SetTile(_englishTab, true, UiTheme.Teal);
+            _filters.gameObject.SetActive(false);
+            _filters.gameObject.SetActive(true);
+            BuildSkillFilters(true);
             BuildHero();
             BuildStats();
             RebuildList();
@@ -157,9 +166,53 @@ namespace NihongoLife.UI
             outline.enabled = on;
         }
 
+        private void BuildSkillFilters(bool english)
+        {
+            UiKit.Clear(_filters);
+            _skillButtons.Clear();
+            _filterIds.Clear();
+            string[] skills = { "all", "listening", "speaking", "reading", "writing" };
+            string[][] labels =
+            {
+                new[] { "TẤT CẢ", "ALL", "すべて" }, new[] { "NGHE", "LISTENING", "リスニング" }, new[] { "NÓI", "SPEAKING", "スピーキング" },
+                new[] { "ĐỌC", "READING", "リーディング" }, new[] { "VIẾT", "WRITING", "ライティング" },
+            };
+            string[] icons = { "checklist", "headphones", "mic", "menu_book", "edit_note" };
+            for (int i = 0; i < skills.Length; i++)
+            {
+                string skill = skills[i];
+                var b = UiKit.Button(_filters, "Skill_" + skill, labels[i][0], labels[i][1], labels[i][2], () =>
+                {
+                    if (english) _englishSkill = skill; else _ieltsSkill = skill;
+                    RebuildList();
+                }, UiKit.Kind.Ghost, icons[i], 13.5f, 18);
+                UiKit.Size(b, 168f, 38f);
+                _filterIds.Add(skill);
+                _skillButtons.Add(b);
+            }
+        }
+
         private void BuildHero()
         {
             UiKit.Clear(_hero);
+            if (_english)
+            {
+                Color course = UiTheme.Teal;
+                var courseWash = UiKit.Image(_hero, "Wash", UiKit.Alpha(course, 0.22f), UiKit.HorizontalFade);
+                UiKit.Fill(courseWash.rectTransform);
+                var courseIcon = UiKit.Icon(_hero, "school", UiKit.Alpha(course, 0.25f), 150f);
+                UiKit.Pin(courseIcon.rectTransform, new Vector2(1f, 0.5f), -30f, 0f, 150f, 150f);
+                var courseChip = UiKit.Chip(_hero, "Family", "ENGLISH COURSE", course, Color.white, "school", 12.5f);
+                UiKit.Place(courseChip, 28f, 22f, 170f, 26f);
+                var courseTitle = UiKit.Label(_hero, "Title", "Tiếng Anh từ cơ bản đến nâng cao", "English from foundations to advanced", "基礎から上級までの英語", 26f, UiTheme.Text, FontStyles.Bold);
+                UiKit.Place(courseTitle.rectTransform, 28f, 54f, 760f, 36f);
+                var courseBody = UiKit.Label(_hero, "Body",
+                    "Lộ trình CEFR A1–C1: mẫu câu · ngữ pháp · điền từ · đọc hiểu · nghe. Học nền tảng trước, luyện IELTS khi đã sẵn sàng.",
+                    "A CEFR A1–C1 route through sentence patterns, grammar, gap fill, reading and listening. Build foundations, then prepare for IELTS.",
+                    "CEFR A1〜C1：文型・文法・穴埋め・読解・リスニング。基礎を固めてからIELTS対策へ。", 14.5f, UiTheme.TextSoft, FontStyles.Normal, TextAlignmentOptions.TopLeft, wrap: true);
+                UiKit.Place(courseBody.rectTransform, 28f, 92f, 780f, 48f);
+                return;
+            }
             bool jlpt = _tab == ExamType.Jlpt;
             Color color = jlpt ? UiTheme.Jlpt : UiTheme.Ielts;
             var wash = UiKit.Image(_hero, "Wash", UiKit.Alpha(color, 0.22f), UiKit.HorizontalFade);
@@ -216,6 +269,14 @@ namespace NihongoLife.UI
         private void RebuildList()
         {
             UiKit.Clear(_listRoot);
+            if (_english)
+            {
+                var lessons = EnglishCourseCatalog.All.Where(x => _englishSkill == "all" || x.skill.ToString().Equals(_englishSkill, StringComparison.OrdinalIgnoreCase)).OrderBy(x => x.level).ThenBy(x => x.skill).ToList();
+                _emptyText.gameObject.SetActive(lessons.Count == 0);
+                for (int i = 0; i < _skillButtons.Count; i++) UiKit.SetKind(_skillButtons[i], _filterIds[i] == _englishSkill ? UiKit.Kind.Accent : UiKit.Kind.Ghost);
+                foreach (var lesson in lessons) BuildEnglishCard(lesson);
+                return;
+            }
             var exams = new List<ExamDefinition>();
             if (GameServices.TryGet(out ExamRepository repository))
                 foreach (var exam in repository.GetAllExams())
@@ -227,8 +288,7 @@ namespace NihongoLife.UI
             packages = packages.OrderBy(p => p.Test.skill == "writing" ? 0 : p.Test.skill == "speaking" ? 1 : p.Test.skill == "listening" ? 2 : 3).ThenBy(p => p.Id).ToList();
             if (_tab == ExamType.Ielts && _ieltsSkill != "all") exams.Clear(); // built-in short sets mix skills
 
-            string[] skillIds = { "all", "listening", "reading", "writing", "speaking" };
-            for (int i = 0; i < _skillButtons.Count; i++) UiKit.SetKind(_skillButtons[i], skillIds[i] == _ieltsSkill ? UiKit.Kind.Accent : UiKit.Kind.Ghost);
+            for (int i = 0; i < _skillButtons.Count; i++) UiKit.SetKind(_skillButtons[i], _filterIds[i] == _ieltsSkill ? UiKit.Kind.Accent : UiKit.Kind.Ghost);
 
             _emptyText.gameObject.SetActive(exams.Count == 0 && packages.Count == 0);
             foreach (var package in packages) BuildPackageCard(package);
@@ -386,6 +446,34 @@ namespace NihongoLife.UI
                 return b;
             }), 13.5f, UiTheme.Teal, FontStyles.Normal);
             UiKit.Place(best.rectTransform, 116f, 142f, 640f, 22f);
+        }
+
+        private void BuildEnglishCard(EnglishLesson lesson)
+        {
+            string icon = lesson.type switch
+            {
+                EnglishActivityType.Listening => "headphones",
+                EnglishActivityType.Reading => "menu_book",
+                EnglishActivityType.Grammar => "spellcheck",
+                EnglishActivityType.GapFill => "edit_note",
+                _ => "chat"
+            };
+            var card = NewCard(UiTheme.Teal, null, icon, 158f);
+            var start = UiKit.Button(card, "Start", "Học ngay", "Start lesson", "学習する", () =>
+            {
+                Hide();
+                EnglishPracticeUI.GetOrCreate(transform).Begin(lesson);
+            }, UiKit.Kind.Accent, "play_arrow", 15f);
+            UiKit.Pin((RectTransform)start.transform, new Vector2(1f, 1f), -22f, -22f, 190f, 46f);
+            CardTitle(card, $"{lesson.level}  ·  {Loc.Pick(lesson.titleVi, lesson.titleEn, lesson.titleEn)}");
+            var description = UiKit.Label(card, "Description", lesson.descriptionVi, lesson.titleEn, lesson.titleEn, 14f, UiTheme.Muted, FontStyles.Normal, TextAlignmentOptions.TopLeft, wrap: true);
+            UiKit.Place(description.rectTransform, 116f, 50f, 650f, 40f);
+            var facts = Facts(card, 100f);
+            UiKit.Chip(facts, "Level", lesson.level, UiKit.Alpha(UiTheme.Teal, 0.16f), UiTheme.Teal, "trending_up", 12f);
+            UiKit.Chip(facts, "Skill", EnglishCourseCatalog.SkillNameVi(lesson.skill), UiKit.Alpha(UiTheme.Gold, 0.13f), UiTheme.Gold, icon, 12f);
+            UiKit.Chip(facts, "Type", EnglishCourseCatalog.TypeNameVi(lesson.type), UiKit.Alpha(Color.white, 0.06f), UiTheme.TextSoft, icon, 12f);
+            UiKit.Chip(facts, "Questions", Loc.F("{0} câu", "{0} questions", "{0}問", lesson.questions.Count), UiKit.Alpha(Color.white, 0.06f), UiTheme.TextSoft, "quiz", 12f);
+            UiKit.Chip(facts, "Original", "Nội dung tự soạn", "Original content", "オリジナル教材", UiKit.Alpha(Color.white, 0.06f), UiTheme.TextSoft, "verified", 12f);
         }
 
         private void OpenLocal(IeltsLibrary.Package package, string mode, bool resume)
