@@ -30,7 +30,7 @@ namespace NihongoLife.UI
             public string Key => Quest != null ? "q:" + Quest.id : "s:" + Story.id;
         }
 
-        private static readonly string[] Filters = { "all", "job", "farm", "learning", "daily", "story" };
+        private static readonly string[] Filters = { "all", "job", "clinic", "farm", "learning", "daily", "story" };
 
         private static string FilterName(string id) => id == "all" ? Loc.T("Tất cả", "All", "すべて") : CategoryName(id);
 
@@ -248,7 +248,7 @@ namespace NihongoLife.UI
         private static string CategoryName(string category) => category switch
         {
             "job" => Loc.T("Làm thêm", "Part-time job", "アルバイト"), "farm" => Loc.T("Nông trại", "Farm", "農場"),
-            "learning" => Loc.T("Học tập", "Learning", "勉強"), "daily" => Loc.T("Hằng ngày", "Daily", "毎日"), _ => Loc.T("Cốt truyện", "Story", "ストーリー"),
+            "learning" => Loc.T("Học tập", "Learning", "勉強"), "clinic" => Loc.T("Phòng khám", "Clinic", "クリニック"), "daily" => Loc.T("Hằng ngày", "Daily", "毎日"), _ => Loc.T("Cốt truyện", "Story", "ストーリー"),
         };
 
         private static string StoryTitle(ScenarioDefinition s) => s.DisplayTitle;

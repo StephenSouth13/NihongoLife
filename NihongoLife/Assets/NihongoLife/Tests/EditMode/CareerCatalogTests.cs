@@ -20,11 +20,11 @@ namespace NihongoLife.Tests
         }
 
         [Test]
-        public void RealCatalog_ThreeCareersFromLevel10_WithBranchesAndSixLevels()
+        public void RealCatalog_FourCareersFromLevel10_WithBranchesAndSixLevels()
         {
             var catalog = CareerCatalog.Load();
             Assert.AreEqual(10, catalog.unlockLevel);
-            CollectionAssert.AreEquivalent(new[] { "retail", "food", "farm" }, catalog.careers.Select(c => c.id).ToArray());
+            CollectionAssert.AreEquivalent(new[] { "retail", "food", "farm", "medical" }, catalog.careers.Select(c => c.id).ToArray());
             foreach (var career in catalog.careers)
             {
                 Assert.AreEqual(6, career.MaxLevel, career.id);

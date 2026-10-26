@@ -187,6 +187,19 @@ namespace NihongoLife.Player
             SaveProgress();
         }
 
+        /// <summary>Seen by the doctor at Hibari Clinic: fully healed, the cold cured, rested enough to walk home.</summary>
+        public void TreatAtClinic()
+        {
+            CurrentHealth = maxHealth;
+            Wetness = 0f;
+            CurrentEnergy = Mathf.Max(CurrentEnergy, maxEnergy * 0.6f);
+            IsExhausted = false;
+            _collapsed = false;
+            SocialStanding.AddMoodlet("treated", SocialMood.Happy, 0.4f, 3f);
+            OnStatusChanged?.Invoke();
+            SaveProgress();
+        }
+
         /// <summary>Tests and debug: put the needs in a given state.</summary>
         public void DebugSetNeeds(float? health = null, float? energy = null, float? hunger = null, float? thirst = null, float? sleepiness = null, float? wetness = null)
         {

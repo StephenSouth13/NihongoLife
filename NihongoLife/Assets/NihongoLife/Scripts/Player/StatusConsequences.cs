@@ -92,8 +92,11 @@ namespace NihongoLife.Player
                 cycle?.SetHour(cycle.Hour + 3f);
                 _status.RecoverAfterCollapse();
                 CollapseCount++;
-                _title.text = NihongoLife.Core.Loc.T("Tỉnh lại sau 3 giờ", "You wake up 3 hours later", "3時間後に目が覚めました");
-                _body.text = NihongoLife.Core.Loc.F("Phòng khám đã chữa cho bạn. Viện phí: {0}.\nHãy ăn uống và ngủ đủ — các vòng chỉ số nhấp nháy đỏ là lúc phải lo ngay.", "The clinic treated you. Fee: {0}.\nEat, drink and sleep enough — a status ring flashing red means act now.", "クリニックで治療を受けました。料金：{0}。\nしっかり食べて、飲んで、寝ましょう。リングが赤く点滅したらすぐ対処を。", NihongoLife.Core.Loc.Yen(LastFee));
+                bool inClinic = false;
+                yield return WakeInClinic(result => inClinic = result);
+                if (controller != null) controller.InputLocked = true; // the zone change unlocks; stay still until the screen clears
+                _title.text = inClinic ? NihongoLife.Core.Loc.T("Tỉnh lại ở phòng khám Hibari", "You wake up at Hibari Clinic", "ひばりクリニックで目が覚めました") : NihongoLife.Core.Loc.T("Tỉnh lại sau 3 giờ", "You wake up 3 hours later", "3時間後に目が覚めました");
+                _body.text = NihongoLife.Core.Loc.F("Bác sĩ Mori đã chữa cho bạn (3 giờ trôi qua). Viện phí: {0}.\nHãy ăn uống và ngủ đủ — các vòng chỉ số nhấp nháy đỏ là lúc phải lo ngay.", "The clinic treated you. Fee: {0}.\nEat, drink and sleep enough — a status ring flashing red means act now.", "クリニックで治療を受けました。料金：{0}。\nしっかり食べて、飲んで、寝ましょう。リングが赤く点滅したらすぐ対処を。", NihongoLife.Core.Loc.Yen(LastFee));
             }
             else
             {
@@ -110,6 +113,19 @@ namespace NihongoLife.Player
             _restingAnimation = null;
             NihongoLife.UI.HudFeed.Post(faint ? NihongoLife.Core.Loc.F("Đã trả viện phí {0}.", "Paid the clinic fee of {0}.", "診察料{0}を払いました。", NihongoLife.Core.Loc.Yen(LastFee)) : NihongoLife.Core.Loc.T("Bạn đã ngủ 6 giờ ngoài đường.", "You slept 6 hours in the street.", "道で6時間眠りました。"), NihongoLife.UI.HudFeed.Kind.Warning, 5f);
             _busy = false;
+        }
+
+        /// <summary>Behind the black screen: the player is carried to the recovery bed of Hibari Clinic (from the town or any zone).</summary>
+        private static IEnumerator WakeInClinic(System.Action<bool> done)
+        {
+            const string clinic = WorldLocationCatalog.ClinicScene;
+            if (!GameServices.TryGet(out SceneFlowController flow) || flow.IsLoading || !Application.CanStreamedLevelBeLoaded(clinic)) { done(false); yield break; }
+            string name = WorldLocationCatalog.Get(clinic).DisplayName;
+            if (string.IsNullOrEmpty(flow.ActiveZone)) flow.EnterZone(clinic, WorldLocationCatalog.ClinicBed, name);
+            else flow.TransferZone(clinic, WorldLocationCatalog.ClinicBed, name);
+            yield return null;
+            for (float t = 0f; t < 25f && flow.IsLoading; t += Time.unscaledDeltaTime) yield return null;
+            done(flow.ActiveZone == clinic);
         }
 
         private IEnumerator Fade(float to, float seconds)

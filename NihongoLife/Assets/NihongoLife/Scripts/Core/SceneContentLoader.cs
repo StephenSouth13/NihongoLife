@@ -23,7 +23,8 @@ namespace NihongoLife.Core
             [WorldLocationCatalog.SchoolScene] = "nlzone-school",
             [WorldLocationCatalog.HomeBedroomScene] = "nlzone-home",
             [WorldLocationCatalog.GameCenterScene] = "nlzone-arcade",
-            [WorldLocationCatalog.MidoriIslandScene] = "nlzone-island"
+            [WorldLocationCatalog.MidoriIslandScene] = "nlzone-island",
+            [WorldLocationCatalog.ClinicScene] = "nlzone-clinic"
         };
 
         static readonly Dictionary<string, AssetBundle> Loaded = new Dictionary<string, AssetBundle>(StringComparer.Ordinal);

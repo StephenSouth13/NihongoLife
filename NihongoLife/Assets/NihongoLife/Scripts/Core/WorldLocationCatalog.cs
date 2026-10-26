@@ -12,6 +12,7 @@ namespace NihongoLife.Core
         public const string HomeBedroomScene = "45_HomeBedroom";
         public const string GameCenterScene = "50_GameCenter";
         public const string MidoriIslandScene = "60_MidoriIsland";
+        public const string ClinicScene = "35_HibariClinic";
 
         public const string StationEntrance = "station_entrance";
         public const string SushiEntrance = "sushi_entrance";
@@ -24,6 +25,10 @@ namespace NihongoLife.Core
         public const string CitySushiReturn = "city_sushi_return";
         public const string CitySchoolReturn = "city_school_return";
         public const string CityHomeBedroomReturn = "city_home_return";
+        public const string ClinicEntrance = "clinic_entrance";
+        /// <summary>The recovery bed: where a player who fainted wakes up.</summary>
+        public const string ClinicBed = "clinic_bed";
+        public const string CityClinicReturn = "city_clinic_return";
 
         private static readonly Dictionary<string, LocationInfo> Locations =
             new Dictionary<string, LocationInfo>(StringComparer.OrdinalIgnoreCase)
@@ -34,7 +39,8 @@ namespace NihongoLife.Core
                 [SchoolScene] = new LocationInfo("hibari_school", "Hibari Japanese School", "Trường Nhật ngữ Hibari", "ひばり日本語学院"),
                 [GameCenterScene] = new LocationInfo("game_center", "Game Center Hibari", "Trung tâm trò chơi Hibari", "ゲームセンター"),
                 [HomeBedroomScene] = new LocationInfo("home_bedroom", "Your Bedroom", "Phòng trọ của bạn", "自室"),
-                [MidoriIslandScene] = new LocationInfo("midori_island", "Midori Island", "Đảo Xanh", "みどり島")
+                [MidoriIslandScene] = new LocationInfo("midori_island", "Midori Island", "Đảo Xanh", "みどり島"),
+                [ClinicScene] = new LocationInfo("hibari_clinic", "Hibari Clinic", "Phòng khám Hibari", "ひばりクリニック")
             };
 
         public static bool Has(string sceneName) => !string.IsNullOrWhiteSpace(sceneName) && Locations.ContainsKey(sceneName);

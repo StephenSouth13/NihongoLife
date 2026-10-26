@@ -57,11 +57,14 @@ namespace NihongoLife.Progression
     public sealed class ProgressionCatalog
     {
         public const string ResourcePath = "Progression/progression";
-        public static readonly string[] Categories = { "story", "job", "farm", "learning", "daily" };
+        public static readonly string[] Categories = { "story", "job", "farm", "learning", "daily", "clinic" };
         public static readonly string[] SupportedEvents =
         {
             "till", "plant", "water", "harvest", "feed", "pet", "buy", "sell", "talk", "learn",
             "restock", "assist", "checkout", "order", "serve", "fish",
+            // Hibari Clinic: the patient visit (ClinicVisit) and the clinic shift (JobStation.Clinic).
+            "clinic_reception", "clinic_consult", "clinic_pay", "clinic_medicine", "clinic_measure", "clinic_eye", "clinic_vaccine",
+            "checkin", "triage", "explain",
         };
 
         public string schema;

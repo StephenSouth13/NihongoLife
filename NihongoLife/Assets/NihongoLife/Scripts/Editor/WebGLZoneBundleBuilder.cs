@@ -30,7 +30,8 @@ namespace NihongoLife.Editor
             ("Assets/NihongoLife/Scenes/40_ HIBARICLASS.unity", "nlzone-school"),
             ("Assets/NihongoLife/Scenes/45_HomeBedroom.unity", "nlzone-home"),
             ("Assets/NihongoLife/Scenes/50_GameCenter.unity", "nlzone-arcade"),
-            ("Assets/NihongoLife/Scenes/60_MidoriIsland.unity", "nlzone-island")
+            ("Assets/NihongoLife/Scenes/60_MidoriIsland.unity", "nlzone-island"),
+            ("Assets/NihongoLife/Scenes/35_HibariClinic.unity", "nlzone-clinic")
         };
 
         public static readonly string[] PlayerScenes =

@@ -40,6 +40,7 @@ namespace NihongoLife.UI
                 case "ARCADE": return WorldLocationCatalog.GameCenterScene;
                 case "SCHOOL": return WorldLocationCatalog.SchoolScene;
                 case "HOME": return WorldLocationCatalog.HomeBedroomScene;
+                case "CLINIC": return WorldLocationCatalog.ClinicScene;
                 default: return null;
             }
         }
@@ -228,6 +229,7 @@ namespace NihongoLife.UI
             else if (scene == WorldLocationCatalog.SchoolScene) SchoolMap();
             else if (scene == WorldLocationCatalog.HomeBedroomScene) BedroomMap();
             else if (scene == WorldLocationCatalog.GameCenterScene) GameCenterMap();
+            else if (scene == WorldLocationCatalog.ClinicScene) ClinicMap();
             else CityMap();
             DrawGrid();
             _labelRects.Clear();
@@ -258,6 +260,20 @@ namespace NihongoLife.UI
             AddWorld(L("Trường Nhật ngữ Hibari", "Hibari Japanese School", "ひばり日本語学院"), "SCHOOL", "学", 18f, -20f, new(.2f, .55f, .32f), "がっこう");
             AddWorld(L("Công viên Hibari", "Hibari Park", "ひばり公園"), "PARK", "園", -40f, 40f, new(.42f, .72f, .4f), "こうえん");
             AddWorld(L("Game Center Hibari", "Game Center Hibari", "ゲームセンター"), "ARCADE", "遊", -6f, -20.5f, new(.92f, .36f, .72f), "ゲーセン");
+            AddWorld(L("Phòng khám Hibari", "Hibari Clinic", "ひばりクリニック"), "CLINIC", "医", -18f, -20.5f, new(.36f, .72f, .64f), "クリニック");
+        }
+
+        private void ClinicMap()
+        {
+            _header.text = L("SƠ ĐỒ PHÒNG KHÁM HIBARI", "HIBARI CLINIC FLOOR MAP", "ひばりクリニック 案内図");
+            _worldMin = new(640, -8); _worldMax = new(660, 8);
+            Road(Vector2.zero, new(MapW - 120, MapH - 80));
+            AddPixel(L("Quầy tiếp nhận (受付)", "Reception (受付)", "受付"), "RECEPTION", "受", new(-140, -60), new(.36f, .72f, .64f));
+            AddPixel(L("Nhận thuốc (お薬)", "Medicine (お薬)", "お薬"), "MEDICINE", "薬", new(90, -60), new(.3f, .62f, .94f));
+            AddPixel(L("Phòng khám bác sĩ (診察室)", "Consultation room (診察室)", "診察室"), "DOCTOR", "診", new(-260, 140), new(.94f, .68f, .25f));
+            AddPixel(L("Khám sức khoẻ · giường nghỉ", "Health check · recovery beds", "健康診断"), "CHECK", "健", new(260, 140), new(.45f, .78f, .48f));
+            AddPixel(L("Phòng chờ", "Waiting room", "待合室"), "WAIT", "待", new(260, -140), new(.62f, .76f, .38f));
+            AddPixel(L("Về thành phố", "Return to city", "出口"), "EXIT", "出", new(0, -200), new(.45f, .78f, .48f));
         }
 
         private void GameCenterMap()

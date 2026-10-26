@@ -1,0 +1,202 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using NihongoLife.Core;
+using UnityEngine;
+
+namespace NihongoLife.PhuQuoc
+{
+    [Serializable]
+    public sealed class PhuQuocTourist
+    {
+        public string lineJa, readingJa, meaningVi;
+        public string right, rightVi;
+        public string[] wrong = Array.Empty<string>(), wrongVi = Array.Empty<string>();
+    }
+
+    [Serializable]
+    public sealed class PhuQuocPlace
+    {
+        public string id, kind;
+        public int[] px = new int[2];
+        public float radius = 20f;
+        public string nameVi, nameEn, nameJa, readingJa, descVi, descEn, descJa, factVi, factEn, factJa;
+        public PhuQuocTourist tourist;
+        public string Name => Loc.Pick(nameVi, nameEn, nameJa);
+        public string Description => Loc.Pick(descVi, descEn, descJa);
+        public string Fact => Loc.Pick(factVi, factEn, factJa);
+        public bool HasTourist => tourist != null && !string.IsNullOrEmpty(tourist.lineJa) && !string.IsNullOrEmpty(tourist.right);
+        public Vector2 Px => new Vector2(px[0], px[1]);
+        public string KindName => kind switch
+        {
+            "beach" => Loc.T("Bãi biển", "Beach", "ビーチ"),
+            "town" => Loc.T("Thị trấn", "Town", "町"),
+            "village" => Loc.T("Làng", "Village", "村"),
+            "port" => Loc.T("Cảng · sân bay", "Port", "港・空港"),
+            "landmark" => Loc.T("Danh thắng", "Landmark", "名所"),
+            "nature" => Loc.T("Thiên nhiên", "Nature", "自然"),
+            "island" => Loc.T("Đảo", "Island", "島"),
+            "fun" => Loc.T("Vui chơi", "Fun", "遊び"),
+            _ => kind,
+        };
+    }
+
+    [Serializable]
+    public sealed class PhuQuocIslet
+    {
+        public string id, nameVi;
+        public int[] px = new int[2];
+        public int[] radiusPx = new int[2];
+    }
+
+    [Serializable]
+    public sealed class PhuQuocRoad
+    {
+        public string id;
+        /// <summary>Flat x0, y0, x1, y1, … in map pixels.</summary>
+        public int[] points = Array.Empty<int>();
+        public IEnumerable<Vector2> Points { get { for (int i = 0; i + 1 < points.Length; i += 2) yield return new Vector2(points[i], points[i + 1]); } }
+    }
+
+    /// <summary>
+    /// Phú Quốc (Resources/PhuQuoc/phuquoc.json): the island outline, the An Thới islets, roads and places, all in the
+    /// pixels of the reference map, so the 3D island and the in-game map share one coordinate system. A map pixel is
+    /// <see cref="metersPerPixel"/> metres (≈1:45 of the real island, Trâu Nằm cape to An Thới ≈ 1.1 km); +y on the
+    /// map is south (−z in the world). The zone's origin is <see cref="Origin"/>.
+    /// </summary>
+    [Serializable]
+    public sealed class PhuQuocCatalog
+    {
+        public const string ResourcePath = "PhuQuoc/phuquoc";
+        public static readonly Vector3 Origin = new Vector3(-4000f, 0f, 0f);
+
+        public string schema;
+        public float metersPerPixel = 0.9f;
+        public int[] centerPx = { 610, 830 };
+        public int flightYen = 3000;
+        public int taxiYenPer100m = 30;
+        /// <summary>Flat x0, y0, x1, y1, … (clockwise on the map).</summary>
+        public int[] outline = Array.Empty<int>();
+        public PhuQuocIslet[] islets = Array.Empty<PhuQuocIslet>();
+        public PhuQuocRoad[] roads = Array.Empty<PhuQuocRoad>();
+        public PhuQuocPlace[] places = Array.Empty<PhuQuocPlace>();
+
+        private static PhuQuocCatalog _cached;
+
+        public static PhuQuocCatalog Load()
+        {
+            if (_cached != null) return _cached;
+            var text = Resources.Load<TextAsset>(ResourcePath);
+            _cached = text != null ? JsonUtility.FromJson<PhuQuocCatalog>(text.text) : new PhuQuocCatalog();
+            return _cached;
+        }
+
+        public PhuQuocPlace Place(string id) => places.FirstOrDefault(p => p.id == id);
+
+        public List<Vector2> OutlinePx()
+        {
+            var list = new List<Vector2>();
+            for (int i = 0; i + 1 < outline.Length; i += 2) list.Add(new Vector2(outline[i], outline[i + 1]));
+            return list;
+        }
+
+        /// <summary>Map pixel → zone-local metres (y = 0).</summary>
+        public Vector3 Local(Vector2 px) => new Vector3((px.x - centerPx[0]) * metersPerPixel, 0f, -(px.y - centerPx[1]) * metersPerPixel);
+        public Vector3 World(Vector2 px) => Origin + Local(px);
+
+        /// <summary>World position → map pixel.</summary>
+        public Vector2 Px(Vector3 world)
+        {
+            Vector3 l = world - Origin;
+            return new Vector2(l.x / metersPerPixel + centerPx[0], -l.z / metersPerPixel + centerPx[1]);
+        }
+
+        public PhuQuocPlace Nearest(Vector3 world, out float distance)
+        {
+            Vector2 p = Px(world);
+            PhuQuocPlace best = null;
+            distance = float.MaxValue;
+            foreach (var place in places)
+            {
+                float d = Vector2.Distance(p, place.Px) * metersPerPixel;
+                if (d < distance) { distance = d; best = place; }
+            }
+            return best;
+        }
+
+        // ─────────── Geometry shared by the 3D island and the map ───────────
+
+        /// <summary>Ear-clipping triangulation of a simple polygon (either winding). Returns index triples.</summary>
+        public static List<int> Triangulate(IList<Vector2> polygon)
+        {
+            var result = new List<int>();
+            int n = polygon.Count;
+            if (n < 3) return result;
+            var index = Enumerable.Range(0, n).ToList();
+            float area = 0f;
+            for (int i = 0; i < n; i++) { var a = polygon[i]; var b = polygon[(i + 1) % n]; area += a.x * b.y - b.x * a.y; }
+            bool ccw = area > 0f;
+            int guard = 0;
+            while (index.Count > 3 && guard++ < 10000)
+            {
+                bool clipped = false;
+                for (int i = 0; i < index.Count; i++)
+                {
+                    int i0 = index[(i + index.Count - 1) % index.Count], i1 = index[i], i2 = index[(i + 1) % index.Count];
+                    Vector2 a = polygon[i0], b = polygon[i1], c = polygon[i2];
+                    float cross = (b.x - a.x) * (c.y - a.y) - (b.y - a.y) * (c.x - a.x);
+                    if (ccw ? cross <= 0f : cross >= 0f) continue; // reflex corner
+                    bool inside = false;
+                    foreach (int j in index)
+                        if (j != i0 && j != i1 && j != i2 && InTriangle(polygon[j], a, b, c)) { inside = true; break; }
+                    if (inside) continue;
+                    result.Add(i0); result.Add(i1); result.Add(i2);
+                    index.RemoveAt(i);
+                    clipped = true;
+                    break;
+                }
+                if (!clipped) break;
+            }
+            if (index.Count == 3) { result.Add(index[0]); result.Add(index[1]); result.Add(index[2]); }
+            return result;
+        }
+
+        private static bool InTriangle(Vector2 p, Vector2 a, Vector2 b, Vector2 c)
+        {
+            float d1 = (p.x - b.x) * (a.y - b.y) - (a.x - b.x) * (p.y - b.y);
+            float d2 = (p.x - c.x) * (b.y - c.y) - (b.x - c.x) * (p.y - c.y);
+            float d3 = (p.x - a.x) * (c.y - a.y) - (c.x - a.x) * (p.y - a.y);
+            bool neg = d1 < 0 || d2 < 0 || d3 < 0, pos = d1 > 0 || d2 > 0 || d3 > 0;
+            return !(neg && pos);
+        }
+
+        /// <summary>The polygon pushed outward (positive) or inward by <paramref name="distance"/> along its vertex normals.</summary>
+        public static List<Vector2> Offset(IList<Vector2> polygon, float distance)
+        {
+            int n = polygon.Count;
+            float area = 0f;
+            for (int i = 0; i < n; i++) { var a = polygon[i]; var b = polygon[(i + 1) % n]; area += a.x * b.y - b.x * a.y; }
+            float sign = area > 0f ? 1f : -1f;
+            var result = new List<Vector2>(n);
+            for (int i = 0; i < n; i++)
+            {
+                Vector2 prev = polygon[(i + n - 1) % n], cur = polygon[i], next = polygon[(i + 1) % n];
+                Vector2 e0 = (cur - prev).normalized, e1 = (next - cur).normalized;
+                Vector2 n0 = new Vector2(e0.y, -e0.x) * sign, n1 = new Vector2(e1.y, -e1.x) * sign; // outward
+                Vector2 normal = (n0 + n1).normalized;
+                float miter = Mathf.Clamp(1f / Mathf.Max(0.35f, Vector2.Dot(normal, n0)), 1f, 2.5f);
+                result.Add(cur + normal * distance * miter);
+            }
+            return result;
+        }
+
+        public static bool Inside(IList<Vector2> polygon, Vector2 p)
+        {
+            bool inside = false;
+            for (int i = 0, j = polygon.Count - 1; i < polygon.Count; j = i++)
+                if ((polygon[i].y > p.y) != (polygon[j].y > p.y) && p.x < (polygon[j].x - polygon[i].x) * (p.y - polygon[i].y) / (polygon[j].y - polygon[i].y) + polygon[i].x)
+                    inside = !inside;
+            return inside;
+        }
+    }
+}

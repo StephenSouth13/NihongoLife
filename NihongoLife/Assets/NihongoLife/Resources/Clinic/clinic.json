@@ -1,0 +1,80 @@
+{
+  "schema": "nihongolife.clinic.v1",
+  "visitFeeYen": 600,
+  "feeNoteVi": "Có bảo hiểm y tế (保険証) nên chỉ trả 30% viện phí.",
+  "feeNoteEn": "With your health insurance card (保険証) you pay only 30% of the bill.",
+  "feeNoteJa": "保険証があるので、自己負担は3割です。",
+  "symptoms": [
+    {
+      "id": "fever",
+      "sayJa": "ねつが あります。", "reading": "netsu ga arimasu", "vi": "Tôi bị sốt.", "en": "I have a fever.",
+      "diagnosisJa": "かぜ", "diagnosisVi": "Cảm cúm", "diagnosisEn": "A cold",
+      "medicineJa": "げねつざい", "medicineVi": "Thuốc hạ sốt", "medicineEn": "Fever reducer",
+      "dosage": "three_after_meals", "cold": true
+    },
+    {
+      "id": "cough",
+      "sayJa": "せきが でます。", "reading": "seki ga demasu", "vi": "Tôi bị ho.", "en": "I have a cough.",
+      "diagnosisJa": "かぜ", "diagnosisVi": "Cảm lạnh", "diagnosisEn": "A cold",
+      "medicineJa": "せきどめ", "medicineVi": "Thuốc ho", "medicineEn": "Cough medicine",
+      "dosage": "three_after_meals", "cold": true
+    },
+    {
+      "id": "throat",
+      "sayJa": "のどが いたいです。", "reading": "nodo ga itai desu", "vi": "Tôi bị đau họng.", "en": "My throat hurts.",
+      "diagnosisJa": "へんとうえん", "diagnosisVi": "Viêm họng", "diagnosisEn": "A sore throat",
+      "medicineJa": "トローチ", "medicineVi": "Viên ngậm họng", "medicineEn": "Throat lozenges",
+      "dosage": "when_painful", "cold": true
+    },
+    {
+      "id": "nose",
+      "sayJa": "はなみずが でます。", "reading": "hanamizu ga demasu", "vi": "Tôi bị sổ mũi.", "en": "I have a runny nose.",
+      "diagnosisJa": "かふんしょう", "diagnosisVi": "Dị ứng phấn hoa", "diagnosisEn": "Hay fever",
+      "medicineJa": "アレルギーの くすり", "medicineVi": "Thuốc dị ứng", "medicineEn": "Allergy medicine",
+      "dosage": "once_before_bed", "cold": false
+    },
+    {
+      "id": "head",
+      "sayJa": "あたまが いたいです。", "reading": "atama ga itai desu", "vi": "Tôi bị đau đầu.", "en": "I have a headache.",
+      "diagnosisJa": "ずつう", "diagnosisVi": "Đau đầu do mệt", "diagnosisEn": "A tension headache",
+      "medicineJa": "いたみどめ", "medicineVi": "Thuốc giảm đau", "medicineEn": "Painkiller",
+      "dosage": "when_painful", "cold": false
+    },
+    {
+      "id": "stomach",
+      "sayJa": "おなかが いたいです。", "reading": "onaka ga itai desu", "vi": "Tôi bị đau bụng.", "en": "I have a stomach ache.",
+      "diagnosisJa": "いえん", "diagnosisVi": "Viêm dạ dày", "diagnosisEn": "Gastritis",
+      "medicineJa": "いぐすり", "medicineVi": "Thuốc dạ dày", "medicineEn": "Stomach medicine",
+      "dosage": "three_before_meals", "cold": false
+    },
+    {
+      "id": "tired",
+      "sayJa": "からだが だるいです。", "reading": "karada ga darui desu", "vi": "Người tôi mệt mỏi, uể oải.", "en": "I feel weak and tired.",
+      "diagnosisJa": "かろう", "diagnosisVi": "Kiệt sức (làm việc quá sức)", "diagnosisEn": "Exhaustion",
+      "medicineJa": "ビタミンざい", "medicineVi": "Vitamin", "medicineEn": "Vitamins",
+      "dosage": "twice_morning_night", "cold": false
+    },
+    {
+      "id": "ankle",
+      "sayJa": "あしを ひねりました。", "reading": "ashi o hinerimashita", "vi": "Tôi bị trẹo chân.", "en": "I twisted my ankle.",
+      "diagnosisJa": "ねんざ", "diagnosisVi": "Bong gân", "diagnosisEn": "A sprain",
+      "medicineJa": "しっぷ", "medicineVi": "Miếng dán giảm đau", "medicineEn": "Pain-relief patch",
+      "dosage": "patch_twice", "cold": false
+    }
+  ],
+  "dosages": [
+    { "id": "three_after_meals", "ja": "1日3回、しょくごに のんで ください。", "vi": "Ngày 3 lần, uống sau bữa ăn.", "en": "Three times a day, after meals." },
+    { "id": "three_before_meals", "ja": "1日3回、しょくぜんに のんで ください。", "vi": "Ngày 3 lần, uống trước bữa ăn.", "en": "Three times a day, before meals." },
+    { "id": "twice_morning_night", "ja": "1日2回、あさと よるに のんで ください。", "vi": "Ngày 2 lần, sáng và tối.", "en": "Twice a day, morning and night." },
+    { "id": "once_before_bed", "ja": "1日1回、ねる まえに のんで ください。", "vi": "Ngày 1 lần, trước khi ngủ.", "en": "Once a day, before bed." },
+    { "id": "when_painful", "ja": "いたい ときに のんで ください。", "vi": "Uống khi bị đau.", "en": "Take it when it hurts." },
+    { "id": "patch_twice", "ja": "1日2回、いたい ところに はって ください。", "vi": "Ngày 2 lần, dán vào chỗ đau.", "en": "Twice a day, stick it where it hurts." }
+  ],
+  "heights": [150, 155, 160, 165, 170, 175],
+  "eyeDirections": [
+    { "id": "up", "ja": "うえ", "vi": "Trên", "en": "Up", "angle": 90 },
+    { "id": "down", "ja": "した", "vi": "Dưới", "en": "Down", "angle": 270 },
+    { "id": "left", "ja": "ひだり", "vi": "Trái", "en": "Left", "angle": 180 },
+    { "id": "right", "ja": "みぎ", "vi": "Phải", "en": "Right", "angle": 0 }
+  ]
+}

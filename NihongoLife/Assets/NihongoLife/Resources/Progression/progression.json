@@ -418,6 +418,284 @@
       "giverNameJa": "毎日のこと",
       "locationEn": "Hibari Mart convenience store",
       "locationJa": "ひばりマート"
+    },
+    {
+      "id": "clinic_first_visit",
+      "category": "clinic",
+      "titleVi": "Khám bệnh lần đầu ở Nhật",
+      "titleEn": "Your first clinic visit in Japan",
+      "titleJa": "はじめての クリニック",
+      "descriptionVi": "Ở Nhật, đi khám có trình tự riêng: đưa thẻ bảo hiểm ở quầy (受付), điền phiếu hỏi bệnh (問診票), nói triệu chứng với bác sĩ, thanh toán (会計) rồi nhận thuốc (お薬). Thử một lần ở Phòng khám Hibari.",
+      "descriptionEn": "Seeing a doctor in Japan has its own steps: hand in your insurance card at reception (受付), fill in the questionnaire (問診票), tell the doctor your symptoms, pay (会計) and collect your medicine (お薬). Try it once at Hibari Clinic.",
+      "descriptionJa": "受付で保険証、問診票、診察、会計、お薬。ひばりクリニックで やってみよう。",
+      "giverNpc": "npc_clinic_nurse",
+      "giverNameVi": "Điều dưỡng Sato",
+      "giverNameEn": "Nurse Sato",
+      "giverNameJa": "さとうさん",
+      "locationVi": "Phòng khám Hibari",
+      "locationEn": "Hibari Clinic",
+      "locationJa": "ひばりクリニック",
+      "scene": "35_HibariClinic",
+      "minLevel": 1,
+      "minKnowledge": 0,
+      "requiresQuests": [],
+      "repeatable": false,
+      "cooldownMinutes": 0,
+      "grantOnAccept": [],
+      "objectives": [
+        {
+          "id": "reception",
+          "event": "clinic_reception",
+          "target": "clinic_desk",
+          "count": 1,
+          "afterAll": false,
+          "textVi": "Đăng ký ở quầy và điền phiếu hỏi bệnh",
+          "textEn": "Check in and fill in the questionnaire",
+          "textJa": "受付と問診票"
+        },
+        {
+          "id": "consult",
+          "event": "clinic_consult",
+          "target": "clinic_doctor",
+          "count": 1,
+          "afterAll": false,
+          "textVi": "Nói triệu chứng với bác sĩ Mori",
+          "textEn": "Tell Dr Mori your symptoms",
+          "textJa": "もり先生に しょうじょうを つたえる"
+        },
+        {
+          "id": "pay",
+          "event": "clinic_pay",
+          "target": "clinic_desk",
+          "count": 1,
+          "afterAll": false,
+          "textVi": "Thanh toán viện phí ở quầy",
+          "textEn": "Pay the bill at reception",
+          "textJa": "受付で お会計"
+        },
+        {
+          "id": "medicine",
+          "event": "clinic_medicine",
+          "target": "clinic_pharmacy",
+          "count": 1,
+          "afterAll": false,
+          "textVi": "Nhận thuốc và hiểu cách dùng",
+          "textEn": "Collect your medicine and understand the dosage",
+          "textJa": "お薬を うけとる"
+        }
+      ],
+      "rewards": {
+        "yen": 0,
+        "xp": 40,
+        "knowledge": 10
+      }
+    },
+    {
+      "id": "clinic_health_check",
+      "category": "clinic",
+      "titleVi": "Khám sức khoẻ định kỳ (健康診断)",
+      "titleEn": "Health check (健康診断)",
+      "titleJa": "けんこうしんだん",
+      "descriptionVi": "Công ty và trường học ở Nhật đều yêu cầu khám sức khoẻ hằng năm. Đo chiều cao (nghe số bằng tiếng Nhật), đo thị lực bằng vòng hở (うえ・した・みぎ・ひだり) rồi nghe bác sĩ báo kết quả.",
+      "descriptionEn": "Japanese companies and schools ask for a yearly health check. Measure your height (numbers in Japanese), do the ring eye test (うえ・した・みぎ・ひだり), then hear the doctor's result.",
+      "descriptionJa": "身長と視力をはかって、先生から結果を聞こう。",
+      "giverNpc": "npc_clinic_nurse",
+      "giverNameVi": "Điều dưỡng Sato",
+      "giverNameEn": "Nurse Sato",
+      "giverNameJa": "さとうさん",
+      "locationVi": "Phòng khám Hibari",
+      "locationEn": "Hibari Clinic",
+      "locationJa": "ひばりクリニック",
+      "scene": "35_HibariClinic",
+      "minLevel": 1,
+      "minKnowledge": 0,
+      "requiresQuests": [
+        "clinic_first_visit"
+      ],
+      "repeatable": true,
+      "cooldownMinutes": 60,
+      "grantOnAccept": [],
+      "objectives": [
+        {
+          "id": "reception",
+          "event": "clinic_reception",
+          "target": "clinic_desk",
+          "count": 1,
+          "afterAll": false,
+          "textVi": "Đăng ký khám sức khoẻ ở quầy",
+          "textEn": "Book the health check at reception",
+          "textJa": "受付で 健康診断"
+        },
+        {
+          "id": "measure",
+          "event": "clinic_measure",
+          "target": "clinic_scale",
+          "count": 1,
+          "afterAll": false,
+          "textVi": "Đo chiều cao",
+          "textEn": "Measure your height",
+          "textJa": "身長を はかる"
+        },
+        {
+          "id": "eye",
+          "event": "clinic_eye",
+          "target": "clinic_eyechart",
+          "count": 3,
+          "afterAll": false,
+          "textVi": "Đo thị lực (3 lượt)",
+          "textEn": "Eye test (3 rounds)",
+          "textJa": "視力検査（3回）"
+        },
+        {
+          "id": "result",
+          "event": "talk",
+          "target": "npc_clinic_doctor",
+          "count": 1,
+          "afterAll": true,
+          "textVi": "Nghe bác sĩ Mori báo kết quả",
+          "textEn": "Hear Dr Mori's result",
+          "textJa": "もり先生に 結果を きく"
+        }
+      ],
+      "rewards": {
+        "yen": 0,
+        "xp": 35,
+        "knowledge": 10
+      }
+    },
+    {
+      "id": "clinic_vaccine",
+      "category": "clinic",
+      "titleVi": "Tiêm phòng cúm (予防接種)",
+      "titleEn": "Flu vaccination (予防接種)",
+      "titleJa": "インフルエンザの よぼうせっしゅ",
+      "descriptionVi": "Mùa cúm sắp đến. Đăng ký tiêm ở quầy, trả lời bác sĩ hôm nay có sốt không (sốt thì không tiêm được), tiêm rồi thanh toán.",
+      "descriptionEn": "Flu season is coming. Book at reception, tell the doctor whether you have a fever today (no jab with a fever), get the jab and pay.",
+      "descriptionJa": "受付で予約、ねつの確認、注射、お会計。",
+      "giverNpc": "npc_clinic_nurse",
+      "giverNameVi": "Điều dưỡng Sato",
+      "giverNameEn": "Nurse Sato",
+      "giverNameJa": "さとうさん",
+      "locationVi": "Phòng khám Hibari",
+      "locationEn": "Hibari Clinic",
+      "locationJa": "ひばりクリニック",
+      "scene": "35_HibariClinic",
+      "minLevel": 1,
+      "minKnowledge": 0,
+      "requiresQuests": [
+        "clinic_first_visit"
+      ],
+      "repeatable": false,
+      "cooldownMinutes": 0,
+      "grantOnAccept": [],
+      "objectives": [
+        {
+          "id": "reception",
+          "event": "clinic_reception",
+          "target": "clinic_desk",
+          "count": 1,
+          "afterAll": false,
+          "textVi": "Đăng ký tiêm ở quầy",
+          "textEn": "Book the vaccination at reception",
+          "textJa": "受付で 予約"
+        },
+        {
+          "id": "vaccine",
+          "event": "clinic_vaccine",
+          "target": "clinic_doctor",
+          "count": 1,
+          "afterAll": false,
+          "textVi": "Trả lời bác sĩ và tiêm phòng",
+          "textEn": "Answer the doctor and get the jab",
+          "textJa": "先生に こたえて 注射"
+        },
+        {
+          "id": "pay",
+          "event": "clinic_pay",
+          "target": "clinic_desk",
+          "count": 1,
+          "afterAll": false,
+          "textVi": "Thanh toán ở quầy",
+          "textEn": "Pay at reception",
+          "textJa": "受付で お会計"
+        }
+      ],
+      "rewards": {
+        "yen": 0,
+        "xp": 30,
+        "knowledge": 6
+      }
+    },
+    {
+      "id": "job_clinic_shift",
+      "category": "job",
+      "titleVi": "Làm ở Phòng khám Hibari",
+      "titleEn": "Shift at Hibari Clinic",
+      "titleJa": "ひばりクリニックで はたらく",
+      "descriptionVi": "Phụ bác sĩ Mori và chị Sato: tiếp nhận bệnh nhân ở quầy (受付), hỏi bệnh và ghi đúng phiếu (問診), giải thích cách dùng thuốc (お薬の説明) rồi báo cáo với bác sĩ.",
+      "descriptionEn": "Help Dr Mori and Nurse Sato: check patients in (受付), ask about symptoms and write them down (問診), explain how to take the medicine (お薬の説明), then report to the doctor.",
+      "descriptionJa": "受付・問診・お薬の説明をして、先生に報告。",
+      "giverNpc": "npc_clinic_doctor",
+      "giverNameVi": "Bác sĩ Mori",
+      "giverNameEn": "Dr Mori",
+      "giverNameJa": "もり先生",
+      "locationVi": "Phòng khám Hibari",
+      "locationEn": "Hibari Clinic",
+      "locationJa": "ひばりクリニック",
+      "scene": "35_HibariClinic",
+      "minLevel": 1,
+      "minKnowledge": 0,
+      "requiresQuests": [],
+      "repeatable": true,
+      "cooldownMinutes": 5,
+      "grantOnAccept": [],
+      "objectives": [
+        {
+          "id": "checkin",
+          "event": "checkin",
+          "target": "clinic_patient",
+          "count": 2,
+          "afterAll": false,
+          "textVi": "Tiếp nhận 2 bệnh nhân ở quầy",
+          "textEn": "Check in 2 patients at reception",
+          "textJa": "受付で 2人"
+        },
+        {
+          "id": "triage",
+          "event": "triage",
+          "target": "clinic_patient",
+          "count": 2,
+          "afterAll": false,
+          "textVi": "Hỏi bệnh 2 người trong phòng chờ",
+          "textEn": "Ask 2 waiting patients about their symptoms",
+          "textJa": "待合室で 問診 2人"
+        },
+        {
+          "id": "explain",
+          "event": "explain",
+          "target": "clinic_pharmacy",
+          "count": 1,
+          "afterAll": false,
+          "textVi": "Giải thích cách dùng thuốc",
+          "textEn": "Explain a prescription",
+          "textJa": "お薬の 説明"
+        },
+        {
+          "id": "talk",
+          "event": "talk",
+          "target": "npc_clinic_doctor",
+          "count": 1,
+          "afterAll": true,
+          "textVi": "Báo cáo với bác sĩ Mori",
+          "textEn": "Report to Dr Mori",
+          "textJa": "もり先生に 報告"
+        }
+      ],
+      "rewards": {
+        "yen": 750,
+        "xp": 45,
+        "knowledge": 8
+      }
     }
   ]
 }

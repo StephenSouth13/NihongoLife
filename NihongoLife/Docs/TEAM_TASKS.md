@@ -1630,3 +1630,16 @@ Giao việc đầy đủ trong `Docs/GROK_TASK_TRAILER_MARKETING.md` (bối cả
   - Sau này dựng **đảo Phú Quốc** (Việt Nam) riêng: rất rộng, gần tỉ lệ thật, UI đầy đủ, theo bản đồ đã gửi (Dương Đông, An Thới, Hàm Ninh, Gành Dầu, Bãi Sao, cáp treo Hòn Thơm, VinWonders, quần đảo An Thới…).
   - Chưa làm cho tới khi anh yêu cầu.
 - **Phòng khám Hibari + tuyến nhiệm vụ:** để sau (xem mục 2026-10-26 ở trên).
+
+## Cập nhật (2026-10-26 khuya, Claude) — Phòng khám Hibari + nghề Y tế
+- **Scene mới `35_HibariClinic`** (anh Long duyệt), dựng bằng `ClinicBuilder.Build`.
+  - Bên trong: sảnh có chỗ đổi dép, quầy 受付 (điều dưỡng Sato), quầy お薬, phòng chờ (ghế, bảng gọi số, TV), phòng khám 診察室 (bác sĩ Mori, giường khám, rèm, bồn rửa), góc khám sức khoẻ (cân đo chiều cao, bảng thị lực vòng hở), 2 giường hồi sức.
+  - Cổng vào ở `StreetBuilding_S_3`, đối diện Sushi Hibari; trên bản đồ là chữ 医. Trạm xe buýt phía nam (ghế, thùng rác, cây) được `ClinicBuilder` dời sang bên 5 m cho thoáng cửa. `CityStreetBuilder` đã ghi S_3 là điểm đến cho lần dựng sau. **Chưa chạy lại** builder phố: chạy thử làm đổi khoảng 43.000 dòng scene và hỏng `ActualSprint` (scene đang có chỉnh sửa mà builder không biết), nên đã trả scene về bản commit. Ai chạy lại `CityStreetBuilder.Build` cần kiểm tra lại toàn bộ test phố.
+- **Đi khám** (`Clinic/ClinicVisit.cs`): đưa thẻ bảo hiểm, phiếu hỏi bệnh theo triệu chứng thật của người chơi (ướt mưa thì cảm, máu thấp thì mệt), nói với bác sĩ, thanh toán ¥600 (bảo hiểm 30%), nhận thuốc và chọn đúng cách dùng. Khám xong hồi đầy máu, khỏi cảm.
+- **Ngất:** tỉnh dậy trên giường hồi sức của phòng khám (từ phố hay từ khu khác).
+- **Nhiệm vụ** (nhóm mới **Phòng khám** trong sổ nhiệm vụ): khám lần đầu · khám sức khoẻ (健康診断) · tiêm phòng cúm (予防接種).
+- **Ca làm `job_clinic_shift`** (¥750): tiếp nhận 2 bệnh nhân, hỏi bệnh 2 người, giải thích thuốc, báo cáo bác sĩ (`JobStation.Clinic.cs`).
+- **Nghề Y tế (cấp 10)** trong `careers.json`: Lễ tân → Trợ lý điều dưỡng → Điều dưỡng → nhánh **Bác sĩ** (研修医 → 医師 → 院長) hoặc **Dược sĩ** (薬剤師見習い → 薬剤師 → 薬局長).
+- **Ánh sáng trong nhà:** `Core/IndoorAmbience` giữ ánh sáng riêng của khu trong nhà (trước đây ban đêm phòng khám tối tím do bầu trời phố).
+- **Phú Quốc** chuyển sang phần mở rộng: dữ liệu nháp ở `Docs/Expansion/PhuQuoc/` (xem README: dùng OpenStreetMap, không dùng Google Maps; không dùng tên/logo thương hiệu khi chưa xin phép).
+- **Test:** `ClinicPlayModeTests` (đi bộ thật qua phòng khám, khám bệnh, ca làm, khám sức khoẻ, tiêm phòng, ngất tỉnh ở phòng khám), `CareerCatalogTests` (4 nghề). Ảnh: `Bao_Cao/clinic/`.

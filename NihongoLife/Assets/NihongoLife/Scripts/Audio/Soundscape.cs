@@ -130,6 +130,7 @@ namespace NihongoLife.Audio
                 case WorldLocationCatalog.SchoolScene: music = "school"; break;
                 case WorldLocationCatalog.HomeBedroomScene: music = "bedroom"; break;
                 case WorldLocationCatalog.GameCenterScene: music = "game_center"; break;
+                case WorldLocationCatalog.ClinicScene: music = "bedroom"; break; // calm and quiet, as a clinic should be
                 case WorldLocationCatalog.MidoriIslandScene: music = "island"; ambience = raining ? "" : night ? "city_night" : "island"; break;
                 default: music = ""; ambience = ""; break; // menu / bootstrap: MenuMusicController plays there
             }

@@ -10,7 +10,7 @@ using UnityEngine;
 
 namespace NihongoLife.Progression
 {
-    public enum JobStationKind { Board, StockCrate, Shelf, Customer, Register, OrderTable, DishPass }
+    public enum JobStationKind { Board, StockCrate, Shelf, Customer, Register, OrderTable, DishPass, ClinicCheckIn, ClinicTriage, ClinicMedicine }
 
     /// <summary>
     /// One work spot of a part-time job, placed in the scene by JobSiteBuilder. It only becomes interactable while
@@ -18,7 +18,7 @@ namespace NihongoLife.Progression
     /// tables outside work. Every completed step is a real action (carry, place, answer correctly) reported to
     /// QuestService — nothing pays for merely opening a window.
     /// </summary>
-    public sealed class JobStation : MonoBehaviour, IInteractable, IConditionalInteractable, IInteractionPriority
+    public sealed partial class JobStation : MonoBehaviour, IInteractable, IConditionalInteractable, IInteractionPriority
     {
         [SerializeField] private string questId = "job_konbini_shift";
         [SerializeField] private JobStationKind kind;
@@ -59,6 +59,9 @@ namespace NihongoLife.Progression
                         string order = JobShift.OrderAt(stationId);
                         return order == null ? QuestService.ObjectiveOpen(questId, "order") : JobShift.CarryKind == "dish";
                     case JobStationKind.DishPass: return QuestService.ObjectiveOpen(questId, "serve") && JobShift.CarryKind == null && JobShift.Orders.Any();
+                    case JobStationKind.ClinicCheckIn: return QuestService.ObjectiveOpen(questId, "checkin") && !JobShift.IsDone(stationId);
+                    case JobStationKind.ClinicTriage: return QuestService.ObjectiveOpen(questId, "triage") && !JobShift.IsDone(stationId);
+                    case JobStationKind.ClinicMedicine: return QuestService.ObjectiveOpen(questId, "explain");
                 }
                 return false;
             }
@@ -69,7 +72,7 @@ namespace NihongoLife.Progression
             // Customers and guests only appear while a shift is running.
             if (shiftVisual != null)
             {
-                bool show = ShiftActive && (kind != JobStationKind.Customer || !JobShift.IsDone(stationId)) && (kind != JobStationKind.OrderTable || !JobShift.IsDone(stationId));
+                bool show = ShiftActive && (kind != JobStationKind.Customer && kind != JobStationKind.ClinicCheckIn && kind != JobStationKind.ClinicTriage || !JobShift.IsDone(stationId)) && (kind != JobStationKind.OrderTable || !JobShift.IsDone(stationId));
                 if (shiftVisual.activeSelf != show) shiftVisual.SetActive(show);
             }
         }
@@ -103,6 +106,9 @@ namespace NihongoLife.Progression
             JobStationKind.Register => Loc.T("Tính tiền cho khách", "Ring up the customer", "レジで会計する"),
             JobStationKind.OrderTable => JobShift.OrderAt(stationId) == null ? Loc.F("Nhận món — {0}", "Take the order — {0}", "注文を聞く — {0}", Label) : Loc.F("Mang món tới {0}", "Bring the dish to {0}", "{0}に料理を運ぶ", Label),
             JobStationKind.DishPass => Loc.T("Lấy món ở quầy bếp", "Pick up a dish at the kitchen pass", "キッチンで料理を受け取る"),
+            JobStationKind.ClinicCheckIn => Loc.T("Tiếp nhận bệnh nhân (受付)", "Check the patient in (受付)", "患者さんの受付をする"),
+            JobStationKind.ClinicTriage => Loc.T("Hỏi bệnh (問診)", "Ask about symptoms (問診)", "問診をする"),
+            JobStationKind.ClinicMedicine => Loc.T("Giải thích cách dùng thuốc (お薬)", "Explain the medicine (お薬)", "お薬の説明をする"),
             _ => Label,
         };
         public Transform GetTransform() => transform;
@@ -131,6 +137,9 @@ namespace NihongoLife.Progression
                     if (JobShift.OrderAt(stationId) == null) TakeOrder(); else Serve();
                     break;
                 case JobStationKind.DishPass: PickDish(); break;
+                case JobStationKind.ClinicCheckIn: ClinicCheckIn(); break;
+                case JobStationKind.ClinicTriage: ClinicTriage(); break;
+                case JobStationKind.ClinicMedicine: ClinicMedicine(); break;
             }
         }
 

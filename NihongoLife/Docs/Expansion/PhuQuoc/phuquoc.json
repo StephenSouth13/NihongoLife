@@ -1,0 +1,877 @@
+{
+ "schema": "nihongolife.phuquoc.v1",
+ "metersPerPixel": 0.9,
+ "centerPx": [
+  610,
+  830
+ ],
+ "flightYen": 3000,
+ "taxiYenPer100m": 30,
+ "outline": [
+  700,
+  222,
+  762,
+  248,
+  822,
+  318,
+  872,
+  380,
+  908,
+  420,
+  936,
+  462,
+  946,
+  520,
+  938,
+  600,
+  942,
+  700,
+  946,
+  800,
+  940,
+  880,
+  928,
+  940,
+  900,
+  982,
+  862,
+  1010,
+  842,
+  1032,
+  848,
+  1080,
+  834,
+  1140,
+  822,
+  1200,
+  832,
+  1270,
+  846,
+  1300,
+  826,
+  1342,
+  848,
+  1438,
+  804,
+  1446,
+  772,
+  1428,
+  746,
+  1404,
+  730,
+  1352,
+  712,
+  1302,
+  704,
+  1250,
+  690,
+  1180,
+  672,
+  1100,
+  656,
+  1020,
+  640,
+  960,
+  622,
+  884,
+  600,
+  822,
+  576,
+  772,
+  546,
+  732,
+  520,
+  692,
+  482,
+  652,
+  432,
+  622,
+  390,
+  602,
+  342,
+  582,
+  308,
+  560,
+  284,
+  520,
+  274,
+  472,
+  290,
+  440,
+  322,
+  430,
+  380,
+  440,
+  430,
+  452,
+  470,
+  470,
+  510,
+  470,
+  540,
+  452,
+  562,
+  420,
+  574,
+  380,
+  592,
+  330,
+  622,
+  290,
+  660,
+  250
+ ],
+ "islets": [
+  {
+   "id": "hon_thom",
+   "nameVi": "Hòn Thơm",
+   "px": [
+    775,
+    1556
+   ],
+   "radiusPx": [
+    22,
+    52
+   ]
+  },
+  {
+   "id": "hon_dua",
+   "nameVi": "Hòn Dừa",
+   "px": [
+    752,
+    1478
+   ],
+   "radiusPx": [
+    9,
+    12
+   ]
+  },
+  {
+   "id": "hon_roi",
+   "nameVi": "Hòn Rỏi",
+   "px": [
+    778,
+    1520
+   ],
+   "radiusPx": [
+    10,
+    14
+   ]
+  },
+  {
+   "id": "dam_ngoai",
+   "nameVi": "Hòn Đầm Ngoài",
+   "px": [
+    836,
+    1470
+   ],
+   "radiusPx": [
+    9,
+    8
+   ]
+  },
+  {
+   "id": "hon_vang",
+   "nameVi": "Hòn Vang",
+   "px": [
+    775,
+    1652
+   ],
+   "radiusPx": [
+    12,
+    9
+   ]
+  },
+  {
+   "id": "may_rut",
+   "nameVi": "Hòn Mây Rút",
+   "px": [
+    720,
+    1698
+   ],
+   "radiusPx": [
+    10,
+    14
+   ]
+  },
+  {
+   "id": "mong_tay",
+   "nameVi": "Hòn Móng Tay",
+   "px": [
+    762,
+    1712
+   ],
+   "radiusPx": [
+    6,
+    5
+   ]
+  },
+  {
+   "id": "gam_ghi",
+   "nameVi": "Hòn Gầm Ghì",
+   "px": [
+    790,
+    1690
+   ],
+   "radiusPx": [
+    7,
+    6
+   ]
+  }
+ ],
+ "roads": [
+  {
+   "id": "west",
+   "points": [
+    300,
+    465,
+    328,
+    520,
+    342,
+    570,
+    450,
+    602,
+    520,
+    690,
+    560,
+    750,
+    650,
+    830,
+    690,
+    900,
+    712,
+    990,
+    702,
+    1080,
+    720,
+    1180,
+    740,
+    1300,
+    766,
+    1420
+   ]
+  },
+  {
+   "id": "east",
+   "points": [
+    650,
+    830,
+    750,
+    880,
+    845,
+    930,
+    860,
+    1000,
+    842,
+    1080,
+    806,
+    1160,
+    820,
+    1250,
+    822,
+    1300,
+    806,
+    1370,
+    770,
+    1420
+   ]
+  },
+  {
+   "id": "north",
+   "points": [
+    650,
+    830,
+    668,
+    700,
+    688,
+    560,
+    700,
+    470,
+    760,
+    400,
+    842,
+    420
+   ]
+  },
+  {
+   "id": "northwest",
+   "points": [
+    450,
+    602,
+    600,
+    520,
+    688,
+    445,
+    700,
+    470
+   ]
+  },
+  {
+   "id": "rach_vem",
+   "points": [
+    688,
+    445,
+    565,
+    436
+   ]
+  }
+ ],
+ "places": [
+  {
+   "id": "airport",
+   "kind": "port",
+   "px": [
+    722,
+    1000
+   ],
+   "radius": 34,
+   "nameVi": "Sân bay quốc tế Phú Quốc",
+   "nameEn": "Phú Quốc International Airport",
+   "nameJa": "フーコック国際空港",
+   "readingJa": "フーコック こくさい くうこう",
+   "descVi": "Cửa ngõ của đảo Ngọc. Từ đây ra thị trấn Dương Đông khoảng 10 phút đi xe.",
+   "descEn": "The gateway to the Pearl Island. About ten minutes by car to Dương Đông town.",
+   "descJa": "真珠の島の玄関口。ドゥオンドンの町まで車で約10分。",
+   "factVi": "Phú Quốc được gọi là \"đảo Ngọc\" — hòn đảo lớn nhất Việt Nam.",
+   "factEn": "Phú Quốc is called the Pearl Island — Vietnam's largest island.",
+   "factJa": "フーコックは「真珠の島」と呼ばれる、ベトナム最大の島です。",
+   "tourist": {
+    "lineJa": "ドゥオンドンまで どのくらい かかりますか。",
+    "readingJa": "duondon made dono kurai kakarimasu ka",
+    "meaningVi": "Đến Dương Đông mất bao lâu?",
+    "right": "くるまで じゅっぷん ぐらいです。",
+    "rightVi": "Đi xe khoảng 10 phút.",
+    "wrong": [
+     "あるいて いちじかんです。",
+     "ひこうきで いきます。"
+    ],
+    "wrongVi": [
+     "Đi bộ 1 tiếng.",
+     "Đi máy bay."
+    ]
+   }
+  },
+  {
+   "id": "duong_dong",
+   "kind": "town",
+   "px": [
+    662,
+    832
+   ],
+   "radius": 40,
+   "nameVi": "Thị trấn Dương Đông · Chợ đêm",
+   "nameEn": "Dương Đông town · Night market",
+   "nameJa": "ドゥオンドンの町・ナイトマーケット",
+   "readingJa": "ドゥオンドン",
+   "descVi": "Trung tâm của đảo: chợ đêm, hải sản nướng, nước mắm và tiêu Phú Quốc.",
+   "descEn": "The island's centre: night market, grilled seafood, Phú Quốc fish sauce and pepper.",
+   "descJa": "島の中心。ナイトマーケット、焼き海鮮、ヌクマムとこしょう。",
+   "factVi": "Nước mắm Phú Quốc là đặc sản nổi tiếng nhất của đảo.",
+   "factEn": "Phú Quốc fish sauce is the island's most famous product.",
+   "factJa": "フーコックのヌクマム（魚醤）は島で一番有名な名物です。",
+   "tourist": {
+    "lineJa": "フーコックの めいぶつは なんですか。",
+    "readingJa": "fūkokku no meibutsu wa nan desu ka",
+    "meaningVi": "Đặc sản của Phú Quốc là gì?",
+    "right": "ヌクマムと こしょうです。",
+    "rightVi": "Nước mắm và tiêu.",
+    "wrong": [
+     "すしと てんぷらです。",
+     "ゆきと スキーです。"
+    ],
+    "wrongVi": [
+     "Sushi và tempura.",
+     "Tuyết và trượt tuyết."
+    ]
+   }
+  },
+  {
+   "id": "dinh_cau",
+   "kind": "landmark",
+   "px": [
+    606,
+    812
+   ],
+   "radius": 22,
+   "nameVi": "Dinh Cậu",
+   "nameEn": "Dinh Cậu shrine",
+   "nameJa": "ディンカウ（岩の上の祠）",
+   "readingJa": "ディンカウ",
+   "descVi": "Ngôi miếu nhỏ trên khối đá ở cửa sông Dương Đông, nơi ngư dân cầu bình an.",
+   "descEn": "A small shrine on a rock at the mouth of the Dương Đông river, where fishermen pray for safety.",
+   "descJa": "ドゥオンドン川の河口の岩の上にある小さな祠。漁師が安全を祈ります。",
+   "factVi": "Dinh Cậu là biểu tượng của Phú Quốc, đẹp nhất lúc hoàng hôn.",
+   "factEn": "Dinh Cậu is the symbol of Phú Quốc, loveliest at sunset.",
+   "factJa": "ディンカウはフーコックの象徴。夕日の時が一番きれいです。",
+   "tourist": {
+    "lineJa": "あの いわの うえに なにが ありますか。",
+    "readingJa": "ano iwa no ue ni nani ga arimasu ka",
+    "meaningVi": "Trên tảng đá kia có gì vậy?",
+    "right": "ちいさい ほこらが あります。",
+    "rightVi": "Có một ngôi miếu nhỏ.",
+    "wrong": [
+     "コンビニが あります。",
+     "えきが あります。"
+    ],
+    "wrongVi": [
+     "Có cửa hàng tiện lợi.",
+     "Có nhà ga."
+    ]
+   }
+  },
+  {
+   "id": "sunset_sanato",
+   "kind": "beach",
+   "px": [
+    652,
+    1050
+   ],
+   "radius": 26,
+   "nameVi": "Sunset Sanato",
+   "nameEn": "Sunset Sanato beach",
+   "nameJa": "サンセット・サナト",
+   "readingJa": "サンセット サナト",
+   "descVi": "Bãi biển phía tây với những tác phẩm điêu khắc khổng lồ — nơi ngắm hoàng hôn đẹp nhất.",
+   "descEn": "A west-coast beach with giant sculptures — the best place for the sunset.",
+   "descJa": "巨大な彫刻が並ぶ西海岸のビーチ。夕日を見るのに最高の場所。",
+   "factVi": "Bờ tây Phú Quốc nhìn thẳng ra hoàng hôn trên vịnh Thái Lan.",
+   "factEn": "The west coast faces the sunset over the Gulf of Thailand.",
+   "factJa": "西海岸はタイランド湾に沈む夕日の正面です。",
+   "tourist": {
+    "lineJa": "いつ くると いちばん きれいですか。",
+    "readingJa": "itsu kuru to ichiban kirei desu ka",
+    "meaningVi": "Đến lúc nào thì đẹp nhất?",
+    "right": "ゆうがたです。ゆうひが とても きれいです。",
+    "rightVi": "Buổi chiều tà, hoàng hôn rất đẹp.",
+    "wrong": [
+     "よなかです。",
+     "あさ ごじです。"
+    ],
+    "wrongVi": [
+     "Nửa đêm.",
+     "5 giờ sáng."
+    ]
+   }
+  },
+  {
+   "id": "ho_quoc",
+   "kind": "landmark",
+   "px": [
+    802,
+    1162
+   ],
+   "radius": 24,
+   "nameVi": "Thiền viện Hộ Quốc",
+   "nameEn": "Hộ Quốc Pagoda",
+   "nameJa": "ホークォック寺",
+   "readingJa": "ホークォック でら",
+   "descVi": "Ngôi chùa lớn nhất đảo, tựa núi nhìn ra biển phía đông.",
+   "descEn": "The island's largest pagoda, against the hills and facing the eastern sea.",
+   "descJa": "島で一番大きいお寺。山を背に東の海をのぞみます。",
+   "factVi": "Từ sân chùa nhìn thấy cả biển xanh và đảo nhỏ phía xa.",
+   "factEn": "From the pagoda's terrace you can see the sea and small islands far away.",
+   "factJa": "お寺から青い海と遠くの小島が見えます。",
+   "tourist": {
+    "lineJa": "ここは なんの たてものですか。",
+    "readingJa": "koko wa nan no tatemono desu ka",
+    "meaningVi": "Đây là công trình gì?",
+    "right": "おてらです。うみが みえる おてらです。",
+    "rightVi": "Là chùa, ngôi chùa nhìn ra biển.",
+    "wrong": [
+     "びょういんです。",
+     "スーパーです。"
+    ],
+    "wrongVi": [
+     "Là bệnh viện.",
+     "Là siêu thị."
+    ]
+   }
+  },
+  {
+   "id": "bai_sao",
+   "kind": "beach",
+   "px": [
+    822,
+    1300
+   ],
+   "radius": 26,
+   "nameVi": "Bãi Sao",
+   "nameEn": "Sao Beach",
+   "nameJa": "サオビーチ",
+   "readingJa": "サオ ビーチ",
+   "descVi": "Bãi cát trắng mịn như kem, nước xanh trong — bãi biển đẹp nhất phía nam đảo.",
+   "descEn": "Sand as white and soft as cream, clear blue water — the finest beach in the south.",
+   "descJa": "クリームのように白い砂と透き通った海。島の南で一番美しいビーチ。",
+   "factVi": "Bãi Sao có tên vì ngày xưa nhiều sao biển.",
+   "factEn": "Sao Beach (\"Star Beach\") was named for its starfish.",
+   "factJa": "サオ（星）ビーチの名前はヒトデから来ています。",
+   "tourist": {
+    "lineJa": "この ビーチの なまえは なんですか。",
+    "readingJa": "kono bīchi no namae wa nan desu ka",
+    "meaningVi": "Bãi biển này tên là gì?",
+    "right": "サオビーチです。しろい すなが ゆうめいです。",
+    "rightVi": "Bãi Sao, nổi tiếng cát trắng.",
+    "wrong": [
+     "ハロンわんです。",
+     "ふじさんです。"
+    ],
+    "wrongVi": [
+     "Vịnh Hạ Long.",
+     "Núi Phú Sĩ."
+    ]
+   }
+  },
+  {
+   "id": "bai_khem",
+   "kind": "beach",
+   "px": [
+    806,
+    1372
+   ],
+   "radius": 20,
+   "nameVi": "Bãi Khem",
+   "nameEn": "Khem Beach",
+   "nameJa": "ケムビーチ",
+   "readingJa": "ケム ビーチ",
+   "descVi": "Vịnh nhỏ yên tĩnh, cát trắng, sóng êm.",
+   "descEn": "A quiet little bay with white sand and gentle waves.",
+   "descJa": "白い砂と穏やかな波の静かな入り江。",
+   "factVi": "Cát Bãi Khem mịn đến mức đi chân trần nghe như tiếng kêu khẽ.",
+   "factEn": "Khem's sand is so fine it squeaks underfoot.",
+   "factJa": "ケムビーチの砂は細かくて、歩くとキュッと鳴ります。"
+  },
+  {
+   "id": "an_thoi",
+   "kind": "port",
+   "px": [
+    768,
+    1432
+   ],
+   "radius": 28,
+   "nameVi": "Cảng An Thới · Cáp treo Hòn Thơm",
+   "nameEn": "An Thới harbour · Hòn Thơm cable car",
+   "nameJa": "アントイ港・ホントム島ロープウェイ",
+   "readingJa": "アントイ",
+   "descVi": "Cảng cá phía nam và ga cáp treo vượt biển sang Hòn Thơm.",
+   "descEn": "The southern fishing port and the sea-crossing cable car to Hòn Thơm.",
+   "descJa": "南の漁港と、ホントム島へ海を渡るロープウェイの駅。",
+   "factVi": "Cáp treo Hòn Thơm dài gần 8 km, từng được ghi nhận là cáp treo vượt biển dài nhất thế giới.",
+   "factEn": "The Hòn Thơm cable car is almost 8 km long, once recorded as the world's longest over-sea cable car.",
+   "factJa": "ホントム島ロープウェイは約8km。世界最長の海上ロープウェイとして記録されました。",
+   "tourist": {
+    "lineJa": "ロープウェイは どこまで いきますか。",
+    "readingJa": "rōpuwei wa doko made ikimasu ka",
+    "meaningVi": "Cáp treo đi đến đâu?",
+    "right": "ホントム島まで いきます。",
+    "rightVi": "Đến đảo Hòn Thơm.",
+    "wrong": [
+     "とうきょうまで いきます。",
+     "どこにも いきません。"
+    ],
+    "wrongVi": [
+     "Đến Tokyo.",
+     "Không đi đâu cả."
+    ]
+   }
+  },
+  {
+   "id": "hon_thom",
+   "kind": "island",
+   "px": [
+    775,
+    1556
+   ],
+   "radius": 30,
+   "nameVi": "Hòn Thơm",
+   "nameEn": "Hòn Thơm island",
+   "nameJa": "ホントム島",
+   "readingJa": "ホントム とう",
+   "descVi": "Đảo nhỏ phía nam: công viên nước, bãi biển, điểm cuối của cáp treo.",
+   "descEn": "A small southern island: water park, beaches, the end of the cable car.",
+   "descJa": "南の小島。ウォーターパークとビーチ、ロープウェイの終点。",
+   "factVi": "Quần đảo An Thới có hơn 15 hòn đảo nhỏ.",
+   "factEn": "The An Thới archipelago has more than 15 small islands.",
+   "factJa": "アントイ諸島には15以上の小島があります。"
+  },
+  {
+   "id": "ham_ninh",
+   "kind": "village",
+   "px": [
+    850,
+    932
+   ],
+   "radius": 26,
+   "nameVi": "Làng chài Hàm Ninh",
+   "nameEn": "Hàm Ninh fishing village",
+   "nameJa": "ハムニン漁村",
+   "readingJa": "ハムニン",
+   "descVi": "Làng chài cổ bờ đông với cầu gỗ dài ra biển và hải sản tươi.",
+   "descEn": "An old east-coast fishing village with a long wooden pier and fresh seafood.",
+   "descJa": "東海岸の古い漁村。海に延びる長い桟橋と新鮮な海鮮。",
+   "factVi": "Ghẹ Hàm Ninh là món nổi tiếng nhất làng.",
+   "factEn": "Hàm Ninh crab is the village's most famous dish.",
+   "factJa": "ハムニンのカニは村の一番の名物です。",
+   "tourist": {
+    "lineJa": "ここの めいぶつは なんですか。",
+    "readingJa": "koko no meibutsu wa nan desu ka",
+    "meaningVi": "Đặc sản ở đây là gì?",
+    "right": "カニです。ハムニンの カニが ゆうめいです。",
+    "rightVi": "Ghẹ. Ghẹ Hàm Ninh rất nổi tiếng.",
+    "wrong": [
+     "ラーメンです。",
+     "チョコレートです。"
+    ],
+    "wrongVi": [
+     "Mì ramen.",
+     "Sô-cô-la."
+    ]
+   }
+  },
+  {
+   "id": "suoi_tranh",
+   "kind": "nature",
+   "px": [
+    866,
+    914
+   ],
+   "radius": 18,
+   "nameVi": "Suối Tranh",
+   "nameEn": "Tranh Stream",
+   "nameJa": "チャイン渓流",
+   "readingJa": "チャイン けいりゅう",
+   "descVi": "Con suối và thác nhỏ trong rừng, nhiều nước nhất vào mùa mưa.",
+   "descEn": "A forest stream with little waterfalls, fullest in the rainy season.",
+   "descJa": "森の中の渓流と小さな滝。雨季に水が一番多い。",
+   "factVi": "Mùa mưa ở Phú Quốc từ khoảng tháng 5 đến tháng 10.",
+   "factEn": "Phú Quốc's rainy season runs roughly from May to October.",
+   "factJa": "フーコックの雨季はだいたい5月から10月です。",
+   "tourist": {
+    "lineJa": "ここに なにが ありますか。",
+    "readingJa": "koko ni nani ga arimasu ka",
+    "meaningVi": "Ở đây có gì?",
+    "right": "たきが あります。",
+    "rightVi": "Có thác nước.",
+    "wrong": [
+     "えいがかんが あります。",
+     "くうこうが あります。"
+    ],
+    "wrongVi": [
+     "Có rạp chiếu phim.",
+     "Có sân bay."
+    ]
+   }
+  },
+  {
+   "id": "duong_dong_lake",
+   "kind": "nature",
+   "px": [
+    818,
+    760
+   ],
+   "radius": 20,
+   "nameVi": "Hồ Dương Đông",
+   "nameEn": "Dương Đông Lake",
+   "nameJa": "ドゥオンドン湖",
+   "readingJa": "ドゥオンドン こ",
+   "descVi": "Hồ chứa nước ngọt giữa rừng, nguồn nước của cả đảo.",
+   "descEn": "A freshwater reservoir in the forest that supplies the island.",
+   "descJa": "森の中の貯水池。島の水がめです。",
+   "factVi": "Quanh hồ là rừng xanh của vườn quốc gia.",
+   "factEn": "The lake is ringed by the national park's forest.",
+   "factJa": "湖のまわりは国立公園の森です。"
+  },
+  {
+   "id": "national_park",
+   "kind": "nature",
+   "px": [
+    800,
+    545
+   ],
+   "radius": 46,
+   "nameVi": "Vườn quốc gia Phú Quốc",
+   "nameEn": "Phú Quốc National Park",
+   "nameJa": "フーコック国立公園",
+   "readingJa": "フーコック こくりつ こうえん",
+   "descVi": "Rừng nguyên sinh phủ gần nửa đảo, đồi núi xanh và nhiều loài chim.",
+   "descEn": "Primeval forest covering almost half the island, green hills and many birds.",
+   "descJa": "島の半分近くをおおう原生林。緑の山と、たくさんの鳥。",
+   "factVi": "Vườn quốc gia là một phần của Khu dự trữ sinh quyển Kiên Giang (UNESCO).",
+   "factEn": "The park is part of the Kiên Giang Biosphere Reserve (UNESCO).",
+   "factJa": "国立公園はキエンザン生物圏保存地域（ユネスコ）の一部です。",
+   "tourist": {
+    "lineJa": "この おおきい もりは なんですか。",
+    "readingJa": "kono ōkii mori wa nan desu ka",
+    "meaningVi": "Khu rừng lớn này là gì?",
+    "right": "こくりつこうえんです。",
+    "rightVi": "Là vườn quốc gia.",
+    "wrong": [
+     "ゴルフじょうです。",
+     "がっこうです。"
+    ],
+    "wrongVi": [
+     "Sân golf.",
+     "Trường học."
+    ]
+   }
+  },
+  {
+   "id": "bai_thom",
+   "kind": "beach",
+   "px": [
+    842,
+    420
+   ],
+   "radius": 22,
+   "nameVi": "Bãi Thơm",
+   "nameEn": "Thơm Beach",
+   "nameJa": "トムビーチ",
+   "readingJa": "トム ビーチ",
+   "descVi": "Bãi biển hoang sơ phía đông bắc, làng nhỏ yên bình.",
+   "descEn": "An unspoilt north-east beach and a quiet little village.",
+   "descJa": "北東の手つかずのビーチと静かな村。",
+   "factVi": "Bãi Thơm còn giữ nhiều rừng và rạn san hô.",
+   "factEn": "Bãi Thơm still keeps much of its forest and coral reef.",
+   "factJa": "トムビーチには森とサンゴ礁がたくさん残っています。"
+  },
+  {
+   "id": "rach_vem",
+   "kind": "village",
+   "px": [
+    565,
+    436
+   ],
+   "radius": 20,
+   "nameVi": "Rạch Vẹm · Làng sao biển",
+   "nameEn": "Rạch Vẹm · Starfish village",
+   "nameJa": "ラックヴェム（ヒトデの村）",
+   "readingJa": "ラックヴェム",
+   "descVi": "Vùng nước nông phía bắc có rất nhiều sao biển — ngắm, chụp ảnh nhưng không nhấc lên khỏi nước.",
+   "descEn": "Shallow northern water full of starfish — look and take photos, but never lift them out.",
+   "descJa": "ヒトデがたくさんいる北の浅瀬。見て写真をとるだけ。水から出さないで。",
+   "factVi": "Nhấc sao biển khỏi nước có thể làm chúng chết.",
+   "factEn": "Lifting a starfish out of the water can kill it.",
+   "factJa": "ヒトデを水から出すと死んでしまうことがあります。",
+   "tourist": {
+    "lineJa": "ここには なにが いますか。",
+    "readingJa": "koko ni wa nani ga imasu ka",
+    "meaningVi": "Ở đây có con gì?",
+    "right": "ヒトデが たくさん います。",
+    "rightVi": "Có rất nhiều sao biển.",
+    "wrong": [
+     "ペンギンが います。",
+     "パンダが います。"
+    ],
+    "wrongVi": [
+     "Có chim cánh cụt.",
+     "Có gấu trúc."
+    ]
+   }
+  },
+  {
+   "id": "ganh_dau",
+   "kind": "beach",
+   "px": [
+    300,
+    462
+   ],
+   "radius": 24,
+   "nameVi": "Mũi Gành Dầu",
+   "nameEn": "Gành Dầu cape",
+   "nameJa": "ガンザウ岬",
+   "readingJa": "ガンザウ みさき",
+   "descVi": "Mũi đất tây bắc, gần biên giới Campuchia, bãi đá và làng chài nhỏ.",
+   "descEn": "The north-west cape near the Cambodian border, rocky shores and a small fishing village.",
+   "descJa": "カンボジア国境に近い北西の岬。岩の海岸と小さな漁村。",
+   "factVi": "Từ Gành Dầu có thể nhìn thấy các đảo của Campuchia.",
+   "factEn": "From Gành Dầu you can see Cambodia's islands.",
+   "factJa": "ガンザウからカンボジアの島が見えます。",
+   "tourist": {
+    "lineJa": "ここから なにが みえますか。",
+    "readingJa": "koko kara nani ga miemasu ka",
+    "meaningVi": "Từ đây nhìn thấy gì?",
+    "right": "カンボジアの しまが みえます。",
+    "rightVi": "Nhìn thấy đảo của Campuchia.",
+    "wrong": [
+     "ふじさんが みえます。",
+     "なにも みえません。"
+    ],
+    "wrongVi": [
+     "Nhìn thấy núi Phú Sĩ.",
+     "Không thấy gì."
+    ]
+   }
+  },
+  {
+   "id": "grand_world",
+   "kind": "fun",
+   "px": [
+    336,
+    566
+   ],
+   "radius": 34,
+   "nameVi": "Grand World · VinWonders · Safari",
+   "nameEn": "Grand World · VinWonders · Safari",
+   "nameJa": "グランドワールド・ヴィンワンダーズ・サファリ",
+   "readingJa": "グランド ワールド",
+   "descVi": "Khu vui chơi phía bắc: thành phố kênh đào như Venice, công viên giải trí và vườn thú bán hoang dã.",
+   "descEn": "The northern resort: a Venice-like canal town, a theme park and a safari park.",
+   "descJa": "北のリゾート。ベネチアのような運河の町、テーマパーク、サファリパーク。",
+   "factVi": "Vinpearl Safari là vườn thú bán hoang dã đầu tiên ở Việt Nam.",
+   "factEn": "Vinpearl Safari was Vietnam's first open-range safari park.",
+   "factJa": "ヴィンパールサファリはベトナム初のサファリパークです。",
+   "tourist": {
+    "lineJa": "ここは どんな ところですか。",
+    "readingJa": "koko wa donna tokoro desu ka",
+    "meaningVi": "Đây là nơi như thế nào?",
+    "right": "ベネチアのような まちです。",
+    "rightVi": "Là thị trấn giống Venice.",
+    "wrong": [
+     "ちいさい びょういんです。",
+     "ふるい えきです。"
+    ],
+    "wrongVi": [
+     "Là bệnh viện nhỏ.",
+     "Là ga cũ."
+    ]
+   }
+  },
+  {
+   "id": "cua_can",
+   "kind": "village",
+   "px": [
+    452,
+    596
+   ],
+   "radius": 22,
+   "nameVi": "Cửa Cạn",
+   "nameEn": "Cửa Cạn",
+   "nameJa": "クアカン",
+   "readingJa": "クアカン",
+   "descVi": "Cửa sông yên tĩnh, chèo kayak giữa rừng ngập mặn, làng chài và bãi biển.",
+   "descEn": "A calm river mouth: kayaking through mangroves, a fishing village and a beach.",
+   "descJa": "静かな河口。マングローブの中をカヤック、漁村とビーチ。",
+   "factVi": "Sông Cửa Cạn là con sông dài nhất đảo.",
+   "factEn": "The Cửa Cạn is the island's longest river.",
+   "factJa": "クアカン川は島で一番長い川です。"
+  },
+  {
+   "id": "ong_lang",
+   "kind": "beach",
+   "px": [
+    552,
+    748
+   ],
+   "radius": 20,
+   "nameVi": "Bãi Ông Lang",
+   "nameEn": "Ông Lang Beach",
+   "nameJa": "オンランビーチ",
+   "readingJa": "オンラン ビーチ",
+   "descVi": "Bãi biển yên tĩnh bờ tây, nhiều đá và hàng dừa.",
+   "descEn": "A quiet west-coast beach with rocks and coconut palms.",
+   "descJa": "岩とヤシの木がある、静かな西海岸のビーチ。",
+   "factVi": "Bờ tây Phú Quốc nước êm hơn vào mùa khô.",
+   "factEn": "The west coast's water is calmest in the dry season.",
+   "factJa": "西海岸は乾季に海が一番おだやかです。"
+  }
+ ]
+}

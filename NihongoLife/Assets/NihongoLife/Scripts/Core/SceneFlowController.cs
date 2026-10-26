@@ -21,6 +21,8 @@ namespace NihongoLife.Core
         private readonly Dictionary<GameObject, bool> _hiddenRootStates = new();
 
         public bool IsLoading => _isLoading;
+        /// <summary>The zone the player is in (empty in the town).</summary>
+        public string ActiveZone => _activeZoneSceneName ?? string.Empty;
 
         public void Initialize()
         {
@@ -354,7 +356,7 @@ namespace NihongoLife.Core
                         camera.SetTarget(player.transform);
                         bool indoor = scene.name == WorldLocationCatalog.HomeBedroomScene
                             || scene.name == WorldLocationCatalog.SchoolScene || scene.name == WorldLocationCatalog.SushiRestaurantScene
-                            || scene.name == WorldLocationCatalog.GameCenterScene;
+                            || scene.name == WorldLocationCatalog.GameCenterScene || scene.name == WorldLocationCatalog.ClinicScene;
                         camera.SetIndoorMode(indoor);
                         camera.SetOrbit(spawn.transform.eulerAngles.y, indoor ? 22f : 20f, indoor ? 3.2f : 7.2f);
                     }

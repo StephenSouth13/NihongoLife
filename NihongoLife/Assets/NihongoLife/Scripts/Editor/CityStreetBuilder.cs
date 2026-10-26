@@ -42,7 +42,7 @@ namespace NihongoLife.EditorTools
         private const float StopEastX = LaneW - 2f, StopWestX = LaneE + 2f;
         private const float AlleyN0 = 12.8f, AlleyN1 = 16f, AlleyS0 = -34.6f, AlleyS1 = -31.4f;
         private static readonly string[] OldPieces = { "road_straight", "road_crossroad", "road_side", "road_crossing", "driveway_short", "traffic_light", "road_intersection" };
-        private static readonly string[] DestinationBuildings = { "StreetBuilding_N_2", "StreetBuilding_N_3", "StreetBuilding_N_7", "StreetBuilding_S_4", "StreetBuilding_S_5" };
+        private static readonly string[] DestinationBuildings = { "StreetBuilding_N_2", "StreetBuilding_N_3", "StreetBuilding_N_7", "StreetBuilding_S_3", "StreetBuilding_S_4", "StreetBuilding_S_5" };
 
         private static Material _asphalt, _laneAsphalt, _paver, _kerb, _paint, _wall, _wallCap, _gravel, _grass, _concrete, _parking,
             _iron, _signalBody, _lampOff, _green, _yellow, _red, _walkGreen, _walkRed, _mirrorPole, _mirror, _vendBody, _vendFront;
