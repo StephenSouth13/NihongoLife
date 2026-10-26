@@ -356,16 +356,18 @@ namespace NihongoLife.UI
         }
     }
 
-    /// <summary>Japanese read-aloud: browser speech synthesis on WebGL (Plugins/WebGL/NihongoPatternSpeech.jslib); hidden elsewhere.</summary>
+    /// <summary>Read-aloud (Japanese by default, or a given BCP-47 language such as en-US): browser speech synthesis on WebGL (Plugins/WebGL/NihongoPatternSpeech.jslib); hidden elsewhere.</summary>
     public static class PatternSpeech
     {
 #if UNITY_WEBGL && !UNITY_EDITOR
         [System.Runtime.InteropServices.DllImport("__Internal")] private static extern int NL_PatternSpeak(string text, string lang);
         public static bool Available => true;
         public static void Speak(string text) { try { NL_PatternSpeak(text ?? "", "ja-JP"); } catch (System.Exception) { } }
+        public static void Speak(string text, string lang) { try { NL_PatternSpeak(text ?? "", string.IsNullOrEmpty(lang) ? "ja-JP" : lang); } catch (System.Exception) { } }
 #else
         public static bool Available => false;
         public static void Speak(string text) { }
+        public static void Speak(string text, string lang) { }
 #endif
     }
 }

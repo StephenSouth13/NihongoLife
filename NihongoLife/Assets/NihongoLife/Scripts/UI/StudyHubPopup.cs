@@ -48,7 +48,12 @@ namespace NihongoLife.UI
             UiKit.Place(_status.rectTransform, 36f, H - 88f, W - 72f, 52f);
         }
 
-        protected override void OnOpened() => Rebuild();
+        protected override void OnOpened()
+        {
+            // English Basic is built in: (re)register its launcher against this hub so the tile opens EnglishBasicUI.
+            StudyModeRegistry.Register(StudyModeRegistry.EnglishBasic, OpenEnglishBasic);
+            Rebuild();
+        }
         protected override void OnLanguageApplied() { if (IsOpen) Rebuild(); }
 
         protected override void Update()
@@ -76,10 +81,10 @@ namespace NihongoLife.UI
                       "N5→N3・{0}文型・ふりがな/ローマ字付き例文と穴埋め・選択・並べ替えドリル。", JapanesePatternCatalog.All.Count),
                 Loc.F("★ {0}/{1}", "★ {0}/{1}", "★ {0}/{1}", stars, maxStars), true, OpenPatterns);
             Tile(1, tw, "Tiếng Anh cơ bản", "English Basic", "基礎英語", "school", UiTheme.Ielts,
-                Loc.T("A1 → B1: từ vựng, ngữ pháp, nghe, nói. Nền tảng trước khi luyện IELTS.",
-                      "A1 → B1: vocabulary, grammar, listening, speaking. Foundations before IELTS.",
-                      "A1→B1：語彙・文法・リスニング・スピーキング。IELTSの前の基礎。"),
-                english ? Loc.T("Sẵn sàng", "Ready", "利用可能") : Loc.T("Sắp ra mắt", "Coming soon", "近日公開"), english, OpenEnglish);
+                Loc.F("A1 · {0} chủ đề: chào hỏi, số đếm, mua sắm, hỏi đường… Từ vựng, câu ví dụ và bài kiểm tra nhỏ.",
+                      "A1 · {0} topics: greetings, numbers, shopping, directions… Vocabulary, examples and short quizzes.",
+                      "A1・{0}テーマ：あいさつ・数字・買い物・道案内…単語・例文・ミニクイズ。", EnglishBasicCatalog.All.Count),
+                english ? Loc.F("★ {0}/{1}", "★ {0}/{1}", "★ {0}/{1}", store.TotalStars(EnglishBasicCatalog.All.Select(l => l.id)), EnglishBasicCatalog.All.Count * 3) : Loc.T("Sắp ra mắt", "Coming soon", "近日公開"), english, OpenEnglish);
             Tile(2, tw, "Video bài học", "Video library", "動画ライブラリ", "videocam", UiTheme.Teal,
                 Loc.F("{0} video từ kênh NihongoLife — xem trong game, có tóm tắt và phụ đề.",
                       "{0} videos from the NihongoLife channel — watch in-game with summary and transcript.",
@@ -118,6 +123,7 @@ namespace NihongoLife.UI
 
         public void OpenPatterns() { Hide(); Child<JapanesePatternsUI>().Show(); }
         public void OpenVideos() { Hide(); Child<InGameVideoPlayerUI>().Show(); }
+        public void OpenEnglishBasic() { Hide(); Child<EnglishBasicUI>().Show(); }
 
         private void OpenEnglish()
         {
