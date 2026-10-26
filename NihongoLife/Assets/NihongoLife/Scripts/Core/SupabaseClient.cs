@@ -24,12 +24,12 @@ namespace NihongoLife.Core
         public void Initialize(GameControlDatabase database)
         {
             if (database == null) return;
-            ProjectUrl = (database.supabaseProjectUrl ?? string.Empty).TrimEnd('/');
-            AnonKey = database.supabaseAnonKey ?? string.Empty;
+            ProjectUrl = database.ResolveSupabaseProjectUrl().TrimEnd('/');
+            AnonKey = database.ResolveSupabaseAnonKey();
 
             if (!IsConfigured)
             {
-                Debug.LogWarning("[SupabaseClient] Project URL or Anon Key is empty. Online features will be unavailable.");
+                Debug.LogWarning("[SupabaseClient] Project URL or anon key is empty. Copy LocalSecrets/secrets.example.json to secrets.json, or set NIHONGOLIFE_SUPABASE_URL and NIHONGOLIFE_SUPABASE_ANON_KEY. Online features stay offline.");
             }
             else
             {

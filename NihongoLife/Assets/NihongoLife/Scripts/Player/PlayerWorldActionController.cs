@@ -96,6 +96,16 @@ namespace NihongoLife.Player
 
             int fine = offense == CivicOffense.AssaultNpc ? 500 : 100;
             PlayerInventory.Instance?.ApplyFine(fine, NihongoLife.Core.Loc.Triple("Tiền phạt", "Fine", "罰金"));
+            if (offense == CivicOffense.Littering)
+            {
+                SocialStanding.AddNotoriety(8, "litter", 3f);
+                SocialStanding.AddMoodlet("litter", SocialMood.Embarrassed, 0.5f, 1f);
+            }
+            else
+            {
+                SocialStanding.AddNotoriety(14, "assault", 3f);
+                SocialStanding.AddMoodlet("rough", SocialMood.Annoyed, 0.65f, 1.2f);
+            }
 
             // Repeated serious violations restrict gameplay locally. A real account ban
             // must be validated by the authoritative backend, never by the client alone.

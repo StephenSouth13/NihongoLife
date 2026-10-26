@@ -51,6 +51,30 @@ namespace NihongoLife.Tests
             Assert.Greater(townTrack.volume, 0.5f, "The town music is audible at the default setting.");
             PlayerPrefs.SetFloat("Volume_BGM", savedBgm);
 
+            // 2b. Settings can switch the music and the ambience (birds, insects, street) off and back on.
+            bool savedMusic = AudioPrefs.MusicOn, savedAmbience = AudioPrefs.AmbienceOn;
+            try
+            {
+                AudioPrefs.MusicOn = false;
+                AudioPrefs.AmbienceOn = false;
+                yield return null;
+                Assert.IsTrue(townTrack.mute, "Music off mutes the town track.");
+                Assert.IsTrue(sources[1].mute, "Ambience off mutes the birds / insects.");
+                Assert.IsFalse(Object.FindObjectsByType<TownAmbientAudio>(FindObjectsSortMode.None)
+                    .SelectMany(a => a.GetComponentsInChildren<AudioSource>()).Any(s => s.isPlaying && !s.mute && s.loop),
+                    "No town music / street loop is left audible.");
+                AudioPrefs.MusicOn = true;
+                AudioPrefs.AmbienceOn = true;
+                yield return null;
+                Assert.IsFalse(townTrack.mute, "Music on again.");
+                Assert.IsFalse(sources[1].mute, "Ambience on again.");
+            }
+            finally
+            {
+                AudioPrefs.MusicOn = savedMusic;
+                AudioPrefs.AmbienceOn = savedAmbience;
+            }
+
             // 3. A story line speaks with its recorded voice.
             var repo = GameServices.Get<IScenarioRepository>();
             var first = repo.GetScenarioById("scenario.intro.arrival");

@@ -94,10 +94,20 @@ namespace NihongoLife.Core
         public int aiMaxSpeakingSeconds = 480;
         public int aiRequestTimeoutSeconds = 60;
 
+        [Header("Exam AI grading (Writing / Speaking)")]
+        [Tooltip("Automatic AI grading when an exam or IELTS Writing/Speaking paper is submitted. Off: answers are only saved (pending review), no AI call, no quota, no network.")]
+        public bool aiGradingEnabled = false;
+        [Tooltip("Lets the learner ask for an optional AI grade of one saved submission (free uses first, then in-game yen).")]
+        public bool allowOnDemandAiGrading = true;
+        [Tooltip("Free on-demand AI gradings per player save.")]
+        public int aiFreeGradings = 3;
+        [Tooltip("In-game yen per on-demand AI grading once the free uses are spent (never real money).")]
+        public int aiGradingPriceYen = 50;
+
         [Header("Agora (video classroom, microphone check)")]
-        [Tooltip("Environment variable holding the Agora App ID; the ID is never written in code.")]
+        [Tooltip("Environment variable holding the Agora App ID. LocalSecrets/secrets.json is checked when the variable is empty.")]
         public string agoraAppIdEnvironmentKey = "AGORA_APP_ID";
-        [Tooltip("Optional App ID for builds without the environment variable (an App ID is public; tokens are not).")]
+        [Tooltip("Optional App ID fallback. Prefer AGORA_APP_ID or LocalSecrets/secrets.json, and leave this empty in git.")]
         public string agoraAppId = "";
         [Tooltip("Optional override for the authenticated Agora room/token API. Empty uses <Supabase URL>/functions/v1/agora-classroom.")]
         public string agoraClassroomApiUrl = "";
@@ -118,13 +128,20 @@ namespace NihongoLife.Core
         public int maxVisiblePlayers = 24;
         public int chatHistoryLimit = 80;
 
+        [Tooltip("Optional fallback. Prefer NIHONGOLIFE_SUPABASE_URL or LocalSecrets/secrets.json. Leave empty in git.")]
         public string supabaseProjectUrl = "";
+        [Tooltip("Optional anon-key fallback. Prefer NIHONGOLIFE_SUPABASE_ANON_KEY or LocalSecrets/secrets.json. Leave empty in git.")]
         public string supabaseAnonKey = "";
-        public string supabaseHost = "aws-0-ap-northeast-2.pooler.supabase.com";
+        [Tooltip("Legacy direct-Postgres host. SupabaseClient does not use it. Leave empty in git. A pooler, if you still connect that way, looks like aws-0-<region>.pooler.supabase.com and the user is postgres.<SUPABASE_PROJECT_REF>.")]
+        public string supabaseHost = "";
         public int postgresPort = 5432;
         public string databaseName = "postgres";
         public string userName = "";
         public string passwordEnvironmentKey = "NIHONGOLIFE_POSTGRES_PASSWORD";
         public bool requireSsl = true;
+
+        public string ResolveSupabaseProjectUrl() => LocalSecrets.Resolve("NIHONGOLIFE_SUPABASE_URL", supabaseProjectUrl);
+
+        public string ResolveSupabaseAnonKey() => LocalSecrets.Resolve("NIHONGOLIFE_SUPABASE_ANON_KEY", supabaseAnonKey);
     }
 }

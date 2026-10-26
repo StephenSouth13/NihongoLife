@@ -36,6 +36,8 @@ namespace NihongoLife.Tests
         [UnityTest]
         public IEnumerator MidoriIsland_FullAcceptanceFlow()
         {
+            if (SystemInfo.graphicsDeviceType == UnityEngine.Rendering.GraphicsDeviceType.Null)
+                Assert.Ignore("No graphics device (GraphicsDeviceType.Null). Midori island captures need a GPU and are skipped in headless/-nographics runs.");
             float started = Time.realtimeSinceStartup;
             IslandTrainService.RideSeconds = 1.2f;
             NihongoLife.UI.TimedAction.SpeedScale = 0f; // farm work runs instantly here; LifeLoopPlayModeTests checks the timed bars
@@ -282,6 +284,8 @@ namespace NihongoLife.Tests
         [UnityTest]
         public IEnumerator MidoriIsland_PerformanceAndLayout()
         {
+            if (SystemInfo.graphicsDeviceType == UnityEngine.Rendering.GraphicsDeviceType.Null)
+                Assert.Ignore("No graphics device (GraphicsDeviceType.Null). Midori island captures need a GPU and are skipped in headless/-nographics runs.");
             yield return SceneManager.LoadSceneAsync(WorldLocationCatalog.MidoriIslandScene); // standalone boot through the city
             for (float t = 0f; t < 25f; t += Time.unscaledDeltaTime)
             {

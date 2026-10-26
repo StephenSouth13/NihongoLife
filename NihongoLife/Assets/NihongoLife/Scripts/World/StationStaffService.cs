@@ -1,5 +1,6 @@
 using NihongoLife.NPC;
 using UnityEngine;
+using NihongoLife.Core;
 
 namespace NihongoLife.World
 {
@@ -9,7 +10,7 @@ namespace NihongoLife.World
     {
         public bool HandleInteract(GameObject player)
         {
-            var station = FindFirstObjectByType<StationTravelController>();
+            var station = SceneRefs.Find<StationTravelController>();
             if (station == null) return false;
             station.Execute(StationAction.TalkStationStaff, player);
             return true;

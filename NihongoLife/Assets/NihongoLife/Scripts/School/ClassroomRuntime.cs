@@ -9,6 +9,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using NihongoLife.Core;
 
 namespace NihongoLife.School
 {
@@ -152,7 +153,7 @@ namespace NihongoLife.School
             if (_canvas == null)
             {
                 _font = NLUi.ResolveFont();
-                var hud = FindFirstObjectByType<HUDUI>();
+                var hud = SceneRefs.Find<HUDUI>();
                 _canvas = NLUi.CreateCanvas("ClassroomFX", 140, hud != null ? hud.transform : transform);
             }
             return (RectTransform)_canvas.transform;

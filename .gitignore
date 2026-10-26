@@ -96,6 +96,8 @@ NihongoLife/Docs/Exam/IELTS.meta
 NihongoLife/Docs/Exam/JLPT/*.pdf
 # Local-only exam packages built from licensed material (questions, keys, audio). Never commit or ship.
 NihongoLife/LocalContent/
+# Generated/downloaded English lesson audio and source books stay local; Git keeps only manifests/tools.
+NihongoLife/LocalContent/English/
 
 # Python bytecode
 __pycache__/
@@ -110,3 +112,27 @@ __pycache__/
 *service_role*
 *.secret.json
 **/Secrets/
+NihongoLife/LocalSecrets/secrets.json
+/LocalSecrets/secrets.json
+
+# Agent scratch, Unity batch logs, and one-off test output. Do not commit.
+task-o-*-results.xml
+task-o-*-test.log
+unity-task-o-build*.log
+.codex_*.py
+.docx_qa_capstone_v4/
+.utmp
+.utmp/
+NihongoLife/playmode-results*.xml
+NihongoLife/editmode-results*.xml
+NihongoLife/test_results.xml
+NihongoLife/test_results_playmode.xml
+
+# Agent scratch and WebGL zone-bundle staging (the player build copies zones/ next to index.html).
+.claude/
+.codex/
+.codex*/
+**/.utmp
+*.mtl.bak
+*.mtl.bak.meta
+NihongoLife/WebGLZoneBundles/

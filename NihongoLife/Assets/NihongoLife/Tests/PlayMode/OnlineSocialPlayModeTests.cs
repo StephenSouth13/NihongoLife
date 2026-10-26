@@ -202,7 +202,8 @@ namespace NihongoLife.Tests
         {
             OnlineAccess.Bypass = true; // the test device has no registered account; the game keeps guests offline
             yield return LoadCity();
-            Assert.IsTrue(GameServices.TryGet(out IOnlineWorldService world) && world is SupabaseOnlineWorldService, "Online is enabled in the control database");
+            if (!(GameServices.TryGet(out IOnlineWorldService world) && world is SupabaseOnlineWorldService))
+                Assert.Inconclusive("Online is not configured on this machine (Supabase settings in LocalSecrets/secrets.json).");
             var online = (SupabaseOnlineWorldService)world;
             yield return WaitFor(() => online.ShardTopic != null, 15f, "local player in a city shard");
             var player = Object.FindFirstObjectByType<PlayerController>();
@@ -291,12 +292,14 @@ namespace NihongoLife.Tests
         private SupabaseRealtimeClient NewClient(string name)
         {
             var db = Resources.Load<GameControlDatabase>("Control/NihongoLifeControlDatabase");
-            Assume.That(db != null && !string.IsNullOrEmpty(db.supabaseProjectUrl), "Supabase not configured");
-            string url = db.supabaseProjectUrl.TrimEnd('/').Replace("https://", "wss://") + "/realtime/v1/websocket?apikey=" + db.supabaseAnonKey + "&vsn=1.0.0";
+            string projectUrl = db != null ? db.ResolveSupabaseProjectUrl() : string.Empty;
+            string anonKey = db != null ? db.ResolveSupabaseAnonKey() : string.Empty;
+            Assume.That(!string.IsNullOrEmpty(projectUrl) && !string.IsNullOrEmpty(anonKey), "Supabase not configured (LocalSecrets/secrets.json or NIHONGOLIFE_SUPABASE_URL / NIHONGOLIFE_SUPABASE_ANON_KEY).");
+            string url = projectUrl.TrimEnd('/').Replace("https://", "wss://") + "/realtime/v1/websocket?apikey=" + anonKey + "&vsn=1.0.0";
             var go = new GameObject("TestRealtime_" + name);
             _spawned.Add(go);
             var client = go.AddComponent<SupabaseRealtimeClient>();
-            client.InitializeRaw(url, db.supabaseAnonKey);
+            client.InitializeRaw(url, anonKey);
             return client;
         }
 

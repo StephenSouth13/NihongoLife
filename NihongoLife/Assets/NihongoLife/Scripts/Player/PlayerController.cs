@@ -35,6 +35,8 @@ namespace NihongoLife.Player
 
         private CharacterController _characterController;
         private Vector3 _velocity;
+        private Vector3 _knock;
+        private float _knockUntil;
         private bool _isGrounded;
         private bool _inputLocked = false;
         private UnityEngine.Camera _mainCamera;
@@ -61,6 +63,21 @@ namespace NihongoLife.Player
                 _clickDestination = destination;
             }
             _hasClickDestination = true;
+        }
+
+        /// <summary>
+        /// A car (or similar) shoves the player along the ground. Only an upward component makes a hop, held for a
+        /// moment so the ground check does not cancel it.
+        /// </summary>
+        public void Knockback(Vector3 worldVelocity)
+        {
+            _knock = new Vector3(worldVelocity.x, 0f, worldVelocity.z);
+            if (worldVelocity.y > 0f)
+            {
+                _velocity.y = Mathf.Max(_velocity.y, worldVelocity.y);
+                _knockUntil = Time.time + 0.35f;
+            }
+            _hasClickDestination = false;
         }
 
         public bool InputLocked
@@ -128,7 +145,7 @@ namespace NihongoLife.Player
                 _isGrounded = controllerGrounded;
             }
 
-            if (_isGrounded && _velocity.y < 0)
+            if (_isGrounded && _velocity.y < 0 && Time.time >= _knockUntil)
             {
                 _velocity.y = -2f;
             }
@@ -219,7 +236,8 @@ namespace NihongoLife.Player
                 _velocity.y = Mathf.Sqrt(jumpHeight * -2f * gravity);
             }
             _velocity.y = Mathf.Max(_velocity.y + gravity * Time.deltaTime, maxFallSpeed);
-            Vector3 finalMove = _smoothedMoveDirection * currentSpeed;
+            Vector3 finalMove = _smoothedMoveDirection * currentSpeed + new Vector3(_knock.x, 0f, _knock.z);
+            _knock = Vector3.MoveTowards(_knock, Vector3.zero, 14f * Time.deltaTime);
             finalMove.y = _velocity.y;
             Vector3 horizontalMove = new(finalMove.x, 0f, finalMove.z);
             float horizontalDistance = horizontalMove.magnitude * Time.deltaTime;
@@ -246,7 +264,7 @@ namespace NihongoLife.Player
                 _hasClickDestination = false;
                 _smoothedMoveDirection = Vector3.zero;
             }
-            if ((flags & CollisionFlags.Below) != 0 && _velocity.y < 0f)
+            if ((flags & CollisionFlags.Below) != 0 && _velocity.y < 0f && Time.time >= _knockUntil)
             {
                 _velocity.y = -2f;
                 _isGrounded = true;
@@ -283,6 +301,7 @@ namespace NihongoLife.Player
         {
             if (_input != null && _input.WasPressed(GameInputId.Interact))
             {
+                if (TownEdge.TryTravel()) return;
                 var detector = GetComponent<InteractionDetector>();
                 if (detector != null)
                 {
@@ -316,7 +335,7 @@ namespace NihongoLife.Player
             UnityEngine.Camera taggedCamera = UnityEngine.Camera.main;
             if (IsGameplayCamera(taggedCamera)) return taggedCamera;
 
-            var controller = FindFirstObjectByType<ThirdPersonCameraController>();
+            var controller = SceneRefs.Find<ThirdPersonCameraController>();
             return controller != null ? controller.GetComponent<UnityEngine.Camera>() : null;
         }
     }

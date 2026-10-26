@@ -34,6 +34,8 @@ namespace NihongoLife.Audio
             _sfxVolume = PlayerPrefs.GetFloat("Volume_SFX", 0.8f);
 
             _bgmSource.volume = _bgmVolume;
+            _bgmSource.mute = !AudioPrefs.MusicOn; // Settings → Music off (the menu theme plays through this source)
+            AudioPrefs.Changed += ApplyMusicSwitch;
             _sfxSource.volume = _sfxVolume;
             _voiceSource.volume = _sfxVolume;
             _catalog = Resources.Load<GameAudioCatalog>("Audio/GameAudioCatalog");
@@ -132,6 +134,13 @@ namespace NihongoLife.Audio
             _footstepIndex = (_footstepIndex + 1) % clips.Length;
             return clip;
         }
+
+        private void ApplyMusicSwitch()
+        {
+            if (_bgmSource != null) _bgmSource.mute = !AudioPrefs.MusicOn;
+        }
+
+        private void OnDestroy() => AudioPrefs.Changed -= ApplyMusicSwitch;
 
         public void SetBGMVolume(float volume)
         {

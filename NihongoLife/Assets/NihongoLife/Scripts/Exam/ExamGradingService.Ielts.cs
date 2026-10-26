@@ -57,7 +57,7 @@ namespace NihongoLife.Exam
                 "Reply with JSON only: {\"criteria\":[{\"code\":\"" + first + "\",\"name\":\"" + firstName + "\",\"band\":6.0,\"explanation\":\"...\"},{\"code\":\"CC\",...},{\"code\":\"LR\",...},{\"code\":\"GRA\",...}],\"summary\":\"<2-3 sentences in " + FeedbackLanguage + ": main strength and the most important thing to improve>\"}";
 
             string text = null, error = null; bool cached = false;
-            yield return RequestJson("writing-examiner", prompt, null, 1600, (t, e, c) => { text = t; error = e; cached = c; });
+            yield return RequestJson("writing-examiner", prompt, null, 4096, t => Parse<ExaminerReply>(t)?.criteria?.Count >= 4, (t, e, c) => { text = t; error = e; cached = c; });
             result.fromCache = cached;
             result.model = Model;
             if (error != null) { result.error = error; done?.Invoke(result); yield break; }
@@ -94,7 +94,7 @@ namespace NihongoLife.Exam
                 "Reply with JSON only: {\"issues\":[{\"sentence\":1,\"original\":\"...\",\"category\":\"grammar\",\"problem\":\"...\",\"explanation\":\"...\",\"suggestion\":\"...\"}],\"overallAdvice\":\"<2-4 sentences in " + FeedbackLanguage + ">\"}";
 
             string reply = null, error = null; bool cached = false;
-            yield return RequestJson("writing-coach", prompt, null, 3000, (t, e, c) => { reply = t; error = e; cached = c; });
+            yield return RequestJson("writing-coach", prompt, null, 8192, t => Parse<CoachReply>(t) != null, (t, e, c) => { reply = t; error = e; cached = c; });
             report.fromCache = cached;
             if (error != null) { report.error = error; done?.Invoke(report); yield break; }
             var parsed = Parse<CoachReply>(reply);
@@ -144,7 +144,7 @@ namespace NihongoLife.Exam
                 "Reply with JSON only: {\"answers\":[{\"number\":1,\"transcript\":\"...\"}],\"criteria\":[{\"code\":\"FC\",\"name\":\"Fluency and Coherence\",\"band\":6.0,\"explanation\":\"...\",\"assessed\":true},{\"code\":\"LR\",...},{\"code\":\"GRA\",...},{\"code\":\"P\",\"name\":\"Pronunciation\",...}],\"summary\":\"<2-3 sentences in " + FeedbackLanguage + ">\"}";
 
             string reply = null, error = null; bool cached = false;
-            yield return RequestJson("speaking-examiner", prompt, audio, 3000, (t, e, c) => { reply = t; error = e; cached = c; });
+            yield return RequestJson("speaking-examiner", prompt, audio, 8192, t => Parse<SpeakingReply>(t)?.criteria?.Count >= 3, (t, e, c) => { reply = t; error = e; cached = c; });
             result.fromCache = cached;
             if (error != null) { result.error = error; done?.Invoke(result); yield break; }
             var parsed = Parse<SpeakingReply>(reply);
@@ -178,14 +178,13 @@ namespace NihongoLife.Exam
         {
             get
             {
-                var l = new LimitSet { daily = 40, maxEssayWords = 700, maxSpeakingSeconds = 480, timeout = 60 };
+                var l = new LimitSet { daily = 40, maxEssayWords = 700, maxSpeakingSeconds = 480, timeout = AiGradingTimeouts.TextSeconds };
                 if (GameServices.TryGet(out GameControlService control) && control.Database != null)
                 {
                     var db = control.Database;
                     l.daily = Mathf.Max(0, db.aiDailyRequestLimit);
                     l.maxEssayWords = Mathf.Max(50, db.aiMaxEssayWords);
                     l.maxSpeakingSeconds = Mathf.Max(30, db.aiMaxSpeakingSeconds);
-                    l.timeout = Mathf.Clamp(db.aiRequestTimeoutSeconds, 10, 180);
                 }
                 return l;
             }
@@ -202,11 +201,57 @@ namespace NihongoLife.Exam
         private static string FeedbackLanguage => NihongoLife.Core.Loc.T("Vietnamese", "English", "Japanese");
 
         /// <summary>Sends one JSON-mode request (text prompt plus optional WAV parts). done(text, error, fromCache).</summary>
-        private IEnumerator RequestJson(string kind, string prompt, List<(string label, byte[] wav)> audio, int maxTokens, Action<string, string, bool> done)
+        /// <summary>Bumped whenever older cache files may hold bad replies (v2: truncated replies were cached before
+        /// the cache only kept complete, parseable ones). A different version purges the whole cache folder once.</summary>
+        public const string CacheVersion = "2";
+
+        private static bool _cacheChecked;
+
+        /// <summary>Deletes <paramref name="cacheFolder"/> once when its version marker is missing or older, then writes the marker.</summary>
+        public static void PurgeCacheIfOutdated(string cacheFolder)
         {
+            try
+            {
+                string marker = Path.Combine(cacheFolder, "cache_version.txt");
+                if (File.Exists(marker) && File.ReadAllText(marker).Trim() == CacheVersion) return;
+                if (Directory.Exists(cacheFolder))
+                {
+                    int count = Directory.GetFiles(cacheFolder).Length;
+                    Directory.Delete(cacheFolder, true);
+                    Debug.Log($"[ExamGradingService] Cleared {count} AI cache file(s) from an older version (they could hold incomplete replies).");
+                }
+                Directory.CreateDirectory(cacheFolder);
+                File.WriteAllText(marker, CacheVersion);
+            }
+            catch (Exception e) { Debug.LogWarning("[ExamGradingService] Could not check the AI cache version: " + e.Message); }
+        }
+
+        /// <summary>Reads a cached reply; a file that no longer passes <paramref name="isValid"/> is deleted (so it is fetched again).</summary>
+        public static bool TryReadCache(string cachePath, Func<string, bool> isValid, out string text)
+        {
+            text = null;
+            if (!File.Exists(cachePath)) return false;
+            try
+            {
+                string cachedText = File.ReadAllText(cachePath);
+                if (isValid == null || isValid(cachedText)) { text = cachedText; return true; }
+            }
+            catch (Exception e) { Debug.LogWarning("[ExamGradingService] Unreadable cache file: " + e.Message); }
+            Debug.LogWarning($"[ExamGradingService] Deleting invalid AI cache file {Path.GetFileName(cachePath)}; it will be fetched again.");
+            try { File.Delete(cachePath); } catch (Exception e) { Debug.LogWarning("[ExamGradingService] Could not delete cache file: " + e.Message); }
+            return false;
+        }
+
+        /// <summary>Only a complete (finishReason STOP) reply that parses is worth caching.</summary>
+        public static bool ShouldCache(string text, string finishReason, Func<string, bool> isValid) =>
+            !string.IsNullOrWhiteSpace(text) && string.Equals(finishReason, "STOP", StringComparison.OrdinalIgnoreCase) && (isValid == null || isValid(text));
+
+        private IEnumerator RequestJson(string kind, string prompt, List<(string label, byte[] wav)> audio, int maxTokens, Func<string, bool> isValid, Action<string, string, bool> done)
+        {
+            if (!_cacheChecked) { _cacheChecked = true; PurgeCacheIfOutdated(CacheFolder); }
             string cacheKey = Hash(kind + "|" + Model + "|" + prompt + "|" + string.Join("|", (audio ?? new List<(string, byte[])>()).Select(a => Hash(a.wav))));
             string cachePath = Path.Combine(CacheFolder, cacheKey + ".txt");
-            if (File.Exists(cachePath)) { done(File.ReadAllText(cachePath), null, true); yield break; }
+            if (TryReadCache(cachePath, isValid, out string cachedReply)) { done(cachedReply, null, true); yield break; }
 
             if (!TryGetConfig(out string apiKey, out string model))
             {
@@ -236,11 +281,11 @@ namespace NihongoLife.Exam
                 request.downloadHandler = new DownloadHandlerBuffer();
                 request.SetRequestHeader("Content-Type", "application/json");
                 request.SetRequestHeader("x-goog-api-key", apiKey);
-                request.timeout = limits.timeout;
+                request.timeout = AiGradingTimeouts.HttpSeconds(audio != null && audio.Count > 0);
                 yield return request.SendWebRequest();
 
-                // A request that reached the service counts against the daily limit, answered or not.
-                if (request.result != UnityWebRequest.Result.ConnectionError)
+                // Only a successful (2xx) answer counts against the daily limit; errors, rate limits and timeouts do not.
+                if (request.responseCode >= 200 && request.responseCode < 300)
                 {
                     PlayerPrefs.SetInt(CounterKey, RequestsToday + 1);
                     PlayerPrefs.Save();
@@ -248,10 +293,14 @@ namespace NihongoLife.Exam
                 }
                 if (request.result == UnityWebRequest.Result.Success)
                 {
-                    string text = ExtractText(request.downloadHandler.text);
+                    string text = ExtractText(request.downloadHandler.text, out string finishReason);
                     if (string.IsNullOrWhiteSpace(text)) { done(null, NihongoLife.Core.Loc.T("AI không trả về nội dung (có thể bị bộ lọc an toàn chặn). Hãy thử lại.", "The AI returned nothing (it may have been blocked by the safety filter). Please try again.", "AIから返答がありません（安全フィルターの可能性）。もう一度試してください。"), false); yield break; }
-                    Directory.CreateDirectory(CacheFolder);
-                    File.WriteAllText(cachePath, text);
+                    if (ShouldCache(text, finishReason, isValid))
+                    {
+                        Directory.CreateDirectory(CacheFolder);
+                        File.WriteAllText(cachePath, text);
+                    }
+                    else Debug.LogWarning($"[ExamGradingService] {kind}: reply not cached (finishReason {finishReason ?? "none"} or unparseable).");
                     done(text, null, false);
                     yield break;
                 }
@@ -271,7 +320,7 @@ namespace NihongoLife.Exam
             }
         }
 
-        private static string BuildBody(string prompt, List<(string label, byte[] wav)> audio, int maxTokens)
+        internal static string BuildBody(string prompt, List<(string label, byte[] wav)> audio, int maxTokens)
         {
             var sb = new StringBuilder();
             sb.Append("{\"contents\":[{\"role\":\"user\",\"parts\":[");
@@ -282,7 +331,10 @@ namespace NihongoLife.Exam
                     sb.Append(",{\"text\":").Append(Json(label)).Append('}');
                     sb.Append(",{\"inlineData\":{\"mimeType\":\"audio/wav\",\"data\":\"").Append(Convert.ToBase64String(wav)).Append("\"}}");
                 }
-            sb.Append("]}],\"generationConfig\":{\"responseMimeType\":\"application/json\",\"temperature\":0.2,\"maxOutputTokens\":").Append(maxTokens).Append("}}");
+            // thinkingBudget 0: thinking models otherwise spend the output budget on hidden reasoning and the JSON
+            // gets cut off (finishReason MAX_TOKENS), which then fails to parse.
+            sb.Append("]}],\"generationConfig\":{\"responseMimeType\":\"application/json\",\"temperature\":0.2,\"maxOutputTokens\":").Append(maxTokens)
+              .Append(",\"thinkingConfig\":{\"thinkingBudget\":0}}}");
             return sb.ToString();
         }
 
@@ -307,22 +359,24 @@ namespace NihongoLife.Exam
             return sb.Append('"').ToString();
         }
 
-        [Serializable] private class ReplyPart { public string text; }
+        [Serializable] private class ReplyPart { public string text; public bool thought; }
         [Serializable] private class ReplyContent { public ReplyPart[] parts; }
-        [Serializable] private class ReplyCandidate { public ReplyContent content; }
+        [Serializable] private class ReplyCandidate { public ReplyContent content; public string finishReason; }
         [Serializable] private class Reply { public ReplyCandidate[] candidates; }
         [Serializable] private class ExaminerReply { public List<IeltsCriterionScore> criteria; public string summary; }
         [Serializable] private class CoachReply { public List<IeltsCoachIssue> issues; public string overallAdvice; }
         [Serializable] private class TranscriptReply { public int number; public string transcript; }
         [Serializable] private class SpeakingReply { public List<TranscriptReply> answers; public List<IeltsCriterionScore> criteria; public string summary; }
 
-        private static string ExtractText(string responseJson)
+        private static string ExtractText(string responseJson, out string finishReason)
         {
+            finishReason = null;
             try
             {
                 var reply = JsonUtility.FromJson<Reply>(responseJson);
+                finishReason = reply?.candidates != null && reply.candidates.Length > 0 ? reply.candidates[0].finishReason : null;
                 var parts = reply?.candidates != null && reply.candidates.Length > 0 ? reply.candidates[0].content?.parts : null;
-                return parts == null ? null : string.Concat(parts.Select(p => p.text));
+                return parts == null ? null : string.Concat(parts.Where(p => p != null && !p.thought).Select(p => p.text));
             }
             catch (Exception e) { Debug.LogWarning("[ExamGradingService] Unreadable reply: " + e.Message); return null; }
         }

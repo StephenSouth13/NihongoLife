@@ -230,7 +230,7 @@ namespace NihongoLife.Learning
             }
 
             GameControlDatabase database = controls.Database;
-            string apiKey = Environment.GetEnvironmentVariable(database.geminiApiKeyEnvironmentKey);
+            string apiKey = LocalSecrets.Resolve(database.geminiApiKeyEnvironmentKey, null);
             if (!database.enableGeminiConversation || !database.allowGeminiDirectClientCalls || string.IsNullOrWhiteSpace(apiKey))
             {
                 _lastResult = $"Set {database.geminiApiKeyEnvironmentKey} to enable real speech recognition.";
@@ -265,7 +265,7 @@ namespace NihongoLife.Learning
                 request.downloadHandler = new DownloadHandlerBuffer();
                 request.SetRequestHeader("Content-Type", "application/json");
                 request.SetRequestHeader("x-goog-api-key", apiKey);
-                request.timeout = 30;
+                request.timeout = NihongoLife.Exam.AiGradingTimeouts.AudioSeconds;
                 yield return request.SendWebRequest();
 
                 if (request.result != UnityWebRequest.Result.Success)

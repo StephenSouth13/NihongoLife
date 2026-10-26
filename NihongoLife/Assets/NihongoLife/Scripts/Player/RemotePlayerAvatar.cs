@@ -96,7 +96,7 @@ namespace NihongoLife.Player
         {
             CharacterId = characterId;
             var character = PlayableCharacterCatalog.FindById(string.IsNullOrEmpty(characterId) ? PlayableCharacterCatalog.DefaultId : characterId);
-            _anim = GetComponent<CharacterAnimationController>() ?? gameObject.AddComponent<CharacterAnimationController>();
+            _anim = GetComponent<CharacterAnimationController>().OrNull() ?? gameObject.AddComponent<CharacterAnimationController>();
             if (PlayableCharacterCatalog.ApplyVisual(gameObject, character))
             {
                 if (_fallback != null) Destroy(_fallback);

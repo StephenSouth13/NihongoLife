@@ -23,9 +23,17 @@ namespace NihongoLife.World
             if (SceneManager.GetActiveScene() != gameObject.scene) return;
             if (GameServices.TryGet(out SceneFlowController flow) && flow.IsLoading) return;
             Vector3 position = transform.position;
+            if (position.y < fallY)
+            {
+                if (_controller != null) _controller.enabled = false;
+                transform.position = safeSpawn;
+                if (_controller != null) _controller.enabled = true;
+                Debug.Log($"[WorldBoundsGuard] Rescued player to {safeSpawn}.");
+                return;
+            }
+            if (TownEdge.TryClamp(transform, _controller)) return;
             bool outOfBounds = Mathf.Abs(position.x) > halfExtents.x
-                || (limitForwardAxis && Mathf.Abs(position.z) > halfExtents.y)
-                || position.y < fallY;
+                || (limitForwardAxis && Mathf.Abs(position.z) > halfExtents.y);
             if (!outOfBounds) return;
 
             Vector3 rescued = new Vector3(
@@ -33,11 +41,6 @@ namespace NihongoLife.World
                 safeSpawn.y,
                 limitForwardAxis ? Mathf.Clamp(position.z, -halfExtents.y + 2f, halfExtents.y - 2f) : position.z
             );
-
-            if (position.y < fallY)
-            {
-                rescued = safeSpawn;
-            }
 
             if (_controller != null) _controller.enabled = false;
             transform.position = rescued;

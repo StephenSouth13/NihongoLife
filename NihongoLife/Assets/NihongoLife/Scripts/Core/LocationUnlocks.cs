@@ -101,7 +101,7 @@ namespace NihongoLife.Core
 
         public static bool IsUnlocked(string sceneName)
         {
-            if (Bypass) return true;
+            if (Bypass || PlayerSessionService.OpenWorld) return true; // guests: the whole town is open
             var stage = Stage(sceneName);
             if (stage == null) return true;
             if (NihongoLife.Scenario.StoryFlags.Has(FlagPrefix + sceneName)) return true;
@@ -149,7 +149,7 @@ namespace NihongoLife.Core
         /// </summary>
         public static void Evaluate()
         {
-            if (Bypass || !GameServices.TryGet(out NihongoLife.Save.IProgressRepository repo)) return;
+            if (Bypass || PlayerSessionService.OpenWorld || !GameServices.TryGet(out NihongoLife.Save.IProgressRepository repo)) return;
             // A save from before the roadmap (past the opening, no map flags yet) gets its open places recorded
             // quietly, instead of a row of "new place" cards at once.
             bool quiet = repo.GetProgress()?.storyFlags?.Any(f => f.StartsWith(FlagPrefix)) != true && !NihongoLife.Scenario.StoryDirector.InPrologue;
@@ -165,7 +165,7 @@ namespace NihongoLife.Core
         /// <summary>A place entered (story-led or unlocked) stays open.</summary>
         public static void MarkVisited(string sceneName)
         {
-            if (Bypass || Stage(sceneName) == null) return;
+            if (Bypass || PlayerSessionService.OpenWorld || Stage(sceneName) == null) return;
             if (!NihongoLife.Scenario.StoryFlags.Has(FlagPrefix + sceneName)) NihongoLife.Scenario.StoryFlags.Set(FlagPrefix + sceneName);
         }
 

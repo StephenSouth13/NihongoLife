@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using NihongoLife.Exam;
+using NihongoLife.Player;
 
 namespace NihongoLife.Data
 {
@@ -96,7 +97,24 @@ namespace NihongoLife.Data
         /// <summary>Quest / part-time job state (definitions: Resources/Progression/progression.json).</summary>
         public List<NihongoLife.Progression.QuestStateRecord> quests = new List<NihongoLife.Progression.QuestStateRecord>();
         public string trackedQuestId = string.Empty;
+        /// <summary>The career chosen from level 10 (definitions: Resources/Progression/careers.json).</summary>
+        public NihongoLife.Progression.CareerState career = new NihongoLife.Progression.CareerState();
         /// <summary>The paper notebook (L): limited pages, more paper from Hibari Mart's stationery shelf.</summary>
         public NihongoLife.Notebook.NotebookRecord notebook = new NihongoLife.Notebook.NotebookRecord();
+        /// <summary>In-game calendar. False on older saves so the first launch does not jump the clock.</summary>
+        public bool calendarStarted;
+        public int calendarDay;
+        public float calendarHour;
+        public int birthdayMonth = 4;
+        public int birthdayDay = 15;
+        public int ageAtEpoch = 16;
+        /// <summary>Danh tiếng / 名声. Polite answers, giving up a seat, helping. Not a level gate.</summary>
+        public int reputation;
+        /// <summary>Tai tiếng / 悪名. Blocking cars, rudeness, littering.</summary>
+        public int notoriety;
+        /// <summary>Free on-demand AI exam gradings already used by this player (see ExamAiSettings.FreeGradings).</summary>
+        public int aiFreeGradesUsed;
+        public List<NpcAffinityRecord> affinities = new List<NpcAffinityRecord>();
+        public List<MoodletRecord> moodlets = new List<MoodletRecord>();
     }
 }

@@ -28,7 +28,7 @@ namespace NihongoLife.Core
 
         public void Initialize()
         {
-            _client = FindFirstObjectByType<SupabaseClient>();
+            _client = SceneRefs.Find<SupabaseClient>();
             Debug.Log("[ProfileService] Initialized.");
         }
 

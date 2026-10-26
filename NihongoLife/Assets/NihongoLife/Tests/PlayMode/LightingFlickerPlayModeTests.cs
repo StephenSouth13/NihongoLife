@@ -74,18 +74,24 @@ namespace NihongoLife.Tests
             finally { camera.targetTexture = null; Object.Destroy(rt); }
 
             // Next to the Game Center canopy: the camera stops at it and is never inside anything while turning.
-            Vector3 front = portal.transform.position + Vector3.forward * 0.8f;
+            // On the pavement in front of the Game Center (it faces north, the street side), under the canopy's edge.
+            Vector3 front = portal.transform.position + Vector3.forward * 2.2f;
             body.enabled = false; player.transform.position = new Vector3(front.x, 0.08f, front.z); body.enabled = true;
             Physics.SyncTransforms();
             var inside = new List<string>();
+            int checkedFrames = 0;
             for (int f = 0; f < 240; f++)
             {
                 cam.SetOrbit(f * 6f, 20f + 30f * Mathf.Abs(Mathf.Sin(f * 0.07f)), 7f);
                 yield return null;
+                Vector3 head = player.transform.position + Vector3.up * 1.6f;
+                if (Physics.CheckSphere(head, 0.05f, Physics.DefaultRaycastLayers, QueryTriggerInteraction.Ignore)) continue; // the pivot itself is blocked: a placement issue, not the camera
+                checkedFrames++;
                 var hits = Physics.OverlapSphere(camera.transform.position, 0.08f, Physics.DefaultRaycastLayers, QueryTriggerInteraction.Ignore)
                     .Where(h => h.GetComponentInParent<PlayerController>() == null).Select(h => h.name).ToList();
                 if (hits.Count > 0) inside.Add($"f{f}: {string.Join(",", hits)}");
             }
+            Assert.GreaterOrEqual(checkedFrames, 100, "The sweep next to the canopy was actually checked.");
             Assert.IsEmpty(inside.Take(10), "The camera went inside an object.");
 
             // A flicker: a frame much darker than both neighbours (the camera barely moves between frames).

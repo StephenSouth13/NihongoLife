@@ -13,18 +13,24 @@ namespace NihongoLife.UI
 
         private void Awake() { if (Instance == null) Instance = this; else Destroy(gameObject); }
 
+        private float _nextScan;
+
         private void Update()
         {
-            foreach (var npc in FindObjectsByType<NPCController>(FindObjectsSortMode.None))
+            // New NPCs appear with zones and scenes, not every frame: look for them a few times a second.
+            if (Time.unscaledTime >= _nextScan)
             {
-                if (!_labels.ContainsKey(npc)) CreateLabel(npc);
+                _nextScan = Time.unscaledTime + 0.5f;
+                foreach (var npc in FindObjectsByType<NPCController>(FindObjectsSortMode.None))
+                    if (!_labels.ContainsKey(npc)) CreateLabel(npc);
             }
+            var camera = Camera.main;
             foreach (var pair in _labels)
             {
                 if (pair.Key == null || pair.Value == null) continue;
-                pair.Value.gameObject.SetActive(Visible);
-                var camera = Camera.main;
-                if (camera != null) pair.Value.transform.rotation = Quaternion.LookRotation(pair.Value.transform.position - camera.transform.position);
+                var label = pair.Value.gameObject;
+                if (label.activeSelf != Visible) label.SetActive(Visible);
+                if (Visible && camera != null) pair.Value.transform.rotation = Quaternion.LookRotation(pair.Value.transform.position - camera.transform.position);
             }
         }
 

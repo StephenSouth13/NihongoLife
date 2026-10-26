@@ -43,7 +43,7 @@ namespace NihongoLife.EditorTools
                 cam.fieldOfView = 30f;
 
                 var kid = (GameObject)PrefabUtility.InstantiatePrefab(AssetDatabase.LoadAssetAtPath<GameObject>(Model));
-                var animator = kid.GetComponent<Animator>() ?? kid.AddComponent<Animator>();
+                var animator = kid.GetComponent<Animator>().OrNull() ?? kid.AddComponent<Animator>();
                 animator.applyRootMotion = false;
                 const int cell = 220;
                 var rt = new RenderTexture(cell, cell * 2, 24);

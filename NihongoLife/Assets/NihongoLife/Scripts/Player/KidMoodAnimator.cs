@@ -1,4 +1,5 @@
 using UnityEngine;
+using NihongoLife.Core;
 
 namespace NihongoLife.Player
 {
@@ -24,10 +25,16 @@ namespace NihongoLife.Player
         private Vector3 _lastPosition;
         private float _speed, _nextCheck;
 
+        private float _nextBind;
+
         private void Update()
         {
-            var animator = GetComponentInChildren<Animator>();
-            if (animator != _animator) Bind(animator); // a new model (character changed)
+            if (_animator == null || Time.unscaledTime >= _nextBind) // a new model (character changed)
+            {
+                _nextBind = Time.unscaledTime + 0.5f;
+                var animator = GetComponentInChildren<Animator>();
+                if (animator != _animator) Bind(animator);
+            }
             if (_overrides == null) return;
 
             float dt = Mathf.Max(Time.deltaTime, 0.0001f);
@@ -54,7 +61,7 @@ namespace NihongoLife.Player
             _overrides = new AnimatorOverrideController(source) { name = source.name }; // same name: code and tests read it to know the rig
             animator.runtimeAnimatorController = _overrides;
             _player = GetComponent<PlayerController>();
-            _consequences = GetComponent<StatusConsequences>() ?? FindFirstObjectByType<StatusConsequences>();
+            _consequences = GetComponent<StatusConsequences>().OrNull() ?? SceneRefs.Find<StatusConsequences>();
             Apply(Mood.Normal); // spell the Kid walk/idle out on this layer too, so later swaps always restore them
         }
 

@@ -1,0 +1,546 @@
+{
+  "schema": "nihongolife.careers.v1",
+  "unlockLevel": 10,
+  "missedShiftPenalty": 15,
+  "careers": [
+    {
+      "id": "retail",
+      "nameVi": "Bán lẻ & dịch vụ",
+      "nameEn": "Retail & service",
+      "nameJa": "小売・サービス",
+      "descriptionVi": "Làm ở Hibari Mart: tiếp khách, xếp hàng, tính tiền. Lên cao thì quản lý cửa hàng hoặc chuyên thu mua hàng hoá.",
+      "descriptionEn": "Work at Hibari Mart: serve customers, stock shelves, run the register. Later manage the store or become a buyer.",
+      "descriptionJa": "ひばりマートで接客・品出し・レジ。将来は店長か、商品のバイヤーへ。",
+      "workplaceVi": "Hibari Mart, phố chính",
+      "workplaceEn": "Hibari Mart, main street",
+      "workplaceJa": "ひばりマート（商店街）",
+      "shiftQuest": "job_konbini_shift",
+      "bossNameJa": "いとう店長",
+      "bossNameVi": "Chị Ito",
+      "workStart": 8,
+      "workEnd": 14,
+      "workDays": [1, 2, 3, 4, 5],
+      "branchAtLevel": 4,
+      "levels": [
+        { "titleVi": "Nhân viên thử việc", "titleEn": "Trainee clerk", "titleJa": "見習いスタッフ", "salary": 200, "shiftsToPromote": 2, "knowledgeToPromote": 0 },
+        { "titleVi": "Nhân viên bán hàng", "titleEn": "Sales clerk", "titleJa": "販売スタッフ", "salary": 320, "shiftsToPromote": 3, "knowledgeToPromote": 150 },
+        { "titleVi": "Trưởng quầy thu ngân", "titleEn": "Register lead", "titleJa": "レジリーダー", "salary": 480, "shiftsToPromote": 3, "knowledgeToPromote": 250 }
+      ],
+      "branches": [
+        {
+          "id": "store",
+          "nameVi": "Quản lý cửa hàng",
+          "nameEn": "Store management",
+          "nameJa": "店長コース",
+          "descriptionVi": "Lo nhân viên, ca làm và khách quen.",
+          "descriptionEn": "Look after the staff, the rota and the regulars.",
+          "descriptionJa": "スタッフ・シフト・常連さんを守る。",
+          "levels": [
+            { "titleVi": "Phó cửa hàng trưởng", "titleEn": "Deputy manager", "titleJa": "副店長", "salary": 700, "shiftsToPromote": 4, "knowledgeToPromote": 350 },
+            { "titleVi": "Cửa hàng trưởng", "titleEn": "Store manager", "titleJa": "店長", "salary": 950, "shiftsToPromote": 5, "knowledgeToPromote": 500 },
+            { "titleVi": "Quản lý khu vực", "titleEn": "Area manager", "titleJa": "エリアマネージャー", "salary": 1300, "shiftsToPromote": 0, "knowledgeToPromote": 0 }
+          ]
+        },
+        {
+          "id": "buyer",
+          "nameVi": "Thu mua hàng hoá",
+          "nameEn": "Buying",
+          "nameJa": "バイヤーコース",
+          "descriptionVi": "Chọn hàng theo mùa, đặt hàng, làm sản phẩm mới.",
+          "descriptionEn": "Pick seasonal goods, order stock, create new products.",
+          "descriptionJa": "季節の商品を選び、発注し、新商品をつくる。",
+          "levels": [
+            { "titleVi": "Phụ trách đặt hàng", "titleEn": "Ordering assistant", "titleJa": "発注担当", "salary": 680, "shiftsToPromote": 4, "knowledgeToPromote": 350 },
+            { "titleVi": "Chuyên viên thu mua", "titleEn": "Buyer", "titleJa": "バイヤー", "salary": 920, "shiftsToPromote": 5, "knowledgeToPromote": 500 },
+            { "titleVi": "Phát triển sản phẩm", "titleEn": "Product developer", "titleJa": "商品開発", "salary": 1300, "shiftsToPromote": 0, "knowledgeToPromote": 0 }
+          ]
+        }
+      ],
+      "interviews": [
+        {
+          "toLevel": 2,
+          "lineJa": "おきゃくさまに「トイレは どこですか」と きかれました。なんと こたえますか。",
+          "readingJa": "Okyakusama ni “toire wa doko desu ka” to kikaremashita. Nan to kotaemasu ka.",
+          "meaningVi": "Khách hỏi \"Nhà vệ sinh ở đâu?\". Bạn trả lời thế nào?",
+          "meaningEn": "A customer asks \"Where is the toilet?\". What do you answer?",
+          "choices": [
+            { "ja": "あちらの おくに ございます。", "vi": "Ở phía trong kia ạ. (lịch sự)", "en": "It's at the back over there. (polite)", "correct": true },
+            { "ja": "しらない。", "vi": "Không biết.", "en": "Dunno.", "hintVi": "Quá cộc lốc với khách. Dùng kính ngữ: ございます.", "hintEn": "Too blunt for a customer. Use polite ございます." },
+            { "ja": "トイレです。", "vi": "Là nhà vệ sinh.", "en": "It's the toilet.", "hintVi": "Khách hỏi chỗ, hãy chỉ vị trí: あちら / おく.", "hintEn": "They asked where — point the way: あちら / おく." }
+          ]
+        },
+        {
+          "toLevel": 3,
+          "lineJa": "せんえんさつを うけとりました。おかいけいは ろっぴゃくごじゅうえんです。おつりは いくらですか。",
+          "readingJa": "Sen-en satsu o uketorimashita. Okaikei wa roppyaku gojū en desu. Otsuri wa ikura desu ka.",
+          "meaningVi": "Nhận tờ 1000 yên. Hoá đơn 650 yên. Tiền thối bao nhiêu?",
+          "meaningEn": "You took a ¥1,000 note. The bill is ¥650. How much change?",
+          "choices": [
+            { "ja": "さんびゃくごじゅうえん", "vi": "350 yên", "en": "¥350", "correct": true },
+            { "ja": "よんひゃくごじゅうえん", "vi": "450 yên", "en": "¥450", "hintVi": "1000 − 650 = ?", "hintEn": "1000 − 650 = ?" },
+            { "ja": "にひゃくごじゅうえん", "vi": "250 yên", "en": "¥250", "hintVi": "1000 − 650 = ?", "hintEn": "1000 − 650 = ?" }
+          ]
+        },
+        {
+          "toLevel": 4,
+          "lineJa": "これから どんな しごとを したいですか。",
+          "readingJa": "Kore kara donna shigoto o shitai desu ka.",
+          "meaningVi": "Từ giờ bạn muốn làm công việc như thế nào?",
+          "meaningEn": "What kind of work would you like to do from now on?",
+          "choices": [
+            { "ja": "おみせと スタッフを まもりたいです。", "vi": "Tôi muốn lo cho cửa hàng và nhân viên. → Quản lý cửa hàng", "en": "I want to look after the store and staff. → Store management", "correct": true, "branch": "store" },
+            { "ja": "あたらしい しょうひんを えらびたいです。", "vi": "Tôi muốn chọn sản phẩm mới. → Thu mua", "en": "I want to choose new products. → Buying", "correct": true, "branch": "buyer" }
+          ]
+        },
+        {
+          "toLevel": 5,
+          "branch": "store",
+          "lineJa": "アルバイトの こが ちこくして きました。てんちょうとして まず なんと いいますか。",
+          "readingJa": "Arubaito no ko ga chikoku shite kimashita. Tenchō to shite mazu nan to iimasu ka.",
+          "meaningVi": "Bạn làm thêm đến muộn. Là quản lý, bạn nói gì trước tiên?",
+          "meaningEn": "A part-timer arrives late. As a manager, what do you say first?",
+          "choices": [
+            { "ja": "だいじょうぶ？ つぎは れんらくしてね。", "vi": "Em ổn chứ? Lần sau báo trước nhé.", "en": "Are you OK? Let me know next time.", "correct": true },
+            { "ja": "もう こなくて いい！", "vi": "Khỏi đến nữa!", "en": "Don't bother coming back!", "hintVi": "Quản lý giỏi hỏi lý do trước, rồi nhắc nhẹ.", "hintEn": "A good manager asks first, then reminds gently." },
+            { "ja": "……", "vi": "(im lặng)", "en": "(silence)", "hintVi": "Im lặng không giải quyết được gì.", "hintEn": "Silence solves nothing." }
+          ]
+        },
+        {
+          "toLevel": 6,
+          "branch": "store",
+          "lineJa": "ほかの みせの てんちょうたちに れいを いいます。ただしい ことばは どれですか。",
+          "readingJa": "Hoka no mise no tenchō-tachi ni rei o iimasu. Tadashii kotoba wa dore desu ka.",
+          "meaningVi": "Bạn cảm ơn các cửa hàng trưởng khác. Câu nào đúng?",
+          "meaningEn": "You thank the other store managers. Which phrase is right?",
+          "choices": [
+            { "ja": "いつも おせわに なって おります。", "vi": "Cảm ơn mọi người luôn giúp đỡ. (công sở)", "en": "Thank you for your continued support. (business)", "correct": true },
+            { "ja": "ありがとね〜", "vi": "Cảm ơn nha~", "en": "Thanks~", "hintVi": "Quá thân mật cho cuộc họp.", "hintEn": "Too casual for a meeting." },
+            { "ja": "おやすみなさい。", "vi": "Chúc ngủ ngon.", "en": "Good night.", "hintVi": "Đây là câu chúc ngủ ngon.", "hintEn": "That's \"good night\"." }
+          ]
+        },
+        {
+          "toLevel": 5,
+          "branch": "buyer",
+          "lineJa": "らいしゅうは とても あつく なるそうです。なにを おおく はっちゅうしますか。",
+          "readingJa": "Raishū wa totemo atsuku naru sō desu. Nani o ōku hacchū shimasu ka.",
+          "meaningVi": "Nghe nói tuần sau rất nóng. Bạn đặt nhiều hàng gì?",
+          "meaningEn": "They say next week will be very hot. What do you order more of?",
+          "choices": [
+            { "ja": "つめたい のみものと アイス", "vi": "Đồ uống lạnh và kem", "en": "Cold drinks and ice cream", "correct": true },
+            { "ja": "おでんと にくまん", "vi": "Oden và bánh bao nhân thịt", "en": "Oden and meat buns", "hintVi": "Đó là món mùa lạnh.", "hintEn": "Those sell in cold weather." },
+            { "ja": "カイロ", "vi": "Miếng dán giữ nhiệt", "en": "Heat packs", "hintVi": "Trời nóng thì không cần.", "hintEn": "Not in a heatwave." }
+          ]
+        },
+        {
+          "toLevel": 6,
+          "branch": "buyer",
+          "lineJa": "あたらしい おにぎりの なまえを きめます。「きせつ」に あう ものは？",
+          "readingJa": "Atarashii onigiri no namae o kimemasu. “Kisetsu” ni au mono wa?",
+          "meaningVi": "Đặt tên onigiri mới. Cái nào hợp \"theo mùa\" (mùa thu)?",
+          "meaningEn": "Naming a new onigiri. Which one fits the season (autumn)?",
+          "choices": [
+            { "ja": "くりごはん おにぎり", "vi": "Onigiri cơm hạt dẻ (mùa thu)", "en": "Chestnut-rice onigiri (autumn)", "correct": true },
+            { "ja": "ひやしちゅうか おにぎり", "vi": "Onigiri mì lạnh (mùa hè)", "en": "Cold-noodle onigiri (summer)", "hintVi": "Món lạnh là của mùa hè.", "hintEn": "Cold dishes are for summer." },
+            { "ja": "おぞうに おにぎり", "vi": "Onigiri canh mochi (Tết)", "en": "New Year mochi-soup onigiri", "hintVi": "Ozōni là món Tết.", "hintEn": "Ozōni is for New Year." }
+          ]
+        }
+      ],
+      "events": [
+        {
+          "id": "retail_lost_child",
+          "lineJa": "おかあさんが いない……",
+          "readingJa": "Okāsan ga inai……",
+          "meaningVi": "Một bé đi lạc: \"Không thấy mẹ đâu…\"",
+          "meaningEn": "A lost child: \"I can't find my mum…\"",
+          "choices": [
+            { "ja": "いっしょに さがそうね。おなまえは？", "vi": "Mình cùng tìm nhé. Em tên gì?", "en": "Let's look together. What's your name?", "performance": 15, "reputation": 4, "mood": "Proud" },
+            { "ja": "レジで アナウンスします。", "vi": "Tôi sẽ thông báo ở quầy.", "en": "I'll make an announcement at the register.", "performance": 10, "reputation": 2 },
+            { "ja": "いま いそがしいので……", "vi": "Giờ tôi đang bận…", "en": "I'm busy right now…", "performance": -10, "reputation": -3, "mood": "Embarrassed" }
+          ]
+        },
+        {
+          "id": "retail_complaint",
+          "lineJa": "この おべんとう、きのうの ものじゃ ないですか！",
+          "readingJa": "Kono obentō, kinō no mono ja nai desu ka!",
+          "meaningVi": "Khách phàn nàn: \"Hộp cơm này của hôm qua đúng không!\"",
+          "meaningEn": "A complaint: \"Isn't this bento from yesterday?!\"",
+          "choices": [
+            { "ja": "もうしわけございません。すぐ おとりかえします。", "vi": "Thành thật xin lỗi. Tôi đổi ngay ạ.", "en": "I'm very sorry. I'll replace it at once.", "performance": 15, "reputation": 3, "mood": "Confident" },
+            { "ja": "きげんは まだ だいじょうぶです。", "vi": "Hạn dùng vẫn còn ạ.", "en": "It's still within the date.", "performance": 0, "reputation": -1 },
+            { "ja": "しりません。", "vi": "Tôi không biết.", "en": "Not my problem.", "performance": -15, "reputation": -4, "mood": "Tense" }
+          ]
+        },
+        {
+          "id": "retail_rush",
+          "lineJa": "レジに ながい れつが できました！",
+          "readingJa": "Reji ni nagai retsu ga dekimashita!",
+          "meaningVi": "Hàng chờ ở quầy dài dằng dặc!",
+          "meaningEn": "A long queue at the register!",
+          "choices": [
+            { "ja": "おまたせしました。つぎの かた、どうぞ！", "vi": "Xin lỗi để quý khách đợi. Mời người tiếp theo!", "en": "Sorry to keep you waiting. Next, please!", "performance": 12, "reputation": 2, "mood": "Confident" },
+            { "ja": "てんちょうを よびます。", "vi": "Tôi gọi cửa hàng trưởng.", "en": "I'll call the manager.", "performance": 5 },
+            { "ja": "やすみに いきます。", "vi": "Tôi đi nghỉ giải lao.", "en": "I'm going on break.", "performance": -12, "reputation": -2 }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "food",
+      "nameVi": "Ẩm thực",
+      "nameEn": "Food & restaurant",
+      "nameJa": "飲食",
+      "descriptionVi": "Làm ở Sushi Hibari: rửa bát, phục vụ, rồi thành đầu bếp sushi (itamae) hoặc chủ nhà hàng.",
+      "descriptionEn": "Work at Sushi Hibari: wash up, serve, then become a sushi chef (itamae) or run the restaurant.",
+      "descriptionJa": "すしひばりで皿洗い・ホール。将来は板前か、お店の経営へ。",
+      "workplaceVi": "Sushi Hibari",
+      "workplaceEn": "Sushi Hibari",
+      "workplaceJa": "すしひばり",
+      "shiftQuest": "job_sushi_shift",
+      "bossNameJa": "あおき大将",
+      "bossNameVi": "Bác Aoki",
+      "workStart": 11,
+      "workEnd": 17,
+      "workDays": [3, 4, 5, 6, 0],
+      "branchAtLevel": 4,
+      "levels": [
+        { "titleVi": "Nhân viên rửa bát", "titleEn": "Dishwasher", "titleJa": "皿洗い", "salary": 220, "shiftsToPromote": 2, "knowledgeToPromote": 0 },
+        { "titleVi": "Nhân viên phục vụ", "titleEn": "Server", "titleJa": "ホールスタッフ", "salary": 340, "shiftsToPromote": 3, "knowledgeToPromote": 150 },
+        { "titleVi": "Trưởng ca phục vụ", "titleEn": "Floor lead", "titleJa": "ホールリーダー", "salary": 500, "shiftsToPromote": 3, "knowledgeToPromote": 250 }
+      ],
+      "branches": [
+        {
+          "id": "itamae",
+          "nameVi": "Đầu bếp sushi",
+          "nameEn": "Sushi chef",
+          "nameJa": "板前コース",
+          "descriptionVi": "Học dao, cơm và cá — đứng sau quầy sushi.",
+          "descriptionEn": "Learn the knife, the rice and the fish — behind the sushi counter.",
+          "descriptionJa": "包丁・シャリ・魚を学び、カウンターに立つ。",
+          "levels": [
+            { "titleVi": "Đầu bếp tập sự", "titleEn": "Apprentice chef", "titleJa": "見習い板前", "salary": 720, "shiftsToPromote": 4, "knowledgeToPromote": 350 },
+            { "titleVi": "Đầu bếp sushi", "titleEn": "Itamae", "titleJa": "板前", "salary": 1000, "shiftsToPromote": 5, "knowledgeToPromote": 500 },
+            { "titleVi": "Bếp trưởng (taishō)", "titleEn": "Head chef (taishō)", "titleJa": "大将", "salary": 1400, "shiftsToPromote": 0, "knowledgeToPromote": 0 }
+          ]
+        },
+        {
+          "id": "owner",
+          "nameVi": "Quản lý nhà hàng",
+          "nameEn": "Restaurant management",
+          "nameJa": "経営コース",
+          "descriptionVi": "Lo khách, thực đơn, sổ sách — rồi mở quán của mình.",
+          "descriptionEn": "Guests, menu and books — then a place of your own.",
+          "descriptionJa": "お客さん・メニュー・帳簿。いつか自分の店を。",
+          "levels": [
+            { "titleVi": "Phó quản lý", "titleEn": "Assistant manager", "titleJa": "副店長", "salary": 700, "shiftsToPromote": 4, "knowledgeToPromote": 350 },
+            { "titleVi": "Quản lý nhà hàng", "titleEn": "Restaurant manager", "titleJa": "店長", "salary": 980, "shiftsToPromote": 5, "knowledgeToPromote": 500 },
+            { "titleVi": "Chủ nhà hàng", "titleEn": "Restaurant owner", "titleJa": "オーナー", "salary": 1400, "shiftsToPromote": 0, "knowledgeToPromote": 0 }
+          ]
+        }
+      ],
+      "interviews": [
+        {
+          "toLevel": 2,
+          "lineJa": "おきゃくさまが みせに はいって きました。さいしょに なんと いいますか。",
+          "readingJa": "Okyakusama ga mise ni haitte kimashita. Saisho ni nan to iimasu ka.",
+          "meaningVi": "Khách bước vào quán. Câu đầu tiên bạn nói là gì?",
+          "meaningEn": "Guests come in. What do you say first?",
+          "choices": [
+            { "ja": "いらっしゃいませ！ なんめいさまですか。", "vi": "Xin mời vào! Quý khách mấy người ạ?", "en": "Welcome! How many in your party?", "correct": true },
+            { "ja": "ごちそうさまでした。", "vi": "Cảm ơn vì bữa ăn.", "en": "Thanks for the meal.", "hintVi": "Câu này khách nói khi ăn xong.", "hintEn": "Guests say that after eating." },
+            { "ja": "いただきます。", "vi": "Mời cả nhà ăn cơm.", "en": "Let's eat.", "hintVi": "Câu này nói trước khi ăn.", "hintEn": "Said before eating." }
+          ]
+        },
+        {
+          "toLevel": 3,
+          "lineJa": "おきゃくさまが「おあいそ おねがいします」と いいました。どういう いみですか。",
+          "readingJa": "Okyakusama ga “oaiso onegai shimasu” to iimashita. Dō iu imi desu ka.",
+          "meaningVi": "Khách nói \"Oaiso onegaishimasu\". Nghĩa là gì?",
+          "meaningEn": "A guest says \"Oaiso onegaishimasu\". What does it mean?",
+          "choices": [
+            { "ja": "おかいけい", "vi": "Tính tiền", "en": "The bill, please", "correct": true },
+            { "ja": "おちゃの おかわり", "vi": "Thêm trà", "en": "More tea", "hintVi": "Thêm trà là あがり / おかわり.", "hintEn": "More tea is あがり / おかわり." },
+            { "ja": "メニュー", "vi": "Thực đơn", "en": "The menu", "hintVi": "おあいそ là tiếng lóng quán sushi chỉ việc tính tiền.", "hintEn": "おあいそ is sushi-bar slang for the bill." }
+          ]
+        },
+        {
+          "toLevel": 4,
+          "lineJa": "この みせで これから なにを したいですか。",
+          "readingJa": "Kono mise de kore kara nani o shitai desu ka.",
+          "meaningVi": "Từ giờ bạn muốn làm gì ở quán này?",
+          "meaningEn": "What would you like to do in this restaurant from now on?",
+          "choices": [
+            { "ja": "いたまえの しゅぎょうを したいです。", "vi": "Tôi muốn học nghề đầu bếp sushi. → Đầu bếp", "en": "I want to train as a sushi chef. → Sushi chef", "correct": true, "branch": "itamae" },
+            { "ja": "みせの けいえいを まなびたいです。", "vi": "Tôi muốn học cách điều hành quán. → Quản lý", "en": "I want to learn to run the place. → Management", "correct": true, "branch": "owner" }
+          ]
+        },
+        {
+          "toLevel": 5,
+          "branch": "itamae",
+          "lineJa": "すしの ごはんの ことを なんと いいますか。",
+          "readingJa": "Sushi no gohan no koto o nan to iimasu ka.",
+          "meaningVi": "Cơm của sushi gọi là gì?",
+          "meaningEn": "What is sushi rice called?",
+          "choices": [
+            { "ja": "シャリ", "vi": "Shari", "en": "Shari", "correct": true },
+            { "ja": "ネタ", "vi": "Neta (phần cá/topping)", "en": "Neta (the topping)", "hintVi": "ネタ là phần cá đặt lên trên.", "hintEn": "ネタ is the topping." },
+            { "ja": "ガリ", "vi": "Gari (gừng hồng)", "en": "Gari (pickled ginger)", "hintVi": "ガリ là gừng ngâm.", "hintEn": "ガリ is pickled ginger." }
+          ]
+        },
+        {
+          "toLevel": 6,
+          "branch": "itamae",
+          "lineJa": "「おまかせで」と いわれました。どう しますか。",
+          "readingJa": "“Omakase de” to iwaremashita. Dō shimasu ka.",
+          "meaningVi": "Khách nói \"Omakase\". Bạn làm gì?",
+          "meaningEn": "A guest says \"Omakase\". What do you do?",
+          "choices": [
+            { "ja": "きょうの いい さかなを えらんで にぎります。", "vi": "Chọn cá ngon nhất hôm nay và nắn sushi.", "en": "Pick today's best fish and make the sushi.", "correct": true },
+            { "ja": "メニューを わたします。", "vi": "Đưa thực đơn.", "en": "Hand over the menu.", "hintVi": "Omakase = để đầu bếp chọn.", "hintEn": "Omakase = leave it to the chef." },
+            { "ja": "おかいけいを します。", "vi": "Tính tiền.", "en": "Bring the bill.", "hintVi": "Khách vừa mới gọi món.", "hintEn": "They have only just ordered." }
+          ]
+        },
+        {
+          "toLevel": 5,
+          "branch": "owner",
+          "lineJa": "よやくの でんわです。「あした しちじに よにん」。なんと こたえますか。",
+          "readingJa": "Yoyaku no denwa desu. “Ashita shichi-ji ni yonin.” Nan to kotaemasu ka.",
+          "meaningVi": "Điện thoại đặt bàn: \"Mai 7 giờ, 4 người\". Bạn đáp thế nào?",
+          "meaningEn": "A booking call: \"Tomorrow at seven, four people.\" How do you answer?",
+          "choices": [
+            { "ja": "あした しちじ、よんめいさまですね。かしこまりました。", "vi": "Mai 7 giờ, 4 vị phải không ạ. Đã rõ.", "en": "Tomorrow at seven, four guests. Certainly.", "correct": true },
+            { "ja": "わかった。", "vi": "Biết rồi.", "en": "Got it.", "hintVi": "Nhắc lại thông tin và dùng かしこまりました.", "hintEn": "Repeat the booking and say かしこまりました." },
+            { "ja": "しちにん ですね。", "vi": "7 người phải không.", "en": "Seven people, right?", "hintVi": "よにん = 4 người, しちじ = 7 giờ.", "hintEn": "よにん = four people, しちじ = seven o'clock." }
+          ]
+        },
+        {
+          "toLevel": 6,
+          "branch": "owner",
+          "lineJa": "あたらしい みせの オープンです。おきゃくさまに さいしょの ひとことを。",
+          "readingJa": "Atarashii mise no ōpun desu. Okyakusama ni saisho no hitokoto o.",
+          "meaningVi": "Khai trương quán mới. Câu đầu tiên với khách?",
+          "meaningEn": "Opening your new restaurant. Your first words to the guests?",
+          "choices": [
+            { "ja": "ほんじつは ごらいてん、まことに ありがとうございます。", "vi": "Xin chân thành cảm ơn quý khách đã đến hôm nay.", "en": "Thank you so much for coming today.", "correct": true },
+            { "ja": "はやく たべて ください。", "vi": "Ăn nhanh lên.", "en": "Eat quickly.", "hintVi": "Không lịch sự với khách.", "hintEn": "Not polite to guests." },
+            { "ja": "おつかれさまでした。", "vi": "Mọi người vất vả rồi.", "en": "Good work today.", "hintVi": "Câu này nói với đồng nghiệp lúc tan ca.", "hintEn": "Said to colleagues after work." }
+          ]
+        }
+      ],
+      "events": [
+        {
+          "id": "food_allergy",
+          "lineJa": "すみません、えびの アレルギーが あるんですが……",
+          "readingJa": "Sumimasen, ebi no arerugī ga arun desu ga……",
+          "meaningVi": "Khách: \"Xin lỗi, tôi bị dị ứng tôm…\"",
+          "meaningEn": "A guest: \"Excuse me, I'm allergic to shrimp…\"",
+          "choices": [
+            { "ja": "かしこまりました。えびを ぬいて おつくりします。", "vi": "Đã rõ. Chúng tôi làm không có tôm ạ.", "en": "Certainly. We'll make it without shrimp.", "performance": 15, "reputation": 4, "mood": "Proud" },
+            { "ja": "たいしょうに きいて きます。", "vi": "Để tôi hỏi bếp trưởng.", "en": "I'll ask the chef.", "performance": 8, "reputation": 1 },
+            { "ja": "すこしなら だいじょうぶですよ。", "vi": "Một chút thì không sao đâu.", "en": "A little won't hurt.", "performance": -15, "reputation": -5, "mood": "Embarrassed" }
+          ]
+        },
+        {
+          "id": "food_broken_plate",
+          "lineJa": "ガシャン！ おさらを わって しまいました。",
+          "readingJa": "Gashan! Osara o watte shimaimashita.",
+          "meaningVi": "Choang! Bạn làm vỡ đĩa.",
+          "meaningEn": "Crash! You broke a plate.",
+          "choices": [
+            { "ja": "しつれいしました！ すぐ かたづけます。", "vi": "Xin lỗi! Tôi dọn ngay.", "en": "Excuse me! I'll clear it up right away.", "performance": 5, "reputation": 1, "mood": "Confident" },
+            { "ja": "だれも みて いない……", "vi": "Không ai thấy đâu…", "en": "Nobody saw…", "performance": -10, "reputation": -2, "mood": "Tense" }
+          ]
+        },
+        {
+          "id": "food_regular",
+          "lineJa": "いつもの、おねがい！",
+          "readingJa": "Itsumo no, onegai!",
+          "meaningVi": "Khách quen: \"Như mọi khi nhé!\"",
+          "meaningEn": "A regular: \"The usual, please!\"",
+          "choices": [
+            { "ja": "はい、まぐろと たまごですね！", "vi": "Vâng, cá ngừ và trứng phải không ạ!", "en": "Yes — tuna and egg, right?", "performance": 12, "reputation": 3, "mood": "Happy" },
+            { "ja": "いつもの……って なんですか。", "vi": "\"Như mọi khi\" là gì ạ?", "en": "What's \"the usual\"?", "performance": 0, "reputation": 0 }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "farm",
+      "nameVi": "Nông nghiệp",
+      "nameEn": "Farming",
+      "nameJa": "農業",
+      "descriptionVi": "Làm ở nông trại đảo Midori: xới đất, gieo, tưới, chăm thú. Lên cao thì chuyên trồng trọt hoặc chăn nuôi.",
+      "descriptionEn": "Work on the Midori Island farm: till, sow, water, tend animals. Later specialise in crops or livestock.",
+      "descriptionJa": "みどり島の農園で耕す・植える・水やり・動物の世話。将来は栽培か牧場へ。",
+      "workplaceVi": "Nông trại đảo Midori",
+      "workplaceEn": "Midori Island farm",
+      "workplaceJa": "みどり島の農園",
+      "shiftQuest": "job_farm_shift",
+      "bossNameJa": "はなさん",
+      "bossNameVi": "Cô Hana",
+      "workStart": 6,
+      "workEnd": 12,
+      "workDays": [1, 2, 3, 4, 5, 6],
+      "branchAtLevel": 4,
+      "levels": [
+        { "titleVi": "Người phụ việc", "titleEn": "Farm helper", "titleJa": "農園の手伝い", "salary": 180, "shiftsToPromote": 2, "knowledgeToPromote": 0 },
+        { "titleVi": "Nông dân tập sự", "titleEn": "Apprentice farmer", "titleJa": "農家見習い", "salary": 300, "shiftsToPromote": 3, "knowledgeToPromote": 150 },
+        { "titleVi": "Nông dân", "titleEn": "Farmer", "titleJa": "農家", "salary": 450, "shiftsToPromote": 3, "knowledgeToPromote": 250 }
+      ],
+      "branches": [
+        {
+          "id": "grower",
+          "nameVi": "Trồng trọt",
+          "nameEn": "Crops",
+          "nameJa": "栽培コース",
+          "descriptionVi": "Rau theo mùa, đất tốt, vụ mùa bội thu.",
+          "descriptionEn": "Seasonal vegetables, good soil, big harvests.",
+          "descriptionJa": "季節の野菜、いい土、大収穫。",
+          "levels": [
+            { "titleVi": "Chuyên gia rau", "titleEn": "Vegetable expert", "titleJa": "野菜名人", "salary": 650, "shiftsToPromote": 4, "knowledgeToPromote": 350 },
+            { "titleVi": "Trưởng nông trại", "titleEn": "Farm foreman", "titleJa": "農園主任", "salary": 900, "shiftsToPromote": 5, "knowledgeToPromote": 500 },
+            { "titleVi": "Chủ nông trại hữu cơ", "titleEn": "Organic farm owner", "titleJa": "有機農園オーナー", "salary": 1250, "shiftsToPromote": 0, "knowledgeToPromote": 0 }
+          ]
+        },
+        {
+          "id": "ranch",
+          "nameVi": "Chăn nuôi",
+          "nameEn": "Livestock",
+          "nameJa": "牧場コース",
+          "descriptionVi": "Bò, alpaca, ngựa — chăm sóc và làm sữa.",
+          "descriptionEn": "Cows, alpacas, horses — care and dairy.",
+          "descriptionJa": "牛・アルパカ・馬の世話と乳しぼり。",
+          "levels": [
+            { "titleVi": "Nhân viên trang trại", "titleEn": "Ranch hand", "titleJa": "牧場スタッフ", "salary": 640, "shiftsToPromote": 4, "knowledgeToPromote": 350 },
+            { "titleVi": "Trưởng trang trại", "titleEn": "Ranch manager", "titleJa": "牧場長", "salary": 880, "shiftsToPromote": 5, "knowledgeToPromote": 500 },
+            { "titleVi": "Chủ trang trại", "titleEn": "Ranch owner", "titleJa": "牧場オーナー", "salary": 1250, "shiftsToPromote": 0, "knowledgeToPromote": 0 }
+          ]
+        }
+      ],
+      "interviews": [
+        {
+          "toLevel": 2,
+          "lineJa": "はたけに たねを まく まえに、なにを しますか。",
+          "readingJa": "Hatake ni tane o maku mae ni, nani o shimasu ka.",
+          "meaningVi": "Trước khi gieo hạt xuống ruộng, bạn làm gì?",
+          "meaningEn": "Before sowing seeds in the field, what do you do?",
+          "choices": [
+            { "ja": "つちを たがやします。", "vi": "Xới đất.", "en": "Till the soil.", "correct": true },
+            { "ja": "しゅうかくします。", "vi": "Thu hoạch.", "en": "Harvest.", "hintVi": "Thu hoạch là bước cuối.", "hintEn": "Harvest comes last." },
+            { "ja": "うります。", "vi": "Bán.", "en": "Sell.", "hintVi": "Chưa có gì để bán.", "hintEn": "Nothing to sell yet." }
+          ]
+        },
+        {
+          "toLevel": 3,
+          "lineJa": "あめが ぜんぜん ふりません。やさいの ために なにが ひつようですか。",
+          "readingJa": "Ame ga zenzen furimasen. Yasai no tame ni nani ga hitsuyō desu ka.",
+          "meaningVi": "Trời không mưa chút nào. Rau cần gì?",
+          "meaningEn": "It hasn't rained at all. What do the vegetables need?",
+          "choices": [
+            { "ja": "まいにち みずを やります。", "vi": "Tưới nước mỗi ngày.", "en": "Water them every day.", "correct": true },
+            { "ja": "かさを さします。", "vi": "Che ô.", "en": "Open an umbrella.", "hintVi": "Rau cần nước, không cần ô.", "hintEn": "They need water, not an umbrella." },
+            { "ja": "ねます。", "vi": "Đi ngủ.", "en": "Go to sleep.", "hintVi": "Rau sẽ héo mất.", "hintEn": "The vegetables would wilt." }
+          ]
+        },
+        {
+          "toLevel": 4,
+          "lineJa": "これから どの しごとを もっと したいですか。",
+          "readingJa": "Kore kara dono shigoto o motto shitai desu ka.",
+          "meaningVi": "Từ giờ bạn muốn làm việc nào nhiều hơn?",
+          "meaningEn": "Which work would you like to do more from now on?",
+          "choices": [
+            { "ja": "やさいを そだてたいです。", "vi": "Tôi muốn trồng rau. → Trồng trọt", "en": "I want to grow vegetables. → Crops", "correct": true, "branch": "grower" },
+            { "ja": "どうぶつの せわを したいです。", "vi": "Tôi muốn chăm thú. → Chăn nuôi", "en": "I want to care for the animals. → Livestock", "correct": true, "branch": "ranch" }
+          ]
+        },
+        {
+          "toLevel": 5,
+          "branch": "grower",
+          "lineJa": "はるに うえる やさいは どれですか。",
+          "readingJa": "Haru ni ueru yasai wa dore desu ka.",
+          "meaningVi": "Rau nào trồng vào mùa xuân?",
+          "meaningEn": "Which vegetable do you plant in spring?",
+          "choices": [
+            { "ja": "トマト", "vi": "Cà chua", "en": "Tomato", "correct": true },
+            { "ja": "だいこん（ふゆ）", "vi": "Củ cải trắng (mùa đông)", "en": "Daikon (winter)", "hintVi": "Daikon ngon nhất mùa đông.", "hintEn": "Daikon is a winter crop." },
+            { "ja": "もち", "vi": "Bánh mochi", "en": "Mochi", "hintVi": "Mochi không phải là rau.", "hintEn": "Mochi isn't a vegetable." }
+          ]
+        },
+        {
+          "toLevel": 6,
+          "branch": "grower",
+          "lineJa": "のうやくを つかわない やさいを なんと いいますか。",
+          "readingJa": "Nōyaku o tsukawanai yasai o nan to iimasu ka.",
+          "meaningVi": "Rau không dùng thuốc trừ sâu gọi là gì?",
+          "meaningEn": "What do you call vegetables grown without pesticides?",
+          "choices": [
+            { "ja": "むのうやく やさい", "vi": "Rau không thuốc trừ sâu", "en": "Pesticide-free vegetables", "correct": true },
+            { "ja": "れいとう やさい", "vi": "Rau đông lạnh", "en": "Frozen vegetables", "hintVi": "れいとう = đông lạnh.", "hintEn": "れいとう = frozen." },
+            { "ja": "かんづめ", "vi": "Đồ hộp", "en": "Tinned food", "hintVi": "かんづめ = đồ hộp.", "hintEn": "かんづめ = tinned." }
+          ]
+        },
+        {
+          "toLevel": 5,
+          "branch": "ranch",
+          "lineJa": "うしが ごはんを たべません。まず なにを しますか。",
+          "readingJa": "Ushi ga gohan o tabemasen. Mazu nani o shimasu ka.",
+          "meaningVi": "Con bò không chịu ăn. Bạn làm gì trước?",
+          "meaningEn": "The cow won't eat. What do you do first?",
+          "choices": [
+            { "ja": "げんきか どうか、よく みます。", "vi": "Quan sát kỹ xem nó có khoẻ không.", "en": "Check carefully whether it's well.", "correct": true },
+            { "ja": "ほうって おきます。", "vi": "Kệ nó.", "en": "Leave it.", "hintVi": "Thú bỏ ăn có thể đang ốm.", "hintEn": "An animal off its food may be ill." },
+            { "ja": "おおきい こえで おこります。", "vi": "Quát to.", "en": "Shout at it.", "hintVi": "Thú sẽ sợ hơn.", "hintEn": "That only scares it." }
+          ]
+        },
+        {
+          "toLevel": 6,
+          "branch": "ranch",
+          "lineJa": "あさ しぼった ぎゅうにゅうを なんと いいますか。",
+          "readingJa": "Asa shibotta gyūnyū o nan to iimasu ka.",
+          "meaningVi": "Sữa vắt sáng nay gọi là gì?",
+          "meaningEn": "What do you call milk milked this morning?",
+          "choices": [
+            { "ja": "しぼりたての ぎゅうにゅう", "vi": "Sữa mới vắt", "en": "Fresh-from-the-cow milk", "correct": true },
+            { "ja": "ふるい ぎゅうにゅう", "vi": "Sữa cũ", "en": "Old milk", "hintVi": "ふるい = cũ.", "hintEn": "ふるい = old." },
+            { "ja": "とうにゅう", "vi": "Sữa đậu nành", "en": "Soy milk", "hintVi": "とうにゅう làm từ đậu nành.", "hintEn": "とうにゅう is made from soybeans." }
+          ]
+        }
+      ],
+      "events": [
+        {
+          "id": "farm_storm",
+          "lineJa": "たいふうが くるそうです！",
+          "readingJa": "Taifū ga kuru sō desu!",
+          "meaningVi": "Nghe nói bão sắp đến!",
+          "meaningEn": "They say a typhoon is coming!",
+          "choices": [
+            { "ja": "ビニールハウスを しっかり しめます。", "vi": "Đóng chặt nhà kính.", "en": "Shut the greenhouse tight.", "performance": 15, "reputation": 2, "mood": "Confident" },
+            { "ja": "はなさんに そうだんします。", "vi": "Hỏi ý cô Hana.", "en": "Ask Hana what to do.", "performance": 8 },
+            { "ja": "うちに かえります。", "vi": "Về nhà luôn.", "en": "Go home.", "performance": -12, "reputation": -2 }
+          ]
+        },
+        {
+          "id": "farm_visitors",
+          "lineJa": "しょうがっこうの こどもたちが けんがくに きました。",
+          "readingJa": "Shōgakkō no kodomo-tachi ga kengaku ni kimashita.",
+          "meaningVi": "Học sinh tiểu học đến tham quan nông trại.",
+          "meaningEn": "Primary-school children have come to visit the farm.",
+          "choices": [
+            { "ja": "いっしょに にんじんを ぬいて みよう！", "vi": "Cùng thử nhổ cà rốt nào!", "en": "Let's pull up some carrots together!", "performance": 12, "reputation": 4, "mood": "Happy" },
+            { "ja": "あぶないから みて いてね。", "vi": "Nguy hiểm, các em đứng xem thôi nhé.", "en": "It's not safe — just watch, OK?", "performance": 5, "reputation": 1 }
+          ]
+        },
+        {
+          "id": "farm_escape",
+          "lineJa": "アルパカが さくから にげました！",
+          "readingJa": "Arupaka ga saku kara nigemashita!",
+          "meaningVi": "Con alpaca sổng ra khỏi chuồng!",
+          "meaningEn": "The alpaca escaped from its pen!",
+          "choices": [
+            { "ja": "えさで ゆっくり よびもどします。", "vi": "Dùng thức ăn gọi nó về từ từ.", "en": "Lure it back slowly with food.", "performance": 14, "reputation": 2, "mood": "Proud" },
+            { "ja": "おいかけます！", "vi": "Đuổi theo!", "en": "Chase it!", "performance": 2, "mood": "Tense" }
+          ]
+        }
+      ]
+    }
+  ]
+}

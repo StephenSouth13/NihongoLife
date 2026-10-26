@@ -172,6 +172,7 @@ namespace NihongoLife.Scenario
 
         public bool IsUnlocked(int knowledge, IReadOnlyCollection<string> completedScenarioIds)
         {
+            if (StoryDirector.Bypass) return true;
             if (knowledge < requiredKnowledge) return false;
             if (requiredScenarioIds == null || requiredScenarioIds.Count == 0) return true;
             if (completedScenarioIds == null) return false;

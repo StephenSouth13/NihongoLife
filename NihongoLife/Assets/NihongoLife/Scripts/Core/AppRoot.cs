@@ -90,6 +90,7 @@ namespace NihongoLife.Core
                 dayNightCycle = gameObject.AddComponent<DayNightCycle>();
             }
             if (GetComponent<WeatherCycle>() == null) gameObject.AddComponent<WeatherCycle>();
+            if (GetComponent<NihongoLife.Player.KidExpressionCrowd>() == null) gameObject.AddComponent<NihongoLife.Player.KidExpressionCrowd>();
 
             // Determine if online features are enabled
             bool onlineEnabled = controlService.Database != null && controlService.Database.enableOnlineSync;
@@ -165,7 +166,7 @@ namespace NihongoLife.Core
             coopSessionService.Initialize();
 
             // Community / group / private (E2E) chat and friends online, on top of the online world.
-            var socialHub = GetComponent<SocialHub>() ?? gameObject.AddComponent<SocialHub>();
+            var socialHub = GetComponent<SocialHub>().OrNull() ?? gameObject.AddComponent<SocialHub>();
             GameServices.Register<SocialHub>(socialHub);
             socialHub.Initialize();
 
@@ -179,7 +180,7 @@ namespace NihongoLife.Core
                 gameObject.AddComponent<NihongoLife.Learning.VoiceChatService>();
             if (GetComponent<NihongoLife.Learning.SpeechPracticeController>() == null)
                 gameObject.AddComponent<NihongoLife.Learning.SpeechPracticeController>();
-            if (FindFirstObjectByType<NihongoLife.Learning.EduMeetingManager>() == null)
+            if (SceneRefs.Find<NihongoLife.Learning.EduMeetingManager>() == null)
                 gameObject.AddComponent<NihongoLife.Learning.EduMeetingManager>();
             if (GetComponent<NihongoLife.Learning.AgoraClassroomService>() == null)
                 gameObject.AddComponent<NihongoLife.Learning.AgoraClassroomService>();

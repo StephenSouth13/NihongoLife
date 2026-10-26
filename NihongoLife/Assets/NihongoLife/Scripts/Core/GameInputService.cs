@@ -36,6 +36,8 @@ namespace NihongoLife.Core
         PushToTalk
     }
 
+    /// <summary>Touch taps are queued and reported on the next frame so HUD Update cannot miss them.</summary>
+    [DefaultExecutionOrder(-200)]
     public class GameInputService : MonoBehaviour, IGameService
     {
         // The action map was rebuilt and old binding GUIDs are no longer valid.
@@ -49,6 +51,7 @@ namespace NihongoLife.Core
         private Vector2 _mobileMove;
         private readonly HashSet<GameInputId> _mobileHeld = new();
         private readonly HashSet<GameInputId> _mobilePressed = new();
+        private readonly HashSet<GameInputId> _queuedPress = new();
 
         public event Action OnBindingsChanged;
         public static GameInputService Instance => _instance;
@@ -57,7 +60,7 @@ namespace NihongoLife.Core
         public static GameInputService GetOrCreate()
         {
             if (_instance != null) return _instance;
-            var existing = FindFirstObjectByType<GameInputService>();
+            var existing = SceneRefs.Find<GameInputService>();
             if (existing != null)
             {
                 existing.Initialize();
@@ -142,7 +145,7 @@ namespace NihongoLife.Core
         {
             if (pressed)
             {
-                if (_mobileHeld.Add(id)) _mobilePressed.Add(id);
+                if (_mobileHeld.Add(id)) _queuedPress.Add(id);
             }
             else
             {
@@ -150,7 +153,13 @@ namespace NihongoLife.Core
             }
         }
 
-        private void LateUpdate() => _mobilePressed.Clear();
+        private void Update()
+        {
+            _mobilePressed.Clear();
+            if (_queuedPress.Count == 0) return;
+            foreach (var id in _queuedPress) _mobilePressed.Add(id);
+            _queuedPress.Clear();
+        }
 
         public string GetBindingLabel(GameInputId id)
         {

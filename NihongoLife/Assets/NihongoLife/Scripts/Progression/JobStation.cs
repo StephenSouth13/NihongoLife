@@ -268,7 +268,7 @@ namespace NihongoLife.Progression
 
         private static void Mastery(string target, bool correct)
         {
-            var mastery = Object.FindFirstObjectByType<LearningMasteryManager>();
+            var mastery = SceneRefs.Find<LearningMasteryManager>();
             if (mastery != null) mastery.RegisterUsage(target, correct);
         }
     }

@@ -105,7 +105,7 @@ namespace NihongoLife.Core
 
         public void Initialize()
         {
-            _realtime = GetComponent<SupabaseRealtimeClient>() ?? FindFirstObjectByType<SupabaseRealtimeClient>();
+            _realtime = GetComponent<SupabaseRealtimeClient>().OrNull() ?? SceneRefs.Find<SupabaseRealtimeClient>();
             if (GameServices.TryGet(out GameControlService control) && control.Database != null)
                 _chatHistoryLimit = Mathf.Max(10, control.Database.chatHistoryLimit);
             if (GetComponent<RemotePlayerManager>() == null) gameObject.AddComponent<RemotePlayerManager>();

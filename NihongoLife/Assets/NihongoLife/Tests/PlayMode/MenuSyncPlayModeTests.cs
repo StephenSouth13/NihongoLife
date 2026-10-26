@@ -32,10 +32,23 @@ namespace NihongoLife.Tests
                 report.AppendLine($"{child.name}\tactive={child.gameObject.activeSelf}\tpos={child.anchoredPosition}\tsize={child.sizeDelta}");
             Directory.CreateDirectory(Out);
             File.WriteAllText(Path.Combine(Out, "layout_play.txt"), report.ToString());
-            // Saved by MainMenuBaker (ColumnX 110, ListTop 380, 440×68): runtime code must not move or resize it.
+            // The menu is responsive (MenuResponsive fits it to the screen for phones in landscape), so the button list
+            // is laid out at runtime: Start must be fully on screen, large enough to tap, and not covered by a sibling.
             var start = (RectTransform)panel.transform.Find("StartButton");
-            Assert.AreEqual(new Vector2(110f, -380f), start.anchoredPosition, "Start stays where the scene put it");
-            Assert.AreEqual(new Vector2(440f, 68f), start.sizeDelta, "Start keeps its saved size");
+            Assert.NotNull(start, "Start button");
+            var canvasRect = (RectTransform)start.GetComponentInParent<Canvas>().rootCanvas.transform;
+            var corners = new Vector3[4]; start.GetWorldCorners(corners);
+            var screenRect = new Rect(canvasRect.position - Vector3.Scale(canvasRect.rect.size, canvasRect.lossyScale) * 0.5f, Vector2.Scale(canvasRect.rect.size, canvasRect.lossyScale));
+            foreach (var c in corners) Assert.IsTrue(screenRect.Contains((Vector2)c), $"Start is on screen ({c} in {screenRect})");
+            Assert.GreaterOrEqual(start.rect.height * start.lossyScale.y / Mathf.Max(0.0001f, canvasRect.lossyScale.y), 32f, "Start is tall enough to tap");
+            var startBox = new Rect(corners[0], corners[2] - corners[0]);
+            foreach (RectTransform other in start.parent)
+            {
+                if (other == start || !other.gameObject.activeInHierarchy || other.GetComponent<UnityEngine.UI.Button>() == null) continue;
+                var oc = new Vector3[4]; other.GetWorldCorners(oc);
+                var box = new Rect(oc[0], oc[2] - oc[0]);
+                Assert.IsFalse(box.Overlaps(startBox) && Mathf.Min(box.xMax, startBox.xMax) - Mathf.Max(box.xMin, startBox.xMin) > 4f && Mathf.Min(box.yMax, startBox.yMax) - Mathf.Max(box.yMin, startBox.yMin) > 4f, $"{other.name} covers Start");
+            }
             Assert.IsNull(panel.transform.Find("LanguageLabel"), "No runtime-created label over the menu");
             foreach (var language in new[] { GameLanguage.Vietnamese, GameLanguage.English, GameLanguage.Japanese })
             {

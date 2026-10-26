@@ -128,7 +128,7 @@ namespace NihongoLife.UI
         {
             if (_instance != null) return;
             var go = new GameObject("UiModalStack");
-            DontDestroyOnLoad(go);
+            if (Application.isPlaying) DontDestroyOnLoad(go); // EditMode tests/editor tools build popups outside play mode
             _instance = go.AddComponent<UiModalStack>();
         }
 

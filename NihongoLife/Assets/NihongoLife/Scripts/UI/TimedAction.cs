@@ -103,7 +103,7 @@ namespace NihongoLife.UI
 
         private IEnumerator Routine(string label, string tool, float seconds, Action onDone, string pose, GameObject prop)
         {
-            _player = FindFirstObjectByType<PlayerController>();
+            _player = SceneRefs.Find<PlayerController>();
             if (_player != null) { _wasLocked = _player.InputLocked; _player.InputLocked = true; }
             var animation = _player != null ? _player.GetComponentInChildren<CharacterAnimationController>() : null;
             _animation = animation;

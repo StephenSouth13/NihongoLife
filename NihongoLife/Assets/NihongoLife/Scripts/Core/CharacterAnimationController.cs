@@ -208,9 +208,24 @@ namespace NihongoLife.Core
             _lookTarget = target;
         }
 
+        /// <summary>
+        /// Lying or sitting: gestures would pull the body out of the pose (an Any State → Bow / Point transition),
+        /// so they are skipped, and entering the pose clears any gesture trigger still waiting.
+        /// </summary>
+        private bool _isResting;
+        private bool InPose => _isResting || _isSittingPose;
+        private bool _isSittingPose;
+
+        private void ClearGestureTriggers()
+        {
+            if (_animator == null || !_animator.isActiveAndEnabled) return;
+            if (_hasPoint) _animator.ResetTrigger(_pointHash);
+            if (_hasBow) _animator.ResetTrigger(_bowHash);
+        }
+
         public void TriggerBow()
         {
-            if (_workState != null) return; // a work pose is not interrupted by gestures
+            if (_workState != null || InPose) return; // a work pose (or lying / sitting) is not interrupted by gestures
             if (_animator != null && _hasBow && _animator.gameObject.activeInHierarchy)
             {
                 _animator.SetTrigger(_bowHash);
@@ -220,7 +235,7 @@ namespace NihongoLife.Core
 
         public void TriggerPoint()
         {
-            if (_workState != null) return;
+            if (_workState != null || InPose) return;
             if (_animator != null && _hasPoint && _animator.gameObject.activeInHierarchy)
             {
                 _animator.SetTrigger(_pointHash);
@@ -232,6 +247,8 @@ namespace NihongoLife.Core
         public bool SetSitting(bool sitting)
         {
             _isSitting = sitting;
+            _isSittingPose = sitting;
+            if (sitting) ClearGestureTriggers();
             if (_animator == null) return false;
             string state = sitting ? sitStateName : standStateName;
             if (_animator.runtimeAnimatorController == null || !HasState(state))
@@ -249,6 +266,8 @@ namespace NihongoLife.Core
         public bool SetResting(bool resting)
         {
             _isSitting = !resting;
+            _isResting = resting;
+            if (resting) ClearGestureTriggers();
             if (_animator == null) return false;
             string state = resting ? restStateName : standStateName;
             if (_animator.runtimeAnimatorController == null || !HasState(state))

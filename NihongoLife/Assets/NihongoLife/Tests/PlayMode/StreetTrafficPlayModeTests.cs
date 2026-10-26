@@ -99,9 +99,14 @@ namespace NihongoLife.Tests
             foreach (var car in traffic.Cars)
             {
                 float x = car.body.localPosition.x;
-                float toCross = car.direction > 0 ? 0.7f - x : x - 6.3f;
-                if (toCross > 0f && toCross < 6f) Assert.Less(car.speed, 0.6f, $"{car.body.name} waits for the player on the crossing.");
-                Assert.Greater(Mathf.Abs(x - 3.5f), 2.2f, $"{car.body.name} drove into the player.");
+                // Bumper to the stop line (x -1.3 eastbound, 8.3 westbound): a car not yet at the line waits; one already
+                // on the zebra clears it (it must not stop on the stripes) but never drives into the player.
+                float bumperToLine = (car.direction > 0 ? -1.3f - x : x - 8.3f) - car.halfLength;
+                if (bumperToLine > -0.2f && bumperToLine < 12f)
+                    Assert.LessOrEqual(car.speed, StreetTraffic.Braking(Mathf.Max(0f, bumperToLine - StreetTraffic.LineClearance)) + 0.6f,
+                        $"{car.body.name} is not braking to wait for the player on the crossing ({bumperToLine:0.0} m from the line).");
+                bool touches = Mathf.Abs(x - 3.5f) < car.halfLength + 0.3f && Mathf.Abs(car.body.localPosition.z + 10f) < car.halfWidth + 0.3f;
+                Assert.IsFalse(touches, $"{car.body.name} drove into the player.");
             }
 
             // On foot: spawn → across the zebra → konbini door; and every portal from the street.
