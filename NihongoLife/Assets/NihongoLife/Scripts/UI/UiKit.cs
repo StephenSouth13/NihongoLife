@@ -716,7 +716,8 @@ namespace NihongoLife.UI
             {
                 var child = parent.GetChild(i).gameObject;
                 child.SetActive(false);
-                UnityEngine.Object.Destroy(child);
+                if (Application.isPlaying) UnityEngine.Object.Destroy(child);
+                else UnityEngine.Object.DestroyImmediate(child); // edit mode (tests, editor tools)
             }
         }
 

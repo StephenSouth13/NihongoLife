@@ -67,6 +67,7 @@ namespace NihongoLife.UI
             "MapButton" => NihongoLife.Core.Loc.T("Bản đồ", "Map", "地図"),
             "QuestButton" => NihongoLife.Core.Loc.T("Nhiệm vụ", "Tasks", "タスク"),
             "ExamButton" => NihongoLife.Core.Loc.T("Luyện thi", "Exams", "試験"),
+            "StudyButton" => NihongoLife.Core.Loc.T("Học thêm", "Study", "学習"),
             "NotebookButton" => NihongoLife.Core.Loc.T("Sổ tay", "Notebook", "ノート"),
             "OverviewButton" => NihongoLife.Core.Loc.T("Góc nhìn", "View", "視点"),
             "SettingsButton" => NihongoLife.Core.Loc.T("Cài đặt", "Settings", "設定"),

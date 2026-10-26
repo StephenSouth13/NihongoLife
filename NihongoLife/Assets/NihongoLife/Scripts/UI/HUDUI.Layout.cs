@@ -68,6 +68,7 @@ namespace NihongoLife.UI
                 }),
                 ("QuestButton", "N", "Nhiệm vụ", () => TaskJournalUI.Toggle()),
                 ("ExamButton", "K", "Luyện thi", () => TogglePopup(GetComponent<ExamCenterPopup>())),
+                ("StudyButton", "U", "Học thêm", () => TogglePopup(GetComponent<StudyHubPopup>())),
                 ("NotebookButton", "L", "Sổ tay", () => NotebookUI.Toggle()),
                 ("OverviewButton", "H", "Góc nhìn", ToggleOverviewCamera),
                 ("SettingsButton", "O", "Cài đặt", () => _settingsUI?.ToggleFromEscape()),
@@ -156,6 +157,8 @@ namespace NihongoLife.UI
             if (examCenter == null) examCenter = gameObject.AddComponent<ExamCenterPopup>();
             examCenter.Initialize(scenarioTitleText != null ? scenarioTitleText.font : null);
         }
+
+        private void EnsureStudyHub() => StudyHubPopup.GetOrCreate(gameObject, scenarioTitleText != null ? scenarioTitleText.font : null);
 
         private void EnsureTutorial()
         {
