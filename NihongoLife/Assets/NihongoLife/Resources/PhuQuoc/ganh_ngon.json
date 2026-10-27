@@ -1,0 +1,1021 @@
+{
+  "schema": "nihongolife.phuquoc.ganhngon.v1",
+  "nameVi": "Nhà hàng Gánh Ngon",
+  "nameEn": "Gánh Ngon Restaurant",
+  "nameJa": "ガインゴン レストラン",
+  "address": "113 Trần Hưng Đạo, Dương Đông, Phú Quốc",
+  "sourceNote": "Facts from the owner (Huy): grilled seafood BBQ, grilled beef, chicken-durian hotpot, fried durian, cơm niêu lunch 10:00–13:00, pub/cocktail bar, 9 VIP rooms, open 10:00–23:00. No prices are listed on purpose. Staff names are fictional game characters.",
+  "openMinute": 600,
+  "closeMinute": 1380,
+  "vipRooms": 9,
+  "dishes": [
+    {
+      "id": "seafood_bbq",
+      "category": "seafood_bbq",
+      "nameVi": "Hải sản nướng BBQ",
+      "nameEn": "Grilled seafood BBQ",
+      "nameJa": "シーフードBBQ",
+      "readingJa": "shīfūdo bābekyū",
+      "descVi": "Hải sản tươi của biển Phú Quốc nướng than.",
+      "descEn": "Fresh Phú Quốc seafood grilled over charcoal.",
+      "descJa": "フーコックの 新鮮な 海の幸を 炭火で 焼きます。",
+      "fromMinute": 0,
+      "toMinute": 0
+    },
+    {
+      "id": "grilled_squid",
+      "category": "seafood_bbq",
+      "nameVi": "Mực nướng",
+      "nameEn": "Grilled squid",
+      "nameJa": "イカの 炭火焼き",
+      "readingJa": "ika no sumibiyaki",
+      "descVi": "Mực nướng than — một món trong suất hải sản nướng.",
+      "descEn": "Charcoal-grilled squid, part of the seafood BBQ.",
+      "descJa": "シーフードBBQの 一品です。",
+      "fromMinute": 0,
+      "toMinute": 0
+    },
+    {
+      "id": "grilled_prawns",
+      "category": "seafood_bbq",
+      "nameVi": "Tôm nướng",
+      "nameEn": "Grilled prawns",
+      "nameJa": "エビの 炭火焼き",
+      "readingJa": "ebi no sumibiyaki",
+      "descVi": "Tôm nướng than — một món trong suất hải sản nướng.",
+      "descEn": "Charcoal-grilled prawns, part of the seafood BBQ.",
+      "descJa": "シーフードBBQの 一品です。",
+      "fromMinute": 0,
+      "toMinute": 0
+    },
+    {
+      "id": "grilled_beef",
+      "category": "grill",
+      "nameVi": "Bò nướng",
+      "nameEn": "Grilled beef",
+      "nameJa": "牛肉の 炭火焼き",
+      "readingJa": "gyūniku no sumibiyaki",
+      "descVi": "Thịt bò nướng tại bàn.",
+      "descEn": "Grilled beef.",
+      "descJa": "牛肉を 焼きます。",
+      "fromMinute": 0,
+      "toMinute": 0
+    },
+    {
+      "id": "chicken_durian_hotpot",
+      "category": "hotpot",
+      "nameVi": "Lẩu gà sầu riêng",
+      "nameEn": "Chicken & durian hotpot",
+      "nameJa": "鶏肉と ドリアンの 鍋",
+      "readingJa": "toriniku to dorian no nabe",
+      "descVi": "Món lẩu đặc trưng của Gánh Ngon: gà nấu với sầu riêng.",
+      "descEn": "Gánh Ngon's signature hotpot: chicken cooked with durian.",
+      "descJa": "ガインゴンの 名物：鶏肉と ドリアンの 鍋。",
+      "fromMinute": 0,
+      "toMinute": 0
+    },
+    {
+      "id": "fried_durian",
+      "category": "durian",
+      "nameVi": "Sầu riêng chiên",
+      "nameEn": "Fried durian",
+      "nameJa": "揚げドリアン",
+      "readingJa": "age dorian",
+      "descVi": "Sầu riêng chiên giòn.",
+      "descEn": "Crispy fried durian.",
+      "descJa": "カリッと 揚げた ドリアン。",
+      "fromMinute": 0,
+      "toMinute": 0
+    },
+    {
+      "id": "com_nieu",
+      "category": "com_nieu",
+      "nameVi": "Cơm niêu (trưa)",
+      "nameEn": "Clay-pot rice (lunch)",
+      "nameJa": "土鍋ごはん（コムニウ）",
+      "readingJa": "donabe gohan (komu niu)",
+      "descVi": "Cơm niêu chỉ phục vụ buổi trưa, 10:00–13:00.",
+      "descEn": "Clay-pot rice lunch, served 10:00–13:00 only.",
+      "descJa": "ランチだけ（10時〜13時）の 土鍋ごはん。",
+      "fromMinute": 600,
+      "toMinute": 780
+    },
+    {
+      "id": "cocktail",
+      "category": "drink",
+      "nameVi": "Cocktail (quầy pub)",
+      "nameEn": "Cocktail (pub bar)",
+      "nameJa": "カクテル",
+      "readingJa": "kakuteru",
+      "descVi": "Pha chế ở quầy pub / cocktail bar.",
+      "descEn": "Mixed at the pub / cocktail bar.",
+      "descJa": "パブ・カクテルバーで 作ります。",
+      "fromMinute": 0,
+      "toMinute": 0
+    },
+    {
+      "id": "iced_tea",
+      "category": "drink",
+      "nameVi": "Trà đá",
+      "nameEn": "Iced tea",
+      "nameJa": "アイスティー",
+      "readingJa": "aisu tī",
+      "descVi": "Trà đá mát lạnh.",
+      "descEn": "Cold Vietnamese iced tea.",
+      "descJa": "冷たい ベトナムの お茶。",
+      "fromMinute": 0,
+      "toMinute": 0
+    }
+  ],
+  "phrases": [
+    {
+      "id": "welcome",
+      "situation": "greet",
+      "ja": "いらっしゃいませ。",
+      "readingJa": "irasshaimase",
+      "en": "Welcome!",
+      "vi": "Xin chào quý khách!"
+    },
+    {
+      "id": "how_many",
+      "situation": "greet",
+      "ja": "なんめいさまですか。",
+      "readingJa": "nanmeisama desu ka",
+      "en": "How many in your party?",
+      "vi": "Quý khách đi mấy người ạ?"
+    },
+    {
+      "id": "this_way",
+      "situation": "seat",
+      "ja": "こちらへ どうぞ。",
+      "readingJa": "kochira e dōzo",
+      "en": "This way, please.",
+      "vi": "Mời quý khách đi lối này."
+    },
+    {
+      "id": "menu",
+      "situation": "order",
+      "ja": "メニューを どうぞ。",
+      "readingJa": "menyū o dōzo",
+      "en": "Here is the menu.",
+      "vi": "Thực đơn đây ạ."
+    },
+    {
+      "id": "ready",
+      "situation": "order",
+      "ja": "ごちゅうもんは おきまりですか。",
+      "readingJa": "gochūmon wa okimari desu ka",
+      "en": "Are you ready to order?",
+      "vi": "Quý khách chọn món chưa ạ?"
+    },
+    {
+      "id": "recommend",
+      "situation": "order",
+      "ja": "シーフードBBQが おすすめです。",
+      "readingJa": "shīfūdo bābekyū ga osusume desu",
+      "en": "I recommend the seafood BBQ.",
+      "vi": "Em gợi ý món hải sản nướng ạ."
+    },
+    {
+      "id": "repeat",
+      "situation": "order",
+      "ja": "ごちゅうもんを くりかえします。",
+      "readingJa": "gochūmon o kurikaeshimasu",
+      "en": "Let me repeat your order.",
+      "vi": "Em xin nhắc lại món ạ."
+    },
+    {
+      "id": "certainly",
+      "situation": "order",
+      "ja": "かしこまりました。",
+      "readingJa": "kashikomarimashita",
+      "en": "Certainly.",
+      "vi": "Vâng, em hiểu rồi ạ."
+    },
+    {
+      "id": "wait",
+      "situation": "serve",
+      "ja": "しょうしょう おまちください。",
+      "readingJa": "shōshō omachi kudasai",
+      "en": "One moment, please.",
+      "vi": "Xin quý khách đợi một chút."
+    },
+    {
+      "id": "sorry_wait",
+      "situation": "serve",
+      "ja": "おまたせしました。",
+      "readingJa": "omatase shimashita",
+      "en": "Sorry to keep you waiting.",
+      "vi": "Xin lỗi đã để quý khách đợi."
+    },
+    {
+      "id": "enjoy",
+      "situation": "serve",
+      "ja": "ごゆっくり どうぞ。",
+      "readingJa": "goyukkuri dōzo",
+      "en": "Please enjoy your meal.",
+      "vi": "Chúc quý khách ngon miệng."
+    },
+    {
+      "id": "lunch_only",
+      "situation": "order",
+      "ja": "コムニウは ランチだけです。",
+      "readingJa": "komu niu wa ranchi dake desu",
+      "en": "Clay-pot rice is lunch only.",
+      "vi": "Cơm niêu chỉ có buổi trưa ạ."
+    },
+    {
+      "id": "vip",
+      "situation": "reception",
+      "ja": "VIPルームが ございます。",
+      "readingJa": "bui ai pī rūmu ga gozaimasu",
+      "en": "We have VIP rooms.",
+      "vi": "Nhà hàng có phòng VIP ạ."
+    },
+    {
+      "id": "hours",
+      "situation": "reception",
+      "ja": "10じから 23じまで あいて います。",
+      "readingJa": "jūji kara nijūsanji made aite imasu",
+      "en": "We're open from 10 am to 11 pm.",
+      "vi": "Nhà hàng mở cửa từ 10 giờ đến 23 giờ."
+    },
+    {
+      "id": "bill",
+      "situation": "pay",
+      "ja": "おかいけいは こちらです。",
+      "readingJa": "okaikei wa kochira desu",
+      "en": "Here is your bill.",
+      "vi": "Hóa đơn của quý khách đây ạ."
+    },
+    {
+      "id": "thanks",
+      "situation": "pay",
+      "ja": "ありがとうございました。またおこしください。",
+      "readingJa": "arigatō gozaimashita. mata okoshi kudasai",
+      "en": "Thank you. Please come again.",
+      "vi": "Cảm ơn quý khách. Hẹn gặp lại."
+    },
+    {
+      "id": "allergy",
+      "situation": "order",
+      "ja": "アレルギーは ありますか。",
+      "readingJa": "arerugī wa arimasu ka",
+      "en": "Do you have any allergies?",
+      "vi": "Quý khách có dị ứng gì không ạ?"
+    },
+    {
+      "id": "wash_hands",
+      "situation": "kitchen",
+      "ja": "まず てを あらいます。",
+      "readingJa": "mazu te o araimasu",
+      "en": "First, I wash my hands.",
+      "vi": "Trước tiên em rửa tay."
+    }
+  ],
+  "dialogues": [
+    {
+      "id": "waiter_japanese_couple",
+      "job": "waiter",
+      "guestVi": "Hai du khách Nhật",
+      "guestEn": "Two Japanese tourists",
+      "guestJa": "日本人の 観光客 ふたり",
+      "guestLanguage": "ja",
+      "target": "ganhngon_table",
+      "steps": [
+        {
+          "id": "enter",
+          "speaker": "guest",
+          "lineJa": "すみません、ふたりです。",
+          "readingJa": "sumimasen, futari desu",
+          "lineEn": "Excuse me, two people.",
+          "lineVi": "Xin lỗi, chúng tôi đi hai người.",
+          "questVi": "Chào khách và mời vào bàn:",
+          "questEn": "Greet the guests and seat them:",
+          "questJa": "あいさつして 席へ 案内しましょう：",
+          "questEvent": "",
+          "choices": [
+            {
+              "ja": "いらっしゃいませ。こちらへ どうぞ。",
+              "en": "Welcome! This way, please.",
+              "vi": "Xin chào! Mời đi lối này.",
+              "correct": true,
+              "hintVi": "",
+              "hintEn": "",
+              "hintJa": ""
+            },
+            {
+              "ja": "ごちそうさまでした。",
+              "en": "Thank you for the meal.",
+              "vi": "Cảm ơn vì bữa ăn.",
+              "correct": false,
+              "hintVi": "Câu này khách nói sau khi ăn xong.",
+              "hintEn": "Guests say that after eating.",
+              "hintJa": "食べた 後に 言う ことばです。"
+            },
+            {
+              "ja": "おだいじに。",
+              "en": "Take care (get well).",
+              "vi": "Chúc mau khỏe.",
+              "correct": false,
+              "hintVi": "Câu này nói với người ốm.",
+              "hintEn": "That's said to someone who is ill.",
+              "hintJa": "病気の 人に 言います。"
+            }
+          ]
+        },
+        {
+          "id": "recommend",
+          "speaker": "guest",
+          "lineJa": "おすすめは なんですか。",
+          "readingJa": "osusume wa nan desu ka",
+          "lineEn": "What do you recommend?",
+          "lineVi": "Món nào ngon nhất ạ?",
+          "questVi": "Gợi ý một món đặc trưng:",
+          "questEn": "Recommend a signature dish:",
+          "questJa": "おすすめを 言いましょう：",
+          "questEvent": "",
+          "choices": [
+            {
+              "ja": "シーフードBBQが おすすめです。",
+              "en": "I recommend the seafood BBQ.",
+              "vi": "Em gợi ý hải sản nướng BBQ.",
+              "correct": true,
+              "hintVi": "",
+              "hintEn": "",
+              "hintJa": ""
+            },
+            {
+              "ja": "きょうは やすみです。",
+              "en": "We're closed today.",
+              "vi": "Hôm nay quán nghỉ.",
+              "correct": false,
+              "hintVi": "Quán đang mở (10:00–23:00).",
+              "hintEn": "The restaurant is open (10:00–23:00).",
+              "hintJa": "お店は 10時〜23時 あいて います。"
+            },
+            {
+              "ja": "いってきます。",
+              "en": "I'm off!",
+              "vi": "Tôi đi đây.",
+              "correct": false,
+              "hintVi": "Câu này nói khi rời nhà.",
+              "hintEn": "That's said when leaving home.",
+              "hintJa": "家を 出る ときの ことばです。"
+            }
+          ]
+        },
+        {
+          "id": "order",
+          "speaker": "guest",
+          "lineJa": "シーフードBBQと アイスティーを ふたつ おねがいします。",
+          "readingJa": "shīfūdo bābekyū to aisu tī o futatsu onegaishimasu",
+          "lineEn": "The seafood BBQ and two iced teas, please.",
+          "lineVi": "Cho một suất hải sản nướng và hai trà đá.",
+          "questVi": "Nhắc lại đúng món khách gọi:",
+          "questEn": "Repeat the order correctly:",
+          "questJa": "注文を 正しく くりかえしましょう：",
+          "questEvent": "order",
+          "choices": [
+            {
+              "ja": "かしこまりました。シーフードBBQと アイスティー ふたつですね。",
+              "en": "Certainly. One seafood BBQ and two iced teas.",
+              "vi": "Vâng ạ. Một hải sản nướng và hai trà đá.",
+              "correct": true,
+              "hintVi": "",
+              "hintEn": "",
+              "hintJa": ""
+            },
+            {
+              "ja": "はい、ぎゅうにくの すみびやき ですね。",
+              "en": "Yes, the grilled beef.",
+              "vi": "Vâng, bò nướng ạ.",
+              "correct": false,
+              "hintVi": "Khách gọi hải sản nướng, không phải bò.",
+              "hintEn": "They ordered the seafood BBQ, not beef.",
+              "hintJa": "牛肉では ありません。"
+            },
+            {
+              "ja": "アイスティー みっつですね。",
+              "en": "Three iced teas.",
+              "vi": "Ba trà đá ạ.",
+              "correct": false,
+              "hintVi": "Khách gọi hai (ふたつ) trà đá.",
+              "hintEn": "They asked for two (futatsu).",
+              "hintJa": "ふたつです。"
+            }
+          ]
+        },
+        {
+          "id": "serve",
+          "speaker": "guest",
+          "lineJa": "わあ、おいしそう！",
+          "readingJa": "wā, oishisō!",
+          "lineEn": "Wow, that looks delicious!",
+          "lineVi": "Ồ, trông ngon quá!",
+          "questVi": "Mang món ra và nói:",
+          "questEn": "Serve the dish and say:",
+          "questJa": "料理を 出して 言いましょう：",
+          "questEvent": "serve",
+          "choices": [
+            {
+              "ja": "おまたせしました。ごゆっくり どうぞ。",
+              "en": "Sorry to keep you waiting. Enjoy!",
+              "vi": "Xin lỗi đã để đợi. Chúc ngon miệng!",
+              "correct": true,
+              "hintVi": "",
+              "hintEn": "",
+              "hintJa": ""
+            },
+            {
+              "ja": "いただきます。",
+              "en": "Let's eat!",
+              "vi": "Mời cả nhà ăn!",
+              "correct": false,
+              "hintVi": "Khách nói câu này trước khi ăn, không phải nhân viên.",
+              "hintEn": "The guest says that before eating, not the staff.",
+              "hintJa": "食べる 人が 言う ことばです。"
+            }
+          ]
+        },
+        {
+          "id": "bill",
+          "speaker": "guest",
+          "lineJa": "おかいけい おねがいします。",
+          "readingJa": "okaikei onegaishimasu",
+          "lineEn": "The bill, please.",
+          "lineVi": "Tính tiền giúp tôi.",
+          "questVi": "Trả lời khách:",
+          "questEn": "Answer the guest:",
+          "questJa": "答えましょう：",
+          "questEvent": "",
+          "choices": [
+            {
+              "ja": "はい、しょうしょう おまちください。",
+              "en": "Yes, one moment please.",
+              "vi": "Vâng, xin đợi một chút.",
+              "correct": true,
+              "hintVi": "",
+              "hintEn": "",
+              "hintJa": ""
+            },
+            {
+              "ja": "いらっしゃいませ。",
+              "en": "Welcome!",
+              "vi": "Xin chào quý khách!",
+              "correct": false,
+              "hintVi": "Câu này dùng khi khách mới vào.",
+              "hintEn": "That's for when guests arrive.",
+              "hintJa": "来た ときの ことばです。"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "waiter_lunch_com_nieu",
+      "job": "waiter",
+      "guestVi": "Khách Nhật đến ăn trưa",
+      "guestEn": "A Japanese guest at lunch",
+      "guestJa": "ランチの お客さん",
+      "guestLanguage": "ja",
+      "target": "ganhngon_table",
+      "steps": [
+        {
+          "id": "ask",
+          "speaker": "guest",
+          "lineJa": "ランチの コムニウは ありますか。",
+          "readingJa": "ranchi no komu niu wa arimasu ka",
+          "lineEn": "Do you have the clay-pot rice lunch?",
+          "lineVi": "Có cơm niêu trưa không?",
+          "questVi": "Bây giờ là 12:00. Trả lời:",
+          "questEn": "It is 12:00 now. Answer:",
+          "questJa": "今は 12時です。答えましょう：",
+          "questEvent": "",
+          "choices": [
+            {
+              "ja": "はい、ランチは 1じまで です。",
+              "en": "Yes, lunch is until 1 pm.",
+              "vi": "Có ạ, cơm trưa đến 13 giờ.",
+              "correct": true,
+              "hintVi": "",
+              "hintEn": "",
+              "hintJa": ""
+            },
+            {
+              "ja": "ランチは よる 10じから です。",
+              "en": "Lunch starts at 10 pm.",
+              "vi": "Cơm trưa bắt đầu 22 giờ.",
+              "correct": false,
+              "hintVi": "Cơm niêu phục vụ 10:00–13:00.",
+              "hintEn": "Clay-pot rice is served 10:00–13:00.",
+              "hintJa": "コムニウは 10時〜13時です。"
+            }
+          ]
+        },
+        {
+          "id": "order",
+          "speaker": "guest",
+          "lineJa": "じゃあ、コムニウを ひとつ おねがいします。",
+          "readingJa": "jā, komu niu o hitotsu onegaishimasu",
+          "lineEn": "Then one clay-pot rice, please.",
+          "lineVi": "Vậy cho một cơm niêu.",
+          "questVi": "Xác nhận món:",
+          "questEn": "Confirm the order:",
+          "questJa": "注文を 確認しましょう：",
+          "questEvent": "order",
+          "choices": [
+            {
+              "ja": "かしこまりました。コムニウ ひとつですね。",
+              "en": "Certainly. One clay-pot rice.",
+              "vi": "Vâng ạ, một cơm niêu.",
+              "correct": true,
+              "hintVi": "",
+              "hintEn": "",
+              "hintJa": ""
+            },
+            {
+              "ja": "カクテル ひとつですね。",
+              "en": "One cocktail.",
+              "vi": "Một cocktail ạ.",
+              "correct": false,
+              "hintVi": "Khách gọi cơm niêu.",
+              "hintEn": "They ordered clay-pot rice.",
+              "hintJa": "コムニウです。"
+            }
+          ]
+        },
+        {
+          "id": "serve",
+          "speaker": "guest",
+          "lineJa": "あつそうですね。",
+          "readingJa": "atsusō desu ne",
+          "lineEn": "It looks hot.",
+          "lineVi": "Trông nóng nhỉ.",
+          "questVi": "Mang món ra và nhắc khách:",
+          "questEn": "Serve it and warn the guest:",
+          "questJa": "出して 注意しましょう：",
+          "questEvent": "serve",
+          "choices": [
+            {
+              "ja": "おまたせしました。おなべが あついので きをつけて ください。",
+              "en": "Here you are. The pot is hot, please be careful.",
+              "vi": "Món của quý khách. Nồi nóng, xin cẩn thận.",
+              "correct": true,
+              "hintVi": "",
+              "hintEn": "",
+              "hintJa": ""
+            },
+            {
+              "ja": "さむいですね。",
+              "en": "It's cold, isn't it?",
+              "vi": "Lạnh nhỉ.",
+              "correct": false,
+              "hintVi": "Nồi cơm niêu rất nóng.",
+              "hintEn": "The clay pot is very hot.",
+              "hintJa": "おなべは あついです。"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "reception_vip_english",
+      "job": "receptionist",
+      "guestVi": "Khách đặt phòng VIP (tiếng Anh)",
+      "guestEn": "A guest booking a VIP room (English)",
+      "guestJa": "VIPルームを 予約する お客さん（英語）",
+      "guestLanguage": "en",
+      "target": "ganhngon_reception",
+      "steps": [
+        {
+          "id": "ask",
+          "speaker": "guest",
+          "lineJa": "こんばんは、10にんで こしつを よやくしたいです。",
+          "readingJa": "konban wa, jūnin de koshitsu o yoyaku shitai desu",
+          "lineEn": "Hi, we'd like a private room for ten people tonight.",
+          "lineVi": "Chào em, chị muốn đặt phòng riêng cho mười người tối nay.",
+          "questVi": "Answer in English:",
+          "questEn": "Answer in English:",
+          "questJa": "英語で 答えましょう：",
+          "questEvent": "",
+          "choices": [
+            {
+              "ja": "かしこまりました。VIPルームが ございます。なんじに しますか。",
+              "en": "Certainly. We have VIP rooms. What time would you like?",
+              "vi": "Vâng ạ, nhà hàng có phòng VIP. Chị muốn mấy giờ ạ?",
+              "correct": true,
+              "hintVi": "",
+              "hintEn": "",
+              "hintJa": ""
+            },
+            {
+              "ja": "すみません、バーしか ありません。",
+              "en": "Sorry, we only have the bar.",
+              "vi": "Xin lỗi, chỉ có quầy bar.",
+              "correct": false,
+              "hintVi": "Gánh Ngon có 9 phòng VIP.",
+              "hintEn": "Gánh Ngon has 9 VIP rooms.",
+              "hintJa": "ガインゴンには VIPルームが 9つ あります。"
+            }
+          ]
+        },
+        {
+          "id": "time",
+          "speaker": "guest",
+          "lineJa": "7じごろ、なまえは たなかです。",
+          "readingJa": "shichiji goro, namae wa Tanaka desu",
+          "lineEn": "Around 7 pm, under the name Tanaka.",
+          "lineVi": "Khoảng 7 giờ, tên Tanaka.",
+          "questVi": "Repeat the booking:",
+          "questEn": "Repeat the booking:",
+          "questJa": "予約を くりかえしましょう：",
+          "questEvent": "order",
+          "choices": [
+            {
+              "ja": "10めいさま、7じ、たなかさまですね。おまちしております。",
+              "en": "A VIP room for ten at 7 pm under Tanaka. We look forward to seeing you.",
+              "vi": "Phòng VIP cho 10 người, 7 giờ, tên Tanaka. Hẹn gặp chị tối nay.",
+              "correct": true,
+              "hintVi": "",
+              "hintEn": "",
+              "hintJa": ""
+            },
+            {
+              "ja": "2めいさま、7じですね。",
+              "en": "Two people at 7 pm.",
+              "vi": "Hai người lúc 7 giờ.",
+              "correct": false,
+              "hintVi": "Khách đặt cho mười người.",
+              "hintEn": "The booking is for ten.",
+              "hintJa": "10人です。"
+            }
+          ]
+        },
+        {
+          "id": "hours",
+          "speaker": "guest",
+          "lineJa": "なんじまで あいて いますか。",
+          "readingJa": "nanji made aite imasu ka",
+          "lineEn": "What time do you close?",
+          "lineVi": "Nhà hàng mở đến mấy giờ?",
+          "questVi": "Answer:",
+          "questEn": "Answer:",
+          "questJa": "答えましょう：",
+          "questEvent": "talk",
+          "choices": [
+            {
+              "ja": "よる 11じまで あいて います。",
+              "en": "We're open until 11 pm.",
+              "vi": "Nhà hàng mở đến 23 giờ ạ.",
+              "correct": true,
+              "hintVi": "",
+              "hintEn": "",
+              "hintJa": ""
+            },
+            {
+              "ja": "ひる 1じに しまります。",
+              "en": "We close at 1 pm.",
+              "vi": "Đóng cửa lúc 13 giờ.",
+              "correct": false,
+              "hintVi": "13:00 là giờ hết cơm niêu trưa; nhà hàng mở đến 23:00.",
+              "hintEn": "1 pm is when the clay-pot lunch ends; the restaurant is open until 11 pm.",
+              "hintJa": "13時は ランチの おわりです。"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "reception_japanese_booking",
+      "job": "receptionist",
+      "guestVi": "Khách Nhật gọi điện đặt bàn",
+      "guestEn": "A Japanese guest phoning to book",
+      "guestJa": "電話で 予約する 日本人",
+      "guestLanguage": "ja",
+      "target": "ganhngon_reception",
+      "steps": [
+        {
+          "id": "call",
+          "speaker": "guest",
+          "lineJa": "もしもし、よやくを したいんですが。",
+          "readingJa": "moshimoshi, yoyaku o shitain desu ga",
+          "lineEn": "Hello, I'd like to make a reservation.",
+          "lineVi": "A lô, tôi muốn đặt bàn.",
+          "questVi": "Hỏi số người:",
+          "questEn": "Ask how many people:",
+          "questJa": "人数を 聞きましょう：",
+          "questEvent": "",
+          "choices": [
+            {
+              "ja": "ありがとうございます。なんめいさまですか。",
+              "en": "Thank you. How many people?",
+              "vi": "Cảm ơn quý khách. Mấy người ạ?",
+              "correct": true,
+              "hintVi": "",
+              "hintEn": "",
+              "hintJa": ""
+            },
+            {
+              "ja": "いただきます。",
+              "en": "Let's eat!",
+              "vi": "Mời ăn!",
+              "correct": false,
+              "hintVi": "Câu này nói trước khi ăn.",
+              "hintEn": "That's said before eating.",
+              "hintJa": "食べる 前の ことばです。"
+            }
+          ]
+        },
+        {
+          "id": "room",
+          "speaker": "guest",
+          "lineJa": "6にんです。こしつは ありますか。",
+          "readingJa": "rokunin desu. koshitsu wa arimasu ka",
+          "lineEn": "Six. Do you have a private room?",
+          "lineVi": "Sáu người. Có phòng riêng không?",
+          "questVi": "Trả lời:",
+          "questEn": "Answer:",
+          "questJa": "答えましょう：",
+          "questEvent": "order",
+          "choices": [
+            {
+              "ja": "はい、VIPルームが ございます。",
+              "en": "Yes, we have VIP rooms.",
+              "vi": "Có ạ, nhà hàng có phòng VIP.",
+              "correct": true,
+              "hintVi": "",
+              "hintEn": "",
+              "hintJa": ""
+            },
+            {
+              "ja": "いいえ、ありません。",
+              "en": "No, we don't.",
+              "vi": "Không có ạ.",
+              "correct": false,
+              "hintVi": "Gánh Ngon có 9 phòng VIP.",
+              "hintEn": "Gánh Ngon has 9 VIP rooms.",
+              "hintJa": "VIPルームが 9つ あります。"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "kitchen_orders",
+      "job": "chef",
+      "guestVi": "Bếp trưởng gọi món",
+      "guestEn": "The head chef calls orders",
+      "guestJa": "料理長の 声",
+      "guestLanguage": "ja",
+      "target": "ganhngon_kitchen",
+      "steps": [
+        {
+          "id": "hands",
+          "speaker": "chef",
+          "lineJa": "さかなを さわる まえに、まず なにを しますか。",
+          "readingJa": "sakana o sawaru mae ni, mazu nani o shimasu ka",
+          "lineEn": "Before you touch the fish, what do you do first?",
+          "lineVi": "Trước khi chạm vào cá, việc đầu tiên là gì?",
+          "questVi": "Vệ sinh an toàn thực phẩm:",
+          "questEn": "Food hygiene:",
+          "questJa": "衛生の きほん：",
+          "questEvent": "",
+          "choices": [
+            {
+              "ja": "まず てを あらいます。",
+              "en": "First I wash my hands.",
+              "vi": "Trước tiên em rửa tay.",
+              "correct": true,
+              "hintVi": "",
+              "hintEn": "",
+              "hintJa": ""
+            },
+            {
+              "ja": "すぐ やきます。",
+              "en": "I grill it right away.",
+              "vi": "Em nướng luôn.",
+              "correct": false,
+              "hintVi": "Luôn rửa tay trước khi chế biến.",
+              "hintEn": "Always wash your hands before handling food.",
+              "hintJa": "まず 手を あらいましょう。"
+            }
+          ]
+        },
+        {
+          "id": "call",
+          "speaker": "chef",
+          "lineJa": "2ばんテーブル、ぎゅうにくの すみびやき ひとつ！",
+          "readingJa": "niban tēburu, gyūniku no sumibiyaki hitotsu!",
+          "lineEn": "Table 2, one grilled beef!",
+          "lineVi": "Bàn 2, một bò nướng!",
+          "questVi": "Đáp lại bếp trưởng:",
+          "questEn": "Answer the head chef:",
+          "questJa": "料理長に 答えましょう：",
+          "questEvent": "order",
+          "choices": [
+            {
+              "ja": "はい、2ばん、ぎゅうにく ひとつ！",
+              "en": "Yes chef — table 2, one grilled beef!",
+              "vi": "Vâng, bàn 2, một bò nướng!",
+              "correct": true,
+              "hintVi": "",
+              "hintEn": "",
+              "hintJa": ""
+            },
+            {
+              "ja": "はい、3ばん、イカ ふたつ！",
+              "en": "Table 3, two squid!",
+              "vi": "Bàn 3, hai mực!",
+              "correct": false,
+              "hintVi": "Bếp gọi bàn 2, bò nướng.",
+              "hintEn": "The chef called table 2, grilled beef.",
+              "hintJa": "2番、牛肉です。"
+            }
+          ]
+        },
+        {
+          "id": "ready",
+          "speaker": "chef",
+          "lineJa": "あげドリアン、できましたか。",
+          "readingJa": "age dorian, dekimashita ka",
+          "lineEn": "Is the fried durian ready?",
+          "lineVi": "Sầu riêng chiên xong chưa?",
+          "questVi": "Báo món đã xong:",
+          "questEn": "Say the dish is ready:",
+          "questJa": "できたと 言いましょう：",
+          "questEvent": "serve",
+          "choices": [
+            {
+              "ja": "はい、できました！おねがいします。",
+              "en": "Yes, it's ready! Service, please.",
+              "vi": "Xong rồi ạ! Mang ra giúp em.",
+              "correct": true,
+              "hintVi": "",
+              "hintEn": "",
+              "hintJa": ""
+            },
+            {
+              "ja": "おやすみなさい。",
+              "en": "Good night.",
+              "vi": "Chúc ngủ ngon.",
+              "correct": false,
+              "hintVi": "Đang giờ làm việc ở bếp.",
+              "hintEn": "You're on shift in the kitchen.",
+              "hintJa": "今は しごと中です。"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "bar_english",
+      "job": "bartender",
+      "guestVi": "Khách ở quầy pub (tiếng Anh)",
+      "guestEn": "A guest at the pub bar (English)",
+      "guestJa": "パブの お客さん（英語）",
+      "guestLanguage": "en",
+      "target": "ganhngon_bar",
+      "steps": [
+        {
+          "id": "cocktail",
+          "speaker": "guest",
+          "lineJa": "カクテルを ください。あまり あまくないのを。",
+          "readingJa": "kakuteru o kudasai. amari amakunai no o",
+          "lineEn": "Can I get a cocktail? Something not too sweet.",
+          "lineVi": "Cho tôi một ly cocktail, đừng ngọt quá.",
+          "questVi": "Answer in English:",
+          "questEn": "Answer in English:",
+          "questJa": "英語で 答えましょう：",
+          "questEvent": "order",
+          "choices": [
+            {
+              "ja": "かしこまりました。あまさ ひかえめで おつくりします。",
+              "en": "Of course. I'll make it less sweet for you.",
+              "vi": "Vâng ạ, em pha ít ngọt cho anh.",
+              "correct": true,
+              "hintVi": "",
+              "hintEn": "",
+              "hintJa": ""
+            },
+            {
+              "ja": "すみません、カクテルは ありません。",
+              "en": "Sorry, we don't have cocktails.",
+              "vi": "Xin lỗi, không có cocktail.",
+              "correct": false,
+              "hintVi": "Gánh Ngon có quầy pub / cocktail bar.",
+              "hintEn": "Gánh Ngon has a pub / cocktail bar.",
+              "hintJa": "カクテルバーが あります。"
+            }
+          ]
+        },
+        {
+          "id": "water",
+          "speaker": "guest",
+          "lineJa": "おみずも もらえますか。",
+          "readingJa": "omizu mo moraemasu ka",
+          "lineEn": "Could I have some water too?",
+          "lineVi": "Cho tôi xin thêm nước lọc được không?",
+          "questVi": "Answer:",
+          "questEn": "Answer:",
+          "questJa": "答えましょう：",
+          "questEvent": "serve",
+          "choices": [
+            {
+              "ja": "はい、すぐ おもちします。",
+              "en": "Sure, I'll bring a glass right away.",
+              "vi": "Vâng, em mang ngay ạ.",
+              "correct": true,
+              "hintVi": "",
+              "hintEn": "",
+              "hintJa": ""
+            },
+            {
+              "ja": "ようこそ！",
+              "en": "Welcome!",
+              "vi": "Chào mừng!",
+              "correct": false,
+              "hintVi": "Khách đã ngồi ở quầy rồi.",
+              "hintEn": "The guest is already seated at the bar.",
+              "hintJa": "お客さんは もう います。"
+            }
+          ]
+        },
+        {
+          "id": "bye",
+          "speaker": "guest",
+          "lineJa": "ありがとう、とても おいしかったです！",
+          "readingJa": "arigatō, totemo oishikatta desu!",
+          "lineEn": "Thanks, that was great!",
+          "lineVi": "Cảm ơn, ngon lắm!",
+          "questVi": "Say goodbye:",
+          "questEn": "Say goodbye:",
+          "questJa": "見送りましょう：",
+          "questEvent": "",
+          "choices": [
+            {
+              "ja": "ありがとうございました。フーコックを たのしんで ください！",
+              "en": "Thank you! Enjoy your evening in Phú Quốc.",
+              "vi": "Cảm ơn anh! Chúc anh buổi tối vui ở Phú Quốc.",
+              "correct": true,
+              "hintVi": "",
+              "hintEn": "",
+              "hintJa": ""
+            },
+            {
+              "ja": "いらっしゃいませ。",
+              "en": "Welcome!",
+              "vi": "Xin mời vào!",
+              "correct": false,
+              "hintVi": "Câu này dùng khi khách mới đến.",
+              "hintEn": "That's for arriving guests.",
+              "hintJa": "来た ときの ことばです。"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "staff": [
+    {
+      "id": "npc_ganhngon_manager",
+      "job": "waiter",
+      "nameVi": "Chị Mai",
+      "nameEn": "Mai",
+      "nameJa": "マイさん",
+      "roleVi": "Quản lý ca",
+      "roleEn": "Shift manager",
+      "roleJa": "シフトマネージャー"
+    },
+    {
+      "id": "npc_ganhngon_reception",
+      "job": "receptionist",
+      "nameVi": "Vy",
+      "nameEn": "Vy",
+      "nameJa": "ヴィーさん",
+      "roleVi": "Lễ tân",
+      "roleEn": "Receptionist",
+      "roleJa": "受付"
+    },
+    {
+      "id": "npc_ganhngon_chef",
+      "job": "chef",
+      "nameVi": "Anh Tùng",
+      "nameEn": "Tung",
+      "nameJa": "トゥンさん",
+      "roleVi": "Bếp trưởng",
+      "roleEn": "Head chef",
+      "roleJa": "料理長"
+    },
+    {
+      "id": "npc_ganhngon_bartender",
+      "job": "bartender",
+      "nameVi": "Anh Khoa",
+      "nameEn": "Khoa",
+      "nameJa": "コアさん",
+      "roleVi": "Bartender quầy pub",
+      "roleEn": "Pub bartender",
+      "roleJa": "バーテンダー"
+    }
+  ]
+}

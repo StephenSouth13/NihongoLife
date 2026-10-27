@@ -1,0 +1,457 @@
+{
+  "schema": "nihongolife.phuquoc.map.v1",
+  "originLat": 10.21537,
+  "originLon": 103.95995,
+  "metersPerUnit": 100,
+  "verticalMetersPerUnit": 50,
+  "note": "Real WGS84 coordinates (OpenStreetMap Nominatim, Oct 2026) projected equirectangular around Gánh Ngon. 1 game unit = 100 m: the 50 km island becomes ~500 units. Outline hand-traced (~1 km accuracy).",
+  "places": [
+    {
+      "id": "ganh_ngon",
+      "category": "restaurant",
+      "nameVi": "Nhà hàng Gánh Ngon",
+      "nameEn": "Gánh Ngon Restaurant",
+      "nameJa": "ガインゴン レストラン",
+      "lat": 10.21537,
+      "lon": 103.95995,
+      "source": "osm_street",
+      "note": "113 Trần Hưng Đạo, Dương Đông (OSM point is the Trần Hưng Đạo street segment)"
+    },
+    {
+      "id": "duong_dong",
+      "category": "town",
+      "nameVi": "Dương Đông",
+      "nameEn": "Dương Đông town",
+      "nameJa": "ズオンドン",
+      "lat": 10.217,
+      "lon": 103.959,
+      "source": "wikipedia",
+      "note": "Administrative centre, west coast"
+    },
+    {
+      "id": "cho_dem",
+      "category": "market",
+      "nameVi": "Chợ đêm Dinh Cậu",
+      "nameEn": "Dinh Cậu Night Market",
+      "nameJa": "ディンカウ ナイトマーケット",
+      "lat": 10.21629,
+      "lon": 103.96057,
+      "source": "osm",
+      "note": ""
+    },
+    {
+      "id": "cho_duong_dong",
+      "category": "market",
+      "nameVi": "Chợ Dương Đông",
+      "nameEn": "Dương Đông Market",
+      "nameJa": "ズオンドン 市場",
+      "lat": 10.22054,
+      "lon": 103.9598,
+      "source": "osm",
+      "note": ""
+    },
+    {
+      "id": "dinh_cau",
+      "category": "landmark",
+      "nameVi": "Dinh Cậu",
+      "nameEn": "Dinh Cậu Shrine",
+      "nameJa": "ディンカウ（神社）",
+      "lat": 10.21721,
+      "lon": 103.95643,
+      "source": "osm",
+      "note": "Rock shrine at the Dương Đông river mouth"
+    },
+    {
+      "id": "sung_hung",
+      "category": "landmark",
+      "nameVi": "Chùa Sùng Hưng",
+      "nameEn": "Sùng Hưng Pagoda",
+      "nameJa": "スンフン寺",
+      "lat": 10.21523,
+      "lon": 103.95978,
+      "source": "osm",
+      "note": ""
+    },
+    {
+      "id": "fish_sauce",
+      "category": "factory",
+      "nameVi": "Nhà thùng nước mắm Khải Hoàn",
+      "nameEn": "Khải Hoàn fish sauce factory",
+      "nameJa": "ヌクマム工場（カイホアン）",
+      "lat": 10.21994,
+      "lon": 103.97149,
+      "source": "osm",
+      "note": "Phú Quốc fish sauce (protected origin)"
+    },
+    {
+      "id": "pepper_farm",
+      "category": "farm",
+      "nameVi": "Vườn tiêu (Đức Thạnh)",
+      "nameEn": "Pepper farm (Đức Thạnh)",
+      "nameJa": "コショウ農園",
+      "lat": 10.20623,
+      "lon": 103.99031,
+      "source": "osm",
+      "note": "Pepper is grown island-wide, esp. Gành Dầu & Cửa Dương"
+    },
+    {
+      "id": "airport",
+      "category": "transport",
+      "nameVi": "Sân bay quốc tế Phú Quốc",
+      "nameEn": "Phú Quốc International Airport",
+      "nameJa": "フーコック国際空港",
+      "lat": 10.1727,
+      "lon": 103.99215,
+      "source": "osm",
+      "note": "IATA PQC, opened 2 Dec 2012"
+    },
+    {
+      "id": "bai_truong",
+      "category": "beach",
+      "nameVi": "Bãi Trường",
+      "nameEn": "Long Beach (Bãi Trường)",
+      "nameJa": "バイチュオン（ロングビーチ）",
+      "lat": 10.13606,
+      "lon": 103.97639,
+      "source": "osm",
+      "note": ""
+    },
+    {
+      "id": "suoi_tranh",
+      "category": "nature",
+      "nameVi": "Suối Tranh",
+      "nameEn": "Tranh Stream",
+      "nameJa": "スオイチャン（滝）",
+      "lat": 10.18378,
+      "lon": 104.01534,
+      "source": "osm",
+      "note": ""
+    },
+    {
+      "id": "ham_ninh",
+      "category": "village",
+      "nameVi": "Làng chài Hàm Ninh",
+      "nameEn": "Hàm Ninh fishing village",
+      "nameJa": "ハムニン漁村",
+      "lat": 10.17634,
+      "lon": 104.03263,
+      "source": "osm",
+      "note": "East coast"
+    },
+    {
+      "id": "ho_quoc",
+      "category": "landmark",
+      "nameVi": "Chùa Hộ Quốc",
+      "nameEn": "Hộ Quốc Pagoda",
+      "nameJa": "ホークオック寺",
+      "lat": 10.0996,
+      "lon": 104.0472,
+      "source": "approx",
+      "note": "Approximate (not geocoded) — on the south-east coast, Bãi Đầm"
+    },
+    {
+      "id": "bai_sao",
+      "category": "beach",
+      "nameVi": "Bãi Sao",
+      "nameEn": "Sao Beach",
+      "nameJa": "バイサオ（サオビーチ）",
+      "lat": 10.05247,
+      "lon": 104.03519,
+      "source": "osm",
+      "note": ""
+    },
+    {
+      "id": "bai_khem",
+      "category": "beach",
+      "nameVi": "Bãi Khem",
+      "nameEn": "Khem Beach",
+      "nameJa": "バイケム",
+      "lat": 10.03577,
+      "lon": 104.03063,
+      "source": "osm",
+      "note": ""
+    },
+    {
+      "id": "prison",
+      "category": "history",
+      "nameVi": "Di tích Nhà tù Phú Quốc",
+      "nameEn": "Phú Quốc Prison relic",
+      "nameJa": "フーコック刑務所 史跡",
+      "lat": 10.04345,
+      "lon": 104.01879,
+      "source": "osm",
+      "note": "1953–1975 prison camp, now a historic site"
+    },
+    {
+      "id": "sunset_town",
+      "category": "entertainment",
+      "nameVi": "Thị trấn Hoàng Hôn (Cầu Hôn)",
+      "nameEn": "Sunset Town (Kiss Bridge)",
+      "nameJa": "サンセットタウン",
+      "lat": 10.02826,
+      "lon": 104.00419,
+      "source": "osm",
+      "note": "Kiss Bridge (Cầu Hôn) point"
+    },
+    {
+      "id": "an_thoi",
+      "category": "town",
+      "nameVi": "An Thới",
+      "nameEn": "An Thới town",
+      "nameJa": "アントイ",
+      "lat": 10.01209,
+      "lon": 104.01481,
+      "source": "osm",
+      "note": "Southern ward"
+    },
+    {
+      "id": "an_thoi_port",
+      "category": "transport",
+      "nameVi": "Cảng An Thới",
+      "nameEn": "An Thới Port",
+      "nameJa": "アントイ港",
+      "lat": 10.01258,
+      "lon": 104.01479,
+      "source": "osm",
+      "note": ""
+    },
+    {
+      "id": "cable_car",
+      "category": "transport",
+      "nameVi": "Ga cáp treo Hòn Thơm (An Thới)",
+      "nameEn": "Hòn Thơm cable car station",
+      "nameJa": "ホントム ロープウェイ駅",
+      "lat": 9.992007,
+      "lon": 104.01244,
+      "source": "osm",
+      "note": ""
+    },
+    {
+      "id": "hon_thom",
+      "category": "island",
+      "nameVi": "Hòn Thơm (Sun World)",
+      "nameEn": "Hòn Thơm island (Sun World)",
+      "nameJa": "ホントム島",
+      "lat": 9.95428,
+      "lon": 104.01761,
+      "source": "osm",
+      "note": "Off the south tip; reached by cable car"
+    },
+    {
+      "id": "ong_lang",
+      "category": "beach",
+      "nameVi": "Bãi Ông Lang",
+      "nameEn": "Ông Lang Beach",
+      "nameJa": "オンラン ビーチ",
+      "lat": 10.25738,
+      "lon": 103.93666,
+      "source": "osm",
+      "note": ""
+    },
+    {
+      "id": "cua_can",
+      "category": "village",
+      "nameVi": "Cửa Cạn",
+      "nameEn": "Cửa Cạn",
+      "nameJa": "クアカン",
+      "lat": 10.27758,
+      "lon": 103.92356,
+      "source": "osm",
+      "note": ""
+    },
+    {
+      "id": "grand_world",
+      "category": "entertainment",
+      "nameVi": "Grand World (chợ đêm phố đi bộ)",
+      "nameEn": "Grand World (walking-street night market)",
+      "nameJa": "グランドワールド",
+      "lat": 10.32494,
+      "lon": 103.85813,
+      "source": "osm",
+      "note": ""
+    },
+    {
+      "id": "vinwonders",
+      "category": "entertainment",
+      "nameVi": "VinWonders Phú Quốc",
+      "nameEn": "VinWonders Phú Quốc",
+      "nameJa": "ヴィンワンダーズ",
+      "lat": 10.3384,
+      "lon": 103.85467,
+      "source": "osm",
+      "note": ""
+    },
+    {
+      "id": "bai_dai",
+      "category": "beach",
+      "nameVi": "Bãi Dài",
+      "nameEn": "Dài Beach",
+      "nameJa": "バイザイ（ロングサンド）",
+      "lat": 10.33593,
+      "lon": 103.84907,
+      "source": "osm",
+      "note": ""
+    },
+    {
+      "id": "ganh_dau",
+      "category": "village",
+      "nameVi": "Gành Dầu",
+      "nameEn": "Gành Dầu",
+      "nameJa": "ガインザウ",
+      "lat": 10.37076,
+      "lon": 103.84471,
+      "source": "osm",
+      "note": "North-west cape, facing Cambodia"
+    },
+    {
+      "id": "rach_vem",
+      "category": "village",
+      "nameVi": "Rạch Vẹm",
+      "nameEn": "Rạch Vẹm",
+      "nameJa": "ラックヴェム",
+      "lat": 10.36117,
+      "lon": 103.93311,
+      "source": "osm",
+      "note": "North coast"
+    },
+    {
+      "id": "national_park",
+      "category": "nature",
+      "nameVi": "Vườn quốc gia Phú Quốc",
+      "nameEn": "Phú Quốc National Park",
+      "nameJa": "フーコック国立公園",
+      "lat": 10.32829,
+      "lon": 104.02463,
+      "source": "osm",
+      "note": "336.57 km² in the north (est. 2001)"
+    },
+    {
+      "id": "nui_chua",
+      "category": "nature",
+      "nameVi": "Núi Chúa (603 m)",
+      "nameEn": "Chúa Mountain (603 m)",
+      "nameJa": "チュア山",
+      "lat": 10.37771,
+      "lon": 104.03881,
+      "source": "osm",
+      "note": "Highest peak of the 99-peak ridge"
+    },
+    {
+      "id": "bai_thom",
+      "category": "village",
+      "nameVi": "Bãi Thơm",
+      "nameEn": "Bãi Thơm",
+      "nameJa": "バイトム",
+      "lat": 10.412,
+      "lon": 104.03149,
+      "source": "osm",
+      "note": "North-east"
+    }
+  ],
+  "outline": [
+    {
+      "lat": 10.385,
+      "lon": 103.835
+    },
+    {
+      "lat": 10.42,
+      "lon": 103.86
+    },
+    {
+      "lat": 10.455,
+      "lon": 103.905
+    },
+    {
+      "lat": 10.445,
+      "lon": 103.96
+    },
+    {
+      "lat": 10.425,
+      "lon": 104.03
+    },
+    {
+      "lat": 10.41,
+      "lon": 104.045
+    },
+    {
+      "lat": 10.38,
+      "lon": 104.055
+    },
+    {
+      "lat": 10.3,
+      "lon": 104.06
+    },
+    {
+      "lat": 10.22,
+      "lon": 104.055
+    },
+    {
+      "lat": 10.176,
+      "lon": 104.045
+    },
+    {
+      "lat": 10.12,
+      "lon": 104.06
+    },
+    {
+      "lat": 10.06,
+      "lon": 104.045
+    },
+    {
+      "lat": 10.03,
+      "lon": 104.04
+    },
+    {
+      "lat": 10.0,
+      "lon": 104.02
+    },
+    {
+      "lat": 9.988,
+      "lon": 104.015
+    },
+    {
+      "lat": 9.995,
+      "lon": 104.005
+    },
+    {
+      "lat": 10.02,
+      "lon": 103.995
+    },
+    {
+      "lat": 10.08,
+      "lon": 103.98
+    },
+    {
+      "lat": 10.136,
+      "lon": 103.97
+    },
+    {
+      "lat": 10.18,
+      "lon": 103.965
+    },
+    {
+      "lat": 10.217,
+      "lon": 103.953
+    },
+    {
+      "lat": 10.258,
+      "lon": 103.932
+    },
+    {
+      "lat": 10.278,
+      "lon": 103.918
+    },
+    {
+      "lat": 10.31,
+      "lon": 103.875
+    },
+    {
+      "lat": 10.336,
+      "lon": 103.845
+    },
+    {
+      "lat": 10.36,
+      "lon": 103.838
+    }
+  ]
+}
