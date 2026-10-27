@@ -193,7 +193,7 @@ namespace NihongoLife.Tests
 
                 Button("Ribbon_Careers").onClick.Invoke();
                 yield return null;
-                Assert.AreEqual(4, HandbookUI.EntryIds.Count(), "Four careers");
+                Assert.AreEqual(CareerService.Catalog.careers.Length, HandbookUI.EntryIds.Count(), "Every career");
                 Button("Entry_medical").onClick.Invoke();
                 yield return null;
                 Capture("handbook", "07_medical_career");

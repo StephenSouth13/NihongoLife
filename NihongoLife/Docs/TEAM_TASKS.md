@@ -1696,3 +1696,28 @@ Giao việc đầy đủ trong `Docs/GROK_TASK_TRAILER_MARKETING.md` (bối cả
   - Danh sách bài: `Resources/Audio/music.json`.
 - **Test:** `IllnessCatalogTests` (EditMode), `IllnessPlayModeTests` (mắc / cảm nhận / chữa / sổ tay / máy nhạc). `SoundscapePlayModeTests` chấp nhận nhạc phố mới. Ảnh: `Bao_Cao/health/`, `Bao_Cao/handbook/`.
 - **Tiếp theo:** dịch vụ nhà hàng — chờ anh Long gửi thông tin và cách vận hành.
+
+## Cập nhật (2026-10-27 tối, Claude) — Tích hợp nhánh Phú Quốc / Gánh Ngon của GrokBot, báo cáo Capstone v7
+- **Sau merge `feat/phuquoc-restaurant`:**
+  - Biên dịch sạch; EditMode 123/123 (có 7 bài `PhuQuocRestaurantTests`).
+  - `PhuQuocIslandBuilder`: bỏ `[MenuItem]` (quy tắc AGENTS), chạy headless (`-executeMethod NihongoLife.EditorTools.PhuQuocIslandBuilder.Build`).
+  - Đã sinh `Scenes/65_PhuQuocIsland.unity` (+ `Materials/PhuQuoc/`) và ghi vào Build Settings. Đây mới là **bản dựng đầu**: đảo phẳng theo đường bờ biển OSM, 31 điểm mốc, khu Gánh Ngon có 8 điểm phục vụ; chưa có đường đi từ Hibari.
+  - `GanhNgonSpot` tách ra file riêng `GanhNgonSpot.cs`. Trước đó class nằm trong `GanhNgonShift.cs` nên scene mất component (test chỉ thấy 3/8 điểm).
+- **Ảnh hưởng tới phần đã có** (giờ có 5 nghề):
+  - Màn chọn nghề (`CareerUI`) chuyển sang lưới 3 cột.
+  - Test sổ tay đếm theo catalog thay vì số cứng 4.
+  - `handbook.json` thêm nghề Nhà hàng & dịch vụ.
+  - Nhạc "work" phát khi ở Gánh Ngon trong giờ làm nghề hospitality.
+- **Test mới:** `PhuQuocIslandPlayModeTests` (31 điểm mốc, đảo có collider, 8 điểm phục vụ, vị trí tương đối đúng địa lý). Ảnh: `Bao_Cao/phuquoc/`.
+- **Còn lại cho Phú Quốc** (theo `Docs/HANDOFF_PHUQUOC.md`):
+  - khu Dương Đông tỉ lệ 1:1 và nội thất Gánh Ngon;
+  - khách NPC (theo mô hình `ClinicPatientFlow`);
+  - đường đi từ Hibari (sân bay PQC);
+  - nối skybox / vật liệu Ground054;
+  - nhãn địa điểm quanh Dương Đông đang chồng lên nhau.
+- **Báo cáo Capstone v7** (`Bao_Cao/NihongoLife_Bao_Cao_Capstone_v7.docx/.pdf`), dựng bằng script trong `Tools/report/`:
+  - `build_report_v7.py` lấy v6 và chèn các mục mới;
+  - `layout_v7.py` bỏ trang trắng, cho các chương nối tiếp;
+  - `word_update.ps1` dùng Word cập nhật mục lục, danh mục và xuất PDF;
+  - `page_fill.py` báo trang thiếu nội dung.
+  - Mục mới: 5.5 phòng khám, 5.6 Phú Quốc, 6.6 ngoại hình, 6.7 bệnh tật, 8.9–8.11 nghề nghiệp / Y tế / Gánh Ngon, 10.8 sổ tay, 12.4 nhạc gốc, 13.8 kiểm thử v7, bảng video YouTube @NihongoLifeGame, tài liệu tham khảo y khoa và Phú Quốc.

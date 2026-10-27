@@ -156,6 +156,7 @@ namespace NihongoLife.Audio
                 "food" => scene == WorldLocationCatalog.SushiRestaurantScene,
                 "farm" => scene == WorldLocationCatalog.MidoriIslandScene,
                 "medical" => scene == WorldLocationCatalog.ClinicScene,
+                "hospitality" => scene == "65_PhuQuocIsland", // Gánh Ngon, Phú Quốc
                 _ => false, // retail works inside the konbini, which keeps its own music
             };
         }

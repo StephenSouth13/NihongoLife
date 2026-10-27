@@ -436,13 +436,20 @@ namespace NihongoLife.UI
                     "Pick a career: work your shifts on time to raise performance, pass a Japanese interview to be promoted, choose your own path at level 4.",
                     "仕事を選びましょう。時間どおりに働いて評価を上げ、日本語の面接で昇進。レベル4で自分のコースを選びます。"), 16f, NLUi.Muted, _font);
 
-            var row = NLUi.Group(_body, "Careers", false, 14f, TextAnchor.UpperLeft, true);
+            // A grid, three cards a row: five careers and more fit without running off the card.
+            var row = new GameObject("Careers", typeof(RectTransform), typeof(GridLayoutGroup)).GetComponent<RectTransform>();
+            row.SetParent(_body, false);
+            var grid = row.GetComponent<GridLayoutGroup>();
+            grid.cellSize = new Vector2(334f, 452f);
+            grid.spacing = new Vector2(14f, 14f);
+            grid.constraint = GridLayoutGroup.Constraint.FixedColumnCount;
+            grid.constraintCount = 3;
+            NLUi.FitContent(row);
             foreach (var career in catalog.careers)
             {
                 bool current = state.careerId == career.id && hasCareer;
                 bool before = state.pastCareers.Contains(career.id);
                 var c = NLUi.Panel(row, "Career_" + career.id, current ? new Color(0.2f, 0.18f, 0.1f, 1f) : NLUi.Card, new RectOffset(18, 18, 16, 16), 8f);
-                NLUi.Size(c, 330f, 450f, 1f);
                 NLUi.Label(c, "Name", $"{career.Name}\n<size=70%><color=#A8B4C4>{career.nameJa}</color></size>", 24f, NLUi.Gold, _font, FontStyles.Bold);
                 NLUi.Label(c, "Workplace", career.Workplace, 16f, NLUi.Text, _font);
                 NLUi.Label(c, "Schedule", career.Schedule, 16f, NLUi.Text, _font);

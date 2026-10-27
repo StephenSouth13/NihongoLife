@@ -26,18 +26,29 @@ namespace NihongoLife.EditorTools
         public const string AssetRoot = "Assets/ThirdParty/PhuQuocCC0";
         private const string MatDir = "Assets/NihongoLife/Materials/PhuQuoc";
 
-        [MenuItem("NihongoLife/Build/Phú Quốc island (65)")]
+        // Headless only (AGENTS.md: no [MenuItem]).
         public static void Build()
         {
-            EditorSceneManager.NewScene(NewSceneSetup.DefaultGameObjects, NewSceneMode.Single);
-            var root = new GameObject("PhuQuocIsland");
-            BuildLayout(root.transform, PhuQuocMap.Load(), true);
-            Directory.CreateDirectory(Path.GetDirectoryName(ScenePath));
-            if (!EditorSceneManager.SaveScene(UnityEngine.SceneManagement.SceneManager.GetActiveScene(), ScenePath))
-                throw new InvalidOperationException("Could not save " + ScenePath);
-            var scenes = EditorBuildSettings.scenes.ToList();
-            if (!scenes.Any(s => s.path == ScenePath)) { scenes.Add(new EditorBuildSettingsScene(ScenePath, true)); EditorBuildSettings.scenes = scenes.ToArray(); }
-            AssetDatabase.SaveAssets();
+            try
+            {
+                EditorSceneManager.NewScene(NewSceneSetup.DefaultGameObjects, NewSceneMode.Single);
+                var root = new GameObject("PhuQuocIsland");
+                BuildLayout(root.transform, PhuQuocMap.Load(), true);
+                Directory.CreateDirectory(Path.GetDirectoryName(ScenePath));
+                if (!EditorSceneManager.SaveScene(UnityEngine.SceneManagement.SceneManager.GetActiveScene(), ScenePath))
+                    throw new InvalidOperationException("Could not save " + ScenePath);
+                var scenes = EditorBuildSettings.scenes.ToList();
+                if (!scenes.Any(s => s.path == ScenePath)) { scenes.Add(new EditorBuildSettingsScene(ScenePath, true)); EditorBuildSettings.scenes = scenes.ToArray(); }
+                AssetDatabase.SaveAssets();
+                Debug.Log("[PhuQuocIslandBuilder] " + ScenePath + " built.");
+                if (Application.isBatchMode) EditorApplication.Exit(0);
+            }
+            catch (Exception e)
+            {
+                Debug.LogException(e);
+                if (Application.isBatchMode) EditorApplication.Exit(1);
+                else throw;
+            }
         }
 
         /// <summary>Builds the island under <paramref name="root"/>. withModels=false builds primitives only (tests).</summary>
