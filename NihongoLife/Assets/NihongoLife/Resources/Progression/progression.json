@@ -696,6 +696,67 @@
         "xp": 45,
         "knowledge": 8
       }
+    },
+    {
+      "id": "job_ganhngon_shift",
+      "category": "job",
+      "titleVi": "Làm ca ở nhà hàng Gánh Ngon (Phú Quốc)",
+      "titleEn": "Shift at Gánh Ngon (Phú Quốc)",
+      "titleJa": "ガインゴンで はたらく",
+      "descriptionVi": "Chị Mai cần người: nhận món của khách Nhật/khách nói tiếng Anh, mang đúng món, nhận đặt phòng VIP, rồi báo cáo.",
+      "descriptionEn": "Mai needs help: take orders from Japanese and English-speaking guests, serve the right dishes, take VIP-room bookings, then report.",
+      "descriptionJa": "注文・配膳・VIPルームの予約をして、マイさんに報告。",
+      "giverNpc": "npc_ganhngon_manager",
+      "giverNameVi": "Chị Mai (quản lý ca)",
+      "giverNameEn": "Mai (shift manager)",
+      "giverNameJa": "マイさん",
+      "locationVi": "Nhà hàng Gánh Ngon, 113 Trần Hưng Đạo, Dương Đông",
+      "locationEn": "Gánh Ngon, 113 Trần Hưng Đạo, Dương Đông",
+      "locationJa": "ガインゴン（ズオンドン）",
+      "scene": "65_PhuQuocIsland",
+      "minLevel": 1,
+      "minKnowledge": 0,
+      "requiresQuests": [],
+      "repeatable": true,
+      "cooldownMinutes": 5,
+      "grantOnAccept": [],
+      "objectives": [
+        {
+          "id": "order",
+          "event": "order",
+          "target": "*",
+          "count": 2,
+          "afterAll": false,
+          "textVi": "Nhận đúng 2 lượt gọi món / đặt bàn",
+          "textEn": "Take 2 orders or bookings correctly",
+          "textJa": "注文・予約を 2回 正しく"
+        },
+        {
+          "id": "serve",
+          "event": "serve",
+          "target": "*",
+          "count": 2,
+          "afterAll": false,
+          "textVi": "Phục vụ đúng 2 lần",
+          "textEn": "Serve correctly twice",
+          "textJa": "2回 正しく 配膳"
+        },
+        {
+          "id": "report",
+          "event": "talk",
+          "target": "npc_ganhngon_manager",
+          "count": 1,
+          "afterAll": true,
+          "textVi": "Báo cáo với chị Mai",
+          "textEn": "Report to Mai",
+          "textJa": "マイさんに 報告"
+        }
+      ],
+      "rewards": {
+        "yen": 750,
+        "xp": 45,
+        "knowledge": 7
+      }
     }
   ]
 }
