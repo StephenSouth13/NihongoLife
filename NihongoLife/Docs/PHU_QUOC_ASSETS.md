@@ -23,3 +23,12 @@ Other CC0 packs checked and suitable for later (URLs verified 27 Oct 2026, HTTP 
 - ambientCG Ground 080 — https://ambientcg.com/view?id=Ground080
 
 Rule: only CC0 goes in this folder. Do not add CC-BY / "free for personal use" assets here.
+
+## Added 27 Oct 2026 (second batch, all CC0 — License.txt in each folder)
+| Folder | Asset | Source page | Licence | Use |
+|---|---|---|---|---|
+| `kenney_car-kit` | Car Kit (FBX) | https://kenney.nl/assets/car-kit | CC0 | cars, taxis, vans, trucks, buses-style vehicles |
+| `kenney_holiday-kit` | Holiday Kit (FBX) | https://kenney.nl/assets/holiday-kit | CC0 | beach chairs, umbrellas, resort props |
+| `kenney_mini-characters` | Mini Characters (FBX) | https://kenney.nl/assets/mini-characters | CC0 | guests / townspeople (low-poly) |
+| `kenney_watercraft-kit` | Watercraft Pack (FBX) | https://kenney.nl/assets/watercraft-kit | CC0 | boats, jet-skis, buoys, piers |
+Not found as CC0 in Kenney/Quaternius quickly: dedicated motorbike model (TODO).
