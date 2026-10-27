@@ -324,10 +324,6 @@ namespace NihongoLife.Editor
             var so = new SerializedObject(guide.GetComponent<NPCController>());
             SetString(so, "promptJa", "練習する");
             SetString(so, "promptEn", "Practice phrases");
-            SetString(so, "fallbackJa", "こんにちは。私はリリーです。一緒に日本語を練習しましょう。");
-            SetString(so, "fallbackReading", "こんにちは。わたしはリリーです。いっしょににほんごをれんしゅうしましょう。");
-            SetString(so, "fallbackEn", "Hi, I am Lilly. Let's practice useful Japanese phrases together.");
-            SetString(so, "fallbackRomaji", "Konnichiwa. Watashi wa Riri desu. Issho ni nihongo wo renshuu shimashou.");
             so.ApplyModifiedProperties();
         }
 
@@ -347,10 +343,6 @@ namespace NihongoLife.Editor
             SetString(so, "promptJa", "話す");
             SetString(so, "promptEn", "Talk");
             SetString(so, "scenarioAreaIdOnInteract", scenarioAreaId);
-            SetString(so, "fallbackJa", "こんにちは。どこへ行きますか。");
-            SetString(so, "fallbackReading", "こんにちは。どこへいきますか。");
-            SetString(so, "fallbackEn", "Hello. Where are you going?");
-            SetString(so, "fallbackRomaji", "Konnichiwa. Doko e ikimasu ka.");
             so.ApplyModifiedProperties();
         }
 

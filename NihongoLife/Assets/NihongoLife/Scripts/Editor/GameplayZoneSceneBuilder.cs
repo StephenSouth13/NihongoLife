@@ -163,10 +163,6 @@ namespace NihongoLife.EditorTools
             SetString(so, "npcId", npcId);
             SetString(so, "displayName", displayName);
             SetString(so, "role", role);
-            SetString(so, "fallbackJa", fallbackJa);
-            SetString(so, "fallbackReading", fallbackReading);
-            SetString(so, "fallbackEn", fallbackEn);
-            SetString(so, "fallbackRomaji", fallbackRomaji);
             so.ApplyModifiedProperties();
 
             AddNpcVisual(npc, visualPrefabPath, fallbackColor);

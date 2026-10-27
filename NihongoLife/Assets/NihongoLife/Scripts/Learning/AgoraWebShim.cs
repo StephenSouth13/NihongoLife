@@ -1,4 +1,5 @@
 #if UNITY_WEBGL
+#pragma warning disable CS0436 // With the WebGL build target the Editor compiles both the Agora SDK and the web shim (AgoraWebShim); the shim types are the intended ones.
 // WebGL stand-in for the native Agora Unity SDK. AgoraRtcSDK.asmdef excludePlatforms includes WebGL,
 // so the editor (WebGL build target) and the WebGL player both compile this file instead of Agora.Rtc.
 // VoiceChatService and EduMeetingManager keep calling Agora.Rtc. The player talks to NihongoAgora.jslib;

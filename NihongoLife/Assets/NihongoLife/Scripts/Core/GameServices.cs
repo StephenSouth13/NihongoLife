@@ -11,9 +11,11 @@ namespace NihongoLife.Core
         public static void Register<T>(T service) where T : class, IGameService
         {
             var type = typeof(T);
-            if (Services.ContainsKey(type))
+            if (Services.TryGetValue(type, out var previous))
             {
-                Debug.LogWarning($"[GameServices] Service {type.Name} is already registered. Overwriting.");
+                // A destroyed Unity service (its AppRoot is gone — a new play session, the next test) is replaced quietly.
+                bool dead = previous is UnityEngine.Object unityObject && unityObject == null;
+                if (!dead && !ReferenceEquals(previous, service)) Debug.LogWarning($"[GameServices] Service {type.Name} is already registered. Overwriting.");
                 Services[type] = service;
             }
             else
@@ -21,6 +23,9 @@ namespace NihongoLife.Core
                 Services.Add(type, service);
             }
         }
+
+        /// <summary>Swaps a service on purpose (e.g. the intro trailer's in-memory save) without the overwrite warning.</summary>
+        public static void Replace<T>(T service) where T : class, IGameService => Services[typeof(T)] = service;
 
         public static T Get<T>() where T : class, IGameService
         {

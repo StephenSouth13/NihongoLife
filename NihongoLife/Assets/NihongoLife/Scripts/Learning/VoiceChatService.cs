@@ -1,3 +1,4 @@
+#pragma warning disable CS0436 // With the WebGL build target the Editor compiles both the Agora SDK and the web shim (AgoraWebShim); the shim types are the intended ones.
 using System;
 using System.Collections;
 using System.Collections.Generic;

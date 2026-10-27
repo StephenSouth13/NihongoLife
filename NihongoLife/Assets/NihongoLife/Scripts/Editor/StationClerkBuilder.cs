@@ -72,10 +72,6 @@ namespace NihongoLife.EditorTools
                 so.FindProperty("role").stringValue = "Station staff";
                 so.FindProperty("promptJa").stringValue = "きっぷを かう";
                 so.FindProperty("promptEn").stringValue = "Mua vé với anh Kimura";
-                so.FindProperty("fallbackJa").stringValue = "いらっしゃいませ。";
-                so.FindProperty("fallbackReading").stringValue = "いらっしゃいませ。";
-                so.FindProperty("fallbackEn").stringValue = "Xin chào quý khách.";
-                so.FindProperty("fallbackRomaji").stringValue = "Irasshaimase.";
                 so.ApplyModifiedPropertiesWithoutUndo();
                 clerk.gameObject.AddComponent<StationStaffService>();
                 var plate = Text(clerk, "Nameplate", "えきいん · Kimura", new Vector3(0f, 2.15f, 0f), 180f, 0.09f, Color.white, 1.4f);

@@ -1,4 +1,5 @@
 #if UNITY_WEBGL
+#pragma warning disable CS0436 // With the WebGL build target the Editor compiles both the Agora SDK and the web shim (AgoraWebShim); the shim types are the intended ones.
 // Web build stand-in for Agora's VideoSurface. The browser draws the camera into an HTML element
 // positioned over this RawImage; WebGL cannot cheaply copy a MediaStream into a Unity texture.
 using Agora.Rtc;

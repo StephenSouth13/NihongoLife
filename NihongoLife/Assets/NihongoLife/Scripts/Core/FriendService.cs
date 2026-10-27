@@ -128,8 +128,10 @@ namespace NihongoLife.Core
                 return;
             }
 
-            // Fetch all friendships involving the current user
+            // Fetch all friendships involving the current user (a real Supabase user id — never an empty or test id,
+            // which the server rejects with "invalid input syntax for type uuid").
             string userId = auth.UserId;
+            if (!Guid.TryParse(userId, out _)) { callback?.Invoke(); return; }
             string url = _client.RestUrl("friendships") + $"?or=(requester_id.eq.{userId},addressee_id.eq.{userId})&select=*";
 
             _client.Get(url,

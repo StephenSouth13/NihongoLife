@@ -62,19 +62,8 @@ namespace NihongoLife.EditorTools
                 var set = AssetDatabase.LoadAssetAtPath<NihongoLife.Player.KidAnimationSet>(KidsCharactersSetup.PrefabFolder + "NL_KidAnimationSet.asset");
                 if (set != null) { set.layKey = sleep; EditorUtility.SetDirty(set); }
 
-                // Girls: every boy_* clip now in the controller → girl_* of the same name.
-                var girl = AssetDatabase.LoadAssetAtPath<AnimatorOverrideController>(Folder + "NL_Kid_Girl.overrideController");
-                var overrides = new List<KeyValuePair<AnimationClip, AnimationClip>>();
-                girl.GetOverrides(overrides);
-                for (int i = 0; i < overrides.Count; i++)
-                {
-                    var key = overrides[i].Key;
-                    if (key == null || !key.name.StartsWith("boy_")) continue;
-                    var g = AssetDatabase.LoadAssetAtPath<AnimationClip>(KidsCharactersSetup.Root + "AnimationClips/girl_Humanoid/girl_" + key.name.Substring(4) + ".anim");
-                    if (g != null) overrides[i] = new KeyValuePair<AnimationClip, AnimationClip>(key, g);
-                }
-                girl.ApplyOverrides(overrides);
-                EditorUtility.SetDirty(girl);
+                AddJump(controller);
+                RefreshGirlOverrides();
                 AssetDatabase.SaveAssets();
                 Debug.Log("[KidMotion] " + string.Join(", ", Actions.Select(a => a.state + "=" + a.clip)) + ", Sit=Kid_Sit, Lay=Kid_Sleep, Walk speed ← " + MoveScaleParam);
                 if (Application.isBatchMode) EditorApplication.Exit(0);
@@ -85,6 +74,62 @@ namespace NihongoLife.EditorTools
                 if (Application.isBatchMode) EditorApplication.Exit(1);
                 else throw;
             }
+        }
+
+        /// <summary>
+        /// Only the Jump state: a Kid jump (boy_jump_default; girls get girl_jump_default through NL_Kid_Girl) that
+        /// returns to Idle by itself. Without it CharacterAnimationController fell back to a Mixamo clip that is never
+        /// loaded in the game ("could not find Jump clip 'Remy@Jump'").
+        /// Run: Unity -batchmode -executeMethod NihongoLife.EditorTools.KidMotionBuilder.BuildJump
+        /// </summary>
+        public static void BuildJump()
+        {
+            try
+            {
+                var controller = AssetDatabase.LoadAssetAtPath<AnimatorController>(Controller);
+                AddJump(controller);
+                RefreshGirlOverrides();
+                AssetDatabase.SaveAssets();
+                Debug.Log("[KidMotion] Jump = boy_jump_default (girl_jump_default for girls), back to Idle on exit.");
+                if (Application.isBatchMode) EditorApplication.Exit(0);
+            }
+            catch (System.Exception e)
+            {
+                Debug.LogException(e);
+                if (Application.isBatchMode) EditorApplication.Exit(1);
+                else throw;
+            }
+        }
+
+        private static void AddJump(AnimatorController controller)
+        {
+            var machine = controller.layers[0].stateMachine;
+            var idle = machine.states.Select(s => s.state).First(s => s.name == "Idle");
+            var jump = machine.states.Select(s => s.state).FirstOrDefault(s => s.name == "Jump") ?? machine.AddState("Jump", new Vector3(520f, 240f, 0f));
+            jump.motion = Boy("jump_default");
+            foreach (var t in jump.transitions.ToArray()) jump.RemoveTransition(t);
+            var back = jump.AddTransition(idle);
+            back.hasExitTime = true;
+            back.exitTime = 0.85f;
+            back.duration = 0.15f;
+            EditorUtility.SetDirty(controller);
+        }
+
+        /// <summary>Girls: every boy_* clip in the controller → girl_* of the same name.</summary>
+        private static void RefreshGirlOverrides()
+        {
+            var girl = AssetDatabase.LoadAssetAtPath<AnimatorOverrideController>(Folder + "NL_Kid_Girl.overrideController");
+            var overrides = new List<KeyValuePair<AnimationClip, AnimationClip>>();
+            girl.GetOverrides(overrides);
+            for (int i = 0; i < overrides.Count; i++)
+            {
+                var key = overrides[i].Key;
+                if (key == null || !key.name.StartsWith("boy_")) continue;
+                var g = AssetDatabase.LoadAssetAtPath<AnimationClip>(KidsCharactersSetup.Root + "AnimationClips/girl_Humanoid/girl_" + key.name.Substring(4) + ".anim");
+                if (g != null) overrides[i] = new KeyValuePair<AnimationClip, AnimationClip>(key, g);
+            }
+            girl.ApplyOverrides(overrides);
+            EditorUtility.SetDirty(girl);
         }
 
         private static AnimationClip Boy(string clip) =>

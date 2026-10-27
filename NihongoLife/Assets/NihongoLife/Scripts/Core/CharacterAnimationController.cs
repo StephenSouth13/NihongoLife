@@ -362,13 +362,15 @@ namespace NihongoLife.Core
             return !string.IsNullOrWhiteSpace(stateName) && _animator.HasState(0, Animator.StringToHash(stateName));
         }
 
+        private static readonly System.Collections.Generic.HashSet<string> MissingClipsWarned = new System.Collections.Generic.HashSet<string>();
+
         private bool PlayDirectClip(string requestedName, string label)
         {
             if (_animator == null || string.IsNullOrWhiteSpace(requestedName)) return false;
             AnimationClip clip = FindAnimationClip(requestedName);
             if (clip == null)
             {
-                Debug.LogWarning($"[CharacterAnimation] '{name}' could not find {label} clip '{requestedName}'.", this);
+                if (MissingClipsWarned.Add(requestedName)) Debug.LogWarning($"[CharacterAnimation] '{name}' could not find {label} clip '{requestedName}'.", this);
                 return false;
             }
 

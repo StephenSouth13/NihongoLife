@@ -74,16 +74,8 @@ namespace NihongoLife.Learning
 
         private bool WasTriggerPressed()
         {
-            if (Keyboard.current != null && Keyboard.current[triggerKey].wasPressedThisFrame && !NihongoLife.UI.UiModalStack.BlocksHotkeys)
-            {
-                return true;
-            }
-
-#if ENABLE_LEGACY_INPUT_MANAGER
-            return Input.GetKeyDown(KeyCode.V);
-#else
-            return false;
-#endif
+            // Input System only (Player Settings → Active Input Handling); typing in a field never starts a recording.
+            return Keyboard.current != null && Keyboard.current[triggerKey].wasPressedThisFrame && !NihongoLife.UI.UiModalStack.BlocksHotkeys;
         }
 
         public void StartRecording()

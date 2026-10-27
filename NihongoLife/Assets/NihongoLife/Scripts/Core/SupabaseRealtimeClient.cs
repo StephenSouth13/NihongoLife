@@ -27,6 +27,9 @@ namespace NihongoLife.Core
     {
         // ──────────────────────── Channel ────────────────────────
 
+        /// <summary>Seconds between two presence updates on one channel.</summary>
+        public const float TrackInterval = 1.5f;
+
         public sealed class Channel
         {
             internal readonly SupabaseRealtimeClient Owner;
@@ -36,6 +39,10 @@ namespace NihongoLife.Core
             public bool Joined { get; internal set; }
             internal string JoinRef;
             internal string TrackJson;
+            /// <summary>Presence actually sent (and when): unchanged meta is not re-sent, bursts are coalesced.</summary>
+            internal string SentTrackJson;
+            internal float LastTrackAt = -999f;
+            internal bool TrackPending;
             internal bool Closed;
             internal float RejoinAt = -1f;
             internal readonly List<string> PendingFrames = new List<string>();
@@ -83,12 +90,28 @@ namespace NihongoLife.Core
             public void Track(object meta)
             {
                 TrackJson = meta is string raw ? raw : MiniJson.Serialize(meta);
-                if (Joined) Owner.SendOnChannel(this, "presence", "{\"type\":\"presence\",\"event\":\"track\",\"payload\":" + TrackJson + "}");
+                TrackPending = true;
+                FlushTrack();
+            }
+
+            /// <summary>Supabase limits presence events per client ("Client presence rate limit exceeded"): the same meta
+            /// is never re-sent, and changes closer than <see cref="TrackInterval"/> wait for the next Update.</summary>
+            internal void FlushTrack()
+            {
+                if (!TrackPending || !Joined || TrackJson == null) return;
+                if (TrackJson == SentTrackJson) { TrackPending = false; return; }
+                if (Time.unscaledTime - LastTrackAt < TrackInterval) return;
+                TrackPending = false;
+                SentTrackJson = TrackJson;
+                LastTrackAt = Time.unscaledTime;
+                Owner.SendOnChannel(this, "presence", "{\"type\":\"presence\",\"event\":\"track\",\"payload\":" + TrackJson + "}");
             }
 
             public void Untrack()
             {
                 TrackJson = null;
+                SentTrackJson = null;
+                TrackPending = false;
                 if (Joined) Owner.SendOnChannel(this, "presence", "{\"type\":\"presence\",\"event\":\"untrack\"}");
             }
 
@@ -440,6 +463,7 @@ namespace NihongoLife.Core
             }
             foreach (var json in _drain) ProcessFrame(json);
             _drain.Clear();
+            foreach (var c in _channels.Values) c.FlushTrack();
 
 #if UNITY_WEBGL && !UNITY_EDITOR
             if (_wantConnected && !_connecting && _socketDropped)
@@ -623,7 +647,7 @@ namespace NihongoLife.Core
         {
             channel.Joined = true;
             channel.RejoinAt = -1f;
-            if (channel.TrackJson != null) channel.Track(channel.TrackJson);
+            if (channel.TrackJson != null) { channel.SentTrackJson = null; channel.Track(channel.TrackJson); } // a new join forgets what the server had
             foreach (var frame in channel.PendingFrames) Enqueue(frame);
             channel.PendingFrames.Clear();
             channel.RaiseJoined();

@@ -49,7 +49,7 @@ namespace NihongoLife.Core
             Playing = true;
             GameServices.TryGet(out _realSaves);
             _islandClock = NihongoLife.Island.IslandState.ClockOffset;
-            GameServices.Register<IProgressRepository>(new MemoryProgressRepository());
+            GameServices.Replace<IProgressRepository>(new MemoryProgressRepository());
         }
 
         /// <summary>The reel ended or was skipped: real saves back, then the game continues.</summary>
@@ -57,7 +57,7 @@ namespace NihongoLife.Core
         {
             if (!Playing) return;
             Playing = false;
-            if (_realSaves != null) GameServices.Register(_realSaves);
+            if (_realSaves != null) GameServices.Replace(_realSaves);
             else GameServices.Unregister<IProgressRepository>();
             _realSaves = null;
             NihongoLife.Island.IslandState.ClockOffset = _islandClock;

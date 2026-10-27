@@ -426,10 +426,6 @@ namespace NihongoLife.EditorTools
             so.FindProperty("promptJa").stringValue = "かいけいする";
             so.FindProperty("promptEn").stringValue = "Thanh toán với chị Ito";
             so.FindProperty("scenarioAreaIdOnInteract").stringValue = "cashier";
-            so.FindProperty("fallbackJa").stringValue = "いらっしゃいませ！";
-            so.FindProperty("fallbackReading").stringValue = "いらっしゃいませ！";
-            so.FindProperty("fallbackEn").stringValue = "Xin mời quý khách!";
-            so.FindProperty("fallbackRomaji").stringValue = "Irasshaimase!";
             so.ApplyModifiedPropertiesWithoutUndo();
             npc.AddComponent<KonbiniClerk>();
             Text(konbini, "CashierNameplate", "いとう · Ito", new Vector3(0f, 2.05f, 9.15f), 0f, 0.09f, Color.white, 0.8f);

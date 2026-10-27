@@ -22,7 +22,7 @@ function agoraUid(userId: string): number {
   return (hash >>> 0) || 1;
 }
 
-Deno.serve(async (request) => {
+Deno.serve(async (request: Request) => {
   if (request.method === "OPTIONS") return new Response("ok", { headers: cors });
   if (request.method !== "POST") return reply({ ok: false, error: "Method not allowed" }, 405);
 

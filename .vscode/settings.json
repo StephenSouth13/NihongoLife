@@ -1,3 +1,8 @@
 {
-    "CodeGPT.apiKey": "CodeGPT Plus Beta"
+    "CodeGPT.apiKey": "CodeGPT Plus Beta",
+    // Supabase Edge Functions run on Deno: let the Deno extension (denoland.vscode-deno) check them, so the editor
+    // knows `Deno`, `https://` and `npm:` imports. The rest of the repo stays on the normal TypeScript server.
+    "deno.enablePaths": ["NihongoLife/supabase/functions"],
+    "deno.lint": true,
+    "deno.config": "NihongoLife/supabase/functions/deno.json"
 }
