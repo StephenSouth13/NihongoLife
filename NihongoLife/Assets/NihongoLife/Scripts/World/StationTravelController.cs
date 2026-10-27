@@ -336,14 +336,4 @@ namespace NihongoLife.World
         public Transform GetTransform() => transform;
         public void Interact(GameObject player) => _controller?.Execute(StationAction.TalkStationStaff, player);
     }
-
-    public sealed class StationBillboardLabel : MonoBehaviour
-    {
-        private void LateUpdate()
-        {
-            var camera = Camera.main;
-            if (camera != null)
-                transform.rotation = Quaternion.LookRotation(transform.position - camera.transform.position);
-        }
-    }
 }

@@ -13,6 +13,9 @@ namespace NihongoLife.Core
         public const string GameCenterScene = "50_GameCenter";
         public const string MidoriIslandScene = "60_MidoriIsland";
         public const string ClinicScene = "35_HibariClinic";
+        public const string PhuQuocIslandScene = "65_PhuQuocIsland";
+        /// <summary>Phú Quốc arrival spawn, in front of Gánh Ngon (Dương Đông).</summary>
+        public const string PhuQuocArrival = "phuquoc_ganh_ngon";
 
         public const string StationEntrance = "station_entrance";
         public const string SushiEntrance = "sushi_entrance";
@@ -40,7 +43,8 @@ namespace NihongoLife.Core
                 [GameCenterScene] = new LocationInfo("game_center", "Game Center Hibari", "Trung tâm trò chơi Hibari", "ゲームセンター"),
                 [HomeBedroomScene] = new LocationInfo("home_bedroom", "Your Bedroom", "Phòng trọ của bạn", "自室"),
                 [MidoriIslandScene] = new LocationInfo("midori_island", "Midori Island", "Đảo Xanh", "みどり島"),
-                [ClinicScene] = new LocationInfo("hibari_clinic", "Hibari Clinic", "Phòng khám Hibari", "ひばりクリニック")
+                [ClinicScene] = new LocationInfo("hibari_clinic", "Hibari Clinic", "Phòng khám Hibari", "ひばりクリニック"),
+                [PhuQuocIslandScene] = new LocationInfo("phu_quoc", "Phu Quoc Island", "Đảo Phú Quốc", "フーコック島")
             };
 
         public static bool Has(string sceneName) => !string.IsNullOrWhiteSpace(sceneName) && Locations.ContainsKey(sceneName);

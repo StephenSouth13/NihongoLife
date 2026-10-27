@@ -25,15 +25,22 @@ namespace NihongoLife.EditorTools
         public const string ScenePath = "Assets/NihongoLife/Scenes/65_PhuQuocIsland.unity";
         public const string AssetRoot = "Assets/ThirdParty/PhuQuocCC0";
         private const string MatDir = "Assets/NihongoLife/Materials/PhuQuoc";
+        /// <summary>Zones sit far outside the town (it stays loaded, hidden, while the player is here).</summary>
+        public static readonly Vector3 Origin = new Vector3(4000f, 0f, 0f);
 
         // Headless only (AGENTS.md: no [MenuItem]).
         public static void Build()
         {
             try
             {
-                EditorSceneManager.NewScene(NewSceneSetup.DefaultGameObjects, NewSceneMode.Single);
+                // A zone like Midori and the clinic: no camera or sun of its own (the town's player, camera and sky
+                // carry over), a spawn the scene flow places the player on, a way back, a preview camera.
+                EditorSceneManager.NewScene(NewSceneSetup.EmptyScene, NewSceneMode.Single);
                 var root = new GameObject("PhuQuocIsland");
+                root.transform.position = Origin;
+                root.AddComponent<NihongoLife.Core.SceneZoneVisibility>();
                 BuildLayout(root.transform, PhuQuocMap.Load(), true);
+                ZoneParts(root.transform, PhuQuocMap.Load());
                 Directory.CreateDirectory(Path.GetDirectoryName(ScenePath));
                 if (!EditorSceneManager.SaveScene(UnityEngine.SceneManagement.SceneManager.GetActiveScene(), ScenePath))
                     throw new InvalidOperationException("Could not save " + ScenePath);
@@ -49,6 +56,44 @@ namespace NihongoLife.EditorTools
                 if (Application.isBatchMode) EditorApplication.Exit(1);
                 else throw;
             }
+        }
+
+        private static void ZoneParts(Transform root, PhuQuocMap map)
+        {
+            var restaurant = root.Find("GanhNgon_Restaurant");
+            if (restaurant == null) throw new InvalidOperationException("Gánh Ngon is missing from the map data");
+            var old = restaurant.Find("PlayerSpawn_GanhNgon");
+            if (old != null) Object.DestroyImmediate(old.gameObject);
+            var spawn = new GameObject("Spawn_" + NihongoLife.Core.WorldLocationCatalog.PhuQuocArrival).transform;
+            spawn.SetParent(restaurant, false);
+            spawn.localPosition = new Vector3(0f, 0.15f, -6f);
+            spawn.gameObject.AddComponent<NihongoLife.Core.SceneSpawnPoint>().Configure(NihongoLife.Core.WorldLocationCatalog.PhuQuocArrival);
+
+            // The way home: back to Hibari (the station square), as the trip will start from there.
+            var exit = new GameObject("ExitToHibari");
+            exit.layer = ZoneBuildKit.InteractableLayer;
+            exit.transform.SetParent(restaurant, false);
+            exit.transform.localPosition = new Vector3(4f, 1f, -6f);
+            var box = exit.AddComponent<BoxCollider>();
+            box.isTrigger = true;
+            box.size = new Vector3(1.6f, 2f, 1.6f);
+            var portal = exit.AddComponent<NihongoLife.Interaction.ScenePortal>();
+            portal.Configure(NihongoLife.Core.WorldLocationCatalog.CityScene, NihongoLife.Core.WorldLocationCatalog.CityStationReturn, "ひばり町へ / Về Hibari", true);
+            var marker = GameObject.CreatePrimitive(PrimitiveType.Cylinder);
+            marker.name = "ExitMarker";
+            Object.DestroyImmediate(marker.GetComponent<Collider>());
+            marker.transform.SetParent(exit.transform, false);
+            marker.transform.localPosition = new Vector3(0f, -0.95f, 0f);
+            marker.transform.localScale = new Vector3(1.4f, 0.05f, 1.4f);
+            ZoneBuildKit.Text(exit.transform, "ExitLabel", "ひばり町へ\n<size=60%>Về Hibari</size>", new Vector3(0f, 1.6f, 0f), 0f, 0.35f, Color.white, 3f);
+
+            var preview = new GameObject("PreviewCamera") { tag = "MainCamera" };
+            preview.transform.SetParent(root, false);
+            preview.transform.localPosition = restaurant.localPosition + new Vector3(0f, 14f, -24f);
+            preview.transform.LookAt(restaurant.position);
+            preview.AddComponent<Camera>().farClipPlane = 3000f;
+            preview.AddComponent<AudioListener>();
+            preview.AddComponent<NihongoLife.Cameras.ZonePreviewCamera>();
         }
 
         /// <summary>Builds the island under <paramref name="root"/>. withModels=false builds primitives only (tests).</summary>
@@ -89,8 +134,13 @@ namespace NihongoLife.EditorTools
             }
 
             var places = new GameObject("Places").transform; places.SetParent(root, false);
+            var font = withModels ? AssetDatabase.LoadAssetAtPath<TMP_FontAsset>(ZoneBuildKit.FontPath) : null;
+            var placed = new List<Vector3>();
             foreach (var p in map.places)
             {
+                var at = map.ToWorld(p);
+                int crowd = placed.Count(q => (q - at).sqrMagnitude < 14f * 14f); // Dương Đông packs many places in a few hundred metres
+                placed.Add(at);
                 var marker = new GameObject("Place_" + p.id);
                 marker.transform.SetParent(places, false);
                 marker.transform.localPosition = map.ToWorld(p) + Vector3.up * 0.1f;
@@ -98,9 +148,10 @@ namespace NihongoLife.EditorTools
                 else { var c = GameObject.CreatePrimitive(PrimitiveType.Cube); c.transform.SetParent(marker.transform, false); }
                 var label = new GameObject("Label").AddComponent<TextMeshPro>();
                 label.transform.SetParent(marker.transform, false);
-                label.transform.localPosition = Vector3.up * 6f;
+                label.transform.localPosition = Vector3.up * (6f + crowd * 3.4f);
+                if (font != null) label.font = font;
                 label.text = p.nameVi + "\n<size=70%>" + p.nameJa + "</size>";
-                label.fontSize = 18; label.alignment = TextAlignmentOptions.Center;
+                label.fontSize = 12; label.alignment = TextAlignmentOptions.Center;
                 label.rectTransform.sizeDelta = new Vector2(30, 6);
             }
 

@@ -129,7 +129,7 @@ namespace NihongoLife.UI
             }
 
             NLUi.Label(_body, "AgeTitle", Loc.T("Theo tuổi", "With age", "年齢とともに"), 18f, NLUi.Gold, _font, FontStyles.Bold);
-            NLUi.Button(_body, "GrayWithAge", (state.grayWithAge ? "☑ " : "☐ ") + Loc.F("Tóc bạc dần từ {0} tuổi", "Hair greys from age {0}", "{0}歳から白髪に", options.grayFromAge), _font,
+            NLUi.Button(_body, "GrayWithAge", (state.grayWithAge ? "✓ " : "○ ") + Loc.F("Tóc bạc dần từ {0} tuổi", "Hair greys from age {0}", "{0}歳から白髪に", options.grayFromAge), _font,
                 () => CharacterLook.SetGrayWithAge(!state.grayWithAge), NLUi.Card, 15f, NLUi.Text, 42f);
             int lines = 0;
             foreach (var set in options.wrinkles) if (age >= set.minAge) lines++;

@@ -1721,3 +1721,13 @@ Giao việc đầy đủ trong `Docs/GROK_TASK_TRAILER_MARKETING.md` (bối cả
   - `word_update.ps1` dùng Word cập nhật mục lục, danh mục và xuất PDF;
   - `page_fill.py` báo trang thiếu nội dung.
   - Mục mới: 5.5 phòng khám, 5.6 Phú Quốc, 6.6 ngoại hình, 6.7 bệnh tật, 8.9–8.11 nghề nghiệp / Y tế / Gánh Ngon, 10.8 sổ tay, 12.4 nhạc gốc, 13.8 kiểm thử v7, bảng video YouTube @NihongoLifeGame, tài liệu tham khảo y khoa và Phú Quốc.
+
+## Cập nhật (2026-10-27 khuya, Claude) — Hết lỗi console khi vào đảo / phòng khám
+- **Đảo Phú Quốc thành zone thật:** vào là có người chơi, không còn "Player was not found".
+  - Đăng ký trong `WorldLocationCatalog` (`PhuQuocIslandScene`, spawn `phuquoc_ganh_ngon`) và `StandaloneZoneBootstrap`: bấm Play trong scene đảo sẽ nạp thị trấn rồi vào đảo.
+  - `PhuQuocIslandBuilder` dựng scene rỗng, đảo đặt cách thị trấn 4000 m. Không còn camera / đèn mặc định; có `SceneZoneVisibility`, `SceneSpawnPoint` trước Gánh Ngon, cổng "Về Hibari" (`ScenePortal`) và `ZonePreviewCamera`.
+  - Nhãn địa danh dùng font Noto (đủ dấu tiếng Việt), xếp tầng quanh Dương Đông để không đè nhau.
+- **Phòng khám:** 5 điểm khám (受付, 診察室, お薬, đo chiều cao, thị lực) bị "missing script" nên không bấm F được trong game, vì `ClinicSpot` nằm trong `ClinicVisit.cs`. Đã tách ra `ClinicSpot.cs` và sửa tham chiếu trong scene.
+- **Ga:** `StationBillboardLabel` cũng nằm chung file (`StationTravelController.cs`), đã tách và sửa tham chiếu trong `20_StationDistrict`.
+- **Bảng ngoại hình:** đổi ký tự ☑/☐ (font không có) thành ✓/○.
+- **Test mới `ZoneConsolePlayModeTests`:** vào Midori, Phú Quốc, phòng khám; thất bại khi có lỗi / cảnh báo console hoặc component mất script. `PhuQuocIslandPlayModeTests` nay kiểm tra người chơi đến Gánh Ngon, đi lại được trên đảo và có cổng về.

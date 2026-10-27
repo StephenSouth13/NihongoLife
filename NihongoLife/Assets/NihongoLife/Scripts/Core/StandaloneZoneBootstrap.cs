@@ -34,6 +34,7 @@ namespace NihongoLife.Core
                 WorldLocationCatalog.GameCenterScene => WorldLocationCatalog.GameCenterEntrance,
                 WorldLocationCatalog.MidoriIslandScene => WorldLocationCatalog.MidoriStation,
                 WorldLocationCatalog.ClinicScene => WorldLocationCatalog.ClinicEntrance,
+                WorldLocationCatalog.PhuQuocIslandScene => WorldLocationCatalog.PhuQuocArrival,
                 _ => string.Empty
             };
             if (string.IsNullOrEmpty(targetSpawn)) return;

@@ -1,7 +1,10 @@
 using System.Collections;
 using System.IO;
 using System.Linq;
+using NihongoLife.Core;
+using NihongoLife.Interaction;
 using NihongoLife.PhuQuoc;
+using NihongoLife.Player;
 using NUnit.Framework;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -10,30 +13,55 @@ using UnityEngine.TestTools;
 namespace NihongoLife.Tests
 {
     /// <summary>
-    /// The first pass of Phú Quốc (65_PhuQuocIsland, PhuQuocIslandBuilder): the island from real OpenStreetMap
-    /// coordinates, every place marked, Gánh Ngon with its service stations. Captures: Bao_Cao/phuquoc.
+    /// Phú Quốc (65_PhuQuocIsland, PhuQuocIslandBuilder) is a zone like Midori: pressing Play in it boots the town and
+    /// enters the island; the player arrives at Gánh Ngon, walks on the island, and has a way back to Hibari. The island
+    /// is built from real OpenStreetMap coordinates. Captures: Bao_Cao/phuquoc.
     /// </summary>
     public class PhuQuocIslandPlayModeTests
     {
         private static string Folder => Path.GetFullPath(Path.Combine(Application.dataPath, "../../Bao_Cao/phuquoc"));
 
         [UnityTest]
-        public IEnumerator Island_PlacesAndGanhNgon()
+        public IEnumerator Island_PlacesGanhNgonArrivalAndWayBack()
         {
             LogAssert.ignoreFailingMessages = true;
-            yield return SceneManager.LoadSceneAsync("65_PhuQuocIsland");
-            yield return null;
+            yield return SceneManager.LoadSceneAsync(WorldLocationCatalog.PhuQuocIslandScene);
+            PlayerController player = null;
+            for (float t = 0f; t < 40f; t += Time.unscaledDeltaTime)
+            {
+                player = Object.FindFirstObjectByType<PlayerController>();
+                var flow = Object.FindFirstObjectByType<SceneFlowController>();
+                if (player != null && flow != null && !flow.IsLoading && SceneManager.GetActiveScene().name == WorldLocationCatalog.PhuQuocIslandScene) break;
+                yield return null;
+            }
+            Assert.AreEqual(WorldLocationCatalog.PhuQuocIslandScene, SceneManager.GetActiveScene().name, "Play in the island boots the town and enters it");
+            Assert.NotNull(player, "The town's player came along");
+            yield return new WaitForSecondsRealtime(1f);
+
             var map = PhuQuocMap.Load();
-            var places = GameObject.Find("PhuQuocIsland/Places");
-            Assert.NotNull(places, "Places group");
-            Assert.AreEqual(map.places.Length, places.transform.childCount, "Every real place has a marker");
-            Assert.NotNull(GameObject.Find("PhuQuocIsland/Island_Beach").GetComponent<MeshCollider>(), "Walkable island");
+            var root = GameObject.Find("PhuQuocIsland").transform;
+            Vector3 P(string id) => root.TransformPoint(map.ToWorld(map.Place(id)));
+            var places = root.Find("Places");
+            Assert.AreEqual(map.places.Length, places.childCount, "Every real place has a marker");
+            Assert.Greater(Vector3.Distance(root.position, Vector3.zero), 1000f, "The island sits far outside the town");
             var spots = Object.FindObjectsByType<GanhNgonSpot>(FindObjectsSortMode.None);
             Assert.AreEqual(8, spots.Length, "Gánh Ngon: reception, four tables, kitchen pass, pub bar, manager");
-            Assert.IsTrue(spots.Any(s => s.station == GanhNgonStation.Manager));
+
+            // Arrived in front of Gánh Ngon, on the ground.
+            Assert.Less(Vector3.Distance(player.transform.position, P("ganh_ngon")), 12f, "Arrives at Gánh Ngon: " + player.transform.position);
+            // Walks on the island (the real CharacterController, a few metres along the street).
+            var cc = player.GetComponent<CharacterController>();
+            Vector3 start = player.transform.position;
+            for (float t = 0f; t < 1.5f; t += Time.deltaTime)
+            {
+                cc.Move(Vector3.right * 2.4f * Time.deltaTime + Vector3.down * 2f * Time.deltaTime);
+                yield return null;
+            }
+            Assert.Greater(Vector3.Distance(start, player.transform.position), 2f, "Walks");
+            Assert.Greater(player.transform.position.y, root.position.y - 0.5f, "Stays on the island, does not fall through");
+            Assert.IsTrue(Object.FindObjectsByType<ScenePortal>(FindObjectsSortMode.None).Any(p => p.gameObject.scene.name == WorldLocationCatalog.PhuQuocIslandScene), "A way back to Hibari");
 
             // Geography holds: An Thới south of Dương Đông, Hàm Ninh east, Gành Dầu north-west.
-            Vector3 P(string id) => map.ToWorld(map.Place(id));
             Assert.Less(P("an_thoi").z, P("ganh_ngon").z);
             Assert.Greater(P("ham_ninh").x, P("ganh_ngon").x);
             Assert.Less(P("ganh_dau").x, P("ganh_ngon").x);
@@ -43,12 +71,12 @@ namespace NihongoLife.Tests
             cam.clearFlags = CameraClearFlags.SolidColor;
             cam.backgroundColor = new Color(0.55f, 0.75f, 0.9f);
             cam.farClipPlane = 3000f;
-            var g = P("ganh_ngon");
-            cam.transform.SetPositionAndRotation(new Vector3(-20f, 520f, -40f), Quaternion.Euler(90f, 0f, 0f));
+            cam.transform.SetPositionAndRotation(root.position + new Vector3(-20f, 520f, -40f), Quaternion.Euler(90f, 0f, 0f));
             cam.fieldOfView = 60f;
             Capture(cam, "01_island_overview");
-            cam.transform.position = g + new Vector3(0f, 18f, -26f);
-            cam.transform.LookAt(g + new Vector3(0f, 0f, -2f));
+            var g = P("ganh_ngon");
+            cam.transform.position = g + new Vector3(0f, 22f, -34f);
+            cam.transform.LookAt(g + new Vector3(0f, 2f, -2f));
             cam.fieldOfView = 50f;
             Capture(cam, "02_ganh_ngon");
             cam.transform.position = P("an_thoi") + new Vector3(-30f, 60f, -60f);
