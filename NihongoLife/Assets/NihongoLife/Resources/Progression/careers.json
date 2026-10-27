@@ -1242,6 +1242,391 @@
       ]
     },
     {
+      "id": "hospitality",
+      "nameVi": "Nhà hàng & dịch vụ (Phú Quốc)",
+      "nameEn": "Restaurant & service (Phú Quốc)",
+      "nameJa": "レストラン・サービス（フーコック）",
+      "descriptionVi": "Làm ở Gánh Ngon, 113 Trần Hưng Đạo, Dương Đông: phục vụ bàn, lễ tân phòng VIP, phụ bếp, quầy pub — tiếp khách Nhật, Anh và khắp nơi. Rồi chọn: bếp trưởng hay quản lý nhà hàng.",
+      "descriptionEn": "Work at Gánh Ngon, 113 Trần Hưng Đạo, Dương Đông: waiting tables, VIP-room reception, kitchen help, the pub bar — serving guests from Japan, English speakers and everyone. Then choose: head chef or restaurant manager.",
+      "descriptionJa": "ガインゴン（ズオンドン）で ホール・受付・厨房・バー。いずれ 料理長か 支配人へ。",
+      "workplaceVi": "Nhà hàng Gánh Ngon, Phú Quốc",
+      "workplaceEn": "Gánh Ngon Restaurant, Phú Quốc",
+      "workplaceJa": "ガインゴン（フーコック）",
+      "shiftQuest": "job_ganhngon_shift",
+      "bossNameJa": "マイさん",
+      "bossNameVi": "Chị Mai",
+      "workStart": 10,
+      "workEnd": 16,
+      "workDays": [
+        1,
+        2,
+        3,
+        5,
+        6,
+        0
+      ],
+      "branchAtLevel": 4,
+      "levels": [
+        {
+          "titleVi": "Phục vụ tập sự",
+          "titleEn": "Trainee server",
+          "titleJa": "見習いホール",
+          "salary": 230,
+          "shiftsToPromote": 2,
+          "knowledgeToPromote": 0
+        },
+        {
+          "titleVi": "Phục vụ / lễ tân",
+          "titleEn": "Server / receptionist",
+          "titleJa": "ホール・受付",
+          "salary": 350,
+          "shiftsToPromote": 3,
+          "knowledgeToPromote": 150
+        },
+        {
+          "titleVi": "Trưởng ca",
+          "titleEn": "Shift lead",
+          "titleJa": "シフトリーダー",
+          "salary": 520,
+          "shiftsToPromote": 3,
+          "knowledgeToPromote": 250
+        }
+      ],
+      "branches": [
+        {
+          "id": "kitchen",
+          "nameVi": "Bếp",
+          "nameEn": "Kitchen",
+          "nameJa": "厨房コース",
+          "descriptionVi": "Than nướng, lẩu, cơm niêu — đứng bếp.",
+          "descriptionEn": "Charcoal grill, hotpot, clay-pot rice — in the kitchen.",
+          "descriptionJa": "炭火・鍋・土鍋ごはん。",
+          "levels": [
+            {
+              "titleVi": "Phụ bếp",
+              "titleEn": "Commis cook",
+              "titleJa": "調理補助",
+              "salary": 720,
+              "shiftsToPromote": 4,
+              "knowledgeToPromote": 350
+            },
+            {
+              "titleVi": "Đầu bếp chính",
+              "titleEn": "Line cook",
+              "titleJa": "調理師",
+              "salary": 1000,
+              "shiftsToPromote": 5,
+              "knowledgeToPromote": 500
+            },
+            {
+              "titleVi": "Bếp trưởng",
+              "titleEn": "Head chef",
+              "titleJa": "料理長",
+              "salary": 1400,
+              "shiftsToPromote": 0,
+              "knowledgeToPromote": 0
+            }
+          ]
+        },
+        {
+          "id": "manager",
+          "nameVi": "Quản lý",
+          "nameEn": "Management",
+          "nameJa": "マネジメントコース",
+          "descriptionVi": "Khách, phòng VIP, quầy pub, đội ngũ — điều hành cả nhà hàng.",
+          "descriptionEn": "Guests, VIP rooms, the pub bar and the team — run the whole restaurant.",
+          "descriptionJa": "お客さま・VIPルーム・バー・チーム。",
+          "levels": [
+            {
+              "titleVi": "Phó quản lý",
+              "titleEn": "Assistant manager",
+              "titleJa": "副支配人",
+              "salary": 700,
+              "shiftsToPromote": 4,
+              "knowledgeToPromote": 350
+            },
+            {
+              "titleVi": "Quản lý nhà hàng",
+              "titleEn": "Restaurant manager",
+              "titleJa": "支配人",
+              "salary": 980,
+              "shiftsToPromote": 5,
+              "knowledgeToPromote": 500
+            },
+            {
+              "titleVi": "Tổng quản lý",
+              "titleEn": "General manager",
+              "titleJa": "総支配人",
+              "salary": 1400,
+              "shiftsToPromote": 0,
+              "knowledgeToPromote": 0
+            }
+          ]
+        }
+      ],
+      "interviews": [
+        {
+          "toLevel": 2,
+          "lineJa": "にほんじんの おきゃくさまが 3にん きました。なんと いいますか。",
+          "readingJa": "Nihonjin no okyakusama ga sannin kimashita. Nan to iimasu ka.",
+          "meaningVi": "Ba khách Nhật bước vào. Bạn nói gì?",
+          "meaningEn": "Three Japanese guests come in. What do you say?",
+          "choices": [
+            {
+              "ja": "いらっしゃいませ。3めいさまですね。こちらへ どうぞ。",
+              "vi": "Xin chào! Ba người ạ, mời đi lối này.",
+              "en": "Welcome! Three of you — this way, please.",
+              "correct": true
+            },
+            {
+              "ja": "ごちそうさまでした。",
+              "vi": "Cảm ơn vì bữa ăn.",
+              "en": "Thanks for the meal.",
+              "correct": false,
+              "hintVi": "Khách nói câu này sau khi ăn.",
+              "hintEn": "Guests say that after eating."
+            }
+          ]
+        },
+        {
+          "toLevel": 3,
+          "lineJa": "おきゃくさまが「コムニウを ください」と いいました。いまは よる 8じです。",
+          "readingJa": "Okyakusama ga 'komu niu o kudasai' to iimashita. Ima wa yoru hachiji desu.",
+          "meaningVi": "Khách gọi cơm niêu lúc 20:00. Bạn trả lời?",
+          "meaningEn": "A guest asks for clay-pot rice at 8 pm. Your answer?",
+          "choices": [
+            {
+              "ja": "もうしわけございません。コムニウは ランチ（10じ〜13じ）だけです。",
+              "vi": "Xin lỗi, cơm niêu chỉ có buổi trưa (10:00–13:00).",
+              "en": "Sorry, clay-pot rice is lunch only (10:00–13:00).",
+              "correct": true
+            },
+            {
+              "ja": "はい、すぐ おもちします。",
+              "vi": "Vâng, em mang ngay.",
+              "en": "Sure, right away.",
+              "correct": false,
+              "hintVi": "Cơm niêu chỉ phục vụ 10:00–13:00.",
+              "hintEn": "Clay-pot rice is only served 10:00–13:00."
+            }
+          ]
+        },
+        {
+          "toLevel": 4,
+          "lineJa": "これから どちらの みちに すすみたいですか。",
+          "readingJa": "Korekara dochira no michi ni susumitai desu ka.",
+          "meaningVi": "Bạn muốn đi tiếp theo hướng nào?",
+          "meaningEn": "Which path do you want to follow?",
+          "choices": [
+            {
+              "ja": "ちゅうぼうで りょうりを まなびたいです。",
+              "vi": "Em muốn học nấu ăn trong bếp.",
+              "en": "I want to learn to cook in the kitchen.",
+              "correct": true,
+              "branch": "kitchen"
+            },
+            {
+              "ja": "みせの マネジメントを まなびたいです。",
+              "vi": "Em muốn học quản lý nhà hàng.",
+              "en": "I want to learn to manage the restaurant.",
+              "correct": true,
+              "branch": "manager"
+            },
+            {
+              "ja": "わかりません。",
+              "vi": "Em không biết.",
+              "en": "I don't know.",
+              "correct": false,
+              "hintVi": "Hãy chọn một hướng.",
+              "hintEn": "Pick a path."
+            }
+          ]
+        },
+        {
+          "toLevel": 5,
+          "lineJa": "さかなを きる まえに なにを しますか。",
+          "readingJa": "Sakana o kiru mae ni nani o shimasu ka.",
+          "meaningVi": "Trước khi làm cá phải làm gì?",
+          "meaningEn": "What do you do before cutting fish?",
+          "choices": [
+            {
+              "ja": "てを あらって、まな板を わけます。",
+              "vi": "Rửa tay và dùng thớt riêng.",
+              "en": "Wash my hands and use a separate board.",
+              "correct": true
+            },
+            {
+              "ja": "そのまま きります。",
+              "vi": "Cắt luôn.",
+              "en": "Just cut it.",
+              "correct": false,
+              "hintVi": "Vệ sinh an toàn thực phẩm là trước tiên.",
+              "hintEn": "Food hygiene comes first."
+            }
+          ],
+          "branch": "kitchen"
+        },
+        {
+          "toLevel": 6,
+          "lineJa": "きょうは とても いそがしいです。りょうりちょうとして どう しますか。",
+          "readingJa": "Kyō wa totemo isogashii desu. Ryōrichō to shite dō shimasu ka.",
+          "meaningVi": "Hôm nay rất đông. Là bếp trưởng bạn làm gì?",
+          "meaningEn": "It's very busy today. As head chef, what do you do?",
+          "choices": [
+            {
+              "ja": "ちゅうもんの じゅんばんを きめて、みんなに しじします。",
+              "vi": "Sắp thứ tự món và phân việc cho cả bếp.",
+              "en": "Set the order of dishes and direct the team.",
+              "correct": true
+            },
+            {
+              "ja": "ひとりで ぜんぶ つくります。",
+              "vi": "Tự nấu hết một mình.",
+              "en": "Cook everything myself.",
+              "correct": false,
+              "hintVi": "Bếp trưởng điều phối cả đội.",
+              "hintEn": "A head chef leads the team."
+            }
+          ],
+          "branch": "kitchen"
+        },
+        {
+          "toLevel": 5,
+          "lineJa": "VIPルームの よやくが かさなりました。どう しますか。",
+          "readingJa": "VIP rūmu no yoyaku ga kasanarimashita. Dō shimasu ka.",
+          "meaningVi": "Hai khách đặt trùng phòng VIP. Bạn làm gì?",
+          "meaningEn": "Two bookings clash for a VIP room. What do you do?",
+          "choices": [
+            {
+              "ja": "ほかの VIPルームを ごあんないします。",
+              "vi": "Mời một nhóm sang phòng VIP khác (nhà hàng có 9 phòng).",
+              "en": "Offer one group another VIP room (there are nine).",
+              "correct": true
+            },
+            {
+              "ja": "あとから きた おきゃくさまを かえします。",
+              "vi": "Mời nhóm đến sau về.",
+              "en": "Send the later group away.",
+              "correct": false,
+              "hintVi": "Nhà hàng có 9 phòng VIP — hãy sắp xếp.",
+              "hintEn": "There are 9 VIP rooms — rearrange."
+            }
+          ],
+          "branch": "manager"
+        },
+        {
+          "toLevel": 6,
+          "lineJa": "いろいろな くにの おきゃくさまが きます。みせとして なにが たいせつですか。",
+          "readingJa": "Iroiro na kuni no okyakusama ga kimasu. Mise to shite nani ga taisetsu desu ka.",
+          "meaningVi": "Khách từ nhiều nước. Điều gì quan trọng với nhà hàng?",
+          "meaningEn": "Guests come from many countries. What matters most?",
+          "choices": [
+            {
+              "ja": "スタッフが にほんごや えいごで あんないできる ことです。",
+              "vi": "Nhân viên đón khách được bằng tiếng Nhật, tiếng Anh.",
+              "en": "Staff who can welcome guests in Japanese and English.",
+              "correct": true
+            },
+            {
+              "ja": "ベトナムごだけで だいじょうぶです。",
+              "vi": "Chỉ tiếng Việt là đủ.",
+              "en": "Vietnamese only is fine.",
+              "correct": false,
+              "hintVi": "Gánh Ngon đón khách đa ngôn ngữ.",
+              "hintEn": "Gánh Ngon welcomes multilingual guests."
+            }
+          ],
+          "branch": "manager"
+        }
+      ],
+      "events": [
+        {
+          "id": "hospitality_allergy",
+          "lineJa": "すみません、エビの アレルギーが あります。",
+          "readingJa": "Sumimasen, ebi no arerugī ga arimasu.",
+          "meaningVi": "Xin lỗi, tôi dị ứng tôm.",
+          "meaningEn": "Excuse me, I'm allergic to prawns.",
+          "choices": [
+            {
+              "ja": "かしこまりました。エビを ぬいて、ちゅうぼうに つたえます。",
+              "vi": "Vâng, em bỏ tôm và báo bếp ngay.",
+              "en": "Certainly — no prawns, I'll tell the kitchen.",
+              "correct": true,
+              "performance": 6,
+              "reputation": 3,
+              "mood": "Happy"
+            },
+            {
+              "ja": "だいじょうぶですよ。",
+              "vi": "Không sao đâu ạ.",
+              "en": "It'll be fine.",
+              "correct": false,
+              "hintVi": "Dị ứng phải báo bếp.",
+              "hintEn": "Allergies must go to the kitchen.",
+              "performance": -6,
+              "mood": "Tense"
+            }
+          ]
+        },
+        {
+          "id": "hospitality_english_guest",
+          "lineJa": "Excuse me, do you have a table by the window?",
+          "readingJa": "(English)",
+          "meaningVi": "Xin lỗi, còn bàn cạnh cửa sổ không?",
+          "meaningEn": "Excuse me, do you have a table by the window?",
+          "choices": [
+            {
+              "ja": "Yes, this way please.",
+              "vi": "Có ạ, mời anh đi lối này.",
+              "en": "Yes, this way please.",
+              "correct": true,
+              "performance": 5,
+              "reputation": 2,
+              "mood": "Happy"
+            },
+            {
+              "ja": "いらっしゃいませ。",
+              "vi": "Xin chào.",
+              "en": "Welcome (Japanese).",
+              "correct": false,
+              "hintVi": "Khách nói tiếng Anh — trả lời bằng tiếng Anh.",
+              "hintEn": "The guest speaks English — answer in English.",
+              "performance": 1,
+              "mood": "Tense"
+            }
+          ]
+        },
+        {
+          "id": "hospitality_hot_pot",
+          "lineJa": "なべが あつい ですね。",
+          "readingJa": "Nabe ga atsui desu ne.",
+          "meaningVi": "Nồi lẩu nóng nhỉ.",
+          "meaningEn": "The hotpot is hot, isn't it?",
+          "choices": [
+            {
+              "ja": "はい、きを つけて ください。とりわけましょうか。",
+              "vi": "Vâng, xin cẩn thận. Em chia ra giúp nhé?",
+              "en": "Yes, please be careful. Shall I serve it for you?",
+              "correct": true,
+              "performance": 5,
+              "reputation": 2,
+              "mood": "Happy"
+            },
+            {
+              "ja": "さむいですね。",
+              "vi": "Lạnh nhỉ.",
+              "en": "It's cold.",
+              "correct": false,
+              "hintVi": "Lẩu gà sầu riêng đang sôi.",
+              "hintEn": "The chicken-durian hotpot is boiling.",
+              "performance": -2,
+              "mood": "Tense"
+            }
+          ]
+        }
+      ]
+    },
+    {
       "id": "medical",
       "nameVi": "Y tế",
       "nameEn": "Medicine",
