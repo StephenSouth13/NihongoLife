@@ -291,7 +291,8 @@ namespace NihongoLife.UI
                 (GameInputId.CameraRotateRight, "Xoay góc nhìn phải", "Rotate view right", "右回転"),
                 (GameInputId.CycleTarget, "Đổi mục tiêu tương tác", "Next interaction target", "対象を切り替え"),
                 (GameInputId.Social, "Bạn bè & tin nhắn", "Friends & messages", "フレンド・メッセージ"),
-                (GameInputId.PushToTalk, "Giữ để nói (voice)", "Push to talk", "押して話す")
+                (GameInputId.PushToTalk, "Giữ để nói (voice)", "Push to talk", "押して話す"),
+                (GameInputId.Handbook, "Sổ tay (cẩm nang)", "Handbook", "ハンドブック")
             };
 
             for (int i = 0; i < rows.Length; i++)

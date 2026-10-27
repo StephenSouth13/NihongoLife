@@ -1,0 +1,60 @@
+{
+  "schema": "nihongolife.handbook.v1",
+  "note": "The handbook's 案内 (introduction) chapter. Body lines starting with '• ' are bullets; '## ' starts a section. Places come from locations.json, illnesses from Health/illnesses.json, careers from Progression/careers.json, music from Audio/music.json.",
+  "intro": [
+    {
+      "id": "welcome", "glyph": "和", "color": "#C0504D", "ja": "ようこそ、ひばりちょうへ",
+      "titleVi": "Chào mừng đến NihongoLife", "titleEn": "Welcome to NihongoLife",
+      "subtitleVi": "Sống ở Nhật để học tiếng Nhật", "subtitleEn": "Live in Japan to learn Japanese",
+      "bodyVi": "NihongoLife là một trò chơi mô phỏng cuộc sống ở thị trấn Hibari-chō (ひばり町), Nhật Bản. Bạn học tiếng Nhật bằng cách sống thật: chào hỏi hàng xóm, mua onigiri ở konbini, đi tàu, làm thêm, khám bệnh, kết bạn.\n## Mỗi ngày của bạn\n• Ăn, uống, ngủ để giữ sức khoẻ.\n• Nói chuyện và làm nhiệm vụ để tích luỹ trí tuệ (知恵).\n• Trí tuệ mở dần các địa điểm mới của thị trấn.\n• Từ cấp 10 chọn một nghề và thăng tiến như ngoài đời.\n## Học thật, thi thật\nLuyện JLPT và IELTS ngay trong game (phím K), có chấm điểm và giải thích.",
+      "bodyEn": "NihongoLife is a life simulation set in the town of Hibari-chō (ひばり町), Japan. You learn Japanese by living there: greet the neighbours, buy onigiri at the konbini, ride the train, work part-time, see a doctor, make friends.\n## Your day\n• Eat, drink and sleep to stay healthy.\n• Talk and finish tasks to gain knowledge (知恵).\n• Knowledge opens the town's places one by one.\n• From level 10 choose a career and climb it as in real life.\n## Real study, real exams\nPractise for the JLPT and IELTS inside the game (K), with scores and explanations."
+    },
+    {
+      "id": "controls", "glyph": "操", "color": "#4F81BD", "ja": "そうさ",
+      "titleVi": "Điều khiển", "titleEn": "Controls",
+      "subtitleVi": "Bàn phím, chuột và cảm ứng", "subtitleEn": "Keyboard, mouse and touch",
+      "bodyVi": "## Di chuyển\n• W A S D — đi · Shift — chạy · Space — nhảy\n• F — tương tác (nói chuyện, mua, ngồi…) · Q — đổi mục tiêu\n• , và . — xoay góc nhìn · H — góc nhìn trên cao · giữ Ctrl — hiện con trỏ\n## Cửa sổ\n• B — balo · Tab — nhân vật · M — bản đồ · N — sổ nhiệm vụ\n• K — luyện thi · U — bạn bè & tin nhắn · L — sổ ghi chép · Y — cuốn sổ tay này\n• E — biểu cảm · C — dùng vật phẩm · G — vứt đồ · O — cài đặt · Esc — đóng\n## Online\n• Enter — chat · T — giữ để nói (voice)\nĐổi phím trong Cài đặt → Điều khiển. Trên điện thoại có cần điều khiển và nút cảm ứng.",
+      "bodyEn": "## Moving\n• W A S D — walk · Shift — run · Space — jump\n• F — interact (talk, buy, sit…) · Q — next target\n• , and . — turn the view · H — overview camera · hold Ctrl — cursor\n## Windows\n• B — bag · Tab — profile · M — map · N — task journal\n• K — exam practice · U — friends & messages · L — notebook · Y — this handbook\n• E — emotes · C — use item · G — drop item · O — settings · Esc — close\n## Online\n• Enter — chat · T — push to talk\nRebind keys in Settings → Controls. Phones get a joystick and touch buttons."
+    },
+    {
+      "id": "body", "glyph": "体", "color": "#3E9E7E", "ja": "からだの ようす",
+      "titleVi": "Cơ thể và nhu cầu", "titleEn": "Your body and needs",
+      "subtitleVi": "Máu, thể lực, no, nước, buồn ngủ", "subtitleEn": "Health, stamina, food, water, sleepiness",
+      "bodyVi": "Năm vòng tròn trên HUD là cơ thể bạn.\n• Máu (♥): tự hồi khi no và đủ nước (từ 30% trở lên). Một bữa ăn hồi ngay một ít, ngủ 8 tiếng hồi đầy. Về 0 là ngất — bạn tỉnh dậy ở phòng khám Hibari.\n• Thể lực: chạy thì tốn, đứng nghỉ thì hồi.\n• No / Nước: giảm dần, nhanh hơn khi chạy hay đứng nắng gắt buổi trưa.\n• Buồn ngủ: đầy thì gà gật rồi ngủ gục.\n## Thời tiết\nMưa làm ướt người (lâu sẽ bị cảm), nắng trưa làm khát nhanh. Xem chương 健康 để biết các loại bệnh và cách chữa.",
+      "bodyEn": "The five rings on the HUD are your body.\n• Health (♥): heals by itself while fed and watered (30 % or more). A meal heals a little at once, 8 hours of sleep heal fully. At zero you faint — and wake up at Hibari Clinic.\n• Stamina: spent by running, back when you rest.\n• Food / Water: drop over time, faster when running or in the midday sun.\n• Sleepiness: when full you nod off and fall asleep.\n## Weather\nRain soaks you (long enough and you catch a cold), the midday sun makes you thirsty. See the 健康 chapter for illnesses and their treatment."
+    },
+    {
+      "id": "learning", "glyph": "学", "color": "#D08A2E", "ja": "まなび",
+      "titleVi": "Học tiếng Nhật và trí tuệ", "titleEn": "Learning Japanese and knowledge",
+      "subtitleVi": "Mỗi câu nói đều là một bài học", "subtitleEn": "Every line is a lesson",
+      "bodyVi": "• Mỗi đoạn hội thoại có chữ Nhật, cách đọc và nghĩa — bật/tắt romaji trong Cài đặt.\n• Trả lời đúng bằng tiếng Nhật ở quầy, nơi làm, phòng khám để nhận trí tuệ (知恵).\n• Học thêm (nút 「Học thêm」 trên HUD) và luyện thi JLPT N5–N1, IELTS (phím K).\n• Sổ ghi chép (L) để chép từ mới; tô sáng trong bài thi rồi chép sang sổ.\n## Trí tuệ mở thị trấn\nVới tài khoản, các địa điểm mở dần theo trí tuệ và cốt truyện. Khách (không đăng nhập) được mở toàn bộ thị trấn ngay.",
+      "bodyEn": "• Every conversation shows the Japanese, its reading and its meaning — toggle romaji in Settings.\n• Answer correctly in Japanese at counters, at work and at the clinic to earn knowledge (知恵).\n• Extra study (the 「Study」 button on the HUD) and JLPT N5–N1 / IELTS practice (K).\n• The notebook (L) keeps new words; highlight in exams and copy to it.\n## Knowledge opens the town\nWith an account, places open with knowledge and the story. Guests (not signed in) get the whole town at once."
+    },
+    {
+      "id": "work", "glyph": "働", "color": "#9C6B3E", "ja": "しごと",
+      "titleVi": "Làm thêm và nghề nghiệp", "titleEn": "Part-time work and careers",
+      "subtitleVi": "Ca làm, thăng chức, cột mốc", "subtitleEn": "Shifts, promotions, milestones",
+      "bodyVi": "• Bảng tuyển người ở mỗi nơi làm: nhận ca trong sổ nhiệm vụ (N), làm xong nhận tiền.\n• Từ cấp 10: chọn một nghề (Bán lẻ, Ẩm thực, Nông nghiệp, Y tế). Làm đúng giờ để tăng hiệu suất, qua phỏng vấn tiếng Nhật để thăng chức, bậc 4 chọn hướng riêng.\n• Cột mốc nghề thưởng yen và trí tuệ.\n## Đừng làm quá sức\n2 ca một ngày dễ đau mỏi cơ, 3 ca thì kiệt sức (過労). Bị bệnh thì làm kém hơn; bị cúm nên nghỉ ở nhà.",
+      "bodyEn": "• Every workplace has a hiring board: take a shift in the task journal (N) and get paid when it is done.\n• From level 10: pick a career (Retail, Food, Farming, Medicine). Work on time to raise performance, pass a Japanese interview to be promoted, choose your path at level 4.\n• Career milestones pay yen and knowledge.\n## Don't overdo it\nTwo shifts a day bring muscle aches, three bring exhaustion (過労). Illness makes you work worse; with flu, stay home."
+    },
+    {
+      "id": "online", "glyph": "友", "color": "#8064A2", "ja": "オンライン",
+      "titleVi": "Chơi online và bạn bè", "titleEn": "Online play and friends",
+      "subtitleVi": "Cần tài khoản đã đăng ký", "subtitleEn": "Needs a registered account",
+      "bodyVi": "Đăng nhập bằng email để:\n• gặp người chơi khác trong thị trấn, chat khu vực, kết bạn, nhắn tin;\n• làm nhiệm vụ cùng nhau (co-op), gọi voice, vào phòng luyện nói (Speaking);\n• ghé thăm đảo của bạn bè, gửi điểm lên bảng xếp hạng.\nKhách chơi được toàn bộ phần ngoại tuyến; tiến trình của khách chuyển vào tài khoản mới ở lần đăng nhập đầu tiên.",
+      "bodyEn": "Sign in with an email to:\n• meet other players in town, use area chat, make friends and send messages;\n• do tasks together (co-op), voice-call, join the Speaking room;\n• visit friends' islands and post scores to the rankings.\nGuests can play everything offline; a guest's progress moves into a new account at its first sign-in."
+    },
+    {
+      "id": "tips", "glyph": "知", "color": "#5B8C5A", "ja": "コツ",
+      "titleVi": "Mẹo sống ở Hibari-chō", "titleEn": "Tips for life in Hibari-chō",
+      "subtitleVi": "Những điều người Nhật hay làm", "subtitleEn": "Things people in Japan do",
+      "bodyVi": "• Vào nhà người Nhật hay phòng khám thì đổi dép (スリッパ).\n• Ở konbini: 「ふくろ いりますか」 — bạn có cần túi không?\n• Rửa tay và súc miệng (てあらい・うがい) khi về nhà — người Nhật phòng cảm như vậy.\n• Mùa xuân đeo khẩu trang chống phấn hoa; mùa hè mang theo nước.\n• Đi khám thì mang thẻ bảo hiểm (保険証): bảo hiểm trả 70%, bạn trả 30%.",
+      "bodyEn": "• Change into slippers (スリッパ) at Japanese homes and clinics.\n• At the konbini: 「ふくろ いりますか」 — do you need a bag?\n• Wash your hands and gargle (てあらい・うがい) when you get home — that is how people in Japan avoid colds.\n• Wear a mask against pollen in spring; carry water in summer.\n• Bring your health-insurance card (保険証) to the doctor: insurance pays 70 %, you pay 30 %."
+    }
+  ],
+  "doctorPath": {
+    "titleVi": "Con đường trở thành bác sĩ ở Nhật", "titleEn": "Becoming a doctor in Japan",
+    "bodyVi": "## Ngoài đời thật\n• Đậu vào trường y (医学部) — học 6 năm. Năm 4 thi chung (CBT, OSCE), năm 5–6 thực tập lâm sàng ở bệnh viện.\n• Thi bác sĩ quốc gia (医師国家試験), mỗi năm một lần vào tháng 2 — tỉ lệ đậu khoảng 90%.\n• Bác sĩ nội trú (初期臨床研修) ít nhất 2 năm, luân chuyển nhiều khoa.\n• Bác sĩ đào tạo chuyên khoa (専攻医) khoảng 3 năm ở một trong 19 chuyên khoa cơ bản → bác sĩ chuyên khoa (専門医).\n• Sau đó: làm ở bệnh viện, hoặc mở phòng khám riêng làm giám đốc (院長).\n## Dược sĩ\nTrường dược (薬学部) 6 năm → thi dược sĩ quốc gia (薬剤師国家試験) → dược sĩ → dược sĩ phụ trách (管理薬剤師) → trưởng nhà thuốc.\n## Trong game\nNghề Y tế đi đúng các bước này (rút gọn thời gian): lễ tân y vụ → trợ lý điều dưỡng → sinh viên y/dược → bậc 4 chọn: bác sĩ nội trú → đào tạo chuyên khoa → bác sĩ chuyên khoa · giám đốc phòng khám, hoặc dược sĩ → dược sĩ phụ trách → trưởng nhà thuốc. Mỗi lần thăng chức là một câu hỏi y khoa thật bằng tiếng Nhật.",
+    "bodyEn": "## In real life\n• Get into medical school (医学部) — six years. Common exams (CBT, OSCE) in year 4, clinical placements in years 5–6.\n• The national medical exam (医師国家試験), once a year in February — about 90 % pass.\n• Junior residency (初期臨床研修), at least two years rotating through departments.\n• Specialty training (専攻医), about three years in one of 19 basic specialties → specialist (専門医).\n• Then: a hospital post, or your own clinic as its director (院長).\n## Pharmacist\nPharmacy school (薬学部) six years → national pharmacist exam (薬剤師国家試験) → pharmacist → supervising pharmacist (管理薬剤師) → head of the pharmacy.\n## In the game\nThe Medicine career follows these steps (time compressed): medical receptionist → nursing assistant → medical/pharmacy student → at level 4: resident → specialty trainee → specialist · clinic director, or pharmacist → supervising pharmacist → head pharmacist. Every promotion is a real medical question in Japanese."
+  }
+}

@@ -68,7 +68,8 @@ namespace NihongoLife.UI
             "QuestButton" => NihongoLife.Core.Loc.T("Nhiệm vụ", "Tasks", "タスク"),
             "ExamButton" => NihongoLife.Core.Loc.T("Luyện thi", "Exams", "試験"),
             "StudyButton" => NihongoLife.Core.Loc.T("Học thêm", "Study", "学習"),
-            "NotebookButton" => NihongoLife.Core.Loc.T("Sổ tay", "Notebook", "ノート"),
+            "NotebookButton" => NihongoLife.Core.Loc.T("Sổ ghi", "Notebook", "ノート"),
+            "HandbookButton" => NihongoLife.Core.Loc.T("Sổ tay", "Handbook", "ハンドブック"),
             "OverviewButton" => NihongoLife.Core.Loc.T("Góc nhìn", "View", "視点"),
             "SettingsButton" => NihongoLife.Core.Loc.T("Cài đặt", "Settings", "設定"),
             _ => fallback,
@@ -187,6 +188,10 @@ namespace NihongoLife.UI
             var portrait = new GameObject("Portrait", typeof(RectTransform), typeof(LayoutElement)).GetComponent<RectTransform>();
             portrait.SetParent(widget, false);
             var portraitLayout = portrait.GetComponent<LayoutElement>();
+            // Tap the portrait: the look panel (hair, beard, what age changes).
+            var portraitHit = portrait.gameObject.AddComponent<Image>();
+            portraitHit.color = new Color(0f, 0f, 0f, 0f);
+            portrait.gameObject.AddComponent<Button>().onClick.AddListener(() => CharacterLookUI.Open());
             portraitLayout.preferredWidth = portraitLayout.minWidth = portraitSize; portraitLayout.preferredHeight = portraitLayout.minHeight = portraitSize;
             var mask = new GameObject("Mask", typeof(RectTransform), typeof(Image), typeof(Mask)).GetComponent<RectTransform>();
             mask.SetParent(portrait, false);
@@ -485,13 +490,16 @@ namespace NihongoLife.UI
                 _weatherText.textWrappingMode = TextWrappingModes.NoWrap;
             }
             string text = null;
-            if (status.HasCold) text = NihongoLife.Core.Loc.T("Bị cảm lạnh vì ướt mưa — mất máu từ từ, mau buồn ngủ. Vào nhà cho khô.", "You caught a cold in the rain — health drains slowly and you tire fast. Go inside and dry off.", "雨でかぜをひきました。体力が少しずつ減り、眠くなりやすいです。家に入って乾かしましょう。");
+            var illness = NihongoLife.Health.PlayerIllness.Main;
+            if (illness != null) text = illness.Name + " (" + illness.kanji + ") — " + NihongoLife.Core.Loc.T("xem cách chữa trong Sổ tay (Y)", "see the treatment in the Handbook (Y)", "治し方はハンドブック（Y）へ");
+            else if (status.HasCold) text = NihongoLife.Core.Loc.T("Bị cảm lạnh vì ướt mưa — mất máu từ từ, mau buồn ngủ. Vào nhà cho khô.", "You caught a cold in the rain — health drains slowly and you tire fast. Go inside and dry off.", "雨でかぜをひきました。体力が少しずつ減り、眠くなりやすいです。家に入って乾かしましょう。");
             else if (NihongoLife.Core.WeatherCycle.PlayerInRain) text = NihongoLife.Core.Loc.F("Đang ướt mưa ({0:0}%) — hồi thể lực chậm một nửa", "Getting wet in the rain ({0:0}%) — stamina recovers at half speed", "雨にぬれています（{0:0}%）— 元気の回復が半分になります", status.Wetness * 100f);
             else if (status.InHotSun) text = NihongoLife.Core.Loc.T("Nắng gắt buổi trưa — khát nhanh hơn, nhớ uống nước", "Strong midday sun — you get thirsty faster, drink water", "昼の強い日差し — のどが渇きやすいので水を飲みましょう");
             bool show = text != null && !hide;
             if (_weatherChip.gameObject.activeSelf != show) _weatherChip.gameObject.SetActive(show);
             if (!show) return;
             _weatherText.text = text;
+            _weatherChip.GetComponent<Image>().color = illness != null ? Color.Lerp(illness.Tint, Color.black, 0.45f) : new Color(0.12f, 0.2f, 0.32f, 0.92f);
             float y = 24f + (StatusWidget != null ? StatusWidget.rect.height : 160f) + 10f + (_warning.gameObject.activeSelf ? _warning.rect.height + 8f : 0f);
             _weatherChip.anchoredPosition = new Vector2(24f, y);
         }
@@ -655,7 +663,8 @@ namespace NihongoLife.UI
             int yen = inventory != null ? inventory.Yen : 0;
             string place = WorldLocationCatalog.Get(SceneManager.GetActiveScene().name).VietnameseName;
             _name.text = status.PlayerName;
-            _level.text = place;
+            string job = NihongoLife.Progression.CareerService.CurrentTitle; // the career title next to the place
+            _level.text = string.IsNullOrEmpty(job) ? place : place + " · " + job;
             var cycle = NihongoLife.Core.DayNightCycle.Active;
             if (_calendar != null)
             {

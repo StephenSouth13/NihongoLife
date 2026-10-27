@@ -1643,3 +1643,56 @@ Giao việc đầy đủ trong `Docs/GROK_TASK_TRAILER_MARKETING.md` (bối cả
 - **Ánh sáng trong nhà:** `Core/IndoorAmbience` giữ ánh sáng riêng của khu trong nhà (trước đây ban đêm phòng khám tối tím do bầu trời phố).
 - **Phú Quốc** chuyển sang phần mở rộng: dữ liệu nháp ở `Docs/Expansion/PhuQuoc/` (xem README: dùng OpenStreetMap, không dùng Google Maps; không dùng tên/logo thương hiệu khi chưa xin phép).
 - **Test:** `ClinicPlayModeTests` (đi bộ thật qua phòng khám, khám bệnh, ca làm, khám sức khoẻ, tiêm phòng, ngất tỉnh ở phòng khám), `CareerCatalogTests` (4 nghề). Ảnh: `Bao_Cao/clinic/`.
+
+## Cập nhật (2026-10-27, Claude) — Sửa cảnh báo, giao diện nghề nghiệp, ngoại hình theo tuổi, phòng khám có người đến khám
+- **Deno (VS Code):** `supabase/functions/deno.json` + `.vscode/settings.json` (`deno.enablePaths`) để extension Deno hiểu Edge Functions, hết báo lỗi `Deno`/URL import. Máy cần cài Deno CLI (`winget install DenoLand.Deno`).
+- **Input:** `activeInputHandler: 1` (chỉ Input System). Đoạn cuối dùng `Input.GetKeyDown` (`SpeechPracticeController`) đã chuyển sang `Keyboard.current`.
+- **Cảnh báo console:** presence Realtime gửi dồn bị giới hạn (track 1,5 s/lần, bỏ trùng); `GameServices.Register` chỉ cảnh báo khi đè service còn sống, `Replace<T>` cho chỗ cố ý đổi (trailer); thiếu glyph ↺↻ ở chọn nhân vật (dùng icon); Remy@Jump (thêm state Jump thật, `KidMotionBuilder.BuildJump`); `friendships` với id không phải uuid; CS0436 (shim Agora khi build WebGL) và CS0414 (field fallback NPC thừa, đã xoá).
+- **Nghề nghiệp — giao diện đầy đủ** (`UI/CareerUI.cs`, 6 tab): Tổng quan (hiệu suất, tâm trạng, mục tiêu kế tiếp), Lộ trình (cây bậc 1–3 rồi 2 nhánh 4–6: lương, yêu cầu, nhánh đã khép), Lịch làm (tuần này, ✓ đã làm / ✗ vắng), Hồ sơ (ngày trong nghề, ca, lương đã nhận, tình huống, lịch sử thăng chức, nghề cũ), Cột mốc, Các nghề (đổi nghề có xác nhận). HUD hiện chức danh nghề.
+- **Tuyến phát triển nghề — cột mốc** (`careers.json` "milestones", `CareerService.CheckMilestones`): 9 cột mốc (初出勤, はじめての昇進, 皆勤の一週間, …, キャリアの頂点), thưởng yen + trí tuệ một lần, giữ khi đổi nghề. Thêm cột mốc = sửa JSON.
+- **Ngoại hình theo tuổi** (`Player/CharacterLook.cs`, `UI/CharacterLookUI.cs`, `Resources/Characters/Looks/`):
+  - Màu tóc (11 màu) đổi trên GPU bằng mask tóc `CharacterLookBuilder.Build` nướng sẵn cho 8 model; râu (lún phún / ria / râu dê / quai nón / râu dài) mở theo tuổi, chỉ model nam; tóc bạc dần từ 45 tuổi; nếp nhăn từ 50 và 65 tuổi.
+  - Người lớn tuổi đi chậm hơn (`CharacterLook.Walk`: người chơi, NPC tuần tra) và nói chậm hơn (`DialogueView.TalkPace`), từ 55 tuổi. NPC có thể đặt nhịp riêng (`Pace`).
+  - Mở bảng: chạm chân dung trên HUD, hoặc nút "Ngoại hình" ở màn chọn nhân vật. Lưu trên máy (`NihongoLife.CharacterLook`), test không ghi (`PlayModeSaveGuard`).
+  - Hành khách lớn tuổi trên tàu (`SeatedPassenger` ambient elder) có tóc bạc + râu dài.
+  - Tùy chọn trong `look_options.json` (màu, kiểu râu, nếp nhăn, tuổi bắt đầu chậm lại). `looks.json` do builder sinh — không sửa tay.
+- **Phòng khám đẹp hơn + người dân đến khám** (`ClinicBuilder.BuildInterior` — chỉ dựng lại scene phòng khám, không đụng phố):
+  - Trang trí: lối đi màu bạc hà, thảm khu chờ, tay vịn gỗ, góc trẻ em (キッズコーナー: thảm, khối đồ chơi, bàn nhỏ, sách tranh), bể cá, tranh treo, hoa ở quầy, đèn ấm khu chờ.
+  - `Clinic/ClinicPatientFlow.cs`: người dân (`clinic.json` "patients", 8 người, có ông bà) vào cửa → 受付 → ngồi ghế chờ (ghế quay về TV) → bảng gọi số + điều dưỡng gọi 「N番の方…」 → vào 診察室 gặp bác sĩ Mori (nói triệu chứng, chẩn đoán) → お薬 → ra về. Mỗi lúc một người trong phòng khám, không collider (không chắn người chơi). Người già đi chậm, có râu/tóc bạc.
+- **Test:** `CharacterLookPlayModeTests` (8 model: tóc, râu chỉ nam, nếp nhăn, tốc độ; bảng ngoại hình trên người chơi, râu mở theo tuổi), `ClinicPlayModeTests.Clinic_TownspeopleComeForACheckUp`, `CareerPlayModeTests` (tab, cột mốc, đổi nghề), `CareerCatalogTests` (cột mốc hợp lệ / sai bị từ chối). Ảnh: `Bao_Cao/character-look/`, `Bao_Cao/clinic/10–12`, `Bao_Cao/career/07–12`.
+
+## Cập nhật (2026-10-27 chiều, Claude) — Bệnh tật như ngoài đời, sổ tay, nhạc mới, lộ trình bác sĩ thật
+- **Hệ thống bệnh** (`Scripts/Health/`, dữ liệu `Resources/Health/illnesses.json`, nguồn `Docs/HEALTH_SOURCES.md`):
+  - 8 bệnh. Mắc theo việc người chơi làm:
+    - cảm lạnh: ướt mưa lâu;
+    - cúm virus: nơi đông người mùa thu – đông;
+    - dị ứng phấn hoa: ngoài trời mùa xuân, không đeo khẩu trang;
+    - đau mỏi cơ: 2 ca/ngày hoặc chạy hơn 3 phút;
+    - kiệt sức 過労: 3 ca/ngày;
+    - say nắng: nắng trưa, ít nước;
+    - đầy bụng: ăn khi đã no;
+    - đau đầu: buồn ngủ đầy quá lâu.
+  - Mỗi bệnh nhân hệ số lên tốc độ đi, thể lực, buồn ngủ, khát, mất máu, và hiệu suất nghề (`PlayerIllness.WorkFactor`).
+  - Hiệu ứng: viền màn hình theo màu bệnh (`IllnessOverlay`), câu 「ハクション！」 trên đầu, biểu cảm, chip HUD.
+  - **Chữa như ngoài đời:**
+    - thuốc không kê đơn chỉ giảm triệu chứng và rút ngắn một chút;
+    - kháng sinh không chữa cảm/cúm;
+    - bác sĩ: thuốc kháng virus cúm hiệu quả nhất trong 48 giờ đầu; say nắng truyền dịch là khỏi;
+    - ngủ chữa cảm, đau mỏi, kiệt sức, đau đầu;
+    - đi làm khi bị cúm bị trừ danh tiếng;
+    - tiêm phòng cúm miễn dịch ~30 ngày; khẩu trang 1 ngày.
+  - Hibari Mart có kệ **くすり** (7 món, lấy từ `illnesses.json` "medicines"); dùng trong balo như đồ ăn (`ItemUseType.Medicine`).
+  - Phòng khám chẩn đoán đúng bệnh đang mắc (`ClinicVisit.TodaysSymptom`); clinic.json có thêm 3 triệu chứng (chóng mặt, ngứa mắt, đau vai lưng).
+  - Lưu: `PlayerProgressDto.illness` (gộp cloud theo `updatedTicks`). Test tắt mắc ngẫu nhiên: `PlayerIllness.Triggers = false` (`PlayModeSaveGuard`).
+- **Nghề Y tế theo lộ trình thật ở Nhật** (`careers.json`):
+  - Nhánh chung: 医療事務 → 看護助手 → 医療系の学生.
+  - Nhánh bác sĩ: 研修医 → 専攻医 → 専門医・院長. Nhánh dược sĩ: 薬剤師 → 管理薬剤師 → 薬局長.
+  - Phỏng vấn thăng chức là câu hỏi y khoa thật (trường y 6 năm, thi quốc gia, "kháng sinh không chữa cảm").
+- **Sổ tay** (`UI/HandbookUI.cs`, phím **Y**, nút "Sổ tay" trên HUD; sổ ghi chép L đổi tên thành "Sổ ghi"):
+  - Dạng cuốn sách mở: bìa vải, hai trang giấy, gáy khâu, ruy-băng chương.
+  - Chương: 案内 Giới thiệu (`Resources/Guide/handbook.json`), 場所 Địa điểm (`LocationGuideUI` nay mở chương này), 健康 Sức khoẻ (tình trạng, 8 bệnh, tủ thuốc, con đường làm bác sĩ ở Nhật), 仕事 Nghề nghiệp, 音楽 Âm nhạc (nghe thử, ghim bài phát mọi nơi — `AudioPrefs.PinnedMusic`).
+- **Nhạc mới** (tạo bằng code, `Tools/audio/compose_music.py`, `Docs/AUDIO_CREDITS.md`):
+  - 5 bài: clinic (phòng khám), rain (phố khi mưa), sick (ở nhà khi ốm), spring (sáng mùa xuân), work (giờ làm ở nơi làm của nghề).
+  - Danh sách bài: `Resources/Audio/music.json`.
+- **Test:** `IllnessCatalogTests` (EditMode), `IllnessPlayModeTests` (mắc / cảm nhận / chữa / sổ tay / máy nhạc). `SoundscapePlayModeTests` chấp nhận nhạc phố mới. Ảnh: `Bao_Cao/health/`, `Bao_Cao/handbook/`.
+- **Tiếp theo:** dịch vụ nhà hàng — chờ anh Long gửi thông tin và cách vận hành.

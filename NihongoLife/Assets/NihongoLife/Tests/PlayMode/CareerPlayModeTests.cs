@@ -69,8 +69,11 @@ namespace NihongoLife.Tests
                 int workday = Enumerable.Range(DayNightCycle.Active.Day + 1, 7).First(d => CareerService.IsWorkDay(food, d));
                 int yen = inventory.Yen;
                 float mood = CareerService.MoodFactor;
+                int firstShiftReward = CareerService.Catalog.milestones.First(m => m.id == "first_shift").rewardYen;
                 CareerService.ShiftDone(workday, 12f);
-                Assert.AreEqual(yen + 220, inventory.Yen, "Salary for the on-time shift");
+                Assert.AreEqual(yen + 220 + firstShiftReward, inventory.Yen, "Salary for the on-time shift + the first-shift milestone");
+                Assert.IsTrue(CareerService.State.milestones.Contains("first_shift"), "Milestone: first shift");
+                Assert.Contains(workday, CareerService.State.workedDays, "The worked day is on the record");
                 Assert.AreEqual(50f * mood, CareerService.State.performance, 0.5f, "Half the bar per shift at level 1 (two shifts), times the mood");
                 CareerService.State.performance = 0f;
                 yen = inventory.Yen;
@@ -90,6 +93,8 @@ namespace NihongoLife.Tests
                 JobQuizCard.Answer(JobQuizCard.CurrentChoices.ToList().FindIndex(c => c.Correct));
                 yield return null;
                 Assert.AreEqual(2, CareerService.State.level, "Promoted");
+                Assert.IsTrue(CareerService.State.milestones.Contains("first_promotion"), "Milestone: first promotion");
+                Assert.AreEqual(1, CareerService.State.promotions.Count, "The promotion is on the record");
                 Assert.AreEqual(0f, CareerService.State.performance, 0.01f);
 
                 // A workday spent in the game without a shift costs performance the next day.
@@ -127,9 +132,44 @@ namespace NihongoLife.Tests
                 Assert.Greater(CareerService.State.performance, beforeEvent, "A good answer raises performance");
                 CareerService.EventChance = 0f;
 
+                // The career window's tabs: overview, path tree, week schedule, profile, milestones, careers.
                 CareerUI.Open();
                 yield return null;
-                Capture("07_ladder");
+                Assert.AreEqual(CareerUI.Tab.Overview, CareerUI.CurrentTab);
+                Capture("07_overview");
+                Button("Tab_Path").onClick.Invoke();
+                yield return null;
+                Assert.IsNotNull(Named("Rung_6"), "The path shows the top rung");
+                Assert.IsNotNull(Named("Branch_owner"), "The path shows the chosen branch");
+                Capture("08_path");
+                Button("Tab_Schedule").onClick.Invoke();
+                yield return null;
+                Assert.IsNotNull(Named("Day_6"), "Seven days in the week");
+                Capture("09_schedule");
+                Button("Tab_Profile").onClick.Invoke();
+                yield return null;
+                Assert.IsNotNull(Named("Promotion_0"), "The profile lists the promotions");
+                Capture("10_profile");
+                Button("Tab_Milestones").onClick.Invoke();
+                yield return null;
+                Assert.IsNotNull(Named("Milestone_first_shift"));
+                Capture("11_milestones");
+                Button("Tab_Careers").onClick.Invoke();
+                yield return null;
+                Capture("12_careers");
+
+                // Switching careers asks first, then starts the new career at level 1.
+                Button("Choose_retail").onClick.Invoke();
+                yield return null;
+                Assert.AreEqual("food", CareerService.State.careerId, "The first click only asks");
+                Button("Choose_retail").onClick.Invoke();
+                yield return null;
+                Assert.AreEqual("retail", CareerService.State.careerId, "Switched");
+                Assert.AreEqual(1, CareerService.State.level);
+                Assert.IsTrue(CareerService.State.pastCareers.Contains("food"));
+                Assert.IsTrue(CareerService.State.milestones.Contains("careers_2"), "Milestone: a second career");
+                Assert.AreEqual(CareerUI.Tab.Overview, CareerUI.CurrentTab, "Back to the overview after switching");
+
                 Button("Quit").onClick.Invoke();
                 yield return null;
                 Button("Quit").onClick.Invoke();
@@ -146,6 +186,9 @@ namespace NihongoLife.Tests
                 CareerUI.Close();
             }
         }
+
+        private static GameObject Named(string name) =>
+            Object.FindObjectsByType<RectTransform>(FindObjectsSortMode.None).Select(r => r.gameObject).FirstOrDefault(g => g.name == name);
 
         private static Button Button(string name) =>
             Object.FindObjectsByType<Button>(FindObjectsSortMode.None).First(b => b.name == name);
@@ -170,6 +213,7 @@ namespace NihongoLife.Tests
             camera.targetTexture = null;
             RenderTexture.active = null;
             foreach (var c in canvases) { c.renderMode = RenderMode.ScreenSpaceOverlay; c.worldCamera = null; }
+            Canvas.ForceUpdateCanvases(); // back to screen size now, or HudFitRect fits the next frame to the camera-mode size
             Object.Destroy(tex);
             rt.Release();
         }

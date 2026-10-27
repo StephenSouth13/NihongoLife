@@ -18,6 +18,8 @@ namespace NihongoLife.Audio
         /// <summary>Key of the music playing now ("city_day", "konbini", …; "" = none). Tests read it.</summary>
         public string MusicKey { get; private set; } = "";
         public string AmbienceKey { get; private set; } = "";
+        /// <summary>A track being listened to in the handbook (plays instead of the place's own; null = none).</summary>
+        public static string PreviewKey;
 
         private AudioSource _music, _ambience, _jingle;
         private string _wantMusic = "", _wantAmbience = "";
@@ -122,20 +124,40 @@ namespace NihongoLife.Audio
                 case WorldLocationCatalog.CityScene:
                     var cam = Camera.main != null ? Camera.main.GetComponent<NihongoLife.Cameras.ThirdPersonCameraController>() : null;
                     bool indoor = cam != null && cam.IsIndoor;
-                    music = indoor ? "konbini" : night ? "city_night" : "city_day";
+                    // Outdoors: the rain has its own track by day, spring mornings theirs (Sakura Michi).
+                    bool spring = cycle != null && GameCalendar.SeasonOn(cycle.Day) == Season.Spring && hour >= 8f && hour < 14f;
+                    music = indoor ? "konbini" : night ? "city_night" : raining ? "rain" : spring ? "spring" : "city_day";
                     ambience = indoor || raining ? "" : night ? "city_night" : "city_day";
                     break;
                 case WorldLocationCatalog.StationScene: music = "station"; ambience = night ? "city_night" : "city_day"; break;
                 case WorldLocationCatalog.SushiRestaurantScene: music = "sushi"; break;
                 case WorldLocationCatalog.SchoolScene: music = "school"; break;
-                case WorldLocationCatalog.HomeBedroomScene: music = "bedroom"; break;
+                case WorldLocationCatalog.HomeBedroomScene: music = NihongoLife.Health.PlayerIllness.Main != null ? "sick" : "bedroom"; break; // ill at home: a lullaby
                 case WorldLocationCatalog.GameCenterScene: music = "game_center"; break;
-                case WorldLocationCatalog.ClinicScene: music = "bedroom"; break; // calm and quiet, as a clinic should be
+                case WorldLocationCatalog.ClinicScene: music = "clinic"; break; // calm and quiet, as a clinic should be
                 case WorldLocationCatalog.MidoriIslandScene: music = "island"; ambience = raining ? "" : night ? "city_night" : "island"; break;
                 default: music = ""; ambience = ""; break; // menu / bootstrap: MenuMusicController plays there
             }
+            if (music != "" && AtWork(scene)) music = "work";
+            // The handbook's player: a track listened to now, or one pinned to play everywhere.
+            if (music != "" && !string.IsNullOrEmpty(PreviewKey)) music = PreviewKey;
+            else if (music != "" && !string.IsNullOrEmpty(AudioPrefs.PinnedMusic)) music = AudioPrefs.PinnedMusic;
             _wantMusic = music;
             _wantAmbience = ambience;
+        }
+
+        /// <summary>Working hours of the player's career, at its workplace: the busy-shift track.</summary>
+        private static bool AtWork(string scene)
+        {
+            var career = NihongoLife.Progression.CareerService.Current;
+            if (career == null || !NihongoLife.Progression.CareerService.WorkingHoursNow) return false;
+            return career.id switch
+            {
+                "food" => scene == WorldLocationCatalog.SushiRestaurantScene,
+                "farm" => scene == WorldLocationCatalog.MidoriIslandScene,
+                "medical" => scene == WorldLocationCatalog.ClinicScene,
+                _ => false, // retail works inside the konbini, which keeps its own music
+            };
         }
 
         private void LevelJingle()

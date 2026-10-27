@@ -415,9 +415,9 @@ namespace NihongoLife.UI
             characterDrag.Configure(ApplyCharacterPreviewYaw);
             var hint = UiKit.Label(frame, "DragHint", "Kéo để xoay", "Drag to turn", "ドラッグで回転", 13f, UiTheme.Muted, FontStyles.Italic, TextAlignmentOptions.Center);
             Box(hint.rectTransform, 0.08f, 0.02f, 0.55f, 0.1f);
-            var turnLeft = UiKit.Button(frame, "TurnLeft", "↺", "↺", "↺", () => characterDrag.AddYaw(-40f), UiKit.Kind.Secondary, null, 18f, 12);
+            var turnLeft = UiKit.Button(frame, "TurnLeft", "", "", "", () => characterDrag.AddYaw(-40f), UiKit.Kind.Secondary, "chevron_left", 18f, 12); // the JP font has no ↺
             Box((RectTransform)turnLeft.transform, 0.58f, 0.02f, 0.76f, 0.12f);
-            var turnRight = UiKit.Button(frame, "TurnRight", "↻", "↻", "↻", () => characterDrag.AddYaw(40f), UiKit.Kind.Secondary, null, 18f, 12);
+            var turnRight = UiKit.Button(frame, "TurnRight", "", "", "", () => characterDrag.AddYaw(40f), UiKit.Kind.Secondary, "chevron_right", 18f, 12);
             Box((RectTransform)turnRight.transform, 0.78f, 0.02f, 0.96f, 0.12f);
 
             characterNameText = UiKit.Label(card, "CharacterName", "", 32f, UiTheme.Gold, FontStyles.Bold);
@@ -429,6 +429,8 @@ namespace NihongoLife.UI
             Box((RectTransform)previousCharacterButton.transform, 0.52f, 0.50f, 0.60f, 0.60f);
             nextCharacterButton = UiKit.IconButton(card, "NextCharacterButton", "chevron_right", () => SelectCharacter(selectedCharacterIndex + 1), UiKit.Kind.Secondary, 52f, 28f);
             Box((RectTransform)nextCharacterButton.transform, 0.62f, 0.50f, 0.70f, 0.60f);
+            var lookButton = UiKit.Button(card, "LookButton", "Ngoại hình", "Appearance", "見た目", () => CharacterLookUI.Open(characterPreviewModel), UiKit.Kind.Secondary, "person_edit", 16f, 12);
+            Box((RectTransform)lookButton.transform, 0.72f, 0.50f, 0.96f, 0.60f);
 
             var nameLabel = UiKit.Label(card, "NameLabel", "Tên của bạn", "Your name", "あなたの名前", 13f, UiTheme.Muted, FontStyles.Bold);
             Box(nameLabel.rectTransform, 0.52f, 0.44f, 0.96f, 0.50f);
@@ -554,6 +556,7 @@ namespace NihongoLife.UI
             characterPreviewModel.transform.localPosition = Vector3.zero;
             characterPreviewModel.transform.localRotation = Quaternion.Euler(0f, 180f, 0f);
             characterPreviewModel.transform.localScale = prefab.transform.localScale; // kids are built at 1.35×
+            CharacterLook.On(characterPreviewModel); // the hair and beard chosen in the look panel
             if (characterDrag != null) characterDrag.SetYaw(0f);
             else ApplyCharacterPreviewYaw(0f);
             foreach (var collider in characterPreviewModel.GetComponentsInChildren<Collider>(true)) Destroy(collider);

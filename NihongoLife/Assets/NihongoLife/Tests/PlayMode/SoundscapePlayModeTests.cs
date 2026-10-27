@@ -17,6 +17,9 @@ namespace NihongoLife.Tests
     /// </summary>
     public class SoundscapePlayModeTests
     {
+        /// <summary>Tracks the town plays outdoors / in the konbini (by time, weather and season).</summary>
+        private static bool TownTrack(string key) => key == "city_day" || key == "city_night" || key == "rain" || key == "spring" || key == "konbini";
+
         [UnityTest]
         public IEnumerator Voices_Music_Ambience()
         {
@@ -36,11 +39,11 @@ namespace NihongoLife.Tests
 
             // 2. In town: music + ambience.
             yield return SceneManager.LoadSceneAsync(WorldLocationCatalog.CityScene);
-            for (float t = 0f; t < 15f && (Soundscape.Instance == null || !Soundscape.Instance.MusicKey.StartsWith("city_")); t += Time.unscaledDeltaTime) yield return null;
+            for (float t = 0f; t < 15f && (Soundscape.Instance == null || !TownTrack(Soundscape.Instance.MusicKey)); t += Time.unscaledDeltaTime) yield return null;
             Assert.NotNull(Soundscape.Instance, "The soundscape runs in the game.");
-            StringAssert.StartsWith("city_", Soundscape.Instance.MusicKey, "Town music plays.");
+            Assert.IsTrue(TownTrack(Soundscape.Instance.MusicKey), "Town music plays: " + Soundscape.Instance.MusicKey);
             var sources = Soundscape.Instance.GetComponents<AudioSource>();
-            Assert.IsTrue(sources.Any(s => s.isPlaying && s.clip != null && s.clip.name.StartsWith("city_") && s.clip.length > 60f), "A town track is playing.");
+            Assert.IsTrue(sources.Any(s => s.isPlaying && s.clip != null && TownTrack(s.clip.name) && s.clip.length > 30f), "A town track is playing.");
             Debug.Log($"[Soundscape] town music {Soundscape.Instance.MusicKey}, ambience {Soundscape.Instance.AmbienceKey}");
             // Audible, not just playing: at the default music setting the town track reaches a real level.
             float savedBgm = PlayerPrefs.GetFloat("Volume_BGM", 0.5f);

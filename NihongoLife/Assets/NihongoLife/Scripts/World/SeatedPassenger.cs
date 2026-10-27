@@ -51,6 +51,9 @@ namespace NihongoLife.World
             _sitting = true;
             _poseVersion++;
             CacheVisual();
+            // The elder who gets the seat looks it: silver hair, a long beard on the boys' models, lines, a slower pace.
+            if (IsAmbientElder && GetComponent<NihongoLife.Player.CharacterLook>() == null)
+                NihongoLife.Player.CharacterLook.On(gameObject, false).Fixed("silver", "long", 78);
             ReleasePin();
             FitTalkCollider();
             StartCoroutine(SitNextFrame(_poseVersion));

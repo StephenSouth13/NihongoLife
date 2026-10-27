@@ -33,7 +33,8 @@ namespace NihongoLife.Core
         CameraRotateRight,
         CycleTarget,
         Social,
-        PushToTalk
+        PushToTalk,
+        Handbook
     }
 
     /// <summary>Touch taps are queued and reported on the next frame so HUD Update cannot miss them.</summary>
@@ -124,6 +125,7 @@ namespace NihongoLife.Core
             AddButton(GameInputId.CycleTarget, "CycleTarget", "<Keyboard>/q", "<Gamepad>/rightShoulder");
             AddButton(GameInputId.Social, "Social", "<Keyboard>/u");
             AddButton(GameInputId.PushToTalk, "PushToTalk", "<Keyboard>/t", "<Gamepad>/leftShoulder");
+            AddButton(GameInputId.Handbook, "Handbook", "<Keyboard>/y");
         }
 
         private void AddButton(GameInputId id, string name, string keyboardPath, string gamepadPath = null)

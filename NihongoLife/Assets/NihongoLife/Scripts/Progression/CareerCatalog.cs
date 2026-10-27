@@ -121,6 +121,20 @@ namespace NihongoLife.Progression
         };
     }
 
+    /// <summary>A step of the career's development path with a one-time reward ("milestones" in careers.json).
+    /// <see cref="type"/>: shifts (on-time shifts in the current career), level, branch (a path chosen), events
+    /// (work events handled), days (days worked), careers (different careers tried).</summary>
+    [Serializable]
+    public sealed class CareerMilestoneDefinition
+    {
+        public string id, type;
+        public int value;
+        public string titleVi, titleEn, titleJa, descVi, descEn, descJa;
+        public int rewardYen, rewardKnowledge;
+        public string Title => Loc.Pick(titleVi, titleEn, titleJa);
+        public string Description => Loc.Pick(descVi, descEn, descJa);
+    }
+
     /// <summary>
     /// The careers a player can follow from level <see cref="unlockLevel"/> (The Sims-style: ladder, schedule,
     /// performance, promotions, a branch half way up, events at work). Edit the JSON to add a career, a level, an
@@ -135,6 +149,7 @@ namespace NihongoLife.Progression
         public int unlockLevel = 10;
         public int missedShiftPenalty = 15;
         public CareerDefinition[] careers = Array.Empty<CareerDefinition>();
+        public CareerMilestoneDefinition[] milestones = Array.Empty<CareerMilestoneDefinition>();
 
         private static CareerCatalog _cached;
 
@@ -178,6 +193,13 @@ namespace NihongoLife.Progression
                 }
                 foreach (var e in c.events)
                     if (e.choices.Length < 2) errors.Add(at + "event " + e.id + " needs at least two answers");
+            }
+            var milestoneIds = new HashSet<string>();
+            foreach (var m in milestones)
+            {
+                if (string.IsNullOrEmpty(m.id) || !milestoneIds.Add(m.id)) errors.Add("milestone id missing or duplicate: " + m.id);
+                if (!new[] { "shifts", "level", "branch", "events", "days", "careers" }.Contains(m.type)) errors.Add("milestone " + m.id + ": unknown type " + m.type);
+                if (string.IsNullOrEmpty(m.titleVi) || string.IsNullOrEmpty(m.titleEn)) errors.Add("milestone " + m.id + ": missing title");
             }
             return errors;
         }

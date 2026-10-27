@@ -51,6 +51,14 @@ namespace NihongoLife.Clinic
             var status = PlayerStatus.Instance;
             var all = Catalog.symptoms;
             if (all.Length == 0) return null;
+            // A real illness (Health/PlayerIllness) shows as its own symptom.
+            var ill = NihongoLife.Health.PlayerIllness.Main;
+            if (ill != null)
+                foreach (var id in ill.symptoms)
+                {
+                    var match = Catalog.Symptom(id);
+                    if (match != null) return match;
+                }
             if (status != null && status.HasCold) return all.FirstOrDefault(s => s.cold) ?? all[0];
             if (status != null && status.CurrentHealth < status.MaxHealth * 0.6f) return Catalog.Symptom("tired") ?? all[0];
             int day = DayNightCycle.Active != null ? DayNightCycle.Active.Day : 0;
@@ -158,8 +166,11 @@ namespace NihongoLife.Clinic
                 Loc.T("Chào bạn. Hôm nay bạn bị sao?", "Hello. What seems to be the problem today?", ""),
                 Loc.F("Nói với bác sĩ (bạn: {0}):", "Tell the doctor (you: {0}):", "先生に伝えましょう：", symptom.Meaning), Shuffle(choices), () =>
                 {
+                    var illness = NihongoLife.Health.PlayerIllness.Main;
                     PlayerStatus.Instance?.TreatAtClinic();
                     Current = Stage.Examined;
+                    if (illness != null)
+                        HudFeed.Post(Loc.T("Bác sĩ: ", "Doctor: ", "先生：") + illness.Name + " — " + illness.Clinic, HudFeed.Kind.Info, 9f, "clinic-treatment");
                     QuestService.Raise("clinic_consult", "clinic_doctor");
                     HudFeed.Post($"「{symptom.diagnosisJa}ですね。{symptom.medicineJa}を だします。」  " + Loc.F("Chẩn đoán: {0}. Thuốc: {1}. Sức khoẻ đã hồi phục — thanh toán ở quầy.", "Diagnosis: {0}. Medicine: {1}. You feel better — pay at reception.", "診断：{0}。お薬：{1}。受付でお会計を。", symptom.Diagnosis, symptom.Medicine), HudFeed.Kind.Reward, 7f);
                 }, "clinic_doctor");
@@ -179,6 +190,8 @@ namespace NihongoLife.Clinic
                     Current = Stage.Examined;
                     QuestService.Raise("clinic_vaccine", "clinic_doctor");
                     SocialStanding.AddMoodlet("vaccinated", SocialMood.Confident, 0.4f, 2f);
+                    var flu = NihongoLife.Health.PlayerIllness.Catalog.Illness("flu");
+                    if (flu != null) NihongoLife.Health.PlayerIllness.Immunize("flu", flu.immunityHours); // the flu shot protects for a season
                     Hint("「はい、おわりました。おだいじに。」 " + Loc.T("Xong rồi! Thanh toán ở quầy tiếp nhận.", "All done! Pay at reception.", "受付でお会計を。"), 6f);
                 }, "clinic_doctor");
         }

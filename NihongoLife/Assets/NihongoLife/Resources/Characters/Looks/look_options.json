@@ -1,0 +1,282 @@
+{
+  "schema": "nihongolife.look-options.v1",
+  "grayFromAge": 45,
+  "grayFullAge": 75,
+  "grayHex": "#C8C8CE",
+  "slowFromAge": 55,
+  "slowestAge": 85,
+  "slowestWalk": 0.72,
+  "slowestTalk": 0.6,
+  "wrinkles": [
+    {
+      "minAge": 50,
+      "pieces": [
+        {
+          "tone": "wrinkle",
+          "pos": [0, 0.86, -0.07],
+          "scale": [0.36, 0.02, 0.05],
+          "rot": [0, 0, 0]
+        },
+        {
+          "tone": "wrinkle",
+          "pos": [-0.2, 0.16, -0.03],
+          "scale": [0.018, 0.13, 0.04],
+          "rot": [0, 0, -16]
+        },
+        {
+          "tone": "wrinkle",
+          "pos": [0.2, 0.16, -0.03],
+          "scale": [0.018, 0.13, 0.04],
+          "rot": [0, 0, 16]
+        }
+      ]
+    },
+    {
+      "minAge": 65,
+      "pieces": [
+        {
+          "tone": "wrinkle",
+          "pos": [0, 0.94, -0.09],
+          "scale": [0.3, 0.018, 0.05],
+          "rot": [0, 0, 0]
+        },
+        {
+          "tone": "wrinkle",
+          "pos": [-0.47, 0.58, -0.12],
+          "scale": [0.08, 0.016, 0.05],
+          "rot": [0, 0, 22]
+        },
+        {
+          "tone": "wrinkle",
+          "pos": [0.47, 0.58, -0.12],
+          "scale": [0.08, 0.016, 0.05],
+          "rot": [0, 0, -22]
+        },
+        {
+          "tone": "wrinkle",
+          "pos": [-0.47, 0.52, -0.12],
+          "scale": [0.08, 0.016, 0.05],
+          "rot": [0, 0, -10]
+        },
+        {
+          "tone": "wrinkle",
+          "pos": [0.47, 0.52, -0.12],
+          "scale": [0.08, 0.016, 0.05],
+          "rot": [0, 0, 10]
+        }
+      ]
+    }
+  ],
+  "hairs": [
+    {
+      "id": "natural",
+      "vi": "Tự nhiên",
+      "en": "Natural",
+      "ja": "生まれつき",
+      "hex": ""
+    },
+    {
+      "id": "black",
+      "vi": "Đen",
+      "en": "Black",
+      "ja": "黒",
+      "hex": "#2A2321"
+    },
+    {
+      "id": "dark_brown",
+      "vi": "Nâu đậm",
+      "en": "Dark brown",
+      "ja": "こげ茶",
+      "hex": "#4B3021"
+    },
+    {
+      "id": "chestnut",
+      "vi": "Hạt dẻ",
+      "en": "Chestnut",
+      "ja": "栗色",
+      "hex": "#7C4A2A"
+    },
+    {
+      "id": "blonde",
+      "vi": "Vàng",
+      "en": "Blonde",
+      "ja": "金髪",
+      "hex": "#D8B46C"
+    },
+    {
+      "id": "auburn",
+      "vi": "Nâu đỏ",
+      "en": "Auburn",
+      "ja": "赤茶",
+      "hex": "#9C4024"
+    },
+    {
+      "id": "ash",
+      "vi": "Muối tiêu",
+      "en": "Salt and pepper",
+      "ja": "ごま塩",
+      "hex": "#8E8984"
+    },
+    {
+      "id": "silver",
+      "vi": "Bạc",
+      "en": "Silver",
+      "ja": "銀髪",
+      "hex": "#C8C8CE"
+    },
+    {
+      "id": "white",
+      "vi": "Trắng",
+      "en": "White",
+      "ja": "白髪",
+      "hex": "#F0EEE8"
+    },
+    {
+      "id": "navy",
+      "vi": "Xanh đêm",
+      "en": "Navy",
+      "ja": "紺",
+      "hex": "#2F3F70"
+    },
+    {
+      "id": "pink",
+      "vi": "Hồng",
+      "en": "Pink",
+      "ja": "ピンク",
+      "hex": "#E592B2"
+    }
+  ],
+  "beards": [
+    {
+      "id": "none",
+      "vi": "Không râu",
+      "en": "Clean-shaven",
+      "ja": "ひげなし",
+      "minAge": 0,
+      "pieces": []
+    },
+    {
+      "id": "stubble",
+      "vi": "Râu lún phún",
+      "en": "Stubble",
+      "ja": "無精ひげ",
+      "minAge": 18,
+      "pieces": [
+        {
+          "tone": "stubble",
+          "pos": [0, 0.0, -0.17],
+          "scale": [0.74, 0.3, 0.42],
+          "rot": [0, 0, 0]
+        }
+      ]
+    },
+    {
+      "id": "mustache",
+      "vi": "Ria mép",
+      "en": "Mustache",
+      "ja": "口ひげ",
+      "minAge": 18,
+      "pieces": [
+        {
+          "tone": "hair",
+          "pos": [-0.085, 0.105, -0.01],
+          "scale": [0.2, 0.07, 0.1],
+          "rot": [0, 0, 14]
+        },
+        {
+          "tone": "hair",
+          "pos": [0.085, 0.105, -0.01],
+          "scale": [0.2, 0.07, 0.1],
+          "rot": [0, 0, -14]
+        }
+      ]
+    },
+    {
+      "id": "goatee",
+      "vi": "Râu dê",
+      "en": "Goatee",
+      "ja": "あごひげ",
+      "minAge": 20,
+      "pieces": [
+        {
+          "tone": "hair",
+          "pos": [-0.085, 0.105, -0.01],
+          "scale": [0.2, 0.07, 0.1],
+          "rot": [0, 0, 14]
+        },
+        {
+          "tone": "hair",
+          "pos": [0.085, 0.105, -0.01],
+          "scale": [0.2, 0.07, 0.1],
+          "rot": [0, 0, -14]
+        },
+        {
+          "tone": "hair",
+          "pos": [0, -0.04, -0.04],
+          "scale": [0.18, 0.17, 0.13],
+          "rot": [0, 0, 0]
+        }
+      ]
+    },
+    {
+      "id": "full",
+      "vi": "Râu quai nón",
+      "en": "Full beard",
+      "ja": "あごひげ（フル）",
+      "minAge": 22,
+      "pieces": [
+        {
+          "tone": "hair",
+          "pos": [0, -0.01, -0.15],
+          "scale": [0.8, 0.36, 0.46],
+          "rot": [0, 0, 0]
+        },
+        {
+          "tone": "hair",
+          "pos": [-0.085, 0.11, 0.0],
+          "scale": [0.2, 0.075, 0.1],
+          "rot": [0, 0, 14]
+        },
+        {
+          "tone": "hair",
+          "pos": [0.085, 0.11, 0.0],
+          "scale": [0.2, 0.075, 0.1],
+          "rot": [0, 0, -14]
+        }
+      ]
+    },
+    {
+      "id": "long",
+      "vi": "Râu dài (ông lão)",
+      "en": "Long beard",
+      "ja": "長いひげ",
+      "minAge": 40,
+      "pieces": [
+        {
+          "tone": "hair",
+          "pos": [0, -0.01, -0.15],
+          "scale": [0.8, 0.36, 0.46],
+          "rot": [0, 0, 0]
+        },
+        {
+          "tone": "hair",
+          "pos": [0, -0.18, -0.07],
+          "scale": [0.42, 0.4, 0.26],
+          "rot": [-12, 0, 0]
+        },
+        {
+          "tone": "hair",
+          "pos": [-0.085, 0.11, 0.0],
+          "scale": [0.2, 0.075, 0.1],
+          "rot": [0, 0, 14]
+        },
+        {
+          "tone": "hair",
+          "pos": [0.085, 0.11, 0.0],
+          "scale": [0.2, 0.075, 0.1],
+          "rot": [0, 0, -14]
+        }
+      ]
+    }
+  ]
+}

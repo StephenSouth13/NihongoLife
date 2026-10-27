@@ -214,7 +214,7 @@ namespace NihongoLife.Player
                 _hasClickDestination = false;
             }
 
-            float currentSpeed = (isRunning ? runSpeed : walkSpeed) * (status != null ? status.MoveSpeedMultiplier : 1f);
+            float currentSpeed = (isRunning ? runSpeed : walkSpeed) * (status != null ? status.MoveSpeedMultiplier : 1f) * CharacterLook.PlayerWalkFactor;
             float smoothing = moveDirection.sqrMagnitude > 0.001f ? acceleration : deceleration;
             _smoothedMoveDirection = Vector3.MoveTowards(_smoothedMoveDirection, moveDirection, smoothing * Time.deltaTime);
             status?.ReportActivity(_smoothedMoveDirection.sqrMagnitude > 0.01f, isRunning);

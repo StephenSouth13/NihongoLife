@@ -85,7 +85,7 @@ namespace NihongoLife.UI
             _location = NLUi.Label(window, "Location", "", 18f, NLUi.Muted, _font);
             NLUi.Anchor(_location.rectTransform, new Vector2(0f, 1f), new Vector2(38f, -70f), new Vector2(700f, 28f));
 
-            var guide = NLUi.Button(window, "GuideButton", NihongoLife.Core.Loc.T("Cẩm nang địa điểm", "Place guide", "ガイドブック"), _font, () => LocationGuideUI.Open(), NLUi.Gold, 17f, NLUi.Ink, 44f);
+            var guide = NLUi.Button(window, "GuideButton", NihongoLife.Core.Loc.T("Sổ tay · địa điểm", "Handbook · places", "ハンドブック・場所"), _font, () => LocationGuideUI.Open(), NLUi.Gold, 17f, NLUi.Ink, 44f);
             NLUi.Anchor((RectTransform)guide.transform, new Vector2(1f, 0f), new Vector2(-30f, 22f), new Vector2(230f, 44f));
             ((RectTransform)guide.transform).pivot = new Vector2(1f, 0f);
 

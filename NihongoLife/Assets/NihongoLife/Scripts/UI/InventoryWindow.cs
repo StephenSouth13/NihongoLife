@@ -131,8 +131,10 @@ namespace NihongoLife.UI
             if (entry.useType == ItemUseType.None) return;
             string id = entry.itemId;
             float food = entry.foodRestore, drink = entry.drinkRestore, energy = entry.energyRestore;
+            var type = entry.useType;
             if (!inventory.RemoveItem(id)) return;
             status.RestoreNeeds(food, drink, energy);
+            if (type == ItemUseType.Medicine) HudFeed.Post(NihongoLife.Health.PlayerIllness.TakeMedicine(id), HudFeed.Kind.Info, 6f, "medicine");
             if (GameServices.TryGet(out IAudioService audio)) audio.PlayCue(GameAudioCue.Pickup, 0.7f);
             Refresh();
         }
@@ -172,7 +174,9 @@ namespace NihongoLife.UI
             if (entry.drinkRestore > 0) effects.Add(NihongoLife.Core.Loc.T("Nước", "Drink", "水分") + $" +{entry.drinkRestore:0}");
             if (entry.energyRestore > 0) effects.Add(NihongoLife.Core.Loc.T("Thể lực", "Stamina", "元気") + $" +{entry.energyRestore:0}");
             _detailEffect.text = effects.Count > 0 ? string.Join("  ·  ", effects) : NihongoLife.Core.Loc.T("Không dùng được — giữ trong balo.", "Can't be used — keep it in your bag.", "使えません。かばんに入れておきましょう。");
-            _useLabel.text = entry.useType == ItemUseType.Drink ? NihongoLife.Core.Loc.T("Uống (E)", "Drink (E)", "のむ（E）") : NihongoLife.Core.Loc.T("Ăn (E)", "Eat (E)", "たべる（E）");
+            var medicine = entry.useType == ItemUseType.Medicine ? NihongoLife.Health.PlayerIllness.Catalog.Medicine(entry.itemId) : null;
+            if (medicine != null) _detailEffect.text = medicine.Use;
+            _useLabel.text = entry.useType == ItemUseType.Medicine ? NihongoLife.Core.Loc.T("Dùng (E)", "Use (E)", "つかう（E）") : entry.useType == ItemUseType.Drink ? NihongoLife.Core.Loc.T("Uống (E)", "Drink (E)", "のむ（E）") : NihongoLife.Core.Loc.T("Ăn (E)", "Eat (E)", "たべる（E）");
         }
 
         private void RefreshBars()

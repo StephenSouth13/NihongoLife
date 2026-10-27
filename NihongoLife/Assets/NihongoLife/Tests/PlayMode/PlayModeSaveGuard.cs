@@ -23,6 +23,8 @@ namespace NihongoLife.Tests
             // Most tests walk through every place; LocationUnlocksPlayModeTests switches the gate back on.
             NihongoLife.Core.LocationUnlocks.Bypass = true;
             NihongoLife.Core.IntroTrailer.Bypass = true; // starting a game in a test never plays the intro trailer
+            NihongoLife.Health.PlayerIllness.Triggers = false; // nobody falls ill by chance in other tests (IllnessPlayModeTests turns it on)
+            NihongoLife.Player.CharacterLook.Persist = false; // the look panel never writes the device's look in tests
             NihongoLife.Progression.CareerClock.PromptEnabled = false; // the level-10 career card only where a test checks it
             NihongoLife.Scenario.StoryDirector.Bypass = true; // StoryFlowPlayModeTests switches the story back on
             NihongoLife.Core.PlayerSessionService.PersistGuest = false; // tests never read or write the real guest save
@@ -44,6 +46,7 @@ namespace NihongoLife.Tests
             NihongoLife.Core.LocationUnlocks.Bypass = false;
             NihongoLife.Core.IntroTrailer.Bypass = false;
             NihongoLife.Progression.CareerClock.PromptEnabled = true;
+            NihongoLife.Player.CharacterLook.Persist = true;
             NihongoLife.Scenario.StoryDirector.Bypass = false;
             NihongoLife.Core.Loc.Set((NihongoLife.Core.GameLanguage)Mathf.Clamp(_language, 0, 2));
             PlayerPrefs.SetString("NL.WalletLedger.v1", _ledger ?? ""); // tests' purchases do not stay in the player's wallet history

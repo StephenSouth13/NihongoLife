@@ -69,7 +69,8 @@ namespace NihongoLife.UI
                 ("QuestButton", "N", "Nhiệm vụ", () => TaskJournalUI.Toggle()),
                 ("ExamButton", "K", "Luyện thi", () => TogglePopup(GetComponent<ExamCenterPopup>())),
                 ("StudyButton", "U", "Học thêm", () => TogglePopup(GetComponent<StudyHubPopup>())),
-                ("NotebookButton", "L", "Sổ tay", () => NotebookUI.Toggle()),
+                ("NotebookButton", "L", "Sổ ghi", () => NotebookUI.Toggle()),
+                ("HandbookButton", "Y", "Sổ tay", () => HandbookUI.Toggle()),
                 ("OverviewButton", "H", "Góc nhìn", ToggleOverviewCamera),
                 ("SettingsButton", "O", "Cài đặt", () => _settingsUI?.ToggleFromEscape()),
             };

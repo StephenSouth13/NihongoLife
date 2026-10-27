@@ -14,9 +14,11 @@ namespace NihongoLife.Audio
         private const string MusicOnKey = "Audio_MusicOn";
         private const string AmbienceOnKey = "Audio_AmbienceOn";
         private const string AmbienceVolumeKey = "Volume_Ambience";
+        private const string PinnedMusicKey = "Audio_PinnedMusic";
 
         private static bool _loaded, _musicOn, _ambienceOn;
         private static float _ambienceVolume;
+        private static string _pinned;
 
         public static event Action Changed;
 
@@ -39,6 +41,13 @@ namespace NihongoLife.Audio
             set { Load(); _ambienceVolume = Mathf.Clamp01(value); PlayerPrefs.SetFloat(AmbienceVolumeKey, _ambienceVolume); Save(); }
         }
 
+        /// <summary>A track chosen in the handbook's 音楽 chapter that plays everywhere ("" = each place its own).</summary>
+        public static string PinnedMusic
+        {
+            get { Load(); return _pinned; }
+            set { Load(); _pinned = value ?? ""; PlayerPrefs.SetString(PinnedMusicKey, _pinned); Save(); }
+        }
+
         /// <summary>Gain for ambience sources: 0 when off, 1 at the default slider position, up to 2.</summary>
         public static float AmbienceGain => AmbienceOn ? AmbienceVolume * 2f : 0f;
 
@@ -49,6 +58,7 @@ namespace NihongoLife.Audio
             _musicOn = PlayerPrefs.GetInt(MusicOnKey, 1) == 1;
             _ambienceOn = PlayerPrefs.GetInt(AmbienceOnKey, 1) == 1;
             _ambienceVolume = Mathf.Clamp01(PlayerPrefs.GetFloat(AmbienceVolumeKey, 0.5f));
+            _pinned = PlayerPrefs.GetString(PinnedMusicKey, "");
         }
 
         private static void Save()

@@ -139,6 +139,7 @@ namespace NihongoLife.Player
             Transform existing = actor.transform.Find("Visual");
             if (existing != null)
             {
+                existing.name = "Visual_Old"; // destroyed at the end of the frame: Find("Visual") must see the new one
                 UnityEngine.Object.Destroy(existing.gameObject);
             }
 
@@ -169,6 +170,7 @@ namespace NihongoLife.Player
             {
                 var marker = actor.GetComponent<PlayerMarker>().OrNull() ?? actor.AddComponent<PlayerMarker>();
                 marker.Configure(character.AccentColor, 0.55f);
+                CharacterLook.On(actor).Refresh(); // hair colour, beard and age lines chosen in the look panel
             }
 
             return true;

@@ -101,6 +101,8 @@ namespace NihongoLife.Data
         public NihongoLife.Progression.CareerState career = new NihongoLife.Progression.CareerState();
         /// <summary>The paper notebook (L): limited pages, more paper from Hibari Mart's stationery shelf.</summary>
         public NihongoLife.Notebook.NotebookRecord notebook = new NihongoLife.Notebook.NotebookRecord();
+        /// <summary>Illnesses, vaccinations and the day's work load (Health/PlayerIllness, Resources/Health/illnesses.json).</summary>
+        public NihongoLife.Health.HealthRecord illness = new NihongoLife.Health.HealthRecord();
         /// <summary>In-game calendar. False on older saves so the first launch does not jump the clock.</summary>
         public bool calendarStarted;
         public int calendarDay;

@@ -10,7 +10,9 @@ namespace NihongoLife.Player
     {
         None,
         Food,
-        Drink
+        Drink,
+        /// <summary>Over-the-counter medicine or a mask (Resources/Health/illnesses.json "medicines").</summary>
+        Medicine
     }
 
     [Serializable]
@@ -187,6 +189,7 @@ namespace NihongoLife.Player
                 PlayerStatus status = PlayerStatus.Instance;
                 if (status == null || !RemoveItem(item.itemId)) return false;
                 status.RestoreNeeds(item.foodRestore, item.drinkRestore, item.energyRestore);
+                if (item.useType == ItemUseType.Medicine) NihongoLife.UI.HudFeed.Post(NihongoLife.Health.PlayerIllness.TakeMedicine(item.itemId), NihongoLife.UI.HudFeed.Kind.Info, 6f, "medicine");
                 return true;
             }
 

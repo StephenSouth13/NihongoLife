@@ -1246,9 +1246,9 @@
       "nameVi": "Y tế",
       "nameEn": "Medicine",
       "nameJa": "医療",
-      "descriptionVi": "Làm ở Phòng khám Hibari: tiếp nhận, hỏi bệnh, giải thích thuốc. Lên cao thì thành bác sĩ (rồi giám đốc phòng khám) hoặc dược sĩ.",
-      "descriptionEn": "Work at Hibari Clinic: reception, symptoms, medicine. Later become a doctor (then clinic director) or a pharmacist.",
-      "descriptionJa": "ひばりクリニックで受付・問診・お薬の説明。将来は医師（院長）か薬剤師へ。",
+      "descriptionVi": "Làm thêm ở Phòng khám Hibari (tiếp nhận, phụ việc) rồi học tiếp như ngoài đời: trường y 6 năm → thi quốc gia → bác sĩ nội trú 2 năm → chuyên khoa 3 năm → bác sĩ chuyên khoa / giám đốc phòng khám; hoặc trường dược 6 năm → dược sĩ.",
+      "descriptionEn": "Start part-time at Hibari Clinic (reception, assisting), then follow the real path: 6 years of medical school → national exam → 2-year residency → 3-year specialty training → specialist / clinic director; or 6 years of pharmacy school → pharmacist.",
+      "descriptionJa": "ひばりクリニックで受付・看護助手から。医学部6年→医師国家試験→初期研修2年→専門研修3年→専門医・院長、または薬学部6年→薬剤師。",
       "workplaceVi": "Phòng khám Hibari",
       "workplaceEn": "Hibari Clinic",
       "workplaceJa": "ひばりクリニック",
@@ -1268,9 +1268,9 @@
       "branchAtLevel": 4,
       "levels": [
         {
-          "titleVi": "Nhân viên lễ tân",
-          "titleEn": "Receptionist",
-          "titleJa": "受付スタッフ",
+          "titleVi": "Nhân viên lễ tân (y vụ)",
+          "titleEn": "Medical receptionist",
+          "titleJa": "医療事務",
           "salary": 240,
           "shiftsToPromote": 2,
           "knowledgeToPromote": 0
@@ -1284,12 +1284,12 @@
           "knowledgeToPromote": 200
         },
         {
-          "titleVi": "Điều dưỡng",
-          "titleEn": "Nurse",
-          "titleJa": "看護師",
-          "salary": 560,
-          "shiftsToPromote": 3,
-          "knowledgeToPromote": 320
+          "titleVi": "Sinh viên y / dược (vừa học vừa làm)",
+          "titleEn": "Medical / pharmacy student (part-time)",
+          "titleJa": "医療系の学生",
+          "salary": 420,
+          "shiftsToPromote": 4,
+          "knowledgeToPromote": 400
         }
       ],
       "branches": [
@@ -1298,30 +1298,30 @@
           "nameVi": "Bác sĩ",
           "nameEn": "Doctor",
           "nameJa": "医師コース",
-          "descriptionVi": "Khám bệnh, chẩn đoán, kê đơn — rồi điều hành phòng khám.",
-          "descriptionEn": "Examine, diagnose, prescribe — then run the clinic.",
-          "descriptionJa": "診察・診断・処方、そして院長へ。",
+          "descriptionVi": "Đậu kỳ thi quốc gia (医師国家試験) → 2 năm nội trú → 3 năm chuyên khoa → bác sĩ chuyên khoa, mở hoặc điều hành phòng khám.",
+          "descriptionEn": "Pass the national medical exam → 2-year residency → 3-year specialty training → specialist running a clinic.",
+          "descriptionJa": "医師国家試験→初期研修2年→専門研修3年→専門医・院長",
           "levels": [
             {
-              "titleVi": "Bác sĩ nội trú",
-              "titleEn": "Resident doctor",
+              "titleVi": "Bác sĩ nội trú (năm 1–2)",
+              "titleEn": "Resident (junior, years 1–2)",
               "titleJa": "研修医",
               "salary": 820,
               "shiftsToPromote": 4,
               "knowledgeToPromote": 450
             },
             {
-              "titleVi": "Bác sĩ",
-              "titleEn": "Doctor",
-              "titleJa": "医師",
+              "titleVi": "Bác sĩ đào tạo chuyên khoa",
+              "titleEn": "Specialty trainee",
+              "titleJa": "専攻医",
               "salary": 1150,
               "shiftsToPromote": 5,
               "knowledgeToPromote": 650
             },
             {
-              "titleVi": "Giám đốc phòng khám",
-              "titleEn": "Clinic director",
-              "titleJa": "院長",
+              "titleVi": "Bác sĩ chuyên khoa · Giám đốc phòng khám",
+              "titleEn": "Specialist · Clinic director",
+              "titleJa": "専門医・院長",
               "salary": 1600,
               "shiftsToPromote": 0,
               "knowledgeToPromote": 0
@@ -1333,22 +1333,22 @@
           "nameVi": "Dược sĩ",
           "nameEn": "Pharmacist",
           "nameJa": "薬剤師コース",
-          "descriptionVi": "Pha chế, giải thích thuốc, kiểm tra tương tác thuốc.",
-          "descriptionEn": "Dispense, explain medicines, check interactions.",
-          "descriptionJa": "調剤・服薬指導・飲み合わせの確認。",
+          "descriptionVi": "Đậu kỳ thi dược sĩ quốc gia (薬剤師国家試験) → dược sĩ → dược sĩ phụ trách (管理薬剤師) → trưởng nhà thuốc.",
+          "descriptionEn": "Pass the national pharmacist exam → pharmacist → supervising pharmacist → head of the pharmacy.",
+          "descriptionJa": "薬剤師国家試験→薬剤師→管理薬剤師→薬局長",
           "levels": [
             {
-              "titleVi": "Dược sĩ tập sự",
-              "titleEn": "Trainee pharmacist",
-              "titleJa": "薬剤師見習い",
+              "titleVi": "Dược sĩ",
+              "titleEn": "Pharmacist",
+              "titleJa": "薬剤師",
               "salary": 780,
               "shiftsToPromote": 4,
               "knowledgeToPromote": 450
             },
             {
-              "titleVi": "Dược sĩ",
-              "titleEn": "Pharmacist",
-              "titleJa": "薬剤師",
+              "titleVi": "Dược sĩ phụ trách",
+              "titleEn": "Supervising pharmacist",
+              "titleJa": "管理薬剤師",
               "salary": 1080,
               "shiftsToPromote": 5,
               "knowledgeToPromote": 650
@@ -1395,52 +1395,54 @@
           ]
         },
         {
+          "id": "medical_to_3",
           "toLevel": 3,
-          "lineJa": "「ねつは なんどですか」と ききました。「さんじゅうはちど ごぶです」。なんどですか。",
-          "readingJa": "“Netsu wa nan-do desu ka” — “sanjūhachi-do gobu desu.”",
-          "meaningVi": "Bạn hỏi bệnh nhân sốt bao nhiêu độ. Họ nói \"さんじゅうはちど ごぶ\". Là bao nhiêu?",
-          "meaningEn": "You ask the temperature: \"さんじゅうはちど ごぶ\". How much?",
+          "lineJa": "いがくぶと やくがくぶは なんねん かかりますか。",
+          "readingJa": "igakubu to yakugakubu wa nannen kakarimasu ka",
+          "meaningVi": "Học trường y và trường dược mất mấy năm?",
+          "meaningEn": "How many years do medical and pharmacy school take?",
           "choices": [
             {
-              "ja": "38.5℃",
-              "vi": "38,5 độ",
-              "en": "38.5 °C",
+              "ja": "どちらも 6ねんです。",
+              "vi": "Cả hai đều 6 năm.",
+              "en": "Six years for both.",
               "correct": true
             },
             {
-              "ja": "35.8℃",
-              "vi": "35,8 độ",
-              "en": "35.8 °C",
-              "hintVi": "さんじゅうはち = 38, ごぶ = .5",
-              "hintEn": "さんじゅうはち = 38, ごぶ = .5"
+              "ja": "4ねんです。",
+              "vi": "4 năm.",
+              "en": "Four years.",
+              "hintVi": "Ở Nhật, trường y (医学部) và trường dược (薬学部) đều học 6 năm.",
+              "hintEn": "In Japan both medical and pharmacy school take six years."
             },
             {
-              "ja": "39.5℃",
-              "vi": "39,5 độ",
-              "en": "39.5 °C",
-              "hintVi": "さんじゅうはち = 38, không phải 39.",
-              "hintEn": "さんじゅうはち is 38, not 39."
+              "ja": "2ねんです。",
+              "vi": "2 năm.",
+              "en": "Two years.",
+              "hintVi": "Ở Nhật, trường y (医学部) và trường dược (薬学部) đều học 6 năm.",
+              "hintEn": "In Japan both medical and pharmacy school take six years."
             }
           ]
         },
         {
+          "id": "medical_to_4",
           "toLevel": 4,
-          "lineJa": "これから どの みちに すすみたいですか。",
-          "readingJa": "Kore kara dono michi ni susumitai desu ka.",
-          "meaningVi": "Từ giờ bạn muốn theo con đường nào?",
-          "meaningEn": "Which path would you like to follow from now on?",
+          "lineJa": "6ねんかん べんきょうしました。どの こっかしけんを うけますか。",
+          "readingJa": "rokunenkan benkyou shimashita. dono kokka shiken o ukemasu ka",
+          "meaningVi": "Bạn đã học 6 năm. Bạn sẽ thi kỳ thi quốc gia nào?",
+          "meaningEn": "You have studied six years. Which national exam will you take?",
           "choices": [
             {
-              "ja": "いしゃに なって、かんじゃさんを しんさつ したいです。",
-              "vi": "Tôi muốn thành bác sĩ, khám cho bệnh nhân. → Bác sĩ",
-              "en": "I want to become a doctor and examine patients. → Doctor",
+              "ja": "いしこっかしけんです。けんしゅういに なります。",
+              "vi": "Thi bác sĩ quốc gia, rồi làm bác sĩ nội trú.",
+              "en": "The national medical exam, then residency.",
               "correct": true,
               "branch": "doctor"
             },
             {
-              "ja": "くすりの せんもんかに なりたいです。",
-              "vi": "Tôi muốn thành chuyên gia về thuốc. → Dược sĩ",
-              "en": "I want to be a medicine specialist. → Pharmacist",
+              "ja": "やくざいしこっかしけんです。やくざいしに なります。",
+              "vi": "Thi dược sĩ quốc gia, rồi làm dược sĩ.",
+              "en": "The national pharmacist exam, then pharmacist.",
               "correct": true,
               "branch": "pharmacist"
             }
@@ -1477,34 +1479,35 @@
           "branch": "doctor"
         },
         {
+          "id": "medical_to_6_doctor",
           "toLevel": 6,
-          "lineJa": "あたらしい いんちょうとして スタッフに ひとこと。",
-          "readingJa": "Atarashii inchō to shite sutaffu ni hitokoto.",
-          "meaningVi": "Là giám đốc mới, nói một câu với nhân viên.",
-          "meaningEn": "As the new director, a word to the staff.",
+          "branch": "doctor",
+          "lineJa": "かぜの かんじゃさんが「こうせいぶっしつを ください」と いいました。",
+          "readingJa": "kaze no kanja-san ga \"kouseibusshitsu o kudasai\" to iimashita",
+          "meaningVi": "Một bệnh nhân bị cảm nói: \"Cho tôi thuốc kháng sinh.\" Bạn trả lời thế nào?",
+          "meaningEn": "A patient with a cold says: \"Give me antibiotics.\" What do you answer?",
           "choices": [
             {
-              "ja": "かんじゃさんの ために、いっしょに がんばりましょう。",
-              "vi": "Vì bệnh nhân, chúng ta cùng cố gắng nhé.",
-              "en": "Let's work hard together for our patients.",
+              "ja": "かぜは ウイルスなので、こうせいぶっしつは ききません。ゆっくり やすんで ください。",
+              "vi": "Cảm là do virus nên kháng sinh không có tác dụng. Hãy nghỉ ngơi.",
+              "en": "A cold is a virus, so antibiotics don't work. Please rest.",
               "correct": true
             },
             {
-              "ja": "わたしの いう とおりに して ください。",
-              "vi": "Cứ làm đúng như tôi nói.",
-              "en": "Just do as I say.",
-              "hintVi": "Lãnh đạo tốt cùng làm với đội.",
-              "hintEn": "Good leaders work with the team."
+              "ja": "はい、たくさん だしますね。",
+              "vi": "Vâng, tôi kê thật nhiều.",
+              "en": "Sure, I'll prescribe plenty.",
+              "hintVi": "Kháng sinh chỉ diệt vi khuẩn; dùng sai còn làm vi khuẩn kháng thuốc.",
+              "hintEn": "Antibiotics only kill bacteria; misuse breeds resistant bacteria."
             },
             {
-              "ja": "きょうは やすみましょう。",
-              "vi": "Hôm nay nghỉ thôi.",
-              "en": "Let's take today off.",
-              "hintVi": "Phòng khám vẫn có bệnh nhân.",
-              "hintEn": "The clinic still has patients."
+              "ja": "ちゅうしゃを しましょう。",
+              "vi": "Tiêm một mũi nhé.",
+              "en": "Let's give an injection.",
+              "hintVi": "Cảm thông thường tự khỏi; chỉ cần điều trị triệu chứng và nghỉ ngơi.",
+              "hintEn": "A common cold clears by itself; treat the symptoms and rest."
             }
-          ],
-          "branch": "doctor"
+          ]
         },
         {
           "toLevel": 5,
@@ -1662,6 +1665,125 @@
           ]
         }
       ]
+    }
+  ],
+  "milestones": [
+    {
+      "id": "first_shift",
+      "type": "shifts",
+      "value": 1,
+      "titleVi": "Ngày đầu đi làm",
+      "titleEn": "First day at work",
+      "titleJa": "初出勤",
+      "descVi": "Làm ca đầu tiên trong nghề.",
+      "descEn": "Work your first shift in a career.",
+      "descJa": "はじめてのシフト。",
+      "rewardYen": 300,
+      "rewardKnowledge": 5
+    },
+    {
+      "id": "first_promotion",
+      "type": "level",
+      "value": 2,
+      "titleVi": "Lần thăng chức đầu tiên",
+      "titleEn": "First promotion",
+      "titleJa": "はじめての昇進",
+      "descVi": "Qua phỏng vấn và lên bậc 2.",
+      "descEn": "Pass the interview and reach level 2.",
+      "descJa": "面接に合格してレベル2へ。",
+      "rewardYen": 500,
+      "rewardKnowledge": 10
+    },
+    {
+      "id": "days_7",
+      "type": "days",
+      "value": 7,
+      "titleVi": "Một tuần trọn vẹn",
+      "titleEn": "A full week",
+      "titleJa": "皆勤の一週間",
+      "descVi": "Đi làm đúng giờ 7 ngày.",
+      "descEn": "Work on time on 7 days.",
+      "descJa": "7日間、時間どおりに働く。",
+      "rewardYen": 700,
+      "rewardKnowledge": 10
+    },
+    {
+      "id": "shifts_10",
+      "type": "shifts",
+      "value": 10,
+      "titleVi": "Nhân viên chăm chỉ",
+      "titleEn": "Hard worker",
+      "titleJa": "がんばり屋",
+      "descVi": "Làm 10 ca trong một nghề.",
+      "descEn": "Work 10 shifts in one career.",
+      "descJa": "ひとつの仕事で10シフト。",
+      "rewardYen": 800,
+      "rewardKnowledge": 10
+    },
+    {
+      "id": "events_5",
+      "type": "events",
+      "value": 5,
+      "titleVi": "Xử lý khéo léo",
+      "titleEn": "Quick thinker",
+      "titleJa": "臨機応変",
+      "descVi": "Xử lý 5 tình huống ở nơi làm việc.",
+      "descEn": "Handle 5 situations at work.",
+      "descJa": "仕事のできごとを5回のりこえる。",
+      "rewardYen": 600,
+      "rewardKnowledge": 10
+    },
+    {
+      "id": "branch",
+      "type": "branch",
+      "value": 1,
+      "titleVi": "Chọn hướng đi riêng",
+      "titleEn": "Your own path",
+      "titleJa": "自分の道",
+      "descVi": "Lên bậc 4 và chọn nhánh nghề.",
+      "descEn": "Reach level 4 and choose your path.",
+      "descJa": "レベル4でコースを選ぶ。",
+      "rewardYen": 1000,
+      "rewardKnowledge": 15
+    },
+    {
+      "id": "shifts_30",
+      "type": "shifts",
+      "value": 30,
+      "titleVi": "Người đáng tin cậy",
+      "titleEn": "Reliable colleague",
+      "titleJa": "たよれる人",
+      "descVi": "Làm 30 ca trong một nghề.",
+      "descEn": "Work 30 shifts in one career.",
+      "descJa": "ひとつの仕事で30シフト。",
+      "rewardYen": 2000,
+      "rewardKnowledge": 20
+    },
+    {
+      "id": "careers_2",
+      "type": "careers",
+      "value": 2,
+      "titleVi": "Đa tài",
+      "titleEn": "Many talents",
+      "titleJa": "多才",
+      "descVi": "Thử sức ở 2 nghề khác nhau.",
+      "descEn": "Try 2 different careers.",
+      "descJa": "2つの仕事を経験する。",
+      "rewardYen": 500,
+      "rewardKnowledge": 10
+    },
+    {
+      "id": "top",
+      "type": "level",
+      "value": 6,
+      "titleVi": "Đỉnh cao sự nghiệp",
+      "titleEn": "Top of the career",
+      "titleJa": "キャリアの頂点",
+      "descVi": "Đạt bậc cao nhất của một nghề.",
+      "descEn": "Reach the top level of a career.",
+      "descJa": "仕事の最高レベルに到達。",
+      "rewardYen": 5000,
+      "rewardKnowledge": 50
     }
   ]
 }

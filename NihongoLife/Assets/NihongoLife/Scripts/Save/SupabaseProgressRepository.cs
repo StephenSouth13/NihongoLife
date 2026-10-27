@@ -388,6 +388,9 @@ namespace NihongoLife.Save
             }
             merged.trackedQuestId = !string.IsNullOrWhiteSpace(cloud.trackedQuestId) ? cloud.trackedQuestId : local.trackedQuestId;
             // Career: the most recently changed record wins (a quit or a promotion on another device is kept).
+            var localHealth = local.illness ?? new NihongoLife.Health.HealthRecord();
+            var cloudHealth = cloud.illness ?? new NihongoLife.Health.HealthRecord();
+            merged.illness = localHealth.updatedTicks >= cloudHealth.updatedTicks ? localHealth : cloudHealth;
             var localCareerState = local.career ?? new NihongoLife.Progression.CareerState();
             var cloudCareerState = cloud.career ?? new NihongoLife.Progression.CareerState();
             merged.career = localCareerState.updatedTicks > cloudCareerState.updatedTicks ? localCareerState : cloudCareerState;

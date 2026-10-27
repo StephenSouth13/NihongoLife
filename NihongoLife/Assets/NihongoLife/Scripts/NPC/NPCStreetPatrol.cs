@@ -23,6 +23,7 @@ namespace NihongoLife.NPC
         private int _direction = 1;
         private Vector3 _smoothVelocity;
         private float _speedPersonality = 1f;
+        private NihongoLife.Player.CharacterLook _look; // older people walk slower (CharacterLook.Walk)
         private float _waitPersonality = 1f;
         private Vector3 _lastProgressPosition;
         private float _stuckTimer;
@@ -33,6 +34,7 @@ namespace NihongoLife.NPC
             _animation = GetComponent<CharacterAnimationController>();
             _characterController = GetComponent<CharacterController>();
             _speedPersonality = Random.Range(0.88f, 1.12f);
+            _look = GetComponent<NihongoLife.Player.CharacterLook>();
             _waitPersonality = Random.Range(0.8f, 1.35f);
             if (_characterController == null)
             {
@@ -83,7 +85,7 @@ namespace NihongoLife.NPC
             }
 
             Vector3 direction = offset.normalized;
-            Vector3 desiredVelocity = direction * walkSpeed * _speedPersonality;
+            Vector3 desiredVelocity = direction * walkSpeed * _speedPersonality * (_look != null ? _look.Walk : 1f);
             _smoothVelocity = Vector3.Lerp(_smoothVelocity, desiredVelocity, 5f * Time.deltaTime);
             _characterController.Move(_smoothVelocity * Time.deltaTime);
             transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(direction), turnSpeed * Time.deltaTime);

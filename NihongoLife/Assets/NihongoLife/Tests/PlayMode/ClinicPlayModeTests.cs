@@ -163,6 +163,63 @@ namespace NihongoLife.Tests
             Capture("09_woke_in_clinic");
         }
 
+        [UnityTest, Timeout(300000)]
+        public IEnumerator Clinic_TownspeopleComeForACheckUp()
+        {
+            LogAssert.ignoreFailingMessages = true;
+            yield return SceneManager.LoadSceneAsync(WorldLocationCatalog.CityScene);
+            yield return new WaitForSecondsRealtime(2.5f);
+            var player = Object.FindFirstObjectByType<PlayerController>();
+            var flow = Object.FindFirstObjectByType<SceneFlowController>();
+            var dm = DialogueManager.Instance;
+            while (dm != null && dm.IsOpen) { dm.CancelDialogue(); if (dm.IsOpen) dm.ContinueDialogue(); yield return null; }
+            GameObject.Find("AdditiveZonePortals/ClinicPortal").GetComponent<ScenePortal>().Interact(player.gameObject);
+            yield return null;
+            for (float t = 0f; t < 30f && flow.IsLoading; t += Time.unscaledDeltaTime) yield return null;
+            yield return new WaitForSecondsRealtime(1f);
+            Assert.AreEqual(WorldLocationCatalog.ClinicScene, SceneManager.GetActiveScene().name);
+
+            var patients = Object.FindFirstObjectByType<ClinicPatientFlow>();
+            Assert.NotNull(patients, "The clinic has its townspeople");
+            Assert.GreaterOrEqual(patients.Count, 2, "People already wait when you walk in");
+            var people = GameObject.FindObjectsByType<Transform>(FindObjectsSortMode.None).Where(t => t.name.StartsWith("Townsperson_")).ToArray();
+            Assert.IsTrue(people.All(p => p.GetComponentsInChildren<Collider>().Length == 0), "Townspeople never block the player");
+            Teleport(player, O + new Vector3(1.2f, 0.1f, -6.4f), 50f);
+            Object.FindFirstObjectByType<NihongoLife.Cameras.ThirdPersonCameraController>()?.SetOrbit(40f, 18f, 6.5f);
+            yield return new WaitForSecondsRealtime(1f);
+            Capture("10_townspeople_waiting");
+
+            // Faster clock: the first person is called, sees Dr Mori, takes the medicine and goes home.
+            float scale = Time.timeScale;
+            try
+            {
+                Time.timeScale = 4f;
+                for (float t = 0f; t < 40f && patients.Called < 1; t += Time.unscaledDeltaTime) yield return null;
+                Assert.GreaterOrEqual(patients.Called, 1, "A number is called");
+                Time.timeScale = 1f;
+                yield return new WaitForSecondsRealtime(0.4f);
+                Capture("11_number_called");
+                Time.timeScale = 4f;
+                for (float t = 0f; t < 25f && !Object.FindObjectsByType<TMPro.TextMeshPro>(FindObjectsSortMode.None).Any(x => x.name == "Speech" && x.gameObject.activeInHierarchy && x.transform.parent.name == "Doctor_Mori"); t += Time.unscaledDeltaTime) yield return null;
+                Time.timeScale = 1f;
+                Teleport(player, O + new Vector3(-3.6f, 0.1f, 2.6f), 240f);
+                Object.FindFirstObjectByType<NihongoLife.Cameras.ThirdPersonCameraController>()?.SetOrbit(240f, 14f, 4.5f);
+                yield return new WaitForSecondsRealtime(0.8f);
+                Capture("12_consultation");
+                Time.timeScale = 4f;
+                for (float t = 0f; t < 60f && patients.Treated < 1; t += Time.unscaledDeltaTime) yield return null;
+                Assert.GreaterOrEqual(patients.Treated, 1, "Someone got their medicine and left");
+            }
+            finally
+            {
+                Time.timeScale = scale;
+            }
+
+            // Elders look their age: a beard / lines on the head bone, grey hair.
+            var elder = GameObject.FindObjectsByType<NihongoLife.Player.CharacterLook>(FindObjectsSortMode.None).FirstOrDefault(l => l.name.StartsWith("Townsperson_") && l.Age >= 60);
+            if (elder != null) Assert.Less(elder.Walk, 1f, "An elder walks slower");
+        }
+
         private static void AnswerRight() => JobQuizCard.Answer(JobQuizCard.CurrentChoices.ToList().FindIndex(c => c.Correct));
 
         private static void AnswerWrongThenRight()

@@ -32,7 +32,24 @@ namespace NihongoLife.Progression
         /// <summary>UTC ticks of the last change (cloud merge keeps the newest).</summary>
         public long updatedTicks;
 
+        // ─── The record of this career (the Profile tab) ───
+        public int startedDay = -1;
+        public int totalSalary;
+        public int eventsHandled;
+        /// <summary>Game days with an on-time shift (latest last, at most 60 kept) — the schedule's ✓ marks.</summary>
+        public List<int> workedDays = new List<int>();
+        public List<CareerPromotionRecord> promotions = new List<CareerPromotionRecord>();
+        /// <summary>Milestones reached (careers.json "milestones"), across every career.</summary>
+        public List<string> milestones = new List<string>();
+
         public bool HasCareer => !string.IsNullOrEmpty(careerId) && level > 0;
+    }
+
+    [Serializable]
+    public sealed class CareerPromotionRecord
+    {
+        public string careerId, branchId;
+        public int level, day;
     }
 
     /// <summary>
@@ -115,7 +132,12 @@ namespace NihongoLife.Progression
             state.shifts = 0;
             state.lastShiftDay = -1;
             state.prompted = true;
+            state.startedDay = Today;
+            state.totalSalary = 0;
+            state.eventsHandled = 0;
+            state.workedDays.Clear();
             Save();
+            CheckMilestones();
             HudFeed.Post(Loc.F("Bạn đã vào nghề {0}: {1} ở {2}. Lịch làm: {3}.", "You joined {0}: {1} at {2}. Schedule: {3}.", "{0}の仕事を始めました：{2}の{1}。勤務：{3}。",
                 career.Name, career.levels[0].Title, career.Workplace, career.Schedule), HudFeed.Kind.Reward, 7f);
             NihongoLife.Audio.Soundscape.Jingle("unlock");
@@ -162,13 +184,20 @@ namespace NihongoLife.Progression
             bool onTime = IsWorkTime(career, day, hour);
             bool firstToday = state.lastShiftDay != day;
             float step = level.shiftsToPromote > 0 ? 100f / level.shiftsToPromote : 0f;
-            float gain = step * MoodFactor * (onTime ? 1f : 0.5f);
+            float gain = step * MoodFactor * (onTime ? 1f : 0.5f) * NihongoLife.Health.PlayerIllness.WorkFactor; // ill: you work worse
             state.performance = Mathf.Clamp(state.performance + gain, 0f, 100f);
             state.shifts++;
             if (onTime) state.lastShiftDay = day;
+            if (onTime && firstToday)
+            {
+                if (!state.workedDays.Contains(day)) state.workedDays.Add(day);
+                while (state.workedDays.Count > 60) state.workedDays.RemoveAt(0);
+                state.totalSalary += level.salary;
+            }
             Save();
             if (onTime && firstToday && level.salary > 0)
                 PlayerInventory.Instance?.AddYen(level.salary, Loc.Triple("Lương: " + level.titleVi, "Salary: " + level.titleEn, "給料：" + level.titleJa));
+            CheckMilestones();
             HudFeed.Post(onTime
                 ? Loc.F("Ca làm đúng giờ · {0} · hiệu suất {1:0}%{2}", "On-time shift · {0} · performance {1:0}%{2}", "時間どおりの勤務 · {0} · 評価 {1:0}%{2}", level.Title, state.performance, firstToday && level.salary > 0 ? "  +" + Loc.Yen(level.salary) : "")
                 : Loc.F("Ca ngoài giờ làm ({0}): hiệu suất chỉ tăng một nửa, không có lương nghề.", "Shift outside working hours ({0}): half the performance, no salary.", "勤務時間外のシフト（{0}）：評価は半分、給料なし。", career.Schedule),
@@ -236,6 +265,7 @@ namespace NihongoLife.Progression
                 state.branchId = career.Branch(branchId) != null ? branchId : career.branches[0].id;
             state.level++;
             state.performance = 0f;
+            state.promotions.Add(new CareerPromotionRecord { careerId = state.careerId, branchId = state.branchId, level = state.level, day = Today });
             Save();
             var level = CurrentLevel;
             var branch = career.Branch(state.branchId);
@@ -244,6 +274,7 @@ namespace NihongoLife.Progression
             SocialStanding.AddReputation(5, "promotion");
             SocialStanding.AddMoodlet("promoted", SocialMood.Proud, 0.8f, 6f);
             NihongoLife.Audio.Soundscape.Jingle("level_up");
+            CheckMilestones();
         }
 
         /// <summary>A work event (Sims 4 style): every answer is allowed and has its consequence.</summary>
@@ -268,9 +299,50 @@ namespace NihongoLife.Progression
             if (choice.reputation > 0) SocialStanding.AddReputation(choice.reputation, "work");
             else if (choice.reputation < 0) SocialStanding.AddNotoriety(-choice.reputation, "work");
             if (!string.IsNullOrEmpty(choice.mood) && Enum.TryParse(choice.mood, out SocialMood mood)) SocialStanding.AddMoodlet("work_event", mood, 0.5f, 3f);
+            state.eventsHandled++;
             Save();
+            CheckMilestones();
             HudFeed.Post(Loc.F("Hiệu suất {0}{1} → {2:0}%", "Performance {0}{1} → {2:0}%", "評価 {0}{1} → {2:0}%", choice.performance >= 0 ? "+" : "", choice.performance, state.performance),
                 choice.performance >= 0 ? HudFeed.Kind.Reward : HudFeed.Kind.Warning, 5f, "career-event");
+        }
+
+        // ─────────── Milestones (the development path, careers.json "milestones") ───────────
+
+        /// <summary>How far the player is towards a milestone (current value; reached when ≥ its value).</summary>
+        public static int MilestoneProgress(CareerMilestoneDefinition m)
+        {
+            var state = State;
+            if (state == null || m == null) return 0;
+            return m.type switch
+            {
+                "shifts" => state.shifts,
+                "level" => state.level,
+                "branch" => string.IsNullOrEmpty(state.branchId) ? 0 : 1,
+                "events" => state.eventsHandled,
+                "days" => state.workedDays.Count,
+                "careers" => state.pastCareers.Count + (state.HasCareer && !state.pastCareers.Contains(state.careerId) ? 1 : 0),
+                _ => 0,
+            };
+        }
+
+        public static bool Reached(CareerMilestoneDefinition m) => State?.milestones.Contains(m.id) == true;
+
+        /// <summary>Awards every milestone just reached (once each, across careers).</summary>
+        public static void CheckMilestones()
+        {
+            var state = State;
+            if (state == null) return;
+            foreach (var m in Catalog.milestones)
+            {
+                if (state.milestones.Contains(m.id) || MilestoneProgress(m) < Mathf.Max(1, m.value)) continue;
+                state.milestones.Add(m.id);
+                Save();
+                if (m.rewardYen > 0) PlayerInventory.Instance?.AddYen(m.rewardYen, Loc.Triple("Cột mốc nghề: " + m.titleVi, "Career milestone: " + m.titleEn, "キャリアの節目：" + m.titleJa));
+                if (m.rewardKnowledge > 0) PlayerStatus.Instance?.AddKnowledge(m.rewardKnowledge);
+                string reward = string.Join(" · ", new[] { m.rewardYen > 0 ? "+" + Loc.Yen(m.rewardYen) : null, m.rewardKnowledge > 0 ? Loc.F("+{0} trí tuệ", "+{0} knowledge", "知識 +{0}", m.rewardKnowledge) : null }.Where(x => x != null));
+                HudFeed.Post(Loc.T("Cột mốc nghề nghiệp: ", "Career milestone: ", "キャリアの節目：") + m.Title + (reward.Length > 0 ? "   " + reward : ""), HudFeed.Kind.Reward, 7f);
+                NihongoLife.Audio.Soundscape.Jingle("unlock");
+            }
         }
 
         // ─────────── The working day (CareerClock ticks this) ───────────

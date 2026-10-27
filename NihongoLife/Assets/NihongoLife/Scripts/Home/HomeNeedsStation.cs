@@ -51,7 +51,7 @@ namespace NihongoLife.Home
             InventoryEntry food = null;
             if (inventory != null)
                 foreach (var item in inventory.Items)
-                    if (item.useType != ItemUseType.None) { food = item; break; }
+                    if (item.useType == ItemUseType.Food || item.useType == ItemUseType.Drink) { food = item; break; } // not medicine
 
             if (food == null || status == null)
             {

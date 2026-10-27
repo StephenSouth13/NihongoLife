@@ -39,6 +39,7 @@ namespace NihongoLife.EditorTools
         private const float HalfX = 10f, HalfZ = 8f, Height = 3.2f;
 
         private static Material _floor, _wall, _ceiling, _mint, _wood, _white, _glass, _curtain, _dark, _sign, _lamp, _rubber, _chart;
+        private static Material _walkway, _rug, _water, _red, _yellow, _blue, _green, _orange, _skyArt;
 
         public static void Build()
         {
@@ -52,6 +53,26 @@ namespace NihongoLife.EditorTools
                 EditorBuildSettings.scenes = scenes.ToArray();
                 AssetDatabase.SaveAssets();
                 Debug.Log("[ClinicBuilder] Hibari Clinic built.");
+                if (Application.isBatchMode) EditorApplication.Exit(0);
+            }
+            catch (Exception exception)
+            {
+                Debug.LogException(exception);
+                if (Application.isBatchMode) EditorApplication.Exit(1);
+                else throw;
+            }
+        }
+
+        /// <summary>Rebuilds only the clinic scene (interior, staff, townspeople's route), leaving the town untouched.
+        /// Run: Unity -batchmode -executeMethod NihongoLife.EditorTools.ClinicBuilder.BuildInterior</summary>
+        public static void BuildInterior()
+        {
+            try
+            {
+                Materials();
+                BuildZone();
+                AssetDatabase.SaveAssets();
+                Debug.Log("[ClinicBuilder] Hibari Clinic interior rebuilt.");
                 if (Application.isBatchMode) EditorApplication.Exit(0);
             }
             catch (Exception exception)
@@ -77,6 +98,15 @@ namespace NihongoLife.EditorTools
             _lamp = Lit(MatDir, "Clinic_Lamp", Color.white, 0.2f, new Color(1f, 1f, 0.96f) * 1.6f);
             _rubber = Lit(MatDir, "Clinic_Rubber", new Color(0.3f, 0.33f, 0.36f), 0.2f);
             _chart = Lit(MatDir, "Clinic_EyeChart", new Color(0.99f, 0.99f, 0.97f), 0.1f, new Color(0.25f, 0.25f, 0.24f));
+            _walkway = Lit(MatDir, "Clinic_Walkway", new Color(0.62f, 0.84f, 0.78f), 0.4f);
+            _rug = Lit(MatDir, "Clinic_Rug", new Color(0.93f, 0.86f, 0.72f), 0.05f);
+            _water = Lit(MatDir, "Clinic_AquariumWater", new Color(0.35f, 0.7f, 0.92f, 0.45f), 0.95f, new Color(0.05f, 0.18f, 0.28f), transparent: true);
+            _red = Lit(MatDir, "Clinic_ToyRed", new Color(0.9f, 0.32f, 0.3f), 0.3f);
+            _yellow = Lit(MatDir, "Clinic_ToyYellow", new Color(0.98f, 0.82f, 0.3f), 0.3f);
+            _blue = Lit(MatDir, "Clinic_ToyBlue", new Color(0.3f, 0.55f, 0.92f), 0.3f);
+            _green = Lit(MatDir, "Clinic_ToyGreen", new Color(0.4f, 0.78f, 0.45f), 0.3f);
+            _orange = Lit(MatDir, "Clinic_Fish", new Color(1f, 0.55f, 0.15f), 0.6f, new Color(0.35f, 0.15f, 0f));
+            _skyArt = Lit(MatDir, "Clinic_ArtSky", new Color(0.55f, 0.78f, 0.95f), 0.1f, new Color(0.12f, 0.16f, 0.2f));
         }
 
         private static Vector3 P(float x, float y, float z) => O + new Vector3(x, y, z);
@@ -167,7 +197,7 @@ namespace NihongoLife.EditorTools
                 for (int i = 0; i < 2; i++)
                     Furn(furniture, "benchCushion", $"WaitingBench_{row}_{i}", P(4.8f + i * 2.4f, 0f, -5.4f + row * 2.2f), 180f, new Vector3(2.0f, 0.85f, 0.6f), true);
             Block(furniture, "CallBoard", P(HalfX - 0.15f, 2.2f, -4.2f), new Vector3(0.05f, 0.7f, 1.6f), _dark, false);
-            Text(furniture, "CallBoard_Text", "しんさつ ばんごう\n<size=180%><color=#7CF0C8>3</color></size>", P(HalfX - 0.19f, 2.2f, -4.2f), 90f, 0.12f, Color.white, 1.5f);
+            Text(furniture, "CallBoard_Text", "しんさつ ばんごう\n<size=180%><color=#7CF0C8>2</color></size>", P(HalfX - 0.19f, 2.2f, -4.2f), 90f, 0.12f, Color.white, 1.5f);
             Furn(furniture, "televisionModern", "WaitingTV", P(HalfX - 0.3f, 1.2f, -1.8f), -90f, new Vector3(1.2f, 0.75f, 0.12f), false);
             Furn(furniture, "bookcaseOpenLow", "MagazineRack", P(3.0f, 0f, -7.55f), 0f, new Vector3(1.2f, 0.8f, 0.35f), true);
             Furn(furniture, "kitchenFridgeSmall", "WaterDispenser", P(8.9f, 0f, -7.3f), 0f, new Vector3(0.5f, 1.2f, 0.45f), true);
@@ -184,6 +214,8 @@ namespace NihongoLife.EditorTools
             Block(signs, "MainSign_Back", P(4.6f, 2.55f, HalfZ * -1f + 0.16f), new Vector3(4.6f, 0.7f, 0.03f), _sign, false);
             Text(signs, "MainSign", "ひばりクリニック  <size=60%>内科・小児科</size>\n<size=50%>Phòng khám Hibari · Nội khoa · Nhi khoa</size>", P(4.6f, 2.55f, -HalfZ + 0.2f), 180f, 0.22f, Color.white, 4.4f);
 
+            Decor(shell, furniture, signs);
+
             // Staff: Nurse Sato at reception, the pharmacist at the window, Dr Mori at the desk.
             Person(staff, "Nurse_Sato", P(-3f, 0f, -2.6f), 180f, "さとう · Điều dưỡng Sato", "かんごし");
             Person(staff, "Pharmacist", P(1.8f, 0f, -2.6f), 180f, "やくざいし · Dược sĩ", "おくすり");
@@ -195,6 +227,23 @@ namespace NihongoLife.EditorTools
             Spot(spots, "Spot_Doctor", P(-6.4f, 1f, 4.5f), new Vector3(2.2f, 2f, 2.2f), ClinicSpotKind.Doctor);
             Spot(spots, "Spot_Scale", P(3.2f, 1f, 3.2f), new Vector3(1.4f, 2f, 1.4f), ClinicSpotKind.Scale);
             Spot(spots, "Spot_EyeTest", P(6.8f, 1f, 2.5f), new Vector3(1.4f, 2f, 1.2f), ClinicSpotKind.EyeChart);
+
+            // Townspeople who come for a check-up on their own (ClinicPatientFlow walks them along these points).
+            var route = Group(root.transform, "PatientRoute");
+            foreach (var (name, x, z, yaw) in new[]
+            {
+                ("Door", 0f, -7.2f, 0f), ("ReceptionWait", -1.2f, -5.7f, 0f), ("Reception", -3f, -4.15f, 0f), ("Aisle", 3.2f, -4.3f, 0f),
+                ("Hall_E", 3.4f, -1.6f, 0f), ("Hall_N", 0.6f, 0.2f, -90f), ("Corridor", -3.8f, 0.2f, 0f), ("ConsultIn", -3.8f, 2.3f, -60f),
+                ("ConsultApproach", -5.6f, 4.5f, -90f), ("Stool", -6.4f, 4.5f, -90f), ("MedicineApproach", 3.2f, -2.6f, 180f),
+                ("MedicineSide", 3.1f, -4.15f, -90f), ("Medicine", 1.8f, -4.15f, 0f), ("Exit", 0f, -7.6f, 180f),
+            })
+                Point(route, name, P(x, 0f, z), yaw);
+            int seat = 0;
+            for (int row = 0; row < 2; row++)
+                for (int i = 0; i < 2; i++)
+                    foreach (float dx in new[] { 0f }) // each "bench" model is one chair
+                        Point(route, "Seat_" + seat++, P(4.8f + i * 2.4f + dx + 0.12f, 0f, -5.4f + row * 2.2f), 90f); // the chairs face the TV / call board (east)
+            root.AddComponent<ClinicPatientFlow>();
 
             // The clinic shift: patients who appear only during a shift, and the job board by the door.
             JobSiteBuilder.Materials();
@@ -238,6 +287,65 @@ namespace NihongoLife.EditorTools
             foreach (var r in shell.GetComponentsInChildren<Renderer>(true)) { r.shadowCastingMode = ShadowCastingMode.Off; r.receiveShadows = true; }
             foreach (var r in signs.GetComponentsInChildren<Renderer>(true)) r.shadowCastingMode = ShadowCastingMode.Off;
             if (!EditorSceneManager.SaveScene(UnityEngine.SceneManagement.SceneManager.GetActiveScene(), ScenePath)) throw new InvalidOperationException("Could not save " + ScenePath);
+        }
+
+        private static void Point(Transform parent, string name, Vector3 position, float yaw)
+        {
+            var point = new GameObject(name).transform;
+            point.SetParent(parent, false);
+            point.SetPositionAndRotation(position, Quaternion.Euler(0f, yaw, 0f));
+        }
+
+        /// <summary>What makes it feel like a real, cared-for clinic: a mint walkway from the door to reception, a warm rug
+        /// under the benches, a wooden handrail round the walls, a kids' corner (小児科) with a play mat and blocks, an
+        /// aquarium, pictures, flowers on the counter and a warm light over the waiting room.</summary>
+        private static void Decor(Transform shell, Transform furniture, Transform signs)
+        {
+            Block(shell, "Walkway", P(0f, 0.006f, -5.6f), new Vector3(1.6f, 0.012f, 4.2f), _walkway, false);
+            Block(shell, "Walkway_Reception", P(-1.5f, 0.006f, -4.2f), new Vector3(6.8f, 0.012f, 1.2f), _walkway, false);
+            Block(shell, "WaitingRug", P(6.5f, 0.006f, -4.3f), new Vector3(6.4f, 0.012f, 4.6f), _rug, false);
+            foreach (var (name, x, z, w, d) in new[] { ("Rail_N", 0f, HalfZ - 0.17f, HalfX * 2f, 0.06f), ("Rail_W", -HalfX + 0.17f, 0f, 0.06f, HalfZ * 2f), ("Rail_E", HalfX - 0.17f, 0f, 0.06f, HalfZ * 2f) })
+                Block(shell, name, P(x, 1.0f, z), new Vector3(w, 0.06f, d), _wood, false);
+
+            // Kids' corner by the entrance (x -9..-5, z -7.6..-4.4).
+            Block(furniture, "KidsMat", P(-7.1f, 0.012f, -5.9f), new Vector3(3.4f, 0.024f, 2.8f), _yellow, false);
+            var toys = new[] { _red, _blue, _green, _yellow, _blue, _red };
+            for (int i = 0; i < toys.Length; i++)
+                Block(furniture, "ToyBlock_" + i, P(-8.2f + (i % 3) * 0.35f, 0.1f + (i / 3) * 0.16f, -5.2f + (i % 2) * 0.1f), Vector3.one * 0.16f, toys[i], false, i * 17f);
+            Block(furniture, "KidsTable", P(-6.6f, 0.25f, -6.3f), new Vector3(0.9f, 0.05f, 0.6f), _white, true);
+            foreach (var (lx, lz) in new[] { (-0.4f, -0.25f), (0.4f, -0.25f), (-0.4f, 0.25f), (0.4f, 0.25f) })
+                Block(furniture, "KidsTableLeg", P(-6.6f + lx, 0.12f, -6.3f + lz), new Vector3(0.05f, 0.24f, 0.05f), _blue, false);
+            Block(furniture, "PictureBook_A", P(-6.75f, 0.29f, -6.3f), new Vector3(0.24f, 0.03f, 0.18f), _red, false, 12f);
+            Block(furniture, "PictureBook_B", P(-6.4f, 0.29f, -6.25f), new Vector3(0.24f, 0.03f, 0.18f), _green, false, -20f);
+            Block(signs, "Sign_Kids_Back", P(-7.1f, 1.9f, -7.86f), new Vector3(2.0f, 0.5f, 0.02f), _yellow, false);
+            Text(signs, "Sign_Kids", "キッズコーナー\n<size=60%>Góc trẻ em</size>", P(-7.1f, 1.9f, -7.83f), 180f, 0.16f, _sign.color, 2f);
+
+            // Aquarium on a low cabinet against the west wall.
+            Block(furniture, "AquariumBase", P(-9.55f, 0.4f, -2.6f), new Vector3(0.6f, 0.8f, 1.8f), _wood, true);
+            Block(furniture, "AquariumWater", P(-9.55f, 1.12f, -2.6f), new Vector3(0.5f, 0.62f, 1.7f), _water, false);
+            Block(furniture, "AquariumSand", P(-9.55f, 0.83f, -2.6f), new Vector3(0.5f, 0.04f, 1.7f), _rug, false);
+            Block(furniture, "AquariumLid", P(-9.55f, 1.45f, -2.6f), new Vector3(0.54f, 0.04f, 1.74f), _dark, false);
+            for (int i = 0; i < 4; i++)
+                Block(furniture, "Fish_" + i, P(-9.42f, 0.98f + (i % 2) * 0.22f, -3.2f + i * 0.4f), new Vector3(0.04f, 0.06f, 0.13f), _orange, false);
+            Block(furniture, "AquariumWeed", P(-9.6f, 1.0f, -1.95f), new Vector3(0.05f, 0.3f, 0.05f), _green, false);
+            PointLight(furniture, "AquariumGlow", P(-9.2f, 1.2f, -2.6f), 1.6f, 0.5f, new Color(0.5f, 0.8f, 1f));
+
+            // Pictures on the waiting room's south wall and the kids' corner wall.
+            foreach (var (name, x, z, side) in new[] { ("Picture_S1", 5.6f, -HalfZ + 0.16f, false), ("Picture_S2", 7.8f, -HalfZ + 0.16f, false), ("Picture_W", -HalfX + 0.16f, -5.4f, true) })
+            {
+                Vector3 frame = side ? new Vector3(0.04f, 0.7f, 0.95f) : new Vector3(0.95f, 0.7f, 0.04f);
+                Vector3 inward = side ? new Vector3(0.025f, 0f, 0f) : new Vector3(0f, 0f, 0.025f);
+                Block(furniture, name + "_Frame", P(x, 1.75f, z), frame, _wood, false);
+                Block(furniture, name + "_Sky", P(x, 1.82f, z) + inward, side ? new Vector3(0.02f, 0.42f, 0.8f) : new Vector3(0.8f, 0.42f, 0.02f), _skyArt, false);
+                Block(furniture, name + "_Hill", P(x, 1.55f, z) + inward * 1.2f, side ? new Vector3(0.02f, 0.16f, 0.8f) : new Vector3(0.8f, 0.16f, 0.02f), _green, false);
+            }
+
+            // Flowers at reception, a warm light over the benches.
+            Cylinder(furniture, "Vase", P(-4.6f, 1.25f, -3.35f), new Vector3(0.14f, 0.24f, 0.14f), _mint, false);
+            var petals = new[] { (-0.04f, 0f, _red), (0.05f, 0.03f, _yellow), (0f, -0.05f, _red) };
+            foreach (var (fx, fz, m) in petals)
+                Block(furniture, "Flower", P(-4.6f + fx, 1.45f, -3.35f + fz), Vector3.one * 0.08f, m, false);
+            PointLight(furniture, "WaitingWarmLight", P(6.5f, 2.7f, -4.3f), 7f, 1.2f, new Color(1f, 0.9f, 0.76f));
         }
 
         private static void Spot(Transform parent, string name, Vector3 position, Vector3 size, ClinicSpotKind kind) =>

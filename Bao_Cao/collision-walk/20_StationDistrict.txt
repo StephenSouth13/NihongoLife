@@ -2,10 +2,10 @@
   OK   ScenePortal 'ExitToCity' at (800.00, 1.10, 9.80) — nearest walkable 0.00 m
   OK   NPCController 'StationTicketClerk' at (790.00, 0.06, 9.35) — nearest walkable 0.05 m
   OK   StationTravelInteractable 'ProductionTicketMachine' at (796.40, 1.30, 7.91) — nearest walkable 0.69 m
-  OK   StationTravelInteractable 'GateScanner' at (800.00, 1.35, 6.05) — nearest walkable 0.60 m
   OK   StationTravelInteractable 'BoardTrainDoor' at (799.50, 1.15, 0.90) — nearest walkable 0.14 m
-  walk → ExitToCity: 4 cells, ended 0.05 m from goal
+  OK   StationTravelInteractable 'GateScanner' at (800.00, 1.35, 6.05) — nearest walkable 0.60 m
+  walk → ExitToCity: 4 cells, ended 0.04 m from goal
   walk → GateScanner: 448 cells, ended 0.25 m from goal
   walk → ProductionTicketMachine: 22 cells, ended 0.25 m from goal
-  walk → BoardTrainDoor: 475 cells, ended 0.25 m from goal
-  walk → StationTicketClerk: 52 cells, ended 0.25 m from goal
+  walk → BoardTrainDoor: 475 cells, ended 0.24 m from goal
+  walk → StationTicketClerk: 52 cells, ended 0.24 m from goal

@@ -1,0 +1,21 @@
+{
+  "schema": "nihongolife.music.v1",
+  "note": "Every background track (Resources/Audio/Music/<key>). The handbook's 音楽 chapter lists them; a pinned track plays everywhere. Credits: Docs/AUDIO_CREDITS.md.",
+  "tracks": [
+    { "key": "menu_bgm", "ja": "ジャオアン", "titleVi": "Màn hình chính", "titleEn": "Main menu", "moodVi": "Trang trọng, cổ điển Nhật", "moodEn": "Stately, traditional", "whereVi": "Menu chính", "whereEn": "Main menu", "credit": "Tozan · CC0" },
+    { "key": "city_day", "ja": "まちの ひる", "titleVi": "Phố Hibari ban ngày", "titleEn": "Hibari by day", "moodVi": "Lo-fi vui tươi", "moodEn": "Happy lo-fi", "whereVi": "Ngoài phố, ban ngày", "whereEn": "The town by day", "credit": "Holizna · CC0" },
+    { "key": "city_night", "ja": "まちの よる", "titleVi": "Phố Hibari về đêm", "titleEn": "Hibari at night", "moodVi": "Chill, thư thái", "moodEn": "Chill beats", "whereVi": "Ngoài phố, buổi tối", "whereEn": "The town at night", "credit": "Holizna · CC0" },
+    { "key": "spring", "ja": "さくらみち", "titleVi": "Đường hoa anh đào", "titleEn": "Sakura Michi", "moodVi": "Đàn koto, tiêu — âm giai Nhật (yo)", "moodEn": "Koto and flute in the Japanese yo scale", "whereVi": "Ngoài phố ban ngày, mùa xuân", "whereEn": "The town by day in spring", "credit": "NihongoLife (tạo bằng code)" },
+    { "key": "rain", "ja": "あめの ひ", "titleVi": "Ngày mưa", "titleEn": "Ame no Hi", "moodVi": "Lo-fi piano, chổi trống, tiếng đĩa than", "moodEn": "Lo-fi piano, brushes, vinyl dust", "whereVi": "Ngoài phố khi trời mưa", "whereEn": "The town in the rain", "credit": "NihongoLife (tạo bằng code)" },
+    { "key": "konbini", "ja": "コンビニ", "titleVi": "Hibari Mart", "titleEn": "Hibari Mart", "moodVi": "Lo-fi tươi sáng", "moodEn": "Bright lo-fi", "whereVi": "Trong cửa hàng tiện lợi", "whereEn": "Inside the konbini", "credit": "Holizna · CC0" },
+    { "key": "station", "ja": "えき", "titleVi": "Ga tàu", "titleEn": "The station", "moodVi": "Chill beats", "moodEn": "Chill beats", "whereVi": "Ga Hibari", "whereEn": "Hibari Station", "credit": "Holizna · CC0" },
+    { "key": "sushi", "ja": "すしや", "titleVi": "Quán sushi", "titleEn": "Sushi bar", "moodVi": "Phương Đông, trầm lắng", "moodEn": "Oriental, somber", "whereVi": "Sushi Hibari", "whereEn": "Sushi Hibari", "credit": "Tozan · CC0" },
+    { "key": "school", "ja": "がっこう", "titleVi": "Trường học", "titleEn": "School", "moodVi": "Nhẹ nhàng, chim sẻ nhỏ", "moodEn": "Light, a tiny sparrow", "whereVi": "Học viện tiếng Nhật Hibari", "whereEn": "Hibari Japanese School", "credit": "Tozan · CC0" },
+    { "key": "work", "ja": "いそがしい シフト", "titleVi": "Ca làm bận rộn", "titleEn": "Busy shift", "moodVi": "Shamisen, trống taiko — nhịp nhanh", "moodEn": "Shamisen and taiko, up-tempo", "whereVi": "Trong giờ làm ở nơi làm việc của nghề", "whereEn": "During working hours at your career's workplace", "credit": "NihongoLife (tạo bằng code)" },
+    { "key": "clinic", "ja": "クリニック", "titleVi": "Phòng chờ yên tĩnh", "titleEn": "Quiet waiting room", "moodVi": "Marimba, pad êm dịu", "moodEn": "Marimba and soft pads", "whereVi": "Phòng khám Hibari", "whereEn": "Hibari Clinic", "credit": "NihongoLife (tạo bằng code)" },
+    { "key": "sick", "ja": "おかゆ", "titleVi": "Mau khoẻ nhé", "titleEn": "Get well soon", "moodVi": "Hộp nhạc ru ngủ 3/4", "moodEn": "Music-box lullaby in 3/4", "whereVi": "Ở nhà khi đang ốm", "whereEn": "At home while you are ill", "credit": "NihongoLife (tạo bằng code)" },
+    { "key": "bedroom", "ja": "へや", "titleVi": "Phòng ngủ", "titleEn": "Bedroom", "moodVi": "Chill beats", "moodEn": "Chill beats", "whereVi": "Phòng của bạn", "whereEn": "Your room", "credit": "Holizna · CC0" },
+    { "key": "game_center", "ja": "ゲームセンター", "titleVi": "Tiệm game", "titleEn": "Game centre", "moodVi": "Chiptune 8-bit", "moodEn": "8-bit chiptune", "whereVi": "Hibari Game Center", "whereEn": "Hibari Game Center", "credit": "SubspaceAudio · CC0" },
+    { "key": "island", "ja": "みどりじま", "titleVi": "Đảo Midori", "titleEn": "Midori Island", "moodVi": "Hawaii cổ điển", "moodEn": "Vintage Hawaii", "whereVi": "Đảo Midori", "whereEn": "Midori Island", "credit": "Tarush Singhal · CC0" }
+  ]
+}

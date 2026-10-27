@@ -48,6 +48,8 @@ namespace NihongoLife.UI
         private float _openedAt;
 
         private const float CharsPerSecond = 55f;
+        /// <summary>The speaker's pace (CharacterLook.Talk: older people speak slower); back to 1 when the view hides.</summary>
+        public static float TalkPace = 1f;
 
         public static DialogueView Create(Transform parent, TMP_FontAsset font)
         {
@@ -165,6 +167,7 @@ namespace NihongoLife.UI
 
         public void Hide()
         {
+            TalkPace = 1f;
             if (_root != null) _root.gameObject.SetActive(false);
             _typing = false;
         }
@@ -234,7 +237,7 @@ namespace NihongoLife.UI
             if (!IsOpen) return;
             if (_typing)
             {
-                _typed += Time.unscaledDeltaTime * CharsPerSecond;
+                _typed += Time.unscaledDeltaTime * CharsPerSecond * Mathf.Clamp(TalkPace, 0.3f, 2f);
                 _japanese.maxVisibleCharacters = Mathf.FloorToInt(_typed);
                 if (_typed >= _japanese.text.Length) FinishTyping();
             }

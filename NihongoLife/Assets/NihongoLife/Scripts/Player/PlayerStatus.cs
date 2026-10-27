@@ -69,7 +69,8 @@ namespace NihongoLife.Player
         public float NoddingOffSeconds { get; private set; }
         public const float FallAsleepAfterSeconds = 40f;
         /// <summary>Walking speed factor from penalties: hunger at 0 (×0.8), falling asleep (×0.7).</summary>
-        public float MoveSpeedMultiplier => (Hunger <= 0f ? 0.8f : 1f) * (Sleepiness >= 100f ? 0.7f : 1f);
+        public float MoveSpeedMultiplier => (Hunger <= 0f ? 0.8f : 1f) * (Sleepiness >= 100f ? 0.7f : 1f) * (_illness != null ? _illness.Move : 1f);
+        private Health.PlayerIllness _illness;
         /// <summary>Raised when health reaches 0 (StatusConsequences plays the faint and the clinic).</summary>
         public event Action OnCollapsed;
         private bool _collapsed;
@@ -94,6 +95,7 @@ namespace NihongoLife.Player
             }
             Instance = this;
             if (GetComponent<StatusConsequences>() == null) gameObject.AddComponent<StatusConsequences>();
+            if (GetComponent<Health.PlayerIllness>() == null) gameObject.AddComponent<Health.PlayerIllness>();
             PlayerName = PlayableCharacterCatalog.ResolvePlayerName(null);
             LoadProgress();
         }
@@ -105,11 +107,14 @@ namespace NihongoLife.Player
             // Moving burns more food and water than standing; sprinting burns a lot more.
             float hungerRate = _sprinting ? 4f : _moving ? 1.5f : 1f;
             float thirstRate = _sprinting ? 5f : _moving ? 1.5f : 1f;
+            if (_illness == null) _illness = GetComponent<Health.PlayerIllness>();
+            bool ill = _illness != null;
+            thirstRate *= ill ? _illness.Thirst : 1f;
             UpdateWeatherExposure();
             if (InHotSun) thirstRate *= 1.6f;
             Hunger = Mathf.Max(0f, Hunger - hungerDrainPerMinute * hungerRate * Time.deltaTime / 60f);
             Thirst = Mathf.Max(0f, Thirst - thirstDrainPerMinute * thirstRate * Time.deltaTime / 60f);
-            Sleepiness = Mathf.Min(100f, Sleepiness + sleepinessGainPerMinute * (_sprinting ? 2f : 1f) * (HasCold ? 1.6f : 1f) * Time.deltaTime / 60f);
+            Sleepiness = Mathf.Min(100f, Sleepiness + sleepinessGainPerMinute * (_sprinting ? 2f : 1f) * (HasCold ? 1.6f : 1f) * (ill ? _illness.Sleepiness : 1f) * Time.deltaTime / 60f);
             NoddingOffSeconds = Sleepiness >= 100f ? NoddingOffSeconds + Time.deltaTime : 0f;
 
             // Energy only comes back once the player has stopped sprinting for a moment; hungry or thirsty
@@ -120,6 +125,7 @@ namespace NihongoLife.Player
             {
                 float rate = _moving ? walkingEnergyRecoveryPerSecond : passiveEnergyRecoveryPerSecond;
                 if (Core.WeatherCycle.PlayerInRain) rate *= 0.5f; // soaked: recovering is slower until you find shelter
+                if (ill) rate *= _illness.Energy; // ill: the body recovers slower (Resources/Health/illnesses.json)
                 CurrentEnergy = Mathf.Min(maxEnergy, CurrentEnergy + rate * recoveryMultiplier * Time.deltaTime);
             }
             if (CurrentEnergy <= 0f) IsExhausted = true;
@@ -129,13 +135,14 @@ namespace NihongoLife.Player
             {
                 CurrentHealth = Mathf.Max(0f, CurrentHealth - exhaustedHealthLossPerSecond * Time.deltaTime);
             }
-            else if (!HasCold && !_collapsed && CurrentHealth > 0f && CurrentHealth < maxHealth && Hunger >= HealthyNeed && Thirst >= HealthyNeed) // at 0 you faint first
+            else if (!HasCold && !(ill && _illness.BlocksHealing) && !_collapsed && CurrentHealth > 0f && CurrentHealth < maxHealth && Hunger >= HealthyNeed && Thirst >= HealthyNeed) // at 0 you faint first
             {
                 // Fed, watered and dry: the body heals by itself, faster when standing still or sitting.
                 float heal = (_moving ? healthRegenPerSecond : healthRegenPerSecond * 2f) * (Sleepiness >= 100f ? 0.5f : 1f);
                 CurrentHealth = Mathf.Min(maxHealth, CurrentHealth + heal * Time.deltaTime);
             }
             if (HasCold) CurrentHealth = Mathf.Max(0f, CurrentHealth - 0.12f * Time.deltaTime);
+            if (ill && _illness.HealthLossPerSecond > 0f) CurrentHealth = Mathf.Max(0f, CurrentHealth - _illness.HealthLossPerSecond * Time.deltaTime);
             if (CurrentHealth <= 0f && !_collapsed) { _collapsed = true; OnCollapsed?.Invoke(); }
             else if (CurrentHealth > 0f) _collapsed = false;
 
@@ -192,6 +199,7 @@ namespace NihongoLife.Player
         {
             CurrentHealth = maxHealth;
             Wetness = 0f;
+            Health.PlayerIllness.TreatAtClinic(); // each illness treated as a doctor would (flu antivirals within 48 h…)
             CurrentEnergy = Mathf.Max(CurrentEnergy, maxEnergy * 0.6f);
             IsExhausted = false;
             _collapsed = false;
@@ -287,6 +295,7 @@ namespace NihongoLife.Player
         {
             // Eating or drinking shows on the body (hand to mouth), unless seated at a table.
             if (food > 0f || drink > 0f) GetComponent<CharacterAnimationController>()?.PlayGesture("UseItem", 1.6f);
+            float hungerBefore = Hunger;
             Hunger = Mathf.Clamp(Hunger + food, 0f, 100f);
             Thirst = Mathf.Clamp(Thirst + drink, 0f, 100f);
             CurrentEnergy = Mathf.Clamp(CurrentEnergy + energy, 0f, maxEnergy);
@@ -294,8 +303,16 @@ namespace NihongoLife.Player
             float nourishment = Mathf.Max(0f, food) + Mathf.Max(0f, drink);
             if (nourishment > 0f && !_collapsed) CurrentHealth = Mathf.Min(maxHealth, CurrentHealth + nourishment * healthPerNourishment);
             if (CurrentEnergy >= sprintAgainAtEnergy) IsExhausted = false;
+            Health.PlayerIllness.Ate(hungerBefore, food); // eating when already full upsets the stomach
             OnStatusChanged?.Invoke();
             SaveProgress();
+        }
+
+        /// <summary>Medicine side effects (drowsy antihistamines) and the like.</summary>
+        public void AddSleepiness(float amount)
+        {
+            Sleepiness = Mathf.Clamp(Sleepiness + amount, 0f, 100f);
+            OnStatusChanged?.Invoke();
         }
 
         public void Sleep(float hours = 8f)
@@ -308,6 +325,7 @@ namespace NihongoLife.Player
             CurrentHealth = Mathf.Min(maxHealth, CurrentHealth + maxHealth * Mathf.Clamp(hours / 8f, 0.25f, 1f));
             _collapsed = false;
             SocialStanding.OnRested();
+            Health.PlayerIllness.Slept(hours); // sleep ends a cold, aches, overwork, a headache
             OnStatusChanged?.Invoke();
             SaveProgress();
         }

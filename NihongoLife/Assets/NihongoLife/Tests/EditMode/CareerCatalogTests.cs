@@ -37,6 +37,27 @@ namespace NihongoLife.Tests
         }
 
         [Test]
+        public void RealCatalog_HasADevelopmentPath_OfMilestones()
+        {
+            var catalog = CareerCatalog.Load();
+            Assert.GreaterOrEqual(catalog.milestones.Length, 6, "milestones");
+            foreach (var id in new[] { "first_shift", "first_promotion", "branch", "top" })
+                Assert.IsTrue(catalog.milestones.Any(m => m.id == id), "milestone " + id);
+            Assert.IsTrue(catalog.milestones.All(m => m.rewardYen > 0 || m.rewardKnowledge > 0), "every milestone rewards something");
+            Assert.IsTrue(catalog.milestones.All(m => !string.IsNullOrEmpty(m.titleJa)), "Japanese titles");
+        }
+
+        [Test]
+        public void BrokenMilestones_AreRejected()
+        {
+            var broken = CareerCatalog.Parse("{\"unlockLevel\":10,\"milestones\":[{\"id\":\"a\",\"type\":\"shifts\",\"titleVi\":\"x\",\"titleEn\":\"x\"},{\"id\":\"a\",\"type\":\"dance\"}]}");
+            var errors = broken.Validate(null);
+            Assert.IsTrue(errors.Any(e => e.Contains("duplicate")), "duplicate id");
+            Assert.IsTrue(errors.Any(e => e.Contains("unknown type")), "unknown type");
+            Assert.IsTrue(errors.Any(e => e.Contains("missing title")), "missing title");
+        }
+
+        [Test]
         public void BrokenCatalog_IsRejected()
         {
             var broken = CareerCatalog.Parse("{\"unlockLevel\":10,\"careers\":[{\"id\":\"x\",\"shiftQuest\":\"no_such_job\",\"workStart\":14,\"workEnd\":8,\"workDays\":[9],\"levels\":[{\"titleVi\":\"a\",\"salary\":1,\"shiftsToPromote\":1},{\"titleVi\":\"b\"}]}]}");

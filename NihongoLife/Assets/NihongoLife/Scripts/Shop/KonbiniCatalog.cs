@@ -6,7 +6,7 @@ using NihongoLife.Player;
 
 namespace NihongoLife.Shop
 {
-    public enum KonbiniSection { Onigiri, Snacks, Drinks, Hot, Stationery }
+    public enum KonbiniSection { Onigiri, Snacks, Drinks, Hot, Stationery, Medicine }
 
     [Serializable]
     public sealed class KonbiniProduct
@@ -87,7 +87,19 @@ namespace NihongoLife.Shop
             ["note_paper_12"] = "Paper pad · +12 notebook pages", ["note_paper_30"] = "Thick notebook · +30 notebook pages",
         };
 
-        public static string English(string id) => id != null && EnglishNames.TryGetValue(id, out string name) ? name : id;
+        public static string English(string id) => id != null && EnglishNames.TryGetValue(id, out string name) ? name
+            : NihongoLife.Health.IllnessCatalog.Load().Medicine(id)?.en ?? id;
+
+        private static readonly Color MedicineTint = new Color(0.86f, 0.95f, 0.92f);
+
+        /// <summary>The くすり shelf comes from Resources/Health/illnesses.json "medicines" (OTC medicine and masks). The
+        /// rehydration drink also quenches thirst.</summary>
+        static KonbiniCatalog()
+        {
+            foreach (var m in NihongoLife.Health.IllnessCatalog.Load().medicines)
+                ((List<KonbiniProduct>)Products).Add(new KonbiniProduct(m.id, m.ja, m.ja, m.vi, m.glyph, m.price, KonbiniSection.Medicine, ItemUseType.Medicine,
+                    0f, m.id == "ors" ? 35f : 0f, 0f, "", MedicineTint));
+        }
 
         /// <summary>Shelf section name in the interface language.</summary>
         public static string SectionName(KonbiniSection s) => NihongoLife.Core.Loc.IsJapanese ? SectionJa(s) : NihongoLife.Core.Loc.IsEnglish ? SectionEn(s) : SectionVi(s);
@@ -98,6 +110,7 @@ namespace NihongoLife.Shop
             KonbiniSection.Snacks => "Snacks",
             KonbiniSection.Drinks => "Drinks",
             KonbiniSection.Stationery => "Stationery",
+            KonbiniSection.Medicine => "Medicine",
             _ => "Hot food",
         };
 
@@ -110,6 +123,7 @@ namespace NihongoLife.Shop
             KonbiniSection.Snacks => "おかし",
             KonbiniSection.Drinks => "のみもの",
             KonbiniSection.Stationery => "ぶんぼうぐ",
+            KonbiniSection.Medicine => "くすり",
             _ => "ホットスナック",
         };
 
@@ -119,6 +133,7 @@ namespace NihongoLife.Shop
             KonbiniSection.Snacks => "Bánh kẹo",
             KonbiniSection.Drinks => "Đồ uống",
             KonbiniSection.Stationery => "Văn phòng phẩm",
+            KonbiniSection.Medicine => "Thuốc · Y tế",
             _ => "Đồ ăn nóng",
         };
     }

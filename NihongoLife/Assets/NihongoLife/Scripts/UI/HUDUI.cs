@@ -188,6 +188,8 @@ namespace NihongoLife.UI
 
             if (!UiModalStack.BlocksHotkeys && input.WasPressed(GameInputId.Journal) && (dialoguePanel == null || !dialoguePanel.activeSelf))
                 TaskJournalUI.Toggle();
+            if (!UiModalStack.BlocksHotkeys && input.WasPressed(GameInputId.Handbook) && (dialoguePanel == null || !dialoguePanel.activeSelf))
+                HandbookUI.Toggle();
             if (!UiModalStack.IsTyping && input.WasPressed(GameInputId.Settings))
             {
                 if (_settingsUI != null && _settingsUI.IsOpen) _settingsUI.Hide();

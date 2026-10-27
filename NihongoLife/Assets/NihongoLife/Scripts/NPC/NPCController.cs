@@ -24,11 +24,6 @@ namespace NihongoLife.NPC
 
         [SerializeField] private string scenarioAreaIdOnInteract;
 
-        [Header("Fallback Conversation")]
-        [SerializeField] private string fallbackJa = "こんにちは。今日はいい天気ですね。";
-        [SerializeField] private string fallbackReading = "こんにちは。きょうはいいてんきですね。";
-        [SerializeField] private string fallbackEn = "Hello. Nice weather today.";
-        [SerializeField] private string fallbackRomaji = "Konnichiwa. Kyou wa ii tenki desu ne.";
 
         private NavMeshAgent _navAgent;
         private NPCStreetPatrol _patrol;
@@ -114,6 +109,8 @@ namespace NihongoLife.NPC
         private void StartFallbackDialogue()
         {
             if (DialogueManager.Instance == null) return;
+            var look = GetComponent<NihongoLife.Player.CharacterLook>();
+            NihongoLife.UI.DialogueView.TalkPace = look != null ? look.Talk : 1f;
             DialogueManager.Instance.StartDialogue(ScriptedNpcDialogue.NextNode(npcId, string.IsNullOrEmpty(displayName) ? gameObject.name : displayName));
         }
 

@@ -33,6 +33,15 @@ namespace NihongoLife.Clinic
         public string Meaning => Loc.Pick(vi, en, ja);
     }
 
+    /// <summary>A townsperson who comes to the clinic on their own (ClinicPatientFlow): model, age and look
+    /// (CharacterLook: elders grey, walk and talk slower), and what they come with (a symptom id).</summary>
+    [Serializable]
+    public sealed class ClinicPatient
+    {
+        public string id, model, nameJa, nameVi, hair = "natural", beard = "none", symptom;
+        public int age = 30;
+    }
+
     /// <summary>Clinic content (Resources/Clinic/clinic.json): symptoms, diagnoses, medicines, dosages, the
     /// health-check heights and eye-test directions. Add a symptom or a dosage there; nothing else changes.</summary>
     [Serializable]
@@ -46,6 +55,11 @@ namespace NihongoLife.Clinic
         public ClinicDosage[] dosages = Array.Empty<ClinicDosage>();
         public int[] heights = Array.Empty<int>();
         public ClinicDirection[] eyeDirections = Array.Empty<ClinicDirection>();
+        /// <summary>The waiting room's own life: who comes, how often, what the staff say.</summary>
+        public ClinicPatient[] patients = Array.Empty<ClinicPatient>();
+        public float patientEverySeconds = 14f;
+        public int maxPatients = 4;
+        public string callJa, callVi, greetJa, doctorJa, byeJa, byeVi;
 
         public string FeeNote => Loc.Pick(feeNoteVi, feeNoteEn, feeNoteJa);
 

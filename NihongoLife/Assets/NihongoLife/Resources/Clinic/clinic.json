@@ -7,74 +7,334 @@
   "symptoms": [
     {
       "id": "fever",
-      "sayJa": "ねつが あります。", "reading": "netsu ga arimasu", "vi": "Tôi bị sốt.", "en": "I have a fever.",
-      "diagnosisJa": "かぜ", "diagnosisVi": "Cảm cúm", "diagnosisEn": "A cold",
-      "medicineJa": "げねつざい", "medicineVi": "Thuốc hạ sốt", "medicineEn": "Fever reducer",
-      "dosage": "three_after_meals", "cold": true
+      "sayJa": "ねつが あります。",
+      "reading": "netsu ga arimasu",
+      "vi": "Tôi bị sốt.",
+      "en": "I have a fever.",
+      "diagnosisJa": "かぜ",
+      "diagnosisVi": "Cảm cúm",
+      "diagnosisEn": "A cold",
+      "medicineJa": "げねつざい",
+      "medicineVi": "Thuốc hạ sốt",
+      "medicineEn": "Fever reducer",
+      "dosage": "three_after_meals",
+      "cold": true
     },
     {
       "id": "cough",
-      "sayJa": "せきが でます。", "reading": "seki ga demasu", "vi": "Tôi bị ho.", "en": "I have a cough.",
-      "diagnosisJa": "かぜ", "diagnosisVi": "Cảm lạnh", "diagnosisEn": "A cold",
-      "medicineJa": "せきどめ", "medicineVi": "Thuốc ho", "medicineEn": "Cough medicine",
-      "dosage": "three_after_meals", "cold": true
+      "sayJa": "せきが でます。",
+      "reading": "seki ga demasu",
+      "vi": "Tôi bị ho.",
+      "en": "I have a cough.",
+      "diagnosisJa": "かぜ",
+      "diagnosisVi": "Cảm lạnh",
+      "diagnosisEn": "A cold",
+      "medicineJa": "せきどめ",
+      "medicineVi": "Thuốc ho",
+      "medicineEn": "Cough medicine",
+      "dosage": "three_after_meals",
+      "cold": true
     },
     {
       "id": "throat",
-      "sayJa": "のどが いたいです。", "reading": "nodo ga itai desu", "vi": "Tôi bị đau họng.", "en": "My throat hurts.",
-      "diagnosisJa": "へんとうえん", "diagnosisVi": "Viêm họng", "diagnosisEn": "A sore throat",
-      "medicineJa": "トローチ", "medicineVi": "Viên ngậm họng", "medicineEn": "Throat lozenges",
-      "dosage": "when_painful", "cold": true
+      "sayJa": "のどが いたいです。",
+      "reading": "nodo ga itai desu",
+      "vi": "Tôi bị đau họng.",
+      "en": "My throat hurts.",
+      "diagnosisJa": "へんとうえん",
+      "diagnosisVi": "Viêm họng",
+      "diagnosisEn": "A sore throat",
+      "medicineJa": "トローチ",
+      "medicineVi": "Viên ngậm họng",
+      "medicineEn": "Throat lozenges",
+      "dosage": "when_painful",
+      "cold": true
     },
     {
       "id": "nose",
-      "sayJa": "はなみずが でます。", "reading": "hanamizu ga demasu", "vi": "Tôi bị sổ mũi.", "en": "I have a runny nose.",
-      "diagnosisJa": "かふんしょう", "diagnosisVi": "Dị ứng phấn hoa", "diagnosisEn": "Hay fever",
-      "medicineJa": "アレルギーの くすり", "medicineVi": "Thuốc dị ứng", "medicineEn": "Allergy medicine",
-      "dosage": "once_before_bed", "cold": false
+      "sayJa": "はなみずが でます。",
+      "reading": "hanamizu ga demasu",
+      "vi": "Tôi bị sổ mũi.",
+      "en": "I have a runny nose.",
+      "diagnosisJa": "かふんしょう",
+      "diagnosisVi": "Dị ứng phấn hoa",
+      "diagnosisEn": "Hay fever",
+      "medicineJa": "アレルギーの くすり",
+      "medicineVi": "Thuốc dị ứng",
+      "medicineEn": "Allergy medicine",
+      "dosage": "once_before_bed",
+      "cold": false
     },
     {
       "id": "head",
-      "sayJa": "あたまが いたいです。", "reading": "atama ga itai desu", "vi": "Tôi bị đau đầu.", "en": "I have a headache.",
-      "diagnosisJa": "ずつう", "diagnosisVi": "Đau đầu do mệt", "diagnosisEn": "A tension headache",
-      "medicineJa": "いたみどめ", "medicineVi": "Thuốc giảm đau", "medicineEn": "Painkiller",
-      "dosage": "when_painful", "cold": false
+      "sayJa": "あたまが いたいです。",
+      "reading": "atama ga itai desu",
+      "vi": "Tôi bị đau đầu.",
+      "en": "I have a headache.",
+      "diagnosisJa": "ずつう",
+      "diagnosisVi": "Đau đầu do mệt",
+      "diagnosisEn": "A tension headache",
+      "medicineJa": "いたみどめ",
+      "medicineVi": "Thuốc giảm đau",
+      "medicineEn": "Painkiller",
+      "dosage": "when_painful",
+      "cold": false
     },
     {
       "id": "stomach",
-      "sayJa": "おなかが いたいです。", "reading": "onaka ga itai desu", "vi": "Tôi bị đau bụng.", "en": "I have a stomach ache.",
-      "diagnosisJa": "いえん", "diagnosisVi": "Viêm dạ dày", "diagnosisEn": "Gastritis",
-      "medicineJa": "いぐすり", "medicineVi": "Thuốc dạ dày", "medicineEn": "Stomach medicine",
-      "dosage": "three_before_meals", "cold": false
+      "sayJa": "おなかが いたいです。",
+      "reading": "onaka ga itai desu",
+      "vi": "Tôi bị đau bụng.",
+      "en": "I have a stomach ache.",
+      "diagnosisJa": "いえん",
+      "diagnosisVi": "Viêm dạ dày",
+      "diagnosisEn": "Gastritis",
+      "medicineJa": "いぐすり",
+      "medicineVi": "Thuốc dạ dày",
+      "medicineEn": "Stomach medicine",
+      "dosage": "three_before_meals",
+      "cold": false
     },
     {
       "id": "tired",
-      "sayJa": "からだが だるいです。", "reading": "karada ga darui desu", "vi": "Người tôi mệt mỏi, uể oải.", "en": "I feel weak and tired.",
-      "diagnosisJa": "かろう", "diagnosisVi": "Kiệt sức (làm việc quá sức)", "diagnosisEn": "Exhaustion",
-      "medicineJa": "ビタミンざい", "medicineVi": "Vitamin", "medicineEn": "Vitamins",
-      "dosage": "twice_morning_night", "cold": false
+      "sayJa": "からだが だるいです。",
+      "reading": "karada ga darui desu",
+      "vi": "Người tôi mệt mỏi, uể oải.",
+      "en": "I feel weak and tired.",
+      "diagnosisJa": "かろう",
+      "diagnosisVi": "Kiệt sức (làm việc quá sức)",
+      "diagnosisEn": "Exhaustion",
+      "medicineJa": "ビタミンざい",
+      "medicineVi": "Vitamin",
+      "medicineEn": "Vitamins",
+      "dosage": "twice_morning_night",
+      "cold": false
     },
     {
       "id": "ankle",
-      "sayJa": "あしを ひねりました。", "reading": "ashi o hinerimashita", "vi": "Tôi bị trẹo chân.", "en": "I twisted my ankle.",
-      "diagnosisJa": "ねんざ", "diagnosisVi": "Bong gân", "diagnosisEn": "A sprain",
-      "medicineJa": "しっぷ", "medicineVi": "Miếng dán giảm đau", "medicineEn": "Pain-relief patch",
-      "dosage": "patch_twice", "cold": false
+      "sayJa": "あしを ひねりました。",
+      "reading": "ashi o hinerimashita",
+      "vi": "Tôi bị trẹo chân.",
+      "en": "I twisted my ankle.",
+      "diagnosisJa": "ねんざ",
+      "diagnosisVi": "Bong gân",
+      "diagnosisEn": "A sprain",
+      "medicineJa": "しっぷ",
+      "medicineVi": "Miếng dán giảm đau",
+      "medicineEn": "Pain-relief patch",
+      "dosage": "patch_twice",
+      "cold": false
+    },
+    {
+      "id": "dizzy",
+      "sayJa": "めまいが します。",
+      "reading": "memai ga shimasu",
+      "vi": "Tôi bị chóng mặt.",
+      "en": "I feel dizzy.",
+      "diagnosisJa": "ねっちゅうしょう",
+      "diagnosisVi": "Say nắng",
+      "diagnosisEn": "Heatstroke",
+      "medicineJa": "けいこう ほすいえき",
+      "medicineVi": "Nước bù điện giải",
+      "medicineEn": "Oral rehydration solution",
+      "dosage": "when_painful",
+      "cold": false
+    },
+    {
+      "id": "itchy_eyes",
+      "sayJa": "めが かゆくて、くしゃみが でます。",
+      "reading": "me ga kayukute, kushami ga demasu",
+      "vi": "Tôi ngứa mắt và hắt hơi.",
+      "en": "My eyes itch and I keep sneezing.",
+      "diagnosisJa": "かふんしょう",
+      "diagnosisVi": "Dị ứng phấn hoa",
+      "diagnosisEn": "Hay fever",
+      "medicineJa": "アレルギーの くすり",
+      "medicineVi": "Thuốc dị ứng",
+      "medicineEn": "Allergy medicine",
+      "dosage": "once_before_bed",
+      "cold": false
+    },
+    {
+      "id": "aching",
+      "sayJa": "かたと こしが いたいです。",
+      "reading": "kata to koshi ga itai desu",
+      "vi": "Tôi đau vai và lưng.",
+      "en": "My shoulders and back hurt.",
+      "diagnosisJa": "きんにくつう",
+      "diagnosisVi": "Đau mỏi cơ",
+      "diagnosisEn": "Muscle ache",
+      "medicineJa": "しっぷ",
+      "medicineVi": "Miếng dán giảm đau",
+      "medicineEn": "Pain-relief patches",
+      "dosage": "patch_twice",
+      "cold": false
     }
   ],
   "dosages": [
-    { "id": "three_after_meals", "ja": "1日3回、しょくごに のんで ください。", "vi": "Ngày 3 lần, uống sau bữa ăn.", "en": "Three times a day, after meals." },
-    { "id": "three_before_meals", "ja": "1日3回、しょくぜんに のんで ください。", "vi": "Ngày 3 lần, uống trước bữa ăn.", "en": "Three times a day, before meals." },
-    { "id": "twice_morning_night", "ja": "1日2回、あさと よるに のんで ください。", "vi": "Ngày 2 lần, sáng và tối.", "en": "Twice a day, morning and night." },
-    { "id": "once_before_bed", "ja": "1日1回、ねる まえに のんで ください。", "vi": "Ngày 1 lần, trước khi ngủ.", "en": "Once a day, before bed." },
-    { "id": "when_painful", "ja": "いたい ときに のんで ください。", "vi": "Uống khi bị đau.", "en": "Take it when it hurts." },
-    { "id": "patch_twice", "ja": "1日2回、いたい ところに はって ください。", "vi": "Ngày 2 lần, dán vào chỗ đau.", "en": "Twice a day, stick it where it hurts." }
+    {
+      "id": "three_after_meals",
+      "ja": "1日3回、しょくごに のんで ください。",
+      "vi": "Ngày 3 lần, uống sau bữa ăn.",
+      "en": "Three times a day, after meals."
+    },
+    {
+      "id": "three_before_meals",
+      "ja": "1日3回、しょくぜんに のんで ください。",
+      "vi": "Ngày 3 lần, uống trước bữa ăn.",
+      "en": "Three times a day, before meals."
+    },
+    {
+      "id": "twice_morning_night",
+      "ja": "1日2回、あさと よるに のんで ください。",
+      "vi": "Ngày 2 lần, sáng và tối.",
+      "en": "Twice a day, morning and night."
+    },
+    {
+      "id": "once_before_bed",
+      "ja": "1日1回、ねる まえに のんで ください。",
+      "vi": "Ngày 1 lần, trước khi ngủ.",
+      "en": "Once a day, before bed."
+    },
+    {
+      "id": "when_painful",
+      "ja": "いたい ときに のんで ください。",
+      "vi": "Uống khi bị đau.",
+      "en": "Take it when it hurts."
+    },
+    {
+      "id": "patch_twice",
+      "ja": "1日2回、いたい ところに はって ください。",
+      "vi": "Ngày 2 lần, dán vào chỗ đau.",
+      "en": "Twice a day, stick it where it hurts."
+    }
   ],
-  "heights": [150, 155, 160, 165, 170, 175],
+  "heights": [
+    150,
+    155,
+    160,
+    165,
+    170,
+    175
+  ],
   "eyeDirections": [
-    { "id": "up", "ja": "うえ", "vi": "Trên", "en": "Up", "angle": 90 },
-    { "id": "down", "ja": "した", "vi": "Dưới", "en": "Down", "angle": 270 },
-    { "id": "left", "ja": "ひだり", "vi": "Trái", "en": "Left", "angle": 180 },
-    { "id": "right", "ja": "みぎ", "vi": "Phải", "en": "Right", "angle": 0 }
+    {
+      "id": "up",
+      "ja": "うえ",
+      "vi": "Trên",
+      "en": "Up",
+      "angle": 90
+    },
+    {
+      "id": "down",
+      "ja": "した",
+      "vi": "Dưới",
+      "en": "Down",
+      "angle": 270
+    },
+    {
+      "id": "left",
+      "ja": "ひだり",
+      "vi": "Trái",
+      "en": "Left",
+      "angle": 180
+    },
+    {
+      "id": "right",
+      "ja": "みぎ",
+      "vi": "Phải",
+      "en": "Right",
+      "angle": 0
+    }
+  ],
+  "callJa": "{0}ばんの かた、しんさつしつへ どうぞ。",
+  "callVi": "Số {0}, mời vào phòng khám.",
+  "greetJa": "こんにちは。はじめてですか。",
+  "doctorJa": "きょうは どうしましたか。",
+  "byeJa": "おだいじに。",
+  "byeVi": "Chúc mau khỏe.",
+  "patientEverySeconds": 14,
+  "maxPatients": 4,
+  "patients": [
+    {
+      "id": "grandpa_ito",
+      "model": "kid_yuto",
+      "nameJa": "いとう さん",
+      "nameVi": "Ông Itō",
+      "age": 78,
+      "hair": "white",
+      "beard": "long",
+      "symptom": "cough"
+    },
+    {
+      "id": "grandma_kato",
+      "model": "kid_hina",
+      "nameJa": "かとう さん",
+      "nameVi": "Bà Katō",
+      "age": 72,
+      "hair": "silver",
+      "beard": "none",
+      "symptom": "tired"
+    },
+    {
+      "id": "mr_suzuki",
+      "model": "kid_riku",
+      "nameJa": "すずき さん",
+      "nameVi": "Anh Suzuki",
+      "age": 34,
+      "hair": "natural",
+      "beard": "stubble",
+      "symptom": "head"
+    },
+    {
+      "id": "ms_tanaka",
+      "model": "kid_mio",
+      "nameJa": "たなか さん",
+      "nameVi": "Chị Tanaka",
+      "age": 29,
+      "hair": "natural",
+      "beard": "none",
+      "symptom": "throat"
+    },
+    {
+      "id": "kenta",
+      "model": "kid_sota",
+      "nameJa": "けんた くん",
+      "nameVi": "Bé Kenta",
+      "age": 8,
+      "hair": "natural",
+      "beard": "none",
+      "symptom": "fever"
+    },
+    {
+      "id": "mr_yamada",
+      "model": "kid_haruto",
+      "nameJa": "やまだ さん",
+      "nameVi": "Bác Yamada",
+      "age": 56,
+      "hair": "ash",
+      "beard": "mustache",
+      "symptom": "stomach"
+    },
+    {
+      "id": "aoi",
+      "model": "kid_yui",
+      "nameJa": "あおい ちゃん",
+      "nameVi": "Bé Aoi",
+      "age": 6,
+      "hair": "natural",
+      "beard": "none",
+      "symptom": "nose"
+    },
+    {
+      "id": "mr_kimura",
+      "model": "kid_yuto",
+      "nameJa": "きむら さん",
+      "nameVi": "Ông Kimura",
+      "age": 66,
+      "hair": "ash",
+      "beard": "goatee",
+      "symptom": "ankle"
+    }
   ]
 }
