@@ -3,6 +3,7 @@ using System.Collections;
 using System.IO;
 using System.Linq;
 using NihongoLife.Core;
+using NihongoLife.Player;
 using NihongoLife.Save;
 using NihongoLife.UI;
 using NUnit.Framework;
@@ -73,6 +74,39 @@ namespace NihongoLife.Tests
                 yield return null;
                 Assert.IsTrue(authUi.IsOpen, "Friends asks a guest to register / sign in.");
                 authUi.Hide();
+
+                // 1b. Offline guest: the whole town is open (no knowledge gates, no forced story), however the town was
+                // started; an account session plays the roadmap.
+                PlayerSessionService.GuestFullAccess = true;
+                LocationUnlocks.Bypass = false;
+                try
+                {
+                    session.BeginGuest();
+                    Assert.IsTrue(PlayerSessionService.OpenWorld);
+                    Assert.IsTrue(LocationUnlocks.IsUnlocked(WorldLocationCatalog.SushiRestaurantScene), "Guests have the whole map.");
+                    Assert.IsTrue(LocationUnlocks.IsUnlocked(WorldLocationCatalog.MidoriIslandScene), "Guests have the whole map.");
+                    Assert.IsFalse(NihongoLife.Scenario.StoryDirector.GatesFreePlay, "Guests are not held in the opening story.");
+                    session.BeginAccount("open-world-test", "Long");
+                    Assert.IsFalse(PlayerSessionService.OpenWorld, "An account plays the campaign.");
+                    PlayerStatus.Instance?.DebugSetKnowledge(0);
+                    Assert.IsFalse(LocationUnlocks.IsUnlocked(WorldLocationCatalog.MidoriIslandScene), "An account opens the map by knowledge and story.");
+
+                    // Two accounts on one machine (a school lab) never share a save.
+                    var repoA = GameServices.Get<IProgressRepository>();
+                    var a = repoA.GetProgress(); a.knowledge = 777; a.storyFlags.Add("account.a.only"); repoA.SaveProgress(a);
+                    session.BeginAccount("open-world-test-b", "Huy");
+                    var b = repoA.GetProgress();
+                    Assert.AreNotEqual(777, b.knowledge, "Account B does not start from account A's save.");
+                    CollectionAssert.DoesNotContain(b.storyFlags, "account.a.only");
+                    session.BeginAccount("open-world-test", "Long");
+                    Assert.AreEqual(777, repoA.GetProgress().knowledge, "Account A keeps its own save.");
+                }
+                finally
+                {
+                    session.BeginGuest();
+                    PlayerSessionService.GuestFullAccess = false;
+                    LocationUnlocks.Bypass = true;
+                }
 
                 // 2. An anonymous session (no email) is still a guest.
                 fake.IsAuthenticated = true;

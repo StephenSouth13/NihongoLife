@@ -136,19 +136,19 @@ Sau khi vào đúng area, các node `Dialogue` tiếp theo (`speakerId: npc_rame
 
 **Không làm**: không tự điền `supabaseProjectUrl`/`supabaseAnonKey`, không tự tạo Supabase project, không tự sửa schema — phần backend là của Claude.
 
-**CẬP NHẬT (2026-09-16, đã xong phần backend)**: Claude đã tạo xong Supabase project thật `nihongolife` (region ap-southeast-1), apply migration đủ 8 bảng (`profiles`, `player_progress`, `scenario_scores`, `chat_messages`, `coop_sessions`, `coop_participants`, `friendships`, `leaderboard`) kèm RLS policy cho từng bảng (đã chạy security advisor, không có cảnh báo), và đã điền `supabaseProjectUrl` + `supabaseAnonKey` + bật `enableOnlineSync: 1` vào `Assets/NihongoLife/Resources/Control/NihongoLifeControlDatabase.asset`. Nghĩa là **giờ có thể test thật** (không chỉ audit tĩnh nữa) — nhắc lưu ý khi audit/test:
+**CẬP NHẬT (2026-09-16, đã xong phần backend)**: Claude đã tạo xong một Supabase project cũ (`<OLD_SUPABASE_PROJECT_REF>`, không còn dùng), apply migration đủ 8 bảng (`profiles`, `player_progress`, `scenario_scores`, `chat_messages`, `coop_sessions`, `coop_participants`, `friendships`, `leaderboard`) kèm RLS policy cho từng bảng (đã chạy security advisor, không có cảnh báo), và đã điền `supabaseProjectUrl` + `supabaseAnonKey` + bật `enableOnlineSync: 1` vào `Assets/NihongoLife/Resources/Control/NihongoLifeControlDatabase.asset`. Nghĩa là **giờ có thể test thật** (không chỉ audit tĩnh nữa) — nhắc lưu ý khi audit/test:
 - `chat_messages.user_id` cố tình để kiểu `text` (không phải `uuid` FK) vì người chơi có thể chat mà chưa đăng nhập (dùng `SystemInfo.deviceUniqueIdentifier`) — không phải bug, đừng "sửa" thành uuid.
 - Các bảng còn lại (`profiles`, `player_progress`, `coop_*`, `friendships`, `leaderboard`) đều yêu cầu người chơi đã đăng nhập thật qua `SupabaseAuthService`/`AuthUI` (RLS check `auth.uid()`) — nếu test mà chưa đăng nhập, các tính năng đó sẽ fail có chủ đích (không phải lỗi).
 - ~~Nếu Realtime Broadcast (`chat_message`) không nhận được ở client khác... báo lại cho Claude~~ **Đã tự kiểm tra và loại trừ (2026-09-24)**: `SupabaseRealtimeClient.JoinChannel()` không set `"private": true` trong config, nghĩa là dùng kênh broadcast công khai — không cần policy `realtime.messages`, không phải cấu hình còn thiếu. Nếu chat vẫn không nhận được ở client khác thì là bug code, không phải backend.
 - 6 field cũ `supabaseHost/postgresPort/databaseName/userName/passwordEnvironmentKey/requireSsl` trong `GameControlDatabase.cs` là tàn dư từ hướng tiếp cận Postgres-direct-connection cũ, không còn dùng (đã xác nhận `SupabaseClient` chỉ dùng REST qua `supabaseProjectUrl`/`supabaseAnonKey`) — an toàn để bỏ qua, không cần dọn trong task này.
 
-**CẬP NHẬT (2026-09-24, đổi sang project Supabase mới)**: chủ dự án tự tạo 1 project Supabase khác (`pkxrtvlerjjiignmlebx`, ngoài tài khoản mà tool Supabase của Claude truy cập được) và yêu cầu chuyển sang dùng project này thay cho `nihongolife` (`kcxhynckzlkrkomnmucp`). Claude đã:
-- Điền lại `supabaseProjectUrl`/`supabaseAnonKey` trong `NihongoLifeControlDatabase.asset` trỏ sang project mới.
+**CẬP NHẬT (2026-09-24, đổi sang project Supabase mới)**: chủ dự án tự tạo 1 project Supabase khác (`<SUPABASE_PROJECT_REF>`, ngoài tài khoản mà tool Supabase của Claude truy cập được) và yêu cầu chuyển sang dùng project này thay cho project cũ (`<OLD_SUPABASE_PROJECT_REF>`). Claude đã:
+- Điền lại `supabaseProjectUrl`/`supabaseAnonKey` trong `NihongoLifeControlDatabase.asset` trỏ sang project mới. Những giá trị đó không còn nằm trong asset; xem `LocalSecrets/secrets.example.json`.
 - Dựng lại y hệt schema cũ (8 bảng + 25 RLS policy + index) sang project mới bằng kết nối Postgres trực tiếp (psql, connection string chủ dự án cung cấp) — đã xác minh lại số bảng/policy khớp 100% với project cũ.
 - Xác nhận: không có trigger nào trên `auth.users` (profiles/player_progress/leaderboard được client tự insert lần đầu, không tự sinh qua trigger — đúng như policy `*_upsert_own` đã thiết kế), không có Storage bucket nào được dùng (`avatar_url` chỉ là text field).
 - Chủ dự án đã tự bật Anonymous Sign-Ins cho project mới qua Dashboard.
 - **Chưa làm** (ngoài khả năng của Claude với project này): lịch sử "Migrations" trên Dashboard sẽ không hiện bản ghi vì áp schema bằng kết nối trực tiếp thay vì Supabase CLI/Management API — chỉ là vấn đề hiển thị, không ảnh hưởng schema thật.
-- Project `nihongolife` (`kcxhynckzlkrkomnmucp`) cũ coi như không dùng nữa — không cần dọn, chỉ cần biết là project đang chạy đã đổi.
+- Project cũ (`<OLD_SUPABASE_PROJECT_REF>`) coi như không dùng nữa — không cần dọn, chỉ cần biết là project đang chạy đã đổi.
 
 ---
 
@@ -1093,7 +1093,7 @@ Claude nhận tiếp phần Codex đang làm dở: báo cáo, trailer, demo và 
 - `CharacterAnimationController.AimHeldProp()`: chỉnh hướng dụng cụ sau animation — chờ cá: cần chĩa ra mặt nước (trước đây dựng đứng như cột cờ); quăng câu: cần vung từ sau đầu ra trước-lên theo thời gian clip (trước đây kết thúc chĩa xuống đất); tưới: bình nghiêng về trước.
 - `KidActionPosesPlayModeTests` chạy trên Midori (có model dụng cụ), bắt buộc dụng cụ có trong tay, mỗi hành động chụp dải 3 khung (đầu/giữa/cuối): `Bao_Cao/character-regression/action_*.jpg`.
 
-**Online.** Lượt chạy toàn bộ hôm nay: 4 test `OnlineSocialPlayModeTests` hỏng vì server Supabase Realtime (`pkxrtvlerjjiignmlebx`) trả `phx_error … channel_crash` khi join kênh presence; sáng 12/10 cùng test này đạt. Lỗi phía server, không liên quan thay đổi trên — kiểm tra trạng thái project trên dashboard Supabase.
+**Online.** Lượt chạy toàn bộ hôm nay: 4 test `OnlineSocialPlayModeTests` hỏng vì server Supabase Realtime (`<SUPABASE_PROJECT_REF>`) trả `phx_error … channel_crash` khi join kênh presence; sáng 12/10 cùng test này đạt. Lỗi phía server, không liên quan thay đổi trên — kiểm tra trạng thái project trên dashboard Supabase.
 
 **Còn lại.** Cuốc đất dùng `action_hammer` (giơ qua vai, nhát bổ nhỏ); nhổ cỏ, cho ăn, bê đồ, ngồi, nằm vẫn là clip Mixamo retarget (pack Kids không có clip tương ứng).
 
@@ -1488,3 +1488,145 @@ Chi tiết thiết kế: `STORY_BIBLE.md` mục 14.
 - Sửa shader Agora.
 - Build mở bằng `01_MainMenu`; cảnh này có AppRoot riêng nên vẫn chạy đúng.
 - WebGL strip High. Đã thêm `Assets/NihongoLife/link.xml` giữ nguyên assembly của game.
+
+## Cập nhật (2026-10-23, Claude) — Sửa xe "bay" lên vỉa hè/mái nhà, khách full map, luật cho agent
+
+**Xe bay khỏi làn, chạy trên vỉa hè và mái nhà** (lỗi từ commit 9115381a)
+- **Nguyên nhân:** `StreetTraffic` gắn `AudioSource` còi vào chính gốc Traffic, rồi dời transform của còi tới chiếc xe đang bóp còi. Mỗi lần bóp còi, cả gốc Traffic cùng mọi xe bị kéo theo (+1,1 m và lệch làn).
+- **Đã sửa:** còi là một GameObject con riêng (`Horn`).
+
+**Xe đụng người**
+- Xe phát hiện người trên toàn bề rộng thân xe (`halfWidth` đo từ renderer).
+- `SeparateFromPlayer` đặt người chơi ra ngoài sườn xe về phía lề và hất nhẹ ngang. Không còn bị xe kinematic đẩy lên nóc.
+- `PlayerController.Knockback` chỉ nhảy lên khi được yêu cầu.
+
+**Khách = full map**
+- Luật suy ra từ phiên chơi: `PlayerSessionService.OpenWorld` (khách → mở toàn bộ bản đồ, không bị giữ ở cốt truyện mở đầu).
+- `BeginOfflinePlay` / `BeginProgressionPlay` không còn đặt cờ `Bypass`.
+- Nút Bắt đầu: tài khoản đã đăng nhập vào lộ trình của tài khoản, khách vào ngoại tuyến. Trước đây nút này đổi cả tài khoản sang save khách.
+
+**Test**
+- Mới: `TrafficLanePlayModeTests` (xe ở yên trong làn suốt 1 phút; xe đụng người; người trên nóc xe; gốc Traffic không bao giờ di chuyển).
+- `GuestOfflinePlayModeTests`: thêm kiểm tra khách full map, tài khoản theo lộ trình.
+- `StreetTrafficPlayModeTests`: đo theo đầu xe.
+
+**`AGENTS.md`:** viết lại thành bộ luật sản phẩm và các bất biến kỹ thuật cho mọi agent.
+
+**Sửa thêm sau khi chạy toàn bộ test trên main (27 test PlayMode trượt sau các commit của Cursor)**
+- **Unity fake-null:** 30 chỗ `GetComponent<T>() ?? …` đổi thành `.OrNull() ?? …` (`Core/UnityNull.cs`). Trước đó menu chính ném `MissingComponentException: CanvasGroup`, làm hỏng dây chuyền khoảng 12 test.
+- **`TownEdge` chỉ có ở thành phố:** trước đây đảo, ga, quán (có `HorizonBackdrop`) cũng bị coi là "thị trấn". Nhấn F ở chỗ câu cá, quầy, Kimura, bảng việc bị nuốt để đi tới ga, và người chơi bị kẹp trong vùng biên nhỏ nên không chạy được.
+- **`ResultUI`:** modal "Results" chỉ tính là mở khi thẻ đang hiển thị. Trước đó nó mở mãi sau khi về thị trấn, chặn thẻ mở khu, phím Esc và nút toàn cảnh.
+- **`TouchControlOverlay`:** chỉ thả input khi overlay vừa ẩn. Trước đó nó xoá joystick và nút mỗi khung khi overlay ẩn.
+- **`KidExpression`:** chỉ cúi chào / chỉ tay khi nhân vật rảnh. Trước đó học xong đi ngủ thì nhân vật đứng dậy chỉ tay trên giường.
+- **Test cập nhật:**
+  - `MenuSyncPlayModeTests`: menu giờ responsive, nên kiểm tra nút Bắt đầu nằm trên màn hình, đủ to, không bị che.
+  - `SpeakingLoungeCamera` và `OnlineSocial.City`: ra Inconclusive khi máy chưa có `LocalSecrets/secrets.json`.
+
+## TASK-M (Grok) — Trailer v4, demo v3, kế hoạch marketing 12 tuần
+Giao việc đầy đủ trong `Docs/GROK_TASK_TRAILER_MARKETING.md` (bối cảnh, luật, công cụ có sẵn, 3 sản phẩm, tiêu chí nghiệm thu). Không sửa gameplay; chỉ sửa `TrailerReel.cs`, hai test quay phim và các file marketing.
+
+## Cập nhật (2026-10-25, Codex) — Viết lại README sản phẩm
+
+- Viết lại toàn bộ `README.md` theo hướng landing page dự án: định vị game, vòng lặp học, gameplay, chế độ khách/tài khoản, kiến trúc, cài đặt, test và đóng góp.
+- Thêm mục video dẫn tới kênh YouTube chính thức `@NihongoLifeGame`; dùng GIF gameplay trong repo làm preview vì GitHub README không hỗ trợ trình phát YouTube iframe.
+- Thêm hướng phát triển theo bốn trụ cột: nội dung học, thế giới sống động, online/cộng đồng và WebGL/khả năng tiếp cận; không đặt ngày phát hành chưa được xác nhận.
+- Chỉ dùng media đang tồn tại trong `docs/readme/`, giữ đúng luật sản phẩm về khách mở toàn thị trấn, campaign tài khoản, từ “trí tuệ” và đúng ba nhà sáng lập.
+- Kiểm tra: rà liên kết/ảnh cục bộ và cấu trúc Markdown; không đổi code hoặc scene nên không cần chạy Unity test.
+
+## Cập nhật (2026-10-25, Codex) — English Foundations A1–C1 và rà kho IELTS
+
+- Rà `LocalContent/IELTS`: 48 package local Cambridge 12–17; tất cả package Reading/Listening có đủ 40 widget, 40 đáp án, không thiếu audio Listening và đều `localOnly`. Không đưa nội dung sách vào Git.
+- Thêm tab **ENGLISH** cạnh JLPT/IELTS trong `ExamCenterPopup`, định vị rõ English Foundations là lộ trình tổng quát còn IELTS là luyện thi.
+- Thêm starter curriculum tự soạn trong `EnglishCourseCatalog`: 10 bài, 30 câu, phủ CEFR A1/A2/B1/B2/C1 và đủ mẫu câu, ngữ pháp, điền từ, đọc hiểu, nghe.
+- Thêm `EnglishPracticeUI`: câu hỏi tương tác, phản hồi đúng/sai, giải thích và tổng kết; nghe dùng Web Speech API trên WebGL, có transcript hỗ trợ.
+- Tài liệu: `Docs/ENGLISH_COURSE.md`, cập nhật `EXAM_SYSTEM.md` và README. Capture đã xem tại `Bao_Cao/english-course/`.
+- Test: WebGL compile 0 `error CS`; `EnglishCourseTests` 2/2 pass; `EnglishCoursePlayModeTests` 1/1 pass.
+
+## Cập nhật (2026-10-25, Codex) — Hoàn thiện ma trận English 4 kỹ năng
+
+- Mở rộng starter curriculum thành 20 unit/60 câu: mỗi cấp A1, A2, B1, B2, C1 đều có đủ Listening, Speaking, Reading và Writing; grammar, pattern, gap-fill và vocabulary được tích hợp theo kỹ năng.
+- Exam Center có filter Nghe/Nói/Đọc/Viết và chip kỹ năng trên từng card; lộ trình được trình bày như 5 quyển/chặng từ First Steps tới Academic Explorer.
+- Thêm `EnglishAudioLibrary`: desktop ưu tiên WAV local, WebGL fallback sang Web Speech API, transcript luôn sẵn có.
+- Thêm manifest và tool sinh 15 audio từ script tự soạn. File nằm ở `LocalContent/English/audio` (~5,45 MB), đã Git ignore; repo chỉ giữ tool/manifest nhẹ.
+- Nguồn British Council/VOA/American English chỉ dùng để tham khảo khung CEFR/phương pháp; không chép bài hoặc audio của họ.
+
+## Cập nhật (2026-10-23 chiều, Claude) — Rà lỗi còn lại và nợ kỹ thuật
+- **Build WebGL bị chặn:** `AgoraWebShim.cs` (namespace `Agora.Rtc`) gọi `AgoraWebEvents` mà thiếu namespace `NihongoLife.Learning`, nên với build target WebGL không biên dịch được. Đã sửa và đã biên dịch thử với target WebGL.
+- **Save tách theo tài khoản** (`progress_<userId>.json`, `PlayerSessionService.AccountId`):
+  - Trước đây mọi tài khoản trên một máy dùng chung `progress.json`, nên ở máy dùng chung tài khoản sau bị gộp cờ cốt truyện và quest của tài khoản trước lên cloud.
+  - Khi khôi phục phiên, cache khách bị gộp vào tài khoản. Cả hai đã sửa.
+  - Test mới trong `GuestOfflinePlayModeTests`.
+- **Bảo mật server:**
+  - `agora-voice` và `agora-classroom` từ chối người dùng ẩn danh.
+  - Cuộc gọi riêng (`nld_…`) chỉ cấp token cho đúng 2 người: server tính lại tên phòng từ người gọi và `peer`. Trước đây ai biết 2 id đều nghe lén được.
+  - Id nhóm voice phải dài ít nhất 10 ký tự.
+  - Migration `20261023_registered_only_online.sql`: `is_registered()`; showcase đảo và thả tim chỉ cho tài khoản đăng ký.
+  - **Cần deploy:** `supabase functions deploy agora-voice agora-classroom` và áp dụng migration.
+- **Hiệu năng mỗi khung:**
+  - `NPCNameplateSystem` không còn `FindObjectsByType` mỗi khung.
+  - `MenuButtonFeel`, `FootGrounder`, `KidMoodAnimator` không còn `GetComponent(s)InChildren` mỗi khung.
+- **`CharacterAnimationController`:** cử chỉ bị chặn khi đang nằm hoặc ngồi, và trigger cử chỉ còn treo được xoá khi vào tư thế.
+- **Test:** thẻ mở khu trong test lộ trình chờ hội thoại kết thúc (đúng thiết kế); test đóng hội thoại còn mở trước khi chờ.
+
+## Cập nhật (2026-10-23 tối, Claude) — Tắt nhạc nền / âm thanh môi trường
+- Người chơi thấy tiếng chim/dế đôi khi ồn, nên Cài đặt → Âm thanh có thêm:
+  - nút **Nhạc nền: Bật/Tắt**;
+  - nút **Môi trường: Bật/Tắt** (chim, dế, gió, mưa, tiếng người ngoài phố);
+  - thanh **âm lượng môi trường** riêng (mặc định 0.5 = độ to cũ).
+- Mã: `Scripts/Audio/AudioPrefs.cs` (PlayerPrefs `Audio_MusicOn`, `Audio_AmbienceOn`, `Volume_Ambience`; giá trị được cache, đọc mỗi khung không tốn). Các nơi đọc giá trị: `Soundscape`, `TownAmbientAudio`, `AudioService` (nhạc menu), mưa trong `OutdoorSky`. UI ở `SettingsUI`.
+- Thêm nguồn ambience mới thì nhân âm lượng với `AudioPrefs.AmbienceGain`; nguồn nhạc mới thì `mute = !AudioPrefs.MusicOn`.
+- Test: `SoundscapePlayModeTests` (tắt thì nhạc và ambience câm, bật lại thì có tiếng).
+
+## Cập nhật (2026-10-26, Claude) — Sửa máu, trailer, cổng soát vé, cảnh tàu, khối lơ lửng ngoài phố
+- **Máu không hồi (kẹt 0% dù no, đủ nước):**
+  - Trước đây `PlayerStatus` không có hồi máu.
+  - Màn ngất bị cắt ngang thì `StatusConsequences._busy` kẹt mãi.
+  - Nay máu tự hồi khi no và nước ≥ 30% (đứng yên nhanh gấp đôi, ~4 phút từ 0 lên đầy); ăn uống hồi ngay; ngủ 8 giờ hồi đầy.
+  - Màn ngất bị cắt thì reset và trả điều khiển; còn 0 máu thì ngất lại.
+  - Test `NeedsWeatherPlayModeTests.Health_HealsWhenFed_AndAStuckFaintRecovers`.
+- **Trailer 99_Trailer:**
+  - Trailer quay trên save thật, nên ngất giữa trailer và ghi đè save.
+  - Nay dùng save tạm trong bộ nhớ (`Core/IntroTrailer.cs`).
+  - Có nút **Bỏ qua** (Esc / Enter / Space).
+  - Khách chơi lần đầu trên máy tự xem một lần rồi vào game.
+  - Bật `99_Trailer` trong Build Settings.
+  - Test `IntroTrailerPlayModeTests`.
+- **Cổng soát vé ga Hibari:**
+  - Lối chính bị chặn bởi collider vô hình của 6 toa tàu trang trí nằm ngang qua sân ga (`HighSpeed_*`, `Opposite_HighSpeed_*`); hai bên cổng lại đi vòng được.
+  - `StationGateBuilder` dựng 3 cabin / 2 làn có cánh (`World/TicketGate.cs`), đầu đọc IC, biển 改札, lan can ngang sân ga; gỡ collider của các toa.
+  - Có vé thì đi vào làn là tự chạm vé và mở; từ sân ga đi ra luôn mở.
+  - Test `StationGatePlayModeTests` (đi bộ thật).
+- **Cảnh ngoài cửa sổ tàu:**
+  - `StationTrainBuilder.RebuildWindowScenery`: hàng rào bê tông, ruộng lúa có bờ, đường làng, cột điện gỗ, hai hàng nhà ở 25 m / 45 m, đồi.
+  - Mọi lớp trôi cùng tốc độ tàu.
+  - Camera cửa sổ đặt sát kính.
+- **Thông báo "đường ra khỏi Hibari-chō" hiện trong ga / trên tàu:** `TownEdge` chỉ phản ứng khi phố là scene đang chơi.
+- **Khối đỏ / kem lơ lửng ngoài phố:**
+  - 436 mảnh trang trí mặt tiền cũ (`FacadeTrim`, `WarmWindow_L/R`, `DoorMat` dưới `StreetBuilding_*`) đặt lệch khỏi tường.
+  - Đã gỡ khỏi 90_TestSandbox và 01_MainMenu (`CityFacadeAccentCleanup`); `VisualEnvironmentBuilder` không tạo lại.
+  - Test `CityTownPlayModeTests`.
+- **"Some objects were not cleaned up … GameInputService":** `TouchControlOverlay.OnDisable` tạo service mới khi đóng scene; nay chỉ dùng service đang có.
+- **Việc sau (anh Long quyết):** phòng khám Hibari chưa có trong phố. Màn ngất hiện chỉ kể "người qua đường gọi phòng khám" rồi trừ viện phí. Sau này thêm khu phòng khám và tuyến nhiệm vụ riêng.
+
+## Cập nhật (2026-10-26 tối, Claude) — Nghề nghiệp từ cấp 10 (kiểu The Sims 3/4)
+- **Mở ở cấp 10** (khách và tài khoản): thẻ "Hướng nghiệp" tự mở một lần; sau đó mở từ nút **Nghề nghiệp** trong Sổ nhiệm vụ (N).
+- **3 nghề**, mỗi nghề gắn với ca làm thêm có sẵn:
+  - Bán lẻ (Hibari Mart): Quản lý cửa hàng / Thu mua.
+  - Ẩm thực (Sushi Hibari): Đầu bếp sushi / Quản lý nhà hàng.
+  - Nông nghiệp (Midori): Trồng trọt / Chăn nuôi.
+- **Thang bậc:** 6 bậc (3 chung + 3 theo nhánh), rẽ nhánh ở bậc 4. Chức danh vi/en/ja, lương nghề cộng thêm vào tiền công ca.
+- **Lịch làm** theo thứ và giờ trong game.
+- **Hiệu suất:**
+  - Ca đúng giờ cho đủ phần hiệu suất (×1.25 khi tâm trạng tốt, ×0.75 khi mệt/căng/bực); ca ngoài giờ được một nửa, không có lương nghề.
+  - Có mặt trong giờ làm mà bỏ ca thì −15.
+- **Thăng chức:** đầy hiệu suất và đủ trí tuệ thì có phỏng vấn tiếng Nhật (sai được giải thích, thử lại).
+- **Sự kiện nơi làm** (35% sau ca đúng giờ): lựa chọn tiếng Nhật ảnh hưởng hiệu suất, danh tiếng, tâm trạng.
+- **Dữ liệu:** `Resources/Progression/careers.json` (thêm nghề / bậc / phỏng vấn / sự kiện không cần sửa code). Save: `PlayerProgressDto.career`; cloud lấy bản mới nhất (`updatedTicks`).
+- **Mã:** `Progression/CareerCatalog.cs`, `Progression/CareerService.cs` (+ `CareerClock`), `UI/CareerUI.cs`.
+- **Test:** `CareerCatalogTests` (EditMode), `CareerPlayModeTests`. Ảnh: `Bao_Cao/career/`.
+- **IELTS:** `Writing_OfflineAndDailyLimit_SaveAndExplain` lỗi từ khi chấm AI mặc định tắt (commit 0302b557). Test nay bật `ExamAiSettings.AutoGradingOverride` trong phần kiểm mất mạng.
+- **Định hướng (anh Long):**
+  - Đảo Midori chủ yếu là nông trại.
+  - Sau này dựng **đảo Phú Quốc** (Việt Nam) riêng: rất rộng, gần tỉ lệ thật, UI đầy đủ, theo bản đồ đã gửi (Dương Đông, An Thới, Hàm Ninh, Gành Dầu, Bãi Sao, cáp treo Hòn Thơm, VinWonders, quần đảo An Thới…).
+  - Chưa làm cho tới khi anh yêu cầu.
+- **Phòng khám Hibari + tuyến nhiệm vụ:** để sau (xem mục 2026-10-26 ở trên).

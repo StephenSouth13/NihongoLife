@@ -22,10 +22,17 @@ namespace NihongoLife.Player
         /// <summary>Soles above the root, metres, at the last idle check (≈0 once settled).</summary>
         public float LastGap { get; private set; }
 
+        private float _nextBind;
+
         private void LateUpdate()
         {
-            var animator = GetComponentInChildren<Animator>();
-            if (animator != _animator) Bind(animator);
+            // The model only changes when the character is swapped: re-check it a few times a second, at once if lost.
+            if (_animator == null || Time.unscaledTime >= _nextBind)
+            {
+                _nextBind = Time.unscaledTime + 0.5f;
+                var animator = GetComponentInChildren<Animator>();
+                if (animator != _animator) Bind(animator);
+            }
             if (_model == null || Time.unscaledTime < _nextCheck) return;
             _nextCheck = Time.unscaledTime + 0.2f;
             if (!IsStandingIdle()) return;

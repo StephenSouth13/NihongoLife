@@ -35,6 +35,12 @@ namespace NihongoLife.Tests
 
             foreach (var root in city.GetRootGameObjects())
                 Assert.IsFalse(OrphanNames.Contains(root.name), "Orphan root still in the city: " + root.name);
+            // No floating facade accents (trim bar / glowing window plates / door mat at a fixed offset in front of
+            // the street houses — they hung over yards and the road as red / cream blocks at dusk).
+            var floating = city.GetRootGameObjects().SelectMany(r => r.GetComponentsInChildren<Transform>(true))
+                .Where(t => t.parent != null && t.parent.name.StartsWith("StreetBuilding_") && (t.name == "FacadeTrim" || t.name.StartsWith("WarmWindow") || t.name == "DoorMat"))
+                .Select(t => t.parent.name + "/" + t.name).ToList();
+            Assert.IsEmpty(floating, "Floating facade pieces: " + string.Join(", ", floating.Take(5)));
             Capture("01_spawn");
 
             // Konbini: cashier behind the counter, quest items inside the building.

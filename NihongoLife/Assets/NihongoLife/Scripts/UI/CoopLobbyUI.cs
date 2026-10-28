@@ -103,13 +103,14 @@ namespace NihongoLife.UI
             _closeButton.onClick.AddListener(Hide);
 
             _panel.SetActive(false);
+            UiModalStack.Register(this, () => _panel != null && _panel.activeSelf, Hide, "Co-op lobby");
         }
 
         private void RefreshView()
         {
             _titleText.text = Text("Học nhóm Co-op", "Co-op Learning", "協力学習");
 
-            var coopService = FindFirstObjectByType<CoopSessionService>();
+            var coopService = SceneRefs.Find<CoopSessionService>();
             if (coopService == null)
             {
                 _sessionListText.text = Text("Co-op chưa khả dụng.", "Co-op not available.", "協力モードは利用できません。");
@@ -238,7 +239,7 @@ namespace NihongoLife.UI
 
         private void OnCreateClicked()
         {
-            var coopService = FindFirstObjectByType<CoopSessionService>();
+            var coopService = SceneRefs.Find<CoopSessionService>();
             if (coopService == null) return;
 
             string scenarioId = PickCoopScenarioId();
@@ -276,7 +277,7 @@ namespace NihongoLife.UI
         {
             if (string.IsNullOrWhiteSpace(sessionId)) return;
 
-            var coopService = FindFirstObjectByType<CoopSessionService>();
+            var coopService = SceneRefs.Find<CoopSessionService>();
             if (coopService == null) return;
 
             _lobbyInfoText.text = Text("Dang vao phong...", "Joining room...", "参加中...");
@@ -285,13 +286,13 @@ namespace NihongoLife.UI
 
         private void OnStartClicked()
         {
-            var coopService = FindFirstObjectByType<CoopSessionService>();
+            var coopService = SceneRefs.Find<CoopSessionService>();
             coopService?.StartSession(_ => RefreshView());
         }
 
         private void OnLeaveClicked()
         {
-            var coopService = FindFirstObjectByType<CoopSessionService>();
+            var coopService = SceneRefs.Find<CoopSessionService>();
             coopService?.LeaveSession(() => RefreshView());
         }
 
@@ -299,7 +300,7 @@ namespace NihongoLife.UI
 
         private void SubscribeEvents()
         {
-            var service = FindFirstObjectByType<CoopSessionService>();
+            var service = SceneRefs.Find<CoopSessionService>();
             if (service == null) return;
 
             service.OnSessionUpdated -= HandleSessionUpdated;
@@ -310,7 +311,7 @@ namespace NihongoLife.UI
 
         private void UnsubscribeEvents()
         {
-            var service = FindFirstObjectByType<CoopSessionService>();
+            var service = SceneRefs.Find<CoopSessionService>();
             if (service == null) return;
 
             service.OnSessionUpdated -= HandleSessionUpdated;
@@ -328,6 +329,7 @@ namespace NihongoLife.UI
 
         private static void LoadCoopGameplay(string scenarioId)
         {
+            PlayerSessionService.GetOrCreate()?.BeginProgressionPlay();
             if (!string.IsNullOrWhiteSpace(scenarioId))
             {
                 ScenarioSceneInitializer.QueueLaunch(scenarioId);
@@ -339,7 +341,7 @@ namespace NihongoLife.UI
             }
             else
             {
-                UnityEngine.SceneManagement.SceneManager.LoadScene("90_TestSandbox");
+                SceneContentLoader.LoadFallback("90_TestSandbox");
             }
         }
 

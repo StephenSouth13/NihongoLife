@@ -82,7 +82,7 @@ namespace NihongoLife.Island
                 else if (!UiModalStack.AnyOpen) IslandUI.OpenShop();
             }
 
-            if (_player == null) _player = FindFirstObjectByType<PlayerController>();
+            if (_player == null) _player = SceneRefs.Find<PlayerController>();
             var player = _player;
             if (player != null && player.transform.position.y < fallY && respawn != null && player.gameObject.scene.IsValid())
             {
@@ -139,7 +139,7 @@ namespace NihongoLife.Island
             if (_departing) return NihongoLife.Core.Loc.T("Tàu đang khởi hành.", "The train is departing.", "電車が出発します。");
             if (!HasTicket) return NihongoLife.Core.Loc.T("Cần vé về Hibari — mua ở máy bán vé cạnh sân ga.", "You need a ticket to Hibari — buy one at the machine by the platform.", "ひばりへのきっぷが必要です。ホームの横の券売機で買いましょう。");
             SceneFlowController flow = null;
-            if (!GameServices.TryGet(out flow)) flow = Object.FindFirstObjectByType<SceneFlowController>();
+            if (!GameServices.TryGet(out flow)) flow = SceneRefs.Find<SceneFlowController>();
             if (flow == null) return NihongoLife.Core.Loc.T("Không tìm thấy hệ thống chuyển cảnh.", "Scene transition system not found.", "シーン切り替えが見つかりません。");
             _departing = true;
             host.StartCoroutine(Ride(flow));
@@ -148,7 +148,7 @@ namespace NihongoLife.Island
 
         private static IEnumerator Ride(SceneFlowController flow)
         {
-            var player = Object.FindFirstObjectByType<PlayerController>();
+            var player = SceneRefs.Find<PlayerController>();
             if (player != null) player.InputLocked = true;
             IslandUI.CloseFarm(); IslandUI.CloseShop(); IslandUI.CloseAnimal(); IslandUI.CloseProgress();
             yield return IslandUI.TravelScreen(NihongoLife.Core.Loc.T("Đảo Xanh", "Midori Island", "みどりじま"), NihongoLife.Core.Loc.T("Ga Hibari", "Hibari Station", "ひばりえき"), RideSeconds);
@@ -157,7 +157,7 @@ namespace NihongoLife.Island
             flow.TransferZone(WorldLocationCatalog.StationScene, WorldLocationCatalog.StationEntrance, NihongoLife.Core.Loc.T("Ga Hibari", "Hibari Station", "ひばりえき"), () =>
             {
                 _departing = false;
-                var p = Object.FindFirstObjectByType<PlayerController>();
+                var p = SceneRefs.Find<PlayerController>();
                 if (p != null) p.InputLocked = false;
                 StationTravelController.AnnounceArrival("hibari");
             });

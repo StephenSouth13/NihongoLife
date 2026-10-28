@@ -173,7 +173,7 @@ namespace NihongoLife.UI
             if (GameServices.TryGet(out IOnlineWorldService online))
             {
                 var target = online.VisiblePlayers.SystemFind(p => p.playerId == _selectedPlayerId);
-                var player = FindFirstObjectByType<PlayerController>();
+                var player = SceneRefs.Find<PlayerController>();
                 if (target != null && player != null)
                 {
                     player.transform.position = target.position;

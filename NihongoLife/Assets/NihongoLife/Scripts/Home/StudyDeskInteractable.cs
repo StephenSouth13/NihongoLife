@@ -160,7 +160,13 @@ namespace NihongoLife.Home
             var questions = pool.GetRange(0, Mathf.Min(questionsPerSession, pool.Count));
 
             int correct = 0;
-            yield return room.RunStudySession(questions, c => correct = c);
+            bool finished = false;
+            yield return room.RunStudySession(questions, c => { correct = c; finished = true; });
+            if (!finished)
+            {
+                _busy = false;
+                yield break;
+            }
 
             _sessionsToday++;
             int gained = correct * knowledgePerCorrect + (correct == questions.Count ? perfectBonus : 0);

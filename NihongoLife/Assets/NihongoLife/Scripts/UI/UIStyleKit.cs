@@ -238,12 +238,19 @@ namespace NihongoLife.UI
             }
 
             if (_running != null) StopCoroutine(_running);
+            if (NihongoLife.Core.MotionSettings.ReduceMotion)
+            {
+                var fitNow = GetComponent<HudFitRect>();
+                transform.localScale = Vector3.one * (fitNow != null ? fitNow.FitScale : 1f);
+                _canvasGroup.alpha = 1f;
+                return;
+            }
             _running = StartCoroutine(AnimateIn());
         }
 
         private IEnumerator AnimateIn()
         {
-            const float duration = 0.16f;
+            const float duration = 0.28f;
             var rect = transform as RectTransform;
             // Panels that auto-fit small screens (HudFitRect) animate towards their fitted scale, not 1.
             var fit = GetComponent<HudFitRect>();

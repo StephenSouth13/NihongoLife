@@ -94,12 +94,14 @@ namespace NihongoLife.Tests
         private SpeakingLiveHub NewHub(string name, string id, string displayName, bool teacherRole)
         {
             var db = Resources.Load<GameControlDatabase>("Control/NihongoLifeControlDatabase");
-            Assume.That(db != null && !string.IsNullOrEmpty(db.supabaseProjectUrl), "Supabase not configured");
-            string url = db.supabaseProjectUrl.TrimEnd('/').Replace("https://", "wss://") + "/realtime/v1/websocket?apikey=" + db.supabaseAnonKey + "&vsn=1.0.0";
+            string projectUrl = db != null ? db.ResolveSupabaseProjectUrl() : string.Empty;
+            string anonKey = db != null ? db.ResolveSupabaseAnonKey() : string.Empty;
+            Assume.That(!string.IsNullOrEmpty(projectUrl) && !string.IsNullOrEmpty(anonKey), "Supabase not configured (LocalSecrets/secrets.json or NIHONGOLIFE_SUPABASE_URL / NIHONGOLIFE_SUPABASE_ANON_KEY).");
+            string url = projectUrl.TrimEnd('/').Replace("https://", "wss://") + "/realtime/v1/websocket?apikey=" + anonKey + "&vsn=1.0.0";
             var go = new GameObject("TestSpeaking_" + name);
             _spawned.Add(go);
             var realtime = go.AddComponent<SupabaseRealtimeClient>();
-            realtime.InitializeRaw(url, db.supabaseAnonKey);
+            realtime.InitializeRaw(url, anonKey);
             var hub = go.AddComponent<SpeakingLiveHub>();
             hub.Connect(realtime, id, displayName, teacherRole);
             return hub;

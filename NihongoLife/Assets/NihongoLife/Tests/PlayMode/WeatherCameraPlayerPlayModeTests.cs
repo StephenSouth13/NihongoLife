@@ -106,7 +106,7 @@ namespace NihongoLife.Tests
                 Assert.That(toCamera.magnitude, Is.InRange(13f, 17f), "Medium zoom level");
                 Assert.AreEqual(45f, Mathf.Repeat(camera.Yaw, 90f), 1f, "On a diagonal");
                 Assert.IsFalse(CursorDirector.GameplayLook, "Free cursor in the overview (Sims-style)");
-                Assert.IsTrue(Object.FindObjectsByType<RectTransform>(FindObjectsSortMode.None).Any(r => r.name == "OverviewControls" && r.gameObject.activeInHierarchy), "Rotate/zoom controls on the HUD");
+                Assert.IsTrue(Object.FindObjectsByType<RectTransform>(FindObjectsSortMode.None).Any(r => r.name == "OverviewControls" && r.gameObject.activeInHierarchy), "Rotate/zoom controls on the HUD (open overlay: " + UiModalStack.TopName + ")");
                 Shoot("overview_medium", useGameCamera: true);
                 float yaw = camera.Yaw;
                 camera.RotateOverview(1);

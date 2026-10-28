@@ -74,10 +74,10 @@ namespace NihongoLife.UI
         /// <summary>Panels destroyed with an old scene are found again in the loaded ones (inactive included).</summary>
         private void ResolvePanels()
         {
-            if (resultPanel == null) resultPanel = FindFirstObjectByType<ResultUI>(FindObjectsInactive.Include);
-            if (hudPanel == null) hudPanel = FindFirstObjectByType<HUDUI>(FindObjectsInactive.Include);
-            if (statusPanel == null) statusPanel = FindFirstObjectByType<StatusUI>(FindObjectsInactive.Include);
-            if (inventoryPanel == null) inventoryPanel = FindFirstObjectByType<InventoryUI>(FindObjectsInactive.Include);
+            if (resultPanel == null) resultPanel = SceneRefs.Find<ResultUI>(FindObjectsInactive.Include);
+            if (hudPanel == null) hudPanel = SceneRefs.Find<HUDUI>(FindObjectsInactive.Include);
+            if (statusPanel == null) statusPanel = SceneRefs.Find<StatusUI>(FindObjectsInactive.Include);
+            if (inventoryPanel == null) inventoryPanel = SceneRefs.Find<InventoryUI>(FindObjectsInactive.Include);
         }
 
         private void OnDestroy()

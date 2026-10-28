@@ -21,6 +21,7 @@ namespace NihongoLife.Save
         private bool _cloudSyncPending = false;
         /// <summary>A guest's progress waiting to move into the account that just signed in (only if that account is new).</summary>
         private PlayerProgressDto _guestCarry;
+        private string _cachedAccount;
 
         public SupabaseProgressRepository(SupabaseClient client)
         {
@@ -44,6 +45,7 @@ namespace NihongoLife.Save
                     // A session restored before this repository subscribed: still an account session, so the
                     // game reads the account's save (not the "Guest" one).
                     PlayerSessionService.GetOrCreate()?.BeginAccount(_authService.UserId, _authService.DisplayName);
+                    _cachedProgress = _localFallback.GetProgress(); // this account's own save, not the guest one loaded above
                     SyncFromCloud();
                 }
             }
@@ -57,9 +59,11 @@ namespace NihongoLife.Save
             if (session == null) return _cachedProgress ??= new PlayerProgressDto();
             if (!session.CanPersist)
                 return session.GuestProgress;
-            if (_cachedProgress == null)
+            // Another account took over the session (sign-in, Start): its own save, never the previous account's.
+            if (_cachedProgress == null || _cachedAccount != session.AccountId)
             {
                 _cachedProgress = _localFallback.GetProgress();
+                _cachedAccount = session.AccountId;
             }
             return _cachedProgress;
         }
@@ -71,10 +75,11 @@ namespace NihongoLife.Save
             if (!session.CanPersist)
             {
                 session.UpdateGuestProgress(progress);
-                _cachedProgress = progress;
+                _cachedProgress = null; // the guest save lives in the session; the account cache reloads when needed
                 return;
             }
             _cachedProgress = progress;
+            _cachedAccount = session.AccountId;
 
             // Always save locally first
             _localFallback.SaveProgress(progress);
@@ -111,6 +116,7 @@ namespace NihongoLife.Save
                 if (state == AuthState.SignedIn && session != null && session.Mode == PlayerSessionMode.Guest)
                     _guestCarry = session.GuestProgressToCarry();
                 session?.BeginAccount(_authService.UserId, _authService.DisplayName);
+                _cachedProgress = _localFallback.GetProgress(); // the signed-in account's own local save
                 if (_cloudSyncPending)
                 {
                     UploadToCloud(_cachedProgress);
@@ -275,6 +281,7 @@ namespace NihongoLife.Save
                 hunger = cloud.hunger,
                 thirst = cloud.thirst,
                 knowledge = Mathf.Max(local.knowledge, cloud.knowledge),
+                aiFreeGradesUsed = Mathf.Max(local.aiFreeGradesUsed, cloud.aiFreeGradesUsed),
                 yen = cloud.yen,
                 activeJobRole = !string.IsNullOrWhiteSpace(cloud.activeJobRole) ? cloud.activeJobRole : local.activeJobRole,
                 business = cloud.business ?? local.business ?? new BusinessRecord(),
@@ -380,12 +387,31 @@ namespace NihongoLife.Save
                 if (localWins) merged.quests[index] = localQuest;
             }
             merged.trackedQuestId = !string.IsNullOrWhiteSpace(cloud.trackedQuestId) ? cloud.trackedQuestId : local.trackedQuestId;
+            // Career: the most recently changed record wins (a quit or a promotion on another device is kept).
+            var localCareerState = local.career ?? new NihongoLife.Progression.CareerState();
+            var cloudCareerState = cloud.career ?? new NihongoLife.Progression.CareerState();
+            merged.career = localCareerState.updatedTicks > cloudCareerState.updatedTicks ? localCareerState : cloudCareerState;
+            merged.career.prompted = localCareerState.prompted || cloudCareerState.prompted;
             // Notebook: the copy written most recently wins (paper bought anywhere is never lost: keep the larger count).
             long Latest(NihongoLife.Notebook.NotebookRecord r) { long t = -1; if (r?.entries != null) foreach (var p in r.entries) if (p != null && p.updatedUnix > t) t = p.updatedUnix; return t; }
             var notebook = Latest(cloud.notebook) >= Latest(local.notebook) ? cloud.notebook : local.notebook;
             merged.notebook = notebook ?? new NihongoLife.Notebook.NotebookRecord();
             merged.notebook.pages = Mathf.Max(merged.notebook.pages, Mathf.Max(cloud.notebook?.pages ?? 0, local.notebook?.pages ?? 0));
 
+            // Calendar: keep the further day. Hour, birthday and age come from that save.
+            if (local.calendarStarted || cloud.calendarStarted)
+            {
+                merged.calendarStarted = true;
+                bool localAhead = local.calendarStarted && (!cloud.calendarStarted || local.calendarDay > cloud.calendarDay);
+                var src = localAhead ? local : cloud;
+                merged.calendarDay = Mathf.Max(local.calendarStarted ? local.calendarDay : 0, cloud.calendarStarted ? cloud.calendarDay : 0);
+                merged.calendarHour = src.calendarHour;
+                merged.birthdayMonth = src.birthdayMonth >= 1 && src.birthdayMonth <= 12 ? src.birthdayMonth : 4;
+                merged.birthdayDay = src.birthdayDay > 0 ? src.birthdayDay : 15;
+                merged.ageAtEpoch = src.ageAtEpoch > 0 ? src.ageAtEpoch : 16;
+            }
+
+            NihongoLife.Player.SocialStanding.Merge(merged, local, cloud);
             return merged;
         }
 

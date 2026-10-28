@@ -5,6 +5,7 @@ using System.Net.WebSockets;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Runtime.InteropServices;
 using UnityEngine;
 
 namespace NihongoLife.Core
@@ -104,7 +105,17 @@ namespace NihongoLife.Core
         // ──────────────────────── State ────────────────────────
 
         /// <summary>Socket open and the send/receive threads running (frames can go out).</summary>
-        public bool IsConnected => _ready && _socket != null && _socket.State == WebSocketState.Open;
+        public bool IsConnected
+        {
+            get
+            {
+#if UNITY_WEBGL && !UNITY_EDITOR
+                return _ready && _webSocketOpen;
+#else
+                return _ready && _socket != null && _socket.State == WebSocketState.Open;
+#endif
+            }
+        }
         private volatile bool _ready;
         public int ReconnectAttempts { get; private set; }
         public int SentFrames { get; private set; }
@@ -150,12 +161,14 @@ namespace NihongoLife.Core
 
         static SupabaseRealtimeClient()
         {
+#if !UNITY_WEBGL || UNITY_EDITOR
             // Mono's ClientWebSocket goes through ServicePoint, which allows 2 connections per host by default;
             // a websocket holds its connection for life, so a third socket (tests, bots) would wait forever.
             if (System.Net.ServicePointManager.DefaultConnectionLimit < 64) System.Net.ServicePointManager.DefaultConnectionLimit = 64;
             // ConnectAsync (TLS handshake) still runs on the pool; give it room so the first connect is not slow either.
             ThreadPool.GetMinThreads(out int worker, out int io);
             if (worker < 32 || io < 32) ThreadPool.SetMinThreads(Math.Max(worker, 32), Math.Max(io, 32));
+#endif
         }
         private const int MaxPendingFramesPerChannel = 64;
 
@@ -297,17 +310,21 @@ namespace NihongoLife.Core
         // ──────────────────────── Socket ────────────────────────
 
 #if UNITY_WEBGL && !UNITY_EDITOR
-        private bool _webNoticeShown;
+        private bool _webSocketOpen;
+
+        [DllImport("__Internal")] private static extern void NihongoRealtimeConnect(string url, string gameObjectName);
+        [DllImport("__Internal")] private static extern void NihongoRealtimeSend(string message);
+        [DllImport("__Internal")] private static extern void NihongoRealtimeClose();
 #endif
 
         private void EnsureSocket()
         {
             if (!Configured) return;
 #if UNITY_WEBGL && !UNITY_EDITOR
-            // ClientWebSocket and the dedicated send/receive threads do not exist in the browser. Until a browser
-            // WebSocket transport is added, the web build stays off realtime (REST features still work) instead of
-            // retrying a connection that cannot open.
-            if (!_webNoticeShown) { _webNoticeShown = true; Debug.Log("[SupabaseRealtime] Web build: realtime is not available yet."); }
+            _wantConnected = true;
+            if (_webSocketOpen || _connecting || _reconnectAt > 0f) return;
+            _connecting = true;
+            NihongoRealtimeConnect(Url, gameObject.name);
             return;
 #endif
             _wantConnected = true;
@@ -322,6 +339,11 @@ namespace NihongoLife.Core
             _ready = false;
             _wantConnected = false;
             _reconnectAt = -1f;
+#if UNITY_WEBGL && !UNITY_EDITOR
+            NihongoRealtimeClose();
+            _webSocketOpen = false;
+            _connecting = false;
+#endif
             _cancellation?.Cancel();
             var socket = _socket;
             _socket = null;
@@ -419,12 +441,19 @@ namespace NihongoLife.Core
             foreach (var json in _drain) ProcessFrame(json);
             _drain.Clear();
 
+#if UNITY_WEBGL && !UNITY_EDITOR
+            if (_wantConnected && !_connecting && _socketDropped)
+#else
             if (_wantConnected && !_connecting && _socket != null && (_socketDropped || _socket.State != WebSocketState.Open))
+#endif
             {
                 _ready = false;
                 Debug.LogWarning($"[SupabaseRealtime] {name}: connection lost ({_closeReason ?? _socket.State.ToString()}) — reconnecting.");
                 _cancellation?.Cancel();
                 _socket = null;
+#if UNITY_WEBGL && !UNITY_EDITOR
+                _webSocketOpen = false;
+#endif
                 foreach (var c in _channels.Values) c.Joined = false;
                 OnDisconnected?.Invoke();
                 ScheduleReconnect();
@@ -433,7 +462,12 @@ namespace NihongoLife.Core
             {
                 _reconnectAt = -1f;
                 ReconnectAttempts++;
+#if UNITY_WEBGL && !UNITY_EDITOR
+                _connecting = true;
+                NihongoRealtimeConnect(Url, gameObject.name);
+#else
                 StartCoroutine(ConnectCoroutine());
+#endif
             }
 
             if (IsConnected && Time.unscaledTime >= _nextHeartbeat)
@@ -469,6 +503,43 @@ namespace NihongoLife.Core
         {
             Disconnect();
         }
+
+#if UNITY_WEBGL && !UNITY_EDITOR
+        // Called by the browser WebSocket plugin on Unity's main thread.
+        public void OnWebGLRealtimeOpen(string unused)
+        {
+            _connecting = false;
+            _webSocketOpen = true;
+            _socketDropped = false;
+            _closeReason = null;
+            _reconnectDelay = 2f;
+            _pendingHeartbeatRef = null;
+            _nextHeartbeat = Time.unscaledTime + HeartbeatInterval;
+            _ready = true;
+            OnConnected?.Invoke();
+            foreach (var channel in _channels.Values) SendJoin(channel);
+        }
+
+        public void OnWebGLRealtimeMessage(string message)
+        {
+            if (string.IsNullOrEmpty(message)) return;
+            lock (_incomingLock) _incoming.Enqueue(message);
+        }
+
+        public void OnWebGLRealtimeClose(string reason)
+        {
+            _connecting = false;
+            _closeReason = string.IsNullOrEmpty(reason) ? "browser socket closed" : reason;
+            if (_wantConnected) _socketDropped = true;
+        }
+
+        public void OnWebGLRealtimeError(string reason)
+        {
+            _connecting = false;
+            _closeReason = string.IsNullOrEmpty(reason) ? "browser socket error" : reason;
+            if (_wantConnected) _socketDropped = true;
+        }
+#endif
 
         // ──────────────────────── Frames ────────────────────────
 
@@ -640,9 +711,14 @@ namespace NihongoLife.Core
         private void Enqueue(string frame)
         {
             if (!IsConnected) return;
+#if UNITY_WEBGL && !UNITY_EDITOR
+            NihongoRealtimeSend(frame);
+            SentFrames++;
+#else
             lock (_outgoingLock) _outgoing.Enqueue(Encoding.UTF8.GetBytes(frame));
             SentFrames++;
             _outgoingSignal?.Release();
+#endif
         }
 
         private static void StartThread(string name, Action body)

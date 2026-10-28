@@ -33,6 +33,8 @@ Deno.serve(async (request) => {
   const authClient = createClient(url, anonKey, { global: { headers: { Authorization: authorization } } });
   const { data: { user }, error: authError } = await authClient.auth.getUser();
   if (authError || !user) return reply({ ok: false, error: "Phiên đăng nhập không hợp lệ." }, 401);
+  // The Speaking room is online play: registered accounts only (OnlineAccess in the game), enforced here too.
+  if (user.is_anonymous) return reply({ ok: false, error: "Phòng Speaking cần tài khoản đã đăng ký." }, 403);
 
   const admin = createClient(url, serviceKey);
   const body = await request.json().catch(() => ({})) as Body;

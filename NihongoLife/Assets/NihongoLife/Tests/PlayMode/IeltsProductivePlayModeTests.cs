@@ -135,6 +135,7 @@ namespace NihongoLife.Tests
             ui.SetAnswer(1, Task1 + unique);
             ui.SetAnswer(2, Task2 + unique);
             ExamGradingService.EndpointOverride = "http://127.0.0.1:9/unreachable";
+            ExamAiSettings.AutoGradingOverride = true; // AI marking is off by default (pending review); this checks the AI path offline
             try
             {
                 ui.SubmitNow();
@@ -151,7 +152,7 @@ namespace NihongoLife.Tests
                 yield return null;
                 Capture("05_writing_offline");
             }
-            finally { ExamGradingService.EndpointOverride = null; }
+            finally { ExamGradingService.EndpointOverride = null; ExamAiSettings.AutoGradingOverride = null; }
 
             // Daily cost limit: when today's quota is used up, nothing is sent.
             var control = GameServices.TryGet(out GameControlService c) ? c : null;
@@ -247,7 +248,8 @@ namespace NihongoLife.Tests
             StringAssert.StartsWith("rec:", ui.GetAnswer(1), "The take is saved as the answer");
             ui.Close();
 
-            // Agora: engine with the configured App ID, recording-device test with volume callbacks.
+#if !UNITY_WEBGL
+            // Native AgoraRtcSDK only (the asmdef excludes WebGL). Browser calls go through NihongoAgora.jslib.
             string appId = NihongoLife.Learning.EduMeetingManager.ConfiguredAppId();
             if (string.IsNullOrWhiteSpace(appId)) Assert.Inconclusive("No Agora App ID configured.");
             var engine = Agora.Rtc.RtcEngine.CreateAgoraRtcEngine();
@@ -269,14 +271,17 @@ namespace NihongoLife.Tests
                 Assert.Greater(volumeCallbacks, 0, "Agora reports microphone volume from the real device");
             }
             finally { engine.Dispose(); }
+#endif
         }
 
+#if !UNITY_WEBGL
         private sealed class AgoraVolumeHandler : Agora.Rtc.IRtcEngineEventHandler
         {
             private readonly Action<int> _volume;
             public AgoraVolumeHandler(Action<int> volume) => _volume = volume;
             public override void OnAudioVolumeIndication(Agora.Rtc.RtcConnection connection, Agora.Rtc.AudioVolumeInfo[] speakers, uint speakerNumber, int totalVolume) => _volume(totalVolume);
         }
+#endif
 
         // ─────────── helpers ───────────
 

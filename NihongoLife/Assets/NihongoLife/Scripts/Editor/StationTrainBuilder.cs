@@ -45,7 +45,7 @@ namespace NihongoLife.EditorTools
         private const float DoorHalf = 0.65f;
         public static readonly Vector3 CarriageOffset = new Vector3(0f, 0f, 260f);
 
-        private static Material _floor, _wall, _ceiling, _lightStrip, _seat, _seatBase, _steel, _glass, _door, _black, _led, _grass, _gravel, _sea, _hill, _hillFar, _mast, _kenney, _adBlue, _adRed, _adOrange, _adGreen, _adGrey, _strap, _rail;
+        private static Material _floor, _wall, _ceiling, _lightStrip, _seat, _seatBase, _steel, _glass, _door, _black, _led, _grass, _gravel, _sea, _hill, _hillFar, _mast, _kenney, _paddyA, _paddyB, _levee, _concrete, _pole, _adBlue, _adRed, _adOrange, _adGreen, _adGrey, _strap, _rail;
 
         public static void Build()
         {
@@ -86,6 +86,38 @@ namespace NihongoLife.EditorTools
             }
         }
 
+        /// <summary>
+        /// Rebuilds only the view out of the windows (and the window camera lens), leaving the carriage, seats and
+        /// commuters as they are. Run: Unity -batchmode -executeMethod NihongoLife.EditorTools.StationTrainBuilder.RebuildWindowScenery
+        /// </summary>
+        public static void RebuildWindowScenery()
+        {
+            try
+            {
+                var scene = EditorSceneManager.OpenScene(ScenePath, OpenSceneMode.Single);
+                var root = scene.GetRootGameObjects().SelectMany(r => r.GetComponentsInChildren<Transform>(true))
+                    .FirstOrDefault(t => t.name == "TrainCarriageInterior");
+                if (root == null) throw new InvalidOperationException("TrainCarriageInterior not found in " + ScenePath);
+                CreateMaterials();
+                var old = root.Find("MovingWindowScenery");
+                if (old != null) Object.DestroyImmediate(old.gameObject);
+                BuildScenery(root);
+                var lens = root.GetComponentsInChildren<Camera>(true).FirstOrDefault(c => c.name == "TrainWindowCamera");
+                if (lens != null) ConfigureWindowLens(lens);
+                EditorSceneManager.MarkSceneDirty(scene);
+                if (!EditorSceneManager.SaveScene(scene)) throw new InvalidOperationException("Could not save " + ScenePath);
+                AssetDatabase.SaveAssets();
+                Debug.Log("[StationTrainBuilder] Window scenery rebuilt.");
+                if (Application.isBatchMode) EditorApplication.Exit(0);
+            }
+            catch (Exception exception)
+            {
+                Debug.LogException(exception);
+                if (Application.isBatchMode) EditorApplication.Exit(1);
+                else throw;
+            }
+        }
+
         private static Vector3 P(float dx, float y, float z) => new Vector3(C.x + dx, y, z);
 
         private static void CreateMaterials()
@@ -109,6 +141,11 @@ namespace NihongoLife.EditorTools
             _hill = Lit(MatDir, "Train_Hill", new Color(0.25f, 0.45f, 0.28f), 0.05f);
             _hillFar = Lit(MatDir, "Train_HillFar", new Color(0.42f, 0.55f, 0.6f), 0.05f);
             _mast = Lit(MatDir, "Train_Mast", new Color(0.55f, 0.56f, 0.58f), 0.5f);
+            _paddyA = Lit(MatDir, "Train_PaddyA", new Color(0.42f, 0.66f, 0.28f), 0.08f);
+            _paddyB = Lit(MatDir, "Train_PaddyB", new Color(0.55f, 0.72f, 0.33f), 0.08f);
+            _levee = Lit(MatDir, "Train_Levee", new Color(0.52f, 0.46f, 0.36f), 0.05f);
+            _concrete = Lit(MatDir, "Train_Concrete", new Color(0.7f, 0.7f, 0.68f), 0.15f);
+            _pole = Lit(MatDir, "Train_UtilityPole", new Color(0.36f, 0.33f, 0.3f), 0.2f);
             _adBlue = Lit(MatDir, "Train_AdBlue", new Color(0.12f, 0.3f, 0.62f), 0.3f);
             _adRed = Lit(MatDir, "Train_AdRed", new Color(0.72f, 0.16f, 0.16f), 0.3f);
             _adOrange = Lit(MatDir, "Train_AdOrange", new Color(0.9f, 0.5f, 0.12f), 0.3f);
@@ -123,7 +160,7 @@ namespace NihongoLife.EditorTools
 
         private static void RemoveSuperseded(Transform root)
         {
-            var keep = new HashSet<string> { "TravelCarriageSpawn", "StartRidePanel", "LeaveTrainDoor", "MovingWindowScenery" };
+            var keep = new HashSet<string> { "TravelCarriageSpawn", "StartRidePanel", "LeaveTrainDoor" }; // the window scenery is rebuilt whole
             foreach (Transform child in root.Cast<Transform>().ToArray())
             {
                 if (keep.Contains(child.name)) continue;
@@ -367,21 +404,27 @@ namespace NihongoLife.EditorTools
 
         // ─────────── Scenery ───────────
 
+        // The view of a Japanese suburban line: catenary masts and a low concrete fence by the track, rice paddies
+        // with levees and wooden utility poles, a row of houses ~25 m out, a second row ~45 m out, hills beyond;
+        // on the south side a seaside promenade and the sea. Every layer moves at train speed (true perspective
+        // does the parallax); each loops wider than the window sees at its distance.
         private static void BuildScenery(Transform root)
         {
-            var scenery = root.Find("MovingWindowScenery");
-            if (scenery == null) { scenery = Group(root, "MovingWindowScenery"); }
+            var scenery = Group(root, "MovingWindowScenery");
             scenery.localPosition = C;
             scenery.localRotation = Quaternion.identity;
+            var random = new System.Random(20261026);
+            float Rand(float min, float max) => min + (float)random.NextDouble() * (max - min);
 
             var statics = Group(scenery, "Static");
-            Block(statics, "TrackBed", new Vector3(0f, -1.05f, 0f), new Vector3(400f, 0.1f, 6f), _gravel, false);
-            Block(statics, "Ground_North", new Vector3(0f, -1.1f, 60f), new Vector3(400f, 0.1f, 114f), _grass, false);
-            Block(statics, "Ground_South", new Vector3(0f, -1.1f, -14f), new Vector3(400f, 0.1f, 22f), _grass, false);
-            Block(statics, "Sea", new Vector3(0f, -1.3f, -160f), new Vector3(600f, 0.1f, 280f), _sea, false);
-            Block(statics, "SeaWall", new Vector3(0f, -1.15f, -25.2f), new Vector3(400f, 0.4f, 0.6f), _gravel, false);
-            Block(statics, "FarHills", new Vector3(0f, 6f, 210f), new Vector3(600f, 16f, 20f), _hillFar, false);
+            Block(statics, "TrackBed", new Vector3(0f, -1.05f, 0f), new Vector3(500f, 0.1f, 6f), _gravel, false);
+            Block(statics, "Ground_North", new Vector3(0f, -1.12f, 70f), new Vector3(500f, 0.1f, 134f), _grass, false);
+            Block(statics, "Ground_South", new Vector3(0f, -1.1f, -14f), new Vector3(500f, 0.1f, 22f), _grass, false);
+            Block(statics, "Sea", new Vector3(0f, -1.3f, -160f), new Vector3(700f, 0.1f, 280f), _sea, false);
+            Block(statics, "SeaWall", new Vector3(0f, -1.15f, -25.2f), new Vector3(500f, 0.4f, 0.6f), _gravel, false);
+            Block(statics, "FarHills", new Vector3(0f, 7f, 230f), new Vector3(700f, 18f, 20f), _hillFar, false);
 
+            // Near the track: catenary masts and wire, a low concrete fence on the north side.
             var near = Group(scenery, "Layer_Near");
             for (float x = -60f; x < 60f; x += 10f)
             {
@@ -392,23 +435,48 @@ namespace NihongoLife.EditorTools
                     Cylinder(mast, "Pole", new Vector3(0f, 2.2f, 0f), new Vector3(0.18f, 3.3f, 0.18f), _mast, false);
                     Block(mast, "Arm", new Vector3(0f, 5.0f, -side * 1.6f), new Vector3(0.1f, 0.1f, 3.2f), _mast, false);
                 }
+                var fence = Group(near, $"Fence_{x:0}");
+                fence.localPosition = new Vector3(x, 0f, 6.6f);
+                Block(fence, "Panel", new Vector3(0f, -0.65f, 0f), new Vector3(9.7f, 0.8f, 0.12f), _concrete, false);
+                Block(fence, "Cap", new Vector3(0f, -0.23f, 0f), new Vector3(9.7f, 0.05f, 0.18f), _concrete, false);
             }
             Block(near, "Wire_N", new Vector3(0f, 4.95f, 1.2f), new Vector3(120f, 0.03f, 0.03f), _black, false).transform.SetAsLastSibling();
 
-            var mid = Group(scenery, "Layer_Mid");
-            string[] houses = { "a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p" };
-            var random = new System.Random(20260920);
-            int h = 0;
-            for (float x = -66f; x < 66f; x += 11f)
+            // Paddies with levees, wooden utility poles along a farm lane.
+            var fields = Group(scenery, "Layer_Fields");
+            for (float x = -60f; x < 60f; x += 12f)
             {
-                PlaceKenney(mid, "building-type-" + houses[h % houses.Length], new Vector3(x + (float)random.NextDouble() * 3f, -1.05f, 15f + (float)random.NextDouble() * 4f), 180f + random.Next(-12, 12), 9f);
-                PlaceKenney(mid, random.Next(2) == 0 ? "tree-large" : "tree-small", new Vector3(x + 5.5f, -1.05f, 10.5f + (float)random.NextDouble() * 2f), random.Next(0, 360), 5f);
-                if (h % 2 == 0) PlaceKenney(mid, "building-type-" + houses[(h + 7) % houses.Length], new Vector3(x + 3f, -1.05f, 27f + (float)random.NextDouble() * 6f), 180f, 10f);
-                // South: a seaside promenade — trees and the odd house before the sea wall.
-                if (h % 3 == 0) PlaceKenney(mid, "building-type-" + houses[(h + 3) % houses.Length], new Vector3(x + 2f, -1.05f, -13f), 0f, 8f);
-                else PlaceKenney(mid, "tree-large", new Vector3(x + 2f, -1.05f, -12f + (float)random.NextDouble() * 3f), random.Next(0, 360), 5.5f);
+                var paddy = Group(fields, $"Paddy_{x:0}");
+                paddy.localPosition = new Vector3(x, 0f, 0f);
+                Block(paddy, "Near", new Vector3(0f, -1.04f, 10.5f), new Vector3(11.6f, 0.06f, 5.6f), random.Next(2) == 0 ? _paddyA : _paddyB, false);
+                Block(paddy, "Far", new Vector3(0f, -1.04f, 16.5f), new Vector3(11.6f, 0.06f, 5.6f), random.Next(2) == 0 ? _paddyA : _paddyB, false);
+                Block(paddy, "Levee_Side", new Vector3(5.9f, -0.98f, 13.5f), new Vector3(0.4f, 0.16f, 12f), _levee, false);
+                Block(paddy, "Levee_Mid", new Vector3(0f, -0.98f, 13.5f), new Vector3(11.6f, 0.16f, 0.4f), _levee, false);
+                Block(paddy, "Lane", new Vector3(0f, -1.0f, 20.2f), new Vector3(12f, 0.1f, 2.4f), _gravel, false);
+                if (Mathf.RoundToInt(x / 12f) % 2 == 0)
+                {
+                    var pole = Group(paddy, "UtilityPole");
+                    pole.localPosition = new Vector3(2f, 0f, 21.8f);
+                    Cylinder(pole, "Post", new Vector3(0f, 2.9f, 0f), new Vector3(0.24f, 4f, 0.24f), _pole, false);
+                    Block(pole, "CrossArm", new Vector3(0f, 6.3f, 0f), new Vector3(1.6f, 0.1f, 0.12f), _pole, false);
+                }
+            }
+            Block(fields, "PowerLine", new Vector3(0f, 5.27f, 21.8f), new Vector3(120f, 0.03f, 0.03f), _black, false);
+
+            // Two rows of houses with gardens and trees (north), the promenade by the sea (south).
+            string[] houses = { "a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u" };
+            var town = Group(scenery, "Layer_Town");
+            int h = 0;
+            for (float x = -75f; x < 75f; x += 10f)
+            {
+                PlaceKenney(town, "building-type-" + houses[random.Next(houses.Length)], new Vector3(x + Rand(-1.2f, 1.2f), -1.05f, 25.5f + Rand(0f, 2.5f)), 180f + Rand(-8f, 8f), Rand(6.2f, 7.6f));
+                if (random.Next(3) > 0) PlaceKenney(town, random.Next(2) == 0 ? "tree-large" : "tree-small", new Vector3(x + 5f, -1.05f, 23.2f + Rand(0f, 1.5f)), random.Next(0, 360), Rand(4f, 5.5f));
+                if (h % 3 == 0) PlaceKenney(town, "building-type-" + houses[(h + 3) % houses.Length], new Vector3(x + 2f, -1.05f, -13f), 0f, 7.5f);
+                else PlaceKenney(town, "tree-large", new Vector3(x + 2f, -1.05f, -12f + Rand(0f, 3f)), random.Next(0, 360), 5.5f);
                 h++;
             }
+            for (float x = -75f; x < 75f; x += 12.5f)
+                PlaceKenney(town, "building-type-" + houses[random.Next(houses.Length)], new Vector3(x + Rand(-2f, 2f), -1.05f, 41f + Rand(0f, 10f)), 180f + Rand(-15f, 15f), Rand(7.5f, 9.5f));
 
             var far = Group(scenery, "Layer_Far");
             for (float x = -120f; x < 120f; x += 30f)
@@ -417,10 +485,10 @@ namespace NihongoLife.EditorTools
                 hill.name = $"Hill_{x:0}";
                 Object.DestroyImmediate(hill.GetComponent<Collider>());
                 hill.transform.SetParent(far, false);
-                hill.transform.localPosition = new Vector3(x + (float)random.NextDouble() * 10f, -2f, 75f + (float)random.NextDouble() * 25f);
-                hill.transform.localScale = new Vector3(36f + (float)random.NextDouble() * 20f, 14f + (float)random.NextDouble() * 10f, 26f);
+                hill.transform.localPosition = new Vector3(x + Rand(0f, 10f), -2f, 92f + Rand(0f, 25f));
+                hill.transform.localScale = new Vector3(Rand(40f, 62f), Rand(16f, 28f), 30f);
                 hill.GetComponent<Renderer>().sharedMaterial = _hill;
-                var boat = Block(far, $"Boat_{x:0}", new Vector3(x + 12f, -1.0f, -55f - (float)random.NextDouble() * 40f), new Vector3(4f, 0.8f, 1.4f), _strap, false);
+                var boat = Block(far, $"Boat_{x:0}", new Vector3(x + 12f, -1.0f, -55f - Rand(0f, 40f)), new Vector3(4f, 0.8f, 1.4f), _strap, false);
                 Block(boat.transform.parent, $"BoatCabin_{x:0}", boat.transform.localPosition + new Vector3(-0.5f, 0.7f, 0f), new Vector3(1.4f, 0.8f, 1f), _adRed, false);
             }
 
@@ -429,8 +497,9 @@ namespace NihongoLife.EditorTools
             var component = scenery.gameObject.AddComponent<TrainWindowScenery>();
             component.Configure(17f,
                 new TrainWindowScenery.Layer { root = near, parallax = 1f, loopWidth = 120f },
-                new TrainWindowScenery.Layer { root = mid, parallax = 0.6f, loopWidth = 132f },
-                new TrainWindowScenery.Layer { root = far, parallax = 0.12f, loopWidth = 240f });
+                new TrainWindowScenery.Layer { root = fields, parallax = 1f, loopWidth = 120f },
+                new TrainWindowScenery.Layer { root = town, parallax = 1f, loopWidth = 150f },
+                new TrainWindowScenery.Layer { root = far, parallax = 1f, loopWidth = 240f });
         }
 
         private static void PlaceKenney(Transform parent, string model, Vector3 position, float yaw, float targetHeight)
@@ -456,14 +525,20 @@ namespace NihongoLife.EditorTools
         {
             var go = new GameObject("TrainWindowCamera");
             go.transform.SetParent(root, false);
-            go.transform.localPosition = P(2.3f, 1.3f, NorthWall - 0.9f); // free window, no commuter in front
-            go.transform.localRotation = Quaternion.Euler(3f, 0f, 0f);
             var camera = go.AddComponent<Camera>();
-            camera.fieldOfView = 62f;
+            ConfigureWindowLens(camera);
+            camera.enabled = false;
+        }
+
+        /// <summary>A passenger's eye at the glass: slightly down at the fields, houses in the upper half.</summary>
+        private static void ConfigureWindowLens(Camera camera)
+        {
+            camera.transform.localPosition = P(2.3f, 1.5f, NorthWall - 0.32f); // at the glass, above the seat back, no commuter in front
+            camera.transform.localRotation = Quaternion.Euler(6f, 0f, 0f);
+            camera.fieldOfView = 56f;
             camera.nearClipPlane = 0.05f;
             camera.farClipPlane = 600f;
             camera.depth = 5f;
-            camera.enabled = false;
         }
     }
 }

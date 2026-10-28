@@ -672,7 +672,7 @@ namespace NihongoLife.UI
 
         public static LayoutElement Size(Component c, float w = -1f, float h = -1f, float flexW = -1f, float flexH = -1f)
         {
-            var le = c.GetComponent<LayoutElement>() ?? c.gameObject.AddComponent<LayoutElement>();
+            var le = c.GetComponent<LayoutElement>().OrNull() ?? c.gameObject.AddComponent<LayoutElement>();
             if (w >= 0f) { le.preferredWidth = w; le.minWidth = w; }
             if (h >= 0f) { le.preferredHeight = h; le.minHeight = h; }
             if (flexW >= 0f) le.flexibleWidth = flexW;
@@ -716,7 +716,8 @@ namespace NihongoLife.UI
             {
                 var child = parent.GetChild(i).gameObject;
                 child.SetActive(false);
-                UnityEngine.Object.Destroy(child);
+                if (Application.isPlaying) UnityEngine.Object.Destroy(child);
+                else UnityEngine.Object.DestroyImmediate(child); // edit mode (tests, editor tools)
             }
         }
 
@@ -738,6 +739,7 @@ namespace NihongoLife.UI
         private Color _base;
         private bool _hasBase, _over;
         private Vector3 _scale = Vector3.one;
+        private static float _lastHoverSound;
 
         private void Awake() { _graphic = GetComponent<Button>()?.targetGraphic ?? GetComponent<Graphic>(); Capture(); _scale = transform.localScale; }
         private void Capture() { if (_graphic != null && !_hasBase) { _base = _graphic.color; _hasBase = true; } }
@@ -757,7 +759,10 @@ namespace NihongoLife.UI
             _over = true;
             if (_graphic == null || !Interactable) return;
             _graphic.color = Hover(_base);
-            transform.localScale = _scale * 1.02f;
+            if (!NihongoLife.Core.MotionSettings.ReduceMotion) transform.localScale = _scale * 1.035f;
+            if (Time.unscaledTime - _lastHoverSound < 0.07f) return;
+            _lastHoverSound = Time.unscaledTime;
+            if (NihongoLife.Core.GameServices.TryGet(out NihongoLife.Audio.IAudioService audio)) audio.PlayCue(NihongoLife.Audio.GameAudioCue.UiHover, 0.35f);
         }
 
         public void OnPointerExit(UnityEngine.EventSystems.PointerEventData e)
@@ -771,13 +776,14 @@ namespace NihongoLife.UI
         {
             if (_graphic == null || !Interactable) return;
             _graphic.color = UiKit.Darken(_base.a < 0.2f ? new Color(1f, 1f, 1f, _base.a + 0.06f) : _base, 0.12f);
-            transform.localScale = _scale * 0.98f;
+            if (!NihongoLife.Core.MotionSettings.ReduceMotion)
+                transform.localScale = new Vector3(_scale.x * 1.06f, _scale.y * 0.9f, _scale.z);
         }
 
         public void OnPointerUp(UnityEngine.EventSystems.PointerEventData e)
         {
             if (_graphic != null) _graphic.color = _over ? Hover(_base) : _base;
-            transform.localScale = _over ? _scale * 1.02f : _scale;
+            transform.localScale = _over && !NihongoLife.Core.MotionSettings.ReduceMotion ? _scale * 1.02f : _scale;
         }
 
         private void OnDisable() { _over = false; if (_graphic != null && _hasBase) _graphic.color = _base; transform.localScale = _scale; }

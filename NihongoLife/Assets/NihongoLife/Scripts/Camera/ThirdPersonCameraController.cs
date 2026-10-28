@@ -276,6 +276,24 @@ namespace NihongoLife.Cameras
             target = newTarget;
         }
 
+        /// <summary>Touch look. Degrees, already scaled by the caller. Ignored while a menu or conversation owns the camera.</summary>
+        public void AddLookDegrees(float yawDegrees, float pitchDegrees)
+        {
+            if (_isLocked || _conversationTarget != null) return;
+            _rotationX += yawDegrees;
+            _rotationY = Mathf.Clamp(_rotationY + pitchDegrees, minYAngle, maxYAngle);
+        }
+
+        /// <summary>Touch pinch. Positive moves the camera farther from the player.</summary>
+        public void AddZoom(float distanceDelta)
+        {
+            if (_isLocked || _conversationTarget != null || Mathf.Abs(distanceDelta) < 0.0001f) return;
+            float zoomed = Mathf.Clamp(defaultDistance + distanceDelta, minDistance, maxDistance);
+            defaultDistance = zoomed;
+            if (_isIndoor) indoorDistance = zoomed;
+            else outdoorDistance = zoomed;
+        }
+
         public void SetOrbit(float yaw, float pitch, float distance)
         {
             _rotationX = yaw;

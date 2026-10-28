@@ -25,7 +25,8 @@ namespace NihongoLife.Player
         public bool TryOpenCompany(string companyName)
         {
             if (OwnsCompany) return false;
-            if (PlayerStatus.Instance == null || PlayerStatus.Instance.Knowledge < CompanyKnowledgeRequirement)
+            // Offline exploration (StoryDirector.Bypass) skips the knowledge gate. The start-up capital still applies.
+            if (!NihongoLife.Scenario.StoryDirector.Bypass && (PlayerStatus.Instance == null || PlayerStatus.Instance.Knowledge < CompanyKnowledgeRequirement))
                 return Fail($"Can {CompanyKnowledgeRequirement} diem kien thuc de mo cong ty.");
             if (PlayerInventory.Instance == null || !PlayerInventory.Instance.SpendYen(CompanyCapitalRequirement, NihongoLife.Core.Loc.Triple("Vốn mở công ty", "Company start-up capital", "会社の資本金")))
                 return Fail($"Can Y{CompanyCapitalRequirement} von khoi nghiep.");

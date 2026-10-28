@@ -51,6 +51,6 @@ namespace NihongoLife.UI
         public void Configure(GameInputId inputAction) => action = inputAction;
         public void OnPointerDown(PointerEventData eventData) => _input.SetMobileButton(action, true);
         public void OnPointerUp(PointerEventData eventData) => _input.SetMobileButton(action, false);
-        private void OnDisable() => _input?.SetMobileButton(action, false);
+        private void OnDisable() { if (_input != null) _input.SetMobileButton(action, false); } // Unity null: no ?.
     }
 }

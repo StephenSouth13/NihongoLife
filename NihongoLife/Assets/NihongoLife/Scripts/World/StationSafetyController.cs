@@ -31,7 +31,7 @@ namespace NihongoLife.World
 
         private void Awake()
         {
-            if (safeSpawn == null) safeSpawn = GameObject.Find("Spawn_station_entrance")?.transform;
+            if (safeSpawn == null) safeSpawn = SceneRefs.FindNamed("Spawn_station_entrance")?.transform;
             EnsureBarrier("Boundary_West", new Vector3(742.5f, 2f, -2f), new Vector3(1f, 4f, 35f));
             EnsureBarrier("Boundary_East", new Vector3(857.5f, 2f, -2f), new Vector3(1f, 4f, 35f));
             EnsureBarrier("Boundary_South", new Vector3(800f, 2f, -19.5f), new Vector3(116f, 4f, 1f));
@@ -42,7 +42,7 @@ namespace NihongoLife.World
 
         private void Start()
         {
-            var station = FindFirstObjectByType<StationTravelController>();
+            var station = SceneRefs.Find<StationTravelController>();
             if (station != null && station.gameObject.scene == gameObject.scene) carriageCenter = station.CarriageCenter;
         }
 
@@ -54,7 +54,7 @@ namespace NihongoLife.World
             if (_player == null)
             {
                 if (Time.unscaledTime < _nextSearchTime) return;
-                _player = FindFirstObjectByType<PlayerController>();
+                _player = SceneRefs.Find<PlayerController>();
                 _nextSearchTime = Time.unscaledTime + 0.5f;
                 if (_player == null) return;
             }

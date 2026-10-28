@@ -1,6 +1,7 @@
 using System;
 using NihongoLife.Data;
 using NihongoLife.Player;
+using NihongoLife.Scenario;
 using UnityEngine;
 
 namespace NihongoLife.Core
@@ -31,7 +32,7 @@ namespace NihongoLife.Core
         {
             if (_instance != null) return _instance;
             if (_isShuttingDown) return null;
-            var existing = FindFirstObjectByType<PlayerSessionService>();
+            var existing = SceneRefs.Find<PlayerSessionService>();
             if (existing != null) { existing.Initialize(); return existing; }
             var go = new GameObject("PlayerSessionService");
             DontDestroyOnLoad(go);
@@ -64,17 +65,43 @@ namespace NihongoLife.Core
         public void BeginGuest()
         {
             Mode = PlayerSessionMode.Guest;
+            AccountId = string.Empty;
             _guestProgress = LoadGuest();
             OnModeChanged?.Invoke(Mode);
         }
 
+        /// <summary>The signed-in account whose save is in use (empty for a guest). Each account has its own local save.</summary>
+        public string AccountId { get; private set; } = string.Empty;
+
         public void BeginAccount(string userId, string displayName)
         {
             Mode = PlayerSessionMode.Account;
+            AccountId = userId ?? string.Empty;
             // The profile name becomes the character's name, unless it is only "Guest"/anonymous.
             if (!PlayableCharacterCatalog.IsPlaceholderName(displayName)) PlayableCharacterCatalog.SavePlayerName(displayName.Trim());
             PlayerPrefs.Save();
             OnModeChanged?.Invoke(Mode);
+        }
+
+        /// <summary>
+        /// The rule for the map and the story: a guest (offline, no account signed in) has the whole town open — no
+        /// knowledge gates, no forced story — while a signed-in account plays the campaign (LocationUnlocks roadmap,
+        /// StoryDirector opening). Derived from <see cref="Mode"/>, never from which menu button was pressed, so it
+        /// also holds when the town is started directly and when a guest signs in later.
+        /// </summary>
+        public static bool OpenWorld => GuestFullAccess && (_instance == null || _instance.Mode == PlayerSessionMode.Guest);
+
+        /// <summary>PlayMode tests that check the campaign gates in a guest session turn this off (PlayModeSaveGuard).</summary>
+        public static bool GuestFullAccess = true;
+
+        /// <summary>Offline exploration with the guest save (the whole town is open: <see cref="OpenWorld"/>).</summary>
+        public void BeginOfflinePlay() => BeginGuest();
+
+        /// <summary>Story / online play: the account save when a registered account is signed in.</summary>
+        public void BeginProgressionPlay()
+        {
+            if (GameServices.TryGet(out IAuthService auth) && auth.IsAuthenticated)
+                BeginAccount(auth.UserId, auth.DisplayName);
         }
 
         public void UpdateGuestProgress(PlayerProgressDto progress)

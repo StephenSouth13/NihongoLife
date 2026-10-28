@@ -24,6 +24,13 @@ namespace NihongoLife.Player
         [SerializeField] private float recoveryDelayAfterSprint = 1.2f;
         [SerializeField] private float sprintAgainAtEnergy = 25f;
         [SerializeField] private float exhaustedHealthLossPerSecond = 1.5f;
+        [Tooltip("Health back per second while fed and watered (doubled standing still): 0 → full in about 4 minutes.")]
+        [SerializeField] private float healthRegenPerSecond = 0.4f;
+        [Tooltip("Health back per point of food / drink eaten.")]
+        [SerializeField] private float healthPerNourishment = 0.35f;
+
+        /// <summary>Food and water at or above this keep the body healing.</summary>
+        public const float HealthyNeed = 30f;
 
         public float CurrentHealth { get; private set; } = 100f;
         public float MaxHealth => maxHealth;
@@ -93,6 +100,7 @@ namespace NihongoLife.Player
 
         private void Update()
         {
+            if (IntroTrailer.Playing) return; // the intro trailer films the town: needs do not drain, nobody faints
             if (Time.time - _lastReportTime > 0.25f) { _moving = false; _sprinting = false; } // locked / in a menu
             // Moving burns more food and water than standing; sprinting burns a lot more.
             float hungerRate = _sprinting ? 4f : _moving ? 1.5f : 1f;
@@ -121,14 +129,23 @@ namespace NihongoLife.Player
             {
                 CurrentHealth = Mathf.Max(0f, CurrentHealth - exhaustedHealthLossPerSecond * Time.deltaTime);
             }
+            else if (!HasCold && !_collapsed && CurrentHealth > 0f && CurrentHealth < maxHealth && Hunger >= HealthyNeed && Thirst >= HealthyNeed) // at 0 you faint first
+            {
+                // Fed, watered and dry: the body heals by itself, faster when standing still or sitting.
+                float heal = (_moving ? healthRegenPerSecond : healthRegenPerSecond * 2f) * (Sleepiness >= 100f ? 0.5f : 1f);
+                CurrentHealth = Mathf.Min(maxHealth, CurrentHealth + heal * Time.deltaTime);
+            }
             if (HasCold) CurrentHealth = Mathf.Max(0f, CurrentHealth - 0.12f * Time.deltaTime);
             if (CurrentHealth <= 0f && !_collapsed) { _collapsed = true; OnCollapsed?.Invoke(); }
             else if (CurrentHealth > 0f) _collapsed = false;
 
+            SocialStanding.AdvanceHours(Time.deltaTime / 60f);
             _statusNotifyTimer += Time.deltaTime;
             if (_statusNotifyTimer >= 0.25f)
             {
                 _statusNotifyTimer = 0f;
+                float health01 = maxHealth <= 0f ? 1f : CurrentHealth / maxHealth;
+                SocialStanding.ReflectNeeds(Hunger, Thirst, Sleepiness, CurrentEnergy, health01);
                 OnStatusChanged?.Invoke();
             }
         }
@@ -143,6 +160,15 @@ namespace NihongoLife.Player
             var outdoors = Core.OutdoorSky.Active;
             InHotSun = weather != null && cycle != null && outdoors != null && outdoors.DrivesAmbientAndFog && weather.Overcast < 0.2f &&
                        cycle.Hour >= 11f && cycle.Hour <= 15f && !Core.WeatherCycle.IsSheltered(transform.position);
+        }
+
+        /// <summary>A bump from the street. Does not write the save on every tick — the usual autosave still runs.</summary>
+        public void ApplyHarm(float amount)
+        {
+            if (amount <= 0f || _collapsed) return;
+            CurrentHealth = Mathf.Max(0f, CurrentHealth - amount);
+            if (CurrentHealth <= 0f) { _collapsed = true; OnCollapsed?.Invoke(); }
+            OnStatusChanged?.Invoke();
         }
 
         /// <summary>After fainting: the clinic patched you up (StatusConsequences applies time and fee).</summary>
@@ -196,6 +222,7 @@ namespace NihongoLife.Player
         public void AddExp(int amount)
         {
             if (amount <= 0) return;
+            amount = SocialStanding.ScaleXp(amount);
             int levelBefore = Level;
             TotalExp += amount;
             ApplyLevelFromTotal();
@@ -250,6 +277,9 @@ namespace NihongoLife.Player
             Hunger = Mathf.Clamp(Hunger + food, 0f, 100f);
             Thirst = Mathf.Clamp(Thirst + drink, 0f, 100f);
             CurrentEnergy = Mathf.Clamp(CurrentEnergy + energy, 0f, maxEnergy);
+            // A meal or a drink heals a little at once (the rest comes back over time while fed).
+            float nourishment = Mathf.Max(0f, food) + Mathf.Max(0f, drink);
+            if (nourishment > 0f && !_collapsed) CurrentHealth = Mathf.Min(maxHealth, CurrentHealth + nourishment * healthPerNourishment);
             if (CurrentEnergy >= sprintAgainAtEnergy) IsExhausted = false;
             OnStatusChanged?.Invoke();
             SaveProgress();
@@ -261,7 +291,10 @@ namespace NihongoLife.Player
             Sleepiness = Mathf.Clamp(Sleepiness - recovery, 0f, 100f);
             CurrentEnergy = Mathf.Clamp(maxEnergy, 0f, maxEnergy);
             IsExhausted = false;
-            CurrentHealth = Mathf.Min(maxHealth, CurrentHealth + 8f);
+            // A full night (8 h) heals completely; a nap heals its share.
+            CurrentHealth = Mathf.Min(maxHealth, CurrentHealth + maxHealth * Mathf.Clamp(hours / 8f, 0.25f, 1f));
+            _collapsed = false;
+            SocialStanding.OnRested();
             OnStatusChanged?.Invoke();
             SaveProgress();
         }
@@ -270,6 +303,7 @@ namespace NihongoLife.Player
         {
             if (amount <= 0) return;
             Knowledge += amount;
+            SocialStanding.AddMoodlet("studied", SocialMood.Inspired, 0.4f, 1f);
             OnStatusChanged?.Invoke();
             SaveProgress();
             // Enough knowledge may open the next stage of the map (MapUnlockCardUI announces it).
@@ -304,6 +338,7 @@ namespace NihongoLife.Player
             Thirst = Mathf.Clamp(progress.thirst, 0f, 100f);
             IsExhausted = CurrentEnergy <= 0f;
             Sleepiness = Mathf.Clamp(progress.sleepiness, 0f, 100f);
+            SocialStanding.Load(progress);
         }
 
         public void ReloadProgress()
@@ -326,6 +361,8 @@ namespace NihongoLife.Player
             progress.hunger = Hunger;
             progress.thirst = Thirst;
             progress.sleepiness = Sleepiness;
+            Core.DayNightCycle.Active?.WriteTo(progress);
+            SocialStanding.WriteTo(progress);
             repository.SaveProgress(progress);
         }
     }

@@ -42,7 +42,7 @@ Mỗi `ScenarioDefinition` giờ là một quest, các trường mới:
 
 ## 3. Chế độ Online
 
-### 3.1 Hiện trạng (đã kiểm tra thực tế trên dự án Supabase `nihongolife`)
+### 3.1 Hiện trạng (đã kiểm tra thực tế trên Supabase project đang cấu hình lúc đó)
 - Có đủ 8 bảng (`profiles`, `player_progress`, `scenario_scores`, `chat_messages`, `coop_sessions`, `coop_participants`, `friendships`, `leaderboard`), RLS bật, cảnh báo bảo mật duy nhất: chưa bật kiểm tra mật khẩu bị lộ (Dashboard).
 - **Tất cả bảng đều 0 dòng**: chưa có ai từng đăng nhập/tạo phiên co-op, nên online **chưa từng được chạy thật**. Việc chặn: bật Anonymous Sign-Ins và tắt Confirm email trong Supabase Dashboard.
 - Code có `CoopSessionService`, `CoopLobbyUI`, `FriendService`, `LeaderboardService`, chat Realtime.

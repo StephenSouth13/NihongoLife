@@ -49,6 +49,7 @@ namespace NihongoLife.UI
 
             panel.SetActive(true);
             _hideAtTime = Time.unscaledTime + autoHideSeconds;
+            UiModalStack.Register(this, () => panel != null && panel.activeSelf, CompleteTutorial, "Tutorial");
         }
 
         private void Update()

@@ -249,7 +249,7 @@ namespace NihongoLife.School
 
         private void ReleasePlayer()
         {
-            PlayerController movement = FindFirstObjectByType<PlayerController>();
+            PlayerController movement = SceneRefs.Find<PlayerController>();
             if (movement != null) movement.enabled = true;
             if (_animation != null) _animation.SetSitting(false);
         }
@@ -263,7 +263,7 @@ namespace NihongoLife.School
 
         public void Interact(GameObject player)
         {
-            Canvas canvas = FindFirstObjectByType<Canvas>(FindObjectsInactive.Include);
+            Canvas canvas = SceneRefs.Find<Canvas>(FindObjectsInactive.Include);
             if (canvas == null) return;
             ExamCenterPopup popup = canvas.GetComponent<ExamCenterPopup>();
             if (popup == null) popup = canvas.gameObject.AddComponent<ExamCenterPopup>();

@@ -131,7 +131,7 @@ namespace NihongoLife.UI
             Feedback($"かごに いれました: {_selected.japanese} ×{_quantity}", NLUi.Good);
             Cue(GameAudioCue.Pickup);
             // The kid reaches up and takes it from the shelf.
-            FindFirstObjectByType<NihongoLife.Player.PlayerController>()?.GetComponent<CharacterAnimationController>()?.PlayGesture("Pickup", 1.1f);
+            SceneRefs.Find<NihongoLife.Player.PlayerController>()?.GetComponent<CharacterAnimationController>()?.PlayGesture("Pickup", 1.1f);
             NotifyScenario(_selected, ScenarioNodeType.CollectItem);
         }
 
@@ -291,9 +291,9 @@ namespace NihongoLife.UI
         private static void Lock(bool locked)
         {
             ScenarioManager.Instance?.SetPlayerInputLocked(locked);
-            var player = FindFirstObjectByType<PlayerController>();
+            var player = SceneRefs.Find<PlayerController>();
             if (player != null) player.InputLocked = locked;
-            var camera = FindFirstObjectByType<NihongoLife.Cameras.ThirdPersonCameraController>();
+            var camera = SceneRefs.Find<NihongoLife.Cameras.ThirdPersonCameraController>();
             if (camera != null) camera.IsLocked = locked;
             Cursor.lockState = CursorLockMode.None; // Sims-style: the cursor stays free in gameplay
             Cursor.visible = true;

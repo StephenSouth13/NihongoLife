@@ -3,6 +3,7 @@ using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
 using UnityEngine.AI;
 using NihongoLife.Cameras;
+using NihongoLife.Core;
 
 namespace NihongoLife.Player
 {
@@ -55,7 +56,7 @@ namespace NihongoLife.Player
             Camera taggedCamera = Camera.main;
             if (IsGameplayCamera(taggedCamera)) return taggedCamera;
 
-            var controller = Object.FindFirstObjectByType<ThirdPersonCameraController>();
+            var controller = SceneRefs.Find<ThirdPersonCameraController>();
             return controller != null ? controller.GetComponent<Camera>() : null;
         }
     }

@@ -96,7 +96,19 @@ namespace NihongoLife.UI
             while (feed._cards.Count > 3) { Destroy(feed._cards[0].card.gameObject); feed._cards.RemoveAt(0); }
         }
 
+        /// <summary>Drops the feed below a tall zone bar (the train board). 92 is the normal gap under the station steps.</summary>
+        public static void SetClearance(float topPixels)
+        {
+            if (_instance == null || _instance._stack == null) return;
+            var position = _instance._stack.anchoredPosition;
+            _instance._stack.anchoredPosition = new Vector2(position.x, -Mathf.Abs(topPixels));
+        }
+
         public static int VisibleCount => _instance == null ? 0 : _instance._cards.Count;
+
+        /// <summary>True while a card posted with this key is still showing.</summary>
+        public static bool HasKey(string key) =>
+            _instance != null && _instance._cards.Exists(c => c.card != null && _instance._keys.TryGetValue(c.card, out string k) && k == key);
         public static string LatestText => _instance == null || _instance._cards.Count == 0 ? null : _instance._lastText;
 
         private void Update()

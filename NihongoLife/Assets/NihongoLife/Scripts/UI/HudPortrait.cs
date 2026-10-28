@@ -1,6 +1,7 @@
 using NihongoLife.Player;
 using UnityEngine;
 using UnityEngine.UI;
+using NihongoLife.Core;
 
 namespace NihongoLife.UI
 {
@@ -49,7 +50,7 @@ namespace NihongoLife.UI
             if (Time.unscaledTime >= _nextCheck)
             {
                 _nextCheck = Time.unscaledTime + 0.75f;
-                var player = FindFirstObjectByType<PlayerController>();
+                var player = SceneRefs.Find<PlayerController>();
                 var visual = player != null ? player.transform.Find("Visual") : null;
                 int id = visual != null ? visual.gameObject.GetInstanceID() : 0;
                 bool lost = _texture != null && !_texture.IsCreated();

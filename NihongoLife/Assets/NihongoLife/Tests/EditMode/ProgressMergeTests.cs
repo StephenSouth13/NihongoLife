@@ -36,6 +36,23 @@ namespace NihongoLife.Tests
         }
 
         [Test]
+        public void Merge_KeepsTheFurtherCalendarDay()
+        {
+            var local = new PlayerProgressDto { calendarStarted = true, calendarDay = 4, calendarHour = 9.5f, birthdayMonth = 4, birthdayDay = 15, ageAtEpoch = 16 };
+            var cloud = new PlayerProgressDto { calendarStarted = true, calendarDay = 2, calendarHour = 21f, birthdayMonth = 8, birthdayDay = 1, ageAtEpoch = 18 };
+            var merged = SupabaseProgressRepository.MergeProgress(local, cloud);
+            Assert.IsTrue(merged.calendarStarted);
+            Assert.AreEqual(4, merged.calendarDay);
+            Assert.AreEqual(9.5f, merged.calendarHour, 0.001f);
+            Assert.AreEqual(4, merged.birthdayMonth);
+            Assert.AreEqual(16, merged.ageAtEpoch);
+
+            var onlyCloud = SupabaseProgressRepository.MergeProgress(new PlayerProgressDto(), cloud);
+            Assert.AreEqual(2, onlyCloud.calendarDay);
+            Assert.AreEqual(8, onlyCloud.birthdayMonth);
+        }
+
+        [Test]
         public void Merge_EmptyCloud_KeepsLocalBag()
         {
             var local = new PlayerProgressDto();

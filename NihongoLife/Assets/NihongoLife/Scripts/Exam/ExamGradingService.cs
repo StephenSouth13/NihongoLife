@@ -40,7 +40,9 @@ namespace NihongoLife.Exam
         [Serializable] private class GeminiPart { public string text; public InlineData inlineData; }
         [Serializable] private class GeminiContent { public GeminiPart[] parts; }
         [Serializable] private class GeminiRequest { public GeminiContent[] contents; }
-        [Serializable] private class GeminiCandidate { public GeminiContent content; }
+        [Serializable] private class GeminiReplyPart { public string text; public bool thought; }
+        [Serializable] private class GeminiReplyContent { public GeminiReplyPart[] parts; }
+        [Serializable] private class GeminiCandidate { public GeminiReplyContent content; }
         [Serializable] private class GeminiResponse { public GeminiCandidate[] candidates; }
 
         public void Initialize() { }
@@ -52,7 +54,7 @@ namespace NihongoLife.Exam
                 if (!GameServices.TryGet(out GameControlService control) || control.Database == null) return false;
                 var db = control.Database;
                 if (!db.enableGeminiConversation || !db.allowGeminiDirectClientCalls) return false;
-                return !string.IsNullOrWhiteSpace(Environment.GetEnvironmentVariable(db.geminiApiKeyEnvironmentKey));
+                return !string.IsNullOrWhiteSpace(LocalSecrets.Resolve(db.geminiApiKeyEnvironmentKey, null));
             }
         }
 
@@ -174,7 +176,7 @@ namespace NihongoLife.Exam
             if (!GameServices.TryGet(out GameControlService control) || control.Database == null) return false;
             var db = control.Database;
             if (!db.enableGeminiConversation || !db.allowGeminiDirectClientCalls) return false;
-            apiKey = Environment.GetEnvironmentVariable(db.geminiApiKeyEnvironmentKey);
+            apiKey = LocalSecrets.Resolve(db.geminiApiKeyEnvironmentKey, null);
             model = string.IsNullOrWhiteSpace(db.geminiModel) ? model : db.geminiModel;
             return !string.IsNullOrWhiteSpace(apiKey);
         }
@@ -200,7 +202,7 @@ namespace NihongoLife.Exam
                 request.downloadHandler = new DownloadHandlerBuffer();
                 request.SetRequestHeader("Content-Type", "application/json");
                 request.SetRequestHeader("x-goog-api-key", apiKey);
-                request.timeout = 45;
+                request.timeout = AiGradingTimeouts.HttpSeconds(HasAudio(requestBody));
 
                 yield return request.SendWebRequest();
 
@@ -215,14 +217,33 @@ namespace NihongoLife.Exam
             }
         }
 
+        private static bool HasAudio(GeminiRequest body)
+        {
+            if (body?.contents == null) return false;
+            foreach (var content in body.contents)
+                if (content?.parts != null)
+                    foreach (var part in content.parts)
+                        if (part?.inlineData != null && !string.IsNullOrEmpty(part.inlineData.data)) return true;
+            return false;
+        }
+
+        /// <summary>The answer text: every part joined, skipping the model's "thought" parts (thinking models can put
+        /// reasoning first and split the JSON over several parts).</summary>
+        private static string JoinAnswerParts(GeminiReplyPart[] parts)
+        {
+            if (parts == null) return null;
+            var sb = new StringBuilder();
+            foreach (var part in parts)
+                if (part != null && !part.thought && !string.IsNullOrEmpty(part.text)) sb.Append(part.text);
+            return sb.ToString();
+        }
+
         private static ExamAiGrade ParseGrade(string responseJson)
         {
             try
             {
                 var response = JsonUtility.FromJson<GeminiResponse>(responseJson);
-                string text = response?.candidates != null && response.candidates.Length > 0
-                    ? response.candidates[0].content?.parts?[0].text
-                    : null;
+                string text = JoinAnswerParts(response?.candidates != null && response.candidates.Length > 0 ? response.candidates[0].content?.parts : null);
                 if (string.IsNullOrWhiteSpace(text)) return null;
 
                 string jsonPart = ExtractJsonObject(text.Trim());

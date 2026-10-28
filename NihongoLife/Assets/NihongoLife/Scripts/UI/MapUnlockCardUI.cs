@@ -58,7 +58,7 @@ namespace NihongoLife.UI
             if (scene == "01_MainMenu" || scene == "00_Bootstrap") return;
             bool busy = UiModalStack.AnyOpen
                 || (NihongoLife.Dialogue.DialogueManager.Instance != null && NihongoLife.Dialogue.DialogueManager.Instance.IsOpen)
-                || (FindFirstObjectByType<ResultUI>() is ResultUI result && result.isActiveAndEnabled)
+                || (SceneRefs.Find<ResultUI>() is ResultUI result && result.isActiveAndEnabled)
                 || FreePlayCardUI.Open != null;
             if (!busy) Show(Pending.Dequeue());
         }
@@ -128,7 +128,7 @@ namespace NihongoLife.UI
             var map = UiKit.Button(card, "OpenMap", "Xem bản đồ", "Open the map", "地図を見る", () =>
             {
                 Close();
-                var mapUi = FindFirstObjectByType<WorldMapUI>();
+                var mapUi = SceneRefs.Find<WorldMapUI>();
                 if (mapUi != null) mapUi.SetVisible(true);
             }, UiKit.Kind.Secondary, "map", 16f);
             UiKit.Pin((RectTransform)map.transform, new Vector2(1f, 0f), -260f, 36f, 200f, 52f);

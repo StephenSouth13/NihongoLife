@@ -86,6 +86,59 @@ namespace NihongoLife.Tests
             finally { WeatherCycle.Instance.Force(null); }
         }
 
+        /// <summary>
+        /// Health comes back: by itself while fed and watered, at once with a meal, fully after a night's sleep. A
+        /// faint cut short (scene change, disabled player) never leaves the player stuck at 0 health: it faints again
+        /// and the clinic patches them up, with control back.
+        /// </summary>
+        [UnityTest]
+        public IEnumerator Health_HealsWhenFed_AndAStuckFaintRecovers()
+        {
+            yield return LoadCity();
+            var status = PlayerStatus.Instance;
+            var consequences = status.GetComponent<StatusConsequences>();
+            var controller = Object.FindFirstObjectByType<PlayerController>();
+            WeatherCycle.Instance.Force(WeatherCycle.Kind.Overcast);
+            try
+            {
+                status.DebugSetNeeds(health: 20f, hunger: 90f, thirst: 90f, sleepiness: 10f, wetness: 0f);
+                yield return new WaitForSecondsRealtime(3f);
+                Assert.Greater(status.CurrentHealth, 21.5f, "Fed and watered: health heals by itself");
+
+                status.DebugSetNeeds(hunger: 10f, thirst: 10f, health: 30f);
+                yield return new WaitForSecondsRealtime(1.5f);
+                Assert.LessOrEqual(status.CurrentHealth, 30.01f, "Hungry and thirsty: no healing");
+
+                float before = status.CurrentHealth;
+                status.RestoreNeeds(30f, 20f, 0f);
+                Assert.GreaterOrEqual(status.CurrentHealth, before + 15f, "A meal and a drink heal at once");
+
+                status.Sleep(8f);
+                Assert.AreEqual(status.MaxHealth, status.CurrentHealth, 0.01f, "A full night heals completely");
+
+                // A faint interrupted half way (the component disabled, as when the player object is switched off).
+                status.DebugSetNeeds(health: 0f, hunger: 90f, thirst: 90f);
+                for (float t = 0f; t < 2f && !consequences.IsBusy; t += Time.unscaledDeltaTime) yield return null;
+                Assert.IsTrue(consequences.IsBusy, "Fainting");
+                consequences.enabled = false;
+                yield return null;
+                Assert.IsFalse(consequences.IsBusy, "A cut-short faint is not left running");
+                Assert.IsFalse(controller.InputLocked, "Control is given back");
+                consequences.enabled = true;
+                for (float t = 0f; t < 3f && !consequences.IsBusy; t += Time.unscaledDeltaTime) yield return null;
+                Assert.IsTrue(consequences.IsBusy, "Still at 0 health: it faints again instead of staying stuck");
+                for (float t = 0f; t < 12f && consequences.IsBusy; t += Time.unscaledDeltaTime) yield return null;
+                Assert.GreaterOrEqual(status.CurrentHealth, status.MaxHealth * 0.45f - 0.01f, "Patched up");
+                Assert.IsFalse(controller.InputLocked, "Back in control");
+            }
+            finally
+            {
+                consequences.enabled = true;
+                status.DebugSetNeeds(sleepiness: 10f, hunger: 90f, thirst: 90f, health: 100f);
+                WeatherCycle.Instance.Force(null);
+            }
+        }
+
         [UnityTest]
         public IEnumerator Weather_WetColdHotSun_ShownAndApplied()
         {

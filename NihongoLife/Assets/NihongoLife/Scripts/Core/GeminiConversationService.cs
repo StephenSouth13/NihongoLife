@@ -21,8 +21,15 @@ namespace NihongoLife.Core
         }
     }
 
+    /// <summary>
+    /// Legacy AI NPC replies. DISABLED: NPCs now use pre-written offline dialogue (NihongoLife.NPC.ScriptedNpcDialogue)
+    /// and nothing in the game calls this. Kept only for reference; it refuses to run unless <see cref="Enabled"/> is set.
+    /// </summary>
     public class GeminiConversationService : MonoBehaviour
     {
+        /// <summary>Off by default. Nothing in the game turns it on.</summary>
+        public static bool Enabled = false;
+
         [Serializable]
         private class GeminiRequest
         {
@@ -62,16 +69,17 @@ namespace NihongoLife.Core
             public GeminiContent content;
         }
 
-        private const string EndpointFormat = "https://generativelanguage.googleapis.com/v1beta/models/{0}:generateContent?key={1}";
+        private const string EndpointFormat = "https://generativelanguage.googleapis.com/v1beta/models/{0}:generateContent";
 
         public bool IsConfigured
         {
             get
             {
+                if (!Enabled) return false;
                 if (!GameServices.TryGet(out GameControlService control) || control.Database == null) return false;
                 var database = control.Database;
                 if (!database.enableGeminiConversation || !database.allowGeminiDirectClientCalls) return false;
-                return !string.IsNullOrWhiteSpace(Environment.GetEnvironmentVariable(database.geminiApiKeyEnvironmentKey));
+                return !string.IsNullOrWhiteSpace(LocalSecrets.Resolve(database.geminiApiKeyEnvironmentKey, null));
             }
         }
 
@@ -89,6 +97,11 @@ namespace NihongoLife.Core
 
         private IEnumerator RequestNpcReplyRoutine(NPCController npc, string playerIntent, Action<AiNpcReply> onComplete, Action<string> onError)
         {
+            if (!Enabled)
+            {
+                onError?.Invoke("AI NPC dialogue is disabled (NPCs use pre-written dialogue).");
+                yield break;
+            }
             if (!GameServices.TryGet(out GameControlService control) || control.Database == null)
             {
                 onError?.Invoke("GameControlService is not configured.");
@@ -96,7 +109,7 @@ namespace NihongoLife.Core
             }
 
             var database = control.Database;
-            string apiKey = Environment.GetEnvironmentVariable(database.geminiApiKeyEnvironmentKey);
+            string apiKey = LocalSecrets.Resolve(database.geminiApiKeyEnvironmentKey, null);
             if (!database.enableGeminiConversation || !database.allowGeminiDirectClientCalls || string.IsNullOrWhiteSpace(apiKey))
             {
                 onError?.Invoke("Gemini is disabled or missing API key.");
@@ -118,7 +131,7 @@ namespace NihongoLife.Core
             };
 
             string json = JsonUtility.ToJson(requestBody);
-            string url = string.Format(EndpointFormat, UnityWebRequest.EscapeURL(database.geminiModel), UnityWebRequest.EscapeURL(apiKey));
+            string url = string.Format(EndpointFormat, UnityWebRequest.EscapeURL(database.geminiModel));
 
             using (var request = new UnityWebRequest(url, UnityWebRequest.kHttpVerbPOST))
             {
@@ -126,6 +139,7 @@ namespace NihongoLife.Core
                 request.uploadHandler = new UploadHandlerRaw(body);
                 request.downloadHandler = new DownloadHandlerBuffer();
                 request.SetRequestHeader("Content-Type", "application/json");
+                request.SetRequestHeader("x-goog-api-key", apiKey); // never in the URL (URLs end up in logs)
 
                 yield return request.SendWebRequest();
 

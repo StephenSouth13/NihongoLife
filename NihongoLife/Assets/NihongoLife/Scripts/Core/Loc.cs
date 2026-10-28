@@ -80,7 +80,7 @@ namespace NihongoLife.Core
         public static void Watch(Component owner, Action redraw)
         {
             if (owner == null || redraw == null) return;
-            var watcher = owner.GetComponent<LocWatcher>() ?? owner.gameObject.AddComponent<LocWatcher>();
+            var watcher = owner.GetComponent<LocWatcher>().OrNull() ?? owner.gameObject.AddComponent<LocWatcher>();
             watcher.Add(redraw);
         }
 

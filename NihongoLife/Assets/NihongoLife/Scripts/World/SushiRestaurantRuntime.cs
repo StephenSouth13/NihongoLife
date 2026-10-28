@@ -58,7 +58,7 @@ namespace NihongoLife.World
                 || Mathf.Abs(player.transform.position.z) > 9.2f;
             if (!invalid) yield break;
 
-            Transform spawn = GameObject.Find("Spawn_sushi_entrance")?.transform;
+            Transform spawn = SceneRefs.FindNamed("Spawn_sushi_entrance")?.transform;
             Vector3 target = spawn != null ? spawn.position : new Vector3(CenterX, 0.25f, -6.2f);
             CharacterController controller = player.GetComponent<CharacterController>();
             if (controller != null) controller.enabled = false;

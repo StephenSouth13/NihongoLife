@@ -1,428 +1,285 @@
 <div align="center">
 
-<img src="Bao_Cao/character-regression/poses_kid_haruto.jpg" alt="NihongoLife — Haruto với bộ animation Kids" width="100%"/>
+# NihongoLife · 日本語ライフ
 
-<br/>
+### Học tiếng Nhật bằng cách sống trong một thế giới Nhật Bản thu nhỏ.
 
-[![Unity](https://img.shields.io/badge/Unity-6000.3.12f1-000000?logo=unity&logoColor=white)](https://unity.com/)
-[![C#](https://img.shields.io/badge/C%23-.NET-512BD4?logo=csharp&logoColor=white)](#-kiến-trúc)
-[![URP](https://img.shields.io/badge/Render-URP-1F3C88)](#-kiến-trúc)
-[![Supabase](https://img.shields.io/badge/Supabase-online-3FCF8E?logo=supabase&logoColor=white)](#-dịch-vụ-trực-tuyến)
-[![Gemini](https://img.shields.io/badge/Gemini-AI-8E75B2?logo=googlegemini&logoColor=white)](#-dịch-vụ-trực-tuyến)
-[![Agora](https://img.shields.io/badge/Agora-RTC-099DFD)](#-dịch-vụ-trực-tuyến)
-[![Play Mode](https://img.shields.io/badge/Play_Mode-rerun_pending-F2B233)](#-kiểm-thử)
-[![EditMode](https://img.shields.io/badge/EditMode-11%2F11_passed-2E9E6B)](#-kiểm-thử)
-[![License: MIT](https://img.shields.io/badge/License-MIT-F2B233.svg)](LICENSE)
+Game mô phỏng cuộc sống 3D dành cho người Việt: khám phá **Hibari-chō**, giao tiếp với NPC, đi học, làm thêm, mua sắm, đi tàu và luyện ngôn ngữ qua những tình huống thật.
 
-**Học tiếng Nhật bằng cách sống ở Nhật.**
-*Learn Japanese by living in Japan · 日本で暮らして、日本語を学ぼう*
+[![Unity](https://img.shields.io/badge/Unity-6000.3.12f1-222222?logo=unity&logoColor=white)](NihongoLife/ProjectSettings/ProjectVersion.txt)
+[![Platform](https://img.shields.io/badge/Platform-Windows%20%7C%20WebGL-3659E3)](#chạy-dự-án)
+[![UI](https://img.shields.io/badge/UI-Tiếng_Việt_%7C_English_%7C_日本語-EA5B71)](#trải-nghiệm-nổi-bật)
+[![License](https://img.shields.io/badge/Code-MIT-F5B700)](LICENSE)
+[![YouTube](https://img.shields.io/badge/YouTube-NihongoLifeGame-FF0000?logo=youtube&logoColor=white)](https://www.youtube.com/@NihongoLifeGame)
 
-<a href="https://www.gzv.one/gzver/quach-thanh-long"><img src="NihongoLife/Docs/partners/gzv.one.png" alt="GZV — Quách Thành Long" width="150"/></a>
-
-**Quách Thành Long** · [Hồ sơ GZV](https://www.gzv.one/gzver/quach-thanh-long) · [quachthanhlong.com](https://quachthanhlong.com/)
-
-[Gameplay](#-trải-nghiệm-trong-game) · [Bắt đầu](#-bắt-đầu-nhanh) · [Điều khiển](#-điều-khiển) · [Kiến trúc](#-kiến-trúc) · [Kiểm thử](#-kiểm-thử) · [Tài liệu](#-tài-liệu)
+[Khám phá game](#nihongolife-là-gì) · [Xem video](#video--gameplay) · [Lộ trình](#hướng-phát-triển) · [Chạy dự án](#chạy-dự-án) · [Đóng góp](#đóng-góp) · [English](#english-summary)
 
 </div>
 
 ---
 
-## 🖼️ Asset Gallery — thư viện vật phẩm
+## NihongoLife là gì?
 
-Xem trước **438 icon PNG thật** của NihongoLife ngay trong README. Gallery tương tác có tìm kiếm, lọc danh mục, nền sáng/tối, xem chi tiết từng icon và bố cục cửa hàng mẫu.
+NihongoLife biến việc học tiếng Nhật thành một cuộc sống để khám phá. Thay vì ghi nhớ những câu rời rạc, người chơi dùng tiếng Nhật ngay trong ngữ cảnh: chào hàng xóm, hỏi giá vé, mua onigiri, gọi món sushi, tham gia lớp học, làm thêm và vui chơi sau giờ học.
 
-[![NihongoLife Asset Gallery — 438 icon thật, tìm kiếm và lọc danh mục](docs/readme/asset-gallery.png)](docs/readme/asset-gallery.png)
+Bạn vào vai một học sinh mới tại **Hibari-chō (ひばり町)**. Mỗi nhiệm vụ là một tình huống giao tiếp; mỗi lựa chọn là một cơ hội luyện nghe, đọc, từ vựng và phản xạ. Trả lời sai không kết thúc cuộc chơi — game giải thích, cho thử lại và giúp người chơi hiểu vì sao.
 
-**[Xem ảnh đầy đủ](docs/readme/asset-gallery.png)** · **[Thư mục gallery](NihongoLife/Docs/AssetPipeline/Preview/)** · **[Hướng dẫn xem và báo cáo](NihongoLife/Docs/AssetPipeline/Preview/STAGE_C0_HANDOFF.md)**
+> **Tinh thần của NihongoLife:** Nói sai cũng không sao. Quan trọng là dám dùng tiếng Nhật trong đúng hoàn cảnh.
 
-Để dùng bản tương tác, clone hoặc tải toàn bộ repo, rồi mở `NihongoLife/Docs/AssetPipeline/Preview/index.html` bằng trình duyệt. Không cần chạy Unity hay server. README trên GitHub hiển thị ảnh xem trước; file HTML trên trang mã nguồn GitHub không chạy trực tiếp.
+<p align="center"><img src="docs/readme/gif_city.gif" width="92%" alt="Khám phá thành phố Hibari-chō trong NihongoLife" /></p>
 
-*Đây là bản xem xét asset và cửa hàng mẫu; chất lượng hình ảnh vẫn chờ chủ dự án duyệt.*
-
----
-
-<div align="center">
-<img src="docs/readme/gif_city.gif" alt="Bay qua phố Hibari-chō rồi đi bộ trên phố" width="80%"/>
-<br/><sub><i>Phố Hibari-chō: khu phố Nhật thu nhỏ, nơi mọi bài học diễn ra.</i></sub>
-</div>
-
-## 🌸 NihongoLife là gì?
-
-**NihongoLife** là game 3D mô phỏng cuộc sống cho người Việt bắt đầu học tiếng Nhật trình độ **N5**. Bạn vào vai một du học sinh vừa tới **ひばり町 (Hibari-chō)**: chào hàng xóm, mua cơm nắm ở konbini, hỏi đường, đi tàu tới trường, gọi sushi, làm bài thi thử… Mỗi việc trong ngày là một tình huống giao tiếp có thật, và **nói sai cũng không sao**: chọn sai sẽ có giải thích và cơ hội chọn lại.
-
-<table>
-<tr>
-<td align="center" width="25%"><h3>14</h3>kịch bản N5<br/><sub>từ ngày đầu tới lễ hội mùa hè</sub></td>
-<td align="center" width="25%"><h3>7</h3>khu vực chơi được<br/><sub>phố · konbini · phòng trọ · ga · sushi · trường · Game Center</sub></td>
-<td align="center" width="25%"><h3>3</h3>ngôn ngữ giao diện<br/><sub>Tiếng Việt · English · 日本語</sub></td>
-<td align="center" width="25%"><h3>5</h3>nhóm kỹ năng được chấm<br/><sub>từ vựng · ngữ pháp · nghe · phản xạ · hoàn thành</sub></td>
-</tr>
-</table>
-
-### 👧 Nhân vật Kids — diện mạo thống nhất
-
-Người chơi, nhân vật online và các NPC chính hiện dùng chung dòng model **Kids Characters for Survival**. Tám nhân vật Humanoid có thể dùng animation riêng của gói và các clip được retarget qua `NL_Humanoid`; model người lớn Remy/Tanaka, Lilly, Elizabeth và Eminem đã được loại khỏi dự án. Save cũ chọn `student` được tự động chuyển sang **Haruto**, nên người chơi không cần tạo lại hồ sơ.
-
-<table>
-<tr>
-<td width="50%"><img src="Bao_Cao/character-regression/poses_kid_haruto.jpg" alt="Haruto với các animation Kids"/><p align="center"><sub>Haruto · bộ pose và animation đã kiểm tra trong Play Mode</sub></p></td>
-<td width="50%"><img src="Bao_Cao/character-regression/poses_kid_yui.jpg" alt="Yui với các animation Kids"/><p align="center"><sub>Yui · cùng rig Humanoid và hệ controller thống nhất</sub></p></td>
-</tr>
-<tr>
-<td width="50%"><img src="Bao_Cao/character-regression/npc_station_1.jpg" alt="NPC Kids tại nhà ga"/><p align="center"><sub>Kimura tại quầy ga · tỷ lệ đã chỉnh theo môi trường</sub></p></td>
-<td width="50%"><img src="Bao_Cao/character-regression/npc_sushi_1.jpg" alt="NPC Kids tại nhà hàng sushi"/><p align="center"><sub>NPC tại nhà hàng · model Kids dùng xuyên suốt thế giới</sub></p></td>
-</tr>
-</table>
-
----
-
-## 🎮 Trải nghiệm trong game
-
-### 💬 Hội thoại N5 có phản hồi
-
-Một khung hội thoại dùng chung cho mọi nơi: câu tiếng Nhật hiện dần, kèm **cách đọc, romaji và nghĩa tiếng Việt** (tuỳ chế độ Hướng dẫn / Luyện tập / Kiểm tra). Chọn đáp án bằng phím 1–4 hoặc chuột. Chọn sai thì NPC giải thích và cho thử lại. Nút **×** đóng hội thoại bất cứ lúc nào mà không mất bước truyện; nhấn **R** để tiếp tục.
-
-<p align="center"><img src="docs/readme/dialogue.jpg" width="85%" alt="Hộp thoại dùng chung"/></p>
-
-### 🏪 Mua sắm ở ひばりマート
-
-Đi tới từng kệ, xem **ảnh thật của từng món**, chọn số lượng, bỏ vào giỏ rồi ra quầy レジ. Chị Ito tính tiền, hỏi có cần túi không, và bạn trả lời bằng tiếng Nhật.
-
-<table>
-<tr>
-<td width="50%"><img src="docs/readme/shop.jpg" alt="Kệ cơm nắm"/><p align="center"><sub>Kệ cơm nắm: ảnh, tên Nhật, giá ¥</sub></p></td>
-<td width="50%"><img src="docs/readme/checkout.jpg" alt="Quầy thanh toán"/><p align="center"><sub>Quầy レジ: giỏ hàng có ảnh, tổng tiền</sub></p></td>
-</tr>
-</table>
-
-<p align="center"><img src="docs/readme/items.png" width="80%" alt="Ảnh vật phẩm"/><br/><sub>Mỗi món có ảnh riêng, dùng chung cho cửa hàng, giỏ hàng và balo.</sub></p>
-
-### 🚃 Đi tàu như người Nhật
-
-Hỏi anh Kimura ở quầy vé (¥320, sân số 2), mua vé, qua cổng soát vé, chờ tàu và lên tàu. Trên tàu có bảng LED, sơ đồ tuyến và hành khách để bắt chuyện; nhấn **Q** để ngắm cảnh qua cửa sổ. Xuống ở Gakuen-mae để tới trường hoặc ở Minato để ăn sushi.
-
-<table>
-<tr>
-<td width="33%"><img src="docs/readme/station.jpg" alt="Quầy vé"/><p align="center"><sub>Hỏi giá ở quầy vé</sub></p></td>
-<td width="33%"><img src="docs/readme/train.jpg" alt="Trên tàu"/><p align="center"><sub>HUD trên tàu</sub></p></td>
-<td width="33%"><img src="docs/readme/window.jpg" alt="Ngắm cảnh"/><p align="center"><sub>Q · ngắm cảnh</sub></p></td>
-</tr>
-</table>
-
-### 🏫 Lớp học Hibari và luyện thi JLPT / IELTS
-
-Ngồi vào bàn thi trong lớp hoặc mở nhanh bằng <kbd>K</kbd>, chọn **JLPT N5** hoặc **IELTS** và làm bài có đồng hồ đếm ngược. JLPT hiện có hai đề mẫu; mock 2 gồm 67 câu, audio nghe hiểu thật, giới hạn một lượt phát, thang 180 điểm và phân tích nhóm câu còn yếu. IELTS hỗ trợ package Reading/Listening 40 câu, hai chế độ luyện tập/thi thử, tự lưu để làm tiếp, giới hạn từ, đáp án thay thế và quy đổi band. Nộp bài xong, cô Morita nhận xét kết quả.
-
-> IELTS dùng package cục bộ trong `LocalContent/IELTS/` (không đưa tài liệu có bản quyền vào Git). Điểm trong game chỉ phục vụ luyện tập, không phải kết quả JLPT/IELTS chính thức. Xem [tài liệu hệ thống thi](NihongoLife/Docs/EXAM_SYSTEM.md).
-
-<table>
-<tr>
-<td width="33%"><img src="docs/readme/exam_desk.jpg" alt="Bàn thi"/><p align="center"><sub>Bàn thi · F</sub></p></td>
-<td width="33%"><img src="docs/readme/exam_centre.jpg" alt="Chọn đề"/><p align="center"><sub>Chọn đề JLPT / IELTS</sub></p></td>
-<td width="33%"><img src="docs/readme/teacher.jpg" alt="Nhận xét"/><p align="center"><sub>Cô Morita nhận xét</sub></p></td>
-</tr>
-</table>
-
-### 🕹️ Game Center: Kana Match
-
-Lật thẻ ghép cặp **hiragana, katakana, kanji N5, đồ ăn và từ vựng**. Có đếm ngược 3-2-1, combo, điểm trực tiếp, sao và vé thưởng; đổi vé lấy quà ở quầy của Aoi. Kết quả được ghi vào cùng hồ sơ học tập với các kịch bản.
-
-<table>
-<tr>
-<td width="55%"><img src="docs/readme/gif_kana.gif" alt="Kana Match"/></td>
-<td width="45%"><img src="docs/readme/kana_result.jpg" alt="Kết quả"/><p align="center"><sub>Bảng kết quả: sao, độ chính xác, vé</sub></p><img src="docs/readme/prize.jpg" alt="Quầy quà"/><p align="center"><sub>Quầy đổi quà</sub></p></td>
-</tr>
-</table>
-
-### 🏠 Phòng trọ, chỉ số sống và hơn thế
-
-<table>
-<tr>
-<td width="33%"><img src="docs/readme/bedroom.jpg" alt="Phòng trọ"/><p align="center"><sub>Phòng trọ 1K: học, nấu, ngủ</sub></p></td>
-<td width="33%"><img src="docs/readme/study.jpg" alt="Học bài"/><p align="center"><sub>Thẻ học bài ở bàn</sub></p></td>
-<td width="33%"><img src="docs/readme/morning.jpg" alt="Buổi sáng"/><p align="center"><sub>Ngủ dậy lúc 07:00</sub></p></td>
-</tr>
-<tr>
-<td width="33%"><img src="docs/readme/bag.jpg" alt="Balo"/><p align="center"><sub>Balo [B]: ăn, bỏ, xem thể trạng</sub></p></td>
-<td width="33%"><img src="docs/readme/map.jpg" alt="Bản đồ"/><p align="center"><sub>Bản đồ [M] + chỉ đường</sub></p></td>
-<td width="33%"><img src="docs/readme/emote.jpg" alt="Biểu cảm"/><p align="center"><sub>Giữ E: vòng biểu cảm có câu Nhật</sub></p></td>
-</tr>
-</table>
-
-**Chỉ số sống chạy như thật.** Chạy (Shift) tốn **14 thể lực/giây** và không hồi khi đang chạy. Hết thể lực thì bị khoá chạy tới khi hồi đủ 25 điểm, và HUD nháy đỏ "Hết sức". Đi và chạy làm đói, khát nhanh hơn; ăn uống và ngủ để hồi.
-
-### 🎛️ Player HUD mới
-
-HUD thường trực đã được gom thành một hệ thống thống nhất, ưu tiên giữ vùng giữa màn hình thoáng để quan sát và tương tác:
-
-- **Góc trái dưới:** ảnh chân dung lấy trực tiếp từ model 3D đang điều khiển, tên nhân vật, địa điểm, cấp độ/EXP, ví tiền và 5 vòng chỉ số **Sức khỏe · Thể lực · No · Khát · Tỉnh táo**.
-- **Góc trái trên:** chỉ hiện một mục tiêu đang theo dõi; danh sách đầy đủ nằm trong Sổ nhiệm vụ.
-- **Giữa phía trên:** thanh trạng thái theo khu vực và tối đa ba thông báo ngắn; thông báo trùng được cập nhật thay vì xếp chồng.
-- **Giữa phía dưới:** một lời nhắc tương tác theo ngữ cảnh. HUD tự mờ khi hội thoại hoặc hoạt động toàn màn hình mở.
-- **Desktop:** bỏ dãy nút tắt gây che màn hình; dùng phím tắt. **Thiết bị cảm ứng:** vẫn có action bar và điều khiển ảo vì không có bàn phím.
-
-Khi một nhu cầu xuống dưới ngưỡng nguy hiểm, HUD chỉ bật một cảnh báo ngắn phía trên thẻ trạng thái. Cửa sổ nhân vật mở bằng <kbd>Tab</kbd> hiển thị model 3D, tiến trình, tiền, kiến thức, ca làm và vốn từ mà không thay đổi `PlayerController`, camera, inventory hay save/online. Xem [thiết kế và quy tắc Player HUD](NihongoLife/Docs/PLAYER_HUD.md).
-
-### 🔓 Tiến trình, mở khóa và cẩm nang địa điểm
-
-Điểm kiến thức từ bài học, bài thi và nhiệm vụ mở dần thế giới: **Ga Hibari 40 điểm → Sushi Hibari 90 điểm → Game Center 160 điểm → đảo Midori 250 điểm**. Hibari Mart, trường và nhà luôn mở; địa điểm người chơi từng ghé vẫn được giữ mở khi nâng cấp save cũ.
-
-- Bản đồ <kbd>M</kbd> hiển thị địa điểm đang khóa, số điểm cần và phần còn thiếu.
-- Sổ nhiệm vụ <kbd>N</kbd> có thanh tiến độ mở khóa cùng gợi ý hoạt động nhận điểm.
-- Cẩm nang địa điểm trên bản đồ giới thiệu văn hóa, cách tương tác, từ vựng và câu mẫu.
-- Chip tiền ghi rõ khoản cộng/trừ cùng lý do; bấm vào để xem lịch sử giao dịch gần nhất.
-
-### 🌱 Trồng trọt bằng nông cụ và câu cá ở đảo Midori
-
-Nông trại không có thao tác “tay không”: phải mua và mang đúng **cuốc/xẻng/bình tưới**. Quy trình hoàn chỉnh là xới đất → gieo hạt → tưới từng giai đoạn → thu hoạch; công cụ hao độ bền sau thao tác thành công, có thể hỏng và tự chuyển sang món dự phòng. Huỷ giữa chừng không làm thay đổi ruộng và không trừ độ bền.
-
-Ở cầu tàu, người chơi cần **cần câu** để quăng phao, chờ cá cắn và kéo bằng <kbd>F</kbd> đúng cửa sổ thời gian. Kéo sớm, để cá thoát, huỷ hoặc đầy balo đều không nhận cá. Cá bắt được đi vào inventory dùng chung, lưu cùng hồ sơ, tính nhiệm vụ/thành tựu và có thể bán tại cửa hàng Midori. Xem [chi tiết farming, công cụ và fishing](NihongoLife/Docs/FISHING_FARMING_TOOLS.md).
-
-### 🌅 Thế giới liền mạch
-
-Không còn mép bản đồ hay khoảng đen ở chân trời: khu nhà ngoại ô, đồi và sương đổi màu theo giờ trong ngày, cửa sổ sáng đèn khi trời tối.
+## Video & gameplay
 
 <p align="center">
-<img src="docs/readme/horizon_day.jpg" width="32%" alt="Ban ngày"/>
-<img src="docs/readme/horizon_dusk.jpg" width="32%" alt="Hoàng hôn"/>
-<img src="docs/readme/horizon_night.jpg" width="32%" alt="Ban đêm"/>
+  <a href="https://www.youtube.com/@NihongoLifeGame"><img src="docs/readme/gif_kana.gif" width="82%" alt="Xem video NihongoLife trên YouTube" /></a><br />
+  <sub>Nhấn vào hình để xem trailer, gameplay và nhật ký phát triển trên kênh YouTube chính thức.</sub>
 </p>
 
-Các model Kids dùng chung avatar `NL_Humanoid` và controller/override theo giới tính. Animation đi, chạy, hội thoại, ngồi, thao tác nông cụ và câu cá được retarget mà không thay đổi controller, collider, inventory hoặc đồng bộ online.
+<div align="center">
 
----
+### [▶ Xem NihongoLife trên YouTube](https://www.youtube.com/@NihongoLifeGame)
 
-## 🚀 Bắt đầu nhanh
+</div>
 
-**Yêu cầu:** Windows 10/11, **Unity 6000.3.12f1** (URP).
+GitHub không hỗ trợ trình phát YouTube nhúng trực tiếp trong README. Ảnh động phía trên đóng vai trò preview và dẫn về kênh chính thức, nên README vẫn hoạt động khi danh sách video thay đổi.
+
+## Trải nghiệm nổi bật
+
+### Một thị trấn để học và sống
+
+Hibari-chō không chỉ là phông nền. Người chơi có thể đi qua phố, cửa hàng tiện lợi, ga tàu, nhà hàng sushi, trường học, phòng trọ, Game Center và mở rộng hành trình tới đảo Midori.
+
+<table>
+  <tr>
+    <td width="50%"><img src="docs/readme/map.jpg" alt="Bản đồ Hibari-chō" /><br /><sub>Khám phá các khu vực trong thị trấn.</sub></td>
+    <td width="50%"><img src="docs/readme/station.jpg" alt="Ga tàu trong NihongoLife" /><br /><sub>Hỏi đường, mua vé và di chuyển bằng tàu.</sub></td>
+  </tr>
+  <tr>
+    <td width="50%"><img src="docs/readme/shop.jpg" alt="Cửa hàng trong NihongoLife" /><br /><sub>Mua sắm và luyện hội thoại đời thường.</sub></td>
+    <td width="50%"><img src="docs/readme/bedroom.jpg" alt="Phòng trọ của người chơi" /><br /><sub>Một ngày mới bắt đầu từ căn phòng của bạn.</sub></td>
+  </tr>
+</table>
+
+### Học qua hội thoại có ngữ cảnh
+
+Hệ thống hội thoại dùng chung hiển thị tiếng Nhật, cách đọc và nghĩa tiếng Việt tùy theo chế độ học. Người chơi có thể học có hướng dẫn, luyện tập hoặc tự kiểm tra; lựa chọn sai nhận phản hồi và cơ hội sửa lại ngay.
+
+<p align="center"><img src="docs/readme/dialogue.jpg" width="82%" alt="Hội thoại tiếng Nhật theo ngữ cảnh trong NihongoLife" /></p>
+
+### Học mà vẫn là một trò chơi
+
+- Nhiệm vụ cốt truyện, story flags và scenario theo dữ liệu.
+- Mua sắm, hành trang, bản đồ, việc làm thêm và vòng lặp ngày/đêm.
+- Tám nhân vật có thể chơi: Haruto, Yui, Sota, Hina, Riku, Mio, Yuto và Sakura.
+- Sáu máy tại Game Center: Kana Match, Word Shooter, Order Rush, Kana Rain, UFO Catcher và Basket Count.
+- Trồng trọt, câu cá và khám phá đảo Midori.
+- Tâm trạng, danh tiếng, thể lực và tiến trình học tác động tới trải nghiệm.
+
+<table>
+  <tr>
+    <td width="50%"><img src="docs/readme/kana_result.jpg" alt="Kết quả mini-game Kana" /><br /><sub>Mini-game củng cố kana và từ vựng.</sub></td>
+    <td width="50%"><img src="docs/readme/prize.jpg" alt="Phần thưởng trong Game Center" /><br /><sub>Học, chơi và nhận phần thưởng.</sub></td>
+  </tr>
+  <tr>
+    <td width="50%"><img src="docs/readme/study.jpg" alt="Học trong lớp" /><br /><sub>Lớp học kết nối nội dung với tiến trình.</sub></td>
+    <td width="50%"><img src="docs/readme/train.jpg" alt="Đi tàu trong NihongoLife" /><br /><sub>Những chuyến đi mở ra khu vực và tình huống mới.</sub></td>
+  </tr>
+</table>
+
+### JLPT & IELTS trong thế giới game
+
+NihongoLife có các hoạt động luyện tập theo dạng JLPT và IELTS cho đọc, nghe, viết và nói. Kết quả trong game phục vụ luyện tập và theo dõi tiến bộ, **không phải điểm thi chính thức** và dự án không đại diện cho các tổ chức kỳ thi.
+
+Ngoài luyện thi, tab **ENGLISH** có lộ trình tiếng Anh tổng quát gồm **20 unit / 60 câu**, phủ CEFR A1–C1 theo bốn kỹ năng Nghe–Nói–Đọc–Viết. Mẫu câu, ngữ pháp, điền từ và từ vựng được đặt trong từng ngữ cảnh kỹ năng. Nội dung do đội ngũ tự soạn để học offline và dẫn dắt người mới từ nền tảng tới giai đoạn luyện IELTS.
+
+<p align="center">
+  <img src="docs/readme/exam_centre.jpg" width="46%" alt="Trung tâm thi trong NihongoLife" />
+  <img src="docs/readme/exam_desk.jpg" width="46%" alt="Bàn thi trong NihongoLife" />
+</p>
+
+### Offline rộng mở, online có trách nhiệm
+
+| Chế độ | Trải nghiệm |
+|---|---|
+| **Khách / offline** | Toàn bộ thị trấn được mở; tiến trình lưu trên thiết bị trong `guest_progress.json`. |
+| **Tài khoản đăng ký** | Chơi campaign theo cốt truyện và mốc **trí tuệ**, có save riêng cho từng tài khoản và được dùng tính năng online. |
+
+Chat, bạn bè, co-op, voice, Speaking room, thăm đảo và gửi điểm xếp hạng yêu cầu tài khoản đã đăng ký. Khi người chơi khách đăng nhập lần đầu vào tài khoản mới, tiến trình khách có thể được chuyển sang tài khoản đó; tài khoản đã có dữ liệu luôn giữ save riêng.
+
+| Trí tuệ | Khu vực mở |
+|---:|---|
+| 100 | Nhà hàng sushi |
+| 160 | Ga tàu |
+| 240 | Game Center |
+| 320 | Đảo Midori |
+
+## Vòng lặp trải nghiệm
+
+```mermaid
+flowchart LR
+    A[Nhận nhiệm vụ] --> B[Khám phá thị trấn]
+    B --> C[Nghe · đọc · tương tác]
+    C --> D{Phản hồi}
+    D -->|Chưa đúng| E[Giải thích · thử lại]
+    E --> C
+    D -->|Hoàn thành| F[Trí tuệ · mastery · phần thưởng]
+    F --> G[Mở câu chuyện và khu vực mới]
+    G --> A
+```
+
+## Hướng phát triển
+
+NihongoLife được phát triển theo hướng **life-sim học ngôn ngữ có thể chơi lâu dài**, nơi nội dung học, thế giới và kết nối cộng đồng bổ trợ cho nhau.
+
+### 1. Trải nghiệm học tập hoàn chỉnh
+
+- Mở rộng scenario đời sống từ N5 lên các cấp độ cao hơn.
+- Bổ sung giọng đọc tự nhiên, phản hồi phát âm và hội thoại có chiều sâu.
+- Hoàn thiện tuyến JLPT/IELTS với kết quả có thể truy vết từ mục tiêu học tới mastery.
+- Giữ triết lý “sai để học”: mọi lỗi đều có giải thích, đường thử lại và kết quả đo được.
+
+### 2. Thế giới sống động hơn
+
+- Hoàn thiện NPC, animation, lịch sinh hoạt và phản ứng theo tâm trạng/danh tiếng.
+- Mở rộng hoạt động tại trường, công việc, Game Center và đảo Midori.
+- Nâng chất lượng ánh sáng, âm thanh, camera, va chạm và khả năng dẫn đường.
+- Tối ưu để thị trấn ổn định trên máy tính, thiết bị cảm ứng và trình duyệt.
+
+### 3. Online & cộng đồng
+
+- Ưu tiên chat, bạn bè, co-op, voice và Speaking room cho tài khoản đăng ký.
+- Đồng bộ tiến trình an toàn giữa local save, tài khoản và cloud.
+- Hoàn thiện realtime trên WebGL mà vẫn giữ trải nghiệm offline độc lập.
+- Phát triển bảng xếp hạng và hoạt động cộng đồng khuyến khích học tập lành mạnh.
+
+### 4. WebGL & khả năng tiếp cận
+
+- Rút ngắn thời gian tải và giảm dung lượng build.
+- Hoàn thiện responsive UI cho desktop, tablet và điện thoại.
+- Bảo đảm lưu IndexedDB, nhập liệu, âm thanh và dịch vụ web hoạt động nhất quán.
+- Đưa game lên website để người học vào chơi nhanh mà không cần cài đặt.
+
+> Trạng thái kỹ thuật chi tiết nằm trong [`ROADMAP.md`](NihongoLife/Docs/ROADMAP.md) và [`TODO_CHECKLIST.md`](NihongoLife/Docs/TODO_CHECKLIST.md). Roadmap là định hướng, không phải cam kết ngày phát hành.
+
+## Kiến trúc tổng quan
+
+Nội dung học được tách khỏi runtime bằng scenario data-driven. `00_Bootstrap` khởi tạo dịch vụ dùng xuyên scene; gameplay giao tiếp qua interface để local save, cloud save và nguồn nội dung có thể thay thế mà không phải viết lại hội thoại.
+
+```mermaid
+graph TD
+    Boot[00_Bootstrap] --> Services[GameServices]
+    Services --> Flow[SceneFlowController]
+    Services --> Audio[AudioService]
+    Services --> Save[Local / Cloud Progress]
+    Services --> Content[Scenario Repository]
+    Content --> Scenario[ScenarioManager]
+    Scenario --> Dialogue[DialogueManager]
+    Scenario --> Score[ScoringManager]
+    Scenario --> Mastery[LearningMasteryManager]
+    Save -. tài khoản đăng ký .-> Supabase
+    Dialogue -. voice / speaking .-> Agora
+```
+
+Tài liệu sâu hơn: [`ARCHITECTURE.md`](NihongoLife/Docs/ARCHITECTURE.md) · [`SCENARIO_SYSTEM.md`](NihongoLife/Docs/SCENARIO_SYSTEM.md) · [`EXAM_SYSTEM.md`](NihongoLife/Docs/EXAM_SYSTEM.md) · [`WEB_INTEGRATION_API.md`](NihongoLife/Docs/WEB_INTEGRATION_API.md)
+
+## Chạy dự án
+
+### Yêu cầu
+
+- Unity **6000.3.12f1**.
+- Git; Git LFS nếu bản clone sử dụng asset được quản lý bằng LFS.
+- Windows cho quy trình phát triển chính; WebGL Build Support nếu build web.
+
+### Cài đặt
 
 ```bash
 git clone https://github.com/StephenSouth13/NihongoLife.git
+cd NihongoLife
 ```
 
-1. Mở thư mục **`NihongoLife/`** (thư mục Unity project bên trong repo) bằng Unity Hub.
-2. Mở scene `Assets/NihongoLife/Scenes/00_Bootstrap.unity` và bấm **Play**. Cũng có thể Play thẳng từ bất kỳ khu nào (phòng trọ, ga…): game tự nạp thành phố làm nền nên luôn có HUD và lối ra.
-3. *(Tuỳ chọn)* Bật AI bằng cách đặt khoá Gemini vào biến môi trường, rồi mở lại Unity:
+1. Mở thư mục `NihongoLife/` bên trong repo bằng Unity Hub.
+2. Mở `Assets/NihongoLife/Scenes/00_Bootstrap.unity`.
+3. Nhấn **Play**. Scene bootstrap sẽ khởi tạo dịch vụ và chuyển tới menu chính.
 
-   ```powershell
-   setx NIHONGOLIFE_GEMINI_API_KEY "<khoá-của-bạn>"
-   ```
-
-> [!NOTE]
-> Không có mạng hay khoá API thì game vẫn chạy đầy đủ ở chế độ offline: lưu cục bộ, NPC dùng câu soạn sẵn, bảng xếp hạng báo "chưa kết nối".
-
-## ⌨️ Điều khiển
-
-| Phím | Chức năng | Phím | Chức năng |
-|:---:|---|:---:|---|
-| <kbd>W</kbd><kbd>A</kbd><kbd>S</kbd><kbd>D</kbd> | Di chuyển | <kbd>Shift</kbd> | Chạy (tốn thể lực) |
-| <kbd>F</kbd> | Nói chuyện / tương tác | <kbd>1</kbd>–<kbd>4</kbd> · <kbd>Enter</kbd> | Chọn đáp án · tiếp tục |
-| <kbd>E</kbd> *(giữ)* | Vòng biểu cảm | <kbd>R</kbd> | Tiếp hội thoại đã tạm đóng |
-| <kbd>B</kbd> | Balo | <kbd>Tab</kbd> | Nhân vật |
-| <kbd>M</kbd> | Bản đồ | <kbd>J</kbd> | Nhiệm vụ |
-| <kbd>K</kbd> | Luyện thi | <kbd>V</kbd> | Luyện phát âm (AI) |
-| <kbd>Q</kbd> | Ngắm cảnh trên tàu | <kbd>F8</kbd> | Lớp học video |
-| <kbd>F</kbd> tại ruộng/cầu tàu | Làm nông · quăng/kéo cần | <kbd>Esc</kbd> | Huỷ thao tác đang làm |
-| <kbd>Esc</kbd> / **×** | Đóng cửa sổ · cài đặt | 🖱️ | Xoay camera, bấm nút |
-
-## 🗺️ Thế giới
-
-<p align="center"><img src="docs/readme/d11_world_hub.png" width="85%" alt="Bản đồ khu vực"/></p>
-
-| Scene | Khu vực |
-|---|---|
-| `00_Bootstrap` → `01_MainMenu` | Khởi động, chọn ngôn ngữ và nhân vật |
-| `90_TestSandbox` | Phố Hibari-chō, konbini ひばりマート, đường chân trời |
-| `20_StationDistrict` | Ga Hibari, tàu tới Gakuen-mae và Minato |
-| `30_SushiRestaurant` | Nhà hàng Sushi Hibari |
-| `40_ HIBARICLASS` | Trường Nhật ngữ Hibari, bàn thi |
-| `45_HomeBedroom` | Phòng trọ Hibari Heights |
-| `50_GameCenter` | Game Center, Kana Match, quầy quà |
-| `60_MidoriIsland` | Đảo Midori, nông trại, cửa hàng, chuồng vật nuôi và cầu câu cá |
-
-Mọi khu vực được nạp thêm (additive) trên nền thành phố và có lối ra cố định về đúng cửa đã vào.
-
----
-
-## 🧩 Kiến trúc
-
-<p align="center"><img src="docs/readme/d08_architecture.png" width="85%" alt="Kiến trúc phân lớp"/></p>
-
-- **Kịch bản theo dữ liệu.** Mỗi bài học là một `ScenarioDefinition` (ScriptableObject): node, lựa chọn, mục tiêu, điều kiện mở khoá. Thêm bài mới không cần viết code gameplay mới.
-- **Service locator.** `AppRoot` đăng ký các dịch vụ (lưu, âm thanh, chuyển scene, online) vào `GameServices`. Mỗi dịch vụ có bản local và bản cloud dùng chung interface.
-- **Chấm điểm thống nhất.** `ScoringManager` gom điểm từ hội thoại, bài thi và mini-game theo 5 nhóm kỹ năng; `LearningMasteryManager` theo dõi mức thuộc từng mục.
-- **Khung mini-game dùng chung.** `MiniGameController` cùng interface `IMiniGame`: trò mới chỉ cần hiện thực `Begin` / `Abort` / `Finished`.
-- **Mọi thứ dựng bằng builder.** Scene và prefab được tạo bằng editor builder chạy batchmode, lưu thẳng vào asset; mở project và bấm Play là đúng trạng thái cuối.
-
-<details>
-<summary><b>📐 Sơ đồ lớp</b></summary>
-<br/>
-<img src="docs/readme/d13_class.png" alt="Sơ đồ lớp"/>
-</details>
-
-<details>
-<summary><b>👤 Sơ đồ use case</b></summary>
-<br/>
-<img src="docs/readme/d12_use_case.png" alt="Use case"/>
-</details>
-
-<details>
-<summary><b>🔁 Sơ đồ tuần tự: hội thoại học tập và Kana Match</b></summary>
-<br/>
-<img src="docs/readme/d14_seq_dialogue.png" alt="Tuần tự hội thoại"/>
-<br/><br/>
-<img src="docs/readme/d16_seq_minigame.png" alt="Tuần tự mini-game"/>
-</details>
-
-<details>
-<summary><b>⚡ Máy trạng thái thể lực và vòng lặp cốt lõi</b></summary>
-<br/>
-<img src="docs/readme/d19_state_stamina.png" alt="Máy trạng thái thể lực"/>
-<br/><br/>
-<img src="docs/readme/d01_core_loop.png" alt="Vòng lặp cốt lõi"/>
-</details>
-
-### ☁️ Dịch vụ trực tuyến
-
-<p align="center"><img src="docs/readme/d22_deployment.png" width="85%" alt="Sơ đồ triển khai"/></p>
-
-| Dịch vụ | Dùng cho | Trạng thái |
-|---|---|---|
-| **Supabase** | Đăng nhập, lưu tiến trình cloud, hồ sơ, xếp hạng, bạn bè, chat, co-op | ✅ Có mã đầy đủ, tự chuyển offline khi thiếu cấu hình |
-| **Google Gemini** | Chấm phát âm <kbd>V</kbd>, NPC trả lời bằng AI, chấm IELTS Writing | ✅ Dùng `gemini-flash-latest`, đã gọi thử thành công |
-| **Agora RTC** | Lớp học video <kbd>F8</kbd> cùng giáo viên | 🟡 Đã nối SDK; cuộc gọi giữa hai máy chưa kiểm chứng |
-
-<details>
-<summary><b>🗄️ Mô hình dữ liệu Supabase</b></summary>
-<br/>
-<img src="docs/readme/d18_erd.png" alt="ERD"/>
-</details>
-
-### 📁 Cấu trúc thư mục
-
-```text
-NihongoLife/                         ← repo
-├── NihongoLife/                     ← Unity project (mở thư mục này)
-│   ├── Assets/NihongoLife/
-│   │   ├── Scenes/                  00_Bootstrap … 50_GameCenter, 90_TestSandbox
-│   │   ├── Scripts/                 Core · Scenario · Dialogue · Player · UI · World · Exam · School · Home …
-│   │   ├── MiniGames/               Core (IMiniGame, MiniGameController) · KanaMatch · Data
-│   │   ├── Resources/               Scenarios (14) · Exams · Items (ảnh vật phẩm) · Control
-│   │   └── Tests/                   PlayMode (13 bộ) · EditMode
-│   └── Docs/                        ARCHITECTURE · STORY_BIBLE · SCENARIO_SYSTEM · TEAM_TASKS …
-├── Bao_Cao/                         báo cáo Capstone, slide, trailer, ảnh kiểm thử
-└── docs/readme/                     hình ảnh cho README này
-```
-
----
-
-## ✅ Kiểm thử
-
-Mỗi bộ kiểm thử Play Mode **điều khiển nhân vật bằng thao tác thật** (đi, nhấn F, chọn đáp án, bấm nút) và **tự chụp ảnh từng bước** vào `Bao_Cao/*-regression/` để người duyệt xem lại.
-
-| Bộ kiểm thử | Kiểm tra |
-|---|---|
-| `GameplayUiPlayModeTests` | Hội thoại + nút ×, konbini → giỏ → thu ngân → balo, bản đồ, HUD, biểu cảm, hai chuyến tàu |
-| `CompletionAuditPlayModeTests` | Chạy thật qua bộ điều khiển, cạn/hồi thể lực, đóng và tiếp lời dẫn truyện |
-| `WorldFeelPlayModeTests` | Đường chân trời ngày/chiều/tối, thể lực, dáng đi thẳng lưng |
-| `GameCenterPlayModeTests` | Kana Match trọn vòng, đổi quà |
-| `SchoolPlayModeTests` | Bàn thi, chọn JLPT/IELTS, làm bài, nhận xét |
-| `BedroomPlayModeTests` · `CityTown` · `ZoneTransition` · `Scenario` | Phòng trọ, lối vào các khu, chuyển khu hai chiều, chạy kịch bản |
-| `KidsCharactersPlayModeTests` · `KidsNpcScalePlayModeTests` | 8 nhân vật Kids, avatar/rig, animation, portrait, NPC theo khu vực và tỷ lệ với quầy/cửa/bàn ghế |
-| `FishingFarmPlayModeTests` | Nông cụ/độ bền, huỷ thao tác, trồng–tưới–thu hoạch, quăng/kéo cần, bắt–bán–lưu cá và ảnh Play Mode |
-| `JlptMockPlayModeTests` | JLPT mock 2: 67 câu, audio một lượt, thang điểm 180, lưu lượt thi và phân tích nhóm yếu |
-| `IeltsReadingPlayModeTests` · `IeltsListeningPlayModeTests` | Package IELTS cục bộ 40 câu, timer, audio, làm tiếp, tự nộp, chấm raw/band và khoá input/HUD |
-
-**Mốc kiểm thử gần nhất trước đợt đồng bộ Kids (12/10/2026):** Play Mode **59/65**. Các bộ Kids, portrait và weather đã qua; toàn bộ Play Mode vẫn cần chạy lại sau thay đổi mới nhất. README không tuyên bố scene hoàn tất khi chưa có vòng kiểm tra hình ảnh và va chạm mới.
-
-<details>
-<summary><b>Chạy kiểm thử và builder bằng dòng lệnh</b></summary>
+Project chạy offline dù chưa có dịch vụ cloud. Nếu cần tích hợp online, tạo file secrets cục bộ từ mẫu:
 
 ```bash
-# Đóng Unity Editor trước khi chạy batchmode
-UNITY="C:/Program Files/Unity/Hub/Editor/6000.3.12f1/Editor/Unity.exe"
-
-"$UNITY" -batchmode -projectPath NihongoLife -runTests -testPlatform PlayMode -testResults playmode.xml
-"$UNITY" -batchmode -projectPath NihongoLife -runTests -testPlatform EditMode -testResults editmode.xml
-
-# Dựng lại một khu vực (lưu thẳng vào scene, không cần thao tác menu)
-"$UNITY" -batchmode -projectPath NihongoLife -executeMethod NihongoLife.EditorTools.GameCenterBuilder.Build -logFile build.log
+cp NihongoLife/LocalSecrets/secrets.example.json NihongoLife/LocalSecrets/secrets.json
 ```
 
-| Builder (`NihongoLife.EditorTools.*`) | Dựng |
+Các cấu hình hỗ trợ gồm `NIHONGOLIFE_SUPABASE_URL`, `NIHONGOLIFE_SUPABASE_ANON_KEY`, `AGORA_APP_ID` và `NIHONGOLIFE_GEMINI_API_KEY`. **Không commit secrets, service-role key, mật khẩu hoặc tài liệu đề thi có bản quyền.**
+
+## Điều khiển mặc định
+
+| Hành động | Phím |
 |---|---|
-| `CityTownBuilder.Build` | Phố Hibari-chō, konbini, cổng khu vực |
-| `HomeBedroomBuilder.Build` | Phòng trọ |
-| `StationTrainBuilder.Build` · `StationClerkBuilder.Build` | Ga, tàu, quầy vé |
-| `ClassroomBuilder.Build` | Lớp học, bàn thi |
-| `GameCenterBuilder.Build` | Game Center |
-| `HorizonBuilder.Build` | Đường chân trời |
-| `ItemIconRenderer.Render` | Ảnh render vật phẩm |
-| `TrailerReelSceneBuilder.Build` | Scene quay trailer |
+| Di chuyển / chạy / nhảy | `WASD` / `Left Shift` / `Space` |
+| Tương tác | `F` |
+| Balo / bản đồ / nhật ký | `B` / `M` / `N` |
+| Dùng / thả vật phẩm | `C` / `G` |
+| Biểu cảm / đổi mục tiêu | `E` / `Q` |
+| Hội thoại, chat | `Enter` |
+| Push-to-talk / voice | giữ `T` / `V` |
+| Bạn bè / cửa hàng / cài đặt | `U` / `P` / `O` |
+| Nhân vật / tạm dừng | `Tab` / `Esc` |
+| Xoay camera | `,` / `.` |
 
-</details>
+Phím có thể đổi trong Cài đặt. Bản cảm ứng và WebGL có joystick, vùng nhìn và action buttons riêng; bàn phím vẫn dùng được khi trình duyệt hỗ trợ.
 
-## 🤝 Quy trình làm việc
+## Kiểm thử & build
 
-<p align="center"><img src="docs/readme/d24_dev_workflow.png" width="80%" alt="Quy trình nhóm"/></p>
+Unity chỉ có thể mở project một lần. Đóng Unity Editor trước khi chạy batch test:
 
-Quy tắc của repo (xem [`AGENTS.md`](AGENTS.md)): không dùng lệnh `[MenuItem]`; không tạo scene mới khi chưa được duyệt; lưu nội dung hoàn chỉnh thẳng vào scene/prefab; không chồng môi trường mới lên môi trường cũ; chỉ coi một scene là xong khi đã kiểm thử hình ảnh và va chạm trong Play Mode.
+```powershell
+Unity -batchmode -projectPath NihongoLife -runTests -testPlatform PlayMode -testResults D:\NihongoLife-TestResults.xml -logFile D:\NihongoLife-PlayMode.log
+Unity -batchmode -projectPath NihongoLife -runTests -testPlatform EditMode -testResults D:\NihongoLife-EditMode.xml -logFile D:\NihongoLife-EditMode.log
+```
 
-## 📚 Tài liệu
+Kiểm tra compile WebGL:
 
-| | |
-|---|---|
-| 📘 **Báo cáo Capstone v5** | [`DOCX`](Bao_Cao/NihongoLife_Bao_Cao_Capstone_v5.docx) |
-| 🎞️ **Slide thuyết trình v5** | [`Bao_Cao/NihongoLife_Thuyet_Trinh_Capstone_v5.pptx`](Bao_Cao/NihongoLife_Thuyet_Trinh_Capstone_v5.pptx) |
-| 🎬 **Video** | [`Trailer v2`](Bao_Cao/NihongoLife_Trailer_v2.mp4) · 1080p30, 1:25 · [`Gameplay Demo`](Bao_Cao/NihongoLife_Gameplay_Demo.mp4) · 1080p30, 4:18 |
-| 🧭 **Thiết kế** | [`ARCHITECTURE`](NihongoLife/Docs/ARCHITECTURE.md) · [`PLAYER_HUD`](NihongoLife/Docs/PLAYER_HUD.md) · [`STORY_BIBLE`](NihongoLife/Docs/STORY_BIBLE.md) · [`SCENARIO_SYSTEM`](NihongoLife/Docs/SCENARIO_SYSTEM.md) · [`EXAM_SYSTEM`](NihongoLife/Docs/EXAM_SYSTEM.md) · [`ROADMAP`](NihongoLife/Docs/ROADMAP.md) |
-| 🎣 **Gameplay mới** | [`FISHING_FARMING_TOOLS`](NihongoLife/Docs/FISHING_FARMING_TOOLS.md) · [`EXAM_CONTENT_PIPELINE`](NihongoLife/Docs/EXAM_CONTENT_PIPELINE.md) |
+```powershell
+Unity -batchmode -quit -buildTarget WebGL -projectPath NihongoLife -logFile D:\NihongoLife-WebGL.log
+```
 
-## 🙏 Ghi công
+Builder và sửa scene chạy headless qua `-executeMethod`; dự án không dùng setup thủ công bằng `[MenuItem]`. Đọc [`AGENTS.md`](AGENTS.md) trước khi sửa gameplay, scene hoặc asset pipeline.
 
-[Unity](https://unity.com/) · Kids Characters for Survival · [Kenney](https://kenney.nl/) · [Quaternius](https://quaternius.com/) · [KayKit](https://kaylousberg.itch.io/) · [Mixamo](https://www.mixamo.com/) *(animation retargeting)* · [Noto Sans JP](https://fonts.google.com/noto/specimen/Noto+Sans+JP) · [Supabase](https://supabase.com/) · [Google Gemini](https://ai.google.dev/) · [Agora](https://www.agora.io/) · [GZV](https://www.gzv.one/gzver/quach-thanh-long)
+## Đóng góp
+
+Pull request được chào đón:
+
+1. Đọc [`AGENTS.md`](AGENTS.md) và [`TEAM_TASKS.md`](NihongoLife/Docs/TEAM_TASKS.md).
+2. Giữ thay đổi tập trung; không viết lại hệ thống đang hoạt động chỉ vì khác phong cách.
+3. Thêm hoặc cập nhật test chứng minh hành vi.
+4. Với thay đổi hình ảnh, kiểm tra Play Mode và lưu capture dưới `Bao_Cao/<topic>/`.
+5. Chạy nhóm test liên quan, sau đó chạy full suite trước khi push.
+
+## Đội ngũ
+
+**The Next Generation · VTC Academy**
+
+- **Quách Thành Long** — Trưởng nhóm · Lập trình web & game
+- **Nguyễn Lê Gia Huy** — Nhân vật · Animation · Gameplay
+- **Lương Nguyễn Tấn Dũng** — Nhân vật · Animation · Gameplay
+
+[Website đội ngũ](https://website-the-next-generation-o323.vercel.app/team) · [Kênh YouTube](https://www.youtube.com/@NihongoLifeGame)
+
+<p align="center">
+  <img src="NihongoLife/Assets/NihongoLife/Resources/MenuGallery/01_team_award_2025.jpg" width="68%" alt="The Next Generation nhận Giải Triển vọng tại Unique Project 2025" /><br />
+  <sub>Giải Triển vọng · Unique Project 2025 · VTC Academy</sub>
+</p>
+
+## Giấy phép & ghi công
+
+Mã nguồn được phát hành theo [MIT License](LICENSE). Âm thanh và âm nhạc có giấy phép riêng được ghi tại [`AUDIO_CREDITS.md`](NihongoLife/Docs/AUDIO_CREDITS.md); hình ảnh, model và package bên thứ ba giữ giấy phép của nguồn tương ứng.
 
 ---
 
-## 💳 Donation & Support / Ủng hộ dự án
+## English summary
 
-Nếu bạn thấy **NihongoLife** hữu ích và muốn đồng hành cùng sự phát triển của dự án, bạn có thể ủng hộ (donate) qua chuyển khoản ngân hàng:
+**NihongoLife** is a 3D Japanese-learning life simulation made for Vietnamese learners. Instead of studying isolated exercises, players live in Hibari-chō and practise through everyday situations: greeting neighbours, shopping, ordering food, attending class, taking the train, working part-time and exploring Midori Island.
 
-<div align="center">
+The game combines contextual dialogue, story quests, progression, mini-games, JLPT/IELTS-style practice and optional registered-account online features. Guests can explore the full town offline with device-local progress; registered accounts follow the campaign, keep separate saves and can access social features.
 
-| Thông tin chuyển khoản | Chi tiết |
-| :--- | :--- |
-| **Chủ tài khoản** | **QUACH THANH LONG** |
-| **Số tài khoản** | **0001244698984** |
-| **Ngân hàng** | **MB Bank (Ngân hàng TMCP Quân Đội)** |
-| **Dịch vụ** | VietQR / Napas 247 |
+Development focuses on richer learning content, a more responsive living world, secure online communication, exam experiences and a fast, accessible WebGL release. Open `NihongoLife/` with Unity **6000.3.12f1**, start from `00_Bootstrap.unity`, and read [`AGENTS.md`](AGENTS.md) before contributing.
 
-<br/>
-
-<img src="https://img.vietqr.io/image/MB-0001244698984-compact2.png?accountName=QUACH%20THANH%20LONG" width="360" alt="VietQR Code - QUACH THANH LONG"/>
-
-<br/>
-
-*Cảm ơn sự hỗ trợ và đồng hành của bạn dành cho NihongoLife!*
-
-</div>
-
----
-
-<div align="center">
-<br/>
-
-**Quách Thành Long** · K24GD03 · Project 3 Capstone · VTC Academy · 2026
-<br/>
-[quachthanhlong.com](https://quachthanhlong.com/) · [GZV Profile](https://www.gzv.one/gzver/quach-thanh-long)
-<br/>
-Giảng viên hướng dẫn: Nguyễn Ngọc Chấn
-
-<sub>Phát hành theo giấy phép <a href="LICENSE">MIT</a>.</sub>
-
-<br/>
-
-<i>ひばり町で、また会いましょう。 · Hẹn gặp lại ở Hibari-chō.</i>
-
-</div>
-
+**Watch development videos:** [youtube.com/@NihongoLifeGame](https://www.youtube.com/@NihongoLifeGame)

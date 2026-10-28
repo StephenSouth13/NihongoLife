@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using NihongoLife.Core;
 
 namespace NihongoLife.UI
 {
@@ -47,7 +48,7 @@ namespace NihongoLife.UI
         {
             get
             {
-                if (_instance == null) _instance = FindFirstObjectByType<HudNotificationTray>();
+                if (_instance == null) _instance = SceneRefs.Find<HudNotificationTray>();
                 return _instance;
             }
         }

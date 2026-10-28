@@ -54,6 +54,10 @@ namespace NihongoLife.Core
         private static readonly int OvercastId = Shader.PropertyToID("_Overcast");
         private static readonly int RotationId = Shader.PropertyToID("_Rotation");
         private static readonly int RainbowId = Shader.PropertyToID("_Rainbow");
+        private static readonly int MoonPhaseId = Shader.PropertyToID("_MoonPhase");
+        private float _moonPhase = 0.5f;
+        private float _sunrise = 6f;
+        private float _sunset = 18f;
         private float _cloudRotation;
         private ParticleSystem _rainFx;
         private AudioSource _rainAudio;
@@ -114,7 +118,7 @@ namespace NihongoLife.Core
         {
             if (Active != this) return;
             if (_sky != null) RenderSettings.skybox = _sky;
-            var cycle = FindFirstObjectByType<DayNightCycle>();
+            var cycle = SceneRefs.Find<DayNightCycle>();
             if (cycle != null) cycle.SetHour(cycle.Hour);
         }
 
@@ -148,7 +152,7 @@ namespace NihongoLife.Core
             var emission = _rainFx.emission;
             emission.rateOverTime = inside ? 0f : 1600f * Rain;
             float swell = 0.85f + 0.15f * Mathf.PerlinNoise(Time.time * 0.23f, 0.5f);
-            _rainAudio.volume = Rain * (inside ? 0.035f : 0.11f) * swell;
+            _rainAudio.volume = Rain * (inside ? 0.035f : 0.11f) * swell * NihongoLife.Audio.AudioPrefs.AmbienceGain; // rain is ambience (Settings)
         }
 
         private void BuildRain()
@@ -206,6 +210,14 @@ namespace NihongoLife.Core
             _rainAudio.Play();
         }
 
+        /// <summary>Season, day length and moon phase for the next <see cref="Apply"/>.</summary>
+        public void SetCalendarSky(float moonPhase, float sunrise, float sunset, Color seasonTint)
+        {
+            _moonPhase = Mathf.Repeat(moonPhase, 1f);
+            _sunrise = sunrise;
+            _sunset = Mathf.Max(sunrise + 1f, sunset);
+        }
+
         /// <summary>Lights this scene for <paramref name="hour"/>. <paramref name="key"/> is the cycle's colour key for
         /// that hour and <paramref name="noon"/> its daytime key: ambient and fog keep the scene's own daytime look and
         /// follow the key's change relative to noon.</summary>
@@ -216,7 +228,9 @@ namespace NihongoLife.Core
             float overcast = weather != null ? weather.Overcast : 0f;
             float rain = weather != null ? weather.Rain : 0f;
             Rain = rain;
-            float angle = hour / 24f * 360f - 90f;
+            // The clock hour is stretched onto an equinox day so summer sunsets stay late and winter ones early.
+            float sunHour = GameCalendar.EquinoxHour(hour, _sunrise, _sunset);
+            float angle = sunHour / 24f * 360f - 90f;
             float elevation = Mathf.Sin(angle * Mathf.Deg2Rad);
             Daylight = Mathf.Clamp01(Mathf.InverseLerp(0.14f, noon.sunIntensity, key.sunIntensity));
             if (sun != null)
@@ -264,6 +278,7 @@ namespace NihongoLife.Core
                 _sky.SetVector(SunDirId, moon ? -toSun : toSun);
                 _sky.SetColor(SunColorId, moon ? new Color(0.75f, 0.82f, 1f) * 0.9f : Color.Lerp(key.sunColor, Color.white, 0.4f) * 1.6f);
                 _sky.SetFloat(SunSizeId, moon ? 0.99935f : 0.9988f);
+                _sky.SetFloat(MoonPhaseId, moon ? _moonPhase : 0.5f);
             }
 
             // Street lamps come on at dusk and go out after dawn.

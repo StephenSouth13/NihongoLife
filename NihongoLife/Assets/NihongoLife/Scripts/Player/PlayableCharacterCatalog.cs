@@ -161,12 +161,13 @@ namespace NihongoLife.Player
             // Running, tired, hurt and fainting clips from the Kids pack (player; other online players get the run).
             if ((actor.GetComponent<PlayerController>() != null || actor.GetComponent<RemotePlayerAvatar>() != null) && actor.GetComponent<KidMoodAnimator>() == null)
                 actor.AddComponent<KidMoodAnimator>();
+            if (actor.GetComponent<KidExpression>() == null) actor.AddComponent<KidExpression>();
             if (actor.GetComponent<FootGrounder>() == null) actor.AddComponent<FootGrounder>(); // shoes on the floor, not in it
 
             // Only the player wears the ground ring (NPCs have name plates), in the character's own colour.
             if (actor.GetComponent<PlayerController>() != null)
             {
-                var marker = actor.GetComponent<PlayerMarker>() ?? actor.AddComponent<PlayerMarker>();
+                var marker = actor.GetComponent<PlayerMarker>().OrNull() ?? actor.AddComponent<PlayerMarker>();
                 marker.Configure(character.AccentColor, 0.55f);
             }
 

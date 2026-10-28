@@ -50,8 +50,8 @@ namespace NihongoLife.Core
 
         public void Initialize()
         {
-            _client = FindFirstObjectByType<SupabaseClient>();
-            _realtimeClient = FindFirstObjectByType<SupabaseRealtimeClient>();
+            _client = SceneRefs.Find<SupabaseClient>();
+            _realtimeClient = SceneRefs.Find<SupabaseRealtimeClient>();
             Debug.Log("[CoopSessionService] Initialized.");
         }
 

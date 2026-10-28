@@ -1,5 +1,6 @@
 using TMPro;
 using UnityEngine;
+using NihongoLife.Core;
 
 namespace NihongoLife.Interaction
 {
@@ -90,7 +91,7 @@ namespace NihongoLife.Interaction
             if (camera == null) return;
             if (_player == null)
             {
-                var player = FindFirstObjectByType<NihongoLife.Player.PlayerController>();
+                var player = SceneRefs.Find<NihongoLife.Player.PlayerController>();
                 if (player != null) _player = player.transform;
             }
             Vector3 viewer = _player != null ? _player.position : camera.transform.position;

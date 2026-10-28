@@ -236,11 +236,20 @@ namespace NihongoLife.Exam
             int aiSectionsDone = 0;
             var gradingService = GameServices.TryGet(out ExamGradingService grading) ? grading : null;
 
+            bool autoAi = ExamAiSettings.AiGradingEnabled;
+            ExamSubmissionManifest submission = null;
+
             foreach (var section in _exam.sections)
             {
                 var sectionResult = new ExamSectionResult { sectionId = section.id };
 
-                if (RequiresAiGrading(section))
+                if (RequiresAiGrading(section) && !autoAi)
+                {
+                    // AI grading off (default): record the answers, no AI call, no network. Graded later via ISubmissionGrader.
+                    submission ??= ExamSubmissionStore.Begin(_exam.id, _exam.examType.ToString(), DateTime.UtcNow);
+                    RecordPendingSection(section, submission, sectionResult);
+                }
+                else if (RequiresAiGrading(section))
                 {
                     aiSectionsDone++;
                     OnGradingStatus?.Invoke(NihongoLife.Core.Loc.F("Đang chấm {0} ({1}/{2})...", "Grading {0} ({1}/{2})...", "{0}を採点中（{1}/{2}）...", Localize(section), aiSectionsDone, aiSectionCount));
@@ -255,6 +264,17 @@ namespace NihongoLife.Exam
             }
 
             foreach (var pair in _answers) result.record.answers.Add(pair.Value);
+
+            if (submission != null)
+            {
+                try
+                {
+                    ExamSubmissionStore.Save(submission);
+                    result.record.submissionFolder = submission.folder;
+                }
+                catch (Exception e) { Debug.LogWarning("[Exam] Could not save the Writing/Speaking submission: " + e.Message); }
+            }
+            result.record.pendingReview = ExamPendingRules.AnyPending(result.record.sections);
 
             FinalizeScoring(result);
             yield return SaveResult(result);
@@ -292,6 +312,37 @@ namespace NihongoLife.Exam
             return section.questions.Exists(q => q != null && (q.type == ExamQuestionType.Essay || q.type == ExamQuestionType.SpeakingPrompt));
         }
 
+        private void RecordPendingSection(ExamSection section, ExamSubmissionManifest submission, ExamSectionResult sectionResult)
+        {
+            sectionResult.pendingReview = true;
+            sectionResult.aiGraded = false;
+            sectionResult.scoredPoints = 0;
+            sectionResult.maxPoints = 0;
+            sectionResult.feedback = ExamPendingText.T(ExamPendingText.Pending);
+            foreach (var question in section.questions)
+            {
+                if (question == null) continue;
+                string prompt = !string.IsNullOrWhiteSpace(question.promptEn) ? question.promptEn : !string.IsNullOrWhiteSpace(question.promptVi) ? question.promptVi : question.promptJa;
+                try
+                {
+                    if (question.type == ExamQuestionType.Essay)
+                    {
+                        string text = _answers.TryGetValue(question.id, out var record) ? record.givenAnswer : string.Empty;
+                        ExamSubmissionStore.AddWriting(submission, question.id, prompt, text);
+                    }
+                    else if (question.type == ExamQuestionType.SpeakingPrompt)
+                    {
+                        _speakingSamples.TryGetValue(question.id, out var samples);
+                        _speakingSampleRates.TryGetValue(question.id, out var rate);
+                        ExamSubmissionStore.AddSpeaking(submission, question.id, prompt, samples, rate <= 0 ? 44100 : rate);
+                    }
+                }
+                catch (Exception e) { Debug.LogWarning("[Exam] Could not save answer " + question.id + ": " + e.Message); }
+            }
+        }
+
+        private static bool IsProductive(ExamQuestion q) => q != null && (q.type == ExamQuestionType.Essay || q.type == ExamQuestionType.SpeakingPrompt);
+
         private void ScoreObjectiveSection(ExamSection section, ExamSectionResult sectionResult)
         {
             int scored = 0;
@@ -307,6 +358,19 @@ namespace NihongoLife.Exam
             sectionResult.scoredPoints = max > 0 ? Mathf.RoundToInt((float)scored / max * section.scoreScaleMax) : 0;
         }
 
+        private int _gradeToken;
+
+        /// <summary>A question the AI could not grade (no reply after a retry) is not skipped: it counts as band 0 with
+        /// a plain note, so the section score is never inflated by leaving it out.</summary>
+        public static ExamAiGrade OrUngraded(ExamAiGrade grade) => grade ?? new ExamAiGrade
+        {
+            band = 0f,
+            transcript = string.Empty,
+            feedback = NihongoLife.Core.Loc.T("Câu này chưa được chấm (dịch vụ AI không phản hồi) nên tính 0 điểm. Bài làm vẫn được lưu.",
+                "This answer could not be graded (the AI service did not respond), so it counts as 0. Your work is saved.",
+                "この解答は採点できませんでした（AIが応答しませんでした）。0点として数えます。解答は保存されています。")
+        };
+
         private IEnumerator GradeAiSection(ExamSection section, ExamGradingService grading, ExamSectionResult sectionResult)
         {
             sectionResult.aiGraded = true;
@@ -316,37 +380,7 @@ namespace NihongoLife.Exam
             foreach (var question in section.questions)
             {
                 if (question == null) continue;
-                bool done = false;
-                ExamAiGrade grade = null;
-
-                if (question.type == ExamQuestionType.Essay)
-                {
-                    string text = _answers.TryGetValue(question.id, out var record) ? record.givenAnswer : string.Empty;
-                    if (grading != null)
-                    {
-                        grading.GradeEssay(question, _exam, text, g => { grade = g; done = true; });
-                    }
-                    else
-                    {
-                        grade = new ExamAiGrade { band = 0f, feedback = NihongoLife.Core.Loc.T("Dịch vụ chấm bài chưa sẵn sàng.", "The grading service is not ready.", "採点サービスの準備ができていません。") };
-                        done = true;
-                    }
-                }
-                else if (question.type == ExamQuestionType.SpeakingPrompt)
-                {
-                    _speakingSamples.TryGetValue(question.id, out var samples);
-                    _speakingSampleRates.TryGetValue(question.id, out var rate);
-                    if (grading != null)
-                    {
-                        grading.GradeSpeaking(question, _exam, samples, rate <= 0 ? 44100 : rate, g => { grade = g; done = true; });
-                    }
-                    else
-                    {
-                        grade = new ExamAiGrade { band = 0f, feedback = NihongoLife.Core.Loc.T("Dịch vụ chấm bài chưa sẵn sàng.", "The grading service is not ready.", "採点サービスの準備ができていません。") };
-                        done = true;
-                    }
-                }
-                else
+                if (!question.type.Equals(ExamQuestionType.Essay) && !question.type.Equals(ExamQuestionType.SpeakingPrompt))
                 {
                     // A non-AI question inside an AI-graded section (rare, but handle it): score objectively.
                     bool correct = _answers.TryGetValue(question.id, out var rec) && rec.correct;
@@ -354,22 +388,55 @@ namespace NihongoLife.Exam
                     continue;
                 }
 
-                float timeout = 45f;
-                while (!done && timeout > 0f)
+                ExamAiGrade grade = null;
+                // One retry when the service gives nothing (or never answers in time); each attempt waits a little longer
+                // than the HTTP timeout, in real time (a paused game, timeScale 0, must not freeze grading).
+                for (int attempt = 0; attempt < 2 && grade == null; attempt++)
                 {
-                    timeout -= Time.deltaTime;
-                    yield return null;
+                    bool done = false;
+                    ExamAiGrade received = null;
+                    int token = ++_gradeToken;
+                    Action<ExamAiGrade> onGrade = g =>
+                    {
+                        if (token != _gradeToken) return; // a late reply from an attempt we already gave up on
+                        received = g;
+                        done = true;
+                    };
+
+                    if (grading == null)
+                    {
+                        received = new ExamAiGrade { band = 0f, feedback = NihongoLife.Core.Loc.T("Dịch vụ chấm bài chưa sẵn sàng.", "The grading service is not ready.", "採点サービスの準備ができていません。") };
+                        done = true;
+                    }
+                    else if (question.type == ExamQuestionType.Essay)
+                    {
+                        string text = _answers.TryGetValue(question.id, out var record) ? record.givenAnswer : string.Empty;
+                        grading.GradeEssay(question, _exam, text, onGrade);
+                    }
+                    else
+                    {
+                        _speakingSamples.TryGetValue(question.id, out var samples);
+                        _speakingSampleRates.TryGetValue(question.id, out var rate);
+                        grading.GradeSpeaking(question, _exam, samples, rate <= 0 ? 44100 : rate, onGrade);
+                    }
+
+                    float wait = AiGradingTimeouts.ClientWaitSeconds(question.type == ExamQuestionType.SpeakingPrompt);
+                    while (!done && wait > 0f)
+                    {
+                        wait -= Time.unscaledDeltaTime;
+                        yield return null;
+                    }
+                    _gradeToken++; // from here on, any reply for this attempt is ignored
+                    grade = received;
                 }
 
-                if (grade != null)
+                grade = OrUngraded(grade);
+                bandVotes.Add(grade.band);
+                if (!string.IsNullOrWhiteSpace(grade.feedback)) feedbacks.Add(grade.feedback);
+                if (_answers.TryGetValue(question.id, out var answered))
                 {
-                    bandVotes.Add(grade.band);
-                    if (!string.IsNullOrWhiteSpace(grade.feedback)) feedbacks.Add(grade.feedback);
-                    if (_answers.TryGetValue(question.id, out var answered))
-                    {
-                        answered.correct = grade.band >= 5f;
-                        if (!string.IsNullOrWhiteSpace(grade.transcript)) answered.rawAnswerText = grade.transcript;
-                    }
+                    answered.correct = grade.band >= 5f;
+                    if (!string.IsNullOrWhiteSpace(grade.transcript)) answered.rawAnswerText = grade.transcript;
                 }
             }
 
@@ -400,24 +467,19 @@ namespace NihongoLife.Exam
                 bool allSectionsPass = true;
                 foreach (var section in result.record.sections)
                 {
+                    if (section.pendingReview) continue;
                     total += section.scoredPoints;
                     if (section.scoredPoints < _exam.jlptSectionPassScore) allSectionsPass = false;
                 }
 
                 result.record.totalScore = total;
-                result.record.totalMaxScore = SumSectionScales();
+                result.record.totalMaxScore = SumSectionScales(result.record);
                 result.record.passed = allSectionsPass && total >= _exam.jlptTotalPassScore;
             }
             else
             {
-                var bands = new List<float>();
-                foreach (var section in result.record.sections)
-                {
-                    float band = section.aiGraded ? section.scoredPoints / 10f : (section.maxPoints > 0 ? (float)section.scoredPoints / section.maxPoints * 9f : 0f);
-                    bands.Add(band);
-                }
-
-                result.record.estimatedBand = bands.Count > 0 ? RoundToHalf(Average(bands)) : 0f;
+                // Pending Writing/Speaking sections are left out: the band covers Reading/Listening only.
+                result.record.estimatedBand = ExamPendingRules.ObjectiveBand(result.record.sections);
                 result.record.totalScore = Mathf.RoundToInt(result.record.estimatedBand * 10f);
                 result.record.totalMaxScore = 90;
             }
@@ -438,9 +500,12 @@ namespace NihongoLife.Exam
                 foreach (var section in _exam.sections)
                 {
                     if (section == null || section.scoreGroup != group.id) continue;
+                    var sectionResult = result.record.sections.Find(s => s.sectionId == section.id);
+                    bool pending = sectionResult != null && sectionResult.pendingReview;
                     foreach (var question in section.questions)
                     {
                         if (question == null) continue;
+                        if (pending && IsProductive(question)) continue; // not graded yet: neither scored nor counted
                         rawMax += question.points;
                         if (_answers.TryGetValue(question.id, out var record) && record.correct) raw += question.points;
                     }
@@ -455,10 +520,15 @@ namespace NihongoLife.Exam
             result.record.passed = groupsPass && total >= _exam.jlptTotalPassScore;
         }
 
-        private int SumSectionScales()
+        private int SumSectionScales(ExamAttemptRecord record)
         {
             int total = 0;
-            foreach (var section in _exam.sections) total += section.scoreScaleMax;
+            foreach (var section in _exam.sections)
+            {
+                var r = record?.sections.Find(s => s.sectionId == section.id);
+                if (r != null && r.pendingReview) continue;
+                total += section.scoreScaleMax;
+            }
             return total;
         }
 
