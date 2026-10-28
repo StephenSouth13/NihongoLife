@@ -1,0 +1,52 @@
+{
+  "schema": "nihongolife.bank.v1",
+  "nameVi": "Ngân hàng tín dụng Hibari",
+  "nameEn": "Hibari Shinkin Bank",
+  "nameJa": "ひばり信用金庫",
+  "creditStart": 60,
+  "creditMax": 100,
+  "creditOnTimeRepay": 8,
+  "creditLate": 12,
+  "creditMinForCard": 30,
+  "graceDays": 3,
+  "remindDaysBefore": 2,
+  "lateFeePercent": 2,
+  "lateFeeEveryDays": 7,
+  "lateFeeCapPercent": 10,
+  "garnishPercent": 30,
+  "extensionDays": 14,
+  "products": [
+    {
+      "id": "emergency",
+      "vi": "Quỹ khẩn cấp",
+      "en": "Emergency small fund",
+      "ja": "緊急小口資金",
+      "noteVi": "Giống quỹ 緊急小口資金 của Hội phúc lợi xã hội ở Nhật: cho người đang cạn tiền ăn, tiền khám bệnh. Không tính lãi, không xét tín dụng.",
+      "noteEn": "Like Japan's 緊急小口資金 run by the social welfare council: for someone out of money for food or a doctor. No interest, no credit check.",
+      "noteJa": "社会福祉協議会の緊急小口資金のように、食費や医療費に困った人へ。無利子・審査なし。",
+      "minLevel": 1,
+      "maxYen": 3000,
+      "perLevelYen": 0,
+      "interestPercent": 0,
+      "termDays": 10,
+      "onlyBelowYen": 1000,
+      "needsCredit": false
+    },
+    {
+      "id": "card",
+      "vi": "Vay cá nhân",
+      "en": "Personal loan",
+      "ja": "カードローン",
+      "noteVi": "Vay để mua sắm, học phí, mở việc làm ăn. Phí vay cố định 5% (ở Nhật lãi bị luật 利息制限法 giới hạn, tối đa 15–20%/năm). Hạn mức tăng theo cấp và điểm tín dụng.",
+      "noteEn": "For shopping, school fees or a small business. A flat 5% fee (in Japan the Interest Rate Restriction Act caps interest at 15–20% a year). The limit grows with your level and credit.",
+      "noteJa": "買い物・学費・商売のために。手数料は一律5%（日本では利息制限法で年15〜20%が上限）。限度額はレベルと信用で増えます。",
+      "minLevel": 3,
+      "maxYen": 30000,
+      "perLevelYen": 1500,
+      "interestPercent": 5,
+      "termDays": 14,
+      "onlyBelowYen": 0,
+      "needsCredit": true
+    }
+  ]
+}

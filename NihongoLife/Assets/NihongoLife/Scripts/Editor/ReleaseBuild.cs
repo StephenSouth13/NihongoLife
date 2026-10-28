@@ -57,7 +57,11 @@ namespace NihongoLife.Editor
             {
                 // Area scenes are downloaded from zones/ after the menu. The player itself stays the menu plus bootstrap.
                 WebGLZoneBundleBuilder.BuildBundles();
-                Build(BuildTarget.WebGL, output, BuildOptions.None, WebGLZoneBundleBuilder.PlayerScenes);
+                // Music and story voices stay out of the first download; they are fetched on demand (WebAudioOnDemand).
+                WebAudioOnDemand.Park();
+                try { Build(BuildTarget.WebGL, output, BuildOptions.None, WebGLZoneBundleBuilder.PlayerScenes); }
+                finally { WebAudioOnDemand.Restore(); }
+                WebAudioOnDemand.Publish(output);
             }
             finally
             {

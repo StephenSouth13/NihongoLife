@@ -99,6 +99,9 @@ namespace NihongoLife.Scenario
                 return;
             }
 
+            // The web build fetches story voices on demand: start downloading this quest's lines now.
+            NihongoLife.Audio.WebAudioStore.PrefetchFolder("Voice/ja/" + scenario.id.Replace('.', '_'));
+
             var validation = ScenarioValidator.Validate(scenario);
             if (validation.HasErrors)
             {

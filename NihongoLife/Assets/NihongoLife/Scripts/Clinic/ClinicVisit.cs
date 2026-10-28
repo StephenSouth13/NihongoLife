@@ -221,7 +221,12 @@ namespace NihongoLife.Clinic
                 {
                     var inventory = PlayerInventory.Instance;
                     bool paid = inventory != null && inventory.SpendYen(fee, Loc.Triple("Viện phí phòng khám", "Clinic fee", "診察料"));
-                    if (!paid) Hint(Loc.T("Không đủ tiền — chị Sato: 「こんどで いいですよ。」 (lần sau trả cũng được).", "Not enough money — Sato: 「こんどで いいですよ。」 (next time is fine).", "「こんどで いいですよ。」"));
+                    if (!paid)
+                    {
+                        // Treatment never waits for money: the fee becomes an interest-free bill (bank app, due in 14 days).
+                        NihongoLife.Bank.BankService.AddClinicBill(fee);
+                        Hint(Loc.F("Không đủ tiền — chị Sato: 「こんどで いいですよ。」 Viện phí {0} ghi vào hoá đơn trả sau (không lãi, 14 ngày) — xem ở ví ¥ → Ngân hàng.", "Not enough money — Sato: 「こんどで いいですよ。」 The {0} fee is billed for later (no interest, 14 days) — see Wallet ¥ → Bank.", "「こんどで いいですよ。」 {0}は後払いになりました（14日以内・無利子）。", Loc.Yen(fee)), 8f);
+                    }
                     QuestService.Raise("clinic_pay", "clinic_desk");
                     if (Reason == Purpose.Consult) { Current = Stage.Paid; Hint(Loc.T("Nhận thuốc ở quầy お薬.", "Collect your medicine at the お薬 window.", "お薬の窓口へどうぞ。")); }
                     else { Current = Stage.None; Hint("「おだいじに。」 " + Loc.T("Chúc mau khoẻ!", "Take care!", "")); }

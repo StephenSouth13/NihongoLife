@@ -99,6 +99,9 @@ namespace NihongoLife.UI
             var title = NLUi.Label(_history, "Title", "", 21f, NLUi.Gold, _font, FontStyles.Bold);
             LocText.Set(title, "Lịch sử ví  <size=70%><color=#A8B4C4>12 giao dịch gần nhất</color></size>", "Wallet history  <size=70%><color=#A8B4C4>last 12 transactions</color></size>", "財布の履歴  <size=70%><color=#A8B4C4>最近の12件</color></size>");
             _historyText = NLUi.Label(_history, "Lines", "", 15.5f, NLUi.Text, _font);
+            // Out of money: loans and the clinic bill are one click away (BankUI).
+            var bank = NLUi.Button(_history, "BankButton", "", _font, () => { HistoryOpen = false; _history.gameObject.SetActive(false); BankUI.Open(); }, NLUi.Gold, 16f, NLUi.Ink, 42f);
+            LocText.Set(bank.GetComponentInChildren<TextMeshProUGUI>(), "Ngân hàng — vay · trả nợ", "Bank — borrow · repay", "銀行 — 借入・返済");
             var close = UiKit.IconButton(_history, "CloseX", "close", () => { HistoryOpen = false; _history.gameObject.SetActive(false); }, UiKit.Kind.Ghost, 34f, 18f);
             close.gameObject.AddComponent<LayoutElement>().ignoreLayout = true;
             UiKit.Pin((RectTransform)close.transform, new Vector2(1f, 1f), -10f, -10f, 34f, 34f);

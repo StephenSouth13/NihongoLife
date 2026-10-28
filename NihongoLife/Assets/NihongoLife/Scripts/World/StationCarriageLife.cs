@@ -8,8 +8,7 @@ using UnityEngine;
 namespace NihongoLife.World
 {
     /// <summary>
-    /// Cheap ambient life for Hibari Station. A couple of people pace the platform and one steps up to the
-    /// train while it boards. Inside the carriage one passenger walks to a seat, one leaves at a stop,
+    /// Cheap ambient life inside the carriage (the platform's people are PlatformCrowd). Inside the carriage one passenger walks to a seat, one leaves at a stop,
     /// and a younger rider gives up their seat to an older one — the player can be the one who offers it.
     /// No NavMesh and no extra lights. Added when the station wakes; the scene does not need a menu step.
     /// </summary>
@@ -25,8 +24,7 @@ namespace NihongoLife.World
 
         private void Start()
         {
-            _station = GetComponent<StationTravelController>();
-            SpawnPlatformWalkers();
+            _station = GetComponent<StationTravelController>(); // the platform's people: PlatformCrowd
         }
 
         /// <summary>Called after the ride enables the carriage and shuffles who is aboard.</summary>
@@ -172,68 +170,6 @@ namespace NihongoLife.World
             door.y = body.position.y;
             yield return MoveTo(body, door, 1.05f);
             if (_alighter != null) _alighter.gameObject.SetActive(false);
-        }
-
-        private void SpawnPlatformWalkers()
-        {
-            if (_station == null || _station.PlatformSpawn == null || _station.CarriageInterior == null) return;
-            if (transform.Find("PlatformPassenger_0") != null) return;
-            var template = _station.CarriageInterior.GetComponentInChildren<SeatedPassenger>(true);
-            if (template == null) return;
-            Transform visual = template.transform.Find("Visual");
-            if (visual == null) return;
-            Transform origin = _station.PlatformSpawn;
-            Vector3 axis = origin.right;
-            axis.y = 0f;
-            if (axis.sqrMagnitude < 0.01f) axis = Vector3.right;
-            axis.Normalize();
-            for (int i = 0; i < 2; i++)
-            {
-                var walker = CreateWalker(visual.gameObject, origin.position + axis * (i == 0 ? -3.2f : 2.6f), origin.rotation, i);
-                StartCoroutine(Pace(walker.transform, origin, axis, i == 0));
-            }
-        }
-
-        private GameObject CreateWalker(GameObject visualPrefab, Vector3 position, Quaternion rotation, int index)
-        {
-            var root = new GameObject("PlatformPassenger_" + index);
-            root.transform.SetParent(transform, true);
-            root.transform.SetPositionAndRotation(position, rotation);
-            var visual = Instantiate(visualPrefab, root.transform);
-            visual.name = "Visual";
-            visual.transform.localPosition = Vector3.zero;
-            visual.transform.localRotation = Quaternion.identity;
-            foreach (var collider in visual.GetComponentsInChildren<Collider>(true)) Destroy(collider);
-            var animation = root.AddComponent<CharacterAnimationController>();
-            animation.SetAnimator(visual.GetComponentInChildren<Animator>(true));
-            KidExpression.On(root).Play(index == 0 ? SocialMood.Happy : SocialMood.Neutral, 1.5f);
-            return root;
-        }
-
-        private IEnumerator Pace(Transform body, Transform origin, Vector3 axis, bool boards)
-        {
-            bool toPositive = true;
-            bool boarded = false;
-            while (body != null)
-            {
-                if (boards && !boarded && _station != null && _station.IsTrainBoarding && !_station.IsOnboard)
-                {
-                    Vector3 forward = origin.forward;
-                    forward.y = 0f;
-                    if (forward.sqrMagnitude < 0.01f) forward = Vector3.forward;
-                    Vector3 door = origin.position + forward.normalized * 1.5f;
-                    door.y = origin.position.y;
-                    yield return MoveTo(body, door, 1.15f);
-                    if (body != null) body.gameObject.SetActive(false);
-                    boarded = true;
-                    yield break;
-                }
-                Vector3 target = origin.position + axis * (toPositive ? 4.6f : -4.6f);
-                target.y = origin.position.y;
-                yield return MoveTo(body, target, 0.95f);
-                toPositive = !toPositive;
-                yield return new WaitForSeconds(0.7f);
-            }
         }
 
         private static IEnumerator MoveTo(Transform body, Vector3 target, float speed)

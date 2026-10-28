@@ -23,7 +23,13 @@ void MainLight_half(float3 WorldPos, out half3 Direction, out half3 Color, out h
 			ShadowAtten = 1.0h;
 		#endif
 
-		#if SHADOWS_SCREEN
+		// NihongoLife: this graph is Unlit, so URP never compiles a shadow variant of it. On WebGL / GLES the shadow
+		// map is then not a depth texture, and a shader that still samples it with a shadow sampler is refused by the
+		// browser ("Mismatch between texture format and sampler type") — the character is simply not drawn (the
+		// empty character-select preview on the web). There, only sample when a shadow keyword is really on.
+		#if (defined(SHADER_API_GLES3) || defined(SHADER_API_GLES) || defined(SHADER_API_WEBGPU)) && !defined(_MAIN_LIGHT_SHADOWS) && !defined(_MAIN_LIGHT_SHADOWS_CASCADE) && !defined(_MAIN_LIGHT_SHADOWS_SCREEN)
+			ShadowAtten = 1.0h;
+		#elif SHADOWS_SCREEN
 			ShadowAtten = SampleScreenSpaceShadowmap(shadowCoord);
 		#else
 			ShadowSamplingData shadowSamplingData = GetMainLightShadowSamplingData();

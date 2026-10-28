@@ -46,6 +46,7 @@ namespace NihongoLife.EditorTools
                 var room = Group(root, "Classroom");
                 var lights = BuildShell(room);
                 BuildFurniture(room);
+                BuildStudents(room);
                 var score = BuildBoard(room);
                 var spot = BuildExamDesk(room);
                 root.gameObject.AddComponent<ClassroomRuntime>().Configure(score, spot, lights);
@@ -54,8 +55,9 @@ namespace NihongoLife.EditorTools
                 if (kim != null) kim.SetPositionAndRotation(O + new Vector3(-1.1f, 0.05f, 3.2f), Quaternion.Euler(0f, 150f, 0f));
 
                 foreach (var r in room.GetComponentsInChildren<Renderer>(true)) { r.shadowCastingMode = ShadowCastingMode.Off; }
+                var classmates = room.Find("Students");
                 foreach (var t in room.GetComponentsInChildren<Transform>(true))
-                    if (t.GetComponent<TextMeshPro>() == null && t.GetComponent<Light>() == null && t.GetComponent<Collider>() == null)
+                    if (t.GetComponent<TextMeshPro>() == null && t.GetComponent<Light>() == null && t.GetComponent<Collider>() == null && (classmates == null || !t.IsChildOf(classmates)))
                         GameObjectUtility.SetStaticEditorFlags(t.gameObject, StaticEditorFlags.BatchingStatic);
 
                 EditorSceneManager.MarkSceneDirty(scene);
@@ -156,6 +158,45 @@ namespace NihongoLife.EditorTools
             Block(room, "Poster_Rules", O + new Vector3(HalfX - 0.15f, 2.3f, 5.4f), new Vector3(0.03f, 1.0f, 1.2f), _poster, false);
             Text(room, "Poster_Rules_Text", "きょうしつの ルール\n<size=70%>あいさつ · しずかに · がんばろう</size>", O + new Vector3(HalfX - 0.17f, 2.3f, 5.4f), 90f, 0.09f, new Color(0.55f, 0.2f, 0.2f), 1.15f);
         }
+
+        // ─────────── Classmates ───────────
+
+        private static readonly string[] Kids = { "haruto", "yui", "sota", "hina", "riku", "mio", "yuto", "sakura" };
+
+        /// <summary>
+        /// A class in session: classmates sit at nine of the twelve desks facing the board (the humanoid Sit pose,
+        /// pinned to the chair by SeatedPassenger), three desks stay free. No colliders — they never block the aisle.
+        /// </summary>
+        private static void BuildStudents(Transform room)
+        {
+            var students = Group(room, "Students");
+            float[] xs = { -4.6f, -2.2f, 2.2f, 4.6f };
+            float[] zs = { 1.3f, -0.9f, -3.1f };
+            var empty = new HashSet<int> { 2, 7, 9 };
+            int n = 0, kid = 0;
+            foreach (float z in zs)
+                foreach (float x in xs)
+                {
+                    int desk = n++;
+                    if (empty.Contains(desk)) continue;
+                    string id = Kids[kid++ % Kids.Length];
+                    var prefab = AssetDatabase.LoadAssetAtPath<GameObject>($"Assets/NihongoLife/Resources/Characters/Kids/NL_kid_{id}.prefab");
+                    if (prefab == null) continue;
+                    var student = new GameObject($"Student_{desk}_{id}");
+                    student.transform.SetParent(students, false);
+                    student.transform.SetPositionAndRotation(O + new Vector3(x, 0.02f, z + ChairOffset), Quaternion.identity); // facing the board (+Z)
+                    var visual = (GameObject)PrefabUtility.InstantiatePrefab(prefab);
+                    visual.name = "Visual";
+                    visual.transform.SetParent(student.transform, false);
+                    foreach (var c in visual.GetComponentsInChildren<Collider>(true)) Object.DestroyImmediate(c);
+                    var animation = student.AddComponent<NihongoLife.Core.CharacterAnimationController>();
+                    animation.SetAnimator(visual.GetComponentInChildren<Animator>(true));
+                    student.AddComponent<NihongoLife.World.SeatedPassenger>().Configure(true);
+                }
+        }
+
+        /// <summary>The chair of a Styloo chair-table sits behind the desk's centre (−Z, towards the back of the room).</summary>
+        private const float ChairOffset = -0.42f;
 
         private static TextMeshPro BuildBoard(Transform room)
         {

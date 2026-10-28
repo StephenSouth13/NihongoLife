@@ -28,6 +28,12 @@ namespace NihongoLife.World
             if (!_gatePassed) { Announce("さきに かいさつを とおって ください。", NihongoLife.Core.Loc.Gloss("Hãy mua vé và qua cổng soát vé trước.", "Buy a ticket and go through the ticket gate first.")); Cue(GameAudioCue.UiError); return; }
             if (!IsTrainBoarding) { Announce("でんしゃは まだ きません。", NihongoLife.Core.Loc.Gloss($"Tàu chưa vào ga — còn khoảng {SecondsUntilArrival():0} giây.", $"The train isn't here yet — about {SecondsUntilArrival():0} seconds.")); return; }
             if (_carriageInterior != null) _carriageInterior.SetActive(true);
+            if (_windowScenery != null)
+            {
+                // Standing at Hibari: the first leg's view, the platform and its name board outside.
+                _windowScenery.ShowLeg(0);
+                _windowScenery.StandAt(Line[0].Ja, Line[0].Vi);
+            }
             ShuffleCommuters();
             GetComponent<StationCarriageLife>()?.OnBoarded();
             Teleport(player, carriageSpawn);
@@ -55,13 +61,22 @@ namespace NihongoLife.World
                 _legProgress = 0f;
                 if (_windowScenery != null) _windowScenery.Throttle = 1f;
                 yield return new WaitForSeconds(1.5f);
+                bool braking = false, tunnelled = false;
                 Announce($"つぎは {stop.Ja}、{stop.Ja}です。", NihongoLife.Core.Loc.Gloss($"Ga tiếp theo: {stop.Vi} ({stop.Place}). Bấm Q để ngắm cảnh, F để nói chuyện.", $"Next stop: {stop.Vi} ({stop.Place}). Press Q to look outside, F to talk."));
                 float elapsed = 0f;
                 while (elapsed < LegSeconds)
                 {
                     elapsed += Time.deltaTime;
                     _legProgress = Mathf.Clamp01(elapsed / LegSeconds);
-                    if (_windowScenery != null && elapsed > LegSeconds - 3f) _windowScenery.Throttle = 0f; // brake into the platform
+                    // Half way: a short tunnel, and out of it the next station's surroundings (the school, the harbour,
+                    // the bridge to Midori, the airport) — the view leaving a stop is still that stop's.
+                    if (_windowScenery != null && !tunnelled && elapsed > LegSeconds * 0.4f) { tunnelled = true; _windowScenery.SwapInTunnel(_nextStop); }
+                    if (_windowScenery != null && elapsed > LegSeconds - 3f && !braking)
+                    {
+                        braking = true;
+                        _windowScenery.Throttle = 0f; // brake into the platform
+                        _windowScenery.ArriveAt(stop.Ja, stop.Vi); // which slides in and stops at the window
+                    }
                     yield return null;
                 }
                 _riding = false;
@@ -105,7 +120,10 @@ namespace NihongoLife.World
                 _alighting = false;
                 return;
             }
-            flow.TransferZone(stop.Scene, stop.Spawn, NihongoLife.Core.Loc.Triple($"Ga {stop.Vi}", $"{stop.Vi} Station", $"{stop.Ja}えき"), () => OnArrivedAt(stopId));
+            string title = stop.Scene == WorldLocationCatalog.PhuQuocIslandScene
+                ? NihongoLife.Core.Loc.Triple("Bay tới Phú Quốc (PQC)", "Flying to Phú Quốc (PQC)", "フーコック（PQC）へ")
+                : NihongoLife.Core.Loc.Triple($"Ga {stop.Vi}", $"{stop.Vi} Station", $"{stop.Ja}えき");
+            flow.TransferZone(stop.Scene, stop.Spawn, title, () => OnArrivedAt(stopId));
         }
 
         /// <summary>Runs on the persistent SceneFlowController after the destination zone is active
@@ -137,8 +155,11 @@ namespace NihongoLife.World
             var card = NLUi.Panel((RectTransform)canvas.transform, "Card", NLUi.Ink, new RectOffset(30, 30, 16, 16), 4f);
             NLUi.Anchor(card, new Vector2(0.5f, 1f), new Vector2(0f, -90f), new Vector2(760f, 0f));
             NLUi.FitContent(card);
-            NLUi.Label(card, "Title", $"{stop.Ja}えき に つきました", 30f, NLUi.Gold, font, FontStyles.Bold, TextAlignmentOptions.Center);
-            NLUi.Label(card, "Sub", NihongoLife.Core.Loc.F("Đã tới ga {0} — {1}. Cửa ra đưa bạn về phố.", "Arrived at {0} — {1}. The exit takes you into town.", "{0}駅 — {1}。出口から町に出られます。", stop.Name, stop.Place), 19f, NLUi.Text, font, FontStyles.Normal, TextAlignmentOptions.Center);
+            bool flight = stop.Scene == WorldLocationCatalog.PhuQuocIslandScene;
+            NLUi.Label(card, "Title", flight ? "フーコックに ようこそ！" : $"{stop.Ja}えき に つきました", 30f, NLUi.Gold, font, FontStyles.Bold, TextAlignmentOptions.Center);
+            NLUi.Label(card, "Sub", flight
+                ? NihongoLife.Core.Loc.T("Chào mừng đến Phú Quốc! Bạn đang ở Dương Đông, trước nhà hàng Gánh Ngon. Cổng 「Về Hibari」 đưa bạn về ga.", "Welcome to Phú Quốc! You are in Dương Đông, in front of Gánh Ngon. The 「Về Hibari」 gate takes you back.", "フーコックへようこそ！ズオンドン、ガインゴンの前です。「ひばり町へ」で帰れます。")
+                : NihongoLife.Core.Loc.F("Đã tới ga {0} — {1}. Cửa ra đưa bạn về phố.", "Arrived at {0} — {1}. The exit takes you into town.", "{0}駅 — {1}。出口から町に出られます。", stop.Name, stop.Place), 19f, NLUi.Text, font, FontStyles.Normal, TextAlignmentOptions.Center);
             Destroy(canvas.gameObject, 6f);
         }
 

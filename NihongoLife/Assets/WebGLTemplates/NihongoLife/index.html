@@ -26,17 +26,30 @@
   <div id="unity-container">
     <canvas id="unity-canvas" tabindex="-1"></canvas>
     <div id="unity-loading" role="status" aria-live="polite">
+      <div id="nl-slides" aria-hidden="true"></div>
       <div class="petal" style="--x:12%;--d:9s;--s:14px"></div>
       <div class="petal" style="--x:28%;--d:12s;--s:10px"></div>
       <div class="petal" style="--x:46%;--d:8s;--s:16px"></div>
       <div class="petal" style="--x:63%;--d:11s;--s:12px"></div>
       <div class="petal" style="--x:78%;--d:10s;--s:9px"></div>
       <div class="petal" style="--x:90%;--d:13s;--s:15px"></div>
-      <div id="unity-mark" aria-hidden="true"></div>
-      <div id="unity-loading-kana">日本語ライフ</div>
-      <div id="unity-loading-title">{{{ PRODUCT_NAME }}}</div>
-      <div id="unity-progress"><div id="unity-progress-bar"></div></div>
-      <div id="unity-loading-text">Loading…</div>
+      <div id="nl-stage">
+        <div id="nl-avatar" aria-hidden="true"><div id="nl-avatar-inner"></div></div>
+        <div id="nl-head">
+          <div id="unity-loading-kana">日本語ライフ</div>
+          <div id="unity-loading-title">{{{ PRODUCT_NAME }}}</div>
+          <div id="nl-tagline"></div>
+        </div>
+        <div id="unity-progress"><div id="unity-progress-bar"></div></div>
+        <div id="nl-status"><span id="unity-loading-text">Loading…</span><span id="nl-percent">0%</span></div>
+        <div id="nl-word">
+          <div id="nl-word-label"></div>
+          <div id="nl-word-ja"></div>
+          <div id="nl-word-romaji"></div>
+          <div id="nl-word-meaning"></div>
+          <div id="nl-tip"></div>
+        </div>
+      </div>
     </div>
     <button id="unity-fullscreen" type="button" hidden>Fullscreen</button>
     <div id="unity-orient" hidden>
@@ -109,15 +122,92 @@
       if (window.unityInstance && window.unityInstance.SetFullscreen) window.unityInstance.SetFullscreen(1);
     });
 
+    // ─── The loader: pictures of the town, the characters, a phrase to learn (TemplateData/art, LoadingArtBuilder) ───
+    var lang = ((navigator.language || "en").slice(0, 2)).toLowerCase();
+    function pick(vi, en, ja) { return lang === "vi" ? vi : lang === "ja" ? ja : en; }
+    var percentText = document.querySelector("#nl-percent");
+    var avatarRing = document.querySelector("#nl-avatar");
+    document.querySelector("#nl-tagline").textContent = pick("Sống ở Nhật, học tiếng Nhật — ngay trên trình duyệt.", "Live in Japan, learn Japanese — right in your browser.", "日本で暮らして、日本語を学ぼう。");
+    document.querySelector("#nl-word-label").textContent = pick("HỌC TRONG LÚC CHỜ · 今日のことば", "LEARN WHILE YOU WAIT · 今日のことば", "待つあいだに · 今日のことば");
+    var scenes = ["90-testsandbox", "20-stationdistrict", "30-sushirestaurant", "40-hibariclass", "35-hibariclinic", "50-gamecenter", "60-midoriisland", "65-phuquocisland", "45-homebedroom"];
+    var kids = ["kid-haruto", "kid-yui", "kid-sota", "kid-hina", "kid-riku", "kid-mio", "kid-yuto", "kid-sakura"];
+    var words = [
+      ["いってきます", "ittekimasu", "Con đi đây (khi ra khỏi nhà)", "I'm off (leaving home)"],
+      ["いただきます", "itadakimasu", "Mời cả nhà (trước khi ăn)", "Said before eating"],
+      ["きっぷを ください", "kippu o kudasai", "Cho tôi một vé", "A ticket, please"],
+      ["つぎは ミナトです", "tsugi wa Minato desu", "Ga tiếp theo là Minato", "The next stop is Minato"],
+      ["いくらですか", "ikura desu ka", "Bao nhiêu tiền?", "How much is it?"],
+      ["あたためますか", "atatamemasu ka", "Có cần hâm nóng không?", "Shall I heat it up?"],
+      ["おだいじに", "odaiji ni", "Chúc mau khoẻ", "Get well soon"],
+      ["おつかれさまでした", "otsukaresama deshita", "Anh chị vất vả rồi", "Thanks for your hard work"],
+      ["もう いちど おねがいします", "mō ichido onegai shimasu", "Xin nói lại một lần nữa", "Once more, please"],
+      ["うみが きれいですね", "umi ga kirei desu ne", "Biển đẹp quá nhỉ", "The sea is beautiful, isn't it"]
+    ];
+    var tips = [
+      ["Bấm vào ví ¥ để mở ngân hàng: hết tiền ăn có quỹ khẩn cấp không lãi.", "Click the ¥ wallet for the bank: an interest-free emergency fund if you run out of food money.", "財布¥から銀行へ。食費に困ったら無利子の緊急資金があります。"],
+      ["Nhiều người quanh bạn? Nhấn Q để đổi, hoặc bấm chuột vào người đó — bấm lần nữa để nói chuyện.", "People all around? Press Q to switch or click someone — click again to talk.", "人が多いときはQかクリック。もう一度クリックで話しかけます。"],
+      ["Phím Y mở Sổ tay: các địa điểm, bệnh và thuốc như ngoài đời.", "Y opens the Handbook: places, illnesses and real medicine.", "Yでハンドブック：場所・病気と薬。"],
+      ["Đi tàu từ ga Hibari: Gakuen-mae, Minato, Đảo Xanh, và sân bay đi Phú Quốc.", "Trains from Hibari: Gakuen-mae, Minato, Midori Island and the airport for Phú Quốc.", "ひばり駅から学園前・ミナト・みどり島、そして空港からフーコックへ。"]
+    ];
+    var reduce = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    var slideBox = document.querySelector("#nl-slides"), slides = [], slideAt = -1;
+    scenes.forEach(function (name) {
+      var img = new Image();
+      img.onload = function () {
+        var div = document.createElement("div");
+        div.className = "nl-slide";
+        div.style.backgroundImage = "url('TemplateData/art/" + name + ".jpg')";
+        slideBox.appendChild(div);
+        slides.push(div);
+        if (slides.length === 1) nextSlide();
+      };
+      img.src = "TemplateData/art/" + name + ".jpg";
+    });
+    function nextSlide() {
+      if (!slides.length) return;
+      if (slideAt >= 0) slides[slideAt].classList.remove("on");
+      slideAt = (slideAt + 1) % slides.length;
+      void slides[slideAt].offsetWidth; // restart the push-in
+      slides[slideAt].classList.add("on");
+    }
+    var faces = [], faceAt = -1, faceBox = document.querySelector("#nl-avatar-inner");
+    kids.forEach(function (name) {
+      var img = new Image();
+      img.alt = "";
+      img.onload = function () { faceBox.appendChild(img); faces.push(img); if (faces.length === 1) nextFace(); };
+      img.src = "TemplateData/art/" + name + ".png";
+    });
+    function nextFace() {
+      if (!faces.length) return;
+      if (faceAt >= 0) faces[faceAt].classList.remove("on");
+      faceAt = (faceAt + 1) % faces.length;
+      faces[faceAt].classList.add("on");
+    }
+    var wordAt = Math.floor(Math.random() * words.length), tipAt = Math.floor(Math.random() * tips.length);
+    function nextWord() {
+      var w = words[wordAt++ % words.length], t = tips[tipAt++ % tips.length];
+      document.querySelector("#nl-word-ja").textContent = w[0];
+      document.querySelector("#nl-word-romaji").textContent = w[1];
+      document.querySelector("#nl-word-meaning").textContent = lang === "vi" ? w[2] : w[3];
+      document.querySelector("#nl-tip").textContent = pick(t[0], t[1], t[2]);
+    }
+    nextWord();
+    var timers = [setInterval(nextSlide, reduce ? 12000 : 7000), setInterval(nextFace, 1800), setInterval(nextWord, 6500)];
+
     var script = document.createElement("script");
     script.src = loaderUrl;
     script.onload = function () {
       createUnityInstance(canvas, config, function (progress) {
         var pct = Math.round(progress * 100);
         bar.style.width = pct + "%";
-        loadingText.textContent = progress < 1 ? ("Loading " + pct + "%") : "Starting…";
+        percentText.textContent = pct + "%";
+        avatarRing.style.setProperty("--p", pct);
+        // Unity reports about 90% once the download is done; the rest is unpacking and starting the engine.
+        loadingText.textContent = progress < 0.9 ? pick("Đang tải dữ liệu game…", "Downloading the game…", "ゲームをダウンロード中…")
+          : progress < 1 ? pick("Đang giải nén…", "Unpacking…", "展開中…") : pick("Đang khởi động thị trấn…", "Starting the town…", "町を準備中…");
       }).then(function (instance) {
         loading.style.display = "none";
+        timers.forEach(clearInterval);
         fullscreen.hidden = false;
         window.unityInstance = instance;
         window.nihongoDprCap = dprCap;

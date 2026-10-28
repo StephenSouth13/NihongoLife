@@ -369,7 +369,23 @@ namespace NihongoLife.Player
             Thirst = Mathf.Clamp(progress.thirst, 0f, 100f);
             IsExhausted = CurrentEnergy <= 0f;
             Sleepiness = Mathf.Clamp(progress.sleepiness, 0f, 100f);
+            WakeSafely();
             SocialStanding.Load(progress);
+        }
+
+        /// <summary>
+        /// A save written while the player was starving, exhausted or fainted (a tab left open on the web, a cut-short
+        /// blackout) must not faint them the moment the game opens: a loaded game starts awake, fed enough to heal.
+        /// </summary>
+        private void WakeSafely()
+        {
+            const float floor = HealthyNeed + 10f;
+            Hunger = Mathf.Max(Hunger, floor);
+            Thirst = Mathf.Max(Thirst, floor);
+            Sleepiness = Mathf.Min(Sleepiness, 80f);
+            CurrentHealth = Mathf.Max(CurrentHealth, maxHealth * 0.4f);
+            if (CurrentEnergy <= 0f) { CurrentEnergy = maxEnergy * 0.3f; IsExhausted = false; }
+            _collapsed = false;
         }
 
         public void ReloadProgress()

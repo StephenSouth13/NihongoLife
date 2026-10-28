@@ -15,6 +15,7 @@ namespace NihongoLife.Core
         private TextMeshProUGUI _placeName;
         private TextMeshProUGUI _status;
         private Image _progressFill;
+        private NihongoLife.UI.LoadingCard _card;
         private bool _isLoading;
         private string _hostSceneName;
         private string _activeZoneSceneName;
@@ -102,7 +103,7 @@ namespace NihongoLife.Core
         {
             _isLoading = true;
             LockPlayer(true);
-            yield return FadeIn(Title(sceneName, displayName));
+            yield return FadeIn(sceneName, Title(sceneName, displayName));
             yield return SceneContentLoader.EnsureAvailable(sceneName, progress =>
                 SetProgress(Mathf.Clamp01(progress), NihongoLife.Core.Loc.T("Đang tải khu vực...", "Downloading the area...", "エリアをダウンロード中...")));
             if (!string.IsNullOrEmpty(SceneContentLoader.LastError))
@@ -138,7 +139,7 @@ namespace NihongoLife.Core
         {
             _isLoading = true;
             LockPlayer(true);
-            yield return FadeIn(Title(sceneName, displayName));
+            yield return FadeIn(sceneName, Title(sceneName, displayName));
 
             Scene host = SceneManager.GetActiveScene();
             if (!host.IsValid() || !host.isLoaded || string.Equals(host.name, sceneName, System.StringComparison.OrdinalIgnoreCase))
@@ -206,7 +207,7 @@ namespace NihongoLife.Core
         {
             _isLoading = true;
             LockPlayer(true);
-            yield return FadeIn(Title(sceneName, displayName));
+            yield return FadeIn(sceneName, Title(sceneName, displayName));
 
             Scene from = SceneManager.GetSceneByName(_activeZoneSceneName);
             Scene to = SceneManager.GetSceneByName(sceneName);
@@ -267,7 +268,7 @@ namespace NihongoLife.Core
         {
             _isLoading = true;
             LockPlayer(true);
-            yield return FadeIn(Title(sceneName, displayName));
+            yield return FadeIn(sceneName, Title(sceneName, displayName));
 
             string zoneName = string.IsNullOrWhiteSpace(_activeZoneSceneName) ? sceneName : _activeZoneSceneName;
             Scene zone = SceneManager.GetSceneByName(zoneName);
@@ -367,10 +368,10 @@ namespace NihongoLife.Core
             return false;
         }
 
-        private IEnumerator FadeIn(string displayName)
+        private IEnumerator FadeIn(string sceneName, string displayName)
         {
             EnsureOverlay();
-            _placeName.text = displayName;
+            _card.Show(sceneName, displayName);
             SetProgress(0f, NihongoLife.Core.Loc.T("Đang di chuyển...", "Travelling...", "移動中..."));
             _overlay.blocksRaycasts = true;
             if (MotionSettings.ReduceMotion)
@@ -414,7 +415,7 @@ namespace NihongoLife.Core
 
         private void SetProgress(float value, string message)
         {
-            if (_progressFill != null) _progressFill.fillAmount = Mathf.Clamp01(value);
+            if (_card != null) _card.SetProgress(value);
             if (_status != null) _status.text = message;
         }
 
@@ -443,68 +444,15 @@ namespace NihongoLife.Core
             scaler.uiScaleMode = CanvasScaler.ScaleMode.ScaleWithScreenSize;
             scaler.referenceResolution = new Vector2(1920f, 1080f);
 
-            var background = CreateImage(canvasGo.transform, "Background", new Color(0.018f, 0.025f, 0.028f, 1f));
-            Stretch(background.rectTransform);
             _overlay = canvasGo.AddComponent<CanvasGroup>();
             _overlay.alpha = 0f;
             _overlay.blocksRaycasts = false;
-
-            var accent = CreateImage(canvasGo.transform, "Accent", new Color(0.96f, 0.66f, 0.18f, 1f));
-            accent.rectTransform.anchorMin = new Vector2(0.5f, 0.5f);
-            accent.rectTransform.anchorMax = new Vector2(0.5f, 0.5f);
-            accent.rectTransform.sizeDelta = new Vector2(72f, 4f);
-            accent.rectTransform.anchoredPosition = new Vector2(0f, 52f);
-
-            _placeName = CreateText(canvasGo.transform, "PlaceName", new Vector2(0f, 108f), new Vector2(1100f, 80f), 38f);
-            _placeName.fontStyle = FontStyles.Bold;
-            _status = CreateText(canvasGo.transform, "Status", new Vector2(0f, -56f), new Vector2(700f, 40f), 17f);
-            _status.color = new Color(0.72f, 0.78f, 0.8f, 1f);
-
-            var track = CreateImage(canvasGo.transform, "ProgressTrack", new Color(0.12f, 0.15f, 0.16f, 1f));
-            track.rectTransform.anchorMin = track.rectTransform.anchorMax = new Vector2(0.5f, 0.5f);
-            track.rectTransform.sizeDelta = new Vector2(420f, 6f);
-            track.rectTransform.anchoredPosition = new Vector2(0f, -10f);
-            var fill = CreateImage(track.transform, "Fill", new Color(0.96f, 0.66f, 0.18f, 1f));
-            Stretch(fill.rectTransform);
-            fill.type = Image.Type.Filled;
-            fill.fillMethod = Image.FillMethod.Horizontal;
-            fill.fillOrigin = 0;
-            _progressFill = fill;
-        }
-
-        private static Image CreateImage(Transform parent, string name, Color color)
-        {
-            var go = new GameObject(name);
-            go.transform.SetParent(parent, false);
-            go.AddComponent<RectTransform>();
-            var image = go.AddComponent<Image>();
-            image.color = color;
-            return image;
-        }
-
-        private static TextMeshProUGUI CreateText(Transform parent, string name, Vector2 position, Vector2 size, float fontSize)
-        {
-            var go = new GameObject(name);
-            go.transform.SetParent(parent, false);
-            var rect = go.AddComponent<RectTransform>();
-            rect.anchorMin = rect.anchorMax = new Vector2(0.5f, 0.5f);
-            rect.anchoredPosition = position;
-            rect.sizeDelta = size;
-            var text = go.AddComponent<TextMeshProUGUI>();
-            text.fontSize = fontSize;
-            text.alignment = TextAlignmentOptions.Center;
-            text.color = Color.white;
-            text.enableAutoSizing = true;
-            text.fontSizeMin = 14f;
-            text.fontSizeMax = fontSize;
-            return text;
-        }
-
-        private static void Stretch(RectTransform rect)
-        {
-            rect.anchorMin = Vector2.zero;
-            rect.anchorMax = Vector2.one;
-            rect.offsetMin = rect.offsetMax = Vector2.zero;
+            // The destination's picture, its names, the player riding the progress bar and a phrase to learn.
+            _card = canvasGo.AddComponent<NihongoLife.UI.LoadingCard>();
+            _card.Build(NihongoLife.UI.NLUi.ResolveFont());
+            _placeName = _card.PlaceName;
+            _status = _card.Status;
+            _progressFill = _card.Fill;
         }
 
         private static string FriendlyName(string sceneName) => sceneName == "01_MainMenu" ? "NIHONGO LIFE" : Title(sceneName, null);

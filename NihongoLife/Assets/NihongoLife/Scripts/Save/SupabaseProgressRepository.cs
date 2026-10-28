@@ -391,6 +391,10 @@ namespace NihongoLife.Save
             var localHealth = local.illness ?? new NihongoLife.Health.HealthRecord();
             var cloudHealth = cloud.illness ?? new NihongoLife.Health.HealthRecord();
             merged.illness = localHealth.updatedTicks >= cloudHealth.updatedTicks ? localHealth : cloudHealth;
+            // Bank: follows the wallet's save (yen = cloud.yen) unless the other copy changed more recently.
+            var localBank = local.bank ?? new NihongoLife.Bank.BankRecord();
+            var cloudBank = cloud.bank ?? new NihongoLife.Bank.BankRecord();
+            merged.bank = localBank.updatedTicks > cloudBank.updatedTicks && cloud.yen == local.yen ? localBank : cloudBank;
             var localCareerState = local.career ?? new NihongoLife.Progression.CareerState();
             var cloudCareerState = cloud.career ?? new NihongoLife.Progression.CareerState();
             merged.career = localCareerState.updatedTicks > cloudCareerState.updatedTicks ? localCareerState : cloudCareerState;

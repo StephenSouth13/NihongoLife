@@ -299,6 +299,7 @@ namespace NihongoLife.World
             {
                 car.hitReadyAt = Time.time + 1.45f;
                 PlayerStatus.Instance?.ApplyHarm(hitDamage);
+                NihongoLife.Health.PlayerIllness.Hit(); // a car's knock leaves a bruise (Resources/Health/illnesses.json "bruise")
                 if (Time.time >= car.hornReadyAt - 1f) { Honk(car); car.hornReadyAt = Time.time + hornCooldown; }
             }
         }

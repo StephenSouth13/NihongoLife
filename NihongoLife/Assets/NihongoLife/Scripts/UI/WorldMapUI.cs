@@ -25,6 +25,8 @@ namespace NihongoLife.UI
             public Vector2 World;     // world X/Z, or NaN when only a pixel position is known
             public Vector2 Pixel;
             public Color Color;
+            /// <summary>A small marker without a label (a crowded map labels only its main places).</summary>
+            public bool Quiet;
             public bool HasWorld => !float.IsNaN(World.x);
             /// <summary>Scene behind this place (for unlocks and the guide), null for spots inside a scene.</summary>
             public string Scene => SceneOfType(Type);
@@ -58,6 +60,8 @@ namespace NihongoLife.UI
         private Transform _player;
         private TMP_FontAsset _font;
         private Vector2 _worldMin, _worldMax;
+        /// <summary>Real metres per world unit on this map (Phú Quốc is built at 1 unit = 100 m).</summary>
+        private float _metresPerUnit = 1f;
         private readonly List<MapPlace> _places = new List<MapPlace>();
         private readonly List<Rect> _labelRects = new List<Rect>();
         private readonly List<(MapPlace place, TextMeshProUGUI distance)> _rows = new List<(MapPlace, TextMeshProUGUI)>();
@@ -113,7 +117,13 @@ namespace NihongoLife.UI
             var layout = sidebar.GetComponent<VerticalLayoutGroup>();
             layout.childForceExpandHeight = false;
             NLUi.Label(sidebar, "Title", "ちめい  <size=75%><color=#A8B4C4>Địa điểm · bấm để đi tới</color></size>", 21f, NLUi.Text, _font, FontStyles.Bold);
-            _sidebarList = NLUi.Group(sidebar, "List", true, 6f);
+            // Many places (Phú Quốc has 31): the list scrolls inside the panel.
+            var listRoot = new GameObject("ListScroll", typeof(RectTransform), typeof(LayoutElement)).GetComponent<RectTransform>();
+            listRoot.SetParent(sidebar, false);
+            var listSize = listRoot.GetComponent<LayoutElement>();
+            listSize.flexibleHeight = 1f; listSize.preferredHeight = MapH - 60f;
+            _sidebarList = UiKit.Scroll(listRoot, "List", out var listScroll, 6f, new RectOffset(0, 10, 0, 4));
+            NLUi.Stretch((RectTransform)listScroll.transform);
 
             _coordinates = NLUi.Label(window, "Coordinates", "", 16f, NLUi.Muted, _font, FontStyles.Normal, TextAlignmentOptions.Left);
             NLUi.Anchor(_coordinates.rectTransform, new Vector2(0f, 0f), new Vector2(36f, 22f), new Vector2(1320f, 30f));
@@ -224,12 +234,14 @@ namespace NihongoLife.UI
             _rows.Clear();
             string scene = SceneManager.GetActiveScene().name;
             _location.text = L("Bạn đang ở: ", "You are in: ", "現在地: ") + WorldLocationCatalog.Get(scene).DisplayName;
+            _metresPerUnit = 1f;
             if (scene == WorldLocationCatalog.StationScene) StationMap();
             else if (scene == WorldLocationCatalog.SushiRestaurantScene) SushiMap();
             else if (scene == WorldLocationCatalog.SchoolScene) SchoolMap();
             else if (scene == WorldLocationCatalog.HomeBedroomScene) BedroomMap();
             else if (scene == WorldLocationCatalog.GameCenterScene) GameCenterMap();
             else if (scene == WorldLocationCatalog.ClinicScene) ClinicMap();
+            else if (scene == WorldLocationCatalog.PhuQuocIslandScene) PhuQuocIslandMap();
             else CityMap();
             DrawGrid();
             _labelRects.Clear();
@@ -261,6 +273,72 @@ namespace NihongoLife.UI
             AddWorld(L("Công viên Hibari", "Hibari Park", "ひばり公園"), "PARK", "園", -40f, 40f, new(.42f, .72f, .4f), "こうえん");
             AddWorld(L("Game Center Hibari", "Game Center Hibari", "ゲームセンター"), "ARCADE", "遊", -6f, -20.5f, new(.92f, .36f, .72f), "ゲーセン");
             AddWorld(L("Phòng khám Hibari", "Hibari Clinic", "ひばりクリニック"), "CLINIC", "医", -18f, -20.5f, new(.36f, .72f, .64f), "クリニック");
+        }
+
+        /// <summary>
+        /// Phú Quốc from the real map data (Resources/PhuQuoc/phu_quoc_map.json, OpenStreetMap): the coastline, the
+        /// places coloured by kind (beaches, towns, markets, nature…), the player where they stand.
+        /// </summary>
+        private void PhuQuocIslandMap()
+        {
+            _header.text = L("BẢN ĐỒ ĐẢO PHÚ QUỐC", "PHÚ QUỐC ISLAND MAP", "フーコック島 地図");
+            var map = NihongoLife.PhuQuoc.PhuQuocMap.Load();
+            var rootObject = GameObject.Find("PhuQuocIsland");
+            Vector3 origin = rootObject != null ? rootObject.transform.position : new Vector3(4000f, 0f, 0f);
+            var outline = map.OutlineWorld();
+            if (outline.Length < 3) { CityMap(); return; }
+            _metresPerUnit = map.metersPerUnit;
+            Vector2 min = outline[0], max = outline[0];
+            foreach (var p in outline) { min = Vector2.Min(min, p); max = Vector2.Max(max, p); }
+            // Keep the island's real proportions: widen the shorter side to the map's aspect.
+            Vector2 centre = (min + max) * 0.5f, size = (max - min) * 1.08f;
+            float aspect = (MapW - Inset) / (MapH - Inset);
+            if (size.x / size.y < aspect) size.x = size.y * aspect; else size.y = size.x / aspect;
+            _worldMin = new Vector2(origin.x, origin.z) + centre - size * 0.5f;
+            _worldMax = new Vector2(origin.x, origin.z) + centre + size * 0.5f;
+
+            var sea = NLUi.Panel(_mapArea, "Sea", new Color(0.12f, 0.36f, 0.5f, 1f));
+            sea.GetComponent<Image>().raycastTarget = false;
+            NLUi.Anchor(sea, new Vector2(0.5f, 0.5f), Vector2.zero, new Vector2(MapW - Inset * 0.5f, MapH - Inset * 0.5f));
+            var land = new GameObject("Coast", typeof(RectTransform), typeof(UiPolygon)).GetComponent<UiPolygon>();
+            land.transform.SetParent(_mapArea, false);
+            NLUi.Anchor(land.rectTransform, new Vector2(0.5f, 0.5f), Vector2.zero, Vector2.zero);
+            land.color = new Color(0.36f, 0.6f, 0.36f, 1f);
+            land.raycastTarget = false;
+            var points = new List<Vector2>();
+            foreach (var p in outline) points.Add(MapPos(origin.x + p.x, origin.z + p.y));
+            land.SetPoints(points);
+            foreach (var place in map.places)
+            {
+                var world = origin + map.ToWorld(place);
+                var (glyph, color) = PhuQuocStyle(place.category, place.id);
+                AddWorld(place.Name, "PQ_" + place.category.ToUpperInvariant(), glyph, world.x, world.z, color, place.nameJa);
+                // Label only the main places (towns, markets, the restaurant, ports and the airport); the rest are dots.
+                _places[_places.Count - 1].Quiet = place.id != "ganh_ngon" && place.category != "town" && place.category != "market" && place.category != "transport";
+            }
+        }
+
+        private static (string glyph, Color color) PhuQuocStyle(string category, string id)
+        {
+            if (id == "ganh_ngon") return ("食", new Color(0.96f, 0.6f, 0.2f));
+            if (id.Contains("airport")) return ("空", new Color(0.3f, 0.62f, 0.94f));
+            switch (category)
+            {
+                case "beach": return ("浜", new Color(0.98f, 0.86f, 0.52f));
+                case "town": return ("町", new Color(0.94f, 0.42f, 0.36f));
+                case "market": return ("市", new Color(0.94f, 0.68f, 0.25f));
+                case "restaurant": return ("食", new Color(0.96f, 0.6f, 0.2f));
+                case "transport": return ("港", new Color(0.3f, 0.62f, 0.94f));
+                case "nature": return ("森", new Color(0.3f, 0.7f, 0.42f));
+                case "farm": return ("農", new Color(0.62f, 0.76f, 0.38f));
+                case "village": return ("村", new Color(0.72f, 0.62f, 0.5f));
+                case "history": return ("史", new Color(0.75f, 0.35f, 0.55f));
+                case "landmark": return ("名", new Color(0.85f, 0.7f, 0.4f));
+                case "factory": return ("工", new Color(0.6f, 0.62f, 0.66f));
+                case "entertainment": return ("遊", new Color(0.92f, 0.36f, 0.72f));
+                case "island": return ("島", new Color(0.36f, 0.72f, 0.64f));
+                default: return ("・", NLUi.Muted);
+            }
         }
 
         private void ClinicMap()
@@ -295,7 +373,7 @@ namespace NihongoLife.UI
             Road(new(0, 10), new(MapW - 60, 120)); Road(new(0, -110), new(MapW - 60, 52));
             AddPixel(L("Máy bán vé", "Ticket machine", "券売機"), "TICKETS", "券", new(-330, 170), new(.22f, .7f, .78f));
             AddPixel(L("Cổng soát vé", "Ticket gate", "改札"), "GATE", "改", new(-90, 90), new(.94f, .68f, .25f));
-            AddPixel(L("Sân ga số 1 · đi Midori", "Platform 1 · to Midori", "1番線 みどり行き"), "PLATFORM", "線", new(190, -70), new(.3f, .62f, .94f));
+            AddPixel(L("Sân ga số 2 · đi Sân bay (qua Midori)", "Platform 2 · to the Airport (via Midori)", "2番線 空港行き"), "PLATFORM", "線", new(190, -70), new(.3f, .62f, .94f));
             AddPixel(L("Lối ra thành phố", "City exit", "出口"), "EXIT", "出", new(360, 170), new(.45f, .78f, .48f));
         }
 
@@ -382,9 +460,11 @@ namespace NihongoLife.UI
         {
             bool locked = place.Locked;
             var marker = NLUi.Panel(_mapArea, "Place_" + place.Type, locked ? new Color(0.42f, 0.45f, 0.5f) : place.Color);
-            NLUi.Anchor(marker, new Vector2(0.5f, 0.5f), place.Pixel, new Vector2(46f, 46f));
+            float size = place.Quiet ? 26f : 46f;
+            NLUi.Anchor(marker, new Vector2(0.5f, 0.5f), place.Pixel, new Vector2(size, size));
             marker.GetComponent<Image>().raycastTarget = false;
-            NLUi.Stretch(NLUi.Label(marker, "Glyph", place.Glyph, 26f, new Color(0.08f, 0.1f, 0.12f), _font, FontStyles.Bold, TextAlignmentOptions.Center).rectTransform);
+            NLUi.Stretch(NLUi.Label(marker, "Glyph", place.Glyph, size * 0.56f, new Color(0.08f, 0.1f, 0.12f), _font, FontStyles.Bold, TextAlignmentOptions.Center).rectTransform);
+            if (place.Quiet) return;
             string text = string.IsNullOrEmpty(place.Short) ? place.Name : place.Short;
             if (locked) text += NihongoLife.Core.Loc.T(" · khóa", " · locked", " · 未開放");
             var label = NLUi.Pill(marker, "Label", text, _font, new Color(0.05f, 0.07f, 0.09f, 0.88f), NLUi.Text, 15f);
@@ -465,7 +545,10 @@ namespace NihongoLife.UI
             var label = _playerMarker.Find("Label");
             if (label != null) label.rotation = Quaternion.identity;
             foreach (var (place, distance) in _rows)
-                distance.text = place.HasWorld ? $"{Vector2.Distance(p, place.World):0}m" : string.Empty;
+            {
+                float metres = place.HasWorld ? Vector2.Distance(p, place.World) * _metresPerUnit : 0f;
+                distance.text = !place.HasWorld ? string.Empty : metres >= 1000f ? $"{metres / 1000f:0.0}km" : $"{metres:0}m";
+            }
             _coordinates.text = $"{L("Vị trí", "Position", "位置")}  X {_player.position.x:0.0}  Z {_player.position.z:0.0}     ·     " +
                                 L("Bấm vào bản đồ hoặc danh sách để tự đi tới", "Click the map or a place to walk there", "地図か場所をクリックすると歩いて行きます") +
                                 $"     ·     M / Esc: {L("đóng", "close", "閉じる")}";

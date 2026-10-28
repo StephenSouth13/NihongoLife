@@ -103,6 +103,8 @@ namespace NihongoLife.Data
         public NihongoLife.Notebook.NotebookRecord notebook = new NihongoLife.Notebook.NotebookRecord();
         /// <summary>Illnesses, vaccinations and the day's work load (Health/PlayerIllness, Resources/Health/illnesses.json).</summary>
         public NihongoLife.Health.HealthRecord illness = new NihongoLife.Health.HealthRecord();
+        /// <summary>Loans, the deferred clinic bill and the credit score (Bank/BankService, Resources/Bank/bank.json).</summary>
+        public NihongoLife.Bank.BankRecord bank = new NihongoLife.Bank.BankRecord();
         /// <summary>In-game calendar. False on older saves so the first launch does not jump the clock.</summary>
         public bool calendarStarted;
         public int calendarDay;

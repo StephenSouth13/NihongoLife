@@ -28,54 +28,144 @@ html, body {
 #unity-loading {
   position: absolute;
   inset: 0;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  background:
-    radial-gradient(ellipse at 50% 18%, rgba(242, 193, 78, 0.16), transparent 46%),
-    #0e1116;
+  overflow: hidden;
+  background: #0e1116;
   pointer-events: none;
+  z-index: 2;
 }
-#unity-mark {
-  width: 72px;
-  height: 72px;
-  border-radius: 50%;
+/* Real pictures of the town, crossfading with a slow push-in. */
+.nl-slide {
+  position: absolute;
+  inset: -4%;
+  background-size: cover;
+  background-position: center;
+  opacity: 0;
+  transform: scale(1.02);
+  transition: opacity 1.6s ease;
+}
+.nl-slide.on {
+  opacity: 1;
+  animation: kenburns 9s ease-out forwards;
+}
+#unity-loading::after {
+  content: "";
+  position: absolute;
+  inset: 0;
   background:
-    radial-gradient(circle at 50% 42%, #f2c14e 0 28%, transparent 30%),
-    linear-gradient(#f2c14e, #f2c14e) center 78% / 46% 8% no-repeat;
-  box-shadow: 0 0 32px rgba(242, 193, 78, 0.35);
-  margin-bottom: 18px;
+    radial-gradient(ellipse at 30% 40%, rgba(242, 193, 78, 0.14), transparent 55%),
+    linear-gradient(180deg, rgba(10, 13, 18, 0.35) 0%, rgba(10, 13, 18, 0.55) 45%, rgba(10, 13, 18, 0.94) 100%);
 }
+#nl-stage {
+  position: absolute;
+  left: max(24px, 6vw);
+  right: max(24px, 6vw);
+  bottom: calc(max(28px, 7vh) + env(safe-area-inset-bottom));
+  z-index: 2;
+  display: grid;
+  grid-template-columns: auto 1fr;
+  grid-template-areas: "avatar head" "bar bar" "status status" "word word";
+  column-gap: 22px;
+  row-gap: 10px;
+  align-items: center;
+}
+/* The progress ring around a rotating portrait of the playable characters. */
+#nl-avatar {
+  grid-area: avatar;
+  --p: 0;
+  width: 104px;
+  height: 104px;
+  border-radius: 50%;
+  padding: 5px;
+  background: conic-gradient(#f2c14e calc(var(--p) * 1%), rgba(255, 255, 255, 0.14) 0);
+  box-shadow: 0 0 40px rgba(242, 193, 78, 0.35);
+  box-sizing: border-box;
+}
+#nl-avatar-inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  overflow: hidden;
+  background: #1c2533;
+}
+#nl-avatar-inner img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0;
+  transform: translateY(6px) scale(1.04);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+#nl-avatar-inner img.on { opacity: 1; transform: none; }
+#nl-head { grid-area: head; min-width: 0; }
 #unity-loading-kana {
-  letter-spacing: 0.28em;
-  font-size: 13px;
-  opacity: 0.72;
-  margin-bottom: 6px;
+  letter-spacing: 0.32em;
+  font-size: 14px;
+  color: #f2c14e;
+  margin-bottom: 4px;
 }
 #unity-loading-title {
-  font-size: clamp(26px, 4vw, 40px);
-  letter-spacing: 0.08em;
-  margin-bottom: 22px;
+  font-size: clamp(30px, 5.2vw, 58px);
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  line-height: 1.05;
+  text-shadow: 0 4px 24px rgba(0, 0, 0, 0.55);
 }
+#nl-tagline { margin-top: 6px; font-size: 15px; opacity: 0.8; }
 #unity-progress {
-  width: min(420px, 72vw);
+  grid-area: bar;
+  width: 100%;
   height: 8px;
-  background: rgba(255, 255, 255, 0.12);
+  margin-top: 8px;
+  background: rgba(255, 255, 255, 0.14);
   border-radius: 99px;
   overflow: hidden;
 }
 #unity-progress-bar {
   width: 0;
   height: 100%;
+  border-radius: 99px;
   background: linear-gradient(90deg, #c9842a, #f2c14e 40%, #fff4cc 50%, #f2c14e 60%, #c9842a);
   background-size: 200% 100%;
   animation: shine 1.6s linear infinite;
+  transition: width 0.35s ease;
 }
-#unity-loading-text {
-  margin-top: 14px;
+#nl-status {
+  grid-area: status;
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
   font-size: 14px;
-  opacity: 0.82;
+}
+#unity-loading-text { opacity: 0.85; }
+#nl-percent { color: #f2c14e; font-weight: 700; }
+/* Learn while it loads: a Japanese phrase and a tip. */
+#nl-word {
+  grid-area: word;
+  margin-top: 10px;
+  padding: 14px 18px;
+  border-radius: 16px;
+  background: rgba(10, 14, 20, 0.62);
+  border: 1px solid rgba(242, 193, 78, 0.25);
+  backdrop-filter: blur(6px);
+  max-width: 640px;
+  transition: opacity 0.5s ease;
+}
+#nl-word-label { font-size: 12px; letter-spacing: 0.18em; color: #f2c14e; font-weight: 700; }
+#nl-word-ja { font-size: clamp(24px, 3.2vw, 34px); font-weight: 700; margin-top: 4px; }
+#nl-word-romaji { font-style: italic; opacity: 0.75; font-size: 14px; }
+#nl-word-meaning { color: #ffe9b8; font-size: 16px; margin-top: 2px; }
+#nl-tip { margin-top: 8px; font-size: 13px; opacity: 0.72; line-height: 1.4; }
+@keyframes kenburns {
+  from { transform: scale(1.02) translate(0, 0); }
+  to { transform: scale(1.12) translate(-1.5%, -1%); }
+}
+@media (max-width: 640px) {
+  #nl-avatar { width: 78px; height: 78px; }
+  #nl-word { padding: 10px 14px; }
+  #nl-tip { display: none; }
 }
 #unity-fullscreen {
   position: absolute;
@@ -140,6 +230,7 @@ html, body {
 }
 .petal {
   position: absolute;
+  z-index: 1;
   top: -20px;
   left: var(--x);
   width: var(--s);
@@ -161,4 +252,5 @@ html, body {
 @media (prefers-reduced-motion: reduce) {
   .petal { animation: none; display: none; }
   #unity-progress-bar { animation: none; }
+  .nl-slide.on { animation: none; }
 }

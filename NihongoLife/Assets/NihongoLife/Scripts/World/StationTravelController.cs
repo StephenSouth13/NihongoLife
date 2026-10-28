@@ -29,7 +29,8 @@ namespace NihongoLife.World
     }
 
     /// <summary>
-    /// Hibari Station: one line, platform 2, ひばり → がくえんまえ (¥180) → ミナト (¥320) → みどりじま (¥450, island terminus).
+    /// Hibari Station: one line, platform 2, ひばり → がくえんまえ (¥180) → ミナト (¥320) → みどりじま (¥450) → くうこう
+    /// (¥1,500 with the flight: alighting there flies the player to Phú Quốc, in front of Gánh Ngon).
     /// Kimura at the counter or the ticket machine sells the ticket, the gate checks it, the train is
     /// called in and holds its doors for a validated passenger, and the ride stops at every station.
     /// Alighting at Gakuen-mae lands in front of Hibari School, Minato in front of Sushi Hibari
@@ -82,6 +83,8 @@ namespace NihongoLife.World
             new Stop("gakuen", "がくえんまえ", "Gakuen-mae", "Trường Nhật ngữ Hibari", "Hibari Japanese School", "ひばり日本語学校", WorldLocationCatalog.SchoolScene, WorldLocationCatalog.SchoolEntrance, 180),
             new Stop("minato", "ミナト", "Minato", "phố cảng · Sushi Hibari", "harbour town · Sushi Hibari", "みなと町・ひばり寿司", WorldLocationCatalog.SushiRestaurantScene, WorldLocationCatalog.SushiEntrance, 320),
             new Stop("midori", "みどりじま", "Midori Island", "Đảo Xanh · nông trại", "Midori Island · farm", "みどりじま・農場", WorldLocationCatalog.MidoriIslandScene, WorldLocationCatalog.MidoriStation, 450),
+            // The terminus: Hibari Airport across the island; the fare includes the flight to Phú Quốc (PQC).
+            new Stop("airport", "くうこう", "Hibari Airport", "Sân bay · bay đi Phú Quốc", "Airport · flight to Phú Quốc", "空港・フーコック行き", WorldLocationCatalog.PhuQuocIslandScene, WorldLocationCatalog.PhuQuocArrival, 1500),
         };
 
         public const string Destination = "ミナト";
@@ -188,6 +191,7 @@ namespace NihongoLife.World
             EnsureStationStaff();
             NormalizeStationInteractions();
             if (GetComponent<StationCarriageLife>() == null) gameObject.AddComponent<StationCarriageLife>();
+            if (GetComponent<PlatformCrowd>() == null) gameObject.AddComponent<PlatformCrowd>();
             RefreshHud();
         }
 
@@ -222,7 +226,7 @@ namespace NihongoLife.World
                 if (Phase > boardingWindow + 12f && Phase < serviceInterval - 12f)
                 {
                     _serviceClock += (serviceInterval - 12f) - Phase; // call the next train in now
-                    Announce($"まもなく、{Platform}ばんせんに みどりじまゆきが まいります。", NihongoLife.Core.Loc.Gloss($"Tàu đi Đảo Xanh (qua Gakuen-mae, Minato) sắp vào sân ga số {Platform}.", $"The train for Midori Island (via Gakuen-mae, Minato) is arriving at platform {Platform}."));
+                    Announce($"まもなく、{Platform}ばんせんに くうこうゆきが まいります。", NihongoLife.Core.Loc.Gloss($"Tàu đi Sân bay (qua Gakuen-mae, Minato, Đảo Xanh) sắp vào sân ga số {Platform}.", $"The train for the Airport (via Gakuen-mae, Minato, Midori Island) is arriving at platform {Platform}."));
                 }
                 if (Phase < boardingWindow && Phase + dt >= boardingWindow - 2f) return; // hold the doors
             }

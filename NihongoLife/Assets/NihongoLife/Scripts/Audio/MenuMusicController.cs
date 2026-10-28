@@ -18,10 +18,16 @@ namespace NihongoLife.Audio
 
         private void Start()
         {
-            AudioClip authored = Resources.Load<AudioClip>(ResourcePath);
+            AudioClip authored = WebAudioStore.Get(ResourcePath);
             if (authored != null)
             {
                 Play(authored);
+                return;
+            }
+            if (WebAudioStore.IsPending(ResourcePath))
+            {
+                // The web build downloads the theme after the page: it starts as soon as it arrives.
+                StartCoroutine(WebAudioStore.WaitFor(ResourcePath, 30f, clip => { if (clip != null && !_stopped) Play(clip); }));
                 return;
             }
 

@@ -121,6 +121,7 @@ namespace NihongoLife.Health
                 foreach (var v in new[] { i.relief, i.medicineShorten, i.clinicShorten, i.earlyClinicShorten }) if (v < 0f || v > 1f) errors.Add(at + "fractions must be 0…1");
                 foreach (var v in new[] { i.move, i.energy, i.sleepiness, i.thirst, i.work }) if (v <= 0f) errors.Add(at + "multipliers must be > 0");
                 if (i.chance > 0f && i.scenes.Length == 0) errors.Add(at + "a chance needs scenes where it is caught");
+                foreach (var s in i.scenes) if (!WorldLocationCatalog.Has(s)) errors.Add(at + "unknown scene " + s + " (a scene name from WorldLocationCatalog)");
             }
             var medicineIds = new HashSet<string>();
             foreach (var m in medicines)

@@ -241,6 +241,12 @@ namespace NihongoLife.Health
             if (state.illnesses.Count != before) Save();
         }
 
+        /// <summary>Hit by a car: a bruise (first aid RICE, a patch, the clinic for an X-ray).</summary>
+        public static void Hit()
+        {
+            if (Triggers && !Has("bruise")) Catch("bruise");
+        }
+
         /// <summary>Food eaten when already full: indigestion.</summary>
         public static void Ate(float hungerBefore, float food)
         {

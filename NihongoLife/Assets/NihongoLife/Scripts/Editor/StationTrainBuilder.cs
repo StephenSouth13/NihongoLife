@@ -24,7 +24,7 @@ namespace NihongoLife.EditorTools
     /// Only the TrainCarriageInterior hierarchy is touched; the rest of the station (and any manual edits)
     /// stays as saved. Idempotent: superseded carriage pieces are removed before the new ones are built.
     /// </summary>
-    public static class StationTrainBuilder
+    public static partial class StationTrainBuilder
     {
         public const string ScenePath = "Assets/NihongoLife/Scenes/20_StationDistrict.unity";
         private const string MatDir = "Assets/NihongoLife/Materials/Train";
@@ -418,11 +418,13 @@ namespace NihongoLife.EditorTools
 
             var statics = Group(scenery, "Static");
             Block(statics, "TrackBed", new Vector3(0f, -1.05f, 0f), new Vector3(500f, 0.1f, 6f), _gravel, false);
-            Block(statics, "Ground_North", new Vector3(0f, -1.12f, 70f), new Vector3(500f, 0.1f, 134f), _grass, false);
-            Block(statics, "Ground_South", new Vector3(0f, -1.1f, -14f), new Vector3(500f, 0.1f, 22f), _grass, false);
             Block(statics, "Sea", new Vector3(0f, -1.3f, -160f), new Vector3(700f, 0.1f, 280f), _sea, false);
-            Block(statics, "SeaWall", new Vector3(0f, -1.15f, -25.2f), new Vector3(500f, 0.4f, 0.6f), _gravel, false);
             Block(statics, "FarHills", new Vector3(0f, 7f, 230f), new Vector3(700f, 18f, 20f), _hillFar, false);
+            // Hibari's own ground (each leg has its own: the harbour has an apron and water, the bridge only sea).
+            var hibariGround = Group(scenery, "Static_hibari");
+            Block(hibariGround, "Ground_North", new Vector3(0f, -1.12f, 70f), new Vector3(500f, 0.1f, 134f), _grass, false);
+            Block(hibariGround, "Ground_South", new Vector3(0f, -1.1f, -14f), new Vector3(500f, 0.1f, 22f), _grass, false);
+            Block(hibariGround, "SeaWall", new Vector3(0f, -1.15f, -25.2f), new Vector3(500f, 0.4f, 0.6f), _gravel, false);
 
             // Near the track: catenary masts and wire, a low concrete fence on the north side.
             var near = Group(scenery, "Layer_Near");
@@ -497,9 +499,21 @@ namespace NihongoLife.EditorTools
             var component = scenery.gameObject.AddComponent<TrainWindowScenery>();
             component.Configure(17f,
                 new TrainWindowScenery.Layer { root = near, parallax = 1f, loopWidth = 120f },
-                new TrainWindowScenery.Layer { root = fields, parallax = 1f, loopWidth = 120f },
-                new TrainWindowScenery.Layer { root = town, parallax = 1f, loopWidth = 150f },
                 new TrainWindowScenery.Layer { root = far, parallax = 1f, loopWidth = 240f });
+            // Hibari → Gakuen-mae: the town's houses and the paddies. The other legs: StationTrainBuilder.Route.cs.
+            var hibari = Group(scenery, "Theme_hibari");
+            fields.SetParent(hibari, true);
+            town.SetParent(hibari, true);
+            var themes = new List<TrainWindowScenery.Theme>
+            {
+                new TrainWindowScenery.Theme { id = "hibari", root = hibari, statics = hibariGround, layers = new List<TrainWindowScenery.Layer>
+                {
+                    new TrainWindowScenery.Layer { root = fields, loopWidth = 120f },
+                    new TrainWindowScenery.Layer { root = town, loopWidth = 150f },
+                }},
+            };
+            BuildRoute(scenery, component, themes, random);
+            foreach (var r in scenery.GetComponentsInChildren<Renderer>(true)) { r.shadowCastingMode = ShadowCastingMode.Off; r.receiveShadows = true; }
         }
 
         private static void PlaceKenney(Transform parent, string model, Vector3 position, float yaw, float targetHeight)

@@ -87,8 +87,12 @@ namespace NihongoLife.Audio
                 gain = Mathf.Max(0f, gain - speed);
                 if (gain <= 0f)
                 {
+                    // The web build fetches music on demand (WebAudioStore): stay quiet until it has arrived.
+                    string path = string.IsNullOrEmpty(want) ? null : $"Audio/{folder}/{want}";
+                    var next = path != null ? WebAudioStore.Get(path) : null;
+                    if (next == null && WebAudioStore.IsPending(path)) { source.volume = 0f; return; }
                     source.Stop();
-                    source.clip = string.IsNullOrEmpty(want) ? null : Resources.Load<AudioClip>($"Audio/{folder}/{want}");
+                    source.clip = next;
                     if (source.clip != null) source.Play();
                     started();
                 }

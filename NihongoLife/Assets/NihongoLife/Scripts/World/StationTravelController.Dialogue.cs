@@ -43,10 +43,11 @@ namespace NihongoLife.World
                     Choice("ミナトえきへ いきたいです。", ("Tôi muốn đến ga Minato.", "I'd like to go to Minato Station."), "st_fare_minato"),
                     Choice("がくえんまえへ いきたいです。", ("Tôi muốn đến ga Gakuen-mae.", "I'd like to go to Gakuen-mae Station."), "st_fare_gakuen"),
                     Choice("みどりじまへ いきたいです。", ("Tôi muốn đến Đảo Xanh (Midori).", "I'd like to go to Midori Island."), "st_fare_midori"),
+                    Choice("くうこうへ いきたいです。", ("Tôi muốn ra sân bay (bay đi Phú Quốc).", "I'd like to go to the airport (flight to Phú Quốc)."), "st_fare_airport"),
                     Choice("ミナト、どこ？", ("Minato, đâu? (cộc lốc)", "Minato, where? (blunt)"), "st_polite"),
                     Choice("すみません、だいじょうぶです。", ("Xin lỗi, không cần đâu ạ.", "Sorry, I'm fine, thanks."), "st_bye")),
                 Line_("st_polite", staff, "「〜へ いきたいです」と いうと ていねいですよ。", "「〜へ いきたいです」と いうと ていねいですよ。", ("Nói 「〜へ いきたいです」 sẽ lịch sự hơn đó.", "Saying 「〜へ いきたいです」 is more polite."), "st_hello"),
-                FareLine("minato", staff), FareLine("gakuen", staff), FareLine("midori", staff),
+                FareLine("minato", staff), FareLine("gakuen", staff), FareLine("midori", staff), FareLine("airport", staff),
                 Line_("st_wrong", staff, $"いいえ、{Platform}ばんせん です。3ばんせんは はんたいほうこう ですよ。", "いいえ、にばんせん です。", ($"Không, là sân ga số {Platform}. Số 3 là chiều ngược lại đó.", $"No, it's platform {Platform}. Platform 3 goes the other way."), "st_hello"),
                 Line_("st_machine", staff, "では、あちらの けんばいきで どうぞ。", "では、あちらの けんばいきで どうぞ。", ("Vậy mời quý khách mua ở máy bán vé đằng kia.", "Then please buy one at the ticket machine over there."), null),
                 Line_("st_bye", staff, "はい、どうぞ おきをつけて。", "はい、どうぞ おきをつけて。", ("Vâng, quý khách đi cẩn thận.", "Certainly. Have a safe trip."), null),
@@ -64,7 +65,7 @@ namespace NihongoLife.World
         private ScenarioNode FareLine(string stopId, string staff)
         {
             Stop stop = System.Array.Find(Line, s => s.Id == stopId);
-            string yenReading = stop.Price switch { 320 => "さんびゃくにじゅうえん", 450 => "よんひゃくごじゅうえん", _ => "ひゃくはちじゅうえん" };
+            string yenReading = stop.Price switch { 320 => "さんびゃくにじゅうえん", 450 => "よんひゃくごじゅうえん", 1500 => "せんごひゃくえん", _ => "ひゃくはちじゅうえん" };
             return Line_("st_fare_" + stopId, staff, $"{stop.Ja}までは {stop.Price}えん、{Platform}ばんせん です。きっぷを おかいに なりますか。",
                 $"{stop.Ja}までは {yenReading}、にばんせん です。", ($"Đến {stop.Vi} là {stop.Price} yên, sân ga số {Platform}. Quý khách mua vé luôn không ạ?", $"To {stop.Vi} it's {stop.Price} yen, platform {Platform}. Would you like a ticket now?"), null,
                 Choice("きっぷを いちまい ください。", ($"Cho tôi một vé ạ. (¥{stop.Price})", $"One ticket, please. (¥{stop.Price})"), "buy:" + stopId),
