@@ -1,0 +1,885 @@
+{
+  "schema": "nihongolife.medical-training.v1",
+  "noteVi": "Ca lâm sàng của phòng đào tạo y khoa (研修室) ở phòng khám Hibari. Mỗi ca: chẩn đoán đúng rồi xử trí đúng hướng dẫn. Nội dung theo hướng dẫn y khoa Nhật — xem Docs/HEALTH_SOURCES.md.",
+  "knowledgePerCase": 15,
+  "cases": [
+    {
+      "id": "case_cold",
+      "illness": "cold",
+      "glyph": "風",
+      "titleVi": "Sốt nhẹ, sổ mũi, đau họng",
+      "titleEn": "Mild fever, runny nose, sore throat",
+      "titleJa": "かぜの しょうじょう",
+      "specialtyVi": "Nội tổng quát (総合内科)",
+      "specialtyEn": "General medicine (総合内科)",
+      "specialtyJa": "総合内科",
+      "patientJa": "2日まえから のどが いたくて、はなみずが でます。ねつは 37.5どです。",
+      "findingsVi": "Nam 20 tuổi. Sốt 37,5 °C, họng đỏ nhẹ, nghe phổi bình thường, ăn uống được. Không khó thở.",
+      "findingsEn": "Man, 20. 37.5 °C, slightly red throat, clear lungs, eating and drinking. No breathlessness.",
+      "diagnosis": [
+        {
+          "ja": "かぜ（急性上気道炎）",
+          "vi": "Cảm lạnh (viêm đường hô hấp trên do virus)",
+          "en": "Common cold (viral upper respiratory infection)",
+          "correct": true
+        },
+        {
+          "ja": "細菌性肺炎",
+          "vi": "Viêm phổi do vi khuẩn",
+          "en": "Bacterial pneumonia",
+          "whyVi": "Phổi nghe bình thường, không khó thở, sốt nhẹ — không giống viêm phổi.",
+          "whyEn": "Clear lungs, no breathlessness, mild fever — not pneumonia."
+        },
+        {
+          "ja": "熱中症",
+          "vi": "Say nắng",
+          "en": "Heatstroke",
+          "whyVi": "Không có tiếp xúc nóng; đây là triệu chứng mũi họng.",
+          "whyEn": "No heat exposure; these are nose and throat symptoms."
+        }
+      ],
+      "treatment": [
+        {
+          "ja": "安静・水分・必要なら解熱鎮痛薬",
+          "vi": "Nghỉ ngơi, uống đủ nước, thuốc hạ sốt giảm đau khi cần",
+          "en": "Rest, fluids, a fever/pain reliever if needed",
+          "correct": true
+        },
+        {
+          "ja": "抗菌薬を出す",
+          "vi": "Kê kháng sinh",
+          "en": "Prescribe antibiotics",
+          "whyVi": "Cảm lạnh do virus — kháng sinh không có tác dụng và gây kháng thuốc.",
+          "whyEn": "Colds are viral — antibiotics don't work and breed resistance."
+        },
+        {
+          "ja": "すぐ点滴",
+          "vi": "Truyền dịch ngay",
+          "en": "An IV drip at once",
+          "whyVi": "Bệnh nhân vẫn ăn uống được — không cần truyền dịch.",
+          "whyEn": "The patient eats and drinks — no drip needed."
+        }
+      ],
+      "redFlagsVi": "Tái khám nếu sốt quá 3–4 ngày, khó thở, đau ngực, li bì — có thể là viêm phổi hoặc cúm.",
+      "redFlagsEn": "Come back if the fever lasts over 3–4 days, or with breathlessness, chest pain or drowsiness — it may be pneumonia or flu.",
+      "sourceVi": "Bộ Y tế, Lao động và Phúc lợi Nhật (厚生労働省) — 抗微生物薬適正使用の手引き (sử dụng kháng sinh hợp lý)."
+    },
+    {
+      "id": "case_flu",
+      "illness": "flu",
+      "glyph": "菌",
+      "titleVi": "Sốt cao đột ngột mùa đông",
+      "titleEn": "Sudden high fever in winter",
+      "titleJa": "きゅうな こうねつ",
+      "specialtyVi": "Nội tổng quát (内科)",
+      "specialtyEn": "Internal medicine (内科)",
+      "specialtyJa": "内科",
+      "patientJa": "きのうの よるから 39どの ねつが あって、からだじゅうが いたいです。クラスで はやって います。",
+      "findingsVi": "Nữ 17 tuổi. Sốt 39,2 °C, đau cơ toàn thân, khởi phát cách đây 20 giờ. Lớp học có nhiều bạn nghỉ vì cúm.",
+      "findingsEn": "Girl, 17. 39.2 °C, aching all over, started 20 hours ago. Many classmates are off with flu.",
+      "diagnosis": [
+        {
+          "ja": "インフルエンザ（迅速検査陽性）",
+          "vi": "Cúm (xét nghiệm nhanh dương tính)",
+          "en": "Influenza (positive rapid test)",
+          "correct": true
+        },
+        {
+          "ja": "かぜ",
+          "vi": "Cảm lạnh thông thường",
+          "en": "A common cold",
+          "whyVi": "Sốt 39 °C đột ngột, đau nhức toàn thân, có dịch ở trường — điển hình của cúm.",
+          "whyEn": "Sudden 39 °C, aching all over, an outbreak at school — typical flu."
+        },
+        {
+          "ja": "胃もたれ",
+          "vi": "Khó tiêu",
+          "en": "Indigestion",
+          "whyVi": "Không có triệu chứng tiêu hoá.",
+          "whyEn": "No digestive symptoms."
+        }
+      ],
+      "treatment": [
+        {
+          "ja": "抗インフルエンザ薬（48時間以内）、出席停止",
+          "vi": "Thuốc kháng virus cúm (trong 48 giờ đầu), nghỉ học 5 ngày + 2 ngày sau hết sốt",
+          "en": "Flu antivirals (within 48 h), off school 5 days + 2 days after the fever",
+          "correct": true
+        },
+        {
+          "ja": "抗菌薬",
+          "vi": "Kháng sinh",
+          "en": "Antibiotics",
+          "whyVi": "Cúm do virus — kháng sinh vô ích.",
+          "whyEn": "Flu is a virus — antibiotics are useless."
+        },
+        {
+          "ja": "かぜ薬で登校",
+          "vi": "Đi học bình thường, uống thuốc cảm",
+          "en": "Go to school with cold medicine",
+          "whyVi": "Luật 学校保健安全法: nghỉ đến khi đủ 5 ngày từ lúc phát bệnh và 2 ngày sau khi hết sốt — tránh lây.",
+          "whyEn": "School Health and Safety Act: stay home 5 days from onset and 2 days after the fever — so it doesn't spread."
+        }
+      ],
+      "redFlagsVi": "Khó thở, môi tím, co giật, lơ mơ, sốt kéo dài — cấp cứu (viêm phổi, viêm não do cúm).",
+      "redFlagsEn": "Breathlessness, blue lips, fits, confusion, a long fever — emergency (pneumonia, flu encephalopathy).",
+      "sourceVi": "厚生労働省 インフルエンザQ&A; 学校保健安全法施行規則 第19条."
+    },
+    {
+      "id": "case_noro",
+      "illness": "norovirus",
+      "glyph": "菌",
+      "titleVi": "Nôn và tiêu chảy sau bữa hàu",
+      "titleEn": "Vomiting and diarrhoea after oysters",
+      "titleJa": "おうと・げり",
+      "specialtyVi": "Tiêu hóa (消化器内科)",
+      "specialtyEn": "Gastroenterology (消化器内科)",
+      "specialtyJa": "消化器内科",
+      "patientJa": "おととい カキを たべてから、はいて、げりが とまりません。",
+      "findingsVi": "Nam 35 tuổi, tháng 12. Nôn 5 lần, tiêu chảy, sốt 37,8 °C, môi hơi khô, vẫn uống được từng ngụm.",
+      "findingsEn": "Man, 35, December. Vomited 5 times, diarrhoea, 37.8 °C, slightly dry lips, can still sip.",
+      "diagnosis": [
+        {
+          "ja": "ノロウイルス感染性胃腸炎",
+          "vi": "Viêm dạ dày ruột do Norovirus",
+          "en": "Norovirus gastroenteritis",
+          "correct": true
+        },
+        {
+          "ja": "虫垂炎",
+          "vi": "Viêm ruột thừa",
+          "en": "Appendicitis",
+          "whyVi": "Không đau khu trú hố chậu phải; nôn + tiêu chảy sau ăn hàu mùa đông điển hình norovirus.",
+          "whyEn": "No right-lower pain; vomiting and diarrhoea after winter oysters is classic norovirus."
+        },
+        {
+          "ja": "インフルエンザ",
+          "vi": "Cúm",
+          "en": "Influenza",
+          "whyVi": "Triệu chứng chủ yếu là tiêu hoá.",
+          "whyEn": "The symptoms are mainly digestive."
+        }
+      ],
+      "treatment": [
+        {
+          "ja": "経口補水液、飲めなければ点滴",
+          "vi": "Bù nước bằng dung dịch ORS từng ngụm; truyền dịch nếu không uống được",
+          "en": "Small sips of ORS; a drip if they can't drink",
+          "correct": true
+        },
+        {
+          "ja": "抗菌薬",
+          "vi": "Kháng sinh",
+          "en": "Antibiotics",
+          "whyVi": "Do virus — kháng sinh không có tác dụng.",
+          "whyEn": "It's viral — antibiotics don't work."
+        },
+        {
+          "ja": "強い下痢止め",
+          "vi": "Thuốc cầm tiêu chảy mạnh",
+          "en": "A strong anti-diarrhoeal",
+          "whyVi": "Giữ virus lại trong ruột, có thể kéo dài bệnh.",
+          "whyEn": "It keeps the virus in the gut and can prolong the illness."
+        }
+      ],
+      "redFlagsVi": "Mất nước nặng (không đi tiểu, li bì), máu trong phân, người già/trẻ nhỏ — nhập viện. Rửa tay xà phòng; khử trùng chất nôn bằng clo.",
+      "redFlagsEn": "Severe dehydration (no urine, drowsy), blood in the stool, the very young or old — admit. Wash with soap; clean vomit with chlorine.",
+      "sourceVi": "厚生労働省 ノロウイルスに関するQ&A."
+    },
+    {
+      "id": "case_heat",
+      "illness": "heatstroke",
+      "glyph": "暑",
+      "titleVi": "Chóng mặt sau giờ làm ngoài nắng",
+      "titleEn": "Dizzy after working in the sun",
+      "titleJa": "あつさで めまい",
+      "specialtyVi": "Cấp cứu (救急科)",
+      "specialtyEn": "Emergency medicine (救急科)",
+      "specialtyJa": "救急科",
+      "patientJa": "そとで しごとを して いたら、めまいが して、あしが つりました。",
+      "findingsVi": "Nam 45 tuổi, tháng 8, 34 °C ngoài trời. Tỉnh táo, chóng mặt, chuột rút, đổ mồ hôi nhiều, nhiệt độ 37,9 °C.",
+      "findingsEn": "Man, 45, August, 34 °C outside. Alert, dizzy, cramps, sweating heavily, 37.9 °C.",
+      "diagnosis": [
+        {
+          "ja": "熱中症（Ⅰ〜Ⅱ度）",
+          "vi": "Say nắng (熱中症) độ I–II",
+          "en": "Heat illness (熱中症), grade I–II",
+          "correct": true
+        },
+        {
+          "ja": "インフルエンザ",
+          "vi": "Cúm",
+          "en": "Influenza",
+          "whyVi": "Khởi phát ngay khi làm việc ngoài nắng nóng, kèm chuột rút — là bệnh do nhiệt.",
+          "whyEn": "It began in the heat, with cramps — heat illness."
+        },
+        {
+          "ja": "打撲",
+          "vi": "Bầm tím do va chạm",
+          "en": "A bruise",
+          "whyVi": "Không có chấn thương.",
+          "whyEn": "There was no injury."
+        }
+      ],
+      "treatment": [
+        {
+          "ja": "涼しい場所・冷却・経口補水液",
+          "vi": "Đưa vào chỗ mát, làm mát cổ – nách – bẹn, bù nước và muối (ORS)",
+          "en": "Into the shade, cool the neck, armpits and groin, water and salt (ORS)",
+          "correct": true
+        },
+        {
+          "ja": "熱いお茶で仕事に戻る",
+          "vi": "Cho uống trà nóng rồi làm tiếp",
+          "en": "Hot tea and back to work",
+          "whyVi": "Phải nghỉ và làm mát ngay; quay lại làm có thể chuyển nặng.",
+          "whyEn": "Rest and cool at once; going back can make it severe."
+        },
+        {
+          "ja": "寝るだけ",
+          "vi": "Chỉ cần ngủ một giấc",
+          "en": "Just sleep it off",
+          "whyVi": "Cần làm mát và bù nước tích cực.",
+          "whyEn": "It needs active cooling and fluids."
+        }
+      ],
+      "redFlagsVi": "Lơ mơ, nói lắp, co giật, không tự uống được — độ III: gọi cấp cứu 119, truyền dịch, làm mát tích cực.",
+      "redFlagsEn": "Confusion, slurred speech, fits, can't drink — grade III: call 119, a drip, active cooling.",
+      "sourceVi": "日本救急医学会 熱中症診療ガイドライン; 環境省 熱中症環境保健マニュアル."
+    },
+    {
+      "id": "case_ankle",
+      "illness": "bruise",
+      "glyph": "打",
+      "titleVi": "Sưng cổ chân sau khi bị xe quẹt",
+      "titleEn": "A swollen ankle after a car clipped him",
+      "titleJa": "あしくびの けが",
+      "specialtyVi": "Chấn thương chỉnh hình (整形外科)",
+      "specialtyEn": "Orthopaedics (整形外科)",
+      "specialtyJa": "整形外科",
+      "patientJa": "くるまに ぶつかって、あしくびが はれて います。",
+      "findingsVi": "Nam 16 tuổi. Sưng, bầm mặt ngoài cổ chân. Vẫn đi được 4 bước, ấn vào mắt cá ngoài KHÔNG đau xương.",
+      "findingsEn": "Boy, 16. Swollen, bruised outer ankle. Can walk 4 steps; NO bone tenderness at the outer ankle bone.",
+      "diagnosis": [
+        {
+          "ja": "打撲・軽い捻挫（オタワルール：X線不要）",
+          "vi": "Bầm tím / bong gân nhẹ — theo quy tắc Ottawa chưa cần chụp X-quang",
+          "en": "Bruise / mild sprain — by the Ottawa rules no X-ray yet",
+          "correct": true
+        },
+        {
+          "ja": "骨折 — ギプス",
+          "vi": "Chắc chắn gãy xương — bó bột",
+          "en": "Surely broken — cast it",
+          "whyVi": "Đi được 4 bước và không đau xương mắt cá → theo quy tắc Ottawa khả năng gãy rất thấp.",
+          "whyEn": "Walks 4 steps, no ankle-bone tenderness → by the Ottawa rules a fracture is very unlikely."
+        },
+        {
+          "ja": "熱中症",
+          "vi": "Say nắng",
+          "en": "Heatstroke",
+          "whyVi": "Đây là chấn thương.",
+          "whyEn": "This is an injury."
+        }
+      ],
+      "treatment": [
+        {
+          "ja": "RICE処置・湿布・改善なければ再診",
+          "vi": "RICE: nghỉ, chườm lạnh, băng ép, kê cao; dán thuốc giảm đau; tái khám nếu không đỡ",
+          "en": "RICE: rest, ice, compression, elevation; a pain patch; return if no better",
+          "correct": true
+        },
+        {
+          "ja": "強くマッサージ",
+          "vi": "Xoa bóp mạnh ngay chỗ sưng",
+          "en": "Rub the swelling hard",
+          "whyVi": "Xoa mạnh lúc mới chấn thương làm sưng và chảy máu thêm.",
+          "whyEn": "Hard rubbing early makes the swelling and bleeding worse."
+        },
+        {
+          "ja": "すぐ温める",
+          "vi": "Chườm nóng ngay",
+          "en": "Heat it straight away",
+          "whyVi": "48 giờ đầu chườm lạnh, không chườm nóng.",
+          "whyEn": "Cold, not heat, for the first 48 hours."
+        }
+      ],
+      "redFlagsVi": "Không đi được 4 bước, đau khi ấn mắt cá / xương bàn chân, biến dạng — chụp X-quang. Tai nạn giao thông: báo cảnh sát 110.",
+      "redFlagsEn": "Can't walk 4 steps, ankle or midfoot bone tenderness, deformity — X-ray. A traffic accident: report it to the police (110).",
+      "sourceVi": "Stiell IG et al. Ottawa ankle rules, JAMA 1993; 日本整形外科学会 捻挫."
+    },
+    {
+      "id": "case_pollen",
+      "illness": "hay_fever",
+      "glyph": "花",
+      "titleVi": "Hắt hơi, ngứa mắt mỗi mùa xuân",
+      "titleEn": "Sneezing and itchy eyes every spring",
+      "titleJa": "はるの くしゃみ",
+      "specialtyVi": "Tai Mũi Họng – dị ứng (耳鼻咽喉科)",
+      "specialtyEn": "ENT and allergy (耳鼻咽喉科)",
+      "specialtyJa": "耳鼻咽喉科",
+      "patientJa": "まいとし はるに なると、くしゃみと めの かゆみが ひどいです。",
+      "findingsVi": "Nữ 28 tuổi, tháng 3. Hắt hơi liên tục, chảy mũi trong, ngứa mắt. Không sốt.",
+      "findingsEn": "Woman, 28, March. Constant sneezing, clear runny nose, itchy eyes. No fever.",
+      "diagnosis": [
+        {
+          "ja": "花粉症（スギ）",
+          "vi": "Viêm mũi dị ứng do phấn hoa tuyết tùng (花粉症)",
+          "en": "Cedar-pollen allergic rhinitis (花粉症)",
+          "correct": true
+        },
+        {
+          "ja": "かぜ",
+          "vi": "Cảm lạnh",
+          "en": "A cold",
+          "whyVi": "Không sốt, lặp lại đúng mùa xuân hằng năm, ngứa mắt — là dị ứng.",
+          "whyEn": "No fever, every spring, itchy eyes — an allergy."
+        },
+        {
+          "ja": "インフルエンザ",
+          "vi": "Cúm",
+          "en": "Influenza",
+          "whyVi": "Không sốt cao, không đau nhức.",
+          "whyEn": "No high fever, no aches."
+        }
+      ],
+      "treatment": [
+        {
+          "ja": "第2世代抗ヒスタミン薬・マスク",
+          "vi": "Thuốc kháng histamin thế hệ 2 (ít buồn ngủ), đeo khẩu trang, tránh phấn hoa",
+          "en": "A 2nd-generation antihistamine (less drowsy), a mask, avoid pollen",
+          "correct": true
+        },
+        {
+          "ja": "抗菌薬",
+          "vi": "Kháng sinh",
+          "en": "Antibiotics",
+          "whyVi": "Dị ứng không phải nhiễm khuẩn.",
+          "whyEn": "An allergy is not an infection."
+        },
+        {
+          "ja": "何もしない",
+          "vi": "Không cần làm gì",
+          "en": "Nothing",
+          "whyVi": "Điều trị giúp ngủ và học tốt hơn; nên bắt đầu thuốc trước mùa phấn.",
+          "whyEn": "Treatment helps sleep and study; start before the pollen season."
+        }
+      ],
+      "redFlagsVi": "Lái xe / máy móc: tránh thuốc gây buồn ngủ. Khó thở, khò khè — kiểm tra hen.",
+      "redFlagsEn": "Driving or machines: avoid drowsy medicines. Breathlessness or wheeze — check for asthma.",
+      "sourceVi": "鼻アレルギー診療ガイドライン (日本耳鼻咽喉科免疫アレルギー感染症学会)."
+    },
+    {
+      "id": "case_headache",
+      "illness": "headache",
+      "glyph": "頭",
+      "titleVi": "Đau đầu sau nhiều đêm thức khuya",
+      "titleEn": "A headache after many late nights",
+      "titleJa": "ねぶそくの ずつう",
+      "specialtyVi": "Thần kinh (脳神経内科)",
+      "specialtyEn": "Neurology (脳神経内科)",
+      "specialtyJa": "脳神経内科",
+      "patientJa": "しけんべんきょうで ねて いなくて、あたまが しめつけられる ように いたいです。",
+      "findingsVi": "Nữ 19 tuổi. Đau như bó chặt hai bên đầu, từ từ, ngủ ít 5 đêm. Thần kinh bình thường, không sốt.",
+      "findingsEn": "Woman, 19. A tight band around the head, gradual, 5 short nights. Normal neurology, no fever.",
+      "diagnosis": [
+        {
+          "ja": "緊張型頭痛",
+          "vi": "Đau đầu do căng thẳng (緊張型頭痛)",
+          "en": "Tension-type headache (緊張型頭痛)",
+          "correct": true
+        },
+        {
+          "ja": "くも膜下出血",
+          "vi": "Xuất huyết dưới nhện",
+          "en": "Subarachnoid haemorrhage",
+          "whyVi": "Đau từ từ, như bó chặt, thần kinh bình thường — không phải \"cơn đau dữ dội nhất đời\" đột ngột.",
+          "whyEn": "Gradual, band-like, normal neurology — not a sudden 'worst headache of my life'."
+        },
+        {
+          "ja": "食中毒",
+          "vi": "Ngộ độc thực phẩm",
+          "en": "Food poisoning",
+          "whyVi": "Không có triệu chứng tiêu hoá.",
+          "whyEn": "No digestive symptoms."
+        }
+      ],
+      "treatment": [
+        {
+          "ja": "睡眠・休息・鎮痛薬（短期）",
+          "vi": "Ngủ đủ, nghỉ giải lao, thuốc giảm đau ngắn ngày",
+          "en": "Enough sleep, breaks, a short course of pain relief",
+          "correct": true
+        },
+        {
+          "ja": "全員CT",
+          "vi": "Chụp CT sọ não ngay cho mọi ca",
+          "en": "A head CT for everyone",
+          "whyVi": "Không có dấu hiệu nguy hiểm — chụp CT không cần thiết.",
+          "whyEn": "No red flags — a CT isn't needed."
+        },
+        {
+          "ja": "毎日ずっと鎮痛薬",
+          "vi": "Uống thuốc giảm đau mỗi ngày kéo dài",
+          "en": "Painkillers every day, long-term",
+          "whyVi": "Lạm dụng thuốc giảm đau gây đau đầu do thuốc (薬物乱用頭痛).",
+          "whyEn": "Overusing painkillers causes medication-overuse headache."
+        }
+      ],
+      "redFlagsVi": "Đau dữ dội đột ngột, yếu liệt, nói khó, cứng gáy kèm sốt — gọi 119 ngay.",
+      "redFlagsEn": "A sudden severe headache, weakness, trouble speaking, a stiff neck with fever — call 119 at once.",
+      "sourceVi": "頭痛の診療ガイドライン (日本頭痛学会)."
+    },
+    {
+      "id": "case_stomach",
+      "illness": "stomach",
+      "glyph": "胃",
+      "titleVi": "Đầy bụng sau bữa tiệc",
+      "titleEn": "Bloated after a feast",
+      "titleJa": "たべすぎ",
+      "specialtyVi": "Tiêu hóa (消化器内科)",
+      "specialtyEn": "Gastroenterology (消化器内科)",
+      "specialtyJa": "消化器内科",
+      "patientJa": "パーティーで たべすぎて、おなかが はって くるしいです。",
+      "findingsVi": "Nam 22 tuổi. Đầy bụng, ợ hơi sau bữa ăn lớn. Bụng mềm, không sốt, đi ngoài bình thường.",
+      "findingsEn": "Man, 22. Bloating and burping after a big meal. Soft abdomen, no fever, normal stools.",
+      "diagnosis": [
+        {
+          "ja": "食べすぎによる胃もたれ",
+          "vi": "Khó tiêu do ăn quá no",
+          "en": "Indigestion from overeating",
+          "correct": true
+        },
+        {
+          "ja": "虫垂炎",
+          "vi": "Viêm ruột thừa",
+          "en": "Appendicitis",
+          "whyVi": "Bụng mềm, không đau khu trú, không sốt.",
+          "whyEn": "Soft abdomen, no focal pain, no fever."
+        },
+        {
+          "ja": "ノロウイルス",
+          "vi": "Norovirus",
+          "en": "Norovirus",
+          "whyVi": "Không nôn, không tiêu chảy.",
+          "whyEn": "No vomiting, no diarrhoea."
+        }
+      ],
+      "treatment": [
+        {
+          "ja": "食事を控え安静・胃腸薬",
+          "vi": "Ngừng ăn, uống nước ấm, nghỉ; thuốc tiêu hoá nếu cần",
+          "en": "Stop eating, warm water, rest; a digestive if needed",
+          "correct": true
+        },
+        {
+          "ja": "もっと食べる",
+          "vi": "Ăn thêm cho tiêu",
+          "en": "Eat more to settle it",
+          "whyVi": "Càng làm dạ dày quá tải.",
+          "whyEn": "It overloads the stomach more."
+        },
+        {
+          "ja": "抗菌薬",
+          "vi": "Kháng sinh",
+          "en": "Antibiotics",
+          "whyVi": "Không có nhiễm khuẩn.",
+          "whyEn": "There is no infection."
+        }
+      ],
+      "redFlagsVi": "Đau bụng dữ dội, phân đen, nôn ra máu, sụt cân — nội soi / cấp cứu.",
+      "redFlagsEn": "Severe pain, black stools, vomiting blood, weight loss — endoscopy / emergency.",
+      "sourceVi": "機能性消化管疾患診療ガイドライン (日本消化器病学会)."
+    },
+    {
+      "id": "case_hfmd",
+      "illness": "hand_foot_mouth",
+      "glyph": "手",
+      "titleVi": "Bé 4 tuổi đau miệng, nổi nốt ở tay chân",
+      "titleEn": "A 4-year-old with a sore mouth and spots on the hands and feet",
+      "titleJa": "くちが いたい、てあしに ぶつぶつ",
+      "specialtyVi": "Nhi khoa (小児科)",
+      "specialtyEn": "Paediatrics (小児科)",
+      "specialtyJa": "小児科",
+      "patientJa": "こうえんで あそんだ あとから、くちが いたいと いって たべません。てと あしにも ぶつぶつが でました。",
+      "findingsVi": "Bé trai 4 tuổi. Sốt 37,8 °C, vài nốt phỏng nhỏ ở lòng bàn tay, bàn chân và loét ở niêm mạc miệng; bé uống được từng ngụm, tiểu bình thường, tỉnh táo.",
+      "findingsEn": "Boy, 4. 37.8 °C, a few small blisters on the palms and soles and ulcers inside the mouth; he drinks in small sips, passes urine normally and is alert.",
+      "diagnosis": [
+        {
+          "ja": "てあしくちびょう",
+          "vi": "Bệnh tay chân miệng",
+          "en": "Hand, foot and mouth disease",
+          "correct": true
+        },
+        {
+          "ja": "みずぼうそう",
+          "vi": "Thủy đậu",
+          "en": "Chickenpox",
+          "whyVi": "Thủy đậu có nốt phỏng khắp thân mình và da đầu, không tập trung ở lòng bàn tay – bàn chân và trong miệng.",
+          "whyEn": "Chickenpox blisters cover the trunk and scalp; they are not concentrated on the palms, soles and inside the mouth.",
+          "correct": false
+        },
+        {
+          "ja": "ようれんきんかんせんしょう",
+          "vi": "Viêm họng liên cầu",
+          "en": "Strep throat",
+          "whyVi": "Viêm họng liên cầu gây đau họng, sốt, amiđan có mủ, không có nốt phỏng ở tay chân.",
+          "whyEn": "Strep throat gives a sore throat, fever and pus on the tonsils, not blisters on hands and feet.",
+          "correct": false
+        }
+      ],
+      "treatment": [
+        {
+          "ja": "すいぶんと やすみ。ねつと いたみに げねつざい",
+          "vi": "Nghỉ ngơi, cho uống từng ngụm nước, ăn đồ mềm nguội; thuốc hạ sốt giảm đau khi cần",
+          "en": "Rest, small sips of fluid, soft cool food, a fever/pain reliever if needed",
+          "correct": true
+        },
+        {
+          "ja": "こうせいぶっしつを だす",
+          "vi": "Kê kháng sinh",
+          "en": "Prescribe antibiotics",
+          "whyVi": "Bệnh do virus – kháng sinh không có tác dụng và làm kháng thuốc.",
+          "whyEn": "It is a virus – antibiotics do not work and breed resistance.",
+          "correct": false
+        },
+        {
+          "ja": "たいいんして てんてきを する",
+          "vi": "Nhập viện truyền dịch ngay",
+          "en": "Admit him and start a drip",
+          "whyVi": "Bé vẫn uống được và tiểu bình thường – chưa cần truyền dịch; chỉ khi không uống được/không tiểu mới cần.",
+          "whyEn": "He can still drink and passes urine – no drip yet; it is needed only if he cannot drink or pass urine.",
+          "correct": false
+        }
+      ],
+      "redFlagsVi": "Quay lại ngay nếu sốt cao trên 2 ngày, nôn, đau đầu, li bì, mắt không nhìn theo, thở nhanh, không uống được hoặc không đi tiểu – có thể là mất nước hoặc viêm màng não.",
+      "redFlagsEn": "Come back at once for a fever beyond 2 days, vomiting, headache, drowsiness, not following with the eyes, fast breathing, or if he cannot drink or pass urine – it may be dehydration or meningitis.",
+      "sourceVi": "Bộ Y tế, Lao động và Phúc lợi Nhật (厚生労働省) – tờ rơi về bệnh tay chân miệng; Viện Y tế trẻ em và phát triển quốc gia (国立成育医療研究センター) – 手足口病; JIHS – 手足口病."
+    },
+    {
+      "id": "case_conj",
+      "illness": "conjunctivitis",
+      "glyph": "眼",
+      "titleVi": "Mắt đỏ, nhiều ghèn, cộm như có cát",
+      "titleEn": "A red eye with a lot of discharge, as if sand were in it",
+      "titleJa": "めが あかくて めやにが おおい",
+      "specialtyVi": "Nhãn khoa (眼科)",
+      "specialtyEn": "Ophthalmology (眼科)",
+      "specialtyJa": "眼科",
+      "patientJa": "きのうから みぎめが あかくて、ごろごろします。めやにが たくさん でて、あさは めが あきませんでした。",
+      "findingsVi": "Nam 31 tuổi. Mắt phải đỏ, mi sưng, ghèn nhiều, hạch trước tai sưng đau; thị lực bình thường. Con anh ấy mới bị đau mắt đỏ.",
+      "findingsEn": "Man, 31. Red right eye, swollen lid, lots of discharge, a tender lymph node in front of the ear; normal vision. His child just had pink eye.",
+      "diagnosis": [
+        {
+          "ja": "りゅうこうせい かくけつまくえん",
+          "vi": "Viêm kết mạc dịch do adenovirus",
+          "en": "Epidemic keratoconjunctivitis (adenovirus)",
+          "correct": true
+        },
+        {
+          "ja": "かふんしょう",
+          "vi": "Dị ứng phấn hoa",
+          "en": "Hay fever",
+          "whyVi": "Dị ứng gây ngứa và chảy nước mắt trong, không có ghèn đặc, hạch tai sưng đau và thường cả hai mắt.",
+          "whyEn": "Allergy gives itching and clear tears, not thick discharge or a tender node, and usually both eyes.",
+          "correct": false
+        },
+        {
+          "ja": "ものもらい",
+          "vi": "Chắp, lẹo",
+          "en": "A stye",
+          "whyVi": "Lẹo chỉ là một cục sưng đau ở mi mắt, không đỏ cả mắt và không lây qua tay.",
+          "whyEn": "A stye is a single painful lump on the eyelid; the whole eye is not red and it does not spread by hands.",
+          "correct": false
+        }
+      ],
+      "treatment": [
+        {
+          "ja": "めぐすりと てあらい。かんせんの おそれが なくなるまで やすむ",
+          "vi": "Thuốc nhỏ mắt theo bác sĩ, rửa tay bằng xà phòng, dùng khăn riêng; nghỉ đến khi hết khả năng lây",
+          "en": "Eye drops from the doctor, hand-washing with soap, your own towel; stay away until you are no longer contagious",
+          "correct": true
+        },
+        {
+          "ja": "いろいろな めぐすりを じぶんで つかう",
+          "vi": "Tự dùng thuốc nhỏ mắt còn thừa trong nhà",
+          "en": "Use whatever old eye drops are at home",
+          "whyVi": "Thuốc nhỏ mắt cũ có thể không phù hợp, nhiễm khuẩn hoặc che bệnh; phải dùng đúng thuốc bác sĩ kê.",
+          "whyEn": "Old drops may be wrong, contaminated or hide the disease; use only what the doctor prescribes.",
+          "correct": false
+        },
+        {
+          "ja": "めを こすって あらう",
+          "vi": "Dụi và rửa mắt thật mạnh",
+          "en": "Rub and wash the eye hard",
+          "whyVi": "Dụi mắt làm tổn thương giác mạc và lan virus sang mắt còn lại, sang người khác.",
+          "whyEn": "Rubbing hurts the cornea and spreads the virus to the other eye and to other people.",
+          "correct": false
+        }
+      ],
+      "redFlagsVi": "Khám ngay nếu đau mắt nhiều, nhìn mờ đi, sợ ánh sáng hoặc giác mạc đục – có thể giác mạc bị tổn thương.",
+      "redFlagsEn": "See a doctor at once for strong eye pain, worse vision, light sensitivity or a cloudy cornea – the cornea may be hurt.",
+      "sourceVi": "Hội Nhi khoa Nhật Bản (日本小児科学会) – 流行性角結膜炎; Bộ Y tế Nhật – 流行性角結膜炎; Quy tắc thi hành Luật An toàn Y tế Học đường (学校保健安全法施行規則)."
+    },
+    {
+      "id": "case_strep",
+      "illness": "strep_throat",
+      "glyph": "喉",
+      "titleVi": "Bé 9 tuổi sốt, đau họng dữ dội, không ho",
+      "titleEn": "A 9-year-old with a fever, a very sore throat and no cough",
+      "titleJa": "ねつと のどの つよい いたみ",
+      "specialtyVi": "Nhi khoa (小児科)",
+      "specialtyEn": "Paediatrics (小児科)",
+      "specialtyJa": "小児科",
+      "patientJa": "きのうから ねつが でて、のどが とても いたくて ごはんが のめません。せきは ありません。",
+      "findingsVi": "Bé gái 9 tuổi. Sốt 39 °C, họng đỏ, amiđan sưng có mủ, hạch cổ trước sưng đau, không ho, không sổ mũi. Test nhanh liên cầu: dương tính.",
+      "findingsEn": "Girl, 9. 39 °C, red throat, swollen tonsils with pus, tender front neck nodes, no cough, no runny nose. The rapid strep test is positive.",
+      "diagnosis": [
+        {
+          "ja": "ようれんきんかんせんしょう",
+          "vi": "Viêm họng liên cầu",
+          "en": "Strep throat (group A streptococcus)",
+          "correct": true
+        },
+        {
+          "ja": "かぜ",
+          "vi": "Cảm lạnh thông thường",
+          "en": "A common cold",
+          "whyVi": "Cảm lạnh thường có ho, sổ mũi, sốt nhẹ; ở đây sốt cao, amiđan có mủ, không ho, test liên cầu dương tính.",
+          "whyEn": "A cold usually has a cough and runny nose with a low fever; here there is a high fever, pus on the tonsils, no cough and a positive strep test.",
+          "correct": false
+        },
+        {
+          "ja": "てあしくちびょう",
+          "vi": "Bệnh tay chân miệng",
+          "en": "Hand, foot and mouth disease",
+          "whyVi": "Không có nốt phỏng ở tay, chân và niêm mạc miệng.",
+          "whyEn": "No blisters on the hands, feet or inside the mouth.",
+          "correct": false
+        }
+      ],
+      "treatment": [
+        {
+          "ja": "ペニシリンけいの こうせいぶっしつを 10にち のみきる",
+          "vi": "Kháng sinh nhóm penicillin (amoxicillin) uống ĐỦ 10 ngày",
+          "en": "A penicillin antibiotic (amoxicillin) for the FULL 10 days",
+          "correct": true
+        },
+        {
+          "ja": "ねつが さがったら くすりを やめる",
+          "vi": "Kháng sinh nhưng ngừng khi hết sốt",
+          "en": "An antibiotic, but stop when the fever is gone",
+          "whyVi": "Ngừng sớm làm vi khuẩn còn sót và có thể gây thấp tim; phải uống đủ 10 ngày.",
+          "whyEn": "Stopping early leaves bacteria behind and can cause rheumatic fever; the full 10 days are needed.",
+          "correct": false
+        },
+        {
+          "ja": "げねつざいだけ だして ようすを みる",
+          "vi": "Chỉ cho thuốc hạ sốt và theo dõi",
+          "en": "Only a fever reducer and wait",
+          "whyVi": "Đây là bệnh do vi khuẩn, cần kháng sinh; thuốc hạ sốt chỉ làm dịu triệu chứng.",
+          "whyEn": "It is bacterial and needs an antibiotic; a fever reducer only soothes the symptoms.",
+          "correct": false
+        }
+      ],
+      "redFlagsVi": "Vài tuần sau nếu nước tiểu đỏ hoặc nâu, phù mặt, đau khớp, tim đập nhanh hay co giật tay chân – đi khám ngay (viêm cầu thận, thấp tim). Được đi học lại sau khi uống kháng sinh đủ 24 giờ và người khỏe.",
+      "redFlagsEn": "Weeks later, red or brown urine, a puffy face, painful joints, a racing heart or jerky movements mean going back at once (kidney inflammation, rheumatic fever). She may go back to school after 24 hours of antibiotics if she feels well.",
+      "sourceVi": "Bộ Y tế Nhật – Hướng dẫn sử dụng kháng sinh hợp lý (抗微生物薬適正使用の手引き), amoxicillin 10 ngày; Hội Nhi khoa Nhật Bản – 溶連菌感染症; Trung tâm Y tế trẻ em quốc gia – 溶連菌感染症."
+    },
+    {
+      "id": "case_otitis",
+      "illness": "otitis_media",
+      "glyph": "耳",
+      "titleVi": "Bé 5 tuổi đau tai sau đợt cảm",
+      "titleEn": "A 5-year-old with ear pain after a cold",
+      "titleJa": "かぜの あとの みみの いたみ",
+      "specialtyVi": "Tai Mũi Họng (耳鼻咽喉科)",
+      "specialtyEn": "Ear, nose and throat (耳鼻咽喉科)",
+      "specialtyJa": "耳鼻咽喉科",
+      "patientJa": "かぜが なおりかけた ころから、ひだりの みみが いたいと ないて います。ねつも すこし あります。",
+      "findingsVi": "Bé gái 5 tuổi. Đau tai trái, sốt 38 °C, quấy khóc; màng nhĩ trái đỏ và hơi phồng, không chảy mủ. Điểm mức độ: nhẹ-vừa (không dưới 2 tuổi).",
+      "findingsEn": "Girl, 5. Left ear pain, 38 °C, fussy; the left eardrum is red and slightly bulging, no pus. Severity score: mild to moderate (not under 2 years).",
+      "diagnosis": [
+        {
+          "ja": "きゅうせいちゅうじえん",
+          "vi": "Viêm tai giữa cấp",
+          "en": "Acute otitis media",
+          "correct": true
+        },
+        {
+          "ja": "がいじどうえん",
+          "vi": "Viêm ống tai ngoài",
+          "en": "Otitis externa (swimmer’s ear)",
+          "whyVi": "Viêm tai ngoài đau khi kéo vành tai, ống tai sưng; ở đây ống tai bình thường và màng nhĩ bị viêm.",
+          "whyEn": "Otitis externa hurts when the ear is pulled and the canal is swollen; here the canal is normal and the eardrum is inflamed.",
+          "correct": false
+        },
+        {
+          "ja": "みみあかの つまり",
+          "vi": "Ráy tai bít",
+          "en": "Ear wax",
+          "whyVi": "Ráy tai không gây sốt và màng nhĩ đỏ phồng.",
+          "whyEn": "Wax does not cause a fever or a red bulging eardrum.",
+          "correct": false
+        }
+      ],
+      "treatment": [
+        {
+          "ja": "いたみどめを つかって、けいかを みる。わるく なれば こうせいぶっしつ",
+          "vi": "Thuốc giảm đau, theo dõi 3 ngày; không đỡ hoặc nặng hơn thì amoxicillin",
+          "en": "A pain reliever and 3 days of watching; amoxicillin if it does not improve or gets worse",
+          "correct": true
+        },
+        {
+          "ja": "すぐに こうせいぶっしつの てんてき",
+          "vi": "Truyền kháng sinh ngay",
+          "en": "An antibiotic drip at once",
+          "whyVi": "Thể nhẹ-vừa ở trẻ trên 2 tuổi không cần truyền kháng sinh; nhiều ca tự khỏi.",
+          "whyEn": "A mild-to-moderate case in a child over 2 does not need an antibiotic drip; many cases heal by themselves.",
+          "correct": false
+        },
+        {
+          "ja": "みみに くすりを いれて もらう",
+          "vi": "Tự nhỏ thuốc vào tai",
+          "en": "Put drops in the ear at home",
+          "whyVi": "Không có bằng chứng thuốc nhỏ tai giúp ích, thậm chí có thể gây hại khi màng nhĩ thủng.",
+          "whyEn": "There is no evidence that ear drops help, and they may do harm if the eardrum is perforated.",
+          "correct": false
+        }
+      ],
+      "redFlagsVi": "Quay lại nếu sau 3 ngày không đỡ, chảy mủ nhiều, sưng đỏ sau tai, liệt mặt, li bì hoặc sốt cao – có thể cần amoxicillin liều cao hoặc rạch màng nhĩ.",
+      "redFlagsEn": "Come back if there is no improvement after 3 days, a lot of pus, swelling behind the ear, a drooping face, drowsiness or a high fever – she may need high-dose amoxicillin or a cut in the eardrum.",
+      "sourceVi": "Hội Tai học Nhật Bản (日本耳科学会) – Hướng dẫn chẩn đoán điều trị viêm tai giữa cấp ở trẻ em (小児急性中耳炎診療ガイドライン 2018/2024)."
+    },
+    {
+      "id": "case_heatrash",
+      "illness": "heat_rash",
+      "glyph": "汗",
+      "titleVi": "Nổi nốt đỏ ngứa ở cổ và lưng sau khi làm việc ngoài nắng",
+      "titleEn": "Itchy red spots on the neck and back after working in the sun",
+      "titleJa": "あつい ひの あとの かゆい ぶつぶつ",
+      "specialtyVi": "Da liễu (皮膚科)",
+      "specialtyEn": "Dermatology (皮膚科)",
+      "specialtyJa": "皮膚科",
+      "patientJa": "きょうの しごとの あと、くびと せなかが かゆくて、あかい ぶつぶつが でました。",
+      "findingsVi": "Nữ 45 tuổi. Nhiều nốt đỏ li ti ở cổ, lưng, nếp khuỷu tay; không sốt, không có nốt phỏng, không lan ra mặt; da nóng ẩm, nhiều mồ hôi.",
+      "findingsEn": "Woman, 45. Many tiny red spots on the neck, back and elbow creases; no fever, no blisters, nothing on the face; warm, sweaty skin.",
+      "diagnosis": [
+        {
+          "ja": "あせも",
+          "vi": "Rôm sảy",
+          "en": "Heat rash",
+          "correct": true
+        },
+        {
+          "ja": "たいじょうほうしん",
+          "vi": "Zona thần kinh",
+          "en": "Shingles",
+          "whyVi": "Zona là chùm mụn nước đau rát chạy theo một bên cơ thể, không phải nhiều nốt đỏ li ti ở các nếp gấp.",
+          "whyEn": "Shingles are painful clustered blisters along one side of the body, not many tiny red spots in the skin folds.",
+          "correct": false
+        },
+        {
+          "ja": "はしか",
+          "vi": "Sởi",
+          "en": "Measles",
+          "whyVi": "Sởi có sốt cao, ho, viêm mắt và ban lan từ mặt xuống người; ở đây không có sốt.",
+          "whyEn": "Measles has a high fever, cough, red eyes and a rash that spreads down from the face; here there is no fever.",
+          "correct": false
+        }
+      ],
+      "treatment": [
+        {
+          "ja": "すずしい ところで やすみ、シャワーで あせを ながす。ひどければ ぬりぐすり",
+          "vi": "Vào chỗ mát, tắm nước mát cho trôi mồ hôi, mặc đồ cotton thoáng; nặng thì thuốc bôi theo bác sĩ",
+          "en": "Cool down, shower the sweat off, loose cotton clothes; an ointment from the doctor if it is bad",
+          "correct": true
+        },
+        {
+          "ja": "こうせいぶっしつを のむ",
+          "vi": "Uống kháng sinh",
+          "en": "Antibiotic pills",
+          "whyVi": "Rôm sảy không do vi khuẩn trong da; chỉ khi nhiễm khuẩn mưng mủ mới cần thuốc bôi kháng sinh, không cần uống.",
+          "whyEn": "Heat rash is not a bacterial infection; only an infected, pus-filled rash needs an antibiotic ointment, not pills.",
+          "correct": false
+        },
+        {
+          "ja": "かゆい ところを つめで かく",
+          "vi": "Gãi cho đỡ ngứa",
+          "en": "Scratch the itchy places",
+          "whyVi": "Gãi làm trầy da và dễ nhiễm khuẩn, bệnh nặng thêm.",
+          "whyEn": "Scratching breaks the skin, invites infection and makes it worse.",
+          "correct": false
+        }
+      ],
+      "redFlagsVi": "Khám nếu đỏ lan rộng, mưng mủ, sốt hoặc đau – có thể bị nhiễm khuẩn da (chốc, viêm mô tế bào).",
+      "redFlagsEn": "See a doctor if the redness spreads, turns to pus, or with a fever or pain – the skin may be infected.",
+      "sourceVi": "Hội Da liễu Nhật Bản (日本皮膚科学会) – Q&A về rôm sảy (あせも); hướng dẫn phòng chống say nắng của Bộ Y tế Nhật."
+    },
+    {
+      "id": "case_toothache",
+      "illness": "toothache",
+      "glyph": "歯",
+      "titleVi": "Đau răng khi nhai và khi uống lạnh",
+      "titleEn": "A tooth that hurts when chewing and with cold drinks",
+      "titleJa": "かむと いたい、つめたいものが しみる",
+      "specialtyVi": "Răng Hàm Mặt (歯科・口腔外科)",
+      "specialtyEn": "Dentistry and oral surgery (歯科・口腔外科)",
+      "specialtyJa": "歯科・口腔外科",
+      "patientJa": "いっしゅうかん まえから みぎの おくばが いたいです。つめたい みずが しみて、よるも いたくて ねられません。",
+      "findingsVi": "Nam 61 tuổi. Răng hàm dưới bên phải có lỗ sâu lớn, đau nhói khi nhai và khi uống lạnh, đau cả đêm; má không sưng, không sốt, há miệng bình thường.",
+      "findingsEn": "Man, 61. A large cavity in the lower right molar, a stabbing pain when chewing and with cold drinks, also at night; the cheek is not swollen, no fever, he opens the mouth normally.",
+      "diagnosis": [
+        {
+          "ja": "むしば（しんぶまで すすんだ）",
+          "vi": "Sâu răng đã vào sâu gần tủy",
+          "en": "A deep cavity close to the nerve",
+          "correct": true
+        },
+        {
+          "ja": "ししゅうびょう（ししゅうえん）",
+          "vi": "Viêm nha chu nhẹ",
+          "en": "Mild gum disease",
+          "whyVi": "Viêm nha chu làm nướu đỏ, chảy máu, không tạo lỗ sâu đau nhói khi lạnh.",
+          "whyEn": "Gum disease makes the gums red and bleeding, not a cavity with a stabbing pain to cold.",
+          "correct": false
+        },
+        {
+          "ja": "えんいんふめいの ふくつう",
+          "vi": "Đau bụng không rõ nguyên nhân",
+          "en": "Unexplained stomach ache",
+          "whyVi": "Triệu chứng nằm ở răng hàm, không phải ở bụng.",
+          "whyEn": "The symptoms are in the molar, not in the stomach.",
+          "correct": false
+        }
+      ],
+      "treatment": [
+        {
+          "ja": "いたみどめで しのぎ、しかへ いく。むしばは かならず しかいで なおす",
+          "vi": "Thuốc giảm đau tạm thời và đến nha sĩ để trám/điều trị tủy – sâu răng không tự lành",
+          "en": "A pain reliever for now and go to a dentist for a filling or root treatment – decay never heals by itself",
+          "correct": true
+        },
+        {
+          "ja": "こうせいぶっしつだけ のんで なおす",
+          "vi": "Chỉ uống kháng sinh là khỏi",
+          "en": "Antibiotic pills alone will cure it",
+          "whyVi": "Kháng sinh không lấp được lỗ sâu; chỉ dùng thêm khi có áp-xe/sưng mặt, và vẫn phải điều trị răng.",
+          "whyEn": "Antibiotics cannot fill a cavity; they are added only for an abscess or a swollen face, and the tooth still needs treatment.",
+          "correct": false
+        },
+        {
+          "ja": "いたい ところに アスピリンを おく",
+          "vi": "Đặt viên thuốc giảm đau lên răng",
+          "en": "Put a painkiller tablet on the tooth",
+          "whyVi": "Đặt viên thuốc lên răng/nướu làm bỏng niêm mạc miệng mà không giảm đau.",
+          "whyEn": "A tablet on the tooth or gum burns the mouth lining and does not relieve the pain.",
+          "correct": false
+        }
+      ],
+      "redFlagsVi": "Đi nha sĩ ngay nếu má sưng, sốt, khó há miệng hoặc khó nuốt – áp-xe răng có thể lan nhanh.",
+      "redFlagsEn": "Go to the dentist at once if the cheek swells, with a fever, or if it is hard to open the mouth or swallow – a tooth abscess can spread fast.",
+      "sourceVi": "Hội Nha khoa Nhật Bản (日本歯科医師会) và Bộ Y tế Nhật – 8020 và phòng sâu răng; hướng dẫn điều trị sâu răng của Hội Nha khoa Bảo tồn Nhật Bản."
+    }
+  ]
+}

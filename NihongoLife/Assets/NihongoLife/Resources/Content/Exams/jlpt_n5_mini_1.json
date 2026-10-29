@@ -1,0 +1,1231 @@
+{
+ "schema": "nihongolife.exam/1",
+ "id": "jlpt_n5_mini_1",
+ "examType": "Jlpt",
+ "family": "JLPT",
+ "level": "N5",
+ "learnerLevel": "Basic",
+ "recommendedBandMin": 0,
+ "recommendedBandMax": 0,
+ "titleVi": "Đề luyện JLPT N5 (mini, không có phần nghe)",
+ "titleEn": "JLPT N5 practice mini-test (no listening)",
+ "titleJa": "日本語能力試験 N5 ミニ模試（聴解なし）",
+ "titleRu": "Мини-тест JLPT N5 (без аудирования)",
+ "descriptionVi": "Đề tự soạn theo cấu trúc JLPT (từ vựng + ngữ pháp + đọc hiểu). Không có phần nghe; điểm đạt đã quy đổi theo thang 120 (2/3 của 180).",
+ "descriptionEn": "Original practice test in JLPT style (vocabulary + grammar + reading). No listening section; pass marks scaled to a 120-point scale (2/3 of 180).",
+ "descriptionJa": "JLPT形式のオリジナル練習問題（文字・語彙・文法・読解）。聴解なし。合格点は120点満点に換算。",
+ "descriptionRu": "Авторский тренировочный тест в формате JLPT (лексика, грамматика, чтение). Без аудирования; проходной балл пересчитан на 120.",
+ "jlptTotalPassScore": 53,
+ "jlptSectionPassScore": 13,
+ "scoreGroups": [
+  {
+   "id": "language",
+   "titleJa": "言語知識・読解",
+   "titleVi": "Kiến thức ngôn ngữ + Đọc hiểu",
+   "max": 120,
+   "passMin": 38
+  }
+ ],
+ "sections": [
+  {
+   "id": "vocab",
+   "type": "JlptVocabulary",
+   "titleVi": "Từ vựng / Chữ Hán",
+   "titleEn": "Vocabulary / Kanji",
+   "titleJa": "文字・語彙",
+   "timeLimitSeconds": 900,
+   "scoreScaleMax": 60,
+   "scoreGroup": "language",
+   "mondai": [
+    {
+     "id": "m_read",
+     "titleJa": "もんだい 漢字の読み",
+     "titleVi": "Đọc chữ Hán"
+    },
+    {
+     "id": "m_orth",
+     "titleJa": "もんだい 表記",
+     "titleVi": "Viết chữ Hán"
+    },
+    {
+     "id": "m_ctx",
+     "titleJa": "もんだい 文脈規定",
+     "titleVi": "Chọn từ phù hợp ngữ cảnh"
+    },
+    {
+     "id": "m_syn",
+     "titleJa": "もんだい 言い換え",
+     "titleVi": "Chọn từ/cụm gần nghĩa"
+    }
+   ],
+   "passages": [],
+   "questions": [
+    {
+     "id": "jlpt_n5_mini_1_v01",
+     "type": "MultipleChoice",
+     "passageId": "",
+     "promptVi": "Đọc chữ Hán",
+     "promptEn": "Choose the correct reading of the underlined word.",
+     "promptJa": "<u>学校</u>に 行きます。",
+     "promptReading": "",
+     "choices": [
+      {
+       "textVi": "がこう",
+       "textEn": "がこう",
+       "textJa": "がこう"
+      },
+      {
+       "textVi": "がっこ",
+       "textEn": "がっこ",
+       "textJa": "がっこ"
+      },
+      {
+       "textVi": "がっこう",
+       "textEn": "がっこう",
+       "textJa": "がっこう"
+      },
+      {
+       "textVi": "がくこう",
+       "textEn": "がくこう",
+       "textJa": "がくこう"
+      }
+     ],
+     "correctChoiceIndex": 2,
+     "acceptedAnswers": [],
+     "explanationVi": "学校 đọc là がっこう (có âm ngắt っ).",
+     "explanationEn": "学校 is read がっこう (with the small っ).",
+     "tags": [
+      "N5",
+      "m_read"
+     ],
+     "points": 1,
+     "mondai": "m_read"
+    },
+    {
+     "id": "jlpt_n5_mini_1_v02",
+     "type": "MultipleChoice",
+     "passageId": "",
+     "promptVi": "Đọc chữ Hán",
+     "promptEn": "Choose the correct reading of the underlined word.",
+     "promptJa": "<u>先生</u>は やさしいです。",
+     "promptReading": "",
+     "choices": [
+      {
+       "textVi": "せいせん",
+       "textEn": "せいせん",
+       "textJa": "せいせん"
+      },
+      {
+       "textVi": "さんせい",
+       "textEn": "さんせい",
+       "textJa": "さんせい"
+      },
+      {
+       "textVi": "せんせい",
+       "textEn": "せんせい",
+       "textJa": "せんせい"
+      },
+      {
+       "textVi": "せんぜい",
+       "textEn": "せんぜい",
+       "textJa": "せんぜい"
+      }
+     ],
+     "correctChoiceIndex": 2,
+     "acceptedAnswers": [],
+     "explanationVi": "先生 = せんせい (giáo viên).",
+     "explanationEn": "先生 = せんせい (teacher).",
+     "tags": [
+      "N5",
+      "m_read"
+     ],
+     "points": 1,
+     "mondai": "m_read"
+    },
+    {
+     "id": "jlpt_n5_mini_1_v03",
+     "type": "MultipleChoice",
+     "passageId": "",
+     "promptVi": "Đọc chữ Hán",
+     "promptEn": "Choose the correct reading of the underlined word.",
+     "promptJa": "<u>水</u>を のみます。",
+     "promptReading": "",
+     "choices": [
+      {
+       "textVi": "すい",
+       "textEn": "すい",
+       "textJa": "すい"
+      },
+      {
+       "textVi": "かわ",
+       "textEn": "かわ",
+       "textJa": "かわ"
+      },
+      {
+       "textVi": "みず",
+       "textEn": "みず",
+       "textJa": "みず"
+      },
+      {
+       "textVi": "みづ",
+       "textEn": "みづ",
+       "textJa": "みづ"
+      }
+     ],
+     "correctChoiceIndex": 2,
+     "acceptedAnswers": [],
+     "explanationVi": "水 đọc kun là みず khi đứng một mình.",
+     "explanationEn": "水 alone is read みず.",
+     "tags": [
+      "N5",
+      "m_read"
+     ],
+     "points": 1,
+     "mondai": "m_read"
+    },
+    {
+     "id": "jlpt_n5_mini_1_v04",
+     "type": "MultipleChoice",
+     "passageId": "",
+     "promptVi": "Đọc chữ Hán",
+     "promptEn": "Choose the correct reading of the underlined word.",
+     "promptJa": "<u>電話</u>を かけます。",
+     "promptReading": "",
+     "choices": [
+      {
+       "textVi": "てんは",
+       "textEn": "てんは",
+       "textJa": "てんは"
+      },
+      {
+       "textVi": "でんは",
+       "textEn": "でんは",
+       "textJa": "でんは"
+      },
+      {
+       "textVi": "でんわ",
+       "textEn": "でんわ",
+       "textJa": "でんわ"
+      },
+      {
+       "textVi": "てんわ",
+       "textEn": "てんわ",
+       "textJa": "てんわ"
+      }
+     ],
+     "correctChoiceIndex": 2,
+     "acceptedAnswers": [],
+     "explanationVi": "電話 = でんわ (điện thoại).",
+     "explanationEn": "電話 = でんわ (telephone).",
+     "tags": [
+      "N5",
+      "m_read"
+     ],
+     "points": 1,
+     "mondai": "m_read"
+    },
+    {
+     "id": "jlpt_n5_mini_1_v05",
+     "type": "MultipleChoice",
+     "passageId": "",
+     "promptVi": "Đọc chữ Hán",
+     "promptEn": "Choose the correct reading of the underlined word.",
+     "promptJa": "<u>十五分</u> まちました。",
+     "promptReading": "",
+     "choices": [
+      {
+       "textVi": "じゅごふん",
+       "textEn": "じゅごふん",
+       "textJa": "じゅごふん"
+      },
+      {
+       "textVi": "じゅうごぷん",
+       "textEn": "じゅうごぷん",
+       "textJa": "じゅうごぷん"
+      },
+      {
+       "textVi": "じっごふん",
+       "textEn": "じっごふん",
+       "textJa": "じっごふん"
+      },
+      {
+       "textVi": "じゅうごふん",
+       "textEn": "じゅうごふん",
+       "textJa": "じゅうごふん"
+      }
+     ],
+     "correctChoiceIndex": 3,
+     "acceptedAnswers": [],
+     "explanationVi": "15 phút = じゅうごふん; 分 sau số 5 đọc ふん (không phải ぷん).",
+     "explanationEn": "15 minutes = じゅうごふん; after 5, 分 is ふん, not ぷん.",
+     "tags": [
+      "N5",
+      "m_read"
+     ],
+     "points": 1,
+     "mondai": "m_read"
+    },
+    {
+     "id": "jlpt_n5_mini_1_v06",
+     "type": "MultipleChoice",
+     "passageId": "",
+     "promptVi": "Viết chữ Hán",
+     "promptEn": "Choose the correct kanji for the underlined hiragana.",
+     "promptJa": "<u>やま</u>に のぼります。",
+     "promptReading": "",
+     "choices": [
+      {
+       "textVi": "山",
+       "textEn": "山",
+       "textJa": "山"
+      },
+      {
+       "textVi": "川",
+       "textEn": "川",
+       "textJa": "川"
+      },
+      {
+       "textVi": "田",
+       "textEn": "田",
+       "textJa": "田"
+      },
+      {
+       "textVi": "海",
+       "textEn": "海",
+       "textJa": "海"
+      }
+     ],
+     "correctChoiceIndex": 0,
+     "acceptedAnswers": [],
+     "explanationVi": "やま = 山 (núi); 川 là かわ, 田 là た, 海 là うみ.",
+     "explanationEn": "やま = 山 (mountain); 川 is かわ, 海 is うみ.",
+     "tags": [
+      "N5",
+      "m_orth"
+     ],
+     "points": 1,
+     "mondai": "m_orth"
+    },
+    {
+     "id": "jlpt_n5_mini_1_v07",
+     "type": "MultipleChoice",
+     "passageId": "",
+     "promptVi": "Viết chữ Hán",
+     "promptEn": "Choose the correct kanji for the underlined hiragana.",
+     "promptJa": "<u>くるま</u>で いきます。",
+     "promptReading": "",
+     "choices": [
+      {
+       "textVi": "車",
+       "textEn": "車",
+       "textJa": "車"
+      },
+      {
+       "textVi": "東",
+       "textEn": "東",
+       "textJa": "東"
+      },
+      {
+       "textVi": "草",
+       "textEn": "草",
+       "textJa": "草"
+      },
+      {
+       "textVi": "事",
+       "textEn": "事",
+       "textJa": "事"
+      }
+     ],
+     "correctChoiceIndex": 0,
+     "acceptedAnswers": [],
+     "explanationVi": "くるま = 車 (xe ô tô).",
+     "explanationEn": "くるま = 車 (car).",
+     "tags": [
+      "N5",
+      "m_orth"
+     ],
+     "points": 1,
+     "mondai": "m_orth"
+    },
+    {
+     "id": "jlpt_n5_mini_1_v08",
+     "type": "MultipleChoice",
+     "passageId": "",
+     "promptVi": "Chọn từ phù hợp ngữ cảnh",
+     "promptEn": "Choose the word that best fits the sentence.",
+     "promptJa": "あついですから、( ) を のみます。",
+     "promptReading": "",
+     "choices": [
+      {
+       "textVi": "ノート",
+       "textEn": "ノート",
+       "textJa": "ノート"
+      },
+      {
+       "textVi": "テレビ",
+       "textEn": "テレビ",
+       "textJa": "テレビ"
+      },
+      {
+       "textVi": "ジュース",
+       "textEn": "ジュース",
+       "textJa": "ジュース"
+      },
+      {
+       "textVi": "シャツ",
+       "textEn": "シャツ",
+       "textJa": "シャツ"
+      }
+     ],
+     "correctChoiceIndex": 2,
+     "acceptedAnswers": [],
+     "explanationVi": "Trời nóng nên uống nước ngọt (ジュース); các từ còn lại không uống được.",
+     "explanationEn": "It is hot, so you drink juice; the others cannot be drunk.",
+     "tags": [
+      "N5",
+      "m_ctx"
+     ],
+     "points": 1,
+     "mondai": "m_ctx"
+    },
+    {
+     "id": "jlpt_n5_mini_1_v09",
+     "type": "MultipleChoice",
+     "passageId": "",
+     "promptVi": "Chọn từ phù hợp ngữ cảnh",
+     "promptEn": "Choose the word that best fits the sentence.",
+     "promptJa": "わたしは まいあさ ( ) を たべます。",
+     "promptReading": "",
+     "choices": [
+      {
+       "textVi": "いす",
+       "textEn": "いす",
+       "textJa": "いす"
+      },
+      {
+       "textVi": "パン",
+       "textEn": "パン",
+       "textJa": "パン"
+      },
+      {
+       "textVi": "かぎ",
+       "textEn": "かぎ",
+       "textJa": "かぎ"
+      },
+      {
+       "textVi": "そら",
+       "textEn": "そら",
+       "textJa": "そら"
+      }
+     ],
+     "correctChoiceIndex": 1,
+     "acceptedAnswers": [],
+     "explanationVi": "Chỉ パン (bánh mì) ăn được.",
+     "explanationEn": "Only パン (bread) is edible.",
+     "tags": [
+      "N5",
+      "m_ctx"
+     ],
+     "points": 1,
+     "mondai": "m_ctx"
+    },
+    {
+     "id": "jlpt_n5_mini_1_v10",
+     "type": "MultipleChoice",
+     "passageId": "",
+     "promptVi": "Chọn từ phù hợp ngữ cảnh",
+     "promptEn": "Choose the word that best fits the sentence.",
+     "promptJa": "( ) で てがみを だします。",
+     "promptReading": "",
+     "choices": [
+      {
+       "textVi": "びょういん",
+       "textEn": "びょういん",
+       "textJa": "びょういん"
+      },
+      {
+       "textVi": "ぎんこう",
+       "textEn": "ぎんこう",
+       "textJa": "ぎんこう"
+      },
+      {
+       "textVi": "としょかん",
+       "textEn": "としょかん",
+       "textJa": "としょかん"
+      },
+      {
+       "textVi": "ゆうびんきょく",
+       "textEn": "ゆうびんきょく",
+       "textJa": "ゆうびんきょく"
+      }
+     ],
+     "correctChoiceIndex": 3,
+     "acceptedAnswers": [],
+     "explanationVi": "Gửi thư ở bưu điện (ゆうびんきょく).",
+     "explanationEn": "You send letters at the post office (ゆうびんきょく).",
+     "tags": [
+      "N5",
+      "m_ctx"
+     ],
+     "points": 1,
+     "mondai": "m_ctx"
+    },
+    {
+     "id": "jlpt_n5_mini_1_v11",
+     "type": "MultipleChoice",
+     "passageId": "",
+     "promptVi": "Chọn từ/cụm gần nghĩa",
+     "promptEn": "Choose the word closest in meaning to the underlined part.",
+     "promptJa": "わたしの <u>ちち</u>は かいしゃいんです。",
+     "promptReading": "",
+     "choices": [
+      {
+       "textVi": "おかあさん",
+       "textEn": "おかあさん",
+       "textJa": "おかあさん"
+      },
+      {
+       "textVi": "おにいさん",
+       "textEn": "おにいさん",
+       "textJa": "おにいさん"
+      },
+      {
+       "textVi": "おじいさん",
+       "textEn": "おじいさん",
+       "textJa": "おじいさん"
+      },
+      {
+       "textVi": "おとうさん",
+       "textEn": "おとうさん",
+       "textJa": "おとうさん"
+      }
+     ],
+     "correctChoiceIndex": 3,
+     "acceptedAnswers": [],
+     "explanationVi": "ちち = bố của mình = おとうさん.",
+     "explanationEn": "ちち = my father = おとうさん.",
+     "tags": [
+      "N5",
+      "m_syn"
+     ],
+     "points": 1,
+     "mondai": "m_syn"
+    }
+   ]
+  },
+  {
+   "id": "grammar_reading",
+   "type": "JlptGrammarReading",
+   "titleVi": "Ngữ pháp / Đọc hiểu",
+   "titleEn": "Grammar / Reading",
+   "titleJa": "文法・読解",
+   "timeLimitSeconds": 1800,
+   "scoreScaleMax": 60,
+   "scoreGroup": "language",
+   "mondai": [
+    {
+     "id": "m_gram",
+     "titleJa": "もんだい 文の文法",
+     "titleVi": "Chọn mẫu ngữ pháp đúng điền vào ( )"
+    },
+    {
+     "id": "m_read_c",
+     "titleJa": "もんだい 内容理解",
+     "titleVi": "Đọc hiểu: đọc đoạn văn và chọn đáp án đúng"
+    }
+   ],
+   "passages": [
+    {
+     "id": "jlpt_n5_mini_1_p1",
+     "titleJa": "読解 1",
+     "titleVi": "Bài đọc",
+     "titleEn": "Reading",
+     "bodyJa": "わたしの なまえは ミンです。ベトナムから きました。いま、フーコックの にほんごの がっこうで べんきょうしています。まいにち あさ 8じに がっこうへ いきます。ひるごはんは ともだちと いっしょに たべます。ゆうがたは うちで しゅくだいを します。",
+     "bodyVi": "",
+     "bodyEn": "",
+     "bodyReading": "",
+     "maxPlays": 0
+    },
+    {
+     "id": "jlpt_n5_mini_1_p2",
+     "titleJa": "読解 2",
+     "titleVi": "Bài đọc",
+     "titleEn": "Reading",
+     "bodyJa": "らいしゅうの どようびに、こうえんで まつりが あります。ごご 2じから 8じまでです。たべものは ありますが、のみものは じぶんで もって きて ください。あめの ときは、にちようびに なります。",
+     "bodyVi": "",
+     "bodyEn": "",
+     "bodyReading": "",
+     "maxPlays": 0
+    }
+   ],
+   "questions": [
+    {
+     "id": "jlpt_n5_mini_1_g01",
+     "type": "MultipleChoice",
+     "passageId": "",
+     "promptVi": "Chọn mẫu ngữ pháp đúng điền vào ( )",
+     "promptEn": "Choose the correct grammar for the blank ( ).",
+     "promptJa": "これは わたし( )かさです。",
+     "promptReading": "",
+     "choices": [
+      {
+       "textVi": "で",
+       "textEn": "で",
+       "textJa": "で"
+      },
+      {
+       "textVi": "を",
+       "textEn": "を",
+       "textJa": "を"
+      },
+      {
+       "textVi": "に",
+       "textEn": "に",
+       "textJa": "に"
+      },
+      {
+       "textVi": "の",
+       "textEn": "の",
+       "textJa": "の"
+      }
+     ],
+     "correctChoiceIndex": 3,
+     "acceptedAnswers": [],
+     "explanationVi": "Sở hữu: Aの B = B của A.",
+     "explanationEn": "Possession: AのB = A's B.",
+     "tags": [
+      "N5",
+      "m_gram",
+      "grammar"
+     ],
+     "points": 1,
+     "mondai": "m_gram"
+    },
+    {
+     "id": "jlpt_n5_mini_1_g02",
+     "type": "MultipleChoice",
+     "passageId": "",
+     "promptVi": "Chọn mẫu ngữ pháp đúng điền vào ( )",
+     "promptEn": "Choose the correct grammar for the blank ( ).",
+     "promptJa": "まいにち がっこう( )いきます。",
+     "promptReading": "",
+     "choices": [
+      {
+       "textVi": "で",
+       "textEn": "で",
+       "textJa": "で"
+      },
+      {
+       "textVi": "に",
+       "textEn": "に",
+       "textJa": "に"
+      },
+      {
+       "textVi": "を",
+       "textEn": "を",
+       "textJa": "を"
+      },
+      {
+       "textVi": "の",
+       "textEn": "の",
+       "textJa": "の"
+      }
+     ],
+     "correctChoiceIndex": 1,
+     "acceptedAnswers": [],
+     "explanationVi": "Điểm đến dùng に (hoặc へ).",
+     "explanationEn": "The destination takes に (or へ).",
+     "tags": [
+      "N5",
+      "m_gram",
+      "grammar"
+     ],
+     "points": 1,
+     "mondai": "m_gram"
+    },
+    {
+     "id": "jlpt_n5_mini_1_g03",
+     "type": "MultipleChoice",
+     "passageId": "",
+     "promptVi": "Chọn mẫu ngữ pháp đúng điền vào ( )",
+     "promptEn": "Choose the correct grammar for the blank ( ).",
+     "promptJa": "バス( )がっこうへ いきます。",
+     "promptReading": "",
+     "choices": [
+      {
+       "textVi": "を",
+       "textEn": "を",
+       "textJa": "を"
+      },
+      {
+       "textVi": "に",
+       "textEn": "に",
+       "textJa": "に"
+      },
+      {
+       "textVi": "が",
+       "textEn": "が",
+       "textJa": "が"
+      },
+      {
+       "textVi": "で",
+       "textEn": "で",
+       "textJa": "で"
+      }
+     ],
+     "correctChoiceIndex": 3,
+     "acceptedAnswers": [],
+     "explanationVi": "Phương tiện: Nで (đi bằng xe buýt).",
+     "explanationEn": "Means of transport: Nで (by bus).",
+     "tags": [
+      "N5",
+      "m_gram",
+      "grammar"
+     ],
+     "points": 1,
+     "mondai": "m_gram"
+    },
+    {
+     "id": "jlpt_n5_mini_1_g04",
+     "type": "MultipleChoice",
+     "passageId": "",
+     "promptVi": "Chọn mẫu ngữ pháp đúng điền vào ( )",
+     "promptEn": "Choose the correct grammar for the blank ( ).",
+     "promptJa": "あした ともだち( )あいます。",
+     "promptReading": "",
+     "choices": [
+      {
+       "textVi": "を",
+       "textEn": "を",
+       "textJa": "を"
+      },
+      {
+       "textVi": "の",
+       "textEn": "の",
+       "textJa": "の"
+      },
+      {
+       "textVi": "に",
+       "textEn": "に",
+       "textJa": "に"
+      },
+      {
+       "textVi": "で",
+       "textEn": "で",
+       "textJa": "で"
+      }
+     ],
+     "correctChoiceIndex": 2,
+     "acceptedAnswers": [],
+     "explanationVi": "Gặp ai đó: 人に あいます.",
+     "explanationEn": "Meet someone: 人に あいます.",
+     "tags": [
+      "N5",
+      "m_gram",
+      "grammar"
+     ],
+     "points": 1,
+     "mondai": "m_gram"
+    },
+    {
+     "id": "jlpt_n5_mini_1_g05",
+     "type": "MultipleChoice",
+     "passageId": "",
+     "promptVi": "Chọn mẫu ngữ pháp đúng điền vào ( )",
+     "promptEn": "Choose the correct grammar for the blank ( ).",
+     "promptJa": "わたしは コーヒー( )すきです。",
+     "promptReading": "",
+     "choices": [
+      {
+       "textVi": "を",
+       "textEn": "を",
+       "textJa": "を"
+      },
+      {
+       "textVi": "に",
+       "textEn": "に",
+       "textJa": "に"
+      },
+      {
+       "textVi": "が",
+       "textEn": "が",
+       "textJa": "が"
+      },
+      {
+       "textVi": "で",
+       "textEn": "で",
+       "textJa": "で"
+      }
+     ],
+     "correctChoiceIndex": 2,
+     "acceptedAnswers": [],
+     "explanationVi": "すき đi với が (Nがすきです).",
+     "explanationEn": "すき takes が (Nがすきです).",
+     "tags": [
+      "N5",
+      "m_gram",
+      "grammar"
+     ],
+     "points": 1,
+     "mondai": "m_gram"
+    },
+    {
+     "id": "jlpt_n5_mini_1_g06",
+     "type": "MultipleChoice",
+     "passageId": "",
+     "promptVi": "Chọn mẫu ngữ pháp đúng điền vào ( )",
+     "promptEn": "Choose the correct grammar for the blank ( ).",
+     "promptJa": "ここで しゃしんを とって( )いいですか。",
+     "promptReading": "",
+     "choices": [
+      {
+       "textVi": "が",
+       "textEn": "が",
+       "textJa": "が"
+      },
+      {
+       "textVi": "を",
+       "textEn": "を",
+       "textJa": "を"
+      },
+      {
+       "textVi": "も",
+       "textEn": "も",
+       "textJa": "も"
+      },
+      {
+       "textVi": "は",
+       "textEn": "は",
+       "textJa": "は"
+      }
+     ],
+     "correctChoiceIndex": 2,
+     "acceptedAnswers": [],
+     "explanationVi": "Xin phép: Vても いいですか.",
+     "explanationEn": "Asking permission: Vても いいですか.",
+     "tags": [
+      "N5",
+      "m_gram",
+      "grammar"
+     ],
+     "points": 1,
+     "mondai": "m_gram"
+    },
+    {
+     "id": "jlpt_n5_mini_1_g07",
+     "type": "MultipleChoice",
+     "passageId": "",
+     "promptVi": "Chọn mẫu ngữ pháp đúng điền vào ( )",
+     "promptEn": "Choose the correct grammar for the blank ( ).",
+     "promptJa": "きのう えいがを ( )。",
+     "promptReading": "",
+     "choices": [
+      {
+       "textVi": "みます",
+       "textEn": "みます",
+       "textJa": "みます"
+      },
+      {
+       "textVi": "みました",
+       "textEn": "みました",
+       "textJa": "みました"
+      },
+      {
+       "textVi": "みましょう",
+       "textEn": "みましょう",
+       "textJa": "みましょう"
+      },
+      {
+       "textVi": "みません",
+       "textEn": "みません",
+       "textJa": "みません"
+      }
+     ],
+     "correctChoiceIndex": 1,
+     "acceptedAnswers": [],
+     "explanationVi": "きのう (hôm qua) → quá khứ みました.",
+     "explanationEn": "きのう (yesterday) → past みました.",
+     "tags": [
+      "N5",
+      "m_gram",
+      "grammar"
+     ],
+     "points": 1,
+     "mondai": "m_gram"
+    },
+    {
+     "id": "jlpt_n5_mini_1_g08",
+     "type": "MultipleChoice",
+     "passageId": "",
+     "promptVi": "Chọn mẫu ngữ pháp đúng điền vào ( )",
+     "promptEn": "Choose the correct grammar for the blank ( ).",
+     "promptJa": "いま、ごはんを たべて ( )。",
+     "promptReading": "",
+     "choices": [
+      {
+       "textVi": "ください",
+       "textEn": "ください",
+       "textJa": "ください"
+      },
+      {
+       "textVi": "あります",
+       "textEn": "あります",
+       "textJa": "あります"
+      },
+      {
+       "textVi": "います",
+       "textEn": "います",
+       "textJa": "います"
+      },
+      {
+       "textVi": "でした",
+       "textEn": "でした",
+       "textJa": "でした"
+      }
+     ],
+     "correctChoiceIndex": 2,
+     "acceptedAnswers": [],
+     "explanationVi": "Đang làm: Vています.",
+     "explanationEn": "In progress: Vています.",
+     "tags": [
+      "N5",
+      "m_gram",
+      "grammar"
+     ],
+     "points": 1,
+     "mondai": "m_gram"
+    },
+    {
+     "id": "jlpt_n5_mini_1_g09",
+     "type": "MultipleChoice",
+     "passageId": "",
+     "promptVi": "Chọn mẫu ngữ pháp đúng điền vào ( )",
+     "promptEn": "Choose the correct grammar for the blank ( ).",
+     "promptJa": "この ほんは あの ほんより ( )です。",
+     "promptReading": "",
+     "choices": [
+      {
+       "textVi": "おもしろくて",
+       "textEn": "おもしろくて",
+       "textJa": "おもしろくて"
+      },
+      {
+       "textVi": "おもしろい",
+       "textEn": "おもしろい",
+       "textJa": "おもしろい"
+      },
+      {
+       "textVi": "おもしろく",
+       "textEn": "おもしろく",
+       "textJa": "おもしろく"
+      },
+      {
+       "textVi": "おもしろかった",
+       "textEn": "おもしろかった",
+       "textJa": "おもしろかった"
+      }
+     ],
+     "correctChoiceIndex": 1,
+     "acceptedAnswers": [],
+     "explanationVi": "AはBより + tính từ い ở dạng từ điển + です.",
+     "explanationEn": "AはBより + い-adjective (plain) + です.",
+     "tags": [
+      "N5",
+      "m_gram",
+      "grammar"
+     ],
+     "points": 1,
+     "mondai": "m_gram"
+    },
+    {
+     "id": "jlpt_n5_mini_1_g10",
+     "type": "MultipleChoice",
+     "passageId": "",
+     "promptVi": "Chọn mẫu ngữ pháp đúng điền vào ( )",
+     "promptEn": "Choose the correct grammar for the blank ( ).",
+     "promptJa": "ジュースを ( ) ください。",
+     "promptReading": "",
+     "choices": [
+      {
+       "textVi": "にほん",
+       "textEn": "にほん",
+       "textJa": "にほん"
+      },
+      {
+       "textVi": "にだい",
+       "textEn": "にだい",
+       "textJa": "にだい"
+      },
+      {
+       "textVi": "にひき",
+       "textEn": "にひき",
+       "textJa": "にひき"
+      },
+      {
+       "textVi": "にまい",
+       "textEn": "にまい",
+       "textJa": "にまい"
+      }
+     ],
+     "correctChoiceIndex": 0,
+     "acceptedAnswers": [],
+     "explanationVi": "Chai/lon dài đếm bằng ～本 (にほん).",
+     "explanationEn": "Bottles/long objects use ～本 (にほん).",
+     "tags": [
+      "N5",
+      "m_gram",
+      "grammar"
+     ],
+     "points": 1,
+     "mondai": "m_gram"
+    },
+    {
+     "id": "jlpt_n5_mini_1_g11",
+     "type": "MultipleChoice",
+     "passageId": "jlpt_n5_mini_1_p1",
+     "promptVi": "Đọc hiểu: đọc đoạn văn và chọn đáp án đúng",
+     "promptEn": "Reading: read the passage and choose the best answer.",
+     "promptJa": "ミンさんは どこから きましたか。",
+     "promptReading": "",
+     "choices": [
+      {
+       "textVi": "がっこう",
+       "textEn": "がっこう",
+       "textJa": "がっこう"
+      },
+      {
+       "textVi": "ベトナム",
+       "textEn": "ベトナム",
+       "textJa": "ベトナム"
+      },
+      {
+       "textVi": "フーコック",
+       "textEn": "フーコック",
+       "textJa": "フーコック"
+      },
+      {
+       "textVi": "にほん",
+       "textEn": "にほん",
+       "textJa": "にほん"
+      }
+     ],
+     "correctChoiceIndex": 1,
+     "acceptedAnswers": [],
+     "explanationVi": "Đoạn văn: ベトナムから きました.",
+     "explanationEn": "The text says ベトナムから きました.",
+     "tags": [
+      "N5",
+      "reading"
+     ],
+     "points": 1,
+     "mondai": "m_read_c"
+    },
+    {
+     "id": "jlpt_n5_mini_1_g12",
+     "type": "MultipleChoice",
+     "passageId": "jlpt_n5_mini_1_p1",
+     "promptVi": "Đọc hiểu: đọc đoạn văn và chọn đáp án đúng",
+     "promptEn": "Reading: read the passage and choose the best answer.",
+     "promptJa": "ミンさんは ひるごはんを だれと たべますか。",
+     "promptReading": "",
+     "choices": [
+      {
+       "textVi": "せんせいと",
+       "textEn": "せんせいと",
+       "textJa": "せんせいと"
+      },
+      {
+       "textVi": "ともだちと",
+       "textEn": "ともだちと",
+       "textJa": "ともだちと"
+      },
+      {
+       "textVi": "かぞくと",
+       "textEn": "かぞくと",
+       "textJa": "かぞくと"
+      },
+      {
+       "textVi": "ひとりで",
+       "textEn": "ひとりで",
+       "textJa": "ひとりで"
+      }
+     ],
+     "correctChoiceIndex": 1,
+     "acceptedAnswers": [],
+     "explanationVi": "ひるごはんは ともだちと いっしょに.",
+     "explanationEn": "ひるごはんは ともだちと いっしょに.",
+     "tags": [
+      "N5",
+      "reading"
+     ],
+     "points": 1,
+     "mondai": "m_read_c"
+    },
+    {
+     "id": "jlpt_n5_mini_1_g13",
+     "type": "MultipleChoice",
+     "passageId": "jlpt_n5_mini_1_p1",
+     "promptVi": "Đọc hiểu: đọc đoạn văn và chọn đáp án đúng",
+     "promptEn": "Reading: read the passage and choose the best answer.",
+     "promptJa": "ゆうがた ミンさんは なにを しますか。",
+     "promptReading": "",
+     "choices": [
+      {
+       "textVi": "ともだちと たべます",
+       "textEn": "ともだちと たべます",
+       "textJa": "ともだちと たべます"
+      },
+      {
+       "textVi": "しゅくだいを します",
+       "textEn": "しゅくだいを します",
+       "textJa": "しゅくだいを します"
+      },
+      {
+       "textVi": "がっこうへ いきます",
+       "textEn": "がっこうへ いきます",
+       "textJa": "がっこうへ いきます"
+      },
+      {
+       "textVi": "にほんへ いきます",
+       "textEn": "にほんへ いきます",
+       "textJa": "にほんへ いきます"
+      }
+     ],
+     "correctChoiceIndex": 1,
+     "acceptedAnswers": [],
+     "explanationVi": "ゆうがたは うちで しゅくだいを します.",
+     "explanationEn": "ゆうがたは うちで しゅくだいを します.",
+     "tags": [
+      "N5",
+      "reading"
+     ],
+     "points": 1,
+     "mondai": "m_read_c"
+    },
+    {
+     "id": "jlpt_n5_mini_1_g14",
+     "type": "MultipleChoice",
+     "passageId": "jlpt_n5_mini_1_p2",
+     "promptVi": "Đọc hiểu: đọc đoạn văn và chọn đáp án đúng",
+     "promptEn": "Reading: read the passage and choose the best answer.",
+     "promptJa": "まつりは いつ ありますか。",
+     "promptReading": "",
+     "choices": [
+      {
+       "textVi": "らいげつの どようび",
+       "textEn": "らいげつの どようび",
+       "textJa": "らいげつの どようび"
+      },
+      {
+       "textVi": "こんしゅうの どようび",
+       "textEn": "こんしゅうの どようび",
+       "textJa": "こんしゅうの どようび"
+      },
+      {
+       "textVi": "らいしゅうの どようび",
+       "textEn": "らいしゅうの どようび",
+       "textJa": "らいしゅうの どようび"
+      },
+      {
+       "textVi": "らいしゅうの にちようび",
+       "textEn": "らいしゅうの にちようび",
+       "textJa": "らいしゅうの にちようび"
+      }
+     ],
+     "correctChoiceIndex": 2,
+     "acceptedAnswers": [],
+     "explanationVi": "らいしゅうの どようび.",
+     "explanationEn": "らいしゅうの どようび (next Saturday).",
+     "tags": [
+      "N5",
+      "reading"
+     ],
+     "points": 1,
+     "mondai": "m_read_c"
+    },
+    {
+     "id": "jlpt_n5_mini_1_g15",
+     "type": "MultipleChoice",
+     "passageId": "jlpt_n5_mini_1_p2",
+     "promptVi": "Đọc hiểu: đọc đoạn văn và chọn đáp án đúng",
+     "promptEn": "Reading: read the passage and choose the best answer.",
+     "promptJa": "あめが ふったら、どう なりますか。",
+     "promptReading": "",
+     "choices": [
+      {
+       "textVi": "まつりは ありません",
+       "textEn": "まつりは ありません",
+       "textJa": "まつりは ありません"
+      },
+      {
+       "textVi": "たべものが なくなります",
+       "textEn": "たべものが なくなります",
+       "textJa": "たべものが なくなります"
+      },
+      {
+       "textVi": "ごご 8じに なります",
+       "textEn": "ごご 8じに なります",
+       "textJa": "ごご 8じに なります"
+      },
+      {
+       "textVi": "にちようびに なります",
+       "textEn": "にちようびに なります",
+       "textJa": "にちようびに なります"
+      }
+     ],
+     "correctChoiceIndex": 3,
+     "acceptedAnswers": [],
+     "explanationVi": "あめの ときは、にちようびに なります.",
+     "explanationEn": "If it rains, it moves to Sunday.",
+     "tags": [
+      "N5",
+      "reading"
+     ],
+     "points": 1,
+     "mondai": "m_read_c"
+    },
+    {
+     "id": "jlpt_n5_mini_1_g16",
+     "type": "MultipleChoice",
+     "passageId": "jlpt_n5_mini_1_p2",
+     "promptVi": "Đọc hiểu: đọc đoạn văn và chọn đáp án đúng",
+     "promptEn": "Reading: read the passage and choose the best answer.",
+     "promptJa": "のみものは どう しますか。",
+     "promptReading": "",
+     "choices": [
+      {
+       "textVi": "こうえんで かいます",
+       "textEn": "こうえんで かいます",
+       "textJa": "こうえんで かいます"
+      },
+      {
+       "textVi": "ありません",
+       "textEn": "ありません",
+       "textJa": "ありません"
+      },
+      {
+       "textVi": "たべものと いっしょに もらいます",
+       "textEn": "たべものと いっしょに もらいます",
+       "textJa": "たべものと いっしょに もらいます"
+      },
+      {
+       "textVi": "じぶんで もって いきます",
+       "textEn": "じぶんで もって いきます",
+       "textJa": "じぶんで もって いきます"
+      }
+     ],
+     "correctChoiceIndex": 3,
+     "acceptedAnswers": [],
+     "explanationVi": "のみものは じぶんで もって きて ください.",
+     "explanationEn": "Bring your own drinks.",
+     "tags": [
+      "N5",
+      "reading"
+     ],
+     "points": 1,
+     "mondai": "m_read_c"
+    }
+   ]
+  }
+ ]
+}

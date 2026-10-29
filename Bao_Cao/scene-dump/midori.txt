@@ -1,0 +1,34 @@
+player (-1201.5, 0.2, -29.6)
+navmesh tris 0
+npcs 
+ROOT MidoriIsland_Zone children=12
+   Ground kids=8 c=(-1200, 0, 0) s=(840, 1, 840)
+   Station kids=38 c=(-1240, 2, -32) s=(170, 5, 9)
+   Farm kids=23 c=(-1223, 5, 5) s=(23, 10, 29)
+   AnimalPen kids=22 c=(-1184, 2, 3) s=(31, 5, 22)
+   MidoriStore kids=15 c=(-1189, 2, -18) s=(8, 5, 7)
+   Lookout kids=11 c=(-1204, 0, 36) s=(24, 4, 20)
+   Nature kids=51 c=(-1200, 3, 4) s=(84, 7, 65)
+   Signs kids=7 c=(-1200, 1, 4) s=(30, 2, 60)
+   Bounds kids=44
+   IslandSun kids=0
+   PreviewCamera kids=0
+   Decor kids=0
+ROOT Midori_NightLamps children=12
+   IslandLamp_0 kids=2 c=(-1196, 2, -24) s=(0, 3, 1)
+   IslandLamp_1 kids=2 c=(-1204, 2, -24) s=(0, 3, 1)
+   IslandLamp_2 kids=2 c=(-1196, 2, -11) s=(1, 3, 1)
+   IslandLamp_3 kids=2 c=(-1204, 2, -6) s=(1, 3, 1)
+   IslandLamp_4 kids=2 c=(-1194, 2, -15) s=(1, 3, 1)
+   IslandLamp_5 kids=2 c=(-1209, 2, 2) s=(1, 3, 1)
+   IslandLamp_6 kids=2 c=(-1188, 2, -2) s=(1, 3, 0)
+   IslandLamp_7 kids=2 c=(-1203, 2, 14) s=(0, 3, 1)
+   IslandLamp_8 kids=2 c=(-1197, 2, 24) s=(0, 3, 1)
+   CanopyLamp kids=1
+   CanopyLamp kids=1
+   CampfireGlow kids=1
+ROOT OutdoorSky children=0
+ROOT Midori_RouteSigns children=1
+   Signpost_Landing kids=19 c=(-1197, 1, -21) s=(3, 3, 0)
+ROOT IslandUI children=1
+   IslandCanvas kids=5

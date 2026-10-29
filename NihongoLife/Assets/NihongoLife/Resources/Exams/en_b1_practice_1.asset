@@ -1,0 +1,728 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f5214dc098a14546900e76a0b9a4682c, type: 3}
+  m_Name: en_b1_practice_1
+  m_EditorClassIdentifier: NihongoLife::NihongoLife.Exam.ExamDefinition
+  id: en_b1_practice_1
+  examType: 1
+  level: "B1"
+  titleVi: "Đề luyện tiếng Anh B1 (Trung cấp)"
+  titleEn: "English practice test B1 (Intermediate)"
+  titleJa: "英語練習テスト B1"
+  descriptionVi: "Đề tự soạn: 10 câu ngữ pháp, 5 câu từ vựng, 1 bài đọc (5 câu). Có giải thích tiếng Việt."
+  descriptionEn: "Original test: 10 grammar, 5 vocabulary, 1 reading passage (5 questions) with explanations."
+  sections:
+  - id: grammar
+    type: 4
+    titleVi: "Ngữ pháp"
+    titleEn: "Grammar"
+    titleJa: ""
+    timeLimitSeconds: 600
+    scoreScaleMax: 9
+    scoreGroup: ""
+    mondai: []
+    passages: []
+    questions:
+    - id: en_b1_practice_1_g01
+      type: 0
+      passageId: 
+      promptVi: "Chọn đáp án đúng. If I ___ more time, I would learn Japanese."
+      promptEn: "If I ___ more time, I would learn Japanese."
+      promptJa: ""
+      promptReading: ""
+      choices:
+      - textVi: "would have"
+        textEn: "would have"
+        textJa: ""
+      - textVi: "will have"
+        textEn: "will have"
+        textJa: ""
+      - textVi: "had"
+        textEn: "had"
+        textJa: ""
+      - textVi: "have"
+        textEn: "have"
+        textJa: ""
+      correctChoiceIndex: 2
+      acceptedAnswers: []
+      taskInstructionsVi: ""
+      taskInstructionsEn: ""
+      minWords: 0
+      timeLimitSeconds: 0
+      explanationVi: "Điều kiện loại 2: If + quá khứ, would + V."
+      explanationEn: "Second conditional: If + past, would + V."
+      tags:
+      - "B1"
+      - "grammar"
+      points: 1
+      mondai: ""
+    - id: en_b1_practice_1_g02
+      type: 0
+      passageId: 
+      promptVi: "Chọn đáp án đúng. The report ___ by the manager yesterday."
+      promptEn: "The report ___ by the manager yesterday."
+      promptJa: ""
+      promptReading: ""
+      choices:
+      - textVi: "wrote"
+        textEn: "wrote"
+        textJa: ""
+      - textVi: "has written"
+        textEn: "has written"
+        textJa: ""
+      - textVi: "was written"
+        textEn: "was written"
+        textJa: ""
+      - textVi: "is written"
+        textEn: "is written"
+        textJa: ""
+      correctChoiceIndex: 2
+      acceptedAnswers: []
+      taskInstructionsVi: ""
+      taskInstructionsEn: ""
+      minWords: 0
+      timeLimitSeconds: 0
+      explanationVi: "Bị động quá khứ đơn: was written."
+      explanationEn: "Past passive: was written."
+      tags:
+      - "B1"
+      - "grammar"
+      points: 1
+      mondai: ""
+    - id: en_b1_practice_1_g03
+      type: 0
+      passageId: 
+      promptVi: "Chọn đáp án đúng. She said she ___ finished."
+      promptEn: "She said she ___ finished."
+      promptJa: ""
+      promptReading: ""
+      choices:
+      - textVi: "have"
+        textEn: "have"
+        textJa: ""
+      - textVi: "had"
+        textEn: "had"
+        textJa: ""
+      - textVi: "was"
+        textEn: "was"
+        textJa: ""
+      - textVi: "has"
+        textEn: "has"
+        textJa: ""
+      correctChoiceIndex: 1
+      acceptedAnswers: []
+      taskInstructionsVi: ""
+      taskInstructionsEn: ""
+      minWords: 0
+      timeLimitSeconds: 0
+      explanationVi: "Tường thuật lùi thì: had finished."
+      explanationEn: "Backshift: had finished."
+      tags:
+      - "B1"
+      - "grammar"
+      points: 1
+      mondai: ""
+    - id: en_b1_practice_1_g04
+      type: 0
+      passageId: 
+      promptVi: "Chọn đáp án đúng. I wish I ___ speak French."
+      promptEn: "I wish I ___ speak French."
+      promptJa: ""
+      promptReading: ""
+      choices:
+      - textVi: "will"
+        textEn: "will"
+        textJa: ""
+      - textVi: "can"
+        textEn: "can"
+        textJa: ""
+      - textVi: "could"
+        textEn: "could"
+        textJa: ""
+      - textVi: "would"
+        textEn: "would"
+        textJa: ""
+      correctChoiceIndex: 2
+      acceptedAnswers: []
+      taskInstructionsVi: ""
+      taskInstructionsEn: ""
+      minWords: 0
+      timeLimitSeconds: 0
+      explanationVi: "Wish + could (điều ước hiện tại)."
+      explanationEn: "wish + could (present wish)."
+      tags:
+      - "B1"
+      - "grammar"
+      points: 1
+      mondai: ""
+    - id: en_b1_practice_1_g05
+      type: 0
+      passageId: 
+      promptVi: "Chọn đáp án đúng. He suggested ___ a taxi."
+      promptEn: "He suggested ___ a taxi."
+      promptJa: ""
+      promptReading: ""
+      choices:
+      - textVi: "taking"
+        textEn: "taking"
+        textJa: ""
+      - textVi: "took"
+        textEn: "took"
+        textJa: ""
+      - textVi: "to take"
+        textEn: "to take"
+        textJa: ""
+      - textVi: "take"
+        textEn: "take"
+        textJa: ""
+      correctChoiceIndex: 0
+      acceptedAnswers: []
+      taskInstructionsVi: ""
+      taskInstructionsEn: ""
+      minWords: 0
+      timeLimitSeconds: 0
+      explanationVi: "suggest + V-ing."
+      explanationEn: "suggest + V-ing."
+      tags:
+      - "B1"
+      - "grammar"
+      points: 1
+      mondai: ""
+    - id: en_b1_practice_1_g06
+      type: 0
+      passageId: 
+      promptVi: "Chọn đáp án đúng. I don't know where ___."
+      promptEn: "I don't know where ___."
+      promptJa: ""
+      promptReading: ""
+      choices:
+      - textVi: "the station is"
+        textEn: "the station is"
+        textJa: ""
+      - textVi: "does the station is"
+        textEn: "does the station is"
+        textJa: ""
+      - textVi: "station is"
+        textEn: "station is"
+        textJa: ""
+      - textVi: "is the station"
+        textEn: "is the station"
+        textJa: ""
+      correctChoiceIndex: 0
+      acceptedAnswers: []
+      taskInstructionsVi: ""
+      taskInstructionsEn: ""
+      minWords: 0
+      timeLimitSeconds: 0
+      explanationVi: "Câu hỏi gián tiếp giữ trật tự câu khẳng định."
+      explanationEn: "Embedded questions keep statement word order."
+      tags:
+      - "B1"
+      - "grammar"
+      points: 1
+      mondai: ""
+    - id: en_b1_practice_1_g07
+      type: 0
+      passageId: 
+      promptVi: "Chọn đáp án đúng. By the time we arrived, the film ___."
+      promptEn: "By the time we arrived, the film ___."
+      promptJa: ""
+      promptReading: ""
+      choices:
+      - textVi: "has already started"
+        textEn: "has already started"
+        textJa: ""
+      - textVi: "already started"
+        textEn: "already started"
+        textJa: ""
+      - textVi: "was already starting"
+        textEn: "was already starting"
+        textJa: ""
+      - textVi: "had already started"
+        textEn: "had already started"
+        textJa: ""
+      correctChoiceIndex: 3
+      acceptedAnswers: []
+      taskInstructionsVi: ""
+      taskInstructionsEn: ""
+      minWords: 0
+      timeLimitSeconds: 0
+      explanationVi: "Hành động xảy ra trước một mốc quá khứ → past perfect."
+      explanationEn: "Earlier past action → past perfect."
+      tags:
+      - "B1"
+      - "grammar"
+      points: 1
+      mondai: ""
+    - id: en_b1_practice_1_g08
+      type: 0
+      passageId: 
+      promptVi: "Chọn đáp án đúng. She is the woman ___ lives next door."
+      promptEn: "She is the woman ___ lives next door."
+      promptJa: ""
+      promptReading: ""
+      choices:
+      - textVi: "who"
+        textEn: "who"
+        textJa: ""
+      - textVi: "whose"
+        textEn: "whose"
+        textJa: ""
+      - textVi: "which"
+        textEn: "which"
+        textJa: ""
+      - textVi: "whom"
+        textEn: "whom"
+        textJa: ""
+      correctChoiceIndex: 0
+      acceptedAnswers: []
+      taskInstructionsVi: ""
+      taskInstructionsEn: ""
+      minWords: 0
+      timeLimitSeconds: 0
+      explanationVi: "who làm chủ ngữ cho người."
+      explanationEn: "'who' as subject for a person."
+      tags:
+      - "B1"
+      - "grammar"
+      points: 1
+      mondai: ""
+    - id: en_b1_practice_1_g09
+      type: 0
+      passageId: 
+      promptVi: "Chọn đáp án đúng. You ___ better see a doctor."
+      promptEn: "You ___ better see a doctor."
+      promptJa: ""
+      promptReading: ""
+      choices:
+      - textVi: "must to"
+        textEn: "must to"
+        textJa: ""
+      - textVi: "had"
+        textEn: "had"
+        textJa: ""
+      - textVi: "should"
+        textEn: "should"
+        textJa: ""
+      - textVi: "would"
+        textEn: "would"
+        textJa: ""
+      correctChoiceIndex: 1
+      acceptedAnswers: []
+      taskInstructionsVi: ""
+      taskInstructionsEn: ""
+      minWords: 0
+      timeLimitSeconds: 0
+      explanationVi: "had better + V."
+      explanationEn: "had better + base verb."
+      tags:
+      - "B1"
+      - "grammar"
+      points: 1
+      mondai: ""
+    - id: en_b1_practice_1_g10
+      type: 0
+      passageId: 
+      promptVi: "Chọn đáp án đúng. We're used to ___ early."
+      promptEn: "We're used to ___ early."
+      promptJa: ""
+      promptReading: ""
+      choices:
+      - textVi: "getting up"
+        textEn: "getting up"
+        textJa: ""
+      - textVi: "gets up"
+        textEn: "gets up"
+        textJa: ""
+      - textVi: "got up"
+        textEn: "got up"
+        textJa: ""
+      - textVi: "get up"
+        textEn: "get up"
+        textJa: ""
+      correctChoiceIndex: 0
+      acceptedAnswers: []
+      taskInstructionsVi: ""
+      taskInstructionsEn: ""
+      minWords: 0
+      timeLimitSeconds: 0
+      explanationVi: "be used to + V-ing."
+      explanationEn: "be used to + V-ing."
+      tags:
+      - "B1"
+      - "grammar"
+      points: 1
+      mondai: ""
+  - id: vocabulary
+    type: 4
+    titleVi: "Từ vựng"
+    titleEn: "Vocabulary"
+    titleJa: ""
+    timeLimitSeconds: 300
+    scoreScaleMax: 9
+    scoreGroup: ""
+    mondai: []
+    passages: []
+    questions:
+    - id: en_b1_practice_1_v01
+      type: 0
+      passageId: 
+      promptVi: "Chọn đáp án đúng. The company decided to ___ a new product next month."
+      promptEn: "The company decided to ___ a new product next month."
+      promptJa: ""
+      promptReading: ""
+      choices:
+      - textVi: "lunch"
+        textEn: "lunch"
+        textJa: ""
+      - textVi: "launch"
+        textEn: "launch"
+        textJa: ""
+      - textVi: "lend"
+        textEn: "lend"
+        textJa: ""
+      - textVi: "lack"
+        textEn: "lack"
+        textJa: ""
+      correctChoiceIndex: 1
+      acceptedAnswers: []
+      taskInstructionsVi: ""
+      taskInstructionsEn: ""
+      minWords: 0
+      timeLimitSeconds: 0
+      explanationVi: "Launch a product = tung sản phẩm."
+      explanationEn: "launch a product."
+      tags:
+      - "B1"
+      - "vocabulary"
+      points: 1
+      mondai: ""
+    - id: en_b1_practice_1_v02
+      type: 0
+      passageId: 
+      promptVi: "Chọn đáp án đúng. She has a lot of ___ in teaching."
+      promptEn: "She has a lot of ___ in teaching."
+      promptJa: ""
+      promptReading: ""
+      choices:
+      - textVi: "expression"
+        textEn: "expression"
+        textJa: ""
+      - textVi: "experiment"
+        textEn: "experiment"
+        textJa: ""
+      - textVi: "experience"
+        textEn: "experience"
+        textJa: ""
+      - textVi: "expedition"
+        textEn: "expedition"
+        textJa: ""
+      correctChoiceIndex: 2
+      acceptedAnswers: []
+      taskInstructionsVi: ""
+      taskInstructionsEn: ""
+      minWords: 0
+      timeLimitSeconds: 0
+      explanationVi: "Experience = kinh nghiệm."
+      explanationEn: "experience = skill from doing."
+      tags:
+      - "B1"
+      - "vocabulary"
+      points: 1
+      mondai: ""
+    - id: en_b1_practice_1_v03
+      type: 0
+      passageId: 
+      promptVi: "Chọn đáp án đúng. The meeting was ___ until next week because the manager was ill."
+      promptEn: "The meeting was ___ until next week because the manager was ill."
+      promptJa: ""
+      promptReading: ""
+      choices:
+      - textVi: "performed"
+        textEn: "performed"
+        textJa: ""
+      - textVi: "prevented"
+        textEn: "prevented"
+        textJa: ""
+      - textVi: "proved"
+        textEn: "proved"
+        textJa: ""
+      - textVi: "postponed"
+        textEn: "postponed"
+        textJa: ""
+      correctChoiceIndex: 3
+      acceptedAnswers: []
+      taskInstructionsVi: ""
+      taskInstructionsEn: ""
+      minWords: 0
+      timeLimitSeconds: 0
+      explanationVi: "Postpone = hoãn lại."
+      explanationEn: "postpone = delay."
+      tags:
+      - "B1"
+      - "vocabulary"
+      points: 1
+      mondai: ""
+    - id: en_b1_practice_1_v04
+      type: 0
+      passageId: 
+      promptVi: "Chọn đáp án đúng. I'm not sure. It ___ on the weather."
+      promptEn: "I'm not sure. It ___ on the weather."
+      promptJa: ""
+      promptReading: ""
+      choices:
+      - textVi: "describes"
+        textEn: "describes"
+        textJa: ""
+      - textVi: "depends"
+        textEn: "depends"
+        textJa: ""
+      - textVi: "decides"
+        textEn: "decides"
+        textJa: ""
+      - textVi: "deserves"
+        textEn: "deserves"
+        textJa: ""
+      correctChoiceIndex: 1
+      acceptedAnswers: []
+      taskInstructionsVi: ""
+      taskInstructionsEn: ""
+      minWords: 0
+      timeLimitSeconds: 0
+      explanationVi: "depend on = phụ thuộc vào."
+      explanationEn: "depend on."
+      tags:
+      - "B1"
+      - "vocabulary"
+      points: 1
+      mondai: ""
+    - id: en_b1_practice_1_v05
+      type: 0
+      passageId: 
+      promptVi: "Chọn đáp án đúng. Please ___ me know when you arrive."
+      promptEn: "Please ___ me know when you arrive."
+      promptJa: ""
+      promptReading: ""
+      choices:
+      - textVi: "let"
+        textEn: "let"
+        textJa: ""
+      - textVi: "say"
+        textEn: "say"
+        textJa: ""
+      - textVi: "speak"
+        textEn: "speak"
+        textJa: ""
+      - textVi: "make"
+        textEn: "make"
+        textJa: ""
+      correctChoiceIndex: 0
+      acceptedAnswers: []
+      taskInstructionsVi: ""
+      taskInstructionsEn: ""
+      minWords: 0
+      timeLimitSeconds: 0
+      explanationVi: "let me know = cho tôi biết."
+      explanationEn: "let me know."
+      tags:
+      - "B1"
+      - "vocabulary"
+      points: 1
+      mondai: ""
+  - id: reading
+    type: 4
+    titleVi: "Đọc hiểu"
+    titleEn: "Reading"
+    titleJa: ""
+    timeLimitSeconds: 600
+    scoreScaleMax: 9
+    scoreGroup: ""
+    mondai: []
+    passages:
+    - id: en_b1_practice_1_passage
+      titleVi: "Bài đọc"
+      titleEn: "Reading: Remote Working"
+      titleJa: ""
+      bodyVi: ""
+      bodyEn: "Remote working has become common since 2020. Many employees say they save time and money because they don't travel to the office. However, some workers feel isolated and find it difficult to separate work from home life. As a result, several companies now offer a 'hybrid' model, in which staff work from home for three days and come to the office for two."
+      bodyJa: ""
+      bodyReading: ""
+      maxPlays: 0
+    questions:
+    - id: en_b1_practice_1_r01
+      type: 0
+      passageId: en_b1_practice_1_passage
+      promptVi: "Chọn đáp án đúng. Why do many employees like remote working?"
+      promptEn: "Why do many employees like remote working?"
+      promptJa: ""
+      promptReading: ""
+      choices:
+      - textVi: "They have longer holidays"
+        textEn: "They have longer holidays"
+        textJa: ""
+      - textVi: "They save time and money"
+        textEn: "They save time and money"
+        textJa: ""
+      - textVi: "They meet colleagues daily"
+        textEn: "They meet colleagues daily"
+        textJa: ""
+      - textVi: "They earn more"
+        textEn: "They earn more"
+        textJa: ""
+      correctChoiceIndex: 1
+      acceptedAnswers: []
+      taskInstructionsVi: ""
+      taskInstructionsEn: ""
+      minWords: 0
+      timeLimitSeconds: 0
+      explanationVi: "Họ tiết kiệm thời gian và tiền."
+      explanationEn: "They save time and money."
+      tags:
+      - "B1"
+      - "reading"
+      points: 1
+      mondai: ""
+    - id: en_b1_practice_1_r02
+      type: 0
+      passageId: en_b1_practice_1_passage
+      promptVi: "Chọn đáp án đúng. What problem do some workers have?"
+      promptEn: "What problem do some workers have?"
+      promptJa: ""
+      promptReading: ""
+      choices:
+      - textVi: "They feel isolated"
+        textEn: "They feel isolated"
+        textJa: ""
+      - textVi: "They work fewer hours"
+        textEn: "They work fewer hours"
+        textJa: ""
+      - textVi: "They dislike their colleagues"
+        textEn: "They dislike their colleagues"
+        textJa: ""
+      - textVi: "They have no internet"
+        textEn: "They have no internet"
+        textJa: ""
+      correctChoiceIndex: 0
+      acceptedAnswers: []
+      taskInstructionsVi: ""
+      taskInstructionsEn: ""
+      minWords: 0
+      timeLimitSeconds: 0
+      explanationVi: "some workers feel isolated."
+      explanationEn: "some workers feel isolated."
+      tags:
+      - "B1"
+      - "reading"
+      points: 1
+      mondai: ""
+    - id: en_b1_practice_1_r03
+      type: 0
+      passageId: en_b1_practice_1_passage
+      promptVi: "Chọn đáp án đúng. What is a 'hybrid' model?"
+      promptEn: "What is a 'hybrid' model?"
+      promptJa: ""
+      promptReading: ""
+      choices:
+      - textVi: "Work from home 3 days and at the office 2"
+        textEn: "Work from home 3 days and at the office 2"
+        textJa: ""
+      - textVi: "Work only from home"
+        textEn: "Work only from home"
+        textJa: ""
+      - textVi: "Work only at the office"
+        textEn: "Work only at the office"
+        textJa: ""
+      - textVi: "Work at night"
+        textEn: "Work at night"
+        textJa: ""
+      correctChoiceIndex: 0
+      acceptedAnswers: []
+      taskInstructionsVi: ""
+      taskInstructionsEn: ""
+      minWords: 0
+      timeLimitSeconds: 0
+      explanationVi: "3 ngày ở nhà, 2 ngày ở văn phòng."
+      explanationEn: "3 days at home, 2 at the office."
+      tags:
+      - "B1"
+      - "reading"
+      points: 1
+      mondai: ""
+    - id: en_b1_practice_1_r04
+      type: 0
+      passageId: en_b1_practice_1_passage
+      promptVi: "Chọn đáp án đúng. The word 'isolated' is closest in meaning to ___."
+      promptEn: "The word 'isolated' is closest in meaning to ___."
+      promptJa: ""
+      promptReading: ""
+      choices:
+      - textVi: "busy"
+        textEn: "busy"
+        textJa: ""
+      - textVi: "angry"
+        textEn: "angry"
+        textJa: ""
+      - textVi: "tired"
+        textEn: "tired"
+        textJa: ""
+      - textVi: "alone"
+        textEn: "alone"
+        textJa: ""
+      correctChoiceIndex: 3
+      acceptedAnswers: []
+      taskInstructionsVi: ""
+      taskInstructionsEn: ""
+      minWords: 0
+      timeLimitSeconds: 0
+      explanationVi: "isolated ≈ alone."
+      explanationEn: "isolated ≈ alone."
+      tags:
+      - "B1"
+      - "reading"
+      points: 1
+      mondai: ""
+    - id: en_b1_practice_1_r05
+      type: 0
+      passageId: en_b1_practice_1_passage
+      promptVi: "Chọn đáp án đúng. What can we infer from the text?"
+      promptEn: "What can we infer from the text?"
+      promptJa: ""
+      promptReading: ""
+      choices:
+      - textVi: "Remote working has disappeared"
+        textEn: "Remote working has disappeared"
+        textJa: ""
+      - textVi: "Workers earn less"
+        textEn: "Workers earn less"
+        textJa: ""
+      - textVi: "All companies reject it"
+        textEn: "All companies reject it"
+        textJa: ""
+      - textVi: "Companies are looking for a balance"
+        textEn: "Companies are looking for a balance"
+        textJa: ""
+      correctChoiceIndex: 3
+      acceptedAnswers: []
+      taskInstructionsVi: ""
+      taskInstructionsEn: ""
+      minWords: 0
+      timeLimitSeconds: 0
+      explanationVi: "Mô hình hybrid là cách cân bằng."
+      explanationEn: "Hybrid models show companies seek balance."
+      tags:
+      - "B1"
+      - "reading"
+      points: 1
+      mondai: ""
+  jlptTotalPassScore: 80
+  jlptSectionPassScore: 19
+  scoreGroups: []

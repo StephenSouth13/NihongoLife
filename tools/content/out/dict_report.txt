@@ -1,0 +1,38 @@
+entries 2234
+domains {'daily': 890, 'restaurant': 354, 'medical': 302, 'bank': 184, 'travel': 268, 'shopping': 75, 'school': 90, 'work': 72}
+pos {'n': 1644, 'num': 16, 'adj': 109, 'phr': 136, 'adv': 26, 'v': 267, 'conj': 7, 'pron': 14, 'interj': 15}
+sizes {'ru-vi': 260944, 'vi-ru': 254550, 'ru-ja': 254662, 'ja-ru': 448635, 'en-vi': 222554, 'vi-en': 227327, 'ja-vi': 413857, 'vi-ja': 228665, 'en-ru': 241695, 'ru-en': 253100, 'ja-en': 401547, 'en-ja': 216716, 'entries': 350131}
+errors 0
+warnings 31
+
+WARN extra.txt:42: duplicate of  merged (bone)
+WARN ja homograph "店員": ['waiter', 'clerk']
+WARN ja homograph "足首": ['foot', 'ankle']
+WARN ja homograph "月": ['month', 'moon']
+WARN ja homograph "遅い": ['late', 'slow']
+WARN ja homograph "オレンジ": ['orange (color)', 'orange']
+WARN ja homograph "電気": ['light', 'electricity']
+WARN ja homograph "寝る": ['to sleep', 'to go to bed']
+WARN ja homograph "借りる": ['to borrow', 'to rent']
+WARN ja homograph "使う": ['to use', 'to spend']
+WARN ja homograph "聞く": ['to hear', 'to ask']
+WARN ja homograph "鍋": ['hot pot', 'pot']
+WARN ja homograph "魚": ['fish', 'fish (animal)']
+WARN ja homograph "アレルギー": ['allergy', 'allergy (medical)']
+WARN ja homograph "予約しています": ['I have a reservation.', 'I have a room reservation.']
+WARN ja homograph "すみません": ['Excuse me! (calling staff)', 'excuse me']
+WARN ja homograph "手数料": ['fee', 'commission']
+WARN ja homograph "小銭": ['small change', 'change (coins)']
+WARN ja homograph "カメラ": ['camera', 'camera (phone)']
+WARN ja homograph "乗る": ['to board', 'to ride (bicycle)']
+WARN ja homograph "高い": ['expensive', 'tall']
+WARN ja homograph "歴史": ['history', 'history (past)']
+WARN ja homograph "鶏": ['chicken (animal)', 'chicken']
+WARN ja homograph "本": ['book', 'long object (counter)']
+WARN ja homograph "料理": ['cooking (hobby)', 'cooking']
+WARN ja homograph "彼女": ['she', 'girlfriend']
+WARN ja homograph "少々お待ちください": ['Just a moment, please.', 'Please wait a moment.']
+WARN ja homograph "階": ['floor (of building)', 'floor (counter)']
+WARN ja homograph "夢": ['dream', 'dream (goal)']
+WARN ja homograph "人": ['person', 'person (counter)']
+WARN ja homograph "急ぐ": ['to hurry', 'to hurry up']

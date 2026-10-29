@@ -1,0 +1,1144 @@
+{
+ "schema": "nihongolife.exam/1",
+ "id": "jlpt_n4_mini_1",
+ "examType": "Jlpt",
+ "family": "JLPT",
+ "level": "N4",
+ "learnerLevel": "Elementary",
+ "recommendedBandMin": 0,
+ "recommendedBandMax": 0,
+ "titleVi": "Đề luyện JLPT N4 (mini, không có phần nghe)",
+ "titleEn": "JLPT N4 practice mini-test (no listening)",
+ "titleJa": "日本語能力試験 N4 ミニ模試（聴解なし）",
+ "titleRu": "Мини-тест JLPT N4 (без аудирования)",
+ "descriptionVi": "Đề tự soạn theo cấu trúc JLPT (từ vựng + ngữ pháp + đọc hiểu). Không có phần nghe; điểm đạt đã quy đổi theo thang 120 (2/3 của 180).",
+ "descriptionEn": "Original practice test in JLPT style (vocabulary + grammar + reading). No listening section; pass marks scaled to a 120-point scale (2/3 of 180).",
+ "descriptionJa": "JLPT形式のオリジナル練習問題（文字・語彙・文法・読解）。聴解なし。合格点は120点満点に換算。",
+ "descriptionRu": "Авторский тренировочный тест в формате JLPT (лексика, грамматика, чтение). Без аудирования; проходной балл пересчитан на 120.",
+ "jlptTotalPassScore": 60,
+ "jlptSectionPassScore": 13,
+ "scoreGroups": [
+  {
+   "id": "language",
+   "titleJa": "言語知識・読解",
+   "titleVi": "Kiến thức ngôn ngữ + Đọc hiểu",
+   "max": 120,
+   "passMin": 38
+  }
+ ],
+ "sections": [
+  {
+   "id": "vocab",
+   "type": "JlptVocabulary",
+   "titleVi": "Từ vựng / Chữ Hán",
+   "titleEn": "Vocabulary / Kanji",
+   "titleJa": "文字・語彙",
+   "timeLimitSeconds": 900,
+   "scoreScaleMax": 60,
+   "scoreGroup": "language",
+   "mondai": [
+    {
+     "id": "m_read",
+     "titleJa": "もんだい 漢字の読み",
+     "titleVi": "Đọc chữ Hán"
+    },
+    {
+     "id": "m_orth",
+     "titleJa": "もんだい 表記",
+     "titleVi": "Viết chữ Hán"
+    },
+    {
+     "id": "m_ctx",
+     "titleJa": "もんだい 文脈規定",
+     "titleVi": "Chọn từ phù hợp ngữ cảnh"
+    }
+   ],
+   "passages": [],
+   "questions": [
+    {
+     "id": "jlpt_n4_mini_1_v01",
+     "type": "MultipleChoice",
+     "passageId": "",
+     "promptVi": "Đọc chữ Hán",
+     "promptEn": "Choose the correct reading of the underlined word.",
+     "promptJa": "<u>新聞</u>を よみます。",
+     "promptReading": "",
+     "choices": [
+      {
+       "textVi": "しんぶん",
+       "textEn": "しんぶん",
+       "textJa": "しんぶん"
+      },
+      {
+       "textVi": "しんぷん",
+       "textEn": "しんぷん",
+       "textJa": "しんぷん"
+      },
+      {
+       "textVi": "しんもん",
+       "textEn": "しんもん",
+       "textJa": "しんもん"
+      },
+      {
+       "textVi": "しんぶ",
+       "textEn": "しんぶ",
+       "textJa": "しんぶ"
+      }
+     ],
+     "correctChoiceIndex": 0,
+     "acceptedAnswers": [],
+     "explanationVi": "新聞 = しんぶん (báo).",
+     "explanationEn": "新聞 = しんぶん (newspaper).",
+     "tags": [
+      "N4",
+      "m_read"
+     ],
+     "points": 1,
+     "mondai": "m_read"
+    },
+    {
+     "id": "jlpt_n4_mini_1_v02",
+     "type": "MultipleChoice",
+     "passageId": "",
+     "promptVi": "Đọc chữ Hán",
+     "promptEn": "Choose the correct reading of the underlined word.",
+     "promptJa": "<u>忘れ物</u>を しました。",
+     "promptReading": "",
+     "choices": [
+      {
+       "textVi": "わすれもの",
+       "textEn": "わすれもの",
+       "textJa": "わすれもの"
+      },
+      {
+       "textVi": "わすれぶつ",
+       "textEn": "わすれぶつ",
+       "textJa": "わすれぶつ"
+      },
+      {
+       "textVi": "ぼうれもの",
+       "textEn": "ぼうれもの",
+       "textJa": "ぼうれもの"
+      },
+      {
+       "textVi": "わすれもん",
+       "textEn": "わすれもん",
+       "textJa": "わすれもん"
+      }
+     ],
+     "correctChoiceIndex": 0,
+     "acceptedAnswers": [],
+     "explanationVi": "忘れ物 = わすれもの (đồ bỏ quên).",
+     "explanationEn": "忘れ物 = わすれもの (lost/forgotten item).",
+     "tags": [
+      "N4",
+      "m_read"
+     ],
+     "points": 1,
+     "mondai": "m_read"
+    },
+    {
+     "id": "jlpt_n4_mini_1_v03",
+     "type": "MultipleChoice",
+     "passageId": "",
+     "promptVi": "Đọc chữ Hán",
+     "promptEn": "Choose the correct reading of the underlined word.",
+     "promptJa": "<u>運動</u>は からだに いいです。",
+     "promptReading": "",
+     "choices": [
+      {
+       "textVi": "うんどお",
+       "textEn": "うんどお",
+       "textJa": "うんどお"
+      },
+      {
+       "textVi": "ゆんどう",
+       "textEn": "ゆんどう",
+       "textJa": "ゆんどう"
+      },
+      {
+       "textVi": "うんどう",
+       "textEn": "うんどう",
+       "textJa": "うんどう"
+      },
+      {
+       "textVi": "うんとう",
+       "textEn": "うんとう",
+       "textJa": "うんとう"
+      }
+     ],
+     "correctChoiceIndex": 2,
+     "acceptedAnswers": [],
+     "explanationVi": "運動 = うんどう (vận động).",
+     "explanationEn": "運動 = うんどう (exercise).",
+     "tags": [
+      "N4",
+      "m_read"
+     ],
+     "points": 1,
+     "mondai": "m_read"
+    },
+    {
+     "id": "jlpt_n4_mini_1_v04",
+     "type": "MultipleChoice",
+     "passageId": "",
+     "promptVi": "Đọc chữ Hán",
+     "promptEn": "Choose the correct reading of the underlined word.",
+     "promptJa": "<u>親切</u>な ひとです。",
+     "promptReading": "",
+     "choices": [
+      {
+       "textVi": "しんきり",
+       "textEn": "しんきり",
+       "textJa": "しんきり"
+      },
+      {
+       "textVi": "おやせつ",
+       "textEn": "おやせつ",
+       "textJa": "おやせつ"
+      },
+      {
+       "textVi": "しんせつ",
+       "textEn": "しんせつ",
+       "textJa": "しんせつ"
+      },
+      {
+       "textVi": "しんせい",
+       "textEn": "しんせい",
+       "textJa": "しんせい"
+      }
+     ],
+     "correctChoiceIndex": 2,
+     "acceptedAnswers": [],
+     "explanationVi": "親切 = しんせつ (tốt bụng).",
+     "explanationEn": "親切 = しんせつ (kind).",
+     "tags": [
+      "N4",
+      "m_read"
+     ],
+     "points": 1,
+     "mondai": "m_read"
+    },
+    {
+     "id": "jlpt_n4_mini_1_v05",
+     "type": "MultipleChoice",
+     "passageId": "",
+     "promptVi": "Đọc chữ Hán",
+     "promptEn": "Choose the correct reading of the underlined word.",
+     "promptJa": "<u>夏休み</u>に うみへ いきます。",
+     "promptReading": "",
+     "choices": [
+      {
+       "textVi": "なつやすみ",
+       "textEn": "なつやすみ",
+       "textJa": "なつやすみ"
+      },
+      {
+       "textVi": "かやすみ",
+       "textEn": "かやすみ",
+       "textJa": "かやすみ"
+      },
+      {
+       "textVi": "なつきゅうみ",
+       "textEn": "なつきゅうみ",
+       "textJa": "なつきゅうみ"
+      },
+      {
+       "textVi": "なつやすむ",
+       "textEn": "なつやすむ",
+       "textJa": "なつやすむ"
+      }
+     ],
+     "correctChoiceIndex": 0,
+     "acceptedAnswers": [],
+     "explanationVi": "夏休み = なつやすみ (kỳ nghỉ hè).",
+     "explanationEn": "夏休み = なつやすみ (summer vacation).",
+     "tags": [
+      "N4",
+      "m_read"
+     ],
+     "points": 1,
+     "mondai": "m_read"
+    },
+    {
+     "id": "jlpt_n4_mini_1_v06",
+     "type": "MultipleChoice",
+     "passageId": "",
+     "promptVi": "Viết chữ Hán",
+     "promptEn": "Choose the correct kanji for the underlined hiragana.",
+     "promptJa": "<u>ひこうき</u>に のります。",
+     "promptReading": "",
+     "choices": [
+      {
+       "textVi": "飛行気",
+       "textEn": "飛行気",
+       "textJa": "飛行気"
+      },
+      {
+       "textVi": "飛交機",
+       "textEn": "飛交機",
+       "textJa": "飛交機"
+      },
+      {
+       "textVi": "非行機",
+       "textEn": "非行機",
+       "textJa": "非行機"
+      },
+      {
+       "textVi": "飛行機",
+       "textEn": "飛行機",
+       "textJa": "飛行機"
+      }
+     ],
+     "correctChoiceIndex": 3,
+     "acceptedAnswers": [],
+     "explanationVi": "ひこうき = 飛行機 (máy bay).",
+     "explanationEn": "ひこうき = 飛行機 (airplane).",
+     "tags": [
+      "N4",
+      "m_orth"
+     ],
+     "points": 1,
+     "mondai": "m_orth"
+    },
+    {
+     "id": "jlpt_n4_mini_1_v07",
+     "type": "MultipleChoice",
+     "passageId": "",
+     "promptVi": "Viết chữ Hán",
+     "promptEn": "Choose the correct kanji for the underlined hiragana.",
+     "promptJa": "<u>しょくどう</u>で ひるごはんを たべます。",
+     "promptReading": "",
+     "choices": [
+      {
+       "textVi": "食当",
+       "textEn": "食当",
+       "textJa": "食当"
+      },
+      {
+       "textVi": "食道",
+       "textEn": "食道",
+       "textJa": "食道"
+      },
+      {
+       "textVi": "飲堂",
+       "textEn": "飲堂",
+       "textJa": "飲堂"
+      },
+      {
+       "textVi": "食堂",
+       "textEn": "食堂",
+       "textJa": "食堂"
+      }
+     ],
+     "correctChoiceIndex": 3,
+     "acceptedAnswers": [],
+     "explanationVi": "しょくどう = 食堂 (nhà ăn).",
+     "explanationEn": "しょくどう = 食堂 (cafeteria).",
+     "tags": [
+      "N4",
+      "m_orth"
+     ],
+     "points": 1,
+     "mondai": "m_orth"
+    },
+    {
+     "id": "jlpt_n4_mini_1_v08",
+     "type": "MultipleChoice",
+     "passageId": "",
+     "promptVi": "Chọn từ phù hợp ngữ cảnh",
+     "promptEn": "Choose the word that best fits the sentence.",
+     "promptJa": "かぜを ひいたので、びょういんで ( ) を もらいました。",
+     "promptReading": "",
+     "choices": [
+      {
+       "textVi": "へや",
+       "textEn": "へや",
+       "textJa": "へや"
+      },
+      {
+       "textVi": "さいふ",
+       "textEn": "さいふ",
+       "textJa": "さいふ"
+      },
+      {
+       "textVi": "てがみ",
+       "textEn": "てがみ",
+       "textJa": "てがみ"
+      },
+      {
+       "textVi": "くすり",
+       "textEn": "くすり",
+       "textJa": "くすり"
+      }
+     ],
+     "correctChoiceIndex": 3,
+     "acceptedAnswers": [],
+     "explanationVi": "Bị cảm → nhận thuốc (くすり) ở bệnh viện.",
+     "explanationEn": "With a cold you get medicine (くすり) at the hospital.",
+     "tags": [
+      "N4",
+      "m_ctx"
+     ],
+     "points": 1,
+     "mondai": "m_ctx"
+    },
+    {
+     "id": "jlpt_n4_mini_1_v09",
+     "type": "MultipleChoice",
+     "passageId": "",
+     "promptVi": "Chọn từ phù hợp ngữ cảnh",
+     "promptEn": "Choose the word that best fits the sentence.",
+     "promptJa": "しゅくだいを わすれたので、せんせいに ( )。",
+     "promptReading": "",
+     "choices": [
+      {
+       "textVi": "ほめました",
+       "textEn": "ほめました",
+       "textJa": "ほめました"
+      },
+      {
+       "textVi": "ならいました",
+       "textEn": "ならいました",
+       "textJa": "ならいました"
+      },
+      {
+       "textVi": "しかられました",
+       "textEn": "しかられました",
+       "textJa": "しかられました"
+      },
+      {
+       "textVi": "おこりました",
+       "textEn": "おこりました",
+       "textJa": "おこりました"
+      }
+     ],
+     "correctChoiceIndex": 2,
+     "acceptedAnswers": [],
+     "explanationVi": "Bị thầy mắng: dạng bị động しかられました.",
+     "explanationEn": "Passive: was scolded by the teacher.",
+     "tags": [
+      "N4",
+      "m_ctx"
+     ],
+     "points": 1,
+     "mondai": "m_ctx"
+    },
+    {
+     "id": "jlpt_n4_mini_1_v10",
+     "type": "MultipleChoice",
+     "passageId": "",
+     "promptVi": "Chọn từ phù hợp ngữ cảnh",
+     "promptEn": "Choose the word that best fits the sentence.",
+     "promptJa": "とても ( ) ので、まどを あけました。",
+     "promptReading": "",
+     "choices": [
+      {
+       "textVi": "せまい",
+       "textEn": "せまい",
+       "textJa": "せまい"
+      },
+      {
+       "textVi": "あつい",
+       "textEn": "あつい",
+       "textJa": "あつい"
+      },
+      {
+       "textVi": "うすい",
+       "textEn": "うすい",
+       "textJa": "うすい"
+      },
+      {
+       "textVi": "くらい",
+       "textEn": "くらい",
+       "textJa": "くらい"
+      }
+     ],
+     "correctChoiceIndex": 1,
+     "acceptedAnswers": [],
+     "explanationVi": "Nóng quá nên mở cửa sổ.",
+     "explanationEn": "It was hot, so I opened the window.",
+     "tags": [
+      "N4",
+      "m_ctx"
+     ],
+     "points": 1,
+     "mondai": "m_ctx"
+    }
+   ]
+  },
+  {
+   "id": "grammar_reading",
+   "type": "JlptGrammarReading",
+   "titleVi": "Ngữ pháp / Đọc hiểu",
+   "titleEn": "Grammar / Reading",
+   "titleJa": "文法・読解",
+   "timeLimitSeconds": 1800,
+   "scoreScaleMax": 60,
+   "scoreGroup": "language",
+   "mondai": [
+    {
+     "id": "m_gram",
+     "titleJa": "もんだい 文の文法",
+     "titleVi": "Chọn mẫu ngữ pháp đúng điền vào ( )"
+    },
+    {
+     "id": "m_read_c",
+     "titleJa": "もんだい 内容理解",
+     "titleVi": "Đọc hiểu: đọc đoạn văn và chọn đáp án đúng"
+    }
+   ],
+   "passages": [
+    {
+     "id": "jlpt_n4_mini_1_p1",
+     "titleJa": "読解 1",
+     "titleVi": "Bài đọc",
+     "titleEn": "Reading",
+     "bodyJa": "きのう、ともだちと いっしょに うみへ いきました。てんきは よかったですが、かぜが つよくて、およぐことが できませんでした。しかたがないので、すなの うえで ひるごはんを たべたり、ほんを よんだり しました。かえる とき、あめが ふって きたので、バスで かえりました。",
+     "bodyVi": "",
+     "bodyEn": "",
+     "bodyReading": "",
+     "maxPlays": 0
+    },
+    {
+     "id": "jlpt_n4_mini_1_p2",
+     "titleJa": "読解 2",
+     "titleVi": "Bài đọc",
+     "titleEn": "Reading",
+     "bodyJa": "たなかさん\nあしたの かいぎは 10じからでしたが、しゃちょうの つごうで 11じからに なりました。ばしょは 3かいの かいぎしつです。しりょうは わたしが じゅんびしますので、もって こなくても いいです。　やまだ",
+     "bodyVi": "",
+     "bodyEn": "",
+     "bodyReading": "",
+     "maxPlays": 0
+    }
+   ],
+   "questions": [
+    {
+     "id": "jlpt_n4_mini_1_g01",
+     "type": "MultipleChoice",
+     "passageId": "",
+     "promptVi": "Chọn mẫu ngữ pháp đúng điền vào ( )",
+     "promptEn": "Choose the correct grammar for the blank ( ).",
+     "promptJa": "あした あめが ( )、しあいは ちゅうしです。",
+     "promptReading": "",
+     "choices": [
+      {
+       "textVi": "ふらなくて",
+       "textEn": "ふらなくて",
+       "textJa": "ふらなくて"
+      },
+      {
+       "textVi": "ふったら",
+       "textEn": "ふったら",
+       "textJa": "ふったら"
+      },
+      {
+       "textVi": "ふるのに",
+       "textEn": "ふるのに",
+       "textJa": "ふるのに"
+      },
+      {
+       "textVi": "ふって",
+       "textEn": "ふって",
+       "textJa": "ふって"
+      }
+     ],
+     "correctChoiceIndex": 1,
+     "acceptedAnswers": [],
+     "explanationVi": "Điều kiện giả định: Vたら (nếu mưa thì...).",
+     "explanationEn": "Conditional: Vたら (if it rains...).",
+     "tags": [
+      "N4",
+      "m_gram",
+      "grammar"
+     ],
+     "points": 1,
+     "mondai": "m_gram"
+    },
+    {
+     "id": "jlpt_n4_mini_1_g02",
+     "type": "MultipleChoice",
+     "passageId": "",
+     "promptVi": "Chọn mẫu ngữ pháp đúng điền vào ( )",
+     "promptEn": "Choose the correct grammar for the blank ( ).",
+     "promptJa": "わたしは ははに へやを そうじ( )。",
+     "promptReading": "",
+     "choices": [
+      {
+       "textVi": "してもらいました",
+       "textEn": "してもらいました",
+       "textJa": "してもらいました"
+      },
+      {
+       "textVi": "させました",
+       "textEn": "させました",
+       "textJa": "させました"
+      },
+      {
+       "textVi": "されました",
+       "textEn": "されました",
+       "textJa": "されました"
+      },
+      {
+       "textVi": "させられました",
+       "textEn": "させられました",
+       "textJa": "させられました"
+      }
+     ],
+     "correctChoiceIndex": 3,
+     "acceptedAnswers": [],
+     "explanationVi": "Bị bắt làm: Vさせられる (bị mẹ bắt dọn phòng).",
+     "explanationEn": "Causative-passive: was made to clean.",
+     "tags": [
+      "N4",
+      "m_gram",
+      "grammar"
+     ],
+     "points": 1,
+     "mondai": "m_gram"
+    },
+    {
+     "id": "jlpt_n4_mini_1_g03",
+     "type": "MultipleChoice",
+     "passageId": "",
+     "promptVi": "Chọn mẫu ngữ pháp đúng điền vào ( )",
+     "promptEn": "Choose the correct grammar for the blank ( ).",
+     "promptJa": "この かんじの よみかたを おしえて( )ませんか。",
+     "promptReading": "",
+     "choices": [
+      {
+       "textVi": "もらい",
+       "textEn": "もらい",
+       "textJa": "もらい"
+      },
+      {
+       "textVi": "くれ",
+       "textEn": "くれ",
+       "textJa": "くれ"
+      },
+      {
+       "textVi": "やり",
+       "textEn": "やり",
+       "textJa": "やり"
+      },
+      {
+       "textVi": "あげ",
+       "textEn": "あげ",
+       "textJa": "あげ"
+      }
+     ],
+     "correctChoiceIndex": 1,
+     "acceptedAnswers": [],
+     "explanationVi": "Nhờ vả: Vてくれませんか.",
+     "explanationEn": "Request: Vてくれませんか.",
+     "tags": [
+      "N4",
+      "m_gram",
+      "grammar"
+     ],
+     "points": 1,
+     "mondai": "m_gram"
+    },
+    {
+     "id": "jlpt_n4_mini_1_g04",
+     "type": "MultipleChoice",
+     "passageId": "",
+     "promptVi": "Chọn mẫu ngữ pháp đúng điền vào ( )",
+     "promptEn": "Choose the correct grammar for the blank ( ).",
+     "promptJa": "せんせいが わたしに ほんを ( )。",
+     "promptReading": "",
+     "choices": [
+      {
+       "textVi": "あげました",
+       "textEn": "あげました",
+       "textJa": "あげました"
+      },
+      {
+       "textVi": "いただきました",
+       "textEn": "いただきました",
+       "textJa": "いただきました"
+      },
+      {
+       "textVi": "さしあげました",
+       "textEn": "さしあげました",
+       "textJa": "さしあげました"
+      },
+      {
+       "textVi": "くださいました",
+       "textEn": "くださいました",
+       "textJa": "くださいました"
+      }
+     ],
+     "correctChoiceIndex": 3,
+     "acceptedAnswers": [],
+     "explanationVi": "Người trên cho mình: くださいました (kính ngữ).",
+     "explanationEn": "A superior gave me: くださいました (honorific).",
+     "tags": [
+      "N4",
+      "m_gram",
+      "grammar"
+     ],
+     "points": 1,
+     "mondai": "m_gram"
+    },
+    {
+     "id": "jlpt_n4_mini_1_g05",
+     "type": "MultipleChoice",
+     "passageId": "",
+     "promptVi": "Chọn mẫu ngữ pháp đúng điền vào ( )",
+     "promptEn": "Choose the correct grammar for the blank ( ).",
+     "promptJa": "ごはんを たべた( )、はを みがきます。",
+     "promptReading": "",
+     "choices": [
+      {
+       "textVi": "あとで",
+       "textEn": "あとで",
+       "textJa": "あとで"
+      },
+      {
+       "textVi": "ばかり",
+       "textEn": "ばかり",
+       "textJa": "ばかり"
+      },
+      {
+       "textVi": "まえに",
+       "textEn": "まえに",
+       "textJa": "まえに"
+      },
+      {
+       "textVi": "ながら",
+       "textEn": "ながら",
+       "textJa": "ながら"
+      }
+     ],
+     "correctChoiceIndex": 0,
+     "acceptedAnswers": [],
+     "explanationVi": "Vたあとで = sau khi làm V.",
+     "explanationEn": "Vたあとで = after doing V.",
+     "tags": [
+      "N4",
+      "m_gram",
+      "grammar"
+     ],
+     "points": 1,
+     "mondai": "m_gram"
+    },
+    {
+     "id": "jlpt_n4_mini_1_g06",
+     "type": "MultipleChoice",
+     "passageId": "",
+     "promptVi": "Chọn mẫu ngữ pháp đúng điền vào ( )",
+     "promptEn": "Choose the correct grammar for the blank ( ).",
+     "promptJa": "ひまな( )、えいがを みに いきませんか。",
+     "promptReading": "",
+     "choices": [
+      {
+       "textVi": "まえ",
+       "textEn": "まえ",
+       "textJa": "まえ"
+      },
+      {
+       "textVi": "うち",
+       "textEn": "うち",
+       "textJa": "うち"
+      },
+      {
+       "textVi": "あいだ",
+       "textEn": "あいだ",
+       "textJa": "あいだ"
+      },
+      {
+       "textVi": "とき",
+       "textEn": "とき",
+       "textJa": "とき"
+      }
+     ],
+     "correctChoiceIndex": 3,
+     "acceptedAnswers": [],
+     "explanationVi": "ひまなとき = khi rảnh.",
+     "explanationEn": "ひまなとき = when you're free.",
+     "tags": [
+      "N4",
+      "m_gram",
+      "grammar"
+     ],
+     "points": 1,
+     "mondai": "m_gram"
+    },
+    {
+     "id": "jlpt_n4_mini_1_g07",
+     "type": "MultipleChoice",
+     "passageId": "",
+     "promptVi": "Chọn mẫu ngữ pháp đúng điền vào ( )",
+     "promptEn": "Choose the correct grammar for the blank ( ).",
+     "promptJa": "この くすりは ねる( )のんで ください。",
+     "promptReading": "",
+     "choices": [
+      {
+       "textVi": "ながら",
+       "textEn": "ながら",
+       "textJa": "ながら"
+      },
+      {
+       "textVi": "まえに",
+       "textEn": "まえに",
+       "textJa": "まえに"
+      },
+      {
+       "textVi": "あとで",
+       "textEn": "あとで",
+       "textJa": "あとで"
+      },
+      {
+       "textVi": "たびに",
+       "textEn": "たびに",
+       "textJa": "たびに"
+      }
+     ],
+     "correctChoiceIndex": 1,
+     "acceptedAnswers": [],
+     "explanationVi": "Vる+まえに = trước khi V.",
+     "explanationEn": "Vる + まえに = before doing V.",
+     "tags": [
+      "N4",
+      "m_gram",
+      "grammar"
+     ],
+     "points": 1,
+     "mondai": "m_gram"
+    },
+    {
+     "id": "jlpt_n4_mini_1_g08",
+     "type": "MultipleChoice",
+     "passageId": "",
+     "promptVi": "Chọn mẫu ngữ pháp đúng điền vào ( )",
+     "promptEn": "Choose the correct grammar for the blank ( ).",
+     "promptJa": "かれは ピアノが ひける( )、うたも じょうずです。",
+     "promptReading": "",
+     "choices": [
+      {
+       "textVi": "から",
+       "textEn": "から",
+       "textJa": "から"
+      },
+      {
+       "textVi": "のに",
+       "textEn": "のに",
+       "textJa": "のに"
+      },
+      {
+       "textVi": "し",
+       "textEn": "し",
+       "textJa": "し"
+      },
+      {
+       "textVi": "ために",
+       "textEn": "ために",
+       "textJa": "ために"
+      }
+     ],
+     "correctChoiceIndex": 2,
+     "acceptedAnswers": [],
+     "explanationVi": "A し、B し: liệt kê lý do/đặc điểm.",
+     "explanationEn": "A し B: listing reasons/qualities.",
+     "tags": [
+      "N4",
+      "m_gram",
+      "grammar"
+     ],
+     "points": 1,
+     "mondai": "m_gram"
+    },
+    {
+     "id": "jlpt_n4_mini_1_g09",
+     "type": "MultipleChoice",
+     "passageId": "",
+     "promptVi": "Chọn mẫu ngữ pháp đúng điền vào ( )",
+     "promptEn": "Choose the correct grammar for the blank ( ).",
+     "promptJa": "かさを わすれて、ぬれて( )ました。",
+     "promptReading": "",
+     "choices": [
+      {
+       "textVi": "あげ",
+       "textEn": "あげ",
+       "textJa": "あげ"
+      },
+      {
+       "textVi": "みせ",
+       "textEn": "みせ",
+       "textJa": "みせ"
+      },
+      {
+       "textVi": "おき",
+       "textEn": "おき",
+       "textJa": "おき"
+      },
+      {
+       "textVi": "しまい",
+       "textEn": "しまい",
+       "textJa": "しまい"
+      }
+     ],
+     "correctChoiceIndex": 3,
+     "acceptedAnswers": [],
+     "explanationVi": "Vてしまいました = lỡ (đáng tiếc).",
+     "explanationEn": "Vてしまいました = ended up (regret).",
+     "tags": [
+      "N4",
+      "m_gram",
+      "grammar"
+     ],
+     "points": 1,
+     "mondai": "m_gram"
+    },
+    {
+     "id": "jlpt_n4_mini_1_g10",
+     "type": "MultipleChoice",
+     "passageId": "",
+     "promptVi": "Chọn mẫu ngữ pháp đúng điền vào ( )",
+     "promptEn": "Choose the correct grammar for the blank ( ).",
+     "promptJa": "ここに くるまを とめて( )いけません。",
+     "promptReading": "",
+     "choices": [
+      {
+       "textVi": "に",
+       "textEn": "に",
+       "textJa": "に"
+      },
+      {
+       "textVi": "が",
+       "textEn": "が",
+       "textJa": "が"
+      },
+      {
+       "textVi": "も",
+       "textEn": "も",
+       "textJa": "も"
+      },
+      {
+       "textVi": "は",
+       "textEn": "は",
+       "textJa": "は"
+      }
+     ],
+     "correctChoiceIndex": 3,
+     "acceptedAnswers": [],
+     "explanationVi": "Vては いけません = không được làm V.",
+     "explanationEn": "Vては いけません = must not do V.",
+     "tags": [
+      "N4",
+      "m_gram",
+      "grammar"
+     ],
+     "points": 1,
+     "mondai": "m_gram"
+    },
+    {
+     "id": "jlpt_n4_mini_1_g11",
+     "type": "MultipleChoice",
+     "passageId": "jlpt_n4_mini_1_p1",
+     "promptVi": "Đọc hiểu: đọc đoạn văn và chọn đáp án đúng",
+     "promptEn": "Reading: read the passage and choose the best answer.",
+     "promptJa": "どうして およげませんでしたか。",
+     "promptReading": "",
+     "choices": [
+      {
+       "textVi": "かぜが つよかったから",
+       "textEn": "かぜが つよかったから",
+       "textJa": "かぜが つよかったから"
+      },
+      {
+       "textVi": "さむかったから",
+       "textEn": "さむかったから",
+       "textJa": "さむかったから"
+      },
+      {
+       "textVi": "あめが ふったから",
+       "textEn": "あめが ふったから",
+       "textJa": "あめが ふったから"
+      },
+      {
+       "textVi": "バスが こなかったから",
+       "textEn": "バスが こなかったから",
+       "textJa": "バスが こなかったから"
+      }
+     ],
+     "correctChoiceIndex": 0,
+     "acceptedAnswers": [],
+     "explanationVi": "かぜが つよくて およぐことが できませんでした.",
+     "explanationEn": "The wind was strong, so they couldn't swim.",
+     "tags": [
+      "N4",
+      "reading"
+     ],
+     "points": 1,
+     "mondai": "m_read_c"
+    },
+    {
+     "id": "jlpt_n4_mini_1_g12",
+     "type": "MultipleChoice",
+     "passageId": "jlpt_n4_mini_1_p1",
+     "promptVi": "Đọc hiểu: đọc đoạn văn và chọn đáp án đúng",
+     "promptEn": "Reading: read the passage and choose the best answer.",
+     "promptJa": "ふたりは すなの うえで なにを しましたか。",
+     "promptReading": "",
+     "choices": [
+      {
+       "textVi": "ひるごはんだけ たべました",
+       "textEn": "ひるごはんだけ たべました",
+       "textJa": "ひるごはんだけ たべました"
+      },
+      {
+       "textVi": "およいだり、あそんだり しました",
+       "textEn": "およいだり、あそんだり しました",
+       "textJa": "およいだり、あそんだり しました"
+      },
+      {
+       "textVi": "ひるごはんを たべたり、ほんを よんだり しました",
+       "textEn": "ひるごはんを たべたり、ほんを よんだり しました",
+       "textJa": "ひるごはんを たべたり、ほんを よんだり しました"
+      },
+      {
+       "textVi": "バスに のりました",
+       "textEn": "バスに のりました",
+       "textJa": "バスに のりました"
+      }
+     ],
+     "correctChoiceIndex": 2,
+     "acceptedAnswers": [],
+     "explanationVi": "Vたり Vたり しました: ăn trưa, đọc sách.",
+     "explanationEn": "Vたり Vたり: ate lunch and read books.",
+     "tags": [
+      "N4",
+      "reading"
+     ],
+     "points": 1,
+     "mondai": "m_read_c"
+    },
+    {
+     "id": "jlpt_n4_mini_1_g13",
+     "type": "MultipleChoice",
+     "passageId": "jlpt_n4_mini_1_p1",
+     "promptVi": "Đọc hiểu: đọc đoạn văn và chọn đáp án đúng",
+     "promptEn": "Reading: read the passage and choose the best answer.",
+     "promptJa": "かえる とき、どうしましたか。",
+     "promptReading": "",
+     "choices": [
+      {
+       "textVi": "バスで かえった",
+       "textEn": "バスで かえった",
+       "textJa": "バスで かえった"
+      },
+      {
+       "textVi": "でんしゃで かえった",
+       "textEn": "でんしゃで かえった",
+       "textJa": "でんしゃで かえった"
+      },
+      {
+       "textVi": "あるいて かえった",
+       "textEn": "あるいて かえった",
+       "textJa": "あるいて かえった"
+      },
+      {
+       "textVi": "ともだちの くるまで かえった",
+       "textEn": "ともだちの くるまで かえった",
+       "textJa": "ともだちの くるまで かえった"
+      }
+     ],
+     "correctChoiceIndex": 0,
+     "acceptedAnswers": [],
+     "explanationVi": "あめが ふって きたので、バスで かえりました.",
+     "explanationEn": "It started to rain, so they took the bus.",
+     "tags": [
+      "N4",
+      "reading"
+     ],
+     "points": 1,
+     "mondai": "m_read_c"
+    },
+    {
+     "id": "jlpt_n4_mini_1_g14",
+     "type": "MultipleChoice",
+     "passageId": "jlpt_n4_mini_1_p2",
+     "promptVi": "Đọc hiểu: đọc đoạn văn và chọn đáp án đúng",
+     "promptEn": "Reading: read the passage and choose the best answer.",
+     "promptJa": "かいぎは なんじからですか。",
+     "promptReading": "",
+     "choices": [
+      {
+       "textVi": "11じ",
+       "textEn": "11じ",
+       "textJa": "11じ"
+      },
+      {
+       "textVi": "3じ",
+       "textEn": "3じ",
+       "textJa": "3じ"
+      },
+      {
+       "textVi": "10じ",
+       "textEn": "10じ",
+       "textJa": "10じ"
+      },
+      {
+       "textVi": "12じ",
+       "textEn": "12じ",
+       "textJa": "12じ"
+      }
+     ],
+     "correctChoiceIndex": 0,
+     "acceptedAnswers": [],
+     "explanationVi": "11じからに なりました.",
+     "explanationEn": "It was changed to 11:00.",
+     "tags": [
+      "N4",
+      "reading"
+     ],
+     "points": 1,
+     "mondai": "m_read_c"
+    },
+    {
+     "id": "jlpt_n4_mini_1_g15",
+     "type": "MultipleChoice",
+     "passageId": "jlpt_n4_mini_1_p2",
+     "promptVi": "Đọc hiểu: đọc đoạn văn và chọn đáp án đúng",
+     "promptEn": "Reading: read the passage and choose the best answer.",
+     "promptJa": "たなかさんは なにを しなければ なりませんか。",
+     "promptReading": "",
+     "choices": [
+      {
+       "textVi": "3かいの かいぎしつに いく",
+       "textEn": "3かいの かいぎしつに いく",
+       "textJa": "3かいの かいぎしつに いく"
+      },
+      {
+       "textVi": "しゃちょうに でんわする",
+       "textEn": "しゃちょうに でんわする",
+       "textJa": "しゃちょうに でんわする"
+      },
+      {
+       "textVi": "しりょうを つくる",
+       "textEn": "しりょうを つくる",
+       "textJa": "しりょうを つくる"
+      },
+      {
+       "textVi": "しりょうを もって いく",
+       "textEn": "しりょうを もって いく",
+       "textJa": "しりょうを もって いく"
+      }
+     ],
+     "correctChoiceIndex": 0,
+     "acceptedAnswers": [],
+     "explanationVi": "Chỉ cần đến phòng họp tầng 3; tài liệu đã có người chuẩn bị.",
+     "explanationEn": "He only has to go to the 3rd-floor room; materials are prepared.",
+     "tags": [
+      "N4",
+      "reading"
+     ],
+     "points": 1,
+     "mondai": "m_read_c"
+    }
+   ]
+  }
+ ]
+}

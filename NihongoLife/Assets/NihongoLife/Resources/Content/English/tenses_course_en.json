@@ -1,0 +1,54 @@
+{
+  "version": 1,
+  "note": "English-language usage and common-mistake notes for the 12 lessons of tenses_course.json (the main file carries vi/ru/ja only). Written by the NihongoLife team.",
+  "lessons": {
+    "present_simple": {
+      "usage": ["Habits and repeated actions (every day, usually).", "Facts and general truths (The sun rises in the east).", "Fixed timetables (The train leaves at 7)."],
+      "commonMistake": "Forgetting -s/-es with he/she/it: ✗ She work → ✓ She works. After does/do use the base verb: ✗ Does she works → ✓ Does she work."
+    },
+    "present_continuous": {
+      "usage": ["An action happening right now (now, at the moment).", "A temporary situation around the present (this week).", "A firm plan for the near future (I am meeting him tonight)."],
+      "commonMistake": "Using the continuous with state verbs (know, like, want): ✗ I am knowing → ✓ I know. Do not drop the verb to be: ✗ He working → ✓ He is working."
+    },
+    "present_perfect": {
+      "usage": ["A finished action that still matters now (I have lost my key).", "Life experience (Have you ever been to Japan?).", "Something that began in the past and continues until now, with for/since."],
+      "commonMistake": "Using the present perfect with a finished time: ✗ I have seen him yesterday → ✓ I saw him yesterday. Remember: for + a period of time, since + a starting point."
+    },
+    "present_perfect_continuous": {
+      "usage": ["Stress on how long something has been going on (I have been waiting for an hour).", "An action that has just stopped but shows results (You are wet — have you been running?).", "Often used with for, since, all day, lately."],
+      "commonMistake": "State verbs cannot be used: ✗ I have been knowing → ✓ I have known. Do not leave out been: ✗ I have studying → ✓ I have been studying."
+    },
+    "past_simple": {
+      "usage": ["An action that started and finished at a definite time in the past.", "A chain of actions one after another (I got up, ate, and left).", "A past habit (When I was a child, I played outside)."],
+      "commonMistake": "After did use the base verb: ✗ Did you went → ✓ Did you go. Irregular verbs must be learned by heart: go → went, buy → bought."
+    },
+    "past_continuous": {
+      "usage": ["An action in progress at a specific moment in the past (at 8 pm last night).", "A longer action interrupted by a shorter one (I was cooking when he called).", "Two actions happening at the same time (while)."],
+      "commonMistake": "Use the past simple for the short interrupting action and the continuous for the long one: ✓ I was walking when I saw him. Choose was/were to match the subject."
+    },
+    "past_perfect": {
+      "usage": ["An action that happened before another past action or time.", "Often with before, after, by the time, already.", "Explaining the cause of a past situation."],
+      "commonMistake": "Do not use it when there is no earlier/later link: ✗ I had eaten breakfast. (no second event) → ✓ I ate breakfast. The later action takes the past simple."
+    },
+    "past_perfect_continuous": {
+      "usage": ["Stress on an action that had been going on up to a past moment.", "The cause of a result seen at that past moment (Her eyes were red; she had been crying).", "Often with for/since + a past point."],
+      "commonMistake": "Mixing it up with the past perfect: ✗ I had been know → ✓ I had known. You need the full had been + V-ing."
+    },
+    "future_simple": {
+      "usage": ["A decision made at the moment of speaking (I'll have the noodles).", "Predictions and opinions about the future (I think it will rain).", "Promises and offers (I will help you)."],
+      "commonMistake": "After will use the base verb, without to or -s: ✗ She will goes → ✓ She will go. For plans already made, be going to is more natural."
+    },
+    "future_continuous": {
+      "usage": ["An action that will be in progress at a certain future time (At 8 pm I will be driving).", "Polite questions about plans (Will you be using the car?).", "A future action seen as part of the normal course of events."],
+      "commonMistake": "Leaving out be: ✗ I will working → ✓ I will be working. Not used with state verbs: ✗ I will be knowing."
+    },
+    "future_perfect": {
+      "usage": ["An action that will be finished before a point in the future (By Friday I will have finished).", "Often with by + a time, by the time.", "Guessing that something has already happened by then."],
+      "commonMistake": "Do not use will after by the time: ✗ by the time you will arrive → ✓ by the time you arrive. Keep have + V3 after will."
+    },
+    "future_perfect_continuous": {
+      "usage": ["Stress on how long an action will have lasted by a future point (By June I will have been working here for ten years).", "Often with by + a time, for + a period.", "Rare; mostly formal or written English."],
+      "commonMistake": "Missing been or have: ✗ I will have working → ✓ I will have been working. It is the longest tense — always check will + have + been + V-ing."
+    }
+  }
+}

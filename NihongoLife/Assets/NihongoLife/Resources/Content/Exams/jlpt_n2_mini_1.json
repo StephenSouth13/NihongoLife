@@ -1,0 +1,1048 @@
+{
+ "schema": "nihongolife.exam/1",
+ "id": "jlpt_n2_mini_1",
+ "examType": "Jlpt",
+ "family": "JLPT",
+ "level": "N2",
+ "learnerLevel": "Upper-intermediate",
+ "recommendedBandMin": 0,
+ "recommendedBandMax": 0,
+ "titleVi": "Đề luyện JLPT N2 (mini, không có phần nghe)",
+ "titleEn": "JLPT N2 practice mini-test (no listening)",
+ "titleJa": "日本語能力試験 N2 ミニ模試（聴解なし）",
+ "titleRu": "Мини-тест JLPT N2 (без аудирования)",
+ "descriptionVi": "Đề tự soạn theo cấu trúc JLPT (từ vựng + ngữ pháp + đọc hiểu). Không có phần nghe; điểm đạt đã quy đổi theo thang 120 (2/3 của 180).",
+ "descriptionEn": "Original practice test in JLPT style (vocabulary + grammar + reading). No listening section; pass marks scaled to a 120-point scale (2/3 of 180).",
+ "descriptionJa": "JLPT形式のオリジナル練習問題（文字・語彙・文法・読解）。聴解なし。合格点は120点満点に換算。",
+ "descriptionRu": "Авторский тренировочный тест в формате JLPT (лексика, грамматика, чтение). Без аудирования; проходной балл пересчитан на 120.",
+ "jlptTotalPassScore": 60,
+ "jlptSectionPassScore": 13,
+ "scoreGroups": [],
+ "sections": [
+  {
+   "id": "vocab",
+   "type": "JlptVocabulary",
+   "titleVi": "Từ vựng / Chữ Hán",
+   "titleEn": "Vocabulary / Kanji",
+   "titleJa": "文字・語彙",
+   "timeLimitSeconds": 900,
+   "scoreScaleMax": 60,
+   "scoreGroup": "",
+   "mondai": [
+    {
+     "id": "m_read",
+     "titleJa": "もんだい 漢字の読み",
+     "titleVi": "Đọc chữ Hán"
+    },
+    {
+     "id": "m_orth",
+     "titleJa": "もんだい 表記",
+     "titleVi": "Viết chữ Hán"
+    },
+    {
+     "id": "m_ctx",
+     "titleJa": "もんだい 文脈規定",
+     "titleVi": "Chọn từ phù hợp ngữ cảnh"
+    },
+    {
+     "id": "m_syn",
+     "titleJa": "もんだい 言い換え",
+     "titleVi": "Chọn từ/cụm gần nghĩa"
+    }
+   ],
+   "passages": [],
+   "questions": [
+    {
+     "id": "jlpt_n2_mini_1_v01",
+     "type": "MultipleChoice",
+     "passageId": "",
+     "promptVi": "Đọc chữ Hán",
+     "promptEn": "Choose the correct reading of the underlined word.",
+     "promptJa": "新しい <u>概念</u>を 紹介する。",
+     "promptReading": "",
+     "choices": [
+      {
+       "textVi": "がいめん",
+       "textEn": "がいめん",
+       "textJa": "がいめん"
+      },
+      {
+       "textVi": "がいねん",
+       "textEn": "がいねん",
+       "textJa": "がいねん"
+      },
+      {
+       "textVi": "かいねん",
+       "textEn": "かいねん",
+       "textJa": "かいねん"
+      },
+      {
+       "textVi": "がいてん",
+       "textEn": "がいてん",
+       "textJa": "がいてん"
+      }
+     ],
+     "correctChoiceIndex": 1,
+     "acceptedAnswers": [],
+     "explanationVi": "概念 = がいねん (khái niệm).",
+     "explanationEn": "概念 = がいねん (concept).",
+     "tags": [
+      "N2",
+      "m_read"
+     ],
+     "points": 1,
+     "mondai": "m_read"
+    },
+    {
+     "id": "jlpt_n2_mini_1_v02",
+     "type": "MultipleChoice",
+     "passageId": "",
+     "promptVi": "Đọc chữ Hán",
+     "promptEn": "Choose the correct reading of the underlined word.",
+     "promptJa": "健康を <u>維持</u>する。",
+     "promptReading": "",
+     "choices": [
+      {
+       "textVi": "いち",
+       "textEn": "いち",
+       "textJa": "いち"
+      },
+      {
+       "textVi": "ゆじ",
+       "textEn": "ゆじ",
+       "textJa": "ゆじ"
+      },
+      {
+       "textVi": "いし",
+       "textEn": "いし",
+       "textJa": "いし"
+      },
+      {
+       "textVi": "いじ",
+       "textEn": "いじ",
+       "textJa": "いじ"
+      }
+     ],
+     "correctChoiceIndex": 3,
+     "acceptedAnswers": [],
+     "explanationVi": "維持 = いじ (duy trì).",
+     "explanationEn": "維持 = いじ (maintain).",
+     "tags": [
+      "N2",
+      "m_read"
+     ],
+     "points": 1,
+     "mondai": "m_read"
+    },
+    {
+     "id": "jlpt_n2_mini_1_v03",
+     "type": "MultipleChoice",
+     "passageId": "",
+     "promptVi": "Đọc chữ Hán",
+     "promptEn": "Choose the correct reading of the underlined word.",
+     "promptJa": "<u>著しい</u> 進歩を 遂げた。",
+     "promptReading": "",
+     "choices": [
+      {
+       "textVi": "いちじるしい",
+       "textEn": "いちじるしい",
+       "textJa": "いちじるしい"
+      },
+      {
+       "textVi": "はなはだしい",
+       "textEn": "はなはだしい",
+       "textJa": "はなはだしい"
+      },
+      {
+       "textVi": "あらわしい",
+       "textEn": "あらわしい",
+       "textJa": "あらわしい"
+      },
+      {
+       "textVi": "いちじるい",
+       "textEn": "いちじるい",
+       "textJa": "いちじるい"
+      }
+     ],
+     "correctChoiceIndex": 0,
+     "acceptedAnswers": [],
+     "explanationVi": "著しい = いちじるしい (đáng kể).",
+     "explanationEn": "著しい = いちじるしい (remarkable).",
+     "tags": [
+      "N2",
+      "m_read"
+     ],
+     "points": 1,
+     "mondai": "m_read"
+    },
+    {
+     "id": "jlpt_n2_mini_1_v04",
+     "type": "MultipleChoice",
+     "passageId": "",
+     "promptVi": "Đọc chữ Hán",
+     "promptEn": "Choose the correct reading of the underlined word.",
+     "promptJa": "社会に <u>貢献</u>する。",
+     "promptReading": "",
+     "choices": [
+      {
+       "textVi": "こうげん",
+       "textEn": "こうげん",
+       "textJa": "こうげん"
+      },
+      {
+       "textVi": "こくけん",
+       "textEn": "こくけん",
+       "textJa": "こくけん"
+      },
+      {
+       "textVi": "こうけん",
+       "textEn": "こうけん",
+       "textJa": "こうけん"
+      },
+      {
+       "textVi": "きょうけん",
+       "textEn": "きょうけん",
+       "textJa": "きょうけん"
+      }
+     ],
+     "correctChoiceIndex": 2,
+     "acceptedAnswers": [],
+     "explanationVi": "貢献 = こうけん (cống hiến).",
+     "explanationEn": "貢献 = こうけん (contribute).",
+     "tags": [
+      "N2",
+      "m_read"
+     ],
+     "points": 1,
+     "mondai": "m_read"
+    },
+    {
+     "id": "jlpt_n2_mini_1_v05",
+     "type": "MultipleChoice",
+     "passageId": "",
+     "promptVi": "Viết chữ Hán",
+     "promptEn": "Choose the correct kanji for the underlined hiragana.",
+     "promptJa": "優勝を <u>かくとく</u>する。",
+     "promptReading": "",
+     "choices": [
+      {
+       "textVi": "穫得",
+       "textEn": "穫得",
+       "textJa": "穫得"
+      },
+      {
+       "textVi": "獲徳",
+       "textEn": "獲徳",
+       "textJa": "獲徳"
+      },
+      {
+       "textVi": "獲特",
+       "textEn": "獲特",
+       "textJa": "獲特"
+      },
+      {
+       "textVi": "獲得",
+       "textEn": "獲得",
+       "textJa": "獲得"
+      }
+     ],
+     "correctChoiceIndex": 3,
+     "acceptedAnswers": [],
+     "explanationVi": "かくとく = 獲得 (giành được).",
+     "explanationEn": "かくとく = 獲得 (acquire).",
+     "tags": [
+      "N2",
+      "m_orth"
+     ],
+     "points": 1,
+     "mondai": "m_orth"
+    },
+    {
+     "id": "jlpt_n2_mini_1_v06",
+     "type": "MultipleChoice",
+     "passageId": "",
+     "promptVi": "Viết chữ Hán",
+     "promptEn": "Choose the correct kanji for the underlined hiragana.",
+     "promptJa": "新しい 計画を <u>ていあん</u>する。",
+     "promptReading": "",
+     "choices": [
+      {
+       "textVi": "提案",
+       "textEn": "提案",
+       "textJa": "提案"
+      },
+      {
+       "textVi": "提安",
+       "textEn": "提安",
+       "textJa": "提安"
+      },
+      {
+       "textVi": "提按",
+       "textEn": "提按",
+       "textJa": "提按"
+      },
+      {
+       "textVi": "堤案",
+       "textEn": "堤案",
+       "textJa": "堤案"
+      }
+     ],
+     "correctChoiceIndex": 0,
+     "acceptedAnswers": [],
+     "explanationVi": "ていあん = 提案 (đề xuất).",
+     "explanationEn": "ていあん = 提案 (propose).",
+     "tags": [
+      "N2",
+      "m_orth"
+     ],
+     "points": 1,
+     "mondai": "m_orth"
+    },
+    {
+     "id": "jlpt_n2_mini_1_v07",
+     "type": "MultipleChoice",
+     "passageId": "",
+     "promptVi": "Chọn từ phù hợp ngữ cảnh",
+     "promptEn": "Choose the word that best fits the sentence.",
+     "promptJa": "景気が ( )して、失業者が 増えた。",
+     "promptReading": "",
+     "choices": [
+      {
+       "textVi": "発展",
+       "textEn": "発展",
+       "textJa": "発展"
+      },
+      {
+       "textVi": "上昇",
+       "textEn": "上昇",
+       "textJa": "上昇"
+      },
+      {
+       "textVi": "悪化",
+       "textEn": "悪化",
+       "textJa": "悪化"
+      },
+      {
+       "textVi": "改善",
+       "textEn": "改善",
+       "textJa": "改善"
+      }
+     ],
+     "correctChoiceIndex": 2,
+     "acceptedAnswers": [],
+     "explanationVi": "Thất nghiệp tăng ← kinh tế xấu đi (悪化).",
+     "explanationEn": "Unemployment rose because the economy worsened (悪化).",
+     "tags": [
+      "N2",
+      "m_ctx"
+     ],
+     "points": 1,
+     "mondai": "m_ctx"
+    },
+    {
+     "id": "jlpt_n2_mini_1_v08",
+     "type": "MultipleChoice",
+     "passageId": "",
+     "promptVi": "Chọn từ phù hợp ngữ cảnh",
+     "promptEn": "Choose the word that best fits the sentence.",
+     "promptJa": "彼の 失敗で 計画が ( )に なった。",
+     "promptReading": "",
+     "choices": [
+      {
+       "textVi": "台無し",
+       "textEn": "台無し",
+       "textJa": "台無し"
+      },
+      {
+       "textVi": "水平",
+       "textEn": "水平",
+       "textJa": "水平"
+      },
+      {
+       "textVi": "無理",
+       "textEn": "無理",
+       "textJa": "無理"
+      },
+      {
+       "textVi": "最低",
+       "textEn": "最低",
+       "textJa": "最低"
+      }
+     ],
+     "correctChoiceIndex": 0,
+     "acceptedAnswers": [],
+     "explanationVi": "台無しになる = bị hỏng hết.",
+     "explanationEn": "台無しになる = be ruined.",
+     "tags": [
+      "N2",
+      "m_ctx"
+     ],
+     "points": 1,
+     "mondai": "m_ctx"
+    },
+    {
+     "id": "jlpt_n2_mini_1_v09",
+     "type": "MultipleChoice",
+     "passageId": "",
+     "promptVi": "Chọn từ/cụm gần nghĩa",
+     "promptEn": "Choose the word closest in meaning to the underlined part.",
+     "promptJa": "彼女は <u>ひそかに</u> 計画を 進めた。",
+     "promptReading": "",
+     "choices": [
+      {
+       "textVi": "きちんと",
+       "textEn": "きちんと",
+       "textJa": "きちんと"
+      },
+      {
+       "textVi": "こっそり",
+       "textEn": "こっそり",
+       "textJa": "こっそり"
+      },
+      {
+       "textVi": "さっそく",
+       "textEn": "さっそく",
+       "textJa": "さっそく"
+      },
+      {
+       "textVi": "ゆっくり",
+       "textEn": "ゆっくり",
+       "textJa": "ゆっくり"
+      }
+     ],
+     "correctChoiceIndex": 1,
+     "acceptedAnswers": [],
+     "explanationVi": "ひそかに ≈ こっそり (lén lút).",
+     "explanationEn": "ひそかに ≈ こっそり (secretly).",
+     "tags": [
+      "N2",
+      "m_syn"
+     ],
+     "points": 1,
+     "mondai": "m_syn"
+    },
+    {
+     "id": "jlpt_n2_mini_1_v10",
+     "type": "MultipleChoice",
+     "passageId": "",
+     "promptVi": "Chọn từ/cụm gần nghĩa",
+     "promptEn": "Choose the word closest in meaning to the underlined part.",
+     "promptJa": "その 報告は <u>おおまかな</u> 内容だった。",
+     "promptReading": "",
+     "choices": [
+      {
+       "textVi": "だいたいの",
+       "textEn": "だいたいの",
+       "textJa": "だいたいの"
+      },
+      {
+       "textVi": "こまかい",
+       "textEn": "こまかい",
+       "textJa": "こまかい"
+      },
+      {
+       "textVi": "くわしい",
+       "textEn": "くわしい",
+       "textJa": "くわしい"
+      },
+      {
+       "textVi": "たしかな",
+       "textEn": "たしかな",
+       "textJa": "たしかな"
+      }
+     ],
+     "correctChoiceIndex": 0,
+     "acceptedAnswers": [],
+     "explanationVi": "おおまか ≈ だいたい (đại khái).",
+     "explanationEn": "おおまか ≈ だいたい (rough).",
+     "tags": [
+      "N2",
+      "m_syn"
+     ],
+     "points": 1,
+     "mondai": "m_syn"
+    }
+   ]
+  },
+  {
+   "id": "grammar_reading",
+   "type": "JlptGrammarReading",
+   "titleVi": "Ngữ pháp / Đọc hiểu",
+   "titleEn": "Grammar / Reading",
+   "titleJa": "文法・読解",
+   "timeLimitSeconds": 1800,
+   "scoreScaleMax": 60,
+   "scoreGroup": "",
+   "mondai": [
+    {
+     "id": "m_gram",
+     "titleJa": "もんだい 文の文法",
+     "titleVi": "Chọn mẫu ngữ pháp đúng điền vào ( )"
+    },
+    {
+     "id": "m_read_c",
+     "titleJa": "もんだい 内容理解",
+     "titleVi": "Đọc hiểu: đọc đoạn văn và chọn đáp án đúng"
+    }
+   ],
+   "passages": [
+    {
+     "id": "jlpt_n2_mini_1_p1",
+     "titleJa": "読解",
+     "titleVi": "Bài đọc",
+     "titleEn": "Reading",
+     "bodyJa": "近年、テレワークを 導入する 企業が 増えている。通勤の 時間が なくなる ことで、社員は 自由な 時間を 持てるように なった という 利点が ある。一方で、同僚と 気軽に 相談できず、孤独を 感じる 人も 少なくない。そのため、週に 数日だけ 出社する 「ハイブリッド型」を 選ぶ 企業も 出て きた。働き方に 唯一の 正解は なく、仕事の 内容や 個人の 事情に 合わせて 柔軟に 選ぶ ことが 重要だと いえる。",
+     "bodyVi": "",
+     "bodyEn": "",
+     "bodyReading": "",
+     "maxPlays": 0
+    }
+   ],
+   "questions": [
+    {
+     "id": "jlpt_n2_mini_1_g01",
+     "type": "MultipleChoice",
+     "passageId": "",
+     "promptVi": "Chọn mẫu ngữ pháp đúng điền vào ( )",
+     "promptEn": "Choose the correct grammar for the blank ( ).",
+     "promptJa": "努力した( )、合格できた。",
+     "promptReading": "",
+     "choices": [
+      {
+       "textVi": "おかげで",
+       "textEn": "おかげで",
+       "textJa": "おかげで"
+      },
+      {
+       "textVi": "せいで",
+       "textEn": "せいで",
+       "textJa": "せいで"
+      },
+      {
+       "textVi": "ばかりに",
+       "textEn": "ばかりに",
+       "textJa": "ばかりに"
+      },
+      {
+       "textVi": "くせに",
+       "textEn": "くせに",
+       "textJa": "くせに"
+      }
+     ],
+     "correctChoiceIndex": 0,
+     "acceptedAnswers": [],
+     "explanationVi": "おかげで = nhờ (kết quả tốt).",
+     "explanationEn": "おかげで = thanks to (good result).",
+     "tags": [
+      "N2",
+      "m_gram",
+      "grammar"
+     ],
+     "points": 1,
+     "mondai": "m_gram"
+    },
+    {
+     "id": "jlpt_n2_mini_1_g02",
+     "type": "MultipleChoice",
+     "passageId": "",
+     "promptVi": "Chọn mẫu ngữ pháp đúng điền vào ( )",
+     "promptEn": "Choose the correct grammar for the blank ( ).",
+     "promptJa": "彼は 忙しい( )、いつも 手伝って くれる。",
+     "promptReading": "",
+     "choices": [
+      {
+       "textVi": "というより",
+       "textEn": "というより",
+       "textJa": "というより"
+      },
+      {
+       "textVi": "に対して",
+       "textEn": "に対して",
+       "textJa": "に対して"
+      },
+      {
+       "textVi": "ことから",
+       "textEn": "ことから",
+       "textJa": "ことから"
+      },
+      {
+       "textVi": "にもかかわらず",
+       "textEn": "にもかかわらず",
+       "textJa": "にもかかわらず"
+      }
+     ],
+     "correctChoiceIndex": 3,
+     "acceptedAnswers": [],
+     "explanationVi": "にもかかわらず = mặc dù.",
+     "explanationEn": "にもかかわらず = despite.",
+     "tags": [
+      "N2",
+      "m_gram",
+      "grammar"
+     ],
+     "points": 1,
+     "mondai": "m_gram"
+    },
+    {
+     "id": "jlpt_n2_mini_1_g03",
+     "type": "MultipleChoice",
+     "passageId": "",
+     "promptVi": "Chọn mẫu ngữ pháp đúng điền vào ( )",
+     "promptEn": "Choose the correct grammar for the blank ( ).",
+     "promptJa": "この 道は 工事中( )、通れません。",
+     "promptReading": "",
+     "choices": [
+      {
+       "textVi": "に比べて",
+       "textEn": "に比べて",
+       "textJa": "に比べて"
+      },
+      {
+       "textVi": "につき",
+       "textEn": "につき",
+       "textJa": "につき"
+      },
+      {
+       "textVi": "にとって",
+       "textEn": "にとって",
+       "textJa": "にとって"
+      },
+      {
+       "textVi": "を通じて",
+       "textEn": "を通じて",
+       "textJa": "を通じて"
+      }
+     ],
+     "correctChoiceIndex": 1,
+     "acceptedAnswers": [],
+     "explanationVi": "Lý do trong thông báo: につき.",
+     "explanationEn": "Notice-style reason: につき.",
+     "tags": [
+      "N2",
+      "m_gram",
+      "grammar"
+     ],
+     "points": 1,
+     "mondai": "m_gram"
+    },
+    {
+     "id": "jlpt_n2_mini_1_g04",
+     "type": "MultipleChoice",
+     "passageId": "",
+     "promptVi": "Chọn mẫu ngữ pháp đúng điền vào ( )",
+     "promptEn": "Choose the correct grammar for the blank ( ).",
+     "promptJa": "彼女の 話し方は まるで 先生( )だった。",
+     "promptReading": "",
+     "choices": [
+      {
+       "textVi": "ぎみ",
+       "textEn": "ぎみ",
+       "textJa": "ぎみ"
+      },
+      {
+       "textVi": "のよう",
+       "textEn": "のよう",
+       "textJa": "のよう"
+      },
+      {
+       "textVi": "ほど",
+       "textEn": "ほど",
+       "textJa": "ほど"
+      },
+      {
+       "textVi": "ばかり",
+       "textEn": "ばかり",
+       "textJa": "ばかり"
+      }
+     ],
+     "correctChoiceIndex": 1,
+     "acceptedAnswers": [],
+     "explanationVi": "まるで N のようだ = giống hệt N.",
+     "explanationEn": "まるで Nのようだ = just like N.",
+     "tags": [
+      "N2",
+      "m_gram",
+      "grammar"
+     ],
+     "points": 1,
+     "mondai": "m_gram"
+    },
+    {
+     "id": "jlpt_n2_mini_1_g05",
+     "type": "MultipleChoice",
+     "passageId": "",
+     "promptVi": "Chọn mẫu ngữ pháp đúng điền vào ( )",
+     "promptEn": "Choose the correct grammar for the blank ( ).",
+     "promptJa": "試験が 近づく( )、不安に なって きた。",
+     "promptReading": "",
+     "choices": [
+      {
+       "textVi": "にかけて",
+       "textEn": "にかけて",
+       "textJa": "にかけて"
+      },
+      {
+       "textVi": "につれて",
+       "textEn": "につれて",
+       "textJa": "につれて"
+      },
+      {
+       "textVi": "にとって",
+       "textEn": "にとって",
+       "textJa": "にとって"
+      },
+      {
+       "textVi": "にわたって",
+       "textEn": "にわたって",
+       "textJa": "にわたって"
+      }
+     ],
+     "correctChoiceIndex": 1,
+     "acceptedAnswers": [],
+     "explanationVi": "Vにつれて = càng V thì càng.",
+     "explanationEn": "Vにつれて = as V progresses.",
+     "tags": [
+      "N2",
+      "m_gram",
+      "grammar"
+     ],
+     "points": 1,
+     "mondai": "m_gram"
+    },
+    {
+     "id": "jlpt_n2_mini_1_g06",
+     "type": "MultipleChoice",
+     "passageId": "",
+     "promptVi": "Chọn mẫu ngữ pháp đúng điền vào ( )",
+     "promptEn": "Choose the correct grammar for the blank ( ).",
+     "promptJa": "結果が どう( )、全力を 尽くすつもりだ。",
+     "promptReading": "",
+     "choices": [
+      {
+       "textVi": "あるものか",
+       "textEn": "あるものか",
+       "textJa": "あるものか"
+      },
+      {
+       "textVi": "あれば",
+       "textEn": "あれば",
+       "textJa": "あれば"
+      },
+      {
+       "textVi": "あるなら",
+       "textEn": "あるなら",
+       "textJa": "あるなら"
+      },
+      {
+       "textVi": "あろうと",
+       "textEn": "あろうと",
+       "textJa": "あろうと"
+      }
+     ],
+     "correctChoiceIndex": 3,
+     "acceptedAnswers": [],
+     "explanationVi": "どうあろうと = dù thế nào.",
+     "explanationEn": "どうあろうと = whatever may be.",
+     "tags": [
+      "N2",
+      "m_gram",
+      "grammar"
+     ],
+     "points": 1,
+     "mondai": "m_gram"
+    },
+    {
+     "id": "jlpt_n2_mini_1_g07",
+     "type": "MultipleChoice",
+     "passageId": "",
+     "promptVi": "Chọn mẫu ngữ pháp đúng điền vào ( )",
+     "promptEn": "Choose the correct grammar for the blank ( ).",
+     "promptJa": "彼の 態度は 失礼と 言わ( )を 得ない。",
+     "promptReading": "",
+     "choices": [
+      {
+       "textVi": "ず",
+       "textEn": "ず",
+       "textJa": "ず"
+      },
+      {
+       "textVi": "ざる",
+       "textEn": "ざる",
+       "textJa": "ざる"
+      },
+      {
+       "textVi": "なく",
+       "textEn": "なく",
+       "textJa": "なく"
+      },
+      {
+       "textVi": "ない",
+       "textEn": "ない",
+       "textJa": "ない"
+      }
+     ],
+     "correctChoiceIndex": 1,
+     "acceptedAnswers": [],
+     "explanationVi": "Vざるを得ない = đành phải V.",
+     "explanationEn": "Vざるを得ない = cannot help but V.",
+     "tags": [
+      "N2",
+      "m_gram",
+      "grammar"
+     ],
+     "points": 1,
+     "mondai": "m_gram"
+    },
+    {
+     "id": "jlpt_n2_mini_1_g08",
+     "type": "MultipleChoice",
+     "passageId": "",
+     "promptVi": "Chọn mẫu ngữ pháp đúng điền vào ( )",
+     "promptEn": "Choose the correct grammar for the blank ( ).",
+     "promptJa": "明日は 台風が 来る( )。",
+     "promptReading": "",
+     "choices": [
+      {
+       "textVi": "ことはない",
+       "textEn": "ことはない",
+       "textJa": "ことはない"
+      },
+      {
+       "textVi": "おそれが ある",
+       "textEn": "おそれが ある",
+       "textJa": "おそれが ある"
+      },
+      {
+       "textVi": "ところだ",
+       "textEn": "ところだ",
+       "textJa": "ところだ"
+      },
+      {
+       "textVi": "つもりだ",
+       "textEn": "つもりだ",
+       "textJa": "つもりだ"
+      }
+     ],
+     "correctChoiceIndex": 1,
+     "acceptedAnswers": [],
+     "explanationVi": "おそれがある = e rằng sẽ.",
+     "explanationEn": "おそれがある = there is a risk that.",
+     "tags": [
+      "N2",
+      "m_gram",
+      "grammar"
+     ],
+     "points": 1,
+     "mondai": "m_gram"
+    },
+    {
+     "id": "jlpt_n2_mini_1_g09",
+     "type": "MultipleChoice",
+     "passageId": "",
+     "promptVi": "Chọn mẫu ngữ pháp đúng điền vào ( )",
+     "promptEn": "Choose the correct grammar for the blank ( ).",
+     "promptJa": "いくら 頼まれた( )、できない ことは できない。",
+     "promptReading": "",
+     "choices": [
+      {
+       "textVi": "としても",
+       "textEn": "としても",
+       "textJa": "としても"
+      },
+      {
+       "textVi": "うえに",
+       "textEn": "うえに",
+       "textJa": "うえに"
+      },
+      {
+       "textVi": "からには",
+       "textEn": "からには",
+       "textJa": "からには"
+      },
+      {
+       "textVi": "ばかりに",
+       "textEn": "ばかりに",
+       "textJa": "ばかりに"
+      }
+     ],
+     "correctChoiceIndex": 0,
+     "acceptedAnswers": [],
+     "explanationVi": "いくら～としても = dù có ... đi nữa.",
+     "explanationEn": "いくら～としても = no matter how.",
+     "tags": [
+      "N2",
+      "m_gram",
+      "grammar"
+     ],
+     "points": 1,
+     "mondai": "m_gram"
+    },
+    {
+     "id": "jlpt_n2_mini_1_g10",
+     "type": "MultipleChoice",
+     "passageId": "",
+     "promptVi": "Chọn mẫu ngữ pháp đúng điền vào ( )",
+     "promptEn": "Choose the correct grammar for the blank ( ).",
+     "promptJa": "子供( )、大人 顔負けの 演奏だった。",
+     "promptReading": "",
+     "choices": [
+      {
+       "textVi": "にしては",
+       "textEn": "にしては",
+       "textJa": "にしては"
+      },
+      {
+       "textVi": "に関して",
+       "textEn": "に関して",
+       "textJa": "に関して"
+      },
+      {
+       "textVi": "において",
+       "textEn": "において",
+       "textJa": "において"
+      },
+      {
+       "textVi": "にあたって",
+       "textEn": "にあたって",
+       "textJa": "にあたって"
+      }
+     ],
+     "correctChoiceIndex": 0,
+     "acceptedAnswers": [],
+     "explanationVi": "N にしては = so với N thì (vượt mong đợi).",
+     "explanationEn": "Nにしては = for a N (surprisingly good).",
+     "tags": [
+      "N2",
+      "m_gram",
+      "grammar"
+     ],
+     "points": 1,
+     "mondai": "m_gram"
+    },
+    {
+     "id": "jlpt_n2_mini_1_g11",
+     "type": "MultipleChoice",
+     "passageId": "jlpt_n2_mini_1_p1",
+     "promptVi": "Đọc hiểu: đọc đoạn văn và chọn đáp án đúng",
+     "promptEn": "Reading: read the passage and choose the best answer.",
+     "promptJa": "テレワークの 利点として 挙げられて いるのは どれですか。",
+     "promptReading": "",
+     "choices": [
+      {
+       "textVi": "通勤時間が なくなる",
+       "textEn": "通勤時間が なくなる",
+       "textJa": "通勤時間が なくなる"
+      },
+      {
+       "textVi": "給料が 増える",
+       "textEn": "給料が 増える",
+       "textJa": "給料が 増える"
+      },
+      {
+       "textVi": "出社日が 増える",
+       "textEn": "出社日が 増える",
+       "textJa": "出社日が 増える"
+      },
+      {
+       "textVi": "同僚と 気軽に 相談できる",
+       "textEn": "同僚と 気軽に 相談できる",
+       "textJa": "同僚と 気軽に 相談できる"
+      }
+     ],
+     "correctChoiceIndex": 0,
+     "acceptedAnswers": [],
+     "explanationVi": "通勤の 時間が なくなる.",
+     "explanationEn": "Commuting time disappears.",
+     "tags": [
+      "N2",
+      "reading"
+     ],
+     "points": 1,
+     "mondai": "m_read_c"
+    },
+    {
+     "id": "jlpt_n2_mini_1_g12",
+     "type": "MultipleChoice",
+     "passageId": "jlpt_n2_mini_1_p1",
+     "promptVi": "Đọc hiểu: đọc đoạn văn và chọn đáp án đúng",
+     "promptEn": "Reading: read the passage and choose the best answer.",
+     "promptJa": "「ハイブリッド型」とは どういう 働き方ですか。",
+     "promptReading": "",
+     "choices": [
+      {
+       "textVi": "すべて 自宅で 働く",
+       "textEn": "すべて 自宅で 働く",
+       "textJa": "すべて 自宅で 働く"
+      },
+      {
+       "textVi": "毎日 出社する",
+       "textEn": "毎日 出社する",
+       "textJa": "毎日 出社する"
+      },
+      {
+       "textVi": "夜だけ 働く",
+       "textEn": "夜だけ 働く",
+       "textJa": "夜だけ 働く"
+      },
+      {
+       "textVi": "週に 数日だけ 出社する",
+       "textEn": "週に 数日だけ 出社する",
+       "textJa": "週に 数日だけ 出社する"
+      }
+     ],
+     "correctChoiceIndex": 3,
+     "acceptedAnswers": [],
+     "explanationVi": "週に 数日だけ 出社する.",
+     "explanationEn": "Going to the office a few days a week.",
+     "tags": [
+      "N2",
+      "reading"
+     ],
+     "points": 1,
+     "mondai": "m_read_c"
+    },
+    {
+     "id": "jlpt_n2_mini_1_g13",
+     "type": "MultipleChoice",
+     "passageId": "jlpt_n2_mini_1_p1",
+     "promptVi": "Đọc hiểu: đọc đoạn văn và chọn đáp án đúng",
+     "promptEn": "Reading: read the passage and choose the best answer.",
+     "promptJa": "筆者の 考えに 合うのは どれですか。",
+     "promptReading": "",
+     "choices": [
+      {
+       "textVi": "孤独は 気に しなくて よい",
+       "textEn": "孤独は 気に しなくて よい",
+       "textJa": "孤独は 気に しなくて よい"
+      },
+      {
+       "textVi": "働き方は 状況に 合わせて 柔軟に 選ぶべきだ",
+       "textEn": "働き方は 状況に 合わせて 柔軟に 選ぶべきだ",
+       "textJa": "働き方は 状況に 合わせて 柔軟に 選ぶべきだ"
+      },
+      {
+       "textVi": "テレワークが 唯一の 正解だ",
+       "textEn": "テレワークが 唯一の 正解だ",
+       "textJa": "テレワークが 唯一の 正解だ"
+      },
+      {
+       "textVi": "出社が 最も 良い",
+       "textEn": "出社が 最も 良い",
+       "textJa": "出社が 最も 良い"
+      }
+     ],
+     "correctChoiceIndex": 1,
+     "acceptedAnswers": [],
+     "explanationVi": "唯一の 正解は なく、柔軟に 選ぶ.",
+     "explanationEn": "No single right answer; choose flexibly.",
+     "tags": [
+      "N2",
+      "reading"
+     ],
+     "points": 1,
+     "mondai": "m_read_c"
+    }
+   ]
+  }
+ ]
+}

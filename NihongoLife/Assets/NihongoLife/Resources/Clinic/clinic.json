@@ -169,6 +169,81 @@
       "medicineEn": "Pain-relief patches",
       "dosage": "patch_twice",
       "cold": false
+    },
+    {
+      "id": "mouth",
+      "sayJa": "くちが いたいです。",
+      "reading": "kuchi ga itai desu",
+      "vi": "Tôi bị đau miệng, khó ăn.",
+      "en": "My mouth hurts and it is hard to eat.",
+      "diagnosisJa": "てあしくちびょう",
+      "diagnosisVi": "Bệnh tay chân miệng",
+      "diagnosisEn": "Hand, foot and mouth disease",
+      "medicineJa": "げねつざい",
+      "medicineVi": "Thuốc hạ sốt giảm đau",
+      "medicineEn": "Fever and pain reducer",
+      "dosage": "when_painful",
+      "cold": false
+    },
+    {
+      "id": "rash",
+      "sayJa": "かゆい ぶつぶつが あります。",
+      "reading": "kayui butsubutsu ga arimasu",
+      "vi": "Tôi bị nổi nốt ngứa.",
+      "en": "I have an itchy rash.",
+      "diagnosisJa": "あせも",
+      "diagnosisVi": "Rôm sảy",
+      "diagnosisEn": "Heat rash",
+      "medicineJa": "ぬりぐすり",
+      "medicineVi": "Thuốc bôi da",
+      "medicineEn": "Skin ointment",
+      "dosage": "apply_twice",
+      "cold": false
+    },
+    {
+      "id": "redeye",
+      "sayJa": "めが あかいです。",
+      "reading": "me ga akai desu",
+      "vi": "Tôi bị đỏ mắt.",
+      "en": "My eye is red.",
+      "diagnosisJa": "はやりめ",
+      "diagnosisVi": "Đau mắt đỏ (viêm kết mạc dịch)",
+      "diagnosisEn": "Pink eye (epidemic conjunctivitis)",
+      "medicineJa": "めぐすり",
+      "medicineVi": "Thuốc nhỏ mắt",
+      "medicineEn": "Eye drops",
+      "dosage": "drops_four",
+      "cold": false
+    },
+    {
+      "id": "ear",
+      "sayJa": "みみが いたいです。",
+      "reading": "mimi ga itai desu",
+      "vi": "Tôi bị đau tai.",
+      "en": "My ear hurts.",
+      "diagnosisJa": "ちゅうじえん",
+      "diagnosisVi": "Viêm tai giữa",
+      "diagnosisEn": "A middle-ear infection",
+      "medicineJa": "いたみどめ",
+      "medicineVi": "Thuốc giảm đau",
+      "medicineEn": "Painkiller",
+      "dosage": "when_painful",
+      "cold": false
+    },
+    {
+      "id": "tooth",
+      "sayJa": "はが いたいです。",
+      "reading": "ha ga itai desu",
+      "vi": "Tôi bị đau răng.",
+      "en": "I have a toothache.",
+      "diagnosisJa": "むしば",
+      "diagnosisVi": "Sâu răng",
+      "diagnosisEn": "A cavity",
+      "medicineJa": "いたみどめ",
+      "medicineVi": "Thuốc giảm đau (rồi đến nha sĩ)",
+      "medicineEn": "Painkiller (then the dentist)",
+      "dosage": "when_painful",
+      "cold": false
     }
   ],
   "dosages": [
@@ -207,6 +282,18 @@
       "ja": "1日2回、いたい ところに はって ください。",
       "vi": "Ngày 2 lần, dán vào chỗ đau.",
       "en": "Twice a day, stick it where it hurts."
+    },
+    {
+      "id": "apply_twice",
+      "ja": "1日2回、ぬって ください。",
+      "vi": "Ngày 2 lần, bôi lên chỗ ngứa.",
+      "en": "Twice a day, apply it to the itchy skin."
+    },
+    {
+      "id": "drops_four",
+      "ja": "1日4回、めに さして ください。",
+      "vi": "Ngày 4 lần, nhỏ vào mắt.",
+      "en": "Four times a day, put a drop in the eye."
     }
   ],
   "heights": [
@@ -335,6 +422,66 @@
       "hair": "ash",
       "beard": "goatee",
       "symptom": "ankle"
+    },
+    {
+      "id": "hinata",
+      "model": "kid_sota",
+      "nameJa": "ひなた くん",
+      "nameVi": "Bé Hinata",
+      "age": 4,
+      "hair": "natural",
+      "beard": "none",
+      "symptom": "mouth"
+    },
+    {
+      "id": "mr_ota",
+      "model": "kid_haruto",
+      "nameJa": "おおた さん",
+      "nameVi": "Anh Ota",
+      "age": 31,
+      "hair": "natural",
+      "beard": "stubble",
+      "symptom": "redeye"
+    },
+    {
+      "id": "miku",
+      "model": "kid_sakura",
+      "nameJa": "みく ちゃん",
+      "nameVi": "Bé Miku",
+      "age": 9,
+      "hair": "natural",
+      "beard": "none",
+      "symptom": "throat"
+    },
+    {
+      "id": "riko",
+      "model": "kid_mio",
+      "nameJa": "りこ ちゃん",
+      "nameVi": "Bé Riko",
+      "age": 5,
+      "hair": "natural",
+      "beard": "none",
+      "symptom": "ear"
+    },
+    {
+      "id": "mrs_hayashi",
+      "model": "kid_hina",
+      "nameJa": "はやし さん",
+      "nameVi": "Cô Hayashi",
+      "age": 45,
+      "hair": "natural",
+      "beard": "none",
+      "symptom": "rash"
+    },
+    {
+      "id": "mr_goto",
+      "model": "kid_riku",
+      "nameJa": "ごとう さん",
+      "nameVi": "Bác Goto",
+      "age": 61,
+      "hair": "silver",
+      "beard": "mustache",
+      "symptom": "tooth"
     }
   ]
 }

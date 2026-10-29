@@ -1,0 +1,728 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f5214dc098a14546900e76a0b9a4682c, type: 3}
+  m_Name: en_b2_practice_1
+  m_EditorClassIdentifier: NihongoLife::NihongoLife.Exam.ExamDefinition
+  id: en_b2_practice_1
+  examType: 1
+  level: "B2"
+  titleVi: "Đề luyện tiếng Anh B2 (Trung cao cấp)"
+  titleEn: "English practice test B2 (Upper-intermediate)"
+  titleJa: "英語練習テスト B2"
+  descriptionVi: "Đề tự soạn: 10 câu ngữ pháp, 5 câu từ vựng, 1 bài đọc (5 câu). Có giải thích tiếng Việt."
+  descriptionEn: "Original test: 10 grammar, 5 vocabulary, 1 reading passage (5 questions) with explanations."
+  sections:
+  - id: grammar
+    type: 4
+    titleVi: "Ngữ pháp"
+    titleEn: "Grammar"
+    titleJa: ""
+    timeLimitSeconds: 600
+    scoreScaleMax: 9
+    scoreGroup: ""
+    mondai: []
+    passages: []
+    questions:
+    - id: en_b2_practice_1_g01
+      type: 0
+      passageId: 
+      promptVi: "Chọn đáp án đúng. Had I known about the traffic, I ___ earlier."
+      promptEn: "Had I known about the traffic, I ___ earlier."
+      promptJa: ""
+      promptReading: ""
+      choices:
+      - textVi: "would leave"
+        textEn: "would leave"
+        textJa: ""
+      - textVi: "had left"
+        textEn: "had left"
+        textJa: ""
+      - textVi: "will leave"
+        textEn: "will leave"
+        textJa: ""
+      - textVi: "would have left"
+        textEn: "would have left"
+        textJa: ""
+      correctChoiceIndex: 3
+      acceptedAnswers: []
+      taskInstructionsVi: ""
+      taskInstructionsEn: ""
+      minWords: 0
+      timeLimitSeconds: 0
+      explanationVi: "Đảo ngữ điều kiện loại 3: would have + V3."
+      explanationEn: "Inverted third conditional: would have + past participle."
+      tags:
+      - "B2"
+      - "grammar"
+      points: 1
+      mondai: ""
+    - id: en_b2_practice_1_g02
+      type: 0
+      passageId: 
+      promptVi: "Chọn đáp án đúng. She denied ___ the money."
+      promptEn: "She denied ___ the money."
+      promptJa: ""
+      promptReading: ""
+      choices:
+      - textVi: "taking"
+        textEn: "taking"
+        textJa: ""
+      - textVi: "take"
+        textEn: "take"
+        textJa: ""
+      - textVi: "to take"
+        textEn: "to take"
+        textJa: ""
+      - textVi: "to have take"
+        textEn: "to have take"
+        textJa: ""
+      correctChoiceIndex: 0
+      acceptedAnswers: []
+      taskInstructionsVi: ""
+      taskInstructionsEn: ""
+      minWords: 0
+      timeLimitSeconds: 0
+      explanationVi: "deny + V-ing."
+      explanationEn: "deny + V-ing."
+      tags:
+      - "B2"
+      - "grammar"
+      points: 1
+      mondai: ""
+    - id: en_b2_practice_1_g03
+      type: 0
+      passageId: 
+      promptVi: "Chọn đáp án đúng. The more you practise, ___ you become."
+      promptEn: "The more you practise, ___ you become."
+      promptJa: ""
+      promptReading: ""
+      choices:
+      - textVi: "the better"
+        textEn: "the better"
+        textJa: ""
+      - textVi: "best"
+        textEn: "best"
+        textJa: ""
+      - textVi: "better"
+        textEn: "better"
+        textJa: ""
+      - textVi: "the best"
+        textEn: "the best"
+        textJa: ""
+      correctChoiceIndex: 0
+      acceptedAnswers: []
+      taskInstructionsVi: ""
+      taskInstructionsEn: ""
+      minWords: 0
+      timeLimitSeconds: 0
+      explanationVi: "The more..., the + so sánh hơn."
+      explanationEn: "The more..., the + comparative."
+      tags:
+      - "B2"
+      - "grammar"
+      points: 1
+      mondai: ""
+    - id: en_b2_practice_1_g04
+      type: 0
+      passageId: 
+      promptVi: "Chọn đáp án đúng. Not only ___ late, but he also forgot the documents."
+      promptEn: "Not only ___ late, but he also forgot the documents."
+      promptJa: ""
+      promptReading: ""
+      choices:
+      - textVi: "was he"
+        textEn: "was he"
+        textJa: ""
+      - textVi: "he did"
+        textEn: "he did"
+        textJa: ""
+      - textVi: "did he"
+        textEn: "did he"
+        textJa: ""
+      - textVi: "he was"
+        textEn: "he was"
+        textJa: ""
+      correctChoiceIndex: 0
+      acceptedAnswers: []
+      taskInstructionsVi: ""
+      taskInstructionsEn: ""
+      minWords: 0
+      timeLimitSeconds: 0
+      explanationVi: "Not only đầu câu → đảo ngữ: was he."
+      explanationEn: "Not only at the start → inversion: was he."
+      tags:
+      - "B2"
+      - "grammar"
+      points: 1
+      mondai: ""
+    - id: en_b2_practice_1_g05
+      type: 0
+      passageId: 
+      promptVi: "Chọn đáp án đúng. I'd rather you ___ smoke here."
+      promptEn: "I'd rather you ___ smoke here."
+      promptJa: ""
+      promptReading: ""
+      choices:
+      - textVi: "wouldn't"
+        textEn: "wouldn't"
+        textJa: ""
+      - textVi: "don't"
+        textEn: "don't"
+        textJa: ""
+      - textVi: "won't"
+        textEn: "won't"
+        textJa: ""
+      - textVi: "didn't"
+        textEn: "didn't"
+        textJa: ""
+      correctChoiceIndex: 3
+      acceptedAnswers: []
+      taskInstructionsVi: ""
+      taskInstructionsEn: ""
+      minWords: 0
+      timeLimitSeconds: 0
+      explanationVi: "would rather + S + quá khứ."
+      explanationEn: "would rather + subject + past."
+      tags:
+      - "B2"
+      - "grammar"
+      points: 1
+      mondai: ""
+    - id: en_b2_practice_1_g06
+      type: 0
+      passageId: 
+      promptVi: "Chọn đáp án đúng. By next year, she ___ here for a decade."
+      promptEn: "By next year, she ___ here for a decade."
+      promptJa: ""
+      promptReading: ""
+      choices:
+      - textVi: "is working"
+        textEn: "is working"
+        textJa: ""
+      - textVi: "will work"
+        textEn: "will work"
+        textJa: ""
+      - textVi: "will have been working"
+        textEn: "will have been working"
+        textJa: ""
+      - textVi: "has worked"
+        textEn: "has worked"
+        textJa: ""
+      correctChoiceIndex: 2
+      acceptedAnswers: []
+      taskInstructionsVi: ""
+      taskInstructionsEn: ""
+      minWords: 0
+      timeLimitSeconds: 0
+      explanationVi: "Tương lai hoàn thành tiếp diễn nhấn mạnh khoảng thời gian."
+      explanationEn: "Future perfect continuous emphasises duration."
+      tags:
+      - "B2"
+      - "grammar"
+      points: 1
+      mondai: ""
+    - id: en_b2_practice_1_g07
+      type: 0
+      passageId: 
+      promptVi: "Chọn đáp án đúng. The project, ___ was started last year, is nearly complete."
+      promptEn: "The project, ___ was started last year, is nearly complete."
+      promptJa: ""
+      promptReading: ""
+      choices:
+      - textVi: "who"
+        textEn: "who"
+        textJa: ""
+      - textVi: "what"
+        textEn: "what"
+        textJa: ""
+      - textVi: "which"
+        textEn: "which"
+        textJa: ""
+      - textVi: "that"
+        textEn: "that"
+        textJa: ""
+      correctChoiceIndex: 2
+      acceptedAnswers: []
+      taskInstructionsVi: ""
+      taskInstructionsEn: ""
+      minWords: 0
+      timeLimitSeconds: 0
+      explanationVi: "Mệnh đề không xác định dùng which (không dùng that)."
+      explanationEn: "Non-defining clause uses which (not that)."
+      tags:
+      - "B2"
+      - "grammar"
+      points: 1
+      mondai: ""
+    - id: en_b2_practice_1_g08
+      type: 0
+      passageId: 
+      promptVi: "Chọn đáp án đúng. He ___ have left already; his car isn't here."
+      promptEn: "He ___ have left already; his car isn't here."
+      promptJa: ""
+      promptReading: ""
+      choices:
+      - textVi: "ought"
+        textEn: "ought"
+        textJa: ""
+      - textVi: "can"
+        textEn: "can"
+        textJa: ""
+      - textVi: "must"
+        textEn: "must"
+        textJa: ""
+      - textVi: "should"
+        textEn: "should"
+        textJa: ""
+      correctChoiceIndex: 2
+      acceptedAnswers: []
+      taskInstructionsVi: ""
+      taskInstructionsEn: ""
+      minWords: 0
+      timeLimitSeconds: 0
+      explanationVi: "must have + V3 = chắc hẳn đã."
+      explanationEn: "must have + past participle = deduction."
+      tags:
+      - "B2"
+      - "grammar"
+      points: 1
+      mondai: ""
+    - id: en_b2_practice_1_g09
+      type: 0
+      passageId: 
+      promptVi: "Chọn đáp án đúng. Despite ___ hard, she failed the exam."
+      promptEn: "Despite ___ hard, she failed the exam."
+      promptJa: ""
+      promptReading: ""
+      choices:
+      - textVi: "she studied"
+        textEn: "she studied"
+        textJa: ""
+      - textVi: "studying"
+        textEn: "studying"
+        textJa: ""
+      - textVi: "to study"
+        textEn: "to study"
+        textJa: ""
+      - textVi: "studied"
+        textEn: "studied"
+        textJa: ""
+      correctChoiceIndex: 1
+      acceptedAnswers: []
+      taskInstructionsVi: ""
+      taskInstructionsEn: ""
+      minWords: 0
+      timeLimitSeconds: 0
+      explanationVi: "Despite + V-ing."
+      explanationEn: "Despite + V-ing."
+      tags:
+      - "B2"
+      - "grammar"
+      points: 1
+      mondai: ""
+    - id: en_b2_practice_1_g10
+      type: 0
+      passageId: 
+      promptVi: "Chọn đáp án đúng. It's high time we ___ a decision."
+      promptEn: "It's high time we ___ a decision."
+      promptJa: ""
+      promptReading: ""
+      choices:
+      - textVi: "are making"
+        textEn: "are making"
+        textJa: ""
+      - textVi: "make"
+        textEn: "make"
+        textJa: ""
+      - textVi: "will make"
+        textEn: "will make"
+        textJa: ""
+      - textVi: "made"
+        textEn: "made"
+        textJa: ""
+      correctChoiceIndex: 3
+      acceptedAnswers: []
+      taskInstructionsVi: ""
+      taskInstructionsEn: ""
+      minWords: 0
+      timeLimitSeconds: 0
+      explanationVi: "It's high time + quá khứ."
+      explanationEn: "It's high time + past simple."
+      tags:
+      - "B2"
+      - "grammar"
+      points: 1
+      mondai: ""
+  - id: vocabulary
+    type: 4
+    titleVi: "Từ vựng"
+    titleEn: "Vocabulary"
+    titleJa: ""
+    timeLimitSeconds: 300
+    scoreScaleMax: 9
+    scoreGroup: ""
+    mondai: []
+    passages: []
+    questions:
+    - id: en_b2_practice_1_v01
+      type: 0
+      passageId: 
+      promptVi: "Chọn đáp án đúng. The government introduced strict ___ to reduce pollution."
+      promptEn: "The government introduced strict ___ to reduce pollution."
+      promptJa: ""
+      promptReading: ""
+      choices:
+      - textVi: "regrets"
+        textEn: "regrets"
+        textJa: ""
+      - textVi: "regulations"
+        textEn: "regulations"
+        textJa: ""
+      - textVi: "reactions"
+        textEn: "reactions"
+        textJa: ""
+      - textVi: "reputations"
+        textEn: "reputations"
+        textJa: ""
+      correctChoiceIndex: 1
+      acceptedAnswers: []
+      taskInstructionsVi: ""
+      taskInstructionsEn: ""
+      minWords: 0
+      timeLimitSeconds: 0
+      explanationVi: "Regulations = quy định."
+      explanationEn: "regulations = rules."
+      tags:
+      - "B2"
+      - "vocabulary"
+      points: 1
+      mondai: ""
+    - id: en_b2_practice_1_v02
+      type: 0
+      passageId: 
+      promptVi: "Chọn đáp án đúng. His argument was so ___ that nobody could disagree."
+      promptEn: "His argument was so ___ that nobody could disagree."
+      promptJa: ""
+      promptReading: ""
+      choices:
+      - textVi: "confusing"
+        textEn: "confusing"
+        textJa: ""
+      - textVi: "convenient"
+        textEn: "convenient"
+        textJa: ""
+      - textVi: "convincing"
+        textEn: "convincing"
+        textJa: ""
+      - textVi: "conventional"
+        textEn: "conventional"
+        textJa: ""
+      correctChoiceIndex: 2
+      acceptedAnswers: []
+      taskInstructionsVi: ""
+      taskInstructionsEn: ""
+      minWords: 0
+      timeLimitSeconds: 0
+      explanationVi: "Convincing = thuyết phục."
+      explanationEn: "convincing = persuasive."
+      tags:
+      - "B2"
+      - "vocabulary"
+      points: 1
+      mondai: ""
+    - id: en_b2_practice_1_v03
+      type: 0
+      passageId: 
+      promptVi: "Chọn đáp án đúng. We need to ___ the budget carefully."
+      promptEn: "We need to ___ the budget carefully."
+      promptJa: ""
+      promptReading: ""
+      choices:
+      - textVi: "amend"
+        textEn: "amend"
+        textJa: ""
+      - textVi: "allocate"
+        textEn: "allocate"
+        textJa: ""
+      - textVi: "allude"
+        textEn: "allude"
+        textJa: ""
+      - textVi: "alter"
+        textEn: "alter"
+        textJa: ""
+      correctChoiceIndex: 1
+      acceptedAnswers: []
+      taskInstructionsVi: ""
+      taskInstructionsEn: ""
+      minWords: 0
+      timeLimitSeconds: 0
+      explanationVi: "Allocate the budget = phân bổ ngân sách."
+      explanationEn: "allocate the budget."
+      tags:
+      - "B2"
+      - "vocabulary"
+      points: 1
+      mondai: ""
+    - id: en_b2_practice_1_v04
+      type: 0
+      passageId: 
+      promptVi: "Chọn đáp án đúng. She was ___ by the amount of work."
+      promptEn: "She was ___ by the amount of work."
+      promptJa: ""
+      promptReading: ""
+      choices:
+      - textVi: "overlooked"
+        textEn: "overlooked"
+        textJa: ""
+      - textVi: "overwhelmed"
+        textEn: "overwhelmed"
+        textJa: ""
+      - textVi: "overtaken"
+        textEn: "overtaken"
+        textJa: ""
+      - textVi: "overcooked"
+        textEn: "overcooked"
+        textJa: ""
+      correctChoiceIndex: 1
+      acceptedAnswers: []
+      taskInstructionsVi: ""
+      taskInstructionsEn: ""
+      minWords: 0
+      timeLimitSeconds: 0
+      explanationVi: "Overwhelmed = choáng ngợp."
+      explanationEn: "overwhelmed = swamped."
+      tags:
+      - "B2"
+      - "vocabulary"
+      points: 1
+      mondai: ""
+    - id: en_b2_practice_1_v05
+      type: 0
+      passageId: 
+      promptVi: "Chọn đáp án đúng. The new law will ___ into effect in January."
+      promptEn: "The new law will ___ into effect in January."
+      promptJa: ""
+      promptReading: ""
+      choices:
+      - textVi: "run"
+        textEn: "run"
+        textJa: ""
+      - textVi: "turn"
+        textEn: "turn"
+        textJa: ""
+      - textVi: "come"
+        textEn: "come"
+        textJa: ""
+      - textVi: "go"
+        textEn: "go"
+        textJa: ""
+      correctChoiceIndex: 2
+      acceptedAnswers: []
+      taskInstructionsVi: ""
+      taskInstructionsEn: ""
+      minWords: 0
+      timeLimitSeconds: 0
+      explanationVi: "come into effect = có hiệu lực."
+      explanationEn: "come into effect."
+      tags:
+      - "B2"
+      - "vocabulary"
+      points: 1
+      mondai: ""
+  - id: reading
+    type: 4
+    titleVi: "Đọc hiểu"
+    titleEn: "Reading"
+    titleJa: ""
+    timeLimitSeconds: 600
+    scoreScaleMax: 9
+    scoreGroup: ""
+    mondai: []
+    passages:
+    - id: en_b2_practice_1_passage
+      titleVi: "Bài đọc"
+      titleEn: "Reading: Microplastics"
+      titleJa: ""
+      bodyVi: ""
+      bodyEn: "Microplastics - tiny fragments less than five millimetres long - have been found in oceans, rivers and even in drinking water. Scientists believe that most come from the breakdown of larger plastic items and from synthetic clothing, which sheds fibres each time it is washed. Although the effects on human health remain uncertain, researchers have warned that the particles can carry harmful chemicals. Some countries have therefore banned microbeads in cosmetics, but critics argue that such measures address only a small part of the problem."
+      bodyJa: ""
+      bodyReading: ""
+      maxPlays: 0
+    questions:
+    - id: en_b2_practice_1_r01
+      type: 0
+      passageId: en_b2_practice_1_passage
+      promptVi: "Chọn đáp án đúng. What are microplastics?"
+      promptEn: "What are microplastics?"
+      promptJa: ""
+      promptReading: ""
+      choices:
+      - textVi: "Large plastic bags"
+        textEn: "Large plastic bags"
+        textJa: ""
+      - textVi: "Recycled plastic"
+        textEn: "Recycled plastic"
+        textJa: ""
+      - textVi: "Plastic bottles"
+        textEn: "Plastic bottles"
+        textJa: ""
+      - textVi: "Fragments smaller than five millimetres"
+        textEn: "Fragments smaller than five millimetres"
+        textJa: ""
+      correctChoiceIndex: 3
+      acceptedAnswers: []
+      taskInstructionsVi: ""
+      taskInstructionsEn: ""
+      minWords: 0
+      timeLimitSeconds: 0
+      explanationVi: "less than five millimetres."
+      explanationEn: "less than five millimetres."
+      tags:
+      - "B2"
+      - "reading"
+      points: 1
+      mondai: ""
+    - id: en_b2_practice_1_r02
+      type: 0
+      passageId: en_b2_practice_1_passage
+      promptVi: "Chọn đáp án đúng. Where do many microplastics come from?"
+      promptEn: "Where do many microplastics come from?"
+      promptJa: ""
+      promptReading: ""
+      choices:
+      - textVi: "Fishing nets only"
+        textEn: "Fishing nets only"
+        textJa: ""
+      - textVi: "Food packaging only"
+        textEn: "Food packaging only"
+        textJa: ""
+      - textVi: "Breakdown of larger plastics and synthetic clothing"
+        textEn: "Breakdown of larger plastics and synthetic clothing"
+        textJa: ""
+      - textVi: "Only cosmetics"
+        textEn: "Only cosmetics"
+        textJa: ""
+      correctChoiceIndex: 2
+      acceptedAnswers: []
+      taskInstructionsVi: ""
+      taskInstructionsEn: ""
+      minWords: 0
+      timeLimitSeconds: 0
+      explanationVi: "breakdown of larger items and synthetic clothing."
+      explanationEn: "larger items and clothing fibres."
+      tags:
+      - "B2"
+      - "reading"
+      points: 1
+      mondai: ""
+    - id: en_b2_practice_1_r03
+      type: 0
+      passageId: en_b2_practice_1_passage
+      promptVi: "Chọn đáp án đúng. What does the text say about human health?"
+      promptEn: "What does the text say about human health?"
+      promptJa: ""
+      promptReading: ""
+      choices:
+      - textVi: "Effects are proven harmless"
+        textEn: "Effects are proven harmless"
+        textJa: ""
+      - textVi: "Effects are fatal"
+        textEn: "Effects are fatal"
+        textJa: ""
+      - textVi: "No studies exist"
+        textEn: "No studies exist"
+        textJa: ""
+      - textVi: "Effects are still uncertain"
+        textEn: "Effects are still uncertain"
+        textJa: ""
+      correctChoiceIndex: 3
+      acceptedAnswers: []
+      taskInstructionsVi: ""
+      taskInstructionsEn: ""
+      minWords: 0
+      timeLimitSeconds: 0
+      explanationVi: "effects ... remain uncertain."
+      explanationEn: "'remain uncertain'."
+      tags:
+      - "B2"
+      - "reading"
+      points: 1
+      mondai: ""
+    - id: en_b2_practice_1_r04
+      type: 0
+      passageId: en_b2_practice_1_passage
+      promptVi: "Chọn đáp án đúng. Critics say that bans on microbeads ___."
+      promptEn: "Critics say that bans on microbeads ___."
+      promptJa: ""
+      promptReading: ""
+      choices:
+      - textVi: "address only a small part"
+        textEn: "address only a small part"
+        textJa: ""
+      - textVi: "solve everything"
+        textEn: "solve everything"
+        textJa: ""
+      - textVi: "are illegal"
+        textEn: "are illegal"
+        textJa: ""
+      - textVi: "are unnecessary"
+        textEn: "are unnecessary"
+        textJa: ""
+      correctChoiceIndex: 0
+      acceptedAnswers: []
+      taskInstructionsVi: ""
+      taskInstructionsEn: ""
+      minWords: 0
+      timeLimitSeconds: 0
+      explanationVi: "address only a small part."
+      explanationEn: "'address only a small part'."
+      tags:
+      - "B2"
+      - "reading"
+      points: 1
+      mondai: ""
+    - id: en_b2_practice_1_r05
+      type: 0
+      passageId: en_b2_practice_1_passage
+      promptVi: "Chọn đáp án đúng. 'Sheds' (fibres) is closest in meaning to ___."
+      promptEn: "'Sheds' (fibres) is closest in meaning to ___."
+      promptJa: ""
+      promptReading: ""
+      choices:
+      - textVi: "stores"
+        textEn: "stores"
+        textJa: ""
+      - textVi: "collects"
+        textEn: "collects"
+        textJa: ""
+      - textVi: "makes"
+        textEn: "makes"
+        textJa: ""
+      - textVi: "loses"
+        textEn: "loses"
+        textJa: ""
+      correctChoiceIndex: 3
+      acceptedAnswers: []
+      taskInstructionsVi: ""
+      taskInstructionsEn: ""
+      minWords: 0
+      timeLimitSeconds: 0
+      explanationVi: "shed = rụng, tách ra."
+      explanationEn: "shed = lose naturally."
+      tags:
+      - "B2"
+      - "reading"
+      points: 1
+      mondai: ""
+  jlptTotalPassScore: 80
+  jlptSectionPassScore: 19
+  scoreGroups: []

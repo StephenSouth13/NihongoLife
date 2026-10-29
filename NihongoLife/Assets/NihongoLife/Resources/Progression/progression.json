@@ -757,6 +757,508 @@
         "xp": 45,
         "knowledge": 7
       }
+    },
+    {
+      "id": "job_kitchen_shift",
+      "category": "job",
+      "titleVi": "Ca bếp ở Sushi Hibari",
+      "titleEn": "Kitchen shift at Sushi Hibari",
+      "titleJa": "ひばり寿司で 厨房の しごと",
+      "descriptionVi": "Bác Ota cần người phụ bếp: sơ chế nguyên liệu (仕込み) đúng cách và làm món theo đơn — mỗi bước là một câu hỏi tiếng Nhật về bếp.",
+      "descriptionEn": "Chef Ota needs a kitchen hand: prep the ingredients (仕込み) properly and make the orders — each step is a Japanese kitchen question.",
+      "descriptionJa": "太田大将が厨房の手伝いを探しています。仕込みと調理を、日本語で正しく。",
+      "giverNpc": "npc_sushi_chef",
+      "giverNameVi": "Bác Ota (bếp trưởng)",
+      "giverNameEn": "Chef Ota",
+      "giverNameJa": "太田大将",
+      "locationVi": "Bếp Sushi Hibari, ga Minato",
+      "locationEn": "Sushi Hibari's kitchen, Minato",
+      "locationJa": "ひばり寿司の厨房（みなと駅）",
+      "scene": "30_SushiRestaurant",
+      "minLevel": 1,
+      "minKnowledge": 0,
+      "requiresQuests": [],
+      "repeatable": true,
+      "cooldownMinutes": 5,
+      "grantOnAccept": [],
+      "objectives": [
+        {
+          "id": "prep",
+          "event": "prep",
+          "target": "sushi_kitchen",
+          "count": 2,
+          "afterAll": false,
+          "textVi": "Sơ chế đúng 2 lần (nói chuyện với bác Ota)",
+          "textEn": "Prep correctly twice (talk to Chef Ota)",
+          "textJa": "仕込みを2回正しく"
+        },
+        {
+          "id": "cook",
+          "event": "cook",
+          "target": "sushi_kitchen",
+          "count": 2,
+          "afterAll": false,
+          "textVi": "Làm đúng 2 món",
+          "textEn": "Make 2 dishes correctly",
+          "textJa": "料理を2つ正しく"
+        },
+        {
+          "id": "report",
+          "event": "talk",
+          "target": "npc_sushi_chef",
+          "count": 1,
+          "afterAll": true,
+          "textVi": "Báo cáo với bác Ota để nhận lương",
+          "textEn": "Report to Chef Ota to get paid",
+          "textJa": "大将に報告して給料をもらう"
+        }
+      ],
+      "rewards": {
+        "yen": 650,
+        "xp": 45,
+        "knowledge": 8
+      }
+    },
+    {
+      "id": "career_food_rush",
+      "category": "job",
+      "titleVi": "Giờ cao điểm ở Sushi Hibari",
+      "titleEn": "Rush hour at Sushi Hibari",
+      "titleJa": "ひばり寿司の ラッシュ",
+      "descriptionVi": "Bậc 2 nghề Ẩm thực: giờ trưa đông khách — nhận và mang 4 đơn liên tiếp.",
+      "descriptionEn": "Food career level 2: the lunch rush — take and serve 4 orders in a row.",
+      "descriptionJa": "飲食キャリア2：昼のラッシュ。4つの注文を受けて運ぶ。",
+      "giverNpc": "npc_sushi_staff",
+      "giverNameVi": "Anh Aoki",
+      "giverNameEn": "Aoki",
+      "giverNameJa": "青木さん",
+      "locationVi": "Bếp Sushi Hibari, ga Minato",
+      "locationEn": "Sushi Hibari's kitchen, Minato",
+      "locationJa": "ひばり寿司の厨房（みなと駅）",
+      "scene": "30_SushiRestaurant",
+      "minLevel": 1,
+      "minKnowledge": 0,
+      "requiresQuests": [],
+      "repeatable": true,
+      "cooldownMinutes": 30,
+      "grantOnAccept": [],
+      "objectives": [
+        {
+          "id": "order",
+          "event": "order",
+          "target": "sushi_table",
+          "count": 4,
+          "afterAll": false,
+          "textVi": "Nhận đúng 4 đơn",
+          "textEn": "Take 4 orders",
+          "textJa": "注文を4つ受ける"
+        },
+        {
+          "id": "serve",
+          "event": "serve",
+          "target": "sushi_table",
+          "count": 4,
+          "afterAll": false,
+          "textVi": "Mang đúng 4 món",
+          "textEn": "Serve 4 dishes",
+          "textJa": "料理を4つ運ぶ"
+        },
+        {
+          "id": "report",
+          "event": "talk",
+          "target": "npc_sushi_staff",
+          "count": 1,
+          "afterAll": true,
+          "textVi": "Báo cáo anh Aoki",
+          "textEn": "Report to Aoki",
+          "textJa": "青木さんに報告"
+        }
+      ],
+      "rewards": {
+        "yen": 1100,
+        "xp": 70,
+        "knowledge": 10
+      },
+      "career": "food",
+      "careerLevel": 2
+    },
+    {
+      "id": "career_chef_prep",
+      "category": "job",
+      "titleVi": "Sơ chế cho cả ngày (仕込み)",
+      "titleEn": "Prep for the whole day (仕込み)",
+      "titleJa": "一日分の 仕込み",
+      "descriptionVi": "Bậc 2 nghề Đầu bếp: chuẩn bị nguyên liệu cho cả ngày trước giờ mở cửa.",
+      "descriptionEn": "Chef career level 2: prep the day's ingredients before opening.",
+      "descriptionJa": "料理人キャリア2：開店前に一日分の仕込み。",
+      "giverNpc": "npc_sushi_chef",
+      "giverNameVi": "Bác Ota (bếp trưởng)",
+      "giverNameEn": "Chef Ota",
+      "giverNameJa": "太田大将",
+      "locationVi": "Bếp Sushi Hibari, ga Minato",
+      "locationEn": "Sushi Hibari's kitchen, Minato",
+      "locationJa": "ひばり寿司の厨房（みなと駅）",
+      "scene": "30_SushiRestaurant",
+      "minLevel": 1,
+      "minKnowledge": 0,
+      "requiresQuests": [],
+      "repeatable": true,
+      "cooldownMinutes": 30,
+      "grantOnAccept": [],
+      "objectives": [
+        {
+          "id": "prep",
+          "event": "prep",
+          "target": "sushi_kitchen",
+          "count": 4,
+          "afterAll": false,
+          "textVi": "Sơ chế đúng 4 lần",
+          "textEn": "Prep correctly 4 times",
+          "textJa": "仕込みを4回正しく"
+        },
+        {
+          "id": "report",
+          "event": "talk",
+          "target": "npc_sushi_chef",
+          "count": 1,
+          "afterAll": true,
+          "textVi": "Báo cáo bác Ota",
+          "textEn": "Report to Chef Ota",
+          "textJa": "大将に報告"
+        }
+      ],
+      "rewards": {
+        "yen": 1000,
+        "xp": 70,
+        "knowledge": 14
+      },
+      "career": "chef",
+      "careerLevel": 2
+    },
+    {
+      "id": "career_chef_omakase",
+      "category": "job",
+      "titleVi": "Phục vụ thực đơn おまかせ",
+      "titleEn": "Serve an omakase course",
+      "titleJa": "おまかせを 出す",
+      "descriptionVi": "Bậc 4 nghề Đầu bếp: làm một set おまかせ (đầu bếp chọn món) — 4 món liên tiếp không sai.",
+      "descriptionEn": "Chef career level 4: an omakase course (the chef's choice) — 4 dishes without a mistake.",
+      "descriptionJa": "料理人キャリア4：おまかせを4品。",
+      "giverNpc": "npc_sushi_chef",
+      "giverNameVi": "Bác Ota (bếp trưởng)",
+      "giverNameEn": "Chef Ota",
+      "giverNameJa": "太田大将",
+      "locationVi": "Bếp Sushi Hibari, ga Minato",
+      "locationEn": "Sushi Hibari's kitchen, Minato",
+      "locationJa": "ひばり寿司の厨房（みなと駅）",
+      "scene": "30_SushiRestaurant",
+      "minLevel": 1,
+      "minKnowledge": 0,
+      "requiresQuests": [],
+      "repeatable": true,
+      "cooldownMinutes": 60,
+      "grantOnAccept": [],
+      "objectives": [
+        {
+          "id": "cook",
+          "event": "cook",
+          "target": "sushi_kitchen",
+          "count": 4,
+          "afterAll": false,
+          "textVi": "Làm đúng 4 món",
+          "textEn": "Make 4 dishes correctly",
+          "textJa": "4品を正しく"
+        },
+        {
+          "id": "report",
+          "event": "talk",
+          "target": "npc_sushi_chef",
+          "count": 1,
+          "afterAll": true,
+          "textVi": "Báo cáo bác Ota",
+          "textEn": "Report to Chef Ota",
+          "textJa": "大将に報告"
+        }
+      ],
+      "rewards": {
+        "yen": 1800,
+        "xp": 110,
+        "knowledge": 20
+      },
+      "career": "chef",
+      "careerLevel": 4
+    },
+    {
+      "id": "career_retail_evening",
+      "category": "job",
+      "titleVi": "Ca tối đông khách ở Hibari Mart",
+      "titleEn": "A busy evening at Hibari Mart",
+      "titleJa": "ひばりマートの 夜の しごと",
+      "descriptionVi": "Bậc 2 nghề Bán lẻ: ca tối — xếp hàng, chỉ đường và tính tiền nhiều hơn.",
+      "descriptionEn": "Retail career level 2: the evening shift — more restocking, helping and ringing up.",
+      "descriptionJa": "小売キャリア2：夜のシフト。",
+      "giverNpc": "npc_cashier",
+      "giverNameVi": "Chị Ito",
+      "giverNameEn": "Ito",
+      "giverNameJa": "伊藤さん",
+      "locationVi": "Hibari Mart, phố chính",
+      "locationEn": "Hibari Mart, main street",
+      "locationJa": "ひばりマート",
+      "scene": "90_TestSandbox",
+      "minLevel": 1,
+      "minKnowledge": 0,
+      "requiresQuests": [],
+      "repeatable": true,
+      "cooldownMinutes": 30,
+      "grantOnAccept": [],
+      "objectives": [
+        {
+          "id": "restock",
+          "event": "restock",
+          "target": "konbini_shelf",
+          "count": 6,
+          "afterAll": false,
+          "textVi": "Xếp 6 thùng hàng lên kệ",
+          "textEn": "Restock 6 times",
+          "textJa": "6回品出し"
+        },
+        {
+          "id": "assist",
+          "event": "assist",
+          "target": "konbini_customer",
+          "count": 3,
+          "afterAll": false,
+          "textVi": "Giúp 3 khách",
+          "textEn": "Help 3 customers",
+          "textJa": "3人を案内"
+        },
+        {
+          "id": "checkout",
+          "event": "checkout",
+          "target": "konbini_register",
+          "count": 2,
+          "afterAll": false,
+          "textVi": "Tính tiền đúng 2 lần",
+          "textEn": "Ring up twice",
+          "textJa": "2回レジ"
+        },
+        {
+          "id": "report",
+          "event": "talk",
+          "target": "npc_cashier",
+          "count": 1,
+          "afterAll": true,
+          "textVi": "Báo cáo chị Ito",
+          "textEn": "Report to Ito",
+          "textJa": "伊藤さんに報告"
+        }
+      ],
+      "rewards": {
+        "yen": 1050,
+        "xp": 70,
+        "knowledge": 10
+      },
+      "career": "retail",
+      "careerLevel": 2
+    },
+    {
+      "id": "career_medical_morning",
+      "category": "job",
+      "titleVi": "Buổi sáng đông bệnh nhân",
+      "titleEn": "A crowded morning at the clinic",
+      "titleJa": "あさの まちあいしつ",
+      "descriptionVi": "Bậc 2 nghề Y tế: tiếp nhận và phân loại (トリアージ) 4 bệnh nhân, giải thích cách dùng thuốc 2 lần.",
+      "descriptionEn": "Medical career level 2: check in and triage 4 patients, explain medicine twice.",
+      "descriptionJa": "医療キャリア2：受付とトリアージを4人、服薬説明を2回。",
+      "giverNpc": "npc_clinic_doctor",
+      "giverNameVi": "Bác sĩ Mori",
+      "giverNameEn": "Dr Mori",
+      "giverNameJa": "森先生",
+      "locationVi": "Phòng khám Hibari",
+      "locationEn": "Hibari Clinic",
+      "locationJa": "ひばりクリニック",
+      "scene": "35_HibariClinic",
+      "minLevel": 1,
+      "minKnowledge": 0,
+      "requiresQuests": [],
+      "repeatable": true,
+      "cooldownMinutes": 30,
+      "grantOnAccept": [],
+      "objectives": [
+        {
+          "id": "checkin",
+          "event": "checkin",
+          "target": "clinic_patient",
+          "count": 4,
+          "afterAll": false,
+          "textVi": "Tiếp nhận 4 bệnh nhân",
+          "textEn": "Check in 4 patients",
+          "textJa": "4人を受付"
+        },
+        {
+          "id": "triage",
+          "event": "triage",
+          "target": "clinic_patient",
+          "count": 4,
+          "afterAll": false,
+          "textVi": "Phân loại đúng 4 bệnh nhân",
+          "textEn": "Triage 4 patients",
+          "textJa": "4人をトリアージ"
+        },
+        {
+          "id": "explain",
+          "event": "explain",
+          "target": "clinic_pharmacy",
+          "count": 2,
+          "afterAll": false,
+          "textVi": "Giải thích cách dùng thuốc 2 lần",
+          "textEn": "Explain medicine twice",
+          "textJa": "服薬説明を2回"
+        },
+        {
+          "id": "report",
+          "event": "talk",
+          "target": "npc_clinic_doctor",
+          "count": 1,
+          "afterAll": true,
+          "textVi": "Báo cáo bác sĩ Mori",
+          "textEn": "Report to Dr Mori",
+          "textJa": "森先生に報告"
+        }
+      ],
+      "rewards": {
+        "yen": 1200,
+        "xp": 80,
+        "knowledge": 16
+      },
+      "career": "medical",
+      "careerLevel": 2
+    },
+    {
+      "id": "career_farm_market",
+      "category": "job",
+      "titleVi": "Giao rau cho chợ",
+      "titleEn": "Vegetables for the market",
+      "titleJa": "いちばに やさいを",
+      "descriptionVi": "Bậc 2 nghề Nông nghiệp: thu hoạch và bán 4 phần nông sản.",
+      "descriptionEn": "Farm career level 2: harvest and sell 4 crops.",
+      "descriptionJa": "農業キャリア2：4つ収穫して売る。",
+      "giverNpc": "npc_farm_manager",
+      "giverNameVi": "Cô Hana",
+      "giverNameEn": "Hana",
+      "giverNameJa": "はなさん",
+      "locationVi": "Nông trại Đảo Xanh",
+      "locationEn": "Midori farm",
+      "locationJa": "みどりじまの農場",
+      "scene": "60_MidoriIsland",
+      "minLevel": 1,
+      "minKnowledge": 0,
+      "requiresQuests": [],
+      "repeatable": true,
+      "cooldownMinutes": 30,
+      "grantOnAccept": [],
+      "objectives": [
+        {
+          "id": "harvest",
+          "event": "harvest",
+          "target": "*",
+          "count": 4,
+          "afterAll": false,
+          "textVi": "Thu hoạch 4 lần",
+          "textEn": "Harvest 4 times",
+          "textJa": "4回収穫"
+        },
+        {
+          "id": "sell",
+          "event": "sell",
+          "target": "*",
+          "count": 4,
+          "afterAll": false,
+          "textVi": "Bán 4 phần",
+          "textEn": "Sell 4",
+          "textJa": "4つ売る"
+        },
+        {
+          "id": "report",
+          "event": "talk",
+          "target": "npc_farm_manager",
+          "count": 1,
+          "afterAll": true,
+          "textVi": "Báo cáo cô Hana",
+          "textEn": "Report to Hana",
+          "textJa": "はなさんに報告"
+        }
+      ],
+      "rewards": {
+        "yen": 950,
+        "xp": 65,
+        "knowledge": 10
+      },
+      "career": "farm",
+      "careerLevel": 2
+    },
+    {
+      "id": "career_hospitality_group",
+      "category": "job",
+      "titleVi": "Đón đoàn khách ở Gánh Ngon",
+      "titleEn": "A tour group at Gánh Ngon",
+      "titleJa": "ガインゴンで 団体客",
+      "descriptionVi": "Bậc 2 nghề Nhà hàng & dịch vụ: một đoàn khách tới — nhận và mang 4 đơn.",
+      "descriptionEn": "Hospitality career level 2: a tour group arrives — take and serve 4 orders.",
+      "descriptionJa": "サービス業キャリア2：団体客に4つの注文。",
+      "giverNpc": "npc_ganhngon_manager",
+      "giverNameVi": "Chị Mai (quản lý)",
+      "giverNameEn": "Mai (manager)",
+      "giverNameJa": "マイさん",
+      "locationVi": "Nhà hàng Gánh Ngon, Dương Đông",
+      "locationEn": "Gánh Ngon, Dương Đông",
+      "locationJa": "ガインゴン（ズオンドン）",
+      "scene": "65_PhuQuocIsland",
+      "minLevel": 1,
+      "minKnowledge": 0,
+      "requiresQuests": [],
+      "repeatable": true,
+      "cooldownMinutes": 30,
+      "grantOnAccept": [],
+      "objectives": [
+        {
+          "id": "order",
+          "event": "order",
+          "target": "*",
+          "count": 4,
+          "afterAll": false,
+          "textVi": "Nhận 4 đơn",
+          "textEn": "Take 4 orders",
+          "textJa": "注文を4つ"
+        },
+        {
+          "id": "serve",
+          "event": "serve",
+          "target": "*",
+          "count": 4,
+          "afterAll": false,
+          "textVi": "Mang 4 món",
+          "textEn": "Serve 4",
+          "textJa": "4つ運ぶ"
+        },
+        {
+          "id": "report",
+          "event": "talk",
+          "target": "npc_ganhngon_manager",
+          "count": 1,
+          "afterAll": true,
+          "textVi": "Báo cáo chị Mai",
+          "textEn": "Report to Mai",
+          "textJa": "マイさんに報告"
+        }
+      ],
+      "rewards": {
+        "yen": 1150,
+        "xp": 75,
+        "knowledge": 12
+      },
+      "career": "hospitality",
+      "careerLevel": 2
     }
   ]
 }

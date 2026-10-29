@@ -1,0 +1,2251 @@
+{
+  "schema": "nihongolife.character-variants.v1 (hand-written; CharacterVariantBuilder turns it into the prefabs Resources/Characters/Variants/NL_var_*)",
+  "uniforms": [
+    {
+      "id": "doctor",
+      "nameVi": "Bác sĩ",
+      "nameEn": "Doctor",
+      "nameJa": "医師",
+      "topHex": "#F6F8FA",
+      "bottomHex": "#2C3E5A",
+      "pieces": [
+        {
+          "name": "Stethoscope_L",
+          "shape": "cylinder",
+          "anchor": "chestFront",
+          "pos": [
+            -0.17,
+            0.1,
+            0.03
+          ],
+          "rot": [
+            0,
+            0,
+            -18
+          ],
+          "size": [
+            0.05,
+            0.5,
+            0.05
+          ],
+          "hex": "#2B2F36"
+        },
+        {
+          "name": "Stethoscope_R",
+          "shape": "cylinder",
+          "anchor": "chestFront",
+          "pos": [
+            0.17,
+            0.1,
+            0.03
+          ],
+          "rot": [
+            0,
+            0,
+            18
+          ],
+          "size": [
+            0.05,
+            0.5,
+            0.05
+          ],
+          "hex": "#2B2F36"
+        },
+        {
+          "name": "Stethoscope_Head",
+          "shape": "sphere",
+          "anchor": "chestFront",
+          "pos": [
+            0.0,
+            -0.16,
+            0.05
+          ],
+          "rot": [
+            0,
+            0,
+            0
+          ],
+          "size": [
+            0.13,
+            0.13,
+            0.07
+          ],
+          "hex": "#9AA3AD"
+        },
+        {
+          "name": "IdBadge",
+          "shape": "cube",
+          "anchor": "chestFront",
+          "pos": [
+            0.26,
+            0.12,
+            0.02
+          ],
+          "rot": [
+            0,
+            0,
+            0
+          ],
+          "size": [
+            0.16,
+            0.09,
+            0.02
+          ],
+          "hex": "#3F7FBF"
+        },
+        {
+          "name": "HeadMirror",
+          "shape": "cylinder",
+          "anchor": "head",
+          "pos": [
+            0.0,
+            0.3,
+            0.47
+          ],
+          "rot": [
+            90,
+            0,
+            0
+          ],
+          "size": [
+            0.2,
+            0.03,
+            0.2
+          ],
+          "hex": "#D7DCE2"
+        }
+      ]
+    },
+    {
+      "id": "nurse",
+      "nameVi": "Y tá",
+      "nameEn": "Nurse",
+      "nameJa": "看護師",
+      "topHex": "#8FD3C8",
+      "bottomHex": "#8FD3C8",
+      "pieces": [
+        {
+          "name": "Cap",
+          "shape": "cube",
+          "anchor": "headTop",
+          "pos": [
+            0.0,
+            0.0,
+            0.08
+          ],
+          "rot": [
+            0,
+            0,
+            0
+          ],
+          "size": [
+            0.72,
+            0.14,
+            0.42
+          ],
+          "hex": "#FFFFFF"
+        },
+        {
+          "name": "CapCross_V",
+          "shape": "cube",
+          "anchor": "headTop",
+          "pos": [
+            0.0,
+            0.02,
+            0.3
+          ],
+          "rot": [
+            0,
+            0,
+            0
+          ],
+          "size": [
+            0.07,
+            0.11,
+            0.03
+          ],
+          "hex": "#D9363E"
+        },
+        {
+          "name": "CapCross_H",
+          "shape": "cube",
+          "anchor": "headTop",
+          "pos": [
+            0.0,
+            0.02,
+            0.3
+          ],
+          "rot": [
+            0,
+            0,
+            0
+          ],
+          "size": [
+            0.16,
+            0.05,
+            0.03
+          ],
+          "hex": "#D9363E"
+        },
+        {
+          "name": "BadgeCross_V",
+          "shape": "cube",
+          "anchor": "chestFront",
+          "pos": [
+            0.26,
+            0.12,
+            0.02
+          ],
+          "rot": [
+            0,
+            0,
+            0
+          ],
+          "size": [
+            0.05,
+            0.14,
+            0.02
+          ],
+          "hex": "#D9363E"
+        },
+        {
+          "name": "BadgeCross_H",
+          "shape": "cube",
+          "anchor": "chestFront",
+          "pos": [
+            0.26,
+            0.12,
+            0.02
+          ],
+          "rot": [
+            0,
+            0,
+            0
+          ],
+          "size": [
+            0.14,
+            0.05,
+            0.02
+          ],
+          "hex": "#D9363E"
+        },
+        {
+          "name": "Apron",
+          "shape": "cube",
+          "anchor": "waistFront",
+          "pos": [
+            0.0,
+            -0.1,
+            0.02
+          ],
+          "rot": [
+            0,
+            0,
+            0
+          ],
+          "size": [
+            0.72,
+            0.4,
+            0.03
+          ],
+          "hex": "#FFFFFF"
+        }
+      ]
+    },
+    {
+      "id": "chef",
+      "nameVi": "Đầu bếp",
+      "nameEn": "Chef",
+      "nameJa": "料理人",
+      "topHex": "#FAFAF7",
+      "bottomHex": "#3A3F47",
+      "pieces": [
+        {
+          "name": "HatBand",
+          "shape": "cylinder",
+          "anchor": "headTop",
+          "pos": [
+            0.0,
+            0.1,
+            0.0
+          ],
+          "rot": [
+            0,
+            0,
+            0
+          ],
+          "size": [
+            0.95,
+            0.22,
+            0.95
+          ],
+          "hex": "#FFFFFF"
+        },
+        {
+          "name": "HatPuff",
+          "shape": "sphere",
+          "anchor": "headTop",
+          "pos": [
+            0.0,
+            0.4,
+            0.0
+          ],
+          "rot": [
+            0,
+            0,
+            0
+          ],
+          "size": [
+            1.2,
+            0.62,
+            1.2
+          ],
+          "hex": "#FFFFFF"
+        },
+        {
+          "name": "Neckerchief",
+          "shape": "cube",
+          "anchor": "neck",
+          "pos": [
+            0.0,
+            -0.05,
+            0.28
+          ],
+          "rot": [
+            0,
+            0,
+            0
+          ],
+          "size": [
+            0.5,
+            0.15,
+            0.22
+          ],
+          "hex": "#C0392B"
+        },
+        {
+          "name": "Button_Top",
+          "shape": "sphere",
+          "anchor": "chestFront",
+          "pos": [
+            0.1,
+            0.05,
+            0.03
+          ],
+          "rot": [
+            0,
+            0,
+            0
+          ],
+          "size": [
+            0.07,
+            0.07,
+            0.05
+          ],
+          "hex": "#CFCFCF"
+        },
+        {
+          "name": "Button_Bottom",
+          "shape": "sphere",
+          "anchor": "chestFront",
+          "pos": [
+            0.1,
+            -0.14,
+            0.03
+          ],
+          "rot": [
+            0,
+            0,
+            0
+          ],
+          "size": [
+            0.07,
+            0.07,
+            0.05
+          ],
+          "hex": "#CFCFCF"
+        },
+        {
+          "name": "Apron",
+          "shape": "cube",
+          "anchor": "waistFront",
+          "pos": [
+            0.0,
+            -0.12,
+            0.03
+          ],
+          "rot": [
+            0,
+            0,
+            0
+          ],
+          "size": [
+            0.75,
+            0.42,
+            0.03
+          ],
+          "hex": "#EDEDE6"
+        }
+      ]
+    },
+    {
+      "id": "waiter",
+      "nameVi": "Phục vụ bàn",
+      "nameEn": "Waiter",
+      "nameJa": "ウェイター",
+      "topHex": "#F3F0E8",
+      "bottomHex": "#1E1E24",
+      "pieces": [
+        {
+          "name": "Vest",
+          "shape": "cube",
+          "anchor": "chestFront",
+          "pos": [
+            0.0,
+            -0.04,
+            0.02
+          ],
+          "rot": [
+            0,
+            0,
+            0
+          ],
+          "size": [
+            0.66,
+            0.5,
+            0.03
+          ],
+          "hex": "#25252D"
+        },
+        {
+          "name": "BowTie_L",
+          "shape": "sphere",
+          "anchor": "neck",
+          "pos": [
+            -0.1,
+            -0.06,
+            0.28
+          ],
+          "rot": [
+            0,
+            0,
+            0
+          ],
+          "size": [
+            0.15,
+            0.12,
+            0.1
+          ],
+          "hex": "#7B1E2B"
+        },
+        {
+          "name": "BowTie_R",
+          "shape": "sphere",
+          "anchor": "neck",
+          "pos": [
+            0.1,
+            -0.06,
+            0.28
+          ],
+          "rot": [
+            0,
+            0,
+            0
+          ],
+          "size": [
+            0.15,
+            0.12,
+            0.1
+          ],
+          "hex": "#7B1E2B"
+        },
+        {
+          "name": "BowTie_Knot",
+          "shape": "sphere",
+          "anchor": "neck",
+          "pos": [
+            0.0,
+            -0.06,
+            0.29
+          ],
+          "rot": [
+            0,
+            0,
+            0
+          ],
+          "size": [
+            0.07,
+            0.07,
+            0.07
+          ],
+          "hex": "#5E1520"
+        },
+        {
+          "name": "WaistApron",
+          "shape": "cube",
+          "anchor": "waistFront",
+          "pos": [
+            0.0,
+            -0.2,
+            0.03
+          ],
+          "rot": [
+            0,
+            0,
+            0
+          ],
+          "size": [
+            0.7,
+            0.38,
+            0.03
+          ],
+          "hex": "#F2F2F2"
+        }
+      ]
+    },
+    {
+      "id": "bank",
+      "nameVi": "Nhân viên ngân hàng",
+      "nameEn": "Bank clerk",
+      "nameJa": "銀行員",
+      "topHex": "#2B3A55",
+      "bottomHex": "#2B3A55",
+      "pieces": [
+        {
+          "name": "ShirtFront",
+          "shape": "cube",
+          "anchor": "chestFront",
+          "pos": [
+            0.0,
+            0.06,
+            0.02
+          ],
+          "rot": [
+            0,
+            0,
+            0
+          ],
+          "size": [
+            0.24,
+            0.56,
+            0.02
+          ],
+          "hex": "#F4F4F4"
+        },
+        {
+          "name": "Tie",
+          "shape": "cube",
+          "anchor": "chestFront",
+          "pos": [
+            0.0,
+            0.0,
+            0.035
+          ],
+          "rot": [
+            0,
+            0,
+            0
+          ],
+          "size": [
+            0.09,
+            0.48,
+            0.02
+          ],
+          "hex": "#7A1F2B"
+        },
+        {
+          "name": "TieKnot",
+          "shape": "cube",
+          "anchor": "chestFront",
+          "pos": [
+            0.0,
+            0.25,
+            0.04
+          ],
+          "rot": [
+            0,
+            0,
+            0
+          ],
+          "size": [
+            0.11,
+            0.09,
+            0.03
+          ],
+          "hex": "#5E1520"
+        },
+        {
+          "name": "NameTag",
+          "shape": "cube",
+          "anchor": "chestFront",
+          "pos": [
+            0.26,
+            0.1,
+            0.02
+          ],
+          "rot": [
+            0,
+            0,
+            0
+          ],
+          "size": [
+            0.16,
+            0.09,
+            0.02
+          ],
+          "hex": "#D4A72C"
+        }
+      ]
+    },
+    {
+      "id": "train",
+      "nameVi": "Nhân viên nhà ga",
+      "nameEn": "Station staff",
+      "nameJa": "駅員",
+      "topHex": "#1D2B4A",
+      "bottomHex": "#1D2B4A",
+      "pieces": [
+        {
+          "name": "CapCrown",
+          "shape": "cylinder",
+          "anchor": "headTop",
+          "pos": [
+            0.0,
+            0.1,
+            0.0
+          ],
+          "rot": [
+            0,
+            0,
+            0
+          ],
+          "size": [
+            1.0,
+            0.24,
+            1.0
+          ],
+          "hex": "#1D2B4A"
+        },
+        {
+          "name": "CapBand",
+          "shape": "cylinder",
+          "anchor": "headTop",
+          "pos": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "rot": [
+            0,
+            0,
+            0
+          ],
+          "size": [
+            1.04,
+            0.07,
+            1.04
+          ],
+          "hex": "#D4A72C"
+        },
+        {
+          "name": "CapVisor",
+          "shape": "cube",
+          "anchor": "headTop",
+          "pos": [
+            0.0,
+            -0.01,
+            0.5
+          ],
+          "rot": [
+            8,
+            0,
+            0
+          ],
+          "size": [
+            0.75,
+            0.04,
+            0.3
+          ],
+          "hex": "#11141B"
+        },
+        {
+          "name": "Button_Top",
+          "shape": "sphere",
+          "anchor": "chestFront",
+          "pos": [
+            -0.12,
+            0.1,
+            0.03
+          ],
+          "rot": [
+            0,
+            0,
+            0
+          ],
+          "size": [
+            0.07,
+            0.07,
+            0.05
+          ],
+          "hex": "#D4A72C"
+        },
+        {
+          "name": "Button_Bottom",
+          "shape": "sphere",
+          "anchor": "chestFront",
+          "pos": [
+            -0.12,
+            -0.1,
+            0.03
+          ],
+          "rot": [
+            0,
+            0,
+            0
+          ],
+          "size": [
+            0.07,
+            0.07,
+            0.05
+          ],
+          "hex": "#D4A72C"
+        },
+        {
+          "name": "Armband",
+          "shape": "cube",
+          "anchor": "chestFront",
+          "pos": [
+            0.3,
+            0.15,
+            0.0
+          ],
+          "rot": [
+            0,
+            0,
+            0
+          ],
+          "size": [
+            0.12,
+            0.1,
+            0.5
+          ],
+          "hex": "#F2F2F2"
+        }
+      ]
+    },
+    {
+      "id": "cafe",
+      "nameVi": "Nhân viên quán cà phê",
+      "nameEn": "Café staff",
+      "nameJa": "カフェ店員",
+      "topHex": "#F1E4CF",
+      "bottomHex": "#4A3426",
+      "pieces": [
+        {
+          "name": "Beret",
+          "shape": "sphere",
+          "anchor": "headTop",
+          "pos": [
+            0.0,
+            0.05,
+            -0.02
+          ],
+          "rot": [
+            0,
+            0,
+            0
+          ],
+          "size": [
+            1.1,
+            0.32,
+            1.1
+          ],
+          "hex": "#5A3A29"
+        },
+        {
+          "name": "Apron",
+          "shape": "cube",
+          "anchor": "chestFront",
+          "pos": [
+            0.0,
+            -0.1,
+            0.03
+          ],
+          "rot": [
+            0,
+            0,
+            0
+          ],
+          "size": [
+            0.7,
+            0.75,
+            0.03
+          ],
+          "hex": "#C8704A"
+        },
+        {
+          "name": "ApronPocket",
+          "shape": "cube",
+          "anchor": "chestFront",
+          "pos": [
+            0.0,
+            -0.3,
+            0.055
+          ],
+          "rot": [
+            0,
+            0,
+            0
+          ],
+          "size": [
+            0.3,
+            0.16,
+            0.03
+          ],
+          "hex": "#A9573A"
+        },
+        {
+          "name": "ApronStrap",
+          "shape": "cube",
+          "anchor": "neck",
+          "pos": [
+            0.0,
+            -0.04,
+            0.2
+          ],
+          "rot": [
+            0,
+            0,
+            0
+          ],
+          "size": [
+            0.36,
+            0.05,
+            0.1
+          ],
+          "hex": "#C8704A"
+        }
+      ]
+    },
+    {
+      "id": "tourist",
+      "nameVi": "Du khách",
+      "nameEn": "Tourist",
+      "nameJa": "旅行者",
+      "topHex": "#F2B33D",
+      "bottomHex": "#C9B28A",
+      "pieces": [
+        {
+          "name": "HatBrim",
+          "shape": "cylinder",
+          "anchor": "headTop",
+          "pos": [
+            0.0,
+            0.05,
+            0.0
+          ],
+          "rot": [
+            0,
+            0,
+            0
+          ],
+          "size": [
+            1.8,
+            0.05,
+            1.8
+          ],
+          "hex": "#E3C77B"
+        },
+        {
+          "name": "HatCrown",
+          "shape": "cylinder",
+          "anchor": "headTop",
+          "pos": [
+            0.0,
+            0.18,
+            0.0
+          ],
+          "rot": [
+            0,
+            0,
+            0
+          ],
+          "size": [
+            1.0,
+            0.28,
+            1.0
+          ],
+          "hex": "#E3C77B"
+        },
+        {
+          "name": "HatRibbon",
+          "shape": "cylinder",
+          "anchor": "headTop",
+          "pos": [
+            0.0,
+            0.1,
+            0.0
+          ],
+          "rot": [
+            0,
+            0,
+            0
+          ],
+          "size": [
+            1.02,
+            0.07,
+            1.02
+          ],
+          "hex": "#D2503B"
+        },
+        {
+          "name": "Backpack",
+          "shape": "cube",
+          "anchor": "chestBack",
+          "pos": [
+            0.0,
+            -0.05,
+            -0.22
+          ],
+          "rot": [
+            0,
+            0,
+            0
+          ],
+          "size": [
+            0.8,
+            0.85,
+            0.4
+          ],
+          "hex": "#2F7D6B"
+        },
+        {
+          "name": "Camera",
+          "shape": "cube",
+          "anchor": "chestFront",
+          "pos": [
+            -0.2,
+            -0.2,
+            0.14
+          ],
+          "rot": [
+            0,
+            0,
+            0
+          ],
+          "size": [
+            0.32,
+            0.22,
+            0.2
+          ],
+          "hex": "#22252B"
+        },
+        {
+          "name": "CameraLens",
+          "shape": "cylinder",
+          "anchor": "chestFront",
+          "pos": [
+            -0.2,
+            -0.2,
+            0.28
+          ],
+          "rot": [
+            90,
+            0,
+            0
+          ],
+          "size": [
+            0.14,
+            0.1,
+            0.14
+          ],
+          "hex": "#555B66"
+        }
+      ]
+    },
+    {
+      "id": "resident",
+      "nameVi": "Người dân",
+      "nameEn": "Resident",
+      "nameJa": "住民",
+      "topHex": "#C9D6DF",
+      "bottomHex": "#5B6B7A",
+      "pieces": []
+    },
+    {
+      "id": "konbini",
+      "nameVi": "Nh?n vi?n c?a h?ng ti?n l?i",
+      "nameEn": "Convenience-store clerk",
+      "nameJa": "??????",
+      "topHex": "#2E8B57",
+      "bottomHex": "#2B2F36",
+      "pieces": [
+        {
+          "name": "CapCrown",
+          "shape": "cylinder",
+          "anchor": "headTop",
+          "pos": [
+            0,
+            0.08,
+            0
+          ],
+          "rot": [
+            0,
+            0,
+            0
+          ],
+          "size": [
+            0.98,
+            0.2,
+            0.98
+          ],
+          "hex": "#2E8B57"
+        },
+        {
+          "name": "CapVisor",
+          "shape": "cube",
+          "anchor": "headTop",
+          "pos": [
+            0,
+            0.04,
+            0.55
+          ],
+          "rot": [
+            0,
+            0,
+            0
+          ],
+          "size": [
+            0.7,
+            0.04,
+            0.38
+          ],
+          "hex": "#1F6B42"
+        },
+        {
+          "name": "Vest",
+          "shape": "cube",
+          "anchor": "chestFront",
+          "pos": [
+            0,
+            -0.08,
+            0.03
+          ],
+          "rot": [
+            0,
+            0,
+            0
+          ],
+          "size": [
+            0.66,
+            0.62,
+            0.03
+          ],
+          "hex": "#F4F6F2"
+        },
+        {
+          "name": "NameTag",
+          "shape": "cube",
+          "anchor": "chestFront",
+          "pos": [
+            0.18,
+            0.1,
+            0.055
+          ],
+          "rot": [
+            0,
+            0,
+            0
+          ],
+          "size": [
+            0.18,
+            0.1,
+            0.02
+          ],
+          "hex": "#FFD54A"
+        }
+      ]
+    },
+    {
+      "id": "farmer",
+      "nameVi": "N?ng d?n",
+      "nameEn": "Farmer",
+      "nameJa": "??",
+      "topHex": "#B5483A",
+      "bottomHex": "#3E5C8A",
+      "pieces": [
+        {
+          "name": "StrawBrim",
+          "shape": "cylinder",
+          "anchor": "headTop",
+          "pos": [
+            0,
+            0.02,
+            0
+          ],
+          "rot": [
+            0,
+            0,
+            0
+          ],
+          "size": [
+            1.75,
+            0.04,
+            1.75
+          ],
+          "hex": "#E3C77A"
+        },
+        {
+          "name": "StrawCrown",
+          "shape": "cylinder",
+          "anchor": "headTop",
+          "pos": [
+            0,
+            0.14,
+            0
+          ],
+          "rot": [
+            0,
+            0,
+            0
+          ],
+          "size": [
+            0.96,
+            0.24,
+            0.96
+          ],
+          "hex": "#D9B862"
+        },
+        {
+          "name": "StrawBand",
+          "shape": "cylinder",
+          "anchor": "headTop",
+          "pos": [
+            0,
+            0.07,
+            0
+          ],
+          "rot": [
+            0,
+            0,
+            0
+          ],
+          "size": [
+            0.99,
+            0.06,
+            0.99
+          ],
+          "hex": "#B5483A"
+        },
+        {
+          "name": "Bib",
+          "shape": "cube",
+          "anchor": "chestFront",
+          "pos": [
+            0,
+            -0.12,
+            0.03
+          ],
+          "rot": [
+            0,
+            0,
+            0
+          ],
+          "size": [
+            0.52,
+            0.5,
+            0.03
+          ],
+          "hex": "#3E5C8A"
+        },
+        {
+          "name": "Neckerchief",
+          "shape": "cube",
+          "anchor": "neck",
+          "pos": [
+            0,
+            -0.05,
+            0.26
+          ],
+          "rot": [
+            0,
+            0,
+            0
+          ],
+          "size": [
+            0.46,
+            0.14,
+            0.2
+          ],
+          "hex": "#F2E8D0"
+        }
+      ]
+    },
+    {
+      "id": "sushi",
+      "nameVi": "??u b?p sushi",
+      "nameEn": "Sushi chef",
+      "nameJa": "????",
+      "topHex": "#F4F4EE",
+      "bottomHex": "#1F2A44",
+      "pieces": [
+        {
+          "name": "Hachimaki",
+          "shape": "cylinder",
+          "anchor": "headTop",
+          "pos": [
+            0,
+            0.02,
+            0
+          ],
+          "rot": [
+            0,
+            0,
+            0
+          ],
+          "size": [
+            1.0,
+            0.14,
+            1.0
+          ],
+          "hex": "#F4F4EE"
+        },
+        {
+          "name": "HachimakiDot",
+          "shape": "sphere",
+          "anchor": "headTop",
+          "pos": [
+            0,
+            0.02,
+            0.5
+          ],
+          "rot": [
+            0,
+            0,
+            0
+          ],
+          "size": [
+            0.14,
+            0.14,
+            0.04
+          ],
+          "hex": "#C0392B"
+        },
+        {
+          "name": "Apron",
+          "shape": "cube",
+          "anchor": "waistFront",
+          "pos": [
+            0,
+            -0.14,
+            0.03
+          ],
+          "rot": [
+            0,
+            0,
+            0
+          ],
+          "size": [
+            0.72,
+            0.5,
+            0.03
+          ],
+          "hex": "#1F3A63"
+        },
+        {
+          "name": "Collar",
+          "shape": "cube",
+          "anchor": "neck",
+          "pos": [
+            0,
+            -0.04,
+            0.22
+          ],
+          "rot": [
+            0,
+            0,
+            0
+          ],
+          "size": [
+            0.4,
+            0.1,
+            0.14
+          ],
+          "hex": "#F4F4EE"
+        }
+      ]
+    },
+    {
+      "id": "musician",
+      "nameVi": "Nh?c c?ng",
+      "nameEn": "Musician",
+      "nameJa": "???????",
+      "topHex": "#3A2E5C",
+      "bottomHex": "#1F1F26",
+      "pieces": [
+        {
+          "name": "Beanie",
+          "shape": "sphere",
+          "anchor": "headTop",
+          "pos": [
+            0,
+            0.04,
+            -0.02
+          ],
+          "rot": [
+            0,
+            0,
+            0
+          ],
+          "size": [
+            1.08,
+            0.4,
+            1.08
+          ],
+          "hex": "#B5483A"
+        },
+        {
+          "name": "Scarf",
+          "shape": "cube",
+          "anchor": "neck",
+          "pos": [
+            0,
+            -0.05,
+            0.24
+          ],
+          "rot": [
+            0,
+            0,
+            0
+          ],
+          "size": [
+            0.5,
+            0.14,
+            0.22
+          ],
+          "hex": "#E0A030"
+        },
+        {
+          "name": "Strap",
+          "shape": "cube",
+          "anchor": "chestFront",
+          "pos": [
+            0,
+            0,
+            0.04
+          ],
+          "rot": [
+            0,
+            0,
+            32
+          ],
+          "size": [
+            0.08,
+            0.95,
+            0.03
+          ],
+          "hex": "#C9A227"
+        }
+      ]
+    },
+    {
+      "id": "producer",
+      "nameVi": "Nh? s?n xu?t ?m nh?c (DJ)",
+      "nameEn": "Music producer (DJ)",
+      "nameJa": "?????????(DJ)",
+      "topHex": "#1B1B22",
+      "bottomHex": "#2B2B33",
+      "pieces": [
+        {
+          "name": "Band",
+          "shape": "cube",
+          "anchor": "headTop",
+          "pos": [
+            0,
+            0.46,
+            0
+          ],
+          "rot": [
+            0,
+            0,
+            0
+          ],
+          "size": [
+            1.12,
+            0.08,
+            0.14
+          ],
+          "hex": "#2A2A33"
+        },
+        {
+          "name": "CupL",
+          "shape": "cylinder",
+          "anchor": "headTop",
+          "pos": [
+            -0.56,
+            -0.02,
+            0
+          ],
+          "rot": [
+            0,
+            0,
+            90
+          ],
+          "size": [
+            0.36,
+            0.14,
+            0.36
+          ],
+          "hex": "#E94560"
+        },
+        {
+          "name": "CupR",
+          "shape": "cylinder",
+          "anchor": "headTop",
+          "pos": [
+            0.56,
+            -0.02,
+            0
+          ],
+          "rot": [
+            0,
+            0,
+            90
+          ],
+          "size": [
+            0.36,
+            0.14,
+            0.36
+          ],
+          "hex": "#E94560"
+        },
+        {
+          "name": "Chain",
+          "shape": "cylinder",
+          "anchor": "neck",
+          "pos": [
+            0,
+            -0.1,
+            0.2
+          ],
+          "rot": [
+            0,
+            0,
+            0
+          ],
+          "size": [
+            0.36,
+            0.04,
+            0.36
+          ],
+          "hex": "#E8C547"
+        }
+      ]
+    },
+    {
+      "id": "painter",
+      "nameVi": "H?a s?",
+      "nameEn": "Painter",
+      "nameJa": "??",
+      "topHex": "#E8E1D0",
+      "bottomHex": "#4B5563",
+      "pieces": [
+        {
+          "name": "Beret",
+          "shape": "sphere",
+          "anchor": "headTop",
+          "pos": [
+            0.06,
+            0.06,
+            -0.02
+          ],
+          "rot": [
+            0,
+            0,
+            0
+          ],
+          "size": [
+            1.16,
+            0.3,
+            1.16
+          ],
+          "hex": "#2F5D8C"
+        },
+        {
+          "name": "Smock",
+          "shape": "cube",
+          "anchor": "chestFront",
+          "pos": [
+            0,
+            -0.1,
+            0.03
+          ],
+          "rot": [
+            0,
+            0,
+            0
+          ],
+          "size": [
+            0.7,
+            0.8,
+            0.03
+          ],
+          "hex": "#F3F0E6"
+        },
+        {
+          "name": "SplashA",
+          "shape": "sphere",
+          "anchor": "chestFront",
+          "pos": [
+            -0.12,
+            0.0,
+            0.06
+          ],
+          "rot": [
+            0,
+            0,
+            0
+          ],
+          "size": [
+            0.1,
+            0.1,
+            0.03
+          ],
+          "hex": "#D64545"
+        },
+        {
+          "name": "SplashB",
+          "shape": "sphere",
+          "anchor": "chestFront",
+          "pos": [
+            0.14,
+            -0.2,
+            0.06
+          ],
+          "rot": [
+            0,
+            0,
+            0
+          ],
+          "size": [
+            0.08,
+            0.08,
+            0.03
+          ],
+          "hex": "#3B82F6"
+        },
+        {
+          "name": "SplashC",
+          "shape": "sphere",
+          "anchor": "chestFront",
+          "pos": [
+            -0.05,
+            -0.32,
+            0.06
+          ],
+          "rot": [
+            0,
+            0,
+            0
+          ],
+          "size": [
+            0.07,
+            0.07,
+            0.03
+          ],
+          "hex": "#F2C94C"
+        }
+      ]
+    }
+  ],
+  "variants": [
+    {
+      "id": "doctor_yui",
+      "kid": "kid_yui",
+      "uniform": "doctor",
+      "hair": "black",
+      "beard": "none",
+      "age": 38,
+      "skinHex": "#E8C3A0",
+      "topHex": "",
+      "bottomHex": "",
+      "height": 1.1,
+      "girth": 0.95,
+      "person": "Yui Hayakawa",
+      "build": "slim",
+      "ageGroup": "adult"
+    },
+    {
+      "id": "doctor_riku",
+      "kid": "kid_riku",
+      "uniform": "doctor",
+      "hair": "silver",
+      "beard": "goatee",
+      "age": 58,
+      "skinHex": "#D3A476",
+      "topHex": "",
+      "bottomHex": "",
+      "height": 1.06,
+      "girth": 1.12,
+      "person": "Riku Aoyama",
+      "build": "sturdy",
+      "ageGroup": "adult"
+    },
+    {
+      "id": "doctor_amara",
+      "kid": "kid_sakura",
+      "uniform": "doctor",
+      "hair": "dark_brown",
+      "beard": "none",
+      "age": 31,
+      "skinHex": "#61402B",
+      "topHex": "",
+      "bottomHex": "",
+      "height": 1.08,
+      "girth": 1.0,
+      "person": "Amara Okafor",
+      "build": "average",
+      "ageGroup": "adult"
+    },
+    {
+      "id": "nurse_hina",
+      "kid": "kid_hina",
+      "uniform": "nurse",
+      "hair": "chestnut",
+      "beard": "none",
+      "age": 33,
+      "skinHex": "#D3A476",
+      "topHex": "",
+      "bottomHex": "",
+      "height": 1.04,
+      "girth": 0.95,
+      "person": "Hina Sakamoto",
+      "build": "slim",
+      "ageGroup": "adult"
+    },
+    {
+      "id": "nurse_yuto",
+      "kid": "kid_yuto",
+      "uniform": "nurse",
+      "hair": "black",
+      "beard": "none",
+      "age": 27,
+      "skinHex": "#8A5A3B",
+      "topHex": "",
+      "bottomHex": "",
+      "height": 1.1,
+      "girth": 1.0,
+      "person": "Yuto Mensah",
+      "build": "average",
+      "ageGroup": "adult"
+    },
+    {
+      "id": "nurse_mio",
+      "kid": "kid_mio",
+      "uniform": "nurse",
+      "hair": "ash",
+      "beard": "none",
+      "age": 56,
+      "skinHex": "#F7DDC9",
+      "topHex": "",
+      "bottomHex": "",
+      "height": 1.0,
+      "girth": 1.1,
+      "person": "Mio Fujita",
+      "build": "sturdy",
+      "ageGroup": "adult"
+    },
+    {
+      "id": "chef_haruto",
+      "kid": "kid_haruto",
+      "uniform": "chef",
+      "hair": "black",
+      "beard": "stubble",
+      "age": 45,
+      "skinHex": "#D3A476",
+      "topHex": "",
+      "bottomHex": "",
+      "height": 1.08,
+      "girth": 1.2,
+      "person": "Haruto Kondo",
+      "build": "sturdy",
+      "ageGroup": "adult"
+    },
+    {
+      "id": "chef_sakura",
+      "kid": "kid_sakura",
+      "uniform": "chef",
+      "hair": "auburn",
+      "beard": "none",
+      "age": 31,
+      "skinHex": "#8A5A3B",
+      "topHex": "",
+      "bottomHex": "",
+      "height": 1.04,
+      "girth": 1.0,
+      "person": "Sakura Delgado",
+      "build": "average",
+      "ageGroup": "adult"
+    },
+    {
+      "id": "chef_sota",
+      "kid": "kid_sota",
+      "uniform": "chef",
+      "hair": "natural",
+      "beard": "none",
+      "age": 24,
+      "skinHex": "#E8C3A0",
+      "topHex": "",
+      "bottomHex": "",
+      "height": 1.0,
+      "girth": 0.93,
+      "person": "Sota Nguyen",
+      "build": "slim",
+      "ageGroup": "adult"
+    },
+    {
+      "id": "waiter_sota",
+      "kid": "kid_sota",
+      "uniform": "waiter",
+      "hair": "dark_brown",
+      "beard": "none",
+      "age": 22,
+      "skinHex": "#F7DDC9",
+      "topHex": "",
+      "bottomHex": "",
+      "height": 1.06,
+      "girth": 0.92,
+      "person": "Sota Lindqvist",
+      "build": "slim",
+      "ageGroup": "adult"
+    },
+    {
+      "id": "waiter_yui",
+      "kid": "kid_yui",
+      "uniform": "waiter",
+      "hair": "black",
+      "beard": "none",
+      "age": 24,
+      "skinHex": "#B07C54",
+      "topHex": "",
+      "bottomHex": "",
+      "height": 1.02,
+      "girth": 0.94,
+      "person": "Linh Tran",
+      "build": "slim",
+      "ageGroup": "adult"
+    },
+    {
+      "id": "waiter_riku",
+      "kid": "kid_riku",
+      "uniform": "waiter",
+      "hair": "silver",
+      "beard": "mustache",
+      "age": 62,
+      "skinHex": "#8A5A3B",
+      "topHex": "",
+      "bottomHex": "",
+      "height": 1.0,
+      "girth": 1.08,
+      "person": "Riku Santos",
+      "build": "sturdy",
+      "ageGroup": "senior"
+    },
+    {
+      "id": "bank_mio",
+      "kid": "kid_mio",
+      "uniform": "bank",
+      "hair": "black",
+      "beard": "none",
+      "age": 35,
+      "skinHex": "#F7DDC9",
+      "topHex": "",
+      "bottomHex": "",
+      "height": 1.08,
+      "girth": 0.92,
+      "person": "Mio Takeda",
+      "build": "slim",
+      "ageGroup": "adult"
+    },
+    {
+      "id": "bank_haruto",
+      "kid": "kid_haruto",
+      "uniform": "bank",
+      "hair": "ash",
+      "beard": "mustache",
+      "age": 41,
+      "skinHex": "#E8C3A0",
+      "topHex": "",
+      "bottomHex": "",
+      "height": 1.12,
+      "girth": 1.0,
+      "person": "Kenji Watanabe",
+      "build": "average",
+      "ageGroup": "adult"
+    },
+    {
+      "id": "bank_yuto",
+      "kid": "kid_yuto",
+      "uniform": "bank",
+      "hair": "black",
+      "beard": "none",
+      "age": 52,
+      "skinHex": "#B07C54",
+      "topHex": "",
+      "bottomHex": "",
+      "height": 1.1,
+      "girth": 1.1,
+      "person": "Arjun Mehta",
+      "build": "sturdy",
+      "ageGroup": "adult"
+    },
+    {
+      "id": "train_yuto",
+      "kid": "kid_yuto",
+      "uniform": "train",
+      "hair": "black",
+      "beard": "none",
+      "age": 34,
+      "skinHex": "#D3A476",
+      "topHex": "",
+      "bottomHex": "",
+      "height": 1.12,
+      "girth": 1.0,
+      "person": "Yuto Ishikawa",
+      "build": "average",
+      "ageGroup": "adult"
+    },
+    {
+      "id": "train_hina",
+      "kid": "kid_hina",
+      "uniform": "train",
+      "hair": "dark_brown",
+      "beard": "none",
+      "age": 28,
+      "skinHex": "#F7DDC9",
+      "topHex": "",
+      "bottomHex": "",
+      "height": 1.06,
+      "girth": 0.93,
+      "person": "Hina Moreau",
+      "build": "slim",
+      "ageGroup": "adult"
+    },
+    {
+      "id": "train_sota",
+      "kid": "kid_sota",
+      "uniform": "train",
+      "hair": "white",
+      "beard": "none",
+      "age": 63,
+      "skinHex": "#E8C3A0",
+      "topHex": "",
+      "bottomHex": "",
+      "height": 0.98,
+      "girth": 1.05,
+      "person": "Sota Murakami",
+      "build": "average",
+      "ageGroup": "senior"
+    },
+    {
+      "id": "cafe_sakura",
+      "kid": "kid_sakura",
+      "uniform": "cafe",
+      "hair": "pink",
+      "beard": "none",
+      "age": 19,
+      "skinHex": "#E8C3A0",
+      "topHex": "",
+      "bottomHex": "",
+      "height": 1.0,
+      "girth": 0.95,
+      "person": "Sakura Ito",
+      "build": "slim",
+      "ageGroup": "teen"
+    },
+    {
+      "id": "cafe_riku",
+      "kid": "kid_riku",
+      "uniform": "cafe",
+      "hair": "blonde",
+      "beard": "none",
+      "age": 23,
+      "skinHex": "#3F2A1D",
+      "topHex": "",
+      "bottomHex": "",
+      "height": 1.1,
+      "girth": 1.0,
+      "person": "Kofi Adeyemi",
+      "build": "average",
+      "ageGroup": "adult"
+    },
+    {
+      "id": "cafe_yui",
+      "kid": "kid_yui",
+      "uniform": "cafe",
+      "hair": "chestnut",
+      "beard": "none",
+      "age": 30,
+      "skinHex": "#61402B",
+      "topHex": "",
+      "bottomHex": "",
+      "height": 1.04,
+      "girth": 1.0,
+      "person": "Yui Rahman",
+      "build": "average",
+      "ageGroup": "adult"
+    },
+    {
+      "id": "tourist_haruto",
+      "kid": "kid_haruto",
+      "uniform": "tourist",
+      "hair": "blonde",
+      "beard": "stubble",
+      "age": 33,
+      "skinHex": "#F7DDC9",
+      "topHex": "",
+      "bottomHex": "",
+      "height": 1.16,
+      "girth": 1.05,
+      "person": "Lucas Berg",
+      "build": "average",
+      "ageGroup": "adult"
+    },
+    {
+      "id": "tourist_mio",
+      "kid": "kid_mio",
+      "uniform": "tourist",
+      "hair": "auburn",
+      "beard": "none",
+      "age": 27,
+      "skinHex": "#E8C3A0",
+      "topHex": "",
+      "bottomHex": "",
+      "height": 1.06,
+      "girth": 0.92,
+      "person": "Olga Petrova",
+      "build": "slim",
+      "ageGroup": "adult"
+    },
+    {
+      "id": "tourist_yuto",
+      "kid": "kid_yuto",
+      "uniform": "tourist",
+      "hair": "white",
+      "beard": "full",
+      "age": 66,
+      "skinHex": "#D3A476",
+      "topHex": "",
+      "bottomHex": "",
+      "height": 0.96,
+      "girth": 1.12,
+      "person": "Chen Wei",
+      "build": "sturdy",
+      "ageGroup": "senior"
+    },
+    {
+      "id": "tourist_hina",
+      "kid": "kid_hina",
+      "uniform": "tourist",
+      "hair": "navy",
+      "beard": "none",
+      "age": 22,
+      "skinHex": "#B07C54",
+      "topHex": "",
+      "bottomHex": "",
+      "height": 1.02,
+      "girth": 0.95,
+      "person": "Priya Nair",
+      "build": "slim",
+      "ageGroup": "adult"
+    },
+    {
+      "id": "resident_child_f",
+      "kid": "kid_hina",
+      "uniform": "resident",
+      "hair": "natural",
+      "beard": "none",
+      "age": 9,
+      "skinHex": "#E8C3A0",
+      "topHex": "#E9879F",
+      "bottomHex": "#47689C",
+      "height": 0.82,
+      "girth": 0.92,
+      "person": "Mei Yamada",
+      "build": "slim",
+      "ageGroup": "child"
+    },
+    {
+      "id": "resident_child_m",
+      "kid": "kid_riku",
+      "uniform": "resident",
+      "hair": "natural",
+      "beard": "none",
+      "age": 10,
+      "skinHex": "#D3A476",
+      "topHex": "#6FB26B",
+      "bottomHex": "#3E4A63",
+      "height": 0.85,
+      "girth": 1.0,
+      "person": "Daiki Suzuki",
+      "build": "average",
+      "ageGroup": "child"
+    },
+    {
+      "id": "resident_teen_f",
+      "kid": "kid_sakura",
+      "uniform": "resident",
+      "hair": "natural",
+      "beard": "none",
+      "age": 16,
+      "skinHex": "#8A5A3B",
+      "topHex": "#B58AD6",
+      "bottomHex": "#2F3A4F",
+      "height": 0.96,
+      "girth": 0.96,
+      "person": "Aiko Mbeki",
+      "build": "slim",
+      "ageGroup": "teen"
+    },
+    {
+      "id": "resident_teen_m",
+      "kid": "kid_haruto",
+      "uniform": "resident",
+      "hair": "natural",
+      "beard": "none",
+      "age": 17,
+      "skinHex": "#61402B",
+      "topHex": "#E0713C",
+      "bottomHex": "#2B2B36",
+      "height": 1.04,
+      "girth": 0.98,
+      "person": "Ren Alvarez",
+      "build": "average",
+      "ageGroup": "teen"
+    },
+    {
+      "id": "resident_elder_f",
+      "kid": "kid_yui",
+      "uniform": "resident",
+      "hair": "silver",
+      "beard": "none",
+      "age": 74,
+      "skinHex": "#F7DDC9",
+      "topHex": "#B9707A",
+      "bottomHex": "#6C5B6E",
+      "height": 0.92,
+      "girth": 1.08,
+      "person": "Chiyo Matsuda",
+      "build": "sturdy",
+      "ageGroup": "senior"
+    },
+    {
+      "id": "resident_elder_m",
+      "kid": "kid_sota",
+      "uniform": "resident",
+      "hair": "white",
+      "beard": "long",
+      "age": 79,
+      "skinHex": "#B07C54",
+      "topHex": "#6E8F7B",
+      "bottomHex": "#5A4A3A",
+      "height": 0.9,
+      "girth": 1.1,
+      "person": "Hiroshi Kato",
+      "build": "sturdy",
+      "ageGroup": "senior"
+    },
+    {
+      "id": "konbini_hina",
+      "kid": "kid_hina",
+      "uniform": "konbini",
+      "hair": "chestnut",
+      "beard": "none",
+      "age": 24,
+      "skinHex": "#E8C3A0",
+      "topHex": "",
+      "bottomHex": "",
+      "height": 1.04,
+      "girth": 0.94,
+      "person": "Hina Aoki",
+      "build": "slim",
+      "ageGroup": "adult"
+    },
+    {
+      "id": "konbini_sota",
+      "kid": "kid_sota",
+      "uniform": "konbini",
+      "hair": "black",
+      "beard": "none",
+      "age": 20,
+      "skinHex": "#C68B5E",
+      "topHex": "",
+      "bottomHex": "",
+      "height": 1.06,
+      "girth": 0.98,
+      "person": "Sota Banda",
+      "build": "average",
+      "ageGroup": "adult"
+    },
+    {
+      "id": "farmer_haruto",
+      "kid": "kid_haruto",
+      "uniform": "farmer",
+      "hair": "natural",
+      "beard": "stubble",
+      "age": 52,
+      "skinHex": "#C68B5E",
+      "topHex": "",
+      "bottomHex": "",
+      "height": 1.1,
+      "girth": 1.14,
+      "person": "Haruto Mori",
+      "build": "sturdy",
+      "ageGroup": "adult"
+    },
+    {
+      "id": "farmer_yui",
+      "kid": "kid_yui",
+      "uniform": "farmer",
+      "hair": "dark_brown",
+      "beard": "none",
+      "age": 44,
+      "skinHex": "#8D5A3C",
+      "topHex": "",
+      "bottomHex": "",
+      "height": 1.04,
+      "girth": 1.0,
+      "person": "Yui Nakamura",
+      "build": "average",
+      "ageGroup": "adult"
+    },
+    {
+      "id": "sushi_riku",
+      "kid": "kid_riku",
+      "uniform": "sushi",
+      "hair": "black",
+      "beard": "mustache",
+      "age": 49,
+      "skinHex": "#E8C3A0",
+      "topHex": "",
+      "bottomHex": "",
+      "height": 1.08,
+      "girth": 1.06,
+      "person": "Riku Hamada",
+      "build": "average",
+      "ageGroup": "adult"
+    },
+    {
+      "id": "sushi_sakura",
+      "kid": "kid_sakura",
+      "uniform": "sushi",
+      "hair": "auburn",
+      "beard": "none",
+      "age": 29,
+      "skinHex": "#F2D5B8",
+      "topHex": "",
+      "bottomHex": "",
+      "height": 1.02,
+      "girth": 0.94,
+      "person": "Sakura Okada",
+      "build": "slim",
+      "ageGroup": "adult"
+    },
+    {
+      "id": "musician_yuto",
+      "kid": "kid_yuto",
+      "uniform": "musician",
+      "hair": "black",
+      "beard": "stubble",
+      "age": 27,
+      "skinHex": "#6B4226",
+      "topHex": "",
+      "bottomHex": "",
+      "height": 1.1,
+      "girth": 1.0,
+      "person": "Yuto Mensah",
+      "build": "average",
+      "ageGroup": "adult"
+    },
+    {
+      "id": "musician_mio",
+      "kid": "kid_mio",
+      "uniform": "musician",
+      "hair": "pink",
+      "beard": "none",
+      "age": 23,
+      "skinHex": "#F2D5B8",
+      "topHex": "",
+      "bottomHex": "",
+      "height": 1.02,
+      "girth": 0.92,
+      "person": "Mio Kanda",
+      "build": "slim",
+      "ageGroup": "adult"
+    },
+    {
+      "id": "producer_sota",
+      "kid": "kid_sota",
+      "uniform": "producer",
+      "hair": "navy",
+      "beard": "none",
+      "age": 31,
+      "skinHex": "#E8C3A0",
+      "topHex": "",
+      "bottomHex": "",
+      "height": 1.08,
+      "girth": 0.98,
+      "person": "Sota Ivanov",
+      "build": "average",
+      "ageGroup": "adult"
+    },
+    {
+      "id": "producer_hina",
+      "kid": "kid_hina",
+      "uniform": "producer",
+      "hair": "silver",
+      "beard": "none",
+      "age": 26,
+      "skinHex": "#C68B5E",
+      "topHex": "",
+      "bottomHex": "",
+      "height": 1.04,
+      "girth": 0.94,
+      "person": "Hina Park",
+      "build": "slim",
+      "ageGroup": "adult"
+    },
+    {
+      "id": "painter_sakura",
+      "kid": "kid_sakura",
+      "uniform": "painter",
+      "hair": "chestnut",
+      "beard": "none",
+      "age": 34,
+      "skinHex": "#F2D5B8",
+      "topHex": "",
+      "bottomHex": "",
+      "height": 1.02,
+      "girth": 0.96,
+      "person": "Sakura Lemaire",
+      "build": "slim",
+      "ageGroup": "adult"
+    },
+    {
+      "id": "painter_yui",
+      "kid": "kid_yui",
+      "uniform": "painter",
+      "hair": "ash",
+      "beard": "none",
+      "age": 61,
+      "skinHex": "#E8C3A0",
+      "topHex": "",
+      "bottomHex": "",
+      "height": 1.0,
+      "girth": 1.08,
+      "person": "Yui Hosoda",
+      "build": "average",
+      "ageGroup": "adult"
+    }
+  ]
+}

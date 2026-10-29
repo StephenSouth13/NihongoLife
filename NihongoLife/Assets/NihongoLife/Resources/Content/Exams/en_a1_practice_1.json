@@ -1,0 +1,897 @@
+{
+ "schema": "nihongolife.exam/1",
+ "id": "en_a1_practice_1",
+ "examType": "Ielts",
+ "family": "English",
+ "level": "A1",
+ "learnerLevel": "Beginner",
+ "recommendedBandMin": 1.0,
+ "recommendedBandMax": 2.5,
+ "titleVi": "Đề luyện tiếng Anh A1 (Cơ bản)",
+ "titleEn": "English practice test A1 (Basic)",
+ "titleJa": "英語練習テスト A1",
+ "titleRu": "Тренировочный тест по английскому A1 (Начальный)",
+ "descriptionVi": "Đề tự soạn: 10 câu ngữ pháp, 5 câu từ vựng, 1 bài đọc (5 câu). Có giải thích tiếng Việt.",
+ "descriptionEn": "Original test: 10 grammar, 5 vocabulary, 1 reading passage (5 questions) with explanations.",
+ "descriptionJa": "オリジナル練習：文法10問・語彙5問・読解1題（5問）。",
+ "descriptionRu": "Авторский тест: 10 вопросов по грамматике, 5 по лексике, 1 текст (5 вопросов).",
+ "jlptTotalPassScore": 0,
+ "jlptSectionPassScore": 0,
+ "scoreGroups": [],
+ "sections": [
+  {
+   "id": "grammar",
+   "type": "IeltsReading",
+   "titleVi": "Ngữ pháp",
+   "titleEn": "Grammar",
+   "titleJa": "",
+   "timeLimitSeconds": 600,
+   "scoreScaleMax": 9,
+   "scoreGroup": "",
+   "mondai": [],
+   "passages": [],
+   "questions": [
+    {
+     "id": "en_a1_practice_1_g01",
+     "type": "MultipleChoice",
+     "passageId": "",
+     "promptVi": "Chọn đáp án đúng. She ___ a teacher.",
+     "promptEn": "She ___ a teacher.",
+     "promptJa": "",
+     "promptReading": "",
+     "choices": [
+      {
+       "textVi": "am",
+       "textEn": "am",
+       "textJa": ""
+      },
+      {
+       "textVi": "be",
+       "textEn": "be",
+       "textJa": ""
+      },
+      {
+       "textVi": "are",
+       "textEn": "are",
+       "textJa": ""
+      },
+      {
+       "textVi": "is",
+       "textEn": "is",
+       "textJa": ""
+      }
+     ],
+     "correctChoiceIndex": 3,
+     "acceptedAnswers": [],
+     "explanationVi": "Chủ ngữ she (ngôi 3 số ít) đi với is.",
+     "explanationEn": "She takes 'is'.",
+     "tags": [
+      "A1",
+      "grammar"
+     ],
+     "points": 1,
+     "mondai": ""
+    },
+    {
+     "id": "en_a1_practice_1_g02",
+     "type": "MultipleChoice",
+     "passageId": "",
+     "promptVi": "Chọn đáp án đúng. I ___ breakfast at 7 every day.",
+     "promptEn": "I ___ breakfast at 7 every day.",
+     "promptJa": "",
+     "promptReading": "",
+     "choices": [
+      {
+       "textVi": "has",
+       "textEn": "has",
+       "textJa": ""
+      },
+      {
+       "textVi": "having",
+       "textEn": "having",
+       "textJa": ""
+      },
+      {
+       "textVi": "am have",
+       "textEn": "am have",
+       "textJa": ""
+      },
+      {
+       "textVi": "have",
+       "textEn": "have",
+       "textJa": ""
+      }
+     ],
+     "correctChoiceIndex": 3,
+     "acceptedAnswers": [],
+     "explanationVi": "Chủ ngữ I dùng have (hiện tại đơn).",
+     "explanationEn": "With I, use 'have' (present simple).",
+     "tags": [
+      "A1",
+      "grammar"
+     ],
+     "points": 1,
+     "mondai": ""
+    },
+    {
+     "id": "en_a1_practice_1_g03",
+     "type": "MultipleChoice",
+     "passageId": "",
+     "promptVi": "Chọn đáp án đúng. There ___ two books on the table.",
+     "promptEn": "There ___ two books on the table.",
+     "promptJa": "",
+     "promptReading": "",
+     "choices": [
+      {
+       "textVi": "is",
+       "textEn": "is",
+       "textJa": ""
+      },
+      {
+       "textVi": "are",
+       "textEn": "are",
+       "textJa": ""
+      },
+      {
+       "textVi": "be",
+       "textEn": "be",
+       "textJa": ""
+      },
+      {
+       "textVi": "am",
+       "textEn": "am",
+       "textJa": ""
+      }
+     ],
+     "correctChoiceIndex": 1,
+     "acceptedAnswers": [],
+     "explanationVi": "Two books là số nhiều → There are.",
+     "explanationEn": "'Two books' is plural → There are.",
+     "tags": [
+      "A1",
+      "grammar"
+     ],
+     "points": 1,
+     "mondai": ""
+    },
+    {
+     "id": "en_a1_practice_1_g04",
+     "type": "MultipleChoice",
+     "passageId": "",
+     "promptVi": "Chọn đáp án đúng. ___ you like coffee?",
+     "promptEn": "___ you like coffee?",
+     "promptJa": "",
+     "promptReading": "",
+     "choices": [
+      {
+       "textVi": "Does",
+       "textEn": "Does",
+       "textJa": ""
+      },
+      {
+       "textVi": "Do",
+       "textEn": "Do",
+       "textJa": ""
+      },
+      {
+       "textVi": "Is",
+       "textEn": "Is",
+       "textJa": ""
+      },
+      {
+       "textVi": "Are",
+       "textEn": "Are",
+       "textJa": ""
+      }
+     ],
+     "correctChoiceIndex": 1,
+     "acceptedAnswers": [],
+     "explanationVi": "Câu hỏi hiện tại đơn với you dùng Do.",
+     "explanationEn": "Present simple question with you uses Do.",
+     "tags": [
+      "A1",
+      "grammar"
+     ],
+     "points": 1,
+     "mondai": ""
+    },
+    {
+     "id": "en_a1_practice_1_g05",
+     "type": "MultipleChoice",
+     "passageId": "",
+     "promptVi": "Chọn đáp án đúng. He ___ to school by bus.",
+     "promptEn": "He ___ to school by bus.",
+     "promptJa": "",
+     "promptReading": "",
+     "choices": [
+      {
+       "textVi": "goes",
+       "textEn": "goes",
+       "textJa": ""
+      },
+      {
+       "textVi": "is go",
+       "textEn": "is go",
+       "textJa": ""
+      },
+      {
+       "textVi": "go",
+       "textEn": "go",
+       "textJa": ""
+      },
+      {
+       "textVi": "going",
+       "textEn": "going",
+       "textJa": ""
+      }
+     ],
+     "correctChoiceIndex": 0,
+     "acceptedAnswers": [],
+     "explanationVi": "He + động từ thêm -es: goes.",
+     "explanationEn": "He + verb with -es: goes.",
+     "tags": [
+      "A1",
+      "grammar"
+     ],
+     "points": 1,
+     "mondai": ""
+    },
+    {
+     "id": "en_a1_practice_1_g06",
+     "type": "MultipleChoice",
+     "passageId": "",
+     "promptVi": "Chọn đáp án đúng. This is ___ umbrella.",
+     "promptEn": "This is ___ umbrella.",
+     "promptJa": "",
+     "promptReading": "",
+     "choices": [
+      {
+       "textVi": "two",
+       "textEn": "two",
+       "textJa": ""
+      },
+      {
+       "textVi": "an",
+       "textEn": "an",
+       "textJa": ""
+      },
+      {
+       "textVi": "a",
+       "textEn": "a",
+       "textJa": ""
+      },
+      {
+       "textVi": "the",
+       "textEn": "the",
+       "textJa": ""
+      }
+     ],
+     "correctChoiceIndex": 1,
+     "acceptedAnswers": [],
+     "explanationVi": "Umbrella bắt đầu bằng nguyên âm → an.",
+     "explanationEn": "Umbrella starts with a vowel sound → an.",
+     "tags": [
+      "A1",
+      "grammar"
+     ],
+     "points": 1,
+     "mondai": ""
+    },
+    {
+     "id": "en_a1_practice_1_g07",
+     "type": "MultipleChoice",
+     "passageId": "",
+     "promptVi": "Chọn đáp án đúng. They ___ in the park now.",
+     "promptEn": "They ___ in the park now.",
+     "promptJa": "",
+     "promptReading": "",
+     "choices": [
+      {
+       "textVi": "are playing",
+       "textEn": "are playing",
+       "textJa": ""
+      },
+      {
+       "textVi": "play",
+       "textEn": "play",
+       "textJa": ""
+      },
+      {
+       "textVi": "plays",
+       "textEn": "plays",
+       "textJa": ""
+      },
+      {
+       "textVi": "played",
+       "textEn": "played",
+       "textJa": ""
+      }
+     ],
+     "correctChoiceIndex": 0,
+     "acceptedAnswers": [],
+     "explanationVi": "'now' → hiện tại tiếp diễn: are playing.",
+     "explanationEn": "'now' → present continuous: are playing.",
+     "tags": [
+      "A1",
+      "grammar"
+     ],
+     "points": 1,
+     "mondai": ""
+    },
+    {
+     "id": "en_a1_practice_1_g08",
+     "type": "MultipleChoice",
+     "passageId": "",
+     "promptVi": "Chọn đáp án đúng. My brother ___ tall.",
+     "promptEn": "My brother ___ tall.",
+     "promptJa": "",
+     "promptReading": "",
+     "choices": [
+      {
+       "textVi": "am",
+       "textEn": "am",
+       "textJa": ""
+      },
+      {
+       "textVi": "is",
+       "textEn": "is",
+       "textJa": ""
+      },
+      {
+       "textVi": "are",
+       "textEn": "are",
+       "textJa": ""
+      },
+      {
+       "textVi": "be",
+       "textEn": "be",
+       "textJa": ""
+      }
+     ],
+     "correctChoiceIndex": 1,
+     "acceptedAnswers": [],
+     "explanationVi": "My brother = he → is.",
+     "explanationEn": "My brother = he → is.",
+     "tags": [
+      "A1",
+      "grammar"
+     ],
+     "points": 1,
+     "mondai": ""
+    },
+    {
+     "id": "en_a1_practice_1_g09",
+     "type": "MultipleChoice",
+     "passageId": "",
+     "promptVi": "Chọn đáp án đúng. We ___ a car.",
+     "promptEn": "We ___ a car.",
+     "promptJa": "",
+     "promptReading": "",
+     "choices": [
+      {
+       "textVi": "haven't",
+       "textEn": "haven't",
+       "textJa": ""
+      },
+      {
+       "textVi": "doesn't have",
+       "textEn": "doesn't have",
+       "textJa": ""
+      },
+      {
+       "textVi": "don't have",
+       "textEn": "don't have",
+       "textJa": ""
+      },
+      {
+       "textVi": "not have",
+       "textEn": "not have",
+       "textJa": ""
+      }
+     ],
+     "correctChoiceIndex": 2,
+     "acceptedAnswers": [],
+     "explanationVi": "Phủ định hiện tại đơn với we: don't have.",
+     "explanationEn": "Negative present simple with we: don't have.",
+     "tags": [
+      "A1",
+      "grammar"
+     ],
+     "points": 1,
+     "mondai": ""
+    },
+    {
+     "id": "en_a1_practice_1_g10",
+     "type": "MultipleChoice",
+     "passageId": "",
+     "promptVi": "Chọn đáp án đúng. I'm ___ Vietnam.",
+     "promptEn": "I'm ___ Vietnam.",
+     "promptJa": "",
+     "promptReading": "",
+     "choices": [
+      {
+       "textVi": "at",
+       "textEn": "at",
+       "textJa": ""
+      },
+      {
+       "textVi": "from",
+       "textEn": "from",
+       "textJa": ""
+      },
+      {
+       "textVi": "on",
+       "textEn": "on",
+       "textJa": ""
+      },
+      {
+       "textVi": "in",
+       "textEn": "in",
+       "textJa": ""
+      }
+     ],
+     "correctChoiceIndex": 1,
+     "acceptedAnswers": [],
+     "explanationVi": "I'm from + nước = tôi đến từ.",
+     "explanationEn": "I'm from + country = where you are from.",
+     "tags": [
+      "A1",
+      "grammar"
+     ],
+     "points": 1,
+     "mondai": ""
+    }
+   ]
+  },
+  {
+   "id": "vocabulary",
+   "type": "IeltsReading",
+   "titleVi": "Từ vựng",
+   "titleEn": "Vocabulary",
+   "titleJa": "",
+   "timeLimitSeconds": 300,
+   "scoreScaleMax": 9,
+   "scoreGroup": "",
+   "mondai": [],
+   "passages": [],
+   "questions": [
+    {
+     "id": "en_a1_practice_1_v01",
+     "type": "MultipleChoice",
+     "passageId": "",
+     "promptVi": "Chọn đáp án đúng. A place where you sleep at night is a ___.",
+     "promptEn": "A place where you sleep at night is a ___.",
+     "promptJa": "",
+     "promptReading": "",
+     "choices": [
+      {
+       "textVi": "bedroom",
+       "textEn": "bedroom",
+       "textJa": ""
+      },
+      {
+       "textVi": "garden",
+       "textEn": "garden",
+       "textJa": ""
+      },
+      {
+       "textVi": "kitchen",
+       "textEn": "kitchen",
+       "textJa": ""
+      },
+      {
+       "textVi": "bathroom",
+       "textEn": "bathroom",
+       "textJa": ""
+      }
+     ],
+     "correctChoiceIndex": 0,
+     "acceptedAnswers": [],
+     "explanationVi": "Bedroom = phòng ngủ.",
+     "explanationEn": "A bedroom is where you sleep.",
+     "tags": [
+      "A1",
+      "vocabulary"
+     ],
+     "points": 1,
+     "mondai": ""
+    },
+    {
+     "id": "en_a1_practice_1_v02",
+     "type": "MultipleChoice",
+     "passageId": "",
+     "promptVi": "Chọn đáp án đúng. The opposite of 'big' is ___.",
+     "promptEn": "The opposite of 'big' is ___.",
+     "promptJa": "",
+     "promptReading": "",
+     "choices": [
+      {
+       "textVi": "new",
+       "textEn": "new",
+       "textJa": ""
+      },
+      {
+       "textVi": "small",
+       "textEn": "small",
+       "textJa": ""
+      },
+      {
+       "textVi": "tall",
+       "textEn": "tall",
+       "textJa": ""
+      },
+      {
+       "textVi": "long",
+       "textEn": "long",
+       "textJa": ""
+      }
+     ],
+     "correctChoiceIndex": 1,
+     "acceptedAnswers": [],
+     "explanationVi": "Trái nghĩa của big là small.",
+     "explanationEn": "Opposite of big is small.",
+     "tags": [
+      "A1",
+      "vocabulary"
+     ],
+     "points": 1,
+     "mondai": ""
+    },
+    {
+     "id": "en_a1_practice_1_v03",
+     "type": "MultipleChoice",
+     "passageId": "",
+     "promptVi": "Chọn đáp án đúng. You use a ___ to write.",
+     "promptEn": "You use a ___ to write.",
+     "promptJa": "",
+     "promptReading": "",
+     "choices": [
+      {
+       "textVi": "shoe",
+       "textEn": "shoe",
+       "textJa": ""
+      },
+      {
+       "textVi": "plate",
+       "textEn": "plate",
+       "textJa": ""
+      },
+      {
+       "textVi": "spoon",
+       "textEn": "spoon",
+       "textJa": ""
+      },
+      {
+       "textVi": "pen",
+       "textEn": "pen",
+       "textJa": ""
+      }
+     ],
+     "correctChoiceIndex": 3,
+     "acceptedAnswers": [],
+     "explanationVi": "Pen = bút.",
+     "explanationEn": "A pen is for writing.",
+     "tags": [
+      "A1",
+      "vocabulary"
+     ],
+     "points": 1,
+     "mondai": ""
+    },
+    {
+     "id": "en_a1_practice_1_v04",
+     "type": "MultipleChoice",
+     "passageId": "",
+     "promptVi": "Chọn đáp án đúng. Monday and Tuesday are days of the ___.",
+     "promptEn": "Monday and Tuesday are days of the ___.",
+     "promptJa": "",
+     "promptReading": "",
+     "choices": [
+      {
+       "textVi": "week",
+       "textEn": "week",
+       "textJa": ""
+      },
+      {
+       "textVi": "hour",
+       "textEn": "hour",
+       "textJa": ""
+      },
+      {
+       "textVi": "year",
+       "textEn": "year",
+       "textJa": ""
+      },
+      {
+       "textVi": "month",
+       "textEn": "month",
+       "textJa": ""
+      }
+     ],
+     "correctChoiceIndex": 0,
+     "acceptedAnswers": [],
+     "explanationVi": "Các ngày thuộc một tuần (week).",
+     "explanationEn": "Days belong to a week.",
+     "tags": [
+      "A1",
+      "vocabulary"
+     ],
+     "points": 1,
+     "mondai": ""
+    },
+    {
+     "id": "en_a1_practice_1_v05",
+     "type": "MultipleChoice",
+     "passageId": "",
+     "promptVi": "Chọn đáp án đúng. She drinks ___ in the morning.",
+     "promptEn": "She drinks ___ in the morning.",
+     "promptJa": "",
+     "promptReading": "",
+     "choices": [
+      {
+       "textVi": "table",
+       "textEn": "table",
+       "textJa": ""
+      },
+      {
+       "textVi": "milk",
+       "textEn": "milk",
+       "textJa": ""
+      },
+      {
+       "textVi": "door",
+       "textEn": "door",
+       "textJa": ""
+      },
+      {
+       "textVi": "bag",
+       "textEn": "bag",
+       "textJa": ""
+      }
+     ],
+     "correctChoiceIndex": 1,
+     "acceptedAnswers": [],
+     "explanationVi": "Chỉ milk uống được.",
+     "explanationEn": "Only milk can be drunk.",
+     "tags": [
+      "A1",
+      "vocabulary"
+     ],
+     "points": 1,
+     "mondai": ""
+    }
+   ]
+  },
+  {
+   "id": "reading",
+   "type": "IeltsReading",
+   "titleVi": "Đọc hiểu",
+   "titleEn": "Reading",
+   "titleJa": "",
+   "timeLimitSeconds": 600,
+   "scoreScaleMax": 9,
+   "scoreGroup": "",
+   "mondai": [],
+   "passages": [
+    {
+     "id": "en_a1_practice_1_passage",
+     "titleJa": "",
+     "titleVi": "Bài đọc",
+     "titleEn": "Reading: About Anna",
+     "bodyJa": "",
+     "bodyVi": "",
+     "bodyEn": "Hi, my name is Anna. I am 12 years old. I live in a small house with my mother, my father and my dog, Max. I go to school by bike. My favourite subject is English. After school I play with Max in the garden.",
+     "bodyReading": "",
+     "maxPlays": 0
+    }
+   ],
+   "questions": [
+    {
+     "id": "en_a1_practice_1_r01",
+     "type": "MultipleChoice",
+     "passageId": "en_a1_practice_1_passage",
+     "promptVi": "Chọn đáp án đúng. How old is Anna?",
+     "promptEn": "How old is Anna?",
+     "promptJa": "",
+     "promptReading": "",
+     "choices": [
+      {
+       "textVi": "11",
+       "textEn": "11",
+       "textJa": ""
+      },
+      {
+       "textVi": "12",
+       "textEn": "12",
+       "textJa": ""
+      },
+      {
+       "textVi": "13",
+       "textEn": "13",
+       "textJa": ""
+      },
+      {
+       "textVi": "10",
+       "textEn": "10",
+       "textJa": ""
+      }
+     ],
+     "correctChoiceIndex": 1,
+     "acceptedAnswers": [],
+     "explanationVi": "Văn bản: I am 12 years old.",
+     "explanationEn": "'I am 12 years old.'",
+     "tags": [
+      "A1",
+      "reading"
+     ],
+     "points": 1,
+     "mondai": ""
+    },
+    {
+     "id": "en_a1_practice_1_r02",
+     "type": "MultipleChoice",
+     "passageId": "en_a1_practice_1_passage",
+     "promptVi": "Chọn đáp án đúng. Who does Anna live with?",
+     "promptEn": "Who does Anna live with?",
+     "promptJa": "",
+     "promptReading": "",
+     "choices": [
+      {
+       "textVi": "Her friends",
+       "textEn": "Her friends",
+       "textJa": ""
+      },
+      {
+       "textVi": "Only her mother",
+       "textEn": "Only her mother",
+       "textJa": ""
+      },
+      {
+       "textVi": "Her mother, father and dog",
+       "textEn": "Her mother, father and dog",
+       "textJa": ""
+      },
+      {
+       "textVi": "Her grandmother",
+       "textEn": "Her grandmother",
+       "textJa": ""
+      }
+     ],
+     "correctChoiceIndex": 2,
+     "acceptedAnswers": [],
+     "explanationVi": "Mẹ, bố và chó Max.",
+     "explanationEn": "Mother, father and dog Max.",
+     "tags": [
+      "A1",
+      "reading"
+     ],
+     "points": 1,
+     "mondai": ""
+    },
+    {
+     "id": "en_a1_practice_1_r03",
+     "type": "MultipleChoice",
+     "passageId": "en_a1_practice_1_passage",
+     "promptVi": "Chọn đáp án đúng. How does she go to school?",
+     "promptEn": "How does she go to school?",
+     "promptJa": "",
+     "promptReading": "",
+     "choices": [
+      {
+       "textVi": "By bus",
+       "textEn": "By bus",
+       "textJa": ""
+      },
+      {
+       "textVi": "On foot",
+       "textEn": "On foot",
+       "textJa": ""
+      },
+      {
+       "textVi": "By car",
+       "textEn": "By car",
+       "textJa": ""
+      },
+      {
+       "textVi": "By bike",
+       "textEn": "By bike",
+       "textJa": ""
+      }
+     ],
+     "correctChoiceIndex": 3,
+     "acceptedAnswers": [],
+     "explanationVi": "I go to school by bike.",
+     "explanationEn": "'I go to school by bike.'",
+     "tags": [
+      "A1",
+      "reading"
+     ],
+     "points": 1,
+     "mondai": ""
+    },
+    {
+     "id": "en_a1_practice_1_r04",
+     "type": "MultipleChoice",
+     "passageId": "en_a1_practice_1_passage",
+     "promptVi": "Chọn đáp án đúng. Her favourite subject is ___.",
+     "promptEn": "Her favourite subject is ___.",
+     "promptJa": "",
+     "promptReading": "",
+     "choices": [
+      {
+       "textVi": "Music",
+       "textEn": "Music",
+       "textJa": ""
+      },
+      {
+       "textVi": "Maths",
+       "textEn": "Maths",
+       "textJa": ""
+      },
+      {
+       "textVi": "English",
+       "textEn": "English",
+       "textJa": ""
+      },
+      {
+       "textVi": "Art",
+       "textEn": "Art",
+       "textJa": ""
+      }
+     ],
+     "correctChoiceIndex": 2,
+     "acceptedAnswers": [],
+     "explanationVi": "My favourite subject is English.",
+     "explanationEn": "'My favourite subject is English.'",
+     "tags": [
+      "A1",
+      "reading"
+     ],
+     "points": 1,
+     "mondai": ""
+    },
+    {
+     "id": "en_a1_practice_1_r05",
+     "type": "MultipleChoice",
+     "passageId": "en_a1_practice_1_passage",
+     "promptVi": "Chọn đáp án đúng. Where does she play with Max?",
+     "promptEn": "Where does she play with Max?",
+     "promptJa": "",
+     "promptReading": "",
+     "choices": [
+      {
+       "textVi": "In the park",
+       "textEn": "In the park",
+       "textJa": ""
+      },
+      {
+       "textVi": "At school",
+       "textEn": "At school",
+       "textJa": ""
+      },
+      {
+       "textVi": "In the garden",
+       "textEn": "In the garden",
+       "textJa": ""
+      },
+      {
+       "textVi": "In the kitchen",
+       "textEn": "In the kitchen",
+       "textJa": ""
+      }
+     ],
+     "correctChoiceIndex": 2,
+     "acceptedAnswers": [],
+     "explanationVi": "After school ... in the garden.",
+     "explanationEn": "'...in the garden.'",
+     "tags": [
+      "A1",
+      "reading"
+     ],
+     "points": 1,
+     "mondai": ""
+    }
+   ]
+  }
+ ]
+}

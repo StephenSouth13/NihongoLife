@@ -1,0 +1,844 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f5214dc098a14546900e76a0b9a4682c, type: 3}
+  m_Name: jlpt_n1_mini_1
+  m_EditorClassIdentifier: NihongoLife::NihongoLife.Exam.ExamDefinition
+  id: jlpt_n1_mini_1
+  examType: 0
+  level: "N1"
+  titleVi: "Đề luyện JLPT N1 (mini, không có phần nghe)"
+  titleEn: "JLPT N1 practice mini-test (no listening)"
+  titleJa: "日本語能力試験 N1 ミニ模試（聴解なし）"
+  descriptionVi: "Đề tự soạn theo cấu trúc JLPT (từ vựng + ngữ pháp + đọc hiểu). Không có phần nghe; điểm đạt đã quy đổi theo thang 120 (2/3 của 180)."
+  descriptionEn: "Original practice test in JLPT style (vocabulary + grammar + reading). No listening section; pass marks scaled to a 120-point scale (2/3 of 180)."
+  sections:
+  - id: vocab
+    type: 0
+    titleVi: "Từ vựng / Chữ Hán"
+    titleEn: "Vocabulary / Kanji"
+    titleJa: "文字・語彙"
+    timeLimitSeconds: 900
+    scoreScaleMax: 60
+    scoreGroup: ""
+    mondai:
+    - id: "m_read"
+      titleJa: "もんだい 漢字の読み"
+      titleVi: "Đọc chữ Hán"
+    - id: "m_orth"
+      titleJa: "もんだい 表記"
+      titleVi: "Viết chữ Hán"
+    - id: "m_ctx"
+      titleJa: "もんだい 文脈規定"
+      titleVi: "Chọn từ phù hợp ngữ cảnh"
+    - id: "m_syn"
+      titleJa: "もんだい 言い換え"
+      titleVi: "Chọn từ/cụm gần nghĩa"
+    passages: []
+    questions:
+    - id: jlpt_n1_mini_1_v01
+      type: 0
+      passageId: 
+      promptVi: "Đọc chữ Hán"
+      promptEn: "Choose the correct reading of the underlined word."
+      promptJa: "注意を <u>怠る</u>。"
+      promptReading: ""
+      choices:
+      - textVi: "ためらう"
+        textEn: "ためらう"
+        textJa: "ためらう"
+      - textVi: "おこたる"
+        textEn: "おこたる"
+        textJa: "おこたる"
+      - textVi: "あやまる"
+        textEn: "あやまる"
+        textJa: "あやまる"
+      - textVi: "なまる"
+        textEn: "なまる"
+        textJa: "なまる"
+      correctChoiceIndex: 1
+      acceptedAnswers: []
+      taskInstructionsVi: ""
+      taskInstructionsEn: ""
+      minWords: 0
+      timeLimitSeconds: 0
+      explanationVi: "怠る = おこたる (lơ là)."
+      explanationEn: "怠る = おこたる (neglect)."
+      tags:
+      - "N1"
+      - "m_read"
+      points: 1
+      mondai: "m_read"
+    - id: jlpt_n1_mini_1_v02
+      type: 0
+      passageId: 
+      promptVi: "Đọc chữ Hán"
+      promptEn: "Choose the correct reading of the underlined word."
+      promptJa: "進歩を <u>阻む</u>。"
+      promptReading: ""
+      choices:
+      - textVi: "ふさぐ"
+        textEn: "ふさぐ"
+        textJa: "ふさぐ"
+      - textVi: "こばむ"
+        textEn: "こばむ"
+        textJa: "こばむ"
+      - textVi: "とざす"
+        textEn: "とざす"
+        textJa: "とざす"
+      - textVi: "はばむ"
+        textEn: "はばむ"
+        textJa: "はばむ"
+      correctChoiceIndex: 3
+      acceptedAnswers: []
+      taskInstructionsVi: ""
+      taskInstructionsEn: ""
+      minWords: 0
+      timeLimitSeconds: 0
+      explanationVi: "阻む = はばむ (cản trở)."
+      explanationEn: "阻む = はばむ (hinder)."
+      tags:
+      - "N1"
+      - "m_read"
+      points: 1
+      mondai: "m_read"
+    - id: jlpt_n1_mini_1_v03
+      type: 0
+      passageId: 
+      promptVi: "Đọc chữ Hán"
+      promptEn: "Choose the correct reading of the underlined word."
+      promptJa: "改革を <u>促す</u>。"
+      promptReading: ""
+      choices:
+      - textVi: "さとす"
+        textEn: "さとす"
+        textJa: "さとす"
+      - textVi: "ただす"
+        textEn: "ただす"
+        textJa: "ただす"
+      - textVi: "うながす"
+        textEn: "うながす"
+        textJa: "うながす"
+      - textVi: "そそのかす"
+        textEn: "そそのかす"
+        textJa: "そそのかす"
+      correctChoiceIndex: 2
+      acceptedAnswers: []
+      taskInstructionsVi: ""
+      taskInstructionsEn: ""
+      minWords: 0
+      timeLimitSeconds: 0
+      explanationVi: "促す = うながす (thúc đẩy)."
+      explanationEn: "促す = うながす (urge/promote)."
+      tags:
+      - "N1"
+      - "m_read"
+      points: 1
+      mondai: "m_read"
+    - id: jlpt_n1_mini_1_v04
+      type: 0
+      passageId: 
+      promptVi: "Đọc chữ Hán"
+      promptEn: "Choose the correct reading of the underlined word."
+      promptJa: "<u>脆い</u> 構造だ。"
+      promptReading: ""
+      choices:
+      - textVi: "もろい"
+        textEn: "もろい"
+        textJa: "もろい"
+      - textVi: "にぶい"
+        textEn: "にぶい"
+        textJa: "にぶい"
+      - textVi: "ぬるい"
+        textEn: "ぬるい"
+        textJa: "ぬるい"
+      - textVi: "あやうい"
+        textEn: "あやうい"
+        textJa: "あやうい"
+      correctChoiceIndex: 0
+      acceptedAnswers: []
+      taskInstructionsVi: ""
+      taskInstructionsEn: ""
+      minWords: 0
+      timeLimitSeconds: 0
+      explanationVi: "脆い = もろい (giòn, yếu)."
+      explanationEn: "脆い = もろい (fragile)."
+      tags:
+      - "N1"
+      - "m_read"
+      points: 1
+      mondai: "m_read"
+    - id: jlpt_n1_mini_1_v05
+      type: 0
+      passageId: 
+      promptVi: "Viết chữ Hán"
+      promptEn: "Choose the correct kanji for the underlined hiragana."
+      promptJa: "労働の <u>ほうしゅう</u>を 受け取る。"
+      promptReading: ""
+      choices:
+      - textVi: "報酬"
+        textEn: "報酬"
+        textJa: "報酬"
+      - textVi: "報州"
+        textEn: "報州"
+        textJa: "報州"
+      - textVi: "報酎"
+        textEn: "報酎"
+        textJa: "報酎"
+      - textVi: "抱酬"
+        textEn: "抱酬"
+        textJa: "抱酬"
+      correctChoiceIndex: 0
+      acceptedAnswers: []
+      taskInstructionsVi: ""
+      taskInstructionsEn: ""
+      minWords: 0
+      timeLimitSeconds: 0
+      explanationVi: "ほうしゅう = 報酬 (thù lao)."
+      explanationEn: "ほうしゅう = 報酬 (reward/pay)."
+      tags:
+      - "N1"
+      - "m_orth"
+      points: 1
+      mondai: "m_orth"
+    - id: jlpt_n1_mini_1_v06
+      type: 0
+      passageId: 
+      promptVi: "Viết chữ Hán"
+      promptEn: "Choose the correct kanji for the underlined hiragana."
+      promptJa: "心の <u>かっとう</u>を 抱える。"
+      promptReading: ""
+      choices:
+      - textVi: "葛籐"
+        textEn: "葛籐"
+        textJa: "葛籐"
+      - textVi: "葛藤"
+        textEn: "葛藤"
+        textJa: "葛藤"
+      - textVi: "喝藤"
+        textEn: "喝藤"
+        textJa: "喝藤"
+      - textVi: "曷藤"
+        textEn: "曷藤"
+        textJa: "曷藤"
+      correctChoiceIndex: 1
+      acceptedAnswers: []
+      taskInstructionsVi: ""
+      taskInstructionsEn: ""
+      minWords: 0
+      timeLimitSeconds: 0
+      explanationVi: "かっとう = 葛藤 (xung đột nội tâm)."
+      explanationEn: "かっとう = 葛藤 (inner conflict)."
+      tags:
+      - "N1"
+      - "m_orth"
+      points: 1
+      mondai: "m_orth"
+    - id: jlpt_n1_mini_1_v07
+      type: 0
+      passageId: 
+      promptVi: "Chọn từ phù hợp ngữ cảnh"
+      promptEn: "Choose the word that best fits the sentence."
+      promptJa: "事件の ( )が ようやく 明らかに なった。"
+      promptReading: ""
+      choices:
+      - textVi: "全般"
+        textEn: "全般"
+        textJa: "全般"
+      - textVi: "全盛"
+        textEn: "全盛"
+        textJa: "全盛"
+      - textVi: "全貌"
+        textEn: "全貌"
+        textJa: "全貌"
+      - textVi: "全域"
+        textEn: "全域"
+        textJa: "全域"
+      correctChoiceIndex: 2
+      acceptedAnswers: []
+      taskInstructionsVi: ""
+      taskInstructionsEn: ""
+      minWords: 0
+      timeLimitSeconds: 0
+      explanationVi: "全貌 = toàn cảnh (sự việc)."
+      explanationEn: "全貌 = the full picture."
+      tags:
+      - "N1"
+      - "m_ctx"
+      points: 1
+      mondai: "m_ctx"
+    - id: jlpt_n1_mini_1_v08
+      type: 0
+      passageId: 
+      promptVi: "Chọn từ phù hợp ngữ cảnh"
+      promptEn: "Choose the word that best fits the sentence."
+      promptJa: "彼の 主張は ( )が 通っていない。"
+      promptReading: ""
+      choices:
+      - textVi: "縁"
+        textEn: "縁"
+        textJa: "縁"
+      - textVi: "壁"
+        textEn: "壁"
+        textJa: "壁"
+      - textVi: "幅"
+        textEn: "幅"
+        textJa: "幅"
+      - textVi: "筋"
+        textEn: "筋"
+        textJa: "筋"
+      correctChoiceIndex: 3
+      acceptedAnswers: []
+      taskInstructionsVi: ""
+      taskInstructionsEn: ""
+      minWords: 0
+      timeLimitSeconds: 0
+      explanationVi: "筋が通る = hợp lý, mạch lạc."
+      explanationEn: "筋が通る = to be logical."
+      tags:
+      - "N1"
+      - "m_ctx"
+      points: 1
+      mondai: "m_ctx"
+    - id: jlpt_n1_mini_1_v09
+      type: 0
+      passageId: 
+      promptVi: "Chọn từ phù hợp ngữ cảnh"
+      promptEn: "Choose the word that best fits the sentence."
+      promptJa: "彼女は 失敗にも ( )ず、前進を 続けた。"
+      promptReading: ""
+      choices:
+      - textVi: "ねたま"
+        textEn: "ねたま"
+        textJa: "ねたま"
+      - textVi: "へつらわ"
+        textEn: "へつらわ"
+        textJa: "へつらわ"
+      - textVi: "いとわ"
+        textEn: "いとわ"
+        textJa: "いとわ"
+      - textVi: "ひるま"
+        textEn: "ひるま"
+        textJa: "ひるま"
+      correctChoiceIndex: 3
+      acceptedAnswers: []
+      taskInstructionsVi: ""
+      taskInstructionsEn: ""
+      minWords: 0
+      timeLimitSeconds: 0
+      explanationVi: "ひるまず = không nao núng."
+      explanationEn: "ひるまず = without flinching."
+      tags:
+      - "N1"
+      - "m_ctx"
+      points: 1
+      mondai: "m_ctx"
+    - id: jlpt_n1_mini_1_v10
+      type: 0
+      passageId: 
+      promptVi: "Chọn từ/cụm gần nghĩa"
+      promptEn: "Choose the word closest in meaning to the underlined part."
+      promptJa: "<u>ひたすら</u> 練習に 励んだ。"
+      promptReading: ""
+      choices:
+      - textVi: "適当に"
+        textEn: "適当に"
+        textJa: "適当に"
+      - textVi: "ときどき"
+        textEn: "ときどき"
+        textJa: "ときどき"
+      - textVi: "いやいや"
+        textEn: "いやいや"
+        textJa: "いやいや"
+      - textVi: "ただ ひとつの ことに 集中して"
+        textEn: "ただ ひとつの ことに 集中して"
+        textJa: "ただ ひとつの ことに 集中して"
+      correctChoiceIndex: 3
+      acceptedAnswers: []
+      taskInstructionsVi: ""
+      taskInstructionsEn: ""
+      minWords: 0
+      timeLimitSeconds: 0
+      explanationVi: "ひたすら = chỉ một lòng."
+      explanationEn: "ひたすら = single-mindedly."
+      tags:
+      - "N1"
+      - "m_syn"
+      points: 1
+      mondai: "m_syn"
+  - id: grammar_reading
+    type: 1
+    titleVi: "Ngữ pháp / Đọc hiểu"
+    titleEn: "Grammar / Reading"
+    titleJa: "文法・読解"
+    timeLimitSeconds: 1800
+    scoreScaleMax: 60
+    scoreGroup: ""
+    mondai:
+    - id: "m_gram"
+      titleJa: "もんだい 文の文法"
+      titleVi: "Chọn mẫu ngữ pháp đúng điền vào ( )"
+    - id: "m_read_c"
+      titleJa: "もんだい 内容理解"
+      titleVi: "Đọc hiểu: đọc đoạn văn và chọn đáp án đúng"
+    passages:
+    - id: jlpt_n1_mini_1_p1
+      titleVi: "Bài đọc"
+      titleEn: "Reading"
+      titleJa: "読解"
+      bodyVi: ""
+      bodyEn: ""
+      bodyJa: "効率を 追い求める 現代社会では、無駄が 悪と みなされがちだ。しかし、一見 無駄に 見える 寄り道や 雑談から、思いがけない 発想が 生まれる こともある。もちろん、全てを 非効率に せよ という わけでは ない。大切なのは、効率と ゆとりの 均衡を 保つ ことである。"
+      bodyReading: ""
+      maxPlays: 0
+    questions:
+    - id: jlpt_n1_mini_1_g01
+      type: 0
+      passageId: 
+      promptVi: "Chọn mẫu ngữ pháp đúng điền vào ( )"
+      promptEn: "Choose the correct grammar for the blank ( )."
+      promptJa: "彼の 実力から( )、優勝しても 不思議では ない。"
+      promptReading: ""
+      choices:
+      - textVi: "してから"
+        textEn: "してから"
+        textJa: "してから"
+      - textVi: "して"
+        textEn: "して"
+        textJa: "して"
+      - textVi: "すると"
+        textEn: "すると"
+        textJa: "すると"
+      - textVi: "すれば"
+        textEn: "すれば"
+        textJa: "すれば"
+      correctChoiceIndex: 3
+      acceptedAnswers: []
+      taskInstructionsVi: ""
+      taskInstructionsEn: ""
+      minWords: 0
+      timeLimitSeconds: 0
+      explanationVi: "Nからすれば = xét từ N thì."
+      explanationEn: "Nからすれば = judging from N."
+      tags:
+      - "N1"
+      - "m_gram"
+      - "grammar"
+      points: 1
+      mondai: "m_gram"
+    - id: jlpt_n1_mini_1_g02
+      type: 0
+      passageId: 
+      promptVi: "Chọn mẫu ngữ pháp đúng điền vào ( )"
+      promptEn: "Choose the correct grammar for the blank ( )."
+      promptJa: "子供の 将来を 思え( )こそ、厳しく 叱るのだ。"
+      promptReading: ""
+      choices:
+      - textVi: "ば"
+        textEn: "ば"
+        textJa: "ば"
+      - textVi: "たら"
+        textEn: "たら"
+        textJa: "たら"
+      - textVi: "ても"
+        textEn: "ても"
+        textJa: "ても"
+      - textVi: "なら"
+        textEn: "なら"
+        textJa: "なら"
+      correctChoiceIndex: 0
+      acceptedAnswers: []
+      taskInstructionsVi: ""
+      taskInstructionsEn: ""
+      minWords: 0
+      timeLimitSeconds: 0
+      explanationVi: "Vばこそ = chính vì V."
+      explanationEn: "Vばこそ = precisely because."
+      tags:
+      - "N1"
+      - "m_gram"
+      - "grammar"
+      points: 1
+      mondai: "m_gram"
+    - id: jlpt_n1_mini_1_g03
+      type: 0
+      passageId: 
+      promptVi: "Chọn mẫu ngữ pháp đúng điền vào ( )"
+      promptEn: "Choose the correct grammar for the blank ( )."
+      promptJa: "彼は 病気を( )、最後まで 働き 続けた。"
+      promptReading: ""
+      choices:
+      - textVi: "おして"
+        textEn: "おして"
+        textJa: "おして"
+      - textVi: "ひいて"
+        textEn: "ひいて"
+        textJa: "ひいて"
+      - textVi: "かけて"
+        textEn: "かけて"
+        textJa: "かけて"
+      - textVi: "そって"
+        textEn: "そって"
+        textJa: "そって"
+      correctChoiceIndex: 0
+      acceptedAnswers: []
+      taskInstructionsVi: ""
+      taskInstructionsEn: ""
+      minWords: 0
+      timeLimitSeconds: 0
+      explanationVi: "病をおして = bất chấp bệnh."
+      explanationEn: "病をおして = in spite of illness."
+      tags:
+      - "N1"
+      - "m_gram"
+      - "grammar"
+      points: 1
+      mondai: "m_gram"
+    - id: jlpt_n1_mini_1_g04
+      type: 0
+      passageId: 
+      promptVi: "Chọn mẫu ngữ pháp đúng điền vào ( )"
+      promptEn: "Choose the correct grammar for the blank ( )."
+      promptJa: "事故の 原因が 分かり( )、再発防止に 努める。"
+      promptReading: ""
+      choices:
+      - textVi: "ながら"
+        textEn: "ながら"
+        textJa: "ながら"
+      - textVi: "かたがた"
+        textEn: "かたがた"
+        textJa: "かたがた"
+      - textVi: "しだい"
+        textEn: "しだい"
+        textJa: "しだい"
+      - textVi: "がてら"
+        textEn: "がてら"
+        textJa: "がてら"
+      correctChoiceIndex: 2
+      acceptedAnswers: []
+      taskInstructionsVi: ""
+      taskInstructionsEn: ""
+      minWords: 0
+      timeLimitSeconds: 0
+      explanationVi: "Vしだい = ngay khi V."
+      explanationEn: "Vしだい = as soon as V."
+      tags:
+      - "N1"
+      - "m_gram"
+      - "grammar"
+      points: 1
+      mondai: "m_gram"
+    - id: jlpt_n1_mini_1_g05
+      type: 0
+      passageId: 
+      promptVi: "Chọn mẫu ngữ pháp đúng điền vào ( )"
+      promptEn: "Choose the correct grammar for the blank ( )."
+      promptJa: "彼女の 笑顔は 彼女( )の 魅力だ。"
+      promptReading: ""
+      choices:
+      - textVi: "だけの"
+        textEn: "だけの"
+        textJa: "だけの"
+      - textVi: "ならでは"
+        textEn: "ならでは"
+        textJa: "ならでは"
+      - textVi: "ばかりの"
+        textEn: "ばかりの"
+        textJa: "ばかりの"
+      - textVi: "なりの"
+        textEn: "なりの"
+        textJa: "なりの"
+      correctChoiceIndex: 1
+      acceptedAnswers: []
+      taskInstructionsVi: ""
+      taskInstructionsEn: ""
+      minWords: 0
+      timeLimitSeconds: 0
+      explanationVi: "Nならでは = đặc trưng chỉ N mới có."
+      explanationEn: "Nならでは = unique to N."
+      tags:
+      - "N1"
+      - "m_gram"
+      - "grammar"
+      points: 1
+      mondai: "m_gram"
+    - id: jlpt_n1_mini_1_g06
+      type: 0
+      passageId: 
+      promptVi: "Chọn mẫu ngữ pháp đúng điền vào ( )"
+      promptEn: "Choose the correct grammar for the blank ( )."
+      promptJa: "先生( )ものが 約束を 破るとは。"
+      promptReading: ""
+      choices:
+      - textVi: "にして"
+        textEn: "にして"
+        textJa: "にして"
+      - textVi: "たりとも"
+        textEn: "たりとも"
+        textJa: "たりとも"
+      - textVi: "ともあろう"
+        textEn: "ともあろう"
+        textJa: "ともあろう"
+      - textVi: "ならでは"
+        textEn: "ならでは"
+        textJa: "ならでは"
+      correctChoiceIndex: 2
+      acceptedAnswers: []
+      taskInstructionsVi: ""
+      taskInstructionsEn: ""
+      minWords: 0
+      timeLimitSeconds: 0
+      explanationVi: "Nともあろう = đường đường là N mà."
+      explanationEn: "Nともあろう = someone as esteemed as N."
+      tags:
+      - "N1"
+      - "m_gram"
+      - "grammar"
+      points: 1
+      mondai: "m_gram"
+    - id: jlpt_n1_mini_1_g07
+      type: 0
+      passageId: 
+      promptVi: "Chọn mẫu ngữ pháp đúng điền vào ( )"
+      promptEn: "Choose the correct grammar for the blank ( )."
+      promptJa: "約束を 忘れた( )、連絡さえ しなかった。"
+      promptReading: ""
+      choices:
+      - textVi: "ものの"
+        textEn: "ものの"
+        textJa: "ものの"
+      - textVi: "とあって"
+        textEn: "とあって"
+        textJa: "とあって"
+      - textVi: "ゆえに"
+        textEn: "ゆえに"
+        textJa: "ゆえに"
+      - textVi: "ばかりか"
+        textEn: "ばかりか"
+        textJa: "ばかりか"
+      correctChoiceIndex: 3
+      acceptedAnswers: []
+      taskInstructionsVi: ""
+      taskInstructionsEn: ""
+      minWords: 0
+      timeLimitSeconds: 0
+      explanationVi: "AばかりかB = không những A mà còn B."
+      explanationEn: "AばかりかB = not only A but also B."
+      tags:
+      - "N1"
+      - "m_gram"
+      - "grammar"
+      points: 1
+      mondai: "m_gram"
+    - id: jlpt_n1_mini_1_g08
+      type: 0
+      passageId: 
+      promptVi: "Chọn mẫu ngữ pháp đúng điền vào ( )"
+      promptEn: "Choose the correct grammar for the blank ( )."
+      promptJa: "一円( )無駄に できない。"
+      promptReading: ""
+      choices:
+      - textVi: "ですら"
+        textEn: "ですら"
+        textJa: "ですら"
+      - textVi: "なりとも"
+        textEn: "なりとも"
+        textJa: "なりとも"
+      - textVi: "たりとも"
+        textEn: "たりとも"
+        textJa: "たりとも"
+      - textVi: "のみ"
+        textEn: "のみ"
+        textJa: "のみ"
+      correctChoiceIndex: 2
+      acceptedAnswers: []
+      taskInstructionsVi: ""
+      taskInstructionsEn: ""
+      minWords: 0
+      timeLimitSeconds: 0
+      explanationVi: "数量＋たりとも＋phủ định = dù một ... cũng không."
+      explanationEn: "Quantity + たりとも + negative = not even one."
+      tags:
+      - "N1"
+      - "m_gram"
+      - "grammar"
+      points: 1
+      mondai: "m_gram"
+    - id: jlpt_n1_mini_1_g09
+      type: 0
+      passageId: 
+      promptVi: "Chọn mẫu ngữ pháp đúng điền vào ( )"
+      promptEn: "Choose the correct grammar for the blank ( )."
+      promptJa: "今回の 成功は、皆の 協力( )ものだ。"
+      promptReading: ""
+      choices:
+      - textVi: "ずくめの"
+        textEn: "ずくめの"
+        textJa: "ずくめの"
+      - textVi: "ながらの"
+        textEn: "ながらの"
+        textJa: "ながらの"
+      - textVi: "あっての"
+        textEn: "あっての"
+        textJa: "あっての"
+      - textVi: "きっての"
+        textEn: "きっての"
+        textJa: "きっての"
+      correctChoiceIndex: 2
+      acceptedAnswers: []
+      taskInstructionsVi: ""
+      taskInstructionsEn: ""
+      minWords: 0
+      timeLimitSeconds: 0
+      explanationVi: "Nあっての = nhờ có N mới có."
+      explanationEn: "Nあっての = only thanks to N."
+      tags:
+      - "N1"
+      - "m_gram"
+      - "grammar"
+      points: 1
+      mondai: "m_gram"
+    - id: jlpt_n1_mini_1_g10
+      type: 0
+      passageId: 
+      promptVi: "Chọn mẫu ngữ pháp đúng điền vào ( )"
+      promptEn: "Choose the correct grammar for the blank ( )."
+      promptJa: "彼は 約束を 破っておきながら、悪びれる( )ない。"
+      promptReading: ""
+      choices:
+      - textVi: "わけも"
+        textEn: "わけも"
+        textJa: "わけも"
+      - textVi: "はずも"
+        textEn: "はずも"
+        textJa: "はずも"
+      - textVi: "ふうも"
+        textEn: "ふうも"
+        textJa: "ふうも"
+      - textVi: "ことも"
+        textEn: "ことも"
+        textJa: "ことも"
+      correctChoiceIndex: 2
+      acceptedAnswers: []
+      taskInstructionsVi: ""
+      taskInstructionsEn: ""
+      minWords: 0
+      timeLimitSeconds: 0
+      explanationVi: "悪びれる風もない = chẳng có vẻ áy náy."
+      explanationEn: "悪びれる風もない = shows no remorse."
+      tags:
+      - "N1"
+      - "m_gram"
+      - "grammar"
+      points: 1
+      mondai: "m_gram"
+    - id: jlpt_n1_mini_1_g11
+      type: 0
+      passageId: jlpt_n1_mini_1_p1
+      promptVi: "Đọc hiểu: đọc đoạn văn và chọn đáp án đúng"
+      promptEn: "Reading: read the passage and choose the best answer."
+      promptJa: "筆者が 述べて いる ことは どれですか。"
+      promptReading: ""
+      choices:
+      - textVi: "雑談は すべて 無駄だ"
+        textEn: "雑談は すべて 無駄だ"
+        textJa: "雑談は すべて 無駄だ"
+      - textVi: "効率は 不要だ"
+        textEn: "効率は 不要だ"
+        textJa: "効率は 不要だ"
+      - textVi: "効率と ゆとりの バランスが 大切だ"
+        textEn: "効率と ゆとりの バランスが 大切だ"
+        textJa: "効率と ゆとりの バランスが 大切だ"
+      - textVi: "無駄は 全て 排除すべきだ"
+        textEn: "無駄は 全て 排除すべきだ"
+        textJa: "無駄は 全て 排除すべきだ"
+      correctChoiceIndex: 2
+      acceptedAnswers: []
+      taskInstructionsVi: ""
+      taskInstructionsEn: ""
+      minWords: 0
+      timeLimitSeconds: 0
+      explanationVi: "Kết luận: giữ cân bằng giữa hiệu suất và thư thả."
+      explanationEn: "Conclusion: keep balance between efficiency and slack."
+      tags:
+      - "N1"
+      - "reading"
+      points: 1
+      mondai: "m_read_c"
+    - id: jlpt_n1_mini_1_g12
+      type: 0
+      passageId: jlpt_n1_mini_1_p1
+      promptVi: "Đọc hiểu: đọc đoạn văn và chọn đáp án đúng"
+      promptEn: "Reading: read the passage and choose the best answer."
+      promptJa: "「一見 無駄に 見える 寄り道や 雑談」に ついて、筆者は どう 考えて いますか。"
+      promptReading: ""
+      choices:
+      - textVi: "常に 悪影響を 与える"
+        textEn: "常に 悪影響を 与える"
+        textJa: "常に 悪影響を 与える"
+      - textVi: "仕事を 遅らせるだけだ"
+        textEn: "仕事を 遅らせるだけだ"
+        textJa: "仕事を 遅らせるだけだ"
+      - textVi: "やめるべきだ"
+        textEn: "やめるべきだ"
+        textJa: "やめるべきだ"
+      - textVi: "新しい 発想の きっかけに なる ことがある"
+        textEn: "新しい 発想の きっかけに なる ことがある"
+        textJa: "新しい 発想の きっかけに なる ことがある"
+      correctChoiceIndex: 3
+      acceptedAnswers: []
+      taskInstructionsVi: ""
+      taskInstructionsEn: ""
+      minWords: 0
+      timeLimitSeconds: 0
+      explanationVi: "思いがけない 発想が 生まれる こともある."
+      explanationEn: "They can give rise to unexpected ideas."
+      tags:
+      - "N1"
+      - "reading"
+      points: 1
+      mondai: "m_read_c"
+    - id: jlpt_n1_mini_1_g13
+      type: 0
+      passageId: jlpt_n1_mini_1_p1
+      promptVi: "Đọc hiểu: đọc đoạn văn và chọn đáp án đúng"
+      promptEn: "Reading: read the passage and choose the best answer."
+      promptJa: "筆者は 非効率に ついて どう 考えて いますか。"
+      promptReading: ""
+      choices:
+      - textVi: "積極的に 増やすべきだ"
+        textEn: "積極的に 増やすべきだ"
+        textJa: "積極的に 増やすべきだ"
+      - textVi: "全てを 非効率に する必要は ない"
+        textEn: "全てを 非効率に する必要は ない"
+        textJa: "全てを 非効率に する必要は ない"
+      - textVi: "考える 必要が ない"
+        textEn: "考える 必要が ない"
+        textJa: "考える 必要が ない"
+      - textVi: "完全に 否定するべきだ"
+        textEn: "完全に 否定するべきだ"
+        textJa: "完全に 否定するべきだ"
+      correctChoiceIndex: 1
+      acceptedAnswers: []
+      taskInstructionsVi: ""
+      taskInstructionsEn: ""
+      minWords: 0
+      timeLimitSeconds: 0
+      explanationVi: "全てを 非効率に せよ という わけでは ない."
+      explanationEn: "He is not saying to make everything inefficient."
+      tags:
+      - "N1"
+      - "reading"
+      points: 1
+      mondai: "m_read_c"
+  jlptTotalPassScore: 67
+  jlptSectionPassScore: 13
+  scoreGroups: []

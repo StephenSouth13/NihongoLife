@@ -1,0 +1,155 @@
+player (0.0, 0.0, -13.5)
+navmesh tris 0
+npcs Neighbor_2@(-11, 0, -1), Neighbor_3@(12, 0, -1), GuideNPC@(-3, 0, -13), Neighbor_1@(-22, 0, -2), CashierNPC@(0, 0, 9)
+ROOT Directional Light children=0
+ROOT GameplayGround children=0
+ROOT Environment children=14
+   CityTile_-1 kids=138 c=(-31, 4, -132) s=(195, 9, 196)
+   CityTile_0 kids=134 c=(-1, 4, 2) s=(134, 9, 128)
+   CityTile_1 kids=131 c=(0, 4, 120) s=(129, 9, 149)
+   GuideNPC kids=4 c=(-3, 1, -13) s=(1, 2, 1)
+   Neighbor_1 kids=4 c=(-22, 1, -2) s=(1, 2, 1)
+   Neighbor_1_Route kids=2
+   Neighbor_2 kids=4 c=(-11, 1, 0) s=(1, 2, 1)
+   Neighbor_3 kids=4 c=(12, 1, 0) s=(1, 2, 1)
+   StoreDoor kids=2 c=(0, 1, 1) s=(4, 2, 0)
+   StoreInteriorCameraZone kids=0
+   Onigiri kids=2 c=(-3, 2, 6) s=(0, 0, 0)
+   Water kids=2 c=(3, 2, 3) s=(0, 0, 0)
+   Tea kids=2 c=(3, 2, 3) s=(1, 0, 0)
+   WorldFallSafety kids=2
+ROOT Player children=5
+   GroundCheck kids=0
+   Visual kids=2 c=(0, 1, -13) s=(1, 1, 1)
+   PlayerMarkerRing kids=0 c=(0, 0, -14) s=(1, 0, 1)
+   FacePlate kids=0 c=(0, 1, -13) s=(0, 0, 0)
+   MoodBubble kids=0 c=(0, 0, -14) s=(0, 0, 0)
+ROOT Main Camera children=0
+ROOT ScenarioManager children=0
+ROOT EventSystem children=0
+ROOT Canvas children=6
+   HUDPanel kids=17
+   ChoiceButtonPrefab kids=1
+   ResultPanel kids=9
+   StatusPanel kids=0
+   LegacyInventoryPanel kids=1
+   WorldMap kids=1
+ROOT ScenarioSceneInitializer children=0
+ROOT ThirdParty_Integrated_World children=2
+   Store_ThirdParty_Visuals kids=45 c=(0, 1, 5) s=(9, 3, 8)
+   Story_ThirdParty_Visuals kids=2 c=(13, 0, 12) s=(43, 1, 21)
+ROOT AdditiveZonePortals children=12
+   StationPortal kids=1 c=(24, 2, -1) s=(0, 0, 0)
+   Spawn_city_station_return kids=0
+   SushiPortal kids=1 c=(-18, 2, -1) s=(3, 1, 3)
+   Spawn_city_sushi_return kids=0
+   SchoolPortal kids=1 c=(18, 2, -22) s=(0, 1, 4)
+   Spawn_city_school_return kids=0
+   HomeBedroomPortal kids=1 c=(-30, 2, 0) s=(0, 0, 0)
+   Spawn_city_home_return kids=0
+   GameCenterPortal kids=1 c=(-6, 2, -19) s=(1, 1, 4)
+   Spawn_city_game_center_return kids=0
+   ClinicPortal kids=1 c=(-18, 2, -19) s=(0, 1, 3)
+   Spawn_city_clinic_return kids=0
+ROOT Horizon_Backdrop children=3
+   FollowStreet kids=2 c=(0, 0, -20) s=(2172, 50, 2050)
+   OuterDistrict kids=15 c=(3, 42, 0) s=(703, 136, 1548)
+   FollowCamera kids=2 c=(0, 55, -20) s=(1810, 320, 1810)
+ROOT JobSite_Konbini children=12
+   JobBoard_job_konbini_shift kids=6 c=(4, 1, 2) s=(0, 2, 2)
+   StockCrates kids=4 c=(4, 1, 9) s=(1, 1, 1)
+   Job_StockCrate kids=0
+   Job_Shelf_Onigiri kids=0
+   Job_Shelf_Snacks kids=0
+   Job_Shelf_Drinks kids=0
+   Job_Customer_A_Visual kids=1 c=(1, 1, 3) s=(1, 1, 2)
+   Job_Customer_A kids=0
+   Job_Customer_B_Visual kids=1 c=(-1, 1, 7) s=(1, 1, 2)
+   Job_Customer_B kids=0
+   RegisterGuest kids=1 c=(1, 1, 7) s=(2, 1, 1)
+   Job_Register kids=0
+ROOT OutdoorSky children=0
+ROOT Town_Konbini children=11
+   Shell kids=26 c=(0, 2, 5) s=(10, 4, 11)
+   Lights kids=10 c=(0, 3, 5) s=(6, 0, 6)
+   AisleSigns kids=12 c=(0, 3, 6) s=(8, 1, 3)
+   Gondola_A kids=11 c=(-3, 1, 3) s=(1, 2, 1)
+   Gondola_B kids=11 c=(-3, 1, 6) s=(1, 2, 1)
+   Register kids=5 c=(0, 1, 8) s=(2, 1, 1)
+   ShelfSections kids=4
+   MedicineCorner kids=2 c=(3, 1, 10) s=(1, 2, 0)
+   PriceTags kids=3 c=(0, 2, 5) s=(6, 0, 3)
+   CashierNPC kids=4 c=(0, 1, 9) s=(1, 2, 1)
+   CashierNameplate kids=0 c=(0, 2, 9) s=(0, 0, 0)
+ROOT Town_Plaza children=25
+   Paving kids=0 c=(-8, 0, 5) s=(6, 0, 8)
+   BoardPost_-9.4 kids=0 c=(-9, 1, 1) s=(0, 2, 0)
+   BoardPost_-6.8 kids=0 c=(-7, 1, 1) s=(0, 2, 0)
+   NoticeBoard kids=0 c=(-8, 1, 1) s=(3, 1, 0)
+   NoticeRoof kids=0 c=(-8, 2, 1) s=(3, 0, 0)
+   Notice_Title kids=0 c=(-8, 2, 1) s=(2, 0, 0)
+   Notice_Paper_A kids=0 c=(-9, 1, 1) s=(1, 1, 0)
+   Notice_A kids=0 c=(-9, 1, 1) s=(1, 0, 0)
+   Notice_Paper_B kids=0 c=(-7, 1, 1) s=(1, 1, 0)
+   Notice_B kids=0 c=(-7, 1, 1) s=(0, 0, 0)
+   BikeRack_0 kids=0 c=(-10, 0, 3) s=(0, 1, 1)
+   BikeRack_1 kids=0 c=(-10, 0, 4) s=(0, 1, 1)
+   BikeRack_2 kids=0 c=(-10, 0, 5) s=(0, 1, 1)
+   BikeRack_3 kids=0 c=(-10, 0, 6) s=(0, 1, 1)
+   BikeRack_4 kids=0 c=(-10, 0, 7) s=(0, 1, 1)
+   BikeRackRail kids=0 c=(-10, 1, 5) s=(0, 0, 4)
+   BenchSeat_4.2 kids=0 c=(-6, 0, 4) s=(1, 0, 2)
+   BenchBack_4.2 kids=0 c=(-6, 1, 4) s=(0, 1, 2)
+   BenchLegs_4.2 kids=0 c=(-6, 0, 4) s=(0, 0, 1)
+   BenchSeat_6.6 kids=0 c=(-6, 0, 7) s=(1, 0, 2)
+   BenchBack_6.6 kids=0 c=(-6, 1, 7) s=(0, 1, 2)
+   BenchLegs_6.6 kids=0 c=(-6, 0, 7) s=(0, 0, 1)
+   PlazaTree kids=1 c=(-10, 1, 8) s=(1, 2, 1)
+   PlazaTree kids=1 c=(-7, 1, 8) s=(1, 2, 1)
+   PlazaLight kids=0
+ROOT Town_Destinations children=4
+   Entrance_HomeBedroom kids=10 c=(-30, 1, 1) s=(3, 3, 1)
+   Entrance_Sushi kids=17 c=(-18, 2, 0) s=(5, 3, 1)
+   Entrance_Station kids=17 c=(24, 2, -1) s=(7, 4, 3)
+   Entrance_School kids=12 c=(18, 1, -20) s=(10, 3, 2)
+ROOT Town_Signposts children=2
+   Signpost_Crossroad_NE kids=22 c=(5, 1, -4) s=(3, 3, 0)
+   Signpost_Spawn kids=22 c=(5, 1, -16) s=(3, 3, 0)
+ROOT TownEdge children=22
+   Skirt_N kids=0 c=(-31, 0, 205) s=(339, 0, 75)
+   Skirt_S kids=0 c=(-31, 0, -197) s=(339, 0, 75)
+   Skirt_E kids=0 c=(101, 0, 4) s=(75, 0, 326)
+   Skirt_W kids=0 c=(-163, 0, 4) s=(75, 0, 326)
+   Fence_N kids=0 c=(-31, 1, 170) s=(196, 2, 0)
+   Fence_S kids=0 c=(-31, 1, -162) s=(196, 2, 0)
+   Fence_E kids=0 c=(66, 1, 4) s=(0, 2, 334)
+   Fence_W kids=0 c=(-129, 1, 4) s=(0, 2, 334)
+   River_N kids=0 c=(-31, 0, 175) s=(211, 0, 7)
+   River_S kids=0 c=(-31, 0, -167) s=(211, 0, 7)
+   River_E kids=0 c=(71, 0, 4) s=(7, 0, 348)
+   River_W kids=0 c=(-134, 0, 4) s=(7, 0, 348)
+   Wall_N kids=0 c=(-31, 4, 184) s=(235, 8, 3)
+   Wall_S kids=0 c=(-31, 4, -176) s=(235, 8, 3)
+   Wall_E kids=0 c=(80, 4, 4) s=(3, 8, 372)
+   Wall_W kids=0 c=(-143, 4, 4) s=(3, 8, 372)
+   Hill_N0 kids=0 c=(-70, 5, 192) s=(22, 9, 16)
+   Hill_N1 kids=0 c=(11, 6, 212) s=(29, 12, 21)
+   Hill_S0 kids=0 c=(-51, 4, -184) s=(19, 8, 14)
+   Hill_S1 kids=0 c=(27, 5, -204) s=(26, 11, 19)
+   Hill_E0 kids=0 c=(88, 5, -46) s=(22, 9, 16)
+   Hill_W0 kids=0 c=(-151, 5, 37) s=(24, 10, 17)
+ROOT TownNightLights children=0
+ROOT QuestWorldMarker children=0
+ROOT QuestDirectionArrow children=2
+   Left kids=0 c=(0, 0, 0) s=(0, 0, 0)
+   Right kids=0 c=(0, 0, 0) s=(0, 0, 0)
+ROOT ProfilePreviewStage children=6
+   Turntable kids=0
+   ProfilePreviewCamera kids=0
+   PreviewLight kids=0
+   PreviewLight kids=0
+   PreviewLight kids=0
+   Floor kids=0 c=(0, -1200, 0) s=(2, 0, 2)
+ROOT InteractionHighlight children=2
+   TargetRing kids=0 c=(-3, 0, -13) s=(1, 0, 1)
+   TargetLabel kids=0 c=(-3, 3, -13) s=(1, 0, 0)

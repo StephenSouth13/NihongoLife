@@ -2050,6 +2050,395 @@
           ]
         }
       ]
+    },
+    {
+      "id": "chef",
+      "nameVi": "Đầu bếp",
+      "nameEn": "Chef",
+      "nameJa": "料理人",
+      "descriptionVi": "Vào bếp Sushi Hibari: rửa dụng cụ, sơ chế (仕込み), nấu — thi lấy bằng đầu bếp (調理師免許), rồi thành đầu bếp sushi hoặc thợ làm bánh (パティシエ).",
+      "descriptionEn": "Into Sushi Hibari's kitchen: clean, prep (仕込み), cook — earn the cook's licence (調理師免許), then become a sushi chef or a pastry chef.",
+      "descriptionJa": "ひばり寿司の厨房へ。洗い場・仕込み・調理から調理師免許、そして寿司職人かパティシエへ。",
+      "workplaceVi": "Bếp Sushi Hibari",
+      "workplaceEn": "Sushi Hibari's kitchen",
+      "workplaceJa": "ひばり寿司の厨房",
+      "shiftQuest": "job_kitchen_shift",
+      "bossNameJa": "太田大将",
+      "bossNameVi": "Bác Ota",
+      "workStart": 10,
+      "workEnd": 16,
+      "workDays": [
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "branchAtLevel": 4,
+      "levels": [
+        {
+          "titleVi": "Phụ bếp",
+          "titleEn": "Kitchen helper",
+          "titleJa": "調理補助",
+          "salary": 260,
+          "shiftsToPromote": 2,
+          "knowledgeToPromote": 0
+        },
+        {
+          "titleVi": "Đầu bếp tập sự",
+          "titleEn": "Apprentice cook",
+          "titleJa": "見習い調理師",
+          "salary": 420,
+          "shiftsToPromote": 3,
+          "knowledgeToPromote": 120
+        },
+        {
+          "titleVi": "Đầu bếp (có bằng 調理師)",
+          "titleEn": "Licensed cook",
+          "titleJa": "調理師",
+          "salary": 620,
+          "shiftsToPromote": 4,
+          "knowledgeToPromote": 260
+        }
+      ],
+      "branches": [
+        {
+          "id": "sushi",
+          "nameVi": "Đầu bếp sushi",
+          "nameEn": "Sushi chef",
+          "nameJa": "寿司職人コース",
+          "descriptionVi": "Dao, cơm và cá: từ đầu bếp sushi lên bếp phó rồi bếp trưởng (板長).",
+          "descriptionEn": "Knife, rice and fish: from sushi chef to second chef to head chef (板長).",
+          "descriptionJa": "包丁・シャリ・魚。寿司職人から二番手、そして板長へ。",
+          "levels": [
+            {
+              "titleVi": "Đầu bếp sushi",
+              "titleEn": "Sushi chef",
+              "titleJa": "寿司職人",
+              "salary": 820,
+              "shiftsToPromote": 4,
+              "knowledgeToPromote": 380
+            },
+            {
+              "titleVi": "Bếp phó (二番手)",
+              "titleEn": "Second chef",
+              "titleJa": "二番手",
+              "salary": 1120,
+              "shiftsToPromote": 5,
+              "knowledgeToPromote": 520
+            },
+            {
+              "titleVi": "Bếp trưởng (板長)",
+              "titleEn": "Head chef",
+              "titleJa": "板長",
+              "salary": 1520,
+              "shiftsToPromote": 0,
+              "knowledgeToPromote": 0
+            }
+          ]
+        },
+        {
+          "id": "pastry",
+          "nameVi": "Thợ làm bánh",
+          "nameEn": "Pastry chef",
+          "nameJa": "パティシエコース",
+          "descriptionVi": "Bánh và đồ ngọt Nhật – Âu: パティシエ, rồi bếp trưởng bánh (シェフパティシエ). Có bằng 製菓衛生師.",
+          "descriptionEn": "Japanese and Western sweets: pâtissier, then head pastry chef (シェフパティシエ). With the confectionery hygiene licence (製菓衛生師).",
+          "descriptionJa": "和洋の菓子づくり。パティシエからシェフパティシエへ。製菓衛生師の資格も。",
+          "levels": [
+            {
+              "titleVi": "Thợ làm bánh",
+              "titleEn": "Pâtissier",
+              "titleJa": "パティシエ",
+              "salary": 780,
+              "shiftsToPromote": 4,
+              "knowledgeToPromote": 360
+            },
+            {
+              "titleVi": "Phó bếp bánh",
+              "titleEn": "Sous pastry chef",
+              "titleJa": "スーシェフパティシエ",
+              "salary": 1060,
+              "shiftsToPromote": 5,
+              "knowledgeToPromote": 500
+            },
+            {
+              "titleVi": "Bếp trưởng bánh",
+              "titleEn": "Head pastry chef",
+              "titleJa": "シェフパティシエ",
+              "salary": 1460,
+              "shiftsToPromote": 0,
+              "knowledgeToPromote": 0
+            }
+          ]
+        }
+      ],
+      "interviews": [
+        {
+          "toLevel": 2,
+          "lineJa": "なまの さかなを さわった あと、まず なにを しますか。",
+          "readingJa": "Nama no sakana o sawatta ato, mazu nani o shimasu ka.",
+          "meaningVi": "Sau khi chạm vào cá sống, việc đầu tiên bạn làm là gì?",
+          "meaningEn": "After touching raw fish, what do you do first?",
+          "choices": [
+            {
+              "ja": "てを せっけんで あらいます。",
+              "vi": "Rửa tay bằng xà phòng.",
+              "en": "Wash my hands with soap.",
+              "correct": true
+            },
+            {
+              "ja": "そのまま ごはんを にぎります。",
+              "vi": "Nặn cơm luôn.",
+              "en": "Shape the rice straight away.",
+              "hintVi": "Tay dính cá sống rồi nặn cơm là dễ gây ngộ độc thực phẩm (食中毒).",
+              "hintEn": "Raw-fish hands on rice is how food poisoning (食中毒) starts."
+            },
+            {
+              "ja": "エプロンで ふきます。",
+              "vi": "Lau vào tạp dề.",
+              "en": "Wipe them on my apron.",
+              "hintVi": "Tạp dề không làm sạch vi khuẩn.",
+              "hintEn": "An apron doesn't remove bacteria."
+            }
+          ]
+        },
+        {
+          "toLevel": 3,
+          "lineJa": "調理師めんきょを とるには どうしますか。",
+          "readingJa": "Chōrishi menkyo o toru ni wa dō shimasu ka.",
+          "meaningVi": "Muốn có bằng đầu bếp (調理師免許) thì làm thế nào?",
+          "meaningEn": "How do you get the cook's licence (調理師免許)?",
+          "choices": [
+            {
+              "ja": "2ねん いじょう はたらいて、しけんに ごうかくします。",
+              "vi": "Làm việc từ 2 năm trở lên rồi thi đỗ kỳ thi.",
+              "en": "Work 2 years or more, then pass the exam.",
+              "correct": true
+            },
+            {
+              "ja": "おかねを はらえば もらえます。",
+              "vi": "Trả tiền là có.",
+              "en": "You can buy it.",
+              "hintVi": "Bằng 調理師 cần kinh nghiệm thực tế (hoặc học trường nấu ăn) và thi do tỉnh tổ chức.",
+              "hintEn": "It needs real kitchen experience (or a cooking school) and a prefectural exam."
+            },
+            {
+              "ja": "だれでも すぐ もらえます。",
+              "vi": "Ai cũng có ngay.",
+              "en": "Anyone gets it at once.",
+              "hintVi": "Không — phải đủ điều kiện mới được dự thi.",
+              "hintEn": "No — you must qualify before you may sit the exam."
+            }
+          ]
+        },
+        {
+          "toLevel": 4,
+          "lineJa": "これから なにを まなびたいですか。",
+          "readingJa": "Kore kara nani o manabitai desu ka.",
+          "meaningVi": "Từ giờ bạn muốn học nghề gì?",
+          "meaningEn": "What would you like to learn next?",
+          "choices": [
+            {
+              "ja": "すしを にぎる ぎじゅつを みがきたいです。",
+              "vi": "Tôi muốn rèn tay nghề nặn sushi.",
+              "en": "I want to master making sushi.",
+              "correct": true,
+              "branch": "sushi"
+            },
+            {
+              "ja": "ケーキや わがしを つくりたいです。",
+              "vi": "Tôi muốn làm bánh ngọt và bánh Nhật (wagashi).",
+              "en": "I want to make cakes and wagashi.",
+              "correct": true,
+              "branch": "pastry"
+            }
+          ]
+        },
+        {
+          "toLevel": 5,
+          "lineJa": "シャリの おおきさは どのくらいが いいですか。",
+          "readingJa": "Shari no ōkisa wa dono kurai ga ii desu ka.",
+          "meaningVi": "Phần cơm (シャリ) của một miếng nigiri nên to cỡ nào?",
+          "meaningEn": "How big should the rice (シャリ) of a nigiri be?",
+          "choices": [
+            {
+              "ja": "ひとくちで たべられる おおきさです。",
+              "vi": "Vừa một miếng ăn.",
+              "en": "One bite.",
+              "correct": true
+            },
+            {
+              "ja": "おにぎりと おなじ おおきさです。",
+              "vi": "To bằng cơm nắm.",
+              "en": "As big as an onigiri.",
+              "hintVi": "Nigiri chỉ khoảng 15–20 g cơm, ăn một miếng.",
+              "hintEn": "A nigiri holds about 15–20 g of rice, one bite."
+            },
+            {
+              "ja": "できるだけ おおきく します。",
+              "vi": "Càng to càng tốt.",
+              "en": "As big as possible.",
+              "hintVi": "To quá sẽ vỡ và lấn vị cá.",
+              "hintEn": "Too big falls apart and drowns the fish."
+            }
+          ],
+          "branch": "sushi"
+        },
+        {
+          "toLevel": 6,
+          "lineJa": "あたらしい みならいに なにを さいしょに おしえますか。",
+          "readingJa": "Atarashii minarai ni nani o saisho ni oshiemasu ka.",
+          "meaningVi": "Bạn dạy người học việc mới điều gì đầu tiên?",
+          "meaningEn": "What do you teach a new apprentice first?",
+          "choices": [
+            {
+              "ja": "えいせいと あいさつです。",
+              "vi": "Vệ sinh và chào hỏi.",
+              "en": "Hygiene and greetings.",
+              "correct": true
+            },
+            {
+              "ja": "いちばん たかい さかなの きりかたです。",
+              "vi": "Cách thái loại cá đắt nhất.",
+              "en": "How to cut the most expensive fish.",
+              "hintVi": "Nền tảng trước: vệ sinh an toàn thực phẩm và phép lịch sự.",
+              "hintEn": "Foundations first: food hygiene and manners."
+            }
+          ],
+          "branch": "sushi"
+        },
+        {
+          "toLevel": 5,
+          "lineJa": "なまクリームを ほぞんする おんどは？",
+          "readingJa": "Nama kurīmu o hozon suru ondo wa?",
+          "meaningVi": "Kem tươi phải bảo quản ở nhiệt độ nào?",
+          "meaningEn": "At what temperature do you keep fresh cream?",
+          "choices": [
+            {
+              "ja": "10ど いかの れいぞうこです。",
+              "vi": "Trong tủ lạnh dưới 10 độ.",
+              "en": "In the fridge below 10 °C.",
+              "correct": true
+            },
+            {
+              "ja": "へやの おんどで だいじょうぶです。",
+              "vi": "Để nhiệt độ phòng cũng được.",
+              "en": "Room temperature is fine.",
+              "hintVi": "Đồ sữa để ngoài dễ sinh vi khuẩn — luôn giữ lạnh dưới 10 °C.",
+              "hintEn": "Dairy left out grows bacteria — keep it below 10 °C."
+            }
+          ],
+          "branch": "pastry"
+        },
+        {
+          "toLevel": 6,
+          "lineJa": "おきゃくさまに たまごアレルギーが あります。どうしますか。",
+          "readingJa": "Okyakusama ni tamago arerugī ga arimasu. Dō shimasu ka.",
+          "meaningVi": "Khách bị dị ứng trứng. Bạn làm gì?",
+          "meaningEn": "A guest is allergic to egg. What do you do?",
+          "choices": [
+            {
+              "ja": "たまごを つかわない おかしを べつの どうぐで つくります。",
+              "vi": "Làm bánh không trứng bằng dụng cụ riêng.",
+              "en": "Make an egg-free sweet with separate tools.",
+              "correct": true
+            },
+            {
+              "ja": "すこしなら だいじょうぶです。",
+              "vi": "Một chút thì không sao.",
+              "en": "A little is fine.",
+              "hintVi": "Dị ứng có thể nguy hiểm tính mạng — không được dùng dù một chút, kể cả dụng cụ dính trứng.",
+              "hintEn": "Allergies can be life-threatening — none at all, not even egg-stained tools."
+            }
+          ],
+          "branch": "pastry"
+        }
+      ],
+      "events": [
+        {
+          "id": "chef_knife",
+          "lineJa": "でばぼうちょうが きれなく なって きました……",
+          "readingJa": "Deba bōchō ga kirenaku natte kimashita……",
+          "meaningVi": "Dao 出刃 (dao thái cá) đã cùn rồi…",
+          "meaningEn": "The deba (fish knife) has gone blunt…",
+          "choices": [
+            {
+              "ja": "といしで といで おきます。",
+              "vi": "Tôi mài bằng đá mài.",
+              "en": "I'll sharpen it on the whetstone.",
+              "performance": 12,
+              "reputation": 2,
+              "mood": "Proud"
+            },
+            {
+              "ja": "あとで やります。",
+              "vi": "Để sau.",
+              "en": "Later.",
+              "performance": -4
+            },
+            {
+              "ja": "ちからを いれて きります。",
+              "vi": "Cố ấn mạnh mà thái.",
+              "en": "Just push harder.",
+              "performance": -12,
+              "reputation": -2,
+              "mood": "Embarrassed"
+            }
+          ]
+        },
+        {
+          "id": "chef_rush",
+          "lineJa": "おひるの ラッシュです！ ちゅうもんが 5つ きました。",
+          "readingJa": "Ohiru no rasshu desu! Chūmon ga itsutsu kimashita.",
+          "meaningVi": "Giờ cao điểm trưa! Có 5 đơn món cùng lúc.",
+          "meaningEn": "The lunch rush! Five orders at once.",
+          "choices": [
+            {
+              "ja": "じゅんばんに ひとつずつ ていねいに つくります。",
+              "vi": "Làm lần lượt từng món, cẩn thận.",
+              "en": "One at a time, in order, carefully.",
+              "performance": 10,
+              "reputation": 3
+            },
+            {
+              "ja": "ぜんぶ いっぺんに いそぎます。",
+              "vi": "Làm cả 5 cùng lúc thật nhanh.",
+              "en": "All at once, fast.",
+              "performance": -6
+            },
+            {
+              "ja": "せんぱいに てつだいを たのみます。",
+              "vi": "Nhờ đàn anh giúp.",
+              "en": "Ask a senior for help.",
+              "performance": 8,
+              "reputation": 1
+            }
+          ]
+        },
+        {
+          "id": "chef_waste",
+          "lineJa": "あまった すしめしが あります。",
+          "readingJa": "Amatta sushimeshi ga arimasu.",
+          "meaningVi": "Còn thừa cơm sushi.",
+          "meaningEn": "There's sushi rice left over.",
+          "choices": [
+            {
+              "ja": "まかないに つかいます。",
+              "vi": "Dùng làm bữa ăn cho nhân viên (まかない).",
+              "en": "Use it for the staff meal (まかない).",
+              "performance": 8,
+              "reputation": 2
+            },
+            {
+              "ja": "すてます。",
+              "vi": "Bỏ đi.",
+              "en": "Throw it away.",
+              "performance": -5
+            }
+          ]
+        }
+      ]
     }
   ],
   "milestones": [

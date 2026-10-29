@@ -1,0 +1,55 @@
+{
+ "schema": "nihongolife.dict/1",
+ "count": 2234,
+ "domains": {
+  "daily": 890,
+  "restaurant": 354,
+  "medical": 302,
+  "bank": 184,
+  "travel": 268,
+  "shopping": 75,
+  "school": 90,
+  "work": 72
+ },
+ "pos": {
+  "n": 1644,
+  "num": 16,
+  "adj": 109,
+  "phr": 136,
+  "adv": 26,
+  "v": 267,
+  "conj": 7,
+  "pron": 14,
+  "interj": 15
+ },
+ "pairs": [
+  "ru-vi",
+  "vi-ru",
+  "ru-ja",
+  "ja-ru",
+  "en-vi",
+  "vi-en",
+  "ja-vi",
+  "vi-ja",
+  "en-ru",
+  "ru-en",
+  "ja-en",
+  "en-ja"
+ ],
+ "files": {
+  "ru-vi": 260944,
+  "vi-ru": 254550,
+  "ru-ja": 254662,
+  "ja-ru": 448635,
+  "en-vi": 222554,
+  "vi-en": 227327,
+  "ja-vi": 413857,
+  "vi-ja": 228665,
+  "en-ru": 241695,
+  "ru-en": 253100,
+  "ja-en": 401547,
+  "en-ja": 216716,
+  "entries": 350131
+ },
+ "licence": "Original content authored for NihongoLife; no JMdict/Wiktionary/Tatoeba/OpenCorpora data used."
+}

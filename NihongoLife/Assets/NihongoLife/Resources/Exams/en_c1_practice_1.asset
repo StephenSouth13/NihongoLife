@@ -1,0 +1,728 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f5214dc098a14546900e76a0b9a4682c, type: 3}
+  m_Name: en_c1_practice_1
+  m_EditorClassIdentifier: NihongoLife::NihongoLife.Exam.ExamDefinition
+  id: en_c1_practice_1
+  examType: 1
+  level: "C1"
+  titleVi: "Đề luyện tiếng Anh C1 (Cao cấp)"
+  titleEn: "English practice test C1 (Advanced)"
+  titleJa: "英語練習テスト C1"
+  descriptionVi: "Đề tự soạn: 10 câu ngữ pháp, 5 câu từ vựng, 1 bài đọc (5 câu). Có giải thích tiếng Việt."
+  descriptionEn: "Original test: 10 grammar, 5 vocabulary, 1 reading passage (5 questions) with explanations."
+  sections:
+  - id: grammar
+    type: 4
+    titleVi: "Ngữ pháp"
+    titleEn: "Grammar"
+    titleJa: ""
+    timeLimitSeconds: 600
+    scoreScaleMax: 9
+    scoreGroup: ""
+    mondai: []
+    passages: []
+    questions:
+    - id: en_c1_practice_1_g01
+      type: 0
+      passageId: 
+      promptVi: "Chọn đáp án đúng. Seldom ___ such a moving performance."
+      promptEn: "Seldom ___ such a moving performance."
+      promptJa: ""
+      promptReading: ""
+      choices:
+      - textVi: "I saw"
+        textEn: "I saw"
+        textJa: ""
+      - textVi: "have I seen"
+        textEn: "have I seen"
+        textJa: ""
+      - textVi: "I have seen"
+        textEn: "I have seen"
+        textJa: ""
+      - textVi: "did I seen"
+        textEn: "did I seen"
+        textJa: ""
+      correctChoiceIndex: 1
+      acceptedAnswers: []
+      taskInstructionsVi: ""
+      taskInstructionsEn: ""
+      minWords: 0
+      timeLimitSeconds: 0
+      explanationVi: "Seldom đầu câu → đảo ngữ: have I seen."
+      explanationEn: "Seldom at the start → inversion: have I seen."
+      tags:
+      - "C1"
+      - "grammar"
+      points: 1
+      mondai: ""
+    - id: en_c1_practice_1_g02
+      type: 0
+      passageId: 
+      promptVi: "Chọn đáp án đúng. She spoke as though she ___ the director herself."
+      promptEn: "She spoke as though she ___ the director herself."
+      promptJa: ""
+      promptReading: ""
+      choices:
+      - textVi: "is"
+        textEn: "is"
+        textJa: ""
+      - textVi: "were"
+        textEn: "were"
+        textJa: ""
+      - textVi: "has been"
+        textEn: "has been"
+        textJa: ""
+      - textVi: "would be"
+        textEn: "would be"
+        textJa: ""
+      correctChoiceIndex: 1
+      acceptedAnswers: []
+      taskInstructionsVi: ""
+      taskInstructionsEn: ""
+      minWords: 0
+      timeLimitSeconds: 0
+      explanationVi: "as though + quá khứ giả định: were."
+      explanationEn: "as though + subjunctive: were."
+      tags:
+      - "C1"
+      - "grammar"
+      points: 1
+      mondai: ""
+    - id: en_c1_practice_1_g03
+      type: 0
+      passageId: 
+      promptVi: "Chọn đáp án đúng. ___ the weather improve, the event will go ahead."
+      promptEn: "___ the weather improve, the event will go ahead."
+      promptJa: ""
+      promptReading: ""
+      choices:
+      - textVi: "Would"
+        textEn: "Would"
+        textJa: ""
+      - textVi: "Should"
+        textEn: "Should"
+        textJa: ""
+      - textVi: "Might"
+        textEn: "Might"
+        textJa: ""
+      - textVi: "If"
+        textEn: "If"
+        textJa: ""
+      correctChoiceIndex: 1
+      acceptedAnswers: []
+      taskInstructionsVi: ""
+      taskInstructionsEn: ""
+      minWords: 0
+      timeLimitSeconds: 0
+      explanationVi: "Should + S + V = if ... (đảo ngữ)."
+      explanationEn: "Should + subject + verb = if (inverted)."
+      tags:
+      - "C1"
+      - "grammar"
+      points: 1
+      mondai: ""
+    - id: en_c1_practice_1_g04
+      type: 0
+      passageId: 
+      promptVi: "Chọn đáp án đúng. He is said ___ the manuscript years ago."
+      promptEn: "He is said ___ the manuscript years ago."
+      promptJa: ""
+      promptReading: ""
+      choices:
+      - textVi: "having destroy"
+        textEn: "having destroy"
+        textJa: ""
+      - textVi: "to have destroyed"
+        textEn: "to have destroyed"
+        textJa: ""
+      - textVi: "destroying"
+        textEn: "destroying"
+        textJa: ""
+      - textVi: "to destroy"
+        textEn: "to destroy"
+        textJa: ""
+      correctChoiceIndex: 1
+      acceptedAnswers: []
+      taskInstructionsVi: ""
+      taskInstructionsEn: ""
+      minWords: 0
+      timeLimitSeconds: 0
+      explanationVi: "to have + V3 chỉ hành động đã xảy ra trước."
+      explanationEn: "to have + past participle = earlier action."
+      tags:
+      - "C1"
+      - "grammar"
+      points: 1
+      mondai: ""
+    - id: en_c1_practice_1_g05
+      type: 0
+      passageId: 
+      promptVi: "Chọn đáp án đúng. No sooner had we sat down ___ the lights went out."
+      promptEn: "No sooner had we sat down ___ the lights went out."
+      promptJa: ""
+      promptReading: ""
+      choices:
+      - textVi: "than"
+        textEn: "than"
+        textJa: ""
+      - textVi: "as"
+        textEn: "as"
+        textJa: ""
+      - textVi: "that"
+        textEn: "that"
+        textJa: ""
+      - textVi: "when"
+        textEn: "when"
+        textJa: ""
+      correctChoiceIndex: 0
+      acceptedAnswers: []
+      taskInstructionsVi: ""
+      taskInstructionsEn: ""
+      minWords: 0
+      timeLimitSeconds: 0
+      explanationVi: "No sooner ... than."
+      explanationEn: "No sooner ... than."
+      tags:
+      - "C1"
+      - "grammar"
+      points: 1
+      mondai: ""
+    - id: en_c1_practice_1_g06
+      type: 0
+      passageId: 
+      promptVi: "Chọn đáp án đúng. The proposal, ___ it been accepted, would have cost millions."
+      promptEn: "The proposal, ___ it been accepted, would have cost millions."
+      promptJa: ""
+      promptReading: ""
+      choices:
+      - textVi: "did"
+        textEn: "did"
+        textJa: ""
+      - textVi: "were"
+        textEn: "were"
+        textJa: ""
+      - textVi: "had"
+        textEn: "had"
+        textJa: ""
+      - textVi: "should"
+        textEn: "should"
+        textJa: ""
+      correctChoiceIndex: 2
+      acceptedAnswers: []
+      taskInstructionsVi: ""
+      taskInstructionsEn: ""
+      minWords: 0
+      timeLimitSeconds: 0
+      explanationVi: "Điều kiện loại 3 đảo ngữ: had it been accepted."
+      explanationEn: "Inverted third conditional: had it been accepted."
+      tags:
+      - "C1"
+      - "grammar"
+      points: 1
+      mondai: ""
+    - id: en_c1_practice_1_g07
+      type: 0
+      passageId: 
+      promptVi: "Chọn đáp án đúng. Little ___ she know that the offer would change her life."
+      promptEn: "Little ___ she know that the offer would change her life."
+      promptJa: ""
+      promptReading: ""
+      choices:
+      - textVi: "would"
+        textEn: "would"
+        textJa: ""
+      - textVi: "does"
+        textEn: "does"
+        textJa: ""
+      - textVi: "had"
+        textEn: "had"
+        textJa: ""
+      - textVi: "did"
+        textEn: "did"
+        textJa: ""
+      correctChoiceIndex: 3
+      acceptedAnswers: []
+      taskInstructionsVi: ""
+      taskInstructionsEn: ""
+      minWords: 0
+      timeLimitSeconds: 0
+      explanationVi: "Little đầu câu → đảo ngữ với did."
+      explanationEn: "Little at the start → inversion with did."
+      tags:
+      - "C1"
+      - "grammar"
+      points: 1
+      mondai: ""
+    - id: en_c1_practice_1_g08
+      type: 0
+      passageId: 
+      promptVi: "Chọn đáp án đúng. It was only after the meeting ___ I realised my mistake."
+      promptEn: "It was only after the meeting ___ I realised my mistake."
+      promptJa: ""
+      promptReading: ""
+      choices:
+      - textVi: "that"
+        textEn: "that"
+        textJa: ""
+      - textVi: "which"
+        textEn: "which"
+        textJa: ""
+      - textVi: "when"
+        textEn: "when"
+        textJa: ""
+      - textVi: "as"
+        textEn: "as"
+        textJa: ""
+      correctChoiceIndex: 0
+      acceptedAnswers: []
+      taskInstructionsVi: ""
+      taskInstructionsEn: ""
+      minWords: 0
+      timeLimitSeconds: 0
+      explanationVi: "Câu chẻ: It was only after ... that."
+      explanationEn: "Cleft sentence: It was only after ... that."
+      tags:
+      - "C1"
+      - "grammar"
+      points: 1
+      mondai: ""
+    - id: en_c1_practice_1_g09
+      type: 0
+      passageId: 
+      promptVi: "Chọn đáp án đúng. She's reluctant to commit ___ any course of action."
+      promptEn: "She's reluctant to commit ___ any course of action."
+      promptJa: ""
+      promptReading: ""
+      choices:
+      - textVi: "with"
+        textEn: "with"
+        textJa: ""
+      - textVi: "to"
+        textEn: "to"
+        textJa: ""
+      - textVi: "at"
+        textEn: "at"
+        textJa: ""
+      - textVi: "for"
+        textEn: "for"
+        textJa: ""
+      correctChoiceIndex: 1
+      acceptedAnswers: []
+      taskInstructionsVi: ""
+      taskInstructionsEn: ""
+      minWords: 0
+      timeLimitSeconds: 0
+      explanationVi: "commit to = cam kết với."
+      explanationEn: "commit to."
+      tags:
+      - "C1"
+      - "grammar"
+      points: 1
+      mondai: ""
+    - id: en_c1_practice_1_g10
+      type: 0
+      passageId: 
+      promptVi: "Chọn đáp án đúng. He's anything ___ a fool."
+      promptEn: "He's anything ___ a fool."
+      promptJa: ""
+      promptReading: ""
+      choices:
+      - textVi: "except"
+        textEn: "except"
+        textJa: ""
+      - textVi: "than"
+        textEn: "than"
+        textJa: ""
+      - textVi: "but"
+        textEn: "but"
+        textJa: ""
+      - textVi: "besides"
+        textEn: "besides"
+        textJa: ""
+      correctChoiceIndex: 2
+      acceptedAnswers: []
+      taskInstructionsVi: ""
+      taskInstructionsEn: ""
+      minWords: 0
+      timeLimitSeconds: 0
+      explanationVi: "anything but = hoàn toàn không phải."
+      explanationEn: "anything but = not at all."
+      tags:
+      - "C1"
+      - "grammar"
+      points: 1
+      mondai: ""
+  - id: vocabulary
+    type: 4
+    titleVi: "Từ vựng"
+    titleEn: "Vocabulary"
+    titleJa: ""
+    timeLimitSeconds: 300
+    scoreScaleMax: 9
+    scoreGroup: ""
+    mondai: []
+    passages: []
+    questions:
+    - id: en_c1_practice_1_v01
+      type: 0
+      passageId: 
+      promptVi: "Chọn đáp án đúng. The scandal had a ___ effect on the company's reputation."
+      promptEn: "The scandal had a ___ effect on the company's reputation."
+      promptJa: ""
+      promptReading: ""
+      choices:
+      - textVi: "detached"
+        textEn: "detached"
+        textJa: ""
+      - textVi: "detrimental"
+        textEn: "detrimental"
+        textJa: ""
+      - textVi: "decisive"
+        textEn: "decisive"
+        textJa: ""
+      - textVi: "deliberate"
+        textEn: "deliberate"
+        textJa: ""
+      correctChoiceIndex: 1
+      acceptedAnswers: []
+      taskInstructionsVi: ""
+      taskInstructionsEn: ""
+      minWords: 0
+      timeLimitSeconds: 0
+      explanationVi: "Detrimental = có hại."
+      explanationEn: "detrimental = harmful."
+      tags:
+      - "C1"
+      - "vocabulary"
+      points: 1
+      mondai: ""
+    - id: en_c1_practice_1_v02
+      type: 0
+      passageId: 
+      promptVi: "Chọn đáp án đúng. Her ___ attitude to deadlines worried the team."
+      promptEn: "Her ___ attitude to deadlines worried the team."
+      promptJa: ""
+      promptReading: ""
+      choices:
+      - textVi: "cavalier"
+        textEn: "cavalier"
+        textJa: ""
+      - textVi: "candid"
+        textEn: "candid"
+        textJa: ""
+      - textVi: "cautious"
+        textEn: "cautious"
+        textJa: ""
+      - textVi: "compelling"
+        textEn: "compelling"
+        textJa: ""
+      correctChoiceIndex: 0
+      acceptedAnswers: []
+      taskInstructionsVi: ""
+      taskInstructionsEn: ""
+      minWords: 0
+      timeLimitSeconds: 0
+      explanationVi: "Cavalier = thờ ơ, ngạo mạn."
+      explanationEn: "cavalier = careless/dismissive."
+      tags:
+      - "C1"
+      - "vocabulary"
+      points: 1
+      mondai: ""
+    - id: en_c1_practice_1_v03
+      type: 0
+      passageId: 
+      promptVi: "Chọn đáp án đúng. The CEO was forced to ___ after the allegations."
+      promptEn: "The CEO was forced to ___ after the allegations."
+      promptJa: ""
+      promptReading: ""
+      choices:
+      - textVi: "resist"
+        textEn: "resist"
+        textJa: ""
+      - textVi: "resolve"
+        textEn: "resolve"
+        textJa: ""
+      - textVi: "resign"
+        textEn: "resign"
+        textJa: ""
+      - textVi: "resent"
+        textEn: "resent"
+        textJa: ""
+      correctChoiceIndex: 2
+      acceptedAnswers: []
+      taskInstructionsVi: ""
+      taskInstructionsEn: ""
+      minWords: 0
+      timeLimitSeconds: 0
+      explanationVi: "Resign = từ chức."
+      explanationEn: "resign = leave a job."
+      tags:
+      - "C1"
+      - "vocabulary"
+      points: 1
+      mondai: ""
+    - id: en_c1_practice_1_v04
+      type: 0
+      passageId: 
+      promptVi: "Chọn đáp án đúng. The findings are ___ with earlier studies."
+      promptEn: "The findings are ___ with earlier studies."
+      promptJa: ""
+      promptReading: ""
+      choices:
+      - textVi: "constant"
+        textEn: "constant"
+        textJa: ""
+      - textVi: "consequent"
+        textEn: "consequent"
+        textJa: ""
+      - textVi: "consistent"
+        textEn: "consistent"
+        textJa: ""
+      - textVi: "conscious"
+        textEn: "conscious"
+        textJa: ""
+      correctChoiceIndex: 2
+      acceptedAnswers: []
+      taskInstructionsVi: ""
+      taskInstructionsEn: ""
+      minWords: 0
+      timeLimitSeconds: 0
+      explanationVi: "Consistent with = nhất quán với."
+      explanationEn: "consistent with."
+      tags:
+      - "C1"
+      - "vocabulary"
+      points: 1
+      mondai: ""
+    - id: en_c1_practice_1_v05
+      type: 0
+      passageId: 
+      promptVi: "Chọn đáp án đúng. He gave a ___ account of the incident, leaving nothing out."
+      promptEn: "He gave a ___ account of the incident, leaving nothing out."
+      promptJa: ""
+      promptReading: ""
+      choices:
+      - textVi: "minimal"
+        textEn: "minimal"
+        textJa: ""
+      - textVi: "mutual"
+        textEn: "mutual"
+        textJa: ""
+      - textVi: "meticulous"
+        textEn: "meticulous"
+        textJa: ""
+      - textVi: "mysterious"
+        textEn: "mysterious"
+        textJa: ""
+      correctChoiceIndex: 2
+      acceptedAnswers: []
+      taskInstructionsVi: ""
+      taskInstructionsEn: ""
+      minWords: 0
+      timeLimitSeconds: 0
+      explanationVi: "Meticulous = tỉ mỉ."
+      explanationEn: "meticulous = very careful, detailed."
+      tags:
+      - "C1"
+      - "vocabulary"
+      points: 1
+      mondai: ""
+  - id: reading
+    type: 4
+    titleVi: "Đọc hiểu"
+    titleEn: "Reading"
+    titleJa: ""
+    timeLimitSeconds: 600
+    scoreScaleMax: 9
+    scoreGroup: ""
+    mondai: []
+    passages:
+    - id: en_c1_practice_1_passage
+      titleVi: "Bài đọc"
+      titleEn: "Reading: Automation and Work"
+      titleJa: ""
+      bodyVi: ""
+      bodyEn: "The notion that technological progress inevitably improves quality of life has come under scrutiny. While automation has undeniably raised productivity, its benefits have been unevenly distributed: owners of capital have prospered, whereas many routine jobs have vanished. Economists remain divided over whether new industries will absorb displaced workers as they did in previous industrial revolutions. Some caution that the pace of change this time may outstrip the capacity of education systems to retrain people, leaving a generation stranded between obsolete skills and emergent demand."
+      bodyJa: ""
+      bodyReading: ""
+      maxPlays: 0
+    questions:
+    - id: en_c1_practice_1_r01
+      type: 0
+      passageId: en_c1_practice_1_passage
+      promptVi: "Chọn đáp án đúng. What is the main idea of the passage?"
+      promptEn: "What is the main idea of the passage?"
+      promptJa: ""
+      promptReading: ""
+      choices:
+      - textVi: "Economists agree new jobs will appear"
+        textEn: "Economists agree new jobs will appear"
+        textJa: ""
+      - textVi: "Education systems are improving quickly"
+        textEn: "Education systems are improving quickly"
+        textJa: ""
+      - textVi: "The assumption that technology automatically improves life is being questioned"
+        textEn: "The assumption that technology automatically improves life is being questioned"
+        textJa: ""
+      - textVi: "Automation has failed to raise productivity"
+        textEn: "Automation has failed to raise productivity"
+        textJa: ""
+      correctChoiceIndex: 2
+      acceptedAnswers: []
+      taskInstructionsVi: ""
+      taskInstructionsEn: ""
+      minWords: 0
+      timeLimitSeconds: 0
+      explanationVi: "Mở đầu: notion ... has come under scrutiny."
+      explanationEn: "Opening: the notion has come under scrutiny."
+      tags:
+      - "C1"
+      - "reading"
+      points: 1
+      mondai: ""
+    - id: en_c1_practice_1_r02
+      type: 0
+      passageId: en_c1_practice_1_passage
+      promptVi: "Chọn đáp án đúng. 'Unevenly distributed' suggests that ___."
+      promptEn: "'Unevenly distributed' suggests that ___."
+      promptJa: ""
+      promptReading: ""
+      choices:
+      - textVi: "everyone benefited equally"
+        textEn: "everyone benefited equally"
+        textJa: ""
+      - textVi: "benefits went mostly to some groups"
+        textEn: "benefits went mostly to some groups"
+        textJa: ""
+      - textVi: "jobs increased"
+        textEn: "jobs increased"
+        textJa: ""
+      - textVi: "productivity fell"
+        textEn: "productivity fell"
+        textJa: ""
+      correctChoiceIndex: 1
+      acceptedAnswers: []
+      taskInstructionsVi: ""
+      taskInstructionsEn: ""
+      minWords: 0
+      timeLimitSeconds: 0
+      explanationVi: "Chủ sở hữu vốn hưởng lợi, nhiều việc làm biến mất."
+      explanationEn: "Capital owners prospered; routine jobs vanished."
+      tags:
+      - "C1"
+      - "reading"
+      points: 1
+      mondai: ""
+    - id: en_c1_practice_1_r03
+      type: 0
+      passageId: en_c1_practice_1_passage
+      promptVi: "Chọn đáp án đúng. What disagreement is mentioned?"
+      promptEn: "What disagreement is mentioned?"
+      promptJa: ""
+      promptReading: ""
+      choices:
+      - textVi: "Whether productivity rose"
+        textEn: "Whether productivity rose"
+        textJa: ""
+      - textVi: "Whether education matters"
+        textEn: "Whether education matters"
+        textJa: ""
+      - textVi: "Whether new industries will absorb displaced workers"
+        textEn: "Whether new industries will absorb displaced workers"
+        textJa: ""
+      - textVi: "Whether automation exists"
+        textEn: "Whether automation exists"
+        textJa: ""
+      correctChoiceIndex: 2
+      acceptedAnswers: []
+      taskInstructionsVi: ""
+      taskInstructionsEn: ""
+      minWords: 0
+      timeLimitSeconds: 0
+      explanationVi: "Economists remain divided over ..."
+      explanationEn: "'divided over whether new industries will absorb...'."
+      tags:
+      - "C1"
+      - "reading"
+      points: 1
+      mondai: ""
+    - id: en_c1_practice_1_r04
+      type: 0
+      passageId: en_c1_practice_1_passage
+      promptVi: "Chọn đáp án đúng. What concern is raised about education systems?"
+      promptEn: "What concern is raised about education systems?"
+      promptJa: ""
+      promptReading: ""
+      choices:
+      - textVi: "They are replaced by automation"
+        textEn: "They are replaced by automation"
+        textJa: ""
+      - textVi: "They are too expensive"
+        textEn: "They are too expensive"
+        textJa: ""
+      - textVi: "They may be too slow to retrain workers"
+        textEn: "They may be too slow to retrain workers"
+        textJa: ""
+      - textVi: "They teach obsolete skills deliberately"
+        textEn: "They teach obsolete skills deliberately"
+        textJa: ""
+      correctChoiceIndex: 2
+      acceptedAnswers: []
+      taskInstructionsVi: ""
+      taskInstructionsEn: ""
+      minWords: 0
+      timeLimitSeconds: 0
+      explanationVi: "pace of change may outstrip the capacity of education systems."
+      explanationEn: "change may outstrip education capacity."
+      tags:
+      - "C1"
+      - "reading"
+      points: 1
+      mondai: ""
+    - id: en_c1_practice_1_r05
+      type: 0
+      passageId: en_c1_practice_1_passage
+      promptVi: "Chọn đáp án đúng. 'Stranded' is closest in meaning to ___."
+      promptEn: "'Stranded' is closest in meaning to ___."
+      promptJa: ""
+      promptReading: ""
+      choices:
+      - textVi: "relocated"
+        textEn: "relocated"
+        textJa: ""
+      - textVi: "promoted"
+        textEn: "promoted"
+        textJa: ""
+      - textVi: "left without a way forward"
+        textEn: "left without a way forward"
+        textJa: ""
+      - textVi: "rewarded"
+        textEn: "rewarded"
+        textJa: ""
+      correctChoiceIndex: 2
+      acceptedAnswers: []
+      taskInstructionsVi: ""
+      taskInstructionsEn: ""
+      minWords: 0
+      timeLimitSeconds: 0
+      explanationVi: "stranded = bị mắc kẹt."
+      explanationEn: "stranded = left helpless."
+      tags:
+      - "C1"
+      - "reading"
+      points: 1
+      mondai: ""
+  jlptTotalPassScore: 80
+  jlptSectionPassScore: 19
+  scoreGroups: []

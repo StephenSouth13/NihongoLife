@@ -145,6 +145,24 @@
         "en": "I go fishing.",
         "vi": "Tôi đi câu cá."
       }
+    },
+    {
+      "id": "tool_afk_rod",
+      "action": "fish_afk",
+      "price": 900,
+      "durability": 20,
+      "word": {
+        "ja": "置き竿",
+        "reading": "okizao",
+        "en": "set rod (AFK)",
+        "vi": "cần câu gác"
+      },
+      "verb": {
+        "ja": "置き竿を 置きます",
+        "reading": "okizao o okimasu",
+        "en": "I plant the set rod.",
+        "vi": "Tôi đặt cần câu gác."
+      }
     }
   ],
   "fish": [
@@ -800,7 +818,12 @@
       "height": 3.8,
       "footprint": 3.4,
       "solid": true,
-      "word": { "ja": "とりい", "reading": "torii", "en": "small torii gate", "vi": "cổng torii nhỏ" },
+      "word": {
+        "ja": "とりい",
+        "reading": "torii",
+        "en": "small torii gate",
+        "vi": "cổng torii nhỏ"
+      },
       "icon": "cottage"
     },
     {
@@ -811,7 +834,12 @@
       "height": 1.45,
       "footprint": 0.8,
       "solid": true,
-      "word": { "ja": "とうろう", "reading": "tōrō", "en": "garden lantern", "vi": "đèn lồng vườn" },
+      "word": {
+        "ja": "とうろう",
+        "reading": "tōrō",
+        "en": "garden lantern",
+        "vi": "đèn lồng vườn"
+      },
       "icon": "lightbulb"
     },
     {
@@ -822,7 +850,12 @@
       "height": 4.8,
       "footprint": 2.2,
       "solid": true,
-      "word": { "ja": "さくら", "reading": "sakura", "en": "cherry blossom tree", "vi": "cây anh đào" },
+      "word": {
+        "ja": "さくら",
+        "reading": "sakura",
+        "en": "cherry blossom tree",
+        "vi": "cây anh đào"
+      },
       "icon": "local_florist"
     },
     {
@@ -833,7 +866,12 @@
       "height": 3.2,
       "footprint": 1.3,
       "solid": true,
-      "word": { "ja": "たけ", "reading": "take", "en": "bamboo grove", "vi": "khóm tre" },
+      "word": {
+        "ja": "たけ",
+        "reading": "take",
+        "en": "bamboo grove",
+        "vi": "khóm tre"
+      },
       "icon": "forest"
     },
     {
@@ -844,7 +882,12 @@
       "height": 0.32,
       "footprint": 2.6,
       "solid": false,
-      "word": { "ja": "こいの いけ", "reading": "koi no ike", "en": "koi pond", "vi": "ao cá koi" },
+      "word": {
+        "ja": "こいの いけ",
+        "reading": "koi no ike",
+        "en": "koi pond",
+        "vi": "ao cá koi"
+      },
       "icon": "water"
     },
     {
@@ -855,7 +898,12 @@
       "height": 1.25,
       "footprint": 0.65,
       "solid": true,
-      "word": { "ja": "ポスト", "reading": "posuto", "en": "mailbox", "vi": "hòm thư" },
+      "word": {
+        "ja": "ポスト",
+        "reading": "posuto",
+        "en": "mailbox",
+        "vi": "hòm thư"
+      },
       "icon": "mark_chat_unread"
     },
     {
@@ -866,7 +914,12 @@
       "height": 0.72,
       "footprint": 1.8,
       "solid": true,
-      "word": { "ja": "えんだい", "reading": "endai", "en": "Japanese wooden bench", "vi": "ghế gỗ kiểu Nhật" },
+      "word": {
+        "ja": "えんだい",
+        "reading": "endai",
+        "en": "Japanese wooden bench",
+        "vi": "ghế gỗ kiểu Nhật"
+      },
       "icon": "chair"
     },
     {
@@ -877,7 +930,12 @@
       "height": 1.1,
       "footprint": 0.55,
       "solid": false,
-      "word": { "ja": "ちょうちん", "reading": "chōchin", "en": "paper lantern", "vi": "đèn lồng giấy" },
+      "word": {
+        "ja": "ちょうちん",
+        "reading": "chōchin",
+        "en": "paper lantern",
+        "vi": "đèn lồng giấy"
+      },
       "icon": "light_mode"
     }
   ]

@@ -1,0 +1,403 @@
+{
+  "schema": "nihongolife.routesigns.v1",
+  "maps": [
+    {
+      "scene": "90_TestSandbox",
+      "root": "Town_Signposts",
+      "posts": [
+        {
+          "id": "crossroad_ne",
+          "name": "Signpost_Crossroad_NE",
+          "pos": [
+            5.4,
+            0,
+            -3.7
+          ],
+          "yaw": 0,
+          "boards": [
+            {
+              "id": "konbini",
+              "color": "green",
+              "label": {
+                "vi": "Cửa hàng tiện lợi Hibari Mart",
+                "en": "Hibari Mart convenience store",
+                "ja": "コンビニ  ひばりマート",
+                "ru": "Магазин Hibari Mart"
+              },
+              "anchor": "",
+              "pos": [
+                0,
+                0,
+                -0.2
+              ]
+            },
+            {
+              "id": "home",
+              "color": "blue",
+              "label": {
+                "vi": "Nhà trọ của bạn",
+                "en": "Your apartment",
+                "ja": "ひばりハイツ 2-14",
+                "ru": "Ваша квартира"
+              },
+              "anchor": "AdditiveZonePortals/HomeBedroomPortal",
+              "pos": []
+            },
+            {
+              "id": "sushi",
+              "color": "blue",
+              "label": {
+                "vi": "Nhà hàng Sushi Hibari",
+                "en": "Sushi Hibari restaurant",
+                "ja": "ひばり寿司",
+                "ru": "Ресторан Sushi Hibari"
+              },
+              "anchor": "AdditiveZonePortals/SushiPortal",
+              "pos": []
+            },
+            {
+              "id": "station",
+              "color": "blue",
+              "label": {
+                "vi": "Ga Hibari · Tàu điện",
+                "en": "Hibari Station · trains",
+                "ja": "ひばり駅",
+                "ru": "Станция Хибари · поезда"
+              },
+              "anchor": "AdditiveZonePortals/StationPortal",
+              "pos": []
+            },
+            {
+              "id": "school",
+              "color": "blue",
+              "label": {
+                "vi": "Trường Nhật ngữ Hibari",
+                "en": "Hibari Japanese School",
+                "ja": "ひばり日本語学院",
+                "ru": "Школа японского языка Хибари"
+              },
+              "anchor": "AdditiveZonePortals/SchoolPortal",
+              "pos": []
+            },
+            {
+              "id": "clinic",
+              "color": "blue",
+              "label": {
+                "vi": "Phòng khám Hibari",
+                "en": "Hibari Clinic",
+                "ja": "ひばりクリニック",
+                "ru": "Клиника Хибари"
+              },
+              "anchor": "AdditiveZonePortals/ClinicPortal",
+              "pos": []
+            },
+            {
+              "id": "game_center",
+              "color": "blue",
+              "label": {
+                "vi": "Trung tâm trò chơi Hibari",
+                "en": "Hibari Game Center",
+                "ja": "ゲームセンター ひばり",
+                "ru": "Игровой центр Хибари"
+              },
+              "anchor": "AdditiveZonePortals/GameCenterPortal",
+              "pos": []
+            }
+          ]
+        },
+        {
+          "id": "spawn",
+          "name": "Signpost_Spawn",
+          "pos": [
+            4.6,
+            0,
+            -16.4
+          ],
+          "yaw": 0,
+          "boards": [
+            {
+              "id": "konbini",
+              "color": "green",
+              "label": {
+                "vi": "Cửa hàng tiện lợi Hibari Mart",
+                "en": "Hibari Mart convenience store",
+                "ja": "コンビニ  ひばりマート",
+                "ru": "Магазин Hibari Mart"
+              },
+              "anchor": "",
+              "pos": [
+                0,
+                0,
+                -0.2
+              ]
+            },
+            {
+              "id": "home",
+              "color": "blue",
+              "label": {
+                "vi": "Nhà trọ của bạn",
+                "en": "Your apartment",
+                "ja": "ひばりハイツ 2-14",
+                "ru": "Ваша квартира"
+              },
+              "anchor": "AdditiveZonePortals/HomeBedroomPortal",
+              "pos": []
+            },
+            {
+              "id": "sushi",
+              "color": "blue",
+              "label": {
+                "vi": "Nhà hàng Sushi Hibari",
+                "en": "Sushi Hibari restaurant",
+                "ja": "ひばり寿司",
+                "ru": "Ресторан Sushi Hibari"
+              },
+              "anchor": "AdditiveZonePortals/SushiPortal",
+              "pos": []
+            },
+            {
+              "id": "station",
+              "color": "blue",
+              "label": {
+                "vi": "Ga Hibari · Tàu điện",
+                "en": "Hibari Station · trains",
+                "ja": "ひばり駅",
+                "ru": "Станция Хибари · поезда"
+              },
+              "anchor": "AdditiveZonePortals/StationPortal",
+              "pos": []
+            },
+            {
+              "id": "school",
+              "color": "blue",
+              "label": {
+                "vi": "Trường Nhật ngữ Hibari",
+                "en": "Hibari Japanese School",
+                "ja": "ひばり日本語学院",
+                "ru": "Школа японского языка Хибари"
+              },
+              "anchor": "AdditiveZonePortals/SchoolPortal",
+              "pos": []
+            },
+            {
+              "id": "clinic",
+              "color": "blue",
+              "label": {
+                "vi": "Phòng khám Hibari",
+                "en": "Hibari Clinic",
+                "ja": "ひばりクリニック",
+                "ru": "Клиника Хибари"
+              },
+              "anchor": "AdditiveZonePortals/ClinicPortal",
+              "pos": []
+            },
+            {
+              "id": "game_center",
+              "color": "blue",
+              "label": {
+                "vi": "Trung tâm trò chơi Hibari",
+                "en": "Hibari Game Center",
+                "ja": "ゲームセンター ひばり",
+                "ru": "Игровой центр Хибари"
+              },
+              "anchor": "AdditiveZonePortals/GameCenterPortal",
+              "pos": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "scene": "20_StationDistrict",
+      "root": "Station_RouteSigns",
+      "posts": [
+        {
+          "id": "hall",
+          "name": "Signpost_Hall",
+          "pos": [
+            803.8,
+            0.3,
+            8.2
+          ],
+          "yaw": 0,
+          "boards": [
+            {
+              "id": "gates",
+              "color": "blue",
+              "label": {
+                "vi": "Cổng soát vé",
+                "en": "Ticket gates",
+                "ja": "改札",
+                "ru": "Турникеты"
+              },
+              "anchor": "TicketGates",
+              "pos": []
+            },
+            {
+              "id": "ticket_machine",
+              "color": "blue",
+              "label": {
+                "vi": "Máy bán vé",
+                "en": "Ticket machine",
+                "ja": "券売機",
+                "ru": "Автомат билетов"
+              },
+              "anchor": "TicketMachineScreen",
+              "pos": []
+            },
+            {
+              "id": "platform2",
+              "color": "green",
+              "label": {
+                "vi": "Sân ga số 2",
+                "en": "Platform 2",
+                "ja": "2番線ホーム",
+                "ru": "Платформа 2"
+              },
+              "anchor": "PlatformDoor_Left",
+              "pos": []
+            },
+            {
+              "id": "exit",
+              "color": "blue",
+              "label": {
+                "vi": "Lối ra · ra phố",
+                "en": "Exit · to town",
+                "ja": "出口・まち",
+                "ru": "Выход в город"
+              },
+              "anchor": "ExitToCity",
+              "pos": []
+            }
+          ]
+        },
+        {
+          "id": "platform",
+          "name": "Signpost_Platform",
+          "pos": [
+            804.2,
+            0.3,
+            3.0
+          ],
+          "yaw": 0,
+          "boards": [
+            {
+              "id": "platform2",
+              "color": "green",
+              "label": {
+                "vi": "Cửa lên tàu · sân ga số 2",
+                "en": "Boarding door · platform 2",
+                "ja": "2番線 のりば",
+                "ru": "Посадка · платформа 2"
+              },
+              "anchor": "PlatformDoor_Left",
+              "pos": []
+            },
+            {
+              "id": "gates",
+              "color": "blue",
+              "label": {
+                "vi": "Cổng soát vé · lối ra",
+                "en": "Ticket gates · exit",
+                "ja": "改札・出口",
+                "ru": "Турникеты · выход"
+              },
+              "anchor": "TicketGates",
+              "pos": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "scene": "60_MidoriIsland",
+      "root": "Midori_RouteSigns",
+      "posts": [
+        {
+          "id": "landing",
+          "name": "Signpost_Landing",
+          "pos": [
+            -1197.0,
+            0,
+            -21.0
+          ],
+          "yaw": 0,
+          "boards": [
+            {
+              "id": "station",
+              "color": "blue",
+              "label": {
+                "vi": "Ga Đảo Xanh",
+                "en": "Midori Island Station",
+                "ja": "みどりじまえき",
+                "ru": "Станция острова Мидори"
+              },
+              "anchor": "Platform",
+              "pos": []
+            },
+            {
+              "id": "farm",
+              "color": "green",
+              "label": {
+                "vi": "ruộng",
+                "en": "field",
+                "ja": "はたけ",
+                "ru": "поле"
+              },
+              "anchor": "Farm",
+              "pos": []
+            },
+            {
+              "id": "shop",
+              "color": "blue",
+              "label": {
+                "vi": "Cửa hàng Midori",
+                "en": "Midori Store",
+                "ja": "みどりしょうてん",
+                "ru": "Магазин Мидори"
+              },
+              "anchor": "Signs/Sign_shop",
+              "pos": []
+            },
+            {
+              "id": "barn",
+              "color": "green",
+              "label": {
+                "vi": "chuồng trại",
+                "en": "barn",
+                "ja": "なや",
+                "ru": "амбар"
+              },
+              "anchor": "Barn",
+              "pos": []
+            },
+            {
+              "id": "view",
+              "color": "blue",
+              "label": {
+                "vi": "đài ngắm cảnh",
+                "en": "lookout",
+                "ja": "てんぼうだい",
+                "ru": "смотровая площадка"
+              },
+              "anchor": "Signs/Sign_view",
+              "pos": []
+            },
+            {
+              "id": "pier",
+              "color": "blue",
+              "label": {
+                "vi": "bến câu cá",
+                "en": "fishing pier",
+                "ja": "つりば",
+                "ru": "рыбацкий пирс"
+              },
+              "anchor": "Signs/Sign_pier",
+              "pos": []
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

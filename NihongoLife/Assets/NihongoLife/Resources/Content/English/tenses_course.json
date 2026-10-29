@@ -1,0 +1,978 @@
+{
+ "version": 1,
+ "courseId": "en_tenses_12",
+ "title": {
+  "en": "12 English Tenses",
+  "vi": "12 thì trong tiếng Anh",
+  "ru": "12 времён английского языка",
+  "ja": "英語の12時制"
+ },
+ "overview": {
+  "vi": "12 thì cơ bản = 3 mốc thời gian (hiện tại, quá khứ, tương lai) × 4 dạng (đơn, tiếp diễn, hoàn thành, hoàn thành tiếp diễn). Đơn: thói quen/sự thật; tiếp diễn: đang diễn ra; hoàn thành: đã xong, có liên quan mốc; hoàn thành tiếp diễn: kéo dài liên tục đến mốc.",
+  "ru": "12 основных времён = 3 момента (настоящее, прошедшее, будущее) × 4 вида (простое, длительное, совершённое, совершённо-длительное). Простое — привычки/факты; длительное — идёт в процессе; совершённое — завершено к моменту; совершённо-длительное — длилось до момента.",
+  "ja": "基本の12時制＝3つの時間（現在・過去・未来）×4つの形（単純・進行・完了・完了進行）。単純＝習慣・事実、進行＝進行中、完了＝その時点で完了、完了進行＝その時点まで継続。",
+  "en": "12 basic tenses = 3 times (present, past, future) × 4 aspects (simple, continuous, perfect, perfect continuous)."
+ },
+ "lessonCount": 12,
+ "lessons": [
+  {
+   "id": "en_tense_01_present_simple",
+   "order": 1,
+   "tenseId": "present_simple",
+   "cefr": "A1",
+   "title": {
+    "en": "Present Simple",
+    "vi": "Hiện tại đơn",
+    "ru": "Настоящее простое",
+    "ja": "現在形（単純現在）"
+   },
+   "formula": {
+    "affirmative": "S + V(s/es)  — I/you/we/they work · he/she/it works",
+    "negative": "S + do/does + not + V  — She does not work",
+    "question": "Do/Does + S + V ?  — Does she work?"
+   },
+   "usage": {
+    "vi": [
+     "Thói quen, việc lặp đi lặp lại (every day, usually).",
+     "Sự thật hiển nhiên, chân lý (The sun rises in the east).",
+     "Lịch trình cố định (The train leaves at 7)."
+    ],
+    "ru": [
+     "Привычки и регулярные действия (every day, usually).",
+     "Общеизвестные факты (The sun rises in the east).",
+     "Расписания (The train leaves at 7)."
+    ],
+    "ja": [
+     "習慣・繰り返される行動（every day, usually）。",
+     "変わらない事実・真理（The sun rises in the east）。",
+     "決まった予定・時刻表（The train leaves at 7）。"
+    ]
+   },
+   "signalWords": [
+    "every day",
+    "usually",
+    "often",
+    "always",
+    "never",
+    "on Sundays",
+    "twice a week"
+   ],
+   "examples": [
+    {
+     "en": "I drink coffee every morning.",
+     "vi": "Tôi uống cà phê mỗi sáng.",
+     "ru": "Я пью кофе каждое утро.",
+     "ja": "私は毎朝コーヒーを飲みます。"
+    },
+    {
+     "en": "The shop opens at nine.",
+     "vi": "Cửa hàng mở cửa lúc chín giờ.",
+     "ru": "Магазин открывается в девять.",
+     "ja": "お店は9時に開きます。"
+    },
+    {
+     "en": "Water boils at 100 degrees.",
+     "vi": "Nước sôi ở 100 độ.",
+     "ru": "Вода кипит при 100 градусах.",
+     "ja": "水は100度で沸騰します。"
+    }
+   ],
+   "commonMistake": {
+    "vi": "Quên thêm -s/-es ở ngôi thứ ba số ít: ✗ She work → ✓ She works. Phủ định/nghi vấn dùng does + động từ nguyên mẫu: ✗ Does she works → ✓ Does she work.",
+    "ru": "Забывают -s/-es в 3-м лице ед. числа: ✗ She work → ✓ She works. После does глагол без -s: ✗ Does she works → ✓ Does she work.",
+    "ja": "三人称単数の -s/-es の付け忘れ：✗ She work → ✓ She works。does の後は原形：✗ Does she works → ✓ Does she work。"
+   },
+   "conjugationFile": "verb_conjugation_key.json",
+   "exerciseIds": [
+    "tx_present_simple_01",
+    "tx_present_simple_02",
+    "tx_present_simple_03",
+    "tx_present_simple_04",
+    "tx_present_simple_05",
+    "tx_present_simple_06",
+    "tx_present_simple_07",
+    "tx_present_simple_08",
+    "tx_present_simple_09",
+    "tx_present_simple_10"
+   ]
+  },
+  {
+   "id": "en_tense_02_present_continuous",
+   "order": 2,
+   "tenseId": "present_continuous",
+   "cefr": "A1",
+   "title": {
+    "en": "Present Continuous",
+    "vi": "Hiện tại tiếp diễn",
+    "ru": "Настоящее длительное",
+    "ja": "現在進行形"
+   },
+   "formula": {
+    "affirmative": "S + am/is/are + V-ing",
+    "negative": "S + am/is/are + not + V-ing",
+    "question": "Am/Is/Are + S + V-ing ?"
+   },
+   "usage": {
+    "vi": [
+     "Hành động đang diễn ra ngay lúc nói (now, at the moment).",
+     "Hành động tạm thời quanh thời điểm hiện tại (this week).",
+     "Kế hoạch chắc chắn trong tương lai gần (I am meeting him tonight)."
+    ],
+    "ru": [
+     "Действие, происходящее прямо сейчас (now, at the moment).",
+     "Временное действие в текущий период (this week).",
+     "Твёрдый план на ближайшее будущее (I am meeting him tonight)."
+    ],
+    "ja": [
+     "今まさに行われている動作（now, at the moment）。",
+     "今の時期だけの一時的な状況（this week）。",
+     "近い未来の確定した予定（I am meeting him tonight）。"
+    ]
+   },
+   "signalWords": [
+    "now",
+    "right now",
+    "at the moment",
+    "today",
+    "this week",
+    "Look!",
+    "Listen!"
+   ],
+   "examples": [
+    {
+     "en": "She is cooking dinner now.",
+     "vi": "Cô ấy đang nấu bữa tối.",
+     "ru": "Она сейчас готовит ужин.",
+     "ja": "彼女は今、夕食を作っています。"
+    },
+    {
+     "en": "We are staying in Phu Quoc this week.",
+     "vi": "Tuần này chúng tôi đang ở Phú Quốc.",
+     "ru": "На этой неделе мы остановились на Фукуоке.",
+     "ja": "今週、私たちはフーコック島に滞在しています。"
+    },
+    {
+     "en": "I am flying to Tokyo tomorrow.",
+     "vi": "Ngày mai tôi bay đi Tokyo.",
+     "ru": "Завтра я лечу в Токио.",
+     "ja": "私は明日東京へ飛びます。"
+    }
+   ],
+   "commonMistake": {
+    "vi": "Dùng tiếp diễn với động từ trạng thái (know, like, want): ✗ I am knowing → ✓ I know. Đừng quên động từ to be: ✗ He working → ✓ He is working.",
+    "ru": "С глаголами состояния (know, like, want) длительное не употребляют: ✗ I am knowing → ✓ I know. Не пропускайте to be: ✗ He working → ✓ He is working.",
+    "ja": "状態動詞（know, like, want）は進行形にしない：✗ I am knowing → ✓ I know。be動詞の脱落に注意：✗ He working → ✓ He is working。"
+   },
+   "conjugationFile": "verb_conjugation_key.json",
+   "exerciseIds": [
+    "tx_present_continuous_01",
+    "tx_present_continuous_02",
+    "tx_present_continuous_03",
+    "tx_present_continuous_04",
+    "tx_present_continuous_05",
+    "tx_present_continuous_06",
+    "tx_present_continuous_07",
+    "tx_present_continuous_08",
+    "tx_present_continuous_09",
+    "tx_present_continuous_10"
+   ]
+  },
+  {
+   "id": "en_tense_03_present_perfect",
+   "order": 3,
+   "tenseId": "present_perfect",
+   "cefr": "A2",
+   "title": {
+    "en": "Present Perfect",
+    "vi": "Hiện tại hoàn thành",
+    "ru": "Настоящее совершённое",
+    "ja": "現在完了形"
+   },
+   "formula": {
+    "affirmative": "S + have/has + V3 (past participle)",
+    "negative": "S + have/has + not + V3",
+    "question": "Have/Has + S + V3 ?"
+   },
+   "usage": {
+    "vi": [
+     "Hành động đã xảy ra, còn liên quan đến hiện tại (I have lost my key).",
+     "Trải nghiệm trong đời (Have you ever been to Japan?).",
+     "Việc bắt đầu trong quá khứ và kéo dài đến nay với for/since."
+    ],
+    "ru": [
+     "Действие в прошлом, важное для настоящего (I have lost my key).",
+     "Жизненный опыт (Have you ever been to Japan?).",
+     "Состояние, длящееся до сейчас, с for/since."
+    ],
+    "ja": [
+     "過去の出来事が今に影響している（鍵をなくしてしまった）。",
+     "これまでの経験（日本に行ったことがありますか）。",
+     "過去から今まで続く状態（for / since を使う）。"
+    ]
+   },
+   "signalWords": [
+    "already",
+    "yet",
+    "just",
+    "ever",
+    "never",
+    "so far",
+    "for",
+    "since",
+    "recently"
+   ],
+   "examples": [
+    {
+     "en": "I have finished my homework.",
+     "vi": "Tôi đã làm xong bài tập.",
+     "ru": "Я закончил домашнее задание.",
+     "ja": "私は宿題を終えました。"
+    },
+    {
+     "en": "She has visited Kyoto twice.",
+     "vi": "Cô ấy đã đến Kyoto hai lần.",
+     "ru": "Она дважды бывала в Киото.",
+     "ja": "彼女は京都を2回訪れたことがあります。"
+    },
+    {
+     "en": "They have lived here since 2020.",
+     "vi": "Họ sống ở đây từ năm 2020.",
+     "ru": "Они живут здесь с 2020 года.",
+     "ja": "彼らは2020年からここに住んでいます。"
+    }
+   ],
+   "commonMistake": {
+    "vi": "Dùng present perfect với mốc thời gian đã qua: ✗ I have seen him yesterday → ✓ I saw him yesterday. Phân biệt for (khoảng thời gian) và since (mốc thời gian).",
+    "ru": "Нельзя использовать с указанием прошедшего времени: ✗ I have seen him yesterday → ✓ I saw him yesterday. Различайте for (период) и since (момент начала).",
+    "ja": "過去の時点を示す語とは使えない：✗ I have seen him yesterday → ✓ I saw him yesterday。for（期間）と since（起点）を区別する。"
+   },
+   "conjugationFile": "verb_conjugation_key.json",
+   "exerciseIds": [
+    "tx_present_perfect_01",
+    "tx_present_perfect_02",
+    "tx_present_perfect_03",
+    "tx_present_perfect_04",
+    "tx_present_perfect_05",
+    "tx_present_perfect_06",
+    "tx_present_perfect_07",
+    "tx_present_perfect_08",
+    "tx_present_perfect_09",
+    "tx_present_perfect_10"
+   ]
+  },
+  {
+   "id": "en_tense_04_present_perfect_continuous",
+   "order": 4,
+   "tenseId": "present_perfect_continuous",
+   "cefr": "B1",
+   "title": {
+    "en": "Present Perfect Continuous",
+    "vi": "Hiện tại hoàn thành tiếp diễn",
+    "ru": "Настоящее совершённо-длительное",
+    "ja": "現在完了進行形"
+   },
+   "formula": {
+    "affirmative": "S + have/has + been + V-ing",
+    "negative": "S + have/has + not + been + V-ing",
+    "question": "Have/Has + S + been + V-ing ?"
+   },
+   "usage": {
+    "vi": [
+     "Nhấn mạnh quá trình kéo dài từ quá khứ đến hiện tại (I have been waiting for an hour).",
+     "Hành động vừa kết thúc nhưng còn thấy kết quả (You are wet — have you been running?).",
+     "Thường đi với for, since, all day, lately."
+    ],
+    "ru": [
+     "Подчёркивает длительность действия до настоящего момента (I have been waiting for an hour).",
+     "Действие только что закончилось, но виден результат (You are wet — have you been running?).",
+     "Часто с for, since, all day, lately."
+    ],
+    "ja": [
+     "過去から今まで続く動作の継続を強調（1時間ずっと待っている）。",
+     "今終わったばかりで結果が見える（濡れているね、走っていたの？）。",
+     "for, since, all day, lately とよく一緒に使う。"
+    ]
+   },
+   "signalWords": [
+    "for + period",
+    "since + point in time",
+    "all day",
+    "lately",
+    "recently",
+    "how long"
+   ],
+   "examples": [
+    {
+     "en": "I have been studying English for two hours.",
+     "vi": "Tôi đã học tiếng Anh được hai tiếng rồi.",
+     "ru": "Я уже два часа учу английский.",
+     "ja": "私は2時間ずっと英語を勉強しています。"
+    },
+    {
+     "en": "It has been raining since morning.",
+     "vi": "Trời mưa từ sáng đến giờ.",
+     "ru": "Дождь идёт с самого утра.",
+     "ja": "朝からずっと雨が降っています。"
+    },
+    {
+     "en": "How long have you been working here?",
+     "vi": "Bạn làm việc ở đây được bao lâu rồi?",
+     "ru": "Как давно вы здесь работаете?",
+     "ja": "ここでどのくらい働いていますか。"
+    }
+   ],
+   "commonMistake": {
+    "vi": "Động từ trạng thái không dùng được: ✗ I have been knowing → ✓ I have known. Đừng dùng been thiếu: ✗ I have studying → ✓ I have been studying.",
+    "ru": "Глаголы состояния не употребляются: ✗ I have been knowing → ✓ I have known. Не забывайте been: ✗ I have studying → ✓ I have been studying.",
+    "ja": "状態動詞は使えない：✗ I have been knowing → ✓ I have known。been の脱落に注意：✗ I have studying → ✓ I have been studying。"
+   },
+   "conjugationFile": "verb_conjugation_key.json",
+   "exerciseIds": [
+    "tx_present_perfect_continuous_01",
+    "tx_present_perfect_continuous_02",
+    "tx_present_perfect_continuous_03",
+    "tx_present_perfect_continuous_04",
+    "tx_present_perfect_continuous_05",
+    "tx_present_perfect_continuous_06",
+    "tx_present_perfect_continuous_07",
+    "tx_present_perfect_continuous_08",
+    "tx_present_perfect_continuous_09",
+    "tx_present_perfect_continuous_10"
+   ]
+  },
+  {
+   "id": "en_tense_05_past_simple",
+   "order": 5,
+   "tenseId": "past_simple",
+   "cefr": "A1",
+   "title": {
+    "en": "Past Simple",
+    "vi": "Quá khứ đơn",
+    "ru": "Прошедшее простое",
+    "ja": "過去形"
+   },
+   "formula": {
+    "affirmative": "S + V2 (past form)",
+    "negative": "S + did + not + V",
+    "question": "Did + S + V ?"
+   },
+   "usage": {
+    "vi": [
+     "Hành động đã xảy ra và kết thúc hẳn ở một thời điểm xác định trong quá khứ.",
+     "Chuỗi hành động nối tiếp trong quá khứ (I got up, ate, and left).",
+     "Thói quen trong quá khứ (When I was a child, I played outside)."
+    ],
+    "ru": [
+     "Завершённое действие в определённый момент прошлого.",
+     "Последовательность действий в прошлом (I got up, ate, and left).",
+     "Привычка в прошлом (When I was a child, I played outside)."
+    ],
+    "ja": [
+     "過去の特定の時点で終わった出来事。",
+     "過去に起こった一連の動作（起きて、食べて、出かけた）。",
+     "過去の習慣（子どもの頃は外で遊んだ）。"
+    ]
+   },
+   "signalWords": [
+    "yesterday",
+    "last week",
+    "two days ago",
+    "in 2019",
+    "when I was young"
+   ],
+   "examples": [
+    {
+     "en": "I visited Hoi An last month.",
+     "vi": "Tháng trước tôi đã đến Hội An.",
+     "ru": "В прошлом месяце я ездил в Хойан.",
+     "ja": "先月、私はホイアンを訪れました。"
+    },
+    {
+     "en": "She didn't come to the party.",
+     "vi": "Cô ấy đã không đến bữa tiệc.",
+     "ru": "Она не пришла на вечеринку.",
+     "ja": "彼女はパーティーに来ませんでした。"
+    },
+    {
+     "en": "Did you see the doctor yesterday?",
+     "vi": "Hôm qua bạn có đi khám bác sĩ không?",
+     "ru": "Вы вчера ходили к врачу?",
+     "ja": "昨日、医者に診てもらいましたか。"
+    }
+   ],
+   "commonMistake": {
+    "vi": "Sau did dùng động từ nguyên mẫu: ✗ Did you went → ✓ Did you go. Động từ bất quy tắc phải học thuộc: go → went, buy → bought.",
+    "ru": "После did глагол в начальной форме: ✗ Did you went → ✓ Did you go. Неправильные глаголы нужно учить: go → went, buy → bought.",
+    "ja": "did の後は原形：✗ Did you went → ✓ Did you go。不規則動詞は暗記：go → went, buy → bought。"
+   },
+   "conjugationFile": "verb_conjugation_key.json",
+   "exerciseIds": [
+    "tx_past_simple_01",
+    "tx_past_simple_02",
+    "tx_past_simple_03",
+    "tx_past_simple_04",
+    "tx_past_simple_05",
+    "tx_past_simple_06",
+    "tx_past_simple_07",
+    "tx_past_simple_08",
+    "tx_past_simple_09",
+    "tx_past_simple_10"
+   ]
+  },
+  {
+   "id": "en_tense_06_past_continuous",
+   "order": 6,
+   "tenseId": "past_continuous",
+   "cefr": "A2",
+   "title": {
+    "en": "Past Continuous",
+    "vi": "Quá khứ tiếp diễn",
+    "ru": "Прошедшее длительное",
+    "ja": "過去進行形"
+   },
+   "formula": {
+    "affirmative": "S + was/were + V-ing",
+    "negative": "S + was/were + not + V-ing",
+    "question": "Was/Were + S + V-ing ?"
+   },
+   "usage": {
+    "vi": [
+     "Hành động đang diễn ra tại một thời điểm xác định trong quá khứ (at 8 pm last night).",
+     "Hành động đang diễn ra thì bị một hành động khác cắt ngang (I was cooking when he called).",
+     "Hai hành động diễn ra song song (while)."
+    ],
+    "ru": [
+     "Действие, длившееся в определённый момент прошлого (at 8 pm last night).",
+     "Длительное действие, прерванное другим (I was cooking when he called).",
+     "Два параллельных действия (while)."
+    ],
+    "ja": [
+     "過去のある時点で進行中だった動作（昨夜8時に）。",
+     "進行中の動作に別の出来事が割り込む（料理中に電話が来た）。",
+     "同時に進行していた二つの動作（while）。"
+    ]
+   },
+   "signalWords": [
+    "while",
+    "when",
+    "at 8 o'clock yesterday",
+    "all evening",
+    "at that moment"
+   ],
+   "examples": [
+    {
+     "en": "I was reading when the lights went out.",
+     "vi": "Tôi đang đọc sách thì mất điện.",
+     "ru": "Я читал, когда погас свет.",
+     "ja": "本を読んでいるときに停電しました。"
+    },
+    {
+     "en": "They were playing football at five o'clock.",
+     "vi": "Lúc năm giờ họ đang chơi bóng đá.",
+     "ru": "В пять часов они играли в футбол.",
+     "ja": "5時に彼らはサッカーをしていました。"
+    },
+    {
+     "en": "While she was cooking, he was washing the dishes.",
+     "vi": "Trong khi cô ấy nấu ăn thì anh ấy rửa bát.",
+     "ru": "Пока она готовила, он мыл посуду.",
+     "ja": "彼女が料理をしている間、彼は皿を洗っていました。"
+    }
+   ],
+   "commonMistake": {
+    "vi": "Hành động ngắn cắt ngang dùng quá khứ đơn, hành động dài dùng tiếp diễn: ✓ I was walking when I saw him. Chọn was/were đúng theo chủ ngữ.",
+    "ru": "Короткое прерывающее действие — Past Simple, длинное — Past Continuous: ✓ I was walking when I saw him. Выбирайте was/were по подлежащему.",
+    "ja": "短い出来事は過去形、長く続く動作は過去進行形：✓ I was walking when I saw him。主語に合わせて was/were を選ぶ。"
+   },
+   "conjugationFile": "verb_conjugation_key.json",
+   "exerciseIds": [
+    "tx_past_continuous_01",
+    "tx_past_continuous_02",
+    "tx_past_continuous_03",
+    "tx_past_continuous_04",
+    "tx_past_continuous_05",
+    "tx_past_continuous_06",
+    "tx_past_continuous_07",
+    "tx_past_continuous_08",
+    "tx_past_continuous_09",
+    "tx_past_continuous_10"
+   ]
+  },
+  {
+   "id": "en_tense_07_past_perfect",
+   "order": 7,
+   "tenseId": "past_perfect",
+   "cefr": "B1",
+   "title": {
+    "en": "Past Perfect",
+    "vi": "Quá khứ hoàn thành",
+    "ru": "Предпрошедшее (Past Perfect)",
+    "ja": "過去完了形"
+   },
+   "formula": {
+    "affirmative": "S + had + V3",
+    "negative": "S + had + not + V3",
+    "question": "Had + S + V3 ?"
+   },
+   "usage": {
+    "vi": [
+     "Hành động xảy ra trước một hành động/mốc khác trong quá khứ.",
+     "Thường đi với before, after, by the time, already.",
+     "Dùng để giải thích nguyên nhân của một sự việc trong quá khứ."
+    ],
+    "ru": [
+     "Действие, завершившееся до другого действия или момента в прошлом.",
+     "Часто с before, after, by the time, already.",
+     "Объясняет причину прошлого события."
+    ],
+    "ja": [
+     "過去のある時点より前に完了していた出来事。",
+     "before, after, by the time, already とよく使う。",
+     "過去の出来事の原因を説明する。"
+    ]
+   },
+   "signalWords": [
+    "before",
+    "after",
+    "by the time",
+    "already",
+    "just",
+    "when"
+   ],
+   "examples": [
+    {
+     "en": "When we arrived, the film had already started.",
+     "vi": "Khi chúng tôi đến thì phim đã bắt đầu rồi.",
+     "ru": "Когда мы пришли, фильм уже начался.",
+     "ja": "私たちが着いたとき、映画はもう始まっていました。"
+    },
+    {
+     "en": "She had never seen snow before she moved to Japan.",
+     "vi": "Trước khi chuyển đến Nhật, cô ấy chưa từng thấy tuyết.",
+     "ru": "Она никогда не видела снега до переезда в Японию.",
+     "ja": "日本に引っ越すまで、彼女は雪を見たことがありませんでした。"
+    },
+    {
+     "en": "I was tired because I had worked all day.",
+     "vi": "Tôi mệt vì đã làm việc cả ngày.",
+     "ru": "Я устал, потому что работал весь день.",
+     "ja": "一日中働いたので疲れていました。"
+    }
+   ],
+   "commonMistake": {
+    "vi": "Đừng dùng cho hành động không có mối liên hệ trước–sau: ✗ I had eaten breakfast. (không có mốc) → ✓ I ate breakfast. Hành động xảy ra sau dùng quá khứ đơn.",
+    "ru": "Не используйте без связи «раньше — позже»: ✗ I had eaten breakfast. → ✓ I ate breakfast. Более позднее действие — в Past Simple.",
+    "ja": "前後関係がないときは使わない：✗ I had eaten breakfast. → ✓ I ate breakfast。後に起きたことは過去形で表す。"
+   },
+   "conjugationFile": "verb_conjugation_key.json",
+   "exerciseIds": [
+    "tx_past_perfect_01",
+    "tx_past_perfect_02",
+    "tx_past_perfect_03",
+    "tx_past_perfect_04",
+    "tx_past_perfect_05",
+    "tx_past_perfect_06",
+    "tx_past_perfect_07",
+    "tx_past_perfect_08",
+    "tx_past_perfect_09",
+    "tx_past_perfect_10"
+   ]
+  },
+  {
+   "id": "en_tense_08_past_perfect_continuous",
+   "order": 8,
+   "tenseId": "past_perfect_continuous",
+   "cefr": "B2",
+   "title": {
+    "en": "Past Perfect Continuous",
+    "vi": "Quá khứ hoàn thành tiếp diễn",
+    "ru": "Предпрошедшее длительное",
+    "ja": "過去完了進行形"
+   },
+   "formula": {
+    "affirmative": "S + had + been + V-ing",
+    "negative": "S + had + not + been + V-ing",
+    "question": "Had + S + been + V-ing ?"
+   },
+   "usage": {
+    "vi": [
+     "Nhấn mạnh hành động đã kéo dài liên tục trước một mốc trong quá khứ.",
+     "Giải thích nguyên nhân/kết quả nhìn thấy ở mốc quá khứ (Her eyes were red; she had been crying).",
+     "Thường có for/since + mốc quá khứ."
+    ],
+    "ru": [
+     "Подчёркивает длительность действия до момента в прошлом.",
+     "Объясняет видимый результат в прошлом (Her eyes were red; she had been crying).",
+     "Часто с for/since и прошлым моментом."
+    ],
+    "ja": [
+     "過去のある時点までずっと続いていた動作を強調。",
+     "過去に見えた結果の理由を説明（目が赤かった。泣いていたのだ）。",
+     "過去の時点を基準に for / since をよく使う。"
+    ]
+   },
+   "signalWords": [
+    "for + period",
+    "since",
+    "before",
+    "by the time",
+    "all day"
+   ],
+   "examples": [
+    {
+     "en": "He had been waiting for an hour when the bus finally came.",
+     "vi": "Anh ấy đã đợi một tiếng khi xe buýt cuối cùng cũng đến.",
+     "ru": "Он ждал уже час, когда наконец пришёл автобус.",
+     "ja": "バスがやっと来たとき、彼は1時間待っていました。"
+    },
+    {
+     "en": "They were tired because they had been walking all day.",
+     "vi": "Họ mệt vì đã đi bộ cả ngày.",
+     "ru": "Они устали, потому что весь день шли пешком.",
+     "ja": "彼らは一日中歩いていたので疲れていました。"
+    },
+    {
+     "en": "I had been studying for two hours before I took a break.",
+     "vi": "Tôi đã học hai tiếng liền trước khi nghỉ giải lao.",
+     "ru": "Я занимался два часа, прежде чем сделать перерыв.",
+     "ja": "休憩する前に、私は2時間ずっと勉強していました。"
+    }
+   ],
+   "commonMistake": {
+    "vi": "Nhầm với past perfect: ✗ I had been know → ✓ I had known. Cần đủ had been + V-ing.",
+    "ru": "Путают с Past Perfect и забывают been: ✗ I had studying → ✓ I had been studying.",
+    "ja": "had been + V-ing の形を崩さない：✗ I had studying → ✓ I had been studying。"
+   },
+   "conjugationFile": "verb_conjugation_key.json",
+   "exerciseIds": [
+    "tx_past_perfect_continuous_01",
+    "tx_past_perfect_continuous_02",
+    "tx_past_perfect_continuous_03",
+    "tx_past_perfect_continuous_04",
+    "tx_past_perfect_continuous_05",
+    "tx_past_perfect_continuous_06",
+    "tx_past_perfect_continuous_07",
+    "tx_past_perfect_continuous_08",
+    "tx_past_perfect_continuous_09",
+    "tx_past_perfect_continuous_10"
+   ]
+  },
+  {
+   "id": "en_tense_09_future_simple",
+   "order": 9,
+   "tenseId": "future_simple",
+   "cefr": "A2",
+   "title": {
+    "en": "Future Simple (will)",
+    "vi": "Tương lai đơn",
+    "ru": "Будущее простое",
+    "ja": "未来形（will）"
+   },
+   "formula": {
+    "affirmative": "S + will + V",
+    "negative": "S + will + not (won't) + V",
+    "question": "Will + S + V ?"
+   },
+   "usage": {
+    "vi": [
+     "Quyết định tức thời lúc nói (I'll have the noodles).",
+     "Dự đoán, ý kiến về tương lai (I think it will rain).",
+     "Lời hứa, đề nghị, lời hứa giúp đỡ (I will help you)."
+    ],
+    "ru": [
+     "Спонтанное решение в момент речи (I'll have the noodles).",
+     "Предположение о будущем (I think it will rain).",
+     "Обещание, предложение помощи (I will help you)."
+    ],
+    "ja": [
+     "その場で決めた意思（麺にします）。",
+     "未来の予測・意見（雨が降ると思う）。",
+     "約束・申し出（手伝います）。"
+    ]
+   },
+   "signalWords": [
+    "tomorrow",
+    "next week",
+    "in two days",
+    "soon",
+    "I think",
+    "probably",
+    "perhaps"
+   ],
+   "examples": [
+    {
+     "en": "I will call you tomorrow.",
+     "vi": "Ngày mai tôi sẽ gọi cho bạn.",
+     "ru": "Я позвоню вам завтра.",
+     "ja": "明日、電話します。"
+    },
+    {
+     "en": "It will probably rain tonight.",
+     "vi": "Tối nay có lẽ trời sẽ mưa.",
+     "ru": "Сегодня вечером, вероятно, пойдёт дождь.",
+     "ja": "今夜はたぶん雨が降るでしょう。"
+    },
+    {
+     "en": "Will you help me with this bag?",
+     "vi": "Bạn giúp tôi xách túi này được không?",
+     "ru": "Поможете мне с этой сумкой?",
+     "ja": "このバッグを手伝ってくれますか。"
+    }
+   ],
+   "commonMistake": {
+    "vi": "Sau will dùng động từ nguyên mẫu, không thêm to/-s: ✗ She will goes → ✓ She will go. Với kế hoạch đã định sẵn thường dùng be going to.",
+    "ru": "После will — глагол без to и без -s: ✗ She will goes → ✓ She will go. Для заранее принятых планов обычно be going to.",
+    "ja": "will の後は原形（to や -s は付けない）：✗ She will goes → ✓ She will go。決まっていた計画には be going to を使うことが多い。"
+   },
+   "conjugationFile": "verb_conjugation_key.json",
+   "exerciseIds": [
+    "tx_future_simple_01",
+    "tx_future_simple_02",
+    "tx_future_simple_03",
+    "tx_future_simple_04",
+    "tx_future_simple_05",
+    "tx_future_simple_06",
+    "tx_future_simple_07",
+    "tx_future_simple_08",
+    "tx_future_simple_09",
+    "tx_future_simple_10"
+   ]
+  },
+  {
+   "id": "en_tense_10_future_continuous",
+   "order": 10,
+   "tenseId": "future_continuous",
+   "cefr": "B1",
+   "title": {
+    "en": "Future Continuous",
+    "vi": "Tương lai tiếp diễn",
+    "ru": "Будущее длительное",
+    "ja": "未来進行形"
+   },
+   "formula": {
+    "affirmative": "S + will + be + V-ing",
+    "negative": "S + will + not + be + V-ing",
+    "question": "Will + S + be + V-ing ?"
+   },
+   "usage": {
+    "vi": [
+     "Hành động sẽ đang diễn ra tại một thời điểm xác định trong tương lai (At 8 pm I will be driving).",
+     "Hỏi lịch trình một cách lịch sự (Will you be using the car?).",
+     "Hành động tương lai như một phần của kế hoạch tự nhiên."
+    ],
+    "ru": [
+     "Действие, которое будет в процессе в определённый момент будущего (At 8 pm I will be driving).",
+     "Вежливый вопрос о планах (Will you be using the car?).",
+     "Действие как естественная часть планов."
+    ],
+    "ja": [
+     "未来のある時点で進行中の動作（午後8時には運転中だろう）。",
+     "予定を丁寧にたずねる（車を使いますか）。",
+     "自然な流れとして起こる未来の動作。"
+    ]
+   },
+   "signalWords": [
+    "at this time tomorrow",
+    "at 8 pm tonight",
+    "next Sunday at noon",
+    "this time next week"
+   ],
+   "examples": [
+    {
+     "en": "This time tomorrow, I will be lying on the beach.",
+     "vi": "Giờ này ngày mai tôi sẽ đang nằm trên bãi biển.",
+     "ru": "Завтра в это время я буду лежать на пляже.",
+     "ja": "明日の今ごろ、私はビーチで寝ているでしょう。"
+    },
+    {
+     "en": "She will be working at 9 pm tonight.",
+     "vi": "Chín giờ tối nay cô ấy sẽ đang làm việc.",
+     "ru": "Сегодня в девять вечера она будет работать.",
+     "ja": "今夜9時、彼女は仕事中でしょう。"
+    },
+    {
+     "en": "Will you be using the computer this afternoon?",
+     "vi": "Chiều nay bạn có dùng máy tính không?",
+     "ru": "Вы будете пользоваться компьютером днём?",
+     "ja": "今日の午後、パソコンを使いますか。"
+    }
+   ],
+   "commonMistake": {
+    "vi": "Quên be: ✗ I will working → ✓ I will be working. Không dùng cho động từ trạng thái: ✗ I will be knowing.",
+    "ru": "Забывают be: ✗ I will working → ✓ I will be working. Не используется с глаголами состояния.",
+    "ja": "be の脱落に注意：✗ I will working → ✓ I will be working。状態動詞には使わない。"
+   },
+   "conjugationFile": "verb_conjugation_key.json",
+   "exerciseIds": [
+    "tx_future_continuous_01",
+    "tx_future_continuous_02",
+    "tx_future_continuous_03",
+    "tx_future_continuous_04",
+    "tx_future_continuous_05",
+    "tx_future_continuous_06",
+    "tx_future_continuous_07",
+    "tx_future_continuous_08",
+    "tx_future_continuous_09",
+    "tx_future_continuous_10"
+   ]
+  },
+  {
+   "id": "en_tense_11_future_perfect",
+   "order": 11,
+   "tenseId": "future_perfect",
+   "cefr": "B2",
+   "title": {
+    "en": "Future Perfect",
+    "vi": "Tương lai hoàn thành",
+    "ru": "Будущее совершённое",
+    "ja": "未来完了形"
+   },
+   "formula": {
+    "affirmative": "S + will + have + V3",
+    "negative": "S + will + not + have + V3",
+    "question": "Will + S + have + V3 ?"
+   },
+   "usage": {
+    "vi": [
+     "Hành động sẽ hoàn tất trước một mốc trong tương lai (By Friday I will have finished).",
+     "Thường đi với by + mốc thời gian, by the time.",
+     "Dự đoán điều đã xảy ra vào thời điểm đó."
+    ],
+    "ru": [
+     "Действие, которое будет завершено к определённому моменту (By Friday I will have finished).",
+     "Часто с by + момент времени, by the time.",
+     "Предположение о том, что к тому моменту уже произойдёт."
+    ],
+    "ja": [
+     "未来のある時点までに完了している動作（金曜までに終えているだろう）。",
+     "by + 時点、by the time とよく使う。",
+     "その時点までに起こっているはずのことの予測。"
+    ]
+   },
+   "signalWords": [
+    "by + time",
+    "by the time",
+    "by next Friday",
+    "by 2030",
+    "before"
+   ],
+   "examples": [
+    {
+     "en": "By next Friday, I will have finished this report.",
+     "vi": "Đến thứ Sáu tới tôi sẽ hoàn thành báo cáo này.",
+     "ru": "К следующей пятнице я закончу этот отчёт.",
+     "ja": "来週の金曜までに、この報告書を仕上げているでしょう。"
+    },
+    {
+     "en": "They will have arrived by noon.",
+     "vi": "Đến trưa họ sẽ đến nơi rồi.",
+     "ru": "К полудню они уже приедут.",
+     "ja": "彼らは正午までに到着しているでしょう。"
+    },
+    {
+     "en": "Will you have eaten by the time I come?",
+     "vi": "Lúc tôi đến thì bạn đã ăn xong chưa?",
+     "ru": "Вы уже поедите к моему приходу?",
+     "ja": "私が行くまでに食べ終わっているでしょうか。"
+    }
+   ],
+   "commonMistake": {
+    "vi": "Sau by the time không dùng will: ✗ by the time you will arrive → ✓ by the time you arrive. Vẫn cần have + V3 sau will.",
+    "ru": "После by the time нет will: ✗ by the time you will arrive → ✓ by the time you arrive. После will нужно have + V3.",
+    "ja": "by the time の節に will は使わない：✗ by the time you will arrive → ✓ by the time you arrive。will の後は have + V3。"
+   },
+   "conjugationFile": "verb_conjugation_key.json",
+   "exerciseIds": [
+    "tx_future_perfect_01",
+    "tx_future_perfect_02",
+    "tx_future_perfect_03",
+    "tx_future_perfect_04",
+    "tx_future_perfect_05",
+    "tx_future_perfect_06",
+    "tx_future_perfect_07",
+    "tx_future_perfect_08",
+    "tx_future_perfect_09",
+    "tx_future_perfect_10"
+   ]
+  },
+  {
+   "id": "en_tense_12_future_perfect_continuous",
+   "order": 12,
+   "tenseId": "future_perfect_continuous",
+   "cefr": "C1",
+   "title": {
+    "en": "Future Perfect Continuous",
+    "vi": "Tương lai hoàn thành tiếp diễn",
+    "ru": "Будущее совершённо-длительное",
+    "ja": "未来完了進行形"
+   },
+   "formula": {
+    "affirmative": "S + will + have + been + V-ing",
+    "negative": "S + will + not + have + been + V-ing",
+    "question": "Will + S + have + been + V-ing ?"
+   },
+   "usage": {
+    "vi": [
+     "Nhấn mạnh độ dài của hành động tính đến một mốc trong tương lai (By June I will have been working here for ten years).",
+     "Thường đi với by + mốc, for + khoảng thời gian.",
+     "Ít dùng, chủ yếu trong văn viết/trang trọng."
+    ],
+    "ru": [
+     "Подчёркивает длительность действия к определённому моменту в будущем (By June I will have been working here for ten years).",
+     "Часто с by + момент и for + период.",
+     "Употребляется редко, чаще в письменной речи."
+    ],
+    "ja": [
+     "未来のある時点までに動作がどれだけ続いているかを強調（6月で10年間働いていることになる）。",
+     "by + 時点、for + 期間とよく使う。",
+     "使用頻度は低く、書き言葉が中心。"
+    ]
+   },
+   "signalWords": [
+    "by + time",
+    "for + period",
+    "by the time",
+    "next year"
+   ],
+   "examples": [
+    {
+     "en": "By June, I will have been working here for ten years.",
+     "vi": "Đến tháng Sáu tôi sẽ làm việc ở đây được mười năm.",
+     "ru": "К июню я буду работать здесь уже десять лет.",
+     "ja": "6月で、私はここで10年間働いていることになります。"
+    },
+    {
+     "en": "At noon, she will have been studying for four hours.",
+     "vi": "Đến trưa cô ấy sẽ học được bốn tiếng liên tục.",
+     "ru": "К полудню она будет заниматься уже четыре часа.",
+     "ja": "正午には、彼女は4時間勉強し続けていることになります。"
+    },
+    {
+     "en": "Will they have been waiting long by then?",
+     "vi": "Đến lúc đó họ sẽ đợi lâu rồi chứ?",
+     "ru": "Они будут ждать уже долго к тому времени?",
+     "ja": "そのころには、彼らはもう長い間待っているでしょうか。"
+    }
+   ],
+   "commonMistake": {
+    "vi": "Thiếu been hoặc have: ✗ I will have working → ✓ I will have been working. Đây là thì dài nhất — luôn kiểm tra will + have + been + V-ing.",
+    "ru": "Пропускают have или been: ✗ I will have working → ✓ I will have been working. Проверяйте: will + have + been + V-ing.",
+    "ja": "have や been の抜け：✗ I will have working → ✓ I will have been working。will + have + been + V-ing の順を確認。"
+   },
+   "conjugationFile": "verb_conjugation_key.json",
+   "exerciseIds": [
+    "tx_future_perfect_continuous_01",
+    "tx_future_perfect_continuous_02",
+    "tx_future_perfect_continuous_03",
+    "tx_future_perfect_continuous_04",
+    "tx_future_perfect_continuous_05",
+    "tx_future_perfect_continuous_06",
+    "tx_future_perfect_continuous_07",
+    "tx_future_perfect_continuous_08",
+    "tx_future_perfect_continuous_09",
+    "tx_future_perfect_continuous_10"
+   ]
+  }
+ ],
+ "schemaNotes": "lessons[].examples/usage/commonMistake/title are per-language objects (vi/ru/ja/en); exerciseIds reference tense_exercises.json; conjugation in verb_conjugation_key.json"
+}

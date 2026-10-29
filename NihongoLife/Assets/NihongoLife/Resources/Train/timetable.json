@@ -1,0 +1,93 @@
+{
+  "schema": "nihongolife.train.timetable.v1",
+  "lineId": "hibari_line",
+  "lineName": {
+    "vi": "Tuyến Hibari",
+    "en": "Hibari Line",
+    "ja": "ひばり線",
+    "ru": "Линия Хибари"
+  },
+  "platform": 2,
+  "serviceIntervalSeconds": 60,
+  "boardingWindowSeconds": 15,
+  "trainTravelDistance": 75,
+  "legSeconds": 10,
+  "dwellSeconds": 4,
+  "stops": [
+    {
+      "id": "hibari",
+      "ja": "ひばり",
+      "vi": "Hibari",
+      "place": {
+        "vi": "Ga Hibari",
+        "en": "Hibari Station",
+        "ja": "ひばり駅",
+        "ru": "Станция Хибари"
+      },
+      "scene": "20_StationDistrict",
+      "spawn": "station_entrance",
+      "price": 0,
+      "legSeconds": 0
+    },
+    {
+      "id": "gakuen",
+      "ja": "がくえんまえ",
+      "vi": "Gakuen-mae",
+      "place": {
+        "vi": "Trường Nhật ngữ Hibari",
+        "en": "Hibari Japanese School",
+        "ja": "ひばり日本語学校",
+        "ru": "Школа японского языка Хибари"
+      },
+      "scene": "40_ HIBARICLASS",
+      "spawn": "school_entrance",
+      "price": 180,
+      "legSeconds": 0
+    },
+    {
+      "id": "minato",
+      "ja": "ミナト",
+      "vi": "Minato",
+      "place": {
+        "vi": "phố cảng · Sushi Hibari",
+        "en": "harbour town · Sushi Hibari",
+        "ja": "みなと町・ひばり寿司",
+        "ru": "портовый город · Sushi Hibari"
+      },
+      "scene": "30_SushiRestaurant",
+      "spawn": "sushi_entrance",
+      "price": 320,
+      "legSeconds": 0
+    },
+    {
+      "id": "midori",
+      "ja": "みどりじま",
+      "vi": "Midori Island",
+      "place": {
+        "vi": "Đảo Xanh · nông trại",
+        "en": "Midori Island · farm",
+        "ja": "みどりじま・農場",
+        "ru": "остров Мидори · ферма"
+      },
+      "scene": "60_MidoriIsland",
+      "spawn": "midori_station",
+      "price": 450,
+      "legSeconds": 0
+    },
+    {
+      "id": "airport",
+      "ja": "くうこう",
+      "vi": "Hibari Airport",
+      "place": {
+        "vi": "Sân bay · bay đi Phú Quốc",
+        "en": "Airport · flight to Phú Quốc",
+        "ja": "空港・フーコック行き",
+        "ru": "Аэропорт · перелёт на Фукуок"
+      },
+      "scene": "65_PhuQuocIsland",
+      "spawn": "phuquoc_ganh_ngon",
+      "price": 1500,
+      "legSeconds": 0
+    }
+  ]
+}
