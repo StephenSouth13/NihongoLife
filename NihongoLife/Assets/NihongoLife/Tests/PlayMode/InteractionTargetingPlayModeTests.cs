@@ -24,13 +24,15 @@ namespace NihongoLife.Tests
         }
 
         private readonly List<GameObject> _made = new List<GameObject>();
+        /// <summary>An empty yard far from anything a previous test left loaded (the town's doors and NPCs).</summary>
+        private static readonly Vector3 O = new Vector3(-3000f, 0f, -3000f);
 
         [TearDown] public void TearDown() { foreach (var g in _made) if (g != null) Object.Destroy(g); _made.Clear(); }
 
         private InteractionDetector Player()
         {
             var go = new GameObject("TargetingPlayer");
-            go.transform.position = Vector3.zero;
+            go.transform.position = O;
             go.transform.rotation = Quaternion.identity; // faces +Z
             _made.Add(go);
             return go.AddComponent<InteractionDetector>();
@@ -39,7 +41,7 @@ namespace NihongoLife.Tests
         private Stand Person(string label, Vector3 pos)
         {
             var go = GameObject.CreatePrimitive(PrimitiveType.Capsule);
-            go.name = label; go.transform.position = pos + Vector3.up; _made.Add(go);
+            go.name = label; go.transform.position = O + pos + Vector3.up; _made.Add(go);
             var s = go.AddComponent<Stand>(); s.label = label;
             return s;
         }
@@ -67,7 +69,7 @@ namespace NihongoLife.Tests
             var d = Player();
             var near = Person("behindWall", new Vector3(0.3f, 0f, 1.3f));
             var wall = GameObject.CreatePrimitive(PrimitiveType.Cube); _made.Add(wall);
-            wall.transform.position = new Vector3(0.3f, 1f, 0.85f); wall.transform.localScale = new Vector3(2f, 2f, 0.1f);
+            wall.transform.position = O + new Vector3(0.3f, 1f, 0.85f); wall.transform.localScale = new Vector3(2f, 2f, 0.1f);
             var visible = Person("visible", new Vector3(-1.9f, 0f, 1.7f));
             yield return Settle(0.3f);
             Assert.AreSame(visible, d.CurrentInteractable, "the visible person beats the nearer one behind a wall");
@@ -103,7 +105,7 @@ namespace NihongoLife.Tests
             yield return Settle(1f);
             Assert.AreEqual(0, changes, "a steady target does not flicker");
             // walk to the second person
-            d.transform.position = new Vector3(0f, 0f, 4.8f);
+            d.transform.position = O + new Vector3(0f, 0f, 4.8f);
             float t0 = Time.unscaledTime;
             while (!ReferenceEquals(d.CurrentInteractable, second) && Time.unscaledTime - t0 < 1f) yield return null;
             Assert.AreSame(second, d.CurrentInteractable);

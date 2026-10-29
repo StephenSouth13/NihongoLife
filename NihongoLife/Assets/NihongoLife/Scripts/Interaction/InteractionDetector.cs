@@ -25,7 +25,7 @@ namespace NihongoLife.Interaction
         [SerializeField] private float checkInterval = 0.05f; // 20 Hz: the target follows the player within a few frames
         [SerializeField] private bool fallbackToAnyLayer = true;
 
-        private const float StickyBonus = 0.2f; // enough to stop flicker, small enough that walking up to something new wins
+        private const float StickyBonus = 0.3f; // enough to stop flicker, small enough that walking up to something new wins
         private const float ManualHoldSeconds = 6f;
 
         private float _nextCheckTime;
@@ -38,7 +38,7 @@ namespace NihongoLife.Interaction
         private readonly HashSet<IInteractable> _seen = new HashSet<IInteractable>();
         private readonly Dictionary<IInteractable, (float distance, Collider collider)> _nearest = new Dictionary<IInteractable, (float, Collider)>();
         private readonly RaycastHit[] _sightHits = new RaycastHit[8];
-        private const float HiddenPenalty = 1.6f;
+        private const float HiddenPenalty = 2.5f; // out of sight: only chosen when nothing visible is near
 
         public event Action<IInteractable> OnInteractableChanged;
 
@@ -155,7 +155,7 @@ namespace NihongoLife.Interaction
             {
                 var hit = _sightHits[i].collider;
                 if (hit == null || hit == target || hit.transform.IsChildOf(transform)) continue;
-                if (hit is CharacterController) continue;                      // people walking by
+                if (hit is CharacterController || hit.attachedRigidbody != null) continue; // people and moving things never "hide" (no flicker)
                 if (hit.GetComponentInParent<IInteractable>() != null) continue;  // the target itself, a counter, another person
                 return false;
             }

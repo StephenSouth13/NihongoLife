@@ -131,7 +131,7 @@ namespace NihongoLife.Player
             if (CurrentEnergy <= 0f) IsExhausted = true;
             else if (IsExhausted && CurrentEnergy >= sprintAgainAtEnergy) IsExhausted = false;
 
-            if (Hunger <= 0f || Thirst <= 0f)
+            if ((Hunger <= 0f || Thirst <= 0f) && Time.time >= _loadGraceUntil)
             {
                 CurrentHealth = Mathf.Max(0f, CurrentHealth - exhaustedHealthLossPerSecond * Time.deltaTime);
             }
@@ -375,18 +375,22 @@ namespace NihongoLife.Player
 
         /// <summary>
         /// A save written while the player was starving, exhausted or fainted (a tab left open on the web, a cut-short
-        /// blackout) must not faint them the moment the game opens: a loaded game starts awake, fed enough to heal.
+        /// blackout) must not faint them the moment the game opens. The needs load as saved (a saved zero is a real empty
+        /// need, shown red), but health starts at 40 % or more and empty needs do not drain it for a short grace —
+        /// time to reach food and water. Sleepiness below the nodding-off line.
         /// </summary>
         private void WakeSafely()
         {
-            const float floor = HealthyNeed + 10f;
-            Hunger = Mathf.Max(Hunger, floor);
-            Thirst = Mathf.Max(Thirst, floor);
             Sleepiness = Mathf.Min(Sleepiness, 80f);
             CurrentHealth = Mathf.Max(CurrentHealth, maxHealth * 0.4f);
-            if (CurrentEnergy <= 0f) { CurrentEnergy = maxEnergy * 0.3f; IsExhausted = false; }
             _collapsed = false;
+            _loadGraceUntil = Time.time + LoadGraceSeconds;
         }
+
+        private const float LoadGraceSeconds = 90f;
+        private float _loadGraceUntil = -1f;
+        /// <summary>Just loaded with an empty need: health is not drained yet (seconds left, 0 when none).</summary>
+        public float LoadGraceLeft => Mathf.Max(0f, _loadGraceUntil - Time.time);
 
         public void ReloadProgress()
         {

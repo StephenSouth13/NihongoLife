@@ -117,6 +117,7 @@ namespace NihongoLife.UI
         /// <summary>A new trip: the destination's picture and names, the player's portrait, the next phrase.</summary>
         public void Show(string sceneName, string displayName)
         {
+            Reveal();
             _shownAt = Time.unscaledTime;
             _shown = 0f;
             _progress = 0f;
@@ -136,6 +137,18 @@ namespace NihongoLife.UI
         }
 
         public void SetProgress(float value) => _progress = Mathf.Clamp01(value);
+
+        /// <summary>Between trips the card's content is switched off, so no text from the last trip (in the language
+        /// of that moment) lingers while the player changes language.</summary>
+        public void Hide()
+        {
+            foreach (Transform child in transform) child.gameObject.SetActive(false);
+        }
+
+        private void Reveal()
+        {
+            foreach (Transform child in transform) child.gameObject.SetActive(true);
+        }
 
         private void Update()
         {

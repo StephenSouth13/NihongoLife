@@ -48,7 +48,7 @@ namespace NihongoLife.Tests
             // Audible, not just playing: at the default music setting the town track reaches a real level.
             float savedBgm = PlayerPrefs.GetFloat("Volume_BGM", 0.5f);
             PlayerPrefs.SetFloat("Volume_BGM", 0.5f);
-            var townTrack = sources.First(s => s.isPlaying && s.clip != null && s.clip.name.StartsWith("city_") && s.clip.length > 60f);
+            var townTrack = sources.First(s => s.isPlaying && s.clip != null && TownTrack(s.clip.name) && s.clip.length > 30f);
             for (float t = 0f; t < 5f && townTrack.volume < 0.5f; t += Time.unscaledDeltaTime) yield return null;
             Debug.Log($"[Soundscape] town music volume {townTrack.volume:0.00} (saved setting {savedBgm:0.00})");
             Assert.Greater(townTrack.volume, 0.5f, "The town music is audible at the default setting.");

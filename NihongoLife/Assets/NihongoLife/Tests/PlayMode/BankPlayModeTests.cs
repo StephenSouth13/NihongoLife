@@ -130,9 +130,9 @@ namespace NihongoLife.Tests
                 var progress = repository.GetProgress();
                 progress.health = 0f; progress.hunger = 0f; progress.thirst = 0f; progress.sleepiness = 100f;
                 status.ReloadProgress();
-                Assert.Greater(status.CurrentHealth, 0f, "Awake after loading");
-                Assert.GreaterOrEqual(status.Hunger, PlayerStatus.HealthyNeed, "Fed enough to heal");
-                Assert.GreaterOrEqual(status.Thirst, PlayerStatus.HealthyNeed);
+                Assert.GreaterOrEqual(status.CurrentHealth, status.MaxHealth * 0.4f - 0.01f, "Awake after loading, with health to spare");
+                Assert.AreEqual(0f, status.Hunger, "The empty need loads as saved (shown red)");
+                Assert.Greater(status.LoadGraceLeft, 30f, "…with time to reach food before it hurts");
                 Assert.Less(status.Sleepiness, 100f, "Not nodding off");
             }
             yield return new WaitForSecondsRealtime(0.5f);

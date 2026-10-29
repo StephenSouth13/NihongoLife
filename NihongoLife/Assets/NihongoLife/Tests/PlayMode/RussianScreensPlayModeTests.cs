@@ -138,7 +138,8 @@ namespace NihongoLife.Tests
                 foreach (HandbookUI.Chapter chapter in Enum.GetValues(typeof(HandbookUI.Chapter)))
                 {
                     var ch = chapter;
-                    steps.Add(("handbook_" + ch, () => HandbookUI.Open(ch), () => HandbookUI.Toggle()));
+                    // The dictionary keeps the last search (another test may have looked up an English word): start it clean, ja → ru.
+                    steps.Add(("handbook_" + ch, () => { if (ch == HandbookUI.Chapter.Dictionary) HandbookUI.DictionarySearch("", "ja", "ru"); else HandbookUI.Open(ch); }, () => HandbookUI.Toggle()));
                 }
                 steps.Add(("tasks", () => TaskJournalUI.Open(), () => TaskJournalUI.Toggle()));
                 steps.Add(("notebook", () => NotebookUI.Show(), () => NotebookUI.Toggle()));

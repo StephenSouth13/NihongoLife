@@ -176,6 +176,10 @@ namespace NihongoLife.EditorTools
                 importer.npotScale = TextureImporterNPOTScale.None;
                 importer.maxTextureSize = maxSize;
                 importer.wrapMode = TextureWrapMode.Clamp;
+                // They sit in Resources, so in the web build's first download: crunch them (≈0.3 MB instead of 2.4 MB).
+                importer.textureCompression = TextureImporterCompression.Compressed;
+                importer.crunchedCompression = true;
+                importer.compressionQuality = 60;
                 importer.SaveAndReimport();
             }
         }

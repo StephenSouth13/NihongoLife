@@ -82,6 +82,8 @@ namespace NihongoLife.UI
                 bool on = c == selected;
                 var b = NLUi.Button(row, "Lang_" + c, c.ToUpperInvariant(), _font, () => pick(c), on ? color : new Color(0.85f, 0.8f, 0.7f, 1f), 14f, on ? Color.white : Ink, 34f);
                 NLUi.Size(b, 64f, 34f);
+                // A 34 px button keeps room for its 14 pt code (NLUi.Button's default padding is 10 px top and bottom).
+                ((HorizontalOrVerticalLayoutGroup)b.GetComponent<HorizontalOrVerticalLayoutGroup>()).padding = new RectOffset(6, 6, 4, 4);
             }
         }
 

@@ -248,7 +248,8 @@ namespace NihongoLife.Cameras
             }
 
             // Something between the player and the camera: move in at once (never through it); ease back out.
-            if (targetDistance < _currentDistance) { _currentDistance = Mathf.MoveTowards(_currentDistance, targetDistance, 30f * Mathf.Min(Time.unscaledDeltaTime, 0.05f)); _distanceVelocity = 0f; }
+            // (AGENTS.md: the distance pulls in at once — easing it in let the camera sit inside a wall for a few frames.)
+            if (targetDistance < _currentDistance) { _currentDistance = targetDistance; _distanceVelocity = 0f; }
             else _currentDistance = Mathf.SmoothDamp(_currentDistance, targetDistance, ref _distanceVelocity, distanceSmoothTime * 3f);
 
             // Final position

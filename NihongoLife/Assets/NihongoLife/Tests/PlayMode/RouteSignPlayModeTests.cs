@@ -21,6 +21,13 @@ namespace NihongoLife.Tests
     {
         private static string Folder => Path.GetFullPath(Path.Combine(Application.dataPath, "../../Bao_Cao/route-signs"));
 
+        /// <summary>Play inside a zone boots the town first, then enters the zone: wait until it is really there.</summary>
+        private static IEnumerator Arrive(string scene)
+        {
+            for (float t = 0f; t < 40f && (SceneManager.GetActiveScene().name != scene || Object.FindFirstObjectByType<NihongoLife.Player.PlayerController>() == null); t += Time.unscaledDeltaTime) yield return null;
+            yield return new WaitForSecondsRealtime(1.5f);
+        }
+
         [UnityTest]
         public IEnumerator EveryMap_HasItsSigns_PointingAtTheirTargets_InEveryLanguage()
         {
@@ -33,7 +40,7 @@ namespace NihongoLife.Tests
                 {
                     Loc.Set(GameLanguage.Vietnamese);
                     yield return SceneManager.LoadSceneAsync(map.scene);
-                    yield return new WaitForSecondsRealtime(2f);
+                    yield return Arrive(map.scene);
                     var posts = Object.FindObjectsByType<RouteSignPost>(FindObjectsInactive.Include, FindObjectsSortMode.None).Where(p => p.gameObject.scene.name == map.scene).ToArray();
                     Assert.AreEqual(map.posts.Length, posts.Length, map.scene + ": baked posts");
                     foreach (var data in map.posts)
@@ -111,7 +118,7 @@ namespace NihongoLife.Tests
         {
             LogAssert.ignoreFailingMessages = true;
             yield return SceneManager.LoadSceneAsync(WorldLocationCatalog.StationScene);
-            yield return new WaitForSecondsRealtime(2f);
+            yield return Arrive(WorldLocationCatalog.StationScene);
             var controller = Object.FindFirstObjectByType<StationTravelController>();
             Assert.NotNull(controller);
             var data = TrainTimetable.Data;

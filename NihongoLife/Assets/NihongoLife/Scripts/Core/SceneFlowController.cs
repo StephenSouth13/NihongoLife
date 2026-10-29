@@ -393,6 +393,7 @@ namespace NihongoLife.Core
             {
                 _overlay.alpha = 0f;
                 _overlay.blocksRaycasts = false;
+                _card.Hide();
                 yield break;
             }
             for (float t = 0f; t < 0.5f; t += Time.unscaledDeltaTime)
@@ -402,6 +403,7 @@ namespace NihongoLife.Core
             }
             _overlay.alpha = 0f;
             _overlay.blocksRaycasts = false;
+            _card.Hide();
         }
 
         private IEnumerator FailAndRelease(string message)
@@ -453,6 +455,7 @@ namespace NihongoLife.Core
             _placeName = _card.PlaceName;
             _status = _card.Status;
             _progressFill = _card.Fill;
+            _card.Hide();
         }
 
         private static string FriendlyName(string sceneName) => sceneName == "01_MainMenu" ? "NIHONGO LIFE" : Title(sceneName, null);
