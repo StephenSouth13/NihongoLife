@@ -1,0 +1,34 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8cd7292b80d74e04db4a79c2979f607a, type: 3}
+  m_Name: minigame_wheel_quiz
+  m_EditorClassIdentifier: NihongoLife.MiniGames::NihongoLife.MiniGames.MiniGameDefinition
+  id: wheel_quiz
+  kind: 12
+  titleJa: "\u30EB\u30FC\u30EC\u30C3\u30C8\u30AF\u30A4\u30BA"
+  titleVi: "V\xF2ng Quay \u0110\u1ED1"
+  titleEn: Wheel Quiz
+  descriptionVi: "Quay b\xE1nh xe l\u1EA5y s\u1ED1 nh\xE2n r\u1ED3i tr\u1EA3 l\u1EDDi
+    c\xE2u h\u1ECFi t\u1EEB v\u1EF1ng \u2014 \u0111\xFAng th\xEC \u0111\u01B0\u1EE3c
+    \u0111i\u1EC3m nh\xE2n l\xEAn."
+  descriptionEn: "Spin the wheel for a multiplier, then answer a word question \u2014
+    a right answer is worth more."
+  descriptionJa: "\u30DB\u30A4\u30FC\u30EB\u3092\u307E\u308F\u3057\u3066\u500D\u7387\u3092\u6C7A\u3081\u3001\u3053\u3068\u3070\u306E\u30AF\u30A4\u30BA\u306B\u7B54\u3048\u3088\u3046\u3002"
+  playable: 1
+  contentSets:
+  - {fileID: 11400000, guid: 4e11c5ac95210e84ba8c18ff569b8063, type: 2}
+  - {fileID: 11400000, guid: 0c2812a7c27ad314ab294e9e02927910, type: 2}
+  - {fileID: 11400000, guid: 7ab00ab706bb59e46bd2f806ad67c152, type: 2}
+  pairsPerRound: 10
+  timeLimitSeconds: 100
+  expPerCorrect: 3
+  knowledgePerRound: 4

@@ -130,7 +130,7 @@ namespace NihongoLife.UI
                     : $"{data.textEn}\nIPA: {data.textEnglishIpa}";
             }
 
-            return data.textEn;
+            return Loc.IsRussian ? Loc.Data(data.textEn) : data.textEn;
         }
 
         private void OnChoiceSelected(int index)

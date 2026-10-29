@@ -275,7 +275,7 @@ namespace NihongoLife.Island
             foreach (var crop in catalog.crops)
             {
                 bool afford = IslandEconomy.Yen >= crop.seedPrice;
-                var b = Btn(buyRow, $"<b>{IslandLanguage.Title(crop.word)}</b>\n<size=90%><color=#{(afford ? "A06C0A" : "8E948A")}>¥{crop.seedPrice}</color>  <color=#2E6B45>+¥{crop.yield * crop.sellPrice - crop.seedPrice}</color></size>",
+                var b = Btn(buyRow, $"<b>{IslandLanguage.Title(crop.word)}</b>\n<size=90%><color=#{(afford ? "A06C0A" : "8E948A")}>{NihongoLife.Core.Loc.Money(crop.seedPrice)}</color>  <color=#2E6B45>+{NihongoLife.Core.Loc.Money(crop.yield * crop.sellPrice - crop.seedPrice)}</color></size>",
                     () => QuickBuy(crop.SeedItemId, crop.seedPrice), Color.white, Ink, 54f, 14.5f);
                 b.name = "BuySeed_" + crop.id;
                 b.interactable = afford;

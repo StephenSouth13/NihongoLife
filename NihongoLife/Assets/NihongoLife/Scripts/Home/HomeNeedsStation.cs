@@ -42,7 +42,7 @@ namespace NihongoLife.Home
                 }
                 status.RestoreNeeds(0f, waterThirstRestore, 0f);
                 Play(GameAudioCue.Pickup);
-                room?.ShowToast("みずを のみました", NihongoLife.Core.Loc.Triple($"Đã uống nước · Nước +{waterThirstRestore:0}", $"Drank water · Thirst +{waterThirstRestore:0}", $"水分 +{waterThirstRestore:0}"));
+                room?.ShowToast("みずを のみました", NihongoLife.Core.Loc.TripleF("Đã uống nước · Nước +{0:0}", "Drank water · Thirst +{0:0}", "水分 +{0:0}", waterThirstRestore));
                 return;
             }
 
@@ -63,7 +63,7 @@ namespace NihongoLife.Home
             inventory.RemoveItem(food.itemId);
             status.RestoreNeeds(food.foodRestore, food.drinkRestore, food.energyRestore);
             room?.ShowToast(food.useType == ItemUseType.Drink ? "いただきます" : "いただきます！",
-                NihongoLife.Core.Loc.Triple($"Đã dùng {name} · No +{food.foodRestore:0} · Nước +{food.drinkRestore:0}", $"Had {name} · Food +{food.foodRestore:0} · Drink +{food.drinkRestore:0}", $"{name} · 満腹 +{food.foodRestore:0} · 水分 +{food.drinkRestore:0}"));
+                NihongoLife.Core.Loc.TripleF("Đã dùng {0} · No +{1:0} · Nước +{2:0}", "Had {0} · Food +{1:0} · Drink +{2:0}", "{0} · 満腹 +{1:0} · 水分 +{2:0}", name, food.foodRestore, food.drinkRestore));
         }
 
         private static void Play(GameAudioCue cue)

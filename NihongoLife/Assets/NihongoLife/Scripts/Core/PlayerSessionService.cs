@@ -140,8 +140,8 @@ namespace NihongoLife.Core
             if (!PersistGuest) return NewGuest();
             try
             {
-                if (!System.IO.File.Exists(GuestSavePath)) return NewGuest();
-                var loaded = JsonUtility.FromJson<PlayerProgressDto>(System.IO.File.ReadAllText(GuestSavePath));
+                var loaded = NihongoLife.Save.ProgressFile.Read(GuestSavePath, out bool fromBackup);
+                if (fromBackup) Debug.LogWarning("[PlayerSession] Guest save was unreadable - restored the previous save (.bak).");
                 return loaded ?? NewGuest();
             }
             catch (Exception ex)
@@ -156,7 +156,7 @@ namespace NihongoLife.Core
             if (!PersistGuest) return;
             try
             {
-                System.IO.File.WriteAllText(GuestSavePath, JsonUtility.ToJson(progress));
+                NihongoLife.Save.ProgressFile.Write(GuestSavePath, progress);
                 NihongoLife.Save.LocalProgressRepository.FlushWebStorage();
             }
             catch (Exception ex) { Debug.LogWarning("[PlayerSession] Guest save failed: " + ex.Message); }

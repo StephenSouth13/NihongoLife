@@ -5,6 +5,7 @@ using NihongoLife.Core;
 using NihongoLife.Dialogue;
 using NihongoLife.Interaction;
 using NihongoLife.Player;
+using NihongoLife.Progression;
 using NihongoLife.UI;
 using NihongoLife.World;
 using NUnit.Framework;
@@ -134,6 +135,111 @@ namespace NihongoLife.Tests
             go.GetComponent<Collider>().isTrigger = true;
             go.AddComponent<Probe>();
             return go;
+        }
+
+        [UnityTest]
+        public IEnumerator Sushi_CustomersComeAndGo_AndTheMenuShowsTheDishes()
+        {
+            LogAssert.ignoreFailingMessages = true;
+            yield return Town();
+            var flow = Object.FindFirstObjectByType<SceneFlowController>();
+            flow.EnterZone(WorldLocationCatalog.SushiRestaurantScene, WorldLocationCatalog.SushiEntrance, "Sushi");
+            for (float t = 0f; t < 20f && (flow.IsLoading || SceneManager.GetActiveScene().name != WorldLocationCatalog.SushiRestaurantScene); t += Time.unscaledDeltaTime) yield return null;
+            yield return new WaitForSecondsRealtime(1f);
+            var dm = DialogueManager.Instance;
+            while (dm != null && dm.IsOpen) { dm.CancelDialogue(); if (dm.IsOpen) dm.ContinueDialogue(); yield return null; }
+            var diners = Object.FindFirstObjectByType<DinerFlow>();
+            Assert.NotNull(diners, "Sushi Hibari has customers");
+            Assert.GreaterOrEqual(diners.Guests, 1, "Someone is already eating when you walk in");
+            for (float t = 0f; t < 25f && diners.Served == 0; t += Time.deltaTime) yield return null;
+            Assert.Greater(diners.Served, 0, "A customer came in, sat down and was served");
+            foreach (Transform guest in diners.transform)
+                if (guest.name.StartsWith("Diner_")) Assert.IsEmpty(guest.GetComponentsInChildren<Collider>(), "Customers never block the player");
+            var cam = Camera.main;
+            cam.transform.SetPositionAndRotation(new Vector3(506.5f, 2.6f, -6.5f), Quaternion.LookRotation(new Vector3(499f, 0.8f, 2.5f) - new Vector3(506.5f, 2.6f, -6.5f)));
+            Capture("05_sushi_customers");
+            for (float t = 0f; t < 70f && diners.Paid == 0; t += Time.deltaTime) yield return null;
+            Assert.Greater(diners.Paid, 0, "…ate, paid at the register and left");
+
+            // The menu: a picture on every dish row, a big one with the description.
+            var board = Object.FindFirstObjectByType<RestaurantMenuBoard>();
+            Assert.NotNull(board);
+            board.Interact(Object.FindFirstObjectByType<PlayerController>().gameObject);
+            yield return null;
+            var panel = GameObject.Find("RestaurantMenuPanel");
+            Assert.NotNull(panel, "The menu opens");
+            var tabs = panel.GetComponentsInChildren<UnityEngine.UI.Button>().Where(b => b.name.StartsWith("Tab_")).ToArray();
+            var rows = panel.GetComponentsInChildren<UnityEngine.UI.Button>().Where(b => b.name.StartsWith("Entry_")).ToArray();
+            Assert.Greater(rows.Length, 0, "Dishes are listed");
+            Assert.IsTrue(rows.Any(r => r.transform.Find("Picture") != null), "Dish rows have pictures");
+            rows.First(r => r.transform.Find("Picture") != null).onClick.Invoke();
+            yield return null;
+            var hero = panel.GetComponentsInChildren<UnityEngine.UI.RawImage>(true).FirstOrDefault(r => r.name == "DetailPicture");
+            Assert.NotNull(hero);
+            Assert.IsTrue(hero.gameObject.activeInHierarchy && hero.texture != null, "The selected dish is shown big");
+            Capture("06_sushi_menu_pictures");
+        }
+
+        [UnityTest]
+        public IEnumerator Clinic_QuickVisit_TrainingRoom_AndDoctorsNotebook()
+        {
+            LogAssert.ignoreFailingMessages = true;
+            yield return Town();
+            var flow = Object.FindFirstObjectByType<SceneFlowController>();
+            flow.EnterZone(WorldLocationCatalog.ClinicScene, WorldLocationCatalog.ClinicEntrance, "Clinic");
+            for (float t = 0f; t < 20f && (flow.IsLoading || SceneManager.GetActiveScene().name != WorldLocationCatalog.ClinicScene); t += Time.unscaledDeltaTime) yield return null;
+            yield return new WaitForSecondsRealtime(1f);
+            var status = PlayerStatus.Instance;
+            var inventory = PlayerInventory.Instance;
+
+            // A sick patient: one step, healed, the fee paid — or billed when the wallet is empty.
+            var cold = NihongoLife.Health.PlayerIllness.Catch("cold", false);
+            float coldLeft = cold.until - NihongoLife.Health.PlayerIllness.Now;
+            status.DebugSetNeeds(health: status.MaxHealth * 0.3f);
+            inventory.AddYen(2000);
+            int yen = inventory.Yen;
+            NihongoLife.Clinic.ClinicVisit.QuickVisit();
+            Assert.AreEqual(status.MaxHealth, status.CurrentHealth, 0.5f, "Healed by the quick visit");
+            // A doctor does not "cure" a cold (illnesses.json cold.clinicShorten = 0.5, HEALTH_SOURCES.md): it is treated and shortened.
+            Assert.IsTrue(cold.treated, "The cold is treated");
+            Assert.LessOrEqual(cold.until - NihongoLife.Health.PlayerIllness.Now, coldLeft * 0.5f + 0.01f, "The doctor shortens the cold by the catalogue share");
+            Assert.AreEqual(yen - NihongoLife.Clinic.ClinicCatalog.Load().visitFeeYen, inventory.Yen, "The fee is paid");
+            inventory.ApplyFine(inventory.Yen);
+            NihongoLife.Bank.BankService.Record.loans.Clear();
+            NihongoLife.Clinic.ClinicVisit.QuickVisit();
+            Assert.AreEqual(NihongoLife.Bank.BankService.ClinicBill, NihongoLife.Bank.BankService.Loans.Single().productId, "No money: the fee is billed for later");
+            NihongoLife.Bank.BankService.Record.loans.Clear();
+
+            // The training room corner is in the clinic; a medical career studies a case and it enters the notebook.
+            var spot = Object.FindObjectsByType<NihongoLife.Clinic.ClinicSpot>(FindObjectsSortMode.None).FirstOrDefault(c => c.name == "Spot_Training");
+            Assert.NotNull(spot, "ClinicBuilder placed the training corner");
+            CareerService.Bypass = true;
+            try
+            {
+                if (CareerService.State.HasCareer) CareerService.Quit();
+                Assert.IsNull(CareerService.Choose("medical"));
+                Assert.IsTrue(NihongoLife.Clinic.MedicalTraining.IsMedical);
+                var first = NihongoLife.Clinic.MedicalTraining.Next();
+                int knowledge = status.Knowledge;
+                NihongoLife.Clinic.MedicalTraining.Study(first);
+                yield return null;
+                Assert.IsTrue(JobQuizCard.IsOpen, "The case opens as a question");
+                var cam = Camera.main;
+                cam.transform.SetPositionAndRotation(new Vector3(650.2f, 1.9f, 2.6f), Quaternion.LookRotation(new Vector3(650.2f, 1.2f, 7.8f) - new Vector3(650.2f, 1.9f, 2.6f)));
+                Capture("07_training_case");
+                JobQuizCard.Close();
+                NihongoLife.Clinic.MedicalTraining.Solve(first);
+                Assert.Contains(first.id, CareerService.State.trainedCases, "Solved cases are recorded");
+                Assert.AreEqual(knowledge + NihongoLife.Clinic.MedicalTraining.Catalog.knowledgePerCase, status.Knowledge, "Knowledge for the ladder");
+                HandbookUI.Open(HandbookUI.Chapter.Doctor, first.id);
+                yield return null;
+                Assert.AreEqual(HandbookUI.Chapter.Doctor, HandbookUI.CurrentChapter);
+                Assert.AreEqual(NihongoLife.Clinic.MedicalTraining.Catalog.cases.Length, HandbookUI.EntryIds.Count(), "Every case is in the notebook");
+                Capture("08_doctors_notebook");
+                HandbookUI.Close();
+                CareerService.Quit();
+            }
+            finally { CareerService.Bypass = false; }
         }
 
         [UnityTest]

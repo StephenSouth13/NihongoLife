@@ -43,6 +43,7 @@ namespace NihongoLife.Tests
             IslandFishing.BiteDelayOverride = null;
             IslandFishing.ForcedFishId = null;
             IslandFishing.BiteWindow = 1.8f;
+            IslandAfkRod.BiteDelayOverride = null; IslandAfkRod.BiteWindow = 25f;
             IslandState.ClockOffset = System.TimeSpan.Zero;
         }
 
@@ -361,6 +362,79 @@ namespace NihongoLife.Tests
         private static void Take(PlayerInventory bag, string id) { int n = bag.GetItemQuantity(id); if (n > 0) bag.RemoveItem(id, n); }
 
         private static IProgressRepository Repository() { GameServices.TryGet(out IProgressRepository r); return r; }
+
+        [UnityTest]
+        public IEnumerator Island_AfkRod_NeedsSkill_PlantWaitBite_PullUp()
+        {
+            yield return LoadIsland();
+            var bag = PlayerInventory.Instance;
+            var record = IslandState.Record;
+            var spot = Object.FindFirstObjectByType<FishingSpot>();
+            var stand = IslandAfkRod.EnsureFor(spot);
+            Assert.NotNull(stand, "A set-rod stand exists beside the fishing spot");
+            Assert.AreSame(stand, IslandAfkRod.EnsureFor(spot), "One stand per spot");
+            Take(bag, IslandAfkRod.ToolId);
+            IslandAfkRod.BiteDelayOverride = 1.0f;
+            IslandFishing.ForcedFishId = "fish_tai";
+            yield return StandAt(stand.transform, 0.8f);
+
+            // Not owned: refused. Owned but fishing skill too low: refused.
+            record.fished = 0;
+            stand.Interact(_player.gameObject);
+            Assert.AreEqual(IslandAfkRod.State.Empty, stand.Current, "No rod - nothing planted");
+            IslandEconomy.Give(IslandAfkRod.ToolId, 1);
+            Assert.AreEqual(1, FishingSkill.Level);
+            stand.Interact(_player.gameObject);
+            Assert.AreEqual(IslandAfkRod.State.Empty, stand.Current, "Skill level 1 - the set rod is locked");
+            Assert.AreEqual(2, FishingSkill.LevelFor(3));
+            Assert.AreEqual(4, FishingSkill.LevelFor(30));
+
+            // Skill learned (3 fish): plant it.
+            record.fished = 3;
+            Assert.AreEqual(FishingSkill.AfkRodLevel, FishingSkill.Level);
+            int uses0 = IslandTools.Left(IslandAfkRod.ToolId);
+            stand.Interact(_player.gameObject);
+            Assert.AreEqual(IslandAfkRod.State.Waiting, stand.Current, "Rod planted and waiting");
+            yield return null;
+            Assert.NotNull(GameObject.Find("AfkRodFloat"), "The float is on the water");
+            Assert.NotNull(GameObject.Find("AfkRodPole"), "The rod is planted on the shore");
+            Capture("60_afk_planted");
+            CaptureFrom("60b_afk_overview", stand.transform.position + new Vector3(8f, 4f, -6f), spot.castTarget.position);
+
+            // Waits by itself, then a fish bites and the marker shows.
+            float t = 0f;
+            while (stand.Current != IslandAfkRod.State.Bite && t < 6f) { t += Time.unscaledDeltaTime; yield return null; }
+            Assert.AreEqual(IslandAfkRod.State.Bite, stand.Current, "A fish bites by itself");
+            yield return null;
+            var mark = GameObject.Find("AfkRodBiteMark");
+            Assert.IsTrue(mark != null && mark.activeSelf, "Red bite marker shown");
+            Capture("61_afk_bite");
+
+            // F pulls it up: exactly one fish, one use of wear, skill progress, then it fishes on.
+            int fish0 = bag.GetItemQuantity("fish_tai"), fished0 = record.fished;
+            stand.Interact(_player.gameObject);
+            Assert.AreEqual(fish0 + 1, bag.GetItemQuantity("fish_tai"), "Exactly one fish");
+            Assert.AreEqual(fished0 + 1, record.fished);
+            Assert.AreEqual(uses0 - 1, IslandTools.Left(IslandAfkRod.ToolId), "One use of wear");
+            Assert.AreEqual(IslandAfkRod.State.Waiting, stand.Current, "Re-armed after the catch");
+            Assert.IsFalse(mark != null && mark.activeSelf, "Marker hidden after the pull");
+
+            // Ignore the next bite: the fish escapes, nothing is given, it re-arms.
+            IslandAfkRod.BiteWindow = 0.5f;
+            t = 0f;
+            while (stand.Current != IslandAfkRod.State.Bite && t < 6f) { t += Time.unscaledDeltaTime; yield return null; }
+            Assert.AreEqual(IslandAfkRod.State.Bite, stand.Current);
+            yield return new WaitForSecondsRealtime(0.8f);
+            Assert.AreEqual(IslandAfkRod.State.Waiting, stand.Current, "Missed bite - the fish escaped and the rod re-armed");
+            Assert.AreEqual(fish0 + 1, bag.GetItemQuantity("fish_tai"), "An escaped fish gives nothing");
+
+            // F while waiting takes the rod back.
+            stand.Interact(_player.gameObject);
+            Assert.AreEqual(IslandAfkRod.State.Empty, stand.Current, "Taken back");
+            yield return null;
+            Assert.IsNull(GameObject.Find("AfkRodFloat"), "Float removed");
+            Assert.AreEqual(1, IslandEconomy.Owned(IslandAfkRod.ToolId), "The rod is still owned");
+        }
 
         private IEnumerator Press(GameInputId id)
         {

@@ -9,6 +9,7 @@ using UnityEngine.EventSystems;
 using UnityEngine.Rendering;
 using NihongoLife.Player;
 using UnityEngine.AI;
+using System.Collections;
 
 namespace NihongoLife.UI
 {
@@ -54,7 +55,8 @@ namespace NihongoLife.UI
         private RawImage _topDownImage;
         private Camera _topDownCamera;
         private RenderTexture _topDownTexture;
-        private Button _areaTab, _overviewTab;
+        private Button _areaTab, _overviewTab, _guideButton;
+        private TextMeshProUGUI _sidebarTitle;
         private bool _showTopDown;
         private TextMeshProUGUI _header, _location, _coordinates;
         private Transform _player;
@@ -65,7 +67,14 @@ namespace NihongoLife.UI
         private readonly List<MapPlace> _places = new List<MapPlace>();
         private readonly List<Rect> _labelRects = new List<Rect>();
         private readonly List<(MapPlace place, TextMeshProUGUI distance)> _rows = new List<(MapPlace, TextMeshProUGUI)>();
-        public bool IsVisible => _overlay != null && _overlay.activeSelf;
+        private CanvasGroup _group;
+        private RectTransform _window, _legend;
+        private Coroutine _anim;
+        private bool _closing, _isCity;
+        public bool IsVisible => _overlay != null && _overlay.activeSelf && !_closing;
+        /// <summary>True while the open/close animation is running (tests, captures).</summary>
+        public bool IsAnimating => _anim != null;
+        public float WindowAlpha => _group != null ? _group.alpha : 0f;
         public event Action<bool> OnVisibilityChanged;
 
         public void Initialize(TMP_FontAsset font)
@@ -81,7 +90,9 @@ namespace NihongoLife.UI
             _overlay.GetComponent<Image>().color = new Color(0f, 0.01f, 0.02f, 0.72f);
             _overlay.transform.SetAsLastSibling();
 
+            _group = _overlay.AddComponent<CanvasGroup>();
             var window = NLUi.Panel(_overlay.transform, "MapWindow", NLUi.Ink);
+            _window = window;
             NLUi.Anchor(window, new Vector2(0.5f, 0.5f), Vector2.zero, new Vector2(1400f, 800f));
 
             _header = NLUi.Label(window, "Header", "", 30f, NLUi.Gold, _font, FontStyles.Bold);
@@ -89,7 +100,8 @@ namespace NihongoLife.UI
             _location = NLUi.Label(window, "Location", "", 18f, NLUi.Muted, _font);
             NLUi.Anchor(_location.rectTransform, new Vector2(0f, 1f), new Vector2(38f, -70f), new Vector2(700f, 28f));
 
-            var guide = NLUi.Button(window, "GuideButton", NihongoLife.Core.Loc.T("Sổ tay · địa điểm", "Handbook · places", "ハンドブック・場所"), _font, () => LocationGuideUI.Open(), NLUi.Gold, 17f, NLUi.Ink, 44f);
+            var guide = NLUi.Button(window, "GuideButton", GuideLabel(), _font, () => LocationGuideUI.Open(), NLUi.Gold, 17f, NLUi.Ink, 44f);
+            _guideButton = guide;
             NLUi.Anchor((RectTransform)guide.transform, new Vector2(1f, 0f), new Vector2(-30f, 22f), new Vector2(230f, 44f));
             ((RectTransform)guide.transform).pivot = new Vector2(1f, 0f);
 
@@ -109,6 +121,7 @@ namespace NihongoLife.UI
             areaGo.GetComponent<Mask>().showMaskGraphic = true;
             var clickTarget = _mapArea.gameObject.AddComponent<MapClickTarget>();
             clickTarget.Clicked += HandleMapClick;
+            MapPremium.PolishWindow(window, mapFrame);
 
             BuildTabs(window);
 
@@ -116,7 +129,7 @@ namespace NihongoLife.UI
             NLUi.Anchor(sidebar, new Vector2(1f, 1f), new Vector2(-30f, -112f), new Vector2(362f, MapH + 12f));
             var layout = sidebar.GetComponent<VerticalLayoutGroup>();
             layout.childForceExpandHeight = false;
-            NLUi.Label(sidebar, "Title", "ちめい  <size=75%><color=#A8B4C4>Địa điểm · bấm để đi tới</color></size>", 21f, NLUi.Text, _font, FontStyles.Bold);
+            _sidebarTitle = NLUi.Label(sidebar, "Title", SidebarTitle(), 21f, NLUi.Text, _font, FontStyles.Bold);
             // Many places (Phú Quốc has 31): the list scrolls inside the panel.
             var listRoot = new GameObject("ListScroll", typeof(RectTransform), typeof(LayoutElement)).GetComponent<RectTransform>();
             listRoot.SetParent(sidebar, false);
@@ -137,8 +150,14 @@ namespace NihongoLife.UI
             if (_topDownTexture != null) { _topDownTexture.Release(); Destroy(_topDownTexture); }
         }
 
+        private static string GuideLabel() => NihongoLife.Core.Loc.T("Sổ tay · địa điểm", "Handbook · places", "ハンドブック・場所");
+
+        private static string SidebarTitle() => "ちめい  <size=75%><color=#A8B4C4>" + NihongoLife.Core.Loc.T("Địa điểm · bấm để đi tới", "Places · click to travel", "場所・クリックで移動") + "</color></size>";
+
         private void HandleGlobalLanguageChanged(GameLanguage _)
         {
+            if (_guideButton != null) _guideButton.GetComponentInChildren<TextMeshProUGUI>().text = GuideLabel();
+            if (_sidebarTitle != null) _sidebarTitle.text = SidebarTitle();
             if (_areaTab != null) _areaTab.GetComponentInChildren<TextMeshProUGUI>().text = L("Khu vực hiện tại", "Current area", "現在のエリア");
             if (_overviewTab != null) _overviewTab.GetComponentInChildren<TextMeshProUGUI>().text = L("Bản đồ tổng", "Overview map", "全体マップ");
             if (IsVisible) { BuildMap(); RefreshMarker(); }
@@ -147,18 +166,59 @@ namespace NihongoLife.UI
         public void SetVisible(bool visible)
         {
             if (_overlay == null) return;
-            _overlay.SetActive(visible);
-            if (visible) _overlay.transform.SetAsLastSibling();
+            if (_anim != null) { StopCoroutine(_anim); _anim = null; }
+            bool animate = isActiveAndEnabled;
+            if (visible)
+            {
+                _closing = false;
+                _group.blocksRaycasts = true;
+                _group.interactable = true;
+                _overlay.SetActive(true);
+                _overlay.transform.SetAsLastSibling();
+            }
+            else
+            {
+                bool wasOpen = _overlay.activeSelf && !_closing;
+                _closing = wasOpen && animate;
+                if (!_closing) _overlay.SetActive(false);
+                _group.blocksRaycasts = false;
+                _group.interactable = false;
+            }
             OnVisibilityChanged?.Invoke(visible);
             if (!visible)
             {
                 if (_topDownCamera != null) _topDownCamera.enabled = false;
+                if (_closing) _anim = StartCoroutine(Animate(false));
                 return;
             }
             GameObject found = GameObject.FindWithTag("Player");
             _player = found != null ? found.transform : null;
             BuildMap(); RefreshMarker();
             UpdateTopDownCamera();
+            if (animate) _anim = StartCoroutine(Animate(true)); else Apply(1f);
+        }
+
+        private void Apply(float k)
+        {
+            _group.alpha = k;
+            if (_window != null) _window.localScale = Vector3.one * Mathf.Lerp(0.94f, 1f, k);
+        }
+
+        private IEnumerator Animate(bool show)
+        {
+            float duration = show ? 0.22f : 0.15f;
+            float t = 0f;
+            Apply(show ? 0f : 1f);
+            while (t < duration)
+            {
+                yield return null;
+                t += Time.unscaledDeltaTime;
+                float k = Mathf.Clamp01(t / duration);
+                Apply(show ? 1f - Mathf.Pow(1f - k, 3f) : 1f - k * k);
+            }
+            Apply(show ? 1f : 0f);
+            if (!show) { _overlay.SetActive(false); _closing = false; }
+            _anim = null;
         }
 
         private void BuildTabs(Transform window)
@@ -182,7 +242,8 @@ namespace NihongoLife.UI
             _showTopDown = topDown;
             _topDownImage.gameObject.SetActive(topDown);
             foreach (Transform child in _mapArea)
-                if (child.name == "Route" || child.name == "Grid" || child.name.StartsWith("Place_")) child.gameObject.SetActive(!topDown);
+                if (child.name == "Route" || child.name == "Grid" || child.name.StartsWith("Place_") || child.name.StartsWith("District_")) child.gameObject.SetActive(!topDown);
+            if (_legend != null) _legend.gameObject.SetActive(!topDown);
             _mapArea.GetComponent<MapClickTarget>().enabled = true;
             if (_areaTab != null) _areaTab.GetComponent<Image>().color = topDown ? NLUi.Gold : NLUi.Card;
             if (_overviewTab != null) _overviewTab.GetComponent<Image>().color = topDown ? NLUi.Card : NLUi.Gold;
@@ -235,6 +296,7 @@ namespace NihongoLife.UI
             string scene = SceneManager.GetActiveScene().name;
             _location.text = L("Bạn đang ở: ", "You are in: ", "現在地: ") + WorldLocationCatalog.Get(scene).DisplayName;
             _metresPerUnit = 1f;
+            _isCity = false;
             if (scene == WorldLocationCatalog.StationScene) StationMap();
             else if (scene == WorldLocationCatalog.SushiRestaurantScene) SushiMap();
             else if (scene == WorldLocationCatalog.SchoolScene) SchoolMap();
@@ -244,10 +306,12 @@ namespace NihongoLife.UI
             else if (scene == WorldLocationCatalog.PhuQuocIslandScene) PhuQuocIslandMap();
             else CityMap();
             DrawGrid();
+            DrawDistricts();
             _labelRects.Clear();
             foreach (var place in _places) DrawPlace(place);
             BuildSidebar();
             DrawPlayerMarker();
+            DrawDecor();
             SetMapMode(_showTopDown);
         }
 
@@ -255,6 +319,7 @@ namespace NihongoLife.UI
 
         private void CityMap()
         {
+            _isCity = true;
             _header.text = L("BẢN ĐỒ HIBARI-CHŌ", "HIBARI-CHŌ MAP", "ひばり町 地図");
             // Streets as CityStreetBuilder lays them: Sakura-dōri (with its sidewalks), the side lane north–south,
             // the back alley west behind the north row, and the park behind it.
@@ -426,6 +491,46 @@ namespace NihongoLife.UI
 
         // ─────────── Drawing ───────────
 
+        private void DrawDistricts()
+        {
+            if (_mapArea == null) return;
+            string scene = SceneManager.GetActiveScene().name;
+            if (scene == WorldLocationCatalog.PhuQuocIslandScene && !_isCity)
+            {
+                MapPremium.SeaLabel(_mapArea, _font, MapPremium.N4("Vịnh Thái Lan", "Gulf of Thailand", "タイ湾", "Тайский залив"), new Vector2(-MapW * 0.36f, -MapH * 0.12f));
+                return;
+            }
+            if (!_isCity) return;
+            int index = 1;
+            void Zone(float x0, float z0, float x1, float z1, string vi, string en, string ja, string ru, Color tint)
+            {
+                Vector2 a = MapPos(x0, z0), b = MapPos(x1, z1);
+                MapPremium.District(_mapArea, _font, MapPremium.N4(vi, en, ja, ru), (a + b) * 0.5f, new Vector2(Mathf.Abs(b.x - a.x), Mathf.Abs(b.y - a.y)), tint, index++);
+            }
+            Zone(-50f, -17f, 58f, -3f, "Phố Sakura", "Sakura-dori", "桜通り", "Улица Сакура", new Color(.2f, .76f, .66f));
+            Zone(-36f, -2f, -14f, 9f, "Khu dân cư", "Residential", "住宅街", "Жилой квартал", new Color(.62f, .76f, .38f));
+            Zone(-12f, -2f, 12f, 9f, "Trung tâm phố", "Town centre", "商店街", "Центр", new Color(.85f, .7f, .4f));
+            Zone(14f, -2f, 36f, 9f, "Khu ga", "Station quarter", "駅前", "Район вокзала", new Color(.3f, .62f, .94f));
+            Zone(-22f, -27f, 28f, -18f, "Học đường & dịch vụ", "Campus & services", "学園エリア", "Кампус и сервисы", new Color(.75f, .45f, .9f));
+            Zone(-50f, 30f, -26f, 48f, "Công viên", "Park", "公園エリア", "Парк", new Color(.42f, .72f, .4f));
+        }
+
+        private void DrawDecor()
+        {
+            MapPremium.Compass(_mapArea, _font, MapW, MapH);
+            if (_places.Exists(x => x.HasWorld))
+                MapPremium.ScaleBar(_mapArea, _font, MapW, MapH, _metresPerUnit * (_worldMax.x - _worldMin.x) / (MapW - Inset));
+            var items = new List<(string key, string name, Color color, string glyph)>();
+            items.Add(("YOU", MapPremium.YouLabel, NLUi.Gold, ""));
+            if (_places.Exists(x => x.Locked)) items.Add(("LOCKED", MapPremium.LockedLabel, new Color(0.42f, 0.45f, 0.5f), "x"));
+            var seen = new HashSet<string>();
+            foreach (var place in _places)
+                if (items.Count < 14 && MapPremium.HasCategory(place.Type) && seen.Add(place.Type))
+                    items.Add((place.Type, MapPremium.CategoryName(place.Type), place.Color, place.Glyph));
+            _legend = MapPremium.Legend(_window, _font, items);
+            _legend.gameObject.SetActive(!_showTopDown);
+        }
+
         private void DrawGrid()
         {
             var grid = new GameObject("Grid", typeof(RectTransform));
@@ -452,6 +557,9 @@ namespace NihongoLife.UI
         {
             var road = NLUi.Panel(_mapArea, "Route", new Color(0.26f, 0.32f, 0.35f, 1f));
             road.GetComponent<Image>().raycastTarget = false;
+            var edge = road.gameObject.AddComponent<Outline>();
+            edge.effectColor = new Color(0.1f, 0.14f, 0.16f, 0.9f);
+            edge.effectDistance = new Vector2(2f, 2f);
             NLUi.Anchor(road, new Vector2(0.5f, 0.5f), p, s);
             road.localRotation = Quaternion.Euler(0, 0, angle);
         }
@@ -463,6 +571,9 @@ namespace NihongoLife.UI
             float size = place.Quiet ? 26f : 46f;
             NLUi.Anchor(marker, new Vector2(0.5f, 0.5f), place.Pixel, new Vector2(size, size));
             marker.GetComponent<Image>().raycastTarget = false;
+            var drop = marker.gameObject.AddComponent<Shadow>();
+            drop.effectColor = new Color(0f, 0f, 0f, 0.5f);
+            drop.effectDistance = new Vector2(0f, -3f);
             NLUi.Stretch(NLUi.Label(marker, "Glyph", place.Glyph, size * 0.56f, new Color(0.08f, 0.1f, 0.12f), _font, FontStyles.Bold, TextAlignmentOptions.Center).rectTransform);
             if (place.Quiet) return;
             string text = string.IsNullOrEmpty(place.Short) ? place.Name : place.Short;
@@ -544,6 +655,13 @@ namespace NihongoLife.UI
             _playerMarker.localRotation = Quaternion.Euler(0f, 0f, -_player.eulerAngles.y);
             var label = _playerMarker.Find("Label");
             if (label != null) label.rotation = Quaternion.identity;
+            var ring = _playerMarker.Find("Ring");
+            if (ring != null)
+            {
+                float k = (Mathf.Sin(Time.unscaledTime * 3.2f) + 1f) * 0.5f;
+                ring.localScale = Vector3.one * (1f + 0.4f * k);
+                ring.GetComponent<Image>().color = new Color(1f, 0.82f, 0.2f, 0.4f - 0.3f * k);
+            }
             foreach (var (place, distance) in _rows)
             {
                 float metres = place.HasWorld ? Vector2.Distance(p, place.World) * _metresPerUnit : 0f;

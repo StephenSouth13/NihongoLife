@@ -68,37 +68,38 @@ namespace NihongoLife.UI
             _root = (RectTransform)rootGo.transform;
             NLUi.Stretch(_root);
 
-            _box = NLUi.Panel(_root, "DialogueBox", NLUi.Ink, new RectOffset(34, 34, 22, 20), 10f);
-            NLUi.Anchor(_box, new Vector2(0.5f, 0f), new Vector2(0f, 34f), new Vector2(1320f, 0f));
+            _box = NLUi.Panel(_root, "DialogueBox", NLUi.Ink, new RectOffset(26, 26, 12, 12), 5f);
+            NLUi.Anchor(_box, new Vector2(0.5f, 0f), new Vector2(0f, 22f), new Vector2(1000f, 0f));
             NLUi.FitContent(_box);
 
             var header = NLUi.Group(_box, "Header", false, 12f, TextAnchor.MiddleLeft);
             ((HorizontalLayoutGroup)header.GetComponent<HorizontalOrVerticalLayoutGroup>()).childForceExpandWidth = false;
-            _speakerPill = NLUi.Pill(header, "Speaker", "", _font, NLUi.Gold, new Color(0.1f, 0.08f, 0.04f), 19f);
+            _speakerPill = NLUi.Pill(header, "Speaker", "", _font, NLUi.Gold, new Color(0.1f, 0.08f, 0.04f), 16f);
             _speaker = _speakerPill.GetComponentInChildren<TextMeshProUGUI>();
             var spacer = new GameObject("Spacer", typeof(RectTransform));
             spacer.transform.SetParent(header, false);
             NLUi.Size(spacer.transform, flexibleWidth: 1f);
-            _mode = NLUi.Label(header, "Mode", "", 15f, NLUi.Muted, _font, FontStyles.Normal, TextAlignmentOptions.Right);
+            _mode = NLUi.Label(header, "Mode", "", 13f, NLUi.Muted, _font, FontStyles.Normal, TextAlignmentOptions.Right);
             _mode.textWrappingMode = TextWrappingModes.NoWrap;
             var closeSpace = new GameObject("CloseSpace", typeof(RectTransform));
             closeSpace.transform.SetParent(header, false);
-            NLUi.Size(closeSpace.transform, 46f, 46f);
+            NLUi.Size(closeSpace.transform, 38f, 38f);
 
-            _japanese = NLUi.Label(_box, "Japanese", "", 33f, NLUi.Text, _font, FontStyles.Bold);
-            _japanese.lineSpacing = 6f;
-            _reading = NLUi.Label(_box, "Reading", "", 19f, NLUi.Muted, _font);
-            _romaji = NLUi.Label(_box, "Romaji", "", 17f, new Color(0.6f, 0.66f, 0.74f), _font, FontStyles.Italic);
-            _meaning = NLUi.Label(_box, "Meaning", "", 21f, NLUi.Soft, _font);
+            _japanese = NLUi.Label(_box, "Japanese", "", 27f, NLUi.Text, _font, FontStyles.Bold);
+            _japanese.lineSpacing = 2f;
+            _reading = NLUi.Label(_box, "Reading", "", 16f, NLUi.Muted, _font);
+            _romaji = NLUi.Label(_box, "Romaji", "", 14f, new Color(0.6f, 0.66f, 0.74f), _font, FontStyles.Italic);
+            _meaning = NLUi.Label(_box, "Meaning", "", 18f, NLUi.Soft, _font);
 
-            _choiceRoot = NLUi.Group(_box, "Choices", true, 8f);
+            _choiceRoot = NLUi.Group(_box, "Choices", true, 4f);
             NLUi.Divider(_box).SetSiblingIndex(_choiceRoot.GetSiblingIndex());
-            _hint = NLUi.Label(_box, "Hint", "", 15f, NLUi.Muted, _font, FontStyles.Normal, TextAlignmentOptions.Right);
-            _closeButton = NLUi.CloseButton(_box, _font, Leave, 42f, 14f);
+            _hint = NLUi.Label(_box, "Hint", "", 12f, NLUi.Muted, _font, FontStyles.Normal, TextAlignmentOptions.Right);
+            _closeButton = NLUi.CloseButton(_box, _font, Leave, 34f, 10f);
             _root.gameObject.SetActive(false);
             _resumeButton = NLUi.Button(canvas, "ResumeDialogue", NihongoLife.Core.Loc.T("Tiếp hội thoại · R", "Resume conversation · R", "会話を続ける · R"), _font,
                 () => DialogueManager.Instance?.ResumeDialogue(), NLUi.Card, 20f, null, 52f);
             NLUi.Anchor((RectTransform)_resumeButton.transform, new Vector2(0.5f, 0f), new Vector2(0f, 104f), new Vector2(280f, 52f));
+            NihongoLife.Core.Loc.Watch(_resumeButton, () => { var label = _resumeButton.GetComponentInChildren<TMPro.TMP_Text>(true); if (label != null) label.text = NihongoLife.Core.Loc.T("Tiếp hội thoại · R", "Resume conversation · R", "会話を続ける · R"); });
             _resumeButton.gameObject.SetActive(false);
         }
 
@@ -126,7 +127,8 @@ namespace NihongoLife.UI
 
             bool guided = data.learningMode == LearningMode.GuidedPractice;
             bool assessment = data.learningMode == LearningMode.Assessment;
-            SetLine(_reading, assessment ? null : data.textReading);
+            // A reading identical to the line (kana-only text) adds nothing: drop it to keep the box short.
+            SetLine(_reading, assessment || string.Equals(data.textReading?.Trim(), data.textJa?.Trim(), StringComparison.Ordinal) ? null : data.textReading);
             SetLine(_romaji, guided ? data.textRomaji : null);
             SetLine(_meaning, assessment ? null : data.textEn);
 
@@ -140,17 +142,23 @@ namespace NihongoLife.UI
                 for (int i = 0; i < choices.Count; i++)
                 {
                     int index = i;
-                    var card = NLUi.Panel(_choiceRoot, "Choice_" + (i + 1), NLUi.Card, new RectOffset(16, 18, 10, 10), 14f, vertical: false);
+                    var card = NLUi.Panel(_choiceRoot, "Choice_" + (i + 1), NLUi.Card, new RectOffset(12, 14, 5, 5), 10f, vertical: false);
                     var row = (HorizontalLayoutGroup)card.GetComponent<HorizontalOrVerticalLayoutGroup>();
                     row.childForceExpandWidth = false;
                     row.childAlignment = TextAnchor.MiddleLeft;
-                    var badge = NLUi.Pill(card, "Number", (i + 1).ToString(), _font, new Color(1f, 1f, 1f, 0.1f), NLUi.Gold, 18f);
-                    NLUi.Size(badge, preferredWidth: 38f);
-                    var texts = NLUi.Group(card, "Texts", true, 2f);
+                    var badge = NLUi.Pill(card, "Number", (i + 1).ToString(), _font, new Color(1f, 1f, 1f, 0.1f), NLUi.Gold, 15f);
+                    NLUi.Size(badge, preferredWidth: 32f);
+                    // One line per answer: the Japanese on the left, its meaning (guided mode) muted on the right.
+                    var texts = NLUi.Group(card, "Texts", false, 16f, TextAnchor.MiddleLeft);
+                    ((HorizontalLayoutGroup)texts.GetComponent<HorizontalOrVerticalLayoutGroup>()).childForceExpandWidth = false;
                     NLUi.Size(texts, flexibleWidth: 1f);
-                    NLUi.Label(texts, "Ja", choices[i].textJa, 23f, NLUi.Text, _font);
+                    var ja = NLUi.Label(texts, "Ja", choices[i].textJa, 20f, NLUi.Text, _font);
+                    NLUi.Size(ja, flexibleWidth: 1f);
                     if (!assessment && guided && !string.IsNullOrWhiteSpace(choices[i].Gloss))
-                        NLUi.Label(texts, "Meaning", choices[i].Gloss, 16f, NLUi.Muted, _font);
+                    {
+                        var gloss = NLUi.Label(texts, "Meaning", choices[i].Gloss, 13f, NLUi.Muted, _font, FontStyles.Normal, TextAlignmentOptions.Right);
+                        NLUi.Size(gloss, preferredWidth: 360f);
+                    }
                     var button = card.gameObject.AddComponent<Button>();
                     button.targetGraphic = card.GetComponent<Image>();
                     button.transition = Selectable.Transition.None;

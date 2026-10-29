@@ -64,7 +64,7 @@ namespace NihongoLife.School
             if (!_welcomed && SceneManager.GetActiveScene() == gameObject.scene)
             {
                 _welcomed = true;
-                Banner("ひばり日本語学院 へ ようこそ", "Lớp N5 của cô Morita · bàn thi ở đầu lớp — F để làm đề JLPT / IELTS", new Color(0.55f, 0.85f, 1f), 5f);
+                Banner("ひばり日本語学院 へ ようこそ", NihongoLife.Core.Loc.T("Lớp N5 của cô Morita · bàn thi ở đầu lớp — F để làm đề JLPT / IELTS", "Ms. Morita's N5 class · exam desk at the front — press F to take a JLPT / IELTS test", "森田先生のN5クラス · 教室の前の受験机 — Fで JLPT / IELTS の模試に挑戦"), new Color(0.55f, 0.85f, 1f), 5f);
             }
             if (_exams == null && ExamManager.Instance != null) Bind(ExamManager.Instance);
             if (_exams == null) return;
@@ -74,7 +74,7 @@ namespace NihongoLife.School
         }
 
         public void OnExamDeskUsed() =>
-            Banner("しけん の じかん です", "Chọn một đề: JLPT N5 hoặc IELTS — làm bài nghiêm túc nhé!", NLUi.Gold, 3f);
+            Banner("しけん の じかん です", NihongoLife.Core.Loc.T("Chọn một đề: JLPT N5 hoặc IELTS — làm bài nghiêm túc nhé!", "Pick a test: JLPT N5 or IELTS — take it seriously!", "試験を選んでください：JLPT N5 または IELTS — まじめに頑張ろう！"), NLUi.Gold, 3f);
 
         private void Bind(ExamManager exams)
         {
@@ -143,7 +143,7 @@ namespace NihongoLife.School
         {
             if (blackboardScore == null) return;
             int best = PlayerPrefs.GetInt(BestScoreKey, 0);
-            blackboardScore.text = best > 0 ? $"さいこうてん  {best}\n<size=60%>Điểm cao nhất của bạn</size>" : "もぎしけん  N5 · IELTS\n<size=60%>Bàn thi ở đầu lớp · F</size>";
+            blackboardScore.text = best > 0 ? $"さいこうてん  {best}\n<size=60%>"+NihongoLife.Core.Loc.T("Điểm cao nhất của bạn", "Your best score", "あなたの最高点")+"</size>" : "もぎしけん  N5 · IELTS\n<size=60%>"+NihongoLife.Core.Loc.T("Bàn thi ở đầu lớp · F", "Exam desk at the front · F", "教室の前の受験机 · F")+"</size>";
         }
 
         // ─────────── UI effects ───────────

@@ -516,7 +516,7 @@ namespace NihongoLife.Learning
             var q = UiKit.Label(paper, "Question", state.question ?? "", state.part == 2 ? 19f : 20f, UiTheme.PaperInk, FontStyles.Bold, TextAlignmentOptions.TopLeft, wrap: true);
             UiKit.Fill(q.rectTransform, 22f, 18f, 22f, 18f);
             if (state.cuePoints != null && state.cuePoints.Length > 0)
-                q.text = $"{state.question}\n<size=80%><color=#5C6676><b>You should say:</b>\n• {string.Join("\n• ", state.cuePoints)}</color></size>";
+                q.text = $"{state.question}\n<size=80%><color=#5C6676><b>{NihongoLife.Core.Loc.T("Bạn nên nói:", "You should say:", "話すポイント:")}</b>\n• {string.Join("\n• ", state.cuePoints)}</color></size>";
 
             // Timer ring.
             float ty = examiner ? 290f : 372f;

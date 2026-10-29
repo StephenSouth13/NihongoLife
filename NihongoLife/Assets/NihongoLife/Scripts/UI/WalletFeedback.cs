@@ -40,7 +40,7 @@ namespace NihongoLife.UI
             Floating++;
             float lane = (Floating - 1) * 26f; // several changes at once stack instead of overlapping
             bool gain = e.amount > 0;
-            var label = NLUi.Label(transform, "Delta", $"<b>{(gain ? "+" : "−")}¥{Math.Abs(e.amount):N0}</b>  <size=75%>{Loc.Resolve(e.reason)}</size>", 20f,
+            var label = NLUi.Label(transform, "Delta", $"<b>{(gain ? "+" : "−")}{NihongoLife.Core.Loc.Money(Math.Abs(e.amount))}</b>  <size=75%>{Loc.Resolve(e.reason)}</size>", 20f,
                 gain ? new Color(0.45f, 0.95f, 0.55f) : new Color(1f, 0.5f, 0.42f), _font, FontStyles.Normal, TextAlignmentOptions.Left);
             label.textWrappingMode = TextWrappingModes.NoWrap;
             label.outlineWidth = 0.2f;
@@ -119,9 +119,9 @@ namespace NihongoLife.UI
             {
                 var e = entries[i];
                 string when = new DateTime(e.ticks).ToString("dd/MM HH:mm");
-                string amount = e.amount > 0 ? $"<color=#7BE38E>+¥{e.amount:N0}</color>" : $"<color=#FF8A75>−¥{-e.amount:N0}</color>";
+                string amount = e.amount > 0 ? $"<color=#7BE38E>+{NihongoLife.Core.Loc.Money(e.amount)}</color>" : $"<color=#FF8A75>−{NihongoLife.Core.Loc.Money(-e.amount)}</color>";
                 if (i > 0) sb.Append('\n');
-                sb.Append($"<color=#8A96A3>{when}</color>  {amount}  {Loc.Resolve(e.reason)}  <color=#8A96A3>→ ¥{e.balance:N0}</color>");
+                sb.Append($"<color=#8A96A3>{when}</color>  {amount}  {Loc.Resolve(e.reason)}  <color=#8A96A3>→ {NihongoLife.Core.Loc.Money(e.balance)}</color>");
             }
             _historyText.text = sb.ToString();
         }

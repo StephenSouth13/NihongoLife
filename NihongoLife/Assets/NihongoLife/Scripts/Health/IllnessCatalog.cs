@@ -57,6 +57,9 @@ namespace NihongoLife.Health
             "work" => Loc.T("Lao động", "Work", "仕事"),
             "weather" => Loc.T("Thời tiết", "Weather", "天気"),
             "food" => Loc.T("Ăn uống", "Food", "食事"),
+            "bacteria" => Loc.T("Vi khuẩn · cần khám", "Bacteria · see a doctor", "細菌感染"),
+            "injury" => Loc.T("Chấn thương", "Injury", "けが"),
+            "dental" => Loc.T("Răng miệng", "Teeth", "歯と口"),
             "allergy" => Loc.T("Dị ứng", "Allergy", "アレルギー"),
             _ => Loc.T("Giấc ngủ", "Sleep", "睡眠"),
         };

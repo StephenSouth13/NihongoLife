@@ -1,0 +1,32 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8cd7292b80d74e04db4a79c2979f607a, type: 3}
+  m_Name: minigame_echo_pads
+  m_EditorClassIdentifier: NihongoLife.MiniGames::NihongoLife.MiniGames.MiniGameDefinition
+  id: echo_pads
+  kind: 7
+  titleJa: "\u30A8\u30B3\u30FC\u30D1\u30C3\u30C9"
+  titleVi: Pad Vang
+  titleEn: Echo Pads
+  descriptionVi: "Nghe v\xE0 nh\xECn b\u1ED1n \xF4 n\u1ED1t \u30C9\u30FB\u30EC\u30FB\u30DF\u30FB\u30BD
+    s\xE1ng l\xEAn r\u1ED3i nh\u1EAFc l\u1EA1i \u0111\xFAng giai \u0111i\u1EC7u \u2014
+    m\u1ED7i l\u01B0\u1EE3t th\xEAm m\u1ED9t n\u1ED1t."
+  descriptionEn: "Watch and listen to the \u30C9\u30FB\u30EC\u30FB\u30DF\u30FB\u30BD
+    pads, then play the tune back \u2014 one more note every round."
+  descriptionJa: "\u30C9\u30FB\u30EC\u30FB\u30DF\u30FB\u30BD\u306E\u30D1\u30C3\u30C9\u306E
+    \u3058\u3085\u3093\u3070\u3093\u3092 \u304A\u307C\u3048\u3066 \u304F\u308A\u304B\u3048\u305D\u3046\u3002"
+  playable: 1
+  contentSets: []
+  pairsPerRound: 8
+  timeLimitSeconds: 90
+  expPerCorrect: 3
+  knowledgePerRound: 4

@@ -23,7 +23,7 @@ namespace NihongoLife.Core
         {
             get
             {
-                if (_language == null) _language = (GameLanguage)Mathf.Clamp(PlayerPrefs.GetInt(PrefsKey, (int)GameLanguage.Vietnamese), 0, 2);
+                if (_language == null) _language = (GameLanguage)Mathf.Clamp(PlayerPrefs.GetInt(PrefsKey, (int)GameLanguage.Vietnamese), 0, 3);
                 return _language.Value;
             }
         }
@@ -32,7 +32,12 @@ namespace NihongoLife.Core
         public static bool IsEnglish => Language == GameLanguage.English;
         public static bool IsJapanese => Language == GameLanguage.Japanese;
         /// <summary>"vi", "en" or "ja".</summary>
-        public static string Code => Language switch { GameLanguage.English => "en", GameLanguage.Japanese => "ja", _ => "vi" };
+        public static string Code => Language switch { GameLanguage.English => "en", GameLanguage.Japanese => "ja", GameLanguage.Russian => "ru", _ => "vi" };
+        public static bool IsRussian => Language == GameLanguage.Russian;
+        /// <summary>True for English and Russian: data that exists only as vi / en / ja is shown in English for Russian (see <see cref="Data"/>).</summary>
+        public static bool EnglishData => Language == GameLanguage.English || Language == GameLanguage.Russian;
+        /// <summary>English data text for the interface: the Russian line when the interface is Russian and <see cref="RuTable"/> has one, else the English text.</summary>
+        public static string Data(string en) => Language == GameLanguage.Russian && !string.IsNullOrEmpty(en) && RuTable.TryGet(en, out var ru) ? ru : en;
 
         public static void Set(GameLanguage language)
         {
@@ -50,23 +55,39 @@ namespace NihongoLife.Core
         }
 
         /// <summary>The text in the current interface language.</summary>
-        public static string T(string vi, string en, string ja) => Language switch
+        public static string T(string vi, string en, string ja) => Currency(Language switch
         {
             GameLanguage.English => en,
             GameLanguage.Japanese => ja,
+            GameLanguage.Russian => RuTable.Translate(en, vi),
             _ => vi
-        };
+        });
+
+        /// <summary>
+        /// G3: a yen amount written into text ("¥12,400", "−¥160") is shown in the language's currency (en $, ru rub., vi dong); Japanese keeps yen.
+        /// Used by <see cref="T"/>, <see cref="F"/> and <see cref="Gloss"/>, so no screen mixes a yen sign into another language.
+        /// </summary>
+        public static string Currency(string text)
+        {
+            if (string.IsNullOrEmpty(text) || Language == GameLanguage.Japanese || text.IndexOf('¥') < 0) return text;
+            return System.Text.RegularExpressions.Regex.Replace(text, "¥\\s?(\\d[\\d,\\.]*\\d|\\d)", m =>
+            {
+                string num = m.Groups[1].Value.Replace(",", "");
+                return double.TryParse(num, System.Globalization.NumberStyles.Float, System.Globalization.CultureInfo.InvariantCulture, out var yen) ? Money(yen) : m.Value;
+            });
+        }
 
         /// <summary><see cref="T"/> then string.Format with the arguments.</summary>
-        public static string F(string vi, string en, string ja, params object[] args) => string.Format(T(vi, en, ja), args);
+        public static string F(string vi, string en, string ja, params object[] args) => Currency(string.Format(T(vi, en, ja), args));
 
         /// <summary>A gloss (meaning) of learned Japanese in the interface language; empty when the interface is Japanese.</summary>
-        public static string Gloss(string vi, string en) => Language switch
+        public static string Gloss(string vi, string en) => Currency(Language switch
         {
             GameLanguage.English => en ?? "",
+            GameLanguage.Russian => en ?? "",
             GameLanguage.Japanese => "",
             _ => vi ?? ""
-        };
+        });
 
         /// <summary>Picks the field for the current language from a vi/en/ja triple; falls back vi → en → ja when one is empty.</summary>
         public static string Pick(string vi, string en, string ja)
@@ -92,6 +113,16 @@ namespace NihongoLife.Core
         /// </summary>
         public static string Triple(string vi, string en, string ja) => $"{TripleMark}{vi}{TripleMark}{en}{TripleMark}{ja}";
 
+        /// <summary>
+        /// <see cref="Triple"/> for templates with {0}-style holes: formats the three languages and also stores the Russian text
+        /// (the English template looked up in <see cref="RuTable"/>, then formatted), so stored messages can be shown in Russian too.
+        /// </summary>
+        public static string TripleF(string vi, string en, string ja, params object[] args)
+        {
+            string ruTemplate = RuTable.TryGet(en, out var found) ? found : en;
+            return $"{TripleMark}{string.Format(vi, args)}{TripleMark}{string.Format(en, args)}{TripleMark}{string.Format(ja, args)}{TripleMark}{string.Format(ruTemplate, args)}";
+        }
+
         /// <summary>True when the text was stored with <see cref="Triple"/>.</summary>
         /// <summary>True when the text contains kana or kanji.</summary>
         public static bool IsJapaneseText(string text)
@@ -108,11 +139,30 @@ namespace NihongoLife.Core
         {
             if (string.IsNullOrEmpty(stored) || stored[0] != TripleMark) return stored ?? "";
             var parts = stored.Split(TripleMark);
+            if (parts.Length >= 5 && Language == GameLanguage.Russian && parts[4].Length > 0) return parts[4];
             return parts.Length >= 4 ? Pick(parts[1], parts[2], parts[3]) : stored.Trim(TripleMark);
         }
 
-        /// <summary>Thousands-separated yen, e.g. ¥12,400.</summary>
-        public static string Yen(int amount) => (amount < 0 ? "−¥" : "¥") + Mathf.Abs(amount).ToString("N0", System.Globalization.CultureInfo.InvariantCulture);
+        /// <summary>
+        /// G3: money in the language's currency. Prices are stored in yen; the display converts: ja yen, en dollar (100 yen = 1 USD),
+        /// ru ruble (1 yen = 1 RUB), vi dong (1 yen = 170 VND); exact multiples, so sums add up. Banknote-style grouping per language.
+        /// </summary>
+        public static string Money(double yen)
+        {
+            bool neg = yen < 0; double a = System.Math.Abs(yen);
+            string body;
+            switch (Language)
+            {
+                case GameLanguage.English: body = "$" + (a / 100.0).ToString("N2", System.Globalization.CultureInfo.InvariantCulture); break;
+                case GameLanguage.Russian: body = System.Math.Round(a).ToString("N0", System.Globalization.CultureInfo.InvariantCulture).Replace(',', '\u00A0') + "\u00A0руб."; break;
+                case GameLanguage.Vietnamese: body = System.Math.Round(a * 170.0).ToString("N0", System.Globalization.CultureInfo.InvariantCulture).Replace(',', '.') + "đ"; break;
+                default: body = "¥" + System.Math.Round(a).ToString("N0", System.Globalization.CultureInfo.InvariantCulture); break;
+            }
+            return neg ? "-" + body : body;
+        }
+
+        /// <summary>Money in the language's currency (see <see cref="Money"/>), e.g. ¥12,400 / 2.108.000đ / $124.00.</summary>
+        public static string Yen(int amount) => Money(amount);
 
         /// <summary>Tests and tools: forget the cached value (re-read from PlayerPrefs next time).</summary>
         public static void ResetCache() => _language = null;

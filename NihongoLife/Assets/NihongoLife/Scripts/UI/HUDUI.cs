@@ -157,6 +157,8 @@ namespace NihongoLife.UI
             EnsureQuestLog();
             EnsureExamCenter();
             EnsureStudyHub();
+            BusinessDashboardUI.GetOrCreate(gameObject, scenarioTitleText != null ? scenarioTitleText.font : null);
+            SkillsPopup.GetOrCreate(gameObject, scenarioTitleText != null ? scenarioTitleText.font : null);
             EnsureMobileControls();
         }
 
@@ -313,6 +315,8 @@ namespace NihongoLife.UI
         private void HandleLanguageChanged(GameLanguage language)
         {
             RefreshPlayerPanels();
+            RefreshOnlineStatus();
+            RefreshChatHistory();
             UpdateObjectivesDisplay();
             if (_currentInteractable != null) ShowPrompt(_currentInteractable);
         }

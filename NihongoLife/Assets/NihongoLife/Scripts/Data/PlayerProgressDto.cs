@@ -58,11 +58,32 @@ namespace NihongoLife.Data
         public int fairWageScore = 50;
         public int educationScore;
         public int partnershipCount;
+        /// <summary>F4: the people on the payroll (employeeCount is kept equal to workers.Count + any legacy hires).</summary>
+        public System.Collections.Generic.List<WorkerRecord> workers = new System.Collections.Generic.List<WorkerRecord>();
+        public long lastCollectTicks;
+        public int totalEarnedYen;
+    }
+
+    [Serializable]
+    public class RoomDecorRecord
+    {
+        public string id; public float x, z, rot;
+    }
+
+    [Serializable]
+    public class WorkerRecord
+    {
+        public string id, name, role;
+        public int wage = 25000, level = 1;
+        public long hiredTicks;
     }
 
     [Serializable]
     public class PlayerProgressDto
     {
+        /// <summary>Save format version (Save/ProgressFile.cs): lets later builds migrate old saves.</summary>
+        public int saveVersion;
+        public string savedAtUtc = string.Empty;
         public string playerId = "local_player";
         public string displayName = "Gakusei";
         public int xp = 0;
@@ -92,6 +113,7 @@ namespace NihongoLife.Data
         public List<CareerRecord> careers = new List<CareerRecord>();
         public List<NihongoLife.Player.InventoryEntry> inventory = new List<NihongoLife.Player.InventoryEntry>();
         public List<NihongoLife.Player.InventoryEntry> homeStorage = new List<NihongoLife.Player.InventoryEntry>();
+        public List<RoomDecorRecord> roomDecor = new List<RoomDecorRecord>();
         /// <summary>Midori Island: farm plots, vocabulary, animals, achievements and the chosen target language.</summary>
         public NihongoLife.Island.IslandRecord island = new NihongoLife.Island.IslandRecord();
         /// <summary>Quest / part-time job state (definitions: Resources/Progression/progression.json).</summary>

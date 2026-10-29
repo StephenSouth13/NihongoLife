@@ -198,18 +198,19 @@ namespace NihongoLife.Interaction
             if (player == null) yield break;
 
             Vector3 destination = transform.TransformPoint(interiorOffset);
-            CharacterController controller = player.GetComponent<CharacterController>();
-            if (controller != null)
+            // Cut through black: the player moves and the camera snaps to the new spot while the screen is dark, so the
+            // smoothed camera never glides through the shop wall (the old "camera whip" at the door).
+            NihongoLife.Cameras.ScreenCut.Run(() =>
             {
-                controller.enabled = false;
-            }
-
-            player.transform.position = destination;
-
-            if (controller != null)
-            {
-                controller.enabled = true;
-            }
+                if (player == null) return;
+                CharacterController controller = player.GetComponent<CharacterController>();
+                if (controller != null) controller.enabled = false;
+                player.transform.position = destination;
+                if (controller != null) controller.enabled = true;
+                Physics.SyncTransforms();
+                var cam = Object.FindFirstObjectByType<NihongoLife.Cameras.ThirdPersonCameraController>();
+                if (cam != null) cam.SnapToTarget();
+            });
         }
 
         private static float EaseOutCubic(float value)

@@ -4,6 +4,7 @@ namespace NihongoLife.Core
     {
         Vietnamese,
         English,
-        Japanese
+        Japanese,
+        Russian
     }
 }

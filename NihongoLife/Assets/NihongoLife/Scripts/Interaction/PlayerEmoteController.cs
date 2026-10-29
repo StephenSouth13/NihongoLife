@@ -107,7 +107,29 @@ namespace NihongoLife.Interaction
             _nextAllowed = Time.unscaledTime + Cooldown;
             _last = index;
             var emote = EmoteCatalog.All[index];
+
+            // Body language: every emote has gestures of the library; "hello" walks through the cultures one tap after another.
+            string gestureId = null;
+            switch (emote.Id)
+            {
+                case "hello":
+                    var greeting = NihongoLife.Gestures.GreetingCatalog.Cycle("casual");
+                    if (greeting != null)
+                    {
+                        gestureId = greeting.gesture;
+                        emote = new EmoteDefinition("hello", greeting.native, greeting.roman, greeting.vi, emote.Gesture) { EnglishMeaning = greeting.en };
+                    }
+                    break;
+                case "thanks": gestureId = NihongoLife.Gestures.GreetingCatalog.Cycle("thanks")?.gesture ?? "bow_light"; break;
+                case "wow": gestureId = "cheer"; break;
+                case "fun": gestureId = "dance_pop_clap"; break;
+                case "yatta": gestureId = "high_five"; break;
+                case "oyasumi": gestureId = "bow_light"; break;
+                case "huh": gestureId = "shrug"; break;
+                case "sorry": gestureId = "bow_deep"; break;
+            }
             EmoteBubble.Spawn(transform, emote);
+            if (gestureId != null && NihongoLife.Gestures.GestureLayer.On(gameObject).Play(gestureId)) return;
 
             var animation = GetComponentInChildren<CharacterAnimationController>();
             if (animation == null) return;

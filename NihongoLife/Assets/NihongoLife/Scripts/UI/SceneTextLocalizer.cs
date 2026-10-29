@@ -19,6 +19,7 @@ namespace NihongoLife.UI
         // Longest phrases first. ja "" = drop it (the sign already says it in Japanese).
         private static readonly (string vi, string en, string ja)[] Phrases =
         {
+            ("Vào phòng khám", "Enter the clinic", "診察室へ"),
             ("Trung tâm trò chơi học tiếng Nhật", "Japanese-learning arcade", "日本語を学べるゲームセンター"),
             ("Phụ việc nông trại · ¥500/ca", "Farm helper · ¥500/shift", "農場のお手伝い · 1回500円"),
             ("Tuyển làm thêm · ¥600/ca", "Part-time job · ¥600/shift", "アルバイト募集 · 1回600円"),
@@ -88,7 +89,7 @@ namespace NihongoLife.UI
             foreach (var root in scene.GetRootGameObjects())
             foreach (var text in root.GetComponentsInChildren<TMP_Text>(true))
             {
-                if (text == null || Entries.ContainsKey(text) || !HasVietnamese(text.text)) continue;
+                if (text == null || Entries.ContainsKey(text) || !(HasVietnamese(text.text) || HasYen(text.text))) continue;
                 var entry = new Entry { Original = text.text, Applied = text.text };
                 Entries[text] = entry;
                 Apply(text, entry);
@@ -117,12 +118,16 @@ namespace NihongoLife.UI
         /// <summary>The authored text in the current language (public for tests).</summary>
         public static string Translate(string original)
         {
-            if (string.IsNullOrEmpty(original) || Loc.IsVietnamese) return original;
+            if (string.IsNullOrEmpty(original)) return original;
+            if (Loc.IsVietnamese) return Loc.Currency(original);
             string value = original;
             foreach (var (vi, en, ja) in Phrases)
-                if (value.Contains(vi)) value = value.Replace(vi, Loc.IsEnglish ? en : ja);
-            return Loc.IsJapanese ? CleanUp(value) : value;
+                if (value.Contains(vi)) value = value.Replace(vi, Loc.IsJapanese ? ja : Loc.Data(en));
+            return Loc.IsJapanese ? CleanUp(value) : Loc.Currency(value);
         }
+
+        // G3: prices on shop tags and posters (¥150) follow the language's currency too.
+        private static bool HasYen(string text) => !string.IsNullOrEmpty(text) && text.IndexOf('\u00a5') >= 0;
 
         private static string CleanUp(string value)
         {

@@ -24,6 +24,7 @@ namespace NihongoLife.UI
         [SerializeField] private Button vietnameseButton;
         [SerializeField] private Button englishButton;
         [SerializeField] private Button japaneseButton;
+        [SerializeField] private Button russianButton;
         [SerializeField] private Button guideButton;
         [SerializeField] private Button aboutButton;
 
@@ -80,6 +81,7 @@ namespace NihongoLife.UI
             Wire(vietnameseButton, () => Loc.Set(GameLanguage.Vietnamese));
             Wire(englishButton, () => Loc.Set(GameLanguage.English));
             Wire(japaneseButton, () => Loc.Set(GameLanguage.Japanese));
+            Wire(russianButton, () => Loc.Set(GameLanguage.Russian));
 
             guidePopup = gameObject.AddComponent<GuidePopup>();
             guidePopup.Initialize(font);
@@ -183,6 +185,7 @@ namespace NihongoLife.UI
             vietnameseButton ??= Find<Button>("LanguageVietnameseButton");
             englishButton ??= Find<Button>("LanguageEnglishButton");
             japaneseButton ??= Find<Button>("LanguageJapaneseButton");
+            russianButton ??= Find<Button>("LanguageRussianButton");
             settingsButton = Find<Button>("SettingsButton");
             loginButton = Find<Button>("LoginButton");
             leaderboardButton = Find<Button>("LeaderboardBtn");
@@ -236,6 +239,7 @@ namespace NihongoLife.UI
             SetSelected(vietnameseButton, Loc.IsVietnamese);
             SetSelected(englishButton, Loc.IsEnglish);
             SetSelected(japaneseButton, Loc.IsJapanese);
+            SetSelected(russianButton, Loc.IsRussian);
             if (characterSelectPanel != null) TranslateCharacterSelect();
         }
 

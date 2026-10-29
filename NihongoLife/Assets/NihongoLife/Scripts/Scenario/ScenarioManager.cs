@@ -649,7 +649,7 @@ namespace NihongoLife.Scenario
             }
 
             inventory.RemoveItem("onigiri");
-            ScoringManager.Instance?.AddScore("TaskCompletion", 25, NihongoLife.Core.Loc.Triple($"Đã thanh toán {total} yen", $"Paid {total} yen", $"{total}円払った"), "checkout_paid");
+            ScoringManager.Instance?.AddScore("TaskCompletion", 25, NihongoLife.Core.Loc.TripleF("Đã thanh toán {0} yen", "Paid {0} yen", "{0}円払った", total), "checkout_paid");
         }
 
         public void SetPlayerInputLocked(bool locked)

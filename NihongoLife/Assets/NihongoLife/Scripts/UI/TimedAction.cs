@@ -72,13 +72,13 @@ namespace NihongoLife.UI
 
         /// <summary>Starts an action; returns false (and does nothing) while another action is running. <paramref name="pose"/>
         /// is a work state on the player's animator (e.g. "Work_Water"); <paramref name="prop"/> a tool held in the right hand.</summary>
-        public static bool Run(string label, string tool, float seconds, Action onDone, Action onCancel = null, string pose = null, GameObject prop = null)
+        public static bool Run(string label, string tool, float seconds, Action onDone, Action onCancel = null, string pose = null, GameObject prop = null, string gesture = null)
         {
             var ui = Instance;
             if (ui._running != null) return false;
             if (SpeedScale <= 0f) { onDone?.Invoke(); return true; } // instant mode (logic-only tests)
             ui._onCancel = onCancel;
-            ui._running = ui.StartCoroutine(ui.Routine(label, tool, Mathf.Max(0.05f, seconds * SpeedScale), onDone, pose, prop));
+            ui._running = ui.StartCoroutine(ui.Routine(label, tool, Mathf.Max(0.05f, seconds * SpeedScale), onDone, pose, prop, gesture));
             return true;
         }
 
@@ -101,7 +101,7 @@ namespace NihongoLife.UI
             cancel?.Invoke();
         }
 
-        private IEnumerator Routine(string label, string tool, float seconds, Action onDone, string pose, GameObject prop)
+        private IEnumerator Routine(string label, string tool, float seconds, Action onDone, string pose, GameObject prop, string gesture = null)
         {
             _player = SceneRefs.Find<PlayerController>();
             if (_player != null) { _wasLocked = _player.InputLocked; _player.InputLocked = true; }
@@ -109,6 +109,8 @@ namespace NihongoLife.UI
             _animation = animation;
             bool posed = animation != null && pose != null && animation.PlayWork(pose);
             if (posed && prop != null) animation.HoldProp(prop);
+            // Hands for job actions (scan, serve, pick up): the gesture layer places them; StopWork clears it in Finish.
+            if (animation != null && !string.IsNullOrEmpty(gesture)) NihongoLife.Gestures.WorkGestures.Start(animation.gameObject, gesture);
             _label.text = label;
             _card.gameObject.SetActive(true);
             _card.SetAsLastSibling();

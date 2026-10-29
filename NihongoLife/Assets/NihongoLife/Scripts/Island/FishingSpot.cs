@@ -11,6 +11,7 @@ namespace NihongoLife.Island
 
         public string GetPromptJa() => IslandLanguage.Primary(IslandCatalog.Load().places?.pier) is { Length: > 0 } p ? p : "つりば";
         public string GetpromptEn() => IslandEconomy.Owned(IslandFishing.RodId) > 0 ? Loc.T("Câu cá", "Fish", "つりをする") : Loc.T("Câu cá (cần có cần câu)", "Fish (needs a fishing rod)", "つりをする（つりざおが必要）");
+        private void Start() => IslandAfkRod.EnsureFor(this); // the set-rod stand beside the spot
         public Transform GetTransform() => transform;
         public void Interact(GameObject player) { if (!IslandVisit.ReadOnlyNotice()) IslandFishing.Begin(this, player); }
     }

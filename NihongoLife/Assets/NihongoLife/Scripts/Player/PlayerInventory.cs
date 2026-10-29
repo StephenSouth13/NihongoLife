@@ -230,6 +230,56 @@ namespace NihongoLife.Player
             return true;
         }
 
+        /// <summary>G2: moves the stack at <paramref name="from"/> to <paramref name="to"/>, or merges it when both hold the same item.</summary>
+        public bool MoveItem(int from, int to)
+        {
+            if (from < 0 || from >= _items.Count || to < 0 || from == to) return false;
+            to = Mathf.Min(to, _items.Count - 1);
+            if (from == to) return false;
+            var a = _items[from]; var b = _items[to];
+            if (a.itemId == b.itemId)
+            {
+                int room = StackLimit(a.itemId) - b.quantity;
+                if (room <= 0) return false;
+                int moved = Mathf.Min(room, a.quantity);
+                b.quantity += moved; a.quantity -= moved;
+                if (a.quantity <= 0) _items.RemoveAt(from);
+            }
+            else { _items.RemoveAt(from); _items.Insert(to, a); }
+            OnInventoryChanged?.Invoke();
+            SaveWallet();
+            return true;
+        }
+
+        /// <summary>G2: removes <paramref name="quantity"/> from the stack at an index (the whole stack when it is that big).</summary>
+        public bool RemoveAt(int index, int quantity = 1)
+        {
+            if (index < 0 || index >= _items.Count || quantity <= 0) return false;
+            var item = _items[index];
+            item.quantity -= Mathf.Min(quantity, item.quantity);
+            if (item.quantity <= 0) _items.RemoveAt(index);
+            OnInventoryChanged?.Invoke();
+            SaveWallet();
+            return true;
+        }
+
+        /// <summary>G2: splits <paramref name="quantity"/> off the stack at an index into a new slot (placed right after it).</summary>
+        public bool SplitAt(int index, int quantity)
+        {
+            if (index < 0 || index >= _items.Count) return false;
+            var item = _items[index];
+            if (quantity <= 0 || quantity >= item.quantity || _items.Count >= maxSlots) return false;
+            item.quantity -= quantity;
+            _items.Insert(index + 1, new InventoryEntry
+            {
+                itemId = item.itemId, displayNameJa = item.displayNameJa, displayNameEn = item.displayNameEn, priceYen = item.priceYen, quantity = quantity,
+                isLitter = item.isLitter, useType = item.useType, foodRestore = item.foodRestore, drinkRestore = item.drinkRestore, energyRestore = item.energyRestore
+            });
+            OnInventoryChanged?.Invoke();
+            SaveWallet();
+            return true;
+        }
+
         public void SortItems()
         {
             _items.Sort((a, b) =>

@@ -199,8 +199,8 @@ namespace NihongoLife.UI
             if (_title != null) _title.text = Loc.T("Điều khiển cảm ứng", "Touch controls", "タッチ操作");
             if (_mode != null) _mode.text = Loc.T(TouchControlPrefs.ModeVi(), TouchControlPrefs.ModeEn(), TouchControlPrefs.ModeJa());
             if (_hand != null) _hand.text = Loc.T(TouchControlPrefs.HandVi(), TouchControlPrefs.HandEn(), TouchControlPrefs.HandJa());
-            if (_sizeLabel != null) _sizeLabel.text = Loc.T($"Cỡ nút  {TouchControlPrefs.Size:0.00}", $"Button size  {TouchControlPrefs.Size:0.00}", $"ボタンサイズ  {TouchControlPrefs.Size:0.00}");
-            if (_opacityLabel != null) _opacityLabel.text = Loc.T($"Độ mờ  {TouchControlPrefs.Opacity:0.00}", $"Opacity  {TouchControlPrefs.Opacity:0.00}", $"不透明度  {TouchControlPrefs.Opacity:0.00}");
+            if (_sizeLabel != null) _sizeLabel.text = Loc.F("Cỡ nút  {0}", "Button size  {0}", "ボタンサイズ  {0}", TouchControlPrefs.Size.ToString("0.00", System.Globalization.CultureInfo.InvariantCulture));
+            if (_opacityLabel != null) _opacityLabel.text = Loc.F("Độ mờ  {0}", "Opacity  {0}", "不透明度  {0}", TouchControlPrefs.Opacity.ToString("0.00", System.Globalization.CultureInfo.InvariantCulture));
             if (_hint != null) _hint.text = Loc.T(
                 "Tự động hiện trên điện thoại và máy tính bảng. Bàn phím và chuột vẫn dùng được. Ẩn nhanh bằng nút Ẩn trên màn hình.",
                 "Auto appears on phones and tablets. Keyboard and mouse keep working. Hide hides them until you tap Controls.",

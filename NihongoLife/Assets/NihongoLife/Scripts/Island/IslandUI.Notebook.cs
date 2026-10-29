@@ -44,7 +44,7 @@ namespace NihongoLife.Island
                      {
                          ("nutrition", record.harvested.ToString(), "lần thu hoạch", "harvests", "収穫"),
                          ("sell", record.sold.ToString(), "nông sản đã bán", "sold", "販売"),
-                         ("payments", $"¥{record.earned:N0}", "tiền kiếm được", "earned", "かせいだお金"),
+                         ("payments", $"{NihongoLife.Core.Loc.Money(record.earned)}", "tiền kiếm được", "earned", "かせいだお金"),
                          ("translate", DistinctWords().Count.ToString(), "từ đã học", "words", "覚えた言葉"),
                          ("pets", record.animalsMet.Count + "/5", "con vật quen", "animal friends", "動物の友だち"),
                      })

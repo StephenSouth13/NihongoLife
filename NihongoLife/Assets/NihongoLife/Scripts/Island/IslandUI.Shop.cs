@@ -267,13 +267,13 @@ namespace NihongoLife.Island
             {
                 int profit = crop.yield * crop.sellPrice - crop.seedPrice;
                 Row(table, false, IslandLanguage.Title(crop.word), $"¥{crop.seedPrice}", Loc.F("{0} giây", "{0}s", "{0}秒", Mathf.RoundToInt(crop.secondsPerStage * 3)),
-                    $"{crop.yield} × ¥{crop.sellPrice}", (profit >= 0 ? "+" : "") + $"¥{profit}", crop.SeedItemId, crop == best);
+                    $"{crop.yield} × {NihongoLife.Core.Loc.Money(crop.sellPrice)}", (profit >= 0 ? "+" : "") + $"{NihongoLife.Core.Loc.Money(profit)}", crop.SeedItemId, crop == best);
             }
             Text(host, Loc.T("Dụng cụ (dùng mòn dần)", "Tools (wear out with use)", "道具（使うと減ります）"), 17f, Ink, FontStyles.Bold);
             var tools = NLUi.Group(host, "Tools", true, 4f);
             Row(tools, true, Loc.T("Dụng cụ", "Tool", "道具"), Loc.T("Giá", "Price", "価格"), Loc.T("Số lần", "Uses", "回数"), Loc.T("Mỗi lần", "Per use", "1回あたり"), Loc.T("Dùng để", "For", "用途"), null);
             foreach (var tool in c.tools)
-                Row(tools, false, IslandLanguage.Title(tool.word), $"¥{tool.price}", tool.durability > 0 ? tool.durability.ToString() : "∞",
+                Row(tools, false, IslandLanguage.Title(tool.word), $"{NihongoLife.Core.Loc.Money(tool.price)}", tool.durability > 0 ? tool.durability.ToString() : "∞",
                     tool.durability > 0 ? $"¥{tool.price / (float)tool.durability:0.#}" : "—", IslandLanguage.Name(tool.verb), tool.id);
             var tips = NLUi.Panel(host, "Tips", GreenSoft, new RectOffset(18, 18, 12, 14), 4f);
             tips.GetComponent<Image>().sprite = UiKit.Rounded(14);

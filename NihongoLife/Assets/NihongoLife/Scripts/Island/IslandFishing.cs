@@ -156,7 +156,7 @@ namespace NihongoLife.Island
             _phase = Phase.Waiting;
             if (posed) _animation.PlayWork("Fish_Wait");
             Show(NihongoLife.Core.Loc.T("Chờ cá cắn câu…", "Waiting for a bite…", "魚がかかるのを待っています…"), NihongoLife.Core.Loc.T("Đừng kéo vội — đợi phao chìm xuống.", "Don't pull yet — wait for the float to sink.", "まだ引かないで。うきが沈むまで待ちましょう。"), true, NihongoLife.Core.Loc.T("Kéo cần", "Reel in", "引く") + "  [F]");
-            float delay = BiteDelayOverride ?? UnityEngine.Random.Range(2.5f, 6f);
+            float delay = BiteDelayOverride ?? UnityEngine.Random.Range(2.5f, 6f) * FishingSkill.BiteTimeScale(FishingSkill.Level);
             for (float t = 0f; t < delay; t += Time.deltaTime)
             {
                 if (_phase != Phase.Waiting) yield break;
@@ -209,6 +209,13 @@ namespace NihongoLife.Island
         {
             if (_rewarded || fish == null) return NihongoLife.Core.Loc.T("Không có cá.", "No fish.", "魚がいません。");
             _rewarded = true;
+            return AwardFish(fish);
+        }
+
+        /// <summary>Puts a caught fish in the bag (bag full / bad fish give a message instead), counts it, raises the quest. Null = success.</summary>
+        public static string AwardFish(IslandFish fish)
+        {
+            if (fish == null) return NihongoLife.Core.Loc.T("Không có cá.", "No fish.", "魚がいません。");
             if (!IslandEconomy.CanStore(fish.id)) { IslandUI.Toast(NihongoLife.Core.Loc.T("Balo đầy — đã thả cá về biển.", "Bag full — the fish was released.", "かばんがいっぱいなので、魚を海に放しました。"), true); return NihongoLife.Core.Loc.T("Balo đầy — không giữ được cá.", "Bag full — you can't keep the fish.", "かばんがいっぱいで魚を持てません。"); }
             if (!IslandEconomy.Give(fish.id, 1)) return NihongoLife.Core.Loc.T("Không cất được cá vào balo.", "Couldn't put the fish in your bag.", "魚をかばんに入れられませんでした。");
             var record = IslandState.Record;
@@ -223,7 +230,7 @@ namespace NihongoLife.Island
             return null;
         }
 
-        private static IslandFish PickFish(IslandCatalog catalog)
+        public static IslandFish PickFish(IslandCatalog catalog)
         {
             var all = catalog.fish ?? Array.Empty<IslandFish>();
             if (all.Length == 0) return null;

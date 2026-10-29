@@ -172,7 +172,7 @@ namespace NihongoLife.Core
             string language = "Vietnamese";
             if (GameServices.TryGet(out GameSettingsService settings))
             {
-                language = settings.Language == GameLanguage.English ? "English" : settings.Language == GameLanguage.Japanese ? "Japanese" : "Vietnamese";
+                language = settings.Language == GameLanguage.English ? "English" : settings.Language == GameLanguage.Japanese ? "Japanese" : settings.Language == GameLanguage.Russian ? "Russian" : "Vietnamese";
             }
 
             string npcName = npc != null ? npc.DisplayName : "Town resident";

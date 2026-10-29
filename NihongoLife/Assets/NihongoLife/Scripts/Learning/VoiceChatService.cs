@@ -176,7 +176,7 @@ namespace NihongoLife.Learning
                 }
                 _engine.EnableSpatialAudio(spatial);
                 int code = _engine.JoinChannel(token, channel, uid, options);
-                if (code != 0) throw new InvalidOperationException(NihongoLife.Core.Loc.Triple($"Vào phòng voice thất bại ({code}).", $"Joining the voice room failed ({code}).", $"ボイスルームに入れませんでした（{code}）。"));
+                if (code != 0) throw new InvalidOperationException(NihongoLife.Core.Loc.TripleF("Vào phòng voice thất bại ({0}).", "Joining the voice room failed ({0}).", "ボイスルームに入れませんでした（{0}）。", code));
                 _token = token;
                 _uid = uid;
                 Channel = channel;
@@ -216,7 +216,7 @@ namespace NihongoLife.Learning
             }
             if (request.result != UnityWebRequest.Result.Success || body == null || !body.Bool("ok"))
             {
-                done(null, 0, body.Str("error") ?? NihongoLife.Core.Loc.Triple($"Máy chủ voice trả lỗi {request.responseCode}.", $"The voice server returned error {request.responseCode}.", $"ボイスサーバーのエラー {request.responseCode}"));
+                done(null, 0, body.Str("error") ?? NihongoLife.Core.Loc.TripleF("Máy chủ voice trả lỗi {0}.", "The voice server returned error {0}.", "ボイスサーバーのエラー {0}", request.responseCode));
                 yield break;
             }
             done(body.Str("token"), (uint)body.Num("uid"), null);
@@ -229,7 +229,7 @@ namespace NihongoLife.Learning
             if (string.IsNullOrWhiteSpace(appId)) throw new InvalidOperationException(NihongoLife.Core.Loc.Triple("Chưa cấu hình Agora App ID.", "Agora App ID is not configured.", "Agora App IDが設定されていません。"));
             _engine = RtcEngine.CreateAgoraRtcEngine();
             int code = _engine.Initialize(new RtcEngineContext { appId = appId, channelProfile = CHANNEL_PROFILE_TYPE.CHANNEL_PROFILE_LIVE_BROADCASTING, audioScenario = AUDIO_SCENARIO_TYPE.AUDIO_SCENARIO_CHATROOM });
-            if (code != 0) { _engine = null; throw new InvalidOperationException(NihongoLife.Core.Loc.Triple($"Khởi tạo Agora thất bại ({code}).", $"Agora failed to start ({code}).", $"Agoraを起動できませんでした（{code}）。")); }
+            if (code != 0) { _engine = null; throw new InvalidOperationException(NihongoLife.Core.Loc.TripleF("Khởi tạo Agora thất bại ({0}).", "Agora failed to start ({0}).", "Agoraを起動できませんでした（{0}）。", code)); }
             _engine.InitEventHandler(new Events(this));
             _engine.EnableAudio();
             _engine.DisableVideo();
@@ -383,9 +383,9 @@ namespace NihongoLife.Learning
                 string key = GameInputService.GetOrCreate().GetBindingLabel(GameInputId.PushToTalk);
                 _owner.SetStatus(_owner.Current switch
                 {
-                    Mode.Area => NihongoLife.Core.Loc.Triple($"Voice khu vực · giữ {key} để nói · nghe người trong {HearingRange:0} m", $"Area voice · hold {key} to talk · hear people within {HearingRange:0} m", $"エリアボイス · {key}を押して話す · {HearingRange:0}m以内が聞こえます"),
-                    Mode.Group => NihongoLife.Core.Loc.Triple($"Voice nhóm · giữ {key} để nói", $"Group voice · hold {key} to talk", $"グループボイス · {key}を押して話す"),
-                    _ => NihongoLife.Core.Loc.Triple($"Đang gọi · giữ {key} để nói", $"In a call · hold {key} to talk", $"通話中 · {key}を押して話す")
+                    Mode.Area => NihongoLife.Core.Loc.TripleF("Voice khu vực · giữ {0} để nói · nghe người trong {1:0} m", "Area voice · hold {0} to talk · hear people within {1:0} m", "エリアボイス · {0}を押して話す · {1:0}m以内が聞こえます", key, HearingRange),
+                    Mode.Group => NihongoLife.Core.Loc.TripleF("Voice nhóm · giữ {0} để nói", "Group voice · hold {0} to talk", "グループボイス · {0}を押して話す", key),
+                    _ => NihongoLife.Core.Loc.TripleF("Đang gọi · giữ {0} để nói", "In a call · hold {0} to talk", "通話中 · {0}を押して話す", key)
                 });
             });
 
@@ -404,7 +404,7 @@ namespace NihongoLife.Learning
                 _owner.OnStateChanged?.Invoke();
             });
 
-            public override void OnError(int err, string msg) => _owner.Post(() => _owner.SetStatus(NihongoLife.Core.Loc.Triple($"Voice lỗi {err}: {msg}", $"Voice error {err}: {msg}", $"ボイスエラー {err}: {msg}")));
+            public override void OnError(int err, string msg) => _owner.Post(() => _owner.SetStatus(NihongoLife.Core.Loc.TripleF("Voice lỗi {0}: {1}", "Voice error {0}: {1}", "ボイスエラー {0}: {1}", err, msg)));
 
             public override void OnTokenPrivilegeWillExpire(RtcConnection connection, string token) => _owner.Post(() =>
             {

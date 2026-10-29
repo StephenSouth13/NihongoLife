@@ -102,7 +102,7 @@ namespace NihongoLife.Shop
         }
 
         /// <summary>Shelf section name in the interface language.</summary>
-        public static string SectionName(KonbiniSection s) => NihongoLife.Core.Loc.IsJapanese ? SectionJa(s) : NihongoLife.Core.Loc.IsEnglish ? SectionEn(s) : SectionVi(s);
+        public static string SectionName(KonbiniSection s) => NihongoLife.Core.Loc.IsJapanese ? SectionJa(s) : NihongoLife.Core.Loc.EnglishData ? NihongoLife.Core.Loc.Data(SectionEn(s)) : SectionVi(s);
 
         public static string SectionEn(KonbiniSection s) => s switch
         {

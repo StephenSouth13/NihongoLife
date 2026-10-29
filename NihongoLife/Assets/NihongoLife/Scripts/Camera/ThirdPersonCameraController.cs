@@ -110,6 +110,7 @@ namespace NihongoLife.Cameras
             Vector3 targetPosition = target.position + targetOffset;
             Vector3 finalPosition = targetPosition + Quaternion.Euler(_rotationY, _rotationX, 0f) * Vector3.back * defaultDistance;
             _currentDistance = defaultDistance;
+            _blendDistance = defaultDistance; _blendVelocity = 0f;
             transform.position = Vector3.SmoothDamp(transform.position, finalPosition, ref _followVelocity, positionSmoothTime * 2f);
             transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(targetPosition - transform.position, Vector3.up), 1f - Mathf.Exp(-10f * Time.deltaTime));
         }
@@ -117,6 +118,7 @@ namespace NihongoLife.Cameras
         private float _rotationX = 0f;
         private float _rotationY = 20f;
         private float _currentDistance;
+        private float _blendDistance = -1f, _blendVelocity; // eased copy of defaultDistance: mode changes glide instead of whipping
         private float _distanceVelocity;
         private Vector3 _followVelocity;
         private bool _isLocked = false;
@@ -144,6 +146,7 @@ namespace NihongoLife.Cameras
                 collisionLayers = Physics.DefaultRaycastLayers;
             }
             _currentDistance = defaultDistance;
+            _blendDistance = defaultDistance;
             
             // Auto-find player target if not set
             if (target == null)
@@ -231,18 +234,21 @@ namespace NihongoLife.Cameras
             // Calculate rotation and position
             Quaternion rotation = Quaternion.Euler(_rotationY, _rotationX, 0);
             Vector3 desiredDirection = rotation * Vector3.back;
-            Vector3 desiredPosition = targetPosition + desiredDirection * defaultDistance;
+            if (_blendDistance < 0f) _blendDistance = defaultDistance;
+            _blendDistance = Mathf.SmoothDamp(_blendDistance, defaultDistance, ref _blendVelocity, 0.45f, Mathf.Infinity, Mathf.Min(Time.unscaledDeltaTime, 0.05f));
+            float wantDistance = _blendDistance;
+            Vector3 desiredPosition = targetPosition + desiredDirection * wantDistance;
 
             // Simple camera collision detection
             Vector3 targetToDesired = desiredPosition - targetPosition;
-            float targetDistance = defaultDistance;
-            if (Physics.SphereCast(targetPosition, cameraRadius, targetToDesired.normalized, out RaycastHit hit, defaultDistance, collisionLayers, QueryTriggerInteraction.Ignore))
+            float targetDistance = wantDistance;
+            if (Physics.SphereCast(targetPosition, cameraRadius, targetToDesired.normalized, out RaycastHit hit, wantDistance, collisionLayers, QueryTriggerInteraction.Ignore))
             {
-                targetDistance = Mathf.Clamp(hit.distance - collisionPadding, minDistance, defaultDistance);
+                targetDistance = Mathf.Clamp(hit.distance - collisionPadding, Mathf.Min(minDistance, wantDistance), wantDistance);
             }
 
             // Something between the player and the camera: move in at once (never through it); ease back out.
-            if (targetDistance < _currentDistance) { _currentDistance = targetDistance; _distanceVelocity = 0f; }
+            if (targetDistance < _currentDistance) { _currentDistance = Mathf.MoveTowards(_currentDistance, targetDistance, 30f * Mathf.Min(Time.unscaledDeltaTime, 0.05f)); _distanceVelocity = 0f; }
             else _currentDistance = Mathf.SmoothDamp(_currentDistance, targetDistance, ref _distanceVelocity, distanceSmoothTime * 3f);
 
             // Final position
@@ -269,6 +275,20 @@ namespace NihongoLife.Cameras
             {
                 transform.SetPositionAndRotation(finalPosition, Quaternion.LookRotation(targetPosition - finalPosition, Vector3.up));
             }
+        }
+
+        /// <summary>After a teleport: the follow pivot and distance jump to the new spot at once (no glide through walls).</summary>
+        public void SnapToTarget()
+        {
+            if (target == null) return;
+            _pivot = target.position + targetOffset; _pivotVelocity = Vector3.zero; _pivotReady = true;
+            _followVelocity = Vector3.zero; _conversationVelocity = Vector3.zero;
+            _blendDistance = defaultDistance; _blendVelocity = 0f;
+            _currentDistance = Mathf.Min(_currentDistance, defaultDistance); _distanceVelocity = 0f;
+            _returningFromConversation = false;
+            Vector3 dir = Quaternion.Euler(_rotationY, _rotationX, 0f) * Vector3.back;
+            transform.position = _pivot + dir * _currentDistance;
+            transform.rotation = Quaternion.LookRotation(_pivot - transform.position, Vector3.up);
         }
 
         public void SetTarget(Transform newTarget)
@@ -301,17 +321,29 @@ namespace NihongoLife.Cameras
             defaultDistance = Mathf.Clamp(distance, minDistance, maxDistance);
             outdoorDistance = defaultDistance;
             _currentDistance = defaultDistance;
+            _blendDistance = defaultDistance; _blendVelocity = 0f;
             _distanceVelocity = 0f;
         }
 
         public bool IsIndoor => _isIndoor;
 
-        public void SetIndoorMode(bool indoor)
+        public void SetIndoorMode(bool indoor) => SetIndoorMode(indoor, false);
+
+        /// <summary>
+        /// <paramref name="smooth"/> (used by walking through a shop door) keeps the current yaw and pitch and only eases the
+        /// distance and height, so entering or leaving never whips the view; the hard form is for teleports/scene starts.
+        /// </summary>
+        public void SetIndoorMode(bool indoor, bool smooth, float indoorOverride = -1f)
         {
             if (indoor) SetOverview(false);
             _isIndoor = indoor;
+            if (indoor && indoorOverride > 0f) indoorDistance = indoorOverride;
             defaultDistance = Mathf.Clamp(indoor ? indoorDistance : outdoorDistance, minDistance, maxDistance);
-            _rotationY = Mathf.Clamp(indoor ? 22f : 16f, minYAngle, maxYAngle);
+            if (!smooth)
+            {
+                _rotationY = Mathf.Clamp(indoor ? 22f : 16f, minYAngle, maxYAngle);
+                _blendDistance = defaultDistance; _blendVelocity = 0f;
+            }
             targetOffset = indoor ? new Vector3(0f, 1.45f, 0f) : new Vector3(0f, 1.6f, 0f);
         }
 

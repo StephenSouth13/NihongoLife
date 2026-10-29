@@ -235,6 +235,15 @@ namespace NihongoLife.UI
             LocText.Set((TMP_Text)_input.placeholder, "Nhập tin nhắn… (Enter để gửi)", "Type a message… (Enter to send)", "メッセージを入力…（Enterで送信）");
             NLUi.Size(_input, -1f, 46f, 1f);
             _input.onSubmit.AddListener(_ => SendCurrent());
+            var emojiButton = NLUi.Button(inputRow, "EmojiButton", "", _font, ToggleEmojiPanel, new Color(0.22f, 0.27f, 0.33f), 18f, Color.white, 46f);
+            NLUi.Size(emojiButton, 56f, 46f, 0f);
+            var emojiIcon = new GameObject("Icon", typeof(RectTransform), typeof(Image));
+            emojiIcon.transform.SetParent(emojiButton.transform, false);
+            var emojiImage = emojiIcon.GetComponent<Image>();
+            emojiImage.sprite = EmojiService.GetSprite("smile"); emojiImage.preserveAspect = true; emojiImage.raycastTarget = false;
+            var emojiRect = (RectTransform)emojiIcon.transform;
+            emojiRect.anchorMin = emojiRect.anchorMax = new Vector2(0.5f, 0.5f); emojiRect.sizeDelta = new Vector2(30f, 30f); emojiRect.anchoredPosition = Vector2.zero;
+            BuildEmojiPanel(inputRow);
             var send = NLUi.Button(inputRow, "Send", "", _font, SendCurrent, NLUi.Gold, 18f, new Color(0.1f, 0.08f, 0.04f), 46f);
             LocText.Set(send.GetComponentInChildren<TextMeshProUGUI>(), "Gửi", "Send", "送信");
             NLUi.Size(send, 110f, 46f, 0f);
@@ -653,8 +662,9 @@ namespace NihongoLife.UI
                 string time = new DateTime(m.sentAtUtcTicks, DateTimeKind.Utc).ToLocalTime().ToString("HH:mm");
                 string who = system ? "<color=#E8C46A>NihongoLife</color>" : mine ? $"<color=#9FD8F0>{Loc.T("Bạn", "You", "あなた")}</color>" : $"<color=#F2C75B>{m.senderDisplayName}</color>";
                 NLUi.Label(bubble, "Meta", $"<b>{who}</b>  <size=80%><color=#8A96A3>{time}</color></size>", 14f, NLUi.Text, _font);
-                var text = NLUi.Label(bubble, "Text", system ? Loc.Resolve(m.text) : m.text, 17f, system ? NLUi.Soft : NLUi.Text, _font);
-                text.richText = system; // players cannot inject tags
+                var text = NLUi.Label(bubble, "Text", system ? Loc.Resolve(m.text) : string.Empty, 17f, system ? NLUi.Soft : NLUi.Text, _font);
+                if (system) text.richText = true;
+                else EmojiService.Apply(text, m.text); // players cannot inject tags: their text is wrapped in noparse
                 var fitter = bubble.gameObject.AddComponent<LayoutElement>();
                 fitter.preferredWidth = Mathf.Min(560f, 60f + m.text.Length * 9.5f);
                 if (!mine && !system)
@@ -666,6 +676,55 @@ namespace NihongoLife.UI
             }
             Canvas.ForceUpdateCanvases();
             _messagesScroll.verticalNormalizedPosition = 0f;
+        }
+
+        // F5: emoji picker. Messages carry plain ":shortcode:" text; EmojiService draws it as sprites.
+        private RectTransform _emojiPanel;
+        public bool EmojiPanelOpen => _emojiPanel != null && _emojiPanel.gameObject.activeSelf;
+        public TMP_InputField ChatInput => _input;
+
+        private void BuildEmojiPanel(Transform inputRow)
+        {
+            _emojiPanel = NLUi.Panel(_chatPane, "EmojiPanel", new Color(0.09f, 0.11f, 0.14f, 1f), new RectOffset(8, 8, 8, 8), 0f);
+            _emojiPanel.SetSiblingIndex(inputRow.GetSiblingIndex());
+            var grid = new GameObject("Grid", typeof(RectTransform), typeof(GridLayoutGroup));
+            grid.transform.SetParent(_emojiPanel, false);
+            var layout = grid.GetComponent<GridLayoutGroup>();
+            layout.cellSize = new Vector2(38f, 38f); layout.spacing = new Vector2(4f, 4f);
+            layout.constraint = GridLayoutGroup.Constraint.FixedColumnCount; layout.constraintCount = 12;
+            for (int i = 0; i < EmojiService.Count; i++)
+            {
+                string name = EmojiService.NameAt(i);
+                var cell = new GameObject("E_" + name, typeof(RectTransform), typeof(Image), typeof(Button));
+                cell.transform.SetParent(grid.transform, false);
+                var image = cell.GetComponent<Image>();
+                image.sprite = EmojiService.GetSprite(name); image.preserveAspect = true;
+                var button = cell.GetComponent<Button>(); button.targetGraphic = image;
+                var colors = button.colors; colors.highlightedColor = new Color(1f, 0.92f, 0.7f, 1f); colors.pressedColor = new Color(0.8f, 0.8f, 0.8f, 1f); button.colors = colors;
+                button.onClick.AddListener(() => InsertEmoji(name));
+            }
+            _emojiPanel.gameObject.SetActive(false);
+        }
+
+        public void ToggleEmojiPanel() => SetEmojiPanel(!EmojiPanelOpen);
+
+        public void SetEmojiPanel(bool open)
+        {
+            if (_emojiPanel == null) return;
+            _emojiPanel.gameObject.SetActive(open);
+            var le = _messagesScroll != null ? _messagesScroll.GetComponent<LayoutElement>() : null;
+            if (le != null) { float h = open ? 170f : 410f; le.preferredHeight = h; le.minHeight = h; }
+            if (_messagesScroll != null) _messagesScroll.verticalNormalizedPosition = 0f;
+        }
+
+        /// <summary>Inserts ":name:" at the end of the typed text (keeps the limit) and keeps focus in the box.</summary>
+        public void InsertEmoji(string name)
+        {
+            if (_input == null) return;
+            string code = EmojiService.Shortcode(name);
+            if (_input.text.Length + code.Length <= _input.characterLimit) _input.text += code;
+            FocusInput();
+            if (_input != null) _input.caretPosition = _input.text.Length;
         }
 
         private void SendCurrent()

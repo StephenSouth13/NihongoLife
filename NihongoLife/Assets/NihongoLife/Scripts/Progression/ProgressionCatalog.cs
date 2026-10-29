@@ -38,6 +38,11 @@ namespace NihongoLife.Progression
         public string GiverName => NihongoLife.Core.Loc.Pick(giverNameVi, giverNameEn, giverNameJa);
         public string Location => NihongoLife.Core.Loc.Pick(locationVi, locationEn, locationJa);
         public int minLevel = 1, minKnowledge;
+        /// <summary>A career's own task: only offered while the player works that career (careers.json id) at
+        /// <see cref="careerLevel"/> or higher — the harder shifts and duties that come with a promotion.</summary>
+        public string career;
+        public int careerLevel = 1;
+        public bool IsCareerTask => !string.IsNullOrEmpty(career);
         public string[] requiresQuests = Array.Empty<string>();
         public bool repeatable;
         public int cooldownMinutes;
@@ -65,6 +70,8 @@ namespace NihongoLife.Progression
             // Hibari Clinic: the patient visit (ClinicVisit) and the clinic shift (JobStation.Clinic).
             "clinic_reception", "clinic_consult", "clinic_pay", "clinic_medicine", "clinic_measure", "clinic_eye", "clinic_vaccine",
             "checkin", "triage", "explain",
+            // Chef kitchen shift (SushiRestaurantRuntime): prep and cooking questions.
+            "prep", "cook",
         };
 
         public string schema;
@@ -128,6 +135,7 @@ namespace NihongoLife.Progression
                 if (string.IsNullOrWhiteSpace(q.descriptionVi)) errors.Add($"{where}: missing Vietnamese description");
                 if (q.minLevel < 1) errors.Add($"{where}: minLevel must be ≥ 1");
                 if (q.minKnowledge < 0) errors.Add($"{where}: minKnowledge must be ≥ 0");
+                if (!string.IsNullOrEmpty(q.career) && q.careerLevel < 1) errors.Add($"{where}: careerLevel must be ≥ 1");
                 if (q.cooldownMinutes < 0) errors.Add($"{where}: cooldownMinutes must be ≥ 0");
                 if (q.rewards == null || q.rewards.yen < 0 || q.rewards.xp < 0 || q.rewards.knowledge < 0) errors.Add($"{where}: rewards must be present and non-negative");
                 if (q.objectives == null || q.objectives.Length == 0) errors.Add($"{where}: no objectives");

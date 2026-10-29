@@ -1,7 +1,14 @@
+using NihongoLife.Player;
 using UnityEngine;
 
 namespace NihongoLife.Cameras
 {
+    /// <summary>
+    /// The konbini's interior volume. Walking through the door used to swap to a second camera (fixed yaw, snapped distance)
+    /// and back, which whipped the view and could flicker on the threshold. Now the ONE camera stays, and only eases its
+    /// distance/height (ThirdPersonCameraController.SetIndoorMode(smooth)) while keeping the player's own yaw and pitch.
+    /// Entering/leaving is debounced: a player has several colliders and the doorway edge can chatter.
+    /// </summary>
     [RequireComponent(typeof(Collider))]
     public class StoreCameraZone : MonoBehaviour
     {
@@ -15,68 +22,68 @@ namespace NihongoLife.Cameras
             return false;
         }
 
+        /// <summary>Distance of the camera behind the player inside the shop.</summary>
+        public const float InteriorDistance = 2.6f;
+        private const float LeaveDelay = 0.3f;
+
+        private float _leaveAt = -1f;
+        private bool _indoorApplied;
+        private Transform _player;
+        private Collider _volume;
+        private float _nextFind;
+
+        public bool IndoorApplied => _indoorApplied;
+
         private void OnEnable() => Zones.Add(this);
-        private void OnDisable() => Zones.Remove(this);
+        private void OnDisable() { Zones.Remove(this); if (_indoorApplied) Apply(false); }
 
-        private Camera _outdoorCamera;
-        private Camera _indoorCamera;
+        private void Awake() { _volume = GetComponent<Collider>(); _volume.isTrigger = true; }
 
-        private void Awake()
+        /// <summary>
+        /// Polled instead of OnTriggerEnter/Exit: the player is also moved by teleports (the shop door) and has more than one
+        /// collider, and trigger callbacks then miscount. The volume is widened by a margin once inside (hysteresis), and
+        /// leaving needs <see cref="LeaveDelay"/> of being outside, so the doorway edge cannot make the camera chatter.
+        /// </summary>
+        private void Update()
         {
-            GetComponent<Collider>().isTrigger = true;
-            CreateIndoorCamera();
-        }
-
-        private void OnTriggerEnter(Collider other)
-        {
-            if (!other.CompareTag("Player")) return;
-            SetIndoorMode(true, other.transform);
-        }
-
-        private void OnTriggerExit(Collider other)
-        {
-            if (!other.CompareTag("Player")) return;
-            SetIndoorMode(false, other.transform);
-        }
-
-        private void CreateIndoorCamera()
-        {
-            _outdoorCamera = Camera.main;
-            if (_outdoorCamera == null) return;
-
-            var go = new GameObject("Store Interior Camera");
-            go.SetActive(false);
-            _indoorCamera = go.AddComponent<Camera>();
-            _indoorCamera.clearFlags = _outdoorCamera.clearFlags;
-            _indoorCamera.backgroundColor = _outdoorCamera.backgroundColor;
-            _indoorCamera.fieldOfView = 56f;
-            _indoorCamera.nearClipPlane = 0.06f;
-            _indoorCamera.farClipPlane = _outdoorCamera.farClipPlane;
-            go.AddComponent<AudioListener>();
-            var controller = go.AddComponent<ThirdPersonCameraController>();
-            controller.SetOrbit(180f, 18f, 2.45f);
-            controller.SetIndoorMode(true);
-        }
-
-        private void SetIndoorMode(bool indoor, Transform player)
-        {
-            if (_outdoorCamera == null || _indoorCamera == null) return;
-
-            if (indoor)
+            if (_player == null)
             {
-                var controller = _indoorCamera.GetComponent<ThirdPersonCameraController>();
-                controller.SetTarget(player);
-                _outdoorCamera.gameObject.tag = "Untagged";
-                _outdoorCamera.gameObject.SetActive(false);
-                _indoorCamera.gameObject.tag = "MainCamera";
-                _indoorCamera.gameObject.SetActive(true);
-                return;
+                if (Time.unscaledTime < _nextFind) return;
+                _nextFind = Time.unscaledTime + 0.5f;
+                var pc = Object.FindFirstObjectByType<PlayerController>();
+                if (pc == null) return;
+                _player = pc.transform;
             }
+            Bounds b = _volume.bounds;
+            if (_indoorApplied) b.Expand(new Vector3(0.5f, 2f, 0.5f));
+            bool inside = b.Contains(new Vector3(_player.position.x, b.center.y, _player.position.z));
+            if (inside)
+            {
+                _leaveAt = -1f;
+                if (!_indoorApplied) Apply(true);
+            }
+            else if (_indoorApplied)
+            {
+                if (_leaveAt < 0f) _leaveAt = Time.unscaledTime + LeaveDelay;
+                else if (Time.unscaledTime >= _leaveAt) { _leaveAt = -1f; Apply(false); }
+            }
+        }
 
-            _indoorCamera.gameObject.tag = "Untagged";
-            _indoorCamera.gameObject.SetActive(false);
-            _outdoorCamera.gameObject.tag = "MainCamera";
-            _outdoorCamera.gameObject.SetActive(true);
+        private static ThirdPersonCameraController FindController()
+        {
+            var cam = Camera.main;
+            var c = cam != null ? cam.GetComponent<ThirdPersonCameraController>() : null;
+            return c != null ? c : Object.FindFirstObjectByType<ThirdPersonCameraController>();
+        }
+
+        private void Apply(bool indoor)
+        {
+            var controller = FindController();
+            if (controller == null) return;
+            // Do not fight another owner (a bedroom/station already put the camera indoors).
+            if (indoor && controller.IsIndoor) { _indoorApplied = true; return; }
+            _indoorApplied = indoor;
+            controller.SetIndoorMode(indoor, true, indoor ? InteriorDistance : -1f);
         }
     }
 }

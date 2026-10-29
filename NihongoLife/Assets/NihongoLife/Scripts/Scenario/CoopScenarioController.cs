@@ -140,7 +140,7 @@ namespace NihongoLife.Scenario
         private static string Pick(string vi, string en, string ja)
         {
             GameLanguage language = GameServices.TryGet(out GameSettingsService settings) ? settings.Language : GameLanguage.Vietnamese;
-            return language == GameLanguage.English ? en : language == GameLanguage.Japanese ? ja : vi;
+            return language == GameLanguage.English ? en : language == GameLanguage.Japanese ? ja : language == GameLanguage.Russian ? NihongoLife.Core.RuTable.Translate(en, vi) : vi;
         }
 
         // ──────────────────────── Broadcast Events ────────────────────────

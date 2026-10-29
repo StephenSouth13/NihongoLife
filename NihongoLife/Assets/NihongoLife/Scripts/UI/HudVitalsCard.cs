@@ -67,7 +67,7 @@ namespace NihongoLife.UI
             PlayerInventory inventory = PlayerInventory.Instance;
 
             if (levelText != null) levelText.text = status != null ? $"Lv {status.Level}" : "Lv -";
-            if (walletText != null) walletText.text = inventory != null ? $"¥ {inventory.Yen:N0}" : "¥ -";
+            if (walletText != null) walletText.text = inventory != null ? $"{NihongoLife.Core.Loc.Money(inventory.Yen)}" : "¥ -";
             SetFill(expFill, status != null && status.MaxExp > 0 ? (float)status.CurrentExp / status.MaxExp : 0f);
 
             foreach (var row in rows)
@@ -128,12 +128,13 @@ namespace NihongoLife.UI
         {
             bool ja = language == GameLanguage.Japanese;
             bool en = language == GameLanguage.English;
+            bool ru = language == GameLanguage.Russian;
             switch (kind)
             {
-                case HudVitalKind.Health: return ja ? "体力" : en ? "Health" : "Máu";
-                case HudVitalKind.Energy: return ja ? "元気" : en ? "Energy" : "Năng lượng";
-                case HudVitalKind.Hunger: return ja ? "満腹" : en ? "Hunger" : "No";
-                default: return ja ? "水分" : en ? "Thirst" : "Khát";
+                case HudVitalKind.Health: return ja ? "体力" : ru ? "Здоровье" : en ? "Health" : "Máu";
+                case HudVitalKind.Energy: return ja ? "元気" : ru ? "Энергия" : en ? "Energy" : "Năng lượng";
+                case HudVitalKind.Hunger: return ja ? "満腹" : ru ? "Голод" : en ? "Hunger" : "No";
+                default: return ja ? "水分" : ru ? "Жажда" : en ? "Thirst" : "Khát";
             }
         }
 

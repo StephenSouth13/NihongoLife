@@ -78,7 +78,7 @@ namespace NihongoLife.Progression
         }
 
         /// <summary>The station label in the interface language (scenes store the Japanese and Vietnamese labels).</summary>
-        private string Label => Loc.IsJapanese && !string.IsNullOrEmpty(labelJa) ? labelJa : Loc.IsEnglish ? LabelEn(labelVi) : labelVi;
+        private string Label => Loc.IsJapanese && !string.IsNullOrEmpty(labelJa) ? labelJa : Loc.EnglishData ? Loc.Data(LabelEn(labelVi)) : labelVi;
 
         private static string LabelEn(string vi) => vi switch
         {
@@ -132,7 +132,7 @@ namespace NihongoLife.Progression
                     }, pose: "Work_Shelf");
                     break;
                 case JobStationKind.Customer: AskCustomer(); break;
-                case JobStationKind.Register: TimedAction.Run(Loc.T("Đang quét mã hàng…", "Scanning items…", "バーコードを読んでいます…"), Loc.T("máy quét", "scanner", "スキャナー"), 1.2f, Checkout, pose: "Work_Hold"); break;
+                case JobStationKind.Register: TimedAction.Run(Loc.T("Đang quét mã hàng…", "Scanning items…", "バーコードを読んでいます…"), Loc.T("máy quét", "scanner", "スキャナー"), 1.2f, Checkout, pose: "Work_Hold", gesture: "cashier_scan"); break;
                 case JobStationKind.OrderTable:
                     if (JobShift.OrderAt(stationId) == null) TakeOrder(); else Serve();
                     break;
@@ -213,19 +213,19 @@ namespace NihongoLife.Progression
                 .GroupBy(d => d.id).Select(g => g.First()).OrderBy(d => (d.id.GetHashCode() & 0x7fffffff) % 13).ToList();
             var choices = options.Select(d => new JobQuizCard.Choice
             {
-                Label = Loc.IsJapanese ? d.nameJa : Loc.IsEnglish ? d.nameEn : d.nameVi,
+                Label = Loc.IsJapanese ? d.nameJa : Loc.EnglishData ? Loc.Data(d.nameEn) : d.nameVi,
                 Detail = Loc.IsJapanese ? d.reading : null,
                 IconItemId = "sushi_" + d.id,
                 Correct = d.id == dish.id,
                 WrongHint = Loc.F("Khách nói 「{0}」 — đọc là {1}.", "The customer said 「{0}」 — read as {1}.", "お客さんは「{0}」（{1}）と言いました。", dish.nameJa, dish.reading),
             }).ToList();
             JobQuizCard.Show(Kicker("ひばり寿司 · " + Label), Loc.T("Khách", "Guest", "おきゃくさん"), $"すみません、{dish.nameJa}を ひとつ ください。", $"sumimasen, {dish.romaji} o hitotsu kudasai",
-                Loc.F("Cho tôi một phần {0}.", "One {0}, please.", "", Loc.IsEnglish ? dish.nameEn : dish.nameVi), Loc.T("Khách gọi món gì? Ghi đúng phiếu:", "What did the guest order? Write the right ticket:", "何を注文しましたか。正しく伝票に書きましょう："), choices, () =>
+                Loc.F("Cho tôi một phần {0}.", "One {0}, please.", "", Loc.EnglishData ? Loc.Data(dish.nameEn) : dish.nameVi), Loc.T("Khách gọi món gì? Ghi đúng phiếu:", "What did the guest order? Write the right ticket:", "何を注文しましたか。正しく伝票に書きましょう："), choices, () =>
                 {
                     JobShift.SetOrder(stationId, dish.id);
                     Mastery("food." + dish.id, true);
                     QuestService.Raise("order", "sushi_table");
-                    HudFeed.Post(Loc.F("Phiếu {0}: {1} ({2}). Lấy món ở quầy bếp.", "Ticket {0}: {1} ({2}). Pick it up at the kitchen pass.", "{0}の伝票：{1}。キッチンで受け取りましょう。", Label, dish.nameJa, Loc.IsEnglish ? dish.nameEn : dish.nameVi), HudFeed.Kind.Info, 4f);
+                    HudFeed.Post(Loc.F("Phiếu {0}: {1} ({2}). Lấy món ở quầy bếp.", "Ticket {0}: {1} ({2}). Pick it up at the kitchen pass.", "{0}の伝票：{1}。キッチンで受け取りましょう。", Label, dish.nameJa, Loc.EnglishData ? Loc.Data(dish.nameEn) : dish.nameVi), HudFeed.Kind.Info, 4f);
                 });
         }
 
@@ -254,7 +254,7 @@ namespace NihongoLife.Progression
             if (JobShift.CarryId != order)
             {
                 var wanted = Dishes().FirstOrDefault(d => d.id == order);
-                HudFeed.Post(Loc.F("Bàn này gọi {0} ({1}) — món bạn cầm là của bàn khác.", "This table ordered {0} ({1}) — the dish you have is for another table.", "このテーブルの注文は{0}です。持っている料理は別のテーブルのものです。", wanted?.nameJa, Loc.IsEnglish ? wanted?.nameEn : wanted?.nameVi), HudFeed.Kind.Warning, 4f);
+                HudFeed.Post(Loc.F("Bàn này gọi {0} ({1}) — món bạn cầm là của bàn khác.", "This table ordered {0} ({1}) — the dish you have is for another table.", "このテーブルの注文は{0}です。持っている料理は別のテーブルのものです。", wanted?.nameJa, Loc.EnglishData ? Loc.Data(wanted?.nameEn) : wanted?.nameVi), HudFeed.Kind.Warning, 4f);
                 return;
             }
             TimedAction.Run(Loc.F("Đang bưng món tới {0}…", "Bringing the dish to {0}…", "{0}に運んでいます…", Label), Loc.T("khay", "tray", "おぼん"), 1f, () =>
@@ -265,14 +265,14 @@ namespace NihongoLife.Progression
                 JobShift.MarkDone(stationId);
                 QuestService.Raise("serve", "sushi_table");
                 HudFeed.Post("「おまたせしました！」" + Loc.T(" — Món đã lên bàn.", " — The dish is served.", ""), HudFeed.Kind.Info, 3f);
-            }, pose: "Work_Hold");
+            }, pose: "Work_Hold", gesture: "serve_tray");
         }
 
         private void OnDishChosen(string dishId)
         {
             var dish = Dishes().FirstOrDefault(d => d.id == dishId);
             if (dish == null) return;
-            TimedAction.Run(Loc.F("Đang lấy {0}…", "Picking up {0}…", "{0}を受け取っています…", dish.nameJa), Loc.T("khay", "tray", "おぼん"), 0.8f, () => JobShift.Carry("dish", dish.id, dish.nameJa), pose: "Work_Hold");
+            TimedAction.Run(Loc.F("Đang lấy {0}…", "Picking up {0}…", "{0}を受け取っています…", dish.nameJa), Loc.T("khay", "tray", "おぼん"), 0.8f, () => JobShift.Carry("dish", dish.id, dish.nameJa), pose: "Work_Hold", gesture: "pickup");
         }
 
         private static void Mastery(string target, bool correct)

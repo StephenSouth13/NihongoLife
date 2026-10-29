@@ -21,9 +21,9 @@ namespace NihongoLife.UI
     /// 音楽 Music (every track: listen, pin one to play everywhere). Left page: the chapter's entries; right page: the
     /// chosen entry. Content is data-driven; the window only lays it out.
     /// </summary>
-    public sealed class HandbookUI : MonoBehaviour
+    public sealed partial class HandbookUI : MonoBehaviour
     {
-        public enum Chapter { Intro, Places, Health, Careers, Music }
+        public enum Chapter { Intro, Places, Health, Careers, Doctor, Music, Dictionary }
 
         // Book palette.
         private static readonly Color Cover = new Color(0.13f, 0.26f, 0.25f, 1f);
@@ -259,7 +259,7 @@ namespace NihongoLife.UI
 
         // ─────────── Chapters ───────────
 
-        private static string ChapterGlyph(Chapter c) => c switch { Chapter.Intro => "案内", Chapter.Places => "場所", Chapter.Health => "健康", Chapter.Careers => "仕事", _ => "音楽" };
+        private static string ChapterGlyph(Chapter c) => c switch { Chapter.Intro => "案内", Chapter.Places => "場所", Chapter.Health => "健康", Chapter.Careers => "仕事", Chapter.Doctor => "医師", Chapter.Dictionary => "辞書", _ => "音楽" };
 
         private static string ChapterName(Chapter c) => c switch
         {
@@ -267,6 +267,8 @@ namespace NihongoLife.UI
             Chapter.Places => Loc.T("Địa điểm", "Places", "場所"),
             Chapter.Health => Loc.T("Sức khoẻ & bệnh", "Health & illness", "健康と病気"),
             Chapter.Careers => Loc.T("Nghề nghiệp", "Careers", "仕事"),
+            Chapter.Doctor => Loc.T("Sổ tay bác sĩ", "Doctor's notebook", "医師の手帳"),
+            Chapter.Dictionary => Loc.T("Từ điển", "Dictionary", "辞書"),
             _ => Loc.T("Âm nhạc", "Music", "音楽"),
         };
 
@@ -276,6 +278,8 @@ namespace NihongoLife.UI
             Chapter.Places => Loc.T("Mỗi nơi trong thị trấn: ý nghĩa, cách dùng, câu hay", "Every place in town: meaning, use, phrases", "町の場所"),
             Chapter.Health => Loc.T("Nguyên nhân, triệu chứng, cách chữa đúng như ngoài đời", "Causes, symptoms and real-life treatment", "原因・症状・治し方"),
             Chapter.Careers => Loc.T("Các nghề và nấc thang thăng tiến", "Careers and their ladders", "職業とキャリア"),
+            Chapter.Doctor => Loc.T("Ca lâm sàng đã học ở 研修室: chẩn đoán, xử trí, dấu hiệu nguy hiểm", "Cases studied in the 研修室: diagnosis, treatment, red flags", "研修室の症例：診断・治療・注意"),
+            Chapter.Dictionary => Loc.T("Tra từ giữa tiếng Việt, Anh, Nhật, Nga", "Look words up between Vietnamese, English, Japanese and Russian", "ベトナム語・英語・日本語・ロシア語の辞書"),
             _ => Loc.T("Nhạc nền của từng nơi — nghe thử, ghim bài yêu thích", "Every place's music — listen, pin a favourite", "BGMを聴く"),
         };
 
@@ -285,6 +289,8 @@ namespace NihongoLife.UI
             Chapter.Places => new Color(0.31f, 0.5f, 0.74f),
             Chapter.Health => new Color(0.24f, 0.62f, 0.49f),
             Chapter.Careers => new Color(0.82f, 0.54f, 0.18f),
+            Chapter.Doctor => new Color(0.2f, 0.45f, 0.62f),
+            Chapter.Dictionary => new Color(0.18f, 0.5f, 0.5f),
             _ => new Color(0.5f, 0.39f, 0.64f),
         };
 
@@ -385,11 +391,11 @@ namespace NihongoLife.UI
 
         private void BuildList()
         {
-            UiKit.Clear(_list);
+            var host = ListHost();
             foreach (var e in _entries)
             {
                 bool on = e.id == _entry;
-                var row = NLUi.Panel(_list, "Entry_" + e.id, on ? new Color(e.color.r, e.color.g, e.color.b, 0.16f) : new Color(1f, 1f, 1f, 0f),
+                var row = NLUi.Panel(host, "Entry_" + e.id, on ? new Color(e.color.r, e.color.g, e.color.b, 0.16f) : new Color(1f, 1f, 1f, 0f),
                     new RectOffset(10, 10, 8, 8), 12f, vertical: false);
                 var layout = (HorizontalLayoutGroup)row.GetComponent<HorizontalOrVerticalLayoutGroup>();
                 layout.childForceExpandWidth = false;
@@ -496,6 +502,8 @@ namespace NihongoLife.UI
             Chapter.Places => PlaceEntries(),
             Chapter.Health => HealthEntries(),
             Chapter.Careers => CareerEntries(),
+            Chapter.Doctor => DoctorEntries(),
+            Chapter.Dictionary => DictionaryEntries(),
             _ => MusicEntries(),
         };
 
@@ -534,6 +542,49 @@ namespace NihongoLife.UI
                 });
             }
             return list;
+        }
+
+        /// <summary>
+        /// The doctor's notebook: every clinical case of the clinic's training room (Clinic/MedicalTraining). A case
+        /// solved there shows its full card — the patient's words, the findings, the diagnosis, the treatment, the red
+        /// flags and the source; one not studied yet keeps its answers for the training room.
+        /// </summary>
+        private List<Entry> DoctorEntries()
+        {
+            var list = new List<Entry>();
+            var color = ChapterColor(Chapter.Doctor);
+            foreach (var c in NihongoLife.Clinic.MedicalTraining.Catalog.cases)
+            {
+                var item = c;
+                bool done = NihongoLife.Clinic.MedicalTraining.IsDone(c.id);
+                list.Add(new Entry
+                {
+                    id = c.id, glyph = c.glyph, color = color, title = c.Title, subtitle = c.patientJa,
+                    badge = done ? "✓" : Loc.T("chưa học", "to study", "未修"),
+                    build = p => BuildCase(p, item, done, color),
+                });
+            }
+            return list;
+        }
+
+        private void BuildCase(RectTransform p, NihongoLife.Clinic.TrainingCase c, bool done, Color color)
+        {
+            Hero(p, c.glyph, color, c.Title, c.titleJa, ChapterName(Chapter.Doctor) + " · " + c.Specialty);
+            Section(p, Loc.T("Bệnh nhân nói", "The patient says", "かんじゃさんの ことば"), c.patientJa, color);
+            Section(p, Loc.T("Khám", "Findings", "所見"), c.Findings, color);
+            if (!done)
+            {
+                Section(p, Loc.T("Chưa học", "Not studied yet", "未修"), NihongoLife.Clinic.MedicalTraining.IsMedical
+                    ? Loc.T("Học ca này ở phòng đào tạo (研修室) của phòng khám Hibari để mở chẩn đoán và cách xử trí.", "Study this case in Hibari Clinic's training room (研修室) to open the diagnosis and treatment.", "研修室で学ぶと、診断と治療が開きます。")
+                    : Loc.T("Dành cho nghề Y tế: chọn nghề từ cấp 10, rồi học ở phòng đào tạo (研修室) của phòng khám.", "For the medical career: choose it from level 10, then study in the clinic's training room (研修室).", "医療キャリアの研修室で学べます。"), color);
+                return;
+            }
+            Section(p, Loc.T("Chẩn đoán", "Diagnosis", "診断"), c.RightDiagnosis?.Label + "  ·  " + c.RightDiagnosis?.ja, color);
+            Section(p, Loc.T("Xử trí", "Treatment", "治療"), c.RightTreatment?.Label + "  ·  " + c.RightTreatment?.ja, color);
+            var wrong = string.Join("\n", c.treatment.Where(t => !t.correct).Select(t => "• " + t.Label + " — " + t.Why));
+            Section(p, Loc.T("Không nên", "Do not", "してはいけない"), wrong, color);
+            Section(p, Loc.T("Dấu hiệu nguy hiểm", "Red flags", "危険なサイン"), c.RedFlags, new Color(0.75f, 0.25f, 0.22f));
+            Section(p, Loc.T("Nguồn", "Source", "出典"), c.sourceVi, color);
         }
 
         private void BuildPlace(RectTransform p, LocationGuideUI.Place place, string scene, Color color)
@@ -680,6 +731,15 @@ namespace NihongoLife.UI
             foreach (var m in IllnessCatalog.Load().medicines)
             {
                 var card = Card(p, color);
+                var picture = ItemIcons.Get(m.id); // the product's own picture (Resources/Items/<id>.png), as on the shelf
+                if (picture != null)
+                {
+                    var icon = new GameObject("MedicineIcon", typeof(RectTransform), typeof(Image), typeof(LayoutElement)).GetComponent<Image>();
+                    icon.transform.SetParent(card, false);
+                    icon.sprite = picture; icon.preserveAspect = true; icon.raycastTarget = false;
+                    var iconSize = icon.GetComponent<LayoutElement>();
+                    iconSize.preferredWidth = 96f; iconSize.preferredHeight = 96f;
+                }
                 NLUi.Label(card, "Name", $"<b>{m.ja}</b>  <color=#736655>{m.kanji}</color>   {Loc.Yen(m.price)}", 18f, Ink, _font);
                 NLUi.Label(card, "Use", m.Name + " — " + m.Use, 15f, InkSoft, _font);
                 var helps = IllnessCatalog.Load().illnesses.Where(i => i.medicines.Contains(m.id)).Select(i => i.Name).ToList();

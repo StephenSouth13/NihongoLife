@@ -234,7 +234,7 @@ namespace NihongoLife.UI
         private static string RowMeta(QuestDefinition quest)
         {
             string category = CategoryName(quest.category);
-            string reward = quest.rewards != null && quest.rewards.yen > 0 ? $"¥{quest.rewards.yen:N0}" : $"{quest.rewards?.xp ?? 0} XP";
+            string reward = quest.rewards != null && quest.rewards.yen > 0 ? $"{NihongoLife.Core.Loc.Money(quest.rewards.yen)}" : $"{quest.rewards?.xp ?? 0} XP";
             return QuestService.Availability(quest) switch
             {
                 QuestAvailability.Active => $"{category} · {StatusName(QuestAvailability.Active)} · {reward}",

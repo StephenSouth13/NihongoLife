@@ -124,6 +124,14 @@ namespace NihongoLife.MiniGames
                 case MiniGameKind.KanaRain: return Attach<KanaRainGame>();
                 case MiniGameKind.UfoCatcher: return Attach<UfoCatcherGame>();
                 case MiniGameKind.BasketCount: return Attach<BasketCountGame>();
+                case MiniGameKind.WordWhack: return Attach<WordWhackGame>();
+                case MiniGameKind.EchoPads: return Attach<EchoPadsGame>();
+                case MiniGameKind.KanaSnake: return Attach<KanaSnakeGame>();
+                case MiniGameKind.KanaBreaker: return Attach<KanaBreakerGame>();
+                case MiniGameKind.DanceArrows: return Attach<DanceArrowsGame>();
+                case MiniGameKind.TenseTyper: return Attach<TenseTyperGame>();
+                case MiniGameKind.WheelQuiz: return Attach<WheelQuizGame>();
+                case MiniGameKind.AirHockey: return Attach<AirHockeyGame>();
                 default: return null;
             }
         }

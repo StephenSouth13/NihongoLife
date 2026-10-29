@@ -49,6 +49,8 @@ namespace NihongoLife.UI
         private TextMeshProUGUI _subtitleText;
         private TextMeshProUGUI _hintText;
         private TextMeshProUGUI _detailText;
+        private RawImage _detailPicture;
+        private static readonly Dictionary<string, Texture2D> DishPictures = new Dictionary<string, Texture2D>();
         private RectTransform _tabsRoot;
         private RectTransform _listRoot;
         private ScrollRect _detailScroll;
@@ -152,7 +154,7 @@ namespace NihongoLife.UI
 
             bool waitingToPay = unpaid.State == RestaurantTable.ServiceState.ReadyToPay;
             tray.Post(BillNoticeId,
-                $"{Pick("Hóa đơn", "Bill", "お会計")}  ¥{unpaid.BillTotal:N0}",
+                $"{Pick("Hóa đơn", "Bill", "お会計")}  {NihongoLife.Core.Loc.Money(unpaid.BillTotal)}",
                 unpaid.GetBillStatus(),
                 OnBillChipClicked,
                 waitingToPay ? HudNoticeTone.Warning : HudNoticeTone.Info,
@@ -324,7 +326,7 @@ namespace NihongoLife.UI
                         _entries.Add(new EntryInfo
                         {
                             dishId = dish.id,
-                            title = $"{dish.nameJa}    <color=#F1B83F>¥{dish.priceYen:N0}</color>",
+                            title = $"{dish.nameJa}    <color=#F1B83F>{NihongoLife.Core.Loc.Money(dish.priceYen)}</color>",
                             subtitle = Pick(dish.nameVi, dish.nameEn, dish.reading),
                             detail = string.Empty
                         });
@@ -352,7 +354,7 @@ namespace NihongoLife.UI
             sb.Append("<color=#AFC0CF>").Append(dish.reading);
             if (!string.IsNullOrWhiteSpace(dish.romaji)) sb.Append("  ·  ").Append(dish.romaji);
             sb.Append("</color>\n");
-            sb.Append(Pick(dish.nameVi, dish.nameEn, dish.nameJa)).Append("    <color=#F1B83F><b>¥").Append(dish.priceYen.ToString("N0")).Append("</b></color>\n");
+            sb.Append(Pick(dish.nameVi, dish.nameEn, dish.nameJa)).Append("    <color=#F1B83F><b>").Append(NihongoLife.Core.Loc.Money(dish.priceYen)).Append("</b></color>\n");
             if (dish.isSpecialty)
             {
                 sb.Append("<color=#F1B83F>★ ").Append(Pick("Đặc sản của quán", "House specialty", "お店の名物")).Append("</color>\n");
@@ -367,7 +369,7 @@ namespace NihongoLife.UI
             return new EntryInfo
             {
                 dishId = dish.id,
-                title = $"{dish.nameJa}    <color=#F1B83F>¥{dish.priceYen:N0}</color>",
+                title = $"{dish.nameJa}    <color=#F1B83F>{NihongoLife.Core.Loc.Money(dish.priceYen)}</color>",
                 subtitle = string.IsNullOrWhiteSpace(dish.servingVi) ? Pick(dish.nameVi, dish.nameEn, dish.reading) : $"{Pick(dish.nameVi, dish.nameEn, dish.reading)}  ·  {dish.servingVi}",
                 detail = sb.ToString()
             };
@@ -421,6 +423,7 @@ namespace NihongoLife.UI
                 }
 
                 var button = CreateRowButton(rowParent, $"Entry_{i}", $"{entry.title}\n<size=78%><color=#AFC0CF>{entry.subtitle}</color></size>", 74f, UIStyleKit.PanelBase, UIStyleKit.PanelHover, UIStyleKit.PanelPressed, 20f, Color.white);
+                AddDishPicture(button, entry.dishId);
                 _rowSwaps.Add(button.GetComponent<ButtonColorSwap>());
                 button.onClick.AddListener(() => SelectEntry(captured));
 
@@ -453,6 +456,36 @@ namespace NihongoLife.UI
                     plus.onClick.AddListener(() => ChangeQuantity(dishId, +1));
                 }
             }
+        }
+
+        /// <summary>The dish's picture (Resources/Restaurants/Dishes/&lt;dish id&gt;), loaded once; null when there is none.</summary>
+        private static Texture2D DishPicture(string dishId)
+        {
+            if (string.IsNullOrEmpty(dishId)) return null;
+            if (!DishPictures.TryGetValue(dishId, out var texture))
+            {
+                texture = Resources.Load<Texture2D>("Restaurants/Dishes/" + dishId);
+                DishPictures[dishId] = texture;
+            }
+            return texture;
+        }
+
+        /// <summary>A square picture at the left of a dish row; the name moves right of it.</summary>
+        private static void AddDishPicture(Button row, string dishId)
+        {
+            var texture = DishPicture(dishId);
+            if (texture == null) return;
+            var picture = new GameObject("Picture", typeof(RectTransform), typeof(RawImage)).GetComponent<RawImage>();
+            picture.transform.SetParent(row.transform, false);
+            picture.texture = texture;
+            picture.raycastTarget = false;
+            var rect = picture.rectTransform;
+            rect.anchorMin = new Vector2(0f, 0.5f);
+            rect.anchorMax = new Vector2(0f, 0.5f);
+            rect.pivot = new Vector2(0f, 0.5f);
+            rect.anchoredPosition = new Vector2(6f, 0f);
+            rect.sizeDelta = new Vector2(64f, 64f);
+            if (row.transform.Find("Label") is RectTransform label) label.offsetMin = new Vector2(78f, label.offsetMin.y);
         }
 
         private static void SetFixedWidth(Button button, float width)
@@ -504,13 +537,13 @@ namespace NihongoLife.UI
             {
                 if (index < 0 && _cart.Count >= RestaurantTable.MaxDistinctDishes)
                 {
-                    _hintText.text = Pick($"Mỗi bàn tối đa {RestaurantTable.MaxDistinctDishes} món khác nhau.", $"Up to {RestaurantTable.MaxDistinctDishes} different dishes per table.", $"1テーブルにつき最大{RestaurantTable.MaxDistinctDishes}種類までです。");
+                    _hintText.text = NihongoLife.Core.Loc.F("Mỗi bàn tối đa {0} món khác nhau.", "Up to {0} different dishes per table.", "1テーブルにつき最大{0}種類までです。", RestaurantTable.MaxDistinctDishes);
                     return;
                 }
 
                 if (CartQuantity() >= RestaurantTable.MaxTotalQuantity)
                 {
-                    _hintText.text = Pick($"Mỗi bàn tối đa {RestaurantTable.MaxTotalQuantity} phần.", $"Up to {RestaurantTable.MaxTotalQuantity} servings per table.", $"1テーブルにつき最大{RestaurantTable.MaxTotalQuantity}個までです。");
+                    _hintText.text = NihongoLife.Core.Loc.F("Mỗi bàn tối đa {0} phần.", "Up to {0} servings per table.", "1テーブルにつき最大{0}個までです。", RestaurantTable.MaxTotalQuantity);
                     return;
                 }
             }
@@ -564,7 +597,7 @@ namespace NihongoLife.UI
             int quantity = CartQuantity();
             bool enough = PlayerInventory.Instance == null || wallet >= total;
             string totalColor = enough ? "#F1B83F" : "#FF7A6B";
-            _cartText.text = $"{Pick("Đã chọn", "Selected", "選択")}: <b>{quantity}</b>   ·   {Pick("Tổng", "Total", "合計")}: <color={totalColor}><b>¥{total:N0}</b></color>   ·   {Pick("Ví", "Wallet", "所持金")}: ¥{wallet:N0}";
+            _cartText.text = $"{Pick("Đã chọn", "Selected", "選択")}: <b>{quantity}</b>   ·   {Pick("Tổng", "Total", "合計")}: <color={totalColor}><b>{NihongoLife.Core.Loc.Money(total)}</b></color>   ·   {Pick("Ví", "Wallet", "所持金")}: {NihongoLife.Core.Loc.Money(wallet)}";
             if (_orderButton != null) _orderButton.interactable = quantity > 0;
             if (_orderButtonLabel != null) _orderButtonLabel.color = quantity > 0 ? new Color(0.08f, 0.06f, 0.02f, 1f) : new Color(0.08f, 0.06f, 0.02f, 0.45f);
         }
@@ -591,7 +624,7 @@ namespace NihongoLife.UI
                 var dish = _menu.FindDish(_cart[i].Key);
                 if (dish == null) continue;
                 int qty = _cart[i].Value;
-                sb.Append(dish.nameJa).Append("  x").Append(qty).Append("   <color=#F1B83F>¥").Append((dish.priceYen * qty).ToString("N0")).Append("</color>\n");
+                sb.Append(dish.nameJa).Append("  x").Append(qty).Append("   <color=#F1B83F>").Append(NihongoLife.Core.Loc.Money((dish.priceYen * qty))).Append("</color>\n");
                 sb.Append("<size=80%><color=#AFC0CF>").Append(Pick(dish.nameVi, dish.nameEn, dish.reading)).Append("  (").Append(dish.priceYen.ToString("N0")).Append(" x ").Append(qty).Append(")</color></size>\n");
 
                 ja.Append(ja.Length == 0 ? string.Empty : "、").Append(StripParentheses(dish.nameJa)).Append("を").Append(JapaneseNumber.CountKanji(qty));
@@ -599,7 +632,7 @@ namespace NihongoLife.UI
             }
 
             int total = CartTotalYen();
-            sb.Append("\n<size=125%><b>").Append(Pick("Tổng", "Total", "合計")).Append(": <color=#F1B83F>¥").Append(total.ToString("N0")).Append("</color></b></size>\n");
+            sb.Append("\n<size=125%><b>").Append(Pick("Tổng", "Total", "合計")).Append(": <color=#F1B83F>").Append(NihongoLife.Core.Loc.Money(total)).Append("</color></b></size>\n");
             sb.Append("<size=85%><color=#AFC0CF>").Append(JapaneseNumber.ToKanji(total)).Append("円  (").Append(JapaneseNumber.ToReading(total)).Append("えん)</color></size>\n\n");
 
             sb.Append("<color=#F1B83F><b>").Append(Pick("Bạn nói với nhân viên:", "You tell the staff:", "店員さんに言うこと:")).Append("</b></color>\n");
@@ -641,6 +674,9 @@ namespace NihongoLife.UI
             }
 
             _detailText.text = _tabs[_tabIndex].kind == TabKind.Order ? BuildOrderSummary() : _entries[index].detail;
+            var picture = _tabs[_tabIndex].kind == TabKind.Order ? null : DishPicture(_entries[index].dishId);
+            _detailPicture.texture = picture;
+            _detailPicture.transform.parent.gameObject.SetActive(picture != null);
             Canvas.ForceUpdateCanvases();
             if (_detailScroll != null) _detailScroll.verticalNormalizedPosition = 1f;
         }
@@ -650,7 +686,7 @@ namespace NihongoLife.UI
         private static string Pick(string vi, string en, string ja)
         {
             GameLanguage language = GameServices.TryGet(out GameSettingsService settings) ? settings.Language : GameLanguage.Vietnamese;
-            string value = language == GameLanguage.English ? en : language == GameLanguage.Japanese ? ja : vi;
+            string value = language == GameLanguage.English ? en : language == GameLanguage.Japanese ? ja : language == GameLanguage.Russian ? NihongoLife.Core.RuTable.Translate(en, vi) : vi;
             if (string.IsNullOrWhiteSpace(value)) value = !string.IsNullOrWhiteSpace(vi) ? vi : !string.IsNullOrWhiteSpace(en) ? en : ja;
             return value ?? string.Empty;
         }
@@ -691,6 +727,21 @@ namespace NihongoLife.UI
             _listScroll = CreateScroll(panelRect, "List", new Vector2(290f, -116f), new Vector2(390f, 466f), out _listRoot, new Color(0.025f, 0.033f, 0.04f, 0.6f));
             _detailScroll = CreateScroll(panelRect, "Detail", new Vector2(696f, -116f), new Vector2(460f, 466f), out RectTransform detailContent, new Color(0.025f, 0.033f, 0.04f, 0.72f));
 
+            // The dish itself, above its description (Resources/Restaurants/Dishes, Tools/art/menu_dish_art.py).
+            var pictureFrame = new GameObject("DetailPictureFrame", typeof(RectTransform), typeof(Image), typeof(LayoutElement));
+            pictureFrame.transform.SetParent(detailContent, false);
+            var frameImage = pictureFrame.GetComponent<Image>();
+            frameImage.color = new Color(0.14f, 0.11f, 0.08f, 1f);
+            frameImage.sprite = UIStyleKit.RoundedSprite();
+            frameImage.type = Image.Type.Sliced;
+            pictureFrame.GetComponent<LayoutElement>().preferredHeight = 210f;
+            _detailPicture = new GameObject("DetailPicture", typeof(RectTransform), typeof(RawImage), typeof(AspectRatioFitter)).GetComponent<RawImage>();
+            _detailPicture.transform.SetParent(pictureFrame.transform, false);
+            var fitter = _detailPicture.GetComponent<AspectRatioFitter>();
+            fitter.aspectMode = AspectRatioFitter.AspectMode.FitInParent;
+            fitter.aspectRatio = 1f;
+            _detailPicture.raycastTarget = false;
+            pictureFrame.SetActive(false);
             _detailText = CreateText(detailContent, "DetailText", string.Empty, Vector2.zero, Vector2.zero, 20f, FontStyles.Normal);
             _detailText.alignment = TextAlignmentOptions.TopLeft;
             _detailText.richText = true;

@@ -22,6 +22,9 @@ namespace NihongoLife.UI
         public static Sprite Pin => Get("pin", PinShape);
         public static Sprite Wallet => Get("wallet", WalletShape);
         public static Sprite Bell => Get("bell", BellShape);
+        public static Sprite Sun => Get("sun", SunShape);
+        public static Sprite Cloud => Get("cloud", CloudShape);
+        public static Sprite RainCloud => Get("raincloud", RainCloudShape);
 
         private static Sprite Get(string name, Func<Vector2, float> shape)
         {
@@ -153,6 +156,28 @@ namespace NihongoLife.UI
             float outline = Mathf.Max(body, -Box(p, new Vector2(-0.04f, -0.08f), new Vector2(0.6f, 0.4f), 0.06f));
             return Union(Mathf.Max(Union(outline, flap, clasp), -dot));
         }
+
+        private static float SunShape(Vector2 p)
+        {
+            float d = Circle(p, Vector2.zero, 0.34f);
+            for (int i = 0; i < 8; i++)
+            {
+                float a = i * Mathf.PI / 4f; var dir = new Vector2(Mathf.Cos(a), Mathf.Sin(a));
+                d = Mathf.Min(d, Segment(p, dir * 0.55f, dir * 0.82f, 0.07f));
+            }
+            return d;
+        }
+
+        private static float CloudAt(Vector2 p, float dy) => Union(
+            Circle(p, new Vector2(-0.3f, -0.08f + dy), 0.28f), Circle(p, new Vector2(0.02f, 0.12f + dy), 0.38f),
+            Circle(p, new Vector2(0.36f, -0.06f + dy), 0.28f), Box(p, new Vector2(0.04f, -0.2f + dy), new Vector2(0.58f, 0.16f), 0.1f));
+
+        private static float CloudShape(Vector2 p) => CloudAt(p, 0f);
+
+        private static float RainCloudShape(Vector2 p) => Union(CloudAt(p, 0.22f),
+            Segment(p, new Vector2(-0.3f, -0.3f), new Vector2(-0.38f, -0.62f), 0.06f),
+            Segment(p, new Vector2(0.02f, -0.3f), new Vector2(-0.06f, -0.62f), 0.06f),
+            Segment(p, new Vector2(0.34f, -0.3f), new Vector2(0.26f, -0.62f), 0.06f));
 
         private static float BellShape(Vector2 p)
         {

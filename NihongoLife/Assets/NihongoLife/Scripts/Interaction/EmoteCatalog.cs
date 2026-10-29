@@ -17,9 +17,11 @@ namespace NihongoLife.Interaction
         public string Reading { get; }
         public string Vi { get; }
         public EmoteGesture Gesture { get; }
+        /// <summary>English meaning when the phrase is not the emote's own (a culture's greeting).</summary>
+        public string EnglishMeaning { get; set; }
 
         /// <summary>Meaning of the phrase in the interface language (empty in the Japanese interface).</summary>
-        public string Meaning => NihongoLife.Core.Loc.Gloss(Vi, Id switch
+        public string Meaning => NihongoLife.Core.Loc.Gloss(Vi, EnglishMeaning ?? Id switch
         {
             "hello" => "Hello!", "thanks" => "Thanks!", "wow" => "Wow!", "fun" => "This is fun!", "yatta" => "Yes, I did it!",
             "oyasumi" => "Good night", "huh" => "Huh? What?", "sorry" => "Sorry", _ => Vi,

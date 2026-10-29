@@ -117,7 +117,7 @@ namespace NihongoLife.UI
 
         public void ShowMessage(string msg)
         {
-            _textMesh.text = msg;
+            NihongoLife.UI.EmojiService.Apply(_textMesh, msg);
             
             // Auto size background based on text length
             float newHeight = Mathf.Clamp(msg.Length * 1.5f + 80f, 100f, 300f);

@@ -77,7 +77,7 @@ namespace NihongoLife.UI
             if (GameServices.TryGet(out GameSettingsService settings)) settings.OnLanguageChanged += HandleGlobalLanguageChanged;
         }
 
-        private void HandleGlobalLanguageChanged(GameLanguage _) => ApplyLanguage();
+        private void HandleGlobalLanguageChanged(GameLanguage _) { ApplyLanguage(); RefreshValues(); RefreshBindingLabels(); }
 
         public void Show()
         {
@@ -225,6 +225,7 @@ namespace NihongoLife.UI
             CreateLanguageButton(languages, "VI", GameLanguage.Vietnamese, Vector2.zero);
             CreateLanguageButton(languages, "EN", GameLanguage.English, Vector2.zero);
             CreateLanguageButton(languages, "JP", GameLanguage.Japanese, Vector2.zero);
+            CreateLanguageButton(languages, "RU", GameLanguage.Russian, Vector2.zero);
             foreach (RectTransform child in languages)
                 StretchInLayout(child, 1f, 36f);
 
@@ -318,7 +319,7 @@ namespace NihongoLife.UI
             var fixedKeys = CreateText(column, string.Empty, 13, Vector2.zero, new Vector2(400f, 56f), TextAlignmentOptions.TopLeft);
             fixedKeys.textWrappingMode = TextWrappingModes.Normal;
             fixedKeys.color = new Color(0.66f, 0.72f, 0.8f, 1f);
-            Localize(fixedKeys, "Chuột: xoay camera · Lăn chuột: zoom · Esc: đóng cửa sổ trên cùng · K: luyện thi · L: sổ tay", "Mouse: rotate camera · Wheel: zoom · Esc: close the top window · K: exams · L: notebook", "マウス：カメラ回転 · ホイール：ズーム · Esc：いちばん上の画面を閉じる · K：試験 · L：ノート");
+            Localize(fixedKeys, "Chuột: xoay camera · Lăn chuột: zoom · Esc: đóng cửa sổ trên cùng · K: luyện thi · L: sổ tay · `: học thêm · X: kỹ năng · Z: công ty · X (phòng ngủ): trang trí", "Mouse: rotate camera · Wheel: zoom · Esc: close the top window · K: exams · L: notebook · `: study · X: skills · Z: company · X (bedroom): decorating", "マウス：カメラ回転 · ホイール：ズーム · Esc：いちばん上の画面を閉じる · K：試験 · L：ノート · `：学習 · X：スキル · Z：会社 · X（寝室）：模様替え");
             ParkInLayout(fixedKeys.transform, 64f);
             RefreshBindingLabels();
         }
@@ -570,7 +571,7 @@ namespace NihongoLife.UI
         private static string Pick(string vi, string en, string ja)
         {
             GameLanguage language = GameServices.TryGet(out GameSettingsService settings) ? settings.Language : GameLanguage.Vietnamese;
-            string value = language == GameLanguage.English ? en : language == GameLanguage.Japanese ? ja : vi;
+            string value = language == GameLanguage.English ? en : language == GameLanguage.Japanese ? ja : language == GameLanguage.Russian ? NihongoLife.Core.RuTable.Translate(en, vi) : vi;
             return string.IsNullOrWhiteSpace(value) ? vi : value;
         }
 

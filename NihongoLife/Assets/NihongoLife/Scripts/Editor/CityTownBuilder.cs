@@ -21,7 +21,7 @@ namespace NihongoLife.EditorTools
     /// Town pass for 90_TestSandbox. Removes the duplicated orphan roots left by earlier builders, wraps
     /// the konbini merchandise in a real building (ひばりマート) with its cashier, turns the four coloured
     /// portal slabs into real storefront/gate entrances (station, sushi, school, home), and adds bilingual
-    /// signposts at the main crossroad. Headless: Unity -batchmode -executeMethod
+    /// direction signposts at the main crossroad (RouteSignBuilder, from route_signs.json). Headless: Unity -batchmode -executeMethod
     /// NihongoLife.EditorTools.CityTownBuilder.Build (no MenuItem). Idempotent: everything it creates
     /// lives under Town_* roots that are deleted and rebuilt on every run.
     /// </summary>
@@ -65,8 +65,8 @@ namespace NihongoLife.EditorTools
                 var destinations = NewRoot(scene, "Town_Destinations");
                 BuildDestinations(destinations);
 
-                var signs = NewRoot(scene, "Town_Signposts");
-                BuildSignposts(signs);
+                // Direction signposts come from Resources/Navigation/route_signs.json (RouteSignBuilder).
+                RouteSignBuilder.BuildInto(scene, WorldLocationCatalog.CityScene);
 
                 Validate(scene);
                 EditorSceneManager.MarkSceneDirty(scene);
@@ -230,6 +230,7 @@ namespace NihongoLife.EditorTools
             BuildGondola(konbini, "Gondola_B", 5.25f, 6.5f);
             BuildCounter(konbini);
             BuildShelfInteractions(konbini);
+            PlaceMedicineShelf(konbini);
 
             // Quest items sit on real fixtures instead of floating at shoulder height.
             var env = GameObject.Find("Environment").transform;
@@ -283,6 +284,26 @@ namespace NihongoLife.EditorTools
                 if (t == null) continue;
                 foreach (var c in t.GetComponentsInChildren<Collider>(true)) c.enabled = false;
             }
+        }
+
+        /// <summary>The medicine shelf (Med_Shelf from MedicineModelBuilder: seven products, a green cross header and the
+        /// F-to-browse trigger for the Medicine section) stands against the back wall east of the register, facing the aisle.
+        /// It carries its own solid body so the player cannot walk through it.</summary>
+        private static void PlaceMedicineShelf(Transform root)
+        {
+            var prefab = AssetDatabase.LoadAssetAtPath<GameObject>(MedicineModelBuilder.ShelfPath);
+            if (prefab == null) throw new InvalidOperationException("Missing " + MedicineModelBuilder.ShelfPath + " - run MedicineModelBuilder.Build first.");
+            var g = Group(root, "MedicineCorner");
+            var shelf = (GameObject)PrefabUtility.InstantiatePrefab(prefab, g);
+            shelf.name = "Med_Shelf";
+            shelf.transform.position = new Vector3(2.9f, 0f, KonbiniBack - 0.32f);
+            shelf.transform.rotation = Quaternion.Euler(0f, 180f, 0f);
+            foreach (var trigger in shelf.GetComponentsInChildren<KonbiniShelf>(true)) trigger.gameObject.layer = InteractableLayer;
+            var body = new GameObject("Med_Shelf_Body");
+            body.transform.SetParent(g, false);
+            body.transform.position = new Vector3(2.9f, 1.0f, KonbiniBack - 0.32f);
+            body.AddComponent<BoxCollider>().size = new Vector3(1.4f, 2.0f, 0.45f);
+            Log.AppendLine("Placed the medicine shelf at " + shelf.transform.position);
         }
 
         private static void BuildCounter(Transform root)
@@ -484,12 +505,8 @@ namespace NihongoLife.EditorTools
             new Destination { Portal = "SchoolPortal", Spawn = "Spawn_city_school_return", Building = "StreetBuilding_S_5", Ja = "ひばり日本語学院", Vi = "Trường Nhật ngữ Hibari", PromptJa = "がっこうに はいる", PromptEn = "Vào trường", FacesNorth = true },
         };
 
-        /// <summary>World position (on the sidewalk) of each entrance, filled during the build and used by the signposts.</summary>
-        private static readonly Dictionary<string, Vector3> EntrancePoints = new Dictionary<string, Vector3>();
-
         private static void BuildDestinations(Transform root)
         {
-            EntrancePoints.Clear();
             var portals = GameObject.Find("AdditiveZonePortals").transform;
             foreach (var d in Destinations)
             {
@@ -535,7 +552,6 @@ namespace NihongoLife.EditorTools
                 var spawn = portals.Find(d.Spawn);
                 if (spawn == null) throw new InvalidOperationException("Missing spawn " + d.Spawn);
                 spawn.SetPositionAndRotation(new Vector3(group.position.x, 0.08f, frontZ + outward * 2.4f), Quaternion.Euler(0f, d.FacesNorth ? 0f : 180f, 0f));
-                EntrancePoints[d.Portal] = new Vector3(group.position.x, 0f, frontZ + outward * 1.2f);
                 Log.AppendLine($"{d.Portal} → {portal.position} (spawn {spawn.position})");
             }
         }
@@ -717,48 +733,6 @@ namespace NihongoLife.EditorTools
             Block(g, "SignBoard", new Vector3(-1.45f, 1.6f, -0.18f), new Vector3(0.9f, 0.55f, 0.04f), _white, false);
             Text(g, "Sign_Text", "<b>ひばりハイツ</b>\nNhà trọ của bạn", new Vector3(-1.45f, 1.6f, -0.21f), 0f, 0.09f, new Color(0.15f, 0.35f, 0.25f), 0.9f);
             PointLight(g, "PorchLight", new Vector3(0f, 2.3f, -0.8f), 3.5f, 0.8f, new Color(1f, 0.85f, 0.6f));
-        }
-
-        // ─────────── Signposts ───────────
-
-        private static void BuildSignposts(Transform root)
-        {
-            Signpost(root, "Signpost_Crossroad_NE", new Vector3(5.4f, 0f, -3.7f));
-            Signpost(root, "Signpost_Spawn", new Vector3(4.6f, 0f, -16.4f));
-        }
-
-        private static void Signpost(Transform root, string name, Vector3 position)
-        {
-            var post = Group(root, name);
-            post.position = position;
-            Cylinder(post, "Pole", new Vector3(-1.55f, 1.3f, 0f), new Vector3(0.12f, 1.3f, 0.12f), _metal, true);
-            var targets = new List<(string label, Vector3 point)>
-            {
-                ("コンビニ  ひばりマート", new Vector3(0f, 0f, KonbiniFront - 0.8f)),
-            };
-            foreach (var d in Destinations)
-                if (EntrancePoints.TryGetValue(d.Portal, out var p)) targets.Add(($"{d.Ja}  ·  {d.Vi}", p));
-            int i = 0;
-            foreach (var (label, point) in targets)
-            {
-                Vector3 delta = point - position;
-                float meters = new Vector2(delta.x, delta.z).magnitude;
-                float y = 2.35f - i * 0.36f;
-                Block(post, "Board_" + i, new Vector3(0f, y, 0f), new Vector3(3.0f, 0.3f, 0.06f), i == 0 ? _green : _blueSign, false);
-                // Front face: read by someone walking north. Back face: read by someone walking south.
-                Text(post, "Board_" + i + "_N", $"{Arrow(delta, 0f)}  {label}  <size=75%>{meters:0}m</size>", new Vector3(0f, y, -0.04f), 0f, 0.1f, Color.white, 2.9f);
-                Text(post, "Board_" + i + "_S", $"{Arrow(delta, 180f)}  {label}  <size=75%>{meters:0}m</size>", new Vector3(0f, y, 0.04f), 180f, 0.1f, Color.white, 2.9f);
-                i++;
-            }
-        }
-
-        /// <summary>Arrow for a viewer whose forward is viewerYaw (0 = north/+Z, 180 = south).</summary>
-        private static string Arrow(Vector3 delta, float viewerYaw)
-        {
-            float angle = Mathf.Atan2(delta.x, delta.z) * Mathf.Rad2Deg - viewerYaw; // 0 = straight ahead, 90 = to the right
-            string[] arrows = { "↑", "↗", "→", "↘", "↓", "↙", "←", "↖" };
-            int index = Mathf.RoundToInt(Mathf.Repeat(angle, 360f) / 45f) % 8;
-            return arrows[index];
         }
 
         // ─────────── Validation ───────────

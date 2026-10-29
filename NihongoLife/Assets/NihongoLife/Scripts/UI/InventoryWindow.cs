@@ -15,7 +15,7 @@ namespace NihongoLife.UI
     /// four vitals. Replaces the old text-list panel whose rows overlapped. Root is assigned to HUDUI's
     /// inventoryPanel so the HUD's existing open/close and input-lock logic keeps working.
     /// </summary>
-    public sealed class InventoryWindow : MonoBehaviour
+    public sealed partial class InventoryWindow : MonoBehaviour
     {
         public GameObject Root => _root.gameObject;
         public int SelectedIndex => _selected;
@@ -52,8 +52,10 @@ namespace NihongoLife.UI
 
         private void Update()
         {
-            if (!_root.gameObject.activeInHierarchy) return;
+            if (!_root.gameObject.activeInHierarchy) { if (MenuOpen) HideMenu(); return; }
             Bind();
+            UpdateTooltip();
+            if (MenuOpen && Mouse.current != null && Mouse.current.leftButton.wasPressedThisFrame && !RectTransformUtility.RectangleContainsScreenPoint(_menu, Mouse.current.position.ReadValue())) HideMenu();
             var keyboard = Keyboard.current;
             if (keyboard == null) return;
             for (int i = 0; i < 9; i++)
@@ -96,7 +98,7 @@ namespace NihongoLife.UI
             var items = inventory != null ? inventory.Items : null;
             int used = items != null ? items.Count : 0;
             _slotsText.text = $"{used}/{(inventory != null ? inventory.MaxSlots : SlotCount)}";
-            _walletText.text = inventory != null ? $"¥{inventory.Yen:N0}" : "¥--";
+            _walletText.text = inventory != null ? $"{NihongoLife.Core.Loc.Money(inventory.Yen)}" : "¥--";
             for (int i = 0; i < _slots.Count; i++)
             {
                 var slot = _slots[i];
@@ -114,6 +116,7 @@ namespace NihongoLife.UI
             }
             RefreshDetail(items != null && _selected < items.Count ? items[_selected] : null);
             RefreshBars();
+            ApplyFilter();
         }
 
         public void Select(int index)
@@ -233,6 +236,7 @@ namespace NihongoLife.UI
             NLUi.Size(closeSpace.transform, 46f, 46f);
             NLUi.CloseButton(window, _font, () => _root.gameObject.SetActive(false), 46f, 18f);
 
+            BuildToolbar(window);
             var body = NLUi.Group(window, "Body", false, 20f, TextAnchor.UpperLeft);
             ((HorizontalLayoutGroup)body.GetComponent<HorizontalOrVerticalLayoutGroup>()).childForceExpandWidth = false;
             var gridGo = new GameObject("Slots", typeof(RectTransform));
@@ -266,6 +270,7 @@ namespace NihongoLife.UI
             Bar(detail, "drink", () => Loc.T("Nước", "Thirst", "のど"));
             Bar(detail, "energy", () => Loc.T("Thể lực", "Stamina", "げんき"));
             Bar(detail, "rest", () => Loc.T("Tỉnh táo", "Alertness", "ねむけ"));
+            BuildOverlays(_root);
             _root.gameObject.SetActive(false);
         }
 
@@ -289,6 +294,7 @@ namespace NihongoLife.UI
             button.transition = Selectable.Transition.None;
             int i = index;
             button.onClick.AddListener(() => Select(i));
+            slot.gameObject.AddComponent<BagSlotEvents>().Init(this, index);
             _slots.Add((slot.GetComponent<Image>(), tile.GetComponent<Image>(), glyph, qty, name));
         }
 

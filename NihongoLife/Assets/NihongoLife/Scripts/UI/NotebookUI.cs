@@ -143,7 +143,7 @@ namespace NihongoLife.UI
             _applying = false;
             int pages = NotebookService.Pages, used = NotebookService.UsedPages;
             _usage.text = NihongoLife.Core.Loc.F("Đã viết <b>{0}</b>/{1} trang", "<b>{0}</b>/{1} pages written", "<b>{0}</b>/{1}ページ使用", used, pages);
-            _pageLabel.text = $"Trang <b>{page + 1}</b> / {pages}";
+            _pageLabel.text = NihongoLife.Core.Loc.F("Trang <b>{0}</b> / {1}", "Page <b>{0}</b> / {1}", "<b>{0}</b> / {1} ページ", page + 1, pages);
             _prev.interactable = page > 0;
             _next.interactable = page < pages - 1;
             _stamp.text = data.updatedUnix > 0 ? DateTimeOffset.FromUnixTimeSeconds(data.updatedUnix).ToLocalTime().ToString("dd/MM  HH:mm") : "";

@@ -122,7 +122,7 @@ namespace NihongoLife.World
             }
             string title = stop.Scene == WorldLocationCatalog.PhuQuocIslandScene
                 ? NihongoLife.Core.Loc.Triple("Bay tới Phú Quốc (PQC)", "Flying to Phú Quốc (PQC)", "フーコック（PQC）へ")
-                : NihongoLife.Core.Loc.Triple($"Ga {stop.Vi}", $"{stop.Vi} Station", $"{stop.Ja}えき");
+                : NihongoLife.Core.Loc.TripleF("Ga {0}", "{0} Station", "{1}えき", stop.Vi, stop.Ja);
             flow.TransferZone(stop.Scene, stop.Spawn, title, () => OnArrivedAt(stopId));
         }
 

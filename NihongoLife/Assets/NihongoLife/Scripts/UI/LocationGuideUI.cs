@@ -19,8 +19,8 @@ namespace NihongoLife.UI
             /// <summary>Name, description, how-to lines and phrase meanings in the interface language.</summary>
             public string Name => Loc.Pick(vi, en, ja);
             public string About => Loc.Pick(about, aboutEn, aboutJa);
-            public string[] How => Loc.IsJapanese && howJa?.Length > 0 ? howJa : Loc.IsEnglish && howEn?.Length > 0 ? howEn : how;
-            public string PhraseMeaning(int i) => Loc.IsJapanese ? "" : Loc.IsEnglish && phrasesEn != null && i < phrasesEn.Length ? phrasesEn[i] : phrases[i][1];
+            public string[] How => Loc.IsJapanese && howJa?.Length > 0 ? howJa : Loc.EnglishData && howEn?.Length > 0 ? Array.ConvertAll(howEn, Loc.Data) : how;
+            public string PhraseMeaning(int i) => Loc.IsJapanese ? "" : Loc.EnglishData && phrasesEn != null && i < phrasesEn.Length ? Loc.Data(phrasesEn[i]) : phrases[i][1];
         }
 
         private static List<Place> _places;

@@ -103,6 +103,9 @@ namespace NihongoLife.UI
         public string WarningText => _warningText != null && _warning.gameObject.activeSelf ? _warningText.text : null;
         public string WeatherEffectText => _weatherChip != null && _weatherChip.gameObject.activeSelf ? _weatherText.text : null;
         private TextMeshProUGUI _name, _level, _wallet, _levelBadge, _calendar, _mood;
+        private Image _skyIcon;
+        /// <summary>Which weather icon sits beside the place: sun, moon, cloud, rain, or null when hidden (tests).</summary>
+        public string SkyIconName { get; private set; }
         private Image _expFill;
         private readonly Dictionary<string, Ring> _rings = new();
         private RectTransform _warning;
@@ -227,6 +230,8 @@ namespace NihongoLife.UI
             Icon(placeRow, "Pin", HudIcons.Pin, 14f, NLUi.Muted);
             _level = NLUi.Label(placeRow, "Place", "", 14f, NLUi.Muted, _font);
             _level.textWrappingMode = TextWrappingModes.NoWrap;
+            _skyIcon = Icon(placeRow, "Sky", HudIcons.Sun, 18f, new Color(1f, 0.85f, 0.4f, 1f));
+            _skyIcon.gameObject.SetActive(false);
             _calendar = NLUi.Label(identity, "Calendar", "", 13f, new Color(0.62f, 0.68f, 0.76f, 1f), _font);
             _calendar.textWrappingMode = TextWrappingModes.Normal;
             _calendar.raycastTarget = false;
@@ -327,6 +332,9 @@ namespace NihongoLife.UI
             _objectiveText.overflowMode = TextOverflowModes.Ellipsis;
             _objectiveText.maxVisibleLines = 2;
             _objectiveProgress = NLUi.Label(_objective, "Progress", "", 13f, NLUi.Muted, _font);
+            // J2: drag the tracker anywhere (position saved), collapse it to the title line, right-click to reset.
+            var drag = DraggableHud.Attach(_objective, "quest_tracker");
+            drag.AddCollapseButton(_font, _objectiveText.gameObject, _objectiveProgress.gameObject);
         }
 
         private void RefreshObjective()
@@ -636,8 +644,11 @@ namespace NihongoLife.UI
             _ => status.Restfulness,
         };
 
+        private bool _locWatched;
+
         private void Bind()
         {
+            if (!_locWatched) { _locWatched = true; NihongoLife.Core.Loc.Watch(this, Refresh); } // place name + labels follow a language change at once
             if (_boundStatus != PlayerStatus.Instance)
             {
                 if (_boundStatus != null) _boundStatus.OnStatusChanged -= Refresh;
@@ -661,15 +672,32 @@ namespace NihongoLife.UI
             RefreshObjective();
             if (status == null) return;
             int yen = inventory != null ? inventory.Yen : 0;
-            string place = WorldLocationCatalog.Get(SceneManager.GetActiveScene().name).VietnameseName;
+            string place = WorldLocationCatalog.Get(SceneManager.GetActiveScene().name).DisplayName;
             _name.text = status.PlayerName;
             string job = NihongoLife.Progression.CareerService.CurrentTitle; // the career title next to the place
             _level.text = string.IsNullOrEmpty(job) ? place : place + " · " + job;
             var cycle = NihongoLife.Core.DayNightCycle.Active;
             if (_calendar != null)
             {
-                _calendar.text = cycle != null ? cycle.HudCompact : "";
+                _calendar.text = cycle != null ? cycle.HudCompact + "\n" + NihongoLife.Core.ClimateService.HudLine(cycle, SceneManager.GetActiveScene().name) : "";
                 _calendar.gameObject.SetActive(!string.IsNullOrEmpty(_calendar.text));
+            }
+            if (_skyIcon != null)
+            {
+                if (cycle == null) { SkyIconName = null; _skyIcon.gameObject.SetActive(false); }
+                else
+                {
+                    bool night = cycle.Hour < 5.5f || cycle.Hour >= 19f;
+                    var sky = NihongoLife.Core.ClimateService.CurrentSky();
+                    string key = sky == NihongoLife.Core.ClimateService.Sky.Rain ? "rain" : sky == NihongoLife.Core.ClimateService.Sky.Cloudy ? "cloud" : night ? "moon" : "sun";
+                    if (key != SkyIconName)
+                    {
+                        SkyIconName = key;
+                        _skyIcon.sprite = key == "rain" ? HudIcons.RainCloud : key == "cloud" ? HudIcons.Cloud : key == "moon" ? HudIcons.Moon : HudIcons.Sun;
+                        _skyIcon.color = key == "rain" ? new Color(0.55f, 0.75f, 1f, 1f) : key == "cloud" ? new Color(0.75f, 0.8f, 0.88f, 1f) : key == "moon" ? new Color(0.85f, 0.88f, 1f, 1f) : new Color(1f, 0.85f, 0.4f, 1f);
+                    }
+                    _skyIcon.gameObject.SetActive(true);
+                }
             }
             if (_mood != null)
             {

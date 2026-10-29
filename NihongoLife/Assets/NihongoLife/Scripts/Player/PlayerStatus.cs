@@ -394,6 +394,9 @@ namespace NihongoLife.Player
             OnStatusChanged?.Invoke();
         }
 
+        /// <summary>Autosave / page-hide: writes the live vitals, clock and standing into the progress and saves it.</summary>
+        public void SaveNow() => SaveProgress();
+
         private void SaveProgress()
         {
             if (!Core.GameServices.TryGet(out Save.IProgressRepository repository)) return;

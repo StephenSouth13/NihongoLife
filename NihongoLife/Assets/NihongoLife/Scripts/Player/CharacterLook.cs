@@ -127,11 +127,14 @@ namespace NihongoLife.Player
         private static LookModels _models;
         private static CharacterLookState _state;
         private static Mesh _sphere;
-        private static Material _hairBlit, _beardBase;
+        private static Material _hairBlit, _paletteBlit, _beardBase;
         private static readonly Dictionary<string, Material> HairMaterials = new Dictionary<string, Material>();
         private static readonly Dictionary<Color, Material> BeardMaterials = new Dictionary<Color, Material>();
 
         private int _appliedVersion = -1, _appliedAge = -1, _visualId;
+        /// <summary>Skin / top / bottom colours of a variant (NPCs); null = the model's own.</summary>
+        private LookTint _tint;
+        private SkinnedMeshRenderer _probe;
         private float _nextCheck;
 
         public static LookOptions Options => _options ??= Load<LookOptions>(OptionsPath) ?? new LookOptions();
@@ -269,6 +272,13 @@ namespace NihongoLife.Player
             return this;
         }
 
+        /// <summary>A fixed look with its own skin, top and bottom colours (a <see cref="CharacterVariant"/>).</summary>
+        public CharacterLook Fixed(string hairId, string beardId, int years, LookTint tint, bool greyWithAge = true)
+        {
+            _tint = tint;
+            return Fixed(hairId, beardId, years, greyWithAge);
+        }
+
         public int Age => playerLook ? PlayerAge : age;
         public bool IsBoy => ModelOf(Visual())?.boy == true;
 
@@ -282,7 +292,7 @@ namespace NihongoLife.Player
             _nextCheck = Time.unscaledTime + 0.5f;
             var visual = Visual();
             int id = visual != null ? visual.GetInstanceID() : 0;
-            if (id != _visualId || Age != _appliedAge || (playerLook && Version != _appliedVersion)) Refresh();
+            if (id != _visualId || Age != _appliedAge || (playerLook && Version != _appliedVersion) || AtlasLost(_probe)) Refresh();
         }
 
         public void Refresh()
@@ -292,8 +302,9 @@ namespace NihongoLife.Player
             _appliedVersion = Version;
             _appliedAge = Age;
             if (visual == null) return;
+            _probe = visual.GetComponentInChildren<SkinnedMeshRenderer>(true);
             if (playerLook) Apply(visual, State.hair, State.beard, Age, State.grayWithAge);
-            else Apply(visual, hair, beard, age, grayWithAge);
+            else Apply(visual, hair, beard, age, grayWithAge, _tint);
         }
 
         private GameObject Visual()
@@ -339,18 +350,19 @@ namespace NihongoLife.Player
         }
 
         /// <summary>Recolours the hair and builds the beard of <paramref name="visual"/> (a Kids-pack model).</summary>
-        public static void Apply(GameObject visual, string hairId, string beardId, int years, bool greyWithAge)
+        public static void Apply(GameObject visual, string hairId, string beardId, int years, bool greyWithAge, LookTint tint = null)
         {
             if (visual == null) return;
             var model = ModelOf(visual);
             if (model == null) return;
             Color hairColor = HairColor(model, hairId, years, greyWithAge);
-            bool natural = hairColor == Hex(model.hairHex);
+            bool tinted = tint != null && !tint.IsEmpty;
+            bool natural = hairColor == Hex(model.hairHex) && !tinted;
             foreach (var renderer in visual.GetComponentsInChildren<SkinnedMeshRenderer>(true))
             {
                 if (ModelOf(renderer) != model) continue;
                 var original = Original(renderer.sharedMaterial);
-                renderer.sharedMaterial = natural ? original : HairMaterial(model, original, hairColor);
+                renderer.sharedMaterial = natural ? original : HairMaterial(model, original, hairColor, tinted ? tint : null);
             }
 
             var animator = visual.GetComponentInChildren<Animator>(true);
@@ -362,31 +374,31 @@ namespace NihongoLife.Player
             var option = Options.Beard(beardId);
             if (option != null && BeardBlocker(beardId, years, model.boy) == null) pieces.AddRange(option.pieces);
             foreach (var set in Options.wrinkles) if (years >= set.minAge) pieces.AddRange(set.pieces);
-            if (pieces.Count > 0) BuildFace(head, model, pieces, hairColor);
+            if (pieces.Count > 0) BuildFace(head, model, pieces, hairColor, tinted && !string.IsNullOrEmpty(tint.skin) ? Hex(tint.skin) : Hex(model.skinHex));
         }
 
         private static readonly Dictionary<Material, Material> Originals = new Dictionary<Material, Material>();
 
         private static Material Original(Material material) => material != null && Originals.TryGetValue(material, out var original) ? original : material;
 
-        private static Material HairMaterial(LookModel model, Material original, Color color)
+        private static Material HairMaterial(LookModel model, Material original, Color color, LookTint tint)
         {
-            string key = model.model + "|" + ColorUtility.ToHtmlStringRGB(color);
-            if (HairMaterials.TryGetValue(key, out var cached) && cached != null) return cached;
+            string key = model.model + "|" + ColorUtility.ToHtmlStringRGB(color) + (tint != null ? "|" + tint.Key : "");
             var source = original.GetTexture("_Texture2D");
             var mask = Resources.Load<Texture2D>("Characters/Looks/" + model.mask);
             _hairBlit ??= Resources.Load<Material>("Characters/Looks/NL_HairRecolor");
+            if (HairMaterials.TryGetValue(key, out var cached) && cached != null)
+            {
+                if (!(cached.GetTexture("_Texture2D") is RenderTexture baked) || baked.IsCreated()) return cached;
+                // The GPU dropped the baked atlas (WebGL context loss, a device reset): paint it again into the same texture.
+                if (source != null && mask != null && _hairBlit != null) { Bake(baked, source, mask, model, color, tint); return cached; }
+            }
             if (source == null || mask == null || _hairBlit == null) return original;
             var target = new RenderTexture(source.width, source.height, 0, RenderTextureFormat.ARGB32, RenderTextureReadWrite.sRGB)
             {
                 name = "Hair_" + key, filterMode = source.filterMode, wrapMode = source.wrapMode, useMipMap = false,
             };
-            var blit = new Material(_hairBlit);
-            blit.SetTexture("_Mask", mask);
-            blit.SetColor("_From", Hex(model.hairHex));
-            blit.SetColor("_To", color);
-            Graphics.Blit(source, target, blit);
-            Destroy(blit);
+            Bake(target, source, mask, model, color, tint);
             var material = new Material(original) { name = key };
             material.SetTexture("_Texture2D", target);
             HairMaterials[key] = material;
@@ -394,7 +406,63 @@ namespace NihongoLife.Player
             return material;
         }
 
-        private static void BuildFace(Transform head, LookModel model, List<LookBeardPiece> pieces, Color hairColor)
+        private static void Bake(RenderTexture target, Texture source, Texture2D mask, LookModel model, Color color, LookTint tint = null)
+        {
+            // First the skin / top / bottom colours of a variant (their blocks are told apart by colour), then the hair
+            // (told apart by its mask), so a hair colour close to the skin never gets repainted as skin.
+            bool palette = tint != null && !tint.IsEmpty;
+            bool hair = color != Hex(model.hairHex);
+            RenderTexture middle = null;
+            Texture current = source;
+            if (palette)
+            {
+                _paletteBlit ??= Resources.Load<Material>("Characters/Variants/NL_PaletteRecolor");
+                var colours = LookPaletteCatalog.For(model.model);
+                if (_paletteBlit != null && colours != null)
+                {
+                    var swap = new Material(_paletteBlit);
+                    swap.SetTexture("_Mask", mask);
+                    SetSwap(swap, 0, colours.skinFrom, tint.skin);
+                    SetSwap(swap, 1, colours.topFrom, tint.top);
+                    SetSwap(swap, 2, colours.bottomFrom, tint.bottom);
+                    RenderTexture into = target;
+                    if (hair)
+                    {
+                        middle = RenderTexture.GetTemporary(source.width, source.height, 0, RenderTextureFormat.ARGB32, RenderTextureReadWrite.sRGB);
+                        middle.filterMode = FilterMode.Point;
+                        into = middle;
+                    }
+                    Graphics.Blit(current, into, swap);
+                    Destroy(swap);
+                    current = into;
+                }
+            }
+            if (hair || current == source)
+            {
+                var blit = new Material(_hairBlit);
+                blit.SetTexture("_Mask", mask);
+                blit.SetColor("_From", Hex(model.hairHex));
+                blit.SetColor("_To", color);
+                Graphics.Blit(current, target, blit);
+                Destroy(blit);
+            }
+            if (middle != null) RenderTexture.ReleaseTemporary(middle);
+        }
+
+        private static void SetSwap(Material swap, int index, string from, string to)
+        {
+            bool on = !string.IsNullOrEmpty(from) && !string.IsNullOrEmpty(to);
+            var f = Hex(from); f.a = on ? 1f : 0f;
+            var t = Hex(to); t.a = on ? 1f : 0f;
+            swap.SetVector("_From" + index, f);
+            swap.SetVector("_To" + index, t);
+        }
+
+        /// <summary>True when this model wears a baked hair atlas the GPU no longer has (the character would show black / vanish).</summary>
+        private static bool AtlasLost(Renderer renderer) =>
+            renderer != null && renderer.sharedMaterial != null && renderer.sharedMaterial.HasProperty("_Texture2D") && renderer.sharedMaterial.GetTexture("_Texture2D") is RenderTexture atlas && !atlas.IsCreated();
+
+        private static void BuildFace(Transform head, LookModel model, List<LookBeardPiece> pieces, Color hairColor, Color skin)
         {
             if (_sphere == null)
             {
@@ -407,7 +475,6 @@ namespace NihongoLife.Player
             root.localPosition = V(model.mouth);
             root.localRotation = Quaternion.LookRotation(V(model.forward), V(model.up));
             root.localScale = Vector3.one * model.faceWidth;
-            Color skin = Hex(model.skinHex);
             Color stubble = Color.Lerp(hairColor, skin, 0.45f);
             Color wrinkle = Color.Lerp(skin, new Color(0.35f, 0.2f, 0.15f), 0.45f);
             int layer = head.gameObject.layer;

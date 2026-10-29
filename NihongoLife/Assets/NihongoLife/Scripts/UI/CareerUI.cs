@@ -74,6 +74,7 @@ namespace NihongoLife.UI
         {
             if (!IsOpen) return;
             _instance._root.gameObject.SetActive(false);
+            CareerAvatarStage.ClearIfAny();
             if (_instance._player != null) _instance._player.InputLocked = _instance._wasLocked;
             _instance._player = null;
         }
@@ -232,7 +233,8 @@ namespace NihongoLife.UI
             }, new Color(0.45f, 0.16f, 0.15f), 16f, Color.white, 46f);
             NLUi.Size(quit, 200f, 46f);
 
-            // Right: the next rung and the next milestone, the two things to aim for.
+            // Right: your person at work, then the next rung and the next milestone, the two things to aim for.
+            AvatarView(right, career, 250f, true);
             NLUi.Label(right, "NextTitle", Loc.T("Mục tiêu tiếp theo", "Next goals", "次の目標"), 18f, NLUi.Gold, _font, FontStyles.Bold);
             var next = career.Level(state.level + 1, state.branchId);
             var goal = NLUi.Panel(right, "NextRung", NLUi.Card, new RectOffset(16, 16, 12, 12), 4f);
@@ -436,20 +438,64 @@ namespace NihongoLife.UI
                     "Pick a career: work your shifts on time to raise performance, pass a Japanese interview to be promoted, choose your own path at level 4.",
                     "仕事を選びましょう。時間どおりに働いて評価を上げ、日本語の面接で昇進。レベル4で自分のコースを選びます。"), 16f, NLUi.Muted, _font);
 
-            // A grid, three cards a row: five careers and more fit without running off the card.
-            var row = new GameObject("Careers", typeof(RectTransform), typeof(GridLayoutGroup)).GetComponent<RectTransform>();
-            row.SetParent(_body, false);
-            var grid = row.GetComponent<GridLayoutGroup>();
-            grid.cellSize = new Vector2(334f, 452f);
-            grid.spacing = new Vector2(14f, 14f);
-            grid.constraint = GridLayoutGroup.Constraint.FixedColumnCount;
-            grid.constraintCount = 3;
-            NLUi.FitContent(row);
-            foreach (var career in catalog.careers)
+            // Careers grouped by industry, each group a coloured header over a grid of three cards a row.
+            foreach (var (industry, members) in CareerIndustries.Group(catalog.careers))
+            {
+                IndustryHeader(industry);
+                var row = new GameObject("Industry_" + industry.id, typeof(RectTransform), typeof(GridLayoutGroup)).GetComponent<RectTransform>();
+                row.SetParent(_body, false);
+                var grid = row.GetComponent<GridLayoutGroup>();
+                grid.cellSize = new Vector2(334f, 668f);
+                grid.spacing = new Vector2(14f, 14f);
+                grid.constraint = GridLayoutGroup.Constraint.FixedColumnCount;
+                grid.constraintCount = 3;
+                NLUi.FitContent(row);
+                foreach (var career in members) BuildCareerCard(row, career, state, hasCareer, industry);
+            }
+        }
+
+        private void IndustryHeader(IndustryDefinition industry)
+        {
+            var head = NLUi.Panel(_body, "IndustryHeader_" + industry.id, new Color(industry.Tint.r * 0.22f, industry.Tint.g * 0.22f, industry.Tint.b * 0.22f, 1f), new RectOffset(18, 18, 10, 12), 2f);
+            var bar = new GameObject("Accent", typeof(RectTransform), typeof(Image), typeof(LayoutElement)).GetComponent<RectTransform>();
+            bar.SetParent(head, false);
+            bar.GetComponent<Image>().color = industry.Tint;
+            bar.GetComponent<LayoutElement>().preferredHeight = 4f;
+            NLUi.Label(head, "Name", industry.Name, 22f, industry.Tint, _font, FontStyles.Bold);
+            NLUi.Label(head, "Blurb", industry.Blurb, 14f, NLUi.Muted, _font);
+        }
+
+        /// <summary>The career's person in uniform (a Kids-family variant), drawn by <see cref="CareerAvatarStage"/>.</summary>
+        private RawImage AvatarView(RectTransform parent, CareerDefinition career, float height, bool always, Color? tint = null)
+        {
+            var look = CareerIndustries.Look(career.id);
+            var frame = new GameObject("AvatarFrame", typeof(RectTransform), typeof(Image), typeof(LayoutElement)).GetComponent<RectTransform>();
+            frame.SetParent(parent, false);
+            var t = tint ?? (CareerIndustries.IndustryOf(career.id)?.Tint ?? NLUi.Gold);
+            frame.GetComponent<Image>().color = new Color(t.r * 0.32f, t.g * 0.32f, t.b * 0.32f, 1f);
+            frame.GetComponent<LayoutElement>().preferredHeight = height;
+            frame.GetComponent<LayoutElement>().minHeight = height;
+            if (look == null) return null;
+            var raw = new GameObject("Avatar_" + career.id, typeof(RectTransform), typeof(RawImage), typeof(CareerAvatarHover)).GetComponent<RectTransform>();
+            raw.SetParent(frame, false);
+            NLUi.Stretch(raw);
+            var image = raw.GetComponent<RawImage>();
+            image.color = new Color(1f, 1f, 1f, 0f);
+            var clip = _scroll != null ? (_scroll.viewport != null ? _scroll.viewport : (RectTransform)_scroll.transform) : null;
+            var avatar = CareerAvatarStage.Instance.Bind(career.id, image, clip);
+            var hover = raw.GetComponent<CareerAvatarHover>();
+            hover.Avatar = avatar; hover.Always = always;
+            if (avatar != null) { avatar.Hot = always || avatar.Hot; image.raycastTarget = true; }
+            return image;
+        }
+
+        private void BuildCareerCard(RectTransform row, CareerDefinition career, CareerState state, bool hasCareer, IndustryDefinition industry)
+        {
             {
                 bool current = state.careerId == career.id && hasCareer;
                 bool before = state.pastCareers.Contains(career.id);
                 var c = NLUi.Panel(row, "Career_" + career.id, current ? new Color(0.2f, 0.18f, 0.1f, 1f) : NLUi.Card, new RectOffset(18, 18, 16, 16), 8f);
+                AvatarView(c, career, 214f, current || _switchTo == career.id);
                 NLUi.Label(c, "Name", $"{career.Name}\n<size=70%><color=#A8B4C4>{career.nameJa}</color></size>", 24f, NLUi.Gold, _font, FontStyles.Bold);
                 NLUi.Label(c, "Workplace", career.Workplace, 16f, NLUi.Text, _font);
                 NLUi.Label(c, "Schedule", career.Schedule, 16f, NLUi.Text, _font);
@@ -466,7 +512,7 @@ namespace NihongoLife.UI
                 if (current)
                 {
                     NLUi.Pill(c, "Current", Loc.T("Nghề hiện tại", "Your career", "今の仕事"), _font, NLUi.Gold, NLUi.Ink, 16f);
-                    continue;
+                    return;
                 }
                 bool confirming = _switchTo == id;
                 string label = !hasCareer ? Loc.T("Chọn nghề này", "Choose this career", "この仕事にする")

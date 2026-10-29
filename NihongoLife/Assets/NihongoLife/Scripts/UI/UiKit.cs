@@ -642,7 +642,7 @@ namespace NihongoLife.UI
         }
 
         /// <summary>Inline TMP sprite-free coin for rich text lines: "¥" in gold bold.</summary>
-        public static string YenInline(int amount) => $"<color={UiTheme.Hex(UiTheme.Gold)}><b>¥{amount.ToString("N0", System.Globalization.CultureInfo.InvariantCulture)}</b></color>";
+        public static string YenInline(int amount) => $"<color={UiTheme.Hex(UiTheme.Gold)}><b>{NihongoLife.Core.Loc.Money(amount)}</b></color>";
 
         // ─────────── Layout groups ───────────
 

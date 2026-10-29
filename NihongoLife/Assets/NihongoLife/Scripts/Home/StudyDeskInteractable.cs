@@ -25,7 +25,7 @@ namespace NihongoLife.Home
         private string Local(string vi, int slot)
         {
             if (NihongoLife.Core.Loc.IsVietnamese || !Others.TryGetValue(japanese, out var row)) return vi;
-            return NihongoLife.Core.Loc.IsEnglish ? row.en[slot] : row.ja[slot];
+            return NihongoLife.Core.Loc.EnglishData ? NihongoLife.Core.Loc.Data(row.en[slot]) : row.ja[slot];
         }
 
         private static readonly System.Collections.Generic.Dictionary<string, (string[] en, string[] ja)> Others = new System.Collections.Generic.Dictionary<string, (string[] en, string[] ja)>
@@ -141,7 +141,7 @@ namespace NihongoLife.Home
             }
             if (status != null && status.CurrentEnergy < energyCost)
             {
-                room?.ShowToast("つかれて います", NihongoLife.Core.Loc.Triple($"Cần {energyCost:0} năng lượng để học. Hãy ăn uống hoặc ngủ.", $"You need {energyCost:0} energy to study. Eat, drink or sleep.", $"勉強するには元気が{energyCost:0}必要です。食べるか寝ましょう。"));
+                room?.ShowToast("つかれて います", NihongoLife.Core.Loc.TripleF("Cần {0:0} năng lượng để học. Hãy ăn uống hoặc ngủ.", "You need {0:0} energy to study. Eat, drink or sleep.", "勉強するには元気が{0:0}必要です。食べるか寝ましょう。", energyCost));
                 return;
             }
             if (room == null) return;
@@ -176,7 +176,7 @@ namespace NihongoLife.Home
                 status.AddKnowledge(gained);
             }
             room.ShowToast(correct == questions.Count ? "まんてん！" : "おつかれさまでした",
-                NihongoLife.Core.Loc.Triple($"Đúng {correct}/{questions.Count} · Trí tuệ +{gained} · Năng lượng −{energyCost:0}", $"Correct {correct}/{questions.Count} · Knowledge +{gained} · Energy −{energyCost:0}", $"正解 {correct}/{questions.Count} · 知識 +{gained} · 元気 −{energyCost:0}"));
+                NihongoLife.Core.Loc.TripleF("Đúng {0}/{1} · Trí tuệ +{2} · Năng lượng −{3:0}", "Correct {0}/{1} · Knowledge +{2} · Energy −{3:0}", "正解 {0}/{1} · 知識 +{2} · 元気 −{3:0}", correct, questions.Count, gained, energyCost));
             _busy = false;
         }
     }

@@ -42,8 +42,8 @@ namespace NihongoLife.World
     {
         [SerializeField] private Transform platformSpawn;
         [SerializeField] private Transform carriageSpawn;
-        // Kept so existing station scenes keep their serialized values. Fares come from Stop.Price,
-        // each leg from LegSeconds, and the window scroll from TrainWindowScenery.
+        // Kept so existing station scenes keep their serialized values. Fares, legs, dwell and the service interval
+        // come from Resources/Train/timetable.json (TrainTimetable), and the window scroll from TrainWindowScenery.
 #pragma warning disable CS0414
         [SerializeField] private Transform sceneryRoot;
         [SerializeField] private int ticketPrice = 320;
@@ -57,12 +57,14 @@ namespace NihongoLife.World
 
         public sealed class Stop
         {
-            public Stop(string id, string ja, string vi, string place, string placeEn, string placeJa, string scene, string spawn, int price)
+            public Stop(TimetableStopData data)
             {
-                Id = id; Ja = ja; Vi = vi; _place = place; _placeEn = placeEn; _placeJa = placeJa; Scene = scene; Spawn = spawn; Price = price;
+                Id = data.id; Ja = data.ja; Vi = data.vi; Scene = data.scene; Spawn = data.spawn; Price = data.price;
+                LegSeconds = TrainTimetable.LegSeconds(data);
+                _place = data.place;
             }
 
-            private readonly string _place, _placeEn, _placeJa;
+            private readonly LocalizedLine _place;
 
             public string Id { get; }
             public string Ja { get; }
@@ -70,30 +72,26 @@ namespace NihongoLife.World
             /// <summary>Station name in the interface language (kana in Japanese, romaji otherwise).</summary>
             public string Name => NihongoLife.Core.Loc.IsJapanese ? Ja : Vi;
             /// <summary>What is at the stop, in the interface language.</summary>
-            public string Place => NihongoLife.Core.Loc.Pick(_place, _placeEn, _placeJa);
+            public string Place => _place != null ? _place.Text : "";
             public string Scene { get; }
             public string Spawn { get; }
             public int Price { get; }
+            /// <summary>Seconds of the leg that ends at this stop.</summary>
+            public float LegSeconds { get; }
         }
 
-        /// <summary>Stops in running order; index 0 is Hibari itself.</summary>
-        public static readonly Stop[] Line =
-        {
-            new Stop("hibari", "ひばり", "Hibari", "Ga Hibari", "Hibari Station", "ひばり駅", WorldLocationCatalog.StationScene, WorldLocationCatalog.StationEntrance, 0),
-            new Stop("gakuen", "がくえんまえ", "Gakuen-mae", "Trường Nhật ngữ Hibari", "Hibari Japanese School", "ひばり日本語学校", WorldLocationCatalog.SchoolScene, WorldLocationCatalog.SchoolEntrance, 180),
-            new Stop("minato", "ミナト", "Minato", "phố cảng · Sushi Hibari", "harbour town · Sushi Hibari", "みなと町・ひばり寿司", WorldLocationCatalog.SushiRestaurantScene, WorldLocationCatalog.SushiEntrance, 320),
-            new Stop("midori", "みどりじま", "Midori Island", "Đảo Xanh · nông trại", "Midori Island · farm", "みどりじま・農場", WorldLocationCatalog.MidoriIslandScene, WorldLocationCatalog.MidoriStation, 450),
-            // The terminus: Hibari Airport across the island; the fare includes the flight to Phú Quốc (PQC).
-            new Stop("airport", "くうこう", "Hibari Airport", "Sân bay · bay đi Phú Quốc", "Airport · flight to Phú Quốc", "空港・フーコック行き", WorldLocationCatalog.PhuQuocIslandScene, WorldLocationCatalog.PhuQuocArrival, 1500),
-        };
+        private static Stop[] _line;
+
+        /// <summary>Stops in running order (Resources/Train/timetable.json); index 0 is Hibari itself, the last stop is the airport with the flight to Phú Quốc.</summary>
+        public static Stop[] Line => _line ??= System.Array.ConvertAll(TrainTimetable.Data.stops, s => new Stop(s));
 
         public const string Destination = "ミナト";
         public const string DestinationVi = "Minato";
         public const string TicketItemId = "train_ticket_minato";
         public const int Platform = 2;
         private const string ScenarioId = "scenario.station.buy_ticket";
-        private const float LegSeconds = 10f;
-        private const float DwellSeconds = 4f;
+        private static float DwellSeconds => TrainTimetable.Data.dwellSeconds;
+        private float LegSeconds => Line[Mathf.Clamp(_nextStop, 1, Line.Length - 1)].LegSeconds;
 
         private bool _gatePassed;
         private bool _onboard;
@@ -184,6 +182,10 @@ namespace NihongoLife.World
                 _carriageInterior.SetActive(false);
             }
             if (_windowCamera != null) _windowCamera.enabled = false;
+            var timetable = TrainTimetable.Data;
+            serviceInterval = timetable.serviceIntervalSeconds;
+            boardingWindow = timetable.boardingWindowSeconds;
+            trainTravelDistance = timetable.trainTravelDistance;
             _serviceClock = boardingWindow + 14f; // the first train is out of the station when the player arrives
             BuildTravelHud();
             CachePlatformTrain();
@@ -272,7 +274,7 @@ namespace NihongoLife.World
                 Cue(GameAudioCue.UiError);
                 return false;
             }
-            if (!inventory.AddItem(TicketItemId, $"きっぷ（{stop.Ja}）", NihongoLife.Core.Loc.Triple($"Vé tàu Hibari → {stop.Vi}", $"Train ticket Hibari → {stop.Vi}", $"きっぷ（ひばり → {stop.Ja}）"), stop.Price, 1))
+            if (!inventory.AddItem(TicketItemId, $"きっぷ（{stop.Ja}）", NihongoLife.Core.Loc.TripleF("Vé tàu Hibari → {0}", "Train ticket Hibari → {0}", "きっぷ（ひばり → {1}）", stop.Vi, stop.Ja), stop.Price, 1))
             {
                 inventory.AddYen(stop.Price, NihongoLife.Core.Loc.Triple("Hoàn vé tàu", "Ticket refund", "きっぷの払い戻し"));
                 Announce("バッグが いっぱいです。", NihongoLife.Core.Loc.Gloss("Balo đã đầy, không nhận được vé.", "Your bag is full, so you can't take the ticket."));

@@ -204,7 +204,7 @@ namespace NihongoLife.Interaction
             var inventory = PlayerInventory.Instance;
             if (inventory != null && inventory.Yen < total)
             {
-                error = Localize($"Không đủ tiền (cần ¥{total:N0}, có ¥{inventory.Yen:N0}).", $"Not enough money (need ¥{total:N0}, have ¥{inventory.Yen:N0}).", $"お金が足りません（{total:N0}円必要、所持金{inventory.Yen:N0}円）。");
+                error = NihongoLife.Core.Loc.F("Không đủ tiền (cần ¥{0:N0}, có ¥{1:N0}).", "Not enough money (need ¥{0:N0}, have ¥{1:N0}).", "お金が足りません（{0:N0}円必要、所持金{1:N0}円）。", total, inventory.Yen);
                 return false;
             }
 
@@ -289,14 +289,14 @@ namespace NihongoLife.Interaction
             if (inventory != null && !inventory.SpendYen(_total, NihongoLife.Core.Loc.Triple("Ăn ở nhà hàng", "Restaurant meal", "レストランの食事")))
             {
                 ShowStaff(null, null, null, null, null, null, "すみません、お金が足りないようです。", "すみません、おかねがたりないようです。",
-                    $"Xin lỗi, dường như bạn không đủ tiền (cần ¥{_total:N0}). Bạn có thể làm ca ở quầy (JobPoint) để kiếm thêm tiền rồi quay lại thanh toán.",
-                    $"Sorry, it seems you don't have enough money (¥{_total:N0} needed). You can work a shift at the counter (JobPoint) to earn more, then come back to pay.", 6f);
+                    $"Xin lỗi, dường như bạn không đủ tiền (cần {NihongoLife.Core.Loc.Money(_total)}). Bạn có thể làm ca ở quầy (JobPoint) để kiếm thêm tiền rồi quay lại thanh toán.",
+                    $"Sorry, it seems you don't have enough money ({NihongoLife.Core.Loc.Money(_total)} needed). You can work a shift at the counter (JobPoint) to earn more, then come back to pay.", 6f);
                 return;
             }
 
             string totalJa = JapaneseNumber.ToKanji(_total) + "円";
             string totalReading = JapaneseNumber.ToReading(_total) + "えん";
-            ShowStaff("bill", "{total}", totalJa, totalReading, $"¥{_total:N0}", $"¥{_total:N0}",
+            ShowStaff("bill", "{total}", totalJa, totalReading, $"{NihongoLife.Core.Loc.Money(_total)}", $"{NihongoLife.Core.Loc.Money(_total)}",
                 "お会計は{total}です。ありがとうございました。またお越しください。", "おかいけいは{total}です。ありがとうございました。またおこしください。",
                 "Tổng cộng là {total}. Cảm ơn quý khách, xin mời quý khách quay lại lần sau.", "That comes to {total}. Thank you very much, please come again.", 7f);
 

@@ -41,6 +41,8 @@ namespace NihongoLife.Progression
         public List<CareerPromotionRecord> promotions = new List<CareerPromotionRecord>();
         /// <summary>Milestones reached (careers.json "milestones"), across every career.</summary>
         public List<string> milestones = new List<string>();
+        /// <summary>Clinical cases solved in the clinic's training room (Clinic/MedicalTraining) — the doctor's notebook.</summary>
+        public List<string> trainedCases = new List<string>();
 
         public bool HasCareer => !string.IsNullOrEmpty(careerId) && level > 0;
     }

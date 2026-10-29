@@ -98,6 +98,44 @@ namespace NihongoLife.EditorTools
             }
         }
 
+        /// <summary>
+        /// Second arcade upgrade on the existing 50_GameCenter (scene not rebuilt): eight more games on machines that were
+        /// only decoration — Word Whack, Echo Pads, Kana Snake and Kana Breaker on the retro wall cabinets, Dance Arrows on
+        /// the dance machine, Tense Typer on the second basketball machine, Wheel Quiz on the prize wheel and Air Hockey on
+        /// the air-hockey table — each with a launcher, a view point and a marquee.
+        /// Run: Unity -batchmode -executeMethod NihongoLife.EditorTools.GameCenterBuilder.UpgradeArcadeMore
+        /// </summary>
+        public static void UpgradeArcadeMore()
+        {
+            try
+            {
+                CreateMaterials();
+                var definitions = BuildContent();
+                var scene = EditorSceneManager.OpenScene(ScenePath, OpenSceneMode.Single);
+                var all = scene.GetRootGameObjects().SelectMany(r => r.GetComponentsInChildren<Transform>(true)).ToList();
+                Transform Find(string name) => all.FirstOrDefault(t => t.name == name) ?? throw new InvalidOperationException(name + " not found in " + ScenePath);
+                var decor = Find("Decor");
+                foreach (var (machine, id, neon) in new[]
+                {
+                    ("Cabinet_W0", "word_whack", _neonGold), ("Cabinet_W1", "echo_pads", _neonPink), ("Cabinet_W3", "kana_snake", _neonCyan),
+                    ("Cabinet_W4", "kana_breaker", _neonPink), ("DanceMachine", "dance_arrows", _neonCyan), ("Basketball_2", "tense_typer", _neonGold),
+                    ("PrizeWheel", "wheel_quiz", _neonPink), ("AirHockey", "air_hockey", _neonCyan),
+                })
+                    AttachGame(Find(machine), decor, definitions[id], neon);
+                EditorSceneManager.MarkSceneDirty(scene);
+                if (!EditorSceneManager.SaveScene(scene)) throw new InvalidOperationException("Could not save " + ScenePath);
+                AssetDatabase.SaveAssets();
+                Debug.Log("[GameCenterBuilder] Arcade upgraded (more): " + string.Join(", ", definitions.Values.Where(d => d.playable).Select(d => d.id)));
+                if (Application.isBatchMode) EditorApplication.Exit(0);
+            }
+            catch (Exception exception)
+            {
+                Debug.LogException(exception);
+                if (Application.isBatchMode) EditorApplication.Exit(1);
+                else throw;
+            }
+        }
+
         /// <summary>A launcher in front of an existing machine (its holder faces the player along +forward), a camera
         /// view point and a marquee with the game's Japanese title. Re-running replaces the previous pieces.</summary>
         private static void AttachGame(Transform machine, Transform decor, MiniGameDefinition definition, Material neon)
@@ -204,6 +242,30 @@ namespace NihongoLife.EditorTools
                 ["basket_count"] = Definition("minigame_basket_count", "basket_count", MiniGameKind.BasketCount, "かずバスケ", "Basket Count", "Basket Count",
                     ("Ném bóng vào rổ ghi đúng số được đọc bằng tiếng Nhật — từ 1 đến 999.", "Shoot into the hoop with the number called in Japanese — from 1 to 999.", "日本語の数を読んで、同じ数字のゴールにシュート！"),
                     true, 10, 75f),
+                ["word_whack"] = Definition("minigame_word_whack", "word_whack", MiniGameKind.WordWhack, "ことばモグラ", "Đập Từ", "Word Whack",
+                    ("Từ tiếng Nhật chui ra khỏi hang — đập đúng từ khớp với gợi ý trước khi nó thụt vào.", "Japanese words pop out of burrows — whack the one that matches the clue before it ducks back.", "あなから ことばが でてくる！ヒントに合うものを たたこう。"),
+                    true, 10, 90f, words, meaning, kanji, hiragana, katakana),
+                ["echo_pads"] = Definition("minigame_echo_pads", "echo_pads", MiniGameKind.EchoPads, "エコーパッド", "Pad Vang", "Echo Pads",
+                    ("Nghe và nhìn bốn ô nốt ド・レ・ミ・ソ sáng lên rồi nhắc lại đúng giai điệu — mỗi lượt thêm một nốt.", "Watch and listen to the ド・レ・ミ・ソ pads, then play the tune back — one more note every round.", "ド・レ・ミ・ソのパッドの じゅんばんを おぼえて くりかえそう。"),
+                    true, 8, 90f),
+                ["kana_snake"] = Definition("minigame_kana_snake", "kana_snake", MiniGameKind.KanaSnake, "かなヘビ", "Rắn Kana", "Kana Snake",
+                    ("Điều khiển rắn ăn đúng chữ kana có cách đọc như gợi ý — ăn đúng thì dài ra.", "Steer the snake onto the kana that reads like the clue — the right one makes it longer.", "ヘビを うごかして、よみ方に合うかなを 食べよう。"),
+                    true, 10, 90f, hiragana, katakana),
+                ["kana_breaker"] = Definition("minigame_kana_breaker", "kana_breaker", MiniGameKind.KanaBreaker, "かなブレイク", "Phá Gạch Kana", "Kana Breaker",
+                    ("Đỡ bóng và phá viên gạch có chữ kana đọc đúng như gợi ý.", "Bounce the ball and break the brick whose kana reads like the clue.", "ボールを うちかえして、よみ方に合うかなの ブロックをこわそう。"),
+                    true, 10, 100f, hiragana, katakana),
+                ["dance_arrows"] = Definition("minigame_dance_arrows", "dance_arrows", MiniGameKind.DanceArrows, "ダンスアロー", "Nhảy Mũi Tên", "Dance Arrows",
+                    ("Bấm đúng mũi tên khi nó chạm vạch sáng — càng đúng nhịp càng nhiều điểm.", "Press the arrow as it crosses the glowing line — the better your timing, the more points.", "ひかる線に やじるしが かさなったら キーをおそう！"),
+                    true, 10, 75f),
+                ["tense_typer"] = Definition("minigame_tense_typer", "tense_typer", MiniGameKind.TenseTyper, "タイムタイパー", "Gõ Thì", "Tense Typer",
+                    ("Điền dạng đúng của động từ vào câu tiếng Anh — luyện 12 thì ngay trên máy chơi game.", "Fill the gap with the right verb form — practise the 12 English tenses at the arcade.", "英語の文の かっこの動詞を 正しい形で入力しよう（12の時制）。"),
+                    true, 10, 120f),
+                ["wheel_quiz"] = Definition("minigame_wheel_quiz", "wheel_quiz", MiniGameKind.WheelQuiz, "ルーレットクイズ", "Vòng Quay Đố", "Wheel Quiz",
+                    ("Quay bánh xe lấy số nhân rồi trả lời câu hỏi từ vựng — đúng thì được điểm nhân lên.", "Spin the wheel for a multiplier, then answer a word question — a right answer is worth more.", "ホイールをまわして倍率を決め、ことばのクイズに答えよう。"),
+                    true, 10, 100f, words, meaning, kanji),
+                ["air_hockey"] = Definition("minigame_air_hockey", "air_hockey", MiniGameKind.AirHockey, "エアホッケー", "Khúc Côn Cầu Bàn", "Air Hockey",
+                    ("Đánh đĩa vào khung thành của robot — ghi bàn được điểm, để lọt bàn mất một mạng.", "Knock the puck into the robot's goal — score to win points, concede and lose a life.", "パックを ロボットのゴールに入れよう！"),
+                    true, 10, 90f),
             };
             return result;
         }

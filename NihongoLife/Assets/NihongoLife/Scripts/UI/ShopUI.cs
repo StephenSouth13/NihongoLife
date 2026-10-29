@@ -221,7 +221,7 @@ namespace NihongoLife.UI
             var name = CreateText(row.transform, "Name", $"{item.DisplayNameJa}{reading}\n<color=#AFC0CF>{item.DisplayNameEn}</color>", new Vector2(18f, -10f), new Vector2(420f, 58f), 19f, FontStyles.Normal);
             name.richText = true;
 
-            var price = CreateText(row.transform, "Price", $"¥{item.PriceYen:N0}", new Vector2(444f, -20f), new Vector2(100f, 36f), 20f, FontStyles.Bold);
+            var price = CreateText(row.transform, "Price", $"{NihongoLife.Core.Loc.Money(item.PriceYen)}", new Vector2(444f, -20f), new Vector2(100f, 36f), 20f, FontStyles.Bold);
             price.alignment = TextAlignmentOptions.MidlineRight;
 
             Button buy = CreateButton(row.transform, "Buy", "Mua", new Vector2(-16f, -15f), new Vector2(92f, 48f));

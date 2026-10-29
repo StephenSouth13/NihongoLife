@@ -26,6 +26,8 @@ namespace NihongoLife.Interaction
         /// <summary>Prompts typed into scenes and prefabs (some English, some Vietnamese, some without accents).</summary>
         private static readonly System.Collections.Generic.Dictionary<string, (string vi, string en, string ja)> Known = new System.Collections.Generic.Dictionary<string, (string vi, string en, string ja)>(System.StringComparer.OrdinalIgnoreCase)
         {
+            ["Vào phòng khám"] = ("Vào phòng khám", "Enter the clinic", "診察室に入る"),
+            ["Thanh toán"] = ("Thanh toán", "Pay at the register", "会計する"),
             ["Talk"] = ("Nói chuyện", "Talk", "はなす"),
             ["Đi vào"] = ("Đi vào", "Go in", "入る"),
             ["Xuong tau"] = ("Xuống tàu", "Get off the train", "でんしゃを おりる"),

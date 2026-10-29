@@ -20,7 +20,7 @@ namespace NihongoLife.UI
     /// Exams are data-driven (ExamDefinition assets under Resources/Exams and IELTS packages); see Docs/EXAM_SYSTEM.md.
     /// Every text follows the interface language.
     /// </summary>
-    public class ExamCenterPopup : MenuPopupBase
+    public partial class ExamCenterPopup : MenuPopupBase
     {
         private const float W = 1380f, H = 870f, RailW = 286f;
 
@@ -192,7 +192,7 @@ namespace NihongoLife.UI
             }
         }
 
-        private void BuildHero()
+        private void BuildHeroCore()
         {
             UiKit.Clear(_hero);
             if (_english)

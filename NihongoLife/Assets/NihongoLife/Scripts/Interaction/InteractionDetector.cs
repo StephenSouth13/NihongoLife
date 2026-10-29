@@ -22,7 +22,7 @@ namespace NihongoLife.Interaction
         [Header("Detection Settings")]
         [SerializeField] private float detectionRadius = 2.0f;
         [SerializeField] private LayerMask interactableLayers;
-        [SerializeField] private float checkInterval = 0.1f;
+        [SerializeField] private float checkInterval = 0.05f; // 20 Hz: the target follows the player within a few frames
         [SerializeField] private bool fallbackToAnyLayer = true;
 
         private const float StickyBonus = 0.2f; // enough to stop flicker, small enough that walking up to something new wins

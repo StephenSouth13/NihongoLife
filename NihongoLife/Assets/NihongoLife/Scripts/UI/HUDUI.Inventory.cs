@@ -93,7 +93,7 @@ namespace NihongoLife.UI
             string name = item.Name;
             _inventoryDetailText.text = $"<size=120%><b>{name}</b></size>\n" +
                 $"{Text("Số lượng", "Quantity", "数量")}: {item.quantity}\n" +
-                $"{Text("Giá trị", "Value", "価格")}: ¥{item.priceYen:N0}\n" +
+                $"{Text("Giá trị", "Value", "価格")}: {NihongoLife.Core.Loc.Money(item.priceYen)}\n" +
                 (item.itemId == "train_ticket_midori"
                     ? Text("Tuyến: Sakura → Midori\nVé dùng cho chuyến kế tiếp.", "Route: Sakura → Midori\nValid for the next service.", "路線: さくら → みどり\n次の電車に有効です。")
                     : Text("Vật phẩm trong balo.", "Item in your bag.", "バッグのアイテムです。"));
@@ -129,7 +129,7 @@ namespace NihongoLife.UI
 
             if (walletText != null)
             {
-                walletText.text = $"¥ {inventory.Yen}";
+                walletText.text = $"{NihongoLife.Core.Loc.Money(inventory.Yen)}";
             }
 
             if (inventoryText != null)
@@ -143,7 +143,7 @@ namespace NihongoLife.UI
                     Text("Học viên", "Learner", "学習者") + "\n" +
                     Text("Cấp độ: N5 Starter", "Level: N5 Starter", "レベル: N5 Starter") + "\n" +
                     Text("Di chuyển: đi bộ / chạy", "Movement: walk / run", "移動: 歩く / 走る") + "\n" +
-                    $"{Text("Tiền mặt", "Cash", "所持金")}: ¥{inventory.Yen}\n" +
+                    $"{Text("Tiền mặt", "Cash", "所持金")}: {NihongoLife.Core.Loc.Money(inventory.Yen)}\n" +
                     Text("Mục tiêu: mua hàng bằng tiếng Nhật", "Goal: shop in Japanese", "目標: 日本語で買い物する") + "\n" +
                     "N: Night  |  M: Morning";
             }
@@ -156,7 +156,7 @@ namespace NihongoLife.UI
         {
             if (walletText != null)
             {
-                walletText.text = $"¥ {inventory.Yen}";
+                walletText.text = $"{NihongoLife.Core.Loc.Money(inventory.Yen)}";
             }
 
             if (inventoryText != null)
@@ -211,7 +211,7 @@ namespace NihongoLife.UI
                           $"{StatLine(Text("Khát", "Thirst", "水分"), status.Thirst, 100f, "#4dd0c8")}\n" +
                           $"<color=#b79cff>{Text("Trí tuệ", "Knowledge", "知識")}: {status.Knowledge}</color>\n"
                         : string.Empty) +
-                    $"<color=#f1c75b>{Text("Tiền mặt", "Cash", "所持金")}</color>: ¥{inventory.Yen}\n" +
+                    $"<color=#f1c75b>{Text("Tiền mặt", "Cash", "所持金")}</color>: {NihongoLife.Core.Loc.Money(inventory.Yen)}\n" +
                     $"<color=#f1c75b>{Text("Mục tiêu", "Goal", "目標")}</color>: {goalText}\n\n" +
                     "<color=#8fa3b8>Tab: profile  |  B: bag  |  V: mic  |  E: talk</color>";
             }

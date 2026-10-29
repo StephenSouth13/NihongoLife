@@ -312,12 +312,14 @@ namespace NihongoLife.Core
             _animator.CrossFadeInFixedTime(state, 0.2f, 0, startSeconds);
             if (_hasSpeed) _animator.SetFloat(_speedHash, 0f);
             _workState = state;
+            NihongoLife.Gestures.WorkGestures.Start(gameObject, NihongoLife.Gestures.WorkGestures.ForPose(state));
             return true;
         }
 
         public void StopWork()
         {
             ReleaseProp();
+            NihongoLife.Gestures.WorkGestures.Stop(gameObject);
             if (_workState == null) return;
             _workState = null;
             if (_animator != null && _animator.runtimeAnimatorController != null && HasState(standStateName))
@@ -348,6 +350,8 @@ namespace NihongoLife.Core
             _heldProp.transform.SetPositionAndRotation(hand.position + fingers * Vector3.Distance(hand.position, middle.position) * 0.9f,
                 Quaternion.LookRotation(fingers, shaft)); // forward = fingers, up (+Y) = shaft
             _heldProp.transform.SetParent(hand, true);
+            var gestures = GetComponent<NihongoLife.Gestures.GestureLayer>();
+            if (gestures != null) gestures.HideProps(true); // the game's own tool is in the hand: no stand-in prop
             return _heldProp;
         }
 
@@ -355,6 +359,8 @@ namespace NihongoLife.Core
         {
             if (_heldProp != null) Destroy(_heldProp);
             _heldProp = null;
+            var gestures = GetComponent<NihongoLife.Gestures.GestureLayer>();
+            if (gestures != null) gestures.HideProps(false);
         }
 
         private bool HasState(string stateName)

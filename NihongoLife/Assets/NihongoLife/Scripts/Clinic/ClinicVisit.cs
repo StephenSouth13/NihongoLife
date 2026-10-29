@@ -9,7 +9,7 @@ using UnityEngine;
 
 namespace NihongoLife.Clinic
 {
-    public enum ClinicSpotKind { Reception, Doctor, Pharmacy, Scale, EyeChart }
+    public enum ClinicSpotKind { Reception, Doctor, Pharmacy, Scale, EyeChart, Training }
 
     /// <summary>
     /// A visit to Hibari Clinic as a patient, the way a Japanese clinic works: reception (初診, 保険証) and the
@@ -37,7 +37,7 @@ namespace NihongoLife.Clinic
         public static int EyeRounds { get; private set; }
 
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
-        public static void Reset() { Current = Stage.None; Reason = Purpose.Consult; Symptom = null; HealthCheckMeasured = false; EyeRounds = 0; }
+        public static void Reset() { Current = Stage.None; Reason = Purpose.Consult; Symptom = null; HealthCheckMeasured = false; EyeRounds = 0; Express = null; }
 
         private static ClinicCatalog Catalog => ClinicCatalog.Load();
         private static bool Active(string questId) => QuestService.State(questId)?.status == "active";
@@ -72,6 +72,7 @@ namespace NihongoLife.Clinic
             ClinicSpotKind.Doctor => Loc.T("Vào phòng khám bác sĩ", "See the doctor", "診察室に入る"),
             ClinicSpotKind.Pharmacy => Loc.T("Nhận thuốc (お薬)", "Collect medicine (お薬)", "お薬を受け取る"),
             ClinicSpotKind.Scale => Loc.T("Đo chiều cao (身長)", "Height check (身長)", "身長をはかる"),
+            ClinicSpotKind.Training => Loc.T("Phòng đào tạo y khoa (研修)", "Medical training (研修)", "研修室で 学ぶ"),
             _ => Loc.T("Đo thị lực (視力)", "Eye test (視力)", "視力検査"),
         };
 
@@ -84,6 +85,7 @@ namespace NihongoLife.Clinic
                 case ClinicSpotKind.Pharmacy: CollectMedicine(); break;
                 case ClinicSpotKind.Scale: MeasureHeight(); break;
                 case ClinicSpotKind.EyeChart: EyeTest(); break;
+                case ClinicSpotKind.Training: MedicalTraining.Open(); break;
             }
         }
 
@@ -94,6 +96,18 @@ namespace NihongoLife.Clinic
             if (Current == Stage.CheckedIn) { Hint(Loc.T("Đã đăng ký — vào phòng khám gặp bác sĩ Mori nhé.", "You're checked in — go in and see Dr Mori.", "受付済みです。診察室へどうぞ。")); return; }
             if (Current == Stage.Paid) { Hint(Loc.T("Đã thanh toán — nhận thuốc ở quầy お薬.", "Paid — collect your medicine at the お薬 window.", "お薬の窓口へどうぞ。")); return; }
             Reason = Active(VaccineQuest) ? Purpose.Vaccine : Active(HealthCheckQuest) ? Purpose.HealthCheck : Purpose.Consult;
+            if (Reason == Purpose.Consult && !Active(FirstVisitQuest) && !Express.HasValue)
+            {
+                // A patient who only wants to get better is not made to walk five counters: one card, done.
+                JobQuizCard.Show(Kicker("受付"), Nurse, "きょうは どう されますか。", null, Loc.T("Hôm nay anh/chị muốn khám thế nào?", "How would you like to be seen today?", ""),
+                    Loc.T("Chọn cách khám:", "Choose:", "えらんでください："), new List<JobQuizCard.Choice>
+                    {
+                        new JobQuizCard.Choice { Id = "quick", Label = Loc.T("Khám nhanh", "Quick visit", "すぐ みてもらう"), Detail = Loc.T("Một bước: khám, nhận thuốc, thanh toán (hoặc trả sau).", "One step: see the doctor, get the medicine, pay (or later).", null), Correct = true },
+                        new JobQuizCard.Choice { Id = "full", Label = Loc.T("Khám từng bước (luyện tiếng Nhật)", "Step by step (practise Japanese)", "ひとつずつ（日本語の れんしゅう）"), Detail = Loc.T("受付 → 問診票 → 診察 → 会計 → お薬", "受付 → 問診票 → 診察 → 会計 → お薬", null), Correct = true },
+                    }, (System.Action<JobQuizCard.Choice>)(picked => { Express = picked.Id == "quick"; if (Express == true) QuickVisit(); else CheckIn(); }), "clinic_card");
+                return;
+            }
+            Express = null;
             var choices = new List<JobQuizCard.Choice>
             {
                 new JobQuizCard.Choice { Label = "はい。ほけんしょうです。おねがいします。", Detail = Loc.T("Vâng, đây là thẻ bảo hiểm. Nhờ chị ạ.", "Yes, here's my insurance card.", null), Correct = true },
@@ -142,6 +156,34 @@ namespace NihongoLife.Clinic
                     ? Loc.T("Đo chiều cao ở bàn cân và đo thị lực ở bảng chữ C, rồi gặp bác sĩ Mori.", "Measure your height at the scale and do the eye test, then see Dr Mori.", "身長と視力をはかってから、もり先生へ。")
                     : Loc.T("Mời ngồi chờ — bác sĩ Mori sẽ gọi. Vào phòng khám (診察室) khi sẵn sàng.", "Please wait — Dr Mori will call you. Go into the consultation room (診察室).", "おかけになってお待ちください。"), 6f);
             }, "clinic_form");
+        }
+
+        /// <summary>The patient's choice at reception this time (null = not asked yet).</summary>
+        private static bool? Express;
+
+        /// <summary>
+        /// The quick visit: the doctor sees the player at once and treats what they have (the same treatment as the
+        /// step-by-step visit), the medicine is handed over, the fee is paid — or billed for later when the wallet is
+        /// short. Every clinic task still counts the steps.
+        /// </summary>
+        public static void QuickVisit()
+        {
+            Express = null;
+            var symptom = TodaysSymptom();
+            var illness = NihongoLife.Health.PlayerIllness.Main;
+            PlayerStatus.Instance?.TreatAtClinic();
+            int fee = Catalog.visitFeeYen;
+            var inventory = PlayerInventory.Instance;
+            bool paid = inventory != null && inventory.SpendYen(fee, Loc.Triple("Viện phí phòng khám", "Clinic fee", "診察料"));
+            if (!paid) NihongoLife.Bank.BankService.AddClinicBill(fee);
+            foreach (var (evt, target) in new[] { ("clinic_reception", "clinic_desk"), ("clinic_consult", "clinic_doctor"), ("clinic_pay", "clinic_desk"), ("clinic_medicine", "clinic_pharmacy") })
+                QuestService.Raise(evt, target);
+            Current = Stage.None;
+            Symptom = null;
+            string what = symptom != null ? Loc.F("Chẩn đoán: {0}. Thuốc: {1}.", "Diagnosis: {0}. Medicine: {1}.", "診断：{0}。お薬：{1}。", symptom.Diagnosis, symptom.Medicine) : "";
+            string how = illness != null ? " " + illness.Clinic : "";
+            string bill = paid ? Loc.F(" Viện phí {0}.", " Fee {0}.", " 診察料{0}。", Loc.Yen(fee)) : Loc.F(" Viện phí {0} ghi trả sau (ví ¥ → Ngân hàng).", " The {0} fee is billed for later (Wallet ¥ → Bank).", " {0}は後払い。", Loc.Yen(fee));
+            HudFeed.Post("「おだいじに。」 " + what + how + bill, HudFeed.Kind.Reward, 10f, "clinic-quick");
         }
 
         // ─────────── The doctor (診察室) ───────────

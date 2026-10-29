@@ -406,7 +406,7 @@ namespace NihongoLife.UI
             cardName.fontSizeMax = 20f;
             cardName.overflowMode = TextOverflowModes.Ellipsis;
             NLUi.Label(card, "Meaning", product.vietnamese, 15f, NLUi.Muted, _font);
-            NLUi.Label(card, "Price", $"¥{product.price}", 19f, NLUi.Gold, _font, FontStyles.Bold);
+            NLUi.Label(card, "Price", $"{NihongoLife.Core.Loc.Money(product.price)}", 19f, NLUi.Gold, _font, FontStyles.Bold);
             var button = card.gameObject.AddComponent<Button>();
             button.targetGraphic = card.GetComponent<Image>();
             button.transition = Selectable.Transition.None;

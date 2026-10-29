@@ -127,14 +127,14 @@ namespace NihongoLife.EditorTools
 
                 // Top right: language switch + account
                 var langBar = Img(panel.transform, "LanguageBar", new Color(0.035f, 0.05f, 0.075f, 0.78f), Load(Art + "round_22.png"));
-                TopRight(langBar.rectTransform, -48f, 40f, 414f, 52f);
+                TopRight(langBar.rectTransform, -48f, 40f, 540f, 52f);
                 var langIcon = Img(langBar.transform, "Icon", UiTheme.TextSoft, Load(Icons + "ic_translate.png"));
                 langIcon.preserveAspect = true;
                 TopLeft(langIcon.rectTransform, 14f, 14f, 24f, 24f);
                 var label = Text(langBar.transform, "LanguageLabel", "Ngôn ngữ", font, 1f, UiTheme.TextSoft, FontStyles.Normal, TextAlignmentOptions.MidlineLeft);
                 label.gameObject.SetActive(false); // kept for old references; the icon says "language"
                 float lx = 48f;
-                foreach (var (name, text) in new[] { ("LanguageVietnameseButton", "Tiếng Việt"), ("LanguageEnglishButton", "English"), ("LanguageJapaneseButton", "日本語") })
+                foreach (var (name, text) in new[] { ("LanguageVietnameseButton", "Tiếng Việt"), ("LanguageEnglishButton", "English"), ("LanguageJapaneseButton", "日本語"), ("LanguageRussianButton", "Русский") })
                 {
                     bool on = name == "LanguageVietnameseButton";
                     var lb = Pill(langBar.transform, name, text, font, on);
@@ -151,6 +151,7 @@ namespace NihongoLife.EditorTools
                 SetRef(so, "vietnameseButton", langBar.transform.Find("LanguageVietnameseButton").GetComponent<Button>());
                 SetRef(so, "englishButton", langBar.transform.Find("LanguageEnglishButton").GetComponent<Button>());
                 SetRef(so, "japaneseButton", langBar.transform.Find("LanguageJapaneseButton").GetComponent<Button>());
+                SetRef(so, "russianButton", langBar.transform.Find("LanguageRussianButton").GetComponent<Button>());
                 SetRef(so, "guideButton", panel.transform.Find("GuideButton").GetComponent<Button>());
                 SetRef(so, "aboutButton", about);
                 SetRef(so, "titleText", title);

@@ -1,0 +1,37 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8cd7292b80d74e04db4a79c2979f607a, type: 3}
+  m_Name: minigame_word_whack
+  m_EditorClassIdentifier: NihongoLife.MiniGames::NihongoLife.MiniGames.MiniGameDefinition
+  id: word_whack
+  kind: 6
+  titleJa: "\u3053\u3068\u3070\u30E2\u30B0\u30E9"
+  titleVi: "\u0110\u1EADp T\u1EEB"
+  titleEn: Word Whack
+  descriptionVi: "T\u1EEB ti\u1EBFng Nh\u1EADt chui ra kh\u1ECFi hang \u2014 \u0111\u1EADp
+    \u0111\xFAng t\u1EEB kh\u1EDBp v\u1EDBi g\u1EE3i \xFD tr\u01B0\u1EDBc khi n\xF3
+    th\u1EE5t v\xE0o."
+  descriptionEn: "Japanese words pop out of burrows \u2014 whack the one that matches
+    the clue before it ducks back."
+  descriptionJa: "\u3042\u306A\u304B\u3089 \u3053\u3068\u3070\u304C \u3067\u3066\u304F\u308B\uFF01\u30D2\u30F3\u30C8\u306B\u5408\u3046\u3082\u306E\u3092
+    \u305F\u305F\u3053\u3046\u3002"
+  playable: 1
+  contentSets:
+  - {fileID: 11400000, guid: 4e11c5ac95210e84ba8c18ff569b8063, type: 2}
+  - {fileID: 11400000, guid: 0c2812a7c27ad314ab294e9e02927910, type: 2}
+  - {fileID: 11400000, guid: 7ab00ab706bb59e46bd2f806ad67c152, type: 2}
+  - {fileID: 11400000, guid: 25f61ec1b2aa4864caca02215798e31e, type: 2}
+  - {fileID: 11400000, guid: 278b97930c6f619429be8006d027c8c2, type: 2}
+  pairsPerRound: 10
+  timeLimitSeconds: 90
+  expPerCorrect: 3
+  knowledgePerRound: 4

@@ -48,7 +48,7 @@ namespace NihongoLife.Tests
             NihongoLife.Progression.CareerClock.PromptEnabled = true;
             NihongoLife.Player.CharacterLook.Persist = true;
             NihongoLife.Scenario.StoryDirector.Bypass = false;
-            NihongoLife.Core.Loc.Set((NihongoLife.Core.GameLanguage)Mathf.Clamp(_language, 0, 2));
+            NihongoLife.Core.Loc.Set((NihongoLife.Core.GameLanguage)Mathf.Clamp(_language, 0, 3));
             PlayerPrefs.SetString("NL.WalletLedger.v1", _ledger ?? ""); // tests' purchases do not stay in the player's wallet history
             if (_hadSave && File.Exists(BackupPath)) File.Copy(BackupPath, SavePath, true);
             else if (!_hadSave && File.Exists(SavePath)) File.Delete(SavePath);

@@ -11,7 +11,15 @@ namespace NihongoLife.MiniGames
         OrderRush,
         KanaRain,
         UfoCatcher,
-        BasketCount
+        BasketCount,
+        WordWhack,
+        EchoPads,
+        KanaSnake,
+        KanaBreaker,
+        DanceArrows,
+        TenseTyper,
+        WheelQuiz,
+        AirHockey
     }
 
     /// <summary>Data for one arcade machine: which mini-game, which learning content, how long a round lasts.</summary>

@@ -15,7 +15,7 @@ namespace NihongoLife.Save
         public static void FlushWebStorage()
         {
 #if UNITY_WEBGL && !UNITY_EDITOR
-            NL_SyncPersistentData();
+            PersistenceGuard.RequestFlush(); // coalesced: a burst of saves costs one IndexedDB sync
 #endif
         }
 
@@ -156,7 +156,7 @@ namespace NihongoLife.Save
         }
 
         /// <summary>Copies an unreadable save aside (never deleted) and returns where; null when there was nothing to keep.</summary>
-        private static string PreserveCorrupt(string path)
+        public static string PreserveCorrupt(string path)
         {
             try
             {

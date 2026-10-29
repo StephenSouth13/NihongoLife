@@ -925,7 +925,7 @@ namespace NihongoLife.UI
             {
                 var row = UiKit.Rect(rect, "Mondai");
                 UiKit.Size(row, -1f, 28f);
-                var name = UiKit.Label(row, "Name", Loc.IsJapanese ? m.titleJa : $"{m.titleJa}  <color=#8FA0AE>{(Loc.IsEnglish ? "" : m.titleVi)}</color>", 14f, UiTheme.TextSoft);
+                var name = UiKit.Label(row, "Name", Loc.IsJapanese ? m.titleJa : $"{m.titleJa}  <color=#8FA0AE>{(Loc.IsVietnamese ? m.titleVi : "")}</color>", 14f, UiTheme.TextSoft);
                 UiKit.Place(name.rectTransform, 0f, 2f, 520f, 24f);
                 var color = m.Accuracy < 0.5f ? UiTheme.Bad : m.Accuracy < 0.8f ? UiTheme.Warn : UiTheme.Good;
                 var fill = UiKit.ProgressBar(row, "Bar", color, new Color(1f, 1f, 1f, 0.07f));

@@ -45,7 +45,7 @@ namespace NihongoLife.UI
             instructionsText.fontSize = 24;
             instructionsText.alignment = TextAlignmentOptions.Center;
             instructionsText.color = Color.white;
-            instructionsText.text = "S\u1eed d\u1ee5ng ph\u00edm W A S D \u0111\u1ec3 di chuy\u1ec3n";
+            instructionsText.text = NihongoLife.Core.Loc.T("S\u1eed d\u1ee5ng ph\u00edm W A S D \u0111\u1ec3 di chuy\u1ec3n", "Use W A S D to move", "W A S D キーで移動");
 
             panel.SetActive(true);
             _hideAtTime = Time.unscaledTime + autoHideSeconds;

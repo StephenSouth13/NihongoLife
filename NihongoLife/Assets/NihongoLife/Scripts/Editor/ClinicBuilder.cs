@@ -228,6 +228,22 @@ namespace NihongoLife.EditorTools
             Spot(spots, "Spot_Scale", P(3.2f, 1f, 3.2f), new Vector3(1.4f, 2f, 1.4f), ClinicSpotKind.Scale);
             Spot(spots, "Spot_EyeTest", P(6.8f, 1f, 2.5f), new Vector3(1.4f, 2f, 1.2f), ClinicSpotKind.EyeChart);
 
+            // The training room corner (研修室) for the medical career: a study desk with books and a model, a
+            // whiteboard with today's case, an anatomy chart. The cases: Resources/Clinic/medical_training.json.
+            var training = Group(root.transform, "TrainingCorner");
+            Block(training, "StudyDesk", P(0.2f, 0.38f, 6.9f), new Vector3(2.2f, 0.76f, 0.8f), _wood, true);
+            Block(training, "StudyChair_A", P(-0.4f, 0.24f, 6.05f), new Vector3(0.5f, 0.48f, 0.5f), _rubber, false);
+            Block(training, "StudyChair_B", P(0.8f, 0.24f, 6.05f), new Vector3(0.5f, 0.48f, 0.5f), _rubber, false);
+            Block(training, "Textbooks", P(-0.4f, 0.86f, 7.0f), new Vector3(0.5f, 0.2f, 0.34f), _sign, false);
+            Block(training, "Notebook", P(0.6f, 0.78f, 6.85f), new Vector3(0.36f, 0.03f, 0.26f), _white, false);
+            Block(training, "Stethoscope", P(1.0f, 0.79f, 7.0f), new Vector3(0.22f, 0.04f, 0.22f), _dark, false);
+            Block(training, "Whiteboard", P(0.2f, 1.75f, 7.86f), new Vector3(2.6f, 1.3f, 0.06f), _chart, false);
+            // North wall: the text faces the room (yaw 0, read looking north).
+            Text(training, "WhiteboardText", "研修室  <size=70%>Đào tạo y khoa</size>\n<size=60%>きょうの しょうれい · Ca lâm sàng hôm nay\nもんしん → しんだん → ちりょう</size>", P(0.2f, 1.85f, 7.82f), 0f, 0.16f, new Color(0.12f, 0.2f, 0.3f), 2.4f);
+            Block(training, "AnatomyChart", P(-1.9f, 1.7f, 7.86f), new Vector3(0.9f, 1.3f, 0.04f), _skyArt, false);
+            Text(training, "AnatomyLabel", "からだの しくみ", P(-1.9f, 2.45f, 7.82f), 0f, 0.09f, new Color(0.12f, 0.2f, 0.3f), 1f);
+            Spot(spots, "Spot_Training", P(0.2f, 1f, 5.9f), new Vector3(2.0f, 2f, 1.2f), ClinicSpotKind.Training);
+
             // Townspeople who come for a check-up on their own (ClinicPatientFlow walks them along these points).
             var route = Group(root.transform, "PatientRoute");
             foreach (var (name, x, z, yaw) in new[]

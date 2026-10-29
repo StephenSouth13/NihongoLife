@@ -155,7 +155,7 @@ namespace NihongoLife.World
             {
                 Stop stop = Line[i];
                 string id = stop.Id;
-                NLUi.Button(_ticketWindow, "Ticket_" + id.ToUpperInvariant(), $"{stop.Ja}  ·  {stop.Vi}   —   {stop.Place}   —   ¥{stop.Price}", _font,
+                NLUi.Button(_ticketWindow, "Ticket_" + id.ToUpperInvariant(), $"{stop.Ja}  ·  {stop.Vi}   —   {stop.Place}   —   {NihongoLife.Core.Loc.Money(stop.Price)}", _font,
                     () => PurchaseTicket(id), new Color(0.12f, 0.4f, 0.5f), 21f, null, 60f);
             }
             var closeSpace = new GameObject("CloseSpace", typeof(RectTransform));
@@ -168,7 +168,7 @@ namespace NihongoLife.World
         private void OpenTicketPanel()
         {
             if (_ticketWindow == null) return;
-            if (PlayerInventory.Instance != null) _ticketWallet.text = $"¥{PlayerInventory.Instance.Yen:N0}";
+            if (PlayerInventory.Instance != null) _ticketWallet.text = $"{NihongoLife.Core.Loc.Money(PlayerInventory.Instance.Yen)}";
             _ticketWindow.gameObject.SetActive(true);
             _ticketWindow.SetAsLastSibling();
             UIStyleKit.PlayShowAnimation(_ticketWindow.gameObject);
@@ -201,7 +201,7 @@ namespace NihongoLife.World
             if (_onboard)
             {
                 if (_ledText != null)
-                    _ledText.text = _atStop ? $"{NextStop.Ja}  <size=62%><color=#FFD08A>Ga {NextStop.Vi}</color></size>" : $"つぎは  {NextStop.Ja}  <size=62%><color=#FFD08A>Next · {NextStop.Vi}</color></size>";
+                    _ledText.text = _atStop ? $"{NextStop.Ja}  <size=62%><color=#FFD08A>{NihongoLife.Core.Loc.F("Ga {0}", "{0} Station", "{0}", NextStop.Vi)}</color></size>" : $"つぎは  {NextStop.Ja}  <size=62%><color=#FFD08A>{NihongoLife.Core.Loc.F("Tiếp: {0}", "Next · {0}", "{0}", NextStop.Vi)}</color></size>";
                 if (_ledTimer != null)
                     _ledTimer.text = _atStop ? NihongoLife.Core.Loc.T("đang dừng", "stopped", "停車中") : NihongoLife.Core.Loc.F("còn {0}s", "{0}s to go", "あと{0}秒", Mathf.CeilToInt((1f - _legProgress) * LegSeconds));
                 float position = Mathf.Clamp(_nextStop - 1 + _legProgress, 0f, Line.Length - 1) / (Line.Length - 1);
@@ -214,7 +214,7 @@ namespace NihongoLife.World
                     _stopDots[i].color = i == _ticketStop ? NLUi.Gold : passed ? new Color(0.3f, 0.78f, 0.52f) : new Color(0.75f, 0.8f, 0.88f);
                     if (i < _stopLabels.Count) _stopLabels[i].text = StopLabel(i);
                 }
-                if (_ticketChip != null) _ticketChip.text = TicketStop != null ? $"きっぷ  {TicketStop.Ja} · ¥{TicketStop.Price}" : "きっぷ —";
+                if (_ticketChip != null) _ticketChip.text = TicketStop != null ? $"きっぷ  {TicketStop.Ja} · {NihongoLife.Core.Loc.Money(TicketStop.Price)}" : "きっぷ —";
                 if (_doorChip != null) _doorChip.text = NihongoLife.Core.Loc.T("Cửa ra bên trái", "Exit on the left", "おでぐちは ひだりがわ");
                 return;
             }

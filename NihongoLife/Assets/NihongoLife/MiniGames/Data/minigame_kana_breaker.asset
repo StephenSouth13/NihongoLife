@@ -1,0 +1,32 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8cd7292b80d74e04db4a79c2979f607a, type: 3}
+  m_Name: minigame_kana_breaker
+  m_EditorClassIdentifier: NihongoLife.MiniGames::NihongoLife.MiniGames.MiniGameDefinition
+  id: kana_breaker
+  kind: 9
+  titleJa: "\u304B\u306A\u30D6\u30EC\u30A4\u30AF"
+  titleVi: "Ph\xE1 G\u1EA1ch Kana"
+  titleEn: Kana Breaker
+  descriptionVi: "\u0110\u1EE1 b\xF3ng v\xE0 ph\xE1 vi\xEAn g\u1EA1ch c\xF3 ch\u1EEF
+    kana \u0111\u1ECDc \u0111\xFAng nh\u01B0 g\u1EE3i \xFD."
+  descriptionEn: Bounce the ball and break the brick whose kana reads like the clue.
+  descriptionJa: "\u30DC\u30FC\u30EB\u3092 \u3046\u3061\u304B\u3048\u3057\u3066\u3001\u3088\u307F\u65B9\u306B\u5408\u3046\u304B\u306A\u306E
+    \u30D6\u30ED\u30C3\u30AF\u3092\u3053\u308F\u305D\u3046\u3002"
+  playable: 1
+  contentSets:
+  - {fileID: 11400000, guid: 25f61ec1b2aa4864caca02215798e31e, type: 2}
+  - {fileID: 11400000, guid: 278b97930c6f619429be8006d027c8c2, type: 2}
+  pairsPerRound: 10
+  timeLimitSeconds: 100
+  expPerCorrect: 3
+  knowledgePerRound: 4

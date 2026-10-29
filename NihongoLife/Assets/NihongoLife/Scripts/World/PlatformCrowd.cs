@@ -29,11 +29,16 @@ namespace NihongoLife.World
         private readonly List<GameObject> _queued = new List<GameObject>();
         private Vector3 _stairs, _platformCentre, _towardTrack;
         private int _next;
-        private bool _boardedThisTrain;
+        private bool _boardedThisTrain, _alightedThisTrain;
+        private Vector3 _doorPos, _along;
         private float _nextArrival;
 
         public int Queued => _queued.Count;
         public int Seated { get; private set; }
+        /// <summary>Passengers who stepped off the arriving train and walked to the stairs (all trains so far).</summary>
+        public int Alighted { get; private set; }
+        /// <summary>Passengers walking from the doors to the stairs right now.</summary>
+        public int Alighting { get; private set; }
 
         private void Start()
         {
@@ -52,8 +57,17 @@ namespace NihongoLife.World
             _towardTrack = _towardTrack.sqrMagnitude > 0.01f ? _towardTrack.normalized : Vector3.back;
             Vector3 along = Vector3.Cross(Vector3.up, _towardTrack).normalized;
             float y = door.position.y;
+            _doorPos = door.position;
+            _along = along;
             var stairs = FindDeep("ExitStairwell");
-            _stairs = stairs != null ? new Vector3(stairs.position.x, y, Mathf.Lerp(_platformCentre.z, stairs.position.z, 0.35f)) : _platformCentre - _towardTrack * 3f;
+            // The stairwell's pivot can sit far from its geometry (the station is built at an offset), so use where it really is.
+            Vector3 stairsAt = stairs != null ? stairs.position : Vector3.zero;
+            if (stairs != null)
+            {
+                var parts = stairs.GetComponentsInChildren<Renderer>();
+                if (parts.Length > 0) { var box = parts[0].bounds; for (int i = 1; i < parts.Length; i++) box.Encapsulate(parts[i].bounds); stairsAt = box.center; }
+            }
+            _stairs = stairs != null ? new Vector3(stairsAt.x, y, Mathf.Lerp(_platformCentre.z, stairsAt.z, 0.35f)) : _platformCentre - _towardTrack * 3f;
 
             // Boarding marks a step back from the yellow line, in front of the three doors.
             var marks = new GameObject("BoardingMarks").transform;
@@ -89,6 +103,7 @@ namespace NihongoLife.World
             if (_station == null) return;
             if (_station.IsTrainBoarding)
             {
+                if (!_alightedThisTrain) { _alightedThisTrain = true; StartCoroutine(Alight()); }
                 if (!_boardedThisTrain && _queued.Count > 0)
                 {
                     _boardedThisTrain = true;
@@ -98,6 +113,7 @@ namespace NihongoLife.World
                 return;
             }
             _boardedThisTrain = false;
+            _alightedThisTrain = false;
             if (Time.time < _nextArrival || _queued.Count >= 4) return;
             _nextArrival = Time.time + Random.Range(7f, 12f);
             var mark = _queueMarks[_next % _queueMarks.Count];
@@ -117,7 +133,33 @@ namespace NihongoLife.World
 
         private void Queue(GameObject person)
         {
-            if (person != null) _queued.Add(person);
+            if (person == null) return;
+            // Arrived late while the doors are open: step straight in.
+            if (_station != null && _station.IsTrainBoarding && _boardedThisTrain) { StartCoroutine(Board(person, 0f)); return; }
+            _queued.Add(person);
+        }
+
+        /// <summary>The train arrives: a few passengers step out of the doors, cross the platform and go up the stairs.</summary>
+        private IEnumerator Alight()
+        {
+            float[] doors = { -10f, 0f, 10f };
+            for (int i = 0; i < doors.Length; i++)
+            {
+                yield return new WaitForSeconds(0.6f);
+                Vector3 start = new Vector3(_doorPos.x, _doorPos.y, _doorPos.z) + _along * doors[i] + _towardTrack * 0.6f;
+                var person = Spawn("Alighting_" + i, start, Quaternion.LookRotation(-_towardTrack));
+                if (person != null) StartCoroutine(GetOffAndLeave(person));
+            }
+        }
+
+        private IEnumerator GetOffAndLeave(GameObject person)
+        {
+            Alighting++;
+            yield return Walk(person.transform, person.transform.position - _towardTrack * 2.2f);
+            yield return Walk(person.transform, _stairs);
+            Alighting--;
+            Alighted++;
+            if (person != null) Destroy(person);
         }
 
         private IEnumerator Board(GameObject person, float delay)

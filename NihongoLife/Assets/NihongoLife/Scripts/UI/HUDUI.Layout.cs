@@ -68,7 +68,7 @@ namespace NihongoLife.UI
                 }),
                 ("QuestButton", "N", "Nhiệm vụ", () => TaskJournalUI.Toggle()),
                 ("ExamButton", "K", "Luyện thi", () => TogglePopup(GetComponent<ExamCenterPopup>())),
-                ("StudyButton", "U", "Học thêm", () => TogglePopup(GetComponent<StudyHubPopup>())),
+                ("StudyButton", "`", "Học thêm", () => TogglePopup(GetComponent<StudyHubPopup>())),
                 ("NotebookButton", "L", "Sổ ghi", () => NotebookUI.Toggle()),
                 ("HandbookButton", "Y", "Sổ tay", () => HandbookUI.Toggle()),
                 ("OverviewButton", "H", "Góc nhìn", ToggleOverviewCamera),
@@ -276,7 +276,8 @@ namespace NihongoLife.UI
                 placeholder.alignment = TextAlignmentOptions.MidlineLeft;
                 placeholder.margin = new Vector4(10f, 0f, 10f, 0f);
                 placeholder.color = new Color(0.58f, 0.64f, 0.7f, 0.72f);
-                placeholder.text = "Type a town chat message...";
+                placeholder.text = NihongoLife.Core.Loc.T("Nhập tin nhắn trò chuyện thị trấn...", "Type a town chat message...", "タウンチャットを入力...");
+                NihongoLife.Core.Loc.Watch(this, () => { if (placeholder != null) placeholder.text = NihongoLife.Core.Loc.T("Nhập tin nhắn trò chuyện thị trấn...", "Type a town chat message...", "タウンチャットを入力..."); });
                 chatInputField.placeholder = placeholder;
 
                 chatInputField.onSubmit.AddListener(SendChatMessage);

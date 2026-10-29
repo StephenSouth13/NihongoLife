@@ -81,6 +81,17 @@ namespace NihongoLife.Progression
         /// <summary>Why the quest cannot be accepted yet (null when it can).</summary>
         public static string Requirement(QuestDefinition quest)
         {
+            // A career's own task is a duty of the job, not a progression lock: it needs the career, bypass or not.
+            if (quest.IsCareerTask)
+            {
+                var career = CareerService.State;
+                var def = CareerService.Catalog.Career(quest.career);
+                string name = def != null ? def.Name : quest.career;
+                if (career == null || !career.HasCareer || career.careerId != quest.career)
+                    return NihongoLife.Core.Loc.F("Việc của nghề {0} — chọn nghề này (từ cấp {1}) để nhận.", "A {0} career task — choose that career (from level {1}).", "{0}の仕事です（レベル{1}から職業を選べます）。", name, CareerService.Catalog.unlockLevel);
+                if (career.level < quest.careerLevel)
+                    return NihongoLife.Core.Loc.F("Cần lên bậc {0} trong nghề (bạn đang bậc {1}).", "Needs career level {0} (you are at {1}).", "キャリアのレベル{0}が必要です（今は{1}）。", quest.careerLevel, career.level);
+            }
             // Offline exploration turns StoryDirector.Bypass on: no prologue, level or knowledge lock.
             if (NihongoLife.Scenario.StoryDirector.Bypass) return null;
             if (NihongoLife.Scenario.StoryDirector.GatesFreePlay)

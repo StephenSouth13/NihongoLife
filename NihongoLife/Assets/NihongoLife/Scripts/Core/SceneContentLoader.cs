@@ -156,19 +156,30 @@ namespace NihongoLife.Core
             }
         }
 
+        /// <summary>
+        /// Variants warmed per frame. WebGL compiles a shader program on first draw; doing a whole collection in one frame
+        /// froze the page. Progressive warm-up spreads it over the loading screen.
+        /// </summary>
+        const int WarmUpVariantsPerFrame = 4;
+
+        /// <summary>Real variants recorded in play (WebGLShaderRecordingPlayModeTests) first, then the keyword-less base ones.</summary>
+        static readonly string[] WarmUpCollections = { "WebGL/RecordedShaderVariants", "WebGL/WebGLShaderVariants" };
+
         static IEnumerator WarmShaders(Action<float> progress)
         {
             if (_warmed) yield break;
             _warmed = true;
-            ShaderVariantCollection collection = Resources.Load<ShaderVariantCollection>("WebGL/WebGLShaderVariants");
-            if (collection != null && !collection.isWarmedUp)
+            for (int c = 0; c < WarmUpCollections.Length; c++)
             {
-                progress?.Invoke(0.2f);
-                collection.WarmUp();
-                yield return null;
+                ShaderVariantCollection collection = Resources.Load<ShaderVariantCollection>(WarmUpCollections[c]);
+                if (collection == null || collection.isWarmedUp) continue;
+                for (int guard = 0; guard < 4000 && !collection.WarmUpProgressively(WarmUpVariantsPerFrame); guard++)
+                {
+                    progress?.Invoke(0.2f);
+                    yield return null;
+                }
             }
         }
-
         public static string BaseUrl
         {
             get
