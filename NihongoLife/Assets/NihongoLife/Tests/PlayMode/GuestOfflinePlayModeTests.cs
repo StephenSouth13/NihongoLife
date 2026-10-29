@@ -53,6 +53,8 @@ namespace NihongoLife.Tests
             GameServices.Register<IAuthService>(fake);
             var session = PlayerSessionService.GetOrCreate();
             string backup = File.Exists(PlayerSessionService.GuestSavePath) ? File.ReadAllText(PlayerSessionService.GuestSavePath) : null;
+            string bakPath = PlayerSessionService.GuestSavePath + ".bak";
+            string bakBackup = File.Exists(bakPath) ? File.ReadAllText(bakPath) : null;
             try
             {
                 var authUi = Object.FindFirstObjectByType<AuthUI>();
@@ -125,7 +127,9 @@ namespace NihongoLife.Tests
                 // 4. A guest's progress is kept on the device and is ready to move into a new account.
                 fake.IsAuthenticated = false; fake.Email = "";
                 PlayerSessionService.PersistGuest = true;
-                if (File.Exists(PlayerSessionService.GuestSavePath)) File.Delete(PlayerSessionService.GuestSavePath);
+                // The save and its backup: a missing save is restored from path.bak (ProgressFile), so a fresh guest needs both gone.
+                foreach (var file in new[] { PlayerSessionService.GuestSavePath, PlayerSessionService.GuestSavePath + ".bak" })
+                    if (File.Exists(file)) File.Delete(file);
                 session.BeginGuest();
                 Assert.IsNull(session.GuestProgressToCarry(), "A fresh guest has nothing to carry.");
                 var repo = GameServices.Get<IProgressRepository>();
@@ -149,6 +153,8 @@ namespace NihongoLife.Tests
                 PlayerSessionService.PersistGuest = true;
                 if (backup != null) File.WriteAllText(PlayerSessionService.GuestSavePath, backup);
                 else if (File.Exists(PlayerSessionService.GuestSavePath)) File.Delete(PlayerSessionService.GuestSavePath);
+                if (bakBackup != null) File.WriteAllText(bakPath, bakBackup);
+                else if (File.Exists(bakPath)) File.Delete(bakPath);
                 PlayerSessionService.PersistGuest = false;
                 session.BeginGuest();
                 if (original != null) GameServices.Register(original); else GameServices.Unregister<IAuthService>();

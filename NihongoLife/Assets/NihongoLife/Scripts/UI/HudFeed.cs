@@ -66,7 +66,7 @@ namespace NihongoLife.UI
                     var existing = feed._cards[i];
                     if (existing.card == null || !feed._keys.TryGetValue(existing.card, out string k) || k != key) continue;
                     var existingLabel = existing.card.Find("Text")?.GetComponent<TextMeshProUGUI>();
-                    if (existingLabel != null) existingLabel.text = text;
+                    if (existingLabel != null) { existingLabel.text = text; FitWidth(existingLabel, text); } // a longer text must widen the card, or it wraps into a narrow column
                     feed._cards[i] = (existing.card, existing.group, Time.unscaledTime + seconds);
                     return;
                 }
@@ -87,13 +87,24 @@ namespace NihongoLife.UI
             NLUi.Size(dot, 24f);
             var label = NLUi.Label(card, "Text", text, 18f, NLUi.Text, feed._font);
             label.textWrappingMode = TextWrappingModes.Normal;
-            var element = label.gameObject.AddComponent<LayoutElement>();
-            element.preferredWidth = Mathf.Min(560f, label.GetPreferredValues(text, 2000f, 40f).x + 4f);
+            FitWidth(label, text);
             var group = card.gameObject.AddComponent<CanvasGroup>();
             group.blocksRaycasts = false;
             if (key != null) feed._keys[card] = key;
             feed._cards.Add((card, group, Time.unscaledTime + seconds));
             while (feed._cards.Count > 3) { Destroy(feed._cards[0].card.gameObject); feed._cards.RemoveAt(0); }
+        }
+
+        /// <summary>One line up to 560 px, then it wraps.</summary>
+        private static void FitWidth(TextMeshProUGUI label, string text)
+        {
+            var element = label.GetComponent<LayoutElement>();
+            if (element == null) element = label.gameObject.AddComponent<LayoutElement>();
+            // The measure can come back tiny (a font atlas still filling in, the canvas hidden behind a window): the card then
+            // wrapped every word into a one-word column. A rough width from the character count is the floor.
+            float measured = label.GetPreferredValues(text, 2000f, 40f).x + 4f;
+            float rough = System.Text.RegularExpressions.Regex.Replace(text ?? "", "<[^>]+>", "").Length * label.fontSize * 0.42f;
+            element.preferredWidth = Mathf.Min(560f, Mathf.Max(measured, rough));
         }
 
         /// <summary>Drops the feed below a tall zone bar (the train board). 92 is the normal gap under the station steps.</summary>

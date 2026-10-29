@@ -53,11 +53,15 @@
     </div>
     <button id="unity-fullscreen" type="button" hidden>Fullscreen</button>
     <div id="unity-orient" hidden>
-      <p id="unity-orient-text">Portrait works. Turn sideways for a wider view of the city.</p>
-      <button id="unity-orient-ok" type="button">Continue</button>
+      <div id="unity-orient-phone" aria-hidden="true">&#128241;</div>
+      <p id="unity-orient-text">Turn your phone sideways to play.</p>
+      <button id="unity-orient-go" type="button">Full screen &middot; landscape</button>
+      <button id="unity-orient-ok" type="button">Keep playing in portrait</button>
     </div>
     <div id="unity-warning"></div>
   </div>
+  <!-- Online settings (public Supabase URL / anon key, Agora App ID), written by the build next to index.html. -->
+  <script src="nl-config.js"></script>
   <script>
     var canvas = document.querySelector("#unity-canvas");
     var loading = document.querySelector("#unity-loading");
@@ -103,6 +107,17 @@
       return window.matchMedia && window.matchMedia("(pointer: coarse)").matches;
     }
 
+    // Phones play in landscape: joystick on the left, actions on the right. Held upright, a full-screen card asks to turn
+    // the phone; its button goes full screen and locks landscape where the browser allows it (Android Chrome; iOS Safari
+    // cannot lock, so turning the phone is enough). "Keep playing in portrait" never leaves anyone stuck.
+    (function () {
+      var l = ((navigator.language || "en").slice(0, 2)).toLowerCase();
+      function t(vi, en, ja, ru) { return l === "vi" ? vi : l === "ja" ? ja : l === "ru" ? ru : en; }
+      document.querySelector("#unity-orient-text").textContent = t("Xoay ngang điện thoại để chơi.", "Turn your phone sideways to play.", "スマホを横にして遊んでね。", "Поверните телефон горизонтально.");
+      document.querySelector("#unity-orient-go").textContent = t("Toàn màn hình · Xoay ngang", "Full screen · landscape", "全画面・横向き", "Во весь экран · горизонтально");
+      document.querySelector("#unity-orient-ok").textContent = t("Vẫn chơi màn hình dọc", "Keep playing in portrait", "縦のまま遊ぶ", "Играть вертикально");
+    })();
+
     function refreshOrient() {
       var portrait = window.matchMedia("(orientation: portrait)").matches;
       var dismissed = false;
@@ -110,10 +125,28 @@
       orient.hidden = !(portrait && coarsePointer() && !dismissed);
     }
 
+    function goLandscape() {
+      var root = document.documentElement;
+      var request = root.requestFullscreen || root.webkitRequestFullscreen;
+      var done = function () {
+        try { if (screen.orientation && screen.orientation.lock) screen.orientation.lock("landscape").catch(function () {}); } catch (e) {}
+      };
+      try {
+        var result = request ? request.call(root) : null;
+        if (result && result.then) result.then(done, done); else done();
+      } catch (e) { done(); }
+    }
+
+    document.querySelector("#unity-orient-go").addEventListener("click", goLandscape);
     document.querySelector("#unity-orient-ok").addEventListener("click", function () {
       try { sessionStorage.setItem("nihongo.orientHint", "1"); } catch (e) {}
       orient.hidden = true;
     });
+    // The first tap of a phone player in landscape also takes the game full screen (the browser bars eat the joystick).
+    window.addEventListener("touchend", function firstTap() {
+      window.removeEventListener("touchend", firstTap);
+      if (coarsePointer() && !document.fullscreenElement && window.matchMedia("(orientation: landscape)").matches) goLandscape();
+    }, { passive: true });
     window.addEventListener("resize", refreshOrient);
     window.addEventListener("orientationchange", refreshOrient);
     refreshOrient();

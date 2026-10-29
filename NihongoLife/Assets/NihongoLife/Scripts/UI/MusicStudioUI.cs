@@ -57,6 +57,7 @@ namespace NihongoLife.UI
         private int _question;
         private Artwork _painting;
         private bool _stage;
+        private bool _street;
         private string _result;
         private RectTransform _card, _mini;
         private SongDefinition _auto;
@@ -76,6 +77,10 @@ namespace NihongoLife.UI
         public static bool Learnt(string songId) => Best(songId) >= LearntScore;
         public static int Fans => PlayerPrefs.GetInt(FansKey, 0);
         public static bool OnStage => _instance != null && _instance._stage;
+        /// <summary>A street performance with the player's own guitar (MusicShop.Busk): passers-by tip a good song.</summary>
+        public static bool OnStreet => _instance != null && _instance._street;
+        /// <summary>Tips of the last street song (tests).</summary>
+        public static int LastTips { get; private set; }
         /// <summary>The last finished melody: its accuracy, whether it was a gig and whether it was good.</summary>
         public static (int score, bool gig, bool good) LastResult { get; private set; }
 
@@ -156,6 +161,7 @@ namespace NihongoLife.UI
             _instance.SetMini(false);
             _instance._root.gameObject.SetActive(false);
             _instance._stage = false;
+            _instance._street = false;
             if (_instance._player != null) _instance._player.InputLocked = _instance._wasLocked;
             _instance._player = null;
         }
@@ -358,7 +364,20 @@ namespace NihongoLife.UI
             var ui = Instance;
             ui._practice = null;
             Open(Tab.Songs);
+            ui._street = false;
             ui._stage = true;
+            ui.Rebuild();
+        }
+
+        /// <summary>The town: the song list in performing mode, played standing with the player's own guitar.</summary>
+        public static void OpenStreet()
+        {
+            var ui = Instance;
+            ui._practice = null;
+            Open(Tab.Songs);
+            ui._stage = false;
+            ui._street = true;
+            ui._guitar = true;
             ui.Rebuild();
         }
 
@@ -449,6 +468,26 @@ namespace NihongoLife.UI
             {
                 bool good = _tempo >= GoodSlow - 0.001f && _tempo <= GoodFast + 0.001f;
                 LastResult = (Mathf.RoundToInt(_tempo * 100f), true, good);
+                if (_street)
+                {
+                    int listeners = Listeners();
+                    LastTips = good ? 40 + 30 * Mathf.Min(listeners, 8) : (listeners > 0 ? 10 : 0);
+                    var inventory = NihongoLife.Player.PlayerInventory.Instance;
+                    if (inventory != null && LastTips > 0) inventory.AddYen(LastTips, Loc.Triple("Biểu diễn đường phố", "Busking tips", "ストリートライブの チップ"));
+                    if (good)
+                    {
+                        PlayerPrefs.SetInt(FansKey, Fans + 1);
+                        NihongoLife.Progression.QuestService.Raise("perform", "music_street");
+                    }
+                    _result = good
+                        ? Loc.F("{0} người dừng lại nghe — tiền thưởng {1}. +1 người hâm mộ.", "{0} people stopped to listen — tips {1}. +1 fan.", "{0}人が 聞いてくれた — チップ {1}。ファン +1", listeners, Loc.Yen(LastTips))
+                        : (_tempo < GoodSlow
+                            ? Loc.T("Chậm quá — người qua đường đi luôn. Thử nhịp 80–125%.", "Too slow — people walk on. Try 80–125%.", "おそすぎて みんな 行ってしまった。80〜125% で。")
+                            : Loc.T("Nhanh quá — chẳng ai theo kịp. Thử nhịp 80–125%.", "Too fast — nobody can follow. Try 80–125%.", "はやすぎます。80〜125% で。"));
+                    HudFeed.Post(_result, good ? HudFeed.Kind.Reward : HudFeed.Kind.Info, 5f, "music");
+                    Redraw();
+                    return;
+                }
                 if (good)
                 {
                     PlayerPrefs.SetInt(FansKey, Fans + 1);
@@ -468,6 +507,21 @@ namespace NihongoLife.UI
             Redraw();
         }
 
+        /// <summary>People within 12 m of the performer (counted once, at the end of a street song).</summary>
+        private int Listeners()
+        {
+            if (_performer == null) return 0;
+            Vector3 at = _performer.transform.position;
+            int n = 0;
+            foreach (var animator in FindObjectsByType<Animator>(FindObjectsSortMode.None))
+            {
+                if (animator == null || !animator.isHuman || !animator.gameObject.activeInHierarchy) continue;
+                if (animator.transform.IsChildOf(_performer.transform) || _performer.transform.IsChildOf(animator.transform)) continue;
+                if ((animator.transform.position - at).sqrMagnitude < 144f) n++;
+            }
+            return n;
+        }
+
         private void RefreshAuto(bool force)
         {
             if (_autoStatus == null || (!force && _autoNote == _shownNote)) return;
@@ -481,7 +535,7 @@ namespace NihongoLife.UI
             string volume = Loc.F("Âm lượng {0}%", "Volume {0}%", "音量 {0}%", Mathf.RoundToInt(_volume * 100f));
             if (_auto == null) return (_result ?? "") + "   ·   " + speed + " · " + volume;
             return Loc.F("Nốt {0}/{1}", "Note {0}/{1}", "{0}/{1}", _autoNote, _auto.notes.Length) + "   ·   " + speed + " · " + volume
-                + (_autoGig ? "   ·   " + Loc.T("Đang diễn!", "On stage!", "ライブ中！") : "");
+                + (_autoGig ? "   ·   " + (_street ? Loc.T("Đang diễn đường phố!", "Busking!", "ストリートライブ中！") : Loc.T("Đang diễn!", "On stage!", "ライブ中！")) : "");
         }
 
         /// <summary>Now playing: the song, its progress, and the knobs — slower / faster, quieter / louder, piano / guitar, loop, stop.</summary>
@@ -501,14 +555,14 @@ namespace NihongoLife.UI
                 Knob("Faster", Loc.T("Nhanh", "Faster", "はやく") + " ▶", () => Tempo += 0.1f, NLUi.CardHover);
                 Knob("Quieter", Loc.T("Nhỏ", "Quieter", "小さく") + " −", () => Volume -= 0.1f, NLUi.CardHover);
                 Knob("Louder", Loc.T("To", "Louder", "大きく") + " +", () => Volume += 0.1f, NLUi.CardHover);
-                Knob("Instrument", _guitar ? "Guitar → Piano" : "Piano → Guitar", () => UseGuitar = !_guitar, NLUi.CardHover);
+                if (!_street) Knob("Instrument", _guitar ? "Guitar → Piano" : "Piano → Guitar", () => UseGuitar = !_guitar, NLUi.CardHover);
                 if (!_autoGig) Knob("Loop", Loc.T("Lặp lại: ", "Loop: ", "くりかえし：") + (_loop ? Loc.T("bật", "on", "オン") : Loc.T("tắt", "off", "オフ")), () => Loop = !_loop, _loop ? NLUi.Gold : NLUi.CardHover);
                 Knob("Stop", "■ " + Loc.T("Dừng", "Stop", "とめる"), StopAuto, NLUi.Card);
             }
             else
             {
                 string again = song.id;
-                bool stage = _stage;
+                bool stage = _stage || _street;
                 Knob("Again", "▶ " + Loc.T("Đàn lại", "Play again", "もう一度"), () => AutoPlay(again, stage), NLUi.Gold);
             }
             if (mini) Knob("Songs", Loc.T("Chọn bài khác", "Other songs", "ほかの曲"), () => { SetMini(false); _tab = Tab.Songs; Rebuild(); }, NLUi.Card);
@@ -641,7 +695,14 @@ namespace NihongoLife.UI
 
         private void BuildSongs()
         {
-            if (_stage)
+            if (_street)
+            {
+                NLUi.Label(_body, "Title", Loc.T("Biểu diễn đường phố — chọn bài", "Busking — pick a song", "ストリートライブ — 曲を えらぶ"), 24f, NLUi.Gold, _font, FontStyles.Bold);
+                NLUi.Label(_body, "StreetHelp", Loc.F("Nhân vật đứng đàn bằng cây guitar của bạn. Hết bài, người qua đường trong khoảng 12 m cho tiền thưởng nếu nhịp {0}–{1}% — càng đông người nghe càng nhiều. Đứng gần ga, quảng trường hay khu mua sắm nhé.",
+                    "Your character plays your guitar where you stand. At the end of a song people within about 12 m tip you if the tempo is {0}–{1}% — the bigger the crowd, the more. Try the station, the plaza or the shops.",
+                    "その場で ギターを ひきます。テンポ {0}〜{1}% なら 12m 以内の 人が チップを くれます。", Mathf.RoundToInt(GoodSlow * 100f), Mathf.RoundToInt(GoodFast * 100f)), 15f, NLUi.Muted, _font);
+            }
+            else if (_stage)
             {
                 NLUi.Label(_body, "Title", Loc.T("Sân khấu Hibiki — chọn bài để biểu diễn", "The Hibiki stage — pick a song to perform", "ひびきステージ — 演奏する曲を えらぶ"), 24f, NLUi.Gold, _font, FontStyles.Bold);
                 NLUi.Label(_body, "StageHelp", Loc.F("Nhân vật tự đàn cho khán giả. Giữ nhịp {0}–{1}% bản gốc thì khán giả thích: +1 người hâm mộ và tính một buổi diễn. Người hâm mộ: {2}.",
@@ -663,7 +724,7 @@ namespace NihongoLife.UI
                 string mark = best >= LearntScore ? $"  <color=#7CE0A0>✓ {best}%</color>" : best > 0 ? $"  <color=#E0C070>{best}%</color>" : "";
                 NLUi.Label(card, "Head", $"<b>{s.Title}</b>{mark}  <size=75%><color=#A8B4C4>{s.composer} · {s.key} · {s.tempo_bpm:0} bpm · {new string('★', Mathf.Clamp(s.difficulty, 1, 5))}</color></size>", 18f, NLUi.Text, _font);
                 var row = NLUi.Group(card, "Actions", false, 8f, TextAnchor.MiddleLeft, false);
-                if (_stage) NLUi.Button(row, "Perform", "▶ " + Loc.T("Biểu diễn", "Perform", "演奏する"), _font, () => Perform(s.id), NLUi.Gold, 15f, NLUi.Ink, 40f);
+                if (_stage || _street) NLUi.Button(row, "Perform", "▶ " + Loc.T("Biểu diễn", "Perform", "演奏する"), _font, () => Perform(s.id), NLUi.Gold, 15f, NLUi.Ink, 40f);
                 else NLUi.Button(row, "AutoPlay", "▶ " + Loc.T("Nhân vật đàn bài này", "Play this song", "この曲を演奏"), _font, () => AutoPlay(s.id), NLUi.Gold, 15f, NLUi.Ink, 40f);
                 NLUi.Button(row, "Practise", Loc.T("Tự đàn bằng bàn phím", "Play it with the keyboard", "キーボードで弾く"), _font, () => PractiseSong(s.id), NLUi.CardHover, 15f, NLUi.Text, 40f);
             }

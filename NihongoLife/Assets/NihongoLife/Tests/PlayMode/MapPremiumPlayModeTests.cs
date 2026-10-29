@@ -114,16 +114,31 @@ namespace NihongoLife.Tests
 
                 // Phu Quoc: sea name, a scale bar in kilometres, more categories.
                 yield return SceneManager.LoadSceneAsync(WorldLocationCatalog.PhuQuocIslandScene);
-                yield return new WaitForSecondsRealtime(4f);
+                // Play inside a zone boots the town first and walks in (StandaloneZoneBootstrap): wait for the island
+                // to be the active scene rather than a fixed time.
+                // (The directly loaded island is active at first; the boot then loads the town and enters the island again.)
+                bool Entered()
+                {
+                    var flow = Object.FindFirstObjectByType<SceneFlowController>();
+                    return SceneManager.GetActiveScene().name == WorldLocationCatalog.PhuQuocIslandScene
+                        && SceneManager.GetSceneByName(WorldLocationCatalog.CityScene).isLoaded && flow != null && !flow.IsLoading;
+                }
+                for (float t = 0f; t < 40f && !Entered(); t += Time.unscaledDeltaTime) yield return null;
+                Assert.AreEqual(WorldLocationCatalog.PhuQuocIslandScene, SceneManager.GetActiveScene().name, "on the island");
+                yield return new WaitForSecondsRealtime(2f);
                 dm = DialogueManager.Instance;
                 while (dm != null && dm.IsOpen) { dm.CancelDialogue(); if (dm.IsOpen) dm.ContinueDialogue(); yield return null; }
-                map = Object.FindFirstObjectByType<WorldMapUI>();
-                Assert.NotNull(map, "Map on the island");
+                map = null;
+                for (float t = 0f; t < 15f && (map = Object.FindFirstObjectByType<WorldMapUI>()) == null; t += 0.25f) yield return new WaitForSecondsRealtime(0.25f);
+                var hidden = Object.FindObjectsByType<WorldMapUI>(FindObjectsInactive.Include, FindObjectsSortMode.None);
+                Assert.NotNull(map, $"Map on the island (inactive maps: {string.Join(", ", hidden.Select(h => h.gameObject.scene.name + "/" + h.name + " active=" + h.gameObject.activeInHierarchy))})");
                 Loc.Set(GameLanguage.English);
                 map.SetVisible(true);
                 yield return new WaitForSecondsRealtime(0.5f);
                 AssertDecor(city: false);
-                Assert.NotNull(Named("District_Sea"), "Sea name");
+                var seaAny = Object.FindObjectsByType<RectTransform>(FindObjectsInactive.Include, FindObjectsSortMode.None).FirstOrDefault(r => r.name == "District_Sea");
+                var districts = Object.FindObjectsByType<RectTransform>(FindObjectsInactive.Include, FindObjectsSortMode.None).Where(r => r.name.StartsWith("District_") || r.name.StartsWith("Place_")).Select(r => r.name + (r.gameObject.activeInHierarchy ? "" : "(off)")).Take(12);
+                Assert.NotNull(Named("District_Sea"), $"Sea name (exists: {seaAny != null}, active scene {SceneManager.GetActiveScene().name}; {string.Join(", ", districts)})");
                 Assert.AreEqual("Gulf of Thailand", Named("District_Sea").GetComponent<TMP_Text>().text);
                 Assert.IsTrue(Named("ScaleBar").GetComponentInChildren<TMP_Text>().text.Contains("km"), "Island scale is in km");
                 Assert.GreaterOrEqual(Named("Legend").GetComponentsInChildren<TMP_Text>().Length, 8, "Island legend has many categories");

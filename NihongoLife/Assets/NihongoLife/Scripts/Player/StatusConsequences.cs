@@ -119,7 +119,7 @@ namespace NihongoLife.Player
         private static IEnumerator WakeInClinic(System.Action<bool> done)
         {
             const string clinic = WorldLocationCatalog.ClinicScene;
-            if (!GameServices.TryGet(out SceneFlowController flow) || flow.IsLoading || !Application.CanStreamedLevelBeLoaded(clinic)) { done(false); yield break; }
+            if (!GameServices.TryGet(out SceneFlowController flow) || flow.IsLoading || !SceneContentLoader.CanLoad(clinic)) { done(false); yield break; }
             string name = WorldLocationCatalog.Get(clinic).DisplayName;
             if (string.IsNullOrEmpty(flow.ActiveZone)) flow.EnterZone(clinic, WorldLocationCatalog.ClinicBed, name);
             else flow.TransferZone(clinic, WorldLocationCatalog.ClinicBed, name);

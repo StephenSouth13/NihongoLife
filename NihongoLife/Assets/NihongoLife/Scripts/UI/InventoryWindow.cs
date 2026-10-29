@@ -132,6 +132,13 @@ namespace NihongoLife.UI
             if (inventory == null || status == null || _selected >= inventory.Items.Count) return;
             var entry = inventory.Items[_selected];
             if (entry.useType == ItemUseType.None) return;
+            if (entry.useType == ItemUseType.Instrument)
+            {
+                // The guitar is kept: using it starts a street performance (the bag closes so the player is seen).
+                _root.gameObject.SetActive(false);
+                NihongoLife.Music.MusicShop.Busk();
+                return;
+            }
             string id = entry.itemId;
             float food = entry.foodRestore, drink = entry.drinkRestore, energy = entry.energyRestore;
             var type = entry.useType;
@@ -177,9 +184,11 @@ namespace NihongoLife.UI
             if (entry.drinkRestore > 0) effects.Add(NihongoLife.Core.Loc.T("Nước", "Drink", "水分") + $" +{entry.drinkRestore:0}");
             if (entry.energyRestore > 0) effects.Add(NihongoLife.Core.Loc.T("Thể lực", "Stamina", "元気") + $" +{entry.energyRestore:0}");
             _detailEffect.text = effects.Count > 0 ? string.Join("  ·  ", effects) : NihongoLife.Core.Loc.T("Không dùng được — giữ trong balo.", "Can't be used — keep it in your bag.", "使えません。かばんに入れておきましょう。");
+            if (entry.useType == ItemUseType.Instrument)
+                _detailEffect.text = NihongoLife.Core.Loc.T("Đàn của bạn, đeo sau lưng. Ra khu phố rồi bấm Đàn (E) để biểu diễn đường phố — người qua đường cho tiền.", "Your own guitar, worn on your back. In the town press Play (E) to busk — passers-by give tips.", "じぶんの ギター。まちで「ひく（E）」を おすと ストリートライブ。");
             var medicine = entry.useType == ItemUseType.Medicine ? NihongoLife.Health.PlayerIllness.Catalog.Medicine(entry.itemId) : null;
             if (medicine != null) _detailEffect.text = medicine.Use;
-            _useLabel.text = entry.useType == ItemUseType.Medicine ? NihongoLife.Core.Loc.T("Dùng (E)", "Use (E)", "つかう（E）") : entry.useType == ItemUseType.Drink ? NihongoLife.Core.Loc.T("Uống (E)", "Drink (E)", "のむ（E）") : NihongoLife.Core.Loc.T("Ăn (E)", "Eat (E)", "たべる（E）");
+            _useLabel.text = entry.useType == ItemUseType.Instrument ? NihongoLife.Core.Loc.T("Đàn (E)", "Play (E)", "ひく（E）") : entry.useType == ItemUseType.Medicine ? NihongoLife.Core.Loc.T("Dùng (E)", "Use (E)", "つかう（E）") : entry.useType == ItemUseType.Drink ? NihongoLife.Core.Loc.T("Uống (E)", "Drink (E)", "のむ（E）") : NihongoLife.Core.Loc.T("Ăn (E)", "Eat (E)", "たべる（E）");
         }
 
         private void RefreshBars()

@@ -40498,6 +40498,7 @@ Transform:
   - {fileID: 1972691431}
   - {fileID: 1520536159}
   - {fileID: 144836757}
+  - {fileID: 2047437849}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1980838437
@@ -41972,6 +41973,121 @@ MeshRenderer:
   m_SortingOrder: 0
   m_MaskInteraction: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!1 &2047437848
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2047437849}
+  - component: {fileID: 2047437850}
+  m_Layer: 0
+  m_Name: ArcadeCrowd
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2047437849
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2047437848}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 300, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1979440657}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2047437850
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2047437848}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a2a4cbd0eb04b824188ddc7a49f0a5b3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: NihongoLife::NihongoLife.World.ArcadeCrowd
+  regulars:
+  - id: claw1
+    model: kid_hina
+    position: {x: 8.95, y: 0, z: -4.6}
+    yaw: 90
+    activity: arcade_play
+    hair: natural
+    age: 15
+  - id: claw1_friend
+    model: kid_sota
+    position: {x: 8.65, y: 0, z: -3.75}
+    yaw: 120
+    activity: 
+    hair: black
+    age: 15
+  - id: claw3
+    model: kid_riku
+    position: {x: 8.95, y: 0, z: 0.2}
+    yaw: 90
+    activity: arcade_play
+    hair: chestnut
+    age: 17
+  - id: pinball
+    model: kid_yuto
+    position: {x: 8.85, y: 0, z: 7.4}
+    yaw: 90
+    activity: arcade_play
+    hair: dark_brown
+    age: 19
+  - id: medal
+    model: kid_sakura
+    position: {x: 7.6, y: 0, z: 4.15}
+    yaw: 0
+    activity: arcade_play
+    hair: auburn
+    age: 22
+  - id: dance_fan
+    model: kid_mio
+    position: {x: -5.2, y: 0, z: 5.4}
+    yaw: -35
+    activity: 
+    hair: pink
+    age: 16
+  - id: vending_a
+    model: kid_yui
+    position: {x: -8, y: 0, z: -6.4}
+    yaw: 40
+    activity: drink_cup
+    hair: natural
+    age: 18
+  - id: vending_b
+    model: kid_haruto
+    position: {x: -7.2, y: 0, z: -5.8}
+    yaw: -140
+    activity: 
+    hair: ash
+    age: 18
+  - id: prize_queue
+    model: kid_riku
+    position: {x: 5.9, y: 0, z: -5.3}
+    yaw: 130
+    activity: 
+    hair: blonde
+    age: 13
+  - id: featured_look
+    model: kid_hina
+    position: {x: -1.8, y: 0, z: 3.6}
+    yaw: 195
+    activity: 
+    hair: black
+    age: 14
 --- !u!1 &2054178502
 GameObject:
   m_ObjectHideFlags: 0

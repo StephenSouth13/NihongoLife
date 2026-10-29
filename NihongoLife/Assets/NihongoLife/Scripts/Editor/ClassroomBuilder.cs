@@ -131,8 +131,12 @@ namespace NihongoLife.EditorTools
             return lights;
         }
 
+        /// <summary>Seat (bench) and desk top of each student chair-table, measured from its mesh.</summary>
+        private static readonly Dictionary<int, (Vector3 seat, Vector3 deskCentre, Vector3 deskSize, float facing)> Seats = new Dictionary<int, (Vector3, Vector3, Vector3, float)>();
+
         private static void BuildFurniture(Transform room)
         {
+            Seats.Clear();
             var furniture = Group(room, "Furniture");
             // Student desks: 3 rows × 4, facing the board (+Z), centre aisle at x = 0.
             float[] xs = { -4.6f, -2.2f, 2.2f, 4.6f };
@@ -140,9 +144,13 @@ namespace NihongoLife.EditorTools
             int n = 0;
             foreach (float z in zs)
                 foreach (float x in xs)
-                    Styloo(furniture, "chairtable", $"StudentDesk_{n++}", O + new Vector3(x, 0f, z), 180f, 1.0f, true);
+                {
+                    // Yaw 0: the bench (with its backrest) is behind the desk, so a student on it faces the desk and the board.
+                    // At 180° the bench was on the board side. 0.85 m tall: a kid sits with the body above the desk top.
+                    var unit = Styloo(furniture, "chairtable", $"StudentDesk_{n}", O + new Vector3(x, 0f, z), 0f, 0.85f, true);
+                    Seats[n++] = MeasureSeat(unit.transform);
+                }
             Styloo(furniture, "desk", "TeacherDesk", O + new Vector3(1.6f, 0f, 4.4f), 180f, 0.82f, true);
-            Styloo(furniture, "lamp", "TeacherLamp", O + new Vector3(2.3f, 0.82f, 4.5f), 180f, 0.45f, false);
             Styloo(furniture, "book", "TeacherBooks", O + new Vector3(1.1f, 0.82f, 4.4f), 160f, 0.12f, false);
             for (int i = 0; i < 4; i++) Styloo(furniture, "locker", $"Locker_{i}", O + new Vector3(-4.2f + i * 1.0f, 0f, -HalfZ + 0.45f), 0f, 1.9f, true);
             Styloo(furniture, "shelf", "Shelf_E", O + new Vector3(HalfX - 0.45f, 0f, -2.6f), -90f, 1.8f, true);
@@ -184,7 +192,8 @@ namespace NihongoLife.EditorTools
                     if (prefab == null) continue;
                     var student = new GameObject($"Student_{desk}_{id}");
                     student.transform.SetParent(students, false);
-                    student.transform.SetPositionAndRotation(O + new Vector3(x, 0.02f, z + ChairOffset), Quaternion.identity); // facing the board (+Z)
+                    var seat = Seats[desk];
+                    student.transform.SetPositionAndRotation(seat.seat + Vector3.up * 0.02f, Quaternion.Euler(0f, seat.facing, 0f)); // on the bench, facing the desk and the board
                     var visual = (GameObject)PrefabUtility.InstantiatePrefab(prefab);
                     visual.name = "Visual";
                     visual.transform.SetParent(student.transform, false);
@@ -195,14 +204,86 @@ namespace NihongoLife.EditorTools
                 }
         }
 
-        /// <summary>The chair of a Styloo chair-table sits behind the desk's centre (−Z, towards the back of the room).</summary>
-        private const float ChairOffset = -0.42f;
+        /// <summary>
+        /// Where to sit at a Styloo chair-table, read from its mesh (an offset guessed once put every student inside the
+        /// desk: only the heads showed above the desk tops). Along the unit's depth through its middle, the highest
+        /// surface of each 4 cm slice: 0.3–0.6 m is the bench, 0.6–0.95 m the desk top. The student sits on the bench
+        /// centre facing the desk; an empty "DeskTopArea" marker (position = desk top centre, scale = its size) lets the
+        /// play-mode test check that nobody sits inside a desk.
+        /// </summary>
+        private static (Vector3 seat, Vector3 deskCentre, Vector3 deskSize, float facing) MeasureSeat(Transform unit)
+        {
+            // Points over every triangle's surface (a low-poly model has too few vertices to profile).
+            var points = new List<Vector3>();
+            foreach (var mf in unit.GetComponentsInChildren<MeshFilter>(true))
+            {
+                var mesh = mf.sharedMesh;
+                if (mesh == null) continue;
+                var v = mesh.vertices.Select(x => unit.InverseTransformPoint(mf.transform.TransformPoint(x))).ToArray();
+                var tris = mesh.triangles;
+                for (int t = 0; t + 2 < tris.Length; t += 3)
+                {
+                    Vector3 a = v[tris[t]], b = v[tris[t + 1]], c = v[tris[t + 2]];
+                    int n = Mathf.Clamp(Mathf.CeilToInt(Mathf.Max((b - a).magnitude, (c - a).magnitude, (c - b).magnitude) / 0.02f), 1, 120);
+                    for (int i = 0; i <= n; i++)
+                        for (int j = 0; i + j <= n; j++)
+                            points.Add(a + (b - a) * (i / (float)n) + (c - a) * (j / (float)n));
+                }
+            }
+            if (points.Count == 0) throw new InvalidOperationException(unit.name + " has no mesh to measure");
+            float minX = points.Min(p => p.x), maxX = points.Max(p => p.x), midX = (minX + maxX) * 0.5f, band = (maxX - minX) * 0.2f;
+            float minZ = points.Min(p => p.z), maxZ = points.Max(p => p.z);
+            const float Step = 0.04f;
+            int slices = Mathf.CeilToInt((maxZ - minZ) / Step) + 1;
+            var top = new float[slices];
+            for (int i = 0; i < slices; i++) top[i] = float.NegativeInfinity;
+            foreach (var p in points)
+            {
+                if (Mathf.Abs(p.x - midX) > band) continue;
+                int i = Mathf.Clamp(Mathf.FloorToInt((p.z - minZ) / Step), 0, slices - 1);
+                if (p.y > top[i]) top[i] = p.y;
+            }
+            (float from, float to) Range(float low, float high)
+            {
+                // The longest run of slices whose top lies in [low, high].
+                int best = 0, bestStart = -1, run = 0;
+                for (int i = 0; i < slices; i++)
+                {
+                    if (top[i] >= low && top[i] <= high) { run++; if (run > best) { best = run; bestStart = i - run + 1; } }
+                    else run = 0;
+                }
+                if (bestStart < 0) throw new InvalidOperationException($"{unit.name}: no surface between {low} and {high} m");
+                return (minZ + bestStart * Step, minZ + (bestStart + best) * Step);
+            }
+            var bench = Range(0.3f, 0.6f);
+            var desk = Range(0.6f, 1.05f);
+            float benchZ = (bench.from + bench.to) * 0.5f, deskZ = (desk.from + desk.to) * 0.5f;
+            float deskTop = Enumerable.Range(0, slices).Where(i => minZ + i * Step >= desk.from && minZ + i * Step < desk.to).Max(i => top[i]);
+            Vector3 seat = unit.TransformPoint(new Vector3(midX, 0f, benchZ));
+            Vector3 deskCentre = unit.TransformPoint(new Vector3(midX, deskTop, deskZ));
+            Vector3 toDesk = deskCentre - seat; toDesk.y = 0f;
+            float facing = Quaternion.LookRotation(toDesk.normalized).eulerAngles.y;
+            var marker = new GameObject("DeskTopArea").transform;
+            marker.SetParent(unit, false);
+            marker.position = deskCentre;
+            marker.rotation = Quaternion.Euler(0f, facing, 0f);
+            marker.localScale = new Vector3(maxX - minX, 0.05f, desk.to - desk.from);
+            Debug.Log($"[ClassroomBuilder] {unit.name}: bench z {bench.from:0.00}–{bench.to:0.00}, desk z {desk.from:0.00}–{desk.to:0.00} (top {deskTop:0.00} m), facing {facing:0}°");
+            return (new Vector3(seat.x, 0f, seat.z), deskCentre, marker.localScale, facing);
+        }
 
         private static TextMeshPro BuildBoard(Transform room)
         {
             var board = Group(room, "Chalkboard");
-            Styloo(board, "blackboardbig", "BoardModel", O + new Vector3(0f, 0.9f, HalfZ - 0.2f), 180f, 1.5f, false, fitWidth: 5.4f);
+            // The green surface in a wooden frame with a chalk tray. (The Styloo "blackboardbig" model rendered as a white
+            // panel standing in front of the board — it hid the lesson, so it is not used.)
             Block(board, "BoardSurface", O + new Vector3(0f, 2.05f, HalfZ - 0.16f), new Vector3(5.2f, 1.45f, 0.03f), _board, false);
+            Block(board, "BoardFrame_Top", O + new Vector3(0f, 2.81f, HalfZ - 0.15f), new Vector3(5.4f, 0.08f, 0.06f), _woodDark, false);
+            Block(board, "BoardFrame_Bottom", O + new Vector3(0f, 1.29f, HalfZ - 0.15f), new Vector3(5.4f, 0.08f, 0.06f), _woodDark, false);
+            Block(board, "BoardFrame_Left", O + new Vector3(-2.66f, 2.05f, HalfZ - 0.15f), new Vector3(0.08f, 1.6f, 0.06f), _woodDark, false);
+            Block(board, "BoardFrame_Right", O + new Vector3(2.66f, 2.05f, HalfZ - 0.15f), new Vector3(0.08f, 1.6f, 0.06f), _woodDark, false);
+            Block(board, "ChalkTray", O + new Vector3(0f, 1.25f, HalfZ - 0.24f), new Vector3(5.2f, 0.04f, 0.14f), _woodDark, false);
+            Block(board, "Chalk_White", O + new Vector3(-1.4f, 1.285f, HalfZ - 0.24f), new Vector3(0.12f, 0.025f, 0.025f), _wall, false);
             Text(board, "Lesson", "きょうの べんきょう\n<size=75%>じこしょうかい · はじめまして · 〜から きました</size>", O + new Vector3(-0.9f, 2.3f, HalfZ - 0.19f), 0f, 0.16f, new Color(0.95f, 0.97f, 0.92f), 3.2f, TextAlignmentOptions.Left);
             Text(board, "Date", "10月8日 (木)\n<size=70%>にっちょく · Kim</size>", O + new Vector3(2.0f, 2.45f, HalfZ - 0.19f), 0f, 0.11f, new Color(1f, 0.95f, 0.75f), 1.4f);
             var score = Text(board, "BestScore", "もぎしけん", O + new Vector3(1.6f, 1.65f, HalfZ - 0.19f), 0f, 0.12f, new Color(1f, 0.85f, 0.45f), 2.0f);
@@ -214,8 +295,8 @@ namespace NihongoLife.EditorTools
         {
             var desk = Group(room, "ExamDesk");
             Vector3 p = O + new Vector3(-3.4f, 0f, 4.2f);
-            Styloo(desk, "chairtable", "ExamDeskModel", p, 180f, 1.0f, true);
-            Styloo(desk, "pencilcase", "ExamPencils", p + new Vector3(0.1f, 0.78f, 0.15f), 180f, 0.08f, false);
+            Styloo(desk, "chairtable", "ExamDeskModel", p, 0f, 0.85f, true);
+            Styloo(desk, "pencilcase", "ExamPencils", p + new Vector3(0.1f, 0.86f, 0.35f), 180f, 0.08f, false);
             Block(desk, "ExamMat", p + new Vector3(0f, 0.01f, -0.2f), new Vector3(1.6f, 0.01f, 1.8f), _deskMark, false);
             Text(desk, "ExamSign", "しけん  <size=70%>Làm bài thi · F</size>", p + new Vector3(0f, 1.75f, 0f), 0f, 0.16f, new Color(1f, 0.8f, 0.35f), 2.4f);
             var trigger = Trigger(desk, "ExamDeskInteraction", p + new Vector3(0f, 1f, -0.7f), new Vector3(1.6f, 2f, 1.4f));

@@ -209,6 +209,7 @@ namespace NihongoLife.Editor
             try
             {
                 WebGLZoneBundleBuilder.Publish(report.summary.outputPath);
+                WriteWebConfig(report.summary.outputPath);
                 WriteSizeReport(report);
             }
             finally
@@ -220,6 +221,49 @@ namespace NihongoLife.Editor
                 }
                 if (File.Exists(SceneBackup)) File.Delete(SceneBackup);
             }
+        }
+
+        /// <summary>
+        /// nl-config.js beside index.html: the public online settings (Supabase URL + anon key, Agora App ID) from
+        /// LocalSecrets/secrets.json or the environment. A browser cannot read that file, and without these the web build
+        /// says "server not configured" and every online button is dead. Build output is gitignored; the Gemini key and
+        /// any service key are never written.
+        /// </summary>
+        internal static void WriteWebConfig(string outputPath)
+        {
+            string root = Directory.Exists(outputPath) ? outputPath : Path.GetDirectoryName(outputPath);
+            if (string.IsNullOrEmpty(root)) return;
+            var fields = new List<string>();
+            foreach (string key in NihongoLife.Core.LocalSecrets.PublicWebKeys)
+            {
+                string value = NihongoLife.Core.LocalSecrets.Resolve(key, null);
+                if (string.IsNullOrWhiteSpace(value)) continue;
+                if (IsSecretKey(value))
+                    throw new BuildFailedException(key + " holds a secret key; the web build only takes the public anon key.");
+                fields.Add("\"" + key + "\": \"" + value.Replace("\\", "\\\\").Replace("\"", "\\\"") + "\"");
+            }
+            string body = fields.Count == 0 ? "null" : "{ " + string.Join(", ", fields) + " }";
+            File.WriteAllText(Path.Combine(root, "nl-config.js"),
+                "// Written by the WebGL build (WebGLZoneBundleBuilder.WriteWebConfig). Public client settings only.\n" +
+                "window.NIHONGOLIFE_CONFIG = " + body + ";\n", new System.Text.UTF8Encoding(false));
+            if (fields.Count < 2)
+                Debug.LogWarning("[WebGL] nl-config.js has no Supabase URL / anon key: the web build stays offline. Fill LocalSecrets/secrets.json.");
+            else Debug.Log("[WebGL] nl-config.js written (" + fields.Count + " public settings).");
+        }
+
+        /// <summary>A new-style secret key, or a legacy JWT whose payload says role service_role.</summary>
+        internal static bool IsSecretKey(string value)
+        {
+            if (value.StartsWith("sb_secret_", StringComparison.Ordinal)) return true;
+            string[] parts = value.Split('.');
+            if (parts.Length != 3) return false;
+            try
+            {
+                string payload = parts[1].Replace('-', '+').Replace('_', '/');
+                payload = payload.PadRight(payload.Length + (4 - payload.Length % 4) % 4, '=');
+                return Encoding.UTF8.GetString(Convert.FromBase64String(payload)).Contains("service_role");
+            }
+            catch (FormatException) { return false; }
         }
 
         static void WriteBackup(EditorBuildSettingsScene[] scenes)

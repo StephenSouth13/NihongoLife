@@ -308,7 +308,7 @@ namespace NihongoLife.Core
 
         private static bool CanLoad(string sceneName)
         {
-            if (!string.IsNullOrWhiteSpace(sceneName) && Application.CanStreamedLevelBeLoaded(sceneName)) return true;
+            if (SceneContentLoader.CanLoad(sceneName)) return true;
             Debug.LogError($"[SceneFlowController] Scene '{sceneName}' is not available in build settings.");
             return false;
         }

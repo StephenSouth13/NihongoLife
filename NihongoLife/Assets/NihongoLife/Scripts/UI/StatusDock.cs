@@ -147,23 +147,51 @@ namespace NihongoLife.UI
             BuildStatusWidget(dock);
             BuildObjectiveChip(dock);
 
-            // Touch layouts have no keyboard: keep the action bar there only.
-            if (HudCanvasFitter.IsTouchLayout(false))
-            {
-                var bar = NLUi.Group(dock, "ActionBar", false, 8f, TextAnchor.MiddleRight, false);
-                NLUi.Anchor(bar, new Vector2(1f, 0f), new Vector2(-24f, 190f), new Vector2(buttons.Count * 112f, 64f));
-                bar.pivot = new Vector2(1f, 0f);
-                ((HorizontalLayoutGroup)bar.GetComponent<HorizontalOrVerticalLayoutGroup>()).childForceExpandWidth = false;
-                foreach (var (name, _, label, action) in buttons)
-                {
-                    var button = NLUi.Button(bar, name, label, _font, () => action?.Invoke(), NLUi.Ink, 16f, NLUi.Text, 62f);
-                    string buttonName = name, fallback = label;
-                    LocText.Set(button.GetComponentInChildren<TextMeshProUGUI>(), () => DockLabel(buttonName, fallback));
-                    NLUi.Size(button, 104f, 62f);
-                }
-            }
+            // Touch layouts have no keyboard: the shortcuts live in a drawer behind "Tools" at the top centre, so on a
+            // phone held sideways they never cover the middle of the screen (a 10-button row ran across it).
+            if (HudCanvasFitter.IsTouchLayout(false)) BuildTouchDrawer(dock, buttons);
 
             BuildCharacterWindow(root, closeCharacter);
+        }
+
+        /// <summary>The touch drawer of shortcuts (bag, character, map, tasks, exams …), closed until "Tools" is tapped.</summary>
+        public RectTransform TouchDrawer { get; private set; }
+
+        private void BuildTouchDrawer(RectTransform dock, IReadOnlyList<(string name, string key, string label, Action action)> buttons)
+        {
+            var toggle = NLUi.Button(dock, "ActionDrawerToggle", "", _font, () => SetTouchDrawer(!TouchDrawer.gameObject.activeSelf), NLUi.Ink, 18f, NLUi.Gold, 56f);
+            LocText.Set(toggle.GetComponentInChildren<TextMeshProUGUI>(), () => NihongoLife.Core.Loc.T("Công cụ", "Tools", "ツール"));
+            var toggleRect = (RectTransform)toggle.transform;
+            NLUi.Anchor(toggleRect, new Vector2(0.5f, 1f), new Vector2(0f, -14f), new Vector2(150f, 56f));
+            toggleRect.pivot = new Vector2(0.5f, 1f);
+
+            var drawer = NLUi.Panel(dock, "ActionBar", new Color(0.04f, 0.05f, 0.07f, 0.94f), new RectOffset(12, 12, 12, 12), 8f);
+            NLUi.Anchor(drawer, new Vector2(0.5f, 1f), new Vector2(0f, -78f), new Vector2(5 * 116f + 24f, 0f));
+            drawer.pivot = new Vector2(0.5f, 1f);
+            NLUi.FitContent(drawer, width: false, height: true);
+            RectTransform row = null;
+            for (int i = 0; i < buttons.Count; i++)
+            {
+                if (i % 5 == 0)
+                {
+                    row = NLUi.Group(drawer, "Row" + i / 5, false, 8f, TextAnchor.MiddleCenter, false);
+                    ((HorizontalLayoutGroup)row.GetComponent<HorizontalOrVerticalLayoutGroup>()).childForceExpandWidth = false;
+                    NLUi.Size(row, -1f, 58f);
+                }
+                var (name, _, label, action) = buttons[i];
+                var button = NLUi.Button(row, name, label, _font, () => { SetTouchDrawer(false); action?.Invoke(); }, new Color(0.14f, 0.17f, 0.22f), 16f, NLUi.Text, 58f);
+                string buttonName = name, fallback = label;
+                LocText.Set(button.GetComponentInChildren<TextMeshProUGUI>(), () => DockLabel(buttonName, fallback));
+                NLUi.Size(button, 108f, 58f);
+            }
+            TouchDrawer = drawer;
+            drawer.SetAsLastSibling(); // over the chips that hang under the button
+            SetTouchDrawer(false);
+        }
+
+        public void SetTouchDrawer(bool open)
+        {
+            if (TouchDrawer != null) TouchDrawer.gameObject.SetActive(open);
         }
 
         // ─────────── Compact status widget ───────────
@@ -174,6 +202,7 @@ namespace NihongoLife.UI
             var widget = NLUi.Panel(dock, "StatusWidget", new Color(0.04f, 0.05f, 0.07f, 0.9f), new RectOffset(14, 20, 14, 14), 18f, vertical: false);
             NLUi.Anchor(widget, Vector2.zero, new Vector2(24f, 24f), new Vector2(0f, 0f));
             widget.pivot = Vector2.zero;
+            if (HudCanvasFitter.IsTouchLayout(false)) widget.localScale = Vector3.one * 0.8f; // a phone held sideways: room for the joystick
             var widgetLayout = (HorizontalLayoutGroup)widget.GetComponent<HorizontalOrVerticalLayoutGroup>();
             widgetLayout.childForceExpandWidth = false;
             widgetLayout.childAlignment = TextAnchor.MiddleLeft;
@@ -486,6 +515,26 @@ namespace NihongoLife.UI
 
         public float DangerVignetteAlpha => _vignetteRaw != null ? _vignetteRaw.color.a : 0f;
 
+        /// <summary>
+        /// The need warning and the weather chip stack above the status card on a desktop. On a touch screen that is where
+        /// the joystick is (the chip covered it and swallowed the thumb), so there they hang under the top centre "Tools"
+        /// button instead. Neither ever takes a touch or a click.
+        /// </summary>
+        private void PlaceChip(RectTransform chip, float stacked)
+        {
+            if (chip == null) return;
+            foreach (var graphic in chip.GetComponentsInChildren<Graphic>(true)) graphic.raycastTarget = false;
+            if (HudCanvasFitter.IsTouchLayout(false))
+            {
+                chip.anchorMin = chip.anchorMax = chip.pivot = new Vector2(0.5f, 1f);
+                chip.anchoredPosition = new Vector2(0f, -80f - stacked);
+                return;
+            }
+            chip.anchorMin = chip.anchorMax = chip.pivot = Vector2.zero;
+            float card = StatusWidget != null ? StatusWidget.rect.height * StatusWidget.localScale.y : 160f;
+            chip.anchoredPosition = new Vector2(24f, 24f + card + 10f + stacked);
+        }
+
         private void UpdateWeatherChip(PlayerStatus status, bool hide)
         {
             if (_weatherChip == null)
@@ -508,8 +557,7 @@ namespace NihongoLife.UI
             if (!show) return;
             _weatherText.text = text;
             _weatherChip.GetComponent<Image>().color = illness != null ? Color.Lerp(illness.Tint, Color.black, 0.45f) : new Color(0.12f, 0.2f, 0.32f, 0.92f);
-            float y = 24f + (StatusWidget != null ? StatusWidget.rect.height : 160f) + 10f + (_warning.gameObject.activeSelf ? _warning.rect.height + 8f : 0f);
-            _weatherChip.anchoredPosition = new Vector2(24f, y);
+            PlaceChip(_weatherChip, _warning.gameObject.activeSelf ? _warning.rect.height + 8f : 0f);
         }
 
         // ─────────── Character window (Tab) ───────────
@@ -599,7 +647,7 @@ namespace NihongoLife.UI
             if (status.IsExhausted && critical == null) critical = "exhausted";
             CriticalNeed = critical;
             _warning.gameObject.SetActive(critical != null && !hide);
-            if (StatusWidget != null) _warning.anchoredPosition = new Vector2(24f, 24f + StatusWidget.rect.height + 10f);
+            PlaceChip(_warning, 0f);
             if (critical != null)
             {
                 bool zero = criticalValue <= 0.001f;

@@ -30,6 +30,8 @@ namespace NihongoLife.MiniGames
         protected virtual bool UsesContentSets => true;
         protected virtual bool SetFits(KanaPairSet set) => set != null && set.pairs.Count >= 4 && set.AvailableInCurrentLanguage;
         protected virtual Color Accent => UiTheme.Gold;
+        /// <summary>The big word over the board when the round ends (a match game says who won).</summary>
+        protected virtual string OverText => Lives <= 0 ? "ゲームオーバー" : "タイムアップ！";
         protected abstract void BuildStage(RectTransform stage);
         protected virtual void OnRoundStart() { }
         protected virtual void OnTick(float dt) { }
@@ -276,7 +278,7 @@ namespace NihongoLife.MiniGames
         }
 
         /// <summary>A wrong answer or a target that got away: breaks the combo, may cost a life (game over at 0).</summary>
-        protected void Miss(string expectedId, string chosenId, string note, RectTransform at, bool costsLife = true)
+        protected void Miss(string expectedId, string chosenId, string note, RectTransform at, bool costsLife = true, string popText = "ちがう！")
         {
             if (State != Phase.Playing) return;
             WrongCount++;
@@ -286,7 +288,7 @@ namespace NihongoLife.MiniGames
             if (!string.IsNullOrEmpty(expectedId)) _missed.Add(expectedId);
             if (!string.IsNullOrEmpty(note)) _mistakes.Add(new MiniGameMistake { expectedTargetId = expectedId, chosenTargetId = chosenId, note = note });
             Cue(GameAudioCue.UiError);
-            Pop(at, "ちがう！", UiTheme.Bad);
+            Pop(at, popText, UiTheme.Bad);
             if (costsLife) Lives = Mathf.Max(0, Lives - 1);
             RefreshHud();
             if (costsLife && Lives <= 0) Finish(true);
@@ -317,7 +319,7 @@ namespace NihongoLife.MiniGames
 
         private IEnumerator FinishSoon(bool completed)
         {
-            var label = UiKit.Label(Root, "Over", Lives <= 0 ? "ゲームオーバー" : "タイムアップ！", 96f, Accent, FontStyles.Bold, TextAlignmentOptions.Center);
+            var label = UiKit.Label(Root, "Over", OverText, 96f, Accent, FontStyles.Bold, TextAlignmentOptions.Center);
             UiKit.Fill(label.rectTransform);
             yield return new WaitForSecondsRealtime(0.9f);
             Finished?.Invoke(BuildResult(completed));

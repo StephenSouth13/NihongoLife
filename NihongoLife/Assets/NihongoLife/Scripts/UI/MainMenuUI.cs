@@ -89,6 +89,7 @@ namespace NihongoLife.UI
             aboutPopup.Initialize(font);
             Wire(guideButton, () => guidePopup.Show());
             Wire(aboutButton, () => aboutPopup.Show());
+            BuildControlsSwitch();
 
             settingsUI = gameObject.AddComponent<SettingsUI>();
             settingsUI.Initialize(font);
@@ -129,6 +130,7 @@ namespace NihongoLife.UI
             Loc.Watch(this, () => { Translate(); DisplayProfileStats(); RefreshModeStatus(); });
             MenuButtonFeel.Dress(transform);
             StartCoroutine(PlayEntrance());
+            StartCoroutine(KeepStoryCardClear());
         }
 
         private IEnumerator PlayEntrance()
@@ -232,6 +234,7 @@ namespace NihongoLife.UI
             Label(settingsButton, "Cài đặt", "Settings", "設定");
             Label(quitButton, "Thoát", "Quit", "終了");
             Label(aboutButton, "Về chúng tôi", "About us", "私たちについて");
+            if (controlsButton != null) Label(controlsButton, TouchControlPrefs.ModeVi(), TouchControlPrefs.ModeEn(), TouchControlPrefs.ModeJa());
             bool signedIn = GameServices.TryGet(out IAuthService auth) && auth.IsAuthenticated;
             if (signedIn) Label(loginButton, "Tài khoản", "Account", "アカウント");
             else Label(loginButton, "Đăng nhập", "Sign in", "ログイン");
@@ -241,6 +244,39 @@ namespace NihongoLife.UI
             SetSelected(japaneseButton, Loc.IsJapanese);
             SetSelected(russianButton, Loc.IsRussian);
             if (characterSelectPanel != null) TranslateCharacterSelect();
+        }
+
+        private Button controlsButton;
+
+        /// <summary>
+        /// A phone player (or anyone) switches the on-screen joystick and buttons right from the menu: Auto (shown on touch
+        /// screens) → On → Off. Same setting as Settings › touch controls; a copy of the "About us" pill, left of it.
+        /// </summary>
+        private void BuildControlsSwitch()
+        {
+            if (aboutButton == null || controlsButton != null) return;
+            var about = (RectTransform)aboutButton.transform;
+            var copy = Instantiate(aboutButton.gameObject, about.parent);
+            copy.name = "ControlsButton";
+            controlsButton = copy.GetComponent<Button>();
+            controlsButton.onClick = new Button.ButtonClickedEvent();
+            controlsButton.onClick.AddListener(() => { TouchControlPrefs.CycleMode(); Translate(); });
+            foreach (var text in copy.GetComponentsInChildren<TextMeshProUGUI>(true))
+                if (text.name.IndexOf("Icon", System.StringComparison.OrdinalIgnoreCase) >= 0) text.text = "smartphone";
+            var rect = (RectTransform)copy.transform;
+            float width = Mathf.Max(about.rect.width, 250f);
+            if (about.parent.GetComponent<LayoutGroup>() != null)
+            {
+                copy.transform.SetSiblingIndex(about.GetSiblingIndex());
+                var element = copy.GetComponent<LayoutElement>().OrNull() ?? copy.AddComponent<LayoutElement>();
+                element.preferredWidth = width;
+            }
+            else
+            {
+                rect.sizeDelta = new Vector2(width, about.sizeDelta.y);
+                float left = about.anchoredPosition.x - about.pivot.x * about.rect.width;
+                rect.anchoredPosition = new Vector2(left - 12f - (1f - rect.pivot.x) * width, about.anchoredPosition.y);
+            }
         }
 
         private static void Label(Button button, string vi, string en, string ja)
@@ -258,6 +294,32 @@ namespace NihongoLife.UI
             var hover = button.GetComponent<UiHover>();
             if (hover != null) hover.SetBase(bg); else if (button.targetGraphic is Image image) image.color = bg;
             foreach (var t in button.GetComponentsInChildren<TextMeshProUGUI>(true)) t.color = fg;
+        }
+
+        /// <summary>
+        /// On a short landscape screen (a phone) the story card ran into the top bar (controls, About, Sign in, languages):
+        /// it steps aside while it would overlap and comes back when there is room. Checked twice a second.
+        /// </summary>
+        private IEnumerator KeepStoryCardClear()
+        {
+            var card = transform.Find("StoryCard") as RectTransform;
+            if (card == null) yield break;
+            var wait = new WaitForSecondsRealtime(0.5f);
+            while (card != null)
+            {
+                bool clash = false;
+                foreach (var button in new[] { controlsButton, aboutButton, loginButton, vietnameseButton, englishButton, japaneseButton, russianButton })
+                    if (button != null && button.gameObject.activeInHierarchy && Overlaps(card, (RectTransform)button.transform)) { clash = true; break; }
+                if (card.gameObject.activeSelf == clash) card.gameObject.SetActive(!clash);
+                yield return wait;
+            }
+        }
+
+        private static bool Overlaps(RectTransform a, RectTransform b)
+        {
+            var ca = new Vector3[4]; var cb = new Vector3[4];
+            a.GetWorldCorners(ca); b.GetWorldCorners(cb);
+            return Rect.MinMaxRect(ca[0].x, ca[0].y, ca[2].x, ca[2].y).Overlaps(Rect.MinMaxRect(cb[0].x, cb[0].y, cb[2].x, cb[2].y));
         }
 
         /// <summary>The baked story card: chapter, next quest and how far the opening / the whole story is.</summary>

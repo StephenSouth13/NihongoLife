@@ -26,6 +26,17 @@ mergeInto(LibraryManager.library, {
     try { localStorage.setItem('nihongo.webgl.dprCap', String(cap)); } catch (e) {}
   },
 
+  // Public client settings (Supabase URL + anon key, Agora App ID) written next to index.html at build time as
+  // nl-config.js (window.NIHONGOLIFE_CONFIG). A browser cannot read LocalSecrets/secrets.json. Empty when absent.
+  NL_GetWebConfig: function () {
+    var text = '';
+    try { if (window.NIHONGOLIFE_CONFIG) text = JSON.stringify(window.NIHONGOLIFE_CONFIG); } catch (e) {}
+    var size = lengthBytesUTF8(text) + 1;
+    var buffer = _malloc(size);
+    stringToUTF8(text, buffer, size);
+    return buffer;
+  },
+
   NL_GetDprCap: function () {
     try {
       var parsed = parseFloat(localStorage.getItem('nihongo.webgl.dprCap'));

@@ -12,7 +12,9 @@ namespace NihongoLife.Player
         Food,
         Drink,
         /// <summary>Over-the-counter medicine or a mask (Resources/Health/illnesses.json "medicines").</summary>
-        Medicine
+        Medicine,
+        /// <summary>The player's own instrument (the guitar from the music shop): kept, used to play in the street.</summary>
+        Instrument
     }
 
     [Serializable]

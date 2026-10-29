@@ -1989,3 +1989,67 @@ Tên lớp test viết tắt: PlayMode = `NihongoLife.Tests.<Lớp>`; EditMode =
   - EditMode: MusicCatalogTests (thêm DjMix, tên tranh sạch), CareerCatalogTests (9 nghề).
   - PlayMode: MusicShopPlayModeTests, MusicStudioPlayModeTests; ZoneConsole và WebGLShaderRecording có thêm 55_MusicShop.
   - Ảnh chụp: `Bao_Cao/music-shop`.
+
+[29/10/2026 — Claude] Sửa loạt lỗi chủ dự án báo (bản web + trong game)
+
+- **Web, bấm "Chọn nhân vật này" không vào game:**
+  - `SceneFlowController.CanLoad` chỉ nhận scene có sẵn trong bản build.
+  - Trên web, mọi khu vực là gói `zones/` tải sau, nên lệnh vào game và mọi cửa đều bị chặn âm thầm.
+  - Nay dùng `SceneContentLoader.CanLoad`; phòng khám khi ngất cũng dùng hàm này.
+- **Web, nút trực tuyến báo «Máy chủ chưa được cấu hình»:**
+  - Trình duyệt không đọc được `LocalSecrets/secrets.json`.
+  - Mỗi lần build WebGL nay ghi `nl-config.js` cạnh index.html (`WebGLZoneBundleBuilder.WriteWebConfig`). File chỉ chứa giá trị công khai: Supabase URL, anon key, Agora App ID.
+  - Service key làm hỏng build. Gemini key không bao giờ được ghi.
+  - `LocalSecrets` đọc qua `NL_GetWebConfig` (jslib). Template đã thêm `<script src="nl-config.js">`.
+- **`TriggerRaycaster` (Devion) ném `InvalidOperationException`:** đã chuyển sang Input System.
+- **Bưng món:** đĩa trống lơ lửng ngang mặt nhân vật kid. Nay là cử chỉ `carry_tray`: khay có sushi và tách trà nằm giữa hai tay, giữ bởi `Gestures/CarryHold`. Hộp hàng dùng `carry_box`.
+- **Đàn guitar:**
+  - Đạo cụ neo theo hông (`hand: "H"`, mới), không còn ló sau đầu.
+  - Mua đàn ở quầy Hibiki: hỏi bằng tiếng Nhật, giá ¥4.800, lưu bằng cờ `own_guitar`.
+  - Đàn đeo sau lưng (`carry_guitar`, `Music/GuitarCarrier`) và nằm trong balo dạng `ItemUseType.Instrument`.
+  - Mở balo → "Đàn" ở khu phố để biểu diễn đường phố (`MusicShop.Busk`, `MusicStudioUI.OpenStreet`). Người trong bán kính 12 m cho tiền thưởng khi nhịp 80–125%.
+- **Game Center:** thêm khách (`World/ArcadeCrowd`, `GameCenterBuilder.AddArcadeCrowd`, cử chỉ `arcade_play`). Họ đứng ở máy gắp thú, pinball, máy đẩy xu, góc máy bán nước, quầy đổi quà, không đứng ở máy có trò của người chơi.
+- **Khúc côn cầu bàn:**
+  - Thành trận đấu: ai ghi 5 bàn trước thắng; lọt 3 bàn (3 tim) thua; hết giờ ai nhiều bàn hơn thắng, bằng nhau hòa.
+  - Có khung thành đỏ/xanh, bảng tỉ số trên bàn, màn kết thúc ghi かち / まけ / ひきわけ.
+- **Konbini:** khối tạp dề cứng (dựng theo số đo người lớn) và khối "BagStand" lơ lửng giữa hai quầy đã bị xóa (`CityTownBuilder.RepairClerkPrefabs`).
+- **Đảo Midori:** cửa tàu về Hibari có biển chỉ dẫn (`PortalBeacon.AttachAt`) và ô のりば màu xanh trên sân ga.
+- **Lớp học:**
+  - Bàn xoay sai 180°, ghế băng quay về phía bảng, học sinh ngồi trong mặt bàn. Nay vị trí ghế đo từ lưới mô hình (`ClassroomBuilder.MeasureSeat`), bàn cao 0,85 m.
+  - Bỏ mô hình bảng trắng che bảng đen (dựng khung gỗ + máng phấn thay thế).
+  - Bỏ đèn trần đặt trên bục giảng (trông như cái bàn lộn ngược).
+- **Tiệm nhạc:** nhãn giá đàn digital piano bị ngược chữ, đã quay lại hướng −90°.
+- **HUD:** thẻ thông báo không còn bị bóp thành cột hẹp (`HudFeed.FitWidth`, có mức tối thiểu theo số ký tự).
+- **Test:**
+  - Mới: `PlacesLookPlayModeTests` (Game Center, đảo, lớp học, konbini), `GuitarBuskingPlayModeTests`.
+  - Bổ sung: `LifeLoopPlayModeTests` (khay trong tay), `ArcadeMoreGamesPlayModeTests` (5 bàn là thắng).
+  - Ảnh chụp: `Bao_Cao/places-look`, `Bao_Cao/busking`, `Bao_Cao/job-carry`.
+
+[29/10/2026 — Claude] Đợt 2: cây đàn, mọi nhân vật, online, điện thoại
+
+- **Cây đàn guitar trông "vỡ vụn":**
+  - Cần đàn nghiêng xuống trái, đầu đàn lại đặt lệch lên trên.
+  - Nay `Tools/music/guitar_props.py` sinh cả hai đạo cụ dọc một trục cần đàn: thân hai bầu, viền, lỗ thoát âm, ngựa, cần, đầu đàn, chốt, 4 dây.
+- **Mọi nhân vật vào chơi được:** test mới `AllCharactersPlayPlayModeTests` chạy cả 8 nhân vật.
+  - Chọn nhân vật → vào khu phố đúng mô hình → đi bộ bằng joystick (chân chạm đất).
+  - Cầm đàn: đàn liền một khối, trước bụng, dưới đầu.
+  - Ảnh chụp: `Bao_Cao/all-characters`.
+- **Online:** kiểm tra dự án Supabase thật bằng anon key.
+  - Đủ các bảng `profiles`, `friendships`, `coop_*`, `player_progress`, `leaderboard`, `scenario_scores`, `island_*`.
+  - Có RPC `is_registered`. Edge Function `agora-voice` / `agora-classroom` đã triển khai và chặn người chưa đăng nhập.
+  - Phòng luyện nói dùng `speaking_rooms`: bảng đã thu hồi quyền anon nên không kiểm tra được từ ngoài. Nếu phòng luyện nói báo lỗi, chạy `supabase/migrations/20261011_agora_speaking_rooms.sql` trong SQL Editor (lệnh idempotent).
+- **Điện thoại:**
+  - Android chỉ cho xoay ngang.
+  - Bản web hiện thẻ toàn màn hình "Xoay ngang điện thoại để chơi" cùng nút "Toàn màn hình · Xoay ngang" (khóa ngang nếu trình duyệt cho), có lựa chọn "Vẫn chơi màn hình dọc". Chạm lần đầu khi đang ngang thì vào toàn màn hình.
+  - Menu chính có nút "Nút cảm ứng: Tự động / Hiện / Ẩn" (`ControlsButton`).
+  - HUD trên màn hình cảm ứng (`StatusDock`):
+    - Thanh 10 lối tắt chắn ngang giữa màn hình, nay gập vào ngăn kéo "Công cụ" ở giữa mép trên.
+    - Thẻ trạng thái thu còn 80%.
+    - Cảnh báo nhu cầu và thời tiết từng nằm đè lên joystick và nuốt cú chạm, nay dời lên dưới nút "Công cụ" và không bắt chạm (`PlaceChip`).
+  - Menu chính: thẻ cốt truyện tự ẩn khi đè lên thanh nút trên cùng (màn ngang thấp).
+  - Nút "Fullscreen" của trang: trên điện thoại nằm nhỏ ở giữa mép dưới, ẩn khi đã toàn màn hình.
+  - Test: `PhoneControlsPlayModeTests`.
+- **Sửa test:**
+  - `InteractionDetector.Visible`: chỉ bỏ qua vật thực sự bao quanh mục tiêu (`Contains`), không bỏ qua bức tường chỉ chạm vào. Lần sửa phòng ngủ trước làm `InteractionTargeting` fail.
+  - `KonbiniCamera`: bước đi theo thời gian, không theo khung hình. Khung hình nhanh lên vì `TriggerRaycaster` hết ném exception, làm "đi bộ" thành 45 m/s.
+  - `GuestOffline`: xóa (và khôi phục) cả `guest_progress.json.bak`.

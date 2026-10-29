@@ -16,6 +16,11 @@ python Tools\release\package_itch.py
 - ≤ 1.000 file (thư mục cũng tính), ≤ 500 MB sau khi giải nén, ≤ 200 MB mỗi file, đường dẫn ≤ 240 ký tự.
 - Bỏ `_headers`, `.htaccess`, `vercel.json` (itch.io không đọc; không cần `Content-Encoding` vì Decompression Fallback bật).
 
+**Trực tuyến trên web.** Trình duyệt không đọc được `LocalSecrets/secrets.json`. Vì vậy mỗi lần build WebGL (cả bằng cửa sổ Build lẫn `ReleaseBuild.BuildWebGL`) sẽ ghi `nl-config.js` cạnh `index.html`.
+- File chỉ chứa giá trị công khai, lấy từ `secrets.json` (hoặc biến môi trường): Supabase URL, anon key, Agora App ID.
+- Không bao giờ chứa Gemini key. Nếu lỡ điền service key, bản build sẽ dừng với lỗi.
+- Thiếu file này thì bản web báo «Máy chủ chưa được cấu hình» và mọi nút trực tuyến không chạy. Nhớ zip cả file này.
+
 ## 2. Cài đặt trang (Edit game)
 - **Kind of project:** HTML · upload zip, tick **This file will be played in the browser**.
 - **Embed options:** Viewport 1280 × 720 · ✓ Mobile friendly (landscape) · ✓ Fullscreen button · ✓ Automatically start on page load: **tắt** (để trang tải nhẹ) · SharedArrayBuffer: **không cần**.

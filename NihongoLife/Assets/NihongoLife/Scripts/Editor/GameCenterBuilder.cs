@@ -5,6 +5,7 @@ using System.Linq;
 using NihongoLife.Core;
 using NihongoLife.Interaction;
 using NihongoLife.MiniGames;
+using NihongoLife.World;
 using TMPro;
 using UnityEditor;
 using UnityEditor.SceneManagement;
@@ -126,6 +127,54 @@ namespace NihongoLife.EditorTools
                 if (!EditorSceneManager.SaveScene(scene)) throw new InvalidOperationException("Could not save " + ScenePath);
                 AssetDatabase.SaveAssets();
                 Debug.Log("[GameCenterBuilder] Arcade upgraded (more): " + string.Join(", ", definitions.Values.Where(d => d.playable).Select(d => d.id)));
+                if (Application.isBatchMode) EditorApplication.Exit(0);
+            }
+            catch (Exception exception)
+            {
+                Debug.LogException(exception);
+                if (Application.isBatchMode) EditorApplication.Exit(1);
+                else throw;
+            }
+        }
+
+        /// <summary>
+        /// The arcade's regulars (World/ArcadeCrowd) on the existing 50_GameCenter (scene not rebuilt): kids playing the
+        /// machines that have no game of the player's (claw machines 1 and 3, pinball, the medal game), a fan watching the
+        /// dance machine, friends with drinks by the vending machines, someone waiting at the prize counter and a kid
+        /// looking at the featured row. Re-running replaces the previous crowd.
+        /// Run: Unity -batchmode -executeMethod NihongoLife.EditorTools.GameCenterBuilder.AddArcadeCrowd
+        /// </summary>
+        public static void AddArcadeCrowd()
+        {
+            try
+            {
+                var scene = EditorSceneManager.OpenScene(ScenePath, OpenSceneMode.Single);
+                var zone = scene.GetRootGameObjects().FirstOrDefault(r => r.name == "GameCenter_Zone") ?? throw new InvalidOperationException("GameCenter_Zone not found in " + ScenePath);
+                var old = zone.transform.Find("ArcadeCrowd");
+                if (old != null) Object.DestroyImmediate(old.gameObject);
+                var crowd = new GameObject("ArcadeCrowd");
+                crowd.transform.SetParent(zone.transform, false);
+                crowd.transform.position = O;
+                ArcadeCrowd.Regular R(string id, string model, float x, float z, float yaw, string activity, string hair, int age) =>
+                    new ArcadeCrowd.Regular { id = id, model = model, position = new Vector3(x, 0f, z), yaw = yaw, activity = activity, hair = hair, age = age };
+                crowd.AddComponent<ArcadeCrowd>().Configure(new[]
+                {
+                    // Claw machines face -X from the east wall: players stand west of them, facing east.
+                    R("claw1", "kid_hina", HalfX - 2.05f, -4.6f, 90f, "arcade_play", "natural", 15),
+                    R("claw1_friend", "kid_sota", HalfX - 2.35f, -3.75f, 120f, "", "black", 15),
+                    R("claw3", "kid_riku", HalfX - 2.05f, 0.2f, 90f, "arcade_play", "chestnut", 17),
+                    R("pinball", "kid_yuto", HalfX - 2.15f, HalfZ - 1.6f, 90f, "arcade_play", "dark_brown", 19),
+                    // The medal game faces -Z.
+                    R("medal", "kid_sakura", 7.6f, 4.15f, 0f, "arcade_play", "auburn", 22),
+                    R("dance_fan", "kid_mio", -5.2f, 5.4f, -35f, "", "pink", 16),
+                    R("vending_a", "kid_yui", -8.0f, -6.4f, 40f, "drink_cup", "natural", 18),
+                    R("vending_b", "kid_haruto", -7.2f, -5.8f, -140f, "", "ash", 18),
+                    R("prize_queue", "kid_riku", 5.9f, -5.3f, 130f, "", "blonde", 13),
+                    R("featured_look", "kid_hina", -1.8f, 3.6f, 195f, "", "black", 14),
+                });
+                EditorSceneManager.MarkSceneDirty(scene);
+                if (!EditorSceneManager.SaveScene(scene)) throw new InvalidOperationException("Could not save " + ScenePath);
+                Debug.Log("[GameCenterBuilder] Arcade crowd placed.");
                 if (Application.isBatchMode) EditorApplication.Exit(0);
             }
             catch (Exception exception)

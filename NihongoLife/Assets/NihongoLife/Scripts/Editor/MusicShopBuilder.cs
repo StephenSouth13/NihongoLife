@@ -277,7 +277,7 @@ namespace NihongoLife.EditorTools
                 Block(upright, "DigitalPiano_" + i, P(-11.2f, 0.78f, z), new Vector3(0.38f, 0.08f, 1.15f), _black, false);
                 Block(upright, "DigitalKeys_" + i, P(-11.05f, 0.83f, z), new Vector3(0.14f, 0.02f, 1.05f), _ivory, false);
                 Block(upright, "DigitalStand_" + i, P(-11.2f, 0.37f, z), new Vector3(0.3f, 0.74f, 0.05f), _metal, true);
-                Text(upright, "PriceTag_" + i, $"¥{48000 + i * 22000:N0}", P(-10.98f, 0.62f, z), 90f, 0.06f, _sign.color, 0.6f);
+                Text(upright, "PriceTag_" + i, $"¥{48000 + i * 22000:N0}", P(-10.98f, 0.62f, z), -90f, 0.06f, _sign.color, 0.6f); // faces the room (+X); 90° read mirrored
             }
             Spot(spots, "Spot_DigitalPianos", P(-10.2f, 1f, 0.6f), new Vector3(1.4f, 2f, 4f), MusicSpotKind.Piano);
         }

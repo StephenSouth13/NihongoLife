@@ -316,7 +316,7 @@ namespace NihongoLife.EditorTools
             blocker.AddComponent<BoxCollider>().size = new Vector3(4.2f, 0.9f, 0.8f);
             Block(c, "Till", new Vector3(0.95f, 0.95f, 8.6f), new Vector3(0.42f, 0.18f, 0.36f), _dark, false);
             Block(c, "TillScreen", new Vector3(0.95f, 1.17f, 8.68f), new Vector3(0.36f, 0.24f, 0.03f), _blueSign, false);
-            Block(c, "BagStand", new Vector3(-0.35f, 0.9f, 8.6f), new Vector3(0.3f, 0.12f, 0.25f), _white, false);
+            // (A white "BagStand" block hung at 0.9 m over the gap between the two counters, in front of the clerk's chest.)
             Text(c, "RegisterPrompt", "レジ · Thanh toán ở đây", new Vector3(0f, 0.6f, 8.13f), 0f, 0.07f, new Color(0.95f, 0.85f, 0.3f), 1.6f);
         }
 
@@ -379,33 +379,23 @@ namespace NihongoLife.EditorTools
 
         /// <summary>The Elizabeth model behind NL_Cashier has no skeleton (static T-pose mesh), so every
         /// shop clerk using it stood in a T-pose. Rebuild both NL_Cashier prefabs (same GUIDs, so every
-        /// scene reference picks it up) from the rigged Lilly character plus a green konbini apron.</summary>
+        /// scene reference picks it up) from the rigged guide character. The green apron once added here was a rigid box
+        /// sized for an adult: on the kid rig it floated in front of the belly as a "green board", so it is removed.</summary>
         private static void EnsureRiggedCashierPrefabs()
         {
             foreach (string path in CashierPrefabs)
             {
                 var existing = AssetDatabase.LoadAssetAtPath<GameObject>(path);
                 var existingAnimator = existing != null ? existing.GetComponentInChildren<Animator>(true) : null;
-                if (existingAnimator != null && existingAnimator.avatar != null && existingAnimator.avatar.isHuman && existing.transform.Find("ClerkUniformMarker") != null)
+                bool rigged = existingAnimator != null && existingAnimator.avatar != null && existingAnimator.avatar.isHuman && existing.transform.Find("ClerkUniformMarker") != null;
+                if (rigged)
+                {
+                    if (existing.GetComponentsInChildren<Transform>(true).Any(t => t.name == "UniformApron")) RemoveApron(path);
                     continue;
+                }
                 var contents = PrefabUtility.LoadPrefabContents(GuidePrefab);
                 try
                 {
-                    var animator = contents.GetComponentInChildren<Animator>(true);
-                    Transform spine = animator.GetBoneTransform(HumanBodyBones.Spine);
-                    Transform hips = animator.GetBoneTransform(HumanBodyBones.Hips);
-                    Transform chest = animator.GetBoneTransform(HumanBodyBones.UpperChest) ?? animator.GetBoneTransform(HumanBodyBones.Chest);
-                    float bottom = hips.position.y - 0.32f, top = chest.position.y + 0.08f;
-                    var apron = GameObject.CreatePrimitive(PrimitiveType.Cube);
-                    apron.name = "UniformApron";
-                    Object.DestroyImmediate(apron.GetComponent<Collider>());
-                    apron.GetComponent<Renderer>().sharedMaterial = _green;
-                    apron.transform.SetParent(spine, true);
-                    apron.transform.position = new Vector3(hips.position.x, (bottom + top) / 2f, hips.position.z + 0.13f);
-                    apron.transform.rotation = contents.transform.rotation;
-                    apron.transform.localScale = Vector3.one;
-                    var lossy = apron.transform.lossyScale;
-                    apron.transform.localScale = new Vector3(0.36f / lossy.x, (top - bottom) / lossy.y, 0.02f / lossy.z);
                     // Marker so the check above can see the prefab is already the rigged clerk.
                     new GameObject("ClerkUniformMarker").transform.SetParent(contents.transform, false);
                     PrefabUtility.SaveAsPrefabAsset(contents, path);
@@ -416,6 +406,44 @@ namespace NihongoLife.EditorTools
                     PrefabUtility.UnloadPrefabContents(contents);
                 }
             }
+        }
+
+        private static void RemoveApron(string path)
+        {
+            var contents = PrefabUtility.LoadPrefabContents(path);
+            try
+            {
+                foreach (var t in contents.GetComponentsInChildren<Transform>(true).Where(t => t.name == "UniformApron").ToList())
+                    Object.DestroyImmediate(t.gameObject);
+                PrefabUtility.SaveAsPrefabAsset(contents, path);
+                Log.AppendLine("Removed the floating apron from " + path);
+            }
+            finally
+            {
+                PrefabUtility.UnloadPrefabContents(contents);
+            }
+        }
+
+        /// <summary>Only the konbini clerk repair (no town rebuild): the clerk prefabs lose the floating apron box, and the
+        /// town scenes lose the bag stand block that floated over the gap between the counters.
+        /// Run: Unity -batchmode -executeMethod NihongoLife.EditorTools.CityTownBuilder.RepairClerkPrefabs</summary>
+        public static void RepairClerkPrefabs()
+        {
+            EnsureRiggedCashierPrefabs();
+            foreach (string path in new[] { "Assets/NihongoLife/Scenes/90_TestSandbox.unity", "Assets/NihongoLife/Scenes/01_MainMenu.unity" })
+            {
+                var scene = EditorSceneManager.OpenScene(path, OpenSceneMode.Single);
+                var stands = scene.GetRootGameObjects().SelectMany(r => r.GetComponentsInChildren<Transform>(true))
+                    .Where(t => t.name == "BagStand" && t.parent != null && t.parent.name == "Register").ToList();
+                foreach (var t in stands) Object.DestroyImmediate(t.gameObject);
+                if (stands.Count == 0) continue;
+                EditorSceneManager.MarkSceneDirty(scene);
+                EditorSceneManager.SaveScene(scene);
+                Log.AppendLine($"Removed {stands.Count} floating bag stand(s) from {path}");
+            }
+            AssetDatabase.SaveAssets();
+            Debug.Log("[CityTownBuilder] " + Log);
+            if (Application.isBatchMode) EditorApplication.Exit(0);
         }
 
         private static void BuildCashier(Transform konbini)

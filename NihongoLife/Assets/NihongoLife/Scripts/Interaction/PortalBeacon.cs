@@ -37,6 +37,20 @@ namespace NihongoLife.Interaction
             root.AddComponent<PortalBeacon>().Build(title, action, exit);
         }
 
+        /// <summary>A beacon over any interactable place that is not a portal (the island's train door).</summary>
+        public static PortalBeacon AttachAt(Transform host, Vector3 worldPosition, System.Func<string> title, System.Func<string> action, bool exit)
+        {
+            if (host == null) return null;
+            var existing = host.GetComponentInChildren<PortalBeacon>(true);
+            if (existing != null) return existing;
+            var root = new GameObject("PortalBeacon");
+            root.transform.SetParent(host, false);
+            root.transform.position = worldPosition;
+            var beacon = root.AddComponent<PortalBeacon>();
+            beacon.Build(title, action, exit);
+            return beacon;
+        }
+
         private void Build(System.Func<string> title, System.Func<string> action, bool exit)
         {
             TMP_FontAsset font = null; // TMP default font; NotoSansJP is its project-wide fallback

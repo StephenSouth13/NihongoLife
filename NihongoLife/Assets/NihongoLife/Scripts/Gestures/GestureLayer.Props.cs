@@ -91,6 +91,8 @@ namespace NihongoLife.Gestures
                 {
                     case "L": pos = _arm[5].position + offset; rot = extra * frame.rotation * baseRot; break;
                     case "W": pos = frame.position + offset; rot = extra * frame.rotation * baseRot; break;
+                    // Worn on the body (a guitar in front, a guitar on the back): from the hips, so it sits on a kid as on an adult.
+                    case "H": pos = _hips.position + offset; rot = extra * frame.rotation * baseRot; break;
                     case "A":
                         {
                             Vector3 r = _arm[2].position, l = _arm[5].position, aim = r - l;

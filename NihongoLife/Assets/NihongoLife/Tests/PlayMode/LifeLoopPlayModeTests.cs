@@ -245,7 +245,23 @@ namespace NihongoLife.Tests
                 JobQuizCard.Answer(IndexOf(c => c.Correct));
                 yield return WaitWork();
                 Assert.AreEqual("dish", JobShift.CarryKind);
-                var target = tables.First(t => JobShift.OrderAt(t.StationId) == JobShift.CarryId);
+                if (served == 0)
+                {
+                    // The dish is seen in the hands: a tray with sushi and tea between them, not a bare disc at face height.
+                    yield return new WaitForSecondsRealtime(0.8f);
+                    var layer = _player.GetComponentInChildren<NihongoLife.Gestures.GestureLayer>();
+                    Assert.IsNotNull(layer, "the player's gesture layer");
+                    Assert.AreEqual("carry_tray", layer.Current, "carrying the dish on a tray");
+                    var tray = layer.ActiveProps.FirstOrDefault(p => p.id == "tray_dish");
+                    Assert.IsNotNull(tray.transform, "the tray is shown");
+                    var animator = layer.Animator;
+                    Vector3 hands = (animator.GetBoneTransform(HumanBodyBones.RightHand).position + animator.GetBoneTransform(HumanBodyBones.LeftHand).position) * 0.5f;
+                    Assert.Less(Vector3.Distance(tray.transform.position, hands), 0.25f, "the tray is held in the hands");
+                    var head = animator.GetBoneTransform(HumanBodyBones.Head).position;
+                    Assert.Less(tray.transform.position.y, head.y - 0.1f, "below the face");
+                    TestShots.Portrait("job-carry", "01_sushi_tray", _player.transform);
+                }
+                var target =tables.First(t => JobShift.OrderAt(t.StationId) == JobShift.CarryId);
                 var other = tables.FirstOrDefault(t => t != target && JobShift.OrderAt(t.StationId) != null && JobShift.OrderAt(t.StationId) != JobShift.CarryId);
                 if (other != null)
                 {

@@ -1,5 +1,6 @@
 using System;
 using System.IO;
+using System.Runtime.InteropServices;
 using UnityEngine;
 
 namespace NihongoLife.Core
@@ -9,6 +10,8 @@ namespace NihongoLife.Core
     /// <c>LocalSecrets/secrets.json</c> next to the Unity project (or the path in NIHONGOLIFE_SECRETS_FILE).
     /// Missing values stay empty so online and AI features fall back to offline play.
     /// Values are never written back onto <see cref="GameControlDatabase"/>, so Play Mode cannot save them into the asset.
+    /// A browser has no file system: the WebGL player reads <c>nl-config.js</c> beside index.html instead, which the build
+    /// writes from the same file with the public values only (<see cref="PublicWebKeys"/>; never the Gemini key).
     /// </summary>
     public static class LocalSecrets
     {
@@ -16,6 +19,9 @@ namespace NihongoLife.Core
         const string SupabaseAnonKey = "NIHONGOLIFE_SUPABASE_ANON_KEY";
         const string AgoraAppIdKey = "AGORA_APP_ID";
         const string GeminiApiKey = "NIHONGOLIFE_GEMINI_API_KEY";
+
+        /// <summary>The only values a web build may carry: all of them are public client identifiers.</summary>
+        public static readonly string[] PublicWebKeys = { SupabaseUrlKey, SupabaseAnonKey, AgoraAppIdKey };
 
         static bool _loaded;
         static SecretsFile _file;
@@ -52,6 +58,25 @@ namespace NihongoLife.Core
         {
             if (_loaded) return _file;
             _loaded = true;
+#if UNITY_WEBGL && !UNITY_EDITOR
+            try
+            {
+                string web = WebConfigText();
+                if (string.IsNullOrWhiteSpace(web))
+                {
+                    Debug.LogWarning("[LocalSecrets] nl-config.js is missing beside index.html: online features stay offline.");
+                    return null;
+                }
+                _file = JsonUtility.FromJson<SecretsFile>(web);
+                if (_file != null) _file.NIHONGOLIFE_GEMINI_API_KEY = _file.geminiApiKey = null; // never from the page
+                return _file;
+            }
+            catch (Exception ex)
+            {
+                Debug.LogWarning("[LocalSecrets] nl-config.js could not be read (" + ex.GetType().Name + ").");
+                return null;
+            }
+#else
             string path = FindPath();
             if (path == null) return null;
             try
@@ -71,7 +96,13 @@ namespace NihongoLife.Core
                 _file = null;
                 return null;
             }
+#endif
         }
+
+#if UNITY_WEBGL && !UNITY_EDITOR
+        [DllImport("__Internal")] static extern string NL_GetWebConfig();
+        static string WebConfigText() => NL_GetWebConfig();
+#endif
 
         static string FindPath()
         {

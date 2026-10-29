@@ -79,6 +79,12 @@ namespace NihongoLife.Editor
             PlayerSettings.SetApplicationIdentifier(NamedBuildTarget.Android, AppId());
             PlayerSettings.Android.bundleVersionCode = ReadPositiveInt("NIHONGO_ANDROID_CODE", 1);
             PlayerSettings.Android.targetArchitectures = AndroidArchitecture.ARM64;
+            // Phones play in landscape (joystick left, actions right): either way round, never portrait.
+            PlayerSettings.defaultInterfaceOrientation = UIOrientation.AutoRotation;
+            PlayerSettings.allowedAutorotateToPortrait = false;
+            PlayerSettings.allowedAutorotateToPortraitUpsideDown = false;
+            PlayerSettings.allowedAutorotateToLandscapeLeft = true;
+            PlayerSettings.allowedAutorotateToLandscapeRight = true;
             PlayerSettings.SetScriptingBackend(NamedBuildTarget.Android, ScriptingImplementation.IL2CPP);
             PlayerSettings.SetManagedStrippingLevel(NamedBuildTarget.Android, ManagedStrippingLevel.High);
 

@@ -181,37 +181,78 @@ html, body {
   font-size: 14px;
   cursor: pointer;
 }
+/* Phones: the in-game buttons own the corners (actions top right); the page button sits small at the bottom centre,
+   and goes away once the game is full screen. */
+@media (pointer: coarse) {
+  #unity-fullscreen {
+    top: auto;
+    right: auto;
+    left: 50%;
+    bottom: calc(6px + env(safe-area-inset-bottom));
+    transform: translateX(-50%);
+    padding: 6px 12px;
+    font-size: 12px;
+  }
+}
+:fullscreen #unity-fullscreen,
+:-webkit-full-screen #unity-fullscreen {
+  display: none;
+}
 #unity-fullscreen:focus-visible,
 #unity-orient-ok:focus-visible {
   outline: 2px solid #f2c14e;
   outline-offset: 2px;
 }
 #unity-orient {
-  position: absolute;
-  left: 50%;
-  bottom: calc(18px + env(safe-area-inset-bottom));
-  transform: translateX(-50%);
-  z-index: 4;
-  width: min(420px, calc(100vw - 32px));
-  padding: 14px 16px;
-  border-radius: 16px;
-  background: rgba(14, 17, 22, 0.92);
-  border: 1px solid rgba(242, 193, 78, 0.35);
+  position: fixed;
+  inset: 0;
+  z-index: 20;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  padding: 24px;
+  background: rgba(10, 12, 18, 0.96);
   text-align: center;
 }
-#unity-orient p {
-  margin: 0 0 10px;
-  font-size: 14px;
-  line-height: 1.4;
+#unity-orient[hidden] {
+  display: none;
 }
-#unity-orient-ok {
+#unity-orient-phone {
+  font-size: 64px;
+  line-height: 1;
+  animation: nl-turn 2.2s ease-in-out infinite;
+}
+@keyframes nl-turn {
+  0%, 25% { transform: rotate(0deg); }
+  55%, 100% { transform: rotate(-90deg); }
+}
+#unity-orient p {
+  margin: 0;
+  font-size: 18px;
+  line-height: 1.4;
+  font-weight: 650;
+}
+#unity-orient-go {
   border: 0;
   border-radius: 999px;
-  padding: 8px 18px;
+  padding: 12px 22px;
   background: #f2c14e;
   color: #1a1204;
   font: inherit;
-  font-weight: 650;
+  font-size: 16px;
+  font-weight: 700;
+  cursor: pointer;
+}
+#unity-orient-ok {
+  border: 0;
+  padding: 6px 10px;
+  background: transparent;
+  color: rgba(255, 255, 255, 0.6);
+  font: inherit;
+  font-size: 13px;
+  text-decoration: underline;
   cursor: pointer;
 }
 #unity-warning {

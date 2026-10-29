@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using NihongoLife.Gestures;
 using UnityEngine;
 
 namespace NihongoLife.Progression
@@ -13,14 +14,13 @@ namespace NihongoLife.Progression
         private static string _shiftKey;
         private static readonly HashSet<string> Done = new();
         private static readonly Dictionary<string, string> TableOrders = new();
-        private static GameObject _carryProp;
 
         public static string CarryKind { get; private set; }
         public static string CarryId { get; private set; }
         public static string CarryLabel { get; private set; }
 
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
-        private static void ResetStatics() { _shiftKey = null; Done.Clear(); TableOrders.Clear(); CarryKind = CarryId = CarryLabel = null; _carryProp = null; }
+        private static void ResetStatics() { _shiftKey = null; Done.Clear(); TableOrders.Clear(); CarryKind = CarryId = CarryLabel = null; }
 
         /// <summary>Clears the in-between state when a different shift (or no shift) is active.</summary>
         public static void Sync(string questId)
@@ -45,25 +45,27 @@ namespace NihongoLife.Progression
         {
             DropCarry();
             CarryKind = kind; CarryId = id; CarryLabel = label;
-            var player = GameObject.FindWithTag("Player");
-            if (player == null) return;
-            // Visible in the world: a box (stock) or a tray (dish) held in front of the chest.
-            _carryProp = GameObject.CreatePrimitive(kind == "dish" ? PrimitiveType.Cylinder : PrimitiveType.Cube);
-            Object.Destroy(_carryProp.GetComponent<Collider>());
-            _carryProp.name = "CarriedItem";
-            _carryProp.transform.SetParent(player.transform, false);
-            _carryProp.transform.localPosition = new Vector3(0f, 1.05f, 0.42f);
-            _carryProp.transform.localScale = kind == "dish" ? new Vector3(0.42f, 0.03f, 0.42f) : new Vector3(0.46f, 0.32f, 0.36f);
-            var renderer = _carryProp.GetComponent<Renderer>();
-            var shader = Shader.Find("Universal Render Pipeline/Lit");
-            if (shader != null) renderer.material = new Material(shader) { color = kind == "dish" ? new Color(0.95f, 0.93f, 0.88f) : new Color(0.72f, 0.55f, 0.34f) };
+            // Visible in the hands: a tray with the dish (sushi on a plate, a cup of tea) or a box, through the gesture
+            // layer so it sits between the hands of any rig (a fixed 1.05 m disc floated in front of a kid's face, empty).
+            var holder = Holder();
+            if (holder != null) CarryHold.On(holder).SetJob(kind == "dish" ? "carry_tray" : "carry_box");
         }
 
         public static void DropCarry()
         {
             CarryKind = CarryId = CarryLabel = null;
-            if (_carryProp != null) Object.Destroy(_carryProp);
-            _carryProp = null;
+            var holder = Holder();
+            var hold = holder != null ? holder.GetComponent<CarryHold>() : null;
+            if (hold != null) hold.SetJob(null);
+        }
+
+        /// <summary>The player's animated body (the object the gesture layer drives).</summary>
+        private static GameObject Holder()
+        {
+            var player = GameObject.FindWithTag("Player");
+            if (player == null) return null;
+            var animation = player.GetComponentInChildren<NihongoLife.Core.CharacterAnimationController>();
+            return animation != null ? animation.gameObject : player;
         }
     }
 }

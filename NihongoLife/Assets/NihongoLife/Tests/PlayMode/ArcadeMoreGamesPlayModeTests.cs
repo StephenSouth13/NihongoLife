@@ -168,6 +168,19 @@ namespace NihongoLife.Tests
                     for (float t = 0f; t < 3f && hockey.CorrectCount == 0; t += Time.unscaledDeltaTime) yield return null;
                     hockey.ShootAtPlayerGoal();
                     for (float t = 0f; t < 3f && hockey.WrongCount == 0; t += Time.unscaledDeltaTime) yield return null;
+                    // A match: the goals and the score are on the table; five goals first wins.
+                    var board = Object.FindObjectsByType<TMP_Text>(FindObjectsSortMode.None).FirstOrDefault(t => t.name == "Scoreboard");
+                    Assert.NotNull(board, "the score is shown on the table");
+                    StringAssert.Contains("1", board.text);
+                    Assert.NotNull(Object.FindObjectsByType<RectTransform>(FindObjectsSortMode.None).FirstOrDefault(r => r.name == "RobotGoal"), "the robot's goal is drawn");
+                    Assert.NotNull(Object.FindObjectsByType<RectTransform>(FindObjectsSortMode.None).FirstOrDefault(r => r.name == "PlayerGoal"), "the player's goal is drawn");
+                    for (int goal = hockey.PlayerGoals; goal < AirHockeyGame.WinGoals && hockey.State == ArcadeGame.Phase.Playing; goal = hockey.PlayerGoals)
+                    {
+                        hockey.ShootAtRobotGoal();
+                        for (float t = 0f; t < 3f && hockey.PlayerGoals == goal; t += Time.unscaledDeltaTime) yield return null;
+                    }
+                    Assert.AreEqual(ArcadeGame.Phase.Finished, hockey.State, "five goals end the match");
+                    Assert.AreEqual(AirHockeyGame.Outcome.Won, hockey.Result, "first to five wins");
                     break;
                 default:
                     Assert.Fail("no play script for " + id);

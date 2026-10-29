@@ -1,7 +1,8 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.InputSystem;
 
 namespace DevionGames
 {
@@ -40,7 +41,7 @@ namespace DevionGames
             if (camera == null) return;
             Ray ray = Cursor.lockState == CursorLockMode.Locked
                 ? new Ray(this.m_Transform.position, this.m_Transform.forward)
-                : camera.ScreenPointToRay(Input.mousePosition);
+                : camera.ScreenPointToRay(PointerPosition());
 
             RaycastHit hit;
             if (TriggerRaycaster.Raycast(ray, out hit, float.PositiveInfinity, this.m_LayerMask))
@@ -55,13 +56,15 @@ namespace DevionGames
                     m_LastCameraHit = current;
                     EventHandler.Execute(m_LastCameraHit, "OnPointerEnterTrigger");
                 }
+                // The project reads input through the Input System package only (UnityEngine.Input throws).
                 int button = -1;
-                if (Input.GetMouseButtonDown(0))
-                    button = 0;
-                if (Input.GetMouseButtonDown(1))
-                    button = 1;
-                if (Input.GetMouseButtonDown(2))
-                    button = 2;
+                var mouse = Mouse.current;
+                if (mouse != null)
+                {
+                    if (mouse.leftButton.wasPressedThisFrame) button = 0;
+                    if (mouse.rightButton.wasPressedThisFrame) button = 1;
+                    if (mouse.middleButton.wasPressedThisFrame) button = 2;
+                }
 
                 if (button != -1)
                 {
@@ -82,6 +85,13 @@ namespace DevionGames
             }
         }
         
+
+        private static Vector2 PointerPosition()
+        {
+            if (Mouse.current != null) return Mouse.current.position.ReadValue();
+            if (Pointer.current != null) return Pointer.current.position.ReadValue();
+            return Vector2.zero;
+        }
 
         public static bool Raycast(Vector3 origin, Vector3 direction,out RaycastHit hit, float maxDistance, int layerMask ) {
             return Raycast(new Ray(origin, direction), out hit, maxDistance, layerMask);

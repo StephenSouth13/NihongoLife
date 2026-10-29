@@ -43,6 +43,22 @@ namespace NihongoLife.Core
         public static bool IsOnDemandScene(string sceneName) =>
             !string.IsNullOrEmpty(sceneName) && BundleNames.ContainsKey(sceneName);
 
+        /// <summary>
+        /// The scene can be opened: it is in the player, or (web) its area pack is listed and will be downloaded first.
+        /// Application.CanStreamedLevelBeLoaded alone is false for every area of the web build until its pack is in,
+        /// which left "Play" and every door doing nothing in the browser.
+        /// </summary>
+        public static bool CanLoad(string sceneName)
+        {
+            if (string.IsNullOrWhiteSpace(sceneName)) return false;
+            if (Application.CanStreamedLevelBeLoaded(sceneName)) return true;
+#if UNITY_WEBGL && !UNITY_EDITOR
+            return IsOnDemandScene(sceneName);
+#else
+            return false;
+#endif
+        }
+
         public static void LoadFallback(string sceneName)
         {
 #if UNITY_WEBGL && !UNITY_EDITOR

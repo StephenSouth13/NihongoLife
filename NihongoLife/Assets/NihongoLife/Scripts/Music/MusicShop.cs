@@ -23,6 +23,13 @@ namespace NihongoLife.Music
         private static readonly string[] Careers = { "musician", "producer", "painter" };
         private const string Owner = "ひびき てんちょう";
 
+        /// <summary>The player's own guitar: bought at the counter, worn on the back, played in the street (Busk).
+        /// Ownership is a story flag (saved per account, locally and to the cloud); the bag item mirrors it.</summary>
+        public const string GuitarItem = "my_guitar";
+        public const string GuitarFlag = "own_guitar";
+        public const int GuitarPrice = 4800;
+        public static bool OwnsGuitar => NihongoLife.Scenario.StoryFlags.Has(GuitarFlag);
+
         public static string PromptJa(MusicSpotKind kind) => kind switch
         {
             MusicSpotKind.Piano => "ピアノを ひく",
@@ -92,10 +99,67 @@ namespace NihongoLife.Music
                 HudFeed.Post("「おつかれさま！ いい しごとでした。」 — " + Loc.T("Chủ tiệm Hibiki trả công cho bạn.", "Mr Hibiki pays you for the work.", "店長がお礼を言いました。"), HudFeed.Kind.Reward, 5f, "music");
                 return;
             }
+            if (!OwnsGuitar) { OfferGuitar(); return; }
             HudFeed.Post("「いらっしゃいませ！」 — " + Loc.T(
                 "Cứ thử đàn thoải mái: chọn bài là nhân vật tự đàn. Lên sân khấu diễn với nhịp 80–125%; bàn DJ và giá vẽ ở bên kia. Việc làm thêm ở bảng cạnh cửa.",
                 "Try any instrument: pick a song and your character plays it. Perform on the stage at 80–125% tempo; the DJ booth and the easel are over there. Jobs are on the boards by the door.",
                 "楽器は 自由に どうぞ。曲を えらぶと 演奏します。ステージは テンポ 80〜125% で。DJブースと イーゼルも あります。"), HudFeed.Kind.Info, 7f, "music");
+        }
+
+        /// <summary>At the counter: the owner offers a second-hand guitar (asked in Japanese; yes / no).</summary>
+        public static void OfferGuitar()
+        {
+            var choices = new List<JobQuizCard.Choice>
+            {
+                new JobQuizCard.Choice { Id = "buy", Label = "はい、ください。", Detail = Loc.F("Vâng, cho tôi mua ({0}).", "Yes, please ({0}).", "はい（{0}）", Loc.Yen(GuitarPrice)), Correct = true },
+                new JobQuizCard.Choice { Id = "no", Label = "いいえ、けっこうです。", Detail = Loc.T("Không, cảm ơn.", "No, thank you.", "いいえ"), Correct = true },
+            };
+            JobQuizCard.Show(Loc.T("Tiệm nhạc Hibiki", "Hibiki Music", "ひびき楽器店"), Owner,
+                "ちゅうこの ギターが ありますよ。かいますか？", "ちゅうこの ぎたーが ありますよ。かいますか？",
+                Loc.F("Tiệm có đàn guitar cũ ({0}). Bạn mua không? Có đàn thì đeo sau lưng, ra phố biểu diễn được.", "There is a second-hand guitar ({0}). Will you buy it? Wear it on your back and busk in the town.", "中古のギター（{0}）。", Loc.Yen(GuitarPrice)),
+                Loc.T("Trả lời chủ tiệm:", "Answer the owner:", "てんちょうに こたえる："), choices, chosen =>
+                {
+                    if (chosen == null || chosen.Id != "buy") { HudFeed.Post("「また どうぞ。」", HudFeed.Kind.Info, 3f, "music"); return; }
+                    BuyGuitar();
+                });
+        }
+
+        /// <summary>Pays and hands over the guitar (false when the wallet is short).</summary>
+        public static bool BuyGuitar()
+        {
+            if (OwnsGuitar) return true;
+            var inventory = NihongoLife.Player.PlayerInventory.Instance;
+            if (inventory == null || !inventory.SpendYen(GuitarPrice, Loc.Triple("Mua đàn guitar", "Bought a guitar", "ギターを買った")))
+            {
+                HudFeed.Post("「おかねが たりませんね。」 — " + Loc.F("Chưa đủ tiền ({0}).", "Not enough money ({0}).", "お金が足りません（{0}）。", Loc.Yen(GuitarPrice)), HudFeed.Kind.Warning, 4f, "music");
+                return false;
+            }
+            NihongoLife.Scenario.StoryFlags.Set(GuitarFlag);
+            GuitarCarrier.Sync();
+            HudFeed.Post("「まいど ありがとうございます！」 — " + Loc.T("Bạn có đàn guitar! Nó đeo sau lưng. Ra khu phố, mở balo (B) → Đàn để biểu diễn đường phố.", "You own a guitar! It rides on your back. In the town open the bag (B) → Play to busk.", "ギターを 手に入れた！まちで バッグ（B）→「ひく」で ストリートライブ。"), HudFeed.Kind.Reward, 7f, "music");
+            return true;
+        }
+
+        /// <summary>
+        /// A street performance with the player's own guitar: only in the town (not inside a shop or another area), standing
+        /// where they are. Passers-by nearby leave tips at the end of a song played at a pleasant tempo (MusicStudioUI).
+        /// </summary>
+        public static bool Busk()
+        {
+            if (!OwnsGuitar) return false;
+            var player = SceneRefs.Find<NihongoLife.Player.PlayerController>();
+            if (player == null) return false;
+            bool inTown = UnityEngine.SceneManagement.SceneManager.GetActiveScene().name == WorldLocationCatalog.CityScene;
+            if (!inTown)
+            {
+                HudFeed.Post(Loc.T("Biểu diễn đường phố ở ngoài khu phố nhé (trong tiệm thì lên sân khấu).", "Busk outside, in the town (in the shop, use the stage).", "ストリートライブは まちの 外で。"), HudFeed.Kind.Info, 4f, "music");
+                return false;
+            }
+            var camera = SceneRefs.Find<NihongoLife.Cameras.ThirdPersonCameraController>();
+            if (camera != null) camera.SetOrbit(player.transform.eulerAngles.y + 160f, 14f, 4f); // from the audience
+            MusicStudioUI.SetPerformer(player.gameObject, true);
+            MusicStudioUI.OpenStreet();
+            return true;
         }
 
         // ─────────── The DJ booth: harmonic mixing ───────────

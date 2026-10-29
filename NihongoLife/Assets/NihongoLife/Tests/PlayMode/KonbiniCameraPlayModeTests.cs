@@ -58,6 +58,12 @@ namespace NihongoLife.Tests
                     if (Physics.OverlapSphere(c.transform.position, 0.06f, Physics.DefaultRaycastLayers, QueryTriggerInteraction.Ignore).Any(h => h.GetComponentInParent<PlayerController>() == null)) insideWall++;
                 }
             }
+            // A walking step lasts 0.03 s (0.09 m → 3 m/s) whatever the frame rate: one step per frame made the "walk"
+            // 45 m/s once frames got fast, and the camera, following it, failed the speed check.
+            IEnumerator WatchFor(float seconds)
+            {
+                for (float tt = 0f; tt < seconds; tt += Time.unscaledDeltaTime) yield return Watch(1);
+            }
             void Snap(string name)
             {
                 var rt = new RenderTexture(960, 540, 24);
@@ -84,14 +90,14 @@ namespace NihongoLife.Tests
                 // Walk out through the zone edge, then back in, a few frames each step (like a real walk).
                 for (int k = 0; k < 3; k++)
                 {
-                    for (float z = 2.0f; z > -1.5f; z -= 0.09f) { Place(player, new Vector3(0f, 0.08f, z), 180f, null); yield return Watch(1); }
+                    for (float z = 2.0f; z > -1.5f; z -= 0.09f) { Place(player, new Vector3(0f, 0.08f, z), 180f, null); yield return WatchFor(0.03f); }
                     for (float tt = 0f; tt < 0.7f; tt += Time.unscaledDeltaTime) yield return Watch(1);
                     if (k == 0 && cycle == 0) Snap("03_walked_out");
-                    for (float z = -1.5f; z < 2.0f; z += 0.09f) { Place(player, new Vector3(0f, 0.08f, z), 0f, null); yield return Watch(1); }
+                    for (float z = -1.5f; z < 2.0f; z += 0.09f) { Place(player, new Vector3(0f, 0.08f, z), 0f, null); yield return WatchFor(0.03f); }
                     for (float tt = 0f; tt < 0.7f; tt += Time.unscaledDeltaTime) yield return Watch(1);
                 }
                 Assert.IsTrue(cam.IsIndoor, "Back indoors after re-entering (cycle " + cycle + ")");
-                for (float z = 2.0f; z > -2.5f; z -= 0.09f) { Place(player, new Vector3(0f, 0.08f, z), 180f, null); yield return Watch(1); }
+                for (float z = 2.0f; z > -2.5f; z -= 0.09f) { Place(player, new Vector3(0f, 0.08f, z), 180f, null); yield return WatchFor(0.03f); }
                 for (float tt = 0f; tt < 1.2f; tt += Time.unscaledDeltaTime) yield return Watch(1);
                 Assert.IsFalse(cam.IsIndoor, "Outdoor camera again after leaving (cycle " + cycle + ")");
             }
