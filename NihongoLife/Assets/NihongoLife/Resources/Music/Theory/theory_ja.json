@@ -1,0 +1,1297 @@
+{
+ "schema": "nihongolife.musictheory.v1",
+ "language": "ja",
+ "lessons": [
+  {
+   "id": "staff-clefs",
+   "order": 1,
+   "level": "beginner",
+   "minutes": 8,
+   "title": "五線譜と音部記号",
+   "intro": "音楽は5本の線と4つの間からなる五線譜に書きます。先頭の音部記号が、音の名前を決めます。",
+   "points": [
+    "線は下から数えます。いちばん下が第1線です。",
+    "ト音記号（）は右手や旋律に使い、第2線がソであることを示します。",
+    "ヘ音記号（）は左手や低音に使い、第4線がファであることを示します。"
+   ],
+   "practiceSongs": [
+    "ode-to-joy"
+   ],
+   "quiz": [
+    {
+     "id": "staff-clefs-q1",
+     "q": "五線譜には線が何本ありますか。",
+     "options": [
+      "4",
+      "5",
+      "6",
+      "7"
+     ],
+     "answer": 1,
+     "explain": "五線譜は線が5本です。"
+    },
+    {
+     "id": "staff-clefs-q2",
+     "q": "ト音記号は第2線のどの音を示しますか。",
+     "options": [
+      "C",
+      "F",
+      "G",
+      "A"
+     ],
+     "answer": 2,
+     "explain": "ト音記号は第2線のソ（G）を巻き込んでいます。"
+    },
+    {
+     "id": "staff-clefs-q3",
+     "q": "ピアノの左手に普通使う音部記号はどれですか。",
+     "options": [
+      "ヘ音記号",
+      "ト音記号",
+      "ハ音記号",
+      "音部記号なし"
+     ],
+     "answer": 0,
+     "explain": "左手は低い音なのでヘ音記号を使います。"
+    }
+   ]
+  },
+  {
+   "id": "note-names-keyboard",
+   "order": 2,
+   "level": "beginner",
+   "minutes": 8,
+   "title": "音名とピアノの鍵盤",
+   "intro": "音名は C D E F G A B（ド レ ミ ファ ソ ラ シ）の7つで、オクターブごとに繰り返します。ピアノの黒鍵は2つと3つのグループに並び、位置の目印になります。",
+   "points": [
+    "C（ド）は2つの黒鍵グループのすぐ左の白鍵です。",
+    "鍵盤の中央付近のCは中央のド（C4）で、MIDI番号は60です。",
+    "Bの次は次のオクターブのCです。CからCまでの8音が1オクターブです。"
+   ],
+   "practiceSongs": [
+    "twinkle-twinkle",
+    "hot-cross-buns"
+   ],
+   "quiz": [
+    {
+     "id": "note-names-keyboard-q1",
+     "q": "2つの黒鍵グループのすぐ左にある音はどれですか。",
+     "options": [
+      "C",
+      "D",
+      "F",
+      "A"
+     ],
+     "answer": 0,
+     "explain": "Cはいつも2つの黒鍵グループのすぐ左です。"
+    },
+    {
+     "id": "note-names-keyboard-q2",
+     "q": "中央のドのMIDI番号はいくつですか。",
+     "options": [
+      "48",
+      "60",
+      "64",
+      "72"
+     ],
+     "answer": 1,
+     "explain": "中央のド＝C4＝MIDI 60です。"
+    },
+    {
+     "id": "note-names-keyboard-q3",
+     "q": "CからC（繰り返しのCを除く）まで、異なる音名はいくつありますか。",
+     "options": [
+      "5",
+      "6",
+      "7",
+      "8"
+     ],
+     "answer": 2,
+     "explain": "C D E F G A B の7つです。"
+    }
+   ]
+  },
+  {
+   "id": "rhythm-values-rests",
+   "order": 3,
+   "level": "beginner",
+   "minutes": 8,
+   "title": "音符の長さと休符",
+   "intro": "音符の形は音の長さを表します。どの音符にも、同じ長さの休符があります。",
+   "points": [
+    "全音符＝4拍、二分音符＝2拍、四分音符＝1拍（4/4拍子の場合）。",
+    "八分音符＝半拍、十六分音符＝4分の1拍です。",
+    "音符の後ろの点は長さを半分延ばします。付点二分音符＝3拍です。"
+   ],
+   "practiceSongs": [
+    "mary-had-a-little-lamb",
+    "hot-cross-buns"
+   ],
+   "quiz": [
+    {
+     "id": "rhythm-values-rests-q1",
+     "q": "4/4拍子で二分音符は何拍ですか。",
+     "options": [
+      "1",
+      "2",
+      "3",
+      "4"
+     ],
+     "answer": 1,
+     "explain": "二分音符は四分音符2つ分＝2拍です。"
+    },
+    {
+     "id": "rhythm-values-rests-q2",
+     "q": "付点二分音符は何拍ですか。",
+     "options": [
+      "2",
+      "2.5",
+      "3",
+      "4"
+     ],
+     "answer": 2,
+     "explain": "2＋1＝3拍です。"
+    },
+    {
+     "id": "rhythm-values-rests-q3",
+     "q": "八分音符4つは何拍分ですか。",
+     "options": [
+      "1",
+      "2",
+      "3",
+      "4"
+     ],
+     "answer": 1,
+     "explain": "八分音符は0.5拍なので、4つで2拍です。"
+    }
+   ]
+  },
+  {
+   "id": "time-signatures-beat",
+   "order": 4,
+   "level": "beginner",
+   "minutes": 8,
+   "title": "拍子記号と拍",
+   "intro": "拍子記号は2つの数字でできています。上は1小節の拍数、下は1拍にあたる音符の種類です。小節の最初の拍がふつう一番強い拍です。",
+   "points": [
+    "4/4：1小節に四分音符4拍。ポップスやEDMで最も一般的です。",
+    "3/4：1小節に3拍。ワルツのリズムで「1・2・3」と数えます。",
+    "6/8：八分音符3つのまとまりが2つ。「1-2-3 4-5-6」と2つの山で感じます。"
+   ],
+   "practiceSongs": [
+    "row-row-row-your-boat",
+    "good-morning-to-all"
+   ],
+   "quiz": [
+    {
+     "id": "time-signatures-beat-q1",
+     "q": "3/4拍子の「3」は何を表しますか。",
+     "options": [
+      "1小節に3拍",
+      "1段に3小節",
+      "3倍速い",
+      "音階に3音"
+     ],
+     "answer": 0,
+     "explain": "上の数字は1小節の拍数です。"
+    },
+    {
+     "id": "time-signatures-beat-q2",
+     "q": "ワルツの感じがする拍子はどれですか。",
+     "options": [
+      "2/4",
+      "3/4",
+      "4/4",
+      "5/4"
+     ],
+     "answer": 1,
+     "explain": "3/4はワルツの拍子です。"
+    },
+    {
+     "id": "time-signatures-beat-q3",
+     "q": "4/4拍子の1小節に四分音符はいくつ入りますか。",
+     "options": [
+      "2",
+      "3",
+      "4",
+      "6"
+     ],
+     "answer": 2,
+     "explain": "下の4は四分音符が1拍、上の4は4拍という意味です。"
+    }
+   ]
+  },
+  {
+   "id": "tempo-dynamics",
+   "order": 5,
+   "level": "beginner",
+   "minutes": 8,
+   "title": "テンポと強弱",
+   "intro": "テンポは曲の速さで、ふつうBPM（1分間の拍数）で表します。強弱記号は音の大きさを表します。",
+   "points": [
+    "ラルゴ≈40〜60、アンダンテ≈76〜108、アレグロ≈120〜156、プレスト≈168〜200 BPM。",
+    "p（ピアノ）＝弱く、f（フォルテ）＝強く、mp／mf＝やや弱く／やや強く。",
+    "クレッシェンド（<）は次第に大きく、ディミヌエンド（>）は次第に小さく。"
+   ],
+   "practiceSongs": [
+    "jingle-bells"
+   ],
+   "quiz": [
+    {
+     "id": "tempo-dynamics-q1",
+     "q": "BPMは何の略ですか。",
+     "options": [
+      "1分間の拍数",
+      "1小節の音数",
+      "1拍あたりの音量",
+      "1曲の小節数"
+     ],
+     "answer": 0,
+     "explain": "BPM＝1分間の拍数。"
+    },
+    {
+     "id": "tempo-dynamics-q2",
+     "q": "記号 f の意味はどれですか。",
+     "options": [
+      "強く",
+      "弱く",
+      "速く",
+      "止まる"
+     ],
+     "answer": 0,
+     "explain": "f＝forte＝強く。"
+    },
+    {
+     "id": "tempo-dynamics-q3",
+     "q": "いちばん速いテンポ表示はどれですか。",
+     "options": [
+      "Largo",
+      "Andante",
+      "Allegro",
+      "Presto"
+     ],
+     "answer": 3,
+     "explain": "4つの中でプレストが最も速いです。"
+    }
+   ]
+  },
+  {
+   "id": "accidentals-semitones",
+   "order": 6,
+   "level": "beginner",
+   "minutes": 8,
+   "title": "シャープ・フラット・ナチュラルと半音",
+   "intro": "半音はピアノで隣り合う鍵盤への最小の動きです。シャープ（♯）は半音上げ、フラット（♭）は半音下げ、ナチュラル（♮）はそれを打ち消します。",
+   "points": [
+    "全音＝半音2つ。CからDは全音です。",
+    "E–FとB–Cの間は半音で、黒鍵はありません。",
+    "C♯とD♭は同じ鍵盤で名前が違うだけです（異名同音）。"
+   ],
+   "practiceSongs": [
+    "fur-elise"
+   ],
+   "quiz": [
+    {
+     "id": "accidentals-semitones-q1",
+     "q": "EからFはどれだけ離れていますか。",
+     "options": [
+      "半音",
+      "全音",
+      "全音と半音",
+      "全音2つ"
+     ],
+     "answer": 0,
+     "explain": "E–Fの間に黒鍵がないので半音です。"
+    },
+    {
+     "id": "accidentals-semitones-q2",
+     "q": "フラット（♭）の働きはどれですか。",
+     "options": [
+      "半音下げる",
+      "半音上げる",
+      "全音下げる",
+      "前の記号を消す"
+     ],
+     "answer": 0,
+     "explain": "フラットは半音下げます。"
+    },
+    {
+     "id": "accidentals-semitones-q3",
+     "q": "C♯と同じ鍵盤の音はどれですか。",
+     "options": [
+      "D♭",
+      "D♯",
+      "B♭",
+      "E♭"
+     ],
+     "answer": 0,
+     "explain": "C♯＝D♭（異名同音）。"
+    }
+   ]
+  },
+  {
+   "id": "major-scale",
+   "order": 7,
+   "level": "beginner",
+   "minutes": 8,
+   "title": "長音階",
+   "intro": "長音階は決まった音程の並びでできた7音で、明るく楽しい響きです。ハ長調は白鍵だけを使います。",
+   "points": [
+    "半音の数で表した公式：2–2–1–2–2–2–1。",
+    "ト長調はシャープ1つ（F♯）。ニ長調は2つ（F♯とC♯）。",
+    "音階の度数はⅠ〜Ⅶ：主音、上主音、中音、下属音、属音、下中音、導音。"
+   ],
+   "practiceSongs": [
+    "ode-to-joy",
+    "twinkle-twinkle"
+   ],
+   "quiz": [
+    {
+     "id": "major-scale-q1",
+     "q": "長音階の音程の並びはどれですか。",
+     "options": [
+      "2–2–1–2–2–2–1",
+      "2–1–2–2–1–2–2",
+      "1–2–2–2–1–2–2",
+      "2–2–2–1–2–2–1"
+     ],
+     "answer": 0,
+     "explain": "長音階：2–2–1–2–2–2–1（半音の数）。"
+    },
+    {
+     "id": "major-scale-q2",
+     "q": "ト長調のシャープはどれですか。",
+     "options": [
+      "C♯",
+      "F♯",
+      "G♯",
+      "B♭"
+     ],
+     "answer": 1,
+     "explain": "ト長調のシャープはF♯の1つです。"
+    },
+    {
+     "id": "major-scale-q3",
+     "q": "ハ長調を構成する音はどれですか。",
+     "options": [
+      "C D E F G A B",
+      "C D E♭ F G A B♭",
+      "C D E F♯ G A B",
+      "C D♭ E F G A B"
+     ],
+     "answer": 0,
+     "explain": "ハ長調は白鍵だけです。"
+    }
+   ]
+  },
+  {
+   "id": "intervals",
+   "order": 8,
+   "level": "beginner",
+   "minutes": 8,
+   "title": "音程",
+   "intro": "音程は2つの音の隔たりで、両端を含めて音名を数えた度数で呼びます。C–Eは3度、C–Gは5度です。",
+   "points": [
+    "長3度＝半音4つ、短3度＝半音3つ。",
+    "完全5度＝半音7つ、オクターブ＝半音12。",
+    "完全4度＝半音5つ。長・短・完全・増・減の種類で大きさが変わります。"
+   ],
+   "practiceSongs": [
+    "greensleeves"
+   ],
+   "quiz": [
+    {
+     "id": "intervals-q1",
+     "q": "CからGは何度ですか。",
+     "options": [
+      "3度",
+      "4度",
+      "5度",
+      "6度"
+     ],
+     "answer": 2,
+     "explain": "C D E F G：5つ数えるので5度です。"
+    },
+    {
+     "id": "intervals-q2",
+     "q": "長3度は半音いくつですか。",
+     "options": [
+      "2",
+      "3",
+      "4",
+      "5"
+     ],
+     "answer": 2,
+     "explain": "C–E＝半音4つ。"
+    },
+    {
+     "id": "intervals-q3",
+     "q": "オクターブは半音いくつですか。",
+     "options": [
+      "8",
+      "10",
+      "12",
+      "14"
+     ],
+     "answer": 2,
+     "explain": "1オクターブ＝半音12。"
+    }
+   ]
+  },
+  {
+   "id": "key-signatures-circle",
+   "order": 9,
+   "level": "intermediate",
+   "minutes": 8,
+   "title": "調号と五度圏",
+   "intro": "調号は音部記号の後ろに書かれるシャープまたはフラットの並びで、曲の調を示します。五度圏は調を完全5度ずつ並べたものです。",
+   "points": [
+    "シャープの順番：F C G D A E B。フラットはその逆：B E A D G C F。",
+    "完全5度上がるごとにシャープが1つ増えます：C(0)→G(1)→D(2)→A(3)→E(4)。",
+    "完全5度下がるごとにフラットが1つ増えます：C→F(1♭)→B♭(2♭)→E♭(3♭)。"
+   ],
+   "practiceSongs": [
+    "old-macdonald",
+    "minuet-in-g"
+   ],
+   "quiz": [
+    {
+     "id": "key-signatures-circle-q1",
+     "q": "ニ長調のシャープはいくつですか。",
+     "options": [
+      "1",
+      "2",
+      "3",
+      "4"
+     ],
+     "answer": 1,
+     "explain": "ニ長調はF♯とC♯の2つです。"
+    },
+    {
+     "id": "key-signatures-circle-q2",
+     "q": "B♭1つだけの調はどれですか。",
+     "options": [
+      "G major",
+      "F major",
+      "D major",
+      "B♭ major"
+     ],
+     "answer": 1,
+     "explain": "ヘ長調のフラットはB♭の1つです。"
+    },
+    {
+     "id": "key-signatures-circle-q3",
+     "q": "調号で最初に付くシャープはどの音ですか。",
+     "options": [
+      "C",
+      "F",
+      "G",
+      "B"
+     ],
+     "answer": 1,
+     "explain": "シャープの順番はF♯から始まります。"
+    }
+   ]
+  },
+  {
+   "id": "minor-scales",
+   "order": 10,
+   "level": "intermediate",
+   "minutes": 8,
+   "title": "短音階",
+   "intro": "短音階は長音階より暗く、しっとりした響きです。自然短音階、和声的短音階、旋律的短音階の3種類があります。",
+   "points": [
+    "自然短音階：2–1–2–2–1–2–2（半音の数）。イ短調は白鍵だけです。",
+    "和声的短音階は第7音を半音上げます（イ短調：G♯）。",
+    "平行調：長調の主音の短3度下から始まる短調です。ハ長調とイ短調は調号が同じです。"
+   ],
+   "practiceSongs": [
+    "greensleeves",
+    "fur-elise"
+   ],
+   "quiz": [
+    {
+     "id": "minor-scales-q1",
+     "q": "ハ長調の平行調（短調）はどれですか。",
+     "options": [
+      "D minor",
+      "E minor",
+      "A minor",
+      "G minor"
+     ],
+     "answer": 2,
+     "explain": "イ短調はCの短3度下です。"
+    },
+    {
+     "id": "minor-scales-q2",
+     "q": "和声的短音階で上げる音は第何音ですか。",
+     "options": [
+      "II",
+      "IV",
+      "VI",
+      "VII"
+     ],
+     "answer": 3,
+     "explain": "導音をつくるため第7音を上げます。"
+    },
+    {
+     "id": "minor-scales-q3",
+     "q": "イ短調（自然短音階）の調号にシャープ・フラットはいくつありますか。",
+     "options": [
+      "0",
+      "1",
+      "2",
+      "3"
+     ],
+     "answer": 0,
+     "explain": "イ短調はハ長調と同じで調号なしです。"
+    }
+   ]
+  },
+  {
+   "id": "triads",
+   "order": 11,
+   "level": "intermediate",
+   "minutes": 8,
+   "title": "三和音",
+   "intro": "三和音は3度ずつ積んだ3つの音（根音・第3音・第5音）です。2つの3度の大きさで和音の種類が決まります。",
+   "points": [
+    "長三和音：長3度＋短3度（半音4＋3）。C＝C–E–G。",
+    "短三和音：短3度＋長3度（3＋4）。Cm＝C–E♭–G。",
+    "減三和音：3＋3（Bdim＝B–D–F）。増三和音：4＋4（Caug＝C–E–G♯）。"
+   ],
+   "practiceSongs": [
+    "canon-in-d"
+   ],
+   "quiz": [
+    {
+     "id": "triads-q1",
+     "q": "Cメジャーコードの構成音はどれですか。",
+     "options": [
+      "C–E–G",
+      "C–E♭–G",
+      "C–F–G",
+      "C–E–A"
+     ],
+     "answer": 0,
+     "explain": "C＝C–E–G（4＋3）。"
+    },
+    {
+     "id": "triads-q2",
+     "q": "短三和音は3度をどの順に積みますか。",
+     "options": [
+      "短3度→長3度",
+      "長3度→短3度",
+      "短3度→短3度",
+      "長3度→長3度"
+     ],
+     "answer": 0,
+     "explain": "短三和音＝3＋4。"
+    },
+    {
+     "id": "triads-q3",
+     "q": "増三和音の構造はどれですか。",
+     "options": [
+      "3+3",
+      "4+3",
+      "3+4",
+      "4+4"
+     ],
+     "answer": 3,
+     "explain": "増三和音＝長3度2つ（4＋4）。"
+    }
+   ]
+  },
+  {
+   "id": "seventh-chords",
+   "order": 12,
+   "level": "intermediate",
+   "minutes": 8,
+   "title": "七の和音",
+   "intro": "七の和音は三和音の上に、根音から7度上の4つ目の音を加えたものです。ジャズやブルースで豊かな色合いを出します。",
+   "points": [
+    "Cmaj7＝C–E–G–B（長7度）。柔らかく夢のような響きです。",
+    "C7＝C–E–G–B♭（属七の和音）。緊張感があり、Fへ解決したがります。",
+    "Cm7＝C–E♭–G–B♭（短七の和音）。なめらかでリラックスした響き。"
+   ],
+   "practiceSongs": [],
+   "quiz": [
+    {
+     "id": "seventh-chords-q1",
+     "q": "C7の構成音はどれですか。",
+     "options": [
+      "C–E–G–B♭",
+      "C–E–G–B",
+      "C–E♭–G–B♭",
+      "C–E–G–A"
+     ],
+     "answer": 0,
+     "explain": "C7＝長三和音＋短7度。"
+    },
+    {
+     "id": "seventh-chords-q2",
+     "q": "Cmaj7とC7で違う音はどれですか。",
+     "options": [
+      "BとB♭",
+      "EとE♭",
+      "GとG♯",
+      "違いはない"
+     ],
+     "answer": 0,
+     "explain": "maj7はB、7はB♭を使います。"
+    },
+    {
+     "id": "seventh-chords-q3",
+     "q": "七の和音は何音でできていますか。",
+     "options": [
+      "2",
+      "3",
+      "4",
+      "5"
+     ],
+     "answer": 2,
+     "explain": "三和音の3音に7度音を加えて4音です。"
+    }
+   ]
+  },
+  {
+   "id": "reading-guitar-tab",
+   "order": 13,
+   "level": "beginner",
+   "minutes": 7,
+   "title": "ギターのタブ譜とコードダイアグラム",
+   "intro": "タブ譜は6本の線でギターの6本の弦を表し、数字は押さえるフレットです。コードダイアグラムは指の位置を示します。",
+   "points": [
+    "いちばん下の線が6弦（低いE）です。標準チューニングは6弦から1弦へ E A D G B E。",
+    "0は開放弦、3はその弦の3フレットを押さえる意味です。",
+    "コードダイアグラムでは、Xは弾かない弦、Oは開放弦、●は指の位置です。"
+   ],
+   "practiceSongs": [],
+   "quiz": [
+    {
+     "id": "reading-guitar-tab-q1",
+     "q": "タブ譜のいちばん下の線はどの弦ですか。",
+     "options": [
+      "6弦（低いE）",
+      "1弦（高いE）",
+      "3弦（G）",
+      "4弦（D）"
+     ],
+     "answer": 0,
+     "explain": "下の線は最も低い弦です。"
+    },
+    {
+     "id": "reading-guitar-tab-q2",
+     "q": "標準チューニング（6弦→1弦）はどれですか。",
+     "options": [
+      "E A D G B E",
+      "E B G D A E",
+      "A D G C E A",
+      "D A D G B E"
+     ],
+     "answer": 0,
+     "explain": "標準：E A D G B E。"
+    },
+    {
+     "id": "reading-guitar-tab-q3",
+     "q": "タブ譜の0は何を意味しますか。",
+     "options": [
+      "開放弦",
+      "弾かない",
+      "10フレット",
+      "ミュート"
+     ],
+     "answer": 0,
+     "explain": "0＝フレットを押さえず開放弦で弾く。"
+    }
+   ]
+  },
+  {
+   "id": "piano-hand-position",
+   "order": 14,
+   "level": "beginner",
+   "minutes": 7,
+   "title": "ピアノの手の形と指番号",
+   "intro": "指番号は親指から小指まで1〜5です。手首の力を抜き、小さなオレンジを持つように指を軽く丸めます。",
+   "points": [
+    "ハ（C）ポジション：右手の指1-2-3-4-5をC D E F Gに置きます。",
+    "右手のハ長調（上行）：1-2-3、親指をくぐらせて、1-2-3-4-5。",
+    "左手は低いCを小指（5）で始めます：5-4-3-2-1、そして3-2-1。"
+   ],
+   "practiceSongs": [
+    "ode-to-joy",
+    "mary-had-a-little-lamb"
+   ],
+   "quiz": [
+    {
+     "id": "piano-hand-position-q1",
+     "q": "指番号1はどの指ですか。",
+     "options": [
+      "親指",
+      "人差し指",
+      "小指",
+      "中指"
+     ],
+     "answer": 0,
+     "explain": "指番号1は親指です。"
+    },
+    {
+     "id": "piano-hand-position-q2",
+     "q": "Cポジションで、右手の5の指が弾く音はどれですか。",
+     "options": [
+      "E",
+      "F",
+      "G",
+      "A"
+     ],
+     "answer": 2,
+     "explain": "1-2-3-4-5＝C D E F G。"
+    },
+    {
+     "id": "piano-hand-position-q3",
+     "q": "右手のハ長調を上行するとき、3の指のあとにすることは何ですか。",
+     "options": [
+      "親指をくぐらせる",
+      "手全体を移動する",
+      "左手に替える",
+      "止まる"
+     ],
+     "answer": 0,
+     "explain": "親指をくぐらせるとなめらかに続けられます。"
+    }
+   ]
+  },
+  {
+   "id": "chord-progressions-roman",
+   "order": 15,
+   "level": "intermediate",
+   "minutes": 8,
+   "title": "ローマ数字と和音進行",
+   "intro": "ローマ数字は音階の度数で和音を呼ぶので、どの調にも使えます。長調では Ⅰ ii iii Ⅳ Ⅴ vi vii° です。",
+   "points": [
+    "C長調のⅠ–Ⅴ–vi–ⅣはC–G–Am–F。G長調ではG–D–Em–Cです。",
+    "完全終止Ⅴ–Ⅰは文の終わりのように聞こえ、Ⅳ–Ⅰは「アーメン」のように穏やかです。",
+    "12小節ブルース：Ⅰ Ⅰ Ⅰ Ⅰ – Ⅳ Ⅳ Ⅰ Ⅰ – Ⅴ Ⅳ Ⅰ Ⅴ。"
+   ],
+   "practiceSongs": [
+    "canon-in-d"
+   ],
+   "quiz": [
+    {
+     "id": "chord-progressions-roman-q1",
+     "q": "C長調のⅠ–Ⅴ–vi–Ⅳはどれですか。",
+     "options": [
+      "C–G–Am–F",
+      "C–F–G–Am",
+      "C–Am–F–G",
+      "C–Dm–G–C"
+     ],
+     "answer": 0,
+     "explain": "Ⅰ＝C、Ⅴ＝G、vi＝Am、Ⅳ＝F。"
+    },
+    {
+     "id": "chord-progressions-roman-q2",
+     "q": "G長調のvi和音はどれですか。",
+     "options": [
+      "Am",
+      "Bm",
+      "Em",
+      "Cm"
+     ],
+     "answer": 2,
+     "explain": "G長調の第6音はEで短和音：Emです。"
+    },
+    {
+     "id": "chord-progressions-roman-q3",
+     "q": "12小節ブルースの最後の2小節はどれですか。",
+     "options": [
+      "I → IV",
+      "IV → V",
+      "I → V",
+      "V → IV"
+     ],
+     "answer": 2,
+     "explain": "最後の2小節はⅠからⅤ（ターンアラウンド）で次の周回につなぎます。"
+    }
+   ]
+  },
+  {
+   "id": "modes",
+   "order": 16,
+   "level": "advanced",
+   "minutes": 8,
+   "title": "旋法（モード）",
+   "intro": "旋法は同じ長音階の別の音から始める7音音階で、それぞれ独自の色合いを持ちます。",
+   "points": [
+    "白鍵で：イオニアン（C–C）＝長音階、ドリアン（D–D）、フリジアン（E–E）、リディアン（F–F）、ミクソリディアン（G–G）、エオリアン（A–A）＝自然短音階、ロクリアン（B–B）。",
+    "ドリアン＝第6音を上げた自然短音階（明るくジャジー）。ミクソリディアン＝第7音を下げた長音階（ロック／ブルース風）。",
+    "リディアン＝第4音を上げた長音階（♯4）。夢のような映画音楽風の響きです。"
+   ],
+   "practiceSongs": [
+    "greensleeves"
+   ],
+   "quiz": [
+    {
+     "id": "modes-q1",
+     "q": "白鍵でDから始まる旋法はどれですか。",
+     "options": [
+      "Dorian",
+      "Phrygian",
+      "Lydian",
+      "Mixolydian"
+     ],
+     "answer": 0,
+     "explain": "白鍵のD–Dはドリアンです。"
+    },
+    {
+     "id": "modes-q2",
+     "q": "ミクソリディアンが長音階と違うのはどの音ですか。",
+     "options": [
+      "第7音が半音低い",
+      "第4音が半音高い",
+      "第3音が半音低い",
+      "第2音が半音高い"
+     ],
+     "answer": 0,
+     "explain": "ミクソリディアン＝♭7の長音階。"
+    },
+    {
+     "id": "modes-q3",
+     "q": "エオリアンと同じ音階はどれですか。",
+     "options": [
+      "自然短音階",
+      "長音階",
+      "和声的短音階",
+      "ペンタトニック"
+     ],
+     "answer": 0,
+     "explain": "エオリアンは自然短音階そのものです。"
+    }
+   ]
+  },
+  {
+   "id": "pentatonic-blues",
+   "order": 17,
+   "level": "intermediate",
+   "minutes": 7,
+   "title": "ペンタトニックとブルーススケール",
+   "intro": "ペンタトニックは5音だけなので即興しやすく、外れた音になりにくい音階です。「ブルーノート」を1つ足すとブルーススケールになります。",
+   "points": [
+    "長調のペンタトニック：1・2・3・5・6度（ハ長調：C D E G A）。",
+    "短調のペンタトニック：1・♭3・4・5・♭7度（イ短調：A C D E G）。",
+    "ブルーススケール＝短調ペンタトニック＋♭5（Aブルース：A C D E♭ E G）。"
+   ],
+   "practiceSongs": [
+    "old-macdonald"
+   ],
+   "quiz": [
+    {
+     "id": "pentatonic-blues-q1",
+     "q": "ペンタトニックは何音ですか。",
+     "options": [
+      "4",
+      "5",
+      "6",
+      "7"
+     ],
+     "answer": 1,
+     "explain": "ペンタ＝5。"
+    },
+    {
+     "id": "pentatonic-blues-q2",
+     "q": "イ短調のペンタトニックの音はどれですか。",
+     "options": [
+      "A C D E G",
+      "A B C E G",
+      "A C D F G",
+      "A B D E G"
+     ],
+     "answer": 0,
+     "explain": "Aから1・♭3・4・5・♭7＝A C D E G。"
+    },
+    {
+     "id": "pentatonic-blues-q3",
+     "q": "短調ペンタトニックに加えるとブルーススケールになる音はどれですか。",
+     "options": [
+      "♭2",
+      "♭5",
+      "♭6",
+      "♭3"
+     ],
+     "answer": 1,
+     "explain": "ブルーノートは♭5です。"
+    }
+   ]
+  },
+  {
+   "id": "harmony-voice-leading",
+   "order": 18,
+   "level": "advanced",
+   "minutes": 8,
+   "title": "和声の基礎：転回形と声部進行",
+   "intro": "転回形は和音の最低音を入れ替えることです。声部進行は、できるだけ小さな動きで次の和音へ移ることです。",
+   "points": [
+    "Cメジャー：基本形 C–E–G、第1転回形 E–G–C、第2転回形 G–C–E。",
+    "2つの和音の共通音を保ち、残りだけ動かします。C→AmではCとEが共通です。",
+    "古典和声では、2つの声部が平行5度で続けて動くのを避けます。"
+   ],
+   "practiceSongs": [
+    "canon-in-d"
+   ],
+   "quiz": [
+    {
+     "id": "harmony-voice-leading-q1",
+     "q": "Cメジャーの第1転回形で最低音はどれですか。",
+     "options": [
+      "C",
+      "E",
+      "G",
+      "B"
+     ],
+     "answer": 1,
+     "explain": "第1転回形は第3音（E）が最低音です。"
+    },
+    {
+     "id": "harmony-voice-leading-q2",
+     "q": "CとAmの共通音はどれですか。",
+     "options": [
+      "C, E",
+      "E, G",
+      "G, A",
+      "C, G"
+     ],
+     "answer": 0,
+     "explain": "C＝C–E–G、Am＝A–C–E → 共通はCとE。"
+    },
+    {
+     "id": "harmony-voice-leading-q3",
+     "q": "「なめらかな声部進行」とは何ですか。",
+     "options": [
+      "音が小さな動きで進む",
+      "すべての音が1オクターブ跳ぶ",
+      "ベースだけを弾く",
+      "和音を使わない"
+     ],
+     "answer": 0,
+     "explain": "小さな動きで共通音を保ちます。"
+    }
+   ]
+  },
+  {
+   "id": "ear-training",
+   "order": 19,
+   "level": "intermediate",
+   "minutes": 8,
+   "title": "聴音：音程と和音を聞き分ける",
+   "intro": "聴音を鍛えると、楽譜を見ずに聞いた旋律を弾けるようになります。各音程をよく知る曲の出だしと結びつけるのがコツです。",
+   "points": [
+    "きらきら星：最初の2音C→Gは上行の完全5度です。",
+    "グリーンスリーブスは上行の短3度（A→C）で始まります。",
+    "長和音は明るく楽しく、短和音は暗く悲しく聞こえます。"
+   ],
+   "practiceSongs": [
+    "twinkle-twinkle",
+    "greensleeves",
+    "ode-to-joy"
+   ],
+   "quiz": [
+    {
+     "id": "ear-training-q1",
+     "q": "きらきら星の最初の2音は何度ですか。",
+     "options": [
+      "完全5度",
+      "短3度",
+      "オクターブ",
+      "2度"
+     ],
+     "answer": 0,
+     "explain": "C→G＝半音7つ＝完全5度。"
+    },
+    {
+     "id": "ear-training-q2",
+     "q": "グリーンスリーブスの出だしは何度ですか。",
+     "options": [
+      "上行の短3度",
+      "上行の長3度",
+      "下行の完全4度",
+      "上行のオクターブ"
+     ],
+     "answer": 0,
+     "explain": "A→Cは半音3つです。"
+    },
+    {
+     "id": "ear-training-q3",
+     "q": "暗く悲しく聞こえる和音の種類はどれですか。",
+     "options": [
+      "短和音",
+      "長和音",
+      "長七",
+      "sus4"
+     ],
+     "answer": 0,
+     "explain": "短和音は悲しく聞こえます。"
+    }
+   ]
+  },
+  {
+   "id": "edm-bpm-bars-phrases",
+   "order": 20,
+   "level": "advanced",
+   "minutes": 8,
+   "title": "EDM：BPM・小節・フレーズ",
+   "intro": "電子音楽は固定されたビートのグリッド上に作られます。多くは4/4拍子で、セクションは8・16・32小節の長さです。",
+   "points": [
+    "代表的なBPM：ハウス120〜128、テクノ125〜150、トランス130〜145、ダブステップ約140、ドラムンベース170〜180。",
+    "フォー・オン・ザ・フロア：キックが1小節の4拍すべてに入ります。",
+    "4/4の1小節の長さ＝240÷BPM秒。120 BPMなら1小節は2秒です。"
+   ],
+   "practiceSongs": [],
+   "quiz": [
+    {
+     "id": "edm-bpm-bars-phrases-q1",
+     "q": "120 BPMで4/4の1小節は何秒ですか。",
+     "options": [
+      "1 s",
+      "2 s",
+      "3 s",
+      "4 s"
+     ],
+     "answer": 1,
+     "explain": "4拍×0.5秒＝2秒。"
+    },
+    {
+     "id": "edm-bpm-bars-phrases-q2",
+     "q": "フォー・オン・ザ・フロアとは何ですか。",
+     "options": [
+      "4拍すべてにキック",
+      "4人が同時に演奏",
+      "1曲に4つの和音",
+      "遅い4/4"
+     ],
+     "answer": 0,
+     "explain": "キックが各拍に等間隔で入ります。"
+    },
+    {
+     "id": "edm-bpm-bars-phrases-q3",
+     "q": "通常いちばん速いジャンルはどれですか。",
+     "options": [
+      "House",
+      "Trance",
+      "Dubstep",
+      "Drum & Bass"
+     ],
+     "answer": 3,
+     "explain": "ドラムンベースは約170〜180 BPMです。"
+    }
+   ]
+  },
+  {
+   "id": "dj-beatmatching",
+   "order": 21,
+   "level": "advanced",
+   "minutes": 8,
+   "title": "DJ：ビートマッチング",
+   "intro": "ビートマッチングは、2曲のBPMを揃え拍を合わせて、つなぎをなめらかにする技術です。入ってくる曲はヘッドホン（キュー）で確認してからスピーカーに出します。",
+   "points": [
+    "テンポ（ピッチ）フェーダーでBPMを合わせ、ジョグ／ナッジで拍の位置を揃えます。",
+    "16または32小節のフレーズの頭でミックスを始め、構成を合わせます。",
+    "テンポの変化が小さいほど自然で、約±6%以内ならあまり気になりません。"
+   ],
+   "practiceSongs": [],
+   "quiz": [
+    {
+     "id": "dj-beatmatching-q1",
+     "q": "曲Aが120 BPM、曲Bが126 BPMです。BをAに合わせるには約どれだけ調整しますか。",
+     "options": [
+      "−4.8%",
+      "+4.8%",
+      "−10%",
+      "+10%"
+     ],
+     "answer": 0,
+     "explain": "120÷126≈0.952、つまり約4.8%遅くします。"
+    },
+    {
+     "id": "dj-beatmatching-q2",
+     "q": "新しい曲のミックスはどこから始めるのがよいですか。",
+     "options": [
+      "16／32小節フレーズの頭",
+      "小節の途中ならどこでも",
+      "前の曲が完全に無音のとき",
+      "セットの最初の1秒"
+     ],
+     "answer": 0,
+     "explain": "フレーズの頭に揃えると構成が合います。"
+    },
+    {
+     "id": "dj-beatmatching-q3",
+     "q": "キュー機能は何のために使いますか。",
+     "options": [
+      "入ってくる曲をヘッドホンで事前確認する",
+      "メインスピーカーの音量を上げる",
+      "曲を削除する",
+      "曲のキーを変える"
+     ],
+     "answer": 0,
+     "explain": "キューはヘッドホンだけで聞けるようにします。"
+    }
+   ]
+  },
+  {
+   "id": "edm-structure-drops",
+   "order": 22,
+   "level": "advanced",
+   "minutes": 8,
+   "title": "EDMの曲構成：ビルドアップとドロップ",
+   "intro": "典型的なEDMは、イントロ→ビルドアップ→ドロップ→ブレイクダウン→2回目のドロップ→アウトロと進みます。緊張を高めてから解放することで感情が生まれます。",
+   "points": [
+    "ビルドアップ：ライザー、スネアロール、上がるフィルター、密になるリズムを足します（8〜16小節）。",
+    "ドロップ：キック・ベース・リードがそろう最もエネルギーの高い瞬間です。",
+    "ブレイクダウン：キックを抜いた静かな部分で、次のドロップの前にメロディとコードを聞かせます。"
+   ],
+   "practiceSongs": [],
+   "quiz": [
+    {
+     "id": "edm-structure-drops-q1",
+     "q": "ドロップの直前にくるセクションはどれですか。",
+     "options": [
+      "アウトロ",
+      "ビルドアップ",
+      "イントロ",
+      "ブリッジ"
+     ],
+     "answer": 1,
+     "explain": "ビルドアップがドロップ前の緊張をつくります。"
+    },
+    {
+     "id": "edm-structure-drops-q2",
+     "q": "ブレイクダウンの特徴はどれですか。",
+     "options": [
+      "キックを抜いて静か",
+      "キックとベースが最大",
+      "ライザーだけ",
+      "完全な無音"
+     ],
+     "answer": 0,
+     "explain": "ブレイクダウンは落ち着く部分です。"
+    },
+    {
+     "id": "edm-structure-drops-q3",
+     "q": "ドロップとは何ですか。",
+     "options": [
+      "エネルギーが最高潮の瞬間",
+      "曲の終わり",
+      "ドラムの一種",
+      "和音の一種"
+     ],
+     "answer": 0,
+     "explain": "ドロップはベースとキックが入る瞬間です。"
+    }
+   ]
+  },
+  {
+   "id": "mixing-eq-compression",
+   "order": 23,
+   "level": "advanced",
+   "minutes": 8,
+   "title": "ミキシングの基礎：EQ・コンプレッサー・サイドチェイン",
+   "intro": "ミキシングは、音同士がきれいに聞こえるようにバランスをとる作業です。基本の道具はEQ、コンプレッサー、サイドチェインの3つです。",
+   "points": [
+    "EQは周波数帯を持ち上げたり削ったりします：低域（約250Hz以下）、中域（約250Hz〜4kHz）、高域（約4kHz以上）。",
+    "コンプレッサーは大きい部分と小さい部分の差を縮めます。主なつまみはスレッショルド、レシオ、アタック、リリースです。",
+    "サイドチェイン：キックが鳴るたびにベースを下げ、「ポンピング」効果を出しキックを際立たせます。"
+   ],
+   "practiceSongs": [],
+   "quiz": [
+    {
+     "id": "mixing-eq-compression-q1",
+     "q": "EDMでサイドチェインは主に何に使いますか。",
+     "options": [
+      "キックに合わせてベースを下げる",
+      "曲を速くする",
+      "キーを変える",
+      "リバーブを足す"
+     ],
+     "answer": 0,
+     "explain": "サイドチェインはキックの信号でベースを圧縮します。"
+    },
+    {
+     "id": "mixing-eq-compression-q2",
+     "q": "「低域」にあたるのはどれですか。",
+     "options": [
+      "60 Hz",
+      "2 kHz",
+      "8 kHz",
+      "16 kHz"
+     ],
+     "answer": 0,
+     "explain": "60Hzは低い周波数です。"
+    },
+    {
+     "id": "mixing-eq-compression-q3",
+     "q": "コンプレッサーは何をしますか。",
+     "options": [
+      "大小の差を縮める",
+      "新しい音を足す",
+      "音を逆再生する",
+      "BPMを変える"
+     ],
+     "answer": 0,
+     "explain": "コンプレッサーはダイナミックレンジを制御します。"
+    }
+   ]
+  },
+  {
+   "id": "harmonic-mixing-camelot",
+   "order": 24,
+   "level": "advanced",
+   "minutes": 8,
+   "title": "ハーモニックミキシング：キャメロットホイール",
+   "intro": "キャメロットホイールは各調に1〜12の数字とA（短調）またはB（長調）の記号を割り当て、DJが相性のよい調の曲を選んで音のぶつかりを避けられるようにします。",
+   "points": [
+    "8A＝イ短調、8B＝ハ長調（平行調は同じ数字）。",
+    "安全なミックス：同じコード、同じ文字で数字±1、または同じ数字で文字を入れ替え（A↔B）。",
+    "数字を+1すると完全5度上です（8A Am→9A Em）。"
+   ],
+   "practiceSongs": [],
+   "quiz": [
+    {
+     "id": "harmonic-mixing-camelot-q1",
+     "q": "8Bはどの調ですか。",
+     "options": [
+      "A minor",
+      "C major",
+      "G major",
+      "E minor"
+     ],
+     "answer": 1,
+     "explain": "8B＝ハ長調。"
+    },
+    {
+     "id": "harmonic-mixing-camelot-q2",
+     "q": "8A（イ短調）から安全にミックスできるコードはどれですか。",
+     "options": [
+      "9A",
+      "3B",
+      "11A",
+      "5B"
+     ],
+     "answer": 0,
+     "explain": "9Aは同じ文字で数字+1です。"
+    },
+    {
+     "id": "harmonic-mixing-camelot-q3",
+     "q": "キャメロットホイールの「A」は何を意味しますか。",
+     "options": [
+      "短調",
+      "長調",
+      "速いテンポ",
+      "大きな音量"
+     ],
+     "answer": 0,
+     "explain": "A＝短調、B＝長調。"
+    }
+   ]
+  }
+ ]
+}

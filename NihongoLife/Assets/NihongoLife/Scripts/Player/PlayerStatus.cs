@@ -348,6 +348,14 @@ namespace NihongoLife.Player
             OnStatusChanged?.Invoke();
         }
 
+        /// <summary>Tests: set the total XP (and so the level) directly (not saved).</summary>
+        public void DebugSetExp(int total)
+        {
+            TotalExp = Mathf.Max(0, total);
+            ApplyLevelFromTotal();
+            OnStatusChanged?.Invoke();
+        }
+
         public bool HasKnowledge(int required) => Knowledge >= Mathf.Max(0, required);
 
         private void LoadProgress()

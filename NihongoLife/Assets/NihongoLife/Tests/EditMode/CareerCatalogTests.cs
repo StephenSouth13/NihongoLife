@@ -24,7 +24,7 @@ namespace NihongoLife.Tests
         {
             var catalog = CareerCatalog.Load();
             Assert.AreEqual(10, catalog.unlockLevel);
-            CollectionAssert.AreEquivalent(new[] { "retail", "food", "farm", "medical", "hospitality", "chef" }, catalog.careers.Select(c => c.id).ToArray());
+            CollectionAssert.AreEquivalent(new[] { "retail", "food", "farm", "medical", "hospitality", "chef", "musician", "producer", "painter" }, catalog.careers.Select(c => c.id).ToArray());
             foreach (var career in catalog.careers)
             {
                 Assert.AreEqual(6, career.MaxLevel, career.id);

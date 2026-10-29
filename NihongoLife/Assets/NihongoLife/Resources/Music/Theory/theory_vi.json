@@ -1,0 +1,1297 @@
+{
+ "schema": "nihongolife.musictheory.v1",
+ "language": "vi",
+ "lessons": [
+  {
+   "id": "staff-clefs",
+   "order": 1,
+   "level": "beginner",
+   "minutes": 8,
+   "title": "Khuông nhạc và khóa nhạc",
+   "intro": "Nhạc được viết trên khuông nhạc gồm 5 dòng kẻ và 4 khe. Khóa nhạc đặt ở đầu khuông cho biết tên của các nốt.",
+   "points": [
+    "Các dòng kẻ được đếm từ dưới lên: dòng 1 ở thấp nhất.",
+    "Khóa Sol thường dùng cho tay phải piano và giai điệu; nó đánh dấu dòng 2 là nốt Sol.",
+    "Khóa Fa dùng cho tay trái và âm trầm; nó đánh dấu dòng 4 là nốt Fa."
+   ],
+   "practiceSongs": [
+    "ode-to-joy"
+   ],
+   "quiz": [
+    {
+     "id": "staff-clefs-q1",
+     "q": "Một khuông nhạc có bao nhiêu dòng kẻ?",
+     "options": [
+      "4",
+      "5",
+      "6",
+      "7"
+     ],
+     "answer": 1,
+     "explain": "Khuông nhạc có 5 dòng kẻ."
+    },
+    {
+     "id": "staff-clefs-q2",
+     "q": "Khóa Sol đánh dấu nốt nào ở dòng 2?",
+     "options": [
+      "C",
+      "F",
+      "G",
+      "A"
+     ],
+     "answer": 2,
+     "explain": "Khóa Sol “cuộn” quanh dòng 2 là Sol (G)."
+    },
+    {
+     "id": "staff-clefs-q3",
+     "q": "Khóa nào thường dùng cho tay trái piano?",
+     "options": [
+      "Khóa Fa",
+      "Khóa Sol",
+      "Khóa Đô",
+      "Không cần khóa"
+     ],
+     "answer": 0,
+     "explain": "Tay trái chơi âm trầm nên dùng khóa Fa."
+    }
+   ]
+  },
+  {
+   "id": "note-names-keyboard",
+   "order": 2,
+   "level": "beginner",
+   "minutes": 8,
+   "title": "Tên nốt và bàn phím piano",
+   "intro": "Có 7 tên nốt: C D E F G A B (Đô Rê Mi Fa Sol La Si), lặp lại theo từng quãng tám. Trên piano, phím đen xếp thành nhóm 2 và nhóm 3 để bạn tìm vị trí.",
+   "points": [
+    "Nốt C (Đô) nằm ngay bên trái nhóm 2 phím đen.",
+    "C ở giữa bàn phím gọi là Middle C (C4), có số MIDI 60.",
+    "Sau B lại đến C của quãng tám tiếp theo; 8 nốt từ C đến C là một quãng tám."
+   ],
+   "practiceSongs": [
+    "twinkle-twinkle",
+    "hot-cross-buns"
+   ],
+   "quiz": [
+    {
+     "id": "note-names-keyboard-q1",
+     "q": "Nốt nào nằm ngay bên trái nhóm 2 phím đen?",
+     "options": [
+      "C",
+      "D",
+      "F",
+      "A"
+     ],
+     "answer": 0,
+     "explain": "C luôn nằm bên trái nhóm 2 phím đen."
+    },
+    {
+     "id": "note-names-keyboard-q2",
+     "q": "Middle C có số MIDI là bao nhiêu?",
+     "options": [
+      "48",
+      "60",
+      "64",
+      "72"
+     ],
+     "answer": 1,
+     "explain": "Middle C = C4 = MIDI 60."
+    },
+    {
+     "id": "note-names-keyboard-q3",
+     "q": "Từ C đến C kế tiếp có bao nhiêu tên nốt khác nhau (không tính C lặp lại)?",
+     "options": [
+      "5",
+      "6",
+      "7",
+      "8"
+     ],
+     "answer": 2,
+     "explain": "C D E F G A B là 7 tên nốt."
+    }
+   ]
+  },
+  {
+   "id": "rhythm-values-rests",
+   "order": 3,
+   "level": "beginner",
+   "minutes": 8,
+   "title": "Trường độ nốt và dấu lặng",
+   "intro": "Mỗi hình nốt cho biết nốt kéo dài bao lâu. Mỗi nốt đều có dấu lặng tương ứng để im lặng đúng thời gian.",
+   "points": [
+    "Nốt tròn = 4 phách, nốt trắng = 2 phách, nốt đen = 1 phách (trong nhịp 4/4).",
+    "Nốt móc đơn = nửa phách; nốt móc kép = một phần tư phách.",
+    "Dấu chấm sau nốt kéo dài thêm một nửa giá trị: nốt trắng chấm = 3 phách."
+   ],
+   "practiceSongs": [
+    "mary-had-a-little-lamb",
+    "hot-cross-buns"
+   ],
+   "quiz": [
+    {
+     "id": "rhythm-values-rests-q1",
+     "q": "Trong nhịp 4/4, nốt trắng kéo dài mấy phách?",
+     "options": [
+      "1",
+      "2",
+      "3",
+      "4"
+     ],
+     "answer": 1,
+     "explain": "Nốt trắng bằng 2 nốt đen = 2 phách."
+    },
+    {
+     "id": "rhythm-values-rests-q2",
+     "q": "Nốt trắng chấm dôi kéo dài bao nhiêu phách?",
+     "options": [
+      "2",
+      "2.5",
+      "3",
+      "4"
+     ],
+     "answer": 2,
+     "explain": "2 + 1 = 3 phách."
+    },
+    {
+     "id": "rhythm-values-rests-q3",
+     "q": "Bốn nốt móc đơn dài bằng mấy phách?",
+     "options": [
+      "1",
+      "2",
+      "3",
+      "4"
+     ],
+     "answer": 1,
+     "explain": "Mỗi nốt móc đơn là 0,5 phách nên 4 nốt = 2 phách."
+    }
+   ]
+  },
+  {
+   "id": "time-signatures-beat",
+   "order": 4,
+   "level": "beginner",
+   "minutes": 8,
+   "title": "Số chỉ nhịp và phách",
+   "intro": "Số chỉ nhịp gồm hai số: số trên là số phách trong một ô nhịp, số dưới cho biết nốt nào bằng 1 phách. Phách đầu của ô nhịp thường mạnh nhất.",
+   "points": [
+    "4/4: 4 phách đen mỗi ô nhịp — nhịp phổ biến nhất (pop, EDM).",
+    "3/4: 3 phách mỗi ô nhịp — nhịp valse, đếm “một-hai-ba”.",
+    "6/8: hai nhóm ba nốt móc đơn, cảm giác “1-2-3 4-5-6” với hai điểm nhấn."
+   ],
+   "practiceSongs": [
+    "row-row-row-your-boat",
+    "good-morning-to-all"
+   ],
+   "quiz": [
+    {
+     "id": "time-signatures-beat-q1",
+     "q": "Số 3 trong nhịp 3/4 cho biết điều gì?",
+     "options": [
+      "3 phách mỗi ô nhịp",
+      "3 ô nhịp mỗi dòng",
+      "Nhanh gấp 3 lần",
+      "3 nốt trong gam"
+     ],
+     "answer": 0,
+     "explain": "Số trên là số phách mỗi ô nhịp."
+    },
+    {
+     "id": "time-signatures-beat-q2",
+     "q": "Nhịp nào có cảm giác valse?",
+     "options": [
+      "2/4",
+      "3/4",
+      "4/4",
+      "5/4"
+     ],
+     "answer": 1,
+     "explain": "3/4 là nhịp valse."
+    },
+    {
+     "id": "time-signatures-beat-q3",
+     "q": "Một ô nhịp 4/4 chứa bao nhiêu nốt đen?",
+     "options": [
+      "2",
+      "3",
+      "4",
+      "6"
+     ],
+     "answer": 2,
+     "explain": "Số dưới 4 nghĩa là nốt đen bằng 1 phách, số trên 4 nghĩa là 4 phách."
+    }
+   ]
+  },
+  {
+   "id": "tempo-dynamics",
+   "order": 5,
+   "level": "beginner",
+   "minutes": 8,
+   "title": "Nhịp độ và cường độ",
+   "intro": "Nhịp độ cho biết nhạc nhanh hay chậm, thường đo bằng BPM (số phách mỗi phút). Cường độ cho biết chơi to hay nhỏ.",
+   "points": [
+    "Largo ≈ 40–60 BPM, Andante ≈ 76–108, Allegro ≈ 120–156, Presto ≈ 168–200.",
+    "p (piano) = nhỏ, f (forte) = to, mp/mf = vừa nhỏ/vừa to.",
+    "Crescendo (<) tăng dần âm lượng, diminuendo (>) giảm dần."
+   ],
+   "practiceSongs": [
+    "jingle-bells"
+   ],
+   "quiz": [
+    {
+     "id": "tempo-dynamics-q1",
+     "q": "BPM là viết tắt của gì?",
+     "options": [
+      "Số phách mỗi phút",
+      "Số nốt mỗi ô nhịp",
+      "Độ to mỗi phách",
+      "Số ô nhịp mỗi bài"
+     ],
+     "answer": 0,
+     "explain": "BPM = số phách mỗi phút."
+    },
+    {
+     "id": "tempo-dynamics-q2",
+     "q": "Ký hiệu f có nghĩa là gì?",
+     "options": [
+      "Chơi to",
+      "Chơi nhỏ",
+      "Chơi nhanh",
+      "Dừng lại"
+     ],
+     "answer": 0,
+     "explain": "f = forte = to."
+    },
+    {
+     "id": "tempo-dynamics-q3",
+     "q": "Nhịp độ nào nhanh nhất?",
+     "options": [
+      "Largo",
+      "Andante",
+      "Allegro",
+      "Presto"
+     ],
+     "answer": 3,
+     "explain": "Presto là nhanh nhất trong bốn từ này."
+    }
+   ]
+  },
+  {
+   "id": "accidentals-semitones",
+   "order": 6,
+   "level": "beginner",
+   "minutes": 8,
+   "title": "Dấu thăng, giáng, hoàn và nửa cung",
+   "intro": "Nửa cung là khoảng cách nhỏ nhất trên piano, từ phím này sang phím liền kề. Thăng (♯) nâng nốt lên nửa cung, giáng (♭) hạ xuống nửa cung, hoàn (♮) hủy dấu đó.",
+   "points": [
+    "Một cung (tone) = 2 nửa cung. Từ C lên D là một cung.",
+    "Giữa E–F và B–C chỉ có nửa cung, không có phím đen.",
+    "C♯ và D♭ là cùng một phím nhưng tên khác nhau (đồng âm khác tên)."
+   ],
+   "practiceSongs": [
+    "fur-elise"
+   ],
+   "quiz": [
+    {
+     "id": "accidentals-semitones-q1",
+     "q": "Từ E lên F là bao nhiêu?",
+     "options": [
+      "Nửa cung",
+      "Một cung",
+      "Một cung rưỡi",
+      "Hai cung"
+     ],
+     "answer": 0,
+     "explain": "E–F không có phím đen nên là nửa cung."
+    },
+    {
+     "id": "accidentals-semitones-q2",
+     "q": "Dấu giáng (♭) làm gì?",
+     "options": [
+      "Hạ nửa cung",
+      "Nâng nửa cung",
+      "Hạ một cung",
+      "Hủy dấu trước"
+     ],
+     "answer": 0,
+     "explain": "Giáng hạ nốt xuống nửa cung."
+    },
+    {
+     "id": "accidentals-semitones-q3",
+     "q": "C♯ trùng với nốt nào?",
+     "options": [
+      "D♭",
+      "D♯",
+      "B♭",
+      "E♭"
+     ],
+     "answer": 0,
+     "explain": "C♯ = D♭ (đồng âm)."
+    }
+   ]
+  },
+  {
+   "id": "major-scale",
+   "order": 7,
+   "level": "beginner",
+   "minutes": 8,
+   "title": "Gam trưởng",
+   "intro": "Gam trưởng gồm 7 nốt xếp theo công thức khoảng cách cố định, cho âm sắc sáng, vui. Gam Đô trưởng (C major) chỉ dùng phím trắng.",
+   "points": [
+    "Công thức theo số nửa cung: 2–2–1–2–2–2–1.",
+    "G major có 1 dấu thăng: F♯. D major có 2: F♯ và C♯.",
+    "Các bậc gọi là: chủ âm (I), thượng chủ âm (II), trung âm (III), hạ át (IV), át âm (V), thượng át (VI), dẫn âm (VII)."
+   ],
+   "practiceSongs": [
+    "ode-to-joy",
+    "twinkle-twinkle"
+   ],
+   "quiz": [
+    {
+     "id": "major-scale-q1",
+     "q": "Công thức của gam trưởng là gì?",
+     "options": [
+      "2–2–1–2–2–2–1",
+      "2–1–2–2–1–2–2",
+      "1–2–2–2–1–2–2",
+      "2–2–2–1–2–2–1"
+     ],
+     "answer": 0,
+     "explain": "Gam trưởng: 2–2–1–2–2–2–1 nửa cung."
+    },
+    {
+     "id": "major-scale-q2",
+     "q": "Gam G major có dấu thăng nào?",
+     "options": [
+      "C♯",
+      "F♯",
+      "G♯",
+      "B♭"
+     ],
+     "answer": 1,
+     "explain": "G major có một dấu thăng là F♯."
+    },
+    {
+     "id": "major-scale-q3",
+     "q": "Gam C major gồm các nốt nào?",
+     "options": [
+      "C D E F G A B",
+      "C D E♭ F G A B♭",
+      "C D E F♯ G A B",
+      "C D♭ E F G A B"
+     ],
+     "answer": 0,
+     "explain": "C major chỉ gồm phím trắng."
+    }
+   ]
+  },
+  {
+   "id": "intervals",
+   "order": 8,
+   "level": "beginner",
+   "minutes": 8,
+   "title": "Quãng",
+   "intro": "Quãng là khoảng cách giữa hai nốt, gọi theo số bậc khi đếm cả nốt đầu và nốt cuối: C–E là quãng ba, C–G là quãng năm.",
+   "points": [
+    "Quãng ba trưởng = 4 nửa cung, quãng ba thứ = 3 nửa cung.",
+    "Quãng năm đúng = 7 nửa cung; quãng tám = 12 nửa cung.",
+    "Quãng bốn đúng = 5 nửa cung; chất lượng quãng (trưởng, thứ, đúng, tăng, giảm) làm đổi độ lớn của quãng."
+   ],
+   "practiceSongs": [
+    "greensleeves"
+   ],
+   "quiz": [
+    {
+     "id": "intervals-q1",
+     "q": "C đến G là quãng mấy?",
+     "options": [
+      "Quãng ba",
+      "Quãng bốn",
+      "Quãng năm",
+      "Quãng sáu"
+     ],
+     "answer": 2,
+     "explain": "C D E F G: đếm 5 nốt nên là quãng năm."
+    },
+    {
+     "id": "intervals-q2",
+     "q": "Quãng ba trưởng có bao nhiêu nửa cung?",
+     "options": [
+      "2",
+      "3",
+      "4",
+      "5"
+     ],
+     "answer": 2,
+     "explain": "C–E = 4 nửa cung."
+    },
+    {
+     "id": "intervals-q3",
+     "q": "Quãng tám có bao nhiêu nửa cung?",
+     "options": [
+      "8",
+      "10",
+      "12",
+      "14"
+     ],
+     "answer": 2,
+     "explain": "Một quãng tám = 12 nửa cung."
+    }
+   ]
+  },
+  {
+   "id": "key-signatures-circle",
+   "order": 9,
+   "level": "intermediate",
+   "minutes": 8,
+   "title": "Hóa biểu và vòng tròn quãng năm",
+   "intro": "Hóa biểu là các dấu thăng hoặc giáng ghi ngay sau khóa nhạc, cho biết giọng của bài. Vòng tròn quãng năm sắp xếp các giọng theo quãng năm đúng.",
+   "points": [
+    "Thứ tự dấu thăng: F C G D A E B. Thứ tự dấu giáng ngược lại: B E A D G C F.",
+    "Đi lên một quãng năm đúng thì thêm một dấu thăng: C (0) → G (1) → D (2) → A (3) → E (4).",
+    "Đi xuống một quãng năm đúng thì thêm một dấu giáng: C → F (1♭) → B♭ (2♭) → E♭ (3♭)."
+   ],
+   "practiceSongs": [
+    "old-macdonald",
+    "minuet-in-g"
+   ],
+   "quiz": [
+    {
+     "id": "key-signatures-circle-q1",
+     "q": "Giọng D major có bao nhiêu dấu thăng?",
+     "options": [
+      "1",
+      "2",
+      "3",
+      "4"
+     ],
+     "answer": 1,
+     "explain": "D major có F♯ và C♯ — 2 dấu thăng."
+    },
+    {
+     "id": "key-signatures-circle-q2",
+     "q": "Giọng nào có đúng 1 dấu giáng (B♭)?",
+     "options": [
+      "G major",
+      "F major",
+      "D major",
+      "B♭ major"
+     ],
+     "answer": 1,
+     "explain": "F major có 1 dấu giáng là B♭."
+    },
+    {
+     "id": "key-signatures-circle-q3",
+     "q": "Dấu thăng đầu tiên trong hóa biểu là nốt nào?",
+     "options": [
+      "C",
+      "F",
+      "G",
+      "B"
+     ],
+     "answer": 1,
+     "explain": "Thứ tự thăng bắt đầu bằng F♯."
+    }
+   ]
+  },
+  {
+   "id": "minor-scales",
+   "order": 10,
+   "level": "intermediate",
+   "minutes": 8,
+   "title": "Các gam thứ",
+   "intro": "Gam thứ có âm sắc buồn, sâu lắng hơn gam trưởng. Có ba dạng: tự nhiên, hòa thanh và giai điệu.",
+   "points": [
+    "Gam thứ tự nhiên: 2–1–2–2–1–2–2 nửa cung. A minor chỉ dùng phím trắng.",
+    "Gam thứ hòa thanh nâng bậc VII lên nửa cung (A minor: G♯).",
+    "Giọng song song: giọng thứ nằm dưới chủ âm trưởng một quãng ba thứ — C major và A minor dùng chung hóa biểu."
+   ],
+   "practiceSongs": [
+    "greensleeves",
+    "fur-elise"
+   ],
+   "quiz": [
+    {
+     "id": "minor-scales-q1",
+     "q": "Giọng thứ song song của C major là gì?",
+     "options": [
+      "D minor",
+      "E minor",
+      "A minor",
+      "G minor"
+     ],
+     "answer": 2,
+     "explain": "A minor cách C một quãng ba thứ xuống."
+    },
+    {
+     "id": "minor-scales-q2",
+     "q": "Gam thứ hòa thanh nâng bậc nào?",
+     "options": [
+      "II",
+      "IV",
+      "VI",
+      "VII"
+     ],
+     "answer": 3,
+     "explain": "Nâng bậc VII để có dẫn âm."
+    },
+    {
+     "id": "minor-scales-q3",
+     "q": "A natural minor có bao nhiêu dấu thăng/giáng?",
+     "options": [
+      "0",
+      "1",
+      "2",
+      "3"
+     ],
+     "answer": 0,
+     "explain": "A minor giống C major: không có dấu hóa."
+    }
+   ]
+  },
+  {
+   "id": "triads",
+   "order": 11,
+   "level": "intermediate",
+   "minutes": 8,
+   "title": "Hợp âm ba",
+   "intro": "Hợp âm ba gồm ba nốt xếp chồng theo quãng ba: nốt gốc, nốt ba và nốt năm. Loại hợp âm phụ thuộc vào độ lớn của hai quãng ba.",
+   "points": [
+    "Trưởng: ba trưởng + ba thứ (4+3 nửa cung). C = C–E–G.",
+    "Thứ: ba thứ + ba trưởng (3+4). Cm = C–E♭–G.",
+    "Giảm: 3+3 (Bdim = B–D–F); tăng: 4+4 (Caug = C–E–G♯)."
+   ],
+   "practiceSongs": [
+    "canon-in-d"
+   ],
+   "quiz": [
+    {
+     "id": "triads-q1",
+     "q": "C major gồm những nốt nào?",
+     "options": [
+      "C–E–G",
+      "C–E♭–G",
+      "C–F–G",
+      "C–E–A"
+     ],
+     "answer": 0,
+     "explain": "C major = C–E–G (4+3)."
+    },
+    {
+     "id": "triads-q2",
+     "q": "Hợp âm thứ có thứ tự quãng ba nào?",
+     "options": [
+      "Thứ rồi trưởng",
+      "Trưởng rồi thứ",
+      "Thứ rồi thứ",
+      "Trưởng rồi trưởng"
+     ],
+     "answer": 0,
+     "explain": "Thứ = 3+4 nửa cung."
+    },
+    {
+     "id": "triads-q3",
+     "q": "Hợp âm tăng có cấu trúc nào?",
+     "options": [
+      "3+3",
+      "4+3",
+      "3+4",
+      "4+4"
+     ],
+     "answer": 3,
+     "explain": "Tăng = hai quãng ba trưởng (4+4)."
+    }
+   ]
+  },
+  {
+   "id": "seventh-chords",
+   "order": 12,
+   "level": "intermediate",
+   "minutes": 8,
+   "title": "Hợp âm bảy",
+   "intro": "Hợp âm bảy thêm nốt thứ tư, cách nốt gốc một quãng bảy, lên trên hợp âm ba. Nó cho màu sắc phong phú hơn, nhất là trong jazz và blues.",
+   "points": [
+    "Cmaj7 = C–E–G–B (bảy trưởng). Âm thanh mơ màng, êm.",
+    "C7 = C–E–G–B♭ (hợp âm bảy át). Có độ căng muốn giải về F.",
+    "Cm7 = C–E♭–G–B♭ (thứ bảy thứ). Mượt, thư giãn."
+   ],
+   "practiceSongs": [],
+   "quiz": [
+    {
+     "id": "seventh-chords-q1",
+     "q": "C7 gồm những nốt nào?",
+     "options": [
+      "C–E–G–B♭",
+      "C–E–G–B",
+      "C–E♭–G–B♭",
+      "C–E–G–A"
+     ],
+     "answer": 0,
+     "explain": "C7 = trưởng + bảy thứ."
+    },
+    {
+     "id": "seventh-chords-q2",
+     "q": "Cmaj7 khác C7 ở nốt nào?",
+     "options": [
+      "B so với B♭",
+      "E so với E♭",
+      "G so với G♯",
+      "Không khác"
+     ],
+     "answer": 0,
+     "explain": "maj7 dùng B, còn 7 dùng B♭."
+    },
+    {
+     "id": "seventh-chords-q3",
+     "q": "Hợp âm bảy có mấy nốt?",
+     "options": [
+      "2",
+      "3",
+      "4",
+      "5"
+     ],
+     "answer": 2,
+     "explain": "Ba nốt của hợp âm ba cộng thêm nốt bảy là 4 nốt."
+    }
+   ]
+  },
+  {
+   "id": "reading-guitar-tab",
+   "order": 13,
+   "level": "beginner",
+   "minutes": 7,
+   "title": "Đọc tab guitar và sơ đồ hợp âm",
+   "intro": "Tab (tablature) vẽ 6 dòng tương ứng 6 dây đàn, con số là phím cần bấm. Sơ đồ hợp âm cho thấy ngón tay đặt ở đâu trên cần đàn.",
+   "points": [
+    "Dòng dưới cùng là dây 6 (Mi trầm). Cách lên: E A D G B E, từ dây 6 đến dây 1.",
+    "Số 0 là gảy dây buông; số 3 là bấm phím 3 của dây đó.",
+    "Trên sơ đồ hợp âm: X là không gảy dây, O là dây buông, chấm là vị trí ngón."
+   ],
+   "practiceSongs": [],
+   "quiz": [
+    {
+     "id": "reading-guitar-tab-q1",
+     "q": "Dòng dưới cùng của tab là dây nào?",
+     "options": [
+      "Dây 6 (Mi trầm)",
+      "Dây 1 (Mi cao)",
+      "Dây 3 (Sol)",
+      "Dây 4 (Rê)"
+     ],
+     "answer": 0,
+     "explain": "Dòng dưới = dây trầm nhất."
+    },
+    {
+     "id": "reading-guitar-tab-q2",
+     "q": "Chuỗi dây chuẩn từ dây 6 đến dây 1 là gì?",
+     "options": [
+      "E A D G B E",
+      "E B G D A E",
+      "A D G C E A",
+      "D A D G B E"
+     ],
+     "answer": 0,
+     "explain": "Chuẩn: E A D G B E."
+    },
+    {
+     "id": "reading-guitar-tab-q3",
+     "q": "Số 0 trong tab có nghĩa gì?",
+     "options": [
+      "Dây buông",
+      "Không gảy",
+      "Phím 10",
+      "Tắt tiếng"
+     ],
+     "answer": 0,
+     "explain": "0 = gảy dây buông, không bấm phím."
+    }
+   ]
+  },
+  {
+   "id": "piano-hand-position",
+   "order": 14,
+   "level": "beginner",
+   "minutes": 7,
+   "title": "Tư thế tay và bấm ngón piano",
+   "intro": "Ngón tay được đánh số 1–5 từ ngón cái đến ngón út. Giữ cổ tay thả lỏng, ngón cong tự nhiên như đang cầm một quả cam nhỏ.",
+   "points": [
+    "Vị trí Đô (C position): tay phải ngón 1-2-3-4-5 đặt trên C D E F G.",
+    "Gam C major tay phải đi lên: 1-2-3, ngón cái luồn dưới, rồi 1-2-3-4-5.",
+    "Tay trái bắt đầu bằng ngón 5 trên nốt C thấp: 5-4-3-2-1 rồi 3-2-1."
+   ],
+   "practiceSongs": [
+    "ode-to-joy",
+    "mary-had-a-little-lamb"
+   ],
+   "quiz": [
+    {
+     "id": "piano-hand-position-q1",
+     "q": "Ngón số 1 là ngón nào?",
+     "options": [
+      "Ngón cái",
+      "Ngón trỏ",
+      "Ngón út",
+      "Ngón giữa"
+     ],
+     "answer": 0,
+     "explain": "Ngón 1 là ngón cái."
+    },
+    {
+     "id": "piano-hand-position-q2",
+     "q": "Ở vị trí C, ngón 5 tay phải đặt trên nốt nào?",
+     "options": [
+      "E",
+      "F",
+      "G",
+      "A"
+     ],
+     "answer": 2,
+     "explain": "1-2-3-4-5 = C D E F G."
+    },
+    {
+     "id": "piano-hand-position-q3",
+     "q": "Khi chơi gam C major tay phải đi lên, sau ngón 3 ta làm gì?",
+     "options": [
+      "Luồn ngón cái xuống dưới",
+      "Nhảy cả bàn tay",
+      "Đổi sang tay trái",
+      "Dừng lại"
+     ],
+     "answer": 0,
+     "explain": "Luồn ngón cái giúp đi tiếp mượt mà."
+    }
+   ]
+  },
+  {
+   "id": "chord-progressions-roman",
+   "order": 15,
+   "level": "intermediate",
+   "minutes": 8,
+   "title": "Số La Mã và vòng hòa âm",
+   "intro": "Số La Mã gọi hợp âm theo bậc của gam nên áp dụng cho mọi giọng. Trong giọng trưởng: I ii iii IV V vi vii°.",
+   "points": [
+    "I–V–vi–IV trong C major là C–G–Am–F; trong G major là G–D–Em–C.",
+    "Kết hoàn toàn (cadence) V–I nghe như “kết câu”; IV–I nghe nhẹ nhàng như “amen”.",
+    "Bước vòng blues 12 ô nhịp: I I I I – IV IV I I – V IV I V."
+   ],
+   "practiceSongs": [
+    "canon-in-d"
+   ],
+   "quiz": [
+    {
+     "id": "chord-progressions-roman-q1",
+     "q": "I–V–vi–IV trong C major là gì?",
+     "options": [
+      "C–G–Am–F",
+      "C–F–G–Am",
+      "C–Am–F–G",
+      "C–Dm–G–C"
+     ],
+     "answer": 0,
+     "explain": "I=C, V=G, vi=Am, IV=F."
+    },
+    {
+     "id": "chord-progressions-roman-q2",
+     "q": "Hợp âm vi trong G major là gì?",
+     "options": [
+      "Am",
+      "Bm",
+      "Em",
+      "Cm"
+     ],
+     "answer": 2,
+     "explain": "Bậc VI của G major là E, hợp âm thứ: Em."
+    },
+    {
+     "id": "chord-progressions-roman-q3",
+     "q": "Vòng 12 ô nhịp blues kết thúc bằng gì?",
+     "options": [
+      "I → IV",
+      "IV → V",
+      "I → V",
+      "V → IV"
+     ],
+     "answer": 2,
+     "explain": "Hai ô cuối I rồi V (turnaround) dẫn về vòng mới."
+    }
+   ]
+  },
+  {
+   "id": "modes",
+   "order": 16,
+   "level": "advanced",
+   "minutes": 8,
+   "title": "Các điệu thức (modes)",
+   "intro": "Điệu thức là các gam bảy nốt lấy từ cùng một gam trưởng nhưng bắt đầu ở bậc khác. Mỗi điệu thức có màu sắc riêng.",
+   "points": [
+    "Theo phím trắng: Ionian (C–C) = trưởng, Dorian (D–D), Phrygian (E–E), Lydian (F–F), Mixolydian (G–G), Aeolian (A–A) = thứ tự nhiên, Locrian (B–B).",
+    "Dorian = thứ tự nhiên với bậc VI nâng lên (nghe sáng, “jazz”). Mixolydian = trưởng với bậc VII hạ xuống (nghe rock/blues).",
+    "Lydian = trưởng với bậc IV nâng lên (♯4), âm thanh mơ mộng như nhạc phim."
+   ],
+   "practiceSongs": [
+    "greensleeves"
+   ],
+   "quiz": [
+    {
+     "id": "modes-q1",
+     "q": "Điệu thức nào bắt đầu từ D trên phím trắng?",
+     "options": [
+      "Dorian",
+      "Phrygian",
+      "Lydian",
+      "Mixolydian"
+     ],
+     "answer": 0,
+     "explain": "D–D trên phím trắng là Dorian."
+    },
+    {
+     "id": "modes-q2",
+     "q": "Mixolydian khác gam trưởng ở bậc nào?",
+     "options": [
+      "Bậc VII hạ nửa cung",
+      "Bậc IV nâng nửa cung",
+      "Bậc III hạ nửa cung",
+      "Bậc II nâng nửa cung"
+     ],
+     "answer": 0,
+     "explain": "Mixolydian = trưởng với ♭7."
+    },
+    {
+     "id": "modes-q3",
+     "q": "Aeolian tương đương gam nào?",
+     "options": [
+      "Thứ tự nhiên",
+      "Trưởng",
+      "Thứ hòa thanh",
+      "Ngũ cung"
+     ],
+     "answer": 0,
+     "explain": "Aeolian chính là gam thứ tự nhiên."
+    }
+   ]
+  },
+  {
+   "id": "pentatonic-blues",
+   "order": 17,
+   "level": "intermediate",
+   "minutes": 7,
+   "title": "Gam ngũ cung và gam blues",
+   "intro": "Gam ngũ cung chỉ có 5 nốt nên rất dễ ứng tấu và hầu như không có nốt “sai”. Thêm một “blue note” sẽ thành gam blues.",
+   "points": [
+    "Ngũ cung trưởng: bậc 1 2 3 5 6 (C major: C D E G A).",
+    "Ngũ cung thứ: bậc 1 ♭3 4 5 ♭7 (A minor: A C D E G).",
+    "Gam blues = ngũ cung thứ + ♭5 (A blues: A C D E♭ E G)."
+   ],
+   "practiceSongs": [
+    "old-macdonald"
+   ],
+   "quiz": [
+    {
+     "id": "pentatonic-blues-q1",
+     "q": "Gam ngũ cung có mấy nốt?",
+     "options": [
+      "4",
+      "5",
+      "6",
+      "7"
+     ],
+     "answer": 1,
+     "explain": "Penta = 5."
+    },
+    {
+     "id": "pentatonic-blues-q2",
+     "q": "A minor pentatonic gồm các nốt nào?",
+     "options": [
+      "A C D E G",
+      "A B C E G",
+      "A C D F G",
+      "A B D E G"
+     ],
+     "answer": 0,
+     "explain": "1 ♭3 4 5 ♭7 từ A = A C D E G."
+    },
+    {
+     "id": "pentatonic-blues-q3",
+     "q": "Nốt thêm vào để thành gam blues là gì?",
+     "options": [
+      "♭2",
+      "♭5",
+      "♭6",
+      "♭3"
+     ],
+     "answer": 1,
+     "explain": "Blue note là ♭5."
+    }
+   ]
+  },
+  {
+   "id": "harmony-voice-leading",
+   "order": 18,
+   "level": "advanced",
+   "minutes": 8,
+   "title": "Hòa âm cơ bản: đảo hợp âm và nối giọng",
+   "intro": "Đảo hợp âm là đổi nốt thấp nhất của hợp âm. Nối giọng (voice leading) là chuyển từ hợp âm này sang hợp âm kia bằng những bước nhỏ nhất.",
+   "points": [
+    "C major: vị trí gốc C–E–G; đảo 1: E–G–C; đảo 2: G–C–E.",
+    "Giữ nốt chung giữa hai hợp âm và chỉ di chuyển các nốt còn lại: C → Am giữ C và E.",
+    "Nên tránh hai giọng đi song song theo quãng năm đúng liên tiếp trong hòa âm cổ điển."
+   ],
+   "practiceSongs": [
+    "canon-in-d"
+   ],
+   "quiz": [
+    {
+     "id": "harmony-voice-leading-q1",
+     "q": "Đảo 1 của C major có nốt thấp nhất là gì?",
+     "options": [
+      "C",
+      "E",
+      "G",
+      "B"
+     ],
+     "answer": 1,
+     "explain": "Đảo 1 có nốt ba (E) ở dưới cùng."
+    },
+    {
+     "id": "harmony-voice-leading-q2",
+     "q": "C và Am có những nốt chung nào?",
+     "options": [
+      "C, E",
+      "E, G",
+      "G, A",
+      "C, G"
+     ],
+     "answer": 0,
+     "explain": "C = C–E–G, Am = A–C–E → chung C và E."
+    },
+    {
+     "id": "harmony-voice-leading-q3",
+     "q": "“Nối giọng mượt” nghĩa là gì?",
+     "options": [
+      "Các nốt di chuyển bước nhỏ",
+      "Mọi nốt nhảy quãng tám",
+      "Chỉ đánh nốt bass",
+      "Không dùng hợp âm"
+     ],
+     "answer": 0,
+     "explain": "Bước nhỏ, giữ nốt chung."
+    }
+   ]
+  },
+  {
+   "id": "ear-training",
+   "order": 19,
+   "level": "intermediate",
+   "minutes": 8,
+   "title": "Luyện tai: nhận ra quãng và hợp âm",
+   "intro": "Luyện tai giúp bạn nghe một giai điệu rồi chơi lại mà không cần nhìn bản nhạc. Mẹo hay nhất là gắn mỗi quãng với đầu một bài hát quen thuộc.",
+   "points": [
+    "Twinkle Twinkle: hai nốt đầu C→G là quãng năm đúng đi lên.",
+    "Greensleeves mở đầu bằng quãng ba thứ đi lên (A→C).",
+    "Hợp âm trưởng nghe sáng, vui; hợp âm thứ nghe tối, buồn."
+   ],
+   "practiceSongs": [
+    "twinkle-twinkle",
+    "greensleeves",
+    "ode-to-joy"
+   ],
+   "quiz": [
+    {
+     "id": "ear-training-q1",
+     "q": "Hai nốt đầu của Twinkle Twinkle là quãng nào?",
+     "options": [
+      "Quãng năm đúng",
+      "Quãng ba thứ",
+      "Quãng tám",
+      "Quãng hai"
+     ],
+     "answer": 0,
+     "explain": "C→G = 7 nửa cung = quãng năm đúng."
+    },
+    {
+     "id": "ear-training-q2",
+     "q": "Greensleeves bắt đầu bằng quãng nào?",
+     "options": [
+      "Ba thứ đi lên",
+      "Ba trưởng đi lên",
+      "Bốn đúng đi xuống",
+      "Quãng tám đi lên"
+     ],
+     "answer": 0,
+     "explain": "A→C cách nhau 3 nửa cung."
+    },
+    {
+     "id": "ear-training-q3",
+     "q": "Hợp âm nghe tối, buồn thường là loại nào?",
+     "options": [
+      "Thứ",
+      "Trưởng",
+      "Bảy trưởng",
+      "Sus4"
+     ],
+     "answer": 0,
+     "explain": "Hợp âm thứ nghe buồn."
+    }
+   ]
+  },
+  {
+   "id": "edm-bpm-bars-phrases",
+   "order": 20,
+   "level": "advanced",
+   "minutes": 8,
+   "title": "EDM: BPM, ô nhịp và đoạn nhạc",
+   "intro": "Nhạc điện tử được xây dựng trên một lưới nhịp cố định. Hầu hết bài dùng nhịp 4/4, và các đoạn nhạc dài 8, 16 hoặc 32 ô nhịp.",
+   "points": [
+    "BPM thường gặp: House 120–128, Techno 125–150, Trance 130–145, Dubstep ~140, Drum & Bass 170–180.",
+    "Four-on-the-floor: trống bass (kick) đánh trên cả 4 phách của ô nhịp.",
+    "Độ dài một ô nhịp 4/4 = 240 ÷ BPM giây. Ở 120 BPM, một ô nhịp dài 2 giây."
+   ],
+   "practiceSongs": [],
+   "quiz": [
+    {
+     "id": "edm-bpm-bars-phrases-q1",
+     "q": "Một ô nhịp 4/4 ở 120 BPM dài bao nhiêu giây?",
+     "options": [
+      "1 s",
+      "2 s",
+      "3 s",
+      "4 s"
+     ],
+     "answer": 1,
+     "explain": "4 phách × 0,5 giây = 2 giây."
+    },
+    {
+     "id": "edm-bpm-bars-phrases-q2",
+     "q": "Four-on-the-floor nghĩa là gì?",
+     "options": [
+      "Kick đánh cả 4 phách",
+      "Bốn người chơi cùng lúc",
+      "Bốn hợp âm mỗi bài",
+      "Nhịp 4/4 chậm"
+     ],
+     "answer": 0,
+     "explain": "Kick đều trên mỗi phách."
+    },
+    {
+     "id": "edm-bpm-bars-phrases-q3",
+     "q": "Thể loại nào thường nhanh nhất?",
+     "options": [
+      "House",
+      "Trance",
+      "Dubstep",
+      "Drum & Bass"
+     ],
+     "answer": 3,
+     "explain": "Drum & Bass khoảng 170–180 BPM."
+    }
+   ]
+  },
+  {
+   "id": "dj-beatmatching",
+   "order": 21,
+   "level": "advanced",
+   "minutes": 8,
+   "title": "DJ: ghép nhịp (beatmatching)",
+   "intro": "Ghép nhịp là làm cho hai bài có cùng BPM và phách trùng nhau để chuyển bài mượt. Bạn nghe bài sắp vào bằng tai nghe (cue) rồi mới đưa lên loa.",
+   "points": [
+    "Dùng thanh chỉnh tempo (pitch) để khớp BPM, rồi dùng jog/nudge để căn phách.",
+    "Bắt đầu hòa bài ở đầu một đoạn 16 hoặc 32 ô nhịp để cấu trúc khớp nhau.",
+    "Độ lệch tempo càng nhỏ càng tự nhiên: dưới ±6% thường nghe không rõ."
+   ],
+   "practiceSongs": [],
+   "quiz": [
+    {
+     "id": "dj-beatmatching-q1",
+     "q": "Bài A 120 BPM, bài B 126 BPM. Muốn B khớp A, chỉnh B khoảng bao nhiêu?",
+     "options": [
+      "−4.8%",
+      "+4.8%",
+      "−10%",
+      "+10%"
+     ],
+     "answer": 0,
+     "explain": "120 ÷ 126 ≈ 0,952, tức giảm khoảng 4,8%."
+    },
+    {
+     "id": "dj-beatmatching-q2",
+     "q": "Nên bắt đầu hòa bài mới ở đâu?",
+     "options": [
+      "Đầu một đoạn 16/32 ô nhịp",
+      "Giữa một ô nhịp bất kỳ",
+      "Khi bài cũ im lặng hẳn",
+      "Ngay giây đầu tiên của set"
+     ],
+     "answer": 0,
+     "explain": "Căn theo đầu phrase để cấu trúc khớp."
+    },
+    {
+     "id": "dj-beatmatching-q3",
+     "q": "Nút cue dùng để làm gì?",
+     "options": [
+      "Nghe trước bài sắp vào qua tai nghe",
+      "Tăng âm lượng loa chính",
+      "Xóa bài",
+      "Đổi giọng bài hát"
+     ],
+     "answer": 0,
+     "explain": "Cue cho phép nghe riêng trong tai nghe."
+    }
+   ]
+  },
+  {
+   "id": "edm-structure-drops",
+   "order": 22,
+   "level": "advanced",
+   "minutes": 8,
+   "title": "Cấu trúc bài EDM: build-up và drop",
+   "intro": "Một bài EDM điển hình đi qua các đoạn: intro, build-up, drop, breakdown, rồi drop lần hai và outro. Cảm xúc đến từ việc tạo căng thẳng rồi giải tỏa.",
+   "points": [
+    "Build-up: thêm riser, tiếng snare roll, lọc cao dần, nhịp nhanh dần (8–16 ô nhịp).",
+    "Drop: điểm năng lượng cao nhất với kick, bass và lead đầy đủ.",
+    "Breakdown: đoạn trầm lắng, bỏ kick, để giai điệu và hợp âm nổi lên trước khi drop lại."
+   ],
+   "practiceSongs": [],
+   "quiz": [
+    {
+     "id": "edm-structure-drops-q1",
+     "q": "Đoạn nào ngay trước drop?",
+     "options": [
+      "Outro (đoạn kết)",
+      "Build-up (đoạn tăng tiến)",
+      "Intro (đoạn mở đầu)",
+      "Bridge (đoạn nối)"
+     ],
+     "answer": 1,
+     "explain": "Build-up tạo căng thẳng trước drop."
+    },
+    {
+     "id": "edm-structure-drops-q2",
+     "q": "Breakdown thường có đặc điểm gì?",
+     "options": [
+      "Bỏ kick, nhẹ nhàng",
+      "Kick và bass to nhất",
+      "Chỉ có tiếng riser",
+      "Toàn bộ im lặng"
+     ],
+     "answer": 0,
+     "explain": "Breakdown là đoạn lắng xuống."
+    },
+    {
+     "id": "edm-structure-drops-q3",
+     "q": "Drop là gì?",
+     "options": [
+      "Điểm năng lượng cao nhất",
+      "Đoạn kết bài",
+      "Một loại trống",
+      "Một hợp âm"
+     ],
+     "answer": 0,
+     "explain": "Drop là lúc bass và kick bùng nổ."
+    }
+   ]
+  },
+  {
+   "id": "mixing-eq-compression",
+   "order": 23,
+   "level": "advanced",
+   "minutes": 8,
+   "title": "Phối âm cơ bản: EQ, nén và sidechain",
+   "intro": "Phối âm là cân bằng các âm thanh để chúng nghe rõ ràng cùng nhau. Ba công cụ cơ bản là EQ, máy nén (compressor) và sidechain.",
+   "points": [
+    "EQ tăng hoặc cắt từng dải tần: bass (dưới ~250 Hz), mid (~250 Hz–4 kHz), treble (trên ~4 kHz).",
+    "Compressor làm giảm chênh lệch giữa chỗ to và chỗ nhỏ; các nút chính: threshold, ratio, attack, release.",
+    "Sidechain: nén bass mỗi khi kick đánh để tạo hiệu ứng “thở” (pumping) và để kick nghe rõ."
+   ],
+   "practiceSongs": [],
+   "quiz": [
+    {
+     "id": "mixing-eq-compression-q1",
+     "q": "Sidechain trong EDM thường dùng để làm gì?",
+     "options": [
+      "Hạ bass khi kick đánh",
+      "Làm bài nhanh hơn",
+      "Đổi giọng",
+      "Thêm reverb"
+     ],
+     "answer": 0,
+     "explain": "Sidechain nén bass theo tín hiệu kick."
+    },
+    {
+     "id": "mixing-eq-compression-q2",
+     "q": "Dải tần nào thuộc “bass”?",
+     "options": [
+      "60 Hz",
+      "2 kHz",
+      "8 kHz",
+      "16 kHz"
+     ],
+     "answer": 0,
+     "explain": "60 Hz là tần số trầm."
+    },
+    {
+     "id": "mixing-eq-compression-q3",
+     "q": "Máy nén làm gì?",
+     "options": [
+      "Giảm chênh lệch to–nhỏ",
+      "Thêm nốt mới",
+      "Đảo ngược âm thanh",
+      "Đổi BPM"
+     ],
+     "answer": 0,
+     "explain": "Compressor kiểm soát dải động."
+    }
+   ]
+  },
+  {
+   "id": "harmonic-mixing-camelot",
+   "order": 24,
+   "level": "advanced",
+   "minutes": 8,
+   "title": "Hòa trộn hòa âm: bánh xe Camelot",
+   "intro": "Bánh xe Camelot gắn mỗi giọng với một mã gồm số 1–12 và chữ A (thứ) hoặc B (trưởng), giúp DJ chọn bài hợp giọng để trộn không bị lạc tông.",
+   "points": [
+    "8A = A minor, 8B = C major (hai giọng song song có cùng số).",
+    "Hòa trộn an toàn: cùng mã, ±1 số cùng chữ, hoặc cùng số đổi chữ (A↔B).",
+    "Đi +1 số nghĩa là lên một quãng năm đúng (8A Am → 9A Em)."
+   ],
+   "practiceSongs": [],
+   "quiz": [
+    {
+     "id": "harmonic-mixing-camelot-q1",
+     "q": "8B là giọng nào?",
+     "options": [
+      "A minor",
+      "C major",
+      "G major",
+      "E minor"
+     ],
+     "answer": 1,
+     "explain": "8B = C major."
+    },
+    {
+     "id": "harmonic-mixing-camelot-q2",
+     "q": "Mã nào hợp nhất để trộn từ 8A (A minor)?",
+     "options": [
+      "9A",
+      "3B",
+      "11A",
+      "5B"
+     ],
+     "answer": 0,
+     "explain": "9A cùng chữ và hơn 1 số."
+    },
+    {
+     "id": "harmonic-mixing-camelot-q3",
+     "q": "Chữ A trên bánh xe Camelot nghĩa là gì?",
+     "options": [
+      "Giọng thứ",
+      "Giọng trưởng",
+      "Nhịp nhanh",
+      "Âm lượng to"
+     ],
+     "answer": 0,
+     "explain": "A = minor, B = major."
+    }
+   ]
+  }
+ ]
+}

@@ -27,6 +27,7 @@ namespace NihongoLife.Interaction
         private static readonly System.Collections.Generic.Dictionary<string, (string vi, string en, string ja)> Known = new System.Collections.Generic.Dictionary<string, (string vi, string en, string ja)>(System.StringComparer.OrdinalIgnoreCase)
         {
             ["Vào phòng khám"] = ("Vào phòng khám", "Enter the clinic", "診察室に入る"),
+            ["Vào tiệm nhạc"] = ("Vào tiệm nhạc", "Enter the music shop", "楽器店に入る"),
             ["Thanh toán"] = ("Thanh toán", "Pay at the register", "会計する"),
             ["Talk"] = ("Nói chuyện", "Talk", "はなす"),
             ["Đi vào"] = ("Đi vào", "Go in", "入る"),

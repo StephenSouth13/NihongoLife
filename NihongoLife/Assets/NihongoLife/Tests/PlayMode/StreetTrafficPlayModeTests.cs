@@ -30,6 +30,9 @@ namespace NihongoLife.Tests
             LogAssert.ignoreFailingMessages = true;
             yield return SceneManager.LoadSceneAsync(WorldLocationCatalog.CityScene);
             for (float t = 0f; t < 20f && (_player = Object.FindFirstObjectByType<PlayerController>()) == null; t += Time.unscaledDeltaTime) yield return null;
+            // A player left weak by earlier tests faints at the first bump and wakes in the clinic (x ≈ 650): start healthy.
+            var status = NihongoLife.Player.PlayerStatus.Instance;
+            if (status != null) status.DebugSetNeeds(health: 100f, energy: 100f, hunger: 100f, thirst: 100f, sleepiness: 0f);
             yield return new WaitForSecondsRealtime(3f);
             NihongoLife.Dialogue.DialogueManager.Instance?.CancelDialogue();
 

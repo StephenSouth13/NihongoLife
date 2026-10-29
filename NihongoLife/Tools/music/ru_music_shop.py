@@ -1,0 +1,320 @@
+"""Russian lines for the Hibiki music shop, the music room, the easel and the arts careers, merged into
+Resources/Content/Localization/ru_table_extra.json (the hand-written table; it wins over ru_table.json).
+Run from the Unity project folder after changing those English strings:  python Tools/music/ru_music_shop.py
+"""
+import json
+import os
+
+RU = {
+    # Careers: musician
+    'Musician': 'Музыкант',
+    'Play the stage of the Hibiki music shop: your character performs and you keep the tempo right (80–125%) for applause and fans — then become a pianist or a singer-songwriter.':
+        'Сцена музыкального магазина «Хибики»: ваш персонаж играет, а вы держите темп (80–125%) ради аплодисментов и поклонников — затем станьте пианистом или автором-исполнителем.',
+    'The Hibiki music shop stage': 'Сцена магазина «Хибики»',
+    'Trainee musician': 'Музыкант-стажёр',
+    'Café musician': 'Музыкант в кафе',
+    'Session musician': 'Сессионный музыкант',
+    'Pianist': 'Пианист',
+    'Accompanying, recitals, then concerts: from pianist to music director.': 'Аккомпанемент, сольные вечера, затем концерты: от пианиста до музыкального руководителя.',
+    'Concert pianist': 'Концертный пианист',
+    'Music director': 'Музыкальный руководитель',
+    'Singer-songwriter': 'Автор-исполнитель',
+    'Write and sing your own songs: a label debut, then a tour.': 'Пишите и пойте свои песни: дебют на лейбле, затем гастроли.',
+    'Major-label artist': 'Артист крупного лейбла',
+    'Touring headliner': 'Хедлайнер гастролей',
+    'What do you do before the show?': 'Что вы делаете перед выступлением?',
+    'Tune up and rehearse.': 'Настраиваю инструмент и репетирую.',
+    'Nothing.': 'Ничего.',
+    'An untuned instrument and no run-through spoil a show.': 'Ненастроенный инструмент и отсутствие прогона портят выступление.',
+    'Apologise to the audience in advance.': 'Заранее извиняюсь перед публикой.',
+    'Prepare well and there is nothing to apologise for.': 'Хорошо подготовьтесь — и извиняться будет не за что.',
+    'Playing a copyrighted song in a shop: what is needed?': 'Исполнение песни, защищённой авторским правом, в магазине: что нужно?',
+    'The venue gets a licence from JASRAC or a similar society.': 'Заведение получает лицензию у JASRAC или подобного общества.',
+    'Public performance of a copyrighted song needs a licence; public-domain music (Beethoven) does not.': 'Публичное исполнение песни под авторским правом требует лицензии; музыка в общественном достоянии (Бетховен) — нет.',
+    'Buying the sheet music is enough.': 'Достаточно купить ноты.',
+    'Sheet music does not include public-performance rights.': 'Покупка нот не даёт права на публичное исполнение.',
+    'Which way would you like to go now?': 'Какой путь вы выберете теперь?',
+    'I want to master the piano.': 'Хочу в совершенстве овладеть фортепиано.',
+    'I want to write and sing my own songs.': 'Хочу писать и петь свои песни.',
+    'What happens if you hold the sustain pedal too much?': 'Что будет, если слишком долго держать педаль?',
+    'The sound gets muddy; change the pedal when the chord changes.': 'Звук становится грязным; меняйте педаль при смене аккорда.',
+    'It is only louder.': 'Просто становится громче.',
+    'The pedal keeps every string ringing, so chords blur together.': 'Педаль оставляет звучать все струны, и аккорды сливаются.',
+    'Nervous before a concert: what do you do?': 'Волнение перед концертом: что вы делаете?',
+    'Breathe deeply and trust my practice.': 'Глубоко дышу и доверяю своим репетициям.',
+    'Cancel the concert.': 'Отменяю концерт.',
+    'Nerves are normal; a last-minute cancellation lets everyone down.': 'Волнение — это нормально; отмена в последний момент подводит всех.',
+    'The melody and the chords clash: what do you do?': 'Мелодия не сочетается с аккордами: что вы делаете?',
+    'Use chord tones on the strong beats.': 'Ставлю звуки аккорда на сильные доли.',
+    'Ignore it.': 'Не обращаю внимания.',
+    'Non-chord notes on strong beats sound wrong; put chord tones there.': 'Неаккордовые звуки на сильных долях звучат фальшиво; ставьте туда звуки аккорда.',
+    'How do you look after your voice on tour?': 'Как вы бережёте голос на гастролях?',
+    'Sleep well, drink water and warm up.': 'Высыпаюсь, пью воду и распеваюсь.',
+    'Keep practising at full volume every day.': 'Каждый день репетирую в полный голос.',
+    'Straining hurts the vocal folds; they need rest.': 'Перенапряжение вредит голосовым связкам; им нужен отдых.',
+    'A guitar string snapped mid-show!': 'Посреди выступления лопнула струна!',
+    'Stay calm and carry on with the other strings.': 'Сохраняю спокойствие и играю на остальных струнах.',
+    'Switch to the spare guitar.': 'Беру запасную гитару.',
+    'Stop and go home.': 'Прекращаю и ухожу домой.',
+    'A guest requests a song you do not know.': 'Гость просит песню, которую вы не знаете.',
+    'Suggest a similar song.': 'Предлагаю похожую песню.',
+    'Try to play it by ear.': 'Пробую подобрать на слух.',
+    'Pretend not to hear.': 'Делаю вид, что не слышу.',
+    # Careers: producer / DJ
+    'DJ & producer': 'Диджей и продюсер',
+    'DJ at the Hibiki music shop: pick the next record by tempo (BPM) and key (the Camelot wheel) — then headline clubs or produce music.':
+        'Диджей в магазине «Хибики»: выбирайте следующий трек по темпу (BPM) и тональности (круг Камелот) — затем станьте хедлайнером клубов или продюсером.',
+    'The Hibiki DJ booth': 'Диджейский пульт «Хибики»',
+    'Sound assistant': 'Помощник звукорежиссёра',
+    'Opening DJ': 'Диджей на разогреве',
+    'Resident DJ': 'Резидент-диджей',
+    'Club DJ': 'Клубный диджей',
+    'Read the floor and keep the energy all night: guest, headliner, festival DJ.': 'Чувствуйте танцпол и держите энергию всю ночь: приглашённый диджей, хедлайнер, диджей фестивалей.',
+    'Guest DJ': 'Приглашённый диджей',
+    'Headliner DJ': 'Диджей-хедлайнер',
+    'Festival DJ': 'Диджей фестивалей',
+    'Music producer': 'Музыкальный продюсер',
+    'Beats, arrangement, mastering: from track maker to label head.': 'Биты, аранжировка, мастеринг: от битмейкера до главы лейбла.',
+    'Track maker': 'Битмейкер',
+    'Label head': 'Глава лейбла',
+    'What is BPM?': 'Что такое BPM?',
+    'Beats per minute.': 'Число ударов в минуту.',
+    'A unit of loudness.': 'Единица громкости.',
+    'Loudness is in dB; BPM is the tempo.': 'Громкость измеряют в дБ; BPM — это темп.',
+    'The length of the song.': 'Длина песни.',
+    'BPM counts beats per minute, not the length.': 'BPM — это удары в минуту, а не длина.',
+    'The next record is in a clashing key: what do you do?': 'Следующий трек в неподходящей тональности: что вы делаете?',
+    'Pick a record in a neighbouring key on the Camelot wheel.': 'Выбираю трек в соседней тональности на круге Камелот.',
+    'Turn it up and force the mix.': 'Делаю громче и свожу силой.',
+    'Clashing keys sound bad, and louder makes it worse.': 'Несовместимые тональности звучат плохо, а громкость делает только хуже.',
+    'Where would you like to work from now on?': 'Где вы хотите работать дальше?',
+    'In clubs, making everyone dance.': 'В клубах, чтобы все танцевали.',
+    'In the studio, making tracks.': 'В студии, создавая треки.',
+    'The dance floor is emptying.': 'Танцпол пустеет.',
+    'Watch the floor and change the energy.': 'Смотрю на танцпол и меняю энергию.',
+    'Keep playing the planned list.': 'Играю дальше по списку.',
+    'A good DJ reads the room, not just the list.': 'Хороший диджей чувствует зал, а не только список.',
+    'Someone says the music is too loud.': 'Кто-то говорит, что музыка слишком громкая.',
+    'Turn it down and suggest earplugs.': 'Делаю тише и предлагаю беруши.',
+    'Turn it up more.': 'Делаю ещё громче.',
+    'Long exposure to very loud sound damages hearing for good.': 'Долгий очень громкий звук необратимо повреждает слух.',
+    "Sampling someone else's record: what do you need?": 'Сэмпл из чужой записи: что нужно?',
+    'Permission from the rights holders (clearance).': 'Разрешение правообладателей (клиренс).',
+    'Short samples are free.': 'Короткие сэмплы бесплатны.',
+    'There is no "short is fine" rule: even short samples need clearance.': 'Правила «коротко — можно» нет: даже короткие сэмплы требуют разрешения.',
+    'What matters most in mastering?': 'Что важнее всего в мастеринге?',
+    'Check the balance on many speakers.': 'Проверить баланс на разных колонках.',
+    'Make it as loud as possible.': 'Сделать как можно громче.',
+    'Streaming services normalise loudness; over-compression just kills the dynamics.': 'Стриминговые сервисы выравнивают громкость; пережатие лишь убивает динамику.',
+    'The mixer suddenly goes silent!': 'Микшер внезапно замолчал!',
+    'Calmly check the cables and the faders.': 'Спокойно проверяю кабели и фейдеры.',
+    'Panic and press every button.': 'Паникую и жму все кнопки.',
+    'A drunk guest keeps pestering you for a song.': 'Пьяный гость настойчиво требует песню.',
+    'Decline politely and tell the staff.': 'Вежливо отказываю и сообщаю персоналу.',
+    'Shout them away.': 'Прогоняю криком.',
+    # Careers: painter
+    'Painter': 'Художник',
+    "Paint commissions at the Hibiki shop's easel (paint-by-numbers after the masterpieces), deliver them — then become an illustrator or an exhibiting artist.":
+        'Пишите картины на заказ за мольбертом в «Хибики» (раскраска по номерам по шедеврам) и сдавайте их — затем станьте иллюстратором или выставочным художником.',
+    'The Hibiki shop easel': 'Мольберт магазина «Хибики»',
+    'Studio assistant': 'Помощник в мастерской',
+    'Commission painter': 'Художник на заказ',
+    'Professional painter': 'Профессиональный художник',
+    'Illustrator': 'Иллюстратор',
+    'Pictures for books, games and ads: from illustrator to art director.': 'Иллюстрации для книг, игр и рекламы: от иллюстратора до арт-директора.',
+    'Popular illustrator': 'Популярный иллюстратор',
+    'Art director': 'Арт-директор',
+    'Exhibiting artist': 'Выставочный художник',
+    'Your own work: solo shows, a gallery that represents you, then museum collections.': 'Свои работы: персональные выставки, галерея-представитель, затем музейные собрания.',
+    'Solo-show artist': 'Художник персональных выставок',
+    'Gallery artist': 'Художник галереи',
+    'Museum-collected artist': 'Художник в музейных собраниях',
+    'Blue and yellow make which colour?': 'Какой цвет получится из синего и жёлтого?',
+    'Green.': 'Зелёный.',
+    'Purple.': 'Фиолетовый.',
+    'Purple is red + blue.': 'Фиолетовый — это красный + синий.',
+    'Orange.': 'Оранжевый.',
+    'Orange is red + yellow.': 'Оранжевый — это красный + жёлтый.',
+    'What do you do after using a brush?': 'Что вы делаете с кистью после работы?',
+    'Wash it at once, shape the bristles and let it dry.': 'Сразу мою, расправляю ворс и сушу.',
+    'Leave it as it is.': 'Оставляю как есть.',
+    'Paint drying in the bristles ruins the brush.': 'Краска, засохшая в ворсе, портит кисть.',
+    'What would you like to paint from now on?': 'Что вы хотите писать дальше?',
+    'Illustrations for books and games.': 'Иллюстрации для книг и игр.',
+    'My own work, in exhibitions.': 'Свои работы, для выставок.',
+    'The client wants the deadline moved earlier.': 'Заказчик хочет перенести срок на более ранний.',
+    'Agree clearly on a possible date and scope.': 'Чётко договариваюсь о реальном сроке и объёме.',
+    'Say nothing and cut corners.': 'Молчу и делаю кое-как.',
+    'Cutting corners costs your name; renegotiating is professional.': 'Халтура стоит репутации; пересмотреть условия — профессионально.',
+    "May you trace someone else's illustration and hand it in?": 'Можно ли обвести чужую иллюстрацию и сдать её?',
+    'No. Tracing without permission infringes copyright.': 'Нет. Обводка без разрешения нарушает авторское право.',
+    'Fine if you change a little.': 'Можно, если немного изменить.',
+    'Small changes still make a derivative work — permission is still needed.': 'Небольшие изменения всё равно дают производное произведение — разрешение всё равно нужно.',
+    'What matters when you price a work?': 'Что важно при назначении цены за работу?',
+    'Size, materials, time and past sale prices.': 'Размер, материалы, время и цены прошлых продаж.',
+    'Whatever I feel like.': 'Как захочется.',
+    'Erratic prices make collectors lose trust.': 'Случайные цены подрывают доверие коллекционеров.',
+    'What do you advise young artists?': 'Что вы посоветуете молодым художникам?',
+    'Sketch every day.': 'Делать наброски каждый день.',
+    'Only paint what sells.': 'Писать только то, что продаётся.',
+    'Skill comes from steady practice, not only from the market.': 'Мастерство приходит от постоянной практики, а не только от рынка.',
+    'You spilled the brush water on the canvas!': 'Вы пролили воду для кистей на холст!',
+    'Blot it at once with paper and fix it once dry.': 'Сразу промокаю бумагой и исправляю, когда высохнет.',
+    'Paint straight over it.': 'Закрашиваю прямо поверх.',
+    'A customer says: "This colour looks odd."': 'Покупатель говорит: «Этот цвет какой-то странный».',
+    'Thank you. Which part bothers you?': 'Спасибо. Что именно вам не нравится?',
+    'Snap back angrily.': 'Резко огрызаюсь.',
+    # Shifts and career tasks
+    'Gig at the Hibiki music shop': 'Выступление в музыкальном магазине «Хибики»',
+    'Mr Hibiki needs an evening musician: take the stage, play 2 songs at 80–125% of their tempo so the audience enjoys them, then report.':
+        'Господину Хибики нужен музыкант на вечер: выйдите на сцену, сыграйте 2 песни в темпе 80–125% от оригинала, чтобы публике понравилось, затем доложите.',
+    'Mr Hibiki (owner)': 'Господин Хибики (владелец)',
+    'Hibiki Music & Art': 'Музыка и живопись «Хибики»',
+    'Play 2 songs well on the stage': 'Хорошо сыграть 2 песни на сцене',
+    'Report to Mr Hibiki at the counter to get paid': 'Доложить господину Хибики у кассы и получить оплату',
+    'DJ set at the Hibiki shop': 'Диджей-сет в магазине «Хибики»',
+    'DJ Sōta needs someone on the decks: pick 4 records in a row that mix — tempo within 6%, neighbouring keys on the Camelot wheel.':
+        'Диджею Сота нужен человек за пультом: подберите подряд 4 сводимых трека — темп в пределах 6%, соседние тональности на круге Камелот.',
+    'Mix 4 records correctly at the booth': 'Правильно свести 4 трека за пультом',
+    'A painting commission': 'Заказ на картину',
+    'A customer orders a copy of a masterpiece: finish one painting at the easel and deliver it to Mr Hibiki.':
+        'Покупатель заказал копию шедевра: закончите одну картину за мольбертом и передайте её господину Хибики.',
+    'Finish 1 painting at the easel': 'Закончить 1 картину за мольбертом',
+    'A recital night': 'Вечер сольного концерта',
+    'Musician career level 3: your own night — 4 good songs.': 'Карьера музыканта, уровень 3: ваш собственный вечер — 4 удачные песни.',
+    'Play 4 songs well': 'Хорошо сыграть 4 песни',
+    'The weekend party': 'Вечеринка выходного дня',
+    'DJ career level 2: hold the party — mix 8 records.': 'Карьера диджея, уровень 2: держите вечеринку — сведите 8 треков.',
+    'Mix 8 records': 'Свести 8 треков',
+    'A small exhibition': 'Небольшая выставка',
+    "Painter career level 4: paint 3 works for the shop's exhibition corner.": 'Карьера художника, уровень 4: напишите 3 работы для выставочного уголка магазина.',
+    'Finish 3 paintings': 'Закончить 3 картины',
+    # The shop, the music room, the easel, the map
+    '{0} is too far from {1} on the Camelot wheel — the keys clash.': '{0} слишком далеко от {1} на круге Камелот — тональности конфликтуют.',
+    '← → tempo · ↑ ↓ volume · Esc closes': '← → темп · ↑ ↓ громкость · Esc — закрыть',
+    'All chords': 'Все аккорды',
+    'All lessons': 'Все уроки',
+    'Another painting →': 'Другая картина →',
+    "Click the keys or use the keyboard: A S D F G H J K L ; ' (white), W E T Y U O P (black). Z / X change octave.":
+        "Нажимайте клавиши на экране или на клавиатуре: A S D F G H J K L ; ' (белые), W E T Y U O P (чёрные). Z / X — смена октавы.",
+    'Counter · Mr Hibiki': 'Касса · господин Хибики',
+    'Done! {0} cells, {1} slips. Paintings finished: {2}.': 'Готово! Клеток: {0}, промахов: {1}. Закончено картин: {2}.',
+    'Done! Accuracy {0}% ({1} wrong keys).': 'Готово! Точность {0}% (ошибок: {1}).',
+    'Easel': 'Мольберт',
+    'Faster': 'Быстрее',
+    'finger': 'палец',
+    'Finished playing!': 'Исполнение закончено!',
+    'Free play — or pick a song in Songs and the character plays it': 'Свободная игра — или выберите песню во вкладке «Песни», и персонаж сыграет её',
+    'Gallery — public-domain masterpieces': 'Галерея — шедевры в общественном достоянии',
+    'Gallery (39 masterpieces)': 'Галерея (39 шедевров)',
+    'Guitar': 'Гитара',
+    'Guitar wall': 'Стена гитар',
+    'HIBIKI MUSIC & ART FLOOR MAP': 'ПЛАН МАГАЗИНА «ХИБИКИ»',
+    'Just played: ': 'Только что сыграно: ',
+    'Keys 1–4 pick a chord of the progression, Space strums. Click a chord to hear it.': 'Клавиши 1–4 выбирают аккорд последовательности, пробел — удар по струнам. Нажмите на аккорд, чтобы услышать его.',
+    'Lesson complete!': 'Урок пройден!',
+    'Listen': 'Слушать',
+    'Look at “{0}”': 'Посмотреть «{0}»',
+    'Look at the gallery': 'Осмотреть галерею',
+    'Look at the painting': 'Посмотреть картину',
+    'Loop: ': 'Повтор: ',
+    'Louder': 'Громче',
+    'Mr Hibiki pays you for the work.': 'Господин Хибики платит вам за работу.',
+    'Music room · piano, guitar, theory': 'Музыкальная комната · фортепиано, гитара, теория',
+    'Music theory — {0}/{1} lessons done': 'Теория музыки — пройдено уроков: {0}/{1}',
+    'Music theory books': 'Книги по теории музыки',
+    'Not quite — ': 'Не совсем — ',
+    'Note {0}/{1}: {2}': 'Нота {0}/{1}: {2}',
+    'Note {0}/{1}': 'Нота {0}/{1}',
+    'Octave': 'Октава',
+    'off': 'выкл.',
+    'on': 'вкл.',
+    'On stage!': 'На сцене!',
+    'Other songs': 'Другие песни',
+    'Paint': 'Рисовать',
+    'Painted {0}/{1} · colour {2} selected · slips: {3}': 'Закрашено {0}/{1} · выбран цвет {2} · промахов: {3}',
+    'Painting after “{0}” finished!': 'Картина по мотивам «{0}» готова!',
+    'Perform': 'Выступить',
+    'Perform on the stage': 'Выступить на сцене',
+    'Piano': 'Фортепиано',
+    'Pianos': 'Фортепиано',
+    'Pick a colour, then click a cell with its number: the whole touching area of that number fills.': 'Выберите цвет и нажмите на клетку с его номером: закрасится вся соседняя область с тем же номером.',
+    'Pick a song: your character plays it while you set the tempo, the volume, piano or guitar. To play it yourself, use “Play it with the keyboard”.':
+        'Выберите песню: её сыграет ваш персонаж, а вы настраиваете темп, громкость, фортепиано или гитару. Чтобы сыграть самому, нажмите «Сыграть на клавиатуре».',
+    'Play a DJ set': 'Сыграть диджей-сет',
+    'Play a guitar': 'Сыграть на гитаре',
+    'Play it with the keyboard': 'Сыграть на клавиатуре',
+    'Play the piano': 'Сыграть на фортепиано',
+    'Play this song': 'Сыграть эту песню',
+    'Playing: {0}. Pick the one that mixes: the same number, or ±1 with the same letter on the Camelot wheel, tempo within 6%.':
+        'Играет: {0}. Выберите сводимый трек: тот же номер или ±1 с той же буквой на круге Камелот, темп в пределах 6%.',
+    'Practise: {0}': 'Практика: {0}',
+    'Practising: {0}': 'Разучивание: {0}',
+    'Question {0}/{1}: ': 'Вопрос {0}/{1}: ',
+    'Quieter': 'Тише',
+    'Right key, but {0} BPM is too far from {1} BPM to beat-match.': 'Тональность подходит, но {0} BPM слишком далеко от {1} BPM для сведения.',
+    'Slower': 'Медленнее',
+    'Songs': 'Песни',
+    'Songs — your character plays them': 'Песни — их играет ваш персонаж',
+    'Stage · DJ booth': 'Сцена · диджейский пульт',
+    'Strum (Space)': 'Удар по струнам (пробел)',
+    'Talk to the owner': 'Поговорить с владельцем',
+    'Tempo {0}% ({1} BPM)': 'Темп {0}% ({1} BPM)',
+    'The audience applauds! +1 fan ({0} in all).': 'Публика аплодирует! +1 поклонник (всего {0}).',
+    'The easel — paint by numbers': 'Мольберт — раскраска по номерам',
+    'The Hibiki stage — pick a song to perform': 'Сцена «Хибики» — выберите песню для выступления',
+    "The melodies are public-domain works; the note data is NihongoLife's own (CC0).": 'Мелодии находятся в общественном достоянии; нотные данные созданы NihongoLife (CC0).',
+    'Theory': 'Теория',
+    'Theory books': 'Книги по теории',
+    'This cell is number {0}, not {1}.': 'Эта клетка — номер {0}, а не {1}.',
+    "Too fast — the audience can't follow. Try 80–125%.": 'Слишком быстро — публика не успевает. Попробуйте 80–125%.',
+    'Too slow — the audience yawns. Try 80–125%.': 'Слишком медленно — публика зевает. Попробуйте 80–125%.',
+    'Try any instrument: pick a song and your character plays it. Perform on the stage at 80–125% tempo; the DJ booth and the easel are over there. Jobs are on the boards by the door.':
+        'Пробуйте любой инструмент: выберите песню, и персонаж сыграет её. Выступайте на сцене в темпе 80–125%; диджейский пульт и мольберт — вон там. Подработка — на досках у входа.',
+    'Volume {0}%': 'Громкость {0}%',
+    'You can play this one by hand now!': 'Теперь вы умеете играть это сами!',
+    'Your character plays': 'Играет ваш персонаж',
+    'Your character plays for the audience. Keep the tempo at {0}–{1}% of the original and they love it: +1 fan and the show counts as a gig. Fans: {2}.':
+        'Ваш персонаж играет для публики. Держите темп {0}–{1}% от оригинала, и зрителям понравится: +1 поклонник, выступление засчитано. Поклонников: {2}.',
+    'Playing': 'Играет',
+    'Exit to the street': 'Выйти на улицу',
+    'Enter the music shop': 'Войти в музыкальный магазин',
+}
+
+
+def english_needed(root):
+    """Every English string of the arts careers and the shop's quests (the code strings are checked by RussianCoverageAuditTests)."""
+    res = os.path.join(root, 'Assets', 'NihongoLife', 'Resources', 'Progression')
+    out = []
+
+    def walk(o):
+        if isinstance(o, dict):
+            for k, v in o.items():
+                if (k.endswith('En') or k == 'en') and isinstance(v, str) and v.strip(): out.append(v)
+                else: walk(v)
+        elif isinstance(o, list):
+            for v in o: walk(v)
+
+    careers = json.load(open(os.path.join(res, 'careers.json'), encoding='utf-8'))
+    for c in careers['careers']:
+        if c['id'] in ('musician', 'producer', 'painter'): walk(c)
+    progression = json.load(open(os.path.join(res, 'progression.json'), encoding='utf-8'))
+    for q in progression['quests']:
+        if q.get('scene') == '55_MusicShop': walk(q)
+    return out
+
+
+path = os.path.join('Assets', 'NihongoLife', 'Resources', 'Content', 'Localization', 'ru_table_extra.json')
+table = json.load(open(path, encoding='utf-8'))
+known = {e['en'] for e in json.load(open(path.replace('_extra', ''), encoding='utf-8'))['entries']} | {e['en'] for e in table['entries']}
+missing = [e for e in english_needed('.') if e not in RU and e not in known]
+if missing: raise SystemExit('no Russian line for:\n' + '\n'.join(missing))
+entries = {e['en']: e for e in table['entries']}
+for en, ru in RU.items():
+    entries[en] = {'en': en, 'ru': ru}
+table['entries'] = list(entries.values())
+table['count'] = len(table['entries'])
+with open(path, 'w', encoding='utf-8', newline='\n') as f:
+    json.dump(table, f, ensure_ascii=True, indent=2)  # the table's own style: escaped, so any code page reads it
+    f.write('\n')
+print(f'{len(RU)} Russian lines merged, {table["count"]} in the extra table')

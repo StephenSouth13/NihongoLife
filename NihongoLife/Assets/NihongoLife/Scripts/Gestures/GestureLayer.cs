@@ -95,6 +95,11 @@ namespace NihongoLife.Gestures
             if (_stopFade <= 0f) End();
         }
 
+        /// <summary>The body was just placed (seated at an instrument, teleported): measure "walking away" from here, so
+        /// the next gesture is not ended by the jump. Not done in Play: callers that replay a gesture often rely on the
+        /// walk check seeing the real motion between frames.</summary>
+        public void ResetMotion() => _lastPos = transform.position;
+
         /// <summary>Tempo of the playing dance or instrument gesture in beats per minute (0 = the gesture's own).</summary>
         public void SetBpm(float bpm) => _bpm = Mathf.Max(0f, bpm);
 

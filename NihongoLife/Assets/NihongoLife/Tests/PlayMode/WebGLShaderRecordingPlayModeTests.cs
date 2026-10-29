@@ -65,7 +65,7 @@ namespace NihongoLife.Tests
             {
                 WorldLocationCatalog.StationScene, WorldLocationCatalog.SushiRestaurantScene, WorldLocationCatalog.SchoolScene,
                 WorldLocationCatalog.HomeBedroomScene, WorldLocationCatalog.GameCenterScene, WorldLocationCatalog.ClinicScene,
-                WorldLocationCatalog.MidoriIslandScene, WorldLocationCatalog.PhuQuocIslandScene
+                WorldLocationCatalog.MidoriIslandScene, WorldLocationCatalog.PhuQuocIslandScene, WorldLocationCatalog.MusicShopScene
             })
             {
                 // Play inside a zone boots the town and enters the zone, as a player does.

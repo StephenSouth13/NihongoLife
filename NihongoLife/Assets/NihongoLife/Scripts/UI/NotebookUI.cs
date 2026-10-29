@@ -366,6 +366,7 @@ namespace NihongoLife.UI
 
             _title = Input(paper, "TitleField", NihongoLife.Core.Loc.T("Tiêu đề trang…", "Page title…", "ページのタイトル…"), 21f, FontStyles.Bold, multiline: false, NotebookService.TitleChars);
             Place((RectTransform)_title.transform, 50f, 14f, -64f, 40f, top: true, stretch: true);
+            LocText.Set((TMP_Text)_title.placeholder, "Tiêu đề trang…", "Page title…", "ページのタイトル…"); // follows a language change
             var titleRule = new GameObject("TitleRule", typeof(RectTransform), typeof(Image)).GetComponent<RectTransform>();
             titleRule.SetParent(paper, false);
             Place(titleRule, 50f, 54f, -64f, 2f, top: true, stretch: true);
@@ -379,6 +380,7 @@ namespace NihongoLife.UI
             bodyRect.offsetMin = new Vector2(50f, 92f); bodyRect.offsetMax = new Vector2(-14f, -82f);
             _body.textComponent.lineSpacing = 16f;
             ((TMP_Text)_body.placeholder).lineSpacing = 16f;
+            LocText.Set((TMP_Text)_body.placeholder, "Viết ghi chú… (từ mới, mẹo làm bài, đáp án cần xem lại)", "Write notes… (new words, test tips, answers to review)", "メモを書く…（新しい言葉、テストのコツ、見直す答え）");
             _rules = new GameObject("Rules", typeof(RectTransform)).GetComponent<RectTransform>();
             _rules.SetParent(_body.textComponent.rectTransform, false);
             NLUi.Stretch(_rules);

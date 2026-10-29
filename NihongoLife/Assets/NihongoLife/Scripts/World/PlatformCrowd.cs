@@ -56,7 +56,9 @@ namespace NihongoLife.World
             _towardTrack.y = 0f;
             _towardTrack = _towardTrack.sqrMagnitude > 0.01f ? _towardTrack.normalized : Vector3.back;
             Vector3 along = Vector3.Cross(Vector3.up, _towardTrack).normalized;
-            float y = door.position.y;
+            // The platform's floor, found under the pacing spot — not the door's height: the door's pivot is its middle
+            // (≈ 1.15 m), and people placed there stood in the air behind the gates.
+            float y = Floor(_platformCentre - _towardTrack * 1.2f, _platformCentre.y);
             _doorPos = door.position;
             _along = along;
             var stairs = FindDeep("ExitStairwell");
@@ -67,7 +69,7 @@ namespace NihongoLife.World
                 var parts = stairs.GetComponentsInChildren<Renderer>();
                 if (parts.Length > 0) { var box = parts[0].bounds; for (int i = 1; i < parts.Length; i++) box.Encapsulate(parts[i].bounds); stairsAt = box.center; }
             }
-            _stairs = stairs != null ? new Vector3(stairsAt.x, y, Mathf.Lerp(_platformCentre.z, stairsAt.z, 0.35f)) : _platformCentre - _towardTrack * 3f;
+            _stairs = stairs != null ? new Vector3(stairsAt.x, y, Mathf.Lerp(_platformCentre.z, stairsAt.z, 0.35f)) : new Vector3(_platformCentre.x, y, _platformCentre.z) - _towardTrack * 3f;
 
             // Boarding marks a step back from the yellow line, in front of the three doors.
             var marks = new GameObject("BoardingMarks").transform;
@@ -76,7 +78,10 @@ namespace NihongoLife.World
             {
                 var mark = new GameObject("Mark_" + x).transform;
                 mark.SetParent(marks, false);
-                mark.position = new Vector3(door.position.x, y, door.position.z) + along * x - _towardTrack * 1.0f;
+                Vector3 at = new Vector3(door.position.x, y, door.position.z) + along * x - _towardTrack * 1.0f;
+                // Slide a mark toward the middle until it stands on the platform's own floor (its ends have none).
+                for (int step = 0; step < 12 && x != 0f && Mathf.Abs(Floor(at, -99f) - y) > 0.1f; step++) at -= along * Mathf.Sign(x);
+                mark.position = at;
                 mark.rotation = Quaternion.LookRotation(_towardTrack);
                 _queueMarks.Add(mark);
             }
@@ -93,7 +98,8 @@ namespace NihongoLife.World
             }
             // Two already waiting, one pacing.
             for (int i = 0; i < 2; i++) Queue(Spawn("Waiting_" + i, _queueMarks[i * 2].position - _towardTrack * (0.7f * i), _queueMarks[i * 2].rotation));
-            var pacer = Spawn("Pacing", _platformCentre - _towardTrack * 1.2f, Quaternion.LookRotation(along));
+            Vector3 paceAt = _platformCentre - _towardTrack * 1.2f;
+            var pacer = Spawn("Pacing", new Vector3(paceAt.x, y, paceAt.z), Quaternion.LookRotation(along));
             if (pacer != null) StartCoroutine(Pace(pacer.transform, along));
             _nextArrival = Time.time + 6f;
         }
@@ -146,7 +152,7 @@ namespace NihongoLife.World
             for (int i = 0; i < doors.Length; i++)
             {
                 yield return new WaitForSeconds(0.6f);
-                Vector3 start = new Vector3(_doorPos.x, _doorPos.y, _doorPos.z) + _along * doors[i] + _towardTrack * 0.6f;
+                Vector3 start = new Vector3(_doorPos.x, _stairs.y, _doorPos.z) + _along * doors[i] + _towardTrack * 0.6f;
                 var person = Spawn("Alighting_" + i, start, Quaternion.LookRotation(-_towardTrack));
                 if (person != null) StartCoroutine(GetOffAndLeave(person));
             }
@@ -220,6 +226,12 @@ namespace NihongoLife.World
             var look = Looks[i % Looks.Length];
             CharacterLook.On(root, false).Fixed(look.hair, look.beard, look.age);
             return root;
+        }
+
+        /// <summary>Height of the floor under a point (solid colliders only; people have none); the fallback when nothing is hit.</summary>
+        private static float Floor(Vector3 at, float fallback)
+        {
+            return Physics.Raycast(at + Vector3.up * 1.5f, Vector3.down, out var hit, 4f, ~0, QueryTriggerInteraction.Ignore) ? hit.point.y : fallback;
         }
 
         private Transform FindDeep(string name)

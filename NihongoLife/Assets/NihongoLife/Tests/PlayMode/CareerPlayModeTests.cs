@@ -39,7 +39,8 @@ namespace NihongoLife.Tests
             try
             {
                 CareerService.EventChance = 0f;
-                // Locked before level 10.
+                // Locked before level 10 (earlier tests may have levelled the shared guest up: start from level 1).
+                status.DebugSetExp(0);
                 Assert.Less(status.Level, 10);
                 Assert.IsNotNull(CareerService.Choose("food"), "No career before level 10");
                 CareerUI.Open();

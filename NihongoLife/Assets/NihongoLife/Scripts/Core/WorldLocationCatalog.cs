@@ -14,6 +14,7 @@ namespace NihongoLife.Core
         public const string MidoriIslandScene = "60_MidoriIsland";
         public const string ClinicScene = "35_HibariClinic";
         public const string PhuQuocIslandScene = "65_PhuQuocIsland";
+        public const string MusicShopScene = "55_MusicShop";
         /// <summary>Phú Quốc arrival spawn, in front of Gánh Ngon (Dương Đông).</summary>
         public const string PhuQuocArrival = "phuquoc_ganh_ngon";
 
@@ -32,6 +33,8 @@ namespace NihongoLife.Core
         /// <summary>The recovery bed: where a player who fainted wakes up.</summary>
         public const string ClinicBed = "clinic_bed";
         public const string CityClinicReturn = "city_clinic_return";
+        public const string MusicShopEntrance = "music_shop_entrance";
+        public const string CityMusicShopReturn = "city_music_return";
 
         private static readonly Dictionary<string, LocationInfo> Locations =
             new Dictionary<string, LocationInfo>(StringComparer.OrdinalIgnoreCase)
@@ -44,7 +47,8 @@ namespace NihongoLife.Core
                 [HomeBedroomScene] = new LocationInfo("home_bedroom", "Your Bedroom", "Phòng trọ của bạn", "自室"),
                 [MidoriIslandScene] = new LocationInfo("midori_island", "Midori Island", "Đảo Xanh", "みどり島"),
                 [ClinicScene] = new LocationInfo("hibari_clinic", "Hibari Clinic", "Phòng khám Hibari", "ひばりクリニック"),
-                [PhuQuocIslandScene] = new LocationInfo("phu_quoc", "Phu Quoc Island", "Đảo Phú Quốc", "フーコック島")
+                [PhuQuocIslandScene] = new LocationInfo("phu_quoc", "Phu Quoc Island", "Đảo Phú Quốc", "フーコック島"),
+                [MusicShopScene] = new LocationInfo("hibiki_music", "Hibiki Music & Art", "Tiệm nhạc & tranh Hibiki", "ひびき楽器店")
             };
 
         public static bool Has(string sceneName) => !string.IsNullOrWhiteSpace(sceneName) && Locations.ContainsKey(sceneName);

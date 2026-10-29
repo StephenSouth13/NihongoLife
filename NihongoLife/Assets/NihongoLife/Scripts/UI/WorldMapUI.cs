@@ -44,6 +44,7 @@ namespace NihongoLife.UI
                 case "SCHOOL": return WorldLocationCatalog.SchoolScene;
                 case "HOME": return WorldLocationCatalog.HomeBedroomScene;
                 case "CLINIC": return WorldLocationCatalog.ClinicScene;
+                case "MUSIC": return WorldLocationCatalog.MusicShopScene;
                 default: return null;
             }
         }
@@ -303,6 +304,7 @@ namespace NihongoLife.UI
             else if (scene == WorldLocationCatalog.HomeBedroomScene) BedroomMap();
             else if (scene == WorldLocationCatalog.GameCenterScene) GameCenterMap();
             else if (scene == WorldLocationCatalog.ClinicScene) ClinicMap();
+            else if (scene == WorldLocationCatalog.MusicShopScene) MusicShopMap();
             else if (scene == WorldLocationCatalog.PhuQuocIslandScene) PhuQuocIslandMap();
             else CityMap();
             DrawGrid();
@@ -338,6 +340,7 @@ namespace NihongoLife.UI
             AddWorld(L("Công viên Hibari", "Hibari Park", "ひばり公園"), "PARK", "園", -40f, 40f, new(.42f, .72f, .4f), "こうえん");
             AddWorld(L("Game Center Hibari", "Game Center Hibari", "ゲームセンター"), "ARCADE", "遊", -6f, -20.5f, new(.92f, .36f, .72f), "ゲーセン");
             AddWorld(L("Phòng khám Hibari", "Hibari Clinic", "ひばりクリニック"), "CLINIC", "医", -18f, -20.5f, new(.36f, .72f, .64f), "クリニック");
+            AddWorld(L("Tiệm nhạc & tranh Hibiki", "Hibiki Music & Art", "ひびき楽器店"), "MUSIC", "音", -30f, -20.5f, new(.66f, .45f, .88f), "がっき");
         }
 
         /// <summary>
@@ -416,6 +419,21 @@ namespace NihongoLife.UI
             AddPixel(L("Phòng khám bác sĩ (診察室)", "Consultation room (診察室)", "診察室"), "DOCTOR", "診", new(-260, 140), new(.94f, .68f, .25f));
             AddPixel(L("Khám sức khoẻ · giường nghỉ", "Health check · recovery beds", "健康診断"), "CHECK", "健", new(260, 140), new(.45f, .78f, .48f));
             AddPixel(L("Phòng chờ", "Waiting room", "待合室"), "WAIT", "待", new(260, -140), new(.62f, .76f, .38f));
+            AddPixel(L("Về thành phố", "Return to city", "出口"), "EXIT", "出", new(0, -200), new(.45f, .78f, .48f));
+        }
+
+        private void MusicShopMap()
+        {
+            _header.text = L("SƠ ĐỒ TIỆM NHẠC & PHÒNG TRANH HIBIKI", "HIBIKI MUSIC & ART FLOOR MAP", "ひびき楽器店 案内図");
+            _worldMin = new(1288, -8); _worldMax = new(1312, 24);
+            Road(Vector2.zero, new(MapW - 120, MapH - 80));
+            AddPixel(L("Phòng tranh (39 kiệt tác)", "Gallery (39 masterpieces)", "ギャラリー"), "GALLERY", "画", new(0, 150), new(.86f, .66f, .3f));
+            AddPixel(L("Sân khấu · bàn DJ", "Stage · DJ booth", "ステージ・DJ"), "STAGE", "舞", new(220, 20), new(.92f, .36f, .72f));
+            AddPixel(L("Đàn piano", "Pianos", "ピアノ"), "PIANO", "鍵", new(-200, 0), new(.3f, .62f, .94f));
+            AddPixel(L("Tường guitar", "Guitar wall", "ギター"), "GUITAR", "弦", new(-160, 60), new(.94f, .68f, .25f));
+            AddPixel(L("Giá vẽ", "Easel", "アトリエ"), "EASEL", "絵", new(-280, -90), new(.45f, .78f, .48f));
+            AddPixel(L("Sách nhạc lý", "Theory books", "音楽理論"), "THEORY", "譜", new(280, -60), new(.62f, .76f, .38f));
+            AddPixel(L("Quầy · chú Hibiki", "Counter · Mr Hibiki", "おかいけい"), "COUNTER", "会", new(140, -150), new(.66f, .45f, .88f));
             AddPixel(L("Về thành phố", "Return to city", "出口"), "EXIT", "出", new(0, -200), new(.45f, .78f, .48f));
         }
 

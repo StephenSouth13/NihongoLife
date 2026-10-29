@@ -25,6 +25,7 @@ namespace NihongoLife.Core
             [WorldLocationCatalog.GameCenterScene] = "nlzone-arcade",
             [WorldLocationCatalog.MidoriIslandScene] = "nlzone-island",
             [WorldLocationCatalog.ClinicScene] = "nlzone-clinic",
+            [WorldLocationCatalog.MusicShopScene] = "nlzone-music",
             [WorldLocationCatalog.PhuQuocIslandScene] = "nlzone-phuquoc"
         };
 

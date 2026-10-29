@@ -1259,6 +1259,318 @@
       },
       "career": "hospitality",
       "careerLevel": 2
+    },
+    {
+      "id": "job_music_gig",
+      "category": "job",
+      "titleVi": "Biểu diễn ở tiệm nhạc Hibiki",
+      "titleEn": "Gig at the Hibiki music shop",
+      "titleJa": "ひびき楽器店で ライブ",
+      "descriptionVi": "Chú Hibiki cần người chơi nhạc buổi tối: lên sân khấu, diễn 2 bài với nhịp 80–125% bản gốc để khán giả thích, rồi báo lại.",
+      "descriptionEn": "Mr Hibiki needs an evening musician: take the stage, play 2 songs at 80–125% of their tempo so the audience enjoys them, then report.",
+      "descriptionJa": "ステージでテンポ80〜125%で2曲演奏して、店長に報告。",
+      "giverNpc": "npc_music_owner",
+      "giverNameVi": "Chú Hibiki (chủ tiệm)",
+      "giverNameEn": "Mr Hibiki (owner)",
+      "giverNameJa": "ひびき店長",
+      "locationVi": "Tiệm nhạc & tranh Hibiki",
+      "locationEn": "Hibiki Music & Art",
+      "locationJa": "ひびき楽器店",
+      "scene": "55_MusicShop",
+      "minLevel": 1,
+      "minKnowledge": 0,
+      "requiresQuests": [],
+      "repeatable": true,
+      "cooldownMinutes": 5,
+      "grantOnAccept": [],
+      "objectives": [
+        {
+          "id": "perform",
+          "event": "perform",
+          "target": "music_stage",
+          "count": 2,
+          "afterAll": false,
+          "textVi": "Biểu diễn tốt 2 bài trên sân khấu",
+          "textEn": "Play 2 songs well on the stage",
+          "textJa": "ステージで2曲"
+        },
+        {
+          "id": "report",
+          "event": "talk",
+          "target": "npc_music_owner",
+          "count": 1,
+          "afterAll": true,
+          "textVi": "Báo cáo chú Hibiki ở quầy để nhận công",
+          "textEn": "Report to Mr Hibiki at the counter to get paid",
+          "textJa": "店長に報告"
+        }
+      ],
+      "rewards": {
+        "yen": 650,
+        "xp": 45,
+        "knowledge": 8
+      }
+    },
+    {
+      "id": "job_dj_set",
+      "category": "job",
+      "titleVi": "Chơi DJ ở tiệm Hibiki",
+      "titleEn": "DJ set at the Hibiki shop",
+      "titleJa": "ひびき楽器店で DJ",
+      "descriptionVi": "DJ Sōta cần người giữ bàn: chọn đúng 4 bài nối tiếp — nhịp chênh không quá 6%, giọng liền kề trên vòng Camelot.",
+      "descriptionEn": "DJ Sōta needs someone on the decks: pick 4 records in a row that mix — tempo within 6%, neighbouring keys on the Camelot wheel.",
+      "descriptionJa": "BPMとキーが合う曲を4回つなげて、店長に報告。",
+      "giverNpc": "npc_music_owner",
+      "giverNameVi": "Chú Hibiki (chủ tiệm)",
+      "giverNameEn": "Mr Hibiki (owner)",
+      "giverNameJa": "ひびき店長",
+      "locationVi": "Tiệm nhạc & tranh Hibiki",
+      "locationEn": "Hibiki Music & Art",
+      "locationJa": "ひびき楽器店",
+      "scene": "55_MusicShop",
+      "minLevel": 1,
+      "minKnowledge": 0,
+      "requiresQuests": [],
+      "repeatable": true,
+      "cooldownMinutes": 5,
+      "grantOnAccept": [],
+      "objectives": [
+        {
+          "id": "mix",
+          "event": "mix",
+          "target": "music_dj",
+          "count": 4,
+          "afterAll": false,
+          "textVi": "Nối đúng 4 bài ở bàn DJ",
+          "textEn": "Mix 4 records correctly at the booth",
+          "textJa": "DJで4曲つなぐ"
+        },
+        {
+          "id": "report",
+          "event": "talk",
+          "target": "npc_music_owner",
+          "count": 1,
+          "afterAll": true,
+          "textVi": "Báo cáo chú Hibiki ở quầy để nhận công",
+          "textEn": "Report to Mr Hibiki at the counter to get paid",
+          "textJa": "店長に報告"
+        }
+      ],
+      "rewards": {
+        "yen": 650,
+        "xp": 45,
+        "knowledge": 7
+      }
+    },
+    {
+      "id": "job_art_commission",
+      "category": "job",
+      "titleVi": "Vẽ tranh theo đơn",
+      "titleEn": "A painting commission",
+      "titleJa": "絵の 依頼",
+      "descriptionVi": "Một vị khách đặt tranh chép theo một kiệt tác: tô xong một bức ở giá vẽ rồi giao cho chú Hibiki.",
+      "descriptionEn": "A customer orders a copy of a masterpiece: finish one painting at the easel and deliver it to Mr Hibiki.",
+      "descriptionJa": "イーゼルで1枚かいて、店長に納品。",
+      "giverNpc": "npc_music_owner",
+      "giverNameVi": "Chú Hibiki (chủ tiệm)",
+      "giverNameEn": "Mr Hibiki (owner)",
+      "giverNameJa": "ひびき店長",
+      "locationVi": "Tiệm nhạc & tranh Hibiki",
+      "locationEn": "Hibiki Music & Art",
+      "locationJa": "ひびき楽器店",
+      "scene": "55_MusicShop",
+      "minLevel": 1,
+      "minKnowledge": 0,
+      "requiresQuests": [],
+      "repeatable": true,
+      "cooldownMinutes": 5,
+      "grantOnAccept": [],
+      "objectives": [
+        {
+          "id": "paint",
+          "event": "paint",
+          "target": "art_easel",
+          "count": 1,
+          "afterAll": false,
+          "textVi": "Vẽ xong 1 bức tranh ở giá vẽ",
+          "textEn": "Finish 1 painting at the easel",
+          "textJa": "イーゼルで1枚"
+        },
+        {
+          "id": "report",
+          "event": "talk",
+          "target": "npc_music_owner",
+          "count": 1,
+          "afterAll": true,
+          "textVi": "Báo cáo chú Hibiki ở quầy để nhận công",
+          "textEn": "Report to Mr Hibiki at the counter to get paid",
+          "textJa": "店長に報告"
+        }
+      ],
+      "rewards": {
+        "yen": 700,
+        "xp": 45,
+        "knowledge": 8
+      }
+    },
+    {
+      "id": "career_musician_recital",
+      "category": "job",
+      "titleVi": "Đêm độc tấu",
+      "titleEn": "A recital night",
+      "titleJa": "リサイタルの夜",
+      "descriptionVi": "Bậc 3 nghề Nhạc công: một đêm diễn riêng — 4 bài tốt liên tiếp.",
+      "descriptionEn": "Musician career level 3: your own night — 4 good songs.",
+      "descriptionJa": "ミュージシャン3：4曲のリサイタル。",
+      "giverNpc": "npc_music_owner",
+      "giverNameVi": "Chú Hibiki (chủ tiệm)",
+      "giverNameEn": "Mr Hibiki (owner)",
+      "giverNameJa": "ひびき店長",
+      "locationVi": "Tiệm nhạc & tranh Hibiki",
+      "locationEn": "Hibiki Music & Art",
+      "locationJa": "ひびき楽器店",
+      "scene": "55_MusicShop",
+      "minLevel": 1,
+      "minKnowledge": 0,
+      "requiresQuests": [],
+      "repeatable": true,
+      "cooldownMinutes": 30,
+      "grantOnAccept": [],
+      "objectives": [
+        {
+          "id": "perform",
+          "event": "perform",
+          "target": "music_stage",
+          "count": 4,
+          "afterAll": false,
+          "textVi": "Biểu diễn tốt 4 bài",
+          "textEn": "Play 4 songs well",
+          "textJa": "4曲演奏"
+        },
+        {
+          "id": "report",
+          "event": "talk",
+          "target": "npc_music_owner",
+          "count": 1,
+          "afterAll": true,
+          "textVi": "Báo cáo chú Hibiki ở quầy để nhận công",
+          "textEn": "Report to Mr Hibiki at the counter to get paid",
+          "textJa": "店長に報告"
+        }
+      ],
+      "rewards": {
+        "yen": 1200,
+        "xp": 80,
+        "knowledge": 14
+      },
+      "career": "musician",
+      "careerLevel": 3
+    },
+    {
+      "id": "career_producer_party",
+      "category": "job",
+      "titleVi": "Tiệc cuối tuần",
+      "titleEn": "The weekend party",
+      "titleJa": "週末パーティー",
+      "descriptionVi": "Bậc 2 nghề DJ: giữ sàn cả buổi tiệc — nối đúng 8 bài.",
+      "descriptionEn": "DJ career level 2: hold the party — mix 8 records.",
+      "descriptionJa": "DJ2：8曲つなぐ。",
+      "giverNpc": "npc_music_owner",
+      "giverNameVi": "Chú Hibiki (chủ tiệm)",
+      "giverNameEn": "Mr Hibiki (owner)",
+      "giverNameJa": "ひびき店長",
+      "locationVi": "Tiệm nhạc & tranh Hibiki",
+      "locationEn": "Hibiki Music & Art",
+      "locationJa": "ひびき楽器店",
+      "scene": "55_MusicShop",
+      "minLevel": 1,
+      "minKnowledge": 0,
+      "requiresQuests": [],
+      "repeatable": true,
+      "cooldownMinutes": 30,
+      "grantOnAccept": [],
+      "objectives": [
+        {
+          "id": "mix",
+          "event": "mix",
+          "target": "music_dj",
+          "count": 8,
+          "afterAll": false,
+          "textVi": "Nối đúng 8 bài",
+          "textEn": "Mix 8 records",
+          "textJa": "8曲つなぐ"
+        },
+        {
+          "id": "report",
+          "event": "talk",
+          "target": "npc_music_owner",
+          "count": 1,
+          "afterAll": true,
+          "textVi": "Báo cáo chú Hibiki ở quầy để nhận công",
+          "textEn": "Report to Mr Hibiki at the counter to get paid",
+          "textJa": "店長に報告"
+        }
+      ],
+      "rewards": {
+        "yen": 1100,
+        "xp": 70,
+        "knowledge": 12
+      },
+      "career": "producer",
+      "careerLevel": 2
+    },
+    {
+      "id": "career_painter_exhibit",
+      "category": "job",
+      "titleVi": "Chuẩn bị triển lãm nhỏ",
+      "titleEn": "A small exhibition",
+      "titleJa": "小さな展示",
+      "descriptionVi": "Bậc 4 nghề Hoạ sĩ: vẽ 3 bức cho góc triển lãm của tiệm.",
+      "descriptionEn": "Painter career level 4: paint 3 works for the shop's exhibition corner.",
+      "descriptionJa": "画家4：3枚かいて展示。",
+      "giverNpc": "npc_music_owner",
+      "giverNameVi": "Chú Hibiki (chủ tiệm)",
+      "giverNameEn": "Mr Hibiki (owner)",
+      "giverNameJa": "ひびき店長",
+      "locationVi": "Tiệm nhạc & tranh Hibiki",
+      "locationEn": "Hibiki Music & Art",
+      "locationJa": "ひびき楽器店",
+      "scene": "55_MusicShop",
+      "minLevel": 1,
+      "minKnowledge": 0,
+      "requiresQuests": [],
+      "repeatable": true,
+      "cooldownMinutes": 60,
+      "grantOnAccept": [],
+      "objectives": [
+        {
+          "id": "paint",
+          "event": "paint",
+          "target": "art_easel",
+          "count": 3,
+          "afterAll": false,
+          "textVi": "Vẽ xong 3 bức",
+          "textEn": "Finish 3 paintings",
+          "textJa": "3枚かく"
+        },
+        {
+          "id": "report",
+          "event": "talk",
+          "target": "npc_music_owner",
+          "count": 1,
+          "afterAll": true,
+          "textVi": "Báo cáo chú Hibiki ở quầy để nhận công",
+          "textEn": "Report to Mr Hibiki at the counter to get paid",
+          "textJa": "店長に報告"
+        }
+      ],
+      "rewards": {
+        "yen": 1900,
+        "xp": 110,
+        "knowledge": 20
+      },
+      "career": "painter",
+      "careerLevel": 4
     }
   ]
 }

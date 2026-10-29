@@ -812,6 +812,8 @@ namespace NihongoLife.UI
             Section(p, Loc.T("Phát ở đâu", "Where it plays", "流れる場所"), track.Where, color);
             Section(p, Loc.T("Nguồn", "Credit", "クレジット"), track.credit, color);
             var buttons = NLUi.Group(p, "Buttons", false, 10f, TextAnchor.MiddleLeft, false);
+            // The music room: piano, guitar, melodies, music theory, the gallery (MusicStudioUI).
+            PageButton(buttons, "MusicStudio", Loc.T("Phòng nhạc · piano, guitar, nhạc lý", "Music room · piano, guitar, theory", "音楽室 · ピアノ・ギター・理論"), color, () => { Close(); MusicStudioUI.Open(); });
             bool listening = Soundscape.PreviewKey == track.key;
             PageButton(buttons, "Listen", listening ? Loc.T("■ Dừng nghe thử", "■ Stop", "■ 停止") : Loc.T("▶ Nghe thử", "▶ Listen", "▶ 試聴"), color, () =>
             {

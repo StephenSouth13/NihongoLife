@@ -2439,6 +2439,1048 @@
           ]
         }
       ]
+    },
+    {
+      "id": "musician",
+      "nameVi": "Nhạc công",
+      "nameEn": "Musician",
+      "nameJa": "ミュージシャン",
+      "descriptionVi": "Biểu diễn trên sân khấu tiệm nhạc Hibiki: nhân vật đàn cho khán giả, bạn giữ nhịp vừa phải (80–125%) để được vỗ tay và có người hâm mộ — rồi thành nghệ sĩ piano hoặc ca sĩ – nhạc sĩ.",
+      "descriptionEn": "Play the stage of the Hibiki music shop: your character performs and you keep the tempo right (80–125%) for applause and fans — then become a pianist or a singer-songwriter.",
+      "descriptionJa": "ひびき楽器店のステージで演奏。テンポ80〜125%で拍手とファンを集めて、ピアニストかシンガーソングライターへ。",
+      "workplaceVi": "Sân khấu tiệm nhạc Hibiki",
+      "workplaceEn": "The Hibiki music shop stage",
+      "workplaceJa": "ひびき楽器店のステージ",
+      "shiftQuest": "job_music_gig",
+      "bossNameJa": "ひびき店長",
+      "bossNameVi": "Chú Hibiki",
+      "workStart": 17,
+      "workEnd": 22,
+      "workDays": [
+        4,
+        5,
+        6,
+        0
+      ],
+      "branchAtLevel": 4,
+      "levels": [
+        {
+          "titleVi": "Nhạc công tập sự",
+          "titleEn": "Trainee musician",
+          "titleJa": "見習いミュージシャン",
+          "salary": 240,
+          "shiftsToPromote": 2,
+          "knowledgeToPromote": 0
+        },
+        {
+          "titleVi": "Nhạc công quán cà phê",
+          "titleEn": "Café musician",
+          "titleJa": "カフェ演奏者",
+          "salary": 400,
+          "shiftsToPromote": 3,
+          "knowledgeToPromote": 120
+        },
+        {
+          "titleVi": "Nhạc công phòng thu",
+          "titleEn": "Session musician",
+          "titleJa": "スタジオミュージシャン",
+          "salary": 600,
+          "shiftsToPromote": 4,
+          "knowledgeToPromote": 260
+        }
+      ],
+      "branches": [
+        {
+          "id": "pianist",
+          "nameVi": "Nghệ sĩ piano",
+          "nameEn": "Pianist",
+          "nameJa": "ピアニストコース",
+          "descriptionVi": "Đệm đàn, độc tấu rồi hoà nhạc: từ nghệ sĩ piano lên giám đốc âm nhạc.",
+          "descriptionEn": "Accompanying, recitals, then concerts: from pianist to music director.",
+          "descriptionJa": "伴奏、リサイタル、コンサート。ピアニストから音楽監督へ。",
+          "levels": [
+            {
+              "titleVi": "Nghệ sĩ piano",
+              "titleEn": "Pianist",
+              "titleJa": "ピアニスト",
+              "salary": 800,
+              "shiftsToPromote": 4,
+              "knowledgeToPromote": 380
+            },
+            {
+              "titleVi": "Nghệ sĩ piano hoà nhạc",
+              "titleEn": "Concert pianist",
+              "titleJa": "コンサートピアニスト",
+              "salary": 1100,
+              "shiftsToPromote": 5,
+              "knowledgeToPromote": 520
+            },
+            {
+              "titleVi": "Giám đốc âm nhạc",
+              "titleEn": "Music director",
+              "titleJa": "音楽監督",
+              "salary": 1500,
+              "shiftsToPromote": 0,
+              "knowledgeToPromote": 0
+            }
+          ]
+        },
+        {
+          "id": "songwriter",
+          "nameVi": "Ca sĩ – nhạc sĩ",
+          "nameEn": "Singer-songwriter",
+          "nameJa": "シンガーソングライターコース",
+          "descriptionVi": "Tự viết và hát bài của mình: ra mắt hãng đĩa rồi đi lưu diễn.",
+          "descriptionEn": "Write and sing your own songs: a label debut, then a tour.",
+          "descriptionJa": "自分の曲を作って歌う。メジャーデビューからツアーへ。",
+          "levels": [
+            {
+              "titleVi": "Ca sĩ – nhạc sĩ",
+              "titleEn": "Singer-songwriter",
+              "titleJa": "シンガーソングライター",
+              "salary": 780,
+              "shiftsToPromote": 4,
+              "knowledgeToPromote": 360
+            },
+            {
+              "titleVi": "Nghệ sĩ hãng đĩa lớn",
+              "titleEn": "Major-label artist",
+              "titleJa": "メジャーアーティスト",
+              "salary": 1080,
+              "shiftsToPromote": 5,
+              "knowledgeToPromote": 500
+            },
+            {
+              "titleVi": "Nghệ sĩ lưu diễn",
+              "titleEn": "Touring headliner",
+              "titleJa": "ツアーアーティスト",
+              "salary": 1480,
+              "shiftsToPromote": 0,
+              "knowledgeToPromote": 0
+            }
+          ]
+        }
+      ],
+      "interviews": [
+        {
+          "toLevel": 2,
+          "lineJa": "ほんばんの まえに なにを しますか。",
+          "readingJa": "Honban no mae ni nani o shimasu ka.",
+          "meaningVi": "Trước giờ diễn bạn làm gì?",
+          "meaningEn": "What do you do before the show?",
+          "choices": [
+            {
+              "ja": "チューニングと リハーサルを します。",
+              "vi": "Lên dây đàn và tập dượt.",
+              "en": "Tune up and rehearse.",
+              "correct": true
+            },
+            {
+              "ja": "なにも しません。",
+              "vi": "Không làm gì.",
+              "en": "Nothing.",
+              "hintVi": "Đàn lệch dây và chưa dượt thì dễ hỏng buổi diễn.",
+              "hintEn": "An untuned instrument and no run-through spoil a show."
+            },
+            {
+              "ja": "おきゃくさんに あやまって おきます。",
+              "vi": "Xin lỗi khán giả trước.",
+              "en": "Apologise to the audience in advance.",
+              "hintVi": "Chuẩn bị kỹ thì không cần xin lỗi.",
+              "hintEn": "Prepare well and there is nothing to apologise for."
+            }
+          ]
+        },
+        {
+          "toLevel": 3,
+          "lineJa": "ちょさくけんの ある きょくを みせで えんそうする とき、なにが ひつようですか。",
+          "readingJa": "Chosakuken no aru kyoku o mise de ensō suru toki, nani ga hitsuyō desu ka.",
+          "meaningVi": "Diễn bài còn bản quyền ở cửa hàng thì cần gì?",
+          "meaningEn": "Playing a copyrighted song in a shop: what is needed?",
+          "choices": [
+            {
+              "ja": "おみせが JASRAC などに きょかを とります。",
+              "vi": "Cửa hàng xin phép (trả phí) qua JASRAC hoặc tổ chức quản lý quyền.",
+              "en": "The venue gets a licence from JASRAC or a similar society.",
+              "correct": true
+            },
+            {
+              "ja": "なにも いりません。",
+              "vi": "Không cần gì.",
+              "en": "Nothing.",
+              "hintVi": "Biểu diễn công khai bài còn bản quyền cần giấy phép; bài đã hết bản quyền (như Beethoven) thì không.",
+              "hintEn": "Public performance of a copyrighted song needs a licence; public-domain music (Beethoven) does not."
+            },
+            {
+              "ja": "がくふを かえば じゆうです。",
+              "vi": "Mua bản nhạc là được tự do.",
+              "en": "Buying the sheet music is enough.",
+              "hintVi": "Mua bản nhạc không kèm quyền biểu diễn công khai.",
+              "hintEn": "Sheet music does not include public-performance rights."
+            }
+          ]
+        },
+        {
+          "toLevel": 4,
+          "lineJa": "これから どの みちに すすみたいですか。",
+          "readingJa": "Kore kara dono michi ni susumitai desu ka.",
+          "meaningVi": "Từ giờ bạn muốn đi theo hướng nào?",
+          "meaningEn": "Which way would you like to go now?",
+          "choices": [
+            {
+              "ja": "ピアノを きわめたいです。",
+              "vi": "Tôi muốn theo đuổi piano tới cùng.",
+              "en": "I want to master the piano.",
+              "correct": true,
+              "branch": "pianist"
+            },
+            {
+              "ja": "じぶんの きょくを つくって うたいたいです。",
+              "vi": "Tôi muốn tự sáng tác và hát.",
+              "en": "I want to write and sing my own songs.",
+              "correct": true,
+              "branch": "songwriter"
+            }
+          ]
+        },
+        {
+          "toLevel": 5,
+          "lineJa": "ペダルを ふみすぎると どう なりますか。",
+          "readingJa": "Pedaru o fumisugiru to dō narimasu ka.",
+          "meaningVi": "Đạp pedal ngân quá nhiều thì sao?",
+          "meaningEn": "What happens if you hold the sustain pedal too much?",
+          "choices": [
+            {
+              "ja": "おとが にごります。コードが かわったら ふみかえます。",
+              "vi": "Tiếng bị đục; đổi hợp âm thì nhấc pedal đạp lại.",
+              "en": "The sound gets muddy; change the pedal when the chord changes.",
+              "correct": true
+            },
+            {
+              "ja": "おとが おおきく なるだけです。",
+              "vi": "Chỉ to tiếng hơn thôi.",
+              "en": "It is only louder.",
+              "hintVi": "Pedal ngân giữ mọi dây rung nên các hợp âm chồng lên nhau.",
+              "hintEn": "The pedal keeps every string ringing, so chords blur together."
+            }
+          ],
+          "branch": "pianist"
+        },
+        {
+          "toLevel": 6,
+          "lineJa": "コンサートの まえに きんちょうしたら どうしますか。",
+          "readingJa": "Konsāto no mae ni kinchō shitara dō shimasu ka.",
+          "meaningVi": "Hồi hộp trước buổi hoà nhạc thì làm sao?",
+          "meaningEn": "Nervous before a concert: what do you do?",
+          "choices": [
+            {
+              "ja": "ふかこきゅうして、いつもの れんしゅうを しんじます。",
+              "vi": "Hít thở sâu và tin vào những buổi tập.",
+              "en": "Breathe deeply and trust my practice.",
+              "correct": true
+            },
+            {
+              "ja": "コンサートを キャンセルします。",
+              "vi": "Huỷ buổi hoà nhạc.",
+              "en": "Cancel the concert.",
+              "hintVi": "Hồi hộp là bình thường; huỷ phút chót làm mất lòng khán giả và ban tổ chức.",
+              "hintEn": "Nerves are normal; a last-minute cancellation lets everyone down."
+            }
+          ],
+          "branch": "pianist"
+        },
+        {
+          "toLevel": 5,
+          "lineJa": "メロディーと コードが あわない とき、どうしますか。",
+          "readingJa": "Merodī to kōdo ga awanai toki, dō shimasu ka.",
+          "meaningVi": "Giai điệu và hợp âm không khớp thì làm sao?",
+          "meaningEn": "The melody and the chords clash: what do you do?",
+          "choices": [
+            {
+              "ja": "つよい はくで コードの なかの おとを つかいます。",
+              "vi": "Dùng nốt thuộc hợp âm ở phách mạnh.",
+              "en": "Use chord tones on the strong beats.",
+              "correct": true
+            },
+            {
+              "ja": "きに しません。",
+              "vi": "Kệ nó.",
+              "en": "Ignore it.",
+              "hintVi": "Nốt ngoài hợp âm ở phách mạnh nghe chỏi; đặt nốt hợp âm ở đó.",
+              "hintEn": "Non-chord notes on strong beats sound wrong; put chord tones there."
+            }
+          ],
+          "branch": "songwriter"
+        },
+        {
+          "toLevel": 6,
+          "lineJa": "ツアーで のどを まもるには どうしますか。",
+          "readingJa": "Tsuā de nodo o mamoru ni wa dō shimasu ka.",
+          "meaningVi": "Đi lưu diễn thì giữ giọng thế nào?",
+          "meaningEn": "How do you look after your voice on tour?",
+          "choices": [
+            {
+              "ja": "よく ねて、みずを のんで、ウォームアップします。",
+              "vi": "Ngủ đủ, uống nước và khởi động giọng.",
+              "en": "Sleep well, drink water and warm up.",
+              "correct": true
+            },
+            {
+              "ja": "まいにち おおごえで れんしゅうしつづけます。",
+              "vi": "Ngày nào cũng gào thật to để luyện.",
+              "en": "Keep practising at full volume every day.",
+              "hintVi": "Hát gắng quá sức làm tổn thương dây thanh; cần nghỉ ngơi.",
+              "hintEn": "Straining hurts the vocal folds; they need rest."
+            }
+          ],
+          "branch": "songwriter"
+        }
+      ],
+      "events": [
+        {
+          "id": "mus_string",
+          "lineJa": "ライブちゅうに ギターの げんが きれました！",
+          "readingJa": "Raibu-chū ni gitā no gen ga kiremashita!",
+          "meaningVi": "Đang diễn thì đứt dây đàn guitar!",
+          "meaningEn": "A guitar string snapped mid-show!",
+          "choices": [
+            {
+              "ja": "おちついて ほかの げんで つづけます。",
+              "vi": "Bình tĩnh chơi tiếp bằng các dây còn lại.",
+              "en": "Stay calm and carry on with the other strings.",
+              "performance": 10,
+              "reputation": 2,
+              "mood": "Proud"
+            },
+            {
+              "ja": "スペアの ギターに かえます。",
+              "vi": "Đổi sang đàn dự phòng.",
+              "en": "Switch to the spare guitar.",
+              "performance": 8,
+              "reputation": 1
+            },
+            {
+              "ja": "えんそうを やめて かえります。",
+              "vi": "Bỏ dở rồi về.",
+              "en": "Stop and go home.",
+              "performance": -12,
+              "reputation": -2,
+              "mood": "Embarrassed"
+            }
+          ]
+        },
+        {
+          "id": "mus_request",
+          "lineJa": "おきゃくさんが しらない きょくを リクエストしました。",
+          "readingJa": "Okyakusan ga shiranai kyoku o rikuesuto shimashita.",
+          "meaningVi": "Khách yêu cầu một bài bạn không biết.",
+          "meaningEn": "A guest requests a song you do not know.",
+          "choices": [
+            {
+              "ja": "にている きょくを ていあんします。",
+              "vi": "Gợi ý một bài tương tự.",
+              "en": "Suggest a similar song.",
+              "performance": 8,
+              "reputation": 2,
+              "mood": "Confident"
+            },
+            {
+              "ja": "みみコピーで ためしに ひいて みます。",
+              "vi": "Thử chơi theo tai.",
+              "en": "Try to play it by ear.",
+              "performance": 4,
+              "reputation": 1
+            },
+            {
+              "ja": "きこえない ふりを します。",
+              "vi": "Giả vờ không nghe thấy.",
+              "en": "Pretend not to hear.",
+              "performance": -6
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "producer",
+      "nameVi": "DJ & nhà sản xuất",
+      "nameEn": "DJ & producer",
+      "nameJa": "DJ・プロデューサー",
+      "descriptionVi": "Chơi DJ ở tiệm nhạc Hibiki: chọn bài tiếp theo khớp nhịp (BPM) và hoà âm (vòng Camelot) — rồi thành DJ sân khấu lớn hoặc nhà sản xuất âm nhạc.",
+      "descriptionEn": "DJ at the Hibiki music shop: pick the next record by tempo (BPM) and key (the Camelot wheel) — then headline clubs or produce music.",
+      "descriptionJa": "ひびき楽器店でDJ。BPMとキー（カメロット）で次の曲をえらび、クラブDJか音楽プロデューサーへ。",
+      "workplaceVi": "Bàn DJ tiệm nhạc Hibiki",
+      "workplaceEn": "The Hibiki DJ booth",
+      "workplaceJa": "ひびき楽器店のDJブース",
+      "shiftQuest": "job_dj_set",
+      "bossNameJa": "DJ ソウタ",
+      "bossNameVi": "DJ Sōta",
+      "workStart": 18,
+      "workEnd": 23,
+      "workDays": [
+        4,
+        5,
+        6
+      ],
+      "branchAtLevel": 4,
+      "levels": [
+        {
+          "titleVi": "Phụ âm thanh",
+          "titleEn": "Sound assistant",
+          "titleJa": "音響アシスタント",
+          "salary": 260,
+          "shiftsToPromote": 2,
+          "knowledgeToPromote": 0
+        },
+        {
+          "titleVi": "DJ mở màn",
+          "titleEn": "Opening DJ",
+          "titleJa": "オープニングDJ",
+          "salary": 420,
+          "shiftsToPromote": 3,
+          "knowledgeToPromote": 120
+        },
+        {
+          "titleVi": "DJ thường trú",
+          "titleEn": "Resident DJ",
+          "titleJa": "レジデントDJ",
+          "salary": 620,
+          "shiftsToPromote": 4,
+          "knowledgeToPromote": 260
+        }
+      ],
+      "branches": [
+        {
+          "id": "club_dj",
+          "nameVi": "DJ sân khấu",
+          "nameEn": "Club DJ",
+          "nameJa": "クラブDJコース",
+          "descriptionVi": "Đọc sàn nhảy, giữ năng lượng cả đêm: DJ khách mời, DJ chính rồi DJ lễ hội.",
+          "descriptionEn": "Read the floor and keep the energy all night: guest, headliner, festival DJ.",
+          "descriptionJa": "フロアを読んで一晩もりあげる。ゲストDJからフェスDJへ。",
+          "levels": [
+            {
+              "titleVi": "DJ khách mời",
+              "titleEn": "Guest DJ",
+              "titleJa": "ゲストDJ",
+              "salary": 800,
+              "shiftsToPromote": 4,
+              "knowledgeToPromote": 380
+            },
+            {
+              "titleVi": "DJ chính",
+              "titleEn": "Headliner DJ",
+              "titleJa": "ヘッドライナーDJ",
+              "salary": 1100,
+              "shiftsToPromote": 5,
+              "knowledgeToPromote": 520
+            },
+            {
+              "titleVi": "DJ lễ hội",
+              "titleEn": "Festival DJ",
+              "titleJa": "フェスDJ",
+              "salary": 1500,
+              "shiftsToPromote": 0,
+              "knowledgeToPromote": 0
+            }
+          ]
+        },
+        {
+          "id": "producer",
+          "nameVi": "Nhà sản xuất âm nhạc",
+          "nameEn": "Music producer",
+          "nameJa": "プロデューサーコース",
+          "descriptionVi": "Làm beat, phối khí, master: từ người làm nhạc tới chủ hãng đĩa.",
+          "descriptionEn": "Beats, arrangement, mastering: from track maker to label head.",
+          "descriptionJa": "トラック、アレンジ、マスタリング。トラックメイカーからレーベル代表へ。",
+          "levels": [
+            {
+              "titleVi": "Người làm nhạc",
+              "titleEn": "Track maker",
+              "titleJa": "トラックメイカー",
+              "salary": 780,
+              "shiftsToPromote": 4,
+              "knowledgeToPromote": 360
+            },
+            {
+              "titleVi": "Nhà sản xuất âm nhạc",
+              "titleEn": "Music producer",
+              "titleJa": "音楽プロデューサー",
+              "salary": 1080,
+              "shiftsToPromote": 5,
+              "knowledgeToPromote": 500
+            },
+            {
+              "titleVi": "Chủ hãng đĩa",
+              "titleEn": "Label head",
+              "titleJa": "レーベル代表",
+              "salary": 1480,
+              "shiftsToPromote": 0,
+              "knowledgeToPromote": 0
+            }
+          ]
+        }
+      ],
+      "interviews": [
+        {
+          "toLevel": 2,
+          "lineJa": "BPM とは なんですか。",
+          "readingJa": "BPM to wa nan desu ka.",
+          "meaningVi": "BPM là gì?",
+          "meaningEn": "What is BPM?",
+          "choices": [
+            {
+              "ja": "いっぷんかんの はくの かずです。",
+              "vi": "Số phách trong một phút.",
+              "en": "Beats per minute.",
+              "correct": true
+            },
+            {
+              "ja": "おとの おおきさの たんいです。",
+              "vi": "Đơn vị âm lượng.",
+              "en": "A unit of loudness.",
+              "hintVi": "Âm lượng đo bằng dB; BPM là nhịp độ.",
+              "hintEn": "Loudness is in dB; BPM is the tempo."
+            },
+            {
+              "ja": "きょくの ながさです。",
+              "vi": "Độ dài bài hát.",
+              "en": "The length of the song.",
+              "hintVi": "BPM là số phách mỗi phút, không phải độ dài.",
+              "hintEn": "BPM counts beats per minute, not the length."
+            }
+          ]
+        },
+        {
+          "toLevel": 3,
+          "lineJa": "つぎの きょくの キーが あわない とき、どうしますか。",
+          "readingJa": "Tsugi no kyoku no kī ga awanai toki, dō shimasu ka.",
+          "meaningVi": "Bài tiếp theo lệch giọng thì làm sao?",
+          "meaningEn": "The next record is in a clashing key: what do you do?",
+          "choices": [
+            {
+              "ja": "カメロットで となりの キーの きょくを えらびます。",
+              "vi": "Chọn bài giọng liền kề trên vòng Camelot.",
+              "en": "Pick a record in a neighbouring key on the Camelot wheel.",
+              "correct": true
+            },
+            {
+              "ja": "おおきい おとで むりやり まぜます。",
+              "vi": "Vặn to rồi trộn bừa.",
+              "en": "Turn it up and force the mix.",
+              "hintVi": "Hai giọng chỏi nhau nghe rất khó chịu, to hơn lại càng rõ.",
+              "hintEn": "Clashing keys sound bad, and louder makes it worse."
+            }
+          ]
+        },
+        {
+          "toLevel": 4,
+          "lineJa": "これから どこで はたらきたいですか。",
+          "readingJa": "Kore kara doko de hatarakitai desu ka.",
+          "meaningVi": "Từ giờ bạn muốn làm ở đâu?",
+          "meaningEn": "Where would you like to work from now on?",
+          "choices": [
+            {
+              "ja": "クラブで みんなを おどらせたいです。",
+              "vi": "Tôi muốn làm cả sàn nhảy cùng nhảy.",
+              "en": "In clubs, making everyone dance.",
+              "correct": true,
+              "branch": "club_dj"
+            },
+            {
+              "ja": "スタジオで きょくを つくりたいです。",
+              "vi": "Tôi muốn làm nhạc trong phòng thu.",
+              "en": "In the studio, making tracks.",
+              "correct": true,
+              "branch": "producer"
+            }
+          ]
+        },
+        {
+          "toLevel": 5,
+          "lineJa": "フロアの おきゃくさんが へって きました。",
+          "readingJa": "Furoa no okyakusan ga hette kimashita.",
+          "meaningVi": "Khách trên sàn đang vãn dần.",
+          "meaningEn": "The dance floor is emptying.",
+          "choices": [
+            {
+              "ja": "フロアを みて きょくの エネルギーを かえます。",
+              "vi": "Nhìn sàn và đổi năng lượng của bài.",
+              "en": "Watch the floor and change the energy.",
+              "correct": true
+            },
+            {
+              "ja": "よていどおり ながしつづけます。",
+              "vi": "Cứ phát đúng danh sách định sẵn.",
+              "en": "Keep playing the planned list.",
+              "hintVi": "DJ giỏi đọc phản ứng của khách chứ không chỉ theo danh sách.",
+              "hintEn": "A good DJ reads the room, not just the list."
+            }
+          ],
+          "branch": "club_dj"
+        },
+        {
+          "toLevel": 6,
+          "lineJa": "おとが おおきすぎると いわれました。",
+          "readingJa": "Oto ga ōkisugiru to iwaremashita.",
+          "meaningVi": "Có người phàn nàn nhạc quá to.",
+          "meaningEn": "Someone says the music is too loud.",
+          "choices": [
+            {
+              "ja": "おんりょうを さげて、みみせんを すすめます。",
+              "vi": "Giảm âm lượng và gợi ý dùng nút tai.",
+              "en": "Turn it down and suggest earplugs.",
+              "correct": true
+            },
+            {
+              "ja": "もっと あげます。",
+              "vi": "Vặn to thêm.",
+              "en": "Turn it up more.",
+              "hintVi": "Tiếng quá lớn kéo dài gây tổn thương thính lực vĩnh viễn.",
+              "hintEn": "Long exposure to very loud sound damages hearing for good."
+            }
+          ],
+          "branch": "club_dj"
+        },
+        {
+          "toLevel": 5,
+          "lineJa": "ほかの ひとの きょくを サンプルに つかう とき、ひつようなのは？",
+          "readingJa": "Hoka no hito no kyoku o sanpuru ni tsukau toki, hitsuyō na no wa?",
+          "meaningVi": "Lấy mẫu (sample) nhạc người khác thì cần gì?",
+          "meaningEn": "Sampling someone else's record: what do you need?",
+          "choices": [
+            {
+              "ja": "けんりしゃの きょか（クリアランス）です。",
+              "vi": "Sự cho phép của chủ quyền (clearance).",
+              "en": "Permission from the rights holders (clearance).",
+              "correct": true
+            },
+            {
+              "ja": "みじかければ じゆうです。",
+              "vi": "Ngắn thì dùng tự do.",
+              "en": "Short samples are free.",
+              "hintVi": "Không có quy tắc \"ngắn là được\": mẫu ngắn vẫn cần xin phép.",
+              "hintEn": "There is no \"short is fine\" rule: even short samples need clearance."
+            }
+          ],
+          "branch": "producer"
+        },
+        {
+          "toLevel": 6,
+          "lineJa": "マスタリングで いちばん だいじなのは？",
+          "readingJa": "Masutaringu de ichiban daiji na no wa?",
+          "meaningVi": "Điều quan trọng nhất khi master là gì?",
+          "meaningEn": "What matters most in mastering?",
+          "choices": [
+            {
+              "ja": "いろいろな スピーカーで きいて バランスを たしかめます。",
+              "vi": "Nghe trên nhiều loa để kiểm tra độ cân bằng.",
+              "en": "Check the balance on many speakers.",
+              "correct": true
+            },
+            {
+              "ja": "とにかく おとを おおきく します。",
+              "vi": "Cứ làm cho thật to.",
+              "en": "Make it as loud as possible.",
+              "hintVi": "Các nền tảng nghe nhạc tự cân âm lượng; nén quá tay chỉ làm mất độ động.",
+              "hintEn": "Streaming services normalise loudness; over-compression just kills the dynamics."
+            }
+          ],
+          "branch": "producer"
+        }
+      ],
+      "events": [
+        {
+          "id": "dj_silence",
+          "lineJa": "ミキサーの おとが きゅうに きえました！",
+          "readingJa": "Mikisā no oto ga kyū ni kiemashita!",
+          "meaningVi": "Bàn mixer đột nhiên mất tiếng!",
+          "meaningEn": "The mixer suddenly goes silent!",
+          "choices": [
+            {
+              "ja": "おちついて ケーブルと ボリュームを たしかめます。",
+              "vi": "Bình tĩnh kiểm tra dây cáp và âm lượng.",
+              "en": "Calmly check the cables and the faders.",
+              "performance": 10,
+              "reputation": 2,
+              "mood": "Confident"
+            },
+            {
+              "ja": "あわてて ぜんぶの ボタンを おします。",
+              "vi": "Hoảng loạn bấm hết mọi nút.",
+              "en": "Panic and press every button.",
+              "performance": -8,
+              "mood": "Tense"
+            }
+          ]
+        },
+        {
+          "id": "dj_request",
+          "lineJa": "よっぱらった おきゃくさんが しつこく リクエストしています。",
+          "readingJa": "Yopparatta okyakusan ga shitsukoku rikuesuto shite imasu.",
+          "meaningVi": "Một vị khách say cứ nằng nặc đòi bài.",
+          "meaningEn": "A drunk guest keeps pestering you for a song.",
+          "choices": [
+            {
+              "ja": "ていねいに ことわって、スタッフに つたえます。",
+              "vi": "Từ chối lịch sự và báo nhân viên.",
+              "en": "Decline politely and tell the staff.",
+              "performance": 8,
+              "reputation": 2
+            },
+            {
+              "ja": "どなって おいかえします。",
+              "vi": "Quát đuổi đi.",
+              "en": "Shout them away.",
+              "performance": -10,
+              "reputation": -2,
+              "mood": "Embarrassed"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "painter",
+      "nameVi": "Hoạ sĩ",
+      "nameEn": "Painter",
+      "nameJa": "画家",
+      "descriptionVi": "Vẽ tranh theo đơn ở góc giá vẽ tiệm Hibiki (tô theo số theo các kiệt tác), giao tranh cho khách — rồi thành hoạ sĩ minh hoạ hoặc hoạ sĩ triển lãm.",
+      "descriptionEn": "Paint commissions at the Hibiki shop's easel (paint-by-numbers after the masterpieces), deliver them — then become an illustrator or an exhibiting artist.",
+      "descriptionJa": "ひびき楽器店のイーゼルで依頼の絵をかいて納品。イラストレーターか個展作家へ。",
+      "workplaceVi": "Góc giá vẽ tiệm Hibiki",
+      "workplaceEn": "The Hibiki shop easel",
+      "workplaceJa": "ひびき楽器店のイーゼル",
+      "shiftQuest": "job_art_commission",
+      "bossNameJa": "ひびき店長",
+      "bossNameVi": "Chú Hibiki",
+      "workStart": 9,
+      "workEnd": 17,
+      "workDays": [
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "branchAtLevel": 4,
+      "levels": [
+        {
+          "titleVi": "Phụ việc xưởng vẽ",
+          "titleEn": "Studio assistant",
+          "titleJa": "アトリエアシスタント",
+          "salary": 250,
+          "shiftsToPromote": 2,
+          "knowledgeToPromote": 0
+        },
+        {
+          "titleVi": "Hoạ sĩ vẽ theo đơn",
+          "titleEn": "Commission painter",
+          "titleJa": "受注画家",
+          "salary": 410,
+          "shiftsToPromote": 3,
+          "knowledgeToPromote": 120
+        },
+        {
+          "titleVi": "Hoạ sĩ chuyên nghiệp",
+          "titleEn": "Professional painter",
+          "titleJa": "プロの画家",
+          "salary": 610,
+          "shiftsToPromote": 4,
+          "knowledgeToPromote": 260
+        }
+      ],
+      "branches": [
+        {
+          "id": "illustrator",
+          "nameVi": "Hoạ sĩ minh hoạ",
+          "nameEn": "Illustrator",
+          "nameJa": "イラストレーターコース",
+          "descriptionVi": "Tranh cho sách, game, quảng cáo: từ hoạ sĩ minh hoạ lên giám đốc nghệ thuật.",
+          "descriptionEn": "Pictures for books, games and ads: from illustrator to art director.",
+          "descriptionJa": "本・ゲーム・広告の絵。イラストレーターからアートディレクターへ。",
+          "levels": [
+            {
+              "titleVi": "Hoạ sĩ minh hoạ",
+              "titleEn": "Illustrator",
+              "titleJa": "イラストレーター",
+              "salary": 790,
+              "shiftsToPromote": 4,
+              "knowledgeToPromote": 370
+            },
+            {
+              "titleVi": "Hoạ sĩ minh hoạ nổi tiếng",
+              "titleEn": "Popular illustrator",
+              "titleJa": "人気イラストレーター",
+              "salary": 1090,
+              "shiftsToPromote": 5,
+              "knowledgeToPromote": 510
+            },
+            {
+              "titleVi": "Giám đốc nghệ thuật",
+              "titleEn": "Art director",
+              "titleJa": "アートディレクター",
+              "salary": 1490,
+              "shiftsToPromote": 0,
+              "knowledgeToPromote": 0
+            }
+          ]
+        },
+        {
+          "id": "fine_art",
+          "nameVi": "Hoạ sĩ triển lãm",
+          "nameEn": "Exhibiting artist",
+          "nameJa": "個展作家コース",
+          "descriptionVi": "Tranh của chính mình: triển lãm cá nhân, gallery đại diện, rồi được bảo tàng sưu tập.",
+          "descriptionEn": "Your own work: solo shows, a gallery that represents you, then museum collections.",
+          "descriptionJa": "自分の作品で個展、ギャラリー専属、そして美術館収蔵へ。",
+          "levels": [
+            {
+              "titleVi": "Hoạ sĩ triển lãm cá nhân",
+              "titleEn": "Solo-show artist",
+              "titleJa": "個展画家",
+              "salary": 770,
+              "shiftsToPromote": 4,
+              "knowledgeToPromote": 350
+            },
+            {
+              "titleVi": "Hoạ sĩ của gallery",
+              "titleEn": "Gallery artist",
+              "titleJa": "ギャラリー専属画家",
+              "salary": 1070,
+              "shiftsToPromote": 5,
+              "knowledgeToPromote": 490
+            },
+            {
+              "titleVi": "Hoạ sĩ được bảo tàng sưu tập",
+              "titleEn": "Museum-collected artist",
+              "titleJa": "美術館収蔵画家",
+              "salary": 1470,
+              "shiftsToPromote": 0,
+              "knowledgeToPromote": 0
+            }
+          ]
+        }
+      ],
+      "interviews": [
+        {
+          "toLevel": 2,
+          "lineJa": "あおと きいろを まぜると なにいろに なりますか。",
+          "readingJa": "Ao to kiiro o mazeru to nani-iro ni narimasu ka.",
+          "meaningVi": "Trộn xanh lam với vàng ra màu gì?",
+          "meaningEn": "Blue and yellow make which colour?",
+          "choices": [
+            {
+              "ja": "みどりです。",
+              "vi": "Xanh lá.",
+              "en": "Green.",
+              "correct": true
+            },
+            {
+              "ja": "むらさきです。",
+              "vi": "Tím.",
+              "en": "Purple.",
+              "hintVi": "Tím là đỏ + xanh lam.",
+              "hintEn": "Purple is red + blue."
+            },
+            {
+              "ja": "オレンジです。",
+              "vi": "Cam.",
+              "en": "Orange.",
+              "hintVi": "Cam là đỏ + vàng.",
+              "hintEn": "Orange is red + yellow."
+            }
+          ]
+        },
+        {
+          "toLevel": 3,
+          "lineJa": "ふでを つかった あと、どうしますか。",
+          "readingJa": "Fude o tsukatta ato, dō shimasu ka.",
+          "meaningVi": "Dùng cọ xong thì làm gì?",
+          "meaningEn": "What do you do after using a brush?",
+          "choices": [
+            {
+              "ja": "すぐに あらって、けを ととのえて かわかします。",
+              "vi": "Rửa ngay, vuốt lông cọ rồi phơi khô.",
+              "en": "Wash it at once, shape the bristles and let it dry.",
+              "correct": true
+            },
+            {
+              "ja": "そのまま おいて おきます。",
+              "vi": "Để nguyên đó.",
+              "en": "Leave it as it is.",
+              "hintVi": "Màu khô lại trong lông cọ làm hỏng cọ.",
+              "hintEn": "Paint drying in the bristles ruins the brush."
+            }
+          ]
+        },
+        {
+          "toLevel": 4,
+          "lineJa": "これから どんな えを かきたいですか。",
+          "readingJa": "Kore kara donna e o kakitai desu ka.",
+          "meaningVi": "Từ giờ bạn muốn vẽ tranh thế nào?",
+          "meaningEn": "What would you like to paint from now on?",
+          "choices": [
+            {
+              "ja": "ほんや ゲームの イラストを かきたいです。",
+              "vi": "Tôi muốn vẽ minh hoạ cho sách và game.",
+              "en": "Illustrations for books and games.",
+              "correct": true,
+              "branch": "illustrator"
+            },
+            {
+              "ja": "てんらんかいで じぶんの さくひんを みせたいです。",
+              "vi": "Tôi muốn trưng bày tác phẩm của mình ở triển lãm.",
+              "en": "My own work, in exhibitions.",
+              "correct": true,
+              "branch": "fine_art"
+            }
+          ]
+        },
+        {
+          "toLevel": 5,
+          "lineJa": "クライアントが しめきりを はやめて ほしいと いいました。",
+          "readingJa": "Kuraianto ga shimekiri o hayamete hoshii to iimashita.",
+          "meaningVi": "Khách hàng muốn rút ngắn hạn nộp.",
+          "meaningEn": "The client wants the deadline moved earlier.",
+          "choices": [
+            {
+              "ja": "できる ひにちと ないようを はっきり そうだんします。",
+              "vi": "Trao đổi rõ ngày có thể giao và phạm vi công việc.",
+              "en": "Agree clearly on a possible date and scope.",
+              "correct": true
+            },
+            {
+              "ja": "なにも いわずに てぬきします。",
+              "vi": "Im lặng làm ẩu cho kịp.",
+              "en": "Say nothing and cut corners.",
+              "hintVi": "Làm ẩu mất uy tín; thoả thuận lại mới chuyên nghiệp.",
+              "hintEn": "Cutting corners costs your name; renegotiating is professional."
+            }
+          ],
+          "branch": "illustrator"
+        },
+        {
+          "toLevel": 6,
+          "lineJa": "ほかの ひとの イラストを なぞって だしても いいですか。",
+          "readingJa": "Hoka no hito no irasuto o nazotte dashite mo ii desu ka.",
+          "meaningVi": "Đồ lại tranh minh hoạ của người khác rồi nộp được không?",
+          "meaningEn": "May you trace someone else's illustration and hand it in?",
+          "choices": [
+            {
+              "ja": "いいえ。むだんの トレースは ちょさくけんの しんがいです。",
+              "vi": "Không. Đồ lại khi chưa xin phép là xâm phạm bản quyền.",
+              "en": "No. Tracing without permission infringes copyright.",
+              "correct": true
+            },
+            {
+              "ja": "すこし かえれば だいじょうぶです。",
+              "vi": "Sửa một chút là được.",
+              "en": "Fine if you change a little.",
+              "hintVi": "Sửa chút ít vẫn là tác phẩm phái sinh — vẫn cần xin phép.",
+              "hintEn": "Small changes still make a derivative work — permission is still needed."
+            }
+          ],
+          "branch": "illustrator"
+        },
+        {
+          "toLevel": 5,
+          "lineJa": "さくひんの ねだんを きめる とき、だいじなのは？",
+          "readingJa": "Sakuhin no nedan o kimeru toki, daiji na no wa?",
+          "meaningVi": "Định giá tác phẩm thì cần cân nhắc gì?",
+          "meaningEn": "What matters when you price a work?",
+          "choices": [
+            {
+              "ja": "サイズ、ざいりょう、じかん、これまでの うれた ねだんです。",
+              "vi": "Kích thước, vật liệu, thời gian và giá đã bán trước đây.",
+              "en": "Size, materials, time and past sale prices.",
+              "correct": true
+            },
+            {
+              "ja": "きぶんで きめます。",
+              "vi": "Tuỳ hứng.",
+              "en": "Whatever I feel like.",
+              "hintVi": "Giá thất thường làm người sưu tập mất lòng tin.",
+              "hintEn": "Erratic prices make collectors lose trust."
+            }
+          ],
+          "branch": "fine_art"
+        },
+        {
+          "toLevel": 6,
+          "lineJa": "わかい さっかに なにを アドバイスしますか。",
+          "readingJa": "Wakai sakka ni nani o adobaisu shimasu ka.",
+          "meaningVi": "Bạn khuyên các hoạ sĩ trẻ điều gì?",
+          "meaningEn": "What do you advise young artists?",
+          "choices": [
+            {
+              "ja": "まいにち スケッチを つづける ことです。",
+              "vi": "Mỗi ngày đều ký hoạ.",
+              "en": "Sketch every day.",
+              "correct": true
+            },
+            {
+              "ja": "うれる えだけ かけば いいです。",
+              "vi": "Chỉ vẽ tranh dễ bán là đủ.",
+              "en": "Only paint what sells.",
+              "hintVi": "Tay nghề đến từ luyện tập đều đặn, không chỉ chạy theo thị trường.",
+              "hintEn": "Skill comes from steady practice, not only from the market."
+            }
+          ],
+          "branch": "fine_art"
+        }
+      ],
+      "events": [
+        {
+          "id": "art_spill",
+          "lineJa": "ふでを あらう みずを キャンバスに こぼしました！",
+          "readingJa": "Fude o arau mizu o kyanbasu ni koboshimashita!",
+          "meaningVi": "Bạn làm đổ nước rửa cọ lên toan!",
+          "meaningEn": "You spilled the brush water on the canvas!",
+          "choices": [
+            {
+              "ja": "すぐに かみで すいとって、かわいてから なおします。",
+              "vi": "Thấm ngay bằng giấy, khô rồi sửa.",
+              "en": "Blot it at once with paper and fix it once dry.",
+              "performance": 10,
+              "reputation": 1,
+              "mood": "Confident"
+            },
+            {
+              "ja": "そのまま うえから ぬります。",
+              "vi": "Cứ tô đè lên.",
+              "en": "Paint straight over it.",
+              "performance": -8,
+              "mood": "Tense"
+            }
+          ]
+        },
+        {
+          "id": "art_critic",
+          "lineJa": "おきゃくさんが「この いろは へんだ」と いいました。",
+          "readingJa": "Okyakusan ga \"kono iro wa hen da\" to iimashita.",
+          "meaningVi": "Khách nói: \"Màu này lạ quá.\"",
+          "meaningEn": "A customer says: \"This colour looks odd.\"",
+          "choices": [
+            {
+              "ja": "ありがとうございます。どこが きに なりますか。",
+              "vi": "Cảm ơn ạ. Anh/chị thấy chỗ nào chưa ổn?",
+              "en": "Thank you. Which part bothers you?",
+              "performance": 8,
+              "reputation": 2,
+              "mood": "Happy"
+            },
+            {
+              "ja": "おこって いいかえします。",
+              "vi": "Nổi cáu cãi lại.",
+              "en": "Snap back angrily.",
+              "performance": -10,
+              "reputation": -2,
+              "mood": "Embarrassed"
+            }
+          ]
+        }
+      ]
     }
   ],
   "milestones": [

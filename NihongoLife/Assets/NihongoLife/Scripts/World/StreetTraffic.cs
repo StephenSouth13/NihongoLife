@@ -477,31 +477,65 @@ namespace NihongoLife.World
             go.SetActive(false);
         }
 
+        /// <summary>Head- and tail-lights on the car's own box: the bumpers along the street (Traffic local X), a little
+        /// under half the body's height, either side of its centre. Placed from the renderers, not at fixed offsets — the
+        /// models differ in size and pivot, and fixed offsets left yellow and red blocks floating on roofs and beside cars.
+        /// They hang on the "Model", so they shrink with the car when it fades out at the street's end.</summary>
         private void EnsureBulbs(Car car)
         {
             if (car.lightsReady || car.body == null) return;
             car.lightsReady = true;
+            if (!Box(car, out Vector3 lo, out Vector3 hi)) return;
+            float front = car.direction > 0 ? hi.x : lo.x, rear = car.direction > 0 ? lo.x : hi.x;
+            float y = lo.y + (hi.y - lo.y) * 0.38f, mid = (lo.z + hi.z) * 0.5f, side = (hi.z - lo.z) * 0.32f;
+            Color head = new Color(1f, 0.93f, 0.72f), tail = new Color(1f, 0.22f, 0.16f);
             Transform host = car.visual != null ? car.visual : car.body;
-            float front = car.halfLength * 0.86f;
             car.bulbs = new[]
             {
-                Bulb(host, new Vector3(-0.55f, 0.72f, front), new Color(1f, 0.93f, 0.72f), "Headlight_L"),
-                Bulb(host, new Vector3(0.55f, 0.72f, front), new Color(1f, 0.93f, 0.72f), "Headlight_R"),
-                Bulb(host, new Vector3(-0.5f, 0.62f, -front), new Color(1f, 0.22f, 0.16f), "Taillight_L"),
-                Bulb(host, new Vector3(0.5f, 0.62f, -front), new Color(1f, 0.22f, 0.16f), "Taillight_R")
+                Bulb(host, new Vector3(front, y, mid - side), head, "Headlight_L"),
+                Bulb(host, new Vector3(front, y, mid + side), head, "Headlight_R"),
+                Bulb(host, new Vector3(rear, y + 0.05f, mid - side), tail, "Taillight_L"),
+                Bulb(host, new Vector3(rear, y + 0.05f, mid + side), tail, "Taillight_R")
             };
             foreach (var b in car.bulbs) if (b != null) b.SetActive(false);
         }
 
-        private GameObject Bulb(Transform parent, Vector3 local, Color color, string name)
+        /// <summary>The car's bounds in the Traffic root's space (cars run along its X).</summary>
+        private bool Box(Car car, out Vector3 lo, out Vector3 hi)
+        {
+            lo = Vector3.one * float.MaxValue;
+            hi = Vector3.one * float.MinValue;
+            bool any = false;
+            foreach (var r in car.body.GetComponentsInChildren<Renderer>())
+            {
+                if (r is ParticleSystemRenderer) continue;
+                Bounds b = r.bounds;
+                for (int i = 0; i < 8; i++)
+                {
+                    Vector3 world = b.center + Vector3.Scale(b.extents, new Vector3((i & 1) == 0 ? -1f : 1f, (i & 2) == 0 ? -1f : 1f, (i & 4) == 0 ? -1f : 1f));
+                    Vector3 local = transform.InverseTransformPoint(world);
+                    lo = Vector3.Min(lo, local);
+                    hi = Vector3.Max(hi, local);
+                    any = true;
+                }
+            }
+            return any;
+        }
+
+        /// <summary>A small lamp at a point of the Traffic root's space, flush with the bumper, the same size on every car.</summary>
+        private GameObject Bulb(Transform parent, Vector3 rootLocal, Color color, string name)
         {
             var go = GameObject.CreatePrimitive(PrimitiveType.Cube);
             go.name = name;
             var col = go.GetComponent<Collider>();
             if (col != null) Destroy(col);
             go.transform.SetParent(parent, false);
-            go.transform.localPosition = local;
-            go.transform.localScale = new Vector3(0.22f, 0.12f, 0.08f);
+            go.transform.SetPositionAndRotation(transform.TransformPoint(rootLocal), transform.rotation);
+            // Thin along the street, wide across the car, whatever the model's own scale and turn.
+            Vector3 world = new Vector3(0.06f, 0.11f, 0.24f);
+            Vector3 size = new Vector3(parent.InverseTransformVector(transform.right * world.x).magnitude,
+                parent.InverseTransformVector(transform.up * world.y).magnitude, parent.InverseTransformVector(transform.forward * world.z).magnitude);
+            go.transform.localScale = size;
             var renderer = go.GetComponent<Renderer>();
             renderer.sharedMaterial = BulbMaterial();
             renderer.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.Off;
@@ -516,10 +550,12 @@ namespace NihongoLife.World
         private void ApplyNightBulbs()
         {
             float night = TownNightLights.Factor;
-            bool on = night > 0.08f;
+            bool dark = night > 0.08f;
             foreach (var car in cars)
             {
                 if (car.bulbs == null) continue;
+                // A car shrunk away at the street's end takes its lamps with it.
+                bool on = dark && (car.visual == null || car.visual.localScale.x > car.visualBase.x * 0.5f);
                 foreach (var b in car.bulbs) if (b != null && b.activeSelf != on) b.SetActive(on);
             }
         }

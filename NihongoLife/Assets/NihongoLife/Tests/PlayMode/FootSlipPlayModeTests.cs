@@ -30,6 +30,10 @@ namespace NihongoLife.Tests
             for (int guard = 0; guard < 40 && dm != null && dm.IsOpen; guard++) { dm.CancelDialogue(); if (dm.IsOpen) dm.ContinueDialogue(); }
             var player = Object.FindFirstObjectByType<PlayerController>();
             var input = GameInputService.GetOrCreate();
+            // The normal gait is measured: a player left hurt or exhausted by earlier tests walks with the mood clips
+            // (KidMoodAnimator: injured / tired), whose cadence is a different matter.
+            var status = NihongoLife.Player.PlayerStatus.Instance;
+            if (status != null) status.DebugSetNeeds(health: 100f, energy: 100f, hunger: 100f, thirst: 100f, sleepiness: 0f);
             string original = PlayableCharacterCatalog.GetSelected().Id;
             var report = new System.Text.StringBuilder();
             float worst = 0f;
@@ -77,7 +81,7 @@ namespace NihongoLife.Tests
                         float slip = slips.Count > 0 ? slips[slips.Count / 2] : 0f;
                         float ratio = bodySpeed > 0.1f ? slip / bodySpeed : 0f;
                         string clip = player.GetComponent<KidMoodAnimator>()?.WalkClipName ?? "?";
-                        string line = $"{kid} {mode}: body {bodySpeed:0.00} m/s · planted foot {slip:0.00} m/s ({ratio * 100:0}% slip, n={slips.Count}) · clip {clip} · animator speed {animator.speed:0.00}";
+                        string line = $"{kid} {mode}: body {bodySpeed:0.00} m/s · planted foot {slip:0.00} m/s ({ratio * 100:0}% slip, n={slips.Count}) · clip {clip} · animator speed {animator.speed:0.00} · gestures [{string.Join(",", player.GetComponentsInChildren<NihongoLife.Gestures.GestureLayer>().Select(g => g.name + ":" + (g.Current ?? "-") + "@" + g.Influence.ToString("0.00")))}] · health {(NihongoLife.Player.PlayerStatus.Instance != null ? NihongoLife.Player.PlayerStatus.Instance.CurrentHealth : -1f):0}";
                         Debug.Log("[FootSlip] " + line);
                         report.AppendLine(line);
                         worst = Mathf.Max(worst, ratio);

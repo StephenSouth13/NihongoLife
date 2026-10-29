@@ -35,17 +35,17 @@ namespace NihongoLife.Tests
             var report = new List<string>();
             try
             {
-                foreach (var scene in new[] { WorldLocationCatalog.MidoriIslandScene, WorldLocationCatalog.PhuQuocIslandScene, WorldLocationCatalog.ClinicScene })
+                foreach (var scene in new[] { WorldLocationCatalog.MidoriIslandScene, WorldLocationCatalog.PhuQuocIslandScene, WorldLocationCatalog.ClinicScene, WorldLocationCatalog.MusicShopScene })
                 {
                     _log.Clear();
-                    if (scene == WorldLocationCatalog.ClinicScene)
+                    if (scene == WorldLocationCatalog.ClinicScene || scene == WorldLocationCatalog.MusicShopScene)
                     {
                         // The clinic is a zone: entered from the town like a player does.
                         yield return SceneManager.LoadSceneAsync(WorldLocationCatalog.CityScene);
                         yield return new WaitForSecondsRealtime(2f);
                         _log.Clear();
                         var flow = Object.FindFirstObjectByType<SceneFlowController>();
-                        flow.EnterZone(scene, WorldLocationCatalog.ClinicEntrance, "Clinic");
+                        flow.EnterZone(scene, scene == WorldLocationCatalog.ClinicScene ? WorldLocationCatalog.ClinicEntrance : WorldLocationCatalog.MusicShopEntrance, scene);
                         for (float t = 0f; t < 20f && (flow.IsLoading || SceneManager.GetActiveScene().name != scene); t += Time.unscaledDeltaTime) yield return null;
                     }
                     else

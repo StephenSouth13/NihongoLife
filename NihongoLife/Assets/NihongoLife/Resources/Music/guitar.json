@@ -1,0 +1,1990 @@
+{
+ "schema": "nihongolife.guitar.v1",
+ "tuningMidi": [
+  40,
+  45,
+  50,
+  55,
+  59,
+  64
+ ],
+ "chords": [
+  {
+   "name": "C",
+   "frets": [
+    -1,
+    3,
+    2,
+    0,
+    1,
+    0
+   ],
+   "fingers": [
+    0,
+    3,
+    2,
+    0,
+    1,
+    0
+   ],
+   "category": "open",
+   "baseFret": 1,
+   "midi": [
+    -1,
+    48,
+    52,
+    55,
+    60,
+    64
+   ]
+  },
+  {
+   "name": "D",
+   "frets": [
+    -1,
+    -1,
+    0,
+    2,
+    3,
+    2
+   ],
+   "fingers": [
+    0,
+    0,
+    0,
+    1,
+    3,
+    2
+   ],
+   "category": "open",
+   "baseFret": 1,
+   "midi": [
+    -1,
+    -1,
+    50,
+    57,
+    62,
+    66
+   ]
+  },
+  {
+   "name": "E",
+   "frets": [
+    0,
+    2,
+    2,
+    1,
+    0,
+    0
+   ],
+   "fingers": [
+    0,
+    2,
+    3,
+    1,
+    0,
+    0
+   ],
+   "category": "open",
+   "baseFret": 1,
+   "midi": [
+    40,
+    47,
+    52,
+    56,
+    59,
+    64
+   ]
+  },
+  {
+   "name": "G",
+   "frets": [
+    3,
+    2,
+    0,
+    0,
+    0,
+    3
+   ],
+   "fingers": [
+    2,
+    1,
+    0,
+    0,
+    0,
+    3
+   ],
+   "category": "open",
+   "baseFret": 1,
+   "midi": [
+    43,
+    47,
+    50,
+    55,
+    59,
+    67
+   ]
+  },
+  {
+   "name": "A",
+   "frets": [
+    -1,
+    0,
+    2,
+    2,
+    2,
+    0
+   ],
+   "fingers": [
+    0,
+    0,
+    1,
+    2,
+    3,
+    0
+   ],
+   "category": "open",
+   "baseFret": 1,
+   "midi": [
+    -1,
+    45,
+    52,
+    57,
+    61,
+    64
+   ]
+  },
+  {
+   "name": "Am",
+   "frets": [
+    -1,
+    0,
+    2,
+    2,
+    1,
+    0
+   ],
+   "fingers": [
+    0,
+    0,
+    2,
+    3,
+    1,
+    0
+   ],
+   "category": "open",
+   "baseFret": 1,
+   "midi": [
+    -1,
+    45,
+    52,
+    57,
+    60,
+    64
+   ]
+  },
+  {
+   "name": "Dm",
+   "frets": [
+    -1,
+    -1,
+    0,
+    2,
+    3,
+    1
+   ],
+   "fingers": [
+    0,
+    0,
+    0,
+    2,
+    3,
+    1
+   ],
+   "category": "open",
+   "baseFret": 1,
+   "midi": [
+    -1,
+    -1,
+    50,
+    57,
+    62,
+    65
+   ]
+  },
+  {
+   "name": "Em",
+   "frets": [
+    0,
+    2,
+    2,
+    0,
+    0,
+    0
+   ],
+   "fingers": [
+    0,
+    2,
+    3,
+    0,
+    0,
+    0
+   ],
+   "category": "open",
+   "baseFret": 1,
+   "midi": [
+    40,
+    47,
+    52,
+    55,
+    59,
+    64
+   ]
+  },
+  {
+   "name": "A7",
+   "frets": [
+    -1,
+    0,
+    2,
+    0,
+    2,
+    0
+   ],
+   "fingers": [
+    0,
+    0,
+    2,
+    0,
+    3,
+    0
+   ],
+   "category": "open",
+   "baseFret": 1,
+   "midi": [
+    -1,
+    45,
+    52,
+    55,
+    61,
+    64
+   ]
+  },
+  {
+   "name": "B7",
+   "frets": [
+    -1,
+    2,
+    1,
+    2,
+    0,
+    2
+   ],
+   "fingers": [
+    0,
+    2,
+    1,
+    3,
+    0,
+    4
+   ],
+   "category": "open",
+   "baseFret": 1,
+   "midi": [
+    -1,
+    47,
+    51,
+    57,
+    59,
+    66
+   ]
+  },
+  {
+   "name": "C7",
+   "frets": [
+    -1,
+    3,
+    2,
+    3,
+    1,
+    0
+   ],
+   "fingers": [
+    0,
+    3,
+    2,
+    4,
+    1,
+    0
+   ],
+   "category": "open",
+   "baseFret": 1,
+   "midi": [
+    -1,
+    48,
+    52,
+    58,
+    60,
+    64
+   ]
+  },
+  {
+   "name": "D7",
+   "frets": [
+    -1,
+    -1,
+    0,
+    2,
+    1,
+    2
+   ],
+   "fingers": [
+    0,
+    0,
+    0,
+    2,
+    1,
+    3
+   ],
+   "category": "open",
+   "baseFret": 1,
+   "midi": [
+    -1,
+    -1,
+    50,
+    57,
+    60,
+    66
+   ]
+  },
+  {
+   "name": "E7",
+   "frets": [
+    0,
+    2,
+    0,
+    1,
+    0,
+    0
+   ],
+   "fingers": [
+    0,
+    2,
+    0,
+    1,
+    0,
+    0
+   ],
+   "category": "open",
+   "baseFret": 1,
+   "midi": [
+    40,
+    47,
+    50,
+    56,
+    59,
+    64
+   ]
+  },
+  {
+   "name": "G7",
+   "frets": [
+    3,
+    2,
+    0,
+    0,
+    0,
+    1
+   ],
+   "fingers": [
+    3,
+    2,
+    0,
+    0,
+    0,
+    1
+   ],
+   "category": "open",
+   "baseFret": 1,
+   "midi": [
+    43,
+    47,
+    50,
+    55,
+    59,
+    65
+   ]
+  },
+  {
+   "name": "Cmaj7",
+   "frets": [
+    -1,
+    3,
+    2,
+    0,
+    0,
+    0
+   ],
+   "fingers": [
+    0,
+    3,
+    2,
+    0,
+    0,
+    0
+   ],
+   "category": "open",
+   "baseFret": 1,
+   "midi": [
+    -1,
+    48,
+    52,
+    55,
+    59,
+    64
+   ]
+  },
+  {
+   "name": "Fmaj7",
+   "frets": [
+    -1,
+    -1,
+    3,
+    2,
+    1,
+    0
+   ],
+   "fingers": [
+    0,
+    0,
+    3,
+    2,
+    1,
+    0
+   ],
+   "category": "open",
+   "baseFret": 1,
+   "midi": [
+    -1,
+    -1,
+    53,
+    57,
+    60,
+    64
+   ]
+  },
+  {
+   "name": "Gmaj7",
+   "frets": [
+    3,
+    2,
+    0,
+    0,
+    0,
+    2
+   ],
+   "fingers": [
+    3,
+    2,
+    0,
+    0,
+    0,
+    1
+   ],
+   "category": "open",
+   "baseFret": 1,
+   "midi": [
+    43,
+    47,
+    50,
+    55,
+    59,
+    66
+   ]
+  },
+  {
+   "name": "Am7",
+   "frets": [
+    -1,
+    0,
+    2,
+    0,
+    1,
+    0
+   ],
+   "fingers": [
+    0,
+    0,
+    2,
+    0,
+    1,
+    0
+   ],
+   "category": "open",
+   "baseFret": 1,
+   "midi": [
+    -1,
+    45,
+    52,
+    55,
+    60,
+    64
+   ]
+  },
+  {
+   "name": "Em7",
+   "frets": [
+    0,
+    2,
+    0,
+    0,
+    0,
+    0
+   ],
+   "fingers": [
+    0,
+    2,
+    0,
+    0,
+    0,
+    0
+   ],
+   "category": "open",
+   "baseFret": 1,
+   "midi": [
+    40,
+    47,
+    50,
+    55,
+    59,
+    64
+   ]
+  },
+  {
+   "name": "Dm7",
+   "frets": [
+    -1,
+    -1,
+    0,
+    2,
+    1,
+    1
+   ],
+   "fingers": [
+    0,
+    0,
+    0,
+    2,
+    1,
+    1
+   ],
+   "category": "open",
+   "baseFret": 1,
+   "midi": [
+    -1,
+    -1,
+    50,
+    57,
+    60,
+    65
+   ]
+  },
+  {
+   "name": "Dmaj7",
+   "frets": [
+    -1,
+    -1,
+    0,
+    2,
+    2,
+    2
+   ],
+   "fingers": [
+    0,
+    0,
+    0,
+    1,
+    2,
+    3
+   ],
+   "category": "open",
+   "baseFret": 1,
+   "midi": [
+    -1,
+    -1,
+    50,
+    57,
+    61,
+    66
+   ]
+  },
+  {
+   "name": "Amaj7",
+   "frets": [
+    -1,
+    0,
+    2,
+    1,
+    2,
+    0
+   ],
+   "fingers": [
+    0,
+    0,
+    2,
+    1,
+    3,
+    0
+   ],
+   "category": "open",
+   "baseFret": 1,
+   "midi": [
+    -1,
+    45,
+    52,
+    56,
+    61,
+    64
+   ]
+  },
+  {
+   "name": "Emaj7",
+   "frets": [
+    0,
+    2,
+    1,
+    1,
+    0,
+    0
+   ],
+   "fingers": [
+    0,
+    3,
+    2,
+    1,
+    0,
+    0
+   ],
+   "category": "open",
+   "baseFret": 1,
+   "midi": [
+    40,
+    47,
+    51,
+    56,
+    59,
+    64
+   ]
+  },
+  {
+   "name": "Dsus2",
+   "frets": [
+    -1,
+    -1,
+    0,
+    2,
+    3,
+    0
+   ],
+   "fingers": [
+    0,
+    0,
+    0,
+    2,
+    3,
+    0
+   ],
+   "category": "open",
+   "baseFret": 1,
+   "midi": [
+    -1,
+    -1,
+    50,
+    57,
+    62,
+    64
+   ]
+  },
+  {
+   "name": "Dsus4",
+   "frets": [
+    -1,
+    -1,
+    0,
+    2,
+    3,
+    3
+   ],
+   "fingers": [
+    0,
+    0,
+    0,
+    1,
+    3,
+    4
+   ],
+   "category": "open",
+   "baseFret": 1,
+   "midi": [
+    -1,
+    -1,
+    50,
+    57,
+    62,
+    67
+   ]
+  },
+  {
+   "name": "Asus2",
+   "frets": [
+    -1,
+    0,
+    2,
+    2,
+    0,
+    0
+   ],
+   "fingers": [
+    0,
+    0,
+    2,
+    3,
+    0,
+    0
+   ],
+   "category": "open",
+   "baseFret": 1,
+   "midi": [
+    -1,
+    45,
+    52,
+    57,
+    59,
+    64
+   ]
+  },
+  {
+   "name": "Asus4",
+   "frets": [
+    -1,
+    0,
+    2,
+    2,
+    3,
+    0
+   ],
+   "fingers": [
+    0,
+    0,
+    2,
+    3,
+    4,
+    0
+   ],
+   "category": "open",
+   "baseFret": 1,
+   "midi": [
+    -1,
+    45,
+    52,
+    57,
+    62,
+    64
+   ]
+  },
+  {
+   "name": "Cadd9",
+   "frets": [
+    -1,
+    3,
+    2,
+    0,
+    3,
+    0
+   ],
+   "fingers": [
+    0,
+    2,
+    1,
+    0,
+    3,
+    0
+   ],
+   "category": "open",
+   "baseFret": 1,
+   "midi": [
+    -1,
+    48,
+    52,
+    55,
+    62,
+    64
+   ]
+  },
+  {
+   "name": "F",
+   "frets": [
+    1,
+    3,
+    3,
+    2,
+    1,
+    1
+   ],
+   "fingers": [
+    1,
+    3,
+    4,
+    2,
+    1,
+    1
+   ],
+   "category": "barre",
+   "baseFret": 1,
+   "midi": [
+    41,
+    48,
+    53,
+    57,
+    60,
+    65
+   ]
+  },
+  {
+   "name": "Fm",
+   "frets": [
+    1,
+    3,
+    3,
+    1,
+    1,
+    1
+   ],
+   "fingers": [
+    1,
+    3,
+    4,
+    1,
+    1,
+    1
+   ],
+   "category": "barre",
+   "baseFret": 1,
+   "midi": [
+    41,
+    48,
+    53,
+    56,
+    60,
+    65
+   ]
+  },
+  {
+   "name": "F7",
+   "frets": [
+    1,
+    3,
+    1,
+    2,
+    1,
+    1
+   ],
+   "fingers": [
+    1,
+    3,
+    1,
+    2,
+    1,
+    1
+   ],
+   "category": "barre",
+   "baseFret": 1,
+   "midi": [
+    41,
+    48,
+    51,
+    57,
+    60,
+    65
+   ]
+  },
+  {
+   "name": "Bm",
+   "frets": [
+    -1,
+    2,
+    4,
+    4,
+    3,
+    2
+   ],
+   "fingers": [
+    0,
+    1,
+    3,
+    4,
+    2,
+    1
+   ],
+   "category": "barre",
+   "baseFret": 2,
+   "midi": [
+    -1,
+    47,
+    54,
+    59,
+    62,
+    66
+   ]
+  },
+  {
+   "name": "B",
+   "frets": [
+    -1,
+    2,
+    4,
+    4,
+    4,
+    2
+   ],
+   "fingers": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    1
+   ],
+   "category": "barre",
+   "baseFret": 2,
+   "midi": [
+    -1,
+    47,
+    54,
+    59,
+    63,
+    66
+   ]
+  },
+  {
+   "name": "Bb",
+   "frets": [
+    -1,
+    1,
+    3,
+    3,
+    3,
+    1
+   ],
+   "fingers": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    1
+   ],
+   "category": "barre",
+   "baseFret": 1,
+   "midi": [
+    -1,
+    46,
+    53,
+    58,
+    62,
+    65
+   ]
+  },
+  {
+   "name": "Bm7",
+   "frets": [
+    -1,
+    2,
+    4,
+    2,
+    3,
+    2
+   ],
+   "fingers": [
+    0,
+    1,
+    3,
+    1,
+    2,
+    1
+   ],
+   "category": "barre",
+   "baseFret": 2,
+   "midi": [
+    -1,
+    47,
+    54,
+    57,
+    62,
+    66
+   ]
+  },
+  {
+   "name": "F#m",
+   "frets": [
+    2,
+    4,
+    4,
+    2,
+    2,
+    2
+   ],
+   "fingers": [
+    1,
+    3,
+    4,
+    1,
+    1,
+    1
+   ],
+   "category": "barre",
+   "baseFret": 2,
+   "midi": [
+    42,
+    49,
+    54,
+    57,
+    61,
+    66
+   ]
+  },
+  {
+   "name": "F#m7",
+   "frets": [
+    2,
+    4,
+    2,
+    2,
+    2,
+    2
+   ],
+   "fingers": [
+    1,
+    3,
+    1,
+    1,
+    1,
+    1
+   ],
+   "category": "barre",
+   "baseFret": 2,
+   "midi": [
+    42,
+    49,
+    52,
+    57,
+    61,
+    66
+   ]
+  },
+  {
+   "name": "Gm",
+   "frets": [
+    3,
+    5,
+    5,
+    3,
+    3,
+    3
+   ],
+   "fingers": [
+    1,
+    3,
+    4,
+    1,
+    1,
+    1
+   ],
+   "category": "barre",
+   "baseFret": 3,
+   "midi": [
+    43,
+    50,
+    55,
+    58,
+    62,
+    67
+   ]
+  },
+  {
+   "name": "Cm",
+   "frets": [
+    -1,
+    3,
+    5,
+    5,
+    4,
+    3
+   ],
+   "fingers": [
+    0,
+    1,
+    3,
+    4,
+    2,
+    1
+   ],
+   "category": "barre",
+   "baseFret": 3,
+   "midi": [
+    -1,
+    48,
+    55,
+    60,
+    63,
+    67
+   ]
+  },
+  {
+   "name": "C#m",
+   "frets": [
+    -1,
+    4,
+    6,
+    6,
+    5,
+    4
+   ],
+   "fingers": [
+    0,
+    1,
+    3,
+    4,
+    2,
+    1
+   ],
+   "category": "barre",
+   "baseFret": 4,
+   "midi": [
+    -1,
+    49,
+    56,
+    61,
+    64,
+    68
+   ]
+  },
+  {
+   "name": "G#m",
+   "frets": [
+    4,
+    6,
+    6,
+    4,
+    4,
+    4
+   ],
+   "fingers": [
+    1,
+    3,
+    4,
+    1,
+    1,
+    1
+   ],
+   "category": "barre",
+   "baseFret": 4,
+   "midi": [
+    44,
+    51,
+    56,
+    59,
+    63,
+    68
+   ]
+  },
+  {
+   "name": "Gm7",
+   "frets": [
+    3,
+    5,
+    3,
+    3,
+    3,
+    3
+   ],
+   "fingers": [
+    1,
+    3,
+    1,
+    1,
+    1,
+    1
+   ],
+   "category": "barre",
+   "baseFret": 3,
+   "midi": [
+    43,
+    50,
+    53,
+    58,
+    62,
+    67
+   ]
+  }
+ ],
+ "progressions": [
+  {
+   "id": "pop-1564_C",
+   "name": "Axis / pop progression",
+   "roman": "I–V–vi–IV",
+   "key": "C",
+   "chords": [
+    "C",
+    "G",
+    "Am",
+    "F"
+   ],
+   "genre": "pop"
+  },
+  {
+   "id": "pop-1564_G",
+   "name": "Axis / pop progression",
+   "roman": "I–V–vi–IV",
+   "key": "G",
+   "chords": [
+    "G",
+    "D",
+    "Em",
+    "C"
+   ],
+   "genre": "pop"
+  },
+  {
+   "id": "pop-1564_D",
+   "name": "Axis / pop progression",
+   "roman": "I–V–vi–IV",
+   "key": "D",
+   "chords": [
+    "D",
+    "A",
+    "Bm",
+    "G"
+   ],
+   "genre": "pop"
+  },
+  {
+   "id": "pop-1564_A",
+   "name": "Axis / pop progression",
+   "roman": "I–V–vi–IV",
+   "key": "A",
+   "chords": [
+    "A",
+    "E",
+    "F#m",
+    "D"
+   ],
+   "genre": "pop"
+  },
+  {
+   "id": "pop-1564_E",
+   "name": "Axis / pop progression",
+   "roman": "I–V–vi–IV",
+   "key": "E",
+   "chords": [
+    "E",
+    "B",
+    "C#m",
+    "A"
+   ],
+   "genre": "pop"
+  },
+  {
+   "id": "pop-6415_C",
+   "name": "Pop (minor-start rotation)",
+   "roman": "vi–IV–I–V",
+   "key": "C",
+   "chords": [
+    "Am",
+    "F",
+    "C",
+    "G"
+   ],
+   "genre": "pop"
+  },
+  {
+   "id": "pop-6415_G",
+   "name": "Pop (minor-start rotation)",
+   "roman": "vi–IV–I–V",
+   "key": "G",
+   "chords": [
+    "Em",
+    "C",
+    "G",
+    "D"
+   ],
+   "genre": "pop"
+  },
+  {
+   "id": "pop-6415_D",
+   "name": "Pop (minor-start rotation)",
+   "roman": "vi–IV–I–V",
+   "key": "D",
+   "chords": [
+    "Bm",
+    "G",
+    "D",
+    "A"
+   ],
+   "genre": "pop"
+  },
+  {
+   "id": "pop-6415_A",
+   "name": "Pop (minor-start rotation)",
+   "roman": "vi–IV–I–V",
+   "key": "A",
+   "chords": [
+    "F#m",
+    "D",
+    "A",
+    "E"
+   ],
+   "genre": "pop"
+  },
+  {
+   "id": "pop-6415_E",
+   "name": "Pop (minor-start rotation)",
+   "roman": "vi–IV–I–V",
+   "key": "E",
+   "chords": [
+    "C#m",
+    "A",
+    "E",
+    "B"
+   ],
+   "genre": "pop"
+  },
+  {
+   "id": "three-chord_C",
+   "name": "Three-chord rock, folk, country",
+   "roman": "I–IV–V–I",
+   "key": "C",
+   "chords": [
+    "C",
+    "F",
+    "G",
+    "C"
+   ],
+   "genre": "folk"
+  },
+  {
+   "id": "three-chord_G",
+   "name": "Three-chord rock, folk, country",
+   "roman": "I–IV–V–I",
+   "key": "G",
+   "chords": [
+    "G",
+    "C",
+    "D",
+    "G"
+   ],
+   "genre": "folk"
+  },
+  {
+   "id": "three-chord_D",
+   "name": "Three-chord rock, folk, country",
+   "roman": "I–IV–V–I",
+   "key": "D",
+   "chords": [
+    "D",
+    "G",
+    "A",
+    "D"
+   ],
+   "genre": "folk"
+  },
+  {
+   "id": "three-chord_A",
+   "name": "Three-chord rock, folk, country",
+   "roman": "I–IV–V–I",
+   "key": "A",
+   "chords": [
+    "A",
+    "D",
+    "E",
+    "A"
+   ],
+   "genre": "folk"
+  },
+  {
+   "id": "three-chord_E",
+   "name": "Three-chord rock, folk, country",
+   "roman": "I–IV–V–I",
+   "key": "E",
+   "chords": [
+    "E",
+    "A",
+    "B",
+    "E"
+   ],
+   "genre": "folk"
+  },
+  {
+   "id": "doowop-1645_C",
+   "name": "50s doo-wop",
+   "roman": "I–vi–IV–V",
+   "key": "C",
+   "chords": [
+    "C",
+    "Am",
+    "F",
+    "G"
+   ],
+   "genre": "pop"
+  },
+  {
+   "id": "doowop-1645_G",
+   "name": "50s doo-wop",
+   "roman": "I–vi–IV–V",
+   "key": "G",
+   "chords": [
+    "G",
+    "Em",
+    "C",
+    "D"
+   ],
+   "genre": "pop"
+  },
+  {
+   "id": "doowop-1645_D",
+   "name": "50s doo-wop",
+   "roman": "I–vi–IV–V",
+   "key": "D",
+   "chords": [
+    "D",
+    "Bm",
+    "G",
+    "A"
+   ],
+   "genre": "pop"
+  },
+  {
+   "id": "doowop-1645_A",
+   "name": "50s doo-wop",
+   "roman": "I–vi–IV–V",
+   "key": "A",
+   "chords": [
+    "A",
+    "F#m",
+    "D",
+    "E"
+   ],
+   "genre": "pop"
+  },
+  {
+   "id": "doowop-1645_E",
+   "name": "50s doo-wop",
+   "roman": "I–vi–IV–V",
+   "key": "E",
+   "chords": [
+    "E",
+    "C#m",
+    "A",
+    "B"
+   ],
+   "genre": "pop"
+  },
+  {
+   "id": "jazz-251_C",
+   "name": "Jazz ii–V–I",
+   "roman": "ii7–V7–Imaj7",
+   "key": "C",
+   "chords": [
+    "Dm7",
+    "G7",
+    "Cmaj7"
+   ],
+   "genre": "jazz"
+  },
+  {
+   "id": "jazz-251_G",
+   "name": "Jazz ii–V–I",
+   "roman": "ii7–V7–Imaj7",
+   "key": "G",
+   "chords": [
+    "Am7",
+    "D7",
+    "Gmaj7"
+   ],
+   "genre": "jazz"
+  },
+  {
+   "id": "jazz-251_D",
+   "name": "Jazz ii–V–I",
+   "roman": "ii7–V7–Imaj7",
+   "key": "D",
+   "chords": [
+    "Em7",
+    "A7",
+    "Dmaj7"
+   ],
+   "genre": "jazz"
+  },
+  {
+   "id": "jazz-251_A",
+   "name": "Jazz ii–V–I",
+   "roman": "ii7–V7–Imaj7",
+   "key": "A",
+   "chords": [
+    "Bm7",
+    "E7",
+    "Amaj7"
+   ],
+   "genre": "jazz"
+  },
+  {
+   "id": "jazz-251_E",
+   "name": "Jazz ii–V–I",
+   "roman": "ii7–V7–Imaj7",
+   "key": "E",
+   "chords": [
+    "F#m7",
+    "B7",
+    "Emaj7"
+   ],
+   "genre": "jazz"
+  },
+  {
+   "id": "blues-12bar_C",
+   "name": "12-bar blues",
+   "roman": "12-bar blues (I7 I7 I7 I7 IV7 IV7 I7 I7 V7 IV7 I7 V7)",
+   "key": "C",
+   "chords": [
+    "C7",
+    "C7",
+    "C7",
+    "C7",
+    "F7",
+    "F7",
+    "C7",
+    "C7",
+    "G7",
+    "F7",
+    "C7",
+    "G7"
+   ],
+   "genre": "blues"
+  },
+  {
+   "id": "blues-12bar_G",
+   "name": "12-bar blues",
+   "roman": "12-bar blues (I7 I7 I7 I7 IV7 IV7 I7 I7 V7 IV7 I7 V7)",
+   "key": "G",
+   "chords": [
+    "G7",
+    "G7",
+    "G7",
+    "G7",
+    "C7",
+    "C7",
+    "G7",
+    "G7",
+    "D7",
+    "C7",
+    "G7",
+    "D7"
+   ],
+   "genre": "blues"
+  },
+  {
+   "id": "blues-12bar_D",
+   "name": "12-bar blues",
+   "roman": "12-bar blues (I7 I7 I7 I7 IV7 IV7 I7 I7 V7 IV7 I7 V7)",
+   "key": "D",
+   "chords": [
+    "D7",
+    "D7",
+    "D7",
+    "D7",
+    "G7",
+    "G7",
+    "D7",
+    "D7",
+    "A7",
+    "G7",
+    "D7",
+    "A7"
+   ],
+   "genre": "blues"
+  },
+  {
+   "id": "blues-12bar_A",
+   "name": "12-bar blues",
+   "roman": "12-bar blues (I7 I7 I7 I7 IV7 IV7 I7 I7 V7 IV7 I7 V7)",
+   "key": "A",
+   "chords": [
+    "A7",
+    "A7",
+    "A7",
+    "A7",
+    "D7",
+    "D7",
+    "A7",
+    "A7",
+    "E7",
+    "D7",
+    "A7",
+    "E7"
+   ],
+   "genre": "blues"
+  },
+  {
+   "id": "blues-12bar_E",
+   "name": "12-bar blues",
+   "roman": "12-bar blues (I7 I7 I7 I7 IV7 IV7 I7 I7 V7 IV7 I7 V7)",
+   "key": "E",
+   "chords": [
+    "E7",
+    "E7",
+    "E7",
+    "E7",
+    "A7",
+    "A7",
+    "E7",
+    "E7",
+    "B7",
+    "A7",
+    "E7",
+    "B7"
+   ],
+   "genre": "blues"
+  },
+  {
+   "id": "minor-i-VI-III-VII_Am",
+   "name": "Minor pop / epic",
+   "roman": "i–VI–III–VII",
+   "key": "Am",
+   "chords": [
+    "Am",
+    "F",
+    "C",
+    "G"
+   ],
+   "genre": "pop"
+  },
+  {
+   "id": "minor-i-VI-III-VII_Em",
+   "name": "Minor pop / epic",
+   "roman": "i–VI–III–VII",
+   "key": "Em",
+   "chords": [
+    "Em",
+    "C",
+    "G",
+    "D"
+   ],
+   "genre": "pop"
+  },
+  {
+   "id": "minor-i-VI-III-VII_Dm",
+   "name": "Minor pop / epic",
+   "roman": "i–VI–III–VII",
+   "key": "Dm",
+   "chords": [
+    "Dm",
+    "Bb",
+    "F",
+    "C"
+   ],
+   "genre": "pop"
+  },
+  {
+   "id": "minor-i-iv-v_Am",
+   "name": "Minor three-chord",
+   "roman": "i–iv–v–i",
+   "key": "Am",
+   "chords": [
+    "Am",
+    "Dm",
+    "Em",
+    "Am"
+   ],
+   "genre": "folk"
+  },
+  {
+   "id": "minor-i-iv-v_Em",
+   "name": "Minor three-chord",
+   "roman": "i–iv–v–i",
+   "key": "Em",
+   "chords": [
+    "Em",
+    "Am",
+    "Bm",
+    "Em"
+   ],
+   "genre": "folk"
+  },
+  {
+   "id": "minor-i-iv-v_Dm",
+   "name": "Minor three-chord",
+   "roman": "i–iv–v–i",
+   "key": "Dm",
+   "chords": [
+    "Dm",
+    "Gm",
+    "Am",
+    "Dm"
+   ],
+   "genre": "folk"
+  },
+  {
+   "id": "andalusian_Am",
+   "name": "Andalusian cadence / flamenco",
+   "roman": "i–VII–VI–V",
+   "key": "Am",
+   "chords": [
+    "Am",
+    "G",
+    "F",
+    "E"
+   ],
+   "genre": "flamenco"
+  },
+  {
+   "id": "andalusian_Em",
+   "name": "Andalusian cadence / flamenco",
+   "roman": "i–VII–VI–V",
+   "key": "Em",
+   "chords": [
+    "Em",
+    "D",
+    "C",
+    "B"
+   ],
+   "genre": "flamenco"
+  },
+  {
+   "id": "andalusian_Dm",
+   "name": "Andalusian cadence / flamenco",
+   "roman": "i–VII–VI–V",
+   "key": "Dm",
+   "chords": [
+    "Dm",
+    "C",
+    "Bb",
+    "A"
+   ],
+   "genre": "flamenco"
+  },
+  {
+   "id": "canon_C",
+   "name": "Pachelbel Canon",
+   "roman": "I–V–vi–iii–IV–I–IV–V",
+   "key": "C",
+   "chords": [
+    "C",
+    "G",
+    "Am",
+    "Em",
+    "F",
+    "C",
+    "F",
+    "G"
+   ],
+   "genre": "classical"
+  },
+  {
+   "id": "canon_G",
+   "name": "Pachelbel Canon",
+   "roman": "I–V–vi–iii–IV–I–IV–V",
+   "key": "G",
+   "chords": [
+    "G",
+    "D",
+    "Em",
+    "Bm",
+    "C",
+    "G",
+    "C",
+    "D"
+   ],
+   "genre": "classical"
+  },
+  {
+   "id": "canon_D",
+   "name": "Pachelbel Canon",
+   "roman": "I–V–vi–iii–IV–I–IV–V",
+   "key": "D",
+   "chords": [
+    "D",
+    "A",
+    "Bm",
+    "F#m",
+    "G",
+    "D",
+    "G",
+    "A"
+   ],
+   "genre": "classical"
+  },
+  {
+   "id": "canon_A",
+   "name": "Pachelbel Canon",
+   "roman": "I–V–vi–iii–IV–I–IV–V",
+   "key": "A",
+   "chords": [
+    "A",
+    "E",
+    "F#m",
+    "C#m",
+    "D",
+    "A",
+    "D",
+    "E"
+   ],
+   "genre": "classical"
+  },
+  {
+   "id": "canon_E",
+   "name": "Pachelbel Canon",
+   "roman": "I–V–vi–iii–IV–I–IV–V",
+   "key": "E",
+   "chords": [
+    "E",
+    "B",
+    "C#m",
+    "G#m",
+    "A",
+    "E",
+    "A",
+    "B"
+   ],
+   "genre": "classical"
+  },
+  {
+   "id": "rock-I-bVII-IV_C",
+   "name": "Mixolydian rock",
+   "roman": "I–bVII–IV–I",
+   "key": "C",
+   "chords": [
+    "C",
+    "Bb",
+    "F",
+    "C"
+   ],
+   "genre": "rock"
+  },
+  {
+   "id": "rock-I-bVII-IV_G",
+   "name": "Mixolydian rock",
+   "roman": "I–bVII–IV–I",
+   "key": "G",
+   "chords": [
+    "G",
+    "F",
+    "C",
+    "G"
+   ],
+   "genre": "rock"
+  },
+  {
+   "id": "rock-I-bVII-IV_D",
+   "name": "Mixolydian rock",
+   "roman": "I–bVII–IV–I",
+   "key": "D",
+   "chords": [
+    "D",
+    "C",
+    "G",
+    "D"
+   ],
+   "genre": "rock"
+  },
+  {
+   "id": "rock-I-bVII-IV_A",
+   "name": "Mixolydian rock",
+   "roman": "I–bVII–IV–I",
+   "key": "A",
+   "chords": [
+    "A",
+    "G",
+    "D",
+    "A"
+   ],
+   "genre": "rock"
+  },
+  {
+   "id": "rock-I-bVII-IV_E",
+   "name": "Mixolydian rock",
+   "roman": "I–bVII–IV–I",
+   "key": "E",
+   "chords": [
+    "E",
+    "D",
+    "A",
+    "E"
+   ],
+   "genre": "rock"
+  },
+  {
+   "id": "ballad-I-iii-IV-V_C",
+   "name": "Ballad ascending",
+   "roman": "I–iii–IV–V",
+   "key": "C",
+   "chords": [
+    "C",
+    "Em",
+    "F",
+    "G"
+   ],
+   "genre": "pop"
+  },
+  {
+   "id": "ballad-I-iii-IV-V_G",
+   "name": "Ballad ascending",
+   "roman": "I–iii–IV–V",
+   "key": "G",
+   "chords": [
+    "G",
+    "Bm",
+    "C",
+    "D"
+   ],
+   "genre": "pop"
+  },
+  {
+   "id": "ballad-I-iii-IV-V_D",
+   "name": "Ballad ascending",
+   "roman": "I–iii–IV–V",
+   "key": "D",
+   "chords": [
+    "D",
+    "F#m",
+    "G",
+    "A"
+   ],
+   "genre": "pop"
+  },
+  {
+   "id": "ballad-I-iii-IV-V_A",
+   "name": "Ballad ascending",
+   "roman": "I–iii–IV–V",
+   "key": "A",
+   "chords": [
+    "A",
+    "C#m",
+    "D",
+    "E"
+   ],
+   "genre": "pop"
+  },
+  {
+   "id": "ballad-I-iii-IV-V_E",
+   "name": "Ballad ascending",
+   "roman": "I–iii–IV–V",
+   "key": "E",
+   "chords": [
+    "E",
+    "G#m",
+    "A",
+    "B"
+   ],
+   "genre": "pop"
+  }
+ ]
+}

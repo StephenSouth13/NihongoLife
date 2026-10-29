@@ -39,6 +39,7 @@ namespace NihongoLife.EditorTools
             (WorldLocationCatalog.GameCenterScene, WorldLocationCatalog.GameCenterEntrance, new Vector3(0f, 2.4f, 0f), new Vector3(0f, 1.2f, 7f), 72f),
             (WorldLocationCatalog.MidoriIslandScene, WorldLocationCatalog.MidoriStation, new Vector3(0f, 12f, -18f), new Vector3(0f, 0f, 18f), 52f),
             (WorldLocationCatalog.ClinicScene, WorldLocationCatalog.ClinicEntrance, new Vector3(0f, 2.3f, 0f), new Vector3(0f, 1.1f, 6f), 72f),
+            (WorldLocationCatalog.MusicShopScene, WorldLocationCatalog.MusicShopEntrance, new Vector3(0f, 2.3f, 0f), new Vector3(0f, 1.1f, 6f), 72f),
             (WorldLocationCatalog.PhuQuocIslandScene, WorldLocationCatalog.PhuQuocArrival, new Vector3(-6f, 10f, -16f), new Vector3(0f, 1f, 16f), 52f),
         };
 

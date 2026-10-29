@@ -72,6 +72,8 @@ namespace NihongoLife.Progression
             "checkin", "triage", "explain",
             // Chef kitchen shift (SushiRestaurantRuntime): prep and cooking questions.
             "prep", "cook",
+            // Hibiki music shop (MusicShop): a gig on the stage, a DJ set, a painting finished at the easel.
+            "perform", "mix", "paint",
         };
 
         public string schema;

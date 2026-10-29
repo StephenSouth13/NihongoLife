@@ -1,0 +1,1297 @@
+{
+ "schema": "nihongolife.musictheory.v1",
+ "language": "en",
+ "lessons": [
+  {
+   "id": "staff-clefs",
+   "order": 1,
+   "level": "beginner",
+   "minutes": 8,
+   "title": "The staff and clefs",
+   "intro": "Music is written on a staff of 5 lines and 4 spaces. The clef at the start tells you the names of the notes.",
+   "points": [
+    "Lines are counted from the bottom up: line 1 is the lowest.",
+    "The treble clef is used for the right hand and melodies; it marks line 2 as G.",
+    "The bass clef is used for the left hand and low notes; it marks line 4 as F."
+   ],
+   "practiceSongs": [
+    "ode-to-joy"
+   ],
+   "quiz": [
+    {
+     "id": "staff-clefs-q1",
+     "q": "How many lines does a staff have?",
+     "options": [
+      "4",
+      "5",
+      "6",
+      "7"
+     ],
+     "answer": 1,
+     "explain": "A staff has 5 lines."
+    },
+    {
+     "id": "staff-clefs-q2",
+     "q": "Which note does the treble clef mark on line 2?",
+     "options": [
+      "C",
+      "F",
+      "G",
+      "A"
+     ],
+     "answer": 2,
+     "explain": "The treble clef curls around line 2, which is G."
+    },
+    {
+     "id": "staff-clefs-q3",
+     "q": "Which clef is usually used for the piano left hand?",
+     "options": [
+      "Bass clef",
+      "Treble clef",
+      "Alto clef",
+      "No clef"
+     ],
+     "answer": 0,
+     "explain": "The left hand plays low notes, so the bass clef is used."
+    }
+   ]
+  },
+  {
+   "id": "note-names-keyboard",
+   "order": 2,
+   "level": "beginner",
+   "minutes": 8,
+   "title": "Note names and the piano keyboard",
+   "intro": "There are 7 note names: C D E F G A B, repeating in every octave. On the piano the black keys come in groups of 2 and 3 to help you find your place.",
+   "points": [
+    "C is the white key just left of a group of 2 black keys.",
+    "The C near the middle of the keyboard is Middle C (C4), MIDI number 60.",
+    "After B comes the next octave's C; eight notes from C to C make an octave."
+   ],
+   "practiceSongs": [
+    "twinkle-twinkle",
+    "hot-cross-buns"
+   ],
+   "quiz": [
+    {
+     "id": "note-names-keyboard-q1",
+     "q": "Which note sits just left of a group of 2 black keys?",
+     "options": [
+      "C",
+      "D",
+      "F",
+      "A"
+     ],
+     "answer": 0,
+     "explain": "C is always just left of the 2-black-key group."
+    },
+    {
+     "id": "note-names-keyboard-q2",
+     "q": "What is the MIDI number of Middle C?",
+     "options": [
+      "48",
+      "60",
+      "64",
+      "72"
+     ],
+     "answer": 1,
+     "explain": "Middle C = C4 = MIDI 60."
+    },
+    {
+     "id": "note-names-keyboard-q3",
+     "q": "How many different note names are there from one C to the next (not counting the repeated C)?",
+     "options": [
+      "5",
+      "6",
+      "7",
+      "8"
+     ],
+     "answer": 2,
+     "explain": "C D E F G A B are 7 names."
+    }
+   ]
+  },
+  {
+   "id": "rhythm-values-rests",
+   "order": 3,
+   "level": "beginner",
+   "minutes": 8,
+   "title": "Note values and rests",
+   "intro": "Each note shape shows how long it lasts. Every note has a matching rest for silence of the same length.",
+   "points": [
+    "Whole note = 4 beats, half note = 2, quarter note = 1 (in 4/4).",
+    "An eighth note = half a beat; a sixteenth note = a quarter of a beat.",
+    "A dot after a note adds half its value: a dotted half note = 3 beats."
+   ],
+   "practiceSongs": [
+    "mary-had-a-little-lamb",
+    "hot-cross-buns"
+   ],
+   "quiz": [
+    {
+     "id": "rhythm-values-rests-q1",
+     "q": "In 4/4, how many beats does a half note last?",
+     "options": [
+      "1",
+      "2",
+      "3",
+      "4"
+     ],
+     "answer": 1,
+     "explain": "A half note equals two quarter notes = 2 beats."
+    },
+    {
+     "id": "rhythm-values-rests-q2",
+     "q": "How many beats does a dotted half note last?",
+     "options": [
+      "2",
+      "2.5",
+      "3",
+      "4"
+     ],
+     "answer": 2,
+     "explain": "2 + 1 = 3 beats."
+    },
+    {
+     "id": "rhythm-values-rests-q3",
+     "q": "Four eighth notes last how many beats?",
+     "options": [
+      "1",
+      "2",
+      "3",
+      "4"
+     ],
+     "answer": 1,
+     "explain": "Each eighth is 0.5 beat, so four = 2 beats."
+    }
+   ]
+  },
+  {
+   "id": "time-signatures-beat",
+   "order": 4,
+   "level": "beginner",
+   "minutes": 8,
+   "title": "Time signatures and the beat",
+   "intro": "A time signature has two numbers: the top is the number of beats in a bar, the bottom says which note value equals one beat. The first beat of a bar is usually the strongest.",
+   "points": [
+    "4/4: four quarter-note beats per bar — the most common metre (pop, EDM).",
+    "3/4: three beats per bar — the waltz feel, counted “one-two-three”.",
+    "6/8: two groups of three eighth notes, felt as “1-2-3 4-5-6” with two pulses."
+   ],
+   "practiceSongs": [
+    "row-row-row-your-boat",
+    "good-morning-to-all"
+   ],
+   "quiz": [
+    {
+     "id": "time-signatures-beat-q1",
+     "q": "What does the 3 in 3/4 tell you?",
+     "options": [
+      "3 beats per bar",
+      "3 bars per line",
+      "3 times faster",
+      "3 notes in the scale"
+     ],
+     "answer": 0,
+     "explain": "The top number is beats per bar."
+    },
+    {
+     "id": "time-signatures-beat-q2",
+     "q": "Which metre has a waltz feel?",
+     "options": [
+      "2/4",
+      "3/4",
+      "4/4",
+      "5/4"
+     ],
+     "answer": 1,
+     "explain": "3/4 is the waltz metre."
+    },
+    {
+     "id": "time-signatures-beat-q3",
+     "q": "How many quarter notes fit in one 4/4 bar?",
+     "options": [
+      "2",
+      "3",
+      "4",
+      "6"
+     ],
+     "answer": 2,
+     "explain": "The bottom 4 means a quarter note is one beat and the top 4 means four beats."
+    }
+   ]
+  },
+  {
+   "id": "tempo-dynamics",
+   "order": 5,
+   "level": "beginner",
+   "minutes": 8,
+   "title": "Tempo and dynamics",
+   "intro": "Tempo says how fast or slow the music goes, usually measured in BPM (beats per minute). Dynamics say how loud or soft to play.",
+   "points": [
+    "Largo ≈ 40–60 BPM, Andante ≈ 76–108, Allegro ≈ 120–156, Presto ≈ 168–200.",
+    "p (piano) = soft, f (forte) = loud, mp/mf = medium soft/medium loud.",
+    "Crescendo (<) gets gradually louder, diminuendo (>) gradually softer."
+   ],
+   "practiceSongs": [
+    "jingle-bells"
+   ],
+   "quiz": [
+    {
+     "id": "tempo-dynamics-q1",
+     "q": "What does BPM stand for?",
+     "options": [
+      "Beats per minute",
+      "Notes per bar",
+      "Loudness per beat",
+      "Bars per song"
+     ],
+     "answer": 0,
+     "explain": "BPM = beats per minute."
+    },
+    {
+     "id": "tempo-dynamics-q2",
+     "q": "What does the symbol f mean?",
+     "options": [
+      "Play loud",
+      "Play soft",
+      "Play fast",
+      "Stop"
+     ],
+     "answer": 0,
+     "explain": "f = forte = loud."
+    },
+    {
+     "id": "tempo-dynamics-q3",
+     "q": "Which tempo marking is fastest?",
+     "options": [
+      "Largo",
+      "Andante",
+      "Allegro",
+      "Presto"
+     ],
+     "answer": 3,
+     "explain": "Presto is the fastest of the four."
+    }
+   ]
+  },
+  {
+   "id": "accidentals-semitones",
+   "order": 6,
+   "level": "beginner",
+   "minutes": 8,
+   "title": "Sharps, flats, naturals and semitones",
+   "intro": "A semitone is the smallest step on the piano, from one key to the very next. A sharp (♯) raises a note by a semitone, a flat (♭) lowers it by a semitone, a natural (♮) cancels either.",
+   "points": [
+    "A whole tone = 2 semitones. C up to D is a whole tone.",
+    "E–F and B–C are only a semitone apart — there is no black key between them.",
+    "C♯ and D♭ are the same key with two names (enharmonic equivalents)."
+   ],
+   "practiceSongs": [
+    "fur-elise"
+   ],
+   "quiz": [
+    {
+     "id": "accidentals-semitones-q1",
+     "q": "How far is E up to F?",
+     "options": [
+      "A semitone",
+      "A whole tone",
+      "A tone and a half",
+      "Two whole tones"
+     ],
+     "answer": 0,
+     "explain": "E–F has no black key between, so it is a semitone."
+    },
+    {
+     "id": "accidentals-semitones-q2",
+     "q": "What does a flat (♭) do?",
+     "options": [
+      "Lowers a semitone",
+      "Raises a semitone",
+      "Lowers a whole tone",
+      "Cancels a previous sign"
+     ],
+     "answer": 0,
+     "explain": "A flat lowers the note by a semitone."
+    },
+    {
+     "id": "accidentals-semitones-q3",
+     "q": "Which note is the same key as C♯?",
+     "options": [
+      "D♭",
+      "D♯",
+      "B♭",
+      "E♭"
+     ],
+     "answer": 0,
+     "explain": "C♯ = D♭ (enharmonic)."
+    }
+   ]
+  },
+  {
+   "id": "major-scale",
+   "order": 7,
+   "level": "beginner",
+   "minutes": 8,
+   "title": "The major scale",
+   "intro": "A major scale has 7 notes built on a fixed pattern of steps and sounds bright and happy. C major uses only the white keys.",
+   "points": [
+    "Formula in semitones: 2–2–1–2–2–2–1.",
+    "G major has one sharp: F♯. D major has two: F♯ and C♯.",
+    "Degrees are numbered I–VII: tonic, supertonic, mediant, subdominant, dominant, submediant, leading tone."
+   ],
+   "practiceSongs": [
+    "ode-to-joy",
+    "twinkle-twinkle"
+   ],
+   "quiz": [
+    {
+     "id": "major-scale-q1",
+     "q": "What is the major-scale step pattern?",
+     "options": [
+      "2–2–1–2–2–2–1",
+      "2–1–2–2–1–2–2",
+      "1–2–2–2–1–2–2",
+      "2–2–2–1–2–2–1"
+     ],
+     "answer": 0,
+     "explain": "Major: 2–2–1–2–2–2–1 semitones."
+    },
+    {
+     "id": "major-scale-q2",
+     "q": "Which sharp does G major have?",
+     "options": [
+      "C♯",
+      "F♯",
+      "G♯",
+      "B♭"
+     ],
+     "answer": 1,
+     "explain": "G major has one sharp, F♯."
+    },
+    {
+     "id": "major-scale-q3",
+     "q": "Which notes make up C major?",
+     "options": [
+      "C D E F G A B",
+      "C D E♭ F G A B♭",
+      "C D E F♯ G A B",
+      "C D♭ E F G A B"
+     ],
+     "answer": 0,
+     "explain": "C major uses only white keys."
+    }
+   ]
+  },
+  {
+   "id": "intervals",
+   "order": 8,
+   "level": "beginner",
+   "minutes": 8,
+   "title": "Intervals",
+   "intro": "An interval is the distance between two notes, named by counting letter names including both ends: C–E is a third, C–G is a fifth.",
+   "points": [
+    "A major third = 4 semitones, a minor third = 3 semitones.",
+    "A perfect fifth = 7 semitones; an octave = 12 semitones.",
+    "A perfect fourth = 5 semitones; quality (major, minor, perfect, augmented, diminished) changes the size."
+   ],
+   "practiceSongs": [
+    "greensleeves"
+   ],
+   "quiz": [
+    {
+     "id": "intervals-q1",
+     "q": "C to G is which interval?",
+     "options": [
+      "A third",
+      "A fourth",
+      "A fifth",
+      "A sixth"
+     ],
+     "answer": 2,
+     "explain": "C D E F G: five letters, so a fifth."
+    },
+    {
+     "id": "intervals-q2",
+     "q": "How many semitones are in a major third?",
+     "options": [
+      "2",
+      "3",
+      "4",
+      "5"
+     ],
+     "answer": 2,
+     "explain": "C–E = 4 semitones."
+    },
+    {
+     "id": "intervals-q3",
+     "q": "How many semitones are in an octave?",
+     "options": [
+      "8",
+      "10",
+      "12",
+      "14"
+     ],
+     "answer": 2,
+     "explain": "An octave = 12 semitones."
+    }
+   ]
+  },
+  {
+   "id": "key-signatures-circle",
+   "order": 9,
+   "level": "intermediate",
+   "minutes": 8,
+   "title": "Key signatures and the circle of fifths",
+   "intro": "A key signature is the set of sharps or flats written after the clef that tells you the key of the piece. The circle of fifths arranges the keys by perfect fifths.",
+   "points": [
+    "Order of sharps: F C G D A E B. Order of flats is the reverse: B E A D G C F.",
+    "Going up a perfect fifth adds one sharp: C (0) → G (1) → D (2) → A (3) → E (4).",
+    "Going down a perfect fifth adds one flat: C → F (1♭) → B♭ (2♭) → E♭ (3♭)."
+   ],
+   "practiceSongs": [
+    "old-macdonald",
+    "minuet-in-g"
+   ],
+   "quiz": [
+    {
+     "id": "key-signatures-circle-q1",
+     "q": "How many sharps does D major have?",
+     "options": [
+      "1",
+      "2",
+      "3",
+      "4"
+     ],
+     "answer": 1,
+     "explain": "D major has F♯ and C♯ — 2 sharps."
+    },
+    {
+     "id": "key-signatures-circle-q2",
+     "q": "Which key has exactly one flat (B♭)?",
+     "options": [
+      "G major",
+      "F major",
+      "D major",
+      "B♭ major"
+     ],
+     "answer": 1,
+     "explain": "F major has one flat, B♭."
+    },
+    {
+     "id": "key-signatures-circle-q3",
+     "q": "Which note gets the first sharp in a key signature?",
+     "options": [
+      "C",
+      "F",
+      "G",
+      "B"
+     ],
+     "answer": 1,
+     "explain": "The order of sharps starts with F♯."
+    }
+   ]
+  },
+  {
+   "id": "minor-scales",
+   "order": 10,
+   "level": "intermediate",
+   "minutes": 8,
+   "title": "Minor scales",
+   "intro": "Minor scales sound darker and more serious than major. There are three forms: natural, harmonic and melodic.",
+   "points": [
+    "Natural minor: 2–1–2–2–1–2–2 semitones. A minor uses only white keys.",
+    "Harmonic minor raises the 7th degree by a semitone (A minor: G♯).",
+    "Relative minor: it starts a minor third below the major tonic — C major and A minor share a key signature."
+   ],
+   "practiceSongs": [
+    "greensleeves",
+    "fur-elise"
+   ],
+   "quiz": [
+    {
+     "id": "minor-scales-q1",
+     "q": "What is the relative minor of C major?",
+     "options": [
+      "D minor",
+      "E minor",
+      "A minor",
+      "G minor"
+     ],
+     "answer": 2,
+     "explain": "A minor is a minor third below C."
+    },
+    {
+     "id": "minor-scales-q2",
+     "q": "Which degree does harmonic minor raise?",
+     "options": [
+      "II",
+      "IV",
+      "VI",
+      "VII"
+     ],
+     "answer": 3,
+     "explain": "It raises the 7th to create a leading tone."
+    },
+    {
+     "id": "minor-scales-q3",
+     "q": "How many sharps or flats does A natural minor have?",
+     "options": [
+      "0",
+      "1",
+      "2",
+      "3"
+     ],
+     "answer": 0,
+     "explain": "A minor shares C major's signature: none."
+    }
+   ]
+  },
+  {
+   "id": "triads",
+   "order": 11,
+   "level": "intermediate",
+   "minutes": 8,
+   "title": "Triads",
+   "intro": "A triad is three notes stacked in thirds: root, third and fifth. The kind of chord depends on the size of the two thirds.",
+   "points": [
+    "Major: major third + minor third (4+3 semitones). C = C–E–G.",
+    "Minor: minor third + major third (3+4). Cm = C–E♭–G.",
+    "Diminished: 3+3 (Bdim = B–D–F); augmented: 4+4 (Caug = C–E–G♯)."
+   ],
+   "practiceSongs": [
+    "canon-in-d"
+   ],
+   "quiz": [
+    {
+     "id": "triads-q1",
+     "q": "Which notes make a C major triad?",
+     "options": [
+      "C–E–G",
+      "C–E♭–G",
+      "C–F–G",
+      "C–E–A"
+     ],
+     "answer": 0,
+     "explain": "C major = C–E–G (4+3)."
+    },
+    {
+     "id": "triads-q2",
+     "q": "Which order of thirds makes a minor triad?",
+     "options": [
+      "Minor then major",
+      "Major then minor",
+      "Minor then minor",
+      "Major then major"
+     ],
+     "answer": 0,
+     "explain": "Minor = 3+4 semitones."
+    },
+    {
+     "id": "triads-q3",
+     "q": "Which structure is an augmented triad?",
+     "options": [
+      "3+3",
+      "4+3",
+      "3+4",
+      "4+4"
+     ],
+     "answer": 3,
+     "explain": "Augmented = two major thirds (4+4)."
+    }
+   ]
+  },
+  {
+   "id": "seventh-chords",
+   "order": 12,
+   "level": "intermediate",
+   "minutes": 8,
+   "title": "Seventh chords",
+   "intro": "A seventh chord adds a fourth note, a seventh above the root, on top of a triad. It adds richer colour, especially in jazz and blues.",
+   "points": [
+    "Cmaj7 = C–E–G–B (major seventh). A dreamy, smooth sound.",
+    "C7 = C–E–G–B♭ (dominant seventh). It is tense and wants to resolve to F.",
+    "Cm7 = C–E♭–G–B♭ (minor seventh). Smooth and relaxed."
+   ],
+   "practiceSongs": [],
+   "quiz": [
+    {
+     "id": "seventh-chords-q1",
+     "q": "Which notes make C7?",
+     "options": [
+      "C–E–G–B♭",
+      "C–E–G–B",
+      "C–E♭–G–B♭",
+      "C–E–G–A"
+     ],
+     "answer": 0,
+     "explain": "C7 = major triad + minor seventh."
+    },
+    {
+     "id": "seventh-chords-q2",
+     "q": "What differs between Cmaj7 and C7?",
+     "options": [
+      "B versus B♭",
+      "E versus E♭",
+      "G versus G♯",
+      "Nothing"
+     ],
+     "answer": 0,
+     "explain": "maj7 uses B, plain 7 uses B♭."
+    },
+    {
+     "id": "seventh-chords-q3",
+     "q": "How many notes are in a seventh chord?",
+     "options": [
+      "2",
+      "3",
+      "4",
+      "5"
+     ],
+     "answer": 2,
+     "explain": "Triad's three notes plus the seventh make four."
+    }
+   ]
+  },
+  {
+   "id": "reading-guitar-tab",
+   "order": 13,
+   "level": "beginner",
+   "minutes": 7,
+   "title": "Reading guitar tab and chord diagrams",
+   "intro": "Tab (tablature) draws 6 lines for the 6 strings; the numbers are the frets to press. A chord diagram shows where the fingers go on the neck.",
+   "points": [
+    "The bottom line is the 6th string (low E). Standard tuning from string 6 to 1: E A D G B E.",
+    "A 0 means an open string; a 3 means press fret 3 on that string.",
+    "In a chord diagram: X = do not play the string, O = open string, a dot = finger position."
+   ],
+   "practiceSongs": [],
+   "quiz": [
+    {
+     "id": "reading-guitar-tab-q1",
+     "q": "Which string is the bottom line of tab?",
+     "options": [
+      "6th string (low E)",
+      "1st string (high E)",
+      "3rd string (G)",
+      "4th string (D)"
+     ],
+     "answer": 0,
+     "explain": "The bottom line is the lowest string."
+    },
+    {
+     "id": "reading-guitar-tab-q2",
+     "q": "What is standard tuning from string 6 to 1?",
+     "options": [
+      "E A D G B E",
+      "E B G D A E",
+      "A D G C E A",
+      "D A D G B E"
+     ],
+     "answer": 0,
+     "explain": "Standard: E A D G B E."
+    },
+    {
+     "id": "reading-guitar-tab-q3",
+     "q": "What does a 0 mean in tab?",
+     "options": [
+      "Open string",
+      "Do not play",
+      "Fret 10",
+      "Mute"
+     ],
+     "answer": 0,
+     "explain": "0 = play the string open, no fret pressed."
+    }
+   ]
+  },
+  {
+   "id": "piano-hand-position",
+   "order": 14,
+   "level": "beginner",
+   "minutes": 7,
+   "title": "Piano hand position and fingering",
+   "intro": "Fingers are numbered 1–5 from the thumb to the little finger. Keep your wrist relaxed and your fingers gently curved as if holding a small orange.",
+   "points": [
+    "C position: right-hand fingers 1-2-3-4-5 sit on C D E F G.",
+    "C major, right hand ascending: 1-2-3, tuck the thumb under, then 1-2-3-4-5.",
+    "The left hand starts with finger 5 on low C: 5-4-3-2-1, then 3-2-1."
+   ],
+   "practiceSongs": [
+    "ode-to-joy",
+    "mary-had-a-little-lamb"
+   ],
+   "quiz": [
+    {
+     "id": "piano-hand-position-q1",
+     "q": "Which finger is number 1?",
+     "options": [
+      "Thumb",
+      "Index finger",
+      "Little finger",
+      "Middle finger"
+     ],
+     "answer": 0,
+     "explain": "Finger 1 is the thumb."
+    },
+    {
+     "id": "piano-hand-position-q2",
+     "q": "In C position, which note does right-hand finger 5 play?",
+     "options": [
+      "E",
+      "F",
+      "G",
+      "A"
+     ],
+     "answer": 2,
+     "explain": "1-2-3-4-5 = C D E F G."
+    },
+    {
+     "id": "piano-hand-position-q3",
+     "q": "In an ascending right-hand C major scale, what happens after finger 3?",
+     "options": [
+      "Tuck the thumb under",
+      "Jump the whole hand",
+      "Switch to the left hand",
+      "Stop"
+     ],
+     "answer": 0,
+     "explain": "Passing the thumb under keeps the scale smooth."
+    }
+   ]
+  },
+  {
+   "id": "chord-progressions-roman",
+   "order": 15,
+   "level": "intermediate",
+   "minutes": 8,
+   "title": "Roman numerals and chord progressions",
+   "intro": "Roman numerals name chords by scale degree so they work in any key. In a major key: I ii iii IV V vi vii°.",
+   "points": [
+    "I–V–vi–IV in C major is C–G–Am–F; in G major it is G–D–Em–C.",
+    "The authentic cadence V–I sounds like a full stop; IV–I sounds gentle, like “amen”.",
+    "12-bar blues: I I I I – IV IV I I – V IV I V."
+   ],
+   "practiceSongs": [
+    "canon-in-d"
+   ],
+   "quiz": [
+    {
+     "id": "chord-progressions-roman-q1",
+     "q": "What is I–V–vi–IV in C major?",
+     "options": [
+      "C–G–Am–F",
+      "C–F–G–Am",
+      "C–Am–F–G",
+      "C–Dm–G–C"
+     ],
+     "answer": 0,
+     "explain": "I=C, V=G, vi=Am, IV=F."
+    },
+    {
+     "id": "chord-progressions-roman-q2",
+     "q": "What is the vi chord in G major?",
+     "options": [
+      "Am",
+      "Bm",
+      "Em",
+      "Cm"
+     ],
+     "answer": 2,
+     "explain": "The 6th degree of G major is E, minor: Em."
+    },
+    {
+     "id": "chord-progressions-roman-q3",
+     "q": "How does the 12-bar blues end?",
+     "options": [
+      "I → IV",
+      "IV → V",
+      "I → V",
+      "V → IV"
+     ],
+     "answer": 2,
+     "explain": "The last two bars are I then V (turnaround) leading to the next chorus."
+    }
+   ]
+  },
+  {
+   "id": "modes",
+   "order": 16,
+   "level": "advanced",
+   "minutes": 8,
+   "title": "Modes",
+   "intro": "Modes are seven-note scales taken from the same major scale but starting on a different degree. Each has its own colour.",
+   "points": [
+    "On the white keys: Ionian (C–C) = major, Dorian (D–D), Phrygian (E–E), Lydian (F–F), Mixolydian (G–G), Aeolian (A–A) = natural minor, Locrian (B–B).",
+    "Dorian = natural minor with a raised 6th (bright, jazzy). Mixolydian = major with a lowered 7th (rock/blues feel).",
+    "Lydian = major with a raised 4th (♯4), a dreamy, cinematic sound."
+   ],
+   "practiceSongs": [
+    "greensleeves"
+   ],
+   "quiz": [
+    {
+     "id": "modes-q1",
+     "q": "Which mode starts on D on the white keys?",
+     "options": [
+      "Dorian",
+      "Phrygian",
+      "Lydian",
+      "Mixolydian"
+     ],
+     "answer": 0,
+     "explain": "D to D on white keys is Dorian."
+    },
+    {
+     "id": "modes-q2",
+     "q": "Which degree makes Mixolydian differ from major?",
+     "options": [
+      "7th lowered a semitone",
+      "4th raised a semitone",
+      "3rd lowered a semitone",
+      "2nd raised a semitone"
+     ],
+     "answer": 0,
+     "explain": "Mixolydian = major with ♭7."
+    },
+    {
+     "id": "modes-q3",
+     "q": "Aeolian equals which scale?",
+     "options": [
+      "Natural minor",
+      "Major",
+      "Harmonic minor",
+      "Pentatonic"
+     ],
+     "answer": 0,
+     "explain": "Aeolian is the natural minor scale."
+    }
+   ]
+  },
+  {
+   "id": "pentatonic-blues",
+   "order": 17,
+   "level": "intermediate",
+   "minutes": 7,
+   "title": "Pentatonic and blues scales",
+   "intro": "A pentatonic scale has only 5 notes, so it is easy to improvise with and hard to hit a wrong note. Add one “blue note” and it becomes the blues scale.",
+   "points": [
+    "Major pentatonic: degrees 1 2 3 5 6 (C major: C D E G A).",
+    "Minor pentatonic: degrees 1 ♭3 4 5 ♭7 (A minor: A C D E G).",
+    "Blues scale = minor pentatonic + ♭5 (A blues: A C D E♭ E G)."
+   ],
+   "practiceSongs": [
+    "old-macdonald"
+   ],
+   "quiz": [
+    {
+     "id": "pentatonic-blues-q1",
+     "q": "How many notes are in a pentatonic scale?",
+     "options": [
+      "4",
+      "5",
+      "6",
+      "7"
+     ],
+     "answer": 1,
+     "explain": "Penta means five."
+    },
+    {
+     "id": "pentatonic-blues-q2",
+     "q": "Which notes are in A minor pentatonic?",
+     "options": [
+      "A C D E G",
+      "A B C E G",
+      "A C D F G",
+      "A B D E G"
+     ],
+     "answer": 0,
+     "explain": "1 ♭3 4 5 ♭7 from A = A C D E G."
+    },
+    {
+     "id": "pentatonic-blues-q3",
+     "q": "Which note added to minor pentatonic makes the blues scale?",
+     "options": [
+      "♭2",
+      "♭5",
+      "♭6",
+      "♭3"
+     ],
+     "answer": 1,
+     "explain": "The blue note is ♭5."
+    }
+   ]
+  },
+  {
+   "id": "harmony-voice-leading",
+   "order": 18,
+   "level": "advanced",
+   "minutes": 8,
+   "title": "Harmony basics: inversions and voice leading",
+   "intro": "An inversion changes which note of the chord is lowest. Voice leading means moving from one chord to the next with the smallest possible steps.",
+   "points": [
+    "C major: root position C–E–G; first inversion E–G–C; second inversion G–C–E.",
+    "Keep common tones between two chords and move only the rest: C → Am keeps C and E.",
+    "In classical harmony avoid two voices moving in parallel perfect fifths."
+   ],
+   "practiceSongs": [
+    "canon-in-d"
+   ],
+   "quiz": [
+    {
+     "id": "harmony-voice-leading-q1",
+     "q": "In the first inversion of C major, which note is lowest?",
+     "options": [
+      "C",
+      "E",
+      "G",
+      "B"
+     ],
+     "answer": 1,
+     "explain": "First inversion has the third (E) in the bass."
+    },
+    {
+     "id": "harmony-voice-leading-q2",
+     "q": "Which notes do C and Am share?",
+     "options": [
+      "C, E",
+      "E, G",
+      "G, A",
+      "C, G"
+     ],
+     "answer": 0,
+     "explain": "C = C–E–G, Am = A–C–E → common: C and E."
+    },
+    {
+     "id": "harmony-voice-leading-q3",
+     "q": "What does “smooth voice leading” mean?",
+     "options": [
+      "Notes move by small steps",
+      "Every note leaps an octave",
+      "Only the bass is played",
+      "No chords at all"
+     ],
+     "answer": 0,
+     "explain": "Small steps, common tones kept."
+    }
+   ]
+  },
+  {
+   "id": "ear-training",
+   "order": 19,
+   "level": "intermediate",
+   "minutes": 8,
+   "title": "Ear training: hearing intervals and chords",
+   "intro": "Ear training lets you hear a melody and play it back without sheet music. The best trick is to link each interval to the opening of a song you know.",
+   "points": [
+    "Twinkle Twinkle: the first two notes C→G are an ascending perfect fifth.",
+    "Greensleeves opens with an ascending minor third (A→C).",
+    "A major chord sounds bright and happy; a minor chord sounds dark and sad."
+   ],
+   "practiceSongs": [
+    "twinkle-twinkle",
+    "greensleeves",
+    "ode-to-joy"
+   ],
+   "quiz": [
+    {
+     "id": "ear-training-q1",
+     "q": "Which interval are the first two notes of Twinkle Twinkle?",
+     "options": [
+      "Perfect fifth",
+      "Minor third",
+      "Octave",
+      "Second"
+     ],
+     "answer": 0,
+     "explain": "C→G = 7 semitones = perfect fifth."
+    },
+    {
+     "id": "ear-training-q2",
+     "q": "Which interval opens Greensleeves?",
+     "options": [
+      "Ascending minor third",
+      "Ascending major third",
+      "Descending perfect fourth",
+      "Ascending octave"
+     ],
+     "answer": 0,
+     "explain": "A→C is 3 semitones."
+    },
+    {
+     "id": "ear-training-q3",
+     "q": "Which chord type usually sounds dark and sad?",
+     "options": [
+      "Minor",
+      "Major",
+      "Major seventh",
+      "Sus4"
+     ],
+     "answer": 0,
+     "explain": "Minor chords sound sad."
+    }
+   ]
+  },
+  {
+   "id": "edm-bpm-bars-phrases",
+   "order": 20,
+   "level": "advanced",
+   "minutes": 8,
+   "title": "EDM: BPM, bars and phrases",
+   "intro": "Electronic music is built on a fixed beat grid. Most tracks use 4/4, and sections last 8, 16 or 32 bars.",
+   "points": [
+    "Typical BPM: House 120–128, Techno 125–150, Trance 130–145, Dubstep ~140, Drum & Bass 170–180.",
+    "Four-on-the-floor: the kick drum hits on all 4 beats of the bar.",
+    "Length of one 4/4 bar = 240 ÷ BPM seconds. At 120 BPM one bar lasts 2 seconds."
+   ],
+   "practiceSongs": [],
+   "quiz": [
+    {
+     "id": "edm-bpm-bars-phrases-q1",
+     "q": "How long is one 4/4 bar at 120 BPM?",
+     "options": [
+      "1 s",
+      "2 s",
+      "3 s",
+      "4 s"
+     ],
+     "answer": 1,
+     "explain": "4 beats × 0.5 s = 2 s."
+    },
+    {
+     "id": "edm-bpm-bars-phrases-q2",
+     "q": "What does four-on-the-floor mean?",
+     "options": [
+      "Kick on every beat of the bar",
+      "Four players at once",
+      "Four chords per song",
+      "Slow 4/4"
+     ],
+     "answer": 0,
+     "explain": "The kick lands steadily on each beat."
+    },
+    {
+     "id": "edm-bpm-bars-phrases-q3",
+     "q": "Which genre is usually fastest?",
+     "options": [
+      "House",
+      "Trance",
+      "Dubstep",
+      "Drum & Bass"
+     ],
+     "answer": 3,
+     "explain": "Drum & Bass runs about 170–180 BPM."
+    }
+   ]
+  },
+  {
+   "id": "dj-beatmatching",
+   "order": 21,
+   "level": "advanced",
+   "minutes": 8,
+   "title": "DJ skills: beatmatching",
+   "intro": "Beatmatching means giving two tracks the same BPM with their beats aligned so the transition is smooth. You listen to the incoming track in headphones (cue) before bringing it into the speakers.",
+   "points": [
+    "Use the tempo (pitch) fader to match BPM, then the jog/nudge to line up the beats.",
+    "Start the mix at the beginning of a 16- or 32-bar phrase so the structures line up.",
+    "The smaller the tempo change the more natural it sounds: under about ±6% is rarely noticeable."
+   ],
+   "practiceSongs": [],
+   "quiz": [
+    {
+     "id": "dj-beatmatching-q1",
+     "q": "Track A is 120 BPM and track B is 126 BPM. To match B to A, change B by about:",
+     "options": [
+      "−4.8%",
+      "+4.8%",
+      "−10%",
+      "+10%"
+     ],
+     "answer": 0,
+     "explain": "120 ÷ 126 ≈ 0.952, so slow it by about 4.8%."
+    },
+    {
+     "id": "dj-beatmatching-q2",
+     "q": "Where should you start mixing the new track?",
+     "options": [
+      "Start of a 16/32-bar phrase",
+      "Anywhere mid-bar",
+      "Only when the old track is silent",
+      "The first second of the set"
+     ],
+     "answer": 0,
+     "explain": "Align to the phrase start so structures match."
+    },
+    {
+     "id": "dj-beatmatching-q3",
+     "q": "What is the cue function for?",
+     "options": [
+      "Preview the incoming track in headphones",
+      "Raise main speaker volume",
+      "Delete the track",
+      "Change the song's key"
+     ],
+     "answer": 0,
+     "explain": "Cue lets you listen privately in headphones."
+    }
+   ]
+  },
+  {
+   "id": "edm-structure-drops",
+   "order": 22,
+   "level": "advanced",
+   "minutes": 8,
+   "title": "EDM song structure: build-ups and drops",
+   "intro": "A typical EDM track moves through intro, build-up, drop, breakdown, a second drop and an outro. The emotion comes from building tension and then releasing it.",
+   "points": [
+    "Build-up: add risers, snare rolls, a rising filter and denser rhythm (8–16 bars).",
+    "Drop: the highest-energy moment with full kick, bass and lead.",
+    "Breakdown: a calm section without the kick, letting melody and chords shine before the next drop."
+   ],
+   "practiceSongs": [],
+   "quiz": [
+    {
+     "id": "edm-structure-drops-q1",
+     "q": "Which section comes right before the drop?",
+     "options": [
+      "Outro",
+      "Build-up",
+      "Intro",
+      "Bridge"
+     ],
+     "answer": 1,
+     "explain": "The build-up creates tension before the drop."
+    },
+    {
+     "id": "edm-structure-drops-q2",
+     "q": "What is typical of a breakdown?",
+     "options": [
+      "Kick removed, calmer",
+      "Loudest kick and bass",
+      "Only risers",
+      "Total silence"
+     ],
+     "answer": 0,
+     "explain": "The breakdown is the calm-down section."
+    },
+    {
+     "id": "edm-structure-drops-q3",
+     "q": "What is the drop?",
+     "options": [
+      "The peak-energy moment",
+      "The ending",
+      "A type of drum",
+      "A chord"
+     ],
+     "answer": 0,
+     "explain": "The drop is when bass and kick burst in."
+    }
+   ]
+  },
+  {
+   "id": "mixing-eq-compression",
+   "order": 23,
+   "level": "advanced",
+   "minutes": 8,
+   "title": "Mixing basics: EQ, compression and sidechain",
+   "intro": "Mixing balances sounds so they are clear together. The three basic tools are EQ, the compressor and sidechain.",
+   "points": [
+    "EQ boosts or cuts frequency bands: bass (below ~250 Hz), mids (~250 Hz–4 kHz), treble (above ~4 kHz).",
+    "A compressor reduces the gap between loud and quiet parts; main controls: threshold, ratio, attack, release.",
+    "Sidechain: duck the bass each time the kick hits to create the “pumping” effect and keep the kick clear."
+   ],
+   "practiceSongs": [],
+   "quiz": [
+    {
+     "id": "mixing-eq-compression-q1",
+     "q": "What is sidechain commonly used for in EDM?",
+     "options": [
+      "Duck the bass when the kick hits",
+      "Make the song faster",
+      "Change key",
+      "Add reverb"
+     ],
+     "answer": 0,
+     "explain": "Sidechain ducks the bass using the kick signal."
+    },
+    {
+     "id": "mixing-eq-compression-q2",
+     "q": "Which band counts as “bass”?",
+     "options": [
+      "60 Hz",
+      "2 kHz",
+      "8 kHz",
+      "16 kHz"
+     ],
+     "answer": 0,
+     "explain": "60 Hz is a low frequency."
+    },
+    {
+     "id": "mixing-eq-compression-q3",
+     "q": "What does a compressor do?",
+     "options": [
+      "Reduces loud–quiet differences",
+      "Adds new notes",
+      "Reverses the sound",
+      "Changes BPM"
+     ],
+     "answer": 0,
+     "explain": "A compressor controls dynamic range."
+    }
+   ]
+  },
+  {
+   "id": "harmonic-mixing-camelot",
+   "order": 24,
+   "level": "advanced",
+   "minutes": 8,
+   "title": "Harmonic mixing: the Camelot wheel",
+   "intro": "The Camelot wheel gives every key a code with a number 1–12 and a letter A (minor) or B (major), so DJs can pick tracks in compatible keys and avoid clashing notes.",
+   "points": [
+    "8A = A minor, 8B = C major (relative keys share a number).",
+    "Safe mixes: same code, ±1 number with the same letter, or the same number with the other letter (A↔B).",
+    "+1 on the number means up a perfect fifth (8A Am → 9A Em)."
+   ],
+   "practiceSongs": [],
+   "quiz": [
+    {
+     "id": "harmonic-mixing-camelot-q1",
+     "q": "Which key is 8B?",
+     "options": [
+      "A minor",
+      "C major",
+      "G major",
+      "E minor"
+     ],
+     "answer": 1,
+     "explain": "8B = C major."
+    },
+    {
+     "id": "harmonic-mixing-camelot-q2",
+     "q": "Which code mixes safely from 8A (A minor)?",
+     "options": [
+      "9A",
+      "3B",
+      "11A",
+      "5B"
+     ],
+     "answer": 0,
+     "explain": "9A has the same letter and +1 number."
+    },
+    {
+     "id": "harmonic-mixing-camelot-q3",
+     "q": "What does the letter A mean on the Camelot wheel?",
+     "options": [
+      "Minor key",
+      "Major key",
+      "Fast tempo",
+      "Loud"
+     ],
+     "answer": 0,
+     "explain": "A = minor, B = major."
+    }
+   ]
+  }
+ ]
+}

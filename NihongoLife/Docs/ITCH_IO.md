@@ -41,6 +41,7 @@ Bản web lưu tiến trình trong trình duyệt (IndexedDB). Chơi online cầ
 - Mô hình 3D: Kenney (CC0) — City Kit Roads/Suburban/Commercial, Food Kit, Furniture Kit, Pirate Kit, Nature Kit, Mini Arcade; Quaternius Ultimate packs (CC0); KayKit City Builder Bits (CC0); Styloo Classroom pack; nhân vật Kids (Unity Asset Store, New Chac); hoạt ảnh Mixamo (Adobe).
 - Vật liệu / bầu trời: ambientCG Ground054, Poly Haven Kloofendal sky (CC0).
 - Hình minh hoạ từ điển: **Twemoji © Twitter, Inc. và cộng sự, CC-BY 4.0** (https://creativecommons.org/licenses/by/4.0/).
+- Tranh trong phòng tranh: The Metropolitan Museum of Art Open Access (CC0) và Wikimedia Commons (phạm vi công cộng). Giai điệu: tác phẩm thuộc phạm vi công cộng, dữ liệu nốt CC0.
 - Bản đồ Phú Quốc: dữ liệu **© OpenStreetMap contributors** (ODbL, https://www.openstreetmap.org/copyright).
 - Font: Noto Sans JP (SIL Open Font License 1.1).
 - Âm nhạc: CC0 từ OpenGameArt (Tozan, Holizna, SubspaceAudio, Tarush Singhal, Thimras, Wolfgang_, Spring Spring, Kenney) và nhạc gốc NihongoLife — chi tiết `Docs/AUDIO_CREDITS.md`. Giọng đọc: Microsoft Edge neural TTS.

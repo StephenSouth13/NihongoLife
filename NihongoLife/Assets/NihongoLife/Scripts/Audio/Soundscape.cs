@@ -139,6 +139,7 @@ namespace NihongoLife.Audio
                 case WorldLocationCatalog.HomeBedroomScene: music = NihongoLife.Health.PlayerIllness.Main != null ? "sick" : "bedroom"; break; // ill at home: a lullaby
                 case WorldLocationCatalog.GameCenterScene: music = "game_center"; break;
                 case WorldLocationCatalog.ClinicScene: music = "clinic"; break; // calm and quiet, as a clinic should be
+                case WorldLocationCatalog.MusicShopScene: music = "spring"; break; // the shop's own record on the counter
                 case WorldLocationCatalog.MidoriIslandScene: music = "island"; ambience = raining ? "" : night ? "city_night" : "island"; break;
                 default: music = ""; ambience = ""; break; // menu / bootstrap: MenuMusicController plays there
             }
@@ -161,6 +162,7 @@ namespace NihongoLife.Audio
                 "farm" => scene == WorldLocationCatalog.MidoriIslandScene,
                 "medical" => scene == WorldLocationCatalog.ClinicScene,
                 "hospitality" => scene == "65_PhuQuocIsland", // Gánh Ngon, Phú Quốc
+                "musician" or "producer" or "painter" => false, // the music shop: a stage needs quiet, not the busy-shift track
                 _ => false, // retail works inside the konbini, which keeps its own music
             };
         }

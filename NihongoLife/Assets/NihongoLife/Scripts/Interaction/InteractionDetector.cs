@@ -157,6 +157,7 @@ namespace NihongoLife.Interaction
                 if (hit == null || hit == target || hit.transform.IsChildOf(transform)) continue;
                 if (hit is CharacterController || hit.attachedRigidbody != null) continue; // people and moving things never "hide" (no flicker)
                 if (hit.GetComponentInParent<IInteractable>() != null) continue;  // the target itself, a counter, another person
+                if (hit.bounds.Intersects(target.bounds)) continue;               // the furniture the spot sits in (the bed round its rest point)
                 return false;
             }
             return true;

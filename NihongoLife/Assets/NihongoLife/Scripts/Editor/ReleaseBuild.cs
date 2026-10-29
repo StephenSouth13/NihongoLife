@@ -29,7 +29,10 @@ namespace NihongoLife.Editor
             "Assets/NihongoLife/Scenes/40_ HIBARICLASS.unity",
             "Assets/NihongoLife/Scenes/45_HomeBedroom.unity",
             "Assets/NihongoLife/Scenes/50_GameCenter.unity",
-            "Assets/NihongoLife/Scenes/60_MidoriIsland.unity"
+            "Assets/NihongoLife/Scenes/60_MidoriIsland.unity",
+            "Assets/NihongoLife/Scenes/35_HibariClinic.unity",
+            "Assets/NihongoLife/Scenes/55_MusicShop.unity",
+            "Assets/NihongoLife/Scenes/65_PhuQuocIsland.unity"
         };
 
         public static void BuildWebGL()

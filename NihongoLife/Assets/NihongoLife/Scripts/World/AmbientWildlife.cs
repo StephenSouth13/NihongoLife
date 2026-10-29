@@ -280,6 +280,8 @@ namespace NihongoLife.World
         private Vector3 _goal, _perch, _orbitCenter, _treeBase, _landFrom;
         private float _treeTop, _climbT, _heartUntil;
         private bool _visible = true;
+        /// <summary>A bird pecking on the ground (pigeons, sparrows on the pavement) rather than up on a tree or a roof.</summary>
+        public bool OnGround { get; private set; }
         private GameObject _heart;
         private static float _lastChirp;
 
@@ -329,8 +331,11 @@ namespace NihongoLife.World
 
         private void BuildBird()
         {
+            _visual.localScale = Vector3.one * 1.8f; // the Kids world is stylised: a real-size sparrow was a speck nobody saw
             _body = Pivot("Body", _visual, new Vector3(0f, 0.1f, 0f));
-            var c = new Color(0.45f, 0.33f, 0.22f);
+            bool pigeon = Index % 2 == 0;
+            Variant = pigeon ? "pigeon" : "sparrow";
+            var c = pigeon ? new Color(0.56f, 0.58f, 0.64f) : new Color(0.52f, 0.37f, 0.24f);
             Part(PrimitiveType.Sphere, _body, Vector3.zero, new Vector3(0.1f, 0.09f, 0.17f), c);
             _head = Part(PrimitiveType.Sphere, _body, new Vector3(0f, 0.05f, 0.09f), Vector3.one * 0.07f, c * 0.9f);
             Part(PrimitiveType.Cube, _head, new Vector3(0f, -0.1f, 0.55f), new Vector3(0.18f, 0.18f, 0.5f), new Color(0.9f, 0.7f, 0.2f));
@@ -383,6 +388,14 @@ namespace NihongoLife.World
                 var p = around + new Vector3(Mathf.Cos(ang) * dist, 0f, Mathf.Sin(ang) * dist);
                 if (Kind == WildKind.Bird)
                 {
+                    OnGround = Random.value < 0.55f;
+                    if (OnGround)
+                    {
+                        var near = around + new Vector3(Mathf.Cos(ang), 0f, Mathf.Sin(ang)) * Random.Range(7f, 18f);
+                        if (AmbientWildlife.Ground(new Vector3(near.x, around.y + 3f, near.z), out var spot) && Mathf.Abs(spot.y - around.y) < 1.5f)
+                        { transform.position = spot; _perch = spot; transform.rotation = Quaternion.Euler(0f, Random.value * 360f, 0f); return true; }
+                        OnGround = false;
+                    }
                     if (FindPerch(p, out var perch)) { transform.position = perch; _perch = perch; return true; }
                     continue;
                 }
@@ -407,7 +420,7 @@ namespace NihongoLife.World
             var player = _owner.Player;
             if (_owner.NearestTree(near, 14f, out var tb, out var top))
             {
-                perch = new Vector3(tb.x + Random.Range(-0.8f, 0.8f), top - Random.Range(0.3f, 1.2f), tb.z + Random.Range(-0.8f, 0.8f));
+                perch = new Vector3(tb.x + Random.Range(-0.5f, 0.5f), top + 0.02f, tb.z + Random.Range(-0.5f, 0.5f)); // on the crown, not hidden in the leaves
                 return true;
             }
             if (Physics.Raycast(new Vector3(near.x, player.position.y + 40f, near.z), Vector3.down, out var hit, 60f, Physics.DefaultRaycastLayers, QueryTriggerInteraction.Ignore) && hit.point.y - player.position.y > 3f)
@@ -423,7 +436,8 @@ namespace NihongoLife.World
             switch (Kind)
             {
                 case WildKind.Bird:
-                    if (Random.value < 0.35f) StartFlying(); else Enter(State.Perched, Random.Range(6f, 18f));
+                    if (OnGround) Enter(State.Forage, Random.Range(6f, 14f));
+                    else if (Random.value < 0.35f) StartFlying(); else Enter(State.Perched, Random.Range(6f, 18f));
                     transform.position = Current == State.Flying ? transform.position : _perch;
                     _nextChirp = Time.time + Random.Range(1f, 6f);
                     break;
@@ -481,8 +495,22 @@ namespace NihongoLife.World
         }
 
         // ── birds
+        /// <summary>Startled: off it goes, circling away from the player before landing somewhere else.</summary>
+        public void FlyAway()
+        {
+            StartFlying();
+            if (_owner.Player == null) return;
+            var away = transform.position - _owner.Player.position; away.y = 0f;
+            _orbitCenter = transform.position + (away.sqrMagnitude > 0.01f ? away.normalized : Vector3.forward) * Random.Range(14f, 22f);
+            Startled++;
+        }
+
+        /// <summary>Times this bird was scared off by the player (tests).</summary>
+        public int Startled { get; private set; }
+
         private void StartFlying()
         {
+            OnGround = false;
             Current = State.Flying; _stateEnd = Time.time + Random.Range(10f, 20f);
             _orbitCenter = _owner.Player != null ? _owner.Player.position + new Vector3(Random.Range(-18f, 18f), 0f, Random.Range(-18f, 18f)) : transform.position;
             _orbitRadius = Random.Range(6f, 13f); _orbitAlt = Random.Range(7f, 14f); _orbitAngle = Random.value * 360f;
@@ -497,9 +525,33 @@ namespace NihongoLife.World
                     transform.position = Vector3.MoveTowards(transform.position, _perch, 2f * dt);
                     _head.localRotation = Quaternion.Euler(0f, Mathf.Sin(_phase * 1.7f) * 40f * (Mathf.Sin(_phase * 0.4f) > 0.5f ? 1f : 0f), 0f);
                     _body.localPosition = new Vector3(0f, 0.1f + Mathf.Max(0f, Mathf.Sin(_phase * 9f)) * (Mathf.Sin(_phase * 0.7f) > 0.8f ? 0.02f : 0f), 0f);
-                    _wingL.localRotation = Quaternion.Euler(0f, 0f, -75f); _wingR.localRotation = Quaternion.Euler(0f, 0f, 75f);
+                    _wingL.localRotation = Quaternion.Euler(8f, -82f, 0f); _wingR.localRotation = Quaternion.Euler(8f, 82f, 0f); // folded flat along the back, tips to the tail
+                    if ((player.position - transform.position).sqrMagnitude < 16f) { FlyAway(); break; }
                     if (Time.time >= _stateEnd || (player.position - transform.position).sqrMagnitude < 25f && _owner.PlayerSpeed > 5f) StartFlying();
                     break;
+                case State.Forage:
+                {
+                    // Pecking about on the ground: a few hops, the head bobbing down; a person within 4.5 m sends it up.
+                    var toPlayer = player.position - transform.position; toPlayer.y = 0f;
+                    if (toPlayer.sqrMagnitude < 4.5f * 4.5f) { FlyAway(); break; }
+                    var hop = _goal - transform.position; hop.y = 0f;
+                    if (hop.sqrMagnitude > 0.04f)
+                    {
+                        float hopUp = Mathf.Abs(Mathf.Sin(_phase * 14f)) * 0.06f;
+                        var step = Vector3.MoveTowards(new Vector3(transform.position.x, _perch.y, transform.position.z), new Vector3(_goal.x, _perch.y, _goal.z), 0.9f * dt);
+                        transform.position = step + Vector3.up * hopUp;
+                        transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(hop), 8f * dt);
+                        _body.localRotation = Quaternion.identity;
+                    }
+                    else _body.localRotation = Quaternion.Euler(Mathf.Max(0f, Mathf.Sin(_phase * 5f)) * 35f, 0f, 0f); // peck
+                    _wingL.localRotation = Quaternion.Euler(8f, -82f, 0f); _wingR.localRotation = Quaternion.Euler(8f, 82f, 0f); // folded flat along the back, tips to the tail
+                    if (Time.time >= _stateEnd)
+                    {
+                        if (Random.value < 0.25f) StartFlying();
+                        else { _goal = new Vector3(_perch.x, _perch.y, _perch.z) + new Vector3(Random.Range(-1.5f, 1.5f), 0f, Random.Range(-1.5f, 1.5f)); _stateEnd = Time.time + Random.Range(3f, 8f); }
+                    }
+                    break;
+                }
                 case State.Flying:
                     _orbitAngle += (7f / Mathf.Max(3f, _orbitRadius)) * Mathf.Rad2Deg * dt;
                     var want = _orbitCenter + new Vector3(Mathf.Cos(_orbitAngle * Mathf.Deg2Rad), 0f, Mathf.Sin(_orbitAngle * Mathf.Deg2Rad)) * _orbitRadius;
@@ -510,7 +562,12 @@ namespace NihongoLife.World
                     _wingL.localRotation = Quaternion.Euler(0f, 0f, flap); _wingR.localRotation = Quaternion.Euler(0f, 0f, -flap);
                     if (Time.time >= _stateEnd)
                     {
-                        if (FindPerch(transform.position + new Vector3(Random.Range(-12f, 12f), 0f, Random.Range(-12f, 12f)), out var p)) { _perch = p; _landFrom = transform.position; Current = State.Landing; _climbT = 0f; }
+                        var landNear = transform.position + new Vector3(Random.Range(-12f, 12f), 0f, Random.Range(-12f, 12f));
+                        Vector3 g = default;
+                        bool ground = Random.value < 0.5f && AmbientWildlife.Ground(new Vector3(landNear.x, player.position.y + 3f, landNear.z), out g)
+                            && Mathf.Abs(g.y - player.position.y) < 1.5f && (new Vector3(g.x - player.position.x, 0f, g.z - player.position.z)).sqrMagnitude > 49f;
+                        if (ground) { _perch = g; OnGround = true; _landFrom = transform.position; Current = State.Landing; _climbT = 0f; }
+                        else if (FindPerch(landNear, out var p)) { _perch = p; _landFrom = transform.position; Current = State.Landing; _climbT = 0f; }
                         else StartFlying();
                     }
                     break;
@@ -520,7 +577,7 @@ namespace NihongoLife.World
                     var d2 = _perch - _landFrom; d2.y = 0f; if (d2.sqrMagnitude > 0.01f) transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(d2), 6f * dt);
                     float fl = Mathf.Sin(_phase * 30f) * 60f * (1f - _climbT * 0.6f);
                     _wingL.localRotation = Quaternion.Euler(0f, 0f, fl); _wingR.localRotation = Quaternion.Euler(0f, 0f, -fl);
-                    if (_climbT >= 1f) { transform.position = _perch; Enter(State.Perched, Random.Range(8f, 25f)); }
+                    if (_climbT >= 1f) { transform.position = _perch; if (OnGround) { Enter(State.Forage, Random.Range(6f, 14f)); _goal = _perch; } else Enter(State.Perched, Random.Range(8f, 25f)); }
                     break;
             }
             if (Time.time >= _nextChirp)

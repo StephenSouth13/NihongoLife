@@ -28,6 +28,9 @@ namespace NihongoLife.Tests
             var dm = DialogueManager.Instance;
             for (int guard = 0; guard < 40 && dm != null && dm.IsOpen; guard++) { dm.CancelDialogue(); if (dm.IsOpen) dm.ContinueDialogue(); }
             var player = Object.FindFirstObjectByType<PlayerController>();
+            // The normal gait is measured: a player left hurt or exhausted by earlier tests walks with the mood clips.
+            var status = NihongoLife.Player.PlayerStatus.Instance;
+            if (status != null) status.DebugSetNeeds(health: 100f, energy: 100f, hunger: 100f, thirst: 100f, sleepiness: 0f);
             var input = GameInputService.GetOrCreate();
             string original = PlayableCharacterCatalog.GetSelected().Id;
             var report = new System.Text.StringBuilder();

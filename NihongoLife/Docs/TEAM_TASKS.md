@@ -1944,3 +1944,48 @@ Tên lớp test viết tắt: PlayMode = `NihongoLife.Tests.<Lớp>`; EditMode =
 - **Rà file bị xoá (6.229 file):** chỉ là GLB/OBJ trùng của Kenney, ảnh preview, ví dụ Devion/KayKit/Mini Arcade; dò GUID: 0 tham chiếu từ nội dung game (cả gián tiếp). Bộ Kids không bị đụng. 5 tài liệu Bao_Cao cũ đã khôi phục.
 - **itch.io:** `Docs/ITCH_IO.md` (cài đặt trang, mô tả 4 ngôn ngữ, ghi công) + `Tools/release/package_itch.py` (kiểm 1.000 mục / 500 MB / 200 MB mỗi file, nén zip).
 - **Test:** BankCatalogTests, MedicalTrainingTests, CareerCatalogTests (6 nghề); BankPlayModeTests, TownLifePlayModeTests, TrainRoutePlayModeTests. Ảnh: `Bao_Cao/bank`, `town-life`, `train-route`.
+
+
+## Cập nhật (2026-10-29, Claude) - Tiệm nhạc & tranh Hibiki (55_MusicShop), nhân vật tự đàn, 3 nghề nghệ thuật
+- **Cảnh mới (chủ dự án đã duyệt) `55_MusicShop`**, dựng bằng `Editor/MusicShopBuilder.Build` (chỉ cảnh: `BuildInterior`). Nằm ở O = (1300, 0, 0). Cửa vào ở `StreetBuilding_S_2` (cạnh phòng khám).
+  - **Tiệm nhạc:** grand piano, đàn upright, piano điện, tường guitar, sân khấu (trống, micro, loa), bàn DJ, góc nhạc lý, giá vẽ, quầy với chú Hibiki, 3 bảng việc.
+  - **Phòng tranh 3D:** 39 bức treo tường có khung, đèn và bảng tên. Đứng trước tranh bấm F mở thẻ (`ArtworkSpot`).
+  - Đã đăng ký đủ: WorldLocationCatalog, StandaloneZoneBootstrap, SceneContentLoader/WebGLZoneBundleBuilder (`nlzone-music`), ReleaseBuild, bản đồ (thành phố + sơ đồ tầng), Soundscape, ảnh màn hình tải.
+- **Nhân vật tự đàn** (`UI/MusicStudioUI` → `AutoPlay`):
+  - Phím sáng theo bài; chỉnh nhịp 50–160 %, âm lượng, piano/guitar, lặp lại (← → nhịp, ↑ ↓ âm lượng).
+  - Ngồi vào grand piano (`MusicSpot` có ghế) thì cửa sổ thu thành thanh điều khiển dưới màn hình. Tay nhân vật theo nhịp (`piano_play` / `guitar_strum`).
+  - Bấm phím bàn phím để tự đàn vẫn giữ.
+- **Sân khấu:** nhân vật biểu diễn. Nhịp 80–125 % thì khán giả thích: +1 người hâm mộ, sự kiện `perform`.
+- **Nghề mới** (careers.json + progression.json, sinh bằng `Tools/music/add_arts_careers.py`):
+  - `musician` (ca `job_music_gig`): nhánh pianist / songwriter.
+  - `producer` (ca `job_dj_set`): chọn bài tiếp theo theo BPM và vòng Camelot; nhánh club_dj / producer.
+  - `painter` (ca `job_art_commission`): tô tranh theo số `UI/PaintingUI`; nhánh illustrator / fine_art.
+  - Sự kiện mới: `perform`, `mix`, `paint`.
+- **Sửa lỗi:**
+  - Cử chỉ: `GestureLayer.ResetMotion()` chỉ được gọi khi nhân vật vừa được đặt vào ghế đàn.
+    - Lần sửa đầu ghi lại vị trí trong `Begin`. Hệ thống nào gọi Play liên tục thì không bao giờ thấy nhân vật "đi khỏi", nên cử chỉ kẹt và đè lên dáng đi.
+    - Hậu quả: người chơi trượt mà không bước, không xoay người. FootGrounding/FootSlip fail khi chạy cả bộ.
+    - Đã hoàn lại phần đó.
+  - Ga: hành khách `PlatformCrowd` đứng ở độ cao tâm cửa tàu (≈ 1,15 m) nên lơ lửng sau cổng soát vé. Nay dò sàn bằng raycast. Test: `PlatformCrowdPlayModeTests`.
+  - Ô tô: đèn pha/đèn hậu ban đêm đặt theo offset cố định nên thành cục vàng/đỏ trên nóc hoặc bên cạnh xe.
+    - Nay đặt theo khung renderer của từng xe, gắn vào thân xe.
+    - Đèn tắt khi xe thu nhỏ ở cuối đường.
+  - Sổ tay: placeholder giờ đổi theo ngôn ngữ (`LocText`).
+  - Ngắm đối tượng: điểm "nằm nghỉ" nằm trong khối giường nên kiểm tra tầm nhìn coi giường là vật che và chọn bồn rửa ở xa hơn. Nay vật có khung chồng lên mục tiêu không tính là che (`InteractionDetector.Visible`). Test: BedroomPlayModeTests.
+  - Test phụ thuộc thứ tự: các test trước làm người chơi (khách, dùng chung) mất máu hoặc lên cấp 10.
+    - Bước chân dùng clip "bị thương"; băng qua đường bị xe quệt thì ngất và tỉnh ở phòng khám.
+    - FootGrounding / FootSlip / StreetTraffic nay bắt đầu với nhu cầu đầy đủ.
+    - Career đặt XP về 0 (`PlayerStatus.DebugSetExp`).
+  - Chim (`World/AmbientWildlife`):
+    - Trước đây chỉ đậu trong tán cây hoặc trên nóc, cách 14–38 m và rất nhỏ, nên không ai thấy.
+    - Nay chim to hơn (×1,8), có bồ câu xám và chim sẻ nâu.
+    - Một nửa xuống đất mổ thóc cách người chơi 7–18 m; lại gần 4,5 m thì bay đi (`FlyAway`), sau đó đáp xuống đất hoặc lên ngọn cây.
+    - Cánh gập dọc lưng.
+    - Test: `IslandPeopleBirdsPlayModeTests` (kiểm tra cả cư dân đảo đứng trên mặt đất lúc mới vào và sau khi đi lang thang).
+  - Ảnh tranh giữ nguyên kích thước (`ArtImagePostprocessor`: nPOTScale None). Trước bị ép vuông 512×512.
+  - Tên tranh Wikimedia lẫn nhãn đa ngôn ngữ đã được làm sạch.
+  - `ReleaseBuild.ProductionScenes` thiếu phòng khám và Phú Quốc, nay đã thêm.
+- **Test:**
+  - EditMode: MusicCatalogTests (thêm DjMix, tên tranh sạch), CareerCatalogTests (9 nghề).
+  - PlayMode: MusicShopPlayModeTests, MusicStudioPlayModeTests; ZoneConsole và WebGLShaderRecording có thêm 55_MusicShop.
+  - Ảnh chụp: `Bao_Cao/music-shop`.
