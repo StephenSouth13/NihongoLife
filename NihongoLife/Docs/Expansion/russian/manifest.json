@@ -1,0 +1,37 @@
+{
+ "schema": "nihongolife.russian/1",
+ "status": "draft — needs native Russian review",
+ "pass_rule": "≥66% each of 5 subtests (TORFL/ТРКИ)",
+ "levels": [
+  {
+   "cefr": "A1",
+   "code": "ТЭУ",
+   "file": "levels/a1.json"
+  },
+  {
+   "cefr": "A2",
+   "code": "ТБУ",
+   "file": "levels/a2.json"
+  },
+  {
+   "cefr": "B1",
+   "code": "ТРКИ-1",
+   "file": "levels/b1.json"
+  },
+  {
+   "cefr": "B2",
+   "code": "ТРКИ-2",
+   "file": "levels/b2.json"
+  },
+  {
+   "cefr": "C1",
+   "code": "ТРКИ-3",
+   "file": "levels/c1.json"
+  },
+  {
+   "cefr": "C2",
+   "code": "ТРКИ-4",
+   "file": "levels/c2.json"
+  }
+ ]
+}
