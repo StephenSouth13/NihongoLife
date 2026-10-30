@@ -83,6 +83,7 @@ namespace NihongoLife.UI
                 if (GUI.Button(new Rect(r.x + 20, r.y + 30 + i * 48, w - 40, 40), label)) Choose(e.option);
             }
             GUI.enabled = true;
+            if (GUI.Button(new Rect(r.x + 10, r.yMax - 34, 120, 28), "T\u00E0i kho\u1EA3n")) { Close(); Comp<EduAccountLinkScreen>(gameObject).Open(); }
             if (GUI.Button(new Rect(r.xMax - 90, r.yMax - 34, 80, 28), EduUiText.Get("ui.close"))) Close();
         }
 
