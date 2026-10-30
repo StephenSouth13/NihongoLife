@@ -46,6 +46,17 @@ namespace NihongoLife.Progression
         /// <summary>Notoriety slowly fades with each good shift (redemption, not a permanent mark).</summary>
         public static int NotorietyAfterGoodShift(int notoriety) => Mathf.Max(0, notoriety - 2);
 
+        public const int GoodShiftRedemption = 2;
+        /// <summary>Short HUD tag after the mood line: VIP clients unlocked, or the scandal block. Empty otherwise.</summary>
+        public static string HudTag(int fame, int notoriety)
+        {
+            if (notoriety >= ScandalBlock) return Loc.T("  ·  ⚠ bị hoãn thăng chức", "  ·  ⚠ promotion on hold", "  ·  ⚠ 昇進保留");
+            if (VipClients(fame, notoriety)) return Loc.T("  ·  ★ khách VIP", "  ·  ★ VIP clients", "  ·  ★ VIP客");
+            return "";
+        }
+
+        public static string Tag => HudTag(SocialStanding.Reputation, SocialStanding.Notoriety);
+
         public static float Performance => PerformanceFactor(SocialStanding.Reputation, SocialStanding.Notoriety);
         public static float Salary => SalaryFactor(SocialStanding.Reputation, SocialStanding.Notoriety);
         public static string Blocker => PromotionBlocker(SocialStanding.Reputation, SocialStanding.Notoriety);

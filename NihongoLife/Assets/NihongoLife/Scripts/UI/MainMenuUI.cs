@@ -388,6 +388,18 @@ namespace NihongoLife.UI
             Box(offlineHint.rectTransform, 0.05f, 0.16f, 0.48f, 0.28f);
             var onlineHint = UiKit.Label(card, "OnlineHint", "", 13f, UiTheme.Muted, FontStyles.Normal, TextAlignmentOptions.TopLeft, wrap: true);
             Box(onlineHint.rectTransform, 0.52f, 0.16f, 0.95f, 0.28f);
+            // Offline guest reset (shop / classroom / contest booth): two taps, never touches an account's save.
+            bool resetArmed = false;
+            Button resetGuest = null;
+            resetGuest = UiKit.Button(card, "ResetGuestButton", "Chơi lại từ đầu (khách)", "Restart as new guest", "ゲストを最初から", () =>
+            {
+                if (!resetArmed) { resetArmed = true; UiKit.SetLabel(resetGuest, Loc.T("Bấm lần nữa để xoá tiến trình khách", "Tap again to erase guest progress", "もう一度押すとゲスト進行を消去")); return; }
+                resetArmed = false;
+                bool done = GuestReset.ResetGuest();
+                UiKit.SetLabel(resetGuest, done ? Loc.T("Đã xoá - khách mới", "Cleared - new guest", "消去しました - 新しいゲスト") : Loc.T("Đang đăng nhập tài khoản - không xoá", "Signed in - nothing erased", "ログイン中 - 消去なし"));
+            }, UiKit.Kind.Secondary, "restart_alt", 14f, 12);
+            Box((RectTransform)resetGuest.transform, 0.05f, 0.03f, 0.48f, 0.14f);
+            resetGuest.gameObject.SetActive(GuestReset.HasGuestSave);
             var back = UiKit.Button(card, "ModeBack", "Quay lại", "Back", "戻る", () => modeSelectPanel.SetActive(false), UiKit.Kind.Ghost, "arrow_back", 16f, 16);
             Box((RectTransform)back.transform, 0.05f, 0.04f, 0.28f, 0.14f);
 

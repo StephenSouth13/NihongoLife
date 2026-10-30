@@ -749,7 +749,7 @@ namespace NihongoLife.UI
             }
             if (_mood != null)
             {
-                _mood.text = SocialStanding.HudLine;
+                _mood.text = SocialStanding.HudLine + NihongoLife.Progression.CareerStanding.Tag;
                 _mood.gameObject.SetActive(!string.IsNullOrEmpty(_mood.text));
             }
             _levelBadge.text = status.Level.ToString();

@@ -210,6 +210,25 @@ namespace NihongoLife.Player
                 Toast(Loc.F("Tai tiếng +{0}", "Notoriety +{0}", "悪名 +{0}", Notoriety - before), "notoriety");
         }
 
+        /// <summary>Redemption: notoriety fades through good shifts, apologies and kind acts. Never below 0.</summary>
+        public static int ReduceNotoriety(int amount, string reason = null, float cooldownSeconds = 0f)
+        {
+            if (amount <= 0 || Notoriety <= 0) return 0;
+            if (cooldownSeconds > 0f && !string.IsNullOrEmpty(reason))
+            {
+                float now = Time.unscaledTime;
+                string key = "-" + reason;
+                if (NextByReason.TryGetValue(key, out float until) && now < until) return 0;
+                NextByReason[key] = now + cooldownSeconds;
+            }
+            int before = Notoriety;
+            Notoriety = Mathf.Clamp(Notoriety - amount, 0, MaxStat);
+            _loaded = true;
+            int dropped = before - Notoriety;
+            if (dropped >= 2) Toast(Loc.F("Tai tiếng -{0}", "Notoriety -{0}", "悪評 -{0}", dropped), "notoriety");
+            return dropped;
+        }
+
         public static void AddAffinity(string npcId, int delta)
         {
             if (string.IsNullOrEmpty(npcId) || delta == 0) return;

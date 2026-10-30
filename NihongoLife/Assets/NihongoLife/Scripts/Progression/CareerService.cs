@@ -186,22 +186,23 @@ namespace NihongoLife.Progression
             bool onTime = IsWorkTime(career, day, hour);
             bool firstToday = state.lastShiftDay != day;
             float step = level.shiftsToPromote > 0 ? 100f / level.shiftsToPromote : 0f;
-            float gain = step * MoodFactor * (onTime ? 1f : 0.5f) * NihongoLife.Health.PlayerIllness.WorkFactor; // ill: you work worse
+            float gain = step * MoodFactor * (onTime ? 1f : 0.5f) * NihongoLife.Health.PlayerIllness.WorkFactor * CareerStanding.Performance; // ill: you work worse; fame helps, notoriety hurts
             state.performance = Mathf.Clamp(state.performance + gain, 0f, 100f);
+            if (onTime && gain > 0f) SocialStanding.ReduceNotoriety(CareerStanding.GoodShiftRedemption, "good-shift"); // redemption: good shifts wear notoriety down
             state.shifts++;
             if (onTime) state.lastShiftDay = day;
             if (onTime && firstToday)
             {
                 if (!state.workedDays.Contains(day)) state.workedDays.Add(day);
                 while (state.workedDays.Count > 60) state.workedDays.RemoveAt(0);
-                state.totalSalary += level.salary;
+                state.totalSalary += PaidSalary(level.salary);
             }
             Save();
             if (onTime && firstToday && level.salary > 0)
-                PlayerInventory.Instance?.AddYen(level.salary, Loc.Triple("Lương: " + level.titleVi, "Salary: " + level.titleEn, "給料：" + level.titleJa));
+                PlayerInventory.Instance?.AddYen(PaidSalary(level.salary), Loc.Triple("Lương: " + level.titleVi, "Salary: " + level.titleEn, "給料：" + level.titleJa));
             CheckMilestones();
             HudFeed.Post(onTime
-                ? Loc.F("Ca làm đúng giờ · {0} · hiệu suất {1:0}%{2}", "On-time shift · {0} · performance {1:0}%{2}", "時間どおりの勤務 · {0} · 評価 {1:0}%{2}", level.Title, state.performance, firstToday && level.salary > 0 ? "  +" + Loc.Yen(level.salary) : "")
+                ? Loc.F("Ca làm đúng giờ · {0} · hiệu suất {1:0}%{2}", "On-time shift · {0} · performance {1:0}%{2}", "時間どおりの勤務 · {0} · 評価 {1:0}%{2}", level.Title, state.performance, firstToday && level.salary > 0 ? "  +" + Loc.Yen(PaidSalary(level.salary)) : "")
                 : Loc.F("Ca ngoài giờ làm ({0}): hiệu suất chỉ tăng một nửa, không có lương nghề.", "Shift outside working hours ({0}): half the performance, no salary.", "勤務時間外のシフト（{0}）：評価は半分、給料なし。", career.Schedule),
                 HudFeed.Kind.Reward, 6f, "career-shift");
 
@@ -220,9 +221,14 @@ namespace NihongoLife.Progression
             if (state.level >= career.MaxLevel || level.shiftsToPromote <= 0) return Loc.T("Bạn đã ở bậc cao nhất.", "You are at the top.", "最高のポストです。");
             if (state.performance < 99.5f) return Loc.F("Hiệu suất {0:0}% / 100%.", "Performance {0:0}% / 100%.", "評価 {0:0}% / 100%。", state.performance);
             int knowledge = PlayerStatus.Instance != null ? PlayerStatus.Instance.Knowledge : Progress?.knowledge ?? 0;
+            string standing = CareerStanding.Blocker;
+            if (standing != null) return standing;
             if (knowledge < level.knowledgeToPromote) return Loc.F("Cần {0} trí tuệ để phỏng vấn thăng chức (bạn có {1}).", "Needs {0} knowledge for the promotion interview (you have {1}).", "昇進面接には知識{0}が必要です（今は{1}）。", level.knowledgeToPromote, knowledge);
             return null;
         }
+
+        /// <summary>Salary after fame / notoriety (CareerStanding.SalaryFactor).</summary>
+        public static int PaidSalary(int salary) => Mathf.RoundToInt(salary * CareerStanding.Salary);
 
         private static bool _interviewing;
 

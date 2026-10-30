@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -132,6 +132,13 @@ namespace NihongoLife.Home
         public void Interact(GameObject player)
         {
             if (_busy) return;
+            NihongoLife.UI.StudyDeskMenuScreen.Open(this, player); // multi-menu: quiz, flashcards, album, exam prep, wardrobe
+        }
+
+        /// <summary>The word quiz (the desk's original session), chosen from the desk menu.</summary>
+        public void StartQuiz(GameObject player)
+        {
+            if (_busy) return;
             var room = HomeBedroomRuntime.Instance;
             var status = PlayerStatus.Instance;
             if (SessionsLeft <= 0)
@@ -169,6 +176,7 @@ namespace NihongoLife.Home
             }
 
             _sessionsToday++;
+            NihongoLife.Learning.StudyProgressStore.AddWordsSeen(questions.Count);
             int gained = correct * knowledgePerCorrect + (correct == questions.Count ? perfectBonus : 0);
             if (status != null)
             {

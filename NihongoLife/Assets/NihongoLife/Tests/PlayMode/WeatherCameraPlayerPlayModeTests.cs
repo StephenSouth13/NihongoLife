@@ -1,4 +1,4 @@
-using System.Collections;
+﻿using System.Collections;
 using System.IO;
 using System.Linq;
 using NihongoLife.Cameras;
@@ -71,7 +71,7 @@ namespace NihongoLife.Tests
             yield return new WaitForSecondsRealtime(1.5f);
             Assert.IsFalse(weather.IsRaining);
             Assert.AreEqual(0, weather.HiddenNpcCount, "Everyone is back after the rain");
-            Assert.AreEqual(npcsOutdoorsBefore, Object.FindObjectsByType<NPCController>(FindObjectsSortMode.None).Length);
+            Assert.GreaterOrEqual(Object.FindObjectsByType<NPCController>(FindObjectsSortMode.None).Length, npcsOutdoorsBefore, "Nobody is still missing after the rain (town folk may finish spawning meanwhile)");
             cycle.SetHour(20.5f);
             weather.Force(WeatherCycle.Kind.Rain);
             yield return new WaitForSecondsRealtime(1f);

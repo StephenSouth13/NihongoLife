@@ -1,4 +1,4 @@
-using System.Collections;
+﻿using System.Collections;
 using System.IO;
 using System.Linq;
 using NihongoLife.Core;
@@ -116,6 +116,10 @@ namespace NihongoLife.Tests
             Teleport(player, desk.transform.position + new Vector3(0f, -0.75f, -0.2f), 0f);
             int knowledgeBefore = status.Knowledge;
             desk.Interact(player.gameObject);
+            yield return null;
+            var deskMenu = Object.FindFirstObjectByType<NihongoLife.UI.StudyDeskMenuScreen>();
+            Assert.IsTrue(deskMenu != null && deskMenu.IsOpen, "Desk must open the study menu.");
+            deskMenu.Choose(NihongoLife.Home.StudyDeskMenu.Option.WordQuiz);
             yield return new WaitForSecondsRealtime(0.3f);
             Assert.IsTrue(room.IsStudyOpen, "Desk must open the study card.");
             Assert.IsTrue(player.InputLocked, "Movement must be locked while studying.");

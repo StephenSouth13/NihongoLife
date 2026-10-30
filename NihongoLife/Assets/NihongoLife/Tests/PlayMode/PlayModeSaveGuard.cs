@@ -1,4 +1,4 @@
-using System.IO;
+﻿using System.IO;
 using NUnit.Framework;
 using UnityEngine;
 
@@ -15,12 +15,14 @@ namespace NihongoLife.Tests
         private static string BackupPath => Path.Combine(Application.temporaryCachePath, "progress.before-tests.json");
         private bool _hadSave;
         private string _ledger;
+        private string _studyDesk;
         private int _language;
 
         [OneTimeSetUp]
         public void KeepSave()
         {
             // Most tests walk through every place; LocationUnlocksPlayModeTests switches the gate back on.
+            AudioListener.volume = 0f; // tests run silently (owner may be in a meeting on this machine)
             NihongoLife.Core.LocationUnlocks.Bypass = true;
             NihongoLife.Core.IntroTrailer.Bypass = true; // starting a game in a test never plays the intro trailer
             NihongoLife.Health.PlayerIllness.Triggers = false; // nobody falls ill by chance in other tests (IllnessPlayModeTests turns it on)
@@ -30,6 +32,7 @@ namespace NihongoLife.Tests
             NihongoLife.Core.PlayerSessionService.PersistGuest = false; // tests never read or write the real guest save
             NihongoLife.Core.PlayerSessionService.GuestFullAccess = false; // tests run guest sessions but check the campaign gates
             _ledger = PlayerPrefs.GetString("NL.WalletLedger.v1", "");
+            _studyDesk = PlayerPrefs.HasKey(NihongoLife.Learning.StudyProgressStore.Key) ? PlayerPrefs.GetString(NihongoLife.Learning.StudyProgressStore.Key) : null;
             // Tests read Vietnamese text; the player's own interface language is put back afterwards.
             _language = PlayerPrefs.GetInt(NihongoLife.Core.Loc.PrefsKey, 0);
             NihongoLife.Core.Loc.Set(NihongoLife.Core.GameLanguage.Vietnamese);
@@ -49,7 +52,9 @@ namespace NihongoLife.Tests
             NihongoLife.Player.CharacterLook.Persist = true;
             NihongoLife.Scenario.StoryDirector.Bypass = false;
             NihongoLife.Core.Loc.Set((NihongoLife.Core.GameLanguage)Mathf.Clamp(_language, 0, 3));
-            PlayerPrefs.SetString("NL.WalletLedger.v1", _ledger ?? ""); // tests' purchases do not stay in the player's wallet history
+            PlayerPrefs.SetString("NL.WalletLedger.v1", _ledger ?? "");
+            if (_studyDesk == null) PlayerPrefs.DeleteKey(NihongoLife.Learning.StudyProgressStore.Key); else PlayerPrefs.SetString(NihongoLife.Learning.StudyProgressStore.Key, _studyDesk); // flashcards, album and wardrobe from tests do not stay
+            NihongoLife.Learning.StudyProgressStore.ResetForTests(); // tests' purchases do not stay in the player's wallet history
             if (_hadSave && File.Exists(BackupPath)) File.Copy(BackupPath, SavePath, true);
             else if (!_hadSave && File.Exists(SavePath)) File.Delete(SavePath);
             // Per-account saves made by tests' fake accounts go; the player's own account saves stay untouched.

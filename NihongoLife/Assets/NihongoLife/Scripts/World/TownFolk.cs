@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using NihongoLife.Core;
@@ -176,6 +176,10 @@ namespace NihongoLife.World
             return found;
         }
 
+        /// <summary>No waist-high prop (menu stand, sign, stool) within ~1 m, so a resident is never framed behind one.</summary>
+        public static bool ClearOfProps(Vector3 groundPoint) =>
+            !Physics.CheckCapsule(groundPoint + Vector3.up * 1.15f, groundPoint + Vector3.up * 1.5f, 0.95f, ~0, QueryTriggerInteraction.Ignore);
+
         public static bool Free(Vector3 groundPoint) =>
             !Physics.CheckCapsule(groundPoint + Vector3.up * 0.5f, groundPoint + Vector3.up * 1.5f, 0.35f, ~0, QueryTriggerInteraction.Ignore);
 
@@ -190,7 +194,7 @@ namespace NihongoLife.World
                     float a = k * Mathf.PI / 4f;
                     var dir = new Vector3(Mathf.Cos(a), 0f, Mathf.Sin(a));
                     var p = b.center + dir * (r0 + extra);
-                    if (!Ground(new Vector3(p.x, b.min.y + 1.5f, p.z), out var g) || Mathf.Abs(g.y - b.min.y) > 1.2f || !Free(g)) continue;
+                    if (!Ground(new Vector3(p.x, b.min.y + 1.5f, p.z), out var g) || Mathf.Abs(g.y - b.min.y) > 1.2f || !Free(g) || !ClearOfProps(g)) continue;
                     float d = (g - toward).sqrMagnitude;
                     if (d < best) { best = d; spot = g; found = true; }
                 }

@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using NihongoLife.PhuQuoc;
@@ -185,12 +185,13 @@ namespace NihongoLife.EditorTools
                 inst.transform.localPosition = Vector3.zero;
                 inst.transform.localRotation = Quaternion.Euler(0, 180f, 0); // Kenney fronts face +z; the lot's front is -z
                 var b = ZoneBuildKit.BoundsOf(inst);
-                float fit = Mathf.Min((LotWidth - 0.1f) / Mathf.Max(0.01f, b.size.x), (LotDepth - 0.2f) / Mathf.Max(0.01f, b.size.z));
+                float fit = Mathf.Min((LotWidth - 0.1f) / Mathf.Max(0.01f, b.size.x), (LotDepth * 1.3f) / Mathf.Max(0.01f, b.size.z)); // fill the full frontage: no gaps between shophouses
                 inst.transform.localScale = Vector3.one * fit;
                 b = ZoneBuildKit.BoundsOf(inst);
                 // Sit on the ground, front flush with the building line.
                 var local = lot.InverseTransformPoint(b.center);
-                inst.transform.localPosition -= new Vector3(local.x, lot.InverseTransformPoint(b.min).y, 0f);
+                float frontZ = Mathf.Min(lot.InverseTransformPoint(b.min).z, lot.InverseTransformPoint(b.max).z);
+                inst.transform.localPosition -= new Vector3(local.x, lot.InverseTransformPoint(b.min).y, frontZ + LotDepth * 0.5f); // facade flush on the pavement edge
                 var col = lot.gameObject.AddComponent<BoxCollider>();
                 col.center = new Vector3(0, b.size.y * 0.5f, 0); col.size = new Vector3(LotWidth - 0.1f, b.size.y, LotDepth - 0.2f);
             }
