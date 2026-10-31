@@ -46,6 +46,12 @@ namespace NihongoLife.Core
             }
         }
 
+        public static void SetPreset(int preset)
+        {
+            Preset = preset;
+            ApplyPreset();
+        }
+
         public static void Cycle()
         {
             Preset = (Preset + 1) % 3;

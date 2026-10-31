@@ -266,6 +266,13 @@ namespace NihongoLife.UI
             reduceMotionLabel.fontSizeMax = 15f;
             ParkInLayout(motion.transform, 40f);
             motion.onClick.AddListener(() => { MotionSettings.Toggle(); RefreshControlButtons(); });
+            var maxPreset = CreateButton(column, string.Empty, Vector2.zero, new Vector2(300f, 40f), false);
+            maxPreset.name = "MaxTestPreset";
+            var maxLabel = maxPreset.GetComponentInChildren<TextMeshProUGUI>();
+            maxLabel.fontSize = 15f;
+            maxLabel.text = OwnerMaxPreset.Label();
+            ParkInLayout(maxPreset.transform, 40f);
+            maxPreset.onClick.AddListener(() => { OwnerMaxPreset.Toggle(); maxLabel.text = OwnerMaxPreset.Label(); RefreshControlButtons(); });
             TouchControlSettingsSection.Build(column, uiFont);
         }
 
