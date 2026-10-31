@@ -41,6 +41,15 @@ namespace NihongoLife.EditorTools
                 Shot(dir, "05_intersection.png", o + new Vector3(62f, 16f, -38f), o + new Vector3(44f, 0f, -15f), 60f);
                 Shot(dir, "06_hotels_street.png", o + new Vector3(-10f, 3f, 15f), o + new Vector3(5f, 4f, 30f), 65f);
                 Shot(dir, "07_night_market.png", o + new Vector3(50f, 2.5f, -38f), o + new Vector3(66f, 1.5f, -50f), 60f);
+                Shot(dir, "08_resort.png", o + new Vector3(205f, 38f, -95f), o + new Vector3(205f, 0f, 0f), 60f);
+                Shot(dir, "09_seafood_market.png", o + new Vector3(-50f, 3.2f, 40f), o + new Vector3(-50f, 1f, 56f), 65f);
+                Shot(dir, "10_hem_alley.png", o + new Vector3(44f, 1.7f, 39f), o + new Vector3(44f, 1.6f, 60f), 60f);
+                Shot(dir, "11_swimmers.png", o + new Vector3(-10f, 5f, -62f), o + new Vector3(0f, 0f, -85f), 60f);
+                Shot(dir, "12_hills_forest.png", o + new Vector3(60f, 30f, 10f), o + new Vector3(100f, 10f, 120f), 65f);
+                Shot(dir, "13_ganh_ngon_staff.png", o + new Vector3(0f, 2.2f, -7.5f), o + new Vector3(0f, 1f, 2f), 60f);
+                Shot(dir, "14_tour_terminal.png", o + new Vector3(-12f, 3f, 36f), o + new Vector3(-12f, 1f, 48f), 60f);
+                Shot(dir, "15_resort_pool.png", o + new Vector3(190f, 5f, -2f), o + new Vector3(208f, 0f, 12f), 60f);
+                Shot(dir, "16_families_promenade.png", o + new Vector3(-30f, 3f, -40f), o + new Vector3(0f, 1f, -48f), 60f);
                 Object.DestroyImmediate(sun.gameObject);
             }
             catch (Exception e) { Debug.LogException(e); code = 1; }

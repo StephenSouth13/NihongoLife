@@ -84,5 +84,61 @@ namespace NihongoLife.Tests
             }
             finally { EditorSceneManager.CloseScene(scene, true); }
         }
+        [Test]
+        public void Scene_HasLandMarketAlleysHillsTourAndPeople()
+        {
+            var scene = EditorSceneManager.OpenScene(ScenePath, OpenSceneMode.Additive);
+            try
+            {
+                var roots = scene.GetRootGameObjects();
+                var all = roots.SelectMany(r => r.GetComponentsInChildren<Transform>(true)).ToList();
+                int Count(string prefix) => all.Count(t => t.name.StartsWith(prefix));
+                var crowd = roots.SelectMany(r => r.GetComponentsInChildren<PhuQuocCrowd>(true)).Single();
+                Assert.GreaterOrEqual(crowd.PeopleCount, 150, "lots of island life");
+                Assert.GreaterOrEqual(crowd.Count(PhuQuocCrowd.Pose.Swim), 30, "swimmers in the sea and the pool");
+                Assert.GreaterOrEqual(crowd.Count(PhuQuocCrowd.Pose.Lie), 15, "sunbathers");
+                Assert.GreaterOrEqual(crowd.GroupCount, 20, "families and shoppers walking");
+                Assert.AreEqual(0, crowd.GetComponentsInChildren<Collider>(true).Length, "people never block the player");
+                for (int i = 0; i < crowd.PeopleCount; i++)
+                    Assert.IsNotNull(crowd.Person(i).GetComponentInChildren<SkinnedMeshRenderer>(), "CC0 character model on " + crowd.Person(i).name);
+                // Swimmers stand in the water (head above, body below the surface).
+                for (int i = 0; i < crowd.PeopleCount; i++)
+                    if (crowd.PoseOf(i) == PhuQuocCrowd.Pose.Swim) Assert.Less(crowd.Person(i).localPosition.y, 0f, crowd.Person(i).name);
+
+                Assert.GreaterOrEqual(Count("SeafoodStall_"), 15, "seafood market stalls");
+                Assert.GreaterOrEqual(Count("Vendor_"), 15, "a vendor at every stall");
+                Assert.GreaterOrEqual(Count("AlleyHouse_"), 40, "hẻm houses");
+                Assert.GreaterOrEqual(Count("PQC_Hill_"), 8, "hills");
+                Assert.GreaterOrEqual(Count("Tree_"), 250, "dense forest");
+                Assert.GreaterOrEqual(Count("Group_Promenade"), 3, "tourist families on the promenade");
+                foreach (var staff in new[] { "Staff_Receptionist", "Staff_Chef", "Staff_Bartender", "Staff_ManagerMai", "Owner_ChuNam", "Staff_Waiter0" })
+                    Assert.IsTrue(all.Any(t => t.name == staff), "Gánh Ngon: " + staff);
+                Assert.IsTrue(all.Any(t => t.name.StartsWith("ResortSwimmer_")) && all.Any(t => t.name.StartsWith("PoolSwimmer_")) && all.Any(t => t.name == "Resort_Receptionist"), "people at the resort");
+
+                // The resort stands on land: ground under the lawn's edges and behind it, not open sea.
+                var lands = all.Where(t => t.name.StartsWith("Land_")).Select(t => t.GetComponent<Renderer>().bounds).ToList();
+                var restaurant = all.First(t => t.name == "GanhNgon_Restaurant");
+                foreach (var local in new[] { new Vector3(280f, 0f, 20f), new Vector3(205f, 0f, 70f), new Vector3(120f, 0f, 60f), new Vector3(0f, 0f, 60f) })
+                {
+                    var w = restaurant.TransformPoint(local);
+                    Assert.IsTrue(lands.Any(b => w.x > b.min.x && w.x < b.max.x && w.z > b.min.z && w.z < b.max.z && b.max.y > restaurant.position.y - 0.2f), "land at " + local);
+                }
+
+                // Every one of the 31 map places has a ticket to a destination; places outside town have a way back.
+                var map = PhuQuocMap.Load();
+                var tickets = roots.SelectMany(r => r.GetComponentsInChildren<PhuQuocTourTicket>(true)).ToList();
+                Assert.AreEqual(map.places.Length, tickets.Count);
+                CollectionAssert.AreEquivalent(map.places.Select(p => p.id), tickets.Select(t => t.placeId));
+                var returns = roots.SelectMany(r => r.GetComponentsInChildren<PhuQuocTourReturn>(true)).ToList();
+                foreach (var t in tickets)
+                {
+                    Assert.IsNotNull(t.destination, t.placeId);
+                    Assert.AreEqual(6, t.gameObject.layer, "interactable layer");
+                    bool inTown = t.destination.IsChildOf(t.transform.parent);
+                    if (!inTown) Assert.IsTrue(returns.Any(r => Vector3.Distance(r.transform.position, t.destination.position) < 10f && r.destination != null), "way back from " + t.placeId);
+                }
+            }
+            finally { EditorSceneManager.CloseScene(scene, true); }
+        }
     }
 }

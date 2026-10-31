@@ -61,6 +61,20 @@ namespace NihongoLife.Tests
             Assert.Greater(player.transform.position.y, root.position.y - 0.5f, "Stays on the island, does not fall through");
             Assert.IsTrue(Object.FindObjectsByType<ScenePortal>(FindObjectsSortMode.None).Any(p => p.gameObject.scene.name == WorldLocationCatalog.PhuQuocIslandScene), "A way back to Hibari");
 
+            // The island tour: a ticket to Hàm Ninh lands on its pad, the post there brings the player back.
+            var ham = Object.FindObjectsByType<PhuQuocTourTicket>(FindObjectsSortMode.None).Single(t => t.placeId == "ham_ninh");
+            ham.Interact(player.gameObject);
+            yield return new WaitForSeconds(1f);
+            Assert.Less(Vector3.Distance(player.transform.position, ham.destination.position), 2.5f, "Arrives at Hàm Ninh: " + player.transform.position);
+            Assert.Greater(player.transform.position.y, ham.destination.position.y - 0.6f, "Stands on the pad");
+            var back = Object.FindObjectsByType<PhuQuocTourReturn>(FindObjectsSortMode.None).OrderBy(r => Vector3.Distance(r.transform.position, player.transform.position)).First();
+            back.Interact(player.gameObject);
+            yield return new WaitForSeconds(0.5f);
+            Assert.Less(Vector3.Distance(player.transform.position, back.destination.position), 2.5f, "Back at the tour terminal");
+            var ganh = Object.FindObjectsByType<PhuQuocTourTicket>(FindObjectsSortMode.None).Single(t => t.placeId == "ganh_ngon");
+            ganh.Interact(player.gameObject);
+            yield return null;
+
             // Geography holds: An Thới south of Dương Đông, Hàm Ninh east, Gành Dầu north-west.
             Assert.Less(P("an_thoi").z, P("ganh_ngon").z);
             Assert.Greater(P("ham_ninh").x, P("ganh_ngon").x);

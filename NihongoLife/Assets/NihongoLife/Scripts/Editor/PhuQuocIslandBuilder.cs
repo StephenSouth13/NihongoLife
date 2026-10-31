@@ -17,7 +17,8 @@ namespace NihongoLife.EditorTools
     ///    over a sea plane, with the 99-peak ridge as low hills in the north;
     ///  • a marker for every real place (Dương Đông, chợ đêm, Dinh Cậu, Bãi Sao, Bãi Dài, An Thới, Hòn Thơm …) using
     ///    CC0 Kenney models (Assets/ThirdParty/PhuQuocCC0, see Docs/PHU_QUOC_ASSETS.md) and a label;
-    ///  • Gánh Ngon at 113 Trần Hưng Đạo with its service stations (GanhNgonSpot) and a player spawn.
+    ///  • Gánh Ngon at 113 Trần Hưng Đạo with its service stations (GanhNgonSpot) and a player spawn;
+    ///  • then the 1:1 Dương Đông passes: PhuQuocDowntownBuilder, PhuQuocResortBuilder, PhuQuocLifeBuilder, PhuQuocCrowdBuilder.
     /// It never touches another scene. Run: Unity -batchmode -executeMethod NihongoLife.EditorTools.PhuQuocIslandBuilder.Build
     /// </summary>
     public static class PhuQuocIslandBuilder
@@ -41,6 +42,13 @@ namespace NihongoLife.EditorTools
                 root.AddComponent<NihongoLife.Core.SceneZoneVisibility>();
                 BuildLayout(root.transform, PhuQuocMap.Load(), true);
                 ZoneParts(root.transform, PhuQuocMap.Load());
+                // The 1:1 Dương Đông area, in order (each pass replaces only its own root under Gánh Ngon):
+                // streets and shophouses → beach resort → traffic, beach and street life → land, hills, market, hẻm, tour, people.
+                var restaurant = root.transform.Find("GanhNgon_Restaurant");
+                PhuQuocDowntownBuilder.BuildInto(restaurant, true);
+                PhuQuocResortBuilder.BuildInto(restaurant);
+                PhuQuocLifeBuilder.BuildInto(root.transform, restaurant);
+                PhuQuocCrowdBuilder.BuildInto(root.transform, restaurant);
                 Directory.CreateDirectory(Path.GetDirectoryName(ScenePath));
                 if (!EditorSceneManager.SaveScene(UnityEngine.SceneManagement.SceneManager.GetActiveScene(), ScenePath))
                     throw new InvalidOperationException("Could not save " + ScenePath);
