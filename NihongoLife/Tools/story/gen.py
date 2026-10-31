@@ -4,6 +4,8 @@
 import json, sys, os, io
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from content import TIERS, LANG, SPEAKERS, MAIN, ARCS
+from content_scenes import CHAPTER_SCENES, TIER_SCENES, OWNER_CALLBACK, BOND_THRESHOLD
+SPEAKERS = dict(SPEAKERS, narrator=("ナレーション", "Dẫn truyện", "Narrator", "Рассказчик"))
 A, DOCS = sys.argv[1], sys.argv[2]
 P = os.path.join(A, 'Resources', 'Progression')
 careers = json.load(io.open(os.path.join(P, 'careers.json'), encoding='utf-8'))
@@ -48,7 +50,20 @@ for v in LOC.values(): r(v[0], v[3])
 for sp, (ja, vi, en, rus) in SPEAKERS.items(): r(en, rus)
 JNOTE = ("Language level: JLPT {0}.", "Trình độ tiếng: JLPT {0}.", "日本語レベル：JLPT {0}。", "Уровень языка: JLPT {0}.")
 
-def lines(sp, ls): return [dict(speaker=sp, ja=a, vi=b, en=c, ru=d) for a, b, c, d in ls]
+def line(sp, t, flag=''):
+    r(t[2], t[3]); d = dict(speaker=sp, ja=t[0], vi=t[1], en=t[2], ru=t[3])
+    if flag: d['flag'] = flag
+    return d
+def lines(sp, ls): return [line(sp, t) for t in ls]
+def ending_line(e):  # (speaker, ja, vi, en, ru[, flag condition])
+    return line(e[0], e[1:5], e[5] if len(e) > 5 else '')
+def cutscene(sp, spec, flag_prefix, ending, extra_ending=()):
+    """Cutscene after the quest's lines: the boss asks, the player answers (flag + affinity), the boss replies, then the ending."""
+    choices = []
+    for oid, text, reply, aff in spec['options']:
+        r(text[2], text[3])
+        choices.append(dict(id=oid, ja=text[0], vi=text[1], en=text[2], ru=text[3], flag=flag_prefix + oid, affinity=aff, reply=line(sp, reply)))
+    return dict(prompt=line(sp, spec['prompt']), choices=choices, ending=list(ending) + list(extra_ending))
 
 def quest(qid, title, desc, jlpt, sp, scene, objectives, requires, min_level, reward, career=None, clevel=1):
     en_desc = desc[0] + " " + JNOTE[0].format(jlpt)
@@ -70,7 +85,7 @@ story = dict(schema='nihongolife.story.v1',
     languageLevels=[dict(id=i, knowledge=k) for i, k in LANG],
     tiers=[dict(id=t[0], careerLevel=t[1], jlpt=t[2], nameEn=t[4], nameVi=t[5], nameJa=t[6], nameRu=t[7]) for t in TIERS],
     speakers=[dict(id=k, nameJa=v[0], nameVi=v[1], nameEn=v[2], nameRu=v[3]) for k, v in SPEAKERS.items()],
-    chapters=[], arcs=[])
+    chapters=[], arcs=[], bondThreshold=BOND_THRESHOLD)
 for t in TIERS: r(t[4], t[7])
 quests = []
 prev = []
@@ -81,10 +96,12 @@ for i, (cid, jlpt, minlvl, (e, tgt, n), sp, scene, title, summ, ls) in enumerate
     quests.append(quest(qid, title, summ, jlpt, sp, scene, objs, prev, minlvl, dict(yen=300 * i, xp=60 + 20 * i, knowledge=15 + 5 * i)))
     story['chapters'].append(dict(id=cid, order=i, questId=qid, jlpt=jlpt, minLevel=minlvl, speaker=sp, scene=scene,
         titleEn=title[0], titleVi=title[1], titleJa=title[2], titleRu=title[3],
-        summaryEn=summ[0], summaryVi=summ[1], summaryJa=summ[2], summaryRu=summ[3], lines=lines(sp, ls)))
+        summaryEn=summ[0], summaryVi=summ[1], summaryJa=summ[2], summaryRu=summ[3], lines=lines(sp, ls),
+        cutscene=cutscene(sp, CHAPTER_SCENES[cid], 'story_choice_%s_' % cid, [ending_line(e) for e in CHAPTER_SCENES[cid]['ending']])))
     prev = [qid]
 CHOICE = 'story_ch05_career_choice'
 assert any(q['id'] == CHOICE for q in quests)
+assert set(CHAPTER_SCENES) == {c['id'] for c in story['chapters']}, 'every chapter needs a cutscene'
 for career, (sp, scene, (e, tgt), stages) in ARCS.items():
     assert career in C, career
     arc = dict(career=career, speaker=sp, scene=scene, stages=[])
@@ -98,7 +115,9 @@ for career, (sp, scene, (e, tgt), stages) in ARCS.items():
         quests.append(quest(qid, title, goal, jlpt, sp, scene, objs, prev, 10, dict(yen=600 + 500 * k, xp=80 + 40 * k, knowledge=20 + 10 * k), career, clevel))
         arc['stages'].append(dict(tier=tid, careerLevel=clevel, jlpt=jlpt, questId=qid,
             titleEn=title[0], titleVi=title[1], titleJa=title[2], titleRu=title[3],
-            goalEn=goal[0], goalVi=goal[1], goalJa=goal[2], goalRu=goal[3], lines=lines(sp, ls)))
+            goalEn=goal[0], goalVi=goal[1], goalJa=goal[2], goalRu=goal[3], lines=lines(sp, ls),
+            cutscene=cutscene(sp, TIER_SCENES[tid], 'story_%s_%s_' % (career, tid), [line('narrator', TIER_SCENES[tid]['ending'])],
+                [line(sp, t, 'story_%s_trainee_%s' % (career, o)) for o, t in OWNER_CALLBACK.items()] if tid == 'owner' else ())))
         prev = [qid]
     story['arcs'].append(arc)
 
@@ -128,6 +147,10 @@ md += ["", "Career levels 4–6 come from the branch chosen at the level-4 inter
 for c in story['chapters']:
     md += ["### %d. %s — %s (`%s`, JLPT %s, level %d)" % (c['order'], c['titleEn'], c['titleJa'], c['questId'], c['jlpt'], c['minLevel']), "", c['summaryEn'], ""]
     for l in c['lines']: md.append("- **%s**: %s — *%s*" % (SPEAKERS[l['speaker']][2], l['ja'], l['en']))
+    sc = c["cutscene"]; md += ["", "*Choice* — %s" % sc['prompt']['en']]
+    for ch in sc['choices']: md.append("  - %s → %s (`%s`, affinity +%d)" % (ch['en'], ch['reply']['en'], ch['flag'], ch['affinity']))
+    md.append("*Ending*")
+    for l in sc['ending']: md.append("  - **%s**: %s%s" % (SPEAKERS[l['speaker']][2], l['en'], " _(if `%s`)_" % l['flag'] if l.get('flag') else ""))
     md.append("")
 md += ["## Career arcs", ""]
 for a in story['arcs']:
@@ -137,6 +160,11 @@ for a in story['arcs']:
         md += ["**%s** · career level %d · JLPT %s · `%s` — %s" % (s['tier'], s['careerLevel'], s['jlpt'], s['questId'], s['goalEn']), ""]
         for l in s['lines']: md.append("- %s — *%s*" % (l['ja'], l['en']))
         md.append("")
+md += ["## Cutscenes, choices and relationships", "",
+ "When a story quest is completed, `StoryScenes` plays its scene in the normal dialogue window: the quest's lines, the boss's question, the player's answer (a story flag + affinity with that person, `SocialStanding`), the reply and the ending. Ending lines with a flag show only when that flag is set, so earlier answers come back later (e.g. the owner stage recalls the trainee answer, the last chapter thanks the people you bonded with). Affinity of %d or more with someone sets `story_bond_<speaker>`. Career answers are remembered per tier (`story_<career>_<tier>_<answer>`):" % BOND_THRESHOLD, ""]
+for tid, spec in TIER_SCENES.items():
+    md.append("- **%s** — %s: " % (tid, spec['prompt'][2]) + "; ".join("%s (`%s`)" % (o[1][2], o[0]) for o in spec['options']))
+md += ["", "Scenes are not played while `StoryDirector.Bypass` is on (tests). A scene plays once (`story_scene_<quest>`); the journal shows the lines at any time.", ""]
 md += ["## Languages", "", "Every line carries Japanese, Vietnamese, English and Russian (`ja/vi/en/ru`). Quest titles, descriptions and objectives are in progression.json (vi/en/ja) with Russian in `ru_table_extra.json`.", ""]
 io.open(os.path.join(DOCS, 'STORY.md'), 'w', encoding='utf-8', newline='\n').write("\n".join(md))
 print('quests', len(quests), 'ru added', added, 'total quests', len(prog['quests']))

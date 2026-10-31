@@ -2053,3 +2053,8 @@ Tên lớp test viết tắt: PlayMode = `NihongoLife.Tests.<Lớp>`; EditMode =
   - `InteractionDetector.Visible`: chỉ bỏ qua vật thực sự bao quanh mục tiêu (`Contains`), không bỏ qua bức tường chỉ chạm vào. Lần sửa phòng ngủ trước làm `InteractionTargeting` fail.
   - `KonbiniCamera`: bước đi theo thời gian, không theo khung hình. Khung hình nhanh lên vì `TriggerRaycaster` hết ném exception, làm "đi bộ" thành 45 m/s.
   - `GuestOffline`: xóa (và khôi phục) cả `guest_progress.json.bak`.
+
+## 2026-11-01 — Story cutscenes, choices, relationships
+- What: every chapter and career stage now ends with a cutscene in the dialogue window (StoryScenes, on QuestService.Completed): quest lines, the boss's question, 3 answers (story flag + affinity), reply, ending. Ending lines can carry a flag condition, so answers come back later (owner stage recalls the trainee answer; homecoming thanks bonded NPCs, story_bond_<speaker> at affinity >= bondThreshold). Plays once, never under StoryDirector.Bypass.
+- Files: Tools/story/content_scenes.py, gen.py (regenerated storyline.json, STORY.md, ru_table_extra.json), Scripts/Progression/Storyline.cs, Scripts/Scenario/StoryScenes.cs.
+- Tests: StorylineTests (+3: cutscene graph reaches its end, consequences, Russian).

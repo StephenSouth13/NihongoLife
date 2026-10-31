@@ -14,8 +14,28 @@ namespace NihongoLife.Progression
     public sealed class StoryLine
     {
         public string speaker, ja, vi, en, ru;
+        /// <summary>Optional StoryFlags condition: the line is part of the scene only when it holds (an earlier choice).</summary>
+        public string flag;
         /// <summary>The meaning in the interface language (empty in Japanese, where the line itself is the text).</summary>
         public string Gloss => Loc.IsJapanese ? string.Empty : Storyline.Pick(vi, en, ja, ru);
+    }
+
+    /// <summary>One answer of a cutscene choice: sets <see cref="flag"/>, adds <see cref="affinity"/> with the speaker.</summary>
+    [Serializable]
+    public sealed class StoryChoice
+    {
+        public string id, ja, vi, en, ru, flag;
+        public int affinity;
+        public StoryLine reply;
+    }
+
+    /// <summary>The scene played when a chapter / stage quest completes (StoryScenes): question, answers, ending.</summary>
+    [Serializable]
+    public sealed class StoryCutscene
+    {
+        public StoryLine prompt;
+        public StoryChoice[] choices = Array.Empty<StoryChoice>();
+        public StoryLine[] ending = Array.Empty<StoryLine>();
     }
 
     [Serializable] public sealed class StoryLanguageLevel { public string id; public int knowledge; }
@@ -43,6 +63,7 @@ namespace NihongoLife.Progression
         public string titleEn, titleVi, titleJa, titleRu, summaryEn, summaryVi, summaryJa, summaryRu;
         public int order, minLevel;
         public StoryLine[] lines = Array.Empty<StoryLine>();
+        public StoryCutscene cutscene;
         public string Title => Storyline.Pick(titleVi, titleEn, titleJa, titleRu);
         public string Summary => Storyline.Pick(summaryVi, summaryEn, summaryJa, summaryRu);
     }
@@ -54,6 +75,7 @@ namespace NihongoLife.Progression
         public string titleEn, titleVi, titleJa, titleRu, goalEn, goalVi, goalJa, goalRu;
         public int careerLevel;
         public StoryLine[] lines = Array.Empty<StoryLine>();
+        public StoryCutscene cutscene;
         public string Title => Storyline.Pick(titleVi, titleEn, titleJa, titleRu);
         public string Goal => Storyline.Pick(goalVi, goalEn, goalJa, goalRu);
     }
@@ -85,6 +107,8 @@ namespace NihongoLife.Progression
         public StorySpeaker[] speakers = Array.Empty<StorySpeaker>();
         public StoryChapter[] chapters = Array.Empty<StoryChapter>();
         public StoryArc[] arcs = Array.Empty<StoryArc>();
+        /// <summary>Affinity with a speaker at which <c>story_bond_&lt;speaker&gt;</c> is set.</summary>
+        public int bondThreshold = 20;
 
         private static Storyline _cached;
 
@@ -128,6 +152,9 @@ namespace NihongoLife.Progression
             arc = null;
             return null;
         }
+
+        public StoryCutscene CutsceneFor(string questId) =>
+            Chapter(questId)?.cutscene ?? Stage(questId, out _)?.cutscene;
 
         public StoryLine[] LinesFor(string questId) =>
             Chapter(questId)?.lines ?? Stage(questId, out _)?.lines ?? Array.Empty<StoryLine>();
@@ -182,6 +209,25 @@ namespace NihongoLife.Progression
                         errors.Add($"{where}: a line is missing ja/vi/en/ru");
                 }
             }
+            var flags = new HashSet<string>();
+            void CheckCutscene(string where, StoryCutscene c)
+            {
+                if (c == null || c.prompt == null) { errors.Add($"{where}: needs a cutscene with a question"); return; }
+                CheckLines(where + " question", new[] { c.prompt, c.prompt, c.prompt });
+                if (c.choices == null || c.choices.Length < 2) errors.Add($"{where}: a cutscene needs at least 2 answers");
+                foreach (var ch in c.choices ?? Array.Empty<StoryChoice>())
+                {
+                    if (string.IsNullOrWhiteSpace(ch.ja) || string.IsNullOrWhiteSpace(ch.vi) || string.IsNullOrWhiteSpace(ch.en) || string.IsNullOrWhiteSpace(ch.ru))
+                        errors.Add($"{where}: answer '{ch.id}' is missing ja/vi/en/ru");
+                    if (string.IsNullOrWhiteSpace(ch.flag) || !flags.Add(ch.flag)) errors.Add($"{where}: answer '{ch.id}' needs its own story flag");
+                    if (ch.affinity < 0 || ch.affinity > 20) errors.Add($"{where}: answer '{ch.id}' affinity out of 0..20");
+                    if (ch.reply == null) errors.Add($"{where}: answer '{ch.id}' needs a reply");
+                    else CheckLines(where + " reply", new[] { ch.reply, ch.reply, ch.reply });
+                }
+                if (c.ending == null || c.ending.Length == 0 || c.ending.All(l => !string.IsNullOrEmpty(l.flag)))
+                    errors.Add($"{where}: the ending needs at least one line that is always shown");
+                else CheckLines(where + " ending", c.ending.Length >= 3 ? c.ending : c.ending.Concat(c.ending).Concat(c.ending).ToArray());
+            }
             QuestDefinition CheckQuest(string where, string questId, string jlpt)
             {
                 if (!questIds.Add(questId)) errors.Add($"{where}: quest '{questId}' used twice");
@@ -204,6 +250,7 @@ namespace NihongoLife.Progression
                     if (q.IsCareerTask) errors.Add($"{where}: a main chapter is not tied to one career");
                 }
                 CheckLines(where, c.lines);
+                CheckCutscene(where, c.cutscene);
                 previous = c.questId;
             }
 
@@ -228,6 +275,7 @@ namespace NihongoLife.Progression
                         if (before != null && !q.requiresQuests.Contains(before)) errors.Add($"{where}: must require the stage before ({before})");
                     }
                     CheckLines(where, s.lines);
+                    CheckCutscene(where, s.cutscene);
                     before = s.questId;
                 }
             }

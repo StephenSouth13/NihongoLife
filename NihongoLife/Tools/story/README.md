@@ -18,3 +18,8 @@ Japanese. The game shows only the chosen interface language (`Loc`); the Japanes
 `gen_*.py` still writes the Vietnamese into the `...En` keys, so after regenerating a quest run
 `python i18n/apply_en.py <asset>`: it moves the Vietnamese to the `...Vi` keys and adds the English from
 `i18n/en/<quest>.json`. Keep that file in step when you change a quest's Vietnamese lines.
+
+## Cutscenes (2026-11-01)
+
+content_scenes.py holds each chapter's / career tier's question, answers (flag, affinity), replies and ending; gen.py writes them as cutscene into storyline.json. Run python gen.py <Assets/NihongoLife> <Docs>.
+

@@ -153,6 +153,13 @@
       "nameVi": "Chú Hibiki",
       "nameEn": "Hibiki",
       "nameRu": "Хибики"
+    },
+    {
+      "id": "narrator",
+      "nameJa": "ナレーション",
+      "nameVi": "Dẫn truyện",
+      "nameEn": "Narrator",
+      "nameRu": "Рассказчик"
     }
   ],
   "chapters": [
@@ -194,7 +201,75 @@
           "en": "First, let's learn the way to the school and the station.",
           "ru": "Сначала запомним дорогу в школу и на станцию."
         }
-      ]
+      ],
+      "cutscene": {
+        "prompt": {
+          "speaker": "npc_neighbor_1",
+          "ja": "ひばり町で、まず何がしたい？",
+          "vi": "Ở Hibari-chō, cháu muốn làm gì trước?",
+          "en": "What would you like to do first in Hibari-chō?",
+          "ru": "Что вы хотите сделать в Хибари-тё первым делом?"
+        },
+        "choices": [
+          {
+            "id": "study",
+            "ja": "日本語をしっかり勉強したいです。",
+            "vi": "Cháu muốn học tiếng Nhật thật chăm chỉ.",
+            "en": "I want to study Japanese properly.",
+            "ru": "Я хочу как следует учить японский.",
+            "flag": "story_choice_arrival_study",
+            "affinity": 5,
+            "reply": {
+              "speaker": "npc_neighbor_1",
+              "ja": "えらいね。森田先生はきびしいけど、やさしいよ。",
+              "vi": "Giỏi lắm. Cô Morita nghiêm nhưng hiền lắm.",
+              "en": "Good for you. Ms Morita is strict but kind.",
+              "ru": "Молодец. Морита-сэнсэй строгая, но добрая."
+            }
+          },
+          {
+            "id": "friends",
+            "ja": "町の人と友だちになりたいです。",
+            "vi": "Cháu muốn kết bạn với mọi người trong phố.",
+            "en": "I want to make friends with the people here.",
+            "ru": "Я хочу подружиться с местными.",
+            "flag": "story_choice_arrival_friends",
+            "affinity": 8,
+            "reply": {
+              "speaker": "npc_neighbor_1",
+              "ja": "それなら、まず商店街でおいしいものを食べよう！",
+              "vi": "Vậy thì trước hết đi ăn món ngon ở khu phố chợ nhé!",
+              "en": "Then let's start by eating something good on the shopping street!",
+              "ru": "Тогда начнём с чего-нибудь вкусного на торговой улице!"
+            }
+          },
+          {
+            "id": "work",
+            "ja": "アルバイトをさがしたいです。",
+            "vi": "Cháu muốn tìm việc làm thêm.",
+            "en": "I want to find a part-time job.",
+            "ru": "Я хочу найти подработку.",
+            "flag": "story_choice_arrival_work",
+            "affinity": 4,
+            "reply": {
+              "speaker": "npc_neighbor_1",
+              "ja": "コンビニのいとうさんが人をさがしているよ。",
+              "vi": "Chị Ito ở konbini đang tìm người đấy.",
+              "en": "Ms Ito at the konbini is looking for help.",
+              "ru": "Ито из комбини как раз ищет помощника."
+            }
+          }
+        ],
+        "ending": [
+          {
+            "speaker": "narrator",
+            "ja": "ひばり町での毎日が、ここから始まる。",
+            "vi": "Những ngày ở Hibari-chō bắt đầu từ đây.",
+            "en": "Your days in Hibari-chō begin here.",
+            "ru": "Здесь начинаются ваши дни в Хибари-тё."
+          }
+        ]
+      }
     },
     {
       "id": "first_class",
@@ -234,7 +309,83 @@
           "en": "I'm Kim! Let's do our best together!",
           "ru": "Я Ким! Давайте стараться вместе!"
         }
-      ]
+      ],
+      "cutscene": {
+        "prompt": {
+          "speaker": "npc_teacher_morita",
+          "ja": "自己紹介、どうしますか？",
+          "vi": "Em sẽ tự giới thiệu thế nào?",
+          "en": "How will you introduce yourself?",
+          "ru": "Как вы представитесь?"
+        },
+        "choices": [
+          {
+            "id": "polite",
+            "ja": "はじめまして。どうぞよろしくお願いします。",
+            "vi": "Rất vui được gặp mọi người. Mong được giúp đỡ.",
+            "en": "Nice to meet you all. I look forward to working with you.",
+            "ru": "Приятно познакомиться. Прошу любить и жаловать.",
+            "flag": "story_choice_first_class_polite",
+            "affinity": 6,
+            "reply": {
+              "speaker": "npc_teacher_morita",
+              "ja": "ていねいでいいですね。",
+              "vi": "Lịch sự lắm, tốt quá.",
+              "en": "Very polite, well done.",
+              "ru": "Очень вежливо, хорошо."
+            }
+          },
+          {
+            "id": "hobby",
+            "ja": "料理が好きです。ベトナム料理を作りたいです。",
+            "vi": "Em thích nấu ăn. Em muốn nấu món Việt cho mọi người.",
+            "en": "I like cooking. I want to cook Vietnamese food for everyone.",
+            "ru": "Я люблю готовить. Хочу приготовить всем вьетнамскую еду.",
+            "flag": "story_choice_first_class_hobby",
+            "affinity": 5,
+            "reply": {
+              "speaker": "npc_teacher_morita",
+              "ja": "キムさんも料理が好きですよ。あとで話してみて。",
+              "vi": "Kim cũng thích nấu ăn đấy. Lát nữa nói chuyện thử nhé.",
+              "en": "Kim likes cooking too. Talk to her later.",
+              "ru": "Ким тоже любит готовить. Поговорите потом."
+            }
+          },
+          {
+            "id": "nervous",
+            "ja": "すみません、日本語がまだ下手です……",
+            "vi": "Xin lỗi, tiếng Nhật của em còn kém lắm…",
+            "en": "Sorry, my Japanese is still poor…",
+            "ru": "Простите, мой японский пока слабый…",
+            "flag": "story_choice_first_class_nervous",
+            "affinity": 8,
+            "reply": {
+              "speaker": "npc_teacher_morita",
+              "ja": "大丈夫。みんな同じですよ。いっしょにがんばりましょう。",
+              "vi": "Không sao. Ai cũng vậy cả. Cùng cố gắng nhé.",
+              "en": "It's fine. Everyone is the same. Let's do our best together.",
+              "ru": "Ничего страшного. Все такие же. Будем стараться вместе."
+            }
+          }
+        ],
+        "ending": [
+          {
+            "speaker": "narrator",
+            "ja": "キムさんが手をふっている。",
+            "vi": "Kim đang vẫy tay với bạn.",
+            "en": "Kim is waving at you.",
+            "ru": "Ким машет вам рукой."
+          },
+          {
+            "speaker": "npc_classmate_kim",
+            "ja": "料理の話、あとで聞かせてね！",
+            "vi": "Kể cho tớ nghe chuyện nấu ăn nhé!",
+            "en": "Tell me about your cooking later!",
+            "ru": "Расскажи потом про свою кухню!",
+            "flag": "story_choice_first_class_hobby"
+          }
+        ]
+      }
     },
     {
       "id": "neighbours",
@@ -274,7 +425,75 @@
           "en": "Please come again. Next time I'll bring you our special.",
           "ru": "Приходите ещё. В следующий раз принесу наше фирменное."
         }
-      ]
+      ],
+      "cutscene": {
+        "prompt": {
+          "speaker": "npc_sushi_staff",
+          "ja": "大将がおすすめを聞いている。",
+          "vi": "Bác Aoki hỏi bạn muốn ăn gì.",
+          "en": "Aoki asks what you would like.",
+          "ru": "Аоки спрашивает, что вы будете."
+        },
+        "choices": [
+          {
+            "id": "omakase",
+            "ja": "おまかせでお願いします。",
+            "vi": "Cho cháu suất omakase ạ.",
+            "en": "Omakase, please.",
+            "ru": "Омакасэ, пожалуйста.",
+            "flag": "story_choice_neighbours_omakase",
+            "affinity": 8,
+            "reply": {
+              "speaker": "npc_sushi_staff",
+              "ja": "いい度胸だ！今日のマグロは最高だよ。",
+              "vi": "Gan lắm! Cá ngừ hôm nay ngon nhất đấy.",
+              "en": "Brave! Today's tuna is the best.",
+              "ru": "Смело! Тунец сегодня лучший."
+            }
+          },
+          {
+            "id": "ask",
+            "ja": "この魚は何ですか？",
+            "vi": "Cá này là cá gì ạ?",
+            "en": "What fish is this?",
+            "ru": "Что это за рыба?",
+            "flag": "story_choice_neighbours_ask",
+            "affinity": 6,
+            "reply": {
+              "speaker": "npc_sushi_staff",
+              "ja": "これはアジ。質問する人、好きだよ。",
+              "vi": "Đây là cá aji. Bác thích người hay hỏi.",
+              "en": "That's horse mackerel. I like people who ask.",
+              "ru": "Это ставрида. Люблю любознательных."
+            }
+          },
+          {
+            "id": "share",
+            "ja": "田中さんといっしょに食べたいです。",
+            "vi": "Cháu muốn ăn cùng chú Tanaka.",
+            "en": "I'd like to eat with Mr Tanaka.",
+            "ru": "Я хочу поесть вместе с Танакой.",
+            "flag": "story_choice_neighbours_share",
+            "affinity": 5,
+            "reply": {
+              "speaker": "npc_sushi_staff",
+              "ja": "いいね、近所づきあいは大事だ。",
+              "vi": "Hay đấy, tình hàng xóm quan trọng lắm.",
+              "en": "Nice. Neighbours matter.",
+              "ru": "Хорошо. Соседи — это важно."
+            }
+          }
+        ],
+        "ending": [
+          {
+            "speaker": "narrator",
+            "ja": "のれんの向こうで、町のみんなが笑っている。",
+            "vi": "Sau tấm rèm noren, mọi người trong phố đang cười.",
+            "en": "Behind the noren, the neighbourhood is laughing.",
+            "ru": "За занавеской норэн смеётся вся округа."
+          }
+        ]
+      }
     },
     {
       "id": "festival",
@@ -314,7 +533,83 @@
           "en": "Thank you. This is your town too.",
           "ru": "Спасибо. Это и твой город тоже."
         }
-      ]
+      ],
+      "cutscene": {
+        "prompt": {
+          "speaker": "npc_neighbor_3",
+          "ja": "お祭りで何を手伝う？",
+          "vi": "Ở lễ hội cháu sẽ giúp gì?",
+          "en": "How will you help at the festival?",
+          "ru": "Чем вы поможете на празднике?"
+        },
+        "choices": [
+          {
+            "id": "dance",
+            "ja": "盆踊りをおどります！",
+            "vi": "Cháu sẽ nhảy Bon Odori!",
+            "en": "I'll dance the Bon Odori!",
+            "ru": "Я станцую бон-одори!",
+            "flag": "story_choice_festival_dance",
+            "affinity": 6,
+            "reply": {
+              "speaker": "npc_neighbor_3",
+              "ja": "いいぞ、輪に入りなさい！",
+              "vi": "Hay lắm, vào vòng nhảy đi!",
+              "en": "Great, join the circle!",
+              "ru": "Отлично, вставай в круг!"
+            }
+          },
+          {
+            "id": "stall",
+            "ja": "屋台を手伝います。",
+            "vi": "Cháu sẽ phụ quầy hàng.",
+            "en": "I'll help at a stall.",
+            "ru": "Я помогу у прилавка.",
+            "flag": "story_choice_festival_stall",
+            "affinity": 8,
+            "reply": {
+              "speaker": "npc_neighbor_3",
+              "ja": "たこ焼きの屋台が大変なんだ。助かるよ。",
+              "vi": "Quầy takoyaki đang bận lắm. Có cháu đỡ quá.",
+              "en": "The takoyaki stall is swamped. That helps.",
+              "ru": "У лотка такояки завал. Спасибо!"
+            }
+          },
+          {
+            "id": "clean",
+            "ja": "あとかたづけをします。",
+            "vi": "Cháu sẽ dọn dẹp sau lễ hội.",
+            "en": "I'll clean up afterwards.",
+            "ru": "Я уберу после праздника.",
+            "flag": "story_choice_festival_clean",
+            "affinity": 10,
+            "reply": {
+              "speaker": "npc_neighbor_3",
+              "ja": "それが一番ありがたい。町の人はちゃんと見ているよ。",
+              "vi": "Đó là việc quý nhất. Người trong phố đều thấy cả.",
+              "en": "That's what we value most. People notice.",
+              "ru": "Это ценнее всего. Люди это видят."
+            }
+          }
+        ],
+        "ending": [
+          {
+            "speaker": "narrator",
+            "ja": "花火が夜空に広がった。",
+            "vi": "Pháo hoa nở rộ trên bầu trời đêm.",
+            "en": "Fireworks open across the night sky.",
+            "ru": "Фейерверк раскрывается в ночном небе."
+          },
+          {
+            "speaker": "npc_classmate_kim",
+            "ja": "きれいだね。来年もいっしょに見よう。",
+            "vi": "Đẹp quá. Năm sau lại cùng xem nhé.",
+            "en": "Beautiful. Let's watch together next year too.",
+            "ru": "Красиво. Давай смотреть вместе и в следующем году.",
+            "flag": "story_bond_npc_classmate_kim"
+          }
+        ]
+      }
     },
     {
       "id": "career_choice",
@@ -354,7 +649,75 @@
           "en": "In any job, the better your Japanese, the higher you go.",
           "ru": "В любой работе: чем лучше японский, тем выше поднимаешься."
         }
-      ]
+      ],
+      "cutscene": {
+        "prompt": {
+          "speaker": "npc_neighbor_1",
+          "ja": "どんな仕事で生きていきたい？",
+          "vi": "Cháu muốn sống bằng nghề gì?",
+          "en": "What kind of work do you want to live by?",
+          "ru": "Какой работой вы хотите жить?"
+        },
+        "choices": [
+          {
+            "id": "people",
+            "ja": "人の役に立つ仕事がしたいです。",
+            "vi": "Cháu muốn làm việc giúp ích cho người khác.",
+            "en": "I want work that helps people.",
+            "ru": "Хочу работу, которая помогает людям.",
+            "flag": "story_choice_career_choice_people",
+            "affinity": 6,
+            "reply": {
+              "speaker": "npc_neighbor_1",
+              "ja": "クリニックか、お店の仕事が向いているね。",
+              "vi": "Phòng khám hoặc cửa hàng hợp với cháu đấy.",
+              "en": "The clinic or a shop would suit you.",
+              "ru": "Тебе подойдёт клиника или магазин."
+            }
+          },
+          {
+            "id": "craft",
+            "ja": "料理や音楽、ものづくりがしたいです。",
+            "vi": "Cháu muốn nấu ăn, làm nhạc, tự tay làm ra thứ gì đó.",
+            "en": "I want to cook, make music, create things.",
+            "ru": "Хочу готовить, играть музыку, создавать.",
+            "flag": "story_choice_career_choice_craft",
+            "affinity": 6,
+            "reply": {
+              "speaker": "npc_neighbor_1",
+              "ja": "職人の道はきびしいけど、楽しいよ。",
+              "vi": "Con đường nghệ nhân vất vả nhưng vui lắm.",
+              "en": "The craftsman's road is hard but fun.",
+              "ru": "Путь мастера труден, но интересен."
+            }
+          },
+          {
+            "id": "bridge",
+            "ja": "日本とベトナムをつなぐ仕事がしたいです。",
+            "vi": "Cháu muốn làm việc kết nối Nhật Bản và Việt Nam.",
+            "en": "I want work that links Japan and Vietnam.",
+            "ru": "Хочу работу, связывающую Японию и Вьетнам.",
+            "flag": "story_choice_career_choice_bridge",
+            "affinity": 8,
+            "reply": {
+              "speaker": "npc_neighbor_1",
+              "ja": "それなら、フーコックのマイさんに会うといい。",
+              "vi": "Vậy thì nên gặp chị Mai ở Phú Quốc.",
+              "en": "Then you should meet Mai on Phú Quốc.",
+              "ru": "Тогда познакомься с Май на Фукуоке."
+            }
+          }
+        ],
+        "ending": [
+          {
+            "speaker": "npc_neighbor_1",
+            "ja": "ジャーナルの「仕事」で、道を選べる。",
+            "vi": "Bạn có thể chọn con đường trong mục Nghề nghiệp.",
+            "en": "You can pick your path under Careers.",
+            "ru": "Свой путь можно выбрать в разделе «Карьера»."
+          }
+        ]
+      }
     },
     {
       "id": "phu_quoc",
@@ -394,7 +757,83 @@
           "en": "Welcome to Phú Quốc. The sea and the food are the best!",
           "ru": "Добро пожаловать на Фукуок. Море и еда — лучшие!"
         }
-      ]
+      ],
+      "cutscene": {
+        "prompt": {
+          "speaker": "npc_ganhngon_manager",
+          "ja": "ガンゴンで最初に何をする？",
+          "vi": "Ở Gánh Ngon em làm gì trước?",
+          "en": "What will you do first at Gánh Ngon?",
+          "ru": "Что вы сделаете первым в «Ганьнгон»?"
+        },
+        "choices": [
+          {
+            "id": "menu",
+            "ja": "メニューを日本語に訳します。",
+            "vi": "Em sẽ dịch thực đơn sang tiếng Nhật.",
+            "en": "I'll translate the menu into Japanese.",
+            "ru": "Я переведу меню на японский.",
+            "flag": "story_choice_phu_quoc_menu",
+            "affinity": 10,
+            "reply": {
+              "speaker": "npc_ganhngon_manager",
+              "ja": "ありがとう！日本のお客さまが喜ぶわ。",
+              "vi": "Cảm ơn em! Khách Nhật sẽ vui lắm.",
+              "en": "Thank you! Japanese guests will love it.",
+              "ru": "Спасибо! Японские гости будут рады."
+            }
+          },
+          {
+            "id": "kitchen",
+            "ja": "厨房を手伝います。",
+            "vi": "Em sẽ phụ bếp.",
+            "en": "I'll help in the kitchen.",
+            "ru": "Я помогу на кухне.",
+            "flag": "story_choice_phu_quoc_kitchen",
+            "affinity": 6,
+            "reply": {
+              "speaker": "npc_ganhngon_manager",
+              "ja": "じゃあ、まずは魚のさばき方から。",
+              "vi": "Vậy bắt đầu từ cách làm cá nhé.",
+              "en": "Then let's start with filleting fish.",
+              "ru": "Тогда начнём с разделки рыбы."
+            }
+          },
+          {
+            "id": "beach",
+            "ja": "まず島を見て回ります。",
+            "vi": "Em đi một vòng đảo trước đã.",
+            "en": "I'll look around the island first.",
+            "ru": "Сначала осмотрю остров.",
+            "flag": "story_choice_phu_quoc_beach",
+            "affinity": 3,
+            "reply": {
+              "speaker": "npc_ganhngon_manager",
+              "ja": "夕日の時間までには戻ってね。",
+              "vi": "Về trước lúc hoàng hôn nhé.",
+              "en": "Be back by sunset.",
+              "ru": "Вернись к закату."
+            }
+          }
+        ],
+        "ending": [
+          {
+            "speaker": "narrator",
+            "ja": "潮風の中、新しい仕事場が待っている。",
+            "vi": "Trong gió biển, chỗ làm mới đang chờ bạn.",
+            "en": "In the sea breeze, a new workplace awaits.",
+            "ru": "На морском ветру вас ждёт новое место работы."
+          },
+          {
+            "speaker": "npc_ganhngon_manager",
+            "ja": "日本語のメニュー、もう評判よ。",
+            "vi": "Thực đơn tiếng Nhật được khen rồi đấy.",
+            "en": "The Japanese menu is already a hit.",
+            "ru": "Японское меню уже хвалят.",
+            "flag": "story_choice_phu_quoc_menu"
+          }
+        ]
+      }
     },
     {
       "id": "n3_exam",
@@ -434,7 +873,83 @@
           "en": "A little every day, together with Kim.",
           "ru": "Понемногу каждый день, вместе с Ким."
         }
-      ]
+      ],
+      "cutscene": {
+        "prompt": {
+          "speaker": "npc_teacher_morita",
+          "ja": "試験の前の日、どうする？",
+          "vi": "Ngày trước kỳ thi em sẽ làm gì?",
+          "en": "What will you do the day before the exam?",
+          "ru": "Что вы сделаете накануне экзамена?"
+        },
+        "choices": [
+          {
+            "id": "review",
+            "ja": "もう一度、文法を復習します。",
+            "vi": "Em ôn lại ngữ pháp một lần nữa.",
+            "en": "Review grammar once more.",
+            "ru": "Ещё раз повторю грамматику.",
+            "flag": "story_choice_n3_exam_review",
+            "affinity": 5,
+            "reply": {
+              "speaker": "npc_teacher_morita",
+              "ja": "まじめですね。でも、早く寝てください。",
+              "vi": "Chăm quá. Nhưng nhớ ngủ sớm nhé.",
+              "en": "Diligent. But do go to bed early.",
+              "ru": "Старательно. Но ложитесь пораньше."
+            }
+          },
+          {
+            "id": "group",
+            "ja": "キムさんたちと勉強会をします。",
+            "vi": "Em học nhóm với Kim và các bạn.",
+            "en": "Hold a study group with Kim and the others.",
+            "ru": "Устрою учебную группу с Ким и другими.",
+            "flag": "story_choice_n3_exam_group",
+            "affinity": 7,
+            "reply": {
+              "speaker": "npc_teacher_morita",
+              "ja": "教え合うのは、一番いい勉強です。",
+              "vi": "Dạy nhau là cách học tốt nhất.",
+              "en": "Teaching each other is the best study.",
+              "ru": "Учить друг друга — лучшая учёба."
+            }
+          },
+          {
+            "id": "rest",
+            "ja": "ゆっくり休みます。",
+            "vi": "Em sẽ nghỉ ngơi thật tốt.",
+            "en": "Rest well.",
+            "ru": "Хорошо отдохну.",
+            "flag": "story_choice_n3_exam_rest",
+            "affinity": 4,
+            "reply": {
+              "speaker": "npc_teacher_morita",
+              "ja": "それも大事な準備ですよ。",
+              "vi": "Đó cũng là chuẩn bị quan trọng đấy.",
+              "en": "That's important preparation too.",
+              "ru": "Это тоже важная подготовка."
+            }
+          }
+        ],
+        "ending": [
+          {
+            "speaker": "narrator",
+            "ja": "合格発表の日、名前を見つけた。",
+            "vi": "Ngày công bố kết quả, bạn tìm thấy tên mình.",
+            "en": "On results day, you find your name.",
+            "ru": "В день результатов вы находите своё имя."
+          },
+          {
+            "speaker": "narrator",
+            "ja": "キムさんも合格！みんなで喜んだ。",
+            "vi": "Kim cũng đỗ! Cả nhóm cùng vui mừng.",
+            "en": "Kim passed too! Everyone celebrates.",
+            "ru": "Ким тоже сдала! Все радуются.",
+            "flag": "story_choice_n3_exam_group"
+          }
+        ]
+      }
     },
     {
       "id": "mentor",
@@ -474,7 +989,75 @@
           "en": "Watching you, I'm glad I became a teacher.",
           "ru": "Глядя на вас, я рада, что стала учителем."
         }
-      ]
+      ],
+      "cutscene": {
+        "prompt": {
+          "speaker": "npc_teacher_morita",
+          "ja": "新しい留学生に、何を伝えたい？",
+          "vi": "Em muốn nói gì với du học sinh mới?",
+          "en": "What do you want to tell the new students?",
+          "ru": "Что вы хотите сказать новым студентам?"
+        },
+        "choices": [
+          {
+            "id": "mistakes",
+            "ja": "まちがえても大丈夫、と伝えます。",
+            "vi": "Sai cũng không sao.",
+            "en": "That mistakes are fine.",
+            "ru": "Что ошибаться не страшно.",
+            "flag": "story_choice_mentor_mistakes",
+            "affinity": 10,
+            "reply": {
+              "speaker": "npc_teacher_morita",
+              "ja": "それは、私が最初にあなたに言った言葉ですね。",
+              "vi": "Đó là câu cô nói với em ngày đầu tiên nhỉ.",
+              "en": "Those are the words I said to you on day one.",
+              "ru": "Это мои слова вам в первый день."
+            }
+          },
+          {
+            "id": "town",
+            "ja": "町の人と話すこと。",
+            "vi": "Hãy trò chuyện với người trong phố.",
+            "en": "To talk with the townspeople.",
+            "ru": "Чтобы говорили с горожанами.",
+            "flag": "story_choice_mentor_town",
+            "affinity": 6,
+            "reply": {
+              "speaker": "npc_teacher_morita",
+              "ja": "ひばり町が、あなたを育てましたね。",
+              "vi": "Hibari-chō đã nuôi lớn em rồi.",
+              "en": "Hibari-chō raised you.",
+              "ru": "Хибари-тё вас вырастил."
+            }
+          },
+          {
+            "id": "work",
+            "ja": "仕事で日本語は伸びる、と伝えます。",
+            "vi": "Đi làm sẽ giỏi tiếng Nhật lên.",
+            "en": "That work makes your Japanese grow.",
+            "ru": "Что работа развивает японский.",
+            "flag": "story_choice_mentor_work",
+            "affinity": 6,
+            "reply": {
+              "speaker": "npc_teacher_morita",
+              "ja": "経験から出た言葉は強いです。",
+              "vi": "Lời từ kinh nghiệm thì có sức nặng.",
+              "en": "Words from experience are strong.",
+              "ru": "Слова из опыта сильны."
+            }
+          }
+        ],
+        "ending": [
+          {
+            "speaker": "narrator",
+            "ja": "教室に、新しい声がひびいている。",
+            "vi": "Lớp học vang lên những giọng nói mới.",
+            "en": "New voices ring through the classroom.",
+            "ru": "Класс наполняют новые голоса."
+          }
+        ]
+      }
     },
     {
       "id": "homecoming",
@@ -514,7 +1097,106 @@
           "en": "Welcome home. This is your hometown too.",
           "ru": "С возвращением. Это тоже твой дом."
         }
-      ]
+      ],
+      "cutscene": {
+        "prompt": {
+          "speaker": "npc_neighbor_1",
+          "ja": "これから、どこで生きていく？",
+          "vi": "Từ giờ, cháu sẽ sống ở đâu?",
+          "en": "Where will you live from now on?",
+          "ru": "Где вы будете жить дальше?"
+        },
+        "choices": [
+          {
+            "id": "japan",
+            "ja": "ひばり町に残ります。",
+            "vi": "Cháu ở lại Hibari-chō.",
+            "en": "I'll stay in Hibari-chō.",
+            "ru": "Я останусь в Хибари-тё.",
+            "flag": "story_choice_homecoming_japan",
+            "affinity": 10,
+            "reply": {
+              "speaker": "npc_neighbor_1",
+              "ja": "うれしいなあ。これからも、となり同士だ。",
+              "vi": "Vui quá. Vẫn là hàng xóm nhé.",
+              "en": "I'm glad. We stay neighbours.",
+              "ru": "Как я рад. Остаёмся соседями."
+            }
+          },
+          {
+            "id": "vietnam",
+            "ja": "ベトナムに帰って、日本とつなぎます。",
+            "vi": "Cháu về Việt Nam và làm cầu nối với Nhật.",
+            "en": "I'll go home to Vietnam and be a bridge to Japan.",
+            "ru": "Вернусь во Вьетнам и буду мостом с Японией.",
+            "flag": "story_choice_homecoming_vietnam",
+            "affinity": 8,
+            "reply": {
+              "speaker": "npc_neighbor_1",
+              "ja": "さびしいけど、誇りに思うよ。",
+              "vi": "Buồn nhưng chú tự hào lắm.",
+              "en": "I'll miss you, but I'm proud.",
+              "ru": "Грустно, но я горжусь тобой."
+            }
+          },
+          {
+            "id": "both",
+            "ja": "二つの国を行き来します。",
+            "vi": "Cháu sẽ đi lại giữa hai nước.",
+            "en": "I'll live between both countries.",
+            "ru": "Буду жить между двумя странами.",
+            "flag": "story_choice_homecoming_both",
+            "affinity": 8,
+            "reply": {
+              "speaker": "npc_neighbor_1",
+              "ja": "ふるさとが二つ。それがあなたらしい。",
+              "vi": "Hai quê hương. Đúng là cháu.",
+              "en": "Two hometowns. That's so you.",
+              "ru": "Две родины — это так на тебя похоже."
+            }
+          }
+        ],
+        "ending": [
+          {
+            "speaker": "narrator",
+            "ja": "森田先生からの手紙：あなたは私の自慢の生徒です。",
+            "vi": "Thư của cô Morita: Em là học trò cô tự hào nhất.",
+            "en": "A letter from Ms Morita: you are the student I'm proudest of.",
+            "ru": "Письмо от Мориты-сэнсэй: вы — моя гордость."
+          },
+          {
+            "speaker": "npc_classmate_kim",
+            "ja": "キムさん：また一緒に料理しようね。",
+            "vi": "Kim: Lại nấu ăn cùng nhau nhé.",
+            "en": "Kim: Let's cook together again.",
+            "ru": "Ким: Давай снова готовить вместе.",
+            "flag": "story_bond_npc_classmate_kim"
+          },
+          {
+            "speaker": "npc_ganhngon_manager",
+            "ja": "マイさん：ガンゴンはいつでもあなたの家よ。",
+            "vi": "Chị Mai: Gánh Ngon luôn là nhà của em.",
+            "en": "Mai: Gánh Ngon is always your home.",
+            "ru": "Май: «Ганьнгон» — всегда твой дом.",
+            "flag": "story_bond_npc_ganhngon_manager"
+          },
+          {
+            "speaker": "npc_sushi_staff",
+            "ja": "大将：のれんはいつでも開いてるぞ。",
+            "vi": "Bác Aoki: Rèm noren lúc nào cũng mở chờ cháu.",
+            "en": "Aoki: The noren is always open for you.",
+            "ru": "Аоки: Норэн для тебя всегда открыт.",
+            "flag": "story_bond_npc_sushi_staff"
+          },
+          {
+            "speaker": "narrator",
+            "ja": "ひばり町の物語は終わらない。新しい一日が始まる。",
+            "vi": "Câu chuyện Hibari-chō không kết thúc. Một ngày mới bắt đầu.",
+            "en": "The story of Hibari-chō does not end. A new day begins.",
+            "ru": "История Хибари-тё не заканчивается. Начинается новый день."
+          }
+        ]
+      }
     }
   ],
   "arcs": [
@@ -558,7 +1240,75 @@
               "en": "Well done. Come again tomorrow.",
               "ru": "Отлично. Приходи и завтра."
             }
-          ]
+          ],
+          "cutscene": {
+            "prompt": {
+              "speaker": "npc_ganhngon_manager",
+              "ja": "最初の一週間、どうだった？",
+              "vi": "Tuần đầu tiên thế nào?",
+              "en": "How was your first week?",
+              "ru": "Как прошла первая неделя?"
+            },
+            "choices": [
+              {
+                "id": "careful",
+                "ja": "ミスをしないよう、メモを取りました。",
+                "vi": "Em ghi chép để không mắc lỗi.",
+                "en": "I took notes so I wouldn't make mistakes.",
+                "ru": "Я делал заметки, чтобы не ошибаться.",
+                "flag": "story_hospitality_trainee_careful",
+                "affinity": 6,
+                "reply": {
+                  "speaker": "npc_ganhngon_manager",
+                  "ja": "そのメモは宝物になるよ。",
+                  "vi": "Cuốn sổ đó sẽ là báu vật đấy.",
+                  "en": "Those notes will become a treasure.",
+                  "ru": "Эти заметки станут сокровищем."
+                }
+              },
+              {
+                "id": "cheerful",
+                "ja": "お客さまと話すのが楽しかったです。",
+                "vi": "Nói chuyện với khách vui lắm ạ.",
+                "en": "I enjoyed talking with customers.",
+                "ru": "Мне понравилось говорить с клиентами.",
+                "flag": "story_hospitality_trainee_cheerful",
+                "affinity": 6,
+                "reply": {
+                  "speaker": "npc_ganhngon_manager",
+                  "ja": "その笑顔がいちばんの戦力だ。",
+                  "vi": "Nụ cười đó là vũ khí mạnh nhất.",
+                  "en": "That smile is your best asset.",
+                  "ru": "Эта улыбка — твоё главное оружие."
+                }
+              },
+              {
+                "id": "tired",
+                "ja": "正直、つかれました。",
+                "vi": "Thật lòng là em mệt ạ.",
+                "en": "Honestly, I'm tired.",
+                "ru": "Честно говоря, я устал.",
+                "flag": "story_hospitality_trainee_tired",
+                "affinity": 4,
+                "reply": {
+                  "speaker": "npc_ganhngon_manager",
+                  "ja": "正直でいい。休むのも仕事だよ。",
+                  "vi": "Thật thà là tốt. Nghỉ ngơi cũng là công việc.",
+                  "en": "Honesty is good. Resting is part of the job.",
+                  "ru": "Честность — это хорошо. Отдых — тоже работа."
+                }
+              }
+            ],
+            "ending": [
+              {
+                "speaker": "narrator",
+                "ja": "見習いの名札に、小さな星がついた。",
+                "vi": "Bảng tên thực tập sinh được gắn một ngôi sao nhỏ.",
+                "en": "A small star is added to your trainee badge.",
+                "ru": "На бейдж стажёра добавилась маленькая звёздочка."
+              }
+            ]
+          }
         },
         {
           "tier": "staff",
@@ -595,7 +1345,75 @@
               "en": "The tour guide praised you.",
               "ru": "Гид тебя хвалил."
             }
-          ]
+          ],
+          "cutscene": {
+            "prompt": {
+              "speaker": "npc_ganhngon_manager",
+              "ja": "お客さまからクレームが来た。どうする？",
+              "vi": "Có khách phàn nàn. Em làm gì?",
+              "en": "A customer complains. What do you do?",
+              "ru": "Клиент жалуется. Что вы сделаете?"
+            },
+            "choices": [
+              {
+                "id": "apologize",
+                "ja": "まず心からおわびします。",
+                "vi": "Trước hết xin lỗi thật lòng.",
+                "en": "Apologise sincerely first.",
+                "ru": "Сначала искренне извинюсь.",
+                "flag": "story_hospitality_staff_apologize",
+                "affinity": 6,
+                "reply": {
+                  "speaker": "npc_ganhngon_manager",
+                  "ja": "それが基本だ。よく見ていたね。",
+                  "vi": "Đó là điều cơ bản. Em quan sát giỏi đấy.",
+                  "en": "That's the basics. You've been watching.",
+                  "ru": "Это основа. Ты внимательно учился."
+                }
+              },
+              {
+                "id": "listen",
+                "ja": "最後まで話を聞きます。",
+                "vi": "Lắng nghe đến hết.",
+                "en": "Listen to the end.",
+                "ru": "Выслушаю до конца.",
+                "flag": "story_hospitality_staff_listen",
+                "affinity": 7,
+                "reply": {
+                  "speaker": "npc_ganhngon_manager",
+                  "ja": "聞く力は、日本語の力でもある。",
+                  "vi": "Biết lắng nghe cũng là giỏi tiếng Nhật.",
+                  "en": "Listening is a language skill too.",
+                  "ru": "Умение слушать — тоже языковой навык."
+                }
+              },
+              {
+                "id": "boss",
+                "ja": "すぐに先輩を呼びます。",
+                "vi": "Gọi ngay tiền bối.",
+                "en": "Call a senior right away.",
+                "ru": "Сразу позову старшего.",
+                "flag": "story_hospitality_staff_boss",
+                "affinity": 5,
+                "reply": {
+                  "speaker": "npc_ganhngon_manager",
+                  "ja": "相談するのは正しい判断だ。",
+                  "vi": "Hỏi ý kiến là quyết định đúng.",
+                  "en": "Asking for help was the right call.",
+                  "ru": "Попросить помощи — верное решение."
+                }
+              }
+            ],
+            "ending": [
+              {
+                "speaker": "narrator",
+                "ja": "「ありがとう、また来ます」とお客さまが言った。",
+                "vi": "Khách nói: 'Cảm ơn, tôi sẽ quay lại'.",
+                "en": "The customer says: thank you, I'll come again.",
+                "ru": "Клиент говорит: «Спасибо, приду ещё»."
+              }
+            ]
+          }
         },
         {
           "tier": "senior",
@@ -632,7 +1450,75 @@
               "en": "Teach the new staff too.",
               "ru": "Научи и новичков."
             }
-          ]
+          ],
+          "cutscene": {
+            "prompt": {
+              "speaker": "npc_ganhngon_manager",
+              "ja": "新人が泣きそうになっている。",
+              "vi": "Người mới sắp khóc rồi.",
+              "en": "The new trainee is close to tears.",
+              "ru": "Новичок вот-вот расплачется."
+            },
+            "choices": [
+              {
+                "id": "teach",
+                "ja": "いっしょにやり方を見直します。",
+                "vi": "Cùng xem lại cách làm.",
+                "en": "Go over the steps together.",
+                "ru": "Вместе разберу порядок работы.",
+                "flag": "story_hospitality_senior_teach",
+                "affinity": 8,
+                "reply": {
+                  "speaker": "npc_ganhngon_manager",
+                  "ja": "昔のあなたを見ているようだ。",
+                  "vi": "Như thấy lại em ngày trước vậy.",
+                  "en": "It's like watching you back then.",
+                  "ru": "Будто вижу тебя в начале."
+                }
+              },
+              {
+                "id": "story",
+                "ja": "自分の失敗の話をします。",
+                "vi": "Kể chuyện thất bại của mình.",
+                "en": "Tell them about my own mistakes.",
+                "ru": "Расскажу о своих ошибках.",
+                "flag": "story_hospitality_senior_story",
+                "affinity": 7,
+                "reply": {
+                  "speaker": "npc_ganhngon_manager",
+                  "ja": "失敗を話せる人は強い。",
+                  "vi": "Người dám kể thất bại là người mạnh.",
+                  "en": "People who share failures are strong.",
+                  "ru": "Кто говорит о неудачах — тот силён."
+                }
+              },
+              {
+                "id": "cover",
+                "ja": "今日は私が代わります。",
+                "vi": "Hôm nay để em làm thay.",
+                "en": "I'll cover for them today.",
+                "ru": "Сегодня подменю его.",
+                "flag": "story_hospitality_senior_cover",
+                "affinity": 4,
+                "reply": {
+                  "speaker": "npc_ganhngon_manager",
+                  "ja": "やさしいね。でも次は教えてあげて。",
+                  "vi": "Em tốt bụng. Nhưng lần sau hãy dạy họ nhé.",
+                  "en": "Kind. But next time, teach them.",
+                  "ru": "Добрый поступок. Но в следующий раз научи."
+                }
+              }
+            ],
+            "ending": [
+              {
+                "speaker": "narrator",
+                "ja": "新人が「先輩」と呼んでくれた。",
+                "vi": "Người mới gọi bạn là 'senpai'.",
+                "en": "The trainee calls you senpai.",
+                "ru": "Новичок называет вас «сэмпай»."
+              }
+            ]
+          }
         },
         {
           "tier": "manager",
@@ -669,7 +1555,75 @@
               "en": "Sales are up twenty percent on last month!",
               "ru": "Выручка выросла на двадцать процентов по сравнению с прошлым месяцем!"
             }
-          ]
+          ],
+          "cutscene": {
+            "prompt": {
+              "speaker": "npc_ganhngon_manager",
+              "ja": "売り上げが落ちた。何を変える？",
+              "vi": "Doanh thu giảm. Em thay đổi gì?",
+              "en": "Sales are down. What will you change?",
+              "ru": "Продажи упали. Что вы измените?"
+            },
+            "choices": [
+              {
+                "id": "team",
+                "ja": "スタッフの意見を聞きます。",
+                "vi": "Lắng nghe ý kiến nhân viên.",
+                "en": "Ask the staff for ideas.",
+                "ru": "Спрошу мнение сотрудников.",
+                "flag": "story_hospitality_manager_team",
+                "affinity": 8,
+                "reply": {
+                  "speaker": "npc_ganhngon_manager",
+                  "ja": "チームはあなたを信じている。",
+                  "vi": "Cả đội tin em.",
+                  "en": "The team trusts you.",
+                  "ru": "Команда тебе доверяет."
+                }
+              },
+              {
+                "id": "new",
+                "ja": "新しいメニューやサービスを作ります。",
+                "vi": "Làm thực đơn, dịch vụ mới.",
+                "en": "Create a new menu or service.",
+                "ru": "Создам новое меню или услугу.",
+                "flag": "story_hospitality_manager_new",
+                "affinity": 6,
+                "reply": {
+                  "speaker": "npc_ganhngon_manager",
+                  "ja": "思い切りがいい。やってみなさい。",
+                  "vi": "Quyết đoán đấy. Cứ thử đi.",
+                  "en": "Bold. Go for it.",
+                  "ru": "Смело. Попробуй."
+                }
+              },
+              {
+                "id": "guests",
+                "ja": "常連さんに話を聞きに行きます。",
+                "vi": "Đi hỏi chuyện khách quen.",
+                "en": "Go and ask the regulars.",
+                "ru": "Поговорю с постоянными клиентами.",
+                "flag": "story_hospitality_manager_guests",
+                "affinity": 7,
+                "reply": {
+                  "speaker": "npc_ganhngon_manager",
+                  "ja": "答えはいつもお客さまの中にある。",
+                  "vi": "Câu trả lời luôn ở nơi khách hàng.",
+                  "en": "The answer is always with the customers.",
+                  "ru": "Ответ всегда у клиентов."
+                }
+              }
+            ],
+            "ending": [
+              {
+                "speaker": "narrator",
+                "ja": "三か月後、売り上げは前より上がった。",
+                "vi": "Ba tháng sau, doanh thu vượt cả trước kia.",
+                "en": "Three months later, sales are higher than ever.",
+                "ru": "Через три месяца продажи выше прежнего."
+              }
+            ]
+          }
         },
         {
           "tier": "owner",
@@ -706,7 +1660,99 @@
               "en": "Do you still have the apron from your first day?",
               "ru": "Ты ещё хранишь фартук с первого дня?"
             }
-          ]
+          ],
+          "cutscene": {
+            "prompt": {
+              "speaker": "npc_ganhngon_manager",
+              "ja": "この仕事で、何を残したい？",
+              "vi": "Em muốn để lại gì qua công việc này?",
+              "en": "What do you want to leave behind through this work?",
+              "ru": "Что вы хотите оставить после себя в этой работе?"
+            },
+            "choices": [
+              {
+                "id": "people",
+                "ja": "人を育てたいです。",
+                "vi": "Em muốn đào tạo con người.",
+                "en": "I want to raise the next people.",
+                "ru": "Хочу растить людей.",
+                "flag": "story_hospitality_owner_people",
+                "affinity": 10,
+                "reply": {
+                  "speaker": "npc_ganhngon_manager",
+                  "ja": "あなたが一番の財産を選んだ。",
+                  "vi": "Em đã chọn tài sản quý nhất.",
+                  "en": "You chose the greatest treasure.",
+                  "ru": "Ты выбрал главное сокровище."
+                }
+              },
+              {
+                "id": "quality",
+                "ja": "最高の仕事を続けたいです。",
+                "vi": "Em muốn giữ chất lượng tốt nhất.",
+                "en": "I want to keep doing the very best work.",
+                "ru": "Хочу продолжать делать лучшую работу.",
+                "flag": "story_hospitality_owner_quality",
+                "affinity": 8,
+                "reply": {
+                  "speaker": "npc_ganhngon_manager",
+                  "ja": "その心があれば、看板は守れる。",
+                  "vi": "Có tấm lòng đó, bảng hiệu sẽ được giữ.",
+                  "en": "With that heart, the name will last.",
+                  "ru": "С таким сердцем имя будет жить."
+                }
+              },
+              {
+                "id": "bridge",
+                "ja": "日本とベトナムをつなぎたいです。",
+                "vi": "Em muốn nối Nhật Bản và Việt Nam.",
+                "en": "I want to link Japan and Vietnam.",
+                "ru": "Хочу связать Японию и Вьетнам.",
+                "flag": "story_hospitality_owner_bridge",
+                "affinity": 8,
+                "reply": {
+                  "speaker": "npc_ganhngon_manager",
+                  "ja": "あなたにしかできないことだ。",
+                  "vi": "Đó là việc chỉ em làm được.",
+                  "en": "Only you can do that.",
+                  "ru": "Это можешь только ты."
+                }
+              }
+            ],
+            "ending": [
+              {
+                "speaker": "narrator",
+                "ja": "あの日の見習いが、今は看板を背負っている。",
+                "vi": "Cậu thực tập sinh ngày ấy, giờ gánh cả bảng hiệu.",
+                "en": "The trainee of that first day now carries the whole business.",
+                "ru": "Стажёр того первого дня теперь несёт на себе всё дело."
+              },
+              {
+                "speaker": "npc_ganhngon_manager",
+                "ja": "見習いのころのメモ、まだ持っているね。",
+                "vi": "Cuốn sổ thời thực tập, em vẫn giữ nhỉ.",
+                "en": "You still keep your trainee notebook.",
+                "ru": "Ты всё ещё хранишь тетрадь стажёра.",
+                "flag": "story_hospitality_trainee_careful"
+              },
+              {
+                "speaker": "npc_ganhngon_manager",
+                "ja": "あの笑顔は、今もお店の顔だ。",
+                "vi": "Nụ cười ấy vẫn là bộ mặt của cửa hàng.",
+                "en": "That smile is still the face of the place.",
+                "ru": "Эта улыбка по-прежнему лицо заведения.",
+                "flag": "story_hospitality_trainee_cheerful"
+              },
+              {
+                "speaker": "npc_ganhngon_manager",
+                "ja": "つかれたと言えた日から、ずいぶん強くなった。",
+                "vi": "Từ ngày dám nói 'em mệt', em đã mạnh mẽ hơn nhiều.",
+                "en": "Since the day you admitted you were tired, you've grown strong.",
+                "ru": "С того дня, как ты признался в усталости, ты стал сильным.",
+                "flag": "story_hospitality_trainee_tired"
+              }
+            ]
+          }
         }
       ]
     },
@@ -750,7 +1796,75 @@
               "en": "Reception is the face of the clinic.",
               "ru": "Регистратура — лицо клиники."
             }
-          ]
+          ],
+          "cutscene": {
+            "prompt": {
+              "speaker": "npc_clinic_doctor",
+              "ja": "最初の一週間、どうだった？",
+              "vi": "Tuần đầu tiên thế nào?",
+              "en": "How was your first week?",
+              "ru": "Как прошла первая неделя?"
+            },
+            "choices": [
+              {
+                "id": "careful",
+                "ja": "ミスをしないよう、メモを取りました。",
+                "vi": "Em ghi chép để không mắc lỗi.",
+                "en": "I took notes so I wouldn't make mistakes.",
+                "ru": "Я делал заметки, чтобы не ошибаться.",
+                "flag": "story_medical_trainee_careful",
+                "affinity": 6,
+                "reply": {
+                  "speaker": "npc_clinic_doctor",
+                  "ja": "そのメモは宝物になるよ。",
+                  "vi": "Cuốn sổ đó sẽ là báu vật đấy.",
+                  "en": "Those notes will become a treasure.",
+                  "ru": "Эти заметки станут сокровищем."
+                }
+              },
+              {
+                "id": "cheerful",
+                "ja": "お客さまと話すのが楽しかったです。",
+                "vi": "Nói chuyện với khách vui lắm ạ.",
+                "en": "I enjoyed talking with customers.",
+                "ru": "Мне понравилось говорить с клиентами.",
+                "flag": "story_medical_trainee_cheerful",
+                "affinity": 6,
+                "reply": {
+                  "speaker": "npc_clinic_doctor",
+                  "ja": "その笑顔がいちばんの戦力だ。",
+                  "vi": "Nụ cười đó là vũ khí mạnh nhất.",
+                  "en": "That smile is your best asset.",
+                  "ru": "Эта улыбка — твоё главное оружие."
+                }
+              },
+              {
+                "id": "tired",
+                "ja": "正直、つかれました。",
+                "vi": "Thật lòng là em mệt ạ.",
+                "en": "Honestly, I'm tired.",
+                "ru": "Честно говоря, я устал.",
+                "flag": "story_medical_trainee_tired",
+                "affinity": 4,
+                "reply": {
+                  "speaker": "npc_clinic_doctor",
+                  "ja": "正直でいい。休むのも仕事だよ。",
+                  "vi": "Thật thà là tốt. Nghỉ ngơi cũng là công việc.",
+                  "en": "Honesty is good. Resting is part of the job.",
+                  "ru": "Честность — это хорошо. Отдых — тоже работа."
+                }
+              }
+            ],
+            "ending": [
+              {
+                "speaker": "narrator",
+                "ja": "見習いの名札に、小さな星がついた。",
+                "vi": "Bảng tên thực tập sinh được gắn một ngôi sao nhỏ.",
+                "en": "A small star is added to your trainee badge.",
+                "ru": "На бейдж стажёра добавилась маленькая звёздочка."
+              }
+            ]
+          }
         },
         {
           "tier": "staff",
@@ -787,7 +1901,75 @@
               "en": "Check the numbers twice.",
               "ru": "Цифры проверяй дважды."
             }
-          ]
+          ],
+          "cutscene": {
+            "prompt": {
+              "speaker": "npc_clinic_doctor",
+              "ja": "お客さまからクレームが来た。どうする？",
+              "vi": "Có khách phàn nàn. Em làm gì?",
+              "en": "A customer complains. What do you do?",
+              "ru": "Клиент жалуется. Что вы сделаете?"
+            },
+            "choices": [
+              {
+                "id": "apologize",
+                "ja": "まず心からおわびします。",
+                "vi": "Trước hết xin lỗi thật lòng.",
+                "en": "Apologise sincerely first.",
+                "ru": "Сначала искренне извинюсь.",
+                "flag": "story_medical_staff_apologize",
+                "affinity": 6,
+                "reply": {
+                  "speaker": "npc_clinic_doctor",
+                  "ja": "それが基本だ。よく見ていたね。",
+                  "vi": "Đó là điều cơ bản. Em quan sát giỏi đấy.",
+                  "en": "That's the basics. You've been watching.",
+                  "ru": "Это основа. Ты внимательно учился."
+                }
+              },
+              {
+                "id": "listen",
+                "ja": "最後まで話を聞きます。",
+                "vi": "Lắng nghe đến hết.",
+                "en": "Listen to the end.",
+                "ru": "Выслушаю до конца.",
+                "flag": "story_medical_staff_listen",
+                "affinity": 7,
+                "reply": {
+                  "speaker": "npc_clinic_doctor",
+                  "ja": "聞く力は、日本語の力でもある。",
+                  "vi": "Biết lắng nghe cũng là giỏi tiếng Nhật.",
+                  "en": "Listening is a language skill too.",
+                  "ru": "Умение слушать — тоже языковой навык."
+                }
+              },
+              {
+                "id": "boss",
+                "ja": "すぐに先輩を呼びます。",
+                "vi": "Gọi ngay tiền bối.",
+                "en": "Call a senior right away.",
+                "ru": "Сразу позову старшего.",
+                "flag": "story_medical_staff_boss",
+                "affinity": 5,
+                "reply": {
+                  "speaker": "npc_clinic_doctor",
+                  "ja": "相談するのは正しい判断だ。",
+                  "vi": "Hỏi ý kiến là quyết định đúng.",
+                  "en": "Asking for help was the right call.",
+                  "ru": "Попросить помощи — верное решение."
+                }
+              }
+            ],
+            "ending": [
+              {
+                "speaker": "narrator",
+                "ja": "「ありがとう、また来ます」とお客さまが言った。",
+                "vi": "Khách nói: 'Cảm ơn, tôi sẽ quay lại'.",
+                "en": "The customer says: thank you, I'll come again.",
+                "ru": "Клиент говорит: «Спасибо, приду ещё»."
+              }
+            ]
+          }
         },
         {
           "tier": "senior",
@@ -824,7 +2006,75 @@
               "en": "Good question. That's a doctor's eye.",
               "ru": "Хороший вопрос. Это взгляд врача."
             }
-          ]
+          ],
+          "cutscene": {
+            "prompt": {
+              "speaker": "npc_clinic_doctor",
+              "ja": "新人が泣きそうになっている。",
+              "vi": "Người mới sắp khóc rồi.",
+              "en": "The new trainee is close to tears.",
+              "ru": "Новичок вот-вот расплачется."
+            },
+            "choices": [
+              {
+                "id": "teach",
+                "ja": "いっしょにやり方を見直します。",
+                "vi": "Cùng xem lại cách làm.",
+                "en": "Go over the steps together.",
+                "ru": "Вместе разберу порядок работы.",
+                "flag": "story_medical_senior_teach",
+                "affinity": 8,
+                "reply": {
+                  "speaker": "npc_clinic_doctor",
+                  "ja": "昔のあなたを見ているようだ。",
+                  "vi": "Như thấy lại em ngày trước vậy.",
+                  "en": "It's like watching you back then.",
+                  "ru": "Будто вижу тебя в начале."
+                }
+              },
+              {
+                "id": "story",
+                "ja": "自分の失敗の話をします。",
+                "vi": "Kể chuyện thất bại của mình.",
+                "en": "Tell them about my own mistakes.",
+                "ru": "Расскажу о своих ошибках.",
+                "flag": "story_medical_senior_story",
+                "affinity": 7,
+                "reply": {
+                  "speaker": "npc_clinic_doctor",
+                  "ja": "失敗を話せる人は強い。",
+                  "vi": "Người dám kể thất bại là người mạnh.",
+                  "en": "People who share failures are strong.",
+                  "ru": "Кто говорит о неудачах — тот силён."
+                }
+              },
+              {
+                "id": "cover",
+                "ja": "今日は私が代わります。",
+                "vi": "Hôm nay để em làm thay.",
+                "en": "I'll cover for them today.",
+                "ru": "Сегодня подменю его.",
+                "flag": "story_medical_senior_cover",
+                "affinity": 4,
+                "reply": {
+                  "speaker": "npc_clinic_doctor",
+                  "ja": "やさしいね。でも次は教えてあげて。",
+                  "vi": "Em tốt bụng. Nhưng lần sau hãy dạy họ nhé.",
+                  "en": "Kind. But next time, teach them.",
+                  "ru": "Добрый поступок. Но в следующий раз научи."
+                }
+              }
+            ],
+            "ending": [
+              {
+                "speaker": "narrator",
+                "ja": "新人が「先輩」と呼んでくれた。",
+                "vi": "Người mới gọi bạn là 'senpai'.",
+                "en": "The trainee calls you senpai.",
+                "ru": "Новичок называет вас «сэмпай»."
+              }
+            ]
+          }
         },
         {
           "tier": "manager",
@@ -861,7 +2111,75 @@
               "en": "Explain things in the patient's words.",
               "ru": "Объясняй словами пациента."
             }
-          ]
+          ],
+          "cutscene": {
+            "prompt": {
+              "speaker": "npc_clinic_doctor",
+              "ja": "売り上げが落ちた。何を変える？",
+              "vi": "Doanh thu giảm. Em thay đổi gì?",
+              "en": "Sales are down. What will you change?",
+              "ru": "Продажи упали. Что вы измените?"
+            },
+            "choices": [
+              {
+                "id": "team",
+                "ja": "スタッフの意見を聞きます。",
+                "vi": "Lắng nghe ý kiến nhân viên.",
+                "en": "Ask the staff for ideas.",
+                "ru": "Спрошу мнение сотрудников.",
+                "flag": "story_medical_manager_team",
+                "affinity": 8,
+                "reply": {
+                  "speaker": "npc_clinic_doctor",
+                  "ja": "チームはあなたを信じている。",
+                  "vi": "Cả đội tin em.",
+                  "en": "The team trusts you.",
+                  "ru": "Команда тебе доверяет."
+                }
+              },
+              {
+                "id": "new",
+                "ja": "新しいメニューやサービスを作ります。",
+                "vi": "Làm thực đơn, dịch vụ mới.",
+                "en": "Create a new menu or service.",
+                "ru": "Создам новое меню или услугу.",
+                "flag": "story_medical_manager_new",
+                "affinity": 6,
+                "reply": {
+                  "speaker": "npc_clinic_doctor",
+                  "ja": "思い切りがいい。やってみなさい。",
+                  "vi": "Quyết đoán đấy. Cứ thử đi.",
+                  "en": "Bold. Go for it.",
+                  "ru": "Смело. Попробуй."
+                }
+              },
+              {
+                "id": "guests",
+                "ja": "常連さんに話を聞きに行きます。",
+                "vi": "Đi hỏi chuyện khách quen.",
+                "en": "Go and ask the regulars.",
+                "ru": "Поговорю с постоянными клиентами.",
+                "flag": "story_medical_manager_guests",
+                "affinity": 7,
+                "reply": {
+                  "speaker": "npc_clinic_doctor",
+                  "ja": "答えはいつもお客さまの中にある。",
+                  "vi": "Câu trả lời luôn ở nơi khách hàng.",
+                  "en": "The answer is always with the customers.",
+                  "ru": "Ответ всегда у клиентов."
+                }
+              }
+            ],
+            "ending": [
+              {
+                "speaker": "narrator",
+                "ja": "三か月後、売り上げは前より上がった。",
+                "vi": "Ba tháng sau, doanh thu vượt cả trước kia.",
+                "en": "Three months later, sales are higher than ever.",
+                "ru": "Через три месяца продажи выше прежнего."
+              }
+            ]
+          }
         },
         {
           "tier": "owner",
@@ -898,7 +2216,99 @@
               "en": "Don't forget the day you started at reception.",
               "ru": "Не забывай день, когда ты начинал в регистратуре."
             }
-          ]
+          ],
+          "cutscene": {
+            "prompt": {
+              "speaker": "npc_clinic_doctor",
+              "ja": "この仕事で、何を残したい？",
+              "vi": "Em muốn để lại gì qua công việc này?",
+              "en": "What do you want to leave behind through this work?",
+              "ru": "Что вы хотите оставить после себя в этой работе?"
+            },
+            "choices": [
+              {
+                "id": "people",
+                "ja": "人を育てたいです。",
+                "vi": "Em muốn đào tạo con người.",
+                "en": "I want to raise the next people.",
+                "ru": "Хочу растить людей.",
+                "flag": "story_medical_owner_people",
+                "affinity": 10,
+                "reply": {
+                  "speaker": "npc_clinic_doctor",
+                  "ja": "あなたが一番の財産を選んだ。",
+                  "vi": "Em đã chọn tài sản quý nhất.",
+                  "en": "You chose the greatest treasure.",
+                  "ru": "Ты выбрал главное сокровище."
+                }
+              },
+              {
+                "id": "quality",
+                "ja": "最高の仕事を続けたいです。",
+                "vi": "Em muốn giữ chất lượng tốt nhất.",
+                "en": "I want to keep doing the very best work.",
+                "ru": "Хочу продолжать делать лучшую работу.",
+                "flag": "story_medical_owner_quality",
+                "affinity": 8,
+                "reply": {
+                  "speaker": "npc_clinic_doctor",
+                  "ja": "その心があれば、看板は守れる。",
+                  "vi": "Có tấm lòng đó, bảng hiệu sẽ được giữ.",
+                  "en": "With that heart, the name will last.",
+                  "ru": "С таким сердцем имя будет жить."
+                }
+              },
+              {
+                "id": "bridge",
+                "ja": "日本とベトナムをつなぎたいです。",
+                "vi": "Em muốn nối Nhật Bản và Việt Nam.",
+                "en": "I want to link Japan and Vietnam.",
+                "ru": "Хочу связать Японию и Вьетнам.",
+                "flag": "story_medical_owner_bridge",
+                "affinity": 8,
+                "reply": {
+                  "speaker": "npc_clinic_doctor",
+                  "ja": "あなたにしかできないことだ。",
+                  "vi": "Đó là việc chỉ em làm được.",
+                  "en": "Only you can do that.",
+                  "ru": "Это можешь только ты."
+                }
+              }
+            ],
+            "ending": [
+              {
+                "speaker": "narrator",
+                "ja": "あの日の見習いが、今は看板を背負っている。",
+                "vi": "Cậu thực tập sinh ngày ấy, giờ gánh cả bảng hiệu.",
+                "en": "The trainee of that first day now carries the whole business.",
+                "ru": "Стажёр того первого дня теперь несёт на себе всё дело."
+              },
+              {
+                "speaker": "npc_clinic_doctor",
+                "ja": "見習いのころのメモ、まだ持っているね。",
+                "vi": "Cuốn sổ thời thực tập, em vẫn giữ nhỉ.",
+                "en": "You still keep your trainee notebook.",
+                "ru": "Ты всё ещё хранишь тетрадь стажёра.",
+                "flag": "story_medical_trainee_careful"
+              },
+              {
+                "speaker": "npc_clinic_doctor",
+                "ja": "あの笑顔は、今もお店の顔だ。",
+                "vi": "Nụ cười ấy vẫn là bộ mặt của cửa hàng.",
+                "en": "That smile is still the face of the place.",
+                "ru": "Эта улыбка по-прежнему лицо заведения.",
+                "flag": "story_medical_trainee_cheerful"
+              },
+              {
+                "speaker": "npc_clinic_doctor",
+                "ja": "つかれたと言えた日から、ずいぶん強くなった。",
+                "vi": "Từ ngày dám nói 'em mệt', em đã mạnh mẽ hơn nhiều.",
+                "en": "Since the day you admitted you were tired, you've grown strong.",
+                "ru": "С того дня, как ты признался в усталости, ты стал сильным.",
+                "flag": "story_medical_trainee_tired"
+              }
+            ]
+          }
         }
       ]
     },
@@ -942,7 +2352,75 @@
               "en": "Great for a first day!",
               "ru": "Отлично для первого дня!"
             }
-          ]
+          ],
+          "cutscene": {
+            "prompt": {
+              "speaker": "npc_cashier",
+              "ja": "最初の一週間、どうだった？",
+              "vi": "Tuần đầu tiên thế nào?",
+              "en": "How was your first week?",
+              "ru": "Как прошла первая неделя?"
+            },
+            "choices": [
+              {
+                "id": "careful",
+                "ja": "ミスをしないよう、メモを取りました。",
+                "vi": "Em ghi chép để không mắc lỗi.",
+                "en": "I took notes so I wouldn't make mistakes.",
+                "ru": "Я делал заметки, чтобы не ошибаться.",
+                "flag": "story_retail_trainee_careful",
+                "affinity": 6,
+                "reply": {
+                  "speaker": "npc_cashier",
+                  "ja": "そのメモは宝物になるよ。",
+                  "vi": "Cuốn sổ đó sẽ là báu vật đấy.",
+                  "en": "Those notes will become a treasure.",
+                  "ru": "Эти заметки станут сокровищем."
+                }
+              },
+              {
+                "id": "cheerful",
+                "ja": "お客さまと話すのが楽しかったです。",
+                "vi": "Nói chuyện với khách vui lắm ạ.",
+                "en": "I enjoyed talking with customers.",
+                "ru": "Мне понравилось говорить с клиентами.",
+                "flag": "story_retail_trainee_cheerful",
+                "affinity": 6,
+                "reply": {
+                  "speaker": "npc_cashier",
+                  "ja": "その笑顔がいちばんの戦力だ。",
+                  "vi": "Nụ cười đó là vũ khí mạnh nhất.",
+                  "en": "That smile is your best asset.",
+                  "ru": "Эта улыбка — твоё главное оружие."
+                }
+              },
+              {
+                "id": "tired",
+                "ja": "正直、つかれました。",
+                "vi": "Thật lòng là em mệt ạ.",
+                "en": "Honestly, I'm tired.",
+                "ru": "Честно говоря, я устал.",
+                "flag": "story_retail_trainee_tired",
+                "affinity": 4,
+                "reply": {
+                  "speaker": "npc_cashier",
+                  "ja": "正直でいい。休むのも仕事だよ。",
+                  "vi": "Thật thà là tốt. Nghỉ ngơi cũng là công việc.",
+                  "en": "Honesty is good. Resting is part of the job.",
+                  "ru": "Честность — это хорошо. Отдых — тоже работа."
+                }
+              }
+            ],
+            "ending": [
+              {
+                "speaker": "narrator",
+                "ja": "見習いの名札に、小さな星がついた。",
+                "vi": "Bảng tên thực tập sinh được gắn một ngôi sao nhỏ.",
+                "en": "A small star is added to your trainee badge.",
+                "ru": "На бейдж стажёра добавилась маленькая звёздочка."
+              }
+            ]
+          }
         },
         {
           "tier": "staff",
@@ -979,7 +2457,75 @@
               "en": "Knowing names makes a shop warm.",
               "ru": "Когда помнишь имена, в магазине теплее."
             }
-          ]
+          ],
+          "cutscene": {
+            "prompt": {
+              "speaker": "npc_cashier",
+              "ja": "お客さまからクレームが来た。どうする？",
+              "vi": "Có khách phàn nàn. Em làm gì?",
+              "en": "A customer complains. What do you do?",
+              "ru": "Клиент жалуется. Что вы сделаете?"
+            },
+            "choices": [
+              {
+                "id": "apologize",
+                "ja": "まず心からおわびします。",
+                "vi": "Trước hết xin lỗi thật lòng.",
+                "en": "Apologise sincerely first.",
+                "ru": "Сначала искренне извинюсь.",
+                "flag": "story_retail_staff_apologize",
+                "affinity": 6,
+                "reply": {
+                  "speaker": "npc_cashier",
+                  "ja": "それが基本だ。よく見ていたね。",
+                  "vi": "Đó là điều cơ bản. Em quan sát giỏi đấy.",
+                  "en": "That's the basics. You've been watching.",
+                  "ru": "Это основа. Ты внимательно учился."
+                }
+              },
+              {
+                "id": "listen",
+                "ja": "最後まで話を聞きます。",
+                "vi": "Lắng nghe đến hết.",
+                "en": "Listen to the end.",
+                "ru": "Выслушаю до конца.",
+                "flag": "story_retail_staff_listen",
+                "affinity": 7,
+                "reply": {
+                  "speaker": "npc_cashier",
+                  "ja": "聞く力は、日本語の力でもある。",
+                  "vi": "Biết lắng nghe cũng là giỏi tiếng Nhật.",
+                  "en": "Listening is a language skill too.",
+                  "ru": "Умение слушать — тоже языковой навык."
+                }
+              },
+              {
+                "id": "boss",
+                "ja": "すぐに先輩を呼びます。",
+                "vi": "Gọi ngay tiền bối.",
+                "en": "Call a senior right away.",
+                "ru": "Сразу позову старшего.",
+                "flag": "story_retail_staff_boss",
+                "affinity": 5,
+                "reply": {
+                  "speaker": "npc_cashier",
+                  "ja": "相談するのは正しい判断だ。",
+                  "vi": "Hỏi ý kiến là quyết định đúng.",
+                  "en": "Asking for help was the right call.",
+                  "ru": "Попросить помощи — верное решение."
+                }
+              }
+            ],
+            "ending": [
+              {
+                "speaker": "narrator",
+                "ja": "「ありがとう、また来ます」とお客さまが言った。",
+                "vi": "Khách nói: 'Cảm ơn, tôi sẽ quay lại'.",
+                "en": "The customer says: thank you, I'll come again.",
+                "ru": "Клиент говорит: «Спасибо, приду ещё»."
+              }
+            ]
+          }
         },
         {
           "tier": "senior",
@@ -1016,7 +2562,75 @@
               "en": "With you here I can relax.",
               "ru": "С тобой я спокойна."
             }
-          ]
+          ],
+          "cutscene": {
+            "prompt": {
+              "speaker": "npc_cashier",
+              "ja": "新人が泣きそうになっている。",
+              "vi": "Người mới sắp khóc rồi.",
+              "en": "The new trainee is close to tears.",
+              "ru": "Новичок вот-вот расплачется."
+            },
+            "choices": [
+              {
+                "id": "teach",
+                "ja": "いっしょにやり方を見直します。",
+                "vi": "Cùng xem lại cách làm.",
+                "en": "Go over the steps together.",
+                "ru": "Вместе разберу порядок работы.",
+                "flag": "story_retail_senior_teach",
+                "affinity": 8,
+                "reply": {
+                  "speaker": "npc_cashier",
+                  "ja": "昔のあなたを見ているようだ。",
+                  "vi": "Như thấy lại em ngày trước vậy.",
+                  "en": "It's like watching you back then.",
+                  "ru": "Будто вижу тебя в начале."
+                }
+              },
+              {
+                "id": "story",
+                "ja": "自分の失敗の話をします。",
+                "vi": "Kể chuyện thất bại của mình.",
+                "en": "Tell them about my own mistakes.",
+                "ru": "Расскажу о своих ошибках.",
+                "flag": "story_retail_senior_story",
+                "affinity": 7,
+                "reply": {
+                  "speaker": "npc_cashier",
+                  "ja": "失敗を話せる人は強い。",
+                  "vi": "Người dám kể thất bại là người mạnh.",
+                  "en": "People who share failures are strong.",
+                  "ru": "Кто говорит о неудачах — тот силён."
+                }
+              },
+              {
+                "id": "cover",
+                "ja": "今日は私が代わります。",
+                "vi": "Hôm nay để em làm thay.",
+                "en": "I'll cover for them today.",
+                "ru": "Сегодня подменю его.",
+                "flag": "story_retail_senior_cover",
+                "affinity": 4,
+                "reply": {
+                  "speaker": "npc_cashier",
+                  "ja": "やさしいね。でも次は教えてあげて。",
+                  "vi": "Em tốt bụng. Nhưng lần sau hãy dạy họ nhé.",
+                  "en": "Kind. But next time, teach them.",
+                  "ru": "Добрый поступок. Но в следующий раз научи."
+                }
+              }
+            ],
+            "ending": [
+              {
+                "speaker": "narrator",
+                "ja": "新人が「先輩」と呼んでくれた。",
+                "vi": "Người mới gọi bạn là 'senpai'.",
+                "en": "The trainee calls you senpai.",
+                "ru": "Новичок называет вас «сэмпай»."
+              }
+            ]
+          }
         },
         {
           "tier": "manager",
@@ -1053,7 +2667,75 @@
               "en": "I'm counting on you, deputy manager.",
               "ru": "Рассчитываю на тебя, заместитель."
             }
-          ]
+          ],
+          "cutscene": {
+            "prompt": {
+              "speaker": "npc_cashier",
+              "ja": "売り上げが落ちた。何を変える？",
+              "vi": "Doanh thu giảm. Em thay đổi gì?",
+              "en": "Sales are down. What will you change?",
+              "ru": "Продажи упали. Что вы измените?"
+            },
+            "choices": [
+              {
+                "id": "team",
+                "ja": "スタッフの意見を聞きます。",
+                "vi": "Lắng nghe ý kiến nhân viên.",
+                "en": "Ask the staff for ideas.",
+                "ru": "Спрошу мнение сотрудников.",
+                "flag": "story_retail_manager_team",
+                "affinity": 8,
+                "reply": {
+                  "speaker": "npc_cashier",
+                  "ja": "チームはあなたを信じている。",
+                  "vi": "Cả đội tin em.",
+                  "en": "The team trusts you.",
+                  "ru": "Команда тебе доверяет."
+                }
+              },
+              {
+                "id": "new",
+                "ja": "新しいメニューやサービスを作ります。",
+                "vi": "Làm thực đơn, dịch vụ mới.",
+                "en": "Create a new menu or service.",
+                "ru": "Создам новое меню или услугу.",
+                "flag": "story_retail_manager_new",
+                "affinity": 6,
+                "reply": {
+                  "speaker": "npc_cashier",
+                  "ja": "思い切りがいい。やってみなさい。",
+                  "vi": "Quyết đoán đấy. Cứ thử đi.",
+                  "en": "Bold. Go for it.",
+                  "ru": "Смело. Попробуй."
+                }
+              },
+              {
+                "id": "guests",
+                "ja": "常連さんに話を聞きに行きます。",
+                "vi": "Đi hỏi chuyện khách quen.",
+                "en": "Go and ask the regulars.",
+                "ru": "Поговорю с постоянными клиентами.",
+                "flag": "story_retail_manager_guests",
+                "affinity": 7,
+                "reply": {
+                  "speaker": "npc_cashier",
+                  "ja": "答えはいつもお客さまの中にある。",
+                  "vi": "Câu trả lời luôn ở nơi khách hàng.",
+                  "en": "The answer is always with the customers.",
+                  "ru": "Ответ всегда у клиентов."
+                }
+              }
+            ],
+            "ending": [
+              {
+                "speaker": "narrator",
+                "ja": "三か月後、売り上げは前より上がった。",
+                "vi": "Ba tháng sau, doanh thu vượt cả trước kia.",
+                "en": "Three months later, sales are higher than ever.",
+                "ru": "Через три месяца продажи выше прежнего."
+              }
+            ]
+          }
         },
         {
           "tier": "owner",
@@ -1090,7 +2772,99 @@
               "en": "Remember your first register?",
               "ru": "Помнишь свою первую кассу?"
             }
-          ]
+          ],
+          "cutscene": {
+            "prompt": {
+              "speaker": "npc_cashier",
+              "ja": "この仕事で、何を残したい？",
+              "vi": "Em muốn để lại gì qua công việc này?",
+              "en": "What do you want to leave behind through this work?",
+              "ru": "Что вы хотите оставить после себя в этой работе?"
+            },
+            "choices": [
+              {
+                "id": "people",
+                "ja": "人を育てたいです。",
+                "vi": "Em muốn đào tạo con người.",
+                "en": "I want to raise the next people.",
+                "ru": "Хочу растить людей.",
+                "flag": "story_retail_owner_people",
+                "affinity": 10,
+                "reply": {
+                  "speaker": "npc_cashier",
+                  "ja": "あなたが一番の財産を選んだ。",
+                  "vi": "Em đã chọn tài sản quý nhất.",
+                  "en": "You chose the greatest treasure.",
+                  "ru": "Ты выбрал главное сокровище."
+                }
+              },
+              {
+                "id": "quality",
+                "ja": "最高の仕事を続けたいです。",
+                "vi": "Em muốn giữ chất lượng tốt nhất.",
+                "en": "I want to keep doing the very best work.",
+                "ru": "Хочу продолжать делать лучшую работу.",
+                "flag": "story_retail_owner_quality",
+                "affinity": 8,
+                "reply": {
+                  "speaker": "npc_cashier",
+                  "ja": "その心があれば、看板は守れる。",
+                  "vi": "Có tấm lòng đó, bảng hiệu sẽ được giữ.",
+                  "en": "With that heart, the name will last.",
+                  "ru": "С таким сердцем имя будет жить."
+                }
+              },
+              {
+                "id": "bridge",
+                "ja": "日本とベトナムをつなぎたいです。",
+                "vi": "Em muốn nối Nhật Bản và Việt Nam.",
+                "en": "I want to link Japan and Vietnam.",
+                "ru": "Хочу связать Японию и Вьетнам.",
+                "flag": "story_retail_owner_bridge",
+                "affinity": 8,
+                "reply": {
+                  "speaker": "npc_cashier",
+                  "ja": "あなたにしかできないことだ。",
+                  "vi": "Đó là việc chỉ em làm được.",
+                  "en": "Only you can do that.",
+                  "ru": "Это можешь только ты."
+                }
+              }
+            ],
+            "ending": [
+              {
+                "speaker": "narrator",
+                "ja": "あの日の見習いが、今は看板を背負っている。",
+                "vi": "Cậu thực tập sinh ngày ấy, giờ gánh cả bảng hiệu.",
+                "en": "The trainee of that first day now carries the whole business.",
+                "ru": "Стажёр того первого дня теперь несёт на себе всё дело."
+              },
+              {
+                "speaker": "npc_cashier",
+                "ja": "見習いのころのメモ、まだ持っているね。",
+                "vi": "Cuốn sổ thời thực tập, em vẫn giữ nhỉ.",
+                "en": "You still keep your trainee notebook.",
+                "ru": "Ты всё ещё хранишь тетрадь стажёра.",
+                "flag": "story_retail_trainee_careful"
+              },
+              {
+                "speaker": "npc_cashier",
+                "ja": "あの笑顔は、今もお店の顔だ。",
+                "vi": "Nụ cười ấy vẫn là bộ mặt của cửa hàng.",
+                "en": "That smile is still the face of the place.",
+                "ru": "Эта улыбка по-прежнему лицо заведения.",
+                "flag": "story_retail_trainee_cheerful"
+              },
+              {
+                "speaker": "npc_cashier",
+                "ja": "つかれたと言えた日から、ずいぶん強くなった。",
+                "vi": "Từ ngày dám nói 'em mệt', em đã mạnh mẽ hơn nhiều.",
+                "en": "Since the day you admitted you were tired, you've grown strong.",
+                "ru": "С того дня, как ты признался в усталости, ты стал сильным.",
+                "flag": "story_retail_trainee_tired"
+              }
+            ]
+          }
         }
       ]
     },
@@ -1134,7 +2908,75 @@
               "en": "Good, tomorrow you're on the floor.",
               "ru": "Хорошо, завтра в зал."
             }
-          ]
+          ],
+          "cutscene": {
+            "prompt": {
+              "speaker": "npc_sushi_staff",
+              "ja": "最初の一週間、どうだった？",
+              "vi": "Tuần đầu tiên thế nào?",
+              "en": "How was your first week?",
+              "ru": "Как прошла первая неделя?"
+            },
+            "choices": [
+              {
+                "id": "careful",
+                "ja": "ミスをしないよう、メモを取りました。",
+                "vi": "Em ghi chép để không mắc lỗi.",
+                "en": "I took notes so I wouldn't make mistakes.",
+                "ru": "Я делал заметки, чтобы не ошибаться.",
+                "flag": "story_food_trainee_careful",
+                "affinity": 6,
+                "reply": {
+                  "speaker": "npc_sushi_staff",
+                  "ja": "そのメモは宝物になるよ。",
+                  "vi": "Cuốn sổ đó sẽ là báu vật đấy.",
+                  "en": "Those notes will become a treasure.",
+                  "ru": "Эти заметки станут сокровищем."
+                }
+              },
+              {
+                "id": "cheerful",
+                "ja": "お客さまと話すのが楽しかったです。",
+                "vi": "Nói chuyện với khách vui lắm ạ.",
+                "en": "I enjoyed talking with customers.",
+                "ru": "Мне понравилось говорить с клиентами.",
+                "flag": "story_food_trainee_cheerful",
+                "affinity": 6,
+                "reply": {
+                  "speaker": "npc_sushi_staff",
+                  "ja": "その笑顔がいちばんの戦力だ。",
+                  "vi": "Nụ cười đó là vũ khí mạnh nhất.",
+                  "en": "That smile is your best asset.",
+                  "ru": "Эта улыбка — твоё главное оружие."
+                }
+              },
+              {
+                "id": "tired",
+                "ja": "正直、つかれました。",
+                "vi": "Thật lòng là em mệt ạ.",
+                "en": "Honestly, I'm tired.",
+                "ru": "Честно говоря, я устал.",
+                "flag": "story_food_trainee_tired",
+                "affinity": 4,
+                "reply": {
+                  "speaker": "npc_sushi_staff",
+                  "ja": "正直でいい。休むのも仕事だよ。",
+                  "vi": "Thật thà là tốt. Nghỉ ngơi cũng là công việc.",
+                  "en": "Honesty is good. Resting is part of the job.",
+                  "ru": "Честность — это хорошо. Отдых — тоже работа."
+                }
+              }
+            ],
+            "ending": [
+              {
+                "speaker": "narrator",
+                "ja": "見習いの名札に、小さな星がついた。",
+                "vi": "Bảng tên thực tập sinh được gắn một ngôi sao nhỏ.",
+                "en": "A small star is added to your trainee badge.",
+                "ru": "На бейдж стажёра добавилась маленькая звёздочка."
+              }
+            ]
+          }
         },
         {
           "tier": "staff",
@@ -1171,7 +3013,75 @@
               "en": "The customers were smiling.",
               "ru": "Гости улыбались."
             }
-          ]
+          ],
+          "cutscene": {
+            "prompt": {
+              "speaker": "npc_sushi_staff",
+              "ja": "お客さまからクレームが来た。どうする？",
+              "vi": "Có khách phàn nàn. Em làm gì?",
+              "en": "A customer complains. What do you do?",
+              "ru": "Клиент жалуется. Что вы сделаете?"
+            },
+            "choices": [
+              {
+                "id": "apologize",
+                "ja": "まず心からおわびします。",
+                "vi": "Trước hết xin lỗi thật lòng.",
+                "en": "Apologise sincerely first.",
+                "ru": "Сначала искренне извинюсь.",
+                "flag": "story_food_staff_apologize",
+                "affinity": 6,
+                "reply": {
+                  "speaker": "npc_sushi_staff",
+                  "ja": "それが基本だ。よく見ていたね。",
+                  "vi": "Đó là điều cơ bản. Em quan sát giỏi đấy.",
+                  "en": "That's the basics. You've been watching.",
+                  "ru": "Это основа. Ты внимательно учился."
+                }
+              },
+              {
+                "id": "listen",
+                "ja": "最後まで話を聞きます。",
+                "vi": "Lắng nghe đến hết.",
+                "en": "Listen to the end.",
+                "ru": "Выслушаю до конца.",
+                "flag": "story_food_staff_listen",
+                "affinity": 7,
+                "reply": {
+                  "speaker": "npc_sushi_staff",
+                  "ja": "聞く力は、日本語の力でもある。",
+                  "vi": "Biết lắng nghe cũng là giỏi tiếng Nhật.",
+                  "en": "Listening is a language skill too.",
+                  "ru": "Умение слушать — тоже языковой навык."
+                }
+              },
+              {
+                "id": "boss",
+                "ja": "すぐに先輩を呼びます。",
+                "vi": "Gọi ngay tiền bối.",
+                "en": "Call a senior right away.",
+                "ru": "Сразу позову старшего.",
+                "flag": "story_food_staff_boss",
+                "affinity": 5,
+                "reply": {
+                  "speaker": "npc_sushi_staff",
+                  "ja": "相談するのは正しい判断だ。",
+                  "vi": "Hỏi ý kiến là quyết định đúng.",
+                  "en": "Asking for help was the right call.",
+                  "ru": "Попросить помощи — верное решение."
+                }
+              }
+            ],
+            "ending": [
+              {
+                "speaker": "narrator",
+                "ja": "「ありがとう、また来ます」とお客さまが言った。",
+                "vi": "Khách nói: 'Cảm ơn, tôi sẽ quay lại'.",
+                "en": "The customer says: thank you, I'll come again.",
+                "ru": "Клиент говорит: «Спасибо, приду ещё»."
+              }
+            ]
+          }
         },
         {
           "tier": "senior",
@@ -1208,7 +3118,75 @@
               "en": "The floor is yours.",
               "ru": "Зал на тебе."
             }
-          ]
+          ],
+          "cutscene": {
+            "prompt": {
+              "speaker": "npc_sushi_staff",
+              "ja": "新人が泣きそうになっている。",
+              "vi": "Người mới sắp khóc rồi.",
+              "en": "The new trainee is close to tears.",
+              "ru": "Новичок вот-вот расплачется."
+            },
+            "choices": [
+              {
+                "id": "teach",
+                "ja": "いっしょにやり方を見直します。",
+                "vi": "Cùng xem lại cách làm.",
+                "en": "Go over the steps together.",
+                "ru": "Вместе разберу порядок работы.",
+                "flag": "story_food_senior_teach",
+                "affinity": 8,
+                "reply": {
+                  "speaker": "npc_sushi_staff",
+                  "ja": "昔のあなたを見ているようだ。",
+                  "vi": "Như thấy lại em ngày trước vậy.",
+                  "en": "It's like watching you back then.",
+                  "ru": "Будто вижу тебя в начале."
+                }
+              },
+              {
+                "id": "story",
+                "ja": "自分の失敗の話をします。",
+                "vi": "Kể chuyện thất bại của mình.",
+                "en": "Tell them about my own mistakes.",
+                "ru": "Расскажу о своих ошибках.",
+                "flag": "story_food_senior_story",
+                "affinity": 7,
+                "reply": {
+                  "speaker": "npc_sushi_staff",
+                  "ja": "失敗を話せる人は強い。",
+                  "vi": "Người dám kể thất bại là người mạnh.",
+                  "en": "People who share failures are strong.",
+                  "ru": "Кто говорит о неудачах — тот силён."
+                }
+              },
+              {
+                "id": "cover",
+                "ja": "今日は私が代わります。",
+                "vi": "Hôm nay để em làm thay.",
+                "en": "I'll cover for them today.",
+                "ru": "Сегодня подменю его.",
+                "flag": "story_food_senior_cover",
+                "affinity": 4,
+                "reply": {
+                  "speaker": "npc_sushi_staff",
+                  "ja": "やさしいね。でも次は教えてあげて。",
+                  "vi": "Em tốt bụng. Nhưng lần sau hãy dạy họ nhé.",
+                  "en": "Kind. But next time, teach them.",
+                  "ru": "Добрый поступок. Но в следующий раз научи."
+                }
+              }
+            ],
+            "ending": [
+              {
+                "speaker": "narrator",
+                "ja": "新人が「先輩」と呼んでくれた。",
+                "vi": "Người mới gọi bạn là 'senpai'.",
+                "en": "The trainee calls you senpai.",
+                "ru": "Новичок называет вас «сэмпай»."
+              }
+            ]
+          }
         },
         {
           "tier": "manager",
@@ -1245,7 +3223,75 @@
               "en": "You're starting to look the part.",
               "ru": "Ты начинаешь выглядеть как профессионал."
             }
-          ]
+          ],
+          "cutscene": {
+            "prompt": {
+              "speaker": "npc_sushi_staff",
+              "ja": "売り上げが落ちた。何を変える？",
+              "vi": "Doanh thu giảm. Em thay đổi gì?",
+              "en": "Sales are down. What will you change?",
+              "ru": "Продажи упали. Что вы измените?"
+            },
+            "choices": [
+              {
+                "id": "team",
+                "ja": "スタッフの意見を聞きます。",
+                "vi": "Lắng nghe ý kiến nhân viên.",
+                "en": "Ask the staff for ideas.",
+                "ru": "Спрошу мнение сотрудников.",
+                "flag": "story_food_manager_team",
+                "affinity": 8,
+                "reply": {
+                  "speaker": "npc_sushi_staff",
+                  "ja": "チームはあなたを信じている。",
+                  "vi": "Cả đội tin em.",
+                  "en": "The team trusts you.",
+                  "ru": "Команда тебе доверяет."
+                }
+              },
+              {
+                "id": "new",
+                "ja": "新しいメニューやサービスを作ります。",
+                "vi": "Làm thực đơn, dịch vụ mới.",
+                "en": "Create a new menu or service.",
+                "ru": "Создам новое меню или услугу.",
+                "flag": "story_food_manager_new",
+                "affinity": 6,
+                "reply": {
+                  "speaker": "npc_sushi_staff",
+                  "ja": "思い切りがいい。やってみなさい。",
+                  "vi": "Quyết đoán đấy. Cứ thử đi.",
+                  "en": "Bold. Go for it.",
+                  "ru": "Смело. Попробуй."
+                }
+              },
+              {
+                "id": "guests",
+                "ja": "常連さんに話を聞きに行きます。",
+                "vi": "Đi hỏi chuyện khách quen.",
+                "en": "Go and ask the regulars.",
+                "ru": "Поговорю с постоянными клиентами.",
+                "flag": "story_food_manager_guests",
+                "affinity": 7,
+                "reply": {
+                  "speaker": "npc_sushi_staff",
+                  "ja": "答えはいつもお客さまの中にある。",
+                  "vi": "Câu trả lời luôn ở nơi khách hàng.",
+                  "en": "The answer is always with the customers.",
+                  "ru": "Ответ всегда у клиентов."
+                }
+              }
+            ],
+            "ending": [
+              {
+                "speaker": "narrator",
+                "ja": "三か月後、売り上げは前より上がった。",
+                "vi": "Ba tháng sau, doanh thu vượt cả trước kia.",
+                "en": "Three months later, sales are higher than ever.",
+                "ru": "Через три месяца продажи выше прежнего."
+              }
+            ]
+          }
         },
         {
           "tier": "owner",
@@ -1282,7 +3328,99 @@
               "en": "Try making sushi with Vietnamese fish too.",
               "ru": "Попробуй суси и из вьетнамской рыбы."
             }
-          ]
+          ],
+          "cutscene": {
+            "prompt": {
+              "speaker": "npc_sushi_staff",
+              "ja": "この仕事で、何を残したい？",
+              "vi": "Em muốn để lại gì qua công việc này?",
+              "en": "What do you want to leave behind through this work?",
+              "ru": "Что вы хотите оставить после себя в этой работе?"
+            },
+            "choices": [
+              {
+                "id": "people",
+                "ja": "人を育てたいです。",
+                "vi": "Em muốn đào tạo con người.",
+                "en": "I want to raise the next people.",
+                "ru": "Хочу растить людей.",
+                "flag": "story_food_owner_people",
+                "affinity": 10,
+                "reply": {
+                  "speaker": "npc_sushi_staff",
+                  "ja": "あなたが一番の財産を選んだ。",
+                  "vi": "Em đã chọn tài sản quý nhất.",
+                  "en": "You chose the greatest treasure.",
+                  "ru": "Ты выбрал главное сокровище."
+                }
+              },
+              {
+                "id": "quality",
+                "ja": "最高の仕事を続けたいです。",
+                "vi": "Em muốn giữ chất lượng tốt nhất.",
+                "en": "I want to keep doing the very best work.",
+                "ru": "Хочу продолжать делать лучшую работу.",
+                "flag": "story_food_owner_quality",
+                "affinity": 8,
+                "reply": {
+                  "speaker": "npc_sushi_staff",
+                  "ja": "その心があれば、看板は守れる。",
+                  "vi": "Có tấm lòng đó, bảng hiệu sẽ được giữ.",
+                  "en": "With that heart, the name will last.",
+                  "ru": "С таким сердцем имя будет жить."
+                }
+              },
+              {
+                "id": "bridge",
+                "ja": "日本とベトナムをつなぎたいです。",
+                "vi": "Em muốn nối Nhật Bản và Việt Nam.",
+                "en": "I want to link Japan and Vietnam.",
+                "ru": "Хочу связать Японию и Вьетнам.",
+                "flag": "story_food_owner_bridge",
+                "affinity": 8,
+                "reply": {
+                  "speaker": "npc_sushi_staff",
+                  "ja": "あなたにしかできないことだ。",
+                  "vi": "Đó là việc chỉ em làm được.",
+                  "en": "Only you can do that.",
+                  "ru": "Это можешь только ты."
+                }
+              }
+            ],
+            "ending": [
+              {
+                "speaker": "narrator",
+                "ja": "あの日の見習いが、今は看板を背負っている。",
+                "vi": "Cậu thực tập sinh ngày ấy, giờ gánh cả bảng hiệu.",
+                "en": "The trainee of that first day now carries the whole business.",
+                "ru": "Стажёр того первого дня теперь несёт на себе всё дело."
+              },
+              {
+                "speaker": "npc_sushi_staff",
+                "ja": "見習いのころのメモ、まだ持っているね。",
+                "vi": "Cuốn sổ thời thực tập, em vẫn giữ nhỉ.",
+                "en": "You still keep your trainee notebook.",
+                "ru": "Ты всё ещё хранишь тетрадь стажёра.",
+                "flag": "story_food_trainee_careful"
+              },
+              {
+                "speaker": "npc_sushi_staff",
+                "ja": "あの笑顔は、今もお店の顔だ。",
+                "vi": "Nụ cười ấy vẫn là bộ mặt của cửa hàng.",
+                "en": "That smile is still the face of the place.",
+                "ru": "Эта улыбка по-прежнему лицо заведения.",
+                "flag": "story_food_trainee_cheerful"
+              },
+              {
+                "speaker": "npc_sushi_staff",
+                "ja": "つかれたと言えた日から、ずいぶん強くなった。",
+                "vi": "Từ ngày dám nói 'em mệt', em đã mạnh mẽ hơn nhiều.",
+                "en": "Since the day you admitted you were tired, you've grown strong.",
+                "ru": "С того дня, как ты признался в усталости, ты стал сильным.",
+                "flag": "story_food_trainee_tired"
+              }
+            ]
+          }
         }
       ]
     },
@@ -1326,7 +3464,75 @@
               "en": "Show me your hands… good.",
               "ru": "Покажи руки… хорошо."
             }
-          ]
+          ],
+          "cutscene": {
+            "prompt": {
+              "speaker": "npc_sushi_chef",
+              "ja": "最初の一週間、どうだった？",
+              "vi": "Tuần đầu tiên thế nào?",
+              "en": "How was your first week?",
+              "ru": "Как прошла первая неделя?"
+            },
+            "choices": [
+              {
+                "id": "careful",
+                "ja": "ミスをしないよう、メモを取りました。",
+                "vi": "Em ghi chép để không mắc lỗi.",
+                "en": "I took notes so I wouldn't make mistakes.",
+                "ru": "Я делал заметки, чтобы не ошибаться.",
+                "flag": "story_chef_trainee_careful",
+                "affinity": 6,
+                "reply": {
+                  "speaker": "npc_sushi_chef",
+                  "ja": "そのメモは宝物になるよ。",
+                  "vi": "Cuốn sổ đó sẽ là báu vật đấy.",
+                  "en": "Those notes will become a treasure.",
+                  "ru": "Эти заметки станут сокровищем."
+                }
+              },
+              {
+                "id": "cheerful",
+                "ja": "お客さまと話すのが楽しかったです。",
+                "vi": "Nói chuyện với khách vui lắm ạ.",
+                "en": "I enjoyed talking with customers.",
+                "ru": "Мне понравилось говорить с клиентами.",
+                "flag": "story_chef_trainee_cheerful",
+                "affinity": 6,
+                "reply": {
+                  "speaker": "npc_sushi_chef",
+                  "ja": "その笑顔がいちばんの戦力だ。",
+                  "vi": "Nụ cười đó là vũ khí mạnh nhất.",
+                  "en": "That smile is your best asset.",
+                  "ru": "Эта улыбка — твоё главное оружие."
+                }
+              },
+              {
+                "id": "tired",
+                "ja": "正直、つかれました。",
+                "vi": "Thật lòng là em mệt ạ.",
+                "en": "Honestly, I'm tired.",
+                "ru": "Честно говоря, я устал.",
+                "flag": "story_chef_trainee_tired",
+                "affinity": 4,
+                "reply": {
+                  "speaker": "npc_sushi_chef",
+                  "ja": "正直でいい。休むのも仕事だよ。",
+                  "vi": "Thật thà là tốt. Nghỉ ngơi cũng là công việc.",
+                  "en": "Honesty is good. Resting is part of the job.",
+                  "ru": "Честность — это хорошо. Отдых — тоже работа."
+                }
+              }
+            ],
+            "ending": [
+              {
+                "speaker": "narrator",
+                "ja": "見習いの名札に、小さな星がついた。",
+                "vi": "Bảng tên thực tập sinh được gắn một ngôi sao nhỏ.",
+                "en": "A small star is added to your trainee badge.",
+                "ru": "На бейдж стажёра добавилась маленькая звёздочка."
+              }
+            ]
+          }
         },
         {
           "tier": "staff",
@@ -1363,7 +3569,75 @@
               "en": "Not bad.",
               "ru": "Неплохо."
             }
-          ]
+          ],
+          "cutscene": {
+            "prompt": {
+              "speaker": "npc_sushi_chef",
+              "ja": "お客さまからクレームが来た。どうする？",
+              "vi": "Có khách phàn nàn. Em làm gì?",
+              "en": "A customer complains. What do you do?",
+              "ru": "Клиент жалуется. Что вы сделаете?"
+            },
+            "choices": [
+              {
+                "id": "apologize",
+                "ja": "まず心からおわびします。",
+                "vi": "Trước hết xin lỗi thật lòng.",
+                "en": "Apologise sincerely first.",
+                "ru": "Сначала искренне извинюсь.",
+                "flag": "story_chef_staff_apologize",
+                "affinity": 6,
+                "reply": {
+                  "speaker": "npc_sushi_chef",
+                  "ja": "それが基本だ。よく見ていたね。",
+                  "vi": "Đó là điều cơ bản. Em quan sát giỏi đấy.",
+                  "en": "That's the basics. You've been watching.",
+                  "ru": "Это основа. Ты внимательно учился."
+                }
+              },
+              {
+                "id": "listen",
+                "ja": "最後まで話を聞きます。",
+                "vi": "Lắng nghe đến hết.",
+                "en": "Listen to the end.",
+                "ru": "Выслушаю до конца.",
+                "flag": "story_chef_staff_listen",
+                "affinity": 7,
+                "reply": {
+                  "speaker": "npc_sushi_chef",
+                  "ja": "聞く力は、日本語の力でもある。",
+                  "vi": "Biết lắng nghe cũng là giỏi tiếng Nhật.",
+                  "en": "Listening is a language skill too.",
+                  "ru": "Умение слушать — тоже языковой навык."
+                }
+              },
+              {
+                "id": "boss",
+                "ja": "すぐに先輩を呼びます。",
+                "vi": "Gọi ngay tiền bối.",
+                "en": "Call a senior right away.",
+                "ru": "Сразу позову старшего.",
+                "flag": "story_chef_staff_boss",
+                "affinity": 5,
+                "reply": {
+                  "speaker": "npc_sushi_chef",
+                  "ja": "相談するのは正しい判断だ。",
+                  "vi": "Hỏi ý kiến là quyết định đúng.",
+                  "en": "Asking for help was the right call.",
+                  "ru": "Попросить помощи — верное решение."
+                }
+              }
+            ],
+            "ending": [
+              {
+                "speaker": "narrator",
+                "ja": "「ありがとう、また来ます」とお客さまが言った。",
+                "vi": "Khách nói: 'Cảm ơn, tôi sẽ quay lại'.",
+                "en": "The customer says: thank you, I'll come again.",
+                "ru": "Клиент говорит: «Спасибо, приду ещё»."
+              }
+            ]
+          }
         },
         {
           "tier": "senior",
@@ -1400,7 +3674,75 @@
               "en": "This phở could go on the menu.",
               "ru": "Этот фо можно подавать гостям."
             }
-          ]
+          ],
+          "cutscene": {
+            "prompt": {
+              "speaker": "npc_sushi_chef",
+              "ja": "新人が泣きそうになっている。",
+              "vi": "Người mới sắp khóc rồi.",
+              "en": "The new trainee is close to tears.",
+              "ru": "Новичок вот-вот расплачется."
+            },
+            "choices": [
+              {
+                "id": "teach",
+                "ja": "いっしょにやり方を見直します。",
+                "vi": "Cùng xem lại cách làm.",
+                "en": "Go over the steps together.",
+                "ru": "Вместе разберу порядок работы.",
+                "flag": "story_chef_senior_teach",
+                "affinity": 8,
+                "reply": {
+                  "speaker": "npc_sushi_chef",
+                  "ja": "昔のあなたを見ているようだ。",
+                  "vi": "Như thấy lại em ngày trước vậy.",
+                  "en": "It's like watching you back then.",
+                  "ru": "Будто вижу тебя в начале."
+                }
+              },
+              {
+                "id": "story",
+                "ja": "自分の失敗の話をします。",
+                "vi": "Kể chuyện thất bại của mình.",
+                "en": "Tell them about my own mistakes.",
+                "ru": "Расскажу о своих ошибках.",
+                "flag": "story_chef_senior_story",
+                "affinity": 7,
+                "reply": {
+                  "speaker": "npc_sushi_chef",
+                  "ja": "失敗を話せる人は強い。",
+                  "vi": "Người dám kể thất bại là người mạnh.",
+                  "en": "People who share failures are strong.",
+                  "ru": "Кто говорит о неудачах — тот силён."
+                }
+              },
+              {
+                "id": "cover",
+                "ja": "今日は私が代わります。",
+                "vi": "Hôm nay để em làm thay.",
+                "en": "I'll cover for them today.",
+                "ru": "Сегодня подменю его.",
+                "flag": "story_chef_senior_cover",
+                "affinity": 4,
+                "reply": {
+                  "speaker": "npc_sushi_chef",
+                  "ja": "やさしいね。でも次は教えてあげて。",
+                  "vi": "Em tốt bụng. Nhưng lần sau hãy dạy họ nhé.",
+                  "en": "Kind. But next time, teach them.",
+                  "ru": "Добрый поступок. Но в следующий раз научи."
+                }
+              }
+            ],
+            "ending": [
+              {
+                "speaker": "narrator",
+                "ja": "新人が「先輩」と呼んでくれた。",
+                "vi": "Người mới gọi bạn là 'senpai'.",
+                "en": "The trainee calls you senpai.",
+                "ru": "Новичок называет вас «сэмпай»."
+              }
+            ]
+          }
         },
         {
           "tier": "manager",
@@ -1437,7 +3779,75 @@
               "en": "…Delicious.",
               "ru": "…Вкусно."
             }
-          ]
+          ],
+          "cutscene": {
+            "prompt": {
+              "speaker": "npc_sushi_chef",
+              "ja": "売り上げが落ちた。何を変える？",
+              "vi": "Doanh thu giảm. Em thay đổi gì?",
+              "en": "Sales are down. What will you change?",
+              "ru": "Продажи упали. Что вы измените?"
+            },
+            "choices": [
+              {
+                "id": "team",
+                "ja": "スタッフの意見を聞きます。",
+                "vi": "Lắng nghe ý kiến nhân viên.",
+                "en": "Ask the staff for ideas.",
+                "ru": "Спрошу мнение сотрудников.",
+                "flag": "story_chef_manager_team",
+                "affinity": 8,
+                "reply": {
+                  "speaker": "npc_sushi_chef",
+                  "ja": "チームはあなたを信じている。",
+                  "vi": "Cả đội tin em.",
+                  "en": "The team trusts you.",
+                  "ru": "Команда тебе доверяет."
+                }
+              },
+              {
+                "id": "new",
+                "ja": "新しいメニューやサービスを作ります。",
+                "vi": "Làm thực đơn, dịch vụ mới.",
+                "en": "Create a new menu or service.",
+                "ru": "Создам новое меню или услугу.",
+                "flag": "story_chef_manager_new",
+                "affinity": 6,
+                "reply": {
+                  "speaker": "npc_sushi_chef",
+                  "ja": "思い切りがいい。やってみなさい。",
+                  "vi": "Quyết đoán đấy. Cứ thử đi.",
+                  "en": "Bold. Go for it.",
+                  "ru": "Смело. Попробуй."
+                }
+              },
+              {
+                "id": "guests",
+                "ja": "常連さんに話を聞きに行きます。",
+                "vi": "Đi hỏi chuyện khách quen.",
+                "en": "Go and ask the regulars.",
+                "ru": "Поговорю с постоянными клиентами.",
+                "flag": "story_chef_manager_guests",
+                "affinity": 7,
+                "reply": {
+                  "speaker": "npc_sushi_chef",
+                  "ja": "答えはいつもお客さまの中にある。",
+                  "vi": "Câu trả lời luôn ở nơi khách hàng.",
+                  "en": "The answer is always with the customers.",
+                  "ru": "Ответ всегда у клиентов."
+                }
+              }
+            ],
+            "ending": [
+              {
+                "speaker": "narrator",
+                "ja": "三か月後、売り上げは前より上がった。",
+                "vi": "Ba tháng sau, doanh thu vượt cả trước kia.",
+                "en": "Three months later, sales are higher than ever.",
+                "ru": "Через три месяца продажи выше прежнего."
+              }
+            ]
+          }
         },
         {
           "tier": "owner",
@@ -1474,7 +3884,99 @@
               "en": "Don't forget the day you washed rice.",
               "ru": "Не забывай день, когда ты мыл рис."
             }
-          ]
+          ],
+          "cutscene": {
+            "prompt": {
+              "speaker": "npc_sushi_chef",
+              "ja": "この仕事で、何を残したい？",
+              "vi": "Em muốn để lại gì qua công việc này?",
+              "en": "What do you want to leave behind through this work?",
+              "ru": "Что вы хотите оставить после себя в этой работе?"
+            },
+            "choices": [
+              {
+                "id": "people",
+                "ja": "人を育てたいです。",
+                "vi": "Em muốn đào tạo con người.",
+                "en": "I want to raise the next people.",
+                "ru": "Хочу растить людей.",
+                "flag": "story_chef_owner_people",
+                "affinity": 10,
+                "reply": {
+                  "speaker": "npc_sushi_chef",
+                  "ja": "あなたが一番の財産を選んだ。",
+                  "vi": "Em đã chọn tài sản quý nhất.",
+                  "en": "You chose the greatest treasure.",
+                  "ru": "Ты выбрал главное сокровище."
+                }
+              },
+              {
+                "id": "quality",
+                "ja": "最高の仕事を続けたいです。",
+                "vi": "Em muốn giữ chất lượng tốt nhất.",
+                "en": "I want to keep doing the very best work.",
+                "ru": "Хочу продолжать делать лучшую работу.",
+                "flag": "story_chef_owner_quality",
+                "affinity": 8,
+                "reply": {
+                  "speaker": "npc_sushi_chef",
+                  "ja": "その心があれば、看板は守れる。",
+                  "vi": "Có tấm lòng đó, bảng hiệu sẽ được giữ.",
+                  "en": "With that heart, the name will last.",
+                  "ru": "С таким сердцем имя будет жить."
+                }
+              },
+              {
+                "id": "bridge",
+                "ja": "日本とベトナムをつなぎたいです。",
+                "vi": "Em muốn nối Nhật Bản và Việt Nam.",
+                "en": "I want to link Japan and Vietnam.",
+                "ru": "Хочу связать Японию и Вьетнам.",
+                "flag": "story_chef_owner_bridge",
+                "affinity": 8,
+                "reply": {
+                  "speaker": "npc_sushi_chef",
+                  "ja": "あなたにしかできないことだ。",
+                  "vi": "Đó là việc chỉ em làm được.",
+                  "en": "Only you can do that.",
+                  "ru": "Это можешь только ты."
+                }
+              }
+            ],
+            "ending": [
+              {
+                "speaker": "narrator",
+                "ja": "あの日の見習いが、今は看板を背負っている。",
+                "vi": "Cậu thực tập sinh ngày ấy, giờ gánh cả bảng hiệu.",
+                "en": "The trainee of that first day now carries the whole business.",
+                "ru": "Стажёр того первого дня теперь несёт на себе всё дело."
+              },
+              {
+                "speaker": "npc_sushi_chef",
+                "ja": "見習いのころのメモ、まだ持っているね。",
+                "vi": "Cuốn sổ thời thực tập, em vẫn giữ nhỉ.",
+                "en": "You still keep your trainee notebook.",
+                "ru": "Ты всё ещё хранишь тетрадь стажёра.",
+                "flag": "story_chef_trainee_careful"
+              },
+              {
+                "speaker": "npc_sushi_chef",
+                "ja": "あの笑顔は、今もお店の顔だ。",
+                "vi": "Nụ cười ấy vẫn là bộ mặt của cửa hàng.",
+                "en": "That smile is still the face of the place.",
+                "ru": "Эта улыбка по-прежнему лицо заведения.",
+                "flag": "story_chef_trainee_cheerful"
+              },
+              {
+                "speaker": "npc_sushi_chef",
+                "ja": "つかれたと言えた日から、ずいぶん強くなった。",
+                "vi": "Từ ngày dám nói 'em mệt', em đã mạnh mẽ hơn nhiều.",
+                "en": "Since the day you admitted you were tired, you've grown strong.",
+                "ru": "С того дня, как ты признался в усталости, ты стал сильным.",
+                "flag": "story_chef_trainee_tired"
+              }
+            ]
+          }
         }
       ]
     },
@@ -1518,7 +4020,75 @@
               "en": "Nice hands!",
               "ru": "Хорошие руки!"
             }
-          ]
+          ],
+          "cutscene": {
+            "prompt": {
+              "speaker": "npc_farm_manager",
+              "ja": "最初の一週間、どうだった？",
+              "vi": "Tuần đầu tiên thế nào?",
+              "en": "How was your first week?",
+              "ru": "Как прошла первая неделя?"
+            },
+            "choices": [
+              {
+                "id": "careful",
+                "ja": "ミスをしないよう、メモを取りました。",
+                "vi": "Em ghi chép để không mắc lỗi.",
+                "en": "I took notes so I wouldn't make mistakes.",
+                "ru": "Я делал заметки, чтобы не ошибаться.",
+                "flag": "story_farm_trainee_careful",
+                "affinity": 6,
+                "reply": {
+                  "speaker": "npc_farm_manager",
+                  "ja": "そのメモは宝物になるよ。",
+                  "vi": "Cuốn sổ đó sẽ là báu vật đấy.",
+                  "en": "Those notes will become a treasure.",
+                  "ru": "Эти заметки станут сокровищем."
+                }
+              },
+              {
+                "id": "cheerful",
+                "ja": "お客さまと話すのが楽しかったです。",
+                "vi": "Nói chuyện với khách vui lắm ạ.",
+                "en": "I enjoyed talking with customers.",
+                "ru": "Мне понравилось говорить с клиентами.",
+                "flag": "story_farm_trainee_cheerful",
+                "affinity": 6,
+                "reply": {
+                  "speaker": "npc_farm_manager",
+                  "ja": "その笑顔がいちばんの戦力だ。",
+                  "vi": "Nụ cười đó là vũ khí mạnh nhất.",
+                  "en": "That smile is your best asset.",
+                  "ru": "Эта улыбка — твоё главное оружие."
+                }
+              },
+              {
+                "id": "tired",
+                "ja": "正直、つかれました。",
+                "vi": "Thật lòng là em mệt ạ.",
+                "en": "Honestly, I'm tired.",
+                "ru": "Честно говоря, я устал.",
+                "flag": "story_farm_trainee_tired",
+                "affinity": 4,
+                "reply": {
+                  "speaker": "npc_farm_manager",
+                  "ja": "正直でいい。休むのも仕事だよ。",
+                  "vi": "Thật thà là tốt. Nghỉ ngơi cũng là công việc.",
+                  "en": "Honesty is good. Resting is part of the job.",
+                  "ru": "Честность — это хорошо. Отдых — тоже работа."
+                }
+              }
+            ],
+            "ending": [
+              {
+                "speaker": "narrator",
+                "ja": "見習いの名札に、小さな星がついた。",
+                "vi": "Bảng tên thực tập sinh được gắn một ngôi sao nhỏ.",
+                "en": "A small star is added to your trainee badge.",
+                "ru": "На бейдж стажёра добавилась маленькая звёздочка."
+              }
+            ]
+          }
         },
         {
           "tier": "staff",
@@ -1555,7 +4125,75 @@
               "en": "The market will be pleased.",
               "ru": "Рынок будет доволен."
             }
-          ]
+          ],
+          "cutscene": {
+            "prompt": {
+              "speaker": "npc_farm_manager",
+              "ja": "お客さまからクレームが来た。どうする？",
+              "vi": "Có khách phàn nàn. Em làm gì?",
+              "en": "A customer complains. What do you do?",
+              "ru": "Клиент жалуется. Что вы сделаете?"
+            },
+            "choices": [
+              {
+                "id": "apologize",
+                "ja": "まず心からおわびします。",
+                "vi": "Trước hết xin lỗi thật lòng.",
+                "en": "Apologise sincerely first.",
+                "ru": "Сначала искренне извинюсь.",
+                "flag": "story_farm_staff_apologize",
+                "affinity": 6,
+                "reply": {
+                  "speaker": "npc_farm_manager",
+                  "ja": "それが基本だ。よく見ていたね。",
+                  "vi": "Đó là điều cơ bản. Em quan sát giỏi đấy.",
+                  "en": "That's the basics. You've been watching.",
+                  "ru": "Это основа. Ты внимательно учился."
+                }
+              },
+              {
+                "id": "listen",
+                "ja": "最後まで話を聞きます。",
+                "vi": "Lắng nghe đến hết.",
+                "en": "Listen to the end.",
+                "ru": "Выслушаю до конца.",
+                "flag": "story_farm_staff_listen",
+                "affinity": 7,
+                "reply": {
+                  "speaker": "npc_farm_manager",
+                  "ja": "聞く力は、日本語の力でもある。",
+                  "vi": "Biết lắng nghe cũng là giỏi tiếng Nhật.",
+                  "en": "Listening is a language skill too.",
+                  "ru": "Умение слушать — тоже языковой навык."
+                }
+              },
+              {
+                "id": "boss",
+                "ja": "すぐに先輩を呼びます。",
+                "vi": "Gọi ngay tiền bối.",
+                "en": "Call a senior right away.",
+                "ru": "Сразу позову старшего.",
+                "flag": "story_farm_staff_boss",
+                "affinity": 5,
+                "reply": {
+                  "speaker": "npc_farm_manager",
+                  "ja": "相談するのは正しい判断だ。",
+                  "vi": "Hỏi ý kiến là quyết định đúng.",
+                  "en": "Asking for help was the right call.",
+                  "ru": "Попросить помощи — верное решение."
+                }
+              }
+            ],
+            "ending": [
+              {
+                "speaker": "narrator",
+                "ja": "「ありがとう、また来ます」とお客さまが言った。",
+                "vi": "Khách nói: 'Cảm ơn, tôi sẽ quay lại'.",
+                "en": "The customer says: thank you, I'll come again.",
+                "ru": "Клиент говорит: «Спасибо, приду ещё»."
+              }
+            ]
+          }
         },
         {
           "tier": "senior",
@@ -1592,7 +4230,75 @@
               "en": "You're a real farmer now.",
               "ru": "Ты теперь настоящий фермер."
             }
-          ]
+          ],
+          "cutscene": {
+            "prompt": {
+              "speaker": "npc_farm_manager",
+              "ja": "新人が泣きそうになっている。",
+              "vi": "Người mới sắp khóc rồi.",
+              "en": "The new trainee is close to tears.",
+              "ru": "Новичок вот-вот расплачется."
+            },
+            "choices": [
+              {
+                "id": "teach",
+                "ja": "いっしょにやり方を見直します。",
+                "vi": "Cùng xem lại cách làm.",
+                "en": "Go over the steps together.",
+                "ru": "Вместе разберу порядок работы.",
+                "flag": "story_farm_senior_teach",
+                "affinity": 8,
+                "reply": {
+                  "speaker": "npc_farm_manager",
+                  "ja": "昔のあなたを見ているようだ。",
+                  "vi": "Như thấy lại em ngày trước vậy.",
+                  "en": "It's like watching you back then.",
+                  "ru": "Будто вижу тебя в начале."
+                }
+              },
+              {
+                "id": "story",
+                "ja": "自分の失敗の話をします。",
+                "vi": "Kể chuyện thất bại của mình.",
+                "en": "Tell them about my own mistakes.",
+                "ru": "Расскажу о своих ошибках.",
+                "flag": "story_farm_senior_story",
+                "affinity": 7,
+                "reply": {
+                  "speaker": "npc_farm_manager",
+                  "ja": "失敗を話せる人は強い。",
+                  "vi": "Người dám kể thất bại là người mạnh.",
+                  "en": "People who share failures are strong.",
+                  "ru": "Кто говорит о неудачах — тот силён."
+                }
+              },
+              {
+                "id": "cover",
+                "ja": "今日は私が代わります。",
+                "vi": "Hôm nay để em làm thay.",
+                "en": "I'll cover for them today.",
+                "ru": "Сегодня подменю его.",
+                "flag": "story_farm_senior_cover",
+                "affinity": 4,
+                "reply": {
+                  "speaker": "npc_farm_manager",
+                  "ja": "やさしいね。でも次は教えてあげて。",
+                  "vi": "Em tốt bụng. Nhưng lần sau hãy dạy họ nhé.",
+                  "en": "Kind. But next time, teach them.",
+                  "ru": "Добрый поступок. Но в следующий раз научи."
+                }
+              }
+            ],
+            "ending": [
+              {
+                "speaker": "narrator",
+                "ja": "新人が「先輩」と呼んでくれた。",
+                "vi": "Người mới gọi bạn là 'senpai'.",
+                "en": "The trainee calls you senpai.",
+                "ru": "Новичок называет вас «сэмпай»."
+              }
+            ]
+          }
         },
         {
           "tier": "manager",
@@ -1629,7 +4335,75 @@
               "en": "Everyone is waiting for your call.",
               "ru": "Все ждут твоих указаний."
             }
-          ]
+          ],
+          "cutscene": {
+            "prompt": {
+              "speaker": "npc_farm_manager",
+              "ja": "売り上げが落ちた。何を変える？",
+              "vi": "Doanh thu giảm. Em thay đổi gì?",
+              "en": "Sales are down. What will you change?",
+              "ru": "Продажи упали. Что вы измените?"
+            },
+            "choices": [
+              {
+                "id": "team",
+                "ja": "スタッフの意見を聞きます。",
+                "vi": "Lắng nghe ý kiến nhân viên.",
+                "en": "Ask the staff for ideas.",
+                "ru": "Спрошу мнение сотрудников.",
+                "flag": "story_farm_manager_team",
+                "affinity": 8,
+                "reply": {
+                  "speaker": "npc_farm_manager",
+                  "ja": "チームはあなたを信じている。",
+                  "vi": "Cả đội tin em.",
+                  "en": "The team trusts you.",
+                  "ru": "Команда тебе доверяет."
+                }
+              },
+              {
+                "id": "new",
+                "ja": "新しいメニューやサービスを作ります。",
+                "vi": "Làm thực đơn, dịch vụ mới.",
+                "en": "Create a new menu or service.",
+                "ru": "Создам новое меню или услугу.",
+                "flag": "story_farm_manager_new",
+                "affinity": 6,
+                "reply": {
+                  "speaker": "npc_farm_manager",
+                  "ja": "思い切りがいい。やってみなさい。",
+                  "vi": "Quyết đoán đấy. Cứ thử đi.",
+                  "en": "Bold. Go for it.",
+                  "ru": "Смело. Попробуй."
+                }
+              },
+              {
+                "id": "guests",
+                "ja": "常連さんに話を聞きに行きます。",
+                "vi": "Đi hỏi chuyện khách quen.",
+                "en": "Go and ask the regulars.",
+                "ru": "Поговорю с постоянными клиентами.",
+                "flag": "story_farm_manager_guests",
+                "affinity": 7,
+                "reply": {
+                  "speaker": "npc_farm_manager",
+                  "ja": "答えはいつもお客さまの中にある。",
+                  "vi": "Câu trả lời luôn ở nơi khách hàng.",
+                  "en": "The answer is always with the customers.",
+                  "ru": "Ответ всегда у клиентов."
+                }
+              }
+            ],
+            "ending": [
+              {
+                "speaker": "narrator",
+                "ja": "三か月後、売り上げは前より上がった。",
+                "vi": "Ba tháng sau, doanh thu vượt cả trước kia.",
+                "en": "Three months later, sales are higher than ever.",
+                "ru": "Через три месяца продажи выше прежнего."
+              }
+            ]
+          }
         },
         {
           "tier": "owner",
@@ -1666,7 +4440,99 @@
               "en": "Remember your first furrow?",
               "ru": "Помнишь свою первую борозду?"
             }
-          ]
+          ],
+          "cutscene": {
+            "prompt": {
+              "speaker": "npc_farm_manager",
+              "ja": "この仕事で、何を残したい？",
+              "vi": "Em muốn để lại gì qua công việc này?",
+              "en": "What do you want to leave behind through this work?",
+              "ru": "Что вы хотите оставить после себя в этой работе?"
+            },
+            "choices": [
+              {
+                "id": "people",
+                "ja": "人を育てたいです。",
+                "vi": "Em muốn đào tạo con người.",
+                "en": "I want to raise the next people.",
+                "ru": "Хочу растить людей.",
+                "flag": "story_farm_owner_people",
+                "affinity": 10,
+                "reply": {
+                  "speaker": "npc_farm_manager",
+                  "ja": "あなたが一番の財産を選んだ。",
+                  "vi": "Em đã chọn tài sản quý nhất.",
+                  "en": "You chose the greatest treasure.",
+                  "ru": "Ты выбрал главное сокровище."
+                }
+              },
+              {
+                "id": "quality",
+                "ja": "最高の仕事を続けたいです。",
+                "vi": "Em muốn giữ chất lượng tốt nhất.",
+                "en": "I want to keep doing the very best work.",
+                "ru": "Хочу продолжать делать лучшую работу.",
+                "flag": "story_farm_owner_quality",
+                "affinity": 8,
+                "reply": {
+                  "speaker": "npc_farm_manager",
+                  "ja": "その心があれば、看板は守れる。",
+                  "vi": "Có tấm lòng đó, bảng hiệu sẽ được giữ.",
+                  "en": "With that heart, the name will last.",
+                  "ru": "С таким сердцем имя будет жить."
+                }
+              },
+              {
+                "id": "bridge",
+                "ja": "日本とベトナムをつなぎたいです。",
+                "vi": "Em muốn nối Nhật Bản và Việt Nam.",
+                "en": "I want to link Japan and Vietnam.",
+                "ru": "Хочу связать Японию и Вьетнам.",
+                "flag": "story_farm_owner_bridge",
+                "affinity": 8,
+                "reply": {
+                  "speaker": "npc_farm_manager",
+                  "ja": "あなたにしかできないことだ。",
+                  "vi": "Đó là việc chỉ em làm được.",
+                  "en": "Only you can do that.",
+                  "ru": "Это можешь только ты."
+                }
+              }
+            ],
+            "ending": [
+              {
+                "speaker": "narrator",
+                "ja": "あの日の見習いが、今は看板を背負っている。",
+                "vi": "Cậu thực tập sinh ngày ấy, giờ gánh cả bảng hiệu.",
+                "en": "The trainee of that first day now carries the whole business.",
+                "ru": "Стажёр того первого дня теперь несёт на себе всё дело."
+              },
+              {
+                "speaker": "npc_farm_manager",
+                "ja": "見習いのころのメモ、まだ持っているね。",
+                "vi": "Cuốn sổ thời thực tập, em vẫn giữ nhỉ.",
+                "en": "You still keep your trainee notebook.",
+                "ru": "Ты всё ещё хранишь тетрадь стажёра.",
+                "flag": "story_farm_trainee_careful"
+              },
+              {
+                "speaker": "npc_farm_manager",
+                "ja": "あの笑顔は、今もお店の顔だ。",
+                "vi": "Nụ cười ấy vẫn là bộ mặt của cửa hàng.",
+                "en": "That smile is still the face of the place.",
+                "ru": "Эта улыбка по-прежнему лицо заведения.",
+                "flag": "story_farm_trainee_cheerful"
+              },
+              {
+                "speaker": "npc_farm_manager",
+                "ja": "つかれたと言えた日から、ずいぶん強くなった。",
+                "vi": "Từ ngày dám nói 'em mệt', em đã mạnh mẽ hơn nhiều.",
+                "en": "Since the day you admitted you were tired, you've grown strong.",
+                "ru": "С того дня, как ты признался в усталости, ты стал сильным.",
+                "flag": "story_farm_trainee_tired"
+              }
+            ]
+          }
         }
       ]
     },
@@ -1710,7 +4576,75 @@
               "en": "Did you hear the applause?",
               "ru": "Слышал аплодисменты?"
             }
-          ]
+          ],
+          "cutscene": {
+            "prompt": {
+              "speaker": "npc_music_owner",
+              "ja": "最初の一週間、どうだった？",
+              "vi": "Tuần đầu tiên thế nào?",
+              "en": "How was your first week?",
+              "ru": "Как прошла первая неделя?"
+            },
+            "choices": [
+              {
+                "id": "careful",
+                "ja": "ミスをしないよう、メモを取りました。",
+                "vi": "Em ghi chép để không mắc lỗi.",
+                "en": "I took notes so I wouldn't make mistakes.",
+                "ru": "Я делал заметки, чтобы не ошибаться.",
+                "flag": "story_musician_trainee_careful",
+                "affinity": 6,
+                "reply": {
+                  "speaker": "npc_music_owner",
+                  "ja": "そのメモは宝物になるよ。",
+                  "vi": "Cuốn sổ đó sẽ là báu vật đấy.",
+                  "en": "Those notes will become a treasure.",
+                  "ru": "Эти заметки станут сокровищем."
+                }
+              },
+              {
+                "id": "cheerful",
+                "ja": "お客さまと話すのが楽しかったです。",
+                "vi": "Nói chuyện với khách vui lắm ạ.",
+                "en": "I enjoyed talking with customers.",
+                "ru": "Мне понравилось говорить с клиентами.",
+                "flag": "story_musician_trainee_cheerful",
+                "affinity": 6,
+                "reply": {
+                  "speaker": "npc_music_owner",
+                  "ja": "その笑顔がいちばんの戦力だ。",
+                  "vi": "Nụ cười đó là vũ khí mạnh nhất.",
+                  "en": "That smile is your best asset.",
+                  "ru": "Эта улыбка — твоё главное оружие."
+                }
+              },
+              {
+                "id": "tired",
+                "ja": "正直、つかれました。",
+                "vi": "Thật lòng là em mệt ạ.",
+                "en": "Honestly, I'm tired.",
+                "ru": "Честно говоря, я устал.",
+                "flag": "story_musician_trainee_tired",
+                "affinity": 4,
+                "reply": {
+                  "speaker": "npc_music_owner",
+                  "ja": "正直でいい。休むのも仕事だよ。",
+                  "vi": "Thật thà là tốt. Nghỉ ngơi cũng là công việc.",
+                  "en": "Honesty is good. Resting is part of the job.",
+                  "ru": "Честность — это хорошо. Отдых — тоже работа."
+                }
+              }
+            ],
+            "ending": [
+              {
+                "speaker": "narrator",
+                "ja": "見習いの名札に、小さな星がついた。",
+                "vi": "Bảng tên thực tập sinh được gắn một ngôi sao nhỏ.",
+                "en": "A small star is added to your trainee badge.",
+                "ru": "На бейдж стажёра добавилась маленькая звёздочка."
+              }
+            ]
+          }
         },
         {
           "tier": "staff",
@@ -1747,7 +4681,75 @@
               "en": "You've got fans.",
               "ru": "У тебя появились поклонники."
             }
-          ]
+          ],
+          "cutscene": {
+            "prompt": {
+              "speaker": "npc_music_owner",
+              "ja": "お客さまからクレームが来た。どうする？",
+              "vi": "Có khách phàn nàn. Em làm gì?",
+              "en": "A customer complains. What do you do?",
+              "ru": "Клиент жалуется. Что вы сделаете?"
+            },
+            "choices": [
+              {
+                "id": "apologize",
+                "ja": "まず心からおわびします。",
+                "vi": "Trước hết xin lỗi thật lòng.",
+                "en": "Apologise sincerely first.",
+                "ru": "Сначала искренне извинюсь.",
+                "flag": "story_musician_staff_apologize",
+                "affinity": 6,
+                "reply": {
+                  "speaker": "npc_music_owner",
+                  "ja": "それが基本だ。よく見ていたね。",
+                  "vi": "Đó là điều cơ bản. Em quan sát giỏi đấy.",
+                  "en": "That's the basics. You've been watching.",
+                  "ru": "Это основа. Ты внимательно учился."
+                }
+              },
+              {
+                "id": "listen",
+                "ja": "最後まで話を聞きます。",
+                "vi": "Lắng nghe đến hết.",
+                "en": "Listen to the end.",
+                "ru": "Выслушаю до конца.",
+                "flag": "story_musician_staff_listen",
+                "affinity": 7,
+                "reply": {
+                  "speaker": "npc_music_owner",
+                  "ja": "聞く力は、日本語の力でもある。",
+                  "vi": "Biết lắng nghe cũng là giỏi tiếng Nhật.",
+                  "en": "Listening is a language skill too.",
+                  "ru": "Умение слушать — тоже языковой навык."
+                }
+              },
+              {
+                "id": "boss",
+                "ja": "すぐに先輩を呼びます。",
+                "vi": "Gọi ngay tiền bối.",
+                "en": "Call a senior right away.",
+                "ru": "Сразу позову старшего.",
+                "flag": "story_musician_staff_boss",
+                "affinity": 5,
+                "reply": {
+                  "speaker": "npc_music_owner",
+                  "ja": "相談するのは正しい判断だ。",
+                  "vi": "Hỏi ý kiến là quyết định đúng.",
+                  "en": "Asking for help was the right call.",
+                  "ru": "Попросить помощи — верное решение."
+                }
+              }
+            ],
+            "ending": [
+              {
+                "speaker": "narrator",
+                "ja": "「ありがとう、また来ます」とお客さまが言った。",
+                "vi": "Khách nói: 'Cảm ơn, tôi sẽ quay lại'.",
+                "en": "The customer says: thank you, I'll come again.",
+                "ru": "Клиент говорит: «Спасибо, приду ещё»."
+              }
+            ]
+          }
         },
         {
           "tier": "senior",
@@ -1784,7 +4786,75 @@
               "en": "That's a pro sound.",
               "ru": "Это профессиональный звук."
             }
-          ]
+          ],
+          "cutscene": {
+            "prompt": {
+              "speaker": "npc_music_owner",
+              "ja": "新人が泣きそうになっている。",
+              "vi": "Người mới sắp khóc rồi.",
+              "en": "The new trainee is close to tears.",
+              "ru": "Новичок вот-вот расплачется."
+            },
+            "choices": [
+              {
+                "id": "teach",
+                "ja": "いっしょにやり方を見直します。",
+                "vi": "Cùng xem lại cách làm.",
+                "en": "Go over the steps together.",
+                "ru": "Вместе разберу порядок работы.",
+                "flag": "story_musician_senior_teach",
+                "affinity": 8,
+                "reply": {
+                  "speaker": "npc_music_owner",
+                  "ja": "昔のあなたを見ているようだ。",
+                  "vi": "Như thấy lại em ngày trước vậy.",
+                  "en": "It's like watching you back then.",
+                  "ru": "Будто вижу тебя в начале."
+                }
+              },
+              {
+                "id": "story",
+                "ja": "自分の失敗の話をします。",
+                "vi": "Kể chuyện thất bại của mình.",
+                "en": "Tell them about my own mistakes.",
+                "ru": "Расскажу о своих ошибках.",
+                "flag": "story_musician_senior_story",
+                "affinity": 7,
+                "reply": {
+                  "speaker": "npc_music_owner",
+                  "ja": "失敗を話せる人は強い。",
+                  "vi": "Người dám kể thất bại là người mạnh.",
+                  "en": "People who share failures are strong.",
+                  "ru": "Кто говорит о неудачах — тот силён."
+                }
+              },
+              {
+                "id": "cover",
+                "ja": "今日は私が代わります。",
+                "vi": "Hôm nay để em làm thay.",
+                "en": "I'll cover for them today.",
+                "ru": "Сегодня подменю его.",
+                "flag": "story_musician_senior_cover",
+                "affinity": 4,
+                "reply": {
+                  "speaker": "npc_music_owner",
+                  "ja": "やさしいね。でも次は教えてあげて。",
+                  "vi": "Em tốt bụng. Nhưng lần sau hãy dạy họ nhé.",
+                  "en": "Kind. But next time, teach them.",
+                  "ru": "Добрый поступок. Но в следующий раз научи."
+                }
+              }
+            ],
+            "ending": [
+              {
+                "speaker": "narrator",
+                "ja": "新人が「先輩」と呼んでくれた。",
+                "vi": "Người mới gọi bạn là 'senpai'.",
+                "en": "The trainee calls you senpai.",
+                "ru": "Новичок называет вас «сэмпай»."
+              }
+            ]
+          }
         },
         {
           "tier": "manager",
@@ -1821,7 +4891,75 @@
               "en": "Chin up.",
               "ru": "Выше голову."
             }
-          ]
+          ],
+          "cutscene": {
+            "prompt": {
+              "speaker": "npc_music_owner",
+              "ja": "売り上げが落ちた。何を変える？",
+              "vi": "Doanh thu giảm. Em thay đổi gì?",
+              "en": "Sales are down. What will you change?",
+              "ru": "Продажи упали. Что вы измените?"
+            },
+            "choices": [
+              {
+                "id": "team",
+                "ja": "スタッフの意見を聞きます。",
+                "vi": "Lắng nghe ý kiến nhân viên.",
+                "en": "Ask the staff for ideas.",
+                "ru": "Спрошу мнение сотрудников.",
+                "flag": "story_musician_manager_team",
+                "affinity": 8,
+                "reply": {
+                  "speaker": "npc_music_owner",
+                  "ja": "チームはあなたを信じている。",
+                  "vi": "Cả đội tin em.",
+                  "en": "The team trusts you.",
+                  "ru": "Команда тебе доверяет."
+                }
+              },
+              {
+                "id": "new",
+                "ja": "新しいメニューやサービスを作ります。",
+                "vi": "Làm thực đơn, dịch vụ mới.",
+                "en": "Create a new menu or service.",
+                "ru": "Создам новое меню или услугу.",
+                "flag": "story_musician_manager_new",
+                "affinity": 6,
+                "reply": {
+                  "speaker": "npc_music_owner",
+                  "ja": "思い切りがいい。やってみなさい。",
+                  "vi": "Quyết đoán đấy. Cứ thử đi.",
+                  "en": "Bold. Go for it.",
+                  "ru": "Смело. Попробуй."
+                }
+              },
+              {
+                "id": "guests",
+                "ja": "常連さんに話を聞きに行きます。",
+                "vi": "Đi hỏi chuyện khách quen.",
+                "en": "Go and ask the regulars.",
+                "ru": "Поговорю с постоянными клиентами.",
+                "flag": "story_musician_manager_guests",
+                "affinity": 7,
+                "reply": {
+                  "speaker": "npc_music_owner",
+                  "ja": "答えはいつもお客さまの中にある。",
+                  "vi": "Câu trả lời luôn ở nơi khách hàng.",
+                  "en": "The answer is always with the customers.",
+                  "ru": "Ответ всегда у клиентов."
+                }
+              }
+            ],
+            "ending": [
+              {
+                "speaker": "narrator",
+                "ja": "三か月後、売り上げは前より上がった。",
+                "vi": "Ba tháng sau, doanh thu vượt cả trước kia.",
+                "en": "Three months later, sales are higher than ever.",
+                "ru": "Через три месяца продажи выше прежнего."
+              }
+            ]
+          }
         },
         {
           "tier": "owner",
@@ -1858,7 +4996,99 @@
               "en": "Don't forget the first café.",
               "ru": "Не забывай первое кафе."
             }
-          ]
+          ],
+          "cutscene": {
+            "prompt": {
+              "speaker": "npc_music_owner",
+              "ja": "この仕事で、何を残したい？",
+              "vi": "Em muốn để lại gì qua công việc này?",
+              "en": "What do you want to leave behind through this work?",
+              "ru": "Что вы хотите оставить после себя в этой работе?"
+            },
+            "choices": [
+              {
+                "id": "people",
+                "ja": "人を育てたいです。",
+                "vi": "Em muốn đào tạo con người.",
+                "en": "I want to raise the next people.",
+                "ru": "Хочу растить людей.",
+                "flag": "story_musician_owner_people",
+                "affinity": 10,
+                "reply": {
+                  "speaker": "npc_music_owner",
+                  "ja": "あなたが一番の財産を選んだ。",
+                  "vi": "Em đã chọn tài sản quý nhất.",
+                  "en": "You chose the greatest treasure.",
+                  "ru": "Ты выбрал главное сокровище."
+                }
+              },
+              {
+                "id": "quality",
+                "ja": "最高の仕事を続けたいです。",
+                "vi": "Em muốn giữ chất lượng tốt nhất.",
+                "en": "I want to keep doing the very best work.",
+                "ru": "Хочу продолжать делать лучшую работу.",
+                "flag": "story_musician_owner_quality",
+                "affinity": 8,
+                "reply": {
+                  "speaker": "npc_music_owner",
+                  "ja": "その心があれば、看板は守れる。",
+                  "vi": "Có tấm lòng đó, bảng hiệu sẽ được giữ.",
+                  "en": "With that heart, the name will last.",
+                  "ru": "С таким сердцем имя будет жить."
+                }
+              },
+              {
+                "id": "bridge",
+                "ja": "日本とベトナムをつなぎたいです。",
+                "vi": "Em muốn nối Nhật Bản và Việt Nam.",
+                "en": "I want to link Japan and Vietnam.",
+                "ru": "Хочу связать Японию и Вьетнам.",
+                "flag": "story_musician_owner_bridge",
+                "affinity": 8,
+                "reply": {
+                  "speaker": "npc_music_owner",
+                  "ja": "あなたにしかできないことだ。",
+                  "vi": "Đó là việc chỉ em làm được.",
+                  "en": "Only you can do that.",
+                  "ru": "Это можешь только ты."
+                }
+              }
+            ],
+            "ending": [
+              {
+                "speaker": "narrator",
+                "ja": "あの日の見習いが、今は看板を背負っている。",
+                "vi": "Cậu thực tập sinh ngày ấy, giờ gánh cả bảng hiệu.",
+                "en": "The trainee of that first day now carries the whole business.",
+                "ru": "Стажёр того первого дня теперь несёт на себе всё дело."
+              },
+              {
+                "speaker": "npc_music_owner",
+                "ja": "見習いのころのメモ、まだ持っているね。",
+                "vi": "Cuốn sổ thời thực tập, em vẫn giữ nhỉ.",
+                "en": "You still keep your trainee notebook.",
+                "ru": "Ты всё ещё хранишь тетрадь стажёра.",
+                "flag": "story_musician_trainee_careful"
+              },
+              {
+                "speaker": "npc_music_owner",
+                "ja": "あの笑顔は、今もお店の顔だ。",
+                "vi": "Nụ cười ấy vẫn là bộ mặt của cửa hàng.",
+                "en": "That smile is still the face of the place.",
+                "ru": "Эта улыбка по-прежнему лицо заведения.",
+                "flag": "story_musician_trainee_cheerful"
+              },
+              {
+                "speaker": "npc_music_owner",
+                "ja": "つかれたと言えた日から、ずいぶん強くなった。",
+                "vi": "Từ ngày dám nói 'em mệt', em đã mạnh mẽ hơn nhiều.",
+                "en": "Since the day you admitted you were tired, you've grown strong.",
+                "ru": "С того дня, как ты признался в усталости, ты стал сильным.",
+                "flag": "story_musician_trainee_tired"
+              }
+            ]
+          }
         }
       ]
     },
@@ -1902,7 +5132,75 @@
               "en": "The floor is moving.",
               "ru": "Танцпол двигается."
             }
-          ]
+          ],
+          "cutscene": {
+            "prompt": {
+              "speaker": "npc_music_owner",
+              "ja": "最初の一週間、どうだった？",
+              "vi": "Tuần đầu tiên thế nào?",
+              "en": "How was your first week?",
+              "ru": "Как прошла первая неделя?"
+            },
+            "choices": [
+              {
+                "id": "careful",
+                "ja": "ミスをしないよう、メモを取りました。",
+                "vi": "Em ghi chép để không mắc lỗi.",
+                "en": "I took notes so I wouldn't make mistakes.",
+                "ru": "Я делал заметки, чтобы не ошибаться.",
+                "flag": "story_producer_trainee_careful",
+                "affinity": 6,
+                "reply": {
+                  "speaker": "npc_music_owner",
+                  "ja": "そのメモは宝物になるよ。",
+                  "vi": "Cuốn sổ đó sẽ là báu vật đấy.",
+                  "en": "Those notes will become a treasure.",
+                  "ru": "Эти заметки станут сокровищем."
+                }
+              },
+              {
+                "id": "cheerful",
+                "ja": "お客さまと話すのが楽しかったです。",
+                "vi": "Nói chuyện với khách vui lắm ạ.",
+                "en": "I enjoyed talking with customers.",
+                "ru": "Мне понравилось говорить с клиентами.",
+                "flag": "story_producer_trainee_cheerful",
+                "affinity": 6,
+                "reply": {
+                  "speaker": "npc_music_owner",
+                  "ja": "その笑顔がいちばんの戦力だ。",
+                  "vi": "Nụ cười đó là vũ khí mạnh nhất.",
+                  "en": "That smile is your best asset.",
+                  "ru": "Эта улыбка — твоё главное оружие."
+                }
+              },
+              {
+                "id": "tired",
+                "ja": "正直、つかれました。",
+                "vi": "Thật lòng là em mệt ạ.",
+                "en": "Honestly, I'm tired.",
+                "ru": "Честно говоря, я устал.",
+                "flag": "story_producer_trainee_tired",
+                "affinity": 4,
+                "reply": {
+                  "speaker": "npc_music_owner",
+                  "ja": "正直でいい。休むのも仕事だよ。",
+                  "vi": "Thật thà là tốt. Nghỉ ngơi cũng là công việc.",
+                  "en": "Honesty is good. Resting is part of the job.",
+                  "ru": "Честность — это хорошо. Отдых — тоже работа."
+                }
+              }
+            ],
+            "ending": [
+              {
+                "speaker": "narrator",
+                "ja": "見習いの名札に、小さな星がついた。",
+                "vi": "Bảng tên thực tập sinh được gắn một ngôi sao nhỏ.",
+                "en": "A small star is added to your trainee badge.",
+                "ru": "На бейдж стажёра добавилась маленькая звёздочка."
+              }
+            ]
+          }
         },
         {
           "tier": "staff",
@@ -1939,7 +5237,75 @@
               "en": "Nice flow.",
               "ru": "Хороший поток."
             }
-          ]
+          ],
+          "cutscene": {
+            "prompt": {
+              "speaker": "npc_music_owner",
+              "ja": "お客さまからクレームが来た。どうする？",
+              "vi": "Có khách phàn nàn. Em làm gì?",
+              "en": "A customer complains. What do you do?",
+              "ru": "Клиент жалуется. Что вы сделаете?"
+            },
+            "choices": [
+              {
+                "id": "apologize",
+                "ja": "まず心からおわびします。",
+                "vi": "Trước hết xin lỗi thật lòng.",
+                "en": "Apologise sincerely first.",
+                "ru": "Сначала искренне извинюсь.",
+                "flag": "story_producer_staff_apologize",
+                "affinity": 6,
+                "reply": {
+                  "speaker": "npc_music_owner",
+                  "ja": "それが基本だ。よく見ていたね。",
+                  "vi": "Đó là điều cơ bản. Em quan sát giỏi đấy.",
+                  "en": "That's the basics. You've been watching.",
+                  "ru": "Это основа. Ты внимательно учился."
+                }
+              },
+              {
+                "id": "listen",
+                "ja": "最後まで話を聞きます。",
+                "vi": "Lắng nghe đến hết.",
+                "en": "Listen to the end.",
+                "ru": "Выслушаю до конца.",
+                "flag": "story_producer_staff_listen",
+                "affinity": 7,
+                "reply": {
+                  "speaker": "npc_music_owner",
+                  "ja": "聞く力は、日本語の力でもある。",
+                  "vi": "Biết lắng nghe cũng là giỏi tiếng Nhật.",
+                  "en": "Listening is a language skill too.",
+                  "ru": "Умение слушать — тоже языковой навык."
+                }
+              },
+              {
+                "id": "boss",
+                "ja": "すぐに先輩を呼びます。",
+                "vi": "Gọi ngay tiền bối.",
+                "en": "Call a senior right away.",
+                "ru": "Сразу позову старшего.",
+                "flag": "story_producer_staff_boss",
+                "affinity": 5,
+                "reply": {
+                  "speaker": "npc_music_owner",
+                  "ja": "相談するのは正しい判断だ。",
+                  "vi": "Hỏi ý kiến là quyết định đúng.",
+                  "en": "Asking for help was the right call.",
+                  "ru": "Попросить помощи — верное решение."
+                }
+              }
+            ],
+            "ending": [
+              {
+                "speaker": "narrator",
+                "ja": "「ありがとう、また来ます」とお客さまが言った。",
+                "vi": "Khách nói: 'Cảm ơn, tôi sẽ quay lại'.",
+                "en": "The customer says: thank you, I'll come again.",
+                "ru": "Клиент говорит: «Спасибо, приду ещё»."
+              }
+            ]
+          }
         },
         {
           "tier": "senior",
@@ -1976,7 +5342,75 @@
               "en": "Good beat.",
               "ru": "Хороший бит."
             }
-          ]
+          ],
+          "cutscene": {
+            "prompt": {
+              "speaker": "npc_music_owner",
+              "ja": "新人が泣きそうになっている。",
+              "vi": "Người mới sắp khóc rồi.",
+              "en": "The new trainee is close to tears.",
+              "ru": "Новичок вот-вот расплачется."
+            },
+            "choices": [
+              {
+                "id": "teach",
+                "ja": "いっしょにやり方を見直します。",
+                "vi": "Cùng xem lại cách làm.",
+                "en": "Go over the steps together.",
+                "ru": "Вместе разберу порядок работы.",
+                "flag": "story_producer_senior_teach",
+                "affinity": 8,
+                "reply": {
+                  "speaker": "npc_music_owner",
+                  "ja": "昔のあなたを見ているようだ。",
+                  "vi": "Như thấy lại em ngày trước vậy.",
+                  "en": "It's like watching you back then.",
+                  "ru": "Будто вижу тебя в начале."
+                }
+              },
+              {
+                "id": "story",
+                "ja": "自分の失敗の話をします。",
+                "vi": "Kể chuyện thất bại của mình.",
+                "en": "Tell them about my own mistakes.",
+                "ru": "Расскажу о своих ошибках.",
+                "flag": "story_producer_senior_story",
+                "affinity": 7,
+                "reply": {
+                  "speaker": "npc_music_owner",
+                  "ja": "失敗を話せる人は強い。",
+                  "vi": "Người dám kể thất bại là người mạnh.",
+                  "en": "People who share failures are strong.",
+                  "ru": "Кто говорит о неудачах — тот силён."
+                }
+              },
+              {
+                "id": "cover",
+                "ja": "今日は私が代わります。",
+                "vi": "Hôm nay để em làm thay.",
+                "en": "I'll cover for them today.",
+                "ru": "Сегодня подменю его.",
+                "flag": "story_producer_senior_cover",
+                "affinity": 4,
+                "reply": {
+                  "speaker": "npc_music_owner",
+                  "ja": "やさしいね。でも次は教えてあげて。",
+                  "vi": "Em tốt bụng. Nhưng lần sau hãy dạy họ nhé.",
+                  "en": "Kind. But next time, teach them.",
+                  "ru": "Добрый поступок. Но в следующий раз научи."
+                }
+              }
+            ],
+            "ending": [
+              {
+                "speaker": "narrator",
+                "ja": "新人が「先輩」と呼んでくれた。",
+                "vi": "Người mới gọi bạn là 'senpai'.",
+                "en": "The trainee calls you senpai.",
+                "ru": "Новичок называет вас «сэмпай»."
+              }
+            ]
+          }
         },
         {
           "tier": "manager",
@@ -2013,7 +5447,75 @@
               "en": "Your name is getting known.",
               "ru": "Твоё имя становится известным."
             }
-          ]
+          ],
+          "cutscene": {
+            "prompt": {
+              "speaker": "npc_music_owner",
+              "ja": "売り上げが落ちた。何を変える？",
+              "vi": "Doanh thu giảm. Em thay đổi gì?",
+              "en": "Sales are down. What will you change?",
+              "ru": "Продажи упали. Что вы измените?"
+            },
+            "choices": [
+              {
+                "id": "team",
+                "ja": "スタッフの意見を聞きます。",
+                "vi": "Lắng nghe ý kiến nhân viên.",
+                "en": "Ask the staff for ideas.",
+                "ru": "Спрошу мнение сотрудников.",
+                "flag": "story_producer_manager_team",
+                "affinity": 8,
+                "reply": {
+                  "speaker": "npc_music_owner",
+                  "ja": "チームはあなたを信じている。",
+                  "vi": "Cả đội tin em.",
+                  "en": "The team trusts you.",
+                  "ru": "Команда тебе доверяет."
+                }
+              },
+              {
+                "id": "new",
+                "ja": "新しいメニューやサービスを作ります。",
+                "vi": "Làm thực đơn, dịch vụ mới.",
+                "en": "Create a new menu or service.",
+                "ru": "Создам новое меню или услугу.",
+                "flag": "story_producer_manager_new",
+                "affinity": 6,
+                "reply": {
+                  "speaker": "npc_music_owner",
+                  "ja": "思い切りがいい。やってみなさい。",
+                  "vi": "Quyết đoán đấy. Cứ thử đi.",
+                  "en": "Bold. Go for it.",
+                  "ru": "Смело. Попробуй."
+                }
+              },
+              {
+                "id": "guests",
+                "ja": "常連さんに話を聞きに行きます。",
+                "vi": "Đi hỏi chuyện khách quen.",
+                "en": "Go and ask the regulars.",
+                "ru": "Поговорю с постоянными клиентами.",
+                "flag": "story_producer_manager_guests",
+                "affinity": 7,
+                "reply": {
+                  "speaker": "npc_music_owner",
+                  "ja": "答えはいつもお客さまの中にある。",
+                  "vi": "Câu trả lời luôn ở nơi khách hàng.",
+                  "en": "The answer is always with the customers.",
+                  "ru": "Ответ всегда у клиентов."
+                }
+              }
+            ],
+            "ending": [
+              {
+                "speaker": "narrator",
+                "ja": "三か月後、売り上げは前より上がった。",
+                "vi": "Ba tháng sau, doanh thu vượt cả trước kia.",
+                "en": "Three months later, sales are higher than ever.",
+                "ru": "Через три месяца продажи выше прежнего."
+              }
+            ]
+          }
         },
         {
           "tier": "owner",
@@ -2050,7 +5552,99 @@
               "en": "You used to carry the cables.",
               "ru": "А ведь ты таскал кабели."
             }
-          ]
+          ],
+          "cutscene": {
+            "prompt": {
+              "speaker": "npc_music_owner",
+              "ja": "この仕事で、何を残したい？",
+              "vi": "Em muốn để lại gì qua công việc này?",
+              "en": "What do you want to leave behind through this work?",
+              "ru": "Что вы хотите оставить после себя в этой работе?"
+            },
+            "choices": [
+              {
+                "id": "people",
+                "ja": "人を育てたいです。",
+                "vi": "Em muốn đào tạo con người.",
+                "en": "I want to raise the next people.",
+                "ru": "Хочу растить людей.",
+                "flag": "story_producer_owner_people",
+                "affinity": 10,
+                "reply": {
+                  "speaker": "npc_music_owner",
+                  "ja": "あなたが一番の財産を選んだ。",
+                  "vi": "Em đã chọn tài sản quý nhất.",
+                  "en": "You chose the greatest treasure.",
+                  "ru": "Ты выбрал главное сокровище."
+                }
+              },
+              {
+                "id": "quality",
+                "ja": "最高の仕事を続けたいです。",
+                "vi": "Em muốn giữ chất lượng tốt nhất.",
+                "en": "I want to keep doing the very best work.",
+                "ru": "Хочу продолжать делать лучшую работу.",
+                "flag": "story_producer_owner_quality",
+                "affinity": 8,
+                "reply": {
+                  "speaker": "npc_music_owner",
+                  "ja": "その心があれば、看板は守れる。",
+                  "vi": "Có tấm lòng đó, bảng hiệu sẽ được giữ.",
+                  "en": "With that heart, the name will last.",
+                  "ru": "С таким сердцем имя будет жить."
+                }
+              },
+              {
+                "id": "bridge",
+                "ja": "日本とベトナムをつなぎたいです。",
+                "vi": "Em muốn nối Nhật Bản và Việt Nam.",
+                "en": "I want to link Japan and Vietnam.",
+                "ru": "Хочу связать Японию и Вьетнам.",
+                "flag": "story_producer_owner_bridge",
+                "affinity": 8,
+                "reply": {
+                  "speaker": "npc_music_owner",
+                  "ja": "あなたにしかできないことだ。",
+                  "vi": "Đó là việc chỉ em làm được.",
+                  "en": "Only you can do that.",
+                  "ru": "Это можешь только ты."
+                }
+              }
+            ],
+            "ending": [
+              {
+                "speaker": "narrator",
+                "ja": "あの日の見習いが、今は看板を背負っている。",
+                "vi": "Cậu thực tập sinh ngày ấy, giờ gánh cả bảng hiệu.",
+                "en": "The trainee of that first day now carries the whole business.",
+                "ru": "Стажёр того первого дня теперь несёт на себе всё дело."
+              },
+              {
+                "speaker": "npc_music_owner",
+                "ja": "見習いのころのメモ、まだ持っているね。",
+                "vi": "Cuốn sổ thời thực tập, em vẫn giữ nhỉ.",
+                "en": "You still keep your trainee notebook.",
+                "ru": "Ты всё ещё хранишь тетрадь стажёра.",
+                "flag": "story_producer_trainee_careful"
+              },
+              {
+                "speaker": "npc_music_owner",
+                "ja": "あの笑顔は、今もお店の顔だ。",
+                "vi": "Nụ cười ấy vẫn là bộ mặt của cửa hàng.",
+                "en": "That smile is still the face of the place.",
+                "ru": "Эта улыбка по-прежнему лицо заведения.",
+                "flag": "story_producer_trainee_cheerful"
+              },
+              {
+                "speaker": "npc_music_owner",
+                "ja": "つかれたと言えた日から、ずいぶん強くなった。",
+                "vi": "Từ ngày dám nói 'em mệt', em đã mạnh mẽ hơn nhiều.",
+                "en": "Since the day you admitted you were tired, you've grown strong.",
+                "ru": "С того дня, как ты признался в усталости, ты стал сильным.",
+                "flag": "story_producer_trainee_tired"
+              }
+            ]
+          }
         }
       ]
     },
@@ -2094,7 +5688,75 @@
               "en": "Nice colours.",
               "ru": "Хорошие цвета."
             }
-          ]
+          ],
+          "cutscene": {
+            "prompt": {
+              "speaker": "npc_music_owner",
+              "ja": "最初の一週間、どうだった？",
+              "vi": "Tuần đầu tiên thế nào?",
+              "en": "How was your first week?",
+              "ru": "Как прошла первая неделя?"
+            },
+            "choices": [
+              {
+                "id": "careful",
+                "ja": "ミスをしないよう、メモを取りました。",
+                "vi": "Em ghi chép để không mắc lỗi.",
+                "en": "I took notes so I wouldn't make mistakes.",
+                "ru": "Я делал заметки, чтобы не ошибаться.",
+                "flag": "story_painter_trainee_careful",
+                "affinity": 6,
+                "reply": {
+                  "speaker": "npc_music_owner",
+                  "ja": "そのメモは宝物になるよ。",
+                  "vi": "Cuốn sổ đó sẽ là báu vật đấy.",
+                  "en": "Those notes will become a treasure.",
+                  "ru": "Эти заметки станут сокровищем."
+                }
+              },
+              {
+                "id": "cheerful",
+                "ja": "お客さまと話すのが楽しかったです。",
+                "vi": "Nói chuyện với khách vui lắm ạ.",
+                "en": "I enjoyed talking with customers.",
+                "ru": "Мне понравилось говорить с клиентами.",
+                "flag": "story_painter_trainee_cheerful",
+                "affinity": 6,
+                "reply": {
+                  "speaker": "npc_music_owner",
+                  "ja": "その笑顔がいちばんの戦力だ。",
+                  "vi": "Nụ cười đó là vũ khí mạnh nhất.",
+                  "en": "That smile is your best asset.",
+                  "ru": "Эта улыбка — твоё главное оружие."
+                }
+              },
+              {
+                "id": "tired",
+                "ja": "正直、つかれました。",
+                "vi": "Thật lòng là em mệt ạ.",
+                "en": "Honestly, I'm tired.",
+                "ru": "Честно говоря, я устал.",
+                "flag": "story_painter_trainee_tired",
+                "affinity": 4,
+                "reply": {
+                  "speaker": "npc_music_owner",
+                  "ja": "正直でいい。休むのも仕事だよ。",
+                  "vi": "Thật thà là tốt. Nghỉ ngơi cũng là công việc.",
+                  "en": "Honesty is good. Resting is part of the job.",
+                  "ru": "Честность — это хорошо. Отдых — тоже работа."
+                }
+              }
+            ],
+            "ending": [
+              {
+                "speaker": "narrator",
+                "ja": "見習いの名札に、小さな星がついた。",
+                "vi": "Bảng tên thực tập sinh được gắn một ngôi sao nhỏ.",
+                "en": "A small star is added to your trainee badge.",
+                "ru": "На бейдж стажёра добавилась маленькая звёздочка."
+              }
+            ]
+          }
         },
         {
           "tier": "staff",
@@ -2131,7 +5793,75 @@
               "en": "They were delighted.",
               "ru": "Клиент в восторге."
             }
-          ]
+          ],
+          "cutscene": {
+            "prompt": {
+              "speaker": "npc_music_owner",
+              "ja": "お客さまからクレームが来た。どうする？",
+              "vi": "Có khách phàn nàn. Em làm gì?",
+              "en": "A customer complains. What do you do?",
+              "ru": "Клиент жалуется. Что вы сделаете?"
+            },
+            "choices": [
+              {
+                "id": "apologize",
+                "ja": "まず心からおわびします。",
+                "vi": "Trước hết xin lỗi thật lòng.",
+                "en": "Apologise sincerely first.",
+                "ru": "Сначала искренне извинюсь.",
+                "flag": "story_painter_staff_apologize",
+                "affinity": 6,
+                "reply": {
+                  "speaker": "npc_music_owner",
+                  "ja": "それが基本だ。よく見ていたね。",
+                  "vi": "Đó là điều cơ bản. Em quan sát giỏi đấy.",
+                  "en": "That's the basics. You've been watching.",
+                  "ru": "Это основа. Ты внимательно учился."
+                }
+              },
+              {
+                "id": "listen",
+                "ja": "最後まで話を聞きます。",
+                "vi": "Lắng nghe đến hết.",
+                "en": "Listen to the end.",
+                "ru": "Выслушаю до конца.",
+                "flag": "story_painter_staff_listen",
+                "affinity": 7,
+                "reply": {
+                  "speaker": "npc_music_owner",
+                  "ja": "聞く力は、日本語の力でもある。",
+                  "vi": "Biết lắng nghe cũng là giỏi tiếng Nhật.",
+                  "en": "Listening is a language skill too.",
+                  "ru": "Умение слушать — тоже языковой навык."
+                }
+              },
+              {
+                "id": "boss",
+                "ja": "すぐに先輩を呼びます。",
+                "vi": "Gọi ngay tiền bối.",
+                "en": "Call a senior right away.",
+                "ru": "Сразу позову старшего.",
+                "flag": "story_painter_staff_boss",
+                "affinity": 5,
+                "reply": {
+                  "speaker": "npc_music_owner",
+                  "ja": "相談するのは正しい判断だ。",
+                  "vi": "Hỏi ý kiến là quyết định đúng.",
+                  "en": "Asking for help was the right call.",
+                  "ru": "Попросить помощи — верное решение."
+                }
+              }
+            ],
+            "ending": [
+              {
+                "speaker": "narrator",
+                "ja": "「ありがとう、また来ます」とお客さまが言った。",
+                "vi": "Khách nói: 'Cảm ơn, tôi sẽ quay lại'.",
+                "en": "The customer says: thank you, I'll come again.",
+                "ru": "Клиент говорит: «Спасибо, приду ещё»."
+              }
+            ]
+          }
         },
         {
           "tier": "senior",
@@ -2168,7 +5898,75 @@
               "en": "That's professional work.",
               "ru": "Это профессиональная работа."
             }
-          ]
+          ],
+          "cutscene": {
+            "prompt": {
+              "speaker": "npc_music_owner",
+              "ja": "新人が泣きそうになっている。",
+              "vi": "Người mới sắp khóc rồi.",
+              "en": "The new trainee is close to tears.",
+              "ru": "Новичок вот-вот расплачется."
+            },
+            "choices": [
+              {
+                "id": "teach",
+                "ja": "いっしょにやり方を見直します。",
+                "vi": "Cùng xem lại cách làm.",
+                "en": "Go over the steps together.",
+                "ru": "Вместе разберу порядок работы.",
+                "flag": "story_painter_senior_teach",
+                "affinity": 8,
+                "reply": {
+                  "speaker": "npc_music_owner",
+                  "ja": "昔のあなたを見ているようだ。",
+                  "vi": "Như thấy lại em ngày trước vậy.",
+                  "en": "It's like watching you back then.",
+                  "ru": "Будто вижу тебя в начале."
+                }
+              },
+              {
+                "id": "story",
+                "ja": "自分の失敗の話をします。",
+                "vi": "Kể chuyện thất bại của mình.",
+                "en": "Tell them about my own mistakes.",
+                "ru": "Расскажу о своих ошибках.",
+                "flag": "story_painter_senior_story",
+                "affinity": 7,
+                "reply": {
+                  "speaker": "npc_music_owner",
+                  "ja": "失敗を話せる人は強い。",
+                  "vi": "Người dám kể thất bại là người mạnh.",
+                  "en": "People who share failures are strong.",
+                  "ru": "Кто говорит о неудачах — тот силён."
+                }
+              },
+              {
+                "id": "cover",
+                "ja": "今日は私が代わります。",
+                "vi": "Hôm nay để em làm thay.",
+                "en": "I'll cover for them today.",
+                "ru": "Сегодня подменю его.",
+                "flag": "story_painter_senior_cover",
+                "affinity": 4,
+                "reply": {
+                  "speaker": "npc_music_owner",
+                  "ja": "やさしいね。でも次は教えてあげて。",
+                  "vi": "Em tốt bụng. Nhưng lần sau hãy dạy họ nhé.",
+                  "en": "Kind. But next time, teach them.",
+                  "ru": "Добрый поступок. Но в следующий раз научи."
+                }
+              }
+            ],
+            "ending": [
+              {
+                "speaker": "narrator",
+                "ja": "新人が「先輩」と呼んでくれた。",
+                "vi": "Người mới gọi bạn là 'senpai'.",
+                "en": "The trainee calls you senpai.",
+                "ru": "Новичок называет вас «сэмпай»."
+              }
+            ]
+          }
         },
         {
           "tier": "manager",
@@ -2205,7 +6003,75 @@
               "en": "Stand tall.",
               "ru": "Держись уверенно."
             }
-          ]
+          ],
+          "cutscene": {
+            "prompt": {
+              "speaker": "npc_music_owner",
+              "ja": "売り上げが落ちた。何を変える？",
+              "vi": "Doanh thu giảm. Em thay đổi gì?",
+              "en": "Sales are down. What will you change?",
+              "ru": "Продажи упали. Что вы измените?"
+            },
+            "choices": [
+              {
+                "id": "team",
+                "ja": "スタッフの意見を聞きます。",
+                "vi": "Lắng nghe ý kiến nhân viên.",
+                "en": "Ask the staff for ideas.",
+                "ru": "Спрошу мнение сотрудников.",
+                "flag": "story_painter_manager_team",
+                "affinity": 8,
+                "reply": {
+                  "speaker": "npc_music_owner",
+                  "ja": "チームはあなたを信じている。",
+                  "vi": "Cả đội tin em.",
+                  "en": "The team trusts you.",
+                  "ru": "Команда тебе доверяет."
+                }
+              },
+              {
+                "id": "new",
+                "ja": "新しいメニューやサービスを作ります。",
+                "vi": "Làm thực đơn, dịch vụ mới.",
+                "en": "Create a new menu or service.",
+                "ru": "Создам новое меню или услугу.",
+                "flag": "story_painter_manager_new",
+                "affinity": 6,
+                "reply": {
+                  "speaker": "npc_music_owner",
+                  "ja": "思い切りがいい。やってみなさい。",
+                  "vi": "Quyết đoán đấy. Cứ thử đi.",
+                  "en": "Bold. Go for it.",
+                  "ru": "Смело. Попробуй."
+                }
+              },
+              {
+                "id": "guests",
+                "ja": "常連さんに話を聞きに行きます。",
+                "vi": "Đi hỏi chuyện khách quen.",
+                "en": "Go and ask the regulars.",
+                "ru": "Поговорю с постоянными клиентами.",
+                "flag": "story_painter_manager_guests",
+                "affinity": 7,
+                "reply": {
+                  "speaker": "npc_music_owner",
+                  "ja": "答えはいつもお客さまの中にある。",
+                  "vi": "Câu trả lời luôn ở nơi khách hàng.",
+                  "en": "The answer is always with the customers.",
+                  "ru": "Ответ всегда у клиентов."
+                }
+              }
+            ],
+            "ending": [
+              {
+                "speaker": "narrator",
+                "ja": "三か月後、売り上げは前より上がった。",
+                "vi": "Ba tháng sau, doanh thu vượt cả trước kia.",
+                "en": "Three months later, sales are higher than ever.",
+                "ru": "Через три месяца продажи выше прежнего."
+              }
+            ]
+          }
         },
         {
           "tier": "owner",
@@ -2242,9 +6108,102 @@
               "en": "Still have your first brush?",
               "ru": "Сохранил свою первую кисть?"
             }
-          ]
+          ],
+          "cutscene": {
+            "prompt": {
+              "speaker": "npc_music_owner",
+              "ja": "この仕事で、何を残したい？",
+              "vi": "Em muốn để lại gì qua công việc này?",
+              "en": "What do you want to leave behind through this work?",
+              "ru": "Что вы хотите оставить после себя в этой работе?"
+            },
+            "choices": [
+              {
+                "id": "people",
+                "ja": "人を育てたいです。",
+                "vi": "Em muốn đào tạo con người.",
+                "en": "I want to raise the next people.",
+                "ru": "Хочу растить людей.",
+                "flag": "story_painter_owner_people",
+                "affinity": 10,
+                "reply": {
+                  "speaker": "npc_music_owner",
+                  "ja": "あなたが一番の財産を選んだ。",
+                  "vi": "Em đã chọn tài sản quý nhất.",
+                  "en": "You chose the greatest treasure.",
+                  "ru": "Ты выбрал главное сокровище."
+                }
+              },
+              {
+                "id": "quality",
+                "ja": "最高の仕事を続けたいです。",
+                "vi": "Em muốn giữ chất lượng tốt nhất.",
+                "en": "I want to keep doing the very best work.",
+                "ru": "Хочу продолжать делать лучшую работу.",
+                "flag": "story_painter_owner_quality",
+                "affinity": 8,
+                "reply": {
+                  "speaker": "npc_music_owner",
+                  "ja": "その心があれば、看板は守れる。",
+                  "vi": "Có tấm lòng đó, bảng hiệu sẽ được giữ.",
+                  "en": "With that heart, the name will last.",
+                  "ru": "С таким сердцем имя будет жить."
+                }
+              },
+              {
+                "id": "bridge",
+                "ja": "日本とベトナムをつなぎたいです。",
+                "vi": "Em muốn nối Nhật Bản và Việt Nam.",
+                "en": "I want to link Japan and Vietnam.",
+                "ru": "Хочу связать Японию и Вьетнам.",
+                "flag": "story_painter_owner_bridge",
+                "affinity": 8,
+                "reply": {
+                  "speaker": "npc_music_owner",
+                  "ja": "あなたにしかできないことだ。",
+                  "vi": "Đó là việc chỉ em làm được.",
+                  "en": "Only you can do that.",
+                  "ru": "Это можешь только ты."
+                }
+              }
+            ],
+            "ending": [
+              {
+                "speaker": "narrator",
+                "ja": "あの日の見習いが、今は看板を背負っている。",
+                "vi": "Cậu thực tập sinh ngày ấy, giờ gánh cả bảng hiệu.",
+                "en": "The trainee of that first day now carries the whole business.",
+                "ru": "Стажёр того первого дня теперь несёт на себе всё дело."
+              },
+              {
+                "speaker": "npc_music_owner",
+                "ja": "見習いのころのメモ、まだ持っているね。",
+                "vi": "Cuốn sổ thời thực tập, em vẫn giữ nhỉ.",
+                "en": "You still keep your trainee notebook.",
+                "ru": "Ты всё ещё хранишь тетрадь стажёра.",
+                "flag": "story_painter_trainee_careful"
+              },
+              {
+                "speaker": "npc_music_owner",
+                "ja": "あの笑顔は、今もお店の顔だ。",
+                "vi": "Nụ cười ấy vẫn là bộ mặt của cửa hàng.",
+                "en": "That smile is still the face of the place.",
+                "ru": "Эта улыбка по-прежнему лицо заведения.",
+                "flag": "story_painter_trainee_cheerful"
+              },
+              {
+                "speaker": "npc_music_owner",
+                "ja": "つかれたと言えた日から、ずいぶん強くなった。",
+                "vi": "Từ ngày dám nói 'em mệt', em đã mạnh mẽ hơn nhiều.",
+                "en": "Since the day you admitted you were tired, you've grown strong.",
+                "ru": "С того дня, как ты признался в усталости, ты стал сильным.",
+                "flag": "story_painter_trainee_tired"
+              }
+            ]
+          }
         }
       ]
     }
-  ]
+  ],
+  "bondThreshold": 20
 }

@@ -30,6 +30,13 @@ You arrive as an exchange student. Meet your neighbour Tanaka on Sakura-dōri.
 - **Tanaka**: わからないことがあったら、いつでも聞いてね。 — *If anything is unclear, just ask me any time.*
 - **Tanaka**: まずは学校と駅の場所を覚えましょう。 — *First, let's learn the way to the school and the station.*
 
+*Choice* — What would you like to do first in Hibari-chō?
+  - I want to study Japanese properly. → Good for you. Ms Morita is strict but kind. (`story_choice_arrival_study`, affinity +5)
+  - I want to make friends with the people here. → Then let's start by eating something good on the shopping street! (`story_choice_arrival_friends`, affinity +8)
+  - I want to find a part-time job. → Ms Ito at the konbini is looking for help. (`story_choice_arrival_work`, affinity +4)
+*Ending*
+  - **Narrator**: Your days in Hibari-chō begin here.
+
 ### 2. First day at Hibari School — ひばり学院の初日 (`story_ch02_first_class`, JLPT N5, level 1)
 
 Introduce yourself in Sakura class and finish three lessons.
@@ -37,6 +44,14 @@ Introduce yourself in Sakura class and finish three lessons.
 - **Ms Morita**: はじめまして。担任の森田です。 — *Nice to meet you. I'm Morita, your homeroom teacher.*
 - **Ms Morita**: まちがえても大丈夫。話すことがいちばん大切です。 — *Mistakes are fine. Speaking is what matters most.*
 - **Ms Morita**: キムです！いっしょにがんばりましょう！ — *I'm Kim! Let's do our best together!*
+
+*Choice* — How will you introduce yourself?
+  - Nice to meet you all. I look forward to working with you. → Very polite, well done. (`story_choice_first_class_polite`, affinity +6)
+  - I like cooking. I want to cook Vietnamese food for everyone. → Kim likes cooking too. Talk to her later. (`story_choice_first_class_hobby`, affinity +5)
+  - Sorry, my Japanese is still poor… → It's fine. Everyone is the same. Let's do our best together. (`story_choice_first_class_nervous`, affinity +8)
+*Ending*
+  - **Narrator**: Kim is waving at you.
+  - **Kim**: Tell me about your cooking later! _(if `story_choice_first_class_hobby`)_
 
 ### 3. Neighbours and sushi — ご近所とお寿司 (`story_ch03_neighbours`, JLPT N5, level 3)
 
@@ -46,6 +61,13 @@ Tanaka takes you to Sushi Hibari. Order on your own in Japanese.
 - **Aoki**: ご注文がお決まりでしたら、どうぞ。 — *Whenever you're ready to order, go ahead.*
 - **Aoki**: また来てくださいね。次はおすすめを出しますよ。 — *Please come again. Next time I'll bring you our special.*
 
+*Choice* — Aoki asks what you would like.
+  - Omakase, please. → Brave! Today's tuna is the best. (`story_choice_neighbours_omakase`, affinity +8)
+  - What fish is this? → That's horse mackerel. I like people who ask. (`story_choice_neighbours_ask`, affinity +6)
+  - I'd like to eat with Mr Tanaka. → Nice. Neighbours matter. (`story_choice_neighbours_share`, affinity +5)
+*Ending*
+  - **Narrator**: Behind the noren, the neighbourhood is laughing.
+
 ### 4. The summer festival — 夏祭り (`story_ch04_festival`, JLPT N5, level 6)
 
 Mr Sato invites you to help at the shrine festival. The whole street now knows your face.
@@ -53,6 +75,14 @@ Mr Sato invites you to help at the shrine festival. The whole street now knows y
 - **Mr Sato**: 今年の夏祭り、手伝ってくれませんか。 — *Would you help with this year's summer festival?*
 - **Mr Sato**: みなさん、この人はもう町の仲間です。 — *Everyone, this person is one of our neighbourhood now.*
 - **Mr Sato**: ありがとう。ここはあなたの町ですよ。 — *Thank you. This is your town too.*
+
+*Choice* — How will you help at the festival?
+  - I'll dance the Bon Odori! → Great, join the circle! (`story_choice_festival_dance`, affinity +6)
+  - I'll help at a stall. → The takoyaki stall is swamped. That helps. (`story_choice_festival_stall`, affinity +8)
+  - I'll clean up afterwards. → That's what we value most. People notice. (`story_choice_festival_clean`, affinity +10)
+*Ending*
+  - **Narrator**: Fireworks open across the night sky.
+  - **Kim**: Beautiful. Let's watch together next year too. _(if `story_bond_npc_classmate_kim`)_
 
 ### 5. Choosing a career — 仕事を選ぶ (`story_ch05_career_choice`, JLPT N4, level 10)
 
@@ -62,6 +92,13 @@ With your visa changed to work, pick a career in the Career app and start as a t
 - **Tanaka**: 店、病院、農場、フーコックのレストラン……何がしたい？ — *A shop, the clinic, the farm, the restaurant in Phú Quốc… what do you want to do?*
 - **Tanaka**: どの仕事も、日本語が上手になるほど上に行けるよ。 — *In any job, the better your Japanese, the higher you go.*
 
+*Choice* — What kind of work do you want to live by?
+  - I want work that helps people. → The clinic or a shop would suit you. (`story_choice_career_choice_people`, affinity +6)
+  - I want to cook, make music, create things. → The craftsman's road is hard but fun. (`story_choice_career_choice_craft`, affinity +6)
+  - I want work that links Japan and Vietnam. → Then you should meet Mai on Phú Quốc. (`story_choice_career_choice_bridge`, affinity +8)
+*Ending*
+  - **Tanaka**: You can pick your path under Careers.
+
 ### 6. A bridge to Phú Quốc — フーコックへの架け橋 (`story_ch06_phu_quoc`, JLPT N4, level 10)
 
 Mai at Gánh Ngon needs a Japanese speaker for her guests from Japan. Visit the island.
@@ -69,6 +106,14 @@ Mai at Gánh Ngon needs a Japanese speaker for her guests from Japan. Visit the 
 - **Mai**: 日本からのお客さまが増えているんです。 — *More and more guests are coming from Japan.*
 - **Mai**: あなたの日本語で、お店を手伝ってくれませんか。 — *Could you help the restaurant with your Japanese?*
 - **Mai**: ようこそフーコックへ。海もごはんも最高ですよ！ — *Welcome to Phú Quốc. The sea and the food are the best!*
+
+*Choice* — What will you do first at Gánh Ngon?
+  - I'll translate the menu into Japanese. → Thank you! Japanese guests will love it. (`story_choice_phu_quoc_menu`, affinity +10)
+  - I'll help in the kitchen. → Then let's start with filleting fish. (`story_choice_phu_quoc_kitchen`, affinity +6)
+  - I'll look around the island first. → Be back by sunset. (`story_choice_phu_quoc_beach`, affinity +3)
+*Ending*
+  - **Narrator**: In the sea breeze, a new workplace awaits.
+  - **Mai**: The Japanese menu is already a hit. _(if `story_choice_phu_quoc_menu`)_
 
 ### 7. Exam season: N3 — 試験シーズン：N3 (`story_ch07_n3_exam`, JLPT N3, level 14)
 
@@ -78,6 +123,14 @@ Morita-sensei prepares the class for the JLPT N3. Ten lessons or practice tests.
 - **Ms Morita**: 仕事で使う日本語も、試験で練習しましょう。 — *Let's practise the Japanese you use at work in the exam too.*
 - **Ms Morita**: キムさんと一緒に、毎日少しずつ。 — *A little every day, together with Kim.*
 
+*Choice* — What will you do the day before the exam?
+  - Review grammar once more. → Diligent. But do go to bed early. (`story_choice_n3_exam_review`, affinity +5)
+  - Hold a study group with Kim and the others. → Teaching each other is the best study. (`story_choice_n3_exam_group`, affinity +7)
+  - Rest well. → That's important preparation too. (`story_choice_n3_exam_rest`, affinity +4)
+*Ending*
+  - **Narrator**: On results day, you find your name.
+  - **Narrator**: Kim passed too! Everyone celebrates. _(if `story_choice_n3_exam_group`)_
+
 ### 8. From student to mentor — 学生から先輩へ (`story_ch08_mentor`, JLPT N2, level 18)
 
 New students arrive in Sakura class. Morita-sensei asks you to welcome them as Tanaka once welcomed you.
@@ -86,6 +139,13 @@ New students arrive in Sakura class. Morita-sensei asks you to welcome them as T
 - **Ms Morita**: 新しい学生に、町を案内してあげてください。 — *Please show the new students around town.*
 - **Ms Morita**: あなたを見ていると、教師になってよかったと思います。 — *Watching you, I'm glad I became a teacher.*
 
+*Choice* — What do you want to tell the new students?
+  - That mistakes are fine. → Those are the words I said to you on day one. (`story_choice_mentor_mistakes`, affinity +10)
+  - To talk with the townspeople. → Hibari-chō raised you. (`story_choice_mentor_town`, affinity +6)
+  - That work makes your Japanese grow. → Words from experience are strong. (`story_choice_mentor_work`, affinity +6)
+*Ending*
+  - **Narrator**: New voices ring through the classroom.
+
 ### 9. Home in two countries — 二つのふるさと (`story_ch09_homecoming`, JLPT N1, level 22)
 
 At the next summer festival Tanaka gives the speech — about you. Your career, your Japanese, your friends in Hibari and Phú Quốc.
@@ -93,6 +153,17 @@ At the next summer festival Tanaka gives the speech — about you. Your career, 
 - **Tanaka**: 最初は道もわからなかったのにね。 — *At first you didn't even know the way.*
 - **Tanaka**: 今では日本とベトナムをつなぐ人だ。 — *Now you're someone who connects Japan and Vietnam.*
 - **Tanaka**: おかえり。ここも、あなたのふるさとだよ。 — *Welcome home. This is your hometown too.*
+
+*Choice* — Where will you live from now on?
+  - I'll stay in Hibari-chō. → I'm glad. We stay neighbours. (`story_choice_homecoming_japan`, affinity +10)
+  - I'll go home to Vietnam and be a bridge to Japan. → I'll miss you, but I'm proud. (`story_choice_homecoming_vietnam`, affinity +8)
+  - I'll live between both countries. → Two hometowns. That's so you. (`story_choice_homecoming_both`, affinity +8)
+*Ending*
+  - **Narrator**: A letter from Ms Morita: you are the student I'm proudest of.
+  - **Kim**: Kim: Let's cook together again. _(if `story_bond_npc_classmate_kim`)_
+  - **Mai**: Mai: Gánh Ngon is always your home. _(if `story_bond_npc_ganhngon_manager`)_
+  - **Aoki**: Aoki: The noren is always open for you. _(if `story_bond_npc_sushi_staff`)_
+  - **Narrator**: The story of Hibari-chō does not end. A new day begins.
 
 ## Career arcs
 
@@ -383,6 +454,18 @@ At the next summer festival Tanaka gives the speech — about you. Your career, 
 - 美術館から電話だ。 — *The museum called.*
 - ひばりとフーコック、両方が入ってる。 — *Both Hibari and Phú Quốc are in it.*
 - 最初の筆、まだある？ — *Still have your first brush?*
+
+## Cutscenes, choices and relationships
+
+When a story quest is completed, `StoryScenes` plays its scene in the normal dialogue window: the quest's lines, the boss's question, the player's answer (a story flag + affinity with that person, `SocialStanding`), the reply and the ending. Ending lines with a flag show only when that flag is set, so earlier answers come back later (e.g. the owner stage recalls the trainee answer, the last chapter thanks the people you bonded with). Affinity of 20 or more with someone sets `story_bond_<speaker>`. Career answers are remembered per tier (`story_<career>_<tier>_<answer>`):
+
+- **trainee** — How was your first week?: I took notes so I wouldn't make mistakes. (`careful`); I enjoyed talking with customers. (`cheerful`); Honestly, I'm tired. (`tired`)
+- **staff** — A customer complains. What do you do?: Apologise sincerely first. (`apologize`); Listen to the end. (`listen`); Call a senior right away. (`boss`)
+- **senior** — The new trainee is close to tears.: Go over the steps together. (`teach`); Tell them about my own mistakes. (`story`); I'll cover for them today. (`cover`)
+- **manager** — Sales are down. What will you change?: Ask the staff for ideas. (`team`); Create a new menu or service. (`new`); Go and ask the regulars. (`guests`)
+- **owner** — What do you want to leave behind through this work?: I want to raise the next people. (`people`); I want to keep doing the very best work. (`quality`); I want to link Japan and Vietnam. (`bridge`)
+
+Scenes are not played while `StoryDirector.Bypass` is on (tests). A scene plays once (`story_scene_<quest>`); the journal shows the lines at any time.
 
 ## Languages
 
