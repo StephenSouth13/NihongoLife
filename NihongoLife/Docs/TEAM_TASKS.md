@@ -2086,3 +2086,7 @@ Tên lớp test viết tắt: PlayMode = `NihongoLife.Tests.<Lớp>`; EditMode =
 ## 2026-11-01 - Russian path: first 27 YouTube lessons linked
 - What: Resources/Content/Russian/ru_path.json gets youtubeUrl (youtu.be links from @NihongoLifeGame, playlist "Tiếng Nga - Русский") for the first 27 steps in path order: alphabet 6, pronunciation 4, A1 units ru_u01-u10 + cert A1 (slot ru-path-cert_a1) + torfl_a1_mock_1, A2 ru_u11-u15. The other 26 slots stay empty until uploaded. Why: the videos are published; filled slots join the in-game video catalog (RussianCourse.RegisterVideos).
 - Tests: ModelAnswersAndRussianPathTests no longer assume every slot is empty (RegisterVideos == number of filled slots; the "empty slot does not play" check uses the first unfilled step). EditMode full run 333/333 passed.
+
+## 2026-11-01 - Russian path: all 53 YouTube lessons linked
+- What: the remaining 26 youtubeUrl slots in Resources/Content/Russian/ru_path.json are filled (A2 u16-u20 + cert/mock A2, B1 u21-u28 + cert/mock B1, B2 u29-u35 + cert/mock B2), so all 53 path steps link a published @NihongoLifeGame video. Why: every Russian lesson is now uploaded.
+- Tests: no test change needed (ModelAnswersAndRussianPathTests counts filled slots; the empty-slot check runs only while an empty slot exists). EditMode full run 333/333 passed.
