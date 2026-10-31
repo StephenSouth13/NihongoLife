@@ -2081,3 +2081,8 @@ Tên lớp test viết tắt: PlayMode = `NihongoLife.Tests.<Lớp>`; EditMode =
 - New PhuQuocPerfPlayModeTests: visits 7 spots (Ganh Ngon, seafood market, hem alley, beach swimmers, resort pool, promenade, tour terminal), vSync off, 1 s warm-up, 3 s measure, writes phuquoc_fps.txt, fails under 20 fps. Desktop (Quadro RTX 3000, D3D11, batch 640x480): average 348.5 fps, worst spot beach_swimmers 314.7 fps (1% low 75.5).
 - WebGL release build in Chrome on Intel UHD 630 (1280x720): menu ~95 fps; Phu Quoc (Ganh Ngon) 53-55 fps, 1% low ~28. Above the 30 fps target, so no optimisation needed.
 - WebGL console: Vivox's bundled source-map-support re-read the framework script from a blob: URL that Unity's loader had already revoked ('Failed to load resource: net::ERR_FILE_NOT_FOUND' x2). The NihongoLife WebGL template now keeps script blob URLs alive. Headless smoke and the Phu Quoc run: 0 console errors.
+
+
+## 2026-11-01 - Russian path: first 27 YouTube lessons linked
+- What: Resources/Content/Russian/ru_path.json gets youtubeUrl (youtu.be links from @NihongoLifeGame, playlist "Tiếng Nga - Русский") for the first 27 steps in path order: alphabet 6, pronunciation 4, A1 units ru_u01-u10 + cert A1 (slot ru-path-cert_a1) + torfl_a1_mock_1, A2 ru_u11-u15. The other 26 slots stay empty until uploaded. Why: the videos are published; filled slots join the in-game video catalog (RussianCourse.RegisterVideos).
+- Tests: ModelAnswersAndRussianPathTests no longer assume every slot is empty (RegisterVideos == number of filled slots; the "empty slot does not play" check uses the first unfilled step). EditMode full run 333/333 passed.

@@ -228,7 +228,7 @@ namespace NihongoLife.Tests
             Assert.AreEqual("en", VideoCatalog.Category(new VideoEntry { module = "ielts" }));
             Assert.AreEqual("ja", VideoCatalog.Category(new VideoEntry { module = "jlpt" }));
             Assert.IsTrue(VideoCatalog.ByCategory("ru").Any(v => v.id == "t-ru-1"));
-            Assert.AreEqual(0, RussianCourse.RegisterVideos(), "slots are empty until videos are published");
+            Assert.AreEqual(RussianCourse.Path.Steps.Count(s => s.video != null && s.video.Filled), RussianCourse.RegisterVideos(), "only published slots join the catalog");
         }
 
         // ── UI ──
@@ -310,8 +310,8 @@ namespace NihongoLife.Tests
             var p = Open<RussianPathPopup>();
             Assert.IsNotNull(p.Step);
             foreach (var st in RussianCourse.Path.stages) { p.SelectStage(st.id); Assert.AreSame(st, p.Stage); }
-            p.SelectStep("ru_pr1");
-            Assert.IsFalse(p.PlayVideo(), "empty slot does not play");
+            var empty = RussianCourse.Path.Steps.FirstOrDefault(s => s.video != null && !s.video.Filled);
+            if (empty != null) { p.SelectStep(empty.id); Assert.IsFalse(p.PlayVideo(), "empty slot does not play"); }
             p.SelectStep("torfl_b1_mock_1");
             var mock = RussianCourse.Mock("torfl_b1_mock_1");
             foreach (var q in mock.Questions) p.Answer(q.id, q.answer);
