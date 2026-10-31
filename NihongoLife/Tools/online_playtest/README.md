@@ -7,3 +7,6 @@ Scripts that test the real backend with the playtest accounts. They read `LocalS
 - `reject_live.py` applies `supabase/migrations/20261031_speaking_request_reject.sql` and checks the teacher "decline" RPC.
 
 Needs Python 3.11 with `requests`, `websockets` and `psycopg2-binary` installed.
+
+- `online_test.py` also checks the server-side incoming-call notifications (Realtime broadcast `request`/`open`/`rejected` on `nl:speaking` and `call_request` on `nl:teacher:<teacherId>`) and the explicit `decline` action (alias `reject`) of `agora-classroom`.
+- Deploy: `npx supabase functions deploy agora-classroom --project-ref pkxrtvlerjjiignmlebx --use-api` with `SUPABASE_ACCESS_TOKEN` loaded from `LocalSecrets/secrets.json` (never commit it).

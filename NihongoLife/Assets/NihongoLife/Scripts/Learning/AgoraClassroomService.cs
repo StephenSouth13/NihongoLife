@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Text;
@@ -80,6 +80,9 @@ namespace NihongoLife.Learning
         public void ListJoinRequests(Action<AgoraClassroomResponse> done) => Call("{\"action\":\"requests\"}", done);
         public void ApproveRequest(string requestId, Action<AgoraClassroomResponse> done) =>
             Call($"{{\"action\":\"approve\",\"requestId\":\"{Escape(requestId)}\"}}", done);
+        /// <summary>Teacher declines a join request through the Edge Function (<c>decline</c>); the server tells the student.</summary>
+        public void DeclineRequest(string requestId, Action<AgoraClassroomResponse> done) => Call(DeclineBody(requestId), done);
+        public static string DeclineBody(string requestId) => "{\"action\":\"decline\",\"requestId\":\"" + Escape(requestId) + "\"}";
         /// <summary>Teacher turns a join request down (database RPC <c>reject_speaking_request</c>; only the room's teacher can).</summary>
         public void RejectRequest(string requestId, Action<bool, string> done)
         {

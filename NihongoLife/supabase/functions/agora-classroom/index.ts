@@ -37,6 +37,18 @@ Deno.serve(async (request: Request) => {
   if (user.is_anonymous) return reply({ ok: false, error: "Phòng Speaking cần tài khoản đã đăng ký." }, 403);
 
   const admin = createClient(url, serviceKey);
+  // Server-side incoming-call notifications (Supabase Realtime broadcast REST API). Same "nl:speaking" lobby events the game
+  // already sends peer-to-peer ("open", "request", "rejected"), so old clients keep working; plus a per-teacher topic.
+  const notify = async (messages: { topic: string; event: string; payload: Record<string, unknown> }[]) => {
+    try {
+      const r = await fetch(`${url}/realtime/v1/api/broadcast`, {
+        method: "POST",
+        headers: { apikey: serviceKey, Authorization: `Bearer ${serviceKey}`, "Content-Type": "application/json" },
+        body: JSON.stringify({ messages: messages.map((m) => ({ ...m, private: false })) }),
+      });
+      return r.ok;
+    } catch { return false; }
+  };
   const body = await request.json().catch(() => ({})) as Body;
   const role = String(user.app_metadata?.role ?? "student").toLowerCase();
   const teacher = role === "teacher" || role === "admin";
@@ -68,7 +80,12 @@ Deno.serve(async (request: Request) => {
       channel_name: channel,
     }).select("*").single();
     if (error) return reply({ ok: false, error: error.message }, 400);
-    return reply({ ok: true, role, room: data });
+    let notified = false;
+    if (!teacher) {
+      notified = await notify([{ topic: "nl:speaking", event: "open", payload: {
+        r: data.id, s: user.id, n: data.student_name, lv: data.student_level ?? 1, t: "", tt: "", src: "server" } }]);
+    }
+    return reply({ ok: true, role, room: data, notified });
   }
 
   if (body.action === "list") {
@@ -104,12 +121,19 @@ Deno.serve(async (request: Request) => {
     const { data: room } = await admin.from("speaking_rooms").select("*").eq("id", body.roomId).eq("status", "waiting").eq("creator_role", "teacher").maybeSingle();
     if (!room) return reply({ ok: false, error: "Phòng giáo viên không còn mở." }, 404);
     const { data: profile } = await admin.from("profiles").select("display_name,avatar_url,bio,level,xp").eq("id", user.id).maybeSingle();
-    const { error } = await admin.from("speaking_room_requests").upsert({
+    const { data: joinRow, error } = await admin.from("speaking_room_requests").upsert({
       room_id: room.id, student_id: user.id, student_name: profile?.display_name ?? displayName,
       student_avatar_url: profile?.avatar_url ?? null, student_bio: profile?.bio ?? null,
       student_level: profile?.level ?? 1, student_xp: profile?.xp ?? 0, status: "pending",
-    }, { onConflict: "room_id,student_id" });
-    return error ? reply({ ok: false, error: error.message }, 400) : reply({ ok: true, role, room });
+    }, { onConflict: "room_id,student_id" }).select("id").maybeSingle();
+    if (error) return reply({ ok: false, error: error.message }, 400);
+    const ring = { r: room.id, s: user.id, n: String(profile?.display_name ?? displayName).slice(0, 80), lv: profile?.level ?? 1,
+      ti: room.teacher_id ?? "", rid: joinRow?.id ?? "", src: "server" };
+    const notified = await notify([
+      { topic: "nl:speaking", event: "request", payload: ring },
+      { topic: `nl:teacher:${room.teacher_id}`, event: "call_request", payload: ring },
+    ]);
+    return reply({ ok: true, role, room, requestId: joinRow?.id ?? null, notified });
   }
 
   if (body.action === "requests") {
@@ -136,6 +160,21 @@ Deno.serve(async (request: Request) => {
     await admin.from("speaking_room_requests").update({ status: "accepted" }).eq("id", joinRequest.id);
     await admin.from("speaking_room_requests").update({ status: "rejected" }).eq("room_id", room.id).neq("id", joinRequest.id).eq("status", "pending");
     return issueToken(room, user.id, role);
+  }
+
+  // Explicit decline (same rule as the reject_speaking_request RPC: only the room's teacher, only a pending request).
+  if (body.action === "decline" || body.action === "reject") {
+    if (!teacher) return reply({ ok: false, error: "Only teachers can decline requests." }, 403);
+    if (!body.requestId) return reply({ ok: false, error: "Missing requestId." }, 400);
+    const { data: joinRequest } = await admin.from("speaking_room_requests").select("id,room_id,student_id,status").eq("id", body.requestId).maybeSingle();
+    if (!joinRequest || joinRequest.status !== "pending") return reply({ ok: false, error: "Request already handled." }, 409);
+    const { data: room } = await admin.from("speaking_rooms").select("id,teacher_id").eq("id", joinRequest.room_id).maybeSingle();
+    if (!room || room.teacher_id !== user.id) return reply({ ok: false, error: "Not your room." }, 403);
+    const { data: updated } = await admin.from("speaking_room_requests").update({ status: "rejected" })
+      .eq("id", joinRequest.id).eq("status", "pending").select("id").maybeSingle();
+    if (!updated) return reply({ ok: false, error: "Request already handled." }, 409);
+    const notified = await notify([{ topic: "nl:speaking", event: "rejected", payload: { r: room.id, s: joinRequest.student_id, tn: displayName, src: "server" } }]);
+    return reply({ ok: true, role, declined: true, requestId: joinRequest.id, notified });
   }
 
   if (body.action === "token") {

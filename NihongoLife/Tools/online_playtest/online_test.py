@@ -160,11 +160,74 @@ def teacher(students, t):
     call(t, {'action': 'close', 'roomId': tr, '_step': 'teacher ends'}, 200)
     report['teacher_room'] = tr
 
+class Listener:
+    """Raw Realtime socket on several public topics; records server broadcasts (incoming-call notifications)."""
+    def __init__(self, s, topics): self.s = s; self.topics = topics; self.got = []; self.ref = 0
+    async def run(self, ready, stop):
+        ws_url = URL.replace('https://', 'wss://') + '/realtime/v1/websocket?apikey=' + KEY + '&vsn=1.0.0'
+        async with websockets.connect(ws_url, max_size=2**22) as ws:
+            for t in self.topics:
+                self.ref += 1
+                await ws.send(json.dumps({'topic': 'realtime:' + t, 'event': 'phx_join', 'ref': str(self.ref), 'join_ref': str(self.ref), 'payload': {
+                    'config': {'broadcast': {'self': False, 'ack': False}, 'presence': {'key': '', 'enabled': False}, 'postgres_changes': [], 'private': False},
+                    'access_token': self.s['token']}}))
+            async def read():
+                async for raw in ws:
+                    m = json.loads(raw)
+                    if m.get('event') == 'broadcast':
+                        p = m.get('payload') or {}; self.got.append((m.get('topic'), p.get('event'), p.get('payload') or {}))
+            task = asyncio.create_task(read()); await asyncio.sleep(1.5); ready.set(); await stop.wait(); task.cancel()
+
+async def notify_decline(students, t):
+    fn = URL + '/functions/v1/agora-classroom'
+    def post(s, body): r = requests.post(fn, headers={**H, 'Authorization': 'Bearer ' + s['token']}, json=body, timeout=25); return r.status_code, (r.json() if r.content else {})
+    c, d = students[2], students[3]
+    tl = Listener(t, ['nl:speaking', 'nl:teacher:' + t['uid']]); sl = Listener(c, ['nl:speaking'])
+    ready1, ready2, stop = asyncio.Event(), asyncio.Event(), asyncio.Event()
+    tasks = [asyncio.create_task(tl.run(ready1, stop)), asyncio.create_task(sl.run(ready2, stop))]
+    await ready1.wait(); await ready2.wait()
+    loop = asyncio.get_running_loop(); run = lambda s, b: loop.run_in_executor(None, post, s, b)
+    checks = []
+    def chk(name, ok, info=None): checks.append({'step': name, 'pass': bool(ok), 'info': info}); log('PASS' if ok else 'FAIL', name, info if info is not None else '')
+    _, mine = await run(t, {'action': 'mine'})
+    if mine.get('room'): await run(t, {'action': 'close', 'roomId': mine['room']['id']})
+    _, tr = await run(t, {'action': 'create'}); room = (tr.get('room') or {}).get('id')
+    code, j = await run(c, {'action': 'request_join', 'roomId': room}); rid = j.get('requestId')
+    chk('request_join returns requestId + notified', code == 200 and rid and j.get('notified') is True, {'http': code, 'notified': j.get('notified')})
+    await run(d, {'action': 'request_join', 'roomId': room})
+    await asyncio.sleep(2.5)
+    lob = [p for tp, e, p in tl.got if tp == 'realtime:nl:speaking' and e == 'request' and p.get('src') == 'server' and p.get('s') == c['uid']]
+    per = [p for tp, e, p in tl.got if tp == 'realtime:nl:teacher:' + t['uid'] and e == 'call_request' and p.get('rid') == rid]
+    chk('teacher gets lobby "request" (old clients) from server', lob and lob[0].get('ti') == t['uid'] and lob[0].get('rid') == rid, len(lob))
+    chk('teacher gets per-teacher "call_request" ring', len(per) >= 1, len(per))
+    code, j = await run(c, {'action': 'decline', 'requestId': rid}); chk('student cannot decline', code == 403, code)
+    code, j = await run(t, {'action': 'decline', 'requestId': rid}); chk('teacher declines request', code == 200 and j.get('declined') and j.get('notified'), {'http': code, 'notified': j.get('notified')})
+    code, j = await run(t, {'action': 'decline', 'requestId': rid}); chk('decline twice -> 409', code == 409, code)
+    await asyncio.sleep(2.5)
+    rej = [p for tp, e, p in sl.got if e == 'rejected' and p.get('s') == c['uid'] and p.get('r') == room]
+    chk('student hears "rejected" broadcast', len(rej) >= 1, len(rej))
+    _, rq = await run(t, {'action': 'requests'}); left = [r['student_id'] for r in rq.get('requests') or []]
+    chk('declined request gone, other still pending', c['uid'] not in left and d['uid'] in left, len(left))
+    reqs_d = [r['id'] for r in rq.get('requests') or [] if r['student_id'] == d['uid']]
+    code, j = await run(t, {'action': 'reject', 'requestId': reqs_d[0] if reqs_d else 'x'}); chk('legacy alias "reject" works', code == 200, code)
+    code, j = await run(t, {'action': 'decline'}); chk('decline without requestId -> 400', code == 400, code)
+    await run(t, {'action': 'close', 'roomId': room})
+    code, j = await run(c, {'action': 'create'}); sr = (j.get('room') or {}).get('id')
+    await asyncio.sleep(2.5)
+    op = [p for tp, e, p in tl.got if e == 'open' and p.get('src') == 'server' and p.get('r') == sr]
+    chk('student call -> teacher gets "open" ring', code == 200 and j.get('notified') and len(op) >= 1, len(op))
+    await run(c, {'action': 'close', 'roomId': sr})
+    stop.set(); await asyncio.gather(*tasks, return_exceptions=True)
+    report['notify_decline'] = checks
+
 sessions = auth_all()
 students = [s for s in sessions if s['role'] != 'teacher']; t = next(s for s in sessions if s['role'] == 'teacher')
 if all(s['token'] for s in sessions):
     gate(sessions)
     asyncio.run(realtime(students))
     teacher(students, t)
+    asyncio.run(notify_decline(students, t))
 json.dump(report, open(os.path.join(OUT, 'report.json'), 'w', encoding='utf-8'), ensure_ascii=False, indent=1)
+tp = [x for x in report['teacher'] if 'pass' in x]; nd = report.get('notify_decline', [])
+log('SUMMARY teacher-call %d/%d, notify+decline %d/%d' % (sum(x['pass'] for x in tp), len(tp), sum(x['pass'] for x in nd), len(nd)))
 log('DONE')

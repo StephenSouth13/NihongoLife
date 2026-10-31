@@ -1,4 +1,4 @@
-#pragma warning disable CS0436 // With the WebGL build target the Editor compiles both the Agora SDK and the web shim (AgoraWebShim); the shim types are the intended ones.
+﻿#pragma warning disable CS0436 // With the WebGL build target the Editor compiles both the Agora SDK and the web shim (AgoraWebShim); the shim types are the intended ones.
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -311,14 +311,23 @@ namespace NihongoLife.Learning
             if (_classroom == null || _roomRequestPending) return;
             var request = _joinRequests.Find(r => r.id == requestId);
             _roomRequestPending = true;
-            _classroom.RejectRequest(requestId, (ok, error) =>
+            _classroom.DeclineRequest(requestId, response =>
+            {
+                if (response.ok) { FinishDecline(requestId, request, true, null); return; }
+                // Older server without the "decline" action: fall back to the reject_speaking_request RPC.
+                _classroom.RejectRequest(requestId, (ok, error) => FinishDecline(requestId, request, ok, error));
+            });
+        }
+
+        private void FinishDecline(string requestId, AgoraJoinRequest request, bool ok, string error)
+        {
             {
                 _roomRequestPending = false;
                 if (!ok) { SetStatusRaw(error); RefreshNow(); return; }
                 _joinRequests.RemoveAll(r => r.id == requestId);
                 if (request != null) _hub.AnnounceRejected(request.room_id, request.student_id);
                 SetStatus("Đã từ chối yêu cầu.", "Request declined.", "リクエストを辞退しました。");
-            });
+            }
         }
 
         private void HandleRequestRejected(string roomId, string teacher)
@@ -335,6 +344,7 @@ namespace NihongoLife.Learning
 
         private void HandleRoomOpened(string roomId, string student, string test, int level)
         {
+            CallRingtone.Ring();
             bool exam = !string.IsNullOrEmpty(test);
             LiveToast.Show(LiveToast.Tone.Live, exam ? "record_voice_over" : "person_add",
                 exam ? "Học viên chờ thi Speaking" : "Học viên đang chờ lớp", exam ? "A student is waiting for a Speaking exam" : "A student is waiting for class", exam ? "スピーキング試験の受験者が待っています" : "生徒が授業を待っています",
@@ -368,6 +378,7 @@ namespace NihongoLife.Learning
 
         private void HandleJoinRequested(string roomId, string student, int level)
         {
+            CallRingtone.Ring();
             LiveToast.Show(LiveToast.Tone.Live, "person_add",
                 "Có học viên xin vào lớp", "A student asks to join", "参加リクエストがあります",
                 $"{student} (Level {level}) đang chờ bạn duyệt.", $"{student} (Level {level}) is waiting for your approval.", $"{student}（レベル{level}）が承認を待っています。",
