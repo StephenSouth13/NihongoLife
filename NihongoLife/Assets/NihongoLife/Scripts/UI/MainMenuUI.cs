@@ -1,4 +1,4 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Linq;
 using NihongoLife.Audio;
 using NihongoLife.Core;
@@ -378,16 +378,16 @@ namespace NihongoLife.UI
             var title = UiKit.Label(card, "Title", "", 28f, UiTheme.Text, FontStyles.Bold);
             Box(title.rectTransform, 0.05f, 0.84f, 0.72f, 0.96f);
             modeStatusText = UiKit.Label(card, "Status", "", 15f, UiTheme.TextSoft, FontStyles.Normal, TextAlignmentOptions.TopLeft, wrap: true);
-            Box(modeStatusText.rectTransform, 0.05f, 0.70f, 0.95f, 0.84f);
+            Box(modeStatusText.rectTransform, 0.05f, 0.71f, 0.95f, 0.84f); FitHint(modeStatusText);
 
             modeOfflineButton = UiKit.Button(card, "OfflineModeButton", "Ngoại tuyến", "Offline", "オフライン", ChooseOffline, UiKit.Kind.Primary, "play_arrow", 20f, 16);
-            Box((RectTransform)modeOfflineButton.transform, 0.05f, 0.28f, 0.48f, 0.66f);
+            Box((RectTransform)modeOfflineButton.transform, 0.05f, 0.40f, 0.48f, 0.68f);
             modeOnlineButton = UiKit.Button(card, "OnlineModeButton", "Trực tuyến", "Online", "オンライン", ChooseOnline, UiKit.Kind.Secondary, "public", 20f, 16);
-            Box((RectTransform)modeOnlineButton.transform, 0.52f, 0.28f, 0.95f, 0.66f);
+            Box((RectTransform)modeOnlineButton.transform, 0.52f, 0.40f, 0.95f, 0.68f);
             var offlineHint = UiKit.Label(card, "OfflineHint", "", 13f, UiTheme.Muted, FontStyles.Normal, TextAlignmentOptions.TopLeft, wrap: true);
-            Box(offlineHint.rectTransform, 0.05f, 0.16f, 0.48f, 0.28f);
+            Box(offlineHint.rectTransform, 0.06f, 0.19f, 0.47f, 0.38f); FitHint(offlineHint);
             var onlineHint = UiKit.Label(card, "OnlineHint", "", 13f, UiTheme.Muted, FontStyles.Normal, TextAlignmentOptions.TopLeft, wrap: true);
-            Box(onlineHint.rectTransform, 0.52f, 0.16f, 0.95f, 0.28f);
+            Box(onlineHint.rectTransform, 0.53f, 0.19f, 0.94f, 0.38f); FitHint(onlineHint);
             // Offline guest reset (shop / classroom / contest booth): two taps, never touches an account's save.
             bool resetArmed = false;
             Button resetGuest = null;
@@ -398,14 +398,25 @@ namespace NihongoLife.UI
                 bool done = GuestReset.ResetGuest();
                 UiKit.SetLabel(resetGuest, done ? Loc.T("Đã xoá - khách mới", "Cleared - new guest", "消去しました - 新しいゲスト") : Loc.T("Đang đăng nhập tài khoản - không xoá", "Signed in - nothing erased", "ログイン中 - 消去なし"));
             }, UiKit.Kind.Secondary, "restart_alt", 14f, 12);
-            Box((RectTransform)resetGuest.transform, 0.05f, 0.03f, 0.48f, 0.14f);
+            Box((RectTransform)resetGuest.transform, 0.52f, 0.04f, 0.95f, 0.16f); FitHint(resetGuest.GetComponentInChildren<TextMeshProUGUI>(true), false);
             resetGuest.gameObject.SetActive(GuestReset.HasGuestSave);
             var back = UiKit.Button(card, "ModeBack", "Quay lại", "Back", "戻る", () => modeSelectPanel.SetActive(false), UiKit.Kind.Ghost, "arrow_back", 16f, 16);
-            Box((RectTransform)back.transform, 0.05f, 0.04f, 0.28f, 0.14f);
+            Box((RectTransform)back.transform, 0.05f, 0.04f, 0.32f, 0.16f);
 
             modeSelectPanel.SetActive(false);
             UiModalStack.Register(this, () => modeSelectPanel.activeSelf && (characterSelectPanel == null || !characterSelectPanel.activeSelf), () => modeSelectPanel.SetActive(false), "ModeSelect");
             RefreshModeStatus();
+        }
+
+        /// <summary>Wrapped hint text that shrinks (down to 11 pt) and ends in "..." instead of running past its box.</summary>
+        private static void FitHint(TextMeshProUGUI text, bool wrap = true)
+        {
+            if (text == null) return;
+            text.enableAutoSizing = true;
+            text.fontSizeMax = Mathf.Max(text.fontSize, 12f);
+            text.fontSizeMin = 11f;
+            text.textWrappingMode = wrap ? TextWrappingModes.Normal : TextWrappingModes.NoWrap;
+            text.overflowMode = TextOverflowModes.Ellipsis;
         }
 
         private void RefreshModeStatus()

@@ -106,6 +106,7 @@ namespace NihongoLife.UI
             var card = CreateChild(_panel, "AuthCard");
             var cardRect = card.AddComponent<RectTransform>();
             CenterRect(cardRect, new Vector2(440f, 570f));
+            card.AddComponent<HudFitRect>(); // phones: the 570-high card shrinks to fit a 480-high canvas
             var cardImage = card.AddComponent<Image>();
             cardImage.color = new Color(0.04f, 0.05f, 0.06f, 0.97f);
 

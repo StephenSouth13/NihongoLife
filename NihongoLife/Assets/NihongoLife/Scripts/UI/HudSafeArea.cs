@@ -1,4 +1,4 @@
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace NihongoLife.UI
 {
@@ -24,7 +24,7 @@ namespace NihongoLife.UI
 
         private void Update()
         {
-            if (Screen.safeArea != _lastSafeArea || Screen.width != _lastResolution.x || Screen.height != _lastResolution.y)
+            if (UiScreen.SafeArea != _lastSafeArea || UiScreen.Width != _lastResolution.x || UiScreen.Height != _lastResolution.y)
             {
                 Apply();
             }
@@ -32,14 +32,14 @@ namespace NihongoLife.UI
 
         private void Apply()
         {
-            if (_rect == null || Screen.width <= 0 || Screen.height <= 0) return;
+            if (_rect == null || UiScreen.Width <= 0 || UiScreen.Height <= 0) return;
 
-            Rect safe = Screen.safeArea;
+            Rect safe = UiScreen.SafeArea;
             _lastSafeArea = safe;
-            _lastResolution = new Vector2Int(Screen.width, Screen.height);
+            _lastResolution = new Vector2Int(UiScreen.Width, UiScreen.Height);
 
-            _rect.anchorMin = new Vector2(safe.xMin / Screen.width, safe.yMin / Screen.height);
-            _rect.anchorMax = new Vector2(safe.xMax / Screen.width, safe.yMax / Screen.height);
+            _rect.anchorMin = new Vector2(safe.xMin / UiScreen.Width, safe.yMin / UiScreen.Height);
+            _rect.anchorMax = new Vector2(safe.xMax / UiScreen.Width, safe.yMax / UiScreen.Height);
             _rect.offsetMin = Vector2.zero;
             _rect.offsetMax = Vector2.zero;
         }

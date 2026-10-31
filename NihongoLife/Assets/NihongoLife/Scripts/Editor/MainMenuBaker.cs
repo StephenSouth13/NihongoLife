@@ -76,8 +76,8 @@ namespace NihongoLife.EditorTools
                 // Brand
                 var accent = Img(panel.transform, "TopAccent", UiTheme.Gold, Load(Art + "round_8.png"));
                 TopLeft(accent.rectTransform, ColumnX, 132f, 64f, 6f);
-                var title = Text(panel.transform, "TitleText", "NIHONGO LIFE", font, 66f, Color.white, FontStyles.Bold, TextAlignmentOptions.MidlineLeft);
-                TopLeft(title.rectTransform, ColumnX, 150f, 760f, 96f);
+                var title = Text(panel.transform, "TitleText", "NIHONGO LIFE", font, 64f, Color.white, FontStyles.Bold, TextAlignmentOptions.MidlineLeft);
+                TopLeft(title.rectTransform, ColumnX, 146f, 760f, 100f);
                 title.characterSpacing = 4f;
                 var kana = Text(panel.transform, "BrandKana", "日本語ライフ", font, 24f, UiTheme.Gold, FontStyles.Bold, TextAlignmentOptions.MidlineLeft);
                 TopLeft(kana.rectTransform, ColumnX + 4f, 246f, 400f, 36f);

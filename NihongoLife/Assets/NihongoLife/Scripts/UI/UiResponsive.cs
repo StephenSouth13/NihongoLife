@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using NihongoLife.Core;
 using TMPro;
 using UnityEngine;
@@ -17,6 +17,7 @@ namespace NihongoLife.UI
         Vector2 _lastRef;
         float _lastMatch;
         int _lastW, _lastH;
+        bool _lastPhone;
 
         public static void Ensure(Transform any)
         {
@@ -33,30 +34,31 @@ namespace NihongoLife.UI
 
         private void Update()
         {
-            if (Screen.width != _lastW || Screen.height != _lastH) Apply();
+            if (UiScreen.Width != _lastW || UiScreen.Height != _lastH || UiScreen.IsPhone != _lastPhone) Apply();
         }
 
         private void Apply()
         {
-            if (_scaler == null || Screen.width < 2 || Screen.height < 2) return;
-            _lastW = Screen.width;
-            _lastH = Screen.height;
-            float aspect = (float)Screen.width / Screen.height;
-            int shortSide = Mathf.Min(Screen.width, Screen.height);
+            if (_scaler == null || UiScreen.Width < 2 || UiScreen.Height < 2) return;
+            _lastW = UiScreen.Width;
+            _lastH = UiScreen.Height;
+            _lastPhone = UiScreen.IsPhone;
+            float aspect = (float)UiScreen.Width / UiScreen.Height;
+            int shortSide = Mathf.Min(UiScreen.Width, UiScreen.Height);
             Vector2 reference;
             float match;
-            if (shortSide <= 500)
+            if (_lastPhone)
             {
                 // Phones stay near real pixels so a button is about a finger tall.
                 // A landscape phone is often wider than 2:1 and must not use the ultrawide reference.
                 if (aspect < 1f)
                 {
-                    reference = new Vector2(Mathf.Clamp(Screen.width, 360, 480), Mathf.Clamp(Screen.height, 640, 960));
+                    reference = new Vector2(Mathf.Clamp(UiScreen.Width, 360, 480), Mathf.Clamp(UiScreen.Height, 640, 960));
                     match = 0f;
                 }
                 else
                 {
-                    reference = new Vector2(Mathf.Clamp(Screen.width, 640, 960), Mathf.Clamp(Screen.height, 320, 480));
+                    reference = new Vector2(Mathf.Clamp(UiScreen.Width, 640, 960), Mathf.Clamp(UiScreen.Height, 320, 480));
                     match = 1f;
                 }
             }
@@ -117,21 +119,21 @@ namespace NihongoLife.UI
 
         private void Update()
         {
-            if (Screen.safeArea != _last || Screen.width != _pixels.x || Screen.height != _pixels.y) Apply();
+            if (UiScreen.SafeArea != _last || UiScreen.Width != _pixels.x || UiScreen.Height != _pixels.y) Apply();
         }
 
         private void Apply()
         {
-            if (_rect == null || Screen.width < 2 || Screen.height < 2) return;
+            if (_rect == null || UiScreen.Width < 2 || UiScreen.Height < 2) return;
             if (_rect.anchorMin != Vector2.zero || _rect.anchorMax != Vector2.one) return;
-            _last = Screen.safeArea;
-            _pixels = new Vector2Int(Screen.width, Screen.height);
+            _last = UiScreen.SafeArea;
+            _pixels = new Vector2Int(UiScreen.Width, UiScreen.Height);
             var canvas = GetComponentInParent<Canvas>();
-            float scale = canvas != null && canvas.scaleFactor > 0.01f ? canvas.scaleFactor : 1f;
+            float scale = UiScreen.CanvasScaleOverride ?? (canvas != null && canvas.scaleFactor > 0.01f ? canvas.scaleFactor : 1f);
             float left = _last.xMin / scale;
             float bottom = _last.yMin / scale;
-            float right = (Screen.width - _last.xMax) / scale;
-            float top = (Screen.height - _last.yMax) / scale;
+            float right = (UiScreen.Width - _last.xMax) / scale;
+            float top = (UiScreen.Height - _last.yMax) / scale;
             _rect.offsetMin = new Vector2(left, bottom);
             _rect.offsetMax = new Vector2(-right, -top);
         }
@@ -175,7 +177,7 @@ namespace NihongoLife.UI
             if (panel.rect.width < 2f || panel.rect.height < 2f) return;
             if (!_captured) Capture();
             bool compact = panel.rect.width < 900f || panel.rect.height < 1000f
-                || Mathf.Min(Screen.width, Screen.height) <= 500;
+                || UiScreen.IsPhone;
             if (compact) Pack(panel);
             else if (_packed) Restore();
         }
