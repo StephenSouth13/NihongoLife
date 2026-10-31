@@ -372,7 +372,9 @@ namespace NihongoLife.Learning
                 var label = UiKit.Label(list, "Request_" + q.id, (Func<string>)(() => $"{q.student_name}  <size=80%><color=#9FB2C5>{Loc.T("xin vào lớp", "asks to join", "参加希望")} · Level {Mathf.Max(1, q.level)}</color></size>"), 15.5f, UiTheme.Text);
                 UiKit.Place(label.rectTransform, 24f, 62f + index * 72f, 340f, 62f);
                 var approve = UiKit.Button(list, "Approve_" + q.id, "Duyệt", "Approve", "承認", () => _manager.ApproveJoinRequest(q.id), UiKit.Kind.Success, "done", 15f);
-                UiKit.Place((RectTransform)approve.transform, 380f, 70f + index * 72f, 160f, 46f);
+                UiKit.Place((RectTransform)approve.transform, 372f, 70f + index * 72f, 112f, 46f);
+                var reject = UiKit.Button(list, "Reject_" + q.id, "Từ chối", "Decline", "辞退", () => _manager.RejectJoinRequest(q.id), UiKit.Kind.Danger, "close", 15f);
+                UiKit.Place((RectTransform)reject.transform, 490f, 70f + index * 72f, 112f, 46f);
                 index++;
             }
             if (index == 0)

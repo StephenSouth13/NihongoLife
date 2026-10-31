@@ -80,6 +80,32 @@ namespace NihongoLife.Learning
         public void ListJoinRequests(Action<AgoraClassroomResponse> done) => Call("{\"action\":\"requests\"}", done);
         public void ApproveRequest(string requestId, Action<AgoraClassroomResponse> done) =>
             Call($"{{\"action\":\"approve\",\"requestId\":\"{Escape(requestId)}\"}}", done);
+        /// <summary>Teacher turns a join request down (database RPC <c>reject_speaking_request</c>; only the room's teacher can).</summary>
+        public void RejectRequest(string requestId, Action<bool, string> done)
+        {
+            if (!IsAvailable) { done?.Invoke(false, NihongoLife.Core.Loc.T("Cần đăng nhập để dùng phòng Speaking.", "Sign in to use the Speaking room.", "スピーキングルームにはログインが必要です。")); return; }
+            StartCoroutine(Rpc(RejectRpcUrl(_client.ProjectUrl), RejectRpcBody(requestId), done));
+        }
+
+        public static string RejectRpcUrl(string projectUrl) => (projectUrl ?? "").TrimEnd('/') + "/rest/v1/rpc/reject_speaking_request";
+        public static string RejectRpcBody(string requestId) => "{\"request_id\":\"" + Escape(requestId) + "\"}";
+
+        private IEnumerator Rpc(string url, string json, Action<bool, string> done)
+        {
+            using (var request = new UnityWebRequest(url, "POST"))
+            {
+                request.uploadHandler = new UploadHandlerRaw(Encoding.UTF8.GetBytes(json));
+                request.downloadHandler = new DownloadHandlerBuffer();
+                request.SetRequestHeader("Content-Type", "application/json");
+                request.SetRequestHeader("apikey", _client.AnonKey);
+                request.SetRequestHeader("Authorization", "Bearer " + _auth.AccessToken);
+                request.timeout = 15;
+                yield return request.SendWebRequest();
+                bool ok = request.result == UnityWebRequest.Result.Success && (request.downloadHandler.text ?? "").Trim() == "true";
+                done?.Invoke(ok, ok ? null : NihongoLife.Core.Loc.T("Không từ chối được yêu cầu (có thể đã được xử lý).", "Couldn't decline the request (it may already be handled).", "リクエストを辞退できませんでした（処理済みの可能性があります）。"));
+            }
+        }
+
         public void GetToken(string roomId, Action<AgoraClassroomResponse> done) =>
             Call($"{{\"action\":\"token\",\"roomId\":\"{Escape(roomId)}\"}}", done);
         public void CloseRoom(string roomId, Action<AgoraClassroomResponse> done) =>

@@ -138,6 +138,7 @@ namespace NihongoLife.Learning
         public event Action<string, string> OnRoomClaimed;                // roomId, teacherName  (for my room)
         public event Action<string, string, int> OnJoinRequested;         // roomId, studentName, level (to me, teacher)
         public event Action<string, string> OnRequestApproved;            // roomId, teacherName  (for me, student)
+        public event Action<string, string> OnRequestRejected;            // roomId, teacherName  (for me, student)
         // Room
         public event Action<string, string> OnPeerEntered;                // name, role
         public event Action<string> OnPeerLeft;                           // name
@@ -234,6 +235,9 @@ namespace NihongoLife.Learning
         public void AnnounceApproved(string roomId, string studentId) =>
             _lobby?.Send("approved", new Dictionary<string, object> { ["r"] = roomId, ["s"] = studentId ?? "", ["tn"] = LocalName });
 
+        public void AnnounceRejected(string roomId, string studentId) =>
+            _lobby?.Send("rejected", new Dictionary<string, object> { ["r"] = roomId, ["s"] = studentId ?? "", ["tn"] = LocalName });
+
         private void HandleLobby(string evt, Dictionary<string, object> p)
         {
             string room = p.Str("r", "");
@@ -254,6 +258,9 @@ namespace NihongoLife.Learning
                     break;
                 case "approved":
                     if (p.Str("s") == LocalId) OnRequestApproved?.Invoke(room, Clean(p.Str("tn", "")));
+                    break;
+                case "rejected":
+                    if (p.Str("s") == LocalId) OnRequestRejected?.Invoke(room, Clean(p.Str("tn", "")));
                     break;
             }
         }

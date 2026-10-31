@@ -85,6 +85,7 @@ namespace NihongoLife.Learning
             _hub.OnRoomClaimed += HandleRoomClaimed;
             _hub.OnJoinRequested += HandleJoinRequested;
             _hub.OnRequestApproved += HandleRequestApproved;
+            _hub.OnRequestRejected += HandleRequestRejected;
             _hub.OnPeerEntered += HandlePeerEntered;
             _hub.OnPeerLeft += HandlePeerLeft;
             _hub.OnResult += HandleResult;
@@ -302,6 +303,32 @@ namespace NihongoLife.Learning
                 _hub.AnnounceApproved(response.room?.id ?? _waitingRoomId, studentId);
                 JoinIssuedRoom(response);
             });
+        }
+
+        /// <summary>Teacher declines one request; the student hears it at once instead of waiting forever.</summary>
+        public void RejectJoinRequest(string requestId)
+        {
+            if (_classroom == null || _roomRequestPending) return;
+            var request = _joinRequests.Find(r => r.id == requestId);
+            _roomRequestPending = true;
+            _classroom.RejectRequest(requestId, (ok, error) =>
+            {
+                _roomRequestPending = false;
+                if (!ok) { SetStatusRaw(error); RefreshNow(); return; }
+                _joinRequests.RemoveAll(r => r.id == requestId);
+                if (request != null) _hub.AnnounceRejected(request.room_id, request.student_id);
+                SetStatus("Đã từ chối yêu cầu.", "Request declined.", "リクエストを辞退しました。");
+            });
+        }
+
+        private void HandleRequestRejected(string roomId, string teacher)
+        {
+            _roomRequestPending = false;
+            LiveToast.Show(LiveToast.Tone.Warning, "block",
+                "Giáo viên chưa nhận lớp", "The teacher declined", "先生は今回は受け入れませんでした",
+                $"{teacher} không thể nhận bạn lúc này. Hãy thử lớp khác.", $"{teacher} can't take you right now. Try another class.", $"{teacher}先生は今は対応できません。別の教室を試してください。",
+                seconds: 8f, key: "speaking-room");
+            RefreshNow();
         }
 
         // ─────────── Real-time hints ───────────
@@ -710,6 +737,7 @@ namespace NihongoLife.Learning
                 _hub.OnRoomClaimed -= HandleRoomClaimed;
                 _hub.OnJoinRequested -= HandleJoinRequested;
                 _hub.OnRequestApproved -= HandleRequestApproved;
+                _hub.OnRequestRejected -= HandleRequestRejected;
                 _hub.OnPeerEntered -= HandlePeerEntered;
                 _hub.OnPeerLeft -= HandlePeerLeft;
                 _hub.OnResult -= HandleResult;
