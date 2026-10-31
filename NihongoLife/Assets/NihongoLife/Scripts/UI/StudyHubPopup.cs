@@ -46,7 +46,9 @@ namespace NihongoLife.UI
             _tiles = UiKit.Rect(card, "Tiles");
             UiKit.Place(_tiles, 32f, 114f, W - 64f, 470f);
             _status = UiKit.Label(card, "Status", "", 15f, UiTheme.TextSoft, FontStyles.Normal, TextAlignmentOptions.MidlineLeft, true);
-            UiKit.Place(_status.rectTransform, 36f, H - 112f, W - 72f, 52f);
+            UiKit.Place(_status.rectTransform, 36f, H - 112f, W - 72f - 300f, 52f);
+            var plan = UiKit.Button(card, "LearningPlan", "Lộ trình học cá nhân", "My learning plan", "わたしの学習プラン", () => OpenLearningPlan(), UiKit.Kind.Primary, "route", 16f);
+            UiKit.Place((RectTransform)plan.transform, W - 36f - 280f, H - 110f, 280f, 48f);
         }
 
         protected override void OnOpened()
@@ -162,6 +164,7 @@ namespace NihongoLife.UI
         public void OpenEnglishBasic() { Hide(); Child<EnglishBasicUI>().Show(); }
         public void OpenModelAnswers() { Hide(); var p = Child<ModelAnswersPopup>(); p.Show(); }
         public void OpenRussianPath() { Hide(); Child<RussianPathPopup>().Show(); }
+        public void OpenLearningPlan() { Hide(); Child<LearningPlanPopup>().Show(); }
 
         private void OpenEnglish()
         {

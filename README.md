@@ -270,6 +270,10 @@ Pull request được chào đón:
 
 ## Giấy phép & ghi công
 
+**Quách Thành Long — người chịu trách nhiệm chính và đóng góp nhiều nhất** (main responsible person and top contributor).
+
+Ghi công đầy đủ (CC BY: Twemoji; CC0: Kenney, KayKit, Quaternius, OpenGameArt, The Met Open Access…), tuyên bố nhãn hiệu (IELTS/JLPT/TORFL là nhãn hiệu của chủ sở hữu; nội dung luyện tập là không chính thức) và ghi chú quyền riêng tư (bản ghi giọng nói lưu cục bộ trên máy): xem [`Docs/LEGAL.md`](NihongoLife/Docs/LEGAL.md).
+
 Mã nguồn được phát hành theo [MIT License](LICENSE). Âm thanh và âm nhạc có giấy phép riêng được ghi tại [`AUDIO_CREDITS.md`](NihongoLife/Docs/AUDIO_CREDITS.md); hình ảnh, model và package bên thứ ba giữ giấy phép của nguồn tương ứng.
 
 ---
