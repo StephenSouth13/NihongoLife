@@ -69,7 +69,7 @@ namespace NihongoLife.UI
         {
             if (_tiles == null) return;
             UiKit.Clear(_tiles);
-            float tw = (W - 64f - 2 * 24f) / 3f;
+            float tw = (W - 64f - 3 * 24f) / 4f;
             var store = LearningProgressStore.Shared;
             int stars = store.TotalStars(JapanesePatternCatalog.All.Select(p => p.id));
             int maxStars = JapanesePatternCatalog.All.Count * 3;
@@ -111,6 +111,16 @@ namespace NihongoLife.UI
                       "Look words up between Vietnamese, English, Japanese and Russian (12 directions) right in the Handbook, by word or reading.",
                       "ベトナム語・英語・日本語・ロシア語（12方向）の単語を、ハンドブックで読み方からも引けます。"),
                 "VI · EN · JA · RU", true, OpenDictionary);
+            Tile(6, tw, "Bài mẫu IELTS", "IELTS model answers", "IELTSモデル解答", "menu_book", UiTheme.Ielts,
+                Loc.F("{0} đề Viết/Nói, mỗi đề có bài mẫu band 5–9, phân tích theo tiêu chí và cách lên band.",
+                      "{0} Writing/Speaking prompts, each with band 5–9 samples, criterion analysis and how to reach the next band.",
+                      "ライティング/スピーキング{0}題、各バンド5〜9の解答例・項目別講評・次のバンドへのコツ。", NihongoLife.Exam.Ielts.IeltsModelAnswers.All.Count),
+                Loc.T("Band 5 → 9", "Band 5 → 9", "バンド5→9"), true, OpenModelAnswers);
+            Tile(7, tw, "Lộ trình tiếng Nga", "Russian path", "ロシア語コース", "school", UiTheme.Live,
+                Loc.T("Bảng chữ cái, phát âm, A1 → B2 và đề thi thử TORFL (ТРКИ) có đáp án.",
+                      "Alphabet, pronunciation, A1 → B2 and TORFL (ТРКИ) mock tests with answer keys.",
+                      "文字・発音・A1→B2、解答付きTORFL（ТРКИ）模試。"),
+                Loc.F("{0} bước", "{0} steps", "{0}ステップ", NihongoLife.StudyModes.Russian.RussianCourse.Path.Steps.Count()), true, OpenRussianPath);
             _status.text = "";
         }
 
@@ -118,17 +128,17 @@ namespace NihongoLife.UI
         {
             const float TH = 222f;
             var card = UiKit.Card(_tiles, "Tile" + index, UiTheme.Surface, 20, 0.3f);
-            UiKit.Place(card.rectTransform, (index % 3) * (width + 24f), (index / 3) * (TH + 26f), width, TH);
+            UiKit.Place(card.rectTransform, (index % 4) * (width + 24f), (index / 4) * (TH + 26f), width, TH);
             var wash = UiKit.Image(card.transform, "Wash", UiKit.Alpha(color, 0.18f), UiKit.VerticalFade);
             UiKit.Strip(wash.rectTransform, true, 0f, 90f);
             var disc = UiKit.Card(card.transform, "Disc", UiKit.Alpha(color, 0.25f), 30, 0f, false);
             UiKit.Place(disc.rectTransform, 20f, 18f, 60f, 60f);
             var ic = UiKit.Icon(disc.transform, icon, color, 34f);
             UiKit.Pin(ic.rectTransform, new Vector2(0.5f, 0.5f), 0f, 0f, 34f, 34f);
-            var title = UiKit.Label(card.transform, "Title", Loc.T(vi, en, ja), 22f, UiTheme.Text, FontStyles.Bold);
+            var title = UiKit.Label(card.transform, "Title", Loc.T(vi, en, ja), 19f, UiTheme.Text, FontStyles.Bold);
             UiKit.Place(title.rectTransform, 96f, 18f, width - 116f, 60f);
             title.textWrappingMode = TextWrappingModes.Normal;
-            var b = UiKit.Label(card.transform, "Body", body, 14f, UiTheme.TextSoft, FontStyles.Normal, TextAlignmentOptions.TopLeft, true);
+            var b = UiKit.Label(card.transform, "Body", body, 12.5f, UiTheme.TextSoft, FontStyles.Normal, TextAlignmentOptions.TopLeft, true);
             UiKit.Place(b.rectTransform, 20f, 84f, width - 40f, 66f);
             var chip = UiKit.Chip(card.transform, "Badge", badge, UiKit.Alpha(color, 0.3f), UiTheme.Text, enabled ? "star" : "hourglass_top", 12.5f);
             UiKit.Place(chip, 20f, 156f, width - 40f - 130f, 28f);
@@ -150,6 +160,8 @@ namespace NihongoLife.UI
         public void OpenTenses() { Hide(); var school = Child<CoursePopup>(); school.Show(); school.ShowTab(CoursePopup.Tab.Tenses); }
         public void OpenDictionary() { Hide(); HandbookUI.Open(HandbookUI.Chapter.Dictionary); }
         public void OpenEnglishBasic() { Hide(); Child<EnglishBasicUI>().Show(); }
+        public void OpenModelAnswers() { Hide(); var p = Child<ModelAnswersPopup>(); p.Show(); }
+        public void OpenRussianPath() { Hide(); Child<RussianPathPopup>().Show(); }
 
         private void OpenEnglish()
         {

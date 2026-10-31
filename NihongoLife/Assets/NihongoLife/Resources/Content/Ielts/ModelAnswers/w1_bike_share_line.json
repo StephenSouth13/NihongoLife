@@ -1,0 +1,554 @@
+{
+ "schema": "nihongolife.ielts.models/1",
+ "id": "w1_bike_share_line",
+ "skill": "writing",
+ "task": 1,
+ "type": "line graph",
+ "title": {
+  "vi": "Task 1 · Biểu đồ đường: Xe đạp công cộng ở 3 thành phố",
+  "en": "Task 1 · Line graph: Public bike use in three cities",
+  "ja": "Task 1・折れ線グラフ：3都市の公共自転車利用",
+  "ru": "Task 1 · Линейный график: прокат велосипедов в трёх городах"
+ },
+ "prompt": "The graph below shows the percentage of households in three cities (Arden, Belmont and Calder) that used public bicycles at least once a week between 2010 and 2025.\n\nSummarise the information by selecting and reporting the main features, and make comparisons where relevant. Write at least 150 words.",
+ "note": {
+  "vi": "Bài mẫu do NihongoLife tự viết để minh họa từng band, không phải bài thi thật hay bài chấm chính thức. Số liệu trong đề Task 1 là hư cấu.",
+  "en": "Original illustrative band samples written by NihongoLife — not real candidate scripts or official marking. Task 1 data is fictional.",
+  "ja": "NihongoLifeが作成したバンド別の例示用オリジナル答案です。実際の受験者答案や公式採点ではありません。Task 1のデータは架空です。",
+  "ru": "Оригинальные иллюстративные образцы по баллам, написанные NihongoLife, — не реальные работы и не официальная оценка. Данные Task 1 вымышлены."
+ },
+ "dataCaption": "Households using public bicycles weekly (%) — fictional data for practice",
+ "dataColumns": [
+  "",
+  "2010",
+  "2015",
+  "2020",
+  "2025"
+ ],
+ "dataRows": [
+  {
+   "cells": [
+    "Arden",
+    "12",
+    "18",
+    "27",
+    "35"
+   ]
+  },
+  {
+   "cells": [
+    "Belmont",
+    "20",
+    "26",
+    "22",
+    "18"
+   ]
+  },
+  {
+   "cells": [
+    "Calder",
+    "5",
+    "11",
+    "22",
+    "30"
+   ]
+  }
+ ],
+ "samples": [
+  {
+   "band": 5.0,
+   "words": 101,
+   "criteria": [
+    {
+     "code": "TA",
+     "band": 5,
+     "note": {
+      "vi": "Có số liệu chính nhưng liệt kê máy móc; 'In conclusion' chỉ là tổng quan sơ sài, không nêu điểm nổi bật (Calder vượt Belmont).",
+      "en": "Key figures are present but listed mechanically; the 'conclusion' is a thin overview that misses a key feature (Calder overtaking Belmont).",
+      "ja": "Key figures are present but listed mechanically; the 'conclusion' is a thin overview that misses a key feature (Calder overtaking Belmont).",
+      "ru": "Key figures are present but listed mechanically; the 'conclusion' is a thin overview that misses a key feature (Calder overtaking Belmont)."
+     }
+    },
+    {
+     "code": "CC",
+     "band": 5,
+     "note": {
+      "vi": "Chia đoạn theo thành phố nhưng thiếu từ nối so sánh.",
+      "en": "Paragraphs by city, but no comparative linking.",
+      "ja": "Paragraphs by city, but no comparative linking.",
+      "ru": "Paragraphs by city, but no comparative linking."
+     }
+    },
+    {
+     "code": "LR",
+     "band": 5,
+     "note": {
+      "vi": "Lặp 'increase', 'go up/down'; ít từ mô tả xu hướng.",
+      "en": "Repetition of 'increase', 'go up/down'; little trend vocabulary.",
+      "ja": "Repetition of 'increase', 'go up/down'; little trend vocabulary.",
+      "ru": "Repetition of 'increase', 'go up/down'; little trend vocabulary."
+     }
+    },
+    {
+     "code": "GRA",
+     "band": 5,
+     "note": {
+      "vi": "Sai thì và chia động từ ('The graph show', 'Arden increase', 'it decrease').",
+      "en": "Tense and agreement errors ('The graph show', 'Arden increase', 'it decrease').",
+      "ja": "Tense and agreement errors ('The graph show', 'Arden increase', 'it decrease').",
+      "ru": "Tense and agreement errors ('The graph show', 'Arden increase', 'it decrease')."
+     }
+    }
+   ],
+   "text": "The graph show the percentage of household in three city who use public bicycle every week from 2010 to 2025.\n\nIn 2010, Belmont was the highest with 20%. Arden was 12% and Calder was only 5%. After that, Arden increase to 18% in 2015, 27% in 2020 and 35% in 2025. Calder also increase, it was 11% in 2015, 22% in 2020 and 30% in 2025.\n\nBelmont increased to 26% in 2015 but then it decrease to 22% in 2020 and 18% in 2025.\n\nIn conclusion, Arden and Calder go up and Belmont go down. Arden is the highest in 2025.",
+   "summary": {
+    "vi": "Mô tả đúng số liệu nhưng chủ yếu liệt kê từng năm, thiếu tổng quan rõ ràng và so sánh; lỗi chia động từ (thì quá khứ, số ít) lặp lại.",
+    "en": "The figures are accurate but mostly listed year by year, without a clear overview or comparisons; repeated verb errors (past tense, agreement).",
+    "ja": "数値は正確だが年ごとの羅列が中心で、明確な概要と比較がない。動詞（過去形・一致）の誤りが繰り返される。",
+    "ru": "Цифры верны, но в основном перечисляются по годам, без чёткого обзора и сравнений; повторяющиеся ошибки в глаголах (прошедшее время, согласование)."
+   },
+   "highlights": [
+    {
+     "phrase": "The graph show",
+     "kind": "issue",
+     "note": {
+      "vi": "Chủ ngữ số ít → 'shows'.",
+      "en": "Singular subject → 'shows'.",
+      "ja": "Singular subject → 'shows'.",
+      "ru": "Singular subject → 'shows'."
+     }
+    },
+    {
+     "phrase": "Arden increase to 18% in 2015, 27% in 2020 and 35% in 2025",
+     "kind": "issue",
+     "note": {
+      "vi": "Liệt kê từng mốc; nên khái quát: 'Arden nearly tripled to 35%'. Dùng thì quá khứ.",
+      "en": "Lists every point; summarise instead: 'Arden nearly tripled to 35%'. Use the past tense.",
+      "ja": "Lists every point; summarise instead: 'Arden nearly tripled to 35%'. Use the past tense.",
+      "ru": "Lists every point; summarise instead: 'Arden nearly tripled to 35%'. Use the past tense."
+     }
+    },
+    {
+     "phrase": "Belmont increased to 26% in 2015 but then it decrease",
+     "kind": "issue",
+     "note": {
+      "vi": "Thì không nhất quán: 'increased... then decreased'.",
+      "en": "Inconsistent tense: 'increased... then decreased'.",
+      "ja": "Inconsistent tense: 'increased... then decreased'.",
+      "ru": "Inconsistent tense: 'increased... then decreased'."
+     }
+    },
+    {
+     "phrase": "In conclusion, Arden and Calder go up and Belmont go down.",
+     "kind": "issue",
+     "note": {
+      "vi": "Task 1 cần 'Overview' ở đầu, không phải kết luận ý kiến; thêm điểm nổi bật Calder vượt Belmont.",
+      "en": "Task 1 needs an overview, not a conclusion; add the key feature that Calder overtook Belmont.",
+      "ja": "Task 1 needs an overview, not a conclusion; add the key feature that Calder overtook Belmont.",
+      "ru": "Task 1 needs an overview, not a conclusion; add the key feature that Calder overtook Belmont."
+     }
+    }
+   ],
+   "nextBand": {
+    "vi": "• Viết một đoạn Overview 2 câu nêu xu hướng chính và điểm nổi bật.\n• Nhóm số liệu và so sánh (Arden vs Calder; Belmont ngược chiều).\n• Dùng thì quá khứ nhất quán và đa dạng động từ xu hướng (rose, climbed, fell back).",
+    "en": "• Write a two-sentence overview with the main trends and the standout feature.\n• Group data and compare (Arden vs Calder; Belmont moving the opposite way).\n• Use the past tense consistently and vary trend verbs (rose, climbed, fell back).",
+    "ja": "• 主な傾向と目立つ特徴を述べる2文の概要を書く。\n• データをまとめて比較する（ArdenとCalder、逆方向のBelmont）。\n• 過去形を一貫して使い、傾向動詞（rose, climbed, fell back）を多様にする。",
+    "ru": "• Напишите обзор из двух предложений с главными тенденциями и самой заметной особенностью.\n• Группируйте данные и сравнивайте (Арден и Колдер; Белмонт движется в обратную сторону).\n• Последовательно используйте прошедшее время и разные глаголы тенденций (rose, climbed, fell back)."
+   }
+  },
+  {
+   "band": 6.0,
+   "words": 160,
+   "criteria": [
+    {
+     "code": "TA",
+     "band": 6,
+     "note": {
+      "vi": "Overview đúng; nêu đỉnh của Belmont và điểm giao Calder–Belmont; có thể nhấn mạnh hơn mức tăng gấp 6 lần của Calder.",
+      "en": "An accurate overview; Belmont's peak and the Calder–Belmont crossing are noted; Calder's sixfold rise could be emphasised more.",
+      "ja": "An accurate overview; Belmont's peak and the Calder–Belmont crossing are noted; Calder's sixfold rise could be emphasised more.",
+      "ru": "An accurate overview; Belmont's peak and the Calder–Belmont crossing are noted; Calder's sixfold rise could be emphasised more."
+     }
+    },
+    {
+     "code": "CC",
+     "band": 6,
+     "note": {
+      "vi": "Chia đoạn theo giai đoạn; 'After that', 'In contrast' rõ nhưng đơn giản.",
+      "en": "Paragraphs by period; 'After that', 'In contrast' are clear but simple.",
+      "ja": "Paragraphs by period; 'After that', 'In contrast' are clear but simple.",
+      "ru": "Paragraphs by period; 'After that', 'In contrast' are clear but simple."
+     }
+    },
+    {
+     "code": "LR",
+     "band": 6,
+     "note": {
+      "vi": "illustrates, proportion, peak, steadily — phù hợp; lặp 'increased'.",
+      "en": "illustrates, proportion, peak, steadily — appropriate; 'increased' is repeated.",
+      "ja": "illustrates, proportion, peak, steadily — appropriate; 'increased' is repeated.",
+      "ru": "illustrates, proportion, peak, steadily — appropriate; 'increased' is repeated."
+     }
+    },
+    {
+     "code": "GRA",
+     "band": 6,
+     "note": {
+      "vi": "Có quá khứ hoàn thành ('had the highest'), mệnh đề quan hệ; chính xác.",
+      "en": "Past perfect ('By 2025, Arden had...'), relative clause; accurate.",
+      "ja": "Past perfect ('By 2025, Arden had...'), relative clause; accurate.",
+      "ru": "Past perfect ('By 2025, Arden had...'), relative clause; accurate."
+     }
+    }
+   ],
+   "text": "The line graph illustrates the proportion of households in Arden, Belmont and Calder that used public bicycles at least once a week from 2010 to 2025.\n\nOverall, the use of public bicycles increased in Arden and Calder, while it decreased in Belmont after 2015. By 2025, Arden had the highest percentage.\n\nIn 2010, Belmont had the largest figure at 20%, compared with 12% in Arden and only 5% in Calder. Over the next five years, all three cities saw a rise, and Belmont reached a peak of 26% in 2015.\n\nAfter that, the trends were different. The percentage in Arden continued to grow steadily, reaching 27% in 2020 and 35% in 2025. Calder also increased quickly, from 11% to 22% in 2020, the same level as Belmont, and then to 30% at the end of the period. In contrast, Belmont fell to 22% in 2020 and dropped further to 18% in 2025, which was the lowest of the three cities.",
+   "summary": {
+    "vi": "Có Overview rõ và các đặc điểm chính được nêu kèm số liệu; tổ chức theo giai đoạn hợp lý; từ vựng xu hướng đủ dùng nhưng chưa đa dạng.",
+    "en": "A clear overview and key features with data; sensible organisation by period; adequate but not varied trend vocabulary.",
+    "ja": "明確な概要があり主な特徴を数値付きで示す。期間ごとの構成は妥当、傾向語彙は十分だが多様ではない。",
+    "ru": "Есть ясный обзор, ключевые особенности подкреплены данными; разумная организация по периодам; лексика тенденций достаточная, но не разнообразная."
+   },
+   "highlights": [
+    {
+     "phrase": "Overall, the use of public bicycles increased in Arden and Calder, while it decreased in Belmont after 2015.",
+     "kind": "good",
+     "note": {
+      "vi": "Overview đúng vị trí — điều kiện bắt buộc để TA ≥ 6.",
+      "en": "An overview in the right place — essential for TA 6+.",
+      "ja": "An overview in the right place — essential for TA 6+.",
+      "ru": "An overview in the right place — essential for TA 6+."
+     }
+    },
+    {
+     "phrase": "the same level as Belmont",
+     "kind": "good",
+     "note": {
+      "vi": "Có so sánh giữa các thành phố.",
+      "en": "A comparison across cities.",
+      "ja": "A comparison across cities.",
+      "ru": "A comparison across cities."
+     }
+    },
+    {
+     "phrase": "Calder also increased quickly",
+     "kind": "issue",
+     "note": {
+      "vi": "Có thể mạnh hơn: 'Calder's figure rose sixfold over the period'.",
+      "en": "Could be stronger: 'Calder's figure rose sixfold over the period'.",
+      "ja": "Could be stronger: 'Calder's figure rose sixfold over the period'.",
+      "ru": "Could be stronger: 'Calder's figure rose sixfold over the period'."
+     }
+    }
+   ],
+   "nextBand": {
+    "vi": "• Làm nổi bật điểm đáng chú ý nhất (Calder tăng gấp 6, vượt Belmont).\n• Đa dạng cách mô tả: cụm danh từ ('a steady climb'), phân số ('nearly three times').\n• Nối ý bằng mệnh đề phân từ để câu gọn hơn.",
+    "en": "• Highlight the most striking feature (Calder rising sixfold and overtaking Belmont).\n• Vary description: noun phrases ('a steady climb'), multiples ('nearly three times').\n• Use participle clauses for tighter sentences.",
+    "ja": "• 最も目立つ特徴（Calderが6倍に増えBelmontを上回る）を強調する。\n• 名詞句（'a steady climb'）や倍数表現で描写を多様にする。\n• 分詞構文で文を引き締める。",
+    "ru": "• Выделите самую яркую особенность (Колдер вырос в шесть раз и обогнал Белмонт).\n• Разнообразьте описание: именные группы ('a steady climb'), кратные величины ('nearly three times').\n• Используйте причастные обороты для сжатости."
+   }
+  },
+  {
+   "band": 7.0,
+   "words": 169,
+   "criteria": [
+    {
+     "code": "TA",
+     "band": 7,
+     "note": {
+      "vi": "Overview có chiều sâu; chọn lọc số liệu thay vì liệt kê; có bội số (tripling, sixfold).",
+      "en": "An insightful overview; data is selected rather than listed; multiples used (tripling, sixfold).",
+      "ja": "An insightful overview; data is selected rather than listed; multiples used (tripling, sixfold).",
+      "ru": "An insightful overview; data is selected rather than listed; multiples used (tripling, sixfold)."
+     }
+    },
+    {
+     "code": "CC",
+     "band": 7,
+     "note": {
+      "vi": "'by contrast', 'however', 'As a result' tự nhiên; đoạn nhóm theo xu hướng.",
+      "en": "'by contrast', 'however', 'As a result' used naturally; paragraphs grouped by trend.",
+      "ja": "'by contrast', 'however', 'As a result' used naturally; paragraphs grouped by trend.",
+      "ru": "'by contrast', 'however', 'As a result' used naturally; paragraphs grouped by trend."
+     }
+    },
+    {
+     "code": "LR",
+     "band": 7,
+     "note": {
+      "vi": "fell back, drew level, overtaking, sixfold increase — chính xác.",
+      "en": "fell back, drew level, overtaking, sixfold increase — precise.",
+      "ja": "fell back, drew level, overtaking, sixfold increase — precise.",
+      "ru": "fell back, drew level, overtaking, sixfold increase — precise."
+     }
+    },
+    {
+     "code": "GRA",
+     "band": 7,
+     "note": {
+      "vi": "Mệnh đề quan hệ không xác định, phân từ ('almost tripling'); không lỗi.",
+      "en": "Non-defining relatives, participle clauses ('almost tripling'); error-free.",
+      "ja": "Non-defining relatives, participle clauses ('almost tripling'); error-free.",
+      "ru": "Non-defining relatives, participle clauses ('almost tripling'); error-free."
+     }
+    }
+   ],
+   "text": "The line graph compares the percentage of households in three cities, Arden, Belmont and Calder, that used public bicycles at least weekly between 2010 and 2025.\n\nOverall, public bicycle use grew substantially in Arden and Calder, whereas Belmont, which started as the leading city, saw its figure decline after 2015. As a result, Belmont went from first to last place over the period.\n\nAt the beginning of the period, one in five households in Belmont (20%) used the bicycles weekly, well ahead of Arden (12%) and Calder (5%). Belmont's figure continued to rise to a peak of 26% in 2015, but then fell back steadily, finishing at 18% in 2025.\n\nArden, by contrast, recorded consistent growth throughout, almost tripling from 12% to 35% and overtaking Belmont shortly after 2015. The most dramatic change, however, occurred in Calder, where usage climbed from just 5% to 30%, a sixfold increase. Calder drew level with Belmont at 22% in 2020 before moving clearly ahead of it by the end of the period.",
+   "summary": {
+    "vi": "Overview rõ với điểm nổi bật (Belmont từ nhất xuống chót); số liệu được chọn lọc và so sánh; nối ý linh hoạt; từ vựng mô tả xu hướng chính xác.",
+    "en": "A clear overview with a standout feature (Belmont from first to last); data selected and compared; flexible linking; precise trend vocabulary.",
+    "ja": "際立つ特徴（Belmontが首位から最下位へ）を含む明確な概要。データを選択して比較し、接続は柔軟、傾向語彙は正確。",
+    "ru": "Ясный обзор с главной особенностью (Белмонт — с первого места на последнее); данные отобраны и сравнены; гибкая связность; точная лексика тенденций."
+   },
+   "highlights": [
+    {
+     "phrase": "As a result, Belmont went from first to last place over the period.",
+     "kind": "good",
+     "note": {
+      "vi": "Đặc điểm nổi bật trong Overview — đây là thứ giám khảo tìm.",
+      "en": "A standout feature in the overview — what examiners look for.",
+      "ja": "A standout feature in the overview — what examiners look for.",
+      "ru": "A standout feature in the overview — what examiners look for."
+     }
+    },
+    {
+     "phrase": "one in five households",
+     "kind": "good",
+     "note": {
+      "vi": "Diễn đạt lại số liệu (20%) linh hoạt.",
+      "en": "Flexible paraphrase of the figure (20%).",
+      "ja": "Flexible paraphrase of the figure (20%).",
+      "ru": "Flexible paraphrase of the figure (20%)."
+     }
+    },
+    {
+     "phrase": "a sixfold increase",
+     "kind": "good",
+     "note": {
+      "vi": "Bội số giúp so sánh sắc nét.",
+      "en": "A multiple sharpens the comparison.",
+      "ja": "A multiple sharpens the comparison.",
+      "ru": "A multiple sharpens the comparison."
+     }
+    },
+    {
+     "phrase": "overtaking Belmont shortly after 2015",
+     "kind": "issue",
+     "note": {
+      "vi": "Cẩn thận: dữ liệu chỉ cho thấy Arden vượt Belmont giữa 2015 và 2020 — tránh suy đoán quá mức.",
+      "en": "Careful: the data only shows Arden overtook Belmont between 2015 and 2020 — avoid over-interpreting.",
+      "ja": "Careful: the data only shows Arden overtook Belmont between 2015 and 2020 — avoid over-interpreting.",
+      "ru": "Careful: the data only shows Arden overtook Belmont between 2015 and 2020 — avoid over-interpreting."
+     }
+    }
+   ],
+   "nextBand": {
+    "vi": "• Mô tả chính xác tuyệt đối theo dữ liệu (tránh 'shortly after' khi không có mốc).\n• Tổ chức thông tin chặt hơn: nhóm hai thành phố tăng vs một thành phố giảm.\n• Thêm cấu trúc đa dạng mà vẫn gọn.",
+    "en": "• Be strictly accurate to the data (avoid 'shortly after' without a data point).\n• Organise more tightly: two rising cities vs one falling city.\n• Add structural variety while staying concise.",
+    "ja": "• データに厳密に正確に（データ点がないのに'shortly after'としない）。\n• 上昇2都市と下降1都市で構成を引き締める。\n• 簡潔さを保ちつつ構文を多様にする。",
+    "ru": "• Будьте строго точны по данным (не пишите 'shortly after' без точки данных).\n• Организуйте плотнее: два растущих города против одного падающего.\n• Добавьте разнообразие структур, сохраняя сжатость."
+   }
+  },
+  {
+   "band": 8.0,
+   "words": 182,
+   "criteria": [
+    {
+     "code": "TA",
+     "band": 8,
+     "note": {
+      "vi": "Đáp ứng đầy đủ; mô tả chính xác ('at some point between 2015 and 2020'); phân tích tương đối/tuyệt đối.",
+      "en": "Covers all requirements; precise ('at some point between 2015 and 2020'); relative vs absolute change analysed.",
+      "ja": "Covers all requirements; precise ('at some point between 2015 and 2020'); relative vs absolute change analysed.",
+      "ru": "Covers all requirements; precise ('at some point between 2015 and 2020'); relative vs absolute change analysed."
+     }
+    },
+    {
+     "code": "CC",
+     "band": 8,
+     "note": {
+      "vi": "Chuyển đoạn tinh tế ('The other two cities moved in the opposite direction').",
+      "en": "Skilful paragraph transition ('The other two cities moved in the opposite direction').",
+      "ja": "Skilful paragraph transition ('The other two cities moved in the opposite direction').",
+      "ru": "Skilful paragraph transition ('The other two cities moved in the opposite direction')."
+     }
+    },
+    {
+     "code": "LR",
+     "band": 8,
+     "note": {
+      "vi": "a reversal in positions, a mere 5%, in relative terms, from a very low base.",
+      "en": "a reversal in positions, a mere 5%, in relative terms, from a very low base.",
+      "ja": "a reversal in positions, a mere 5%, in relative terms, from a very low base.",
+      "ru": "a reversal in positions, a mere 5%, in relative terms, from a very low base."
+     }
+    },
+    {
+     "code": "GRA",
+     "band": 8,
+     "note": {
+      "vi": "Mệnh đề 'when', phân từ, cấu trúc so sánh; chính xác.",
+      "en": "'when' clauses, participles, comparatives; accurate.",
+      "ja": "'when' clauses, participles, comparatives; accurate.",
+      "ru": "'when' clauses, participles, comparatives; accurate."
+     }
+    }
+   ],
+   "text": "The graph tracks the share of households in Arden, Belmont and Calder that used public bicycles at least once a week over a fifteen-year period from 2010.\n\nThe most notable feature is a reversal in the cities' positions: Belmont, initially the leader, ended the period with the lowest rate, while Arden and Calder both saw sustained growth. Arden had the highest figure by 2025.\n\nIn 2010, weekly use stood at 20% of households in Belmont, against 12% in Arden and a mere 5% in Calder. Belmont's lead widened slightly to 2015, when its rate peaked at 26%, but the figure then declined in each subsequent five-year interval, to 22% and finally 18%.\n\nThe other two cities moved in the opposite direction. Arden's rate rose steadily at every point, almost tripling to 35% and passing Belmont at some point between 2015 and 2020. Calder's growth was even more pronounced in relative terms: from a very low base, its figure doubled to 11% by 2015 and doubled again to 22% in 2020, matching Belmont, before reaching 30%, six times its starting level.",
+   "summary": {
+    "vi": "Tổng quan sắc nét (sự đảo ngược vị trí), số liệu chọn lọc và diễn giải chính xác (doubled again, six times); văn phong tự nhiên; rất ít điểm có thể cải thiện.",
+    "en": "A sharp overview (the reversal of positions), well-selected data interpreted precisely (doubled again, six times); natural style; very little to improve.",
+    "ja": "順位の逆転という鋭い概要、データの選択と正確な解釈（doubled again, six times）、自然な文体。改善点はごくわずか。",
+    "ru": "Чёткий обзор (смена позиций), хорошо отобранные и точно интерпретированные данные (doubled again, six times); естественный стиль; улучшать почти нечего."
+   },
+   "highlights": [
+    {
+     "phrase": "The most notable feature is a reversal in the cities' positions",
+     "kind": "good",
+     "note": {
+      "vi": "Overview diễn giải chứ không chỉ mô tả.",
+      "en": "The overview interprets, not just describes.",
+      "ja": "The overview interprets, not just describes.",
+      "ru": "The overview interprets, not just describes."
+     }
+    },
+    {
+     "phrase": "at some point between 2015 and 2020",
+     "kind": "good",
+     "note": {
+      "vi": "Chính xác theo dữ liệu — sửa đúng điểm yếu của bài band 7.",
+      "en": "Strictly accurate to the data — fixes the band 7 weakness.",
+      "ja": "Strictly accurate to the data — fixes the band 7 weakness.",
+      "ru": "Strictly accurate to the data — fixes the band 7 weakness."
+     }
+    },
+    {
+     "phrase": "in relative terms: from a very low base",
+     "kind": "good",
+     "note": {
+      "vi": "Phân biệt thay đổi tương đối và tuyệt đối — tư duy phân tích.",
+      "en": "Distinguishes relative from absolute change — analytical thinking.",
+      "ja": "Distinguishes relative from absolute change — analytical thinking.",
+      "ru": "Distinguishes relative from absolute change — analytical thinking."
+     }
+    },
+    {
+     "phrase": "Arden had the highest figure by 2025.",
+     "kind": "issue",
+     "note": {
+      "vi": "Đúng nhưng hơi rời rạc; band 9 sẽ gắn vào câu Overview trước.",
+      "en": "Correct but slightly detached; band 9 would fold it into the previous sentence.",
+      "ja": "Correct but slightly detached; band 9 would fold it into the previous sentence.",
+      "ru": "Correct but slightly detached; band 9 would fold it into the previous sentence."
+     }
+    }
+   ],
+   "nextBand": {
+    "vi": "• Gộp ý Overview thành một khối liền mạch.\n• Giữ độ dài vừa đủ (~170–190 từ) và mọi câu đều mang thông tin.",
+    "en": "• Fold the overview into one seamless unit.\n• Keep it lean (~170–190 words) with every sentence carrying information.",
+    "ja": "• 概要を一つのまとまりにする。\n• 170〜190語程度に絞り、全ての文に情報を持たせる。",
+    "ru": "• Объедините обзор в одно цельное высказывание.\n• Держите объём ~170–190 слов, чтобы каждое предложение несло информацию."
+   }
+  },
+  {
+   "band": 9.0,
+   "words": 178,
+   "criteria": [
+    {
+     "code": "TA",
+     "band": 9,
+     "note": {
+      "vi": "Mọi điểm chính đều có, không thừa; dùng 'percentage points' đúng thuật ngữ; so sánh cuối với Belmont kết bài tự nhiên.",
+      "en": "All key features, nothing superfluous; 'percentage points' used correctly; the final comparison with Belmont closes naturally.",
+      "ja": "All key features, nothing superfluous; 'percentage points' used correctly; the final comparison with Belmont closes naturally.",
+      "ru": "All key features, nothing superfluous; 'percentage points' used correctly; the final comparison with Belmont closes naturally."
+     }
+    },
+    {
+     "code": "CC",
+     "band": 9,
+     "note": {
+      "vi": "Thông tin dẫn dắt mượt; 'From that peak, however' nối logic.",
+      "en": "Information flows seamlessly; 'From that peak, however' links logically.",
+      "ja": "Information flows seamlessly; 'From that peak, however' links logically.",
+      "ru": "Information flows seamlessly; 'From that peak, however' links logically."
+     }
+    },
+    {
+     "code": "LR",
+     "band": 9,
+     "note": {
+      "vi": "striking reversal, grew without interruption, steeper still, drew level — chính xác, tự nhiên.",
+      "en": "striking reversal, grew without interruption, steeper still, drew level — precise and natural.",
+      "ja": "striking reversal, grew without interruption, steeper still, drew level — precise and natural.",
+      "ru": "striking reversal, grew without interruption, steeper still, drew level — precise and natural."
+     }
+    },
+    {
+     "code": "GRA",
+     "band": 9,
+     "note": {
+      "vi": "Cấu trúc 'so... that', mệnh đề quan hệ 'the point at which', phân từ; không lỗi.",
+      "en": "'so... that', 'the point at which', participle clauses; error-free.",
+      "ja": "'so... that', 'the point at which', participle clauses; error-free.",
+      "ru": "'so... that', 'the point at which', participle clauses; error-free."
+     }
+    }
+   ],
+   "text": "The graph shows how the proportion of households using public bicycles at least weekly changed in three cities, Arden, Belmont and Calder, between 2010 and 2025.\n\nThe period was marked by a striking reversal: Belmont, the clear leader in 2010, finished with the lowest rate of the three, while Arden and Calder grew so strongly that Arden ended the period well ahead.\n\nBelmont began with weekly use among 20% of households and extended its lead to 26% by 2015. From that peak, however, its figure fell at each subsequent measurement, to 22% in 2020 and 18% in 2025, slightly below where it had started.\n\nArden, starting at 12%, grew without interruption, rising to 18%, then 27% and finally 35%, almost three times its initial level. Calder's rise was steeper still in relative terms. From only 5% in 2010, its rate roughly doubled in each of the first two intervals, reaching 22% in 2020, the point at which it drew level with Belmont, and then climbed to 30%, six times the original figure, leaving Belmont twelve percentage points behind.",
+   "summary": {
+    "vi": "Đáp ứng trọn vẹn: tổng quan sâu, mọi đặc điểm chính được chọn lọc và trình bày chính xác, liên kết tự nhiên, ngôn ngữ chính xác và linh hoạt (percentage points, steeper still in relative terms).",
+    "en": "Fully satisfies the task: an insightful overview, every key feature selected and presented precisely, natural cohesion, and accurate, flexible language (percentage points, steeper still in relative terms).",
+    "ja": "課題を完全に満たす。洞察ある概要、主要な特徴を正確に選択・提示し、結束性は自然、言語は正確で柔軟（percentage points, steeper still in relative terms）。",
+    "ru": "Полностью выполняет задание: глубокий обзор, все ключевые особенности отобраны и точно представлены, естественная связность, точный и гибкий язык (percentage points, steeper still in relative terms)."
+   },
+   "highlights": [
+    {
+     "phrase": "grew so strongly that Arden ended the period well ahead",
+     "kind": "good",
+     "note": {
+      "vi": "Overview gộp mọi đặc điểm chính trong một câu.",
+      "en": "The overview combines all key features in one sentence.",
+      "ja": "The overview combines all key features in one sentence.",
+      "ru": "The overview combines all key features in one sentence."
+     }
+    },
+    {
+     "phrase": "slightly below where it had started",
+     "kind": "good",
+     "note": {
+      "vi": "Chi tiết so sánh tinh tế với điểm xuất phát.",
+      "en": "A subtle comparison with the starting point.",
+      "ja": "A subtle comparison with the starting point.",
+      "ru": "A subtle comparison with the starting point."
+     }
+    },
+    {
+     "phrase": "the point at which it drew level with Belmont",
+     "kind": "good",
+     "note": {
+      "vi": "Mệnh đề quan hệ có giới từ — ngữ pháp band 9.",
+      "en": "A prepositional relative clause — band 9 grammar.",
+      "ja": "A prepositional relative clause — band 9 grammar.",
+      "ru": "A prepositional relative clause — band 9 grammar."
+     }
+    },
+    {
+     "phrase": "twelve percentage points behind",
+     "kind": "good",
+     "note": {
+      "vi": "Thuật ngữ chính xác: điểm phần trăm, không phải phần trăm.",
+      "en": "Precise term: percentage points, not percent.",
+      "ja": "Precise term: percentage points, not percent.",
+      "ru": "Precise term: percentage points, not percent."
+     }
+    }
+   ],
+   "nextBand": {
+    "vi": "• Mức cao nhất. Lưu ý: Task 1 không cần ý kiến cá nhân hay giải thích nguyên nhân.",
+    "en": "• Top band. Note: Task 1 needs no opinion or speculation about causes.",
+    "ja": "• 最高バンド。Task 1では意見や原因の推測は不要です。",
+    "ru": "• Высший балл. Помните: в Task 1 не нужны мнения и догадки о причинах."
+   }
+  }
+ ]
+}

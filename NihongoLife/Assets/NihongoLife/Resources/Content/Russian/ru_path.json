@@ -1,0 +1,1157 @@
+{
+ "schema": "nihongolife.ru.path/1",
+ "channelUrl": "https://www.youtube.com/@NihongoLifeGame",
+ "videoNote": {
+  "vi": "Ô video để trống: điền link YouTube từ kênh @NihongoLifeGame vào trường youtubeUrl khi video được đăng.",
+  "en": "Video slots are empty: fill youtubeUrl with a link from the @NihongoLifeGame channel once the video is published.",
+  "ja": "動画枠は空です。@NihongoLifeGameで公開後、youtubeUrlにリンクを入れてください。",
+  "ru": "Слоты для видео пусты: укажите в youtubeUrl ссылку с канала @NihongoLifeGame после публикации."
+ },
+ "stages": [
+  {
+   "id": "alphabet",
+   "label": {
+    "vi": "Bảng chữ cái Kirin",
+    "en": "Cyrillic alphabet",
+    "ja": "キリル文字",
+    "ru": "Алфавит"
+   },
+   "steps": [
+    {
+     "id": "ru_L_v1",
+     "kind": "alphabet",
+     "ref": "ru_L_v1",
+     "title": {
+      "vi": "Nguyên âm cứng: а о у э ы",
+      "en": "Hard vowels: а о у э ы",
+      "ja": "硬母音：а о у э ы",
+      "ru": "Твёрдые гласные: а о у э ы"
+     },
+     "video": {
+      "id": "ru-path-ru_L_v1",
+      "youtubeUrl": ""
+     }
+    },
+    {
+     "id": "ru_L_v2",
+     "kind": "alphabet",
+     "ref": "ru_L_v2",
+     "title": {
+      "vi": "Nguyên âm mềm: я е ё ю и",
+      "en": "Soft vowels: я е ё ю и",
+      "ja": "軟母音：я е ё ю и",
+      "ru": "Мягкие гласные: я е ё ю и"
+     },
+     "video": {
+      "id": "ru-path-ru_L_v2",
+      "youtubeUrl": ""
+     }
+    },
+    {
+     "id": "ru_L_c1",
+     "kind": "alphabet",
+     "ref": "ru_L_c1",
+     "title": {
+      "vi": "Phụ âm 1: б в г д ж з",
+      "en": "Consonants 1: б в г д ж з",
+      "ja": "子音 1：б в г д ж з",
+      "ru": "Согласные 1: б в г д ж з"
+     },
+     "video": {
+      "id": "ru-path-ru_L_c1",
+      "youtubeUrl": ""
+     }
+    },
+    {
+     "id": "ru_L_c2",
+     "kind": "alphabet",
+     "ref": "ru_L_c2",
+     "title": {
+      "vi": "Phụ âm 2: й к л м н п р",
+      "en": "Consonants 2: й к л м н п р",
+      "ja": "子音 2：й к л м н п р",
+      "ru": "Согласные 2: й к л м н п р"
+     },
+     "video": {
+      "id": "ru-path-ru_L_c2",
+      "youtubeUrl": ""
+     }
+    },
+    {
+     "id": "ru_L_c3",
+     "kind": "alphabet",
+     "ref": "ru_L_c3",
+     "title": {
+      "vi": "Phụ âm 3: с т ф х ц ч ш щ",
+      "en": "Consonants 3: с т ф х ц ч ш щ",
+      "ja": "子音 3：с т ф х ц ч ш щ",
+      "ru": "Согласные 3: с т ф х ц ч ш щ"
+     },
+     "video": {
+      "id": "ru-path-ru_L_c3",
+      "youtubeUrl": ""
+     }
+    },
+    {
+     "id": "ru_L_s",
+     "kind": "alphabet",
+     "ref": "ru_L_s",
+     "title": {
+      "vi": "Dấu cứng và dấu mềm: ъ ь",
+      "en": "Hard and soft signs: ъ ь",
+      "ja": "硬音記号と軟音記号：ъ ь",
+      "ru": "Твёрдый и мягкий знаки: ъ ь"
+     },
+     "video": {
+      "id": "ru-path-ru_L_s",
+      "youtubeUrl": ""
+     }
+    }
+   ]
+  },
+  {
+   "id": "pronunciation",
+   "label": {
+    "vi": "Phát âm",
+    "en": "Pronunciation",
+    "ja": "発音",
+    "ru": "Произношение"
+   },
+   "steps": [
+    {
+     "id": "ru_pr1",
+     "kind": "pronunciation",
+     "ref": "ru_pr1",
+     "title": {
+      "vi": "Trọng âm và nhược hóa nguyên âm",
+      "en": "Stress and vowel reduction",
+      "ja": "強勢と母音の弱化",
+      "ru": "Ударение и редукция гласных"
+     },
+     "video": {
+      "id": "ru-path-ru_pr1",
+      "youtubeUrl": ""
+     }
+    },
+    {
+     "id": "ru_pr2",
+     "kind": "pronunciation",
+     "ref": "ru_pr2",
+     "title": {
+      "vi": "Phụ âm cứng và mềm",
+      "en": "Hard and soft consonants",
+      "ja": "硬子音と軟子音",
+      "ru": "Твёрдые и мягкие согласные"
+     },
+     "video": {
+      "id": "ru-path-ru_pr2",
+      "youtubeUrl": ""
+     }
+    },
+    {
+     "id": "ru_pr3",
+     "kind": "pronunciation",
+     "ref": "ru_pr3",
+     "title": {
+      "vi": "Vô thanh hóa và đồng hóa",
+      "en": "Devoicing and assimilation",
+      "ja": "無声化と同化",
+      "ru": "Оглушение и ассимиляция"
+     },
+     "video": {
+      "id": "ru-path-ru_pr3",
+      "youtubeUrl": ""
+     }
+    },
+    {
+     "id": "ru_pr4",
+     "kind": "pronunciation",
+     "ref": "ru_pr4",
+     "title": {
+      "vi": "Ngữ điệu: câu kể và câu hỏi",
+      "en": "Intonation: statements and questions",
+      "ja": "イントネーション：平叙文と疑問文",
+      "ru": "Интонация: утверждение и вопрос"
+     },
+     "video": {
+      "id": "ru-path-ru_pr4",
+      "youtubeUrl": ""
+     }
+    }
+   ]
+  },
+  {
+   "id": "a1",
+   "label": {
+    "vi": "Trình độ A1",
+    "en": "Level A1",
+    "ja": "レベル A1",
+    "ru": "Уровень A1"
+   },
+   "steps": [
+    {
+     "id": "ru_u01",
+     "kind": "unit",
+     "ref": "ru_u01",
+     "title": {
+      "vi": "Chào hỏi và giới thiệu",
+      "en": "Greetings and introductions",
+      "ja": "あいさつと自己紹介",
+      "ru": "Приветствия и знакомство"
+     },
+     "video": {
+      "id": "ru-path-ru_u01",
+      "youtubeUrl": ""
+     }
+    },
+    {
+     "id": "ru_u02",
+     "kind": "unit",
+     "ref": "ru_u02",
+     "title": {
+      "vi": "Số đếm",
+      "en": "Numbers and counting",
+      "ja": "数と数え方",
+      "ru": "Числа и счёт"
+     },
+     "video": {
+      "id": "ru-path-ru_u02",
+      "youtubeUrl": ""
+     }
+    },
+    {
+     "id": "ru_u03",
+     "kind": "unit",
+     "ref": "ru_u03",
+     "title": {
+      "vi": "Gia đình",
+      "en": "Family",
+      "ja": "家族",
+      "ru": "Семья"
+     },
+     "video": {
+      "id": "ru-path-ru_u03",
+      "youtubeUrl": ""
+     }
+    },
+    {
+     "id": "ru_u04",
+     "kind": "unit",
+     "ref": "ru_u04",
+     "title": {
+      "vi": "Món ăn",
+      "en": "Food",
+      "ja": "食べ物",
+      "ru": "Еда"
+     },
+     "video": {
+      "id": "ru-path-ru_u04",
+      "youtubeUrl": ""
+     }
+    },
+    {
+     "id": "ru_u05",
+     "kind": "unit",
+     "ref": "ru_u05",
+     "title": {
+      "vi": "Đồ uống và quán cà phê",
+      "en": "Drinks and the café",
+      "ja": "飲み物とカフェ",
+      "ru": "Напитки и кафе"
+     },
+     "video": {
+      "id": "ru-path-ru_u05",
+      "youtubeUrl": ""
+     }
+    },
+    {
+     "id": "ru_u06",
+     "kind": "unit",
+     "ref": "ru_u06",
+     "title": {
+      "vi": "Thời gian và các ngày trong tuần",
+      "en": "Time and days of the week",
+      "ja": "時間と曜日",
+      "ru": "Время и дни недели"
+     },
+     "video": {
+      "id": "ru-path-ru_u06",
+      "youtubeUrl": ""
+     }
+    },
+    {
+     "id": "ru_u07",
+     "kind": "unit",
+     "ref": "ru_u07",
+     "title": {
+      "vi": "Màu sắc và quần áo",
+      "en": "Colors and clothes",
+      "ja": "色と服",
+      "ru": "Цвета и одежда"
+     },
+     "video": {
+      "id": "ru-path-ru_u07",
+      "youtubeUrl": ""
+     }
+    },
+    {
+     "id": "ru_u08",
+     "kind": "unit",
+     "ref": "ru_u08",
+     "title": {
+      "vi": "Ngôi nhà và các phòng",
+      "en": "The house and its rooms",
+      "ja": "家と部屋",
+      "ru": "Дом и комнаты"
+     },
+     "video": {
+      "id": "ru-path-ru_u08",
+      "youtubeUrl": ""
+     }
+    },
+    {
+     "id": "ru_u09",
+     "kind": "unit",
+     "ref": "ru_u09",
+     "title": {
+      "vi": "Động vật và thiên nhiên",
+      "en": "Animals and nature",
+      "ja": "動物と自然",
+      "ru": "Животные и природа"
+     },
+     "video": {
+      "id": "ru-path-ru_u09",
+      "youtubeUrl": ""
+     }
+    },
+    {
+     "id": "ru_u10",
+     "kind": "unit",
+     "ref": "ru_u10",
+     "title": {
+      "vi": "Trường học và lớp học",
+      "en": "School and the classroom",
+      "ja": "学校と教室",
+      "ru": "Школа и класс"
+     },
+     "video": {
+      "id": "ru-path-ru_u10",
+      "youtubeUrl": ""
+     }
+    },
+    {
+     "id": "cert_torfl_a1",
+     "kind": "cert",
+     "ref": "cert_torfl_a1",
+     "title": {
+      "vi": "Đề luyện TORFL A1 (trong Trường học)",
+      "en": "TORFL A1 practice set (in School)",
+      "ja": "TORFL A1 練習セット（学校）",
+      "ru": "Тренировочный набор ТРКИ A1 (в Школе)"
+     },
+     "video": {
+      "id": "ru-path-cert_a1",
+      "youtubeUrl": ""
+     }
+    },
+    {
+     "id": "torfl_a1_mock_1",
+     "kind": "mock",
+     "ref": "torfl_a1_mock_1",
+     "title": {
+      "vi": "Đề thi thử TORFL A1 theo định dạng (có đáp án)",
+      "en": "TORFL A1 exam-format mock (with key)",
+      "ja": "TORFL A1 本番形式模試（解答付き）",
+      "ru": "Пробный тест ТРКИ A1 в формате экзамена (с ключами)"
+     },
+     "video": {
+      "id": "ru-path-torfl_a1_mock_1",
+      "youtubeUrl": ""
+     }
+    }
+   ]
+  },
+  {
+   "id": "a2",
+   "label": {
+    "vi": "Trình độ A2",
+    "en": "Level A2",
+    "ja": "レベル A2",
+    "ru": "Уровень A2"
+   },
+   "steps": [
+    {
+     "id": "ru_u11",
+     "kind": "unit",
+     "ref": "ru_u11",
+     "title": {
+      "vi": "Mua sắm",
+      "en": "Shopping",
+      "ja": "買い物",
+      "ru": "Покупки"
+     },
+     "video": {
+      "id": "ru-path-ru_u11",
+      "youtubeUrl": ""
+     }
+    },
+    {
+     "id": "ru_u12",
+     "kind": "unit",
+     "ref": "ru_u12",
+     "title": {
+      "vi": "Giao thông và đi lại",
+      "en": "Transport and getting around",
+      "ja": "交通と移動",
+      "ru": "Транспорт и поездки"
+     },
+     "video": {
+      "id": "ru-path-ru_u12",
+      "youtubeUrl": ""
+     }
+    },
+    {
+     "id": "ru_u13",
+     "kind": "unit",
+     "ref": "ru_u13",
+     "title": {
+      "vi": "Du lịch và khách sạn",
+      "en": "Travel and hotels",
+      "ja": "旅行とホテル",
+      "ru": "Путешествия и гостиница"
+     },
+     "video": {
+      "id": "ru-path-ru_u13",
+      "youtubeUrl": ""
+     }
+    },
+    {
+     "id": "ru_u14",
+     "kind": "unit",
+     "ref": "ru_u14",
+     "title": {
+      "vi": "Hỏi đường trong thành phố",
+      "en": "Asking for directions in the city",
+      "ja": "町で道をたずねる",
+      "ru": "Как пройти в городе"
+     },
+     "video": {
+      "id": "ru-path-ru_u14",
+      "youtubeUrl": ""
+     }
+    },
+    {
+     "id": "ru_u15",
+     "kind": "unit",
+     "ref": "ru_u15",
+     "title": {
+      "vi": "Thời tiết và các mùa",
+      "en": "Weather and seasons",
+      "ja": "天気と季節",
+      "ru": "Погода и времена года"
+     },
+     "video": {
+      "id": "ru-path-ru_u15",
+      "youtubeUrl": ""
+     }
+    },
+    {
+     "id": "ru_u16",
+     "kind": "unit",
+     "ref": "ru_u16",
+     "title": {
+      "vi": "Sở thích và âm nhạc",
+      "en": "Hobbies and music",
+      "ja": "趣味と音楽",
+      "ru": "Хобби и музыка"
+     },
+     "video": {
+      "id": "ru-path-ru_u16",
+      "youtubeUrl": ""
+     }
+    },
+    {
+     "id": "ru_u17",
+     "kind": "unit",
+     "ref": "ru_u17",
+     "title": {
+      "vi": "Cơ thể và sức khỏe",
+      "en": "The body and health",
+      "ja": "体と健康",
+      "ru": "Тело и здоровье"
+     },
+     "video": {
+      "id": "ru-path-ru_u17",
+      "youtubeUrl": ""
+     }
+    },
+    {
+     "id": "ru_u18",
+     "kind": "unit",
+     "ref": "ru_u18",
+     "title": {
+      "vi": "Phòng khám và hiệu thuốc",
+      "en": "Clinic and pharmacy",
+      "ja": "病院と薬局",
+      "ru": "Поликлиника и аптека"
+     },
+     "video": {
+      "id": "ru-path-ru_u18",
+      "youtubeUrl": ""
+     }
+    },
+    {
+     "id": "ru_u19",
+     "kind": "unit",
+     "ref": "ru_u19",
+     "title": {
+      "vi": "Ngân hàng và tiền bạc",
+      "en": "Banking and money",
+      "ja": "銀行とお金",
+      "ru": "Банк и деньги"
+     },
+     "video": {
+      "id": "ru-path-ru_u19",
+      "youtubeUrl": ""
+     }
+    },
+    {
+     "id": "ru_u20",
+     "kind": "unit",
+     "ref": "ru_u20",
+     "title": {
+      "vi": "Gọi món ở nhà hàng",
+      "en": "Ordering at a restaurant",
+      "ja": "レストランで注文する",
+      "ru": "Заказ в ресторане"
+     },
+     "video": {
+      "id": "ru-path-ru_u20",
+      "youtubeUrl": ""
+     }
+    },
+    {
+     "id": "cert_torfl_a2",
+     "kind": "cert",
+     "ref": "cert_torfl_a2",
+     "title": {
+      "vi": "Đề luyện TORFL A2 (trong Trường học)",
+      "en": "TORFL A2 practice set (in School)",
+      "ja": "TORFL A2 練習セット（学校）",
+      "ru": "Тренировочный набор ТРКИ A2 (в Школе)"
+     },
+     "video": {
+      "id": "ru-path-cert_a2",
+      "youtubeUrl": ""
+     }
+    },
+    {
+     "id": "torfl_a2_mock_1",
+     "kind": "mock",
+     "ref": "torfl_a2_mock_1",
+     "title": {
+      "vi": "Đề thi thử TORFL A2 theo định dạng (có đáp án)",
+      "en": "TORFL A2 exam-format mock (with key)",
+      "ja": "TORFL A2 本番形式模試（解答付き）",
+      "ru": "Пробный тест ТРКИ A2 в формате экзамена (с ключами)"
+     },
+     "video": {
+      "id": "ru-path-torfl_a2_mock_1",
+      "youtubeUrl": ""
+     }
+    }
+   ]
+  },
+  {
+   "id": "b1",
+   "label": {
+    "vi": "Trình độ B1",
+    "en": "Level B1",
+    "ja": "レベル B1",
+    "ru": "Уровень B1"
+   },
+   "steps": [
+    {
+     "id": "ru_u21",
+     "kind": "unit",
+     "ref": "ru_u21",
+     "title": {
+      "vi": "Công việc và phỏng vấn",
+      "en": "Jobs and interviews",
+      "ja": "仕事と面接",
+      "ru": "Работа и собеседование"
+     },
+     "video": {
+      "id": "ru-path-ru_u21",
+      "youtubeUrl": ""
+     }
+    },
+    {
+     "id": "ru_u22",
+     "kind": "unit",
+     "ref": "ru_u22",
+     "title": {
+      "vi": "Giao tiếp ở nơi làm việc",
+      "en": "Communication at work",
+      "ja": "職場でのやりとり",
+      "ru": "Общение на работе"
+     },
+     "video": {
+      "id": "ru-path-ru_u22",
+      "youtubeUrl": ""
+     }
+    },
+    {
+     "id": "ru_u23",
+     "kind": "unit",
+     "ref": "ru_u23",
+     "title": {
+      "vi": "Điện thoại và Internet",
+      "en": "Phone and internet",
+      "ja": "電話とインターネット",
+      "ru": "Телефон и интернет"
+     },
+     "video": {
+      "id": "ru-path-ru_u23",
+      "youtubeUrl": ""
+     }
+    },
+    {
+     "id": "ru_u24",
+     "kind": "unit",
+     "ref": "ru_u24",
+     "title": {
+      "vi": "Thói quen hằng ngày",
+      "en": "Daily routines",
+      "ja": "毎日の習慣",
+      "ru": "Распорядок дня"
+     },
+     "video": {
+      "id": "ru-path-ru_u24",
+      "youtubeUrl": ""
+     }
+    },
+    {
+     "id": "ru_u25",
+     "kind": "unit",
+     "ref": "ru_u25",
+     "title": {
+      "vi": "Cảm xúc và tính cách",
+      "en": "Feelings and personality",
+      "ja": "気持ちと性格",
+      "ru": "Чувства и характер"
+     },
+     "video": {
+      "id": "ru-path-ru_u25",
+      "youtubeUrl": ""
+     }
+    },
+    {
+     "id": "ru_u26",
+     "kind": "unit",
+     "ref": "ru_u26",
+     "title": {
+      "vi": "Thể thao và trận đấu",
+      "en": "Sports and matches",
+      "ja": "スポーツと試合",
+      "ru": "Спорт и матчи"
+     },
+     "video": {
+      "id": "ru-path-ru_u26",
+      "youtubeUrl": ""
+     }
+    },
+    {
+     "id": "ru_u27",
+     "kind": "unit",
+     "ref": "ru_u27",
+     "title": {
+      "vi": "Nghệ thuật và văn hóa",
+      "en": "Art and culture",
+      "ja": "芸術と文化",
+      "ru": "Искусство и культура"
+     },
+     "video": {
+      "id": "ru-path-ru_u27",
+      "youtubeUrl": ""
+     }
+    },
+    {
+     "id": "ru_u28",
+     "kind": "unit",
+     "ref": "ru_u28",
+     "title": {
+      "vi": "Môi trường và khí hậu",
+      "en": "Environment and climate",
+      "ja": "環境と気候",
+      "ru": "Окружающая среда и климат"
+     },
+     "video": {
+      "id": "ru-path-ru_u28",
+      "youtubeUrl": ""
+     }
+    },
+    {
+     "id": "cert_torfl_b1",
+     "kind": "cert",
+     "ref": "cert_torfl_b1",
+     "title": {
+      "vi": "Đề luyện TORFL B1 (trong Trường học)",
+      "en": "TORFL B1 practice set (in School)",
+      "ja": "TORFL B1 練習セット（学校）",
+      "ru": "Тренировочный набор ТРКИ B1 (в Школе)"
+     },
+     "video": {
+      "id": "ru-path-cert_b1",
+      "youtubeUrl": ""
+     }
+    },
+    {
+     "id": "torfl_b1_mock_1",
+     "kind": "mock",
+     "ref": "torfl_b1_mock_1",
+     "title": {
+      "vi": "Đề thi thử TORFL B1 theo định dạng (có đáp án)",
+      "en": "TORFL B1 exam-format mock (with key)",
+      "ja": "TORFL B1 本番形式模試（解答付き）",
+      "ru": "Пробный тест ТРКИ B1 в формате экзамена (с ключами)"
+     },
+     "video": {
+      "id": "ru-path-torfl_b1_mock_1",
+      "youtubeUrl": ""
+     }
+    }
+   ]
+  },
+  {
+   "id": "b2",
+   "label": {
+    "vi": "Trình độ B2",
+    "en": "Level B2",
+    "ja": "レベル B2",
+    "ru": "Уровень B2"
+   },
+   "steps": [
+    {
+     "id": "ru_u29",
+     "kind": "unit",
+     "ref": "ru_u29",
+     "title": {
+      "vi": "Giáo dục và định hướng nghề nghiệp",
+      "en": "Education and career planning",
+      "ja": "教育とキャリア設計",
+      "ru": "Образование и карьера"
+     },
+     "video": {
+      "id": "ru-path-ru_u29",
+      "youtubeUrl": ""
+     }
+    },
+    {
+     "id": "ru_u30",
+     "kind": "unit",
+     "ref": "ru_u30",
+     "title": {
+      "vi": "Tin tức và truyền thông",
+      "en": "News and media",
+      "ja": "ニュースとメディア",
+      "ru": "Новости и СМИ"
+     },
+     "video": {
+      "id": "ru-path-ru_u30",
+      "youtubeUrl": ""
+     }
+    },
+    {
+     "id": "ru_u31",
+     "kind": "unit",
+     "ref": "ru_u31",
+     "title": {
+      "vi": "Công nghệ và trí tuệ nhân tạo",
+      "en": "Technology and artificial intelligence",
+      "ja": "テクノロジーと人工知能",
+      "ru": "Технологии и искусственный интеллект"
+     },
+     "video": {
+      "id": "ru-path-ru_u31",
+      "youtubeUrl": ""
+     }
+    },
+    {
+     "id": "ru_u32",
+     "kind": "unit",
+     "ref": "ru_u32",
+     "title": {
+      "vi": "Pháp luật và quy tắc",
+      "en": "Law and rules",
+      "ja": "法律とルール",
+      "ru": "Закон и правила"
+     },
+     "video": {
+      "id": "ru-path-ru_u32",
+      "youtubeUrl": ""
+     }
+    },
+    {
+     "id": "ru_u33",
+     "kind": "unit",
+     "ref": "ru_u33",
+     "title": {
+      "vi": "Kinh tế và kinh doanh",
+      "en": "Economy and business",
+      "ja": "経済とビジネス",
+      "ru": "Экономика и бизнес"
+     },
+     "video": {
+      "id": "ru-path-ru_u33",
+      "youtubeUrl": ""
+     }
+    },
+    {
+     "id": "ru_u34",
+     "kind": "unit",
+     "ref": "ru_u34",
+     "title": {
+      "vi": "Khoa học và y tế",
+      "en": "Science and healthcare",
+      "ja": "科学と医療",
+      "ru": "Наука и медицина"
+     },
+     "video": {
+      "id": "ru-path-ru_u34",
+      "youtubeUrl": ""
+     }
+    },
+    {
+     "id": "ru_u35",
+     "kind": "unit",
+     "ref": "ru_u35",
+     "title": {
+      "vi": "Xã hội và các mối quan hệ",
+      "en": "Society and relationships",
+      "ja": "社会と人間関係",
+      "ru": "Общество и отношения"
+     },
+     "video": {
+      "id": "ru-path-ru_u35",
+      "youtubeUrl": ""
+     }
+    },
+    {
+     "id": "cert_torfl_b2",
+     "kind": "cert",
+     "ref": "cert_torfl_b2",
+     "title": {
+      "vi": "Đề luyện TORFL B2 (trong Trường học)",
+      "en": "TORFL B2 practice set (in School)",
+      "ja": "TORFL B2 練習セット（学校）",
+      "ru": "Тренировочный набор ТРКИ B2 (в Школе)"
+     },
+     "video": {
+      "id": "ru-path-cert_b2",
+      "youtubeUrl": ""
+     }
+    },
+    {
+     "id": "torfl_b2_mock_1",
+     "kind": "mock",
+     "ref": "torfl_b2_mock_1",
+     "title": {
+      "vi": "Đề thi thử TORFL B2 theo định dạng (có đáp án)",
+      "en": "TORFL B2 exam-format mock (with key)",
+      "ja": "TORFL B2 本番形式模試（解答付き）",
+      "ru": "Пробный тест ТРКИ B2 в формате экзамена (с ключами)"
+     },
+     "video": {
+      "id": "ru-path-torfl_b2_mock_1",
+      "youtubeUrl": ""
+     }
+    }
+   ]
+  }
+ ],
+ "pronunciation": [
+  {
+   "id": "ru_pr1",
+   "title": {
+    "vi": "Trọng âm và nhược hóa nguyên âm",
+    "en": "Stress and vowel reduction",
+    "ja": "強勢と母音の弱化",
+    "ru": "Ударение и редукция гласных"
+   },
+   "tip": {
+    "vi": "Mỗi từ tiếng Nga có một âm tiết nhấn. Nguyên âm không nhấn bị đọc yếu: о → [a] (молоко́ → [məlɐˈko]), е/я → gần [i] (телефо́н). Học từ mới luôn kèm dấu trọng âm.",
+    "en": "Every Russian word has one stressed syllable. Unstressed vowels weaken: о → [a] (молоко́ → [məlɐˈko]), е/я → close to [i] (телефо́н). Always learn new words with their stress mark.",
+    "ja": "ロシア語の単語には強勢が1つあり、強勢のない母音は弱まる：о→[a]（молоко́）、е/я→[i]に近い（телефо́н）。新しい単語は必ず強勢記号と一緒に覚える。",
+    "ru": "В каждом слове одно ударение. Безударные гласные редуцируются: о → [а] (молоко́), е/я → близко к [и] (телефо́н). Учите слова с ударением."
+   },
+   "examples": [
+    {
+     "ru": "молоко́",
+     "gloss": {
+      "vi": "sữa",
+      "en": "milk",
+      "ja": "牛乳",
+      "ru": "молоко́"
+     }
+    },
+    {
+     "ru": "хорошо́",
+     "gloss": {
+      "vi": "tốt",
+      "en": "good",
+      "ja": "良い",
+      "ru": "хорошо́"
+     }
+    },
+    {
+     "ru": "телефо́н",
+     "gloss": {
+      "vi": "điện thoại",
+      "en": "phone",
+      "ja": "電話",
+      "ru": "телефо́н"
+     }
+    },
+    {
+     "ru": "язы́к",
+     "gloss": {
+      "vi": "ngôn ngữ",
+      "en": "language",
+      "ja": "言語",
+      "ru": "язы́к"
+     }
+    }
+   ],
+   "quiz": [
+    {
+     "stem": "Как читается безударная «о» в слове «хорошо́»?",
+     "choices": [
+      "не читается",
+      "как [о]",
+      "как [а]",
+      "как [у]"
+     ],
+     "answer": 2
+    },
+    {
+     "stem": "Где ударение в слове «молоко»?",
+     "choices": [
+      "на первом слоге",
+      "на втором слоге",
+      "ударения нет",
+      "на последнем слоге"
+     ],
+     "answer": 3
+    }
+   ]
+  },
+  {
+   "id": "ru_pr2",
+   "title": {
+    "vi": "Phụ âm cứng và mềm",
+    "en": "Hard and soft consonants",
+    "ja": "硬子音と軟子音",
+    "ru": "Твёрдые и мягкие согласные"
+   },
+   "tip": {
+    "vi": "Phụ âm đứng trước е, ё, и, ю, я hoặc ь trở nên mềm (lưỡi nâng về phía vòm miệng): мат/мать, был/бил. Sự khác biệt này đổi nghĩa từ.",
+    "en": "A consonant before е, ё, и, ю, я or ь is soft (palatalised — the tongue rises toward the palate): мат/мать, был/бил. The difference changes meaning.",
+    "ja": "е・ё・и・ю・я・ьの前の子音は軟子音（舌を硬口蓋へ上げる）：мат/мать、был/бил。違いで意味が変わる。",
+    "ru": "Перед е, ё, и, ю, я и ь согласные мягкие: мат/мать, был/бил. Это различает смысл."
+   },
+   "examples": [
+    {
+     "ru": "мат / мать",
+     "gloss": {
+      "vi": "chiếu (thảm) / mẹ",
+      "en": "mat / mother",
+      "ja": "マット／母",
+      "ru": "мат / мать"
+     }
+    },
+    {
+     "ru": "был / бил",
+     "gloss": {
+      "vi": "đã là / đã đánh",
+      "en": "was / hit",
+      "ja": "〜だった／打った",
+      "ru": "был / бил"
+     }
+    },
+    {
+     "ru": "угол / уголь",
+     "gloss": {
+      "vi": "góc / than",
+      "en": "corner / coal",
+      "ja": "角／石炭",
+      "ru": "угол / уголь"
+     }
+    }
+   ],
+   "quiz": [
+    {
+     "stem": "Какая согласная мягкая?",
+     "choices": [
+      "т в слове «мат»",
+      "т в слове «мать»",
+      "л в слове «угол»",
+      "б в слове «был»"
+     ],
+     "answer": 1
+    },
+    {
+     "stem": "Что делает ь в слове «уголь»?",
+     "choices": [
+      "ничего",
+      "делает л твёрдой",
+      "смягчает л",
+      "обозначает звук [й]"
+     ],
+     "answer": 2
+    }
+   ]
+  },
+  {
+   "id": "ru_pr3",
+   "title": {
+    "vi": "Vô thanh hóa và đồng hóa",
+    "en": "Devoicing and assimilation",
+    "ja": "無声化と同化",
+    "ru": "Оглушение и ассимиляция"
+   },
+   "tip": {
+    "vi": "Phụ âm hữu thanh ở cuối từ đọc thành vô thanh: хлеб → [хлеп], город → [горат]. Trong cụm phụ âm, âm đầu đồng hóa theo âm sau: вторник → [фторник], сделать → [зделать].",
+    "en": "Voiced consonants become voiceless at the end of a word: хлеб → [khlep], город → [gorat]. In clusters the first consonant takes the voicing of the next: вторник → [ftornik], сделать → [zdelat'].",
+    "ja": "語末の有声子音は無声化：хлеб→[хлеп]、город→[горат]。子音連続では後ろの音に同化：вторник→[фторник]、сделать→[зделать]。",
+    "ru": "На конце слова звонкие оглушаются: хлеб [хлеп]. В сочетаниях согласных первый уподобляется второму: вторник [фторник], сделать [зделать]."
+   },
+   "examples": [
+    {
+     "ru": "хлеб",
+     "gloss": {
+      "vi": "bánh mì",
+      "en": "bread",
+      "ja": "パン",
+      "ru": "хлеб"
+     }
+    },
+    {
+     "ru": "друг",
+     "gloss": {
+      "vi": "bạn",
+      "en": "friend",
+      "ja": "友達",
+      "ru": "друг"
+     }
+    },
+    {
+     "ru": "вторник",
+     "gloss": {
+      "vi": "thứ ba",
+      "en": "Tuesday",
+      "ja": "火曜日",
+      "ru": "вторник"
+     }
+    },
+    {
+     "ru": "сделать",
+     "gloss": {
+      "vi": "làm",
+      "en": "to do",
+      "ja": "する",
+      "ru": "сделать"
+     }
+    }
+   ],
+   "quiz": [
+    {
+     "stem": "Как звучит последний звук в слове «друг»?",
+     "choices": [
+      "[х]",
+      "[к]",
+      "[г]",
+      "[д]"
+     ],
+     "answer": 1
+    },
+    {
+     "stem": "Как читается «в» в слове «вторник»?",
+     "choices": [
+      "[б]",
+      "не читается",
+      "[ф]",
+      "[в]"
+     ],
+     "answer": 2
+    }
+   ]
+  },
+  {
+   "id": "ru_pr4",
+   "title": {
+    "vi": "Ngữ điệu: câu kể và câu hỏi",
+    "en": "Intonation: statements and questions",
+    "ja": "イントネーション：平叙文と疑問文",
+    "ru": "Интонация: утверждение и вопрос"
+   },
+   "tip": {
+    "vi": "Câu kể (ИК-1): giọng hạ ở từ trọng tâm. Câu hỏi có từ để hỏi (ИК-2): nhấn mạnh từ để hỏi. Câu hỏi có/không không có từ để hỏi (ИК-3): giọng lên cao rõ rệt ở từ được hỏi — «Это твой брат?» Chỉ ngữ điệu phân biệt câu kể và câu hỏi.",
+    "en": "Statements (IK-1): the pitch falls on the key word. Wh-questions (IK-2): stress the question word. Yes/no questions without a question word (IK-3): a sharp rise on the word in question — «Это твой брат?» Only intonation tells a statement from a question.",
+    "ja": "平叙文（ИК-1）：要の語で下降。疑問詞疑問文（ИК-2）：疑問詞を強調。疑問詞のない諾否疑問文（ИК-3）：問う語で急上昇—«Это твой брат?»。平叙文と疑問文はイントネーションだけで区別する。",
+    "ru": "ИК-1 — повествование, понижение тона. ИК-2 — вопрос с вопросительным словом. ИК-3 — вопрос без вопросительного слова, резкий подъём тона: «Это твой брат?»"
+   },
+   "examples": [
+    {
+     "ru": "Это твой брат.",
+     "gloss": {
+      "vi": "Đây là anh trai bạn.",
+      "en": "This is your brother.",
+      "ja": "これは君の兄だ。",
+      "ru": "Это твой брат."
+     }
+    },
+    {
+     "ru": "Это твой брат?",
+     "gloss": {
+      "vi": "Đây là anh trai bạn à?",
+      "en": "Is this your brother?",
+      "ja": "これは君の兄？",
+      "ru": "Это твой брат?"
+     }
+    },
+    {
+     "ru": "Где ты живёшь?",
+     "gloss": {
+      "vi": "Bạn sống ở đâu?",
+      "en": "Where do you live?",
+      "ja": "どこに住んでいるの？",
+      "ru": "Где ты живёшь?"
+     }
+    }
+   ],
+   "quiz": [
+    {
+     "stem": "Чем отличается «Это твой брат.» от «Это твой брат?»",
+     "choices": [
+      "порядком слов",
+      "окончанием",
+      "частицей «ли»",
+      "только интонацией"
+     ],
+     "answer": 3
+    },
+    {
+     "stem": "Какая интонационная конструкция в вопросе без вопросительного слова?",
+     "choices": [
+      "ИК-5",
+      "ИК-3",
+      "ИК-2",
+      "ИК-1"
+     ],
+     "answer": 1
+    }
+   ]
+  }
+ ]
+}

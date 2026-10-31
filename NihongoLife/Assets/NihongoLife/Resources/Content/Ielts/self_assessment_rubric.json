@@ -1,0 +1,963 @@
+{
+ "schema": "nihongolife.ielts.rubric/1",
+ "source": {
+  "vi": "Tóm tắt (diễn đạt lại) từ mô tả band điểm IELTS công khai. Không phải văn bản chính thức; dùng để tự đánh giá.",
+  "en": "Summarised (paraphrased) from the public IELTS band descriptors. Not the official wording; for self-assessment only.",
+  "ja": "公開されているIELTSバンド記述を要約（言い換え）したもの。公式文言ではなく自己評価用です。",
+  "ru": "Кратко пересказано по общедоступным дескрипторам IELTS. Не официальный текст; только для самооценки."
+ },
+ "writing_task1": [
+  {
+   "code": "TA",
+   "name": {
+    "vi": "Hoàn thành yêu cầu (Task 1)",
+    "en": "Task Achievement (Task 1)",
+    "ja": "課題の達成（Task 1）",
+    "ru": "Выполнение задания (Task 1)"
+   },
+   "help": {
+    "vi": "Có tổng quan, chọn lọc đặc điểm chính và so sánh chính xác không.",
+    "en": "Is there an overview, are key features selected and compared accurately?",
+    "ja": "概要があり、主要な特徴を選んで正確に比較しているか。",
+    "ru": "Есть ли обзор, выбраны ли и точно сравнены ключевые особенности."
+   },
+   "bands": [
+    {
+     "band": 9,
+     "text": {
+      "vi": "Đáp ứng trọn vẹn mọi yêu cầu; trình bày đầy đủ, xuất sắc.",
+      "en": "Fully satisfies all requirements; a fully developed response."
+     }
+    },
+    {
+     "band": 8,
+     "text": {
+      "vi": "Bao quát mọi yêu cầu; trình bày rõ đặc điểm chính, minh họa tốt.",
+      "en": "Covers all requirements; key features clearly presented and illustrated."
+     }
+    },
+    {
+     "band": 7,
+     "text": {
+      "vi": "Có tổng quan rõ; nêu và làm nổi bật đặc điểm chính; có thể mở rộng hơn.",
+      "en": "A clear overview; key features presented and highlighted, could be more fully extended."
+     }
+    },
+    {
+     "band": 6,
+     "text": {
+      "vi": "Có tổng quan; đặc điểm chính được nêu nhưng còn sót/không chính xác; chi tiết có chỗ thừa.",
+      "en": "An overview is attempted; key features covered but some are inadequately covered or inaccurate."
+     }
+    },
+    {
+     "band": 5,
+     "text": {
+      "vi": "Chủ yếu liệt kê chi tiết; thiếu tổng quan rõ; có thể thiếu số liệu.",
+      "en": "Mostly lists detail mechanically; no clear overview; data may be missing."
+     }
+    },
+    {
+     "band": 4,
+     "text": {
+      "vi": "Cố gắng nhưng lạc đề hoặc đặc điểm chính lẫn với chi tiết không liên quan.",
+      "en": "Attempts the task but key features are confused with irrelevant detail."
+     }
+    }
+   ],
+   "checklist": [
+    {
+     "vi": "Có đoạn Overview nêu xu hướng chính?",
+     "en": "Is there an overview of the main trends?",
+     "ja": "主な傾向の概要があるか？",
+     "ru": "Есть ли обзор главных тенденций?"
+    },
+    {
+     "vi": "Có so sánh thay vì chỉ liệt kê số?",
+     "en": "Do you compare rather than just list numbers?",
+     "ja": "数字を並べるだけでなく比較しているか？",
+     "ru": "Сравниваете ли вы, а не просто перечисляете цифры?"
+    },
+    {
+     "vi": "Số liệu được trích chính xác, không thêm ý kiến cá nhân?",
+     "en": "Are figures accurate, with no personal opinion added?",
+     "ja": "数値は正確で個人的意見を加えていないか？",
+     "ru": "Цифры точны, без личного мнения?"
+    }
+   ]
+  },
+  {
+   "code": "CC",
+   "name": {
+    "vi": "Mạch lạc & Liên kết",
+    "en": "Coherence & Cohesion",
+    "ja": "一貫性と結束性",
+    "ru": "Связность и последовательность"
+   },
+   "help": {
+    "vi": "Ý có sắp xếp logic không, chia đoạn và nối ý ra sao.",
+    "en": "Is the information logically organised, paragraphed and linked?",
+    "ja": "情報の論理的な構成、段落分け、つなぎ方。",
+    "ru": "Логично ли организована информация, как разбита на абзацы и связана."
+   },
+   "bands": [
+    {
+     "band": 9,
+     "text": {
+      "vi": "Liên kết tự nhiên tới mức không gây chú ý; chia đoạn hoàn hảo.",
+      "en": "Cohesion so natural it attracts no attention; paragraphing is skilful."
+     }
+    },
+    {
+     "band": 8,
+     "text": {
+      "vi": "Sắp xếp logic; mọi khía cạnh liên kết tốt; chia đoạn hợp lý.",
+      "en": "Information sequenced logically; all aspects of cohesion managed well; sufficient paragraphing."
+     }
+    },
+    {
+     "band": 7,
+     "text": {
+      "vi": "Tiến trình rõ ràng; dùng nhiều phương tiện nối, đôi khi hơi nhiều/ít; mỗi đoạn có ý trung tâm.",
+      "en": "Clear progression; a range of cohesive devices, sometimes over/under-used; a clear central topic per paragraph."
+     }
+    },
+    {
+     "band": 6,
+     "text": {
+      "vi": "Sắp xếp mạch lạc nhưng nối ý đôi khi máy móc hoặc sai; chia đoạn chưa luôn logic.",
+      "en": "Coherent arrangement, but linking can be mechanical or faulty; paragraphing not always logical."
+     }
+    },
+    {
+     "band": 5,
+     "text": {
+      "vi": "Có tổ chức nhưng thiếu tiến trình tổng thể; nối ý hạn chế, lặp; chia đoạn chưa phù hợp.",
+      "en": "Some organisation but no clear overall progression; limited, repetitive linking; inadequate paragraphing."
+     }
+    },
+    {
+     "band": 4,
+     "text": {
+      "vi": "Ý không sắp xếp mạch lạc; từ nối cơ bản, sai hoặc lặp.",
+      "en": "Ideas not arranged coherently; basic, inaccurate or repetitive linking."
+     }
+    }
+   ],
+   "checklist": [
+    {
+     "vi": "Mỗi đoạn có một ý chính rõ ràng?",
+     "en": "Does each paragraph have one clear main idea?",
+     "ja": "各段落に明確な主題が1つあるか？",
+     "ru": "В каждом абзаце одна ясная главная мысль?"
+    },
+    {
+     "vi": "Từ nối đa dạng và không lạm dụng?",
+     "en": "Are linking words varied and not overused?",
+     "ja": "つなぎ語は多様で使いすぎていないか？",
+     "ru": "Связки разнообразны и не злоупотреблены?"
+    },
+    {
+     "vi": "Có dùng đại từ/danh từ tóm ý để tránh lặp?",
+     "en": "Do you use pronouns or summary nouns to avoid repetition?",
+     "ja": "指示語や要約名詞で繰り返しを避けているか？",
+     "ru": "Используете ли местоимения или обобщающие слова, чтобы избежать повторов?"
+    }
+   ]
+  },
+  {
+   "code": "LR",
+   "name": {
+    "vi": "Vốn từ vựng",
+    "en": "Lexical Resource",
+    "ja": "語彙力",
+    "ru": "Лексический запас"
+   },
+   "help": {
+    "vi": "Phạm vi, độ chính xác và sự tự nhiên của từ vựng.",
+    "en": "Range, accuracy and naturalness of vocabulary.",
+    "ja": "語彙の幅・正確さ・自然さ。",
+    "ru": "Диапазон, точность и естественность лексики."
+   },
+   "bands": [
+    {
+     "band": 9,
+     "text": {
+      "vi": "Từ vựng rộng, tự nhiên, tinh tế; lỗi chỉ là 'sơ suất'.",
+      "en": "Wide, natural, sophisticated vocabulary; only rare slips."
+     }
+    },
+    {
+     "band": 8,
+     "text": {
+      "vi": "Từ vựng rộng, dùng linh hoạt và chính xác; hiếm lỗi kết hợp/chính tả.",
+      "en": "Wide range used fluently and precisely; occasional errors in collocation or spelling."
+     }
+    },
+    {
+     "band": 7,
+     "text": {
+      "vi": "Đủ rộng để linh hoạt; có từ ít phổ biến và ý thức văn phong; đôi lỗi kết hợp.",
+      "en": "Sufficient range for flexibility; some less common items and awareness of style; occasional collocation errors."
+     }
+    },
+    {
+     "band": 6,
+     "text": {
+      "vi": "Đủ cho đề bài; cố dùng từ ít phổ biến nhưng còn sai; lỗi chính tả/dạng từ không cản trở hiểu.",
+      "en": "Adequate for the task; attempts less common words with some inaccuracy; spelling/word-form errors do not impede meaning."
+     }
+    },
+    {
+     "band": 5,
+     "text": {
+      "vi": "Hạn chế nhưng tạm đủ; lỗi chính tả/dạng từ gây khó cho người đọc.",
+      "en": "Limited but minimally adequate; spelling/word-form errors may cause difficulty for the reader."
+     }
+    },
+    {
+     "band": 4,
+     "text": {
+      "vi": "Từ cơ bản, lặp; lỗi nhiều gây sai lệch ý.",
+      "en": "Basic, repetitive vocabulary; frequent errors may distort meaning."
+     }
+    }
+   ],
+   "checklist": [
+    {
+     "vi": "Có dùng từ chủ đề cụ thể thay vì từ chung chung?",
+     "en": "Do you use specific topic words rather than general ones?",
+     "ja": "一般的な語でなく話題に特有の語を使っているか？",
+     "ru": "Используете ли конкретную тематическую лексику вместо общих слов?"
+    },
+    {
+     "vi": "Kết hợp từ (collocation) có tự nhiên?",
+     "en": "Are collocations natural?",
+     "ja": "コロケーションは自然か？",
+     "ru": "Естественны ли словосочетания?"
+    },
+    {
+     "vi": "Chính tả và dạng từ (noun/verb/adj) đúng?",
+     "en": "Are spelling and word forms correct?",
+     "ja": "綴りと品詞は正しいか？",
+     "ru": "Правильны ли орфография и формы слов?"
+    }
+   ]
+  },
+  {
+   "code": "GRA",
+   "name": {
+    "vi": "Ngữ pháp: đa dạng & chính xác",
+    "en": "Grammatical Range & Accuracy",
+    "ja": "文法の幅と正確さ",
+    "ru": "Грамматический диапазон и точность"
+   },
+   "help": {
+    "vi": "Mức đa dạng cấu trúc câu và độ chính xác.",
+    "en": "Variety of sentence structures and how accurate they are.",
+    "ja": "文構造の多様さと正確さ。",
+    "ru": "Разнообразие структур предложений и их точность."
+   },
+   "bands": [
+    {
+     "band": 9,
+     "text": {
+      "vi": "Cấu trúc đa dạng, linh hoạt, chính xác hoàn toàn.",
+      "en": "A wide range used with full flexibility and accuracy."
+     }
+    },
+    {
+     "band": 8,
+     "text": {
+      "vi": "Đa dạng cấu trúc; đa số câu không lỗi; lỗi rất ít.",
+      "en": "A wide range of structures; the majority of sentences are error-free."
+     }
+    },
+    {
+     "band": 7,
+     "text": {
+      "vi": "Nhiều câu phức; câu không lỗi xuất hiện thường xuyên; kiểm soát tốt.",
+      "en": "A variety of complex structures; frequent error-free sentences; good control."
+     }
+    },
+    {
+     "band": 6,
+     "text": {
+      "vi": "Kết hợp câu đơn và phức; có lỗi nhưng hiếm khi gây khó hiểu.",
+      "en": "A mix of simple and complex sentences; some errors that rarely reduce communication."
+     }
+    },
+    {
+     "band": 5,
+     "text": {
+      "vi": "Phạm vi hạn chế; cố dùng câu phức nhưng kém chính xác; lỗi thường xuyên.",
+      "en": "Limited range; attempts at complex sentences are less accurate; frequent errors."
+     }
+    },
+    {
+     "band": 4,
+     "text": {
+      "vi": "Rất ít cấu trúc; câu phụ hiếm; lỗi chiếm ưu thế.",
+      "en": "Very limited range; rare subordinate clauses; errors predominate."
+     }
+    }
+   ],
+   "checklist": [
+    {
+     "vi": "Có ít nhất vài câu phức (mệnh đề quan hệ, điều kiện)?",
+     "en": "Do you use some complex sentences (relative, conditional clauses)?",
+     "ja": "複文（関係節・条件節）をいくつか使っているか？",
+     "ru": "Используете ли сложные предложения (относительные, условные)?"
+    },
+    {
+     "vi": "Thì động từ và hòa hợp chủ–vị chính xác?",
+     "en": "Are tenses and subject–verb agreement accurate?",
+     "ja": "時制と主述の一致は正確か？",
+     "ru": "Точны ли времена и согласование подлежащего со сказуемым?"
+    },
+    {
+     "vi": "Mạo từ và dấu câu đúng?",
+     "en": "Are articles and punctuation correct?",
+     "ja": "冠詞と句読点は正しいか？",
+     "ru": "Правильны ли артикли и пунктуация?"
+    }
+   ]
+  }
+ ],
+ "writing_task2": [
+  {
+   "code": "TR",
+   "name": {
+    "vi": "Trả lời đề bài (Task 2)",
+    "en": "Task Response (Task 2)",
+    "ja": "課題への応答（Task 2）",
+    "ru": "Ответ на задание (Task 2)"
+   },
+   "help": {
+    "vi": "Trả lời đủ mọi phần đề, quan điểm rõ và được phát triển.",
+    "en": "Are all parts answered with a clear, developed position?",
+    "ja": "全ての問いに答え、明確な立場を展開しているか。",
+    "ru": "Отвечено ли на все части, есть ли ясная развитая позиция."
+   },
+   "bands": [
+    {
+     "band": 9,
+     "text": {
+      "vi": "Trả lời trọn vẹn; quan điểm rõ, ý phát triển đầy đủ và có chiều sâu.",
+      "en": "Fully addresses all parts; a fully developed position with relevant, extended ideas."
+     }
+    },
+    {
+     "band": 8,
+     "text": {
+      "vi": "Trả lời đủ; quan điểm phát triển tốt với ý liên quan, mở rộng và có minh họa.",
+      "en": "Sufficiently addresses all parts; a well-developed response with extended, supported ideas."
+     }
+    },
+    {
+     "band": 7,
+     "text": {
+      "vi": "Trả lời mọi phần; quan điểm rõ xuyên suốt; ý chính được mở rộng nhưng có thể khái quát quá.",
+      "en": "Addresses all parts; a clear position throughout; main ideas extended but may over-generalise."
+     }
+    },
+    {
+     "band": 6,
+     "text": {
+      "vi": "Trả lời mọi phần nhưng có phần chưa đủ; có quan điểm nhưng kết luận có thể chưa rõ; ý chưa phát triển đủ.",
+      "en": "Addresses all parts though some more fully than others; a relevant position though conclusions may be unclear; some ideas underdeveloped."
+     }
+    },
+    {
+     "band": 5,
+     "text": {
+      "vi": "Trả lời một phần; quan điểm chưa luôn rõ; ý hạn chế, ít phát triển.",
+      "en": "Addresses the task only partially; position not always clear; limited, underdeveloped ideas."
+     }
+    },
+    {
+     "band": 4,
+     "text": {
+      "vi": "Trả lời tối thiểu hoặc lạc đề; quan điểm khó nhận ra.",
+      "en": "Responds minimally or tangentially; the position is unclear."
+     }
+    }
+   ],
+   "checklist": [
+    {
+     "vi": "Đã trả lời MỌI phần của đề (ví dụ: cả hai quan điểm + ý kiến)?",
+     "en": "Did you answer EVERY part of the question (e.g. both views + your opinion)?",
+     "ja": "問いの全ての部分（両論＋意見など）に答えたか？",
+     "ru": "Ответили ли вы на ВСЕ части вопроса (обе точки зрения + мнение)?"
+    },
+    {
+     "vi": "Quan điểm nêu ở mở bài và nhất quán đến kết luận?",
+     "en": "Is your position stated early and consistent to the end?",
+     "ja": "立場を早めに示し最後まで一貫しているか？",
+     "ru": "Позиция заявлена в начале и выдержана до конца?"
+    },
+    {
+     "vi": "Mỗi lý do có giải thích + ví dụ cụ thể?",
+     "en": "Is each reason explained and supported with an example?",
+     "ja": "各理由に説明と具体例があるか？",
+     "ru": "Каждая причина объяснена и подкреплена примером?"
+    }
+   ]
+  },
+  {
+   "code": "CC",
+   "name": {
+    "vi": "Mạch lạc & Liên kết",
+    "en": "Coherence & Cohesion",
+    "ja": "一貫性と結束性",
+    "ru": "Связность и последовательность"
+   },
+   "help": {
+    "vi": "Ý có sắp xếp logic không, chia đoạn và nối ý ra sao.",
+    "en": "Is the information logically organised, paragraphed and linked?",
+    "ja": "情報の論理的な構成、段落分け、つなぎ方。",
+    "ru": "Логично ли организована информация, как разбита на абзацы и связана."
+   },
+   "bands": [
+    {
+     "band": 9,
+     "text": {
+      "vi": "Liên kết tự nhiên tới mức không gây chú ý; chia đoạn hoàn hảo.",
+      "en": "Cohesion so natural it attracts no attention; paragraphing is skilful."
+     }
+    },
+    {
+     "band": 8,
+     "text": {
+      "vi": "Sắp xếp logic; mọi khía cạnh liên kết tốt; chia đoạn hợp lý.",
+      "en": "Information sequenced logically; all aspects of cohesion managed well; sufficient paragraphing."
+     }
+    },
+    {
+     "band": 7,
+     "text": {
+      "vi": "Tiến trình rõ ràng; dùng nhiều phương tiện nối, đôi khi hơi nhiều/ít; mỗi đoạn có ý trung tâm.",
+      "en": "Clear progression; a range of cohesive devices, sometimes over/under-used; a clear central topic per paragraph."
+     }
+    },
+    {
+     "band": 6,
+     "text": {
+      "vi": "Sắp xếp mạch lạc nhưng nối ý đôi khi máy móc hoặc sai; chia đoạn chưa luôn logic.",
+      "en": "Coherent arrangement, but linking can be mechanical or faulty; paragraphing not always logical."
+     }
+    },
+    {
+     "band": 5,
+     "text": {
+      "vi": "Có tổ chức nhưng thiếu tiến trình tổng thể; nối ý hạn chế, lặp; chia đoạn chưa phù hợp.",
+      "en": "Some organisation but no clear overall progression; limited, repetitive linking; inadequate paragraphing."
+     }
+    },
+    {
+     "band": 4,
+     "text": {
+      "vi": "Ý không sắp xếp mạch lạc; từ nối cơ bản, sai hoặc lặp.",
+      "en": "Ideas not arranged coherently; basic, inaccurate or repetitive linking."
+     }
+    }
+   ],
+   "checklist": [
+    {
+     "vi": "Mỗi đoạn có một ý chính rõ ràng?",
+     "en": "Does each paragraph have one clear main idea?",
+     "ja": "各段落に明確な主題が1つあるか？",
+     "ru": "В каждом абзаце одна ясная главная мысль?"
+    },
+    {
+     "vi": "Từ nối đa dạng và không lạm dụng?",
+     "en": "Are linking words varied and not overused?",
+     "ja": "つなぎ語は多様で使いすぎていないか？",
+     "ru": "Связки разнообразны и не злоупотреблены?"
+    },
+    {
+     "vi": "Có dùng đại từ/danh từ tóm ý để tránh lặp?",
+     "en": "Do you use pronouns or summary nouns to avoid repetition?",
+     "ja": "指示語や要約名詞で繰り返しを避けているか？",
+     "ru": "Используете ли местоимения или обобщающие слова, чтобы избежать повторов?"
+    }
+   ]
+  },
+  {
+   "code": "LR",
+   "name": {
+    "vi": "Vốn từ vựng",
+    "en": "Lexical Resource",
+    "ja": "語彙力",
+    "ru": "Лексический запас"
+   },
+   "help": {
+    "vi": "Phạm vi, độ chính xác và sự tự nhiên của từ vựng.",
+    "en": "Range, accuracy and naturalness of vocabulary.",
+    "ja": "語彙の幅・正確さ・自然さ。",
+    "ru": "Диапазон, точность и естественность лексики."
+   },
+   "bands": [
+    {
+     "band": 9,
+     "text": {
+      "vi": "Từ vựng rộng, tự nhiên, tinh tế; lỗi chỉ là 'sơ suất'.",
+      "en": "Wide, natural, sophisticated vocabulary; only rare slips."
+     }
+    },
+    {
+     "band": 8,
+     "text": {
+      "vi": "Từ vựng rộng, dùng linh hoạt và chính xác; hiếm lỗi kết hợp/chính tả.",
+      "en": "Wide range used fluently and precisely; occasional errors in collocation or spelling."
+     }
+    },
+    {
+     "band": 7,
+     "text": {
+      "vi": "Đủ rộng để linh hoạt; có từ ít phổ biến và ý thức văn phong; đôi lỗi kết hợp.",
+      "en": "Sufficient range for flexibility; some less common items and awareness of style; occasional collocation errors."
+     }
+    },
+    {
+     "band": 6,
+     "text": {
+      "vi": "Đủ cho đề bài; cố dùng từ ít phổ biến nhưng còn sai; lỗi chính tả/dạng từ không cản trở hiểu.",
+      "en": "Adequate for the task; attempts less common words with some inaccuracy; spelling/word-form errors do not impede meaning."
+     }
+    },
+    {
+     "band": 5,
+     "text": {
+      "vi": "Hạn chế nhưng tạm đủ; lỗi chính tả/dạng từ gây khó cho người đọc.",
+      "en": "Limited but minimally adequate; spelling/word-form errors may cause difficulty for the reader."
+     }
+    },
+    {
+     "band": 4,
+     "text": {
+      "vi": "Từ cơ bản, lặp; lỗi nhiều gây sai lệch ý.",
+      "en": "Basic, repetitive vocabulary; frequent errors may distort meaning."
+     }
+    }
+   ],
+   "checklist": [
+    {
+     "vi": "Có dùng từ chủ đề cụ thể thay vì từ chung chung?",
+     "en": "Do you use specific topic words rather than general ones?",
+     "ja": "一般的な語でなく話題に特有の語を使っているか？",
+     "ru": "Используете ли конкретную тематическую лексику вместо общих слов?"
+    },
+    {
+     "vi": "Kết hợp từ (collocation) có tự nhiên?",
+     "en": "Are collocations natural?",
+     "ja": "コロケーションは自然か？",
+     "ru": "Естественны ли словосочетания?"
+    },
+    {
+     "vi": "Chính tả và dạng từ (noun/verb/adj) đúng?",
+     "en": "Are spelling and word forms correct?",
+     "ja": "綴りと品詞は正しいか？",
+     "ru": "Правильны ли орфография и формы слов?"
+    }
+   ]
+  },
+  {
+   "code": "GRA",
+   "name": {
+    "vi": "Ngữ pháp: đa dạng & chính xác",
+    "en": "Grammatical Range & Accuracy",
+    "ja": "文法の幅と正確さ",
+    "ru": "Грамматический диапазон и точность"
+   },
+   "help": {
+    "vi": "Mức đa dạng cấu trúc câu và độ chính xác.",
+    "en": "Variety of sentence structures and how accurate they are.",
+    "ja": "文構造の多様さと正確さ。",
+    "ru": "Разнообразие структур предложений и их точность."
+   },
+   "bands": [
+    {
+     "band": 9,
+     "text": {
+      "vi": "Cấu trúc đa dạng, linh hoạt, chính xác hoàn toàn.",
+      "en": "A wide range used with full flexibility and accuracy."
+     }
+    },
+    {
+     "band": 8,
+     "text": {
+      "vi": "Đa dạng cấu trúc; đa số câu không lỗi; lỗi rất ít.",
+      "en": "A wide range of structures; the majority of sentences are error-free."
+     }
+    },
+    {
+     "band": 7,
+     "text": {
+      "vi": "Nhiều câu phức; câu không lỗi xuất hiện thường xuyên; kiểm soát tốt.",
+      "en": "A variety of complex structures; frequent error-free sentences; good control."
+     }
+    },
+    {
+     "band": 6,
+     "text": {
+      "vi": "Kết hợp câu đơn và phức; có lỗi nhưng hiếm khi gây khó hiểu.",
+      "en": "A mix of simple and complex sentences; some errors that rarely reduce communication."
+     }
+    },
+    {
+     "band": 5,
+     "text": {
+      "vi": "Phạm vi hạn chế; cố dùng câu phức nhưng kém chính xác; lỗi thường xuyên.",
+      "en": "Limited range; attempts at complex sentences are less accurate; frequent errors."
+     }
+    },
+    {
+     "band": 4,
+     "text": {
+      "vi": "Rất ít cấu trúc; câu phụ hiếm; lỗi chiếm ưu thế.",
+      "en": "Very limited range; rare subordinate clauses; errors predominate."
+     }
+    }
+   ],
+   "checklist": [
+    {
+     "vi": "Có ít nhất vài câu phức (mệnh đề quan hệ, điều kiện)?",
+     "en": "Do you use some complex sentences (relative, conditional clauses)?",
+     "ja": "複文（関係節・条件節）をいくつか使っているか？",
+     "ru": "Используете ли сложные предложения (относительные, условные)?"
+    },
+    {
+     "vi": "Thì động từ và hòa hợp chủ–vị chính xác?",
+     "en": "Are tenses and subject–verb agreement accurate?",
+     "ja": "時制と主述の一致は正確か？",
+     "ru": "Точны ли времена и согласование подлежащего со сказуемым?"
+    },
+    {
+     "vi": "Mạo từ và dấu câu đúng?",
+     "en": "Are articles and punctuation correct?",
+     "ja": "冠詞と句読点は正しいか？",
+     "ru": "Правильны ли артикли и пунктуация?"
+    }
+   ]
+  }
+ ],
+ "speaking": [
+  {
+   "code": "FC",
+   "name": {
+    "vi": "Trôi chảy & Mạch lạc",
+    "en": "Fluency & Coherence",
+    "ja": "流暢さと一貫性",
+    "ru": "Беглость и связность"
+   },
+   "help": {
+    "vi": "Nói liền mạch, ít ngập ngừng, ý nối kết logic.",
+    "en": "Speaking at length without effort, with logically linked ideas.",
+    "ja": "無理なく話し続け、考えを論理的につなげる。",
+    "ru": "Говорить развёрнуто без усилий, логично связывая мысли."
+   },
+   "bands": [
+    {
+     "band": 9,
+     "text": {
+      "vi": "Nói trôi chảy, hiếm khi lặp/tự sửa; ngập ngừng chỉ vì nội dung; phát triển ý trọn vẹn.",
+      "en": "Fluent with only rare repetition or self-correction; hesitation is content-related; topics fully developed."
+     }
+    },
+    {
+     "band": 8,
+     "text": {
+      "vi": "Trôi chảy, thỉnh thoảng lặp/tự sửa; phát triển ý mạch lạc, phù hợp.",
+      "en": "Fluent with only occasional repetition or self-correction; coherent, appropriate development."
+     }
+    },
+    {
+     "band": 7,
+     "text": {
+      "vi": "Nói dài không quá gắng sức; đôi khi ngập ngừng vì ngôn ngữ; dùng từ nối linh hoạt.",
+      "en": "Speaks at length without noticeable effort; some language-related hesitation; flexible connectives."
+     }
+    },
+    {
+     "band": 6,
+     "text": {
+      "vi": "Sẵn sàng nói dài nhưng đôi khi mất mạch do lặp/ngập ngừng; từ nối chưa luôn phù hợp.",
+      "en": "Willing to speak at length, though coherence may be lost through repetition or hesitation; connectives not always appropriate."
+     }
+    },
+    {
+     "band": 5,
+     "text": {
+      "vi": "Duy trì được nhưng hay lặp, tự sửa, nói chậm; lạm dụng từ nối.",
+      "en": "Keeps going but relies on repetition, self-correction or slow speech; overuses connectives."
+     }
+    },
+    {
+     "band": 4,
+     "text": {
+      "vi": "Không thể trả lời mà không ngừng đáng kể; câu nối đơn giản.",
+      "en": "Cannot respond without noticeable pauses; simple sentence linking."
+     }
+    }
+   ],
+   "checklist": [
+    {
+     "vi": "Trả lời được mở rộng (không chỉ 1 câu)?",
+     "en": "Did you extend answers beyond a single sentence?",
+     "ja": "1文で終わらず答えを広げたか？",
+     "ru": "Расширяли ли вы ответы дальше одного предложения?"
+    },
+    {
+     "vi": "Ít 'er/um' và ít tự sửa?",
+     "en": "Few 'er/um' fillers and self-corrections?",
+     "ja": "'er/um' や言い直しが少ないか？",
+     "ru": "Мало 'э-э' и самоисправлений?"
+    },
+    {
+     "vi": "Part 2 nói gần đủ 2 phút?",
+     "en": "Did you speak for close to two minutes in Part 2?",
+     "ja": "Part 2で2分近く話したか？",
+     "ru": "Говорили ли почти две минуты в Part 2?"
+    }
+   ]
+  },
+  {
+   "code": "LR",
+   "name": {
+    "vi": "Vốn từ vựng",
+    "en": "Lexical Resource",
+    "ja": "語彙力",
+    "ru": "Лексический запас"
+   },
+   "help": {
+    "vi": "Phạm vi, độ chính xác và sự tự nhiên của từ vựng.",
+    "en": "Range, accuracy and naturalness of vocabulary.",
+    "ja": "語彙の幅・正確さ・自然さ。",
+    "ru": "Диапазон, точность и естественность лексики."
+   },
+   "bands": [
+    {
+     "band": 9,
+     "text": {
+      "vi": "Dùng từ vựng linh hoạt, chính xác ở mọi chủ đề; thành ngữ tự nhiên.",
+      "en": "Full flexibility and precision on all topics; idiomatic language used naturally."
+     }
+    },
+    {
+     "band": 8,
+     "text": {
+      "vi": "Từ vựng rộng, linh hoạt; dùng từ ít gặp và thành ngữ khéo; diễn đạt lại hiệu quả.",
+      "en": "Wide resource used flexibly; skilful less common and idiomatic items; effective paraphrase."
+     }
+    },
+    {
+     "band": 7,
+     "text": {
+      "vi": "Linh hoạt bàn nhiều chủ đề; có từ ít gặp và thành ngữ, ý thức văn phong.",
+      "en": "Flexible across topics; some less common and idiomatic vocabulary with awareness of style."
+     }
+    },
+    {
+     "band": 6,
+     "text": {
+      "vi": "Đủ để bàn dài; dùng từ chưa phù hợp đôi chỗ nhưng ý rõ; diễn đạt lại thường thành công.",
+      "en": "Wide enough to discuss at length; some inappropriate choices but meaning is clear; generally paraphrases successfully."
+     }
+    },
+    {
+     "band": 5,
+     "text": {
+      "vi": "Đủ cho chủ đề quen thuộc; hạn chế ở chủ đề lạ; diễn đạt lại khó khăn.",
+      "en": "Manages familiar topics; limited flexibility on unfamiliar ones; paraphrase attempts mixed."
+     }
+    },
+    {
+     "band": 4,
+     "text": {
+      "vi": "Đủ cho chủ đề quen; lỗi chọn từ thường xuyên; hiếm khi diễn đạt lại.",
+      "en": "Basic meaning on familiar topics; frequent word-choice errors; rarely paraphrases."
+     }
+    }
+   ],
+   "checklist": [
+    {
+     "vi": "Có dùng vài thành ngữ/cụm tự nhiên đúng chỗ?",
+     "en": "Did you use a few natural idioms or phrases correctly?",
+     "ja": "自然な慣用句・フレーズを正しく使ったか？",
+     "ru": "Использовали ли вы к месту естественные идиомы?"
+    },
+    {
+     "vi": "Khi quên từ, có diễn đạt lại được?",
+     "en": "When you forgot a word, could you paraphrase?",
+     "ja": "単語を忘れたとき言い換えられたか？",
+     "ru": "Когда забывали слово, могли ли перефразировать?"
+    },
+    {
+     "vi": "Từ cho Part 3 có đủ trừu tượng (ví dụ: impact, development)?",
+     "en": "Was your Part 3 vocabulary abstract enough (e.g. impact, development)?",
+     "ja": "Part 3で抽象的な語（impact, development）を使えたか？",
+     "ru": "Хватало ли абстрактной лексики в Part 3 (impact, development)?"
+    }
+   ]
+  },
+  {
+   "code": "GRA",
+   "name": {
+    "vi": "Ngữ pháp: đa dạng & chính xác",
+    "en": "Grammatical Range & Accuracy",
+    "ja": "文法の幅と正確さ",
+    "ru": "Грамматический диапазон и точность"
+   },
+   "help": {
+    "vi": "Mức đa dạng cấu trúc câu và độ chính xác.",
+    "en": "Variety of sentence structures and how accurate they are.",
+    "ja": "文構造の多様さと正確さ。",
+    "ru": "Разнообразие структур предложений и их точность."
+   },
+   "bands": [
+    {
+     "band": 9,
+     "text": {
+      "vi": "Cấu trúc đa dạng, tự nhiên, chính xác nhất quán.",
+      "en": "A full range of structures used naturally and consistently accurately."
+     }
+    },
+    {
+     "band": 8,
+     "text": {
+      "vi": "Đa dạng, linh hoạt; đa số câu không lỗi.",
+      "en": "A wide range used flexibly; most sentences error-free."
+     }
+    },
+    {
+     "band": 7,
+     "text": {
+      "vi": "Dùng câu phức khá linh hoạt; câu không lỗi thường xuyên.",
+      "en": "A range of complex structures with some flexibility; frequent error-free sentences."
+     }
+    },
+    {
+     "band": 6,
+     "text": {
+      "vi": "Kết hợp câu đơn và phức nhưng kém linh hoạt; lỗi ở câu phức nhưng hiếm gây khó hiểu.",
+      "en": "A mix of simple and complex structures with limited flexibility; errors in complex structures rarely impede."
+     }
+    },
+    {
+     "band": 5,
+     "text": {
+      "vi": "Câu đơn khá chính xác; câu phức hạn chế và có lỗi.",
+      "en": "Basic sentences fairly accurate; limited complex structures with errors."
+     }
+    },
+    {
+     "band": 4,
+     "text": {
+      "vi": "Câu cơ bản, ít câu phụ; lỗi thường xuyên.",
+      "en": "Basic sentences, rare subordination; frequent errors."
+     }
+    }
+   ],
+   "checklist": [
+    {
+     "vi": "Có ít nhất vài câu phức (mệnh đề quan hệ, điều kiện)?",
+     "en": "Do you use some complex sentences (relative, conditional clauses)?",
+     "ja": "複文（関係節・条件節）をいくつか使っているか？",
+     "ru": "Используете ли сложные предложения (относительные, условные)?"
+    },
+    {
+     "vi": "Thì động từ và hòa hợp chủ–vị chính xác?",
+     "en": "Are tenses and subject–verb agreement accurate?",
+     "ja": "時制と主述の一致は正確か？",
+     "ru": "Точны ли времена и согласование подлежащего со сказуемым?"
+    },
+    {
+     "vi": "Mạo từ và dấu câu đúng?",
+     "en": "Are articles and punctuation correct?",
+     "ja": "冠詞と句読点は正しいか？",
+     "ru": "Правильны ли артикли и пунктуация?"
+    }
+   ]
+  },
+  {
+   "code": "P",
+   "name": {
+    "vi": "Phát âm",
+    "en": "Pronunciation",
+    "ja": "発音",
+    "ru": "Произношение"
+   },
+   "help": {
+    "vi": "Độ rõ ràng, nhấn âm, ngữ điệu và nối âm (hãy nghe lại bản ghi của bạn).",
+    "en": "Clarity, stress, intonation and linking (listen back to your recording).",
+    "ja": "明瞭さ・強勢・抑揚・連結（自分の録音を聞き直す）。",
+    "ru": "Чёткость, ударение, интонация и связность речи (переслушайте свою запись)."
+   },
+   "bands": [
+    {
+     "band": 9,
+     "text": {
+      "vi": "Dùng đầy đủ đặc điểm phát âm chính xác, tinh tế; dễ hiểu hoàn toàn.",
+      "en": "Uses a full range of features with precision and subtlety; effortless to understand."
+     }
+    },
+    {
+     "band": 8,
+     "text": {
+      "vi": "Dùng nhiều đặc điểm phát âm; hiếm khi sai; dễ hiểu suốt bài.",
+      "en": "A wide range of features; only occasional lapses; easy to understand throughout."
+     }
+    },
+    {
+     "band": 7,
+     "text": {
+      "vi": "Có đặc điểm của band 6 và một số của band 8.",
+      "en": "Shows all band 6 features and some, but not all, band 8 features."
+     }
+    },
+    {
+     "band": 6,
+     "text": {
+      "vi": "Dùng nhiều đặc điểm nhưng kiểm soát chưa đều; nhìn chung dễ hiểu dù đôi khi phát âm sai.",
+      "en": "A range of features with mixed control; generally understood despite some mispronunciation."
+     }
+    },
+    {
+     "band": 5,
+     "text": {
+      "vi": "Có đặc điểm của band 4 và một số của band 6.",
+      "en": "Shows all band 4 features and some band 6 features."
+     }
+    },
+    {
+     "band": 4,
+     "text": {
+      "vi": "Đặc điểm phát âm hạn chế; lỗi thường xuyên gây khó hiểu.",
+      "en": "Limited features; frequent mispronunciation causes some difficulty."
+     }
+    }
+   ],
+   "checklist": [
+    {
+     "vi": "Nghe lại: người khác có hiểu mọi từ không?",
+     "en": "Listening back: would a stranger understand every word?",
+     "ja": "聞き直して：初対面の人が全ての語を理解できるか？",
+     "ru": "Переслушайте: понял бы незнакомый человек каждое слово?"
+    },
+    {
+     "vi": "Có nhấn trọng âm từ khóa trong câu?",
+     "en": "Do you stress the key words in each sentence?",
+     "ja": "文の重要語に強勢を置いているか？",
+     "ru": "Выделяете ли ударением ключевые слова?"
+    },
+    {
+     "vi": "Âm cuối (-s, -ed, -t) có rõ?",
+     "en": "Are final sounds (-s, -ed, -t) clear?",
+     "ja": "語末音（-s, -ed, -t）ははっきりしているか？",
+     "ru": "Чётко ли звучат конечные звуки (-s, -ed, -t)?"
+    }
+   ]
+  }
+ ]
+}

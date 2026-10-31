@@ -385,7 +385,21 @@ namespace NihongoLife.UI
             // AI grading is off by default: the paper is only recorded (pending review), no AI call, no network.
             if (ExamAiSettings.AiGradingEnabled) StartCoroutine(GradeProductive());
             else ShowProductiveResults();
+            if (AutoOpenModelAnswers) OpenModelAnswers();
         }
+
+        /// <summary>After a Writing/Speaking submission the model answers open once on their own (tests switch this off).</summary>
+        public static bool AutoOpenModelAnswers = true;
+
+        /// <summary>"Tham khảo / Model answers" for the current paper's skill (Writing → Task 2 first, Speaking → Part 1).</summary>
+        public ModelAnswersPopup OpenModelAnswers()
+        {
+            string skill = ProductiveRecord?.skill ?? _test?.skill ?? "writing";
+            return ModelAnswersPopup.Open(skill, skill == "writing" ? 2 : 1);
+        }
+
+        /// <summary>Rubric self-assessment of the submitted paper (saved with it, labelled "self-assessed").</summary>
+        public SelfAssessPopup OpenSelfAssessment() => ProductiveRecord == null ? null : SelfAssessPopup.Open(ProductiveRecord);
 
         /// <summary>Mirror of the submitted paper in persistentDataPath/exam_submissions/&lt;test&gt;/&lt;timestamp&gt;/ (manifest.json + essays / WAVs).</summary>
         private static void SaveSubmissionManifest(IeltsProductiveRecord record)
@@ -608,6 +622,10 @@ namespace NihongoLife.UI
                 PaperText(summary, Loc.F("Lượt chấm AI còn lại hôm nay: <b>{0}</b> (kết quả đã chấm được lưu lại, xem lại không tốn lượt).", "AI markings left today: <b>{0}</b> (marked results are saved; viewing them again is free).", "本日のAI採点の残り回数：<b>{0}</b>（採点結果は保存され、見直しは無料です）。", ExamGradingService.RequestsLeftToday), 14.5f, FontStyles.Normal).color = PaperMuted;
             }
 
+            if (record.selfAssessedOverall > 0f)
+                PaperText(summary, Loc.F("Band tự đánh giá (self-assessed): <b>{0:0.0}</b> — ước tính của chính bạn theo tiêu chí, không phải điểm chính thức.",
+                    "Self-assessed band: <b>{0:0.0}</b> — your own estimate against the criteria, not an official score.",
+                    "自己評価バンド：<b>{0:0.0}</b>（基準に基づく自己推定で、公式スコアではありません）。", record.selfAssessedOverall), 16f, FontStyles.Normal).name = "SelfAssessedBand";
             if (record.skill == "writing") foreach (var task in record.writing) WritingTaskResult(content, task);
             else SpeakingResult(content, record);
 
@@ -619,6 +637,8 @@ namespace NihongoLife.UI
             else if (failed && !live && ExamAiSettings.OnDemandGradingAllowed)
                 UiKit.Size(UiKit.Button(buttons, "GradeWithAi", ExamPendingText.GradeButton[0], ExamPendingText.GradeButton[1], ExamPendingText.GradeButton[2], RequestPaidGrade, UiKit.Kind.Primary, "auto_awesome", 16f), 220f, 50f);
             if (failed && !IsGrading && !ExamAiSettings.AiGradingEnabled) PaperText(summary, ExamPendingText.T(ExamPendingText.Saved), 14.5f, FontStyles.Italic).color = PaperMuted;
+            UiKit.Size(UiKit.Button(buttons, "SelfAssess", "Tự đánh giá", "Self-assess", "自己評価", () => OpenSelfAssessment(), UiKit.Kind.Success, "fact_check", 16f), 200f, 50f);
+            UiKit.Size(UiKit.Button(buttons, "Models", "Tham khảo bài mẫu", "Model answers", "モデル解答", () => OpenModelAnswers(), UiKit.Kind.Accent, "menu_book", 16f), 240f, 50f);
             UiKit.Size(UiKit.Button(buttons, "Again", "Làm bài mới (luyện tập)", "New paper (practice)", "新しく練習する", () => Begin(_package, PracticeMode, false), UiKit.Kind.Accent, "replay", 16f), 280f, 50f);
             if (record.skill == "speaking") UiKit.Size(UiKit.Button(buttons, "Live", "Thi với giám khảo", "Live with examiner", "試験官とライブ", () => OpenLiveExam(), UiKit.Kind.Danger, "co_present", 16f), 240f, 50f);
             UiKit.Size(UiKit.Button(buttons, "Close", "Đóng", "Close", "閉じる", Close, UiKit.Kind.Secondary, "close", 16f), 160f, 50f);

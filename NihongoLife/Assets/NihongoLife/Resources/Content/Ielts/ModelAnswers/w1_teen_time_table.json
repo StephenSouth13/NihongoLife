@@ -1,0 +1,553 @@
+{
+ "schema": "nihongolife.ielts.models/1",
+ "id": "w1_teen_time_table",
+ "skill": "writing",
+ "task": 1,
+ "type": "table",
+ "title": {
+  "vi": "Task 1 · Bảng số liệu: Thời gian thanh thiếu niên dành cho 4 hoạt động",
+  "en": "Task 1 · Table: Teenagers' daily time on four activities",
+  "ja": "Task 1・表：10代の4つの活動時間",
+  "ru": "Task 1 · Таблица: время подростков на четыре занятия"
+ },
+ "prompt": "The table below shows the average number of minutes per day that teenagers in one country spent on four activities in 2005 and 2025.\n\nSummarise the information by selecting and reporting the main features, and make comparisons where relevant. Write at least 150 words.",
+ "note": {
+  "vi": "Bài mẫu do NihongoLife tự viết để minh họa từng band, không phải bài thi thật hay bài chấm chính thức. Số liệu trong đề Task 1 là hư cấu.",
+  "en": "Original illustrative band samples written by NihongoLife — not real candidate scripts or official marking. Task 1 data is fictional.",
+  "ja": "NihongoLifeが作成したバンド別の例示用オリジナル答案です。実際の受験者答案や公式採点ではありません。Task 1のデータは架空です。",
+  "ru": "Оригинальные иллюстративные образцы по баллам, написанные NihongoLife, — не реальные работы и не официальная оценка. Данные Task 1 вымышлены."
+ },
+ "dataCaption": "Average minutes per day — fictional data for practice",
+ "dataColumns": [
+  "Activity",
+  "2005",
+  "2025"
+ ],
+ "dataRows": [
+  {
+   "cells": [
+    "Social media",
+    "15",
+    "140"
+   ]
+  },
+  {
+   "cells": [
+    "Reading for pleasure",
+    "45",
+    "20"
+   ]
+  },
+  {
+   "cells": [
+    "Sport and exercise",
+    "60",
+    "45"
+   ]
+  },
+  {
+   "cells": [
+    "Homework",
+    "70",
+    "75"
+   ]
+  }
+ ],
+ "samples": [
+  {
+   "band": 5.0,
+   "words": 87,
+   "criteria": [
+    {
+     "code": "TA",
+     "band": 5,
+     "note": {
+      "vi": "Liệt kê; ý kiến 'should do more sport' không liên quan; dưới số từ tối thiểu bị trừ điểm.",
+      "en": "Listing; the opinion 'should do more sport' is irrelevant; being under the word limit is penalised.",
+      "ja": "Listing; the opinion 'should do more sport' is irrelevant; being under the word limit is penalised.",
+      "ru": "Listing; the opinion 'should do more sport' is irrelevant; being under the word limit is penalised."
+     }
+    },
+    {
+     "code": "CC",
+     "band": 5,
+     "note": {
+      "vi": "Mỗi hoạt động một câu, ít liên kết.",
+      "en": "One sentence per activity, little linking.",
+      "ja": "One sentence per activity, little linking.",
+      "ru": "One sentence per activity, little linking."
+     }
+    },
+    {
+     "code": "LR",
+     "band": 5,
+     "note": {
+      "vi": "Lặp 'was... minutes'; thiếu từ so sánh.",
+      "en": "'was... minutes' repeated; no comparison language.",
+      "ja": "'was... minutes' repeated; no comparison language.",
+      "ru": "'was... minutes' repeated; no comparison language."
+     }
+    },
+    {
+     "code": "GRA",
+     "band": 5,
+     "note": {
+      "vi": "'spend for', 'it is 140 minutes in 2025' (thì), 'almost same'.",
+      "en": "'spend for', 'it is 140 minutes in 2025' (tense), 'almost same'.",
+      "ja": "'spend for', 'it is 140 minutes in 2025' (tense), 'almost same'.",
+      "ru": "'spend for', 'it is 140 minutes in 2025' (tense), 'almost same'."
+     }
+    }
+   ],
+   "text": "The table show how many minutes teenagers spend for four activities in 2005 and 2025.\n\nSocial media was 15 minutes in 2005 and it is 140 minutes in 2025. Reading was 45 minutes and then 20 minutes. Sport was 60 minutes and in 2025 it was 45 minutes. Homework was 70 minutes in 2005 and 75 minutes in 2025.\n\nSo social media increase very much. Reading and sport decrease. Homework is almost same. I think teenagers use phone too much now and they should do more sport.",
+   "summary": {
+    "vi": "Nêu đủ số liệu nhưng chỉ liệt kê, tổng quan mờ nhạt, có ý kiến cá nhân không phù hợp với Task 1; dưới 150 từ; lỗi thì và giới từ.",
+    "en": "All figures are given but simply listed; the overview is weak, a personal opinion is added (inappropriate for Task 1); under 150 words; tense and preposition errors.",
+    "ja": "数値は全て挙げているが羅列のみで概要が弱く、Task 1に不適切な個人的意見がある。150語未満で、時制・前置詞の誤りあり。",
+    "ru": "Все цифры приведены, но просто перечислены; обзор слабый, добавлено личное мнение (неуместно в Task 1); меньше 150 слов; ошибки во временах и предлогах."
+   },
+   "highlights": [
+    {
+     "phrase": "spend for four activities",
+     "kind": "issue",
+     "note": {
+      "vi": "'spend time on'.",
+      "en": "'spend time on'.",
+      "ja": "'spend time on'.",
+      "ru": "'spend time on'."
+     }
+    },
+    {
+     "phrase": "it is 140 minutes in 2025",
+     "kind": "issue",
+     "note": {
+      "vi": "Dữ liệu là quá khứ/đã cho → 'it was'. Nhất quán thì.",
+      "en": "Use a consistent past tense → 'it was'.",
+      "ja": "Use a consistent past tense → 'it was'.",
+      "ru": "Use a consistent past tense → 'it was'."
+     }
+    },
+    {
+     "phrase": "I think teenagers use phone too much now and they should do more sport.",
+     "kind": "issue",
+     "note": {
+      "vi": "Task 1 không có ý kiến cá nhân — thay bằng Overview khách quan.",
+      "en": "No opinions in Task 1 — replace with an objective overview.",
+      "ja": "No opinions in Task 1 — replace with an objective overview.",
+      "ru": "No opinions in Task 1 — replace with an objective overview."
+     }
+    },
+    {
+     "phrase": "So social media increase very much.",
+     "kind": "good",
+     "note": {
+      "vi": "Có ý tổng quan (mạng xã hội tăng mạnh) — nên đưa lên đầu và viết rõ hơn.",
+      "en": "There is an overview idea (social media rose sharply) — move it up and express it clearly.",
+      "ja": "There is an overview idea (social media rose sharply) — move it up and express it clearly.",
+      "ru": "There is an overview idea (social media rose sharply) — move it up and express it clearly."
+     }
+    }
+   ],
+   "nextBand": {
+    "vi": "• Viết ≥150 từ, có đoạn Overview khách quan.\n• So sánh: social media tăng gần gấp 10 lần và trở thành hoạt động chiếm nhiều thời gian nhất.\n• Nhóm 'giảm' (đọc, thể thao) và 'ổn định' (bài tập).",
+    "en": "• Write 150+ words with an objective overview.\n• Compare: social media rose almost tenfold and became the most time-consuming activity.\n• Group the falls (reading, sport) and the stable item (homework).",
+    "ja": "• 150語以上で客観的な概要を書く。\n• 比較：SNSはほぼ10倍になり最も時間を使う活動になった。\n• 減少（読書・運動）と安定（宿題）をまとめる。",
+    "ru": "• Пишите не менее 150 слов с объективным обзором.\n• Сравнивайте: соцсети выросли почти в десять раз и стали самым затратным занятием.\n• Сгруппируйте снижения (чтение, спорт) и стабильный пункт (домашние задания)."
+   }
+  },
+  {
+   "band": 6.0,
+   "words": 162,
+   "criteria": [
+    {
+     "code": "TA",
+     "band": 6,
+     "note": {
+      "vi": "Đầy đủ đặc điểm; 'more than nine times higher' tốt; câu cuối hơi dài dòng.",
+      "en": "Key features covered; 'more than nine times higher' is good; the last sentence is a little wordy.",
+      "ja": "Key features covered; 'more than nine times higher' is good; the last sentence is a little wordy.",
+      "ru": "Key features covered; 'more than nine times higher' is good; the last sentence is a little wordy."
+     }
+    },
+    {
+     "code": "CC",
+     "band": 6,
+     "note": {
+      "vi": "Nhóm hợp lý (tăng / giảm / ổn định).",
+      "en": "Sensible grouping (rise / falls / stable).",
+      "ja": "Sensible grouping (rise / falls / stable).",
+      "ru": "Sensible grouping (rise / falls / stable)."
+     }
+    },
+    {
+     "code": "LR",
+     "band": 6,
+     "note": {
+      "vi": "dramatically, dropped, rose slightly — đủ; 'most popular' chưa chính xác (là 'chiếm thời gian nhất').",
+      "en": "dramatically, dropped, rose slightly — adequate; 'most popular' is imprecise (it means 'most time-consuming').",
+      "ja": "dramatically, dropped, rose slightly — adequate; 'most popular' is imprecise (it means 'most time-consuming').",
+      "ru": "dramatically, dropped, rose slightly — adequate; 'most popular' is imprecise (it means 'most time-consuming')."
+     }
+    },
+    {
+     "code": "GRA",
+     "band": 6,
+     "note": {
+      "vi": "Quá khứ hoàn thành, mệnh đề quan hệ; chính xác.",
+      "en": "Past perfect, relative clauses; accurate.",
+      "ja": "Past perfect, relative clauses; accurate.",
+      "ru": "Past perfect, relative clauses; accurate."
+     }
+    }
+   ],
+   "text": "The table gives information about the average amount of time that teenagers in one country spent each day on social media, reading for pleasure, sport and exercise, and homework in 2005 and 2025.\n\nOverall, the time spent on social media increased dramatically, and it became the most popular activity in 2025. In contrast, teenagers spent less time on reading and sport, while homework stayed almost the same.\n\nIn 2005, teenagers used social media for only 15 minutes a day, which was the lowest of the four activities. By 2025, this figure had risen to 140 minutes, more than nine times higher.\n\nReading for pleasure and sport both fell during the period. Reading dropped from 45 to 20 minutes, and sport and exercise went down from 60 to 45 minutes. Homework was the activity with the most time in 2005, at 70 minutes, and it rose slightly to 75 minutes in 2025, so it was the second most common activity at the end.",
+   "summary": {
+    "vi": "Overview rõ, các đặc điểm chính và so sánh có mặt; tổ chức hợp lý; ngôn ngữ đủ chính xác nhưng còn đơn giản.",
+    "en": "A clear overview with the main features and comparisons; logical organisation; accurate but plain language.",
+    "ja": "明確な概要で主な特徴と比較がある。構成は論理的、言語は正確だが平易。",
+    "ru": "Ясный обзор с главными особенностями и сравнениями; логичная организация; язык точный, но простой."
+   },
+   "highlights": [
+    {
+     "phrase": "Overall, the time spent on social media increased dramatically, and it became the most popular activity in 2025.",
+     "kind": "good",
+     "note": {
+      "vi": "Overview đặt đúng chỗ, nêu xu hướng nổi bật.",
+      "en": "The overview is placed well and states the standout trend.",
+      "ja": "The overview is placed well and states the standout trend.",
+      "ru": "The overview is placed well and states the standout trend."
+     }
+    },
+    {
+     "phrase": "most popular",
+     "kind": "issue",
+     "note": {
+      "vi": "Bảng đo thời gian, không đo mức yêu thích → 'the most time-consuming'.",
+      "en": "The table measures time, not popularity → 'the most time-consuming'.",
+      "ja": "The table measures time, not popularity → 'the most time-consuming'.",
+      "ru": "The table measures time, not popularity → 'the most time-consuming'."
+     }
+    },
+    {
+     "phrase": "more than nine times higher",
+     "kind": "good",
+     "note": {
+      "vi": "Bội số giúp so sánh rõ.",
+      "en": "A multiple makes the comparison clear.",
+      "ja": "A multiple makes the comparison clear.",
+      "ru": "A multiple makes the comparison clear."
+     }
+    }
+   ],
+   "nextBand": {
+    "vi": "• Chọn từ chính xác theo dữ liệu (time-consuming, not popular).\n• So sánh chéo trong cùng năm (2005: bài tập > thể thao > đọc > MXH).\n• Gọn câu bằng phân từ: 'rising slightly to 75 minutes'.",
+    "en": "• Choose words that match the data (time-consuming, not popular).\n• Compare across items within each year (2005: homework > sport > reading > social media).\n• Tighten with participles: 'rising slightly to 75 minutes'.",
+    "ja": "• データに合った語を選ぶ（popularでなくtime-consuming）。\n• 同じ年の項目間で比較する。\n• 分詞で引き締める：'rising slightly to 75 minutes'。",
+    "ru": "• Выбирайте слова, соответствующие данным (time-consuming, а не popular).\n• Сравнивайте пункты внутри одного года.\n• Сокращайте с помощью причастий: 'rising slightly to 75 minutes'."
+   }
+  },
+  {
+   "band": 7.0,
+   "words": 175,
+   "criteria": [
+    {
+     "code": "TA",
+     "band": 7,
+     "note": {
+      "vi": "Overview chất lượng; mọi số liệu chính được chọn lọc; 'that do not involve screens' là nhận xét hợp lý từ dữ liệu.",
+      "en": "A quality overview; all key data selected; 'that do not involve screens' is a reasonable grouping from the data.",
+      "ja": "A quality overview; all key data selected; 'that do not involve screens' is a reasonable grouping from the data.",
+      "ru": "A quality overview; all key data selected; 'that do not involve screens' is a reasonable grouping from the data."
+     }
+    },
+    {
+     "code": "CC",
+     "band": 7,
+     "note": {
+      "vi": "'Over the same period', 'which had been' nối mạch.",
+      "en": "'Over the same period', 'which had been' provide flow.",
+      "ja": "'Over the same period', 'which had been' provide flow.",
+      "ru": "'Over the same period', 'which had been' provide flow."
+     }
+    },
+    {
+     "code": "LR",
+     "band": 7,
+     "note": {
+      "vi": "devoted to, lost ground, marginally, a distant second.",
+      "en": "devoted to, lost ground, marginally, a distant second.",
+      "ja": "devoted to, lost ground, marginally, a distant second.",
+      "ru": "devoted to, lost ground, marginally, a distant second."
+     }
+    },
+    {
+     "code": "GRA",
+     "band": 7,
+     "note": {
+      "vi": "Quá khứ hoàn thành, phân từ 'making it...'; chính xác.",
+      "en": "Past perfect, participle 'making it...'; accurate.",
+      "ja": "Past perfect, participle 'making it...'; accurate.",
+      "ru": "Past perfect, participle 'making it...'; accurate."
+     }
+    }
+   ],
+   "text": "The table compares how many minutes per day teenagers in one country devoted to four activities in 2005 and 2025.\n\nOverall, the pattern of teenagers' time changed markedly. Social media, the least time-consuming activity in 2005, had become by far the most time-consuming by 2025, while reading for pleasure and sport declined and homework remained broadly stable.\n\nThe rise in social media use was dramatic. Teenagers spent just a quarter of an hour a day on it in 2005, but this had grown to 140 minutes, more than two hours, twenty years later, a roughly ninefold increase.\n\nOver the same period, the two leisure activities that do not involve screens lost ground. Time spent reading for pleasure more than halved, from 45 to 20 minutes, making it the least time-consuming activity in 2025, and sport and exercise fell by a quarter, from 60 to 45 minutes. Homework, which had been the largest item in 2005 at 70 minutes, increased only marginally to 75 minutes, leaving it a distant second to social media.",
+   "summary": {
+    "vi": "Tổng quan sắc nét với sự đảo vị trí; diễn đạt số liệu linh hoạt (a quarter of an hour, more than halved, fell by a quarter); liên kết và tổ chức rõ.",
+    "en": "A sharp overview showing the reversal; flexible expression of data (a quarter of an hour, more than halved, fell by a quarter); clear cohesion and organisation.",
+    "ja": "逆転を示す鋭い概要、柔軟なデータ表現（a quarter of an hour, more than halved, fell by a quarter）、明確な結束と構成。",
+    "ru": "Чёткий обзор, показывающий смену лидера; гибкая подача данных (a quarter of an hour, more than halved, fell by a quarter); ясная связность и организация."
+   },
+   "highlights": [
+    {
+     "phrase": "had become by far the most time-consuming by 2025",
+     "kind": "good",
+     "note": {
+      "vi": "Overview nêu sự đảo ngược — đặc điểm chính.",
+      "en": "The overview captures the reversal — the key feature.",
+      "ja": "The overview captures the reversal — the key feature.",
+      "ru": "The overview captures the reversal — the key feature."
+     }
+    },
+    {
+     "phrase": "just a quarter of an hour a day",
+     "kind": "good",
+     "note": {
+      "vi": "Diễn đạt lại 15 phút tự nhiên.",
+      "en": "A natural paraphrase of 15 minutes.",
+      "ja": "A natural paraphrase of 15 minutes.",
+      "ru": "A natural paraphrase of 15 minutes."
+     }
+    },
+    {
+     "phrase": "more than two hours, twenty years later, a roughly ninefold increase",
+     "kind": "issue",
+     "note": {
+      "vi": "Nhiều cụm chèn liên tiếp làm câu rối; band 8 tách ý gọn hơn.",
+      "en": "Several inserted phrases make the sentence cluttered; band 8 separates them more cleanly.",
+      "ja": "Several inserted phrases make the sentence cluttered; band 8 separates them more cleanly.",
+      "ru": "Several inserted phrases make the sentence cluttered; band 8 separates them more cleanly."
+     }
+    },
+    {
+     "phrase": "a distant second",
+     "kind": "good",
+     "note": {
+      "vi": "Cụm so sánh tự nhiên, ít gặp.",
+      "en": "A natural, less common comparative phrase.",
+      "ja": "A natural, less common comparative phrase.",
+      "ru": "A natural, less common comparative phrase."
+     }
+    }
+   ],
+   "nextBand": {
+    "vi": "• Tránh chồng nhiều cụm chèn trong một câu.\n• Thêm so sánh tổng thể (ví dụ: MXH 2025 gần bằng tổng thể thao + đọc + ... ) chỉ khi tính đúng từ bảng.",
+    "en": "• Avoid stacking inserted phrases in one sentence.\n• Add overall comparisons (e.g. social media in 2025 versus reading and sport combined) only when calculated correctly from the table.",
+    "ja": "• 1文に挿入句を重ねすぎない。\n• 表から正しく計算できる場合のみ全体比較を加える（例：2025年のSNSと読書＋運動の合計）。",
+    "ru": "• Не нагромождайте вставные обороты в одном предложении.\n• Добавляйте общие сравнения (например, соцсети в 2025 г. против чтения и спорта вместе) только при верном расчёте по таблице."
+   }
+  },
+  {
+   "band": 8.0,
+   "words": 170,
+   "criteria": [
+    {
+     "code": "TA",
+     "band": 8,
+     "note": {
+      "vi": "So sánh tổng hợp chính xác (20 + 45 = 65); Overview sắc nét.",
+      "en": "An accurate combined comparison (20 + 45 = 65); a sharp overview.",
+      "ja": "An accurate combined comparison (20 + 45 = 65); a sharp overview.",
+      "ru": "An accurate combined comparison (20 + 45 = 65); a sharp overview."
+     }
+    },
+    {
+     "code": "CC",
+     "band": 8,
+     "note": {
+      "vi": "'Both of those activities' tham chiếu khéo.",
+      "en": "'Both of those activities' — skilful referencing.",
+      "ja": "'Both of those activities' — skilful referencing.",
+      "ru": "'Both of those activities' — skilful referencing."
+     }
+    },
+    {
+     "code": "LR",
+     "band": 8,
+     "note": {
+      "vi": "accounted for, hit hardest, edged up, overtaken comfortably.",
+      "en": "accounted for, hit hardest, edged up, overtaken comfortably.",
+      "ja": "accounted for, hit hardest, edged up, overtaken comfortably.",
+      "ru": "accounted for, hit hardest, edged up, overtaken comfortably."
+     }
+    },
+    {
+     "code": "GRA",
+     "band": 8,
+     "note": {
+      "vi": "Đa dạng, chính xác.",
+      "en": "Varied and accurate.",
+      "ja": "Varied and accurate.",
+      "ru": "Varied and accurate."
+     }
+    }
+   ],
+   "text": "The table shows the average daily time that teenagers in one country spent on four activities in 2005 and in 2025.\n\nThe most striking change is the rise of social media, which went from the smallest to the largest share of teenagers' time. Screen-free leisure, in the form of reading and sport, declined, whereas homework hardly changed.\n\nIn 2005, social media accounted for just 15 minutes a day, far less than any other activity. Twenty years later, teenagers were spending 140 minutes on it, around nine times as long. This was more than the combined time they spent reading for pleasure and doing sport in 2025 (65 minutes).\n\nBoth of those activities fell. Reading was hit hardest, dropping from 45 to 20 minutes and becoming the least time-consuming of the four, while sport and exercise decreased more moderately, from an hour to 45 minutes. Homework, the main demand on teenagers' time in 2005 at 70 minutes, edged up to 75 minutes but was overtaken comfortably by social media.",
+   "summary": {
+    "vi": "Chọn lọc và so sánh rất tốt, kể cả phép so sánh tổng tính đúng (140 > 65); tổ chức logic; ngôn ngữ chính xác và tự nhiên.",
+    "en": "Excellent selection and comparison, including a correctly calculated combined comparison (140 > 65); logical organisation; precise, natural language.",
+    "ja": "正しく計算した合計比較（140＞65）を含め、選択と比較が非常に良い。構成は論理的で言語は正確かつ自然。",
+    "ru": "Отличный отбор и сравнение, включая верно рассчитанное суммарное сравнение (140 > 65); логичная организация; точный естественный язык."
+   },
+   "highlights": [
+    {
+     "phrase": "went from the smallest to the largest share of teenagers' time",
+     "kind": "good",
+     "note": {
+      "vi": "Overview diễn giải sự đảo vị trí.",
+      "en": "The overview interprets the reversal.",
+      "ja": "The overview interprets the reversal.",
+      "ru": "The overview interprets the reversal."
+     }
+    },
+    {
+     "phrase": "This was more than the combined time they spent reading for pleasure and doing sport in 2025 (65 minutes).",
+     "kind": "good",
+     "note": {
+      "vi": "So sánh tổng chính xác theo bảng — dấu hiệu TA band 8.",
+      "en": "An accurate combined comparison from the table — a band 8 TA signal.",
+      "ja": "An accurate combined comparison from the table — a band 8 TA signal.",
+      "ru": "An accurate combined comparison from the table — a band 8 TA signal."
+     }
+    },
+    {
+     "phrase": "Reading was hit hardest",
+     "kind": "good",
+     "note": {
+      "vi": "Cụm tự nhiên, nhấn mạnh mức giảm lớn nhất (tương đối).",
+      "en": "A natural phrase stressing the largest (relative) fall.",
+      "ja": "A natural phrase stressing the largest (relative) fall.",
+      "ru": "A natural phrase stressing the largest (relative) fall."
+     }
+    },
+    {
+     "phrase": "Screen-free leisure, in the form of reading and sport, declined",
+     "kind": "issue",
+     "note": {
+      "vi": "Hơi trừu tượng; band 9 diễn đạt trực tiếp hơn.",
+      "en": "Slightly abstract; band 9 phrases it more directly.",
+      "ja": "Slightly abstract; band 9 phrases it more directly.",
+      "ru": "Slightly abstract; band 9 phrases it more directly."
+     }
+    }
+   ],
+   "nextBand": {
+    "vi": "• Giữ diễn đạt trực tiếp, dễ hiểu ngay lần đọc đầu.\n• Mọi câu đều phục vụ so sánh, không có chi tiết thừa.",
+    "en": "• Keep phrasing direct and instantly clear.\n• Make every sentence serve a comparison, with no surplus detail.",
+    "ja": "• 一読で分かる直接的な表現を保つ。\n• 全ての文を比較に役立て、余分な詳細をなくす。",
+    "ru": "• Сохраняйте прямые, сразу понятные формулировки.\n• Каждое предложение должно служить сравнению, без лишних деталей."
+   }
+  },
+  {
+   "band": 9.0,
+   "words": 177,
+   "criteria": [
+    {
+     "code": "TA",
+     "band": 9,
+     "note": {
+      "vi": "Mọi đặc điểm chính, so sánh xếp hạng (third place to last) và tỷ lệ chính xác.",
+      "en": "All key features, rank changes (third place to last) and accurate ratios.",
+      "ja": "All key features, rank changes (third place to last) and accurate ratios.",
+      "ru": "All key features, rank changes (third place to last) and accurate ratios."
+     }
+    },
+    {
+     "code": "CC",
+     "band": 9,
+     "note": {
+      "vi": "Liền mạch; 'The declines were uneven' là câu chủ đề tóm ý tuyệt vời.",
+      "en": "Seamless; 'The declines were uneven' is an excellent summarising topic sentence.",
+      "ja": "Seamless; 'The declines were uneven' is an excellent summarising topic sentence.",
+      "ru": "Seamless; 'The declines were uneven' is an excellent summarising topic sentence."
+     }
+    },
+    {
+     "code": "LR",
+     "band": 9,
+     "note": {
+      "vi": "from the margins to the centre, put together, slipping, demanded.",
+      "en": "from the margins to the centre, put together, slipping, demanded.",
+      "ja": "from the margins to the centre, put together, slipping, demanded.",
+      "ru": "from the margins to the centre, put together, slipping, demanded."
+     }
+    },
+    {
+     "code": "GRA",
+     "band": 9,
+     "note": {
+      "vi": "Dấu chấm phẩy, 'so that', mệnh đề quan hệ; hoàn toàn chính xác.",
+      "en": "Semicolons, 'so that', relative clauses; fully accurate.",
+      "ja": "Semicolons, 'so that', relative clauses; fully accurate.",
+      "ru": "Semicolons, 'so that', relative clauses; fully accurate."
+     }
+    }
+   ],
+   "text": "The table sets out how many minutes a day, on average, teenagers in one country spent on four activities in 2005 and 2025.\n\nOver these two decades, social media moved from the margins to the centre of teenagers' days, becoming by far their most time-consuming activity. Reading and sport both lost time, while homework stayed almost constant.\n\nThe scale of the change in social media use is remarkable. In 2005 it occupied a mere 15 minutes daily, the smallest figure in the table; by 2025 it took up 140 minutes, roughly nine times as much and more than reading and sport put together.\n\nThe declines were uneven. Reading for pleasure more than halved, from 45 to 20 minutes, falling from third place to last, whereas sport and exercise lost a quarter of its time, slipping from 60 to 45 minutes. Homework, which had demanded more time than anything else in 2005 (70 minutes), rose by just five minutes, so that by 2025 teenagers were spending nearly twice as long on social media as on their schoolwork.",
+   "summary": {
+    "vi": "Hoàn chỉnh: tổng quan bằng hình ảnh ('from the margins to the centre'), mọi so sánh chính xác (gần gấp đôi bài tập: 140 vs 75), ngôn ngữ tinh tế, tự nhiên và chính xác tuyệt đối.",
+    "en": "Complete: a vivid overview ('from the margins to the centre'), every comparison accurate (nearly twice homework: 140 vs 75), sophisticated, natural and fully accurate language.",
+    "ja": "完璧：比喩的な概要（'from the margins to the centre'）、全ての比較が正確（宿題のほぼ2倍：140対75）、洗練され自然で完全に正確な言語。",
+    "ru": "Безупречно: образный обзор ('from the margins to the centre'), все сравнения точны (почти вдвое больше, чем на домашние задания: 140 против 75), изысканный, естественный и абсолютно точный язык."
+   },
+   "highlights": [
+    {
+     "phrase": "moved from the margins to the centre of teenagers' days",
+     "kind": "good",
+     "note": {
+      "vi": "Hình ảnh ẩn dụ chính xác cho xu hướng chính.",
+      "en": "An apt metaphor for the main trend.",
+      "ja": "An apt metaphor for the main trend.",
+      "ru": "An apt metaphor for the main trend."
+     }
+    },
+    {
+     "phrase": "The declines were uneven.",
+     "kind": "good",
+     "note": {
+      "vi": "Câu chủ đề ngắn tóm ý cả đoạn.",
+      "en": "A short topic sentence summarising the paragraph.",
+      "ja": "A short topic sentence summarising the paragraph.",
+      "ru": "A short topic sentence summarising the paragraph."
+     }
+    },
+    {
+     "phrase": "falling from third place to last",
+     "kind": "good",
+     "note": {
+      "vi": "So sánh thứ hạng — chọn lọc thông tin tinh tế.",
+      "en": "A rank comparison — sophisticated selection.",
+      "ja": "A rank comparison — sophisticated selection.",
+      "ru": "A rank comparison — sophisticated selection."
+     }
+    },
+    {
+     "phrase": "nearly twice as long on social media as on their schoolwork",
+     "kind": "good",
+     "note": {
+      "vi": "So sánh cuối chính xác (140 vs 75) kết bài mạnh.",
+      "en": "An accurate closing comparison (140 vs 75).",
+      "ja": "An accurate closing comparison (140 vs 75).",
+      "ru": "An accurate closing comparison (140 vs 75)."
+     }
+    }
+   ],
+   "nextBand": {
+    "vi": "• Mức cao nhất. So sánh với band 8: câu ngắn nhấn mạnh và so sánh thứ hạng.",
+    "en": "• Top band. Compare with band 8: short emphatic sentences and rank comparisons.",
+    "ja": "• 最高バンド。8.0と比べ、短い強調文と順位比較に注目。",
+    "ru": "• Высший балл. Сравните с 8.0: короткие выразительные предложения и сравнение мест."
+   }
+  }
+ ]
+}

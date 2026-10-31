@@ -1,0 +1,500 @@
+{
+ "schema": "nihongolife.ielts.models/1",
+ "id": "s2_public_place",
+ "skill": "speaking",
+ "task": 2,
+ "type": "part2",
+ "title": {
+  "vi": "Part 2 · Mô tả một nơi công cộng bạn thích",
+  "en": "Part 2 · Describe a public place you enjoy",
+  "ja": "Part 2・好きな公共の場所",
+  "ru": "Part 2 · Опишите общественное место, которое вам нравится"
+ },
+ "prompt": "Describe a public place in your town or city that you enjoy visiting.\nYou should say:\n- where it is\n- what people do there\n- how often you go there\nand explain why you enjoy visiting it.",
+ "note": {
+  "vi": "Phát âm không thể hiện được qua văn bản: điểm P là minh họa, ghi chú mô tả cách nói (nhấn âm, ngữ điệu, nối âm) của người nói ở band này.",
+  "en": "Pronunciation cannot be shown in writing: the P band is illustrative and the notes describe how a speaker at this band typically sounds (stress, intonation, linking).",
+  "ja": "発音は文字では示せません。Pのバンドは例示で、注記はこのバンドの話者の典型的な話し方（強勢・抑揚・連結）を説明します。",
+  "ru": "Произношение нельзя показать письменно: балл P условный, а комментарии описывают, как обычно звучит говорящий этого уровня (ударение, интонация, связность)."
+ },
+ "dataCaption": "",
+ "dataColumns": [],
+ "dataRows": [],
+ "samples": [
+  {
+   "band": 5.0,
+   "words": 112,
+   "criteria": [
+    {
+     "code": "FC",
+     "band": 5,
+     "note": {
+      "vi": "Theo thứ tự thẻ, nối bằng 'Also'; dừng sớm ('That's all').",
+      "en": "Follows the card order, links with 'Also'; stops early ('That's all').",
+      "ja": "Follows the card order, links with 'Also'; stops early ('That's all').",
+      "ru": "Follows the card order, links with 'Also'; stops early ('That's all')."
+     }
+    },
+    {
+     "code": "LR",
+     "band": 5,
+     "note": {
+      "vi": "Từ cơ bản; 'by walk', 'for relax' sai kết hợp.",
+      "en": "Basic words; 'by walk', 'for relax' are wrong collocations.",
+      "ja": "Basic words; 'by walk', 'for relax' are wrong collocations.",
+      "ru": "Basic words; 'by walk', 'for relax' are wrong collocations."
+     }
+    },
+    {
+     "code": "GRA",
+     "band": 5,
+     "note": {
+      "vi": "'It is name', 'three time', câu đơn.",
+      "en": "'It is name', 'three time', simple sentences.",
+      "ja": "'It is name', 'three time', simple sentences.",
+      "ru": "'It is name', 'three time', simple sentences."
+     }
+    },
+    {
+     "code": "P",
+     "band": 5,
+     "note": {
+      "vi": "Hiểu được; nhiều âm cuối bị nuốt.",
+      "en": "Intelligible; many final sounds dropped.",
+      "ja": "Intelligible; many final sounds dropped.",
+      "ru": "Intelligible; many final sounds dropped."
+     }
+    }
+   ],
+   "text": "I want to talk about a park near my house. It is name Green Park. It is about ten minutes from my house by walk. In the park, people do exercise, they run, and old people do, er, tai chi in the morning. Children play in the playground. I go there maybe two or three time a week, usually in the evening after school. I like it because it is very green and the air is fresh, not like the street. Also it is free so everybody can go. Sometimes I meet my friends there and we, um, sit and talk. I think it is a good place for relax. That's all.",
+   "summary": {
+    "vi": "Nêu đủ các ý trên thẻ nhưng diễn đạt đơn giản, ngắn (dưới 2 phút), lỗi dạng từ và số nhiều.",
+    "en": "Covers the cue-card points but simply and briefly (under two minutes), with word-form and plural errors.",
+    "ja": "カードの項目は網羅しているが単純で短く（2分未満）、品詞と複数形の誤りがある。",
+    "ru": "Охватывает пункты карточки, но просто и кратко (меньше двух минут), с ошибками в формах слов и множественном числе."
+   },
+   "highlights": [
+    {
+     "phrase": "It is name Green Park",
+     "kind": "issue",
+     "note": {
+      "vi": "'It's called Green Park'.",
+      "en": "'It's called Green Park'.",
+      "ja": "'It's called Green Park'.",
+      "ru": "'It's called Green Park'."
+     }
+    },
+    {
+     "phrase": "by walk",
+     "kind": "issue",
+     "note": {
+      "vi": "'on foot' hoặc 'a ten-minute walk'.",
+      "en": "'on foot' or 'a ten-minute walk'.",
+      "ja": "'on foot' or 'a ten-minute walk'.",
+      "ru": "'on foot' or 'a ten-minute walk'."
+     }
+    },
+    {
+     "phrase": "a good place for relax",
+     "kind": "issue",
+     "note": {
+      "vi": "'a good place to relax'.",
+      "en": "'a good place to relax'.",
+      "ja": "'a good place to relax'.",
+      "ru": "'a good place to relax'."
+     }
+    },
+    {
+     "phrase": "That's all.",
+     "kind": "issue",
+     "note": {
+      "vi": "Đừng dừng sớm — hãy nói đủ 2 phút bằng cách kể một kỷ niệm.",
+      "en": "Don't stop early — fill two minutes with a short story or memory.",
+      "ja": "Don't stop early — fill two minutes with a short story or memory.",
+      "ru": "Don't stop early — fill two minutes with a short story or memory."
+     }
+    }
+   ],
+   "nextBand": {
+    "vi": "Nói đủ 2 phút: thêm một kỷ niệm cụ thể; sửa 'called', 'on foot', 'to relax'.",
+    "en": "Speak for the full two minutes: add a specific memory; fix 'called', 'on foot', 'to relax'.",
+    "ja": "具体的な思い出を加えて2分話し切る。'called', 'on foot', 'to relax' を直す。",
+    "ru": "Говорите все две минуты: добавьте конкретное воспоминание; исправьте 'called', 'on foot', 'to relax'."
+   }
+  },
+  {
+   "band": 6.0,
+   "words": 189,
+   "criteria": [
+    {
+     "code": "FC",
+     "band": 6,
+     "note": {
+      "vi": "Mạch lạc; đôi khi phát triển ý còn đơn giản ('everyone seems happy').",
+      "en": "Coherent; some ideas are simply developed ('everyone seems happy').",
+      "ja": "Coherent; some ideas are simply developed ('everyone seems happy').",
+      "ru": "Coherent; some ideas are simply developed ('everyone seems happy')."
+     }
+    },
+    {
+     "code": "LR",
+     "band": 6,
+     "note": {
+      "vi": "elderly, swings, handmade, a break from all that — đủ dùng.",
+      "en": "elderly, swings, handmade, a break from all that — adequate.",
+      "ja": "elderly, swings, handmade, a break from all that — adequate.",
+      "ru": "elderly, swings, handmade, a break from all that — adequate."
+     }
+    },
+    {
+     "code": "GRA",
+     "band": 6,
+     "note": {
+      "vi": "which-clauses, bị động 'was built'; chính xác.",
+      "en": "which-clauses, passive 'was built'; accurate.",
+      "ja": "which-clauses, passive 'was built'; accurate.",
+      "ru": "which-clauses, passive 'was built'; accurate."
+     }
+    },
+    {
+     "code": "P",
+     "band": 6,
+     "note": {
+      "vi": "Rõ, nhưng ngữ điệu chưa thay đổi nhiều.",
+      "en": "Clear, but limited intonation range.",
+      "ja": "Clear, but limited intonation range.",
+      "ru": "Clear, but limited intonation range."
+     }
+    }
+   ],
+   "text": "The place I'd like to describe is Green Park, which is a large park about a ten-minute walk from my home. It's quite old, I think it was built more than fifty years ago, and it has a lake in the middle and lots of big trees.\n\nPeople do many different things there. In the early morning you can see elderly people doing tai chi or dancing to music, and later in the day there are people jogging, families having picnics and children playing on the swings. At weekends there's sometimes a small market selling plants and handmade things.\n\nI go there about three times a week, usually in the evening, to walk or just sit by the lake after studying.\n\nThe main reason I enjoy it is that it helps me relax. My street is very noisy and crowded, so walking in the park feels like a break from all that. I also like watching people, because everyone seems happy there. Sometimes I meet my friends and we walk around the lake and chat for an hour or so. I think every city needs places like this.",
+   "summary": {
+    "vi": "Nói đủ dài, mạch lạc theo thẻ, có chi tiết; từ vựng đủ, ngữ pháp có cấu trúc phức (mệnh đề quan hệ, bị động).",
+    "en": "Speaks at length, coherently following the card, with detail; adequate vocabulary; some complex grammar (relatives, passive).",
+    "ja": "カードに沿って一貫して十分に話し、詳細もある。語彙は十分で、複文（関係詞・受動態）もある。",
+    "ru": "Говорит развёрнуто и связно по карточке, с деталями; лексика достаточная; есть сложные конструкции (относительные, пассив)."
+   },
+   "highlights": [
+    {
+     "phrase": "which is a large park about a ten-minute walk from my home",
+     "kind": "good",
+     "note": {
+      "vi": "Mệnh đề quan hệ + 'a ten-minute walk' tự nhiên.",
+      "en": "A relative clause + a natural 'a ten-minute walk'.",
+      "ja": "A relative clause + a natural 'a ten-minute walk'.",
+      "ru": "A relative clause + a natural 'a ten-minute walk'."
+     }
+    },
+    {
+     "phrase": "feels like a break from all that",
+     "kind": "good",
+     "note": {
+      "vi": "Diễn đạt cảm xúc tự nhiên.",
+      "en": "A natural way to express a feeling.",
+      "ja": "A natural way to express a feeling.",
+      "ru": "A natural way to express a feeling."
+     }
+    },
+    {
+     "phrase": "everyone seems happy there",
+     "kind": "issue",
+     "note": {
+      "vi": "Ý chung; thêm một hình ảnh cụ thể để lên band 7.",
+      "en": "General; add a specific image to reach band 7.",
+      "ja": "General; add a specific image to reach band 7.",
+      "ru": "General; add a specific image to reach band 7."
+     }
+    }
+   ],
+   "nextBand": {
+    "vi": "Thêm chi tiết giác quan (âm thanh, mùi), một câu chuyện ngắn; dùng từ vựng ít phổ biến hơn.",
+    "en": "Add sensory detail (sounds, smells) and a short anecdote; use less common vocabulary.",
+    "ja": "音や匂いなど感覚的な詳細と短いエピソードを加え、より高度な語彙を使う。",
+    "ru": "Добавьте чувственные детали (звуки, запахи) и короткую историю; используйте менее частотную лексику."
+   }
+  },
+  {
+   "band": 7.0,
+   "words": 205,
+   "criteria": [
+    {
+     "code": "FC",
+     "band": 7,
+     "note": {
+      "vi": "Tổ chức sáng tạo (theo thời gian); 'As for why' chuyển ý tự nhiên.",
+      "en": "Creative organisation (by time); 'As for why' is a natural transition.",
+      "ja": "Creative organisation (by time); 'As for why' is a natural transition.",
+      "ru": "Creative organisation (by time); 'As for why' is a natural transition."
+     }
+    },
+    {
+     "code": "LR",
+     "band": 7,
+     "note": {
+      "vi": "tucked away, ritual, breathing space, died down.",
+      "en": "tucked away, ritual, breathing space, died down.",
+      "ja": "tucked away, ritual, breathing space, died down.",
+      "ru": "tucked away, ritual, breathing space, died down."
+     }
+    },
+    {
+     "code": "GRA",
+     "band": 7,
+     "note": {
+      "vi": "Hiện tại hoàn thành, mệnh đề 'when', 'without having to'; ít lỗi.",
+      "en": "Present perfect, 'when' clauses, 'without having to'; few errors.",
+      "ja": "Present perfect, 'when' clauses, 'without having to'; few errors.",
+      "ru": "Present perfect, 'when' clauses, 'without having to'; few errors."
+     }
+    },
+    {
+     "code": "P",
+     "band": 7,
+     "note": {
+      "vi": "Ngữ điệu tự nhiên, rõ ràng.",
+      "en": "Natural, clear intonation.",
+      "ja": "Natural, clear intonation.",
+      "ru": "Natural, clear intonation."
+     }
+    }
+   ],
+   "text": "I'm going to talk about Green Park, which is a fairly large park tucked away behind the main shopping street, just a ten-minute walk from where I live.\n\nWhat I love about it is how many different groups share the space. At dawn it belongs to the older generation: you'll see dozens of people doing tai chi or ballroom dancing to a little portable speaker. By mid-morning it's mostly parents with toddlers, and in the evening it fills up with joggers, students like me and couples strolling around the lake.\n\nI'd say I go three or four times a week, usually after dinner, when the heat has died down. It's become a bit of a ritual: I do a couple of laps of the lake and then sit on the same bench and watch the sky change colour.\n\nAs for why I enjoy it, I think it's mainly because it gives me some breathing space. My neighbourhood is packed with traffic and construction noise, so stepping into the park is like turning the volume down. It's also one of the few places in the city where people of all ages mix without having to spend any money, which I think is quite special.",
+   "summary": {
+    "vi": "Trôi chảy, có tổ chức theo thời gian trong ngày; từ vựng tự nhiên và hình ảnh ('turning the volume down'); ngữ pháp đa dạng.",
+    "en": "Fluent, organised by time of day; natural vocabulary and imagery ('turning the volume down'); varied grammar.",
+    "ja": "時間帯で整理された流暢な話。自然な語彙と比喩（'turning the volume down'）、多様な文法。",
+    "ru": "Беглый рассказ, организованный по времени суток; естественная лексика и образность ('turning the volume down'); разнообразная грамматика."
+   },
+   "highlights": [
+    {
+     "phrase": "At dawn it belongs to the older generation",
+     "kind": "good",
+     "note": {
+      "vi": "Cách tổ chức theo thời gian giúp bài nói mạch lạc, sinh động.",
+      "en": "Organising by time makes the talk coherent and vivid.",
+      "ja": "Organising by time makes the talk coherent and vivid.",
+      "ru": "Organising by time makes the talk coherent and vivid."
+     }
+    },
+    {
+     "phrase": "It's become a bit of a ritual",
+     "kind": "good",
+     "note": {
+      "vi": "Chi tiết cá nhân tự nhiên.",
+      "en": "A natural personal detail.",
+      "ja": "A natural personal detail.",
+      "ru": "A natural personal detail."
+     }
+    },
+    {
+     "phrase": "is like turning the volume down",
+     "kind": "good",
+     "note": {
+      "vi": "So sánh hình ảnh sáng tạo.",
+      "en": "A creative image.",
+      "ja": "A creative image.",
+      "ru": "A creative image."
+     }
+    }
+   ],
+   "nextBand": {
+    "vi": "Tăng độ tinh tế từ vựng và giữ trôi chảy khi chuyển sang lý do trừu tượng hơn (giá trị cộng đồng).",
+    "en": "Raise lexical precision and stay fluent when moving to more abstract reasons (community value).",
+    "ja": "語彙の精度を上げ、地域社会の価値など抽象的な理由でも流暢さを保つ。",
+    "ru": "Повышайте точность лексики и сохраняйте беглость при переходе к абстрактным причинам (ценность для сообщества)."
+   }
+  },
+  {
+   "band": 8.0,
+   "words": 213,
+   "criteria": [
+    {
+     "code": "FC",
+     "band": 8,
+     "note": {
+      "vi": "Câu hỏi tu từ 'Why do I like it so much?' dẫn dắt tự nhiên; 'Partly... But the deeper reason' rất mạch lạc.",
+      "en": "The rhetorical 'Why do I like it so much?' guides naturally; 'Partly... But the deeper reason' is very coherent.",
+      "ja": "The rhetorical 'Why do I like it so much?' guides naturally; 'Partly... But the deeper reason' is very coherent.",
+      "ru": "The rhetorical 'Why do I like it so much?' guides naturally; 'Partly... But the deeper reason' is very coherent."
+     }
+    },
+    {
+     "code": "LR",
+     "band": 8,
+     "note": {
+      "vi": "springs to mind, scruffy, in perfect unison, refuge, claimed a bench.",
+      "en": "springs to mind, scruffy, in perfect unison, refuge, claimed a bench.",
+      "ja": "springs to mind, scruffy, in perfect unison, refuge, claimed a bench.",
+      "ru": "springs to mind, scruffy, in perfect unison, refuge, claimed a bench."
+     }
+    },
+    {
+     "code": "GRA",
+     "band": 8,
+     "note": {
+      "vi": "Mệnh đề rút gọn, cấu trúc so sánh tương phản; chính xác.",
+      "en": "Reduced clauses, contrastive structures; accurate.",
+      "ja": "Reduced clauses, contrastive structures; accurate.",
+      "ru": "Reduced clauses, contrastive structures; accurate."
+     }
+    },
+    {
+     "code": "P",
+     "band": 8,
+     "note": {
+      "vi": "Nhịp, nhấn và ngữ điệu linh hoạt.",
+      "en": "Flexible rhythm, stress and intonation.",
+      "ja": "Flexible rhythm, stress and intonation.",
+      "ru": "Flexible rhythm, stress and intonation."
+     }
+    }
+   ],
+   "text": "The place that immediately springs to mind is Green Park, a slightly scruffy but much-loved park squeezed in behind the main shopping street, about ten minutes on foot from my flat.\n\nIt's an interesting place to people-watch, because it changes character completely over the course of a day. Early in the morning it's taken over by retirees doing tai chi in perfect unison, or practising ballroom dancing with a crackly speaker propped against a tree. By lunchtime office workers drift in with takeaway boxes, and in the evening it's all joggers, teenagers on skateboards and families feeding the ducks.\n\nI try to go most evenings, so four or five times a week, and I've more or less claimed a bench by the lake as my own.\n\nWhy do I like it so much? Partly it's simply a refuge. I live above a busy road, and the park is the one spot nearby where I can actually hear birds instead of horns. But I think the deeper reason is that it's genuinely shared. Nobody has to buy anything to be there, and you get an eighty-year-old and an eight-year-old using the same path, which feels increasingly rare in a city where so much space is about spending money.",
+   "summary": {
+    "vi": "Bài nói tự nhiên, giàu hình ảnh ('a crackly speaker propped against a tree'), có lớp nghĩa sâu hơn (không gian chung không cần tiêu tiền); ngữ pháp và từ vựng linh hoạt.",
+    "en": "Natural and vivid ('a crackly speaker propped against a tree'), with a deeper layer of meaning (shared space without spending); flexible grammar and vocabulary.",
+    "ja": "自然で鮮明（'a crackly speaker propped against a tree'）、お金を使わない共有空間という深い意味もある。文法と語彙は柔軟。",
+    "ru": "Естественно и живо ('a crackly speaker propped against a tree'), с более глубоким смыслом (общее пространство без трат); гибкая грамматика и лексика."
+   },
+   "highlights": [
+    {
+     "phrase": "springs to mind",
+     "kind": "good",
+     "note": {
+      "vi": "Mở bài Part 2 tự nhiên.",
+      "en": "A natural Part 2 opener.",
+      "ja": "A natural Part 2 opener.",
+      "ru": "A natural Part 2 opener."
+     }
+    },
+    {
+     "phrase": "where I can actually hear birds instead of horns",
+     "kind": "good",
+     "note": {
+      "vi": "Tương phản cụ thể, súc tích.",
+      "en": "A concise, concrete contrast.",
+      "ja": "A concise, concrete contrast.",
+      "ru": "A concise, concrete contrast."
+     }
+    },
+    {
+     "phrase": "an eighty-year-old and an eight-year-old using the same path",
+     "kind": "good",
+     "note": {
+      "vi": "Hình ảnh cụ thể minh họa ý trừu tượng.",
+      "en": "A concrete image illustrating an abstract idea.",
+      "ja": "A concrete image illustrating an abstract idea.",
+      "ru": "A concrete image illustrating an abstract idea."
+     }
+    }
+   ],
+   "nextBand": {
+    "vi": "Band 9: duy trì sự tự nhiên này hoàn toàn, không có chỗ nào phải tìm từ.",
+    "en": "Band 9: sustain this ease completely, with no searching for words.",
+    "ja": "9.0：言葉を探す瞬間が一切ないほど、この自然さを完全に維持する。",
+    "ru": "9.0: полностью сохраняйте эту лёгкость, без поиска слов."
+   }
+  },
+  {
+   "band": 9.0,
+   "words": 241,
+   "criteria": [
+    {
+     "code": "FC",
+     "band": 9,
+     "note": {
+      "vi": "Hoàn toàn trôi chảy; ẩn dụ 'like a clock' xuyên suốt tạo mạch lạc.",
+      "en": "Completely fluent; the 'like a clock' metaphor runs through for coherence.",
+      "ja": "Completely fluent; the 'like a clock' metaphor runs through for coherence.",
+      "ru": "Completely fluent; the 'like a clock' metaphor runs through for coherence."
+     }
+    },
+    {
+     "code": "LR",
+     "band": 9,
+     "note": {
+      "vi": "isn't much to look at, hypnotic, perched, down to a fine art, asks nothing of you.",
+      "en": "isn't much to look at, hypnotic, perched, down to a fine art, asks nothing of you.",
+      "ja": "isn't much to look at, hypnotic, perched, down to a fine art, asks nothing of you.",
+      "ru": "isn't much to look at, hypnotic, perched, down to a fine art, asks nothing of you."
+     }
+    },
+    {
+     "code": "GRA",
+     "band": 9,
+     "note": {
+      "vi": "Cấu trúc 'so... that', chèn ý ('there's always someone'), tương phản 'less like... more like'; không lỗi.",
+      "en": "'so... that', parenthetical asides ('there's always someone'), 'less like... more like'; error-free.",
+      "ja": "'so... that', parenthetical asides ('there's always someone'), 'less like... more like'; error-free.",
+      "ru": "'so... that', parenthetical asides ('there's always someone'), 'less like... more like'; error-free."
+     }
+    },
+    {
+     "code": "P",
+     "band": 9,
+     "note": {
+      "vi": "Dùng nhịp và ngữ điệu để tạo hài hước (chèn ý, nhấn 'badly').",
+      "en": "Uses rhythm and intonation for humour (the aside, stress on 'badly').",
+      "ja": "Uses rhythm and intonation for humour (the aside, stress on 'badly').",
+      "ru": "Uses rhythm and intonation for humour (the aside, stress on 'badly')."
+     }
+    }
+   ],
+   "text": "I'd like to talk about Green Park, which, to be honest, isn't much to look at: the paint on the benches is peeling and the lake is more of a large pond. But it's about ten minutes' walk from my flat and it's probably my favourite place in the whole city.\n\nWhat makes it special is the way it works almost like a clock. If you turn up at six in the morning, it's full of retired people doing tai chi so slowly and precisely that it's quite hypnotic to watch. At lunchtime it's office workers perched on walls with their noodles, and by the evening the soundtrack has switched to skateboards, a football being kicked against a fence and someone, there's always someone, practising the saxophone badly under the bridge.\n\nI'm there most evenings, I'd guess five times a week, and I've got my routine down to a fine art: two laps of the pond, then the bench under the big tree, then home.\n\nAs for why I keep going back, I think it's that the park asks nothing of you. You don't need a ticket or a reason or any money; you can just exist there for a while. In a city where almost every space is designed to sell you something, that feels less like a luxury and more like a necessity, and I suspect that's why so many different people end up sharing the same few paths.",
+   "summary": {
+    "vi": "Kể chuyện tự nhiên, hài hước và giàu hình ảnh; lập luận sâu sắc ('the park asks nothing of you'); ngôn ngữ chính xác tuyệt đối và linh hoạt.",
+    "en": "Natural, humorous and vivid storytelling; an insightful reason ('the park asks nothing of you'); fully accurate and flexible language.",
+    "ja": "自然でユーモアがあり鮮明な語り。洞察ある理由（'the park asks nothing of you'）、完全に正確で柔軟な言語。",
+    "ru": "Естественный, юмористичный и яркий рассказ; глубокая мысль ('the park asks nothing of you'); абсолютно точный и гибкий язык."
+   },
+   "highlights": [
+    {
+     "phrase": "isn't much to look at",
+     "kind": "good",
+     "note": {
+      "vi": "Mở đầu khiêm tốn, hài hước — rất tự nhiên.",
+      "en": "A modest, humorous opening — very natural.",
+      "ja": "A modest, humorous opening — very natural.",
+      "ru": "A modest, humorous opening — very natural."
+     }
+    },
+    {
+     "phrase": "it works almost like a clock",
+     "kind": "good",
+     "note": {
+      "vi": "Ẩn dụ tổ chức cả phần mô tả.",
+      "en": "A metaphor that organises the whole description.",
+      "ja": "A metaphor that organises the whole description.",
+      "ru": "A metaphor that organises the whole description."
+     }
+    },
+    {
+     "phrase": "I've got my routine down to a fine art",
+     "kind": "good",
+     "note": {
+      "vi": "Thành ngữ chính xác.",
+      "en": "A precise idiom.",
+      "ja": "A precise idiom.",
+      "ru": "A precise idiom."
+     }
+    },
+    {
+     "phrase": "less like a luxury and more like a necessity",
+     "kind": "good",
+     "note": {
+      "vi": "Kết thúc sâu sắc với cấu trúc tương phản.",
+      "en": "An insightful close with a contrastive structure.",
+      "ja": "An insightful close with a contrastive structure.",
+      "ru": "An insightful close with a contrastive structure."
+     }
+    }
+   ],
+   "nextBand": {
+    "vi": "Mức cao nhất. So sánh với band 8: hài hước tự nhiên và một ẩn dụ xuyên suốt.",
+    "en": "Top band. Compare with band 8: natural humour and one sustained metaphor.",
+    "ja": "最高バンド。8.0と比べ、自然なユーモアと一貫した比喩に注目。",
+    "ru": "Высший балл. Сравните с 8.0: естественный юмор и сквозная метафора."
+   }
+  }
+ ]
+}

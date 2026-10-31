@@ -1,0 +1,480 @@
+{
+ "schema": "nihongolife.ielts.models/1",
+ "id": "s3_public_spaces",
+ "skill": "speaking",
+ "task": 3,
+ "type": "part3",
+ "title": {
+  "vi": "Part 3 · Không gian công cộng thay đổi thế nào?",
+  "en": "Part 3 · How are public spaces changing?",
+  "ja": "Part 3・公共空間はどう変わったか",
+  "ru": "Part 3 · Как меняются общественные пространства?"
+ },
+ "prompt": "How have public spaces in cities changed in recent years, and do you think these changes are positive?",
+ "note": {
+  "vi": "Phát âm không thể hiện được qua văn bản: điểm P là minh họa, ghi chú mô tả cách nói (nhấn âm, ngữ điệu, nối âm) của người nói ở band này.",
+  "en": "Pronunciation cannot be shown in writing: the P band is illustrative and the notes describe how a speaker at this band typically sounds (stress, intonation, linking).",
+  "ja": "発音は文字では示せません。Pのバンドは例示で、注記はこのバンドの話者の典型的な話し方（強勢・抑揚・連結）を説明します。",
+  "ru": "Произношение нельзя показать письменно: балл P условный, а комментарии описывают, как обычно звучит говорящий этого уровня (ударение, интонация, связность)."
+ },
+ "dataCaption": "",
+ "dataColumns": [],
+ "dataRows": [],
+ "samples": [
+  {
+   "band": 5.0,
+   "words": 65,
+   "criteria": [
+    {
+     "code": "FC",
+     "band": 5,
+     "note": {
+      "vi": "Có nối ý ('Before', 'But', 'So') nhưng đơn giản.",
+      "en": "Some linking ('Before', 'But', 'So') but simple.",
+      "ja": "Some linking ('Before', 'But', 'So') but simple.",
+      "ru": "Some linking ('Before', 'But', 'So') but simple."
+     }
+    },
+    {
+     "code": "LR",
+     "band": 5,
+     "note": {
+      "vi": "Từ cơ bản; 'half good, half bad' chưa tự nhiên.",
+      "en": "Basic words; 'half good, half bad' is unnatural.",
+      "ja": "Basic words; 'half good, half bad' is unnatural.",
+      "ru": "Basic words; 'half good, half bad' is unnatural."
+     }
+    },
+    {
+     "code": "GRA",
+     "band": 5,
+     "note": {
+      "vi": "'the city have', 'there was many park', 'some new park is'.",
+      "en": "'the city have', 'there was many park', 'some new park is'.",
+      "ja": "'the city have', 'there was many park', 'some new park is'.",
+      "ru": "'the city have', 'there was many park', 'some new park is'."
+     }
+    },
+    {
+     "code": "P",
+     "band": 5,
+     "note": {
+      "vi": "Hiểu được, đôi khi phải cố nghe.",
+      "en": "Intelligible, occasionally needs effort.",
+      "ja": "Intelligible, occasionally needs effort.",
+      "ru": "Intelligible, occasionally needs effort."
+     }
+    }
+   ],
+   "text": "I think now the city have more building and less space for people. Before, there was many park and open area but now they build shopping mall and apartment. It is not good because people don't have place to walk and children can't play outside. But some new park is very nice, have lights and music. So I think it is half good, half bad.",
+   "summary": {
+    "vi": "Có ý trả lời và quan điểm nhưng lập luận đơn giản; lỗi chủ–vị và số nhiều; từ vựng hạn chế cho câu hỏi trừu tượng.",
+    "en": "An answer and opinion are given but reasoning is simple; agreement and plural errors; limited vocabulary for an abstract question.",
+    "ja": "答えと意見はあるが論理が単純。一致と複数形の誤り、抽象的な質問に対する語彙が限られる。",
+    "ru": "Ответ и мнение есть, но рассуждение простое; ошибки согласования и множественного числа; ограниченная лексика для абстрактного вопроса."
+   },
+   "highlights": [
+    {
+     "phrase": "the city have more building",
+     "kind": "issue",
+     "note": {
+      "vi": "'cities have more buildings'.",
+      "en": "'cities have more buildings'.",
+      "ja": "'cities have more buildings'.",
+      "ru": "'cities have more buildings'."
+     }
+    },
+    {
+     "phrase": "there was many park and open area",
+     "kind": "issue",
+     "note": {
+      "vi": "'there were many parks and open areas'.",
+      "en": "'there were many parks and open areas'.",
+      "ja": "'there were many parks and open areas'.",
+      "ru": "'there were many parks and open areas'."
+     }
+    },
+    {
+     "phrase": "half good, half bad",
+     "kind": "issue",
+     "note": {
+      "vi": "Tự nhiên hơn: 'it's a mixed picture'.",
+      "en": "More natural: 'it's a mixed picture'.",
+      "ja": "More natural: 'it's a mixed picture'.",
+      "ru": "More natural: 'it's a mixed picture'."
+     }
+    }
+   ],
+   "nextBand": {
+    "vi": "Cấu trúc câu trả lời Part 3: quan điểm → lý do → ví dụ → (nhượng bộ). Dùng từ trừu tượng: development, green space.",
+    "en": "Structure Part 3 answers: opinion → reason → example → (concession). Use abstract words: development, green space.",
+    "ja": "Part 3の構成：意見→理由→例→（譲歩）。development, green space など抽象語を使う。",
+    "ru": "Структура ответа в Part 3: мнение → причина → пример → (уступка). Используйте абстрактные слова: development, green space."
+   }
+  },
+  {
+   "band": 6.0,
+   "words": 97,
+   "criteria": [
+    {
+     "code": "FC",
+     "band": 6,
+     "note": {
+      "vi": "Mạch lạc; 'On the other hand', 'So overall' hơi công thức.",
+      "en": "Coherent; 'On the other hand', 'So overall' are slightly formulaic.",
+      "ja": "Coherent; 'On the other hand', 'So overall' are slightly formulaic.",
+      "ru": "Coherent; 'On the other hand', 'So overall' are slightly formulaic."
+     }
+    },
+    {
+     "code": "LR",
+     "band": 6,
+     "note": {
+      "vi": "developers, apartment blocks, walking streets, green space.",
+      "en": "developers, apartment blocks, walking streets, green space.",
+      "ja": "developers, apartment blocks, walking streets, green space.",
+      "ru": "developers, apartment blocks, walking streets, green space."
+     }
+    },
+    {
+     "code": "GRA",
+     "band": 6,
+     "note": {
+      "vi": "'has been replaced', 'As cities grow'; chính xác.",
+      "en": "'has been replaced', 'As cities grow'; accurate.",
+      "ja": "'has been replaced', 'As cities grow'; accurate.",
+      "ru": "'has been replaced', 'As cities grow'; accurate."
+     }
+    },
+    {
+     "code": "P",
+     "band": 6,
+     "note": {
+      "vi": "Rõ ràng, nhấn câu đôi khi đều đều.",
+      "en": "Clear; sentence stress sometimes even.",
+      "ja": "Clear; sentence stress sometimes even.",
+      "ru": "Clear; sentence stress sometimes even."
+     }
+    }
+   ],
+   "text": "Well, in my country, I think the biggest change is that a lot of open space has been replaced by buildings, especially shopping malls and apartment blocks. As cities grow, land becomes very expensive, so developers want to use every piece of it. On the other hand, the government has also built some new parks and walking streets recently, and these are quite popular, especially at weekends. So overall I think the changes are partly positive, but we still need more green space, because many people live in small apartments and they need somewhere to go outside.",
+   "summary": {
+    "vi": "Có lập luận nguyên nhân–kết quả và cân bằng hai mặt; ngữ pháp có bị động hiện tại hoàn thành; từ vựng đủ.",
+    "en": "Cause–effect reasoning and a balanced view; present perfect passive used; adequate vocabulary.",
+    "ja": "因果関係の論理とバランスのとれた見方。現在完了受動態を使用、語彙は十分。",
+    "ru": "Причинно-следственное рассуждение и сбалансированный взгляд; использован Present Perfect Passive; лексика достаточная."
+   },
+   "highlights": [
+    {
+     "phrase": "a lot of open space has been replaced by buildings",
+     "kind": "good",
+     "note": {
+      "vi": "Bị động hiện tại hoàn thành — đúng cho thay đổi gần đây.",
+      "en": "Present perfect passive — right for recent change.",
+      "ja": "Present perfect passive — right for recent change.",
+      "ru": "Present perfect passive — right for recent change."
+     }
+    },
+    {
+     "phrase": "As cities grow, land becomes very expensive, so developers want to use every piece of it.",
+     "kind": "good",
+     "note": {
+      "vi": "Giải thích nguyên nhân — tiêu chí quan trọng của Part 3.",
+      "en": "Explains the cause — key for Part 3.",
+      "ja": "Explains the cause — key for Part 3.",
+      "ru": "Explains the cause — key for Part 3."
+     }
+    },
+    {
+     "phrase": "partly positive",
+     "kind": "issue",
+     "note": {
+      "vi": "Quan điểm hơi mơ hồ; nêu rõ thay đổi nào tích cực, thay đổi nào không.",
+      "en": "A vague stance; say which changes are positive and which are not.",
+      "ja": "A vague stance; say which changes are positive and which are not.",
+      "ru": "A vague stance; say which changes are positive and which are not."
+     }
+    }
+   ],
+   "nextBand": {
+    "vi": "Phân tích sâu hơn: ai được lợi, ai chịu thiệt; dùng cụm như 'at the expense of', 'commercialised'.",
+    "en": "Analyse more deeply: who benefits and who loses; use phrases like 'at the expense of', 'commercialised'.",
+    "ja": "誰が得をし誰が損をするかまで分析し、'at the expense of', 'commercialised' などを使う。",
+    "ru": "Анализируйте глубже: кто выигрывает, кто проигрывает; используйте 'at the expense of', 'commercialised'."
+   }
+  },
+  {
+   "band": 7.0,
+   "words": 101,
+   "criteria": [
+    {
+     "code": "FC",
+     "band": 7,
+     "note": {
+      "vi": "Khung 'two contradictory trends' tổ chức tốt.",
+      "en": "The 'two contradictory trends' frame organises the answer well.",
+      "ja": "The 'two contradictory trends' frame organises the answer well.",
+      "ru": "The 'two contradictory trends' frame organises the answer well."
+     }
+    },
+    {
+     "code": "LR",
+     "band": 7,
+     "note": {
+      "vi": "make way for, commercialised, riverside walkways, wealthier districts.",
+      "en": "make way for, commercialised, riverside walkways, wealthier districts.",
+      "ja": "make way for, commercialised, riverside walkways, wealthier districts.",
+      "ru": "make way for, commercialised, riverside walkways, wealthier districts."
+     }
+    },
+    {
+     "code": "GRA",
+     "band": 7,
+     "note": {
+      "vi": "'used to', hiện tại tiếp diễn cho xu hướng, mệnh đề quan hệ; ít lỗi.",
+      "en": "'used to', present continuous for trends, relatives; few errors.",
+      "ja": "'used to', present continuous for trends, relatives; few errors.",
+      "ru": "'used to', present continuous for trends, relatives; few errors."
+     }
+    },
+    {
+     "code": "P",
+     "band": 7,
+     "note": {
+      "vi": "Ngữ điệu tự nhiên.",
+      "en": "Natural intonation.",
+      "ja": "Natural intonation.",
+      "ru": "Natural intonation."
+     }
+    }
+   ],
+   "text": "I'd say there have been two quite contradictory trends. On one hand, a lot of traditional open space, things like markets and empty lots where kids used to play, has disappeared to make way for malls and high-rise flats, so public life has become more commercialised. On the other, local authorities have started to recognise the value of green space, so we're seeing riverside walkways and pedestrian streets that simply didn't exist ten years ago. Overall I think it's a positive direction, but the risk is that the new spaces are mostly in wealthier districts, so not everyone benefits equally.",
+   "summary": {
+    "vi": "Phân tích hai xu hướng trái ngược, có quan điểm rõ và nêu rủi ro (bất bình đẳng); từ vựng chính xác; trôi chảy.",
+    "en": "Analyses two contradictory trends, gives a clear view and identifies a risk (inequality); precise vocabulary; fluent.",
+    "ja": "相反する2つの傾向を分析し、明確な意見とリスク（不平等）を示す。語彙は正確で流暢。",
+    "ru": "Анализирует две противоположные тенденции, даёт ясное мнение и указывает риск (неравенство); точная лексика; беглость."
+   },
+   "highlights": [
+    {
+     "phrase": "two quite contradictory trends",
+     "kind": "good",
+     "note": {
+      "vi": "Khung trả lời rõ ràng ngay câu đầu.",
+      "en": "A clear frame from the first sentence.",
+      "ja": "A clear frame from the first sentence.",
+      "ru": "A clear frame from the first sentence."
+     }
+    },
+    {
+     "phrase": "has disappeared to make way for malls",
+     "kind": "good",
+     "note": {
+      "vi": "Cụm 'make way for' chính xác.",
+      "en": "Accurate use of 'make way for'.",
+      "ja": "Accurate use of 'make way for'.",
+      "ru": "Accurate use of 'make way for'."
+     }
+    },
+    {
+     "phrase": "not everyone benefits equally",
+     "kind": "good",
+     "note": {
+      "vi": "Nêu khía cạnh công bằng — chiều sâu band 7.",
+      "en": "Raises fairness — band 7 depth.",
+      "ja": "Raises fairness — band 7 depth.",
+      "ru": "Raises fairness — band 7 depth."
+     }
+    }
+   ],
+   "nextBand": {
+    "vi": "Thêm ví dụ cụ thể và suy đoán hợp lý về tương lai; dùng cấu trúc nhấn mạnh.",
+    "en": "Add a concrete example and reasoned speculation about the future; use emphatic structures.",
+    "ja": "具体例と将来についての論理的な推測を加え、強調構文を使う。",
+    "ru": "Добавьте конкретный пример и обоснованный прогноз; используйте эмфатические конструкции."
+   }
+  },
+  {
+   "band": 8.0,
+   "words": 134,
+   "criteria": [
+    {
+     "code": "FC",
+     "band": 8,
+     "note": {
+      "vi": "Phát triển ý tự nhiên, 'though', 'I'd add one caveat' mạch lạc.",
+      "en": "Natural development; 'though', 'I'd add one caveat' are coherent.",
+      "ja": "Natural development; 'though', 'I'd add one caveat' are coherent.",
+      "ru": "Natural development; 'though', 'I'd add one caveat' are coherent."
+     }
+    },
+    {
+     "code": "LR",
+     "band": 8,
+     "note": {
+      "vi": "a mixed bag, swallowed up, caveat, policed, moved on.",
+      "en": "a mixed bag, swallowed up, caveat, policed, moved on.",
+      "ja": "a mixed bag, swallowed up, caveat, policed, moved on.",
+      "ru": "a mixed bag, swallowed up, caveat, policed, moved on."
+     }
+    },
+    {
+     "code": "GRA",
+     "band": 8,
+     "note": {
+      "vi": "Bị động tiếp diễn quá khứ, 'so... that', mệnh đề quan hệ; chính xác.",
+      "en": "Past passive, 'so... that', relatives; accurate.",
+      "ja": "Past passive, 'so... that', relatives; accurate.",
+      "ru": "Past passive, 'so... that', relatives; accurate."
+     }
+    },
+    {
+     "code": "P",
+     "band": 8,
+     "note": {
+      "vi": "Linh hoạt, dễ nghe.",
+      "en": "Flexible and easy to follow.",
+      "ja": "Flexible and easy to follow.",
+      "ru": "Flexible and easy to follow."
+     }
+    }
+   ],
+   "text": "It's been a real mixed bag, I think. For a long stretch, the dominant pattern was that open, informal spaces, street markets, patches of wasteland, even wide pavements, were steadily swallowed up by development, and a lot of social life moved indoors into shopping malls, where you're essentially a customer rather than a citizen. More recently, though, there's been a noticeable push the other way: cities are converting old railway lines into parks or closing streets to traffic at weekends. I'd call that broadly positive, but I'd add one caveat, which is that some of these new spaces are so carefully designed and policed that they feel more like showrooms than genuinely public places. A good public space, to my mind, is one where you can do nothing in particular without being moved on.",
+   "summary": {
+    "vi": "Trả lời sâu, có phân biệt 'customer vs citizen', nêu lưu ý tinh tế; từ vựng giàu và chính xác; ngữ pháp linh hoạt.",
+    "en": "A deep answer distinguishing 'customer vs citizen', with a subtle caveat; rich, precise vocabulary; flexible grammar.",
+    "ja": "「顧客か市民か」を区別する深い答えで、微妙な但し書きもある。語彙は豊かで正確、文法は柔軟。",
+    "ru": "Глубокий ответ с различением «покупатель / гражданин» и тонкой оговоркой; богатая точная лексика; гибкая грамматика."
+   },
+   "highlights": [
+    {
+     "phrase": "you're essentially a customer rather than a citizen",
+     "kind": "good",
+     "note": {
+      "vi": "Phân biệt khái niệm sắc nét.",
+      "en": "A sharp conceptual distinction.",
+      "ja": "A sharp conceptual distinction.",
+      "ru": "A sharp conceptual distinction."
+     }
+    },
+    {
+     "phrase": "I'd add one caveat",
+     "kind": "good",
+     "note": {
+      "vi": "Thêm lưu ý — dấu hiệu tư duy phản biện.",
+      "en": "Adding a caveat — a sign of critical thinking.",
+      "ja": "Adding a caveat — a sign of critical thinking.",
+      "ru": "Adding a caveat — a sign of critical thinking."
+     }
+    },
+    {
+     "phrase": "they feel more like showrooms than genuinely public places",
+     "kind": "good",
+     "note": {
+      "vi": "So sánh hình ảnh chính xác.",
+      "en": "A precise comparative image.",
+      "ja": "A precise comparative image.",
+      "ru": "A precise comparative image."
+     }
+    }
+   ],
+   "nextBand": {
+    "vi": "Band 9: duy trì độ sâu này với mọi câu hỏi Part 3 và hoàn toàn không ngập ngừng vì ngôn ngữ.",
+    "en": "Band 9: sustain this depth across all Part 3 questions with no language-related hesitation.",
+    "ja": "9.0：Part 3の全質問でこの深さを保ち、言語的なためらいを一切なくす。",
+    "ru": "9.0: удерживайте эту глубину во всех вопросах Part 3 без языковых пауз."
+   }
+  },
+  {
+   "band": 9.0,
+   "words": 139,
+   "criteria": [
+    {
+     "code": "FC",
+     "band": 9,
+     "note": {
+      "vi": "Tổ chức hoàn hảo quanh hai từ khóa; trôi chảy hoàn toàn.",
+      "en": "Perfectly organised around two key words; completely fluent.",
+      "ja": "Perfectly organised around two key words; completely fluent.",
+      "ru": "Perfectly organised around two key words; completely fluent."
+     }
+    },
+    {
+     "code": "LR",
+     "band": 9,
+     "note": {
+      "vi": "woken up to, quietly conditional, unthinkable a generation ago, plazas.",
+      "en": "woken up to, quietly conditional, unthinkable a generation ago, plazas.",
+      "ja": "woken up to, quietly conditional, unthinkable a generation ago, plazas.",
+      "ru": "woken up to, quietly conditional, unthinkable a generation ago, plazas."
+     }
+    },
+    {
+     "code": "GRA",
+     "band": 9,
+     "note": {
+      "vi": "Điều kiện quá khứ ('would have been unthinkable'), 'less by... more by'; hoàn toàn chính xác.",
+      "en": "Past conditional ('would have been unthinkable'), 'less by... more by'; fully accurate.",
+      "ja": "Past conditional ('would have been unthinkable'), 'less by... more by'; fully accurate.",
+      "ru": "Past conditional ('would have been unthinkable'), 'less by... more by'; fully accurate."
+     }
+    },
+    {
+     "code": "P",
+     "band": 9,
+     "note": {
+      "vi": "Nhấn tương phản 'better / narrower' rõ, ngữ điệu tinh tế.",
+      "en": "Clear contrastive stress on 'better / narrower', subtle intonation.",
+      "ja": "Clear contrastive stress on 'better / narrower', subtle intonation.",
+      "ru": "Clear contrastive stress on 'better / narrower', subtle intonation."
+     }
+    }
+   ],
+   "text": "I think the honest answer is that public space has become both better and narrower. Better, because cities have finally woken up to the idea that people need somewhere to breathe, so you get these lovely riverside promenades and car-free weekends that would have been unthinkable a generation ago. Narrower, because a lot of what's being created is quietly conditional: it's privately managed, there are rules about where you can sit, and the whole thing is designed around a particular kind of visitor, usually one with money to spend in the cafés nearby. So yes, it's largely positive, but I'd judge a city less by how attractive its new plazas look and more by whether a teenager with no money, or an elderly man with nowhere else to go, would feel welcome to spend an afternoon there.",
+   "summary": {
+    "vi": "Trả lời xuất sắc: khung 'better and narrower' độc đáo, phân tích tinh tế, đề xuất tiêu chí đánh giá; ngôn ngữ hoàn toàn tự nhiên và chính xác.",
+    "en": "An outstanding answer: an original 'better and narrower' frame, subtle analysis and a proposed yardstick; completely natural and accurate language.",
+    "ja": "「より良く、より狭く」という独自の枠組み、繊細な分析、評価基準の提案を備えた卓越した答え。言語は完全に自然で正確。",
+    "ru": "Выдающийся ответ: оригинальная рамка «лучше и уже», тонкий анализ, предложенный критерий оценки; абсолютно естественный и точный язык."
+   },
+   "highlights": [
+    {
+     "phrase": "both better and narrower",
+     "kind": "good",
+     "note": {
+      "vi": "Khung trả lời độc đáo, dễ nhớ.",
+      "en": "An original, memorable frame.",
+      "ja": "An original, memorable frame.",
+      "ru": "An original, memorable frame."
+     }
+    },
+    {
+     "phrase": "quietly conditional",
+     "kind": "good",
+     "note": {
+      "vi": "Kết hợp từ tinh tế, chính xác.",
+      "en": "A subtle, precise collocation.",
+      "ja": "A subtle, precise collocation.",
+      "ru": "A subtle, precise collocation."
+     }
+    },
+    {
+     "phrase": "I'd judge a city less by how attractive its new plazas look and more by whether",
+     "kind": "good",
+     "note": {
+      "vi": "Đưa ra tiêu chí đánh giá riêng — đỉnh cao của Part 3.",
+      "en": "Proposes a personal yardstick — the peak of Part 3.",
+      "ja": "Proposes a personal yardstick — the peak of Part 3.",
+      "ru": "Proposes a personal yardstick — the peak of Part 3."
+     }
+    }
+   ],
+   "nextBand": {
+    "vi": "Mức cao nhất. Bí quyết: khung ý rõ + ví dụ con người cụ thể + ngôn ngữ tự nhiên.",
+    "en": "Top band. The recipe: a clear frame + concrete human examples + natural language.",
+    "ja": "最高バンド。秘訣：明確な枠組み＋具体的な人の例＋自然な言語。",
+    "ru": "Высший балл. Рецепт: ясная рамка + конкретные человеческие примеры + естественный язык."
+   }
+  }
+ ]
+}

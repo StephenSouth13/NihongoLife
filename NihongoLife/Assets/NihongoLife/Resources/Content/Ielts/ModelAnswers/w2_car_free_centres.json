@@ -1,0 +1,550 @@
+{
+ "schema": "nihongolife.ielts.models/1",
+ "id": "w2_car_free_centres",
+ "skill": "writing",
+ "task": 2,
+ "type": "discussion",
+ "title": {
+  "vi": "Task 2 · Thảo luận: Cấm ô tô cá nhân ở trung tâm thành phố",
+  "en": "Task 2 · Discussion: Banning private cars from city centres",
+  "ja": "Task 2・両論：都心からの自家用車締め出し",
+  "ru": "Task 2 · Обсуждение: запрет личных автомобилей в центре города"
+ },
+ "prompt": "Some people believe that cities should ban private cars from their central areas. Others think this would harm local businesses and the people who live there.\n\nDiscuss both views and give your own opinion. Write at least 250 words.",
+ "note": {
+  "vi": "Bài mẫu do NihongoLife tự viết để minh họa từng band, không phải bài thi thật hay bài chấm chính thức. Số liệu trong đề Task 1 là hư cấu.",
+  "en": "Original illustrative band samples written by NihongoLife — not real candidate scripts or official marking. Task 1 data is fictional.",
+  "ja": "NihongoLifeが作成したバンド別の例示用オリジナル答案です。実際の受験者答案や公式採点ではありません。Task 1のデータは架空です。",
+  "ru": "Оригинальные иллюстративные образцы по баллам, написанные NihongoLife, — не реальные работы и не официальная оценка. Данные Task 1 вымышлены."
+ },
+ "dataCaption": "",
+ "dataColumns": [],
+ "dataRows": [],
+ "samples": [
+  {
+   "band": 5.0,
+   "words": 191,
+   "criteria": [
+    {
+     "code": "TR",
+     "band": 5,
+     "note": {
+      "vi": "Đáp ứng cả ba phần (hai quan điểm + ý kiến) nhưng chỉ ở mức liệt kê; ý kiến cá nhân xuất hiện muộn và không được giải thích.",
+      "en": "All three parts are addressed (two views + opinion) but only at list level; the opinion appears late and is not explained.",
+      "ja": "All three parts are addressed (two views + opinion) but only at list level; the opinion appears late and is not explained.",
+      "ru": "All three parts are addressed (two views + opinion) but only at list level; the opinion appears late and is not explained."
+     }
+    },
+    {
+     "code": "CC",
+     "band": 5,
+     "note": {
+      "vi": "Bố cục rõ nhờ 'On the one hand / On the other hand', nhưng nối trong đoạn lặp 'Also'.",
+      "en": "Clear layout thanks to 'On the one hand / On the other hand', but in-paragraph linking repeats 'Also'.",
+      "ja": "Clear layout thanks to 'On the one hand / On the other hand', but in-paragraph linking repeats 'Also'.",
+      "ru": "Clear layout thanks to 'On the one hand / On the other hand', but in-paragraph linking repeats 'Also'."
+     }
+    },
+    {
+     "code": "LR",
+     "band": 5,
+     "note": {
+      "vi": "Từ vựng cơ bản, lặp 'ban car'; sai dạng từ ('more clean', 'more safe', 'disable people').",
+      "en": "Basic vocabulary, 'ban car' repeated; word-form errors ('more clean', 'more safe', 'disable people').",
+      "ja": "Basic vocabulary, 'ban car' repeated; word-form errors ('more clean', 'more safe', 'disable people').",
+      "ru": "Basic vocabulary, 'ban car' repeated; word-form errors ('more clean', 'more safe', 'disable people')."
+     }
+    },
+    {
+     "code": "GRA",
+     "band": 5,
+     "note": {
+      "vi": "Câu đơn giản; lỗi số nhiều ('many city'), chủ-vị ('bus and train is'), thiếu danh động từ ('ban car have').",
+      "en": "Simple sentences; plural errors ('many city'), agreement ('bus and train is'), missing gerund ('ban car have').",
+      "ja": "Simple sentences; plural errors ('many city'), agreement ('bus and train is'), missing gerund ('ban car have').",
+      "ru": "Simple sentences; plural errors ('many city'), agreement ('bus and train is'), missing gerund ('ban car have')."
+     }
+    }
+   ],
+   "text": "Today many city have problem with traffic jam and pollution. Some people think government should ban private car in city centre, but other people think it is bad for business and people who live there. In this essay I will discuss both view.\n\nOn the one hand, ban car have many advantage. The air in city centre will be more clean because cars make a lot of smoke. Also there will be less traffic jam and people can walk on the street more safe. For example in my city, the centre is always crowded and noisy and it is very dangerous for children.\n\nOn the other hand, shops in the centre maybe lose customer. Many people like to drive to shopping because they can carry many things. If they can not drive, they will go to big supermarket outside the city. Also old people and disable people need car to move, so ban car is difficult for them.\n\nIn my opinion, I think ban car is good idea but government must make public transport better first. If bus and train is cheap and fast, people will not need to use car.",
+   "summary": {
+    "vi": "Nêu được cả hai quan điểm và ý kiến cá nhân, nhưng phát triển ý còn mỏng, kết luận rất ngắn; lỗi số nhiều, so sánh hơn và dạng từ xuất hiện thường xuyên.",
+    "en": "Both views and an opinion are presented, but development is thin and the conclusion very brief; frequent errors with plurals, comparatives and word forms.",
+    "ja": "両論と自分の意見は示されているが展開が薄く、結論が非常に短い。複数形・比較級・品詞の誤りが頻繁。",
+    "ru": "Обе точки зрения и мнение представлены, но развитие слабое, вывод очень короткий; частые ошибки во множественном числе, сравнительной степени и формах слов."
+   },
+   "highlights": [
+    {
+     "phrase": "many city have problem",
+     "kind": "issue",
+     "note": {
+      "vi": "'many' + danh từ số nhiều → 'many cities have problems'.",
+      "en": "'many' + plural → 'many cities have problems'.",
+      "ja": "'many' + plural → 'many cities have problems'.",
+      "ru": "'many' + plural → 'many cities have problems'."
+     }
+    },
+    {
+     "phrase": "ban car have many advantage",
+     "kind": "issue",
+     "note": {
+      "vi": "Chủ ngữ là hành động → dùng danh động từ: 'banning cars has many advantages'.",
+      "en": "An action as subject needs a gerund: 'banning cars has many advantages'.",
+      "ja": "An action as subject needs a gerund: 'banning cars has many advantages'.",
+      "ru": "An action as subject needs a gerund: 'banning cars has many advantages'."
+     }
+    },
+    {
+     "phrase": "more clean",
+     "kind": "issue",
+     "note": {
+      "vi": "Tính từ một âm tiết: 'cleaner'.",
+      "en": "One-syllable adjective: 'cleaner'.",
+      "ja": "One-syllable adjective: 'cleaner'.",
+      "ru": "One-syllable adjective: 'cleaner'."
+     }
+    },
+    {
+     "phrase": "For example in my city, the centre is always crowded and noisy",
+     "kind": "good",
+     "note": {
+      "vi": "Có ví dụ cá nhân — tốt, nhưng cần nối rõ với lợi ích của việc cấm xe.",
+      "en": "A personal example — good, but link it clearly to the benefit of a ban.",
+      "ja": "A personal example — good, but link it clearly to the benefit of a ban.",
+      "ru": "A personal example — good, but link it clearly to the benefit of a ban."
+     }
+    },
+    {
+     "phrase": "government must make public transport better first",
+     "kind": "good",
+     "note": {
+      "vi": "Ý kiến có điều kiện hợp lý, nhưng cần một đoạn giải thích.",
+      "en": "A sensible conditional opinion, but it needs a paragraph of explanation.",
+      "ja": "A sensible conditional opinion, but it needs a paragraph of explanation.",
+      "ru": "A sensible conditional opinion, but it needs a paragraph of explanation."
+     }
+    }
+   ],
+   "nextBand": {
+    "vi": "• Mở rộng mỗi quan điểm bằng ít nhất 2 câu giải thích + 1 ví dụ.\n• Nêu ý kiến ngay ở mở bài và giải thích nó trong kết luận.\n• Ôn danh từ số nhiều, so sánh hơn và danh động từ làm chủ ngữ.",
+    "en": "• Extend each view with at least two explaining sentences and an example.\n• State your opinion in the introduction and justify it in the conclusion.\n• Revise plurals, comparatives and gerund subjects.",
+    "ja": "• 各見解を説明2文＋例1つで広げる。\n• 序論で意見を示し、結論で理由づける。\n• 複数形・比較級・主語の動名詞を復習する。",
+    "ru": "• Раскройте каждую точку зрения минимум двумя поясняющими предложениями и примером.\n• Сформулируйте мнение во вступлении и обоснуйте его в заключении.\n• Повторите множественное число, сравнительную степень и герундий в роли подлежащего."
+   }
+  },
+  {
+   "band": 6.0,
+   "words": 289,
+   "criteria": [
+    {
+     "code": "TR",
+     "band": 6,
+     "note": {
+      "vi": "Đủ ba phần, quan điểm có điều kiện và giải pháp. 'Several European cities' chỉ là ví dụ chung chung.",
+      "en": "All three parts with a qualified opinion and solutions. 'Several European cities' is a vague example.",
+      "ja": "All three parts with a qualified opinion and solutions. 'Several European cities' is a vague example.",
+      "ru": "All three parts with a qualified opinion and solutions. 'Several European cities' is a vague example."
+     }
+    },
+    {
+     "code": "CC",
+     "band": 6,
+     "note": {
+      "vi": "Tổ chức logic; từ nối đúng nhưng mang tính công thức ('On the other hand, there are also strong arguments').",
+      "en": "Logical organisation; accurate but formulaic linking ('On the other hand, there are also strong arguments').",
+      "ja": "Logical organisation; accurate but formulaic linking ('On the other hand, there are also strong arguments').",
+      "ru": "Logical organisation; accurate but formulaic linking ('On the other hand, there are also strong arguments')."
+     }
+    },
+    {
+     "code": "LR",
+     "band": 6,
+     "note": {
+      "vi": "Đủ từ chủ đề (pedestrians, car-free zones, exceptions); ít cụm diễn đạt tinh tế.",
+      "en": "Adequate topic words (pedestrians, car-free zones, exceptions); few precise collocations.",
+      "ja": "Adequate topic words (pedestrians, car-free zones, exceptions); few precise collocations.",
+      "ru": "Adequate topic words (pedestrians, car-free zones, exceptions); few precise collocations."
+     }
+    },
+    {
+     "code": "GRA",
+     "band": 6,
+     "note": {
+      "vi": "Có câu điều kiện, bị động, mệnh đề quan hệ; chính xác nhưng an toàn.",
+      "en": "Conditionals, passives and relative clauses; accurate but safe.",
+      "ja": "Conditionals, passives and relative clauses; accurate but safe.",
+      "ru": "Conditionals, passives and relative clauses; accurate but safe."
+     }
+    }
+   ],
+   "text": "In many large cities, traffic in the centre has become a serious problem, and some people suggest that private cars should be banned from these areas completely. Others, however, worry that such a ban would damage local shops and make life harder for residents. This essay will look at both opinions before giving my own view.\n\nSupporters of a ban argue that it would improve the quality of life in city centres. Without cars, the air would be cleaner and the streets would be quieter and safer for pedestrians and cyclists. Space that is now used for parking could be turned into parks, cafés or play areas. Several European cities have already closed some central streets to cars, and these places have become popular with visitors.\n\nOn the other hand, there are also strong arguments against this idea. Many small businesses depend on customers who arrive by car, especially when they buy large or heavy items. If driving becomes impossible, these customers may choose shopping centres outside the city instead, and local shops could close. Residents could also be affected, for example elderly people who find it difficult to walk or to use crowded buses.\n\nIn my opinion, a complete ban is too extreme, but cities should reduce car use in their centres. They could introduce car-free zones on some streets, charge drivers a fee to enter the centre and make exceptions for disabled people and deliveries. At the same time, public transport needs to be improved so that people have a real alternative.\n\nIn conclusion, although banning private cars has clear environmental benefits, it may cause problems for businesses and residents. A balanced approach which limits cars rather than banning them completely is the best solution.",
+   "summary": {
+    "vi": "Bàn đủ hai phía và có quan điểm rõ (giảm thay vì cấm hẳn); ý có phát triển nhưng còn khái quát; nối ý chính xác nhưng quen thuộc; từ vựng và ngữ pháp đủ, ít lỗi.",
+    "en": "Both sides discussed with a clear opinion (limit rather than ban); ideas developed but general; accurate but familiar linking; adequate vocabulary and grammar with few errors.",
+    "ja": "両論を扱い明確な意見（全面禁止でなく制限）がある。展開はあるが一般的、接続は正確だが定型的、語彙・文法は十分で誤りは少ない。",
+    "ru": "Обе стороны рассмотрены, мнение ясное (ограничить, а не запретить); идеи развиты, но обобщённо; связки точные, но шаблонные; лексика и грамматика достаточны, ошибок мало."
+   },
+   "highlights": [
+    {
+     "phrase": "This essay will look at both opinions before giving my own view.",
+     "kind": "issue",
+     "note": {
+      "vi": "Câu dẫn chung chung; band 7 nêu luôn quan điểm ở mở bài.",
+      "en": "A generic signpost; band 7 states the position in the introduction.",
+      "ja": "A generic signpost; band 7 states the position in the introduction.",
+      "ru": "A generic signpost; band 7 states the position in the introduction."
+     }
+    },
+    {
+     "phrase": "Space that is now used for parking could be turned into parks, cafés or play areas.",
+     "kind": "good",
+     "note": {
+      "vi": "Một lợi ích cụ thể ngoài 'ô nhiễm' — phát triển ý tốt.",
+      "en": "A specific benefit beyond 'pollution' — good development.",
+      "ja": "A specific benefit beyond 'pollution' — good development.",
+      "ru": "A specific benefit beyond 'pollution' — good development."
+     }
+    },
+    {
+     "phrase": "Several European cities have already closed some central streets to cars",
+     "kind": "issue",
+     "note": {
+      "vi": "Ví dụ mơ hồ; cụ thể hóa bằng tình huống, không bịa số liệu.",
+      "en": "A vague example; make it concrete with a scenario, without invented figures.",
+      "ja": "A vague example; make it concrete with a scenario, without invented figures.",
+      "ru": "A vague example; make it concrete with a scenario, without invented figures."
+     }
+    },
+    {
+     "phrase": "charge drivers a fee to enter the centre and make exceptions for disabled people and deliveries",
+     "kind": "good",
+     "note": {
+      "vi": "Giải pháp cụ thể làm quan điểm thuyết phục.",
+      "en": "Concrete solutions make the opinion persuasive.",
+      "ja": "Concrete solutions make the opinion persuasive.",
+      "ru": "Concrete solutions make the opinion persuasive."
+     }
+    }
+   ],
+   "nextBand": {
+    "vi": "• Nêu quan điểm ngay ở mở bài và nhắc lại xuyên suốt.\n• Giải thích cơ chế (vì sao phí vào trung tâm giảm xe mà không giết chết cửa hàng).\n• Dùng từ vựng chính xác hơn: footfall, congestion charge, last-mile deliveries.",
+    "en": "• State the position in the introduction and keep it visible throughout.\n• Explain mechanisms (why an entry charge cuts traffic without killing shops).\n• Use more precise lexis: footfall, congestion charge, last-mile deliveries.",
+    "ja": "• 序論で立場を示し、全体を通して維持する。\n• 仕組みを説明する（なぜ入域料が店を潰さず交通を減らすか）。\n• footfall, congestion charge など正確な語彙を使う。",
+    "ru": "• Сформулируйте позицию во вступлении и удерживайте её во всём тексте.\n• Объясните механизмы (почему плата за въезд снижает трафик, не убивая магазины).\n• Используйте точную лексику: footfall, congestion charge, last-mile deliveries."
+   }
+  },
+  {
+   "band": 7.0,
+   "words": 316,
+   "criteria": [
+    {
+     "code": "TR",
+     "band": 7,
+     "note": {
+      "vi": "Đầy đủ và rõ quan điểm; luận điểm 'người đi bộ có thể là khách hàng giá trị' khéo léo dùng lại mối lo của phe phản đối. Đôi chỗ còn khẳng định chung.",
+      "en": "Full and clear; the point that pedestrians can be valuable customers cleverly answers the opposing worry. Some claims remain general.",
+      "ja": "Full and clear; the point that pedestrians can be valuable customers cleverly answers the opposing worry. Some claims remain general.",
+      "ru": "Full and clear; the point that pedestrians can be valuable customers cleverly answers the opposing worry. Some claims remain general."
+     }
+    },
+    {
+     "code": "CC",
+     "band": 7,
+     "note": {
+      "vi": "'Equally important', 'Nevertheless', 'Crucially' dùng đúng chỗ; mạch đoạn rõ ràng.",
+      "en": "'Equally important', 'Nevertheless', 'Crucially' used appropriately; clear paragraph progression.",
+      "ja": "'Equally important', 'Nevertheless', 'Crucially' used appropriately; clear paragraph progression.",
+      "ru": "'Equally important', 'Nevertheless', 'Crucially' used appropriately; clear paragraph progression."
+     }
+    },
+    {
+     "code": "LR",
+     "band": 7,
+     "note": {
+      "vi": "Từ chính xác: outright ban, counterproductive, bulky goods, out-of-town retail parks, pedestrianise.",
+      "en": "Precise items: outright ban, counterproductive, bulky goods, out-of-town retail parks, pedestrianise.",
+      "ja": "Precise items: outright ban, counterproductive, bulky goods, out-of-town retail parks, pedestrianise.",
+      "ru": "Precise items: outright ban, counterproductive, bulky goods, out-of-town retail parks, pedestrianise."
+     }
+    },
+    {
+     "code": "GRA",
+     "band": 7,
+     "note": {
+      "vi": "Mệnh đề quan hệ không xác định, cấu trúc 'so that', 'rather than'; rất ít lỗi.",
+      "en": "Non-defining relatives, 'so that', 'rather than'; very few errors.",
+      "ja": "Non-defining relatives, 'so that', 'rather than'; very few errors.",
+      "ru": "Non-defining relatives, 'so that', 'rather than'; very few errors."
+     }
+    }
+   ],
+   "text": "As congestion and air pollution worsen in many urban areas, proposals to ban private cars from city centres have become increasingly common. While such bans offer clear environmental and social gains, opponents fear they would drive away customers and isolate residents. I believe that the benefits justify strict limits on cars, but that an outright ban would be counterproductive.\n\nAdvocates of car-free centres point first to public health. Traffic is a major source of the fine particles and noise that harm people who live and work in busy districts, and removing it produces an immediate improvement. Equally important is the question of space: a single lane of parked cars occupies room that could host wider pavements, cycle lanes or outdoor seating. Streets redesigned in this way tend to attract more people on foot, and pedestrians, who browse and return frequently, can be valuable customers.\n\nNevertheless, the concerns of businesses and residents deserve to be taken seriously. Shops selling bulky goods, such as furniture or electrical appliances, rely on customers who can load a car outside the door, and a sudden ban could push these customers towards out-of-town retail parks. Residents, too, may struggle; an elderly person with limited mobility cannot easily replace a car with a bicycle, and tradespeople need vehicles to carry tools.\n\nFor these reasons, I favour a gradual and selective approach. Cities could charge private cars to enter the centre at peak times, pedestrianise the busiest shopping streets and guarantee access for residents, disabled drivers and deliveries. Crucially, the revenue from charges could fund cheaper and more frequent public transport, so that giving up the car becomes a convenient choice rather than a punishment.\n\nIn conclusion, reducing car traffic in city centres is desirable, but it should be achieved through targeted restrictions and better alternatives rather than a blanket ban that ignores the needs of those most dependent on driving.",
+   "summary": {
+    "vi": "Thảo luận cân bằng, quan điểm rõ từ mở bài; mỗi ý được mở rộng (không gian → người đi bộ → khách hàng); nối ý linh hoạt; từ vựng chính xác; câu phức đa dạng.",
+    "en": "A balanced discussion with a clear position from the introduction; ideas are extended (space → pedestrians → customers); flexible cohesion; precise vocabulary; varied complex sentences.",
+    "ja": "序論から立場が明確でバランスの取れた議論。論が展開され（空間→歩行者→顧客）、結束性が柔軟、語彙は正確で複文も多様。",
+    "ru": "Сбалансированное обсуждение с ясной позицией с самого вступления; идеи развиты (пространство → пешеходы → покупатели); гибкая связность; точная лексика; разнообразные сложные предложения."
+   },
+   "highlights": [
+    {
+     "phrase": "I believe that the benefits justify strict limits on cars, but that an outright ban would be counterproductive.",
+     "kind": "good",
+     "note": {
+      "vi": "Luận đề rõ ngay mở bài — yêu cầu của Task Response band 7.",
+      "en": "A clear thesis in the introduction — a band 7 Task Response requirement.",
+      "ja": "A clear thesis in the introduction — a band 7 Task Response requirement.",
+      "ru": "A clear thesis in the introduction — a band 7 Task Response requirement."
+     }
+    },
+    {
+     "phrase": "pedestrians, who browse and return frequently, can be valuable customers",
+     "kind": "good",
+     "note": {
+      "vi": "Biến lập luận đối phương thành lợi thế — tư duy phản biện.",
+      "en": "Turns the opposing argument into an advantage — critical thinking.",
+      "ja": "Turns the opposing argument into an advantage — critical thinking.",
+      "ru": "Turns the opposing argument into an advantage — critical thinking."
+     }
+    },
+    {
+     "phrase": "Traffic is a major source of the fine particles and noise",
+     "kind": "issue",
+     "note": {
+      "vi": "Đúng nhưng chung; band 8 gắn với một tình huống/nhóm người cụ thể.",
+      "en": "True but general; band 8 ties it to a specific situation or group.",
+      "ja": "True but general; band 8 ties it to a specific situation or group.",
+      "ru": "True but general; band 8 ties it to a specific situation or group."
+     }
+    },
+    {
+     "phrase": "so that giving up the car becomes a convenient choice rather than a punishment",
+     "kind": "good",
+     "note": {
+      "vi": "Cấu trúc tương phản tinh tế, kết thúc đoạn ấn tượng.",
+      "en": "A neat contrast that ends the paragraph strongly.",
+      "ja": "A neat contrast that ends the paragraph strongly.",
+      "ru": "A neat contrast that ends the paragraph strongly."
+     }
+    }
+   ],
+   "nextBand": {
+    "vi": "• Chuyển các khẳng định chung thành ví dụ cụ thể, sinh động.\n• Thêm sắc thái: điều kiện nào khiến lệnh cấm hiệu quả/không hiệu quả.\n• Đa dạng hóa nhịp câu và dùng từ ít gặp một cách tự nhiên.",
+    "en": "• Turn general claims into vivid, specific examples.\n• Add nuance: under what conditions a ban works or fails.\n• Vary sentence rhythm and use less common vocabulary naturally.",
+    "ja": "• 一般的な主張を具体的で鮮明な例にする。\n• 禁止が機能する／しない条件などニュアンスを加える。\n• 文のリズムを変え、高度な語彙を自然に使う。",
+    "ru": "• Превратите общие утверждения в яркие конкретные примеры.\n• Добавьте нюансы: при каких условиях запрет работает или нет.\n• Варьируйте ритм предложений и естественно используйте менее частотную лексику."
+   }
+  },
+  {
+   "band": 8.0,
+   "words": 335,
+   "criteria": [
+    {
+     "code": "TR",
+     "band": 8,
+     "note": {
+      "vi": "Quan điểm rõ và tinh tế ('the goal is right but the method matters'); ví dụ cụ thể cho cả hai phía.",
+      "en": "A clear, nuanced stance ('the goal is right but the method matters'); specific examples for both sides.",
+      "ja": "A clear, nuanced stance ('the goal is right but the method matters'); specific examples for both sides.",
+      "ru": "A clear, nuanced stance ('the goal is right but the method matters'); specific examples for both sides."
+     }
+    },
+    {
+     "code": "CC",
+     "band": 8,
+     "note": {
+      "vi": "Chuyển ý tự nhiên ('important as that is', 'nonetheless', 'Meanwhile'); mỗi đoạn có trọng tâm rõ.",
+      "en": "Natural transitions ('important as that is', 'nonetheless', 'Meanwhile'); each paragraph clearly focused.",
+      "ja": "Natural transitions ('important as that is', 'nonetheless', 'Meanwhile'); each paragraph clearly focused.",
+      "ru": "Natural transitions ('important as that is', 'nonetheless', 'Meanwhile'); each paragraph clearly focused."
+     }
+    },
+    {
+     "code": "LR",
+     "band": 8,
+     "note": {
+      "vi": "linger rather than merely pass through, strand residents, bears the cost, phased in — tự nhiên và chính xác.",
+      "en": "linger rather than merely pass through, strand residents, bears the cost, phased in — natural and precise.",
+      "ja": "linger rather than merely pass through, strand residents, bears the cost, phased in — natural and precise.",
+      "ru": "linger rather than merely pass through, strand residents, bears the cost, phased in — natural and precise."
+     }
+    },
+    {
+     "code": "GRA",
+     "band": 8,
+     "note": {
+      "vi": "Cấu trúc nhượng bộ đảo ('important as that is'), mệnh đề chèn, câu điều kiện; gần như hoàn hảo.",
+      "en": "Inverted concession ('important as that is'), embedded clauses, conditionals; almost flawless.",
+      "ja": "Inverted concession ('important as that is'), embedded clauses, conditionals; almost flawless.",
+      "ru": "Inverted concession ('important as that is'), embedded clauses, conditionals; almost flawless."
+     }
+    }
+   ],
+   "text": "Few urban policies provoke as much debate as the proposal to close city centres to private cars. Supporters see it as the quickest route to cleaner, safer and more liveable streets, whereas critics warn that it would empty shops and strand residents. In my view, the goal is right but the method matters: centres should become largely car-free, provided that the change is phased in and accompanied by genuine alternatives.\n\nThe case for removing cars rests on more than air quality, important as that is. Cars, whether moving or parked, consume a remarkable share of a city's most valuable land. When a street is reclaimed from traffic, it can accommodate trees, seating and space for children to play, and it becomes a place where people choose to linger rather than merely pass through. A family that previously drove in, parked and left after one errand may, in a pleasant pedestrianised centre, spend an afternoon there, visiting several shops and a café along the way.\n\nOpponents are nonetheless right to highlight who bears the cost. A hardware shop whose customers buy heavy materials, or a resident in her eighties who relies on a car to reach the doctor, cannot simply adapt overnight. If a ban is imposed abruptly, the likely winners are out-of-town shopping centres with free parking, and the losers are precisely the independent businesses that give a city centre its character.\n\nThe solution, I would argue, is to treat car-free centres as a destination reached in stages. Access permits for residents and disabled drivers, timed windows for deliveries, and small electric shuttles linking car parks on the edge of the centre would address most legitimate objections. Meanwhile, reliable and affordable public transport would ensure that leaving the car behind feels like an improvement rather than a sacrifice.\n\nUltimately, banning private cars from city centres is worthwhile, but only if cities recognise that a policy which benefits the many must not be paid for by the few who have no alternative.",
+   "summary": {
+    "vi": "Lập luận phát triển tốt với ví dụ sinh động (gia đình dạo phố cả buổi chiều); xử lý phản biện khéo léo, nêu rõ ai chịu thiệt; từ vựng rộng và tự nhiên; cấu trúc đa dạng, gần như không lỗi.",
+    "en": "A well-developed argument with vivid examples (the family spending an afternoon); objections handled skilfully by identifying who bears the cost; wide natural vocabulary; varied structures, nearly error-free.",
+    "ja": "鮮明な例（午後を過ごす家族）で論がよく展開され、誰が負担するかを示して反論を巧みに扱う。語彙は広く自然、構文は多様でほぼ誤りなし。",
+    "ru": "Хорошо развитая аргументация с яркими примерами (семья проводит в центре целый день); возражения учтены умело — показано, кто несёт издержки; широкая естественная лексика; разнообразные структуры почти без ошибок."
+   },
+   "highlights": [
+    {
+     "phrase": "important as that is",
+     "kind": "good",
+     "note": {
+      "vi": "Mệnh đề nhượng bộ đảo — dấu hiệu ngữ pháp band 8+.",
+      "en": "An inverted concessive clause — a band 8+ grammar signal.",
+      "ja": "An inverted concessive clause — a band 8+ grammar signal.",
+      "ru": "An inverted concessive clause — a band 8+ grammar signal."
+     }
+    },
+    {
+     "phrase": "A family that previously drove in, parked and left after one errand may, in a pleasant pedestrianised centre, spend an afternoon there",
+     "kind": "good",
+     "note": {
+      "vi": "Kịch bản cụ thể thay cho số liệu — thuyết phục mà không bịa dữ liệu.",
+      "en": "A concrete scenario instead of statistics — persuasive without invented data.",
+      "ja": "A concrete scenario instead of statistics — persuasive without invented data.",
+      "ru": "A concrete scenario instead of statistics — persuasive without invented data."
+     }
+    },
+    {
+     "phrase": "the losers are precisely the independent businesses that give a city centre its character",
+     "kind": "good",
+     "note": {
+      "vi": "Phân tích hệ quả sâu: ai thắng, ai thua.",
+      "en": "Deep analysis of consequences: who wins, who loses.",
+      "ja": "Deep analysis of consequences: who wins, who loses.",
+      "ru": "Deep analysis of consequences: who wins, who loses."
+     }
+    },
+    {
+     "phrase": "Access permits for residents and disabled drivers, timed windows for deliveries, and small electric shuttles linking car parks on the edge of the centre would address most legitimate objections.",
+     "kind": "issue",
+     "note": {
+      "vi": "Câu dài và dày thông tin; band 9 có thể chia nhịp để nhấn mạnh.",
+      "en": "Long and dense; a band 9 writer might split it for emphasis.",
+      "ja": "Long and dense; a band 9 writer might split it for emphasis.",
+      "ru": "Long and dense; a band 9 writer might split it for emphasis."
+     }
+    }
+   ],
+   "nextBand": {
+    "vi": "• Điều chỉnh nhịp câu: xen câu ngắn để nhấn mạnh sau câu dài.\n• Đưa ra một góc nhìn độc đáo hơn (ví dụ: ai quyết định 'thành phố thuộc về ai').\n• Đảm bảo mọi ý đều được khai thác trọn vẹn, không còn câu 'liệt kê'.",
+    "en": "• Adjust rhythm: follow a long sentence with a short, emphatic one.\n• Offer a more original angle (e.g. who the city centre is for).\n• Make sure every idea is fully exploited, with no list-like sentences.",
+    "ja": "• 長文の後に短い強調文を置くなどリズムを調整する。\n• 「都心は誰のものか」など独自の視点を示す。\n• 羅列的な文をなくし、全論点を十分に掘り下げる。",
+    "ru": "• Регулируйте ритм: после длинного предложения ставьте короткое, выразительное.\n• Предложите более оригинальный ракурс (например, для кого существует центр города).\n• Убедитесь, что каждая идея полностью раскрыта, без перечислений."
+   }
+  },
+  {
+   "band": 9.0,
+   "words": 361,
+   "criteria": [
+    {
+     "code": "TR",
+     "band": 9,
+     "note": {
+      "vi": "Đặt lại khung vấn đề ngay mở bài; phân tích hai phía có chiều sâu; kết luận đưa ra tiêu chí đánh giá chính sách.",
+      "en": "Reframes the issue from the outset; deep analysis of both sides; the conclusion offers a criterion for judging the policy.",
+      "ja": "Reframes the issue from the outset; deep analysis of both sides; the conclusion offers a criterion for judging the policy.",
+      "ru": "Reframes the issue from the outset; deep analysis of both sides; the conclusion offers a criterion for judging the policy."
+     }
+    },
+    {
+     "code": "CC",
+     "band": 9,
+     "note": {
+      "vi": "Liên kết 'vô hình': 'Yet', 'then', 'Above all' và tham chiếu ý nối các đoạn trơn tru.",
+      "en": "'Invisible' cohesion: 'Yet', 'then', 'Above all' and idea referencing join paragraphs smoothly.",
+      "ja": "'Invisible' cohesion: 'Yet', 'then', 'Above all' and idea referencing join paragraphs smoothly.",
+      "ru": "'Invisible' cohesion: 'Yet', 'then', 'Above all' and idea referencing join paragraphs smoothly."
+     }
+    },
+    {
+     "code": "LR",
+     "band": 9,
+     "note": {
+      "vi": "hollow them out, to be endured rather than enjoyed, quietly collect the customers — giàu hình ảnh, chính xác.",
+      "en": "hollow them out, to be endured rather than enjoyed, quietly collect the customers — vivid and precise.",
+      "ja": "hollow them out, to be endured rather than enjoyed, quietly collect the customers — vivid and precise.",
+      "ru": "hollow them out, to be endured rather than enjoyed, quietly collect the customers — vivid and precise."
+     }
+    },
+    {
+     "code": "GRA",
+     "band": 9,
+     "note": {
+      "vi": "Câu ngắn nhấn mạnh xen câu dài; cấu trúc 'not... but', 'neither... nor'; hoàn toàn chính xác.",
+      "en": "Short emphatic sentences among long ones; 'not... but', 'neither... nor'; fully accurate.",
+      "ja": "Short emphatic sentences among long ones; 'not... but', 'neither... nor'; fully accurate.",
+      "ru": "Short emphatic sentences among long ones; 'not... but', 'neither... nor'; fully accurate."
+     }
+    }
+   ],
+   "text": "City centres were not designed for cars, yet over the past century many have been reshaped around them. Calls to ban private vehicles from these areas are therefore, in a sense, proposals to return streets to their original purpose. Whether that would revive centres or hollow them out is the real question, and my answer is that it depends almost entirely on how the change is made.\n\nThose in favour make a persuasive case. Traffic does not merely pollute; it dictates the shape of public space. Pavements narrow, crossings multiply and the street becomes something to be endured rather than enjoyed. Remove the cars and the same stretch of road can hold market stalls, trees and benches, and people begin to treat it as a place in its own right. Retailers who fear the loss of drivers often underestimate how much a pleasant environment changes behaviour: a shopper on foot is slower, more curious and more likely to return.\n\nYet the critics' objections are not simply nostalgia for parking. Some businesses genuinely depend on vehicle access, and some residents genuinely cannot walk or cycle. For a carpenter carrying timber, or a pensioner with arthritis, a car is not a lifestyle choice but a necessity. A policy that ignores them does not create a fairer city; it shifts the burden onto those least able to carry it, while out-of-town malls, with their vast free car parks, quietly collect the customers that the centre has turned away.\n\nThe sensible course, then, is neither a sudden ban nor the status quo, but a deliberate transition. Restricting through-traffic first, pricing access for private cars, protecting permits for residents with genuine need and scheduling deliveries outside busy hours would allow centres to change without shocks. Above all, public transport must improve before restrictions tighten, not after, so that the alternative exists by the time people need it.\n\nBanning private cars from city centres can transform them for the better. But the measure of such a policy is not how many cars it removes; it is whether everyone, including those who still need to drive, can continue to reach the heart of their city.",
+   "summary": {
+    "vi": "Bài viết sâu sắc, độc đáo (đường phố 'trở về mục đích ban đầu'); thảo luận hai phía công bằng; lập luận chặt chẽ dẫn tới quan điểm thuyết phục; ngôn ngữ tinh tế, tự nhiên, chính xác tuyệt đối.",
+    "en": "An insightful, original response (streets 'returned to their original purpose'); both sides treated fairly; tightly reasoned towards a persuasive opinion; sophisticated, natural and fully accurate language.",
+    "ja": "街路を「本来の目的に戻す」という独自の視点を持つ洞察的な答案。両論を公平に扱い、説得力ある意見へ緻密に論を運ぶ。言語は洗練され自然で完全に正確。",
+    "ru": "Глубокий, оригинальный ответ (улицы «возвращаются к своему изначальному назначению»); обе стороны рассмотрены справедливо; строгая аргументация ведёт к убедительному мнению; изысканный, естественный и абсолютно точный язык."
+   },
+   "highlights": [
+    {
+     "phrase": "Calls to ban private vehicles from these areas are therefore, in a sense, proposals to return streets to their original purpose.",
+     "kind": "good",
+     "note": {
+      "vi": "Đặt lại khung vấn đề — sự độc đáo đặc trưng band 9.",
+      "en": "Reframing the issue — the originality typical of band 9.",
+      "ja": "Reframing the issue — the originality typical of band 9.",
+      "ru": "Reframing the issue — the originality typical of band 9."
+     }
+    },
+    {
+     "phrase": "Traffic does not merely pollute; it dictates the shape of public space.",
+     "kind": "good",
+     "note": {
+      "vi": "Câu ngắn, sắc, mở rộng ý vượt khỏi 'ô nhiễm'.",
+      "en": "Short and sharp, extending the idea beyond pollution.",
+      "ja": "Short and sharp, extending the idea beyond pollution.",
+      "ru": "Short and sharp, extending the idea beyond pollution."
+     }
+    },
+    {
+     "phrase": "a car is not a lifestyle choice but a necessity",
+     "kind": "good",
+     "note": {
+      "vi": "Cấu trúc 'not X but Y' tạo đối lập rõ.",
+      "en": "'not X but Y' creates a clear contrast.",
+      "ja": "'not X but Y' creates a clear contrast.",
+      "ru": "'not X but Y' creates a clear contrast."
+     }
+    },
+    {
+     "phrase": "public transport must improve before restrictions tighten, not after",
+     "kind": "good",
+     "note": {
+      "vi": "Lập luận về trình tự — chi tiết thể hiện tư duy chính sách.",
+      "en": "An argument about sequencing — evidence of policy thinking.",
+      "ja": "An argument about sequencing — evidence of policy thinking.",
+      "ru": "An argument about sequencing — evidence of policy thinking."
+     }
+    },
+    {
+     "phrase": "the measure of such a policy is not how many cars it removes",
+     "kind": "good",
+     "note": {
+      "vi": "Kết luận đưa ra tiêu chí đánh giá mới, không lặp lại thân bài.",
+      "en": "The conclusion offers a new yardstick instead of repeating the body.",
+      "ja": "The conclusion offers a new yardstick instead of repeating the body.",
+      "ru": "The conclusion offers a new yardstick instead of repeating the body."
+     }
+    }
+   ],
+   "nextBand": {
+    "vi": "• Mức cao nhất. Đặt cạnh bài band 8: chú ý cách đặt lại khung vấn đề và nhịp câu.",
+    "en": "• Top band. Put it next to the band 8 answer and notice the reframing and sentence rhythm.",
+    "ja": "• 最高バンド。8.0と並べ、問題の捉え直しと文のリズムに注目しましょう。",
+    "ru": "• Высший балл. Сравните с ответом на 8.0: обратите внимание на переосмысление проблемы и ритм предложений."
+   }
+  }
+ ]
+}

@@ -142,6 +142,42 @@ namespace NihongoLife.StudyModes.Video
             return "";
         }
 
+        /// <summary>
+        /// Adds entries that live outside the catalog JSON (e.g. Russian path slots once their YouTube URL is filled).
+        /// Entries with no playable source or an id already present are skipped. Returns how many were added.
+        /// </summary>
+        public static int Merge(IEnumerable<VideoEntry> entries)
+        {
+            if (entries == null) return 0;
+            int added = 0;
+            var data = Data;
+            foreach (var v in entries)
+            {
+                if (v == null || string.IsNullOrWhiteSpace(v.id) || Find(v.id) != null) continue;
+                if (string.IsNullOrWhiteSpace(v.titleVi) && string.IsNullOrWhiteSpace(v.titleEn)) continue;
+                if (Classify(v) == VideoSourceKind.None) continue;
+                data.videos.Add(v);
+                added++;
+            }
+            return added;
+        }
+
+        /// <summary>Which language a video teaches: "en" (IELTS / English), "ja" (Japanese, JLPT, kana, life in Japan) or "ru" (Russian).</summary>
+        public static string Category(VideoEntry v)
+        {
+            string m = (v?.module ?? "").ToLowerInvariant();
+            if (m.StartsWith("ru") || m.Contains("russian") || m.Contains("torfl")) return "ru";
+            if (m.StartsWith("ielts") || m.StartsWith("english") || m.StartsWith("en-") || m == "en") return "en";
+            return "ja";
+        }
+
+        public static List<VideoEntry> ByCategory(string category)
+        {
+            var list = new List<VideoEntry>();
+            foreach (var v in All) if (Category(v) == category) list.Add(v);
+            return list;
+        }
+
         /// <summary>Tests only.</summary>
         public static void ResetCache() => _loaded = null;
     }

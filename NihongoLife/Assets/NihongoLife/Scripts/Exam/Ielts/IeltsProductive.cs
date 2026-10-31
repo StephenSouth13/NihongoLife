@@ -78,6 +78,8 @@ namespace NihongoLife.Exam.Ielts
         public IeltsAiExamination examination;
         public IeltsCoachReport coach;
         public List<IeltsRewrite> rewrites = new();
+        /// <summary>The learner's own rubric marking of this task ("self-assessed"); independent of the AI/teacher examination.</summary>
+        public IeltsSelfAssessment selfAssessment;
     }
 
     /// <summary>Measured on the learner's machine from the recording itself (not from the transcript).</summary>
@@ -122,6 +124,10 @@ namespace NihongoLife.Exam.Ielts
         public float overall;
         /// <summary>The band went into the IELTS score history (once, from the original submission only).</summary>
         public bool countedInHistory;
+        /// <summary>Speaking self-assessment ("self-assessed").</summary>
+        public IeltsSelfAssessment speakingSelfAssessment;
+        /// <summary>Overall band from the learner's self-assessment (0 = not done). Never mixed into <see cref="overall"/>.</summary>
+        public float selfAssessedOverall;
     }
 
     /// <summary>IELTS rounding rules, applied locally to whatever the model reports per criterion.</summary>

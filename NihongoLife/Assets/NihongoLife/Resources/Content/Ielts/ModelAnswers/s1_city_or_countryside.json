@@ -1,0 +1,480 @@
+{
+ "schema": "nihongolife.ielts.models/1",
+ "id": "s1_city_or_countryside",
+ "skill": "speaking",
+ "task": 1,
+ "type": "part1",
+ "title": {
+  "vi": "Part 1 · Thành phố hay nông thôn?",
+  "en": "Part 1 · City or countryside?",
+  "ja": "Part 1・都会か田舎か",
+  "ru": "Part 1 · Город или деревня?"
+ },
+ "prompt": "Do you prefer living in a city or in the countryside? Why?",
+ "note": {
+  "vi": "Phát âm không thể hiện được qua văn bản: điểm P là minh họa, ghi chú mô tả cách nói (nhấn âm, ngữ điệu, nối âm) của người nói ở band này.",
+  "en": "Pronunciation cannot be shown in writing: the P band is illustrative and the notes describe how a speaker at this band typically sounds (stress, intonation, linking).",
+  "ja": "発音は文字では示せません。Pのバンドは例示で、注記はこのバンドの話者の典型的な話し方（強勢・抑揚・連結）を説明します。",
+  "ru": "Произношение нельзя показать письменно: балл P условный, а комментарии описывают, как обычно звучит говорящий этого уровня (ударение, интонация, связность)."
+ },
+ "dataCaption": "",
+ "dataColumns": [],
+ "dataRows": [],
+ "samples": [
+  {
+   "band": 5.0,
+   "words": 46,
+   "criteria": [
+    {
+     "code": "FC",
+     "band": 5,
+     "note": {
+      "vi": "Ngập ngừng ('er', 'um'), lặp từ; câu trả lời ngắn.",
+      "en": "Hesitation ('er', 'um') and repetition; a short answer.",
+      "ja": "Hesitation ('er', 'um') and repetition; a short answer.",
+      "ru": "Hesitation ('er', 'um') and repetition; a short answer."
+     }
+    },
+    {
+     "code": "LR",
+     "band": 5,
+     "note": {
+      "vi": "'many thing to do', 'convenient' — đủ nhưng hẹp.",
+      "en": "'many thing to do', 'convenient' — adequate but narrow.",
+      "ja": "'many thing to do', 'convenient' — adequate but narrow.",
+      "ru": "'many thing to do', 'convenient' — adequate but narrow."
+     }
+    },
+    {
+     "code": "GRA",
+     "band": 5,
+     "note": {
+      "vi": "'I prefer city', 'there is many', 'I live in city since' (cần hiện tại hoàn thành).",
+      "en": "'I prefer city', 'there is many', 'I live in city since' (needs present perfect).",
+      "ja": "'I prefer city', 'there is many', 'I live in city since' (needs present perfect).",
+      "ru": "'I prefer city', 'there is many', 'I live in city since' (needs present perfect)."
+     }
+    },
+    {
+     "code": "P",
+     "band": 5,
+     "note": {
+      "vi": "Dễ hiểu nhưng nhấn âm từng từ, ngữ điệu phẳng.",
+      "en": "Generally intelligible but word-by-word stress and flat intonation.",
+      "ja": "Generally intelligible but word-by-word stress and flat intonation.",
+      "ru": "Generally intelligible but word-by-word stress and flat intonation."
+     }
+    }
+   ],
+   "text": "I prefer city. Because in city there is many... many thing to do, like shopping, and, er, the transport is more convenient. Countryside is quiet but, um, it is boring for me. I live in city since I was born so I am used to it.",
+   "summary": {
+    "vi": "Trả lời được nhưng ngắn, ngập ngừng; lỗi ngữ pháp cơ bản; từ vựng chung chung.",
+    "en": "Answers the question but briefly, with hesitation; basic grammar errors; general vocabulary.",
+    "ja": "答えてはいるが短くためらいがあり、基本的な文法ミスと一般的な語彙。",
+    "ru": "Отвечает на вопрос, но кратко и с паузами; базовые грамматические ошибки; общая лексика."
+   },
+   "highlights": [
+    {
+     "phrase": "there is many... many thing",
+     "kind": "issue",
+     "note": {
+      "vi": "'there are many things'.",
+      "en": "'there are many things'.",
+      "ja": "'there are many things'.",
+      "ru": "'there are many things'."
+     }
+    },
+    {
+     "phrase": "I live in city since I was born",
+     "kind": "issue",
+     "note": {
+      "vi": "'I have lived in the city since I was born'.",
+      "en": "'I have lived in the city since I was born'.",
+      "ja": "'I have lived in the city since I was born'.",
+      "ru": "'I have lived in the city since I was born'."
+     }
+    },
+    {
+     "phrase": "the transport is more convenient",
+     "kind": "good",
+     "note": {
+      "vi": "Có lý do cụ thể — tốt.",
+      "en": "A concrete reason — good.",
+      "ja": "A concrete reason — good.",
+      "ru": "A concrete reason — good."
+     }
+    }
+   ],
+   "nextBand": {
+    "vi": "Mở rộng 2–3 câu: lý do + ví dụ cá nhân; dùng hiện tại hoàn thành với 'since'.",
+    "en": "Extend to 2–3 sentences: reason + personal example; use the present perfect with 'since'.",
+    "ja": "理由＋個人的な例で2〜3文に広げ、'since'には現在完了を使う。",
+    "ru": "Расширьте ответ до 2–3 предложений: причина + личный пример; с 'since' используйте Present Perfect."
+   }
+  },
+  {
+   "band": 6.0,
+   "words": 57,
+   "criteria": [
+    {
+     "code": "FC",
+     "band": 6,
+     "note": {
+      "vi": "Nói trôi, có nối ý ('mainly because'); đôi khi dùng cụm đệm.",
+      "en": "Speaks at length with linking ('mainly because'); some fillers.",
+      "ja": "Speaks at length with linking ('mainly because'); some fillers.",
+      "ru": "Speaks at length with linking ('mainly because'); some fillers."
+     }
+    },
+    {
+     "code": "LR",
+     "band": 6,
+     "note": {
+      "vi": "Từ vựng phù hợp; 'and so on' thay cho ví dụ cụ thể hơn.",
+      "en": "Appropriate vocabulary; 'and so on' replaces more specific examples.",
+      "ja": "Appropriate vocabulary; 'and so on' replaces more specific examples.",
+      "ru": "Appropriate vocabulary; 'and so on' replaces more specific examples."
+     }
+    },
+    {
+     "code": "GRA",
+     "band": 6,
+     "note": {
+      "vi": "Có câu điều kiện loại 2 ('if I lived there'); chính xác.",
+      "en": "Second conditional ('if I lived there'); accurate.",
+      "ja": "Second conditional ('if I lived there'); accurate.",
+      "ru": "Second conditional ('if I lived there'); accurate."
+     }
+    },
+    {
+     "code": "P",
+     "band": 6,
+     "note": {
+      "vi": "Dễ hiểu; nhấn âm câu chưa luôn tự nhiên.",
+      "en": "Easy to understand; sentence stress not always natural.",
+      "ja": "Easy to understand; sentence stress not always natural.",
+      "ru": "Easy to understand; sentence stress not always natural."
+     }
+    }
+   ],
+   "text": "I'd say I prefer the city, mainly because it's more convenient. Everything is close, like supermarkets, hospitals and so on, and I can take the bus or the metro to go almost anywhere. The countryside is nice for a short holiday, but I think I would feel a bit bored if I lived there all the time.",
+   "summary": {
+    "vi": "Trả lời đủ dài, có lý do và ví dụ; vài chỗ dùng cụm quen thuộc ('and so on'); ngữ pháp chính xác ở mức an toàn.",
+    "en": "A reasonably extended answer with a reason and examples; some stock phrases ('and so on'); accurate but safe grammar.",
+    "ja": "理由と例を含む十分な長さの答え。定型句（'and so on'）があり、文法は正確だが安全運転。",
+    "ru": "Достаточно развёрнутый ответ с причиной и примерами; есть шаблонные фразы ('and so on'); грамматика точная, но простая."
+   },
+   "highlights": [
+    {
+     "phrase": "I'd say I prefer the city, mainly because",
+     "kind": "good",
+     "note": {
+      "vi": "Mở câu tự nhiên + lý do ngay.",
+      "en": "A natural opener plus an immediate reason.",
+      "ja": "A natural opener plus an immediate reason.",
+      "ru": "A natural opener plus an immediate reason."
+     }
+    },
+    {
+     "phrase": "and so on",
+     "kind": "issue",
+     "note": {
+      "vi": "Cụm đệm; nêu một ví dụ cụ thể sẽ tốt hơn.",
+      "en": "A filler; one specific example would be better.",
+      "ja": "A filler; one specific example would be better.",
+      "ru": "A filler; one specific example would be better."
+     }
+    },
+    {
+     "phrase": "I would feel a bit bored if I lived there all the time",
+     "kind": "good",
+     "note": {
+      "vi": "Câu điều kiện loại 2 đúng.",
+      "en": "A correct second conditional.",
+      "ja": "A correct second conditional.",
+      "ru": "A correct second conditional."
+     }
+    }
+   ],
+   "nextBand": {
+    "vi": "Thay cụm chung bằng chi tiết riêng (ví dụ quán ăn đêm gần nhà); dùng thành ngữ tự nhiên.",
+    "en": "Replace generic phrases with personal detail (e.g. the late-night food stalls near home); use natural idiomatic language.",
+    "ja": "一般的な表現を個人的な詳細（家の近くの屋台など）に置き換え、自然な慣用表現を使う。",
+    "ru": "Замените общие фразы личными деталями (например, ночные лотки с едой рядом с домом); используйте естественные идиомы."
+   }
+  },
+  {
+   "band": 7.0,
+   "words": 60,
+   "criteria": [
+    {
+     "code": "FC",
+     "band": 7,
+     "note": {
+      "vi": "Nói dài không gắng sức; 'That said' chuyển ý tự nhiên.",
+      "en": "Speaks at length without effort; 'That said' is a natural shift.",
+      "ja": "Speaks at length without effort; 'That said' is a natural shift.",
+      "ru": "Speaks at length without effort; 'That said' is a natural shift."
+     }
+    },
+    {
+     "code": "LR",
+     "band": 7,
+     "note": {
+      "vi": "Thành ngữ dùng đúng ngữ cảnh: on my doorstep, the slower pace.",
+      "en": "Idiomatic items used well: on my doorstep, the slower pace.",
+      "ja": "Idiomatic items used well: on my doorstep, the slower pace.",
+      "ru": "Idiomatic items used well: on my doorstep, the slower pace."
+     }
+    },
+    {
+     "code": "GRA",
+     "band": 7,
+     "note": {
+      "vi": "Điều kiện, tương lai, cấu trúc phức; không lỗi.",
+      "en": "Conditionals, future forms, complex structures; error-free.",
+      "ja": "Conditionals, future forms, complex structures; error-free.",
+      "ru": "Conditionals, future forms, complex structures; error-free."
+     }
+    },
+    {
+     "code": "P",
+     "band": 7,
+     "note": {
+      "vi": "Ngữ điệu tự nhiên, nối âm tốt; đôi khi nhấn sai một âm tiết.",
+      "en": "Natural intonation and linking; occasional misplaced word stress.",
+      "ja": "Natural intonation and linking; occasional misplaced word stress.",
+      "ru": "Natural intonation and linking; occasional misplaced word stress."
+     }
+    }
+   ],
+   "text": "Definitely the city, at least at this stage of my life. I like having everything on my doorstep: if I fancy a bowl of noodles at eleven at night, there's always somewhere open. That said, I can see the appeal of the countryside, especially the fresh air and the slower pace, so maybe when I'm older I'll move somewhere quieter.",
+   "summary": {
+    "vi": "Trả lời trôi chảy, có ý phát triển và nhượng bộ; từ vựng tự nhiên ('on my doorstep', 'fancy'); ngữ pháp linh hoạt.",
+    "en": "Fluent and developed, with a concession; natural vocabulary ('on my doorstep', 'fancy'); flexible grammar.",
+    "ja": "流暢で展開があり譲歩も含む。自然な語彙（'on my doorstep', 'fancy'）、柔軟な文法。",
+    "ru": "Беглый развёрнутый ответ с уступкой; естественная лексика ('on my doorstep', 'fancy'); гибкая грамматика."
+   },
+   "highlights": [
+    {
+     "phrase": "at least at this stage of my life",
+     "kind": "good",
+     "note": {
+      "vi": "Thêm sắc thái cho câu trả lời — dấu hiệu band 7.",
+      "en": "Adds nuance to the answer — a band 7 signal.",
+      "ja": "Adds nuance to the answer — a band 7 signal.",
+      "ru": "Adds nuance to the answer — a band 7 signal."
+     }
+    },
+    {
+     "phrase": "everything on my doorstep",
+     "kind": "good",
+     "note": {
+      "vi": "Thành ngữ tự nhiên = rất gần nhà.",
+      "en": "Natural idiom = very close to home.",
+      "ja": "Natural idiom = very close to home.",
+      "ru": "Natural idiom = very close to home."
+     }
+    },
+    {
+     "phrase": "That said,",
+     "kind": "good",
+     "note": {
+      "vi": "Nhượng bộ tự nhiên trong văn nói.",
+      "en": "A natural spoken concession.",
+      "ja": "A natural spoken concession.",
+      "ru": "A natural spoken concession."
+     }
+    }
+   ],
+   "nextBand": {
+    "vi": "Giữ độ tự nhiên nhưng thêm chính xác về từ (ví dụ 'the anonymity of city life'), ngữ điệu nhấn mạnh ý chính.",
+    "en": "Keep it natural but add precision ('the anonymity of city life') and use intonation to highlight key points.",
+    "ja": "自然さを保ちつつ語の精度（'the anonymity of city life'）を上げ、抑揚で要点を強調する。",
+    "ru": "Сохраняя естественность, добавьте точности ('the anonymity of city life') и выделяйте главное интонацией."
+   }
+  },
+  {
+   "band": 8.0,
+   "words": 71,
+   "criteria": [
+    {
+     "code": "FC",
+     "band": 8,
+     "note": {
+      "vi": "Không ngập ngừng do ngôn ngữ; phát triển ý mạch lạc.",
+      "en": "Hesitation is content-related only; coherent development.",
+      "ja": "Hesitation is content-related only; coherent development.",
+      "ru": "Hesitation is content-related only; coherent development."
+     }
+    },
+    {
+     "code": "LR",
+     "band": 8,
+     "note": {
+      "vi": "thrives on, struck by, rule out, swapping the noise for some peace and quiet.",
+      "en": "thrives on, struck by, rule out, swapping the noise for some peace and quiet.",
+      "ja": "thrives on, struck by, rule out, swapping the noise for some peace and quiet.",
+      "ru": "thrives on, struck by, rule out, swapping the noise for some peace and quiet."
+     }
+    },
+    {
+     "code": "GRA",
+     "band": 8,
+     "note": {
+      "vi": "Danh động từ, mệnh đề 'how much more...', phủ định khéo; chính xác.",
+      "en": "Gerunds, 'how much more...' clauses, hedged negatives; accurate.",
+      "ja": "Gerunds, 'how much more...' clauses, hedged negatives; accurate.",
+      "ru": "Gerunds, 'how much more...' clauses, hedged negatives; accurate."
+     }
+    },
+    {
+     "code": "P",
+     "band": 8,
+     "note": {
+      "vi": "Dễ nghe, ngữ điệu biểu cảm, nhịp tiếng Anh tự nhiên.",
+      "en": "Easy to follow, expressive intonation, natural English rhythm.",
+      "ja": "Easy to follow, expressive intonation, natural English rhythm.",
+      "ru": "Easy to follow, expressive intonation, natural English rhythm."
+     }
+    }
+   ],
+   "text": "For now, the city, without a doubt. I'm someone who thrives on a bit of buzz, and I love that I can finish work, catch a film and grab dinner without ever needing a car. Having said that, every time I visit my grandparents in their village I'm struck by how much more rested I feel, so I wouldn't rule out swapping the noise for some peace and quiet later on.",
+   "summary": {
+    "vi": "Trôi chảy, mạch lạc, từ vựng tinh tế và chính xác ('thrives on a bit of buzz', 'wouldn't rule out'); câu phức linh hoạt.",
+    "en": "Fluent and coherent; precise, idiomatic vocabulary ('thrives on a bit of buzz', 'wouldn't rule out'); flexible complex sentences.",
+    "ja": "流暢で一貫性があり、正確で慣用的な語彙（'thrives on a bit of buzz', 'wouldn't rule out'）、柔軟な複文。",
+    "ru": "Бегло и связно; точная идиоматичная лексика ('thrives on a bit of buzz', 'wouldn't rule out'); гибкие сложные предложения."
+   },
+   "highlights": [
+    {
+     "phrase": "thrives on a bit of buzz",
+     "kind": "good",
+     "note": {
+      "vi": "Cụm thành ngữ tinh tế: thích không khí sôi động.",
+      "en": "A sophisticated idiom: enjoys a lively atmosphere.",
+      "ja": "A sophisticated idiom: enjoys a lively atmosphere.",
+      "ru": "A sophisticated idiom: enjoys a lively atmosphere."
+     }
+    },
+    {
+     "phrase": "I'm struck by how much more rested I feel",
+     "kind": "good",
+     "note": {
+      "vi": "Cấu trúc cảm thán phức — ngữ pháp band 8.",
+      "en": "A complex exclamative structure — band 8 grammar.",
+      "ja": "A complex exclamative structure — band 8 grammar.",
+      "ru": "A complex exclamative structure — band 8 grammar."
+     }
+    },
+    {
+     "phrase": "I wouldn't rule out",
+     "kind": "good",
+     "note": {
+      "vi": "Nói giảm tự nhiên, rất bản xứ.",
+      "en": "Natural hedging, very native-like.",
+      "ja": "Natural hedging, very native-like.",
+      "ru": "Natural hedging, very native-like."
+     }
+    }
+   ],
+   "nextBand": {
+    "vi": "Band 9 cần độ tự nhiên hoàn toàn trong mọi câu trả lời, kể cả câu hỏi khó; luyện giữ chất lượng này xuyên suốt bài thi.",
+    "en": "Band 9 needs complete naturalness on every answer, including difficult ones; practise sustaining this level throughout.",
+    "ja": "9.0では難しい質問も含め全回答で完全な自然さが必要。試験全体でこの水準を維持する練習を。",
+    "ru": "Для 9.0 нужна полная естественность в каждом ответе, включая трудные; тренируйтесь удерживать этот уровень на протяжении всего экзамена."
+   }
+  },
+  {
+   "band": 9.0,
+   "words": 73,
+   "criteria": [
+    {
+     "code": "FC",
+     "band": 9,
+     "note": {
+      "vi": "Mạch lạc hoàn toàn, có tổ chức ý độc đáo; nói tự nhiên như người bản xứ.",
+      "en": "Fully coherent with an original structure; speaks with native-like ease.",
+      "ja": "Fully coherent with an original structure; speaks with native-like ease.",
+      "ru": "Fully coherent with an original structure; speaks with native-like ease."
+     }
+    },
+    {
+     "code": "LR",
+     "band": 9,
+     "note": {
+      "vi": "through and through, anonymity, vegetable patch, escape to — chính xác, tự nhiên.",
+      "en": "through and through, anonymity, vegetable patch, escape to — precise and natural.",
+      "ja": "through and through, anonymity, vegetable patch, escape to — precise and natural.",
+      "ru": "through and through, anonymity, vegetable patch, escape to — precise and natural."
+     }
+    },
+    {
+     "code": "GRA",
+     "band": 9,
+     "note": {
+      "vi": "Cấu trúc đa dạng, câu hỏi tu từ hài hước; hoàn toàn chính xác.",
+      "en": "A full range of structures, humorous hedging; fully accurate.",
+      "ja": "A full range of structures, humorous hedging; fully accurate.",
+      "ru": "A full range of structures, humorous hedging; fully accurate."
+     }
+    },
+    {
+     "code": "P",
+     "band": 9,
+     "note": {
+      "vi": "Dùng đầy đủ đặc điểm phát âm để truyền đạt sắc thái (nhấn 'weekday' / 'weekend').",
+      "en": "Uses the full range of features to convey nuance (contrastive stress on 'weekday' / 'weekend').",
+      "ja": "Uses the full range of features to convey nuance (contrastive stress on 'weekday' / 'weekend').",
+      "ru": "Uses the full range of features to convey nuance (contrastive stress on 'weekday' / 'weekend')."
+     }
+    }
+   ],
+   "text": "Honestly, it depends which version of me you ask. The weekday me is a city person through and through: I like the anonymity, the late-night noodle stalls, the fact that something's always going on. But the weekend me would happily trade all of that for a cottage with a vegetable patch. So I suppose the ideal would be a city job and a village to escape to, if that's not too greedy.",
+   "summary": {
+    "vi": "Hoàn toàn tự nhiên, sáng tạo ('the weekday me / the weekend me'), từ vựng chính xác và giàu sắc thái, ngữ pháp linh hoạt không lỗi.",
+    "en": "Completely natural and creative ('the weekday me / the weekend me'); precise, nuanced vocabulary; flexible, error-free grammar.",
+    "ja": "完全に自然で創造的（'the weekday me / the weekend me'）、正確でニュアンス豊かな語彙、柔軟で誤りのない文法。",
+    "ru": "Полностью естественно и творчески ('the weekday me / the weekend me'); точная, богатая нюансами лексика; гибкая безошибочная грамматика."
+   },
+   "highlights": [
+    {
+     "phrase": "it depends which version of me you ask",
+     "kind": "good",
+     "note": {
+      "vi": "Cách mở độc đáo, tự nhiên.",
+      "en": "An original, natural opening.",
+      "ja": "An original, natural opening.",
+      "ru": "An original, natural opening."
+     }
+    },
+    {
+     "phrase": "a city person through and through",
+     "kind": "good",
+     "note": {
+      "vi": "Thành ngữ chính xác.",
+      "en": "A precise idiom.",
+      "ja": "A precise idiom.",
+      "ru": "A precise idiom."
+     }
+    },
+    {
+     "phrase": "if that's not too greedy",
+     "kind": "good",
+     "note": {
+      "vi": "Kết thúc hài hước, tự nhiên — thể hiện sự thoải mái hoàn toàn với ngôn ngữ.",
+      "en": "A natural, humorous close — shows complete ease with the language.",
+      "ja": "A natural, humorous close — shows complete ease with the language.",
+      "ru": "A natural, humorous close — shows complete ease with the language."
+     }
+    }
+   ],
+   "nextBand": {
+    "vi": "Mức cao nhất. Lưu ý: không cần học thuộc — sự tự nhiên quan trọng hơn từ 'khó'.",
+    "en": "Top band. Note: don't memorise — naturalness matters more than 'difficult' words.",
+    "ja": "最高バンド。暗記は不要で、難しい語より自然さが大切です。",
+    "ru": "Высший балл. Не заучивайте — естественность важнее «сложных» слов."
+   }
+  }
+ ]
+}
