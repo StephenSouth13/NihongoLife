@@ -66,7 +66,7 @@ namespace NihongoLife.Core
             DontDestroyOnLoad(host);
             host.AddComponent<SceneContentLoader>().StartCoroutine(LoadFallbackRoutine(sceneName, host));
 #else
-            SceneManager.LoadScene(sceneName);
+            SceneManager.LoadSceneAsync(sceneName);
 #endif
         }
 

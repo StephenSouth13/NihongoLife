@@ -138,6 +138,23 @@ namespace NihongoLife.UI
 
         public void SetProgress(float value) => _progress = Mathf.Clamp01(value);
 
+        private RectTransform[] _wipe;
+        private Vector2[] _wipeBase;
+
+        /// <summary>Slides the text block and the word card sideways (SceneTransition wipe); 0 = resting place.</summary>
+        public void SetWipe(float offset)
+        {
+            if (_wipe == null)
+            {
+                _wipe = new[] { _kicker != null ? _kicker.rectTransform : null, PlaceName != null ? PlaceName.rectTransform : null,
+                    _japanese != null ? _japanese.rectTransform : null, _wordJa != null ? (RectTransform)_wordJa.rectTransform.parent : null };
+                _wipeBase = new Vector2[_wipe.Length];
+                for (int i = 0; i < _wipe.Length; i++) if (_wipe[i] != null) _wipeBase[i] = _wipe[i].anchoredPosition;
+            }
+            if (MotionSettings.ReduceMotion) offset = 0f;
+            for (int i = 0; i < _wipe.Length; i++) if (_wipe[i] != null) _wipe[i].anchoredPosition = _wipeBase[i] + new Vector2(offset, 0f);
+        }
+
         /// <summary>Between trips the card's content is switched off, so no text from the last trip (in the language
         /// of that moment) lingers while the player changes language.</summary>
         public void Hide()

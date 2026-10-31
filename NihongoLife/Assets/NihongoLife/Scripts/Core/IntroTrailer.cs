@@ -38,7 +38,7 @@ namespace NihongoLife.Core
             if (Bypass || Seen || Playing || !Application.CanStreamedLevelBeLoaded(SceneName)) return false;
             Begin();
             _then = then;
-            SceneManager.LoadScene(SceneName, LoadSceneMode.Single);
+            SceneManager.LoadSceneAsync(SceneName, LoadSceneMode.Single);
             return true;
         }
 

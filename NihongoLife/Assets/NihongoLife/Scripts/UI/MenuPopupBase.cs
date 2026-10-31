@@ -182,8 +182,9 @@ namespace NihongoLife.UI
 
             GetTitle(out string vi, out string en, out string ja);
             var title = AddLocalizedText(Card, vi, en, ja, 30f, 36f, 22f, CardSize.x - 150f, 56f, TextAlignmentOptions.MidlineLeft, FontStyles.Bold);
-            title.characterSpacing = 1f;
+            UiFrame.StyleTitle(title);
 
+            UiFrame.Apply(Card, UiFrame.Tone.Gold);
             UiKit.CloseButton(Card, Hide, 26f);
         }
 

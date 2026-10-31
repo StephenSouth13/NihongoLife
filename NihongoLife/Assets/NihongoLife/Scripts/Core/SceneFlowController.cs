@@ -120,11 +120,11 @@ namespace NihongoLife.Core
             operation.allowSceneActivation = false;
             while (operation.progress < 0.9f)
             {
-                SetProgress(operation.progress / 0.9f, NihongoLife.Core.Loc.T("Đang chuẩn bị khu vực...", "Preparing the area...", "エリアを準備中..."));
+                SetProgress(SceneTransition.DisplayProgress(0f, operation.progress), NihongoLife.Core.Loc.T("Đang chuẩn bị khu vực...", "Preparing the area...", "エリアを準備中..."));
                 yield return null;
             }
             SetProgress(1f, NihongoLife.Core.Loc.T("Sẵn sàng", "Ready", "準備完了"));
-            yield return new WaitForSecondsRealtime(0.18f);
+            yield return new WaitForSecondsRealtime(SceneTransition.ReadyHoldSeconds);
             operation.allowSceneActivation = true;
             while (!operation.isDone) yield return null;
             _hostSceneName = null;
@@ -380,12 +380,14 @@ namespace NihongoLife.Core
                 _overlay.alpha = 1f;
                 yield break;
             }
-            for (float t = 0f; t < 0.38f; t += Time.unscaledDeltaTime)
+            for (float t = 0f; t < SceneTransition.FadeInSeconds; t += Time.unscaledDeltaTime)
             {
-                _overlay.alpha = Mathf.SmoothStep(0f, 1f, t / 0.38f);
+                _overlay.alpha = SceneTransition.Alpha(t, true);
+                _card.SetWipe(SceneTransition.WipeOffset(_overlay.alpha, true));
                 yield return null;
             }
             _overlay.alpha = 1f;
+            _card.SetWipe(0f);
         }
 
         private IEnumerator FadeOut()
@@ -397,11 +399,13 @@ namespace NihongoLife.Core
                 _card.Hide();
                 yield break;
             }
-            for (float t = 0f; t < 0.5f; t += Time.unscaledDeltaTime)
+            for (float t = 0f; t < SceneTransition.FadeOutSeconds; t += Time.unscaledDeltaTime)
             {
-                _overlay.alpha = Mathf.SmoothStep(1f, 0f, t / 0.5f);
+                _overlay.alpha = SceneTransition.Alpha(t, false);
+                _card.SetWipe(SceneTransition.WipeOffset(_overlay.alpha, false));
                 yield return null;
             }
+            _card.SetWipe(0f);
             _overlay.alpha = 0f;
             _overlay.blocksRaycasts = false;
             _card.Hide();

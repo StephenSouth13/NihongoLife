@@ -82,12 +82,40 @@ namespace NihongoLife.StudyModes.Video
             return true;
         }
 
+        /// <summary>Seconds without a new frame while playing before the UI shows "Buffering…".</summary>
+        public const float BufferingAfter = 0.75f;
+        public const float DefaultStallTimeout = 20f;
+        public float StallTimeout { get; set; } = DefaultStallTimeout;
+        public bool Buffering { get; private set; }
+        public float StallElapsed { get; private set; }
+        private long _lastFrame = long.MinValue;
+
+        /// <summary>0..1 share of the prepare timeout already used (drives the loading strip).</summary>
+        public float PrepareProgress => State == VideoPlaybackState.Preparing && PrepareTimeout > 0f ? Math.Min(1f, PrepareElapsed / PrepareTimeout) : 0f;
+
+        /// <summary>Call every frame while playing with the player's current frame. Detects buffering (no new frame)
+        /// and fails with Timeout after <see cref="StallTimeout"/> seconds of stall. True when it just failed.</summary>
+        public bool TickPlayback(long frame, float deltaTime)
+        {
+            if (State != VideoPlaybackState.Playing) { ResetStall(); return false; }
+            if (frame != _lastFrame) { _lastFrame = frame; StallElapsed = 0f; Buffering = false; return false; }
+            StallElapsed += Math.Max(0f, deltaTime);
+            Buffering = StallElapsed >= BufferingAfter;
+            if (StallElapsed < StallTimeout) return false;
+            Fail(VideoErrorKind.Timeout, "Stalled while buffering");
+            return true;
+        }
+
+        /// <summary>After a seek/resume the next frames may take a moment: start counting again.</summary>
+        public void ResetStall() { StallElapsed = 0f; Buffering = false; _lastFrame = long.MinValue; }
+
         public bool CanSeek => State == VideoPlaybackState.Playing || State == VideoPlaybackState.Paused || State == VideoPlaybackState.Ended;
 
         public void Close()
         {
             Generation++;
             Error = VideoErrorKind.None; ErrorDetail = null; PrepareElapsed = 0f;
+            ResetStall();
             Set(VideoPlaybackState.Idle);
         }
 
@@ -110,6 +138,7 @@ namespace NihongoLife.StudyModes.Video
         private void Fail(VideoErrorKind kind, string detail)
         {
             Error = kind; ErrorDetail = detail;
+            ResetStall();
             Set(VideoPlaybackState.Error);
         }
 

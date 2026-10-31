@@ -36,6 +36,9 @@ namespace NihongoLife.UI
         private bool _fullscreen, _seeking;
         private Vector2 _stagePos;
         private Coroutine _thumbJob;
+        private VideoPlayerStatus _status;
+        private bool _wasBuffering;
+        public VideoPlayerStatus LoadingStatus => _status;
 
         protected override bool LocksGameplay => true;
         protected override Vector2 CardSize => new Vector2(W, H);
@@ -71,6 +74,7 @@ namespace NihongoLife.UI
             UiKit.Fill(_screen.rectTransform);
             _overlay = UiKit.Label(_stage, "Overlay", "", 20f, UiTheme.Text, FontStyles.Bold, TextAlignmentOptions.Center, true);
             UiKit.Fill(_overlay.rectTransform, 40f, 40f, 40f, 110f);
+            _status = VideoPlayerStatus.Create(_stage);
             _retryBtn = UiKit.Button(_stage, "Retry", "Thử lại", "Retry", "再試行", Retry, UiKit.Kind.Primary, "refresh");
             UiKit.Pin((RectTransform)_retryBtn.transform, new Vector2(0.5f, 0f), -120f, 40f, 200f, 50f);
             _externalBtn = UiKit.Button(_stage, "External", "Mở trên YouTube", "Open on YouTube", "YouTubeで開く", OpenExternal, UiKit.Kind.Accent, "public");
@@ -261,6 +265,7 @@ namespace NihongoLife.UI
         private void OnSeekChanged(float value)
         {
             if (_seeking || _player == null || !_sm.CanSeek) return;
+            _sm.ResetStall();
             double length = _player.length;
             _player.time = VideoPlaybackStateMachine.SeekTime(value, length);
         }
@@ -311,6 +316,9 @@ namespace NihongoLife.UI
         protected override void OnOpenUpdate()
         {
             if (_sm.Tick(Time.unscaledDeltaTime) && _player != null) _player.Stop();
+            if (_sm.State == VideoPlaybackState.Preparing && _status != null) { _status.Set(true, _sm.PrepareProgress); _overlay.text = PreparingText(); }
+            if (_player != null && _sm.State == VideoPlaybackState.Playing && _player.isPlaying && _sm.TickPlayback(_player.frame, Time.unscaledDeltaTime)) _player.Stop();
+            if (_sm.Buffering != _wasBuffering) { _wasBuffering = _sm.Buffering; RefreshChrome(); }
             if (_player != null && (_sm.State == VideoPlaybackState.Playing || _sm.State == VideoPlaybackState.Paused))
             {
                 double len = _player.length, t = _player.time;
@@ -328,6 +336,7 @@ namespace NihongoLife.UI
             _screen.enabled = s == VideoPlaybackState.Playing || s == VideoPlaybackState.Paused || s == VideoPlaybackState.Ended;
             _thumbBg.enabled = !_screen.enabled;
             _retryBtn.gameObject.SetActive(s == VideoPlaybackState.Error);
+            if (_status != null) _status.Set(s == VideoPlaybackState.Preparing || (s == VideoPlaybackState.Playing && _sm.Buffering), s == VideoPlaybackState.Preparing ? _sm.PrepareProgress : -1f);
             bool hasYoutube = _entry != null && VideoCatalog.IsYouTube(_entry.youtubeUrl);
             _externalBtn.gameObject.SetActive(hasYoutube && (s == VideoPlaybackState.ExternalOnly || s == VideoPlaybackState.Error));
             _controls.gameObject.SetActive(s != VideoPlaybackState.ExternalOnly);
@@ -336,7 +345,8 @@ namespace NihongoLife.UI
             foreach (var img in icon) if (img.name.StartsWith("Icon_")) img.sprite = UiIcons.Get(s == VideoPlaybackState.Playing ? "pause" : s == VideoPlaybackState.Ended ? "replay" : "play_arrow");
             _overlay.text = s switch
             {
-                VideoPlaybackState.Preparing => Loc.T("Đang tải video…", "Loading video…", "動画を読み込み中…"),
+                VideoPlaybackState.Preparing => PreparingText(),
+                VideoPlaybackState.Playing when _sm.Buffering => Loc.T("\u0110ang t\u1EA3i th\u00EAm\u2026", "Buffering\u2026", "\u30D0\u30C3\u30D5\u30A1\u30EA\u30F3\u30B0\u4E2D\u2026"),
                 VideoPlaybackState.ExternalOnly => Loc.T("Video này đang ở trên YouTube. Xem tóm tắt bên dưới hoặc mở trên YouTube.",
                     "This video is hosted on YouTube. Read the summary below or open it on YouTube.",
                     "この動画はYouTubeで公開中です。下の要約を読むか、YouTubeで開いてください。"),
@@ -347,6 +357,9 @@ namespace NihongoLife.UI
             };
             if (s == VideoPlaybackState.Ended) _screen.enabled = true;
         }
+
+        private string PreparingText() => Loc.F("\u0110ang t\u1EA3i video\u2026 {0}s / {1}s", "Loading video\u2026 {0}s / {1}s", "\u52D5\u753B\u3092\u8AAD\u307F\u8FBC\u307F\u4E2D\u2026 {0}\u79D2 / {1}\u79D2",
+            Mathf.FloorToInt(_sm.PrepareElapsed), Mathf.RoundToInt(_sm.PrepareTimeout));
 
         private string ErrorText()
         {

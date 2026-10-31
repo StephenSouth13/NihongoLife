@@ -9,6 +9,12 @@ namespace NihongoLife.Tests
     /// <summary>The full N5 mock follows the official layout, and the per-もんだい analysis gives exact, correct advice.</summary>
     public class JlptExamTests
     {
+        private NihongoLife.Core.GameLanguage _savedLanguage;
+
+        // The analysis texts are asserted in Vietnamese: never depend on the language a previous run left in PlayerPrefs.
+        [SetUp] public void LanguageSetUp() { _savedLanguage = NihongoLife.Core.Loc.Language; NihongoLife.Core.Loc.Set(NihongoLife.Core.GameLanguage.Vietnamese); }
+        [TearDown] public void LanguageTearDown() => NihongoLife.Core.Loc.Set(_savedLanguage);
+
         [Test]
         public void N5Mock2_FollowsOfficialLayout()
         {
