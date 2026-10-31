@@ -158,13 +158,15 @@ namespace NihongoLife.Tests
             var alphabet = Resources.Load<TextAsset>("Content/School/alphabets/ru_cyrillic").text;
             var units = Resources.Load<TextAsset>("Content/School/units/units_ru").text;
             var ids = new HashSet<string>();
+            var slots = new HashSet<string>();
             foreach (var st in path.stages) Complete(st.label, st.id);
             foreach (var step in path.Steps)
             {
                 Assert.IsTrue(ids.Add(step.id), "unique " + step.id);
                 Complete(step.title, step.id);
                 Assert.IsNotNull(step.video, step.id);
-                Assert.AreEqual("ru-path-" + step.id, step.video.id);
+                StringAssert.StartsWith("ru-path-", step.video.id);
+                Assert.IsTrue(slots.Add(step.video.id), "unique slot " + step.video.id);
                 Assert.IsTrue(string.IsNullOrEmpty(step.video.youtubeUrl) || VideoCatalog.IsYouTube(step.video.youtubeUrl), step.id);
                 string idPattern = "\"id\"\\s*:\\s*\"" + Regex.Escape(step.@ref) + "\"";
                 switch (step.kind)

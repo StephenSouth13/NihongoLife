@@ -139,7 +139,6 @@ namespace NihongoLife.UI
             }
             else SampleColumn(_main, set, set.AtBand(Band), "Single", false);
 
-            Canvas.ForceUpdateCanvases();
             if (_scroll != null) _scroll.verticalNormalizedPosition = 1f;
         }
 
