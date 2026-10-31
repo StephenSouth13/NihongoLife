@@ -100,6 +100,33 @@ namespace NihongoLife.Core
         public event Action<Conversation, OnlineChatMessage> OnMessage;
         public event Action OnFriendsChanged;
         public event Action<Invite> OnInvite;
+        /// <summary>Someone started or stopped typing (read <see cref="TypingLabel"/>).</summary>
+        public event Action OnTypingChanged;
+        public readonly ChatTyping Typing = new ChatTyping();
+        public string TypingLabel(string conversationId) => Typing.Label(conversationId, Time.unscaledTime);
+
+        /// <summary>The local player is typing in a community or group chat: tell the others (throttled).</summary>
+        public void NotifyTyping(string conversationId)
+        {
+            if (_online == null || _realtime == null || string.IsNullOrEmpty(conversationId)) return;
+            bool community = conversationId == CommunityId;
+            Group group = !community && conversationId.StartsWith("grp:", StringComparison.Ordinal) ? GetGroup(conversationId.Substring(4)) : null;
+            if (!community && group == null) return; // area chat uses the world service; DMs go over REST, no typing there
+            if (!Typing.ShouldSend(conversationId, Time.unscaledTime)) return;
+            var payload = new Dictionary<string, object> { ["i"] = LocalId, ["n"] = _online.LocalDisplayName };
+            if (community) _community?.Send("ty", payload);
+            else group.Channel?.Send("ty", payload);
+        }
+
+        private bool HandleTyping(string conversationId, string evt, Dictionary<string, object> p)
+        {
+            if (evt != "ty") return false;
+            string id = p.Str("i");
+            if (string.IsNullOrEmpty(id) || id == LocalId || IsBlocked(id)) return true;
+            Typing.Note(conversationId, id, SupabaseOnlineWorldService.Clean(p.Str("n", "Learner")), Time.unscaledTime);
+            OnTypingChanged?.Invoke();
+            return true;
+        }
 
         // ──────────────────────── Lifecycle ────────────────────────
 
@@ -340,8 +367,10 @@ namespace NihongoLife.Core
 
         private void HandleCommunity(string evt, Dictionary<string, object> p)
         {
+            if (HandleTyping(CommunityId, evt, p)) return;
             if (evt != "c") return;
             string id = p.Str("i");
+            Typing.Clear(CommunityId, id);
             if (string.IsNullOrEmpty(id) || id == LocalId || IsBlocked(id)) return;
             string text = SupabaseOnlineWorldService.Clean(p.Str("t", ""));
             if (text.Length == 0) return;
@@ -440,8 +469,10 @@ namespace NihongoLife.Core
 
         private void HandleGroup(Group g, string evt, Dictionary<string, object> p)
         {
+            if (HandleTyping(GroupConversationId(g.Id), evt, p)) return;
             if (evt != "c") return;
             string id = p.Str("i");
+            Typing.Clear(GroupConversationId(g.Id), id);
             if (string.IsNullOrEmpty(id) || id == LocalId || IsBlocked(id)) return;
             string text = SupabaseOnlineWorldService.Clean(p.Str("t", ""));
             if (text.Length == 0) return;

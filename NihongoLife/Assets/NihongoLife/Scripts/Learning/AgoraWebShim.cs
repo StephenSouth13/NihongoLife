@@ -20,6 +20,8 @@ namespace Agora.Rtc
     internal enum REMOTE_VIDEO_STATE { REMOTE_VIDEO_STATE_STOPPED = 0, REMOTE_VIDEO_STATE_STARTING = 1, REMOTE_VIDEO_STATE_DECODING = 2 }
     internal enum REMOTE_VIDEO_STATE_REASON { REMOTE_VIDEO_STATE_REASON_INTERNAL = 0 }
     internal enum USER_OFFLINE_REASON_TYPE { USER_OFFLINE_QUIT = 0 }
+    internal enum CONNECTION_STATE_TYPE { CONNECTION_STATE_DISCONNECTED = 1, CONNECTION_STATE_CONNECTING = 2, CONNECTION_STATE_CONNECTED = 3, CONNECTION_STATE_RECONNECTING = 4, CONNECTION_STATE_FAILED = 5 }
+    internal enum CONNECTION_CHANGED_REASON_TYPE { CONNECTION_CHANGED_CONNECTING = 0, CONNECTION_CHANGED_LEAVE_CHANNEL = 5 }
 
     internal sealed class Optional<T>
     {
@@ -59,6 +61,7 @@ namespace Agora.Rtc
         public virtual void OnRemoteVideoStateChanged(RtcConnection connection, uint remoteUid, REMOTE_VIDEO_STATE state, REMOTE_VIDEO_STATE_REASON reason, int elapsed) { }
         public virtual void OnError(int err, string msg) { }
         public virtual void OnTokenPrivilegeWillExpire(RtcConnection connection, string token) { }
+        public virtual void OnConnectionStateChanged(RtcConnection connection, CONNECTION_STATE_TYPE state, CONNECTION_CHANGED_REASON_TYPE reason) { }
     }
 
     internal interface IVideoDeviceManager { DeviceInfo[] EnumerateVideoDevices(); }
@@ -96,6 +99,9 @@ namespace Agora.Rtc
         int StartPreview();
         int StopPreview();
         int MuteLocalAudioStream(bool mute);
+        int MuteRemoteAudioStream(uint uid, bool mute);
+        int AdjustRecordingSignalVolume(int volume);
+        int AdjustPlaybackSignalVolume(int volume);
         int MuteLocalVideoStream(bool mute);
         int SwitchCamera();
     }
@@ -244,6 +250,10 @@ namespace Agora.Rtc
         public int StartPreview() => AgoraWebNative.NL_AgoraStartPreview();
         public int StopPreview() { AgoraWebNative.NL_AgoraStopPreview(); return 0; }
         public int MuteLocalAudioStream(bool mute) { AgoraWebNative.NL_AgoraMuteLocalAudio(mute ? 1 : 0); return 0; }
+        // Not bridged to the Agora Web SDK yet: on WebGL per-player mute and volume sliders are stored but have no effect.
+        public int MuteRemoteAudioStream(uint uid, bool mute) => 0;
+        public int AdjustRecordingSignalVolume(int volume) => 0;
+        public int AdjustPlaybackSignalVolume(int volume) => 0;
         public int MuteLocalVideoStream(bool mute) { AgoraWebNative.NL_AgoraMuteLocalVideo(mute ? 1 : 0); return 0; }
         public int SwitchCamera() { AgoraWebNative.NL_AgoraSwitchCamera(); return 0; }
 

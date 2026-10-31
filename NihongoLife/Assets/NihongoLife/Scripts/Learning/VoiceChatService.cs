@@ -39,7 +39,34 @@ namespace NihongoLife.Learning
         private string _status = NihongoLife.Core.Loc.Triple("Voice đang tắt.", "Voice is off.", "ボイスはオフです。");
         public bool Joined { get; private set; }
         public bool Talking { get; private set; }
-        public bool OpenMic { get; set; }
+        /// <summary>Open mic (always sending) instead of push-to-talk. Remembered between sessions.</summary>
+        public bool OpenMic { get => VoicePrefs.OpenMic; set { VoicePrefs.OpenMic = value; OnStateChanged?.Invoke(); } }
+        /// <summary>Microphone muted: never sends, even with open mic or the talk key held.</summary>
+        public bool SelfMuted { get => VoicePrefs.SelfMuted; set { VoicePrefs.SelfMuted = value; _engine?.MuteLocalAudioStream(value); OnStateChanged?.Invoke(); } }
+        public int MicVolume { get => VoicePrefs.MicVolume; set { VoicePrefs.MicVolume = value; _engine?.AdjustRecordingSignalVolume(VoicePrefs.MicVolume); OnStateChanged?.Invoke(); } }
+        public int SpeakerVolume { get => VoicePrefs.SpeakerVolume; set { VoicePrefs.SpeakerVolume = value; _engine?.AdjustPlaybackSignalVolume(VoicePrefs.SpeakerVolume); OnStateChanged?.Invoke(); } }
+        /// <summary>The local microphone is actually picking up speech (for the speaking indicator).</summary>
+        public bool LocalSpeaking { get; private set; }
+        public bool Reconnecting => _rejoinAt > 0f || _agoraReconnecting;
+        public bool IsSpeaking(string playerId) => !string.IsNullOrEmpty(playerId) && _speaking.Contains(AgoraUid(playerId));
+
+        /// <summary>Stop hearing one player (this session).</summary>
+        public void MuteUser(string playerId, bool muted)
+        {
+            if (string.IsNullOrEmpty(playerId)) return;
+            uint uid = AgoraUid(playerId);
+            VoicePrefs.SetUserMuted(uid, muted);
+            if (Joined) _engine?.MuteRemoteAudioStream(uid, muted);
+            OnStateChanged?.Invoke();
+        }
+        public bool IsUserMuted(string playerId) => !string.IsNullOrEmpty(playerId) && VoicePrefs.IsUserMuted(AgoraUid(playerId));
+
+        // Rejoin after a lost connection (fresh token, backoff), remembering what we were in.
+        private Mode _lastMode;
+        private string _lastChannel, _lastContext;
+        private float _rejoinAt = -1f;
+        private int _rejoinAttempts;
+        private bool _agoraReconnecting;
         public bool Busy { get; private set; }
         public IReadOnlyCollection<uint> Speaking => _speaking;
 
@@ -86,7 +113,15 @@ namespace NihongoLife.Learning
 
         public void Leave()
         {
+            // The player chose to leave: no automatic rejoin.
+            _rejoinAt = -1f; _rejoinAttempts = 0; _lastChannel = null; _agoraReconnecting = false;
+            Reset();
+        }
+
+        private void Reset()
+        {
             if (_engine != null && Joined) _engine.LeaveChannel();
+            LocalSpeaking = false;
             Joined = false;
             Talking = false;
             Current = Mode.Off;
@@ -120,7 +155,8 @@ namespace NihongoLife.Learning
                 Fail(NihongoLife.Core.Loc.Triple("Voice cần tài khoản đã đăng ký và đăng nhập (chế độ Khách chơi ngoại tuyến).", "Voice needs a registered account, signed in (guests play offline).", "ボイスには登録済みアカウントでのログインが必要です（ゲストはオフライン）。"));
                 return;
             }
-            Leave();
+            Reset();
+            _lastMode = mode; _lastChannel = channel; _lastContext = context;
             _callPeer = mode == Mode.Call ? context : null;
             StartCoroutine(JoinRoutine(mode, channel, auth));
         }
@@ -270,6 +306,7 @@ namespace NihongoLife.Learning
                 SetStatus(NihongoLife.Core.Loc.Triple("Voice tạm dừng trong phòng Speaking.", "Voice is paused in the Speaking room.", "スピーキングルームではボイスを一時停止します。"));
                 return;
             }
+            if (_rejoinAt > 0f && Time.unscaledTime >= _rejoinAt && !Busy) { _rejoinAt = -1f; Rejoin(); }
             if (!Joined || _engine == null) return;
 
             // Area voice follows the player: another place (or shard) means another voice room.
@@ -285,7 +322,7 @@ namespace NihongoLife.Learning
             var input = GameInputService.Instance;
             bool held = OpenMic || (input != null && !NihongoLife.UI.UiModalStack.IsTyping && input.IsPressed(GameInputId.PushToTalk));
             if (held) _releaseAt = Time.unscaledTime + PushToTalkTail;
-            bool talk = held || Time.unscaledTime < _releaseAt;
+            bool talk = !SelfMuted && (held || Time.unscaledTime < _releaseAt);
             if (talk != Talking)
             {
                 Talking = talk;
@@ -338,6 +375,52 @@ namespace NihongoLife.Learning
             return sb.Length > 56 ? sb.ToString(0, 56) : sb.ToString();
         }
 
+        private void Rejoin()
+        {
+            if (_lastChannel == null) return;
+            if (_lastMode == Mode.Area) JoinArea();
+            else Join(_lastMode, _lastChannel, _lastContext);
+        }
+
+        private void HandleJoined()
+        {
+            _rejoinAttempts = 0;
+            _agoraReconnecting = false;
+            if (_engine == null) return;
+            _engine.MuteLocalAudioStream(SelfMuted);
+            _engine.AdjustRecordingSignalVolume(MicVolume);
+            _engine.AdjustPlaybackSignalVolume(SpeakerVolume);
+            foreach (uint uid in VoicePrefs.MutedUsers) _engine.MuteRemoteAudioStream(uid, true);
+        }
+
+        private void HandleConnection(int state, bool leftOnPurpose)
+        {
+            switch (VoiceReconnect.Classify(state, leftOnPurpose, Joined))
+            {
+                case VoiceReconnect.Step.Reconnecting:
+                    _agoraReconnecting = true;
+                    SetStatus(NihongoLife.Core.Loc.Triple("Mạng chập chờn — đang nối lại voice…", "Network hiccup — reconnecting voice…", "ネットワーク不安定 — ボイスを再接続中…"));
+                    break;
+                case VoiceReconnect.Step.Restored:
+                    if (_agoraReconnecting) { _agoraReconnecting = false; SetStatus(NihongoLife.Core.Loc.Triple("Voice đã kết nối lại.", "Voice reconnected.", "ボイスが再接続しました。")); }
+                    break;
+                case VoiceReconnect.Step.Rejoin:
+                    if (_lastChannel == null) break;
+                    Joined = false; Talking = false; LocalSpeaking = false;
+                    _agoraReconnecting = false;
+                    if (_rejoinAttempts >= VoiceReconnect.MaxAttempts)
+                    {
+                        Leave();
+                        Fail(NihongoLife.Core.Loc.Triple("Mất kết nối voice. Hãy bật lại voice khi mạng ổn định.", "Voice connection lost. Turn voice on again when the network is stable.", "ボイスの接続が切れました。ネットワークが安定したら再度オンにしてください。"));
+                        break;
+                    }
+                    float wait = VoiceReconnect.Delay(_rejoinAttempts++);
+                    _rejoinAt = Time.unscaledTime + wait;
+                    SetStatus(NihongoLife.Core.Loc.TripleF("Mất kết nối voice — thử lại sau {0:0} giây…", "Voice connection lost — retrying in {0:0} s…", "ボイス接続が切れました — {0:0}秒後に再試行…", wait));
+                    break;
+            }
+        }
+
         private void SetStatus(string status)
         {
             _status = status;
@@ -380,6 +463,7 @@ namespace NihongoLife.Learning
             public override void OnJoinChannelSuccess(RtcConnection connection, int elapsed) => _owner.Post(() =>
             {
                 _owner.Joined = true;
+                _owner.HandleJoined();
                 string key = GameInputService.GetOrCreate().GetBindingLabel(GameInputId.PushToTalk);
                 _owner.SetStatus(_owner.Current switch
                 {
@@ -400,9 +484,20 @@ namespace NihongoLife.Learning
             public override void OnAudioVolumeIndication(RtcConnection connection, AudioVolumeInfo[] speakers, uint speakerNumber, int totalVolume) => _owner.Post(() =>
             {
                 _owner._speaking.Clear();
-                if (speakers != null) foreach (var s in speakers) if (s.uid != 0 && s.volume > 12) _owner._speaking.Add(s.uid);
+                bool me = false;
+                if (speakers != null)
+                    foreach (var s in speakers)
+                    {
+                        if (!VoiceReconnect.IsSpeaking(s.volume)) continue;
+                        if (s.uid == 0) me = true; // uid 0 is the local microphone
+                        else if (!VoicePrefs.IsUserMuted(s.uid)) _owner._speaking.Add(s.uid);
+                    }
+                _owner.LocalSpeaking = me && _owner.Talking;
                 _owner.OnStateChanged?.Invoke();
             });
+
+            public override void OnConnectionStateChanged(RtcConnection connection, CONNECTION_STATE_TYPE state, CONNECTION_CHANGED_REASON_TYPE reason) =>
+                _owner.Post(() => _owner.HandleConnection((int)state, reason == CONNECTION_CHANGED_REASON_TYPE.CONNECTION_CHANGED_LEAVE_CHANNEL));
 
             public override void OnError(int err, string msg) => _owner.Post(() => _owner.SetStatus(NihongoLife.Core.Loc.TripleF("Voice lỗi {0}: {1}", "Voice error {0}: {1}", "ボイスエラー {0}: {1}", err, msg)));
 

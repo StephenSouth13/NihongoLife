@@ -121,6 +121,11 @@ namespace NihongoLife.UI
                 RefreshList();
                 RefreshPane();
             }
+            if (_typing != null)
+            {
+                string typing = _hub != null && _conversationId != null ? _hub.TypingLabel(_conversationId) : string.Empty;
+                if (_typing.text != typing) _typing.text = typing;
+            }
             if (_messagesDirty)
             {
                 _messagesDirty = false;
@@ -230,11 +235,14 @@ namespace NihongoLife.UI
             _paneActions = NLUi.Group(head, "PaneActions", false, 6f, TextAnchor.MiddleRight, false);
             NLUi.Divider(_chatPane);
             _messagesContent = Scroll(_chatPane, "Messages", 410f, out _messagesScroll);
+            _typing = NLUi.Label(_chatPane, "Typing", "", 13f, NLUi.Muted, _font, FontStyles.Italic);
+            NLUi.Size(_typing, -1f, 18f);
             var inputRow = NLUi.Group(_chatPane, "InputRow", false, 8f, TextAnchor.MiddleLeft);
             _input = MakeInput(inputRow, "ChatInput", "", SupabaseOnlineWorldService.MaxChatLength);
             LocText.Set((TMP_Text)_input.placeholder, "Nhập tin nhắn… (Enter để gửi)", "Type a message… (Enter to send)", "メッセージを入力…（Enterで送信）");
             NLUi.Size(_input, -1f, 46f, 1f);
             _input.onSubmit.AddListener(_ => SendCurrent());
+            _input.onValueChanged.AddListener(text => { if (!string.IsNullOrEmpty(text) && _hub != null && _conversationId != null) _hub.NotifyTyping(_conversationId); });
             var emojiButton = NLUi.Button(inputRow, "EmojiButton", "", _font, ToggleEmojiPanel, new Color(0.22f, 0.27f, 0.33f), 18f, Color.white, 46f);
             NLUi.Size(emojiButton, 56f, 46f, 0f);
             var emojiIcon = new GameObject("Icon", typeof(RectTransform), typeof(Image));
@@ -334,6 +342,7 @@ namespace NihongoLife.UI
         private RectTransform _voiceBar;
         private TextMeshProUGUI _voiceText;
         private Image _voiceDot;
+        private TextMeshProUGUI _typing, _micModeText, _muteText, _volumeText;
 
         private void BuildVoiceBar()
         {
@@ -347,10 +356,28 @@ namespace NihongoLife.UI
             NLUi.Size(dot.transform, 22f, 22f);
             _voiceText = NLUi.Label(_voiceBar, "Text", "", 16f, NLUi.Text, _font, FontStyles.Normal, TextAlignmentOptions.MidlineLeft);
             _voiceText.textWrappingMode = TextWrappingModes.NoWrap;
+            var mode = NLUi.Button(_voiceBar, "MicMode", "", _font, () => { var v = NihongoLife.Learning.VoiceChatService.Instance; if (v != null) v.OpenMic = !v.OpenMic; }, new Color(0.22f, 0.27f, 0.33f), 13f, null, 30f);
+            NLUi.Size(mode, 92f, 30f);
+            _micModeText = mode.GetComponentInChildren<TextMeshProUGUI>();
+            var mute = NLUi.Button(_voiceBar, "Mute", "", _font, () => { var v = NihongoLife.Learning.VoiceChatService.Instance; if (v != null) v.SelfMuted = !v.SelfMuted; }, new Color(0.22f, 0.27f, 0.33f), 13f, null, 30f);
+            NLUi.Size(mute, 84f, 30f);
+            _muteText = mute.GetComponentInChildren<TextMeshProUGUI>();
+            var down = NLUi.Button(_voiceBar, "VolumeDown", "−", _font, () => StepSpeaker(-1), new Color(0.22f, 0.27f, 0.33f), 16f, null, 30f);
+            NLUi.Size(down, 30f, 30f);
+            _volumeText = NLUi.Label(_voiceBar, "Volume", "", 13f, NLUi.Soft, _font, FontStyles.Normal, TextAlignmentOptions.Center);
+            NLUi.Size(_volumeText, 44f, 30f);
+            var up = NLUi.Button(_voiceBar, "VolumeUp", "+", _font, () => StepSpeaker(1), new Color(0.22f, 0.27f, 0.33f), 16f, null, 30f);
+            NLUi.Size(up, 30f, 30f);
             var off = NLUi.Button(_voiceBar, "Leave", Loc.T("Tắt", "Off", "切る"), _font, () => NihongoLife.Learning.VoiceChatService.Instance?.Leave(), NLUi.Bad, 14f, null, 30f);
             NLUi.Size(off, 64f, 30f);
             NLUi.FitContent(_voiceBar, width: true, height: false);
             _voiceBar.gameObject.SetActive(false);
+        }
+
+        private static void StepSpeaker(int direction)
+        {
+            var v = NihongoLife.Learning.VoiceChatService.Instance;
+            if (v != null) v.SpeakerVolume = NihongoLife.Learning.VoicePrefs.Step(v.SpeakerVolume, direction);
         }
 
         private void UpdateVoiceBar()
@@ -360,7 +387,12 @@ namespace NihongoLife.UI
             bool show = voice != null && voice.Current != NihongoLife.Learning.VoiceChatService.Mode.Off;
             if (_voiceBar.gameObject.activeSelf != show) _voiceBar.gameObject.SetActive(show);
             if (!show) return;
-            _voiceDot.color = voice.Talking ? new Color(1f, 0.35f, 0.3f) : voice.Joined ? Online : NLUi.Muted;
+            // Speaking indicator: bright and pulsing while your voice is picked up, red while sending, grey when muted.
+            float pulse = voice.LocalSpeaking ? 0.75f + 0.25f * Mathf.Sin(Time.unscaledTime * 12f) : 1f;
+            _voiceDot.color = voice.SelfMuted ? NLUi.Muted : voice.Talking ? new Color(1f, 0.35f, 0.3f) * pulse : voice.Reconnecting ? new Color(0.95f, 0.75f, 0.3f) : voice.Joined ? Online : NLUi.Muted;
+            if (_micModeText != null) _micModeText.text = voice.OpenMic ? Loc.T("Mở mic", "Open mic", "常時マイク") : Loc.T("Giữ để nói", "Push to talk", "押して話す");
+            if (_muteText != null) _muteText.text = voice.SelfMuted ? Loc.T("Bật mic", "Unmute", "ミュート解除") : Loc.T("Tắt mic", "Mute", "ミュート");
+            if (_volumeText != null) _volumeText.text = NihongoLife.Learning.VoicePrefs.Percent(voice.SpeakerVolume);
             var talkers = new List<string>();
             foreach (uint uid in voice.Speaking) { string n = NameForUid(uid); if (n != null) talkers.Add(n); if (talkers.Count == 3) break; }
             _voiceText.text = voice.Talking ? "<b>" + Loc.T("Đang nói…", "Speaking…", "話しています…") + "</b>  " + voice.Status
@@ -653,13 +685,21 @@ namespace NihongoLife.UI
             if (c.Messages.Count == 0)
                 Note(_messagesContent, c.Kind == SocialHub.Kind.Direct ? Loc.T("Hãy gửi lời chào! Tin nhắn được mã hóa trên máy bạn trước khi gửi đi.", "Say hello! Messages are encrypted on your device before they are sent.", "あいさつを送りましょう！メッセージは送信前に端末で暗号化されます。") : Loc.T("Chưa có tin nhắn. Hãy bắt đầu cuộc trò chuyện!", "No messages yet. Start the conversation!", "まだメッセージはありません。会話を始めましょう！"));
             string me = _hub.LocalId;
+            long previous = 0;
+            var now = DateTime.Now;
             foreach (var m in c.Messages)
             {
+                if (ChatTime.NewDay(previous, m.sentAtUtcTicks))
+                {
+                    var day = NLUi.Label(_messagesContent, "Day", "— " + ChatTime.DayLabel(m.sentAtUtcTicks, now) + " —", 12f, NLUi.Muted, _font, FontStyles.Normal, TextAlignmentOptions.Center);
+                    day.raycastTarget = false;
+                }
+                previous = m.sentAtUtcTicks;
                 bool mine = m.senderPlayerId == me;
                 bool system = m.senderPlayerId == "system";
                 var row = NLUi.Group(_messagesContent, "Row", false, 0f, mine ? TextAnchor.UpperRight : TextAnchor.UpperLeft, false);
                 var bubble = NLUi.Panel(row, "Bubble", system ? SystemTint : mine ? Mine : Theirs, new RectOffset(12, 12, 6, 8), 2f);
-                string time = new DateTime(m.sentAtUtcTicks, DateTimeKind.Utc).ToLocalTime().ToString("HH:mm");
+                string time = ChatTime.Stamp(m.sentAtUtcTicks, now);
                 string who = system ? "<color=#E8C46A>NihongoLife</color>" : mine ? $"<color=#9FD8F0>{Loc.T("Bạn", "You", "あなた")}</color>" : $"<color=#F2C75B>{m.senderDisplayName}</color>";
                 NLUi.Label(bubble, "Meta", $"<b>{who}</b>  <size=80%><color=#8A96A3>{time}</color></size>", 14f, NLUi.Text, _font);
                 var text = NLUi.Label(bubble, "Text", system ? Loc.Resolve(m.text) : string.Empty, 17f, system ? NLUi.Soft : NLUi.Text, _font);
