@@ -52,9 +52,17 @@ namespace NihongoLife.UI
         private static readonly Dictionary<string, Sprite> Cache = new Dictionary<string, Sprite>();
 
         /// <summary>"mic", "headphones", … (without the ic_ prefix) or "coin_yen".</summary>
+        /// <summary>Names used in code that map to a different Material Symbols file.</summary>
+        public static readonly Dictionary<string, string> Aliases = new Dictionary<string, string>
+        {
+            { "writing", "edit_note" }, { "certificate", "workspace_premium" }, { "mask", "masks" },
+            { "assault", "sports_mma" }, { "litter", "delete" },
+        };
+
         public static Sprite Get(string name)
         {
             if (string.IsNullOrEmpty(name)) return null;
+            if (Aliases.TryGetValue(name, out var alias)) name = alias;
             if (Cache.TryGetValue(name, out var cached) && cached != null) return cached;
             var sprite = Resources.Load<Sprite>("UI/Icons/" + (name.StartsWith("coin") ? name : "ic_" + name));
             if (sprite == null)
@@ -345,8 +353,10 @@ namespace NihongoLife.UI
 
         public static Image Icon(Transform parent, string icon, Color color, float size = 24f)
         {
-            var image = Image(parent, "Icon_" + icon, color, UiIcons.Get(icon));
+            var sprite = UiIcons.Get(icon);
+            var image = Image(parent, "Icon_" + icon, color, sprite);
             image.preserveAspect = true;
+            if (sprite == null) image.enabled = false; // never draw a solid square for a missing icon
             image.rectTransform.sizeDelta = new Vector2(size, size);
             return image;
         }

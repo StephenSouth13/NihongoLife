@@ -119,6 +119,9 @@ namespace Agora.Rtc
         [DllImport("__Internal")] internal static extern void NL_AgoraStopPreview();
         [DllImport("__Internal")] internal static extern void NL_AgoraMuteLocalAudio(int mute);
         [DllImport("__Internal")] internal static extern void NL_AgoraMuteLocalVideo(int mute);
+        [DllImport("__Internal")] internal static extern void NL_AgoraSetPlaybackVolume(int volume);
+        [DllImport("__Internal")] internal static extern void NL_AgoraSetRecordingVolume(int volume);
+        [DllImport("__Internal")] internal static extern void NL_AgoraMuteRemote(string uid, int mute);
         [DllImport("__Internal")] internal static extern void NL_AgoraSwitchCamera();
         [DllImport("__Internal")] internal static extern void NL_AgoraEnableSpatial(int enabled);
         [DllImport("__Internal")] internal static extern void NL_AgoraSetSpatialLimits(float range, int maxCount);
@@ -140,6 +143,11 @@ namespace Agora.Rtc
         internal static void NL_AgoraStopPreview() { }
         internal static void NL_AgoraMuteLocalAudio(int mute) { }
         internal static void NL_AgoraMuteLocalVideo(int mute) { }
+        internal static int LastPlaybackVolume = 100, LastRecordingVolume = 100;
+        internal static readonly System.Collections.Generic.Dictionary<string, bool> LastRemoteMute = new System.Collections.Generic.Dictionary<string, bool>();
+        internal static void NL_AgoraSetPlaybackVolume(int volume) { LastPlaybackVolume = volume; }
+        internal static void NL_AgoraSetRecordingVolume(int volume) { LastRecordingVolume = volume; }
+        internal static void NL_AgoraMuteRemote(string uid, int mute) { LastRemoteMute[uid] = mute != 0; }
         internal static void NL_AgoraSwitchCamera() { }
         internal static void NL_AgoraEnableSpatial(int enabled) { }
         internal static void NL_AgoraSetSpatialLimits(float range, int maxCount) { }
@@ -251,9 +259,9 @@ namespace Agora.Rtc
         public int StopPreview() { AgoraWebNative.NL_AgoraStopPreview(); return 0; }
         public int MuteLocalAudioStream(bool mute) { AgoraWebNative.NL_AgoraMuteLocalAudio(mute ? 1 : 0); return 0; }
         // Not bridged to the Agora Web SDK yet: on WebGL per-player mute and volume sliders are stored but have no effect.
-        public int MuteRemoteAudioStream(uint uid, bool mute) => 0;
-        public int AdjustRecordingSignalVolume(int volume) => 0;
-        public int AdjustPlaybackSignalVolume(int volume) => 0;
+        public int MuteRemoteAudioStream(uint uid, bool mute) { AgoraWebNative.NL_AgoraMuteRemote(uid.ToString(), mute ? 1 : 0); return 0; }
+        public int AdjustRecordingSignalVolume(int volume) { AgoraWebNative.NL_AgoraSetRecordingVolume(volume); return 0; }
+        public int AdjustPlaybackSignalVolume(int volume) { AgoraWebNative.NL_AgoraSetPlaybackVolume(volume); return 0; }
         public int MuteLocalVideoStream(bool mute) { AgoraWebNative.NL_AgoraMuteLocalVideo(mute ? 1 : 0); return 0; }
         public int SwitchCamera() { AgoraWebNative.NL_AgoraSwitchCamera(); return 0; }
 

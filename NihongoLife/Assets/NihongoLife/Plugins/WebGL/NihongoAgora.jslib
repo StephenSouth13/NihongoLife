@@ -278,11 +278,18 @@ mergeInto(LibraryManager.library, {
         return s.cam.setDevice(s.cameras[s.camIndex].deviceId);
       });
     };
+    s.vol = function (user, base) {
+      if (!user.audioTrack) return;
+      if (s.muted && s.muted[String(user.uid)]) { user.audioTrack.setVolume(0); return; }
+      var play = s.playVol == null ? 100 : s.playVol;
+      user.audioTrack.setVolume(Math.max(0, Math.min(1000, Math.round(base * play / 100))));
+    };
     s.applySpatial = function () {
+      if (s.mic && s.micVol != null) { try { s.mic.setVolume(s.micVol); } catch (e) {} }
       if (!s.client || !s.client.remoteUsers) return;
       var users = s.client.remoteUsers;
       if (!s.spatial || !s.selfPos) {
-        for (var i = 0; i < users.length; i++) if (users[i].audioTrack) users[i].audioTrack.setVolume(100);
+        for (var i = 0; i < users.length; i++) s.vol(users[i], 100);
         return;
       }
       var ranked = [];
@@ -300,7 +307,7 @@ mergeInto(LibraryManager.library, {
         if (audible && ranked[k].known) kept++;
         var vol = 100;
         if (ranked[k].known) vol = audible ? Math.max(0, Math.round(100 * (1 - ranked[k].d / Math.max(0.01, s.range)))) : 0;
-        track.setVolume(vol);
+        s.vol(ranked[k].user, vol);
       }
     };
     s.leave = function () {
@@ -394,6 +401,15 @@ mergeInto(LibraryManager.library, {
 
   NL_AgoraMuteLocalAudio__deps: ["$nlAgoraGet"],
   NL_AgoraMuteLocalAudio: function (mute) { var s = nlAgoraGet(); if (s.mic) s.mic.setEnabled(!mute); },
+
+  NL_AgoraSetPlaybackVolume__deps: ["$nlAgoraGet"],
+  NL_AgoraSetPlaybackVolume: function (volume) { var s = nlAgoraGet(); s.playVol = volume; s.applySpatial(); },
+
+  NL_AgoraSetRecordingVolume__deps: ["$nlAgoraGet"],
+  NL_AgoraSetRecordingVolume: function (volume) { var s = nlAgoraGet(); s.micVol = volume; s.applySpatial(); },
+
+  NL_AgoraMuteRemote__deps: ["$nlAgoraGet"],
+  NL_AgoraMuteRemote: function (uid, mute) { var s = nlAgoraGet(); s.muted = s.muted || {}; s.muted[UTF8ToString(uid)] = !!mute; s.applySpatial(); },
 
   NL_AgoraMuteLocalVideo__deps: ["$nlAgoraGet"],
   NL_AgoraMuteLocalVideo: function (mute) { var s = nlAgoraGet(); if (s.cam) s.cam.setEnabled(!mute); },
