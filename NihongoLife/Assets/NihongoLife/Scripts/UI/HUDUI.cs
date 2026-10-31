@@ -164,6 +164,42 @@ namespace NihongoLife.UI
 
 
 
+        private float _promptWidth = -1f;
+
+        /// <summary>
+        /// The [F] prompt is centred at the bottom; on a narrow (phone) canvas that runs into the status card on the
+        /// left or the touch action buttons on the right, so it narrows and moves into the free lane between them.
+        /// </summary>
+        private void FitPromptLane()
+        {
+            var rect = promptPanel.transform as RectTransform;
+            var parent = rect != null ? rect.parent as RectTransform : null;
+            if (parent == null) return;
+            if (_promptWidth < 0f) _promptWidth = rect.sizeDelta.x;
+            float total = parent.rect.width;
+            float left = 0f;
+            var widget = _statusDock != null ? _statusDock.StatusWidget : null;
+            if (widget != null && widget.gameObject.activeInHierarchy)
+            {
+                var corners = new Vector3[4];
+                widget.GetWorldCorners(corners);
+                Vector3 top = parent.InverseTransformPoint(corners[2]);
+                // Only when the card reaches the prompt's height.
+                if (top.y - parent.rect.yMin > rect.anchoredPosition.y) left = top.x - parent.rect.xMin + 12f;
+            }
+            float right = TouchControlOverlay.ReservedSide > 0f ? TouchControlOverlay.ReservedSide + 8f : 0f;
+            float width = _promptWidth, x = 0f;
+            float centredMin = (total - _promptWidth) * 0.5f;
+            if (centredMin < left || centredMin < right)
+            {
+                float lane = Mathf.Max(0f, total - left - right);
+                width = Mathf.Clamp(lane, Mathf.Min(240f, _promptWidth), _promptWidth);
+                x = left + lane * 0.5f - total * 0.5f;
+            }
+            if (Mathf.Abs(rect.sizeDelta.x - width) > 0.5f) rect.sizeDelta = new Vector2(width, rect.sizeDelta.y);
+            if (Mathf.Abs(rect.anchoredPosition.x - x) > 0.5f) rect.anchoredPosition = new Vector2(x, rect.anchoredPosition.y);
+        }
+
         private void Update()
         {
             BindDialogue();
@@ -172,6 +208,7 @@ namespace NihongoLife.UI
             bool suppressPrompt = TimedAction.Busy || UiModalStack.AnyOpen;
             if (promptPanel != null)
             {
+                FitPromptLane();
                 if (suppressPrompt && promptPanel.activeSelf) HidePrompt();
                 else if (!suppressPrompt && !promptPanel.activeSelf && _currentInteractable != null && (_currentInteractable as UnityEngine.Object) != null) ShowPrompt(_currentInteractable);
             }

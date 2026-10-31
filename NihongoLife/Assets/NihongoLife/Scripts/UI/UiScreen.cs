@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 
 namespace NihongoLife.UI
 {
@@ -12,6 +12,9 @@ namespace NihongoLife.UI
         public static Rect? SafeAreaOverride;
         /// <summary>Canvas scale factor to use while <see cref="Override"/> is set (world-space layout tests).</summary>
         public static float? CanvasScaleOverride;
+        /// <summary>Screen DPI to use while <see cref="Override"/> is set (a phone is ~2.5-3x 96).</summary>
+        public static float? DpiOverride;
+        public static float Dpi => Override.HasValue && DpiOverride.HasValue ? DpiOverride.Value : Screen.dpi;
         public static int Width => Override?.x ?? Screen.width;
         public static int Height => Override?.y ?? Screen.height;
         public static Rect SafeArea => Override.HasValue ? SafeAreaOverride ?? new Rect(0f, 0f, Override.Value.x, Override.Value.y) : Screen.safeArea;

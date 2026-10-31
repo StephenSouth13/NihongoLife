@@ -147,7 +147,8 @@ namespace NihongoLife.UI
                     row.childForceExpandWidth = false;
                     row.childAlignment = TextAnchor.MiddleLeft;
                     var badge = NLUi.Pill(card, "Number", (i + 1).ToString(), _font, new Color(1f, 1f, 1f, 0.1f), NLUi.Gold, 15f);
-                    NLUi.Size(badge, preferredWidth: 32f);
+                    NLUi.Size(badge, preferredWidth: 32f, minHeight: 30f);
+                    badge.GetComponent<HorizontalOrVerticalLayoutGroup>().padding = new RectOffset(4, 4, 4, 4); // a one-digit badge: the pill's 16 px sides left no room for the digit
                     // One line per answer: the Japanese on the left, its meaning (guided mode) muted on the right.
                     var texts = NLUi.Group(card, "Texts", false, 16f, TextAnchor.MiddleLeft);
                     ((HorizontalLayoutGroup)texts.GetComponent<HorizontalOrVerticalLayoutGroup>()).childForceExpandWidth = false;
@@ -231,6 +232,25 @@ namespace NihongoLife.UI
             _japanese.maxVisibleCharacters = 99999;
         }
 
+        /// <summary>1000 wide on a desktop; on a narrow (phone) canvas it shrinks to stay inside the safe area and
+        /// clear of the on-screen action buttons on either side.</summary>
+        private void FitBoxWidth()
+        {
+            if (_box == null || _root == null) return;
+            float side = 12f;
+            var canvas = _root.GetComponentInParent<Canvas>();
+            if (canvas != null) canvas = canvas.rootCanvas;
+            if (canvas != null && UiScreen.Width > 0)
+            {
+                float k = ((RectTransform)canvas.transform).rect.width / UiScreen.Width;
+                Rect safe = UiScreen.SafeArea;
+                side = Mathf.Max(side, Mathf.Max(safe.xMin, UiScreen.Width - safe.xMax) * k + 12f);
+            }
+            side = Mathf.Max(side, TouchControlOverlay.ReservedSide);
+            float width = Mathf.Clamp(_root.rect.width - side * 2f, 320f, 1000f);
+            if (Mathf.Abs(_box.sizeDelta.x - width) > 0.5f) _box.sizeDelta = new Vector2(width, _box.sizeDelta.y);
+        }
+
         private void Update()
         {
             bool paused = !IsOpen && DialogueManager.Instance != null && DialogueManager.Instance.IsStoryPaused;
@@ -243,6 +263,7 @@ namespace NihongoLife.UI
                 return;
             }
             if (!IsOpen) return;
+            FitBoxWidth();
             if (_typing)
             {
                 _typed += Time.unscaledDeltaTime * CharsPerSecond * Mathf.Clamp(TalkPace, 0.3f, 2f);

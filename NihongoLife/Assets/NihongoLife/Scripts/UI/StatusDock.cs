@@ -156,12 +156,29 @@ namespace NihongoLife.UI
 
         /// <summary>The touch drawer of shortcuts (bag, character, map, tasks, exams …), closed until "Tools" is tapped.</summary>
         public RectTransform TouchDrawer { get; private set; }
+        private RectTransform _drawerToggle;
+
+        /// <summary>On a narrow touch canvas the objective chip (top left) narrows so it ends before "Tools".</summary>
+        private void KeepObjectiveClearOfTools()
+        {
+            if (_objective == null || _drawerToggle == null || !_drawerToggle.gameObject.activeInHierarchy) return;
+            var parent = _objective.parent as RectTransform;
+            if (parent == null) return;
+            var corners = new Vector3[4];
+            _drawerToggle.GetWorldCorners(corners);
+            float toolsLeft = parent.InverseTransformPoint(corners[0]).x;
+            _objective.GetWorldCorners(corners);
+            float objectiveLeft = parent.InverseTransformPoint(corners[0]).x;
+            float width = Mathf.Clamp(toolsLeft - objectiveLeft - 12f, 220f, 420f);
+            if (Mathf.Abs(_objective.sizeDelta.x - width) > 0.5f) _objective.sizeDelta = new Vector2(width, _objective.sizeDelta.y);
+        }
 
         private void BuildTouchDrawer(RectTransform dock, IReadOnlyList<(string name, string key, string label, Action action)> buttons)
         {
             var toggle = NLUi.Button(dock, "ActionDrawerToggle", "", _font, () => SetTouchDrawer(!TouchDrawer.gameObject.activeSelf), NLUi.Ink, 18f, NLUi.Gold, 56f);
             LocText.Set(toggle.GetComponentInChildren<TextMeshProUGUI>(), () => NihongoLife.Core.Loc.T("Công cụ", "Tools", "ツール"));
             var toggleRect = (RectTransform)toggle.transform;
+            _drawerToggle = toggleRect;
             NLUi.Anchor(toggleRect, new Vector2(0.5f, 1f), new Vector2(0f, -14f), new Vector2(150f, 56f));
             toggleRect.pivot = new Vector2(0.5f, 1f);
 
@@ -244,9 +261,9 @@ namespace NihongoLife.UI
             var badgeImage = badge.GetComponent<Image>(); badgeImage.sprite = HudGraphics.Disc; badgeImage.color = new Color(0.47f, 0.36f, 0.9f);
             var badgeEdge = badge.GetComponent<Outline>(); badgeEdge.effectColor = new Color(1f, 1f, 1f, 0.85f); badgeEdge.effectDistance = new Vector2(1.5f, -1.5f);
             var lv = NLUi.Label(badge, "Lv", "Lv.", 10f, new Color(1f, 1f, 1f, 0.85f), _font, FontStyles.Bold, TextAlignmentOptions.Top);
-            NLUi.Stretch(lv.rectTransform); lv.rectTransform.offsetMax = new Vector2(0f, -5f);
-            _levelBadge = NLUi.Label(badge, "Level", "1", 17f, Color.white, _font, FontStyles.Bold, TextAlignmentOptions.Bottom);
-            NLUi.Stretch(_levelBadge.rectTransform); _levelBadge.rectTransform.offsetMin = new Vector2(0f, 3f);
+            NLUi.Stretch(lv.rectTransform); lv.rectTransform.offsetMax = new Vector2(0f, -3f);
+            _levelBadge = NLUi.Label(badge, "Level", "1", 15f, Color.white, _font, FontStyles.Bold, TextAlignmentOptions.Bottom);
+            NLUi.Stretch(_levelBadge.rectTransform); _levelBadge.rectTransform.offsetMin = new Vector2(0f, 1f);
             _levelBadge.textWrappingMode = TextWrappingModes.NoWrap;
 
             var column = NLUi.Group(widget, "Column", true, 8f, TextAnchor.UpperLeft, false);
@@ -622,6 +639,7 @@ namespace NihongoLife.UI
             Bind();
             if (Time.unscaledTime >= _nextRefresh) { _nextRefresh = Time.unscaledTime + 0.5f; Refresh(); }
             AnimateFills();
+            KeepObjectiveClearOfTools();
             bool dialogueOpen = DialogueManager.Instance != null && DialogueManager.Instance.IsOpen;
             bool hide = dialogueOpen || UiModalStack.ImmersiveOpen;
             _dockGroup.alpha = Mathf.MoveTowards(_dockGroup.alpha, hide ? 0f : 1f, Time.unscaledDeltaTime * 6f);

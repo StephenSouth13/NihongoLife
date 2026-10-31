@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using NihongoLife.Cameras;
 using NihongoLife.Core;
+using NihongoLife.Dialogue;
 using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -173,11 +174,23 @@ namespace NihongoLife.UI
         }
 
         bool _wasShown;
+        bool _talking;
 
         void Apply()
         {
             if (!TouchControlPrefs.WantsVisible) _sessionHidden = false;
             bool shown = Shown;
+            bool talking = DialogueManager.Instance != null && DialogueManager.Instance.IsOpen;
+            if (talking != _talking)
+            {
+                // In a conversation only Interact (advance / confirm) stays: the rest would sit on the dialogue box.
+                _talking = talking;
+                if (talking) ReleaseAll();
+                if (_stick != null) _stick.gameObject.SetActive(!talking);
+                if (_jump != null) _jump.gameObject.SetActive(!talking);
+                if (_sprint != null) _sprint.gameObject.SetActive(!talking);
+                foreach (var b in _small) if (b != null) b.gameObject.SetActive(!talking);
+            }
             if (_visuals != null)
             {
                 _visuals.alpha = shown ? TouchControlPrefs.Opacity : 0f;
@@ -196,6 +209,14 @@ namespace NihongoLife.UI
             Layout();
         }
 
+        /// <summary>
+        /// Canvas units the action buttons take from the right (left when left-handed) edge, safe area included, while
+        /// they are shown (0 when hidden): the dialogue box and the [F] prompt keep clear of it.
+        /// </summary>
+        public static float ReservedSide { get; private set; }
+        /// <summary>Height of the bottom action row (Jump / Sprint) from the bottom edge while shown, else 0.</summary>
+        public static float ReservedBottom { get; private set; }
+
         void Layout()
         {
             var root = (RectTransform)transform;
@@ -203,61 +224,61 @@ namespace NihongoLife.UI
             float height = root.rect.height;
             if (width < 2f || height < 2f) return;
 
+            // Safe area (notch, rounded corners) in canvas units, unless a HudSafeArea parent already applied it.
+            float insetL = 0f, insetR = 0f, insetB = 0f;
+            var canvas = GetComponentInParent<Canvas>();
+            if (canvas != null) canvas = canvas.rootCanvas;
+            if (canvas != null && UiScreen.Width > 0 && UiScreen.Height > 0)
+            {
+                Rect full = ((RectTransform)canvas.transform).rect;
+                if (Mathf.Abs(full.width - width) < 1f)
+                {
+                    float k = full.width / UiScreen.Width;
+                    Rect safe = UiScreen.SafeArea;
+                    insetL = Mathf.Max(0f, safe.xMin * k);
+                    insetR = Mathf.Max(0f, (UiScreen.Width - safe.xMax) * k);
+                    insetB = Mathf.Max(0f, safe.yMin * k);
+                }
+            }
+
             float scale = TouchControlPrefs.Size;
             bool left = TouchControlPrefs.LeftHanded;
-            bool cramped = height < 520f;
-            float stickD = (cramped ? 108f : 150f) * scale;
-            float big = (cramped ? 70f : 96f) * scale;
-            float small = (cramped ? 54f : 64f) * scale;
+            bool compact = height < 620f; // phones held sideways (canvas ~540 tall)
+            float stickD = (compact ? 120f : 150f) * scale;
+            float big = (compact ? 72f : 96f) * scale;
+            float small = (compact ? 50f : 64f) * scale;
             float gap = 8f * scale;
-            float edge = 16f;
+            const float edge = 16f;
             float stickAnchorX = left ? 1f : 0f;
             float stickSign = left ? -1f : 1f;
             float actionAnchorX = left ? 0f : 1f;
             float actionSign = left ? 1f : -1f;
+            float stickEdge = edge + (left ? insetR : insetL);
+            float actionEdge = edge + (left ? insetL : insetR);
+            float bottom = edge + insetB;
 
-            if (cramped)
+            // Thumb zones at the bottom corners, clear of the HUD at the top (objective, Tools, mailbox bell):
+            // Interact above Jump in the corner, Sprint beside Jump, the small buttons in a grid above them.
+            Pin(_jump, new Vector2(actionAnchorX, 0f), new Vector2(actionAnchorX, 0.5f), new Vector2(actionEdge * actionSign, bottom + big * 0.5f), big);
+            Pin(_interact, new Vector2(actionAnchorX, 0f), new Vector2(actionAnchorX, 0.5f), new Vector2(actionEdge * actionSign, bottom + big * 1.5f + gap), big);
+            Pin(_sprint, new Vector2(actionAnchorX, 0f), new Vector2(actionAnchorX, 0.5f), new Vector2((actionEdge + big + gap) * actionSign, bottom + big * 0.5f), big);
+            float gridBase = bottom + (big + gap) * 2f;
+            float topReserve = 84f; // the HUD's top row
+            int rows = Mathf.Max(1, Mathf.FloorToInt((height - topReserve - gridBase + gap) / (small + gap)));
+            int columns = Mathf.Max(2, Mathf.CeilToInt(_small.Count / (float)Mathf.Min(rows, 3)));
+            for (int i = 0; i < _small.Count; i++)
             {
-                float y = height - edge - Mathf.Max(stickD, big) * 0.5f;
-                var diameters = new[] { big, big, big, small, small, small, small, small, small };
-                float used = stickD + edge * 2f;
-                for (int i = 0; i < diameters.Length; i++) used += diameters[i] + gap;
-                float fit = used > width ? Mathf.Clamp(width / used, 0.62f, 1f) : 1f;
-                stickD *= fit;
-                big *= fit;
-                small *= fit;
-                gap *= fit;
-                y = height - edge - Mathf.Max(stickD, big) * 0.5f;
-                Pin(_stick, new Vector2(stickAnchorX, 0f), new Vector2(stickAnchorX, 0.5f), new Vector2(edge * stickSign, y), stickD);
-                float cursor = edge;
-                Pin(_jump, new Vector2(actionAnchorX, 0f), new Vector2(actionAnchorX, 0.5f), new Vector2((cursor + big * 0.5f) * actionSign, y), big);
-                cursor += big + gap;
-                Pin(_interact, new Vector2(actionAnchorX, 0f), new Vector2(actionAnchorX, 0.5f), new Vector2((cursor + big * 0.5f) * actionSign, y), big);
-                cursor += big + gap;
-                Pin(_sprint, new Vector2(actionAnchorX, 0f), new Vector2(actionAnchorX, 0.5f), new Vector2((cursor + big * 0.5f) * actionSign, y), big);
-                cursor += big + gap;
-                for (int i = 0; i < _small.Count; i++)
-                {
-                    Pin(_small[i], new Vector2(actionAnchorX, 0f), new Vector2(actionAnchorX, 0.5f), new Vector2((cursor + small * 0.5f) * actionSign, y), small);
-                    cursor += small + gap;
-                }
+                int column = i % columns, row = i / columns;
+                float x = actionEdge + (big - small) * 0.5f + column * (small + gap);
+                Pin(_small[i], new Vector2(actionAnchorX, 0f), new Vector2(actionAnchorX, 0.5f), new Vector2(x * actionSign, gridBase + small * 0.5f + row * (small + gap)), small);
             }
-            else
-            {
-                float stickY = Mathf.Clamp(height * 0.34f, 280f, 460f);
-                Pin(_stick, new Vector2(stickAnchorX, 0f), new Vector2(stickAnchorX, 0.5f), new Vector2(edge * stickSign, stickY), stickD);
-                float baseY = Mathf.Max(300f, 270f + big * 0.5f);
-                Pin(_jump, new Vector2(actionAnchorX, 0f), new Vector2(actionAnchorX, 0.5f), new Vector2(edge * actionSign, baseY), big);
-                Pin(_interact, new Vector2(actionAnchorX, 0f), new Vector2(actionAnchorX, 0.5f), new Vector2(edge * actionSign, baseY + big + gap), big);
-                Pin(_sprint, new Vector2(actionAnchorX, 0f), new Vector2(actionAnchorX, 0.5f), new Vector2((edge + big + gap) * actionSign, baseY + (big + gap) * 0.5f), big);
-                float x = edge;
-                float y = baseY + (big + gap) * 2f;
-                for (int i = 0; i < _small.Count; i++)
-                {
-                    Pin(_small[i], new Vector2(actionAnchorX, 0f), new Vector2(actionAnchorX, 0.5f), new Vector2((x + small * 0.5f) * actionSign, y), small);
-                    x += small + gap;
-                }
-            }
+
+            float stickY = Mathf.Clamp(height * 0.52f, bottom + stickD * 0.5f, height - topReserve - stickD * 0.5f);
+            Pin(_stick, new Vector2(stickAnchorX, 0f), new Vector2(stickAnchorX, 0.5f), new Vector2(stickEdge * stickSign, stickY), stickD);
+
+            bool shown = Shown && _visuals != null && _visuals.alpha > 0.01f;
+            ReservedSide = shown ? actionEdge + Mathf.Max(big, columns * (small + gap)) + gap : 0f;
+            ReservedBottom = shown ? bottom + big + gap : 0f;
 
             var handle = _stick.Find("Handle") as RectTransform;
             if (handle != null)

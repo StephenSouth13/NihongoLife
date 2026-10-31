@@ -26,8 +26,8 @@ namespace NihongoLife.UI
         private float _lastDpi;
 
         public static bool IsTouchLayout(bool forced) =>
-            forced || Application.isMobilePlatform || UnityEngine.Device.SystemInfo.deviceType == DeviceType.Handheld
-            || UnityEngine.Device.Application.isMobilePlatform || WebGLPointer.Coarse;
+            forced || (UiScreen.PhoneOverride ?? (Application.isMobilePlatform || UnityEngine.Device.SystemInfo.deviceType == DeviceType.Handheld
+            || UnityEngine.Device.Application.isMobilePlatform || WebGLPointer.Coarse));
 
         private void OnEnable()
         {
@@ -38,7 +38,7 @@ namespace NihongoLife.UI
 
         private void Update()
         {
-            if (Screen.width != _lastResolution.x || Screen.height != _lastResolution.y || !Mathf.Approximately(Screen.dpi, _lastDpi))
+            if (UiScreen.Width != _lastResolution.x || UiScreen.Height != _lastResolution.y || !Mathf.Approximately(UiScreen.Dpi, _lastDpi))
             {
                 Apply();
             }
@@ -46,17 +46,17 @@ namespace NihongoLife.UI
 
         private void Apply()
         {
-            if (_scaler == null || Screen.width <= 0 || Screen.height <= 0) return;
+            if (_scaler == null || UiScreen.Width <= 0 || UiScreen.Height <= 0) return;
 
-            _lastResolution = new Vector2Int(Screen.width, Screen.height);
-            _lastDpi = Screen.dpi;
+            _lastResolution = new Vector2Int(UiScreen.Width, UiScreen.Height);
+            _lastDpi = UiScreen.Dpi;
 
             float referenceHeight = desktopReferenceHeight;
             if (IsTouchLayout(forceTouchLayout))
             {
-                // Screen.dpi is 96 x device pixel ratio in browsers, so this approximates CSS pixels.
-                float dpiScale = Screen.dpi > 0f ? Mathf.Clamp(Screen.dpi / 96f, 1f, 4f) : 1f;
-                float cssHeight = Screen.height / dpiScale;
+                // UiScreen.Dpi is 96 x device pixel ratio in browsers, so this approximates CSS pixels.
+                float dpiScale = UiScreen.Dpi > 0f ? Mathf.Clamp(UiScreen.Dpi / 96f, 1f, 4f) : 1f;
+                float cssHeight = UiScreen.Height / dpiScale;
                 referenceHeight = Mathf.Clamp(cssHeight, touchMinReferenceHeight, touchMaxReferenceHeight);
             }
 

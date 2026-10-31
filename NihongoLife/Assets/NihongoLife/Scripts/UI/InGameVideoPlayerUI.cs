@@ -27,7 +27,8 @@ namespace NihongoLife.UI
         private RectTransform _list, _stage, _controls, _info;
         private RawImage _screen;
         private Image _thumbBg;
-        private TextMeshProUGUI _overlay, _time, _title, _summary, _transcript;
+        private TextMeshProUGUI _overlay, _time, _title, _summary, _transcript, _stageTitle;
+        private Image _titleBar;
         private Button _playBtn, _retryBtn, _externalBtn;
         private Slider _seek, _volume;
         private VideoPlayer _player;
@@ -76,9 +77,16 @@ namespace NihongoLife.UI
             UiKit.Fill(_overlay.rectTransform, 40f, 40f, 40f, 110f);
             _status = VideoPlayerStatus.Create(_stage);
             _retryBtn = UiKit.Button(_stage, "Retry", "Thử lại", "Retry", "再試行", Retry, UiKit.Kind.Primary, "refresh");
-            UiKit.Pin((RectTransform)_retryBtn.transform, new Vector2(0.5f, 0f), -120f, 40f, 200f, 50f);
-            _externalBtn = UiKit.Button(_stage, "External", "Mở trên YouTube", "Open on YouTube", "YouTubeで開く", OpenExternal, UiKit.Kind.Accent, "public");
-            UiKit.Pin((RectTransform)_externalBtn.transform, new Vector2(0.5f, 0f), 120f, 40f, 240f, 50f);
+            UiKit.Pin((RectTransform)_retryBtn.transform, new Vector2(0.5f, 0f), 0f, 40f, 200f, 50f);
+            // Title strip over the top of the picture, with the "open on YouTube" link as a small corner icon
+            // (owner 01/11/2026: the wide text button took too much of the stage).
+            _titleBar = UiKit.Image(_stage, "TitleBar", new Color(0f, 0f, 0f, 0.55f));
+            UiKit.Pin(_titleBar.rectTransform, new Vector2(0.5f, 1f), 0f, 0f, PW, 46f);
+            _stageTitle = UiKit.Label(_titleBar.transform, "StageTitle", "", 15f, UiTheme.Text, FontStyles.Bold, TextAlignmentOptions.MidlineLeft);
+            UiKit.Fill(_stageTitle.rectTransform, 14f, 0f, 56f, 0f);
+            _stageTitle.textWrappingMode = TextWrappingModes.NoWrap; _stageTitle.overflowMode = TextOverflowModes.Ellipsis;
+            _externalBtn = UiKit.IconButton(_stage, "External", "public", OpenExternal, UiKit.Kind.Ghost, 34f, 18f);
+            UiKit.Pin((RectTransform)_externalBtn.transform, new Vector2(1f, 1f), -6f, -6f, 34f, 34f);
 
             _controls = UiKit.Card(card, "Controls", UiTheme.Surface, 14, 0f, true).rectTransform;
             UiKit.Place(_controls, x, 108f + PH + 10f, PW, 58f);
@@ -86,17 +94,15 @@ namespace NihongoLife.UI
             UiKit.Place((RectTransform)_playBtn.transform, 8f, 7f, 44f, 44f);
             _time = UiKit.Label(_controls, "Time", "0:00 / 0:00", 14f, UiTheme.TextSoft, FontStyles.Normal, TextAlignmentOptions.Center);
             UiKit.Place(_time.rectTransform, 58f, 7f, 120f, 44f);
-            _seek = MakeSlider(_controls, "Seek", 186f, PW - 186f - 300f);
+            _seek = MakeSlider(_controls, "Seek", 186f, PW - 186f - 250f);
             _seek.onValueChanged.AddListener(OnSeekChanged);
             var vol = UiKit.IconButton(_controls, "Mute", "volume_up", ToggleMute, UiKit.Kind.Ghost);
-            UiKit.Place((RectTransform)vol.transform, PW - 290f, 7f, 44f, 44f);
-            _volume = MakeSlider(_controls, "Volume", PW - 240f, 120f);
+            UiKit.Place((RectTransform)vol.transform, PW - 240f, 7f, 44f, 44f);
+            _volume = MakeSlider(_controls, "Volume", PW - 190f, 120f);
             _volume.value = PlayerPrefs.GetFloat("NihongoLife.VideoVolume", 0.8f);
             _volume.onValueChanged.AddListener(OnVolumeChanged);
             var full = UiKit.IconButton(_controls, "Fullscreen", "visibility", ToggleFullscreen, UiKit.Kind.Ghost);
-            UiKit.Place((RectTransform)full.transform, PW - 108f, 7f, 44f, 44f);
-            var ext = UiKit.IconButton(_controls, "OpenExternal", "public", OpenExternal, UiKit.Kind.Ghost);
-            UiKit.Place((RectTransform)ext.transform, PW - 56f, 7f, 44f, 44f);
+            UiKit.Place((RectTransform)full.transform, PW - 56f, 7f, 44f, 44f);
 
             _info = UiKit.Card(card, "Info", UiTheme.Surface, 16, 0f, false).rectTransform;
             float infoY = 108f + PH + 80f;
@@ -338,7 +344,10 @@ namespace NihongoLife.UI
             _retryBtn.gameObject.SetActive(s == VideoPlaybackState.Error);
             if (_status != null) _status.Set(s == VideoPlaybackState.Preparing || (s == VideoPlaybackState.Playing && _sm.Buffering), s == VideoPlaybackState.Preparing ? _sm.PrepareProgress : -1f);
             bool hasYoutube = _entry != null && VideoCatalog.IsYouTube(_entry.youtubeUrl);
-            _externalBtn.gameObject.SetActive(hasYoutube && (s == VideoPlaybackState.ExternalOnly || s == VideoPlaybackState.Error));
+            _externalBtn.gameObject.SetActive(hasYoutube);
+            // The title strip shows while nothing plays (thumbnail, loading, errors) and hides over a playing picture.
+            _titleBar.gameObject.SetActive(_entry != null && s != VideoPlaybackState.Playing);
+            if (_stageTitle != null) _stageTitle.text = _entry == null ? "" : VideoCatalog.Title(_entry);
             _controls.gameObject.SetActive(s != VideoPlaybackState.ExternalOnly);
             _playBtn.interactable = s != VideoPlaybackState.Preparing && s != VideoPlaybackState.Idle;
             var icon = _playBtn.transform.GetComponentsInChildren<Image>(true);
