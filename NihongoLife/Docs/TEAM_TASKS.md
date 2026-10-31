@@ -2073,3 +2073,6 @@ Tên lớp test viết tắt: PlayMode = `NihongoLife.Tests.<Lớp>`; EditMode =
 
 ## 2026-11-01 - StoryScenes PlayMode test
 - New StoryScenesPlayModeTests (real town): completing a story quest opens its cutscene in the dialogue window (lines, question with every answer, reply, ending, all with Japanese text); the chosen answer sets only its story flag and changes the speaker's affinity by its value, once; the scene does not replay; nothing plays while StoryDirector.Bypass is on. Passed 3/3 runs.
+
+## 2026-11-01 - Left-handed touch layout
+- GameplayPhoneLayoutPlayModeTests now also runs left-handed (TouchControlPrefs.LeftHanded) at the 4 phone sizes. It found the status card (bottom left) under the mirrored Jump/Interact/Sprint buttons. Fix: StatusDock moves the card and its warning chip to the bottom right when left-handed on a touch layout; HUDUI's [F] prompt lane takes the buttons on the left and the card on the right. 16 audits, 0 issues; with PhoneControls + MenuLayout PlayMode 3/3.

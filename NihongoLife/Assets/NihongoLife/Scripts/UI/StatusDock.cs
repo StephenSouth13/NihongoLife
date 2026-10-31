@@ -158,6 +158,25 @@ namespace NihongoLife.UI
         public RectTransform TouchDrawer { get; private set; }
         private RectTransform _drawerToggle;
 
+        /// <summary>Touch layouts: the status card (and its warning chip) sits in the bottom corner opposite the action
+        /// buttons - bottom left when right-handed, bottom right when left-handed (TouchControlPrefs.LeftHanded).</summary>
+        private void KeepClearOfThumbs()
+        {
+            bool right = HudCanvasFitter.IsTouchLayout(false) && TouchControlPrefs.LeftHanded;
+            Corner(StatusWidget, right, 24f);
+            Corner(_warning, right, 190f);
+        }
+
+        private static void Corner(RectTransform rect, bool right, float y)
+        {
+            if (rect == null) return;
+            float side = right ? 1f : 0f;
+            if (Mathf.Approximately(rect.anchorMin.x, side) && Mathf.Approximately(rect.pivot.x, side)) return;
+            rect.anchorMin = rect.anchorMax = new Vector2(side, 0f);
+            rect.pivot = new Vector2(side, 0f);
+            rect.anchoredPosition = new Vector2(right ? -24f : 24f, y);
+        }
+
         /// <summary>On a narrow touch canvas the objective chip (top left) narrows so it ends before "Tools".</summary>
         private void KeepObjectiveClearOfTools()
         {
@@ -640,6 +659,7 @@ namespace NihongoLife.UI
             if (Time.unscaledTime >= _nextRefresh) { _nextRefresh = Time.unscaledTime + 0.5f; Refresh(); }
             AnimateFills();
             KeepObjectiveClearOfTools();
+            KeepClearOfThumbs();
             bool dialogueOpen = DialogueManager.Instance != null && DialogueManager.Instance.IsOpen;
             bool hide = dialogueOpen || UiModalStack.ImmersiveOpen;
             _dockGroup.alpha = Mathf.MoveTowards(_dockGroup.alpha, hide ? 0f : 1f, Time.unscaledDeltaTime * 6f);

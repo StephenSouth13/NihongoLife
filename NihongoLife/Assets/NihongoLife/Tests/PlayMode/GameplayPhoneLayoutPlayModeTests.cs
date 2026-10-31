@@ -20,7 +20,7 @@ namespace NihongoLife.Tests
     /// Phones are landscape only (AGENTS.md). In the town with the on-screen controls On, at real phone sizes
     /// (2400x1080 and 2340x1080 with a notch, 1600x720, 1334x750): the joystick and buttons stay inside the safe area,
     /// do not overlap each other or any HUD button, the HUD fits the screen, and a story cutscene with its answers
-    /// (dialogue window) fits too. With NL_SHOTS_DIR set it saves a screenshot per size and state.
+    /// (dialogue window) fits too - right- and left-handed (TouchControlPrefs.LeftHanded mirrors the controls). With NL_SHOTS_DIR set it saves a screenshot per size and state.
     /// </summary>
     public class GameplayPhoneLayoutPlayModeTests
     {
@@ -37,6 +37,7 @@ namespace NihongoLife.Tests
         {
             LogAssert.ignoreFailingMessages = true;
             int mode = TouchControlPrefs.Mode;
+            bool leftHanded = TouchControlPrefs.LeftHanded;
             bool scenes = StoryScenes.Enabled;
             TouchControlPrefs.Mode = 1;
             // Build the HUD as a phone does: phone profile, a phone-sized screen and a phone's pixel density.
@@ -59,8 +60,12 @@ namespace NihongoLife.Tests
             int audits = 0;
             try
             {
-                foreach (var size in Phones)
+                foreach (bool left in new[] { false, true })
+                foreach (var phone in Phones)
                 {
+                    // Right-handed (stick left, buttons right) and left-handed (mirrored) on every phone.
+                    TouchControlPrefs.LeftHanded = left;
+                    var size = left ? new MenuLayoutPlayModeTests.Size(phone.Name + "_left", phone.W, phone.H, phone.Phone, phone.Safe) : phone;
                     foreach (string state in new[] { "hud", "dialogue" })
                     {
                         if (state == "dialogue")
@@ -103,13 +108,14 @@ namespace NihongoLife.Tests
                 UiLayoutProbe.Release();
                 UiScreen.DpiOverride = null;
                 TouchControlPrefs.Mode = mode;
+                TouchControlPrefs.LeftHanded = leftHanded;
                 StoryScenes.Enabled = scenes;
             }
             string report = string.Join("\n", issues.Distinct());
             string dir = !string.IsNullOrEmpty(shots) ? shots : Path.Combine(Application.temporaryCachePath, "phone_layout");
             Directory.CreateDirectory(dir);
             File.WriteAllText(Path.Combine(dir, "phone_layout_issues.txt"), $"audits: {audits} issues: {issues.Distinct().Count()}\n{report}\n");
-            Assert.AreEqual(Phones.Length * 2, audits);
+            Assert.AreEqual(Phones.Length * 2 * 2, audits);
             Assert.IsEmpty(issues.Distinct().ToList(), "phone layout problems:\n" + report);
         }
 

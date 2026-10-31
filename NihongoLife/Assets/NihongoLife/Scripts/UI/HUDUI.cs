@@ -177,7 +177,7 @@ namespace NihongoLife.UI
             if (parent == null) return;
             if (_promptWidth < 0f) _promptWidth = rect.sizeDelta.x;
             float total = parent.rect.width;
-            float left = 0f;
+            float left = 0f, right = 0f;
             var widget = _statusDock != null ? _statusDock.StatusWidget : null;
             if (widget != null && widget.gameObject.activeInHierarchy)
             {
@@ -185,9 +185,18 @@ namespace NihongoLife.UI
                 widget.GetWorldCorners(corners);
                 Vector3 top = parent.InverseTransformPoint(corners[2]);
                 // Only when the card reaches the prompt's height.
-                if (top.y - parent.rect.yMin > rect.anchoredPosition.y) left = top.x - parent.rect.xMin + 12f;
+                Vector3 bottomLeft = parent.InverseTransformPoint(corners[0]);
+                // Only when the card reaches the prompt's height. Left-handed touch layouts mirror the card to the right.
+                bool cardOnRight = bottomLeft.x > parent.rect.center.x;
+                if (top.y - parent.rect.yMin > rect.anchoredPosition.y)
+                {
+                    if (cardOnRight) right = parent.rect.xMax - bottomLeft.x + 12f;
+                    else left = top.x - parent.rect.xMin + 12f;
+                }
             }
-            float right = TouchControlOverlay.ReservedSide > 0f ? TouchControlOverlay.ReservedSide + 8f : 0f;
+            float buttons = TouchControlOverlay.ReservedSide > 0f ? TouchControlOverlay.ReservedSide + 8f : 0f;
+            if (NihongoLife.Core.TouchControlPrefs.LeftHanded) left = Mathf.Max(left, buttons);
+            else right = Mathf.Max(right, buttons);
             float width = _promptWidth, x = 0f;
             float centredMin = (total - _promptWidth) * 0.5f;
             if (centredMin < left || centredMin < right)
