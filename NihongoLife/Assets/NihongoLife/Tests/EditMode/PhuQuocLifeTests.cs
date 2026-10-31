@@ -1,4 +1,4 @@
-using System.Linq;
+﻿using System.Linq;
 using NihongoLife.PhuQuoc;
 using NUnit.Framework;
 using TMPro;
@@ -63,6 +63,9 @@ namespace NihongoLife.Tests
 
                 var guests = root.SelectMany(r => r.GetComponentsInChildren<GanhNgonCustomers>(true)).Single();
                 Assert.AreEqual(8, guests.SeatCount);
+                var sky = root.SelectMany(r => r.GetComponentsInChildren<PhuQuocSkybox>(true)).Single();
+                Assert.IsNotNull(sky.Sky, "PQ_Skybox is used in play");
+                Assert.Less(PhuQuocSkybox.ExposureFor(1.1f, 0f), PhuQuocSkybox.ExposureFor(1.1f, 1f), "night sky is darker");
 
                 var places = root.SelectMany(r => r.GetComponentsInChildren<PhuQuocPlaceTag>(true)).Select(p => p.nameVi).ToList();
                 foreach (var kind in new[] { "Khách sạn", "Nhà nghỉ", "Homestay", "tiện lợi", "Cà phê", "Chợ", "Nhà thuốc", "Bến xe buýt" })

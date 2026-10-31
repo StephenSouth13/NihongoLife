@@ -99,7 +99,7 @@ namespace NihongoLife.EditorTools
             Walkers(root);
             SeaEverywhere(island, m);
             HideOverviewNearTown(island, restaurant);
-            Skybox();
+            root.gameObject.AddComponent<PhuQuocSkybox>().Sky = Skybox();
             Optimise(root);
             return root;
         }
@@ -659,7 +659,7 @@ namespace NihongoLife.EditorTools
             }
         }
 
-        private static void Skybox()
+        private static Material Skybox()
         {
             var tex = AssetDatabase.LoadAssetAtPath<Texture>(SkyTex);
             var mat = AssetDatabase.LoadAssetAtPath<Material>(SkyboxPath);
@@ -674,6 +674,7 @@ namespace NihongoLife.EditorTools
             mat.SetFloat("_Exposure", 1.1f);
             mat.SetColor("_Tint", new Color(0.55f, 0.6f, 0.65f));
             EditorUtility.SetDirty(mat);
+            return mat;
         }
 
         private static void Optimise(Transform root)

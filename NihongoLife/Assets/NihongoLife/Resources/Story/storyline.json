@@ -1,0 +1,2250 @@
+{
+  "schema": "nihongolife.story.v1",
+  "languageLevels": [
+    {
+      "id": "N5",
+      "knowledge": 0
+    },
+    {
+      "id": "N4",
+      "knowledge": 150
+    },
+    {
+      "id": "N3",
+      "knowledge": 400
+    },
+    {
+      "id": "N2",
+      "knowledge": 800
+    },
+    {
+      "id": "N1",
+      "knowledge": 1400
+    }
+  ],
+  "tiers": [
+    {
+      "id": "trainee",
+      "careerLevel": 1,
+      "jlpt": "N5",
+      "nameEn": "Trainee",
+      "nameVi": "Thực tập",
+      "nameJa": "見習い",
+      "nameRu": "Стажёр"
+    },
+    {
+      "id": "staff",
+      "careerLevel": 2,
+      "jlpt": "N4",
+      "nameEn": "Staff",
+      "nameVi": "Nhân viên",
+      "nameJa": "スタッフ",
+      "nameRu": "Сотрудник"
+    },
+    {
+      "id": "senior",
+      "careerLevel": 3,
+      "jlpt": "N3",
+      "nameEn": "Senior",
+      "nameVi": "Nhân viên chính",
+      "nameJa": "ベテラン",
+      "nameRu": "Старший сотрудник"
+    },
+    {
+      "id": "manager",
+      "careerLevel": 5,
+      "jlpt": "N2",
+      "nameEn": "Manager",
+      "nameVi": "Quản lý",
+      "nameJa": "マネージャー",
+      "nameRu": "Руководитель"
+    },
+    {
+      "id": "owner",
+      "careerLevel": 6,
+      "jlpt": "N1",
+      "nameEn": "Owner / specialist",
+      "nameVi": "Chủ / chuyên gia",
+      "nameJa": "オーナー・専門家",
+      "nameRu": "Владелец / специалист"
+    }
+  ],
+  "speakers": [
+    {
+      "id": "npc_neighbor_1",
+      "nameJa": "田中さん",
+      "nameVi": "Tanaka",
+      "nameEn": "Tanaka",
+      "nameRu": "Танака"
+    },
+    {
+      "id": "npc_neighbor_3",
+      "nameJa": "佐藤さん",
+      "nameVi": "Bác Sato",
+      "nameEn": "Mr Sato",
+      "nameRu": "Сато"
+    },
+    {
+      "id": "npc_cashier",
+      "nameJa": "いとう店長",
+      "nameVi": "Chị Ito",
+      "nameEn": "Ms Ito",
+      "nameRu": "Ито"
+    },
+    {
+      "id": "npc_ramen_owner",
+      "nameJa": "山田さん",
+      "nameVi": "Chú Yamada",
+      "nameEn": "Mr Yamada",
+      "nameRu": "Ямада"
+    },
+    {
+      "id": "npc_teacher_morita",
+      "nameJa": "森田先生",
+      "nameVi": "Cô Morita",
+      "nameEn": "Ms Morita",
+      "nameRu": "Морита-сэнсэй"
+    },
+    {
+      "id": "npc_classmate_kim",
+      "nameJa": "キムさん",
+      "nameVi": "Kim",
+      "nameEn": "Kim",
+      "nameRu": "Ким"
+    },
+    {
+      "id": "npc_sushi_staff",
+      "nameJa": "あおき大将",
+      "nameVi": "Bác Aoki",
+      "nameEn": "Aoki",
+      "nameRu": "Аоки"
+    },
+    {
+      "id": "npc_sushi_chef",
+      "nameJa": "太田大将",
+      "nameVi": "Bác Ota",
+      "nameEn": "Ota",
+      "nameRu": "Ота"
+    },
+    {
+      "id": "npc_farm_manager",
+      "nameJa": "はなさん",
+      "nameVi": "Cô Hana",
+      "nameEn": "Hana",
+      "nameRu": "Хана"
+    },
+    {
+      "id": "npc_ganhngon_manager",
+      "nameJa": "マイさん",
+      "nameVi": "Chị Mai",
+      "nameEn": "Mai",
+      "nameRu": "Май"
+    },
+    {
+      "id": "npc_clinic_doctor",
+      "nameJa": "もり院長",
+      "nameVi": "Bác sĩ Mori",
+      "nameEn": "Dr Mori",
+      "nameRu": "Доктор Мори"
+    },
+    {
+      "id": "npc_music_owner",
+      "nameJa": "ひびき店長",
+      "nameVi": "Chú Hibiki",
+      "nameEn": "Hibiki",
+      "nameRu": "Хибики"
+    }
+  ],
+  "chapters": [
+    {
+      "id": "arrival",
+      "order": 1,
+      "questId": "story_ch01_arrival",
+      "jlpt": "N5",
+      "minLevel": 1,
+      "speaker": "npc_neighbor_1",
+      "scene": "90_TestSandbox",
+      "titleEn": "A new life in Hibari-chō",
+      "titleVi": "Cuộc sống mới ở Hibari-chō",
+      "titleJa": "ひばり町での新生活",
+      "titleRu": "Новая жизнь в Хибари-тё",
+      "summaryEn": "You arrive as an exchange student. Meet your neighbour Tanaka on Sakura-dōri.",
+      "summaryVi": "Bạn đến Nhật làm du học sinh. Gặp hàng xóm Tanaka trên phố Sakura.",
+      "summaryJa": "留学生として到着。さくら通りで隣人の田中さんに会う。",
+      "summaryRu": "Вы приезжаете учиться по обмену. Познакомьтесь с соседом Танакой на улице Сакура.",
+      "lines": [
+        {
+          "speaker": "npc_neighbor_1",
+          "ja": "ようこそ、ひばり町へ！となりの田中です。",
+          "vi": "Chào mừng đến Hibari-chō! Tôi là Tanaka, nhà bên cạnh.",
+          "en": "Welcome to Hibari-chō! I'm Tanaka, from next door.",
+          "ru": "Добро пожаловать в Хибари-тё! Я Танака, ваш сосед."
+        },
+        {
+          "speaker": "npc_neighbor_1",
+          "ja": "わからないことがあったら、いつでも聞いてね。",
+          "vi": "Có gì không hiểu thì cứ hỏi tôi nhé.",
+          "en": "If anything is unclear, just ask me any time.",
+          "ru": "Если что-то непонятно — спрашивайте в любое время."
+        },
+        {
+          "speaker": "npc_neighbor_1",
+          "ja": "まずは学校と駅の場所を覚えましょう。",
+          "vi": "Trước hết hãy nhớ đường đến trường và nhà ga.",
+          "en": "First, let's learn the way to the school and the station.",
+          "ru": "Сначала запомним дорогу в школу и на станцию."
+        }
+      ]
+    },
+    {
+      "id": "first_class",
+      "order": 2,
+      "questId": "story_ch02_first_class",
+      "jlpt": "N5",
+      "minLevel": 1,
+      "speaker": "npc_teacher_morita",
+      "scene": "40_ HIBARICLASS",
+      "titleEn": "First day at Hibari School",
+      "titleVi": "Ngày đầu ở trường Hibari",
+      "titleJa": "ひばり学院の初日",
+      "titleRu": "Первый день в школе Хибари",
+      "summaryEn": "Introduce yourself in Sakura class and finish three lessons.",
+      "summaryVi": "Tự giới thiệu ở lớp Sakura và học xong 3 bài.",
+      "summaryJa": "さくらクラスで自己紹介し、3つのレッスンを終える。",
+      "summaryRu": "Представьтесь в классе Сакура и пройдите три урока.",
+      "lines": [
+        {
+          "speaker": "npc_teacher_morita",
+          "ja": "はじめまして。担任の森田です。",
+          "vi": "Rất vui được gặp em. Cô là Morita, giáo viên chủ nhiệm.",
+          "en": "Nice to meet you. I'm Morita, your homeroom teacher.",
+          "ru": "Приятно познакомиться. Я Морита, ваш классный руководитель."
+        },
+        {
+          "speaker": "npc_teacher_morita",
+          "ja": "まちがえても大丈夫。話すことがいちばん大切です。",
+          "vi": "Sai cũng không sao. Quan trọng nhất là dám nói.",
+          "en": "Mistakes are fine. Speaking is what matters most.",
+          "ru": "Ошибаться не страшно. Главное — говорить."
+        },
+        {
+          "speaker": "npc_teacher_morita",
+          "ja": "キムです！いっしょにがんばりましょう！",
+          "vi": "Mình là Kim! Cùng cố gắng nhé!",
+          "en": "I'm Kim! Let's do our best together!",
+          "ru": "Я Ким! Давайте стараться вместе!"
+        }
+      ]
+    },
+    {
+      "id": "neighbours",
+      "order": 3,
+      "questId": "story_ch03_neighbours",
+      "jlpt": "N5",
+      "minLevel": 3,
+      "speaker": "npc_sushi_staff",
+      "scene": "30_SushiRestaurant",
+      "titleEn": "Neighbours and sushi",
+      "titleVi": "Hàng xóm và bữa sushi",
+      "titleJa": "ご近所とお寿司",
+      "titleRu": "Соседи и суси",
+      "summaryEn": "Tanaka takes you to Sushi Hibari. Order on your own in Japanese.",
+      "summaryVi": "Tanaka dẫn bạn đến Sushi Hibari. Tự gọi món bằng tiếng Nhật nhé.",
+      "summaryJa": "田中さんとひばり寿司へ。自分で日本語で注文しよう。",
+      "summaryRu": "Танака ведёт вас в «Суси Хибари». Закажите сами по-японски.",
+      "lines": [
+        {
+          "speaker": "npc_sushi_staff",
+          "ja": "いらっしゃいませ！田中さんのお友だちですね。",
+          "vi": "Xin mời vào! Bạn của Tanaka phải không.",
+          "en": "Welcome! You're Tanaka's friend, aren't you?",
+          "ru": "Добро пожаловать! Вы друг Танаки, верно?"
+        },
+        {
+          "speaker": "npc_sushi_staff",
+          "ja": "ご注文がお決まりでしたら、どうぞ。",
+          "vi": "Nếu đã chọn được món thì mời bạn gọi.",
+          "en": "Whenever you're ready to order, go ahead.",
+          "ru": "Когда будете готовы, заказывайте."
+        },
+        {
+          "speaker": "npc_sushi_staff",
+          "ja": "また来てくださいね。次はおすすめを出しますよ。",
+          "vi": "Lần sau lại ghé nhé. Lần tới tôi giới thiệu món đặc biệt.",
+          "en": "Please come again. Next time I'll bring you our special.",
+          "ru": "Приходите ещё. В следующий раз принесу наше фирменное."
+        }
+      ]
+    },
+    {
+      "id": "festival",
+      "order": 4,
+      "questId": "story_ch04_festival",
+      "jlpt": "N5",
+      "minLevel": 6,
+      "speaker": "npc_neighbor_3",
+      "scene": "90_TestSandbox",
+      "titleEn": "The summer festival",
+      "titleVi": "Lễ hội mùa hè",
+      "titleJa": "夏祭り",
+      "titleRu": "Летний фестиваль",
+      "summaryEn": "Mr Sato invites you to help at the shrine festival. The whole street now knows your face.",
+      "summaryVi": "Bác Sato mời bạn phụ lễ hội ở đền. Cả khu phố giờ đã quen mặt bạn.",
+      "summaryJa": "佐藤さんに神社の夏祭りを手伝ってと頼まれる。町の皆があなたを知っている。",
+      "summaryRu": "Сато зовёт помочь на празднике у храма. Вас уже знает вся улица.",
+      "lines": [
+        {
+          "speaker": "npc_neighbor_3",
+          "ja": "今年の夏祭り、手伝ってくれませんか。",
+          "vi": "Năm nay cháu phụ lễ hội mùa hè được không?",
+          "en": "Would you help with this year's summer festival?",
+          "ru": "Поможешь в этом году с летним фестивалем?"
+        },
+        {
+          "speaker": "npc_neighbor_3",
+          "ja": "みなさん、この人はもう町の仲間です。",
+          "vi": "Mọi người ơi, người này đã là người của khu phố rồi.",
+          "en": "Everyone, this person is one of our neighbourhood now.",
+          "ru": "Друзья, этот человек теперь один из нас."
+        },
+        {
+          "speaker": "npc_neighbor_3",
+          "ja": "ありがとう。ここはあなたの町ですよ。",
+          "vi": "Cảm ơn cháu. Đây là khu phố của cháu đấy.",
+          "en": "Thank you. This is your town too.",
+          "ru": "Спасибо. Это и твой город тоже."
+        }
+      ]
+    },
+    {
+      "id": "career_choice",
+      "order": 5,
+      "questId": "story_ch05_career_choice",
+      "jlpt": "N4",
+      "minLevel": 10,
+      "speaker": "npc_neighbor_1",
+      "scene": "90_TestSandbox",
+      "titleEn": "Choosing a career",
+      "titleVi": "Chọn nghề",
+      "titleJa": "仕事を選ぶ",
+      "titleRu": "Выбор профессии",
+      "summaryEn": "With your visa changed to work, pick a career in the Career app and start as a trainee.",
+      "summaryVi": "Visa chuyển sang lao động: chọn một nghề trong ứng dụng Nghề nghiệp và bắt đầu từ thực tập.",
+      "summaryJa": "就労ビザに切り替え、キャリアアプリで仕事を選んで見習いから始める。",
+      "summaryRu": "Виза сменилась на рабочую: выберите профессию в приложении «Карьера» и начните стажёром.",
+      "lines": [
+        {
+          "speaker": "npc_neighbor_1",
+          "ja": "ビザ、おめでとう！これからは働けるね。",
+          "vi": "Chúc mừng có visa! Từ giờ bạn đi làm được rồi.",
+          "en": "Congratulations on the visa! You can work now.",
+          "ru": "Поздравляю с визой! Теперь ты можешь работать."
+        },
+        {
+          "speaker": "npc_neighbor_1",
+          "ja": "店、病院、農場、フーコックのレストラン……何がしたい？",
+          "vi": "Cửa hàng, phòng khám, nông trại, nhà hàng ở Phú Quốc… bạn muốn làm gì?",
+          "en": "A shop, the clinic, the farm, the restaurant in Phú Quốc… what do you want to do?",
+          "ru": "Магазин, клиника, ферма, ресторан на Фукуоке… чем хочешь заниматься?"
+        },
+        {
+          "speaker": "npc_neighbor_1",
+          "ja": "どの仕事も、日本語が上手になるほど上に行けるよ。",
+          "vi": "Nghề nào cũng vậy, tiếng Nhật càng giỏi càng lên cao.",
+          "en": "In any job, the better your Japanese, the higher you go.",
+          "ru": "В любой работе: чем лучше японский, тем выше поднимаешься."
+        }
+      ]
+    },
+    {
+      "id": "phu_quoc",
+      "order": 6,
+      "questId": "story_ch06_phu_quoc",
+      "jlpt": "N4",
+      "minLevel": 10,
+      "speaker": "npc_ganhngon_manager",
+      "scene": "65_PhuQuocIsland",
+      "titleEn": "A bridge to Phú Quốc",
+      "titleVi": "Nhịp cầu đến Phú Quốc",
+      "titleJa": "フーコックへの架け橋",
+      "titleRu": "Мост на Фукуок",
+      "summaryEn": "Mai at Gánh Ngon needs a Japanese speaker for her guests from Japan. Visit the island.",
+      "summaryVi": "Chị Mai ở Gánh Ngon cần người nói tiếng Nhật để đón khách Nhật. Hãy ra đảo.",
+      "summaryJa": "ガンゴンのマイさんが日本人客のために日本語ができる人を探している。島へ行こう。",
+      "summaryRu": "Май из «Ганьнгон» ищет того, кто говорит по-японски, для гостей из Японии. Отправляйтесь на остров.",
+      "lines": [
+        {
+          "speaker": "npc_ganhngon_manager",
+          "ja": "日本からのお客さまが増えているんです。",
+          "vi": "Khách từ Nhật đến ngày càng đông.",
+          "en": "More and more guests are coming from Japan.",
+          "ru": "Гостей из Японии становится всё больше."
+        },
+        {
+          "speaker": "npc_ganhngon_manager",
+          "ja": "あなたの日本語で、お店を手伝ってくれませんか。",
+          "vi": "Em dùng tiếng Nhật giúp quán chị được không?",
+          "en": "Could you help the restaurant with your Japanese?",
+          "ru": "Поможешь ресторану своим японским?"
+        },
+        {
+          "speaker": "npc_ganhngon_manager",
+          "ja": "ようこそフーコックへ。海もごはんも最高ですよ！",
+          "vi": "Chào mừng đến Phú Quốc. Biển và đồ ăn đều tuyệt!",
+          "en": "Welcome to Phú Quốc. The sea and the food are the best!",
+          "ru": "Добро пожаловать на Фукуок. Море и еда — лучшие!"
+        }
+      ]
+    },
+    {
+      "id": "n3_exam",
+      "order": 7,
+      "questId": "story_ch07_n3_exam",
+      "jlpt": "N3",
+      "minLevel": 14,
+      "speaker": "npc_teacher_morita",
+      "scene": "40_ HIBARICLASS",
+      "titleEn": "Exam season: N3",
+      "titleVi": "Mùa thi: N3",
+      "titleJa": "試験シーズン：N3",
+      "titleRu": "Сезон экзаменов: N3",
+      "summaryEn": "Morita-sensei prepares the class for the JLPT N3. Ten lessons or practice tests.",
+      "summaryVi": "Cô Morita ôn thi JLPT N3 cho lớp. Học 10 bài hoặc đề thi thử.",
+      "summaryJa": "森田先生とJLPT N3対策。レッスンか模試を10回。",
+      "summaryRu": "Морита-сэнсэй готовит класс к JLPT N3. Десять уроков или пробных тестов.",
+      "lines": [
+        {
+          "speaker": "npc_teacher_morita",
+          "ja": "N3からは、新聞の見出しも読めるようになりますよ。",
+          "vi": "Từ N3 em sẽ đọc được cả tít báo.",
+          "en": "From N3 on you'll be able to read newspaper headlines.",
+          "ru": "С уровня N3 вы сможете читать заголовки газет."
+        },
+        {
+          "speaker": "npc_teacher_morita",
+          "ja": "仕事で使う日本語も、試験で練習しましょう。",
+          "vi": "Tiếng Nhật dùng trong công việc cũng luyện qua đề thi nhé.",
+          "en": "Let's practise the Japanese you use at work in the exam too.",
+          "ru": "Японский для работы тоже потренируем на экзамене."
+        },
+        {
+          "speaker": "npc_teacher_morita",
+          "ja": "キムさんと一緒に、毎日少しずつ。",
+          "vi": "Cùng Kim mỗi ngày một chút.",
+          "en": "A little every day, together with Kim.",
+          "ru": "Понемногу каждый день, вместе с Ким."
+        }
+      ]
+    },
+    {
+      "id": "mentor",
+      "order": 8,
+      "questId": "story_ch08_mentor",
+      "jlpt": "N2",
+      "minLevel": 18,
+      "speaker": "npc_teacher_morita",
+      "scene": "40_ HIBARICLASS",
+      "titleEn": "From student to mentor",
+      "titleVi": "Từ học viên thành người hướng dẫn",
+      "titleJa": "学生から先輩へ",
+      "titleRu": "От ученика к наставнику",
+      "summaryEn": "New students arrive in Sakura class. Morita-sensei asks you to welcome them as Tanaka once welcomed you.",
+      "summaryVi": "Lớp Sakura có học viên mới. Cô Morita nhờ bạn đón họ như Tanaka từng đón bạn.",
+      "summaryJa": "さくらクラスに新入生。田中さんがしてくれたように迎えてほしいと森田先生。",
+      "summaryRu": "В класс Сакура пришли новички. Морита просит встретить их, как когда-то Танака встретил вас.",
+      "lines": [
+        {
+          "speaker": "npc_teacher_morita",
+          "ja": "今度はあなたが先輩ですね。",
+          "vi": "Lần này em là đàn anh, đàn chị rồi.",
+          "en": "This time you're the senior student.",
+          "ru": "Теперь вы — старший."
+        },
+        {
+          "speaker": "npc_teacher_morita",
+          "ja": "新しい学生に、町を案内してあげてください。",
+          "vi": "Hãy dẫn các bạn mới đi tham quan khu phố.",
+          "en": "Please show the new students around town.",
+          "ru": "Покажите, пожалуйста, новичкам город."
+        },
+        {
+          "speaker": "npc_teacher_morita",
+          "ja": "あなたを見ていると、教師になってよかったと思います。",
+          "vi": "Nhìn em, cô thấy mình chọn nghề giáo là đúng.",
+          "en": "Watching you, I'm glad I became a teacher.",
+          "ru": "Глядя на вас, я рада, что стала учителем."
+        }
+      ]
+    },
+    {
+      "id": "homecoming",
+      "order": 9,
+      "questId": "story_ch09_homecoming",
+      "jlpt": "N1",
+      "minLevel": 22,
+      "speaker": "npc_neighbor_1",
+      "scene": "90_TestSandbox",
+      "titleEn": "Home in two countries",
+      "titleVi": "Hai quê hương",
+      "titleJa": "二つのふるさと",
+      "titleRu": "Дом в двух странах",
+      "summaryEn": "At the next summer festival Tanaka gives the speech — about you. Your career, your Japanese, your friends in Hibari and Phú Quốc.",
+      "summaryVi": "Lễ hội mùa hè năm sau, Tanaka phát biểu — về bạn: nghề nghiệp, tiếng Nhật, bạn bè ở Hibari và Phú Quốc.",
+      "summaryJa": "翌年の夏祭りで田中さんがスピーチ。テーマはあなた：仕事、日本語、ひばりとフーコックの仲間。",
+      "summaryRu": "На следующем летнем фестивале Танака произносит речь — о вас: о работе, японском и друзьях в Хибари и на Фукуоке.",
+      "lines": [
+        {
+          "speaker": "npc_neighbor_1",
+          "ja": "最初は道もわからなかったのにね。",
+          "vi": "Hồi đầu bạn còn chẳng biết đường đi.",
+          "en": "At first you didn't even know the way.",
+          "ru": "А ведь сначала ты даже дорогу не знал."
+        },
+        {
+          "speaker": "npc_neighbor_1",
+          "ja": "今では日本とベトナムをつなぐ人だ。",
+          "vi": "Giờ bạn là người nối Nhật Bản với Việt Nam.",
+          "en": "Now you're someone who connects Japan and Vietnam.",
+          "ru": "Теперь ты связываешь Японию и Вьетнам."
+        },
+        {
+          "speaker": "npc_neighbor_1",
+          "ja": "おかえり。ここも、あなたのふるさとだよ。",
+          "vi": "Mừng bạn về. Nơi này cũng là quê của bạn.",
+          "en": "Welcome home. This is your hometown too.",
+          "ru": "С возвращением. Это тоже твой дом."
+        }
+      ]
+    }
+  ],
+  "arcs": [
+    {
+      "career": "hospitality",
+      "speaker": "npc_ganhngon_manager",
+      "scene": "65_PhuQuocIsland",
+      "stages": [
+        {
+          "tier": "trainee",
+          "careerLevel": 1,
+          "jlpt": "N5",
+          "questId": "story_hospitality_trainee",
+          "titleEn": "Gánh Ngon: first apron",
+          "titleVi": "Gánh Ngon: chiếc tạp dề đầu tiên",
+          "titleJa": "ガンゴン：初めてのエプロン",
+          "titleRu": "«Ганьнгон»: первый фартук",
+          "goalEn": "Greet guests and serve your first tables.",
+          "goalVi": "Chào khách và phục vụ những bàn đầu tiên.",
+          "goalJa": "お客さまに挨拶し、最初のテーブルを担当する。",
+          "goalRu": "Встречайте гостей и обслужите первые столики.",
+          "lines": [
+            {
+              "speaker": "npc_ganhngon_manager",
+              "ja": "いらっしゃいませ、は笑顔で言ってね。",
+              "vi": "Nói 'irasshaimase' với nụ cười nhé.",
+              "en": "Say irasshaimase with a smile.",
+              "ru": "Говори «ирассяимасэ» с улыбкой."
+            },
+            {
+              "speaker": "npc_ganhngon_manager",
+              "ja": "お水とおしぼりを先に出します。",
+              "vi": "Mang nước và khăn lạnh ra trước.",
+              "en": "Water and a cold towel come first.",
+              "ru": "Сначала вода и холодное полотенце."
+            },
+            {
+              "speaker": "npc_ganhngon_manager",
+              "ja": "よくできました。明日も来てね。",
+              "vi": "Làm tốt lắm. Mai lại đến nhé.",
+              "en": "Well done. Come again tomorrow.",
+              "ru": "Отлично. Приходи и завтра."
+            }
+          ]
+        },
+        {
+          "tier": "staff",
+          "careerLevel": 2,
+          "jlpt": "N4",
+          "questId": "story_hospitality_staff",
+          "titleEn": "Gánh Ngon: the Japanese tour group",
+          "titleVi": "Gánh Ngon: đoàn khách Nhật",
+          "titleJa": "ガンゴン：日本人ツアー客",
+          "titleRu": "«Ганьнгон»: японская тургруппа",
+          "goalEn": "Take orders from a Japanese tour group and explain the dishes.",
+          "goalVi": "Nhận món cho đoàn khách Nhật và giải thích các món.",
+          "goalJa": "日本人ツアー客の注文を取り、料理を説明する。",
+          "goalRu": "Примите заказ японской тургруппы и расскажите о блюдах.",
+          "lines": [
+            {
+              "speaker": "npc_ganhngon_manager",
+              "ja": "今日は日本の団体さんが十二名です。",
+              "vi": "Hôm nay có đoàn 12 khách Nhật.",
+              "en": "Today we have a Japanese group of twelve.",
+              "ru": "Сегодня у нас японская группа из двенадцати человек."
+            },
+            {
+              "speaker": "npc_ganhngon_manager",
+              "ja": "パクチーが苦手な方がいるか、聞いてください。",
+              "vi": "Hỏi xem ai không ăn được rau mùi nhé.",
+              "en": "Ask whether anyone dislikes coriander.",
+              "ru": "Спроси, не против ли кто-нибудь кинзы."
+            },
+            {
+              "speaker": "npc_ganhngon_manager",
+              "ja": "ガイドさんがあなたをほめていましたよ。",
+              "vi": "Hướng dẫn viên khen em đấy.",
+              "en": "The tour guide praised you.",
+              "ru": "Гид тебя хвалил."
+            }
+          ]
+        },
+        {
+          "tier": "senior",
+          "careerLevel": 3,
+          "jlpt": "N3",
+          "questId": "story_hospitality_senior",
+          "titleEn": "Gánh Ngon: running the floor",
+          "titleVi": "Gánh Ngon: điều phối sảnh",
+          "titleJa": "ガンゴン：ホールを任される",
+          "titleRu": "«Ганьнгон»: управление залом",
+          "goalEn": "Lead the evening shift and handle a complaint politely.",
+          "goalVi": "Phụ trách ca tối và xử lý một lời phàn nàn lịch sự.",
+          "goalJa": "夜のシフトを仕切り、クレームに丁寧に対応する。",
+          "goalRu": "Ведите вечернюю смену и вежливо разберите жалобу.",
+          "lines": [
+            {
+              "speaker": "npc_ganhngon_manager",
+              "ja": "今夜はあなたがシフトリーダーよ。",
+              "vi": "Tối nay em là trưởng ca.",
+              "en": "Tonight you're the shift lead.",
+              "ru": "Сегодня вечером ты старший смены."
+            },
+            {
+              "speaker": "npc_ganhngon_manager",
+              "ja": "お客さまが「遅い」と言ったら、まず「申し訳ございません」。",
+              "vi": "Khách chê chậm thì trước hết nói 'mōshiwake gozaimasen'.",
+              "en": "If a guest says it's slow, start with mōshiwake gozaimasen.",
+              "ru": "Если гость говорит, что долго, — сначала «мо:сивакэ годзаимасэн»."
+            },
+            {
+              "speaker": "npc_ganhngon_manager",
+              "ja": "新人の子たちにも教えてあげてね。",
+              "vi": "Chỉ cho các bạn mới nữa nhé.",
+              "en": "Teach the new staff too.",
+              "ru": "Научи и новичков."
+            }
+          ]
+        },
+        {
+          "tier": "manager",
+          "careerLevel": 5,
+          "jlpt": "N2",
+          "questId": "story_hospitality_manager",
+          "titleEn": "Gánh Ngon: the manager's key",
+          "titleVi": "Gánh Ngon: chìa khóa quản lý",
+          "titleJa": "ガンゴン：店長の鍵",
+          "titleRu": "«Ганьнгон»: ключи управляющего",
+          "goalEn": "Plan the rota, the menu and a partnership with a Japanese travel agency.",
+          "goalVi": "Lên lịch ca, thực đơn và hợp tác với một công ty du lịch Nhật.",
+          "goalJa": "シフト表とメニューを作り、日本の旅行会社と提携する。",
+          "goalRu": "Составьте график, меню и договоритесь с японским турагентством.",
+          "lines": [
+            {
+              "speaker": "npc_ganhngon_manager",
+              "ja": "このお店の鍵、あなたに預けます。",
+              "vi": "Chị giao chìa khóa quán cho em.",
+              "en": "I'm trusting you with the keys to this place.",
+              "ru": "Доверяю тебе ключи от ресторана."
+            },
+            {
+              "speaker": "npc_ganhngon_manager",
+              "ja": "旅行会社とのメール、敬語で書けますか。",
+              "vi": "Em viết được email kính ngữ cho công ty du lịch không?",
+              "en": "Can you write the travel agency email in keigo?",
+              "ru": "Сможешь написать письмо турагентству на кэйго?"
+            },
+            {
+              "speaker": "npc_ganhngon_manager",
+              "ja": "売り上げ、先月より二割も上がったわ！",
+              "vi": "Doanh thu tăng 20% so với tháng trước!",
+              "en": "Sales are up twenty percent on last month!",
+              "ru": "Выручка выросла на двадцать процентов по сравнению с прошлым месяцем!"
+            }
+          ]
+        },
+        {
+          "tier": "owner",
+          "careerLevel": 6,
+          "jlpt": "N1",
+          "questId": "story_hospitality_owner",
+          "titleEn": "Gánh Ngon: your own restaurant",
+          "titleVi": "Gánh Ngon: nhà hàng của riêng bạn",
+          "titleJa": "ガンゴン：自分の店",
+          "titleRu": "«Ганьнгон»: собственный ресторан",
+          "goalEn": "Open a second Gánh Ngon by the beach, a bridge between Vietnamese food and Japanese guests.",
+          "goalVi": "Mở Gánh Ngon thứ hai bên biển, nhịp cầu giữa ẩm thực Việt và khách Nhật.",
+          "goalJa": "ビーチに二号店を開き、ベトナム料理と日本人客の架け橋に。",
+          "goalRu": "Откройте второй «Ганьнгон» у пляжа — мост между вьетнамской кухней и гостями из Японии.",
+          "lines": [
+            {
+              "speaker": "npc_ganhngon_manager",
+              "ja": "二号店のオーナーは、あなたしかいない。",
+              "vi": "Chủ quán thứ hai chỉ có thể là em.",
+              "en": "There's no one but you to own the second restaurant.",
+              "ru": "Владельцем второго ресторана можешь быть только ты."
+            },
+            {
+              "speaker": "npc_ganhngon_manager",
+              "ja": "日本の雑誌にも紹介されるそうよ。",
+              "vi": "Nghe nói còn được tạp chí Nhật giới thiệu đấy.",
+              "en": "I hear a Japanese magazine will feature it.",
+              "ru": "Говорят, о нём напишет японский журнал."
+            },
+            {
+              "speaker": "npc_ganhngon_manager",
+              "ja": "最初の日のエプロン、まだ持ってる？",
+              "vi": "Em còn giữ chiếc tạp dề ngày đầu không?",
+              "en": "Do you still have the apron from your first day?",
+              "ru": "Ты ещё хранишь фартук с первого дня?"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "career": "medical",
+      "speaker": "npc_clinic_doctor",
+      "scene": "35_HibariClinic",
+      "stages": [
+        {
+          "tier": "trainee",
+          "careerLevel": 1,
+          "jlpt": "N5",
+          "questId": "story_medical_trainee",
+          "titleEn": "Clinic: the reception desk",
+          "titleVi": "Phòng khám: quầy lễ tân",
+          "titleJa": "クリニック：受付",
+          "titleRu": "Клиника: регистратура",
+          "goalEn": "Check patients in and ask for their insurance card.",
+          "goalVi": "Tiếp nhận bệnh nhân và hỏi thẻ bảo hiểm.",
+          "goalJa": "患者さんを受け付け、保険証を確認する。",
+          "goalRu": "Регистрируйте пациентов и спрашивайте страховой полис.",
+          "lines": [
+            {
+              "speaker": "npc_clinic_doctor",
+              "ja": "保険証をお願いします、から始めましょう。",
+              "vi": "Bắt đầu bằng 'hokenshō o onegai shimasu'.",
+              "en": "Start with: your insurance card, please.",
+              "ru": "Начнём с «ваш страховой полис, пожалуйста»."
+            },
+            {
+              "speaker": "npc_clinic_doctor",
+              "ja": "問診票は、ゆっくり説明してあげてください。",
+              "vi": "Giải thích phiếu hỏi bệnh thật chậm nhé.",
+              "en": "Explain the questionnaire slowly.",
+              "ru": "Объясняйте анкету медленно."
+            },
+            {
+              "speaker": "npc_clinic_doctor",
+              "ja": "受付は病院の顔ですよ。",
+              "vi": "Lễ tân là bộ mặt của phòng khám.",
+              "en": "Reception is the face of the clinic.",
+              "ru": "Регистратура — лицо клиники."
+            }
+          ]
+        },
+        {
+          "tier": "staff",
+          "careerLevel": 2,
+          "jlpt": "N4",
+          "questId": "story_medical_staff",
+          "titleEn": "Clinic: nursing assistant",
+          "titleVi": "Phòng khám: phụ tá điều dưỡng",
+          "titleJa": "クリニック：看護助手",
+          "titleRu": "Клиника: помощник медсестры",
+          "goalEn": "Take temperatures and blood pressure and ask where it hurts.",
+          "goalVi": "Đo nhiệt độ, huyết áp và hỏi đau ở đâu.",
+          "goalJa": "体温と血圧を測り、どこが痛いか聞く。",
+          "goalRu": "Измеряйте температуру и давление, спрашивайте, где болит.",
+          "lines": [
+            {
+              "speaker": "npc_clinic_doctor",
+              "ja": "どこが痛いですか、と聞いてから測ります。",
+              "vi": "Hỏi 'đau ở đâu' rồi mới đo.",
+              "en": "Ask where it hurts, then measure.",
+              "ru": "Сначала спроси, где болит, потом измеряй."
+            },
+            {
+              "speaker": "npc_clinic_doctor",
+              "ja": "外国の患者さんには、あなたの通訳が助かります。",
+              "vi": "Với bệnh nhân nước ngoài, em phiên dịch giúp nhiều lắm.",
+              "en": "Your interpreting helps our foreign patients a lot.",
+              "ru": "Твой перевод очень помогает иностранным пациентам."
+            },
+            {
+              "speaker": "npc_clinic_doctor",
+              "ja": "数字は二回確認してね。",
+              "vi": "Con số thì kiểm tra hai lần nhé.",
+              "en": "Check the numbers twice.",
+              "ru": "Цифры проверяй дважды."
+            }
+          ]
+        },
+        {
+          "tier": "senior",
+          "careerLevel": 3,
+          "jlpt": "N3",
+          "questId": "story_medical_senior",
+          "titleEn": "Clinic: medical student",
+          "titleVi": "Phòng khám: sinh viên y",
+          "titleJa": "クリニック：医学生",
+          "titleRu": "Клиника: студент-медик",
+          "goalEn": "Pass the CBT practice and present a case to Dr Mori.",
+          "goalVi": "Qua bài CBT thử và trình bày một ca bệnh với bác sĩ Mori.",
+          "goalJa": "CBT模試に合格し、森先生に症例を発表する。",
+          "goalRu": "Сдайте пробный CBT и доложите случай доктору Мори.",
+          "lines": [
+            {
+              "speaker": "npc_clinic_doctor",
+              "ja": "医学部の勉強は六年。焦らずにいきましょう。",
+              "vi": "Học y mất sáu năm. Đừng vội.",
+              "en": "Medical school is six years. Don't rush.",
+              "ru": "Медицинский — шесть лет. Не торопись."
+            },
+            {
+              "speaker": "npc_clinic_doctor",
+              "ja": "症例発表は、主訴から順番に。",
+              "vi": "Trình bày ca bệnh theo thứ tự, từ lý do đến khám.",
+              "en": "Present the case in order, starting with the chief complaint.",
+              "ru": "Докладывай по порядку, начиная с основной жалобы."
+            },
+            {
+              "speaker": "npc_clinic_doctor",
+              "ja": "いい質問ですね。それが医者の目です。",
+              "vi": "Câu hỏi hay. Đó là con mắt của bác sĩ.",
+              "en": "Good question. That's a doctor's eye.",
+              "ru": "Хороший вопрос. Это взгляд врача."
+            }
+          ]
+        },
+        {
+          "tier": "manager",
+          "careerLevel": 5,
+          "jlpt": "N2",
+          "questId": "story_medical_manager",
+          "titleEn": "Clinic: specialty training",
+          "titleVi": "Phòng khám: đào tạo chuyên khoa",
+          "titleJa": "クリニック：専門研修",
+          "titleRu": "Клиника: специализация",
+          "goalEn": "After the national exam and residency, lead the morning clinic as a specialty trainee.",
+          "goalVi": "Sau kỳ thi quốc gia và nội trú, phụ trách ca khám sáng với tư cách bác sĩ chuyên khoa.",
+          "goalJa": "国家試験と研修を経て、専攻医として午前外来を担当。",
+          "goalRu": "После госэкзамена и ординатуры ведите утренний приём как врач-специализант.",
+          "lines": [
+            {
+              "speaker": "npc_clinic_doctor",
+              "ja": "国家試験合格、おめでとう。",
+              "vi": "Chúc mừng em đỗ kỳ thi quốc gia.",
+              "en": "Congratulations on passing the national exam.",
+              "ru": "Поздравляю со сдачей государственного экзамена."
+            },
+            {
+              "speaker": "npc_clinic_doctor",
+              "ja": "今日から、午前の外来をお願いします。",
+              "vi": "Từ hôm nay em phụ trách khám buổi sáng.",
+              "en": "From today the morning clinic is yours.",
+              "ru": "С сегодняшнего дня утренний приём — твой."
+            },
+            {
+              "speaker": "npc_clinic_doctor",
+              "ja": "説明は、患者さんの言葉で。",
+              "vi": "Giải thích bằng lời của bệnh nhân.",
+              "en": "Explain things in the patient's words.",
+              "ru": "Объясняй словами пациента."
+            }
+          ]
+        },
+        {
+          "tier": "owner",
+          "careerLevel": 6,
+          "jlpt": "N1",
+          "questId": "story_medical_owner",
+          "titleEn": "Clinic: specialist and director",
+          "titleVi": "Phòng khám: chuyên gia và viện trưởng",
+          "titleJa": "クリニック：専門医・院長",
+          "titleRu": "Клиника: специалист и главврач",
+          "goalEn": "Become a specialist and take over Hibari Clinic, with care in Japanese, Vietnamese and English.",
+          "goalVi": "Thành chuyên gia và tiếp quản phòng khám Hibari, khám bằng tiếng Nhật, Việt và Anh.",
+          "goalJa": "専門医となり、日・越・英語で診るひばりクリニックを継ぐ。",
+          "goalRu": "Станьте специалистом и возглавьте клинику Хибари с приёмом на японском, вьетнамском и английском.",
+          "lines": [
+            {
+              "speaker": "npc_clinic_doctor",
+              "ja": "このクリニックを、あなたに任せたい。",
+              "vi": "Tôi muốn giao phòng khám này cho em.",
+              "en": "I want to leave this clinic to you.",
+              "ru": "Я хочу доверить тебе эту клинику."
+            },
+            {
+              "speaker": "npc_clinic_doctor",
+              "ja": "三つの言葉で診られる院長は、町の宝です。",
+              "vi": "Viện trưởng khám được ba thứ tiếng là báu vật của khu phố.",
+              "en": "A director who treats in three languages is a treasure for the town.",
+              "ru": "Главврач, принимающий на трёх языках, — сокровище города."
+            },
+            {
+              "speaker": "npc_clinic_doctor",
+              "ja": "受付から始めた日を、忘れないでね。",
+              "vi": "Đừng quên ngày em bắt đầu ở quầy lễ tân.",
+              "en": "Don't forget the day you started at reception.",
+              "ru": "Не забывай день, когда ты начинал в регистратуре."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "career": "retail",
+      "speaker": "npc_cashier",
+      "scene": "90_TestSandbox",
+      "stages": [
+        {
+          "tier": "trainee",
+          "careerLevel": 1,
+          "jlpt": "N5",
+          "questId": "story_retail_trainee",
+          "titleEn": "Hibari Mart: the first shift",
+          "titleVi": "Hibari Mart: ca đầu tiên",
+          "titleJa": "ひばりマート：初シフト",
+          "titleRu": "«Хибари Март»: первая смена",
+          "goalEn": "Stock shelves and ring up customers.",
+          "goalVi": "Xếp hàng lên kệ và tính tiền cho khách.",
+          "goalJa": "品出しとレジ打ち。",
+          "goalRu": "Раскладывайте товар и пробивайте покупки.",
+          "lines": [
+            {
+              "speaker": "npc_cashier",
+              "ja": "レジ袋はご利用ですか、と聞いてね。",
+              "vi": "Hỏi khách có cần túi không nhé.",
+              "en": "Ask whether they'd like a bag.",
+              "ru": "Спрашивай, нужен ли пакет."
+            },
+            {
+              "speaker": "npc_cashier",
+              "ja": "温めますか、も忘れずに。",
+              "vi": "Đừng quên hỏi 'có hâm nóng không'.",
+              "en": "Don't forget: shall I heat it up?",
+              "ru": "Не забудь: «подогреть?»"
+            },
+            {
+              "speaker": "npc_cashier",
+              "ja": "初日なのに上手！",
+              "vi": "Ngày đầu mà giỏi ghê!",
+              "en": "Great for a first day!",
+              "ru": "Отлично для первого дня!"
+            }
+          ]
+        },
+        {
+          "tier": "staff",
+          "careerLevel": 2,
+          "jlpt": "N4",
+          "questId": "story_retail_staff",
+          "titleEn": "Hibari Mart: regulars",
+          "titleVi": "Hibari Mart: khách quen",
+          "titleJa": "ひばりマート：常連さん",
+          "titleRu": "«Хибари Март»: постоянные покупатели",
+          "goalEn": "Remember the regulars and handle deliveries.",
+          "goalVi": "Nhớ khách quen và xử lý gửi hàng.",
+          "goalJa": "常連さんを覚え、宅配便を受け付ける。",
+          "goalRu": "Запоминайте постоянных покупателей и принимайте посылки.",
+          "lines": [
+            {
+              "speaker": "npc_cashier",
+              "ja": "佐藤さんはいつも朝の新聞よ。",
+              "vi": "Bác Sato sáng nào cũng mua báo.",
+              "en": "Mr Sato always buys the morning paper.",
+              "ru": "Сато всегда берёт утреннюю газету."
+            },
+            {
+              "speaker": "npc_cashier",
+              "ja": "宅配便の伝票、書き方を教えるね。",
+              "vi": "Chị chỉ cách ghi phiếu gửi hàng.",
+              "en": "Let me show you the delivery slip.",
+              "ru": "Покажу, как заполнять накладную."
+            },
+            {
+              "speaker": "npc_cashier",
+              "ja": "お客さまの名前を覚えると、店が温かくなる。",
+              "vi": "Nhớ tên khách thì cửa hàng ấm áp hơn.",
+              "en": "Knowing names makes a shop warm.",
+              "ru": "Когда помнишь имена, в магазине теплее."
+            }
+          ]
+        },
+        {
+          "tier": "senior",
+          "careerLevel": 3,
+          "jlpt": "N3",
+          "questId": "story_retail_senior",
+          "titleEn": "Hibari Mart: register lead",
+          "titleVi": "Hibari Mart: trưởng quầy",
+          "titleJa": "ひばりマート：レジリーダー",
+          "titleRu": "«Хибари Март»: старший кассир",
+          "goalEn": "Train a new clerk and close the register without errors.",
+          "goalVi": "Kèm nhân viên mới và chốt két không sai.",
+          "goalJa": "新人を教え、レジ締めをミスなく。",
+          "goalRu": "Обучите новичка и закройте кассу без ошибок.",
+          "lines": [
+            {
+              "speaker": "npc_cashier",
+              "ja": "新人さんに、あいさつから教えてあげて。",
+              "vi": "Dạy bạn mới từ câu chào nhé.",
+              "en": "Teach the newcomer, starting with greetings.",
+              "ru": "Учи новичка, начиная с приветствий."
+            },
+            {
+              "speaker": "npc_cashier",
+              "ja": "レジ締め、一円も合わせてね。",
+              "vi": "Chốt két phải khớp từng yên.",
+              "en": "Close the register to the last yen.",
+              "ru": "Касса должна сойтись до иены."
+            },
+            {
+              "speaker": "npc_cashier",
+              "ja": "あなたがいると安心。",
+              "vi": "Có em là chị yên tâm.",
+              "en": "With you here I can relax.",
+              "ru": "С тобой я спокойна."
+            }
+          ]
+        },
+        {
+          "tier": "manager",
+          "careerLevel": 5,
+          "jlpt": "N2",
+          "questId": "story_retail_manager",
+          "titleEn": "Hibari Mart: running the store",
+          "titleVi": "Hibari Mart: quản lý cửa hàng",
+          "titleJa": "ひばりマート：店を任される",
+          "titleRu": "«Хибари Март»: управление магазином",
+          "goalEn": "Plan orders for the festival week and manage the staff.",
+          "goalVi": "Đặt hàng cho tuần lễ hội và quản lý nhân viên.",
+          "goalJa": "祭りの週の発注とスタッフ管理。",
+          "goalRu": "Закажите товар на неделю фестиваля и руководите персоналом.",
+          "lines": [
+            {
+              "speaker": "npc_cashier",
+              "ja": "祭りの週は、おにぎりが三倍売れるの。",
+              "vi": "Tuần lễ hội onigiri bán gấp ba.",
+              "en": "Festival week sells three times the onigiri.",
+              "ru": "В неделю фестиваля онигири продаются втрое больше."
+            },
+            {
+              "speaker": "npc_cashier",
+              "ja": "発注は、天気予報も見て決めて。",
+              "vi": "Đặt hàng nhớ xem cả dự báo thời tiết.",
+              "en": "Check the weather forecast when ordering.",
+              "ru": "При заказе смотри прогноз погоды."
+            },
+            {
+              "speaker": "npc_cashier",
+              "ja": "店長代理、よろしくね。",
+              "vi": "Nhờ em làm phó cửa hàng nhé.",
+              "en": "I'm counting on you, deputy manager.",
+              "ru": "Рассчитываю на тебя, заместитель."
+            }
+          ]
+        },
+        {
+          "tier": "owner",
+          "careerLevel": 6,
+          "jlpt": "N1",
+          "questId": "story_retail_owner",
+          "titleEn": "Hibari Mart: your own shop",
+          "titleVi": "Hibari Mart: cửa hàng của bạn",
+          "titleJa": "ひばりマート：自分の店",
+          "titleRu": "«Хибари Март»: свой магазин",
+          "goalEn": "Open a Hibari Mart that also sells Vietnamese goods, or become the chain's buyer.",
+          "goalVi": "Mở một Hibari Mart có bán cả hàng Việt, hoặc làm người thu mua cho chuỗi.",
+          "goalJa": "ベトナム食材も置く新店を開くか、チェーンのバイヤーになる。",
+          "goalRu": "Откройте «Хибари Март» с вьетнамскими товарами или станьте закупщиком сети.",
+          "lines": [
+            {
+              "speaker": "npc_cashier",
+              "ja": "新しい店、あなたにお願いしたいの。",
+              "vi": "Cửa hàng mới, chị muốn nhờ em.",
+              "en": "I'd like you to take the new store.",
+              "ru": "Хочу доверить тебе новый магазин."
+            },
+            {
+              "speaker": "npc_cashier",
+              "ja": "フォーやバインミーの棚、いいアイデアね。",
+              "vi": "Kệ phở và bánh mì, ý tưởng hay đấy.",
+              "en": "A shelf for phở and bánh mì — nice idea.",
+              "ru": "Полка для фо и банми — хорошая идея."
+            },
+            {
+              "speaker": "npc_cashier",
+              "ja": "最初のレジ、覚えてる？",
+              "vi": "Còn nhớ lần tính tiền đầu tiên không?",
+              "en": "Remember your first register?",
+              "ru": "Помнишь свою первую кассу?"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "career": "food",
+      "speaker": "npc_sushi_staff",
+      "scene": "30_SushiRestaurant",
+      "stages": [
+        {
+          "tier": "trainee",
+          "careerLevel": 1,
+          "jlpt": "N5",
+          "questId": "story_food_trainee",
+          "titleEn": "Sushi Hibari: washing up",
+          "titleVi": "Sushi Hibari: rửa bát",
+          "titleJa": "ひばり寿司：洗い場",
+          "titleRu": "«Суси Хибари»: мойка",
+          "goalEn": "Keep the dishes moving and learn the restaurant greetings.",
+          "goalVi": "Rửa bát kịp và học câu chào của quán.",
+          "goalJa": "皿を回し、店のあいさつを覚える。",
+          "goalRu": "Успевайте с посудой и выучите приветствия ресторана.",
+          "lines": [
+            {
+              "speaker": "npc_sushi_staff",
+              "ja": "洗い場が止まると、店が止まる。",
+              "vi": "Chỗ rửa bát dừng là quán dừng.",
+              "en": "If the sink stops, the restaurant stops.",
+              "ru": "Встала мойка — встал ресторан."
+            },
+            {
+              "speaker": "npc_sushi_staff",
+              "ja": "「いらっしゃいませ」は大きな声で！",
+              "vi": "Nói 'irasshaimase' thật to!",
+              "en": "Shout irasshaimase!",
+              "ru": "Громко: «ирассяимасэ»!"
+            },
+            {
+              "speaker": "npc_sushi_staff",
+              "ja": "よし、明日はホールだ。",
+              "vi": "Được, mai ra sảnh.",
+              "en": "Good, tomorrow you're on the floor.",
+              "ru": "Хорошо, завтра в зал."
+            }
+          ]
+        },
+        {
+          "tier": "staff",
+          "careerLevel": 2,
+          "jlpt": "N4",
+          "questId": "story_food_staff",
+          "titleEn": "Sushi Hibari: on the floor",
+          "titleVi": "Sushi Hibari: phục vụ sảnh",
+          "titleJa": "ひばり寿司：ホール",
+          "titleRu": "«Суси Хибари»: в зале",
+          "goalEn": "Take orders and repeat them back correctly.",
+          "goalVi": "Nhận món và đọc lại đơn chính xác.",
+          "goalJa": "注文を受け、正しく復唱する。",
+          "goalRu": "Принимайте заказы и точно повторяйте их.",
+          "lines": [
+            {
+              "speaker": "npc_sushi_staff",
+              "ja": "ご注文を繰り返します、が基本だ。",
+              "vi": "Đọc lại đơn là điều cơ bản.",
+              "en": "Repeating the order is the basics.",
+              "ru": "Повторить заказ — это основа."
+            },
+            {
+              "speaker": "npc_sushi_staff",
+              "ja": "わさび抜き、聞き逃すなよ。",
+              "vi": "Đừng nghe sót 'không wasabi'.",
+              "en": "Don't miss 'no wasabi'.",
+              "ru": "Не пропусти «без васаби»."
+            },
+            {
+              "speaker": "npc_sushi_staff",
+              "ja": "お客さんが笑ってたぞ。",
+              "vi": "Khách cười đấy.",
+              "en": "The customers were smiling.",
+              "ru": "Гости улыбались."
+            }
+          ]
+        },
+        {
+          "tier": "senior",
+          "careerLevel": 3,
+          "jlpt": "N3",
+          "questId": "story_food_senior",
+          "titleEn": "Sushi Hibari: floor lead",
+          "titleVi": "Sushi Hibari: trưởng sảnh",
+          "titleJa": "ひばり寿司：ホールリーダー",
+          "titleRu": "«Суси Хибари»: старший зала",
+          "goalEn": "Run the lunch rush and seat a group of eight.",
+          "goalVi": "Lo giờ trưa cao điểm và xếp chỗ đoàn tám người.",
+          "goalJa": "昼のラッシュを回し、八名の団体を案内。",
+          "goalRu": "Проведите обеденный наплыв и рассадите группу из восьми.",
+          "lines": [
+            {
+              "speaker": "npc_sushi_staff",
+              "ja": "八名様、カウンターは無理だな。",
+              "vi": "Tám người thì quầy không đủ.",
+              "en": "Eight guests won't fit at the counter.",
+              "ru": "Восемь гостей у стойки не поместятся."
+            },
+            {
+              "speaker": "npc_sushi_staff",
+              "ja": "座敷にご案内して。",
+              "vi": "Mời họ vào phòng chiếu nhé.",
+              "en": "Show them to the tatami room.",
+              "ru": "Проводи их в комнату с татами."
+            },
+            {
+              "speaker": "npc_sushi_staff",
+              "ja": "ホールはお前に任せた。",
+              "vi": "Sảnh giao cho cháu.",
+              "en": "The floor is yours.",
+              "ru": "Зал на тебе."
+            }
+          ]
+        },
+        {
+          "tier": "manager",
+          "careerLevel": 5,
+          "jlpt": "N2",
+          "questId": "story_food_manager",
+          "titleEn": "Sushi Hibari: manager or itamae",
+          "titleVi": "Sushi Hibari: quản lý hay itamae",
+          "titleJa": "ひばり寿司：店長か板前か",
+          "titleRu": "«Суси Хибари»: управляющий или итамаэ",
+          "goalEn": "Run the restaurant's books or stand behind the counter.",
+          "goalVi": "Lo sổ sách quán hoặc đứng sau quầy sushi.",
+          "goalJa": "店の経営か、カウンターに立つか。",
+          "goalRu": "Ведите дела ресторана или встаньте за стойку.",
+          "lines": [
+            {
+              "speaker": "npc_sushi_staff",
+              "ja": "数字を見るのも、魚を見るのも同じ目だ。",
+              "vi": "Nhìn số liệu hay nhìn cá cũng cần cùng một con mắt.",
+              "en": "Reading numbers and reading fish take the same eye.",
+              "ru": "Цифры и рыбу видят одним и тем же глазом."
+            },
+            {
+              "speaker": "npc_sushi_staff",
+              "ja": "仕入れの電話、敬語で頼む。",
+              "vi": "Gọi đặt hàng thì dùng kính ngữ nhé.",
+              "en": "Use keigo when you call the suppliers.",
+              "ru": "С поставщиками говори на кэйго."
+            },
+            {
+              "speaker": "npc_sushi_staff",
+              "ja": "いい顔になってきたな。",
+              "vi": "Trông cháu ra dáng rồi.",
+              "en": "You're starting to look the part.",
+              "ru": "Ты начинаешь выглядеть как профессионал."
+            }
+          ]
+        },
+        {
+          "tier": "owner",
+          "careerLevel": 6,
+          "jlpt": "N1",
+          "questId": "story_food_owner",
+          "titleEn": "Sushi Hibari: the next taishō",
+          "titleVi": "Sushi Hibari: đại tướng kế nhiệm",
+          "titleJa": "ひばり寿司：次の大将",
+          "titleRu": "«Суси Хибари»: следующий тайсё",
+          "goalEn": "Take over the restaurant, or open your own counter.",
+          "goalVi": "Tiếp quản quán, hoặc mở quầy của riêng mình.",
+          "goalJa": "店を継ぐか、自分の店を出す。",
+          "goalRu": "Возьмите ресторан или откройте свою стойку.",
+          "lines": [
+            {
+              "speaker": "npc_sushi_staff",
+              "ja": "のれん、お前に譲る。",
+              "vi": "Tấm rèm noren này, chú trao cho cháu.",
+              "en": "I'm handing the noren to you.",
+              "ru": "Я передаю тебе норэн."
+            },
+            {
+              "speaker": "npc_sushi_staff",
+              "ja": "洗い場から始めた奴は、強い。",
+              "vi": "Ai bắt đầu từ chỗ rửa bát thì vững lắm.",
+              "en": "Those who start at the sink are strong.",
+              "ru": "Кто начинал с мойки, тот крепок."
+            },
+            {
+              "speaker": "npc_sushi_staff",
+              "ja": "ベトナムの魚も、握ってみろ。",
+              "vi": "Thử nắm sushi cá Việt Nam xem.",
+              "en": "Try making sushi with Vietnamese fish too.",
+              "ru": "Попробуй суси и из вьетнамской рыбы."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "career": "chef",
+      "speaker": "npc_sushi_chef",
+      "scene": "30_SushiRestaurant",
+      "stages": [
+        {
+          "tier": "trainee",
+          "careerLevel": 1,
+          "jlpt": "N5",
+          "questId": "story_chef_trainee",
+          "titleEn": "Kitchen: rice and knives",
+          "titleVi": "Bếp: cơm và dao",
+          "titleJa": "厨房：米と包丁",
+          "titleRu": "Кухня: рис и ножи",
+          "goalEn": "Wash the rice and learn knife safety.",
+          "goalVi": "Vo gạo và học an toàn khi dùng dao.",
+          "goalJa": "米を研ぎ、包丁の安全を学ぶ。",
+          "goalRu": "Промывайте рис и учитесь безопасно обращаться с ножом.",
+          "lines": [
+            {
+              "speaker": "npc_sushi_chef",
+              "ja": "米は三年、と言われる。",
+              "vi": "Người ta nói: cơm là ba năm.",
+              "en": "They say rice takes three years.",
+              "ru": "Говорят, рис — это три года."
+            },
+            {
+              "speaker": "npc_sushi_chef",
+              "ja": "包丁は、使ったらすぐ洗う。",
+              "vi": "Dùng dao xong rửa ngay.",
+              "en": "Wash the knife right after use.",
+              "ru": "Нож мой сразу после работы."
+            },
+            {
+              "speaker": "npc_sushi_chef",
+              "ja": "手を見せろ。……よし。",
+              "vi": "Cho chú xem tay… Được.",
+              "en": "Show me your hands… good.",
+              "ru": "Покажи руки… хорошо."
+            }
+          ]
+        },
+        {
+          "tier": "staff",
+          "careerLevel": 2,
+          "jlpt": "N4",
+          "questId": "story_chef_staff",
+          "titleEn": "Kitchen: the prep line",
+          "titleVi": "Bếp: sơ chế",
+          "titleJa": "厨房：仕込み",
+          "titleRu": "Кухня: заготовки",
+          "goalEn": "Prepare fish and garnish for service.",
+          "goalVi": "Sơ chế cá và rau trang trí cho ca.",
+          "goalJa": "魚とつまの仕込み。",
+          "goalRu": "Подготовьте рыбу и гарнир к смене.",
+          "lines": [
+            {
+              "speaker": "npc_sushi_chef",
+              "ja": "仕込みで、味の半分が決まる。",
+              "vi": "Sơ chế quyết định nửa hương vị.",
+              "en": "Prep decides half the flavour.",
+              "ru": "Заготовка решает половину вкуса."
+            },
+            {
+              "speaker": "npc_sushi_chef",
+              "ja": "大根のつま、細く。",
+              "vi": "Củ cải thái thật mảnh.",
+              "en": "Cut the daikon thin.",
+              "ru": "Дайкон режь тонко."
+            },
+            {
+              "speaker": "npc_sushi_chef",
+              "ja": "悪くない。",
+              "vi": "Không tệ.",
+              "en": "Not bad.",
+              "ru": "Неплохо."
+            }
+          ]
+        },
+        {
+          "tier": "senior",
+          "careerLevel": 3,
+          "jlpt": "N3",
+          "questId": "story_chef_senior",
+          "titleEn": "Kitchen: licensed cook",
+          "titleVi": "Bếp: đầu bếp có chứng chỉ",
+          "titleJa": "厨房：調理師",
+          "titleRu": "Кухня: дипломированный повар",
+          "goalEn": "Pass the cook's licence and cook the staff meal.",
+          "goalVi": "Đỗ chứng chỉ đầu bếp và nấu bữa cho nhân viên.",
+          "goalJa": "調理師免許を取り、まかないを作る。",
+          "goalRu": "Получите поварской диплом и приготовьте обед для персонала.",
+          "lines": [
+            {
+              "speaker": "npc_sushi_chef",
+              "ja": "免許、おめでとう。",
+              "vi": "Chúc mừng có chứng chỉ.",
+              "en": "Congratulations on your licence.",
+              "ru": "Поздравляю с дипломом."
+            },
+            {
+              "speaker": "npc_sushi_chef",
+              "ja": "まかないで、皆を笑わせろ。",
+              "vi": "Nấu bữa nhân viên cho mọi người cười.",
+              "en": "Make everyone smile with the staff meal.",
+              "ru": "Пусть все улыбнутся за обедом."
+            },
+            {
+              "speaker": "npc_sushi_chef",
+              "ja": "このフォー、店で出してもいい。",
+              "vi": "Phở này đem bán trong quán cũng được.",
+              "en": "This phở could go on the menu.",
+              "ru": "Этот фо можно подавать гостям."
+            }
+          ]
+        },
+        {
+          "tier": "manager",
+          "careerLevel": 5,
+          "jlpt": "N2",
+          "questId": "story_chef_manager",
+          "titleEn": "Kitchen: second chef",
+          "titleVi": "Bếp: bếp phó",
+          "titleJa": "厨房：二番手",
+          "titleRu": "Кухня: второй повар",
+          "goalEn": "Run the kitchen when Ota is away and create a seasonal dish.",
+          "goalVi": "Điều hành bếp khi bác Ota vắng và sáng tạo món theo mùa.",
+          "goalJa": "大田さん不在時に厨房を回し、季節の一品を作る。",
+          "goalRu": "Ведите кухню без Оты и придумайте сезонное блюдо.",
+          "lines": [
+            {
+              "speaker": "npc_sushi_chef",
+              "ja": "今日は俺がいない。厨房はお前だ。",
+              "vi": "Hôm nay chú vắng. Bếp là của cháu.",
+              "en": "I'm away today. The kitchen is yours.",
+              "ru": "Меня сегодня нет. Кухня твоя."
+            },
+            {
+              "speaker": "npc_sushi_chef",
+              "ja": "季節の一品、考えておけ。",
+              "vi": "Nghĩ một món theo mùa đi.",
+              "en": "Think up a seasonal dish.",
+              "ru": "Придумай сезонное блюдо."
+            },
+            {
+              "speaker": "npc_sushi_chef",
+              "ja": "……うまい。",
+              "vi": "…Ngon.",
+              "en": "…Delicious.",
+              "ru": "…Вкусно."
+            }
+          ]
+        },
+        {
+          "tier": "owner",
+          "careerLevel": 6,
+          "jlpt": "N1",
+          "questId": "story_chef_owner",
+          "titleEn": "Kitchen: head chef",
+          "titleVi": "Bếp: bếp trưởng",
+          "titleJa": "厨房：料理長",
+          "titleRu": "Кухня: шеф-повар",
+          "goalEn": "Lead the kitchen: sushi or pastry, your name on the menu.",
+          "goalVi": "Dẫn dắt bếp: sushi hay bánh ngọt, tên bạn trên thực đơn.",
+          "goalJa": "寿司でも菓子でも、メニューにあなたの名前。",
+          "goalRu": "Возглавьте кухню: суси или десерты, ваше имя в меню.",
+          "lines": [
+            {
+              "speaker": "npc_sushi_chef",
+              "ja": "料理長、と呼ばれる気分はどうだ。",
+              "vi": "Được gọi là bếp trưởng thấy sao?",
+              "en": "How does 'head chef' feel?",
+              "ru": "Каково это — зваться шеф-поваром?"
+            },
+            {
+              "speaker": "npc_sushi_chef",
+              "ja": "お前の味は、二つの国の味だ。",
+              "vi": "Vị của cháu là vị của hai đất nước.",
+              "en": "Your flavour is the flavour of two countries.",
+              "ru": "Твой вкус — вкус двух стран."
+            },
+            {
+              "speaker": "npc_sushi_chef",
+              "ja": "米を研いだ日を忘れるな。",
+              "vi": "Đừng quên ngày vo gạo đầu tiên.",
+              "en": "Don't forget the day you washed rice.",
+              "ru": "Не забывай день, когда ты мыл рис."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "career": "farm",
+      "speaker": "npc_farm_manager",
+      "scene": "60_MidoriIsland",
+      "stages": [
+        {
+          "tier": "trainee",
+          "careerLevel": 1,
+          "jlpt": "N5",
+          "questId": "story_farm_trainee",
+          "titleEn": "Midori farm: first furrow",
+          "titleVi": "Nông trại Midori: luống đầu tiên",
+          "titleJa": "みどり農園：最初の畝",
+          "titleRu": "Ферма Мидори: первая борозда",
+          "goalEn": "Till, plant and water with Hana.",
+          "goalVi": "Cuốc đất, gieo và tưới cùng cô Hana.",
+          "goalJa": "はなさんと耕し、植え、水をやる。",
+          "goalRu": "Пашите, сажайте и поливайте с Ханой.",
+          "lines": [
+            {
+              "speaker": "npc_farm_manager",
+              "ja": "土は生きているのよ。",
+              "vi": "Đất cũng sống đấy.",
+              "en": "The soil is alive.",
+              "ru": "Земля живая."
+            },
+            {
+              "speaker": "npc_farm_manager",
+              "ja": "水は朝のうちにね。",
+              "vi": "Tưới nước vào buổi sáng nhé.",
+              "en": "Water in the morning.",
+              "ru": "Поливай утром."
+            },
+            {
+              "speaker": "npc_farm_manager",
+              "ja": "いい手つき！",
+              "vi": "Tay nghề tốt đấy!",
+              "en": "Nice hands!",
+              "ru": "Хорошие руки!"
+            }
+          ]
+        },
+        {
+          "tier": "staff",
+          "careerLevel": 2,
+          "jlpt": "N4",
+          "questId": "story_farm_staff",
+          "titleEn": "Midori farm: the harvest",
+          "titleVi": "Nông trại Midori: mùa thu hoạch",
+          "titleJa": "みどり農園：収穫",
+          "titleRu": "Ферма Мидори: урожай",
+          "goalEn": "Bring in the harvest and sort it for market.",
+          "goalVi": "Thu hoạch và phân loại để đem ra chợ.",
+          "goalJa": "収穫して市場用に選別する。",
+          "goalRu": "Соберите урожай и рассортируйте для рынка.",
+          "lines": [
+            {
+              "speaker": "npc_farm_manager",
+              "ja": "大きさで三つに分けて。",
+              "vi": "Chia làm ba loại theo cỡ.",
+              "en": "Sort into three sizes.",
+              "ru": "Раздели на три размера."
+            },
+            {
+              "speaker": "npc_farm_manager",
+              "ja": "傷のあるのは、ジャム用。",
+              "vi": "Quả bị xước để làm mứt.",
+              "en": "Bruised ones are for jam.",
+              "ru": "Помятые — на варенье."
+            },
+            {
+              "speaker": "npc_farm_manager",
+              "ja": "市場の人も喜ぶわ。",
+              "vi": "Người ở chợ sẽ vui lắm.",
+              "en": "The market will be pleased.",
+              "ru": "Рынок будет доволен."
+            }
+          ]
+        },
+        {
+          "tier": "senior",
+          "careerLevel": 3,
+          "jlpt": "N3",
+          "questId": "story_farm_senior",
+          "titleEn": "Midori farm: farmer",
+          "titleVi": "Nông trại Midori: nông dân",
+          "titleJa": "みどり農園：農家",
+          "titleRu": "Ферма Мидори: фермер",
+          "goalEn": "Plan a season of crops and sell at the market.",
+          "goalVi": "Lên kế hoạch mùa vụ và bán ở chợ.",
+          "goalJa": "作付け計画を立て、市場で売る。",
+          "goalRu": "Спланируйте сезон и продавайте на рынке.",
+          "lines": [
+            {
+              "speaker": "npc_farm_manager",
+              "ja": "何を植えるか、あなたが決めて。",
+              "vi": "Trồng gì là em quyết.",
+              "en": "You decide what to plant.",
+              "ru": "Ты решаешь, что сажать."
+            },
+            {
+              "speaker": "npc_farm_manager",
+              "ja": "値段の交渉も、日本語でね。",
+              "vi": "Trả giá cũng bằng tiếng Nhật nhé.",
+              "en": "Negotiate prices in Japanese too.",
+              "ru": "Торгуйся тоже по-японски."
+            },
+            {
+              "speaker": "npc_farm_manager",
+              "ja": "もう立派な農家ね。",
+              "vi": "Giờ là nông dân thực thụ rồi.",
+              "en": "You're a real farmer now.",
+              "ru": "Ты теперь настоящий фермер."
+            }
+          ]
+        },
+        {
+          "tier": "manager",
+          "careerLevel": 5,
+          "jlpt": "N2",
+          "questId": "story_farm_manager",
+          "titleEn": "Midori farm: foreman",
+          "titleVi": "Nông trại Midori: quản đốc",
+          "titleJa": "みどり農園：現場責任者",
+          "titleRu": "Ферма Мидори: бригадир",
+          "goalEn": "Lead the helpers and supply Sushi Hibari and Gánh Ngon.",
+          "goalVi": "Dẫn dắt người làm và cung cấp rau cho Sushi Hibari và Gánh Ngon.",
+          "goalJa": "手伝いをまとめ、ひばり寿司とガンゴンに卸す。",
+          "goalRu": "Руководите помощниками и снабжайте «Суси Хибари» и «Ганьнгон».",
+          "lines": [
+            {
+              "speaker": "npc_farm_manager",
+              "ja": "ひばり寿司が、うちの大葉をほしいって。",
+              "vi": "Sushi Hibari muốn lá tía tô của mình.",
+              "en": "Sushi Hibari wants our shiso.",
+              "ru": "«Суси Хибари» хочет наш сисо."
+            },
+            {
+              "speaker": "npc_farm_manager",
+              "ja": "フーコックにはハーブを送りましょう。",
+              "vi": "Gửi rau thơm cho Phú Quốc nhé.",
+              "en": "Let's send herbs to Phú Quốc.",
+              "ru": "Отправим травы на Фукуок."
+            },
+            {
+              "speaker": "npc_farm_manager",
+              "ja": "みんな、あなたの指示を待ってるわ。",
+              "vi": "Mọi người đang chờ em chỉ đạo.",
+              "en": "Everyone is waiting for your call.",
+              "ru": "Все ждут твоих указаний."
+            }
+          ]
+        },
+        {
+          "tier": "owner",
+          "careerLevel": 6,
+          "jlpt": "N1",
+          "questId": "story_farm_owner",
+          "titleEn": "Midori farm: your own farm",
+          "titleVi": "Nông trại Midori: nông trại của bạn",
+          "titleJa": "みどり農園：自分の農園",
+          "titleRu": "Ферма Мидори: своя ферма",
+          "goalEn": "Run your own organic farm or ranch on Midori Island.",
+          "goalVi": "Tự điều hành nông trại hữu cơ hoặc trang trại trên đảo Midori.",
+          "goalJa": "みどり島で自分の有機農園か牧場を営む。",
+          "goalRu": "Ведите свою органическую ферму или ранчо на острове Мидори.",
+          "lines": [
+            {
+              "speaker": "npc_farm_manager",
+              "ja": "この畑、あなたに譲るわ。",
+              "vi": "Cô giao mảnh ruộng này cho em.",
+              "en": "I'm giving this field to you.",
+              "ru": "Отдаю тебе это поле."
+            },
+            {
+              "speaker": "npc_farm_manager",
+              "ja": "ベトナムの野菜も育ててみて。",
+              "vi": "Thử trồng cả rau Việt nhé.",
+              "en": "Try growing Vietnamese vegetables too.",
+              "ru": "Попробуй выращивать и вьетнамские овощи."
+            },
+            {
+              "speaker": "npc_farm_manager",
+              "ja": "最初の畝、まだ覚えてる？",
+              "vi": "Còn nhớ luống đầu tiên không?",
+              "en": "Remember your first furrow?",
+              "ru": "Помнишь свою первую борозду?"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "career": "musician",
+      "speaker": "npc_music_owner",
+      "scene": "55_MusicShop",
+      "stages": [
+        {
+          "tier": "trainee",
+          "careerLevel": 1,
+          "jlpt": "N5",
+          "questId": "story_musician_trainee",
+          "titleEn": "Hibiki stage: first song",
+          "titleVi": "Sân khấu Hibiki: bài đầu tiên",
+          "titleJa": "ひびき：最初の一曲",
+          "titleRu": "Сцена «Хибики»: первая песня",
+          "goalEn": "Play your first song on the café stage.",
+          "goalVi": "Chơi bài đầu tiên trên sân khấu quán.",
+          "goalJa": "カフェのステージで初めて演奏する。",
+          "goalRu": "Сыграйте первую песню на сцене кафе.",
+          "lines": [
+            {
+              "speaker": "npc_music_owner",
+              "ja": "緊張しても大丈夫。",
+              "vi": "Run cũng không sao.",
+              "en": "It's fine to be nervous.",
+              "ru": "Волноваться — нормально."
+            },
+            {
+              "speaker": "npc_music_owner",
+              "ja": "お客さんの顔を見て弾いて。",
+              "vi": "Nhìn mặt khách mà chơi.",
+              "en": "Play looking at the audience.",
+              "ru": "Играй, глядя на слушателей."
+            },
+            {
+              "speaker": "npc_music_owner",
+              "ja": "拍手、聞こえた？",
+              "vi": "Nghe tiếng vỗ tay chưa?",
+              "en": "Did you hear the applause?",
+              "ru": "Слышал аплодисменты?"
+            }
+          ]
+        },
+        {
+          "tier": "staff",
+          "careerLevel": 2,
+          "jlpt": "N4",
+          "questId": "story_musician_staff",
+          "titleEn": "Hibiki stage: café regular",
+          "titleVi": "Sân khấu Hibiki: nhạc công quen",
+          "titleJa": "ひびき：カフェの常連",
+          "titleRu": "Сцена «Хибики»: музыкант кафе",
+          "goalEn": "Play weekly sets and talk with the audience in Japanese.",
+          "goalVi": "Chơi hàng tuần và trò chuyện với khán giả bằng tiếng Nhật.",
+          "goalJa": "毎週演奏し、日本語でMCをする。",
+          "goalRu": "Играйте каждую неделю и говорите со зрителями по-японски.",
+          "lines": [
+            {
+              "speaker": "npc_music_owner",
+              "ja": "曲の間に、少し話してみて。",
+              "vi": "Giữa các bài thử nói vài câu.",
+              "en": "Say a few words between songs.",
+              "ru": "Скажи пару слов между песнями."
+            },
+            {
+              "speaker": "npc_music_owner",
+              "ja": "ベトナムの歌も聞きたいな。",
+              "vi": "Chú muốn nghe cả bài Việt.",
+              "en": "I'd love to hear a Vietnamese song.",
+              "ru": "Хочу услышать вьетнамскую песню."
+            },
+            {
+              "speaker": "npc_music_owner",
+              "ja": "ファンができたね。",
+              "vi": "Có fan rồi đấy.",
+              "en": "You've got fans.",
+              "ru": "У тебя появились поклонники."
+            }
+          ]
+        },
+        {
+          "tier": "senior",
+          "careerLevel": 3,
+          "jlpt": "N3",
+          "questId": "story_musician_senior",
+          "titleEn": "Hibiki stage: session musician",
+          "titleVi": "Sân khấu Hibiki: nhạc công phòng thu",
+          "titleJa": "ひびき：スタジオミュージシャン",
+          "titleRu": "Сцена «Хибики»: сессионный музыкант",
+          "goalEn": "Record for other artists and read charts fast.",
+          "goalVi": "Thu âm cho nghệ sĩ khác và đọc bản nhạc nhanh.",
+          "goalJa": "他の歌手の録音、譜面を素早く読む。",
+          "goalRu": "Записывайтесь для других артистов, быстро читайте ноты.",
+          "lines": [
+            {
+              "speaker": "npc_music_owner",
+              "ja": "スタジオは時間との勝負だ。",
+              "vi": "Phòng thu là cuộc đua với thời gian.",
+              "en": "The studio is a race against time.",
+              "ru": "Студия — гонка со временем."
+            },
+            {
+              "speaker": "npc_music_owner",
+              "ja": "一回で決めよう。",
+              "vi": "Một lần là xong nhé.",
+              "en": "Let's nail it in one take.",
+              "ru": "Сделаем с одного дубля."
+            },
+            {
+              "speaker": "npc_music_owner",
+              "ja": "プロの音になった。",
+              "vi": "Âm thanh chuyên nghiệp rồi.",
+              "en": "That's a pro sound.",
+              "ru": "Это профессиональный звук."
+            }
+          ]
+        },
+        {
+          "tier": "manager",
+          "careerLevel": 5,
+          "jlpt": "N2",
+          "questId": "story_musician_manager",
+          "titleEn": "Hibiki stage: concert",
+          "titleVi": "Sân khấu Hibiki: buổi hòa nhạc",
+          "titleJa": "ひびき：コンサート",
+          "titleRu": "Сцена «Хибики»: концерт",
+          "goalEn": "Lead a recital or a tour show.",
+          "goalVi": "Dẫn dắt buổi hòa nhạc hoặc show lưu diễn.",
+          "goalJa": "リサイタルかツアー公演を率いる。",
+          "goalRu": "Проведите сольный концерт или тур.",
+          "lines": [
+            {
+              "speaker": "npc_music_owner",
+              "ja": "ホールが満席だ！",
+              "vi": "Khán phòng kín chỗ!",
+              "en": "The hall is sold out!",
+              "ru": "Зал полон!"
+            },
+            {
+              "speaker": "npc_music_owner",
+              "ja": "インタビューも日本語でね。",
+              "vi": "Phỏng vấn cũng bằng tiếng Nhật nhé.",
+              "en": "The interview's in Japanese too.",
+              "ru": "Интервью тоже на японском."
+            },
+            {
+              "speaker": "npc_music_owner",
+              "ja": "胸を張って。",
+              "vi": "Ưỡn ngực lên.",
+              "en": "Chin up.",
+              "ru": "Выше голову."
+            }
+          ]
+        },
+        {
+          "tier": "owner",
+          "careerLevel": 6,
+          "jlpt": "N1",
+          "questId": "story_musician_owner",
+          "titleEn": "Hibiki stage: headliner",
+          "titleVi": "Sân khấu Hibiki: nghệ sĩ chính",
+          "titleJa": "ひびき：ヘッドライナー",
+          "titleRu": "Сцена «Хибики»: хедлайнер",
+          "goalEn": "Headline the summer festival in Hibari and Phú Quốc.",
+          "goalVi": "Làm nghệ sĩ chính ở lễ hội mùa hè Hibari và Phú Quốc.",
+          "goalJa": "ひばりとフーコックの夏フェスでトリを務める。",
+          "goalRu": "Станьте хедлайнером летних фестивалей в Хибари и на Фукуоке.",
+          "lines": [
+            {
+              "speaker": "npc_music_owner",
+              "ja": "トリはお前だ。",
+              "vi": "Tiết mục chính là cháu.",
+              "en": "You're closing the show.",
+              "ru": "Ты закрываешь концерт."
+            },
+            {
+              "speaker": "npc_music_owner",
+              "ja": "二つの町が歌ってる。",
+              "vi": "Hai thành phố đang cùng hát.",
+              "en": "Two towns are singing.",
+              "ru": "Поют два города."
+            },
+            {
+              "speaker": "npc_music_owner",
+              "ja": "最初のカフェ、忘れるなよ。",
+              "vi": "Đừng quên quán cà phê đầu tiên.",
+              "en": "Don't forget the first café.",
+              "ru": "Не забывай первое кафе."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "career": "producer",
+      "speaker": "npc_music_owner",
+      "scene": "55_MusicShop",
+      "stages": [
+        {
+          "tier": "trainee",
+          "careerLevel": 1,
+          "jlpt": "N5",
+          "questId": "story_producer_trainee",
+          "titleEn": "DJ booth: cables and crates",
+          "titleVi": "Bàn DJ: dây và thùng đĩa",
+          "titleJa": "DJブース：ケーブルとレコード",
+          "titleRu": "DJ-пульт: кабели и пластинки",
+          "goalEn": "Set up the booth and play the warm-up.",
+          "goalVi": "Lắp bàn DJ và chơi phần khởi động.",
+          "goalJa": "ブースを準備し、ウォームアップをかける。",
+          "goalRu": "Подготовьте пульт и сыграйте разогрев.",
+          "lines": [
+            {
+              "speaker": "npc_music_owner",
+              "ja": "ケーブルは色で覚えろ。",
+              "vi": "Nhớ dây theo màu.",
+              "en": "Learn the cables by colour.",
+              "ru": "Запоминай кабели по цвету."
+            },
+            {
+              "speaker": "npc_music_owner",
+              "ja": "最初は小さい音から。",
+              "vi": "Bắt đầu nhỏ thôi.",
+              "en": "Start quiet.",
+              "ru": "Начинай тихо."
+            },
+            {
+              "speaker": "npc_music_owner",
+              "ja": "フロアが揺れてる。",
+              "vi": "Sàn nhảy rung rồi.",
+              "en": "The floor is moving.",
+              "ru": "Танцпол двигается."
+            }
+          ]
+        },
+        {
+          "tier": "staff",
+          "careerLevel": 2,
+          "jlpt": "N4",
+          "questId": "story_producer_staff",
+          "titleEn": "DJ booth: opening DJ",
+          "titleVi": "Bàn DJ: DJ mở màn",
+          "titleJa": "DJブース：オープニングDJ",
+          "titleRu": "DJ-пульт: открывающий DJ",
+          "goalEn": "Open the night and read the crowd.",
+          "goalVi": "Mở màn đêm diễn và đọc cảm xúc khán giả.",
+          "goalJa": "夜を開け、客の空気を読む。",
+          "goalRu": "Открывайте вечер и чувствуйте публику.",
+          "lines": [
+            {
+              "speaker": "npc_music_owner",
+              "ja": "客の空気を読め。",
+              "vi": "Đọc không khí của khách.",
+              "en": "Read the room.",
+              "ru": "Чувствуй зал."
+            },
+            {
+              "speaker": "npc_music_owner",
+              "ja": "日本語でマイクも入れて。",
+              "vi": "Cầm mic nói tiếng Nhật nữa.",
+              "en": "Get on the mic in Japanese.",
+              "ru": "Возьми микрофон и говори по-японски."
+            },
+            {
+              "speaker": "npc_music_owner",
+              "ja": "いい流れだ。",
+              "vi": "Mạch nhạc hay đấy.",
+              "en": "Nice flow.",
+              "ru": "Хороший поток."
+            }
+          ]
+        },
+        {
+          "tier": "senior",
+          "careerLevel": 3,
+          "jlpt": "N3",
+          "questId": "story_producer_senior",
+          "titleEn": "DJ booth: resident",
+          "titleVi": "Bàn DJ: DJ thường trú",
+          "titleJa": "DJブース：レジデント",
+          "titleRu": "DJ-пульт: резидент",
+          "goalEn": "Hold a residency and make your first track.",
+          "goalVi": "Giữ suất diễn thường kỳ và làm bản nhạc đầu tay.",
+          "goalJa": "レギュラーを持ち、初めての曲を作る。",
+          "goalRu": "Получите резидентство и сделайте первый трек.",
+          "lines": [
+            {
+              "speaker": "npc_music_owner",
+              "ja": "毎週金曜はお前の夜だ。",
+              "vi": "Tối thứ Sáu là đêm của cháu.",
+              "en": "Every Friday is your night.",
+              "ru": "Каждая пятница — твой вечер."
+            },
+            {
+              "speaker": "npc_music_owner",
+              "ja": "自分の曲、作ってみろ。",
+              "vi": "Thử tự làm nhạc đi.",
+              "en": "Try making your own track.",
+              "ru": "Попробуй сделать свой трек."
+            },
+            {
+              "speaker": "npc_music_owner",
+              "ja": "いいビートだ。",
+              "vi": "Beat hay.",
+              "en": "Good beat.",
+              "ru": "Хороший бит."
+            }
+          ]
+        },
+        {
+          "tier": "manager",
+          "careerLevel": 5,
+          "jlpt": "N2",
+          "questId": "story_producer_manager",
+          "titleEn": "DJ booth: headliner or producer",
+          "titleVi": "Bàn DJ: DJ chính hay nhà sản xuất",
+          "titleJa": "DJブース：ヘッドライナーかプロデューサー",
+          "titleRu": "DJ-пульт: хедлайнер или продюсер",
+          "goalEn": "Headline a club night or produce for an artist.",
+          "goalVi": "Làm DJ chính một đêm hoặc sản xuất cho nghệ sĩ.",
+          "goalJa": "クラブのトリか、アーティストのプロデュース。",
+          "goalRu": "Станьте хедлайнером клуба или продюсируйте артиста.",
+          "lines": [
+            {
+              "speaker": "npc_music_owner",
+              "ja": "契約書、ちゃんと読めるか。",
+              "vi": "Đọc được hợp đồng chưa?",
+              "en": "Can you read the contract properly?",
+              "ru": "Сможешь как следует прочитать контракт?"
+            },
+            {
+              "speaker": "npc_music_owner",
+              "ja": "敬語で交渉しろ。",
+              "vi": "Đàm phán bằng kính ngữ.",
+              "en": "Negotiate in keigo.",
+              "ru": "Веди переговоры на кэйго."
+            },
+            {
+              "speaker": "npc_music_owner",
+              "ja": "名前が売れてきたな。",
+              "vi": "Tên tuổi nổi rồi.",
+              "en": "Your name is getting known.",
+              "ru": "Твоё имя становится известным."
+            }
+          ]
+        },
+        {
+          "tier": "owner",
+          "careerLevel": 6,
+          "jlpt": "N1",
+          "questId": "story_producer_owner",
+          "titleEn": "DJ booth: festival and label",
+          "titleVi": "Bàn DJ: lễ hội và hãng đĩa",
+          "titleJa": "DJブース：フェスとレーベル",
+          "titleRu": "DJ-пульт: фестиваль и лейбл",
+          "goalEn": "Play the beach festival in Phú Quốc or start your own label.",
+          "goalVi": "Chơi lễ hội biển ở Phú Quốc hoặc lập hãng đĩa riêng.",
+          "goalJa": "フーコックのビーチフェスか、自分のレーベル。",
+          "goalRu": "Сыграйте на пляжном фестивале на Фукуоке или создайте свой лейбл.",
+          "lines": [
+            {
+              "speaker": "npc_music_owner",
+              "ja": "ビーチのステージ、決まったぞ。",
+              "vi": "Sân khấu bãi biển chốt rồi.",
+              "en": "The beach stage is booked.",
+              "ru": "Пляжная сцена твоя."
+            },
+            {
+              "speaker": "npc_music_owner",
+              "ja": "レーベルの名前は？",
+              "vi": "Hãng đĩa tên gì?",
+              "en": "What's the label called?",
+              "ru": "Как назовёшь лейбл?"
+            },
+            {
+              "speaker": "npc_music_owner",
+              "ja": "ケーブル係だったのにな。",
+              "vi": "Hồi đó còn là đứa lo dây.",
+              "en": "You used to carry the cables.",
+              "ru": "А ведь ты таскал кабели."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "career": "painter",
+      "speaker": "npc_music_owner",
+      "scene": "55_MusicShop",
+      "stages": [
+        {
+          "tier": "trainee",
+          "careerLevel": 1,
+          "jlpt": "N5",
+          "questId": "story_painter_trainee",
+          "titleEn": "Easel: studio assistant",
+          "titleVi": "Giá vẽ: trợ lý xưởng",
+          "titleJa": "イーゼル：アシスタント",
+          "titleRu": "Мольберт: ассистент мастерской",
+          "goalEn": "Prepare canvases and finish your first painting.",
+          "goalVi": "Chuẩn bị toan và hoàn thành bức tranh đầu tiên.",
+          "goalJa": "キャンバスを準備し、初めての絵を仕上げる。",
+          "goalRu": "Подготовьте холсты и закончите первую картину.",
+          "lines": [
+            {
+              "speaker": "npc_music_owner",
+              "ja": "筆はていねいに洗ってね。",
+              "vi": "Rửa cọ cẩn thận nhé.",
+              "en": "Wash the brushes carefully.",
+              "ru": "Мой кисти аккуратно."
+            },
+            {
+              "speaker": "npc_music_owner",
+              "ja": "見たものを、そのまま描いて。",
+              "vi": "Vẽ đúng những gì em thấy.",
+              "en": "Paint what you see.",
+              "ru": "Рисуй то, что видишь."
+            },
+            {
+              "speaker": "npc_music_owner",
+              "ja": "色がいいね。",
+              "vi": "Màu đẹp đấy.",
+              "en": "Nice colours.",
+              "ru": "Хорошие цвета."
+            }
+          ]
+        },
+        {
+          "tier": "staff",
+          "careerLevel": 2,
+          "jlpt": "N4",
+          "questId": "story_painter_staff",
+          "titleEn": "Easel: commissions",
+          "titleVi": "Giá vẽ: tranh đặt",
+          "titleJa": "イーゼル：依頼",
+          "titleRu": "Мольберт: заказы",
+          "goalEn": "Paint for customers and discuss what they want in Japanese.",
+          "goalVi": "Vẽ theo đơn và trao đổi yêu cầu bằng tiếng Nhật.",
+          "goalJa": "依頼を受け、日本語で要望を聞く。",
+          "goalRu": "Пишите на заказ и обсуждайте пожелания по-японски.",
+          "lines": [
+            {
+              "speaker": "npc_music_owner",
+              "ja": "お客さまの話を、最後まで聞いて。",
+              "vi": "Nghe khách nói hết đã.",
+              "en": "Hear the customer out.",
+              "ru": "Дослушай клиента до конца."
+            },
+            {
+              "speaker": "npc_music_owner",
+              "ja": "締め切りは守ること。",
+              "vi": "Phải giữ đúng hạn.",
+              "en": "Meet the deadline.",
+              "ru": "Соблюдай сроки."
+            },
+            {
+              "speaker": "npc_music_owner",
+              "ja": "喜んでたよ。",
+              "vi": "Khách vui lắm.",
+              "en": "They were delighted.",
+              "ru": "Клиент в восторге."
+            }
+          ]
+        },
+        {
+          "tier": "senior",
+          "careerLevel": 3,
+          "jlpt": "N3",
+          "questId": "story_painter_senior",
+          "titleEn": "Easel: professional",
+          "titleVi": "Giá vẽ: họa sĩ chuyên nghiệp",
+          "titleJa": "イーゼル：プロ",
+          "titleRu": "Мольберт: профессионал",
+          "goalEn": "Finish a series and price your work.",
+          "goalVi": "Hoàn thành một loạt tranh và tự định giá.",
+          "goalJa": "シリーズを完成させ、値段をつける。",
+          "goalRu": "Завершите серию и назначьте цену.",
+          "lines": [
+            {
+              "speaker": "npc_music_owner",
+              "ja": "シリーズで描くと、物語になる。",
+              "vi": "Vẽ theo loạt sẽ thành câu chuyện.",
+              "en": "A series becomes a story.",
+              "ru": "Серия превращается в историю."
+            },
+            {
+              "speaker": "npc_music_owner",
+              "ja": "値段は自信の数字だ。",
+              "vi": "Giá là con số của sự tự tin.",
+              "en": "A price is a number for confidence.",
+              "ru": "Цена — это мера уверенности."
+            },
+            {
+              "speaker": "npc_music_owner",
+              "ja": "プロの絵だ。",
+              "vi": "Tranh chuyên nghiệp rồi.",
+              "en": "That's professional work.",
+              "ru": "Это профессиональная работа."
+            }
+          ]
+        },
+        {
+          "tier": "manager",
+          "careerLevel": 5,
+          "jlpt": "N2",
+          "questId": "story_painter_manager",
+          "titleEn": "Easel: exhibition",
+          "titleVi": "Giá vẽ: triển lãm",
+          "titleJa": "イーゼル：個展",
+          "titleRu": "Мольберт: выставка",
+          "goalEn": "Hold a solo show or art-direct a project.",
+          "goalVi": "Mở triển lãm cá nhân hoặc chỉ đạo nghệ thuật một dự án.",
+          "goalJa": "個展を開くか、プロジェクトのアートディレクター。",
+          "goalRu": "Устройте персональную выставку или станьте арт-директором проекта.",
+          "lines": [
+            {
+              "speaker": "npc_music_owner",
+              "ja": "個展のあいさつ、考えた？",
+              "vi": "Đã nghĩ lời chào triển lãm chưa?",
+              "en": "Have you written the opening speech?",
+              "ru": "Подготовил речь к открытию?"
+            },
+            {
+              "speaker": "npc_music_owner",
+              "ja": "フーコックの海の絵、人気だよ。",
+              "vi": "Tranh biển Phú Quốc được thích lắm.",
+              "en": "Your Phú Quốc sea paintings are popular.",
+              "ru": "Твои картины моря Фукуока популярны."
+            },
+            {
+              "speaker": "npc_music_owner",
+              "ja": "堂々としてね。",
+              "vi": "Tự tin lên.",
+              "en": "Stand tall.",
+              "ru": "Держись уверенно."
+            }
+          ]
+        },
+        {
+          "tier": "owner",
+          "careerLevel": 6,
+          "jlpt": "N1",
+          "questId": "story_painter_owner",
+          "titleEn": "Easel: in the museum",
+          "titleVi": "Giá vẽ: vào bảo tàng",
+          "titleJa": "イーゼル：美術館へ",
+          "titleRu": "Мольберт: в музее",
+          "goalEn": "A museum collects your painting of two hometowns.",
+          "goalVi": "Bảo tàng sưu tầm bức tranh hai quê hương của bạn.",
+          "goalJa": "二つのふるさとの絵が美術館に収蔵される。",
+          "goalRu": "Музей приобретает вашу картину о двух родных местах.",
+          "lines": [
+            {
+              "speaker": "npc_music_owner",
+              "ja": "美術館から電話だ。",
+              "vi": "Bảo tàng gọi điện đấy.",
+              "en": "The museum called.",
+              "ru": "Звонили из музея."
+            },
+            {
+              "speaker": "npc_music_owner",
+              "ja": "ひばりとフーコック、両方が入ってる。",
+              "vi": "Có cả Hibari lẫn Phú Quốc trong tranh.",
+              "en": "Both Hibari and Phú Quốc are in it.",
+              "ru": "На ней и Хибари, и Фукуок."
+            },
+            {
+              "speaker": "npc_music_owner",
+              "ja": "最初の筆、まだある？",
+              "vi": "Còn giữ cây cọ đầu tiên không?",
+              "en": "Still have your first brush?",
+              "ru": "Сохранил свою первую кисть?"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

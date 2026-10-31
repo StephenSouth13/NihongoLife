@@ -1571,6 +1571,2896 @@
       },
       "career": "painter",
       "careerLevel": 4
+    },
+    {
+      "id": "story_ch01_arrival",
+      "category": "story",
+      "titleVi": "Cuộc sống mới ở Hibari-chō",
+      "titleEn": "A new life in Hibari-chō",
+      "titleJa": "ひばり町での新生活",
+      "descriptionVi": "Bạn đến Nhật làm du học sinh. Gặp hàng xóm Tanaka trên phố Sakura. Trình độ tiếng: JLPT N5.",
+      "descriptionEn": "You arrive as an exchange student. Meet your neighbour Tanaka on Sakura-dōri. Language level: JLPT N5.",
+      "descriptionJa": "留学生として到着。さくら通りで隣人の田中さんに会う。日本語レベル：JLPT N5。",
+      "giverNpc": "npc_neighbor_1",
+      "giverNameVi": "Tanaka",
+      "giverNameEn": "Tanaka",
+      "giverNameJa": "田中さん",
+      "locationVi": "Hibari-chō",
+      "locationEn": "Hibari-chō",
+      "locationJa": "ひばり町",
+      "scene": "90_TestSandbox",
+      "minLevel": 1,
+      "minKnowledge": 0,
+      "requiresQuests": [],
+      "repeatable": false,
+      "cooldownMinutes": 0,
+      "grantOnAccept": [],
+      "objectives": [
+        {
+          "id": "talk",
+          "event": "talk",
+          "target": "npc_neighbor_1",
+          "count": 1,
+          "afterAll": false,
+          "textVi": "Nói chuyện với Tanaka",
+          "textEn": "Talk to Tanaka",
+          "textJa": "田中さんと話す"
+        }
+      ],
+      "rewards": {
+        "yen": 300,
+        "xp": 80,
+        "knowledge": 20
+      }
+    },
+    {
+      "id": "story_ch02_first_class",
+      "category": "story",
+      "titleVi": "Ngày đầu ở trường Hibari",
+      "titleEn": "First day at Hibari School",
+      "titleJa": "ひばり学院の初日",
+      "descriptionVi": "Tự giới thiệu ở lớp Sakura và học xong 3 bài. Trình độ tiếng: JLPT N5.",
+      "descriptionEn": "Introduce yourself in Sakura class and finish three lessons. Language level: JLPT N5.",
+      "descriptionJa": "さくらクラスで自己紹介し、3つのレッスンを終える。日本語レベル：JLPT N5。",
+      "giverNpc": "npc_teacher_morita",
+      "giverNameVi": "Cô Morita",
+      "giverNameEn": "Ms Morita",
+      "giverNameJa": "森田先生",
+      "locationVi": "Trường Hibari, lớp Sakura",
+      "locationEn": "Hibari School, Sakura class",
+      "locationJa": "ひばり学院さくらクラス",
+      "scene": "40_ HIBARICLASS",
+      "minLevel": 1,
+      "minKnowledge": 0,
+      "requiresQuests": [
+        "story_ch01_arrival"
+      ],
+      "repeatable": false,
+      "cooldownMinutes": 0,
+      "grantOnAccept": [],
+      "objectives": [
+        {
+          "id": "learn",
+          "event": "learn",
+          "target": "*",
+          "count": 3,
+          "afterAll": false,
+          "textVi": "Học xong 3 bài",
+          "textEn": "Finish 3 lessons",
+          "textJa": "レッスンを3回終える"
+        },
+        {
+          "id": "report",
+          "event": "talk",
+          "target": "npc_teacher_morita",
+          "count": 1,
+          "afterAll": true,
+          "textVi": "Báo cáo Cô Morita",
+          "textEn": "Report to Ms Morita",
+          "textJa": "森田先生に報告する"
+        }
+      ],
+      "rewards": {
+        "yen": 600,
+        "xp": 100,
+        "knowledge": 25
+      }
+    },
+    {
+      "id": "story_ch03_neighbours",
+      "category": "story",
+      "titleVi": "Hàng xóm và bữa sushi",
+      "titleEn": "Neighbours and sushi",
+      "titleJa": "ご近所とお寿司",
+      "descriptionVi": "Tanaka dẫn bạn đến Sushi Hibari. Tự gọi món bằng tiếng Nhật nhé. Trình độ tiếng: JLPT N5.",
+      "descriptionEn": "Tanaka takes you to Sushi Hibari. Order on your own in Japanese. Language level: JLPT N5.",
+      "descriptionJa": "田中さんとひばり寿司へ。自分で日本語で注文しよう。日本語レベル：JLPT N5。",
+      "giverNpc": "npc_sushi_staff",
+      "giverNameVi": "Bác Aoki",
+      "giverNameEn": "Aoki",
+      "giverNameJa": "あおき大将",
+      "locationVi": "Sushi Hibari",
+      "locationEn": "Sushi Hibari",
+      "locationJa": "ひばり寿司",
+      "scene": "30_SushiRestaurant",
+      "minLevel": 3,
+      "minKnowledge": 0,
+      "requiresQuests": [
+        "story_ch02_first_class"
+      ],
+      "repeatable": false,
+      "cooldownMinutes": 0,
+      "grantOnAccept": [],
+      "objectives": [
+        {
+          "id": "order",
+          "event": "order",
+          "target": "*",
+          "count": 1,
+          "afterAll": false,
+          "textVi": "Gọi món bằng tiếng Nhật",
+          "textEn": "Order a meal in Japanese",
+          "textJa": "日本語で注文する"
+        },
+        {
+          "id": "report",
+          "event": "talk",
+          "target": "npc_sushi_staff",
+          "count": 1,
+          "afterAll": true,
+          "textVi": "Báo cáo Bác Aoki",
+          "textEn": "Report to Aoki",
+          "textJa": "あおき大将に報告する"
+        }
+      ],
+      "rewards": {
+        "yen": 900,
+        "xp": 120,
+        "knowledge": 30
+      }
+    },
+    {
+      "id": "story_ch04_festival",
+      "category": "story",
+      "titleVi": "Lễ hội mùa hè",
+      "titleEn": "The summer festival",
+      "titleJa": "夏祭り",
+      "descriptionVi": "Bác Sato mời bạn phụ lễ hội ở đền. Cả khu phố giờ đã quen mặt bạn. Trình độ tiếng: JLPT N5.",
+      "descriptionEn": "Mr Sato invites you to help at the shrine festival. The whole street now knows your face. Language level: JLPT N5.",
+      "descriptionJa": "佐藤さんに神社の夏祭りを手伝ってと頼まれる。町の皆があなたを知っている。日本語レベル：JLPT N5。",
+      "giverNpc": "npc_neighbor_3",
+      "giverNameVi": "Bác Sato",
+      "giverNameEn": "Mr Sato",
+      "giverNameJa": "佐藤さん",
+      "locationVi": "Hibari-chō",
+      "locationEn": "Hibari-chō",
+      "locationJa": "ひばり町",
+      "scene": "90_TestSandbox",
+      "minLevel": 6,
+      "minKnowledge": 0,
+      "requiresQuests": [
+        "story_ch03_neighbours"
+      ],
+      "repeatable": false,
+      "cooldownMinutes": 0,
+      "grantOnAccept": [],
+      "objectives": [
+        {
+          "id": "talk",
+          "event": "talk",
+          "target": "npc_neighbor_3",
+          "count": 1,
+          "afterAll": false,
+          "textVi": "Nói chuyện với Bác Sato",
+          "textEn": "Talk to Mr Sato",
+          "textJa": "佐藤さんと話す"
+        }
+      ],
+      "rewards": {
+        "yen": 1200,
+        "xp": 140,
+        "knowledge": 35
+      }
+    },
+    {
+      "id": "story_ch05_career_choice",
+      "category": "story",
+      "titleVi": "Chọn nghề",
+      "titleEn": "Choosing a career",
+      "titleJa": "仕事を選ぶ",
+      "descriptionVi": "Visa chuyển sang lao động: chọn một nghề trong ứng dụng Nghề nghiệp và bắt đầu từ thực tập. Trình độ tiếng: JLPT N4.",
+      "descriptionEn": "With your visa changed to work, pick a career in the Career app and start as a trainee. Language level: JLPT N4.",
+      "descriptionJa": "就労ビザに切り替え、キャリアアプリで仕事を選んで見習いから始める。日本語レベル：JLPT N4。",
+      "giverNpc": "npc_neighbor_1",
+      "giverNameVi": "Tanaka",
+      "giverNameEn": "Tanaka",
+      "giverNameJa": "田中さん",
+      "locationVi": "Hibari-chō",
+      "locationEn": "Hibari-chō",
+      "locationJa": "ひばり町",
+      "scene": "90_TestSandbox",
+      "minLevel": 10,
+      "minKnowledge": 150,
+      "requiresQuests": [
+        "story_ch04_festival"
+      ],
+      "repeatable": false,
+      "cooldownMinutes": 0,
+      "grantOnAccept": [],
+      "objectives": [
+        {
+          "id": "talk",
+          "event": "talk",
+          "target": "npc_neighbor_1",
+          "count": 1,
+          "afterAll": false,
+          "textVi": "Nói chuyện với Tanaka",
+          "textEn": "Talk to Tanaka",
+          "textJa": "田中さんと話す"
+        }
+      ],
+      "rewards": {
+        "yen": 1500,
+        "xp": 160,
+        "knowledge": 40
+      }
+    },
+    {
+      "id": "story_ch06_phu_quoc",
+      "category": "story",
+      "titleVi": "Nhịp cầu đến Phú Quốc",
+      "titleEn": "A bridge to Phú Quốc",
+      "titleJa": "フーコックへの架け橋",
+      "descriptionVi": "Chị Mai ở Gánh Ngon cần người nói tiếng Nhật để đón khách Nhật. Hãy ra đảo. Trình độ tiếng: JLPT N4.",
+      "descriptionEn": "Mai at Gánh Ngon needs a Japanese speaker for her guests from Japan. Visit the island. Language level: JLPT N4.",
+      "descriptionJa": "ガンゴンのマイさんが日本人客のために日本語ができる人を探している。島へ行こう。日本語レベル：JLPT N4。",
+      "giverNpc": "npc_ganhngon_manager",
+      "giverNameVi": "Chị Mai",
+      "giverNameEn": "Mai",
+      "giverNameJa": "マイさん",
+      "locationVi": "Nhà hàng Gánh Ngon, Phú Quốc",
+      "locationEn": "Gánh Ngon Restaurant, Phú Quốc",
+      "locationJa": "ガンゴン（フーコック）",
+      "scene": "65_PhuQuocIsland",
+      "minLevel": 10,
+      "minKnowledge": 150,
+      "requiresQuests": [
+        "story_ch05_career_choice"
+      ],
+      "repeatable": false,
+      "cooldownMinutes": 0,
+      "grantOnAccept": [],
+      "objectives": [
+        {
+          "id": "talk",
+          "event": "talk",
+          "target": "npc_ganhngon_manager",
+          "count": 1,
+          "afterAll": false,
+          "textVi": "Nói chuyện với Chị Mai",
+          "textEn": "Talk to Mai",
+          "textJa": "マイさんと話す"
+        }
+      ],
+      "rewards": {
+        "yen": 1800,
+        "xp": 180,
+        "knowledge": 45
+      }
+    },
+    {
+      "id": "story_ch07_n3_exam",
+      "category": "story",
+      "titleVi": "Mùa thi: N3",
+      "titleEn": "Exam season: N3",
+      "titleJa": "試験シーズン：N3",
+      "descriptionVi": "Cô Morita ôn thi JLPT N3 cho lớp. Học 10 bài hoặc đề thi thử. Trình độ tiếng: JLPT N3.",
+      "descriptionEn": "Morita-sensei prepares the class for the JLPT N3. Ten lessons or practice tests. Language level: JLPT N3.",
+      "descriptionJa": "森田先生とJLPT N3対策。レッスンか模試を10回。日本語レベル：JLPT N3。",
+      "giverNpc": "npc_teacher_morita",
+      "giverNameVi": "Cô Morita",
+      "giverNameEn": "Ms Morita",
+      "giverNameJa": "森田先生",
+      "locationVi": "Trường Hibari, lớp Sakura",
+      "locationEn": "Hibari School, Sakura class",
+      "locationJa": "ひばり学院さくらクラス",
+      "scene": "40_ HIBARICLASS",
+      "minLevel": 14,
+      "minKnowledge": 400,
+      "requiresQuests": [
+        "story_ch06_phu_quoc"
+      ],
+      "repeatable": false,
+      "cooldownMinutes": 0,
+      "grantOnAccept": [],
+      "objectives": [
+        {
+          "id": "learn",
+          "event": "learn",
+          "target": "*",
+          "count": 10,
+          "afterAll": false,
+          "textVi": "Học xong 10 bài",
+          "textEn": "Finish 10 lessons",
+          "textJa": "レッスンを10回終える"
+        },
+        {
+          "id": "report",
+          "event": "talk",
+          "target": "npc_teacher_morita",
+          "count": 1,
+          "afterAll": true,
+          "textVi": "Báo cáo Cô Morita",
+          "textEn": "Report to Ms Morita",
+          "textJa": "森田先生に報告する"
+        }
+      ],
+      "rewards": {
+        "yen": 2100,
+        "xp": 200,
+        "knowledge": 50
+      }
+    },
+    {
+      "id": "story_ch08_mentor",
+      "category": "story",
+      "titleVi": "Từ học viên thành người hướng dẫn",
+      "titleEn": "From student to mentor",
+      "titleJa": "学生から先輩へ",
+      "descriptionVi": "Lớp Sakura có học viên mới. Cô Morita nhờ bạn đón họ như Tanaka từng đón bạn. Trình độ tiếng: JLPT N2.",
+      "descriptionEn": "New students arrive in Sakura class. Morita-sensei asks you to welcome them as Tanaka once welcomed you. Language level: JLPT N2.",
+      "descriptionJa": "さくらクラスに新入生。田中さんがしてくれたように迎えてほしいと森田先生。日本語レベル：JLPT N2。",
+      "giverNpc": "npc_teacher_morita",
+      "giverNameVi": "Cô Morita",
+      "giverNameEn": "Ms Morita",
+      "giverNameJa": "森田先生",
+      "locationVi": "Trường Hibari, lớp Sakura",
+      "locationEn": "Hibari School, Sakura class",
+      "locationJa": "ひばり学院さくらクラス",
+      "scene": "40_ HIBARICLASS",
+      "minLevel": 18,
+      "minKnowledge": 800,
+      "requiresQuests": [
+        "story_ch07_n3_exam"
+      ],
+      "repeatable": false,
+      "cooldownMinutes": 0,
+      "grantOnAccept": [],
+      "objectives": [
+        {
+          "id": "talk",
+          "event": "talk",
+          "target": "npc_teacher_morita",
+          "count": 1,
+          "afterAll": false,
+          "textVi": "Nói chuyện với Cô Morita",
+          "textEn": "Talk to Ms Morita",
+          "textJa": "森田先生と話す"
+        }
+      ],
+      "rewards": {
+        "yen": 2400,
+        "xp": 220,
+        "knowledge": 55
+      }
+    },
+    {
+      "id": "story_ch09_homecoming",
+      "category": "story",
+      "titleVi": "Hai quê hương",
+      "titleEn": "Home in two countries",
+      "titleJa": "二つのふるさと",
+      "descriptionVi": "Lễ hội mùa hè năm sau, Tanaka phát biểu — về bạn: nghề nghiệp, tiếng Nhật, bạn bè ở Hibari và Phú Quốc. Trình độ tiếng: JLPT N1.",
+      "descriptionEn": "At the next summer festival Tanaka gives the speech — about you. Your career, your Japanese, your friends in Hibari and Phú Quốc. Language level: JLPT N1.",
+      "descriptionJa": "翌年の夏祭りで田中さんがスピーチ。テーマはあなた：仕事、日本語、ひばりとフーコックの仲間。日本語レベル：JLPT N1。",
+      "giverNpc": "npc_neighbor_1",
+      "giverNameVi": "Tanaka",
+      "giverNameEn": "Tanaka",
+      "giverNameJa": "田中さん",
+      "locationVi": "Hibari-chō",
+      "locationEn": "Hibari-chō",
+      "locationJa": "ひばり町",
+      "scene": "90_TestSandbox",
+      "minLevel": 22,
+      "minKnowledge": 1400,
+      "requiresQuests": [
+        "story_ch08_mentor"
+      ],
+      "repeatable": false,
+      "cooldownMinutes": 0,
+      "grantOnAccept": [],
+      "objectives": [
+        {
+          "id": "talk",
+          "event": "talk",
+          "target": "npc_neighbor_1",
+          "count": 1,
+          "afterAll": false,
+          "textVi": "Nói chuyện với Tanaka",
+          "textEn": "Talk to Tanaka",
+          "textJa": "田中さんと話す"
+        }
+      ],
+      "rewards": {
+        "yen": 2700,
+        "xp": 240,
+        "knowledge": 60
+      }
+    },
+    {
+      "id": "story_hospitality_trainee",
+      "category": "story",
+      "titleVi": "Gánh Ngon: chiếc tạp dề đầu tiên",
+      "titleEn": "Gánh Ngon: first apron",
+      "titleJa": "ガンゴン：初めてのエプロン",
+      "descriptionVi": "Chào khách và phục vụ những bàn đầu tiên. Trình độ tiếng: JLPT N5.",
+      "descriptionEn": "Greet guests and serve your first tables. Language level: JLPT N5.",
+      "descriptionJa": "お客さまに挨拶し、最初のテーブルを担当する。日本語レベル：JLPT N5。",
+      "giverNpc": "npc_ganhngon_manager",
+      "giverNameVi": "Chị Mai",
+      "giverNameEn": "Mai",
+      "giverNameJa": "マイさん",
+      "locationVi": "Nhà hàng Gánh Ngon, Phú Quốc",
+      "locationEn": "Gánh Ngon Restaurant, Phú Quốc",
+      "locationJa": "ガンゴン（フーコック）",
+      "scene": "65_PhuQuocIsland",
+      "minLevel": 10,
+      "minKnowledge": 0,
+      "requiresQuests": [
+        "story_ch05_career_choice"
+      ],
+      "repeatable": false,
+      "cooldownMinutes": 0,
+      "grantOnAccept": [],
+      "objectives": [
+        {
+          "id": "work",
+          "event": "serve",
+          "target": "*",
+          "count": 2,
+          "afterAll": false,
+          "textVi": "Phục vụ 2 khách",
+          "textEn": "Serve 2 guests",
+          "textJa": "お客さまを2組接客する"
+        },
+        {
+          "id": "report",
+          "event": "talk",
+          "target": "npc_ganhngon_manager",
+          "count": 1,
+          "afterAll": true,
+          "textVi": "Báo cáo Chị Mai",
+          "textEn": "Report to Mai",
+          "textJa": "マイさんに報告する"
+        }
+      ],
+      "rewards": {
+        "yen": 600,
+        "xp": 80,
+        "knowledge": 20
+      },
+      "career": "hospitality",
+      "careerLevel": 1
+    },
+    {
+      "id": "story_hospitality_staff",
+      "category": "story",
+      "titleVi": "Gánh Ngon: đoàn khách Nhật",
+      "titleEn": "Gánh Ngon: the Japanese tour group",
+      "titleJa": "ガンゴン：日本人ツアー客",
+      "descriptionVi": "Nhận món cho đoàn khách Nhật và giải thích các món. Trình độ tiếng: JLPT N4.",
+      "descriptionEn": "Take orders from a Japanese tour group and explain the dishes. Language level: JLPT N4.",
+      "descriptionJa": "日本人ツアー客の注文を取り、料理を説明する。日本語レベル：JLPT N4。",
+      "giverNpc": "npc_ganhngon_manager",
+      "giverNameVi": "Chị Mai",
+      "giverNameEn": "Mai",
+      "giverNameJa": "マイさん",
+      "locationVi": "Nhà hàng Gánh Ngon, Phú Quốc",
+      "locationEn": "Gánh Ngon Restaurant, Phú Quốc",
+      "locationJa": "ガンゴン（フーコック）",
+      "scene": "65_PhuQuocIsland",
+      "minLevel": 10,
+      "minKnowledge": 150,
+      "requiresQuests": [
+        "story_hospitality_trainee"
+      ],
+      "repeatable": false,
+      "cooldownMinutes": 0,
+      "grantOnAccept": [],
+      "objectives": [
+        {
+          "id": "work",
+          "event": "serve",
+          "target": "*",
+          "count": 3,
+          "afterAll": false,
+          "textVi": "Phục vụ 3 khách",
+          "textEn": "Serve 3 guests",
+          "textJa": "お客さまを3組接客する"
+        },
+        {
+          "id": "report",
+          "event": "talk",
+          "target": "npc_ganhngon_manager",
+          "count": 1,
+          "afterAll": true,
+          "textVi": "Báo cáo Chị Mai",
+          "textEn": "Report to Mai",
+          "textJa": "マイさんに報告する"
+        }
+      ],
+      "rewards": {
+        "yen": 1100,
+        "xp": 120,
+        "knowledge": 30
+      },
+      "career": "hospitality",
+      "careerLevel": 2
+    },
+    {
+      "id": "story_hospitality_senior",
+      "category": "story",
+      "titleVi": "Gánh Ngon: điều phối sảnh",
+      "titleEn": "Gánh Ngon: running the floor",
+      "titleJa": "ガンゴン：ホールを任される",
+      "descriptionVi": "Phụ trách ca tối và xử lý một lời phàn nàn lịch sự. Trình độ tiếng: JLPT N3.",
+      "descriptionEn": "Lead the evening shift and handle a complaint politely. Language level: JLPT N3.",
+      "descriptionJa": "夜のシフトを仕切り、クレームに丁寧に対応する。日本語レベル：JLPT N3。",
+      "giverNpc": "npc_ganhngon_manager",
+      "giverNameVi": "Chị Mai",
+      "giverNameEn": "Mai",
+      "giverNameJa": "マイさん",
+      "locationVi": "Nhà hàng Gánh Ngon, Phú Quốc",
+      "locationEn": "Gánh Ngon Restaurant, Phú Quốc",
+      "locationJa": "ガンゴン（フーコック）",
+      "scene": "65_PhuQuocIsland",
+      "minLevel": 10,
+      "minKnowledge": 400,
+      "requiresQuests": [
+        "story_hospitality_staff"
+      ],
+      "repeatable": false,
+      "cooldownMinutes": 0,
+      "grantOnAccept": [],
+      "objectives": [
+        {
+          "id": "work",
+          "event": "serve",
+          "target": "*",
+          "count": 4,
+          "afterAll": false,
+          "textVi": "Phục vụ 4 khách",
+          "textEn": "Serve 4 guests",
+          "textJa": "お客さまを4組接客する"
+        },
+        {
+          "id": "report",
+          "event": "talk",
+          "target": "npc_ganhngon_manager",
+          "count": 1,
+          "afterAll": true,
+          "textVi": "Báo cáo Chị Mai",
+          "textEn": "Report to Mai",
+          "textJa": "マイさんに報告する"
+        }
+      ],
+      "rewards": {
+        "yen": 1600,
+        "xp": 160,
+        "knowledge": 40
+      },
+      "career": "hospitality",
+      "careerLevel": 3
+    },
+    {
+      "id": "story_hospitality_manager",
+      "category": "story",
+      "titleVi": "Gánh Ngon: chìa khóa quản lý",
+      "titleEn": "Gánh Ngon: the manager's key",
+      "titleJa": "ガンゴン：店長の鍵",
+      "descriptionVi": "Lên lịch ca, thực đơn và hợp tác với một công ty du lịch Nhật. Trình độ tiếng: JLPT N2.",
+      "descriptionEn": "Plan the rota, the menu and a partnership with a Japanese travel agency. Language level: JLPT N2.",
+      "descriptionJa": "シフト表とメニューを作り、日本の旅行会社と提携する。日本語レベル：JLPT N2。",
+      "giverNpc": "npc_ganhngon_manager",
+      "giverNameVi": "Chị Mai",
+      "giverNameEn": "Mai",
+      "giverNameJa": "マイさん",
+      "locationVi": "Nhà hàng Gánh Ngon, Phú Quốc",
+      "locationEn": "Gánh Ngon Restaurant, Phú Quốc",
+      "locationJa": "ガンゴン（フーコック）",
+      "scene": "65_PhuQuocIsland",
+      "minLevel": 10,
+      "minKnowledge": 800,
+      "requiresQuests": [
+        "story_hospitality_senior"
+      ],
+      "repeatable": false,
+      "cooldownMinutes": 0,
+      "grantOnAccept": [],
+      "objectives": [
+        {
+          "id": "work",
+          "event": "serve",
+          "target": "*",
+          "count": 5,
+          "afterAll": false,
+          "textVi": "Phục vụ 5 khách",
+          "textEn": "Serve 5 guests",
+          "textJa": "お客さまを5組接客する"
+        },
+        {
+          "id": "report",
+          "event": "talk",
+          "target": "npc_ganhngon_manager",
+          "count": 1,
+          "afterAll": true,
+          "textVi": "Báo cáo Chị Mai",
+          "textEn": "Report to Mai",
+          "textJa": "マイさんに報告する"
+        }
+      ],
+      "rewards": {
+        "yen": 2100,
+        "xp": 200,
+        "knowledge": 50
+      },
+      "career": "hospitality",
+      "careerLevel": 5
+    },
+    {
+      "id": "story_hospitality_owner",
+      "category": "story",
+      "titleVi": "Gánh Ngon: nhà hàng của riêng bạn",
+      "titleEn": "Gánh Ngon: your own restaurant",
+      "titleJa": "ガンゴン：自分の店",
+      "descriptionVi": "Mở Gánh Ngon thứ hai bên biển, nhịp cầu giữa ẩm thực Việt và khách Nhật. Trình độ tiếng: JLPT N1.",
+      "descriptionEn": "Open a second Gánh Ngon by the beach, a bridge between Vietnamese food and Japanese guests. Language level: JLPT N1.",
+      "descriptionJa": "ビーチに二号店を開き、ベトナム料理と日本人客の架け橋に。日本語レベル：JLPT N1。",
+      "giverNpc": "npc_ganhngon_manager",
+      "giverNameVi": "Chị Mai",
+      "giverNameEn": "Mai",
+      "giverNameJa": "マイさん",
+      "locationVi": "Nhà hàng Gánh Ngon, Phú Quốc",
+      "locationEn": "Gánh Ngon Restaurant, Phú Quốc",
+      "locationJa": "ガンゴン（フーコック）",
+      "scene": "65_PhuQuocIsland",
+      "minLevel": 10,
+      "minKnowledge": 1400,
+      "requiresQuests": [
+        "story_hospitality_manager"
+      ],
+      "repeatable": false,
+      "cooldownMinutes": 0,
+      "grantOnAccept": [],
+      "objectives": [
+        {
+          "id": "work",
+          "event": "serve",
+          "target": "*",
+          "count": 6,
+          "afterAll": false,
+          "textVi": "Phục vụ 6 khách",
+          "textEn": "Serve 6 guests",
+          "textJa": "お客さまを6組接客する"
+        },
+        {
+          "id": "report",
+          "event": "talk",
+          "target": "npc_ganhngon_manager",
+          "count": 1,
+          "afterAll": true,
+          "textVi": "Báo cáo Chị Mai",
+          "textEn": "Report to Mai",
+          "textJa": "マイさんに報告する"
+        }
+      ],
+      "rewards": {
+        "yen": 2600,
+        "xp": 240,
+        "knowledge": 60
+      },
+      "career": "hospitality",
+      "careerLevel": 6
+    },
+    {
+      "id": "story_medical_trainee",
+      "category": "story",
+      "titleVi": "Phòng khám: quầy lễ tân",
+      "titleEn": "Clinic: the reception desk",
+      "titleJa": "クリニック：受付",
+      "descriptionVi": "Tiếp nhận bệnh nhân và hỏi thẻ bảo hiểm. Trình độ tiếng: JLPT N5.",
+      "descriptionEn": "Check patients in and ask for their insurance card. Language level: JLPT N5.",
+      "descriptionJa": "患者さんを受け付け、保険証を確認する。日本語レベル：JLPT N5。",
+      "giverNpc": "npc_clinic_doctor",
+      "giverNameVi": "Bác sĩ Mori",
+      "giverNameEn": "Dr Mori",
+      "giverNameJa": "もり院長",
+      "locationVi": "Phòng khám Hibari",
+      "locationEn": "Hibari Clinic",
+      "locationJa": "ひばりクリニック",
+      "scene": "35_HibariClinic",
+      "minLevel": 10,
+      "minKnowledge": 0,
+      "requiresQuests": [
+        "story_ch05_career_choice"
+      ],
+      "repeatable": false,
+      "cooldownMinutes": 0,
+      "grantOnAccept": [],
+      "objectives": [
+        {
+          "id": "work",
+          "event": "triage",
+          "target": "clinic_patient",
+          "count": 2,
+          "afterAll": false,
+          "textVi": "Phân loại 2 bệnh nhân",
+          "textEn": "Triage 2 patients",
+          "textJa": "患者さんを2人トリアージする"
+        },
+        {
+          "id": "report",
+          "event": "talk",
+          "target": "npc_clinic_doctor",
+          "count": 1,
+          "afterAll": true,
+          "textVi": "Báo cáo Bác sĩ Mori",
+          "textEn": "Report to Dr Mori",
+          "textJa": "もり院長に報告する"
+        }
+      ],
+      "rewards": {
+        "yen": 600,
+        "xp": 80,
+        "knowledge": 20
+      },
+      "career": "medical",
+      "careerLevel": 1
+    },
+    {
+      "id": "story_medical_staff",
+      "category": "story",
+      "titleVi": "Phòng khám: phụ tá điều dưỡng",
+      "titleEn": "Clinic: nursing assistant",
+      "titleJa": "クリニック：看護助手",
+      "descriptionVi": "Đo nhiệt độ, huyết áp và hỏi đau ở đâu. Trình độ tiếng: JLPT N4.",
+      "descriptionEn": "Take temperatures and blood pressure and ask where it hurts. Language level: JLPT N4.",
+      "descriptionJa": "体温と血圧を測り、どこが痛いか聞く。日本語レベル：JLPT N4。",
+      "giverNpc": "npc_clinic_doctor",
+      "giverNameVi": "Bác sĩ Mori",
+      "giverNameEn": "Dr Mori",
+      "giverNameJa": "もり院長",
+      "locationVi": "Phòng khám Hibari",
+      "locationEn": "Hibari Clinic",
+      "locationJa": "ひばりクリニック",
+      "scene": "35_HibariClinic",
+      "minLevel": 10,
+      "minKnowledge": 150,
+      "requiresQuests": [
+        "story_medical_trainee"
+      ],
+      "repeatable": false,
+      "cooldownMinutes": 0,
+      "grantOnAccept": [],
+      "objectives": [
+        {
+          "id": "work",
+          "event": "triage",
+          "target": "clinic_patient",
+          "count": 3,
+          "afterAll": false,
+          "textVi": "Phân loại 3 bệnh nhân",
+          "textEn": "Triage 3 patients",
+          "textJa": "患者さんを3人トリアージする"
+        },
+        {
+          "id": "report",
+          "event": "talk",
+          "target": "npc_clinic_doctor",
+          "count": 1,
+          "afterAll": true,
+          "textVi": "Báo cáo Bác sĩ Mori",
+          "textEn": "Report to Dr Mori",
+          "textJa": "もり院長に報告する"
+        }
+      ],
+      "rewards": {
+        "yen": 1100,
+        "xp": 120,
+        "knowledge": 30
+      },
+      "career": "medical",
+      "careerLevel": 2
+    },
+    {
+      "id": "story_medical_senior",
+      "category": "story",
+      "titleVi": "Phòng khám: sinh viên y",
+      "titleEn": "Clinic: medical student",
+      "titleJa": "クリニック：医学生",
+      "descriptionVi": "Qua bài CBT thử và trình bày một ca bệnh với bác sĩ Mori. Trình độ tiếng: JLPT N3.",
+      "descriptionEn": "Pass the CBT practice and present a case to Dr Mori. Language level: JLPT N3.",
+      "descriptionJa": "CBT模試に合格し、森先生に症例を発表する。日本語レベル：JLPT N3。",
+      "giverNpc": "npc_clinic_doctor",
+      "giverNameVi": "Bác sĩ Mori",
+      "giverNameEn": "Dr Mori",
+      "giverNameJa": "もり院長",
+      "locationVi": "Phòng khám Hibari",
+      "locationEn": "Hibari Clinic",
+      "locationJa": "ひばりクリニック",
+      "scene": "35_HibariClinic",
+      "minLevel": 10,
+      "minKnowledge": 400,
+      "requiresQuests": [
+        "story_medical_staff"
+      ],
+      "repeatable": false,
+      "cooldownMinutes": 0,
+      "grantOnAccept": [],
+      "objectives": [
+        {
+          "id": "work",
+          "event": "triage",
+          "target": "clinic_patient",
+          "count": 4,
+          "afterAll": false,
+          "textVi": "Phân loại 4 bệnh nhân",
+          "textEn": "Triage 4 patients",
+          "textJa": "患者さんを4人トリアージする"
+        },
+        {
+          "id": "report",
+          "event": "talk",
+          "target": "npc_clinic_doctor",
+          "count": 1,
+          "afterAll": true,
+          "textVi": "Báo cáo Bác sĩ Mori",
+          "textEn": "Report to Dr Mori",
+          "textJa": "もり院長に報告する"
+        }
+      ],
+      "rewards": {
+        "yen": 1600,
+        "xp": 160,
+        "knowledge": 40
+      },
+      "career": "medical",
+      "careerLevel": 3
+    },
+    {
+      "id": "story_medical_manager",
+      "category": "story",
+      "titleVi": "Phòng khám: đào tạo chuyên khoa",
+      "titleEn": "Clinic: specialty training",
+      "titleJa": "クリニック：専門研修",
+      "descriptionVi": "Sau kỳ thi quốc gia và nội trú, phụ trách ca khám sáng với tư cách bác sĩ chuyên khoa. Trình độ tiếng: JLPT N2.",
+      "descriptionEn": "After the national exam and residency, lead the morning clinic as a specialty trainee. Language level: JLPT N2.",
+      "descriptionJa": "国家試験と研修を経て、専攻医として午前外来を担当。日本語レベル：JLPT N2。",
+      "giverNpc": "npc_clinic_doctor",
+      "giverNameVi": "Bác sĩ Mori",
+      "giverNameEn": "Dr Mori",
+      "giverNameJa": "もり院長",
+      "locationVi": "Phòng khám Hibari",
+      "locationEn": "Hibari Clinic",
+      "locationJa": "ひばりクリニック",
+      "scene": "35_HibariClinic",
+      "minLevel": 10,
+      "minKnowledge": 800,
+      "requiresQuests": [
+        "story_medical_senior"
+      ],
+      "repeatable": false,
+      "cooldownMinutes": 0,
+      "grantOnAccept": [],
+      "objectives": [
+        {
+          "id": "work",
+          "event": "triage",
+          "target": "clinic_patient",
+          "count": 5,
+          "afterAll": false,
+          "textVi": "Phân loại 5 bệnh nhân",
+          "textEn": "Triage 5 patients",
+          "textJa": "患者さんを5人トリアージする"
+        },
+        {
+          "id": "report",
+          "event": "talk",
+          "target": "npc_clinic_doctor",
+          "count": 1,
+          "afterAll": true,
+          "textVi": "Báo cáo Bác sĩ Mori",
+          "textEn": "Report to Dr Mori",
+          "textJa": "もり院長に報告する"
+        }
+      ],
+      "rewards": {
+        "yen": 2100,
+        "xp": 200,
+        "knowledge": 50
+      },
+      "career": "medical",
+      "careerLevel": 5
+    },
+    {
+      "id": "story_medical_owner",
+      "category": "story",
+      "titleVi": "Phòng khám: chuyên gia và viện trưởng",
+      "titleEn": "Clinic: specialist and director",
+      "titleJa": "クリニック：専門医・院長",
+      "descriptionVi": "Thành chuyên gia và tiếp quản phòng khám Hibari, khám bằng tiếng Nhật, Việt và Anh. Trình độ tiếng: JLPT N1.",
+      "descriptionEn": "Become a specialist and take over Hibari Clinic, with care in Japanese, Vietnamese and English. Language level: JLPT N1.",
+      "descriptionJa": "専門医となり、日・越・英語で診るひばりクリニックを継ぐ。日本語レベル：JLPT N1。",
+      "giverNpc": "npc_clinic_doctor",
+      "giverNameVi": "Bác sĩ Mori",
+      "giverNameEn": "Dr Mori",
+      "giverNameJa": "もり院長",
+      "locationVi": "Phòng khám Hibari",
+      "locationEn": "Hibari Clinic",
+      "locationJa": "ひばりクリニック",
+      "scene": "35_HibariClinic",
+      "minLevel": 10,
+      "minKnowledge": 1400,
+      "requiresQuests": [
+        "story_medical_manager"
+      ],
+      "repeatable": false,
+      "cooldownMinutes": 0,
+      "grantOnAccept": [],
+      "objectives": [
+        {
+          "id": "work",
+          "event": "triage",
+          "target": "clinic_patient",
+          "count": 6,
+          "afterAll": false,
+          "textVi": "Phân loại 6 bệnh nhân",
+          "textEn": "Triage 6 patients",
+          "textJa": "患者さんを6人トリアージする"
+        },
+        {
+          "id": "report",
+          "event": "talk",
+          "target": "npc_clinic_doctor",
+          "count": 1,
+          "afterAll": true,
+          "textVi": "Báo cáo Bác sĩ Mori",
+          "textEn": "Report to Dr Mori",
+          "textJa": "もり院長に報告する"
+        }
+      ],
+      "rewards": {
+        "yen": 2600,
+        "xp": 240,
+        "knowledge": 60
+      },
+      "career": "medical",
+      "careerLevel": 6
+    },
+    {
+      "id": "story_retail_trainee",
+      "category": "story",
+      "titleVi": "Hibari Mart: ca đầu tiên",
+      "titleEn": "Hibari Mart: the first shift",
+      "titleJa": "ひばりマート：初シフト",
+      "descriptionVi": "Xếp hàng lên kệ và tính tiền cho khách. Trình độ tiếng: JLPT N5.",
+      "descriptionEn": "Stock shelves and ring up customers. Language level: JLPT N5.",
+      "descriptionJa": "品出しとレジ打ち。日本語レベル：JLPT N5。",
+      "giverNpc": "npc_cashier",
+      "giverNameVi": "Chị Ito",
+      "giverNameEn": "Ms Ito",
+      "giverNameJa": "いとう店長",
+      "locationVi": "Hibari-chō",
+      "locationEn": "Hibari-chō",
+      "locationJa": "ひばり町",
+      "scene": "90_TestSandbox",
+      "minLevel": 10,
+      "minKnowledge": 0,
+      "requiresQuests": [
+        "story_ch05_career_choice"
+      ],
+      "repeatable": false,
+      "cooldownMinutes": 0,
+      "grantOnAccept": [],
+      "objectives": [
+        {
+          "id": "work",
+          "event": "checkout",
+          "target": "konbini_register",
+          "count": 2,
+          "afterAll": false,
+          "textVi": "Tính tiền cho 2 khách",
+          "textEn": "Ring up 2 customers",
+          "textJa": "2人のお会計をする"
+        },
+        {
+          "id": "report",
+          "event": "talk",
+          "target": "npc_cashier",
+          "count": 1,
+          "afterAll": true,
+          "textVi": "Báo cáo Chị Ito",
+          "textEn": "Report to Ms Ito",
+          "textJa": "いとう店長に報告する"
+        }
+      ],
+      "rewards": {
+        "yen": 600,
+        "xp": 80,
+        "knowledge": 20
+      },
+      "career": "retail",
+      "careerLevel": 1
+    },
+    {
+      "id": "story_retail_staff",
+      "category": "story",
+      "titleVi": "Hibari Mart: khách quen",
+      "titleEn": "Hibari Mart: regulars",
+      "titleJa": "ひばりマート：常連さん",
+      "descriptionVi": "Nhớ khách quen và xử lý gửi hàng. Trình độ tiếng: JLPT N4.",
+      "descriptionEn": "Remember the regulars and handle deliveries. Language level: JLPT N4.",
+      "descriptionJa": "常連さんを覚え、宅配便を受け付ける。日本語レベル：JLPT N4。",
+      "giverNpc": "npc_cashier",
+      "giverNameVi": "Chị Ito",
+      "giverNameEn": "Ms Ito",
+      "giverNameJa": "いとう店長",
+      "locationVi": "Hibari-chō",
+      "locationEn": "Hibari-chō",
+      "locationJa": "ひばり町",
+      "scene": "90_TestSandbox",
+      "minLevel": 10,
+      "minKnowledge": 150,
+      "requiresQuests": [
+        "story_retail_trainee"
+      ],
+      "repeatable": false,
+      "cooldownMinutes": 0,
+      "grantOnAccept": [],
+      "objectives": [
+        {
+          "id": "work",
+          "event": "checkout",
+          "target": "konbini_register",
+          "count": 3,
+          "afterAll": false,
+          "textVi": "Tính tiền cho 3 khách",
+          "textEn": "Ring up 3 customers",
+          "textJa": "3人のお会計をする"
+        },
+        {
+          "id": "report",
+          "event": "talk",
+          "target": "npc_cashier",
+          "count": 1,
+          "afterAll": true,
+          "textVi": "Báo cáo Chị Ito",
+          "textEn": "Report to Ms Ito",
+          "textJa": "いとう店長に報告する"
+        }
+      ],
+      "rewards": {
+        "yen": 1100,
+        "xp": 120,
+        "knowledge": 30
+      },
+      "career": "retail",
+      "careerLevel": 2
+    },
+    {
+      "id": "story_retail_senior",
+      "category": "story",
+      "titleVi": "Hibari Mart: trưởng quầy",
+      "titleEn": "Hibari Mart: register lead",
+      "titleJa": "ひばりマート：レジリーダー",
+      "descriptionVi": "Kèm nhân viên mới và chốt két không sai. Trình độ tiếng: JLPT N3.",
+      "descriptionEn": "Train a new clerk and close the register without errors. Language level: JLPT N3.",
+      "descriptionJa": "新人を教え、レジ締めをミスなく。日本語レベル：JLPT N3。",
+      "giverNpc": "npc_cashier",
+      "giverNameVi": "Chị Ito",
+      "giverNameEn": "Ms Ito",
+      "giverNameJa": "いとう店長",
+      "locationVi": "Hibari-chō",
+      "locationEn": "Hibari-chō",
+      "locationJa": "ひばり町",
+      "scene": "90_TestSandbox",
+      "minLevel": 10,
+      "minKnowledge": 400,
+      "requiresQuests": [
+        "story_retail_staff"
+      ],
+      "repeatable": false,
+      "cooldownMinutes": 0,
+      "grantOnAccept": [],
+      "objectives": [
+        {
+          "id": "work",
+          "event": "checkout",
+          "target": "konbini_register",
+          "count": 4,
+          "afterAll": false,
+          "textVi": "Tính tiền cho 4 khách",
+          "textEn": "Ring up 4 customers",
+          "textJa": "4人のお会計をする"
+        },
+        {
+          "id": "report",
+          "event": "talk",
+          "target": "npc_cashier",
+          "count": 1,
+          "afterAll": true,
+          "textVi": "Báo cáo Chị Ito",
+          "textEn": "Report to Ms Ito",
+          "textJa": "いとう店長に報告する"
+        }
+      ],
+      "rewards": {
+        "yen": 1600,
+        "xp": 160,
+        "knowledge": 40
+      },
+      "career": "retail",
+      "careerLevel": 3
+    },
+    {
+      "id": "story_retail_manager",
+      "category": "story",
+      "titleVi": "Hibari Mart: quản lý cửa hàng",
+      "titleEn": "Hibari Mart: running the store",
+      "titleJa": "ひばりマート：店を任される",
+      "descriptionVi": "Đặt hàng cho tuần lễ hội và quản lý nhân viên. Trình độ tiếng: JLPT N2.",
+      "descriptionEn": "Plan orders for the festival week and manage the staff. Language level: JLPT N2.",
+      "descriptionJa": "祭りの週の発注とスタッフ管理。日本語レベル：JLPT N2。",
+      "giverNpc": "npc_cashier",
+      "giverNameVi": "Chị Ito",
+      "giverNameEn": "Ms Ito",
+      "giverNameJa": "いとう店長",
+      "locationVi": "Hibari-chō",
+      "locationEn": "Hibari-chō",
+      "locationJa": "ひばり町",
+      "scene": "90_TestSandbox",
+      "minLevel": 10,
+      "minKnowledge": 800,
+      "requiresQuests": [
+        "story_retail_senior"
+      ],
+      "repeatable": false,
+      "cooldownMinutes": 0,
+      "grantOnAccept": [],
+      "objectives": [
+        {
+          "id": "work",
+          "event": "checkout",
+          "target": "konbini_register",
+          "count": 5,
+          "afterAll": false,
+          "textVi": "Tính tiền cho 5 khách",
+          "textEn": "Ring up 5 customers",
+          "textJa": "5人のお会計をする"
+        },
+        {
+          "id": "report",
+          "event": "talk",
+          "target": "npc_cashier",
+          "count": 1,
+          "afterAll": true,
+          "textVi": "Báo cáo Chị Ito",
+          "textEn": "Report to Ms Ito",
+          "textJa": "いとう店長に報告する"
+        }
+      ],
+      "rewards": {
+        "yen": 2100,
+        "xp": 200,
+        "knowledge": 50
+      },
+      "career": "retail",
+      "careerLevel": 5
+    },
+    {
+      "id": "story_retail_owner",
+      "category": "story",
+      "titleVi": "Hibari Mart: cửa hàng của bạn",
+      "titleEn": "Hibari Mart: your own shop",
+      "titleJa": "ひばりマート：自分の店",
+      "descriptionVi": "Mở một Hibari Mart có bán cả hàng Việt, hoặc làm người thu mua cho chuỗi. Trình độ tiếng: JLPT N1.",
+      "descriptionEn": "Open a Hibari Mart that also sells Vietnamese goods, or become the chain's buyer. Language level: JLPT N1.",
+      "descriptionJa": "ベトナム食材も置く新店を開くか、チェーンのバイヤーになる。日本語レベル：JLPT N1。",
+      "giverNpc": "npc_cashier",
+      "giverNameVi": "Chị Ito",
+      "giverNameEn": "Ms Ito",
+      "giverNameJa": "いとう店長",
+      "locationVi": "Hibari-chō",
+      "locationEn": "Hibari-chō",
+      "locationJa": "ひばり町",
+      "scene": "90_TestSandbox",
+      "minLevel": 10,
+      "minKnowledge": 1400,
+      "requiresQuests": [
+        "story_retail_manager"
+      ],
+      "repeatable": false,
+      "cooldownMinutes": 0,
+      "grantOnAccept": [],
+      "objectives": [
+        {
+          "id": "work",
+          "event": "checkout",
+          "target": "konbini_register",
+          "count": 6,
+          "afterAll": false,
+          "textVi": "Tính tiền cho 6 khách",
+          "textEn": "Ring up 6 customers",
+          "textJa": "6人のお会計をする"
+        },
+        {
+          "id": "report",
+          "event": "talk",
+          "target": "npc_cashier",
+          "count": 1,
+          "afterAll": true,
+          "textVi": "Báo cáo Chị Ito",
+          "textEn": "Report to Ms Ito",
+          "textJa": "いとう店長に報告する"
+        }
+      ],
+      "rewards": {
+        "yen": 2600,
+        "xp": 240,
+        "knowledge": 60
+      },
+      "career": "retail",
+      "careerLevel": 6
+    },
+    {
+      "id": "story_food_trainee",
+      "category": "story",
+      "titleVi": "Sushi Hibari: rửa bát",
+      "titleEn": "Sushi Hibari: washing up",
+      "titleJa": "ひばり寿司：洗い場",
+      "descriptionVi": "Rửa bát kịp và học câu chào của quán. Trình độ tiếng: JLPT N5.",
+      "descriptionEn": "Keep the dishes moving and learn the restaurant greetings. Language level: JLPT N5.",
+      "descriptionJa": "皿を回し、店のあいさつを覚える。日本語レベル：JLPT N5。",
+      "giverNpc": "npc_sushi_staff",
+      "giverNameVi": "Bác Aoki",
+      "giverNameEn": "Aoki",
+      "giverNameJa": "あおき大将",
+      "locationVi": "Sushi Hibari",
+      "locationEn": "Sushi Hibari",
+      "locationJa": "ひばり寿司",
+      "scene": "30_SushiRestaurant",
+      "minLevel": 10,
+      "minKnowledge": 0,
+      "requiresQuests": [
+        "story_ch05_career_choice"
+      ],
+      "repeatable": false,
+      "cooldownMinutes": 0,
+      "grantOnAccept": [],
+      "objectives": [
+        {
+          "id": "work",
+          "event": "serve",
+          "target": "sushi_table",
+          "count": 2,
+          "afterAll": false,
+          "textVi": "Phục vụ 2 khách",
+          "textEn": "Serve 2 guests",
+          "textJa": "お客さまを2組接客する"
+        },
+        {
+          "id": "report",
+          "event": "talk",
+          "target": "npc_sushi_staff",
+          "count": 1,
+          "afterAll": true,
+          "textVi": "Báo cáo Bác Aoki",
+          "textEn": "Report to Aoki",
+          "textJa": "あおき大将に報告する"
+        }
+      ],
+      "rewards": {
+        "yen": 600,
+        "xp": 80,
+        "knowledge": 20
+      },
+      "career": "food",
+      "careerLevel": 1
+    },
+    {
+      "id": "story_food_staff",
+      "category": "story",
+      "titleVi": "Sushi Hibari: phục vụ sảnh",
+      "titleEn": "Sushi Hibari: on the floor",
+      "titleJa": "ひばり寿司：ホール",
+      "descriptionVi": "Nhận món và đọc lại đơn chính xác. Trình độ tiếng: JLPT N4.",
+      "descriptionEn": "Take orders and repeat them back correctly. Language level: JLPT N4.",
+      "descriptionJa": "注文を受け、正しく復唱する。日本語レベル：JLPT N4。",
+      "giverNpc": "npc_sushi_staff",
+      "giverNameVi": "Bác Aoki",
+      "giverNameEn": "Aoki",
+      "giverNameJa": "あおき大将",
+      "locationVi": "Sushi Hibari",
+      "locationEn": "Sushi Hibari",
+      "locationJa": "ひばり寿司",
+      "scene": "30_SushiRestaurant",
+      "minLevel": 10,
+      "minKnowledge": 150,
+      "requiresQuests": [
+        "story_food_trainee"
+      ],
+      "repeatable": false,
+      "cooldownMinutes": 0,
+      "grantOnAccept": [],
+      "objectives": [
+        {
+          "id": "work",
+          "event": "serve",
+          "target": "sushi_table",
+          "count": 3,
+          "afterAll": false,
+          "textVi": "Phục vụ 3 khách",
+          "textEn": "Serve 3 guests",
+          "textJa": "お客さまを3組接客する"
+        },
+        {
+          "id": "report",
+          "event": "talk",
+          "target": "npc_sushi_staff",
+          "count": 1,
+          "afterAll": true,
+          "textVi": "Báo cáo Bác Aoki",
+          "textEn": "Report to Aoki",
+          "textJa": "あおき大将に報告する"
+        }
+      ],
+      "rewards": {
+        "yen": 1100,
+        "xp": 120,
+        "knowledge": 30
+      },
+      "career": "food",
+      "careerLevel": 2
+    },
+    {
+      "id": "story_food_senior",
+      "category": "story",
+      "titleVi": "Sushi Hibari: trưởng sảnh",
+      "titleEn": "Sushi Hibari: floor lead",
+      "titleJa": "ひばり寿司：ホールリーダー",
+      "descriptionVi": "Lo giờ trưa cao điểm và xếp chỗ đoàn tám người. Trình độ tiếng: JLPT N3.",
+      "descriptionEn": "Run the lunch rush and seat a group of eight. Language level: JLPT N3.",
+      "descriptionJa": "昼のラッシュを回し、八名の団体を案内。日本語レベル：JLPT N3。",
+      "giverNpc": "npc_sushi_staff",
+      "giverNameVi": "Bác Aoki",
+      "giverNameEn": "Aoki",
+      "giverNameJa": "あおき大将",
+      "locationVi": "Sushi Hibari",
+      "locationEn": "Sushi Hibari",
+      "locationJa": "ひばり寿司",
+      "scene": "30_SushiRestaurant",
+      "minLevel": 10,
+      "minKnowledge": 400,
+      "requiresQuests": [
+        "story_food_staff"
+      ],
+      "repeatable": false,
+      "cooldownMinutes": 0,
+      "grantOnAccept": [],
+      "objectives": [
+        {
+          "id": "work",
+          "event": "serve",
+          "target": "sushi_table",
+          "count": 4,
+          "afterAll": false,
+          "textVi": "Phục vụ 4 khách",
+          "textEn": "Serve 4 guests",
+          "textJa": "お客さまを4組接客する"
+        },
+        {
+          "id": "report",
+          "event": "talk",
+          "target": "npc_sushi_staff",
+          "count": 1,
+          "afterAll": true,
+          "textVi": "Báo cáo Bác Aoki",
+          "textEn": "Report to Aoki",
+          "textJa": "あおき大将に報告する"
+        }
+      ],
+      "rewards": {
+        "yen": 1600,
+        "xp": 160,
+        "knowledge": 40
+      },
+      "career": "food",
+      "careerLevel": 3
+    },
+    {
+      "id": "story_food_manager",
+      "category": "story",
+      "titleVi": "Sushi Hibari: quản lý hay itamae",
+      "titleEn": "Sushi Hibari: manager or itamae",
+      "titleJa": "ひばり寿司：店長か板前か",
+      "descriptionVi": "Lo sổ sách quán hoặc đứng sau quầy sushi. Trình độ tiếng: JLPT N2.",
+      "descriptionEn": "Run the restaurant's books or stand behind the counter. Language level: JLPT N2.",
+      "descriptionJa": "店の経営か、カウンターに立つか。日本語レベル：JLPT N2。",
+      "giverNpc": "npc_sushi_staff",
+      "giverNameVi": "Bác Aoki",
+      "giverNameEn": "Aoki",
+      "giverNameJa": "あおき大将",
+      "locationVi": "Sushi Hibari",
+      "locationEn": "Sushi Hibari",
+      "locationJa": "ひばり寿司",
+      "scene": "30_SushiRestaurant",
+      "minLevel": 10,
+      "minKnowledge": 800,
+      "requiresQuests": [
+        "story_food_senior"
+      ],
+      "repeatable": false,
+      "cooldownMinutes": 0,
+      "grantOnAccept": [],
+      "objectives": [
+        {
+          "id": "work",
+          "event": "serve",
+          "target": "sushi_table",
+          "count": 5,
+          "afterAll": false,
+          "textVi": "Phục vụ 5 khách",
+          "textEn": "Serve 5 guests",
+          "textJa": "お客さまを5組接客する"
+        },
+        {
+          "id": "report",
+          "event": "talk",
+          "target": "npc_sushi_staff",
+          "count": 1,
+          "afterAll": true,
+          "textVi": "Báo cáo Bác Aoki",
+          "textEn": "Report to Aoki",
+          "textJa": "あおき大将に報告する"
+        }
+      ],
+      "rewards": {
+        "yen": 2100,
+        "xp": 200,
+        "knowledge": 50
+      },
+      "career": "food",
+      "careerLevel": 5
+    },
+    {
+      "id": "story_food_owner",
+      "category": "story",
+      "titleVi": "Sushi Hibari: đại tướng kế nhiệm",
+      "titleEn": "Sushi Hibari: the next taishō",
+      "titleJa": "ひばり寿司：次の大将",
+      "descriptionVi": "Tiếp quản quán, hoặc mở quầy của riêng mình. Trình độ tiếng: JLPT N1.",
+      "descriptionEn": "Take over the restaurant, or open your own counter. Language level: JLPT N1.",
+      "descriptionJa": "店を継ぐか、自分の店を出す。日本語レベル：JLPT N1。",
+      "giverNpc": "npc_sushi_staff",
+      "giverNameVi": "Bác Aoki",
+      "giverNameEn": "Aoki",
+      "giverNameJa": "あおき大将",
+      "locationVi": "Sushi Hibari",
+      "locationEn": "Sushi Hibari",
+      "locationJa": "ひばり寿司",
+      "scene": "30_SushiRestaurant",
+      "minLevel": 10,
+      "minKnowledge": 1400,
+      "requiresQuests": [
+        "story_food_manager"
+      ],
+      "repeatable": false,
+      "cooldownMinutes": 0,
+      "grantOnAccept": [],
+      "objectives": [
+        {
+          "id": "work",
+          "event": "serve",
+          "target": "sushi_table",
+          "count": 6,
+          "afterAll": false,
+          "textVi": "Phục vụ 6 khách",
+          "textEn": "Serve 6 guests",
+          "textJa": "お客さまを6組接客する"
+        },
+        {
+          "id": "report",
+          "event": "talk",
+          "target": "npc_sushi_staff",
+          "count": 1,
+          "afterAll": true,
+          "textVi": "Báo cáo Bác Aoki",
+          "textEn": "Report to Aoki",
+          "textJa": "あおき大将に報告する"
+        }
+      ],
+      "rewards": {
+        "yen": 2600,
+        "xp": 240,
+        "knowledge": 60
+      },
+      "career": "food",
+      "careerLevel": 6
+    },
+    {
+      "id": "story_chef_trainee",
+      "category": "story",
+      "titleVi": "Bếp: cơm và dao",
+      "titleEn": "Kitchen: rice and knives",
+      "titleJa": "厨房：米と包丁",
+      "descriptionVi": "Vo gạo và học an toàn khi dùng dao. Trình độ tiếng: JLPT N5.",
+      "descriptionEn": "Wash the rice and learn knife safety. Language level: JLPT N5.",
+      "descriptionJa": "米を研ぎ、包丁の安全を学ぶ。日本語レベル：JLPT N5。",
+      "giverNpc": "npc_sushi_chef",
+      "giverNameVi": "Bác Ota",
+      "giverNameEn": "Ota",
+      "giverNameJa": "太田大将",
+      "locationVi": "Sushi Hibari",
+      "locationEn": "Sushi Hibari",
+      "locationJa": "ひばり寿司",
+      "scene": "30_SushiRestaurant",
+      "minLevel": 10,
+      "minKnowledge": 0,
+      "requiresQuests": [
+        "story_ch05_career_choice"
+      ],
+      "repeatable": false,
+      "cooldownMinutes": 0,
+      "grantOnAccept": [],
+      "objectives": [
+        {
+          "id": "work",
+          "event": "cook",
+          "target": "sushi_kitchen",
+          "count": 2,
+          "afterAll": false,
+          "textVi": "Nấu 2 món",
+          "textEn": "Cook 2 dishes",
+          "textJa": "料理を2品作る"
+        },
+        {
+          "id": "report",
+          "event": "talk",
+          "target": "npc_sushi_chef",
+          "count": 1,
+          "afterAll": true,
+          "textVi": "Báo cáo Bác Ota",
+          "textEn": "Report to Ota",
+          "textJa": "太田大将に報告する"
+        }
+      ],
+      "rewards": {
+        "yen": 600,
+        "xp": 80,
+        "knowledge": 20
+      },
+      "career": "chef",
+      "careerLevel": 1
+    },
+    {
+      "id": "story_chef_staff",
+      "category": "story",
+      "titleVi": "Bếp: sơ chế",
+      "titleEn": "Kitchen: the prep line",
+      "titleJa": "厨房：仕込み",
+      "descriptionVi": "Sơ chế cá và rau trang trí cho ca. Trình độ tiếng: JLPT N4.",
+      "descriptionEn": "Prepare fish and garnish for service. Language level: JLPT N4.",
+      "descriptionJa": "魚とつまの仕込み。日本語レベル：JLPT N4。",
+      "giverNpc": "npc_sushi_chef",
+      "giverNameVi": "Bác Ota",
+      "giverNameEn": "Ota",
+      "giverNameJa": "太田大将",
+      "locationVi": "Sushi Hibari",
+      "locationEn": "Sushi Hibari",
+      "locationJa": "ひばり寿司",
+      "scene": "30_SushiRestaurant",
+      "minLevel": 10,
+      "minKnowledge": 150,
+      "requiresQuests": [
+        "story_chef_trainee"
+      ],
+      "repeatable": false,
+      "cooldownMinutes": 0,
+      "grantOnAccept": [],
+      "objectives": [
+        {
+          "id": "work",
+          "event": "cook",
+          "target": "sushi_kitchen",
+          "count": 3,
+          "afterAll": false,
+          "textVi": "Nấu 3 món",
+          "textEn": "Cook 3 dishes",
+          "textJa": "料理を3品作る"
+        },
+        {
+          "id": "report",
+          "event": "talk",
+          "target": "npc_sushi_chef",
+          "count": 1,
+          "afterAll": true,
+          "textVi": "Báo cáo Bác Ota",
+          "textEn": "Report to Ota",
+          "textJa": "太田大将に報告する"
+        }
+      ],
+      "rewards": {
+        "yen": 1100,
+        "xp": 120,
+        "knowledge": 30
+      },
+      "career": "chef",
+      "careerLevel": 2
+    },
+    {
+      "id": "story_chef_senior",
+      "category": "story",
+      "titleVi": "Bếp: đầu bếp có chứng chỉ",
+      "titleEn": "Kitchen: licensed cook",
+      "titleJa": "厨房：調理師",
+      "descriptionVi": "Đỗ chứng chỉ đầu bếp và nấu bữa cho nhân viên. Trình độ tiếng: JLPT N3.",
+      "descriptionEn": "Pass the cook's licence and cook the staff meal. Language level: JLPT N3.",
+      "descriptionJa": "調理師免許を取り、まかないを作る。日本語レベル：JLPT N3。",
+      "giverNpc": "npc_sushi_chef",
+      "giverNameVi": "Bác Ota",
+      "giverNameEn": "Ota",
+      "giverNameJa": "太田大将",
+      "locationVi": "Sushi Hibari",
+      "locationEn": "Sushi Hibari",
+      "locationJa": "ひばり寿司",
+      "scene": "30_SushiRestaurant",
+      "minLevel": 10,
+      "minKnowledge": 400,
+      "requiresQuests": [
+        "story_chef_staff"
+      ],
+      "repeatable": false,
+      "cooldownMinutes": 0,
+      "grantOnAccept": [],
+      "objectives": [
+        {
+          "id": "work",
+          "event": "cook",
+          "target": "sushi_kitchen",
+          "count": 4,
+          "afterAll": false,
+          "textVi": "Nấu 4 món",
+          "textEn": "Cook 4 dishes",
+          "textJa": "料理を4品作る"
+        },
+        {
+          "id": "report",
+          "event": "talk",
+          "target": "npc_sushi_chef",
+          "count": 1,
+          "afterAll": true,
+          "textVi": "Báo cáo Bác Ota",
+          "textEn": "Report to Ota",
+          "textJa": "太田大将に報告する"
+        }
+      ],
+      "rewards": {
+        "yen": 1600,
+        "xp": 160,
+        "knowledge": 40
+      },
+      "career": "chef",
+      "careerLevel": 3
+    },
+    {
+      "id": "story_chef_manager",
+      "category": "story",
+      "titleVi": "Bếp: bếp phó",
+      "titleEn": "Kitchen: second chef",
+      "titleJa": "厨房：二番手",
+      "descriptionVi": "Điều hành bếp khi bác Ota vắng và sáng tạo món theo mùa. Trình độ tiếng: JLPT N2.",
+      "descriptionEn": "Run the kitchen when Ota is away and create a seasonal dish. Language level: JLPT N2.",
+      "descriptionJa": "大田さん不在時に厨房を回し、季節の一品を作る。日本語レベル：JLPT N2。",
+      "giverNpc": "npc_sushi_chef",
+      "giverNameVi": "Bác Ota",
+      "giverNameEn": "Ota",
+      "giverNameJa": "太田大将",
+      "locationVi": "Sushi Hibari",
+      "locationEn": "Sushi Hibari",
+      "locationJa": "ひばり寿司",
+      "scene": "30_SushiRestaurant",
+      "minLevel": 10,
+      "minKnowledge": 800,
+      "requiresQuests": [
+        "story_chef_senior"
+      ],
+      "repeatable": false,
+      "cooldownMinutes": 0,
+      "grantOnAccept": [],
+      "objectives": [
+        {
+          "id": "work",
+          "event": "cook",
+          "target": "sushi_kitchen",
+          "count": 5,
+          "afterAll": false,
+          "textVi": "Nấu 5 món",
+          "textEn": "Cook 5 dishes",
+          "textJa": "料理を5品作る"
+        },
+        {
+          "id": "report",
+          "event": "talk",
+          "target": "npc_sushi_chef",
+          "count": 1,
+          "afterAll": true,
+          "textVi": "Báo cáo Bác Ota",
+          "textEn": "Report to Ota",
+          "textJa": "太田大将に報告する"
+        }
+      ],
+      "rewards": {
+        "yen": 2100,
+        "xp": 200,
+        "knowledge": 50
+      },
+      "career": "chef",
+      "careerLevel": 5
+    },
+    {
+      "id": "story_chef_owner",
+      "category": "story",
+      "titleVi": "Bếp: bếp trưởng",
+      "titleEn": "Kitchen: head chef",
+      "titleJa": "厨房：料理長",
+      "descriptionVi": "Dẫn dắt bếp: sushi hay bánh ngọt, tên bạn trên thực đơn. Trình độ tiếng: JLPT N1.",
+      "descriptionEn": "Lead the kitchen: sushi or pastry, your name on the menu. Language level: JLPT N1.",
+      "descriptionJa": "寿司でも菓子でも、メニューにあなたの名前。日本語レベル：JLPT N1。",
+      "giverNpc": "npc_sushi_chef",
+      "giverNameVi": "Bác Ota",
+      "giverNameEn": "Ota",
+      "giverNameJa": "太田大将",
+      "locationVi": "Sushi Hibari",
+      "locationEn": "Sushi Hibari",
+      "locationJa": "ひばり寿司",
+      "scene": "30_SushiRestaurant",
+      "minLevel": 10,
+      "minKnowledge": 1400,
+      "requiresQuests": [
+        "story_chef_manager"
+      ],
+      "repeatable": false,
+      "cooldownMinutes": 0,
+      "grantOnAccept": [],
+      "objectives": [
+        {
+          "id": "work",
+          "event": "cook",
+          "target": "sushi_kitchen",
+          "count": 6,
+          "afterAll": false,
+          "textVi": "Nấu 6 món",
+          "textEn": "Cook 6 dishes",
+          "textJa": "料理を6品作る"
+        },
+        {
+          "id": "report",
+          "event": "talk",
+          "target": "npc_sushi_chef",
+          "count": 1,
+          "afterAll": true,
+          "textVi": "Báo cáo Bác Ota",
+          "textEn": "Report to Ota",
+          "textJa": "太田大将に報告する"
+        }
+      ],
+      "rewards": {
+        "yen": 2600,
+        "xp": 240,
+        "knowledge": 60
+      },
+      "career": "chef",
+      "careerLevel": 6
+    },
+    {
+      "id": "story_farm_trainee",
+      "category": "story",
+      "titleVi": "Nông trại Midori: luống đầu tiên",
+      "titleEn": "Midori farm: first furrow",
+      "titleJa": "みどり農園：最初の畝",
+      "descriptionVi": "Cuốc đất, gieo và tưới cùng cô Hana. Trình độ tiếng: JLPT N5.",
+      "descriptionEn": "Till, plant and water with Hana. Language level: JLPT N5.",
+      "descriptionJa": "はなさんと耕し、植え、水をやる。日本語レベル：JLPT N5。",
+      "giverNpc": "npc_farm_manager",
+      "giverNameVi": "Cô Hana",
+      "giverNameEn": "Hana",
+      "giverNameJa": "はなさん",
+      "locationVi": "Nông trại đảo Midori",
+      "locationEn": "Midori Island farm",
+      "locationJa": "みどり島の農園",
+      "scene": "60_MidoriIsland",
+      "minLevel": 10,
+      "minKnowledge": 0,
+      "requiresQuests": [
+        "story_ch05_career_choice"
+      ],
+      "repeatable": false,
+      "cooldownMinutes": 0,
+      "grantOnAccept": [],
+      "objectives": [
+        {
+          "id": "work",
+          "event": "harvest",
+          "target": "*",
+          "count": 2,
+          "afterAll": false,
+          "textVi": "Thu hoạch 2 cây",
+          "textEn": "Harvest 2 crops",
+          "textJa": "作物を2回収穫する"
+        },
+        {
+          "id": "report",
+          "event": "talk",
+          "target": "npc_farm_manager",
+          "count": 1,
+          "afterAll": true,
+          "textVi": "Báo cáo Cô Hana",
+          "textEn": "Report to Hana",
+          "textJa": "はなさんに報告する"
+        }
+      ],
+      "rewards": {
+        "yen": 600,
+        "xp": 80,
+        "knowledge": 20
+      },
+      "career": "farm",
+      "careerLevel": 1
+    },
+    {
+      "id": "story_farm_staff",
+      "category": "story",
+      "titleVi": "Nông trại Midori: mùa thu hoạch",
+      "titleEn": "Midori farm: the harvest",
+      "titleJa": "みどり農園：収穫",
+      "descriptionVi": "Thu hoạch và phân loại để đem ra chợ. Trình độ tiếng: JLPT N4.",
+      "descriptionEn": "Bring in the harvest and sort it for market. Language level: JLPT N4.",
+      "descriptionJa": "収穫して市場用に選別する。日本語レベル：JLPT N4。",
+      "giverNpc": "npc_farm_manager",
+      "giverNameVi": "Cô Hana",
+      "giverNameEn": "Hana",
+      "giverNameJa": "はなさん",
+      "locationVi": "Nông trại đảo Midori",
+      "locationEn": "Midori Island farm",
+      "locationJa": "みどり島の農園",
+      "scene": "60_MidoriIsland",
+      "minLevel": 10,
+      "minKnowledge": 150,
+      "requiresQuests": [
+        "story_farm_trainee"
+      ],
+      "repeatable": false,
+      "cooldownMinutes": 0,
+      "grantOnAccept": [],
+      "objectives": [
+        {
+          "id": "work",
+          "event": "harvest",
+          "target": "*",
+          "count": 3,
+          "afterAll": false,
+          "textVi": "Thu hoạch 3 cây",
+          "textEn": "Harvest 3 crops",
+          "textJa": "作物を3回収穫する"
+        },
+        {
+          "id": "report",
+          "event": "talk",
+          "target": "npc_farm_manager",
+          "count": 1,
+          "afterAll": true,
+          "textVi": "Báo cáo Cô Hana",
+          "textEn": "Report to Hana",
+          "textJa": "はなさんに報告する"
+        }
+      ],
+      "rewards": {
+        "yen": 1100,
+        "xp": 120,
+        "knowledge": 30
+      },
+      "career": "farm",
+      "careerLevel": 2
+    },
+    {
+      "id": "story_farm_senior",
+      "category": "story",
+      "titleVi": "Nông trại Midori: nông dân",
+      "titleEn": "Midori farm: farmer",
+      "titleJa": "みどり農園：農家",
+      "descriptionVi": "Lên kế hoạch mùa vụ và bán ở chợ. Trình độ tiếng: JLPT N3.",
+      "descriptionEn": "Plan a season of crops and sell at the market. Language level: JLPT N3.",
+      "descriptionJa": "作付け計画を立て、市場で売る。日本語レベル：JLPT N3。",
+      "giverNpc": "npc_farm_manager",
+      "giverNameVi": "Cô Hana",
+      "giverNameEn": "Hana",
+      "giverNameJa": "はなさん",
+      "locationVi": "Nông trại đảo Midori",
+      "locationEn": "Midori Island farm",
+      "locationJa": "みどり島の農園",
+      "scene": "60_MidoriIsland",
+      "minLevel": 10,
+      "minKnowledge": 400,
+      "requiresQuests": [
+        "story_farm_staff"
+      ],
+      "repeatable": false,
+      "cooldownMinutes": 0,
+      "grantOnAccept": [],
+      "objectives": [
+        {
+          "id": "work",
+          "event": "harvest",
+          "target": "*",
+          "count": 4,
+          "afterAll": false,
+          "textVi": "Thu hoạch 4 cây",
+          "textEn": "Harvest 4 crops",
+          "textJa": "作物を4回収穫する"
+        },
+        {
+          "id": "report",
+          "event": "talk",
+          "target": "npc_farm_manager",
+          "count": 1,
+          "afterAll": true,
+          "textVi": "Báo cáo Cô Hana",
+          "textEn": "Report to Hana",
+          "textJa": "はなさんに報告する"
+        }
+      ],
+      "rewards": {
+        "yen": 1600,
+        "xp": 160,
+        "knowledge": 40
+      },
+      "career": "farm",
+      "careerLevel": 3
+    },
+    {
+      "id": "story_farm_manager",
+      "category": "story",
+      "titleVi": "Nông trại Midori: quản đốc",
+      "titleEn": "Midori farm: foreman",
+      "titleJa": "みどり農園：現場責任者",
+      "descriptionVi": "Dẫn dắt người làm và cung cấp rau cho Sushi Hibari và Gánh Ngon. Trình độ tiếng: JLPT N2.",
+      "descriptionEn": "Lead the helpers and supply Sushi Hibari and Gánh Ngon. Language level: JLPT N2.",
+      "descriptionJa": "手伝いをまとめ、ひばり寿司とガンゴンに卸す。日本語レベル：JLPT N2。",
+      "giverNpc": "npc_farm_manager",
+      "giverNameVi": "Cô Hana",
+      "giverNameEn": "Hana",
+      "giverNameJa": "はなさん",
+      "locationVi": "Nông trại đảo Midori",
+      "locationEn": "Midori Island farm",
+      "locationJa": "みどり島の農園",
+      "scene": "60_MidoriIsland",
+      "minLevel": 10,
+      "minKnowledge": 800,
+      "requiresQuests": [
+        "story_farm_senior"
+      ],
+      "repeatable": false,
+      "cooldownMinutes": 0,
+      "grantOnAccept": [],
+      "objectives": [
+        {
+          "id": "work",
+          "event": "harvest",
+          "target": "*",
+          "count": 5,
+          "afterAll": false,
+          "textVi": "Thu hoạch 5 cây",
+          "textEn": "Harvest 5 crops",
+          "textJa": "作物を5回収穫する"
+        },
+        {
+          "id": "report",
+          "event": "talk",
+          "target": "npc_farm_manager",
+          "count": 1,
+          "afterAll": true,
+          "textVi": "Báo cáo Cô Hana",
+          "textEn": "Report to Hana",
+          "textJa": "はなさんに報告する"
+        }
+      ],
+      "rewards": {
+        "yen": 2100,
+        "xp": 200,
+        "knowledge": 50
+      },
+      "career": "farm",
+      "careerLevel": 5
+    },
+    {
+      "id": "story_farm_owner",
+      "category": "story",
+      "titleVi": "Nông trại Midori: nông trại của bạn",
+      "titleEn": "Midori farm: your own farm",
+      "titleJa": "みどり農園：自分の農園",
+      "descriptionVi": "Tự điều hành nông trại hữu cơ hoặc trang trại trên đảo Midori. Trình độ tiếng: JLPT N1.",
+      "descriptionEn": "Run your own organic farm or ranch on Midori Island. Language level: JLPT N1.",
+      "descriptionJa": "みどり島で自分の有機農園か牧場を営む。日本語レベル：JLPT N1。",
+      "giverNpc": "npc_farm_manager",
+      "giverNameVi": "Cô Hana",
+      "giverNameEn": "Hana",
+      "giverNameJa": "はなさん",
+      "locationVi": "Nông trại đảo Midori",
+      "locationEn": "Midori Island farm",
+      "locationJa": "みどり島の農園",
+      "scene": "60_MidoriIsland",
+      "minLevel": 10,
+      "minKnowledge": 1400,
+      "requiresQuests": [
+        "story_farm_manager"
+      ],
+      "repeatable": false,
+      "cooldownMinutes": 0,
+      "grantOnAccept": [],
+      "objectives": [
+        {
+          "id": "work",
+          "event": "harvest",
+          "target": "*",
+          "count": 6,
+          "afterAll": false,
+          "textVi": "Thu hoạch 6 cây",
+          "textEn": "Harvest 6 crops",
+          "textJa": "作物を6回収穫する"
+        },
+        {
+          "id": "report",
+          "event": "talk",
+          "target": "npc_farm_manager",
+          "count": 1,
+          "afterAll": true,
+          "textVi": "Báo cáo Cô Hana",
+          "textEn": "Report to Hana",
+          "textJa": "はなさんに報告する"
+        }
+      ],
+      "rewards": {
+        "yen": 2600,
+        "xp": 240,
+        "knowledge": 60
+      },
+      "career": "farm",
+      "careerLevel": 6
+    },
+    {
+      "id": "story_musician_trainee",
+      "category": "story",
+      "titleVi": "Sân khấu Hibiki: bài đầu tiên",
+      "titleEn": "Hibiki stage: first song",
+      "titleJa": "ひびき：最初の一曲",
+      "descriptionVi": "Chơi bài đầu tiên trên sân khấu quán. Trình độ tiếng: JLPT N5.",
+      "descriptionEn": "Play your first song on the café stage. Language level: JLPT N5.",
+      "descriptionJa": "カフェのステージで初めて演奏する。日本語レベル：JLPT N5。",
+      "giverNpc": "npc_music_owner",
+      "giverNameVi": "Chú Hibiki",
+      "giverNameEn": "Hibiki",
+      "giverNameJa": "ひびき店長",
+      "locationVi": "Tiệm nhạc Hibiki",
+      "locationEn": "The Hibiki music shop",
+      "locationJa": "ひびき楽器店",
+      "scene": "55_MusicShop",
+      "minLevel": 10,
+      "minKnowledge": 0,
+      "requiresQuests": [
+        "story_ch05_career_choice"
+      ],
+      "repeatable": false,
+      "cooldownMinutes": 0,
+      "grantOnAccept": [],
+      "objectives": [
+        {
+          "id": "work",
+          "event": "perform",
+          "target": "music_stage",
+          "count": 2,
+          "afterAll": false,
+          "textVi": "Biểu diễn 2 bài",
+          "textEn": "Play 2 songs on stage",
+          "textJa": "ステージで2曲演奏する"
+        },
+        {
+          "id": "report",
+          "event": "talk",
+          "target": "npc_music_owner",
+          "count": 1,
+          "afterAll": true,
+          "textVi": "Báo cáo Chú Hibiki",
+          "textEn": "Report to Hibiki",
+          "textJa": "ひびき店長に報告する"
+        }
+      ],
+      "rewards": {
+        "yen": 600,
+        "xp": 80,
+        "knowledge": 20
+      },
+      "career": "musician",
+      "careerLevel": 1
+    },
+    {
+      "id": "story_musician_staff",
+      "category": "story",
+      "titleVi": "Sân khấu Hibiki: nhạc công quen",
+      "titleEn": "Hibiki stage: café regular",
+      "titleJa": "ひびき：カフェの常連",
+      "descriptionVi": "Chơi hàng tuần và trò chuyện với khán giả bằng tiếng Nhật. Trình độ tiếng: JLPT N4.",
+      "descriptionEn": "Play weekly sets and talk with the audience in Japanese. Language level: JLPT N4.",
+      "descriptionJa": "毎週演奏し、日本語でMCをする。日本語レベル：JLPT N4。",
+      "giverNpc": "npc_music_owner",
+      "giverNameVi": "Chú Hibiki",
+      "giverNameEn": "Hibiki",
+      "giverNameJa": "ひびき店長",
+      "locationVi": "Tiệm nhạc Hibiki",
+      "locationEn": "The Hibiki music shop",
+      "locationJa": "ひびき楽器店",
+      "scene": "55_MusicShop",
+      "minLevel": 10,
+      "minKnowledge": 150,
+      "requiresQuests": [
+        "story_musician_trainee"
+      ],
+      "repeatable": false,
+      "cooldownMinutes": 0,
+      "grantOnAccept": [],
+      "objectives": [
+        {
+          "id": "work",
+          "event": "perform",
+          "target": "music_stage",
+          "count": 3,
+          "afterAll": false,
+          "textVi": "Biểu diễn 3 bài",
+          "textEn": "Play 3 songs on stage",
+          "textJa": "ステージで3曲演奏する"
+        },
+        {
+          "id": "report",
+          "event": "talk",
+          "target": "npc_music_owner",
+          "count": 1,
+          "afterAll": true,
+          "textVi": "Báo cáo Chú Hibiki",
+          "textEn": "Report to Hibiki",
+          "textJa": "ひびき店長に報告する"
+        }
+      ],
+      "rewards": {
+        "yen": 1100,
+        "xp": 120,
+        "knowledge": 30
+      },
+      "career": "musician",
+      "careerLevel": 2
+    },
+    {
+      "id": "story_musician_senior",
+      "category": "story",
+      "titleVi": "Sân khấu Hibiki: nhạc công phòng thu",
+      "titleEn": "Hibiki stage: session musician",
+      "titleJa": "ひびき：スタジオミュージシャン",
+      "descriptionVi": "Thu âm cho nghệ sĩ khác và đọc bản nhạc nhanh. Trình độ tiếng: JLPT N3.",
+      "descriptionEn": "Record for other artists and read charts fast. Language level: JLPT N3.",
+      "descriptionJa": "他の歌手の録音、譜面を素早く読む。日本語レベル：JLPT N3。",
+      "giverNpc": "npc_music_owner",
+      "giverNameVi": "Chú Hibiki",
+      "giverNameEn": "Hibiki",
+      "giverNameJa": "ひびき店長",
+      "locationVi": "Tiệm nhạc Hibiki",
+      "locationEn": "The Hibiki music shop",
+      "locationJa": "ひびき楽器店",
+      "scene": "55_MusicShop",
+      "minLevel": 10,
+      "minKnowledge": 400,
+      "requiresQuests": [
+        "story_musician_staff"
+      ],
+      "repeatable": false,
+      "cooldownMinutes": 0,
+      "grantOnAccept": [],
+      "objectives": [
+        {
+          "id": "work",
+          "event": "perform",
+          "target": "music_stage",
+          "count": 4,
+          "afterAll": false,
+          "textVi": "Biểu diễn 4 bài",
+          "textEn": "Play 4 songs on stage",
+          "textJa": "ステージで4曲演奏する"
+        },
+        {
+          "id": "report",
+          "event": "talk",
+          "target": "npc_music_owner",
+          "count": 1,
+          "afterAll": true,
+          "textVi": "Báo cáo Chú Hibiki",
+          "textEn": "Report to Hibiki",
+          "textJa": "ひびき店長に報告する"
+        }
+      ],
+      "rewards": {
+        "yen": 1600,
+        "xp": 160,
+        "knowledge": 40
+      },
+      "career": "musician",
+      "careerLevel": 3
+    },
+    {
+      "id": "story_musician_manager",
+      "category": "story",
+      "titleVi": "Sân khấu Hibiki: buổi hòa nhạc",
+      "titleEn": "Hibiki stage: concert",
+      "titleJa": "ひびき：コンサート",
+      "descriptionVi": "Dẫn dắt buổi hòa nhạc hoặc show lưu diễn. Trình độ tiếng: JLPT N2.",
+      "descriptionEn": "Lead a recital or a tour show. Language level: JLPT N2.",
+      "descriptionJa": "リサイタルかツアー公演を率いる。日本語レベル：JLPT N2。",
+      "giverNpc": "npc_music_owner",
+      "giverNameVi": "Chú Hibiki",
+      "giverNameEn": "Hibiki",
+      "giverNameJa": "ひびき店長",
+      "locationVi": "Tiệm nhạc Hibiki",
+      "locationEn": "The Hibiki music shop",
+      "locationJa": "ひびき楽器店",
+      "scene": "55_MusicShop",
+      "minLevel": 10,
+      "minKnowledge": 800,
+      "requiresQuests": [
+        "story_musician_senior"
+      ],
+      "repeatable": false,
+      "cooldownMinutes": 0,
+      "grantOnAccept": [],
+      "objectives": [
+        {
+          "id": "work",
+          "event": "perform",
+          "target": "music_stage",
+          "count": 5,
+          "afterAll": false,
+          "textVi": "Biểu diễn 5 bài",
+          "textEn": "Play 5 songs on stage",
+          "textJa": "ステージで5曲演奏する"
+        },
+        {
+          "id": "report",
+          "event": "talk",
+          "target": "npc_music_owner",
+          "count": 1,
+          "afterAll": true,
+          "textVi": "Báo cáo Chú Hibiki",
+          "textEn": "Report to Hibiki",
+          "textJa": "ひびき店長に報告する"
+        }
+      ],
+      "rewards": {
+        "yen": 2100,
+        "xp": 200,
+        "knowledge": 50
+      },
+      "career": "musician",
+      "careerLevel": 5
+    },
+    {
+      "id": "story_musician_owner",
+      "category": "story",
+      "titleVi": "Sân khấu Hibiki: nghệ sĩ chính",
+      "titleEn": "Hibiki stage: headliner",
+      "titleJa": "ひびき：ヘッドライナー",
+      "descriptionVi": "Làm nghệ sĩ chính ở lễ hội mùa hè Hibari và Phú Quốc. Trình độ tiếng: JLPT N1.",
+      "descriptionEn": "Headline the summer festival in Hibari and Phú Quốc. Language level: JLPT N1.",
+      "descriptionJa": "ひばりとフーコックの夏フェスでトリを務める。日本語レベル：JLPT N1。",
+      "giverNpc": "npc_music_owner",
+      "giverNameVi": "Chú Hibiki",
+      "giverNameEn": "Hibiki",
+      "giverNameJa": "ひびき店長",
+      "locationVi": "Tiệm nhạc Hibiki",
+      "locationEn": "The Hibiki music shop",
+      "locationJa": "ひびき楽器店",
+      "scene": "55_MusicShop",
+      "minLevel": 10,
+      "minKnowledge": 1400,
+      "requiresQuests": [
+        "story_musician_manager"
+      ],
+      "repeatable": false,
+      "cooldownMinutes": 0,
+      "grantOnAccept": [],
+      "objectives": [
+        {
+          "id": "work",
+          "event": "perform",
+          "target": "music_stage",
+          "count": 6,
+          "afterAll": false,
+          "textVi": "Biểu diễn 6 bài",
+          "textEn": "Play 6 songs on stage",
+          "textJa": "ステージで6曲演奏する"
+        },
+        {
+          "id": "report",
+          "event": "talk",
+          "target": "npc_music_owner",
+          "count": 1,
+          "afterAll": true,
+          "textVi": "Báo cáo Chú Hibiki",
+          "textEn": "Report to Hibiki",
+          "textJa": "ひびき店長に報告する"
+        }
+      ],
+      "rewards": {
+        "yen": 2600,
+        "xp": 240,
+        "knowledge": 60
+      },
+      "career": "musician",
+      "careerLevel": 6
+    },
+    {
+      "id": "story_producer_trainee",
+      "category": "story",
+      "titleVi": "Bàn DJ: dây và thùng đĩa",
+      "titleEn": "DJ booth: cables and crates",
+      "titleJa": "DJブース：ケーブルとレコード",
+      "descriptionVi": "Lắp bàn DJ và chơi phần khởi động. Trình độ tiếng: JLPT N5.",
+      "descriptionEn": "Set up the booth and play the warm-up. Language level: JLPT N5.",
+      "descriptionJa": "ブースを準備し、ウォームアップをかける。日本語レベル：JLPT N5。",
+      "giverNpc": "npc_music_owner",
+      "giverNameVi": "Chú Hibiki",
+      "giverNameEn": "Hibiki",
+      "giverNameJa": "ひびき店長",
+      "locationVi": "Tiệm nhạc Hibiki",
+      "locationEn": "The Hibiki music shop",
+      "locationJa": "ひびき楽器店",
+      "scene": "55_MusicShop",
+      "minLevel": 10,
+      "minKnowledge": 0,
+      "requiresQuests": [
+        "story_ch05_career_choice"
+      ],
+      "repeatable": false,
+      "cooldownMinutes": 0,
+      "grantOnAccept": [],
+      "objectives": [
+        {
+          "id": "work",
+          "event": "mix",
+          "target": "music_dj",
+          "count": 2,
+          "afterAll": false,
+          "textVi": "Chơi 2 set DJ",
+          "textEn": "Play 2 DJ sets",
+          "textJa": "DJセットを2回かける"
+        },
+        {
+          "id": "report",
+          "event": "talk",
+          "target": "npc_music_owner",
+          "count": 1,
+          "afterAll": true,
+          "textVi": "Báo cáo Chú Hibiki",
+          "textEn": "Report to Hibiki",
+          "textJa": "ひびき店長に報告する"
+        }
+      ],
+      "rewards": {
+        "yen": 600,
+        "xp": 80,
+        "knowledge": 20
+      },
+      "career": "producer",
+      "careerLevel": 1
+    },
+    {
+      "id": "story_producer_staff",
+      "category": "story",
+      "titleVi": "Bàn DJ: DJ mở màn",
+      "titleEn": "DJ booth: opening DJ",
+      "titleJa": "DJブース：オープニングDJ",
+      "descriptionVi": "Mở màn đêm diễn và đọc cảm xúc khán giả. Trình độ tiếng: JLPT N4.",
+      "descriptionEn": "Open the night and read the crowd. Language level: JLPT N4.",
+      "descriptionJa": "夜を開け、客の空気を読む。日本語レベル：JLPT N4。",
+      "giverNpc": "npc_music_owner",
+      "giverNameVi": "Chú Hibiki",
+      "giverNameEn": "Hibiki",
+      "giverNameJa": "ひびき店長",
+      "locationVi": "Tiệm nhạc Hibiki",
+      "locationEn": "The Hibiki music shop",
+      "locationJa": "ひびき楽器店",
+      "scene": "55_MusicShop",
+      "minLevel": 10,
+      "minKnowledge": 150,
+      "requiresQuests": [
+        "story_producer_trainee"
+      ],
+      "repeatable": false,
+      "cooldownMinutes": 0,
+      "grantOnAccept": [],
+      "objectives": [
+        {
+          "id": "work",
+          "event": "mix",
+          "target": "music_dj",
+          "count": 3,
+          "afterAll": false,
+          "textVi": "Chơi 3 set DJ",
+          "textEn": "Play 3 DJ sets",
+          "textJa": "DJセットを3回かける"
+        },
+        {
+          "id": "report",
+          "event": "talk",
+          "target": "npc_music_owner",
+          "count": 1,
+          "afterAll": true,
+          "textVi": "Báo cáo Chú Hibiki",
+          "textEn": "Report to Hibiki",
+          "textJa": "ひびき店長に報告する"
+        }
+      ],
+      "rewards": {
+        "yen": 1100,
+        "xp": 120,
+        "knowledge": 30
+      },
+      "career": "producer",
+      "careerLevel": 2
+    },
+    {
+      "id": "story_producer_senior",
+      "category": "story",
+      "titleVi": "Bàn DJ: DJ thường trú",
+      "titleEn": "DJ booth: resident",
+      "titleJa": "DJブース：レジデント",
+      "descriptionVi": "Giữ suất diễn thường kỳ và làm bản nhạc đầu tay. Trình độ tiếng: JLPT N3.",
+      "descriptionEn": "Hold a residency and make your first track. Language level: JLPT N3.",
+      "descriptionJa": "レギュラーを持ち、初めての曲を作る。日本語レベル：JLPT N3。",
+      "giverNpc": "npc_music_owner",
+      "giverNameVi": "Chú Hibiki",
+      "giverNameEn": "Hibiki",
+      "giverNameJa": "ひびき店長",
+      "locationVi": "Tiệm nhạc Hibiki",
+      "locationEn": "The Hibiki music shop",
+      "locationJa": "ひびき楽器店",
+      "scene": "55_MusicShop",
+      "minLevel": 10,
+      "minKnowledge": 400,
+      "requiresQuests": [
+        "story_producer_staff"
+      ],
+      "repeatable": false,
+      "cooldownMinutes": 0,
+      "grantOnAccept": [],
+      "objectives": [
+        {
+          "id": "work",
+          "event": "mix",
+          "target": "music_dj",
+          "count": 4,
+          "afterAll": false,
+          "textVi": "Chơi 4 set DJ",
+          "textEn": "Play 4 DJ sets",
+          "textJa": "DJセットを4回かける"
+        },
+        {
+          "id": "report",
+          "event": "talk",
+          "target": "npc_music_owner",
+          "count": 1,
+          "afterAll": true,
+          "textVi": "Báo cáo Chú Hibiki",
+          "textEn": "Report to Hibiki",
+          "textJa": "ひびき店長に報告する"
+        }
+      ],
+      "rewards": {
+        "yen": 1600,
+        "xp": 160,
+        "knowledge": 40
+      },
+      "career": "producer",
+      "careerLevel": 3
+    },
+    {
+      "id": "story_producer_manager",
+      "category": "story",
+      "titleVi": "Bàn DJ: DJ chính hay nhà sản xuất",
+      "titleEn": "DJ booth: headliner or producer",
+      "titleJa": "DJブース：ヘッドライナーかプロデューサー",
+      "descriptionVi": "Làm DJ chính một đêm hoặc sản xuất cho nghệ sĩ. Trình độ tiếng: JLPT N2.",
+      "descriptionEn": "Headline a club night or produce for an artist. Language level: JLPT N2.",
+      "descriptionJa": "クラブのトリか、アーティストのプロデュース。日本語レベル：JLPT N2。",
+      "giverNpc": "npc_music_owner",
+      "giverNameVi": "Chú Hibiki",
+      "giverNameEn": "Hibiki",
+      "giverNameJa": "ひびき店長",
+      "locationVi": "Tiệm nhạc Hibiki",
+      "locationEn": "The Hibiki music shop",
+      "locationJa": "ひびき楽器店",
+      "scene": "55_MusicShop",
+      "minLevel": 10,
+      "minKnowledge": 800,
+      "requiresQuests": [
+        "story_producer_senior"
+      ],
+      "repeatable": false,
+      "cooldownMinutes": 0,
+      "grantOnAccept": [],
+      "objectives": [
+        {
+          "id": "work",
+          "event": "mix",
+          "target": "music_dj",
+          "count": 5,
+          "afterAll": false,
+          "textVi": "Chơi 5 set DJ",
+          "textEn": "Play 5 DJ sets",
+          "textJa": "DJセットを5回かける"
+        },
+        {
+          "id": "report",
+          "event": "talk",
+          "target": "npc_music_owner",
+          "count": 1,
+          "afterAll": true,
+          "textVi": "Báo cáo Chú Hibiki",
+          "textEn": "Report to Hibiki",
+          "textJa": "ひびき店長に報告する"
+        }
+      ],
+      "rewards": {
+        "yen": 2100,
+        "xp": 200,
+        "knowledge": 50
+      },
+      "career": "producer",
+      "careerLevel": 5
+    },
+    {
+      "id": "story_producer_owner",
+      "category": "story",
+      "titleVi": "Bàn DJ: lễ hội và hãng đĩa",
+      "titleEn": "DJ booth: festival and label",
+      "titleJa": "DJブース：フェスとレーベル",
+      "descriptionVi": "Chơi lễ hội biển ở Phú Quốc hoặc lập hãng đĩa riêng. Trình độ tiếng: JLPT N1.",
+      "descriptionEn": "Play the beach festival in Phú Quốc or start your own label. Language level: JLPT N1.",
+      "descriptionJa": "フーコックのビーチフェスか、自分のレーベル。日本語レベル：JLPT N1。",
+      "giverNpc": "npc_music_owner",
+      "giverNameVi": "Chú Hibiki",
+      "giverNameEn": "Hibiki",
+      "giverNameJa": "ひびき店長",
+      "locationVi": "Tiệm nhạc Hibiki",
+      "locationEn": "The Hibiki music shop",
+      "locationJa": "ひびき楽器店",
+      "scene": "55_MusicShop",
+      "minLevel": 10,
+      "minKnowledge": 1400,
+      "requiresQuests": [
+        "story_producer_manager"
+      ],
+      "repeatable": false,
+      "cooldownMinutes": 0,
+      "grantOnAccept": [],
+      "objectives": [
+        {
+          "id": "work",
+          "event": "mix",
+          "target": "music_dj",
+          "count": 6,
+          "afterAll": false,
+          "textVi": "Chơi 6 set DJ",
+          "textEn": "Play 6 DJ sets",
+          "textJa": "DJセットを6回かける"
+        },
+        {
+          "id": "report",
+          "event": "talk",
+          "target": "npc_music_owner",
+          "count": 1,
+          "afterAll": true,
+          "textVi": "Báo cáo Chú Hibiki",
+          "textEn": "Report to Hibiki",
+          "textJa": "ひびき店長に報告する"
+        }
+      ],
+      "rewards": {
+        "yen": 2600,
+        "xp": 240,
+        "knowledge": 60
+      },
+      "career": "producer",
+      "careerLevel": 6
+    },
+    {
+      "id": "story_painter_trainee",
+      "category": "story",
+      "titleVi": "Giá vẽ: trợ lý xưởng",
+      "titleEn": "Easel: studio assistant",
+      "titleJa": "イーゼル：アシスタント",
+      "descriptionVi": "Chuẩn bị toan và hoàn thành bức tranh đầu tiên. Trình độ tiếng: JLPT N5.",
+      "descriptionEn": "Prepare canvases and finish your first painting. Language level: JLPT N5.",
+      "descriptionJa": "キャンバスを準備し、初めての絵を仕上げる。日本語レベル：JLPT N5。",
+      "giverNpc": "npc_music_owner",
+      "giverNameVi": "Chú Hibiki",
+      "giverNameEn": "Hibiki",
+      "giverNameJa": "ひびき店長",
+      "locationVi": "Tiệm nhạc Hibiki",
+      "locationEn": "The Hibiki music shop",
+      "locationJa": "ひびき楽器店",
+      "scene": "55_MusicShop",
+      "minLevel": 10,
+      "minKnowledge": 0,
+      "requiresQuests": [
+        "story_ch05_career_choice"
+      ],
+      "repeatable": false,
+      "cooldownMinutes": 0,
+      "grantOnAccept": [],
+      "objectives": [
+        {
+          "id": "work",
+          "event": "paint",
+          "target": "art_easel",
+          "count": 2,
+          "afterAll": false,
+          "textVi": "Hoàn thành 2 bức tranh",
+          "textEn": "Finish 2 paintings",
+          "textJa": "絵を2枚仕上げる"
+        },
+        {
+          "id": "report",
+          "event": "talk",
+          "target": "npc_music_owner",
+          "count": 1,
+          "afterAll": true,
+          "textVi": "Báo cáo Chú Hibiki",
+          "textEn": "Report to Hibiki",
+          "textJa": "ひびき店長に報告する"
+        }
+      ],
+      "rewards": {
+        "yen": 600,
+        "xp": 80,
+        "knowledge": 20
+      },
+      "career": "painter",
+      "careerLevel": 1
+    },
+    {
+      "id": "story_painter_staff",
+      "category": "story",
+      "titleVi": "Giá vẽ: tranh đặt",
+      "titleEn": "Easel: commissions",
+      "titleJa": "イーゼル：依頼",
+      "descriptionVi": "Vẽ theo đơn và trao đổi yêu cầu bằng tiếng Nhật. Trình độ tiếng: JLPT N4.",
+      "descriptionEn": "Paint for customers and discuss what they want in Japanese. Language level: JLPT N4.",
+      "descriptionJa": "依頼を受け、日本語で要望を聞く。日本語レベル：JLPT N4。",
+      "giverNpc": "npc_music_owner",
+      "giverNameVi": "Chú Hibiki",
+      "giverNameEn": "Hibiki",
+      "giverNameJa": "ひびき店長",
+      "locationVi": "Tiệm nhạc Hibiki",
+      "locationEn": "The Hibiki music shop",
+      "locationJa": "ひびき楽器店",
+      "scene": "55_MusicShop",
+      "minLevel": 10,
+      "minKnowledge": 150,
+      "requiresQuests": [
+        "story_painter_trainee"
+      ],
+      "repeatable": false,
+      "cooldownMinutes": 0,
+      "grantOnAccept": [],
+      "objectives": [
+        {
+          "id": "work",
+          "event": "paint",
+          "target": "art_easel",
+          "count": 3,
+          "afterAll": false,
+          "textVi": "Hoàn thành 3 bức tranh",
+          "textEn": "Finish 3 paintings",
+          "textJa": "絵を3枚仕上げる"
+        },
+        {
+          "id": "report",
+          "event": "talk",
+          "target": "npc_music_owner",
+          "count": 1,
+          "afterAll": true,
+          "textVi": "Báo cáo Chú Hibiki",
+          "textEn": "Report to Hibiki",
+          "textJa": "ひびき店長に報告する"
+        }
+      ],
+      "rewards": {
+        "yen": 1100,
+        "xp": 120,
+        "knowledge": 30
+      },
+      "career": "painter",
+      "careerLevel": 2
+    },
+    {
+      "id": "story_painter_senior",
+      "category": "story",
+      "titleVi": "Giá vẽ: họa sĩ chuyên nghiệp",
+      "titleEn": "Easel: professional",
+      "titleJa": "イーゼル：プロ",
+      "descriptionVi": "Hoàn thành một loạt tranh và tự định giá. Trình độ tiếng: JLPT N3.",
+      "descriptionEn": "Finish a series and price your work. Language level: JLPT N3.",
+      "descriptionJa": "シリーズを完成させ、値段をつける。日本語レベル：JLPT N3。",
+      "giverNpc": "npc_music_owner",
+      "giverNameVi": "Chú Hibiki",
+      "giverNameEn": "Hibiki",
+      "giverNameJa": "ひびき店長",
+      "locationVi": "Tiệm nhạc Hibiki",
+      "locationEn": "The Hibiki music shop",
+      "locationJa": "ひびき楽器店",
+      "scene": "55_MusicShop",
+      "minLevel": 10,
+      "minKnowledge": 400,
+      "requiresQuests": [
+        "story_painter_staff"
+      ],
+      "repeatable": false,
+      "cooldownMinutes": 0,
+      "grantOnAccept": [],
+      "objectives": [
+        {
+          "id": "work",
+          "event": "paint",
+          "target": "art_easel",
+          "count": 4,
+          "afterAll": false,
+          "textVi": "Hoàn thành 4 bức tranh",
+          "textEn": "Finish 4 paintings",
+          "textJa": "絵を4枚仕上げる"
+        },
+        {
+          "id": "report",
+          "event": "talk",
+          "target": "npc_music_owner",
+          "count": 1,
+          "afterAll": true,
+          "textVi": "Báo cáo Chú Hibiki",
+          "textEn": "Report to Hibiki",
+          "textJa": "ひびき店長に報告する"
+        }
+      ],
+      "rewards": {
+        "yen": 1600,
+        "xp": 160,
+        "knowledge": 40
+      },
+      "career": "painter",
+      "careerLevel": 3
+    },
+    {
+      "id": "story_painter_manager",
+      "category": "story",
+      "titleVi": "Giá vẽ: triển lãm",
+      "titleEn": "Easel: exhibition",
+      "titleJa": "イーゼル：個展",
+      "descriptionVi": "Mở triển lãm cá nhân hoặc chỉ đạo nghệ thuật một dự án. Trình độ tiếng: JLPT N2.",
+      "descriptionEn": "Hold a solo show or art-direct a project. Language level: JLPT N2.",
+      "descriptionJa": "個展を開くか、プロジェクトのアートディレクター。日本語レベル：JLPT N2。",
+      "giverNpc": "npc_music_owner",
+      "giverNameVi": "Chú Hibiki",
+      "giverNameEn": "Hibiki",
+      "giverNameJa": "ひびき店長",
+      "locationVi": "Tiệm nhạc Hibiki",
+      "locationEn": "The Hibiki music shop",
+      "locationJa": "ひびき楽器店",
+      "scene": "55_MusicShop",
+      "minLevel": 10,
+      "minKnowledge": 800,
+      "requiresQuests": [
+        "story_painter_senior"
+      ],
+      "repeatable": false,
+      "cooldownMinutes": 0,
+      "grantOnAccept": [],
+      "objectives": [
+        {
+          "id": "work",
+          "event": "paint",
+          "target": "art_easel",
+          "count": 5,
+          "afterAll": false,
+          "textVi": "Hoàn thành 5 bức tranh",
+          "textEn": "Finish 5 paintings",
+          "textJa": "絵を5枚仕上げる"
+        },
+        {
+          "id": "report",
+          "event": "talk",
+          "target": "npc_music_owner",
+          "count": 1,
+          "afterAll": true,
+          "textVi": "Báo cáo Chú Hibiki",
+          "textEn": "Report to Hibiki",
+          "textJa": "ひびき店長に報告する"
+        }
+      ],
+      "rewards": {
+        "yen": 2100,
+        "xp": 200,
+        "knowledge": 50
+      },
+      "career": "painter",
+      "careerLevel": 5
+    },
+    {
+      "id": "story_painter_owner",
+      "category": "story",
+      "titleVi": "Giá vẽ: vào bảo tàng",
+      "titleEn": "Easel: in the museum",
+      "titleJa": "イーゼル：美術館へ",
+      "descriptionVi": "Bảo tàng sưu tầm bức tranh hai quê hương của bạn. Trình độ tiếng: JLPT N1.",
+      "descriptionEn": "A museum collects your painting of two hometowns. Language level: JLPT N1.",
+      "descriptionJa": "二つのふるさとの絵が美術館に収蔵される。日本語レベル：JLPT N1。",
+      "giverNpc": "npc_music_owner",
+      "giverNameVi": "Chú Hibiki",
+      "giverNameEn": "Hibiki",
+      "giverNameJa": "ひびき店長",
+      "locationVi": "Tiệm nhạc Hibiki",
+      "locationEn": "The Hibiki music shop",
+      "locationJa": "ひびき楽器店",
+      "scene": "55_MusicShop",
+      "minLevel": 10,
+      "minKnowledge": 1400,
+      "requiresQuests": [
+        "story_painter_manager"
+      ],
+      "repeatable": false,
+      "cooldownMinutes": 0,
+      "grantOnAccept": [],
+      "objectives": [
+        {
+          "id": "work",
+          "event": "paint",
+          "target": "art_easel",
+          "count": 6,
+          "afterAll": false,
+          "textVi": "Hoàn thành 6 bức tranh",
+          "textEn": "Finish 6 paintings",
+          "textJa": "絵を6枚仕上げる"
+        },
+        {
+          "id": "report",
+          "event": "talk",
+          "target": "npc_music_owner",
+          "count": 1,
+          "afterAll": true,
+          "textVi": "Báo cáo Chú Hibiki",
+          "textEn": "Report to Hibiki",
+          "textJa": "ひびき店長に報告する"
+        }
+      ],
+      "rewards": {
+        "yen": 2600,
+        "xp": 240,
+        "knowledge": 60
+      },
+      "career": "painter",
+      "careerLevel": 6
     }
   ]
 }

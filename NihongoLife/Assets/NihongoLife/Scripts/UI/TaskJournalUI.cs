@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using NihongoLife.Core;
@@ -310,6 +310,8 @@ namespace NihongoLife.UI
             NLUi.Label(_detail, "Kicker", $"{CategoryName(quest.category).ToUpperInvariant()}  ·  {StatusName(availability)}", 13f, NLUi.Gold, _font, FontStyles.Bold);
             NLUi.Label(_detail, "Title", quest.Title, 26f, NLUi.Text, _font, FontStyles.Bold).textWrappingMode = TextWrappingModes.Normal;
             NLUi.Label(_detail, "Description", quest.Description, 16f, NLUi.Soft, _font).textWrappingMode = TextWrappingModes.Normal;
+            string storyDialogue = NihongoLife.Progression.Storyline.DialogueFor(quest.id); // Docs/STORY.md: the scene's NPC lines
+            if (!string.IsNullOrEmpty(storyDialogue)) NLUi.Label(_detail, "StoryDialogue", storyDialogue, 15f, NLUi.Soft, _font).textWrappingMode = TextWrappingModes.Normal;
             string requirement = QuestService.Requirement(quest);
             string requirementLine = StoryDirector.Bypass
                 ? "<color=#74D680>✓ " + Loc.T("Mở sẵn — không khoá cấp", "Open — no level lock", "開放済み — レベル制限なし") + "</color>"
