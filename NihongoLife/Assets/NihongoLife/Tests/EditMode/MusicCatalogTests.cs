@@ -30,6 +30,67 @@ namespace NihongoLife.Tests
         }
 
         [Test]
+        public void Songs_AreGroupedByRegion_WithKnownInstruments()
+        {
+            var regions = MusicCatalog.Regions.Select(r => r.id).ToArray();
+            var instruments = MusicCatalog.Instruments.Select(i => i.id).ToArray();
+            Assert.AreEqual(MusicCatalog.Songs.Length, MusicCatalog.Songs.Select(s => s.id).Distinct().Count(), "unique ids");
+            foreach (var s in MusicCatalog.Songs)
+            {
+                CollectionAssert.Contains(regions, s.region, s.id + ": region");
+                Assert.IsNotEmpty(s.instruments, s.id + ": instruments");
+                Assert.AreEqual(s.instrument, s.instruments[0], s.id + ": the first instrument is the one it plays on");
+                foreach (var i in s.instruments) CollectionAssert.Contains(instruments, i, s.id + ": instrument " + i);
+                string licence = (s.notes_licence ?? "").ToLowerInvariant();
+                Assert.IsTrue(licence.Contains("public domain") || licence.Contains("cc0"), s.id + ": public domain / CC0 only");
+                Assert.IsFalse(licence.Contains("cc by-nc") || licence.Contains("all rights reserved"), s.id);
+            }
+            Assert.GreaterOrEqual(MusicCatalog.SongsIn("vietnam").Count(), 3, "Vietnamese folk songs");
+            Assert.GreaterOrEqual(MusicCatalog.SongsIn("japan").Count(), 5, "Japanese songs");
+            Assert.GreaterOrEqual(MusicCatalog.SongsIn("russia").Count(), 4, "Russian songs");
+            Assert.GreaterOrEqual(MusicCatalog.SongsIn("classical").Count(), 5, "classical");
+            Assert.GreaterOrEqual(MusicCatalog.SongsIn("children").Count(), 5, "children's songs");
+            // Folk songs sound on their own instruments, not on the piano.
+            foreach (var region in new[] { "vietnam", "russia" })
+                foreach (var s in MusicCatalog.SongsIn(region))
+                    Assert.AreNotEqual(InstrumentSynth.Voice.Piano, InstrumentSynth.VoiceFor(s.instrument), s.id);
+            foreach (var s in MusicCatalog.SongsIn("vietnam"))
+                Assert.IsTrue(s.instruments.All(i => i == "dan_tranh" || i == "dan_bau" || i == "sao_truc" || i == "dan_nguyet"), s.id + ": Vietnamese instruments");
+            Assert.IsNotNull(MusicCatalog.Song("ly-cay-da"));
+            Assert.IsNotNull(MusicCatalog.Song("kojo-no-tsuki"));
+            Assert.IsNotNull(MusicCatalog.Song("kalinka"));
+        }
+
+        [Test]
+        public void Regions_AndInstruments_AreNamedInFourLanguages()
+        {
+            foreach (var r in MusicCatalog.Regions)
+                Assert.IsFalse(string.IsNullOrEmpty(r.vi) || string.IsNullOrEmpty(r.en) || string.IsNullOrEmpty(r.ja) || string.IsNullOrEmpty(r.ru), r.id);
+            foreach (var i in MusicCatalog.Instruments)
+                Assert.IsFalse(string.IsNullOrEmpty(i.vi) || string.IsNullOrEmpty(i.en) || string.IsNullOrEmpty(i.ja) || string.IsNullOrEmpty(i.ru), i.id);
+        }
+
+        [Test]
+        public void EveryVoice_SynthesisesAnAudibleCleanNote()
+        {
+            foreach (InstrumentSynth.Voice voice in System.Enum.GetValues(typeof(InstrumentSynth.Voice)))
+                foreach (int midi in new[] { 48, 69, 84 })
+                {
+                    var clip = InstrumentSynth.Clip(voice, midi);
+                    Assert.IsNotNull(clip, voice + " " + midi);
+                    var data = new float[clip.samples];
+                    clip.GetData(data, 0);
+                    float peak = data.Max(System.Math.Abs);
+                    Assert.Greater(peak, 0.02f, voice + " " + midi + ": audible");
+                    Assert.Less(peak, 1f, voice + " " + midi + ": no clipping");
+                    Assert.IsFalse(data.Any(float.IsNaN), voice + " " + midi);
+                }
+            Assert.AreEqual(InstrumentSynth.Voice.DanTranh, InstrumentSynth.VoiceFor("dan_tranh"));
+            Assert.AreEqual(InstrumentSynth.Voice.Shamisen, InstrumentSynth.VoiceFor("shamisen"));
+            Assert.AreEqual(InstrumentSynth.Voice.Piano, InstrumentSynth.VoiceFor(null));
+        }
+
+        [Test]
         public void GuitarChords_MatchTheTuning_AndProgressionsUseKnownChords()
         {
             int[] tuning = { 40, 45, 50, 55, 59, 64 };

@@ -445,7 +445,7 @@ namespace NihongoLife.UI
             while (_autoNote < notes.Length && notes[_autoNote].start <= _autoBeat)
             {
                 int midi = notes[_autoNote++].midi;
-                _audio.PlayOneShot(InstrumentSynth.Clip(_guitar ? InstrumentSynth.Voice.Guitar : InstrumentSynth.Voice.Piano, midi), 0.9f);
+                _audio.PlayOneShot(InstrumentSynth.Clip(_guitar ? InstrumentSynth.Voice.Guitar : InstrumentSynth.VoiceFor(_auto.instrument), midi), 0.9f);
                 if (_pianoKeys.TryGetValue(midi, out var image) && image != null) StartCoroutine(Flash(image, midi));
             }
             if (_autoNote >= notes.Length && _autoBeat >= Beats(_auto))
@@ -555,7 +555,11 @@ namespace NihongoLife.UI
                 Knob("Faster", Loc.T("Nhanh", "Faster", "はやく") + " ▶", () => Tempo += 0.1f, NLUi.CardHover);
                 Knob("Quieter", Loc.T("Nhỏ", "Quieter", "小さく") + " −", () => Volume -= 0.1f, NLUi.CardHover);
                 Knob("Louder", Loc.T("To", "Louder", "大きく") + " +", () => Volume += 0.1f, NLUi.CardHover);
-                if (!_street) Knob("Instrument", _guitar ? "Guitar → Piano" : "Piano → Guitar", () => UseGuitar = !_guitar, NLUi.CardHover);
+                if (!_street && song.instrument != "guitar")
+                {
+                    string own = MusicCatalog.InstrumentName(string.IsNullOrEmpty(song.instrument) ? "piano" : song.instrument);
+                    Knob("Instrument", _guitar ? "Guitar → " + own : own + " → Guitar", () => UseGuitar = !_guitar, NLUi.CardHover);
+                }
                 if (!_autoGig) Knob("Loop", Loc.T("Lặp lại: ", "Loop: ", "くりかえし：") + (_loop ? Loc.T("bật", "on", "オン") : Loc.T("tắt", "off", "オフ")), () => Loop = !_loop, _loop ? NLUi.Gold : NLUi.CardHover);
                 Knob("Stop", "■ " + Loc.T("Dừng", "Stop", "とめる"), StopAuto, NLUi.Card);
             }
@@ -617,7 +621,7 @@ namespace NihongoLife.UI
             {
                 float at = start + note.start * spb;
                 while (Time.unscaledTime < at) yield return null;
-                _audio.PlayOneShot(InstrumentSynth.Clip(song.instrument == "guitar" ? InstrumentSynth.Voice.Guitar : InstrumentSynth.Voice.Piano, note.midi));
+                _audio.PlayOneShot(InstrumentSynth.Clip(InstrumentSynth.VoiceFor(song.instrument), note.midi));
                 if (_pianoKeys.TryGetValue(note.midi, out var image)) StartCoroutine(Flash(image, note.midi));
             }
         }
@@ -693,8 +697,11 @@ namespace NihongoLife.UI
 
         // ─────────── Songs ───────────
 
+        private string _region, _shownRegion;
+
         private void BuildSongs()
         {
+            _shownRegion = "\u0000"; // nothing shown yet: the first song opens its group
             if (_street)
             {
                 NLUi.Label(_body, "Title", Loc.T("Biểu diễn đường phố — chọn bài", "Busking — pick a song", "ストリートライブ — 曲を えらぶ"), 24f, NLUi.Gold, _font, FontStyles.Bold);
@@ -716,13 +723,33 @@ namespace NihongoLife.UI
                     "Pick a song: your character plays it while you set the tempo, the volume, piano or guitar. To play it yourself, use “Play it with the keyboard”.",
                     "曲をえらぶと キャラクターが演奏。テンポ・音量・楽器を かえられます。"), 15f, NLUi.Muted, _font);
             }
-            foreach (var song in MusicCatalog.Songs.OrderBy(s => s.difficulty).ThenBy(s => s.Title))
+            // Groups: a row of region filters (all / Việt Nam / Nhật Bản / Nga / Cổ điển / Thiếu nhi / world), then a heading per region.
+            var filters = NLUi.Group(_body, "Regions", false, 6f, TextAnchor.MiddleLeft, false);
+            void Filter(string id, string label)
+            {
+                bool on = _region == id;
+                NLUi.Size(NLUi.Button(filters, "Region_" + (id ?? "all"), label, _font, () => { _region = id; Rebuild(); }, on ? NLUi.Gold : NLUi.CardHover, 14f, on ? NLUi.Ink : NLUi.Text, 38f), -1f, 38f);
+            }
+            Filter(null, Loc.T("Tất cả", "All", "すべて"));
+            foreach (var r in MusicCatalog.Regions)
+                if (MusicCatalog.SongsIn(r.id).Any()) Filter(r.id, MusicCatalog.RegionName(r.id));
+            var groups = MusicCatalog.Regions.Select(r => r.id).ToList();
+            foreach (var song in MusicCatalog.Songs
+                .Where(s => _region == null || s.region == _region)
+                .OrderBy(s => groups.IndexOf(s.region) < 0 ? groups.Count : groups.IndexOf(s.region)).ThenBy(s => s.difficulty).ThenBy(s => s.Title))
             {
                 var s = song;
+                if (s.region != _shownRegion)
+                {
+                    _shownRegion = s.region;
+                    NLUi.Label(_body, "Group_" + (s.region ?? "other"), MusicCatalog.RegionName(s.region ?? "world"), 20f, NLUi.Gold, _font, FontStyles.Bold);
+                }
                 var card = NLUi.Panel(_body, "Song_" + s.id, NLUi.Card, new RectOffset(18, 18, 10, 12), 6f);
                 int best = Best(s.id);
                 string mark = best >= LearntScore ? $"  <color=#7CE0A0>✓ {best}%</color>" : best > 0 ? $"  <color=#E0C070>{best}%</color>" : "";
+                var instruments = (s.instruments != null && s.instruments.Length > 0 ? s.instruments : new[] { string.IsNullOrEmpty(s.instrument) ? "piano" : s.instrument }).Select(MusicCatalog.InstrumentName);
                 NLUi.Label(card, "Head", $"<b>{s.Title}</b>{mark}  <size=75%><color=#A8B4C4>{s.composer} · {s.key} · {s.tempo_bpm:0} bpm · {new string('★', Mathf.Clamp(s.difficulty, 1, 5))}</color></size>", 18f, NLUi.Text, _font);
+                NLUi.Label(card, "Instruments", "♪ " + string.Join(" · ", instruments), 14f, NLUi.Muted, _font);
                 var row = NLUi.Group(card, "Actions", false, 8f, TextAnchor.MiddleLeft, false);
                 if (_stage || _street) NLUi.Button(row, "Perform", "▶ " + Loc.T("Biểu diễn", "Perform", "演奏する"), _font, () => Perform(s.id), NLUi.Gold, 15f, NLUi.Ink, 40f);
                 else NLUi.Button(row, "AutoPlay", "▶ " + Loc.T("Nhân vật đàn bài này", "Play this song", "この曲を演奏"), _font, () => AutoPlay(s.id), NLUi.Gold, 15f, NLUi.Ink, 40f);

@@ -13,6 +13,10 @@ namespace NihongoLife.Music
     public sealed class SongDefinition
     {
         public string id, title, title_vi, title_ja, title_ru, composer, key, time_signature, level, instrument, notes_licence;
+        /// <summary>vietnam, japan, russia, classical, children or world (MusicCatalog.Regions).</summary>
+        public string region, source;
+        /// <summary>The instruments the song belongs to (ids as InstrumentSynth.VoiceFor); the first is <see cref="instrument"/>.</summary>
+        public string[] instruments = Array.Empty<string>();
         public float tempo_bpm = 90f;
         public int difficulty = 1;
         public SongNote[] notes = Array.Empty<SongNote>();
@@ -51,7 +55,7 @@ namespace NihongoLife.Music
     }
 
     /// <summary>
-    /// The music and art content: 22 melodies, 42 guitar chord shapes with progressions, 24 music-theory lessons in
+    /// The music and art content: melodies grouped by region, each with its instruments, 42 guitar chord shapes with progressions, 24 music-theory lessons in
     /// vi / en / ja / ru with quizzes, and 39 paintings (Met Open Access CC0, Wikimedia Commons public domain).
     /// Imported by Tools/music/import_group_b.py; validated by MusicCatalogTests.
     /// </summary>
@@ -99,6 +103,40 @@ namespace NihongoLife.Music
             }
             return file.lessons ?? Array.Empty<TheoryLesson>();
         }
+
+        /// <summary>The song-list groups, in display order: id, vi, en, ja, ru.</summary>
+        public static readonly (string id, string vi, string en, string ja, string ru)[] Regions =
+        {
+            ("vietnam", "Việt Nam", "Vietnam", "ベトナム", "Вьетнам"),
+            ("japan", "Nhật Bản", "Japan", "日本", "Япония"),
+            ("russia", "Nga", "Russia", "ロシア", "Россия"),
+            ("classical", "Cổ điển", "Classical", "クラシック", "Классика"),
+            ("children", "Thiếu nhi", "Children's songs", "童謡", "Детские песни"),
+            ("world", "Dân ca thế giới", "World folk", "世界の民謡", "Народные песни мира"),
+        };
+
+        /// <summary>Instrument ids and their names: id, vi, en, ja, ru.</summary>
+        public static readonly (string id, string vi, string en, string ja, string ru)[] Instruments =
+        {
+            ("piano", "Piano", "Piano", "ピアノ", "Фортепиано"),
+            ("guitar", "Guitar", "Guitar", "ギター", "Гитара"),
+            ("violin", "Vĩ cầm", "Violin", "バイオリン", "Скрипка"),
+            ("dan_tranh", "Đàn tranh", "Đàn tranh (zither)", "ダン・チャン（箏）", "Дан чань (цитра)"),
+            ("dan_bau", "Đàn bầu", "Đàn bầu (monochord)", "ダン・バウ（一弦琴）", "Дан бау (монохорд)"),
+            ("sao_truc", "Sáo trúc", "Sáo trúc (bamboo flute)", "竹笛（サオ・チュック）", "Бамбуковая флейта"),
+            ("koto", "Đàn koto", "Koto", "箏", "Кото"),
+            ("shamisen", "Đàn shamisen", "Shamisen", "三味線", "Сямисэн"),
+            ("shakuhachi", "Sáo shakuhachi", "Shakuhachi", "尺八", "Сякухати"),
+            ("balalaika", "Đàn balalaika", "Balalaika", "バラライカ", "Балалайка"),
+            ("gayageum", "Đàn gayageum", "Gayageum", "伽耶琴", "Каягым"),
+            ("erhu", "Đàn nhị (erhu)", "Erhu", "二胡", "Эрху"),
+        };
+
+        public static IEnumerable<SongDefinition> SongsIn(string region) => Songs.Where(s => s.region == region);
+
+        private static string Pick((string id, string vi, string en, string ja, string ru) e) => Loc.Code switch { "vi" => e.vi, "ja" => e.ja, "ru" => e.ru, _ => e.en };
+        public static string RegionName(string id) { foreach (var r in Regions) if (r.id == id) return Pick(r); return id; }
+        public static string InstrumentName(string id) { foreach (var i in Instruments) if (i.id == id) return Pick(i); return id; }
 
         public static string NoteName(int midi)
         {

@@ -33,3 +33,32 @@ seamless loop.
 | Music/work | いそがしい シフト · Busy shift | shamisen-style riff, taiko, bass in the in scale (112 bpm) |
 
 Where each track plays: `Resources/Audio/music.json` (the handbook's 音楽 chapter lists them; a pinned track plays everywhere).
+
+## Music studio melodies and instruments (world folk update)
+
+Instrument voices (đàn tranh, đàn bầu, sáo trúc, koto, shamisen, shakuhachi, balalaika, violin/erhu) are **synthesised
+in code** by `Scripts/Music/InstrumentSynth.cs` (additive models with vibrato, bends, breath and tremolo) — no recorded
+samples, no third-party audio.
+
+Melodies added to `Resources/Music/songs.json` by `Tools/music/folk/import_world_folk.py`. Every melody is public
+domain (anonymous traditional song, or composer dead long enough); note data is NihongoLife's own, released CC0.
+Reference transcriptions consulted (not redistributed):
+
+| Song id | Melody | Instruments | Reference |
+|---|---|---|---|
+| ly-cay-da | Lý cây đa — quan họ Bắc Ninh, anonymous | đàn tranh, sáo trúc | Ngô Càn Chiếu, "Vài bản nhạc ký âm ABC" (ngocanchieu.org) |
+| ly-ngua-o | Lý ngựa ô — dân ca Nam Bộ, anonymous | đàn tranh, đàn bầu | same |
+| ho-hui | Hò hụi — boatmen's chant, anonymous (collected by Dương Bích Hà) | đàn bầu, sáo trúc | same |
+| sakura-sakura-full | Sakura Sakura — Japanese traditional | koto, shakuhachi | trillian.mit.edu/~jc/music/abc/Japan/Sakura_Am.abc |
+| kojo-no-tsuki | Kōjō no Tsuki — Taki Rentarō (d. 1903), Yamada version (1917) | shakuhachi, koto | …/Japan/KojoNoTsuki_Dm.abc |
+| soran-bushi | Sōran Bushi — Hokkaido folk | shamisen, shakuhachi | …/Japan/Sooranbushi_F.abc |
+| takeda-no-komoriuta | Takeda no Komoriuta — Kyoto folk lullaby | shakuhachi, koto | …/Japan/TakedaNoKomoriuta.abc |
+| kalinka | Kalinka — Ivan Larionov (1860, d. 1889) | balalaika | …/Russia/Kalinka.abc |
+| korobeiniki | Korobeiniki — Russian folk | balalaika | NihongoLife's own transcription |
+| ochi-chyornye | Ochi Chyornye — Florian Hermann (1843) | violin, balalaika | …/Russia/OchiChorniya.abc |
+| metelitsa | Metelitsa — Russian folk dance | balalaika | …/Russia/Metelitsa.abc |
+| hopak | Hopak — Ukrainian folk dance | violin, balalaika | …/Russia/Hopak.abc |
+| arirang | Arirang — Korean folk | gayageum | …/Korea/Arirang_G.abc |
+| mo-li-hua | Mò Lì Huā — Chinese folk | erhu, sáo trúc | …/China/MoLiHua_F.abc |
+
+Excluded on purpose: songs still in copyright (e.g. Sơn Tùng M-TP, Katyusha — Blanter d. 1990, "Hana" by Kina Shoukichi).
