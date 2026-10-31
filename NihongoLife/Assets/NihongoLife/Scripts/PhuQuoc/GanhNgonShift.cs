@@ -55,8 +55,12 @@ namespace NihongoLife.PhuQuoc
             }).ToList();
         }
 
+        /// <summary>Raised whenever the player uses a station (GanhNgonCustomers serves the longest-waiting guest at a Table).</summary>
+        public static event System.Action<GanhNgonStation> StationUsed;
+
         public static void Use(GanhNgonStation station)
         {
+            StationUsed?.Invoke(station);
             var catalog = GanhNgonCatalog.Load();
             if (station == GanhNgonStation.Manager)
             {

@@ -32,3 +32,25 @@ Rule: only CC0 goes in this folder. Do not add CC-BY / "free for personal use" a
 | `kenney_mini-characters` | Mini Characters (FBX) | https://kenney.nl/assets/mini-characters | CC0 | guests / townspeople (low-poly) |
 | `kenney_watercraft-kit` | Watercraft Pack (FBX) | https://kenney.nl/assets/watercraft-kit | CC0 | boats, jet-skis, buoys, piers |
 Not found as CC0 in Kenney/Quaternius quickly: dedicated motorbike model (TODO).
+
+## Added 31 Oct 2026 — Pixor library (CC0 1.0, "no credit needed" on every page) → `pixor_cc0/`
+Downloaded as GLB from https://pixor.art/library/ and converted to OBJ + MTL with trimesh (Unity has no glTF importer
+in this project). Materials are rebuilt as URP Lit from the MTL diffuse colours by `PhuQuocLifeBuilder`. A copy of this
+table is in `pixor_cc0/CREDITS.md`.
+
+| File | Source page | Use in 65_PhuQuocIsland |
+|---|---|---|
+| `scooter/pq_scooter.obj` | https://pixor.art/library/vehicles/scooter/ | motorbike traffic (most common vehicle) |
+| `motorbike/pq_motorbike.obj` | https://pixor.art/library/vehicles/motorbike/ | motorbike traffic |
+| `bicycle/pq_bicycle.obj` | https://pixor.art/library/vehicles/bicycle/ | kerb-lane bicycles |
+| `bus/pq_bus.obj` | https://pixor.art/library/vehicles/bus/ | the island bus on Trần Hưng Đạo |
+| `seashell/pq_seashell.obj` | https://pixor.art/library/pirate/seashell/ | shells on the beach |
+| `starfish/pq_starfish.obj` | https://pixor.art/library/pirate/starfish/ | starfish at the water line |
+| `pebbles/pq_pebbles.obj` | https://pixor.art/library/rocks/pebbles/ | pebble clusters |
+| `rock-small/pq_rock-small.obj` | https://pixor.art/library/rocks/rock-small/ | small beach rocks |
+| `crab/pq_crab.obj` | https://pixor.art/library/creatures/crab/ | beach crabs |
+
+Also used by the life pass (already in the project, CC0): Kenney Car Kit (cars, taxi, van, SUV, delivery, truck),
+Kenney Mini Characters (motorbike riders), Kenney Holiday Kit (lanterns, bench), Kenney City Kit Commercial / Suburban
+(hotels, guesthouses, shops), Kenney Nature Kit (palms, rocks), ambientCG Ground054 (golden sand), Poly Haven
+Kloofendal sky (`PQ_Skybox`). The sea is our own shader (`Shaders/NL_SeaWater.shader`).
