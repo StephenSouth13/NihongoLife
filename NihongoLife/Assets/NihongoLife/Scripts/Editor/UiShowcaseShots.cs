@@ -60,6 +60,11 @@ namespace NihongoLife.EditorTools
                 canvasGo.layer = layer;
                 build(canvasGo);
                 foreach (var t in canvasGo.GetComponentsInChildren<Transform>(true)) t.gameObject.layer = layer;
+                for (int pass = 0; pass < 2; pass++)
+                {
+                    Canvas.ForceUpdateCanvases();
+                    LayoutRebuilder.ForceRebuildLayoutImmediate((RectTransform)canvasGo.transform);
+                }
                 Canvas.ForceUpdateCanvases();
                 // The pop-in animation only advances in Play Mode: render the settled state.
                 foreach (var cg in canvasGo.GetComponentsInChildren<CanvasGroup>(true)) cg.alpha = 1f;

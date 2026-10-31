@@ -55,6 +55,7 @@ namespace NihongoLife.UI
             var right = UiKit.Rect(card, "Timeline");
             UiKit.Place(right, LW + 56f, 96f, W - LW - 88f, H - 128f);
             _main = UiKit.Scroll(right, "Scroll", out _mainScroll, 12f, new RectOffset(4, 16, 4, 24));
+            UiKit.Fill((RectTransform)_mainScroll.transform);
             _overlay = UiKit.Rect(card, "Overlay");
             UiKit.Place(_overlay, 24f, 88f, W - 48f, H - 112f);
             _overlay.gameObject.SetActive(false);
@@ -214,6 +215,13 @@ namespace NihongoLife.UI
             y += ((cells.Length + cols - 1) / cols) * (h + gap) + 6f;
         }
 
+        private static void StretchRow(RectTransform panel)
+        {
+            var le = panel.GetComponent<LayoutElement>() ?? panel.gameObject.AddComponent<LayoutElement>();
+            le.flexibleWidth = 1f;
+            foreach (var t in panel.GetComponentsInChildren<TextMeshProUGUI>(true)) t.textWrappingMode = TextWrappingModes.Normal;
+        }
+
         private void BuildTimeline()
         {
             UiKit.Clear(_main);
@@ -225,6 +233,14 @@ namespace NihongoLife.UI
                     "Chọn ngôn ngữ, trình độ, mục tiêu và thời gian mỗi ngày. Game sẽ xếp các bài học có sẵn thành từng chặng, có mốc theo tuần và thời gian dự kiến. Số giờ dựa trên số liệu công bố (Cambridge English, Trung tâm Giáo dục tiếng Nhật) và chỉ là ước tính.",
                     "Pick a language, your level, a goal and a daily time. The game orders the lessons it already has into phases with weekly milestones and an estimated duration. Hours come from published figures (Cambridge English, Japanese Language Education Center) and are estimates only.",
                     "言語・レベル・目標・1日の時間を選ぶと、ゲーム内の教材を段階に分け、週ごとの目標と予想期間を示します。時間は公表データ（Cambridge English、日本語教育センター）に基づく目安です。"), 15f, UiTheme.TextSoft);
+                StretchRow(intro);
+                var steps = ReferenceUi.Panel(_main, "IntroSteps", UiTheme.Surface);
+                ReferenceUi.Text(steps, "StepsTitle", Loc.T("Cách hoạt động", "How it works", "使い方"), 18f, UiTheme.Gold, FontStyles.Bold);
+                ReferenceUi.Text(steps, "Step1", Loc.T("① Chọn ngôn ngữ, trình độ, mục tiêu và số phút mỗi ngày ở cột bên trái.", "① Choose a language, level, goal and minutes per day on the left.", "① 左で言語・レベル・目標・1日の時間を選ぶ。"), 15f, UiTheme.Text);
+                ReferenceUi.Text(steps, "Step2", Loc.T("② Bấm \"Tạo lộ trình\": các chặng, mốc tuần và ngày dự kiến hoàn thành hiện ở đây.", "② Press \"Build my plan\": phases, weekly milestones and a finish date appear here.", "② 「プランを作る」で段階・週目標・完了予定日がここに表示。"), 15f, UiTheme.Text);
+                ReferenceUi.Text(steps, "Step3", Loc.T("③ Mỗi chặng có bài kiểm tra mốc; đạt thì nhận chứng nhận trong game.", "③ Each phase ends with a checkpoint test; pass it to earn an in-game certificate.", "③ 各段階の確認テストに合格すると修了証がもらえます。"), 15f, UiTheme.Text);
+                StretchRow(steps);
+                LayoutRebuilder.ForceRebuildLayoutImmediate(_main);
                 return;
             }
 

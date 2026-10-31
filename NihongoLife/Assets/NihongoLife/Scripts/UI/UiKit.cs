@@ -335,6 +335,8 @@ namespace NihongoLife.UI
             if (target.parent == null) return null;
             var shadow = Image(target.parent, target.name + "_Shadow", new Color(0f, 0f, 0f, strength), Shadow(radius));
             shadow.transform.SetSiblingIndex(target.GetSiblingIndex());
+            shadow.gameObject.AddComponent<LayoutElement>().ignoreLayout = true;
+            shadow.raycastTarget = false;
             var follow = shadow.gameObject.AddComponent<UiFollowRect>();
             follow.Configure(target, 26f, drop);
             target.gameObject.AddComponent<UiShadowLink>().Shadow = shadow.gameObject;
@@ -810,6 +812,7 @@ namespace NihongoLife.UI
     }
 
     /// <summary>Keeps a shadow image aligned with its card (same rect grown by the blur, dropped a little).</summary>
+    [ExecuteAlways]
     public sealed class UiFollowRect : MonoBehaviour
     {
         private RectTransform _target, _self;
@@ -822,12 +825,22 @@ namespace NihongoLife.UI
             Sync();
         }
 
+        private void OnEnable() { Canvas.willRenderCanvases += Sync; Sync(); }
+        private void OnDisable() => Canvas.willRenderCanvases -= Sync;
         private void LateUpdate() => Sync();
 
         private void Sync()
         {
+            if (this == null) { Canvas.willRenderCanvases -= Sync; return; }
             if (_self == null) return;
-            if (_target == null) { Destroy(gameObject); return; }
+            if (_target == null) { if (Application.isPlaying) Destroy(gameObject); else gameObject.SetActive(false); return; }
+            // Follow the card in its parent's space, even when a layout group moved it after Configure.
+            if (_target.parent != _self.parent)
+            {
+                _self.position = _target.position + new Vector3(0f, -_drop * _target.lossyScale.y, 0f);
+                _self.sizeDelta = _target.rect.size + new Vector2(_grow * 2f, _grow * 2f);
+                return;
+            }
             _self.anchorMin = _target.anchorMin;
             _self.anchorMax = _target.anchorMax;
             _self.pivot = _target.pivot;
