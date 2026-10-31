@@ -12,7 +12,7 @@ namespace NihongoLife.Tests
 {
     /// <summary>
     /// Takes the photos of the location guide (map › Cẩm nang): each place rendered from the game camera, world only
-    /// (no HUD, no dialogue), saved to Resources/Guide/{TYPE}.jpg. Explicit: run it when places change.
+    /// (no HUD, no dialogue, no player model), saved to Resources/Guide/{TYPE}.jpg. Explicit: run it when places change.
     /// </summary>
     public class GuidePhotosPlayModeTests
     {
@@ -68,6 +68,11 @@ namespace NihongoLife.Tests
         private static void Shoot(string type)
         {
             var cam = Camera.main;
+            // World only: the player's own model (seen from behind, close to the lens) is hidden for the photo.
+            var player = Object.FindFirstObjectByType<PlayerController>();
+            var hidden = player != null ? player.GetComponentsInChildren<Renderer>() : new Renderer[0];
+            var was = new bool[hidden.Length];
+            for (int i = 0; i < hidden.Length; i++) { was[i] = hidden[i].enabled; hidden[i].enabled = false; }
             var rt = new RenderTexture(960, 540, 24);
             cam.targetTexture = rt;
             cam.Render();
@@ -80,6 +85,7 @@ namespace NihongoLife.Tests
             File.WriteAllBytes(Path.Combine(Dir, type + ".jpg"), tex.EncodeToJPG(86));
             RenderTexture.active = old;
             cam.targetTexture = null;
+            for (int i = 0; i < hidden.Length; i++) if (hidden[i] != null) hidden[i].enabled = was[i];
             rt.Release();
             Object.Destroy(rt);
             Object.Destroy(tex);
