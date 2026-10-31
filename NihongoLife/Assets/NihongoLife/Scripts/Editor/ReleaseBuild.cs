@@ -32,7 +32,9 @@ namespace NihongoLife.Editor
             "Assets/NihongoLife/Scenes/60_MidoriIsland.unity",
             "Assets/NihongoLife/Scenes/35_HibariClinic.unity",
             "Assets/NihongoLife/Scenes/55_MusicShop.unity",
-            "Assets/NihongoLife/Scenes/65_PhuQuocIsland.unity"
+            "Assets/NihongoLife/Scenes/65_PhuQuocIsland.unity",
+            // The intro trailer before a guest's first game (IntroTrailer.PlayBefore); without it the intro never plays.
+            "Assets/NihongoLife/Scenes/99_Trailer.unity"
         };
 
         public static void BuildWebGL()

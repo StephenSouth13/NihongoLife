@@ -518,6 +518,7 @@ namespace NihongoLife.Trailer
         private IEnumerator LoadCity()
         {
             ShouldRecord = false;
+            yield return SceneContentLoader.EnsureAvailable(WorldLocationCatalog.CityScene, null); // web: area pack first
             yield return SceneManager.LoadSceneAsync(WorldLocationCatalog.CityScene, LoadSceneMode.Single);
             for (int i = 0; i < 90 && FindFirstObjectByType<PlayerController>() == null; i++) yield return null;
             yield return null;
@@ -537,6 +538,7 @@ namespace NihongoLife.Trailer
             ShouldRecord = false;
             Black(1f);
             var city = SceneManager.GetSceneByName(WorldLocationCatalog.CityScene);
+            yield return SceneContentLoader.EnsureAvailable(sceneName, null); // web: area pack first
             var load = SceneManager.LoadSceneAsync(sceneName, LoadSceneMode.Additive);
             while (!load.isDone) yield return null;
             var zone = SceneManager.GetSceneByName(sceneName);

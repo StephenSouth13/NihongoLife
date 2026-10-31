@@ -26,7 +26,8 @@ namespace NihongoLife.Core
             [WorldLocationCatalog.MidoriIslandScene] = "nlzone-island",
             [WorldLocationCatalog.ClinicScene] = "nlzone-clinic",
             [WorldLocationCatalog.MusicShopScene] = "nlzone-music",
-            [WorldLocationCatalog.PhuQuocIslandScene] = "nlzone-phuquoc"
+            [WorldLocationCatalog.PhuQuocIslandScene] = "nlzone-phuquoc",
+            [IntroTrailer.SceneName] = "nlzone-trailer"
         };
 
         static readonly Dictionary<string, AssetBundle> Loaded = new Dictionary<string, AssetBundle>(StringComparer.Ordinal);

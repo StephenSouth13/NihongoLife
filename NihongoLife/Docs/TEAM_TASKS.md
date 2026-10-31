@@ -2096,3 +2096,11 @@ Tên lớp test viết tắt: PlayMode = `NihongoLife.Tests.<Lớp>`; EditMode =
 - IntroTrailer reloads PlayerStatus on its throw-away save and back, and restores the player's live vitals afterwards without writing the real save.
 - The close glyph U+2715 (missing from NotoSansJP, which caused TMP warnings) is replaced by '×' in TaskJournalUI and QuestLogPopup.
 - New PlayMode test IntroTrailerFirstLaunchPlayModeTests: fresh first launch, the trailer plays to the end with no warnings or errors, then the town loads.
+
+### 2026-11-01 - Guide photos without the player model
+- GuidePhotosPlayModeTests hides the player's renderers while it takes each photo. The old HOME photo was filled by the back of the player's head, close to the camera.
+- All 7 Resources/Guide photos were taken again (world only). Regression check: EditMode 333/333; PlayMode StoryFlow/LocationUnlock/Island/StoryScene/IntroTrailer/PhuQuoc/Trailer 26/26.
+
+### 2026-11-01 - Intro trailer in release builds (desktop, Android, WebGL)
+- 99_Trailer was missing from ReleaseBuild.ProductionScenes and from the WebGL area packs, so a built game never played the intro (PlayBefore returned false). It is now in ProductionScenes and is a WebGL area pack (nlzone-trailer). IntroTrailer opens it through SceneContentLoader, and TrailerReel downloads each area pack it films before loading it.
+- Checked on a fresh browser profile (Playwright + Chrome) through Bắt đầu > Ngoại tuyến > Chọn nhân vật này: desktop 1280x720 and phone landscape 844x390 with touch. The trailer plays to the end and the town loads, with 0 console errors (only the offline-config warnings). EditMode 333/333; PlayMode IntroTrailer/StoryScene/Trailer 4/4.

@@ -33,7 +33,9 @@ namespace NihongoLife.Editor
             ("Assets/NihongoLife/Scenes/60_MidoriIsland.unity", "nlzone-island"),
             ("Assets/NihongoLife/Scenes/35_HibariClinic.unity", "nlzone-clinic"),
             ("Assets/NihongoLife/Scenes/55_MusicShop.unity", "nlzone-music"),
-            ("Assets/NihongoLife/Scenes/65_PhuQuocIsland.unity", "nlzone-phuquoc")
+            ("Assets/NihongoLife/Scenes/65_PhuQuocIsland.unity", "nlzone-phuquoc"),
+            // The intro trailer before a guest's first game (IntroTrailer); it films the areas above.
+            ("Assets/NihongoLife/Scenes/99_Trailer.unity", "nlzone-trailer")
         };
 
         public static readonly string[] PlayerScenes =

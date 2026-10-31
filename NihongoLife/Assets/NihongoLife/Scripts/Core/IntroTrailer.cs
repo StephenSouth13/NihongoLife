@@ -36,10 +36,11 @@ namespace NihongoLife.Core
         /// <summary>Plays the trailer once, then runs <paramref name="then"/> (load the game). False: nothing to play.</summary>
         public static bool PlayBefore(Action then)
         {
-            if (Bypass || Seen || Playing || !Application.CanStreamedLevelBeLoaded(SceneName)) return false;
+            // SceneContentLoader: in the player build, or (web) its area pack is downloaded before it opens.
+            if (Bypass || Seen || Playing || !SceneContentLoader.CanLoad(SceneName)) return false;
             Begin();
             _then = then;
-            SceneManager.LoadSceneAsync(SceneName, LoadSceneMode.Single);
+            SceneContentLoader.LoadFallback(SceneName);
             return true;
         }
 
