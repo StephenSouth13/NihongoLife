@@ -63,6 +63,13 @@
   <!-- Online settings (public Supabase URL / anon key, Agora App ID), written by the build next to index.html. -->
   <script src="nl-config.js"></script>
   <script>
+    // Vivox's bundled source-map-support re-reads the framework script by URL whenever an Error stack is built.
+    // Unity's loader revokes that blob: URL right after it runs, which logs 'Failed to load resource' in the console.
+    // Keep script blobs alive (one framework file, a few MB) so the lookup succeeds quietly.
+    (function () { var keep = {}; var revoke = URL.revokeObjectURL.bind(URL); var create = URL.createObjectURL.bind(URL);
+      URL.createObjectURL = function (o) { var u = create(o); if (o && o.type && /javascript/.test(o.type)) keep[u] = true; return u; };
+      URL.revokeObjectURL = function (u) { if (!keep[u]) revoke(u); }; })();
+
     var canvas = document.querySelector("#unity-canvas");
     var loading = document.querySelector("#unity-loading");
     var bar = document.querySelector("#unity-progress-bar");

@@ -2076,3 +2076,8 @@ Tên lớp test viết tắt: PlayMode = `NihongoLife.Tests.<Lớp>`; EditMode =
 
 ## 2026-11-01 - Left-handed touch layout
 - GameplayPhoneLayoutPlayModeTests now also runs left-handed (TouchControlPrefs.LeftHanded) at the 4 phone sizes. It found the status card (bottom left) under the mirrored Jump/Interact/Sprint buttons. Fix: StatusDock moves the card and its warning chip to the bottom right when left-handed on a touch layout; HUDUI's [F] prompt lane takes the buttons on the left and the card on the right. 16 audits, 0 issues; with PhoneControls + MenuLayout PlayMode 3/3.
+
+## 2026-11-01 - Phu Quoc frame rate + WebGL console
+- New PhuQuocPerfPlayModeTests: visits 7 spots (Ganh Ngon, seafood market, hem alley, beach swimmers, resort pool, promenade, tour terminal), vSync off, 1 s warm-up, 3 s measure, writes phuquoc_fps.txt, fails under 20 fps. Desktop (Quadro RTX 3000, D3D11, batch 640x480): average 348.5 fps, worst spot beach_swimmers 314.7 fps (1% low 75.5).
+- WebGL release build in Chrome on Intel UHD 630 (1280x720): menu ~95 fps; Phu Quoc (Ganh Ngon) 53-55 fps, 1% low ~28. Above the 30 fps target, so no optimisation needed.
+- WebGL console: Vivox's bundled source-map-support re-read the framework script from a blob: URL that Unity's loader had already revoked ('Failed to load resource: net::ERR_FILE_NOT_FOUND' x2). The NihongoLife WebGL template now keeps script blob URLs alive. Headless smoke and the Phu Quoc run: 0 console errors.
