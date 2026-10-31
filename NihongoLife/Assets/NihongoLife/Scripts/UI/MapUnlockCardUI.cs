@@ -34,7 +34,7 @@ namespace NihongoLife.UI
 
         private static void Enqueue(LocationUnlock stage)
         {
-            if (stage != null) Pending.Enqueue(stage);
+            if (stage != null && !IntroTrailer.Playing) Pending.Enqueue(stage); // no "new place" card over the intro trailer
         }
 
         /// <summary>Tests: show a stage's card right away.</summary>

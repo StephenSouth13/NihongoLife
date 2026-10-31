@@ -23,7 +23,7 @@ namespace NihongoLife.Core
 
         public static void Record(int amount, string reason, int balance)
         {
-            if (amount == 0) return;
+            if (amount == 0 || IntroTrailer.Playing) return; // the intro trailer's throw-away wallet never reaches the player's history
             Load();
             var e = new Entry { amount = amount, reason = string.IsNullOrWhiteSpace(reason) ? NihongoLife.Core.Loc.Triple("Khác", "Other", "その他") : reason, balance = balance, ticks = DateTime.Now.Ticks };
             _store.entries.Insert(0, e);

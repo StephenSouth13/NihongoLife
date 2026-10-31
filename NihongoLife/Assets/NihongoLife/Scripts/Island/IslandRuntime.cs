@@ -59,13 +59,14 @@ namespace NihongoLife.Island
             }
             var record = IslandState.Record;
             bool firstVisit = !record.welcomed;
-            if (IslandEconomy.GiveStarterKit())
+            bool filming = NihongoLife.Core.IntroTrailer.Playing; // the intro trailer films the island: no welcome card or toasts over the shots
+            if (IslandEconomy.GiveStarterKit() && !filming)
                 IslandUI.Toast(NihongoLife.Core.Loc.T("Quà chào mừng: cuốc, bình tưới và 3 túi hạt cà rốt đã vào balo.", "Welcome gift: a hoe, a watering can and 3 bags of carrot seeds are in your bag.", "ようこそのプレゼント：くわ、じょうろ、にんじんの種3袋をかばんに入れました。"));
             record.welcomed = true;
             IslandState.Discover("place:island");
             IslandUI.ShowToolbar();
-            IslandUI.ShowWelcome();
-            if (!firstVisit) IslandUI.Toast(NihongoLife.Core.Loc.T("Cây trồng vẫn lớn trong lúc bạn đi vắng — ghé ruộng xem nhé.", "Your crops kept growing while you were away — go and check the fields.", "留守の間も作物は育っています。畑を見に行きましょう。"));
+            if (!filming) IslandUI.ShowWelcome();
+            if (!firstVisit && !filming) IslandUI.Toast(NihongoLife.Core.Loc.T("Cây trồng vẫn lớn trong lúc bạn đi vắng — ghé ruộng xem nhé.", "Your crops kept growing while you were away — go and check the fields.", "留守の間も作物は育っています。畑を見に行きましょう。"));
             IslandAchievements.Unlocked += OnAchievement;
         }
 

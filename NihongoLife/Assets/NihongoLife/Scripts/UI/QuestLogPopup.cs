@@ -327,7 +327,7 @@ namespace NihongoLife.UI
                     var runtime = ScenarioManager.Instance.Objectives.Find(o => o.id == objective.id);
                     if (runtime != null && runtime.state == ObjectiveState.Completed) { mark = "●"; color = "#7FD39B"; }
                     else if (runtime != null && runtime.state == ObjectiveState.Active) { mark = "◐"; color = "#F2B840"; }
-                    else if (runtime != null && runtime.state == ObjectiveState.Failed) { mark = "✕"; color = "#F0625A"; }
+                    else if (runtime != null && runtime.state == ObjectiveState.Failed) { mark = "×"; color = "#F0625A"; }
                 }
 
                 string optional = objective.isOptional ? Pick(" (tùy chọn)", " (optional)", "（任意）") : string.Empty;
@@ -411,7 +411,7 @@ namespace NihongoLife.UI
             if (scenario.requiredKnowledge > 0)
             {
                 bool ok = progress.knowledge >= scenario.requiredKnowledge;
-                parts.Add($"{(ok ? "✓" : "✕")} {scenario.requiredKnowledge} {Pick("trí tuệ", "knowledge", "知識")}");
+                parts.Add($"{(ok ? "✓" : "×")} {scenario.requiredKnowledge} {Pick("trí tuệ", "knowledge", "知識")}");
             }
 
             if (scenario.requiredScenarioIds != null)
@@ -421,7 +421,7 @@ namespace NihongoLife.UI
                 {
                     var required = repository?.GetScenarioById(id);
                     string name = required != null ? required.DisplayTitle : id;
-                    parts.Add($"{(progress.completed.Contains(id) ? "✓" : "✕")} {name}");
+                    parts.Add($"{(progress.completed.Contains(id) ? "✓" : "×")} {name}");
                 }
             }
 

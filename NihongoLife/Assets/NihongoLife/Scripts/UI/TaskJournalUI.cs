@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using NihongoLife.Core;
@@ -316,7 +316,7 @@ namespace NihongoLife.UI
             string requirementLine = StoryDirector.Bypass
                 ? "<color=#74D680>✓ " + Loc.T("Mở sẵn — không khoá cấp", "Open — no level lock", "開放済み — レベル制限なし") + "</color>"
                 : Loc.F("<color=#A8B4C4>Yêu cầu</color>  Cấp {0}", "<color=#A8B4C4>Requires</color>  Level {0}", "<color=#A8B4C4>条件</color>  レベル{0}", quest.minLevel) + (quest.minKnowledge > 0 ? Loc.F(" · {0} trí tuệ", " · {0} knowledge", " · 知識{0}", quest.minKnowledge) : "") +
-                  (requirement == null ? "  <color=#74D680>✓ " + Loc.T("đủ điều kiện", "requirements met", "条件クリア") + "</color>" : $"  <color=#FF8A7A>✕ {requirement}</color>");
+                  (requirement == null ? "  <color=#74D680>✓ " + Loc.T("đủ điều kiện", "requirements met", "条件クリア") + "</color>" : $"  <color=#FF8A7A>× {requirement}</color>");
             NLUi.Label(_detail, "Info",
                 Loc.F("<color=#A8B4C4>Giao việc</color>  {0}      <color=#A8B4C4>Ở đâu</color>  {1}\n", "<color=#A8B4C4>Given by</color>  {0}      <color=#A8B4C4>Where</color>  {1}\n", "<color=#A8B4C4>依頼者</color>  {0}      <color=#A8B4C4>場所</color>  {1}\n", quest.GiverName, quest.Location) +
                 requirementLine +

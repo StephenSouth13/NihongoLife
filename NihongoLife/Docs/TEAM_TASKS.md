@@ -2090,3 +2090,9 @@ Tên lớp test viết tắt: PlayMode = `NihongoLife.Tests.<Lớp>`; EditMode =
 ## 2026-11-01 - Russian path: all 53 YouTube lessons linked
 - What: the remaining 26 youtubeUrl slots in Resources/Content/Russian/ru_path.json are filled (A2 u16-u20 + cert/mock A2, B1 u21-u28 + cert/mock B1, B2 u29-u35 + cert/mock B2), so all 53 path steps link a published @NihongoLifeGame video. Why: every Russian lesson is now uploaded.
 - Tests: no test change needed (ModelAnswersAndRussianPathTests counts filled slots; the empty-slot check runs only while an empty slot exists). EditMode full run 333/333 passed.
+
+### 2026-11-01 - Intro trailer first-launch fixes
+- While the intro trailer films (IntroTrailer.Playing): LocationUnlocks.Evaluate does nothing, MapUnlockCardUI does not queue the full-screen 'new area' card, WalletLedger does not record (the trailer's sale stayed in the real wallet history), and IslandRuntime skips the welcome banner and toasts.
+- IntroTrailer reloads PlayerStatus on its throw-away save and back, and restores the player's live vitals afterwards without writing the real save.
+- The close glyph U+2715 (missing from NotoSansJP, which caused TMP warnings) is replaced by '×' in TaskJournalUI and QuestLogPopup.
+- New PlayMode test IntroTrailerFirstLaunchPlayModeTests: fresh first launch, the trailer plays to the end with no warnings or errors, then the town loads.

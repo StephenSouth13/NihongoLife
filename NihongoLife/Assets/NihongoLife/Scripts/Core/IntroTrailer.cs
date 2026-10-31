@@ -19,6 +19,7 @@ namespace NihongoLife.Core
         private static Action _then;
         private static IProgressRepository _realSaves;
         private static TimeSpan _islandClock;
+        private static float[] _vitals;
 
         /// <summary>Tests only (PlayModeSaveGuard): starting a game never plays the intro.</summary>
         public static bool Bypass;
@@ -47,9 +48,14 @@ namespace NihongoLife.Core
         {
             if (Playing) return;
             Playing = true;
+            // A player already in the world: its live vitals are kept aside (the real save is not written) and the
+            // trailer shows the fresh ones of its throw-away save.
+            var status = NihongoLife.Player.PlayerStatus.Instance;
+            _vitals = status != null ? new[] { status.CurrentHealth, status.CurrentEnergy, status.Hunger, status.Thirst, status.Sleepiness } : null;
             GameServices.TryGet(out _realSaves);
             _islandClock = NihongoLife.Island.IslandState.ClockOffset;
             GameServices.Replace<IProgressRepository>(new MemoryProgressRepository());
+            if (status != null) status.ReloadProgress();
         }
 
         /// <summary>The reel ended or was skipped: real saves back, then the game continues.</summary>
@@ -61,6 +67,13 @@ namespace NihongoLife.Core
             else GameServices.Unregister<IProgressRepository>();
             _realSaves = null;
             NihongoLife.Island.IslandState.ClockOffset = _islandClock;
+            var status = NihongoLife.Player.PlayerStatus.Instance;
+            if (status != null)
+            {
+                status.ReloadProgress(); // the player's own level, money and vitals again
+                if (_vitals != null) status.DebugSetNeeds(_vitals[0], _vitals[1], _vitals[2], _vitals[3], _vitals[4]);
+            }
+            _vitals = null;
             var then = _then;
             _then = null;
             if (then == null) return;
@@ -72,7 +85,7 @@ namespace NihongoLife.Core
         public static bool HasContinuation => _then != null;
 
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
-        private static void ResetStatics() { Playing = false; _then = null; _realSaves = null; }
+        private static void ResetStatics() { Playing = false; _then = null; _realSaves = null; _vitals = null; }
 
         /// <summary>A save that lives only in memory, fresh for each trailer.</summary>
         private sealed class MemoryProgressRepository : IProgressRepository

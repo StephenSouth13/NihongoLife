@@ -149,7 +149,7 @@ namespace NihongoLife.Core
         /// </summary>
         public static void Evaluate()
         {
-            if (Bypass || PlayerSessionService.OpenWorld || !GameServices.TryGet(out NihongoLife.Save.IProgressRepository repo)) return;
+            if (Bypass || IntroTrailer.Playing || PlayerSessionService.OpenWorld || !GameServices.TryGet(out NihongoLife.Save.IProgressRepository repo)) return; // the intro trailer films on a throw-away save: nothing opens
             // A save from before the roadmap (past the opening, no map flags yet) gets its open places recorded
             // quietly, instead of a row of "new place" cards at once.
             bool quiet = repo.GetProgress()?.storyFlags?.Any(f => f.StartsWith(FlagPrefix)) != true && !NihongoLife.Scenario.StoryDirector.InPrologue;
