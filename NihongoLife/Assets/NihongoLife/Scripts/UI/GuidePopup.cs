@@ -79,17 +79,17 @@ namespace NihongoLife.UI
                 int column = i % 2;
                 int row = i / 2;
                 float x = 38f + column * 530f;
-                float y = 128f + row * 186f;
+                float y = 120f + row * 172f;
                 var step = _steps[i];
 
-                AddRounded(card, "StepCard", x, y, 500f, 170f, Surface);
+                AddRounded(card, "StepCard", x, y, 500f, 160f, Surface);
                 AddCircle(card, "Badge", x + 18f, y + 18f, 46f, Gold);
                 AddText(card, (i + 1).ToString(), 26f, x + 18f, y + 18f, 46f, 46f, TextAlignmentOptions.Center, FontStyles.Bold, false, DarkText);
                 AddLocalizedText(card, step.titleVi, step.titleEn, step.titleJa, 22f, x + 78f, y + 20f, 402f, 36f, TextAlignmentOptions.MidlineLeft, FontStyles.Bold, false, Gold);
-                step.body = AddText(card, string.Empty, 17f, x + 78f, y + 62f, 404f, 100f, TextAlignmentOptions.TopLeft, FontStyles.Normal, true);
+                step.body = AddText(card, string.Empty, 17f, x + 78f, y + 60f, 404f, 92f, TextAlignmentOptions.TopLeft, FontStyles.Normal, true);
             }
 
-            AddLocalizedText(card, "Phím tắt", "Shortcuts", "ショートカット", 17f, 38f, 506f, 300f, 26f, TextAlignmentOptions.MidlineLeft, FontStyles.Bold, false, Gold);
+            AddLocalizedText(card, "Phím tắt", "Shortcuts", "ショートカット", 17f, 38f, 462f, 300f, 26f, TextAlignmentOptions.MidlineLeft, FontStyles.Bold, false, Gold);
 
             _shortcuts.Add(new Shortcut { fixedKey = "W A S D", vi = "Di chuyển", en = "Move", ja = "移動" });
             _shortcuts.Add(new Shortcut { id = GameInputId.Sprint, vi = "Chạy", en = "Sprint", ja = "走る" });
@@ -107,11 +107,15 @@ namespace NihongoLife.UI
             {
                 var shortcut = _shortcuts[i];
                 float x = 38f + (i % 4) * 264f;
-                float y = 538f + (i / 4) * 54f;
+                float y = 492f + (i / 4) * 52f;
                 AddRounded(card, "Chip", x, y, 248f, 44f, Surface);
                 AddRounded(card, "KeyBox", x + 6f, y + 6f, 96f, 32f, new Color(0.18f, 0.22f, 0.26f, 1f));
                 shortcut.keyText = AddText(card, "-", 15f, x + 6f, y + 6f, 96f, 32f, TextAlignmentOptions.Center, FontStyles.Bold, false, Gold);
-                AddLocalizedText(card, shortcut.vi, shortcut.en, shortcut.ja, 16f, x + 112f, y + 4f, 130f, 36f, TextAlignmentOptions.MidlineLeft);
+                var label = AddLocalizedText(card, shortcut.vi, shortcut.en, shortcut.ja, 15f, x + 110f, y + 3f, 132f, 38f, TextAlignmentOptions.MidlineLeft, FontStyles.Normal, true);
+                label.enableAutoSizing = true;
+                label.fontSizeMin = 10f;
+                label.fontSizeMax = 15f;
+                label.overflowMode = TextOverflowModes.Truncate;
             }
         }
 

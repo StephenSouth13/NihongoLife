@@ -102,6 +102,22 @@ namespace NihongoLife.UI
             return Rect.MinMaxRect(Mathf.Min(p.x, q.x), Mathf.Min(p.y, q.y), Mathf.Max(p.x, q.x), Mathf.Max(p.y, q.y));
         }
 
+        /// <summary>The pop-up card a control sits on: its outermost ancestor under the layer with a visible Image that is not full-screen.</summary>
+        static RectTransform PanelOf(RectTransform canvasRect, RectTransform layer, Transform t)
+        {
+            RectTransform panel = null;
+            Rect screen = canvasRect.rect;
+            for (var p = t.parent; p != null && p != layer && p != canvasRect; p = p.parent)
+            {
+                var image = p.GetComponent<Image>();
+                if (image == null || !image.enabled || image.color.a < 0.3f) continue;
+                var r = Box(canvasRect, (RectTransform)p);
+                if (r.width >= screen.width * 0.97f && r.height >= screen.height * 0.97f) continue;
+                panel = (RectTransform)p;
+            }
+            return layer == canvasRect ? null : panel;
+        }
+
         static Rect Box(RectTransform space, RectTransform rect)
         {
             var c = new Vector3[4];
@@ -160,6 +176,8 @@ namespace NihongoLife.UI
                     float spill = Mathf.Max(own.xMin - glyphs.xMin, glyphs.xMax - own.xMax, own.yMin - glyphs.yMin, glyphs.yMax - own.yMax);
                     if (spill > tolerance + 1f) issues.Add($"spills out of its box by {spill:0}px: {name} \"{Short(text.text)}\"");
                 }
+                if (text.isTextTruncated)
+                    issues.Add($"text cut off: {name} \"{Short(text.text)}\"");
                 Rect visible = glyphs;
                 if (!Clip(canvasRect, text.transform, ref visible)) continue;
                 if (visible.xMin < screen.xMin - tolerance || visible.xMax > screen.xMax + tolerance || visible.yMin < screen.yMin - tolerance || visible.yMax > screen.yMax + tolerance)
@@ -184,8 +202,29 @@ namespace NihongoLife.UI
                 if (!Clip(canvasRect, s.transform, ref r)) continue;
                 if (r.xMin < screen.xMin - tolerance || r.xMax > screen.xMax + tolerance || r.yMin < screen.yMin - tolerance || r.yMax > screen.yMax + tolerance)
                     issues.Add($"button off screen: {PathOf(s.transform, layer)}");
+                var panel = PanelOf(canvasRect, layer, s.transform);
+                if (panel != null)
+                {
+                    var pr = Box(canvasRect, panel);
+                    float out_ = Mathf.Max(pr.xMin - r.xMin, r.xMax - pr.xMax, pr.yMin - r.yMin, r.yMax - pr.yMax);
+                    if (out_ > tolerance + 1f) issues.Add($"button leaves its panel by {out_:0}px: {PathOf(s.transform, layer)}");
+                }
                 buttons.Add((s, r));
             }
+            // Chips, cards and other boxes drawn on a pop-up card must stay on that card.
+            if (layer != canvasRect)
+                foreach (var image in layer.GetComponentsInChildren<Image>(false))
+                {
+                    if (!image.enabled || image.color.a < 0.3f || !Visible(image.transform) || image.GetComponent<Selectable>() != null) continue;
+                    if (image.GetComponentInParent<ScrollRect>() != null) continue;
+                    var panel = PanelOf(canvasRect, layer, image.transform);
+                    if (panel == null) continue;
+                    var r = Box(canvasRect, image.rectTransform);
+                    if (!Clip(canvasRect, image.transform, ref r)) continue;
+                    var pr = Box(canvasRect, panel);
+                    float out_ = Mathf.Max(pr.xMin - r.xMin, r.xMax - pr.xMax, pr.yMin - r.yMin, r.yMax - pr.yMax);
+                    if (out_ > tolerance + 1f) issues.Add($"box leaves its panel by {out_:0}px: {PathOf(image.transform, layer)}");
+                }
             for (int i = 0; i < buttons.Count; i++)
                 for (int j = i + 1; j < buttons.Count; j++)
                 {

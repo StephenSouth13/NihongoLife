@@ -2111,3 +2111,10 @@ Tên lớp test viết tắt: PlayMode = `NihongoLife.Tests.<Lớp>`; EditMode =
 ### 2026-11-01 - WebGL rebuild check (main 75d05c873)
 - WebGL rebuilt from main with ReleaseBuild.BuildWebGL (Validation passed, 100.0 MB, 12 area packs including nlzone-trailer).
 - First-launch check on a fresh browser profile (Playwright + Chrome), path Bắt đầu > Ngoại tuyến > Chọn nhân vật này: desktop 1280x720 and phone landscape 844x390 with touch. The intro trailer plays and the town loads on both, with 0 console errors (only offline-config warnings). No code changes were needed.
+
+### 2026-11-01 - Menu UI fit, phone detection, switchable menu character
+- How to play: step cards and the 11 shortcut chips are re-spaced so every chip stays inside the card (the last row used to run 30 px past it); chip labels shrink/wrap instead of "...". The Russian "Founding team" credit was shortened so it fits the About card.
+- Top bar (language, sign in, about, touch controls): drops to the bottom bar whenever its buttons do not fit next to the title (wide-but-short phone browsers like 844x390 @2x), and labels shrink and wrap instead of being cut.
+- UiLayoutProbe now also reports cut-off text (isTextTruncated), buttons that leave their pop-up card and boxes (chips, cards) that leave their card. MenuLayoutPlayModeTests adds desktop 1280x720 and phone 844x390 @2x browser sizes; main, mode, character, settings, guide, about and auth in 4 languages: 280 audits, 0 issues.
+- UiScreen.IsPhone also follows the browser's coarse (finger) pointer, so phone/tablet browsers get the phone UI profile without the touch flag (Touch controls: Off still wins).
+- Main menu character: all 8 playable kids are placed in 01_MainMenu under MenuAvatarStage (scene-authored, MenuAvatarBootstrap removed; nothing is created at runtime). The figure follows the character chosen in Choose character, and a tap/click on it switches to the next kid and saves that choice; Choose character opens on the saved kid.

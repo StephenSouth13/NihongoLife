@@ -696,6 +696,9 @@ namespace NihongoLife.UI
             HideInfoPopups();
             characterSelectPanel.SetActive(true);
             characterSelectPanel.transform.SetAsLastSibling();
+            // The menu figure can switch kids with a tap, so start from the saved choice rather than the one read at build time.
+            int saved = PlayableCharacterCatalog.IndexOf(PlayableCharacterCatalog.GetSelected().Id);
+            if (saved >= 0) selectedCharacterIndex = saved;
             SelectCharacter(selectedCharacterIndex);
             UIStyleKit.PlayShowAnimation(characterSelectPanel.transform.Find("Card").gameObject);
             if (confirmCharacterButton != null && EventSystem.current != null)

@@ -2716,6 +2716,115 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 140352893}
   m_CullTransparentMesh: 1
+--- !u!1001 &140439119
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 945346363}
+    m_Modifications:
+    - target: {fileID: 2524946057392054102, guid: ed5ea1d1368dc574d9821c4a73348613, type: 3}
+      propertyPath: m_Name
+      value: Figure_kid_yui
+      objectReference: {fileID: 0}
+    - target: {fileID: 2524946057392054102, guid: ed5ea1d1368dc574d9821c4a73348613, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2900803745293010412, guid: ed5ea1d1368dc574d9821c4a73348613, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2900803745293010412, guid: ed5ea1d1368dc574d9821c4a73348613, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2900803745293010412, guid: ed5ea1d1368dc574d9821c4a73348613, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2900803745293010412, guid: ed5ea1d1368dc574d9821c4a73348613, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2900803745293010412, guid: ed5ea1d1368dc574d9821c4a73348613, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2900803745293010412, guid: ed5ea1d1368dc574d9821c4a73348613, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2900803745293010412, guid: ed5ea1d1368dc574d9821c4a73348613, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2900803745293010412, guid: ed5ea1d1368dc574d9821c4a73348613, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2900803745293010412, guid: ed5ea1d1368dc574d9821c4a73348613, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2900803745293010412, guid: ed5ea1d1368dc574d9821c4a73348613, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 2524946057392054102, guid: ed5ea1d1368dc574d9821c4a73348613, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 140439123}
+  m_SourcePrefab: {fileID: 100100000, guid: ed5ea1d1368dc574d9821c4a73348613, type: 3}
+--- !u!1 &140439120 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2524946057392054102, guid: ed5ea1d1368dc574d9821c4a73348613, type: 3}
+  m_PrefabInstance: {fileID: 140439119}
+  m_PrefabAsset: {fileID: 0}
+--- !u!95 &140439121 stripped
+Animator:
+  m_CorrespondingSourceObject: {fileID: 9124738661117452182, guid: ed5ea1d1368dc574d9821c4a73348613, type: 3}
+  m_PrefabInstance: {fileID: 140439119}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &140439122 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 2900803745293010412, guid: ed5ea1d1368dc574d9821c4a73348613, type: 3}
+  m_PrefabInstance: {fileID: 140439119}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &140439123
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 140439120}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e68ebcbc17f897546bc941685607e046, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: NihongoLife::NihongoLife.Core.CharacterAnimationController
+  _animator: {fileID: 140439121}
+  speedParam: Speed
+  isTalkingParam: IsTalking
+  bowParam: Bow
+  pointParam: Point
+  sitStateName: Sit
+  restStateName: Lay
+  jumpStateName: Jump
+  standStateName: Idle
+  speedDampTime: 0.12
+  fullSpeedReference: 1.15
+  enableProceduralPresentationOnAnimatedRig: 0
+  sittingClipName: Remy@Sitting
+  layingClipName: Remy@Laying Nodding
+  jumpClipName: Remy@Jump
+  idleBreathAmount: 0.012
+  walkBobAmount: 0.025
+  lookAtWeight: 0.42
 --- !u!1 &140777342
 GameObject:
   m_ObjectHideFlags: 0
@@ -13467,6 +13576,103 @@ Transform:
   - {fileID: 1070792522}
   m_Father: {fileID: 167354364}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &711285612
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 711285614}
+  - component: {fileID: 711285613}
+  m_Layer: 0
+  m_Name: MenuAvatarLight
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!108 &711285613
+Light:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 711285612}
+  m_Enabled: 1
+  serializedVersion: 12
+  m_Type: 2
+  m_Color: {r: 1, g: 0.93, b: 0.82, a: 1}
+  m_Intensity: 2.2
+  m_Range: 6
+  m_SpotAngle: 30
+  m_InnerSpotAngle: 21.80208
+  m_CookieSize2D: {x: 0.5, y: 0.5}
+  m_Shadows:
+    m_Type: 0
+    m_Resolution: -1
+    m_CustomResolution: -1
+    m_Strength: 1
+    m_Bias: 0.05
+    m_NormalBias: 0.4
+    m_NearPlane: 0.2
+    m_CullingMatrixOverride:
+      e00: 1
+      e01: 0
+      e02: 0
+      e03: 0
+      e10: 0
+      e11: 1
+      e12: 0
+      e13: 0
+      e20: 0
+      e21: 0
+      e22: 1
+      e23: 0
+      e30: 0
+      e31: 0
+      e32: 0
+      e33: 1
+    m_UseCullingMatrixOverride: 0
+  m_Cookie: {fileID: 0}
+  m_DrawHalo: 0
+  m_Flare: {fileID: 0}
+  m_RenderMode: 0
+  m_CullingMask:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_RenderingLayerMask: 1
+  m_Lightmapping: 4
+  m_LightShadowCasterMode: 0
+  m_AreaSize: {x: 1, y: 1}
+  m_BounceIntensity: 1
+  m_ColorTemperature: 6570
+  m_UseColorTemperature: 0
+  m_BoundingSphereOverride: {x: 0, y: 0, z: 0, w: 0}
+  m_UseBoundingSphereOverride: 0
+  m_UseViewFrustumForShadowCasterCull: 1
+  m_ForceVisible: 0
+  m_ShadowRadius: 0
+  m_ShadowAngle: 0
+  m_LightUnit: 1
+  m_LuxAtDistance: 1
+  m_EnableSpotReflector: 1
+--- !u!4 &711285614
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 711285612}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 945346363}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &714655848
 GameObject:
   m_ObjectHideFlags: 0
@@ -16506,6 +16712,115 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 10.096447, y: 1.15, z: 0.15}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!1001 &831580492
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 945346363}
+    m_Modifications:
+    - target: {fileID: 3516198596523292280, guid: aea36ada208e8f34db17e65b12ab49c0, type: 3}
+      propertyPath: m_Name
+      value: Figure_kid_riku
+      objectReference: {fileID: 0}
+    - target: {fileID: 3516198596523292280, guid: aea36ada208e8f34db17e65b12ab49c0, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4289638319283711170, guid: aea36ada208e8f34db17e65b12ab49c0, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4289638319283711170, guid: aea36ada208e8f34db17e65b12ab49c0, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4289638319283711170, guid: aea36ada208e8f34db17e65b12ab49c0, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4289638319283711170, guid: aea36ada208e8f34db17e65b12ab49c0, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4289638319283711170, guid: aea36ada208e8f34db17e65b12ab49c0, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4289638319283711170, guid: aea36ada208e8f34db17e65b12ab49c0, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4289638319283711170, guid: aea36ada208e8f34db17e65b12ab49c0, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4289638319283711170, guid: aea36ada208e8f34db17e65b12ab49c0, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4289638319283711170, guid: aea36ada208e8f34db17e65b12ab49c0, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4289638319283711170, guid: aea36ada208e8f34db17e65b12ab49c0, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 3516198596523292280, guid: aea36ada208e8f34db17e65b12ab49c0, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 831580496}
+  m_SourcePrefab: {fileID: 100100000, guid: aea36ada208e8f34db17e65b12ab49c0, type: 3}
+--- !u!1 &831580493 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3516198596523292280, guid: aea36ada208e8f34db17e65b12ab49c0, type: 3}
+  m_PrefabInstance: {fileID: 831580492}
+  m_PrefabAsset: {fileID: 0}
+--- !u!95 &831580494 stripped
+Animator:
+  m_CorrespondingSourceObject: {fileID: 7883541829490243256, guid: aea36ada208e8f34db17e65b12ab49c0, type: 3}
+  m_PrefabInstance: {fileID: 831580492}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &831580495 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 4289638319283711170, guid: aea36ada208e8f34db17e65b12ab49c0, type: 3}
+  m_PrefabInstance: {fileID: 831580492}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &831580496
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 831580493}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e68ebcbc17f897546bc941685607e046, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: NihongoLife::NihongoLife.Core.CharacterAnimationController
+  _animator: {fileID: 831580494}
+  speedParam: Speed
+  isTalkingParam: IsTalking
+  bowParam: Bow
+  pointParam: Point
+  sitStateName: Sit
+  restStateName: Lay
+  jumpStateName: Jump
+  standStateName: Idle
+  speedDampTime: 0.12
+  fullSpeedReference: 1.15
+  enableProceduralPresentationOnAnimatedRig: 0
+  sittingClipName: Remy@Sitting
+  layingClipName: Remy@Laying Nodding
+  jumpClipName: Remy@Jump
+  idleBreathAmount: 0.012
+  walkBobAmount: 0.025
+  lookAtWeight: 0.42
 --- !u!1 &849742814
 GameObject:
   m_ObjectHideFlags: 0
@@ -19419,6 +19734,78 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 10.7300005, y: 1.15, z: 0.15}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!1 &945346361
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 945346363}
+  - component: {fileID: 945346362}
+  m_Layer: 0
+  m_Name: MenuAvatarStage
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &945346362
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 945346361}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 14a7b80e5f0bb4a46994565fae6f566b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: NihongoLife::NihongoLife.UI.MenuAvatarStage
+  figures:
+  - {fileID: 1051901058}
+  - {fileID: 140439120}
+  - {fileID: 1367897339}
+  - {fileID: 1500246255}
+  - {fileID: 831580493}
+  - {fileID: 1202964380}
+  - {fileID: 1149865054}
+  - {fileID: 1408728205}
+  figureIds:
+  - kid_haruto
+  - kid_yui
+  - kid_sota
+  - kid_hina
+  - kid_riku
+  - kid_mio
+  - kid_yuto
+  - kid_sakura
+  figureLight: {fileID: 711285613}
+--- !u!4 &945346363
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 945346361}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 711285614}
+  - {fileID: 1051901060}
+  - {fileID: 140439122}
+  - {fileID: 1367897341}
+  - {fileID: 1500246257}
+  - {fileID: 831580495}
+  - {fileID: 1202964382}
+  - {fileID: 1149865056}
+  - {fileID: 1408728207}
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &946345817
 GameObject:
   m_ObjectHideFlags: 0
@@ -21663,6 +22050,111 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 7412017470815486267, guid: 141f24025ace1634eb52281b372f6171, type: 3}
   m_PrefabInstance: {fileID: 1036689912}
   m_PrefabAsset: {fileID: 0}
+--- !u!1001 &1051901057
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 945346363}
+    m_Modifications:
+    - target: {fileID: 4875020775434084940, guid: e870b80c175c54347be107912d96d48e, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4875020775434084940, guid: e870b80c175c54347be107912d96d48e, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4875020775434084940, guid: e870b80c175c54347be107912d96d48e, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4875020775434084940, guid: e870b80c175c54347be107912d96d48e, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4875020775434084940, guid: e870b80c175c54347be107912d96d48e, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4875020775434084940, guid: e870b80c175c54347be107912d96d48e, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4875020775434084940, guid: e870b80c175c54347be107912d96d48e, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4875020775434084940, guid: e870b80c175c54347be107912d96d48e, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4875020775434084940, guid: e870b80c175c54347be107912d96d48e, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4875020775434084940, guid: e870b80c175c54347be107912d96d48e, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5254677379172120822, guid: e870b80c175c54347be107912d96d48e, type: 3}
+      propertyPath: m_Name
+      value: Figure_kid_haruto
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 5254677379172120822, guid: e870b80c175c54347be107912d96d48e, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1051901061}
+  m_SourcePrefab: {fileID: 100100000, guid: e870b80c175c54347be107912d96d48e, type: 3}
+--- !u!1 &1051901058 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5254677379172120822, guid: e870b80c175c54347be107912d96d48e, type: 3}
+  m_PrefabInstance: {fileID: 1051901057}
+  m_PrefabAsset: {fileID: 0}
+--- !u!95 &1051901059 stripped
+Animator:
+  m_CorrespondingSourceObject: {fileID: 1533371513671530550, guid: e870b80c175c54347be107912d96d48e, type: 3}
+  m_PrefabInstance: {fileID: 1051901057}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &1051901060 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 4875020775434084940, guid: e870b80c175c54347be107912d96d48e, type: 3}
+  m_PrefabInstance: {fileID: 1051901057}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1051901061
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1051901058}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e68ebcbc17f897546bc941685607e046, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: NihongoLife::NihongoLife.Core.CharacterAnimationController
+  _animator: {fileID: 1051901059}
+  speedParam: Speed
+  isTalkingParam: IsTalking
+  bowParam: Bow
+  pointParam: Point
+  sitStateName: Sit
+  restStateName: Lay
+  jumpStateName: Jump
+  standStateName: Idle
+  speedDampTime: 0.12
+  fullSpeedReference: 1.15
+  enableProceduralPresentationOnAnimatedRig: 0
+  sittingClipName: Remy@Sitting
+  layingClipName: Remy@Laying Nodding
+  jumpClipName: Remy@Jump
+  idleBreathAmount: 0.012
+  walkBobAmount: 0.025
+  lookAtWeight: 0.42
 --- !u!1 &1055589222
 GameObject:
   m_ObjectHideFlags: 0
@@ -23992,6 +24484,115 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1143899455}
   m_Mesh: {fileID: 10206, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!1001 &1149865053
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 945346363}
+    m_Modifications:
+    - target: {fileID: 1317159361478869948, guid: 61de8250cd9ae7540b22580b6f6ca4a5, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1317159361478869948, guid: 61de8250cd9ae7540b22580b6f6ca4a5, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1317159361478869948, guid: 61de8250cd9ae7540b22580b6f6ca4a5, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1317159361478869948, guid: 61de8250cd9ae7540b22580b6f6ca4a5, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1317159361478869948, guid: 61de8250cd9ae7540b22580b6f6ca4a5, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1317159361478869948, guid: 61de8250cd9ae7540b22580b6f6ca4a5, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1317159361478869948, guid: 61de8250cd9ae7540b22580b6f6ca4a5, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1317159361478869948, guid: 61de8250cd9ae7540b22580b6f6ca4a5, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1317159361478869948, guid: 61de8250cd9ae7540b22580b6f6ca4a5, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1317159361478869948, guid: 61de8250cd9ae7540b22580b6f6ca4a5, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1805008700188334342, guid: 61de8250cd9ae7540b22580b6f6ca4a5, type: 3}
+      propertyPath: m_Name
+      value: Figure_kid_yuto
+      objectReference: {fileID: 0}
+    - target: {fileID: 1805008700188334342, guid: 61de8250cd9ae7540b22580b6f6ca4a5, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 1805008700188334342, guid: 61de8250cd9ae7540b22580b6f6ca4a5, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1149865057}
+  m_SourcePrefab: {fileID: 100100000, guid: 61de8250cd9ae7540b22580b6f6ca4a5, type: 3}
+--- !u!1 &1149865054 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1805008700188334342, guid: 61de8250cd9ae7540b22580b6f6ca4a5, type: 3}
+  m_PrefabInstance: {fileID: 1149865053}
+  m_PrefabAsset: {fileID: 0}
+--- !u!95 &1149865055 stripped
+Animator:
+  m_CorrespondingSourceObject: {fileID: 4947012469382617542, guid: 61de8250cd9ae7540b22580b6f6ca4a5, type: 3}
+  m_PrefabInstance: {fileID: 1149865053}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &1149865056 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 1317159361478869948, guid: 61de8250cd9ae7540b22580b6f6ca4a5, type: 3}
+  m_PrefabInstance: {fileID: 1149865053}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1149865057
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1149865054}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e68ebcbc17f897546bc941685607e046, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: NihongoLife::NihongoLife.Core.CharacterAnimationController
+  _animator: {fileID: 1149865055}
+  speedParam: Speed
+  isTalkingParam: IsTalking
+  bowParam: Bow
+  pointParam: Point
+  sitStateName: Sit
+  restStateName: Lay
+  jumpStateName: Jump
+  standStateName: Idle
+  speedDampTime: 0.12
+  fullSpeedReference: 1.15
+  enableProceduralPresentationOnAnimatedRig: 0
+  sittingClipName: Remy@Sitting
+  layingClipName: Remy@Laying Nodding
+  jumpClipName: Remy@Jump
+  idleBreathAmount: 0.012
+  walkBobAmount: 0.025
+  lookAtWeight: 0.42
 --- !u!1 &1150807835
 GameObject:
   m_ObjectHideFlags: 0
@@ -24832,6 +25433,115 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 5019523340680990449, guid: 5278b8d5b9ea7174f9ef8d0877293cb5, type: 3}
   m_PrefabInstance: {fileID: 1199522806}
   m_PrefabAsset: {fileID: 0}
+--- !u!1001 &1202964379
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 945346363}
+    m_Modifications:
+    - target: {fileID: 7185174779990475523, guid: 52e51f883da39804a94ae4de13449b1d, type: 3}
+      propertyPath: m_Name
+      value: Figure_kid_mio
+      objectReference: {fileID: 0}
+    - target: {fileID: 7185174779990475523, guid: 52e51f883da39804a94ae4de13449b1d, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7565219202565265849, guid: 52e51f883da39804a94ae4de13449b1d, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7565219202565265849, guid: 52e51f883da39804a94ae4de13449b1d, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7565219202565265849, guid: 52e51f883da39804a94ae4de13449b1d, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7565219202565265849, guid: 52e51f883da39804a94ae4de13449b1d, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7565219202565265849, guid: 52e51f883da39804a94ae4de13449b1d, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7565219202565265849, guid: 52e51f883da39804a94ae4de13449b1d, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7565219202565265849, guid: 52e51f883da39804a94ae4de13449b1d, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7565219202565265849, guid: 52e51f883da39804a94ae4de13449b1d, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7565219202565265849, guid: 52e51f883da39804a94ae4de13449b1d, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7565219202565265849, guid: 52e51f883da39804a94ae4de13449b1d, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 7185174779990475523, guid: 52e51f883da39804a94ae4de13449b1d, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1202964383}
+  m_SourcePrefab: {fileID: 100100000, guid: 52e51f883da39804a94ae4de13449b1d, type: 3}
+--- !u!1 &1202964380 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7185174779990475523, guid: 52e51f883da39804a94ae4de13449b1d, type: 3}
+  m_PrefabInstance: {fileID: 1202964379}
+  m_PrefabAsset: {fileID: 0}
+--- !u!95 &1202964381 stripped
+Animator:
+  m_CorrespondingSourceObject: {fileID: 4475771111914603459, guid: 52e51f883da39804a94ae4de13449b1d, type: 3}
+  m_PrefabInstance: {fileID: 1202964379}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &1202964382 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 7565219202565265849, guid: 52e51f883da39804a94ae4de13449b1d, type: 3}
+  m_PrefabInstance: {fileID: 1202964379}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1202964383
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1202964380}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e68ebcbc17f897546bc941685607e046, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: NihongoLife::NihongoLife.Core.CharacterAnimationController
+  _animator: {fileID: 1202964381}
+  speedParam: Speed
+  isTalkingParam: IsTalking
+  bowParam: Bow
+  pointParam: Point
+  sitStateName: Sit
+  restStateName: Lay
+  jumpStateName: Jump
+  standStateName: Idle
+  speedDampTime: 0.12
+  fullSpeedReference: 1.15
+  enableProceduralPresentationOnAnimatedRig: 0
+  sittingClipName: Remy@Sitting
+  layingClipName: Remy@Laying Nodding
+  jumpClipName: Remy@Jump
+  idleBreathAmount: 0.012
+  walkBobAmount: 0.025
+  lookAtWeight: 0.42
 --- !u!1001 &1205424552
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -28155,6 +28865,115 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 899336023488205887, guid: fd65e016eb4a1744f9615b019b89564f, type: 3}
   m_PrefabInstance: {fileID: 1366622047}
   m_PrefabAsset: {fileID: 0}
+--- !u!1001 &1367897338
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 945346363}
+    m_Modifications:
+    - target: {fileID: 5028017316091877740, guid: 94bba0d7df21c0c4fb7b3d3be8031cdd, type: 3}
+      propertyPath: m_Name
+      value: Figure_kid_sota
+      objectReference: {fileID: 0}
+    - target: {fileID: 5028017316091877740, guid: 94bba0d7df21c0c4fb7b3d3be8031cdd, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5660122791032849366, guid: 94bba0d7df21c0c4fb7b3d3be8031cdd, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5660122791032849366, guid: 94bba0d7df21c0c4fb7b3d3be8031cdd, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5660122791032849366, guid: 94bba0d7df21c0c4fb7b3d3be8031cdd, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5660122791032849366, guid: 94bba0d7df21c0c4fb7b3d3be8031cdd, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5660122791032849366, guid: 94bba0d7df21c0c4fb7b3d3be8031cdd, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5660122791032849366, guid: 94bba0d7df21c0c4fb7b3d3be8031cdd, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5660122791032849366, guid: 94bba0d7df21c0c4fb7b3d3be8031cdd, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5660122791032849366, guid: 94bba0d7df21c0c4fb7b3d3be8031cdd, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5660122791032849366, guid: 94bba0d7df21c0c4fb7b3d3be8031cdd, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5660122791032849366, guid: 94bba0d7df21c0c4fb7b3d3be8031cdd, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 5028017316091877740, guid: 94bba0d7df21c0c4fb7b3d3be8031cdd, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1367897342}
+  m_SourcePrefab: {fileID: 100100000, guid: 94bba0d7df21c0c4fb7b3d3be8031cdd, type: 3}
+--- !u!1 &1367897339 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5028017316091877740, guid: 94bba0d7df21c0c4fb7b3d3be8031cdd, type: 3}
+  m_PrefabInstance: {fileID: 1367897338}
+  m_PrefabAsset: {fileID: 0}
+--- !u!95 &1367897340 stripped
+Animator:
+  m_CorrespondingSourceObject: {fileID: 1760035971579435436, guid: 94bba0d7df21c0c4fb7b3d3be8031cdd, type: 3}
+  m_PrefabInstance: {fileID: 1367897338}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &1367897341 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 5660122791032849366, guid: 94bba0d7df21c0c4fb7b3d3be8031cdd, type: 3}
+  m_PrefabInstance: {fileID: 1367897338}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1367897342
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1367897339}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e68ebcbc17f897546bc941685607e046, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: NihongoLife::NihongoLife.Core.CharacterAnimationController
+  _animator: {fileID: 1367897340}
+  speedParam: Speed
+  isTalkingParam: IsTalking
+  bowParam: Bow
+  pointParam: Point
+  sitStateName: Sit
+  restStateName: Lay
+  jumpStateName: Jump
+  standStateName: Idle
+  speedDampTime: 0.12
+  fullSpeedReference: 1.15
+  enableProceduralPresentationOnAnimatedRig: 0
+  sittingClipName: Remy@Sitting
+  layingClipName: Remy@Laying Nodding
+  jumpClipName: Remy@Jump
+  idleBreathAmount: 0.012
+  walkBobAmount: 0.025
+  lookAtWeight: 0.42
 --- !u!1 &1373487922
 GameObject:
   m_ObjectHideFlags: 0
@@ -29568,6 +30387,115 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 9.649839, y: 1.15, z: 0.15}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!1001 &1408728204
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 945346363}
+    m_Modifications:
+    - target: {fileID: 3760276515647909946, guid: 14b403e24fd517847ae7a25a4cb8101d, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3760276515647909946, guid: 14b403e24fd517847ae7a25a4cb8101d, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3760276515647909946, guid: 14b403e24fd517847ae7a25a4cb8101d, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3760276515647909946, guid: 14b403e24fd517847ae7a25a4cb8101d, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3760276515647909946, guid: 14b403e24fd517847ae7a25a4cb8101d, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3760276515647909946, guid: 14b403e24fd517847ae7a25a4cb8101d, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3760276515647909946, guid: 14b403e24fd517847ae7a25a4cb8101d, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3760276515647909946, guid: 14b403e24fd517847ae7a25a4cb8101d, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3760276515647909946, guid: 14b403e24fd517847ae7a25a4cb8101d, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3760276515647909946, guid: 14b403e24fd517847ae7a25a4cb8101d, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4568056563526249088, guid: 14b403e24fd517847ae7a25a4cb8101d, type: 3}
+      propertyPath: m_Name
+      value: Figure_kid_sakura
+      objectReference: {fileID: 0}
+    - target: {fileID: 4568056563526249088, guid: 14b403e24fd517847ae7a25a4cb8101d, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 4568056563526249088, guid: 14b403e24fd517847ae7a25a4cb8101d, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1408728208}
+  m_SourcePrefab: {fileID: 100100000, guid: 14b403e24fd517847ae7a25a4cb8101d, type: 3}
+--- !u!1 &1408728205 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4568056563526249088, guid: 14b403e24fd517847ae7a25a4cb8101d, type: 3}
+  m_PrefabInstance: {fileID: 1408728204}
+  m_PrefabAsset: {fileID: 0}
+--- !u!95 &1408728206 stripped
+Animator:
+  m_CorrespondingSourceObject: {fileID: 7119913134828169792, guid: 14b403e24fd517847ae7a25a4cb8101d, type: 3}
+  m_PrefabInstance: {fileID: 1408728204}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &1408728207 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 3760276515647909946, guid: 14b403e24fd517847ae7a25a4cb8101d, type: 3}
+  m_PrefabInstance: {fileID: 1408728204}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1408728208
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1408728205}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e68ebcbc17f897546bc941685607e046, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: NihongoLife::NihongoLife.Core.CharacterAnimationController
+  _animator: {fileID: 1408728206}
+  speedParam: Speed
+  isTalkingParam: IsTalking
+  bowParam: Bow
+  pointParam: Point
+  sitStateName: Sit
+  restStateName: Lay
+  jumpStateName: Jump
+  standStateName: Idle
+  speedDampTime: 0.12
+  fullSpeedReference: 1.15
+  enableProceduralPresentationOnAnimatedRig: 0
+  sittingClipName: Remy@Sitting
+  layingClipName: Remy@Laying Nodding
+  jumpClipName: Remy@Jump
+  idleBreathAmount: 0.012
+  walkBobAmount: 0.025
+  lookAtWeight: 0.42
 --- !u!1 &1412482364
 GameObject:
   m_ObjectHideFlags: 0
@@ -31968,6 +32896,115 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 7.8879347, y: 1.15, z: 0.15}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!1001 &1500246254
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 945346363}
+    m_Modifications:
+    - target: {fileID: 2728831397996478637, guid: 05db925c3ee2bea4487eb19c5f46fbd2, type: 3}
+      propertyPath: m_Name
+      value: Figure_kid_hina
+      objectReference: {fileID: 0}
+    - target: {fileID: 2728831397996478637, guid: 05db925c3ee2bea4487eb19c5f46fbd2, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3356607919082904087, guid: 05db925c3ee2bea4487eb19c5f46fbd2, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3356607919082904087, guid: 05db925c3ee2bea4487eb19c5f46fbd2, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3356607919082904087, guid: 05db925c3ee2bea4487eb19c5f46fbd2, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3356607919082904087, guid: 05db925c3ee2bea4487eb19c5f46fbd2, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3356607919082904087, guid: 05db925c3ee2bea4487eb19c5f46fbd2, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3356607919082904087, guid: 05db925c3ee2bea4487eb19c5f46fbd2, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3356607919082904087, guid: 05db925c3ee2bea4487eb19c5f46fbd2, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3356607919082904087, guid: 05db925c3ee2bea4487eb19c5f46fbd2, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3356607919082904087, guid: 05db925c3ee2bea4487eb19c5f46fbd2, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3356607919082904087, guid: 05db925c3ee2bea4487eb19c5f46fbd2, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 2728831397996478637, guid: 05db925c3ee2bea4487eb19c5f46fbd2, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1500246258}
+  m_SourcePrefab: {fileID: 100100000, guid: 05db925c3ee2bea4487eb19c5f46fbd2, type: 3}
+--- !u!1 &1500246255 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2728831397996478637, guid: 05db925c3ee2bea4487eb19c5f46fbd2, type: 3}
+  m_PrefabInstance: {fileID: 1500246254}
+  m_PrefabAsset: {fileID: 0}
+--- !u!95 &1500246256 stripped
+Animator:
+  m_CorrespondingSourceObject: {fileID: 8679911798080454765, guid: 05db925c3ee2bea4487eb19c5f46fbd2, type: 3}
+  m_PrefabInstance: {fileID: 1500246254}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &1500246257 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 3356607919082904087, guid: 05db925c3ee2bea4487eb19c5f46fbd2, type: 3}
+  m_PrefabInstance: {fileID: 1500246254}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1500246258
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1500246255}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e68ebcbc17f897546bc941685607e046, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: NihongoLife::NihongoLife.Core.CharacterAnimationController
+  _animator: {fileID: 1500246256}
+  speedParam: Speed
+  isTalkingParam: IsTalking
+  bowParam: Bow
+  pointParam: Point
+  sitStateName: Sit
+  restStateName: Lay
+  jumpStateName: Jump
+  standStateName: Idle
+  speedDampTime: 0.12
+  fullSpeedReference: 1.15
+  enableProceduralPresentationOnAnimatedRig: 0
+  sittingClipName: Remy@Sitting
+  layingClipName: Remy@Laying Nodding
+  jumpClipName: Remy@Jump
+  idleBreathAmount: 0.012
+  walkBobAmount: 0.025
+  lookAtWeight: 0.42
 --- !u!1001 &1502747270
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -44749,3 +45786,4 @@ SceneRoots:
   - {fileID: 788997649}
   - {fileID: 381360712}
   - {fileID: 1474484008}
+  - {fileID: 945346363}

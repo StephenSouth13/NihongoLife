@@ -35,6 +35,8 @@ namespace NihongoLife.UI
                 if (shortSide <= 500) return true;
                 if (shortSide > 1300) return false;
                 if (UnityEngine.Device.Application.isMobilePlatform || UnityEngine.Device.SystemInfo.deviceType == DeviceType.Handheld) return true;
+                // Phone and tablet browsers report a coarse (finger) pointer even when the user agent looks like a desktop.
+                if (NihongoLife.Core.TouchControlPrefs.Mode != 2 && NihongoLife.Core.WebGLPointer.Coarse) return true;
                 return NihongoLife.Core.TouchControlPrefs.Mode == 1;
             }
         }

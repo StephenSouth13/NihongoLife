@@ -34,8 +34,10 @@ namespace NihongoLife.Tests
             new Size("desktop_4x3_1024x768", 1024, 768, false),
             new Size("desktop_free_1280x620", 1280, 620, false),
             new Size("desktop_1366x768", 1366, 768, false),
+            new Size("desktop_browser_1280x720", 1280, 720, false),
             new Size("phone_landscape_2400x1080", 2400, 1080, true, new Rect(110f, 0f, 2180f, 1080f)),
             new Size("phone_small_1334x750", 1334, 750, true),
+            new Size("phone_browser_844x390_dpr2", 1688, 780, true),
         };
 
         static readonly GameLanguage[] Languages = { GameLanguage.Vietnamese, GameLanguage.English, GameLanguage.Japanese, GameLanguage.Russian };

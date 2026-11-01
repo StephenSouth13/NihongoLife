@@ -46,6 +46,43 @@ namespace NihongoLife.Tests
             Assert.Greater(lumMax - lumMin, 0.25f, "the character is visible, not a flat background");
         }
 
+        [UnityTest, Timeout(120000)]
+        public IEnumerator MainMenu_AvatarCyclesThroughEveryKid_AndFollowsTheSelection()
+        {
+            LogAssert.ignoreFailingMessages = true;
+            string saved = NihongoLife.Player.PlayableCharacterCatalog.GetSelected().Id;
+            try
+            {
+                yield return SceneManager.LoadSceneAsync("01_MainMenu");
+                yield return new WaitForSecondsRealtime(1f);
+                var stage = Object.FindFirstObjectByType<MenuAvatarStage>();
+                Assert.NotNull(stage, "the stage is authored in 01_MainMenu");
+                Assert.AreEqual(NihongoLife.Player.PlayableCharacterCatalog.Count, stage.FigureCount, "every playable kid is placed in the scene");
+                Assert.AreEqual(1, Object.FindObjectsByType<MenuAvatarStage>(FindObjectsSortMode.None).Length, "nothing adds a second stage at runtime");
+                var seen = new System.Collections.Generic.HashSet<string>();
+                for (int i = 0; i < stage.FigureCount; i++)
+                {
+                    seen.Add(stage.ShownId);
+                    Assert.AreEqual(stage.ShownId, NihongoLife.Player.PlayableCharacterCatalog.GetSelected().Id, "the shown kid is the saved choice");
+                    int active = 0;
+                    foreach (Transform child in stage.transform) if (child.gameObject.activeSelf && child.GetComponent<Light>() == null) active++;
+                    Assert.AreEqual(1, active, "exactly one figure is visible");
+                    Grab(Camera.main, $"cycle_{i}_{stage.ShownId}");
+                    stage.Cycle(1);
+                    yield return null;
+                }
+                Assert.AreEqual(stage.FigureCount, seen.Count, "next walks through every kid");
+                stage.Cycle(-1);
+                yield return null;
+                string back = stage.ShownId;
+                NihongoLife.Player.PlayableCharacterCatalog.SaveSelected("kid_mio");
+                yield return new WaitForSecondsRealtime(1f);
+                Assert.AreEqual("kid_mio", stage.ShownId, "the figure follows the character picked in Choose character");
+                Assert.AreNotEqual(string.Empty, back);
+            }
+            finally { NihongoLife.Player.PlayableCharacterCatalog.SaveSelected(saved); }
+        }
+
         private static Texture2D Grab(Camera camera, string name)
         {
             const int width = 1600, height = 900;
