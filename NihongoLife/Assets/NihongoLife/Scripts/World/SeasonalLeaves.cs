@@ -28,7 +28,7 @@ namespace NihongoLife.World
         private static void Boot()
         {
             var go = new GameObject("SeasonalLeaves");
-            DontDestroyOnLoad(go);
+            if (Application.isPlaying) DontDestroyOnLoad(go);
             Instance = go.AddComponent<SeasonalLeaves>();
         }
 

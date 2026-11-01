@@ -81,7 +81,7 @@ namespace NihongoLife.UI
 
             if (_arrow == null)
             {
-                _arrow = new GameObject("QuestDirectionArrow");
+                _arrow = UiBind.Make("QuestDirectionArrow");
                 _arrow.name = "QuestDirectionArrow";
                 Material arrowMaterial = CreateMaterial("QuestArrowMat", new Color(1f, 0.72f, 0.16f, 1f));
                 CreateArrowWing(_arrow.transform, "Left", new Vector3(-0.16f, 0f, 0f), Quaternion.Euler(0f, -38f, 0f), arrowMaterial);
@@ -90,7 +90,7 @@ namespace NihongoLife.UI
 
             if (_hudIndicator == null && transform is RectTransform hudRoot)
             {
-                var indicator = new GameObject("QuestWaypoint", typeof(RectTransform), typeof(Image));
+                var indicator = UiBind.Make("QuestWaypoint", typeof(RectTransform), typeof(Image));
                 indicator.transform.SetParent(hudRoot, false);
                 _hudIndicator = (RectTransform)indicator.transform;
                 _hudIndicator.sizeDelta = new Vector2(220f, 58f);
@@ -126,12 +126,12 @@ namespace NihongoLife.UI
 
         private static TextMeshProUGUI CreateHudText(Transform parent, string name, string value, Vector2 position, Vector2 size, float fontSize)
         {
-            var go = new GameObject(name, typeof(RectTransform));
+            var go = UiBind.Make(name, typeof(RectTransform));
             go.transform.SetParent(parent, false);
             var rect = (RectTransform)go.transform;
             rect.anchoredPosition = position;
             rect.sizeDelta = size;
-            var text = go.AddComponent<TextMeshProUGUI>();
+            var text = go.Need<TextMeshProUGUI>();
             text.text = value;
             text.fontSize = fontSize;
             text.alignment = TextAlignmentOptions.Center;

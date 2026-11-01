@@ -57,9 +57,9 @@ namespace NihongoLife.UI
             get
             {
                 if (_instance != null) return _instance;
-                var go = new GameObject("CareerAvatarStage");
-                DontDestroyOnLoad(go);
-                _instance = go.AddComponent<CareerAvatarStage>();
+                var go = UiBind.Make("CareerAvatarStage");
+                if (Application.isPlaying) DontDestroyOnLoad(go);
+                _instance = go.Need<CareerAvatarStage>();
                 _instance.Init();
                 return _instance;
             }
@@ -72,9 +72,9 @@ namespace NihongoLife.UI
 
         private void Init()
         {
-            var camGo = new GameObject("StageCamera");
+            var camGo = UiBind.Make("StageCamera");
             camGo.transform.SetParent(transform, false);
-            _cam = camGo.AddComponent<Camera>();
+            _cam = camGo.Need<Camera>();
             _cam.enabled = false;
             _cam.clearFlags = CameraClearFlags.SolidColor;
             _cam.backgroundColor = new Color(0f, 0f, 0f, 0f);
@@ -91,9 +91,9 @@ namespace NihongoLife.UI
 
         private Light MakeLight(string name, Color color, float intensity)
         {
-            var go = new GameObject(name);
+            var go = UiBind.Make(name);
             go.transform.SetParent(transform, false);
-            var l = go.AddComponent<Light>();
+            var l = go.Need<Light>();
             l.type = LightType.Point; l.color = color; l.intensity = intensity; l.range = 9f; l.shadows = LightShadows.None;
             l.enabled = false; // switched on only while rendering an avatar: it must never touch the game world
             return l;

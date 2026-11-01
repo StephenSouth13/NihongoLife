@@ -19,7 +19,7 @@ namespace NihongoLife.Learning
             if (_runner == null)
             {
                 var go = new GameObject("AlbumSnapshotter") { hideFlags = HideFlags.HideInHierarchy };
-                DontDestroyOnLoad(go);
+                if (Application.isPlaying) DontDestroyOnLoad(go);
                 _runner = go.AddComponent<AlbumSnapshotter>();
             }
             _runner.StartCoroutine(_runner.Capture(pageId));

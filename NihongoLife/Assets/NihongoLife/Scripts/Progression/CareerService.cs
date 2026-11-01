@@ -399,7 +399,7 @@ namespace NihongoLife.Progression
         {
             if (_instance != null) return;
             var go = new GameObject("CareerClock");
-            DontDestroyOnLoad(go);
+            if (Application.isPlaying) DontDestroyOnLoad(go);
             _instance = go.AddComponent<CareerClock>();
         }
 

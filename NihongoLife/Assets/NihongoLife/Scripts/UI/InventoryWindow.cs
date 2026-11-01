@@ -44,7 +44,7 @@ namespace NihongoLife.UI
         public static InventoryWindow Create(Transform parent, TMP_FontAsset font)
         {
             var canvas = NLUi.CreateCanvas("InventoryCanvas", 550, parent);
-            var window = canvas.gameObject.AddComponent<InventoryWindow>();
+            var window = canvas.gameObject.Need<InventoryWindow>();
             window._font = font != null ? font : NLUi.ResolveFont();
             window.Build(canvas.transform);
             return window;
@@ -222,7 +222,7 @@ namespace NihongoLife.UI
 
         private void Build(Transform canvas)
         {
-            var rootGo = new GameObject("InventoryRoot", typeof(RectTransform), typeof(Image));
+            var rootGo = UiBind.Make("InventoryRoot", typeof(RectTransform), typeof(Image));
             rootGo.transform.SetParent(canvas, false);
             _root = (RectTransform)rootGo.transform;
             NLUi.Stretch(_root);
@@ -240,7 +240,7 @@ namespace NihongoLife.UI
             _slotsText = NLUi.Pill(header, "Slots", "0/16", _font, new Color(1f, 1f, 1f, 0.08f), NLUi.Muted, 18f).GetComponentInChildren<TextMeshProUGUI>();
             _walletText = NLUi.Pill(header, "Wallet", "¥0", _font, new Color(1f, 1f, 1f, 0.08f), NLUi.Gold, 20f).GetComponentInChildren<TextMeshProUGUI>();
             NLUi.Label(header, "Hint", "B / Esc", 15f, NLUi.Muted, _font).textWrappingMode = TextWrappingModes.NoWrap;
-            var closeSpace = new GameObject("CloseSpace", typeof(RectTransform));
+            var closeSpace = UiBind.Make("CloseSpace", typeof(RectTransform));
             closeSpace.transform.SetParent(header, false);
             NLUi.Size(closeSpace.transform, 46f, 46f);
             NLUi.CloseButton(window, _font, () => _root.gameObject.SetActive(false), 46f, 18f);
@@ -248,9 +248,9 @@ namespace NihongoLife.UI
             BuildToolbar(window);
             var body = NLUi.Group(window, "Body", false, 20f, TextAnchor.UpperLeft);
             ((HorizontalLayoutGroup)body.GetComponent<HorizontalOrVerticalLayoutGroup>()).childForceExpandWidth = false;
-            var gridGo = new GameObject("Slots", typeof(RectTransform));
+            var gridGo = UiBind.Make("Slots", typeof(RectTransform));
             gridGo.transform.SetParent(body, false);
-            var grid = gridGo.AddComponent<GridLayoutGroup>();
+            var grid = gridGo.Need<GridLayoutGroup>();
             grid.cellSize = new Vector2(126f, 126f);
             grid.spacing = new Vector2(10f, 10f);
             grid.constraint = GridLayoutGroup.Constraint.FixedColumnCount;
@@ -298,12 +298,12 @@ namespace NihongoLife.UI
             NLUi.Anchor(name.rectTransform, new Vector2(0.5f, 0f), new Vector2(0f, 8f), new Vector2(116f, 22f));
             var label = NLUi.Label(slot, "Number", (index + 1) <= 9 ? (index + 1).ToString() : string.Empty, 12f, NLUi.Muted, _font);
             NLUi.Anchor(label.rectTransform, new Vector2(0f, 1f), new Vector2(7f, -4f), new Vector2(20f, 18f));
-            var button = slot.gameObject.AddComponent<Button>();
+            var button = slot.gameObject.Need<Button>();
             button.targetGraphic = slot.GetComponent<Image>();
             button.transition = Selectable.Transition.None;
             int i = index;
             button.onClick.AddListener(() => Select(i));
-            slot.gameObject.AddComponent<BagSlotEvents>().Init(this, index);
+            slot.gameObject.Need<BagSlotEvents>().Init(this, index);
             _slots.Add((slot.GetComponent<Image>(), tile.GetComponent<Image>(), glyph, qty, name));
         }
 

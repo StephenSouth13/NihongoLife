@@ -99,7 +99,7 @@ namespace NihongoLife.World
         {
             RegisterLines();
             var go = new GameObject("TownFolk");
-            DontDestroyOnLoad(go);
+            if (Application.isPlaying) DontDestroyOnLoad(go);
             Instance = go.AddComponent<TownFolk>();
             SceneManager.sceneLoaded += (s, m) => { if (Instance != null) Instance.ResetForScene(); };
         }

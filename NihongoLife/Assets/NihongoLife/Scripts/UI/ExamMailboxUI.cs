@@ -113,7 +113,7 @@ namespace NihongoLife.UI
             _bell = bell.gameObject;
             var bellRect = bell.rectTransform;
             UiKit.Pin(bellRect, new Vector2(1f, 1f), -74f, -84f, 62f, 62f);
-            var toggle = bell.gameObject.AddComponent<Button>();
+            var toggle = bell.gameObject.Need<Button>();
             toggle.targetGraphic = bell;
             UIStyleKit.StyleButton(toggle, bell.color, new Color(0.16f, 0.22f, 0.3f, 1f), UiTheme.GoldDeep);
             bell.sprite = UiKit.Rounded(18);
@@ -125,7 +125,7 @@ namespace NihongoLife.UI
             _badge = UiKit.Label(badgeRoot.transform, "Count", "", 13f, Color.white, FontStyles.Bold, TextAlignmentOptions.Center);
             UiKit.Fill(_badge.rectTransform);
             badgeRoot.transform.SetAsLastSibling();
-            bell.gameObject.AddComponent<DraggableHudIcon>().Initialize("NL.ExamMailbox.IconPosition");
+            bell.gameObject.Need<DraggableHudIcon>().Initialize("NL.ExamMailbox.IconPosition");
 
             // Window.
             var window = UiKit.Card(canvas.transform, "MailboxWindow", UiTheme.Ink, 24, 0.6f, true);
@@ -249,7 +249,7 @@ namespace NihongoLife.UI
             var fbHead = UiKit.Label(_detail, "FeedbackHead", "Nhận xét", "Feedback", "コメント", 13f, UiTheme.Gold, FontStyles.Bold);
             UiKit.Size(fbHead, -1f, 22f);
             var text = UiUserContent.Mark(UiKit.Label(_detail, "Detail", "<noparse>" + summary + "</noparse>", 15f, UiTheme.TextSoft, FontStyles.Normal, TextAlignmentOptions.TopLeft, wrap: true));
-            text.gameObject.AddComponent<ContentSizeFitter>().verticalFit = ContentSizeFitter.FitMode.PreferredSize;
+            text.gameObject.Need<ContentSizeFitter>().verticalFit = ContentSizeFitter.FitMode.PreferredSize;
             AddSeen(record.id);
             RefreshBadge();
             HudNotificationTray.Instance?.Clear("exam-mail-" + record.id);

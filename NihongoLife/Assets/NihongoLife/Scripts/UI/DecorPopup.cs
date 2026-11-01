@@ -20,7 +20,7 @@ namespace NihongoLife.UI
 
         public static DecorPopup GetOrCreate(GameObject host, TMP_FontAsset font)
         {
-            var ui = host.GetComponent<DecorPopup>(); if (ui == null) ui = host.AddComponent<DecorPopup>();
+            var ui = host.GetComponent<DecorPopup>(); if (ui == null) ui = host.Need<DecorPopup>();
             ui.Initialize(font); return ui;
         }
 

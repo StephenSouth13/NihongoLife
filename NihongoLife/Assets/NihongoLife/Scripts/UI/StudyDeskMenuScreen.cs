@@ -96,6 +96,6 @@ namespace NihongoLife.UI
             _ => EduUiText.Get("desk.wardrobe"),
         };
 
-        private static T Comp<T>(GameObject g) where T : Component { return g.TryGetComponent<T>(out var c) ? c : g.AddComponent<T>(); }
+        private static T Comp<T>(GameObject g) where T : Component { return g.TryGetComponent<T>(out var c) ? c : g.Need<T>(); }
     }
 }

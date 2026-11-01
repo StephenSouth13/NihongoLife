@@ -39,8 +39,8 @@ namespace NihongoLife.UI
             {
                 if (_instance != null) return _instance;
                 var canvas = NLUi.CreateCanvas("TimedActionCanvas", 150);
-                DontDestroyOnLoad(canvas.gameObject);
-                var ui = canvas.gameObject.AddComponent<TimedAction>();
+                if (Application.isPlaying) DontDestroyOnLoad(canvas.gameObject);
+                var ui = canvas.gameObject.Need<TimedAction>();
                 var font = NLUi.ResolveFont();
                 ui._card = NLUi.Panel(canvas.transform, "ActionCard", new Color(0.04f, 0.055f, 0.07f, 0.94f), new RectOffset(22, 22, 12, 14), 6f);
                 NLUi.Anchor(ui._card, new Vector2(0.5f, 0f), new Vector2(0f, 104f), new Vector2(560f, 0f));
@@ -52,11 +52,11 @@ namespace NihongoLife.UI
                 ui._detail = NLUi.Label(top, "Detail", "", 15f, NLUi.Muted, font, FontStyles.Normal, TextAlignmentOptions.Right);
                 ui._detail.textWrappingMode = TextWrappingModes.NoWrap;
                 NLUi.Size(ui._detail, 150f);
-                var track = new GameObject("Track", typeof(RectTransform), typeof(Image), typeof(LayoutElement)).GetComponent<RectTransform>();
+                var track = UiBind.Make("Track", typeof(RectTransform), typeof(Image), typeof(LayoutElement)).GetComponent<RectTransform>();
                 track.SetParent(ui._card, false);
                 track.GetComponent<Image>().color = new Color(1f, 1f, 1f, 0.1f);
                 track.GetComponent<LayoutElement>().preferredHeight = 10f;
-                ui._fill = new GameObject("Fill", typeof(RectTransform), typeof(Image)).GetComponent<Image>();
+                ui._fill = UiBind.Make("Fill", typeof(RectTransform), typeof(Image)).GetComponent<Image>();
                 ui._fill.transform.SetParent(track, false);
                 ui._fill.color = NLUi.Gold;
                 var r = ui._fill.rectTransform; r.anchorMin = Vector2.zero; r.anchorMax = new Vector2(0f, 1f); r.offsetMin = r.offsetMax = Vector2.zero;

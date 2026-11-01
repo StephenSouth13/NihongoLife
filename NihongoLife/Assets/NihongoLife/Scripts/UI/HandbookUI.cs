@@ -81,8 +81,8 @@ namespace NihongoLife.UI
             {
                 if (_instance != null) return _instance;
                 var canvas = NLUi.CreateCanvas("HandbookCanvas", 645);
-                DontDestroyOnLoad(canvas.gameObject);
-                _instance = canvas.gameObject.AddComponent<HandbookUI>();
+                if (Application.isPlaying) DontDestroyOnLoad(canvas.gameObject);
+                _instance = canvas.gameObject.Need<HandbookUI>();
                 _instance._font = NLUi.ResolveFont();
                 _instance.Build((RectTransform)canvas.transform);
                 Loc.Watch(_instance, () => { if (IsOpen) _instance.Show(_instance._chapter, _instance._entry); });
@@ -124,20 +124,20 @@ namespace NihongoLife.UI
 
         private void Build(RectTransform canvas)
         {
-            _root = new GameObject("Handbook", typeof(RectTransform), typeof(Image)).GetComponent<RectTransform>();
+            _root = UiBind.Make("Handbook", typeof(RectTransform), typeof(Image)).GetComponent<RectTransform>();
             _root.SetParent(canvas, false);
             NLUi.Stretch(_root);
             _root.GetComponent<Image>().color = new Color(0.02f, 0.03f, 0.04f, 0.68f);
 
             // Ribbons first: they sit behind the cover and stick out on the right.
-            _book = new GameObject("Book", typeof(RectTransform)).GetComponent<RectTransform>();
+            _book = UiBind.Make("Book", typeof(RectTransform)).GetComponent<RectTransform>();
             _book.SetParent(_root, false);
             _book.anchorMin = _book.anchorMax = _book.pivot = new Vector2(0.5f, 0.5f);
             _book.anchoredPosition = new Vector2(-60f, 0f);
             _book.sizeDelta = new Vector2(1340f, 800f);
-            _book.gameObject.AddComponent<HudFitRect>().Configure(0.86f, 0.94f, Vector2.zero, 0.4f);
+            _book.gameObject.Need<HudFitRect>().Configure(0.86f, 0.94f, Vector2.zero, 0.4f);
 
-            _ribbons = new GameObject("Ribbons", typeof(RectTransform)).GetComponent<RectTransform>();
+            _ribbons = UiBind.Make("Ribbons", typeof(RectTransform)).GetComponent<RectTransform>();
             _ribbons.SetParent(_book, false);
             _ribbons.anchorMin = new Vector2(1f, 1f); _ribbons.anchorMax = new Vector2(1f, 1f); _ribbons.pivot = new Vector2(0f, 1f);
             _ribbons.anchoredPosition = new Vector2(-40f, -70f);
@@ -177,7 +177,7 @@ namespace NihongoLife.UI
 
         private static RectTransform Rounded(Transform parent, string name, Color color, int radius)
         {
-            var go = new GameObject(name, typeof(RectTransform), typeof(Image));
+            var go = UiBind.Make(name, typeof(RectTransform), typeof(Image));
             go.transform.SetParent(parent, false);
             var image = go.GetComponent<Image>();
             image.sprite = UiKit.Rounded(radius);
@@ -194,7 +194,7 @@ namespace NihongoLife.UI
             page.anchorMax = leftSide ? new Vector2(0.5f, 1f) : new Vector2(1f, 1f);
             page.offsetMin = offsetMin; page.offsetMax = offsetMax;
             // A faint shade toward the spine, as on a real open book.
-            var shade = new GameObject("SpineShade", typeof(RectTransform), typeof(Image)).GetComponent<RectTransform>();
+            var shade = UiBind.Make("SpineShade", typeof(RectTransform), typeof(Image)).GetComponent<RectTransform>();
             shade.SetParent(page, false);
             shade.anchorMin = leftSide ? new Vector2(1f, 0f) : Vector2.zero;
             shade.anchorMax = leftSide ? Vector2.one : new Vector2(0f, 1f);
@@ -222,7 +222,7 @@ namespace NihongoLife.UI
 
         private static void Spine(RectTransform cover)
         {
-            var spine = new GameObject("Spine", typeof(RectTransform), typeof(Image)).GetComponent<RectTransform>();
+            var spine = UiBind.Make("Spine", typeof(RectTransform), typeof(Image)).GetComponent<RectTransform>();
             spine.SetParent(cover, false);
             spine.anchorMin = new Vector2(0.5f, 0f); spine.anchorMax = new Vector2(0.5f, 1f);
             spine.sizeDelta = new Vector2(10f, -40f);
@@ -230,7 +230,7 @@ namespace NihongoLife.UI
             // Gilt stitches down the spine.
             for (int i = 0; i < 14; i++)
             {
-                var stitch = new GameObject("Stitch", typeof(RectTransform), typeof(Image)).GetComponent<RectTransform>();
+                var stitch = UiBind.Make("Stitch", typeof(RectTransform), typeof(Image)).GetComponent<RectTransform>();
                 stitch.SetParent(spine, false);
                 stitch.anchorMin = stitch.anchorMax = new Vector2(0.5f, 1f - (i + 0.5f) / 14f);
                 stitch.sizeDelta = new Vector2(3f, 18f);
@@ -240,7 +240,7 @@ namespace NihongoLife.UI
 
         private static RectTransform Area(RectTransform page, string name, Vector2 offsetMin, Vector2 offsetMax)
         {
-            var area = new GameObject(name, typeof(RectTransform)).GetComponent<RectTransform>();
+            var area = UiBind.Make(name, typeof(RectTransform)).GetComponent<RectTransform>();
             area.SetParent(page, false);
             NLUi.Stretch(area);
             area.offsetMin = offsetMin; area.offsetMax = offsetMax;
@@ -323,7 +323,7 @@ namespace NihongoLife.UI
                 ribbon.anchorMin = ribbon.anchorMax = ribbon.pivot = new Vector2(0f, 1f);
                 ribbon.anchoredPosition = new Vector2(0f, -i * 74f);
                 ribbon.sizeDelta = new Vector2(on ? 196f : 172f, 64f);
-                var button = ribbon.gameObject.AddComponent<Button>();
+                var button = ribbon.gameObject.Need<Button>();
                 button.targetGraphic = ribbon.GetComponent<Image>();
                 var chapter = c;
                 button.onClick.AddListener(() => Show(chapter, null));
@@ -357,11 +357,11 @@ namespace NihongoLife.UI
         private void Divider(RectTransform parent, Color color)
         {
             var line = NLUi.Group(parent, "Divider", false, 6f, TextAnchor.MiddleLeft, false);
-            var bar = new GameObject("Bar", typeof(RectTransform), typeof(Image)).GetComponent<RectTransform>();
+            var bar = UiBind.Make("Bar", typeof(RectTransform), typeof(Image)).GetComponent<RectTransform>();
             bar.SetParent(line, false);
             bar.GetComponent<Image>().color = color;
             NLUi.Size(bar, 120f, 3f);
-            var rest = new GameObject("Rest", typeof(RectTransform), typeof(Image)).GetComponent<RectTransform>();
+            var rest = UiBind.Make("Rest", typeof(RectTransform), typeof(Image)).GetComponent<RectTransform>();
             rest.SetParent(line, false);
             rest.GetComponent<Image>().color = Rule;
             NLUi.Size(rest, 380f, 1f);
@@ -369,14 +369,14 @@ namespace NihongoLife.UI
 
         private RectTransform Badge(RectTransform parent, string glyph, Color color, float size, float fontSize)
         {
-            var disc = new GameObject("Badge", typeof(RectTransform), typeof(Image), typeof(LayoutElement)).GetComponent<RectTransform>();
+            var disc = UiBind.Make("Badge", typeof(RectTransform), typeof(Image), typeof(LayoutElement)).GetComponent<RectTransform>();
             disc.SetParent(parent, false);
             var image = disc.GetComponent<Image>();
             image.sprite = HudGraphics.Disc;
             image.color = color;
             var layout = disc.GetComponent<LayoutElement>();
             layout.preferredWidth = layout.minWidth = size; layout.preferredHeight = layout.minHeight = size;
-            var ring = new GameObject("Ring", typeof(RectTransform), typeof(Image)).GetComponent<RectTransform>();
+            var ring = UiBind.Make("Ring", typeof(RectTransform), typeof(Image)).GetComponent<RectTransform>();
             ring.SetParent(disc, false);
             NLUi.Stretch(ring, 3f);
             ring.GetComponent<Image>().sprite = UiKit.RingThin;
@@ -400,7 +400,7 @@ namespace NihongoLife.UI
                 var layout = (HorizontalLayoutGroup)row.GetComponent<HorizontalOrVerticalLayoutGroup>();
                 layout.childForceExpandWidth = false;
                 layout.childAlignment = TextAnchor.MiddleLeft;
-                var button = row.gameObject.AddComponent<Button>();
+                var button = row.gameObject.Need<Button>();
                 button.targetGraphic = row.GetComponent<Image>();
                 var colors = button.colors;
                 colors.highlightedColor = new Color(0.92f, 0.86f, 0.74f, 1f);
@@ -449,7 +449,7 @@ namespace NihongoLife.UI
             if (string.IsNullOrEmpty(body)) return;
             var block = NLUi.Group(parent, "Section", true, 4f);
             var head = NLUi.Group(block, "Head", false, 8f, TextAnchor.MiddleLeft, false);
-            var mark = new GameObject("Mark", typeof(RectTransform), typeof(Image)).GetComponent<RectTransform>();
+            var mark = UiBind.Make("Mark", typeof(RectTransform), typeof(Image)).GetComponent<RectTransform>();
             mark.SetParent(head, false);
             mark.GetComponent<Image>().color = color;
             NLUi.Size(mark, 6f, 18f);
@@ -593,7 +593,7 @@ namespace NihongoLife.UI
             if (tex != null)
             {
                 var frame = NLUi.Panel(p, "PhotoFrame", Color.white, new RectOffset(8, 8, 8, 8), 0f);
-                var photo = new GameObject("Photo", typeof(RectTransform), typeof(RawImage), typeof(LayoutElement)).GetComponent<RawImage>();
+                var photo = UiBind.Make("Photo", typeof(RectTransform), typeof(RawImage), typeof(LayoutElement)).GetComponent<RawImage>();
                 photo.transform.SetParent(frame, false);
                 photo.texture = tex;
                 var le = photo.GetComponent<LayoutElement>();
@@ -734,7 +734,7 @@ namespace NihongoLife.UI
                 var picture = ItemIcons.Get(m.id); // the product's own picture (Resources/Items/<id>.png), as on the shelf
                 if (picture != null)
                 {
-                    var icon = new GameObject("MedicineIcon", typeof(RectTransform), typeof(Image), typeof(LayoutElement)).GetComponent<Image>();
+                    var icon = UiBind.Make("MedicineIcon", typeof(RectTransform), typeof(Image), typeof(LayoutElement)).GetComponent<Image>();
                     icon.transform.SetParent(card, false);
                     icon.sprite = picture; icon.preserveAspect = true; icon.raycastTarget = false;
                     var iconSize = icon.GetComponent<LayoutElement>();

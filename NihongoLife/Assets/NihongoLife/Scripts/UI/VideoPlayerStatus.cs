@@ -15,7 +15,7 @@ namespace NihongoLife.UI
         {
             var root = UiKit.Rect(parent, "LoadingStatus");
             UiKit.Pin(root, new Vector2(0.5f, 0.5f), 0f, 40f, 360f, 120f);
-            var s = root.gameObject.AddComponent<VideoPlayerStatus>();
+            var s = root.gameObject.Need<VideoPlayerStatus>();
             var ring = UiKit.Image(root, "Spinner", UiTheme.Teal, ArcSprite());
             ring.type = Image.Type.Simple;
             ring.preserveAspect = true;

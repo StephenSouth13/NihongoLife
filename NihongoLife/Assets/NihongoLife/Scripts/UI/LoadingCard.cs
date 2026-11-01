@@ -40,12 +40,12 @@ namespace NihongoLife.UI
             var root = (RectTransform)transform;
             var back = Img(root, "Background", new Color(0.03f, 0.045f, 0.06f, 1f));
             Stretch(back.rectTransform);
-            _picture = new GameObject("Picture", typeof(RectTransform), typeof(RawImage)).GetComponent<RawImage>();
+            _picture = UiBind.Make("Picture", typeof(RectTransform), typeof(RawImage)).GetComponent<RawImage>();
             _picture.transform.SetParent(root, false);
             _pictureRect = _picture.rectTransform;
             Stretch(_pictureRect);
             _picture.raycastTarget = false;
-            var shade = new GameObject("Shade", typeof(RectTransform), typeof(RawImage)).GetComponent<RawImage>();
+            var shade = UiBind.Make("Shade", typeof(RectTransform), typeof(RawImage)).GetComponent<RawImage>();
             shade.transform.SetParent(root, false);
             Stretch(shade.rectTransform);
             shade.texture = Gradient();
@@ -77,14 +77,14 @@ namespace NihongoLife.UI
             _avatar.GetComponent<Image>().type = Image.Type.Sliced;
             _avatar.anchorMin = _avatar.anchorMax = new Vector2(0f, 0.5f);
             _avatar.sizeDelta = new Vector2(92f, 92f);
-            var mask = new GameObject("Mask", typeof(RectTransform), typeof(Image), typeof(Mask)).GetComponent<RectTransform>();
+            var mask = UiBind.Make("Mask", typeof(RectTransform), typeof(Image), typeof(Mask)).GetComponent<RectTransform>();
             mask.SetParent(_avatar, false);
             Stretch(mask); mask.offsetMin = new Vector2(4f, 4f); mask.offsetMax = new Vector2(-4f, -4f);
             mask.GetComponent<Image>().sprite = UIStyleKit.RoundedSprite();
             mask.GetComponent<Image>().type = Image.Type.Sliced;
             mask.GetComponent<Mask>().showMaskGraphic = true;
             mask.GetComponent<Image>().color = new Color(0.12f, 0.15f, 0.2f, 1f);
-            _avatarImage = new GameObject("Portrait", typeof(RectTransform), typeof(RawImage)).GetComponent<RawImage>();
+            _avatarImage = UiBind.Make("Portrait", typeof(RectTransform), typeof(RawImage)).GetComponent<RawImage>();
             _avatarImage.transform.SetParent(mask, false);
             Stretch(_avatarImage.rectTransform);
             _avatarImage.raycastTarget = false;
@@ -244,7 +244,7 @@ namespace NihongoLife.UI
 
         private static Image Img(Transform parent, string name, Color color)
         {
-            var image = new GameObject(name, typeof(RectTransform), typeof(Image)).GetComponent<Image>();
+            var image = UiBind.Make(name, typeof(RectTransform), typeof(Image)).GetComponent<Image>();
             image.transform.SetParent(parent, false);
             image.color = color;
             image.raycastTarget = false;
@@ -253,7 +253,7 @@ namespace NihongoLife.UI
 
         private static TextMeshProUGUI Text(Transform parent, string name, string value, TMP_FontAsset font, float size, Color color, FontStyles style, TextAlignmentOptions alignment = TextAlignmentOptions.Left)
         {
-            var text = new GameObject(name, typeof(RectTransform), typeof(TextMeshProUGUI)).GetComponent<TextMeshProUGUI>();
+            var text = UiBind.Make(name, typeof(RectTransform), typeof(TextMeshProUGUI)).GetComponent<TextMeshProUGUI>();
             text.transform.SetParent(parent, false);
             if (font != null) text.font = font;
             text.text = value;

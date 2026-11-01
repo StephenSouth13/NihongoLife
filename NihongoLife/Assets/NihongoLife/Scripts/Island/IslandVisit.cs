@@ -190,7 +190,7 @@ namespace NihongoLife.Island
             {
                 if (_instance != null) return _instance;
                 var go = new GameObject("IslandShowcaseService");
-                DontDestroyOnLoad(go);
+                if (Application.isPlaying) DontDestroyOnLoad(go);
                 _instance = go.AddComponent<IslandShowcaseService>();
                 return _instance;
             }

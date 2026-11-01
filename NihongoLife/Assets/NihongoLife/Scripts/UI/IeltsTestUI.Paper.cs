@@ -94,7 +94,7 @@ namespace NihongoLife.UI
 
         private void GroupHeader(RectTransform parent, IeltsGroup group)
         {
-            var spacer = new GameObject("Spacer", typeof(RectTransform), typeof(LayoutElement));
+            var spacer = UiBind.Make("Spacer", typeof(RectTransform), typeof(LayoutElement));
             spacer.transform.SetParent(parent, false);
             spacer.GetComponent<LayoutElement>().preferredHeight = 6f;
             string range = group.from == group.to ? $"Question {group.from}" : $"Questions {group.from}–{group.to}";
@@ -121,10 +121,10 @@ namespace NihongoLife.UI
             }
             const float width = 600f;
             float height = width * texture.height / Mathf.Max(1f, texture.width);
-            var holder = new GameObject("GroupImage", typeof(RectTransform), typeof(LayoutElement)).GetComponent<RectTransform>();
+            var holder = UiBind.Make("GroupImage", typeof(RectTransform), typeof(LayoutElement)).GetComponent<RectTransform>();
             holder.SetParent(parent, false);
             holder.GetComponent<LayoutElement>().preferredHeight = height + 8f;
-            var image = new GameObject("Picture", typeof(RectTransform), typeof(RawImage)).GetComponent<RawImage>();
+            var image = UiBind.Make("Picture", typeof(RectTransform), typeof(RawImage)).GetComponent<RawImage>();
             image.transform.SetParent(holder, false);
             image.texture = texture;
             image.raycastTarget = false;
@@ -183,7 +183,7 @@ namespace NihongoLife.UI
                         size.minWidth = 32f;
                     }
                 }
-                var filler = new GameObject("Fill", typeof(RectTransform), typeof(LayoutElement));
+                var filler = UiBind.Make("Fill", typeof(RectTransform), typeof(LayoutElement));
                 filler.transform.SetParent(row, false);
                 filler.GetComponent<LayoutElement>().flexibleWidth = 1f;
             }
@@ -293,7 +293,7 @@ namespace NihongoLife.UI
                 var label = PaperText(row, $"<b>{item.number}</b>   {item.text}", 17f, FontStyles.Normal);
                 NLUi.Size(label, 360f);
                 LetterRow(row, item.number, group.options);
-                var filler = new GameObject("Fill", typeof(RectTransform), typeof(LayoutElement));
+                var filler = UiBind.Make("Fill", typeof(RectTransform), typeof(LayoutElement));
                 filler.transform.SetParent(row, false);
                 filler.GetComponent<LayoutElement>().flexibleWidth = 1f;
             }

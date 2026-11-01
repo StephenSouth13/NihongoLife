@@ -68,7 +68,7 @@ namespace NihongoLife.UI
             _thumbBg = UiKit.Image(_stage, "Thumb", new Color(1f, 1f, 1f, 0f));
             UiKit.Fill(_thumbBg.rectTransform);
             _thumbBg.preserveAspect = true;
-            var screenGo = new GameObject("Screen", typeof(RectTransform), typeof(RawImage));
+            var screenGo = UiBind.Make("Screen", typeof(RectTransform), typeof(RawImage));
             screenGo.transform.SetParent(_stage, false);
             _screen = screenGo.GetComponent<RawImage>();
             _screen.color = Color.white; _screen.raycastTarget = false; _screen.enabled = false;
@@ -113,9 +113,9 @@ namespace NihongoLife.UI
             var scrollRoot = (RectTransform)scrollContent.parent.parent;
             UiKit.Fill(scrollRoot, 18f, 64f, 18f, 10f);
             _summary = UiKit.Label(scrollContent, "Summary", "", 14.5f, UiTheme.TextSoft, FontStyles.Normal, TextAlignmentOptions.TopLeft, true);
-            _summary.gameObject.AddComponent<ContentSizeFitter>().verticalFit = ContentSizeFitter.FitMode.PreferredSize;
+            _summary.gameObject.Need<ContentSizeFitter>().verticalFit = ContentSizeFitter.FitMode.PreferredSize;
             _transcript = UiKit.Label(scrollContent, "Transcript", "", 14f, UiTheme.Muted, FontStyles.Normal, TextAlignmentOptions.TopLeft, true);
-            _transcript.gameObject.AddComponent<ContentSizeFitter>().verticalFit = ContentSizeFitter.FitMode.PreferredSize;
+            _transcript.gameObject.Need<ContentSizeFitter>().verticalFit = ContentSizeFitter.FitMode.PreferredSize;
 
             _sm.Changed += _ => RefreshChrome();
             RefreshChrome();
@@ -173,7 +173,7 @@ namespace NihongoLife.UI
                 bool on = _entry != null && _entry.id == v.id;
                 var row = UiKit.Card(_list, "Video_" + v.id, on ? UiTheme.Raised : UiTheme.Surface, 14);
                 UiKit.Size(row, -1f, 92f);
-                var btn = row.gameObject.AddComponent<Button>();
+                var btn = row.gameObject.Need<Button>();
                 btn.targetGraphic = row;
                 btn.onClick.AddListener(() => Select(video.id));
                 if (on) { var bar = UiKit.Image(row.transform, "Sel", UiTheme.Teal, UiKit.Rounded(3)); UiKit.Place(bar.rectTransform, 0f, 16f, 5f, 60f); }
@@ -223,9 +223,9 @@ namespace NihongoLife.UI
         private void EnsurePlayer()
         {
             if (_player != null) return;
-            var go = new GameObject("InGameVideoPlayer");
+            var go = UiBind.Make("InGameVideoPlayer");
             go.transform.SetParent(transform, false);
-            _player = go.AddComponent<VideoPlayer>();
+            _player = go.Need<VideoPlayer>();
             _player.playOnAwake = false;
             _player.waitForFirstFrame = true;
             _player.skipOnDrop = true;
@@ -254,7 +254,7 @@ namespace NihongoLife.UI
 
         private void FitScreen(float w, float h)
         {
-            var fit = _screen.GetComponent<AspectRatioFitter>() ?? _screen.gameObject.AddComponent<AspectRatioFitter>();
+            var fit = _screen.GetComponent<AspectRatioFitter>() ?? _screen.gameObject.Need<AspectRatioFitter>();
             fit.aspectMode = AspectRatioFitter.AspectMode.FitInParent;
             fit.aspectRatio = h > 0 ? w / h : 16f / 9f;
         }

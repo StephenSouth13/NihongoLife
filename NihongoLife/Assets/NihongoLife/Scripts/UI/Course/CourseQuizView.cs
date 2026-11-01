@@ -257,7 +257,7 @@ namespace NihongoLife.UI
             UiKit.Place(card.rectTransform, x, y, w, h);
             if (interactable && click != null)
             {
-                var b = card.gameObject.AddComponent<Button>();
+                var b = card.gameObject.Need<Button>();
                 b.targetGraphic = card;
                 var colors = b.colors; colors.highlightedColor = new Color(1.15f, 1.15f, 1.15f, 1f); colors.pressedColor = new Color(0.85f, 0.85f, 0.85f, 1f); b.colors = colors;
                 b.onClick.AddListener(() => click());
@@ -310,7 +310,7 @@ namespace NihongoLife.UI
 
         private TMP_InputField BuildInput(RectTransform parent)
         {
-            var go = new GameObject("Input", typeof(RectTransform), typeof(Image), typeof(TMP_InputField));
+            var go = UiBind.Make("Input", typeof(RectTransform), typeof(Image), typeof(TMP_InputField));
             go.transform.SetParent(parent, false);
             UiKit.Fill((RectTransform)go.transform, 16f, 0f, 16f, 0f);
             go.GetComponent<Image>().color = new Color(1f, 1f, 1f, 0f);
@@ -324,7 +324,7 @@ namespace NihongoLife.UI
             input.selectionColor = new Color(0.98f, 0.82f, 0.32f, 0.45f);
             var viewport = UiKit.Rect(go.transform, "Viewport");
             UiKit.Fill(viewport);
-            viewport.gameObject.AddComponent<RectMask2D>();
+            viewport.gameObject.Need<RectMask2D>();
             input.textViewport = viewport;
             TextMeshProUGUI Make(string name, Color color, FontStyles style)
             {
@@ -446,7 +446,7 @@ namespace NihongoLife.UI
                 var sp = NihongoLife.Content.IllustrationService.GetSprite(_lastIllu);
                 if (sp != null)
                 {
-                    var pic = new GameObject("Illustration", typeof(RectTransform), typeof(Image));
+                    var pic = UiBind.Make("Illustration", typeof(RectTransform), typeof(Image));
                     pic.transform.SetParent(fb.transform, false);
                     var pimg = pic.GetComponent<Image>(); pimg.sprite = sp; pimg.preserveAspect = true; pimg.raycastTarget = false;
                     UiKit.Place((RectTransform)pic.transform, 20f, cy, 84f, 84f);

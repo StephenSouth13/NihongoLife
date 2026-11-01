@@ -41,8 +41,8 @@ namespace NihongoLife.UI
             {
                 if (_instance != null) return _instance;
                 var canvas = NLUi.CreateCanvas("HudFeedCanvas", 140);
-                DontDestroyOnLoad(canvas.gameObject);
-                _instance = canvas.gameObject.AddComponent<HudFeed>();
+                if (Application.isPlaying) DontDestroyOnLoad(canvas.gameObject);
+                _instance = canvas.gameObject.Need<HudFeed>();
                 _instance._font = NLUi.ResolveFont();
                 _instance._stack = NLUi.Group(canvas.transform, "Feed", true, 8f, TextAnchor.UpperCenter, false);
                 NLUi.Anchor(_instance._stack, new Vector2(0.5f, 1f), new Vector2(0f, -92f), new Vector2(640f, 0f));
@@ -88,7 +88,7 @@ namespace NihongoLife.UI
             var label = NLUi.Label(card, "Text", text, 18f, NLUi.Text, feed._font);
             label.textWrappingMode = TextWrappingModes.Normal;
             FitWidth(label, text);
-            var group = card.gameObject.AddComponent<CanvasGroup>();
+            var group = card.gameObject.Need<CanvasGroup>();
             group.blocksRaycasts = false;
             if (key != null) feed._keys[card] = key;
             feed._cards.Add((card, group, Time.unscaledTime + seconds));
@@ -99,7 +99,7 @@ namespace NihongoLife.UI
         private static void FitWidth(TextMeshProUGUI label, string text)
         {
             var element = label.GetComponent<LayoutElement>();
-            if (element == null) element = label.gameObject.AddComponent<LayoutElement>();
+            if (element == null) element = label.gameObject.Need<LayoutElement>();
             // The measure can come back tiny (a font atlas still filling in, the canvas hidden behind a window): the card then
             // wrapped every word into a one-word column. A rough width from the character count is the floor.
             float measured = label.GetPreferredValues(text, 2000f, 40f).x + 4f;

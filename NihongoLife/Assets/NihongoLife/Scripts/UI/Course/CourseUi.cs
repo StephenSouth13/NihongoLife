@@ -93,7 +93,7 @@ namespace NihongoLife.UI
         {
             var row = UiKit.Card(parent, name, selected ? UiTheme.Raised : UiTheme.Surface, 14);
             UiKit.Size(row, -1f, height);
-            var button = row.gameObject.AddComponent<Button>();
+            var button = row.gameObject.Need<Button>();
             button.targetGraphic = row;
             button.onClick.AddListener(() => click?.Invoke());
             if (selected)

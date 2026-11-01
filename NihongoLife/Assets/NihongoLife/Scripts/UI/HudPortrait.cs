@@ -35,10 +35,10 @@ namespace NihongoLife.UI
 
         public static HudPortrait Create(RectTransform parent)
         {
-            var go = new GameObject("PortraitImage", typeof(RectTransform), typeof(RawImage));
+            var go = UiBind.Make("PortraitImage", typeof(RectTransform), typeof(RawImage));
             go.transform.SetParent(parent, false);
             NLUi.Stretch((RectTransform)go.transform);
-            var portrait = go.AddComponent<HudPortrait>();
+            var portrait = go.Need<HudPortrait>();
             portrait._image = go.GetComponent<RawImage>();
             portrait._image.raycastTarget = false;
             portrait._image.color = new Color(1f, 1f, 1f, 0f); // invisible until the first shot
@@ -151,13 +151,13 @@ namespace NihongoLife.UI
             _texture = new RenderTexture(TextureSize, TextureSize, 24, RenderTextureFormat.ARGB32) { name = "HudPortraitRT", antiAliasing = 4 };
             _texture.Create();
 
-            _stage = new GameObject("HudPortraitStage").transform;
-            DontDestroyOnLoad(_stage.gameObject);
+            _stage = UiBind.Make("HudPortraitStage").transform;
+            if (Application.isPlaying) DontDestroyOnLoad(_stage.gameObject);
             _stage.position = StagePosition;
 
-            var cameraGo = new GameObject("HudPortraitCamera");
+            var cameraGo = UiBind.Make("HudPortraitCamera");
             cameraGo.transform.SetParent(_stage, false);
-            _camera = cameraGo.AddComponent<Camera>();
+            _camera = cameraGo.Need<Camera>();
             _camera.enabled = false; // rendered manually, once per model
             _camera.clearFlags = CameraClearFlags.SolidColor;
             _camera.backgroundColor = Backdrop;
@@ -174,10 +174,10 @@ namespace NihongoLife.UI
 
         private void AddLight(Vector3 local, float intensity, Color color, float range)
         {
-            var go = new GameObject("PortraitLight");
+            var go = UiBind.Make("PortraitLight");
             go.transform.SetParent(_stage, false);
             go.transform.localPosition = local;
-            var light = go.AddComponent<Light>();
+            var light = go.Need<Light>();
             light.type = LightType.Point;
             light.intensity = intensity;
             light.range = range;

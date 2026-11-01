@@ -19,7 +19,7 @@ namespace NihongoLife.Cameras
         {
             if (FindFirstObjectByType<DepthPrecision>() != null) return;
             var go = new GameObject("DepthPrecision");
-            DontDestroyOnLoad(go);
+            if (Application.isPlaying) DontDestroyOnLoad(go);
             go.AddComponent<DepthPrecision>();
             SceneManager.sceneLoaded += (s, m) => { Apply(); if (NihongoLife.World.AmbientWildlife.SceneHasWildlife(s.name)) ScreenCut.RevealFromBlack(); };
             Apply();

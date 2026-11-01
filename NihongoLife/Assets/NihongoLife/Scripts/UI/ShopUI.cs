@@ -32,8 +32,8 @@ namespace NihongoLife.UI
                 return existing;
             }
 
-            var host = new GameObject("ShopUI");
-            _instance = host.AddComponent<ShopUI>();
+            var host = UiBind.Make("ShopUI");
+            _instance = host.Need<ShopUI>();
             return _instance;
         }
 
@@ -139,7 +139,7 @@ namespace NihongoLife.UI
         private void BuildUI()
         {
             Canvas canvas = ResolveCanvas();
-            _panel = new GameObject("ShopPanel", typeof(RectTransform), typeof(Image));
+            _panel = UiBind.Make("ShopPanel", typeof(RectTransform), typeof(Image));
             _panel.transform.SetParent(canvas.transform, false);
             var panelRect = (RectTransform)_panel.transform;
             panelRect.anchorMin = new Vector2(0.5f, 0.5f);
@@ -147,7 +147,7 @@ namespace NihongoLife.UI
             panelRect.pivot = new Vector2(0.5f, 0.5f);
             panelRect.sizeDelta = new Vector2(720f, 560f);
             UIStyleKit.StylePanel(panelRect, UIStyleKit.PanelBase);
-            _panel.AddComponent<HudFitRect>().Configure(1f, 0.96f, new Vector2(32f, 0f), 0.4f);
+            _panel.Need<HudFitRect>().Configure(1f, 0.96f, new Vector2(32f, 0f), 0.4f);
 
             CreateText(panelRect, "Title", "CỬA HÀNG / お店", new Vector2(28f, -30f), new Vector2(560f, 48f), 30f, FontStyles.Bold);
             _balanceText = CreateText(panelRect, "Balance", string.Empty, new Vector2(28f, -82f), new Vector2(420f, 36f), 20f, FontStyles.Normal);
@@ -159,7 +159,7 @@ namespace NihongoLife.UI
             closeRect.pivot = Vector2.one;
             close.onClick.AddListener(Close);
 
-            var viewport = new GameObject("ItemsViewport", typeof(RectTransform), typeof(Image), typeof(Mask));
+            var viewport = UiBind.Make("ItemsViewport", typeof(RectTransform), typeof(Image), typeof(Mask));
             viewport.transform.SetParent(panelRect, false);
             var viewportRect = (RectTransform)viewport.transform;
             viewportRect.anchorMin = new Vector2(0f, 1f);
@@ -170,7 +170,7 @@ namespace NihongoLife.UI
             viewport.GetComponent<Image>().color = new Color(0.025f, 0.033f, 0.04f, 0.72f);
             viewport.GetComponent<Mask>().showMaskGraphic = true;
 
-            var rows = new GameObject("Rows", typeof(RectTransform), typeof(VerticalLayoutGroup), typeof(ContentSizeFitter));
+            var rows = UiBind.Make("Rows", typeof(RectTransform), typeof(VerticalLayoutGroup), typeof(ContentSizeFitter));
             rows.transform.SetParent(viewportRect, false);
             _rowsRoot = (RectTransform)rows.transform;
             _rowsRoot.anchorMin = new Vector2(0f, 1f);
@@ -212,7 +212,7 @@ namespace NihongoLife.UI
 
         private void CreateItemRow(InteractiveItem item)
         {
-            var row = new GameObject($"Item_{item.ItemId}", typeof(RectTransform), typeof(Image), typeof(LayoutElement));
+            var row = UiBind.Make($"Item_{item.ItemId}", typeof(RectTransform), typeof(Image), typeof(LayoutElement));
             row.transform.SetParent(_rowsRoot, false);
             row.GetComponent<Image>().color = new Color(0.11f, 0.13f, 0.15f, 0.96f);
             row.GetComponent<LayoutElement>().preferredHeight = 78f;
@@ -257,7 +257,7 @@ namespace NihongoLife.UI
             Canvas canvas = hud != null ? hud.GetComponentInParent<Canvas>() : SceneRefs.Find<Canvas>();
             if (canvas != null) return canvas;
 
-            var canvasObject = new GameObject("ShopCanvas", typeof(Canvas), typeof(CanvasScaler), typeof(GraphicRaycaster));
+            var canvasObject = UiBind.Make("ShopCanvas", typeof(Canvas), typeof(CanvasScaler), typeof(GraphicRaycaster));
             canvas = canvasObject.GetComponent<Canvas>();
             canvas.renderMode = RenderMode.ScreenSpaceOverlay;
             canvas.sortingOrder = 200;
@@ -269,7 +269,7 @@ namespace NihongoLife.UI
 
         private static TextMeshProUGUI CreateText(Transform parent, string name, string value, Vector2 position, Vector2 size, float fontSize, FontStyles style)
         {
-            var go = new GameObject(name, typeof(RectTransform), typeof(TextMeshProUGUI));
+            var go = UiBind.Make(name, typeof(RectTransform), typeof(TextMeshProUGUI));
             go.transform.SetParent(parent, false);
             var rect = (RectTransform)go.transform;
             rect.anchorMin = new Vector2(0f, 1f);
@@ -290,7 +290,7 @@ namespace NihongoLife.UI
 
         private static Button CreateButton(Transform parent, string name, string label, Vector2 position, Vector2 size)
         {
-            var go = new GameObject(name, typeof(RectTransform), typeof(Image), typeof(Button));
+            var go = UiBind.Make(name, typeof(RectTransform), typeof(Image), typeof(Button));
             go.transform.SetParent(parent, false);
             var rect = (RectTransform)go.transform;
             rect.anchorMin = new Vector2(0f, 1f);

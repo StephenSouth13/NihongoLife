@@ -149,7 +149,7 @@ namespace NihongoLife.Audio
         {
             if (_host != null) return;
             var go = new GameObject("WebAudioStore");
-            DontDestroyOnLoad(go);
+            if (Application.isPlaying) DontDestroyOnLoad(go);
             _host = go.AddComponent<WebAudioStore>();
         }
     }

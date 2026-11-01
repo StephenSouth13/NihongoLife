@@ -58,9 +58,9 @@ namespace NihongoLife.UI
         public static SocialChatWindow Ensure()
         {
             if (_instance != null) return _instance;
-            var go = new GameObject("SocialChatWindow");
-            DontDestroyOnLoad(go);
-            _instance = go.AddComponent<SocialChatWindow>();
+            var go = UiBind.Make("SocialChatWindow");
+            if (Application.isPlaying) DontDestroyOnLoad(go);
+            _instance = go.Need<SocialChatWindow>();
             return _instance;
         }
 
@@ -193,7 +193,7 @@ namespace NihongoLife.UI
             NLUi.Size(title, 220f, 40f);
             _status = NLUi.Label(top, "Status", "", 16f, NLUi.Muted, _font, FontStyles.Normal, TextAlignmentOptions.MidlineLeft);
             NLUi.Size(_status, -1f, 40f, 1f);
-            var spacer = new GameObject("Spacer", typeof(RectTransform)); spacer.transform.SetParent(top, false);
+            var spacer = UiBind.Make("Spacer", typeof(RectTransform)); spacer.transform.SetParent(top, false);
             NLUi.Size(spacer.transform, 44f, 40f);
 
             // Tabs
@@ -245,7 +245,7 @@ namespace NihongoLife.UI
             _input.onValueChanged.AddListener(text => { if (!string.IsNullOrEmpty(text) && _hub != null && _conversationId != null) _hub.NotifyTyping(_conversationId); });
             var emojiButton = NLUi.Button(inputRow, "EmojiButton", "", _font, ToggleEmojiPanel, new Color(0.22f, 0.27f, 0.33f), 18f, Color.white, 46f);
             NLUi.Size(emojiButton, 56f, 46f, 0f);
-            var emojiIcon = new GameObject("Icon", typeof(RectTransform), typeof(Image));
+            var emojiIcon = UiBind.Make("Icon", typeof(RectTransform), typeof(Image));
             emojiIcon.transform.SetParent(emojiButton.transform, false);
             var emojiImage = emojiIcon.GetComponent<Image>();
             emojiImage.sprite = EmojiService.GetSprite("smile"); emojiImage.preserveAspect = true; emojiImage.raycastTarget = false;
@@ -279,7 +279,7 @@ namespace NihongoLife.UI
 
         private RectTransform Scroll(Transform parent, string name, float height, out ScrollRect scroll)
         {
-            var view = new GameObject(name, typeof(RectTransform), typeof(RectMask2D), typeof(ScrollRect));
+            var view = UiBind.Make(name, typeof(RectTransform), typeof(RectMask2D), typeof(ScrollRect));
             view.transform.SetParent(parent, false);
             NLUi.Size(view.transform, -1f, height, 1f, height);
             var content = NLUi.Group(view.transform, "Content", true, 6f);
@@ -299,13 +299,13 @@ namespace NihongoLife.UI
 
         private TMP_InputField MakeInput(Transform parent, string name, string placeholder, int limit)
         {
-            var go = new GameObject(name, typeof(RectTransform), typeof(Image));
+            var go = UiBind.Make(name, typeof(RectTransform), typeof(Image));
             go.transform.SetParent(parent, false);
             var image = go.GetComponent<Image>();
             image.sprite = UIStyleKit.RoundedSprite();
             image.type = Image.Type.Sliced;
             image.color = new Color(0.07f, 0.09f, 0.11f, 1f);
-            var area = new GameObject("TextArea", typeof(RectTransform), typeof(RectMask2D));
+            var area = UiBind.Make("TextArea", typeof(RectTransform), typeof(RectMask2D));
             area.transform.SetParent(go.transform, false);
             NLUi.Stretch((RectTransform)area.transform, 4f);
             ((RectTransform)area.transform).offsetMin = new Vector2(12f, 4f);
@@ -316,7 +316,7 @@ namespace NihongoLife.UI
             var ph = NLUi.Label(area.transform, "Placeholder", placeholder, 17f, new Color(0.6f, 0.66f, 0.72f, 0.7f), _font, FontStyles.Italic, TextAlignmentOptions.MidlineLeft);
             ph.textWrappingMode = TextWrappingModes.NoWrap;
             NLUi.Stretch(ph.rectTransform);
-            var input = go.AddComponent<TMP_InputField>();
+            var input = go.Need<TMP_InputField>();
             input.textViewport = (RectTransform)area.transform;
             input.textComponent = text;
             input.placeholder = ph;
@@ -331,7 +331,7 @@ namespace NihongoLife.UI
         {
             _launcher = NLUi.Panel(_canvas.transform, "ChatLauncher", new Color(0.86f, 0.63f, 0.2f, 0.95f), new RectOffset(16, 16, 8, 8), 0f, false);
             NLUi.Anchor(_launcher, new Vector2(0f, 0f), new Vector2(24f, 300f), new Vector2(260f, 44f));
-            var button = _launcher.gameObject.AddComponent<Button>();
+            var button = _launcher.gameObject.Need<Button>();
             button.onClick.AddListener(() => Open(_hub != null && _hub.Invites.Count > 0 ? Tab.Groups : _hub != null && _hub.UnreadOf(SocialHub.Kind.Direct) > 0 ? Tab.Direct : Tab.Groups));
             _launcherText = NLUi.Label(_launcher, "Text", "", 17f, new Color(0.1f, 0.07f, 0.02f), _font, FontStyles.Bold, TextAlignmentOptions.MidlineLeft);
             _launcherText.textWrappingMode = TextWrappingModes.NoWrap;
@@ -349,7 +349,7 @@ namespace NihongoLife.UI
             _voiceBar = NLUi.Panel(_canvas.transform, "VoiceBar", new Color(0.06f, 0.09f, 0.12f, 0.92f), new RectOffset(14, 10, 6, 6), 10f, false);
             NLUi.Anchor(_voiceBar, new Vector2(0f, 0f), new Vector2(24f, 352f), new Vector2(520f, 42f));
             ((HorizontalLayoutGroup)_voiceBar.GetComponent<HorizontalOrVerticalLayoutGroup>()).childForceExpandWidth = false;
-            var dot = new GameObject("Mic", typeof(RectTransform), typeof(Image));
+            var dot = UiBind.Make("Mic", typeof(RectTransform), typeof(Image));
             dot.transform.SetParent(_voiceBar, false);
             _voiceDot = dot.GetComponent<Image>();
             _voiceDot.sprite = HudGraphics.Ring;
@@ -705,11 +705,11 @@ namespace NihongoLife.UI
                 var text = NLUi.Label(bubble, "Text", system ? Loc.Resolve(m.text) : string.Empty, 17f, system ? NLUi.Soft : NLUi.Text, _font);
                 if (system) text.richText = true;
                 else EmojiService.Apply(text, m.text); // players cannot inject tags: their text is wrapped in noparse
-                var fitter = bubble.gameObject.AddComponent<LayoutElement>();
+                var fitter = bubble.gameObject.Need<LayoutElement>();
                 fitter.preferredWidth = Mathf.Min(560f, 60f + m.text.Length * 9.5f);
                 if (!mine && !system)
                 {
-                    var button = bubble.gameObject.AddComponent<Button>();
+                    var button = bubble.gameObject.Need<Button>();
                     string id = m.senderPlayerId, name = m.senderDisplayName;
                     button.onClick.AddListener(() => ShowPlayerCard(id, name));
                 }
@@ -727,7 +727,7 @@ namespace NihongoLife.UI
         {
             _emojiPanel = NLUi.Panel(_chatPane, "EmojiPanel", new Color(0.09f, 0.11f, 0.14f, 1f), new RectOffset(8, 8, 8, 8), 0f);
             _emojiPanel.SetSiblingIndex(inputRow.GetSiblingIndex());
-            var grid = new GameObject("Grid", typeof(RectTransform), typeof(GridLayoutGroup));
+            var grid = UiBind.Make("Grid", typeof(RectTransform), typeof(GridLayoutGroup));
             grid.transform.SetParent(_emojiPanel, false);
             var layout = grid.GetComponent<GridLayoutGroup>();
             layout.cellSize = new Vector2(38f, 38f); layout.spacing = new Vector2(4f, 4f);
@@ -735,7 +735,7 @@ namespace NihongoLife.UI
             for (int i = 0; i < EmojiService.Count; i++)
             {
                 string name = EmojiService.NameAt(i);
-                var cell = new GameObject("E_" + name, typeof(RectTransform), typeof(Image), typeof(Button));
+                var cell = UiBind.Make("E_" + name, typeof(RectTransform), typeof(Image), typeof(Button));
                 cell.transform.SetParent(grid.transform, false);
                 var image = cell.GetComponent<Image>();
                 image.sprite = EmojiService.GetSprite(name); image.preserveAspect = true;

@@ -65,20 +65,20 @@ namespace NihongoLife.UI
 
         private void BuildUI()
         {
-            _panel = new GameObject("ProfilePanel");
+            _panel = UiBind.Make("ProfilePanel");
             _panel.transform.SetParent(transform, false);
-            var rect = _panel.AddComponent<RectTransform>();
+            var rect = _panel.Need<RectTransform>();
             rect.anchorMin = Vector2.zero;
             rect.anchorMax = Vector2.one;
             rect.offsetMin = Vector2.zero;
             rect.offsetMax = Vector2.zero;
-            _panel.AddComponent<Image>().color = new Color(0.01f, 0.015f, 0.02f, 0.92f);
+            _panel.Need<Image>().color = new Color(0.01f, 0.015f, 0.02f, 0.92f);
 
-            var card = new GameObject("Card");
+            var card = UiBind.Make("Card");
             card.transform.SetParent(_panel.transform, false);
-            var cardRect = card.AddComponent<RectTransform>();
+            var cardRect = card.Need<RectTransform>();
             Center(cardRect, new Vector2(460f, 480f));
-            card.AddComponent<Image>().color = new Color(0.035f, 0.045f, 0.055f, 0.97f);
+            card.Need<Image>().color = new Color(0.035f, 0.045f, 0.055f, 0.97f);
 
             _titleText = MakeText(card, "Title", new Vector2(0f, 200f), new Vector2(400f, 38f), 24f);
             _titleText.fontStyle = FontStyles.Bold;
@@ -210,13 +210,13 @@ namespace NihongoLife.UI
 
         private TextMeshProUGUI MakeText(GameObject p, string n, Vector2 pos, Vector2 size, float fs)
         {
-            var go = new GameObject(n);
+            var go = UiBind.Make(n);
             go.transform.SetParent(p.transform, false);
-            var r = go.AddComponent<RectTransform>();
+            var r = go.Need<RectTransform>();
             r.anchorMin = r.anchorMax = r.pivot = new Vector2(0.5f, 0.5f);
             r.anchoredPosition = pos;
             r.sizeDelta = size;
-            var t = go.AddComponent<TextMeshProUGUI>();
+            var t = go.Need<TextMeshProUGUI>();
             if (_font != null) t.font = _font;
             t.fontSize = fs;
             t.alignment = TextAlignmentOptions.Center;
@@ -229,15 +229,15 @@ namespace NihongoLife.UI
 
         private TMP_InputField CreateInput(GameObject parent, string name, Vector2 pos, string placeholder)
         {
-            var go = new GameObject(name);
+            var go = UiBind.Make(name);
             go.transform.SetParent(parent.transform, false);
-            var r = go.AddComponent<RectTransform>();
+            var r = go.Need<RectTransform>();
             r.anchorMin = r.anchorMax = r.pivot = new Vector2(0.5f, 0.5f);
             r.anchoredPosition = pos;
             r.sizeDelta = new Vector2(340f, 40f);
-            go.AddComponent<Image>().color = new Color(0.09f, 0.11f, 0.13f, 1f);
+            go.Need<Image>().color = new Color(0.09f, 0.11f, 0.13f, 1f);
 
-            var input = go.AddComponent<TMP_InputField>();
+            var input = go.Need<TMP_InputField>();
             input.lineType = TMP_InputField.LineType.SingleLine;
             input.textViewport = r;
 
@@ -258,15 +258,15 @@ namespace NihongoLife.UI
 
         private Button MakeButton(GameObject p, string n, Vector2 pos, Vector2 size, string label)
         {
-            var go = new GameObject(n);
+            var go = UiBind.Make(n);
             go.transform.SetParent(p.transform, false);
-            var r = go.AddComponent<RectTransform>();
+            var r = go.Need<RectTransform>();
             r.anchorMin = r.anchorMax = r.pivot = new Vector2(0.5f, 0.5f);
             r.anchoredPosition = pos;
             r.sizeDelta = size;
-            go.AddComponent<Image>().color = new Color(0.12f, 0.15f, 0.18f, 1f);
-            var btn = go.AddComponent<Button>();
-            go.AddComponent<UIHoverScale>();
+            go.Need<Image>().color = new Color(0.12f, 0.15f, 0.18f, 1f);
+            var btn = go.Need<Button>();
+            go.Need<UIHoverScale>();
             var txt = MakeText(go, "Lbl", Vector2.zero, new Vector2(size.x - 10f, size.y - 6f), 15f);
             txt.text = label;
             txt.fontStyle = FontStyles.Bold;

@@ -179,7 +179,7 @@ namespace NihongoLife.UI
         {
             var border = Image(rect, "Border", color, Stroke(radius));
             Fill(border.rectTransform);
-            border.gameObject.AddComponent<LayoutElement>().ignoreLayout = true;
+            border.gameObject.Need<LayoutElement>().ignoreLayout = true;
             return border;
         }
 
@@ -262,7 +262,7 @@ namespace NihongoLife.UI
 
         public static RectTransform Rect(Transform parent, string name)
         {
-            var go = new GameObject(name, typeof(RectTransform));
+            var go = UiBind.Make(name, typeof(RectTransform));
             go.transform.SetParent(parent, false);
             go.layer = parent != null ? parent.gameObject.layer : 5;
             return (RectTransform)go.transform;
@@ -318,7 +318,7 @@ namespace NihongoLife.UI
         public static Image Image(Transform parent, string name, Color color, Sprite sprite = null, bool raycast = false)
         {
             var rect = Rect(parent, name);
-            var image = rect.gameObject.AddComponent<Image>();
+            var image = rect.gameObject.Need<Image>();
             image.color = color;
             image.raycastTarget = raycast;
             if (sprite != null)
@@ -343,11 +343,11 @@ namespace NihongoLife.UI
             if (target.parent == null) return null;
             var shadow = Image(target.parent, target.name + "_Shadow", new Color(0f, 0f, 0f, strength), Shadow(radius));
             shadow.transform.SetSiblingIndex(target.GetSiblingIndex());
-            shadow.gameObject.AddComponent<LayoutElement>().ignoreLayout = true;
+            shadow.gameObject.Need<LayoutElement>().ignoreLayout = true;
             shadow.raycastTarget = false;
-            var follow = shadow.gameObject.AddComponent<UiFollowRect>();
+            var follow = shadow.gameObject.Need<UiFollowRect>();
             follow.Configure(target, 26f, drop);
-            target.gameObject.AddComponent<UiShadowLink>().Shadow = shadow.gameObject;
+            target.gameObject.Need<UiShadowLink>().Shadow = shadow.gameObject;
             return shadow;
         }
 
@@ -367,7 +367,7 @@ namespace NihongoLife.UI
             FontStyles style = FontStyles.Normal, TextAlignmentOptions align = TextAlignmentOptions.MidlineLeft, bool wrap = false)
         {
             var rect = Rect(parent, name);
-            var t = rect.gameObject.AddComponent<TextMeshProUGUI>();
+            var t = rect.gameObject.Need<TextMeshProUGUI>();
             t.font = Font;
             t.fontSize = size;
             t.color = color;
@@ -437,7 +437,7 @@ namespace NihongoLife.UI
         {
             var (bg, fg) = Colors(kind);
             var image = Image(parent, name, bg, Rounded(radius), true);
-            var button = image.gameObject.AddComponent<Button>();
+            var button = image.gameObject.Need<Button>();
             button.targetGraphic = image;
             UIStyleKit.StyleButton(button, bg, Lighten(bg, kind == Kind.Ghost || kind == Kind.Quiet ? 0.06f : 0.1f), Darken(bg, 0.12f));
             image.sprite = Rounded(radius); // StyleButton sets its own sprite
@@ -446,7 +446,7 @@ namespace NihongoLife.UI
 
             var row = Rect(image.transform, "Content");
             Fill(row, 14f, 0f, 14f, 0f);
-            var layout = row.gameObject.AddComponent<HorizontalLayoutGroup>();
+            var layout = row.gameObject.Need<HorizontalLayoutGroup>();
             layout.childAlignment = TextAnchor.MiddleCenter;
             layout.spacing = 8f;
             layout.childControlWidth = layout.childControlHeight = true;
@@ -454,7 +454,7 @@ namespace NihongoLife.UI
             if (!string.IsNullOrEmpty(icon))
             {
                 var ic = Icon(row, icon, fg, fontSize + 4f);
-                var le = ic.gameObject.AddComponent<LayoutElement>();
+                var le = ic.gameObject.Need<LayoutElement>();
                 le.preferredWidth = le.preferredHeight = le.minWidth = fontSize + 4f;
             }
             var label = Label(row, "Label", "", fontSize, fg, FontStyles.Bold, TextAlignmentOptions.Center);
@@ -478,7 +478,7 @@ namespace NihongoLife.UI
             var (bg, fg) = Colors(kind);
             var image = Image(parent, name, bg, Circle, true);
             image.rectTransform.sizeDelta = new Vector2(size, size);
-            var button = image.gameObject.AddComponent<Button>();
+            var button = image.gameObject.Need<Button>();
             button.targetGraphic = image;
             UIStyleKit.StyleButton(button, bg, Lighten(bg, 0.12f), Darken(bg, 0.15f));
             image.sprite = Circle;
@@ -494,7 +494,7 @@ namespace NihongoLife.UI
         public static Button CloseButton(RectTransform window, Action onClick, float inset = 22f)
         {
             var b = IconButton(window, "CloseX", "close", onClick, Kind.Secondary, 44f, 22f);
-            var le = b.gameObject.AddComponent<LayoutElement>();
+            var le = b.gameObject.Need<LayoutElement>();
             le.ignoreLayout = true;
             Pin((RectTransform)b.transform, new Vector2(1f, 1f), -inset, -inset, 44f, 44f);
             return b;
@@ -530,7 +530,7 @@ namespace NihongoLife.UI
 
         public static Outline Outline(RectTransform rect, Color color, float distance = 1.2f)
         {
-            var o = rect.gameObject.AddComponent<Outline>();
+            var o = rect.gameObject.Need<Outline>();
             o.effectColor = color;
             o.effectDistance = new Vector2(distance, -distance);
             o.useGraphicAlpha = false;
@@ -544,19 +544,19 @@ namespace NihongoLife.UI
         {
             var image = Image(parent, name, bg, Rounded(14));
             var rect = image.rectTransform;
-            var layout = rect.gameObject.AddComponent<HorizontalLayoutGroup>();
+            var layout = rect.gameObject.Need<HorizontalLayoutGroup>();
             layout.padding = new RectOffset(12, 12, 4, 5);
             layout.spacing = 6f;
             layout.childAlignment = TextAnchor.MiddleCenter;
             layout.childControlWidth = layout.childControlHeight = true;
             layout.childForceExpandWidth = layout.childForceExpandHeight = false;
-            var fitter = rect.gameObject.AddComponent<ContentSizeFitter>();
+            var fitter = rect.gameObject.Need<ContentSizeFitter>();
             fitter.horizontalFit = ContentSizeFitter.FitMode.PreferredSize;
             fitter.verticalFit = ContentSizeFitter.FitMode.PreferredSize;
             if (!string.IsNullOrEmpty(icon))
             {
                 var ic = Icon(rect, icon, fg, size + 3f);
-                var le = ic.gameObject.AddComponent<LayoutElement>();
+                var le = ic.gameObject.Need<LayoutElement>();
                 le.preferredWidth = le.preferredHeight = size + 3f;
             }
             var label = Label(rect, "Text", text, size, fg, FontStyles.Bold, TextAlignmentOptions.Center);
@@ -628,17 +628,17 @@ namespace NihongoLife.UI
         public static RectTransform Money(Transform parent, string name, int amount, float size, Color color, bool showSign = false)
         {
             var row = Rect(parent, name);
-            var layout = row.gameObject.AddComponent<HorizontalLayoutGroup>();
+            var layout = row.gameObject.Need<HorizontalLayoutGroup>();
             layout.spacing = size * 0.25f;
             layout.childAlignment = TextAnchor.MiddleLeft;
             layout.childControlWidth = layout.childControlHeight = true;
             layout.childForceExpandWidth = layout.childForceExpandHeight = false;
-            var fitter = row.gameObject.AddComponent<ContentSizeFitter>();
+            var fitter = row.gameObject.Need<ContentSizeFitter>();
             fitter.horizontalFit = ContentSizeFitter.FitMode.PreferredSize;
             fitter.verticalFit = ContentSizeFitter.FitMode.PreferredSize;
             var coin = Image(row, "Coin", Color.white, UiIcons.Coin);
             coin.preserveAspect = true;
-            var le = coin.gameObject.AddComponent<LayoutElement>();
+            var le = coin.gameObject.Need<LayoutElement>();
             le.preferredWidth = le.preferredHeight = size * 1.15f;
             string sign = showSign && amount > 0 ? "+" : amount < 0 ? "−" : "";
             Label(row, "Amount", sign + Mathf.Abs(amount).ToString("N0", System.Globalization.CultureInfo.InvariantCulture), size, color, FontStyles.Bold);
@@ -660,7 +660,7 @@ namespace NihongoLife.UI
 
         public static VerticalLayoutGroup Column(RectTransform rect, float spacing, RectOffset padding = null, TextAnchor align = TextAnchor.UpperLeft)
         {
-            var g = rect.gameObject.AddComponent<VerticalLayoutGroup>();
+            var g = rect.gameObject.Need<VerticalLayoutGroup>();
             g.spacing = spacing;
             g.padding = padding ?? new RectOffset();
             g.childAlignment = align;
@@ -672,7 +672,7 @@ namespace NihongoLife.UI
 
         public static HorizontalLayoutGroup RowLayout(RectTransform rect, float spacing, RectOffset padding = null, TextAnchor align = TextAnchor.MiddleLeft)
         {
-            var g = rect.gameObject.AddComponent<HorizontalLayoutGroup>();
+            var g = rect.gameObject.Need<HorizontalLayoutGroup>();
             g.spacing = spacing;
             g.padding = padding ?? new RectOffset();
             g.childAlignment = align;
@@ -684,7 +684,7 @@ namespace NihongoLife.UI
 
         public static LayoutElement Size(Component c, float w = -1f, float h = -1f, float flexW = -1f, float flexH = -1f)
         {
-            var le = c.GetComponent<LayoutElement>().OrNull() ?? c.gameObject.AddComponent<LayoutElement>();
+            var le = c.GetComponent<LayoutElement>().OrNull() ?? c.gameObject.Need<LayoutElement>();
             if (w >= 0f) { le.preferredWidth = w; le.minWidth = w; }
             if (h >= 0f) { le.preferredHeight = h; le.minHeight = h; }
             if (flexW >= 0f) le.flexibleWidth = flexW;
@@ -696,13 +696,13 @@ namespace NihongoLife.UI
         public static RectTransform Scroll(Transform parent, string name, out ScrollRect scroll, float spacing = 12f, RectOffset padding = null)
         {
             var root = Rect(parent, name);
-            var bg = root.gameObject.AddComponent<Image>();
+            var bg = root.gameObject.Need<Image>();
             bg.color = new Color(0f, 0f, 0f, 0f);
-            scroll = root.gameObject.AddComponent<ScrollRect>();
+            scroll = root.gameObject.Need<ScrollRect>();
             var viewport = Rect(root, "Viewport");
             Fill(viewport);
-            viewport.gameObject.AddComponent<RectMask2D>();
-            var vpImage = viewport.gameObject.AddComponent<Image>();
+            viewport.gameObject.Need<RectMask2D>();
+            var vpImage = viewport.gameObject.Need<Image>();
             vpImage.color = new Color(0f, 0f, 0f, 0f);
             var content = Rect(viewport, "Content");
             content.anchorMin = new Vector2(0f, 1f);
@@ -711,7 +711,7 @@ namespace NihongoLife.UI
             content.sizeDelta = Vector2.zero;
             content.anchoredPosition = Vector2.zero;
             Column(content, spacing, padding ?? new RectOffset(2, 2, 2, 2));
-            content.gameObject.AddComponent<ContentSizeFitter>().verticalFit = ContentSizeFitter.FitMode.PreferredSize;
+            content.gameObject.Need<ContentSizeFitter>().verticalFit = ContentSizeFitter.FitMode.PreferredSize;
             scroll.viewport = viewport;
             scroll.content = content;
             scroll.horizontal = false;
@@ -807,7 +807,7 @@ namespace NihongoLife.UI
     {
         public static T Mark<T>(T component) where T : Component
         {
-            if (component != null && component.GetComponent<UiUserContent>() == null) component.gameObject.AddComponent<UiUserContent>();
+            if (component != null && component.GetComponent<UiUserContent>() == null) component.gameObject.Need<UiUserContent>();
             return component;
         }
     }

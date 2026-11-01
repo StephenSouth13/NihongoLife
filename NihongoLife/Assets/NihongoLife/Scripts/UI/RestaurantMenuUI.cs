@@ -92,8 +92,8 @@ namespace NihongoLife.UI
                 return existing;
             }
 
-            var host = new GameObject("RestaurantMenuUI");
-            _instance = host.AddComponent<RestaurantMenuUI>();
+            var host = UiBind.Make("RestaurantMenuUI");
+            _instance = host.Need<RestaurantMenuUI>();
             return _instance;
         }
 
@@ -410,7 +410,7 @@ namespace NihongoLife.UI
                 Transform rowParent = _listRoot;
                 if (stepper)
                 {
-                    var row = new GameObject($"Row_{i}", typeof(RectTransform), typeof(HorizontalLayoutGroup), typeof(LayoutElement));
+                    var row = UiBind.Make($"Row_{i}", typeof(RectTransform), typeof(HorizontalLayoutGroup), typeof(LayoutElement));
                     row.transform.SetParent(_listRoot, false);
                     row.GetComponent<LayoutElement>().preferredHeight = 74f;
                     var layout = row.GetComponent<HorizontalLayoutGroup>();
@@ -436,7 +436,7 @@ namespace NihongoLife.UI
                     minus.GetComponentInChildren<TextMeshProUGUI>().alignment = TextAlignmentOptions.Center;
                     minus.onClick.AddListener(() => ChangeQuantity(dishId, -1));
 
-                    var qtyGo = new GameObject("Qty", typeof(RectTransform), typeof(LayoutElement));
+                    var qtyGo = UiBind.Make("Qty", typeof(RectTransform), typeof(LayoutElement));
                     qtyGo.transform.SetParent(rowParent, false);
                     qtyGo.GetComponent<LayoutElement>().preferredWidth = 40f;
                     var qty = CreateText(qtyGo.transform, "QtyText", QuantityOf(dishId).ToString(), Vector2.zero, Vector2.zero, 26f, FontStyles.Bold);
@@ -475,7 +475,7 @@ namespace NihongoLife.UI
         {
             var texture = DishPicture(dishId);
             if (texture == null) return;
-            var picture = new GameObject("Picture", typeof(RectTransform), typeof(RawImage)).GetComponent<RawImage>();
+            var picture = UiBind.Make("Picture", typeof(RectTransform), typeof(RawImage)).GetComponent<RawImage>();
             picture.transform.SetParent(row.transform, false);
             picture.texture = texture;
             picture.raycastTarget = false;
@@ -698,7 +698,7 @@ namespace NihongoLife.UI
             EnsureEventSystem();
             _font = ResolveFont();
             Canvas canvas = ResolveCanvas();
-            _panel = new GameObject("RestaurantMenuPanel", typeof(RectTransform), typeof(Image));
+            _panel = UiBind.Make("RestaurantMenuPanel", typeof(RectTransform), typeof(Image));
             _panel.transform.SetParent(canvas.transform, false);
             var panelRect = (RectTransform)_panel.transform;
             panelRect.anchorMin = new Vector2(0.5f, 0.5f);
@@ -706,7 +706,7 @@ namespace NihongoLife.UI
             panelRect.pivot = new Vector2(0.5f, 0.5f);
             panelRect.sizeDelta = new Vector2(1180f, 700f);
             UIStyleKit.StylePanel(panelRect, UIStyleKit.PanelBase);
-            _panel.AddComponent<HudFitRect>().Configure(1f, 0.96f, new Vector2(32f, 0f), 0.4f);
+            _panel.Need<HudFitRect>().Configure(1f, 0.96f, new Vector2(32f, 0f), 0.4f);
 
             _titleText = CreateText(panelRect, "Title", string.Empty, new Vector2(28f, -30f), new Vector2(920f, 48f), 32f, FontStyles.Bold);
             _subtitleText = CreateText(panelRect, "Subtitle", string.Empty, new Vector2(28f, -76f), new Vector2(980f, 30f), 19f, FontStyles.Normal);
@@ -728,14 +728,14 @@ namespace NihongoLife.UI
             _detailScroll = CreateScroll(panelRect, "Detail", new Vector2(696f, -116f), new Vector2(460f, 466f), out RectTransform detailContent, new Color(0.025f, 0.033f, 0.04f, 0.72f));
 
             // The dish itself, above its description (Resources/Restaurants/Dishes, Tools/art/menu_dish_art.py).
-            var pictureFrame = new GameObject("DetailPictureFrame", typeof(RectTransform), typeof(Image), typeof(LayoutElement));
+            var pictureFrame = UiBind.Make("DetailPictureFrame", typeof(RectTransform), typeof(Image), typeof(LayoutElement));
             pictureFrame.transform.SetParent(detailContent, false);
             var frameImage = pictureFrame.GetComponent<Image>();
             frameImage.color = new Color(0.14f, 0.11f, 0.08f, 1f);
             frameImage.sprite = UIStyleKit.RoundedSprite();
             frameImage.type = Image.Type.Sliced;
             pictureFrame.GetComponent<LayoutElement>().preferredHeight = 210f;
-            _detailPicture = new GameObject("DetailPicture", typeof(RectTransform), typeof(RawImage), typeof(AspectRatioFitter)).GetComponent<RawImage>();
+            _detailPicture = UiBind.Make("DetailPicture", typeof(RectTransform), typeof(RawImage), typeof(AspectRatioFitter)).GetComponent<RawImage>();
             _detailPicture.transform.SetParent(pictureFrame.transform, false);
             var fitter = _detailPicture.GetComponent<AspectRatioFitter>();
             fitter.aspectMode = AspectRatioFitter.AspectMode.FitInParent;
@@ -754,14 +754,14 @@ namespace NihongoLife.UI
         private static void EnsureEventSystem()
         {
             if (EventSystem.current != null) return;
-            var eventSystemObject = new GameObject("RestaurantEventSystem");
-            eventSystemObject.AddComponent<EventSystem>();
-            eventSystemObject.AddComponent<InputSystemUIInputModule>();
+            var eventSystemObject = UiBind.Make("RestaurantEventSystem");
+            eventSystemObject.Need<EventSystem>();
+            eventSystemObject.Need<InputSystemUIInputModule>();
         }
 
         private void BuildFooter(RectTransform panelRect)
         {
-            _footer = new GameObject("OrderFooter", typeof(RectTransform), typeof(Image));
+            _footer = UiBind.Make("OrderFooter", typeof(RectTransform), typeof(Image));
             _footer.transform.SetParent(panelRect, false);
             var rect = (RectTransform)_footer.transform;
             rect.anchorMin = new Vector2(0f, 1f);
@@ -789,7 +789,7 @@ namespace NihongoLife.UI
 
         private void BuildStaffBar(Transform canvasTransform)
         {
-            _staffBar = new GameObject("RestaurantStaffBar", typeof(RectTransform), typeof(Image));
+            _staffBar = UiBind.Make("RestaurantStaffBar", typeof(RectTransform), typeof(Image));
             _staffBar.transform.SetParent(canvasTransform, false);
             var rect = (RectTransform)_staffBar.transform;
             rect.anchorMin = new Vector2(0.5f, 0f);
@@ -799,7 +799,7 @@ namespace NihongoLife.UI
             rect.sizeDelta = new Vector2(1000f, 150f);
             UIStyleKit.StylePanel(rect, new Color(0.05f, 0.06f, 0.075f, 0.94f));
             _staffBar.GetComponent<Image>().raycastTarget = false;
-            _staffBar.AddComponent<HudFitRect>().Configure(0.96f, 0.4f, new Vector2(0f, 0f), 0.4f);
+            _staffBar.Need<HudFitRect>().Configure(0.96f, 0.4f, new Vector2(0f, 0f), 0.4f);
 
             _staffSpeakerText = CreateText(rect, "Speaker", string.Empty, new Vector2(26f, -14f), new Vector2(600f, 28f), 20f, FontStyles.Bold);
             _staffSpeakerText.color = UIStyleKit.AccentGold;
@@ -812,7 +812,7 @@ namespace NihongoLife.UI
 
         private ScrollRect CreateScroll(Transform parent, string name, Vector2 position, Vector2 size, out RectTransform content, Color background)
         {
-            var root = new GameObject(name, typeof(RectTransform), typeof(Image), typeof(ScrollRect));
+            var root = UiBind.Make(name, typeof(RectTransform), typeof(Image), typeof(ScrollRect));
             root.transform.SetParent(parent, false);
             var rootRect = (RectTransform)root.transform;
             rootRect.anchorMin = new Vector2(0f, 1f);
@@ -822,7 +822,7 @@ namespace NihongoLife.UI
             rootRect.sizeDelta = size;
             root.GetComponent<Image>().color = background;
 
-            var viewport = new GameObject("Viewport", typeof(RectTransform), typeof(RectMask2D));
+            var viewport = UiBind.Make("Viewport", typeof(RectTransform), typeof(RectMask2D));
             viewport.transform.SetParent(rootRect, false);
             var viewportRect = (RectTransform)viewport.transform;
             viewportRect.anchorMin = Vector2.zero;
@@ -830,7 +830,7 @@ namespace NihongoLife.UI
             viewportRect.offsetMin = Vector2.zero;
             viewportRect.offsetMax = Vector2.zero;
 
-            var contentObject = new GameObject("Content", typeof(RectTransform), typeof(VerticalLayoutGroup), typeof(ContentSizeFitter));
+            var contentObject = UiBind.Make("Content", typeof(RectTransform), typeof(VerticalLayoutGroup), typeof(ContentSizeFitter));
             contentObject.transform.SetParent(viewportRect, false);
             content = (RectTransform)contentObject.transform;
             content.anchorMin = new Vector2(0f, 1f);
@@ -860,11 +860,11 @@ namespace NihongoLife.UI
 
         private Button CreateRowButton(Transform parent, string name, string label, float height, Color baseColor, Color hoverColor, Color pressedColor, float fontSize, Color textColor, bool useLayoutElement = true)
         {
-            var go = new GameObject(name, typeof(RectTransform), typeof(Image), typeof(Button));
+            var go = UiBind.Make(name, typeof(RectTransform), typeof(Image), typeof(Button));
             go.transform.SetParent(parent, false);
             if (useLayoutElement)
             {
-                go.AddComponent<LayoutElement>().preferredHeight = height;
+                go.Need<LayoutElement>().preferredHeight = height;
             }
 
             var button = go.GetComponent<Button>();
@@ -885,7 +885,7 @@ namespace NihongoLife.UI
 
         private TextMeshProUGUI CreateText(Transform parent, string name, string value, Vector2 position, Vector2 size, float fontSize, FontStyles style)
         {
-            var go = new GameObject(name, typeof(RectTransform), typeof(TextMeshProUGUI));
+            var go = UiBind.Make(name, typeof(RectTransform), typeof(TextMeshProUGUI));
             go.transform.SetParent(parent, false);
             var rect = (RectTransform)go.transform;
             rect.anchorMin = new Vector2(0f, 1f);
@@ -928,7 +928,7 @@ namespace NihongoLife.UI
             Canvas canvas = hud != null ? hud.GetComponentInParent<Canvas>() : SceneRefs.Find<Canvas>();
             if (canvas != null) return canvas;
 
-            var canvasObject = new GameObject("RestaurantMenuCanvas", typeof(Canvas), typeof(CanvasScaler), typeof(GraphicRaycaster));
+            var canvasObject = UiBind.Make("RestaurantMenuCanvas", typeof(Canvas), typeof(CanvasScaler), typeof(GraphicRaycaster));
             canvas = canvasObject.GetComponent<Canvas>();
             canvas.renderMode = RenderMode.ScreenSpaceOverlay;
             canvas.sortingOrder = 200;

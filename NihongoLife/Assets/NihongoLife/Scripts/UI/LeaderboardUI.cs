@@ -52,23 +52,23 @@ namespace NihongoLife.UI
 
         private void BuildUI()
         {
-            _panel = new GameObject("LeaderboardPanel");
+            _panel = UiBind.Make("LeaderboardPanel");
             _panel.transform.SetParent(transform, false);
-            var panelRect = _panel.AddComponent<RectTransform>();
+            var panelRect = _panel.Need<RectTransform>();
             panelRect.anchorMin = Vector2.zero;
             panelRect.anchorMax = Vector2.one;
             panelRect.offsetMin = Vector2.zero;
             panelRect.offsetMax = Vector2.zero;
 
-            var bg = _panel.AddComponent<Image>();
+            var bg = _panel.Need<Image>();
             bg.color = new Color(0.01f, 0.015f, 0.02f, 0.92f);
             bg.raycastTarget = true;
 
             // Card
             var card = CreateChild(_panel, "Card");
-            var cardRect = card.AddComponent<RectTransform>();
+            var cardRect = card.Need<RectTransform>();
             Center(cardRect, new Vector2(600f, 560f));
-            card.AddComponent<Image>().color = new Color(0.035f, 0.045f, 0.055f, 0.97f);
+            card.Need<Image>().color = new Color(0.035f, 0.045f, 0.055f, 0.97f);
 
             // Title
             _titleText = CreateText(card, "Title", new Vector2(0f, 240f), new Vector2(540f, 42f), 26f);
@@ -152,7 +152,7 @@ namespace NihongoLife.UI
 
         private static GameObject CreateChild(GameObject parent, string name)
         {
-            var go = new GameObject(name);
+            var go = UiBind.Make(name);
             go.transform.SetParent(parent.transform, false);
             return go;
         }
@@ -169,14 +169,14 @@ namespace NihongoLife.UI
         private TextMeshProUGUI CreateText(GameObject parent, string name, Vector2 pos, Vector2 size, float fontSize)
         {
             var go = CreateChild(parent, name);
-            var rect = go.AddComponent<RectTransform>();
+            var rect = go.Need<RectTransform>();
             rect.anchorMin = new Vector2(0.5f, 0.5f);
             rect.anchorMax = new Vector2(0.5f, 0.5f);
             rect.pivot = new Vector2(0.5f, 0.5f);
             rect.anchoredPosition = pos;
             rect.sizeDelta = size;
 
-            var text = go.AddComponent<TextMeshProUGUI>();
+            var text = go.Need<TextMeshProUGUI>();
             if (_font != null) text.font = _font;
             text.fontSize = fontSize;
             text.alignment = TextAlignmentOptions.Center;
@@ -190,16 +190,16 @@ namespace NihongoLife.UI
         private Button CreateSimpleButton(GameObject parent, string name, Vector2 pos, Vector2 size, string label)
         {
             var go = CreateChild(parent, name);
-            var rect = go.AddComponent<RectTransform>();
+            var rect = go.Need<RectTransform>();
             rect.anchorMin = new Vector2(0.5f, 0.5f);
             rect.anchorMax = new Vector2(0.5f, 0.5f);
             rect.pivot = new Vector2(0.5f, 0.5f);
             rect.anchoredPosition = pos;
             rect.sizeDelta = size;
 
-            go.AddComponent<Image>().color = new Color(0.12f, 0.15f, 0.18f, 1f);
-            var btn = go.AddComponent<Button>();
-            go.AddComponent<UIHoverScale>();
+            go.Need<Image>().color = new Color(0.12f, 0.15f, 0.18f, 1f);
+            var btn = go.Need<Button>();
+            go.Need<UIHoverScale>();
 
             var txt = CreateText(go, "Label", Vector2.zero, new Vector2(size.x - 10f, size.y - 6f), 16f);
             txt.text = label;

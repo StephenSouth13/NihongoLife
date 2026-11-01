@@ -28,7 +28,7 @@ namespace NihongoLife.UI
         {
             host ??= Host();
             var popup = host.GetComponent<T>();
-            if (popup == null) popup = host.AddComponent<T>();
+            if (popup == null) popup = host.Need<T>();
             popup.Initialize(UiKit.Font);
             return popup;
         }
@@ -101,7 +101,7 @@ namespace NihongoLife.UI
         public static HighlightTooltip Attach(TextMeshProUGUI text, RectTransform tooltipLayer, List<string> notes)
         {
             text.raycastTarget = true;
-            var tip = text.gameObject.AddComponent<HighlightTooltip>();
+            var tip = text.gameObject.Need<HighlightTooltip>();
             tip.Target = text;
             tip.Notes = notes ?? new List<string>();
             var card = UiKit.Card(tooltipLayer, "Tooltip", new Color(0.05f, 0.07f, 0.1f, 0.97f), 12, 0.4f, false);

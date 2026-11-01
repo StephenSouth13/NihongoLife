@@ -89,7 +89,7 @@ namespace NihongoLife.UI
 
         private TMP_InputField MakeInput(RectTransform box, string placeholder)
         {
-            var go = new GameObject("Input", typeof(RectTransform), typeof(TMP_InputField));
+            var go = UiBind.Make("Input", typeof(RectTransform), typeof(TMP_InputField));
             go.transform.SetParent(box, false);
             NLUi.Stretch((RectTransform)go.transform, 12f);
             var input = go.GetComponent<TMP_InputField>();
@@ -100,13 +100,13 @@ namespace NihongoLife.UI
             input.customCaretColor = true;
             input.caretWidth = 2;
             input.selectionColor = new Color(0.98f, 0.82f, 0.32f, 0.45f);
-            var viewport = new GameObject("Viewport", typeof(RectTransform), typeof(RectMask2D)).GetComponent<RectTransform>();
+            var viewport = UiBind.Make("Viewport", typeof(RectTransform), typeof(RectMask2D)).GetComponent<RectTransform>();
             viewport.SetParent(go.transform, false);
             NLUi.Stretch(viewport);
             input.textViewport = viewport;
             TextMeshProUGUI Make(string name, Color color, FontStyles style)
             {
-                var t = new GameObject(name, typeof(RectTransform), typeof(TextMeshProUGUI)).GetComponent<TextMeshProUGUI>();
+                var t = UiBind.Make(name, typeof(RectTransform), typeof(TextMeshProUGUI)).GetComponent<TextMeshProUGUI>();
                 t.transform.SetParent(viewport, false);
                 NLUi.Stretch(t.rectTransform);
                 if (_font != null) t.font = _font;

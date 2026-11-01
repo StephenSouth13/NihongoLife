@@ -32,7 +32,7 @@ namespace NihongoLife.UI
         public static DraggableHud Attach(RectTransform panel, string key)
         {
             var d = panel.GetComponent<DraggableHud>();
-            if (d == null) d = panel.gameObject.AddComponent<DraggableHud>();
+            if (d == null) d = panel.gameObject.Need<DraggableHud>();
             d._rt = panel; d._key = key; d._defaultPos = panel.anchoredPosition;
             if (!All.Contains(d)) All.Add(d);
             var image = panel.GetComponent<Image>();
@@ -47,14 +47,14 @@ namespace NihongoLife.UI
         public void AddCollapseButton(TMP_FontAsset font, params GameObject[] hidden)
         {
             _collapsible = hidden ?? Array.Empty<GameObject>();
-            var go = new GameObject("CollapseButton", typeof(RectTransform), typeof(Image), typeof(Button), typeof(LayoutElement));
+            var go = UiBind.Make("CollapseButton", typeof(RectTransform), typeof(Image), typeof(Button), typeof(LayoutElement));
             go.transform.SetParent(_rt, false);
             go.GetComponent<LayoutElement>().ignoreLayout = true;
             var img = go.GetComponent<Image>(); img.color = new Color(1f, 1f, 1f, 0.12f);
             var r = (RectTransform)go.transform;
             r.anchorMin = r.anchorMax = new Vector2(1f, 1f); r.pivot = new Vector2(1f, 1f);
             r.anchoredPosition = new Vector2(-6f, -6f); r.sizeDelta = new Vector2(26f, 22f);
-            var lbl = new GameObject("Label", typeof(RectTransform), typeof(TextMeshProUGUI)).GetComponent<TextMeshProUGUI>();
+            var lbl = UiBind.Make("Label", typeof(RectTransform), typeof(TextMeshProUGUI)).GetComponent<TextMeshProUGUI>();
             lbl.transform.SetParent(go.transform, false);
             lbl.font = font; lbl.fontSize = 16f; lbl.alignment = TextAlignmentOptions.Center; lbl.color = Color.white; lbl.raycastTarget = false;
             var lr = lbl.rectTransform; lr.anchorMin = Vector2.zero; lr.anchorMax = Vector2.one; lr.offsetMin = lr.offsetMax = Vector2.zero;

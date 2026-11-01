@@ -46,7 +46,7 @@ namespace NihongoLife.UI
             var sprite = Get(itemId);
             if (icon == null && sprite != null)
             {
-                icon = new GameObject("ItemIcon", typeof(RectTransform), typeof(Image), typeof(LayoutElement)).GetComponent<RectTransform>();
+                icon = UiBind.Make("ItemIcon", typeof(RectTransform), typeof(Image), typeof(LayoutElement)).GetComponent<RectTransform>();
                 icon.SetParent(tile, false);
                 icon.GetComponent<LayoutElement>().ignoreLayout = true;
                 icon.anchorMin = Vector2.zero;
@@ -66,7 +66,7 @@ namespace NihongoLife.UI
                 if (hasPicture) icon.GetComponent<Image>().sprite = sprite;
             }
             var chip = glyph.rectTransform;
-            if (!glyph.TryGetComponent(out LayoutElement element)) element = glyph.gameObject.AddComponent<LayoutElement>();
+            if (!glyph.TryGetComponent(out LayoutElement element)) element = glyph.gameObject.Need<LayoutElement>();
             int key = glyph.GetInstanceID();
             if (!GlyphDefaults.ContainsKey(key)) GlyphDefaults[key] = (glyph.fontSize, chip.anchorMin, chip.anchorMax);
             if (!hasPicture)

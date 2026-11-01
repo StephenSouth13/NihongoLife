@@ -119,8 +119,8 @@ namespace NihongoLife.UI
             {
                 bool head = line.style == "table_head";
                 var row = Row(table, "Row", 0f);
-                row.gameObject.AddComponent<Image>().color = head ? new Color(0.86f, 0.9f, 0.95f, 1f) : new Color(1f, 1f, 1f, 1f);
-                var outline = row.gameObject.AddComponent<Outline>();
+                row.gameObject.Need<Image>().color = head ? new Color(0.86f, 0.9f, 0.95f, 1f) : new Color(1f, 1f, 1f, 1f);
+                var outline = row.gameObject.Need<Outline>();
                 outline.effectColor = PaperLine;
                 Cell(row, line.label ?? "", 220f, head ? FontStyles.Bold : FontStyles.Bold);
                 foreach (string cell in (line.text ?? "").Split('|')) Cell(row, cell.Trim(), 250f, head ? FontStyles.Bold : FontStyles.Normal).alignment = TextAlignmentOptions.Center;
@@ -170,12 +170,12 @@ namespace NihongoLife.UI
                 speakingRow.RecordLabel = UiKit.LabelOf(speakingRow.Record);
                 speakingRow.Play = UiKit.Button(row, "Play_" + number, "Nghe lại", "Play back", "再生", () => PlayTake(number), UiKit.Kind.Accent, "play_arrow", 15.5f, 22);
                 UiKit.Size(speakingRow.Play, 160f, 44f);
-                var meterBack = new GameObject("Meter", typeof(RectTransform), typeof(Image), typeof(LayoutElement)).GetComponent<RectTransform>();
+                var meterBack = UiBind.Make("Meter", typeof(RectTransform), typeof(Image), typeof(LayoutElement)).GetComponent<RectTransform>();
                 meterBack.SetParent(row, false);
                 meterBack.GetComponent<Image>().color = new Color(0.86f, 0.87f, 0.85f, 1f);
                 var meterElement = meterBack.GetComponent<LayoutElement>();
                 meterElement.preferredWidth = meterElement.minWidth = 140f; meterElement.preferredHeight = meterElement.minHeight = 12f;
-                speakingRow.Meter = new GameObject("Level", typeof(RectTransform), typeof(Image)).GetComponent<RectTransform>();
+                speakingRow.Meter = UiBind.Make("Level", typeof(RectTransform), typeof(Image)).GetComponent<RectTransform>();
                 speakingRow.Meter.SetParent(meterBack, false);
                 speakingRow.Meter.anchorMin = Vector2.zero; speakingRow.Meter.anchorMax = new Vector2(0f, 1f);
                 speakingRow.Meter.pivot = new Vector2(0f, 0.5f); speakingRow.Meter.sizeDelta = Vector2.zero;
@@ -651,7 +651,7 @@ namespace NihongoLife.UI
             foreach (var c in exam.criteria)
             {
                 var row = Row(parent, "Criterion_" + c.code, 12f);
-                row.gameObject.AddComponent<Image>().color = new Color(0.96f, 0.97f, 0.99f, 1f);
+                row.gameObject.Need<Image>().color = new Color(0.96f, 0.97f, 0.99f, 1f);
                 Cell(row, $"<b>{c.code}</b>", 60f, FontStyles.Normal);
                 Cell(row, c.name ?? "", 250f, FontStyles.Normal);
                 var band = Cell(row, c.assessed ? $"<size=130%><b>{c.band:0.0}</b></size>" : $"<i>{Loc.T("chưa chấm", "not marked", "未採点")}</i>", 110f, FontStyles.Normal);

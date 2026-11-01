@@ -160,7 +160,7 @@ namespace NihongoLife.Learning
         {
             if (Instance != null) return Instance;
             var go = new GameObject("SpeakingLiveHub");
-            DontDestroyOnLoad(go);
+            if (Application.isPlaying) DontDestroyOnLoad(go);
             return go.AddComponent<SpeakingLiveHub>();
         }
 
@@ -178,7 +178,7 @@ namespace NihongoLife.Learning
                 var client = SceneRefs.Find<SupabaseClient>();
                 if (client == null || !client.IsConfigured) return;
                 var go = new GameObject("SpeakingRealtime");
-                DontDestroyOnLoad(go);
+                if (Application.isPlaying) DontDestroyOnLoad(go);
                 _realtime = go.AddComponent<SupabaseRealtimeClient>();
                 _realtime.Initialize(client);
                 _ownsRealtime = true;

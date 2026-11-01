@@ -85,13 +85,13 @@ namespace NihongoLife.UI
             if (GameServices.TryGet(out GameSettingsService languageSettings)) languageSettings.OnLanguageChanged += HandleGlobalLanguageChanged;
 
             var canvas = GetComponentInParent<Canvas>();
-            _overlay = new GameObject("WorldMap", typeof(RectTransform), typeof(Image));
+            _overlay = UiBind.Make("WorldMap", typeof(RectTransform), typeof(Image));
             _overlay.transform.SetParent(canvas != null ? canvas.transform : transform, false);
             NLUi.Stretch((RectTransform)_overlay.transform);
             _overlay.GetComponent<Image>().color = new Color(0f, 0.01f, 0.02f, 0.72f);
             _overlay.transform.SetAsLastSibling();
 
-            _group = _overlay.AddComponent<CanvasGroup>();
+            _group = _overlay.Need<CanvasGroup>();
             var window = NLUi.Panel(_overlay.transform, "MapWindow", NLUi.Ink);
             _window = window;
             NLUi.Anchor(window, new Vector2(0.5f, 0.5f), Vector2.zero, new Vector2(1400f, 800f));
@@ -111,7 +111,7 @@ namespace NihongoLife.UI
 
             var mapFrame = NLUi.Panel(window, "MapFrame", new Color(0.075f, 0.12f, 0.14f, 1f));
             NLUi.Anchor(mapFrame, new Vector2(0f, 1f), new Vector2(30f, -112f), new Vector2(MapW + 12f, MapH + 12f));
-            var areaGo = new GameObject("MapArea", typeof(RectTransform), typeof(Image), typeof(Mask));
+            var areaGo = UiBind.Make("MapArea", typeof(RectTransform), typeof(Image), typeof(Mask));
             areaGo.transform.SetParent(mapFrame, false);
             _mapArea = (RectTransform)areaGo.transform;
             NLUi.Anchor(_mapArea, new Vector2(0.5f, 0.5f), Vector2.zero, new Vector2(MapW, MapH));
@@ -120,7 +120,7 @@ namespace NihongoLife.UI
             areaImage.type = Image.Type.Sliced;
             areaImage.color = new Color(0.1f, 0.16f, 0.18f, 1f);
             areaGo.GetComponent<Mask>().showMaskGraphic = true;
-            var clickTarget = _mapArea.gameObject.AddComponent<MapClickTarget>();
+            var clickTarget = _mapArea.gameObject.Need<MapClickTarget>();
             clickTarget.Clicked += HandleMapClick;
             MapPremium.PolishWindow(window, mapFrame);
 
@@ -132,7 +132,7 @@ namespace NihongoLife.UI
             layout.childForceExpandHeight = false;
             _sidebarTitle = NLUi.Label(sidebar, "Title", SidebarTitle(), 21f, NLUi.Text, _font, FontStyles.Bold);
             // Many places (Phú Quốc has 31): the list scrolls inside the panel.
-            var listRoot = new GameObject("ListScroll", typeof(RectTransform), typeof(LayoutElement)).GetComponent<RectTransform>();
+            var listRoot = UiBind.Make("ListScroll", typeof(RectTransform), typeof(LayoutElement)).GetComponent<RectTransform>();
             listRoot.SetParent(sidebar, false);
             var listSize = listRoot.GetComponent<LayoutElement>();
             listSize.flexibleHeight = 1f; listSize.preferredHeight = MapH - 60f;
@@ -229,7 +229,7 @@ namespace NihongoLife.UI
             ((HorizontalLayoutGroup)tabs.GetComponent<HorizontalOrVerticalLayoutGroup>()).childForceExpandWidth = false;
             _areaTab = NLUi.Button(tabs, "MapTab_Area", L("Khu vực hiện tại", "Current area", "現在のエリア"), _font, () => SetMapMode(true), NLUi.Card, 17f, null, 44f);
             _overviewTab = NLUi.Button(tabs, "MapTab_Overview", L("Bản đồ tổng", "Overview map", "全体マップ"), _font, () => SetMapMode(false), NLUi.Card, 17f, null, 44f);
-            var topDownObject = new GameObject("TopDownMap", typeof(RectTransform), typeof(RawImage));
+            var topDownObject = UiBind.Make("TopDownMap", typeof(RectTransform), typeof(RawImage));
             topDownObject.transform.SetParent(_mapArea, false);
             _topDownImage = topDownObject.GetComponent<RawImage>();
             _topDownImage.color = Color.white;
@@ -266,8 +266,8 @@ namespace NihongoLife.UI
             }
             if (_topDownCamera == null)
             {
-                var go = new GameObject("TopDownMapCamera");
-                _topDownCamera = go.AddComponent<Camera>();
+                var go = UiBind.Make("TopDownMapCamera");
+                _topDownCamera = go.Need<Camera>();
                 _topDownCamera.orthographic = true;
                 _topDownCamera.cullingMask = ~(LayerMask.GetMask("MapRoof") | (1 << 5));
                 _topDownCamera.clearFlags = CameraClearFlags.SolidColor;
@@ -368,7 +368,7 @@ namespace NihongoLife.UI
             var sea = NLUi.Panel(_mapArea, "Sea", new Color(0.12f, 0.36f, 0.5f, 1f));
             sea.GetComponent<Image>().raycastTarget = false;
             NLUi.Anchor(sea, new Vector2(0.5f, 0.5f), Vector2.zero, new Vector2(MapW - Inset * 0.5f, MapH - Inset * 0.5f));
-            var land = new GameObject("Coast", typeof(RectTransform), typeof(UiPolygon)).GetComponent<UiPolygon>();
+            var land = UiBind.Make("Coast", typeof(RectTransform), typeof(UiPolygon)).GetComponent<UiPolygon>();
             land.transform.SetParent(_mapArea, false);
             NLUi.Anchor(land.rectTransform, new Vector2(0.5f, 0.5f), Vector2.zero, Vector2.zero);
             land.color = new Color(0.36f, 0.6f, 0.36f, 1f);
@@ -551,7 +551,7 @@ namespace NihongoLife.UI
 
         private void DrawGrid()
         {
-            var grid = new GameObject("Grid", typeof(RectTransform));
+            var grid = UiBind.Make("Grid", typeof(RectTransform));
             grid.transform.SetParent(_mapArea, false);
             grid.transform.SetAsFirstSibling();
             NLUi.Stretch((RectTransform)grid.transform);
@@ -564,7 +564,7 @@ namespace NihongoLife.UI
 
         private static void Line(Transform parent, Vector2 position, Vector2 size)
         {
-            var go = new GameObject("GridLine", typeof(RectTransform), typeof(Image));
+            var go = UiBind.Make("GridLine", typeof(RectTransform), typeof(Image));
             go.transform.SetParent(parent, false);
             go.GetComponent<Image>().color = new Color(1f, 1f, 1f, 0.035f);
             go.GetComponent<Image>().raycastTarget = false;
@@ -575,7 +575,7 @@ namespace NihongoLife.UI
         {
             var road = NLUi.Panel(_mapArea, "Route", new Color(0.26f, 0.32f, 0.35f, 1f));
             road.GetComponent<Image>().raycastTarget = false;
-            var edge = road.gameObject.AddComponent<Outline>();
+            var edge = road.gameObject.Need<Outline>();
             edge.effectColor = new Color(0.1f, 0.14f, 0.16f, 0.9f);
             edge.effectDistance = new Vector2(2f, 2f);
             NLUi.Anchor(road, new Vector2(0.5f, 0.5f), p, s);
@@ -589,7 +589,7 @@ namespace NihongoLife.UI
             float size = place.Quiet ? 26f : 46f;
             NLUi.Anchor(marker, new Vector2(0.5f, 0.5f), place.Pixel, new Vector2(size, size));
             marker.GetComponent<Image>().raycastTarget = false;
-            var drop = marker.gameObject.AddComponent<Shadow>();
+            var drop = marker.gameObject.Need<Shadow>();
             drop.effectColor = new Color(0f, 0f, 0f, 0.5f);
             drop.effectDistance = new Vector2(0f, -3f);
             NLUi.Stretch(NLUi.Label(marker, "Glyph", place.Glyph, size * 0.56f, new Color(0.08f, 0.1f, 0.12f), _font, FontStyles.Bold, TextAlignmentOptions.Center).rectTransform);
@@ -630,7 +630,7 @@ namespace NihongoLife.UI
                 NLUi.Size(info, 34f, 30f, 0f);
                 if (place.HasWorld)
                 {
-                    var button = row.gameObject.AddComponent<Button>();
+                    var button = row.gameObject.Need<Button>();
                     button.targetGraphic = row.GetComponent<Image>();
                     button.onClick.AddListener(() =>
                     {
@@ -647,7 +647,7 @@ namespace NihongoLife.UI
             _destinationMarker = NLUi.Panel(_mapArea, "Destination", NLUi.Bad);
             NLUi.Anchor(_destinationMarker, new Vector2(0.5f, 0.5f), Vector2.zero, new Vector2(18f, 18f));
             _destinationMarker.gameObject.SetActive(false);
-            _playerMarker = new GameObject("YouAreHere", typeof(RectTransform)).GetComponent<RectTransform>();
+            _playerMarker = UiBind.Make("YouAreHere", typeof(RectTransform)).GetComponent<RectTransform>();
             _playerMarker.SetParent(_mapArea, false);
             NLUi.Anchor(_playerMarker, new Vector2(0.5f, 0.5f), Vector2.zero, new Vector2(40f, 40f));
             var ring = NLUi.Panel(_playerMarker, "Ring", new Color(1f, 0.82f, 0.2f, 0.25f));

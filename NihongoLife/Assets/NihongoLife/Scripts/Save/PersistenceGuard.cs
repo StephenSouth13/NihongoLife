@@ -41,7 +41,7 @@ namespace NihongoLife.Save
         {
             if (_instance != null) return _instance;
             var go = new GameObject(ObjectName);
-            DontDestroyOnLoad(go);
+            if (Application.isPlaying) DontDestroyOnLoad(go);
             _instance = go.AddComponent<PersistenceGuard>();
             _instance._nextAutosave = Time.unscaledTime + AutosaveSeconds;
 #if UNITY_WEBGL && !UNITY_EDITOR

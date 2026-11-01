@@ -20,7 +20,7 @@ namespace NihongoLife.UI
 
         private RectTransform Strip(RectTransform parent, string name, float offset, float height, bool top, Color color)
         {
-            var rect = new GameObject(name, typeof(RectTransform), typeof(Image)).GetComponent<RectTransform>();
+            var rect = UiBind.Make(name, typeof(RectTransform), typeof(Image)).GetComponent<RectTransform>();
             rect.SetParent(parent, false);
             rect.anchorMin = new Vector2(0f, top ? 1f : 0f);
             rect.anchorMax = new Vector2(1f, top ? 1f : 0f);
@@ -41,7 +41,7 @@ namespace NihongoLife.UI
 
         private TextMeshProUGUI Text(RectTransform parent, string name, string value, float size, Color color, TextAlignmentOptions align, FontStyles style = FontStyles.Normal)
         {
-            var t = new GameObject(name, typeof(RectTransform), typeof(TextMeshProUGUI)).GetComponent<TextMeshProUGUI>();
+            var t = UiBind.Make(name, typeof(RectTransform), typeof(TextMeshProUGUI)).GetComponent<TextMeshProUGUI>();
             t.transform.SetParent(parent, false);
             t.font = _font; t.fontSize = size; t.color = color; t.alignment = align; t.fontStyle = style;
             t.text = value; t.raycastTarget = false; t.textWrappingMode = TextWrappingModes.NoWrap;
@@ -73,7 +73,7 @@ namespace NihongoLife.UI
         private RectTransform Box(RectTransform parent, string name)
         {
             var box = NLUi.Panel(parent, name, new Color(1f, 1f, 1f, 1f), new RectOffset(26, 26, 18, 20), 8f);
-            var outline = box.gameObject.AddComponent<Outline>();
+            var outline = box.gameObject.Need<Outline>();
             outline.effectColor = PaperLine;
             outline.effectDistance = new Vector2(1.5f, -1.5f);
             return box;
@@ -81,16 +81,16 @@ namespace NihongoLife.UI
 
         private ScrollRect MakeScroll(RectTransform parent, string name, out RectTransform content)
         {
-            var go = new GameObject(name, typeof(RectTransform), typeof(ScrollRect), typeof(Image));
+            var go = UiBind.Make(name, typeof(RectTransform), typeof(ScrollRect), typeof(Image));
             go.transform.SetParent(parent, false);
             var rect = (RectTransform)go.transform;
             rect.anchorMin = Vector2.zero; rect.anchorMax = Vector2.one; rect.offsetMin = rect.offsetMax = Vector2.zero;
             go.GetComponent<Image>().color = new Color(0f, 0f, 0f, 0f);
-            var viewport = new GameObject("Viewport", typeof(RectTransform), typeof(RectMask2D), typeof(Image)).GetComponent<RectTransform>();
+            var viewport = UiBind.Make("Viewport", typeof(RectTransform), typeof(RectMask2D), typeof(Image)).GetComponent<RectTransform>();
             viewport.SetParent(rect, false);
             NLUi.Stretch(viewport);
             viewport.GetComponent<Image>().color = new Color(0f, 0f, 0f, 0f);
-            var paper = new GameObject("Paper", typeof(RectTransform), typeof(Image), typeof(VerticalLayoutGroup), typeof(ContentSizeFitter)).GetComponent<RectTransform>();
+            var paper = UiBind.Make("Paper", typeof(RectTransform), typeof(Image), typeof(VerticalLayoutGroup), typeof(ContentSizeFitter)).GetComponent<RectTransform>();
             paper.SetParent(viewport, false);
             paper.anchorMin = paper.anchorMax = new Vector2(0.5f, 1f);
             paper.pivot = new Vector2(0.5f, 1f);
@@ -110,26 +110,26 @@ namespace NihongoLife.UI
             scroll.scrollSensitivity = 38f;
             content = paper;
             // Narrow the paper to its column when the passage is shown beside it.
-            go.AddComponent<IeltsPaperWidth>().Configure(paper, rect);
+            go.Need<IeltsPaperWidth>().Configure(paper, rect);
             return scroll;
         }
 
         private TMP_InputField MakeInput(RectTransform parent, float width, float height, bool multiline = false)
         {
-            var go = new GameObject("Input", typeof(RectTransform), typeof(Image), typeof(TMP_InputField), typeof(LayoutElement));
+            var go = UiBind.Make("Input", typeof(RectTransform), typeof(Image), typeof(TMP_InputField), typeof(LayoutElement));
             go.transform.SetParent(parent, false);
             var element = go.GetComponent<LayoutElement>();
             element.preferredWidth = width; element.minWidth = width; element.preferredHeight = height; element.minHeight = height;
             var image = go.GetComponent<Image>();
             image.color = new Color(1f, 1f, 0.97f, 1f);
-            var outline = go.AddComponent<Outline>();
+            var outline = go.Need<Outline>();
             outline.effectColor = new Color(0.55f, 0.6f, 0.68f, 1f);
             outline.effectDistance = new Vector2(1f, -1f);
-            var area = new GameObject("TextArea", typeof(RectTransform), typeof(RectMask2D)).GetComponent<RectTransform>();
+            var area = UiBind.Make("TextArea", typeof(RectTransform), typeof(RectMask2D)).GetComponent<RectTransform>();
             area.SetParent(go.transform, false);
             NLUi.Stretch(area);
             area.offsetMin = new Vector2(10f, 4f); area.offsetMax = new Vector2(-10f, -4f);
-            var text = new GameObject("Text", typeof(RectTransform), typeof(TextMeshProUGUI)).GetComponent<TextMeshProUGUI>();
+            var text = UiBind.Make("Text", typeof(RectTransform), typeof(TextMeshProUGUI)).GetComponent<TextMeshProUGUI>();
             text.transform.SetParent(area, false);
             NLUi.Stretch(text.rectTransform);
             text.font = _font; text.fontSize = 17f; text.color = PaperInk;

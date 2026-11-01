@@ -18,7 +18,7 @@ namespace NihongoLife.Learning
             if (_host == null)
             {
                 var go = new GameObject("NihongoAgoraWeb");
-                DontDestroyOnLoad(go);
+                if (Application.isPlaying) DontDestroyOnLoad(go);
                 go.hideFlags = HideFlags.HideAndDontSave;
                 _host = go.AddComponent<AgoraWebEvents>();
                 AgoraWebNative.NL_AgoraSetTarget(go.name);

@@ -46,8 +46,8 @@ namespace NihongoLife.UI
             {
                 if (_instance != null) return _instance;
                 var canvas = NLUi.CreateCanvas("LiveToastCanvas", 980);
-                DontDestroyOnLoad(canvas.gameObject);
-                _instance = canvas.gameObject.AddComponent<LiveToast>();
+                if (Application.isPlaying) DontDestroyOnLoad(canvas.gameObject);
+                _instance = canvas.gameObject.Need<LiveToast>();
                 _instance._stack = UiKit.Rect(canvas.transform, "Stack");
                 UiKit.Pin(_instance._stack, new Vector2(1f, 1f), -24f, -96f, Width, 600f);
                 return _instance;
@@ -89,7 +89,7 @@ namespace NihongoLife.UI
             var card = UiKit.Card(_stack, "Toast", new Color(0.085f, 0.11f, 0.155f, 0.98f), 16, 0f, true);
             var rect = card.rectTransform;
             UiKit.Pin(rect, new Vector2(1f, 1f), 0f, 0f, Width, height);
-            var group = card.gameObject.AddComponent<CanvasGroup>();
+            var group = card.gameObject.Need<CanvasGroup>();
             group.alpha = 0f;
             UiKit.Outline(rect, UiKit.Alpha(accent, 0.35f), 1f);
 

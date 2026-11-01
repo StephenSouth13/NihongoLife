@@ -20,7 +20,7 @@ namespace NihongoLife.UI
 
         private void BuildResults()
         {
-            _results = new GameObject("Results", typeof(RectTransform)).GetComponent<RectTransform>();
+            _results = UiBind.Make("Results", typeof(RectTransform)).GetComponent<RectTransform>();
             _results.SetParent(_root, false);
             _results.anchorMin = Vector2.zero; _results.anchorMax = Vector2.one;
             _results.offsetMin = new Vector2(0f, 92f); _results.offsetMax = new Vector2(0f, -144f);
@@ -49,7 +49,7 @@ namespace NihongoLife.UI
             foreach (var item in r.Items)
             {
                 var row = Row(content, "R" + item.Number, 10f);
-                row.gameObject.AddComponent<Image>().color = item.IsCorrect ? new Color(0.88f, 0.96f, 0.9f, 1f) : new Color(0.99f, 0.91f, 0.9f, 1f);
+                row.gameObject.Need<Image>().color = item.IsCorrect ? new Color(0.88f, 0.96f, 0.9f, 1f) : new Color(0.99f, 0.91f, 0.9f, 1f);
                 Cell(row, item.Number.ToString(), 60f, FontStyles.Bold);
                 Cell(row, string.IsNullOrEmpty(item.Given) ? $"<i>{Loc.T("(bỏ trống)", "(blank)", "（空欄）")}</i>" : item.Given, 360f, FontStyles.Normal);
                 Cell(row, IeltsGrader.KeyDisplay(item.Correct) + (item.Correct != null && item.Correct.Length > 1 && item.Correct.All(c => c.Length == 1) ? $"  <i>{Loc.T("(bất kỳ thứ tự)", "(any order)", "（順不同）")}</i>" : ""), 420f, FontStyles.Normal);
@@ -75,7 +75,7 @@ namespace NihongoLife.UI
 
         private void BuildConfirm()
         {
-            _confirm = new GameObject("Confirm", typeof(RectTransform), typeof(Image)).GetComponent<RectTransform>();
+            _confirm = UiBind.Make("Confirm", typeof(RectTransform), typeof(Image)).GetComponent<RectTransform>();
             _confirm.SetParent(_root, false);
             NLUi.Stretch(_confirm);
             _confirm.GetComponent<Image>().color = new Color(0f, 0f, 0f, 0.66f);

@@ -217,7 +217,7 @@ namespace NihongoLife.UI
 
         private static void StretchRow(RectTransform panel)
         {
-            var le = panel.GetComponent<LayoutElement>() ?? panel.gameObject.AddComponent<LayoutElement>();
+            var le = panel.GetComponent<LayoutElement>() ?? panel.gameObject.Need<LayoutElement>();
             le.flexibleWidth = 1f;
             foreach (var t in panel.GetComponentsInChildren<TextMeshProUGUI>(true)) t.textWrappingMode = TextWrappingModes.Normal;
         }
@@ -502,7 +502,7 @@ namespace NihongoLife.UI
             var grid = UiKit.Scroll(host, "Grid", out _, 0f, new RectOffset(4, 16, 4, 16));
             var gl = grid.gameObject.GetComponent<VerticalLayoutGroup>();
             if (gl != null) UnityEngine.Object.DestroyImmediate(gl);
-            var g = grid.gameObject.AddComponent<GridLayoutGroup>();
+            var g = grid.gameObject.Need<GridLayoutGroup>();
             g.cellSize = new Vector2(220f, 250f); g.spacing = new Vector2(16f, 16f);
             var mark = CertificateView.Mark;
             foreach (var t in tiles)
@@ -517,7 +517,7 @@ namespace NihongoLife.UI
                 if (earned && mark != null)
                 {
                     var mr = UiKit.Rect(disc.transform, "Mark"); UiKit.Place(mr, 24f, 10f, 60f, 60f);
-                    var raw = mr.gameObject.AddComponent<RawImage>(); raw.texture = mark; raw.raycastTarget = false;
+                    var raw = mr.gameObject.Need<RawImage>(); raw.texture = mark; raw.raycastTarget = false;
                 }
                 var lv = UiKit.Label(disc.transform, "Level", CertificateView.LevelName(t.track, t.level), earned ? 24f : 30f, earned ? Color.white : UiTheme.Muted, FontStyles.Bold, TextAlignmentOptions.Center);
                 UiKit.Place(lv, 0f, earned ? 66f : 0f, 108f, earned ? 40f : 108f);

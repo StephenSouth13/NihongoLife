@@ -56,9 +56,9 @@ namespace NihongoLife.UI
         private static void Boot()
         {
             if (_instance != null) return;
-            var host = new GameObject("NotebookUI");
-            DontDestroyOnLoad(host);
-            _instance = host.AddComponent<NotebookUI>();
+            var host = UiBind.Make("NotebookUI");
+            if (Application.isPlaying) DontDestroyOnLoad(host);
+            _instance = host.Need<NotebookUI>();
         }
 
         public static NotebookUI GetOrCreate()
@@ -230,7 +230,7 @@ namespace NihongoLife.UI
                 for (int i = 0; i < pages; i++)
                 {
                     int page = i;
-                    var go = new GameObject("Page" + (i + 1), typeof(RectTransform), typeof(Image), typeof(Button), typeof(LayoutElement));
+                    var go = UiBind.Make("Page" + (i + 1), typeof(RectTransform), typeof(Image), typeof(Button), typeof(LayoutElement));
                     go.transform.SetParent(_chips, false);
                     var bg = go.GetComponent<Image>();
                     bg.sprite = UIStyleKit.RoundedSprite();
@@ -278,7 +278,7 @@ namespace NihongoLife.UI
             int needed = Mathf.CeilToInt((viewport.height + Mathf.Abs(offset)) / pitch) + 2;
             while (_ruleLines.Count < needed)
             {
-                var go = new GameObject("Rule", typeof(RectTransform), typeof(Image), typeof(LayoutElement));
+                var go = UiBind.Make("Rule", typeof(RectTransform), typeof(Image), typeof(LayoutElement));
                 go.transform.SetParent(_rules, false);
                 go.GetComponent<LayoutElement>().ignoreLayout = true;
                 var image = go.GetComponent<Image>();
@@ -307,7 +307,7 @@ namespace NihongoLife.UI
         {
             _font = NLUi.ResolveFont();
             _canvas = NLUi.CreateCanvas("NotebookCanvas", 900, transform);
-            _window = new GameObject("Notebook", typeof(RectTransform), typeof(Image), typeof(Shadow)).GetComponent<RectTransform>();
+            _window = UiBind.Make("Notebook", typeof(RectTransform), typeof(Image), typeof(Shadow)).GetComponent<RectTransform>();
             _window.SetParent(_canvas.transform, false);
             NLUi.Anchor(_window, new Vector2(1f, 0.5f), new Vector2(-36f, 10f), new Vector2(Width, Height));
             var cover = _window.GetComponent<Image>();
@@ -319,7 +319,7 @@ namespace NihongoLife.UI
             shadow.effectDistance = new Vector2(6f, -8f);
 
             // Cover band (drag handle) with the title, usage and close button.
-            var band = new GameObject("CoverBand", typeof(RectTransform), typeof(Image), typeof(NotebookDragHandle)).GetComponent<RectTransform>();
+            var band = UiBind.Make("CoverBand", typeof(RectTransform), typeof(Image), typeof(NotebookDragHandle)).GetComponent<RectTransform>();
             band.SetParent(_window, false);
             band.anchorMin = new Vector2(0f, 1f); band.anchorMax = new Vector2(1f, 1f); band.pivot = new Vector2(0.5f, 1f);
             band.anchoredPosition = Vector2.zero; band.sizeDelta = new Vector2(0f, 64f);
@@ -333,10 +333,10 @@ namespace NihongoLife.UI
             NLUi.CloseButton(band, _font, Close, 36f, 14f);
 
             // Page chips on the cover.
-            var chipsHost = new GameObject("Chips", typeof(RectTransform), typeof(RectMask2D)).GetComponent<RectTransform>();
+            var chipsHost = UiBind.Make("Chips", typeof(RectTransform), typeof(RectMask2D)).GetComponent<RectTransform>();
             chipsHost.SetParent(_window, false);
             Place(chipsHost, 22f, 66f, Width - 44f, 34f, top: true);
-            var scroll = chipsHost.gameObject.AddComponent<ScrollRect>();
+            var scroll = chipsHost.gameObject.Need<ScrollRect>();
             scroll.horizontal = true; scroll.vertical = false; scroll.movementType = ScrollRect.MovementType.Clamped; scroll.scrollSensitivity = 18f;
             _chips = NLUi.Group(chipsHost, "Row", false, 6f, TextAnchor.MiddleLeft, false);
             _chips.anchorMin = new Vector2(0f, 0f); _chips.anchorMax = new Vector2(0f, 1f); _chips.pivot = new Vector2(0f, 0.5f);
@@ -346,7 +346,7 @@ namespace NihongoLife.UI
             scroll.viewport = chipsHost;
 
             // The paper sheet with its spiral binding.
-            var paper = new GameObject("Paper", typeof(RectTransform), typeof(Image)).GetComponent<RectTransform>();
+            var paper = UiBind.Make("Paper", typeof(RectTransform), typeof(Image)).GetComponent<RectTransform>();
             paper.SetParent(_window, false);
             paper.anchorMin = Vector2.zero; paper.anchorMax = Vector2.one;
             paper.offsetMin = new Vector2(34f, 16f); paper.offsetMax = new Vector2(-16f, -110f);
@@ -356,7 +356,7 @@ namespace NihongoLife.UI
             paperImage.color = PageColor;
             BuildSpiral(paper);
 
-            var margin = new GameObject("Margin", typeof(RectTransform), typeof(Image)).GetComponent<RectTransform>();
+            var margin = UiBind.Make("Margin", typeof(RectTransform), typeof(Image)).GetComponent<RectTransform>();
             margin.SetParent(paper, false);
             margin.anchorMin = new Vector2(0f, 0f); margin.anchorMax = new Vector2(0f, 1f);
             margin.pivot = new Vector2(0f, 0.5f);
@@ -367,7 +367,7 @@ namespace NihongoLife.UI
             _title = Input(paper, "TitleField", NihongoLife.Core.Loc.T("Tiêu đề trang…", "Page title…", "ページのタイトル…"), 21f, FontStyles.Bold, multiline: false, NotebookService.TitleChars);
             Place((RectTransform)_title.transform, 50f, 14f, -64f, 40f, top: true, stretch: true);
             LocText.Set((TMP_Text)_title.placeholder, "Tiêu đề trang…", "Page title…", "ページのタイトル…"); // follows a language change
-            var titleRule = new GameObject("TitleRule", typeof(RectTransform), typeof(Image)).GetComponent<RectTransform>();
+            var titleRule = UiBind.Make("TitleRule", typeof(RectTransform), typeof(Image)).GetComponent<RectTransform>();
             titleRule.SetParent(paper, false);
             Place(titleRule, 50f, 54f, -64f, 2f, top: true, stretch: true);
             titleRule.GetComponent<Image>().color = new Color(0.13f, 0.17f, 0.27f, 0.35f);
@@ -381,7 +381,7 @@ namespace NihongoLife.UI
             _body.textComponent.lineSpacing = 16f;
             ((TMP_Text)_body.placeholder).lineSpacing = 16f;
             LocText.Set((TMP_Text)_body.placeholder, "Viết ghi chú… (từ mới, mẹo làm bài, đáp án cần xem lại)", "Write notes… (new words, test tips, answers to review)", "メモを書く…（新しい言葉、テストのコツ、見直す答え）");
-            _rules = new GameObject("Rules", typeof(RectTransform)).GetComponent<RectTransform>();
+            _rules = UiBind.Make("Rules", typeof(RectTransform)).GetComponent<RectTransform>();
             _rules.SetParent(_body.textComponent.rectTransform, false);
             NLUi.Stretch(_rules);
             _rules.SetAsFirstSibling();
@@ -423,7 +423,7 @@ namespace NihongoLife.UI
             for (int i = 0; i < rings; i++)
             {
                 float y = -34f - i * ((Height - 126f - 68f) / (rings - 1));
-                var hole = new GameObject("Hole", typeof(RectTransform), typeof(Image)).GetComponent<RectTransform>();
+                var hole = UiBind.Make("Hole", typeof(RectTransform), typeof(Image)).GetComponent<RectTransform>();
                 hole.SetParent(paper, false);
                 hole.anchorMin = hole.anchorMax = new Vector2(0f, 1f);
                 hole.pivot = new Vector2(0.5f, 0.5f);
@@ -433,7 +433,7 @@ namespace NihongoLife.UI
                 holeImage.sprite = UIStyleKit.RoundedSprite(); holeImage.type = Image.Type.Sliced;
                 holeImage.color = CoverEdge; holeImage.raycastTarget = false;
 
-                var ring = new GameObject("Ring", typeof(RectTransform), typeof(Image)).GetComponent<RectTransform>();
+                var ring = UiBind.Make("Ring", typeof(RectTransform), typeof(Image)).GetComponent<RectTransform>();
                 ring.SetParent(paper, false);
                 ring.anchorMin = ring.anchorMax = new Vector2(0f, 1f);
                 ring.pivot = new Vector2(1f, 0.5f);
@@ -447,7 +447,7 @@ namespace NihongoLife.UI
 
         private TMP_InputField Input(RectTransform parent, string name, string placeholder, float size, FontStyles style, bool multiline, int limit)
         {
-            var go = new GameObject(name, typeof(RectTransform), typeof(Image), typeof(TMP_InputField));
+            var go = UiBind.Make(name, typeof(RectTransform), typeof(Image), typeof(TMP_InputField));
             go.transform.SetParent(parent, false);
             go.GetComponent<Image>().color = new Color(1f, 1f, 1f, 0f);
             var input = go.GetComponent<TMP_InputField>();
@@ -460,14 +460,14 @@ namespace NihongoLife.UI
             input.selectionColor = new Color(0.98f, 0.82f, 0.32f, 0.45f);
             input.scrollSensitivity = 12f;
 
-            var viewport = new GameObject("Viewport", typeof(RectTransform), typeof(RectMask2D)).GetComponent<RectTransform>();
+            var viewport = UiBind.Make("Viewport", typeof(RectTransform), typeof(RectMask2D)).GetComponent<RectTransform>();
             viewport.SetParent(go.transform, false);
             NLUi.Stretch(viewport);
             input.textViewport = viewport;
 
             TextMeshProUGUI Make(string childName, Color color, FontStyles childStyle)
             {
-                var t = new GameObject(childName, typeof(RectTransform), typeof(TextMeshProUGUI)).GetComponent<TextMeshProUGUI>();
+                var t = UiBind.Make(childName, typeof(RectTransform), typeof(TextMeshProUGUI)).GetComponent<TextMeshProUGUI>();
                 t.transform.SetParent(viewport, false);
                 NLUi.Stretch(t.rectTransform);
                 if (_font != null) t.font = _font;
@@ -488,7 +488,7 @@ namespace NihongoLife.UI
 
         private Button SmallButton(RectTransform parent, string name, string label, Action onClick, float height)
         {
-            var go = new GameObject(name, typeof(RectTransform), typeof(Image), typeof(Button));
+            var go = UiBind.Make(name, typeof(RectTransform), typeof(Image), typeof(Button));
             go.transform.SetParent(parent, false);
             var image = go.GetComponent<Image>();
             image.sprite = UIStyleKit.RoundedSprite();

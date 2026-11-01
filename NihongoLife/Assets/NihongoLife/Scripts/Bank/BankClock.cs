@@ -16,7 +16,7 @@ namespace NihongoLife.Bank
         {
             if (_instance != null) return;
             var go = new GameObject("BankClock");
-            DontDestroyOnLoad(go);
+            if (Application.isPlaying) DontDestroyOnLoad(go);
             _instance = go.AddComponent<BankClock>();
         }
 

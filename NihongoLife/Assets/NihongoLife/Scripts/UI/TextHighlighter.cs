@@ -148,7 +148,7 @@ namespace NihongoLife.UI
         {
             if (text == null || book == null) return null;
             var highlighter = text.GetComponent<TextHighlighter>();
-            if (highlighter == null) highlighter = text.gameObject.AddComponent<TextHighlighter>();
+            if (highlighter == null) highlighter = text.gameObject.Need<TextHighlighter>();
             highlighter._text = text;
             highlighter._book = book;
             highlighter._key = key;
@@ -360,7 +360,7 @@ namespace NihongoLife.UI
             layout.childControlHeight = true;
             // Sizes itself from its buttons whenever it is laid out (it may be built while its screen is hidden).
             NLUi.FitContent(row, width: true, height: false);
-            var state = row.gameObject.AddComponent<State>();
+            var state = row.gameObject.Need<State>();
 
             var pen = Tool(row, state, 0, height, () =>
                 HighlightTool.SetMode(HighlightTool.Mode == HighlightTool.ToolMode.Pen ? HighlightTool.ToolMode.Off : HighlightTool.ToolMode.Pen));
@@ -368,7 +368,7 @@ namespace NihongoLife.UI
             for (int i = 0; i < HighlightTool.Colors.Length; i++)
             {
                 int index = i;
-                var go = new GameObject("Color" + i, typeof(RectTransform), typeof(Image), typeof(Button), typeof(LayoutElement));
+                var go = UiBind.Make("Color" + i, typeof(RectTransform), typeof(Image), typeof(Button), typeof(LayoutElement));
                 go.transform.SetParent(row, false);
                 var image = go.GetComponent<Image>();
                 image.sprite = UiKit.Circle;

@@ -47,7 +47,7 @@ namespace NihongoLife.UI
             Chip(BagFilter.Food, "Đồ ăn", "Food", "食べ物");
             Chip(BagFilter.Drink, "Đồ uống", "Drinks", "飲み物");
             Chip(BagFilter.Other, "Khác", "Other", "その他");
-            var spacer = new GameObject("Spacer", typeof(RectTransform)); spacer.transform.SetParent(bar, false);
+            var spacer = UiBind.Make("Spacer", typeof(RectTransform)); spacer.transform.SetParent(bar, false);
             NLUi.Size(spacer.transform, flexibleWidth: 1f);
             var sort = NLUi.Button(bar, "SortButton", "", _font, SortBag, new Color(0.22f, 0.27f, 0.33f), 16f, Color.white, 36f);
             LocText.Set(sort.GetComponentInChildren<TextMeshProUGUI>(), "Sắp xếp", "Sort", "並べ替え");
@@ -70,20 +70,20 @@ namespace NihongoLife.UI
             _tipTitle = NLUi.Label(_tip, "Title", "", 20f, NLUi.Gold, _font, FontStyles.Bold);
             _tipBody = NLUi.Label(_tip, "Body", "", 16f, NLUi.Text, _font);
             foreach (var g in _tip.GetComponentsInChildren<Graphic>(true)) g.raycastTarget = false;
-            _tip.gameObject.AddComponent<LayoutElement>().ignoreLayout = true;
+            _tip.gameObject.Need<LayoutElement>().ignoreLayout = true;
             _tip.gameObject.SetActive(false);
 
             _menu = NLUi.Panel(root, "ContextMenu", new Color(0.08f, 0.1f, 0.13f, 0.99f), new RectOffset(8, 8, 8, 8), 4f);
             _menu.anchorMin = _menu.anchorMax = new Vector2(0.5f, 0.5f); _menu.pivot = new Vector2(0f, 1f);
             NLUi.Size(_menu, preferredWidth: 230f);
             NLUi.FitContent(_menu);
-            _menu.gameObject.AddComponent<LayoutElement>().ignoreLayout = true;
+            _menu.gameObject.Need<LayoutElement>().ignoreLayout = true;
             _menu.gameObject.SetActive(false);
 
             _ghost = NLUi.Panel(root, "DragGhost", Color.white, new RectOffset(0, 0, 0, 0), 0f);
             _ghost.anchorMin = _ghost.anchorMax = new Vector2(0.5f, 0.5f); _ghost.pivot = new Vector2(0.5f, 0.5f);
             _ghost.sizeDelta = new Vector2(84f, 66f);
-            _ghost.gameObject.AddComponent<LayoutElement>().ignoreLayout = true;
+            _ghost.gameObject.Need<LayoutElement>().ignoreLayout = true;
             _ghostTile = _ghost.GetComponent<Image>(); _ghostTile.raycastTarget = false;
             _ghostGlyph = NLUi.Label(_ghost, "Glyph", "", 40f, new Color(0.15f, 0.12f, 0.1f), _font, FontStyles.Bold, TextAlignmentOptions.Center);
             _ghostGlyph.raycastTarget = false;

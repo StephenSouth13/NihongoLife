@@ -72,13 +72,13 @@ namespace NihongoLife.UI
         // ── Window polish ──
         public static void PolishWindow(RectTransform window, RectTransform mapFrame)
         {
-            var shadow = window.gameObject.AddComponent<Shadow>();
+            var shadow = window.gameObject.Need<Shadow>();
             shadow.effectColor = new Color(0f, 0f, 0f, 0.55f);
             shadow.effectDistance = new Vector2(0f, -14f);
             var line = NewImage(window, "HeaderAccent", new Color(1f, 0.82f, 0.2f, 0.9f));
             NLUi.Anchor(line, new Vector2(0f, 1f), new Vector2(36f, -100f), new Vector2(150f, 3f));
             var frameImage = mapFrame.GetComponent<Image>();
-            var outline = mapFrame.gameObject.AddComponent<Outline>();
+            var outline = mapFrame.gameObject.Need<Outline>();
             outline.effectColor = new Color(1f, 0.82f, 0.2f, 0.35f);
             outline.effectDistance = new Vector2(1.5f, 1.5f);
             frameImage.color = new Color(0.05f, 0.08f, 0.1f, 1f);
@@ -91,7 +91,7 @@ namespace NihongoLife.UI
 
         private static RectTransform NewImage(Transform parent, string name, Color color, Sprite sprite = null)
         {
-            var go = new GameObject(name, typeof(RectTransform), typeof(Image));
+            var go = UiBind.Make(name, typeof(RectTransform), typeof(Image));
             go.transform.SetParent(parent, false);
             var image = go.GetComponent<Image>();
             image.color = color;
@@ -143,7 +143,7 @@ namespace NihongoLife.UI
         {
             var existing = window.Find("Legend");
             if (existing != null) Object.Destroy(existing.gameObject);
-            var root = new GameObject("Legend", typeof(RectTransform), typeof(GridLayoutGroup));
+            var root = UiBind.Make("Legend", typeof(RectTransform), typeof(GridLayoutGroup));
             root.transform.SetParent(window, false);
             var rt = (RectTransform)root.transform;
             NLUi.Anchor(rt, new Vector2(0f, 0f), new Vector2(36f, 58f), new Vector2(980f, 52f));
@@ -156,7 +156,7 @@ namespace NihongoLife.UI
             grid.childAlignment = TextAnchor.UpperLeft;
             foreach (var item in items)
             {
-                var cell = new GameObject("Legend_" + item.key, typeof(RectTransform)).GetComponent<RectTransform>();
+                var cell = UiBind.Make("Legend_" + item.key, typeof(RectTransform)).GetComponent<RectTransform>();
                 cell.SetParent(rt, false);
                 var dot = NewImage(cell, "Swatch", item.color, UIStyleKit.RoundedSprite());
                 dot.GetComponent<Image>().type = Image.Type.Sliced;
@@ -197,7 +197,7 @@ namespace NihongoLife.UI
             float metres = NiceMetres[0];
             foreach (float m in NiceMetres) { if (m / metresPerPixel <= 220f) metres = m; }
             float px = Mathf.Max(24f, metres / metresPerPixel);
-            var root = new GameObject("ScaleBar", typeof(RectTransform)).GetComponent<RectTransform>();
+            var root = UiBind.Make("ScaleBar", typeof(RectTransform)).GetComponent<RectTransform>();
             root.SetParent(mapArea, false);
             NLUi.Anchor(root, new Vector2(.5f, .5f), new Vector2(-mapW / 2f + 28f + px / 2f, -mapH / 2f + 34f), new Vector2(px, 20f));
             var bg = NewImage(root, "Back", new Color(0.04f, 0.07f, 0.09f, 0.6f));
@@ -225,7 +225,7 @@ namespace NihongoLife.UI
             zone.GetComponent<Image>().raycastTarget = false;
             NLUi.Anchor(zone, new Vector2(.5f, .5f), centre, size);
             zone.SetSiblingIndex(Mathf.Min(siblingIndex, mapArea.childCount - 1));
-            var outline = zone.gameObject.AddComponent<Outline>();
+            var outline = zone.gameObject.Need<Outline>();
             outline.effectColor = new Color(tint.r, tint.g, tint.b, 0.35f);
             outline.effectDistance = new Vector2(1.2f, 1.2f);
             var l = NLUi.Label(zone, "Name", name.ToUpperInvariant(), 13f, new Color(Mathf.Lerp(tint.r, 1f, .55f), Mathf.Lerp(tint.g, 1f, .55f), Mathf.Lerp(tint.b, 1f, .55f), .95f),

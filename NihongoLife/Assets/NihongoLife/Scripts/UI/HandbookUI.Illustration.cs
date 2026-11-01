@@ -15,7 +15,7 @@ namespace NihongoLife.UI
             var sprite = IllustrationService.GetSprite(conceptId);
             if (sprite == null) return;
             var row = NLUi.Group(parent, "Illustration", false, 14f, TextAnchor.MiddleLeft, false);
-            var go = new GameObject(open ? "Picture" : "Silhouette", typeof(RectTransform), typeof(Image));
+            var go = UiBind.Make(open ? "Picture" : "Silhouette", typeof(RectTransform), typeof(Image));
             go.transform.SetParent(row, false);
             var img = go.GetComponent<Image>();
             img.sprite = sprite; img.preserveAspect = true; img.raycastTarget = false;

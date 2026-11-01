@@ -118,10 +118,10 @@ namespace NihongoLife.UI
         static void Boot()
         {
             if (Array.IndexOf(Environment.GetCommandLineArgs(), "-nlmax") >= 0) SetActive(true);
-            var go = new GameObject("OwnerDebugOverlay");
+            var go = UiBind.Make("OwnerDebugOverlay");
             UnityEngine.Object.DontDestroyOnLoad(go);
             go.hideFlags = HideFlags.HideInHierarchy;
-            go.AddComponent<OwnerDebugOverlay>();
+            go.Need<OwnerDebugOverlay>();
         }
     }
 

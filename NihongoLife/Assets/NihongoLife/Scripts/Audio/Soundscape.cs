@@ -32,7 +32,7 @@ namespace NihongoLife.Audio
         {
             if (Instance != null) return;
             var go = new GameObject("Soundscape");
-            DontDestroyOnLoad(go);
+            if (Application.isPlaying) DontDestroyOnLoad(go);
             Instance = go.AddComponent<Soundscape>();
         }
 

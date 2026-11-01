@@ -66,7 +66,7 @@ namespace NihongoLife.Player
         {
             if (_instance != null) return _instance;
             var go = new GameObject("PlayerConductSystem");
-            DontDestroyOnLoad(go);
+            if (Application.isPlaying) DontDestroyOnLoad(go);
             return go.AddComponent<PlayerConductSystem>();
         }
 

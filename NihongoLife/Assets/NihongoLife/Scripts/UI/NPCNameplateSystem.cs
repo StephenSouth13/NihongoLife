@@ -47,10 +47,10 @@ namespace NihongoLife.UI
                 _labels[npc] = existing;
                 return;
             }
-            var objectLabel = new GameObject("NPCNameplate");
+            var objectLabel = UiBind.Make("NPCNameplate");
             objectLabel.transform.SetParent(npc.transform, false);
             objectLabel.transform.localPosition = Vector3.up * 2.25f;
-            var label = objectLabel.AddComponent<TextMeshPro>();
+            var label = objectLabel.Need<TextMeshPro>();
             string name = string.IsNullOrWhiteSpace(npc.DisplayName) ? npc.name : npc.DisplayName;
             label.text = string.IsNullOrWhiteSpace(npc.Role) ? name : $"{name}\n<size=70%>{npc.Role}</size>";
             label.fontSize = 0.22f; label.alignment = TextAlignmentOptions.Center;

@@ -51,8 +51,8 @@ namespace NihongoLife.UI
             {
                 if (_instance != null) return _instance;
                 var canvas = NLUi.CreateCanvas("PaintingCanvas", 128);
-                DontDestroyOnLoad(canvas.gameObject);
-                _instance = canvas.gameObject.AddComponent<PaintingUI>();
+                if (Application.isPlaying) DontDestroyOnLoad(canvas.gameObject);
+                _instance = canvas.gameObject.Need<PaintingUI>();
                 _instance._font = NLUi.ResolveFont();
                 _instance.Build((RectTransform)canvas.transform);
                 Loc.Watch(_instance, () => { if (IsOpen) _instance.Redraw(); });
@@ -214,15 +214,15 @@ namespace NihongoLife.UI
 
         private void Build(RectTransform canvas)
         {
-            _root = new GameObject("Painting", typeof(RectTransform), typeof(Image)).GetComponent<RectTransform>();
+            _root = UiBind.Make("Painting", typeof(RectTransform), typeof(Image)).GetComponent<RectTransform>();
             _root.SetParent(canvas, false);
             NLUi.Stretch(_root);
             _root.GetComponent<Image>().color = new Color(0.01f, 0.015f, 0.02f, 0.72f);
             var card = NLUi.Panel(_root, "Card", new Color(0.09f, 0.08f, 0.12f, 0.98f));
             card.anchorMin = card.anchorMax = card.pivot = new Vector2(0.5f, 0.5f);
             card.sizeDelta = new Vector2(1180f, 720f);
-            card.gameObject.AddComponent<HudFitRect>().Configure(0.96f, 0.94f, Vector2.zero, 0.4f);
-            _grid = new GameObject("Canvas", typeof(RectTransform)).GetComponent<RectTransform>();
+            card.gameObject.Need<HudFitRect>().Configure(0.96f, 0.94f, Vector2.zero, 0.4f);
+            _grid = UiBind.Make("Canvas", typeof(RectTransform)).GetComponent<RectTransform>();
             _grid.SetParent(card, false);
             _grid.anchorMin = _grid.anchorMax = _grid.pivot = new Vector2(0f, 1f);
             _grid.anchoredPosition = new Vector2(30f, -30f);
@@ -244,7 +244,7 @@ namespace NihongoLife.UI
             for (int i = 0; i < _target.Length; i++)
             {
                 int cell = i;
-                var rect = new GameObject("Cell_" + i, typeof(RectTransform), typeof(Image), typeof(Button)).GetComponent<RectTransform>();
+                var rect = UiBind.Make("Cell_" + i, typeof(RectTransform), typeof(Image), typeof(Button)).GetComponent<RectTransform>();
                 rect.SetParent(_grid, false);
                 rect.anchorMin = rect.anchorMax = rect.pivot = new Vector2(0f, 1f);
                 rect.anchoredPosition = new Vector2((i % Columns) * size, -(i / Columns) * size);
@@ -268,7 +268,7 @@ namespace NihongoLife.UI
             UiKit.Clear(_side);
             NLUi.Label(_side, "Title", Loc.T("Giá vẽ — tô tranh theo số", "The easel — paint by numbers", "イーゼル — 数字でぬり絵"), 22f, NLUi.Gold, _font, FontStyles.Bold);
             NLUi.Label(_side, "Art", $"<b>{_art.title}</b>\n<size=85%>{_art.artist} · {_art.date}</size>", 16f, NLUi.Text, _font);
-            var thumb = new GameObject("Original", typeof(RectTransform), typeof(RawImage), typeof(LayoutElement)).GetComponent<RawImage>();
+            var thumb = UiBind.Make("Original", typeof(RectTransform), typeof(RawImage), typeof(LayoutElement)).GetComponent<RawImage>();
             thumb.transform.SetParent(_side, false);
             thumb.texture = _art.Picture;
             float aspect = _art.Picture != null ? _art.Picture.width / (float)_art.Picture.height : 1f;

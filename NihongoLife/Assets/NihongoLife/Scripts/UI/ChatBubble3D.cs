@@ -24,11 +24,11 @@ namespace NihongoLife.UI
             if (Camera.main != null) _mainCameraTransform = Camera.main.transform;
 
             // 1. Create Canvas
-            GameObject canvasGo = new GameObject("ChatBubbleCanvas");
+            GameObject canvasGo = UiBind.Make("ChatBubbleCanvas");
             canvasGo.transform.SetParent(transform, false);
             canvasGo.transform.localPosition = offset;
             
-            Canvas canvas = canvasGo.AddComponent<Canvas>();
+            Canvas canvas = canvasGo.Need<Canvas>();
             canvas.renderMode = RenderMode.WorldSpace;
             canvas.sortingOrder = 100;
             
@@ -36,13 +36,13 @@ namespace NihongoLife.UI
             canvasRect.sizeDelta = new Vector2(400, 150);
             canvasRect.localScale = Vector3.one * 0.006f;
 
-            _canvasGroup = canvasGo.AddComponent<CanvasGroup>();
+            _canvasGroup = canvasGo.Need<CanvasGroup>();
             _canvasGroup.alpha = 0f;
 
             // 2. Create Background
-            GameObject bgGo = new GameObject("BG");
+            GameObject bgGo = UiBind.Make("BG");
             bgGo.transform.SetParent(canvasGo.transform, false);
-            Image bg = bgGo.AddComponent<Image>();
+            Image bg = bgGo.Need<Image>();
             bg.color = new Color(0.1f, 0.12f, 0.15f, 0.95f); // Dark elegant theme
             bg.type = Image.Type.Sliced;
             bg.sprite = UIStyleKit.RoundedSprite();
@@ -52,9 +52,9 @@ namespace NihongoLife.UI
             bgRect.offsetMin = bgRect.offsetMax = Vector2.zero;
 
             // 3. Create Text
-            GameObject textGo = new GameObject("Text");
+            GameObject textGo = UiBind.Make("Text");
             textGo.transform.SetParent(bgGo.transform, false);
-            _textMesh = textGo.AddComponent<TextMeshProUGUI>();
+            _textMesh = textGo.Need<TextMeshProUGUI>();
             _textMesh.color = new Color(0.95f, 0.95f, 0.95f, 1f);
             _textMesh.alignment = TextAlignmentOptions.Center;
             _textMesh.fontSize = 28;

@@ -89,25 +89,25 @@ namespace NihongoLife.UI
         private void BuildUI()
         {
             // Root panel
-            _panel = new GameObject("AuthPanel");
+            _panel = UiBind.Make("AuthPanel");
             _panel.transform.SetParent(transform, false);
-            var panelRect = _panel.AddComponent<RectTransform>();
+            var panelRect = _panel.Need<RectTransform>();
             panelRect.anchorMin = Vector2.zero;
             panelRect.anchorMax = Vector2.one;
             panelRect.offsetMin = Vector2.zero;
             panelRect.offsetMax = Vector2.zero;
 
             // Dimmed background
-            var bg = _panel.AddComponent<Image>();
+            var bg = _panel.Need<Image>();
             bg.color = new Color(0.01f, 0.015f, 0.02f, 0.92f);
             bg.raycastTarget = true;
 
             // Center card
             var card = CreateChild(_panel, "AuthCard");
-            var cardRect = card.AddComponent<RectTransform>();
+            var cardRect = card.Need<RectTransform>();
             CenterRect(cardRect, new Vector2(440f, 570f));
-            card.AddComponent<HudFitRect>(); // phones: the 570-high card shrinks to fit a 480-high canvas
-            var cardImage = card.AddComponent<Image>();
+            card.Need<HudFitRect>(); // phones: the 570-high card shrinks to fit a 480-high canvas
+            var cardImage = card.Need<Image>();
             cardImage.color = new Color(0.04f, 0.05f, 0.06f, 0.97f);
 
             // Title
@@ -140,10 +140,10 @@ namespace NihongoLife.UI
 
             // Status text
             var statusObject = CreateChild(card, "StatusPanel");
-            var statusRect = statusObject.AddComponent<RectTransform>();
+            var statusRect = statusObject.Need<RectTransform>();
             CenterRect(statusRect, new Vector2(370f, 54f));
             statusRect.anchoredPosition = new Vector2(0f, -246f);
-            _statusPanel = statusObject.AddComponent<Image>();
+            _statusPanel = statusObject.Need<Image>();
             _statusPanel.color = new Color(0.12f, 0.16f, 0.19f, 0.96f);
             _statusText = CreateText(statusObject, "StatusText", Vector2.zero, new Vector2(340f, 44f), 13f);
             _statusText.color = new Color(0.83f, 0.91f, 0.95f, 1f);
@@ -373,7 +373,7 @@ namespace NihongoLife.UI
 
         private static GameObject CreateChild(GameObject parent, string name)
         {
-            var go = new GameObject(name);
+            var go = UiBind.Make(name);
             go.transform.SetParent(parent.transform, false);
             return go;
         }
@@ -390,14 +390,14 @@ namespace NihongoLife.UI
         private TextMeshProUGUI CreateText(GameObject parent, string name, Vector2 position, Vector2 size, float fontSize)
         {
             var go = CreateChild(parent, name);
-            var rect = go.AddComponent<RectTransform>();
+            var rect = go.Need<RectTransform>();
             rect.anchorMin = new Vector2(0.5f, 0.5f);
             rect.anchorMax = new Vector2(0.5f, 0.5f);
             rect.pivot = new Vector2(0.5f, 0.5f);
             rect.anchoredPosition = position;
             rect.sizeDelta = size;
 
-            var text = go.AddComponent<TextMeshProUGUI>();
+            var text = go.Need<TextMeshProUGUI>();
             if (_font != null) text.font = _font;
             text.fontSize = fontSize;
             text.alignment = TextAlignmentOptions.Center;
@@ -411,27 +411,27 @@ namespace NihongoLife.UI
         private TMP_InputField CreateInputField(GameObject parent, string name, Vector2 position, string placeholder)
         {
             var go = CreateChild(parent, name);
-            var rect = go.AddComponent<RectTransform>();
+            var rect = go.Need<RectTransform>();
             rect.anchorMin = new Vector2(0.5f, 0.5f);
             rect.anchorMax = new Vector2(0.5f, 0.5f);
             rect.pivot = new Vector2(0.5f, 0.5f);
             rect.anchoredPosition = position;
             rect.sizeDelta = new Vector2(340f, 46f);
 
-            var bg = go.AddComponent<Image>();
+            var bg = go.Need<Image>();
             bg.color = new Color(0.09f, 0.11f, 0.13f, 1f);
 
-            var input = go.AddComponent<TMP_InputField>();
+            var input = go.Need<TMP_InputField>();
             input.textViewport = rect;
             input.lineType = TMP_InputField.LineType.SingleLine;
 
             var textGo = CreateChild(go, "Text");
-            var textRect = textGo.AddComponent<RectTransform>();
+            var textRect = textGo.Need<RectTransform>();
             textRect.anchorMin = Vector2.zero;
             textRect.anchorMax = Vector2.one;
             textRect.offsetMin = new Vector2(14f, 4f);
             textRect.offsetMax = new Vector2(-14f, -4f);
-            var text = textGo.AddComponent<TextMeshProUGUI>();
+            var text = textGo.Need<TextMeshProUGUI>();
             if (_font != null) text.font = _font;
             text.fontSize = 16f;
             text.color = new Color(0.92f, 0.96f, 1f, 1f);
@@ -439,12 +439,12 @@ namespace NihongoLife.UI
             input.textComponent = text;
 
             var phGo = CreateChild(go, "Placeholder");
-            var phRect = phGo.AddComponent<RectTransform>();
+            var phRect = phGo.Need<RectTransform>();
             phRect.anchorMin = Vector2.zero;
             phRect.anchorMax = Vector2.one;
             phRect.offsetMin = new Vector2(14f, 4f);
             phRect.offsetMax = new Vector2(-14f, -4f);
-            var ph = phGo.AddComponent<TextMeshProUGUI>();
+            var ph = phGo.Need<TextMeshProUGUI>();
             if (_font != null) ph.font = _font;
             ph.fontSize = 16f;
             ph.color = new Color(0.5f, 0.55f, 0.6f, 0.75f);
@@ -458,24 +458,24 @@ namespace NihongoLife.UI
         private Button CreateButton(GameObject parent, string name, Vector2 position, Vector2 size, string label, Color bgColor)
         {
             var go = CreateChild(parent, name);
-            var rect = go.AddComponent<RectTransform>();
+            var rect = go.Need<RectTransform>();
             rect.anchorMin = new Vector2(0.5f, 0.5f);
             rect.anchorMax = new Vector2(0.5f, 0.5f);
             rect.pivot = new Vector2(0.5f, 0.5f);
             rect.anchoredPosition = position;
             rect.sizeDelta = size;
 
-            var image = go.AddComponent<Image>();
+            var image = go.Need<Image>();
             image.color = bgColor;
 
-            var button = go.AddComponent<Button>();
+            var button = go.Need<Button>();
             var colors = button.colors;
             colors.highlightedColor = new Color(bgColor.r + 0.08f, bgColor.g + 0.08f, bgColor.b + 0.08f, 1f);
             colors.pressedColor = new Color(bgColor.r - 0.05f, bgColor.g - 0.05f, bgColor.b - 0.05f, 1f);
             colors.fadeDuration = 0.08f;
             button.colors = colors;
 
-            go.AddComponent<UIHoverScale>();
+            go.Need<UIHoverScale>();
 
             var textObj = CreateText(go, "Label", Vector2.zero, new Vector2(size.x - 20f, size.y - 8f), 17f);
             textObj.text = label;

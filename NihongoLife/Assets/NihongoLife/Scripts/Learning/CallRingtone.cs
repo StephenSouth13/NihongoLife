@@ -41,7 +41,7 @@ namespace NihongoLife.Learning
             if (_source == null)
             {
                 var go = new GameObject("CallRingtone");
-                Object.DontDestroyOnLoad(go);
+                if (Application.isPlaying) Object.DontDestroyOnLoad(go);
                 _source = go.AddComponent<AudioSource>();
                 _source.playOnAwake = false;
                 _source.spatialBlend = 0f;

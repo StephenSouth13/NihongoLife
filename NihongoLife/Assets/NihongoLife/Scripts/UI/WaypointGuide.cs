@@ -37,9 +37,9 @@ namespace NihongoLife.UI
         {
             if (_instance == null)
             {
-                var host = new GameObject("WaypointGuide");
-                DontDestroyOnLoad(host);
-                _instance = host.AddComponent<WaypointGuide>();
+                var host = UiBind.Make("WaypointGuide");
+                if (Application.isPlaying) DontDestroyOnLoad(host);
+                _instance = host.Need<WaypointGuide>();
                 _instance.Build();
             }
             _instance.SetTarget(label, worldTarget);
@@ -58,7 +58,7 @@ namespace NihongoLife.UI
             ((UnityEngine.UI.HorizontalLayoutGroup)_pill.GetComponent<UnityEngine.UI.HorizontalOrVerticalLayoutGroup>()).childForceExpandWidth = false;
             NLUi.Anchor(_pill, new Vector2(0.5f, 1f), new Vector2(0f, -96f), new Vector2(0f, 52f));
             NLUi.FitContent(_pill, width: true, height: false);
-            var arrowHolder = new GameObject("ArrowHolder", typeof(RectTransform), typeof(UnityEngine.UI.LayoutElement)).GetComponent<RectTransform>();
+            var arrowHolder = UiBind.Make("ArrowHolder", typeof(RectTransform), typeof(UnityEngine.UI.LayoutElement)).GetComponent<RectTransform>();
             arrowHolder.SetParent(_pill, false);
             var le = arrowHolder.GetComponent<UnityEngine.UI.LayoutElement>();
             le.preferredWidth = 34f; le.preferredHeight = 34f;
@@ -71,7 +71,7 @@ namespace NihongoLife.UI
             _distance.textWrappingMode = TextWrappingModes.NoWrap;
 
             // TextMeshPro swaps the Transform for a RectTransform, so take the transform after adding it.
-            _groundText = new GameObject("GroundArrow").AddComponent<TextMeshPro>();
+            _groundText = UiBind.Make("GroundArrow").Need<TextMeshPro>();
             _groundArrow = _groundText.transform;
             _groundArrow.SetParent(transform, false);
             _groundText.text = "▲";

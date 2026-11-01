@@ -41,8 +41,8 @@ namespace NihongoLife.UI
             {
                 if (_instance != null) return _instance;
                 var canvas = NLUi.CreateCanvas("CareerCanvas", 127);
-                DontDestroyOnLoad(canvas.gameObject);
-                _instance = canvas.gameObject.AddComponent<CareerUI>();
+                if (Application.isPlaying) DontDestroyOnLoad(canvas.gameObject);
+                _instance = canvas.gameObject.Need<CareerUI>();
                 _instance._font = NLUi.ResolveFont();
                 _instance.Build((RectTransform)canvas.transform);
                 Loc.Watch(_instance, () => { if (IsOpen) _instance.Rebuild(); });
@@ -92,24 +92,24 @@ namespace NihongoLife.UI
 
         private void Build(RectTransform canvas)
         {
-            _root = new GameObject("Career", typeof(RectTransform), typeof(Image)).GetComponent<RectTransform>();
+            _root = UiBind.Make("Career", typeof(RectTransform), typeof(Image)).GetComponent<RectTransform>();
             _root.SetParent(canvas, false);
             NLUi.Stretch(_root);
             _root.GetComponent<Image>().color = new Color(0.01f, 0.015f, 0.02f, 0.72f);
 
-            var card = new GameObject("Card", typeof(RectTransform), typeof(Image)).GetComponent<RectTransform>();
+            var card = UiBind.Make("Card", typeof(RectTransform), typeof(Image)).GetComponent<RectTransform>();
             card.SetParent(_root, false);
             card.anchorMin = card.anchorMax = card.pivot = new Vector2(0.5f, 0.5f);
             card.sizeDelta = new Vector2(1140f, 680f);
             card.GetComponent<Image>().color = NLUi.Ink;
-            card.gameObject.AddComponent<HudFitRect>().Configure(0.96f, 0.94f, Vector2.zero, 0.4f);
+            card.gameObject.Need<HudFitRect>().Configure(0.96f, 0.94f, Vector2.zero, 0.4f);
 
             // Fixed header (title, subtitle, tabs); the tab's content scrolls below it.
             _header = NLUi.Group(card, "Header", true, 8f);
             _header.anchorMin = new Vector2(0f, 1f); _header.anchorMax = new Vector2(1f, 1f); _header.pivot = new Vector2(0.5f, 1f);
             _header.offsetMin = new Vector2(30f, -168f); _header.offsetMax = new Vector2(-80f, -20f);
 
-            var scrollRoot = new GameObject("Scroll", typeof(RectTransform)).GetComponent<RectTransform>();
+            var scrollRoot = UiBind.Make("Scroll", typeof(RectTransform)).GetComponent<RectTransform>();
             scrollRoot.SetParent(card, false);
             NLUi.Stretch(scrollRoot);
             scrollRoot.offsetMin = new Vector2(30f, 20f); scrollRoot.offsetMax = new Vector2(-24f, -176f);
@@ -442,7 +442,7 @@ namespace NihongoLife.UI
             foreach (var (industry, members) in CareerIndustries.Group(catalog.careers))
             {
                 IndustryHeader(industry);
-                var row = new GameObject("Industry_" + industry.id, typeof(RectTransform), typeof(GridLayoutGroup)).GetComponent<RectTransform>();
+                var row = UiBind.Make("Industry_" + industry.id, typeof(RectTransform), typeof(GridLayoutGroup)).GetComponent<RectTransform>();
                 row.SetParent(_body, false);
                 var grid = row.GetComponent<GridLayoutGroup>();
                 grid.cellSize = new Vector2(334f, 668f);
@@ -457,7 +457,7 @@ namespace NihongoLife.UI
         private void IndustryHeader(IndustryDefinition industry)
         {
             var head = NLUi.Panel(_body, "IndustryHeader_" + industry.id, new Color(industry.Tint.r * 0.22f, industry.Tint.g * 0.22f, industry.Tint.b * 0.22f, 1f), new RectOffset(18, 18, 10, 12), 2f);
-            var bar = new GameObject("Accent", typeof(RectTransform), typeof(Image), typeof(LayoutElement)).GetComponent<RectTransform>();
+            var bar = UiBind.Make("Accent", typeof(RectTransform), typeof(Image), typeof(LayoutElement)).GetComponent<RectTransform>();
             bar.SetParent(head, false);
             bar.GetComponent<Image>().color = industry.Tint;
             bar.GetComponent<LayoutElement>().preferredHeight = 4f;
@@ -469,14 +469,14 @@ namespace NihongoLife.UI
         private RawImage AvatarView(RectTransform parent, CareerDefinition career, float height, bool always, Color? tint = null)
         {
             var look = CareerIndustries.Look(career.id);
-            var frame = new GameObject("AvatarFrame", typeof(RectTransform), typeof(Image), typeof(LayoutElement)).GetComponent<RectTransform>();
+            var frame = UiBind.Make("AvatarFrame", typeof(RectTransform), typeof(Image), typeof(LayoutElement)).GetComponent<RectTransform>();
             frame.SetParent(parent, false);
             var t = tint ?? (CareerIndustries.IndustryOf(career.id)?.Tint ?? NLUi.Gold);
             frame.GetComponent<Image>().color = new Color(t.r * 0.32f, t.g * 0.32f, t.b * 0.32f, 1f);
             frame.GetComponent<LayoutElement>().preferredHeight = height;
             frame.GetComponent<LayoutElement>().minHeight = height;
             if (look == null) return null;
-            var raw = new GameObject("Avatar_" + career.id, typeof(RectTransform), typeof(RawImage), typeof(CareerAvatarHover)).GetComponent<RectTransform>();
+            var raw = UiBind.Make("Avatar_" + career.id, typeof(RectTransform), typeof(RawImage), typeof(CareerAvatarHover)).GetComponent<RectTransform>();
             raw.SetParent(frame, false);
             NLUi.Stretch(raw);
             var image = raw.GetComponent<RawImage>();
@@ -539,11 +539,11 @@ namespace NihongoLife.UI
 
         private static void Bar(RectTransform parent, string name, float value, Color color, float height)
         {
-            var bar = new GameObject(name, typeof(RectTransform), typeof(Image), typeof(LayoutElement)).GetComponent<RectTransform>();
+            var bar = UiBind.Make(name, typeof(RectTransform), typeof(Image), typeof(LayoutElement)).GetComponent<RectTransform>();
             bar.SetParent(parent, false);
             bar.GetComponent<Image>().color = new Color(1f, 1f, 1f, 0.08f);
             bar.GetComponent<LayoutElement>().preferredHeight = height;
-            var fill = new GameObject("Fill", typeof(RectTransform), typeof(Image)).GetComponent<RectTransform>();
+            var fill = UiBind.Make("Fill", typeof(RectTransform), typeof(Image)).GetComponent<RectTransform>();
             fill.SetParent(bar, false);
             fill.anchorMin = Vector2.zero; fill.anchorMax = new Vector2(Mathf.Clamp01(value), 1f);
             fill.offsetMin = fill.offsetMax = Vector2.zero;

@@ -32,8 +32,8 @@ namespace NihongoLife.UI
             {
                 if (_instance != null) return _instance;
                 var canvas = NLUi.CreateCanvas("BankCanvas", 570);
-                DontDestroyOnLoad(canvas.gameObject);
-                _instance = canvas.gameObject.AddComponent<BankUI>();
+                if (Application.isPlaying) DontDestroyOnLoad(canvas.gameObject);
+                _instance = canvas.gameObject.Need<BankUI>();
                 _instance._font = NLUi.ResolveFont();
                 _instance.Build((RectTransform)canvas.transform);
                 Loc.Watch(_instance, () => { if (IsOpen) _instance.Rebuild(); });
@@ -68,15 +68,15 @@ namespace NihongoLife.UI
 
         private void Build(RectTransform canvas)
         {
-            _root = new GameObject("Bank", typeof(RectTransform), typeof(Image)).GetComponent<RectTransform>();
+            _root = UiBind.Make("Bank", typeof(RectTransform), typeof(Image)).GetComponent<RectTransform>();
             _root.SetParent(canvas, false);
             NLUi.Stretch(_root);
             _root.GetComponent<Image>().color = new Color(0.01f, 0.015f, 0.02f, 0.72f);
             var card = NLUi.Panel(_root, "Card", NLUi.Ink);
             card.anchorMin = card.anchorMax = card.pivot = new Vector2(0.5f, 0.5f);
             card.sizeDelta = new Vector2(920f, 700f);
-            card.gameObject.AddComponent<HudFitRect>().Configure(0.94f, 0.94f, Vector2.zero, 0.4f);
-            var scrollRoot = new GameObject("Scroll", typeof(RectTransform)).GetComponent<RectTransform>();
+            card.gameObject.Need<HudFitRect>().Configure(0.94f, 0.94f, Vector2.zero, 0.4f);
+            var scrollRoot = UiBind.Make("Scroll", typeof(RectTransform)).GetComponent<RectTransform>();
             scrollRoot.SetParent(card, false);
             NLUi.Stretch(scrollRoot);
             scrollRoot.offsetMin = new Vector2(28f, 20f); scrollRoot.offsetMax = new Vector2(-20f, -20f);

@@ -31,7 +31,7 @@ namespace NihongoLife.UI
         public static StudyHubPopup GetOrCreate(GameObject host, TMP_FontAsset font)
         {
             var hub = host.GetComponent<StudyHubPopup>();
-            if (hub == null) hub = host.AddComponent<StudyHubPopup>();
+            if (hub == null) hub = host.Need<StudyHubPopup>();
             hub.Initialize(font);
             return hub;
         }
@@ -151,7 +151,7 @@ namespace NihongoLife.UI
         private T Child<T>() where T : MenuPopupBase
         {
             var popup = GetComponent<T>();
-            if (popup == null) popup = gameObject.AddComponent<T>();
+            if (popup == null) popup = gameObject.Need<T>();
             popup.Initialize(Font);
             return popup;
         }

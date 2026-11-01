@@ -23,7 +23,7 @@ namespace NihongoLife.UI
         {
             var canvas = any != null ? any.GetComponentInParent<Canvas>() : null;
             if (canvas == null || canvas.GetComponent<ResponsiveCanvasFit>() != null) return;
-            canvas.gameObject.AddComponent<ResponsiveCanvasFit>();
+            canvas.gameObject.Need<ResponsiveCanvasFit>();
         }
 
         private void OnEnable()
@@ -107,7 +107,7 @@ namespace NihongoLife.UI
         {
             if (target == null || target.GetComponent<SafeAreaInset>() != null) return;
             if (target.GetComponentInParent<HudSafeArea>() != null) return;
-            target.gameObject.AddComponent<SafeAreaInset>();
+            target.gameObject.Need<SafeAreaInset>();
         }
 
         private void OnEnable()
@@ -168,7 +168,7 @@ namespace NihongoLife.UI
 
         public static void Ensure(RectTransform panel)
         {
-            if (panel != null && panel.GetComponent<MenuResponsive>() == null) panel.gameObject.AddComponent<MenuResponsive>();
+            if (panel != null && panel.GetComponent<MenuResponsive>() == null) panel.gameObject.Need<MenuResponsive>();
         }
 
         private void LateUpdate()
@@ -351,7 +351,7 @@ namespace NihongoLife.UI
                 if (hud == null) continue;
                 var canvas = hud.GetComponentInParent<Canvas>();
                 if (canvas != null && canvas.GetComponent<HudCanvasFitter>() == null)
-                    canvas.gameObject.AddComponent<HudCanvasFitter>();
+                    canvas.gameObject.Need<HudCanvasFitter>();
                 SafeAreaInset.Ensure(hud.transform);
             }
         }

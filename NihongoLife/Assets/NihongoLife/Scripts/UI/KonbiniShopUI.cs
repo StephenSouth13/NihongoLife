@@ -61,7 +61,7 @@ namespace NihongoLife.UI
         {
             if (_instance != null) return _instance;
             var canvas = NLUi.CreateCanvas("KonbiniShopCanvas", 650);
-            _instance = canvas.gameObject.AddComponent<KonbiniShopUI>();
+            _instance = canvas.gameObject.Need<KonbiniShopUI>();
             _instance._font = NLUi.ResolveFont();
             _instance.Build(canvas.transform);
             return _instance;
@@ -319,7 +319,7 @@ namespace NihongoLife.UI
             NLUi.Size(_title, flexibleWidth: 1f);
             _wallet = NLUi.Pill(header, "Wallet", "¥0", _font, new Color(1f, 1f, 1f, 0.08f), NLUi.Gold, 20f).GetComponentInChildren<TextMeshProUGUI>();
             NLUi.Label(header, "EscHint", "Esc", 15f, NLUi.Muted, _font).textWrappingMode = TextWrappingModes.NoWrap;
-            var closeSpace = new GameObject("CloseSpace", typeof(RectTransform));
+            var closeSpace = UiBind.Make("CloseSpace", typeof(RectTransform));
             closeSpace.transform.SetParent(header, false);
             NLUi.Size(closeSpace.transform, 46f, 46f);
             NLUi.CloseButton(_window, _font, Close, 46f, 18f);
@@ -338,10 +338,10 @@ namespace NihongoLife.UI
 
             var body = NLUi.Group(_browse, "Body", false, 18f, TextAnchor.UpperLeft);
             ((HorizontalLayoutGroup)body.GetComponent<HorizontalOrVerticalLayoutGroup>()).childForceExpandWidth = false;
-            var gridGo = new GameObject("Products", typeof(RectTransform));
+            var gridGo = UiBind.Make("Products", typeof(RectTransform));
             gridGo.transform.SetParent(body, false);
             _grid = (RectTransform)gridGo.transform;
-            var grid = gridGo.AddComponent<GridLayoutGroup>();
+            var grid = gridGo.Need<GridLayoutGroup>();
             grid.cellSize = new Vector2(232f, 196f);
             grid.spacing = new Vector2(12f, 12f);
             grid.constraint = GridLayoutGroup.Constraint.FixedColumnCount;
@@ -407,7 +407,7 @@ namespace NihongoLife.UI
             cardName.overflowMode = TextOverflowModes.Ellipsis;
             NLUi.Label(card, "Meaning", product.vietnamese, 15f, NLUi.Muted, _font);
             NLUi.Label(card, "Price", $"{NihongoLife.Core.Loc.Money(product.price)}", 19f, NLUi.Gold, _font, FontStyles.Bold);
-            var button = card.gameObject.AddComponent<Button>();
+            var button = card.gameObject.Need<Button>();
             button.targetGraphic = card.GetComponent<Image>();
             button.transition = Selectable.Transition.None;
             button.onClick.AddListener(() => Select(product));

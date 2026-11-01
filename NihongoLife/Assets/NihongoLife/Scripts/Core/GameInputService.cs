@@ -69,7 +69,7 @@ namespace NihongoLife.Core
             }
 
             var go = new GameObject("GameInputService");
-            DontDestroyOnLoad(go);
+            if (Application.isPlaying) DontDestroyOnLoad(go);
             var service = go.AddComponent<GameInputService>();
             service.Initialize();
             GameServices.Register<GameInputService>(service);

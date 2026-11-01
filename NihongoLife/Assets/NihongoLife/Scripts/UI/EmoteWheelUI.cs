@@ -40,7 +40,7 @@ namespace NihongoLife.UI
             var hud = SceneRefs.Find<HUDUI>();
             var canvas = NLUi.CreateCanvas("EmoteWheelCanvas", 700, hud != null ? hud.transform : null);
             if (hud == null) DontDestroyOnLoad(canvas.gameObject);
-            var wheel = canvas.gameObject.AddComponent<EmoteWheelUI>();
+            var wheel = canvas.gameObject.Need<EmoteWheelUI>();
             wheel.Build((RectTransform)canvas.transform);
             return wheel;
         }
@@ -48,7 +48,7 @@ namespace NihongoLife.UI
         private void Build(RectTransform canvas)
         {
             var font = NLUi.ResolveFont();
-            _root = new GameObject("EmoteWheel", typeof(RectTransform), typeof(CanvasGroup)).GetComponent<RectTransform>();
+            _root = UiBind.Make("EmoteWheel", typeof(RectTransform), typeof(CanvasGroup)).GetComponent<RectTransform>();
             _root.SetParent(canvas, false);
             _root.anchorMin = _root.anchorMax = new Vector2(0.5f, 0.5f);
             _root.sizeDelta = new Vector2(Size, Size);
@@ -63,7 +63,7 @@ namespace NihongoLife.UI
                 float angle = (90f - i * 45f) * Mathf.Deg2Rad;
                 var icon = Picture(_root, "Slot_" + emote.Id, EmoteCatalog.Icon(emote.Id), new Vector2(Mathf.Cos(angle), Mathf.Sin(angle)) * SlotRadius, 104f);
                 icon.raycastTarget = true;
-                var button = icon.gameObject.AddComponent<Button>();
+                var button = icon.gameObject.Need<Button>();
                 button.transition = Selectable.Transition.None;
                 button.onClick.AddListener(() => { Select(index); SlotClicked?.Invoke(index); });
                 var key = NLUi.Label(icon.rectTransform, "Key", (i + 1).ToString(), 15f, NLUi.Gold, font, FontStyles.Bold, TextAlignmentOptions.Center);
@@ -88,7 +88,7 @@ namespace NihongoLife.UI
 
         private static Image Picture(RectTransform parent, string name, Sprite sprite, Vector2 position, float size)
         {
-            var image = new GameObject(name, typeof(RectTransform), typeof(Image)).GetComponent<Image>();
+            var image = UiBind.Make(name, typeof(RectTransform), typeof(Image)).GetComponent<Image>();
             image.transform.SetParent(parent, false);
             image.sprite = sprite;
             image.preserveAspect = true;

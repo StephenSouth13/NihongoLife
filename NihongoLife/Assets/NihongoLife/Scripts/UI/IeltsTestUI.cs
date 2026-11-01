@@ -95,8 +95,8 @@ namespace NihongoLife.UI
         {
             if (Instance == null)
             {
-                var go = new GameObject("IeltsTestUI");
-                Instance = go.AddComponent<IeltsTestUI>();
+                var go = UiBind.Make("IeltsTestUI");
+                Instance = go.Need<IeltsTestUI>();
             }
             Instance.Begin(package, mode, resume);
             return Instance;
@@ -105,7 +105,7 @@ namespace NihongoLife.UI
         private void Awake()
         {
             _font = NLUi.ResolveFont();
-            _audio = gameObject.AddComponent<AudioSource>();
+            _audio = gameObject.Need<AudioSource>();
             _audio.playOnAwake = false;
             _audio.spatialBlend = 0f;
             Build();

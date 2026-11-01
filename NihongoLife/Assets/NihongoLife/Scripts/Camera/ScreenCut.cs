@@ -22,7 +22,7 @@ namespace NihongoLife.Cameras
             if (_instance == null)
             {
                 var go = new GameObject("ScreenCut") { hideFlags = HideFlags.None };
-                DontDestroyOnLoad(go);
+                if (Application.isPlaying) DontDestroyOnLoad(go);
                 _instance = go.AddComponent<ScreenCut>();
                 _instance.Build();
             }
@@ -39,7 +39,7 @@ namespace NihongoLife.Cameras
             if (_instance == null)
             {
                 var go = new GameObject("ScreenCut");
-                DontDestroyOnLoad(go);
+                if (Application.isPlaying) DontDestroyOnLoad(go);
                 _instance = go.AddComponent<ScreenCut>();
                 _instance.Build();
             }

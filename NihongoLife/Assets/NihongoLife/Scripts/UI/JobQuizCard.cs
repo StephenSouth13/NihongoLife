@@ -45,8 +45,8 @@ namespace NihongoLife.UI
             if (_instance == null)
             {
                 var canvas = NLUi.CreateCanvas("JobQuizCanvas", 160);
-                DontDestroyOnLoad(canvas.gameObject);
-                _instance = canvas.gameObject.AddComponent<JobQuizCard>();
+                if (Application.isPlaying) DontDestroyOnLoad(canvas.gameObject);
+                _instance = canvas.gameObject.Need<JobQuizCard>();
                 _instance._font = NLUi.ResolveFont();
                 UiModalStack.Register(_instance, () => IsOpen, () => Close(), "Job conversation");
             }
@@ -108,7 +108,7 @@ namespace NihongoLife.UI
 
         private static Image Icon(RectTransform parent, Sprite sprite, float size)
         {
-            var go = new GameObject("Icon", typeof(RectTransform), typeof(Image), typeof(LayoutElement));
+            var go = UiBind.Make("Icon", typeof(RectTransform), typeof(Image), typeof(LayoutElement));
             go.transform.SetParent(parent, false);
             var e = go.GetComponent<LayoutElement>(); e.preferredWidth = e.minWidth = size; e.preferredHeight = e.minHeight = size;
             var image = go.GetComponent<Image>(); image.sprite = sprite; image.preserveAspect = true; image.raycastTarget = false;

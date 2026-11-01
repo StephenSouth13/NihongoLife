@@ -22,25 +22,25 @@ namespace NihongoLife.UI
                 return;
             }
 
-            panel = new GameObject("TutorialPanel");
+            panel = UiBind.Make("TutorialPanel");
             panel.transform.SetParent(transform, false);
-            var rect = panel.AddComponent<RectTransform>();
+            var rect = panel.Need<RectTransform>();
             rect.anchorMin = new Vector2(0.5f, 0.2f);
             rect.anchorMax = new Vector2(0.5f, 0.2f);
             rect.anchoredPosition = Vector2.zero;
             rect.sizeDelta = new Vector2(600, 120);
 
-            var img = panel.AddComponent<Image>();
+            var img = panel.Need<Image>();
             img.color = new Color(0.1f, 0.12f, 0.15f, 0.9f);
 
-            var go = new GameObject("Text");
+            var go = UiBind.Make("Text");
             go.transform.SetParent(panel.transform, false);
-            var textRect = go.AddComponent<RectTransform>();
+            var textRect = go.Need<RectTransform>();
             textRect.anchorMin = Vector2.zero;
             textRect.anchorMax = Vector2.one;
             textRect.sizeDelta = Vector2.zero;
 
-            instructionsText = go.AddComponent<TextMeshProUGUI>();
+            instructionsText = go.Need<TextMeshProUGUI>();
             instructionsText.font = font;
             instructionsText.fontSize = 24;
             instructionsText.alignment = TextAlignmentOptions.Center;

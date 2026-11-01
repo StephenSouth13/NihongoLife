@@ -54,7 +54,7 @@ namespace NihongoLife.UI
         public static DialogueView Create(Transform parent, TMP_FontAsset font)
         {
             var canvas = NLUi.CreateCanvas("DialogueCanvas", 600, parent);
-            var view = canvas.gameObject.AddComponent<DialogueView>();
+            var view = canvas.gameObject.Need<DialogueView>();
             view._font = font != null ? font : NLUi.ResolveFont();
             view.Build(canvas.transform);
             UiModalStack.Register(view, () => view.IsOpen && view._canLeave, view.Leave, "Dialogue");
@@ -63,7 +63,7 @@ namespace NihongoLife.UI
 
         private void Build(Transform canvas)
         {
-            var rootGo = new GameObject("DialogueRoot", typeof(RectTransform));
+            var rootGo = UiBind.Make("DialogueRoot", typeof(RectTransform));
             rootGo.transform.SetParent(canvas, false);
             _root = (RectTransform)rootGo.transform;
             NLUi.Stretch(_root);
@@ -76,12 +76,12 @@ namespace NihongoLife.UI
             ((HorizontalLayoutGroup)header.GetComponent<HorizontalOrVerticalLayoutGroup>()).childForceExpandWidth = false;
             _speakerPill = NLUi.Pill(header, "Speaker", "", _font, NLUi.Gold, new Color(0.1f, 0.08f, 0.04f), 16f);
             _speaker = _speakerPill.GetComponentInChildren<TextMeshProUGUI>();
-            var spacer = new GameObject("Spacer", typeof(RectTransform));
+            var spacer = UiBind.Make("Spacer", typeof(RectTransform));
             spacer.transform.SetParent(header, false);
             NLUi.Size(spacer.transform, flexibleWidth: 1f);
             _mode = NLUi.Label(header, "Mode", "", 13f, NLUi.Muted, _font, FontStyles.Normal, TextAlignmentOptions.Right);
             _mode.textWrappingMode = TextWrappingModes.NoWrap;
-            var closeSpace = new GameObject("CloseSpace", typeof(RectTransform));
+            var closeSpace = UiBind.Make("CloseSpace", typeof(RectTransform));
             closeSpace.transform.SetParent(header, false);
             NLUi.Size(closeSpace.transform, 38f, 38f);
 
@@ -160,11 +160,11 @@ namespace NihongoLife.UI
                         var gloss = NLUi.Label(texts, "Meaning", choices[i].Gloss, 13f, NLUi.Muted, _font, FontStyles.Normal, TextAlignmentOptions.Right);
                         NLUi.Size(gloss, preferredWidth: 360f);
                     }
-                    var button = card.gameObject.AddComponent<Button>();
+                    var button = card.gameObject.Need<Button>();
                     button.targetGraphic = card.GetComponent<Image>();
                     button.transition = Selectable.Transition.None;
                     button.onClick.AddListener(() => Pick(index));
-                    var hover = card.gameObject.AddComponent<ChoiceHover>();
+                    var hover = card.gameObject.Need<ChoiceHover>();
                     hover.Init(this, index);
                     _choices.Add(card.GetComponent<Image>());
                 }

@@ -58,7 +58,7 @@ namespace NihongoLife.UI
             uiFont = font;
 
             // Hidden first: whatever happens below, the panel can never stay stuck open.
-            panelObj = new GameObject("SettingsPanel", typeof(RectTransform), typeof(Image), typeof(Button));
+            panelObj = UiBind.Make("SettingsPanel", typeof(RectTransform), typeof(Image), typeof(Button));
             panelObj.transform.SetParent(transform, false);
             panelObj.SetActive(false);
 
@@ -134,12 +134,12 @@ namespace NihongoLife.UI
             backdropButton.targetGraphic = backdrop;
             backdropButton.onClick.AddListener(Hide);
 
-            var card = new GameObject("Card", typeof(RectTransform), typeof(Image), typeof(VerticalLayoutGroup));
+            var card = UiBind.Make("Card", typeof(RectTransform), typeof(Image), typeof(VerticalLayoutGroup));
             card.transform.SetParent(panelObj.transform, false);
             cardRect = (RectTransform)card.transform;
             UIStyleKit.StylePanel(cardRect, new Color(0.055f, 0.068f, 0.082f, 1f));
             card.GetComponent<Image>().raycastTarget = true;
-            var frame = card.AddComponent<MenuSafeFrame>();
+            var frame = card.Need<MenuSafeFrame>();
             frame.Configure(new Vector2(1080f, 720f), new Vector2(640f, 440f), new Vector2(40f, 28f));
             var cardLayout = card.GetComponent<VerticalLayoutGroup>();
             cardLayout.padding = new RectOffset(22, 22, 18, 16);
@@ -333,7 +333,7 @@ namespace NihongoLife.UI
 
         private static RectTransform Row(Transform parent, string name, float height, bool flexible)
         {
-            var go = new GameObject(name, typeof(RectTransform), typeof(HorizontalLayoutGroup), typeof(LayoutElement));
+            var go = UiBind.Make(name, typeof(RectTransform), typeof(HorizontalLayoutGroup), typeof(LayoutElement));
             go.transform.SetParent(parent, false);
             var layout = go.GetComponent<HorizontalLayoutGroup>();
             layout.spacing = 10f;
@@ -353,7 +353,7 @@ namespace NihongoLife.UI
 
         private RectTransform ScrollColumn(Transform parent, string name, float preferredWidth)
         {
-            var go = new GameObject(name, typeof(RectTransform), typeof(Image), typeof(ScrollRect), typeof(LayoutElement));
+            var go = UiBind.Make(name, typeof(RectTransform), typeof(Image), typeof(ScrollRect), typeof(LayoutElement));
             go.transform.SetParent(parent, false);
             var image = go.GetComponent<Image>();
             image.color = new Color(1f, 1f, 1f, 0.03f);
@@ -364,7 +364,7 @@ namespace NihongoLife.UI
             element.minWidth = preferredWidth > 0f ? 260f : 220f;
             element.flexibleHeight = 1f;
 
-            var viewportGo = new GameObject("Viewport", typeof(RectTransform), typeof(Image), typeof(RectMask2D));
+            var viewportGo = UiBind.Make("Viewport", typeof(RectTransform), typeof(Image), typeof(RectMask2D));
             viewportGo.transform.SetParent(go.transform, false);
             var viewport = (RectTransform)viewportGo.transform;
             viewport.anchorMin = Vector2.zero;
@@ -373,7 +373,7 @@ namespace NihongoLife.UI
             viewport.offsetMax = new Vector2(-8f, -8f);
             viewportGo.GetComponent<Image>().color = new Color(1f, 1f, 1f, 0.01f);
 
-            var contentGo = new GameObject("Content", typeof(RectTransform), typeof(VerticalLayoutGroup), typeof(ContentSizeFitter));
+            var contentGo = UiBind.Make("Content", typeof(RectTransform), typeof(VerticalLayoutGroup), typeof(ContentSizeFitter));
             contentGo.transform.SetParent(viewport, false);
             var content = (RectTransform)contentGo.transform;
             content.anchorMin = new Vector2(0f, 1f);
@@ -405,7 +405,7 @@ namespace NihongoLife.UI
         private static void StretchInLayout(RectTransform rect, float flexibleWidth, float height, float preferredWidth = -1f)
         {
             if (rect == null) return;
-            var element = rect.GetComponent<LayoutElement>().OrNull() ?? rect.gameObject.AddComponent<LayoutElement>();
+            var element = rect.GetComponent<LayoutElement>().OrNull() ?? rect.gameObject.Need<LayoutElement>();
             element.flexibleWidth = flexibleWidth;
             element.minHeight = height;
             element.preferredHeight = height;
@@ -425,7 +425,7 @@ namespace NihongoLife.UI
         private static void ParkInLayout(Transform target, float height)
         {
             if (target == null) return;
-            var element = target.GetComponent<LayoutElement>().OrNull() ?? target.gameObject.AddComponent<LayoutElement>();
+            var element = target.GetComponent<LayoutElement>().OrNull() ?? target.gameObject.Need<LayoutElement>();
             element.minHeight = height;
             element.preferredHeight = height;
             element.flexibleWidth = 1f;
@@ -600,7 +600,7 @@ namespace NihongoLife.UI
 
         private TextMeshProUGUI CreateText(Transform parent, string value, float size, Vector2 position, Vector2 dimensions, TextAlignmentOptions alignment)
         {
-            var go = new GameObject("Label", typeof(RectTransform), typeof(TextMeshProUGUI));
+            var go = UiBind.Make("Label", typeof(RectTransform), typeof(TextMeshProUGUI));
             go.transform.SetParent(parent, false);
             var rect = (RectTransform)go.transform;
             rect.anchoredPosition = position;
@@ -621,7 +621,7 @@ namespace NihongoLife.UI
 
         private Slider CreateSlider(Transform parent, Vector2 position, out TextMeshProUGUI valueText)
         {
-            var go = new GameObject("Slider", typeof(RectTransform));
+            var go = UiBind.Make("Slider", typeof(RectTransform));
             go.transform.SetParent(parent, false);
             var rect = (RectTransform)go.transform;
             rect.anchoredPosition = position + new Vector2(20f, 0f);
@@ -635,7 +635,7 @@ namespace NihongoLife.UI
             backgroundRect.anchorMax = new Vector2(1f, 0.5f);
             backgroundRect.sizeDelta = new Vector2(0f, 10f);
 
-            var fillArea = new GameObject("FillArea", typeof(RectTransform));
+            var fillArea = UiBind.Make("FillArea", typeof(RectTransform));
             fillArea.transform.SetParent(go.transform, false);
             var fillAreaRect = (RectTransform)fillArea.transform;
             fillAreaRect.anchorMin = new Vector2(0f, 0.5f);
@@ -646,7 +646,7 @@ namespace NihongoLife.UI
             fill.rectTransform.anchorMax = new Vector2(0f, 1f);
             fill.rectTransform.sizeDelta = new Vector2(16f, 0f);
 
-            var handleArea = new GameObject("HandleArea", typeof(RectTransform));
+            var handleArea = UiBind.Make("HandleArea", typeof(RectTransform));
             handleArea.transform.SetParent(go.transform, false);
             var handleAreaRect = (RectTransform)handleArea.transform;
             handleAreaRect.anchorMin = Vector2.zero;
@@ -656,7 +656,7 @@ namespace NihongoLife.UI
             var handle = CreateSliderImage(handleArea.transform, "Handle", Color.white, rounded);
             handle.rectTransform.sizeDelta = new Vector2(22f, 0f); // stretched to the 28 px row by the Slider; a y size here would add to it
 
-            var slider = go.AddComponent<Slider>();
+            var slider = go.Need<Slider>();
             slider.fillRect = fill.rectTransform;
             slider.handleRect = handle.rectTransform;
             slider.targetGraphic = handle;
@@ -678,7 +678,7 @@ namespace NihongoLife.UI
 
         private static Image CreateSliderImage(Transform parent, string name, Color color, Sprite sprite)
         {
-            var go = new GameObject(name, typeof(RectTransform), typeof(Image));
+            var go = UiBind.Make(name, typeof(RectTransform), typeof(Image));
             go.transform.SetParent(parent, false);
             var image = go.GetComponent<Image>();
             image.color = color;
@@ -693,7 +693,7 @@ namespace NihongoLife.UI
 
         private Button CreateButton(Transform parent, string label, Vector2 position, Vector2 size, bool gold)
         {
-            var go = new GameObject("Button", typeof(RectTransform), typeof(Image), typeof(Button));
+            var go = UiBind.Make("Button", typeof(RectTransform), typeof(Image), typeof(Button));
             go.transform.SetParent(parent, false);
             var rect = (RectTransform)go.transform;
             rect.anchoredPosition = position;

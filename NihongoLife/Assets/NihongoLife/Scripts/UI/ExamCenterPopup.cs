@@ -88,7 +88,7 @@ namespace NihongoLife.UI
             bool fixedTitle = true, string titleVi = null, string titleEn = null, string titleJa = null)
         {
             var image = UiKit.Card(card, name, UiTheme.Surface, 18, 0f, true);
-            var button = image.gameObject.AddComponent<Button>();
+            var button = image.gameObject.Need<Button>();
             button.targetGraphic = image;
             UIStyleKit.StyleButton(button, UiTheme.Surface, UiTheme.Raised, UiTheme.Sunken);
             image.sprite = UiKit.Rounded(18);

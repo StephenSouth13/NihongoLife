@@ -140,10 +140,10 @@ namespace NihongoLife.UI
             ConfigureResponsiveText();
             EnsureInventoryActions();
             EnsureOnlineChatPanel();
-            _worldMap = gameObject.AddComponent<WorldMapUI>();
+            _worldMap = gameObject.Need<WorldMapUI>();
             _worldMap.Initialize(scenarioTitleText != null ? scenarioTitleText.font : null);
             _worldMap.OnVisibilityChanged += _ => UpdateOverlayInputLock();
-            _settingsUI = gameObject.AddComponent<SettingsUI>();
+            _settingsUI = gameObject.Need<SettingsUI>();
             _settingsUI.Initialize(scenarioTitleText != null ? scenarioTitleText.font : null);
             EnsureStatusDock();
             UnifyHudStyle();
@@ -378,16 +378,16 @@ namespace NihongoLife.UI
 
         private static TextMeshProUGUI CreateHudText(string name, Transform parent, Vector2 position, Vector2 size, float fontSize, TMP_FontAsset font)
         {
-            var go = new GameObject(name);
+            var go = UiBind.Make(name);
             go.transform.SetParent(parent, false);
-            var rect = go.AddComponent<RectTransform>();
+            var rect = go.Need<RectTransform>();
             rect.anchorMin = new Vector2(0f, 1f);
             rect.anchorMax = new Vector2(0f, 1f);
             rect.pivot = new Vector2(0f, 1f);
             rect.anchoredPosition = position;
             rect.sizeDelta = size;
 
-            var text = go.AddComponent<TextMeshProUGUI>();
+            var text = go.Need<TextMeshProUGUI>();
             if (font != null) text.font = font;
             text.fontSize = fontSize;
             text.textWrappingMode = TextWrappingModes.Normal;

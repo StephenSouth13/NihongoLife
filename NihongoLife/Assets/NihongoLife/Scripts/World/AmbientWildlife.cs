@@ -45,7 +45,7 @@ namespace NihongoLife.World
         private static void Boot()
         {
             var go = new GameObject("AmbientWildlife");
-            DontDestroyOnLoad(go);
+            if (Application.isPlaying) DontDestroyOnLoad(go);
             Instance = go.AddComponent<AmbientWildlife>();
             SceneManager.sceneLoaded += (s, m) => { if (Instance != null) Instance.ResetForScene(); };
         }

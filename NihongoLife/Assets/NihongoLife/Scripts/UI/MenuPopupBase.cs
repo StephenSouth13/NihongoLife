@@ -82,7 +82,7 @@ namespace NihongoLife.UI
             if (PanelObject != null) return;
 
             Font = font;
-            PanelObject = new GameObject(GetType().Name + "Panel", typeof(RectTransform), typeof(Image), typeof(Button));
+            PanelObject = UiBind.Make(GetType().Name + "Panel", typeof(RectTransform), typeof(Image), typeof(Button));
             PanelObject.transform.SetParent(transform, false);
             PanelObject.SetActive(false);
 
@@ -173,7 +173,7 @@ namespace NihongoLife.UI
             Card.anchorMin = Card.anchorMax = Card.pivot = new Vector2(0.5f, 0.5f);
             Card.sizeDelta = CardSize;
             cardImage.raycastTarget = true;
-            card.AddComponent<HudFitRect>().Configure(0.96f, 0.94f, Vector2.zero, 0.4f);
+            card.Need<HudFitRect>().Configure(0.96f, 0.94f, Vector2.zero, 0.4f);
             // Hairline under the header and a warm glow along the top edge.
             var glow = UiKit.Image(Card, "TopGlow", UiKit.Alpha(UiTheme.Gold, 0.055f), UiKit.VerticalFade);
             UiKit.Strip(glow.rectTransform, true, 0f, 96f, 22f, 22f);
@@ -219,7 +219,7 @@ namespace NihongoLife.UI
 
         protected TextMeshProUGUI AddText(Transform parent, string value, float size, float x, float y, float width, float height, TextAlignmentOptions alignment, FontStyles style = FontStyles.Normal, bool wrap = false, Color? color = null)
         {
-            var go = new GameObject("Text", typeof(RectTransform), typeof(TextMeshProUGUI));
+            var go = UiBind.Make("Text", typeof(RectTransform), typeof(TextMeshProUGUI));
             go.transform.SetParent(parent, false);
             Place((RectTransform)go.transform, x, y, width, height);
             var text = go.GetComponent<TextMeshProUGUI>();
@@ -246,7 +246,7 @@ namespace NihongoLife.UI
 
         protected Image AddImage(Transform parent, string name, float x, float y, float width, float height, Color color, Sprite sprite = null, bool sliced = false)
         {
-            var go = new GameObject(name, typeof(RectTransform), typeof(Image));
+            var go = UiBind.Make(name, typeof(RectTransform), typeof(Image));
             go.transform.SetParent(parent, false);
             Place((RectTransform)go.transform, x, y, width, height);
             var image = go.GetComponent<Image>();
@@ -273,7 +273,7 @@ namespace NihongoLife.UI
 
         protected Button AddButton(Transform parent, string label, float x, float y, float width, float height, bool gold, float fontSize = 18f)
         {
-            var go = new GameObject("Button", typeof(RectTransform), typeof(Image), typeof(Button));
+            var go = UiBind.Make("Button", typeof(RectTransform), typeof(Image), typeof(Button));
             go.transform.SetParent(parent, false);
             Place((RectTransform)go.transform, x, y, width, height);
             var button = go.GetComponent<Button>();

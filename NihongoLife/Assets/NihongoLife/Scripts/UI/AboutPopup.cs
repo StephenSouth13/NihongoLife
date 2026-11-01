@@ -138,15 +138,15 @@ namespace NihongoLife.UI
             _shot = AddImage(card, "Shot", 468f, 148f, 672f, 374f, Color.white);
             _shot.preserveAspect = true;
             _shot.raycastTarget = true;
-            _shotGroup = _shot.gameObject.AddComponent<CanvasGroup>();
-            var shotButton = _shot.gameObject.AddComponent<Button>();
+            _shotGroup = _shot.gameObject.Need<CanvasGroup>();
+            var shotButton = _shot.gameObject.Need<Button>();
             shotButton.transition = Selectable.Transition.None;
             shotButton.targetGraphic = _shot;
             shotButton.onClick.AddListener(OpenLightbox);
 
             _emptyText = AddText(card, string.Empty, 40f, 468f, 148f, 672f, 374f, TextAlignmentOptions.Center, FontStyles.Bold, true, new Color(0.95f, 0.72f, 0.25f, 0.85f));
 
-            _arrows = new GameObject("Arrows", typeof(RectTransform));
+            _arrows = UiBind.Make("Arrows", typeof(RectTransform));
             _arrows.transform.SetParent(card, false);
             Place((RectTransform)_arrows.transform, 0f, 0f, CardSize.x, CardSize.y);
             var previous = AddButton(_arrows.transform, "<", 476f, 312f, 48f, 54f, false, 26f);
@@ -156,7 +156,7 @@ namespace NihongoLife.UI
 
             _captionText = AddText(card, string.Empty, 18f, 464f, 540f, 680f, 44f, TextAlignmentOptions.Center, FontStyles.Normal, true);
 
-            var dots = new GameObject("Dots", typeof(RectTransform));
+            var dots = UiBind.Make("Dots", typeof(RectTransform));
             dots.transform.SetParent(card, false);
             _dotsRoot = (RectTransform)dots.transform;
             Place(_dotsRoot, 464f, 604f, 680f, 16f);
@@ -166,7 +166,7 @@ namespace NihongoLife.UI
 
         private void BuildLightbox()
         {
-            _lightbox = new GameObject("Lightbox", typeof(RectTransform), typeof(Image), typeof(Button));
+            _lightbox = UiBind.Make("Lightbox", typeof(RectTransform), typeof(Image), typeof(Button));
             _lightbox.transform.SetParent(PanelObject.transform, false);
             var rect = (RectTransform)_lightbox.transform;
             rect.anchorMin = Vector2.zero;
@@ -179,7 +179,7 @@ namespace NihongoLife.UI
             button.targetGraphic = background;
             button.onClick.AddListener(CloseLightbox);
 
-            var imageGo = new GameObject("Image", typeof(RectTransform), typeof(Image));
+            var imageGo = UiBind.Make("Image", typeof(RectTransform), typeof(Image));
             imageGo.transform.SetParent(_lightbox.transform, false);
             var imageRect = (RectTransform)imageGo.transform;
             imageRect.anchorMin = Vector2.zero;
@@ -190,7 +190,7 @@ namespace NihongoLife.UI
             _lightboxImage.preserveAspect = true;
             _lightboxImage.raycastTarget = false;
 
-            var captionGo = new GameObject("Caption", typeof(RectTransform), typeof(TextMeshProUGUI));
+            var captionGo = UiBind.Make("Caption", typeof(RectTransform), typeof(TextMeshProUGUI));
             captionGo.transform.SetParent(_lightbox.transform, false);
             var captionRect = (RectTransform)captionGo.transform;
             captionRect.anchorMin = new Vector2(0f, 0f);
@@ -290,6 +290,17 @@ namespace NihongoLife.UI
 
         private void BuildDots()
         {
+            // The dots are authored in 01_MainMenu (bake scope "AboutDots"); at runtime this scope only finds and hooks them.
+            using (UiBind.Scope(_dotsRoot, "AboutDots")) BuildDotsInScope();
+        }
+
+#if UNITY_EDITOR
+        /// <summary>Editor bake: loads the gallery so its dots are authored too.</summary>
+        public void BakeGallery() => LoadGallery();
+#endif
+
+        private void BuildDotsInScope()
+        {
             foreach (var dot in _dots)
             {
                 if (dot != null) Destroy(dot.gameObject);
@@ -303,11 +314,12 @@ namespace NihongoLife.UI
             for (int i = 0; i < _items.Count; i++)
             {
                 var dot = AddCircle(_dotsRoot, "Dot", start + i * 22f, 0f, 12f, new Color(0.3f, 0.35f, 0.4f, 1f));
-                var button = dot.gameObject.AddComponent<Button>();
+                var button = dot.gameObject.Need<Button>();
                 dot.raycastTarget = true;
                 button.transition = Selectable.Transition.None;
                 button.targetGraphic = dot;
                 int captured = i;
+                button.onClick.RemoveAllListeners();
                 button.onClick.AddListener(() => GoTo(captured, true));
                 _dots.Add(dot);
             }

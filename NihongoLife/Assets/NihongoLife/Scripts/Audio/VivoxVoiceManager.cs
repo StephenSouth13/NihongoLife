@@ -33,7 +33,7 @@ namespace NihongoLife.Audio
             }
 
             Instance = this;
-            DontDestroyOnLoad(gameObject);
+            if (Application.isPlaying) DontDestroyOnLoad(gameObject);
 
             await InitializeVivoxAsync();
         }
@@ -206,7 +206,7 @@ namespace NihongoLife.Audio
             }
 
             Instance = this;
-            DontDestroyOnLoad(gameObject);
+            if (Application.isPlaying) DontDestroyOnLoad(gameObject);
         }
         
         public void Update3DPosition(Transform playerTransform, Transform cameraTransform) {}

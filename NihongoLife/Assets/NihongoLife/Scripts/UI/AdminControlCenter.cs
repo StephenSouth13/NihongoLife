@@ -99,21 +99,21 @@ namespace NihongoLife.UI
 
         private TMP_InputField CreateAdminInput(string name, float x, float y, float w, float h)
         {
-            var go = new GameObject(name);
+            var go = UiBind.Make(name);
             go.transform.SetParent(Card, false);
-            var rect = go.AddComponent<RectTransform>();
+            var rect = go.Need<RectTransform>();
             rect.anchorMin = new Vector2(0, 1); rect.anchorMax = new Vector2(0, 1);
             rect.pivot = new Vector2(0, 1);
             rect.anchoredPosition = new Vector2(x, y);
             rect.sizeDelta = new Vector2(w, h);
             
-            var img = go.AddComponent<Image>();
+            var img = go.Need<Image>();
             img.color = new Color(0.2f, 0.2f, 0.2f);
             
-            var input = go.AddComponent<TMP_InputField>();
-            var textGo = new GameObject("Text");
+            var input = go.Need<TMP_InputField>();
+            var textGo = UiBind.Make("Text");
             textGo.transform.SetParent(go.transform, false);
-            var text = textGo.AddComponent<TextMeshProUGUI>();
+            var text = textGo.Need<TextMeshProUGUI>();
             text.fontSize = 20;
             text.color = Color.white;
             textGo.GetComponent<RectTransform>().sizeDelta = new Vector2(w-10, h);

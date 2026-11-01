@@ -130,6 +130,23 @@ namespace NihongoLife.World
         /// <summary>Speed that still stops within <paramref name="distance"/> at 3.5 m/s² (0 once there).</summary>
         public static float Braking(float distance) => distance <= 0.03f ? 0f : Mathf.Sqrt(2f * 3.5f * distance);
 
+#if UNITY_EDITOR
+        /// <summary>Editor bake: authors the car lamps and the horn object into the open scene.</summary>
+        public void BakeLamps()
+        {
+            foreach (var c in cars)
+            {
+                if (c.body == null) continue;
+                c.visual = c.body.Find("Model");
+                if (c.visual == null) c.visual = c.body;
+                c.lightsReady = false;
+                EnsureBulbs(c);
+            }
+            _horn = null;
+            EnsureHorn();
+        }
+#endif
+
         private void Start()
         {
             foreach (var c in cars)
@@ -438,9 +455,12 @@ namespace NihongoLife.World
             if (_horn != null) return;
             // Its own child object: the horn is moved to the honking car, and moving this component's transform would
             // carry the whole Traffic root — every car — along with it (cars "jumped" onto pavements and roofs).
-            var hornObject = new GameObject("Horn");
+            // Authored in 01_MainMenu by the bake; other scenes still make it here.
+            var authored = transform.Find("Horn");
+            var hornObject = authored != null ? authored.gameObject : new GameObject("Horn");
             hornObject.transform.SetParent(transform, false);
-            _horn = hornObject.AddComponent<AudioSource>();
+            _horn = hornObject.GetComponent<AudioSource>();
+            if (_horn == null) _horn = hornObject.AddComponent<AudioSource>();
             _horn.playOnAwake = false;
             _horn.spatialBlend = 1f;
             _horn.minDistance = 4f;
@@ -525,10 +545,12 @@ namespace NihongoLife.World
         /// <summary>A small lamp at a point of the Traffic root's space, flush with the bumper, the same size on every car.</summary>
         private GameObject Bulb(Transform parent, Vector3 rootLocal, Color color, string name)
         {
-            var go = GameObject.CreatePrimitive(PrimitiveType.Cube);
+            // Reuse a lamp the bake authored on this car (01_MainMenu); other scenes still make it here.
+            var authored = parent.Find(name);
+            var go = authored != null ? authored.gameObject : GameObject.CreatePrimitive(PrimitiveType.Cube);
             go.name = name;
             var col = go.GetComponent<Collider>();
-            if (col != null) Destroy(col);
+            if (col != null) { if (Application.isPlaying) Destroy(col); else DestroyImmediate(col); }
             go.transform.SetParent(parent, false);
             go.transform.SetPositionAndRotation(transform.TransformPoint(rootLocal), transform.rotation);
             // Thin along the street, wide across the car, whatever the model's own scale and turn.

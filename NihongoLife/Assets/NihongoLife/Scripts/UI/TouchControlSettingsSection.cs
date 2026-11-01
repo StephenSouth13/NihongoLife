@@ -11,7 +11,7 @@ namespace NihongoLife.UI
         public static void Build(Transform column, TMP_FontAsset font)
         {
             if (column == null) return;
-            var root = new GameObject("TouchControlsSettings", typeof(RectTransform), typeof(VerticalLayoutGroup), typeof(LayoutElement), typeof(TouchControlSettingsBinder));
+            var root = UiBind.Make("TouchControlsSettings", typeof(RectTransform), typeof(VerticalLayoutGroup), typeof(LayoutElement), typeof(TouchControlSettingsBinder));
             root.transform.SetParent(column, false);
             var layout = root.GetComponent<VerticalLayoutGroup>();
             layout.spacing = 8f;
@@ -43,7 +43,7 @@ namespace NihongoLife.UI
 
         static TextMeshProUGUI MakeText(Transform parent, TMP_FontAsset font, float size, FontStyles style, float height)
         {
-            var go = new GameObject("Label", typeof(RectTransform), typeof(TextMeshProUGUI), typeof(LayoutElement));
+            var go = UiBind.Make("Label", typeof(RectTransform), typeof(TextMeshProUGUI), typeof(LayoutElement));
             go.transform.SetParent(parent, false);
             var element = go.GetComponent<LayoutElement>();
             element.minHeight = height;
@@ -65,7 +65,7 @@ namespace NihongoLife.UI
 
         static Button MakeButton(Transform parent, TMP_FontAsset font, float height)
         {
-            var go = new GameObject("Button", typeof(RectTransform), typeof(Image), typeof(Button), typeof(LayoutElement));
+            var go = UiBind.Make("Button", typeof(RectTransform), typeof(Image), typeof(Button), typeof(LayoutElement));
             go.transform.SetParent(parent, false);
             var element = go.GetComponent<LayoutElement>();
             element.minHeight = height;
@@ -91,7 +91,7 @@ namespace NihongoLife.UI
 
         static Slider MakeSlider(Transform parent, float min, float max, float value)
         {
-            var go = new GameObject("Slider", typeof(RectTransform), typeof(LayoutElement));
+            var go = UiBind.Make("Slider", typeof(RectTransform), typeof(LayoutElement));
             go.transform.SetParent(parent, false);
             var element = go.GetComponent<LayoutElement>();
             element.minHeight = 32f;
@@ -104,7 +104,7 @@ namespace NihongoLife.UI
             backgroundRect.anchorMax = new Vector2(1f, 0.5f);
             backgroundRect.sizeDelta = new Vector2(-8f, 8f);
 
-            var fillArea = new GameObject("FillArea", typeof(RectTransform));
+            var fillArea = UiBind.Make("FillArea", typeof(RectTransform));
             fillArea.transform.SetParent(go.transform, false);
             var fillAreaRect = (RectTransform)fillArea.transform;
             fillAreaRect.anchorMin = new Vector2(0f, 0.5f);
@@ -115,7 +115,7 @@ namespace NihongoLife.UI
             fill.rectTransform.anchorMax = new Vector2(0f, 1f);
             fill.rectTransform.sizeDelta = new Vector2(10f, 0f);
 
-            var handleSlide = new GameObject("HandleSlide", typeof(RectTransform));
+            var handleSlide = UiBind.Make("HandleSlide", typeof(RectTransform));
             handleSlide.transform.SetParent(go.transform, false);
             var handleArea = (RectTransform)handleSlide.transform;
             handleArea.anchorMin = Vector2.zero;
@@ -125,7 +125,7 @@ namespace NihongoLife.UI
             var handle = MakeImage(handleSlide.transform, "Handle", Color.white);
             handle.rectTransform.sizeDelta = new Vector2(18f, 18f);
 
-            var slider = go.AddComponent<Slider>();
+            var slider = go.Need<Slider>();
             slider.fillRect = fill.rectTransform;
             slider.handleRect = handle.rectTransform;
             slider.targetGraphic = handle;
@@ -139,7 +139,7 @@ namespace NihongoLife.UI
 
         static Image MakeImage(Transform parent, string name, Color color)
         {
-            var go = new GameObject(name, typeof(RectTransform), typeof(Image));
+            var go = UiBind.Make(name, typeof(RectTransform), typeof(Image));
             go.transform.SetParent(parent, false);
             var image = go.GetComponent<Image>();
             image.sprite = UiKit.Rounded(8);

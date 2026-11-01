@@ -52,8 +52,8 @@ namespace NihongoLife.UI
             {
                 if (_instance != null) return _instance;
                 var canvas = NLUi.CreateCanvas("TaskJournalCanvas", 125);
-                DontDestroyOnLoad(canvas.gameObject);
-                _instance = canvas.gameObject.AddComponent<TaskJournalUI>();
+                if (Application.isPlaying) DontDestroyOnLoad(canvas.gameObject);
+                _instance = canvas.gameObject.Need<TaskJournalUI>();
                 _instance._font = NLUi.ResolveFont();
                 _instance.Build((RectTransform)canvas.transform);
                 Loc.Watch(_instance, () => { if (IsOpen) _instance.Rebuild(); });
@@ -93,17 +93,17 @@ namespace NihongoLife.UI
 
         private void Build(RectTransform canvas)
         {
-            _root = new GameObject("TaskJournal", typeof(RectTransform), typeof(Image)).GetComponent<RectTransform>();
+            _root = UiBind.Make("TaskJournal", typeof(RectTransform), typeof(Image)).GetComponent<RectTransform>();
             _root.SetParent(canvas, false);
             NLUi.Stretch(_root);
             _root.GetComponent<Image>().color = new Color(0.01f, 0.015f, 0.02f, 0.72f);
 
-            var card = new GameObject("Card", typeof(RectTransform), typeof(Image)).GetComponent<RectTransform>();
+            var card = UiBind.Make("Card", typeof(RectTransform), typeof(Image)).GetComponent<RectTransform>();
             card.SetParent(_root, false);
             card.anchorMin = card.anchorMax = card.pivot = new Vector2(0.5f, 0.5f);
             card.sizeDelta = new Vector2(1140f, 700f);
             card.GetComponent<Image>().color = NLUi.Ink;
-            card.gameObject.AddComponent<HudFitRect>().Configure(0.96f, 0.94f, Vector2.zero, 0.4f);
+            card.gameObject.Need<HudFitRect>().Configure(0.96f, 0.94f, Vector2.zero, 0.4f);
 
             var title = NLUi.Label(card, "Title", "", 30f, NLUi.Text, _font, FontStyles.Bold);
             LocText.Set(title, () => Loc.T("Sổ nhiệm vụ", "Task journal", "タスク帳") + "  <size=65%><color=#A8B4C4>[N]</color></size>");
@@ -117,7 +117,7 @@ namespace NihongoLife.UI
             _filters = NLUi.Group(card, "Filters", false, 8f, TextAnchor.MiddleLeft, false);
             Place(_filters, 28f, 76f, 1080f, 40f);
 
-            var listPanel = new GameObject("ListPanel", typeof(RectTransform), typeof(Image)).GetComponent<RectTransform>();
+            var listPanel = UiBind.Make("ListPanel", typeof(RectTransform), typeof(Image)).GetComponent<RectTransform>();
             listPanel.SetParent(card, false);
             Place(listPanel, 28f, 128f, 380f, 548f);
             listPanel.GetComponent<Image>().color = new Color(1f, 1f, 1f, 0.035f);
@@ -126,15 +126,15 @@ namespace NihongoLife.UI
             _list.offsetMin = new Vector2(10f, 0f); _list.offsetMax = new Vector2(-10f, -10f);
             NLUi.FitContent(_list);
             // The list can be longer than the panel (unlock card + quests): clip and scroll it.
-            listPanel.gameObject.AddComponent<RectMask2D>();
-            var scroll = listPanel.gameObject.AddComponent<ScrollRect>();
+            listPanel.gameObject.Need<RectMask2D>();
+            var scroll = listPanel.gameObject.Need<ScrollRect>();
             scroll.content = _list;
             scroll.viewport = listPanel;
             scroll.horizontal = false;
             scroll.movementType = ScrollRect.MovementType.Clamped;
             scroll.scrollSensitivity = 30f;
 
-            var detailPanel = new GameObject("DetailPanel", typeof(RectTransform), typeof(Image)).GetComponent<RectTransform>();
+            var detailPanel = UiBind.Make("DetailPanel", typeof(RectTransform), typeof(Image)).GetComponent<RectTransform>();
             detailPanel.SetParent(card, false);
             Place(detailPanel, 424f, 128f, 688f, 548f);
             detailPanel.GetComponent<Image>().color = new Color(1f, 1f, 1f, 0.035f);
@@ -344,7 +344,7 @@ namespace NihongoLife.UI
             foreach (var grant in quest.grantOnAccept ?? Array.Empty<QuestItemGrant>())
             {
                 var holder = NLUi.Group(tiles, "Grant_" + grant.itemId, false, 4f, TextAnchor.MiddleLeft, false);
-                var icon = new GameObject("Icon", typeof(RectTransform), typeof(Image), typeof(LayoutElement)).GetComponent<Image>();
+                var icon = UiBind.Make("Icon", typeof(RectTransform), typeof(Image), typeof(LayoutElement)).GetComponent<Image>();
                 icon.transform.SetParent(holder, false);
                 icon.sprite = ItemIcons.Get(grant.itemId); icon.preserveAspect = true;
                 icon.color = icon.sprite != null ? Color.white : Color.clear;

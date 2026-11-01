@@ -33,11 +33,11 @@ namespace NihongoLife.UI
 
         public static ProfilePreview Create(RectTransform parent, Vector2 size)
         {
-            var go = new GameObject("ProfilePreview", typeof(RectTransform), typeof(RawImage), typeof(LayoutElement));
+            var go = UiBind.Make("ProfilePreview", typeof(RectTransform), typeof(RawImage), typeof(LayoutElement));
             go.transform.SetParent(parent, false);
             var element = go.GetComponent<LayoutElement>();
             element.preferredWidth = size.x; element.preferredHeight = size.y; element.minWidth = size.x; element.minHeight = size.y;
-            var preview = go.AddComponent<ProfilePreview>();
+            var preview = go.Need<ProfilePreview>();
             preview._size = size;
             preview._image = go.GetComponent<RawImage>();
             preview._image.color = Color.white;
@@ -82,17 +82,17 @@ namespace NihongoLife.UI
             _texture = new RenderTexture(w, h, 24, RenderTextureFormat.ARGB32) { name = "ProfilePreviewRT", antiAliasing = 4 };
             _image.texture = _texture;
 
-            _stage = new GameObject("ProfilePreviewStage").transform;
+            _stage = UiBind.Make("ProfilePreviewStage").transform;
             _stage.position = StagePosition;
-            _turntable = new GameObject("Turntable").transform;
+            _turntable = UiBind.Make("Turntable").transform;
             _turntable.SetParent(_stage, false);
             _turntable.localRotation = Quaternion.Euler(0f, _yaw, 0f);
 
-            var cameraGo = new GameObject("ProfilePreviewCamera");
+            var cameraGo = UiBind.Make("ProfilePreviewCamera");
             cameraGo.transform.SetParent(_stage, false);
             cameraGo.transform.localPosition = new Vector3(0f, 1.0f, 3.3f);
             cameraGo.transform.LookAt(_stage.position + Vector3.up * 0.92f);
-            _camera = cameraGo.AddComponent<Camera>();
+            _camera = cameraGo.Need<Camera>();
             _camera.clearFlags = CameraClearFlags.SolidColor;
             _camera.backgroundColor = Backdrop; // light, friendly studio backdrop instead of a near-black void
             _camera.cullingMask = 1 << StageLayer;
@@ -120,10 +120,10 @@ namespace NihongoLife.UI
 
         private void AddLight(Vector3 local, float intensity, Color color, float range)
         {
-            var go = new GameObject("PreviewLight");
+            var go = UiBind.Make("PreviewLight");
             go.transform.SetParent(_stage, false);
             go.transform.localPosition = local;
-            var light = go.AddComponent<Light>();
+            var light = go.Need<Light>();
             light.type = LightType.Point;
             light.intensity = intensity;
             light.range = range;

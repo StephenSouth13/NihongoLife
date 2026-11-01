@@ -35,7 +35,7 @@ namespace NihongoLife.Core
             var existing = SceneRefs.Find<PlayerSessionService>();
             if (existing != null) { existing.Initialize(); return existing; }
             var go = new GameObject("PlayerSessionService");
-            DontDestroyOnLoad(go);
+            if (Application.isPlaying) DontDestroyOnLoad(go);
             var service = go.AddComponent<PlayerSessionService>();
             service.Initialize();
             GameServices.Register<PlayerSessionService>(service);

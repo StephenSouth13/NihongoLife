@@ -102,7 +102,7 @@ namespace NihongoLife.UI
                 n++;
                 var row = UiKit.Card(_list, "Row_" + l.id, on ? UiTheme.Raised : UiTheme.Surface, 14);
                 UiKit.Size(row, -1f, 74f);
-                var btn = row.gameObject.AddComponent<Button>();
+                var btn = row.gameObject.Need<Button>();
                 btn.targetGraphic = row;
                 btn.onClick.AddListener(() => SelectLesson(lesson.id));
                 if (on) { var bar = UiKit.Image(row.transform, "Sel", UiTheme.Ielts, UiKit.Rounded(3)); UiKit.Place(bar.rectTransform, 0f, 14f, 5f, 46f); }

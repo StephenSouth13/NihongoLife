@@ -21,7 +21,7 @@ namespace NihongoLife.UI
         private void Build()
         {
             _canvas = NLUi.CreateCanvas("IeltsTestCanvas", 760);
-            _root = new GameObject("IeltsRoot", typeof(RectTransform), typeof(Image)).GetComponent<RectTransform>();
+            _root = UiBind.Make("IeltsRoot", typeof(RectTransform), typeof(Image)).GetComponent<RectTransform>();
             _root.SetParent(_canvas.transform, false);
             NLUi.Stretch(_root);
             _root.GetComponent<Image>().color = Bg;
@@ -46,7 +46,7 @@ namespace NihongoLife.UI
 
             // Audio bar: part tabs · play · progress · time · rules note
             _audioBar = Strip(_root, "AudioBar", 70f, 74f, top: true, new Color(0.075f, 0.098f, 0.135f, 1f));
-            _tabs = new GameObject("Tabs", typeof(RectTransform), typeof(HorizontalLayoutGroup)).GetComponent<RectTransform>();
+            _tabs = UiBind.Make("Tabs", typeof(RectTransform), typeof(HorizontalLayoutGroup)).GetComponent<RectTransform>();
             _tabs.SetParent(_audioBar, false);
             Place(_tabs, 28f, 14f, 520f, 46f, Vector2.zero);
             var tabLayout = _tabs.GetComponent<HorizontalLayoutGroup>();
@@ -57,7 +57,7 @@ namespace NihongoLife.UI
             var track = UiKit.Image(_audioBar, "Progress", new Color(1f, 1f, 1f, 0.12f), UiKit.Rounded(6), true);
             _progressTrack = track.rectTransform;
             Place(_progressTrack, 760f, 31f, 520f, 12f, Vector2.zero);
-            var trigger = _progressTrack.gameObject.AddComponent<EventTrigger>();
+            var trigger = _progressTrack.gameObject.Need<EventTrigger>();
             var entry = new EventTrigger.Entry { eventID = EventTriggerType.PointerDown };
             entry.callback.AddListener(OnTrackClicked);
             trigger.triggers.Add(entry);
@@ -74,7 +74,7 @@ namespace NihongoLife.UI
             Place(_note.rectTransform, -28f, 6f, 430f, 62f, new Vector2(1f, 0f));
 
             // Body (questions; passage column added for reading parts)
-            _bodyArea = new GameObject("Body", typeof(RectTransform)).GetComponent<RectTransform>();
+            _bodyArea = UiBind.Make("Body", typeof(RectTransform)).GetComponent<RectTransform>();
             _bodyArea.SetParent(_root, false);
             _bodyArea.anchorMin = Vector2.zero; _bodyArea.anchorMax = Vector2.one;
             _bodyArea.offsetMin = new Vector2(0f, 92f); _bodyArea.offsetMax = new Vector2(0f, -144f);
@@ -85,7 +85,7 @@ namespace NihongoLife.UI
             _footer = Strip(_root, "Footer", 0f, 92f, top: false, UiTheme.Ink);
             var topLine = UiKit.Image(_footer, "Line", UiTheme.Line);
             UiKit.Strip(topLine.rectTransform, true, 0f, 1f);
-            _navigator = new GameObject("Navigator", typeof(RectTransform), typeof(GridLayoutGroup)).GetComponent<RectTransform>();
+            _navigator = UiBind.Make("Navigator", typeof(RectTransform), typeof(GridLayoutGroup)).GetComponent<RectTransform>();
             _navigator.SetParent(_footer, false);
             Place(_navigator, 28f, 14f, 1220f, 64f, Vector2.zero);
             var grid = _navigator.GetComponent<GridLayoutGroup>();
@@ -186,7 +186,7 @@ namespace NihongoLife.UI
             foreach (int n in numbers)
             {
                 int number = n;
-                var cell = new GameObject("Nav" + n, typeof(RectTransform), typeof(Image), typeof(Button));
+                var cell = UiBind.Make("Nav" + n, typeof(RectTransform), typeof(Image), typeof(Button));
                 cell.transform.SetParent(_navigator, false);
                 var image = cell.GetComponent<Image>();
                 image.sprite = UiKit.Circle;

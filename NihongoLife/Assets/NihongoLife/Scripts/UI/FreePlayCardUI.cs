@@ -26,7 +26,7 @@ namespace NihongoLife.UI
         {
             if (Open != null) return;
             var canvas = NLUi.CreateCanvas("FreePlayCard", 320);
-            Open = canvas.gameObject.AddComponent<FreePlayCardUI>();
+            Open = canvas.gameObject.Need<FreePlayCardUI>();
             Open.Build(canvas.transform);
             StoryDirector.MarkFreePlayAnnounced();
             UiModalStack.Register(Open, () => Open != null, Close, "Free play");

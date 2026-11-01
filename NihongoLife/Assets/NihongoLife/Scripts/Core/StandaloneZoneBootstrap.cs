@@ -45,7 +45,7 @@ namespace NihongoLife.Core
             if (Application.CanStreamedLevelBeLoaded(WorldLocationCatalog.CityScene))
             {
                 var runner = new GameObject("StandaloneZoneBootstrap_CityBoot");
-                DontDestroyOnLoad(runner);
+                if (Application.isPlaying) DontDestroyOnLoad(runner);
                 runner.AddComponent<StandaloneZoneBootstrap>().BootThroughCity(scene.name, targetSpawn);
                 return;
             }

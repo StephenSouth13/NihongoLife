@@ -27,9 +27,9 @@ namespace NihongoLife.UI
             LocationUnlocks.Unlocked -= Enqueue;
             LocationUnlocks.Unlocked += Enqueue;
             if (_host != null) return;
-            var go = new GameObject("MapUnlockHost");
-            DontDestroyOnLoad(go);
-            _host = go.AddComponent<MapUnlockCardUI>();
+            var go = UiBind.Make("MapUnlockHost");
+            if (Application.isPlaying) DontDestroyOnLoad(go);
+            _host = go.Need<MapUnlockCardUI>();
         }
 
         private static void Enqueue(LocationUnlock stage)
@@ -66,7 +66,7 @@ namespace NihongoLife.UI
         private static void Show(LocationUnlock stage)
         {
             var canvas = NLUi.CreateCanvas("MapUnlockCard", 330);
-            Open = canvas.gameObject.AddComponent<MapUnlockCardUI>();
+            Open = canvas.gameObject.Need<MapUnlockCardUI>();
             Open.Stage = stage;
             Open.Build(canvas.transform, stage);
             UiModalStack.Register(Open, () => Open != null, Close, "Map unlock");
@@ -90,7 +90,7 @@ namespace NihongoLife.UI
             var photoFrame = UiKit.Card(card, "PhotoFrame", UiTheme.Sunken, 18).rectTransform;
             UiKit.Place(photoFrame, 34f, 34f, 430f, 492f);
             var tex = Resources.Load<Texture2D>("Guide/" + stage.guideKey);
-            var photo = new GameObject("Photo", typeof(RectTransform), typeof(RawImage)).GetComponent<RawImage>();
+            var photo = UiBind.Make("Photo", typeof(RectTransform), typeof(RawImage)).GetComponent<RawImage>();
             photo.transform.SetParent(photoFrame, false);
             photo.texture = tex;
             photo.color = tex != null ? Color.white : new Color(0.15f, 0.18f, 0.22f);

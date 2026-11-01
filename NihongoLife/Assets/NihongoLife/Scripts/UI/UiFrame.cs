@@ -35,7 +35,7 @@ namespace NihongoLife.UI
         {
             if (card == null) return null;
             var old = card.Find("UiFrame");
-            if (old != null) Object.DestroyImmediate(old.gameObject);
+            if (old != null && !UiBind.Binding) Object.DestroyImmediate(old.gameObject);
             var root = UiKit.Rect(card, "UiFrame");
             UiKit.Fill(root);
             root.SetAsFirstSibling();

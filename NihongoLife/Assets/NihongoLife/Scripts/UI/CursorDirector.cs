@@ -38,9 +38,9 @@ namespace NihongoLife.UI
         private static void Boot()
         {
             if (_instance != null) return;
-            var go = new GameObject("CursorDirector");
-            DontDestroyOnLoad(go);
-            _instance = go.AddComponent<CursorDirector>();
+            var go = UiBind.Make("CursorDirector");
+            if (Application.isPlaying) DontDestroyOnLoad(go);
+            _instance = go.Need<CursorDirector>();
         }
 
         private void OnApplicationFocus(bool focused)

@@ -104,7 +104,7 @@ namespace NihongoLife.UI
             if (Step?.video == null || !Step.video.Filled) return false;
             RussianCourse.RegisterVideos();
             var player = gameObject.GetComponent<InGameVideoPlayerUI>();
-            if (player == null) player = gameObject.AddComponent<InGameVideoPlayerUI>();
+            if (player == null) player = gameObject.Need<InGameVideoPlayerUI>();
             player.Initialize(Font);
             Hide();
             player.Show();
@@ -159,7 +159,7 @@ namespace NihongoLife.UI
         private void OpenSchool()
         {
             var school = gameObject.GetComponent<CoursePopup>();
-            if (school == null) school = gameObject.AddComponent<CoursePopup>();
+            if (school == null) school = gameObject.Need<CoursePopup>();
             school.Initialize(Font);
             Hide();
             school.Show();

@@ -28,7 +28,7 @@ namespace NihongoLife.UI
         {
             var existing = SceneRefs.Find<EnglishPracticeUI>(FindObjectsInactive.Include);
             if (existing != null) return existing;
-            var ui = host.gameObject.AddComponent<EnglishPracticeUI>();
+            var ui = host.gameObject.Need<EnglishPracticeUI>();
             ui.Initialize(UiKit.Font);
             return ui;
         }
@@ -53,7 +53,7 @@ namespace NihongoLife.UI
         protected override void Build(RectTransform card)
         {
             _audio = gameObject.GetComponent<AudioSource>();
-            if (_audio == null) _audio = gameObject.AddComponent<AudioSource>();
+            if (_audio == null) _audio = gameObject.Need<AudioSource>();
             _audio.playOnAwake = false;
             _audio.spatialBlend = 0f;
             var accent = UiTheme.Teal;

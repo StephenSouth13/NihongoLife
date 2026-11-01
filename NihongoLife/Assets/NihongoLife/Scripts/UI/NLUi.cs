@@ -25,7 +25,7 @@ namespace NihongoLife.UI
 
         public static Canvas CreateCanvas(string name, int sortingOrder, Transform parent = null)
         {
-            var go = new GameObject(name, typeof(RectTransform), typeof(Canvas), typeof(CanvasScaler), typeof(GraphicRaycaster));
+            var go = UiBind.Make(name, typeof(RectTransform), typeof(Canvas), typeof(CanvasScaler), typeof(GraphicRaycaster));
             if (parent != null) go.transform.SetParent(parent, false);
             var canvas = go.GetComponent<Canvas>();
             canvas.renderMode = RenderMode.ScreenSpaceOverlay;
@@ -44,7 +44,7 @@ namespace NihongoLife.UI
         /// <summary>Rounded panel. Pass padding/spacing to make it a vertical layout that fits its content.</summary>
         public static RectTransform Panel(Transform parent, string name, Color color, RectOffset padding = null, float spacing = -1f, bool vertical = true)
         {
-            var go = new GameObject(name, typeof(RectTransform), typeof(Image));
+            var go = UiBind.Make(name, typeof(RectTransform), typeof(Image));
             go.transform.SetParent(parent, false);
             var image = go.GetComponent<Image>();
             image.sprite = UIStyleKit.RoundedSprite();
@@ -52,7 +52,7 @@ namespace NihongoLife.UI
             image.color = color;
             if (padding != null)
             {
-                HorizontalOrVerticalLayoutGroup layout = vertical ? go.AddComponent<VerticalLayoutGroup>() : go.AddComponent<HorizontalLayoutGroup>();
+                HorizontalOrVerticalLayoutGroup layout = vertical ? go.Need<VerticalLayoutGroup>() : go.Need<HorizontalLayoutGroup>();
                 layout.padding = padding;
                 layout.spacing = Mathf.Max(0f, spacing);
                 layout.childControlWidth = true;
@@ -67,9 +67,9 @@ namespace NihongoLife.UI
         /// <summary>Invisible layout row/column.</summary>
         public static RectTransform Group(Transform parent, string name, bool vertical, float spacing, TextAnchor alignment = TextAnchor.UpperLeft, bool expandWidth = true)
         {
-            var go = new GameObject(name, typeof(RectTransform));
+            var go = UiBind.Make(name, typeof(RectTransform));
             go.transform.SetParent(parent, false);
-            HorizontalOrVerticalLayoutGroup layout = vertical ? go.AddComponent<VerticalLayoutGroup>() : go.AddComponent<HorizontalLayoutGroup>();
+            HorizontalOrVerticalLayoutGroup layout = vertical ? go.Need<VerticalLayoutGroup>() : go.Need<HorizontalLayoutGroup>();
             layout.spacing = spacing;
             layout.childControlWidth = true;
             layout.childControlHeight = true;
@@ -82,9 +82,9 @@ namespace NihongoLife.UI
         public static TextMeshProUGUI Label(Transform parent, string name, string value, float size, Color color, TMP_FontAsset font,
             FontStyles style = FontStyles.Normal, TextAlignmentOptions alignment = TextAlignmentOptions.TopLeft)
         {
-            var go = new GameObject(name, typeof(RectTransform));
+            var go = UiBind.Make(name, typeof(RectTransform));
             go.transform.SetParent(parent, false);
-            var text = go.AddComponent<TextMeshProUGUI>();
+            var text = go.Need<TextMeshProUGUI>();
             if (font != null) text.font = font;
             text.text = value;
             text.fontSize = size;
@@ -101,7 +101,7 @@ namespace NihongoLife.UI
         public static LayoutElement Size(Component target, float preferredWidth = -1f, float preferredHeight = -1f, float flexibleWidth = -1f, float minHeight = -1f)
         {
             var element = target.GetComponent<LayoutElement>();
-            if (element == null) element = target.gameObject.AddComponent<LayoutElement>();
+            if (element == null) element = target.gameObject.Need<LayoutElement>();
             if (preferredWidth >= 0f) element.preferredWidth = preferredWidth;
             if (preferredHeight >= 0f) element.preferredHeight = preferredHeight;
             if (flexibleWidth >= 0f) element.flexibleWidth = flexibleWidth;
@@ -112,7 +112,7 @@ namespace NihongoLife.UI
         public static void FitContent(RectTransform rect, bool width = false, bool height = true)
         {
             var fitter = rect.GetComponent<ContentSizeFitter>();
-            if (fitter == null) fitter = rect.gameObject.AddComponent<ContentSizeFitter>();
+            if (fitter == null) fitter = rect.gameObject.Need<ContentSizeFitter>();
             fitter.horizontalFit = width ? ContentSizeFitter.FitMode.PreferredSize : ContentSizeFitter.FitMode.Unconstrained;
             fitter.verticalFit = height ? ContentSizeFitter.FitMode.PreferredSize : ContentSizeFitter.FitMode.Unconstrained;
         }
@@ -137,7 +137,7 @@ namespace NihongoLife.UI
             Color? textColor = null, float minHeight = 52f)
         {
             var rect = Panel(parent, name, baseColor, new RectOffset(18, 18, 10, 10), 0f);
-            var button = rect.gameObject.AddComponent<Button>();
+            var button = rect.gameObject.Need<Button>();
             button.targetGraphic = rect.GetComponent<Image>();
             UIStyleKit.StyleButton(button, baseColor, Color.Lerp(baseColor, Color.white, 0.12f), Color.Lerp(baseColor, Color.black, 0.2f));
             var text = Label(rect, "Label", label, fontSize, textColor ?? Text, font, FontStyles.Normal, TextAlignmentOptions.Center);
@@ -151,7 +151,7 @@ namespace NihongoLife.UI
         /// way out is always visible, not only the Esc key.</summary>
         public static Button CloseButton(Transform parent, TMP_FontAsset font, Action onClick, float size = 46f, float inset = 12f)
         {
-            var go = new GameObject("CloseX", typeof(RectTransform), typeof(Image), typeof(Button), typeof(LayoutElement));
+            var go = UiBind.Make("CloseX", typeof(RectTransform), typeof(Image), typeof(Button), typeof(LayoutElement));
             go.transform.SetParent(parent, false);
             go.GetComponent<LayoutElement>().ignoreLayout = true;
             var rect = (RectTransform)go.transform;
@@ -175,7 +175,7 @@ namespace NihongoLife.UI
 
         public static RectTransform Divider(Transform parent)
         {
-            var go = new GameObject("Divider", typeof(RectTransform), typeof(Image));
+            var go = UiBind.Make("Divider", typeof(RectTransform), typeof(Image));
             go.transform.SetParent(parent, false);
             go.GetComponent<Image>().color = Line;
             Size(go.transform, preferredHeight: 1f);

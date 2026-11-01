@@ -48,7 +48,7 @@ namespace NihongoLife.UI
         public static CoursePopup GetOrCreate(GameObject host, TMP_FontAsset font)
         {
             var popup = host.GetComponent<CoursePopup>();
-            if (popup == null) popup = host.AddComponent<CoursePopup>();
+            if (popup == null) popup = host.Need<CoursePopup>();
             popup.Initialize(font);
             return popup;
         }

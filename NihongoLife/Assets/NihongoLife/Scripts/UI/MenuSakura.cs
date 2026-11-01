@@ -20,7 +20,7 @@ namespace NihongoLife.UI
             if (host == null) return null;
             var existing = host.GetComponent<MenuSakura>();
             if (existing != null) return existing;
-            return host.gameObject.AddComponent<MenuSakura>();
+            return host.gameObject.Need<MenuSakura>();
         }
 
         private void OnEnable() => MotionSettings.Changed += RefreshVisible;
@@ -64,6 +64,25 @@ namespace NihongoLife.UI
                     _petals[i].gameObject.SetActive(visible);
         }
 
+        private static Transform FindField()
+        {
+            foreach (var root in UnityEngine.SceneManagement.SceneManager.GetActiveScene().GetRootGameObjects())
+                if (root.name == "MenuSakuraField") return root.transform;
+            return null;
+        }
+
+#if UNITY_EDITOR
+        /// <summary>Editor bake: authors the petal field (desktop count) into the open scene.</summary>
+        public void BakeField()
+        {
+            var old = FindField();
+            if (old != null) DestroyImmediate(old.gameObject);
+            Build();
+            if (_material != null) DestroyImmediate(_material);
+            _built = false;
+        }
+#endif
+
         private void Build()
         {
             _built = true;
@@ -79,17 +98,22 @@ namespace NihongoLife.UI
             var tint = new Color(1f, 0.78f, 0.84f, 0.85f);
             if (_material.HasProperty("_BaseColor")) _material.SetColor("_BaseColor", tint);
             else _material.color = tint;
-            _field = new GameObject("MenuSakuraField").transform;
+            // The field and its petals are authored in 01_MainMenu (bake); other hosts still make them here.
+            var authored = FindField();
+            _field = authored != null ? authored : new GameObject("MenuSakuraField").transform;
+            var pool = new System.Collections.Generic.List<GameObject>();
+            foreach (Transform child in _field) if (child.name == "Petal") pool.Add(child.gameObject);
+            for (int i = count; i < pool.Count; i++) pool[i].SetActive(false);
             _petals = new Transform[count];
             _speed = new Vector3[count];
             var camera = Camera.main;
             Vector3 origin = camera != null ? camera.transform.position + camera.transform.forward * 8f : Vector3.zero;
             for (int i = 0; i < count; i++)
             {
-                var go = GameObject.CreatePrimitive(PrimitiveType.Quad);
+                var go = i < pool.Count ? pool[i] : GameObject.CreatePrimitive(PrimitiveType.Quad);
                 go.name = "Petal";
                 var collider = go.GetComponent<Collider>();
-                if (collider != null) Destroy(collider);
+                if (collider != null) { if (Application.isPlaying) Destroy(collider); else DestroyImmediate(collider); }
                 go.transform.SetParent(_field, true);
                 go.transform.position = origin + new Vector3(Random.Range(-9f, 9f), Random.Range(-4f, 6f), Random.Range(-4f, 4f));
                 go.transform.localScale = Vector3.one * Random.Range(0.08f, 0.16f);
@@ -105,7 +129,7 @@ namespace NihongoLife.UI
 
         private void OnDestroy()
         {
-            if (_field != null) Destroy(_field.gameObject);
+            if (_field != null && Application.isPlaying) Destroy(_field.gameObject);
             if (_material != null) Destroy(_material);
         }
     }

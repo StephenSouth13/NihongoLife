@@ -64,7 +64,7 @@ namespace NihongoLife.Core
         {
 #if UNITY_WEBGL && !UNITY_EDITOR
             var host = new GameObject("SceneContentLoader");
-            DontDestroyOnLoad(host);
+            if (Application.isPlaying) DontDestroyOnLoad(host);
             host.AddComponent<SceneContentLoader>().StartCoroutine(LoadFallbackRoutine(sceneName, host));
 #else
             SceneManager.LoadSceneAsync(sceneName);

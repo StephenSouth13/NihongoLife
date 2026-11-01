@@ -22,7 +22,7 @@ namespace NihongoLife.UI
         {
             var canvas = GetComponentInParent<Canvas>();
             if (canvas == null || canvas.transform.Find("MapButton") != null) return;
-            var go = new GameObject("MapButton", typeof(RectTransform), typeof(Image), typeof(Button));
+            var go = UiBind.Make("MapButton", typeof(RectTransform), typeof(Image), typeof(Button));
             go.transform.SetParent(canvas.transform, false);
             var rect = (RectTransform)go.transform;
             rect.anchorMin = rect.anchorMax = rect.pivot = Vector2.zero;
@@ -33,7 +33,7 @@ namespace NihongoLife.UI
             var button = go.GetComponent<Button>();
             button.targetGraphic = image;
             button.onClick.AddListener(() => _worldMap.SetVisible(!_worldMap.IsVisible));
-            var labelObject = new GameObject("Label", typeof(RectTransform), typeof(TextMeshProUGUI));
+            var labelObject = UiBind.Make("Label", typeof(RectTransform), typeof(TextMeshProUGUI));
             labelObject.transform.SetParent(go.transform, false);
             var label = labelObject.GetComponent<TextMeshProUGUI>();
             if (scenarioTitleText != null) label.font = scenarioTitleText.font;
@@ -89,7 +89,7 @@ namespace NihongoLife.UI
             if (scenarioTitleText != null && scenarioTitleText.transform.parent != null)
             {
                 var mission = scenarioTitleText.transform.parent.gameObject;
-                if (mission.GetComponent<CanvasGroup>() == null) mission.AddComponent<CanvasGroup>();
+                if (mission.GetComponent<CanvasGroup>() == null) mission.Need<CanvasGroup>();
                 var group = mission.GetComponent<CanvasGroup>();
                 group.alpha = 0f; group.blocksRaycasts = false; group.interactable = false;
             }
@@ -147,7 +147,7 @@ namespace NihongoLife.UI
         private void EnsureQuestLog()
         {
             var questLog = GetComponent<QuestLogPopup>();
-            if (questLog == null) questLog = gameObject.AddComponent<QuestLogPopup>();
+            if (questLog == null) questLog = gameObject.Need<QuestLogPopup>();
             questLog.SetDialoguePanel(dialoguePanel);
             questLog.Initialize(scenarioTitleText != null ? scenarioTitleText.font : null);
         }
@@ -155,7 +155,7 @@ namespace NihongoLife.UI
         private void EnsureExamCenter()
         {
             var examCenter = GetComponent<ExamCenterPopup>();
-            if (examCenter == null) examCenter = gameObject.AddComponent<ExamCenterPopup>();
+            if (examCenter == null) examCenter = gameObject.Need<ExamCenterPopup>();
             examCenter.Initialize(scenarioTitleText != null ? scenarioTitleText.font : null);
         }
 
@@ -163,7 +163,7 @@ namespace NihongoLife.UI
 
         private void EnsureTutorial()
         {
-            var tutorial = gameObject.AddComponent<TutorialUI>();
+            var tutorial = gameObject.Need<TutorialUI>();
             TMP_FontAsset font = scenarioTitleText != null ? scenarioTitleText.font : null;
             tutorial.Initialize(font);
         }
@@ -230,15 +230,15 @@ namespace NihongoLife.UI
 
             if (chatPanel == null)
             {
-                chatPanel = new GameObject("OnlineChatPanel");
+                chatPanel = UiBind.Make("OnlineChatPanel");
                 chatPanel.transform.SetParent(transform, false);
-                chatPanel.AddComponent<Image>().color = new Color(0.025f, 0.035f, 0.045f, 0.94f);
+                chatPanel.Need<Image>().color = new Color(0.025f, 0.035f, 0.045f, 0.94f);
             }
 
             StyleInfoPanel(chatPanel, new Vector2(0f, 0f), new Vector2(24f, 24f), new Vector2(470f, 250f));
             if (chatPanel.GetComponent<HudFitRect>() == null)
             {
-                chatPanel.AddComponent<HudFitRect>().Configure(0.9f, 0.6f, new Vector2(48f, 48f), 0.5f);
+                chatPanel.Need<HudFitRect>().Configure(0.9f, 0.6f, new Vector2(48f, 48f), 0.5f);
             }
 
             if (chatHistoryText == null)
@@ -250,19 +250,19 @@ namespace NihongoLife.UI
 
             if (chatInputField == null)
             {
-                var inputObject = new GameObject("ChatInput");
+                var inputObject = UiBind.Make("ChatInput");
                 inputObject.transform.SetParent(chatPanel.transform, false);
-                var inputRect = inputObject.AddComponent<RectTransform>();
+                var inputRect = inputObject.Need<RectTransform>();
                 inputRect.anchorMin = new Vector2(0f, 0f);
                 inputRect.anchorMax = new Vector2(1f, 0f);
                 inputRect.pivot = new Vector2(0.5f, 0f);
                 inputRect.anchoredPosition = new Vector2(0f, 14f);
                 inputRect.sizeDelta = new Vector2(-32f, 42f);
 
-                var inputImage = inputObject.AddComponent<Image>();
+                var inputImage = inputObject.Need<Image>();
                 inputImage.color = new Color(0.11f, 0.13f, 0.15f, 1f);
 
-                chatInputField = inputObject.AddComponent<TMP_InputField>();
+                chatInputField = inputObject.Need<TMP_InputField>();
                 chatInputField.textViewport = inputRect;
                 chatInputField.lineType = TMP_InputField.LineType.SingleLine;
                 chatInputField.characterLimit = 120;
@@ -314,7 +314,7 @@ namespace NihongoLife.UI
             _questMarker = SceneRefs.Find<QuestDirectionMarker>();
             if (_questMarker == null)
             {
-                _questMarker = gameObject.AddComponent<QuestDirectionMarker>();
+                _questMarker = gameObject.Need<QuestDirectionMarker>();
             }
         }
 
@@ -343,7 +343,7 @@ namespace NihongoLife.UI
             }
 
             var button = missionPanel.GetComponent<Button>();
-            if (button == null) button = missionPanel.gameObject.AddComponent<Button>();
+            if (button == null) button = missionPanel.gameObject.Need<Button>();
             button.transition = Selectable.Transition.ColorTint;
             var colors = button.colors;
             colors.normalColor = Color.white;
@@ -356,15 +356,15 @@ namespace NihongoLife.UI
             button.onClick.RemoveListener(ToggleObjectivesPanel);
             button.onClick.AddListener(ToggleObjectivesPanel);
 
-            var toggleObject = new GameObject("QuestDropdownToggle");
+            var toggleObject = UiBind.Make("QuestDropdownToggle");
             toggleObject.transform.SetParent(missionPanel, false);
-            var toggleRect = toggleObject.AddComponent<RectTransform>();
+            var toggleRect = toggleObject.Need<RectTransform>();
             toggleRect.anchorMin = toggleRect.anchorMax = new Vector2(1f, 1f);
             toggleRect.pivot = new Vector2(1f, 1f); toggleRect.anchoredPosition = new Vector2(-10f, -10f);
             toggleRect.sizeDelta = new Vector2(42f, 34f);
-            var toggleImage = toggleObject.AddComponent<Image>(); toggleImage.color = new Color(0.95f, 0.68f, 0.2f, 0.9f);
-            var toggleButton = toggleObject.AddComponent<Button>(); toggleButton.targetGraphic = toggleImage;
-            var toggleLabel = new GameObject("Icon").AddComponent<TextMeshProUGUI>();
+            var toggleImage = toggleObject.Need<Image>(); toggleImage.color = new Color(0.95f, 0.68f, 0.2f, 0.9f);
+            var toggleButton = toggleObject.Need<Button>(); toggleButton.targetGraphic = toggleImage;
+            var toggleLabel = UiBind.Make("Icon").Need<TextMeshProUGUI>();
             toggleLabel.transform.SetParent(toggleObject.transform, false); toggleLabel.text = "≡";
             toggleLabel.fontSize = 22f; toggleLabel.alignment = TextAlignmentOptions.Center; toggleLabel.color = Color.black;
             toggleLabel.rectTransform.anchorMin = Vector2.zero; toggleLabel.rectTransform.anchorMax = Vector2.one; toggleLabel.rectTransform.sizeDelta = Vector2.zero;
@@ -391,7 +391,7 @@ namespace NihongoLife.UI
         private void EnsureNameplateToggle()
         {
             // Nameplates stay. The extra top-right "Tên nhân vật" chip duplicated the player card, so it is not created.
-            if (NPCNameplateSystem.Instance == null) gameObject.AddComponent<NPCNameplateSystem>();
+            if (NPCNameplateSystem.Instance == null) gameObject.Need<NPCNameplateSystem>();
             var canvas = GetComponentInParent<Canvas>();
             if (canvas == null) return;
             HideNameToggles(canvas.transform);

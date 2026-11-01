@@ -28,8 +28,8 @@ namespace NihongoLife.UI
             {
                 if (_instance != null) return _instance;
                 var canvas = NLUi.CreateCanvas("CharacterLookCanvas", 140);
-                DontDestroyOnLoad(canvas.gameObject);
-                _instance = canvas.gameObject.AddComponent<CharacterLookUI>();
+                if (Application.isPlaying) DontDestroyOnLoad(canvas.gameObject);
+                _instance = canvas.gameObject.Need<CharacterLookUI>();
                 _instance._font = NLUi.ResolveFont();
                 _instance.Build((RectTransform)canvas.transform);
                 Loc.Watch(_instance, () => { if (IsOpen) _instance.Rebuild(); });
@@ -62,8 +62,8 @@ namespace NihongoLife.UI
             _root.anchorMin = new Vector2(1f, 0.5f); _root.anchorMax = new Vector2(1f, 0.5f); _root.pivot = new Vector2(1f, 0.5f);
             _root.anchoredPosition = new Vector2(-24f, 0f);
             _root.sizeDelta = new Vector2(520f, 760f);
-            _root.gameObject.AddComponent<HudFitRect>().Configure(0.45f, 0.94f, new Vector2(-24f, 0f), 0.4f);
-            var scrollRoot = new GameObject("Scroll", typeof(RectTransform)).GetComponent<RectTransform>();
+            _root.gameObject.Need<HudFitRect>().Configure(0.45f, 0.94f, new Vector2(-24f, 0f), 0.4f);
+            var scrollRoot = UiBind.Make("Scroll", typeof(RectTransform)).GetComponent<RectTransform>();
             scrollRoot.SetParent(_root, false);
             NLUi.Stretch(scrollRoot);
             scrollRoot.offsetMin = new Vector2(22f, 18f); scrollRoot.offsetMax = new Vector2(-12f, -18f);
@@ -100,7 +100,7 @@ namespace NihongoLife.UI
             if (!string.IsNullOrEmpty(_message)) NLUi.Label(_body, "Message", _message, 15f, NLUi.Bad, _font);
 
             NLUi.Label(_body, "HairTitle", Loc.T("Màu tóc", "Hair colour", "髪の色"), 18f, NLUi.Gold, _font, FontStyles.Bold);
-            var grid = new GameObject("Hairs", typeof(RectTransform), typeof(GridLayoutGroup)).GetComponent<RectTransform>();
+            var grid = UiBind.Make("Hairs", typeof(RectTransform), typeof(GridLayoutGroup)).GetComponent<RectTransform>();
             grid.SetParent(_body, false);
             var layout = grid.GetComponent<GridLayoutGroup>();
             layout.cellSize = new Vector2(144f, 44f); layout.spacing = new Vector2(8f, 8f);
@@ -113,7 +113,7 @@ namespace NihongoLife.UI
                 var swatch = string.IsNullOrEmpty(hair.hex) ? NLUi.Card : CharacterLook.Hex(hair.hex);
                 var button = NLUi.Button(grid, "Hair_" + id, (on ? "✓ " : "") + hair.Name, _font, () => { _message = null; CharacterLook.SetHair(id); },
                     swatch, 14f, swatch.grayscale > 0.55f ? NLUi.Ink : Color.white, 44f);
-                if (on) button.gameObject.AddComponent<Outline>().effectColor = NLUi.Gold;
+                if (on) button.gameObject.Need<Outline>().effectColor = NLUi.Gold;
             }
 
             NLUi.Label(_body, "BeardTitle", Loc.T("Râu", "Beard", "ひげ"), 18f, NLUi.Gold, _font, FontStyles.Bold);

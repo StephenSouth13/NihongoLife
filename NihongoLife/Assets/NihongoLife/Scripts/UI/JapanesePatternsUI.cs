@@ -112,7 +112,7 @@ namespace NihongoLife.UI
                 bool on = _pattern == p;
                 var row = UiKit.Card(_list, "Row_" + p.id, on ? UiTheme.Raised : UiTheme.Surface, 14);
                 UiKit.Size(row, -1f, 74f);
-                var btn = row.gameObject.AddComponent<Button>();
+                var btn = row.gameObject.Need<Button>();
                 btn.targetGraphic = row;
                 btn.onClick.AddListener(() => SelectPattern(pat.id));
                 if (on) { var bar = UiKit.Image(row.transform, "Sel", UiTheme.Jlpt, UiKit.Rounded(3)); UiKit.Place(bar.rectTransform, 0f, 14f, 5f, 46f); }

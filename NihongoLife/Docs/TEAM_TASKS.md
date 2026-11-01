@@ -2126,3 +2126,11 @@ Tên lớp test viết tắt: PlayMode = `NihongoLife.Tests.<Lớp>`; EditMode =
 - Phone top bar lifted MenuTopBar.BottomLift = 58px so it clears the browser Fullscreen pill.
 - New PlayMode test MenuNoRuntimeObjectsPlayModeTests: TopCluster subtree and MenuAvatarStage (+ figure roots) must have scene (positive) instance ids. Full list of other runtime objects written to Bao_Cao/menu-avatar/runtime_objects.txt.
 - Still code-built (follow-up): Settings / Guide / About / CharacterSelect / Friends / Auth / ModeSelect pop-ups, town preview (traffic, coin parking, houses, petals), Profile/Coop/Leaderboard widgets.
+
+### 2026-11-01 ? Main menu popups, widgets and town preview authored in 01_MainMenu
+- New UiBind/UiBakeId: menu UI code builds through `UiBind.Make` inside named scopes. An editor bake runs the same code once and saves the result into 01_MainMenu (tagged with UiBakeId). At runtime the menu only finds and hooks those objects. Gameplay scenes still create their UI as before.
+- Authored in 01_MainMenu: How to play, About (and its gallery dots), Settings, Login, Leaderboard, Friends, Profile, Co-op, Mode select, Character select, the character-select preview stage (camera, lights and one inactive preview per playable kid), button effect parts, street traffic lamps and horn, and the sakura petal field.
+- `DontDestroyOnLoad` calls are guarded with `Application.isPlaying` so the bake can run in the editor.
+- MenuNoRuntimeObjects test: compares the live menu against a manifest of the scene file after opening and closing each popup. Allowed exceptions: the TMP input caret.
+- Touch-controls button: new phone icon `ic_smartphone.png`, drawn in-house (CC0), replacing the info icon.
+- Tests: EditMode 333/333; PlayMode MenuNoRuntime/MenuLayout/MenuAvatar/PhoneControls/MainMenu 7/7.

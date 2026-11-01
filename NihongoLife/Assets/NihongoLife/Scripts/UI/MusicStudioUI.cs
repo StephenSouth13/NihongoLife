@@ -123,10 +123,10 @@ namespace NihongoLife.UI
             {
                 if (_instance != null) return _instance;
                 var canvas = NLUi.CreateCanvas("MusicStudioCanvas", 128);
-                DontDestroyOnLoad(canvas.gameObject);
-                _instance = canvas.gameObject.AddComponent<MusicStudioUI>();
+                if (Application.isPlaying) DontDestroyOnLoad(canvas.gameObject);
+                _instance = canvas.gameObject.Need<MusicStudioUI>();
                 _instance._font = NLUi.ResolveFont();
-                _instance._audio = canvas.gameObject.AddComponent<AudioSource>();
+                _instance._audio = canvas.gameObject.Need<AudioSource>();
                 _instance._audio.playOnAwake = false;
                 _instance.Build((RectTransform)canvas.transform);
                 Loc.Watch(_instance, () => { if (IsOpen) _instance.Rebuild(); });
@@ -168,7 +168,7 @@ namespace NihongoLife.UI
 
         private void Build(RectTransform canvas)
         {
-            _root = new GameObject("MusicStudio", typeof(RectTransform), typeof(Image)).GetComponent<RectTransform>();
+            _root = UiBind.Make("MusicStudio", typeof(RectTransform), typeof(Image)).GetComponent<RectTransform>();
             _root.SetParent(canvas, false);
             NLUi.Stretch(_root);
             _root.GetComponent<Image>().color = new Color(0.01f, 0.015f, 0.02f, 0.72f);
@@ -176,11 +176,11 @@ namespace NihongoLife.UI
             _card = card;
             card.anchorMin = card.anchorMax = card.pivot = new Vector2(0.5f, 0.5f);
             card.sizeDelta = new Vector2(1180f, 720f);
-            card.gameObject.AddComponent<HudFitRect>().Configure(0.96f, 0.94f, Vector2.zero, 0.4f);
+            card.gameObject.Need<HudFitRect>().Configure(0.96f, 0.94f, Vector2.zero, 0.4f);
             _tabs = NLUi.Group(card, "Tabs", false, 8f, TextAnchor.MiddleLeft, false);
             _tabs.anchorMin = new Vector2(0f, 1f); _tabs.anchorMax = new Vector2(1f, 1f); _tabs.pivot = new Vector2(0.5f, 1f);
             _tabs.offsetMin = new Vector2(28f, -92f); _tabs.offsetMax = new Vector2(-80f, -20f);
-            var scrollRoot = new GameObject("Scroll", typeof(RectTransform)).GetComponent<RectTransform>();
+            var scrollRoot = UiBind.Make("Scroll", typeof(RectTransform)).GetComponent<RectTransform>();
             scrollRoot.SetParent(card, false);
             NLUi.Stretch(scrollRoot);
             scrollRoot.offsetMin = new Vector2(28f, 20f); scrollRoot.offsetMax = new Vector2(-20f, -100f);
@@ -262,7 +262,7 @@ namespace NihongoLife.UI
             NLUi.Label(_body, "Help", Loc.T("Bấm phím trên màn hình hoặc bàn phím: A S D F G H J K L ; ' (phím trắng), W E T Y U O P (phím đen). Z / X đổi quãng tám.",
                 "Click the keys or use the keyboard: A S D F G H J K L ; ' (white), W E T Y U O P (black). Z / X change octave.",
                 "画面の鍵盤か、キーボードの A S D F G H J K L ; '（白鍵）W E T Y U O P（黒鍵）。Z / X でオクターブ。"), 15f, NLUi.Muted, _font);
-            var board = new GameObject("Keyboard", typeof(RectTransform), typeof(LayoutElement)).GetComponent<RectTransform>();
+            var board = UiBind.Make("Keyboard", typeof(RectTransform), typeof(LayoutElement)).GetComponent<RectTransform>();
             board.SetParent(_body, false);
             board.GetComponent<LayoutElement>().preferredHeight = 240f;
             const float w = 70f;
@@ -291,7 +291,7 @@ namespace NihongoLife.UI
 
         private void PianoKey(RectTransform board, int midi, Vector2 pos, Vector2 size, Color color, string label)
         {
-            var key = new GameObject("Key_" + midi, typeof(RectTransform), typeof(Image), typeof(Button)).GetComponent<RectTransform>();
+            var key = UiBind.Make("Key_" + midi, typeof(RectTransform), typeof(Image), typeof(Button)).GetComponent<RectTransform>();
             key.SetParent(board, false);
             key.anchorMin = key.anchorMax = key.pivot = new Vector2(0f, 1f);
             key.anchoredPosition = pos;
@@ -664,7 +664,7 @@ namespace NihongoLife.UI
                 NLUi.Button(_body, "Strum", Loc.T("Quạt dây (Space)", "Strum (Space)", "ストローク（Space）"), _font, () => Strum(_chord), NLUi.Gold, 18f, NLUi.Ink, 48f);
             }
             NLUi.Label(_body, "AllTitle", Loc.T("Tất cả hợp âm", "All chords", "すべてのコード"), 18f, NLUi.Gold, _font, FontStyles.Bold);
-            var grid = new GameObject("AllChords", typeof(RectTransform), typeof(GridLayoutGroup)).GetComponent<RectTransform>();
+            var grid = UiBind.Make("AllChords", typeof(RectTransform), typeof(GridLayoutGroup)).GetComponent<RectTransform>();
             grid.SetParent(_body, false);
             var layout = grid.GetComponent<GridLayoutGroup>();
             layout.cellSize = new Vector2(96f, 44f); layout.spacing = new Vector2(6f, 6f);
@@ -857,14 +857,14 @@ namespace NihongoLife.UI
             {
                 var a = _painting;
                 NLUi.Button(_body, "Back", "< " + Loc.T("Phòng tranh", "Gallery", "ギャラリー"), _font, () => { _painting = null; Rebuild(); }, NLUi.Card, 15f, NLUi.Text, 40f);
-                var frame = new GameObject("Painting", typeof(RectTransform), typeof(RawImage), typeof(LayoutElement)).GetComponent<RawImage>();
+                var frame = UiBind.Make("Painting", typeof(RectTransform), typeof(RawImage), typeof(LayoutElement)).GetComponent<RawImage>();
                 frame.transform.SetParent(_body, false);
                 var tex = a.Picture;
                 frame.texture = tex;
                 float aspect = tex != null ? tex.width / (float)tex.height : 1f;
                 frame.GetComponent<LayoutElement>().preferredHeight = 420f;
                 frame.GetComponent<LayoutElement>().preferredWidth = 420f * aspect;
-                var fitter = frame.gameObject.AddComponent<AspectRatioFitter>();
+                var fitter = frame.gameObject.Need<AspectRatioFitter>();
                 fitter.aspectMode = AspectRatioFitter.AspectMode.HeightControlsWidth; fitter.aspectRatio = aspect;
                 NLUi.Label(_body, "Title", $"<b>{a.title}</b>", 24f, NLUi.Gold, _font);
                 NLUi.Label(_body, "Info", $"{a.artist} · {a.date}\n{a.medium}\n{a.museum}", 16f, NLUi.Text, _font);
@@ -872,7 +872,7 @@ namespace NihongoLife.UI
                 return;
             }
             NLUi.Label(_body, "Title", Loc.T("Phòng tranh — kiệt tác thuộc phạm vi công cộng", "Gallery — public-domain masterpieces", "ギャラリー — パブリックドメインの名画"), 24f, NLUi.Gold, _font, FontStyles.Bold);
-            var grid = new GameObject("Paintings", typeof(RectTransform), typeof(GridLayoutGroup)).GetComponent<RectTransform>();
+            var grid = UiBind.Make("Paintings", typeof(RectTransform), typeof(GridLayoutGroup)).GetComponent<RectTransform>();
             grid.SetParent(_body, false);
             var layout = grid.GetComponent<GridLayoutGroup>();
             layout.cellSize = new Vector2(200f, 230f); layout.spacing = new Vector2(12f, 12f);
@@ -882,16 +882,16 @@ namespace NihongoLife.UI
             {
                 var a = art;
                 var cell = NLUi.Panel(grid, "Art_" + a.id, NLUi.Card);
-                var button = cell.gameObject.AddComponent<Button>();
+                var button = cell.gameObject.Need<Button>();
                 button.targetGraphic = cell.GetComponent<Image>();
                 button.onClick.AddListener(() => { _painting = a; Rebuild(); });
-                var picture = new GameObject("Thumb", typeof(RectTransform), typeof(RawImage)).GetComponent<RawImage>();
+                var picture = UiBind.Make("Thumb", typeof(RectTransform), typeof(RawImage)).GetComponent<RawImage>();
                 picture.transform.SetParent(cell, false);
                 picture.texture = a.Picture;
                 picture.raycastTarget = false;
                 var r = picture.rectTransform;
                 r.anchorMin = new Vector2(0f, 0.28f); r.anchorMax = new Vector2(1f, 1f); r.offsetMin = new Vector2(8f, 0f); r.offsetMax = new Vector2(-8f, -8f);
-                var fit = picture.gameObject.AddComponent<AspectRatioFitter>();
+                var fit = picture.gameObject.Need<AspectRatioFitter>();
                 fit.aspectMode = AspectRatioFitter.AspectMode.FitInParent;
                 fit.aspectRatio = a.Picture != null ? a.Picture.width / (float)a.Picture.height : 1f;
                 var label = NLUi.Label(cell, "Name", $"<b>{a.title}</b>\n<size=80%>{a.artist}</size>", 12f, NLUi.Text, _font, FontStyles.Normal, TextAlignmentOptions.Top);

@@ -25,7 +25,7 @@ namespace NihongoLife.Health
         {
             if (_instance != null) return;
             var canvas = NLUi.CreateCanvas("IllnessOverlayCanvas", 5);
-            DontDestroyOnLoad(canvas.gameObject);
+            if (Application.isPlaying) DontDestroyOnLoad(canvas.gameObject);
             _instance = canvas.gameObject.AddComponent<IllnessOverlay>();
             var go = new GameObject("Glow", typeof(RectTransform), typeof(RawImage));
             go.transform.SetParent(canvas.transform, false);

@@ -51,9 +51,9 @@ namespace NihongoLife.UI
             var previous = parent.Find("MobileControls");
             if (previous != null) Destroy(previous.gameObject);
             if (parent.Find("TouchControls") != null) return;
-            var go = new GameObject("TouchControls", typeof(RectTransform));
+            var go = UiBind.Make("TouchControls", typeof(RectTransform));
             go.transform.SetParent(parent, false);
-            go.AddComponent<TouchControlOverlay>();
+            go.Need<TouchControlOverlay>();
         }
 
         private void Awake()
@@ -66,9 +66,9 @@ namespace NihongoLife.UI
 
             _look = UiKit.Image(transform, "LookPad", new Color(1f, 1f, 1f, 0f), null, false);
             UiKit.Fill(_look.rectTransform);
-            _look.gameObject.AddComponent<TouchLookPad>().Bind(this);
+            _look.gameObject.Need<TouchLookPad>().Bind(this);
 
-            var visuals = new GameObject("Visuals", typeof(RectTransform), typeof(CanvasGroup));
+            var visuals = UiBind.Make("Visuals", typeof(RectTransform), typeof(CanvasGroup));
             visuals.transform.SetParent(transform, false);
             UiKit.Fill((RectTransform)visuals.transform);
             _visuals = visuals.GetComponent<CanvasGroup>();
@@ -78,7 +78,7 @@ namespace NihongoLife.UI
             handle.anchorMin = handle.anchorMax = new Vector2(0.5f, 0.5f);
             handle.pivot = new Vector2(0.5f, 0.5f);
             handle.anchoredPosition = Vector2.zero;
-            _stick.gameObject.AddComponent<MobileJoystick>().Configure(handle, 56f);
+            _stick.gameObject.Need<MobileJoystick>().Configure(handle, 56f);
 
             _jump = Action(visuals.transform, "Jump", GameInputId.Jump, "Nhảy", "Jump", "ジャンプ", UiTheme.Gold, UiTheme.OnGold);
             _interact = Action(visuals.transform, "Interact", GameInputId.Interact, "F", "F", "F", UiTheme.Gold, UiTheme.OnGold);
@@ -311,7 +311,7 @@ namespace NihongoLife.UI
         RectTransform Action(Transform parent, string name, GameInputId id, string vi, string en, string ja, Color fill, Color ink)
         {
             var rect = Circle(parent, name, fill, true);
-            rect.gameObject.AddComponent<MobileActionButton>().Configure(id);
+            rect.gameObject.Need<MobileActionButton>().Configure(id);
             AddLabel(rect, vi, en, ja, ink);
             return rect;
         }
@@ -319,7 +319,7 @@ namespace NihongoLife.UI
         RectTransform Tap(Transform parent, string name, Action click, string vi, string en, string ja, Color fill, Color ink)
         {
             var rect = Circle(parent, name, fill, true);
-            var tap = rect.gameObject.AddComponent<TouchTap>();
+            var tap = rect.gameObject.Need<TouchTap>();
             tap.Click = click;
             AddLabel(rect, vi, en, ja, ink);
             return rect;

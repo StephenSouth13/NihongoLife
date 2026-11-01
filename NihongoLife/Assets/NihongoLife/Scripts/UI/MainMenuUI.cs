@@ -70,6 +70,18 @@ namespace NihongoLife.UI
         private int selectedCharacterIndex;
         private bool startOnlineAfterCharacterConfirm;
 
+#if UNITY_EDITOR
+        /// <summary>Editor bake entry: runs the same build code as Start so its scopes author the pop-ups into 01_MainMenu.</summary>
+        public void BakeAuthored()
+        {
+            Bind();
+            var font = titleText != null ? titleText.font : UiKit.Font;
+            BuildPopups(font);
+            using (UiBind.Scope(transform, "ModeSelect")) BuildModeSelect(font);
+            using (UiBind.Scope(transform, "CharacterSelect")) BuildCharacterSelect(font);
+        }
+#endif
+
         private void Start()
         {
             EnsureSettingsService();
@@ -83,48 +95,21 @@ namespace NihongoLife.UI
             Wire(japaneseButton, () => Loc.Set(GameLanguage.Japanese));
             Wire(russianButton, () => Loc.Set(GameLanguage.Russian));
 
-            guidePopup = gameObject.AddComponent<GuidePopup>();
-            guidePopup.Initialize(font);
-            aboutPopup = gameObject.AddComponent<AboutPopup>();
-            aboutPopup.Initialize(font);
-            Wire(guideButton, () => guidePopup.Show());
-            Wire(aboutButton, () => aboutPopup.Show());
-            BuildControlsSwitch();
+            BuildPopups(font);
 
-            settingsUI = gameObject.AddComponent<SettingsUI>();
-            settingsUI.Initialize(font);
-            Wire(settingsButton, () => settingsUI.Show());
-            authUI = gameObject.AddComponent<AuthUI>();
-            authUI.Initialize(font);
-            Wire(loginButton, () => authUI.Show());
-            if (GameServices.TryGet(out IAuthService auth)) auth.OnAuthStateChanged += _ => { Translate(); DisplayProfileStats(); };
-
-            leaderboardUI = gameObject.AddComponent<LeaderboardUI>();
-            leaderboardUI.Initialize(font);
-            Wire(leaderboardButton, () => leaderboardUI.Show());
-            friendsUI = gameObject.AddComponent<FriendsUI>();
-            friendsUI.Initialize(font);
-            Wire(friendsButton, () => { if (OnlineAccess.IsRegistered) friendsUI.Show(); else authUI.ShowForOnline(); });
-            profileUI = gameObject.AddComponent<PlayerProfileUI>();
-            profileUI.Initialize(font);
-            Wire(profileButton, () => profileUI.ShowOwnProfile());
-            coopLobbyUI = gameObject.AddComponent<CoopLobbyUI>();
-            coopLobbyUI.Initialize(font);
-            Wire(onlineButton, OnOnlineClicked);
-
-            menuMusic = gameObject.GetComponent<MenuMusicController>().OrNull() ?? gameObject.AddComponent<MenuMusicController>();
+            menuMusic = gameObject.GetComponent<MenuMusicController>().OrNull() ?? gameObject.Need<MenuMusicController>();
             var dayNight = SceneRefs.Find<DayNightCycle>();
             if (dayNight != null) dayNight.SetHour(9f); // the menu is always a bright morning
 
             MenuChrome.Arrange((RectTransform)transform);
             if (titleText != null && titleText.GetComponent<MenuTitleShimmer>() == null)
-                titleText.gameObject.AddComponent<MenuTitleShimmer>();
+                titleText.gameObject.Need<MenuTitleShimmer>();
             MenuSakura.Ensure(transform);
             ResponsiveCanvasFit.Ensure(transform);
             SafeAreaInset.Ensure(transform);
             MenuResponsive.Ensure((RectTransform)transform);
-            BuildModeSelect(font);
-            BuildCharacterSelect(font);
+            using (UiBind.Scope(transform, "ModeSelect")) BuildModeSelect(font);
+            using (UiBind.Scope(transform, "CharacterSelect")) BuildCharacterSelect(font);
             Translate();
             DisplayProfileStats();
             Loc.Watch(this, () => { Translate(); DisplayProfileStats(); RefreshModeStatus(); });
@@ -133,9 +118,42 @@ namespace NihongoLife.UI
             StartCoroutine(KeepStoryCardClear());
         }
 
+        /// <summary>Pop-ups and widgets: authored in 01_MainMenu by the bake; at runtime each scope only finds and hooks them.</summary>
+        private void BuildPopups(TMP_FontAsset font)
+        {
+            guidePopup = gameObject.Need<GuidePopup>();
+            using (UiBind.Scope(transform, "Guide")) guidePopup.Initialize(font);
+            aboutPopup = gameObject.Need<AboutPopup>();
+            using (UiBind.Scope(transform, "About")) aboutPopup.Initialize(font);
+            Wire(guideButton, () => guidePopup.Show());
+            Wire(aboutButton, () => aboutPopup.Show());
+            BuildControlsSwitch();
+
+            settingsUI = gameObject.Need<SettingsUI>();
+            using (UiBind.Scope(transform, "Settings")) settingsUI.Initialize(font);
+            Wire(settingsButton, () => settingsUI.Show());
+            authUI = gameObject.Need<AuthUI>();
+            using (UiBind.Scope(transform, "Auth")) authUI.Initialize(font);
+            Wire(loginButton, () => authUI.Show());
+            if (GameServices.TryGet(out IAuthService auth)) auth.OnAuthStateChanged += _ => { Translate(); DisplayProfileStats(); };
+
+            leaderboardUI = gameObject.Need<LeaderboardUI>();
+            using (UiBind.Scope(transform, "Leaderboard")) leaderboardUI.Initialize(font);
+            Wire(leaderboardButton, () => leaderboardUI.Show());
+            friendsUI = gameObject.Need<FriendsUI>();
+            using (UiBind.Scope(transform, "Friends")) friendsUI.Initialize(font);
+            Wire(friendsButton, () => { if (OnlineAccess.IsRegistered) friendsUI.Show(); else authUI.ShowForOnline(); });
+            profileUI = gameObject.Need<PlayerProfileUI>();
+            using (UiBind.Scope(transform, "Profile")) profileUI.Initialize(font);
+            Wire(profileButton, () => profileUI.ShowOwnProfile());
+            coopLobbyUI = gameObject.Need<CoopLobbyUI>();
+            using (UiBind.Scope(transform, "Coop")) coopLobbyUI.Initialize(font);
+            Wire(onlineButton, OnOnlineClicked);
+        }
+
         private IEnumerator PlayEntrance()
         {
-            var group = GetComponent<CanvasGroup>().OrNull() ?? gameObject.AddComponent<CanvasGroup>();
+            var group = GetComponent<CanvasGroup>().OrNull() ?? gameObject.Need<CanvasGroup>();
             if (MotionSettings.ReduceMotion)
             {
                 group.alpha = 1f;
@@ -169,9 +187,9 @@ namespace NihongoLife.UI
             var existing = SceneRefs.Find<GameSettingsService>();
             if (existing == null)
             {
-                var go = new GameObject("GameSettingsService");
-                existing = go.AddComponent<GameSettingsService>();
-                DontDestroyOnLoad(go);
+                var go = UiBind.Make("GameSettingsService");
+                existing = go.Need<GameSettingsService>();
+                if (Application.isPlaying) DontDestroyOnLoad(go);
             }
             existing.Initialize();
             GameServices.Register<GameSettingsService>(existing);
@@ -211,8 +229,8 @@ namespace NihongoLife.UI
         {
             if (button == null) return;
             if (click != null) button.onClick.AddListener(() => click());
-            if (button.GetComponent<UiHover>() == null) button.gameObject.AddComponent<UiHover>();
-            if (button.GetComponent<UIButtonAudio>() == null) button.gameObject.AddComponent<UIButtonAudio>();
+            if (button.GetComponent<UiHover>() == null) button.gameObject.Need<UiHover>();
+            if (button.GetComponent<UIButtonAudio>() == null) button.gameObject.Need<UIButtonAudio>();
         }
 
         // ─────────── Texts ───────────
@@ -357,7 +375,7 @@ namespace NihongoLife.UI
             modeSelectPanel = dim.gameObject;
             UiKit.Fill(dim.rectTransform);
             var card = UiKit.Card(dim.transform, "Card", UiTheme.Ink, 24, 0.6f).rectTransform;
-            card.gameObject.AddComponent<MenuSafeFrame>().Configure(new Vector2(860f, 480f), new Vector2(560f, 400f), new Vector2(40f, 32f));
+            card.gameObject.Need<MenuSafeFrame>().Configure(new Vector2(860f, 480f), new Vector2(560f, 400f), new Vector2(40f, 32f));
             var title = UiKit.Label(card, "Title", "", 28f, UiTheme.Text, FontStyles.Bold);
             Box(title.rectTransform, 0.05f, 0.84f, 0.72f, 0.96f);
             modeStatusText = UiKit.Label(card, "Status", "", 15f, UiTheme.TextSoft, FontStyles.Normal, TextAlignmentOptions.TopLeft, wrap: true);
@@ -473,17 +491,17 @@ namespace NihongoLife.UI
             characterSelectPanel = dim.gameObject;
             UiKit.Fill(dim.rectTransform);
             var card = UiKit.Card(dim.transform, "Card", UiTheme.Ink, 24, 0.6f).rectTransform;
-            card.gameObject.AddComponent<MenuSafeFrame>().Configure(new Vector2(1080f, 660f), new Vector2(720f, 500f), new Vector2(36f, 28f));
+            card.gameObject.Need<MenuSafeFrame>().Configure(new Vector2(1080f, 660f), new Vector2(720f, 500f), new Vector2(36f, 28f));
 
             var title = UiKit.Label(card, "Title", "", 28f, UiTheme.Text, FontStyles.Bold);
             Box(title.rectTransform, 0.04f, 0.88f, 0.7f, 0.97f);
             var frame = UiKit.Card(card, "PreviewFrame", new Color(0.05f, 0.07f, 0.1f, 1f), 20, 0f, false).rectTransform;
             Box(frame, 0.04f, 0.08f, 0.48f, 0.86f);
-            var preview = new GameObject("Preview", typeof(RectTransform), typeof(RawImage)).GetComponent<RawImage>();
+            var preview = UiBind.Make("Preview", typeof(RectTransform), typeof(RawImage)).GetComponent<RawImage>();
             preview.transform.SetParent(frame, false);
             UiKit.Fill(preview.rectTransform, 8f, 8f, 8f, 36f);
             characterPreviewImage = preview;
-            characterDrag = preview.gameObject.AddComponent<CharacterPreviewDragRotate>();
+            characterDrag = preview.gameObject.Need<CharacterPreviewDragRotate>();
             characterDrag.Configure(ApplyCharacterPreviewYaw);
             var hint = UiKit.Label(frame, "DragHint", "Kéo để xoay", "Drag to turn", "ドラッグで回転", 13f, UiTheme.Muted, FontStyles.Italic, TextAlignmentOptions.Center);
             Box(hint.rectTransform, 0.08f, 0.02f, 0.55f, 0.1f);
@@ -544,10 +562,10 @@ namespace NihongoLife.UI
         {
             var bg = UiKit.Card(parent, "PlayerNameInput", UiTheme.Sunken, 14, 0f, true);
             UiKit.Border(bg.rectTransform, new Color(1f, 1f, 1f, 0.14f), 14);
-            var input = bg.gameObject.AddComponent<TMP_InputField>();
+            var input = bg.gameObject.Need<TMP_InputField>();
             var area = UiKit.Rect(bg.transform, "TextArea");
             UiKit.Fill(area, 16f, 6f, 16f, 6f);
-            area.gameObject.AddComponent<RectMask2D>();
+            area.gameObject.Need<RectMask2D>();
             var text = UiKit.Label(area, "Text", "", 18f, UiTheme.Text);
             UiKit.Fill(text.rectTransform);
             var placeholder = UiKit.Label(area, "Placeholder", "", 17f, UiTheme.Muted, FontStyles.Italic);
@@ -563,9 +581,19 @@ namespace NihongoLife.UI
             return input;
         }
 
+        /// <summary>The preview stage (camera, lights, one model per playable character) is authored in 01_MainMenu by the
+        /// bake (scope "PreviewStage"); at runtime this only finds and hooks it.</summary>
         private void CreateCharacterPreviewStage()
         {
-            if (Application.isBatchMode) return;
+            Transform authored = null;
+            foreach (var root in gameObject.scene.GetRootGameObjects())
+                if (root.name == "CharacterSelectPreviewStage") { authored = root.transform; break; }
+            using (UiBind.Scope(authored, "PreviewStage")) CreateCharacterPreviewStageInScope(authored != null);
+        }
+
+        private void CreateCharacterPreviewStageInScope(bool authored)
+        {
+            if (Application.isBatchMode && !UiBind.BakeScopes.Contains("PreviewStage")) return;
             bool web = Application.platform == RuntimePlatform.WebGLPlayer;
             characterPreviewTexture = new RenderTexture(web ? 512 : 768, web ? 600 : 900, 16, RenderTextureFormat.ARGB32)
             {
@@ -574,14 +602,14 @@ namespace NihongoLife.UI
             };
             characterPreviewTexture.Create();
             if (characterPreviewImage != null) characterPreviewImage.texture = characterPreviewTexture;
-            characterPreviewStage = new GameObject("CharacterSelectPreviewStage");
+            characterPreviewStage = UiBind.Make("CharacterSelectPreviewStage");
             characterPreviewStage.transform.position = new Vector3(0f, -500f, 0f);
-            DontDestroyOnLoad(characterPreviewStage);
-            var cameraGo = new GameObject("PreviewCamera");
+            if (Application.isPlaying && !authored) DontDestroyOnLoad(characterPreviewStage);
+            var cameraGo = UiBind.Make("PreviewCamera");
             cameraGo.transform.SetParent(characterPreviewStage.transform, false);
             cameraGo.transform.localPosition = new Vector3(0f, 1.05f, 2.4f);
             cameraGo.transform.localRotation = Quaternion.Euler(8f, 180f, 0f);
-            characterPreviewCamera = cameraGo.AddComponent<Camera>();
+            characterPreviewCamera = cameraGo.Need<Camera>();
             characterPreviewCamera.clearFlags = CameraClearFlags.SolidColor;
             characterPreviewCamera.backgroundColor = new Color(0.07f, 0.09f, 0.13f, 1f);
             characterPreviewCamera.fieldOfView = 24f;
@@ -597,11 +625,11 @@ namespace NihongoLife.UI
         private void PreviewLight(string name, Vector3 position, Quaternion rotation, float intensity, Color color)
         {
             if (characterPreviewStage == null) return;
-            var lightGo = new GameObject(name);
+            var lightGo = UiBind.Make(name);
             lightGo.transform.SetParent(characterPreviewStage.transform, false);
             lightGo.transform.localPosition = position;
             lightGo.transform.localRotation = rotation;
-            var light = lightGo.AddComponent<Light>();
+            var light = lightGo.Need<Light>();
             light.type = LightType.Directional;
             light.intensity = intensity;
             light.color = color;
@@ -620,18 +648,34 @@ namespace NihongoLife.UI
                 confirmCharacterButton.interactable = character.IsAvailable;
                 UiKit.SetLabel(confirmCharacterButton, character.IsAvailable ? Loc.T("Chọn nhân vật này", "Play as this character", "このキャラで始める") : Loc.T("Sắp ra mắt", "Coming soon", "近日公開"));
             }
-            if (characterPreviewModel != null) Destroy(characterPreviewModel);
+            if (characterPreviewModel != null)
+            {
+                if (characterPreviewModel.name.StartsWith("Preview_")) characterPreviewModel.SetActive(false); // authored, keep
+                else Destroy(characterPreviewModel);
+                characterPreviewModel = null;
+            }
             var prefab = PlayableCharacterCatalog.LoadPrefab(character);
             if (prefab == null || characterPreviewStage == null) return;
-            characterPreviewModel = Instantiate(prefab, characterPreviewStage.transform);
-            characterPreviewModel.name = "SelectedCharacterPreview";
+            var authoredModel = characterPreviewStage.transform.Find("Preview_" + character.Id);
+            if (authoredModel != null)
+            {
+                characterPreviewModel = authoredModel.gameObject;
+                characterPreviewModel.SetActive(true);
+            }
+            else
+            {
+                if (!Application.isPlaying) return; // the bake places one model per character itself
+                characterPreviewModel = Instantiate(prefab, characterPreviewStage.transform);
+                characterPreviewModel.name = "SelectedCharacterPreview";
+            }
             characterPreviewModel.transform.localPosition = Vector3.zero;
             characterPreviewModel.transform.localRotation = Quaternion.Euler(0f, 180f, 0f);
             characterPreviewModel.transform.localScale = prefab.transform.localScale; // kids are built at 1.35×
             CharacterLook.On(characterPreviewModel); // the hair and beard chosen in the look panel
             if (characterDrag != null) characterDrag.SetYaw(0f);
             else ApplyCharacterPreviewYaw(0f);
-            foreach (var collider in characterPreviewModel.GetComponentsInChildren<Collider>(true)) Destroy(collider);
+            if (Application.isPlaying)
+                foreach (var collider in characterPreviewModel.GetComponentsInChildren<Collider>(true)) Destroy(collider);
             FrameCharacterPreview();
         }
 

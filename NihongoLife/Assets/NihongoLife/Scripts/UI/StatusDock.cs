@@ -130,7 +130,7 @@ namespace NihongoLife.UI
         public static StatusDock Create(Transform parent, TMP_FontAsset font, IReadOnlyList<(string name, string key, string label, Action action)> buttons, Action closeCharacter)
         {
             var canvas = NLUi.CreateCanvas("StatusDockCanvas", 90, parent);
-            var dock = canvas.gameObject.AddComponent<StatusDock>();
+            var dock = canvas.gameObject.Need<StatusDock>();
             dock._font = font != null ? font : NLUi.ResolveFont();
             dock.Build((RectTransform)canvas.transform, buttons, closeCharacter);
             return dock;
@@ -138,7 +138,7 @@ namespace NihongoLife.UI
 
         private void Build(RectTransform root, IReadOnlyList<(string name, string key, string label, Action action)> buttons, Action closeCharacter)
         {
-            var dock = new GameObject("Dock", typeof(RectTransform), typeof(CanvasGroup)).GetComponent<RectTransform>();
+            var dock = UiBind.Make("Dock", typeof(RectTransform), typeof(CanvasGroup)).GetComponent<RectTransform>();
             dock.SetParent(root, false);
             NLUi.Stretch(dock);
             _dockGroup = dock.GetComponent<CanvasGroup>();
@@ -243,25 +243,25 @@ namespace NihongoLife.UI
             widgetLayout.childForceExpandWidth = false;
             widgetLayout.childAlignment = TextAnchor.MiddleLeft;
             NLUi.FitContent(widget, width: true, height: true);
-            var edge = widget.gameObject.AddComponent<Outline>();
+            var edge = widget.gameObject.Need<Outline>();
             edge.effectColor = new Color(1f, 1f, 1f, 0.07f);
             edge.effectDistance = new Vector2(1f, -1f);
-            var shadow = widget.gameObject.AddComponent<Shadow>();
+            var shadow = widget.gameObject.Need<Shadow>();
             shadow.effectColor = new Color(0f, 0f, 0f, 0.35f);
             shadow.effectDistance = new Vector2(0f, -4f);
             StatusWidget = widget;
 
             // Portrait of the real player model in a framed circle, with the level badge on its rim.
             const float portraitSize = 100f;
-            var portrait = new GameObject("Portrait", typeof(RectTransform), typeof(LayoutElement)).GetComponent<RectTransform>();
+            var portrait = UiBind.Make("Portrait", typeof(RectTransform), typeof(LayoutElement)).GetComponent<RectTransform>();
             portrait.SetParent(widget, false);
             var portraitLayout = portrait.GetComponent<LayoutElement>();
             // Tap the portrait: the look panel (hair, beard, what age changes).
-            var portraitHit = portrait.gameObject.AddComponent<Image>();
+            var portraitHit = portrait.gameObject.Need<Image>();
             portraitHit.color = new Color(0f, 0f, 0f, 0f);
-            portrait.gameObject.AddComponent<Button>().onClick.AddListener(() => CharacterLookUI.Open());
+            portrait.gameObject.Need<Button>().onClick.AddListener(() => CharacterLookUI.Open());
             portraitLayout.preferredWidth = portraitLayout.minWidth = portraitSize; portraitLayout.preferredHeight = portraitLayout.minHeight = portraitSize;
-            var mask = new GameObject("Mask", typeof(RectTransform), typeof(Image), typeof(Mask)).GetComponent<RectTransform>();
+            var mask = UiBind.Make("Mask", typeof(RectTransform), typeof(Image), typeof(Mask)).GetComponent<RectTransform>();
             mask.SetParent(portrait, false);
             NLUi.Stretch(mask, 4f);
             var maskImage = mask.GetComponent<Image>();
@@ -269,12 +269,12 @@ namespace NihongoLife.UI
             maskImage.color = new Color(0.33f, 0.52f, 0.62f, 1f); // shown until the first photo is taken
             maskImage.raycastTarget = false;
             _portrait = HudPortrait.Create(mask);
-            var frame = new GameObject("Frame", typeof(RectTransform), typeof(Image)).GetComponent<Image>();
+            var frame = UiBind.Make("Frame", typeof(RectTransform), typeof(Image)).GetComponent<Image>();
             frame.transform.SetParent(portrait, false);
             NLUi.Stretch(frame.rectTransform);
             frame.sprite = HudGraphics.Hairline; frame.color = new Color(1f, 1f, 1f, 0.9f); frame.raycastTarget = false;
 
-            var badge = new GameObject("LevelBadge", typeof(RectTransform), typeof(Image), typeof(Outline)).GetComponent<RectTransform>();
+            var badge = UiBind.Make("LevelBadge", typeof(RectTransform), typeof(Image), typeof(Outline)).GetComponent<RectTransform>();
             badge.SetParent(portrait, false);
             badge.anchorMin = badge.anchorMax = new Vector2(1f, 0f); badge.pivot = new Vector2(0.72f, 0.22f); badge.sizeDelta = new Vector2(40f, 40f);
             var badgeImage = badge.GetComponent<Image>(); badgeImage.sprite = HudGraphics.Disc; badgeImage.color = new Color(0.47f, 0.36f, 0.9f);
@@ -300,16 +300,16 @@ namespace NihongoLife.UI
             _calendar = NLUi.Label(identity, "Calendar", "", 13f, new Color(0.62f, 0.68f, 0.76f, 1f), _font);
             _calendar.textWrappingMode = TextWrappingModes.Normal;
             _calendar.raycastTarget = false;
-            var calendarLayout = _calendar.gameObject.AddComponent<LayoutElement>();
+            var calendarLayout = _calendar.gameObject.Need<LayoutElement>();
             calendarLayout.preferredWidth = 260f;
             calendarLayout.minHeight = 16f;
             _mood = NLUi.Label(identity, "Mood", "", 13f, new Color(0.78f, 0.72f, 0.55f, 1f), _font);
             _mood.textWrappingMode = TextWrappingModes.Normal;
             _mood.raycastTarget = false;
-            var moodLayout = _mood.gameObject.AddComponent<LayoutElement>();
+            var moodLayout = _mood.gameObject.Need<LayoutElement>();
             moodLayout.preferredWidth = 260f;
             moodLayout.minHeight = 16f;
-            var spacer = new GameObject("Spacer", typeof(RectTransform), typeof(LayoutElement));
+            var spacer = UiBind.Make("Spacer", typeof(RectTransform), typeof(LayoutElement));
             spacer.transform.SetParent(top, false);
             spacer.GetComponent<LayoutElement>().flexibleWidth = 1f;
             var wallet = NLUi.Panel(top, "WalletPill", new Color(0.12f, 0.1f, 0.05f, 0.85f), new RectOffset(12, 16, 6, 6), 8f, vertical: false);
@@ -323,7 +323,7 @@ namespace NihongoLife.UI
             NLUi.FitContent(wallet, width: true, height: true);
             // +¥/−¥ with the reason rises from the chip; a click lists the last transactions.
             wallet.GetComponent<Image>().raycastTarget = true;
-            wallet.gameObject.AddComponent<WalletFeedback>().Configure(_font);
+            wallet.gameObject.Need<WalletFeedback>().Configure(_font);
 
             _expFill = BarFill(column, "Exp", new Color(0.55f, 0.45f, 0.95f), 3f);
             NLUi.Size(_expFill.transform.parent, flexibleWidth: 1f);
@@ -343,7 +343,7 @@ namespace NihongoLife.UI
 
         private static Image Icon(Transform parent, string name, Sprite sprite, float size, Color color)
         {
-            var image = new GameObject(name, typeof(RectTransform), typeof(Image), typeof(LayoutElement)).GetComponent<Image>();
+            var image = UiBind.Make(name, typeof(RectTransform), typeof(Image), typeof(LayoutElement)).GetComponent<Image>();
             image.transform.SetParent(parent, false);
             image.sprite = sprite; image.color = color; image.raycastTarget = false; image.preserveAspect = true;
             var element = image.GetComponent<LayoutElement>();
@@ -355,21 +355,21 @@ namespace NihongoLife.UI
         private Ring MakeRing(RectTransform parent, string key, Color color)
         {
             const float size = 60f;
-            var holder = new GameObject("Need_" + key, typeof(RectTransform), typeof(LayoutElement)).GetComponent<RectTransform>();
+            var holder = UiBind.Make("Need_" + key, typeof(RectTransform), typeof(LayoutElement)).GetComponent<RectTransform>();
             holder.SetParent(parent, false);
             var element = holder.GetComponent<LayoutElement>();
             element.preferredWidth = element.minWidth = size; element.preferredHeight = element.minHeight = size;
-            var plate = new GameObject("Plate", typeof(RectTransform), typeof(Image)).GetComponent<Image>();
+            var plate = UiBind.Make("Plate", typeof(RectTransform), typeof(Image)).GetComponent<Image>();
             plate.transform.SetParent(holder, false); NLUi.Stretch(plate.rectTransform, 3f);
             plate.sprite = HudGraphics.Disc; plate.color = new Color(1f, 1f, 1f, 0.04f); plate.raycastTarget = false;
-            var back = new GameObject("Track", typeof(RectTransform), typeof(Image)).GetComponent<Image>();
+            var back = UiBind.Make("Track", typeof(RectTransform), typeof(Image)).GetComponent<Image>();
             back.transform.SetParent(holder, false); NLUi.Stretch(back.rectTransform);
             back.sprite = HudGraphics.Gauge; back.color = new Color(1f, 1f, 1f, 0.1f); back.raycastTarget = false;
-            var fill = new GameObject("Fill", typeof(RectTransform), typeof(Image)).GetComponent<Image>();
+            var fill = UiBind.Make("Fill", typeof(RectTransform), typeof(Image)).GetComponent<Image>();
             fill.transform.SetParent(holder, false); NLUi.Stretch(fill.rectTransform);
             fill.sprite = HudGraphics.Gauge; fill.color = color; fill.raycastTarget = false;
             fill.type = Image.Type.Filled; fill.fillMethod = Image.FillMethod.Radial360; fill.fillOrigin = (int)Image.Origin360.Top; fill.fillClockwise = true;
-            var icon = new GameObject("Icon", typeof(RectTransform), typeof(Image)).GetComponent<Image>();
+            var icon = UiBind.Make("Icon", typeof(RectTransform), typeof(Image)).GetComponent<Image>();
             icon.transform.SetParent(holder, false);
             icon.rectTransform.anchorMin = icon.rectTransform.anchorMax = new Vector2(0.5f, 0.5f);
             icon.rectTransform.anchoredPosition = new Vector2(0f, 8f);
@@ -434,13 +434,13 @@ namespace NihongoLife.UI
         private Bar BarRow(RectTransform parent, string icon, string label, Color color)
         {
             var row = NLUi.Group(parent, "Row_" + label, false, 8f, TextAnchor.MiddleLeft, false);
-            var glyph = new GameObject("Icon", typeof(RectTransform), typeof(Image), typeof(LayoutElement)).GetComponent<Image>();
+            var glyph = UiBind.Make("Icon", typeof(RectTransform), typeof(Image), typeof(LayoutElement)).GetComponent<Image>();
             glyph.transform.SetParent(row, false);
             glyph.sprite = NeedIcon(icon); glyph.color = color; glyph.preserveAspect = true; glyph.raycastTarget = false;
             var glyphSize = glyph.GetComponent<LayoutElement>(); glyphSize.preferredWidth = glyphSize.preferredHeight = 20f;
             string need = icon;
             NLUi.Size(LocText.Set(NLUi.Label(row, "Label", "", 16f, NLUi.Muted, _font), () => NeedName(need)), 96f);
-            var track = new GameObject("Track", typeof(RectTransform), typeof(Image), typeof(LayoutElement)).GetComponent<RectTransform>();
+            var track = UiBind.Make("Track", typeof(RectTransform), typeof(Image), typeof(LayoutElement)).GetComponent<RectTransform>();
             track.SetParent(row, false);
             track.GetComponent<Image>().color = new Color(1f, 1f, 1f, 0.08f);
             var element = track.GetComponent<LayoutElement>();
@@ -453,7 +453,7 @@ namespace NihongoLife.UI
 
         private Image BarFill(RectTransform parent, string name, Color color, float height)
         {
-            var track = new GameObject(name + "Track", typeof(RectTransform), typeof(Image), typeof(LayoutElement)).GetComponent<RectTransform>();
+            var track = UiBind.Make(name + "Track", typeof(RectTransform), typeof(Image), typeof(LayoutElement)).GetComponent<RectTransform>();
             track.SetParent(parent, false);
             track.GetComponent<Image>().color = new Color(1f, 1f, 1f, 0.08f);
             track.GetComponent<LayoutElement>().preferredHeight = height;
@@ -462,7 +462,7 @@ namespace NihongoLife.UI
 
         private static Image Fill(RectTransform track, Color color)
         {
-            var fill = new GameObject("Fill", typeof(RectTransform), typeof(Image)).GetComponent<Image>();
+            var fill = UiBind.Make("Fill", typeof(RectTransform), typeof(Image)).GetComponent<Image>();
             fill.transform.SetParent(track, false);
             fill.color = color;
             var rect = fill.rectTransform;
@@ -524,7 +524,7 @@ namespace NihongoLife.UI
                     texture.SetPixel(x, y, new Color(1f, 1f, 1f, Mathf.SmoothStep(0f, 1f, Mathf.InverseLerp(0.62f, 1.08f, d))));
                 }
             texture.Apply();
-            var go = new GameObject("DangerVignette", typeof(RectTransform), typeof(RawImage));
+            var go = UiBind.Make("DangerVignette", typeof(RectTransform), typeof(RawImage));
             go.transform.SetParent(root, false);
             go.transform.SetAsFirstSibling();
             NLUi.Stretch((RectTransform)go.transform);
@@ -620,7 +620,7 @@ namespace NihongoLife.UI
             LocText.Set(NLUi.Label(names, "Kicker", "", 15f, NLUi.Gold, _font, FontStyles.Bold), "Hồ sơ nhân vật", "Character profile", "じぶんのプロフィール");
             _characterName = NLUi.Label(names, "Name", "", 28f, NLUi.Text, _font, FontStyles.Bold);
             _characterLevel = NLUi.Label(names, "Level", "", 16f, NLUi.Muted, _font);
-            var closeSpace = new GameObject("CloseSpace", typeof(RectTransform));
+            var closeSpace = UiBind.Make("CloseSpace", typeof(RectTransform));
             closeSpace.transform.SetParent(header, false);
             NLUi.Size(closeSpace.transform, 46f, 46f);
             NLUi.CloseButton(_characterWindow, _font, () => close?.Invoke(), 46f, 18f);

@@ -22,7 +22,7 @@ namespace NihongoLife.UI
         public static SkillsPopup GetOrCreate(GameObject host, TMP_FontAsset font)
         {
             var ui = host.GetComponent<SkillsPopup>();
-            if (ui == null) ui = host.AddComponent<SkillsPopup>();
+            if (ui == null) ui = host.Need<SkillsPopup>();
             ui.Initialize(font);
             return ui;
         }

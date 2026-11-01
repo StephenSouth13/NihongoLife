@@ -30,7 +30,7 @@ namespace NihongoLife.UI
         public static BusinessDashboardUI GetOrCreate(GameObject host, TMP_FontAsset font)
         {
             var ui = host.GetComponent<BusinessDashboardUI>();
-            if (ui == null) ui = host.AddComponent<BusinessDashboardUI>();
+            if (ui == null) ui = host.Need<BusinessDashboardUI>();
             ui.Initialize(font);
             return ui;
         }

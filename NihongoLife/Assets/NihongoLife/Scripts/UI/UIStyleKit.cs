@@ -82,7 +82,7 @@ namespace NihongoLife.UI
         public static void StyleButton(Button button, Color baseColor, Color hoverColor, Color pressedColor)
         {
             if (button == null) return;
-            if (button.GetComponent<UIButtonAudio>() == null) button.gameObject.AddComponent<UIButtonAudio>();
+            if (button.GetComponent<UIButtonAudio>() == null) button.gameObject.Need<UIButtonAudio>();
 
             var image = button.GetComponent<Image>();
             if (image != null)
@@ -105,13 +105,13 @@ namespace NihongoLife.UI
             var hover = button.GetComponent<ButtonColorSwap>();
             if (hover == null)
             {
-                hover = button.gameObject.AddComponent<ButtonColorSwap>();
+                hover = button.gameObject.Need<ButtonColorSwap>();
             }
             hover.Configure(image, baseColor, hoverColor, pressedColor);
 
             if (button.GetComponent<UIHoverScale>() == null)
             {
-                var scale = button.gameObject.AddComponent<UIHoverScale>();
+                var scale = button.gameObject.Need<UIHoverScale>();
                 scale.hoverScale = 1.045f;
                 scale.pressScale = 0.96f;
             }
@@ -132,7 +132,7 @@ namespace NihongoLife.UI
 
             if (panelRect.Find("AccentBar") != null) return;
 
-            var bar = new GameObject("AccentBar", typeof(RectTransform), typeof(Image));
+            var bar = UiBind.Make("AccentBar", typeof(RectTransform), typeof(Image));
             var barRect = (RectTransform)bar.transform;
             barRect.SetParent(panelRect, false);
             barRect.anchorMin = new Vector2(0f, 1f);
@@ -151,13 +151,13 @@ namespace NihongoLife.UI
             var canvasGroup = target.GetComponent<CanvasGroup>();
             if (!canvasGroup)
             {
-                canvasGroup = target.AddComponent<CanvasGroup>();
+                canvasGroup = target.Need<CanvasGroup>();
             }
 
             var runner = target.GetComponent<UIPopupAnimator>();
             if (!runner)
             {
-                runner = target.AddComponent<UIPopupAnimator>();
+                runner = target.Need<UIPopupAnimator>();
             }
             runner.PlayIn(canvasGroup);
         }
@@ -234,7 +234,7 @@ namespace NihongoLife.UI
             }
             if (!_canvasGroup)
             {
-                _canvasGroup = gameObject.AddComponent<CanvasGroup>();
+                _canvasGroup = gameObject.Need<CanvasGroup>();
             }
 
             if (_running != null) StopCoroutine(_running);

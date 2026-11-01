@@ -36,7 +36,7 @@ namespace NihongoLife.UI
         {
             Hide();
             var school = GetComponent<CoursePopup>();
-            if (school == null) school = gameObject.AddComponent<CoursePopup>();
+            if (school == null) school = gameObject.Need<CoursePopup>();
             school.Initialize(Font);
             school.Show();
             if (step != null) school.OpenStep(step);

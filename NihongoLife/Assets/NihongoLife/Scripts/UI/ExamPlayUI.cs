@@ -65,7 +65,7 @@ namespace NihongoLife.UI
         {
             var existing = SceneRefs.Find<ExamPlayUI>(FindObjectsInactive.Include);
             if (existing != null) return existing;
-            var instance = host.gameObject.AddComponent<ExamPlayUI>();
+            var instance = host.gameObject.Need<ExamPlayUI>();
             instance.Initialize(UiKit.Font);
             return instance;
         }
@@ -95,7 +95,7 @@ namespace NihongoLife.UI
         {
             // Unity's fake-null breaks `??` on components; use an explicit lifetime check.
             _listeningAudio = gameObject.GetComponent<AudioSource>();
-            if (_listeningAudio == null) _listeningAudio = gameObject.AddComponent<AudioSource>();
+            if (_listeningAudio == null) _listeningAudio = gameObject.Need<AudioSource>();
             _listeningAudio.playOnAwake = false;
             _listeningAudio.loop = false;
             _listeningAudio.spatialBlend = 0f;
@@ -148,7 +148,7 @@ namespace NihongoLife.UI
             var grid = UiKit.Rect(_navPanel, "Palette");
             _paletteRoot = grid;
             UiKit.Place(grid, 16f, 48f, NavW - 32f, H - Top - Bottom - 16f - 170f);
-            var layout = grid.gameObject.AddComponent<GridLayoutGroup>();
+            var layout = grid.gameObject.Need<GridLayoutGroup>();
             layout.cellSize = new Vector2(34f, 34f);
             layout.spacing = new Vector2(7f, 7f);
             layout.constraint = GridLayoutGroup.Constraint.FixedColumnCount;
@@ -449,7 +449,7 @@ namespace NihongoLife.UI
                 bool answered = manager.GetAnswer(section.questions[i].id) != null;
                 bool current = index == manager.QuestionIndex;
                 var cell = UiKit.Image(_paletteRoot, "Q" + i, current ? UiTheme.Gold : answered ? UiKit.Alpha(UiTheme.Teal, 0.85f) : UiTheme.Raised, UiKit.Circle, true);
-                var btn = cell.gameObject.AddComponent<Button>();
+                var btn = cell.gameObject.Need<Button>();
                 btn.targetGraphic = cell;
                 btn.onClick.AddListener(() => { CommitActiveEssayIfAny(); ExamManager.Instance?.GoToQuestion(index); });
                 var label = UiKit.Label(cell.transform, "N", (i + 1).ToString(), 13f, current ? UiTheme.OnGold : Color.white, FontStyles.Bold, TextAlignmentOptions.Center);
@@ -466,7 +466,7 @@ namespace NihongoLife.UI
             UiKit.Clear(_passageContent);
 
             var title = UiKit.Label(_passageContent, "Title", Loc.Pick(passage.titleVi, passage.titleEn, passage.titleJa), 19f, UiKit.Darken(Family, 0.1f), FontStyles.Bold, TextAlignmentOptions.TopLeft, wrap: true);
-            title.gameObject.AddComponent<ContentSizeFitter>().verticalFit = ContentSizeFitter.FitMode.PreferredSize;
+            title.gameObject.Need<ContentSizeFitter>().verticalFit = ContentSizeFitter.FitMode.PreferredSize;
 
             bool isListening = section.type == ExamSectionType.JlptListening || section.type == ExamSectionType.IeltsListening;
             if (isListening && passage.maxPlays > 0)
@@ -495,7 +495,7 @@ namespace NihongoLife.UI
             if (!string.IsNullOrWhiteSpace(passage.bodyReading))
             {
                 var reading = UiKit.Label(_passageContent, "Reading", passage.bodyReading, 15f, UiTheme.PaperMuted, FontStyles.Italic, TextAlignmentOptions.TopLeft, wrap: true);
-                reading.gameObject.AddComponent<ContentSizeFitter>().verticalFit = ContentSizeFitter.FitMode.PreferredSize;
+                reading.gameObject.Need<ContentSizeFitter>().verticalFit = ContentSizeFitter.FitMode.PreferredSize;
             }
 
             string body = Loc.Pick(passage.bodyVi, passage.bodyEn, passage.bodyJa);
@@ -507,7 +507,7 @@ namespace NihongoLife.UI
             var bodyText = UiKit.Label(_passageContent, "Body", body, 18f, UiTheme.PaperInk, FontStyles.Normal, TextAlignmentOptions.TopLeft, wrap: true);
             bodyText.lineSpacing = 8f;
             bodyText.raycastTarget = true;
-            bodyText.gameObject.AddComponent<ContentSizeFitter>().verticalFit = ContentSizeFitter.FitMode.PreferredSize;
+            bodyText.gameObject.Need<ContentSizeFitter>().verticalFit = ContentSizeFitter.FitMode.PreferredSize;
             TextHighlighter.Bind(bodyText, Highlights, HighlightBook.KeyFor("passage/" + passage.id, body));
         }
 
@@ -594,7 +594,7 @@ namespace NihongoLife.UI
                 var row = UiKit.Card(_answerRoot, "Choice" + i, on ? UiTheme.PaperSelect : Color.white, 14, 0f, true);
                 UiKit.Place(row.rectTransform, 0f, i * (rowHeight + 12f), width, rowHeight);
                 UiKit.Outline(row.rectTransform, on ? Family : UiTheme.PaperLine, on ? 2f : 1.2f);
-                var button = row.gameObject.AddComponent<Button>();
+                var button = row.gameObject.Need<Button>();
                 button.targetGraphic = row;
                 UIStyleKit.StyleButton(button, row.color, on ? row.color : new Color(0.96f, 0.97f, 1f, 1f), new Color(0.88f, 0.92f, 0.98f, 1f));
                 row.sprite = UiKit.Rounded(14);
@@ -622,11 +622,11 @@ namespace NihongoLife.UI
             var bg = UiKit.Card(parent, "InputField", Color.white, 12, 0f, true);
             UiKit.Place(bg.rectTransform, x, y, width, height);
             UiKit.Outline(bg.rectTransform, UiTheme.PaperLine, 1.4f);
-            var input = bg.gameObject.AddComponent<TMP_InputField>();
+            var input = bg.gameObject.Need<TMP_InputField>();
             input.lineType = multiline ? TMP_InputField.LineType.MultiLineNewline : TMP_InputField.LineType.SingleLine;
             var area = UiKit.Rect(bg.transform, "TextViewport");
             UiKit.Fill(area, 14f, 10f, 14f, 10f);
-            area.gameObject.AddComponent<RectMask2D>();
+            area.gameObject.Need<RectMask2D>();
             var text = UiKit.Label(area, "Text", "", 17f, UiTheme.PaperInk, FontStyles.Normal, multiline ? TextAlignmentOptions.TopLeft : TextAlignmentOptions.MidlineLeft, multiline);
             UiKit.Fill(text.rectTransform);
             var ph = UiKit.Label(area, "Placeholder", placeholder, 17f, UiTheme.PaperMuted, FontStyles.Italic, multiline ? TextAlignmentOptions.TopLeft : TextAlignmentOptions.MidlineLeft, multiline);
@@ -898,16 +898,16 @@ namespace NihongoLife.UI
             var layout = UiKit.Column(rect, 0f, new RectOffset(62, 20, 14, 14));
             layout.childForceExpandWidth = true;
             var t = UiKit.Label(rect, "Text", text, 15f, UiTheme.Text, FontStyles.Normal, TextAlignmentOptions.TopLeft, wrap: true);
-            t.gameObject.AddComponent<ContentSizeFitter>().verticalFit = ContentSizeFitter.FitMode.PreferredSize;
+            t.gameObject.Need<ContentSizeFitter>().verticalFit = ContentSizeFitter.FitMode.PreferredSize;
             var ic = UiKit.Icon(rect, icon, accent, 26f);
-            ic.gameObject.AddComponent<LayoutElement>().ignoreLayout = true;
+            ic.gameObject.Need<LayoutElement>().ignoreLayout = true;
             UiKit.Place(ic.rectTransform, 20f, 14f, 26f, 26f);
             var stripe = UiKit.Image(rect, "Stripe", accent, UiKit.Rounded(3));
-            stripe.gameObject.AddComponent<LayoutElement>().ignoreLayout = true;
+            stripe.gameObject.Need<LayoutElement>().ignoreLayout = true;
             stripe.rectTransform.anchorMin = new Vector2(0f, 0f); stripe.rectTransform.anchorMax = new Vector2(0f, 1f);
             stripe.rectTransform.pivot = new Vector2(0f, 0.5f);
             stripe.rectTransform.offsetMin = new Vector2(0f, 12f); stripe.rectTransform.offsetMax = new Vector2(4f, -12f);
-            rect.gameObject.AddComponent<ContentSizeFitter>().verticalFit = ContentSizeFitter.FitMode.PreferredSize;
+            rect.gameObject.Need<ContentSizeFitter>().verticalFit = ContentSizeFitter.FitMode.PreferredSize;
         }
 
         /// <summary>Per-もんだい table and concrete advice (ExamAnalysis), at the top of the scrolling review.</summary>
@@ -918,9 +918,9 @@ namespace NihongoLife.UI
             var card = UiKit.Card(_reviewListContent, "Analysis", UiTheme.Surface, 16, 0f, false);
             var rect = card.rectTransform;
             UiKit.Column(rect, 8f, new RectOffset(24, 24, 18, 20));
-            rect.gameObject.AddComponent<ContentSizeFitter>().verticalFit = ContentSizeFitter.FitMode.PreferredSize;
+            rect.gameObject.Need<ContentSizeFitter>().verticalFit = ContentSizeFitter.FitMode.PreferredSize;
             var title = UiKit.Label(rect, "Title", Loc.T("Phân tích từng dạng bài", "Analysis by question type", "問題タイプ別の分析") + (string.IsNullOrEmpty(analysis.status) ? "" : $"  ·  {analysis.status}"), 17f, UiTheme.Gold, FontStyles.Bold, TextAlignmentOptions.TopLeft, wrap: true);
-            title.gameObject.AddComponent<ContentSizeFitter>().verticalFit = ContentSizeFitter.FitMode.PreferredSize;
+            title.gameObject.Need<ContentSizeFitter>().verticalFit = ContentSizeFitter.FitMode.PreferredSize;
             foreach (var m in analysis.mondai)
             {
                 var row = UiKit.Rect(rect, "Mondai");
@@ -937,7 +937,7 @@ namespace NihongoLife.UI
             foreach (var line in analysis.advice)
             {
                 var a = UiKit.Label(rect, "Advice", "• " + line, 14.5f, new Color(0.95f, 0.92f, 0.8f, 1f), FontStyles.Normal, TextAlignmentOptions.TopLeft, wrap: true);
-                a.gameObject.AddComponent<ContentSizeFitter>().verticalFit = ContentSizeFitter.FitMode.PreferredSize;
+                a.gameObject.Need<ContentSizeFitter>().verticalFit = ContentSizeFitter.FitMode.PreferredSize;
             }
         }
     }

@@ -116,19 +116,19 @@ namespace NihongoLife.UI
 
         private ScrollRect CreateScroll(Transform parent, string name, float x, float y, float width, float height, out RectTransform content)
         {
-            var root = new GameObject(name, typeof(RectTransform), typeof(Image), typeof(ScrollRect));
+            var root = UiBind.Make(name, typeof(RectTransform), typeof(Image), typeof(ScrollRect));
             root.transform.SetParent(parent, false);
             Place((RectTransform)root.transform, x, y, width, height);
             root.GetComponent<Image>().color = new Color(0.03f, 0.04f, 0.05f, 0.8f);
 
-            var viewport = new GameObject("Viewport", typeof(RectTransform), typeof(RectMask2D));
+            var viewport = UiBind.Make("Viewport", typeof(RectTransform), typeof(RectMask2D));
             viewport.transform.SetParent(root.transform, false);
             var viewportRect = (RectTransform)viewport.transform;
             viewportRect.anchorMin = Vector2.zero;
             viewportRect.anchorMax = Vector2.one;
             viewportRect.offsetMin = viewportRect.offsetMax = Vector2.zero;
 
-            var contentObject = new GameObject("Content", typeof(RectTransform), typeof(VerticalLayoutGroup), typeof(ContentSizeFitter));
+            var contentObject = UiBind.Make("Content", typeof(RectTransform), typeof(VerticalLayoutGroup), typeof(ContentSizeFitter));
             contentObject.transform.SetParent(viewportRect, false);
             content = (RectTransform)contentObject.transform;
             content.anchorMin = new Vector2(0f, 1f);
@@ -253,7 +253,7 @@ namespace NihongoLife.UI
             foreach (var scenario in _rows)
             {
                 var captured = scenario;
-                var row = new GameObject("Row", typeof(RectTransform), typeof(Image), typeof(Button), typeof(LayoutElement));
+                var row = UiBind.Make("Row", typeof(RectTransform), typeof(Image), typeof(Button), typeof(LayoutElement));
                 row.transform.SetParent(_listRoot, false);
                 row.GetComponent<LayoutElement>().preferredHeight = 74f;
                 var button = row.GetComponent<Button>();

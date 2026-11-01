@@ -16,7 +16,7 @@ namespace NihongoLife.UI
 
         public static AnimatedBar Attach(RectTransform fill, float value, bool animate = true)
         {
-            var a = fill.parent.gameObject.AddComponent<AnimatedBar>();
+            var a = fill.parent.gameObject.Need<AnimatedBar>();
             a.fill = fill;
             a.target = Mathf.Clamp01(value);
             a.current = animate && Application.isPlaying ? 0f : a.target;
@@ -137,7 +137,7 @@ namespace NihongoLife.UI
             }
             var rt = UiKit.Rect(root, name);
             UiKit.Place(rt, x, y, w, h);
-            var img = rt.gameObject.AddComponent<RawImage>();
+            var img = rt.gameObject.Need<RawImage>();
             img.texture = tex; img.raycastTarget = false;
             if (tex == null) img.color = Color.clear;
         }
@@ -154,13 +154,13 @@ namespace NihongoLife.UI
             int height = Mathf.RoundToInt(width * CH / CW);
             const int layer = 31;
             var rt = new RenderTexture(width, height, 24, RenderTextureFormat.ARGB32) { antiAliasing = 4 };
-            var camGo = new GameObject("CertCam");
-            var canvasGo = new GameObject("CertCanvas", typeof(Canvas), typeof(CanvasScaler));
+            var camGo = UiBind.Make("CertCam");
+            var canvasGo = UiBind.Make("CertCanvas", typeof(Canvas), typeof(CanvasScaler));
             Texture2D tex = null;
             try
             {
                 camGo.transform.position = new Vector3(0f, -5000f, -10f);
-                var cam = camGo.AddComponent<Camera>();
+                var cam = camGo.Need<Camera>();
                 cam.enabled = false; cam.cullingMask = 1 << layer; cam.clearFlags = CameraClearFlags.SolidColor; cam.backgroundColor = Cream;
                 cam.orthographic = true; cam.orthographicSize = CH / 2f; cam.aspect = CW / CH; cam.nearClipPlane = 0.1f; cam.farClipPlane = 100f; cam.targetTexture = rt;
                 // World-space canvas: independent of the (batch-mode) screen size, 1 unit = 1 certificate px

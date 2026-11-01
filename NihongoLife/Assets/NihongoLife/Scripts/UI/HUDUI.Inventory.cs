@@ -37,7 +37,7 @@ namespace NihongoLife.UI
 
         private void CreateInventoryButton(string label, Vector2 position, UnityEngine.Events.UnityAction action)
         {
-            var go = new GameObject("InventoryAction_" + label, typeof(RectTransform), typeof(Image), typeof(Button));
+            var go = UiBind.Make("InventoryAction_" + label, typeof(RectTransform), typeof(Image), typeof(Button));
             go.transform.SetParent(inventoryPanel.transform, false);
             var rect = go.GetComponent<RectTransform>();
             rect.anchorMin = rect.anchorMax = new Vector2(0f, 1f);

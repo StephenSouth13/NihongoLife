@@ -54,7 +54,7 @@ namespace NihongoLife.UI
 
         private void BuildUI()
         {
-            _panel = new GameObject("FriendsPanel", typeof(RectTransform), typeof(Image));
+            _panel = UiBind.Make("FriendsPanel", typeof(RectTransform), typeof(Image));
             _panel.transform.SetParent(transform, false);
             _panel.layer = 5;
             var overlay = (RectTransform)_panel.transform;
@@ -241,7 +241,7 @@ namespace NihongoLife.UI
             var root = UiKit.Rect(parent, "Input");
             root.anchorMin = Vector2.zero; root.anchorMax = Vector2.one;
             root.offsetMin = new Vector2(14f, 7f); root.offsetMax = new Vector2(-202f, -7f);
-            var input = root.gameObject.AddComponent<TMP_InputField>();
+            var input = root.gameObject.Need<TMP_InputField>();
             input.lineType = TMP_InputField.LineType.SingleLine; input.characterLimit = 64;
             var text = UiKit.Label(root, "Text", "", 15f, UiTheme.Text);
             UiKit.Fill(text.rectTransform, 8f, 0f, 8f, 0f);

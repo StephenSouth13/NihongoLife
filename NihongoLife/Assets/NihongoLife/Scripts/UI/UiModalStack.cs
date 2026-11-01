@@ -127,9 +127,9 @@ namespace NihongoLife.UI
         private static void Ensure()
         {
             if (_instance != null) return;
-            var go = new GameObject("UiModalStack");
+            var go = UiBind.Make("UiModalStack");
             if (Application.isPlaying) DontDestroyOnLoad(go); // EditMode tests/editor tools build popups outside play mode
-            _instance = go.AddComponent<UiModalStack>();
+            _instance = go.Need<UiModalStack>();
         }
 
         private void Update()
