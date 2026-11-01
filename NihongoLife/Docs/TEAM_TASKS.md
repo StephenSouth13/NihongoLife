@@ -2107,3 +2107,7 @@ Tên lớp test viết tắt: PlayMode = `NihongoLife.Tests.<Lớp>`; EditMode =
 
 ### 2026-11-01 - Promo footage recording test
 - Tests/PlayMode/PromoRecordingTests.cs records 1920x1080 30fps JPG frames (plus timeline.tsv) of the main menu + town walk (30 s) and Phu Quoc (108 s) into NL_FRAME_DIR (default: temp\NihongoLifePromoFrames). Run it on its own, not in the same run as Trailer_RecordFrames, which writes to the same root. PlayMode PromoRecording 2/2.
+
+### 2026-11-01 - WebGL rebuild check (main 75d05c873)
+- WebGL rebuilt from main with ReleaseBuild.BuildWebGL (Validation passed, 100.0 MB, 12 area packs including nlzone-trailer).
+- First-launch check on a fresh browser profile (Playwright + Chrome), path Bắt đầu > Ngoại tuyến > Chọn nhân vật này: desktop 1280x720 and phone landscape 844x390 with touch. The intro trailer plays and the town loads on both, with 0 console errors (only offline-config warnings). No code changes were needed.
