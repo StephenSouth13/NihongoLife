@@ -2119,3 +2119,10 @@ Tên lớp test viết tắt: PlayMode = `NihongoLife.Tests.<Lớp>`; EditMode =
 - UiScreen.IsPhone also follows the browser's coarse (finger) pointer, so phone/tablet browsers get the phone UI profile without the touch flag (Touch controls: Off still wins).
 - Main menu character: all 8 playable kids are placed in 01_MainMenu under MenuAvatarStage (scene-authored, MenuAvatarBootstrap removed; nothing is created at runtime). The figure follows the character chosen in Choose character, and a tap/click on it switches to the next kid and saves that choice; Choose character opens on the saved kid.
 - WebGL rebuilt from 5444a69b4 (Validation passed). Fresh-profile Playwright check, desktop 1280x720 and phone 844x390 touch: menu, Settings and How to play fit, the intro trailer plays and the town loads, 0 console errors. EditMode 333/333; PlayMode MenuLayout/MenuAvatar/GameplayPhoneLayout/PhoneControls/IntroTrailer/StoryFlow 10/10.
+
+### 2026-11-01 - Menu: nothing created by code in the top bar / character stage
+- ControlsButton (touch-controls pill) and the TopCluster layout (MenuTopBar, LayoutElements, HorizontalLayoutGroup) are now authored in 01_MainMenu; MainMenuUI.BuildControlsSwitch only finds and wires the button, MenuChrome.Arrange only adjusts existing components (no Instantiate / AddComponent).
+- Scene buttons under MainMenuUI carry baked MenuButtonFeel + CanvasGroup + ShineSweep / Ripple / FocusRing children; MenuButtonFeel reuses them and only creates them for buttons that pop-ups build at runtime.
+- Phone top bar lifted MenuTopBar.BottomLift = 58px so it clears the browser Fullscreen pill.
+- New PlayMode test MenuNoRuntimeObjectsPlayModeTests: TopCluster subtree and MenuAvatarStage (+ figure roots) must have scene (positive) instance ids. Full list of other runtime objects written to Bao_Cao/menu-avatar/runtime_objects.txt.
+- Still code-built (follow-up): Settings / Guide / About / CharacterSelect / Friends / Auth / ModeSelect pop-ups, town preview (traffic, coin parking, houses, petals), Profile/Coop/Leaderboard widgets.

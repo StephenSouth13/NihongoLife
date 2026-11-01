@@ -67,6 +67,9 @@ namespace NihongoLife.UI
             if (root.GetComponent<MenuFeelDriver>() == null) root.gameObject.AddComponent<MenuFeelDriver>();
         }
 
+        /// <summary>Editor bake: gives an authored button its effect children so nothing is made when the menu opens.</summary>
+        public void BakeParts() => Awake();
+
         private void Awake()
         {
             _rect = transform as RectTransform;
@@ -82,7 +85,20 @@ namespace NihongoLife.UI
             _rippleRect = _ripple.rectTransform;
             _rippleRect.anchorMin = _rippleRect.anchorMax = new Vector2(0.5f, 0.5f);
             _rippleRect.sizeDelta = new Vector2(36f, 36f);
-            _focus = UiKit.Border(_rect, new Color(0.97f, 0.74f, 0.24f, 0.95f), 12);
+            // Buttons authored in 01_MainMenu carry their ShineSweep / Ripple / FocusRing children already (baked); only buttons
+            // that a pop-up builds at runtime get them made here.
+            var ring = transform.Find("FocusRing");
+            if (ring != null && ring.TryGetComponent(out Image ringImage))
+            {
+                _focus = ringImage;
+                _focus.sprite = UiKit.Stroke(12);
+                _focus.color = new Color(0.97f, 0.74f, 0.24f, 0.95f);
+            }
+            else
+            {
+                _focus = UiKit.Border(_rect, new Color(0.97f, 0.74f, 0.24f, 0.95f), 12);
+                _focus.gameObject.name = "FocusRing";
+            }
             _focus.raycastTarget = false;
             _focus.enabled = false;
             foreach (Transform child in transform)
@@ -209,9 +225,14 @@ namespace NihongoLife.UI
 
         private Image ChildImage(string name, Color color, Sprite sprite)
         {
-            var go = new GameObject(name, typeof(RectTransform), typeof(Image));
-            go.transform.SetParent(transform, false);
-            var image = go.GetComponent<Image>();
+            var existing = transform.Find(name);
+            Image image = existing != null ? existing.GetComponent<Image>() : null;
+            if (image == null)
+            {
+                var go = new GameObject(name, typeof(RectTransform), typeof(Image));
+                go.transform.SetParent(transform, false);
+                image = go.GetComponent<Image>();
+            }
             image.color = color;
             image.raycastTarget = false;
             if (sprite != null) { image.sprite = sprite; image.type = Image.Type.Simple; image.preserveAspect = false; }

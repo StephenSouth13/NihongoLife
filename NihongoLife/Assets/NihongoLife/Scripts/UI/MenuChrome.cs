@@ -18,25 +18,9 @@ namespace NihongoLife.UI
             var about = panel.Find("AboutButton") as RectTransform;
             if (lang == null) return;
 
+            // TopCluster (with its MenuTopBar), the layout elements and the ControlsButton are authored in 01_MainMenu: nothing is created here.
             var cluster = panel.Find("TopCluster") as RectTransform;
-            if (cluster == null)
-            {
-                var go = new GameObject("TopCluster", typeof(RectTransform), typeof(HorizontalLayoutGroup), typeof(MenuTopBar));
-                go.layer = panel.gameObject.layer;
-                cluster = go.GetComponent<RectTransform>();
-                cluster.SetParent(panel, false);
-                var row = go.GetComponent<HorizontalLayoutGroup>();
-                row.childAlignment = TextAnchor.MiddleRight;
-                row.spacing = 12f;
-                row.padding = new RectOffset(8, 8, 4, 4);
-                row.childControlWidth = true;
-                row.childControlHeight = true;
-                row.childForceExpandWidth = false;
-                row.childForceExpandHeight = true;
-            }
-
-            // The component lives in its own file (MenuTopBar.cs); a scene baked before that has a missing script here.
-            if (cluster.GetComponent<MenuTopBar>() == null) cluster.gameObject.AddComponent<MenuTopBar>();
+            if (cluster == null) { Debug.LogWarning("[MenuChrome] TopCluster is missing from the menu scene."); return; }
 
             if (about != null && about.parent != cluster) about.SetParent(cluster, false);
             if (login != null && login.parent != cluster) login.SetParent(cluster, false);
@@ -45,11 +29,14 @@ namespace NihongoLife.UI
             Prefer(about, 196f, 48f, 140f);
             Prefer(login, 188f, 48f, 140f);
             PrepareLanguageBar(lang);
-            var langElement = lang.GetComponent<LayoutElement>().OrNull() ?? lang.gameObject.AddComponent<LayoutElement>();
+            var langElement = lang.GetComponent<LayoutElement>();
+            if (langElement != null)
+            {
             langElement.preferredWidth = 560f;
             langElement.minWidth = 280f;
             langElement.preferredHeight = 48f;
             langElement.flexibleWidth = 1f;
+            }
 
             var profile = panel.Find("ProfileText") as RectTransform;
             if (profile != null)
@@ -71,9 +58,8 @@ namespace NihongoLife.UI
         private static void PrepareLanguageBar(RectTransform lang)
         {
             var row = lang.GetComponent<HorizontalLayoutGroup>();
-            if (row == null)
+            if (row != null)
             {
-                row = lang.gameObject.AddComponent<HorizontalLayoutGroup>();
                 row.padding = new RectOffset(10, 8, 6, 6);
                 row.spacing = 6f;
                 row.childAlignment = TextAnchor.MiddleLeft;
@@ -86,7 +72,8 @@ namespace NihongoLife.UI
             {
                 bool button = child.name.IndexOf("Button", System.StringComparison.Ordinal) >= 0;
                 bool hidden = child.name == "LanguageLabel";
-                var element = child.GetComponent<LayoutElement>().OrNull() ?? child.gameObject.AddComponent<LayoutElement>();
+                var element = child.GetComponent<LayoutElement>();
+                if (element == null) continue;
                 element.ignoreLayout = hidden;
                 element.minWidth = button ? 72f : 28f;
                 element.preferredWidth = button ? 120f : 28f;
@@ -105,7 +92,8 @@ namespace NihongoLife.UI
         private static void Prefer(RectTransform rect, float width, float height, float minWidth)
         {
             if (rect == null) return;
-            var element = rect.GetComponent<LayoutElement>().OrNull() ?? rect.gameObject.AddComponent<LayoutElement>();
+            var element = rect.GetComponent<LayoutElement>();
+            if (element == null) return;
             element.preferredWidth = width;
             element.minWidth = minWidth;
             element.preferredHeight = height;

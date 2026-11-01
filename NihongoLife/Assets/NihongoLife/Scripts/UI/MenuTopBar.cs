@@ -6,6 +6,8 @@ namespace NihongoLife.UI
     /// <summary>Stretches the top cluster between the brand column and the right edge.</summary>
     public sealed class MenuTopBar : MonoBehaviour
     {
+        /// <summary>Gap under the bottom bar on narrow screens (canvas units).</summary>
+        public const float BottomLift = 58f;
         private RectTransform _rect;
         private RectTransform _parent;
 
@@ -32,8 +34,9 @@ namespace NihongoLife.UI
                 _rect.anchorMin = new Vector2(0f, 0f);
                 _rect.anchorMax = new Vector2(1f, 0f);
                 _rect.pivot = new Vector2(0.5f, 0f);
-                _rect.offsetMin = new Vector2(12f, 10f);
-                _rect.offsetMax = new Vector2(-12f, 62f);
+                // Lifted clear of the browser's "Fullscreen" pill, which phone pages show at the bottom centre (WebGL template).
+                _rect.offsetMin = new Vector2(12f, BottomLift);
+                _rect.offsetMax = new Vector2(-12f, BottomLift + 52f);
                 Tighten(true);
                 return;
             }

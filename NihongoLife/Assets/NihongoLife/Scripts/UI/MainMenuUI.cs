@@ -250,33 +250,16 @@ namespace NihongoLife.UI
 
         /// <summary>
         /// A phone player (or anyone) switches the on-screen joystick and buttons right from the menu: Auto (shown on touch
-        /// screens) → On → Off. Same setting as Settings › touch controls; a copy of the "About us" pill, left of it.
+        /// screens), On, Off. Same setting as Settings > touch controls. The "ControlsButton" pill is authored in 01_MainMenu
+        /// (TopCluster, left of "About us"); nothing is created here, the click is only wired.
         /// </summary>
         private void BuildControlsSwitch()
         {
-            if (aboutButton == null || controlsButton != null) return;
-            var about = (RectTransform)aboutButton.transform;
-            var copy = Instantiate(aboutButton.gameObject, about.parent);
-            copy.name = "ControlsButton";
-            controlsButton = copy.GetComponent<Button>();
-            controlsButton.onClick = new Button.ButtonClickedEvent();
+            if (controlsButton != null) return;
+            controlsButton = Find<Button>("ControlsButton");
+            if (controlsButton == null) { Debug.LogWarning("[MainMenuUI] ControlsButton is missing from 01_MainMenu."); return; }
+            controlsButton.onClick.RemoveAllListeners();
             controlsButton.onClick.AddListener(() => { TouchControlPrefs.CycleMode(); Translate(); });
-            foreach (var text in copy.GetComponentsInChildren<TextMeshProUGUI>(true))
-                if (text.name.IndexOf("Icon", System.StringComparison.OrdinalIgnoreCase) >= 0) text.text = "smartphone";
-            var rect = (RectTransform)copy.transform;
-            float width = Mathf.Max(about.rect.width, 250f);
-            if (about.parent.GetComponent<LayoutGroup>() != null)
-            {
-                copy.transform.SetSiblingIndex(about.GetSiblingIndex());
-                var element = copy.GetComponent<LayoutElement>().OrNull() ?? copy.AddComponent<LayoutElement>();
-                element.preferredWidth = width;
-            }
-            else
-            {
-                rect.sizeDelta = new Vector2(width, about.sizeDelta.y);
-                float left = about.anchoredPosition.x - about.pivot.x * about.rect.width;
-                rect.anchoredPosition = new Vector2(left - 12f - (1f - rect.pivot.x) * width, about.anchoredPosition.y);
-            }
         }
 
         private static void Label(Button button, string vi, string en, string ja)
