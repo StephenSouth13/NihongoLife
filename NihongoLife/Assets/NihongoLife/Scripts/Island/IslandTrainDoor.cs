@@ -26,8 +26,8 @@ namespace NihongoLife.Island
             float half = box != null ? box.size.y * 0.5f * transform.lossyScale.y : 1.1f;
             Vector3 floor = transform.position + Vector3.down * half;
             PortalBeacon.AttachAt(transform, floor + Vector3.up * 2.75f,
-                () => "ひばり ゆき  <size=70%>" + Loc.T("Tàu về khu phố Hibari", "Train home to Hibari", "ひばり行き") + "</size>",
-                () => IslandTrainService.HasTicket ? Loc.T("Lên tàu", "Board", "のる") : Loc.T("Lên tàu (cần vé — máy bán vé bên phải)", "Board (ticket from the machine on the right)", "のる（きっぷが ひつよう）"), true);
+                () => "ひばり ゆき  <size=70%>" + Loc.T("Về Hibari", "To Hibari", "ひばりへ") + "</size>",
+                () => IslandTrainService.HasTicket ? Loc.T("Lên tàu", "Board", "のる") : Loc.T("Cần vé tàu", "Ticket needed", "きっぷが ひつよう"), true);
             BoardingMark(floor + Vector3.up * 0.215f + Vector3.forward * 0.55f);
         }
 

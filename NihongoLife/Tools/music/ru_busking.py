@@ -42,6 +42,11 @@ RU = {
     'A draw {0} – {1}': 'Ничья {0} – {1}',
     # Midori Island: the way home
     'Train home to Hibari': 'Поезд домой, в Хибари',
+    'To Hibari': 'В Хибари',
+    'Alphabet, pronunciation, A1 → B2 and TORFL mock tests with answer keys.': 'Алфавит, произношение, A1 → B2 и пробные тесты ТРКИ с ответами.',
+    'Max test preset: On': 'Режим макс. теста: вкл.',
+    'Max test preset: Off': 'Режим макс. теста: выкл.',
+    'Ticket needed': 'Нужен билет',
     'Board': 'Сесть в поезд',
     'Board (ticket from the machine on the right)': 'Сесть в поезд (билет — в автомате справа)',
     # Phone HUD

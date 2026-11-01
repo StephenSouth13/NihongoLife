@@ -88,7 +88,9 @@ namespace NihongoLife.Editor
                 Debug.LogWarning("[WebGL] No zone bundles to copy. WebGL area loads will fail until a bundle build runs.");
                 return;
             }
+            // Pack names carry a content hash: packs of an older build would pile up here (571 MB, over itch.io's 500 MB).
             string dest = Path.Combine(root, "zones");
+            if (Directory.Exists(dest)) Directory.Delete(dest, true);
             Directory.CreateDirectory(dest);
             var index = new StringBuilder();
             index.Append("{\"bundles\":[");

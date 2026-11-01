@@ -18,7 +18,10 @@ namespace NihongoLife.Core
             if (testConnectionOnStart && !_testedThisSession)
             {
                 _testedThisSession = true;
+#if !UNITY_WEBGL || UNITY_EDITOR
+                // Only a log line. In a browser the 404 of the optional voice_lines table shows as a red console error.
                 StartCoroutine(TestConnection());
+#endif
             }
         }
 

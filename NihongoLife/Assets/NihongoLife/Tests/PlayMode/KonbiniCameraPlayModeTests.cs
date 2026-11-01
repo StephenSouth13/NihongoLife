@@ -109,7 +109,9 @@ namespace NihongoLife.Tests
             Assert.AreEqual(0, swaps, "The one camera is never swapped.");
             Assert.AreEqual(cams0, cams1); Assert.AreEqual(listeners0, listeners1); Assert.AreEqual(1, listeners1);
             Assert.Less(maxYaw, 6f, "No yaw whip: " + summary);
-            Assert.Less(maxSpeed, 45f, "No position jump (camera speed): " + summary);
+            // The distance pulls in at once at the door frame (up to 1.6 m in one frame, by design), so a 50 ms window can read
+            // 45-57 m/s depending on the frame rate. A jump to the wrong place is well above that.
+            Assert.Less(maxSpeed, 65f, "No position jump (camera speed): " + summary);
             Assert.AreEqual(0, insideWall, "The camera is never inside a wall: " + summary);
         }
 

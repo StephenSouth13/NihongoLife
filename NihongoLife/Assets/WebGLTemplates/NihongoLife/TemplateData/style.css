@@ -167,13 +167,14 @@ html, body {
   #nl-word { padding: 10px 14px; }
   #nl-tip { display: none; }
 }
+/* Bottom right: at the top right it covered the menu's language row (Русский could not be seen or clicked). */
 #unity-fullscreen {
   position: absolute;
-  top: calc(12px + env(safe-area-inset-top));
+  bottom: calc(12px + env(safe-area-inset-bottom));
   right: calc(12px + env(safe-area-inset-right));
   z-index: 3;
   border-radius: 999px;
-  padding: 10px 16px;
+  padding: 8px 14px;
   background: rgba(14, 17, 22, 0.72);
   color: #f4efe4;
   border: 1px solid rgba(242, 193, 78, 0.45);

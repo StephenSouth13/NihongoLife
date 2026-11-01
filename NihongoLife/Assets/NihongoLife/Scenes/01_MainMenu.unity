@@ -119,21 +119,6 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
---- !u!115 &1217387
-MonoScript:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_Name: 
-  serializedVersion: 7
-  m_DefaultReferences: {}
-  m_Icon: {fileID: 0}
-  m_Type: 0
-  m_ExecutionOrder: 0
-  m_ClassName: UiShadowLink
-  m_Namespace: NihongoLife.UI
-  m_AssemblyName: NihongoLife
 --- !u!1 &1369333
 GameObject:
   m_ObjectHideFlags: 0
@@ -583,7 +568,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 5752566}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 1699784791}
+  m_Script: {fileID: 11500000, guid: 4f7b059f25a9a204b951953f6d15f048, type: 3}
   m_Name: 
   m_EditorClassIdentifier: NihongoLife::NihongoLife.UI.ButtonColorSwap
 --- !u!114 &5752574
@@ -4822,7 +4807,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 71262766}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 1699784791}
+  m_Script: {fileID: 11500000, guid: 4f7b059f25a9a204b951953f6d15f048, type: 3}
   m_Name: 
   m_EditorClassIdentifier: NihongoLife::NihongoLife.UI.ButtonColorSwap
 --- !u!114 &71262774
@@ -7765,7 +7750,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 119663988}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 292585199}
+  m_Script: {fileID: 11500000, guid: df82d170439a69a4283e4211d94d52b1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: NihongoLife::NihongoLife.UI.UiFollowRect
 --- !u!114 &119663990
@@ -8804,21 +8789,6 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 0.45, y: 4.2, z: 6.5}
   m_Center: {x: 0, y: 0, z: 0}
---- !u!115 &132920594
-MonoScript:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_Name: 
-  serializedVersion: 7
-  m_DefaultReferences: {}
-  m_Icon: {fileID: 0}
-  m_Type: 0
-  m_ExecutionOrder: 0
-  m_ClassName: MenuFeelDriver
-  m_Namespace: NihongoLife.UI
-  m_AssemblyName: NihongoLife
 --- !u!4 &134276774 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 1911804066022413813, guid: 9b352100e5f12e14ea8a3c8e997675c1, type: 3}
@@ -9466,7 +9436,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 140352893}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 735259846}
+  m_Script: {fileID: 11500000, guid: 38de94fb719e79c448647be717aba8ea, type: 3}
   m_Name: 
   m_EditorClassIdentifier: NihongoLife::NihongoLife.UI.UiHover
 --- !u!114 &140352903
@@ -9478,7 +9448,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 140352893}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 747076895}
+  m_Script: {fileID: 11500000, guid: 38de94fb719e79c448647be717aba8ea, type: 3}
   m_Name: 
   m_EditorClassIdentifier: NihongoLife::NihongoLife.UI.UiHover
 --- !u!114 &140352904
@@ -9490,7 +9460,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 140352893}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 360358772}
+  m_Script: {fileID: 11500000, guid: 38de94fb719e79c448647be717aba8ea, type: 3}
   m_Name: 
   m_EditorClassIdentifier: NihongoLife::NihongoLife.UI.UiHover
 --- !u!114 &140352905
@@ -9502,7 +9472,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 140352893}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 379898995}
+  m_Script: {fileID: 11500000, guid: 38de94fb719e79c448647be717aba8ea, type: 3}
   m_Name: 
   m_EditorClassIdentifier: NihongoLife::NihongoLife.UI.UiHover
 --- !u!114 &140352906
@@ -9514,7 +9484,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 140352893}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 1935287269}
+  m_Script: {fileID: 11500000, guid: 38de94fb719e79c448647be717aba8ea, type: 3}
   m_Name: 
   m_EditorClassIdentifier: NihongoLife::NihongoLife.UI.UiHover
 --- !u!1001 &140439119
@@ -12230,7 +12200,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 166431952}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 1699784791}
+  m_Script: {fileID: 11500000, guid: 4f7b059f25a9a204b951953f6d15f048, type: 3}
   m_Name: 
   m_EditorClassIdentifier: NihongoLife::NihongoLife.UI.ButtonColorSwap
 --- !u!114 &166431960
@@ -15356,7 +15326,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 210127121}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 1699784791}
+  m_Script: {fileID: 11500000, guid: 4f7b059f25a9a204b951953f6d15f048, type: 3}
   m_Name: 
   m_EditorClassIdentifier: NihongoLife::NihongoLife.UI.ButtonColorSwap
 --- !u!114 &210127129
@@ -18012,7 +17982,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 264889038}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 1699784791}
+  m_Script: {fileID: 11500000, guid: 4f7b059f25a9a204b951953f6d15f048, type: 3}
   m_Name: 
   m_EditorClassIdentifier: NihongoLife::NihongoLife.UI.ButtonColorSwap
 --- !u!114 &264889045
@@ -19945,7 +19915,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 282951215}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 1699784791}
+  m_Script: {fileID: 11500000, guid: 4f7b059f25a9a204b951953f6d15f048, type: 3}
   m_Name: 
   m_EditorClassIdentifier: NihongoLife::NihongoLife.UI.ButtonColorSwap
 --- !u!114 &282951223
@@ -20696,7 +20666,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 292235303}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 1699784791}
+  m_Script: {fileID: 11500000, guid: 4f7b059f25a9a204b951953f6d15f048, type: 3}
   m_Name: 
   m_EditorClassIdentifier: NihongoLife::NihongoLife.UI.ButtonColorSwap
 --- !u!114 &292235311
@@ -20809,21 +20779,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 292235303}
   m_CullTransparentMesh: 1
---- !u!115 &292585199
-MonoScript:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_Name: 
-  serializedVersion: 7
-  m_DefaultReferences: {}
-  m_Icon: {fileID: 0}
-  m_Type: 0
-  m_ExecutionOrder: 0
-  m_ClassName: UiFollowRect
-  m_Namespace: NihongoLife.UI
-  m_AssemblyName: NihongoLife
 --- !u!1 &292962686
 GameObject:
   m_ObjectHideFlags: 0
@@ -21554,7 +21509,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 297906135}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 1699784791}
+  m_Script: {fileID: 11500000, guid: 4f7b059f25a9a204b951953f6d15f048, type: 3}
   m_Name: 
   m_EditorClassIdentifier: NihongoLife::NihongoLife.UI.ButtonColorSwap
 --- !u!114 &297906142
@@ -23877,21 +23832,6 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 8.6, y: 4.6, z: 7.2}
   m_Center: {x: 0, y: 0, z: 0}
---- !u!115 &360358772
-MonoScript:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_Name: 
-  serializedVersion: 7
-  m_DefaultReferences: {}
-  m_Icon: {fileID: 0}
-  m_Type: 0
-  m_ExecutionOrder: 0
-  m_ClassName: UiHover
-  m_Namespace: NihongoLife.UI
-  m_AssemblyName: NihongoLife
 --- !u!1001 &360677647
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -24088,7 +24028,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 363492402}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 1699784791}
+  m_Script: {fileID: 11500000, guid: 4f7b059f25a9a204b951953f6d15f048, type: 3}
   m_Name: 
   m_EditorClassIdentifier: NihongoLife::NihongoLife.UI.ButtonColorSwap
 --- !u!114 &363492410
@@ -24678,7 +24618,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 366986144}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 1699784791}
+  m_Script: {fileID: 11500000, guid: 4f7b059f25a9a204b951953f6d15f048, type: 3}
   m_Name: 
   m_EditorClassIdentifier: NihongoLife::NihongoLife.UI.ButtonColorSwap
 --- !u!114 &366986152
@@ -25369,7 +25309,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 374511329}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 1699784791}
+  m_Script: {fileID: 11500000, guid: 4f7b059f25a9a204b951953f6d15f048, type: 3}
   m_Name: 
   m_EditorClassIdentifier: NihongoLife::NihongoLife.UI.ButtonColorSwap
 --- !u!114 &374511337
@@ -25774,21 +25714,6 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 11.80035, y: 1.15, z: 0.15}
   m_Center: {x: 0, y: 0, z: 0}
---- !u!115 &379898995
-MonoScript:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_Name: 
-  serializedVersion: 7
-  m_DefaultReferences: {}
-  m_Icon: {fileID: 0}
-  m_Type: 0
-  m_ExecutionOrder: 0
-  m_ClassName: UiHover
-  m_Namespace: NihongoLife.UI
-  m_AssemblyName: NihongoLife
 --- !u!1 &380963737
 GameObject:
   m_ObjectHideFlags: 0
@@ -29572,7 +29497,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 449399120}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 1699784791}
+  m_Script: {fileID: 11500000, guid: 4f7b059f25a9a204b951953f6d15f048, type: 3}
   m_Name: 
   m_EditorClassIdentifier: NihongoLife::NihongoLife.UI.ButtonColorSwap
 --- !u!114 &449399128
@@ -35325,7 +35250,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 527292962}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 1217387}
+  m_Script: {fileID: 11500000, guid: 0cef3aefb10b4fd45a1df7ca592e8800, type: 3}
   m_Name: 
   m_EditorClassIdentifier: NihongoLife::NihongoLife.UI.UiShadowLink
   Shadow: {fileID: 1009506079}
@@ -36380,7 +36305,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 543364185}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 1890810848}
+  m_Script: {fileID: 11500000, guid: bc44b7b434e8fec47b437efc8767e3c3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: NihongoLife::NihongoLife.UI.TouchControlSettingsBinder
 --- !u!114 &543364189
@@ -38233,7 +38158,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 573047759}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 1699784791}
+  m_Script: {fileID: 11500000, guid: 4f7b059f25a9a204b951953f6d15f048, type: 3}
   m_Name: 
   m_EditorClassIdentifier: NihongoLife::NihongoLife.UI.ButtonColorSwap
 --- !u!114 &573047766
@@ -39386,7 +39311,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 589062551}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 1699784791}
+  m_Script: {fileID: 11500000, guid: 4f7b059f25a9a204b951953f6d15f048, type: 3}
   m_Name: 
   m_EditorClassIdentifier: NihongoLife::NihongoLife.UI.ButtonColorSwap
 --- !u!114 &589062559
@@ -40030,7 +39955,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 601204727}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 1699784791}
+  m_Script: {fileID: 11500000, guid: 4f7b059f25a9a204b951953f6d15f048, type: 3}
   m_Name: 
   m_EditorClassIdentifier: NihongoLife::NihongoLife.UI.ButtonColorSwap
 --- !u!114 &601204734
@@ -40841,7 +40766,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 609215950}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 1217387}
+  m_Script: {fileID: 11500000, guid: 0cef3aefb10b4fd45a1df7ca592e8800, type: 3}
   m_Name: 
   m_EditorClassIdentifier: NihongoLife::NihongoLife.UI.UiShadowLink
   Shadow: {fileID: 1269766011}
@@ -42587,7 +42512,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 636548023}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 1699784791}
+  m_Script: {fileID: 11500000, guid: 4f7b059f25a9a204b951953f6d15f048, type: 3}
   m_Name: 
   m_EditorClassIdentifier: NihongoLife::NihongoLife.UI.ButtonColorSwap
 --- !u!114 &636548031
@@ -44528,7 +44453,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 661716185}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 1699784791}
+  m_Script: {fileID: 11500000, guid: 4f7b059f25a9a204b951953f6d15f048, type: 3}
   m_Name: 
   m_EditorClassIdentifier: NihongoLife::NihongoLife.UI.ButtonColorSwap
 --- !u!114 &661716193
@@ -45451,21 +45376,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 671917702}
   m_CullTransparentMesh: 1
---- !u!115 &672571216
-MonoScript:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_Name: 
-  serializedVersion: 7
-  m_DefaultReferences: {}
-  m_Icon: {fileID: 0}
-  m_Type: 0
-  m_ExecutionOrder: 0
-  m_ClassName: LocWatcher
-  m_Namespace: NihongoLife.Core
-  m_AssemblyName: NihongoLife
 --- !u!1 &674418067
 GameObject:
   m_ObjectHideFlags: 0
@@ -46429,7 +46339,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 684218622}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 735259846}
+  m_Script: {fileID: 11500000, guid: 38de94fb719e79c448647be717aba8ea, type: 3}
   m_Name: 
   m_EditorClassIdentifier: NihongoLife::NihongoLife.UI.UiHover
 --- !u!114 &684218632
@@ -46441,7 +46351,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 684218622}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 747076895}
+  m_Script: {fileID: 11500000, guid: 38de94fb719e79c448647be717aba8ea, type: 3}
   m_Name: 
   m_EditorClassIdentifier: NihongoLife::NihongoLife.UI.UiHover
 --- !u!114 &684218633
@@ -46453,7 +46363,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 684218622}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 360358772}
+  m_Script: {fileID: 11500000, guid: 38de94fb719e79c448647be717aba8ea, type: 3}
   m_Name: 
   m_EditorClassIdentifier: NihongoLife::NihongoLife.UI.UiHover
 --- !u!1 &684792854
@@ -50818,21 +50728,6 @@ MonoBehaviour:
   scope: CharacterSelect
   order: 20
   made: Icon_chevron_right
---- !u!115 &735259846
-MonoScript:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_Name: 
-  serializedVersion: 7
-  m_DefaultReferences: {}
-  m_Icon: {fileID: 0}
-  m_Type: 0
-  m_ExecutionOrder: 0
-  m_ClassName: UiHover
-  m_Namespace: NihongoLife.UI
-  m_AssemblyName: NihongoLife
 --- !u!1 &739016764
 GameObject:
   m_ObjectHideFlags: 0
@@ -51108,7 +51003,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 743560188}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 1699784791}
+  m_Script: {fileID: 11500000, guid: 4f7b059f25a9a204b951953f6d15f048, type: 3}
   m_Name: 
   m_EditorClassIdentifier: NihongoLife::NihongoLife.UI.ButtonColorSwap
 --- !u!114 &743560196
@@ -51632,21 +51527,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 2303060980499230386, guid: 9397b573527f7ea43b02f885bdb5edf5, type: 3}
   m_PrefabInstance: {fileID: 744918256}
   m_PrefabAsset: {fileID: 0}
---- !u!115 &747076895
-MonoScript:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_Name: 
-  serializedVersion: 7
-  m_DefaultReferences: {}
-  m_Icon: {fileID: 0}
-  m_Type: 0
-  m_ExecutionOrder: 0
-  m_ClassName: UiHover
-  m_Namespace: NihongoLife.UI
-  m_AssemblyName: NihongoLife
 --- !u!1 &747128292
 GameObject:
   m_ObjectHideFlags: 0
@@ -51751,7 +51631,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 747128292}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 1217387}
+  m_Script: {fileID: 11500000, guid: 0cef3aefb10b4fd45a1df7ca592e8800, type: 3}
   m_Name: 
   m_EditorClassIdentifier: NihongoLife::NihongoLife.UI.UiShadowLink
   Shadow: {fileID: 119663988}
@@ -53103,7 +52983,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 758583569}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 1699784791}
+  m_Script: {fileID: 11500000, guid: 4f7b059f25a9a204b951953f6d15f048, type: 3}
   m_Name: 
   m_EditorClassIdentifier: NihongoLife::NihongoLife.UI.ButtonColorSwap
 --- !u!114 &758583577
@@ -56290,7 +56170,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 801757345}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 735259846}
+  m_Script: {fileID: 11500000, guid: 38de94fb719e79c448647be717aba8ea, type: 3}
   m_Name: 
   m_EditorClassIdentifier: NihongoLife::NihongoLife.UI.UiHover
 --- !u!1 &803063775
@@ -57752,7 +57632,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 824356715}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 1699784791}
+  m_Script: {fileID: 11500000, guid: 4f7b059f25a9a204b951953f6d15f048, type: 3}
   m_Name: 
   m_EditorClassIdentifier: NihongoLife::NihongoLife.UI.ButtonColorSwap
 --- !u!114 &824356723
@@ -61450,7 +61330,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 873757300}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 1699784791}
+  m_Script: {fileID: 11500000, guid: 4f7b059f25a9a204b951953f6d15f048, type: 3}
   m_Name: 
   m_EditorClassIdentifier: NihongoLife::NihongoLife.UI.ButtonColorSwap
 --- !u!114 &873757308
@@ -61983,7 +61863,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 877972905}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 1699784791}
+  m_Script: {fileID: 11500000, guid: 4f7b059f25a9a204b951953f6d15f048, type: 3}
   m_Name: 
   m_EditorClassIdentifier: NihongoLife::NihongoLife.UI.ButtonColorSwap
 --- !u!114 &877972913
@@ -62227,7 +62107,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 878136616}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 1699784791}
+  m_Script: {fileID: 11500000, guid: 4f7b059f25a9a204b951953f6d15f048, type: 3}
   m_Name: 
   m_EditorClassIdentifier: NihongoLife::NihongoLife.UI.ButtonColorSwap
 --- !u!114 &878136624
@@ -69695,7 +69575,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 975401983}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 1699784791}
+  m_Script: {fileID: 11500000, guid: 4f7b059f25a9a204b951953f6d15f048, type: 3}
   m_Name: 
   m_EditorClassIdentifier: NihongoLife::NihongoLife.UI.ButtonColorSwap
 --- !u!114 &975401990
@@ -70364,7 +70244,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 979798434}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 1699784791}
+  m_Script: {fileID: 11500000, guid: 4f7b059f25a9a204b951953f6d15f048, type: 3}
   m_Name: 
   m_EditorClassIdentifier: NihongoLife::NihongoLife.UI.ButtonColorSwap
 --- !u!114 &979798441
@@ -71507,7 +71387,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 995524065}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 1699784791}
+  m_Script: {fileID: 11500000, guid: 4f7b059f25a9a204b951953f6d15f048, type: 3}
   m_Name: 
   m_EditorClassIdentifier: NihongoLife::NihongoLife.UI.ButtonColorSwap
 --- !u!114 &995524073
@@ -72411,7 +72291,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1002610563}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 735259846}
+  m_Script: {fileID: 11500000, guid: 38de94fb719e79c448647be717aba8ea, type: 3}
   m_Name: 
   m_EditorClassIdentifier: NihongoLife::NihongoLife.UI.UiHover
 --- !u!1 &1002779659
@@ -72944,7 +72824,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1009506079}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 292585199}
+  m_Script: {fileID: 11500000, guid: df82d170439a69a4283e4211d94d52b1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: NihongoLife::NihongoLife.UI.UiFollowRect
 --- !u!114 &1009506081
@@ -73303,7 +73183,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1014939178}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 735259846}
+  m_Script: {fileID: 11500000, guid: 38de94fb719e79c448647be717aba8ea, type: 3}
   m_Name: 
   m_EditorClassIdentifier: NihongoLife::NihongoLife.UI.UiHover
 --- !u!1 &1016204229
@@ -75048,7 +74928,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1045479591}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 1699784791}
+  m_Script: {fileID: 11500000, guid: 4f7b059f25a9a204b951953f6d15f048, type: 3}
   m_Name: 
   m_EditorClassIdentifier: NihongoLife::NihongoLife.UI.ButtonColorSwap
 --- !u!114 &1045479599
@@ -77918,7 +77798,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1083329695}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 1699784791}
+  m_Script: {fileID: 11500000, guid: 4f7b059f25a9a204b951953f6d15f048, type: 3}
   m_Name: 
   m_EditorClassIdentifier: NihongoLife::NihongoLife.UI.ButtonColorSwap
 --- !u!114 &1083329703
@@ -83805,7 +83685,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1156619721}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 1699784791}
+  m_Script: {fileID: 11500000, guid: 4f7b059f25a9a204b951953f6d15f048, type: 3}
   m_Name: 
   m_EditorClassIdentifier: NihongoLife::NihongoLife.UI.ButtonColorSwap
 --- !u!114 &1156619729
@@ -85307,7 +85187,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1178754104}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 292585199}
+  m_Script: {fileID: 11500000, guid: df82d170439a69a4283e4211d94d52b1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: NihongoLife::NihongoLife.UI.UiFollowRect
 --- !u!114 &1178754106
@@ -85919,7 +85799,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1185164640}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 1217387}
+  m_Script: {fileID: 11500000, guid: 0cef3aefb10b4fd45a1df7ca592e8800, type: 3}
   m_Name: 
   m_EditorClassIdentifier: NihongoLife::NihongoLife.UI.UiShadowLink
   Shadow: {fileID: 1178754104}
@@ -86507,7 +86387,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1189033334}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 1699784791}
+  m_Script: {fileID: 11500000, guid: 4f7b059f25a9a204b951953f6d15f048, type: 3}
   m_Name: 
   m_EditorClassIdentifier: NihongoLife::NihongoLife.UI.ButtonColorSwap
 --- !u!114 &1189033342
@@ -89777,7 +89657,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1240820657}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 1699784791}
+  m_Script: {fileID: 11500000, guid: 4f7b059f25a9a204b951953f6d15f048, type: 3}
   m_Name: 
   m_EditorClassIdentifier: NihongoLife::NihongoLife.UI.ButtonColorSwap
 --- !u!114 &1240820665
@@ -91393,7 +91273,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1261983504}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 1699784791}
+  m_Script: {fileID: 11500000, guid: 4f7b059f25a9a204b951953f6d15f048, type: 3}
   m_Name: 
   m_EditorClassIdentifier: NihongoLife::NihongoLife.UI.ButtonColorSwap
 --- !u!114 &1261983511
@@ -92133,7 +92013,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1269766011}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 292585199}
+  m_Script: {fileID: 11500000, guid: df82d170439a69a4283e4211d94d52b1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: NihongoLife::NihongoLife.UI.UiFollowRect
 --- !u!114 &1269766013
@@ -93523,7 +93403,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1290092760}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 1699784791}
+  m_Script: {fileID: 11500000, guid: 4f7b059f25a9a204b951953f6d15f048, type: 3}
   m_Name: 
   m_EditorClassIdentifier: NihongoLife::NihongoLife.UI.ButtonColorSwap
 --- !u!114 &1290092768
@@ -95558,7 +95438,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1314679093}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 1699784791}
+  m_Script: {fileID: 11500000, guid: 4f7b059f25a9a204b951953f6d15f048, type: 3}
   m_Name: 
   m_EditorClassIdentifier: NihongoLife::NihongoLife.UI.ButtonColorSwap
 --- !u!114 &1314679101
@@ -96828,7 +96708,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1339861687}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 1699784791}
+  m_Script: {fileID: 11500000, guid: 4f7b059f25a9a204b951953f6d15f048, type: 3}
   m_Name: 
   m_EditorClassIdentifier: NihongoLife::NihongoLife.UI.ButtonColorSwap
 --- !u!114 &1339861695
@@ -99471,7 +99351,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1364919470}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 1699784791}
+  m_Script: {fileID: 11500000, guid: 4f7b059f25a9a204b951953f6d15f048, type: 3}
   m_Name: 
   m_EditorClassIdentifier: NihongoLife::NihongoLife.UI.ButtonColorSwap
 --- !u!114 &1364919478
@@ -100491,7 +100371,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1375120388}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 132920594}
+  m_Script: {fileID: 11500000, guid: 3d192abed5db8b543958fc2110cf2114, type: 3}
   m_Name: 
   m_EditorClassIdentifier: NihongoLife::NihongoLife.UI.MenuFeelDriver
 --- !u!114 &1375120394
@@ -100587,7 +100467,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1375120388}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 672571216}
+  m_Script: {fileID: 11500000, guid: ac4b758dd4bd02242a1ed5b180900cec, type: 3}
   m_Name: 
   m_EditorClassIdentifier: NihongoLife::NihongoLife.Core.LocWatcher
 --- !u!114 &1375120402
@@ -101944,7 +101824,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1394938658}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 1699784791}
+  m_Script: {fileID: 11500000, guid: 4f7b059f25a9a204b951953f6d15f048, type: 3}
   m_Name: 
   m_EditorClassIdentifier: NihongoLife::NihongoLife.UI.ButtonColorSwap
 --- !u!114 &1394938666
@@ -103941,7 +103821,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1417666473}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 735259846}
+  m_Script: {fileID: 11500000, guid: 38de94fb719e79c448647be717aba8ea, type: 3}
   m_Name: 
   m_EditorClassIdentifier: NihongoLife::NihongoLife.UI.UiHover
 --- !u!1 &1419946856
@@ -104155,7 +104035,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1420475155}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 1699784791}
+  m_Script: {fileID: 11500000, guid: 4f7b059f25a9a204b951953f6d15f048, type: 3}
   m_Name: 
   m_EditorClassIdentifier: NihongoLife::NihongoLife.UI.ButtonColorSwap
 --- !u!114 &1420475162
@@ -107805,7 +107685,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1458477342}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 1699784791}
+  m_Script: {fileID: 11500000, guid: 4f7b059f25a9a204b951953f6d15f048, type: 3}
   m_Name: 
   m_EditorClassIdentifier: NihongoLife::NihongoLife.UI.ButtonColorSwap
 --- !u!114 &1458477350
@@ -109242,7 +109122,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1480984092}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 1699784791}
+  m_Script: {fileID: 11500000, guid: 4f7b059f25a9a204b951953f6d15f048, type: 3}
   m_Name: 
   m_EditorClassIdentifier: NihongoLife::NihongoLife.UI.ButtonColorSwap
 --- !u!114 &1480984100
@@ -109385,7 +109265,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1482309632}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 292585199}
+  m_Script: {fileID: 11500000, guid: df82d170439a69a4283e4211d94d52b1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: NihongoLife::NihongoLife.UI.UiFollowRect
 --- !u!114 &1482309634
@@ -110847,7 +110727,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1502388351}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 1699784791}
+  m_Script: {fileID: 11500000, guid: 4f7b059f25a9a204b951953f6d15f048, type: 3}
   m_Name: 
   m_EditorClassIdentifier: NihongoLife::NihongoLife.UI.ButtonColorSwap
 --- !u!114 &1502388358
@@ -113636,7 +113516,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1546707740}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 1699784791}
+  m_Script: {fileID: 11500000, guid: 4f7b059f25a9a204b951953f6d15f048, type: 3}
   m_Name: 
   m_EditorClassIdentifier: NihongoLife::NihongoLife.UI.ButtonColorSwap
 --- !u!114 &1546707747
@@ -114358,7 +114238,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1557785887}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 1699784791}
+  m_Script: {fileID: 11500000, guid: 4f7b059f25a9a204b951953f6d15f048, type: 3}
   m_Name: 
   m_EditorClassIdentifier: NihongoLife::NihongoLife.UI.ButtonColorSwap
 --- !u!114 &1557785895
@@ -115244,7 +115124,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1572135732}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 1699784791}
+  m_Script: {fileID: 11500000, guid: 4f7b059f25a9a204b951953f6d15f048, type: 3}
   m_Name: 
   m_EditorClassIdentifier: NihongoLife::NihongoLife.UI.ButtonColorSwap
 --- !u!114 &1572135740
@@ -118072,7 +117952,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1613001892}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 1699784791}
+  m_Script: {fileID: 11500000, guid: 4f7b059f25a9a204b951953f6d15f048, type: 3}
   m_Name: 
   m_EditorClassIdentifier: NihongoLife::NihongoLife.UI.ButtonColorSwap
 --- !u!114 &1613001900
@@ -118770,7 +118650,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1618936690}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 1699784791}
+  m_Script: {fileID: 11500000, guid: 4f7b059f25a9a204b951953f6d15f048, type: 3}
   m_Name: 
   m_EditorClassIdentifier: NihongoLife::NihongoLife.UI.ButtonColorSwap
 --- !u!114 &1618936698
@@ -119111,7 +118991,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1621194863}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 1699784791}
+  m_Script: {fileID: 11500000, guid: 4f7b059f25a9a204b951953f6d15f048, type: 3}
   m_Name: 
   m_EditorClassIdentifier: NihongoLife::NihongoLife.UI.ButtonColorSwap
 --- !u!114 &1621194871
@@ -119786,7 +119666,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1625605669}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 1699784791}
+  m_Script: {fileID: 11500000, guid: 4f7b059f25a9a204b951953f6d15f048, type: 3}
   m_Name: 
   m_EditorClassIdentifier: NihongoLife::NihongoLife.UI.ButtonColorSwap
 --- !u!114 &1625605676
@@ -120438,7 +120318,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1630543619}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 1699784791}
+  m_Script: {fileID: 11500000, guid: 4f7b059f25a9a204b951953f6d15f048, type: 3}
   m_Name: 
   m_EditorClassIdentifier: NihongoLife::NihongoLife.UI.ButtonColorSwap
 --- !u!114 &1630543626
@@ -124203,7 +124083,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1694581205}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 1699784791}
+  m_Script: {fileID: 11500000, guid: 4f7b059f25a9a204b951953f6d15f048, type: 3}
   m_Name: 
   m_EditorClassIdentifier: NihongoLife::NihongoLife.UI.ButtonColorSwap
 --- !u!114 &1694581212
@@ -124696,21 +124576,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1699315984}
   m_CullTransparentMesh: 1
---- !u!115 &1699784791
-MonoScript:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_Name: 
-  serializedVersion: 7
-  m_DefaultReferences: {}
-  m_Icon: {fileID: 0}
-  m_Type: 0
-  m_ExecutionOrder: 0
-  m_ClassName: ButtonColorSwap
-  m_Namespace: NihongoLife.UI
-  m_AssemblyName: NihongoLife
 --- !u!1 &1701349977
 GameObject:
   m_ObjectHideFlags: 0
@@ -124938,7 +124803,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1701659412}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 1699784791}
+  m_Script: {fileID: 11500000, guid: 4f7b059f25a9a204b951953f6d15f048, type: 3}
   m_Name: 
   m_EditorClassIdentifier: NihongoLife::NihongoLife.UI.ButtonColorSwap
 --- !u!114 &1701659420
@@ -125673,7 +125538,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1714651129}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 1699784791}
+  m_Script: {fileID: 11500000, guid: 4f7b059f25a9a204b951953f6d15f048, type: 3}
   m_Name: 
   m_EditorClassIdentifier: NihongoLife::NihongoLife.UI.ButtonColorSwap
 --- !u!114 &1714651136
@@ -127874,7 +127739,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1742586201}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 1699784791}
+  m_Script: {fileID: 11500000, guid: 4f7b059f25a9a204b951953f6d15f048, type: 3}
   m_Name: 
   m_EditorClassIdentifier: NihongoLife::NihongoLife.UI.ButtonColorSwap
 --- !u!114 &1742586209
@@ -129957,7 +129822,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1770072216}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 1699784791}
+  m_Script: {fileID: 11500000, guid: 4f7b059f25a9a204b951953f6d15f048, type: 3}
   m_Name: 
   m_EditorClassIdentifier: NihongoLife::NihongoLife.UI.ButtonColorSwap
 --- !u!114 &1770072224
@@ -132573,7 +132438,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1801808620}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 1699784791}
+  m_Script: {fileID: 11500000, guid: 4f7b059f25a9a204b951953f6d15f048, type: 3}
   m_Name: 
   m_EditorClassIdentifier: NihongoLife::NihongoLife.UI.ButtonColorSwap
 --- !u!114 &1801808628
@@ -133069,7 +132934,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1813780078}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 1699784791}
+  m_Script: {fileID: 11500000, guid: 4f7b059f25a9a204b951953f6d15f048, type: 3}
   m_Name: 
   m_EditorClassIdentifier: NihongoLife::NihongoLife.UI.ButtonColorSwap
 --- !u!114 &1813780085
@@ -134521,7 +134386,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1828052456}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 1699784791}
+  m_Script: {fileID: 11500000, guid: 4f7b059f25a9a204b951953f6d15f048, type: 3}
   m_Name: 
   m_EditorClassIdentifier: NihongoLife::NihongoLife.UI.ButtonColorSwap
 --- !u!114 &1828052464
@@ -134689,7 +134554,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1828424509}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 1217387}
+  m_Script: {fileID: 11500000, guid: 0cef3aefb10b4fd45a1df7ca592e8800, type: 3}
   m_Name: 
   m_EditorClassIdentifier: NihongoLife::NihongoLife.UI.UiShadowLink
   Shadow: {fileID: 1482309632}
@@ -136351,7 +136216,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1853464993}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 1699784791}
+  m_Script: {fileID: 11500000, guid: 4f7b059f25a9a204b951953f6d15f048, type: 3}
   m_Name: 
   m_EditorClassIdentifier: NihongoLife::NihongoLife.UI.ButtonColorSwap
 --- !u!114 &1853465001
@@ -138702,21 +138567,6 @@ MonoBehaviour:
   scope: Settings
   order: 27
   made: FillArea
---- !u!115 &1876021107
-MonoScript:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_Name: 
-  serializedVersion: 7
-  m_DefaultReferences: {}
-  m_Icon: {fileID: 0}
-  m_Type: 0
-  m_ExecutionOrder: 0
-  m_ClassName: UiUserContent
-  m_Namespace: NihongoLife.UI
-  m_AssemblyName: NihongoLife
 --- !u!1001 &1880530328
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -139446,21 +139296,6 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 8.6, y: 4.6, z: 7.2}
   m_Center: {x: 0, y: 0, z: 0}
---- !u!115 &1890810848
-MonoScript:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_Name: 
-  serializedVersion: 7
-  m_DefaultReferences: {}
-  m_Icon: {fileID: 0}
-  m_Type: 0
-  m_ExecutionOrder: 0
-  m_ClassName: TouchControlSettingsBinder
-  m_Namespace: NihongoLife.UI
-  m_AssemblyName: NihongoLife
 --- !u!1 &1891026540
 GameObject:
   m_ObjectHideFlags: 0
@@ -140063,7 +139898,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1894783541}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 1699784791}
+  m_Script: {fileID: 11500000, guid: 4f7b059f25a9a204b951953f6d15f048, type: 3}
   m_Name: 
   m_EditorClassIdentifier: NihongoLife::NihongoLife.UI.ButtonColorSwap
 --- !u!114 &1894783548
@@ -140755,7 +140590,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1906918889}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 1876021107}
+  m_Script: {fileID: 11500000, guid: 6a716328b30701a47a3537cd7bb4f45e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: NihongoLife::NihongoLife.UI.UiUserContent
 --- !u!114 &1906918892
@@ -142669,21 +142504,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1931190527}
   m_CullTransparentMesh: 1
---- !u!115 &1935287269
-MonoScript:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_Name: 
-  serializedVersion: 7
-  m_DefaultReferences: {}
-  m_Icon: {fileID: 0}
-  m_Type: 0
-  m_ExecutionOrder: 0
-  m_ClassName: UiHover
-  m_Namespace: NihongoLife.UI
-  m_AssemblyName: NihongoLife
 --- !u!1 &1935486689
 GameObject:
   m_ObjectHideFlags: 0
@@ -144528,7 +144348,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1958428943}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 1699784791}
+  m_Script: {fileID: 11500000, guid: 4f7b059f25a9a204b951953f6d15f048, type: 3}
   m_Name: 
   m_EditorClassIdentifier: NihongoLife::NihongoLife.UI.ButtonColorSwap
 --- !u!114 &1958428950
@@ -147875,7 +147695,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 2015396999}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 1699784791}
+  m_Script: {fileID: 11500000, guid: 4f7b059f25a9a204b951953f6d15f048, type: 3}
   m_Name: 
   m_EditorClassIdentifier: NihongoLife::NihongoLife.UI.ButtonColorSwap
 --- !u!114 &2015397007
@@ -148771,7 +148591,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 2019817537}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 735259846}
+  m_Script: {fileID: 11500000, guid: 38de94fb719e79c448647be717aba8ea, type: 3}
   m_Name: 
   m_EditorClassIdentifier: NihongoLife::NihongoLife.UI.UiHover
 --- !u!1 &2020458995
@@ -150568,7 +150388,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 2042907377}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 1699784791}
+  m_Script: {fileID: 11500000, guid: 4f7b059f25a9a204b951953f6d15f048, type: 3}
   m_Name: 
   m_EditorClassIdentifier: NihongoLife::NihongoLife.UI.ButtonColorSwap
 --- !u!114 &2042907384
@@ -152360,7 +152180,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 2060252985}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 735259846}
+  m_Script: {fileID: 11500000, guid: 38de94fb719e79c448647be717aba8ea, type: 3}
   m_Name: 
   m_EditorClassIdentifier: NihongoLife::NihongoLife.UI.UiHover
 --- !u!1 &2060829977
@@ -155915,7 +155735,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 2131048208}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 1699784791}
+  m_Script: {fileID: 11500000, guid: 4f7b059f25a9a204b951953f6d15f048, type: 3}
   m_Name: 
   m_EditorClassIdentifier: NihongoLife::NihongoLife.UI.ButtonColorSwap
 --- !u!114 &2131048216
@@ -157014,7 +156834,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 2142837437}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 1699784791}
+  m_Script: {fileID: 11500000, guid: 4f7b059f25a9a204b951953f6d15f048, type: 3}
   m_Name: 
   m_EditorClassIdentifier: NihongoLife::NihongoLife.UI.ButtonColorSwap
 --- !u!114 &2142837445

@@ -75,6 +75,8 @@ namespace NihongoLife.Tests
         {
             // TMP_InputField makes its text caret itself when it is enabled (TextMeshPro internals, not our code).
             if (path.EndsWith("/Caret")) return true;
+            // TMP adds a sub mesh when glyphs land on a second atlas page: it depends on what earlier scenes drew.
+            if (path.Contains("/TMP SubMeshUI")) return true;
             foreach (var prefix in StillBuiltByCode)
                 if (path == prefix || path.StartsWith(prefix + "/")) return true;
             return false;

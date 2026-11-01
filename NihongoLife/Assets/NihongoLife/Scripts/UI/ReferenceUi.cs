@@ -76,7 +76,8 @@ namespace NihongoLife.UI
                 string mark = h.Good ? "#3FC78555" : "#EB5C5255";
                 string ink = h.Good ? "#7FE0AE" : "#FF9A8F";
                 sb.Append($"<link=\"h{s.index}\"><mark={mark}><color={ink}>").Append(Safe(text.Substring(s.start, s.end - s.start)))
-                  .Append($"</color></mark></link><sup><color={ink}>{s.index + 1}</color></sup>");
+                  // Not <sup>: measured for layout before its first mesh, </sup> throws and the text stays broken every frame.
+                  .Append($"</color></mark></link><voffset=0.35em><size=65%><color={ink}>{s.index + 1}</color></size></voffset>");
                 pos = s.end;
             }
             sb.Append(Safe(text.Substring(pos)));

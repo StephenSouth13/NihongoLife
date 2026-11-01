@@ -65,6 +65,89 @@ namespace NihongoLife.EditorTools
             public float Intensity, Range, SpotAngle;
         }
 
+        private const string ExteriorMaterials = "Assets/NihongoLife/Materials/ExteriorView";
+
+        /// <summary>The town keeps many materials inside its scene file: a piece copied to another scene loses them (the
+        /// slot saves empty), so they become assets first.</summary>
+        private static Material Persist(Material m)
+        {
+            if (m == null || EditorUtility.IsPersistent(m)) return m;
+            if (!AssetDatabase.IsValidFolder(ExteriorMaterials)) AssetDatabase.CreateFolder("Assets/NihongoLife/Materials", "ExteriorView");
+            string colour = m.HasProperty("_BaseColor") ? ColorUtility.ToHtmlStringRGB(m.GetColor("_BaseColor")) : "plain";
+            string safe = new string(m.name.Select(c => char.IsLetterOrDigit(c) ? c : '_').ToArray());
+            string path = $"{ExteriorMaterials}/{safe}_{colour}.mat";
+            var existing = AssetDatabase.LoadAssetAtPath<Material>(path);
+            if (existing != null) return existing;
+            var copy = new Material(m);
+            AssetDatabase.CreateAsset(copy, path);
+            return copy;
+        }
+
+        private static Material Plain(string name, Color color)
+        {
+            if (!AssetDatabase.IsValidFolder(ExteriorMaterials)) AssetDatabase.CreateFolder("Assets/NihongoLife/Materials", "ExteriorView");
+            string path = $"{ExteriorMaterials}/{name}.mat";
+            var existing = AssetDatabase.LoadAssetAtPath<Material>(path);
+            if (existing != null) return existing;
+            var m = new Material(Shader.Find("Universal Render Pipeline/Lit"));
+            m.SetColor("_BaseColor", color);
+            AssetDatabase.CreateAsset(m, path);
+            return m;
+        }
+
+        /// <summary>
+        /// Fills the empty material slots of the street seen through the windows of the four interiors (older builds saved
+        /// them empty), without rebuilding those scenes: same-named town pieces give their material, pieces the town no
+        /// longer has get a plain one.
+        /// Run: Unity -batchmode -executeMethod NihongoLife.EditorTools.EnvironmentViewsBuilder.RepairExteriorMaterials
+        /// </summary>
+        public static void RepairExteriorMaterials()
+        {
+            try
+            {
+                EditorSceneManager.OpenScene(Scenes + "90_TestSandbox.unity", OpenSceneMode.Single);
+                var known = new Dictionary<string, Material[]>();
+                foreach (var r in Object.FindObjectsByType<MeshRenderer>(FindObjectsInactive.Include, FindObjectsSortMode.None))
+                    if (!known.ContainsKey(r.name) && r.sharedMaterials.Length > 0 && r.sharedMaterials.All(m => m != null))
+                        known[r.name] = r.sharedMaterials.Select(Persist).ToArray();
+                int filled = 0;
+                foreach (string name in new[] { "20_StationDistrict", "30_SushiRestaurant", "40_ HIBARICLASS", "50_GameCenter" })
+                {
+                    var scene = EditorSceneManager.OpenScene(Scenes + name + ".unity", OpenSceneMode.Single);
+                    var root = GameObject.Find(ExteriorRoot);
+                    if (root == null) throw new InvalidOperationException(ExteriorRoot + " not found in " + name);
+                    foreach (var r in root.GetComponentsInChildren<MeshRenderer>(true))
+                    {
+                        var slots = r.sharedMaterials;
+                        if (slots.All(m => m != null)) continue;
+                        known.TryGetValue(r.name, out var from);
+                        for (int i = 0; i < slots.Length; i++)
+                        {
+                            if (slots[i] != null) continue;
+                            if (from != null) slots[i] = from[Mathf.Min(i, from.Length - 1)];
+                            else if (r.name.StartsWith("LaneLine")) slots[i] = Plain("ExteriorLine", Color.white);
+                            else if (r.name.StartsWith("WarmWindow")) slots[i] = Plain("ExteriorWarmWindow", new Color(1f, 0.86f, 0.62f));
+                            else if (r.name.StartsWith("PocketPark")) slots[i] = Plain("ExteriorPark", new Color(0.45f, 0.68f, 0.42f));
+                            else slots[i] = Plain("ExteriorPlain", new Color(0.7f, 0.7f, 0.72f));
+                            filled++;
+                        }
+                        r.sharedMaterials = slots;
+                    }
+                    EditorSceneManager.MarkSceneDirty(scene);
+                    if (!EditorSceneManager.SaveScene(scene)) throw new InvalidOperationException("Could not save " + name);
+                }
+                AssetDatabase.SaveAssets();
+                Debug.Log($"[EnvironmentViewsBuilder] Filled {filled} empty material slots.");
+                if (Application.isBatchMode) EditorApplication.Exit(0);
+            }
+            catch (Exception e)
+            {
+                Debug.LogException(e);
+                if (Application.isBatchMode) EditorApplication.Exit(1);
+                else throw;
+            }
+        }
+
         public static void BuildAll()
         {
             try
@@ -254,7 +337,7 @@ namespace NihongoLife.EditorTools
                 pieces.Add(new Piece
                 {
                     Mesh = filter.sharedMesh,
-                    Materials = renderer.sharedMaterials,
+                    Materials = renderer.sharedMaterials.Select(Persist).ToArray(),
                     Local = frame * renderer.transform.localToWorldMatrix,
                     Name = renderer.name,
                 });

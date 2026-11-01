@@ -145,7 +145,7 @@ namespace NihongoLife.EditorTools
             Block(shell, "Wall_S_L", P(-6.75f, Height / 2f, South), new Vector3(10.5f, Height, 0.25f), _wall, true);
             Block(shell, "Wall_S_R", P(6.75f, Height / 2f, South), new Vector3(10.5f, Height, 0.25f), _wall, true);
             Block(shell, "Wall_S_Header", P(0f, (2.4f + Height) / 2f, South), new Vector3(3f, Height - 2.4f, 0.25f), _wall, true);
-            Block(shell, "EntranceGlass", P(0f, 1.2f, South - 0.06f), new Vector3(3f, 2.4f, 0.04f), _glass, false);
+            Block(shell, "EntranceGlass", P(0f, 1.2f, South - 0.06f), new Vector3(3f, 2.4f, 0.04f), _glass, true); // solid: the camera stays inside
             // The divider between shop and gallery, with an archway in the middle.
             Block(shell, "Divider_L", P(-6.75f, Height / 2f, Divider), new Vector3(10.5f, Height, 0.25f), _wall, true);
             Block(shell, "Divider_R", P(6.75f, Height / 2f, Divider), new Vector3(10.5f, Height, 0.25f), _wall, true);

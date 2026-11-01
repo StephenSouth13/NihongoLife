@@ -564,6 +564,12 @@ namespace NihongoLife.UI
             {
                 chip.anchorMin = chip.anchorMax = chip.pivot = new Vector2(0.5f, 1f);
                 chip.anchoredPosition = new Vector2(0f, -80f - stacked);
+                // Centred, a long line ran into the quest tracker at the top left: it starts just past it instead.
+                if (_objective != null && _objective.gameObject.activeInHierarchy)
+                {
+                    chip.anchorMin = chip.anchorMax = chip.pivot = new Vector2(0f, 1f);
+                    chip.anchoredPosition = new Vector2(_objective.anchoredPosition.x + _objective.rect.width + 10f, -80f - stacked);
+                }
                 return;
             }
             chip.anchorMin = chip.anchorMax = chip.pivot = Vector2.zero;

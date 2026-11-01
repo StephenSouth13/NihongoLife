@@ -60,6 +60,10 @@ namespace NihongoLife.EditorTools
                 var scene = EditorSceneManager.OpenScene(MenuSyncCheck.ScenePath, OpenSceneMode.Single);
                 var panel = GameObject.Find("Canvas/MainMenuPanel");
                 if (panel == null) throw new System.Exception("Canvas/MainMenuPanel not found");
+                // This bake only knows the left column and clears everything else under the panel: run on the authored
+                // menu it once deleted the top bar, popups and widgets (1334 objects down to 492).
+                if (panel.transform.Find("TopCluster") != null)
+                    throw new System.InvalidOperationException("01_MainMenu is authored in the scene; this bake would delete it. Edit the scene instead.");
                 var menu = panel.GetComponent<MainMenuUI>();
                 var font = AssetDatabase.LoadAssetAtPath<TMP_FontAsset>("Assets/NihongoLife/Fonts/NotoSansJP SDF.asset");
 

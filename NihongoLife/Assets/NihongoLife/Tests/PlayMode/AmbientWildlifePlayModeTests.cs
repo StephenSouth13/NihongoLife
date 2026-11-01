@@ -84,8 +84,14 @@ namespace NihongoLife.Tests
             Vector3 p0 = dog.transform.position; yield return new WaitForSecondsRealtime(1f);
             Assert.Less(Vector3.Distance(p0, dog.transform.position), 0.05f, "A sleeping dog stays put");
             Assert.Less(dog.transform.GetChild(0).GetChild(0).localPosition.y, sitY, "Lying down is lower than sitting");
-            dog.Force(Critter.State.Walk, 30f); p0 = dog.transform.position; yield return new WaitForSecondsRealtime(3f);
-            Assert.Greater(Vector3.Distance(p0, dog.transform.position), 0.8f, "A walking dog moves");
+            // Its heading is random and a wall turns it and ends the walk, so it is asked again until it has room.
+            float walked = 0f;
+            for (int i = 0; i < 6 && walked <= 0.8f; i++)
+            {
+                dog.Force(Critter.State.Walk, 30f); p0 = dog.transform.position; yield return new WaitForSecondsRealtime(3f);
+                walked = Vector3.Distance(p0, dog.transform.position);
+            }
+            Assert.Greater(walked, 0.8f, "A walking dog moves");
             PutNear(dog, 6f);
             dog.Interact(_player.gameObject);
             Assert.AreEqual(Critter.State.Follow, dog.Current); Assert.Greater(dog.FriendUntil, Time.time);

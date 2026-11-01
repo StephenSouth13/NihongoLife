@@ -271,6 +271,7 @@ namespace NihongoLife.UI
             var maxLabel = maxPreset.GetComponentInChildren<TextMeshProUGUI>();
             maxLabel.fontSize = 15f;
             maxLabel.text = OwnerMaxPreset.Label();
+            Loc.Watch(maxLabel, () => maxLabel.text = OwnerMaxPreset.Label());
             ParkInLayout(maxPreset.transform, 40f);
             maxPreset.onClick.AddListener(() => { OwnerMaxPreset.Toggle(); maxLabel.text = OwnerMaxPreset.Label(); RefreshControlButtons(); });
             TouchControlSettingsSection.Build(column, uiFont);

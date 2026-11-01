@@ -119,9 +119,9 @@ namespace NihongoLife.UI
                       "ライティング/スピーキング{0}題、各バンド5〜9の解答例・項目別講評・次のバンドへのコツ。", NihongoLife.Exam.Ielts.IeltsModelAnswers.All.Count),
                 Loc.T("Band 5 → 9", "Band 5 → 9", "バンド5→9"), true, OpenModelAnswers);
             Tile(7, tw, "Lộ trình tiếng Nga", "Russian path", "ロシア語コース", "school", UiTheme.Live,
-                Loc.T("Bảng chữ cái, phát âm, A1 → B2 và đề thi thử TORFL (ТРКИ) có đáp án.",
-                      "Alphabet, pronunciation, A1 → B2 and TORFL (ТРКИ) mock tests with answer keys.",
-                      "文字・発音・A1→B2、解答付きTORFL（ТРКИ）模試。"),
+                Loc.T("Bảng chữ cái, phát âm, A1 → B2 và đề thi thử TORFL có đáp án.",
+                      "Alphabet, pronunciation, A1 → B2 and TORFL mock tests with answer keys.",
+                      "文字・発音・A1→B2、解答付きTORFL模試。"),
                 Loc.F("{0} bước", "{0} steps", "{0}ステップ", NihongoLife.StudyModes.Russian.RussianCourse.Path.Steps.Count()), true, OpenRussianPath);
             _status.text = "";
         }
@@ -141,11 +141,19 @@ namespace NihongoLife.UI
             UiKit.Place(title.rectTransform, 96f, 18f, width - 116f, 60f);
             title.textWrappingMode = TextWrappingModes.Normal;
             var b = UiKit.Label(card.transform, "Body", body, 12.5f, UiTheme.TextSoft, FontStyles.Normal, TextAlignmentOptions.TopLeft, true);
-            UiKit.Place(b.rectTransform, 20f, 84f, width - 40f, 66f);
+            UiKit.Place(b.rectTransform, 20f, 84f, width - 40f, 74f);
             var chip = UiKit.Chip(card.transform, "Badge", badge, UiKit.Alpha(color, 0.3f), UiTheme.Text, enabled ? "star" : "hourglass_top", 12.5f);
-            UiKit.Place(chip, 20f, 156f, width - 40f - 130f, 28f);
+            // A long badge (Russian) shrinks to its place: fitted to the text it ran under the Open button.
+            chip.GetComponent<ContentSizeFitter>().horizontalFit = ContentSizeFitter.FitMode.Unconstrained;
+            var chipText = chip.Find("Text").GetComponent<TextMeshProUGUI>();
+            chipText.textWrappingMode = TextWrappingModes.NoWrap;
+            chipText.overflowMode = TextOverflowModes.Ellipsis;
+            chipText.enableAutoSizing = true;
+            chipText.fontSizeMin = 9.5f;
+            chipText.fontSizeMax = 12.5f;
+            UiKit.Place(chip, 20f, 166f, width - 40f - 130f, 28f);
             var go = UiKit.Button(card.transform, "Open", "Mở", "Open", "開く", () => open(), enabled ? UiKit.Kind.Primary : UiKit.Kind.Quiet, "arrow_forward", 15f);
-            UiKit.Place((RectTransform)go.transform, width - 20f - 112f, 154f, 112f, 44f);
+            UiKit.Place((RectTransform)go.transform, width - 20f - 112f, 162f, 112f, 44f);
         }
 
         private T Child<T>() where T : MenuPopupBase

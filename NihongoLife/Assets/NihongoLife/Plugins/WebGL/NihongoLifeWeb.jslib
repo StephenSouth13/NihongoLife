@@ -37,6 +37,17 @@ mergeInto(LibraryManager.library, {
     return buffer;
   },
 
+  // Web release check (Core/WebQaBridge, page URL with qa=1 only).
+  NL_QaLog: function (type, messagePtr) {
+    var q = window.__nlQa = window.__nlQa || { logs: [] };
+    q.logs.push([type, UTF8ToString(messagePtr)]);
+  },
+
+  NL_QaReport: function (jsonPtr) {
+    var q = window.__nlQa = window.__nlQa || { logs: [] };
+    q.report = UTF8ToString(jsonPtr);
+  },
+
   NL_GetDprCap: function () {
     try {
       var parsed = parseFloat(localStorage.getItem('nihongo.webgl.dprCap'));
