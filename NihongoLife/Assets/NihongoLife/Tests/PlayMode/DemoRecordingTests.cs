@@ -31,7 +31,7 @@ namespace NihongoLife.Tests
     /// voice line (NL_DEMO_VO: "id\tseconds" per line), and timeline.tsv maps beats to frames for the audio mix.
     /// Explicit: run with -testFilter Demo_RecordFrames; NL_DEMO_DIR picks the frame folder.
     /// </summary>
-    public class DemoRecordingTests
+    public partial class DemoRecordingTests
     {
         private static string FrameFolder => System.Environment.GetEnvironmentVariable("NL_DEMO_DIR") is { Length: > 0 } dir ? dir : Path.Combine(Path.GetTempPath(), "NihongoLifeDemoFrames");
 

@@ -111,7 +111,7 @@ namespace NihongoLife.Core
             AddButton(GameInputId.UseItem, "UseItem", "<Keyboard>/c", "<Gamepad>/buttonNorth");
             AddButton(GameInputId.Chat, "Chat", "<Keyboard>/enter");
             AddButton(GameInputId.Voice, "Voice", "<Keyboard>/v");
-            AddButton(GameInputId.Attack, "Attack", "<Mouse>/leftButton", "<Gamepad>/rightTrigger");
+            AddButton(GameInputId.Attack, "Attack", "<Keyboard>/x", "<Gamepad>/rightTrigger"); // never a mouse button: every click near an NPC was a ¥500 fine
             AddButton(GameInputId.DropItem, "DropItem", "<Keyboard>/g", "<Gamepad>/dpad/down");
             AddButton(GameInputId.Pause, "Pause", "<Keyboard>/escape", "<Gamepad>/start");
             AddButton(GameInputId.Emote, "Emote", "<Keyboard>/e", "<Gamepad>/dpad/left");

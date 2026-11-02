@@ -48,18 +48,17 @@ namespace NihongoLife.World
             StartCoroutine(StabilizePlayerSpawn());
         }
 
+        private const float StoolSeatHeight = 0.22f;
+
         /// <summary>Customers at the counter (DinerFlow): stools along it, the register by the door; the player keeps
         /// the middle seat and the two tables.</summary>
         private void BuildDiners()
         {
             var seats = new List<(Vector3, Quaternion)>();
-            foreach (float dx in new[] { -4.2f, -2.4f, 2.4f, 4.2f })
-            {
-                var seat = new Vector3(CenterX + dx, 0f, 2.3f);
-                Block("CounterStool_" + dx, seat + new Vector3(0f, 0.22f, 0f), new Vector3(0.12f, 0.44f, 0.12f), DarkWood, false);
-                Block("CounterStoolTop_" + dx, seat + new Vector3(0f, 0.46f, 0f), new Vector3(0.46f, 0.07f, 0.46f), WarmWood, false);
-                seats.Add((seat, Quaternion.identity)); // facing the counter (+Z)
-            }
+            // The scene's own stools (CounterStool_-2 … 2, 2.05 m apart): a second set here stood beside them and guests sat
+            // between the two.
+            foreach (float dx in new[] { -4.1f, -2.05f, 2.05f, 4.1f })
+                seats.Add((new Vector3(CenterX + dx, StoolSeatHeight, 2.2f), Quaternion.identity)); // facing the counter (+Z)
             Block("Register", new Vector3(CenterX + 5.4f, 0.5f, -6.3f), new Vector3(1.3f, 1f, 0.6f), WarmWood, true);
             Block("RegisterTill", new Vector3(CenterX + 5.4f, 1.12f, -6.3f), new Vector3(0.45f, 0.25f, 0.35f), new Color(0.2f, 0.2f, 0.22f), false);
             var chef = _generated.Find("SushiChef_Ota");

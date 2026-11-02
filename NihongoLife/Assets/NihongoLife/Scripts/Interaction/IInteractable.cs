@@ -28,6 +28,7 @@ namespace NihongoLife.Interaction
         {
             ["Vào phòng khám"] = ("Vào phòng khám", "Enter the clinic", "診察室に入る"),
             ["Vào tiệm nhạc"] = ("Vào tiệm nhạc", "Enter the music shop", "楽器店に入る"),
+            ["Vào cửa hàng thời trang"] = ("Vào cửa hàng thời trang", "Enter the clothes shop", "服屋に入る"),
             ["Thanh toán"] = ("Thanh toán", "Pay at the register", "会計する"),
             ["Talk"] = ("Nói chuyện", "Talk", "はなす"),
             ["Đi vào"] = ("Đi vào", "Go in", "入る"),
@@ -45,7 +46,7 @@ namespace NihongoLife.Interaction
             ["Vào ga tàu"] = ("Vào ga tàu", "Enter the station", "駅に入る"),
             ["Vào Game Center"] = ("Vào Game Center", "Enter the Game Center", "ゲームセンターに入る"),
             ["Về phòng trọ"] = ("Về phòng trọ", "Go home to your room", "部屋に帰る"),
-            ["Thanh toán với chị Ito"] = ("Thanh toán với chị Ito", "Pay Ito at the register", "レジで いとうさんに払う"),
+            ["Thanh toán với chị Ito"] = ("Thanh toán với anh Ito", "Pay Ito at the register", "レジで いとうさんに払う"),
             ["Ra phố"] = ("Ra phố", "Go out to the street", "外に出る"),
             ["Ra phố (về Hibari-chō)"] = ("Ra phố (về Hibari-chō)", "Go out (back to Hibari-chō)", "外に出る（ひばり町へ）"),
             ["Mua vé với anh Kimura"] = ("Mua vé với anh Kimura", "Buy a ticket from Kimura", "木村さんから きっぷを かう"),

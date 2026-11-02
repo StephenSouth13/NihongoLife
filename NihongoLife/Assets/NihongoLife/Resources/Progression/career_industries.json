@@ -78,6 +78,21 @@
         "producer",
         "painter"
       ]
+    },
+    {
+      "id": "fashion",
+      "color": "#D2558C",
+      "nameVi": "Thời trang",
+      "nameEn": "Fashion",
+      "nameJa": "ファッション",
+      "nameRu": "Мода",
+      "blurbVi": "Hibari Mode: gấp đồ, tư vấn cỡ và màu, phòng thử đồ, thu ngân. Lên cao thành stylist hoặc nhà thiết kế.",
+      "blurbEn": "Hibari Mode: folding, advising on sizes and colours, the fitting room, the till. Later a stylist or a designer.",
+      "blurbJa": "ひばりモード：たたみ、サイズと色の案内、試着室、レジ。のちにスタイリストかデザイナーへ。",
+      "blurbRu": "Hibari Mode: укладка одежды, советы по размеру и цвету, примерочная, касса. Затем стилист или дизайнер.",
+      "careers": [
+        "fashion"
+      ]
     }
   ],
   "looks": [
@@ -150,6 +165,14 @@
       "industry": "arts",
       "variant": "painter_sakura",
       "gesture": "paint_canvas",
+      "alt": "think",
+      "prop": ""
+    },
+    {
+      "career": "fashion",
+      "industry": "fashion",
+      "variant": "fashion_riku",
+      "gesture": "fold_clothes",
       "alt": "think",
       "prop": ""
     }

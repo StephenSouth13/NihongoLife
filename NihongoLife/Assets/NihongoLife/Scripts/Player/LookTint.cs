@@ -12,13 +12,36 @@ namespace NihongoLife.Player
     public sealed class LookTint
     {
         public string skin, top, bottom;
+        /// <summary>A complete outfit: every colour block of the clothes changes, not only the main top and bottom.</summary>
+        public bool outfit;
 
         public LookTint() { }
         public LookTint(string skin, string top, string bottom) { this.skin = skin; this.top = top; this.bottom = bottom; }
 
         public bool IsEmpty => string.IsNullOrEmpty(skin) && string.IsNullOrEmpty(top) && string.IsNullOrEmpty(bottom);
         /// <summary>Part of a baked atlas's cache key.</summary>
-        public string Key => (skin ?? "") + "/" + (top ?? "") + "/" + (bottom ?? "");
+        public string Key => (skin ?? "") + "/" + (top ?? "") + "/" + (bottom ?? "") + (outfit ? "/full" : "");
+    }
+
+    /// <summary>One shape of an accessory; x right, y up, z forward. Where it starts and its unit come from "bone":
+    /// "head" the mouth, in face widths, for what sits on the face; "crown" the top of the head and "brow" the forehead
+    /// at the head's centre, in head radii, so a hat fits every model and hair; "chest" the upper-chest bone, in face
+    /// widths. Tone is its colour.</summary>
+    [Serializable]
+    public sealed class LookWearPiece
+    {
+        public string bone = "head", shape = "sphere", tone = "#FFFFFF";
+        public float[] pos = { 0f, 0f, 0f };
+        public float[] scale = { 0.1f, 0.1f, 0.1f };
+        public float[] rot = { 0f, 0f, 0f };
+    }
+
+    /// <summary>A complete outfit as a character wears it: the clothes' colours and the accessories.</summary>
+    public sealed class LookOutfit
+    {
+        public string id;
+        public LookTint tint;
+        public LookWearPiece[] pieces = Array.Empty<LookWearPiece>();
     }
 
     /// <summary>The flat colour blocks of one Kids-pack model's atlas, as CharacterVariantBuilder measured them
@@ -28,6 +51,9 @@ namespace NihongoLife.Player
     public sealed class LookPalette
     {
         public string kid, model, skinFrom, topFrom, bottomFrom;
+        /// <summary>Every colour block of the clothes, for a complete outfit: above the waist, and from the waist down
+        /// (dungarees, which cover both, count as the bottom).</summary>
+        public string[] outfitTop = Array.Empty<string>(), outfitBottom = Array.Empty<string>();
     }
 
     [Serializable]

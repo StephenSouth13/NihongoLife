@@ -43,7 +43,7 @@ namespace NihongoLife.Tests
             var report = new System.Text.StringBuilder();
             try
             {
-                foreach (string id in new[] { "word_shooter", "order_rush", "kana_rain", "ufo_catcher", "basket_count" })
+                foreach (string id in new[] { "word_shooter", "order_rush", "kana_rain", "ufo_catcher", "basket_count", "hoop_shot" })
                 {
                     var launcher = launchers.FirstOrDefault(l => l.Definition != null && l.Definition.id == id);
                     Assert.NotNull(launcher, id + " machine is in the Game Center");
@@ -123,6 +123,17 @@ namespace NihongoLife.Tests
                     var other = ufo.AnyOther();
                     ufo.AimAt(other); ufo.DropClaw();
                     for (float t = 0f; t < 3f && ufo.Dropping; t += Time.unscaledDeltaTime) { ufo.AimAt(other); yield return null; }
+                    break;
+                case HoopShotGame hoop:
+                    for (int i = 0; i < 2; i++)
+                    {
+                        hoop.Throw(hoop.PerfectThrow());
+                        for (float t = 0f; t < 4f && hoop.Flying; t += Time.unscaledDeltaTime) yield return null;
+                    }
+                    Assert.AreEqual(2, hoop.Baskets, "Two clean throws score two baskets");
+                    hoop.Throw(new Vector2(900f, 500f));
+                    for (float t = 0f; t < 4f && hoop.Flying; t += Time.unscaledDeltaTime) yield return null;
+                    Assert.AreEqual(2, hoop.Baskets, "A throw wide of the hoop scores nothing");
                     break;
                 case BasketCountGame basket:
                     for (int i = 0; i < 3; i++)

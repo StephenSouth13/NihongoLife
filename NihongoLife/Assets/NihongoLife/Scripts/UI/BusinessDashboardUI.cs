@@ -16,6 +16,7 @@ namespace NihongoLife.UI
         private Button _partnerButton, _roleButton, _collectButton, _trainButton, _fireButton;
         private TextMeshProUGUI _workersText;
         private int _roleIndex;
+        private int _kindIndex;
         public Button HireButton => _hireButton;
         public Button CollectButton => _collectButton;
         public Button RoleButton => _roleButton;
@@ -75,8 +76,13 @@ namespace NihongoLife.UI
 
             _hireButton.onClick.AddListener(OnHireClicked);
             _partnerButton.onClick.AddListener(OnPartnerClicked);
-            _roleButton.onClick.AddListener(() => { _roleIndex = (_roleIndex + 1) % BusinessWorkers.Roles.Length; RefreshUI(); });
-            _collectButton.onClick.AddListener(() => { BusinessWorkers.Collect(BusinessSystem.Instance); RefreshUI(); });
+            _roleButton.onClick.AddListener(() =>
+            {
+                if (BusinessSystem.Instance != null && !BusinessSystem.Instance.OwnsCompany) _kindIndex = (_kindIndex + 1) % BusinessLedger.File.kinds.Length;
+                else _roleIndex = (_roleIndex + 1) % BusinessWorkers.Roles.Length;
+                RefreshUI();
+            });
+            _collectButton.onClick.AddListener(() => { BusinessLedger.Withdraw(BusinessSystem.Instance); RefreshUI(); });
             _trainButton.onClick.AddListener(() => { var w = Weakest(); if (w != null) BusinessWorkers.Train(BusinessSystem.Instance, w.id); RefreshUI(); });
             _fireButton.onClick.AddListener(() => { var w = Latest(); if (w != null) BusinessWorkers.Fire(BusinessSystem.Instance, w.id); RefreshUI(); });
 
@@ -117,6 +123,12 @@ namespace NihongoLife.UI
                 _statsText.text = NihongoLife.Core.Loc.T("Hãy học lên 300 Điểm Trí Tuệ và tiết kiệm 50,000 Yen để khởi nghiệp!", "Reach 300 knowledge points and save ¥50,000 to start a business!", "知識ポイント300と50,000円をためて起業しましょう！");
                 SetLabel(_hireButton, Loc.T("Lập công ty (", "Found company (", "会社を作る（") + Loc.Yen(BusinessSystem.CompanyCapitalRequirement) + Loc.T(")", ")", "）")); _hireButton.interactable = BusinessSystem.Instance != null; DisableWorkerButtons();
                 _partnerButton.interactable = false;
+                var kind = BusinessLedger.File.kinds[_kindIndex];
+                SetLabel(_roleButton, kind.Name);
+                _roleButton.interactable = true;
+                _workersText.text = Loc.F("Loại hình: {0}. Chi phí cố định {1} mỗi tuần, doanh thu nhân viên x{2}. Bấm ô giữa để đổi loại hình.",
+                    "Kind: {0}. Fixed costs {1} a week, staff revenue x{2}. Press the middle button to change it.",
+                    "業種：{0}。固定費 {1}／週、売上 x{2}。中央のボタンで変更できます。", kind.Name, Loc.Yen(kind.WeeklyCost), kind.revenueFactor.ToString("0.##"));
                 return;
             }
 
@@ -134,9 +146,9 @@ namespace NihongoLife.UI
             SetLabel(_hireButton, Loc.T("Tuyển", "Hire", "雇う") + " (" + Loc.Yen(wage) + ")");
             SetLabel(_roleButton, Loc.T("Vị trí: ", "Role: ", "役割：") + role.Label);
             _hireButton.interactable = b.capitalYen >= wage && b.workers != null && b.workers.Count < BusinessWorkers.MaxWorkers;
-            BusinessWorkers.Pending(BusinessSystem.Instance, out int gross, out int wages, out int net);
-            SetLabel(_collectButton, Loc.T("Thu về", "Collect", "回収") + " (" + Loc.Yen(Mathf.Max(0, net)) + ")");
-            _collectButton.interactable = net > 0;
+            int spare = Mathf.Max(0, b.capitalYen - BusinessLedger.Reserve(b));
+            SetLabel(_collectButton, Loc.T("Rút về ví", "To my wallet", "財布へ") + " (" + Loc.Yen(spare) + ")");
+            _collectButton.interactable = spare > 0;
             _roleButton.interactable = true;
             var weakest = Weakest();
             SetLabel(_trainButton, Loc.T("Đào tạo", "Train", "研修") + (weakest != null ? " (" + Loc.Yen(BusinessWorkers.TrainCost(weakest)) + ")" : ""));
@@ -148,11 +160,22 @@ namespace NihongoLife.UI
             else
             {
                 foreach (var w in b.workers) sb.AppendLine(BusinessWorkers.Describe(w));
-                sb.Append(Loc.T("Đang chờ thu: ", "Waiting to collect: ", "回収待ち：") + Loc.Yen(gross) + " − " + Loc.T("lương ", "wages ", "給料 ") + Loc.Yen(wages) + " = " + Loc.Yen(net));
+                sb.Append(WeekLine(b));
             }
             if (!string.IsNullOrEmpty(_message)) sb.Append("\n").Append(_message);
             _workersText.text = sb.ToString();
             _partnerButton.interactable = b.reputation >= 60;
+        }
+
+        /// <summary>What the week looks like so far: everything here runs by itself, the player only reads it.</summary>
+        private static string WeekLine(NihongoLife.Data.BusinessRecord b)
+        {
+            var kind = BusinessLedger.KindOf(b);
+            int today = BusinessWorkers.Today();
+            return Loc.F("{0}: chi phí {1}/tuần · tuần này thu {2}, lương {3} · còn {4} ngày đến kỳ quyết toán",
+                "{0}: costs {1} a week · this week income {2}, wages {3} · {4} days to the weekly accounts",
+                "{0}：経費 {1}／週・今週の収入 {2}、給料 {3}・決算まであと{4}日",
+                kind.Name, Loc.Yen(kind.WeeklyCost), Loc.Yen(b.weekIncomeYen), Loc.Yen(b.weekWagesYen), BusinessLedger.DaysToWeekEnd(b, today));
         }
 
         private static void SetLabel(Button b, string text) { var l = b != null ? b.GetComponentInChildren<TMP_Text>(true) : null; if (l != null) l.text = text; }
@@ -183,7 +206,7 @@ namespace NihongoLife.UI
         {
             if (BusinessSystem.Instance != null)
             {
-                var sys = BusinessSystem.Instance; if (!sys.OwnsCompany) { sys.TryOpenCompany("Mirai Learning"); RefreshUI(); return; } BusinessWorkers.Hire(sys, BusinessWorkers.Roles[_roleIndex].Id, Mathf.Max(25000, BusinessWorkers.LivingWage(sys.Business)));
+                var sys = BusinessSystem.Instance; if (!sys.OwnsCompany) { sys.TryOpenCompany("Mirai Learning", BusinessLedger.File.kinds[_kindIndex].id); RefreshUI(); return; } BusinessWorkers.Hire(sys, BusinessWorkers.Roles[_roleIndex].Id, Mathf.Max(25000, BusinessWorkers.LivingWage(sys.Business)));
                 RefreshUI();
             }
         }

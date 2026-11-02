@@ -1,0 +1,154 @@
+{
+  "schema": "nihongolife.fashion_floor.v1",
+  "requests": [
+    {
+      "lineJa": "この シャツの Mサイズは ありますか。",
+      "reading": "kono shatsu no emu saizu wa arimasu ka",
+      "vi": "Áo này có cỡ M không?",
+      "en": "Do you have this shirt in medium?",
+      "answerJa": "はい、Mサイズは こちらです。",
+      "answerVi": "Dạ có, cỡ M đây ạ.",
+      "answerEn": "Yes, here is the medium.",
+      "wrongJa": [
+        "Lサイズは ありません。",
+        "おにあいです。"
+      ],
+      "wrongVi": [
+        "Không có cỡ L.",
+        "Hợp với quý khách lắm."
+      ],
+      "wrongEn": [
+        "We have no large.",
+        "It suits you."
+      ]
+    },
+    {
+      "lineJa": "もう少し 小さいのは ありますか。",
+      "reading": "mō sukoshi chiisai no wa arimasu ka",
+      "vi": "Có cái nhỏ hơn một chút không?",
+      "en": "Do you have a slightly smaller one?",
+      "answerJa": "Sサイズを お持ちします。",
+      "answerVi": "Tôi mang cỡ S đến ạ.",
+      "answerEn": "I will bring the small.",
+      "wrongJa": [
+        "Lサイズを お持ちします。",
+        "いらっしゃいませ。"
+      ],
+      "wrongVi": [
+        "Tôi mang cỡ L đến ạ.",
+        "Xin chào quý khách."
+      ],
+      "wrongEn": [
+        "I will bring the large.",
+        "Welcome."
+      ]
+    },
+    {
+      "lineJa": "これの 青は ありますか。",
+      "reading": "kore no ao wa arimasu ka",
+      "vi": "Cái này có màu xanh không?",
+      "en": "Do you have this in blue?",
+      "answerJa": "青は あちらの たなに ございます。",
+      "answerVi": "Màu xanh ở kệ đằng kia ạ.",
+      "answerEn": "The blue ones are on that shelf.",
+      "wrongJa": [
+        "赤は 売り切れです。",
+        "千円です。"
+      ],
+      "wrongVi": [
+        "Màu đỏ hết hàng rồi.",
+        "1.000 yên ạ."
+      ],
+      "wrongEn": [
+        "Red is sold out.",
+        "That is ¥1,000."
+      ]
+    },
+    {
+      "lineJa": "この ジャケットは あらえますか。",
+      "reading": "kono jaketto wa araemasu ka",
+      "vi": "Áo khoác này giặt được không?",
+      "en": "Can this jacket be washed?",
+      "answerJa": "はい、せんたくきで あらえます。",
+      "answerVi": "Dạ được, giặt máy được ạ.",
+      "answerEn": "Yes, it is machine washable.",
+      "wrongJa": [
+        "はい、あたたかいです。",
+        "しちゃくしつは あちらです。"
+      ],
+      "wrongVi": [
+        "Dạ, ấm lắm ạ.",
+        "Phòng thử đồ ở đằng kia."
+      ],
+      "wrongEn": [
+        "Yes, it is warm.",
+        "The fitting room is over there."
+      ]
+    }
+  ],
+  "fittings": [
+    {
+      "lineJa": "これを 着てみても いいですか。",
+      "reading": "kore o kite mite mo ii desu ka",
+      "vi": "Tôi mặc thử cái này được không?",
+      "en": "May I try this on?",
+      "answerJa": "はい、しちゃくしつは こちらです。",
+      "answerVi": "Dạ được, phòng thử đồ ở đây ạ.",
+      "answerEn": "Of course, the fitting room is this way.",
+      "wrongJa": [
+        "ありがとうございました。",
+        "三千円です。"
+      ],
+      "wrongVi": [
+        "Cảm ơn quý khách.",
+        "3.000 yên ạ."
+      ],
+      "wrongEn": [
+        "Thank you for shopping.",
+        "That is ¥3,000."
+      ]
+    },
+    {
+      "lineJa": "サイズは どうでしょうか。…少し 大きいです。",
+      "reading": "saizu wa dō deshō ka… sukoshi ōkii desu",
+      "vi": "Cỡ thế nào ạ? …Hơi rộng một chút.",
+      "en": "How is the size? …A little big.",
+      "answerJa": "一つ 小さいサイズを お持ちしましょうか。",
+      "answerVi": "Để tôi mang cỡ nhỏ hơn một số nhé?",
+      "answerEn": "Shall I bring one size smaller?",
+      "wrongJa": [
+        "一つ 大きいサイズを お持ちしましょうか。",
+        "またの ご来店を お待ちしております。"
+      ],
+      "wrongVi": [
+        "Để tôi mang cỡ lớn hơn nhé?",
+        "Hẹn gặp lại quý khách."
+      ],
+      "wrongEn": [
+        "Shall I bring one size bigger?",
+        "We hope to see you again."
+      ]
+    },
+    {
+      "lineJa": "どうですか。にあいますか。",
+      "reading": "dō desu ka. niaimasu ka",
+      "vi": "Thế nào? Có hợp không?",
+      "en": "How is it? Does it suit me?",
+      "answerJa": "とても よく おにあいです。",
+      "answerVi": "Rất hợp với quý khách ạ.",
+      "answerEn": "It suits you very well.",
+      "wrongJa": [
+        "売り切れです。",
+        "ふくろは いりますか。"
+      ],
+      "wrongVi": [
+        "Hết hàng rồi ạ.",
+        "Quý khách có cần túi không?"
+      ],
+      "wrongEn": [
+        "It is sold out.",
+        "Do you need a bag?"
+      ]
+    }
+  ]
+}

@@ -51,6 +51,14 @@ namespace NihongoLife.Tests
             }
         }
 
+        /// <summary>A model saved as its old Prefab object cannot be instantiated: serving a dish threw and the table stayed stuck.</summary>
+        [Test]
+        public void EveryDishModel_PointsAtARealObject()
+        {
+            foreach (var path in Directory.GetFiles(Path.Combine(Application.dataPath, "NihongoLife/Resources/Restaurants"), "*.asset"))
+                StringAssert.DoesNotContain("fileID: 100100000", File.ReadAllText(path), Path.GetFileName(path));
+        }
+
         [Test]
         public void EveryRenderer_HasItsMaterials()
         {

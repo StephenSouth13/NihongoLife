@@ -146,15 +146,15 @@ namespace NihongoLife.UI
 
             BuildStatusWidget(dock);
             BuildObjectiveChip(dock);
+            HudToggleBar.Build(dock);
 
-            // Touch layouts have no keyboard: the shortcuts live in a drawer behind "Tools" at the top centre, so on a
-            // phone held sideways they never cover the middle of the screen (a 10-button row ran across it).
-            if (HudCanvasFitter.IsTouchLayout(false)) BuildTouchDrawer(dock, buttons);
+            // The shortcuts live in one tray behind an icon, so they never cover the picture until they are asked for.
+            BuildShortcutDock(dock, buttons);
 
             BuildCharacterWindow(root, closeCharacter);
         }
 
-        /// <summary>The touch drawer of shortcuts (bag, character, map, tasks, exams …), closed until "Tools" is tapped.</summary>
+        /// <summary>The tray of shortcuts (bag, character, map, tasks, exams …), closed until its icon is pressed.</summary>
         public RectTransform TouchDrawer { get; private set; }
         private RectTransform _drawerToggle;
 
@@ -177,7 +177,7 @@ namespace NihongoLife.UI
             rect.anchoredPosition = new Vector2(right ? -24f : 24f, y);
         }
 
-        /// <summary>On a narrow touch canvas the objective chip (top left) narrows so it ends before "Tools".</summary>
+        /// <summary>On a narrow touch canvas the objective chip (top left) narrows so it ends before the shortcuts icon.</summary>
         private void KeepObjectiveClearOfTools()
         {
             if (_objective == null || _drawerToggle == null || !_drawerToggle.gameObject.activeInHierarchy) return;
@@ -192,33 +192,76 @@ namespace NihongoLife.UI
             if (Mathf.Abs(_objective.sizeDelta.x - width) > 0.5f) _objective.sizeDelta = new Vector2(width, _objective.sizeDelta.y);
         }
 
-        private void BuildTouchDrawer(RectTransform dock, IReadOnlyList<(string name, string key, string label, Action action)> buttons)
+        private static string ShortcutIcon(string name) => name switch
         {
-            var toggle = NLUi.Button(dock, "ActionDrawerToggle", "", _font, () => SetTouchDrawer(!TouchDrawer.gameObject.activeSelf), NLUi.Ink, 18f, NLUi.Gold, 56f);
-            LocText.Set(toggle.GetComponentInChildren<TextMeshProUGUI>(), () => NihongoLife.Core.Loc.T("Công cụ", "Tools", "ツール"));
-            var toggleRect = (RectTransform)toggle.transform;
-            _drawerToggle = toggleRect;
-            NLUi.Anchor(toggleRect, new Vector2(0.5f, 1f), new Vector2(0f, -14f), new Vector2(150f, 56f));
-            toggleRect.pivot = new Vector2(0.5f, 1f);
+            "BagButton" => "backpack",
+            "CharacterButton" => "person",
+            "MapButton" => "map",
+            "QuestButton" => "checklist",
+            "ExamButton" => "quiz",
+            "StudyButton" => "school",
+            "NotebookButton" => "edit_note",
+            "HandbookButton" => "menu_book",
+            "OverviewButton" => "explore",
+            "SettingsButton" => "settings",
+            _ => "grid_view",
+        };
 
+        /// <summary>Every shortcut behind one icon: a tray of icon tiles with the name in the current language and, on a
+        /// computer, the key. Top centre on a touch screen, where the corners belong to the thumbs; top right on a computer.</summary>
+        private void BuildShortcutDock(RectTransform dock, IReadOnlyList<(string name, string key, string label, Action action)> buttons)
+        {
+            bool touch = HudCanvasFitter.IsTouchLayout(false);
+            var disc = UiKit.Image(dock, "ActionDrawerToggle", NLUi.Ink, UiKit.Circle, true);
+            var toggleRect = disc.rectTransform;
+            _drawerToggle = toggleRect;
+            float size = touch ? 56f : 48f;
+            Vector2 anchor = touch ? new Vector2(0.5f, 1f) : new Vector2(1f, 1f);
+            NLUi.Anchor(toggleRect, anchor, touch ? new Vector2(0f, -14f) : new Vector2(-146f, -68f), new Vector2(size, size));
+            toggleRect.pivot = anchor;
+            var mark = UiKit.Icon(toggleRect, "grid_view", NLUi.Gold, size * 0.56f);
+            UiKit.Pin(mark.rectTransform, new Vector2(0.5f, 0.5f), 0f, 0f, size * 0.56f, size * 0.56f);
+            mark.raycastTarget = false;
+            var toggleButton = toggleRect.gameObject.AddComponent<Button>();
+            toggleButton.targetGraphic = disc;
+            toggleButton.onClick.AddListener(() => SetTouchDrawer(!TouchDrawer.gameObject.activeSelf));
+
+            const int columns = 5;
+            const float tileWidth = 96f, tileHeight = 82f;
             var drawer = NLUi.Panel(dock, "ActionBar", new Color(0.04f, 0.05f, 0.07f, 0.94f), new RectOffset(12, 12, 12, 12), 8f);
-            NLUi.Anchor(drawer, new Vector2(0.5f, 1f), new Vector2(0f, -78f), new Vector2(5 * 116f + 24f, 0f));
-            drawer.pivot = new Vector2(0.5f, 1f);
+            NLUi.Anchor(drawer, anchor, touch ? new Vector2(0f, -78f) : new Vector2(-146f, -124f), new Vector2(columns * (tileWidth + 8f) + 16f, 0f));
+            drawer.pivot = anchor;
             NLUi.FitContent(drawer, width: false, height: true);
             RectTransform row = null;
             for (int i = 0; i < buttons.Count; i++)
             {
-                if (i % 5 == 0)
+                if (i % columns == 0)
                 {
-                    row = NLUi.Group(drawer, "Row" + i / 5, false, 8f, TextAnchor.MiddleCenter, false);
+                    row = NLUi.Group(drawer, "Row" + i / columns, false, 8f, TextAnchor.MiddleCenter, false);
                     ((HorizontalLayoutGroup)row.GetComponent<HorizontalOrVerticalLayoutGroup>()).childForceExpandWidth = false;
-                    NLUi.Size(row, -1f, 58f);
+                    NLUi.Size(row, -1f, tileHeight);
                 }
-                var (name, _, label, action) = buttons[i];
-                var button = NLUi.Button(row, name, label, _font, () => { SetTouchDrawer(false); action?.Invoke(); }, new Color(0.14f, 0.17f, 0.22f), 16f, NLUi.Text, 58f);
+                var (name, key, label, action) = buttons[i];
+                var tile = NLUi.Button(row, name, label, _font, () => { SetTouchDrawer(false); action?.Invoke(); }, new Color(0.14f, 0.17f, 0.22f), 13f, NLUi.Text, tileHeight);
+                NLUi.Size(tile, tileWidth, tileHeight);
+                var caption = tile.GetComponentInChildren<TextMeshProUGUI>();
                 string buttonName = name, fallback = label;
-                LocText.Set(button.GetComponentInChildren<TextMeshProUGUI>(), () => DockLabel(buttonName, fallback));
-                NLUi.Size(button, 108f, 58f);
+                LocText.Set(caption, () => DockLabel(buttonName, fallback));
+                caption.alignment = TextAlignmentOptions.Bottom;
+                caption.rectTransform.offsetMin = new Vector2(4f, 7f);
+                caption.rectTransform.offsetMax = new Vector2(-4f, -4f);
+                caption.raycastTarget = false;
+                var glyph = UiKit.Icon(tile.transform, ShortcutIcon(name), NLUi.Gold, 34f);
+                UiKit.Pin(glyph.rectTransform, new Vector2(0.5f, 1f), 0f, -9f, 34f, 34f);
+                glyph.raycastTarget = false;
+                if (!touch)
+                {
+                    var cap = NLUi.Label(tile.transform, "Key", key, 11f, NLUi.Muted, _font, FontStyles.Bold, TextAlignmentOptions.TopRight);
+                    cap.rectTransform.anchorMin = cap.rectTransform.anchorMax = cap.rectTransform.pivot = Vector2.one;
+                    cap.rectTransform.anchoredPosition = new Vector2(-6f, -4f);
+                    cap.rectTransform.sizeDelta = new Vector2(34f, 16f);
+                    cap.raycastTarget = false;
+                }
             }
             TouchDrawer = drawer;
             drawer.SetAsLastSibling(); // over the chips that hang under the button
@@ -320,6 +363,12 @@ namespace NihongoLife.UI
             Icon(wallet, "WalletIcon", UiIcons.Coin, 26f, Color.white); // the gold yen coin
             _wallet = NLUi.Label(wallet, "Wallet", "", 19f, NLUi.Gold, _font, FontStyles.Bold);
             _wallet.textWrappingMode = TextWrappingModes.NoWrap;
+            // Dong and rubles are longer than yen: the amount shrinks inside its pill instead of running out of the card.
+            _wallet.enableAutoSizing = true;
+            _wallet.fontSizeMin = 12f;
+            _wallet.fontSizeMax = 19f;
+            var walletWidth = _wallet.gameObject.Need<LayoutElement>();
+            walletWidth.preferredWidth = walletWidth.minWidth = 92f;
             NLUi.FitContent(wallet, width: true, height: true);
             // +¥/−¥ with the reason rises from the chip; a click lists the last transactions.
             wallet.GetComponent<Image>().raycastTarget = true;
@@ -422,7 +471,7 @@ namespace NihongoLife.UI
                     try { info = StoryDirector.Hud(); } catch (Exception e) { Debug.LogException(e); }
                 }
             }
-            _objective.gameObject.SetActive(info != null);
+            _objective.gameObject.SetActive(info != null && !HudPrefs.QuestHidden);
             if (info == null) return;
             _objectiveKicker.text = info.Value.kicker;
             _objectiveText.text = info.Value.text;
@@ -664,6 +713,8 @@ namespace NihongoLife.UI
             Bind();
             if (Time.unscaledTime >= _nextRefresh) { _nextRefresh = Time.unscaledTime + 0.5f; Refresh(); }
             AnimateFills();
+            if (StatusWidget != null && StatusWidget.gameObject.activeSelf == HudPrefs.StatusHidden) StatusWidget.gameObject.SetActive(!HudPrefs.StatusHidden);
+            if (_objective != null && HudPrefs.QuestHidden && _objective.gameObject.activeSelf) _objective.gameObject.SetActive(false);
             KeepObjectiveClearOfTools();
             KeepClearOfThumbs();
             bool dialogueOpen = DialogueManager.Instance != null && DialogueManager.Instance.IsOpen;
@@ -797,7 +848,7 @@ namespace NihongoLife.UI
                 _mood.gameObject.SetActive(!string.IsNullOrEmpty(_mood.text));
             }
             _levelBadge.text = status.Level.ToString();
-            _wallet.text = yen.ToString("N0", System.Globalization.CultureInfo.InvariantCulture);
+            _wallet.text = NihongoLife.Core.Loc.Yen(yen);
             SetFill(_expFill, status.MaxExp > 0 ? status.CurrentExp / (float)status.MaxExp : 0f);
             foreach (var (key, _, _, _) in Needs)
             {

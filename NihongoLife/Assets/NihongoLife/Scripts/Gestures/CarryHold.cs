@@ -75,7 +75,7 @@ namespace NihongoLife.Gestures
             string current = layer.Current;
             if (current != null && current == Back && want != Back) { layer.Stop(0.2f); return; }
             if (want == null || current == want) return;
-            if (current == null) layer.Play(want);
+            if (current == null || current.StartsWith("ill_")) layer.Play(want); // a symptom gives way to what the hands are doing
         }
     }
 }

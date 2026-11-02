@@ -1556,6 +1556,100 @@
           "hex": "#F2C94C"
         }
       ]
+    },
+    {
+      "id": "fashion",
+      "nameVi": "Nhân viên thời trang",
+      "nameEn": "Fashion staff",
+      "nameJa": "ファッションスタッフ",
+      "topHex": "#2B2D36",
+      "bottomHex": "#3A3D47",
+      "pieces": [
+        {
+          "name": "TapeNeck",
+          "shape": "sphere",
+          "anchor": "chestFront",
+          "pos": [
+            0,
+            0.12,
+            -0.06
+          ],
+          "rot": [
+            0,
+            0,
+            0
+          ],
+          "size": [
+            0.62,
+            0.1,
+            0.5
+          ],
+          "hex": "#E8C34A"
+        },
+        {
+          "name": "TapeEndL",
+          "shape": "cube",
+          "anchor": "chestFront",
+          "pos": [
+            -0.14,
+            -0.08,
+            0.03
+          ],
+          "rot": [
+            0,
+            0,
+            0
+          ],
+          "size": [
+            0.05,
+            0.34,
+            0.02
+          ],
+          "hex": "#E8C34A"
+        },
+        {
+          "name": "TapeEndR",
+          "shape": "cube",
+          "anchor": "chestFront",
+          "pos": [
+            0.14,
+            -0.08,
+            0.03
+          ],
+          "rot": [
+            0,
+            0,
+            0
+          ],
+          "size": [
+            0.05,
+            0.34,
+            0.02
+          ],
+          "hex": "#E8C34A"
+        },
+        {
+          "name": "Badge",
+          "shape": "cube",
+          "anchor": "chestFront",
+          "pos": [
+            0.06,
+            0.02,
+            0.05
+          ],
+          "rot": [
+            0,
+            0,
+            0
+          ],
+          "size": [
+            0.09,
+            0.05,
+            0.02
+          ],
+          "hex": "#D2558C"
+        }
+      ]
     }
   ],
   "variants": [
@@ -2246,6 +2340,38 @@
       "person": "Yui Hosoda",
       "build": "sturdy",
       "ageGroup": "senior"
+    },
+    {
+      "id": "fashion_riku",
+      "kid": "kid_riku",
+      "uniform": "fashion",
+      "hair": "natural",
+      "beard": "none",
+      "age": 31,
+      "skinHex": "#8A5A3B",
+      "topHex": "",
+      "bottomHex": "",
+      "height": 1.03,
+      "girth": 0.96,
+      "person": "Ren Kisaragi",
+      "build": "slim",
+      "ageGroup": "adult"
+    },
+    {
+      "id": "fashion_mio",
+      "kid": "kid_mio",
+      "uniform": "fashion",
+      "hair": "natural",
+      "beard": "none",
+      "age": 26,
+      "skinHex": "#E8C3A0",
+      "topHex": "",
+      "bottomHex": "",
+      "height": 1.0,
+      "girth": 0.96,
+      "person": "Aya Mizuno",
+      "build": "slim",
+      "ageGroup": "adult"
     }
   ]
 }

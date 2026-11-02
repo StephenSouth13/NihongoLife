@@ -234,7 +234,7 @@ namespace NihongoLife.UI
         {
             _hintText.text = _table != null
                 ? Pick("ESC: đóng  |  Dùng nút - / + để chọn số lượng, rồi bấm 注文する để gọi món", "ESC: close  |  Use - / + to pick quantities, then press 注文する to order", "ESC: 閉じる  |  - / + で数を選んで、注文するを押します")
-                : Pick("ESC: đóng thực đơn  |  Muốn gọi món? Hãy đến bàn ăn và bấm E", "ESC: close menu  |  Want to order? Go to a table and press E", "ESC: 閉じる  |  注文はテーブルでできます");
+                : Pick("ESC: đóng thực đơn  |  Muốn gọi món? Hãy đến bàn ăn và bấm F", "ESC: close menu  |  Want to order? Go to a table and press F", "ESC: 閉じる  |  注文はテーブルでできます");
         }
 
         public static string Localize(string vi, string en, string ja) => Pick(vi, en, ja);

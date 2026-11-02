@@ -213,6 +213,162 @@
         "en": "tuna",
         "vi": "cá ngừ"
       }
+    },
+    {
+      "id": "fish_karei",
+      "model": "Turbot",
+      "sellPrice": 160,
+      "weight": 24,
+      "skill": 1,
+      "word": {
+        "ja": "かれい",
+        "reading": "karei",
+        "en": "flatfish",
+        "vi": "cá thờn bơn"
+      }
+    },
+    {
+      "id": "fish_budai",
+      "model": "ParrotFish",
+      "sellPrice": 260,
+      "weight": 16,
+      "skill": 1,
+      "word": {
+        "ja": "ぶだい",
+        "reading": "budai",
+        "en": "parrotfish",
+        "vi": "cá vẹt"
+      }
+    },
+    {
+      "id": "fish_hagi",
+      "model": "BlueTang",
+      "sellPrice": 240,
+      "weight": 14,
+      "skill": 1,
+      "word": {
+        "ja": "はぎ",
+        "reading": "hagi",
+        "en": "blue tang",
+        "vi": "cá đuôi gai xanh"
+      }
+    },
+    {
+      "id": "fish_kumanomi",
+      "model": "Clownfish",
+      "sellPrice": 180,
+      "weight": 18,
+      "skill": 1,
+      "word": {
+        "ja": "くまのみ",
+        "reading": "kumanomi",
+        "en": "clownfish",
+        "vi": "cá hề"
+      }
+    },
+    {
+      "id": "fish_hata",
+      "model": "CoralGrouper",
+      "sellPrice": 380,
+      "weight": 12,
+      "skill": 2,
+      "word": {
+        "ja": "はた",
+        "reading": "hata",
+        "en": "grouper",
+        "vi": "cá mú"
+      }
+    },
+    {
+      "id": "fish_koi",
+      "model": "Koi",
+      "sellPrice": 420,
+      "weight": 10,
+      "skill": 2,
+      "word": {
+        "ja": "こい",
+        "reading": "koi",
+        "en": "koi carp",
+        "vi": "cá chép"
+      }
+    },
+    {
+      "id": "fish_minokasago",
+      "model": "Lionfish",
+      "sellPrice": 460,
+      "weight": 8,
+      "skill": 2,
+      "word": {
+        "ja": "みのかさご",
+        "reading": "minokasago",
+        "en": "lionfish",
+        "vi": "cá mao tiên"
+      }
+    },
+    {
+      "id": "fish_ankou",
+      "model": "Anglerfish",
+      "sellPrice": 700,
+      "weight": 6,
+      "skill": 3,
+      "word": {
+        "ja": "あんこう",
+        "reading": "ankou",
+        "en": "anglerfish",
+        "vi": "cá vây chân"
+      }
+    },
+    {
+      "id": "fish_manbou",
+      "model": "Sunfish",
+      "sellPrice": 850,
+      "weight": 5,
+      "skill": 3,
+      "word": {
+        "ja": "まんぼう",
+        "reading": "manbou",
+        "en": "ocean sunfish",
+        "vi": "cá mặt trăng"
+      }
+    },
+    {
+      "id": "fish_mekajiki",
+      "model": "Swordfish",
+      "sellPrice": 1200,
+      "weight": 4,
+      "skill": 3,
+      "word": {
+        "ja": "めかじき",
+        "reading": "mekajiki",
+        "en": "swordfish",
+        "vi": "cá kiếm"
+      }
+    },
+    {
+      "id": "fish_same",
+      "model": "Shark",
+      "sellPrice": 3000,
+      "weight": 2,
+      "skill": 4,
+      "word": {
+        "ja": "さめ",
+        "reading": "same",
+        "en": "shark",
+        "vi": "cá mập"
+      }
+    },
+    {
+      "id": "fish_mitsukuri",
+      "model": "GoblinShark",
+      "sellPrice": 6000,
+      "weight": 1,
+      "skill": 4,
+      "word": {
+        "ja": "みつくりざめ",
+        "reading": "mitsukurizame",
+        "en": "goblin shark",
+        "vi": "cá mập yêu tinh"
+      }
     }
   ],
   "verbs": {

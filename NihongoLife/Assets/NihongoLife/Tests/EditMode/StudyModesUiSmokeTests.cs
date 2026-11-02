@@ -61,11 +61,12 @@ namespace NihongoLife.Tests
                 patterns.Hide();
                 hub.Show();
                 hub.OpenVideos();
-                var video = _canvas.GetComponent<InGameVideoPlayerUI>();
-                Assert.IsTrue(video.IsOpen);
-                Assert.IsNotNull(video.Current);
-                video.Hide();
-                Assert.AreEqual(VideoPlaybackState.Idle, video.StateMachine.State, "closing must stop playback");
+                var library = _canvas.GetComponent<VideoCoursesUI>();
+                Assert.IsTrue(library.IsOpen, "The Study Hub opens the course library");
+                library.OpenCourse(VideoCourseCatalog.File.courses[0]);
+                Assert.IsNotNull(library.Lesson, "A course opens on its next lesson");
+                library.Hide();
+                Assert.IsFalse(library.IsOpen);
             }
             finally { Loc.Set(previous); }
         }

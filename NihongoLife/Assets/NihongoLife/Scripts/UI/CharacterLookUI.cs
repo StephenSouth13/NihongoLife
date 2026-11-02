@@ -139,6 +139,8 @@ namespace NihongoLife.UI
             NLUi.Label(_body, "Pace", Loc.F("Tốc độ đi ×{0:0.00} · tốc độ nói ×{1:0.00} (chậm dần từ {2} tuổi)", "Walking ×{0:0.00} · speaking ×{1:0.00} (slower from age {2})", "歩く速さ ×{0:0.00} · 話す速さ ×{1:0.00}（{2}歳からゆっくり）",
                 CharacterLook.WalkFactor(age), CharacterLook.TalkFactor(age), options.slowFromAge), 15f, NLUi.Muted, _font);
 
+            if (_subject == null)
+                NLUi.Button(_body, "Wardrobe", Loc.T("Tủ đồ của tôi", "My wardrobe", "自分の服"), _font, () => { Close(); FashionShopUI.Open(); }, NLUi.Card, 16f, NLUi.Text, 44f);
             var done = NLUi.Button(_body, "Done", Loc.T("Xong", "Done", "完了"), _font, Close, NLUi.Gold, 17f, NLUi.Ink, 46f);
             NLUi.Size(done, -1f, 46f);
         }

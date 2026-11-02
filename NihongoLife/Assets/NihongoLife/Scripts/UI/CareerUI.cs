@@ -463,6 +463,11 @@ namespace NihongoLife.UI
             bar.GetComponent<LayoutElement>().preferredHeight = 4f;
             NLUi.Label(head, "Name", industry.Name, 22f, industry.Tint, _font, FontStyles.Bold);
             NLUi.Label(head, "Blurb", industry.Blurb, 14f, NLUi.Muted, _font);
+            var state = CareerService.State;
+            if (state == null || industry.id == "other") return;
+            string id = industry.id;
+            if (state.majorIndustry == id) NLUi.Pill(head, "Major", Loc.T("Ngành chính của bạn", "Your field of work", "あなたの専門"), _font, industry.Tint, NLUi.Ink, 15f);
+            else NLUi.Button(head, "MakeMajor_" + id, Loc.T("Chọn làm ngành chính", "Make this my field", "専門にする"), _font, () => { CareerService.ChooseMajor(id); Rebuild(); }, new Color(industry.Tint.r * 0.45f, industry.Tint.g * 0.45f, industry.Tint.b * 0.45f, 1f), 15f);
         }
 
         /// <summary>The career's person in uniform (a Kids-family variant), drawn by <see cref="CareerAvatarStage"/>.</summary>
@@ -500,6 +505,8 @@ namespace NihongoLife.UI
                 NLUi.Label(c, "Workplace", career.Workplace, 16f, NLUi.Text, _font);
                 NLUi.Label(c, "Schedule", career.Schedule, 16f, NLUi.Text, _font);
                 NLUi.Label(c, "Description", career.Description, 15f, NLUi.Muted, _font);
+                if (CareerService.OutOfField(career.id))
+                    NLUi.Label(c, "OutOfField", Loc.T("Trái ngành chính: lương và kinh nghiệm chỉ 50%.", "Outside your field: 50% pay and experience.", "専門外：給料と経験値は50%です。"), 15f, new Color(1f, 0.62f, 0.45f), _font, FontStyles.Bold);
                 NLUi.Divider(c);
                 NLUi.Label(c, "Start", Loc.F("Bắt đầu: {0} · {1}/ca", "Start: {0} · {1}/shift", "スタート：{0} · {1}/シフト", career.levels[0].Title, Loc.Yen(career.levels[0].salary)), 15f, NLUi.Soft, _font);
                 if (career.branches.Length > 0)

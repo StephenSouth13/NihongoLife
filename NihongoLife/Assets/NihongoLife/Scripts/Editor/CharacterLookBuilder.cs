@@ -154,6 +154,9 @@ namespace NihongoLife.EditorTools
                     up = Arr(head.InverseTransformDirection(Vector3.up).normalized),
                     mouth = Arr(mouth),
                     faceWidth = width / Mathf.Max(0.0001f, scale),
+                    crown = Arr(head.InverseTransformPoint(new Vector3(centre.x, max.y, centre.z))),
+                    brow = Arr(head.InverseTransformPoint(new Vector3(centre.x, mouthY + width * 0.62f, centre.z))),
+                    headRadius = Mathf.Max(size.x, size.z) * 0.5f / Mathf.Max(0.0001f, scale),
                 };
             }
             finally

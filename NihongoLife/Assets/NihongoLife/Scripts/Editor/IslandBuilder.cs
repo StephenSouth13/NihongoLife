@@ -70,7 +70,7 @@ namespace NihongoLife.EditorTools
         {
             _grass = Lit(MatDir, "MI_Grass", new Color(0.42f, 0.62f, 0.3f), 0.1f);
             _sand = Lit(MatDir, "MI_Sand", new Color(0.86f, 0.79f, 0.6f), 0.15f);
-            _sea = Lit(MatDir, "MI_Sea", new Color(0.18f, 0.48f, 0.62f), 0.88f);
+            _sea = Lit(MatDir, "MI_Sea", new Color(0.18f, 0.48f, 0.62f), 0.55f); // smoother and the sun drew a white blot on the sea
             _path = Lit(MatDir, "MI_Path", new Color(0.78f, 0.68f, 0.5f), 0.12f);
             _plaza = Lit(MatDir, "MI_Plaza", new Color(0.72f, 0.7f, 0.64f), 0.2f);
             _soil = Lit(MatDir, "MI_Soil", new Color(0.55f, 0.38f, 0.24f), 0.05f);
@@ -215,24 +215,8 @@ namespace NihongoLife.EditorTools
             Disc(ground, "Sea", new Vector3(0f, -0.55f, 0f), 420f, 420f, 0.1f, _sea, false);
             Disc(ground, "Beach", new Vector3(0f, -0.3f, 0f), IslandRX + 4f, IslandRZ + 4f, 0.5f, _sand, true);
             Disc(ground, "Island", new Vector3(0f, -0.25f, 0f), IslandRX, IslandRZ, 0.5f, _grass, true);
-            // Invisible shore: the player stays on the grass (the fall guard in IslandRuntime is a second safety net).
-            const int segments = 44;
-            float rx = IslandRX - 3.5f, rz = IslandRZ - 3.5f;
-            for (int i = 0; i < segments; i++)
-            {
-                float a0 = i * Mathf.PI * 2f / segments, a1 = (i + 1) * Mathf.PI * 2f / segments;
-                Vector3 p0 = new Vector3(Mathf.Cos(a0) * rx, 0f, Mathf.Sin(a0) * rz), p1 = new Vector3(Mathf.Cos(a1) * rx, 0f, Mathf.Sin(a1) * rz);
-                int part = 0;
-                foreach (var (a, c) in ShoreOutsidePier(p0, p1)) // the pier (north) has its own rails
-                {
-                    var wall = new GameObject(part++ == 0 ? "Shore_" + i : $"Shore_{i}_{part}");
-                    wall.transform.SetParent(boundsRoot, false);
-                    wall.transform.localPosition = (a + c) * 0.5f + Vector3.up * 1.5f;
-                    wall.transform.localRotation = Quaternion.LookRotation(c - a);
-                    var box = wall.AddComponent<BoxCollider>();
-                    box.size = new Vector3(0.6f, 3f, (c - a).magnitude + 0.6f);
-                }
-            }
+            WaterSurfaceBuilder.Prepare(ground.Find("Sea").gameObject);
+            // No invisible shoreline: the beach leads into the water and PlayerSwim takes over there.
         }
 
         private static GameObject Disc(Transform parent, string name, Vector3 position, float rx, float rz, float height, Material material, bool collider)

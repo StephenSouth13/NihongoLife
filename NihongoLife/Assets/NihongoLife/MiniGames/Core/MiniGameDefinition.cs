@@ -19,7 +19,8 @@ namespace NihongoLife.MiniGames
         DanceArrows,
         TenseTyper,
         WheelQuiz,
-        AirHockey
+        AirHockey,
+        HoopShot
     }
 
     /// <summary>Data for one arcade machine: which mini-game, which learning content, how long a round lasts.</summary>

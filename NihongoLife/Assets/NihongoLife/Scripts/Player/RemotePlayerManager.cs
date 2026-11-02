@@ -35,6 +35,7 @@ namespace NihongoLife.Player
             if (_onlineWorld != null)
             {
                 _onlineWorld.OnPlayerJoinedOrUpdated -= HandlePlayerUpdate;
+                _onlineWorld.OnPlayerEmote -= HandlePlayerEmote;
                 _onlineWorld.OnPlayerLeft -= HandlePlayerLeft;
             }
             SceneManager.activeSceneChanged -= HandleActiveSceneChanged;
@@ -45,6 +46,7 @@ namespace NihongoLife.Player
             if (_onlineWorld == null && GameServices.TryGet(out _onlineWorld))
             {
                 _onlineWorld.OnPlayerJoinedOrUpdated += HandlePlayerUpdate;
+                _onlineWorld.OnPlayerEmote += HandlePlayerEmote;
                 _onlineWorld.OnPlayerLeft += HandlePlayerLeft;
                 foreach (var p in _onlineWorld.VisiblePlayers) HandlePlayerUpdate(p);
             }
@@ -70,6 +72,11 @@ namespace NihongoLife.Player
         }
 
         private void HandlePlayerLeft(string playerId) => DespawnAvatar(playerId);
+
+        private void HandlePlayerEmote(string playerId, int emote)
+        {
+            if (_avatars.TryGetValue(playerId, out var avatar) && avatar != null) avatar.PlayEmote(emote);
+        }
 
         private void SpawnAvatar(OnlinePlayerSnapshot snapshot)
         {

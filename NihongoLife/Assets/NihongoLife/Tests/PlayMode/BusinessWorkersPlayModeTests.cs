@@ -23,6 +23,7 @@ namespace NihongoLife.Tests
         public void TearDown()
         {
             BusinessWorkers.NowTicks = () => DateTime.UtcNow.Ticks;
+            BusinessWorkers.Today = () => DayNightCycle.Active != null ? DayNightCycle.Active.Day : 0;
             Loc.Set(GameLanguage.Vietnamese);
             if (_sys != null && _sys.Business != null)
             {
@@ -43,8 +44,9 @@ namespace NihongoLife.Tests
             var ui = UnityEngine.Object.FindFirstObjectByType<BusinessDashboardUI>();
             Assert.NotNull(ui, "The company screen is created with the HUD (key Z)");
 
-            long now = DateTime.UtcNow.Ticks; BusinessWorkers.NowTicks = () => now;
+            int day = 400; BusinessWorkers.Today = () => day;
             var b = _sys.Business;
+            b.kind = "shop"; b.lastSettledDay = day; b.weekStartDay = day;
             b.companyName = "Test Co"; b.capitalYen = 200000; b.employeeCount = 0; b.workers.Clear(); b.lastCollectTicks = 0; b.reputation = 20;
 
             Assert.IsNull(BusinessWorkers.Hire(_sys, "cook", 1000), "Below the living wage nobody is hired");
@@ -55,18 +57,18 @@ namespace NihongoLife.Tests
             Assert.AreEqual(2, b.workers.Count); Assert.AreEqual(2, b.employeeCount);
             Assert.AreNotEqual(cook.name, cashier.name);
 
-            now += TimeSpan.TicksPerHour * 5;
+            day += 1;
             BusinessWorkers.Pending(_sys, out int gross, out int wages, out int net);
-            Assert.AreEqual((220 + 180) * 5, gross, 2, "Gross = revenue per hour x 5 hours");
+            Assert.AreEqual((220 + 180) * BusinessWorkers.HoursPerDay, gross, 2, "Gross = revenue per hour x a working day");
             Assert.Greater(wages, 0); Assert.AreEqual(gross - wages, net); Assert.Greater(net, 1000);
             int cap0 = b.capitalYen;
             Assert.AreEqual(net, BusinessWorkers.Collect(_sys));
             Assert.AreEqual(cap0 + net, b.capitalYen, "Collected into capital");
             BusinessWorkers.Pending(_sys, out int again, out _, out _); Assert.AreEqual(0, again, "Nothing waiting right after collecting");
 
-            now += TimeSpan.TicksPerHour * 100;
+            day += 100;
             BusinessWorkers.Pending(_sys, out int capped, out _, out _);
-            Assert.AreEqual((220 + 180) * BusinessWorkers.MaxHours, capped, 2, "Earnings stop piling up after 8 hours away");
+            Assert.AreEqual((220 + 180) * BusinessWorkers.HoursPerDay * BusinessWorkers.MaxDaysAway, capped, 2, "Earnings stop piling up after a month away");
 
             int cap1 = b.capitalYen;
             Assert.IsTrue(BusinessWorkers.Train(_sys, cook.id)); Assert.AreEqual(2, cook.level);

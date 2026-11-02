@@ -28,6 +28,13 @@ namespace NihongoLife.Tests
             var dm = DialogueManager.Instance;
             for (int guard = 0; guard < 40 && dm != null && dm.IsOpen; guard++) { dm.CancelDialogue(); if (dm.IsOpen) dm.ContinueDialogue(); }
             var player = Object.FindFirstObjectByType<PlayerController>();
+            // A known flat piece of pavement: earlier tests leave the player anywhere, on a kerb's edge too.
+            var spot = GameObject.Find("Spawn_" + WorldLocationCatalog.CityClinicReturn);
+            var capsule = player.GetComponent<CharacterController>();
+            capsule.enabled = false;
+            player.transform.position = spot.transform.position;
+            capsule.enabled = true;
+            Physics.SyncTransforms();
             // The normal gait is measured: a player left hurt or exhausted by earlier tests walks with the mood clips.
             var status = NihongoLife.Player.PlayerStatus.Instance;
             if (status != null) status.DebugSetNeeds(health: 100f, energy: 100f, hunger: 100f, thirst: 100f, sleepiness: 0f);
@@ -91,7 +98,11 @@ namespace NihongoLife.Tests
                 if (t != null) lowest = Mathf.Min(lowest, t.position.y);
             }
             // The mesh sole is below the bone: use the skinned mesh bounds' bottom too.
-            foreach (var r in player.GetComponentsInChildren<SkinnedMeshRenderer>()) lowest = Mathf.Min(lowest, r.bounds.min.y);
+            foreach (var r in player.GetComponentsInChildren<SkinnedMeshRenderer>())
+            {
+                r.updateWhenOffscreen = true; // off camera the bounds are a stale box, not the pose
+                lowest = Mathf.Min(lowest, r.bounds.min.y);
+            }
             Vector3 p = player.transform.position;
             if (!Physics.Raycast(p + Vector3.up * 1f, Vector3.down, out var hit, 3f, Physics.DefaultRaycastLayers, QueryTriggerInteraction.Ignore))
                 return (float.NaN, 0f);

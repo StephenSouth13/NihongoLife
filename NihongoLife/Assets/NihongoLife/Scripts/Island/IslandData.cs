@@ -28,7 +28,7 @@ namespace NihongoLife.Island
     /// <summary>A tool; <c>durability</c> = uses before it breaks (0 = never wears out).</summary>
     [Serializable] public sealed class IslandTool { public string id, action; public int price, durability; public IslandWord word, verb; }
     /// <summary>A fish caught at the pier: model name (fish pack FBX), sell price and catch weight (relative odds).</summary>
-    [Serializable] public sealed class IslandFish { public string id, model; public int sellPrice, weight; public IslandWord word; }
+    [Serializable] public sealed class IslandFish { public string id, model; public int sellPrice, weight, skill = 1; public IslandWord word; }
     [Serializable] public sealed class IslandAnimalDef { public string id, model; public string[] foods; public IslandWord word; public IslandSound sound; }
     [Serializable] public sealed class IslandProduct
     {

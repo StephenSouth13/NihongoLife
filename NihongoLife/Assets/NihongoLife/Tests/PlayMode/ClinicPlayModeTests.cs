@@ -120,7 +120,7 @@ namespace NihongoLife.Tests
             ClinicVisit.Use(ClinicSpotKind.Doctor);
             yield return null;
             Assert.AreEqual("completed", QuestService.State("job_clinic_shift").status);
-            Assert.AreEqual(yen + 750, inventory.Yen, "Shift pay");
+            Assert.AreEqual(yen + Mathf.RoundToInt(1900 * CareerService.RewardFactor("medical")), inventory.Yen, "Shift pay");
 
             // Health check: reception, height, three eye rounds, the doctor's result.
             Assert.IsNull(QuestService.Accept(ClinicVisit.HealthCheckQuest));

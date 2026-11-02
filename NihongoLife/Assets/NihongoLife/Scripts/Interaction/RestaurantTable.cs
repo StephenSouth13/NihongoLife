@@ -4,7 +4,9 @@ using System.Text;
 using System.Text.RegularExpressions;
 using UnityEngine;
 using UnityEngine.Rendering;
+using NihongoLife.Core;
 using NihongoLife.Data;
+using NihongoLife.Gestures;
 using NihongoLife.Player;
 using NihongoLife.UI;
 
@@ -46,6 +48,9 @@ namespace NihongoLife.Interaction
         private readonly List<OrderLine> _order = new List<OrderLine>();
         private readonly List<GameObject> _served = new List<GameObject>();
         private int _total;
+        private PlayerController _diner;
+        private CharacterAnimationController _dinerAnimation;
+        private Vector3 _dinerStoodAt;
 
         private static readonly List<RestaurantTable> ActiveTables = new List<RestaurantTable>();
         private float _nextReminderTime;
@@ -116,8 +121,8 @@ namespace NihongoLife.Interaction
                 default:
                     ShowStaff(null, null, null, null, null, null,
                         "お客様、お料理とお会計がまだです。", "おきゃくさま、おりょうりとおかいけいがまだです。",
-                        "Quý khách chưa dùng xong món và chưa thanh toán ạ. Hãy ăn xong (E ở bàn), thanh toán rồi hãy ra về.",
-                        "You haven't finished your meal or paid yet. Finish eating (E at the table) and pay before you leave.", 7f);
+                        "Quý khách chưa dùng xong món và chưa thanh toán ạ. Hãy ăn xong (F ở bàn), thanh toán rồi hãy ra về.",
+                        "You haven't finished your meal or paid yet. Finish eating (F at the table) and pay before you leave.", 7f);
                     break;
             }
         }
@@ -268,6 +273,8 @@ namespace NihongoLife.Interaction
                 thirst += line.dish.thirstRestore * line.quantity;
             }
 
+            SeatDiner();
+
             // Plates disappear one by one while eating.
             float step = _served.Count > 0 ? eatSeconds / _served.Count : eatSeconds;
             for (int i = 0; i < _served.Count; i++)
@@ -277,10 +284,63 @@ namespace NihongoLife.Interaction
             }
 
             _served.Clear();
+            ReleaseDiner();
             PlayerStatus.Instance?.RestoreNeeds(hunger, thirst, 0f);
             _state = ServiceState.ReadyToPay;
             _nextReminderTime = Time.time + 25f;
-            ShowStaff(null, null, null, null, null, null, "ごちそうさまでした。", "ごちそうさまでした。", "Cảm ơn vì bữa ăn (câu nói sau khi ăn). Bấm E để thanh toán.", "Thank you for the meal (said after eating). Press E to pay.", 5f);
+            ShowStaff(null, null, null, null, null, null, "ごちそうさまでした。", "ごちそうさまでした。", "Cảm ơn vì bữa ăn (câu nói sau khi ăn). Bấm F để thanh toán.", "Thank you for the meal (said after eating). Press F to pay.", 5f);
+        }
+
+        /// <summary>The meal is eaten seated on the nearer chair, with chopsticks. It used to happen standing still.</summary>
+        private void SeatDiner()
+        {
+            _diner = SceneRefs.Find<PlayerController>();
+            if (_diner == null) return;
+            _dinerStoodAt = _diner.transform.position;
+            _diner.InputLocked = true;
+            _diner.enabled = false; // a chair has a collider: the body is left out of physics until the player stands up
+            var body = _diner.GetComponent<CharacterController>();
+            if (body != null) body.enabled = false;
+            var chair = NearestChair(_dinerStoodAt);
+            if (chair != null)
+            {
+                Vector3 toTable = transform.position - chair.position;
+                toTable.y = 0f;
+                _diner.transform.SetPositionAndRotation(new Vector3(chair.position.x, _dinerStoodAt.y, chair.position.z), Quaternion.LookRotation(toTable.normalized));
+            }
+            _dinerAnimation = _diner.GetComponent<CharacterAnimationController>();
+            if (_dinerAnimation == null) _dinerAnimation = _diner.GetComponentInChildren<CharacterAnimationController>();
+            if (_dinerAnimation != null) _dinerAnimation.SetSitting(true);
+            var gestures = GestureLayer.On(_diner.gameObject);
+            gestures.ResetMotion();
+            gestures.Play("eat_rice");
+        }
+
+        private void ReleaseDiner()
+        {
+            if (_diner == null) return;
+            GestureLayer.On(_diner.gameObject).Stop();
+            if (_dinerAnimation != null) _dinerAnimation.SetSitting(false);
+            _diner.transform.position = _dinerStoodAt;
+            var body = _diner.GetComponent<CharacterController>();
+            if (body != null) body.enabled = true;
+            _diner.enabled = true;
+            _diner.InputLocked = false;
+            _diner = null;
+        }
+
+        /// <summary>Tables are named DiningTableService_A, their chairs DiningChair_A_N and DiningChair_A_S.</summary>
+        private Transform NearestChair(Vector3 from)
+        {
+            string table = name.Substring(name.LastIndexOf('_') + 1);
+            Transform nearest = null;
+            foreach (string side in new[] { "N", "S" })
+            {
+                var chair = SceneRefs.FindNamed("DiningChair_" + table + "_" + side);
+                if (chair == null) continue;
+                if (nearest == null || Vector3.Distance(from, chair.transform.position) < Vector3.Distance(from, nearest.position)) nearest = chair.transform;
+            }
+            return nearest;
         }
 
         private void Pay()
@@ -322,11 +382,15 @@ namespace NihongoLife.Interaction
             Transform anchor = serveAnchor != null ? serveAnchor : transform;
             Vector3 origin = serveAnchor != null ? Vector3.zero : Vector3.up * 0.8f;
 
-            int columns = 3;
+            // In front of whoever ordered, centred on what was ordered: the first dish used to land on the table's bowl.
+            int columns = Mathf.Clamp(_order.Count, 1, 3);
+            var player = SceneRefs.Find<PlayerController>();
+            var chair = player != null ? NearestChair(player.transform.position) : null;
+            if (chair != null && serveAnchor == null) origin += Vector3.forward * (Mathf.Sign(chair.position.z - transform.position.z) * 0.3f);
             for (int i = 0; i < _order.Count; i++)
             {
                 int col = i % columns;
-                int row = i / columns;
+                int row = i / 3;
                 var slot = new GameObject($"Served_{_order[i].dish.id}");
                 slot.transform.SetParent(anchor, false);
                 slot.transform.localPosition = origin + new Vector3((col - (columns - 1) * 0.5f) * slotSpacing.x, 0f, (row - 0.5f) * slotSpacing.y);
@@ -447,6 +511,7 @@ namespace NihongoLife.Interaction
             else if (_state == ServiceState.Eating)
             {
                 ClearServed();
+                ReleaseDiner();
                 _state = ServiceState.ReadyToPay;
             }
             else if (_state == ServiceState.Paying)

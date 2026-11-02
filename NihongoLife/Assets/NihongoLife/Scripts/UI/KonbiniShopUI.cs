@@ -216,7 +216,7 @@ namespace NihongoLife.UI
             if (dm == null) return;
             ScenarioNode Line(string id, string ja, string reading, string vi, string en, string next) => new ScenarioNode
             {
-                id = id, nodeType = ScenarioNodeType.Dialogue, speakerId = "npc_cashier", speakerName = NihongoLife.Core.Loc.T("Chị Ito", "Ito", "いとうさん"),
+                id = id, nodeType = ScenarioNodeType.Dialogue, speakerId = "npc_cashier", speakerName = NihongoLife.Core.Loc.T("Anh Ito", "Ito", "いとうさん"),
                 textJa = ja, textReading = reading, textVi = vi, textEn = en, nextNodeId = next, animationCue = "bow"
             };
             var total_ = Line("pay_total", $"ありがとうございます。ぜんぶで {total}えん です。", $"ありがとうございます。ぜんぶで {total}えん です。", $"Cảm ơn quý khách. Tổng cộng {total} yên.", $"Thank you. That's {total} yen in total.", "pay_bag");
@@ -247,7 +247,7 @@ namespace NihongoLife.UI
             int count = KonbiniBasket.Count;
             _basketLine.text = count == 0
                 ? NihongoLife.Core.Loc.T("Giỏ: trống", "Basket: empty", "かご：からっぽ")
-                : NihongoLife.Core.Loc.F("Giỏ: <color=#F2B233>{0} món · {1}</color>   →   mang ra quầy gặp chị Ito để thanh toán", "Basket: <color=#F2B233>{0} items · {1}</color>   →   take it to the register to pay Ito", "かご：<color=#F2B233>{0}点 · {1}</color>   →   レジで いとうさんに払いましょう", count, NihongoLife.Core.Loc.Yen(KonbiniBasket.Total));
+                : NihongoLife.Core.Loc.F("Giỏ: <color=#F2B233>{0} món · {1}</color>   →   mang ra quầy gặp anh Ito để thanh toán", "Basket: <color=#F2B233>{0} items · {1}</color>   →   take it to the register to pay Ito", "かご：<color=#F2B233>{0}点 · {1}</color>   →   レジで いとうさんに払いましょう", count, NihongoLife.Core.Loc.Yen(KonbiniBasket.Total));
             if (PlayerInventory.Instance != null) _wallet.text = NihongoLife.Core.Loc.Yen(PlayerInventory.Instance.Yen);
             _chip.gameObject.SetActive(count > 0 && !IsOpen);
             _chipText.text = NihongoLife.Core.Loc.T("Giỏ", "Basket", "かご") + $"  {count}  ·  {NihongoLife.Core.Loc.Yen(KonbiniBasket.Total)}\n<size=70%><color=#A8B4C4>" + NihongoLife.Core.Loc.T("Thanh toán ở quầy", "Pay at the register", "レジで払う") + "</color></size>";
@@ -373,7 +373,7 @@ namespace NihongoLife.UI
 
             // Checkout page
             _checkout = NLUi.Group(_window, "Checkout", true, 12f);
-            LocText.Set(NLUi.Label(_checkout, "Heading", "", 26f, NLUi.Gold, _font, FontStyles.Bold), "Thanh toán với chị Ito", "Pay Ito at the register", "レジで いとうさんに払う");
+            LocText.Set(NLUi.Label(_checkout, "Heading", "", 26f, NLUi.Gold, _font, FontStyles.Bold), "Thanh toán với anh Ito", "Pay Ito at the register", "レジで いとうさんに払う");
             _checkoutLines = NLUi.Group(_checkout, "Lines", true, 8f);
             _checkoutTotal = NLUi.Label(_checkout, "Total", "", 22f, NLUi.Text, _font);
             var actions = NLUi.Group(_checkout, "Actions", false, 12f, TextAnchor.MiddleRight);

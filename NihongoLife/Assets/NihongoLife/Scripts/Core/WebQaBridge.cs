@@ -101,6 +101,8 @@ namespace NihongoLife.Core
                         foreach (var m in r.sharedMaterials)
                         {
                             if (m != null && m.shader != null && m.shader.isSupported && m.shader.name != "Hidden/InternalErrorShader") continue;
+                            // A text's spare sub-mesh ("New Game Object" outside the Editor) and a pooled, hidden piece draw nothing.
+                            if (m == null && (!r.gameObject.activeInHierarchy || r.GetComponent<TMPro.TMP_SubMesh>() != null)) continue;
                             broken++;
                             if (firstBroken.Count < 8) firstBroken.Add((m != null ? m.name + "/" + (m.shader != null ? m.shader.name : "no shader") : "no material") + " on " + r.name);
                         }

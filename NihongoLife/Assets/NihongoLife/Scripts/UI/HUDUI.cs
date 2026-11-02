@@ -175,46 +175,62 @@ namespace NihongoLife.UI
             var rect = promptPanel.transform as RectTransform;
             var parent = rect != null ? rect.parent as RectTransform : null;
             if (parent == null) return;
-            if (_promptWidth < 0f) _promptWidth = rect.sizeDelta.x;
+            if (_promptWidth < 0f) { _promptWidth = rect.sizeDelta.x; _promptY = rect.anchoredPosition.y; }
             float total = parent.rect.width;
-            float left = 0f, right = 0f;
+            float left = 0f, right = 0f, cardTop = -1f;
             var widget = _statusDock != null ? _statusDock.StatusWidget : null;
             if (widget != null && widget.gameObject.activeInHierarchy)
             {
                 var corners = new Vector3[4];
                 widget.GetWorldCorners(corners);
                 Vector3 top = parent.InverseTransformPoint(corners[2]);
-                // Only when the card reaches the prompt's height.
                 Vector3 bottomLeft = parent.InverseTransformPoint(corners[0]);
                 // Only when the card reaches the prompt's height. Left-handed touch layouts mirror the card to the right.
                 bool cardOnRight = bottomLeft.x > parent.rect.center.x;
-                if (top.y - parent.rect.yMin > rect.anchoredPosition.y)
+                if (top.y - parent.rect.yMin > _promptY)
                 {
+                    cardTop = top.y - parent.rect.yMin;
                     if (cardOnRight) right = parent.rect.xMax - bottomLeft.x + 12f;
                     else left = top.x - parent.rect.xMin + 12f;
                 }
             }
             float buttons = TouchControlOverlay.ReservedSide > 0f ? TouchControlOverlay.ReservedSide + 8f : 0f;
-            if (NihongoLife.Core.TouchControlPrefs.LeftHanded) left = Mathf.Max(left, buttons);
-            else right = Mathf.Max(right, buttons);
-            float width = _promptWidth, x = 0f;
+            bool leftHanded = NihongoLife.Core.TouchControlPrefs.LeftHanded;
+            float width = _promptWidth, x = 0f, y = _promptY;
+            float lane = total - left - right - buttons;
             float centredMin = (total - _promptWidth) * 0.5f;
-            if (centredMin < left || centredMin < right)
+            if (cardTop > 0f && lane < MinPromptLane)
             {
-                float lane = Mathf.Max(0f, total - left - right);
-                width = Mathf.Clamp(lane, Mathf.Min(240f, _promptWidth), _promptWidth);
-                x = left + lane * 0.5f - total * 0.5f;
+                // No room beside the card on a small phone: the hint stands just above it, clear of the buttons.
+                float free = Mathf.Max(MinPromptLane, total - buttons - 24f);
+                width = Mathf.Min(_promptWidth, free);
+                x = (leftHanded ? buttons : -buttons) * 0.5f;
+                y = cardTop + 10f;
+            }
+            else
+            {
+                if (leftHanded) left = Mathf.Max(left, buttons);
+                else right = Mathf.Max(right, buttons);
+                if (centredMin < left || centredMin < right)
+                {
+                    float room = Mathf.Max(0f, total - left - right);
+                    width = Mathf.Clamp(room, Mathf.Min(MinPromptLane, _promptWidth), _promptWidth);
+                    x = left + room * 0.5f - total * 0.5f;
+                }
             }
             if (Mathf.Abs(rect.sizeDelta.x - width) > 0.5f) rect.sizeDelta = new Vector2(width, rect.sizeDelta.y);
-            if (Mathf.Abs(rect.anchoredPosition.x - x) > 0.5f) rect.anchoredPosition = new Vector2(x, rect.anchoredPosition.y);
+            if (Mathf.Abs(rect.anchoredPosition.x - x) > 0.5f || Mathf.Abs(rect.anchoredPosition.y - y) > 0.5f) rect.anchoredPosition = new Vector2(x, y);
         }
+
+        private const float MinPromptLane = 240f;
+        private float _promptY;
 
         private void Update()
         {
             BindDialogue();
             UpdateOverviewControls();
             // Prompt lane: the [F] prompt steps aside while a timed action runs or a window is open, and comes back after.
-            bool suppressPrompt = TimedAction.Busy || UiModalStack.AnyOpen;
+            bool suppressPrompt = TimedAction.Busy || UiModalStack.AnyOpen || HudPrefs.PromptHidden;
             if (promptPanel != null)
             {
                 FitPromptLane();

@@ -55,9 +55,14 @@ namespace NihongoLife.Core
             }
         }
 
-        public static string ModeVi() => Mode switch { 1 => "Nút cảm ứng: Hiện", 2 => "Nút cảm ứng: Ẩn", _ => "Nút cảm ứng: Tự động" };
-        public static string ModeEn() => Mode switch { 1 => "Touch controls: On", 2 => "Touch controls: Off", _ => "Touch controls: Auto" };
-        public static string ModeJa() => Mode switch { 1 => "タッチ操作: 表示", 2 => "タッチ操作: 隠す", _ => "タッチ操作: 自動" };
+        /// <summary>What the player chooses is how they play: with a phone's touch buttons, or with keyboard and mouse.
+        /// Automatic says which one it found.</summary>
+        public static string ModeVi() => Mode switch { 1 => "Chế độ chơi: Điện thoại", 2 => "Chế độ chơi: Máy tính", _ => WantsVisible ? "Chế độ chơi: Điện thoại (tự nhận)" : "Chế độ chơi: Máy tính (tự nhận)" };
+        public static string ModeEn() => Mode switch { 1 => "Play on: Phone", 2 => "Play on: Computer", _ => WantsVisible ? "Play on: Phone (detected)" : "Play on: Computer (detected)" };
+        public static string ModeJa() => Mode switch { 1 => "プレイ: スマホ", 2 => "プレイ: パソコン", _ => WantsVisible ? "プレイ: スマホ（自動）" : "プレイ: パソコン（自動）" };
+
+        /// <summary>The picture beside the mode: a phone or a keyboard.</summary>
+        public static string ModeIcon => WantsVisible ? "smartphone" : "keyboard";
         public static string HandVi() => LeftHanded ? "Tay thuận: Trái" : "Tay thuận: Phải";
         public static string HandEn() => LeftHanded ? "Handed: Left" : "Handed: Right";
         public static string HandJa() => LeftHanded ? "利き手: 左" : "利き手: 右";

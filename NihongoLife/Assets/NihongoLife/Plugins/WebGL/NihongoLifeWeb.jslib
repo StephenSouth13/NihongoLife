@@ -38,7 +38,37 @@ mergeInto(LibraryManager.library, {
   },
 
   // Web release check (Core/WebQaBridge, page URL with qa=1 only).
-  NL_QaLog: function (type, messagePtr) {
+  // A lesson of the course library: YouTube's own player, placed over the game's player area (fractions of the canvas).
+    NL_VideoShow: function (idPtr, x, y, width, height) {
+        var id = UTF8ToString(idPtr);
+        var canvas = document.querySelector("#unity-canvas") || document.querySelector("canvas");
+        if (!canvas || !/^[\w-]{11}$/.test(id)) return;
+        var frame = document.getElementById("nl-video");
+        if (!frame) {
+            frame = document.createElement("iframe");
+            frame.id = "nl-video";
+            frame.allow = "autoplay; encrypted-media; picture-in-picture; fullscreen";
+            frame.setAttribute("allowfullscreen", "");
+            frame.style.position = "fixed";
+            frame.style.border = "0";
+            frame.style.borderRadius = "12px";
+            frame.style.zIndex = "5";
+            canvas.parentNode.appendChild(frame);
+        }
+        var box = canvas.getBoundingClientRect();
+        frame.style.left = (box.left + box.width * x) + "px";
+        frame.style.top = (box.top + box.height * y) + "px";
+        frame.style.width = (box.width * width) + "px";
+        frame.style.height = (box.height * height) + "px";
+        frame.src = "https://www.youtube-nocookie.com/embed/" + id + "?autoplay=1&rel=0";
+    },
+
+    NL_VideoHide: function () {
+        var frame = document.getElementById("nl-video");
+        if (frame) frame.parentNode.removeChild(frame);
+    },
+
+    NL_QaLog: function (type, messagePtr) {
     var q = window.__nlQa = window.__nlQa || { logs: [] };
     q.logs.push([type, UTF8ToString(messagePtr)]);
   },

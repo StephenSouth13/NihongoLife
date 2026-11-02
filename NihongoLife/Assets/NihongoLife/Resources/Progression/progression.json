@@ -23,10 +23,10 @@
       "titleVi": "Làm thêm ở Hibari Mart",
       "titleEn": "Part-time shift at Hibari Mart",
       "titleJa": "ひばりマートで アルバイト",
-      "descriptionVi": "Chị Ito cần người phụ một ca: lấy thùng hàng trong kho, xếp lên kệ, chỉ đường cho khách và tính tiền đúng ở quầy.",
+      "descriptionVi": "Anh Ito cần người phụ một ca: lấy thùng hàng trong kho, xếp lên kệ, chỉ đường cho khách và tính tiền đúng ở quầy.",
       "descriptionEn": "Ito needs help for one shift: carry stock from the back room, restock shelves, help customers find items and ring up a purchase.",
       "giverNpc": "npc_cashier",
-      "giverNameVi": "Chị Ito (thu ngân)",
+      "giverNameVi": "Anh Ito (thu ngân)",
       "locationVi": "Cửa hàng tiện lợi Hibari Mart, phố chính Hibari",
       "scene": "90_TestSandbox",
       "minLevel": 1,
@@ -72,13 +72,13 @@
           "target": "npc_cashier",
           "count": 1,
           "afterAll": true,
-          "textVi": "Báo cáo với chị Ito để nhận lương",
+          "textVi": "Báo cáo với anh Ito để nhận lương",
           "textEn": "Report to Ito to get paid",
           "textJa": "伊藤さんに報告して給料をもらう"
         }
       ],
       "rewards": {
-        "yen": 600,
+        "yen": 1500,
         "xp": 40,
         "knowledge": 6
       },
@@ -139,7 +139,7 @@
         }
       ],
       "rewards": {
-        "yen": 700,
+        "yen": 1750,
         "xp": 45,
         "knowledge": 6
       },
@@ -225,7 +225,7 @@
         }
       ],
       "rewards": {
-        "yen": 500,
+        "yen": 1250,
         "xp": 40,
         "knowledge": 4
       },
@@ -276,7 +276,7 @@
         }
       ],
       "rewards": {
-        "yen": 150,
+        "yen": 600,
         "xp": 35,
         "knowledge": 3
       },
@@ -327,7 +327,7 @@
         }
       ],
       "rewards": {
-        "yen": 100,
+        "yen": 600,
         "xp": 30,
         "knowledge": 3
       },
@@ -368,7 +368,7 @@
         }
       ],
       "rewards": {
-        "yen": 0,
+        "yen": 500,
         "xp": 30,
         "knowledge": 12
       },
@@ -409,7 +409,7 @@
         }
       ],
       "rewards": {
-        "yen": 0,
+        "yen": 300,
         "xp": 10,
         "knowledge": 1
       },
@@ -485,7 +485,7 @@
         }
       ],
       "rewards": {
-        "yen": 0,
+        "yen": 800,
         "xp": 40,
         "knowledge": 10
       }
@@ -558,7 +558,7 @@
         }
       ],
       "rewards": {
-        "yen": 0,
+        "yen": 800,
         "xp": 35,
         "knowledge": 10
       }
@@ -621,7 +621,7 @@
         }
       ],
       "rewards": {
-        "yen": 0,
+        "yen": 800,
         "xp": 30,
         "knowledge": 6
       }
@@ -692,7 +692,7 @@
         }
       ],
       "rewards": {
-        "yen": 750,
+        "yen": 1900,
         "xp": 45,
         "knowledge": 8
       }
@@ -753,7 +753,7 @@
         }
       ],
       "rewards": {
-        "yen": 750,
+        "yen": 1900,
         "xp": 45,
         "knowledge": 7
       }
@@ -814,7 +814,7 @@
         }
       ],
       "rewards": {
-        "yen": 650,
+        "yen": 1600,
         "xp": 45,
         "knowledge": 8
       }
@@ -875,7 +875,7 @@
         }
       ],
       "rewards": {
-        "yen": 1100,
+        "yen": 2200,
         "xp": 70,
         "knowledge": 10
       },
@@ -928,7 +928,7 @@
         }
       ],
       "rewards": {
-        "yen": 1000,
+        "yen": 2000,
         "xp": 70,
         "knowledge": 14
       },
@@ -981,7 +981,7 @@
         }
       ],
       "rewards": {
-        "yen": 1800,
+        "yen": 3600,
         "xp": 110,
         "knowledge": 20
       },
@@ -998,7 +998,7 @@
       "descriptionEn": "Retail career level 2: the evening shift — more restocking, helping and ringing up.",
       "descriptionJa": "小売キャリア2：夜のシフト。",
       "giverNpc": "npc_cashier",
-      "giverNameVi": "Chị Ito",
+      "giverNameVi": "Anh Ito",
       "giverNameEn": "Ito",
       "giverNameJa": "伊藤さん",
       "locationVi": "Hibari Mart, phố chính",
@@ -1048,13 +1048,13 @@
           "target": "npc_cashier",
           "count": 1,
           "afterAll": true,
-          "textVi": "Báo cáo chị Ito",
+          "textVi": "Báo cáo anh Ito",
           "textEn": "Report to Ito",
           "textJa": "伊藤さんに報告"
         }
       ],
       "rewards": {
-        "yen": 1050,
+        "yen": 2100,
         "xp": 70,
         "knowledge": 10
       },
@@ -1127,7 +1127,7 @@
         }
       ],
       "rewards": {
-        "yen": 1200,
+        "yen": 2400,
         "xp": 80,
         "knowledge": 16
       },
@@ -1190,7 +1190,7 @@
         }
       ],
       "rewards": {
-        "yen": 950,
+        "yen": 1900,
         "xp": 65,
         "knowledge": 10
       },
@@ -1253,7 +1253,7 @@
         }
       ],
       "rewards": {
-        "yen": 1150,
+        "yen": 2300,
         "xp": 75,
         "knowledge": 12
       },
@@ -1306,7 +1306,7 @@
         }
       ],
       "rewards": {
-        "yen": 650,
+        "yen": 1600,
         "xp": 45,
         "knowledge": 8
       }
@@ -1357,7 +1357,7 @@
         }
       ],
       "rewards": {
-        "yen": 650,
+        "yen": 1600,
         "xp": 45,
         "knowledge": 7
       }
@@ -1408,7 +1408,7 @@
         }
       ],
       "rewards": {
-        "yen": 700,
+        "yen": 1750,
         "xp": 45,
         "knowledge": 8
       }
@@ -1459,7 +1459,7 @@
         }
       ],
       "rewards": {
-        "yen": 1200,
+        "yen": 2400,
         "xp": 80,
         "knowledge": 14
       },
@@ -1512,7 +1512,7 @@
         }
       ],
       "rewards": {
-        "yen": 1100,
+        "yen": 2200,
         "xp": 70,
         "knowledge": 12
       },
@@ -1565,12 +1565,93 @@
         }
       ],
       "rewards": {
-        "yen": 1900,
+        "yen": 3800,
         "xp": 110,
         "knowledge": 20
       },
       "career": "painter",
       "careerLevel": 4
+    },
+    {
+      "id": "job_fashion_shift",
+      "category": "job",
+      "titleVi": "Làm ở Hibari Mode",
+      "titleEn": "Shift at Hibari Mode",
+      "titleJa": "ひばりモードで はたらく",
+      "descriptionVi": "Phụ anh Ren: gấp đồ trên bàn, tư vấn cỡ và màu, đưa khách vào phòng thử, tính tiền rồi báo cáo.",
+      "descriptionEn": "Help Ren: fold the tables, advise on sizes and colours, look after the fitting room, run the till, then report.",
+      "descriptionJa": "たたみ、サイズと色の案内、試着室、レジのあと、店長に報告。",
+      "giverNpc": "npc_fashion_manager",
+      "giverNameVi": "Anh Ren (quản lý)",
+      "giverNameEn": "Ren (manager)",
+      "giverNameJa": "れん店長",
+      "locationVi": "Hibari Mode",
+      "locationEn": "Hibari Mode",
+      "locationJa": "ひばりモード",
+      "scene": "56_FashionStore",
+      "minLevel": 1,
+      "minKnowledge": 0,
+      "requiresQuests": [],
+      "repeatable": true,
+      "cooldownMinutes": 5,
+      "grantOnAccept": [],
+      "objectives": [
+        {
+          "id": "fold",
+          "event": "fold",
+          "target": "fashion_table",
+          "count": 3,
+          "afterAll": false,
+          "textVi": "Gấp gọn 3 bàn quần áo",
+          "textEn": "Tidy 3 clothes tables",
+          "textJa": "テーブルを 3つ たたむ"
+        },
+        {
+          "id": "advise",
+          "event": "advise",
+          "target": "fashion_customer",
+          "count": 2,
+          "afterAll": false,
+          "textVi": "Tư vấn cỡ và màu cho 2 khách",
+          "textEn": "Advise 2 customers on sizes and colours",
+          "textJa": "お客さま 2人に 案内"
+        },
+        {
+          "id": "fit",
+          "event": "fit",
+          "target": "fashion_fitting",
+          "count": 1,
+          "afterAll": false,
+          "textVi": "Chăm sóc khách ở phòng thử đồ",
+          "textEn": "Look after a customer at the fitting room",
+          "textJa": "試着室の お客さま"
+        },
+        {
+          "id": "checkout",
+          "event": "checkout",
+          "target": "fashion_register",
+          "count": 1,
+          "afterAll": false,
+          "textVi": "Tính tiền ở quầy",
+          "textEn": "Ring up at the till",
+          "textJa": "レジで 会計"
+        },
+        {
+          "id": "talk",
+          "event": "talk",
+          "target": "npc_fashion_manager",
+          "count": 1,
+          "afterAll": true,
+          "textVi": "Báo cáo với anh Ren",
+          "textEn": "Report to Ren",
+          "textJa": "れん店長に 報告"
+        }
+      ],
+      "rewards": {
+        "yen": 1900,
+        "xp": 45,
+        "knowledge": 8
+      }
     },
     {
       "id": "story_ch01_arrival",
@@ -4460,6 +4541,281 @@
         "knowledge": 60
       },
       "career": "painter",
+      "careerLevel": 6
+    },
+    {
+      "id": "story_fashion_trainee",
+      "category": "story",
+      "titleVi": "Hibari Mode: phụ kho",
+      "titleEn": "Hibari Mode: stock assistant",
+      "titleJa": "ひばりモード：ストック",
+      "descriptionVi": "Gấp đồ trên bàn và học tên cỡ, tên màu bằng tiếng Nhật. Trình độ tiếng: JLPT N5.",
+      "descriptionEn": "Fold the tables and learn the sizes and colours in Japanese. Language level: JLPT N5.",
+      "descriptionJa": "テーブルをたたみ、サイズと色の言い方を覚える。日本語レベル：JLPT N5。",
+      "giverNpc": "npc_fashion_manager",
+      "giverNameVi": "Anh Ren",
+      "giverNameEn": "Ren",
+      "giverNameJa": "れん店長",
+      "locationVi": "Hibari Mode",
+      "locationEn": "Hibari Mode",
+      "locationJa": "ひばりモード",
+      "scene": "56_FashionStore",
+      "minLevel": 10,
+      "minKnowledge": 0,
+      "requiresQuests": [
+        "story_ch05_career_choice"
+      ],
+      "repeatable": false,
+      "cooldownMinutes": 0,
+      "grantOnAccept": [],
+      "objectives": [
+        {
+          "id": "work",
+          "event": "fold",
+          "target": "fashion_table",
+          "count": 2,
+          "afterAll": false,
+          "textVi": "Gấp gọn 2 bàn quần áo",
+          "textEn": "Tidy 2 clothes tables",
+          "textJa": "テーブルを2つたたむ"
+        },
+        {
+          "id": "report",
+          "event": "talk",
+          "target": "npc_fashion_manager",
+          "count": 1,
+          "afterAll": true,
+          "textVi": "Báo cáo Anh Ren",
+          "textEn": "Report to Ren",
+          "textJa": "れん店長に報告する"
+        }
+      ],
+      "rewards": {
+        "yen": 600,
+        "xp": 80,
+        "knowledge": 20
+      },
+      "career": "fashion",
+      "careerLevel": 1
+    },
+    {
+      "id": "story_fashion_staff",
+      "category": "story",
+      "titleVi": "Hibari Mode: nhân viên bán hàng",
+      "titleEn": "Hibari Mode: sales assistant",
+      "titleJa": "ひばりモード：販売スタッフ",
+      "descriptionVi": "Chào khách và chăm sóc phòng thử đồ. Trình độ tiếng: JLPT N4.",
+      "descriptionEn": "Greet customers and look after the fitting rooms. Language level: JLPT N4.",
+      "descriptionJa": "お客さまに声をかけ、試着室を案内する。日本語レベル：JLPT N4。",
+      "giverNpc": "npc_fashion_manager",
+      "giverNameVi": "Anh Ren",
+      "giverNameEn": "Ren",
+      "giverNameJa": "れん店長",
+      "locationVi": "Hibari Mode",
+      "locationEn": "Hibari Mode",
+      "locationJa": "ひばりモード",
+      "scene": "56_FashionStore",
+      "minLevel": 10,
+      "minKnowledge": 150,
+      "requiresQuests": [
+        "story_fashion_trainee"
+      ],
+      "repeatable": false,
+      "cooldownMinutes": 0,
+      "grantOnAccept": [],
+      "objectives": [
+        {
+          "id": "work",
+          "event": "fold",
+          "target": "fashion_table",
+          "count": 3,
+          "afterAll": false,
+          "textVi": "Gấp gọn 3 bàn quần áo",
+          "textEn": "Tidy 3 clothes tables",
+          "textJa": "テーブルを3つたたむ"
+        },
+        {
+          "id": "report",
+          "event": "talk",
+          "target": "npc_fashion_manager",
+          "count": 1,
+          "afterAll": true,
+          "textVi": "Báo cáo Anh Ren",
+          "textEn": "Report to Ren",
+          "textJa": "れん店長に報告する"
+        }
+      ],
+      "rewards": {
+        "yen": 1100,
+        "xp": 120,
+        "knowledge": 30
+      },
+      "career": "fashion",
+      "careerLevel": 2
+    },
+    {
+      "id": "story_fashion_senior",
+      "category": "story",
+      "titleVi": "Hibari Mode: tư vấn thời trang",
+      "titleEn": "Hibari Mode: fashion adviser",
+      "titleJa": "ひばりモード：アドバイザー",
+      "descriptionVi": "Phối một bộ hoàn chỉnh cho khách và giải thích vì sao. Trình độ tiếng: JLPT N3.",
+      "descriptionEn": "Build a whole outfit for a customer and explain your choice. Language level: JLPT N3.",
+      "descriptionJa": "お客さまに一式をすすめ、理由を説明する。日本語レベル：JLPT N3。",
+      "giverNpc": "npc_fashion_manager",
+      "giverNameVi": "Anh Ren",
+      "giverNameEn": "Ren",
+      "giverNameJa": "れん店長",
+      "locationVi": "Hibari Mode",
+      "locationEn": "Hibari Mode",
+      "locationJa": "ひばりモード",
+      "scene": "56_FashionStore",
+      "minLevel": 10,
+      "minKnowledge": 400,
+      "requiresQuests": [
+        "story_fashion_staff"
+      ],
+      "repeatable": false,
+      "cooldownMinutes": 0,
+      "grantOnAccept": [],
+      "objectives": [
+        {
+          "id": "work",
+          "event": "fold",
+          "target": "fashion_table",
+          "count": 4,
+          "afterAll": false,
+          "textVi": "Gấp gọn 4 bàn quần áo",
+          "textEn": "Tidy 4 clothes tables",
+          "textJa": "テーブルを4つたたむ"
+        },
+        {
+          "id": "report",
+          "event": "talk",
+          "target": "npc_fashion_manager",
+          "count": 1,
+          "afterAll": true,
+          "textVi": "Báo cáo Anh Ren",
+          "textEn": "Report to Ren",
+          "textJa": "れん店長に報告する"
+        }
+      ],
+      "rewards": {
+        "yen": 1600,
+        "xp": 160,
+        "knowledge": 40
+      },
+      "career": "fashion",
+      "careerLevel": 3
+    },
+    {
+      "id": "story_fashion_manager",
+      "category": "story",
+      "titleVi": "Hibari Mode: stylist hay nhà thiết kế",
+      "titleEn": "Hibari Mode: stylist or designer",
+      "titleJa": "ひばりモード：スタイリストかデザイナー",
+      "descriptionVi": "Lo trang phục cho buổi chụp tạp chí hoặc trình bày mẫu vẽ đầu tiên. Trình độ tiếng: JLPT N2.",
+      "descriptionEn": "Dress a magazine shoot or show your first sketches. Language level: JLPT N2.",
+      "descriptionJa": "雑誌の撮影を担当するか、初めてのデザインを見せる。日本語レベル：JLPT N2。",
+      "giverNpc": "npc_fashion_manager",
+      "giverNameVi": "Anh Ren",
+      "giverNameEn": "Ren",
+      "giverNameJa": "れん店長",
+      "locationVi": "Hibari Mode",
+      "locationEn": "Hibari Mode",
+      "locationJa": "ひばりモード",
+      "scene": "56_FashionStore",
+      "minLevel": 10,
+      "minKnowledge": 800,
+      "requiresQuests": [
+        "story_fashion_senior"
+      ],
+      "repeatable": false,
+      "cooldownMinutes": 0,
+      "grantOnAccept": [],
+      "objectives": [
+        {
+          "id": "work",
+          "event": "fold",
+          "target": "fashion_table",
+          "count": 5,
+          "afterAll": false,
+          "textVi": "Gấp gọn 5 bàn quần áo",
+          "textEn": "Tidy 5 clothes tables",
+          "textJa": "テーブルを5つたたむ"
+        },
+        {
+          "id": "report",
+          "event": "talk",
+          "target": "npc_fashion_manager",
+          "count": 1,
+          "afterAll": true,
+          "textVi": "Báo cáo Anh Ren",
+          "textEn": "Report to Ren",
+          "textJa": "れん店長に報告する"
+        }
+      ],
+      "rewards": {
+        "yen": 2100,
+        "xp": 200,
+        "knowledge": 50
+      },
+      "career": "fashion",
+      "careerLevel": 5
+    },
+    {
+      "id": "story_fashion_owner",
+      "category": "story",
+      "titleVi": "Hibari Mode: bộ sưu tập của bạn",
+      "titleEn": "Hibari Mode: your own collection",
+      "titleJa": "ひばりモード：自分のコレクション",
+      "descriptionVi": "Ra mắt bộ sưu tập nối Hibari với Phú Quốc. Trình độ tiếng: JLPT N1.",
+      "descriptionEn": "Show a collection that joins Hibari and Phú Quốc. Language level: JLPT N1.",
+      "descriptionJa": "ひばりとフーコックをつなぐコレクションを発表する。日本語レベル：JLPT N1。",
+      "giverNpc": "npc_fashion_manager",
+      "giverNameVi": "Anh Ren",
+      "giverNameEn": "Ren",
+      "giverNameJa": "れん店長",
+      "locationVi": "Hibari Mode",
+      "locationEn": "Hibari Mode",
+      "locationJa": "ひばりモード",
+      "scene": "56_FashionStore",
+      "minLevel": 10,
+      "minKnowledge": 1400,
+      "requiresQuests": [
+        "story_fashion_manager"
+      ],
+      "repeatable": false,
+      "cooldownMinutes": 0,
+      "grantOnAccept": [],
+      "objectives": [
+        {
+          "id": "work",
+          "event": "fold",
+          "target": "fashion_table",
+          "count": 6,
+          "afterAll": false,
+          "textVi": "Gấp gọn 6 bàn quần áo",
+          "textEn": "Tidy 6 clothes tables",
+          "textJa": "テーブルを6つたたむ"
+        },
+        {
+          "id": "report",
+          "event": "talk",
+          "target": "npc_fashion_manager",
+          "count": 1,
+          "afterAll": true,
+          "textVi": "Báo cáo Anh Ren",
+          "textEn": "Report to Ren",
+          "textJa": "れん店長に報告する"
+        }
+      ],
+      "rewards": {
+        "yen": 2600,
+        "xp": 240,
+        "knowledge": 60
+      },
+      "career": "fashion",
       "careerLevel": 6
     }
   ]

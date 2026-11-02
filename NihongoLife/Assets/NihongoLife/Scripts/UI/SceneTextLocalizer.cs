@@ -21,9 +21,12 @@ namespace NihongoLife.UI
         {
             ("Vào phòng khám", "Enter the clinic", "診察室へ"),
             ("Trung tâm trò chơi học tiếng Nhật", "Japanese-learning arcade", "日本語を学べるゲームセンター"),
-            ("Phụ việc nông trại · ¥500/ca", "Farm helper · ¥500/shift", "農場のお手伝い · 1回500円"),
-            ("Tuyển làm thêm · ¥600/ca", "Part-time job · ¥600/shift", "アルバイト募集 · 1回600円"),
-            ("Tuyển phục vụ · ¥700/ca", "Server wanted · ¥700/shift", "ホールスタッフ募集 · 1回700円"),
+            ("Phụ việc nông trại", "Farm helper", "農場のお手伝い"),
+            ("Tuyển làm thêm", "Part-time job", "アルバイト募集"),
+            ("Tuyển phục vụ", "Server wanted", "ホールスタッフ募集"),
+            ("/ca", "/shift", "／回"),
+            ("/buổi", "/show", "／回"),
+            ("/bức", "/piece", "／枚"),
             ("[F] xem việc · N sổ nhiệm vụ", "[F] see the job · N task journal", "[F] 仕事を見る · N タスク帳"),
             ("Chào mừng tới Game Center", "Welcome to the Game Center", "ゲームセンターへようこそ"),
             ("Ga Hibari · Tàu điện", "Hibari Station · Trains", ""),
@@ -68,6 +71,26 @@ namespace NihongoLife.UI
         };
 
         private sealed class Entry { public string Original, Applied; }
+
+        [System.Serializable] private sealed class Phrase { public string vi, en, ja, ru; }
+        [System.Serializable] private sealed class Repay { public string from, to; }
+        [System.Serializable] private sealed class PhraseFile { public Phrase[] entries = new Phrase[0]; public Repay[] repay = new Repay[0]; }
+
+        private static PhraseFile _file;
+
+        /// <summary>Signs of the areas (scene_phrases.json), longest first. Job boards were typed with the old pay: repay corrects
+        /// them in every language.</summary>
+        private static PhraseFile File
+        {
+            get
+            {
+                if (_file != null) return _file;
+                var asset = Resources.Load<TextAsset>("Content/Localization/scene_phrases");
+                _file = asset != null ? JsonUtility.FromJson<PhraseFile>(asset.text) ?? new PhraseFile() : new PhraseFile();
+                System.Array.Sort(_file.entries, (a, b) => b.vi.Length.CompareTo(a.vi.Length));
+                return _file;
+            }
+        }
         private static readonly Dictionary<TMP_Text, Entry> Entries = new Dictionary<TMP_Text, Entry>();
 
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterSceneLoad)]
@@ -119,8 +142,16 @@ namespace NihongoLife.UI
         public static string Translate(string original)
         {
             if (string.IsNullOrEmpty(original)) return original;
-            if (Loc.IsVietnamese) return Loc.Currency(original);
             string value = original;
+            foreach (var pay in File.repay)
+                if (value.Contains(pay.from)) value = value.Replace(pay.from, pay.to);
+            if (Loc.IsVietnamese) return Loc.Currency(value);
+            foreach (var phrase in File.entries)
+                if (value.Contains(phrase.vi))
+                {
+                    string shown = Loc.IsJapanese ? phrase.ja : Loc.Code == "ru" && !string.IsNullOrEmpty(phrase.ru) ? phrase.ru : phrase.en;
+                    value = value.Replace(phrase.vi, shown);
+                }
             foreach (var (vi, en, ja) in Phrases)
                 if (value.Contains(vi)) value = value.Replace(vi, Loc.IsJapanese ? ja : Loc.Data(en));
             return Loc.IsJapanese ? CleanUp(value) : Loc.Currency(value);
@@ -136,7 +167,8 @@ namespace NihongoLife.UI
             var kept = new List<string>();
             foreach (string raw in lines)
             {
-                string line = Regex.Replace(raw, @"\s*[·|]\s*(?=<size|$)", " ");
+                string line = Regex.Replace(raw, @"^\s*[/·]\s*", "");
+                line = Regex.Replace(line, @"\s*[·|/]\s*(?=<size|$)", " ");
                 line = Regex.Replace(line, @"(\s*·\s*)+$", "").TrimEnd();
                 line = Regex.Replace(line, @"\s{3,}", "  ");
                 if (line.Trim().Length > 0) kept.Add(line);
@@ -148,7 +180,7 @@ namespace NihongoLife.UI
         {
             if (string.IsNullOrEmpty(text)) return false;
             foreach (char c in text)
-                if ("ăâđêôơưáàảãạấầẩẫậắằẳẵặéèẻẽẹếềểễệíìỉĩịóòỏõọốồổỗộớờởỡợúùủũụứừửữựýỳỷỹỵĂÂĐÊÔƠƯ".IndexOf(c) >= 0) return true;
+                if ("ăâđêôơưáàảãạấầẩẫậắằẳẵặéèẻẽẹếềểễệíìỉĩịóòỏõọốồổỗộớờởỡợúùủũụứừửữựýỳỷỹỵĂÂĐÊÔƠƯ".IndexOf(char.ToLowerInvariant(c)) >= 0) return true;
             return false;
         }
     }

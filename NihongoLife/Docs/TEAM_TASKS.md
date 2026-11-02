@@ -2149,3 +2149,53 @@ Tên lớp test viết tắt: PlayMode = `NihongoLife.Tests.<Lớp>`; EditMode =
 - **Lưu ý cho team:** `MainMenuBaker.Bake` chỉ biết cột trái và xóa phần còn lại của panel; đã có lần làm menu tụt từ 1334 xuống 492 object (khôi phục từ git), nên giờ baker từ chối chạy trên menu đã author. Đừng dùng nó để sửa menu.
 - **Test:** ngưỡng tốc độ camera `KonbiniCameraPlayModeTests` nâng từ 45 lên 65 m/s (camera kéo vào tức thì ở khung cửa là đúng thiết kế, số đo đổi theo FPS). `AmbientWildlifePlayModeTests` cho chó đi lại nếu gặp tường. `MenuNoRuntimeObjectsPlayModeTests` bỏ qua `TMP SubMeshUI`.
 - **Kết quả:** EditMode 337/337. PlayMode 215: 200 đạt, 10 bỏ qua, 3 fail, gồm `Writing_RealAi` (mạng), `IntroTrailerFirstLaunch` (Supabase giới hạn presence khi cả bộ test chạy, đạt khi chạy riêng), `LifeLoop.City_Hud…` (không ổn định: chạy riêng đạt 3/4 lần, lỗi không lặp lại cùng một chỗ, chưa tìm ra nguyên nhân).
+
+### 2026-11-02 - Owner's 11-point list: safety, swimming, economy, languages, phone HUD, online, arcade, fishing, video courses, clothes shop
+
+**Player safety (`Player/PlayerController`, `World/WorldBoundsGuard`, `Core/GameInputService`).** Jumps limited (0.85 m, 1 s, from solid ground only); inside a zone the guard remembers the footing and brings a falling player back (`ZoneRescues`). Attack moved off the left mouse button to X: that click was the ¥500 assault fine the owner saw as "money taken for nothing". Tests: `PlayerSafetyPlayModeTests`, `ZoneLeakTests` (flood fill from each spawn, `Bao_Cao/zone-leaks`).
+
+**Sushi Hibari (`Interaction/RestaurantTable`, `Editor/RestaurantMenuRepair`, `Editor/ZoneDoorBlockBuilder`, `World/SushiRestaurantRuntime`).** The dish models pointed at the legacy Prefab object, `Instantiate` threw, the table stayed in Preparing, so F and the exit died: 24 dishes repaired, `SceneIntegrityTests.EveryDishModel_PointsAtARealObject`. Real chairs and an eating gesture, two rope lanes (入口 / 出口), door blocks in sushi, clinic, school, station, a real ceiling and panels. Test: `SushiFlowPlayModeTests`.
+
+**Swimming (`Player/PlayerSwim`, `World/WaterSurface`, `Editor/WaterSurfaceBuilder`, `Shaders/NL_SeaWater`).** Past waist depth the player floats and strokes, climbs out at the shore, a current turns them back after 60 m. The sea colliders went, the wall around Midori went. `MixFog` flooded the sea with the fog colour: removed. Test: `SwimPlayModeTests`.
+
+**Economy (`Player/BusinessLedger`, `BusinessClock`, `BusinessWorkers`, `Resources/Progression/business.json`, `progression.json`).** Shifts ×2.5, career work ×2, farm, clinic, learning and daily tasks raised. A company has a kind, weekly fixed costs and wages closed every 7 game days, staff earn by the game day, the owner withdraws to the wallet. Choosing a field (`CareerState.majorIndustry`): work outside it pays money and XP ×0.5 (`CareerService.RewardFactor`). Tests: `BusinessLedgerPlayModeTests`, `BusinessWorkersPlayModeTests`.
+
+**Languages (`Resources/Content/Localization/scene_phrases.json`, `Core/SceneTextLocalizer`).** Scene text and prices follow the language and currency, the wallet shows the local currency. `ZoneLanguagePlayModeTests` sweeps every area in English; `RussianCoverageAuditTests` needs every UI triple in Russian (`Tools/music/ru_busking.py`).
+
+**Phone HUD (`UI/HudPrefs`, `UI/HudToggleBar`).** Three icons put away the character card, the task tracker and the F hint; the state stays on the device. Test: `HudTogglePlayModeTests`.
+
+**Shortcuts and menu (`UI/StatusDock.BuildShortcutDock`, `Editor/MenuBrandBuilder`, `Core/TouchControlPrefs`).** All shortcuts sit in one tray behind an icon on every screen, with icon tiles, the name in the current language and the key on a computer. The menu shows the real logo (`Resources/Branding/nihongolife_logo_light.png`, from `Tools/release/web_branding.py`) and "Play on: Phone / Computer" instead of "Touch controls: Auto". The web page has the logo in the loader, a real favicon and link picture, and an icon instead of the word Fullscreen.
+
+**Online (`Interaction/EmoteBubble`, `Player/PlayerEmoteController`, `Core/SupabaseOnlineWorldService`, `Core/SupabaseRealtimeClient`).** Emotes are pooled (5 to 6 ms a call), reach other players (event "e") and play on their avatars. A refused presence update waits 15 s and is sent again (`TrackBackoff`). What a player wears travels in presence ("o"). Live: `Tools/online_playtest/online_test.py` teacher call 24/24, notify and decline 11/11. Not testable here: real microphones and speakers through Agora on two devices.
+
+**Arcade (`MiniGames/Arcade/HoopShotGame`, `UfoCatcherGame`, `Editor/GameCenterBuilder`).** Hoop Shot (flick physics), a claw you steer and lower by hand with grip and slip (a 2D simulation, not a 3D machine), every machine has one game, the idle ones show 使用中 with a player on them.
+
+**Fishing (`Resources/Island/island_catalog.json`, `Editor/IslandFishingBuilder`).** 16 fish with a skill level, sharks included. The fight is the same for every fish so far.
+
+**Video courses (`UI/VideoCoursesUI`, `StudyModes/VideoCourseCatalog`, `Tools/video/build_courses.py`, `Resources/Video/video_courses.json`).** 152 lessons in 4 courses from @NihongoLifeGame, catalogue, curriculum, progress; on the web a YouTube player sits over the game (`NL_VideoShow`). Test: `VideoCoursesPlayModeTests`.
+
+**Hibari Mode (`56_FashionStore`, approved by the owner's request; `Editor/FashionStoreBuilder`, `Fashion/*`, `UI/FashionShopUI`, `Progression/JobStation.Fashion`, `Tools/fashion/build_fashion.py`).** 18 complete sets in 7 categories on real rails and mannequins; pick one to try it on with the camera in front of the character, buy it, wear it; owned sets stay in the account save and open from the look panel anywhere. `CharacterLook` recolours every block of the clothes (`LookPalette.outfitTop/outfitBottom`, measured by `CharacterVariantBuilder.MeasurePalettes`) and builds accessories on their own children (`Look_Wear`), crown and brow from `looks.json`. The Fashion industry, a 6-level career with stylist and designer branches, a Japanese shift. Other players see the outfit. Test: `FashionStorePlayModeTests` (captures `Bao_Cao/fashion`).
+
+**Illness on the body (`Resources/Health/illnesses.json` "gesture", `gestures.json` ill_*).** Sneeze, cough, hand on the forehead, fanning in the heat, holding the head or stomach, for each of the 16 illnesses. Test: `IllnessPlayModeTests.Every_Illness_ShowsOnTheBody` (captures `Bao_Cao/health/body`).
+
+**Data fixes.** "chị Ito" was a man: "anh Ito" everywhere. Ten gesture names had Russian or `?` as Japanese; `GestureLibraryTests` now reads them. `FootSlipPlayModeTests` limit 0.91: unobstructed runs measure 87 to 90 %, the old 0.88 only passed when the character hit something.
+
+**Fashion career made whole.** 5-stage story arc (`Tools/story/content.py`, `gen.py`), uniform and staff (`variants.json`, `CharacterVariantBuilder`), 7 interviews, 3 work events, avatar and `fold_clothes` gesture.
+
+**Leaving a shop (`FashionStoreBuilder.ClearOfCanopy`, `TurnReturnSpawns`).** The return spawn looked at the street, so the camera behind the player sat inside the canopy and a band of it covered the picture. The four shops now send the player out looking along the pavement. Test: `FashionStorePlayModeTests.LeavingTheShop_TheCameraIsClearOfTheCanopy`.
+
+**Illness gestures never interrupt.** `KidExpression.PlayGesture` plays only with no other gesture running and not while swimming, and `CarryHold` replaces a symptom. Test: `SushiFlowPlayModeTests.Ill_TheMealAndTheTrayComeFirst` (symptoms every half second through `PlayerIllness.SymptomEvery`). An illness left by an earlier test showed this in the full run; the sushi and swim tests now start healthy.
+
+**Accessories.** An outfit can use up to three roots on the head; all of them are removed when it changes (the headphones of the last set stayed on).
+
+**Key hints.** The sushi hints still said E; interact is F (`RestaurantTable`, `RestaurantMenuUI`, the sushi scenario, the Russian tables).
+
+**Full demo (`Tests/PlayMode/DemoRecordingTests.Tour.cs`, `Tools/video/tour_voice.py`, `tour_music.py`, `Bao_Cao/_build_video/mix_video.py`).** `Tour_RecordFrames` plays 14 chapters through the real game logic; `NL_TOUR_FROM` starts at a later chapter. The voice service refuses some sentences for no stated reason: `tour_voice.py` reports them and they are reworded.
+
+**Web measured.** Town entry on the final release build: 382 frames, a three-frame fade in from the loading screen, then brightness 145 to 150 of 255 with no swing over 1. Screenshots run at about 14 frames a second in headless Chrome, so a one-frame flash on a player's machine could still escape it. Browser tour: 12 areas and the HUD windows, no Unity or browser errors, no missing scripts, 58 to 60 fps.
+
+**Web check counts honestly (2026-11-03).** `WebQaBridge` reported "no material on New Game Object" in every area: those are TextMeshPro spare sub-meshes, named only in the Editor, and they draw nothing. It now skips them and hidden pooled pieces, so a real empty slot stands out. `ZoneConsolePlayModeTests.Town_EveryRendererHasItsMaterials` guards the same thing in the town.
+
+**AI Writing test (2026-11-03).** `IeltsProductivePlayModeTests.Writing_RealAi_ExaminerCoachRewriteHistory` failed with an empty message because AI marking is off by default and the test never turned it on. It now sets `ExamAiSettings.AutoGradingOverride`, and Gemini being overloaded or out of reach after the built-in retry counts as Inconclusive. On 2026-11-03 direct calls got timeouts and "high demand" 503s, so this case could not finish; the game kept the paper and said to mark it later.
+
+**Machine note.** On a low battery Windows gives Unity the Intel GPU and batch runs die with `887a0005` on the first frames; `-adapter 1` keeps the NVIDIA GPU (`_work/run_tests.ps1`).

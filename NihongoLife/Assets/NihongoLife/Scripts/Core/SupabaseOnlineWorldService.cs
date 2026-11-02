@@ -31,6 +31,7 @@ namespace NihongoLife.Core
         private string _localPlayerId;
         private string _localDisplayName;
         private string _localCharacterId;
+        private string _localOutfit;
         private int _chatHistoryLimit = 80;
         private SupabaseRealtimeClient _realtime;
         private SupabaseRealtimeClient.Channel _lobby, _shard;
@@ -119,13 +120,26 @@ namespace NihongoLife.Core
 
         private void OnDestroy()
         {
+            NihongoLife.Fashion.FashionService.Changed -= OutfitChanged;
             Disconnect();
         }
 
         // ──────────────────────── Connect ────────────────────────
 
+        /// <summary>Tells the others what the player now wears.</summary>
+        public void SetLocalOutfit(string outfitId)
+        {
+            _localOutfit = outfitId ?? string.Empty;
+            TrackShard();
+        }
+
+        private void OutfitChanged() => SetLocalOutfit(NihongoLife.Fashion.FashionService.WornId);
+
         public void ConnectLocalPlayer(string playerId, string displayName)
         {
+            _localOutfit = NihongoLife.Fashion.FashionService.WornId;
+            NihongoLife.Fashion.FashionService.Changed -= OutfitChanged;
+            NihongoLife.Fashion.FashionService.Changed += OutfitChanged;
             _localPlayerId = string.IsNullOrWhiteSpace(playerId) ? Guid.NewGuid().ToString("N") : playerId;
             _localDisplayName = string.IsNullOrWhiteSpace(displayName) ? "Learner" : displayName;
             if (UseAuthIdentity && GameServices.TryGet(out IAuthService auth) && auth.IsAuthenticated)
@@ -314,7 +328,7 @@ namespace NihongoLife.Core
 
         private void TrackShard()
         {
-            _shard?.Track(new Dictionary<string, object> { ["n"] = _localDisplayName, ["c"] = _localCharacterId });
+            _shard?.Track(new Dictionary<string, object> { ["n"] = _localDisplayName, ["c"] = _localCharacterId, ["o"] = _localOutfit ?? string.Empty });
         }
 
         private void LeaveShard()
@@ -337,6 +351,7 @@ namespace NihongoLife.Core
             var p = GetOrAdd(key);
             p.displayName = meta.Str("n", p.displayName ?? "Learner");
             p.characterId = meta.Str("c", p.characterId);
+            p.outfitId = meta.Str("o", "");
             p.sceneName = _scene;
             p.roomId = _scene;
             p.shardTopic = _shard?.Topic;
@@ -365,6 +380,15 @@ namespace NihongoLife.Core
         }
 
         // ──────────────────────── Pose ────────────────────────
+
+        public event Action<string, int> OnPlayerEmote;
+
+        /// <summary>Tells the area about an emote. It only needs to be seen by who is there now, so it is not stored.</summary>
+        public void SendEmote(int emote)
+        {
+            if (_shard == null) return;
+            _shard.Send("e", new Dictionary<string, object> { ["i"] = _localPlayerId, ["e"] = emote });
+        }
 
         public void UpdateLocalPlayerPose(string sceneName, Vector3 position, Quaternion rotation)
         {
@@ -429,9 +453,13 @@ namespace NihongoLife.Core
                 p.roomId = _scene;
                 p.shardTopic = _shard?.Topic;
                 var meta = _shard?.MetaOf(id);
-                if (meta != null) { p.displayName = meta.Str("n", p.displayName); p.characterId = meta.Str("c", p.characterId); }
+                if (meta != null) { p.displayName = meta.Str("n", p.displayName); p.characterId = meta.Str("c", p.characterId); p.outfitId = meta.Str("o", ""); }
                 p.hasPose = true;
                 OnPlayerJoinedOrUpdated?.Invoke(p);
+            }
+            else if (evt == "e")
+            {
+                OnPlayerEmote?.Invoke(id, (int)payload.Num("e", -1));
             }
             else if (evt == "c")
             {

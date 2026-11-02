@@ -54,6 +54,15 @@ namespace NihongoLife.Player
         /// sleeping or fainted (input locked), sitting, working, or talking. (A mood from studying used to make the
         /// player stand up and point while lying in bed.)
         /// </summary>
+        /// <summary>A body gesture of the same kind (an illness showing): only while the character is free and doing
+        /// nothing else. It never takes over from another gesture (eating, swimming, carrying).</summary>
+        public void PlayGesture(string id)
+        {
+            var gestures = NihongoLife.Gestures.GestureLayer.On(gameObject);
+            var swim = GetComponent<PlayerSwim>().OrNull();
+            if (FreeToEmote() && string.IsNullOrEmpty(gestures.Current) && (swim == null || !swim.Swimming)) gestures.Play(id);
+        }
+
         private bool FreeToEmote()
         {
             var seat = GetComponent<NihongoLife.World.SeatedPassenger>().OrNull();

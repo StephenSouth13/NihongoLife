@@ -132,6 +132,7 @@ namespace NihongoLife.MiniGames
                 case MiniGameKind.TenseTyper: return Attach<TenseTyperGame>();
                 case MiniGameKind.WheelQuiz: return Attach<WheelQuizGame>();
                 case MiniGameKind.AirHockey: return Attach<AirHockeyGame>();
+                case MiniGameKind.HoopShot: return Attach<HoopShotGame>();
                 default: return null;
             }
         }

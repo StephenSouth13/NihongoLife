@@ -60,6 +60,7 @@ namespace NihongoLife.Tests
         {
             yield return LoadCity();
             if (!GameServices.TryGet(out ExamGradingService grading) || !grading.IsConfigured) Assert.Inconclusive("Gemini is not configured on this machine.");
+            ExamAiSettings.AutoGradingOverride = true; // AI marking is off by default (pending review); this case is the real AI path
             var ui = Open("nl_writing_academic_1");
             ui.SetAnswer(1, Task1);
             ui.SetAnswer(2, Task2);
@@ -77,6 +78,7 @@ namespace NihongoLife.Tests
             for (float t = 0f; t < 180f && ui.IsGrading; t += Time.unscaledDeltaTime) yield return null;
             var record = ui.ProductiveRecord;
             Assert.NotNull(record);
+            if (record.writing.Any(t => t.examination?.error != null && (t.examination.error.Contains("503") || t.examination.error.StartsWith("Không kết nối")))) Assert.Inconclusive("Gemini is overloaded or out of reach, even after the retry.");
             foreach (var task in record.writing)
             {
                 Assert.IsTrue(task.examination != null && task.examination.Ok, $"Task {task.task}: {task.examination?.error}");
@@ -124,6 +126,9 @@ namespace NihongoLife.Tests
             Assert.AreEqual(paid, ExamGradingService.PaidRequestsThisSession, "No paid request for a cached answer");
             ui.Close();
         }
+
+        [TearDown]
+        public void AiMarkingBackToDefault() => ExamAiSettings.AutoGradingOverride = null;
 
         [UnityTest]
         public IEnumerator Writing_OfflineAndDailyLimit_SaveAndExplain()

@@ -27,6 +27,19 @@ namespace NihongoLife.Tests
             _log.Add(type + ": " + message.Split('\n')[0]);
         }
 
+        /// <summary>A renderer with an empty material slot draws pink or nothing, and the web check counts it as broken.</summary>
+        [UnityTest]
+        public IEnumerator Town_EveryRendererHasItsMaterials()
+        {
+            LogAssert.ignoreFailingMessages = true;
+            yield return SceneManager.LoadSceneAsync(WorldLocationCatalog.CityScene);
+            yield return new WaitForSecondsRealtime(20f); // townspeople, traffic and animals appear over time
+            var empty = new List<string>();
+            foreach (var r in Object.FindObjectsByType<Renderer>(FindObjectsInactive.Include, FindObjectsSortMode.None))
+                if (r.sharedMaterials.Any(m => m == null)) empty.Add(r.GetType().Name + " " + Path(r.transform));
+            Assert.IsEmpty(empty.Distinct().OrderBy(s => s).Take(30), "Renderers with an empty material slot (" + empty.Count + ")");
+        }
+
         [UnityTest]
         public IEnumerator Islands_And_Clinic_LoadWithoutConsoleErrors()
         {

@@ -36,8 +36,7 @@
       <div id="nl-stage">
         <div id="nl-avatar" aria-hidden="true"><div id="nl-avatar-inner"></div></div>
         <div id="nl-head">
-          <div id="unity-loading-kana">日本語ライフ</div>
-          <div id="unity-loading-title">{{{ PRODUCT_NAME }}}</div>
+          <img id="nl-logo" src="TemplateData/logo.png" alt="{{{ PRODUCT_NAME }}}" width="360" height="100">
           <div id="nl-tagline"></div>
         </div>
         <div id="unity-progress"><div id="unity-progress-bar"></div></div>
@@ -51,7 +50,9 @@
         </div>
       </div>
     </div>
-    <button id="unity-fullscreen" type="button" hidden>Fullscreen</button>
+    <button id="unity-fullscreen" type="button" hidden aria-label="Fullscreen" title="Fullscreen">
+      <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><path fill="currentColor" d="M3 3h7v2H5v5H3V3zm11 0h7v7h-2V5h-5V3zM3 14h2v5h5v2H3v-7zm16 0h2v7h-7v-2h5v-5z"/></svg>
+    </button>
     <div id="unity-orient" hidden>
       <div id="unity-orient-phone" aria-hidden="true">&#128241;</div>
       <p id="unity-orient-text">Turn your phone sideways to play.</p>
@@ -164,10 +165,13 @@
 
     // ─── The loader: pictures of the town, the characters, a phrase to learn (TemplateData/art, LoadingArtBuilder) ───
     var lang = ((navigator.language || "en").slice(0, 2)).toLowerCase();
-    function pick(vi, en, ja) { return lang === "vi" ? vi : lang === "ja" ? ja : en; }
+    function pick(vi, en, ja, ru) { return lang === "vi" ? vi : lang === "ja" ? ja : lang === "ru" && ru ? ru : en; }
+    var fullscreenLabel = pick("Toàn màn hình", "Fullscreen", "全画面", "Во весь экран");
+    fullscreen.setAttribute("aria-label", fullscreenLabel);
+    fullscreen.title = fullscreenLabel;
     var percentText = document.querySelector("#nl-percent");
     var avatarRing = document.querySelector("#nl-avatar");
-    document.querySelector("#nl-tagline").textContent = pick("Sống ở Nhật, học tiếng Nhật — ngay trên trình duyệt.", "Live in Japan, learn Japanese — right in your browser.", "日本で暮らして、日本語を学ぼう。");
+    document.querySelector("#nl-tagline").textContent = pick("Sống ở Nhật, học tiếng Nhật — ngay trên trình duyệt.", "Live in Japan, learn Japanese — right in your browser.", "日本で暮らして、日本語を学ぼう。", "Живите в Японии и учите японский прямо в браузере.");
     document.querySelector("#nl-word-label").textContent = pick("HỌC TRONG LÚC CHỜ · 今日のことば", "LEARN WHILE YOU WAIT · 今日のことば", "待つあいだに · 今日のことば");
     var scenes = ["90-testsandbox", "20-stationdistrict", "30-sushirestaurant", "40-hibariclass", "35-hibariclinic", "50-gamecenter", "60-midoriisland", "65-phuquocisland", "45-homebedroom"];
     var kids = ["kid-haruto", "kid-yui", "kid-sota", "kid-hina", "kid-riku", "kid-mio", "kid-yuto", "kid-sakura"];
@@ -243,8 +247,8 @@
         percentText.textContent = pct + "%";
         avatarRing.style.setProperty("--p", pct);
         // Unity reports about 90% once the download is done; the rest is unpacking and starting the engine.
-        loadingText.textContent = progress < 0.9 ? pick("Đang tải dữ liệu game…", "Downloading the game…", "ゲームをダウンロード中…")
-          : progress < 1 ? pick("Đang giải nén…", "Unpacking…", "展開中…") : pick("Đang khởi động thị trấn…", "Starting the town…", "町を準備中…");
+        loadingText.textContent = progress < 0.9 ? pick("Đang tải dữ liệu game…", "Downloading the game…", "ゲームをダウンロード中…", "Загрузка игры…")
+          : progress < 1 ? pick("Đang giải nén…", "Unpacking…", "展開中…", "Распаковка…") : pick("Đang khởi động thị trấn…", "Starting the town…", "町を準備中…", "Запускаем город…");
       }).then(function (instance) {
         loading.style.display = "none";
         timers.forEach(clearInterval);

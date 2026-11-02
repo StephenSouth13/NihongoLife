@@ -45,6 +45,7 @@ namespace NihongoLife.UI
                 case "HOME": return WorldLocationCatalog.HomeBedroomScene;
                 case "CLINIC": return WorldLocationCatalog.ClinicScene;
                 case "MUSIC": return WorldLocationCatalog.MusicShopScene;
+                case "FASHION": return WorldLocationCatalog.FashionStoreScene;
                 default: return null;
             }
         }
@@ -305,6 +306,7 @@ namespace NihongoLife.UI
             else if (scene == WorldLocationCatalog.GameCenterScene) GameCenterMap();
             else if (scene == WorldLocationCatalog.ClinicScene) ClinicMap();
             else if (scene == WorldLocationCatalog.MusicShopScene) MusicShopMap();
+            else if (scene == WorldLocationCatalog.FashionStoreScene) FashionStoreMap();
             else if (scene == WorldLocationCatalog.PhuQuocIslandScene) PhuQuocIslandMap();
             else CityMap();
             DrawGrid();
@@ -341,6 +343,7 @@ namespace NihongoLife.UI
             AddWorld(L("Game Center Hibari", "Game Center Hibari", "ゲームセンター"), "ARCADE", "遊", -6f, -20.5f, new(.92f, .36f, .72f), "ゲーセン");
             AddWorld(L("Phòng khám Hibari", "Hibari Clinic", "ひばりクリニック"), "CLINIC", "医", -18f, -20.5f, new(.36f, .72f, .64f), "クリニック");
             AddWorld(L("Tiệm nhạc & tranh Hibiki", "Hibiki Music & Art", "ひびき楽器店"), "MUSIC", "音", -30f, -20.5f, new(.66f, .45f, .88f), "がっき");
+            AddWorld(L("Thời trang Hibari Mode", "Hibari Mode (clothes)", "ひばりモード"), "FASHION", "服", -42f, -20.5f, new(.82f, .33f, .55f), "ふく");
         }
 
         /// <summary>
@@ -420,6 +423,18 @@ namespace NihongoLife.UI
             AddPixel(L("Khám sức khoẻ · giường nghỉ", "Health check · recovery beds", "健康診断"), "CHECK", "健", new(260, 140), new(.45f, .78f, .48f));
             AddPixel(L("Phòng chờ", "Waiting room", "待合室"), "WAIT", "待", new(260, -140), new(.62f, .76f, .38f));
             AddPixel(L("Về thành phố", "Return to city", "出口"), "EXIT", "出", new(0, -200), new(.45f, .78f, .48f));
+        }
+
+        private void FashionStoreMap()
+        {
+            _header.text = L("SƠ ĐỒ CỬA HÀNG HIBARI MODE", "HIBARI MODE FLOOR MAP", "ひばりモード 案内図");
+            _worldMin = new(1587, -9); _worldMax = new(1613, 13);
+            Road(Vector2.zero, new(MapW - 120, MapH - 80));
+            AddPixel(L("Thường ngày · đường phố", "Everyday · street", "ふだん着・ストリート"), "CASUAL", "服", new(-280, 40), new(.3f, .62f, .94f));
+            AddPixel(L("Công sở · thể thao", "Office · sport", "オフィス・スポーツ"), "OFFICE", "着", new(280, 40), new(.2f, .72f, .64f));
+            AddPixel(L("Mùa hè · mùa đông · lễ hội", "Summer · winter · festival", "季節・お祭り"), "SEASON", "季", new(0, 40), new(.94f, .68f, .25f));
+            AddPixel(L("Phòng thử đồ · gương", "Fitting rooms · mirror", "試着室・かがみ"), "FITTING", "鏡", new(-160, 180), new(.82f, .33f, .55f));
+            AddPixel(L("Quầy · anh Ren", "Till · Ren", "レジ"), "COUNTER", "会", new(230, 180), new(.66f, .45f, .88f));
         }
 
         private void MusicShopMap()

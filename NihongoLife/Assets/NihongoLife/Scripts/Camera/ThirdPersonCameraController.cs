@@ -315,6 +315,23 @@ namespace NihongoLife.Cameras
             else outdoorDistance = zoomed;
         }
 
+        private (float yaw, float pitch, float distance, float outdoor)? _savedOrbit;
+
+        /// <summary>A view for a moment (the character seen from the front); <see cref="PopOrbit"/> restores the old one.</summary>
+        public void PushOrbit(float yaw, float pitch, float distance)
+        {
+            _savedOrbit ??= (_rotationX, _rotationY, defaultDistance, outdoorDistance);
+            SetOrbit(yaw, pitch, distance);
+        }
+
+        public void PopOrbit()
+        {
+            if (!(_savedOrbit is { } saved)) return;
+            _savedOrbit = null;
+            SetOrbit(saved.yaw, saved.pitch, saved.distance);
+            outdoorDistance = saved.outdoor;
+        }
+
         public void SetOrbit(float yaw, float pitch, float distance)
         {
             _rotationX = yaw;

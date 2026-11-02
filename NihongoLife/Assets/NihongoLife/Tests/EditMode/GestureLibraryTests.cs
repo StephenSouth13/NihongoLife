@@ -27,6 +27,7 @@ namespace NihongoLife.Tests.EditMode
                 Assert.IsFalse(string.IsNullOrWhiteSpace(g.en), g.id + " en");
                 Assert.IsFalse(string.IsNullOrWhiteSpace(g.ja), g.id + " ja");
                 Assert.IsFalse(string.IsNullOrWhiteSpace(g.ru), g.id + " ru");
+                StringAssert.IsMatch(@"[぀-ヿ一-鿿]", g.ja, g.id + ": the Japanese name is Japanese");
                 Assert.Greater(g.dur, 0.3f, g.id);
                 Assert.IsNotEmpty(g.ch, g.id);
                 foreach (var c in g.ch)

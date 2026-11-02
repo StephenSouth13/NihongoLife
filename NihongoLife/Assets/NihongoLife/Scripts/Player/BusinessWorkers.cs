@@ -18,13 +18,15 @@ namespace NihongoLife.Player
     /// F4: hire workers for the player's company. Each has a name, a role, a wage and a level. Workers earn for the company by
     /// the (real) hour up to <see cref="MaxHours"/> hours between collections - so it also works after the tab was closed -
     /// the wage is paid pro rata out of what they earn, and <see cref="Collect"/> banks the net into the company's capital.
+    /// Work is counted on the game's calendar, eight hours a day; BusinessClock settles every new day.
     /// Training raises a worker's level (+20% earnings per level). Hiring still goes through <see cref="BusinessSystem.TryHireEmployee"/>
     /// so the living-wage rule and the reputation effects stay in one place.
     /// </summary>
     public static class BusinessWorkers
     {
-        public const int MaxHours = 8, MaxLevel = 5, HoursPerMonth = 720, MaxWorkers = 12;
+        public const int HoursPerDay = 8, MaxDaysAway = 30, MaxLevel = 5, HoursPerMonth = HoursPerDay * 30, MaxWorkers = 12;
         public static Func<long> NowTicks = () => DateTime.UtcNow.Ticks;
+        public static Func<int> Today = () => DayNightCycle.Active != null ? DayNightCycle.Active.Day : 0;
 
         public static readonly WorkerRole[] Roles =
         {
@@ -51,7 +53,7 @@ namespace NihongoLife.Player
             if (!sys.TryHireEmployee(wage)) return null;
             var used = b.workers.Select(x => x.name).ToHashSet();
             string name = Names.FirstOrDefault(n => !used.Contains(n)) ?? "Worker" + (b.workers.Count + 1);
-            var w = new WorkerRecord { id = "w" + (b.workers.Count + 1) + "_" + NowTicks() % 100000, name = name, role = Role(roleId).Id, wage = wage, level = 1, hiredTicks = NowTicks() };
+            var w = new WorkerRecord { id = "w" + (b.workers.Count + 1) + "_" + NowTicks() % 100000, name = name, role = Role(roleId).Id, wage = wage, level = 1, hiredTicks = NowTicks(), hiredDay = Today() };
             b.workers.Add(w);
             sys.Persist();
             return w;
@@ -82,8 +84,8 @@ namespace NihongoLife.Player
 
         private static float Hours(BusinessRecord b, WorkerRecord w)
         {
-            long since = Math.Max(b.lastCollectTicks, w.hiredTicks);
-            return Mathf.Clamp((float)((NowTicks() - since) / (double)TimeSpan.TicksPerHour), 0f, MaxHours);
+            int days = Today() - Math.Max(b.lastSettledDay, w.hiredDay);
+            return Mathf.Clamp(days, 0, MaxDaysAway) * HoursPerDay;
         }
 
         /// <summary>What the staff have earned (gross), cost in wages, and the net, since the last collection.</summary>
@@ -92,7 +94,8 @@ namespace NihongoLife.Player
             gross = wages = net = 0;
             if (sys == null || !sys.OwnsCompany || sys.Business.workers == null) return;
             float g = 0f, c = 0f;
-            foreach (var w in sys.Business.workers) { float h = Hours(sys.Business, w); g += RevenuePerHour(w) * h; c += WagePerHour(w) * h; }
+            float factor = BusinessLedger.KindOf(sys.Business)?.revenueFactor ?? 1f;
+            foreach (var w in sys.Business.workers) { float h = Hours(sys.Business, w); g += RevenuePerHour(w) * factor * h; c += WagePerHour(w) * h; }
             gross = Mathf.FloorToInt(g); wages = Mathf.CeilToInt(c); net = gross - wages;
         }
 
@@ -105,6 +108,7 @@ namespace NihongoLife.Player
             b.capitalYen = Mathf.Max(0, b.capitalYen + net);
             if (net > 0) b.totalEarnedYen += net;
             b.lastCollectTicks = NowTicks();
+            b.lastSettledDay = Today();
             sys.Persist();
             return net;
         }

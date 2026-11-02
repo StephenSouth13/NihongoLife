@@ -75,7 +75,7 @@ namespace NihongoLife.UI
             var store = LearningProgressStore.Shared;
             int stars = store.TotalStars(JapanesePatternCatalog.All.Select(p => p.id));
             int maxStars = JapanesePatternCatalog.All.Count * 3;
-            int watched = VideoCatalog.All.Count(v => store.IsVideoWatched(v.id));
+            int watched = VideoCourseCatalog.Watched(store);
             bool english = StudyModeRegistry.IsAvailable(StudyModeRegistry.EnglishBasic);
 
             Tile(0, tw, "Mẫu câu tiếng Nhật", "Japanese patterns", "文型練習", "translate", UiTheme.Jlpt,
@@ -89,10 +89,10 @@ namespace NihongoLife.UI
                       "A1・{0}テーマ：あいさつ・数字・買い物・道案内…単語・例文・ミニクイズ。", EnglishBasicCatalog.All.Count),
                 english ? Loc.F("★ {0}/{1}", "★ {0}/{1}", "★ {0}/{1}", store.TotalStars(EnglishBasicCatalog.All.Select(l => l.id)), EnglishBasicCatalog.All.Count * 3) : Loc.T("Sắp ra mắt", "Coming soon", "近日公開"), english, OpenEnglish);
             Tile(2, tw, "Video bài học", "Video library", "動画ライブラリ", "videocam", UiTheme.Teal,
-                Loc.F("{0} video từ kênh NihongoLife — xem trong game, có tóm tắt và phụ đề.",
-                      "{0} videos from the NihongoLife channel — watch in-game with summary and transcript.",
-                      "NihongoLifeチャンネルの動画{0}本—要約・字幕付きでゲーム内視聴。", VideoCatalog.All.Count),
-                Loc.F("Đã xem {0}/{1}", "Watched {0}/{1}", "視聴済み {0}/{1}", watched, VideoCatalog.All.Count), true, OpenVideos);
+                Loc.F("{0} bài học video theo khóa: tiếng Nga, tiếng Anh, tiếng Nhật, có giáo trình và tiến độ.",
+                      "{0} video lessons in courses: Russian, English and Japanese, with a curriculum and progress.",
+                      "ロシア語・英語・日本語のビデオコース{0}レッスン。カリキュラムと進捗つき。", VideoCourseCatalog.LessonCount),
+                Loc.F("Đã xem {0}/{1}", "Watched {0}/{1}", "視聴済み {0}/{1}", watched, VideoCourseCatalog.LessonCount), true, OpenVideos);
             var route = LearningPath.CurrentRoute();
             string pathBadge = route != null
                 ? Loc.F("Lộ trình: {0}/{1} bước", "Your path: {0}/{1} steps", "コース：{0}/{1}ステップ", LearningPath.DoneCount(route), route.Steps.Count)
@@ -165,7 +165,7 @@ namespace NihongoLife.UI
         }
 
         public void OpenPatterns() { Hide(); Child<JapanesePatternsUI>().Show(); }
-        public void OpenVideos() { Hide(); Child<InGameVideoPlayerUI>().Show(); }
+        public void OpenVideos() { Hide(); Child<VideoCoursesUI>().Show(); }
         public void OpenSchool() { Hide(); Child<CoursePopup>().Show(); }
         public void OpenTenses() { Hide(); var school = Child<CoursePopup>(); school.Show(); school.ShowTab(CoursePopup.Tab.Tenses); }
         public void OpenDictionary() { Hide(); HandbookUI.Open(HandbookUI.Chapter.Dictionary); }

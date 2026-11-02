@@ -42,6 +42,7 @@ namespace NihongoLife.UI
             { "place.35_HibariClinic", new[] { "Ph\u00F2ng kh\u00E1m Hibari", "Hibari clinic", "\u3072\u3070\u308A\u30AF\u30EA\u30CB\u30C3\u30AF", "\u041A\u043B\u0438\u043D\u0438\u043A\u0430 \u0425\u0438\u0431\u0430\u0440\u0438" } },
             { "place.65_PhuQuocIsland", new[] { "\u0110\u1EA3o Ph\u00FA Qu\u1ED1c", "Phu Quoc Island", "\u30D5\u30FC\u30B3\u30C3\u30AF\u5CF6", "\u041E\u0441\u0442\u0440\u043E\u0432 \u0424\u0443\u043A\u0443\u043E\u043A" } },
             { "place.55_MusicShop", new[] { "C\u1EEDa h\u00E0ng nh\u1EA1c", "Music shop", "\u697D\u5668\u5E97", "\u041C\u0443\u0437\u044B\u043A\u0430\u043B\u044C\u043D\u044B\u0439 \u043C\u0430\u0433\u0430\u0437\u0438\u043D" } },
+            { "place.56_FashionStore", new[] { "C\u1EEDa h\u00E0ng th\u1EDDi trang", "Clothes shop", "\u670D\u5C4B\u3055\u3093", "\u041C\u0430\u0433\u0430\u0437\u0438\u043D \u043E\u0434\u0435\u0436\u0434\u044B" } },
             { "place.90_TestSandbox", new[] { "Th\u1ECB tr\u1EA5n", "The town", "\u753A", "\u0413\u043E\u0440\u043E\u0434" } },
             { "photo.visit", new[] { "L\u1EA7n \u0111\u1EA7u \u0111\u1EBFn", "First visit", "\u306F\u3058\u3081\u3066\u6765\u305F\uFF01", "\u041F\u0435\u0440\u0432\u044B\u0439 \u0432\u0438\u0437\u0438\u0442" } },
             { "photo.words", new[] { "\u0110\u00E3 h\u1ECDc {0} t\u1EEB", "Learned {0} words", "{0}\u8A9E\u899A\u3048\u305F\uFF01", "\u0412\u044B\u0443\u0447\u0435\u043D\u043E \u0441\u043B\u043E\u0432: {0}" } },

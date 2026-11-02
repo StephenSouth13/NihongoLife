@@ -1,0 +1,13 @@
+{
+  "schema": "nihongolife.business.v1",
+  "weekDays": 7,
+  "ownerDrawPercent": 60,
+  "reserveWeeks": 2,
+  "kinds": [
+    { "id": "shop", "nameVi": "Cửa hàng", "nameEn": "Shop", "nameJa": "ショップ", "nameRu": "Магазин", "weeklyRent": 1500, "weeklyUtilities": 500, "weeklySupplies": 500, "revenueFactor": 1.0 },
+    { "id": "restaurant", "nameVi": "Nhà hàng", "nameEn": "Restaurant", "nameJa": "レストラン", "nameRu": "Ресторан", "weeklyRent": 2000, "weeklyUtilities": 800, "weeklySupplies": 1200, "revenueFactor": 1.2 },
+    { "id": "clinic", "nameVi": "Phòng khám", "nameEn": "Clinic", "nameJa": "クリニック", "nameRu": "Клиника", "weeklyRent": 2500, "weeklyUtilities": 1000, "weeklySupplies": 1500, "revenueFactor": 1.5 },
+    { "id": "school", "nameVi": "Trường ngoại ngữ", "nameEn": "Language school", "nameJa": "語学学校", "nameRu": "Языковая школа", "weeklyRent": 2000, "weeklyUtilities": 600, "weeklySupplies": 400, "revenueFactor": 1.1 },
+    { "id": "fashion", "nameVi": "Thời trang", "nameEn": "Fashion house", "nameJa": "ファッション", "nameRu": "Дом моды", "weeklyRent": 2200, "weeklyUtilities": 500, "weeklySupplies": 800, "revenueFactor": 1.25 }
+  ]
+}

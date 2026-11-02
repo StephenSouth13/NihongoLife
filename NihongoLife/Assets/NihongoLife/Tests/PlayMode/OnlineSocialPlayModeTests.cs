@@ -197,6 +197,50 @@ namespace NihongoLife.Tests
 
         // ─────────── In the city ───────────
 
+        /// <summary>An emote crosses the real network: a bot uses one and its avatar here shows the bubble.</summary>
+        [UnityTest]
+        public IEnumerator City_AnEmoteOfAnotherPlayer_IsSeenHere()
+        {
+            OnlineAccess.Bypass = true;
+            yield return LoadCity();
+            if (!(GameServices.TryGet(out IOnlineWorldService world) && world is SupabaseOnlineWorldService))
+                Assert.Inconclusive("Online is not configured on this machine (Supabase settings in LocalSecrets/secrets.json).");
+            var online = (SupabaseOnlineWorldService)world;
+            yield return WaitFor(() => online.ShardTopic != null, 15f, "local player in a city shard");
+            var player = Object.FindFirstObjectByType<PlayerController>();
+            string scene = SceneManager.GetActiveScene().name;
+            var bot = NewWorld("emoteA", "Haru", "kid_haruto");
+            var manager = Object.FindFirstObjectByType<RemotePlayerManager>();
+            Vector3 spot = player.transform.position + player.transform.forward * 2f;
+            for (float t = 0f; t < 20f && !manager.Avatars.Values.Any(a => a.DisplayName == "Haru"); t += Time.unscaledDeltaTime)
+            {
+                bot.UpdateLocalPlayerPose(scene, spot, Quaternion.identity);
+                yield return null;
+            }
+            var avatar = manager.Avatars.Values.FirstOrDefault(a => a.DisplayName == "Haru");
+            Assert.IsNotNull(avatar, "The other player is here");
+            bot.SendEmote(2);
+            Transform bubble = null;
+            for (float t = 0f; t < 8f && (bubble == null || !bubble.gameObject.activeSelf); t += Time.unscaledDeltaTime)
+            {
+                bubble = avatar.transform.Find("EmoteBubble");
+                yield return null;
+            }
+            Assert.IsNotNull(bubble, "The emote arrived");
+            Assert.IsTrue(bubble.gameObject.activeSelf);
+
+            // What the other player wears shows here too.
+            bot.SetLocalOutfit("office_navy");
+            bool dressed = false;
+            for (float t = 0f; t < 10f && !dressed; t += Time.unscaledDeltaTime)
+            {
+                bot.UpdateLocalPlayerPose(scene, spot, Quaternion.identity);
+                dressed = avatar.GetComponentsInChildren<Transform>(true).Any(x => x.name == NihongoLife.Player.CharacterLook.WearName);
+                yield return null;
+            }
+            Assert.IsTrue(dressed, "The other player's outfit arrived");
+        }
+
         [UnityTest]
         public IEnumerator City_RemotePlayers_TargetingAndChatWindow()
         {

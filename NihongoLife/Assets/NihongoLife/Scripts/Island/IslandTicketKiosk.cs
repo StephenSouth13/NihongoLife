@@ -12,7 +12,7 @@ namespace NihongoLife.Island
     /// <summary>Ticket kiosk at Midori station.</summary>
     public sealed class IslandTicketKiosk : MonoBehaviour, IInteractable
     {
-        public string GetPromptJa() => IslandLanguage.Target == TargetLanguage.English ? $"Ticket to Hibari ¥{IslandTrainService.Price}" : $"ひばりゆき きっぷ ¥{IslandTrainService.Price}";
+        public string GetPromptJa() => IslandLanguage.Target == TargetLanguage.English ? $"Ticket to Hibari {Loc.Yen(IslandTrainService.Price)}" : $"ひばりゆき きっぷ {Loc.Yen(IslandTrainService.Price)}";
         public string GetpromptEn() => IslandTrainService.HasTicket ? Loc.T("Đã có vé — ra cửa tàu", "You have a ticket — go to the train door", "切符があります — 電車のドアへ") : Loc.F("Mua vé về Hibari (¥{0})", "Buy a ticket to Hibari (¥{0})", "ひばり行きの切符を買う（¥{0}）", IslandTrainService.Price);
         public Transform GetTransform() => transform;
         public void Interact(GameObject player)

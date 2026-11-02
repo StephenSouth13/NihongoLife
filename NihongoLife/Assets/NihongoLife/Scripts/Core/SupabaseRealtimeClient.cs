@@ -30,6 +30,9 @@ namespace NihongoLife.Core
         /// <summary>Seconds between two presence updates on one channel.</summary>
         public const float TrackInterval = 1.5f;
 
+        /// <summary>Seconds a channel waits after the server refused a presence update.</summary>
+        public const float TrackBackoff = 15f;
+
         public sealed class Channel
         {
             internal readonly SupabaseRealtimeClient Owner;
@@ -43,6 +46,7 @@ namespace NihongoLife.Core
             internal string SentTrackJson;
             internal float LastTrackAt = -999f;
             internal bool TrackPending;
+            internal float TrackResumeAt;
             internal bool Closed;
             internal float RejoinAt = -1f;
             internal readonly List<string> PendingFrames = new List<string>();
@@ -98,13 +102,21 @@ namespace NihongoLife.Core
             /// is never re-sent, and changes closer than <see cref="TrackInterval"/> wait for the next Update.</summary>
             internal void FlushTrack()
             {
-                if (!TrackPending || !Joined || TrackJson == null) return;
+                if (!TrackPending || !Joined || TrackJson == null || Time.unscaledTime < TrackResumeAt) return;
                 if (TrackJson == SentTrackJson) { TrackPending = false; return; }
                 if (Time.unscaledTime - LastTrackAt < TrackInterval) return;
                 TrackPending = false;
                 SentTrackJson = TrackJson;
                 LastTrackAt = Time.unscaledTime;
                 Owner.SendOnChannel(this, "presence", "{\"type\":\"presence\",\"event\":\"track\",\"payload\":" + TrackJson + "}");
+            }
+
+            /// <summary>The server dropped this client's last presence update: it is sent again once the limit has passed.</summary>
+            internal void BackOffTrack()
+            {
+                TrackResumeAt = Time.unscaledTime + TrackBackoff;
+                SentTrackJson = null;
+                TrackPending = TrackJson != null;
             }
 
             public void Untrack()
@@ -622,8 +634,14 @@ namespace NihongoLife.Core
                         }
                         break;
                     case "system":
-                        if ((payload.Str("message") ?? "").IndexOf("Too many", StringComparison.OrdinalIgnoreCase) >= 0) channel.RaiseRateLimited();
-                        if (payload.Str("status") != "ok" || Verbose) Debug.LogWarning($"[SupabaseRealtime] {name}: system on {channel.Topic}: {MiniJson.Serialize(payload)}");
+                        string notice = payload.Str("message") ?? "";
+                        if (notice.IndexOf("Too many", StringComparison.OrdinalIgnoreCase) >= 0) channel.RaiseRateLimited();
+                        if (notice.IndexOf("presence rate limit", StringComparison.OrdinalIgnoreCase) >= 0)
+                        {
+                            channel.BackOffTrack(); // handled: the player's presence simply arrives a little later
+                            if (Verbose) Debug.Log($"[SupabaseRealtime] {name}: presence paused on {channel.Topic}");
+                        }
+                        else if (payload.Str("status") != "ok" || Verbose) Debug.LogWarning($"[SupabaseRealtime] {name}: system on {channel.Topic}: {MiniJson.Serialize(payload)}");
                         break;
                     case "broadcast":
                         channel.RaiseBroadcast(payload.Str("event"), payload.Obj("payload"));

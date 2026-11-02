@@ -59,6 +59,7 @@ namespace NihongoLife.Player
             DisplayName = string.IsNullOrWhiteSpace(snapshot.displayName) ? "Learner" : snapshot.displayName;
             SceneName = snapshot.sceneName;
             if (!string.IsNullOrEmpty(snapshot.characterId) && snapshot.characterId != CharacterId) ApplyCharacter(snapshot.characterId);
+            if ((snapshot.outfitId ?? string.Empty) != _outfit) Wear(snapshot.outfitId ?? string.Empty);
             if (_nameTag != null) _nameTag.text = NameLabel();
 
             float now = Time.unscaledTime;
@@ -90,6 +91,15 @@ namespace NihongoLife.Player
         {
             string star = GameServices.TryGet(out SocialHub hub) && hub.IsFriend(PlayerId) ? "<color=#FFD45C>★</color> " : string.Empty;
             return star + DisplayName;
+        }
+
+        private string _outfit = string.Empty;
+
+        /// <summary>Dresses the avatar in what that player bought.</summary>
+        private void Wear(string outfitId)
+        {
+            _outfit = outfitId;
+            CharacterLook.On(gameObject, false).Fixed("natural", "none", 16).Dress(NihongoLife.Fashion.FashionCatalog.Load().Look(outfitId));
         }
 
         private void ApplyCharacter(string characterId)
@@ -187,6 +197,16 @@ namespace NihongoLife.Player
         }
 
         /// <summary>RemotePlayerManager hides far avatars beyond the visible cap.</summary>
+        /// <summary>The bubble and the body language another player chose, as seen from here.</summary>
+        public void PlayEmote(int index)
+        {
+            if (index < 0 || index >= NihongoLife.Interaction.EmoteCatalog.All.Count) return;
+            var emote = NihongoLife.Interaction.EmoteCatalog.All[index];
+            NihongoLife.Interaction.EmoteBubble.Spawn(transform, emote);
+            string gesture = NihongoLife.Interaction.PlayerEmoteController.GestureFor(emote.Id);
+            if (gesture != null) NihongoLife.Gestures.GestureLayer.On(gameObject).Play(gesture);
+        }
+
         public void SetVisualVisible(bool visible)
         {
             VisualVisible = visible;

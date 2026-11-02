@@ -160,7 +160,7 @@ namespace NihongoLife.Gestures
             if (dt > 0f && !_stopping)
             {
                 float speed = (transform.position - _lastPos).magnitude / dt;
-                if (speed > 0.7f && !_cur.id.StartsWith("carry")) Stop(0.2f);
+                if (speed > 0.7f && !_cur.id.StartsWith("carry") && !_cur.id.StartsWith("swim")) Stop(0.2f);
             }
             _lastPos = transform.position;
             float rate = _speed * (_bpm > 0f && _cur.bpm > 0f ? _bpm / _cur.bpm : 1f);

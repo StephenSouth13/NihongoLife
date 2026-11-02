@@ -1,0 +1,748 @@
+{
+  "schema": "nihongolife.outfits.v1",
+  "parts": [
+    {
+      "id": "cap",
+      "pieces": [
+        {
+          "bone": "crown",
+          "shape": "sphere",
+          "pos": [
+            0,
+            -0.56,
+            -0.04
+          ],
+          "scale": [
+            2.14,
+            1.16,
+            2.14
+          ]
+        },
+        {
+          "bone": "crown",
+          "shape": "sphere",
+          "pos": [
+            0,
+            -0.88,
+            0.96
+          ],
+          "scale": [
+            1.5,
+            0.12,
+            1.1
+          ]
+        }
+      ]
+    },
+    {
+      "id": "beanie",
+      "pieces": [
+        {
+          "bone": "crown",
+          "shape": "sphere",
+          "pos": [
+            0,
+            -0.62,
+            -0.02
+          ],
+          "scale": [
+            2.24,
+            1.46,
+            2.24
+          ]
+        }
+      ]
+    },
+    {
+      "id": "strawhat",
+      "pieces": [
+        {
+          "bone": "crown",
+          "shape": "sphere",
+          "pos": [
+            0,
+            -0.8,
+            0
+          ],
+          "scale": [
+            3.2,
+            0.14,
+            3.2
+          ]
+        },
+        {
+          "bone": "crown",
+          "shape": "sphere",
+          "pos": [
+            0,
+            -0.46,
+            0
+          ],
+          "scale": [
+            2.1,
+            1.0,
+            2.1
+          ]
+        }
+      ]
+    },
+    {
+      "id": "visor",
+      "pieces": [
+        {
+          "bone": "brow",
+          "shape": "sphere",
+          "pos": [
+            0,
+            0,
+            0
+          ],
+          "scale": [
+            1.98,
+            0.2,
+            1.98
+          ]
+        },
+        {
+          "bone": "brow",
+          "shape": "sphere",
+          "pos": [
+            0,
+            -0.04,
+            0.92
+          ],
+          "scale": [
+            1.4,
+            0.1,
+            1.0
+          ]
+        }
+      ]
+    },
+    {
+      "id": "headband",
+      "pieces": [
+        {
+          "bone": "brow",
+          "shape": "sphere",
+          "pos": [
+            0,
+            0,
+            0
+          ],
+          "scale": [
+            1.98,
+            0.22,
+            1.98
+          ]
+        }
+      ]
+    },
+    {
+      "id": "headphones",
+      "pieces": [
+        {
+          "bone": "crown",
+          "shape": "sphere",
+          "pos": [
+            0,
+            -0.5,
+            0
+          ],
+          "scale": [
+            2.2,
+            0.22,
+            0.34
+          ]
+        },
+        {
+          "bone": "brow",
+          "shape": "sphere",
+          "pos": [
+            -1.02,
+            -0.34,
+            0
+          ],
+          "scale": [
+            0.34,
+            0.72,
+            0.72
+          ]
+        },
+        {
+          "bone": "brow",
+          "shape": "sphere",
+          "pos": [
+            1.02,
+            -0.34,
+            0
+          ],
+          "scale": [
+            0.34,
+            0.72,
+            0.72
+          ]
+        }
+      ]
+    },
+    {
+      "id": "glasses",
+      "pieces": [
+        {
+          "bone": "head",
+          "shape": "sphere",
+          "pos": [
+            -0.2,
+            0.3,
+            0.5
+          ],
+          "scale": [
+            0.3,
+            0.2,
+            0.04
+          ]
+        },
+        {
+          "bone": "head",
+          "shape": "sphere",
+          "pos": [
+            0.2,
+            0.3,
+            0.5
+          ],
+          "scale": [
+            0.3,
+            0.2,
+            0.04
+          ]
+        },
+        {
+          "bone": "head",
+          "shape": "cube",
+          "pos": [
+            0,
+            0.31,
+            0.52
+          ],
+          "scale": [
+            0.16,
+            0.03,
+            0.03
+          ]
+        }
+      ]
+    },
+    {
+      "id": "scarf",
+      "pieces": [
+        {
+          "bone": "chest",
+          "shape": "sphere",
+          "pos": [
+            0,
+            0.22,
+            0.02
+          ],
+          "scale": [
+            0.86,
+            0.3,
+            0.76
+          ]
+        },
+        {
+          "bone": "chest",
+          "shape": "cube",
+          "pos": [
+            0.16,
+            -0.06,
+            0.34
+          ],
+          "scale": [
+            0.2,
+            0.56,
+            0.06
+          ]
+        }
+      ]
+    },
+    {
+      "id": "tie",
+      "pieces": [
+        {
+          "bone": "chest",
+          "shape": "cube",
+          "pos": [
+            0,
+            0.14,
+            0.36
+          ],
+          "scale": [
+            0.2,
+            0.14,
+            0.06
+          ]
+        },
+        {
+          "bone": "chest",
+          "shape": "cube",
+          "pos": [
+            0,
+            -0.26,
+            0.37
+          ],
+          "scale": [
+            0.2,
+            0.68,
+            0.05
+          ]
+        }
+      ]
+    },
+    {
+      "id": "bowtie",
+      "pieces": [
+        {
+          "bone": "chest",
+          "shape": "sphere",
+          "pos": [
+            -0.13,
+            0.13,
+            0.33
+          ],
+          "scale": [
+            0.24,
+            0.15,
+            0.08
+          ]
+        },
+        {
+          "bone": "chest",
+          "shape": "sphere",
+          "pos": [
+            0.13,
+            0.13,
+            0.33
+          ],
+          "scale": [
+            0.24,
+            0.15,
+            0.08
+          ]
+        }
+      ]
+    },
+    {
+      "id": "backpack",
+      "pieces": [
+        {
+          "bone": "chest",
+          "shape": "cube",
+          "pos": [
+            0,
+            -0.14,
+            -0.42
+          ],
+          "scale": [
+            0.72,
+            0.84,
+            0.3
+          ]
+        },
+        {
+          "bone": "chest",
+          "shape": "cube",
+          "pos": [
+            -0.25,
+            0.1,
+            0.0
+          ],
+          "scale": [
+            0.09,
+            0.09,
+            0.82
+          ]
+        },
+        {
+          "bone": "chest",
+          "shape": "cube",
+          "pos": [
+            0.25,
+            0.1,
+            0.0
+          ],
+          "scale": [
+            0.09,
+            0.09,
+            0.82
+          ]
+        }
+      ]
+    }
+  ],
+  "categories": [
+    {
+      "id": "casual",
+      "vi": "Thường ngày",
+      "en": "Everyday",
+      "ja": "ふだん着",
+      "ru": "Повседневное"
+    },
+    {
+      "id": "street",
+      "vi": "Đường phố",
+      "en": "Street",
+      "ja": "ストリート",
+      "ru": "Уличный стиль"
+    },
+    {
+      "id": "office",
+      "vi": "Công sở",
+      "en": "Office",
+      "ja": "オフィス",
+      "ru": "Офис"
+    },
+    {
+      "id": "sport",
+      "vi": "Thể thao",
+      "en": "Sport",
+      "ja": "スポーツ",
+      "ru": "Спорт"
+    },
+    {
+      "id": "summer",
+      "vi": "Mùa hè",
+      "en": "Summer",
+      "ja": "夏",
+      "ru": "Лето"
+    },
+    {
+      "id": "winter",
+      "vi": "Mùa đông",
+      "en": "Winter",
+      "ja": "冬",
+      "ru": "Зима"
+    },
+    {
+      "id": "festival",
+      "vi": "Lễ hội",
+      "en": "Festival",
+      "ja": "お祭り",
+      "ru": "Праздник"
+    }
+  ],
+  "outfits": [
+    {
+      "id": "casual_white",
+      "category": "casual",
+      "vi": "Sơ mi trắng, quần bò",
+      "en": "White shirt and jeans",
+      "ja": "白シャツとジーンズ",
+      "ru": "Белая рубашка и джинсы",
+      "price": 4800,
+      "top": "#F2F0EA",
+      "bottom": "#3E5C86",
+      "wear": []
+    },
+    {
+      "id": "casual_knit",
+      "category": "casual",
+      "vi": "Áo len kem, kính tròn",
+      "en": "Cream jumper and glasses",
+      "ja": "クリーム色のセーターとめがね",
+      "ru": "Кремовый свитер и очки",
+      "price": 5200,
+      "top": "#E6D3B3",
+      "bottom": "#6B4F3A",
+      "wear": [
+        {
+          "part": "glasses",
+          "color": "#2B2B30"
+        }
+      ]
+    },
+    {
+      "id": "casual_mint",
+      "category": "casual",
+      "vi": "Bộ bạc hà dạo phố",
+      "en": "Mint day out",
+      "ja": "ミントのおでかけ服",
+      "ru": "Мятный комплект",
+      "price": 5600,
+      "top": "#9FD8C4",
+      "bottom": "#EDE6D6",
+      "wear": [
+        {
+          "part": "cap",
+          "color": "#EDE6D6"
+        }
+      ]
+    },
+    {
+      "id": "street_black",
+      "category": "street",
+      "vi": "Toàn đen đường phố",
+      "en": "All-black street",
+      "ja": "オールブラック",
+      "ru": "Весь в чёрном",
+      "price": 9800,
+      "top": "#1F2126",
+      "bottom": "#2C2F36",
+      "wear": [
+        {
+          "part": "cap",
+          "color": "#16171B"
+        }
+      ]
+    },
+    {
+      "id": "street_neon",
+      "category": "street",
+      "vi": "Neon Akihabara",
+      "en": "Akihabara neon",
+      "ja": "アキバネオン",
+      "ru": "Неон Акихабары",
+      "price": 11800,
+      "top": "#7B3FF2",
+      "bottom": "#22242B",
+      "wear": [
+        {
+          "part": "headphones",
+          "color": "#F24FA8"
+        }
+      ]
+    },
+    {
+      "id": "street_bomber",
+      "category": "street",
+      "vi": "Bomber đỏ, ba lô",
+      "en": "Red bomber and backpack",
+      "ja": "赤いボンバーとリュック",
+      "ru": "Красный бомбер и рюкзак",
+      "price": 12500,
+      "top": "#B8322F",
+      "bottom": "#23252B",
+      "wear": [
+        {
+          "part": "backpack",
+          "color": "#2A2C33"
+        }
+      ]
+    },
+    {
+      "id": "office_navy",
+      "category": "office",
+      "vi": "Vest xanh than, cà vạt đỏ",
+      "en": "Navy suit, red tie",
+      "ja": "紺のスーツ",
+      "ru": "Тёмно-синий костюм",
+      "price": 18000,
+      "top": "#1F2C4A",
+      "bottom": "#1F2C4A",
+      "wear": [
+        {
+          "part": "tie",
+          "color": "#B33A3A"
+        }
+      ]
+    },
+    {
+      "id": "office_grey",
+      "category": "office",
+      "vi": "Vest xám, kính",
+      "en": "Grey suit and glasses",
+      "ja": "グレーのスーツとめがね",
+      "ru": "Серый костюм и очки",
+      "price": 18000,
+      "top": "#6A6F78",
+      "bottom": "#4C5058",
+      "wear": [
+        {
+          "part": "tie",
+          "color": "#1F2C4A"
+        },
+        {
+          "part": "glasses",
+          "color": "#1E1E22"
+        }
+      ]
+    },
+    {
+      "id": "office_blouse",
+      "category": "office",
+      "vi": "Sơ mi trắng, khăn lụa",
+      "en": "White shirt and silk scarf",
+      "ja": "白シャツとスカーフ",
+      "ru": "Белая рубашка и шёлковый платок",
+      "price": 12000,
+      "top": "#FFFFFF",
+      "bottom": "#2A2D33",
+      "wear": [
+        {
+          "part": "scarf",
+          "color": "#3F7FD6"
+        }
+      ]
+    },
+    {
+      "id": "sport_track",
+      "category": "sport",
+      "vi": "Đồ thể thao xanh",
+      "en": "Blue tracksuit",
+      "ja": "青いジャージ",
+      "ru": "Синий спортивный костюм",
+      "price": 7500,
+      "top": "#2F6FD0",
+      "bottom": "#1B2A4A",
+      "wear": [
+        {
+          "part": "headband",
+          "color": "#FFFFFF"
+        }
+      ]
+    },
+    {
+      "id": "sport_tennis",
+      "category": "sport",
+      "vi": "Tennis trắng",
+      "en": "Tennis whites",
+      "ja": "テニスウェア",
+      "ru": "Белая теннисная форма",
+      "price": 7800,
+      "top": "#F7F7F2",
+      "bottom": "#F7F7F2",
+      "wear": [
+        {
+          "part": "visor",
+          "color": "#2FA88F"
+        }
+      ]
+    },
+    {
+      "id": "summer_beach",
+      "category": "summer",
+      "vi": "Đi biển, mũ rơm",
+      "en": "Beach day, straw hat",
+      "ja": "海の服とむぎわら帽子",
+      "ru": "Пляжный комплект и шляпа",
+      "price": 6200,
+      "top": "#4FC1D9",
+      "bottom": "#F2C14E",
+      "wear": [
+        {
+          "part": "strawhat",
+          "color": "#E3C98A"
+        }
+      ]
+    },
+    {
+      "id": "summer_linen",
+      "category": "summer",
+      "vi": "Vải lanh mùa hè",
+      "en": "Summer linen",
+      "ja": "夏のリネン",
+      "ru": "Летний лён",
+      "price": 6800,
+      "top": "#EFE3C8",
+      "bottom": "#C9B48F",
+      "wear": [
+        {
+          "part": "strawhat",
+          "color": "#D8BE82"
+        }
+      ]
+    },
+    {
+      "id": "winter_camel",
+      "category": "winter",
+      "vi": "Áo khoác nâu, khăn đỏ",
+      "en": "Camel coat, red scarf",
+      "ja": "キャメルのコートと赤いマフラー",
+      "ru": "Пальто и красный шарф",
+      "price": 16000,
+      "top": "#B98A54",
+      "bottom": "#33302C",
+      "wear": [
+        {
+          "part": "scarf",
+          "color": "#B33A3A"
+        },
+        {
+          "part": "beanie",
+          "color": "#3B3631"
+        }
+      ]
+    },
+    {
+      "id": "winter_snow",
+      "category": "winter",
+      "vi": "Bộ đi tuyết đỏ",
+      "en": "Red snow set",
+      "ja": "赤いスノーウェア",
+      "ru": "Красный зимний комплект",
+      "price": 14500,
+      "top": "#C23B3B",
+      "bottom": "#3A3F4A",
+      "wear": [
+        {
+          "part": "beanie",
+          "color": "#F2F0EA"
+        },
+        {
+          "part": "scarf",
+          "color": "#F2F0EA"
+        }
+      ]
+    },
+    {
+      "id": "festival_indigo",
+      "category": "festival",
+      "vi": "Lễ hội màu chàm",
+      "en": "Indigo festival",
+      "ja": "藍色のお祭り服",
+      "ru": "Индиговый праздничный",
+      "price": 15000,
+      "top": "#2A3F73",
+      "bottom": "#2A3F73",
+      "wear": [
+        {
+          "part": "headband",
+          "color": "#FFFFFF"
+        }
+      ]
+    },
+    {
+      "id": "festival_red",
+      "category": "festival",
+      "vi": "Lễ hội đỏ vàng",
+      "en": "Red and gold festival",
+      "ja": "赤と金のお祭り服",
+      "ru": "Красно-золотой праздничный",
+      "price": 15000,
+      "top": "#B33A3A",
+      "bottom": "#EED9A8",
+      "wear": [
+        {
+          "part": "headband",
+          "color": "#EED9A8"
+        }
+      ]
+    },
+    {
+      "id": "festival_gold",
+      "category": "festival",
+      "vi": "Dạ hội vàng, nơ đen",
+      "en": "Gold gala, black bow tie",
+      "ja": "金のパーティー服",
+      "ru": "Золотой вечерний",
+      "price": 48000,
+      "top": "#C8A24A",
+      "bottom": "#1C1C20",
+      "wear": [
+        {
+          "part": "bowtie",
+          "color": "#16171B"
+        }
+      ]
+    }
+  ]
+}

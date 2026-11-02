@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using NihongoLife.Island;
 using UnityEditor;
+using UnityEditor.SceneManagement;
 using UnityEngine;
 using UnityEngine.Rendering;
 using Object = UnityEngine.Object;
@@ -20,6 +21,36 @@ namespace NihongoLife.EditorTools
         private const string FishPack = "Assets/ThirdParty/Mixamo/fish and tool/FBX-20261010T144531Z-1-001/FBX/";
         private const float PierX = -14f, PierLength = 12f, PierLandOverlap = 2.5f, PierHalfWidth = 2.3f;
 
+        /// <summary>Length in metres when held up: a shark must look like one next to a sea bream.</summary>
+        private static float FishSize(IslandFish fish) => fish.id == "fish_maguro" ? 0.8f : fish.sellPrice >= 3000 ? 1.7f : fish.sellPrice >= 1000 ? 1.1f : fish.sellPrice >= 600 ? 0.7f : 0.45f;
+
+        /// <summary>
+        /// New fish of the catalog without rebuilding the island: their prefabs and bag pictures, added to the scene's library.
+        /// Run: Unity -batchmode -executeMethod NihongoLife.EditorTools.IslandBuilder.RefreshFish
+        /// </summary>
+        public static void RefreshFish()
+        {
+            try
+            {
+                var scene = EditorSceneManager.OpenScene(ScenePath, OpenSceneMode.Single);
+                var library = scene.GetRootGameObjects().Select(r => r.GetComponentInChildren<IslandModelLibrary>(true)).FirstOrDefault(l => l != null);
+                if (library == null) throw new InvalidOperationException("No IslandModelLibrary in " + ScenePath);
+                foreach (var entry in BuildFishingPrefabs().Where(e => e.name.StartsWith("Fish_"))) library.Put(entry.name, entry.prefab);
+                EditorUtility.SetDirty(library);
+                EditorSceneManager.MarkSceneDirty(scene);
+                if (!EditorSceneManager.SaveScene(scene)) throw new InvalidOperationException("Could not save " + ScenePath);
+                AssetDatabase.SaveAssets();
+                Debug.Log("[IslandBuilder] Fish refreshed: " + IslandCatalog.Load().fish.Length);
+                if (Application.isBatchMode) EditorApplication.Exit(0);
+            }
+            catch (Exception e)
+            {
+                Debug.LogException(e);
+                if (Application.isBatchMode) EditorApplication.Exit(1);
+                else throw;
+            }
+        }
+
         // ─────────── prefabs ───────────
 
         private static List<IslandModelLibrary.Entry> BuildFishingPrefabs()
@@ -34,7 +65,7 @@ namespace NihongoLife.EditorTools
             };
             foreach (var fish in IslandCatalog.Load().fish ?? Array.Empty<IslandFish>())
             {
-                var entry = Simple("Fish_" + fish.id, FishPack + fish.model + ".fbx", fish.id == "fish_maguro" ? 0.8f : 0.45f);
+                var entry = Simple("Fish_" + fish.id, FishPack + fish.model + ".fbx", FishSize(fish));
                 entries.Add(entry);
                 RenderIcon(entry.prefab, fish.id, Quaternion.Euler(0f, 90f, 0f));
             }

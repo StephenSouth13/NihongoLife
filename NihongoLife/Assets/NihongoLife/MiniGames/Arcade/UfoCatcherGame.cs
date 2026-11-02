@@ -11,9 +11,9 @@ using UnityEngine.UI;
 namespace NihongoLife.MiniGames
 {
     /// <summary>
-    /// UFOキャッチャー: a real-looking crane game. The machine calls a plush in Japanese only ("「ねこ」を とって！");
-    /// the claw sweeps over the pile — press Space (or the button) to drop it. The right plush is carried to the
-    /// chute and drops out ("GET!"), a wrong one slips out of the claw and costs a life, an empty grab breaks the combo.
+    /// UFOキャッチャー: a crane game driven like a real one. The machine calls a plush in Japanese only ("「ねこ」を とって！");
+    /// the player steers the claw along the rail, then drops it. A grab off-centre may slip out on the way up, the plush swings
+    /// on the way to the chute and drops out ("GET!"); a wrong one costs a life, an empty grab breaks the combo.
     /// Prizes are vocab targets. Art (one plush style, the cabinet, the claw): Resources/MiniGames/UfoCatcher, made by
     /// Tools/art/ufo_catcher_art.py.
     /// </summary>
@@ -53,9 +53,9 @@ namespace NihongoLife.MiniGames
         protected override bool UsesContentSets => false;
         protected override Color Accent => new Color(1f, 0.42f, 0.75f);
         protected override (string vi, string en, string ja) HowTo => (
-            "Nghe máy gọi tên thú bông bằng tiếng Nhật, canh cần gắp đang chạy rồi bấm Space (hoặc nút Thả) để gắp đúng con. Gắp nhầm mất một mạng.",
-            "The machine calls a plush in Japanese. Time the moving claw and press Space (or Drop) to grab the right one. A wrong plush costs a life.",
-            "よばれた ぬいぐるみを とろう！ スペース（または ボタン）で アームを おろす。まちがえると ライフが へります。");
+            "Nghe máy gọi tên thú bông bằng tiếng Nhật. Giữ ← → để lái cần gắp vào đúng giữa con đó rồi bấm Space. Gắp lệch dễ tuột, gắp nhầm mất một mạng.",
+            "The machine calls a plush in Japanese. Hold ← → to steer the claw over its middle, then press Space. Off-centre grabs slip; a wrong plush costs a life.",
+            "よばれた ぬいぐるみを とろう！ ← → で アームを うごかし、スペースで おろす。まんなかを つかまないと おちます。");
 
         // Cabinet geometry (stage units; cabinet.png is drawn at 2x): the window and, inside it, the chute and the pile.
         private const float CabinetW = 860f, CabinetH = 600f;
@@ -70,8 +70,10 @@ namespace NihongoLife.MiniGames
         private readonly RectTransform[] _slotRect = new RectTransform[Slots];
         private RectTransform _box, _claw, _cable, _carriage, _callCard, _prongL, _prongR;
         private TextMeshProUGUI _call, _reading;
+        private ArcadeHoldButton _left, _right;
+        private const float ClawSpeed = 240f, FullGripWithin = 12f, NoGripAt = 56f;
         private Prize _target;
-        private float _clawX = PileLeft, _dir = 1f, _depth = RestDepth;
+        private float _clawX = PileLeft, _depth = RestDepth;
         private bool _dropping;
 
         public Prize Target => _target;
@@ -120,11 +122,23 @@ namespace NihongoLife.MiniGames
             UiKit.Place(_reading.rectTransform, 14f, 210f, 252f, 28f);
 
             var drop = UiKit.Button(stage, "Drop", "Thả gắp (Space)", "Drop (Space)", "おろす（スペース）", DropClaw, UiKit.Kind.Primary, "arrow_downward", 20f, 18);
-            UiKit.Place((RectTransform)drop.transform, 880f, 320f, 280f, 70f);
+            UiKit.Place((RectTransform)drop.transform, 880f, 400f, 280f, 70f);
+            _left = Steer(stage, "SteerLeft", "chevron_left", 880f);
+            _right = Steer(stage, "SteerRight", "chevron_right", 1025f);
             PlaceClaw(RestDepth);
             OpenClaw(0.35f);
         }
 
+
+        private static ArcadeHoldButton Steer(RectTransform stage, string name, string icon, float x)
+        {
+            var pad = UiKit.Card(stage, name, UiTheme.Surface, 16, 0.2f, false);
+            UiKit.Place(pad.rectTransform, x, 316f, 135f, 72f);
+            pad.raycastTarget = true;
+            var glyph = UiKit.Icon(pad.transform, icon, UiTheme.Text, 40f);
+            UiKit.Pin(glyph.rectTransform, new Vector2(0.5f, 0.5f), 0f, 0f, 40f, 40f);
+            return pad.gameObject.AddComponent<ArcadeHoldButton>();
+        }
 
         /// <summary>Anchors at the window's top-left corner, so positions are (x, -y from the top).</summary>
         private static void TopLeft(RectTransform rect, Vector2 pivot, Vector2 size)
@@ -213,9 +227,12 @@ namespace NihongoLife.MiniGames
         {
             if (Keyboard.current != null && Keyboard.current.spaceKey.wasPressedThisFrame) DropClaw();
             if (_dropping) return;
-            _clawX += _dir * Mathf.Lerp(200f, 340f, Mathf.Clamp01(Elapsed / 60f)) * dt;
-            if (_clawX > PileRight + 10f) { _clawX = PileRight + 10f; _dir = -1f; }
-            if (_clawX < PileLeft - 10f) { _clawX = PileLeft - 10f; _dir = 1f; }
+            var keys = Keyboard.current;
+            float steer = 0f;
+            if ((keys != null && (keys.leftArrowKey.isPressed || keys.aKey.isPressed)) || (_left != null && _left.Held)) steer -= 1f;
+            if ((keys != null && (keys.rightArrowKey.isPressed || keys.dKey.isPressed)) || (_right != null && _right.Held)) steer += 1f;
+            if (steer == 0f) return;
+            _clawX = Mathf.Clamp(_clawX + steer * ClawSpeed * dt, PileLeft - 10f, PileRight + 10f);
             PlaceClaw(RestDepth);
         }
 
@@ -266,7 +283,11 @@ namespace NihongoLife.MiniGames
                 if (d < best) { best = d; grabbed = i; }
             }
             RectTransform carried = grabbed >= 0 ? _slotRect[grabbed] : null;
-            bool right = grabbed >= 0 && _slot[grabbed] == _target;
+            bool wanted = grabbed >= 0 && _slot[grabbed] == _target;
+            // How well the claw closed around it: dead centre always holds, near the edge of the plush it rarely does.
+            float grip = grabbed >= 0 ? 1f - Mathf.InverseLerp(FullGripWithin, NoGripAt, best) : 0f;
+            bool slipped = wanted && Random.value > grip;
+            bool right = wanted && !slipped;
             Vector2 home = grabbed >= 0 ? SlotPosition(grabbed) : Vector2.zero;
             if (carried != null) { carried.SetAsLastSibling(); _claw.SetAsLastSibling(); carried.localRotation = Quaternion.identity; }
 
@@ -295,6 +316,7 @@ namespace NihongoLife.MiniGames
                     _clawX = Mathf.Lerp(from, ChuteX, Smooth(t));
                     PlaceClaw(RestDepth);
                     carried.anchoredPosition = CarryPosition();
+                    carried.localRotation = Quaternion.Euler(0f, 0f, Mathf.Sin(t * 16f) * 8f * (1f - t)); // it swings on the cable
                     yield return null;
                 }
                 OpenClaw(1f);
@@ -309,7 +331,6 @@ namespace NihongoLife.MiniGames
                 FillSlot(grabbed, true);
                 if (State == Phase.Playing) NextTarget();
                 _clawX = PileLeft;
-                _dir = 1f;
                 PlaceClaw(RestDepth);
             }
             else
@@ -325,7 +346,8 @@ namespace NihongoLife.MiniGames
                 carried.anchoredPosition = home;
                 PlaceClaw(RestDepth);
                 var wrong = _slot[grabbed];
-                Miss(_target.TargetId, wrong.TargetId, $"「{_target.Ja}」 = {Loc.Gloss(_target.Vi, _target.En)} " + Loc.F("(bạn gắp 「{0}」 = {1})", "(you grabbed 「{0}」 = {1})", "（「{0}」をとった）", wrong.Ja, Loc.Gloss(wrong.Vi, wrong.En)), carried);
+                if (slipped) Miss(_target.TargetId, null, null, carried, costsLife: false, popText: Loc.T("Tuột mất!", "It slipped!", "おちた！"));
+                else Miss(_target.TargetId, wrong.TargetId, $"「{_target.Ja}」 = {Loc.Gloss(_target.Vi, _target.En)} " + Loc.F("(bạn gắp 「{0}」 = {1})", "(you grabbed 「{0}」 = {1})", "（「{0}」をとった）", wrong.Ja, Loc.Gloss(wrong.Vi, wrong.En)), carried);
                 StartCoroutine(Shake(carried, 0.25f));
             }
             OpenClaw(0.35f);

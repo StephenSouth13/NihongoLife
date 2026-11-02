@@ -59,7 +59,7 @@ namespace NihongoLife.Clinic
         public ClinicPatient[] patients = Array.Empty<ClinicPatient>();
         public float patientEverySeconds = 14f;
         public int maxPatients = 4;
-        public string callJa, callVi, greetJa, doctorJa, byeJa, byeVi;
+        public string callJa, callVi, callEn, greetJa, doctorJa, byeJa, byeVi, byeEn;
 
         public string FeeNote => Loc.Pick(feeNoteVi, feeNoteEn, feeNoteJa);
 

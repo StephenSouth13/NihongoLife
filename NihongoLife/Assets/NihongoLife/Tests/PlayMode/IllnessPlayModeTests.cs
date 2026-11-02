@@ -4,6 +4,7 @@ using System.Linq;
 using NihongoLife.Audio;
 using NihongoLife.Core;
 using NihongoLife.Dialogue;
+using NihongoLife.Gestures;
 using NihongoLife.Health;
 using NihongoLife.Player;
 using NihongoLife.Progression;
@@ -32,6 +33,58 @@ namespace NihongoLife.Tests
             yield return new WaitForSecondsRealtime(2.5f);
             var dm = DialogueManager.Instance;
             while (dm != null && dm.IsOpen) { dm.CancelDialogue(); if (dm.IsOpen) dm.ContinueDialogue(); yield return null; }
+        }
+
+        /// <summary>Every illness shows on the character's body, and is photographed for the handbook and the report.</summary>
+        [UnityTest, Timeout(180000)]
+        public IEnumerator Every_Illness_ShowsOnTheBody()
+        {
+            yield return LoadCity();
+            GameServices.TryGet(out SceneFlowController flow);
+            flow.EnterZone(WorldLocationCatalog.ClinicScene, WorldLocationCatalog.ClinicEntrance, WorldLocationCatalog.ClinicScene);
+            for (float t = 0f; t < 20f && SceneManager.GetActiveScene().name != WorldLocationCatalog.ClinicScene; t += Time.unscaledDeltaTime) yield return null;
+            yield return new WaitForSecondsRealtime(1.5f);
+            var player = Object.FindFirstObjectByType<PlayerController>();
+            var camera = Camera.main;
+            var follow = camera.GetComponent<NihongoLife.Cameras.ThirdPersonCameraController>();
+            string folder = Path.GetFullPath(Path.Combine(Application.dataPath, "../../Bao_Cao/health/body"));
+            Directory.CreateDirectory(folder);
+            follow.enabled = false;
+            try
+            {
+                foreach (var illness in IllnessCatalog.Load().illnesses)
+                {
+                    PlayerIllness.CureAll();
+                    PlayerIllness.Catch(illness.id, false);
+                    Assert.IsFalse(string.IsNullOrEmpty(illness.gesture), illness.id + " shows on the body");
+                    Assert.IsNotNull(GestureLibrary.Find(illness.gesture), illness.id + ": " + illness.gesture);
+                    KidExpression.On(player.gameObject).PlayGesture(illness.gesture);
+                    Assert.AreEqual(illness.gesture, GestureLayer.On(player.gameObject).Current, illness.id);
+                    yield return new WaitForSecondsRealtime(illness.gesture == "ill_sneeze" ? 0.75f : 1.1f);
+                    var p = player.transform;
+                    camera.transform.position = p.position + p.forward * 1.75f + p.right * 0.55f + Vector3.up * 1.05f;
+                    camera.transform.LookAt(p.position + Vector3.up * 0.72f);
+                    var rt = new RenderTexture(720, 720, 24);
+                    camera.targetTexture = rt;
+                    camera.Render();
+                    RenderTexture.active = rt;
+                    var image = new Texture2D(720, 720, TextureFormat.RGB24, false);
+                    image.ReadPixels(new Rect(0, 0, 720, 720), 0, 0);
+                    image.Apply();
+                    File.WriteAllBytes(Path.Combine(folder, illness.id + ".jpg"), image.EncodeToJPG(90));
+                    camera.targetTexture = null;
+                    RenderTexture.active = null;
+                    Object.Destroy(rt);
+                    Object.Destroy(image);
+                    GestureLayer.On(player.gameObject).Stop(0.1f);
+                    yield return new WaitForSecondsRealtime(0.2f);
+                }
+            }
+            finally
+            {
+                follow.enabled = true;
+                PlayerIllness.CureAll();
+            }
         }
 
         [UnityTest]

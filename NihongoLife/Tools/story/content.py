@@ -22,6 +22,7 @@ SPEAKERS = {
  "npc_ganhngon_manager": ("マイさん","Chị Mai","Mai","Май"),
  "npc_clinic_doctor": ("もり院長","Bác sĩ Mori","Dr Mori","Доктор Мори"),
  "npc_music_owner": ("ひびき店長","Chú Hibiki","Hibiki","Хибики"),
+ "npc_fashion_manager": ("れん店長","Anh Ren","Ren","Рэн"),
 }
 
 # Main storyline: id, JLPT, min player level, objective (event, target, count), speaker, scene,
@@ -215,4 +216,16 @@ ARCS = {
    [("個展のあいさつ、考えた？","Đã nghĩ lời chào triển lãm chưa?","Have you written the opening speech?","Подготовил речь к открытию?"),("フーコックの海の絵、人気だよ。","Tranh biển Phú Quốc được thích lắm.","Your Phú Quốc sea paintings are popular.","Твои картины моря Фукуока популярны."),("堂々としてね。","Tự tin lên.","Stand tall.","Держись уверенно.")]),
   (T("Easel: in the museum","Giá vẽ: vào bảo tàng","イーゼル：美術館へ","Мольберт: в музее"),T("A museum collects your painting of two hometowns.","Bảo tàng sưu tầm bức tranh hai quê hương của bạn.","二つのふるさとの絵が美術館に収蔵される。","Музей приобретает вашу картину о двух родных местах."),
    [("美術館から電話だ。","Bảo tàng gọi điện đấy.","The museum called.","Звонили из музея."),("ひばりとフーコック、両方が入ってる。","Có cả Hibari lẫn Phú Quốc trong tranh.","Both Hibari and Phú Quốc are in it.","На ней и Хибари, и Фукуок."),("最初の筆、まだある？","Còn giữ cây cọ đầu tiên không?","Still have your first brush?","Сохранил свою первую кисть?")])]),
+ "fashion": ("npc_fashion_manager","56_FashionStore",("fold","fashion_table"),[
+  (T("Hibari Mode: stock assistant","Hibari Mode: phụ kho","ひばりモード：ストック","Hibari Mode: помощник на складе"),T("Fold the tables and learn the sizes and colours in Japanese.","Gấp đồ trên bàn và học tên cỡ, tên màu bằng tiếng Nhật.","テーブルをたたみ、サイズと色の言い方を覚える。","Складывайте одежду и учите размеры и цвета по-японски."),
+   [("たたみ方は、お店の顔だよ。","Cách gấp đồ là bộ mặt của cửa hàng.","How you fold is the face of the shop.","То, как ты складываешь, — лицо магазина."),("Sサイズ、Mサイズ、言ってみて。","Thử nói cỡ S, cỡ M xem.","Say S size, M size for me.","Скажи: размер S, размер M."),("いいね、きれいにそろった。","Tốt, gọn gàng rồi.","Nice, nice and even.","Отлично, всё ровно.")]),
+  (T("Hibari Mode: sales assistant","Hibari Mode: nhân viên bán hàng","ひばりモード：販売スタッフ","Hibari Mode: продавец"),T("Greet customers and look after the fitting rooms.","Chào khách và chăm sóc phòng thử đồ.","お客さまに声をかけ、試着室を案内する。","Встречайте покупателей и помогайте у примерочных."),
+   [("声をかけるタイミングが大事だよ。","Thời điểm bắt chuyện rất quan trọng.","When you speak to them matters.","Важно вовремя заговорить."),("試着室はこちらです、って言ってみて。","Thử nói: phòng thử đồ ở đây ạ.","Try saying: the fitting room is this way.","Скажи: примерочная вот здесь."),("お客さま、笑ってたね。","Khách cười rồi đấy.","The customer smiled.","Покупатель улыбнулся.")]),
+  (T("Hibari Mode: fashion adviser","Hibari Mode: tư vấn thời trang","ひばりモード：アドバイザー","Hibari Mode: консультант"),T("Build a whole outfit for a customer and explain your choice.","Phối một bộ hoàn chỉnh cho khách và giải thích vì sao.","お客さまに一式をすすめ、理由を説明する。","Подберите покупателю весь образ и объясните выбор."),
+   [("服だけじゃなく、その人を見て。","Đừng chỉ nhìn đồ, hãy nhìn người mặc.","Look at the person, not only the clothes.","Смотри на человека, а не только на одежду."),("色の理由を、日本語で言えるかな。","Giải thích được lý do chọn màu bằng tiếng Nhật không?","Can you give the reason for a colour in Japanese?","Сможешь объяснить выбор цвета по-японски?"),("いい提案だった。","Gợi ý hay đấy.","That was a good suggestion.","Хорошее предложение.")]),
+  (T("Hibari Mode: stylist or designer","Hibari Mode: stylist hay nhà thiết kế","ひばりモード：スタイリストかデザイナー","Hibari Mode: стилист или дизайнер"),T("Dress a magazine shoot or show your first sketches.","Lo trang phục cho buổi chụp tạp chí hoặc trình bày mẫu vẽ đầu tiên.","雑誌の撮影を担当するか、初めてのデザインを見せる。","Оденьте съёмку для журнала или покажите первые эскизы."),
+   [("撮影は明日の朝だ。","Buổi chụp sáng mai đấy.","The shoot is tomorrow morning.","Съёмка завтра утром."),("敬語で打ち合わせしよう。","Họp bằng kính ngữ nhé.","Let us hold the meeting in keigo.","Проведём встречу на кэйго."),("ひばりの春、という感じだ。","Đúng chất mùa xuân Hibari.","That is spring in Hibari.","Это настоящая весна в Хибари.")]),
+  (T("Hibari Mode: your own collection","Hibari Mode: bộ sưu tập của bạn","ひばりモード：自分のコレクション","Hibari Mode: ваша коллекция"),T("Show a collection that joins Hibari and Phú Quốc.","Ra mắt bộ sưu tập nối Hibari với Phú Quốc.","ひばりとフーコックをつなぐコレクションを発表する。","Покажите коллекцию, объединяющую Хибари и Фукуок."),
+   [("ショーのあいさつ、考えた？","Đã nghĩ lời chào buổi diễn chưa?","Have you written the words for the show?","Подготовил слова для показа?"),("二つの町の色が入ってるね。","Có màu của cả hai nơi trong đó.","The colours of both towns are in it.","В ней цвета обоих городов."),("たたみ方から始まったのにな。","Vậy mà bắt đầu từ việc gấp đồ đấy.","And it all began with folding.","А ведь всё началось со складывания.")]),
+ ]),
 }

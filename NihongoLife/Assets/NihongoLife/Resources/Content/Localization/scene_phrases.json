@@ -1,0 +1,684 @@
+{
+ "repay": [
+  {
+   "from": "¥500/ca",
+   "to": "¥1,250/ca"
+  },
+  {
+   "from": "¥600/ca",
+   "to": "¥1,500/ca"
+  },
+  {
+   "from": "¥700/ca",
+   "to": "¥1,750/ca"
+  },
+  {
+   "from": "¥750/ca",
+   "to": "¥1,900/ca"
+  },
+  {
+   "from": "¥650/buổi",
+   "to": "¥1,600/buổi"
+  },
+  {
+   "from": "¥700/bức",
+   "to": "¥1,750/bức"
+  }
+ ],
+ "entries": [
+  {
+   "vi": "Mua vé ở máy hoặc quầy anh Kimura",
+   "en": "Buy a ticket at the machine or from Kimura",
+   "ja": "",
+   "ru": "Билет — в автомате или у Кимуры"
+  },
+  {
+   "vi": "Ngân hàng · vay · trả nợ",
+   "en": "Bank · loans · repayment",
+   "ja": "",
+   "ru": "Банк · кредиты · погашение"
+  },
+  {
+   "vi": "KHU NHÀ GA",
+   "en": "STATION DISTRICT",
+   "ja": "",
+   "ru": "РАЙОН ВОКЗАЛА"
+  },
+  {
+   "vi": "Cổng soát vé",
+   "en": "Ticket gates",
+   "ja": "",
+   "ru": "Турникеты"
+  },
+  {
+   "vi": "Bạn ở đây",
+   "en": "You are here",
+   "ja": "",
+   "ru": "Вы здесь"
+  },
+  {
+   "vi": "nông trại",
+   "en": "farm",
+   "ja": "",
+   "ru": "ферма"
+  },
+  {
+   "vi": "phố cảng",
+   "en": "harbour town",
+   "ja": "",
+   "ru": "портовый город"
+  },
+  {
+   "vi": "Bản đồ tuyến & khu vực",
+   "en": "Line and area map",
+   "ja": "",
+   "ru": "Карта линий и районов"
+  },
+  {
+   "vi": "NHÀ HÀNG SUSHI",
+   "en": "SUSHI RESTAURANT",
+   "ja": "",
+   "ru": "СУШИ-РЕСТОРАН"
+  },
+  {
+   "vi": "Vào · In",
+   "en": "In",
+   "ja": "",
+   "ru": "Вход"
+  },
+  {
+   "vi": "Ra · Out",
+   "en": "Out",
+   "ja": "",
+   "ru": "Выход"
+  },
+  {
+   "vi": "Giờ khám: T2–T7 9:00–18:00",
+   "en": "Open Mon–Sat 9:00–18:00",
+   "ja": "",
+   "ru": "Пн–Сб 9:00–18:00"
+  },
+  {
+   "vi": "Phòng khám Hibari · Nội khoa · Nhi khoa",
+   "en": "Hibari Clinic · Internal medicine · Paediatrics",
+   "ja": "",
+   "ru": "Клиника Хибари · Терапия · Педиатрия"
+  },
+  {
+   "vi": "Bé Aoi",
+   "en": "Aoi",
+   "ja": "",
+   "ru": "Аои"
+  },
+  {
+   "vi": "Bà Katō",
+   "en": "Mrs Katō",
+   "ja": "",
+   "ru": "Госпожа Като"
+  },
+  {
+   "vi": "Bác sĩ Mori",
+   "en": "Dr Mori",
+   "ja": "",
+   "ru": "Доктор Мори"
+  },
+  {
+   "vi": "Dược sĩ",
+   "en": "Pharmacist",
+   "ja": "",
+   "ru": "Фармацевт"
+  },
+  {
+   "vi": "Rửa tay · súc miệng",
+   "en": "Wash your hands · gargle",
+   "ja": "",
+   "ru": "Мойте руки · полощите горло"
+  },
+  {
+   "vi": "Hãy đeo khẩu trang",
+   "en": "Please wear a mask",
+   "ja": "",
+   "ru": "Наденьте маску"
+  },
+  {
+   "vi": "Xin xuất trình thẻ bảo hiểm",
+   "en": "Please show your insurance card",
+   "ja": "",
+   "ru": "Покажите страховую карту"
+  },
+  {
+   "vi": "Phòng khám bệnh · Consultation",
+   "en": "Consultation room",
+   "ja": "",
+   "ru": "Кабинет врача"
+  },
+  {
+   "vi": "Khám sức khoẻ · Health check",
+   "en": "Health check",
+   "ja": "",
+   "ru": "Медосмотр"
+  },
+  {
+   "vi": "Góc trẻ em",
+   "en": "Kids' corner",
+   "ja": "",
+   "ru": "Детский уголок"
+  },
+  {
+   "vi": "Nhận thuốc · Medicine",
+   "en": "Medicine",
+   "ja": "",
+   "ru": "Выдача лекарств"
+  },
+  {
+   "vi": "Quầy tiếp nhận · Reception",
+   "en": "Reception",
+   "ja": "",
+   "ru": "Регистратура"
+  },
+  {
+   "vi": "Xin đổi sang dép đi trong nhà",
+   "en": "Please change into slippers",
+   "ja": "",
+   "ru": "Пожалуйста, переобуйтесь в тапочки"
+  },
+  {
+   "vi": "Số 3, mời vào phòng khám.",
+   "en": "Number 3, please come in.",
+   "ja": "",
+   "ru": "Номер 3, проходите, пожалуйста."
+  },
+  {
+   "vi": "Làm ở phòng khám",
+   "en": "Clinic job",
+   "ja": "クリニックの仕事",
+   "ru": "Работа в клинике"
+  },
+  {
+   "vi": "Biểu diễn buổi tối",
+   "en": "Evening show",
+   "ja": "夜のライブ",
+   "ru": "Вечерний концерт"
+  },
+  {
+   "vi": "Vẽ tranh theo đơn",
+   "en": "Painting commission",
+   "ja": "絵の依頼",
+   "ru": "Картина на заказ"
+  },
+  {
+   "vi": "Chơi DJ",
+   "en": "DJ set",
+   "ja": "DJプレイ",
+   "ru": "DJ-сет"
+  },
+  {
+   "vi": "Biểu diễn",
+   "en": "Perform",
+   "ja": "",
+   "ru": "Выступить"
+  },
+  {
+   "vi": "Mở cửa 10:00–21:00",
+   "en": "Open 10:00–21:00",
+   "ja": "",
+   "ru": "Открыто 10:00–21:00"
+  },
+  {
+   "vi": "Tiệm nhạc & tranh Hibiki",
+   "en": "Hibiki Music & Art",
+   "ja": "",
+   "ru": "Музыка и живопись Хибики"
+  },
+  {
+   "vi": "Chú Hibiki",
+   "en": "Mr Hibiki",
+   "ja": "",
+   "ru": "Господин Хибики"
+  },
+  {
+   "vi": "Góc vẽ tranh",
+   "en": "Painting corner",
+   "ja": "",
+   "ru": "Уголок живописи"
+  },
+  {
+   "vi": "Bản nhạc · Nhạc lý",
+   "en": "Sheet music · Theory",
+   "ja": "",
+   "ru": "Ноты · Теория"
+  },
+  {
+   "vi": "Nghe thử",
+   "en": "Listen",
+   "ja": "",
+   "ru": "Послушать"
+  },
+  {
+   "vi": "Quầy",
+   "en": "Counter",
+   "ja": "",
+   "ru": "Касса"
+  },
+  {
+   "vi": "Phòng tranh Hibiki",
+   "en": "Hibiki Gallery",
+   "ja": "",
+   "ru": "Галерея Хибики"
+  },
+  {
+   "vi": "Phòng tranh",
+   "en": "Gallery",
+   "ja": "",
+   "ru": "Галерея"
+  },
+  {
+   "vi": "Gõ Thì",
+   "en": "Tense Typing",
+   "ja": "時制タイピング",
+   "ru": "Времена на скорость"
+  },
+  {
+   "vi": "Khúc Côn Cầu Bàn",
+   "en": "Air Hockey",
+   "ja": "エアホッケー",
+   "ru": "Аэрохоккей"
+  },
+  {
+   "vi": "Nhảy Mũi Tên",
+   "en": "Arrow Dance",
+   "ja": "矢印ダンス",
+   "ru": "Танец стрелок"
+  },
+  {
+   "vi": "Phá Gạch Kana",
+   "en": "Kana Breaker",
+   "ja": "かなブロック崩し",
+   "ru": "Кана-арканоид"
+  },
+  {
+   "vi": "Rắn Kana",
+   "en": "Kana Snake",
+   "ja": "かなスネーク",
+   "ru": "Кана-змейка"
+  },
+  {
+   "vi": "Về Hibari",
+   "en": "To Hibari",
+   "ja": "",
+   "ru": "В Хибари"
+  },
+  {
+   "vi": "Bến xe Tour đảo",
+   "en": "Island tour stop",
+   "ja": "",
+   "ru": "Остановка тура по острову"
+  },
+  {
+   "vi": "31 điểm đến",
+   "en": "",
+   "ja": "",
+   "ru": ""
+  },
+  {
+   "vi": "Bến xe buýt · Tour đảo",
+   "en": "Bus stop · Island tour",
+   "ja": "",
+   "ru": "Автобус · Тур по острову"
+  },
+  {
+   "vi": "Nhà thùng nước mắm",
+   "en": "Fish sauce house",
+   "ja": "",
+   "ru": "Цех рыбного соуса"
+  },
+  {
+   "vi": "chợ đêm phố đi bộ",
+   "en": "walking street night market",
+   "ja": "",
+   "ru": "ночной рынок"
+  },
+  {
+   "vi": "Quầy nước dừa",
+   "en": "Coconut bar",
+   "ja": "",
+   "ru": "Кокосовый бар"
+  },
+  {
+   "vi": "Bánh tráng nướng",
+   "en": "Grilled rice paper",
+   "ja": "",
+   "ru": "Жареная рисовая лепёшка"
+  },
+  {
+   "vi": "Bánh canh ghẹ",
+   "en": "Crab noodle soup",
+   "ja": "",
+   "ru": "Суп с крабом"
+  },
+  {
+   "vi": "Gỏi cá trích",
+   "en": "Herring salad",
+   "ja": "",
+   "ru": "Салат из сельди"
+  },
+  {
+   "vi": "Hải sản nướng",
+   "en": "Grilled seafood",
+   "ja": "",
+   "ru": "Морепродукты на гриле"
+  },
+  {
+   "vi": "Hải sản tươi",
+   "en": "Fresh seafood",
+   "ja": "",
+   "ru": "Свежие морепродукты"
+  },
+  {
+   "vi": "Mực một nắng",
+   "en": "Sun-dried squid",
+   "ja": "",
+   "ru": "Вяленый кальмар"
+  },
+  {
+   "vi": "Nhum nướng",
+   "en": "Grilled sea urchin",
+   "ja": "",
+   "ru": "Морской ёж на гриле"
+  },
+  {
+   "vi": "Kem cuộn",
+   "en": "Rolled ice cream",
+   "ja": "",
+   "ru": "Роллы из мороженого"
+  },
+  {
+   "vi": "Kem dừa",
+   "en": "Coconut ice cream",
+   "ja": "",
+   "ru": "Кокосовое мороженое"
+  },
+  {
+   "vi": "Ngọc trai",
+   "en": "Pearls",
+   "ja": "",
+   "ru": "Жемчуг"
+  },
+  {
+   "vi": "Nước mía",
+   "en": "Sugar cane juice",
+   "ja": "",
+   "ru": "Сок сахарного тростника"
+  },
+  {
+   "vi": "Rượu sim",
+   "en": "Myrtle wine",
+   "ja": "",
+   "ru": "Вино из мирта"
+  },
+  {
+   "vi": "Trái cây",
+   "en": "Fruit",
+   "ja": "",
+   "ru": "Фрукты"
+  },
+  {
+   "vi": "Ốc",
+   "en": "Sea snails",
+   "ja": "",
+   "ru": "Морские улитки"
+  },
+  {
+   "vi": "Bánh mì",
+   "en": "Banh mi",
+   "ja": "",
+   "ru": "Бань ми"
+  },
+  {
+   "vi": "Bún quậy",
+   "en": "Bun quay noodles",
+   "ja": "",
+   "ru": "Лапша бун куай"
+  },
+  {
+   "vi": "Cà phê muối",
+   "en": "Salt coffee",
+   "ja": "",
+   "ru": "Солёный кофе"
+  },
+  {
+   "vi": "Cà phê Phố Biển",
+   "en": "Seaside Cafe",
+   "ja": "",
+   "ru": "Приморское кафе"
+  },
+  {
+   "vi": "Cà phê",
+   "en": "Coffee",
+   "ja": "",
+   "ru": "Кофе"
+  },
+  {
+   "vi": "Nhà sách",
+   "en": "Bookshop",
+   "ja": "",
+   "ru": "Книжный"
+  },
+  {
+   "vi": "Phở",
+   "en": "Pho",
+   "ja": "",
+   "ru": "Фо"
+  },
+  {
+   "vi": "Tạp hoá",
+   "en": "General store",
+   "ja": "",
+   "ru": "Лавка"
+  },
+  {
+   "vi": "Thuê xe máy",
+   "en": "Motorbike hire",
+   "ja": "",
+   "ru": "Прокат мотобайков"
+  },
+  {
+   "vi": "Tiệm may",
+   "en": "Tailor",
+   "ja": "",
+   "ru": "Ателье"
+  },
+  {
+   "vi": "Tiệm thuốc",
+   "en": "Pharmacy",
+   "ja": "",
+   "ru": "Аптека"
+  },
+  {
+   "vi": "Nhà thuốc",
+   "en": "Pharmacy",
+   "ja": "",
+   "ru": "Аптека"
+  },
+  {
+   "vi": "Khách sạn",
+   "en": "Hotel",
+   "ja": "",
+   "ru": "Отель"
+  },
+  {
+   "vi": "Nhà nghỉ",
+   "en": "Guesthouse",
+   "ja": "",
+   "ru": "Гостевой дом"
+  },
+  {
+   "vi": "Ngân hàng",
+   "en": "Bank",
+   "ja": "",
+   "ru": "Банк"
+  },
+  {
+   "vi": "Nước mắm · Tiêu",
+   "en": "Fish sauce · Pepper",
+   "ja": "",
+   "ru": "Рыбный соус · Перец"
+  },
+  {
+   "vi": "Quà lưu niệm",
+   "en": "Souvenirs",
+   "ja": "",
+   "ru": "Сувениры"
+  },
+  {
+   "vi": "Siêu thị mini",
+   "en": "Mini market",
+   "ja": "",
+   "ru": "Минимаркет"
+  },
+  {
+   "vi": "Sinh tố",
+   "en": "Smoothies",
+   "ja": "",
+   "ru": "Смузи"
+  },
+  {
+   "vi": "Chào mừng",
+   "en": "",
+   "ja": "",
+   "ru": ""
+  },
+  {
+   "vi": "Hẻm",
+   "en": "Alley",
+   "ja": "路地",
+   "ru": "Переулок"
+  },
+  {
+   "vi": "Bé Kenta",
+   "en": "Kenta",
+   "ja": "",
+   "ru": "Кента"
+  },
+  {
+   "vi": "Điều dưỡng Sato",
+   "en": "Nurse Sato",
+   "ja": "",
+   "ru": "Медсестра Сато"
+  },
+  {
+   "vi": "Chị Tanaka",
+   "en": "Ms Tanaka",
+   "ja": "",
+   "ru": "Госпожа Танака"
+  },
+  {
+   "vi": "Đào tạo y khoa",
+   "en": "Medical training",
+   "ja": "",
+   "ru": "Медицинская подготовка"
+  },
+  {
+   "vi": "Ca lâm sàng",
+   "en": "Clinical case",
+   "ja": "",
+   "ru": "Клинический случай"
+  },
+  {
+   "vi": " tới Game Center",
+   "en": " to the Game Center",
+   "ja": "",
+   "ru": "в игровой центр"
+  },
+  {
+   "vi": "Đập Từ",
+   "en": "Word Whack",
+   "ja": "単語たたき",
+   "ru": "Удар по словам"
+  },
+  {
+   "vi": "Vòng Quay Đố",
+   "en": "Quiz Wheel",
+   "ja": "クイズルーレット",
+   "ru": "Колесо вопросов"
+  },
+  {
+   "vi": "Đàn grand piano · F để chơi",
+   "en": "Grand piano · F to play",
+   "ja": "",
+   "ru": "Рояль · F, чтобы играть"
+  },
+  {
+   "vi": "Vườn tiêu",
+   "en": "Pepper farm",
+   "ja": "",
+   "ru": "Перечная ферма"
+  },
+  {
+   "vi": "Đồ lưu niệm",
+   "en": "Souvenirs",
+   "ja": "",
+   "ru": "Сувениры"
+  },
+  {
+   "vi": "Đổi tiền",
+   "en": "Currency exchange",
+   "ja": "",
+   "ru": "Обмен валюты"
+  },
+  {
+   "vi": "CHỢ ĐÊM PHÚ QUỐC",
+   "en": "PHU QUOC NIGHT MARKET",
+   "ja": "",
+   "ru": "НОЧНОЙ РЫНОК ФУКУОКА"
+  },
+  {
+   "vi": "Đường",
+   "en": "Street",
+   "ja": "",
+   "ru": "Улица"
+  },
+  {
+   "vi": "Ngon quá!",
+   "en": "Delicious!",
+   "ja": "おいしい！",
+   "ru": "Вкусно!"
+  },
+  {
+   "vi": "Quầy đổi quà",
+   "en": "Prize counter",
+   "ja": "",
+   "ru": "Стойка призов"
+  },
+  {
+   "vi": "Phụ việc nông trại",
+   "en": "Farm helper",
+   "ja": "",
+   "ru": "Помощник на ферме"
+  },
+  {
+   "vi": "quản lý nông trại",
+   "en": "farm manager",
+   "ja": "",
+   "ru": "управляющая фермой"
+  },
+  {
+   "vi": "Đường 30 Tháng 4",
+   "en": "30 April Street",
+   "ja": "",
+   "ru": "Улица 30 апреля"
+  },
+  {
+   "vi": "Ca lâm sàng hôm nay",
+   "en": "Today's case",
+   "ja": "",
+   "ru": "Случай дня"
+  },
+  {
+   "vi": "Ném Rổ",
+   "en": "Hoop Shot",
+   "ja": "フープショット",
+   "ru": "Бросок в кольцо"
+  }
+ ]
+}

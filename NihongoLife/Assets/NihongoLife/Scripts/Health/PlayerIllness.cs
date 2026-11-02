@@ -59,6 +59,8 @@ namespace NihongoLife.Health
         public static PlayerIllness Instance { get; private set; }
         /// <summary>False in tests (PlayModeSaveGuard): nothing is caught by itself; Catch() still works.</summary>
         public static bool Triggers = true;
+        /// <summary>Tests: seconds between symptoms instead of the usual half minute.</summary>
+        public static float? SymptomEvery;
         public static event Action Changed;
 
         private const float CheckInterval = 0.5f, ContagionInterval = 30f;
@@ -389,10 +391,11 @@ namespace NihongoLife.Health
 
         private void Symptoms()
         {
+            if (SymptomEvery.HasValue) _nextSymptom = Mathf.Min(_nextSymptom, Time.time + SymptomEvery.Value);
             if (Time.time < _nextSymptom) return;
             var main = Main;
             if (main == null) { _nextSymptom = Time.time + 5f; return; }
-            _nextSymptom = Time.time + UnityEngine.Random.Range(22f, 38f);
+            _nextSymptom = Time.time + (SymptomEvery ?? UnityEngine.Random.Range(22f, 38f));
             string line = main.effect switch
             {
                 "sneeze" => "ハクション！",
@@ -404,6 +407,7 @@ namespace NihongoLife.Health
             };
             SymptomBubble.Show(transform, line, main.Tint);
             if (Enum.TryParse(main.mood, out SocialMood mood)) KidExpression.On(gameObject).Play(mood, 2.5f);
+            if (!string.IsNullOrEmpty(main.gesture)) KidExpression.On(gameObject).PlayGesture(main.gesture);
         }
     }
 }

@@ -2,7 +2,7 @@
 
 > Generated from `Assets/NihongoLife/Resources/Story/storyline.json` by `Tools/story/gen.py`; edit the content there, rerun, then run the EditMode tests `StorylineTests`.
 
-The world and cast are defined in `STORY_BIBLE.md` (Hibari-chō, the N5 scenarios). This file is the long story that runs on top of it: a **main storyline** of 9 chapters and **9 career arcs**, each with five stages from trainee to owner/specialist. Every chapter and stage is a real quest in `progression.json` (category `story`), so the Task Journal (N), quest tracking, rewards and the quest HUD handle it with no extra system.
+The world and cast are defined in `STORY_BIBLE.md` (Hibari-chō, the N5 scenarios). This file is the long story that runs on top of it: a **main storyline** of 9 chapters and **10 career arcs**, each with five stages from trainee to owner/specialist. Every chapter and stage is a real quest in `progression.json` (category `story`), so the Task Journal (N), quest tracking, rewards and the quest HUD handle it with no extra system.
 
 ## Unlock rules
 
@@ -454,6 +454,38 @@ At the next summer festival Tanaka gives the speech — about you. Your career, 
 - 美術館から電話だ。 — *The museum called.*
 - ひばりとフーコック、両方が入ってる。 — *Both Hibari and Phú Quốc are in it.*
 - 最初の筆、まだある？ — *Still have your first brush?*
+
+### Fashion — ファッション (Hibari Mode, main street, boss: Ren)
+
+**trainee** · career level 1 · JLPT N5 · `story_fashion_trainee` — Fold the tables and learn the sizes and colours in Japanese.
+
+- たたみ方は、お店の顔だよ。 — *How you fold is the face of the shop.*
+- Sサイズ、Mサイズ、言ってみて。 — *Say S size, M size for me.*
+- いいね、きれいにそろった。 — *Nice, nice and even.*
+
+**staff** · career level 2 · JLPT N4 · `story_fashion_staff` — Greet customers and look after the fitting rooms.
+
+- 声をかけるタイミングが大事だよ。 — *When you speak to them matters.*
+- 試着室はこちらです、って言ってみて。 — *Try saying: the fitting room is this way.*
+- お客さま、笑ってたね。 — *The customer smiled.*
+
+**senior** · career level 3 · JLPT N3 · `story_fashion_senior` — Build a whole outfit for a customer and explain your choice.
+
+- 服だけじゃなく、その人を見て。 — *Look at the person, not only the clothes.*
+- 色の理由を、日本語で言えるかな。 — *Can you give the reason for a colour in Japanese?*
+- いい提案だった。 — *That was a good suggestion.*
+
+**manager** · career level 5 · JLPT N2 · `story_fashion_manager` — Dress a magazine shoot or show your first sketches.
+
+- 撮影は明日の朝だ。 — *The shoot is tomorrow morning.*
+- 敬語で打ち合わせしよう。 — *Let us hold the meeting in keigo.*
+- ひばりの春、という感じだ。 — *That is spring in Hibari.*
+
+**owner** · career level 6 · JLPT N1 · `story_fashion_owner` — Show a collection that joins Hibari and Phú Quốc.
+
+- ショーのあいさつ、考えた？ — *Have you written the words for the show?*
+- 二つの町の色が入ってるね。 — *The colours of both towns are in it.*
+- たたみ方から始まったのにな。 — *And it all began with folding.*
 
 ## Cutscenes, choices and relationships
 

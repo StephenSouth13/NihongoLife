@@ -35,6 +35,7 @@ namespace NihongoLife.Core
                 WorldLocationCatalog.MidoriIslandScene => WorldLocationCatalog.MidoriStation,
                 WorldLocationCatalog.ClinicScene => WorldLocationCatalog.ClinicEntrance,
                 WorldLocationCatalog.MusicShopScene => WorldLocationCatalog.MusicShopEntrance,
+                WorldLocationCatalog.FashionStoreScene => WorldLocationCatalog.FashionStoreEntrance,
                 WorldLocationCatalog.PhuQuocIslandScene => WorldLocationCatalog.PhuQuocArrival,
                 _ => string.Empty
             };

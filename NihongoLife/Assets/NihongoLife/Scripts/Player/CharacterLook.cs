@@ -72,6 +72,9 @@ namespace NihongoLife.Player
         public bool boy;
         public float[] forward, up, mouth;
         public float faceWidth;
+        /// <summary>The top of the head and the forehead at the head's centre, hair included, and half its width.</summary>
+        public float[] crown, brow;
+        public float headRadius;
     }
 
     [Serializable]
@@ -103,6 +106,8 @@ namespace NihongoLife.Player
         public const string PrefsKey = "NihongoLife.CharacterLook";
         /// <summary>The head bone's child holding the beard and the wrinkles.</summary>
         public const string BeardName = "Look_Face";
+        /// <summary>The bone's child holding an outfit's accessories.</summary>
+        public const string WearName = "Look_Wear";
         private const string ModelsPath = "Characters/Looks/looks";
         private const string OptionsPath = "Characters/Looks/look_options";
 
@@ -126,14 +131,17 @@ namespace NihongoLife.Player
         private static LookOptions _options;
         private static LookModels _models;
         private static CharacterLookState _state;
-        private static Mesh _sphere;
+        private static Mesh _sphere, _cube;
         private static Material _hairBlit, _paletteBlit, _beardBase;
         private static readonly Dictionary<string, Material> HairMaterials = new Dictionary<string, Material>();
         private static readonly Dictionary<Color, Material> BeardMaterials = new Dictionary<Color, Material>();
 
         private int _appliedVersion = -1, _appliedAge = -1, _visualId;
+        private string _appliedOutfit;
         /// <summary>Skin / top / bottom colours of a variant (NPCs); null = the model's own.</summary>
         private LookTint _tint;
+        /// <summary>What another player wears (shown as they are); the local player's comes from FashionService.</summary>
+        private LookOutfit _outfit;
         private SkinnedMeshRenderer _probe;
         private float _nextCheck;
 
@@ -205,6 +213,13 @@ namespace NihongoLife.Player
             State.beard = id;
             Save();
             return null;
+        }
+
+        /// <summary>Something the look depends on changed (the outfit shown): everything showing it redraws.</summary>
+        public static void Touch()
+        {
+            Version++;
+            Changed?.Invoke();
         }
 
         public static void SetGrayWithAge(bool on)
@@ -279,6 +294,14 @@ namespace NihongoLife.Player
             return Fixed(hairId, beardId, years, greyWithAge);
         }
 
+        /// <summary>The clothes and accessories another player wears (null = the model's own).</summary>
+        public CharacterLook Dress(LookOutfit outfit)
+        {
+            _outfit = outfit;
+            Refresh();
+            return this;
+        }
+
         public int Age => playerLook ? PlayerAge : age;
         public bool IsBoy => ModelOf(Visual())?.boy == true;
 
@@ -292,7 +315,7 @@ namespace NihongoLife.Player
             _nextCheck = Time.unscaledTime + 0.5f;
             var visual = Visual();
             int id = visual != null ? visual.GetInstanceID() : 0;
-            if (id != _visualId || Age != _appliedAge || (playerLook && Version != _appliedVersion) || AtlasLost(_probe)) Refresh();
+            if (id != _visualId || Age != _appliedAge || (playerLook && (Version != _appliedVersion || _appliedOutfit != NihongoLife.Fashion.FashionService.ShownId)) || AtlasLost(_probe)) Refresh();
         }
 
         public void Refresh()
@@ -303,8 +326,12 @@ namespace NihongoLife.Player
             _appliedAge = Age;
             if (visual == null) return;
             _probe = visual.GetComponentInChildren<SkinnedMeshRenderer>(true);
-            if (playerLook) Apply(visual, State.hair, State.beard, Age, State.grayWithAge);
-            else Apply(visual, hair, beard, age, grayWithAge, _tint);
+            if (playerLook)
+            {
+                _appliedOutfit = NihongoLife.Fashion.FashionService.ShownId;
+                Apply(visual, State.hair, State.beard, Age, State.grayWithAge, null, NihongoLife.Fashion.FashionService.Shown);
+            }
+            else Apply(visual, hair, beard, age, grayWithAge, _tint, _outfit);
         }
 
         private GameObject Visual()
@@ -350,11 +377,12 @@ namespace NihongoLife.Player
         }
 
         /// <summary>Recolours the hair and builds the beard of <paramref name="visual"/> (a Kids-pack model).</summary>
-        public static void Apply(GameObject visual, string hairId, string beardId, int years, bool greyWithAge, LookTint tint = null)
+        public static void Apply(GameObject visual, string hairId, string beardId, int years, bool greyWithAge, LookTint tint = null, LookOutfit outfit = null)
         {
             if (visual == null) return;
             var model = ModelOf(visual);
             if (model == null) return;
+            if (outfit != null) tint = new LookTint(tint?.skin, outfit.tint.top, outfit.tint.bottom) { outfit = true };
             Color hairColor = HairColor(model, hairId, years, greyWithAge);
             bool tinted = tint != null && !tint.IsEmpty;
             bool natural = hairColor == Hex(model.hairHex) && !tinted;
@@ -368,6 +396,7 @@ namespace NihongoLife.Player
             var animator = visual.GetComponentInChildren<Animator>(true);
             var head = animator != null && animator.isHuman ? animator.GetBoneTransform(HumanBodyBones.Head) : null;
             if (head == null) return;
+            ApplyWear(animator, visual.transform, head, model, outfit);
             var old = head.Find(BeardName);
             if (old != null) { old.gameObject.SetActive(false); Destroy(old.gameObject); }
             var pieces = new List<LookBeardPiece>();
@@ -375,6 +404,66 @@ namespace NihongoLife.Player
             if (option != null && BeardBlocker(beardId, years, model.boy) == null) pieces.AddRange(option.pieces);
             foreach (var set in Options.wrinkles) if (years >= set.minAge) pieces.AddRange(set.pieces);
             if (pieces.Count > 0) BuildFace(head, model, pieces, hairColor, tinted && !string.IsNullOrEmpty(tint.skin) ? Hex(tint.skin) : Hex(model.skinHex));
+        }
+
+        /// <summary>The accessories on their own children of the head and chest bones, so they follow every animation.</summary>
+        private static void ApplyWear(Animator animator, Transform body, Transform head, LookModel model, LookOutfit outfit)
+        {
+            var chest = animator.GetBoneTransform(HumanBodyBones.UpperChest);
+            if (chest == null) chest = animator.GetBoneTransform(HumanBodyBones.Chest);
+            foreach (var bone in new[] { head, chest })
+            {
+                if (bone == null) continue;
+                for (int i = bone.childCount - 1; i >= 0; i--) // the head holds up to three: face, crown and brow
+                {
+                    var stale = bone.GetChild(i);
+                    if (stale.name == WearName) { stale.gameObject.SetActive(false); Destroy(stale.gameObject); }
+                }
+            }
+            if (outfit == null || outfit.pieces.Length == 0) return;
+            var roots = new Dictionary<string, Transform>();
+            foreach (var piece in outfit.pieces)
+            {
+                string place = piece.bone == "chest" && chest == null ? "head" : piece.bone;
+                if (!roots.TryGetValue(place, out var root))
+                {
+                    root = new GameObject(WearName).transform;
+                    roots[place] = root;
+                    root.SetParent(place == "chest" ? chest : head, false);
+                    root.gameObject.layer = head.gameObject.layer;
+                    if (place == "chest")
+                    {
+                        root.rotation = body.rotation;
+                        root.localScale = Vector3.one * model.faceWidth * (head.lossyScale.x / chest.lossyScale.x);
+                    }
+                    else
+                    {
+                        root.localPosition = V(place == "crown" ? model.crown : place == "brow" ? model.brow : model.mouth);
+                        root.localRotation = Quaternion.LookRotation(V(model.forward), V(model.up));
+                        root.localScale = Vector3.one * (place == "head" ? model.faceWidth : model.headRadius);
+                    }
+                }
+                var go = new GameObject("Piece", typeof(MeshFilter), typeof(MeshRenderer)) { layer = root.gameObject.layer };
+                go.transform.SetParent(root, false);
+                go.transform.localPosition = V(piece.pos);
+                go.transform.localRotation = Quaternion.Euler(V(piece.rot));
+                go.transform.localScale = V(piece.scale);
+                go.GetComponent<MeshFilter>().sharedMesh = piece.shape == "cube" ? Cube : Sphere;
+                var renderer = go.GetComponent<MeshRenderer>();
+                renderer.sharedMaterial = BeardMaterial(Hex(piece.tone));
+                renderer.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.Off;
+            }
+        }
+
+        private static Mesh Sphere => _sphere != null ? _sphere : _sphere = Primitive(PrimitiveType.Sphere);
+        private static Mesh Cube => _cube != null ? _cube : _cube = Primitive(PrimitiveType.Cube);
+
+        private static Mesh Primitive(PrimitiveType type)
+        {
+            var probe = GameObject.CreatePrimitive(type);
+            var mesh = probe.GetComponent<MeshFilter>().sharedMesh;
+            DestroyImmediate(probe);
+            return mesh;
         }
 
         private static readonly Dictionary<Material, Material> Originals = new Dictionary<Material, Material>();
@@ -423,8 +512,13 @@ namespace NihongoLife.Player
                     var swap = new Material(_paletteBlit);
                     swap.SetTexture("_Mask", mask);
                     SetSwap(swap, 0, colours.skinFrom, tint.skin);
-                    SetSwap(swap, 1, colours.topFrom, tint.top);
-                    SetSwap(swap, 2, colours.bottomFrom, tint.bottom);
+                    var tops = tint.outfit && colours.outfitTop.Length > 0 ? colours.outfitTop : new[] { colours.topFrom };
+                    var bottoms = tint.outfit && colours.outfitTop.Length > 0 ? colours.outfitBottom : new[] { colours.bottomFrom };
+                    for (int i = 0; i < 3; i++)
+                    {
+                        SetSwap(swap, 1 + i * 2, i < tops.Length ? tops[i] : null, tint.top);
+                        SetSwap(swap, 2 + i * 2, i < bottoms.Length ? bottoms[i] : null, tint.bottom);
+                    }
                     RenderTexture into = target;
                     if (hair)
                     {
@@ -464,12 +558,6 @@ namespace NihongoLife.Player
 
         private static void BuildFace(Transform head, LookModel model, List<LookBeardPiece> pieces, Color hairColor, Color skin)
         {
-            if (_sphere == null)
-            {
-                var probe = GameObject.CreatePrimitive(PrimitiveType.Sphere);
-                _sphere = probe.GetComponent<MeshFilter>().sharedMesh;
-                DestroyImmediate(probe);
-            }
             var root = new GameObject(BeardName).transform;
             root.SetParent(head, false);
             root.localPosition = V(model.mouth);
@@ -488,7 +576,7 @@ namespace NihongoLife.Player
                 go.transform.localPosition = V(piece.pos);
                 go.transform.localRotation = Quaternion.Euler(V(piece.rot));
                 go.transform.localScale = V(piece.scale);
-                go.GetComponent<MeshFilter>().sharedMesh = _sphere;
+                go.GetComponent<MeshFilter>().sharedMesh = Sphere;
                 go.GetComponent<MeshRenderer>().sharedMaterial = BeardMaterial(piece.tone == "stubble" ? stubble : piece.tone == "wrinkle" ? wrinkle : Color.Lerp(hairColor, Color.black, 0.08f));
                 go.GetComponent<MeshRenderer>().shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.Off;
             }

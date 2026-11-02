@@ -22,7 +22,7 @@ namespace NihongoLife.Player
             Load();
         }
 
-        public bool TryOpenCompany(string companyName)
+        public bool TryOpenCompany(string companyName, string kindId = null)
         {
             if (OwnsCompany) return false;
             // Offline exploration (StoryDirector.Bypass) skips the knowledge gate. The start-up capital still applies.
@@ -34,6 +34,9 @@ namespace NihongoLife.Player
             Business = new BusinessRecord
             {
                 companyName = string.IsNullOrWhiteSpace(companyName) ? "Mirai Learning" : companyName.Trim(),
+                kind = BusinessLedger.Kind(kindId)?.id ?? "shop",
+                lastSettledDay = DayNightCycle.Active != null ? DayNightCycle.Active.Day : -1,
+                weekStartDay = DayNightCycle.Active != null ? DayNightCycle.Active.Day : -1,
                 capitalYen = CompanyCapitalRequirement,
                 reputation = 10,
                 fairWageScore = 50,

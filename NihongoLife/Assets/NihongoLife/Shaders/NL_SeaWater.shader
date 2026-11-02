@@ -25,7 +25,6 @@ Shader "NihongoLife/SeaWater"
             HLSLPROGRAM
             #pragma vertex vert
             #pragma fragment frag
-            #pragma multi_compile_fog
             #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Core.hlsl"
             #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Lighting.hlsl"
 
@@ -35,7 +34,7 @@ Shader "NihongoLife/SeaWater"
             CBUFFER_END
 
             struct Attributes { float4 positionOS : POSITION; };
-            struct Varyings { float4 positionCS : SV_POSITION; float3 positionWS : TEXCOORD0; half fog : TEXCOORD1; };
+            struct Varyings { float4 positionCS : SV_POSITION; float3 positionWS : TEXCOORD0; };
 
             Varyings vert(Attributes v)
             {
@@ -43,7 +42,6 @@ Shader "NihongoLife/SeaWater"
                 VertexPositionInputs p = GetVertexPositionInputs(v.positionOS.xyz);
                 o.positionCS = p.positionCS;
                 o.positionWS = p.positionWS;
-                o.fog = ComputeFogFactor(p.positionCS.z);
                 return o;
             }
 
@@ -69,8 +67,11 @@ Shader "NihongoLife/SeaWater"
                 float diff = 0.55 + 0.45 * saturate(dot(n, l.direction));
                 float streak = sin(i.positionWS.x * 0.9 + t * 1.3 + sin(i.positionWS.z * 0.6 - t)) * sin(i.positionWS.z * 1.3 - t * 0.8);
                 float foam = smoothstep(1.0 - _FoamAmount * 0.5, 1.0, streak) * _FoamAmount;
-                col = col * diff * l.color + spec * l.color + _Foam.rgb * foam;
-                col = MixFog(col, i.fog);
+                // Only the brightness of the sun lights the water: its full colour turned the sea brown at sunrise and sunset.
+                half sun = dot(l.color, half3(0.3, 0.59, 0.11));
+                // The sky's ambient keeps the water lit (and follows night and day) even when no main light reaches this pass.
+                half3 ambient = SampleSH(half3(0, 1, 0));
+                col = col * (ambient + diff * lerp(sun.xxx, l.color, 0.25)) + spec * l.color + _Foam.rgb * foam;
                 return half4(col, 1);
             }
             ENDHLSL

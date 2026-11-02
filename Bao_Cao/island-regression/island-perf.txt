@@ -18,15 +18,15 @@ talking to cow
 click AnimalCard/Feed
 click AnimalCard/Feed
 click AnimalCard/Pet
-animal max wander in 4s = 3.64 m
+animal max wander in 4s = 3.07 m
 words=13 achievements=first_harvest,first_sale
 at KioskInteraction: current=KioskInteraction (NihongoLife.Island.IslandTicketKiosk)
 at TrainDoorInteraction: current=TrainDoorInteraction (NihongoLife.Island.IslandTrainDoor)
-total 82.0s
+total 79.8s
 scenes: 90_TestSandbox, 60_MidoriIsland active=60_MidoriIsland
-island objects: plots=6 animals=donkey,alpaca,dog,cow,horse counters=1 spots=7
-walk to store: closest 2.2 m, ended at (-1195.99, 0.00, -18.20)
-walk to farm: closest 2.2 m, ended at (-1223.57, 0.00, -0.95)
-walk to animal pen: closest 2.2 m, ended at (-1182.98, 0.00, 6.46)
+island objects: plots=6 animals=horse,cow,donkey,dog,alpaca counters=1 spots=7
+walk to store: closest 2.1 m, ended at (-1195.93, 0.00, -18.19)
+walk to farm: closest 2.2 m, ended at (-1223.56, 0.00, -0.96)
+walk to animal pen: closest 2.2 m, ended at (-1184.09, 0.00, 5.86)
 walk to lookout: closest 2.3 m, ended at (-1200.00, 0.00, 29.72)
-perf (editor, batchmode): frames=356 avg=11.3ms p95=13.0ms max=14.7ms islandRenderers=284 batches=301 setPass=37 tris=68230
+perf (editor, batchmode): frames=334 avg=12.0ms p95=13.6ms max=15.1ms islandRenderers=284 batches=298 setPass=38 tris=72785

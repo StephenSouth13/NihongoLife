@@ -92,7 +92,7 @@ namespace NihongoLife.EditorTools
                 Slab(g, "Shrub", new Vector3(x, 0.25f, 0.6f), new Vector3(1.4f, 0.5f, 0.9f), m.shrub, 0f);
             }
             var sea = GameObject.CreatePrimitive(PrimitiveType.Plane);
-            sea.name = "Sea"; Object.DestroyImmediate(sea.GetComponent<Collider>());
+            sea.name = "Sea"; WaterSurfaceBuilder.Prepare(sea);
             sea.transform.SetParent(g, false); sea.transform.localPosition = new Vector3(0, -0.08f, -85f); sea.transform.localScale = new Vector3(24f, 1f, 11f);
             sea.GetComponent<Renderer>().sharedMaterial = m.sea;
             // Paths: teak boards, 2.4 m wide, lobby → pool → beach and along both villa wings.
@@ -163,7 +163,7 @@ namespace NihongoLife.EditorTools
             Slab(g, "Coping_S", new Vector3(0, DeckTop, -hz - 0.15f), new Vector3(2f * hx + 0.6f, 0.06f, 0.3f), m.terrazzo, 0f);
             Slab(g, "Coping_N", new Vector3(0, DeckTop, hz + 0.15f), new Vector3(2f * hx + 0.6f, 0.06f, 0.3f), m.terrazzo, 0f);
             var water = GameObject.CreatePrimitive(PrimitiveType.Cube);
-            water.name = "PoolWater"; Object.DestroyImmediate(water.GetComponent<Collider>());
+            water.name = "PoolWater"; WaterSurfaceBuilder.Prepare(water);
             water.transform.SetParent(g, false); water.transform.localPosition = new Vector3(0, DeckTop - 0.18f, 0); water.transform.localScale = new Vector3(2f * hx - 0.4f, 0.04f, 2f * hz - 0.4f);
             water.GetComponent<Renderer>().sharedMaterial = m.poolWater;
             // Safety: a walkable surface at water level so the player wades, not falls 1.4 m.

@@ -100,6 +100,83 @@ namespace NihongoLife.EditorTools
         }
 
         /// <summary>
+        /// Machines the regulars play on, each with a 使用中 (in use) sign: the room is alive, and no machine stands idle or
+        /// repeats the player's games.
+        /// Run: Unity -batchmode -executeMethod NihongoLife.EditorTools.GameCenterBuilder.AddOccupiedMachines
+        /// </summary>
+        public static void AddOccupiedMachines()
+        {
+            try
+            {
+                CreateMaterials();
+                var scene = EditorSceneManager.OpenScene(ScenePath, OpenSceneMode.Single);
+                var all = scene.GetRootGameObjects().SelectMany(r => r.GetComponentsInChildren<Transform>(true)).ToList();
+                var machines = all.First(t => t.name == "Machines");
+                var decor = all.First(t => t.name == "Decor");
+                var spots = new[]
+                {
+                    ("claw-machine", "Claw_1", O + new Vector3(HalfX - 1.1f, 0f, -4.6f), -90f, 2.15f),
+                    ("claw-machine", "Claw_3", O + new Vector3(HalfX - 1.1f, 0f, 0.2f), -90f, 2.15f),
+                    ("gambling-machine", "MedalGame", O + new Vector3(7.6f, 0f, 5.2f), 180f, 1.9f),
+                    ("pinball", "Pinball_2", O + new Vector3(HalfX - 3.3f, 0f, HalfZ - 1.6f), 180f, 1.5f),
+                };
+                foreach (var (model, name, at, yaw, height) in spots)
+                {
+                    var stale = all.FirstOrDefault(t => t != null && t.name == name);
+                    if (stale != null) Object.DestroyImmediate(stale.gameObject);
+                    Machine(machines, model, name, at, yaw, height);
+                    Text(decor, "InUse_" + name, "使用中", at + Vector3.up * (height + 0.35f), yaw, 0.26f, new Color(1f, 0.55f, 0.35f), 1.4f);
+                }
+                EditorSceneManager.MarkSceneDirty(scene);
+                if (!EditorSceneManager.SaveScene(scene)) throw new InvalidOperationException("Could not save " + ScenePath);
+                Debug.Log("[GameCenterBuilder] Occupied machines placed.");
+                if (Application.isBatchMode) EditorApplication.Exit(0);
+            }
+            catch (Exception exception)
+            {
+                Debug.LogException(exception);
+                if (Application.isBatchMode) EditorApplication.Exit(1);
+                else throw;
+            }
+        }
+
+        /// <summary>
+        /// One game on every machine, none twice: Hoop Shot takes the second basketball machine (it ran a typing game), Tense
+        /// Typer moves to the pinball table, and the machines that stood idle or repeated a game (two claws, the medal game)
+        /// leave the floor.
+        /// Run: Unity -batchmode -executeMethod NihongoLife.EditorTools.GameCenterBuilder.TidyMachines
+        /// </summary>
+        public static void TidyMachines()
+        {
+            try
+            {
+                CreateMaterials();
+                var definitions = BuildContent();
+                var scene = EditorSceneManager.OpenScene(ScenePath, OpenSceneMode.Single);
+                var all = scene.GetRootGameObjects().SelectMany(r => r.GetComponentsInChildren<Transform>(true)).ToList();
+                Transform Find(string name) => all.FirstOrDefault(t => t != null && t.name == name) ?? throw new InvalidOperationException(name + " not found in " + ScenePath);
+                var decor = Find("Decor");
+                var typing = Find("Basketball_2").Find("MiniGameLauncher_tense_typer");
+                if (typing != null) Object.DestroyImmediate(typing.gameObject);
+                AttachGame(Find("Basketball_2"), decor, definitions["hoop_shot"], _neonCyan);
+                AttachGame(Find("Pinball_1"), decor, definitions["tense_typer"], _neonGold);
+                foreach (string idle in new[] { "Claw_1", "Claw_3", "MedalGame" })
+                    Object.DestroyImmediate(Find(idle).gameObject);
+                EditorSceneManager.MarkSceneDirty(scene);
+                if (!EditorSceneManager.SaveScene(scene)) throw new InvalidOperationException("Could not save " + ScenePath);
+                AssetDatabase.SaveAssets();
+                Debug.Log("[GameCenterBuilder] Machines tidied.");
+                if (Application.isBatchMode) EditorApplication.Exit(0);
+            }
+            catch (Exception exception)
+            {
+                Debug.LogException(exception);
+                if (Application.isBatchMode) EditorApplication.Exit(1);
+                else throw;
+            }
+        }
+
+        /// <summary>
         /// Second arcade upgrade on the existing 50_GameCenter (scene not rebuilt): eight more games on machines that were
         /// only decoration — Word Whack, Echo Pads, Kana Snake and Kana Breaker on the retro wall cabinets, Dance Arrows on
         /// the dance machine, Tense Typer on the second basketball machine, Wheel Quiz on the prize wheel and Air Hockey on
@@ -159,13 +236,14 @@ namespace NihongoLife.EditorTools
                     new ArcadeCrowd.Regular { id = id, model = model, position = new Vector3(x, 0f, z), yaw = yaw, activity = activity, hair = hair, age = age };
                 crowd.AddComponent<ArcadeCrowd>().Configure(new[]
                 {
-                    // Claw machines face -X from the east wall: players stand west of them, facing east.
+                    // The machines marked 使用中 (AddOccupiedMachines) are theirs; the player's own machines stay free.
                     R("claw1", "kid_hina", HalfX - 2.05f, -4.6f, 90f, "arcade_play", "natural", 15),
                     R("claw1_friend", "kid_sota", HalfX - 2.35f, -3.75f, 120f, "", "black", 15),
                     R("claw3", "kid_riku", HalfX - 2.05f, 0.2f, 90f, "arcade_play", "chestnut", 17),
-                    R("pinball", "kid_yuto", HalfX - 2.15f, HalfZ - 1.6f, 90f, "arcade_play", "dark_brown", 19),
-                    // The medal game faces -Z.
                     R("medal", "kid_sakura", 7.6f, 4.15f, 0f, "arcade_play", "auburn", 22),
+                    R("pinball2", "kid_yuto", HalfX - 3.3f, HalfZ - 2.75f, 0f, "arcade_play", "dark_brown", 19),
+                    R("chat_a", "kid_mio", 0.2f, -1.6f, 70f, "", "black", 15),
+                    R("chat_b", "kid_haruto", 1.1f, -1.3f, -110f, "", "ash", 17),
                     R("dance_fan", "kid_mio", -5.2f, 5.4f, -35f, "", "pink", 16),
                     R("vending_a", "kid_yui", -8.0f, -6.4f, 40f, "drink_cup", "natural", 18),
                     R("vending_b", "kid_haruto", -7.2f, -5.8f, -140f, "", "ash", 18),
@@ -291,6 +369,9 @@ namespace NihongoLife.EditorTools
                 ["basket_count"] = Definition("minigame_basket_count", "basket_count", MiniGameKind.BasketCount, "かずバスケ", "Basket Count", "Basket Count",
                     ("Ném bóng vào rổ ghi đúng số được đọc bằng tiếng Nhật — từ 1 đến 999.", "Shoot into the hoop with the number called in Japanese — from 1 to 999.", "日本語の数を読んで、同じ数字のゴールにシュート！"),
                     true, 10, 75f),
+                ["hoop_shot"] = Definition("minigame_hoop_shot", "hoop_shot", MiniGameKind.HoopShot, "フープショット", "Ném Rổ", "Hoop Shot",
+                    ("Vuốt bóng vào rổ như ném thật. Vào giữa vành được gấp đôi, rổ di chuyển dần.", "Flick the ball into the hoop like a real shot. Clean shots score double and the hoop starts to move.", "スワイプで シュート！ まんなかに はいると 2ばい。"),
+                    true, 10, 60f),
                 ["word_whack"] = Definition("minigame_word_whack", "word_whack", MiniGameKind.WordWhack, "ことばモグラ", "Đập Từ", "Word Whack",
                     ("Từ tiếng Nhật chui ra khỏi hang — đập đúng từ khớp với gợi ý trước khi nó thụt vào.", "Japanese words pop out of burrows — whack the one that matches the clue before it ducks back.", "あなから ことばが でてくる！ヒントに合うものを たたこう。"),
                     true, 10, 90f, words, meaning, kanji, hiragana, katakana),
@@ -607,7 +688,7 @@ namespace NihongoLife.EditorTools
 
             var spawn = new GameObject("Spawn_" + WorldLocationCatalog.CityGameCenterReturn);
             spawn.transform.SetParent(portals);
-            spawn.transform.SetPositionAndRotation(new Vector3(group.position.x, 0.08f, frontZ + 2.4f), Quaternion.identity);
+            spawn.transform.SetPositionAndRotation(new Vector3(group.position.x, 0.08f, frontZ + 2.4f), FashionStoreBuilder.ClearOfCanopy);
             spawn.AddComponent<SceneSpawnPoint>().Configure(WorldLocationCatalog.CityGameCenterReturn);
 
             foreach (var renderer in group.GetComponentsInChildren<Renderer>(true)) renderer.shadowCastingMode = ShadowCastingMode.Off;

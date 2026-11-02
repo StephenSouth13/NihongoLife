@@ -252,7 +252,12 @@ namespace NihongoLife.UI
             Label(settingsButton, "Cài đặt", "Settings", "設定");
             Label(quitButton, "Thoát", "Quit", "終了");
             Label(aboutButton, "Về chúng tôi", "About us", "私たちについて");
-            if (controlsButton != null) Label(controlsButton, TouchControlPrefs.ModeVi(), TouchControlPrefs.ModeEn(), TouchControlPrefs.ModeJa());
+            if (controlsButton != null)
+            {
+                Label(controlsButton, TouchControlPrefs.ModeVi(), TouchControlPrefs.ModeEn(), TouchControlPrefs.ModeJa());
+                foreach (var picture in controlsButton.GetComponentsInChildren<Image>(true))
+                    if (picture.gameObject != controlsButton.gameObject) picture.sprite = UiIcons.Get(TouchControlPrefs.ModeIcon);
+            }
             bool signedIn = GameServices.TryGet(out IAuthService auth) && auth.IsAuthenticated;
             if (signedIn) Label(loginButton, "Tài khoản", "Account", "アカウント");
             else Label(loginButton, "Đăng nhập", "Sign in", "ログイン");
@@ -267,8 +272,8 @@ namespace NihongoLife.UI
         private Button controlsButton;
 
         /// <summary>
-        /// A phone player (or anyone) switches the on-screen joystick and buttons right from the menu: Auto (shown on touch
-        /// screens), On, Off. Same setting as Settings > touch controls. The "ControlsButton" pill is authored in 01_MainMenu
+        /// Anyone chooses how they play right from the menu: phone (joystick and touch buttons), computer, or automatic
+        /// (touch screens get the phone mode). Same setting as Settings > touch controls. The "ControlsButton" pill is authored in 01_MainMenu
         /// (TopCluster, left of "About us"); nothing is created here, the click is only wired.
         /// </summary>
         private void BuildControlsSwitch()
@@ -358,13 +363,9 @@ namespace NihongoLife.UI
                 var progress = progressRepo.GetProgress();
                 string name = progress.displayName;
                 if (GameServices.TryGet(out IAuthService authSvc) && authSvc.IsAuthenticated && !string.IsNullOrWhiteSpace(authSvc.DisplayName)) name = authSvc.DisplayName;
-                details = $"<b><color=#F7BD3D>{Loc.T("Học viên", "Learner", "学習者")}</color></b>  {name}   ·   {Loc.T("Cấp", "Level", "レベル")} {progress.level} ({progress.xp} XP)   ·   " +
-                          Loc.F("{0} tình huống đã hoàn thành", "{0} scenarios completed", "完了したシナリオ {0}", progress.completedScenarios.Count) + "\n";
+                details = $"<b><color=#F7BD3D>{Loc.T("Học viên", "Learner", "学習者")}</color></b>  {name}   ·   {Loc.T("Cấp", "Level", "レベル")} {progress.level} ({progress.xp} XP)";
             }
-            details += Loc.T("WASD di chuyển  ·  F tương tác  ·  B balo  ·  M bản đồ  ·  Tab nhân vật",
-                             "WASD move  ·  F interact  ·  B bag  ·  M map  ·  Tab character",
-                             "WASD 移動  ·  F 調べる  ·  B バッグ  ·  M 地図  ·  Tab キャラ");
-            profileText.text = details.Trim();
+            profileText.text = string.IsNullOrEmpty(details) ? "" : "<mark=#0A0D12C8 padding=\"12,12,5,5\">" + details + "</mark>"; // readable over the town behind it
         }
 
         // ─────────── Mode select ───────────

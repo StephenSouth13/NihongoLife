@@ -266,7 +266,9 @@ namespace NihongoLife.Progression
             if (progress.trackedQuestId == quest.id) progress.trackedQuestId = Active.FirstOrDefault(q => q.id != quest.id)?.id ?? string.Empty;
             Save();
 
-            var rewards = quest.rewards ?? new QuestRewards();
+            var given = quest.rewards ?? new QuestRewards();
+            float field = CareerService.RewardFactor(CareerService.CareerOf(quest));
+            var rewards = new QuestRewards { yen = Mathf.RoundToInt(given.yen * field), xp = Mathf.RoundToInt(given.xp * field), knowledge = given.knowledge };
             if (rewards.xp > 0) PlayerStatus.Instance?.AddExp(rewards.xp);
             SocialStanding.AddReputation(3, "help");
             SocialStanding.AddMoodlet("helped", SocialMood.Proud, 0.5f, 1.5f);
@@ -281,6 +283,7 @@ namespace NihongoLife.Progression
             }
             Save();
             string pay = string.Join("  ·  ", new[] { rewards.yen > 0 ? "+" + NihongoLife.Core.Loc.Yen(rewards.yen) : null, rewards.xp > 0 ? $"+{rewards.xp} XP" : null, rewards.knowledge > 0 ? NihongoLife.Core.Loc.F("+{0} trí tuệ", "+{0} knowledge", "知識 +{0}", rewards.knowledge) : null }.Where(x => x != null));
+            if (field < 1f) pay += "  ·  " + NihongoLife.Core.Loc.T("trái ngành −50%", "outside your field −50%", "専門外 −50%");
             HudFeed.Post(NihongoLife.Core.Loc.T("Hoàn thành: ", "Completed: ", "完了：") + $"{quest.Title}   {pay}", HudFeed.Kind.Reward, 6f);
             Completed?.Invoke(quest);
         }

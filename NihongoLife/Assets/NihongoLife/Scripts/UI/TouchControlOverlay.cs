@@ -80,19 +80,19 @@ namespace NihongoLife.UI
             handle.anchoredPosition = Vector2.zero;
             _stick.gameObject.Need<MobileJoystick>().Configure(handle, 56f);
 
-            _jump = Action(visuals.transform, "Jump", GameInputId.Jump, "Nhảy", "Jump", "ジャンプ", UiTheme.Gold, UiTheme.OnGold);
+            _jump = Action(visuals.transform, "Jump", GameInputId.Jump, "Nhảy", "Jump", "ジャンプ", UiTheme.Gold, UiTheme.OnGold, "arrow_upward");
             _interact = Action(visuals.transform, "Interact", GameInputId.Interact, "F", "F", "F", UiTheme.Gold, UiTheme.OnGold);
-            _sprint = Action(visuals.transform, "Sprint", GameInputId.Sprint, "Chạy", "Run", "走る", UiTheme.Teal, UiTheme.OnGold);
-            _small.Add(Action(visuals.transform, "Map", GameInputId.Map, "Bản đồ", "Map", "地図", UiTheme.Raised, UiTheme.Text));
-            _small.Add(Action(visuals.transform, "Bag", GameInputId.Inventory, "Túi", "Bag", "荷物", UiTheme.Raised, UiTheme.Text));
-            _small.Add(Action(visuals.transform, "Chat", GameInputId.Chat, "Chat", "Chat", "会話", UiTheme.Raised, UiTheme.Text));
-            _small.Add(Action(visuals.transform, "Talk", GameInputId.PushToTalk, "Nói", "Talk", "話す", UiTheme.Raised, UiTheme.Text));
-            _small.Add(Action(visuals.transform, "Menu", GameInputId.Settings, "Menu", "Menu", "メニュー", UiTheme.Raised, UiTheme.Text));
+            _sprint = Action(visuals.transform, "Sprint", GameInputId.Sprint, "Chạy", "Run", "走る", UiTheme.Teal, UiTheme.OnGold, "directions_run");
+            _small.Add(Action(visuals.transform, "Map", GameInputId.Map, "Bản đồ", "Map", "地図", UiTheme.Raised, UiTheme.Text, "map"));
+            _small.Add(Action(visuals.transform, "Bag", GameInputId.Inventory, "Túi", "Bag", "荷物", UiTheme.Raised, UiTheme.Text, "backpack"));
+            _small.Add(Action(visuals.transform, "Chat", GameInputId.Chat, "Chat", "Chat", "会話", UiTheme.Raised, UiTheme.Text, "chat"));
+            _small.Add(Action(visuals.transform, "Talk", GameInputId.PushToTalk, "Nói", "Talk", "話す", UiTheme.Raised, UiTheme.Text, "mic"));
+            _small.Add(Action(visuals.transform, "Menu", GameInputId.Settings, "Menu", "Menu", "メニュー", UiTheme.Raised, UiTheme.Text, "settings"));
             _small.Add(Tap(visuals.transform, "HideTouch", () =>
             {
                 _sessionHidden = true;
                 ReleaseAll();
-            }, "Ẩn", "Hide", "隠す", new Color(0.07f, 0.08f, 0.1f, 0.92f), UiTheme.Text));
+            }, "Ẩn", "Hide", "隠す", new Color(0.07f, 0.08f, 0.1f, 0.92f), UiTheme.Text, "visibility"));
 
             _restore = Tap(transform, "ShowTouch", () => _sessionHidden = false, "Nút", "Controls", "操作", UiTheme.Gold, UiTheme.OnGold).gameObject;
             Loc.Watch(this, RefreshLabels);
@@ -308,21 +308,35 @@ namespace NihongoLife.UI
             for (int i = 0; i < _held.Length; i++) input.SetMobileButton(_held[i], false);
         }
 
-        RectTransform Action(Transform parent, string name, GameInputId id, string vi, string en, string ja, Color fill, Color ink)
+        RectTransform Action(Transform parent, string name, GameInputId id, string vi, string en, string ja, Color fill, Color ink, string icon = null)
         {
             var rect = Circle(parent, name, fill, true);
             rect.gameObject.Need<MobileActionButton>().Configure(id);
-            AddLabel(rect, vi, en, ja, ink);
+            Face(rect, vi, en, ja, ink, icon);
             return rect;
         }
 
-        RectTransform Tap(Transform parent, string name, Action click, string vi, string en, string ja, Color fill, Color ink)
+        RectTransform Tap(Transform parent, string name, Action click, string vi, string en, string ja, Color fill, Color ink, string icon = null)
         {
             var rect = Circle(parent, name, fill, true);
             var tap = rect.gameObject.Need<TouchTap>();
             tap.Click = click;
-            AddLabel(rect, vi, en, ja, ink);
+            Face(rect, vi, en, ja, ink, icon);
             return rect;
+        }
+
+        /// <summary>A button shows its icon, which needs no reading on a small screen; the rest keep their word.</summary>
+        void Face(RectTransform rect, string vi, string en, string ja, Color ink, string icon)
+        {
+            if (string.IsNullOrEmpty(icon))
+            {
+                AddLabel(rect, vi, en, ja, ink);
+                return;
+            }
+            var glyph = UiKit.Icon(rect, icon, ink, 30f);
+            UiKit.Fill(glyph.rectTransform, 12f, 12f, 12f, 12f);
+            glyph.raycastTarget = false;
+            glyph.preserveAspect = true;
         }
 
         void AddLabel(RectTransform rect, string vi, string en, string ja, Color ink)

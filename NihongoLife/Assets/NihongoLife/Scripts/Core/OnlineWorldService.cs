@@ -16,6 +16,8 @@ namespace NihongoLife.Core
         public long serverTick;
         /// <summary>PlayableCharacterCatalog id of the model this player picked.</summary>
         public string characterId;
+        /// <summary>The outfit this player wears (Resources/Fashion/outfits.json); empty = the model's own clothes.</summary>
+        public string outfitId;
         /// <summary>World shard the player is in ("" for local simulation).</summary>
         public string shardTopic;
         /// <summary>0 idle, 1 walking, 2 running (drives the remote animation).</summary>
@@ -45,11 +47,14 @@ namespace NihongoLife.Core
         event Action<OnlinePlayerSnapshot> OnPlayerJoinedOrUpdated;
         event Action<string> OnPlayerLeft;
         event Action<OnlineChatMessage> OnChatMessageReceived;
+        /// <summary>Another player used an emote: their id and the index in EmoteCatalog.</summary>
+        event Action<string, int> OnPlayerEmote;
 
         void ConnectLocalPlayer(string playerId, string displayName);
         void Disconnect();
         void UpdateLocalPlayerPose(string sceneName, Vector3 position, Quaternion rotation);
         void SendChatMessage(string channelId, string text);
+        void SendEmote(int emote);
     }
 
     public class LocalOnlineWorldService : IOnlineWorldService
@@ -69,6 +74,9 @@ namespace NihongoLife.Core
         public event Action<OnlinePlayerSnapshot> OnPlayerJoinedOrUpdated;
         public event Action<string> OnPlayerLeft;
         public event Action<OnlineChatMessage> OnChatMessageReceived;
+        public event Action<string, int> OnPlayerEmote { add { } remove { } }
+
+        public void SendEmote(int emote) { }
 
         public void Initialize()
         {

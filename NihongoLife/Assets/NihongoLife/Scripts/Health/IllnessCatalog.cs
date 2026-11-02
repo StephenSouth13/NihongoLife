@@ -31,6 +31,8 @@ namespace NihongoLife.Health
         public bool heals = true;
         /// <summary>SocialMood name of the moodlet, and the visual effect (sneeze, cough, fever, heat, dizzy, ache).</summary>
         public string mood, effect;
+        /// <summary>What the body does now and then: a sneeze, a hand on the forehead, fanning in the heat (gestures.json).</summary>
+        public string gesture;
         /// <summary>Over-the-counter medicines (medicines[] ids) that help.</summary>
         public string[] medicines = Array.Empty<string>();
         public float relief, medicineShorten, clinicShorten, earlyHours, earlyClinicShorten;

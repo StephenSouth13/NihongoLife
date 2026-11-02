@@ -473,7 +473,7 @@ namespace NihongoLife.EditorTools
             so.FindProperty("displayName").stringValue = "Ito";
             so.FindProperty("role").stringValue = "Cashier";
             so.FindProperty("promptJa").stringValue = "かいけいする";
-            so.FindProperty("promptEn").stringValue = "Thanh toán với chị Ito";
+            so.FindProperty("promptEn").stringValue = "Thanh toán với anh Ito";
             so.FindProperty("scenarioAreaIdOnInteract").stringValue = "cashier";
             so.ApplyModifiedPropertiesWithoutUndo();
             npc.AddComponent<KonbiniClerk>();

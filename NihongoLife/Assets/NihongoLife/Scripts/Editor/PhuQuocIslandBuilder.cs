@@ -117,6 +117,7 @@ namespace NihongoLife.EditorTools
             water.transform.localPosition = new Vector3(0, -0.3f, -60);
             water.transform.localScale = new Vector3(90, 1, 90);
             water.GetComponent<Renderer>().sharedMaterial = sea;
+            WaterSurfaceBuilder.Prepare(water);
 
             var outline = map.OutlineWorld();
             var beach = PolygonObject("Island_Beach", outline, 0f, sand, root);

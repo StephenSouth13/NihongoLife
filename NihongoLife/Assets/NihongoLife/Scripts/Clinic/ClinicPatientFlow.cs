@@ -144,7 +144,7 @@ namespace NihongoLife.Clinic
             // The call: the board shows the number, the nurse calls it.
             Called++;
             if (_board != null) _board.text = $"しんさつ ばんごう\n<size=180%><color=#7CF0C8>{p.number}</color></size>";
-            Say(_nurse, string.Format(_catalog.callJa ?? "{0}", p.number), string.Format(Loc.Pick(_catalog.callVi, _catalog.callVi, _catalog.callJa) ?? "{0}", p.number), 3.5f);
+            Say(_nurse, string.Format(_catalog.callJa ?? "{0}", p.number), string.Format(Loc.Pick(_catalog.callVi, _catalog.callEn, _catalog.callJa) ?? "{0}", p.number), 3.5f);
             yield return new WaitForSeconds(1.2f);
             Stand(p);
             _takenSeats.Remove(seat);
@@ -167,7 +167,7 @@ namespace NihongoLife.Clinic
             _medicineBusy = true;
             yield return WalkTo(p, "Medicine");
             Face(p, _pharmacist);
-            Say(_pharmacist, (symptom != null ? symptom.medicineJa + "。" : "") + _catalog.byeJa, Loc.Pick(_catalog.byeVi, _catalog.byeVi, _catalog.byeJa), 3.5f);
+            Say(_pharmacist, (symptom != null ? symptom.medicineJa + "。" : "") + _catalog.byeJa, Loc.Pick(_catalog.byeVi, _catalog.byeEn, _catalog.byeJa), 3.5f);
             yield return new WaitForSeconds(3.2f);
             _medicineBusy = false;
             Treated++;
@@ -193,7 +193,7 @@ namespace NihongoLife.Clinic
             var anim = go.AddComponent<CharacterAnimationController>();
             anim.SetAnimator(go.GetComponentInChildren<Animator>(true));
             var look = CharacterLook.On(go, false).Fixed(data.hair, data.beard, data.age);
-            var plate = Label(go.transform, "Nameplate", $"{data.nameJa}\n<size=70%>{data.nameVi}</size>", 2.1f / go.transform.lossyScale.y, 0.9f, new Color(0.95f, 0.95f, 0.9f)); // kids are built at 1.35×
+            var plate = Label(go.transform, "Nameplate", Loc.IsVietnamese ? $"{data.nameJa}\n<size=70%>{data.nameVi}</size>" : data.nameJa, 2.1f / go.transform.lossyScale.y, 0.9f, new Color(0.95f, 0.95f, 0.9f)); // kids are built at 1.35×
             plate.gameObject.AddComponent<BillboardUI>().lockRotationXAndZ = true;
             return new Patient { data = data, go = go, anim = anim, look = look };
         }

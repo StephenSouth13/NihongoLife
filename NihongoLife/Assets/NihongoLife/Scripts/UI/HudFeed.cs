@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using NihongoLife.Core;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -48,6 +49,7 @@ namespace NihongoLife.UI
                 NLUi.Anchor(_instance._stack, new Vector2(0.5f, 1f), new Vector2(0f, -92f), new Vector2(640f, 0f));
                 _instance._stack.pivot = new Vector2(0.5f, 1f);
                 NLUi.FitContent(_instance._stack);
+                Loc.Watch(_instance, _instance.Clear); // cards are written in one language: a switch drops them
                 return _instance;
             }
         }
@@ -57,7 +59,7 @@ namespace NihongoLife.UI
         public static void Post(string text, Kind kind = Kind.Info, float seconds = 4.5f, string key = null)
         {
             if (string.IsNullOrWhiteSpace(text)) return;
-            text = NihongoLife.Core.Loc.Resolve(text); // stored three-language messages show in the current language
+            text = Loc.Resolve(text); // stored three-language messages show in the current language
             var feed = Instance;
             if (key != null)
             {
@@ -83,7 +85,7 @@ namespace NihongoLife.UI
             var card = NLUi.Panel(feed._stack, "FeedCard", new Color(0.05f, 0.07f, 0.09f, 0.94f), new RectOffset(18, 18, 10, 11), 0f, vertical: false);
             ((HorizontalLayoutGroup)card.GetComponent<HorizontalOrVerticalLayoutGroup>()).childForceExpandWidth = false;
             NLUi.FitContent(card, width: true, height: true);
-            var dot = NLUi.Label(card, "Dot", kind == Kind.Reward ? "¥" : kind == Kind.Warning ? "!" : "●", 17f, accent, feed._font, FontStyles.Bold, TextAlignmentOptions.Center);
+            var dot = NLUi.Label(card, "Dot", kind == Kind.Reward ? "+" : kind == Kind.Warning ? "!" : "●", 17f, accent, feed._font, FontStyles.Bold, TextAlignmentOptions.Center);
             NLUi.Size(dot, 24f);
             var label = NLUi.Label(card, "Text", text, 18f, NLUi.Text, feed._font);
             label.textWrappingMode = TextWrappingModes.Normal;
@@ -122,14 +124,20 @@ namespace NihongoLife.UI
             _instance != null && _instance._cards.Exists(c => c.card != null && _instance._keys.TryGetValue(c.card, out string k) && k == key);
         public static string LatestText => _instance == null || _instance._cards.Count == 0 ? null : _instance._lastText;
 
+        private void Clear()
+        {
+            foreach (var (card, _, _) in _cards) if (card != null) Destroy(card.gameObject);
+            _cards.Clear();
+            _keys.Clear();
+        }
+
         private void Update()
         {
             // The main menu shows no gameplay notifications: anything left from the game is dropped there.
             string scene = UnityEngine.SceneManagement.SceneManager.GetActiveScene().name;
             if (scene == "01_MainMenu" || scene == "00_Bootstrap")
             {
-                foreach (var (card, _, _) in _cards) if (card != null) Destroy(card.gameObject);
-                _cards.Clear(); _keys.Clear();
+                Clear();
                 return;
             }
             // While a window is open the feed steps aside (never over a card) and its timers wait.

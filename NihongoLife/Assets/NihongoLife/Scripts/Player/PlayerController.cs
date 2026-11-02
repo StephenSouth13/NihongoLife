@@ -38,6 +38,12 @@ namespace NihongoLife.Player
         private Vector3 _knock;
         private float _knockUntil;
         private bool _isGrounded;
+        private float _nextJumpAt;
+        private PlayerSwim _swim;
+        /// <summary>Caps what the prefab saved: higher jumps carried the player over walls and out of the map.</summary>
+        private const float MaxJumpHeight = 0.85f;
+        private const float JumpCooldown = 1f;
+        private const float SwimSpeed = 2.4f, SwimSprintSpeed = 3.6f;
         private bool _inputLocked = false;
         private UnityEngine.Camera _mainCamera;
         private CharacterAnimationController _animationController;
@@ -99,6 +105,8 @@ namespace NihongoLife.Player
         private void Awake()
         {
             _characterController = GetComponent<CharacterController>();
+            _swim = GetComponent<PlayerSwim>();
+            if (_swim == null) _swim = gameObject.AddComponent<PlayerSwim>();
             _characterController.detectCollisions = true;
             _characterController.skinWidth = Mathf.Max(_characterController.skinWidth, 0.08f);
             // The controller keeps its capsule bottom skinWidth above the floor. Lift the capsule by that much
@@ -214,13 +222,14 @@ namespace NihongoLife.Player
                 _hasClickDestination = false;
             }
 
-            float currentSpeed = (isRunning ? runSpeed : walkSpeed) * (status != null ? status.MoveSpeedMultiplier : 1f) * CharacterLook.PlayerWalkFactor;
+            bool swimming = _swim != null && _swim.Swimming;
+            float currentSpeed = (swimming ? (isRunning ? SwimSprintSpeed : SwimSpeed) : isRunning ? runSpeed : walkSpeed) * (status != null ? status.MoveSpeedMultiplier : 1f) * CharacterLook.PlayerWalkFactor;
             float smoothing = moveDirection.sqrMagnitude > 0.001f ? acceleration : deceleration;
             _smoothedMoveDirection = Vector3.MoveTowards(_smoothedMoveDirection, moveDirection, smoothing * Time.deltaTime);
             status?.ReportActivity(_smoothedMoveDirection.sqrMagnitude > 0.01f, isRunning);
             if (_animationController != null)
             {
-                _animationController.SetSpeed(_smoothedMoveDirection.magnitude * currentSpeed);
+                _animationController.SetSpeed(swimming ? 0f : _smoothedMoveDirection.magnitude * currentSpeed);
             }
 
             // Rotate Player in movement direction
@@ -231,11 +240,14 @@ namespace NihongoLife.Player
             }
 
             // Apply gravity
-            if (_isGrounded && _input != null && !NihongoLife.UI.UiModalStack.IsTyping && _input.WasPressed(GameInputId.Jump))
+            if (!swimming && _isGrounded && _input != null && !NihongoLife.UI.UiModalStack.IsTyping && _input.WasPressed(GameInputId.Jump) && CanJump())
             {
-                _velocity.y = Mathf.Sqrt(jumpHeight * -2f * gravity);
+                _velocity.y = Mathf.Sqrt(Mathf.Min(jumpHeight, MaxJumpHeight) * -2f * gravity);
+                _nextJumpAt = Time.time + JumpCooldown;
             }
-            _velocity.y = Mathf.Max(_velocity.y + gravity * Time.deltaTime, maxFallSpeed);
+            _velocity.y = swimming
+                ? Mathf.Clamp((_swim.FloatY - transform.position.y) * 6f, -3f, 3f)
+                : Mathf.Max(_velocity.y + gravity * Time.deltaTime, maxFallSpeed);
             Vector3 finalMove = _smoothedMoveDirection * currentSpeed + new Vector3(_knock.x, 0f, _knock.z);
             _knock = Vector3.MoveTowards(_knock, Vector3.zero, 14f * Time.deltaTime);
             finalMove.y = _velocity.y;
@@ -247,7 +259,8 @@ namespace NihongoLife.Player
                 Vector3 capsuleTop = capsuleBottom + Vector3.up * Mathf.Max(0f, _characterController.height - _characterController.radius * 2f);
                 if (Physics.CapsuleCast(capsuleBottom, capsuleTop, _characterController.radius * 0.92f,
                         horizontalMove.normalized, out RaycastHit wallHit, horizontalDistance + 0.06f,
-                        Physics.DefaultRaycastLayers, QueryTriggerInteraction.Ignore))
+                        Physics.DefaultRaycastLayers, QueryTriggerInteraction.Ignore)
+                    && (!swimming || wallHit.normal.y < 0.5f)) // the sand rising out of the sea is a way ashore, not a wall
                 {
                     finalMove.x = 0f;
                     finalMove.z = 0f;
@@ -270,6 +283,19 @@ namespace NihongoLife.Player
                 _isGrounded = true;
             }
             HandleFootsteps(moveDirection.sqrMagnitude > 0.01f, isRunning);
+        }
+
+        /// <summary>
+        /// "Grounded" is also true beside a wall (the ground sphere touches it) and for a frame after any bump, which let the
+        /// jump key climb walls without end. A jump needs a floor under the feet and a second since the last one.
+        /// </summary>
+        private bool CanJump()
+        {
+            if (Time.time < _nextJumpAt || _velocity.y > 0f) return false;
+            float radius = _characterController.radius * 0.7f;
+            Vector3 origin = transform.position + Vector3.up * (radius + 0.1f);
+            return Physics.SphereCast(origin, radius, Vector3.down, out RaycastHit floor, 0.3f, Physics.DefaultRaycastLayers, QueryTriggerInteraction.Ignore)
+                && floor.normal.y > 0.7f;
         }
 
         private void HandleFootsteps(bool moving, bool running)

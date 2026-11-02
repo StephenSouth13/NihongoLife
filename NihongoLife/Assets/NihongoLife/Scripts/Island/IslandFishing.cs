@@ -232,7 +232,8 @@ namespace NihongoLife.Island
 
         public static IslandFish PickFish(IslandCatalog catalog)
         {
-            var all = catalog.fish ?? Array.Empty<IslandFish>();
+            // Big and rare fish only bite for a good angler: what a player can catch grows with their skill.
+            var all = (catalog.fish ?? Array.Empty<IslandFish>()).Where(f => f.skill <= FishingSkill.Level).ToArray();
             if (all.Length == 0) return null;
             if (!string.IsNullOrEmpty(ForcedFishId)) return catalog.Fish(ForcedFishId) ?? all[0];
             int total = all.Sum(f => Mathf.Max(1, f.weight));

@@ -307,7 +307,9 @@ namespace NihongoLife.EditorTools
             sea.normals = Enumerable.Repeat(Vector3.up, 4).ToArray();
             sea.RecalculateBounds();
             SaveMesh(sea);
-            Attach(g, sea, m.sea, false).name = "PQ_SeaLocal";
+            var localSea = Attach(g, sea, m.sea, false);
+            localSea.name = "PQ_SeaLocal";
+            WaterSurfaceBuilder.Prepare(localSea.gameObject);
 
             // Promenade along the top of the beach.
             Slab(g, "Promenade", new Vector3((BeachX0 + 110f) * 0.5f, 0.1f, PromenadeZ), new Vector3(110f - BeachX0, 0.15f, 4f), m.tile);

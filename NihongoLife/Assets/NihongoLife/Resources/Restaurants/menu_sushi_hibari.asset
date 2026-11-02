@@ -13,902 +13,1074 @@ MonoBehaviour:
   m_Name: menu_sushi_hibari
   m_EditorClassIdentifier: NihongoLife::NihongoLife.Data.RestaurantMenuDefinition
   id: menu.sushi.hibari
-  restaurantNameJa: ひばり寿司
-  restaurantNameReading: ひばりずし
+  restaurantNameJa: "\u3072\u3070\u308A\u5BFF\u53F8"
+  restaurantNameReading: "\u3072\u3070\u308A\u305A\u3057"
   restaurantNameVi: Sushi Hibari
   restaurantNameEn: Hibari Sushi
-  taglineVi: "Sushi tươi làm ngay trước mặt bạn, giữa khu phố Hibari"
-  taglineEn: "Sushi made fresh in front of you, in the heart of Hibari-cho"
+  taglineVi: "Sushi t\u01B0\u01A1i l\xE0m ngay tr\u01B0\u1EDBc m\u1EB7t b\u1EA1n,
+    gi\u1EEFa khu ph\u1ED1 Hibari"
+  taglineEn: Sushi made fresh in front of you, in the heart of Hibari-cho
   categories:
-  - id: "nigiri"
-    titleJa: "握り"
-    titleReading: "にぎり"
-    titleVi: "Sushi nắm (nigiri)"
-    titleEn: "Nigiri sushi"
-  - id: "maki"
-    titleJa: "巻き物"
-    titleReading: "まきもの"
-    titleVi: "Sushi cuộn (maki)"
-    titleEn: "Rolls (maki)"
-  - id: "donburi"
-    titleJa: "ちらし・丼"
-    titleReading: "ちらし・どんぶり"
-    titleVi: "Cơm chirashi và donburi"
-    titleEn: "Chirashi and rice bowls"
-  - id: "side"
-    titleJa: "一品料理"
-    titleReading: "いっぴんりょうり"
-    titleVi: "Món ăn kèm"
-    titleEn: "Side dishes"
-  - id: "drink"
-    titleJa: "飲み物"
-    titleReading: "のみもの"
-    titleVi: "Đồ uống"
-    titleEn: "Drinks"
-  - id: "dessert"
-    titleJa: "デザート"
-    titleReading: "でざーと"
-    titleVi: "Tráng miệng"
-    titleEn: "Dessert"
+  - id: nigiri
+    titleJa: "\u63E1\u308A"
+    titleReading: "\u306B\u304E\u308A"
+    titleVi: "Sushi n\u1EAFm (nigiri)"
+    titleEn: Nigiri sushi
+  - id: maki
+    titleJa: "\u5DFB\u304D\u7269"
+    titleReading: "\u307E\u304D\u3082\u306E"
+    titleVi: "Sushi cu\u1ED9n (maki)"
+    titleEn: Rolls (maki)
+  - id: donburi
+    titleJa: "\u3061\u3089\u3057\u30FB\u4E3C"
+    titleReading: "\u3061\u3089\u3057\u30FB\u3069\u3093\u3076\u308A"
+    titleVi: "C\u01A1m chirashi v\xE0 donburi"
+    titleEn: Chirashi and rice bowls
+  - id: side
+    titleJa: "\u4E00\u54C1\u6599\u7406"
+    titleReading: "\u3044\u3063\u3074\u3093\u308A\u3087\u3046\u308A"
+    titleVi: "M\xF3n \u0103n k\xE8m"
+    titleEn: Side dishes
+  - id: drink
+    titleJa: "\u98F2\u307F\u7269"
+    titleReading: "\u306E\u307F\u3082\u306E"
+    titleVi: "\u0110\u1ED3 u\u1ED1ng"
+    titleEn: Drinks
+  - id: dessert
+    titleJa: "\u30C7\u30B6\u30FC\u30C8"
+    titleReading: "\u3067\u3056\u30FC\u3068"
+    titleVi: "Tr\xE1ng mi\u1EC7ng"
+    titleEn: Dessert
   dishes:
-  - id: "maguro"
-    categoryId: "nigiri"
-    nameJa: "まぐろ（赤身）"
-    reading: "まぐろ（あかみ）"
-    romaji: "maguro (akami)"
-    nameVi: "Cá ngừ (phần thịt đỏ)"
-    nameEn: "Tuna (lean red cut)"
+  - id: maguro
+    categoryId: nigiri
+    nameJa: "\u307E\u3050\u308D\uFF08\u8D64\u8EAB\uFF09"
+    reading: "\u307E\u3050\u308D\uFF08\u3042\u304B\u307F\uFF09"
+    romaji: maguro (akami)
+    nameVi: "C\xE1 ng\u1EEB (ph\u1EA7n th\u1ECBt \u0111\u1ECF)"
+    nameEn: Tuna (lean red cut)
     priceYen: 280
-    descriptionJa: "赤い身のまぐろです。あぶらが少なくて、さっぱりしています。"
-    descriptionVi: "Phần thịt đỏ của cá ngừ, ít béo, vị thanh. Đây là loại sushi kinh điển nhất, rất hợp để thử đầu tiên. Một phần gồm 2 miếng."
-    descriptionEn: "The lean red cut of tuna: clean taste, little fat. A classic and the best first piece to try. One order is 2 pieces."
+    descriptionJa: "\u8D64\u3044\u8EAB\u306E\u307E\u3050\u308D\u3067\u3059\u3002\u3042\u3076\u3089\u304C\u5C11\u306A\u304F\u3066\u3001\u3055\u3063\u3071\u308A\u3057\u3066\u3044\u307E\u3059\u3002"
+    descriptionVi: "Ph\u1EA7n th\u1ECBt \u0111\u1ECF c\u1EE7a c\xE1 ng\u1EEB, \xEDt
+      b\xE9o, v\u1ECB thanh. \u0110\xE2y l\xE0 lo\u1EA1i sushi kinh \u0111i\u1EC3n
+      nh\u1EA5t, r\u1EA5t h\u1EE3p \u0111\u1EC3 th\u1EED \u0111\u1EA7u ti\xEAn. M\u1ED9t
+      ph\u1EA7n g\u1ED3m 2 mi\u1EBFng."
+    descriptionEn: 'The lean red cut of tuna: clean taste, little fat. A classic
+      and the best first piece to try. One order is 2 pieces.'
     ingredientsVi:
-    - "Cơm sushi (trộn giấm)"
-    - "Cá ngừ"
-    - "Wasabi"
+    - "C\u01A1m sushi (tr\u1ED9n gi\u1EA5m)"
+    - "C\xE1 ng\u1EEB"
+    - Wasabi
     allergensVi:
-    - "Cá"
-    - "Đậu nành (nước tương)"
-    eatingTipVi: "Chỉ chấm phần cá vào nước tương, không nhúng phần cơm. Ăn cả miếng trong một lần."
+    - "C\xE1"
+    - "\u0110\u1EADu n\xE0nh (n\u01B0\u1EDBc t\u01B0\u01A1ng)"
+    eatingTipVi: "Ch\u1EC9 ch\u1EA5m ph\u1EA7n c\xE1 v\xE0o n\u01B0\u1EDBc t\u01B0\u01A1ng,
+      kh\xF4ng nh\xFAng ph\u1EA7n c\u01A1m. \u0102n c\u1EA3 mi\u1EBFng trong m\u1ED9t
+      l\u1EA7n."
     isSpecialty: 0
-    specialtyNoteVi: ""
-    vocabularyTag: "vocab.n5.maguro"
+    specialtyNoteVi: 
+    vocabularyTag: vocab.n5.maguro
     hungerRestore: 7
     thirstRestore: 0
-    servingVi: "1 phần = 2 miếng"
-    servedModel: {fileID: 100100000, guid: a197afcd7b7b898469922b2c5b45c420, type: 3}
+    servingVi: "1 ph\u1EA7n = 2 mi\u1EBFng"
+    servedModel: {fileID: 919132149155446097, guid: a197afcd7b7b898469922b2c5b45c420, type: 3}
     servedModelSize: 0.15
     servedModelEuler: {x: -90, y: 0, z: 0}
     servedOnPlate: 1
-  - id: "salmon"
-    categoryId: "nigiri"
-    nameJa: "サーモン"
-    reading: "さーもん"
-    romaji: "saamon"
-    nameVi: "Cá hồi"
-    nameEn: "Salmon"
+  - id: salmon
+    categoryId: nigiri
+    nameJa: "\u30B5\u30FC\u30E2\u30F3"
+    reading: "\u3055\u30FC\u3082\u3093"
+    romaji: saamon
+    nameVi: "C\xE1 h\u1ED3i"
+    nameEn: Salmon
     priceYen: 250
-    descriptionJa: "サーモンはやわらかくて、あぶらがあります。"
-    descriptionVi: "Cá hồi béo, mềm và dễ ăn, được nhiều người chọn khi mới làm quen với sushi. Một phần gồm 2 miếng."
-    descriptionEn: "Soft, rich salmon that is easy to enjoy for newcomers. One order is 2 pieces."
+    descriptionJa: "\u30B5\u30FC\u30E2\u30F3\u306F\u3084\u308F\u3089\u304B\u304F\u3066\u3001\u3042\u3076\u3089\u304C\u3042\u308A\u307E\u3059\u3002"
+    descriptionVi: "C\xE1 h\u1ED3i b\xE9o, m\u1EC1m v\xE0 d\u1EC5 \u0103n, \u0111\u01B0\u1EE3c
+      nhi\u1EC1u ng\u01B0\u1EDDi ch\u1ECDn khi m\u1EDBi l\xE0m quen v\u1EDBi sushi.
+      M\u1ED9t ph\u1EA7n g\u1ED3m 2 mi\u1EBFng."
+    descriptionEn: Soft, rich salmon that is easy to enjoy for newcomers. One order
+      is 2 pieces.
     ingredientsVi:
-    - "Cơm sushi"
-    - "Cá hồi"
-    - "Wasabi"
+    - "C\u01A1m sushi"
+    - "C\xE1 h\u1ED3i"
+    - Wasabi
     allergensVi:
-    - "Cá"
-    - "Đậu nành (nước tương)"
-    eatingTipVi: "Chấm nhẹ phần cá vào nước tương rồi ăn cả miếng."
+    - "C\xE1"
+    - "\u0110\u1EADu n\xE0nh (n\u01B0\u1EDBc t\u01B0\u01A1ng)"
+    eatingTipVi: "Ch\u1EA5m nh\u1EB9 ph\u1EA7n c\xE1 v\xE0o n\u01B0\u1EDBc t\u01B0\u01A1ng
+      r\u1ED3i \u0103n c\u1EA3 mi\u1EBFng."
     isSpecialty: 0
-    specialtyNoteVi: ""
-    vocabularyTag: "vocab.n5.sake"
+    specialtyNoteVi: 
+    vocabularyTag: vocab.n5.sake
     hungerRestore: 7
     thirstRestore: 0
-    servingVi: "1 phần = 2 miếng"
-    servedModel: {fileID: 100100000, guid: f694e8604dbbd4d4b8c77a9ebaeea544, type: 3}
+    servingVi: "1 ph\u1EA7n = 2 mi\u1EBFng"
+    servedModel: {fileID: 919132149155446097, guid: f694e8604dbbd4d4b8c77a9ebaeea544, type: 3}
     servedModelSize: 0.15
     servedModelEuler: {x: -90, y: 0, z: 0}
     servedOnPlate: 1
-  - id: "ebi"
-    categoryId: "nigiri"
-    nameJa: "えび"
-    reading: "えび"
-    romaji: "ebi"
-    nameVi: "Tôm luộc"
-    nameEn: "Boiled shrimp"
+  - id: ebi
+    categoryId: nigiri
+    nameJa: "\u3048\u3073"
+    reading: "\u3048\u3073"
+    romaji: ebi
+    nameVi: "T\xF4m lu\u1ED9c"
+    nameEn: Boiled shrimp
     priceYen: 220
-    descriptionJa: "えびは火を通してあります。なま魚がにがてな人にもおすすめです。"
-    descriptionVi: "Tôm đã luộc chín, hợp với người chưa quen ăn cá sống. Một phần gồm 2 miếng."
-    descriptionEn: "Cooked shrimp, a good choice if you are not used to raw fish. One order is 2 pieces."
+    descriptionJa: "\u3048\u3073\u306F\u706B\u3092\u901A\u3057\u3066\u3042\u308A\u307E\u3059\u3002\u306A\u307E\u9B5A\u304C\u306B\u304C\u3066\u306A\u4EBA\u306B\u3082\u304A\u3059\u3059\u3081\u3067\u3059\u3002"
+    descriptionVi: "T\xF4m \u0111\xE3 lu\u1ED9c ch\xEDn, h\u1EE3p v\u1EDBi ng\u01B0\u1EDDi
+      ch\u01B0a quen \u0103n c\xE1 s\u1ED1ng. M\u1ED9t ph\u1EA7n g\u1ED3m 2 mi\u1EBFng."
+    descriptionEn: Cooked shrimp, a good choice if you are not used to raw fish.
+      One order is 2 pieces.
     ingredientsVi:
-    - "Cơm sushi"
-    - "Tôm luộc"
+    - "C\u01A1m sushi"
+    - "T\xF4m lu\u1ED9c"
     allergensVi:
-    - "Động vật giáp xác (tôm)"
-    - "Đậu nành (nước tương)"
-    eatingTipVi: "Có thể ăn bằng tay hoặc đũa. Nếu bị dị ứng tôm, hãy nói ngay với nhân viên: アレルギーがあります。"
+    - "\u0110\u1ED9ng v\u1EADt gi\xE1p x\xE1c (t\xF4m)"
+    - "\u0110\u1EADu n\xE0nh (n\u01B0\u1EDBc t\u01B0\u01A1ng)"
+    eatingTipVi: "C\xF3 th\u1EC3 \u0103n b\u1EB1ng tay ho\u1EB7c \u0111\u0169a. N\u1EBFu
+      b\u1ECB d\u1ECB \u1EE9ng t\xF4m, h\xE3y n\xF3i ngay v\u1EDBi nh\xE2n vi\xEAn:
+      \u30A2\u30EC\u30EB\u30AE\u30FC\u304C\u3042\u308A\u307E\u3059\u3002"
     isSpecialty: 0
-    specialtyNoteVi: ""
-    vocabularyTag: "vocab.n5.ebi"
+    specialtyNoteVi: 
+    vocabularyTag: vocab.n5.ebi
     hungerRestore: 7
     thirstRestore: 0
-    servingVi: "1 phần = 2 miếng"
-    servedModel: {fileID: 100100000, guid: 1bc950c954199b745a02eafe3da54a62, type: 3}
+    servingVi: "1 ph\u1EA7n = 2 mi\u1EBFng"
+    servedModel: {fileID: 919132149155446097, guid: 1bc950c954199b745a02eafe3da54a62, type: 3}
     servedModelSize: 0.15
     servedModelEuler: {x: -90, y: 0, z: 0}
     servedOnPlate: 1
-  - id: "tamago"
-    categoryId: "nigiri"
-    nameJa: "たまご"
-    reading: "たまご"
-    romaji: "tamago"
-    nameVi: "Trứng cuộn ngọt"
-    nameEn: "Sweet rolled omelet"
+  - id: tamago
+    categoryId: nigiri
+    nameJa: "\u305F\u307E\u3054"
+    reading: "\u305F\u307E\u3054"
+    romaji: tamago
+    nameVi: "Tr\u1EE9ng cu\u1ED9n ng\u1ECDt"
+    nameEn: Sweet rolled omelet
     priceYen: 180
-    descriptionJa: "たまごは甘い卵焼きです。子どもにも人気です。"
-    descriptionVi: "Trứng cuộn nướng vị ngọt, có dải rong biển giữ phần trứng. Nhiều người kể rằng tamago là món để 'thử tay nghề' của đầu bếp. Một phần gồm 2 miếng."
-    descriptionEn: "Sweet grilled rolled omelet held by a strip of seaweed. Many people say tamago is how you judge a chef's skill. One order is 2 pieces."
+    descriptionJa: "\u305F\u307E\u3054\u306F\u7518\u3044\u5375\u713C\u304D\u3067\u3059\u3002\u5B50\u3069\u3082\u306B\u3082\u4EBA\u6C17\u3067\u3059\u3002"
+    descriptionVi: "Tr\u1EE9ng cu\u1ED9n n\u01B0\u1EDBng v\u1ECB ng\u1ECDt, c\xF3
+      d\u1EA3i rong bi\u1EC3n gi\u1EEF ph\u1EA7n tr\u1EE9ng. Nhi\u1EC1u ng\u01B0\u1EDDi
+      k\u1EC3 r\u1EB1ng tamago l\xE0 m\xF3n \u0111\u1EC3 'th\u1EED tay ngh\u1EC1'
+      c\u1EE7a \u0111\u1EA7u b\u1EBFp. M\u1ED9t ph\u1EA7n g\u1ED3m 2 mi\u1EBFng."
+    descriptionEn: Sweet grilled rolled omelet held by a strip of seaweed. Many people
+      say tamago is how you judge a chef's skill. One order is 2 pieces.
     ingredientsVi:
-    - "Cơm sushi"
-    - "Trứng cuộn (tamagoyaki)"
-    - "Rong biển"
+    - "C\u01A1m sushi"
+    - "Tr\u1EE9ng cu\u1ED9n (tamagoyaki)"
+    - "Rong bi\u1EC3n"
     allergensVi:
-    - "Trứng"
-    - "Đậu nành"
-    eatingTipVi: "Ăn cả miếng, không cần chấm nước tương vì trứng đã có vị ngọt."
+    - "Tr\u1EE9ng"
+    - "\u0110\u1EADu n\xE0nh"
+    eatingTipVi: "\u0102n c\u1EA3 mi\u1EBFng, kh\xF4ng c\u1EA7n ch\u1EA5m n\u01B0\u1EDBc
+      t\u01B0\u01A1ng v\xEC tr\u1EE9ng \u0111\xE3 c\xF3 v\u1ECB ng\u1ECDt."
     isSpecialty: 0
-    specialtyNoteVi: ""
-    vocabularyTag: "vocab.n5.tamago"
+    specialtyNoteVi: 
+    vocabularyTag: vocab.n5.tamago
     hungerRestore: 6
     thirstRestore: 0
-    servingVi: "1 phần = 2 miếng"
-    servedModel: {fileID: 100100000, guid: a886bbd5d8cd17e4fb743346a2d6f864, type: 3}
+    servingVi: "1 ph\u1EA7n = 2 mi\u1EBFng"
+    servedModel: {fileID: 919132149155446097, guid: a886bbd5d8cd17e4fb743346a2d6f864, type: 3}
     servedModelSize: 0.15
     servedModelEuler: {x: -90, y: 0, z: 0}
     servedOnPlate: 1
-  - id: "ika"
-    categoryId: "nigiri"
-    nameJa: "いか"
-    reading: "いか"
-    romaji: "ika"
-    nameVi: "Mực"
-    nameEn: "Squid"
+  - id: ika
+    categoryId: nigiri
+    nameJa: "\u3044\u304B"
+    reading: "\u3044\u304B"
+    romaji: ika
+    nameVi: "M\u1EF1c"
+    nameEn: Squid
     priceYen: 200
-    descriptionJa: "いかは少しかたくて、あまい味です。"
-    descriptionVi: "Mực có độ dai giòn nhẹ và vị ngọt thanh. Một phần gồm 2 miếng."
-    descriptionEn: "Squid with a slight chew and a gentle sweetness. One order is 2 pieces."
+    descriptionJa: "\u3044\u304B\u306F\u5C11\u3057\u304B\u305F\u304F\u3066\u3001\u3042\u307E\u3044\u5473\u3067\u3059\u3002"
+    descriptionVi: "M\u1EF1c c\xF3 \u0111\u1ED9 dai gi\xF2n nh\u1EB9 v\xE0 v\u1ECB
+      ng\u1ECDt thanh. M\u1ED9t ph\u1EA7n g\u1ED3m 2 mi\u1EBFng."
+    descriptionEn: Squid with a slight chew and a gentle sweetness. One order is
+      2 pieces.
     ingredientsVi:
-    - "Cơm sushi"
-    - "Mực"
+    - "C\u01A1m sushi"
+    - "M\u1EF1c"
     allergensVi:
-    - "Động vật thân mềm (mực)"
-    - "Đậu nành (nước tương)"
-    eatingTipVi: "Nhai kỹ hơn các loại khác một chút để cảm nhận vị ngọt."
+    - "\u0110\u1ED9ng v\u1EADt th\xE2n m\u1EC1m (m\u1EF1c)"
+    - "\u0110\u1EADu n\xE0nh (n\u01B0\u1EDBc t\u01B0\u01A1ng)"
+    eatingTipVi: "Nhai k\u1EF9 h\u01A1n c\xE1c lo\u1EA1i kh\xE1c m\u1ED9t ch\xFAt
+      \u0111\u1EC3 c\u1EA3m nh\u1EADn v\u1ECB ng\u1ECDt."
     isSpecialty: 0
-    specialtyNoteVi: ""
-    vocabularyTag: "vocab.n5.ika"
+    specialtyNoteVi: 
+    vocabularyTag: vocab.n5.ika
     hungerRestore: 6
     thirstRestore: 0
-    servingVi: "1 phần = 2 miếng"
-    servedModel: {fileID: 100100000, guid: c81dd715be12d6845be9c3509eafdc1b, type: 3}
+    servingVi: "1 ph\u1EA7n = 2 mi\u1EBFng"
+    servedModel: {fileID: 919132149155446097, guid: c81dd715be12d6845be9c3509eafdc1b, type: 3}
     servedModelSize: 0.15
     servedModelEuler: {x: -90, y: 0, z: 0}
     servedOnPlate: 1
-  - id: "unagi_nigiri"
-    categoryId: "nigiri"
-    nameJa: "うなぎ"
-    reading: "うなぎ"
-    romaji: "unagi"
-    nameVi: "Lươn nướng sốt ngọt"
-    nameEn: "Grilled eel with sweet sauce"
+  - id: unagi_nigiri
+    categoryId: nigiri
+    nameJa: "\u3046\u306A\u304E"
+    reading: "\u3046\u306A\u304E"
+    romaji: unagi
+    nameVi: "L\u01B0\u01A1n n\u01B0\u1EDBng s\u1ED1t ng\u1ECDt"
+    nameEn: Grilled eel with sweet sauce
     priceYen: 380
-    descriptionJa: "うなぎは焼いた魚です。あまいたれがおいしいです。"
-    descriptionVi: "Lươn nướng phết sốt ngọt mặn (tare), béo và thơm. Một phần gồm 2 miếng."
-    descriptionEn: "Grilled eel brushed with sweet-savory tare sauce. Rich and fragrant. One order is 2 pieces."
+    descriptionJa: "\u3046\u306A\u304E\u306F\u713C\u3044\u305F\u9B5A\u3067\u3059\u3002\u3042\u307E\u3044\u305F\u308C\u304C\u304A\u3044\u3057\u3044\u3067\u3059\u3002"
+    descriptionVi: "L\u01B0\u01A1n n\u01B0\u1EDBng ph\u1EBFt s\u1ED1t ng\u1ECDt m\u1EB7n
+      (tare), b\xE9o v\xE0 th\u01A1m. M\u1ED9t ph\u1EA7n g\u1ED3m 2 mi\u1EBFng."
+    descriptionEn: Grilled eel brushed with sweet-savory tare sauce. Rich and fragrant.
+      One order is 2 pieces.
     ingredientsVi:
-    - "Cơm sushi"
-    - "Lươn nướng"
-    - "Sốt tare (nước tương, mirin, đường)"
+    - "C\u01A1m sushi"
+    - "L\u01B0\u01A1n n\u01B0\u1EDBng"
+    - "S\u1ED1t tare (n\u01B0\u1EDBc t\u01B0\u01A1ng, mirin, \u0111\u01B0\u1EDDng)"
     allergensVi:
-    - "Cá (lươn)"
-    - "Đậu nành"
-    - "Lúa mì"
-    eatingTipVi: "Sốt đã có sẵn, không cần chấm thêm nước tương."
+    - "C\xE1 (l\u01B0\u01A1n)"
+    - "\u0110\u1EADu n\xE0nh"
+    - "L\xFAa m\xEC"
+    eatingTipVi: "S\u1ED1t \u0111\xE3 c\xF3 s\u1EB5n, kh\xF4ng c\u1EA7n ch\u1EA5m
+      th\xEAm n\u01B0\u1EDBc t\u01B0\u01A1ng."
     isSpecialty: 1
-    specialtyNoteVi: "Người Nhật hay ăn lươn vào 'Doyo no Ushi no Hi' (土用の丑の日), ngày giữa mùa hè, để lấy sức chống nóng."
-    vocabularyTag: "vocab.n5.unagi"
+    specialtyNoteVi: "Ng\u01B0\u1EDDi Nh\u1EADt hay \u0103n l\u01B0\u01A1n v\xE0o
+      'Doyo no Ushi no Hi' (\u571F\u7528\u306E\u4E11\u306E\u65E5), ng\xE0y gi\u1EEFa
+      m\xF9a h\xE8, \u0111\u1EC3 l\u1EA5y s\u1EE9c ch\u1ED1ng n\xF3ng."
+    vocabularyTag: vocab.n5.unagi
     hungerRestore: 8
     thirstRestore: 0
-    servingVi: "1 phần = 2 miếng"
-    servedModel: {fileID: 100100000, guid: a197afcd7b7b898469922b2c5b45c420, type: 3}
+    servingVi: "1 ph\u1EA7n = 2 mi\u1EBFng"
+    servedModel: {fileID: 919132149155446097, guid: a197afcd7b7b898469922b2c5b45c420, type: 3}
     servedModelSize: 0.15
     servedModelEuler: {x: -90, y: 0, z: 0}
     servedOnPlate: 1
-  - id: "hotate"
-    categoryId: "nigiri"
-    nameJa: "ほたて"
-    reading: "ほたて"
-    romaji: "hotate"
-    nameVi: "Sò điệp"
-    nameEn: "Scallop"
+  - id: hotate
+    categoryId: nigiri
+    nameJa: "\u307B\u305F\u3066"
+    reading: "\u307B\u305F\u3066"
+    romaji: hotate
+    nameVi: "S\xF2 \u0111i\u1EC7p"
+    nameEn: Scallop
     priceYen: 320
-    descriptionJa: "ほたては大きくて、とてもあまいです。"
-    descriptionVi: "Sò điệp to, vị ngọt và mềm, thường được ưa chuộng vào mùa lạnh. Một phần gồm 2 miếng."
-    descriptionEn: "Large, sweet, tender scallop. One order is 2 pieces."
+    descriptionJa: "\u307B\u305F\u3066\u306F\u5927\u304D\u304F\u3066\u3001\u3068\u3066\u3082\u3042\u307E\u3044\u3067\u3059\u3002"
+    descriptionVi: "S\xF2 \u0111i\u1EC7p to, v\u1ECB ng\u1ECDt v\xE0 m\u1EC1m, th\u01B0\u1EDDng
+      \u0111\u01B0\u1EE3c \u01B0a chu\u1ED9ng v\xE0o m\xF9a l\u1EA1nh. M\u1ED9t ph\u1EA7n
+      g\u1ED3m 2 mi\u1EBFng."
+    descriptionEn: Large, sweet, tender scallop. One order is 2 pieces.
     ingredientsVi:
-    - "Cơm sushi"
-    - "Sò điệp"
+    - "C\u01A1m sushi"
+    - "S\xF2 \u0111i\u1EC7p"
     allergensVi:
-    - "Động vật thân mềm (sò điệp)"
-    - "Đậu nành (nước tương)"
-    eatingTipVi: "Chấm nhẹ nước tương hoặc ăn với chút muối nếu quán có."
+    - "\u0110\u1ED9ng v\u1EADt th\xE2n m\u1EC1m (s\xF2 \u0111i\u1EC7p)"
+    - "\u0110\u1EADu n\xE0nh (n\u01B0\u1EDBc t\u01B0\u01A1ng)"
+    eatingTipVi: "Ch\u1EA5m nh\u1EB9 n\u01B0\u1EDBc t\u01B0\u01A1ng ho\u1EB7c \u0103n
+      v\u1EDBi ch\xFAt mu\u1ED1i n\u1EBFu qu\xE1n c\xF3."
     isSpecialty: 0
-    specialtyNoteVi: ""
-    vocabularyTag: "vocab.n5.hotate"
+    specialtyNoteVi: 
+    vocabularyTag: vocab.n5.hotate
     hungerRestore: 7
     thirstRestore: 0
-    servingVi: "1 phần = 2 miếng"
-    servedModel: {fileID: 100100000, guid: f694e8604dbbd4d4b8c77a9ebaeea544, type: 3}
+    servingVi: "1 ph\u1EA7n = 2 mi\u1EBFng"
+    servedModel: {fileID: 919132149155446097, guid: f694e8604dbbd4d4b8c77a9ebaeea544, type: 3}
     servedModelSize: 0.15
     servedModelEuler: {x: -90, y: 0, z: 0}
     servedOnPlate: 1
-  - id: "ikura"
-    categoryId: "nigiri"
-    nameJa: "いくら（軍艦）"
-    reading: "いくら（ぐんかん）"
-    romaji: "ikura (gunkan)"
-    nameVi: "Trứng cá hồi (gunkan)"
-    nameEn: "Salmon roe (gunkan)"
+  - id: ikura
+    categoryId: nigiri
+    nameJa: "\u3044\u304F\u3089\uFF08\u8ECD\u8266\uFF09"
+    reading: "\u3044\u304F\u3089\uFF08\u3050\u3093\u304B\u3093\uFF09"
+    romaji: ikura (gunkan)
+    nameVi: "Tr\u1EE9ng c\xE1 h\u1ED3i (gunkan)"
+    nameEn: Salmon roe (gunkan)
     priceYen: 300
-    descriptionJa: "いくらは赤くて小さい魚のたまごです。のりでまいてあります。"
-    descriptionVi: "Trứng cá hồi đỏ bóng, vị mặn dịu, nổ nhẹ trong miệng. Món gunkan (軍艦, nghĩa là 'tàu chiến') được quấn rong biển để giữ phần trứng. Một phần gồm 2 miếng."
-    descriptionEn: "Bright red salmon roe with a mild salty pop. 'Gunkan' means 'battleship', named for the seaweed wall. One order is 2 pieces."
+    descriptionJa: "\u3044\u304F\u3089\u306F\u8D64\u304F\u3066\u5C0F\u3055\u3044\u9B5A\u306E\u305F\u307E\u3054\u3067\u3059\u3002\u306E\u308A\u3067\u307E\u3044\u3066\u3042\u308A\u307E\u3059\u3002"
+    descriptionVi: "Tr\u1EE9ng c\xE1 h\u1ED3i \u0111\u1ECF b\xF3ng, v\u1ECB m\u1EB7n
+      d\u1ECBu, n\u1ED5 nh\u1EB9 trong mi\u1EC7ng. M\xF3n gunkan (\u8ECD\u8266, ngh\u0129a
+      l\xE0 't\xE0u chi\u1EBFn') \u0111\u01B0\u1EE3c qu\u1EA5n rong bi\u1EC3n \u0111\u1EC3
+      gi\u1EEF ph\u1EA7n tr\u1EE9ng. M\u1ED9t ph\u1EA7n g\u1ED3m 2 mi\u1EBFng."
+    descriptionEn: Bright red salmon roe with a mild salty pop. 'Gunkan' means 'battleship',
+      named for the seaweed wall. One order is 2 pieces.
     ingredientsVi:
-    - "Cơm sushi"
-    - "Trứng cá hồi (ngâm nước tương)"
-    - "Rong biển"
+    - "C\u01A1m sushi"
+    - "Tr\u1EE9ng c\xE1 h\u1ED3i (ng\xE2m n\u01B0\u1EDBc t\u01B0\u01A1ng)"
+    - "Rong bi\u1EC3n"
     allergensVi:
-    - "Trứng cá"
-    - "Cá hồi"
-    - "Đậu nành"
-    eatingTipVi: "Ăn bằng tay sẽ dễ hơn, tránh lật ngược miếng sushi."
+    - "Tr\u1EE9ng c\xE1"
+    - "C\xE1 h\u1ED3i"
+    - "\u0110\u1EADu n\xE0nh"
+    eatingTipVi: "\u0102n b\u1EB1ng tay s\u1EBD d\u1EC5 h\u01A1n, tr\xE1nh l\u1EADt
+      ng\u01B0\u1EE3c mi\u1EBFng sushi."
     isSpecialty: 0
-    specialtyNoteVi: ""
-    vocabularyTag: "vocab.n5.ikura"
+    specialtyNoteVi: 
+    vocabularyTag: vocab.n5.ikura
     hungerRestore: 7
     thirstRestore: 0
-    servingVi: "1 phần = 2 miếng"
-    servedModel: {fileID: 100100000, guid: a886bbd5d8cd17e4fb743346a2d6f864, type: 3}
+    servingVi: "1 ph\u1EA7n = 2 mi\u1EBFng"
+    servedModel: {fileID: 919132149155446097, guid: a886bbd5d8cd17e4fb743346a2d6f864, type: 3}
     servedModelSize: 0.15
     servedModelEuler: {x: -90, y: 0, z: 0}
     servedOnPlate: 1
-  - id: "kappamaki"
-    categoryId: "maki"
-    nameJa: "かっぱ巻き"
-    reading: "かっぱまき"
-    romaji: "kappamaki"
-    nameVi: "Sushi cuộn dưa leo"
-    nameEn: "Cucumber roll"
+  - id: kappamaki
+    categoryId: maki
+    nameJa: "\u304B\u3063\u3071\u5DFB\u304D"
+    reading: "\u304B\u3063\u3071\u307E\u304D"
+    romaji: kappamaki
+    nameVi: "Sushi cu\u1ED9n d\u01B0a leo"
+    nameEn: Cucumber roll
     priceYen: 250
-    descriptionJa: "かっぱ巻きはきゅうりのすしです。さっぱりしています。"
-    descriptionVi: "Cuộn dưa leo giòn mát, nhẹ và tươi. Tên 'kappa' lấy từ thủy quái kappa trong truyền thuyết Nhật, nghe nói rất thích dưa leo. Một phần gồm 6 miếng nhỏ."
-    descriptionEn: "A refreshing cucumber roll. 'Kappa' is a water creature from Japanese folklore said to love cucumbers. One order is 6 small pieces."
+    descriptionJa: "\u304B\u3063\u3071\u5DFB\u304D\u306F\u304D\u3085\u3046\u308A\u306E\u3059\u3057\u3067\u3059\u3002\u3055\u3063\u3071\u308A\u3057\u3066\u3044\u307E\u3059\u3002"
+    descriptionVi: "Cu\u1ED9n d\u01B0a leo gi\xF2n m\xE1t, nh\u1EB9 v\xE0 t\u01B0\u01A1i.
+      T\xEAn 'kappa' l\u1EA5y t\u1EEB th\u1EE7y qu\xE1i kappa trong truy\u1EC1n thuy\u1EBFt
+      Nh\u1EADt, nghe n\xF3i r\u1EA5t th\xEDch d\u01B0a leo. M\u1ED9t ph\u1EA7n g\u1ED3m
+      6 mi\u1EBFng nh\u1ECF."
+    descriptionEn: A refreshing cucumber roll. 'Kappa' is a water creature from Japanese
+      folklore said to love cucumbers. One order is 6 small pieces.
     ingredientsVi:
-    - "Cơm sushi"
-    - "Dưa leo"
-    - "Rong biển"
+    - "C\u01A1m sushi"
+    - "D\u01B0a leo"
+    - "Rong bi\u1EC3n"
     allergensVi:
-    - "Đậu nành (nước tương)"
-    eatingTipVi: "Món chay dễ ăn, hợp làm món dọn vị giữa các loại cá."
+    - "\u0110\u1EADu n\xE0nh (n\u01B0\u1EDBc t\u01B0\u01A1ng)"
+    eatingTipVi: "M\xF3n chay d\u1EC5 \u0103n, h\u1EE3p l\xE0m m\xF3n d\u1ECDn v\u1ECB
+      gi\u1EEFa c\xE1c lo\u1EA1i c\xE1."
     isSpecialty: 0
-    specialtyNoteVi: ""
-    vocabularyTag: "vocab.n5.kyuuri"
+    specialtyNoteVi: 
+    vocabularyTag: vocab.n5.kyuuri
     hungerRestore: 9
     thirstRestore: 0
-    servingVi: "1 phần = 6 miếng nhỏ"
-    servedModel: {fileID: 100100000, guid: a656cd6806486fb4fb5ff7ff46fbb8b1, type: 3}
+    servingVi: "1 ph\u1EA7n = 6 mi\u1EBFng nh\u1ECF"
+    servedModel: {fileID: 919132149155446097, guid: a656cd6806486fb4fb5ff7ff46fbb8b1, type: 3}
     servedModelSize: 0.08
     servedModelEuler: {x: -90, y: 0, z: 0}
     servedOnPlate: 1
-  - id: "tekkamaki"
-    categoryId: "maki"
-    nameJa: "鉄火巻き"
-    reading: "てっかまき"
-    romaji: "tekkamaki"
-    nameVi: "Sushi cuộn cá ngừ"
-    nameEn: "Tuna roll"
+  - id: tekkamaki
+    categoryId: maki
+    nameJa: "\u9244\u706B\u5DFB\u304D"
+    reading: "\u3066\u3063\u304B\u307E\u304D"
+    romaji: tekkamaki
+    nameVi: "Sushi cu\u1ED9n c\xE1 ng\u1EEB"
+    nameEn: Tuna roll
     priceYen: 350
-    descriptionJa: "鉄火巻きはまぐろのまきずしです。"
-    descriptionVi: "Cuộn cá ngừ đỏ với rong biển bên ngoài. Theo một giả thuyết phổ biến, 'tekka' (鉄火) gắn với các sòng bạc xưa, nơi người ta cần món ăn nhanh bằng một tay. Một phần gồm 6 miếng nhỏ."
-    descriptionEn: "A tuna roll wrapped in seaweed. One popular theory links the name 'tekka' to old gambling dens where a one-handed snack was handy. One order is 6 small pieces."
+    descriptionJa: "\u9244\u706B\u5DFB\u304D\u306F\u307E\u3050\u308D\u306E\u307E\u304D\u305A\u3057\u3067\u3059\u3002"
+    descriptionVi: "Cu\u1ED9n c\xE1 ng\u1EEB \u0111\u1ECF v\u1EDBi rong bi\u1EC3n
+      b\xEAn ngo\xE0i. Theo m\u1ED9t gi\u1EA3 thuy\u1EBFt ph\u1ED5 bi\u1EBFn, 'tekka'
+      (\u9244\u706B) g\u1EAFn v\u1EDBi c\xE1c s\xF2ng b\u1EA1c x\u01B0a, n\u01A1i
+      ng\u01B0\u1EDDi ta c\u1EA7n m\xF3n \u0103n nhanh b\u1EB1ng m\u1ED9t tay. M\u1ED9t
+      ph\u1EA7n g\u1ED3m 6 mi\u1EBFng nh\u1ECF."
+    descriptionEn: A tuna roll wrapped in seaweed. One popular theory links the name
+      'tekka' to old gambling dens where a one-handed snack was handy. One order
+      is 6 small pieces.
     ingredientsVi:
-    - "Cơm sushi"
-    - "Cá ngừ"
-    - "Rong biển"
+    - "C\u01A1m sushi"
+    - "C\xE1 ng\u1EEB"
+    - "Rong bi\u1EC3n"
     allergensVi:
-    - "Cá"
-    - "Đậu nành (nước tương)"
-    eatingTipVi: "Chấm nhẹ một đầu miếng cuộn vào nước tương."
+    - "C\xE1"
+    - "\u0110\u1EADu n\xE0nh (n\u01B0\u1EDBc t\u01B0\u01A1ng)"
+    eatingTipVi: "Ch\u1EA5m nh\u1EB9 m\u1ED9t \u0111\u1EA7u mi\u1EBFng cu\u1ED9n
+      v\xE0o n\u01B0\u1EDBc t\u01B0\u01A1ng."
     isSpecialty: 0
-    specialtyNoteVi: ""
-    vocabularyTag: "vocab.n5.maguro"
+    specialtyNoteVi: 
+    vocabularyTag: vocab.n5.maguro
     hungerRestore: 10
     thirstRestore: 0
-    servingVi: "1 phần = 6 miếng nhỏ"
-    servedModel: {fileID: 100100000, guid: a656cd6806486fb4fb5ff7ff46fbb8b1, type: 3}
+    servingVi: "1 ph\u1EA7n = 6 mi\u1EBFng nh\u1ECF"
+    servedModel: {fileID: 919132149155446097, guid: a656cd6806486fb4fb5ff7ff46fbb8b1, type: 3}
     servedModelSize: 0.08
     servedModelEuler: {x: -90, y: 0, z: 0}
     servedOnPlate: 1
-  - id: "futomaki"
-    categoryId: "maki"
-    nameJa: "太巻き"
-    reading: "ふとまき"
-    romaji: "futomaki"
-    nameVi: "Sushi cuộn lớn nhiều nhân"
-    nameEn: "Thick roll with many fillings"
+  - id: futomaki
+    categoryId: maki
+    nameJa: "\u592A\u5DFB\u304D"
+    reading: "\u3075\u3068\u307E\u304D"
+    romaji: futomaki
+    nameVi: "Sushi cu\u1ED9n l\u1EDBn nhi\u1EC1u nh\xE2n"
+    nameEn: Thick roll with many fillings
     priceYen: 450
-    descriptionJa: "太巻きは大きいまきずしです。いろいろなものが入っています。"
-    descriptionVi: "Cuộn to với nhiều nhân như trứng, dưa leo, nấm shiitake và chả cá, cắt ra thấy nhiều màu. Ngày Setsubun (3/2), người Nhật có tục ăn nguyên một cuộn 'ehomaki' (恵方巻) quay về hướng may mắn trong im lặng. Một phần gồm 4 miếng lớn."
-    descriptionEn: "A thick roll with egg, cucumber, shiitake and fish cake. On Setsubun (Feb 3) many people eat a whole 'ehomaki' in silence facing the lucky direction. One order is 4 large pieces."
+    descriptionJa: "\u592A\u5DFB\u304D\u306F\u5927\u304D\u3044\u307E\u304D\u305A\u3057\u3067\u3059\u3002\u3044\u308D\u3044\u308D\u306A\u3082\u306E\u304C\u5165\u3063\u3066\u3044\u307E\u3059\u3002"
+    descriptionVi: "Cu\u1ED9n to v\u1EDBi nhi\u1EC1u nh\xE2n nh\u01B0 tr\u1EE9ng,
+      d\u01B0a leo, n\u1EA5m shiitake v\xE0 ch\u1EA3 c\xE1, c\u1EAFt ra th\u1EA5y
+      nhi\u1EC1u m\xE0u. Ng\xE0y Setsubun (3/2), ng\u01B0\u1EDDi Nh\u1EADt c\xF3
+      t\u1EE5c \u0103n nguy\xEAn m\u1ED9t cu\u1ED9n 'ehomaki' (\u6075\u65B9\u5DFB)
+      quay v\u1EC1 h\u01B0\u1EDBng may m\u1EAFn trong im l\u1EB7ng. M\u1ED9t ph\u1EA7n
+      g\u1ED3m 4 mi\u1EBFng l\u1EDBn."
+    descriptionEn: A thick roll with egg, cucumber, shiitake and fish cake. On Setsubun
+      (Feb 3) many people eat a whole 'ehomaki' in silence facing the lucky direction.
+      One order is 4 large pieces.
     ingredientsVi:
-    - "Cơm sushi"
-    - "Trứng cuộn"
-    - "Dưa leo"
-    - "Nấm shiitake"
-    - "Chả cá kamaboko"
-    - "Rong biển"
+    - "C\u01A1m sushi"
+    - "Tr\u1EE9ng cu\u1ED9n"
+    - "D\u01B0a leo"
+    - "N\u1EA5m shiitake"
+    - "Ch\u1EA3 c\xE1 kamaboko"
+    - "Rong bi\u1EC3n"
     allergensVi:
-    - "Trứng"
-    - "Cá (chả cá)"
-    - "Đậu nành"
-    - "Lúa mì"
-    eatingTipVi: "Miếng to, có thể cắn làm hai lần. Chấm nước tương ít."
+    - "Tr\u1EE9ng"
+    - "C\xE1 (ch\u1EA3 c\xE1)"
+    - "\u0110\u1EADu n\xE0nh"
+    - "L\xFAa m\xEC"
+    eatingTipVi: "Mi\u1EBFng to, c\xF3 th\u1EC3 c\u1EAFn l\xE0m hai l\u1EA7n. Ch\u1EA5m
+      n\u01B0\u1EDBc t\u01B0\u01A1ng \xEDt."
     isSpecialty: 0
-    specialtyNoteVi: ""
-    vocabularyTag: "vocab.n5.makizushi"
+    specialtyNoteVi: 
+    vocabularyTag: vocab.n5.makizushi
     hungerRestore: 14
     thirstRestore: 0
-    servingVi: "1 phần = 4 miếng lớn"
-    servedModel: {fileID: 100100000, guid: a656cd6806486fb4fb5ff7ff46fbb8b1, type: 3}
+    servingVi: "1 ph\u1EA7n = 4 mi\u1EBFng l\u1EDBn"
+    servedModel: {fileID: 919132149155446097, guid: a656cd6806486fb4fb5ff7ff46fbb8b1, type: 3}
     servedModelSize: 0.1
     servedModelEuler: {x: -90, y: 0, z: 0}
     servedOnPlate: 1
-  - id: "california"
-    categoryId: "maki"
-    nameJa: "カリフォルニアロール"
-    reading: "かりふぉるにあろーる"
-    romaji: "kariforunia roru"
-    nameVi: "Cuộn California"
-    nameEn: "California roll"
+  - id: california
+    categoryId: maki
+    nameJa: "\u30AB\u30EA\u30D5\u30A9\u30EB\u30CB\u30A2\u30ED\u30FC\u30EB"
+    reading: "\u304B\u308A\u3075\u3049\u308B\u306B\u3042\u308D\u30FC\u308B"
+    romaji: kariforunia roru
+    nameVi: "Cu\u1ED9n California"
+    nameEn: California roll
     priceYen: 450
-    descriptionJa: "カリフォルニアロールはアメリカで生まれたすしです。"
-    descriptionVi: "Cuộn đảo (cơm ở ngoài) với bơ, thanh cua và mè. Món này ra đời ở Bắc Mỹ, không phải sushi truyền thống của Nhật, nhưng nhiều quán vẫn có để phục vụ khách quốc tế."
-    descriptionEn: "An inside-out roll with avocado, imitation crab and sesame. It was created in North America and is not traditional Japanese sushi, but many shops serve it."
+    descriptionJa: "\u30AB\u30EA\u30D5\u30A9\u30EB\u30CB\u30A2\u30ED\u30FC\u30EB\u306F\u30A2\u30E1\u30EA\u30AB\u3067\u751F\u307E\u308C\u305F\u3059\u3057\u3067\u3059\u3002"
+    descriptionVi: "Cu\u1ED9n \u0111\u1EA3o (c\u01A1m \u1EDF ngo\xE0i) v\u1EDBi b\u01A1,
+      thanh cua v\xE0 m\xE8. M\xF3n n\xE0y ra \u0111\u1EDDi \u1EDF B\u1EAFc M\u1EF9,
+      kh\xF4ng ph\u1EA3i sushi truy\u1EC1n th\u1ED1ng c\u1EE7a Nh\u1EADt, nh\u01B0ng
+      nhi\u1EC1u qu\xE1n v\u1EABn c\xF3 \u0111\u1EC3 ph\u1EE5c v\u1EE5 kh\xE1ch qu\u1ED1c
+      t\u1EBF."
+    descriptionEn: An inside-out roll with avocado, imitation crab and sesame. It
+      was created in North America and is not traditional Japanese sushi, but many
+      shops serve it.
     ingredientsVi:
-    - "Cơm sushi"
-    - "Bơ"
-    - "Thanh cua (surimi)"
-    - "Mè"
-    - "Sốt mayonnaise"
+    - "C\u01A1m sushi"
+    - "B\u01A1"
+    - Thanh cua (surimi)
+    - "M\xE8"
+    - "S\u1ED1t mayonnaise"
     allergensVi:
-    - "Cá (thanh cua)"
-    - "Trứng (mayonnaise)"
-    - "Mè"
-    - "Lúa mì"
-    eatingTipVi: "Ăn kèm chút nước tương hoặc sốt riêng của quán."
+    - "C\xE1 (thanh cua)"
+    - "Tr\u1EE9ng (mayonnaise)"
+    - "M\xE8"
+    - "L\xFAa m\xEC"
+    eatingTipVi: "\u0102n k\xE8m ch\xFAt n\u01B0\u1EDBc t\u01B0\u01A1ng ho\u1EB7c
+      s\u1ED1t ri\xEAng c\u1EE7a qu\xE1n."
     isSpecialty: 0
-    specialtyNoteVi: ""
-    vocabularyTag: "vocab.n5.abokado"
+    specialtyNoteVi: 
+    vocabularyTag: vocab.n5.abokado
     hungerRestore: 12
     thirstRestore: 0
-    servingVi: "1 phần = 6-8 miếng"
-    servedModel: {fileID: 100100000, guid: a656cd6806486fb4fb5ff7ff46fbb8b1, type: 3}
+    servingVi: "1 ph\u1EA7n = 6-8 mi\u1EBFng"
+    servedModel: {fileID: 919132149155446097, guid: a656cd6806486fb4fb5ff7ff46fbb8b1, type: 3}
     servedModelSize: 0.09
     servedModelEuler: {x: -90, y: 0, z: 0}
     servedOnPlate: 1
-  - id: "chirashi"
-    categoryId: "donburi"
-    nameJa: "ちらし寿司"
-    reading: "ちらしずし"
-    romaji: "chirashi zushi"
-    nameVi: "Cơm sushi rải hải sản"
-    nameEn: "Scattered sushi bowl"
+  - id: chirashi
+    categoryId: donburi
+    nameJa: "\u3061\u3089\u3057\u5BFF\u53F8"
+    reading: "\u3061\u3089\u3057\u305A\u3057"
+    romaji: chirashi zushi
+    nameVi: "C\u01A1m sushi r\u1EA3i h\u1EA3i s\u1EA3n"
+    nameEn: Scattered sushi bowl
     priceYen: 1100
-    descriptionJa: "ちらし寿司は、すしめしの上にいろいろな魚をのせた料理です。"
-    descriptionVi: "Cơm trộn giấm với nhiều loại hải sản, trứng cuộn và rau củ rải lên trên ('chirashi' nghĩa là 'rải'). Vào ngày Hinamatsuri (3/3), nhiều gia đình Nhật ăn chirashi zushi. Kèm súp miso."
-    descriptionEn: "Vinegared rice topped with assorted seafood, egg and vegetables ('chirashi' means 'scattered'). Many families eat it on Hinamatsuri (March 3). Comes with miso soup."
+    descriptionJa: "\u3061\u3089\u3057\u5BFF\u53F8\u306F\u3001\u3059\u3057\u3081\u3057\u306E\u4E0A\u306B\u3044\u308D\u3044\u308D\u306A\u9B5A\u3092\u306E\u305B\u305F\u6599\u7406\u3067\u3059\u3002"
+    descriptionVi: "C\u01A1m tr\u1ED9n gi\u1EA5m v\u1EDBi nhi\u1EC1u lo\u1EA1i h\u1EA3i
+      s\u1EA3n, tr\u1EE9ng cu\u1ED9n v\xE0 rau c\u1EE7 r\u1EA3i l\xEAn tr\xEAn ('chirashi'
+      ngh\u0129a l\xE0 'r\u1EA3i'). V\xE0o ng\xE0y Hinamatsuri (3/3), nhi\u1EC1u
+      gia \u0111\xECnh Nh\u1EADt \u0103n chirashi zushi. K\xE8m s\xFAp miso."
+    descriptionEn: Vinegared rice topped with assorted seafood, egg and vegetables
+      ('chirashi' means 'scattered'). Many families eat it on Hinamatsuri (March
+      3). Comes with miso soup.
     ingredientsVi:
-    - "Cơm sushi"
-    - "Cá ngừ"
-    - "Cá hồi"
-    - "Tôm"
-    - "Trứng cuộn"
-    - "Rong biển thái sợi"
+    - "C\u01A1m sushi"
+    - "C\xE1 ng\u1EEB"
+    - "C\xE1 h\u1ED3i"
+    - "T\xF4m"
+    - "Tr\u1EE9ng cu\u1ED9n"
+    - "Rong bi\u1EC3n th\xE1i s\u1EE3i"
     allergensVi:
-    - "Cá"
-    - "Động vật giáp xác (tôm)"
-    - "Trứng"
-    - "Đậu nành"
-    eatingTipVi: "Trộn nhẹ wasabi vào nước tương rồi rưới từng ít lên hải sản, không đổ lên cơm."
+    - "C\xE1"
+    - "\u0110\u1ED9ng v\u1EADt gi\xE1p x\xE1c (t\xF4m)"
+    - "Tr\u1EE9ng"
+    - "\u0110\u1EADu n\xE0nh"
+    eatingTipVi: "Tr\u1ED9n nh\u1EB9 wasabi v\xE0o n\u01B0\u1EDBc t\u01B0\u01A1ng
+      r\u1ED3i r\u01B0\u1EDBi t\u1EEBng \xEDt l\xEAn h\u1EA3i s\u1EA3n, kh\xF4ng
+      \u0111\u1ED5 l\xEAn c\u01A1m."
     isSpecialty: 1
-    specialtyNoteVi: "Món đặc trưng của quán, đầu bếp chọn hải sản tươi theo từng ngày."
-    vocabularyTag: "vocab.n5.chirashi"
+    specialtyNoteVi: "M\xF3n \u0111\u1EB7c tr\u01B0ng c\u1EE7a qu\xE1n, \u0111\u1EA7u
+      b\u1EBFp ch\u1ECDn h\u1EA3i s\u1EA3n t\u01B0\u01A1i theo t\u1EEBng ng\xE0y."
+    vocabularyTag: vocab.n5.chirashi
     hungerRestore: 32
     thirstRestore: 0
-    servingVi: "1 bát (kèm súp miso)"
-    servedModel: {fileID: 100100000, guid: b802e0fea61ff6b47b2f4955fea8ea8d, type: 3}
+    servingVi: "1 b\xE1t (k\xE8m s\xFAp miso)"
+    servedModel: {fileID: 919132149155446097, guid: b802e0fea61ff6b47b2f4955fea8ea8d, type: 3}
     servedModelSize: 0.2
     servedModelEuler: {x: -90, y: 0, z: 0}
     servedOnPlate: 0
-  - id: "kaisendon"
-    categoryId: "donburi"
-    nameJa: "海鮮丼"
-    reading: "かいせんどん"
-    romaji: "kaisendon"
-    nameVi: "Cơm hải sản sống"
-    nameEn: "Seafood rice bowl"
+  - id: kaisendon
+    categoryId: donburi
+    nameJa: "\u6D77\u9BAE\u4E3C"
+    reading: "\u304B\u3044\u305B\u3093\u3069\u3093"
+    romaji: kaisendon
+    nameVi: "C\u01A1m h\u1EA3i s\u1EA3n s\u1ED1ng"
+    nameEn: Seafood rice bowl
     priceYen: 1150
-    descriptionJa: "海鮮丼は、ごはんの上にさしみをのせた丼です。"
-    descriptionVi: "Sashimi tươi xếp trên cơm trắng. Khác với chirashi, kaisendon thường dùng cơm trắng thường (không trộn giấm). Kèm súp miso."
-    descriptionEn: "Fresh sashimi over plain rice. Unlike chirashi, kaisendon usually uses plain rice rather than vinegared sushi rice. Comes with miso soup."
+    descriptionJa: "\u6D77\u9BAE\u4E3C\u306F\u3001\u3054\u306F\u3093\u306E\u4E0A\u306B\u3055\u3057\u307F\u3092\u306E\u305B\u305F\u4E3C\u3067\u3059\u3002"
+    descriptionVi: "Sashimi t\u01B0\u01A1i x\u1EBFp tr\xEAn c\u01A1m tr\u1EAFng.
+      Kh\xE1c v\u1EDBi chirashi, kaisendon th\u01B0\u1EDDng d\xF9ng c\u01A1m tr\u1EAFng
+      th\u01B0\u1EDDng (kh\xF4ng tr\u1ED9n gi\u1EA5m). K\xE8m s\xFAp miso."
+    descriptionEn: Fresh sashimi over plain rice. Unlike chirashi, kaisendon usually
+      uses plain rice rather than vinegared sushi rice. Comes with miso soup.
     ingredientsVi:
-    - "Cơm trắng"
-    - "Cá ngừ"
-    - "Cá hồi"
-    - "Mực"
-    - "Trứng cá hồi"
-    - "Lá tía tô"
+    - "C\u01A1m tr\u1EAFng"
+    - "C\xE1 ng\u1EEB"
+    - "C\xE1 h\u1ED3i"
+    - "M\u1EF1c"
+    - "Tr\u1EE9ng c\xE1 h\u1ED3i"
+    - "L\xE1 t\xEDa t\xF4"
     allergensVi:
-    - "Cá"
-    - "Động vật thân mềm (mực)"
-    - "Trứng cá"
-    - "Đậu nành"
-    eatingTipVi: "Rưới nước tương lên sashimi, không đổ trực tiếp lên cơm."
+    - "C\xE1"
+    - "\u0110\u1ED9ng v\u1EADt th\xE2n m\u1EC1m (m\u1EF1c)"
+    - "Tr\u1EE9ng c\xE1"
+    - "\u0110\u1EADu n\xE0nh"
+    eatingTipVi: "R\u01B0\u1EDBi n\u01B0\u1EDBc t\u01B0\u01A1ng l\xEAn sashimi, kh\xF4ng
+      \u0111\u1ED5 tr\u1EF1c ti\u1EBFp l\xEAn c\u01A1m."
     isSpecialty: 0
-    specialtyNoteVi: ""
-    vocabularyTag: "vocab.n5.donburi"
+    specialtyNoteVi: 
+    vocabularyTag: vocab.n5.donburi
     hungerRestore: 34
     thirstRestore: 0
-    servingVi: "1 bát (kèm súp miso)"
-    servedModel: {fileID: 100100000, guid: b802e0fea61ff6b47b2f4955fea8ea8d, type: 3}
+    servingVi: "1 b\xE1t (k\xE8m s\xFAp miso)"
+    servedModel: {fileID: 919132149155446097, guid: b802e0fea61ff6b47b2f4955fea8ea8d, type: 3}
     servedModelSize: 0.2
     servedModelEuler: {x: -90, y: 0, z: 0}
     servedOnPlate: 0
-  - id: "unadon"
-    categoryId: "donburi"
-    nameJa: "うな丼"
-    reading: "うなどん"
-    romaji: "unadon"
-    nameVi: "Cơm lươn nướng"
-    nameEn: "Grilled eel rice bowl"
+  - id: unadon
+    categoryId: donburi
+    nameJa: "\u3046\u306A\u4E3C"
+    reading: "\u3046\u306A\u3069\u3093"
+    romaji: unadon
+    nameVi: "C\u01A1m l\u01B0\u01A1n n\u01B0\u1EDBng"
+    nameEn: Grilled eel rice bowl
     priceYen: 1100
-    descriptionJa: "うな丼は、ごはんの上にうなぎをのせた丼です。"
-    descriptionVi: "Lươn nướng sốt ngọt trên cơm nóng, hương thơm rất đặc trưng. Kèm súp miso."
-    descriptionEn: "Grilled eel with sweet sauce over hot rice, with a distinctive aroma. Comes with miso soup."
+    descriptionJa: "\u3046\u306A\u4E3C\u306F\u3001\u3054\u306F\u3093\u306E\u4E0A\u306B\u3046\u306A\u304E\u3092\u306E\u305B\u305F\u4E3C\u3067\u3059\u3002"
+    descriptionVi: "L\u01B0\u01A1n n\u01B0\u1EDBng s\u1ED1t ng\u1ECDt tr\xEAn c\u01A1m
+      n\xF3ng, h\u01B0\u01A1ng th\u01A1m r\u1EA5t \u0111\u1EB7c tr\u01B0ng. K\xE8m
+      s\xFAp miso."
+    descriptionEn: Grilled eel with sweet sauce over hot rice, with a distinctive
+      aroma. Comes with miso soup.
     ingredientsVi:
-    - "Cơm trắng"
-    - "Lươn nướng"
-    - "Sốt tare"
+    - "C\u01A1m tr\u1EAFng"
+    - "L\u01B0\u01A1n n\u01B0\u1EDBng"
+    - "S\u1ED1t tare"
     allergensVi:
-    - "Cá (lươn)"
-    - "Đậu nành"
-    - "Lúa mì"
-    eatingTipVi: "Có thể rắc chút bột tiêu sansho (山椒) nếu quán có để tăng hương vị."
+    - "C\xE1 (l\u01B0\u01A1n)"
+    - "\u0110\u1EADu n\xE0nh"
+    - "L\xFAa m\xEC"
+    eatingTipVi: "C\xF3 th\u1EC3 r\u1EAFc ch\xFAt b\u1ED9t ti\xEAu sansho (\u5C71\u6912)
+      n\u1EBFu qu\xE1n c\xF3 \u0111\u1EC3 t\u0103ng h\u01B0\u01A1ng v\u1ECB."
     isSpecialty: 1
-    specialtyNoteVi: "Món ăn 'lấy sức' quen thuộc trong mùa hè, đặc biệt vào ngày Doyo no Ushi no Hi (土用の丑の日)."
-    vocabularyTag: "vocab.n5.unagi"
+    specialtyNoteVi: "M\xF3n \u0103n 'l\u1EA5y s\u1EE9c' quen thu\u1ED9c trong m\xF9a
+      h\xE8, \u0111\u1EB7c bi\u1EC7t v\xE0o ng\xE0y Doyo no Ushi no Hi (\u571F\u7528\u306E\u4E11\u306E\u65E5)."
+    vocabularyTag: vocab.n5.unagi
     hungerRestore: 33
     thirstRestore: 0
-    servingVi: "1 bát (kèm súp miso)"
-    servedModel: {fileID: 100100000, guid: b802e0fea61ff6b47b2f4955fea8ea8d, type: 3}
+    servingVi: "1 b\xE1t (k\xE8m s\xFAp miso)"
+    servedModel: {fileID: 919132149155446097, guid: b802e0fea61ff6b47b2f4955fea8ea8d, type: 3}
     servedModelSize: 0.2
     servedModelEuler: {x: -90, y: 0, z: 0}
     servedOnPlate: 0
-  - id: "hibari_set"
-    categoryId: "donburi"
-    nameJa: "ひばり特選にぎり"
-    reading: "ひばりとくせんにぎり"
-    romaji: "Hibari tokusen nigiri"
-    nameVi: "Set nigiri đặc biệt của Hibari"
-    nameEn: "Hibari premium nigiri set"
+  - id: hibari_set
+    categoryId: donburi
+    nameJa: "\u3072\u3070\u308A\u7279\u9078\u306B\u304E\u308A"
+    reading: "\u3072\u3070\u308A\u3068\u304F\u305B\u3093\u306B\u304E\u308A"
+    romaji: Hibari tokusen nigiri
+    nameVi: "Set nigiri \u0111\u1EB7c bi\u1EC7t c\u1EE7a Hibari"
+    nameEn: Hibari premium nigiri set
     priceYen: 1180
-    descriptionJa: "ひばり特選にぎりは、今日いちばんよい魚のすしセットです。"
-    descriptionVi: "Set 8 miếng nigiri do đầu bếp chọn theo cá tươi nhất trong ngày, kèm trứng cuộn và súp miso. Quán làm theo phong cách 'Edomae' (江戸前) từ vùng vịnh Tokyo xưa: cá được ướp, ủ hoặc nấu nhẹ để lấy vị tốt nhất."
-    descriptionEn: "An 8-piece nigiri set chosen by the chef from the day's freshest fish, with tamago and miso soup. Prepared in the 'Edomae' style from old Tokyo Bay: fish is marinated, aged or lightly cooked to bring out flavor."
+    descriptionJa: "\u3072\u3070\u308A\u7279\u9078\u306B\u304E\u308A\u306F\u3001\u4ECA\u65E5\u3044\u3061\u3070\u3093\u3088\u3044\u9B5A\u306E\u3059\u3057\u30BB\u30C3\u30C8\u3067\u3059\u3002"
+    descriptionVi: "Set 8 mi\u1EBFng nigiri do \u0111\u1EA7u b\u1EBFp ch\u1ECDn theo
+      c\xE1 t\u01B0\u01A1i nh\u1EA5t trong ng\xE0y, k\xE8m tr\u1EE9ng cu\u1ED9n v\xE0
+      s\xFAp miso. Qu\xE1n l\xE0m theo phong c\xE1ch 'Edomae' (\u6C5F\u6238\u524D)
+      t\u1EEB v\xF9ng v\u1ECBnh Tokyo x\u01B0a: c\xE1 \u0111\u01B0\u1EE3c \u01B0\u1EDBp,
+      \u1EE7 ho\u1EB7c n\u1EA5u nh\u1EB9 \u0111\u1EC3 l\u1EA5y v\u1ECB t\u1ED1t nh\u1EA5t."
+    descriptionEn: 'An 8-piece nigiri set chosen by the chef from the day''s freshest
+      fish, with tamago and miso soup. Prepared in the ''Edomae'' style from old
+      Tokyo Bay: fish is marinated, aged or lightly cooked to bring out flavor.'
     ingredientsVi:
-    - "Cơm sushi"
-    - "Cá theo mùa (do đầu bếp chọn)"
-    - "Trứng cuộn"
-    - "Súp miso"
+    - "C\u01A1m sushi"
+    - "C\xE1 theo m\xF9a (do \u0111\u1EA7u b\u1EBFp ch\u1ECDn)"
+    - "Tr\u1EE9ng cu\u1ED9n"
+    - "S\xFAp miso"
     allergensVi:
-    - "Cá"
-    - "Trứng"
-    - "Đậu nành"
-    - "Có thể có động vật giáp xác và thân mềm — hãy hỏi nhân viên"
-    eatingTipVi: "Ăn từ miếng nhạt vị (cá trắng) đến đậm vị (lươn, cá ngừ béo), giữa các miếng ăn một lát gừng ngâm (gari)."
+    - "C\xE1"
+    - "Tr\u1EE9ng"
+    - "\u0110\u1EADu n\xE0nh"
+    - "C\xF3 th\u1EC3 c\xF3 \u0111\u1ED9ng v\u1EADt gi\xE1p x\xE1c v\xE0 th\xE2n
+      m\u1EC1m \u2014 h\xE3y h\u1ECFi nh\xE2n vi\xEAn"
+    eatingTipVi: "\u0102n t\u1EEB mi\u1EBFng nh\u1EA1t v\u1ECB (c\xE1 tr\u1EAFng)
+      \u0111\u1EBFn \u0111\u1EADm v\u1ECB (l\u01B0\u01A1n, c\xE1 ng\u1EEB b\xE9o),
+      gi\u1EEFa c\xE1c mi\u1EBFng \u0103n m\u1ED9t l\xE1t g\u1EEBng ng\xE2m (gari)."
     isSpecialty: 1
-    specialtyNoteVi: "Món đặc trưng của quán. 'Shun' (旬) là mùa ngon nhất của mỗi loại cá, vì vậy nguyên liệu trong set thay đổi theo mùa."
-    vocabularyTag: "vocab.n5.nigiri"
+    specialtyNoteVi: "M\xF3n \u0111\u1EB7c tr\u01B0ng c\u1EE7a qu\xE1n. 'Shun' (\u65EC)
+      l\xE0 m\xF9a ngon nh\u1EA5t c\u1EE7a m\u1ED7i lo\u1EA1i c\xE1, v\xEC v\u1EADy
+      nguy\xEAn li\u1EC7u trong set thay \u0111\u1ED5i theo m\xF9a."
+    vocabularyTag: vocab.n5.nigiri
     hungerRestore: 40
     thirstRestore: 0
-    servingVi: "1 suất = 8 miếng nigiri + tamago + súp miso"
-    servedModel: {fileID: 100100000, guid: b802e0fea61ff6b47b2f4955fea8ea8d, type: 3}
+    servingVi: "1 su\u1EA5t = 8 mi\u1EBFng nigiri + tamago + s\xFAp miso"
+    servedModel: {fileID: 919132149155446097, guid: b802e0fea61ff6b47b2f4955fea8ea8d, type: 3}
     servedModelSize: 0.22
     servedModelEuler: {x: -90, y: 0, z: 0}
     servedOnPlate: 0
-  - id: "misoshiru"
-    categoryId: "side"
-    nameJa: "お味噌汁"
-    reading: "おみそしる"
-    romaji: "omisoshiru"
-    nameVi: "Súp miso"
-    nameEn: "Miso soup"
+  - id: misoshiru
+    categoryId: side
+    nameJa: "\u304A\u5473\u564C\u6C41"
+    reading: "\u304A\u307F\u305D\u3057\u308B"
+    romaji: omisoshiru
+    nameVi: "S\xFAp miso"
+    nameEn: Miso soup
     priceYen: 200
-    descriptionJa: "お味噌汁は、みそのスープです。とうふとわかめが入っています。"
-    descriptionVi: "Súp làm từ nước dashi và miso, có đậu phụ, rong biển wakame và hành lá. Ấm bụng, dễ ăn."
-    descriptionEn: "Soup made from dashi and miso, with tofu, wakame seaweed and green onion. Warming and gentle."
+    descriptionJa: "\u304A\u5473\u564C\u6C41\u306F\u3001\u307F\u305D\u306E\u30B9\u30FC\u30D7\u3067\u3059\u3002\u3068\u3046\u3075\u3068\u308F\u304B\u3081\u304C\u5165\u3063\u3066\u3044\u307E\u3059\u3002"
+    descriptionVi: "S\xFAp l\xE0m t\u1EEB n\u01B0\u1EDBc dashi v\xE0 miso, c\xF3
+      \u0111\u1EADu ph\u1EE5, rong bi\u1EC3n wakame v\xE0 h\xE0nh l\xE1. \u1EA4m
+      b\u1EE5ng, d\u1EC5 \u0103n."
+    descriptionEn: Soup made from dashi and miso, with tofu, wakame seaweed and green
+      onion. Warming and gentle.
     ingredientsVi:
-    - "Nước dashi (cá)"
-    - "Miso"
-    - "Đậu phụ"
-    - "Rong biển wakame"
-    - "Hành lá"
+    - "N\u01B0\u1EDBc dashi (c\xE1)"
+    - Miso
+    - "\u0110\u1EADu ph\u1EE5"
+    - "Rong bi\u1EC3n wakame"
+    - "H\xE0nh l\xE1"
     allergensVi:
-    - "Đậu nành"
-    - "Cá (dashi)"
-    eatingTipVi: "Bưng bát lên uống trực tiếp, dùng đũa gắp nguyên liệu. Không dùng thìa."
+    - "\u0110\u1EADu n\xE0nh"
+    - "C\xE1 (dashi)"
+    eatingTipVi: "B\u01B0ng b\xE1t l\xEAn u\u1ED1ng tr\u1EF1c ti\u1EBFp, d\xF9ng
+      \u0111\u0169a g\u1EAFp nguy\xEAn li\u1EC7u. Kh\xF4ng d\xF9ng th\xECa."
     isSpecialty: 0
-    specialtyNoteVi: ""
-    vocabularyTag: "vocab.n5.misoshiru"
+    specialtyNoteVi: 
+    vocabularyTag: vocab.n5.misoshiru
     hungerRestore: 4
     thirstRestore: 6
-    servingVi: "1 bát"
-    servedModel: {fileID: 100100000, guid: b802e0fea61ff6b47b2f4955fea8ea8d, type: 3}
+    servingVi: "1 b\xE1t"
+    servedModel: {fileID: 919132149155446097, guid: b802e0fea61ff6b47b2f4955fea8ea8d, type: 3}
     servedModelSize: 0.13
     servedModelEuler: {x: -90, y: 0, z: 0}
     servedOnPlate: 0
-  - id: "chawanmushi"
-    categoryId: "side"
-    nameJa: "茶碗蒸し"
-    reading: "ちゃわんむし"
-    romaji: "chawanmushi"
-    nameVi: "Trứng hấp mặn"
-    nameEn: "Savory steamed egg custard"
+  - id: chawanmushi
+    categoryId: side
+    nameJa: "\u8336\u7897\u84B8\u3057"
+    reading: "\u3061\u3083\u308F\u3093\u3080\u3057"
+    romaji: chawanmushi
+    nameVi: "Tr\u1EE9ng h\u1EA5p m\u1EB7n"
+    nameEn: Savory steamed egg custard
     priceYen: 400
-    descriptionJa: "茶碗蒸しは、たまごをむしたあたたかい料理です。"
-    descriptionVi: "Trứng hấp mềm mịn như pudding mặn, nấu từ nước dashi với thịt gà, nấm và tôm. Ăn bằng thìa nhỏ, rất nóng nên hãy ăn chậm."
-    descriptionEn: "A silky savory custard of egg and dashi with chicken, mushroom and shrimp. Eaten with a small spoon; it is very hot, so go slowly."
+    descriptionJa: "\u8336\u7897\u84B8\u3057\u306F\u3001\u305F\u307E\u3054\u3092\u3080\u3057\u305F\u3042\u305F\u305F\u304B\u3044\u6599\u7406\u3067\u3059\u3002"
+    descriptionVi: "Tr\u1EE9ng h\u1EA5p m\u1EC1m m\u1ECBn nh\u01B0 pudding m\u1EB7n,
+      n\u1EA5u t\u1EEB n\u01B0\u1EDBc dashi v\u1EDBi th\u1ECBt g\xE0, n\u1EA5m v\xE0
+      t\xF4m. \u0102n b\u1EB1ng th\xECa nh\u1ECF, r\u1EA5t n\xF3ng n\xEAn h\xE3y
+      \u0103n ch\u1EADm."
+    descriptionEn: A silky savory custard of egg and dashi with chicken, mushroom
+      and shrimp. Eaten with a small spoon; it is very hot, so go slowly.
     ingredientsVi:
-    - "Trứng"
-    - "Nước dashi"
-    - "Thịt gà"
-    - "Nấm"
-    - "Tôm"
-    - "Ngân hạnh (có thể có)"
+    - "Tr\u1EE9ng"
+    - "N\u01B0\u1EDBc dashi"
+    - "Th\u1ECBt g\xE0"
+    - "N\u1EA5m"
+    - "T\xF4m"
+    - "Ng\xE2n h\u1EA1nh (c\xF3 th\u1EC3 c\xF3)"
     allergensVi:
-    - "Trứng"
-    - "Đậu nành"
-    - "Cá (dashi)"
-    - "Động vật giáp xác (tôm)"
-    - "Hạt ngân hạnh (có thể có)"
-    eatingTipVi: "Dùng thìa nhỏ đi kèm. Đây là món tráng miệng vị mặn nên ăn trước cơm chứ không phải sau."
+    - "Tr\u1EE9ng"
+    - "\u0110\u1EADu n\xE0nh"
+    - "C\xE1 (dashi)"
+    - "\u0110\u1ED9ng v\u1EADt gi\xE1p x\xE1c (t\xF4m)"
+    - "H\u1EA1t ng\xE2n h\u1EA1nh (c\xF3 th\u1EC3 c\xF3)"
+    eatingTipVi: "D\xF9ng th\xECa nh\u1ECF \u0111i k\xE8m. \u0110\xE2y l\xE0 m\xF3n
+      tr\xE1ng mi\u1EC7ng v\u1ECB m\u1EB7n n\xEAn \u0103n tr\u01B0\u1EDBc c\u01A1m
+      ch\u1EE9 kh\xF4ng ph\u1EA3i sau."
     isSpecialty: 1
-    specialtyNoteVi: "Đầu bếp của quán hấp món này theo công thức riêng, mỗi ngày làm số lượng có hạn."
-    vocabularyTag: "vocab.n5.chawanmushi"
+    specialtyNoteVi: "\u0110\u1EA7u b\u1EBFp c\u1EE7a qu\xE1n h\u1EA5p m\xF3n n\xE0y
+      theo c\xF4ng th\u1EE9c ri\xEAng, m\u1ED7i ng\xE0y l\xE0m s\u1ED1 l\u01B0\u1EE3ng
+      c\xF3 h\u1EA1n."
+    vocabularyTag: vocab.n5.chawanmushi
     hungerRestore: 8
     thirstRestore: 3
-    servingVi: "1 chén"
-    servedModel: {fileID: 100100000, guid: b802e0fea61ff6b47b2f4955fea8ea8d, type: 3}
+    servingVi: "1 ch\xE9n"
+    servedModel: {fileID: 919132149155446097, guid: b802e0fea61ff6b47b2f4955fea8ea8d, type: 3}
     servedModelSize: 0.1
     servedModelEuler: {x: -90, y: 0, z: 0}
     servedOnPlate: 0
-  - id: "edamame"
-    categoryId: "side"
-    nameJa: "枝豆"
-    reading: "えだまめ"
-    romaji: "edamame"
-    nameVi: "Đậu nành non luộc muối"
-    nameEn: "Salted young soybeans"
+  - id: edamame
+    categoryId: side
+    nameJa: "\u679D\u8C46"
+    reading: "\u3048\u3060\u307E\u3081"
+    romaji: edamame
+    nameVi: "\u0110\u1EADu n\xE0nh non lu\u1ED9c mu\u1ED1i"
+    nameEn: Salted young soybeans
     priceYen: 300
-    descriptionJa: "枝豆は、しおをかけたまめです。"
-    descriptionVi: "Đậu nành non luộc, rắc muối, món nhấm nhẹ trước bữa ăn."
-    descriptionEn: "Young soybeans boiled and salted, a light starter."
+    descriptionJa: "\u679D\u8C46\u306F\u3001\u3057\u304A\u3092\u304B\u3051\u305F\u307E\u3081\u3067\u3059\u3002"
+    descriptionVi: "\u0110\u1EADu n\xE0nh non lu\u1ED9c, r\u1EAFc mu\u1ED1i, m\xF3n
+      nh\u1EA5m nh\u1EB9 tr\u01B0\u1EDBc b\u1EEFa \u0103n."
+    descriptionEn: Young soybeans boiled and salted, a light starter.
     ingredientsVi:
-    - "Đậu nành non"
-    - "Muối"
+    - "\u0110\u1EADu n\xE0nh non"
+    - "Mu\u1ED1i"
     allergensVi:
-    - "Đậu nành"
-    eatingTipVi: "Bóp hạt ra khỏi vỏ bằng tay, không ăn vỏ."
+    - "\u0110\u1EADu n\xE0nh"
+    eatingTipVi: "B\xF3p h\u1EA1t ra kh\u1ECFi v\u1ECF b\u1EB1ng tay, kh\xF4ng \u0103n
+      v\u1ECF."
     isSpecialty: 0
-    specialtyNoteVi: ""
-    vocabularyTag: "vocab.n5.mame"
+    specialtyNoteVi: 
+    vocabularyTag: vocab.n5.mame
     hungerRestore: 6
     thirstRestore: 0
-    servingVi: "1 đĩa nhỏ"
-    servedModel: {fileID: 100100000, guid: b802e0fea61ff6b47b2f4955fea8ea8d, type: 3}
+    servingVi: "1 \u0111\u0129a nh\u1ECF"
+    servedModel: {fileID: 919132149155446097, guid: b802e0fea61ff6b47b2f4955fea8ea8d, type: 3}
     servedModelSize: 0.16
     servedModelEuler: {x: -90, y: 0, z: 0}
     servedOnPlate: 0
-  - id: "ocha"
-    categoryId: "drink"
-    nameJa: "お茶（あがり）"
-    reading: "おちゃ（あがり）"
-    romaji: "ocha (agari)"
-    nameVi: "Trà xanh (agari)"
-    nameEn: "Green tea (agari)"
+  - id: ocha
+    categoryId: drink
+    nameJa: "\u304A\u8336\uFF08\u3042\u304C\u308A\uFF09"
+    reading: "\u304A\u3061\u3083\uFF08\u3042\u304C\u308A\uFF09"
+    romaji: ocha (agari)
+    nameVi: "Tr\xE0 xanh (agari)"
+    nameEn: Green tea (agari)
     priceYen: 0
-    descriptionJa: "お茶はむりょうです。"
-    descriptionVi: "Trà xanh nóng miễn phí; 'agari' (あがり) là cách gọi trà trong tiệm sushi. Có thể xin rót thêm."
-    descriptionEn: "Free hot green tea; 'agari' is the sushi-shop word for tea. Refills are available."
+    descriptionJa: "\u304A\u8336\u306F\u3080\u308A\u3087\u3046\u3067\u3059\u3002"
+    descriptionVi: "Tr\xE0 xanh n\xF3ng mi\u1EC5n ph\xED; 'agari' (\u3042\u304C\u308A)
+      l\xE0 c\xE1ch g\u1ECDi tr\xE0 trong ti\u1EC7m sushi. C\xF3 th\u1EC3 xin r\xF3t
+      th\xEAm."
+    descriptionEn: Free hot green tea; 'agari' is the sushi-shop word for tea. Refills
+      are available.
     ingredientsVi:
-    - "Trà xanh"
+    - "Tr\xE0 xanh"
     allergensVi: []
-    eatingTipVi: "Uống giữa các miếng sushi để làm sạch vị giác."
+    eatingTipVi: "U\u1ED1ng gi\u1EEFa c\xE1c mi\u1EBFng sushi \u0111\u1EC3 l\xE0m
+      s\u1EA1ch v\u1ECB gi\xE1c."
     isSpecialty: 0
-    specialtyNoteVi: ""
-    vocabularyTag: "vocab.n5.ocha"
+    specialtyNoteVi: 
+    vocabularyTag: vocab.n5.ocha
     hungerRestore: 0
     thirstRestore: 16
-    servingVi: "1 tách (miễn phí, rót thêm được)"
-    servedModel: {fileID: 100100000, guid: b802e0fea61ff6b47b2f4955fea8ea8d, type: 3}
+    servingVi: "1 t\xE1ch (mi\u1EC5n ph\xED, r\xF3t th\xEAm \u0111\u01B0\u1EE3c)"
+    servedModel: {fileID: 919132149155446097, guid: b802e0fea61ff6b47b2f4955fea8ea8d, type: 3}
     servedModelSize: 0.09
     servedModelEuler: {x: -90, y: 0, z: 0}
     servedOnPlate: 0
-  - id: "oolong"
-    categoryId: "drink"
-    nameJa: "ウーロン茶"
-    reading: "うーろんちゃ"
-    romaji: "uuroncha"
-    nameVi: "Trà ô long"
-    nameEn: "Oolong tea"
+  - id: oolong
+    categoryId: drink
+    nameJa: "\u30A6\u30FC\u30ED\u30F3\u8336"
+    reading: "\u3046\u30FC\u308D\u3093\u3061\u3083"
+    romaji: uuroncha
+    nameVi: "Tr\xE0 \xF4 long"
+    nameEn: Oolong tea
     priceYen: 250
-    descriptionJa: "ウーロン茶はつめたいお茶です。"
-    descriptionVi: "Trà ô long ướp lạnh, ít đắng, hợp với món dầu mỡ."
-    descriptionEn: "Chilled oolong tea, mild and good with rich dishes."
+    descriptionJa: "\u30A6\u30FC\u30ED\u30F3\u8336\u306F\u3064\u3081\u305F\u3044\u304A\u8336\u3067\u3059\u3002"
+    descriptionVi: "Tr\xE0 \xF4 long \u01B0\u1EDBp l\u1EA1nh, \xEDt \u0111\u1EAFng,
+      h\u1EE3p v\u1EDBi m\xF3n d\u1EA7u m\u1EE1."
+    descriptionEn: Chilled oolong tea, mild and good with rich dishes.
     ingredientsVi:
-    - "Trà ô long"
+    - "Tr\xE0 \xF4 long"
     allergensVi: []
-    eatingTipVi: "Không có."
+    eatingTipVi: "Kh\xF4ng c\xF3."
     isSpecialty: 0
-    specialtyNoteVi: ""
-    vocabularyTag: "vocab.n5.ocha"
+    specialtyNoteVi: 
+    vocabularyTag: vocab.n5.ocha
     hungerRestore: 0
     thirstRestore: 18
-    servingVi: "1 ly"
-    servedModel: {fileID: 100100000, guid: e683d54a409932244a59e383584d9fca, type: 3}
+    servingVi: 1 ly
+    servedModel: {fileID: 919132149155446097, guid: e683d54a409932244a59e383584d9fca, type: 3}
     servedModelSize: 0.22
     servedModelEuler: {x: -90, y: 0, z: 0}
     servedOnPlate: 0
-  - id: "ramune"
-    categoryId: "drink"
-    nameJa: "ラムネ"
-    reading: "らむね"
-    romaji: "ramune"
-    nameVi: "Soda ramune"
-    nameEn: "Ramune soda"
+  - id: ramune
+    categoryId: drink
+    nameJa: "\u30E9\u30E0\u30CD"
+    reading: "\u3089\u3080\u306D"
+    romaji: ramune
+    nameVi: Soda ramune
+    nameEn: Ramune soda
     priceYen: 250
-    descriptionJa: "ラムネは、ガラスのびんに入ったソーダです。"
-    descriptionVi: "Soda có ga trong chai thủy tinh có viên bi bên trong cổ chai, ấn nút nhựa để viên bi rơi xuống rồi mới uống. Món giải khát quen thuộc ở lễ hội mùa hè."
-    descriptionEn: "Fizzy soda in a glass bottle sealed with a marble. Push the plastic cap to drop the marble, then drink. A summer festival favorite."
+    descriptionJa: "\u30E9\u30E0\u30CD\u306F\u3001\u30AC\u30E9\u30B9\u306E\u3073\u3093\u306B\u5165\u3063\u305F\u30BD\u30FC\u30C0\u3067\u3059\u3002"
+    descriptionVi: "Soda c\xF3 ga trong chai th\u1EE7y tinh c\xF3 vi\xEAn bi b\xEAn
+      trong c\u1ED5 chai, \u1EA5n n\xFAt nh\u1EF1a \u0111\u1EC3 vi\xEAn bi r\u01A1i
+      xu\u1ED1ng r\u1ED3i m\u1EDBi u\u1ED1ng. M\xF3n gi\u1EA3i kh\xE1t quen thu\u1ED9c
+      \u1EDF l\u1EC5 h\u1ED9i m\xF9a h\xE8."
+    descriptionEn: Fizzy soda in a glass bottle sealed with a marble. Push the plastic
+      cap to drop the marble, then drink. A summer festival favorite.
     ingredientsVi:
-    - "Nước có ga"
-    - "Đường"
-    - "Hương vị (chanh)"
+    - "N\u01B0\u1EDBc c\xF3 ga"
+    - "\u0110\u01B0\u1EDDng"
+    - "H\u01B0\u01A1ng v\u1ECB (chanh)"
     allergensVi: []
-    eatingTipVi: "Ấn thật mạnh nút nhựa xuống trước khi mở để viên bi rơi vào cổ chai."
+    eatingTipVi: "\u1EA4n th\u1EADt m\u1EA1nh n\xFAt nh\u1EF1a xu\u1ED1ng tr\u01B0\u1EDBc
+      khi m\u1EDF \u0111\u1EC3 vi\xEAn bi r\u01A1i v\xE0o c\u1ED5 chai."
     isSpecialty: 0
-    specialtyNoteVi: ""
-    vocabularyTag: "vocab.n5.soda"
+    specialtyNoteVi: 
+    vocabularyTag: vocab.n5.soda
     hungerRestore: 0
     thirstRestore: 18
-    servingVi: "1 chai"
-    servedModel: {fileID: 100100000, guid: e683d54a409932244a59e383584d9fca, type: 3}
+    servingVi: 1 chai
+    servedModel: {fileID: 919132149155446097, guid: e683d54a409932244a59e383584d9fca, type: 3}
     servedModelSize: 0.2
     servedModelEuler: {x: -90, y: 0, z: 0}
     servedOnPlate: 0
-  - id: "matcha_ice"
-    categoryId: "dessert"
-    nameJa: "抹茶アイス"
-    reading: "まっちゃあいす"
-    romaji: "matcha aisu"
-    nameVi: "Kem trà xanh"
-    nameEn: "Matcha ice cream"
+  - id: matcha_ice
+    categoryId: dessert
+    nameJa: "\u62B9\u8336\u30A2\u30A4\u30B9"
+    reading: "\u307E\u3063\u3061\u3083\u3042\u3044\u3059"
+    romaji: matcha aisu
+    nameVi: "Kem tr\xE0 xanh"
+    nameEn: Matcha ice cream
     priceYen: 300
-    descriptionJa: "抹茶アイスは、緑のお茶のアイスクリームです。"
-    descriptionVi: "Kem vị trà xanh matcha, hơi đắng nhẹ, vị ngọt vừa phải. Món kết thúc bữa quen thuộc."
-    descriptionEn: "Ice cream made with matcha, slightly bitter and gently sweet. A familiar way to end a meal."
+    descriptionJa: "\u62B9\u8336\u30A2\u30A4\u30B9\u306F\u3001\u7DD1\u306E\u304A\u8336\u306E\u30A2\u30A4\u30B9\u30AF\u30EA\u30FC\u30E0\u3067\u3059\u3002"
+    descriptionVi: "Kem v\u1ECB tr\xE0 xanh matcha, h\u01A1i \u0111\u1EAFng nh\u1EB9,
+      v\u1ECB ng\u1ECDt v\u1EEBa ph\u1EA3i. M\xF3n k\u1EBFt th\xFAc b\u1EEFa quen
+      thu\u1ED9c."
+    descriptionEn: Ice cream made with matcha, slightly bitter and gently sweet.
+      A familiar way to end a meal.
     ingredientsVi:
-    - "Sữa"
-    - "Đường"
-    - "Bột trà xanh matcha"
-    - "Kem tươi"
+    - "S\u1EEFa"
+    - "\u0110\u01B0\u1EDDng"
+    - "B\u1ED9t tr\xE0 xanh matcha"
+    - "Kem t\u01B0\u01A1i"
     allergensVi:
-    - "Sữa"
-    - "Trứng (có thể có)"
-    eatingTipVi: "Không có."
+    - "S\u1EEFa"
+    - "Tr\u1EE9ng (c\xF3 th\u1EC3 c\xF3)"
+    eatingTipVi: "Kh\xF4ng c\xF3."
     isSpecialty: 0
-    specialtyNoteVi: ""
-    vocabularyTag: "vocab.n5.aisu"
+    specialtyNoteVi: 
+    vocabularyTag: vocab.n5.aisu
     hungerRestore: 4
     thirstRestore: 0
-    servingVi: "1 cốc"
-    servedModel: {fileID: 100100000, guid: b802e0fea61ff6b47b2f4955fea8ea8d, type: 3}
+    servingVi: "1 c\u1ED1c"
+    servedModel: {fileID: 919132149155446097, guid: b802e0fea61ff6b47b2f4955fea8ea8d, type: 3}
     servedModelSize: 0.1
     servedModelEuler: {x: -90, y: 0, z: 0}
     servedOnPlate: 0
-  - id: "mitarashi"
-    categoryId: "dessert"
-    nameJa: "みたらし団子"
-    reading: "みたらしだんご"
-    romaji: "mitarashi dango"
-    nameVi: "Bánh dango sốt mitarashi"
-    nameEn: "Mitarashi dango"
+  - id: mitarashi
+    categoryId: dessert
+    nameJa: "\u307F\u305F\u3089\u3057\u56E3\u5B50"
+    reading: "\u307F\u305F\u3089\u3057\u3060\u3093\u3054"
+    romaji: mitarashi dango
+    nameVi: "B\xE1nh dango s\u1ED1t mitarashi"
+    nameEn: Mitarashi dango
     priceYen: 300
-    descriptionJa: "みたらし団子は、あまいたれのだんごです。"
-    descriptionVi: "Bánh nếp gạo xiên que nướng nhẹ, phết sốt nước tương ngọt mặn sánh. Dai, ngọt, rất được yêu thích."
-    descriptionEn: "Chewy skewered rice dumplings brushed with a sticky sweet-savory soy glaze."
+    descriptionJa: "\u307F\u305F\u3089\u3057\u56E3\u5B50\u306F\u3001\u3042\u307E\u3044\u305F\u308C\u306E\u3060\u3093\u3054\u3067\u3059\u3002"
+    descriptionVi: "B\xE1nh n\u1EBFp g\u1EA1o xi\xEAn que n\u01B0\u1EDBng nh\u1EB9,
+      ph\u1EBFt s\u1ED1t n\u01B0\u1EDBc t\u01B0\u01A1ng ng\u1ECDt m\u1EB7n s\xE1nh.
+      Dai, ng\u1ECDt, r\u1EA5t \u0111\u01B0\u1EE3c y\xEAu th\xEDch."
+    descriptionEn: Chewy skewered rice dumplings brushed with a sticky sweet-savory
+      soy glaze.
     ingredientsVi:
-    - "Bột gạo"
-    - "Nước tương"
-    - "Đường"
+    - "B\u1ED9t g\u1EA1o"
+    - "N\u01B0\u1EDBc t\u01B0\u01A1ng"
+    - "\u0110\u01B0\u1EDDng"
     allergensVi:
-    - "Đậu nành"
-    - "Lúa mì"
-    eatingTipVi: "Ăn từ viên trên cùng, dùng răng kéo từng viên ra khỏi que."
+    - "\u0110\u1EADu n\xE0nh"
+    - "L\xFAa m\xEC"
+    eatingTipVi: "\u0102n t\u1EEB vi\xEAn tr\xEAn c\xF9ng, d\xF9ng r\u0103ng k\xE9o
+      t\u1EEBng vi\xEAn ra kh\u1ECFi que."
     isSpecialty: 0
-    specialtyNoteVi: ""
-    vocabularyTag: "vocab.n5.dango"
+    specialtyNoteVi: 
+    vocabularyTag: vocab.n5.dango
     hungerRestore: 6
     thirstRestore: 0
-    servingVi: "1 xiên (3-4 viên)"
-    servedModel: {fileID: 100100000, guid: 6b20a1689a65afd40978327e5aa0a74e, type: 3}
+    servingVi: "1 xi\xEAn (3-4 vi\xEAn)"
+    servedModel: {fileID: 919132149155446097, guid: 6b20a1689a65afd40978327e5aa0a74e, type: 3}
     servedModelSize: 0.16
     servedModelEuler: {x: -90, y: 0, z: 0}
     servedOnPlate: 1
   phrases:
-  - ja: "いらっしゃいませ。"
-    reading: "いらっしゃいませ。"
-    romaji: "irasshaimase."
-    vi: "Xin chào quý khách (lời chào của nhân viên)."
-    whenVi: "Khi bạn bước vào quán. Không cần trả lời đầy đủ, chỉ cần gật đầu mỉm cười hoặc nói 'こんにちは'."
-  - ja: "何名様ですか。"
-    reading: "なんめいさまですか。"
-    romaji: "nanmeisama desu ka."
-    vi: "Quý khách đi mấy người ạ?"
-    whenVi: "Nhân viên hỏi số người ngay khi bạn vào cửa."
-  - ja: "一人です。／二人です。"
-    reading: "ひとりです。／ふたりです。"
-    romaji: "hitori desu. / futari desu."
-    vi: "Một người ạ. / Hai người ạ."
-    whenVi: "Trả lời số người. Lưu ý 一人 (hitori) và 二人 (futari) đọc bất quy tắc; từ 3 người là 三人 (sannin)."
-  - ja: "こちらへどうぞ。"
-    reading: "こちらへどうぞ。"
-    romaji: "kochira e douzo."
-    vi: "Mời quý khách đi lối này."
-    whenVi: "Nhân viên dẫn bạn tới chỗ ngồi."
-  - ja: "カウンターでお願いします。"
-    reading: "かうんたーでおねがいします。"
-    romaji: "kauntaa de onegaishimasu."
-    vi: "Cho tôi ngồi ở quầy nhé."
-    whenVi: "Chọn chỗ ngồi. Dùng 'で+お願いします' để chọn/yêu cầu; không dùng 'をください' cho chỗ ngồi."
-  - ja: "メニューをお願いします。"
-    reading: "めにゅーをおねがいします。"
-    romaji: "menyuu wo onegaishimasu."
-    vi: "Cho tôi xin thực đơn."
-    whenVi: "Khi chưa có thực đơn trên bàn."
-  - ja: "おすすめは何ですか。"
-    reading: "おすすめはなんですか。"
-    romaji: "osusume wa nan desu ka."
-    vi: "Món nào được gợi ý ạ?"
-    whenVi: "Khi chưa biết chọn món gì. Rất hữu ích ở quầy sushi, nơi đầu bếp trả lời trực tiếp."
-  - ja: "これをください。"
-    reading: "これをください。"
-    romaji: "kore wo kudasai."
-    vi: "Cho tôi món này."
-    whenVi: "Vừa chỉ vào món trong thực đơn vừa nói."
-  - ja: "〜をお願いします。"
-    reading: "〜をおねがいします。"
-    romaji: "~ wo onegaishimasu."
-    vi: "Cho tôi món ~ với ạ."
-    whenVi: "Cách gọi món lịch sự hơn 'をください'."
-  - ja: "すみません。"
-    reading: "すみません。"
-    romaji: "sumimasen."
-    vi: "Xin lỗi (để gọi nhân viên)."
-    whenVi: "Khi cần gọi nhân viên. Nói vừa phải rồi giơ tay nhẹ, không gọi to."
-  - ja: "アレルギーがあります。"
-    reading: "あれるぎーがあります。"
-    romaji: "arerugii ga arimasu."
-    vi: "Tôi bị dị ứng."
-    whenVi: "Nói trước khi gọi món, rồi cho biết dị ứng gì, ví dụ 'えびです' (tôm)."
-  - ja: "わさびなしでお願いします。"
-    reading: "わさびなしでおねがいします。"
-    romaji: "wasabi nashi de onegaishimasu."
-    vi: "Cho tôi không wasabi nhé."
-    whenVi: "Nếu bạn không ăn được cay. Đầu bếp thường cho sẵn wasabi trong miếng nigiri."
-  - ja: "いただきます。"
-    reading: "いただきます。"
-    romaji: "itadakimasu."
-    vi: "Xin phép được ăn (lời nói trước bữa ăn)."
-    whenVi: "Nói trước khi bắt đầu ăn, biết ơn người nấu và nguyên liệu."
-  - ja: "おいしいです。"
-    reading: "おいしいです。"
-    romaji: "oishii desu."
-    vi: "Ngon quá."
-    whenVi: "Khi nhân viên hỏi 'いかがですか' hoặc khi bạn muốn khen."
-  - ja: "お会計をお願いします。"
-    reading: "おかいけいをおねがいします。"
-    romaji: "okaikei wo onegaishimasu."
-    vi: "Cho tôi thanh toán."
-    whenVi: "Khi ăn xong. Thanh toán thường ở quầy thu ngân gần cửa."
-  - ja: "カードで払えますか。"
-    reading: "かーどではらえますか。"
-    romaji: "kaado de haraemasu ka."
-    vi: "Tôi trả bằng thẻ được không?"
-    whenVi: "Nhiều quán nhỏ chỉ nhận tiền mặt, nên hỏi trước cho chắc."
-  - ja: "ごちそうさまでした。"
-    reading: "ごちそうさまでした。"
-    romaji: "gochisousama deshita."
-    vi: "Cảm ơn vì bữa ăn ngon."
-    whenVi: "Nói khi ăn xong và khi rời quán."
-  - ja: "ありがとうございました。"
-    reading: "ありがとうございました。"
-    romaji: "arigatou gozaimashita."
-    vi: "Xin cảm ơn quý khách (nhân viên nói khi bạn rời quán)."
-    whenVi: "Đáp lại bằng cái gật đầu hoặc 'ごちそうさまでした'."
+  - ja: "\u3044\u3089\u3063\u3057\u3083\u3044\u307E\u305B\u3002"
+    reading: "\u3044\u3089\u3063\u3057\u3083\u3044\u307E\u305B\u3002"
+    romaji: irasshaimase.
+    vi: "Xin ch\xE0o qu\xFD kh\xE1ch (l\u1EDDi ch\xE0o c\u1EE7a nh\xE2n vi\xEAn)."
+    whenVi: "Khi b\u1EA1n b\u01B0\u1EDBc v\xE0o qu\xE1n. Kh\xF4ng c\u1EA7n tr\u1EA3
+      l\u1EDDi \u0111\u1EA7y \u0111\u1EE7, ch\u1EC9 c\u1EA7n g\u1EADt \u0111\u1EA7u
+      m\u1EC9m c\u01B0\u1EDDi ho\u1EB7c n\xF3i '\u3053\u3093\u306B\u3061\u306F'."
+  - ja: "\u4F55\u540D\u69D8\u3067\u3059\u304B\u3002"
+    reading: "\u306A\u3093\u3081\u3044\u3055\u307E\u3067\u3059\u304B\u3002"
+    romaji: nanmeisama desu ka.
+    vi: "Qu\xFD kh\xE1ch \u0111i m\u1EA5y ng\u01B0\u1EDDi \u1EA1?"
+    whenVi: "Nh\xE2n vi\xEAn h\u1ECFi s\u1ED1 ng\u01B0\u1EDDi ngay khi b\u1EA1n v\xE0o
+      c\u1EEDa."
+  - ja: "\u4E00\u4EBA\u3067\u3059\u3002\uFF0F\u4E8C\u4EBA\u3067\u3059\u3002"
+    reading: "\u3072\u3068\u308A\u3067\u3059\u3002\uFF0F\u3075\u305F\u308A\u3067\u3059\u3002"
+    romaji: hitori desu. / futari desu.
+    vi: "M\u1ED9t ng\u01B0\u1EDDi \u1EA1. / Hai ng\u01B0\u1EDDi \u1EA1."
+    whenVi: "Tr\u1EA3 l\u1EDDi s\u1ED1 ng\u01B0\u1EDDi. L\u01B0u \xFD \u4E00\u4EBA
+      (hitori) v\xE0 \u4E8C\u4EBA (futari) \u0111\u1ECDc b\u1EA5t quy t\u1EAFc; t\u1EEB
+      3 ng\u01B0\u1EDDi l\xE0 \u4E09\u4EBA (sannin)."
+  - ja: "\u3053\u3061\u3089\u3078\u3069\u3046\u305E\u3002"
+    reading: "\u3053\u3061\u3089\u3078\u3069\u3046\u305E\u3002"
+    romaji: kochira e douzo.
+    vi: "M\u1EDDi qu\xFD kh\xE1ch \u0111i l\u1ED1i n\xE0y."
+    whenVi: "Nh\xE2n vi\xEAn d\u1EABn b\u1EA1n t\u1EDBi ch\u1ED7 ng\u1ED3i."
+  - ja: "\u30AB\u30A6\u30F3\u30BF\u30FC\u3067\u304A\u9858\u3044\u3057\u307E\u3059\u3002"
+    reading: "\u304B\u3046\u3093\u305F\u30FC\u3067\u304A\u306D\u304C\u3044\u3057\u307E\u3059\u3002"
+    romaji: kauntaa de onegaishimasu.
+    vi: "Cho t\xF4i ng\u1ED3i \u1EDF qu\u1EA7y nh\xE9."
+    whenVi: "Ch\u1ECDn ch\u1ED7 ng\u1ED3i. D\xF9ng '\u3067+\u304A\u9858\u3044\u3057\u307E\u3059'
+      \u0111\u1EC3 ch\u1ECDn/y\xEAu c\u1EA7u; kh\xF4ng d\xF9ng '\u3092\u304F\u3060\u3055\u3044'
+      cho ch\u1ED7 ng\u1ED3i."
+  - ja: "\u30E1\u30CB\u30E5\u30FC\u3092\u304A\u9858\u3044\u3057\u307E\u3059\u3002"
+    reading: "\u3081\u306B\u3085\u30FC\u3092\u304A\u306D\u304C\u3044\u3057\u307E\u3059\u3002"
+    romaji: menyuu wo onegaishimasu.
+    vi: "Cho t\xF4i xin th\u1EF1c \u0111\u01A1n."
+    whenVi: "Khi ch\u01B0a c\xF3 th\u1EF1c \u0111\u01A1n tr\xEAn b\xE0n."
+  - ja: "\u304A\u3059\u3059\u3081\u306F\u4F55\u3067\u3059\u304B\u3002"
+    reading: "\u304A\u3059\u3059\u3081\u306F\u306A\u3093\u3067\u3059\u304B\u3002"
+    romaji: osusume wa nan desu ka.
+    vi: "M\xF3n n\xE0o \u0111\u01B0\u1EE3c g\u1EE3i \xFD \u1EA1?"
+    whenVi: "Khi ch\u01B0a bi\u1EBFt ch\u1ECDn m\xF3n g\xEC. R\u1EA5t h\u1EEFu \xEDch
+      \u1EDF qu\u1EA7y sushi, n\u01A1i \u0111\u1EA7u b\u1EBFp tr\u1EA3 l\u1EDDi tr\u1EF1c
+      ti\u1EBFp."
+  - ja: "\u3053\u308C\u3092\u304F\u3060\u3055\u3044\u3002"
+    reading: "\u3053\u308C\u3092\u304F\u3060\u3055\u3044\u3002"
+    romaji: kore wo kudasai.
+    vi: "Cho t\xF4i m\xF3n n\xE0y."
+    whenVi: "V\u1EEBa ch\u1EC9 v\xE0o m\xF3n trong th\u1EF1c \u0111\u01A1n v\u1EEBa
+      n\xF3i."
+  - ja: "\u301C\u3092\u304A\u9858\u3044\u3057\u307E\u3059\u3002"
+    reading: "\u301C\u3092\u304A\u306D\u304C\u3044\u3057\u307E\u3059\u3002"
+    romaji: ~ wo onegaishimasu.
+    vi: "Cho t\xF4i m\xF3n ~ v\u1EDBi \u1EA1."
+    whenVi: "C\xE1ch g\u1ECDi m\xF3n l\u1ECBch s\u1EF1 h\u01A1n '\u3092\u304F\u3060\u3055\u3044'."
+  - ja: "\u3059\u307F\u307E\u305B\u3093\u3002"
+    reading: "\u3059\u307F\u307E\u305B\u3093\u3002"
+    romaji: sumimasen.
+    vi: "Xin l\u1ED7i (\u0111\u1EC3 g\u1ECDi nh\xE2n vi\xEAn)."
+    whenVi: "Khi c\u1EA7n g\u1ECDi nh\xE2n vi\xEAn. N\xF3i v\u1EEBa ph\u1EA3i r\u1ED3i
+      gi\u01A1 tay nh\u1EB9, kh\xF4ng g\u1ECDi to."
+  - ja: "\u30A2\u30EC\u30EB\u30AE\u30FC\u304C\u3042\u308A\u307E\u3059\u3002"
+    reading: "\u3042\u308C\u308B\u304E\u30FC\u304C\u3042\u308A\u307E\u3059\u3002"
+    romaji: arerugii ga arimasu.
+    vi: "T\xF4i b\u1ECB d\u1ECB \u1EE9ng."
+    whenVi: "N\xF3i tr\u01B0\u1EDBc khi g\u1ECDi m\xF3n, r\u1ED3i cho bi\u1EBFt d\u1ECB
+      \u1EE9ng g\xEC, v\xED d\u1EE5 '\u3048\u3073\u3067\u3059' (t\xF4m)."
+  - ja: "\u308F\u3055\u3073\u306A\u3057\u3067\u304A\u9858\u3044\u3057\u307E\u3059\u3002"
+    reading: "\u308F\u3055\u3073\u306A\u3057\u3067\u304A\u306D\u304C\u3044\u3057\u307E\u3059\u3002"
+    romaji: wasabi nashi de onegaishimasu.
+    vi: "Cho t\xF4i kh\xF4ng wasabi nh\xE9."
+    whenVi: "N\u1EBFu b\u1EA1n kh\xF4ng \u0103n \u0111\u01B0\u1EE3c cay. \u0110\u1EA7u
+      b\u1EBFp th\u01B0\u1EDDng cho s\u1EB5n wasabi trong mi\u1EBFng nigiri."
+  - ja: "\u3044\u305F\u3060\u304D\u307E\u3059\u3002"
+    reading: "\u3044\u305F\u3060\u304D\u307E\u3059\u3002"
+    romaji: itadakimasu.
+    vi: "Xin ph\xE9p \u0111\u01B0\u1EE3c \u0103n (l\u1EDDi n\xF3i tr\u01B0\u1EDBc
+      b\u1EEFa \u0103n)."
+    whenVi: "N\xF3i tr\u01B0\u1EDBc khi b\u1EAFt \u0111\u1EA7u \u0103n, bi\u1EBFt
+      \u01A1n ng\u01B0\u1EDDi n\u1EA5u v\xE0 nguy\xEAn li\u1EC7u."
+  - ja: "\u304A\u3044\u3057\u3044\u3067\u3059\u3002"
+    reading: "\u304A\u3044\u3057\u3044\u3067\u3059\u3002"
+    romaji: oishii desu.
+    vi: "Ngon qu\xE1."
+    whenVi: "Khi nh\xE2n vi\xEAn h\u1ECFi '\u3044\u304B\u304C\u3067\u3059\u304B'
+      ho\u1EB7c khi b\u1EA1n mu\u1ED1n khen."
+  - ja: "\u304A\u4F1A\u8A08\u3092\u304A\u9858\u3044\u3057\u307E\u3059\u3002"
+    reading: "\u304A\u304B\u3044\u3051\u3044\u3092\u304A\u306D\u304C\u3044\u3057\u307E\u3059\u3002"
+    romaji: okaikei wo onegaishimasu.
+    vi: "Cho t\xF4i thanh to\xE1n."
+    whenVi: "Khi \u0103n xong. Thanh to\xE1n th\u01B0\u1EDDng \u1EDF qu\u1EA7y thu
+      ng\xE2n g\u1EA7n c\u1EEDa."
+  - ja: "\u30AB\u30FC\u30C9\u3067\u6255\u3048\u307E\u3059\u304B\u3002"
+    reading: "\u304B\u30FC\u3069\u3067\u306F\u3089\u3048\u307E\u3059\u304B\u3002"
+    romaji: kaado de haraemasu ka.
+    vi: "T\xF4i tr\u1EA3 b\u1EB1ng th\u1EBB \u0111\u01B0\u1EE3c kh\xF4ng?"
+    whenVi: "Nhi\u1EC1u qu\xE1n nh\u1ECF ch\u1EC9 nh\u1EADn ti\u1EC1n m\u1EB7t, n\xEAn
+      h\u1ECFi tr\u01B0\u1EDBc cho ch\u1EAFc."
+  - ja: "\u3054\u3061\u305D\u3046\u3055\u307E\u3067\u3057\u305F\u3002"
+    reading: "\u3054\u3061\u305D\u3046\u3055\u307E\u3067\u3057\u305F\u3002"
+    romaji: gochisousama deshita.
+    vi: "C\u1EA3m \u01A1n v\xEC b\u1EEFa \u0103n ngon."
+    whenVi: "N\xF3i khi \u0103n xong v\xE0 khi r\u1EDDi qu\xE1n."
+  - ja: "\u3042\u308A\u304C\u3068\u3046\u3054\u3056\u3044\u307E\u3057\u305F\u3002"
+    reading: "\u3042\u308A\u304C\u3068\u3046\u3054\u3056\u3044\u307E\u3057\u305F\u3002"
+    romaji: arigatou gozaimashita.
+    vi: "Xin c\u1EA3m \u01A1n qu\xFD kh\xE1ch (nh\xE2n vi\xEAn n\xF3i khi b\u1EA1n
+      r\u1EDDi qu\xE1n)."
+    whenVi: "\u0110\xE1p l\u1EA1i b\u1EB1ng c\xE1i g\u1EADt \u0111\u1EA7u ho\u1EB7c
+      '\u3054\u3061\u305D\u3046\u3055\u307E\u3067\u3057\u305F'."
   etiquette:
-  - titleJa: "おしぼり"
-    titleVi: "Khăn ướt (oshibori)"
-    bodyVi: "Quán thường đưa khăn nóng hoặc lạnh để lau tay trước khi ăn. Không dùng lau mặt hay cổ. Ăn xong gấp lại gọn và đặt cạnh, không vò nát."
-  - titleJa: "しょうゆのつけ方"
-    titleVi: "Cách chấm nước tương"
-    bodyVi: "Chấm phần cá (không chấm phần cơm) vì cơm dễ rời và nước tương thấm quá nhiều. Đổ nước tương vào đĩa nhỏ vừa đủ, không đổ đầy."
-  - titleJa: "わさびとガリ"
-    titleVi: "Wasabi và gừng ngâm (gari)"
-    bodyVi: "Đầu bếp thường đã cho wasabi vào giữa cá và cơm; đừng hòa thêm nhiều vào nước tương nếu không cần. Gừng ngâm gari ăn giữa các loại sushi để làm sạch vị giác, không ăn kèm cùng miếng sushi."
-  - titleJa: "手でも箸でも"
-    titleVi: "Ăn bằng tay hoặc đũa đều được"
-    bodyVi: "Nigiri có thể ăn bằng tay hoặc đũa. Ăn trọn cả miếng trong một lần, không cắn làm đôi."
-  - titleJa: "お茶（あがり）"
-    titleVi: "Trà xanh (agari)"
-    bodyVi: "Trà miễn phí, uống giữa các loại để làm sạch vị giác. Có thể xin rót thêm bằng 'お茶をください'."
-  - titleJa: "お箸のマナー"
-    titleVi: "Lễ nghi dùng đũa"
-    bodyVi: "Không cắm đũa thẳng đứng vào cơm (gợi lễ cúng người mất), không chuyền thức ăn từ đũa này sang đũa khác, không dùng đũa chỉ vào người khác."
-  - titleJa: "いただきます・ごちそうさま"
-    titleVi: "Lời trước và sau bữa ăn"
-    bodyVi: "Nói 'いただきます' trước khi ăn và 'ごちそうさまでした' khi ăn xong hoặc rời quán để cảm ơn người nấu."
-  - titleJa: "お会計"
-    titleVi: "Thanh toán"
-    bodyVi: "Thanh toán tại quầy thu ngân khi đã ăn xong, không cần để tiền boa (ở Nhật không có tục tiền boa). Nhiều quán nhỏ chỉ nhận tiền mặt."
-  staffNameJa: 青木
+  - titleJa: "\u304A\u3057\u307C\u308A"
+    titleVi: "Kh\u0103n \u01B0\u1EDBt (oshibori)"
+    bodyVi: "Qu\xE1n th\u01B0\u1EDDng \u0111\u01B0a kh\u0103n n\xF3ng ho\u1EB7c l\u1EA1nh
+      \u0111\u1EC3 lau tay tr\u01B0\u1EDBc khi \u0103n. Kh\xF4ng d\xF9ng lau m\u1EB7t
+      hay c\u1ED5. \u0102n xong g\u1EA5p l\u1EA1i g\u1ECDn v\xE0 \u0111\u1EB7t c\u1EA1nh,
+      kh\xF4ng v\xF2 n\xE1t."
+  - titleJa: "\u3057\u3087\u3046\u3086\u306E\u3064\u3051\u65B9"
+    titleVi: "C\xE1ch ch\u1EA5m n\u01B0\u1EDBc t\u01B0\u01A1ng"
+    bodyVi: "Ch\u1EA5m ph\u1EA7n c\xE1 (kh\xF4ng ch\u1EA5m ph\u1EA7n c\u01A1m) v\xEC
+      c\u01A1m d\u1EC5 r\u1EDDi v\xE0 n\u01B0\u1EDBc t\u01B0\u01A1ng th\u1EA5m qu\xE1
+      nhi\u1EC1u. \u0110\u1ED5 n\u01B0\u1EDBc t\u01B0\u01A1ng v\xE0o \u0111\u0129a
+      nh\u1ECF v\u1EEBa \u0111\u1EE7, kh\xF4ng \u0111\u1ED5 \u0111\u1EA7y."
+  - titleJa: "\u308F\u3055\u3073\u3068\u30AC\u30EA"
+    titleVi: "Wasabi v\xE0 g\u1EEBng ng\xE2m (gari)"
+    bodyVi: "\u0110\u1EA7u b\u1EBFp th\u01B0\u1EDDng \u0111\xE3 cho wasabi v\xE0o
+      gi\u1EEFa c\xE1 v\xE0 c\u01A1m; \u0111\u1EEBng h\xF2a th\xEAm nhi\u1EC1u v\xE0o
+      n\u01B0\u1EDBc t\u01B0\u01A1ng n\u1EBFu kh\xF4ng c\u1EA7n. G\u1EEBng ng\xE2m
+      gari \u0103n gi\u1EEFa c\xE1c lo\u1EA1i sushi \u0111\u1EC3 l\xE0m s\u1EA1ch
+      v\u1ECB gi\xE1c, kh\xF4ng \u0103n k\xE8m c\xF9ng mi\u1EBFng sushi."
+  - titleJa: "\u624B\u3067\u3082\u7BB8\u3067\u3082"
+    titleVi: "\u0102n b\u1EB1ng tay ho\u1EB7c \u0111\u0169a \u0111\u1EC1u \u0111\u01B0\u1EE3c"
+    bodyVi: "Nigiri c\xF3 th\u1EC3 \u0103n b\u1EB1ng tay ho\u1EB7c \u0111\u0169a.
+      \u0102n tr\u1ECDn c\u1EA3 mi\u1EBFng trong m\u1ED9t l\u1EA7n, kh\xF4ng c\u1EAFn
+      l\xE0m \u0111\xF4i."
+  - titleJa: "\u304A\u8336\uFF08\u3042\u304C\u308A\uFF09"
+    titleVi: "Tr\xE0 xanh (agari)"
+    bodyVi: "Tr\xE0 mi\u1EC5n ph\xED, u\u1ED1ng gi\u1EEFa c\xE1c lo\u1EA1i \u0111\u1EC3
+      l\xE0m s\u1EA1ch v\u1ECB gi\xE1c. C\xF3 th\u1EC3 xin r\xF3t th\xEAm b\u1EB1ng
+      '\u304A\u8336\u3092\u304F\u3060\u3055\u3044'."
+  - titleJa: "\u304A\u7BB8\u306E\u30DE\u30CA\u30FC"
+    titleVi: "L\u1EC5 nghi d\xF9ng \u0111\u0169a"
+    bodyVi: "Kh\xF4ng c\u1EAFm \u0111\u0169a th\u1EB3ng \u0111\u1EE9ng v\xE0o c\u01A1m
+      (g\u1EE3i l\u1EC5 c\xFAng ng\u01B0\u1EDDi m\u1EA5t), kh\xF4ng chuy\u1EC1n th\u1EE9c
+      \u0103n t\u1EEB \u0111\u0169a n\xE0y sang \u0111\u0169a kh\xE1c, kh\xF4ng d\xF9ng
+      \u0111\u0169a ch\u1EC9 v\xE0o ng\u01B0\u1EDDi kh\xE1c."
+  - titleJa: "\u3044\u305F\u3060\u304D\u307E\u3059\u30FB\u3054\u3061\u305D\u3046\u3055\u307E"
+    titleVi: "L\u1EDDi tr\u01B0\u1EDBc v\xE0 sau b\u1EEFa \u0103n"
+    bodyVi: "N\xF3i '\u3044\u305F\u3060\u304D\u307E\u3059' tr\u01B0\u1EDBc khi \u0103n
+      v\xE0 '\u3054\u3061\u305D\u3046\u3055\u307E\u3067\u3057\u305F' khi \u0103n
+      xong ho\u1EB7c r\u1EDDi qu\xE1n \u0111\u1EC3 c\u1EA3m \u01A1n ng\u01B0\u1EDDi
+      n\u1EA5u."
+  - titleJa: "\u304A\u4F1A\u8A08"
+    titleVi: "Thanh to\xE1n"
+    bodyVi: "Thanh to\xE1n t\u1EA1i qu\u1EA7y thu ng\xE2n khi \u0111\xE3 \u0103n
+      xong, kh\xF4ng c\u1EA7n \u0111\u1EC3 ti\u1EC1n boa (\u1EDF Nh\u1EADt kh\xF4ng
+      c\xF3 t\u1EE5c ti\u1EC1n boa). Nhi\u1EC1u qu\xE1n nh\u1ECF ch\u1EC9 nh\u1EADn
+      ti\u1EC1n m\u1EB7t."
+  staffNameJa: "\u9752\u6728"
   staffNameVi: Aoki
-  plateModel: {fileID: 100100000, guid: fa485bb8ebeb39c4684a09ba1343d109, type: 3}
+  serviceLines:
+  - key: order_confirm
+    ja: "\u304B\u3057\u3053\u307E\u308A\u307E\u3057\u305F\u3002{order}\u3067\u3059\u306D\u3002\u5C11\u3005\u304A\u5F85\u3061\u304F\u3060\u3055\u3044\u3002"
+    reading: "\u304B\u3057\u3053\u307E\u308A\u307E\u3057\u305F\u3002{order}\u3067\u3059\u306D\u3002\u3057\u3087\u3046\u3057\u3087\u3046\u304A\u307E\u3061\u304F\u3060\u3055\u3044\u3002"
+    vi: "V\xE2ng \u1EA1. {order}, \u0111\xFAng kh\xF4ng \u1EA1? Xin qu\xFD kh\xE1ch
+      \u0111\u1EE3i m\u1ED9t ch\xFAt."
+    en: Certainly. {order}, correct? Please wait a moment.
+  - key: served
+    ja: "\u304A\u5F85\u305F\u305B\u3057\u307E\u3057\u305F\u3002\u3054\u3086\u3063\u304F\u308A\u3069\u3046\u305E\u3002"
+    reading: "\u304A\u307E\u305F\u305B\u3057\u307E\u3057\u305F\u3002\u3054\u3086\u3063\u304F\u308A\u3069\u3046\u305E\u3002"
+    vi: "\u0110\u1EC3 qu\xFD kh\xE1ch \u0111\u1EE3i l\xE2u r\u1ED3i. Xin m\u1EDDi
+      d\xF9ng b\u1EEFa thong th\u1EA3."
+    en: Thank you for waiting. Please take your time and enjoy.
+  - key: bill
+    ja: "\u304A\u4F1A\u8A08\u306F{total}\u3067\u3059\u3002\u3042\u308A\u304C\u3068\u3046\u3054\u3056\u3044\u307E\u3057\u305F\u3002\u307E\u305F\u304A\u8D8A\u3057\u304F\u3060\u3055\u3044\u3002"
+    reading: "\u304A\u304B\u3044\u3051\u3044\u306F{total}\u3067\u3059\u3002\u3042\u308A\u304C\u3068\u3046\u3054\u3056\u3044\u307E\u3057\u305F\u3002\u307E\u305F\u304A\u3053\u3057\u304F\u3060\u3055\u3044\u3002"
+    vi: "T\u1ED5ng c\u1ED9ng l\xE0 {total}. C\u1EA3m \u01A1n qu\xFD kh\xE1ch, xin
+      m\u1EDDi qu\xFD kh\xE1ch quay l\u1EA1i l\u1EA7n sau."
+    en: Your total is {total}. Thank you very much. Please come again.
+  - key: bill_reminder
+    ja: "\u304A\u5BA2\u69D8\u3001\u304A\u4F1A\u8A08\u3092\u304A\u9858\u3044\u3057\u307E\u3059\u3002"
+    reading: "\u304A\u304D\u3083\u304F\u3055\u307E\u3001\u304A\u304B\u3044\u3051\u3044\u3092\u304A\u306D\u304C\u3044\u3057\u307E\u3059\u3002"
+    vi: "Qu\xFD kh\xE1ch \u01A1i, xin m\u1EDDi thanh to\xE1n t\u1EA1i b\xE0n \u1EA1."
+    en: Excuse me, could you please pay your bill at the table?
+  - key: exit_blocked
+    ja: "\u304A\u5BA2\u69D8\u3001\u304A\u4F1A\u8A08\u304C\u307E\u3060\u3067\u3059\u3002\u30C6\u30FC\u30D6\u30EB\u3067\u304A\u9858\u3044\u3057\u307E\u3059\u3002"
+    reading: "\u304A\u304D\u3083\u304F\u3055\u307E\u3001\u304A\u304B\u3044\u3051\u3044\u304C\u307E\u3060\u3067\u3059\u3002\u30C6\u30FC\u30D6\u30EB\u3067\u304A\u306D\u304C\u3044\u3057\u307E\u3059\u3002"
+    vi: "Qu\xFD kh\xE1ch \u01A1i, qu\xFD kh\xE1ch ch\u01B0a thanh to\xE1n \u1EA1.
+      Xin thanh to\xE1n t\u1EA1i b\xE0n. (\u1EDE Nh\u1EADt, r\u1EDDi qu\xE1n m\xE0
+      kh\xF4ng tr\u1EA3 ti\u1EC1n - \u98DF\u3044\u9003\u3052 - l\xE0 vi ph\u1EA1m
+      ph\xE1p lu\u1EADt.)"
+    en: Excuse me, you have not paid yet. Please pay at the table. (In Japan, leaving
+      without paying - 'kuinige' - is a crime.)
+  plateModel: {fileID: 919132149155446097, guid: fa485bb8ebeb39c4684a09ba1343d109, type: 3}
   plateModelSize: 0.26
   plateModelEuler: {x: -90, y: 0, z: 0}
-  serviceLines:
-  - key: "order_confirm"
-    ja: "かしこまりました。{order}ですね。少々お待ちください。"
-    reading: "かしこまりました。{order}ですね。しょうしょうおまちください。"
-    vi: "Vâng ạ. {order}, đúng không ạ? Xin quý khách đợi một chút."
-    en: "Certainly. {order}, correct? Please wait a moment."
-  - key: "served"
-    ja: "お待たせしました。ごゆっくりどうぞ。"
-    reading: "おまたせしました。ごゆっくりどうぞ。"
-    vi: "Để quý khách đợi lâu rồi. Xin mời dùng bữa thong thả."
-    en: "Thank you for waiting. Please take your time and enjoy."
-  - key: "bill"
-    ja: "お会計は{total}です。ありがとうございました。またお越しください。"
-    reading: "おかいけいは{total}です。ありがとうございました。またおこしください。"
-    vi: "Tổng cộng là {total}. Cảm ơn quý khách, xin mời quý khách quay lại lần sau."
-    en: "Your total is {total}. Thank you very much. Please come again."
-  - key: "bill_reminder"
-    ja: "お客様、お会計をお願いします。"
-    reading: "おきゃくさま、おかいけいをおねがいします。"
-    vi: "Quý khách ơi, xin mời thanh toán tại bàn ạ."
-    en: "Excuse me, could you please pay your bill at the table?"
-  - key: "exit_blocked"
-    ja: "お客様、お会計がまだです。テーブルでお願いします。"
-    reading: "おきゃくさま、おかいけいがまだです。テーブルでおねがいします。"
-    vi: "Quý khách ơi, quý khách chưa thanh toán ạ. Xin thanh toán tại bàn. (Ở Nhật, rời quán mà không trả tiền - 食い逃げ - là vi phạm pháp luật.)"
-    en: "Excuse me, you have not paid yet. Please pay at the table. (In Japan, leaving without paying - 'kuinige' - is a crime.)"

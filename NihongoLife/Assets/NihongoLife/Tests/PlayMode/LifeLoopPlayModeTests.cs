@@ -60,7 +60,7 @@ namespace NihongoLife.Tests
             // ── HUD policy and layout ──
             var dock = Object.FindFirstObjectByType<StatusDock>();
             Assert.NotNull(dock?.StatusWidget, "Compact status widget");
-            Assert.IsNull(GameObject.Find("ActionBar"), "No permanent shortcut bar on desktop");
+            Assert.IsNull(GameObject.Find("ActionBar"), "The tray of shortcuts stays closed until it is asked for");
             HudFeed.Post("Kiểm tra bố cục: thông báo ở giữa phía trên.");
             yield return new WaitForSecondsRealtime(0.6f);
             foreach (var (w, h) in new[] { (1920, 1080), (1600, 900), (1366, 768), (1280, 720) })
@@ -159,18 +159,18 @@ namespace NihongoLife.Tests
             Assert.IsTrue(QuestService.ReadyToReport("job_konbini_shift"));
 
             // ── Report to Ito: paid once ──
-            int yen0 = bag.Yen, xp0 = PlayerStatus.Instance.TotalExp, know0 = PlayerStatus.Instance.Knowledge;
+            int yen0 = bag.Yen, xp0 = PlayerStatus.Instance.TotalExp, know0 = PlayerStatus.Instance.Knowledge, wageXp = SocialStanding.ScaleXp(40);
             var ito = Object.FindObjectsByType<NPCController>(FindObjectsSortMode.None).First(n => n.NpcId == "npc_cashier");
             ito.Interact(_player.gameObject);
             yield return new WaitForSecondsRealtime(0.3f);
             CloseDialogues();
-            Assert.AreEqual(yen0 + 600, bag.Yen, "Wage ¥600 paid");
-            Assert.AreEqual(xp0 + 40, PlayerStatus.Instance.TotalExp, "+40 XP");
+            Assert.AreEqual(yen0 + 1500, bag.Yen, "Wage ¥1,500 paid");
+            Assert.AreEqual(xp0 + wageXp, PlayerStatus.Instance.TotalExp, "+40 XP, scaled by the mood");
             Assert.AreEqual(know0 + 6, PlayerStatus.Instance.Knowledge, "+6 knowledge (separate from XP)");
             CaptureAndCheck("10_paid", 1600, 900);
             ito.Interact(_player.gameObject); yield return null; CloseDialogues();
             QuestService.Raise("checkout", "konbini_register"); QuestService.Raise("talk", "npc_cashier");
-            Assert.AreEqual(yen0 + 600, bag.Yen, "Talking again / repeated events never pay twice");
+            Assert.AreEqual(yen0 + 1500, bag.Yen, "Talking again / repeated events never pay twice");
             Assert.AreEqual(QuestAvailability.Cooldown, QuestService.Availability(QuestService.Catalog.Quest("job_konbini_shift")), "Next shift after the cooldown");
             Assert.AreEqual(1, Progress().careers.First(c => c.roleId == "job_konbini_shift").totalShifts);
 
@@ -183,7 +183,7 @@ namespace NihongoLife.Tests
             Assert.IsTrue(KonbiniShopUI.GetOrCreate().Pay(), "Buy with earned money");
             yield return new WaitForSecondsRealtime(0.2f);
             CloseDialogues();
-            Assert.AreEqual(yen1 - onigiri.price, bag.Yen, "Price taken once");
+            Assert.AreEqual(yen1 - onigiri.price + QuestService.Catalog.Quest("daily_konbini_meal").rewards.yen, bag.Yen, "Price taken once, the daily task pays");
             Assert.IsTrue(bag.HasItem(onigiri.id));
             Assert.AreEqual("completed", QuestService.State("daily_konbini_meal")?.status, "Daily meal done by a real purchase");
             KonbiniBasket.Clear();
@@ -276,7 +276,7 @@ namespace NihongoLife.Tests
             aoki.Interact(_player.gameObject);
             yield return new WaitForSecondsRealtime(0.3f);
             CloseDialogues();
-            Assert.AreEqual(yenCancelled + 700, bag.Yen, "Paid ¥700 for the completed shift only");
+            Assert.AreEqual(yenCancelled + 1750, bag.Yen, "Paid ¥1,750 for the completed shift only");
             CaptureAndCheck("21_sushi_paid", 1600, 900);
             WriteLog("sushi.txt");
         }
@@ -371,9 +371,9 @@ namespace NihongoLife.Tests
 
             int yen0 = bag.Yen;
             hana.Interact(_player.gameObject);
-            Assert.AreEqual(yen0 + 500, bag.Yen, "Hana pays ¥500");
+            Assert.AreEqual(yen0 + 1250, bag.Yen, "Hana pays ¥1,250");
             hana.Interact(_player.gameObject);
-            Assert.AreEqual(yen0 + 500, bag.Yen, "…once");
+            Assert.AreEqual(yen0 + 1250, bag.Yen, "…once");
             CaptureAndCheck("31_farm_paid", 1600, 900);
 
             // Sell produce, switch the learning language, then travel back.
@@ -544,8 +544,9 @@ namespace NihongoLife.Tests
                 rt.GetWorldCorners(corners);
                 Vector2 a = camera.WorldToScreenPoint(corners[0]), b = camera.WorldToScreenPoint(corners[2]);
                 var rect = Rect.MinMaxRect(Mathf.Min(a.x, b.x), Mathf.Min(a.y, b.y), Mathf.Max(a.x, b.x), Mathf.Max(a.y, b.y));
-                if (rect.width > 1f && rect.height > 1f) pieces.Add((label, rect));
-                if (rect.xMin < -1f || rect.yMin < -1f || rect.xMax > width + 1f || rect.yMax > height + 1f) overlaps.Add($"{label} clipped by the screen edge");
+                if (rect.width <= 1f || rect.height <= 1f) return; // not laid out yet (posted this very frame): not on screen
+                pieces.Add((label, rect));
+                if (rect.xMin < -1f || rect.yMin < -1f || rect.xMax > width + 1f || rect.yMax > height + 1f) overlaps.Add($"{label} clipped by the screen edge: {rect} of {width}x{height}, \"{rt.GetComponentInChildren<TMPro.TMP_Text>()?.text}\"");
             }
             var dock = Object.FindFirstObjectByType<StatusDock>();
             if (dock != null && !(dock.CharacterRoot != null && dock.CharacterRoot.activeInHierarchy))

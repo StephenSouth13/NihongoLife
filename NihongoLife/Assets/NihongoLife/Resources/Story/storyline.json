@@ -155,6 +155,13 @@
       "nameRu": "Хибики"
     },
     {
+      "id": "npc_fashion_manager",
+      "nameJa": "れん店長",
+      "nameVi": "Anh Ren",
+      "nameEn": "Ren",
+      "nameRu": "Рэн"
+    },
+    {
       "id": "narrator",
       "nameJa": "ナレーション",
       "nameVi": "Dẫn truyện",
@@ -6198,6 +6205,562 @@
                 "en": "Since the day you admitted you were tired, you've grown strong.",
                 "ru": "С того дня, как ты признался в усталости, ты стал сильным.",
                 "flag": "story_painter_trainee_tired"
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "career": "fashion",
+      "speaker": "npc_fashion_manager",
+      "scene": "56_FashionStore",
+      "stages": [
+        {
+          "tier": "trainee",
+          "careerLevel": 1,
+          "jlpt": "N5",
+          "questId": "story_fashion_trainee",
+          "titleEn": "Hibari Mode: stock assistant",
+          "titleVi": "Hibari Mode: phụ kho",
+          "titleJa": "ひばりモード：ストック",
+          "titleRu": "Hibari Mode: помощник на складе",
+          "goalEn": "Fold the tables and learn the sizes and colours in Japanese.",
+          "goalVi": "Gấp đồ trên bàn và học tên cỡ, tên màu bằng tiếng Nhật.",
+          "goalJa": "テーブルをたたみ、サイズと色の言い方を覚える。",
+          "goalRu": "Складывайте одежду и учите размеры и цвета по-японски.",
+          "lines": [
+            {
+              "speaker": "npc_fashion_manager",
+              "ja": "たたみ方は、お店の顔だよ。",
+              "vi": "Cách gấp đồ là bộ mặt của cửa hàng.",
+              "en": "How you fold is the face of the shop.",
+              "ru": "То, как ты складываешь, — лицо магазина."
+            },
+            {
+              "speaker": "npc_fashion_manager",
+              "ja": "Sサイズ、Mサイズ、言ってみて。",
+              "vi": "Thử nói cỡ S, cỡ M xem.",
+              "en": "Say S size, M size for me.",
+              "ru": "Скажи: размер S, размер M."
+            },
+            {
+              "speaker": "npc_fashion_manager",
+              "ja": "いいね、きれいにそろった。",
+              "vi": "Tốt, gọn gàng rồi.",
+              "en": "Nice, nice and even.",
+              "ru": "Отлично, всё ровно."
+            }
+          ],
+          "cutscene": {
+            "prompt": {
+              "speaker": "npc_fashion_manager",
+              "ja": "最初の一週間、どうだった？",
+              "vi": "Tuần đầu tiên thế nào?",
+              "en": "How was your first week?",
+              "ru": "Как прошла первая неделя?"
+            },
+            "choices": [
+              {
+                "id": "careful",
+                "ja": "ミスをしないよう、メモを取りました。",
+                "vi": "Em ghi chép để không mắc lỗi.",
+                "en": "I took notes so I wouldn't make mistakes.",
+                "ru": "Я делал заметки, чтобы не ошибаться.",
+                "flag": "story_fashion_trainee_careful",
+                "affinity": 6,
+                "reply": {
+                  "speaker": "npc_fashion_manager",
+                  "ja": "そのメモは宝物になるよ。",
+                  "vi": "Cuốn sổ đó sẽ là báu vật đấy.",
+                  "en": "Those notes will become a treasure.",
+                  "ru": "Эти заметки станут сокровищем."
+                }
+              },
+              {
+                "id": "cheerful",
+                "ja": "お客さまと話すのが楽しかったです。",
+                "vi": "Nói chuyện với khách vui lắm ạ.",
+                "en": "I enjoyed talking with customers.",
+                "ru": "Мне понравилось говорить с клиентами.",
+                "flag": "story_fashion_trainee_cheerful",
+                "affinity": 6,
+                "reply": {
+                  "speaker": "npc_fashion_manager",
+                  "ja": "その笑顔がいちばんの戦力だ。",
+                  "vi": "Nụ cười đó là vũ khí mạnh nhất.",
+                  "en": "That smile is your best asset.",
+                  "ru": "Эта улыбка — твоё главное оружие."
+                }
+              },
+              {
+                "id": "tired",
+                "ja": "正直、つかれました。",
+                "vi": "Thật lòng là em mệt ạ.",
+                "en": "Honestly, I'm tired.",
+                "ru": "Честно говоря, я устал.",
+                "flag": "story_fashion_trainee_tired",
+                "affinity": 4,
+                "reply": {
+                  "speaker": "npc_fashion_manager",
+                  "ja": "正直でいい。休むのも仕事だよ。",
+                  "vi": "Thật thà là tốt. Nghỉ ngơi cũng là công việc.",
+                  "en": "Honesty is good. Resting is part of the job.",
+                  "ru": "Честность — это хорошо. Отдых — тоже работа."
+                }
+              }
+            ],
+            "ending": [
+              {
+                "speaker": "narrator",
+                "ja": "見習いの名札に、小さな星がついた。",
+                "vi": "Bảng tên thực tập sinh được gắn một ngôi sao nhỏ.",
+                "en": "A small star is added to your trainee badge.",
+                "ru": "На бейдж стажёра добавилась маленькая звёздочка."
+              }
+            ]
+          }
+        },
+        {
+          "tier": "staff",
+          "careerLevel": 2,
+          "jlpt": "N4",
+          "questId": "story_fashion_staff",
+          "titleEn": "Hibari Mode: sales assistant",
+          "titleVi": "Hibari Mode: nhân viên bán hàng",
+          "titleJa": "ひばりモード：販売スタッフ",
+          "titleRu": "Hibari Mode: продавец",
+          "goalEn": "Greet customers and look after the fitting rooms.",
+          "goalVi": "Chào khách và chăm sóc phòng thử đồ.",
+          "goalJa": "お客さまに声をかけ、試着室を案内する。",
+          "goalRu": "Встречайте покупателей и помогайте у примерочных.",
+          "lines": [
+            {
+              "speaker": "npc_fashion_manager",
+              "ja": "声をかけるタイミングが大事だよ。",
+              "vi": "Thời điểm bắt chuyện rất quan trọng.",
+              "en": "When you speak to them matters.",
+              "ru": "Важно вовремя заговорить."
+            },
+            {
+              "speaker": "npc_fashion_manager",
+              "ja": "試着室はこちらです、って言ってみて。",
+              "vi": "Thử nói: phòng thử đồ ở đây ạ.",
+              "en": "Try saying: the fitting room is this way.",
+              "ru": "Скажи: примерочная вот здесь."
+            },
+            {
+              "speaker": "npc_fashion_manager",
+              "ja": "お客さま、笑ってたね。",
+              "vi": "Khách cười rồi đấy.",
+              "en": "The customer smiled.",
+              "ru": "Покупатель улыбнулся."
+            }
+          ],
+          "cutscene": {
+            "prompt": {
+              "speaker": "npc_fashion_manager",
+              "ja": "お客さまからクレームが来た。どうする？",
+              "vi": "Có khách phàn nàn. Em làm gì?",
+              "en": "A customer complains. What do you do?",
+              "ru": "Клиент жалуется. Что вы сделаете?"
+            },
+            "choices": [
+              {
+                "id": "apologize",
+                "ja": "まず心からおわびします。",
+                "vi": "Trước hết xin lỗi thật lòng.",
+                "en": "Apologise sincerely first.",
+                "ru": "Сначала искренне извинюсь.",
+                "flag": "story_fashion_staff_apologize",
+                "affinity": 6,
+                "reply": {
+                  "speaker": "npc_fashion_manager",
+                  "ja": "それが基本だ。よく見ていたね。",
+                  "vi": "Đó là điều cơ bản. Em quan sát giỏi đấy.",
+                  "en": "That's the basics. You've been watching.",
+                  "ru": "Это основа. Ты внимательно учился."
+                }
+              },
+              {
+                "id": "listen",
+                "ja": "最後まで話を聞きます。",
+                "vi": "Lắng nghe đến hết.",
+                "en": "Listen to the end.",
+                "ru": "Выслушаю до конца.",
+                "flag": "story_fashion_staff_listen",
+                "affinity": 7,
+                "reply": {
+                  "speaker": "npc_fashion_manager",
+                  "ja": "聞く力は、日本語の力でもある。",
+                  "vi": "Biết lắng nghe cũng là giỏi tiếng Nhật.",
+                  "en": "Listening is a language skill too.",
+                  "ru": "Умение слушать — тоже языковой навык."
+                }
+              },
+              {
+                "id": "boss",
+                "ja": "すぐに先輩を呼びます。",
+                "vi": "Gọi ngay tiền bối.",
+                "en": "Call a senior right away.",
+                "ru": "Сразу позову старшего.",
+                "flag": "story_fashion_staff_boss",
+                "affinity": 5,
+                "reply": {
+                  "speaker": "npc_fashion_manager",
+                  "ja": "相談するのは正しい判断だ。",
+                  "vi": "Hỏi ý kiến là quyết định đúng.",
+                  "en": "Asking for help was the right call.",
+                  "ru": "Попросить помощи — верное решение."
+                }
+              }
+            ],
+            "ending": [
+              {
+                "speaker": "narrator",
+                "ja": "「ありがとう、また来ます」とお客さまが言った。",
+                "vi": "Khách nói: 'Cảm ơn, tôi sẽ quay lại'.",
+                "en": "The customer says: thank you, I'll come again.",
+                "ru": "Клиент говорит: «Спасибо, приду ещё»."
+              }
+            ]
+          }
+        },
+        {
+          "tier": "senior",
+          "careerLevel": 3,
+          "jlpt": "N3",
+          "questId": "story_fashion_senior",
+          "titleEn": "Hibari Mode: fashion adviser",
+          "titleVi": "Hibari Mode: tư vấn thời trang",
+          "titleJa": "ひばりモード：アドバイザー",
+          "titleRu": "Hibari Mode: консультант",
+          "goalEn": "Build a whole outfit for a customer and explain your choice.",
+          "goalVi": "Phối một bộ hoàn chỉnh cho khách và giải thích vì sao.",
+          "goalJa": "お客さまに一式をすすめ、理由を説明する。",
+          "goalRu": "Подберите покупателю весь образ и объясните выбор.",
+          "lines": [
+            {
+              "speaker": "npc_fashion_manager",
+              "ja": "服だけじゃなく、その人を見て。",
+              "vi": "Đừng chỉ nhìn đồ, hãy nhìn người mặc.",
+              "en": "Look at the person, not only the clothes.",
+              "ru": "Смотри на человека, а не только на одежду."
+            },
+            {
+              "speaker": "npc_fashion_manager",
+              "ja": "色の理由を、日本語で言えるかな。",
+              "vi": "Giải thích được lý do chọn màu bằng tiếng Nhật không?",
+              "en": "Can you give the reason for a colour in Japanese?",
+              "ru": "Сможешь объяснить выбор цвета по-японски?"
+            },
+            {
+              "speaker": "npc_fashion_manager",
+              "ja": "いい提案だった。",
+              "vi": "Gợi ý hay đấy.",
+              "en": "That was a good suggestion.",
+              "ru": "Хорошее предложение."
+            }
+          ],
+          "cutscene": {
+            "prompt": {
+              "speaker": "npc_fashion_manager",
+              "ja": "新人が泣きそうになっている。",
+              "vi": "Người mới sắp khóc rồi.",
+              "en": "The new trainee is close to tears.",
+              "ru": "Новичок вот-вот расплачется."
+            },
+            "choices": [
+              {
+                "id": "teach",
+                "ja": "いっしょにやり方を見直します。",
+                "vi": "Cùng xem lại cách làm.",
+                "en": "Go over the steps together.",
+                "ru": "Вместе разберу порядок работы.",
+                "flag": "story_fashion_senior_teach",
+                "affinity": 8,
+                "reply": {
+                  "speaker": "npc_fashion_manager",
+                  "ja": "昔のあなたを見ているようだ。",
+                  "vi": "Như thấy lại em ngày trước vậy.",
+                  "en": "It's like watching you back then.",
+                  "ru": "Будто вижу тебя в начале."
+                }
+              },
+              {
+                "id": "story",
+                "ja": "自分の失敗の話をします。",
+                "vi": "Kể chuyện thất bại của mình.",
+                "en": "Tell them about my own mistakes.",
+                "ru": "Расскажу о своих ошибках.",
+                "flag": "story_fashion_senior_story",
+                "affinity": 7,
+                "reply": {
+                  "speaker": "npc_fashion_manager",
+                  "ja": "失敗を話せる人は強い。",
+                  "vi": "Người dám kể thất bại là người mạnh.",
+                  "en": "People who share failures are strong.",
+                  "ru": "Кто говорит о неудачах — тот силён."
+                }
+              },
+              {
+                "id": "cover",
+                "ja": "今日は私が代わります。",
+                "vi": "Hôm nay để em làm thay.",
+                "en": "I'll cover for them today.",
+                "ru": "Сегодня подменю его.",
+                "flag": "story_fashion_senior_cover",
+                "affinity": 4,
+                "reply": {
+                  "speaker": "npc_fashion_manager",
+                  "ja": "やさしいね。でも次は教えてあげて。",
+                  "vi": "Em tốt bụng. Nhưng lần sau hãy dạy họ nhé.",
+                  "en": "Kind. But next time, teach them.",
+                  "ru": "Добрый поступок. Но в следующий раз научи."
+                }
+              }
+            ],
+            "ending": [
+              {
+                "speaker": "narrator",
+                "ja": "新人が「先輩」と呼んでくれた。",
+                "vi": "Người mới gọi bạn là 'senpai'.",
+                "en": "The trainee calls you senpai.",
+                "ru": "Новичок называет вас «сэмпай»."
+              }
+            ]
+          }
+        },
+        {
+          "tier": "manager",
+          "careerLevel": 5,
+          "jlpt": "N2",
+          "questId": "story_fashion_manager",
+          "titleEn": "Hibari Mode: stylist or designer",
+          "titleVi": "Hibari Mode: stylist hay nhà thiết kế",
+          "titleJa": "ひばりモード：スタイリストかデザイナー",
+          "titleRu": "Hibari Mode: стилист или дизайнер",
+          "goalEn": "Dress a magazine shoot or show your first sketches.",
+          "goalVi": "Lo trang phục cho buổi chụp tạp chí hoặc trình bày mẫu vẽ đầu tiên.",
+          "goalJa": "雑誌の撮影を担当するか、初めてのデザインを見せる。",
+          "goalRu": "Оденьте съёмку для журнала или покажите первые эскизы.",
+          "lines": [
+            {
+              "speaker": "npc_fashion_manager",
+              "ja": "撮影は明日の朝だ。",
+              "vi": "Buổi chụp sáng mai đấy.",
+              "en": "The shoot is tomorrow morning.",
+              "ru": "Съёмка завтра утром."
+            },
+            {
+              "speaker": "npc_fashion_manager",
+              "ja": "敬語で打ち合わせしよう。",
+              "vi": "Họp bằng kính ngữ nhé.",
+              "en": "Let us hold the meeting in keigo.",
+              "ru": "Проведём встречу на кэйго."
+            },
+            {
+              "speaker": "npc_fashion_manager",
+              "ja": "ひばりの春、という感じだ。",
+              "vi": "Đúng chất mùa xuân Hibari.",
+              "en": "That is spring in Hibari.",
+              "ru": "Это настоящая весна в Хибари."
+            }
+          ],
+          "cutscene": {
+            "prompt": {
+              "speaker": "npc_fashion_manager",
+              "ja": "売り上げが落ちた。何を変える？",
+              "vi": "Doanh thu giảm. Em thay đổi gì?",
+              "en": "Sales are down. What will you change?",
+              "ru": "Продажи упали. Что вы измените?"
+            },
+            "choices": [
+              {
+                "id": "team",
+                "ja": "スタッフの意見を聞きます。",
+                "vi": "Lắng nghe ý kiến nhân viên.",
+                "en": "Ask the staff for ideas.",
+                "ru": "Спрошу мнение сотрудников.",
+                "flag": "story_fashion_manager_team",
+                "affinity": 8,
+                "reply": {
+                  "speaker": "npc_fashion_manager",
+                  "ja": "チームはあなたを信じている。",
+                  "vi": "Cả đội tin em.",
+                  "en": "The team trusts you.",
+                  "ru": "Команда тебе доверяет."
+                }
+              },
+              {
+                "id": "new",
+                "ja": "新しいメニューやサービスを作ります。",
+                "vi": "Làm thực đơn, dịch vụ mới.",
+                "en": "Create a new menu or service.",
+                "ru": "Создам новое меню или услугу.",
+                "flag": "story_fashion_manager_new",
+                "affinity": 6,
+                "reply": {
+                  "speaker": "npc_fashion_manager",
+                  "ja": "思い切りがいい。やってみなさい。",
+                  "vi": "Quyết đoán đấy. Cứ thử đi.",
+                  "en": "Bold. Go for it.",
+                  "ru": "Смело. Попробуй."
+                }
+              },
+              {
+                "id": "guests",
+                "ja": "常連さんに話を聞きに行きます。",
+                "vi": "Đi hỏi chuyện khách quen.",
+                "en": "Go and ask the regulars.",
+                "ru": "Поговорю с постоянными клиентами.",
+                "flag": "story_fashion_manager_guests",
+                "affinity": 7,
+                "reply": {
+                  "speaker": "npc_fashion_manager",
+                  "ja": "答えはいつもお客さまの中にある。",
+                  "vi": "Câu trả lời luôn ở nơi khách hàng.",
+                  "en": "The answer is always with the customers.",
+                  "ru": "Ответ всегда у клиентов."
+                }
+              }
+            ],
+            "ending": [
+              {
+                "speaker": "narrator",
+                "ja": "三か月後、売り上げは前より上がった。",
+                "vi": "Ba tháng sau, doanh thu vượt cả trước kia.",
+                "en": "Three months later, sales are higher than ever.",
+                "ru": "Через три месяца продажи выше прежнего."
+              }
+            ]
+          }
+        },
+        {
+          "tier": "owner",
+          "careerLevel": 6,
+          "jlpt": "N1",
+          "questId": "story_fashion_owner",
+          "titleEn": "Hibari Mode: your own collection",
+          "titleVi": "Hibari Mode: bộ sưu tập của bạn",
+          "titleJa": "ひばりモード：自分のコレクション",
+          "titleRu": "Hibari Mode: ваша коллекция",
+          "goalEn": "Show a collection that joins Hibari and Phú Quốc.",
+          "goalVi": "Ra mắt bộ sưu tập nối Hibari với Phú Quốc.",
+          "goalJa": "ひばりとフーコックをつなぐコレクションを発表する。",
+          "goalRu": "Покажите коллекцию, объединяющую Хибари и Фукуок.",
+          "lines": [
+            {
+              "speaker": "npc_fashion_manager",
+              "ja": "ショーのあいさつ、考えた？",
+              "vi": "Đã nghĩ lời chào buổi diễn chưa?",
+              "en": "Have you written the words for the show?",
+              "ru": "Подготовил слова для показа?"
+            },
+            {
+              "speaker": "npc_fashion_manager",
+              "ja": "二つの町の色が入ってるね。",
+              "vi": "Có màu của cả hai nơi trong đó.",
+              "en": "The colours of both towns are in it.",
+              "ru": "В ней цвета обоих городов."
+            },
+            {
+              "speaker": "npc_fashion_manager",
+              "ja": "たたみ方から始まったのにな。",
+              "vi": "Vậy mà bắt đầu từ việc gấp đồ đấy.",
+              "en": "And it all began with folding.",
+              "ru": "А ведь всё началось со складывания."
+            }
+          ],
+          "cutscene": {
+            "prompt": {
+              "speaker": "npc_fashion_manager",
+              "ja": "この仕事で、何を残したい？",
+              "vi": "Em muốn để lại gì qua công việc này?",
+              "en": "What do you want to leave behind through this work?",
+              "ru": "Что вы хотите оставить после себя в этой работе?"
+            },
+            "choices": [
+              {
+                "id": "people",
+                "ja": "人を育てたいです。",
+                "vi": "Em muốn đào tạo con người.",
+                "en": "I want to raise the next people.",
+                "ru": "Хочу растить людей.",
+                "flag": "story_fashion_owner_people",
+                "affinity": 10,
+                "reply": {
+                  "speaker": "npc_fashion_manager",
+                  "ja": "あなたが一番の財産を選んだ。",
+                  "vi": "Em đã chọn tài sản quý nhất.",
+                  "en": "You chose the greatest treasure.",
+                  "ru": "Ты выбрал главное сокровище."
+                }
+              },
+              {
+                "id": "quality",
+                "ja": "最高の仕事を続けたいです。",
+                "vi": "Em muốn giữ chất lượng tốt nhất.",
+                "en": "I want to keep doing the very best work.",
+                "ru": "Хочу продолжать делать лучшую работу.",
+                "flag": "story_fashion_owner_quality",
+                "affinity": 8,
+                "reply": {
+                  "speaker": "npc_fashion_manager",
+                  "ja": "その心があれば、看板は守れる。",
+                  "vi": "Có tấm lòng đó, bảng hiệu sẽ được giữ.",
+                  "en": "With that heart, the name will last.",
+                  "ru": "С таким сердцем имя будет жить."
+                }
+              },
+              {
+                "id": "bridge",
+                "ja": "日本とベトナムをつなぎたいです。",
+                "vi": "Em muốn nối Nhật Bản và Việt Nam.",
+                "en": "I want to link Japan and Vietnam.",
+                "ru": "Хочу связать Японию и Вьетнам.",
+                "flag": "story_fashion_owner_bridge",
+                "affinity": 8,
+                "reply": {
+                  "speaker": "npc_fashion_manager",
+                  "ja": "あなたにしかできないことだ。",
+                  "vi": "Đó là việc chỉ em làm được.",
+                  "en": "Only you can do that.",
+                  "ru": "Это можешь только ты."
+                }
+              }
+            ],
+            "ending": [
+              {
+                "speaker": "narrator",
+                "ja": "あの日の見習いが、今は看板を背負っている。",
+                "vi": "Cậu thực tập sinh ngày ấy, giờ gánh cả bảng hiệu.",
+                "en": "The trainee of that first day now carries the whole business.",
+                "ru": "Стажёр того первого дня теперь несёт на себе всё дело."
+              },
+              {
+                "speaker": "npc_fashion_manager",
+                "ja": "見習いのころのメモ、まだ持っているね。",
+                "vi": "Cuốn sổ thời thực tập, em vẫn giữ nhỉ.",
+                "en": "You still keep your trainee notebook.",
+                "ru": "Ты всё ещё хранишь тетрадь стажёра.",
+                "flag": "story_fashion_trainee_careful"
+              },
+              {
+                "speaker": "npc_fashion_manager",
+                "ja": "あの笑顔は、今もお店の顔だ。",
+                "vi": "Nụ cười ấy vẫn là bộ mặt của cửa hàng.",
+                "en": "That smile is still the face of the place.",
+                "ru": "Эта улыбка по-прежнему лицо заведения.",
+                "flag": "story_fashion_trainee_cheerful"
+              },
+              {
+                "speaker": "npc_fashion_manager",
+                "ja": "つかれたと言えた日から、ずいぶん強くなった。",
+                "vi": "Từ ngày dám nói 'em mệt', em đã mạnh mẽ hơn nhiều.",
+                "en": "Since the day you admitted you were tired, you've grown strong.",
+                "ru": "С того дня, как ты признался в усталости, ты стал сильным.",
+                "flag": "story_fashion_trainee_tired"
               }
             ]
           }

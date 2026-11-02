@@ -466,7 +466,7 @@ namespace NihongoLife.EditorTools
             so.ApplyModifiedPropertiesWithoutUndo();
             var spawn = new GameObject("Spawn_" + WorldLocationCatalog.CityClinicReturn);
             spawn.transform.SetParent(portals);
-            spawn.transform.SetPositionAndRotation(new Vector3(group.position.x, 0.08f, frontZ + 2.4f), Quaternion.identity);
+            spawn.transform.SetPositionAndRotation(new Vector3(group.position.x, 0.08f, frontZ + 2.4f), FashionStoreBuilder.ClearOfCanopy);
             spawn.AddComponent<SceneSpawnPoint>().Configure(WorldLocationCatalog.CityClinicReturn);
 
             foreach (var renderer in group.GetComponentsInChildren<Renderer>(true)) renderer.shadowCastingMode = ShadowCastingMode.Off;

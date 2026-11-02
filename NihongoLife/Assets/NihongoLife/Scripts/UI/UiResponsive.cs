@@ -161,7 +161,7 @@ namespace NihongoLife.UI
         bool _packed;
         static readonly string[] Names =
         {
-            "ColumnShade", "TopAccent", "TitleText", "BrandKana", "SubtitleText",
+            "ColumnShade", "TopAccent", "BrandLogo", "SubtitleText",
             "StartButton", "OnlineBtn", "ProfileBtn", "FriendsBtn", "LeaderboardBtn", "GuideButton", "SettingsButton", "QuitButton",
             "StoryCard", "ProfileText"
         };
@@ -221,12 +221,9 @@ namespace NihongoLife.UI
             Place("TopAccent", margin, y, 48f, 4f);
             y += 8f;
             float titleW = split ? w - margin * 2f : colW;
-            Place("TitleText", margin, y, titleW, shortH ? 34f : 56f);
-            SetFont("TitleText", shortH ? 28f : 44f);
-            y += shortH ? 36f : 60f;
-            Place("BrandKana", margin, y, titleW, 22f);
-            SetFont("BrandKana", 15f);
-            y += 24f;
+            float logoH = shortH ? 52f : 80f;
+            Place("BrandLogo", margin, y, logoH * 3.6f, logoH);
+            y += logoH + 6f;
             if (h > 760f)
             {
                 Place("SubtitleText", margin, y, titleW, 36f);

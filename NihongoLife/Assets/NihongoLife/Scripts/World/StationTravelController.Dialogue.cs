@@ -68,7 +68,7 @@ namespace NihongoLife.World
             string yenReading = stop.Price switch { 320 => "さんびゃくにじゅうえん", 450 => "よんひゃくごじゅうえん", 1500 => "せんごひゃくえん", _ => "ひゃくはちじゅうえん" };
             return Line_("st_fare_" + stopId, staff, $"{stop.Ja}までは {stop.Price}えん、{Platform}ばんせん です。きっぷを おかいに なりますか。",
                 $"{stop.Ja}までは {yenReading}、にばんせん です。", ($"Đến {stop.Vi} là {stop.Price} yên, sân ga số {Platform}. Quý khách mua vé luôn không ạ?", $"To {stop.Vi} it's {stop.Price} yen, platform {Platform}. Would you like a ticket now?"), null,
-                Choice("きっぷを いちまい ください。", ($"Cho tôi một vé ạ. (¥{stop.Price})", $"One ticket, please. (¥{stop.Price})"), "buy:" + stopId),
+                Choice("きっぷを いちまい ください。", ($"Cho tôi một vé ạ. ({NihongoLife.Core.Loc.Yen(stop.Price)})", $"One ticket, please. ({NihongoLife.Core.Loc.Yen(stop.Price)})"), "buy:" + stopId),
                 Choice("けんばいきで かいます。", ("Tôi sẽ mua ở máy bán vé.", "I'll buy one at the machine."), "st_machine"),
                 Choice("3ばんせん ですか。", ("Sân ga số 3 ạ?", "Platform 3?"), "st_wrong"));
         }

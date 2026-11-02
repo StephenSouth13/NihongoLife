@@ -74,6 +74,8 @@ namespace NihongoLife.Progression
             "prep", "cook",
             // Hibiki music shop (MusicShop): a gig on the stage, a DJ set, a painting finished at the easel.
             "perform", "mix", "paint",
+            // Hibari Mode shift (JobStation.Fashion): tidy a table, answer a customer, the fitting room.
+            "fold", "advise", "fit",
         };
 
         public string schema;

@@ -358,7 +358,7 @@ namespace NihongoLife.Core
                         bool indoor = scene.name == WorldLocationCatalog.HomeBedroomScene
                             || scene.name == WorldLocationCatalog.SchoolScene || scene.name == WorldLocationCatalog.SushiRestaurantScene
                             || scene.name == WorldLocationCatalog.GameCenterScene || scene.name == WorldLocationCatalog.ClinicScene
-                            || scene.name == WorldLocationCatalog.MusicShopScene;
+                            || scene.name == WorldLocationCatalog.MusicShopScene || scene.name == WorldLocationCatalog.FashionStoreScene;
                         camera.SetIndoorMode(indoor);
                         camera.SetOrbit(spawn.transform.eulerAngles.y, indoor ? 22f : 20f, indoor ? 3.2f : 7.2f);
                     }

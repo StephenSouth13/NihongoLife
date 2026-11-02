@@ -93,7 +93,7 @@ namespace NihongoLife.Tests
         }
 
         /// <summary>Collision at the station exit: the player stands on the floor in front of the stairs and cannot walk
-        /// up them past the 出口 door (the way out is the door itself), nor through the stairwell walls.</summary>
+        /// past the 出口 door (the way out is the door itself): ExitDoorBlocks closes the stairwell, the hall's wall the rest.</summary>
         [UnityTest]
         public IEnumerator Station_ExitStairwellCollision()
         {
@@ -110,10 +110,10 @@ namespace NihongoLife.Tests
             float floorY = player.transform.position.y;
             Assert.Greater(floorY, -0.2f, "Standing on the platform in front of the stairs");
             for (int i = 0; i < 40; i++) { body.Move(new Vector3(0f, -0.05f, 0.15f)); yield return null; }
-            Assert.Less(player.transform.position.z, 12.9f, "Cannot climb past the exit door");
+            Assert.Less(player.transform.position.z, 11.1f, "The block in the doorway stops the player");
             Assert.Greater(player.transform.position.y, floorY - 0.2f, "Did not fall through the stairs");
-            for (int i = 0; i < 40; i++) { body.Move(new Vector3(0.2f, -0.05f, 0f)); yield return null; }
-            Assert.Less(player.transform.position.x, 803f, "Tunnel wall east of the opening stops the player");
+            for (int i = 0; i < 40; i++) { body.Move(new Vector3(0.2f, -0.05f, 0.15f)); yield return null; }
+            Assert.Less(player.transform.position.z, 12.9f, "Sliding along the block does not get behind it");
             player.InputLocked = false;
             var exit = Object.FindObjectsByType<ScenePortal>(FindObjectsSortMode.None).First(p => p.gameObject.scene.name == WorldLocationCatalog.StationScene);
             Assert.Less(Vector3.Distance(exit.transform.position, new Vector3(800f, 1.1f, 9.8f)), 0.5f, "The 出口 door is in front of the stairs");

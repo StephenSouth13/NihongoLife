@@ -1,780 +1,674 @@
 HUD place vi: Thành phố Hibari
 HUD place ru: Город Нихонго
 chat placeholder: Введите сообщение в чат города...
-== hud (29 texts)
-RU   Kicker: ◆ СЮЖЕТ · Chapter 3 · 近所とレストラン
-RU   Caption: Чат
-RU   Calendar: День 2 · 4/2 · Весна · возраст 16 23:25 · Очистить · 11°C
---   Value: 88%
---   Value: 86%
---   Name: Long
+== hud (21 texts)
+--   Value: 100%
+RU   Text: Помочь госпоже Судзуки найти кошку  ·  Дом Судзуки
 RU   Place: Город Нихонго
+--   Name: Long
 --   Key: F
-RU   Caption: Бег
---   Value: 88%
-RU   Caption: Сумка
-RU   Caption: Прыжок
---   Icon: ≡
---   Lv: Lv.
---   Caption: F
---   Value: 100%
---   Label: -
-RU   ScenarioTitle: Нет активного задания
-RU   Text: Помочь госпоже Судзуки найти кошку  ·  Дом Судзуки
---   Wallet: 33,820
-RU   Caption: Меню
-RU   Caption: Поговорить
-RU   Caption: Карта
-RU   Mood: спокоен  ·  репутация 45  ·  дурная слава 0
---   Value: 100%
+--   Level: 3
+RU   Kicker: ◆ СЮЖЕТ · Chapter 3 · 近所とレストラン
+--   Value: 87%
 RU   Progress: Готово · нажмите N и начните из журнала
-RU   Caption: Скрыть
+--   Icon: ≡
+--   Value: 85%
+--   Label: -
+RU   Wallet: 39 425 руб.
+--   Value: 100%
+RU   Mood: спокоен  ·  репутация 51  ·  дурная слава 0
+--   Value: 88%
+RU   ScenarioTitle: Нет активного задания
+RU   Calendar: День 2 · 4/2 · Весна · возраст 16 23:24 · Очистить · 11°C
+--   Caption: F
+--   Lv: Lv.
 RU   PromptText: Отработка фраз
---   Level: 3
-== handbook_Intro (27 texts)
-RU   Kicker: ◆ СЮЖЕТ · Chapter 3 · 近所とレストラン
-RU   Caption: Чат
-RU   Calendar: День 2 · 4/2 · Весна · возраст 16 23:26 · Очистить · 11°C
---   Value: 88%
---   Value: 86%
---   Name: Long
-RU   Place: Город Нихонго
-RU   Caption: Бег
---   Value: 88%
-RU   Caption: Сумка
-RU   Caption: Прыжок
---   Icon: ≡
---   Lv: Lv.
---   Caption: F
+== handbook_Intro (19 texts)
 --   Value: 100%
---   Label: -
-RU   ScenarioTitle: Нет активного задания
 RU   Text: Помочь госпоже Судзуки найти кошку  ·  Дом Судзуки
---   Wallet: 33,820
-RU   Caption: Меню
-RU   Caption: Поговорить
-RU   Caption: Карта
-RU   Mood: спокоен  ·  репутация 45  ·  дурная слава 0
---   Value: 100%
-RU   Progress: Готово · нажмите N и начните из журнала
-RU   Caption: Скрыть
+RU   Place: Город Нихонго
+--   Name: Long
 --   Level: 3
-== handbook_Places (27 texts)
 RU   Kicker: ◆ СЮЖЕТ · Chapter 3 · 近所とレストラン
-RU   Caption: Чат
+--   Value: 87%
+RU   Progress: Готово · нажмите N и начните из журнала
+--   Icon: ≡
+--   Value: 85%
+--   Label: -
+RU   Wallet: 39 425 руб.
+--   Value: 100%
+RU   Mood: спокоен  ·  репутация 51  ·  дурная слава 0
+--   Value: 88%
+RU   ScenarioTitle: Нет активного задания
+RU   Calendar: День 2 · 4/2 · Весна · возраст 16 23:25 · Очистить · 11°C
+--   Caption: F
+--   Lv: Lv.
+== handbook_Places (19 texts)
+--   Value: 100%
+RU   Text: Помочь госпоже Судзуки найти кошку  ·  Дом Судзуки
+RU   Place: Город Нихонго
+--   Name: Long
+--   Level: 3
+RU   Kicker: ◆ СЮЖЕТ · Chapter 3 · 近所とレストラン
+--   Value: 87%
+RU   Progress: Готово · нажмите N и начните из журнала
+--   Icon: ≡
+--   Value: 85%
+--   Label: -
+RU   Wallet: 39 425 руб.
+--   Value: 100%
+RU   Mood: спокоен  ·  репутация 51  ·  дурная слава 0
+--   Value: 88%
+RU   ScenarioTitle: Нет активного задания
 RU   Calendar: День 2 · 4/2 · Весна · возраст 16 23:27 · Очистить · 11°C
---   Value: 88%
---   Value: 86%
---   Name: Long
-RU   Place: Город Нихонго
-RU   Caption: Бег
---   Value: 88%
-RU   Caption: Сумка
-RU   Caption: Прыжок
---   Icon: ≡
---   Lv: Lv.
 --   Caption: F
---   Value: 100%
---   Label: -
-RU   ScenarioTitle: Нет активного задания
-RU   Text: Помочь госпоже Судзуки найти кошку  ·  Дом Судзуки
---   Wallet: 33,820
-RU   Caption: Меню
-RU   Caption: Поговорить
-RU   Caption: Карта
-RU   Mood: спокоен  ·  репутация 45  ·  дурная слава 0
---   Value: 100%
-RU   Progress: Готово · нажмите N и начните из журнала
-RU   Caption: Скрыть
---   Level: 3
-== handbook_Health (27 texts)
-RU   Kicker: ◆ СЮЖЕТ · Chapter 3 · 近所とレストラン
-RU   Caption: Чат
-RU   Calendar: День 2 · 4/2 · Весна · возраст 16 23:29 · Очистить · 11°C
---   Value: 88%
---   Value: 86%
---   Name: Long
-RU   Place: Город Нихонго
-RU   Caption: Бег
---   Value: 88%
-RU   Caption: Сумка
-RU   Caption: Прыжок
---   Icon: ≡
 --   Lv: Lv.
---   Caption: F
+== handbook_Health (19 texts)
 --   Value: 100%
---   Label: -
-RU   ScenarioTitle: Нет активного задания
 RU   Text: Помочь госпоже Судзуки найти кошку  ·  Дом Судзуки
---   Wallet: 33,820
-RU   Caption: Меню
-RU   Caption: Поговорить
-RU   Caption: Карта
-RU   Mood: спокоен  ·  репутация 45  ·  дурная слава 0
---   Value: 100%
-RU   Progress: Готово · нажмите N и начните из журнала
-RU   Caption: Скрыть
+RU   Place: Город Нихонго
+--   Name: Long
 --   Level: 3
-== handbook_Careers (27 texts)
 RU   Kicker: ◆ СЮЖЕТ · Chapter 3 · 近所とレストラン
-RU   Caption: Чат
+--   Value: 87%
+RU   Progress: Готово · нажмите N и начните из журнала
+--   Icon: ≡
+--   Value: 85%
+--   Label: -
+RU   Wallet: 39 425 руб.
+--   Value: 100%
+RU   Mood: спокоен  ·  репутация 51  ·  дурная слава 0
+--   Value: 88%
+RU   ScenarioTitle: Нет активного задания
+RU   Calendar: День 2 · 4/2 · Весна · возраст 16 23:28 · Очистить · 11°C
+--   Caption: F
+--   Lv: Lv.
+== handbook_Careers (19 texts)
+--   Value: 100%
+RU   Text: Помочь госпоже Судзуки найти кошку  ·  Дом Судзуки
+RU   Place: Город Нихонго
+--   Name: Long
+--   Level: 3
+RU   Kicker: ◆ СЮЖЕТ · Chapter 3 · 近所とレストラン
+--   Value: 87%
+RU   Progress: Готово · нажмите N и начните из журнала
+--   Icon: ≡
+--   Value: 85%
+--   Label: -
+RU   Wallet: 39 425 руб.
+--   Value: 100%
+RU   Mood: спокоен  ·  репутация 51  ·  дурная слава 0
+--   Value: 88%
+RU   ScenarioTitle: Нет активного задания
 RU   Calendar: День 2 · 4/2 · Весна · возраст 16 23:30 · Очистить · 11°C
---   Value: 88%
---   Value: 86%
---   Name: Long
-RU   Place: Город Нихонго
-RU   Caption: Бег
---   Value: 88%
-RU   Caption: Сумка
-RU   Caption: Прыжок
---   Icon: ≡
---   Lv: Lv.
 --   Caption: F
---   Value: 100%
---   Label: -
-RU   ScenarioTitle: Нет активного задания
-RU   Text: Помочь госпоже Судзуки найти кошку  ·  Дом Судзуки
---   Wallet: 33,820
-RU   Caption: Меню
-RU   Caption: Поговорить
-RU   Caption: Карта
-RU   Mood: спокоен  ·  репутация 45  ·  дурная слава 0
---   Value: 100%
-RU   Progress: Готово · нажмите N и начните из журнала
-RU   Caption: Скрыть
---   Level: 3
-== handbook_Doctor (27 texts)
-RU   Kicker: ◆ СЮЖЕТ · Chapter 3 · 近所とレストラン
-RU   Caption: Чат
-RU   Calendar: День 2 · 4/2 · Весна · возраст 16 23:32 · Очистить · 11°C
---   Value: 88%
---   Value: 86%
---   Name: Long
-RU   Place: Город Нихонго
-RU   Caption: Бег
---   Value: 88%
-RU   Caption: Сумка
-RU   Caption: Прыжок
---   Icon: ≡
 --   Lv: Lv.
---   Caption: F
+== handbook_Doctor (19 texts)
 --   Value: 100%
---   Label: -
-RU   ScenarioTitle: Нет активного задания
 RU   Text: Помочь госпоже Судзуки найти кошку  ·  Дом Судзуки
---   Wallet: 33,820
-RU   Caption: Меню
-RU   Caption: Поговорить
-RU   Caption: Карта
-RU   Mood: спокоен  ·  репутация 45  ·  дурная слава 0
---   Value: 100%
-RU   Progress: Готово · нажмите N и начните из журнала
-RU   Caption: Скрыть
+RU   Place: Город Нихонго
+--   Name: Long
 --   Level: 3
-== handbook_Music (27 texts)
 RU   Kicker: ◆ СЮЖЕТ · Chapter 3 · 近所とレストラン
-RU   Caption: Чат
+--   Value: 87%
+RU   Progress: Готово · нажмите N и начните из журнала
+--   Icon: ≡
+--   Value: 85%
+--   Label: -
+RU   Wallet: 39 425 руб.
+--   Value: 100%
+RU   Mood: спокоен  ·  репутация 51  ·  дурная слава 0
+--   Value: 88%
+RU   ScenarioTitle: Нет активного задания
+RU   Calendar: День 2 · 4/2 · Весна · возраст 16 23:31 · Очистить · 11°C
+--   Caption: F
+--   Lv: Lv.
+== handbook_Music (19 texts)
+--   Value: 100%
+RU   Text: Помочь госпоже Судзуки найти кошку  ·  Дом Судзуки
+RU   Place: Город Нихонго
+--   Name: Long
+--   Level: 3
+RU   Kicker: ◆ СЮЖЕТ · Chapter 3 · 近所とレストラン
+--   Value: 87%
+RU   Progress: Готово · нажмите N и начните из журнала
+--   Icon: ≡
+--   Value: 85%
+--   Label: -
+RU   Wallet: 39 425 руб.
+--   Value: 100%
+RU   Mood: спокоен  ·  репутация 51  ·  дурная слава 0
+--   Value: 88%
+RU   ScenarioTitle: Нет активного задания
 RU   Calendar: День 2 · 4/2 · Весна · возраст 16 23:33 · Очистить · 11°C
---   Value: 88%
---   Value: 86%
---   Name: Long
-RU   Place: Город Нихонго
-RU   Caption: Бег
---   Value: 88%
-RU   Caption: Сумка
-RU   Caption: Прыжок
---   Icon: ≡
---   Lv: Lv.
 --   Caption: F
---   Value: 100%
---   Label: -
-RU   ScenarioTitle: Нет активного задания
-RU   Text: Помочь госпоже Судзуки найти кошку  ·  Дом Судзуки
---   Wallet: 33,820
-RU   Caption: Меню
-RU   Caption: Поговорить
-RU   Caption: Карта
-RU   Mood: спокоен  ·  репутация 45  ·  дурная слава 0
---   Value: 100%
-RU   Progress: Готово · нажмите N и начните из журнала
-RU   Caption: Скрыть
---   Level: 3
-== handbook_Dictionary (27 texts)
-RU   Kicker: ◆ СЮЖЕТ · Chapter 3 · 近所とレストラン
-RU   Caption: Чат
-RU   Calendar: День 2 · 4/2 · Весна · возраст 16 23:35 · Очистить · 11°C
---   Value: 88%
---   Value: 86%
---   Name: Long
-RU   Place: Город Нихонго
-RU   Caption: Бег
---   Value: 88%
-RU   Caption: Сумка
-RU   Caption: Прыжок
---   Icon: ≡
 --   Lv: Lv.
---   Caption: F
+== handbook_Dictionary (19 texts)
 --   Value: 100%
---   Label: -
-RU   ScenarioTitle: Нет активного задания
 RU   Text: Помочь госпоже Судзуки найти кошку  ·  Дом Судзуки
---   Wallet: 33,820
-RU   Caption: Меню
-RU   Caption: Поговорить
-RU   Caption: Карта
-RU   Mood: спокоен  ·  репутация 45  ·  дурная слава 0
---   Value: 100%
-RU   Progress: Готово · нажмите N и начните из журнала
-RU   Caption: Скрыть
---   Level: 3
-== tasks (86 texts)
-RU   Kicker: ◆ СЮЖЕТ · Chapter 3 · 近所とレストラン
-RU   Caption: Чат
-RU   Label: Ежедневно
-RU   Label: Обучение
---   Count: 0/2
-RU   Calendar: День 2 · 4/2 · Весна · возраст 16 23:36 · Очистить · 11°C
-RU   Label: Заказ на картину    Подработка · следующая смена через 1 мин
-RU   How: Повышайте знания: уроки в школе «Хибари», экзамены JLPT, учебный стол дома, задания и сюжет.
-RU   Text: 700 руб.
-RU   Section_completed: ГОТОВО   12
-RU   Always: ✓  Хибари Март · Школа «Хибари» — всегда открыто
---   Value: 88%
-RU   RewardsTitle: Награды
---   Count: 0/2
-RU   Label: Список слов острова Мидори    Обучение · 30 XP
-RU   Name: ✓   Район станции Экимаэ     Поездка на поезде
---   Value: 86%
---   Name: Long
-RU   Info: Дал(а)   Аоки (сотрудник ресторана)       Где   «Суши Хибари», станция Минато  ✓ Открыто — без ограничения по уровню        Повтор   через 5 мин
 RU   Place: Город Нихонго
-RU   Label: Представиться в классе    Сюжет
-RU   Description: Аоки нужен официант: поймите японский заказ, заберите нужное блюдо на раздаче и отнесите к нужному столу.
-RU   Label: Медосмотр (健康診断)    Клиника · 35 XP
-RU   Caption: Бег
-RU   Section_available: ДОСТУПНО   84
+--   Name: Long
+--   Level: 3
+RU   Kicker: ◆ СЮЖЕТ · Chapter 3 · 近所とレストラン
+--   Value: 87%
+RU   Progress: Готово · нажмите N и начните из журнала
+--   Icon: ≡
+--   Value: 85%
+--   Label: -
+RU   Wallet: 39 425 руб.
+--   Value: 100%
+RU   Mood: спокоен  ·  репутация 51  ·  дурная слава 0
 --   Value: 88%
-RU   Label: Ужин в суши-ресторане    Сюжет
-RU   Title: ДОРОЖНАЯ КАРТА   · 220 знаний
+RU   ScenarioTitle: Нет активного задания
+RU   Calendar: День 2 · 4/2 · Весна · возраст 16 23:34 · Очистить · 11°C
+--   Caption: F
+--   Lv: Lv.
+== tasks (78 texts)
+--   Value: 100%
+--   Check: ○
+RU   Text: Помочь госпоже Судзуки найти кошку  ·  Дом Судзуки
 RU   Label: Игровой центр с Ким    Сюжет
-RU   Label: Сюжет
-RU   Caption: Сумка
-RU   Name: ✓   Суши Хибари     Ваш первый ресторан
-RU   Label: Купить рисовый шарик в круглосуточном магазине    Сюжет
-RU   Name: ✓   Ваша спальня     Ваша комната
-RU   Name: ✓   Игровой центр Хибари     Приглашение от одноклассника
-RU   Caption: Прыжок
-RU   Label: Подработка в «Хибари Март»    Подработка · 600 руб.
-RU   Label: Выступление в музыкальном магазине «Хибики»    Подработка · следующая смена через 1 мин
-RU   Label: Диджей-сет в магазине «Хибики»    Подработка · следующая смена через 1 мин
---   Icon: ≡
-RU   ObjectivesTitle: Цели
-RU   Label: Клиника
-RU   Label: Первый улов    Ферма · 100 руб.
---   Lv: Lv.
-RU   Label: Смена официанта в «Суши Хибари»    Подработка · 700 руб.
---   Caption: F
-RU   Label: Прививка от гриппа (予防接種)    Клиника · 30 XP
-RU   Label: Ферма
-RU   Label: Подработка
-RU   Label: Первый урожай    Ферма · 150 руб.
-RU   Text: Доложить Аоки, чтобы получить оплату    (последний)
---   Value: 100%
-RU   Label: Сегодняшний обед    Ежедневно · 10 XP
---   Label: -
-RU   Text: +6 знаний
-RU   Label: Карьера
-RU   Text: Правильно принять 2 заказа
-RU   Text: Подать 2 блюда к нужным столам
-RU   Label: К полям острова Мидори    Сюжет
-RU   Label: Взять смену
-RU   ScenarioTitle: Нет активного задания
---   X: ×
-RU   Text: Помочь госпоже Судзуки найти кошку  ·  Дом Судзуки
---   Wallet: 33,820
-RU   Label: Все
-RU   Label: Чай в доме господина Танаки    Сюжет
-RU   Label: Добро пожаловать в Хибари-тё    Сюжет
-RU   Caption: Меню
---   Check: ○
-RU   Caption: Поговорить
-RU   Kicker: ПОДРАБОТКА  ·  доступно
-RU   Label: Помощник на ферме на острове Мидори    Подработка · 500 руб.
---   Check: ○
-RU   Label: Ваш первый визит в клинику в Японии    Клиника · 40 XP
-RU   Caption: Карта
-RU   Mood: спокоен  ·  репутация 45  ·  дурная слава 0
-RU   Title: Журнал заданий    [N]
-RU   Title: Смена официанта в «Суши Хибари»
---   Check: ○
---   Value: 100%
---   Text: +45 XP
-RU   Progress: Готово · нажмите N и начните из журнала
-RU   Caption: Скрыть
-RU   Name: ✓   Остров Мидори     Остров Мидори
---   Level: 3
---   Count: 0/1
-== notebook (45 texts)
-RU   Kicker: ◆ СЮЖЕТ · Chapter 3 · 近所とレストラン
-RU   Caption: Чат
---   Text: ​
-RU   Calendar: День 2 · 4/2 · Весна · возраст 16 23:37 · Очистить · 11°C
---   N: 3
---   N: 4
---   N: 2
---   Value: 88%
---   Value: 86%
---   Name: Long
-RU   Label: Стереть страницу
+RU   Label: Первый улов    Ферма · 600 руб.
 RU   Place: Город Нихонго
-RU   Caption: Бег
---   Value: 88%
-RU   Caption: Сумка
-RU   PageLabel: Страница  1  / 6
-RU   Caption: Прыжок
-RU   Usage: Написано страниц:  0 /6
---   Icon: ≡
---   N: 1
---   Label: ›
---   Lv: Lv.
---   Caption: F
---   N: 5
-RU   Placeholder: Название страницы…
---   Value: 100%
---   Label: -
-RU   ScenarioTitle: Нет активного задания
---   Text: ​
-RU   Text: Помочь госпоже Судзуки найти кошку  ·  Дом Судзуки
---   Wallet: 33,820
+--   Name: Long
+RU   Label: Ваш первый визит в клинику в Японии    Клиника · 800 руб.
+RU   Label: Медосмотр (健康診断)    Клиника · 800 руб.
+RU   Label: Ежедневно
+RU   Name: ✓   Район станции Экимаэ     Поездка на поезде
+RU   Label: Диджей-сет в магазине «Хибики»    Подработка · следующая смена через 1 мин
+--   Text: +45 XP
+RU   Label: Карьера
+RU   Label: Обучение
+RU   Section_completed: ГОТОВО   12
 --   X: ×
---   N: 6
-RU   Caption: Меню
-RU   Meter: 0 / 600  персонажи
-RU   Placeholder: Пишите заметки… (новые слова, советы к тестам, ответы для повторения)
-RU   Caption: Поговорить
-RU   Caption: Карта
-RU   Mood: спокоен  ·  репутация 45  ·  дурная слава 0
-RU   Heading: Блокнот
---   Label: ‹
---   Value: 100%
-RU   Progress: Готово · нажмите N и начните из журнала
-RU   Caption: Скрыть
+RU   Label: Представиться в классе    Сюжет
+RU   Name: ✓   Игровой центр Хибари     Приглашение от одноклассника
+RU   How: Повышайте знания: уроки в школе «Хибари», экзамены JLPT, учебный стол дома, задания и сюжет.
+RU   ObjectivesTitle: Цели
+RU   Label: К полям острова Мидори    Сюжет
+RU   Kicker: ПОДРАБОТКА  ·  доступно
+RU   Title: Смена официанта в «Суши Хибари»
 --   Level: 3
-== worldmap (123 texts)
 RU   Kicker: ◆ СЮЖЕТ · Chapter 3 · 近所とレストラン
+--   Value: 87%
+RU   Text: 1 750 руб.
+RU   Name: ✓   Остров Мидори     Остров Мидори
+RU   Progress: Готово · нажмите N и начните из журнала
+RU   Label: Смена официанта в «Суши Хибари»    Подработка · 1 750 руб.
+RU   Text: +6 знаний
+--   Icon: ≡
+--   Count: 0/2
+--   Value: 85%
+RU   Label: Первый урожай    Ферма · 600 руб.
+RU   Label: Взять смену
+--   Label: -
+RU   Name: ✓   Ваша спальня     Ваша комната
+RU   Wallet: 39 425 руб.
+RU   RewardsTitle: Награды
+RU   Label: Ферма
+RU   Info: Дал(а)   Аоки (сотрудник ресторана)       Где   «Суши Хибари», станция Минато  ✓ Открыто — без ограничения по уровню        Повтор   через 5 мин
+RU   Description: Аоки нужен официант: поймите японский заказ, заберите нужное блюдо на раздаче и отнесите к нужному столу.
+--   Check: ○
+--   Value: 100%
+RU   Title: ДОРОЖНАЯ КАРТА   · 274 знаний
+RU   Label: Сегодняшний обед    Ежедневно · 300 руб.
+RU   Label: Помощник на ферме на острове Мидори    Подработка · 1 250 руб.
+RU   Label: Прививка от гриппа (予防接種)    Клиника · 800 руб.
+RU   Mood: спокоен  ·  репутация 51  ·  дурная слава 0
+RU   Label: Клиника
+RU   Label: Добро пожаловать в Хибари-тё    Сюжет
+RU   Label: Сюжет
+RU   Label: Список слов острова Мидори    Обучение · 500 руб.
+RU   Label: Ужин в суши-ресторане    Сюжет
+RU   Label: Подработка в «Хибари Март»    Подработка · 1 500 руб.
+--   Value: 88%
+--   Count: 0/2
+RU   Always: ✓  Хибари Март · Школа «Хибари» — всегда открыто
+RU   Section_available: ДОСТУПНО   90
+RU   ScenarioTitle: Нет активного задания
+RU   Text: Доложить Аоки, чтобы получить оплату    (последний)
+RU   Calendar: День 2 · 4/2 · Весна · возраст 16 23:35 · Очистить · 11°C
+RU   Label: Выступление в музыкальном магазине «Хибики»    Подработка · следующая смена через 1 мин
+RU   Label: Купить рисовый шарик в круглосуточном магазине    Сюжет
+--   Check: ○
+RU   Label: Заказ на картину    Подработка · следующая смена через 1 мин
+RU   Label: Все
+RU   Name: ✓   Суши Хибари     Ваш первый ресторан
+RU   Text: Подать 2 блюда к нужным столам
+RU   Label: Чай в доме господина Танаки    Сюжет
+RU   Title: Журнал заданий    [N]
+--   Caption: F
+--   Lv: Lv.
+RU   Label: Подработка
+RU   Text: Правильно принять 2 заказа
+--   Count: 0/1
+== notebook (37 texts)
+--   Value: 100%
+RU   Text: Помочь госпоже Судзуки найти кошку  ·  Дом Судзуки
+RU   Place: Город Нихонго
+--   Name: Long
+--   N: 1
+RU   Heading: Блокнот
+--   N: 6
+--   Level: 3
+RU   Placeholder: Пишите заметки… (новые слова, советы к тестам, ответы для повторения)
+RU   Kicker: ◆ СЮЖЕТ · Chapter 3 · 近所とレストラン
+--   Value: 87%
+RU   Placeholder: Название страницы…
+RU   Progress: Готово · нажмите N и начните из журнала
+--   X: ×
+--   Icon: ≡
+--   Value: 85%
+--   Label: -
+RU   PageLabel: Страница  1  / 6
+RU   Wallet: 39 425 руб.
+--   Label: ›
+--   N: 5
+--   Value: 100%
+RU   Mood: спокоен  ·  репутация 51  ·  дурная слава 0
+RU   Meter: 0 / 600  персонажи
+--   Value: 88%
+--   N: 2
+RU   ScenarioTitle: Нет активного задания
+RU   Calendar: День 2 · 4/2 · Весна · возраст 16 23:37 · Очистить · 11°C
+--   Text: ​
+--   Text: ​
+--   Caption: F
+--   N: 4
+--   Lv: Lv.
+RU   Usage: Написано страниц:  0 /6
+RU   Label: Стереть страницу
+--   Label: ‹
+--   N: 3
+== worldmap (121 texts)
+RU   Text: Помочь госпоже Судзуки найти кошку  ·  Дом Судзуки
+--   Glyph: 学
+RU   Coordinates: Позиция  X 0.0  Z -13.5     ·     Нажмите на карту или место, чтобы дойти туда     ·     M / Esc: закрыть
 --   Label: ?
-RU   Caption: Чат
---   Text: 園
---   Glyph: 家
-RU   Name: ПАРК
---   Text: 掲
---   Distance: 67m
---   Glyph: 遊
---   Label: ?
+RU   Text: ВЫ
+--   Text: がっき
 --   Glyph: 駅
-RU   Calendar: День 2 · 4/2 · Весна · возраст 16 23:39 · Очистить · 11°C
---   Glyph: 掲
---   Glyph: 遊
---   Distance: 23m
---   Text: 店
-RU   Text: Аркада
 --   Label: ?
+--   Label: ?
+--   Text: いえ
+--   Text: えき
+RU   Name: Игровой центр Хибари
+--   Glyph: 服
+--   Level: 3
+RU   Kicker: ◆ СЮЖЕТ · Chapter 3 · 近所とレストラン
+--   Value: 87%
 RU   Name: Хибари-Хайтс (дом)
+--   Glyph: 医
+RU   Progress: Готово · нажмите N и начните из журнала
+--   Distance: 33m
+--   Icon: ≡
+RU   Name: Станция Хибари
+RU   Label: Текущая зона
+RU   Text: Ресторан
+RU   Name: ПАРК
+--   Text: 服
+--   Glyph: 掲
+--   Text: 家
+RU   Wallet: 39 425 руб.
+--   Label: ?
+RU   Name: ЦЕНТР
+--   Value: 100%
+RU   Text: Клиника
+RU   Label: Обзорная карта
+RU   Name: КАМПУС И СЕРВИСЫ
+--   Text: がっこう
+--   Glyph: 学
+--   Label: ×
+RU   Mood: спокоен  ·  репутация 51  ·  дурная слава 0
+--   Text: 医
+--   Glyph: 店
+--   Text: 掲
+RU   ScenarioTitle: Нет активного задания
+RU   Text: Парк
+--   Glyph: 遊
+--   Glyph: 音
+--   Distance: 9m
+--   Glyph: 掲
+--   Text: けいじばん
+RU   Label: Справочник · места
+--   Label: ?
+--   Caption: F
+--   Text: 店
+RU   Name: Hibari Mode (одежда)
 RU   Text: Жильё
 --   Label: ?
-RU   Name: Суши Хибари
---   Glyph: 音
+--   Label: ?
 --   Glyph: 駅
---   Distance: 18m
---   Distance: 28m
---   Value: 88%
---   Distance: 31m
+RU   N: С
 RU   Name: УЛИЦА САКУРА
---   Text: こうえん
---   Value: 86%
---   Name: Long
-RU   Name: Станция Хибари
---   Text: 寿
-RU   Place: Город Нихонго
-RU   Name: РАЙОН ВОКЗАЛА
---   Text: 学
-RU   Name: ЖИЛОЙ КВАРТАЛ
-RU   Text: Школа
-RU   Name: Игровой центр Хибари
-RU   Name: Хибари Март
-RU   Caption: Бег
---   Distance: 19m
---   Value: 88%
---   Text: ゲーセン
---   Glyph: 寿
---   Text: がっこう
-RU   Caption: Сумка
-RU   Text: Ресторан
---   Glyph: 医
---   Glyph: 園
-RU   Caption: Прыжок
---   Text: 遊
-RU   Text: ВЫ
-RU   Location: Вы находитесь: Город Нихонго
---   Label: ?
---   Glyph: 店
-RU   Title: ちめい    Места · нажмите, чтобы отправиться
---   Distance: 19m
---   Text: 20 m
---   Glyph: 学
-RU   Label: Справочник · места
---   Icon: ≡
-RU   Name: Клиника Хибари
---   Glyph: 寿
---   Text: 駅
---   Label: ?
---   Text: すし
---   Text: がっき
-RU   Label: Текущая зона
---   Glyph: 医
-RU   Text: Парк
+--   Distance: 67m
+--   Distance: 28m
+--   Value: 100%
 --   Glyph: 家
-RU   Text: Магазин
---   Lv: Lv.
---   Caption: F
+RU   Place: Город Нихонго
+--   Name: Long
+--   Distance: 23m
+--   Text: 遊
+--   Text: ふく
+--   Text: すし
+--   Distance: 19m
+--   Glyph: 園
+--   Glyph: 遊
+--   Text: ひばりマート
+--   Text: 園
+--   Text: クリニック
+RU   Name: Хибари Март
+--   Glyph: 店
+--   Distance: 19m
+RU   Name: Парк Хибари
+RU   Location: Вы находитесь: Город Нихонго
+RU   Title: ちめい    Места · нажмите, чтобы отправиться
+RU   Name: Музыка и живопись «Хибики»
+--   Distance: 43m
 --   Label: ?
 --   Distance: 17m
-RU   Text: Клиника
---   Value: 100%
+RU   Text: Школа
+--   Distance: 31m
+--   Value: 85%
+--   Glyph: 家
 --   Label: -
+RU   Name: Суши Хибари
 --   Text: 音
---   Text: ひばりマート
---   Text: えき
---   Glyph: 学
---   Glyph: 掲
---   Label: ?
---   Glyph: 店
-RU   Name: ЦЕНТР
-RU   Name: КАМПУС И СЕРВИСЫ
-RU   Coordinates: Позиция  X 0.0  Z -13.5     ·     Нажмите на карту или место, чтобы дойти туда     ·     M / Esc: закрыть
-RU   ScenarioTitle: Нет активного задания
+--   Glyph: 医
+--   Distance: 18m
 RU   Text: Вы здесь
---   Text: いえ
-RU   Label: Обзорная карта
-RU   Text: Помочь госпоже Судзуки найти кошку  ·  Дом Судзуки
---   Wallet: 33,820
-RU   Text: Вокзал
-RU   Name: Музыка и живопись «Хибики»
-RU   Caption: Меню
---   Label: ×
-RU   Name: Парк Хибари
-RU   Caption: Поговорить
 --   Label: ?
-RU   Header: КАРТА ХИБАРИ-ТЁ
-RU   Caption: Карта
-RU   Mood: спокоен  ·  репутация 45  ·  дурная слава 0
---   Label: ?
-RU   Name: Японская школа Хибари
---   Distance: 9m
-RU   N: С
-RU   Name: Доска объявлений
---   Text: 家
---   Value: 100%
-RU   Progress: Готово · нажмите N и начните из журнала
-RU   Caption: Скрыть
---   Text: 医
-RU   Text: Объявления
---   Text: けいじばん
---   Text: クリニック
---   Level: 3
+--   Text: 学
+--   Text: 駅
+RU   Name: Клиника Хибари
 --   Glyph: 園
---   Distance: 33m
-== settings (116 texts)
-RU   Label: Музыка: вкл.
-RU   Kicker: ◆ СЮЖЕТ · Chapter 3 · 近所とレストラン
-RU   Caption: Чат
-RU   Label: Говорить по нажатию
---   Label: V
-RU   Calendar: День 2 · 4/2 · Весна · возраст 16 23:40 · Очистить · 11°C
-RU   Label: Спринт
---   Label: W
---   Label: S
---   Label: F
-RU   Label: Курсор (удерживать)
+RU   Text: Объявления
 --   Value: 88%
---   Label: Left Shift
---   Value: 86%
---   Name: Long
-RU   Place: Город Нихонго
-RU   Label: Язык
-RU   Label: Авто: показывается на телефонах и планшетах. Клавиатура и мышь продолжают работать. «Скрыть» убирает их, пока вы не нажмёте «Управление».
-RU   Label: Справочник
-RU   Caption: Бег
---   Label: C
---   Value: 88%
-RU   Label: Мышь: поворот камеры · Колесо: масштаб · Esc: закрыть верхнее окно · K: экзамены · L: тетрадь · `: обучение · X: навыки · Z: компания · X (спальня): декор
-RU   Label: Магазин (остров)
-RU   Label: Повернуть вид влево
-RU   Label: Назад
-RU   Caption: Сумка
-RU   Label: Атмосфера: вкл.
-RU   Label: Сенсорное управление
---   Label: X
-RU   Caption: Прыжок
-RU   Label: Закрыть
-RU   Label: Мышь поворачивает камеру. Удерживайте Ctrl или откройте окно, чтобы появился курсор.
---   Label: 1.0x
-RU   Label: Друзья и сообщения
---   Label: .
---   Icon: ≡
-RU   Label: Инверсия по Y: выкл.
-RU   Label: Режим: обзор мышью
-RU   Label: Эмоции
-RU   Label: Музыка
-RU   Label: Размер кнопок  1.00
-RU   Label: Ведущая рука: правая
---   Label: ,
-RU   Label: Прозрачность  0.88
---   Label: U
-RU   Label: Настройки
-RU   Label: Сумка
-RU   Label: Лево
+RU   Name: ЖИЛОЙ КВАРТАЛ
+--   Glyph: 寿
+--   Label: ?
+--   Text: 寿
+RU   Calendar: День 2 · 4/2 · Весна · возраст 16 23:38 · Очистить · 11°C
+RU   Name: Японская школа Хибари
+RU   Text: Магазин
+RU   Text: Вокзал
+--   Text: ゲーセン
+RU   Name: Доска объявлений
+--   Glyph: 寿
+RU   Header: КАРТА ХИБАРИ-ТЁ
+--   Label: ?
+RU   Name: РАЙОН ВОКЗАЛА
+--   Text: こうえん
+--   Text: 20 m
 --   Lv: Lv.
-RU   Label: Сбросить клавиши
---   Caption: F
-RU   Label: Следующая цель взаимодействия
---   Label: 0%
---   Label: Space
-RU   Label: Чувствительность мыши
+RU   Text: Аркада
+== settings (108 texts)
+RU   Text: Помочь госпоже Судзуки найти кошку  ·  Дом Судзуки
+RU   Label: Авто: показывается на телефонах и планшетах. Клавиатура и мышь продолжают работать. «Скрыть» убирает их, пока вы не нажмёте «Управление».
+--   Label: Left Shift
+--   Label: RU
+RU   Label: Музыка
+RU   Label: Говорить по нажатию
+RU   Label: Настройки
+RU   Label: Закрыть
+--   Level: 3
+RU   Kicker: ◆ СЮЖЕТ · Chapter 3 · 近所とレストラン
+--   Value: 87%
+RU   Label: Справочник
+--   Label: N
+RU   Label: Повернуть вид вправо
+RU   Label: Профиль
+RU   Progress: Готово · нажмите N и начните из журнала
+--   Icon: ≡
+RU   Label: Ведущая рука: правая
 --   Label: B
-RU   Label: Звуковые эффекты
-RU   Label: Закрыть / назад
---   Label: Q
---   Label: A
---   Label: M
---   Label: G
 --   Label: 0%
-RU   Label: Камера и мышь
---   Label: E
+RU   Label: Режим: обзор мышью
+RU   Label: Сбросить клавиши
+RU   Wallet: 39 425 руб.
+--   Label: X
+RU   Label: Запись
+RU   Label: Спринт
+RU   Label: Журнал заданий
+--   Label: 30%
 RU   Label: Право
 --   Value: 100%
---   Label: -
-RU   Label: Сенсорное управление: выкл.
-RU   Label: Прыжок
-RU   Label: Вперёд
---   Label: D
+--   Label: Q
+RU   Label: Лево
+RU   Mood: спокоен  ·  репутация 51  ·  дурная слава 0
 --   Label: JP
-RU   Label: Настройки
-RU   Label: Меньше движения: выкл.
---   Label: VI
-RU   ScenarioTitle: Нет активного задания
-RU   Label: Окружение (птицы, насекомые, улица)
-RU   Text: Помочь госпоже Судзуки найти кошку  ·  Дом Судзуки
---   Wallet: 33,820
---   Label: Escape
-RU   Label: Звук
---   Label: N
-RU   Caption: Меню
---   Label: Left Control
-RU   Label: Режим макс. теста: выкл.
-RU   Label: Выбросить предмет
-RU   Caption: Поговорить
-RU   Label: Карта
-RU   Label: Журнал заданий
-RU   Caption: Карта
-RU   Mood: спокоен  ·  репутация 45  ·  дурная слава 0
 --   Label: T
-RU   Label: Нажмите на клавишу, чтобы переназначить. Удерживайте Ctrl, чтобы показать курсор во время игры.
---   Label: P
---   Label: RU
-RU   Label: Профиль
-RU   Label: Использовать предмет
---   Label: Enter
---   Label: H
---   Value: 100%
+RU   Label: Режим макс. теста: выкл.
+RU   Label: Друзья и сообщения
+RU   Label: Назад
+RU   Label: Атмосфера: вкл.
+RU   ScenarioTitle: Нет активного задания
+RU   Label: Чувствительность мыши
+--   Label: V
+RU   Label: Звуковые эффекты
+RU   Label: Сенсорное управление
+RU   Label: Камера и мышь
+--   Label: 0%
+RU   Label: Повернуть вид влево
+--   Caption: F
+--   Label: ,
 RU   Label: Взаимодействовать
-RU   Label: Повернуть вид вправо
-RU   Progress: Готово · нажмите N и начните из журнала
---   Label: O
---   Label: Tab
-RU   Caption: Скрыть
+--   Label: Escape
+--   Label: U
+--   Value: 100%
 RU   Label: Обзорная камера
-RU   Label: Запись
+RU   Place: Город Нихонго
+--   Name: Long
+--   Label: Tab
+--   Label: C
+RU   Label: Нажмите на клавишу, чтобы переназначить. Удерживайте Ctrl, чтобы показать курсор во время игры.
+--   Label: Enter
+RU   Label: Мышь поворачивает камеру. Удерживайте Ctrl или откройте окно, чтобы появился курсор.
+--   Label: G
+RU   Label: Язык
+RU   Label: Размер кнопок  1.00
+--   Label: E
+--   Label: M
+--   Label: S
+--   Label: D
+RU   Label: Мышь: поворот камеры · Колесо: масштаб · Esc: закрыть верхнее окно · K: экзамены · L: тетрадь · `: обучение · X: навыки · Z: компания · X (спальня): декор
+--   Label: W
 --   Label: Y
+RU   Label: Магазин (остров)
 --   Label: EN
---   Level: 3
-RU   Label: Клавиши управления
+RU   Label: Выбросить предмет
+RU   Label: Меньше движения: выкл.
+--   Value: 85%
+--   Label: -
+--   Label: .
+--   Label: O
+RU   Label: Вперёд
+--   Label: F
+RU   Label: Использовать предмет
+--   Label: 1.0x
+RU   Label: Карта
+--   Label: A
+RU   Label: Звук
+--   Label: P
 RU   Label: Чат
---   Label: 30%
-== ExamCenterPopup (112 texts)
-RU   Kicker: ◆ СЮЖЕТ · Chapter 3 · 近所とレストラン
-RU   Text: вопросов: 23
-RU   Caption: Чат
-RU   Text: разделов: 2
-RU   Text: разделов: 2
---   Label_JLPT: JLPT
-RU   Head: Ваш рекорд
-RU   Body: Работы N5 в реальном формате: лексика · грамматика и чтение · аудирование с записью. Мгновенная проверка с минимумами по разделам и разбивкой по типам вопросов.
+--   Label: VI
+RU   Label: Клавиши управления
+--   Label: H
+--   Label: Left Control
+--   Value: 88%
+RU   Label: Инверсия по Y: выкл.
+RU   Label: Следующая цель взаимодействия
+RU   Label: Закрыть / назад
+RU   Calendar: День 2 · 4/2 · Весна · возраст 16 23:40 · Очистить · 11°C
+RU   Label: Прыжок
+--   Label: Space
+RU   Label: Настройки
+--   Lv: Lv.
+RU   Label: Играть: компьютер
+RU   Label: Музыка: вкл.
+RU   Label: Курсор (удерживать)
+RU   Label: Прозрачность  0.88
+RU   Label: Окружение (птицы, насекомые, улица)
+RU   Label: Эмоции
+RU   Label: Сумка
+== ExamCenterPopup (104 texts)
+RU   Text: Помочь госпоже Судзуки найти кошку  ·  Дом Судзуки
+--   Value_IELTS: Band 9.0
 --   Level: N5
-RU   Calendar: День 2 · 4/2 · Весна · возраст 16 23:41 · Очистить · 11°C
-RU   Text: вопросов: 25
-RU   Subtitle: Выберите экзамен, затем тренируйтесь или пройдите пробный тест — результаты сохранятся в вашем почтовом ящике.
-RU   Text: вопросов: 14
---   Level: N5
-RU   Title: N5  ·  Мини-тест JLPT N5 (без аудирования)
+RU   Sub: Уровень японского языка
 RU   Best: Ещё не пробовали
-RU   Label: Начать
-RU   Text: Авторский набор
+RU   Text: 45 мин
+RU   Text: 45 мин
+RU   Best: Ещё не пробовали
+--   Level: 3
+RU   Kicker: ◆ СЮЖЕТ · Chapter 3 · 近所とレストラン
+--   Value: 87%
+RU   Progress: Готово · нажмите N и начните из журнала
+RU   Title: Почтовый ящик результатов
+RU   Subtitle: Выберите экзамен, затем тренируйтесь или пройдите пробный тест — результаты сохранятся в вашем почтовом ящике.
+--   Icon: ≡
+RU   Text: вопросов: 25
 RU   Label: Начать
 RU   Description: Авторский тренировочный тест в стиле JLPT (лексика + грамматика + чтение). Без раздела аудирования; проходные баллы приведены к шкале в 120 баллов (2/3 от 180).
+RU   Title: N3  ·  Мини-тест JLPT N3 (без аудирования)
+RU   Description: Оригинальный тренировочный тест в текущем формате N5 (67 вопросов, 90 минут). Аудирование озвучено ИИ.
+RU   Wallet: 39 425 руб.
+--   Label_IELTS: IELTS
+RU   Head: Ваш рекорд
+--   Value: 100%
+--   Level: N2
+RU   Sub: Разговор с экзаменатором
+--   Title: JLPT
+RU   Title: N4  ·  Мини-тест JLPT N4 (без аудирования)
+RU   Label: Начать
+RU   Mood: спокоен  ·  репутация 51  ·  дурная слава 0
+--   Level: N3
+RU   Title: N5  ·  JLPT N5 — тренировочный тест 1
+--   Value_JLPT: —
+RU   Label: Начать
+RU   Title: Квалификационный экзамен по японскому языку
+RU   ScenarioTitle: Нет активного задания
+RU   Label: Учитесь и тренируйтесь в Школе
+RU   Text: вопросов: 23
+RU   Text: Авторский набор
+RU   Text: Авторский набор
+RU   Title: N1  ·  Мини-тест JLPT N1 (без аудирования)
+--   Text: JLPT
+RU   Text: 45 мин
+--   Caption: F
+RU   Text: 45 мин
+--   Level: N1
 RU   Title: N5  ·  JLPT N5 — полный пробный тест 2
---   Value: 88%
---   Value: 86%
---   Name: Long
+RU   Text: вопросов: 14
+RU   Text: разделов: 2
+RU   Text: Авторский набор
+RU   Text: Авторский набор
+RU   Text: вопросов: 67
 RU   Best: Ещё не пробовали
+RU   Text: разделов: 3
+RU   Count: попыток: 155
+--   Value: 100%
 RU   Description: Авторский тренировочный тест в стиле JLPT (лексика + грамматика + чтение). Без раздела аудирования; проходные баллы приведены к шкале в 120 баллов (2/3 от 180).
 RU   Place: Город Нихонго
---   Value_JLPT: —
-RU   Text: вопросов: 25
---   Level: N2
-RU   Label: Начать
-RU   Title: N5  ·  JLPT N5 — тренировочный тест 1
-RU   Caption: Бег
-RU   Title: Почтовый ящик результатов
---   Value: 88%
-RU   Caption: Сумка
---   Title: JLPT
-RU   Caption: Прыжок
-RU   Text: 45 мин
-RU   Title: N3  ·  Мини-тест JLPT N3 (без аудирования)
-RU   Text: вопросов: 67
-RU   Description: Короткий тренировочный набор N5: лексика и кандзи, грамматика и чтение, аудирование (аудирование имитируется текстом).
-RU   Sub: От основ до продвинутого уровня
-RU   Title: N1  ·  Мини-тест JLPT N1 (без аудирования)
---   Icon: ≡
---   Level: N4
-RU   Description: Авторский тренировочный тест в стиле JLPT (лексика + грамматика + чтение). Без раздела аудирования; проходные баллы приведены к шкале в 120 баллов (2/3 от 180).
+--   Name: Long
+RU   Text: разделов: 2
 RU   Best: Ещё не пробовали
---   Title: IELTS
-RU   Title: Квалификационный экзамен по японскому языку
-RU   Text: Авторский набор
+RU   Label: Начать
+RU   Sub: Академический английский
+RU   Text: разделов: 2
+RU   Sub: Отмеченные результаты
+RU   Description: Короткий тренировочный набор N5: лексика и кандзи, грамматика и чтение, аудирование (аудирование имитируется текстом).
+--   Level: N4
+RU   Text: вопросов: 25
 RU   Text: 45 мин
+--   Level: N5
+RU   Best: Ещё не пробовали
 RU   Text: Экзаменационный центр
---   Text: JLPT
-RU   Label: Учитесь и тренируйтесь в Школе
+RU   Text: вопросов: 23
+RU   Body: Работы N5 в реальном формате: лексика · грамматика и чтение · аудирование с записью. Мгновенная проверка с минимумами по разделам и разбивкой по типам вопросов.
+--   Value: 85%
+RU   Label: Начать
+--   Label: -
+RU   Best: Ещё не пробовали
+RU   Description: Авторский тренировочный тест в стиле JLPT (лексика + грамматика + чтение). Без раздела аудирования; проходные баллы приведены к шкале в 120 баллов (2/3 от 180).
+RU   Label: Начать
+RU   Text: разделов: 3
+RU   Best: Ещё не пробовали
+RU   Description: Авторский тренировочный тест в стиле JLPT (лексика + грамматика + чтение). Без раздела аудирования; проходные баллы приведены к шкале в 120 баллов (2/3 от 180).
+--   Title: ENGLISH
+RU   Text: Авторский набор
+RU   Text: 90 мин
+--   Title: IELTS
+--   Value: 88%
+RU   Title: N2  ·  Мини-тест JLPT N2 (без аудирования)
+RU   Text: Авторский набор
+RU   Text: разделов: 2
+RU   Label: Начать
+RU   Text: 20 мин
+RU   Text: Авторский набор
+RU   Text: вопросов: 27
+RU   Calendar: День 2 · 4/2 · Весна · возраст 16 23:41 · Очистить · 11°C
+RU   Description: Авторский тренировочный тест в стиле JLPT (лексика + грамматика + чтение). Без раздела аудирования; проходные баллы приведены к шкале в 120 баллов (2/3 от 180).
+RU   Sub: От основ до продвинутого уровня
+--   Level: N5
 RU   Text: разделов: 2
 --   Lv: Lv.
-RU   Text: разделов: 2
-RU   Text: 20 мин
-RU   Label: Начать
---   Caption: F
-RU   Text: 90 мин
---   Level: N5
-RU   Sub: Разговор с экзаменатором
-RU   Text: разделов: 3
-RU   Best: Ещё не пробовали
-RU   Text: разделов: 3
-RU   Text: 45 мин
---   Value: 100%
---   Label: -
-RU   Sub: Отмеченные результаты
---   Title: ENGLISH
-RU   Sub: Академический английский
-RU   Sub: Уровень японского языка
-RU   Text: Авторский набор
-RU   Description: Авторский тренировочный тест в стиле JLPT (лексика + грамматика + чтение). Без раздела аудирования; проходные баллы приведены к шкале в 120 баллов (2/3 от 180).
-RU   Label: Начать
-RU   ScenarioTitle: Нет активного задания
-RU   Text: 45 мин
-RU   Text: Авторский набор
---   Value_IELTS: Band 9.0
-RU   Text: Помочь госпоже Судзуки найти кошку  ·  Дом Судзуки
---   Wallet: 33,820
-RU   Text: разделов: 2
---   Level: N3
-RU   Best: Ещё не пробовали
-RU   Caption: Меню
-RU   Best: Ещё не пробовали
-RU   Label: Начать
-RU   Caption: Поговорить
-RU   Best: Ещё не пробовали
-RU   Caption: Карта
-RU   Text: Авторский набор
-RU   Title: N4  ·  Мини-тест JLPT N4 (без аудирования)
-RU   Mood: спокоен  ·  репутация 45  ·  дурная слава 0
-RU   Text: вопросов: 27
---   Label_IELTS: IELTS
-RU   Description: Авторский тренировочный тест в стиле JLPT (лексика + грамматика + чтение). Без раздела аудирования; проходные баллы приведены к шкале в 120 баллов (2/3 от 180).
---   Value: 100%
-RU   Text: 45 мин
-RU   Progress: Готово · нажмите N и начните из журнала
-RU   Title: N2  ·  Мини-тест JLPT N2 (без аудирования)
---   Level: N1
-RU   Caption: Скрыть
-RU   Text: Авторский набор
-RU   Label: Начать
-RU   Text: вопросов: 23
+RU   Title: N5  ·  Мини-тест JLPT N5 (без аудирования)
 RU   Title: Живой экзамен
-RU   Description: Оригинальный тренировочный тест в текущем формате N5 (67 вопросов, 90 минут). Аудирование озвучено ИИ.
-RU   Count: попыток: 131
-RU   Text: Авторский набор
+--   Label_JLPT: JLPT
+== StudyHubPopup (54 texts)
+RU   Title: Базовый английский
+RU   Text: Помочь госпоже Судзуки найти кошку  ·  Дом Судзуки
+RU   Label: Мой учебный план
+RU   Label: Открыть
+--   Text: ★ 3/36
 --   Level: 3
-== StudyHubPopup (62 texts)
 RU   Kicker: ◆ СЮЖЕТ · Chapter 3 · 近所とレストラン
-RU   Caption: Чат
-RU   Label: Открыть
-RU   Calendar: День 2 · 4/2 · Весна · возраст 16 23:43 · Очистить · 11°C
-RU   Title: Видеотека
-RU   Title: Школа
-RU   Label: Открыть
+--   Value: 87%
+RU   Progress: Готово · нажмите N и начните из журнала
+--   Icon: ≡
+RU   Text: Шагов: 53
+RU   Body: A1 · 8 тем: приветствия, числа, покупки, дорога… Лексика, примеры и короткие тесты.
+RU   Wallet: 39 425 руб.
+--   Value: 100%
+RU   Mood: спокоен  ·  репутация 51  ·  дурная слава 0
+--   Text: VI · EN · JA · RU
 RU   Title: Японские конструкции
 RU   Label: Открыть
-RU   Text: Учиться ещё
---   Text: ★ 3/36
-RU   Title: Словарь
---   Value: 88%
-RU   Title: Образцы ответов IELTS
---   Value: 86%
---   Name: Long
-RU   Place: Город Нихонго
-RU   Body: Формулы, употребление, слова-маркеры, типичные ошибки, таблица спряжения глаголов и 120 упражнений с оценкой.
-RU   Title: 12 английских времён
-RU   Title: Базовый английский
-RU   Caption: Бег
 RU   Label: Открыть
---   Value: 88%
---   Text: Band 5 → 9
---   Text: ★ 0/45
-RU   Caption: Сумка
-RU   Body: По 40 уроков на язык, алфавиты, грамматика, сертификаты N5–N1 / A1–C1 и тест уровня.
-RU   Caption: Прыжок
-RU   Body: Видео с канала NihongoLife: 63 — смотрите в игре с кратким содержанием и текстом.
-RU   Text: Шагов: 53
-RU   Label: Открыть
---   Icon: ≡
-RU   Label: Открыть
---   Lv: Lv.
-RU   Subtitle: Тренируйте шаблоны предложений и базовый английский, смотрите видео прямо в игре. Настоящие экзамены — в экзаменационном центре (K).
---   Caption: F
-RU   Text: Просмотрено 0/63
---   Text: VI · EN · JA · RU
-RU   Body: Алфавит, произношение, A1 → B2 и пробные тесты ТРКИ с ответами.
---   Value: 100%
---   Label: -
-RU   Label: Открыть
-RU   Text: Путь ещё не выбран
-RU   Title: Курс русского языка
-RU   Body: N5 → N3 · 15 конструкций · примеры с фуриганой и ромадзи, упражнения на заполнение / выбор / порядок слов.
-RU   Label: Открыть
-RU   Body: Ищите слова между вьетнамским, английским, японским и русским (12 направлений) прямо в Справочнике.
 RU   ScenarioTitle: Нет активного задания
-RU   Text: Помочь госпоже Судзуки найти кошку  ·  Дом Судзуки
---   Wallet: 33,820
-RU   Caption: Меню
-RU   Caption: Поговорить
+RU   Label: Открыть
 --   Text: ★ 0/24
-RU   Caption: Карта
-RU   Mood: спокоен  ·  репутация 45  ·  дурная слава 0
---   Value: 100%
+RU   Title: Словарь
+RU   Title: Видеотека
+--   Text: ★ 0/45
+RU   Title: Образцы ответов IELTS
+RU   Text: Путь ещё не выбран
+--   Caption: F
 RU   Body: 7 заданий Writing/Speaking: образцы на band 5–9, разбор по критериям и как подняться на следующий уровень.
-RU   Progress: Готово · нажмите N и начните из журнала
-RU   Caption: Скрыть
-RU   Body: A1 · 8 тем: приветствия, числа, покупки, дорога… Лексика, примеры и короткие тесты.
---   Level: 3
-RU   Label: Мой учебный план
-RuTable misses while opening the screens: 5
+RU   Label: Открыть
+RU   Body: По 40 уроков на язык, алфавиты, грамматика, сертификаты N5–N1 / A1–C1 и тест уровня.
+--   Value: 100%
+RU   Place: Город Нихонго
+--   Name: Long
+RU   Body: Формулы, употребление, слова-маркеры, типичные ошибки, таблица спряжения глаголов и 120 упражнений с оценкой.
+RU   Body: Видеоуроков в курсах: 152. Русский, английский и японский, с программой и прогрессом.
+RU   Body: Алфавит, произношение, A1 → B2 и пробные тесты ТРКИ с ответами.
+RU   Body: Ищите слова между вьетнамским, английским, японским и русским (12 направлений) прямо в Справочнике.
+--   Value: 85%
+--   Label: -
+RU   Subtitle: Тренируйте шаблоны предложений и базовый английский, смотрите видео прямо в игре. Настоящие экзамены — в экзаменационном центре (K).
+RU   Label: Открыть
+--   Text: Band 5 → 9
+--   Value: 88%
+RU   Text: Учиться ещё
+RU   Title: 12 английских времён
+RU   Calendar: День 2 · 4/2 · Весна · возраст 16 23:42 · Очистить · 11°C
+RU   Text: Просмотрено 7/152
+RU   Body: N5 → N3 · 15 конструкций · примеры с фуриганой и ромадзи, упражнения на заполнение / выбор / порядок слов.
+--   Lv: Lv.
+RU   Label: Открыть
+RU   Label: Открыть
+RU   Title: Школа
+RU   Title: Курс русского языка
+RuTable misses while opening the screens: 7

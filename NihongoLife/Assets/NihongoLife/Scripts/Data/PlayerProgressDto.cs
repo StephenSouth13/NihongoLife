@@ -62,6 +62,11 @@ namespace NihongoLife.Data
         public System.Collections.Generic.List<WorkerRecord> workers = new System.Collections.Generic.List<WorkerRecord>();
         public long lastCollectTicks;
         public int totalEarnedYen;
+        /// <summary>The kind of business (business.json): sets its weekly costs and how much the staff bring in.</summary>
+        public string kind = "shop";
+        /// <summary>Game day settled last, and the day the current week began (-1: not started).</summary>
+        public int lastSettledDay = -1, weekStartDay = -1;
+        public int weekIncomeYen, weekWagesYen, lastWeekProfitYen, unpaidCostYen;
     }
 
     [Serializable]
@@ -76,6 +81,7 @@ namespace NihongoLife.Data
         public string id, name, role;
         public int wage = 25000, level = 1;
         public long hiredTicks;
+        public int hiredDay;
     }
 
     [Serializable]
@@ -119,6 +125,10 @@ namespace NihongoLife.Data
         /// <summary>Quest / part-time job state (definitions: Resources/Progression/progression.json).</summary>
         public List<NihongoLife.Progression.QuestStateRecord> quests = new List<NihongoLife.Progression.QuestStateRecord>();
         public string trackedQuestId = string.Empty;
+        /// <summary>Clothes bought at Hibari Mode (Resources/Fashion/outfits.json).</summary>
+        public List<string> outfits = new List<string>();
+        /// <summary>The outfit worn; empty = the character's own clothes.</summary>
+        public string outfit = string.Empty;
         /// <summary>The career chosen from level 10 (definitions: Resources/Progression/careers.json).</summary>
         public NihongoLife.Progression.CareerState career = new NihongoLife.Progression.CareerState();
         /// <summary>The paper notebook (L): limited pages, more paper from Hibari Mart's stationery shelf.</summary>

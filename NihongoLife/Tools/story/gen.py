@@ -26,6 +26,7 @@ EV = {  # event: (en, vi, ja, ru) with {n}
  'perform': ("Play {n} songs on stage", "Biểu diễn {n} bài", "ステージで{n}曲演奏する", "Сыграйте песни на сцене: {n}"),
  'mix': ("Play {n} DJ sets", "Chơi {n} set DJ", "DJセットを{n}回かける", "Отыграйте DJ-сеты: {n}"),
  'paint': ("Finish {n} paintings", "Hoàn thành {n} bức tranh", "絵を{n}枚仕上げる", "Закончите картины: {n}"),
+ 'fold': ("Tidy {n} clothes tables", "Gấp gọn {n} bàn quần áo", "テーブルを{n}つたたむ", "Сложите одежду на столах: {n}"),
  'learn': ("Finish {n} lessons", "Học xong {n} bài", "レッスンを{n}回終える", "Пройдите уроки: {n}"),
  'order': ("Order a meal in Japanese", "Gọi món bằng tiếng Nhật", "日本語で注文する", "Закажите еду по-японски"),
 }
@@ -38,6 +39,7 @@ def talk_text(sp, report):
     else: t = ("Talk to " + en, "Nói chuyện với " + vi, ja + "と話す", "Поговорите: " + rus)
     r(t[0], t[3]); return t
 LOC = {  # scene: (en, vi, ja, ru)
+ '56_FashionStore': ("Hibari Mode", "Hibari Mode", "ひばりモード", "Hibari Mode"),
  '90_TestSandbox': ("Hibari-chō", "Hibari-chō", "ひばり町", "Хибари-тё"),
  '40_ HIBARICLASS': ("Hibari School, Sakura class", "Trường Hibari, lớp Sakura", "ひばり学院さくらクラス", "Школа Хибари, класс Сакура"),
  '30_SushiRestaurant': ("Sushi Hibari", "Sushi Hibari", "ひばり寿司", "«Суси Хибари»"),

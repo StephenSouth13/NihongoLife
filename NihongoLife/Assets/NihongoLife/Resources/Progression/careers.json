@@ -16,7 +16,7 @@
       "workplaceJa": "ひばりマート（商店街）",
       "shiftQuest": "job_konbini_shift",
       "bossNameJa": "いとう店長",
-      "bossNameVi": "Chị Ito",
+      "bossNameVi": "Anh Ito",
       "workStart": 8,
       "workEnd": 14,
       "workDays": [
@@ -3476,6 +3476,402 @@
               "en": "Snap back angrily.",
               "performance": -10,
               "reputation": -2,
+              "mood": "Embarrassed"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "fashion",
+      "nameVi": "Thời trang",
+      "nameEn": "Fashion",
+      "nameJa": "ファッション",
+      "descriptionVi": "Làm ở Hibari Mode: gấp đồ, tư vấn cỡ và màu bằng tiếng Nhật, đưa khách vào phòng thử, tính tiền. Lên cao thành stylist hoặc nhà thiết kế.",
+      "descriptionEn": "Work at Hibari Mode: fold the stock, advise on sizes and colours in Japanese, look after the fitting room, run the till. Later become a stylist or a designer.",
+      "descriptionJa": "ひばりモードでたたみ、サイズと色の案内、試着室、レジ。将来はスタイリストかデザイナーへ。",
+      "workplaceVi": "Hibari Mode, phố chính",
+      "workplaceEn": "Hibari Mode, main street",
+      "workplaceJa": "ひばりモード（商店街）",
+      "shiftQuest": "job_fashion_shift",
+      "bossNameJa": "れん店長",
+      "bossNameVi": "Anh Ren",
+      "workStart": 10,
+      "workEnd": 18,
+      "workDays": [
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "branchAtLevel": 4,
+      "levels": [
+        {
+          "titleVi": "Nhân viên phụ kho",
+          "titleEn": "Stock assistant",
+          "titleJa": "ストックスタッフ",
+          "salary": 260,
+          "shiftsToPromote": 2,
+          "knowledgeToPromote": 0
+        },
+        {
+          "titleVi": "Nhân viên bán hàng",
+          "titleEn": "Sales assistant",
+          "titleJa": "販売スタッフ",
+          "salary": 420,
+          "shiftsToPromote": 3,
+          "knowledgeToPromote": 120
+        },
+        {
+          "titleVi": "Tư vấn thời trang",
+          "titleEn": "Fashion adviser",
+          "titleJa": "ファッションアドバイザー",
+          "salary": 620,
+          "shiftsToPromote": 4,
+          "knowledgeToPromote": 260
+        }
+      ],
+      "branches": [
+        {
+          "id": "stylist",
+          "nameVi": "Stylist",
+          "nameEn": "Stylist",
+          "nameJa": "スタイリストコース",
+          "descriptionVi": "Chọn đồ cho khách, cho buổi chụp ảnh và cho sân khấu.",
+          "descriptionEn": "Dress customers, photo shoots and stages.",
+          "descriptionJa": "お客さま、撮影、舞台の服を選ぶ。",
+          "levels": [
+            {
+              "titleVi": "Stylist",
+              "titleEn": "Stylist",
+              "titleJa": "スタイリスト",
+              "salary": 800,
+              "shiftsToPromote": 4,
+              "knowledgeToPromote": 370
+            },
+            {
+              "titleVi": "Stylist trưởng",
+              "titleEn": "Lead stylist",
+              "titleJa": "チーフスタイリスト",
+              "salary": 1000,
+              "shiftsToPromote": 5,
+              "knowledgeToPromote": 520
+            },
+            {
+              "titleVi": "Giám đốc hình ảnh",
+              "titleEn": "Image director",
+              "titleJa": "イメージディレクター",
+              "salary": 1320,
+              "shiftsToPromote": 6,
+              "knowledgeToPromote": 700
+            }
+          ]
+        },
+        {
+          "id": "designer",
+          "nameVi": "Nhà thiết kế",
+          "nameEn": "Designer",
+          "nameJa": "デザイナーコース",
+          "descriptionVi": "Vẽ mẫu, chọn vải, làm bộ sưu tập của riêng mình.",
+          "descriptionEn": "Sketch, choose fabrics, make your own collection.",
+          "descriptionJa": "デザインを描き、布を選び、自分のコレクションを作る。",
+          "levels": [
+            {
+              "titleVi": "Trợ lý thiết kế",
+              "titleEn": "Design assistant",
+              "titleJa": "デザインアシスタント",
+              "salary": 780,
+              "shiftsToPromote": 4,
+              "knowledgeToPromote": 370
+            },
+            {
+              "titleVi": "Nhà thiết kế",
+              "titleEn": "Designer",
+              "titleJa": "デザイナー",
+              "salary": 980,
+              "shiftsToPromote": 5,
+              "knowledgeToPromote": 520
+            },
+            {
+              "titleVi": "Giám đốc sáng tạo",
+              "titleEn": "Creative director",
+              "titleJa": "クリエイティブディレクター",
+              "salary": 1350,
+              "shiftsToPromote": 6,
+              "knowledgeToPromote": 700
+            }
+          ]
+        }
+      ],
+      "interviews": [
+        {
+          "toLevel": 2,
+          "lineJa": "おきゃくさまが「少し 大きい」と 言いました。なんと 言いますか。",
+          "readingJa": "Okyakusama ga “sukoshi ōkii” to iimashita. Nan to iimasu ka.",
+          "meaningVi": "Khách nói \"hơi rộng\". Bạn nói gì?",
+          "meaningEn": "A customer says \"a little big\". What do you say?",
+          "choices": [
+            {
+              "ja": "一つ 小さいサイズを お持ちします。",
+              "vi": "Tôi mang cỡ nhỏ hơn ạ.",
+              "en": "I will bring one size smaller.",
+              "correct": true
+            },
+            {
+              "ja": "やせて ください。",
+              "vi": "Quý khách gầy đi đi.",
+              "en": "Please lose weight.",
+              "hintVi": "Không bao giờ nói vậy với khách.",
+              "hintEn": "Never say that to a customer."
+            },
+            {
+              "ja": "知りません。",
+              "vi": "Tôi không biết.",
+              "en": "I do not know.",
+              "hintVi": "Hãy đề nghị mang cỡ khác: お持ちします.",
+              "hintEn": "Offer another size: お持ちします."
+            }
+          ]
+        },
+        {
+          "toLevel": 3,
+          "lineJa": "おきゃくさまに 色を すすめて ください。",
+          "readingJa": "Okyakusama ni iro o susumete kudasai.",
+          "meaningVi": "Hãy gợi ý màu cho khách.",
+          "meaningEn": "Suggest a colour to the customer.",
+          "choices": [
+            {
+              "ja": "こちらの 紺は いかがでしょうか。",
+              "vi": "Quý khách thấy màu xanh than này thế nào ạ?",
+              "en": "How about this navy?",
+              "correct": true
+            },
+            {
+              "ja": "紺を 買いなさい。",
+              "vi": "Mua màu xanh than đi.",
+              "en": "Buy the navy.",
+              "hintVi": "Là mệnh lệnh. Dùng いかがでしょうか.",
+              "hintEn": "That is an order. Use いかがでしょうか."
+            },
+            {
+              "ja": "紺は きらいです。",
+              "vi": "Tôi ghét màu xanh than.",
+              "en": "I hate navy.",
+              "hintVi": "Không nói sở thích của mình với khách.",
+              "hintEn": "Your own taste does not matter here."
+            }
+          ]
+        },
+        {
+          "toLevel": 4,
+          "lineJa": "しょうらい、どんな 仕事を したいですか。",
+          "readingJa": "Shōrai, donna shigoto o shitai desu ka.",
+          "meaningVi": "Sau này bạn muốn làm công việc nào?",
+          "meaningEn": "What work do you want to do in the future?",
+          "choices": [
+            {
+              "ja": "お客さまに 合う 服を えらぶ 仕事が したいです。",
+              "vi": "Tôi muốn chọn đồ hợp với từng khách.",
+              "en": "I want to choose clothes that suit each customer.",
+              "correct": true,
+              "branch": "stylist"
+            },
+            {
+              "ja": "自分で 服を デザインしたいです。",
+              "vi": "Tôi muốn tự thiết kế quần áo.",
+              "en": "I want to design clothes myself.",
+              "correct": true,
+              "branch": "designer"
+            }
+          ]
+        },
+        {
+          "toLevel": 5,
+          "branch": "stylist",
+          "lineJa": "ざっしの さつえいで、モデルの 服が 合いません。どうしますか。",
+          "readingJa": "Zasshi no satsuei de, moderu no fuku ga aimasen. Dō shimasu ka.",
+          "meaningVi": "Trong buổi chụp tạp chí, đồ của người mẫu không vừa. Bạn làm gì?",
+          "meaningEn": "At a magazine shoot the clothes do not fit the model. What do you do?",
+          "choices": [
+            {
+              "ja": "すぐに 別の サイズを 用意します。",
+              "vi": "Tôi chuẩn bị ngay cỡ khác.",
+              "en": "I get another size ready at once.",
+              "correct": true
+            },
+            {
+              "ja": "そのまま さつえいします。",
+              "vi": "Cứ chụp như vậy.",
+              "en": "We shoot as it is.",
+              "hintVi": "Khách hàng sẽ không hài lòng.",
+              "hintEn": "The client will not be happy."
+            }
+          ]
+        },
+        {
+          "toLevel": 6,
+          "branch": "stylist",
+          "lineJa": "ブランドの イメージを どう 変えますか。",
+          "readingJa": "Burando no imēji o dō kaemasu ka.",
+          "meaningVi": "Bạn sẽ đổi hình ảnh thương hiệu thế nào?",
+          "meaningEn": "How will you change the brand image?",
+          "choices": [
+            {
+              "ja": "お客さまの 声を 聞いて、少しずつ 変えます。",
+              "vi": "Nghe khách hàng rồi đổi từng bước.",
+              "en": "I listen to customers and change it step by step.",
+              "correct": true
+            },
+            {
+              "ja": "全部 すぐに 変えます。",
+              "vi": "Đổi hết ngay lập tức.",
+              "en": "I change everything at once.",
+              "hintVi": "Thương hiệu cần sự tin cậy lâu dài.",
+              "hintEn": "A brand needs lasting trust."
+            }
+          ]
+        },
+        {
+          "toLevel": 5,
+          "branch": "designer",
+          "lineJa": "この 布は 高すぎます。どうしますか。",
+          "readingJa": "Kono nuno wa takasugimasu. Dō shimasu ka.",
+          "meaningVi": "Loại vải này đắt quá. Bạn làm gì?",
+          "meaningEn": "This fabric costs too much. What do you do?",
+          "choices": [
+            {
+              "ja": "にた 布を さがして、ねだんを くらべます。",
+              "vi": "Tìm loại vải tương tự rồi so giá.",
+              "en": "I look for a similar fabric and compare prices.",
+              "correct": true
+            },
+            {
+              "ja": "ねだんを 見ないで 買います。",
+              "vi": "Mua luôn không xem giá.",
+              "en": "I buy it without checking the price.",
+              "hintVi": "Nhà thiết kế cũng phải giữ ngân sách.",
+              "hintEn": "A designer has a budget too."
+            }
+          ]
+        },
+        {
+          "toLevel": 6,
+          "branch": "designer",
+          "lineJa": "新しい コレクションの テーマを 教えて ください。",
+          "readingJa": "Atarashii korekushon no tēma o oshiete kudasai.",
+          "meaningVi": "Hãy cho biết chủ đề bộ sưu tập mới.",
+          "meaningEn": "Tell us the theme of the new collection.",
+          "choices": [
+            {
+              "ja": "ひばり町の 四季を テーマに しました。",
+              "vi": "Tôi lấy bốn mùa của phố Hibari làm chủ đề.",
+              "en": "The four seasons of Hibari town.",
+              "correct": true
+            },
+            {
+              "ja": "テーマは ありません。",
+              "vi": "Không có chủ đề.",
+              "en": "There is no theme.",
+              "hintVi": "Người đứng đầu phải có ý tưởng rõ ràng.",
+              "hintEn": "A director needs a clear idea."
+            }
+          ]
+        }
+      ],
+      "events": [
+        {
+          "id": "fashion_sale",
+          "lineJa": "セールで お店が こんでいます。",
+          "readingJa": "Sēru de omise ga konde imasu.",
+          "meaningVi": "Cửa hàng đông vì đợt giảm giá.",
+          "meaningEn": "The shop is crowded for the sale.",
+          "choices": [
+            {
+              "ja": "レジを 手伝います。",
+              "vi": "Tôi ra phụ thu ngân.",
+              "en": "I help at the till.",
+              "performance": 15,
+              "reputation": 3,
+              "mood": "Proud"
+            },
+            {
+              "ja": "たたむのを 続けます。",
+              "vi": "Tôi tiếp tục gấp đồ.",
+              "en": "I keep folding.",
+              "performance": 6,
+              "reputation": 1
+            },
+            {
+              "ja": "休けいに 行きます。",
+              "vi": "Tôi đi nghỉ.",
+              "en": "I go on a break.",
+              "performance": -10,
+              "reputation": -3,
+              "mood": "Embarrassed"
+            }
+          ]
+        },
+        {
+          "id": "fashion_stain",
+          "lineJa": "新しい シャツに しみが あります。",
+          "readingJa": "Atarashii shatsu ni shimi ga arimasu.",
+          "meaningVi": "Chiếc áo mới có vết bẩn.",
+          "meaningEn": "There is a stain on a new shirt.",
+          "choices": [
+            {
+              "ja": "すぐに 新しいのと 交換します。",
+              "vi": "Đổi ngay chiếc mới.",
+              "en": "I swap it for a new one at once.",
+              "performance": 15,
+              "reputation": 3,
+              "mood": "Proud"
+            },
+            {
+              "ja": "店長に 報告します。",
+              "vi": "Báo với quản lý.",
+              "en": "I tell the manager.",
+              "performance": 8,
+              "reputation": 1
+            },
+            {
+              "ja": "そのまま たなに もどします。",
+              "vi": "Cứ để lại lên kệ.",
+              "en": "I put it back on the shelf.",
+              "performance": -10,
+              "reputation": -3,
+              "mood": "Embarrassed"
+            }
+          ]
+        },
+        {
+          "id": "fashion_return",
+          "lineJa": "この シャツを 返品したいのですが……",
+          "readingJa": "Kono shatsu o henpin shitai no desu ga…",
+          "meaningVi": "Tôi muốn trả lại chiếc áo này…",
+          "meaningEn": "I would like to return this shirt…",
+          "choices": [
+            {
+              "ja": "レシートは お持ちでしょうか。",
+              "vi": "Quý khách có hoá đơn không ạ?",
+              "en": "Do you have the receipt?",
+              "performance": 15,
+              "reputation": 3,
+              "mood": "Proud"
+            },
+            {
+              "ja": "店長を 呼びます。",
+              "vi": "Tôi gọi quản lý.",
+              "en": "I will call the manager.",
+              "performance": 8,
+              "reputation": 1
+            },
+            {
+              "ja": "返品は できません。",
+              "vi": "Không trả được.",
+              "en": "No returns.",
+              "performance": -10,
+              "reputation": -3,
               "mood": "Embarrassed"
             }
           ]

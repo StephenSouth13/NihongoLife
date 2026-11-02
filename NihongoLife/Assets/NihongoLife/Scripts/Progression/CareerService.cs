@@ -17,6 +17,8 @@ namespace NihongoLife.Progression
     {
         public string careerId = string.Empty;
         public string branchId = string.Empty;
+        /// <summary>The chosen field of work: jobs of other industries pay half (<see cref="CareerService.RewardFactor"/>).</summary>
+        public string majorIndustry = string.Empty;
         public int level;
         /// <summary>0–100: full = promotion interview.</summary>
         public float performance;
@@ -127,6 +129,7 @@ namespace NihongoLife.Progression
             if (career == null || state == null) return Loc.T("Không tìm thấy nghề này.", "Career not found.", "その職業は見つかりません。");
             if (!Unlocked) return Loc.F("Mở khi đạt cấp {0} (bạn đang cấp {1}).", "Opens at level {0} (you are level {1}).", "レベル{0}で開きます（今はレベル{1}）。", Catalog.unlockLevel, PlayerLevel);
             if (state.HasCareer) return Loc.T("Bạn đang có nghề — nghỉ việc trước khi đổi nghề.", "You already have a career — quit first to change.", "今の仕事をやめてから変えましょう。");
+            if (string.IsNullOrEmpty(state.majorIndustry)) state.majorIndustry = CareerIndustries.IndustryOf(career.id)?.id ?? string.Empty;
             state.careerId = career.id;
             state.branchId = string.Empty;
             state.level = 1;
@@ -228,7 +231,38 @@ namespace NihongoLife.Progression
         }
 
         /// <summary>Salary after fame / notoriety (CareerStanding.SalaryFactor).</summary>
-        public static int PaidSalary(int salary) => Mathf.RoundToInt(salary * CareerStanding.Salary);
+        public static int PaidSalary(int salary) => Mathf.RoundToInt(salary * CareerStanding.Salary * RewardFactor(State?.careerId));
+
+        public const float OutOfFieldFactor = 0.5f;
+
+        /// <summary>True when a career lies outside the chosen field of work.</summary>
+        public static bool OutOfField(string careerId)
+        {
+            string major = State?.majorIndustry;
+            var industry = string.IsNullOrEmpty(careerId) ? null : CareerIndustries.IndustryOf(careerId);
+            return !string.IsNullOrEmpty(major) && industry != null && industry.id != major;
+        }
+
+        /// <summary>Work outside the chosen field counts for half, in money and in experience.</summary>
+        public static float RewardFactor(string careerId) => OutOfField(careerId) ? OutOfFieldFactor : 1f;
+
+        /// <summary>Which career a task belongs to: its own field, or the career whose shift it is.</summary>
+        public static string CareerOf(QuestDefinition quest)
+        {
+            if (quest == null) return null;
+            if (!string.IsNullOrEmpty(quest.career)) return quest.career;
+            return Catalog.careers.FirstOrDefault(c => c.shiftQuest == quest.id)?.id;
+        }
+
+        /// <summary>Picks the field of work. Changing it keeps the career, whose pay then follows the new field.</summary>
+        public static void ChooseMajor(string industryId)
+        {
+            var state = State;
+            if (state == null) return;
+            state.majorIndustry = industryId ?? string.Empty;
+            Save();
+            Changed?.Invoke();
+        }
 
         private static bool _interviewing;
 

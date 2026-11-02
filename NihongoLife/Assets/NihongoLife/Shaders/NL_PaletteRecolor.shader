@@ -14,6 +14,14 @@ Shader "Hidden/NihongoLife/PaletteRecolor"
         _To1 ("Top to", Vector) = (0, 0, 0, 0)
         _From2 ("Bottom from", Vector) = (0, 0, 0, 0)
         _To2 ("Bottom to", Vector) = (0, 0, 0, 0)
+        _From3 ("Top 2 from", Vector) = (0, 0, 0, 0)
+        _To3 ("Top 2 to", Vector) = (0, 0, 0, 0)
+        _From4 ("Bottom 2 from", Vector) = (0, 0, 0, 0)
+        _To4 ("Bottom 2 to", Vector) = (0, 0, 0, 0)
+        _From5 ("Top 3 from", Vector) = (0, 0, 0, 0)
+        _To5 ("Top 3 to", Vector) = (0, 0, 0, 0)
+        _From6 ("Bottom 3 from", Vector) = (0, 0, 0, 0)
+        _To6 ("Bottom 3 to", Vector) = (0, 0, 0, 0)
         _Tolerance ("Tolerance", Float) = 0.045
         _ChromaTolerance ("Hue tolerance", Float) = 0.03
     }
@@ -29,7 +37,7 @@ Shader "Hidden/NihongoLife/PaletteRecolor"
 
             sampler2D _MainTex;
             sampler2D _Mask;
-            float4 _From0, _To0, _From1, _To1, _From2, _To2;
+            float4 _From0, _To0, _From1, _To1, _From2, _To2, _From3, _To3, _From4, _To4, _From5, _To5, _From6, _To6;
             float _Tolerance, _ChromaTolerance;
 
             // (Vector, not Color: Unity would convert Color properties to linear on upload.) The colours of the blocks are given as authored (sRGB bytes / 255, set with SetVector): the match is
@@ -84,6 +92,12 @@ Shader "Hidden/NihongoLife/PaletteRecolor"
                 o = lerp(o, Swapped(g, _From0, _To0), h0);
                 o = lerp(o, Swapped(g, _From1, _To1), h1);
                 o = lerp(o, Swapped(g, _From2, _To2), h2);
+                // A complete outfit: the other colour blocks of the same garments.
+                float free = notHair * (1.0 - h0) * (1.0 - h1) * (1.0 - h2);
+                o = lerp(o, Swapped(g, _From3, _To3), Hit(g, _From3, _To3, 0.0) * free);
+                o = lerp(o, Swapped(g, _From4, _To4), Hit(g, _From4, _To4, 0.0) * free);
+                o = lerp(o, Swapped(g, _From5, _To5), Hit(g, _From5, _To5, 0.0) * free);
+                o = lerp(o, Swapped(g, _From6, _To6), Hit(g, _From6, _To6, 0.0) * free);
                 return float4(FromAuthored(o), c.a);
             }
             ENDCG

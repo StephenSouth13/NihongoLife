@@ -10,7 +10,7 @@ using UnityEngine;
 
 namespace NihongoLife.Progression
 {
-    public enum JobStationKind { Board, StockCrate, Shelf, Customer, Register, OrderTable, DishPass, ClinicCheckIn, ClinicTriage, ClinicMedicine }
+    public enum JobStationKind { Board, StockCrate, Shelf, Customer, Register, OrderTable, DishPass, ClinicCheckIn, ClinicTriage, ClinicMedicine, FashionFold, FashionAdvise, FashionFitting, FashionRegister }
 
     /// <summary>
     /// One work spot of a part-time job, placed in the scene by JobSiteBuilder. It only becomes interactable while
@@ -62,6 +62,10 @@ namespace NihongoLife.Progression
                     case JobStationKind.ClinicCheckIn: return QuestService.ObjectiveOpen(questId, "checkin") && !JobShift.IsDone(stationId);
                     case JobStationKind.ClinicTriage: return QuestService.ObjectiveOpen(questId, "triage") && !JobShift.IsDone(stationId);
                     case JobStationKind.ClinicMedicine: return QuestService.ObjectiveOpen(questId, "explain");
+                    case JobStationKind.FashionFold: return QuestService.ObjectiveOpen(questId, "fold") && !JobShift.IsDone(stationId);
+                    case JobStationKind.FashionAdvise: return QuestService.ObjectiveOpen(questId, "advise") && !JobShift.IsDone(stationId);
+                    case JobStationKind.FashionFitting: return QuestService.ObjectiveOpen(questId, "fit");
+                    case JobStationKind.FashionRegister: return QuestService.ObjectiveOpen(questId, "checkout");
                 }
                 return false;
             }
@@ -72,7 +76,7 @@ namespace NihongoLife.Progression
             // Customers and guests only appear while a shift is running.
             if (shiftVisual != null)
             {
-                bool show = ShiftActive && (kind != JobStationKind.Customer && kind != JobStationKind.ClinicCheckIn && kind != JobStationKind.ClinicTriage || !JobShift.IsDone(stationId)) && (kind != JobStationKind.OrderTable || !JobShift.IsDone(stationId));
+                bool show = ShiftActive && (kind != JobStationKind.Customer && kind != JobStationKind.ClinicCheckIn && kind != JobStationKind.ClinicTriage && kind != JobStationKind.FashionAdvise || !JobShift.IsDone(stationId)) && (kind != JobStationKind.OrderTable || !JobShift.IsDone(stationId));
                 if (shiftVisual.activeSelf != show) shiftVisual.SetActive(show);
             }
         }
@@ -109,6 +113,10 @@ namespace NihongoLife.Progression
             JobStationKind.ClinicCheckIn => Loc.T("Tiếp nhận bệnh nhân (受付)", "Check the patient in (受付)", "患者さんの受付をする"),
             JobStationKind.ClinicTriage => Loc.T("Hỏi bệnh (問診)", "Ask about symptoms (問診)", "問診をする"),
             JobStationKind.ClinicMedicine => Loc.T("Giải thích cách dùng thuốc (お薬)", "Explain the medicine (お薬)", "お薬の説明をする"),
+            JobStationKind.FashionFold => Loc.T("Gấp gọn bàn quần áo", "Tidy the clothes table", "テーブルの服をたたむ"),
+            JobStationKind.FashionAdvise => Loc.T("Tư vấn cho khách", "Help the customer", "お客さまを案内する"),
+            JobStationKind.FashionFitting => Loc.T("Khách ở phòng thử đồ", "Customer at the fitting room", "試着室のお客さま"),
+            JobStationKind.FashionRegister => Loc.T("Tính tiền ở quầy", "Ring up at the till", "レジで会計する"),
             _ => Label,
         };
         public Transform GetTransform() => transform;
@@ -140,6 +148,10 @@ namespace NihongoLife.Progression
                 case JobStationKind.ClinicCheckIn: ClinicCheckIn(); break;
                 case JobStationKind.ClinicTriage: ClinicTriage(); break;
                 case JobStationKind.ClinicMedicine: ClinicMedicine(); break;
+                case JobStationKind.FashionFold: FashionFold(); break;
+                case JobStationKind.FashionAdvise: FashionAdvise(); break;
+                case JobStationKind.FashionFitting: FashionFitting(); break;
+                case JobStationKind.FashionRegister: FashionCheckout(); break;
             }
         }
 

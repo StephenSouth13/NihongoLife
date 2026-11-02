@@ -36,6 +36,10 @@ namespace NihongoLife.Interaction
             _input = GameInputService.GetOrCreate();
             _player = GetComponent<PlayerController>();
             NihongoLife.UI.UiModalStack.Register(this, () => _wheel != null && _wheel.IsOpen, () => { CloseWheel(); _pressedAt = -1f; }, "EmoteWheel");
+            // Ready before the first emote, which paid for the bubble and for reading both gesture files.
+            EmoteBubble.Prepare(transform);
+            NihongoLife.Gestures.GreetingCatalog.Cycle("casual");
+            NihongoLife.Gestures.GestureLayer.On(gameObject);
         }
 
         private void Update()
@@ -107,6 +111,7 @@ namespace NihongoLife.Interaction
             _nextAllowed = Time.unscaledTime + Cooldown;
             _last = index;
             var emote = EmoteCatalog.All[index];
+            if (NihongoLife.Core.GameServices.TryGet(out NihongoLife.Core.IOnlineWorldService online)) online.SendEmote(index);
 
             // Body language: every emote has gestures of the library; "hello" walks through the cultures one tap after another.
             string gestureId = null;
@@ -121,12 +126,7 @@ namespace NihongoLife.Interaction
                     }
                     break;
                 case "thanks": gestureId = NihongoLife.Gestures.GreetingCatalog.Cycle("thanks")?.gesture ?? "bow_light"; break;
-                case "wow": gestureId = "cheer"; break;
-                case "fun": gestureId = "dance_pop_clap"; break;
-                case "yatta": gestureId = "high_five"; break;
-                case "oyasumi": gestureId = "bow_light"; break;
-                case "huh": gestureId = "shrug"; break;
-                case "sorry": gestureId = "bow_deep"; break;
+                default: gestureId = GestureFor(emote.Id); break;
             }
             EmoteBubble.Spawn(transform, emote);
             if (gestureId != null && NihongoLife.Gestures.GestureLayer.On(gameObject).Play(gestureId)) return;
@@ -139,6 +139,23 @@ namespace NihongoLife.Interaction
                 case EmoteGesture.Jump: animation.TriggerJump(); break;
                 case EmoteGesture.Point: animation.TriggerPoint(); break;
                 default: StartCoroutine(TalkBriefly(animation)); break;
+            }
+        }
+
+        /// <summary>The body language of an emote (also used for other players seen online).</summary>
+        public static string GestureFor(string id)
+        {
+            switch (id)
+            {
+                case "hello": return "wave";
+                case "thanks": return "bow_light";
+                case "wow": return "cheer";
+                case "fun": return "dance_pop_clap";
+                case "yatta": return "high_five";
+                case "oyasumi": return "bow_light";
+                case "huh": return "shrug";
+                case "sorry": return "bow_deep";
+                default: return null;
             }
         }
 
