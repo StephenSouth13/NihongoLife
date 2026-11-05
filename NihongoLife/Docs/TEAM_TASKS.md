@@ -2199,3 +2199,11 @@ Tên lớp test viết tắt: PlayMode = `NihongoLife.Tests.<Lớp>`; EditMode =
 **AI Writing test (2026-11-03).** `IeltsProductivePlayModeTests.Writing_RealAi_ExaminerCoachRewriteHistory` failed with an empty message because AI marking is off by default and the test never turned it on. It now sets `ExamAiSettings.AutoGradingOverride`, and Gemini being overloaded or out of reach after the built-in retry counts as Inconclusive. On 2026-11-03 direct calls got timeouts and "high demand" 503s, so this case could not finish; the game kept the paper and said to mark it later.
 
 **Machine note.** On a low battery Windows gives Unity the Intel GPU and batch runs die with `887a0005` on the first frames; `-adapter 1` keeps the NVIDIA GPU (`_work/run_tests.ps1`).
+
+---
+
+## 2026-11-06 — Khôi phục slide capstone v9
+
+- Khôi phục `Bao_Cao/NihongoLife_Thuyet_Trinh_Capstone_v9.pptx` từ bốn phần đã lưu, không chỉnh sửa nội dung hay bố cục.
+- Kiểm chứng đầy đủ: **71.418.240 byte**, MD5 **1a6cae5c786409b11a95c6a48182a23f**.
+- Tệp tạm gộp nằm ngoài Git; không đưa credential hay encoder tạm vào commit.
