@@ -64,6 +64,7 @@ namespace NihongoLife.UI
             UiKit.Place(chip, 24f, 18f, 90f, 26f);
             var title = UiKit.Label(panel.transform, "Title", c.Title.Resolve(), 26f, UiTheme.Text, FontStyles.Bold);
             UiKit.Place(title.rectTransform, 24f, 48f, w - 48f - 260f, 40f);
+            LessonVideoUi.AddHeaderButton(panel.transform, c.Title.Resolve(), ClassroomVideoIndex.ForContent(c.Target, "certificate", c.Id), w - 24f - 304f, 36f);
             var start = UiKit.Button(panel.transform, "Start", "Bắt đầu thi thử", "Start the practice exam", "模擬試験を始める", StartExam, UiKit.Kind.Primary, "timer", 16f);
             UiKit.Place((RectTransform)start.transform, w - 24f - 250f, 30f, 250f, 54f);
 
@@ -72,6 +73,7 @@ namespace NihongoLife.UI
             var content = CourseUi.ScrollIn(host);
             var body = CourseUi.Body(content);
             float bw = w - 28f - 24f, y = 6f;
+            y = LessonVideoUi.AddStrip(body, c.Title.Resolve(), ClassroomVideoIndex.ForContent(c.Target,"certificate",c.Id), y, bw);
 
             // key facts
             var store = LearningProgressStore.Shared;

@@ -12,7 +12,7 @@ namespace NihongoLife.UI
     /// </summary>
     public sealed class CoursePopup : MenuPopupBase
     {
-        public enum Tab { Path, Lessons, Alphabet, Grammar, Certificates, Tenses }
+        public enum Tab { Path, Lessons, Alphabet, Grammar, Certificates, Tenses, VideoSeries }
 
         /// <summary>The not-yet-saved choice on the path tab.</summary>
         public sealed class PathDraft
@@ -26,7 +26,7 @@ namespace NihongoLife.UI
         private RectTransform _area, _bar;
         private readonly Dictionary<Tab, CourseTabView> _views = new Dictionary<Tab, CourseTabView>();
         private Tab _tab = Tab.Path;
-        private string _target = "ja";
+        private string _target = "ru";
 
         public PathDraft Draft { get; } = new PathDraft();
         public string Target => _target;
@@ -38,6 +38,7 @@ namespace NihongoLife.UI
         public CourseGrammarView GrammarView => (CourseGrammarView)_views[Tab.Grammar];
         public CourseCertificatesView CertificatesView => (CourseCertificatesView)_views[Tab.Certificates];
         public CourseTensesView TensesView => (CourseTensesView)_views[Tab.Tenses];
+        public CourseVideoSeriesView VideoSeriesView => (CourseVideoSeriesView)_views[Tab.VideoSeries];
 
         protected override bool LocksGameplay => true;
         protected override Vector2 CardSize => new Vector2(W, H);
@@ -66,6 +67,7 @@ namespace NihongoLife.UI
             _views[Tab.Grammar] = new CourseGrammarView(this);
             _views[Tab.Certificates] = new CourseCertificatesView(this);
             _views[Tab.Tenses] = new CourseTensesView(this);
+            _views[Tab.VideoSeries] = new CourseVideoSeriesView(this);
             foreach (var v in _views.Values) v.Attach(_area, aw, ah);
             var saved = LearningPath.Current;
             if (saved.IsSet) { Draft.Target = saved.Target; Draft.Goal = saved.Goal; Draft.Level = saved.StartLevel; _target = saved.Target; }
@@ -108,6 +110,18 @@ namespace NihongoLife.UI
             _tab = tab;
             BuildBar();
             ActiveView?.Show();
+        }
+
+        public void OpenRussianStep(NihongoLife.StudyModes.Russian.RuPathStep step)
+        {
+            if (step == null) return;
+            string id = step.kind == "cert" ? "cert_" + step.@ref : step.@ref;
+            if (step.kind == "cert") OpenCertificate(id);
+            else if (step.kind == "mock") { /* the only exact mock-authored UI remains RussianPathPopup */ return; }
+            else if (step.kind == "unit") OpenUnit(id);
+            else if (step.kind == "alphabet") { OpenAlphabet("cyrillic"); AlphabetView.SelectLesson(id); }
+            else { SetTarget("ru"); ShowTab(Tab.Path); }
+            LessonVideoUi.Open(step.title?.Get("vi") ?? step.id, ClassroomVideoIndex.ForPath(step.id));
         }
 
         public void OpenUnit(string unitId)
@@ -164,12 +178,13 @@ namespace NihongoLife.UI
                 (Tab.Grammar, "Ngữ pháp", "Grammar", "文法", "edit_note"),
                 (Tab.Certificates, "Chứng chỉ", "Certificates", "検定", "workspace_premium"),
                 (Tab.Tenses, "12 thì tiếng Anh", "12 English tenses", "英語の12時制", "schedule"),
+                (Tab.VideoSeries, "Bài giảng video", "Video series", "動画レッスン", "smart_display"),
             };
             float x = 0f;
             foreach (var t in tabs)
             {
                 var tab = t.tab;
-                float w = tab == Tab.Tenses ? 190f : 144f;
+                float w = tab == Tab.Tenses ? 180f : tab == Tab.VideoSeries ? 164f : 122f;
                 var b = UiKit.Button(_bar, "Tab_" + tab, t.vi, t.en, t.ja, () => ShowTab(tab), _tab == tab ? UiKit.Kind.Primary : UiKit.Kind.Secondary, t.icon, 15f);
                 UiKit.Place((RectTransform)b.transform, x, 0f, w, 44f);
                 x += w + 6f;

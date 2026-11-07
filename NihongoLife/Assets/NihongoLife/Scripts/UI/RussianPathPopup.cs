@@ -103,12 +103,8 @@ namespace NihongoLife.UI
         {
             if (Step?.video == null || !Step.video.Filled) return false;
             RussianCourse.RegisterVideos();
-            var player = gameObject.GetComponent<InGameVideoPlayerUI>();
-            if (player == null) player = gameObject.Need<InGameVideoPlayerUI>();
-            player.Initialize(Font);
             Hide();
-            player.Show();
-            player.Select(Step.video.id);
+            LessonVideoUi.Open(Step.title?.Get("vi") ?? Step.id, ClassroomVideoIndex.ForPath(Step.id));
             return true;
         }
 
@@ -156,13 +152,15 @@ namespace NihongoLife.UI
             Canvas.ForceUpdateCanvases();
         }
 
-        private void OpenSchool()
+        public void OpenSchool()
         {
             var school = gameObject.GetComponent<CoursePopup>();
             if (school == null) school = gameObject.Need<CoursePopup>();
             school.Initialize(Font);
             Hide();
             school.Show();
+            if (Step.kind == "mock" || Step.@ref.StartsWith("ru_pr")) return; // authored Russian-specific content never masquerades as a missing School unit
+            school.OpenRussianStep(Step); // resolves unit/alphabet/certificate and its exact video selection
         }
 
         private void VideoSlot(Transform parent)

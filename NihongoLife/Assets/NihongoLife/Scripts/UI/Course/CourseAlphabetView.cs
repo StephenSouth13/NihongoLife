@@ -93,6 +93,7 @@ namespace NihongoLife.UI
             var content = CourseUi.ScrollIn(host);
             var body = CourseUi.Body(content);
             float bw = w - 28f - 24f, y = 4f;
+            y = LessonVideoUi.AddStrip(body, lesson.Title.Resolve(), ClassroomVideoIndex.ForContent(a.Target,"alphabet",lesson.Id), y, bw);
             if (!lesson.Tip.IsEmpty)
             {
                 var tip = UiKit.Card(body, "Tip", UiKit.Alpha(UiTheme.Gold, 0.13f), 14, 0f, false);

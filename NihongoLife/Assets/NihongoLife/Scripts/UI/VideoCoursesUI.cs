@@ -31,6 +31,10 @@ namespace NihongoLife.UI
 #endif
 
         private RectTransform _body, _player;
+        private System.Collections.Generic.IReadOnlyList<LessonVideoBinding> _lessonBindings;
+        private string _lessonName;
+        public LessonVideoBinding SelectedBinding { get; private set; }
+        private bool BindingMode => _lessonBindings != null;
         private string _language = "all";
 
         public VideoCourse Course { get; private set; }
@@ -52,7 +56,7 @@ namespace NihongoLife.UI
 
         protected override void OnOpened()
         {
-            Course = null;
+            if (!BindingMode) Course = null;
             Rebuild();
         }
 
@@ -63,7 +67,8 @@ namespace NihongoLife.UI
         {
             StopPlayback();
             UiKit.Clear(_body);
-            if (Course == null) BuildCatalogue();
+            if (BindingMode) BuildBindingPage();
+            else if (Course == null) BuildCatalogue();
             else BuildCoursePage();
         }
 
@@ -131,18 +136,49 @@ namespace NihongoLife.UI
         {
             Course = course;
             Lesson = course.NextLesson(Store);
+            Show();
             Rebuild();
         }
 
+        public void OpenLessonBindings(string title, System.Collections.Generic.IReadOnlyList<LessonVideoBinding> links)
+        {
+            if (links == null || links.Count == 0) throw new System.ArgumentException("Lesson has no videos");
+            _lessonBindings=links; _lessonName=title;            OpenCourse(new VideoCourse { id="classroom_"+title, lang="all", titleVi=title, titleEn=title, titleJa=title, color="#176276",
+                sections=new[]{new VideoCourseSection { titleVi="Các phần bài học", titleEn="Lesson parts", titleJa="レッスンの各部分", lessons=links.Select(v=>new VideoLesson { id=YoutubeId(v.youtubeUrl), title=v.Title }).ToArray() } } });
+            SelectedBinding=links[0];
+        }
+        
+        public void OpenLibraryCourse(string id)
+        {
+            _lessonBindings=null; var course=VideoCourseCatalog.File.courses.FirstOrDefault(c=>c.id==id); if (course==null) throw new System.ArgumentException("Missing course "+id); OpenCourse(course);
+        }
+        public void SelectLessonVideo(LessonVideoBinding binding)
+        {
+            if(_lessonBindings!=null && _lessonBindings.Contains(binding)){SelectedBinding=binding;SelectLesson(Course.Lessons.FirstOrDefault(l=>l.id==binding.videoId));}
+        }
+        private void BuildBindingPage()
+        {
+            BuildCoursePage();
+            // Large external action below becomes a compact secondary action; the on-player icon stays.
+            var external=_body.Find("OnYouTube");if(external!=null)external.gameObject.SetActive(false);
+            var next=_body.Find("Next");if(next!=null)UiKit.Place((RectTransform)next.transform,252f,638f,200f,48f);
+        }
+        public static string YoutubeId(string url)
+        {
+            if(string.IsNullOrEmpty(url))return null;
+            int at=url.IndexOf("youtu.be/",System.StringComparison.OrdinalIgnoreCase);
+            if(at>=0)return url.Substring(at+9).Split('?','&','/')[0];
+            at=url.IndexOf("v=",System.StringComparison.OrdinalIgnoreCase);return at<0?null:url.Substring(at+2).Split('&','/')[0];
+        }
         public void BackToCatalogue()
         {
-            Course = null;
+            if (!BindingMode) Course = null;
             Rebuild();
         }
 
         private void BuildCoursePage()
         {
-            var back = UiKit.Button(_body, "Back", "Tất cả khóa học", "All courses", "コース一覧", BackToCatalogue, UiKit.Kind.Quiet, "arrow_back", 15f);
+            var back = UiKit.Button(_body, "Back", BindingMode ? "Trở lại bài học" : "Tất cả khóa học", BindingMode ? "Back to lesson" : "All courses", BindingMode ? "レッスンに戻る" : "コース一覧", BindingMode ? (System.Action)(() => Hide()) : BackToCatalogue, UiKit.Kind.Quiet, "arrow_back", 15f);
             UiKit.Place((RectTransform)back.transform, 0f, 0f, 210f, 44f);
             UiKit.Place(UiKit.Label(_body, "CourseTitle", Course.Title, 24f, UiTheme.Text, FontStyles.Bold, TextAlignmentOptions.MidlineLeft), 226f, 0f, PlayerW - 226f, 44f);
 
@@ -155,6 +191,8 @@ namespace NihongoLife.UI
             UiKit.Fill(picture.rectTransform);
             picture.raycastTarget = false;
             StartCoroutine(VideoThumbnails.Load(Lesson?.id, picture));
+            var external = UiKit.Button(_player, "OpenYouTubeCompact", "YouTube", OpenOnYouTube, UiKit.Kind.Secondary, "public", 13f);
+            UiKit.Pin((RectTransform)external.transform, new Vector2(1f,1f), -148f, 14f, 136f, 40f);
             var play = UiKit.Button(_player, "Play", "Phát bài học", "Play lesson", "再生する", Play, UiKit.Kind.Primary, "play_arrow", 20f);
             UiKit.Pin((RectTransform)play.transform, new Vector2(0.5f, 0.5f), 0f, 0f, 260f, 72f);
 
@@ -202,6 +240,7 @@ namespace NihongoLife.UI
         public void SelectLesson(VideoLesson lesson)
         {
             Lesson = lesson;
+            if (BindingMode) SelectedBinding = _lessonBindings.FirstOrDefault(b => YoutubeId(b.youtubeUrl) == lesson.id);
             Rebuild();
         }
 
@@ -215,6 +254,7 @@ namespace NihongoLife.UI
         public void MarkDone()
         {
             if (Lesson == null) return;
+            if (BindingMode) SelectedBinding=_lessonBindings.FirstOrDefault(b=>b.videoId==YoutubeId(b.youtubeUrl) && b.videoId==Lesson.id);
             Store.MarkVideoWatched(Lesson.id);
             Rebuild();
         }
@@ -223,6 +263,7 @@ namespace NihongoLife.UI
         public void Play()
         {
             if (Lesson == null) return;
+            if (BindingMode) SelectedBinding=_lessonBindings.FirstOrDefault(b=>b.videoId==YoutubeId(b.youtubeUrl) && b.videoId==Lesson.id);
             Store.MarkVideoWatched(Lesson.id);
 #if UNITY_WEBGL && !UNITY_EDITOR
             var corners = new Vector3[4];

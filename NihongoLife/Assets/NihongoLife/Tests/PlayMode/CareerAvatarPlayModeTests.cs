@@ -61,6 +61,16 @@ namespace NihongoLife.Tests
                     AssertFits(card, career.id);
                 }
 
+                var retail = CharacterVariants.Prefab(CareerIndustries.Look("retail").variant);
+                var retailVest = retail.GetComponentsInChildren<MeshFilter>(true).FirstOrDefault(m=>m.name=="Uniform_Vest");
+                Assert.NotNull(retailVest,"Retail employee keeps identifiable clothing");
+                Assert.Less(retailVest.sharedMesh.bounds.size.z,retailVest.sharedMesh.bounds.size.x+0.00001f,"Retail vest is a textile panel rather than a torso-wide box");
+                StringAssert.Contains("fabric",retailVest.sharedMesh.name);
+                foreach (var job in catalog.careers)
+                {
+                    var look=CharacterVariants.Find(CareerIndustries.Look(job.id).variant);
+                    foreach(var prop in CharacterVariants.Prefab(look.id).GetComponentsInChildren<MeshFilter>(true)) Assert.Less(prop.sharedMesh.bounds.size.z,0.75f,job.id+": no stray torso cube "+prop.name);
+                }
                 // Every avatar draws something (not blank, not everything) and the person is in uniform colours of its own.
                 var looks = new List<string>();
                 foreach (var a in stage.Avatars)

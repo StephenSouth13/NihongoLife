@@ -2207,3 +2207,24 @@ Tên lớp test viết tắt: PlayMode = `NihongoLife.Tests.<Lớp>`; EditMode =
 - Khôi phục `Bao_Cao/NihongoLife_Thuyet_Trinh_Capstone_v9.pptx` từ bốn phần đã lưu, không chỉnh sửa nội dung hay bố cục.
 - Kiểm chứng đầy đủ: **71.418.240 byte**, MD5 **1a6cae5c786409b11a95c6a48182a23f**.
 - Tệp tạm gộp nằm ngoài Git; không đưa credential hay encoder tạm vào commit.
+---
+
+## 2026-11-06 — Liên kết video YouTube trong lớp học, sửa avatar đại diện nghề và dựng video mở khóa
+
+### Video bài học
+- Nguyên nhân: `ru_path.json` và `VideoCoursesUI` là hai cấu trúc dữ liệu/UI riêng. `CoursePopup` vẫn mở target cũ hoặc mặc định Nhật; `RussianPathPopup` không chọn bài tương ứng; `CourseLessonsView` không có nút video. Vì vậy URL đã upload nhưng không thể mở từ chi tiết bài học.
+- Thêm index có builder `Tools/classroom/build_lesson_videos.py` + dữ liệu `Resources/Content/Video/lesson_video_index.json`: map chính xác theo `ru_path.ref` (cả nhóm chữ Cyrillic và TORFL), 34 video English upload công khai; không ghép video vào unit theo số thứ tự. Video bổ trợ/IELTS/JP giữ ID series riêng.
+- `CoursePopup` chọn Russian lesson/certificate cụ thể khi đi từ path; Russian-specific pronunciation/mock giữ đúng nội dung gốc. Unit/alphabet/certificate sử dụng cùng player `VideoCoursesUI`; WebGL iframe, desktop handoff YouTube đúng ràng buộc hiện có, nút YouTube gọn trên cửa sổ xem.
+- Test `ClassroomVideoPlayModeTests`: mở từ classroom hub; lặp link từ School unit/alphabet/certificate thực tế, mở từng phần Cyrillic/TORFL, kiểm chứng button và ID YouTube được chọn. Russian mock không bị ghép sang unit `ru_u*`.
+- Các chuỗi video School mới có Russian trong `ru_table_extra.json`; font/coverage do import phát sinh sẽ được trả nguyên trước khi commit.
+
+### Đồng phục nhân vật đại diện nghề
+- Nguyên nhân: retail `konbini_hina` dùng `Uniform_Vest` là **một khối Cube đầy đủ** che thân. Không phải lỗi clip YouTube và cũng không phải khay hàng gesture.
+- `CharacterVariantBuilder` tạo mesh bib hai mảng mỏng, khoét cổ, lưu asset; rebuild `NL_var_konbini_hina.prefab`. Các nghề khác vẫn dùng body-worn prop theo bone; test mới đo mesh/coverage để phát hiện hộp che thân.
+- Cần kiểm tra bằng ảnh Play Mode trước/sau và kiểm đủ 10 đại diện nghề ở idle lẫn giữa gesture.
+
+### Video mở khóa nghề
+- Recording test sẽ sử dụng gameplay/service thật, chụp UI thật 1920×1080, nâng cấp đủ 6 bậc tới một nhánh cao nhất (không bịa level 7), lưu output ngoài `Assets` và trả nguyên state.
+- Box sẽ ghép `edge-tts vi-VN`, FreePD CC0, chapter theo từng bậc vào `/workspace/youtube/careers/<career>.mp4`. Không upload; chuyển giao `YOUTUBE_UPLOAD_TASK.md` cho bot với **authuser=1** kèm đường dẫn/thời lượng chính xác.
+
+Kiểm chứng: builder chạy headless bằng `nl_batch`, chỉ mở một Unity; linked/focused tests rồi full suite. Kết quả executable/capture thực tế được ghi sau khi chạy, không lấy số dự kiến làm kết quả.
