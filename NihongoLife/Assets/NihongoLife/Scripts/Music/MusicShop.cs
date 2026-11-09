@@ -85,7 +85,31 @@ namespace NihongoLife.Music
                 // At the piano: from the right, the hands and the keys in view. On the stage: from the audience, a little to the side.
                 if (camera != null) camera.SetOrbit(spot.SeatYaw + (spot.Kind == MusicSpotKind.Stage ? 165f : -70f), 16f, spot.Kind == MusicSpotKind.Stage ? 4.2f : 3.2f);
             }
+            // At the grand piano the hands play its own keys (the gesture's keyboard is hidden); anywhere else they play the gesture's.
+            NihongoLife.Gestures.GestureLayer.On(player.gameObject).Keys = spot != null && spot.Kind == MusicSpotKind.Piano ? KeysTop(spot) : null;
             MusicStudioUI.SetPerformer(player.gameObject, guitar);
+        }
+
+        /// <summary>A marker at the centre of the top of the piano's white keys nearest the spot (made once, under the keys).</summary>
+        private static Transform KeysTop(MusicSpot spot)
+        {
+            Renderer best = null; float bestDistance = 9f;
+            foreach (var r in spot.gameObject.scene.GetRootGameObjects().SelectMany(g => g.GetComponentsInChildren<Renderer>()))
+            {
+                if (r.name != "WhiteKeys") continue;
+                float d = Vector3.Distance(r.bounds.center, spot.Seat);
+                if (d < bestDistance) { best = r; bestDistance = d; }
+            }
+            if (best == null) return null;
+            var marker = best.transform.Find("KeysTop");
+            if (marker == null)
+            {
+                marker = new GameObject("KeysTop").transform;
+                marker.SetParent(best.transform, false);
+            }
+            var b = best.bounds;
+            marker.position = new Vector3(b.center.x, b.max.y, b.center.z);
+            return marker;
         }
 
         /// <summary>The owner: takes the report of a finished gig / set / commission (pay), otherwise says what the shop offers.</summary>

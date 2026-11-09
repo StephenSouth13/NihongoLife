@@ -263,7 +263,7 @@ namespace NihongoLife.EditorTools
             foreach (float x in new[] { -0.4f, 0.4f })
                 Block(grand, "BenchLeg", P(gx + x, 0.25f, gz - 1.45f), new Vector3(0.06f, 0.5f, 0.3f), _black, false);
             Text(grand, "Label", "グランドピアノ\n<size=60%>Đàn grand piano · F để chơi</size>", P(gx, 2.35f, gz + 0.2f), 0f, 0.09f, _ivory.color, 1.6f).gameObject.AddComponent<BillboardUI>().lockRotationXAndZ = true;
-            Spot(spots, "Spot_Piano", P(gx, 1f, gz - 1.9f), new Vector3(2.4f, 2f, 1.4f), MusicSpotKind.Piano).Configure(MusicSpotKind.Piano, P(gx, 0.02f, gz - 1.42f), 0f); // on the bench, facing the keys
+            Spot(spots, "Spot_Piano", P(gx, 1f, gz - 1.9f), new Vector3(2.4f, 2f, 1.4f), MusicSpotKind.Piano).Configure(MusicSpotKind.Piano, P(gx, 0.02f, gz - 1.26f), 0f); // at the front of the bench, the keys within a chibi arm's reach (PianoHands)
 
             // An upright piano against the west wall, and a digital piano row for trying.
             var upright = Group(parent, "UprightPiano");

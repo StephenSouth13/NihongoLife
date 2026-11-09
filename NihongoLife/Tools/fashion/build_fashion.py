@@ -149,7 +149,7 @@ LOOK = {'career': 'fashion', 'industry': 'fashion', 'variant': 'fashion_riku', '
 
 
 def level(vi, en, ja, salary, shifts, knowledge):
-    return {'titleVi': vi, 'titleEn': en, 'titleJa': ja, 'salary': salary, 'shiftsToPromote': shifts, 'knowledgeToPromote': knowledge}
+    return {'titleVi': vi, 'titleEn': en, 'titleJa': ja, 'salary': salary, 'shiftsToPromote': 0 if shifts == 0 else max(1, min(3, shifts - 1)),  # 1–3 shifts a level: the milestone story (career_stories.json) carries the step 'knowledgeToPromote': knowledge}
 
 
 def choice(ja, vi, en, correct=False, hint_vi=None, hint_en=None, branch=None):

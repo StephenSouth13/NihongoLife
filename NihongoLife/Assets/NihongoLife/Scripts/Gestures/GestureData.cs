@@ -83,7 +83,8 @@ namespace NihongoLife.Gestures
     /// <summary>
     /// A held or placed object built from primitives. hand R / L: follows that hand (rotation fixed to the body, plus the
     /// gesture's p channel); A: held by both hands, its Y axis running from the left hand to the right hand (a broom, a hoe);
-    /// W: stands in the world in front of the character (a chair, a keyboard, a cutting board).
+    /// W: stands in the world in front of the character (a chair, a cutting board); H: worn from the hips; K: played sitting
+    /// (a keyboard) — in front of the shoulders with its top <see cref="top"/> arm lengths from them, legs stretched to the floor.
     /// pos and rot give the offset and base rotation.
     /// </summary>
     [Serializable]
@@ -91,6 +92,8 @@ namespace NihongoLife.Gestures
     {
         public string id, hand = "R";
         public float[] pos = new float[3], rot = new float[3], tip;
+        /// <summary>K only: the height of the prop's top from the shoulders, in arm lengths (negative = below).</summary>
+        public float top;
         public GPiece[] pieces = Array.Empty<GPiece>();
     }
 

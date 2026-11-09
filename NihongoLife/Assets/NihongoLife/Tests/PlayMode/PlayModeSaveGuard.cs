@@ -29,6 +29,7 @@ namespace NihongoLife.Tests
             NihongoLife.Health.PlayerIllness.Triggers = false; // nobody falls ill by chance in other tests (IllnessPlayModeTests turns it on)
             NihongoLife.Player.CharacterLook.Persist = false; // the look panel never writes the device's look in tests
             NihongoLife.Progression.CareerClock.PromptEnabled = false; // the level-10 career card only where a test checks it
+            NihongoLife.Progression.CareerStories.Enabled = false; // promotions go straight to the interview unless a test plays the story
             NihongoLife.Scenario.StoryDirector.Bypass = true; // StoryFlowPlayModeTests switches the story back on
             NihongoLife.Core.PlayerSessionService.PersistGuest = false; // tests never read or write the real guest save
             NihongoLife.Core.PlayerSessionService.GuestFullAccess = false; // tests run guest sessions but check the campaign gates
@@ -51,6 +52,7 @@ namespace NihongoLife.Tests
             NihongoLife.Core.IntroTrailer.Bypass = false;
             NihongoLife.Learning.VoiceChatService.AutoJoinArea = true;
             NihongoLife.Progression.CareerClock.PromptEnabled = true;
+            NihongoLife.Progression.CareerStories.Enabled = true;
             NihongoLife.Player.CharacterLook.Persist = true;
             NihongoLife.Scenario.StoryDirector.Bypass = false;
             NihongoLife.Core.Loc.Set((NihongoLife.Core.GameLanguage)Mathf.Clamp(_language, 0, 3));

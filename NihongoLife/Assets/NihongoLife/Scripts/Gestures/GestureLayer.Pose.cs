@@ -63,6 +63,7 @@ namespace NihongoLife.Gestures
                 if (c.inf < 0.02f) { c.value = animRel; c.vel = Vector3.zero; }
                 if (c.inf <= 0.001f) continue;
                 Vector3 desired = shoulder + (right * (side * c.value.x) + up * c.value.y + fwd * c.value.z) * _armLen;
+                desired += _keysShift; // at a real instrument: the hands play its keys, not the gesture's own keyboard
                 Vector3 target = Vector3.Lerp(animHand[s], desired, Mathf.Clamp01(c.inf));
                 Vector3 pole = -fwd * 0.6f + right * (side * 0.5f) - up * 0.5f;
                 TwoBoneIk.Solve(upper, lower, hand, target, pole);

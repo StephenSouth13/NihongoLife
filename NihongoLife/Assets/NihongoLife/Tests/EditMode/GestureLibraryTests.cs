@@ -46,7 +46,7 @@ namespace NihongoLife.Tests.EditMode
             foreach (var p in GestureLibrary.File.props)
             {
                 Assert.IsNotEmpty(p.pieces, p.id);
-                Assert.Contains(p.hand, new[] { "R", "L", "A", "W", "H" }, p.id);
+                Assert.Contains(p.hand, new[] { "R", "L", "A", "W", "H", "K" }, p.id);
                 foreach (var pc in p.pieces) Assert.Contains(pc.shape, new[] { "cube", "sphere", "cyl", "capsule" }, p.id);
             }
         }

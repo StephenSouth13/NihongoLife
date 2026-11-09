@@ -156,6 +156,7 @@ namespace NihongoLife.UI
             _instance._auto = null;
             _instance._autoFinished = false;
             _instance.StopGesture();
+            if (_instance._performer != null && _instance._performer.TryGetComponent(out NihongoLife.Gestures.GestureLayer layer)) layer.Keys = null; // up from the piano
             _instance._performer = null;
             _instance._painting = null; // the gallery opens on its grid next time
             _instance.SetMini(false);

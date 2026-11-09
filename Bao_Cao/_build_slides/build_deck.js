@@ -116,6 +116,30 @@ const SHORT_NAME = { retail: 'Bán lẻ', food: 'Ẩm thực', farm: 'Nông nghi
 // The branch the career video follows (Tools/video/career_voice.py).
 const BRANCH = { retail: 'store', food: 'owner', farm: 'grower', hospitality: 'manager', medical: 'doctor', chef: 'sushi', musician: 'pianist', producer: 'producer', painter: 'fine_art', fashion: 'designer' };
 
+// A feature slide: 3–4 game captures side by side, each with a short head (gold) and what it does (30 pt).
+// A head is a string or runs ([{ text, ja }]) so Japanese words get the Japanese font.
+function features(f) {
+  const s = slide(f.title, { notes: f.notes });
+  const n = f.items.length, gap = 0.2, w = (12.45 - gap * (n - 1)) / n;
+  f.items.forEach((it, i) => {
+    const x = 0.45 + i * (w + gap);
+    s.addImage({ path: img(it.pic), x, y: 1.9, w, h: 2.8, sizing: { type: 'cover', w, h: 2.8 }, altText: typeof it.head === 'string' ? it.head : it.head.map(r => r.text).join('') });
+    const head = typeof it.head === 'string' ? it.head : it.head.map(r => ({ text: r.text, options: r.ja ? { fontFace: JP } : {} }));
+    text(s, head, { x, y: 4.82, w, h: 0.6, bold: true, color: GOLD });
+    text(s, it.body, { x, y: 5.45, w, h: 1.45, color: MUTED });
+  });
+}
+
+// Six captures in a 3 × 2 grid with a one-line caption each (the Game Center's machines).
+function grid6(f) {
+  const s = slide(f.title, { notes: f.notes });
+  f.items.forEach((it, i) => {
+    const w = 4.03, h = 1.95, x = 0.45 + (i % 3) * (w + 0.18), y = 1.9 + Math.floor(i / 3) * 2.6;
+    s.addImage({ path: img(it.pic), x, y, w, h, sizing: { type: 'cover', w, h }, altText: it.head });
+    text(s, it.head, { x, y: y + h + 0.03, w, h: 0.55, bold: true, color: GOLD, align: 'center' });
+  });
+}
+
 // ─────────── content ───────────
 
 const SCENES = [
@@ -205,6 +229,121 @@ const MAPS = [
   { file: '60_midoriisland', scene: '60_MidoriIsland', title: 'đảo Midori', spots: ['Ruộng, chuồng thú', 'Bến câu cá, ga tàu'], notes: 'Đảo tròn có ga tàu ở phía Nam, đường chữ thập, ruộng trồng trọt, chuồng thú, bến câu cá và bãi biển để bơi.' },
   { file: '65_phuquocisland', scene: '65_PhuQuocIsland', title: 'Phú Quốc (Dương Đông)', spots: ['Phố, chợ, bờ biển', 'Quán Gánh Ngon'], notes: 'Khu trung tâm Dương Đông quanh quán Gánh Ngon: phố, chợ, khu nghỉ dưỡng, bờ biển. Cả đảo dựng từ toạ độ OpenStreetMap, 1 đơn vị = 100 m.' },
 ];
+
+// What can be done in each area, every picture captured in the game (Bao_Cao/_build_slides/feature_pics.py).
+const FEATURES = [
+  { title: 'Thị trấn Hibari: đi đâu, làm gì', notes: 'Bản đồ M chỉ đường tới 11 địa điểm. Cốt truyện 9 chương: thẻ nhiệm vụ dẫn từng bước, sổ nhiệm vụ (J) ghi lộ trình. Tài khoản mở khu mới bằng trí tuệ (khách chơi mở hết). Thời tiết và 4 mùa: mưa ướt người dễ bị cảm lạnh, trời nóng dễ say nắng. Sổ tay Y: hướng dẫn, địa điểm, sức khoẻ, nghề nghiệp.', items: [
+    { pic: 'f_to_map', head: 'Bản đồ M', body: 'Chỉ đường tới 11 nơi trong thị trấn' },
+    { pic: 'f_to_story', head: 'Cốt truyện', body: '9 chương, nhiệm vụ dẫn từng bước' },
+    { pic: 'f_to_unlock', head: 'Mở khu mới', body: 'Đủ trí tuệ thì khu mới mở ra' },
+    { pic: 'f_to_rain', head: 'Thời tiết', body: 'Mưa ướt người dễ bị cảm lạnh' },
+  ] },
+  { title: 'Hibari Mart (konbini)', notes: 'Mua đồ ăn uống để hồi chỉ số đói và khát; thu ngân hỏi bằng tiếng Nhật (có cần túi, có hâm nóng không). Bảng アルバイト nhận ca làm thêm: bày hàng lên kệ, tính tiền, trả lời câu hỏi của khách. Quầy thuốc không kê đơn: thuốc chỉ làm đỡ triệu chứng, muốn khỏi phải đi khám (đúng thực tế y khoa).', items: [
+    { pic: 'konbini', head: 'Làm thêm', body: 'Bày hàng, tính tiền, trả lời khách bằng tiếng Nhật' },
+    { pic: 'f_kb_inside', head: 'Mua đồ ăn uống', body: 'Ăn uống để hồi chỉ số đói và khát' },
+    { pic: 'medicine_shelf', head: 'Quầy thuốc', body: 'Thuốc không kê đơn chỉ làm đỡ triệu chứng' },
+  ] },
+  { title: 'Phòng trọ Hibari Heights', notes: 'Phòng của nhân vật, mở từ đầu. Tủ lạnh: lấy cơm nắm (hồi đói +30). Bồn rửa: uống nước (hồi khát +35). Bàn học: câu ôn từ vựng N5, trả lời đúng được cộng trí tuệ. Giường: ngủ qua đêm, ngủ đủ 8 tiếng hồi đầy sức khoẻ, sáng ra chào おはようございます.', items: [
+    { pic: 'f_be_fridge', head: 'Tủ lạnh', body: 'Lấy cơm nắm, hồi đói' },
+    { pic: 'f_be_sink', head: 'Bồn rửa', body: 'Uống nước, hồi khát' },
+    { pic: 'f_be_correct', head: 'Bàn học', body: 'Ôn từ vựng, cộng trí tuệ' },
+    { pic: 'f_be_morning', head: 'Ngủ qua đêm', body: 'Ngủ 8 tiếng hồi đầy sức khoẻ' },
+  ] },
+  { title: 'Ga Hibari và chuyến tàu', notes: 'Mua vé ở quầy của anh Kimura (hỏi bằng tiếng Nhật) hoặc máy bán vé. Cổng soát vé là lối duy nhất giữa sảnh và sân ga, có vé mới mở. Tuyến 5 ga: Hibari, Gakuen-mae, Minato, Đảo Midori, Sân bay; từ sân bay bay tới Phú Quốc. Ngoài cửa sổ mỗi ga có cảnh riêng, đổi cảnh trong đường hầm, sân ga có biển tên trượt vào dừng đúng cửa sổ.', items: [
+    { pic: 'f_st_kimura', head: 'Quầy vé', body: 'Mua vé với anh Kimura' },
+    { pic: 'f_st_gate', head: 'Cổng soát vé', body: 'Có vé mới vào sân ga' },
+    { pic: 'f_st_board', head: 'Tuyến 5 ga', body: 'Từ Hibari tới sân bay' },
+    { pic: 'f_st_airport', head: 'Ngoài cửa sổ', body: 'Mỗi ga một cảnh riêng' },
+  ] },
+  { title: 'Nhà hàng Sushi Hibari', notes: 'Thực đơn có hình, tên món, cách đọc và giá. Ngồi bàn ăn bằng đũa, ăn xong trả tiền ở quầy (お会計お願いします). Ca làm phục vụ: bưng khay món ra bàn; nghề đầu bếp làm ở quầy bếp của bác Ota.', items: [
+    { pic: 'sushi_menu', head: 'Thực đơn có hình', body: 'Tên món, cách đọc và giá' },
+    { pic: 'sushi', head: 'Ăn bằng đũa', body: 'Ngồi bàn ăn, xong trả tiền ở quầy' },
+    { pic: 'f_su_tray', head: 'Ca phục vụ', body: 'Bưng khay món ra bàn cho khách' },
+  ] },
+  { title: 'Phòng khám Hibari: khám như ở Nhật', notes: 'Năm bước như phòng khám thật ở Nhật: 受付 (tiếp nhận, đưa thẻ bảo hiểm), 問診票 (phiếu hỏi bệnh, chọn triệu chứng bằng tiếng Nhật), 診察 (bác sĩ hỏi và khám), 会計 (trả tiền), お薬 (nhận thuốc). Khám xong khỏi hẳn. Có khám mắt, gọi số chờ; ngất thì tỉnh lại trên giường phòng khám; ca làm của ngành y.', items: [
+    { pic: 'f_cl_reception', head: [{ text: '受付', ja: true }, { text: ' tiếp nhận' }], body: 'Chào lễ tân, đưa thẻ bảo hiểm' },
+    { pic: 'f_cl_form', head: [{ text: '問診票', ja: true }], body: 'Chọn triệu chứng bằng tiếng Nhật' },
+    { pic: 'clinic', head: [{ text: '診察', ja: true }, { text: ' khám' }], body: 'Bác sĩ hỏi bệnh và khám' },
+    { pic: 'clinic_med', head: [{ text: 'お薬', ja: true }, { text: ' thuốc' }], body: 'Nhận thuốc, khám xong là khỏi' },
+  ] },
+  { title: 'Hibiki Music & Art', notes: 'Ngồi vào đàn grand piano: nhân vật tự đàn 36 bài, chỉnh nhịp, âm lượng, đổi piano/guitar; tay đặt đúng trên phím đàn. Sân khấu: diễn với nhịp 80–125% thì khán giả thích, có thêm fan. Bàn DJ: chọn bài hợp tông, nhịp để nối. Giá vẽ: tô tranh theo số; phòng tranh 3D treo 39 tác phẩm. Mua guitar thì đeo sau lưng, ra phố đàn kiếm tiền. Nghề nhạc công, DJ, hoạ sĩ.', items: [
+    { pic: 'music', head: 'Tự đàn piano', body: '36 bài, chỉnh nhịp và âm lượng' },
+    { pic: 'f_mu_gig', head: 'Diễn sân khấu', body: 'Nhịp 80–125% khán giả mới thích' },
+    { pic: 'f_mu_dj', head: 'Bàn DJ', body: 'Chọn bài hợp nhịp để nối' },
+    { pic: 'f_mu_paint', head: 'Vẽ tranh', body: 'Tô theo số; phòng tranh 39 bức' },
+  ] },
+  { title: 'Hibari Mode (thời trang)', notes: '18 bộ đồ chia nhóm thường ngày, công sở, thể thao, theo mùa, lễ hội. Thử đồ miễn phí, chỉ đổi hình hiển thị; rời cửa sổ là trở lại đồ đang mặc. Mua rồi thì vào tủ đồ, bạn bè online cũng thấy. Ca làm thời trang: gấp đồ, tư vấn cỡ, trả lời khách bằng tiếng Nhật, dẫn khách vào phòng thử.', items: [
+    { pic: 'tryon', head: 'Thử đồ', body: 'Thử miễn phí, rời quầy là trả lại' },
+    { pic: 'f_fa_quiz', head: 'Ca làm thời trang', body: 'Tư vấn khách bằng tiếng Nhật' },
+    { pic: 'kids_fashion', head: '18 bộ đồ', body: 'Mua rồi bạn bè online cũng thấy' },
+  ] },
+  { title: 'Đảo Midori: nông trại', notes: 'Ruộng 4 bước, mỗi việc kèm một động từ tiếng Nhật (つちを たがやします, みずを あげます…). Chưa có cuốc thì đào bằng tay, chậm hơn. 4 loại cây: cà rốt, cà chua, ngô, bí ngô; mỗi giai đoạn lớn cần tưới lại; cây vẫn lớn trong lúc người chơi rời đảo. Bộ quà chào mừng: cuốc, bình tưới, 3 túi hạt cà rốt.', items: [
+    { pic: 'f_mi_till', head: 'Cuốc đất', body: 'Chưa có cuốc thì đào tay, chậm hơn' },
+    { pic: 'f_mi_seed', head: 'Gieo hạt', body: 'Cà rốt, cà chua, ngô, bí ngô' },
+    { pic: 'f_mi_water', head: 'Tưới nước', body: 'Mỗi giai đoạn lớn cần tưới lại' },
+    { pic: 'f_mi_ready', head: 'Thu hoạch', body: 'Cây vẫn lớn khi bạn đi vắng' },
+  ] },
+  { title: 'Đảo Midori: câu cá', notes: 'Đứng ở bến, quăng cần; cá cắn câu thì kéo ngay. 16 loài cá có tên tiếng Nhật, từ cá bơn (ひらめ), cá tráp, cá nóc tới cá kiếm và cá mập. Cần câu tự động thả câu trong lúc người chơi làm việc khác. Cá bán ở cửa hàng Midori.', items: [
+    { pic: 'f_mi_cast', head: 'Quăng cần', body: 'Đứng ở bến, quăng cần ra biển' },
+    { pic: 'f_mi_bite', head: 'Cá cắn câu', body: 'Thấy báo là kéo ngay' },
+    { pic: 'f_mi_caught', head: 'Câu được', body: '16 loài, từ cá bơn tới cá mập' },
+    { pic: 'f_mi_sellfish', head: 'Bán cá', body: 'Bán ở cửa hàng Midori' },
+  ] },
+  { title: 'Đảo Midori: thú nuôi, cửa hàng, biển', notes: '5 con vật: bò, alpaca, lừa, ngựa, chó; cho ăn, làm quen, học tên tiếng Nhật. Cửa hàng Midori (phím P): nông nghiệp, thời trang, công nghệ, bán nông sản và cá. Sổ tay đảo: từ vựng đã học, thành tích. Biển không có tường: bơi ra xa rồi lên bờ.', items: [
+    { pic: 'f_mi_animal', head: 'Chăm thú', body: 'Bò, alpaca, lừa, ngựa, chó' },
+    { pic: 'f_mi_shop', head: 'Cửa hàng', body: 'Hạt giống, dụng cụ, đồ thời trang' },
+    { pic: 'f_mi_notebook', head: 'Sổ tay đảo', body: 'Từ đã học và thành tích' },
+    { pic: 'midori', head: 'Bơi biển', body: 'Bơi ra xa rồi lên bờ' },
+  ] },
+  { title: 'Đảo Midori: trang trí, thăm đảo bạn', notes: '32 món trang trí, trong đó có góc Nhật Bản: cổng torii, đèn đá, hoa anh đào, tre, hồ cá koi, đèn lồng chōchin. Tự đặt, xoay, dời từng món; không đặt chồng lên lối đi. Tài khoản online thăm đảo của bạn bè và thả tim.', items: [
+    { pic: 'f_mi_decor_shop', head: '32 món', body: 'Cây, hoa, đá, ghế, giếng…' },
+    { pic: 'f_mi_edit', head: 'Tự sắp xếp', body: 'Đặt, xoay, dời từng món' },
+    { pic: 'f_mi_jp', head: 'Góc Nhật Bản', body: 'Cổng torii, đèn đá, hoa anh đào' },
+    { pic: 'f_on_visit_like', head: 'Thăm đảo bạn', body: 'Đi thăm và thả tim (online)' },
+  ] },
+  { title: 'Đảo Phú Quốc', notes: 'Dựng từ toạ độ OpenStreetMap thật, 1 đơn vị = 100 m, 31 địa danh: Dương Đông, chợ đêm Dinh Cậu, chùa Sùng Hưng, nhà thùng nước mắm, vườn tiêu, Suối Tranh, làng chài Hàm Ninh, Bãi Sao, Bãi Khem, di tích nhà tù Phú Quốc, An Thới và ga cáp treo Hòn Thơm. Quán Gánh Ngon là nơi làm của nghề nhà hàng Phú Quốc: phục vụ khách Nhật bằng tiếng Nhật. Đi tàu ra sân bay rồi bay tới đảo.', items: [
+    { pic: 'f_pq_overview', head: 'Bản đồ thật', body: '31 địa danh theo OpenStreetMap' },
+    { pic: 'phuquoc', head: 'Gánh Ngon', body: 'Quán ăn: phục vụ khách Nhật' },
+    { pic: 'f_pq_anthoi', head: 'An Thới', body: 'Quần đảo phía Nam, cáp treo Hòn Thơm' },
+    { pic: 'f_pq_swim', head: 'Bơi biển', body: 'Bãi biển của đảo' },
+  ] },
+];
+
+// The study part in detail: mock tests of four systems, AI marking, results, video lessons, the learner's own path.
+const STUDY = [
+  { title: 'Thi thử: 4 hệ thống, nhiều cấp độ', notes: 'JLPT N5–N1: từ vựng, chữ Hán, ngữ pháp, đọc hiểu (đề N5 có thêm phần nghe). IELTS Academic: Nghe, Đọc, Viết, Nói. Tiếng Anh A1–C1 (20 câu mỗi đề) và đề 12 thì 60 câu. TORFL tiếng Nga A1–B2: từ vựng ngữ pháp, đọc, nghe. Đề tự soạn theo định dạng kỳ thi, không phải đề chính thức; kết quả lưu vào lịch sử.', items: [
+    { pic: 'f_jlpt_vocab', head: 'JLPT N5 → N1', body: 'Từ vựng, ngữ pháp, đọc; N5 có nghe' },
+    { pic: 'f_ielts_select', head: 'IELTS', body: 'Academic: Nghe, Đọc, Viết, Nói' },
+    { pic: 'f_exam_started', head: 'Anh A1 → C1', body: 'Thêm đề 12 thì, 60 câu' },
+    { pic: 'f_torfl', head: 'TORFL', body: 'Tiếng Nga, đề thử A1 → B2' },
+  ] },
+  { title: 'IELTS Viết và Nói: chấm bằng AI', notes: 'Bài Viết Task 1 và Task 2 được giám khảo AI ước tính band theo 4 tiêu chí (Task Achievement, Coherence and Cohesion, Lexical Resource, Grammatical Range and Accuracy) kèm nhận xét. Phần Nói Part 1–3 ghi âm câu trả lời, có thời gian chuẩn bị, chấm theo lưu loát, từ vựng, ngữ pháp, phát âm. Điểm là ước tính để luyện tập, không phải điểm chính thức.', items: [
+    { pic: 'f_ielts_write', head: 'Viết Task 1, 2', body: 'Band theo 4 tiêu chí, kèm nhận xét' },
+    { pic: 'f_ielts_speak', head: 'Nói Part 1 → 3', body: 'Ghi âm câu trả lời, có thời gian chuẩn bị' },
+    { pic: 'f_ielts_speak_res', head: 'Điểm phần Nói', body: 'Lưu loát, từ vựng, ngữ pháp, phát âm' },
+  ] },
+  { title: 'Kết quả và nhận xét sau bài thi', notes: 'Sau mỗi đề: điểm, đạt hay chưa đạt, phân tích đúng sai theo từng dạng bài để biết phần yếu; cô Morita nhận xét và khuyên ôn lại. Phần nghe của đề N5 phát lời thoại rồi chọn đáp án.', items: [
+    { pic: 'f_jlpt_result', head: 'Phân tích kết quả', body: 'Đúng sai theo từng dạng bài' },
+    { pic: 'f_teacher', head: 'Cô Morita nhận xét', body: 'Khuyên ôn lại phần còn yếu' },
+    { pic: 'f_jlpt_listen', head: 'Phần nghe', body: 'Nghe lời thoại rồi chọn đáp án' },
+  ] },
+  { title: 'Học qua video: 181 bài', notes: '4 khoá video: tiếng Nga từ con số 0 (93 bài, 10 phần), tiếng Anh (71 bài, 7 phần), tiếng Nhật kana, mẫu câu, JLPT (10 bài), khám phá NihongoLife (7 bài). Làm như một trang học trực tuyến: giáo trình theo phần, lưu tiến độ đã xem, phát ngay trong game hoặc mở YouTube; video gắn đúng bài học trong Lớp học.', items: [
+    { pic: 'catalogue', head: '4 khoá học', body: 'Nga, Anh, Nhật và hướng dẫn game' },
+    { pic: 'courses', head: 'Giáo trình theo phần', body: 'Lưu tiến độ đã xem' },
+    { pic: 'course_path', head: 'Video theo bài', body: 'Mỗi bài học có video đi kèm' },
+  ] },
+  { title: 'Lộ trình học của riêng mình', notes: 'Bài kiểm tra đầu vào 20 câu xếp người học vào đúng trình độ (ví dụ 12/20 → N3) rồi mở lộ trình từ bài phù hợp. Bảng chữ cái hiragana, katakana có âm đọc; ngữ pháp từng mẫu câu kèm ví dụ; 12 thì tiếng Anh; từ điển tra qua lại Nhật, Anh, Việt, Nga.', items: [
+    { pic: 'f_placement', head: 'Đầu vào', body: '20 câu xếp bạn vào đúng trình độ' },
+    { pic: 'f_alphabet', head: 'Bảng chữ cái', body: 'Hiragana, katakana có âm đọc' },
+    { pic: 'f_grammar', head: 'Ngữ pháp', body: 'Từng mẫu câu kèm ví dụ' },
+    { pic: 'f_dict', head: 'Từ điển', body: 'Tra Nhật, Anh, Việt, Nga' },
+  ] },
+];
+
+const ARCADE = { title: 'Game Center: 15 trò luyện chữ', notes: '15 máy, trò nào cũng luyện chữ, từ hoặc số: Kana Match, Word Shooter, Order Rush (gọi món), Kana Rain, gắp thú UFO, Basket Count (đếm số), Word Whack, Echo Pads, Kana Snake, Kana Breaker, Dance Arrows, Tense Typer (12 thì tiếng Anh), Wheel Quiz, Air Hockey, Hoop Shot. Vé thắng đổi quà ở quầy bằng tiếng Nhật.', items: [
+  { pic: 'f_gc_match', head: 'Kana Match' }, { pic: 'f_gc_kana_breaker', head: 'Kana Breaker' }, { pic: 'f_gc_order', head: 'Order Rush' },
+  { pic: 'f_gc_tense', head: 'Tense Typer' }, { pic: 'f_gc_ufo', head: 'Gắp thú UFO' }, { pic: 'f_gc_basket', head: 'Basket Count' },
+] };
 
 // ─────────── slides by section (built twice: once to count for the table of contents) ───────────
 
@@ -316,6 +455,11 @@ const SECTIONS = [
       bullets(s, m.spots, 8.45, 4.95, 4.45, 1.95);
     }),
   ]],
+  ['Chức năng từng khu', [
+    ...FEATURES.slice(0, 6).map(f => () => features(f)),
+    () => grid6(ARCADE),
+    ...FEATURES.slice(6).map(f => () => features(f)),
+  ]],
   ['Nhân vật và lộ trình', [
     () => {
       const s = slide('8 nhân vật chơi được', { notes: 'Haruto, Yui, Sota, Hina, Riku, Mio, Yuto, Sakura: mỗi em một ngoại hình, màu da, kiểu tóc riêng; ai cũng đi, chạy, chơi đàn, cử chỉ, mặc được mọi bộ đồ. Ảnh: AllCharactersPlayPlayModeTests (mỗi nhân vật vào game và chơi đàn).' });
@@ -398,6 +542,11 @@ const SECTIONS = [
       });
     },
     ...CAREERS.map(c => () => careerSlide(c)),
+    () => features({ title: 'Truyện mốc trước mỗi lần thăng chức', notes: '70 cảnh truyện ngắn (10 ngành × bậc 2, 3, 4 và bậc 5, 6 của mỗi nhánh), dữ liệu career_stories.json sinh từ Tools/story/career_stories.py. Khi thanh hiệu suất đầy, một cảnh ở nơi làm việc diễn ra trước buổi phỏng vấn: sếp, đồng nghiệp hoặc khách nói bằng tiếng Nhật, người chơi chọn 1 trong 3 câu trả lời. Câu tốt nhất (lịch sự, chu đáo) được +5 trí tuệ và danh tiếng rồi vào phỏng vấn; câu tạm được thêm chút danh tiếng; câu kém mất 20% hiệu suất nên phỏng vấn lùi lại ca sau. Mỗi bậc giờ chỉ cần 1–3 ca. Câu trả lời của ngành y theo đúng thực tế: không kê kháng sinh cho cảm, đo huyết áp sau khi nghỉ, sổ thuốc khi uống chung thuốc.', items: [
+      { pic: 'f_cs_question', head: 'Tình huống ở nơi làm', body: 'Khách, sếp, đồng nghiệp nói tiếng Nhật' },
+      { pic: 'f_cs_reply', head: '3 câu trả lời', body: 'Câu tốt nhất được +5 trí tuệ' },
+      { pic: 'f_cs_interview', head: 'Rồi mới phỏng vấn', body: 'Trả lời kém: phỏng vấn lùi lại ca sau' },
+    ] }),
     () => {
       const s = slide('Video: con đường sự nghiệp', { notes: 'Mười ngành, mỗi ngành từ bậc 1 đến bậc 6, ghi trực tiếp trong game (DemoRecordingTests.Careers_RecordFrames): ca làm thật, phỏng vấn thăng chức tiếng Nhật, chọn nhánh ở bậc 4. Lời dẫn giọng nam. Bản đầy đủ: Bao_Cao/NihongoLife_Con_Duong_Su_Nghiep.mp4.' });
       video(s, 'careers.mp4', 'career_interview', 2.2, 1.85, 8.9, 5.0, '10 ngành · bậc 1 đến bậc 6');
@@ -441,16 +590,7 @@ const SECTIONS = [
       picture(s, 'classroom_ru', 0.45, 1.95, 7.6, 4.95, 'Lớp học, chọn tiếng Nga');
       bullets(s, ['Một nút, bốn ngôn ngữ', 'Bài học, video, thi thử', 'Video gắn đúng từng bài'], 8.35, 2.0, 4.55, 4.9);
     },
-    () => {
-      const s = slide('Khoá học video', { notes: 'Thư viện video làm như một trang học trực tuyến: khoá theo ngôn ngữ, giáo trình theo phần, tiến độ đã xem, phát trong game hoặc mở YouTube.' });
-      picture(s, 'catalogue', 0.45, 1.95, 6.1, 4.95, 'Danh mục khoá học');
-      picture(s, 'courses', 6.8, 1.95, 6.1, 4.95, 'Trang bài học');
-    },
-    () => {
-      const s = slide('Thi thử JLPT, IELTS, TORFL', { notes: 'Đề tự soạn theo định dạng kỳ thi, không phải đề chính thức; chấm điểm, lưu lịch sử; IELTS Viết/Nói có thể chấm bằng AI. Chứng nhận trong game không phải chứng chỉ chính thức.' });
-      picture(s, 'exam_centre', 0.45, 1.95, 6.1, 4.95, 'Trung tâm luyện thi');
-      picture(s, 'exam_result', 6.8, 1.95, 6.1, 4.95, 'Kết quả và nhận xét');
-    },
+    ...STUDY.map(f => () => features(f)),
   ]],
   ['Online và kỹ thuật', [
     () => {

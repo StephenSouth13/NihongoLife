@@ -1,6 +1,7 @@
 using System.Collections;
 using System.IO;
 using System.Linq;
+using System.Text;
 using NihongoLife.Core;
 using NihongoLife.Dialogue;
 using NihongoLife.Interaction;
@@ -92,6 +93,22 @@ namespace NihongoLife.Tests
                 var gestures = player.GetComponentInChildren<NihongoLife.Gestures.GestureLayer>();
                 Assert.IsNotNull(gestures);
                 Assert.AreEqual("piano_play", gestures.Current, "hands on the keys");
+                // On the grand piano's own keys: no gesture keyboard in front of it, the wrists just over the white keys.
+                Assert.IsNotNull(gestures.Keys, "the piano's keys are known");
+                Assert.IsFalse(gestures.ActiveProps.Any(p => p.transform.gameObject.activeInHierarchy), "the gesture's own keyboard and bench are hidden");
+                var animator = player.GetComponentInChildren<Animator>();
+                var keysBox = gestures.Keys.parent.GetComponent<Renderer>().bounds;
+                var hands = new StringBuilder();
+                foreach (var bone in new[] { HumanBodyBones.RightHand, HumanBodyBones.LeftHand })
+                {
+                    Vector3 wrist = animator.GetBoneTransform(bone).position;
+                    float above = wrist.y - keysBox.max.y;
+                    hands.Append($"{bone}: {above * 100f:0.0} cm above, {(wrist.z - keysBox.min.z) * 100f:0.0} cm in from the front edge; ");
+                    Assert.That(above, Is.InRange(-0.01f, 0.12f), bone + " rests on the keys: " + hands);
+                    Assert.That(wrist.x, Is.InRange(keysBox.min.x, keysBox.max.x), bone + " over the keyboard: " + hands);
+                    Assert.That(wrist.z, Is.InRange(keysBox.min.z - 0.06f, keysBox.max.z), bone + " over the keys, not in front of them: " + hands);
+                }
+                Debug.Log("[PianoHands] grand piano: " + hands);
                 CaptureUi("08_character_plays_piano");
                 MusicStudioUI.Tempo = 1f;
                 MusicStudioUI.Volume = 0.8f;

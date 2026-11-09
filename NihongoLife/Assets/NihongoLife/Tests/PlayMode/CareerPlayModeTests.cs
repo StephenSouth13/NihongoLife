@@ -75,13 +75,18 @@ namespace NihongoLife.Tests
                 Assert.AreEqual(yen + 220 + firstShiftReward, inventory.Yen, "Salary for the on-time shift + the first-shift milestone");
                 Assert.IsTrue(CareerService.State.milestones.Contains("first_shift"), "Milestone: first shift");
                 Assert.Contains(workday, CareerService.State.workedDays, "The worked day is on the record");
-                Assert.AreEqual(50f * mood, CareerService.State.performance, 0.5f, "Half the bar per shift at level 1 (two shifts), times the mood");
+                float step = 100f / food.levels[0].shiftsToPromote; // a shift fills 1/shiftsToPromote of the bar
+                Assert.AreEqual(Mathf.Min(100f, step * mood), CareerService.State.performance, 0.5f, "A shift fills its share of the bar, times the mood");
+                if (JobQuizCard.IsOpen) JobQuizCard.Close(); // a full bar already offers the interview: it is tested below
                 CareerService.State.performance = 0f;
                 yen = inventory.Yen;
                 mood = CareerService.MoodFactor;
                 CareerService.ShiftDone(workday + 1, 20f);
-                Assert.AreEqual(25f * mood, CareerService.State.performance, 0.5f, "Outside working hours counts half");
+                Assert.AreEqual(Mathf.Min(100f, step * 0.5f * mood), CareerService.State.performance, 0.5f, "Outside working hours counts half");
+                if (JobQuizCard.IsOpen) JobQuizCard.Close();
                 Assert.AreEqual(yen, inventory.Yen, "No salary outside working hours");
+                yield return null; // CareerClock notices the closed card on its next frame
+                yield return null;
 
                 // A full bar: the promotion interview in Japanese — wrong answers are explained, the right one promotes.
                 CareerService.State.performance = 100f;

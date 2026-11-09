@@ -69,6 +69,10 @@ ICONS = os.path.normpath(os.path.join(B, '..', 'NihongoLife', 'Assets', 'Nihongo
 for career, icon in {'retail': 'local_convenience_store', 'food': 'ramen_dining', 'chef': 'set_meal', 'hospitality': 'hotel', 'medical': 'medical_services',
                      'farm': 'agriculture', 'musician': 'music_note', 'producer': 'headphones', 'painter': 'draw', 'fashion': 'checkroom'}.items():
     PICS['icon_' + career] = os.path.join(ICONS, f'ic_{icon}.png')
+# The feature section's captures (feature_pics.py).
+sys.path.insert(0, HERE)
+from feature_pics import F  # noqa: E402
+PICS.update({key: f'{B}/{rel}' for key, rel in F.items()})
 missing = []
 for name, src in PICS.items():
     if not os.path.exists(src):

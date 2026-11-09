@@ -10,6 +10,7 @@ namespace NihongoLife.Gestures
         {
             public GProp def; public GameObject go; public int index = -1; public float ts, te = float.MaxValue, scale;
             public Quaternion last = Quaternion.identity;
+            public float fwd = float.NaN, up = float.NaN; // K: the shoulders' smoothed distance ahead of / above the feet
         }
 
         private sealed class Fx { public Transform t; public Vector3 vel; public float life, age, size; public int kind; public bool alive; }
@@ -31,6 +32,14 @@ namespace NihongoLife.Gestures
 
         public int ActiveFx { get { int n = 0; foreach (var f in _fx) if (f.alive) n++; return n; } }
         private float PropScale => Mathf.Max(0.2f, _armLen / 0.55f);
+
+        /// <summary>
+        /// A real instrument's keys (a transform at the centre of the white keys' top), or null. While set, a gesture with a
+        /// K prop (piano_play) hides its own props and moves the hands by the distance from its keyboard's <c>tip</c> to these
+        /// keys — the grand piano of the music shop, where the gesture's keyboard stood in front of the real one.
+        /// </summary>
+        public Transform Keys { get; set; }
+        private Vector3 _keysShift;
 
         // ------------------------------------------------------------------ props
 
@@ -67,7 +76,8 @@ namespace NihongoLife.Gestures
 
         private void UpdateProps(float dt, bool posed)
         {
-            if (_props.Count == 0) return;
+            bool keysSeen = false;
+            if (_props.Count == 0) { _keysShift = Vector3.zero; return; }
             float sc = PropScale;
             var frame = transform;
             for (int i = _props.Count - 1; i >= 0; i--)
@@ -78,7 +88,8 @@ namespace NihongoLife.Gestures
                 p.scale = Mathf.MoveTowards(p.scale, wanted ? 1f : 0f, dt / 0.16f);
                 if (p.index < 0 && p.scale <= 0.001f) { Destroy(p.go); _props.RemoveAt(i); continue; }
                 bool visible = p.scale > 0.001f;
-                if (p.go.activeSelf != visible) p.go.SetActive(visible);
+                bool shown = visible && (Keys == null || !HasKeysProp());
+                if (p.go.activeSelf != shown) p.go.SetActive(shown);
                 if (!visible || !_resolved || _hips == null) continue;
 
                 Vector3 pch = Vector3.zero;
@@ -86,11 +97,24 @@ namespace NihongoLife.Gestures
                 var baseRot = Quaternion.Euler(V3(p.def.rot));
                 var extra = Euler(pch, frame.right, frame.up, frame.forward);
                 Vector3 offset = frame.rotation * (V3(p.def.pos) * sc);
-                Vector3 pos; Quaternion rot;
+                Vector3 pos; Quaternion rot; float stretch = 1f;
                 switch (p.def.hand)
                 {
                     case "L": pos = _arm[5].position + offset; rot = extra * frame.rotation * baseRot; break;
                     case "W": pos = frame.position + offset; rot = extra * frame.rotation * baseRot; break;
+                    // Played sitting (a keyboard): in front of the shoulders, its top p.def.top arm lengths from them, where the
+                    // hand targets are; the legs stretch to the floor. From the feet at an adult's height the keys stood at a
+                    // chibi kid's chest and the hands played under them.
+                    case "K":
+                        {
+                            Vector3 rel = (_arm[0].position + _arm[3].position) * 0.5f - frame.position;
+                            float fwd = Vector3.Dot(rel, frame.forward), up = Vector3.Dot(rel, frame.up) + p.def.top * _armLen;
+                            if (float.IsNaN(p.fwd)) { p.fwd = fwd; p.up = up; }
+                            else { float k = 1f - Mathf.Exp(-dt * 10f); p.fwd += (fwd - p.fwd) * k; p.up += (up - p.up) * k; }
+                            pos = frame.position + frame.forward * p.fwd + offset; rot = extra * frame.rotation * baseRot;
+                            stretch = Mathf.Clamp(p.up / Mathf.Max(0.01f, PropHeight(p.def) * sc), 0.3f, 3f);
+                            break;
+                        }
                     // Worn on the body (a guitar in front, a guitar on the back): from the hips, so it sits on a kid as on an adult.
                     case "H": pos = _hips.position + offset; rot = extra * frame.rotation * baseRot; break;
                     case "A":
@@ -107,8 +131,33 @@ namespace NihongoLife.Gestures
                     default: pos = _arm[2].position + offset; rot = extra * frame.rotation * baseRot; break;
                 }
                 p.go.transform.SetPositionAndRotation(pos, rot);
-                p.go.transform.localScale = Vector3.one * (sc * Smooth(p.scale));
+                float size = sc * Smooth(p.scale);
+                p.go.transform.localScale = new Vector3(size, size * stretch, size);
+                if (p.def.hand == "K" && p.index >= 0 && p.def.tip != null && p.def.tip.Length == 3)
+                {
+                    // Where the hands would play on the gesture's keyboard, at full size, against the real keys.
+                    var full = Matrix4x4.TRS(pos, rot, new Vector3(sc, sc * stretch, sc));
+                    Vector3 shift = Keys != null ? Keys.position - full.MultiplyPoint3x4(V3(p.def.tip)) : Vector3.zero;
+                    _keysShift = Vector3.Lerp(_keysShift, shift, 1f - Mathf.Exp(-dt * 10f));
+                    keysSeen = true;
+                }
             }
+            if (!keysSeen) _keysShift = Vector3.MoveTowards(_keysShift, Vector3.zero, dt);
+        }
+
+        private bool HasKeysProp()
+        {
+            if (_cur == null) return false;
+            foreach (var use in _cur.props) { var def = GestureLibrary.Prop(use.id); if (def != null && def.hand == "K") return true; }
+            return false;
+        }
+
+        /// <summary>The top of a prop's pieces above its origin, in its own units.</summary>
+        private static float PropHeight(GProp def)
+        {
+            float top = 0.01f;
+            foreach (var piece in def.pieces) top = Mathf.Max(top, piece.pos[1] + piece.size[1] * 0.5f);
+            return top;
         }
 
         private void ClearProps(bool destroy)

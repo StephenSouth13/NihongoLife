@@ -43,6 +43,8 @@ namespace NihongoLife.Progression
         public List<CareerPromotionRecord> promotions = new List<CareerPromotionRecord>();
         /// <summary>Milestones reached (careers.json "milestones"), across every career.</summary>
         public List<string> milestones = new List<string>();
+        /// <summary>Milestone stories already played before their interview (CareerStories, career_stories.json ids).</summary>
+        public List<string> stories = new List<string>();
         /// <summary>Clinical cases solved in the clinic's training room (Clinic/MedicalTraining) — the doctor's notebook.</summary>
         public List<string> trainedCases = new List<string>();
 
@@ -274,6 +276,21 @@ namespace NihongoLife.Progression
             if (blocker != null) { HudFeed.Post(blocker, HudFeed.Kind.Info, 6f, "career-promotion"); return false; }
             var career = Current;
             var state = State;
+            // First the milestone story of this promotion (once); a poor answer empties the bar a little and the interview waits.
+            var story = CareerStories.Pending(career, state);
+            if (story != null && CareerStories.Play(story, career, chosen =>
+                {
+                    _interviewing = false;
+                    if (chosen == null) return; // left with Esc: the story plays again after the next shift
+                    if (!State.stories.Contains(story.id)) State.stories.Add(story.id);
+                    CareerStories.Apply(chosen, State);
+                    Save();
+                    TryOfferPromotion();
+                }))
+            {
+                _interviewing = true;
+                return true;
+            }
             var interview = career.Interview(state.level + 1, state.branchId);
             if (interview == null) { Promote(null); return true; } // no interview written: promote straight away
             _interviewing = true;

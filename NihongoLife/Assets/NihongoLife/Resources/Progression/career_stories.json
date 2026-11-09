@@ -1,0 +1,6085 @@
+{
+ "schema": "nihongolife.career_stories.v1",
+ "stories": [
+  {
+   "id": "retail_2",
+   "career": "retail",
+   "toLevel": 2,
+   "branch": "",
+   "titleVi": "Một mình đứng quầy",
+   "titleEn": "Alone at the register",
+   "titleJa": "はじめての一人レジ",
+   "cast": [
+    {
+     "id": "regular",
+     "vi": "Ông cụ khách quen",
+     "en": "Regular customer",
+     "ja": "常連のおじいさん"
+    }
+   ],
+   "lines": [
+    {
+     "speaker": "boss",
+     "ja": "今日から 一人で レジを お願いします。",
+     "vi": "Từ hôm nay em đứng quầy một mình nhé.",
+     "en": "From today, please run the register on your own."
+    }
+   ],
+   "ask": {
+    "speaker": "regular",
+    "ja": "この お弁当、温めて もらえますか。",
+    "vi": "Cháu hâm nóng hộp cơm này giúp ông được không?",
+    "en": "Could you heat up this bento for me?"
+   },
+   "choices": [
+    {
+     "id": "ok",
+     "kind": "ok",
+     "ja": "はい。",
+     "vi": "Vâng.",
+     "en": "Yes.",
+     "reply": {
+      "speaker": "boss",
+      "ja": "「少々 お待ちください」も 言えると いいね。",
+      "vi": "Nói thêm \"xin chờ một chút\" thì tốt hơn đấy.",
+      "en": "Adding 'one moment, please' would be even better."
+     },
+     "knowledge": 0,
+     "reputation": 1,
+     "performance": 0,
+     "mood": ""
+    },
+    {
+     "id": "best",
+     "kind": "best",
+     "ja": "はい、温めますね。少々 お待ちください。",
+     "vi": "Vâng, cháu hâm nóng ạ. Ông chờ một chút nhé.",
+     "en": "Certainly, I'll heat it up. One moment, please.",
+     "reply": {
+      "speaker": "regular",
+      "ja": "ありがとう。ていねいだね。",
+      "vi": "Cảm ơn cháu. Lễ phép quá.",
+      "en": "Thank you. How polite."
+     },
+     "knowledge": 5,
+     "reputation": 4,
+     "performance": 0,
+     "mood": "Proud"
+    },
+    {
+     "id": "poor",
+     "kind": "poor",
+     "ja": "電子レンジは あそこです。",
+     "vi": "Lò vi sóng ở đằng kia.",
+     "en": "The microwave is over there.",
+     "reply": {
+      "speaker": "regular",
+      "ja": "え……自分で？",
+      "vi": "Hả… tự làm à?",
+      "en": "Eh… by myself?"
+     },
+     "knowledge": 0,
+     "reputation": -2,
+     "performance": -20,
+     "mood": "Embarrassed"
+    }
+   ]
+  },
+  {
+   "id": "retail_3",
+   "career": "retail",
+   "toLevel": 3,
+   "branch": "",
+   "titleVi": "Giờ cao điểm",
+   "titleEn": "Rush hour",
+   "titleJa": "混雑の時間",
+   "cast": [
+    {
+     "id": "yuki",
+     "vi": "Chị Yuki (đồng nghiệp)",
+     "en": "Yuki (coworker)",
+     "ja": "ゆきさん"
+    },
+    {
+     "id": "guest",
+     "vi": "Khách hàng",
+     "en": "Customer",
+     "ja": "お客様"
+    }
+   ],
+   "lines": [
+    {
+     "speaker": "narrator",
+     "ja": "昼休み。レジに 長い 列が できました。",
+     "vi": "Giờ nghỉ trưa. Hàng người xếp dài trước quầy.",
+     "en": "Lunchtime. A long queue forms at the register."
+    },
+    {
+     "speaker": "yuki",
+     "ja": "どうしよう、一人じゃ 間に合わない！",
+     "vi": "Làm sao đây, một mình chị không kịp!",
+     "en": "What do we do? I can't keep up alone!"
+    }
+   ],
+   "ask": {
+    "speaker": "boss",
+    "ja": "今日は あなたが リーダーです。どうしますか。",
+    "vi": "Hôm nay em dẫn ca. Em làm gì?",
+    "en": "You're leading the shift today. What will you do?"
+   },
+   "choices": [
+    {
+     "id": "best",
+     "kind": "best",
+     "ja": "もう 一台 レジを 開けます。次の お客様、こちらへ どうぞ！",
+     "vi": "Em mở thêm một quầy. Quý khách tiếp theo, mời sang đây ạ!",
+     "en": "I'll open another register. Next customer, this way please!",
+     "reply": {
+      "speaker": "yuki",
+      "ja": "助かった！列が すぐ 短く なったね。",
+      "vi": "Cứu chị rồi! Hàng ngắn lại ngay.",
+      "en": "You saved me! The queue got shorter right away."
+     },
+     "knowledge": 5,
+     "reputation": 4,
+     "performance": 0,
+     "mood": "Proud"
+    },
+    {
+     "id": "poor",
+     "kind": "poor",
+     "ja": "お客様に 待って もらいます。",
+     "vi": "Để khách chờ thôi.",
+     "en": "The customers will just have to wait.",
+     "reply": {
+      "speaker": "guest",
+      "ja": "まだですか？もう 帰ります。",
+      "vi": "Vẫn chưa xong à? Tôi về đây.",
+      "en": "Still not done? I'm leaving."
+     },
+     "knowledge": 0,
+     "reputation": -2,
+     "performance": -20,
+     "mood": "Embarrassed"
+    },
+    {
+     "id": "ok",
+     "kind": "ok",
+     "ja": "急いで やります。",
+     "vi": "Em sẽ làm nhanh hơn.",
+     "en": "I'll hurry.",
+     "reply": {
+      "speaker": "boss",
+      "ja": "がんばったね。でも、レジを もう 一台 開ける 手も あったよ。",
+      "vi": "Em cố gắng rồi. Nhưng còn cách mở thêm một quầy nữa đấy.",
+      "en": "Good effort. You could also have opened another register."
+     },
+     "knowledge": 0,
+     "reputation": 1,
+     "performance": 0,
+     "mood": ""
+    }
+   ]
+  },
+  {
+   "id": "retail_4",
+   "career": "retail",
+   "toLevel": 4,
+   "branch": "",
+   "titleVi": "Kèm người mới",
+   "titleEn": "Training the new hire",
+   "titleJa": "新人の指導",
+   "cast": [
+    {
+     "id": "kenta",
+     "vi": "Kenta (nhân viên mới)",
+     "en": "Kenta (new part-timer)",
+     "ja": "けんたくん"
+    }
+   ],
+   "lines": [
+    {
+     "speaker": "boss",
+     "ja": "新しい アルバイトの けんたくんを 教えて ください。",
+     "vi": "Em kèm bạn làm thêm mới, Kenta, nhé.",
+     "en": "Please train our new part-timer, Kenta."
+    },
+    {
+     "speaker": "kenta",
+     "ja": "すみません……おつりを まちがえました。",
+     "vi": "Em xin lỗi… em đưa nhầm tiền thối.",
+     "en": "Sorry… I gave the wrong change."
+    }
+   ],
+   "ask": {
+    "speaker": "narrator",
+    "ja": "けんたくんに 何と 言いますか。",
+    "vi": "Bạn nói gì với Kenta?",
+    "en": "What do you say to Kenta?"
+   },
+   "choices": [
+    {
+     "id": "ok",
+     "kind": "ok",
+     "ja": "次は 気を つけてね。",
+     "vi": "Lần sau cẩn thận nhé.",
+     "en": "Be careful next time.",
+     "reply": {
+      "speaker": "boss",
+      "ja": "注意だけじゃなくて、やり方も 見せて あげよう。",
+      "vi": "Đừng chỉ nhắc, hãy chỉ cho em ấy cách làm.",
+      "en": "Don't just warn him — show him how."
+     },
+     "knowledge": 0,
+     "reputation": 1,
+     "performance": 0,
+     "mood": ""
+    },
+    {
+     "id": "poor",
+     "kind": "poor",
+     "ja": "どうして こんな 簡単な ことが できないの？",
+     "vi": "Sao việc dễ thế này cũng không làm được?",
+     "en": "Why can't you do something this easy?",
+     "reply": {
+      "speaker": "kenta",
+      "ja": "……すみません。",
+      "vi": "…Em xin lỗi.",
+      "en": "…I'm sorry."
+     },
+     "knowledge": 0,
+     "reputation": -2,
+     "performance": -20,
+     "mood": "Embarrassed"
+    },
+    {
+     "id": "best",
+     "kind": "best",
+     "ja": "大丈夫。いっしょに 数え方を 確認しよう。",
+     "vi": "Không sao. Mình cùng xem lại cách đếm tiền nhé.",
+     "en": "It's okay. Let's go over how to count it together.",
+     "reply": {
+      "speaker": "kenta",
+      "ja": "はい！ありがとうございます、先輩！",
+      "vi": "Vâng! Em cảm ơn ạ!",
+      "en": "Yes! Thank you!"
+     },
+     "knowledge": 5,
+     "reputation": 4,
+     "performance": 0,
+     "mood": "Proud"
+    }
+   ]
+  },
+  {
+   "id": "retail_5_store",
+   "career": "retail",
+   "toLevel": 5,
+   "branch": "store",
+   "titleVi": "Ngày bão",
+   "titleEn": "Typhoon day",
+   "titleJa": "台風の日",
+   "cast": [
+    {
+     "id": "yuki",
+     "vi": "Chị Yuki (đồng nghiệp)",
+     "en": "Yuki (coworker)",
+     "ja": "ゆきさん"
+    },
+    {
+     "id": "guest",
+     "vi": "Khách hàng",
+     "en": "Customer",
+     "ja": "お客様"
+    }
+   ],
+   "lines": [
+    {
+     "speaker": "boss",
+     "ja": "明日は 台風です。店は あなたに まかせます。",
+     "vi": "Mai có bão. Anh giao cửa hàng cho em.",
+     "en": "A typhoon is coming tomorrow. I'm leaving the store to you."
+    },
+    {
+     "speaker": "yuki",
+     "ja": "配送の トラックが 遅れるそうです。",
+     "vi": "Nghe nói xe giao hàng sẽ đến trễ.",
+     "en": "They say the delivery truck will be late."
+    }
+   ],
+   "ask": {
+    "speaker": "yuki",
+    "ja": "どう しましょうか。",
+    "vi": "Mình làm sao đây?",
+    "en": "What should we do?"
+   },
+   "choices": [
+    {
+     "id": "best",
+     "kind": "best",
+     "ja": "水と パンを 多めに 並べて、入口に お知らせを はります。",
+     "vi": "Bày thêm nước và bánh mì, dán thông báo ở cửa.",
+     "en": "We'll stock extra water and bread and put a notice at the entrance.",
+     "reply": {
+      "speaker": "guest",
+      "ja": "水が あって よかった。ありがとう。",
+      "vi": "May mà còn nước. Cảm ơn nhé.",
+      "en": "Glad you have water. Thank you."
+     },
+     "knowledge": 5,
+     "reputation": 4,
+     "performance": 0,
+     "mood": "Proud"
+    },
+    {
+     "id": "ok",
+     "kind": "ok",
+     "ja": "いつも 通りに します。",
+     "vi": "Cứ làm như mọi ngày.",
+     "en": "We'll do things as usual.",
+     "reply": {
+      "speaker": "yuki",
+      "ja": "水が すぐ 売り切れて しまいました……",
+      "vi": "Nước bán hết sạch ngay…",
+      "en": "The water sold out right away…"
+     },
+     "knowledge": 0,
+     "reputation": 1,
+     "performance": 0,
+     "mood": ""
+    },
+    {
+     "id": "poor",
+     "kind": "poor",
+     "ja": "今日は 店を 閉めましょう。",
+     "vi": "Hôm nay đóng cửa luôn đi.",
+     "en": "Let's just close the store today.",
+     "reply": {
+      "speaker": "boss",
+      "ja": "閉める 前に、私に 相談して ほしかったな。",
+      "vi": "Trước khi đóng cửa, em nên hỏi anh đã.",
+      "en": "I wish you'd asked me before closing."
+     },
+     "knowledge": 0,
+     "reputation": -2,
+     "performance": -20,
+     "mood": "Embarrassed"
+    }
+   ]
+  },
+  {
+   "id": "retail_5_buyer",
+   "career": "retail",
+   "toLevel": 5,
+   "branch": "buyer",
+   "titleVi": "Rẻ nhưng kém",
+   "titleEn": "Cheap but poor",
+   "titleJa": "安いけれど……",
+   "cast": [
+    {
+     "id": "supplier",
+     "vi": "Người chào hàng",
+     "en": "Supplier",
+     "ja": "業者さん"
+    },
+    {
+     "id": "guest",
+     "vi": "Khách hàng",
+     "en": "Customer",
+     "ja": "お客様"
+    }
+   ],
+   "lines": [
+    {
+     "speaker": "supplier",
+     "ja": "この おにぎり、ほかより 三割 安いですよ。",
+     "vi": "Loại cơm nắm này rẻ hơn chỗ khác 30% đấy.",
+     "en": "These onigiri are 30% cheaper than anywhere else."
+    },
+    {
+     "speaker": "narrator",
+     "ja": "でも、ごはんが 少し かたいです。",
+     "vi": "Nhưng cơm hơi cứng.",
+     "en": "But the rice is a little hard."
+    }
+   ],
+   "ask": {
+    "speaker": "supplier",
+    "ja": "たくさん 注文しますか。",
+    "vi": "Anh/chị đặt nhiều không?",
+    "en": "Will you order a lot?"
+   },
+   "choices": [
+    {
+     "id": "poor",
+     "kind": "poor",
+     "ja": "安いので、たくさん 買います。",
+     "vi": "Rẻ thì mua nhiều.",
+     "en": "It's cheap, so I'll buy lots.",
+     "reply": {
+      "speaker": "guest",
+      "ja": "この おにぎり、かたいね……",
+      "vi": "Cơm nắm này cứng quá…",
+      "en": "This onigiri is hard…"
+     },
+     "knowledge": 0,
+     "reputation": -2,
+     "performance": -20,
+     "mood": "Embarrassed"
+    },
+    {
+     "id": "best",
+     "kind": "best",
+     "ja": "品質を 確かめてから 決めます。サンプルを ください。",
+     "vi": "Tôi kiểm tra chất lượng rồi mới quyết. Cho tôi xin mẫu.",
+     "en": "I'll decide after checking the quality. Please give me samples.",
+     "reply": {
+      "speaker": "boss",
+      "ja": "さすが。お客様の ことを 考えて いるね。",
+      "vi": "Đúng là em. Em nghĩ cho khách hàng đấy.",
+      "en": "Well done. You're thinking of the customers."
+     },
+     "knowledge": 5,
+     "reputation": 4,
+     "performance": 0,
+     "mood": "Proud"
+    },
+    {
+     "id": "ok",
+     "kind": "ok",
+     "ja": "店長に 聞いて みます。",
+     "vi": "Tôi hỏi cửa hàng trưởng đã.",
+     "en": "I'll ask the manager.",
+     "reply": {
+      "speaker": "boss",
+      "ja": "自分で 判断できるように なろう。",
+      "vi": "Em nên tập tự quyết định.",
+      "en": "Learn to judge for yourself."
+     },
+     "knowledge": 0,
+     "reputation": 1,
+     "performance": 0,
+     "mood": ""
+    }
+   ]
+  },
+  {
+   "id": "retail_6_store",
+   "career": "retail",
+   "toLevel": 6,
+   "branch": "store",
+   "titleVi": "Quản lý ba cửa hàng",
+   "titleEn": "Three stores",
+   "titleJa": "三つの店",
+   "cast": [
+    {
+     "id": "yuki",
+     "vi": "Chị Yuki (đồng nghiệp)",
+     "en": "Yuki (coworker)",
+     "ja": "ゆきさん"
+    }
+   ],
+   "lines": [
+    {
+     "speaker": "boss",
+     "ja": "来月から 三つの 店を まとめて ほしい。",
+     "vi": "Từ tháng sau anh muốn em quản lý ba cửa hàng.",
+     "en": "From next month, I'd like you to run three stores."
+    },
+    {
+     "speaker": "yuki",
+     "ja": "でも、店ごとに やり方が ちがいますね。",
+     "vi": "Nhưng mỗi cửa hàng làm một kiểu.",
+     "en": "But each store does things differently."
+    }
+   ],
+   "ask": {
+    "speaker": "boss",
+    "ja": "最初に 何を しますか。",
+    "vi": "Việc đầu tiên em làm gì?",
+    "en": "What will you do first?"
+   },
+   "choices": [
+    {
+     "id": "ok",
+     "kind": "ok",
+     "ja": "マニュアルを 配ります。",
+     "vi": "Tôi phát sổ hướng dẫn.",
+     "en": "I'll hand out a manual.",
+     "reply": {
+      "speaker": "boss",
+      "ja": "マニュアルも 大事。でも、人の 声も 聞こう。",
+      "vi": "Sổ hướng dẫn cũng quan trọng, nhưng hãy nghe con người nữa.",
+      "en": "Manuals matter, but listen to people too."
+     },
+     "knowledge": 0,
+     "reputation": 1,
+     "performance": 0,
+     "mood": ""
+    },
+    {
+     "id": "best",
+     "kind": "best",
+     "ja": "まず、それぞれの 店の スタッフの 話を 聞きます。",
+     "vi": "Trước tiên tôi nghe nhân viên từng cửa hàng nói.",
+     "en": "First, I'll listen to the staff at each store.",
+     "reply": {
+      "speaker": "yuki",
+      "ja": "話を 聞いて もらえて、みんな うれしそうです。",
+      "vi": "Được lắng nghe, ai cũng vui.",
+      "en": "Everyone looks happy to be heard."
+     },
+     "knowledge": 5,
+     "reputation": 4,
+     "performance": 0,
+     "mood": "Proud"
+    },
+    {
+     "id": "poor",
+     "kind": "poor",
+     "ja": "全部 私の やり方に します。",
+     "vi": "Tất cả làm theo cách của tôi.",
+     "en": "Everything will be done my way.",
+     "reply": {
+      "speaker": "yuki",
+      "ja": "……みんな、ちょっと 困って います。",
+      "vi": "…Mọi người hơi khó xử.",
+      "en": "…Everyone is a bit troubled."
+     },
+     "knowledge": 0,
+     "reputation": -2,
+     "performance": -20,
+     "mood": "Embarrassed"
+    }
+   ]
+  },
+  {
+   "id": "retail_6_buyer",
+   "career": "retail",
+   "toLevel": 6,
+   "branch": "buyer",
+   "titleVi": "Sản phẩm mới",
+   "titleEn": "A new product",
+   "titleJa": "新商品",
+   "cast": [
+    {
+     "id": "hana",
+     "vi": "Cô Hana (nông trại Midori)",
+     "en": "Hana (Midori farm)",
+     "ja": "はなさん"
+    },
+    {
+     "id": "guest",
+     "vi": "Khách hàng",
+     "en": "Customer",
+     "ja": "お客様"
+    }
+   ],
+   "lines": [
+    {
+     "speaker": "boss",
+     "ja": "ひばりマートだけの 新しい 商品を 作りたい。",
+     "vi": "Anh muốn có sản phẩm mới chỉ Hibari Mart mới có.",
+     "en": "I want a new product only Hibari Mart sells."
+    },
+    {
+     "speaker": "hana",
+     "ja": "みどり島の 野菜、使って みませんか。",
+     "vi": "Thử dùng rau đảo Midori không?",
+     "en": "Why not try vegetables from Midori Island?"
+    }
+   ],
+   "ask": {
+    "speaker": "boss",
+    "ja": "どんな 商品に しますか。",
+    "vi": "Em làm sản phẩm gì?",
+    "en": "What kind of product will it be?"
+   },
+   "choices": [
+    {
+     "id": "best",
+     "kind": "best",
+     "ja": "みどり島の 野菜で、季節の おにぎりを 作りましょう。",
+     "vi": "Làm cơm nắm theo mùa bằng rau đảo Midori.",
+     "en": "Let's make seasonal onigiri with Midori vegetables.",
+     "reply": {
+      "speaker": "hana",
+      "ja": "うれしい！島の 野菜を 町の 人に 食べて もらえる。",
+      "vi": "Vui quá! Người trong phố được ăn rau đảo.",
+      "en": "Wonderful! Town folk will eat island vegetables."
+     },
+     "knowledge": 5,
+     "reputation": 4,
+     "performance": 0,
+     "mood": "Proud"
+    },
+    {
+     "id": "poor",
+     "kind": "poor",
+     "ja": "いちばん 安い 材料で 作ります。",
+     "vi": "Làm bằng nguyên liệu rẻ nhất.",
+     "en": "We'll make it with the cheapest ingredients.",
+     "reply": {
+      "speaker": "guest",
+      "ja": "味が いまいち……もう 買わないかな。",
+      "vi": "Vị không ngon lắm… chắc không mua nữa.",
+      "en": "It doesn't taste great… I won't buy it again."
+     },
+     "knowledge": 0,
+     "reputation": -2,
+     "performance": -20,
+     "mood": "Embarrassed"
+    },
+    {
+     "id": "ok",
+     "kind": "ok",
+     "ja": "人気の 商品を まねします。",
+     "vi": "Bắt chước sản phẩm đang được ưa chuộng.",
+     "en": "We'll copy a popular product.",
+     "reply": {
+      "speaker": "boss",
+      "ja": "それでは ひばりマートらしさが ないね。",
+      "vi": "Vậy thì không còn chất Hibari Mart.",
+      "en": "Then it won't feel like Hibari Mart."
+     },
+     "knowledge": 0,
+     "reputation": 1,
+     "performance": 0,
+     "mood": ""
+    }
+   ]
+  },
+  {
+   "id": "food_2",
+   "career": "food",
+   "toLevel": 2,
+   "branch": "",
+   "titleVi": "Khách đầu tiên",
+   "titleEn": "First guests",
+   "titleJa": "はじめての接客",
+   "cast": [
+    {
+     "id": "guest",
+     "vi": "Hai vị khách",
+     "en": "Two guests",
+     "ja": "お客様"
+    }
+   ],
+   "lines": [
+    {
+     "speaker": "boss",
+     "ja": "今日から ホールに 出て もらう。",
+     "vi": "Từ hôm nay cháu ra phục vụ bàn.",
+     "en": "From today you'll work the floor."
+    }
+   ],
+   "ask": {
+    "speaker": "guest",
+    "ja": "二人ですけど、席 ありますか。",
+    "vi": "Chúng tôi hai người, còn chỗ không?",
+    "en": "There are two of us — any seats?"
+   },
+   "choices": [
+    {
+     "id": "best",
+     "kind": "best",
+     "ja": "いらっしゃいませ。二名様ですね。こちらへ どうぞ。",
+     "vi": "Kính chào quý khách. Hai vị ạ. Mời đi lối này.",
+     "en": "Welcome. Two people? This way, please.",
+     "reply": {
+      "speaker": "guest",
+      "ja": "ありがとう。いい お店だね。",
+      "vi": "Cảm ơn. Quán dễ chịu thật.",
+      "en": "Thanks. Nice place."
+     },
+     "knowledge": 5,
+     "reputation": 4,
+     "performance": 0,
+     "mood": "Proud"
+    },
+    {
+     "id": "ok",
+     "kind": "ok",
+     "ja": "はい、どうぞ。",
+     "vi": "Vâng, mời vào.",
+     "en": "Yes, go ahead.",
+     "reply": {
+      "speaker": "boss",
+      "ja": "「いらっしゃいませ」を 元気に！",
+      "vi": "Nói \"Irasshaimase\" to và vui lên nào!",
+      "en": "Say 'Irasshaimase' with energy!"
+     },
+     "knowledge": 0,
+     "reputation": 1,
+     "performance": 0,
+     "mood": ""
+    },
+    {
+     "id": "poor",
+     "kind": "poor",
+     "ja": "えっと……わかりません。",
+     "vi": "Ờ… tôi không biết.",
+     "en": "Um… I don't know.",
+     "reply": {
+      "speaker": "guest",
+      "ja": "……ほかの 店に 行こうか。",
+      "vi": "…Mình sang quán khác nhé.",
+      "en": "…Shall we go somewhere else?"
+     },
+     "knowledge": 0,
+     "reputation": -2,
+     "performance": -20,
+     "mood": "Embarrassed"
+    }
+   ]
+  },
+  {
+   "id": "food_3",
+   "career": "food",
+   "toLevel": 3,
+   "branch": "",
+   "titleVi": "Khách bị dị ứng",
+   "titleEn": "An allergy",
+   "titleJa": "アレルギー",
+   "cast": [
+    {
+     "id": "saki",
+     "vi": "Chị Saki (phục vụ lâu năm)",
+     "en": "Saki (senior server)",
+     "ja": "さきさん"
+    },
+    {
+     "id": "guest",
+     "vi": "Khách",
+     "en": "Guest",
+     "ja": "お客様"
+    }
+   ],
+   "lines": [
+    {
+     "speaker": "saki",
+     "ja": "あの お客様、注文が あるって。",
+     "vi": "Vị khách kia muốn gọi món.",
+     "en": "That guest wants to order."
+    }
+   ],
+   "ask": {
+    "speaker": "guest",
+    "ja": "えびの アレルギーが あるんです。大丈夫ですか。",
+    "vi": "Tôi bị dị ứng tôm. Có sao không?",
+    "en": "I'm allergic to shrimp. Is that okay?"
+   },
+   "choices": [
+    {
+     "id": "ok",
+     "kind": "ok",
+     "ja": "たぶん 大丈夫です。",
+     "vi": "Chắc không sao đâu.",
+     "en": "It's probably fine.",
+     "reply": {
+      "speaker": "saki",
+      "ja": "「たぶん」は だめ。必ず 大将に 聞いてね。",
+      "vi": "\"Chắc\" là không được. Phải hỏi bác chủ quán.",
+      "en": "'Probably' won't do. Always ask the chef."
+     },
+     "knowledge": 0,
+     "reputation": 1,
+     "performance": 0,
+     "mood": ""
+    },
+    {
+     "id": "best",
+     "kind": "best",
+     "ja": "確認して まいります。えびを 使わない メニューを ご案内します。",
+     "vi": "Để tôi hỏi bếp. Tôi sẽ giới thiệu món không có tôm.",
+     "en": "I'll check with the kitchen and show you dishes without shrimp.",
+     "reply": {
+      "speaker": "boss",
+      "ja": "よし。お客様の 安全が 一番だ。",
+      "vi": "Tốt. An toàn của khách là trên hết.",
+      "en": "Good. The guest's safety comes first."
+     },
+     "knowledge": 5,
+     "reputation": 4,
+     "performance": 0,
+     "mood": "Proud"
+    },
+    {
+     "id": "poor",
+     "kind": "poor",
+     "ja": "わかりません。好きな ものを どうぞ。",
+     "vi": "Tôi không biết. Cứ gọi món thích đi.",
+     "en": "I don't know. Order what you like.",
+     "reply": {
+      "speaker": "guest",
+      "ja": "それは こわいです……",
+      "vi": "Vậy thì sợ lắm…",
+      "en": "That's scary…"
+     },
+     "knowledge": 0,
+     "reputation": -2,
+     "performance": -20,
+     "mood": "Embarrassed"
+    }
+   ]
+  },
+  {
+   "id": "food_4",
+   "career": "food",
+   "toLevel": 4,
+   "branch": "",
+   "titleVi": "Tối bận rộn",
+   "titleEn": "A busy evening",
+   "titleJa": "忙しい夜",
+   "cast": [
+    {
+     "id": "saki",
+     "vi": "Chị Saki (phục vụ lâu năm)",
+     "en": "Saki (senior server)",
+     "ja": "さきさん"
+    }
+   ],
+   "lines": [
+    {
+     "speaker": "boss",
+     "ja": "今夜は 団体の 予約が 三つ ある。",
+     "vi": "Tối nay có ba đoàn đặt bàn.",
+     "en": "We have three group bookings tonight."
+    },
+    {
+     "speaker": "saki",
+     "ja": "ホールの 人が 足りません！",
+     "vi": "Thiếu người phục vụ rồi!",
+     "en": "We're short of servers!"
+    }
+   ],
+   "ask": {
+    "speaker": "boss",
+    "ja": "リーダーとして、どう 動く？",
+    "vi": "Là trưởng ca, cháu xử lý thế nào?",
+    "en": "As shift leader, how will you handle it?"
+   },
+   "choices": [
+    {
+     "id": "best",
+     "kind": "best",
+     "ja": "団体ごとに 担当を 決めて、私は 全体を 見ます。",
+     "vi": "Phân mỗi đoàn một người phụ trách, tôi trông toàn bộ.",
+     "en": "I'll assign someone to each group and watch over everything.",
+     "reply": {
+      "speaker": "saki",
+      "ja": "わかりやすい！みんな 動きやすいです。",
+      "vi": "Rõ ràng quá! Ai cũng dễ làm.",
+      "en": "Clear! Everyone knows what to do."
+     },
+     "knowledge": 5,
+     "reputation": 4,
+     "performance": 0,
+     "mood": "Proud"
+    },
+    {
+     "id": "poor",
+     "kind": "poor",
+     "ja": "予約を 一つ 断りましょう。",
+     "vi": "Huỷ bớt một đoàn đi.",
+     "en": "Let's cancel one booking.",
+     "reply": {
+      "speaker": "boss",
+      "ja": "当日に 断るのは 失礼だ。",
+      "vi": "Huỷ ngay trong ngày là thất lễ.",
+      "en": "Cancelling on the day is rude."
+     },
+     "knowledge": 0,
+     "reputation": -2,
+     "performance": -20,
+     "mood": "Embarrassed"
+    },
+    {
+     "id": "ok",
+     "kind": "ok",
+     "ja": "私が 全部の テーブルを 回ります。",
+     "vi": "Tôi tự chạy hết các bàn.",
+     "en": "I'll cover every table myself.",
+     "reply": {
+      "speaker": "boss",
+      "ja": "一人で 全部は むりだ。人に 任せる ことも 覚えよう。",
+      "vi": "Một mình không làm hết được. Học cách giao việc đi.",
+      "en": "You can't do it all alone. Learn to delegate."
+     },
+     "knowledge": 0,
+     "reputation": 1,
+     "performance": 0,
+     "mood": ""
+    }
+   ]
+  },
+  {
+   "id": "food_5_itamae",
+   "career": "food",
+   "toLevel": 5,
+   "branch": "itamae",
+   "titleVi": "Con cá ngừ",
+   "titleEn": "The tuna",
+   "titleJa": "マグロ",
+   "cast": [],
+   "lines": [
+    {
+     "speaker": "boss",
+     "ja": "今日の マグロは お前が 切って みろ。",
+     "vi": "Hôm nay cháu thử cắt cá ngừ.",
+     "en": "Today, you cut the tuna."
+    },
+    {
+     "speaker": "narrator",
+     "ja": "包丁が 少し 切れにくいです。",
+     "vi": "Con dao hơi cùn.",
+     "en": "The knife is a bit dull."
+    }
+   ],
+   "ask": {
+    "speaker": "boss",
+    "ja": "どうする？",
+    "vi": "Cháu làm gì?",
+    "en": "What will you do?"
+   },
+   "choices": [
+    {
+     "id": "ok",
+     "kind": "ok",
+     "ja": "力を 入れて 切ります。",
+     "vi": "Dùng lực cắt mạnh.",
+     "en": "I'll cut with more force.",
+     "reply": {
+      "speaker": "boss",
+      "ja": "身が つぶれた。力じゃない、刃だ。",
+      "vi": "Thịt cá bị dập rồi. Không phải sức, mà là lưỡi dao.",
+      "en": "You crushed the flesh. It's the blade, not force."
+     },
+     "knowledge": 0,
+     "reputation": 1,
+     "performance": 0,
+     "mood": ""
+    },
+    {
+     "id": "best",
+     "kind": "best",
+     "ja": "先に 包丁を 研ぎます。それから 切ります。",
+     "vi": "Mài dao trước, rồi mới cắt.",
+     "en": "I'll sharpen the knife first, then cut.",
+     "reply": {
+      "speaker": "boss",
+      "ja": "そうだ。道具を 大事に する 人が いい 職人に なる。",
+      "vi": "Đúng. Người quý dụng cụ mới thành thợ giỏi.",
+      "en": "Right. Those who care for their tools become good craftsmen."
+     },
+     "knowledge": 5,
+     "reputation": 4,
+     "performance": 0,
+     "mood": "Proud"
+    },
+    {
+     "id": "poor",
+     "kind": "poor",
+     "ja": "別の 人に 頼みます。",
+     "vi": "Nhờ người khác cắt.",
+     "en": "I'll ask someone else.",
+     "reply": {
+      "speaker": "boss",
+      "ja": "逃げるな。やって みろ。",
+      "vi": "Đừng né. Thử đi.",
+      "en": "Don't run away. Try it."
+     },
+     "knowledge": 0,
+     "reputation": -2,
+     "performance": -20,
+     "mood": "Embarrassed"
+    }
+   ]
+  },
+  {
+   "id": "food_5_owner",
+   "career": "food",
+   "toLevel": 5,
+   "branch": "owner",
+   "titleVi": "Đánh giá xấu",
+   "titleEn": "A bad review",
+   "titleJa": "悪い口コミ",
+   "cast": [
+    {
+     "id": "saki",
+     "vi": "Chị Saki (phục vụ lâu năm)",
+     "en": "Saki (senior server)",
+     "ja": "さきさん"
+    }
+   ],
+   "lines": [
+    {
+     "speaker": "saki",
+     "ja": "ネットに「待ち時間が 長い」って 書かれました。",
+     "vi": "Trên mạng có người viết \"chờ lâu quá\".",
+     "en": "Someone wrote online that 'the wait is too long.'"
+    }
+   ],
+   "ask": {
+    "speaker": "boss",
+    "ja": "副店長、どう する？",
+    "vi": "Phó quản lý, cháu làm gì?",
+    "en": "Deputy manager, what will you do?"
+   },
+   "choices": [
+    {
+     "id": "best",
+     "kind": "best",
+     "ja": "ていねいに 返事を 書いて、予約の 仕組みを 見直します。",
+     "vi": "Viết trả lời lịch sự và xem lại cách nhận đặt bàn.",
+     "en": "I'll reply politely and rethink how we take bookings.",
+     "reply": {
+      "speaker": "saki",
+      "ja": "待ち時間が 半分に なりました！",
+      "vi": "Thời gian chờ giảm một nửa!",
+      "en": "The wait time halved!"
+     },
+     "knowledge": 5,
+     "reputation": 4,
+     "performance": 0,
+     "mood": "Proud"
+    },
+    {
+     "id": "poor",
+     "kind": "poor",
+     "ja": "その お客様は もう 来なくて いいです。",
+     "vi": "Vị khách đó đừng đến nữa cũng được.",
+     "en": "That customer doesn't need to come back.",
+     "reply": {
+      "speaker": "saki",
+      "ja": "そんな 言い方は……",
+      "vi": "Nói vậy thì…",
+      "en": "You can't say that…"
+     },
+     "knowledge": 0,
+     "reputation": -2,
+     "performance": -20,
+     "mood": "Embarrassed"
+    },
+    {
+     "id": "ok",
+     "kind": "ok",
+     "ja": "気に しないで おきます。",
+     "vi": "Kệ nó đi.",
+     "en": "I'll ignore it.",
+     "reply": {
+      "speaker": "boss",
+      "ja": "お客様の 声は 宝だよ。",
+      "vi": "Ý kiến khách là vàng đấy.",
+      "en": "Customer feedback is a treasure."
+     },
+     "knowledge": 0,
+     "reputation": 1,
+     "performance": 0,
+     "mood": ""
+    }
+   ]
+  },
+  {
+   "id": "food_6_itamae",
+   "career": "food",
+   "toLevel": 6,
+   "branch": "itamae",
+   "titleVi": "Hương vị của quán",
+   "titleEn": "The shop's flavour",
+   "titleJa": "大将の味",
+   "cast": [
+    {
+     "id": "regular",
+     "vi": "Khách quen lâu năm",
+     "en": "Old regular",
+     "ja": "常連さん"
+    }
+   ],
+   "lines": [
+    {
+     "speaker": "boss",
+     "ja": "わしは そろそろ 引退だ。この 店の 味を 頼む。",
+     "vi": "Bác sắp nghỉ hưu. Hương vị quán nhờ cháu giữ.",
+     "en": "I'll retire soon. I'm counting on you to keep this shop's flavour."
+    },
+    {
+     "speaker": "regular",
+     "ja": "新しい 大将の すし、楽しみに してるよ。",
+     "vi": "Mong sushi của bếp trưởng mới lắm.",
+     "en": "Can't wait for the new chef's sushi."
+    }
+   ],
+   "ask": {
+    "speaker": "boss",
+    "ja": "お前の すしは どんな すしだ？",
+    "vi": "Sushi của cháu là sushi thế nào?",
+    "en": "What kind of sushi is yours?"
+   },
+   "choices": [
+    {
+     "id": "ok",
+     "kind": "ok",
+     "ja": "大将と まったく 同じに します。",
+     "vi": "Làm y hệt bác.",
+     "en": "Exactly the same as yours.",
+     "reply": {
+      "speaker": "boss",
+      "ja": "まねだけでは 足りない。お前の 味も 見せろ。",
+      "vi": "Bắt chước chưa đủ. Cho bác thấy vị của cháu.",
+      "en": "Copying isn't enough. Show your own flavour."
+     },
+     "knowledge": 0,
+     "reputation": 1,
+     "performance": 0,
+     "mood": ""
+    },
+    {
+     "id": "poor",
+     "kind": "poor",
+     "ja": "全部 新しい メニューに 変えます。",
+     "vi": "Đổi hết sang thực đơn mới.",
+     "en": "I'll change the whole menu.",
+     "reply": {
+      "speaker": "regular",
+      "ja": "いつもの すしが ない……",
+      "vi": "Không còn món sushi quen…",
+      "en": "My usual sushi is gone…"
+     },
+     "knowledge": 0,
+     "reputation": -2,
+     "performance": -20,
+     "mood": "Embarrassed"
+    },
+    {
+     "id": "best",
+     "kind": "best",
+     "ja": "大将の 味を 守りながら、季節の 魚で 新しい 一品も 出します。",
+     "vi": "Giữ vị của bác, và thêm một món mới theo cá mùa.",
+     "en": "I'll keep your flavour and add a new dish with seasonal fish.",
+     "reply": {
+      "speaker": "boss",
+      "ja": "それで いい。伝統は 続けながら 変わるものだ。",
+      "vi": "Vậy là được. Truyền thống là vừa giữ vừa đổi mới.",
+      "en": "Good. Tradition lives on by changing."
+     },
+     "knowledge": 5,
+     "reputation": 4,
+     "performance": 0,
+     "mood": "Proud"
+    }
+   ]
+  },
+  {
+   "id": "food_6_owner",
+   "career": "food",
+   "toLevel": 6,
+   "branch": "owner",
+   "titleVi": "Chi nhánh thứ hai",
+   "titleEn": "A second shop",
+   "titleJa": "二号店",
+   "cast": [
+    {
+     "id": "saki",
+     "vi": "Chị Saki (phục vụ lâu năm)",
+     "en": "Saki (senior server)",
+     "ja": "さきさん"
+    }
+   ],
+   "lines": [
+    {
+     "speaker": "boss",
+     "ja": "二号店を 出さないかと 言われた。",
+     "vi": "Có người mời mở chi nhánh hai.",
+     "en": "We've been asked to open a second shop."
+    },
+    {
+     "speaker": "saki",
+     "ja": "でも、職人が まだ 足りません。",
+     "vi": "Nhưng còn thiếu đầu bếp.",
+     "en": "But we still don't have enough chefs."
+    }
+   ],
+   "ask": {
+    "speaker": "boss",
+    "ja": "オーナーとして、どう 決める？",
+    "vi": "Là chủ quán, cháu quyết thế nào?",
+    "en": "As owner, what's your decision?"
+   },
+   "choices": [
+    {
+     "id": "best",
+     "kind": "best",
+     "ja": "まず 若い 職人を 育てて、一年後に 開きます。",
+     "vi": "Trước hết đào tạo đầu bếp trẻ, một năm sau mới mở.",
+     "en": "We'll train young chefs first and open in a year.",
+     "reply": {
+      "speaker": "boss",
+      "ja": "急がば 回れ、だな。",
+      "vi": "Dục tốc bất đạt mà.",
+      "en": "More haste, less speed."
+     },
+     "knowledge": 5,
+     "reputation": 4,
+     "performance": 0,
+     "mood": "Proud"
+    },
+    {
+     "id": "ok",
+     "kind": "ok",
+     "ja": "来月 すぐに 開きます。",
+     "vi": "Mở ngay tháng sau.",
+     "en": "We'll open next month.",
+     "reply": {
+      "speaker": "saki",
+      "ja": "人が 足りなくて、どちらの 店も 大変です……",
+      "vi": "Thiếu người, cả hai quán đều vất vả…",
+      "en": "Short-handed, both shops are struggling…"
+     },
+     "knowledge": 0,
+     "reputation": 1,
+     "performance": 0,
+     "mood": ""
+    },
+    {
+     "id": "poor",
+     "kind": "poor",
+     "ja": "安い 冷凍の 魚で 開きます。",
+     "vi": "Mở bằng cá đông lạnh giá rẻ.",
+     "en": "We'll open with cheap frozen fish.",
+     "reply": {
+      "speaker": "boss",
+      "ja": "それは もう ひばり寿司じゃない。",
+      "vi": "Thế thì không còn là Sushi Hibari nữa.",
+      "en": "That's not Hibari Sushi anymore."
+     },
+     "knowledge": 0,
+     "reputation": -2,
+     "performance": -20,
+     "mood": "Embarrassed"
+    }
+   ]
+  },
+  {
+   "id": "farm_2",
+   "career": "farm",
+   "toLevel": 2,
+   "branch": "",
+   "titleVi": "Cây con héo",
+   "titleEn": "Weak seedlings",
+   "titleJa": "しおれた苗",
+   "cast": [],
+   "lines": [
+    {
+     "speaker": "boss",
+     "ja": "この 苗、元気が ないね。",
+     "vi": "Cây con này héo quá.",
+     "en": "These seedlings look weak."
+    }
+   ],
+   "ask": {
+    "speaker": "boss",
+    "ja": "どう したら いいと 思う？",
+    "vi": "Em nghĩ nên làm gì?",
+    "en": "What do you think we should do?"
+   },
+   "choices": [
+    {
+     "id": "best",
+     "kind": "best",
+     "ja": "土を さわって みます。かわいて いたら、水を あげます。",
+     "vi": "Sờ thử đất. Nếu khô thì tưới nước.",
+     "en": "I'll feel the soil. If it's dry, I'll water them.",
+     "reply": {
+      "speaker": "boss",
+      "ja": "そう、まず 見て、さわって。それが 農業の 基本。",
+      "vi": "Đúng, trước tiên nhìn và sờ. Đó là cơ bản của nhà nông.",
+      "en": "Yes — look and touch first. That's farming basics."
+     },
+     "knowledge": 5,
+     "reputation": 4,
+     "performance": 0,
+     "mood": "Proud"
+    },
+    {
+     "id": "ok",
+     "kind": "ok",
+     "ja": "肥料を たくさん あげます。",
+     "vi": "Bón thật nhiều phân.",
+     "en": "I'll give lots of fertiliser.",
+     "reply": {
+      "speaker": "boss",
+      "ja": "多すぎると 根が いたむよ。まず 土を 見てね。",
+      "vi": "Nhiều quá là hỏng rễ. Xem đất trước đã.",
+      "en": "Too much hurts the roots. Check the soil first."
+     },
+     "knowledge": 0,
+     "reputation": 1,
+     "performance": 0,
+     "mood": ""
+    },
+    {
+     "id": "poor",
+     "kind": "poor",
+     "ja": "抜いて すてます。",
+     "vi": "Nhổ bỏ đi.",
+     "en": "I'll pull them out and throw them away.",
+     "reply": {
+      "speaker": "boss",
+      "ja": "まだ 生きてるのに……",
+      "vi": "Còn sống mà…",
+      "en": "They're still alive…"
+     },
+     "knowledge": 0,
+     "reputation": -2,
+     "performance": -20,
+     "mood": "Embarrassed"
+    }
+   ]
+  },
+  {
+   "id": "farm_3",
+   "career": "farm",
+   "toLevel": 3,
+   "branch": "",
+   "titleVi": "Mưa đá",
+   "titleEn": "Hail",
+   "titleJa": "ひょう",
+   "cast": [],
+   "lines": [
+    {
+     "speaker": "narrator",
+     "ja": "ラジオ：「今夜、ひょうが 降るでしょう。」",
+     "vi": "Đài: \"Đêm nay có thể có mưa đá.\"",
+     "en": "Radio: 'Hail is expected tonight.'"
+    }
+   ],
+   "ask": {
+    "speaker": "boss",
+    "ja": "トマトが もうすぐ とれるのに。どうする？",
+    "vi": "Cà chua sắp thu hoạch rồi. Làm sao đây?",
+    "en": "The tomatoes are almost ready. What now?"
+   },
+   "choices": [
+    {
+     "id": "ok",
+     "kind": "ok",
+     "ja": "朝 早く 様子を 見に 来ます。",
+     "vi": "Sáng sớm tôi ra xem.",
+     "en": "I'll check early in the morning.",
+     "reply": {
+      "speaker": "boss",
+      "ja": "朝では 遅かった……半分 だめに なったね。",
+      "vi": "Sáng thì muộn rồi… hỏng mất một nửa.",
+      "en": "Morning was too late… half are ruined."
+     },
+     "knowledge": 0,
+     "reputation": 1,
+     "performance": 0,
+     "mood": ""
+    },
+    {
+     "id": "best",
+     "kind": "best",
+     "ja": "暗く なる 前に、ネットを かけて、熟れた トマトは 先に とります。",
+     "vi": "Trước khi tối, phủ lưới và hái trước quả chín.",
+     "en": "Before dark, I'll cover them with nets and pick the ripe ones first.",
+     "reply": {
+      "speaker": "boss",
+      "ja": "完璧！ほとんど 無事だったよ。",
+      "vi": "Hoàn hảo! Gần như không sao cả.",
+      "en": "Perfect! Almost all of them survived."
+     },
+     "knowledge": 5,
+     "reputation": 4,
+     "performance": 0,
+     "mood": "Proud"
+    },
+    {
+     "id": "poor",
+     "kind": "poor",
+     "ja": "天気は どう しようも ないです。",
+     "vi": "Thời tiết thì chịu thôi.",
+     "en": "Nothing can be done about weather.",
+     "reply": {
+      "speaker": "boss",
+      "ja": "できる ことは あったんだよ。",
+      "vi": "Vẫn có việc làm được mà.",
+      "en": "There were things we could do."
+     },
+     "knowledge": 0,
+     "reputation": -2,
+     "performance": -20,
+     "mood": "Embarrassed"
+    }
+   ]
+  },
+  {
+   "id": "farm_4",
+   "career": "farm",
+   "toLevel": 4,
+   "branch": "",
+   "titleVi": "Học sinh tham quan",
+   "titleEn": "A school visit",
+   "titleJa": "農業体験",
+   "cast": [
+    {
+     "id": "sora",
+     "vi": "Bé Sora (học sinh)",
+     "en": "Sora (a pupil)",
+     "ja": "そらくん"
+    }
+   ],
+   "lines": [
+    {
+     "speaker": "boss",
+     "ja": "ひばり小学校の 子どもたちが 見学に 来るよ。",
+     "vi": "Học sinh tiểu học Hibari đến tham quan đấy.",
+     "en": "Children from Hibari Elementary are coming to visit."
+    }
+   ],
+   "ask": {
+    "speaker": "sora",
+    "ja": "にんじんって、どこに なるの？",
+    "vi": "Cà rốt mọc ở đâu ạ?",
+    "en": "Where do carrots grow?"
+   },
+   "choices": [
+    {
+     "id": "best",
+     "kind": "best",
+     "ja": "土の 中だよ。いっしょに 抜いて みよう！",
+     "vi": "Trong đất đấy. Cùng nhổ thử nào!",
+     "en": "In the ground! Let's pull one up together!",
+     "reply": {
+      "speaker": "sora",
+      "ja": "わあ、大きい！にんじん 好きに なった！",
+      "vi": "Oa, to quá! Em thích cà rốt rồi!",
+      "en": "Wow, it's big! I like carrots now!"
+     },
+     "knowledge": 5,
+     "reputation": 4,
+     "performance": 0,
+     "mood": "Proud"
+    },
+    {
+     "id": "poor",
+     "kind": "poor",
+     "ja": "今 いそがしいから、あとでね。",
+     "vi": "Giờ bận, để sau nhé.",
+     "en": "I'm busy now, later.",
+     "reply": {
+      "speaker": "boss",
+      "ja": "子どもの 質問は、未来の 農家の たねだよ。",
+      "vi": "Câu hỏi của trẻ con là hạt giống nhà nông tương lai.",
+      "en": "A child's question is the seed of a future farmer."
+     },
+     "knowledge": 0,
+     "reputation": -2,
+     "performance": -20,
+     "mood": "Embarrassed"
+    },
+    {
+     "id": "ok",
+     "kind": "ok",
+     "ja": "木に なるんじゃないよ。",
+     "vi": "Không mọc trên cây đâu.",
+     "en": "Not on trees.",
+     "reply": {
+      "speaker": "sora",
+      "ja": "じゃあ、どこ？",
+      "vi": "Vậy ở đâu ạ?",
+      "en": "Then where?"
+     },
+     "knowledge": 0,
+     "reputation": 1,
+     "performance": 0,
+     "mood": ""
+    }
+   ]
+  },
+  {
+   "id": "farm_5_grower",
+   "career": "farm",
+   "toLevel": 5,
+   "branch": "grower",
+   "titleVi": "Sâu hại",
+   "titleEn": "Pests",
+   "titleJa": "害虫",
+   "cast": [
+    {
+     "id": "guest",
+     "vi": "Khách ở chợ",
+     "en": "Market customer",
+     "ja": "お客さん"
+    }
+   ],
+   "lines": [
+    {
+     "speaker": "boss",
+     "ja": "キャベツに 虫が たくさん いる。",
+     "vi": "Bắp cải nhiều sâu quá.",
+     "en": "The cabbages are full of bugs."
+    }
+   ],
+   "ask": {
+    "speaker": "boss",
+    "ja": "野菜の 専門家として、どう する？",
+    "vi": "Là chuyên gia rau, em làm gì?",
+    "en": "As the vegetable expert, what will you do?"
+   },
+   "choices": [
+    {
+     "id": "ok",
+     "kind": "ok",
+     "ja": "農薬を まきます。",
+     "vi": "Phun thuốc trừ sâu.",
+     "en": "I'll spray pesticide.",
+     "reply": {
+      "speaker": "boss",
+      "ja": "効くけど、使いすぎには 気を つけてね。",
+      "vi": "Có tác dụng, nhưng đừng lạm dụng.",
+      "en": "It works, but don't overuse it."
+     },
+     "knowledge": 0,
+     "reputation": 1,
+     "performance": 0,
+     "mood": ""
+    },
+    {
+     "id": "best",
+     "kind": "best",
+     "ja": "ネットで 守って、虫を 食べる てんとう虫も 使います。",
+     "vi": "Phủ lưới và dùng bọ rùa ăn sâu.",
+     "en": "I'll protect them with nets and use ladybirds that eat the bugs.",
+     "reply": {
+      "speaker": "boss",
+      "ja": "農薬を 減らせたね。お客様も 安心だ。",
+      "vi": "Giảm được thuốc trừ sâu. Khách cũng yên tâm.",
+      "en": "We cut down pesticides. Customers can relax."
+     },
+     "knowledge": 5,
+     "reputation": 4,
+     "performance": 0,
+     "mood": "Proud"
+    },
+    {
+     "id": "poor",
+     "kind": "poor",
+     "ja": "虫の ついた まま 売ります。",
+     "vi": "Bán luôn cả sâu.",
+     "en": "I'll sell them, bugs and all.",
+     "reply": {
+      "speaker": "guest",
+      "ja": "虫が いる！返品します。",
+      "vi": "Có sâu! Tôi trả lại.",
+      "en": "There's a bug! I'm returning this."
+     },
+     "knowledge": 0,
+     "reputation": -2,
+     "performance": -20,
+     "mood": "Embarrassed"
+    }
+   ]
+  },
+  {
+   "id": "farm_5_ranch",
+   "career": "farm",
+   "toLevel": 5,
+   "branch": "ranch",
+   "titleVi": "Con bò ốm",
+   "titleEn": "A sick cow",
+   "titleJa": "牛の体調",
+   "cast": [
+    {
+     "id": "vet",
+     "vi": "Bác sĩ thú y",
+     "en": "Vet",
+     "ja": "獣医さん"
+    }
+   ],
+   "lines": [
+    {
+     "speaker": "boss",
+     "ja": "牛の ハナコが 朝から 何も 食べないの。",
+     "vi": "Bò Hanako từ sáng chưa ăn gì.",
+     "en": "Hanako the cow hasn't eaten since morning."
+    }
+   ],
+   "ask": {
+    "speaker": "boss",
+    "ja": "どう する？",
+    "vi": "Làm sao đây?",
+    "en": "What will you do?"
+   },
+   "choices": [
+    {
+     "id": "best",
+     "kind": "best",
+     "ja": "すぐ 獣医さんに 電話して、水と 体温を 見ます。",
+     "vi": "Gọi ngay bác sĩ thú y, xem nước uống và nhiệt độ.",
+     "en": "I'll call the vet now and check her water and temperature.",
+     "reply": {
+      "speaker": "vet",
+      "ja": "早く 呼んで くれて よかった。もう 大丈夫。",
+      "vi": "May mà gọi sớm. Ổn rồi.",
+      "en": "Good thing you called early. She'll be fine."
+     },
+     "knowledge": 5,
+     "reputation": 4,
+     "performance": 0,
+     "mood": "Proud"
+    },
+    {
+     "id": "poor",
+     "kind": "poor",
+     "ja": "えさを むりに 食べさせます。",
+     "vi": "Ép nó ăn.",
+     "en": "I'll force her to eat.",
+     "reply": {
+      "speaker": "boss",
+      "ja": "それは かわいそう……",
+      "vi": "Tội nó…",
+      "en": "Poor thing…"
+     },
+     "knowledge": 0,
+     "reputation": -2,
+     "performance": -20,
+     "mood": "Embarrassed"
+    },
+    {
+     "id": "ok",
+     "kind": "ok",
+     "ja": "明日まで 待って みます。",
+     "vi": "Đợi đến mai xem.",
+     "en": "I'll wait until tomorrow.",
+     "reply": {
+      "speaker": "boss",
+      "ja": "動物は がまんするから、早めが いいんだよ。",
+      "vi": "Con vật hay chịu đựng, nên phải sớm.",
+      "en": "Animals hide pain — sooner is better."
+     },
+     "knowledge": 0,
+     "reputation": 1,
+     "performance": 0,
+     "mood": ""
+    }
+   ]
+  },
+  {
+   "id": "farm_6_grower",
+   "career": "farm",
+   "toLevel": 6,
+   "branch": "grower",
+   "titleVi": "Nông trại hữu cơ",
+   "titleEn": "The organic farm",
+   "titleJa": "有機農園",
+   "cast": [
+    {
+     "id": "ito",
+     "vi": "Anh Ito (Hibari Mart)",
+     "en": "Ito (Hibari Mart)",
+     "ja": "いとう店長"
+    }
+   ],
+   "lines": [
+    {
+     "speaker": "boss",
+     "ja": "この 畑を、あなたに ゆずりたい。",
+     "vi": "Chị muốn giao lại mảnh ruộng này cho em.",
+     "en": "I want to hand this field over to you."
+    },
+    {
+     "speaker": "ito",
+     "ja": "有機野菜を 毎週 ほしいんです。",
+     "vi": "Tôi muốn rau hữu cơ mỗi tuần.",
+     "en": "I'd like organic vegetables every week."
+    }
+   ],
+   "ask": {
+    "speaker": "boss",
+    "ja": "農園の 主として、何を 大切に する？",
+    "vi": "Là chủ nông trại, em coi trọng điều gì?",
+    "en": "As the farm's owner, what will you value?"
+   },
+   "choices": [
+    {
+     "id": "poor",
+     "kind": "poor",
+     "ja": "いちばん 高く 売れる ものだけ 作ります。",
+     "vi": "Chỉ trồng thứ bán đắt nhất.",
+     "en": "I'll only grow what sells highest.",
+     "reply": {
+      "speaker": "boss",
+      "ja": "同じ ものばかりだと、土が やせるよ。",
+      "vi": "Trồng một thứ mãi là đất bạc màu.",
+      "en": "Growing one thing only wears out the soil."
+     },
+     "knowledge": 0,
+     "reputation": -2,
+     "performance": -20,
+     "mood": "Embarrassed"
+    },
+    {
+     "id": "ok",
+     "kind": "ok",
+     "ja": "たくさん 作って、たくさん 売ります。",
+     "vi": "Trồng nhiều, bán nhiều.",
+     "en": "Grow lots, sell lots.",
+     "reply": {
+      "speaker": "boss",
+      "ja": "量も 大事。でも、土が つかれないようにね。",
+      "vi": "Số lượng cũng quan trọng, nhưng đừng để đất kiệt.",
+      "en": "Quantity matters, but don't exhaust the soil."
+     },
+     "knowledge": 0,
+     "reputation": 1,
+     "performance": 0,
+     "mood": ""
+    },
+    {
+     "id": "best",
+     "kind": "best",
+     "ja": "土を 育てる ことです。毎年 作物を 変えて、土を 休ませます。",
+     "vi": "Nuôi đất. Mỗi năm đổi cây trồng để đất nghỉ.",
+     "en": "Nurturing the soil. I'll rotate crops so it can rest.",
+     "reply": {
+      "speaker": "boss",
+      "ja": "安心して まかせられる。",
+      "vi": "Chị yên tâm giao rồi.",
+      "en": "I can leave it to you with peace of mind."
+     },
+     "knowledge": 5,
+     "reputation": 4,
+     "performance": 0,
+     "mood": "Proud"
+    }
+   ]
+  },
+  {
+   "id": "farm_6_ranch",
+   "career": "farm",
+   "toLevel": 6,
+   "branch": "ranch",
+   "titleVi": "Trang trại mở cửa",
+   "titleEn": "The open ranch",
+   "titleJa": "牧場体験",
+   "cast": [
+    {
+     "id": "sora",
+     "vi": "Bé Sora (học sinh)",
+     "en": "Sora (a pupil)",
+     "ja": "そらくん"
+    }
+   ],
+   "lines": [
+    {
+     "speaker": "boss",
+     "ja": "牧場を 町の 人に 開きたいね。",
+     "vi": "Chị muốn mở trang trại cho người trong phố đến.",
+     "en": "I'd like to open the ranch to town folk."
+    },
+    {
+     "speaker": "sora",
+     "ja": "馬に 乗りたい！",
+     "vi": "Em muốn cưỡi ngựa!",
+     "en": "I want to ride a horse!"
+    }
+   ],
+   "ask": {
+    "speaker": "boss",
+    "ja": "牧場の 主として、どう する？",
+    "vi": "Là chủ trang trại, em làm gì?",
+    "en": "As the ranch owner, what will you do?"
+   },
+   "choices": [
+    {
+     "id": "best",
+     "kind": "best",
+     "ja": "ヘルメットを つけて、私が 馬を 引きます。動物の 話も します。",
+     "vi": "Đội mũ bảo hiểm, tôi dắt ngựa, kể chuyện về con vật.",
+     "en": "Helmet on, I'll lead the horse and talk about the animals.",
+     "reply": {
+      "speaker": "sora",
+      "ja": "楽しかった！また 来たい！",
+      "vi": "Vui quá! Em muốn đến nữa!",
+      "en": "That was fun! I want to come again!"
+     },
+     "knowledge": 5,
+     "reputation": 4,
+     "performance": 0,
+     "mood": "Proud"
+    },
+    {
+     "id": "ok",
+     "kind": "ok",
+     "ja": "見るだけに して ください。",
+     "vi": "Chỉ được xem thôi.",
+     "en": "Please just watch.",
+     "reply": {
+      "speaker": "sora",
+      "ja": "えー、ざんねん……",
+      "vi": "Ơ, tiếc quá…",
+      "en": "Aww, too bad…"
+     },
+     "knowledge": 0,
+     "reputation": 1,
+     "performance": 0,
+     "mood": ""
+    },
+    {
+     "id": "poor",
+     "kind": "poor",
+     "ja": "一人で 乗って いいよ。",
+     "vi": "Tự cưỡi đi.",
+     "en": "Go ahead and ride alone.",
+     "reply": {
+      "speaker": "boss",
+      "ja": "子ども 一人は あぶない！",
+      "vi": "Trẻ con một mình nguy hiểm!",
+      "en": "A child alone is dangerous!"
+     },
+     "knowledge": 0,
+     "reputation": -2,
+     "performance": -20,
+     "mood": "Embarrassed"
+    }
+   ]
+  },
+  {
+   "id": "hospitality_2",
+   "career": "hospitality",
+   "toLevel": 2,
+   "branch": "",
+   "titleVi": "Khách Nhật đầu tiên",
+   "titleEn": "First Japanese guests",
+   "titleJa": "日本人のお客様",
+   "cast": [
+    {
+     "id": "tourist",
+     "vi": "Khách du lịch Nhật",
+     "en": "Japanese tourist",
+     "ja": "日本人観光客"
+    }
+   ],
+   "lines": [
+    {
+     "speaker": "boss",
+     "ja": "日本人の お客様です。あなたが 案内して。",
+     "vi": "Khách Nhật đấy. Em ra đón nhé.",
+     "en": "Japanese guests. You show them in."
+    }
+   ],
+   "ask": {
+    "speaker": "tourist",
+    "ja": "おすすめは 何ですか。",
+    "vi": "Món nào nên thử ạ?",
+    "en": "What do you recommend?"
+   },
+   "choices": [
+    {
+     "id": "ok",
+     "kind": "ok",
+     "ja": "全部 おいしいです。",
+     "vi": "Món nào cũng ngon.",
+     "en": "Everything is good.",
+     "reply": {
+      "speaker": "boss",
+      "ja": "一つ 選んで、説明して あげて。",
+      "vi": "Chọn một món và giải thích cho khách.",
+      "en": "Pick one and explain it."
+     },
+     "knowledge": 0,
+     "reputation": 1,
+     "performance": 0,
+     "mood": ""
+    },
+    {
+     "id": "best",
+     "kind": "best",
+     "ja": "ニシンの サラダ（ゴイ・カー・チック）が おすすめです。島の 名物です。",
+     "vi": "Nên thử gỏi cá trích, đặc sản của đảo.",
+     "en": "Try the herring salad (gỏi cá trích), an island speciality.",
+     "reply": {
+      "speaker": "tourist",
+      "ja": "おいしそう！それに します。",
+      "vi": "Nghe ngon quá! Lấy món đó.",
+      "en": "Sounds delicious! I'll have that."
+     },
+     "knowledge": 5,
+     "reputation": 4,
+     "performance": 0,
+     "mood": "Proud"
+    },
+    {
+     "id": "poor",
+     "kind": "poor",
+     "ja": "メニューを 見て ください。",
+     "vi": "Xem thực đơn đi.",
+     "en": "Please look at the menu.",
+     "reply": {
+      "speaker": "tourist",
+      "ja": "……読めないんですけど。",
+      "vi": "…Tôi không đọc được.",
+      "en": "…I can't read it."
+     },
+     "knowledge": 0,
+     "reputation": -2,
+     "performance": -20,
+     "mood": "Embarrassed"
+    }
+   ]
+  },
+  {
+   "id": "hospitality_3",
+   "career": "hospitality",
+   "toLevel": 3,
+   "branch": "",
+   "titleVi": "Món cay",
+   "titleEn": "Spicy food",
+   "titleJa": "辛いもの",
+   "cast": [
+    {
+     "id": "tourist",
+     "vi": "Khách du lịch Nhật",
+     "en": "Japanese tourist",
+     "ja": "日本人観光客"
+    }
+   ],
+   "lines": [
+    {
+     "speaker": "narrator",
+     "ja": "お客様が 唐辛子を 見て、少し 心配そうです。",
+     "vi": "Khách nhìn ớt, có vẻ hơi lo.",
+     "en": "The guest looks at the chillies, a little worried."
+    }
+   ],
+   "ask": {
+    "speaker": "tourist",
+    "ja": "これ、辛いですか。",
+    "vi": "Món này cay không?",
+    "en": "Is this spicy?"
+   },
+   "choices": [
+    {
+     "id": "best",
+     "kind": "best",
+     "ja": "少し 辛いです。唐辛子を 別の お皿に しましょうか。",
+     "vi": "Hơi cay ạ. Tôi để ớt ra đĩa riêng nhé?",
+     "en": "A little. Shall I put the chillies on a separate plate?",
+     "reply": {
+      "speaker": "tourist",
+      "ja": "ありがとう！助かります。",
+      "vi": "Cảm ơn! Đỡ quá.",
+      "en": "Thank you! That helps."
+     },
+     "knowledge": 5,
+     "reputation": 4,
+     "performance": 0,
+     "mood": "Proud"
+    },
+    {
+     "id": "poor",
+     "kind": "poor",
+     "ja": "ベトナム料理は 辛いのが 普通です。",
+     "vi": "Món Việt cay là bình thường.",
+     "en": "Vietnamese food is normally spicy.",
+     "reply": {
+      "speaker": "boss",
+      "ja": "お客様に 合わせて あげようね。",
+      "vi": "Mình chiều theo khách nhé.",
+      "en": "Let's adjust to the guest."
+     },
+     "knowledge": 0,
+     "reputation": -2,
+     "performance": -20,
+     "mood": "Embarrassed"
+    },
+    {
+     "id": "ok",
+     "kind": "ok",
+     "ja": "大丈夫です。",
+     "vi": "Không sao đâu.",
+     "en": "It's fine.",
+     "reply": {
+      "speaker": "tourist",
+      "ja": "か、辛い！水を ください！",
+      "vi": "Ca… cay quá! Cho tôi nước!",
+      "en": "S-spicy! Water, please!"
+     },
+     "knowledge": 0,
+     "reputation": 1,
+     "performance": 0,
+     "mood": ""
+    }
+   ]
+  },
+  {
+   "id": "hospitality_4",
+   "career": "hospitality",
+   "toLevel": 4,
+   "branch": "",
+   "titleVi": "Mất điện",
+   "titleEn": "A power cut",
+   "titleJa": "停電",
+   "cast": [
+    {
+     "id": "tourist",
+     "vi": "Khách du lịch Nhật",
+     "en": "Japanese tourist",
+     "ja": "日本人観光客"
+    }
+   ],
+   "lines": [
+    {
+     "speaker": "narrator",
+     "ja": "夕食の 時間に、停電に なりました。",
+     "vi": "Giờ ăn tối thì mất điện.",
+     "en": "The power goes out at dinnertime."
+    },
+    {
+     "speaker": "boss",
+     "ja": "お客様が ざわざわ して いる！",
+     "vi": "Khách bắt đầu xôn xao!",
+     "en": "The guests are getting restless!"
+    }
+   ],
+   "ask": {
+    "speaker": "boss",
+    "ja": "シフトリーダー、どう する？",
+    "vi": "Trưởng ca, em làm gì?",
+    "en": "Shift leader, what will you do?"
+   },
+   "choices": [
+    {
+     "id": "ok",
+     "kind": "ok",
+     "ja": "電気が もどるまで 待ちます。",
+     "vi": "Đợi có điện lại.",
+     "en": "We'll wait for the power to return.",
+     "reply": {
+      "speaker": "boss",
+      "ja": "待つ 間も、お客様に 声を かけて。",
+      "vi": "Trong lúc chờ, hỏi han khách đi.",
+      "en": "While waiting, talk to the guests."
+     },
+     "knowledge": 0,
+     "reputation": 1,
+     "performance": 0,
+     "mood": ""
+    },
+    {
+     "id": "poor",
+     "kind": "poor",
+     "ja": "今日は もう 閉店です。",
+     "vi": "Hôm nay đóng cửa luôn.",
+     "en": "We're closing for today.",
+     "reply": {
+      "speaker": "tourist",
+      "ja": "まだ 食べて いないのに……",
+      "vi": "Chúng tôi chưa ăn mà…",
+      "en": "We haven't eaten yet…"
+     },
+     "knowledge": 0,
+     "reputation": -2,
+     "performance": -20,
+     "mood": "Embarrassed"
+    },
+    {
+     "id": "best",
+     "kind": "best",
+     "ja": "ろうそくを 置いて、日本語と ベトナム語で 説明します。",
+     "vi": "Đặt nến, giải thích bằng tiếng Nhật và tiếng Việt.",
+     "en": "I'll set out candles and explain in Japanese and Vietnamese.",
+     "reply": {
+      "speaker": "tourist",
+      "ja": "ろうそくの 夕食、すてき！",
+      "vi": "Bữa tối dưới nến, lãng mạn quá!",
+      "en": "A candlelit dinner — lovely!"
+     },
+     "knowledge": 5,
+     "reputation": 4,
+     "performance": 0,
+     "mood": "Proud"
+    }
+   ]
+  },
+  {
+   "id": "hospitality_5_kitchen",
+   "career": "hospitality",
+   "toLevel": 5,
+   "branch": "kitchen",
+   "titleVi": "Nước mắm đảo",
+   "titleEn": "The island's fish sauce",
+   "titleJa": "ヌックマム",
+   "cast": [
+    {
+     "id": "tourist",
+     "vi": "Khách du lịch Nhật",
+     "en": "Japanese tourist",
+     "ja": "日本人観光客"
+    }
+   ],
+   "lines": [
+    {
+     "speaker": "boss",
+     "ja": "日本の お客様に 島の ヌックマムを 紹介したい。",
+     "vi": "Chị muốn giới thiệu nước mắm đảo cho khách Nhật.",
+     "en": "I want to introduce the island's fish sauce to Japanese guests."
+    }
+   ],
+   "ask": {
+    "speaker": "tourist",
+    "ja": "においが 強いですね……",
+    "vi": "Mùi mạnh nhỉ…",
+    "en": "It smells strong…"
+   },
+   "choices": [
+    {
+     "id": "best",
+     "kind": "best",
+     "ja": "少しだけ、ライムと 砂糖で つけだれに します。どうぞ。",
+     "vi": "Pha chút ít với chanh, đường thành nước chấm. Mời anh/chị.",
+     "en": "Just a little, mixed with lime and sugar as a dip. Please try.",
+     "reply": {
+      "speaker": "tourist",
+      "ja": "あ、おいしい！お土産に 買いたい。",
+      "vi": "Ồ, ngon! Muốn mua làm quà.",
+      "en": "Oh, tasty! I want to buy some as a souvenir."
+     },
+     "knowledge": 5,
+     "reputation": 4,
+     "performance": 0,
+     "mood": "Proud"
+    },
+    {
+     "id": "ok",
+     "kind": "ok",
+     "ja": "なれれば おいしいです。",
+     "vi": "Quen rồi thì ngon.",
+     "en": "It's tasty once you're used to it.",
+     "reply": {
+      "speaker": "tourist",
+      "ja": "うーん……やめて おきます。",
+      "vi": "Ừm… thôi vậy.",
+      "en": "Hmm… I'll pass."
+     },
+     "knowledge": 0,
+     "reputation": 1,
+     "performance": 0,
+     "mood": ""
+    },
+    {
+     "id": "poor",
+     "kind": "poor",
+     "ja": "いやなら 食べなくて いいです。",
+     "vi": "Không thích thì thôi khỏi ăn.",
+     "en": "If you don't like it, don't eat it.",
+     "reply": {
+      "speaker": "boss",
+      "ja": "島の 自慢を そんなふうに……",
+      "vi": "Niềm tự hào của đảo mà em nói vậy…",
+      "en": "Our island's pride, and you say that…"
+     },
+     "knowledge": 0,
+     "reputation": -2,
+     "performance": -20,
+     "mood": "Embarrassed"
+    }
+   ]
+  },
+  {
+   "id": "hospitality_5_manager",
+   "career": "hospitality",
+   "toLevel": 5,
+   "branch": "manager",
+   "titleVi": "Đoàn khách lớn",
+   "titleEn": "A tour group",
+   "titleJa": "ツアー客",
+   "cast": [
+    {
+     "id": "guide",
+     "vi": "Hướng dẫn viên",
+     "en": "Tour guide",
+     "ja": "ガイドさん"
+    }
+   ],
+   "lines": [
+    {
+     "speaker": "guide",
+     "ja": "明日、四十人の 日本人ツアーで 行きたいんです。",
+     "vi": "Mai tôi muốn dẫn đoàn 40 khách Nhật đến.",
+     "en": "Tomorrow I'd like to bring a tour of forty Japanese guests."
+    }
+   ],
+   "ask": {
+    "speaker": "boss",
+    "ja": "副マネージャー、受けられる？",
+    "vi": "Phó quản lý, nhận được không?",
+    "en": "Deputy manager, can we take it?"
+   },
+   "choices": [
+    {
+     "id": "poor",
+     "kind": "poor",
+     "ja": "四十人は むりです。",
+     "vi": "40 người thì chịu.",
+     "en": "Forty is impossible.",
+     "reply": {
+      "speaker": "boss",
+      "ja": "少し 考えれば できたのに……",
+      "vi": "Nghĩ một chút là làm được mà…",
+      "en": "With a little planning we could have."
+     },
+     "knowledge": 0,
+     "reputation": -2,
+     "performance": -20,
+     "mood": "Embarrassed"
+    },
+    {
+     "id": "best",
+     "kind": "best",
+     "ja": "はい。メニューを 決めて、スタッフを 二人 増やします。",
+     "vi": "Được. Chốt thực đơn trước và thêm hai nhân viên.",
+     "en": "Yes. We'll fix the menu ahead and add two staff.",
+     "reply": {
+      "speaker": "guide",
+      "ja": "スムーズでした！また お願いします。",
+      "vi": "Suôn sẻ quá! Lần sau lại nhờ nhé.",
+      "en": "That went smoothly! We'll come again."
+     },
+     "knowledge": 5,
+     "reputation": 4,
+     "performance": 0,
+     "mood": "Proud"
+    },
+    {
+     "id": "ok",
+     "kind": "ok",
+     "ja": "はい、大丈夫です。",
+     "vi": "Vâng, được ạ.",
+     "en": "Yes, no problem.",
+     "reply": {
+      "speaker": "boss",
+      "ja": "準備なしで、料理が とても 遅れたね。",
+      "vi": "Không chuẩn bị nên món ra rất chậm.",
+      "en": "Without preparation, the food came out very late."
+     },
+     "knowledge": 0,
+     "reputation": 1,
+     "performance": 0,
+     "mood": ""
+    }
+   ]
+  },
+  {
+   "id": "hospitality_6_kitchen",
+   "career": "hospitality",
+   "toLevel": 6,
+   "branch": "kitchen",
+   "titleVi": "Món đặc trưng",
+   "titleEn": "A signature dish",
+   "titleJa": "看板料理",
+   "cast": [
+    {
+     "id": "tourist",
+     "vi": "Khách du lịch Nhật",
+     "en": "Japanese tourist",
+     "ja": "日本人観光客"
+    }
+   ],
+   "lines": [
+    {
+     "speaker": "boss",
+     "ja": "料理長として、新しい 看板料理を 作って。",
+     "vi": "Là bếp trưởng, em làm món đặc trưng mới nhé.",
+     "en": "As head chef, create a new signature dish."
+    }
+   ],
+   "ask": {
+    "speaker": "boss",
+    "ja": "どんな 料理に する？",
+    "vi": "Món gì đây?",
+    "en": "What will it be?"
+   },
+   "choices": [
+    {
+     "id": "best",
+     "kind": "best",
+     "ja": "島の 海の幸と 日本の だしを 合わせた フォーを 作ります。",
+     "vi": "Làm phở hải sản đảo với nước dùng dashi Nhật.",
+     "en": "A phở with island seafood and Japanese dashi.",
+     "reply": {
+      "speaker": "tourist",
+      "ja": "ベトナムと 日本が いっしょに なった 味！",
+      "vi": "Vị Việt và Nhật hoà làm một!",
+      "en": "Vietnam and Japan in one flavour!"
+     },
+     "knowledge": 5,
+     "reputation": 4,
+     "performance": 0,
+     "mood": "Proud"
+    },
+    {
+     "id": "ok",
+     "kind": "ok",
+     "ja": "有名な 料理を そのまま 出します。",
+     "vi": "Làm y món nổi tiếng.",
+     "en": "We'll serve a famous dish as is.",
+     "reply": {
+      "speaker": "boss",
+      "ja": "おいしいけど、ガインゴンらしさが ほしいね。",
+      "vi": "Ngon, nhưng cần chất Gánh Ngon.",
+      "en": "Tasty, but it needs a Gánh Ngon touch."
+     },
+     "knowledge": 0,
+     "reputation": 1,
+     "performance": 0,
+     "mood": ""
+    },
+    {
+     "id": "poor",
+     "kind": "poor",
+     "ja": "冷凍の 料理を 温めて 出します。",
+     "vi": "Hâm đồ đông lạnh ra bán.",
+     "en": "We'll reheat frozen food.",
+     "reply": {
+      "speaker": "tourist",
+      "ja": "……ふつうの 味ですね。",
+      "vi": "…Vị bình thường nhỉ.",
+      "en": "…It tastes ordinary."
+     },
+     "knowledge": 0,
+     "reputation": -2,
+     "performance": -20,
+     "mood": "Embarrassed"
+    }
+   ]
+  },
+  {
+   "id": "hospitality_6_manager",
+   "career": "hospitality",
+   "toLevel": 6,
+   "branch": "manager",
+   "titleVi": "Cầu nối",
+   "titleEn": "The bridge",
+   "titleJa": "かけはし",
+   "cast": [
+    {
+     "id": "agent",
+     "vi": "Nhân viên công ty du lịch",
+     "en": "Travel agent",
+     "ja": "旅行会社の人"
+    }
+   ],
+   "lines": [
+    {
+     "speaker": "boss",
+     "ja": "日本の 旅行会社が、うちと 契約したいって。",
+     "vi": "Một công ty du lịch Nhật muốn ký hợp đồng với quán.",
+     "en": "A Japanese travel company wants a contract with us."
+    }
+   ],
+   "ask": {
+    "speaker": "agent",
+    "ja": "お店の 強みは 何ですか。",
+    "vi": "Điểm mạnh của quán là gì?",
+    "en": "What is your restaurant's strength?"
+   },
+   "choices": [
+    {
+     "id": "ok",
+     "kind": "ok",
+     "ja": "安いです。",
+     "vi": "Rẻ ạ.",
+     "en": "We're cheap.",
+     "reply": {
+      "speaker": "agent",
+      "ja": "安いだけでは……",
+      "vi": "Chỉ rẻ thôi thì…",
+      "en": "Being cheap alone…"
+     },
+     "knowledge": 0,
+     "reputation": 1,
+     "performance": 0,
+     "mood": ""
+    },
+    {
+     "id": "best",
+     "kind": "best",
+     "ja": "島の 食材と、日本語で できる おもてなしです。",
+     "vi": "Nguyên liệu của đảo, và sự hiếu khách bằng tiếng Nhật.",
+     "en": "Island ingredients and hospitality in Japanese.",
+     "reply": {
+      "speaker": "agent",
+      "ja": "ぜひ いっしょに やりましょう。",
+      "vi": "Nhất định hợp tác nhé.",
+      "en": "Let's definitely work together."
+     },
+     "knowledge": 5,
+     "reputation": 4,
+     "performance": 0,
+     "mood": "Proud"
+    },
+    {
+     "id": "poor",
+     "kind": "poor",
+     "ja": "とくに ありません。",
+     "vi": "Không có gì đặc biệt.",
+     "en": "Nothing in particular.",
+     "reply": {
+      "speaker": "agent",
+      "ja": "では、またの 機会に。",
+      "vi": "Vậy để dịp khác.",
+      "en": "Another time, then."
+     },
+     "knowledge": 0,
+     "reputation": -2,
+     "performance": -20,
+     "mood": "Embarrassed"
+    }
+   ]
+  },
+  {
+   "id": "medical_2",
+   "career": "medical",
+   "toLevel": 2,
+   "branch": "",
+   "titleVi": "Quên thẻ bảo hiểm",
+   "titleEn": "A forgotten insurance card",
+   "titleJa": "保険証を忘れた",
+   "cast": [
+    {
+     "id": "patient",
+     "vi": "Bà cụ bệnh nhân",
+     "en": "Elderly patient",
+     "ja": "おばあさん"
+    }
+   ],
+   "lines": [
+    {
+     "speaker": "boss",
+     "ja": "受付を お願いします。",
+     "vi": "Em trực quầy tiếp nhận nhé.",
+     "en": "Please take the reception desk."
+    }
+   ],
+   "ask": {
+    "speaker": "patient",
+    "ja": "保険証を 忘れて しまいました……",
+    "vi": "Tôi quên mang thẻ bảo hiểm…",
+    "en": "I forgot my insurance card…"
+   },
+   "choices": [
+    {
+     "id": "best",
+     "kind": "best",
+     "ja": "今日は 全額 お支払いいただいて、保険証を お持ちいただければ 返金します。",
+     "vi": "Hôm nay bà trả toàn bộ, mang thẻ đến thì được hoàn lại phần chênh.",
+     "en": "Pay in full today; bring the card and we'll refund the difference.",
+     "reply": {
+      "speaker": "patient",
+      "ja": "よかった……ありがとう。",
+      "vi": "May quá… cảm ơn cháu.",
+      "en": "What a relief… thank you."
+     },
+     "knowledge": 5,
+     "reputation": 4,
+     "performance": 0,
+     "mood": "Proud"
+    },
+    {
+     "id": "ok",
+     "kind": "ok",
+     "ja": "保険証が ないと だめです。",
+     "vi": "Không có thẻ thì không được.",
+     "en": "Without the card, we can't.",
+     "reply": {
+      "speaker": "boss",
+      "ja": "全額で 受けて、あとで 返金できるよ。",
+      "vi": "Có thể trả toàn bộ rồi hoàn lại sau mà.",
+      "en": "She can pay in full and be refunded later."
+     },
+     "knowledge": 0,
+     "reputation": 1,
+     "performance": 0,
+     "mood": ""
+    },
+    {
+     "id": "poor",
+     "kind": "poor",
+     "ja": "また 明日 来て ください。",
+     "vi": "Mai bà quay lại nhé.",
+     "en": "Please come back tomorrow.",
+     "reply": {
+      "speaker": "patient",
+      "ja": "でも、熱が あって つらいのに……",
+      "vi": "Nhưng tôi sốt mệt lắm…",
+      "en": "But I have a fever and feel awful…"
+     },
+     "knowledge": 0,
+     "reputation": -2,
+     "performance": -20,
+     "mood": "Embarrassed"
+    }
+   ]
+  },
+  {
+   "id": "medical_3",
+   "career": "medical",
+   "toLevel": 3,
+   "branch": "",
+   "titleVi": "Đo huyết áp",
+   "titleEn": "Blood pressure",
+   "titleJa": "血圧",
+   "cast": [
+    {
+     "id": "kana",
+     "vi": "Chị Kana (điều dưỡng)",
+     "en": "Kana (nurse)",
+     "ja": "かなさん"
+    },
+    {
+     "id": "patient",
+     "vi": "Bệnh nhân",
+     "en": "Patient",
+     "ja": "患者さん"
+    }
+   ],
+   "lines": [
+    {
+     "speaker": "kana",
+     "ja": "血圧を はかって もらえる？",
+     "vi": "Em đo huyết áp giúp chị nhé?",
+     "en": "Could you take the blood pressure?"
+    },
+    {
+     "speaker": "narrator",
+     "ja": "患者さんは 走って 来た ばかりです。",
+     "vi": "Bệnh nhân vừa chạy đến.",
+     "en": "The patient has just come running in."
+    }
+   ],
+   "ask": {
+    "speaker": "patient",
+    "ja": "すぐ はかりますか。",
+    "vi": "Đo ngay luôn à?",
+    "en": "Are you measuring right away?"
+   },
+   "choices": [
+    {
+     "id": "ok",
+     "kind": "ok",
+     "ja": "はい、すぐ はかります。",
+     "vi": "Vâng, đo ngay.",
+     "en": "Yes, right away.",
+     "reply": {
+      "speaker": "kana",
+      "ja": "少し 休んで、もう 一度 はかって みて。",
+      "vi": "Cho nghỉ chút rồi đo lại nhé.",
+      "en": "Let them rest and measure again."
+     },
+     "knowledge": 0,
+     "reputation": 1,
+     "performance": 0,
+     "mood": ""
+    },
+    {
+     "id": "best",
+     "kind": "best",
+     "ja": "五分ほど 座って 休んでから はかりましょう。",
+     "vi": "Mình ngồi nghỉ khoảng 5 phút rồi đo nhé.",
+     "en": "Let's rest for about five minutes, then measure.",
+     "reply": {
+      "speaker": "kana",
+      "ja": "正しいね。走った あとは 高く 出るから。",
+      "vi": "Đúng rồi. Vừa chạy thì huyết áp lên cao.",
+      "en": "Correct. It reads high right after running."
+     },
+     "knowledge": 5,
+     "reputation": 4,
+     "performance": 0,
+     "mood": "Proud"
+    },
+    {
+     "id": "poor",
+     "kind": "poor",
+     "ja": "高いですね。病気かも しれません。",
+     "vi": "Cao quá. Có thể bị bệnh.",
+     "en": "That's high. You might be ill.",
+     "reply": {
+      "speaker": "patient",
+      "ja": "え……こわい……",
+      "vi": "Hả… sợ quá…",
+      "en": "What… that's scary…"
+     },
+     "knowledge": 0,
+     "reputation": -2,
+     "performance": -20,
+     "mood": "Embarrassed"
+    }
+   ]
+  },
+  {
+   "id": "medical_4",
+   "career": "medical",
+   "toLevel": 4,
+   "branch": "",
+   "titleVi": "Xin kháng sinh",
+   "titleEn": "Asking for antibiotics",
+   "titleJa": "抗生物質",
+   "cast": [
+    {
+     "id": "patient",
+     "vi": "Bệnh nhân bị cảm",
+     "en": "Patient with a cold",
+     "ja": "かぜの患者さん"
+    }
+   ],
+   "lines": [
+    {
+     "speaker": "patient",
+     "ja": "かぜなので、抗生物質を ください。",
+     "vi": "Tôi bị cảm, cho tôi kháng sinh.",
+     "en": "I have a cold — give me antibiotics."
+    }
+   ],
+   "ask": {
+    "speaker": "boss",
+    "ja": "あなたなら、どう 説明する？",
+    "vi": "Nếu là em, em giải thích thế nào?",
+    "en": "How would you explain it?"
+   },
+   "choices": [
+    {
+     "id": "poor",
+     "kind": "poor",
+     "ja": "はい、出して もらいますね。",
+     "vi": "Vâng, tôi sẽ xin cho.",
+     "en": "Sure, I'll get you some.",
+     "reply": {
+      "speaker": "boss",
+      "ja": "必要ない 薬は 出さないよ。",
+      "vi": "Thuốc không cần thì không kê.",
+      "en": "We don't give unnecessary medicine."
+     },
+     "knowledge": 0,
+     "reputation": -2,
+     "performance": -20,
+     "mood": "Embarrassed"
+    },
+    {
+     "id": "best",
+     "kind": "best",
+     "ja": "かぜの 多くは ウイルスなので、抗生物質は 効きません。休んで、水分を とりましょう。",
+     "vi": "Cảm phần lớn do virus, kháng sinh không có tác dụng. Nghỉ ngơi và uống nhiều nước nhé.",
+     "en": "Most colds are viral, so antibiotics don't work. Rest and drink fluids.",
+     "reply": {
+      "speaker": "boss",
+      "ja": "その通り。わかりやすい 説明だ。",
+      "vi": "Chính xác. Giải thích dễ hiểu.",
+      "en": "Exactly. A clear explanation."
+     },
+     "knowledge": 5,
+     "reputation": 4,
+     "performance": 0,
+     "mood": "Proud"
+    },
+    {
+     "id": "ok",
+     "kind": "ok",
+     "ja": "先生に 聞いて ください。",
+     "vi": "Hỏi bác sĩ đi ạ.",
+     "en": "Please ask the doctor.",
+     "reply": {
+      "speaker": "boss",
+      "ja": "君も 説明できるように なろう。",
+      "vi": "Em cũng nên giải thích được.",
+      "en": "You should be able to explain it too."
+     },
+     "knowledge": 0,
+     "reputation": 1,
+     "performance": 0,
+     "mood": ""
+    }
+   ]
+  },
+  {
+   "id": "medical_5_doctor",
+   "career": "medical",
+   "toLevel": 5,
+   "branch": "doctor",
+   "titleVi": "Đau ngực",
+   "titleEn": "Chest pain",
+   "titleJa": "胸の痛み",
+   "cast": [
+    {
+     "id": "kana",
+     "vi": "Chị Kana (điều dưỡng)",
+     "en": "Kana (nurse)",
+     "ja": "かなさん"
+    },
+    {
+     "id": "patient",
+     "vi": "Bệnh nhân lớn tuổi",
+     "en": "Older patient",
+     "ja": "患者さん"
+    }
+   ],
+   "lines": [
+    {
+     "speaker": "kana",
+     "ja": "先生、急患です！",
+     "vi": "Bác sĩ ơi, có ca cấp cứu!",
+     "en": "Doctor, an emergency!"
+    },
+    {
+     "speaker": "patient",
+     "ja": "胸が しめつけられるように 痛い……",
+     "vi": "Ngực tôi đau như bị bóp chặt…",
+     "en": "My chest hurts like it's being squeezed…"
+    }
+   ],
+   "ask": {
+    "speaker": "kana",
+    "ja": "どう しますか。",
+    "vi": "Làm gì đây ạ?",
+    "en": "What do we do?"
+   },
+   "choices": [
+    {
+     "id": "best",
+     "kind": "best",
+     "ja": "すぐ 心電図を とって、院長と 救急車を 呼びます。",
+     "vi": "Đo điện tim ngay, gọi viện trưởng và xe cấp cứu.",
+     "en": "ECG now, and call the director and an ambulance.",
+     "reply": {
+      "speaker": "boss",
+      "ja": "正しい 判断だ。大きい 病院に 間に合った。",
+      "vi": "Quyết định đúng. Kịp chuyển viện lớn.",
+      "en": "Right call. We got them to the big hospital in time."
+     },
+     "knowledge": 5,
+     "reputation": 4,
+     "performance": 0,
+     "mood": "Proud"
+    },
+    {
+     "id": "ok",
+     "kind": "ok",
+     "ja": "痛み止めを 出して、様子を 見ます。",
+     "vi": "Cho thuốc giảm đau, theo dõi.",
+     "en": "Give painkillers and observe.",
+     "reply": {
+      "speaker": "boss",
+      "ja": "胸の 痛みは 待っては だめだ。まず 心臓を 調べよう。",
+      "vi": "Đau ngực thì không được chờ. Kiểm tra tim trước.",
+      "en": "Chest pain can't wait. Check the heart first."
+     },
+     "knowledge": 0,
+     "reputation": 1,
+     "performance": 0,
+     "mood": ""
+    },
+    {
+     "id": "poor",
+     "kind": "poor",
+     "ja": "疲れでしょう。帰って 寝て ください。",
+     "vi": "Chắc do mệt. Về ngủ đi.",
+     "en": "Probably tiredness. Go home and sleep.",
+     "reply": {
+      "speaker": "boss",
+      "ja": "それは 危ない！",
+      "vi": "Thế là nguy hiểm!",
+      "en": "That's dangerous!"
+     },
+     "knowledge": 0,
+     "reputation": -2,
+     "performance": -20,
+     "mood": "Embarrassed"
+    }
+   ]
+  },
+  {
+   "id": "medical_5_pharmacist",
+   "career": "medical",
+   "toLevel": 5,
+   "branch": "pharmacist",
+   "titleVi": "Uống chung thuốc",
+   "titleEn": "Taking medicines together",
+   "titleJa": "飲み合わせ",
+   "cast": [
+    {
+     "id": "patient",
+     "vi": "Bệnh nhân",
+     "en": "Patient",
+     "ja": "患者さん"
+    }
+   ],
+   "lines": [
+    {
+     "speaker": "narrator",
+     "ja": "薬局の カウンターで。",
+     "vi": "Tại quầy thuốc.",
+     "en": "At the pharmacy counter."
+    }
+   ],
+   "ask": {
+    "speaker": "patient",
+    "ja": "この 薬と、ほかの 病院の 薬、いっしょに 飲んで いいですか。",
+    "vi": "Thuốc này với thuốc của bệnh viện khác uống chung được không?",
+    "en": "Can I take this with medicine from another hospital?"
+   },
+   "choices": [
+    {
+     "id": "ok",
+     "kind": "ok",
+     "ja": "たぶん 大丈夫です。",
+     "vi": "Chắc không sao.",
+     "en": "Probably fine.",
+     "reply": {
+      "speaker": "boss",
+      "ja": "薬に「たぶん」は ないよ。",
+      "vi": "Thuốc không có chuyện \"chắc\".",
+      "en": "There's no 'probably' with medicine."
+     },
+     "knowledge": 0,
+     "reputation": 1,
+     "performance": 0,
+     "mood": ""
+    },
+    {
+     "id": "poor",
+     "kind": "poor",
+     "ja": "全部 いっしょに 飲んで ください。",
+     "vi": "Uống chung hết đi.",
+     "en": "Take them all together.",
+     "reply": {
+      "speaker": "boss",
+      "ja": "確認しないのは 危険だ。",
+      "vi": "Không kiểm tra là nguy hiểm.",
+      "en": "Not checking is dangerous."
+     },
+     "knowledge": 0,
+     "reputation": -2,
+     "performance": -20,
+     "mood": "Embarrassed"
+    },
+    {
+     "id": "best",
+     "kind": "best",
+     "ja": "お薬手帳を 見せて いただけますか。飲み合わせを 確認します。",
+     "vi": "Cho tôi xem sổ thuốc được không? Tôi kiểm tra tương tác thuốc.",
+     "en": "May I see your medicine notebook? I'll check for interactions.",
+     "reply": {
+      "speaker": "patient",
+      "ja": "手帳、持って いて よかった。",
+      "vi": "May mà có mang sổ.",
+      "en": "Glad I brought my notebook."
+     },
+     "knowledge": 5,
+     "reputation": 4,
+     "performance": 0,
+     "mood": "Proud"
+    }
+   ]
+  },
+  {
+   "id": "medical_6_doctor",
+   "career": "medical",
+   "toLevel": 6,
+   "branch": "doctor",
+   "titleVi": "Phòng khám của em",
+   "titleEn": "Your clinic",
+   "titleJa": "あなたのクリニック",
+   "cast": [
+    {
+     "id": "kana",
+     "vi": "Chị Kana (điều dưỡng)",
+     "en": "Kana (nurse)",
+     "ja": "かなさん"
+    },
+    {
+     "id": "patient",
+     "vi": "Bệnh nhân người Việt",
+     "en": "Vietnamese patient",
+     "ja": "ベトナム人の患者さん"
+    }
+   ],
+   "lines": [
+    {
+     "speaker": "boss",
+     "ja": "来年から、この クリニックを 君に まかせたい。",
+     "vi": "Từ năm sau bác muốn giao phòng khám cho em.",
+     "en": "From next year I want to leave this clinic to you."
+    },
+    {
+     "speaker": "kana",
+     "ja": "町の 外国人の 患者さんも 増えて います。",
+     "vi": "Bệnh nhân người nước ngoài trong phố cũng tăng.",
+     "en": "We have more foreign patients in town too."
+    }
+   ],
+   "ask": {
+    "speaker": "boss",
+    "ja": "院長として、何を 始める？",
+    "vi": "Là giám đốc, em bắt đầu gì?",
+    "en": "As director, what will you start?"
+   },
+   "choices": [
+    {
+     "id": "best",
+     "kind": "best",
+     "ja": "やさしい 日本語と 英語、ベトナム語の 問診票を 作ります。",
+     "vi": "Làm phiếu hỏi bệnh bằng tiếng Nhật dễ hiểu, tiếng Anh và tiếng Việt.",
+     "en": "Questionnaires in easy Japanese, English and Vietnamese.",
+     "reply": {
+      "speaker": "patient",
+      "ja": "自分の ことばで 書けて、安心しました。",
+      "vi": "Viết được bằng tiếng mình, yên tâm quá.",
+      "en": "Writing in my own language put me at ease."
+     },
+     "knowledge": 5,
+     "reputation": 4,
+     "performance": 0,
+     "mood": "Proud"
+    },
+    {
+     "id": "poor",
+     "kind": "poor",
+     "ja": "日本語が できない 人は ほかへ どうぞ。",
+     "vi": "Ai không biết tiếng Nhật thì đi chỗ khác.",
+     "en": "Those without Japanese can go elsewhere.",
+     "reply": {
+      "speaker": "boss",
+      "ja": "医者が 患者を えらぶのか？",
+      "vi": "Bác sĩ mà lại chọn bệnh nhân sao?",
+      "en": "A doctor choosing patients?"
+     },
+     "knowledge": 0,
+     "reputation": -2,
+     "performance": -20,
+     "mood": "Embarrassed"
+    },
+    {
+     "id": "ok",
+     "kind": "ok",
+     "ja": "今まで 通りに します。",
+     "vi": "Giữ như trước.",
+     "en": "Keep things as they are.",
+     "reply": {
+      "speaker": "kana",
+      "ja": "外国の 方は 問診票で 困って いますよ。",
+      "vi": "Người nước ngoài khổ với phiếu hỏi bệnh lắm.",
+      "en": "Foreign patients struggle with the form."
+     },
+     "knowledge": 0,
+     "reputation": 1,
+     "performance": 0,
+     "mood": ""
+    }
+   ]
+  },
+  {
+   "id": "medical_6_pharmacist",
+   "career": "medical",
+   "toLevel": 6,
+   "branch": "pharmacist",
+   "titleVi": "Nhà thuốc của phố",
+   "titleEn": "The town pharmacy",
+   "titleJa": "町の薬局",
+   "cast": [
+    {
+     "id": "patient",
+     "vi": "Ông cụ",
+     "en": "Elderly man",
+     "ja": "おじいさん"
+    }
+   ],
+   "lines": [
+    {
+     "speaker": "boss",
+     "ja": "薬局の 責任者は 君だ。",
+     "vi": "Em là trưởng nhà thuốc.",
+     "en": "You head the pharmacy now."
+    }
+   ],
+   "ask": {
+    "speaker": "patient",
+    "ja": "薬が 多すぎて、どれを いつ 飲むか わからない……",
+    "vi": "Thuốc nhiều quá, không biết uống cái nào lúc nào…",
+    "en": "So many pills, I don't know which to take when…"
+   },
+   "choices": [
+    {
+     "id": "best",
+     "kind": "best",
+     "ja": "朝・昼・夜で 一回分ずつ まとめる 一包化を、先生に 相談しましょう。",
+     "vi": "Mình hỏi bác sĩ để gói thuốc theo từng lần uống sáng, trưa, tối nhé.",
+     "en": "Let's ask the doctor about packing doses by morning, noon and night.",
+     "reply": {
+      "speaker": "patient",
+      "ja": "これなら まちがえない。ありがとう。",
+      "vi": "Thế này thì không nhầm nữa. Cảm ơn.",
+      "en": "Now I won't mix them up. Thank you."
+     },
+     "knowledge": 5,
+     "reputation": 4,
+     "performance": 0,
+     "mood": "Proud"
+    },
+    {
+     "id": "ok",
+     "kind": "ok",
+     "ja": "紙に 書いて おきます。",
+     "vi": "Tôi ghi ra giấy cho ông.",
+     "en": "I'll write it down.",
+     "reply": {
+      "speaker": "patient",
+      "ja": "字が 小さくて……",
+      "vi": "Chữ nhỏ quá…",
+      "en": "The writing is so small…"
+     },
+     "knowledge": 0,
+     "reputation": 1,
+     "performance": 0,
+     "mood": ""
+    },
+    {
+     "id": "poor",
+     "kind": "poor",
+     "ja": "説明書を 読んで ください。",
+     "vi": "Ông đọc hướng dẫn đi.",
+     "en": "Please read the leaflet.",
+     "reply": {
+      "speaker": "boss",
+      "ja": "読むのが 難しい 人も いるよ。",
+      "vi": "Có người đọc khó lắm.",
+      "en": "Some people find reading hard."
+     },
+     "knowledge": 0,
+     "reputation": -2,
+     "performance": -20,
+     "mood": "Embarrassed"
+    }
+   ]
+  },
+  {
+   "id": "chef_2",
+   "career": "chef",
+   "toLevel": 2,
+   "branch": "",
+   "titleVi": "Vo gạo",
+   "titleEn": "Washing rice",
+   "titleJa": "米とぎ",
+   "cast": [
+    {
+     "id": "ken",
+     "vi": "Anh Ken (bếp phụ)",
+     "en": "Ken (sous-chef)",
+     "ja": "けんさん"
+    }
+   ],
+   "lines": [
+    {
+     "speaker": "boss",
+     "ja": "まずは 米を といで みろ。",
+     "vi": "Trước hết vo gạo xem.",
+     "en": "First, wash the rice."
+    }
+   ],
+   "ask": {
+    "speaker": "ken",
+    "ja": "何回 とぐか、わかる？",
+    "vi": "Biết vo mấy lần không?",
+    "en": "Know how many times to wash it?"
+   },
+   "choices": [
+    {
+     "id": "ok",
+     "kind": "ok",
+     "ja": "一回で いいと 思います。",
+     "vi": "Một lần là được.",
+     "en": "Once is enough, I think.",
+     "reply": {
+      "speaker": "ken",
+      "ja": "それだと ごはんが べたつくよ。",
+      "vi": "Vậy cơm sẽ dính.",
+      "en": "Then the rice gets sticky."
+     },
+     "knowledge": 0,
+     "reputation": 1,
+     "performance": 0,
+     "mood": ""
+    },
+    {
+     "id": "best",
+     "kind": "best",
+     "ja": "水が すきとおるまで、やさしく 何回か とぎます。",
+     "vi": "Vo nhẹ vài lần đến khi nước trong.",
+     "en": "Gently, several times, until the water runs clear.",
+     "reply": {
+      "speaker": "boss",
+      "ja": "そうだ。米を つぶさないように。",
+      "vi": "Đúng. Đừng làm nát hạt gạo.",
+      "en": "Right. Don't crush the grains."
+     },
+     "knowledge": 5,
+     "reputation": 4,
+     "performance": 0,
+     "mood": "Proud"
+    },
+    {
+     "id": "poor",
+     "kind": "poor",
+     "ja": "洗剤で 洗います。",
+     "vi": "Rửa bằng nước rửa chén.",
+     "en": "I'll wash it with detergent.",
+     "reply": {
+      "speaker": "boss",
+      "ja": "ばかもん！",
+      "vi": "Đồ ngốc!",
+      "en": "You fool!"
+     },
+     "knowledge": 0,
+     "reputation": -2,
+     "performance": -20,
+     "mood": "Embarrassed"
+    }
+   ]
+  },
+  {
+   "id": "chef_3",
+   "career": "chef",
+   "toLevel": 3,
+   "branch": "",
+   "titleVi": "Cầm dao trong bếp",
+   "titleEn": "Knife safety",
+   "titleJa": "包丁",
+   "cast": [
+    {
+     "id": "ken",
+     "vi": "Anh Ken (bếp phụ)",
+     "en": "Ken (sous-chef)",
+     "ja": "けんさん"
+    }
+   ],
+   "lines": [
+    {
+     "speaker": "ken",
+     "ja": "包丁の 持ち方、気を つけて。",
+     "vi": "Chú ý cách cầm dao.",
+     "en": "Mind how you hold the knife."
+    }
+   ],
+   "ask": {
+    "speaker": "boss",
+    "ja": "包丁を 持って 人の 後ろを 通る とき、何と 言う？",
+    "vi": "Cầm dao đi sau lưng người khác thì nói gì?",
+    "en": "What do you say when passing behind someone with a knife?"
+   },
+   "choices": [
+    {
+     "id": "best",
+     "kind": "best",
+     "ja": "「後ろ、通ります。包丁です」と 声を かけます。",
+     "vi": "Nói: \"Đi sau lưng đây, có dao.\"",
+     "en": "I call out, 'Behind you — knife.'",
+     "reply": {
+      "speaker": "boss",
+      "ja": "それで いい。厨房は 声で 守る。",
+      "vi": "Đúng. Bếp được giữ an toàn bằng lời nói.",
+      "en": "Good. A kitchen stays safe by calling out."
+     },
+     "knowledge": 5,
+     "reputation": 4,
+     "performance": 0,
+     "mood": "Proud"
+    },
+    {
+     "id": "poor",
+     "kind": "poor",
+     "ja": "急いで 走ります。",
+     "vi": "Chạy thật nhanh.",
+     "en": "I'll run.",
+     "reply": {
+      "speaker": "ken",
+      "ja": "あぶない！",
+      "vi": "Nguy hiểm!",
+      "en": "Dangerous!"
+     },
+     "knowledge": 0,
+     "reputation": -2,
+     "performance": -20,
+     "mood": "Embarrassed"
+    },
+    {
+     "id": "ok",
+     "kind": "ok",
+     "ja": "何も 言わずに、ゆっくり 通ります。",
+     "vi": "Không nói gì, đi chậm.",
+     "en": "I pass slowly without a word.",
+     "reply": {
+      "speaker": "ken",
+      "ja": "ゆっくりでも、声は 出そう。",
+      "vi": "Chậm cũng phải lên tiếng.",
+      "en": "Even slowly, call out."
+     },
+     "knowledge": 0,
+     "reputation": 1,
+     "performance": 0,
+     "mood": ""
+    }
+   ]
+  },
+  {
+   "id": "chef_4",
+   "career": "chef",
+   "toLevel": 4,
+   "branch": "",
+   "titleVi": "Độ tươi của cá",
+   "titleEn": "Freshness",
+   "titleJa": "鮮度",
+   "cast": [
+    {
+     "id": "ken",
+     "vi": "Anh Ken (bếp phụ)",
+     "en": "Ken (sous-chef)",
+     "ja": "けんさん"
+    }
+   ],
+   "lines": [
+    {
+     "speaker": "ken",
+     "ja": "この 魚、ちょっと においが 気に なる。",
+     "vi": "Con cá này hơi có mùi.",
+     "en": "This fish smells a bit off."
+    }
+   ],
+   "ask": {
+    "speaker": "boss",
+    "ja": "どう する？",
+    "vi": "Làm sao?",
+    "en": "What will you do?"
+   },
+   "choices": [
+    {
+     "id": "poor",
+     "kind": "poor",
+     "ja": "安い まかないに します。",
+     "vi": "Làm cơm nhân viên.",
+     "en": "We'll use it for the staff meal.",
+     "reply": {
+      "speaker": "ken",
+      "ja": "おなかを こわしたら どう するの……",
+      "vi": "Lỡ đau bụng thì sao…",
+      "en": "What if someone gets sick…"
+     },
+     "knowledge": 0,
+     "reputation": -2,
+     "performance": -20,
+     "mood": "Embarrassed"
+    },
+    {
+     "id": "ok",
+     "kind": "ok",
+     "ja": "においを 消して 使います。",
+     "vi": "Khử mùi rồi dùng.",
+     "en": "Mask the smell and use it.",
+     "reply": {
+      "speaker": "boss",
+      "ja": "においを 消しても、悪い 魚は 悪い。",
+      "vi": "Khử mùi rồi thì cá hỏng vẫn là cá hỏng.",
+      "en": "Masked or not, bad fish is bad."
+     },
+     "knowledge": 0,
+     "reputation": 1,
+     "performance": 0,
+     "mood": ""
+    },
+    {
+     "id": "best",
+     "kind": "best",
+     "ja": "使いません。仕入れ先に 伝えて、今日の メニューを 変えます。",
+     "vi": "Không dùng. Báo nơi nhập và đổi thực đơn hôm nay.",
+     "en": "We won't use it. I'll tell the supplier and change today's menu.",
+     "reply": {
+      "speaker": "boss",
+      "ja": "店の 信用は 一皿で 決まる。正しい。",
+      "vi": "Uy tín của quán nằm ở từng đĩa. Đúng lắm.",
+      "en": "A shop's trust rests on each plate. Correct."
+     },
+     "knowledge": 5,
+     "reputation": 4,
+     "performance": 0,
+     "mood": "Proud"
+    }
+   ]
+  },
+  {
+   "id": "chef_5_sushi",
+   "career": "chef",
+   "toLevel": 5,
+   "branch": "sushi",
+   "titleVi": "Khách quen khó tính",
+   "titleEn": "A demanding regular",
+   "titleJa": "うるさい常連",
+   "cast": [
+    {
+     "id": "sato",
+     "vi": "Ông Sato (khách quen)",
+     "en": "Mr Sato (regular)",
+     "ja": "佐藤さん"
+    }
+   ],
+   "lines": [
+    {
+     "speaker": "sato",
+     "ja": "今日の シャリは 少し かたいね。",
+     "vi": "Cơm sushi hôm nay hơi cứng.",
+     "en": "Today's sushi rice is a bit firm."
+    }
+   ],
+   "ask": {
+    "speaker": "boss",
+    "ja": "二番手、どう 答える？",
+    "vi": "Bếp phó, cháu trả lời sao?",
+    "en": "Number two, how do you answer?"
+   },
+   "choices": [
+    {
+     "id": "best",
+     "kind": "best",
+     "ja": "申し訳ありません。すぐ 新しく 握り直します。",
+     "vi": "Xin lỗi ông. Tôi nắm lại món mới ngay.",
+     "en": "I'm sorry. I'll make you a fresh one right away.",
+     "reply": {
+      "speaker": "sato",
+      "ja": "うん、これだ。また 来るよ。",
+      "vi": "Ừ, đúng vị rồi. Lần sau lại đến.",
+      "en": "Yes, that's it. I'll come again."
+     },
+     "knowledge": 5,
+     "reputation": 4,
+     "performance": 0,
+     "mood": "Proud"
+    },
+    {
+     "id": "ok",
+     "kind": "ok",
+     "ja": "今日は こういう シャリです。",
+     "vi": "Hôm nay cơm như vậy ạ.",
+     "en": "That's today's rice.",
+     "reply": {
+      "speaker": "sato",
+      "ja": "そうか……",
+      "vi": "Vậy à…",
+      "en": "I see…"
+     },
+     "knowledge": 0,
+     "reputation": 1,
+     "performance": 0,
+     "mood": ""
+    },
+    {
+     "id": "poor",
+     "kind": "poor",
+     "ja": "ほかの お客様は 何も 言いません。",
+     "vi": "Khách khác có ai nói gì đâu.",
+     "en": "Other customers don't complain.",
+     "reply": {
+      "speaker": "boss",
+      "ja": "お客様と 争うな。",
+      "vi": "Đừng cãi khách.",
+      "en": "Don't argue with guests."
+     },
+     "knowledge": 0,
+     "reputation": -2,
+     "performance": -20,
+     "mood": "Embarrassed"
+    }
+   ]
+  },
+  {
+   "id": "chef_5_pastry",
+   "career": "chef",
+   "toLevel": 5,
+   "branch": "pastry",
+   "titleVi": "Bánh sinh nhật",
+   "titleEn": "A birthday cake",
+   "titleJa": "誕生日ケーキ",
+   "cast": [
+    {
+     "id": "mother",
+     "vi": "Mẹ bé Yui",
+     "en": "Yui's mother",
+     "ja": "ゆいちゃんの お母さん"
+    }
+   ],
+   "lines": [
+    {
+     "speaker": "mother",
+     "ja": "娘の 誕生日なんですが、卵の アレルギーが あって……",
+     "vi": "Sinh nhật con gái tôi, nhưng bé dị ứng trứng…",
+     "en": "It's my daughter's birthday, but she's allergic to eggs…"
+    }
+   ],
+   "ask": {
+    "speaker": "mother",
+    "ja": "ケーキは 作れますか。",
+    "vi": "Có làm bánh được không?",
+    "en": "Can you make a cake?"
+   },
+   "choices": [
+    {
+     "id": "ok",
+     "kind": "ok",
+     "ja": "アレルギーの ケーキは むずかしいです。",
+     "vi": "Bánh cho người dị ứng thì khó lắm.",
+     "en": "Allergy cakes are difficult.",
+     "reply": {
+      "speaker": "mother",
+      "ja": "そうですか……",
+      "vi": "Vậy à…",
+      "en": "I see…"
+     },
+     "knowledge": 0,
+     "reputation": 1,
+     "performance": 0,
+     "mood": ""
+    },
+    {
+     "id": "best",
+     "kind": "best",
+     "ja": "はい。卵を 使わない レシピで、道具も 分けて 作ります。",
+     "vi": "Được ạ. Tôi làm theo công thức không trứng, dùng dụng cụ riêng.",
+     "en": "Yes. An egg-free recipe, with separate utensils.",
+     "reply": {
+      "speaker": "mother",
+      "ja": "娘が「おいしい！」って 笑いました。",
+      "vi": "Con bé cười nói \"Ngon quá!\"",
+      "en": "My daughter smiled and said 'Yummy!'"
+     },
+     "knowledge": 5,
+     "reputation": 4,
+     "performance": 0,
+     "mood": "Proud"
+    },
+    {
+     "id": "poor",
+     "kind": "poor",
+     "ja": "卵を 少しだけ 使います。",
+     "vi": "Chỉ dùng chút trứng thôi.",
+     "en": "Just a little egg.",
+     "reply": {
+      "speaker": "boss",
+      "ja": "アレルギーに「少し」は ない！",
+      "vi": "Dị ứng thì không có chuyện \"một chút\"!",
+      "en": "With allergies there's no 'a little'!"
+     },
+     "knowledge": 0,
+     "reputation": -2,
+     "performance": -20,
+     "mood": "Embarrassed"
+    }
+   ]
+  },
+  {
+   "id": "chef_6_sushi",
+   "career": "chef",
+   "toLevel": 6,
+   "branch": "sushi",
+   "titleVi": "Bếp trưởng",
+   "titleEn": "Head chef",
+   "titleJa": "板長",
+   "cast": [
+    {
+     "id": "ken",
+     "vi": "Anh Ken (bếp phụ)",
+     "en": "Ken (sous-chef)",
+     "ja": "けんさん"
+    }
+   ],
+   "lines": [
+    {
+     "speaker": "boss",
+     "ja": "今日から お前が 板長だ。",
+     "vi": "Từ hôm nay cháu là bếp trưởng.",
+     "en": "From today you are head chef."
+    },
+    {
+     "speaker": "ken",
+     "ja": "新人が 三人 入りました。",
+     "vi": "Có ba người mới vào.",
+     "en": "Three newcomers have joined."
+    }
+   ],
+   "ask": {
+    "speaker": "boss",
+    "ja": "板長として、何を 教える？",
+    "vi": "Là bếp trưởng, cháu dạy gì?",
+    "en": "As head chef, what will you teach?"
+   },
+   "choices": [
+    {
+     "id": "ok",
+     "kind": "ok",
+     "ja": "見て 覚えろ、と 言います。",
+     "vi": "Bảo họ nhìn mà học.",
+     "en": "I'll tell them to learn by watching.",
+     "reply": {
+      "speaker": "boss",
+      "ja": "昔は そうだった。今は 言葉でも 教えよう。",
+      "vi": "Ngày xưa thế. Giờ hãy dạy cả bằng lời.",
+      "en": "That was the old way. Teach with words too."
+     },
+     "knowledge": 0,
+     "reputation": 1,
+     "performance": 0,
+     "mood": ""
+    },
+    {
+     "id": "best",
+     "kind": "best",
+     "ja": "まず 掃除と 道具の 手入れ。それから 一つずつ 技を 見せます。",
+     "vi": "Trước là dọn dẹp và giữ dụng cụ. Rồi chỉ từng kỹ thuật.",
+     "en": "Cleaning and tool care first. Then I'll show each skill one by one.",
+     "reply": {
+      "speaker": "ken",
+      "ja": "新人たち、楽しそうに がんばって います。",
+      "vi": "Người mới hăng hái lắm.",
+      "en": "The newcomers are working with joy."
+     },
+     "knowledge": 5,
+     "reputation": 4,
+     "performance": 0,
+     "mood": "Proud"
+    },
+    {
+     "id": "poor",
+     "kind": "poor",
+     "ja": "最初から 握らせます。",
+     "vi": "Cho nắm sushi ngay từ đầu.",
+     "en": "I'll have them make sushi from day one.",
+     "reply": {
+      "speaker": "ken",
+      "ja": "基本が ないと、けがを しますよ。",
+      "vi": "Không có căn bản dễ bị thương.",
+      "en": "Without basics they'll get hurt."
+     },
+     "knowledge": 0,
+     "reputation": -2,
+     "performance": -20,
+     "mood": "Embarrassed"
+    }
+   ]
+  },
+  {
+   "id": "chef_6_pastry",
+   "career": "chef",
+   "toLevel": 6,
+   "branch": "pastry",
+   "titleVi": "Tiệm bánh",
+   "titleEn": "The patisserie",
+   "titleJa": "パティスリー",
+   "cast": [
+    {
+     "id": "mother",
+     "vi": "Mẹ bé Yui",
+     "en": "Yui's mother",
+     "ja": "ゆいちゃんの お母さん"
+    }
+   ],
+   "lines": [
+    {
+     "speaker": "boss",
+     "ja": "ひばり町に 小さな ケーキ屋を 開かないか。",
+     "vi": "Mở một tiệm bánh nhỏ ở phố Hibari không?",
+     "en": "How about opening a small cake shop in Hibari?"
+    }
+   ],
+   "ask": {
+    "speaker": "boss",
+    "ja": "どんな 店に する？",
+    "vi": "Tiệm thế nào?",
+    "en": "What kind of shop?"
+   },
+   "choices": [
+    {
+     "id": "best",
+     "kind": "best",
+     "ja": "季節の 果物と、アレルギーの 人も 食べられる ケーキの 店です。",
+     "vi": "Tiệm bánh trái cây theo mùa, có bánh cho cả người dị ứng.",
+     "en": "Seasonal fruit cakes, and cakes people with allergies can eat too.",
+     "reply": {
+      "speaker": "mother",
+      "ja": "うちの 子も 安心して 買えます！",
+      "vi": "Con tôi cũng yên tâm mua được!",
+      "en": "My child can buy safely too!"
+     },
+     "knowledge": 5,
+     "reputation": 4,
+     "performance": 0,
+     "mood": "Proud"
+    },
+    {
+     "id": "poor",
+     "kind": "poor",
+     "ja": "いちばん 安い 材料で たくさん 作ります。",
+     "vi": "Làm thật nhiều bằng nguyên liệu rẻ nhất.",
+     "en": "Mass-produce with the cheapest ingredients.",
+     "reply": {
+      "speaker": "mother",
+      "ja": "前の ほうが おいしかった……",
+      "vi": "Hồi trước ngon hơn…",
+      "en": "It used to taste better…"
+     },
+     "knowledge": 0,
+     "reputation": -2,
+     "performance": -20,
+     "mood": "Embarrassed"
+    },
+    {
+     "id": "ok",
+     "kind": "ok",
+     "ja": "パリの 店と 同じに します。",
+     "vi": "Làm y tiệm ở Paris.",
+     "en": "Just like a Paris shop.",
+     "reply": {
+      "speaker": "boss",
+      "ja": "すてきだけど、町の 人の 好みも 考えよう。",
+      "vi": "Đẹp đấy, nhưng nghĩ cả khẩu vị người trong phố.",
+      "en": "Lovely, but think of the town's tastes too."
+     },
+     "knowledge": 0,
+     "reputation": 1,
+     "performance": 0,
+     "mood": ""
+    }
+   ]
+  },
+  {
+   "id": "musician_2",
+   "career": "musician",
+   "toLevel": 2,
+   "branch": "",
+   "titleVi": "Đàn ở quán cà phê",
+   "titleEn": "A café gig",
+   "titleJa": "カフェライブ",
+   "cast": [
+    {
+     "id": "owner",
+     "vi": "Chủ quán cà phê",
+     "en": "Café owner",
+     "ja": "カフェの マスター"
+    }
+   ],
+   "lines": [
+    {
+     "speaker": "boss",
+     "ja": "カフェで ピアノを ひいて みないか。",
+     "vi": "Thử đàn piano ở quán cà phê không?",
+     "en": "How about playing piano at the café?"
+    },
+    {
+     "speaker": "narrator",
+     "ja": "お客様は 静かに 話を して います。",
+     "vi": "Khách đang trò chuyện nhỏ nhẹ.",
+     "en": "The guests are chatting quietly."
+    }
+   ],
+   "ask": {
+    "speaker": "owner",
+    "ja": "どんな 曲に する？",
+    "vi": "Đàn bài gì đây?",
+    "en": "What will you play?"
+   },
+   "choices": [
+    {
+     "id": "poor",
+     "kind": "poor",
+     "ja": "いちばん 大きな 音で ひきます。",
+     "vi": "Đàn to hết cỡ.",
+     "en": "I'll play as loud as possible.",
+     "reply": {
+      "speaker": "owner",
+      "ja": "お客様が 帰って しまった……",
+      "vi": "Khách về hết rồi…",
+      "en": "The guests have left…"
+     },
+     "knowledge": 0,
+     "reputation": -2,
+     "performance": -20,
+     "mood": "Embarrassed"
+    },
+    {
+     "id": "best",
+     "kind": "best",
+     "ja": "話の じゃまに ならない、静かな ジャズに します。",
+     "vi": "Đàn jazz nhẹ, không làm phiền cuộc trò chuyện.",
+     "en": "Quiet jazz that won't disturb the conversations.",
+     "reply": {
+      "speaker": "owner",
+      "ja": "いい 雰囲気だ。また 来て ほしい。",
+      "vi": "Không khí dễ chịu. Mong cậu đến nữa.",
+      "en": "Lovely mood. Please come again."
+     },
+     "knowledge": 5,
+     "reputation": 4,
+     "performance": 0,
+     "mood": "Proud"
+    },
+    {
+     "id": "ok",
+     "kind": "ok",
+     "ja": "自分の 好きな 曲を ひきます。",
+     "vi": "Đàn bài mình thích.",
+     "en": "I'll play what I like.",
+     "reply": {
+      "speaker": "boss",
+      "ja": "場所に 合わせる ことも 大事だよ。",
+      "vi": "Hợp với nơi chốn cũng quan trọng.",
+      "en": "Fitting the place matters too."
+     },
+     "knowledge": 0,
+     "reputation": 1,
+     "performance": 0,
+     "mood": ""
+    }
+   ]
+  },
+  {
+   "id": "musician_3",
+   "career": "musician",
+   "toLevel": 3,
+   "branch": "",
+   "titleVi": "Đàn sai nốt",
+   "titleEn": "A wrong note",
+   "titleJa": "ミスタッチ",
+   "cast": [
+    {
+     "id": "audience",
+     "vi": "Khán giả",
+     "en": "Audience",
+     "ja": "観客"
+    }
+   ],
+   "lines": [
+    {
+     "speaker": "narrator",
+     "ja": "ライブの 途中で、まちがえて しまいました。",
+     "vi": "Giữa buổi diễn, bạn đàn sai.",
+     "en": "Mid-performance, you hit a wrong note."
+    }
+   ],
+   "ask": {
+    "speaker": "narrator",
+    "ja": "どう しますか。",
+    "vi": "Bạn làm gì?",
+    "en": "What do you do?"
+   },
+   "choices": [
+    {
+     "id": "best",
+     "kind": "best",
+     "ja": "止まらずに、そのまま 曲を 続けます。",
+     "vi": "Không dừng, đàn tiếp bài.",
+     "en": "I keep playing without stopping.",
+     "reply": {
+      "speaker": "boss",
+      "ja": "プロは 止まらない。よく やった。",
+      "vi": "Dân chuyên nghiệp không dừng. Giỏi lắm.",
+      "en": "Pros don't stop. Well done."
+     },
+     "knowledge": 5,
+     "reputation": 4,
+     "performance": 0,
+     "mood": "Proud"
+    },
+    {
+     "id": "ok",
+     "kind": "ok",
+     "ja": "最初から ひき直します。",
+     "vi": "Đàn lại từ đầu.",
+     "en": "I start over from the beginning.",
+     "reply": {
+      "speaker": "boss",
+      "ja": "ステージでは、続ける 方が いいよ。",
+      "vi": "Trên sân khấu, đàn tiếp thì hơn.",
+      "en": "On stage, it's better to carry on."
+     },
+     "knowledge": 0,
+     "reputation": 1,
+     "performance": 0,
+     "mood": ""
+    },
+    {
+     "id": "poor",
+     "kind": "poor",
+     "ja": "ステージから おります。",
+     "vi": "Bỏ xuống sân khấu.",
+     "en": "I leave the stage.",
+     "reply": {
+      "speaker": "audience",
+      "ja": "え、終わり？",
+      "vi": "Hả, hết rồi à?",
+      "en": "Huh, is it over?"
+     },
+     "knowledge": 0,
+     "reputation": -2,
+     "performance": -20,
+     "mood": "Embarrassed"
+    }
+   ]
+  },
+  {
+   "id": "musician_4",
+   "career": "musician",
+   "toLevel": 4,
+   "branch": "",
+   "titleVi": "Phòng thu",
+   "titleEn": "The studio",
+   "titleJa": "スタジオ",
+   "cast": [
+    {
+     "id": "producer",
+     "vi": "Nhà sản xuất Kudō",
+     "en": "Producer Kudō",
+     "ja": "工藤プロデューサー"
+    }
+   ],
+   "lines": [
+    {
+     "speaker": "narrator",
+     "ja": "レコーディングスタジオで。",
+     "vi": "Trong phòng thu âm.",
+     "en": "In the recording studio."
+    }
+   ],
+   "ask": {
+    "speaker": "producer",
+    "ja": "テンポを 少し 速く して くれる？",
+    "vi": "Đàn nhanh hơn chút được không?",
+    "en": "Could you play a little faster?"
+   },
+   "choices": [
+    {
+     "id": "ok",
+     "kind": "ok",
+     "ja": "このままの 方が いいと 思います。",
+     "vi": "Tôi nghĩ giữ nguyên thì hơn.",
+     "en": "I think it's better as it is.",
+     "reply": {
+      "speaker": "producer",
+      "ja": "意見は いいけど、まず 一回 ためして みよう。",
+      "vi": "Có ý kiến tốt, nhưng thử một lần đã.",
+      "en": "Opinions are fine, but let's try once first."
+     },
+     "knowledge": 0,
+     "reputation": 1,
+     "performance": 0,
+     "mood": ""
+    },
+    {
+     "id": "best",
+     "kind": "best",
+     "ja": "わかりました。メトロノームに 合わせて、もう 一度 ひきます。",
+     "vi": "Vâng. Tôi đàn lại theo máy đếm nhịp.",
+     "en": "Understood. I'll play again with the metronome.",
+     "reply": {
+      "speaker": "producer",
+      "ja": "ぴったりだ。いい テイクが とれた。",
+      "vi": "Chuẩn luôn. Được bản thu tốt.",
+      "en": "Spot on. We got a great take."
+     },
+     "knowledge": 5,
+     "reputation": 4,
+     "performance": 0,
+     "mood": "Proud"
+    },
+    {
+     "id": "poor",
+     "kind": "poor",
+     "ja": "疲れたので 帰ります。",
+     "vi": "Mệt rồi, tôi về.",
+     "en": "I'm tired, I'm going home.",
+     "reply": {
+      "speaker": "producer",
+      "ja": "……次は ほかの 人に 頼むよ。",
+      "vi": "…Lần sau tôi nhờ người khác.",
+      "en": "…Next time I'll ask someone else."
+     },
+     "knowledge": 0,
+     "reputation": -2,
+     "performance": -20,
+     "mood": "Embarrassed"
+    }
+   ]
+  },
+  {
+   "id": "musician_5_pianist",
+   "career": "musician",
+   "toLevel": 5,
+   "branch": "pianist",
+   "titleVi": "Buổi hoà nhạc",
+   "titleEn": "The concert",
+   "titleJa": "演奏会",
+   "cast": [
+    {
+     "id": "audience",
+     "vi": "Khán giả",
+     "en": "Audience",
+     "ja": "観客"
+    }
+   ],
+   "lines": [
+    {
+     "speaker": "boss",
+     "ja": "ホールで ソロの 演奏会だ。",
+     "vi": "Buổi hoà nhạc độc tấu ở nhà hát đấy.",
+     "en": "It's a solo concert in the hall."
+    },
+    {
+     "speaker": "narrator",
+     "ja": "本番の 前、手が ふるえて います。",
+     "vi": "Trước giờ diễn, tay bạn run.",
+     "en": "Before the show, your hands are shaking."
+    }
+   ],
+   "ask": {
+    "speaker": "boss",
+    "ja": "どう する？",
+    "vi": "Cháu làm gì?",
+    "en": "What will you do?"
+   },
+   "choices": [
+    {
+     "id": "best",
+     "kind": "best",
+     "ja": "ゆっくり 深呼吸して、最初の 四小節を 心の 中で 歌います。",
+     "vi": "Hít thở sâu, hát thầm bốn ô nhịp đầu.",
+     "en": "Breathe deeply and sing the first four bars in my head.",
+     "reply": {
+      "speaker": "audience",
+      "ja": "すばらしい 演奏だった！",
+      "vi": "Màn trình diễn tuyệt vời!",
+      "en": "A wonderful performance!"
+     },
+     "knowledge": 5,
+     "reputation": 4,
+     "performance": 0,
+     "mood": "Proud"
+    },
+    {
+     "id": "ok",
+     "kind": "ok",
+     "ja": "楽譜を 見ながら ひきます。",
+     "vi": "Đàn nhìn bản nhạc.",
+     "en": "I'll play reading the score.",
+     "reply": {
+      "speaker": "boss",
+      "ja": "それも いい。でも、心を 落ち着ける ことも 大切だ。",
+      "vi": "Cũng được, nhưng giữ bình tĩnh cũng quan trọng.",
+      "en": "That works. But calming yourself matters too."
+     },
+     "knowledge": 0,
+     "reputation": 1,
+     "performance": 0,
+     "mood": ""
+    },
+    {
+     "id": "poor",
+     "kind": "poor",
+     "ja": "演奏会を やめます。",
+     "vi": "Huỷ buổi diễn.",
+     "en": "Cancel the concert.",
+     "reply": {
+      "speaker": "boss",
+      "ja": "お客様が 待って いるのに……",
+      "vi": "Khán giả đang đợi mà…",
+      "en": "The audience is waiting…"
+     },
+     "knowledge": 0,
+     "reputation": -2,
+     "performance": -20,
+     "mood": "Embarrassed"
+    }
+   ]
+  },
+  {
+   "id": "musician_5_songwriter",
+   "career": "musician",
+   "toLevel": 5,
+   "branch": "songwriter",
+   "titleVi": "Bài hát đầu tay",
+   "titleEn": "My first song",
+   "titleJa": "はじめての曲",
+   "cast": [
+    {
+     "id": "audience",
+     "vi": "Khán giả",
+     "en": "Audience",
+     "ja": "観客"
+    }
+   ],
+   "lines": [
+    {
+     "speaker": "boss",
+     "ja": "自分の 曲を 作って みないか。",
+     "vi": "Thử viết bài hát của riêng mình không?",
+     "en": "How about writing your own song?"
+    }
+   ],
+   "ask": {
+    "speaker": "boss",
+    "ja": "何に ついて 歌う？",
+    "vi": "Hát về điều gì?",
+    "en": "What will you sing about?"
+   },
+   "choices": [
+    {
+     "id": "ok",
+     "kind": "ok",
+     "ja": "流行って いる 曲を まねします。",
+     "vi": "Bắt chước bài đang thịnh hành.",
+     "en": "I'll copy a trending song.",
+     "reply": {
+      "speaker": "boss",
+      "ja": "あなたらしさを 入れて ごらん。",
+      "vi": "Thêm chất riêng của cháu vào.",
+      "en": "Put some of yourself into it."
+     },
+     "knowledge": 0,
+     "reputation": 1,
+     "performance": 0,
+     "mood": ""
+    },
+    {
+     "id": "poor",
+     "kind": "poor",
+     "ja": "ほかの 人の 歌詞を そのまま 使います。",
+     "vi": "Dùng nguyên lời bài hát của người khác.",
+     "en": "I'll use someone else's lyrics as is.",
+     "reply": {
+      "speaker": "boss",
+      "ja": "それは 盗作だよ。",
+      "vi": "Thế là đạo nhạc.",
+      "en": "That's plagiarism."
+     },
+     "knowledge": 0,
+     "reputation": -2,
+     "performance": -20,
+     "mood": "Embarrassed"
+    },
+    {
+     "id": "best",
+     "kind": "best",
+     "ja": "ひばり町に 来た 日の 気持ちを、やさしい 日本語で 歌います。",
+     "vi": "Hát về cảm xúc ngày đầu đến phố Hibari, bằng tiếng Nhật dễ hiểu.",
+     "en": "The feelings of my first day in Hibari, in simple Japanese.",
+     "reply": {
+      "speaker": "audience",
+      "ja": "心に しみる 歌だね。",
+      "vi": "Bài hát thấm vào lòng quá.",
+      "en": "That song touches the heart."
+     },
+     "knowledge": 5,
+     "reputation": 4,
+     "performance": 0,
+     "mood": "Proud"
+    }
+   ]
+  },
+  {
+   "id": "musician_6_pianist",
+   "career": "musician",
+   "toLevel": 6,
+   "branch": "pianist",
+   "titleVi": "Giám đốc âm nhạc",
+   "titleEn": "Music director",
+   "titleJa": "音楽監督",
+   "cast": [
+    {
+     "id": "sora",
+     "vi": "Bé Sora",
+     "en": "Sora",
+     "ja": "そらくん"
+    }
+   ],
+   "lines": [
+    {
+     "speaker": "boss",
+     "ja": "町の 音楽祭の 監督を 頼みたい。",
+     "vi": "Chú muốn nhờ cháu làm giám đốc lễ hội âm nhạc của phố.",
+     "en": "I'd like you to direct the town's music festival."
+    },
+    {
+     "speaker": "sora",
+     "ja": "ぼくも ステージに 出たい！",
+     "vi": "Em cũng muốn lên sân khấu!",
+     "en": "I want to be on stage too!"
+    }
+   ],
+   "ask": {
+    "speaker": "boss",
+    "ja": "どんな 音楽祭に する？",
+    "vi": "Lễ hội thế nào?",
+    "en": "What kind of festival?"
+   },
+   "choices": [
+    {
+     "id": "best",
+     "kind": "best",
+     "ja": "プロも 子どもも 出られる、町の みんなの 音楽祭に します。",
+     "vi": "Lễ hội của cả phố, dân chuyên lẫn trẻ em đều lên được.",
+     "en": "A festival for everyone — pros and children alike.",
+     "reply": {
+      "speaker": "sora",
+      "ja": "ぼく、ピアノ 練習する！",
+      "vi": "Em sẽ tập piano!",
+      "en": "I'll practise piano!"
+     },
+     "knowledge": 5,
+     "reputation": 4,
+     "performance": 0,
+     "mood": "Proud"
+    },
+    {
+     "id": "poor",
+     "kind": "poor",
+     "ja": "チケットを 高く して、もうけます。",
+     "vi": "Bán vé thật đắt để lời.",
+     "en": "Expensive tickets to make money.",
+     "reply": {
+      "speaker": "boss",
+      "ja": "町の 人が 来られないね。",
+      "vi": "Người trong phố không đến được rồi.",
+      "en": "The townspeople can't come."
+     },
+     "knowledge": 0,
+     "reputation": -2,
+     "performance": -20,
+     "mood": "Embarrassed"
+    },
+    {
+     "id": "ok",
+     "kind": "ok",
+     "ja": "プロだけの 音楽祭に します。",
+     "vi": "Chỉ mời dân chuyên nghiệp.",
+     "en": "Professionals only.",
+     "reply": {
+      "speaker": "sora",
+      "ja": "そっか……",
+      "vi": "Vậy à…",
+      "en": "Oh…"
+     },
+     "knowledge": 0,
+     "reputation": 1,
+     "performance": 0,
+     "mood": ""
+    }
+   ]
+  },
+  {
+   "id": "musician_6_songwriter",
+   "career": "musician",
+   "toLevel": 6,
+   "branch": "songwriter",
+   "titleVi": "Lưu diễn",
+   "titleEn": "On tour",
+   "titleJa": "ツアー",
+   "cast": [
+    {
+     "id": "manager",
+     "vi": "Quản lý tour",
+     "en": "Tour manager",
+     "ja": "マネージャー"
+    },
+    {
+     "id": "fan",
+     "vi": "Người hâm mộ",
+     "en": "Fan",
+     "ja": "ファン"
+    }
+   ],
+   "lines": [
+    {
+     "speaker": "manager",
+     "ja": "全国ツアーが 決まりました！",
+     "vi": "Đã chốt tour lưu diễn toàn quốc!",
+     "en": "A national tour is confirmed!"
+    },
+    {
+     "speaker": "fan",
+     "ja": "最初の カフェライブから、ずっと 応援して います。",
+     "vi": "Tôi ủng hộ từ buổi diễn ở quán cà phê đầu tiên.",
+     "en": "I've supported you since your first café gig."
+    }
+   ],
+   "ask": {
+    "speaker": "manager",
+    "ja": "最後の 曲は どう しますか。",
+    "vi": "Bài cuối chọn gì?",
+    "en": "What about the final song?"
+   },
+   "choices": [
+    {
+     "id": "best",
+     "kind": "best",
+     "ja": "はじめて 作った、ひばり町の 歌に します。みんなと 歌います。",
+     "vi": "Bài hát về phố Hibari đầu tay, hát cùng mọi người.",
+     "en": "My first song, about Hibari. We'll sing it together.",
+     "reply": {
+      "speaker": "fan",
+      "ja": "泣いちゃった……ありがとう！",
+      "vi": "Khóc mất rồi… cảm ơn!",
+      "en": "I cried… thank you!"
+     },
+     "knowledge": 5,
+     "reputation": 4,
+     "performance": 0,
+     "mood": "Proud"
+    },
+    {
+     "id": "ok",
+     "kind": "ok",
+     "ja": "いちばん 売れた 曲に します。",
+     "vi": "Bài bán chạy nhất.",
+     "en": "My best-selling song.",
+     "reply": {
+      "speaker": "manager",
+      "ja": "もり上がりました！",
+      "vi": "Không khí bùng nổ!",
+      "en": "The crowd went wild!"
+     },
+     "knowledge": 0,
+     "reputation": 1,
+     "performance": 0,
+     "mood": ""
+    },
+    {
+     "id": "poor",
+     "kind": "poor",
+     "ja": "アンコールは しません。",
+     "vi": "Không hát encore.",
+     "en": "No encore.",
+     "reply": {
+      "speaker": "fan",
+      "ja": "えー……",
+      "vi": "Ơ…",
+      "en": "Aww…"
+     },
+     "knowledge": 0,
+     "reputation": -2,
+     "performance": -20,
+     "mood": "Embarrassed"
+    }
+   ]
+  },
+  {
+   "id": "producer_2",
+   "career": "producer",
+   "toLevel": 2,
+   "branch": "",
+   "titleVi": "Phần mở màn",
+   "titleEn": "The opening set",
+   "titleJa": "オープニング",
+   "cast": [],
+   "lines": [
+    {
+     "speaker": "boss",
+     "ja": "今夜の オープニングを まかせる。",
+     "vi": "Giao cháu phần mở màn tối nay.",
+     "en": "Tonight's opening set is yours."
+    },
+    {
+     "speaker": "narrator",
+     "ja": "まだ お客様は 少ないです。",
+     "vi": "Khách còn ít.",
+     "en": "Few guests have arrived yet."
+    }
+   ],
+   "ask": {
+    "speaker": "boss",
+    "ja": "どんな 音に する？",
+    "vi": "Chơi nhạc thế nào?",
+    "en": "What sound will you go for?"
+   },
+   "choices": [
+    {
+     "id": "ok",
+     "kind": "ok",
+     "ja": "好きな 曲を 順番に かけます。",
+     "vi": "Bật lần lượt bài mình thích.",
+     "en": "Play my favourites in order.",
+     "reply": {
+      "speaker": "boss",
+      "ja": "流れを 考えると、もっと よく なるよ。",
+      "vi": "Nghĩ đến mạch bài thì sẽ hay hơn.",
+      "en": "Think about the flow and it'll get better."
+     },
+     "knowledge": 0,
+     "reputation": 1,
+     "performance": 0,
+     "mood": ""
+    },
+    {
+     "id": "best",
+     "kind": "best",
+     "ja": "ゆったりした 曲から 始めて、少しずつ もり上げます。",
+     "vi": "Bắt đầu nhạc chậm, rồi nâng dần không khí.",
+     "en": "Start mellow and build up little by little.",
+     "reply": {
+      "speaker": "boss",
+      "ja": "完璧な ウォームアップだ。",
+      "vi": "Khởi động hoàn hảo.",
+      "en": "A perfect warm-up."
+     },
+     "knowledge": 5,
+     "reputation": 4,
+     "performance": 0,
+     "mood": "Proud"
+    },
+    {
+     "id": "poor",
+     "kind": "poor",
+     "ja": "最初から いちばん 激しい 曲を かけます。",
+     "vi": "Bật ngay bài sung nhất.",
+     "en": "Hit the hardest track straight away.",
+     "reply": {
+      "speaker": "boss",
+      "ja": "まだ 早すぎる。メインの DJが 困るよ。",
+      "vi": "Còn quá sớm. DJ chính sẽ khó xử.",
+      "en": "Too early. The main DJ will struggle."
+     },
+     "knowledge": 0,
+     "reputation": -2,
+     "performance": -20,
+     "mood": "Embarrassed"
+    }
+   ]
+  },
+  {
+   "id": "producer_3",
+   "career": "producer",
+   "toLevel": 3,
+   "branch": "",
+   "titleVi": "Âm lượng",
+   "titleEn": "Volume",
+   "titleJa": "音量",
+   "cast": [
+    {
+     "id": "neighbor",
+     "vi": "Hàng xóm",
+     "en": "Neighbour",
+     "ja": "近所の人"
+    }
+   ],
+   "lines": [
+    {
+     "speaker": "neighbor",
+     "ja": "音が 大きすぎて、赤ちゃんが 起きて しまいました。",
+     "vi": "Nhạc to quá, em bé nhà tôi thức giấc.",
+     "en": "It is so loud my baby woke up."
+    }
+   ],
+   "ask": {
+    "speaker": "boss",
+    "ja": "どう 対応する？",
+    "vi": "Xử lý thế nào?",
+    "en": "How will you respond?"
+   },
+   "choices": [
+    {
+     "id": "best",
+     "kind": "best",
+     "ja": "申し訳ありません。低音を 下げて、窓を 閉めます。",
+     "vi": "Xin lỗi. Tôi giảm âm trầm và đóng cửa sổ.",
+     "en": "I'm sorry. I'll turn down the bass and close the windows.",
+     "reply": {
+      "speaker": "neighbor",
+      "ja": "ありがとう。これなら 大丈夫です。",
+      "vi": "Cảm ơn. Thế này thì ổn.",
+      "en": "Thank you. That's fine now."
+     },
+     "knowledge": 5,
+     "reputation": 4,
+     "performance": 0,
+     "mood": "Proud"
+    },
+    {
+     "id": "poor",
+     "kind": "poor",
+     "ja": "ここは 音楽の 店です。",
+     "vi": "Đây là tiệm nhạc mà.",
+     "en": "This is a music shop.",
+     "reply": {
+      "speaker": "boss",
+      "ja": "ご近所あっての 店だよ。",
+      "vi": "Có hàng xóm mới có tiệm.",
+      "en": "The shop exists thanks to its neighbours."
+     },
+     "knowledge": 0,
+     "reputation": -2,
+     "performance": -20,
+     "mood": "Embarrassed"
+    },
+    {
+     "id": "ok",
+     "kind": "ok",
+     "ja": "あと 十分で 終わります。",
+     "vi": "Mười phút nữa xong ạ.",
+     "en": "We'll finish in ten minutes.",
+     "reply": {
+      "speaker": "neighbor",
+      "ja": "十分も……",
+      "vi": "Tận mười phút…",
+      "en": "Ten whole minutes…"
+     },
+     "knowledge": 0,
+     "reputation": 1,
+     "performance": 0,
+     "mood": ""
+    }
+   ]
+  },
+  {
+   "id": "producer_4",
+   "career": "producer",
+   "toLevel": 4,
+   "branch": "",
+   "titleVi": "Thiết bị hỏng",
+   "titleEn": "Gear failure",
+   "titleJa": "機材トラブル",
+   "cast": [
+    {
+     "id": "crowd",
+     "vi": "Khán giả",
+     "en": "Crowd",
+     "ja": "観客"
+    }
+   ],
+   "lines": [
+    {
+     "speaker": "narrator",
+     "ja": "ライブ中、ミキサーの 片方が 動かなく なりました。",
+     "vi": "Đang diễn thì một bên bàn mixer hỏng.",
+     "en": "Mid-show, one side of the mixer dies."
+    }
+   ],
+   "ask": {
+    "speaker": "boss",
+    "ja": "レジデントDJ、どう する？",
+    "vi": "DJ thường trú, cháu làm gì?",
+    "en": "Resident DJ, what will you do?"
+   },
+   "choices": [
+    {
+     "id": "poor",
+     "kind": "poor",
+     "ja": "今日は 終わりに します。",
+     "vi": "Hôm nay kết thúc.",
+     "en": "Call it a night.",
+     "reply": {
+      "speaker": "crowd",
+      "ja": "えー！まだ 九時だよ！",
+      "vi": "Ơ! Mới chín giờ mà!",
+      "en": "What! It's only nine!"
+     },
+     "knowledge": 0,
+     "reputation": -2,
+     "performance": -20,
+     "mood": "Embarrassed"
+    },
+    {
+     "id": "ok",
+     "kind": "ok",
+     "ja": "音を 止めて 直します。",
+     "vi": "Dừng nhạc để sửa.",
+     "en": "Stop the music and fix it.",
+     "reply": {
+      "speaker": "boss",
+      "ja": "直せたけど、フロアが 冷えたね。",
+      "vi": "Sửa được nhưng sàn nhảy nguội mất.",
+      "en": "Fixed, but the floor cooled down."
+     },
+     "knowledge": 0,
+     "reputation": 1,
+     "performance": 0,
+     "mood": ""
+    },
+    {
+     "id": "best",
+     "kind": "best",
+     "ja": "一台の デッキだけで 続けながら、スタッフに 予備を たのみます。",
+     "vi": "Chơi tiếp bằng một đầu đĩa, nhờ nhân viên mang máy dự phòng.",
+     "en": "Keep going on one deck while asking staff for the spare.",
+     "reply": {
+      "speaker": "crowd",
+      "ja": "止まらなかった！すごい！",
+      "vi": "Không hề dừng! Đỉnh!",
+      "en": "It never stopped! Amazing!"
+     },
+     "knowledge": 5,
+     "reputation": 4,
+     "performance": 0,
+     "mood": "Proud"
+    }
+   ]
+  },
+  {
+   "id": "producer_5_club_dj",
+   "career": "producer",
+   "toLevel": 5,
+   "branch": "club_dj",
+   "titleVi": "Yêu cầu bài hát",
+   "titleEn": "A request",
+   "titleJa": "リクエスト",
+   "cast": [
+    {
+     "id": "fan",
+     "vi": "Khách",
+     "en": "Guest",
+     "ja": "お客さん"
+    }
+   ],
+   "lines": [
+    {
+     "speaker": "fan",
+     "ja": "私の 好きな 曲、かけて ください！",
+     "vi": "Bật bài tôi thích đi!",
+     "en": "Play my favourite song!"
+    },
+    {
+     "speaker": "narrator",
+     "ja": "でも、今の 流れと 合いません。",
+     "vi": "Nhưng bài đó không hợp mạch nhạc lúc này.",
+     "en": "But it doesn't fit the current flow."
+    }
+   ],
+   "ask": {
+    "speaker": "narrator",
+    "ja": "どう しますか。",
+    "vi": "Bạn làm gì?",
+    "en": "What do you do?"
+   },
+   "choices": [
+    {
+     "id": "best",
+     "kind": "best",
+     "ja": "いいですね！二曲 あとに、つながる ように 入れます。",
+     "vi": "Hay đấy! Hai bài nữa tôi sẽ nối vào cho mượt.",
+     "en": "Great choice! I'll blend it in two tracks from now.",
+     "reply": {
+      "speaker": "fan",
+      "ja": "かかった！最高！",
+      "vi": "Bật rồi! Tuyệt nhất!",
+      "en": "There it is! The best!"
+     },
+     "knowledge": 5,
+     "reputation": 4,
+     "performance": 0,
+     "mood": "Proud"
+    },
+    {
+     "id": "ok",
+     "kind": "ok",
+     "ja": "今すぐ かけます。",
+     "vi": "Bật ngay.",
+     "en": "Right now.",
+     "reply": {
+      "speaker": "boss",
+      "ja": "急に 変わって、フロアが とまどったね。",
+      "vi": "Đổi đột ngột, sàn nhảy lúng túng.",
+      "en": "The sudden switch confused the floor."
+     },
+     "knowledge": 0,
+     "reputation": 1,
+     "performance": 0,
+     "mood": ""
+    },
+    {
+     "id": "poor",
+     "kind": "poor",
+     "ja": "リクエストは 受けません。",
+     "vi": "Không nhận yêu cầu.",
+     "en": "No requests.",
+     "reply": {
+      "speaker": "fan",
+      "ja": "つめたい……",
+      "vi": "Lạnh lùng thế…",
+      "en": "So cold…"
+     },
+     "knowledge": 0,
+     "reputation": -2,
+     "performance": -20,
+     "mood": "Embarrassed"
+    }
+   ]
+  },
+  {
+   "id": "producer_5_producer",
+   "career": "producer",
+   "toLevel": 5,
+   "branch": "producer",
+   "titleVi": "Đoạn nhạc mẫu",
+   "titleEn": "The sample",
+   "titleJa": "サンプル",
+   "cast": [
+    {
+     "id": "rina",
+     "vi": "Ca sĩ Rina",
+     "en": "Singer Rina",
+     "ja": "歌手のリナ"
+    }
+   ],
+   "lines": [
+    {
+     "speaker": "narrator",
+     "ja": "スタジオで 新曲を 作って います。",
+     "vi": "Đang làm bài mới trong phòng thu.",
+     "en": "You're making a new song in the studio."
+    }
+   ],
+   "ask": {
+    "speaker": "rina",
+    "ja": "この 有名な 曲の 一部、使っちゃって いい？",
+    "vi": "Dùng một đoạn bài nổi tiếng này được không?",
+    "en": "Can we just use part of this famous song?"
+   },
+   "choices": [
+    {
+     "id": "ok",
+     "kind": "ok",
+     "ja": "少しだけなら いいと 思う。",
+     "vi": "Một chút chắc được.",
+     "en": "A little should be fine.",
+     "reply": {
+      "speaker": "boss",
+      "ja": "少しでも 許可は 必要だ。",
+      "vi": "Một chút cũng cần xin phép.",
+      "en": "Even a little needs permission."
+     },
+     "knowledge": 0,
+     "reputation": 1,
+     "performance": 0,
+     "mood": ""
+    },
+    {
+     "id": "best",
+     "kind": "best",
+     "ja": "権利者に 許可を 取ってからに しよう。だめなら 自分で 作るよ。",
+     "vi": "Xin phép chủ bản quyền trước đã. Không được thì tự làm.",
+     "en": "Let's get permission from the rights holder first. If not, I'll make our own.",
+     "reply": {
+      "speaker": "rina",
+      "ja": "オリジナルの 方が、もっと よく なった！",
+      "vi": "Bản tự làm còn hay hơn!",
+      "en": "The original turned out even better!"
+     },
+     "knowledge": 5,
+     "reputation": 4,
+     "performance": 0,
+     "mood": "Proud"
+    },
+    {
+     "id": "poor",
+     "kind": "poor",
+     "ja": "だれも 気づかないよ。",
+     "vi": "Không ai để ý đâu.",
+     "en": "Nobody will notice.",
+     "reply": {
+      "speaker": "boss",
+      "ja": "それで 曲を 消された 人を 知ってる。",
+      "vi": "Chú biết người bị gỡ nhạc vì vậy.",
+      "en": "I know people whose songs got taken down for that."
+     },
+     "knowledge": 0,
+     "reputation": -2,
+     "performance": -20,
+     "mood": "Embarrassed"
+    }
+   ]
+  },
+  {
+   "id": "producer_6_club_dj",
+   "career": "producer",
+   "toLevel": 6,
+   "branch": "club_dj",
+   "titleVi": "Lễ hội mùa hè",
+   "titleEn": "The summer festival",
+   "titleJa": "夏フェス",
+   "cast": [
+    {
+     "id": "staff",
+     "vi": "Nhân viên lễ hội",
+     "en": "Festival staff",
+     "ja": "スタッフ"
+    },
+    {
+     "id": "crowd",
+     "vi": "Khán giả",
+     "en": "Crowd",
+     "ja": "観客"
+    }
+   ],
+   "lines": [
+    {
+     "speaker": "boss",
+     "ja": "夏フェスの メインステージだ。",
+     "vi": "Sân khấu chính lễ hội mùa hè đấy.",
+     "en": "It's the summer festival main stage."
+    },
+    {
+     "speaker": "narrator",
+     "ja": "急に 雨が 降って きました。",
+     "vi": "Đột nhiên trời mưa.",
+     "en": "Suddenly it starts to rain."
+    }
+   ],
+   "ask": {
+    "speaker": "staff",
+    "ja": "続けますか。",
+    "vi": "Diễn tiếp không?",
+    "en": "Shall we continue?"
+   },
+   "choices": [
+    {
+     "id": "poor",
+     "kind": "poor",
+     "ja": "雨でも 気に せず、そのまま 続けます。",
+     "vi": "Kệ mưa, cứ diễn.",
+     "en": "Ignore the rain and carry on.",
+     "reply": {
+      "speaker": "staff",
+      "ja": "機材が ぬれて 危ない！",
+      "vi": "Thiết bị ướt, nguy hiểm!",
+      "en": "The gear is wet — it's dangerous!"
+     },
+     "knowledge": 0,
+     "reputation": -2,
+     "performance": -20,
+     "mood": "Embarrassed"
+    },
+    {
+     "id": "best",
+     "kind": "best",
+     "ja": "機材を 守って、安全を 確かめてから 続けます。お客様にも 声を かけます。",
+     "vi": "Che chắn thiết bị, kiểm tra an toàn rồi diễn tiếp, nhắc khán giả nữa.",
+     "en": "Protect the gear, check safety, continue — and talk to the crowd.",
+     "reply": {
+      "speaker": "crowd",
+      "ja": "雨の 中の ダンス、一生 忘れない！",
+      "vi": "Nhảy dưới mưa, nhớ cả đời!",
+      "en": "Dancing in the rain — unforgettable!"
+     },
+     "knowledge": 5,
+     "reputation": 4,
+     "performance": 0,
+     "mood": "Proud"
+    },
+    {
+     "id": "ok",
+     "kind": "ok",
+     "ja": "雨が やむまで 待ちます。",
+     "vi": "Đợi tạnh mưa.",
+     "en": "Wait for the rain to stop.",
+     "reply": {
+      "speaker": "staff",
+      "ja": "待って いる 間に、人が 減りました。",
+      "vi": "Trong lúc chờ, khách về bớt.",
+      "en": "While we waited, people left."
+     },
+     "knowledge": 0,
+     "reputation": 1,
+     "performance": 0,
+     "mood": ""
+    }
+   ]
+  },
+  {
+   "id": "producer_6_producer",
+   "career": "producer",
+   "toLevel": 6,
+   "branch": "producer",
+   "titleVi": "Hãng đĩa riêng",
+   "titleEn": "My own label",
+   "titleJa": "レーベル",
+   "cast": [
+    {
+     "id": "rina",
+     "vi": "Ca sĩ Rina",
+     "en": "Singer Rina",
+     "ja": "歌手のリナ"
+    }
+   ],
+   "lines": [
+    {
+     "speaker": "boss",
+     "ja": "自分の レーベルを 作るんだって？",
+     "vi": "Nghe nói cháu lập hãng đĩa riêng?",
+     "en": "I hear you're starting your own label?"
+    },
+    {
+     "speaker": "rina",
+     "ja": "新人を 育てて ほしいです。",
+     "vi": "Mong anh nâng đỡ người mới.",
+     "en": "Please nurture new artists."
+    }
+   ],
+   "ask": {
+    "speaker": "boss",
+    "ja": "どんな レーベルに する？",
+    "vi": "Hãng đĩa thế nào?",
+    "en": "What kind of label?"
+   },
+   "choices": [
+    {
+     "id": "best",
+     "kind": "best",
+     "ja": "町の 若い アーティストを 見つけて、公平な 契約で 育てます。",
+     "vi": "Tìm nghệ sĩ trẻ trong phố, nâng đỡ bằng hợp đồng công bằng.",
+     "en": "Find young local artists and grow them with fair contracts.",
+     "reply": {
+      "speaker": "rina",
+      "ja": "安心して 音楽が できます。",
+      "vi": "Yên tâm làm nhạc.",
+      "en": "I can make music with peace of mind."
+     },
+     "knowledge": 5,
+     "reputation": 4,
+     "performance": 0,
+     "mood": "Proud"
+    },
+    {
+     "id": "ok",
+     "kind": "ok",
+     "ja": "有名な 人だけと 契約します。",
+     "vi": "Chỉ ký với người nổi tiếng.",
+     "en": "Sign only famous artists.",
+     "reply": {
+      "speaker": "boss",
+      "ja": "安全だけど、新しい 音は 生まれにくいね。",
+      "vi": "An toàn nhưng khó có âm nhạc mới.",
+      "en": "Safe, but new sounds rarely emerge."
+     },
+     "knowledge": 0,
+     "reputation": 1,
+     "performance": 0,
+     "mood": ""
+    },
+    {
+     "id": "poor",
+     "kind": "poor",
+     "ja": "アーティストの 取り分を 少なく します。",
+     "vi": "Giảm phần chia cho nghệ sĩ.",
+     "en": "Give artists a smaller share.",
+     "reply": {
+      "speaker": "rina",
+      "ja": "それは ちょっと……",
+      "vi": "Vậy thì hơi…",
+      "en": "That's a bit…"
+     },
+     "knowledge": 0,
+     "reputation": -2,
+     "performance": -20,
+     "mood": "Embarrassed"
+    }
+   ]
+  },
+  {
+   "id": "painter_2",
+   "career": "painter",
+   "toLevel": 2,
+   "branch": "",
+   "titleVi": "Đơn vẽ đầu tiên",
+   "titleEn": "First commission",
+   "titleJa": "はじめての依頼",
+   "cast": [
+    {
+     "id": "client",
+     "vi": "Bà Tanaka (khách đặt tranh)",
+     "en": "Mrs Tanaka (client)",
+     "ja": "田中さん"
+    }
+   ],
+   "lines": [
+    {
+     "speaker": "client",
+     "ja": "うちの 犬の 絵を かいて ほしいんです。",
+     "vi": "Tôi muốn nhờ vẽ con chó nhà tôi.",
+     "en": "I'd like a painting of my dog."
+    }
+   ],
+   "ask": {
+    "speaker": "boss",
+    "ja": "まず 何を 聞く？",
+    "vi": "Trước tiên cháu hỏi gì?",
+    "en": "What will you ask first?"
+   },
+   "choices": [
+    {
+     "id": "best",
+     "kind": "best",
+     "ja": "犬の 名前と 性格、絵を かざる 場所を 教えて ください。",
+     "vi": "Cho tôi biết tên, tính cách của cún và chỗ treo tranh.",
+     "en": "Please tell me the dog's name, personality and where it'll hang.",
+     "reply": {
+      "speaker": "client",
+      "ja": "そこまで 聞いて くれるなんて、うれしい。",
+      "vi": "Hỏi kỹ thế, tôi vui quá.",
+      "en": "I'm glad you ask so much."
+     },
+     "knowledge": 5,
+     "reputation": 4,
+     "performance": 0,
+     "mood": "Proud"
+    },
+    {
+     "id": "poor",
+     "kind": "poor",
+     "ja": "いつまでに お金を くれますか。",
+     "vi": "Khi nào bà trả tiền?",
+     "en": "When will you pay?",
+     "reply": {
+      "speaker": "client",
+      "ja": "……ほかの 人に 頼みます。",
+      "vi": "…Tôi nhờ người khác.",
+      "en": "…I'll ask someone else."
+     },
+     "knowledge": 0,
+     "reputation": -2,
+     "performance": -20,
+     "mood": "Embarrassed"
+    },
+    {
+     "id": "ok",
+     "kind": "ok",
+     "ja": "写真を ください。",
+     "vi": "Cho tôi ảnh.",
+     "en": "Give me a photo.",
+     "reply": {
+      "speaker": "boss",
+      "ja": "写真だけじゃ、気持ちまでは かけないよ。",
+      "vi": "Chỉ ảnh thì không vẽ được tình cảm.",
+      "en": "A photo alone won't capture feelings."
+     },
+     "knowledge": 0,
+     "reputation": 1,
+     "performance": 0,
+     "mood": ""
+    }
+   ]
+  },
+  {
+   "id": "painter_3",
+   "career": "painter",
+   "toLevel": 3,
+   "branch": "",
+   "titleVi": "Khác hình dung",
+   "titleEn": "Not quite right",
+   "titleJa": "イメージとちがう",
+   "cast": [
+    {
+     "id": "client",
+     "vi": "Bà Tanaka (khách đặt tranh)",
+     "en": "Mrs Tanaka (client)",
+     "ja": "田中さん"
+    }
+   ],
+   "lines": [
+    {
+     "speaker": "client",
+     "ja": "うーん、イメージと ちょっと ちがう……",
+     "vi": "Ừm, hơi khác hình dung của tôi…",
+     "en": "Hmm, it's a little different from what I imagined…"
+    }
+   ],
+   "ask": {
+    "speaker": "narrator",
+    "ja": "どう こたえますか。",
+    "vi": "Bạn trả lời thế nào?",
+    "en": "How do you respond?"
+   },
+   "choices": [
+    {
+     "id": "ok",
+     "kind": "ok",
+     "ja": "これが 私の スタイルです。",
+     "vi": "Đây là phong cách của tôi.",
+     "en": "This is my style.",
+     "reply": {
+      "speaker": "boss",
+      "ja": "スタイルも 大事。でも、注文の 絵だよ。",
+      "vi": "Phong cách quan trọng, nhưng đây là tranh đặt mà.",
+      "en": "Style matters, but this is a commission."
+     },
+     "knowledge": 0,
+     "reputation": 1,
+     "performance": 0,
+     "mood": ""
+    },
+    {
+     "id": "best",
+     "kind": "best",
+     "ja": "どこが ちがいますか。色ですか、表情ですか。直します。",
+     "vi": "Khác ở đâu ạ? Màu hay nét mặt? Tôi sẽ sửa.",
+     "en": "What's different — the colours or the expression? I'll fix it.",
+     "reply": {
+      "speaker": "client",
+      "ja": "目の 感じが、まさに うちの 子です！",
+      "vi": "Ánh mắt đúng là bé nhà tôi!",
+      "en": "The eyes are exactly my dog!"
+     },
+     "knowledge": 5,
+     "reputation": 4,
+     "performance": 0,
+     "mood": "Proud"
+    },
+    {
+     "id": "poor",
+     "kind": "poor",
+     "ja": "もう 完成です。",
+     "vi": "Xong rồi đấy.",
+     "en": "It's finished.",
+     "reply": {
+      "speaker": "client",
+      "ja": "そうですか……",
+      "vi": "Vậy à…",
+      "en": "I see…"
+     },
+     "knowledge": 0,
+     "reputation": -2,
+     "performance": -20,
+     "mood": "Embarrassed"
+    }
+   ]
+  },
+  {
+   "id": "painter_4",
+   "career": "painter",
+   "toLevel": 4,
+   "branch": "",
+   "titleVi": "Triển lãm nhỏ",
+   "titleEn": "A small show",
+   "titleJa": "小さな展示",
+   "cast": [
+    {
+     "id": "visitor",
+     "vi": "Khách xem tranh",
+     "en": "Visitor",
+     "ja": "来場者"
+    }
+   ],
+   "lines": [
+    {
+     "speaker": "boss",
+     "ja": "店の ギャラリーで、あなたの 絵を 五枚 かざろう。",
+     "vi": "Treo năm bức của cháu trong gallery tiệm nhé.",
+     "en": "Let's hang five of your works in the shop gallery."
+    }
+   ],
+   "ask": {
+    "speaker": "visitor",
+    "ja": "この 絵、何を かいたんですか。",
+    "vi": "Bức này vẽ gì vậy?",
+    "en": "What did you paint here?"
+   },
+   "choices": [
+    {
+     "id": "best",
+     "kind": "best",
+     "ja": "朝の みどり島です。海の 光を 青と 金色で かきました。",
+     "vi": "Đảo Midori buổi sáng. Tôi vẽ ánh biển bằng xanh và vàng.",
+     "en": "Midori Island at dawn. I painted the sea light in blue and gold.",
+     "reply": {
+      "speaker": "visitor",
+      "ja": "見て いると、海の 音が 聞こえそう。",
+      "vi": "Nhìn mà như nghe tiếng biển.",
+      "en": "Looking at it, I can almost hear the sea."
+     },
+     "knowledge": 5,
+     "reputation": 4,
+     "performance": 0,
+     "mood": "Proud"
+    },
+    {
+     "id": "ok",
+     "kind": "ok",
+     "ja": "見た 通りです。",
+     "vi": "Như anh/chị thấy đấy.",
+     "en": "What you see.",
+     "reply": {
+      "speaker": "boss",
+      "ja": "一言 説明が あると、もっと 伝わるよ。",
+      "vi": "Giải thích một câu thì dễ cảm hơn.",
+      "en": "A word of explanation helps it reach people."
+     },
+     "knowledge": 0,
+     "reputation": 1,
+     "performance": 0,
+     "mood": ""
+    },
+    {
+     "id": "poor",
+     "kind": "poor",
+     "ja": "わかる 人だけ わかれば いいです。",
+     "vi": "Ai hiểu thì hiểu.",
+     "en": "Those who get it, get it.",
+     "reply": {
+      "speaker": "visitor",
+      "ja": "……そうですか。",
+      "vi": "…Vậy à.",
+      "en": "…I see."
+     },
+     "knowledge": 0,
+     "reputation": -2,
+     "performance": -20,
+     "mood": "Embarrassed"
+    }
+   ]
+  },
+  {
+   "id": "painter_5_illustrator",
+   "career": "painter",
+   "toLevel": 5,
+   "branch": "illustrator",
+   "titleVi": "Hạn nộp gấp",
+   "titleEn": "An early deadline",
+   "titleJa": "しめきり",
+   "cast": [
+    {
+     "id": "editor",
+     "vi": "Biên tập viên",
+     "en": "Editor",
+     "ja": "編集者"
+    }
+   ],
+   "lines": [
+    {
+     "speaker": "narrator",
+     "ja": "出版社から 電話です。",
+     "vi": "Nhà xuất bản gọi điện.",
+     "en": "The publisher calls."
+    }
+   ],
+   "ask": {
+    "speaker": "editor",
+    "ja": "表紙の しめきりを、三日 早めて ほしいんです。",
+    "vi": "Muốn hạn nộp bìa sớm ba ngày.",
+    "en": "We need the cover three days earlier."
+   },
+   "choices": [
+    {
+     "id": "poor",
+     "kind": "poor",
+     "ja": "むりです。",
+     "vi": "Không được.",
+     "en": "Impossible.",
+     "reply": {
+      "speaker": "editor",
+      "ja": "では、別の 方に……",
+      "vi": "Vậy tôi nhờ người khác…",
+      "en": "Then someone else…"
+     },
+     "knowledge": 0,
+     "reputation": -2,
+     "performance": -20,
+     "mood": "Embarrassed"
+    },
+    {
+     "id": "best",
+     "kind": "best",
+     "ja": "ラフを 明日 送ります。それを 見て、細かい 所を 決めましょう。",
+     "vi": "Mai tôi gửi bản phác. Xem rồi mình chốt chi tiết.",
+     "en": "I'll send a rough tomorrow; let's decide details from that.",
+     "reply": {
+      "speaker": "editor",
+      "ja": "早くて 助かります！",
+      "vi": "Nhanh quá, đỡ cho tôi!",
+      "en": "So quick — that helps!"
+     },
+     "knowledge": 5,
+     "reputation": 4,
+     "performance": 0,
+     "mood": "Proud"
+    },
+    {
+     "id": "ok",
+     "kind": "ok",
+     "ja": "がんばって みます。",
+     "vi": "Tôi sẽ cố.",
+     "en": "I'll try my best.",
+     "reply": {
+      "speaker": "editor",
+      "ja": "間に合ったけど、少し 雑でしたね。",
+      "vi": "Kịp nhưng hơi ẩu.",
+      "en": "On time, but a little rough."
+     },
+     "knowledge": 0,
+     "reputation": 1,
+     "performance": 0,
+     "mood": ""
+    }
+   ]
+  },
+  {
+   "id": "painter_5_fine_art",
+   "career": "painter",
+   "toLevel": 5,
+   "branch": "fine_art",
+   "titleVi": "Lời phê bình",
+   "titleEn": "A harsh critique",
+   "titleJa": "きびしい批評",
+   "cast": [
+    {
+     "id": "critic",
+     "vi": "Nhà phê bình",
+     "en": "Critic",
+     "ja": "評論家"
+    }
+   ],
+   "lines": [
+    {
+     "speaker": "critic",
+     "ja": "技術は あるが、あなたの 声が 聞こえない。",
+     "vi": "Có kỹ thuật, nhưng không nghe được tiếng nói của bạn.",
+     "en": "You have technique, but I can't hear your voice."
+    }
+   ],
+   "ask": {
+    "speaker": "boss",
+    "ja": "どう 受け止める？",
+    "vi": "Cháu đón nhận thế nào?",
+    "en": "How will you take it?"
+   },
+   "choices": [
+    {
+     "id": "best",
+     "kind": "best",
+     "ja": "ありがとうございます。自分が 本当に かきたい ものを 考えます。",
+     "vi": "Cảm ơn ông. Tôi sẽ nghĩ về điều mình thật sự muốn vẽ.",
+     "en": "Thank you. I'll think about what I truly want to paint.",
+     "reply": {
+      "speaker": "boss",
+      "ja": "その 素直さが、次の 絵を 強く する。",
+      "vi": "Sự cầu thị đó làm bức sau mạnh hơn.",
+      "en": "That openness will make your next work stronger."
+     },
+     "knowledge": 5,
+     "reputation": 4,
+     "performance": 0,
+     "mood": "Proud"
+    },
+    {
+     "id": "poor",
+     "kind": "poor",
+     "ja": "あなたに 何が わかるんですか。",
+     "vi": "Ông thì biết gì.",
+     "en": "What would you know?",
+     "reply": {
+      "speaker": "critic",
+      "ja": "……失礼する。",
+      "vi": "…Tôi xin phép.",
+      "en": "…Excuse me."
+     },
+     "knowledge": 0,
+     "reputation": -2,
+     "performance": -20,
+     "mood": "Embarrassed"
+    },
+    {
+     "id": "ok",
+     "kind": "ok",
+     "ja": "気に しません。",
+     "vi": "Kệ thôi.",
+     "en": "I don't care.",
+     "reply": {
+      "speaker": "boss",
+      "ja": "全部 聞かなくて いい。でも、一つは 持ち帰ろう。",
+      "vi": "Không cần nghe hết, nhưng giữ lại một điều.",
+      "en": "No need to take it all, but keep one thing."
+     },
+     "knowledge": 0,
+     "reputation": 1,
+     "performance": 0,
+     "mood": ""
+    }
+   ]
+  },
+  {
+   "id": "painter_6_illustrator",
+   "career": "painter",
+   "toLevel": 6,
+   "branch": "illustrator",
+   "titleVi": "Giám đốc nghệ thuật",
+   "titleEn": "Art director",
+   "titleJa": "アートディレクター",
+   "cast": [
+    {
+     "id": "junior",
+     "vi": "Hoạ sĩ trẻ",
+     "en": "Junior artist",
+     "ja": "若手イラストレーター"
+    }
+   ],
+   "lines": [
+    {
+     "speaker": "boss",
+     "ja": "ゲームの 絵を まとめる 仕事が 来たよ。",
+     "vi": "Có việc chỉ đạo hình ảnh cho một trò chơi.",
+     "en": "There's work directing the art for a game."
+    },
+    {
+     "speaker": "junior",
+     "ja": "みんな、絵の タッチが バラバラです。",
+     "vi": "Nét vẽ mỗi người một kiểu.",
+     "en": "Everyone's drawing styles are all over the place."
+    }
+   ],
+   "ask": {
+    "speaker": "junior",
+    "ja": "どう そろえますか。",
+    "vi": "Thống nhất thế nào?",
+    "en": "How do we unify them?"
+   },
+   "choices": [
+    {
+     "id": "ok",
+     "kind": "ok",
+     "ja": "全部 私が かき直します。",
+     "vi": "Tôi vẽ lại tất cả.",
+     "en": "I'll redraw everything myself.",
+     "reply": {
+      "speaker": "boss",
+      "ja": "それでは 間に合わないし、チームも 育たない。",
+      "vi": "Vậy không kịp mà đội cũng không lớn.",
+      "en": "You won't make it, and the team won't grow."
+     },
+     "knowledge": 0,
+     "reputation": 1,
+     "performance": 0,
+     "mood": ""
+    },
+    {
+     "id": "best",
+     "kind": "best",
+     "ja": "色と 線の ルールを 一枚に まとめて、毎週 いっしょに 見ます。",
+     "vi": "Gom quy tắc màu và nét vào một trang, mỗi tuần cùng xem.",
+     "en": "Put colour and line rules on one sheet and review together weekly.",
+     "reply": {
+      "speaker": "junior",
+      "ja": "わかりやすい！絵が そろって きました。",
+      "vi": "Dễ hiểu quá! Tranh đồng bộ dần rồi.",
+      "en": "So clear! The art is coming together."
+     },
+     "knowledge": 5,
+     "reputation": 4,
+     "performance": 0,
+     "mood": "Proud"
+    },
+    {
+     "id": "poor",
+     "kind": "poor",
+     "ja": "自由に かいて いいよ。",
+     "vi": "Cứ vẽ tự do.",
+     "en": "Draw however you like.",
+     "reply": {
+      "speaker": "junior",
+      "ja": "ますます バラバラに……",
+      "vi": "Càng lộn xộn hơn…",
+      "en": "Even more scattered…"
+     },
+     "knowledge": 0,
+     "reputation": -2,
+     "performance": -20,
+     "mood": "Embarrassed"
+    }
+   ]
+  },
+  {
+   "id": "painter_6_fine_art",
+   "career": "painter",
+   "toLevel": 6,
+   "branch": "fine_art",
+   "titleVi": "Bảo tàng sưu tập",
+   "titleEn": "The museum",
+   "titleJa": "美術館",
+   "cast": [
+    {
+     "id": "curator",
+     "vi": "Người phụ trách bảo tàng",
+     "en": "Curator",
+     "ja": "学芸員"
+    }
+   ],
+   "lines": [
+    {
+     "speaker": "curator",
+     "ja": "あなたの 絵を、美術館に 収めたいのです。",
+     "vi": "Chúng tôi muốn bảo tàng sưu tập tranh của bạn.",
+     "en": "We'd like your painting for the museum's collection."
+    }
+   ],
+   "ask": {
+    "speaker": "curator",
+    "ja": "作品に ついて、一言 お願いします。",
+    "vi": "Xin bạn nói một lời về tác phẩm.",
+    "en": "A few words about the work, please."
+   },
+   "choices": [
+    {
+     "id": "best",
+     "kind": "best",
+     "ja": "ベトナムと 日本、二つの 海を 一枚に かきました。見る 人に 故郷を 思い出して ほしいです。",
+     "vi": "Tôi vẽ hai biển, Việt Nam và Nhật Bản, trong một bức. Mong người xem nhớ về quê mình.",
+     "en": "I painted two seas, Vietnam's and Japan's, on one canvas. I hope it reminds viewers of home.",
+     "reply": {
+      "speaker": "curator",
+      "ja": "すてきな ことばです。",
+      "vi": "Lời nói thật đẹp.",
+      "en": "Beautiful words."
+     },
+     "knowledge": 5,
+     "reputation": 4,
+     "performance": 0,
+     "mood": "Proud"
+    },
+    {
+     "id": "poor",
+     "kind": "poor",
+     "ja": "高く 買って ください。",
+     "vi": "Mua giá cao vào.",
+     "en": "Please pay a high price.",
+     "reply": {
+      "speaker": "curator",
+      "ja": "……ええと。",
+      "vi": "…Ờ.",
+      "en": "…Um."
+     },
+     "knowledge": 0,
+     "reputation": -2,
+     "performance": -20,
+     "mood": "Embarrassed"
+    },
+    {
+     "id": "ok",
+     "kind": "ok",
+     "ja": "見て 感じて ください。",
+     "vi": "Mời mọi người cảm nhận.",
+     "en": "Please just feel it.",
+     "reply": {
+      "speaker": "curator",
+      "ja": "わかりました。",
+      "vi": "Vâng.",
+      "en": "Understood."
+     },
+     "knowledge": 0,
+     "reputation": 1,
+     "performance": 0,
+     "mood": ""
+    }
+   ]
+  },
+  {
+   "id": "fashion_2",
+   "career": "fashion",
+   "toLevel": 2,
+   "branch": "",
+   "titleVi": "Tìm cỡ áo",
+   "titleEn": "Finding a size",
+   "titleJa": "サイズ",
+   "cast": [
+    {
+     "id": "guest",
+     "vi": "Khách",
+     "en": "Customer",
+     "ja": "お客様"
+    }
+   ],
+   "lines": [
+    {
+     "speaker": "boss",
+     "ja": "まず、シャツの たたみ方を 覚えよう。",
+     "vi": "Trước hết học cách gấp áo sơ mi.",
+     "en": "First, learn to fold shirts."
+    }
+   ],
+   "ask": {
+    "speaker": "guest",
+    "ja": "この シャツ、Mサイズ ありますか。",
+    "vi": "Áo này có size M không?",
+    "en": "Do you have this shirt in M?"
+   },
+   "choices": [
+    {
+     "id": "ok",
+     "kind": "ok",
+     "ja": "ないと 思います。",
+     "vi": "Chắc là hết.",
+     "en": "I don't think so.",
+     "reply": {
+      "speaker": "boss",
+      "ja": "倉庫に あったよ。確認してから 答えよう。",
+      "vi": "Trong kho có đấy. Kiểm tra rồi hãy trả lời.",
+      "en": "There was one in stock. Check before answering."
+     },
+     "knowledge": 0,
+     "reputation": 1,
+     "performance": 0,
+     "mood": ""
+    },
+    {
+     "id": "best",
+     "kind": "best",
+     "ja": "確認して まいります。少々 お待ちください。",
+     "vi": "Để tôi kiểm tra. Xin chờ một chút.",
+     "en": "I'll go and check. One moment, please.",
+     "reply": {
+      "speaker": "guest",
+      "ja": "ありました！ありがとう。",
+      "vi": "Có rồi! Cảm ơn.",
+      "en": "You had it! Thanks."
+     },
+     "knowledge": 5,
+     "reputation": 4,
+     "performance": 0,
+     "mood": "Proud"
+    },
+    {
+     "id": "poor",
+     "kind": "poor",
+     "ja": "自分で さがして ください。",
+     "vi": "Tự tìm đi.",
+     "en": "Look for it yourself.",
+     "reply": {
+      "speaker": "guest",
+      "ja": "……もう いいです。",
+      "vi": "…Thôi khỏi.",
+      "en": "…Never mind."
+     },
+     "knowledge": 0,
+     "reputation": -2,
+     "performance": -20,
+     "mood": "Embarrassed"
+    }
+   ]
+  },
+  {
+   "id": "fashion_3",
+   "career": "fashion",
+   "toLevel": 3,
+   "branch": "",
+   "titleVi": "Đồ đi phỏng vấn",
+   "titleEn": "An interview outfit",
+   "titleJa": "面接の服",
+   "cast": [
+    {
+     "id": "guest",
+     "vi": "Cô gái trẻ",
+     "en": "Young woman",
+     "ja": "若い女性"
+    }
+   ],
+   "lines": [
+    {
+     "speaker": "guest",
+     "ja": "面接に 着て いく 服を さがして います。",
+     "vi": "Tôi tìm đồ mặc đi phỏng vấn.",
+     "en": "I'm looking for something to wear to an interview."
+    }
+   ],
+   "ask": {
+    "speaker": "guest",
+    "ja": "何が いいですか。",
+    "vi": "Nên chọn gì ạ?",
+    "en": "What would be good?"
+   },
+   "choices": [
+    {
+     "id": "best",
+     "kind": "best",
+     "ja": "どんな 会社ですか。紺の ジャケットなら、きちんと 見えて 動きやすいですよ。",
+     "vi": "Công ty thế nào ạ? Áo khoác xanh navy trông chỉn chu mà dễ vận động.",
+     "en": "What kind of company? A navy jacket looks neat and is easy to move in.",
+     "reply": {
+      "speaker": "guest",
+      "ja": "自信が 出ました！",
+      "vi": "Tự tin hẳn lên!",
+      "en": "I feel confident now!"
+     },
+     "knowledge": 5,
+     "reputation": 4,
+     "performance": 0,
+     "mood": "Proud"
+    },
+    {
+     "id": "poor",
+     "kind": "poor",
+     "ja": "派手な 服が いいですよ。",
+     "vi": "Đồ sặc sỡ đi.",
+     "en": "Something flashy.",
+     "reply": {
+      "speaker": "guest",
+      "ja": "面接には ちょっと……",
+      "vi": "Đi phỏng vấn thì hơi…",
+      "en": "For an interview, that's a bit…"
+     },
+     "knowledge": 0,
+     "reputation": -2,
+     "performance": -20,
+     "mood": "Embarrassed"
+    },
+    {
+     "id": "ok",
+     "kind": "ok",
+     "ja": "これが 人気です。",
+     "vi": "Mẫu này đang được ưa chuộng.",
+     "en": "This one is popular.",
+     "reply": {
+      "speaker": "boss",
+      "ja": "人気より、その 人に 合うかが 大事だよ。",
+      "vi": "Hợp người hơn là đang hot.",
+      "en": "What suits the person matters more than popularity."
+     },
+     "knowledge": 0,
+     "reputation": 1,
+     "performance": 0,
+     "mood": ""
+    }
+   ]
+  },
+  {
+   "id": "fashion_4",
+   "career": "fashion",
+   "toLevel": 4,
+   "branch": "",
+   "titleVi": "Hàng tồn kho",
+   "titleEn": "Leftover stock",
+   "titleJa": "在庫",
+   "cast": [
+    {
+     "id": "guest",
+     "vi": "Khách",
+     "en": "Customer",
+     "ja": "お客様"
+    }
+   ],
+   "lines": [
+    {
+     "speaker": "boss",
+     "ja": "冬の コートが たくさん 残って いる。",
+     "vi": "Còn nhiều áo khoác mùa đông.",
+     "en": "Lots of winter coats are left."
+    }
+   ],
+   "ask": {
+    "speaker": "boss",
+    "ja": "アドバイザーとして、どう 売る？",
+    "vi": "Là tư vấn thời trang, em bán thế nào?",
+    "en": "As fashion advisor, how will you sell them?"
+   },
+   "choices": [
+    {
+     "id": "poor",
+     "kind": "poor",
+     "ja": "すてます。",
+     "vi": "Vứt đi.",
+     "en": "Throw them away.",
+     "reply": {
+      "speaker": "boss",
+      "ja": "もったいない！",
+      "vi": "Phí quá!",
+      "en": "What a waste!"
+     },
+     "knowledge": 0,
+     "reputation": -2,
+     "performance": -20,
+     "mood": "Embarrassed"
+    },
+    {
+     "id": "ok",
+     "kind": "ok",
+     "ja": "半額に します。",
+     "vi": "Giảm nửa giá.",
+     "en": "Half price.",
+     "reply": {
+      "speaker": "boss",
+      "ja": "売れたけど、もうけは 少ないね。",
+      "vi": "Bán được nhưng lãi ít.",
+      "en": "They sold, but with little profit."
+     },
+     "knowledge": 0,
+     "reputation": 1,
+     "performance": 0,
+     "mood": ""
+    },
+    {
+     "id": "best",
+     "kind": "best",
+     "ja": "マフラーと 合わせた コーディネートを、マネキンに 着せて 見せます。",
+     "vi": "Phối với khăn quàng, mặc lên ma-nơ-canh cho khách xem.",
+     "en": "Style them with scarves on the mannequins.",
+     "reply": {
+      "speaker": "guest",
+      "ja": "この 組み合わせ、そのまま ください！",
+      "vi": "Cho tôi nguyên bộ phối này!",
+      "en": "I'll take that whole outfit!"
+     },
+     "knowledge": 5,
+     "reputation": 4,
+     "performance": 0,
+     "mood": "Proud"
+    }
+   ]
+  },
+  {
+   "id": "fashion_5_stylist",
+   "career": "fashion",
+   "toLevel": 5,
+   "branch": "stylist",
+   "titleVi": "Chụp ảnh tạp chí",
+   "titleEn": "A magazine shoot",
+   "titleJa": "雑誌の撮影",
+   "cast": [
+    {
+     "id": "model",
+     "vi": "Người mẫu Aya",
+     "en": "Model Aya",
+     "ja": "モデルのあや"
+    },
+    {
+     "id": "photographer",
+     "vi": "Nhiếp ảnh gia",
+     "en": "Photographer",
+     "ja": "カメラマン"
+    }
+   ],
+   "lines": [
+    {
+     "speaker": "model",
+     "ja": "この 服、ちょっと 大きいです……",
+     "vi": "Bộ này hơi rộng…",
+     "en": "This outfit is a bit big…"
+    }
+   ],
+   "ask": {
+    "speaker": "photographer",
+    "ja": "時間が ありません！",
+    "vi": "Không còn thời gian!",
+    "en": "We're out of time!"
+   },
+   "choices": [
+    {
+     "id": "best",
+     "kind": "best",
+     "ja": "後ろを クリップで とめます。前から 見えないので 大丈夫です。",
+     "vi": "Kẹp phía sau. Nhìn trước không thấy nên ổn.",
+     "en": "I'll pin it at the back. It won't show from the front.",
+     "reply": {
+      "speaker": "photographer",
+      "ja": "完璧だ。いい 写真が とれた。",
+      "vi": "Hoàn hảo. Có ảnh đẹp rồi.",
+      "en": "Perfect. Great shot."
+     },
+     "knowledge": 5,
+     "reputation": 4,
+     "performance": 0,
+     "mood": "Proud"
+    },
+    {
+     "id": "ok",
+     "kind": "ok",
+     "ja": "別の 服を さがします。",
+     "vi": "Tìm bộ khác.",
+     "en": "I'll find another outfit.",
+     "reply": {
+      "speaker": "photographer",
+      "ja": "間に合ったけど、ぎりぎりだったね。",
+      "vi": "Kịp nhưng sát giờ.",
+      "en": "Made it, but barely."
+     },
+     "knowledge": 0,
+     "reputation": 1,
+     "performance": 0,
+     "mood": ""
+    },
+    {
+     "id": "poor",
+     "kind": "poor",
+     "ja": "そのまま とって ください。",
+     "vi": "Cứ chụp vậy đi.",
+     "en": "Just shoot it as is.",
+     "reply": {
+      "speaker": "model",
+      "ja": "ぶかぶかに 見えます……",
+      "vi": "Trông thùng thình…",
+      "en": "It looks baggy…"
+     },
+     "knowledge": 0,
+     "reputation": -2,
+     "performance": -20,
+     "mood": "Embarrassed"
+    }
+   ]
+  },
+  {
+   "id": "fashion_5_designer",
+   "career": "fashion",
+   "toLevel": 5,
+   "branch": "designer",
+   "titleVi": "Mẫu thiết kế đầu tiên",
+   "titleEn": "My first design",
+   "titleJa": "はじめてのデザイン",
+   "cast": [
+    {
+     "id": "guest",
+     "vi": "Khách",
+     "en": "Customer",
+     "ja": "お客様"
+    }
+   ],
+   "lines": [
+    {
+     "speaker": "boss",
+     "ja": "あなたの デザインで 一着 作ろう。",
+     "vi": "Làm một bộ theo thiết kế của em nhé.",
+     "en": "Let's make one piece from your design."
+    }
+   ],
+   "ask": {
+    "speaker": "boss",
+    "ja": "テーマは？",
+    "vi": "Chủ đề là gì?",
+    "en": "What's the theme?"
+   },
+   "choices": [
+    {
+     "id": "ok",
+     "kind": "ok",
+     "ja": "去年 流行った 形に します。",
+     "vi": "Theo kiểu thịnh hành năm ngoái.",
+     "en": "Last year's trendy shape.",
+     "reply": {
+      "speaker": "boss",
+      "ja": "安全だね。でも、あなたの 色が 見たい。",
+      "vi": "An toàn đấy, nhưng muốn thấy màu riêng của em.",
+      "en": "Safe. But I want to see your colour."
+     },
+     "knowledge": 0,
+     "reputation": 1,
+     "performance": 0,
+     "mood": ""
+    },
+    {
+     "id": "best",
+     "kind": "best",
+     "ja": "アオザイの 線と 着物の 帯を 合わせた ワンピースです。",
+     "vi": "Váy kết hợp đường nét áo dài và đai obi kimono.",
+     "en": "A dress combining áo dài lines with a kimono obi.",
+     "reply": {
+      "speaker": "guest",
+      "ja": "見た ことが ない！ほしい！",
+      "vi": "Chưa thấy bao giờ! Muốn mua!",
+      "en": "Never seen anything like it! I want it!"
+     },
+     "knowledge": 5,
+     "reputation": 4,
+     "performance": 0,
+     "mood": "Proud"
+    },
+    {
+     "id": "poor",
+     "kind": "poor",
+     "ja": "有名な ブランドの デザインを まねします。",
+     "vi": "Bắt chước thiết kế hãng nổi tiếng.",
+     "en": "Copy a famous brand's design.",
+     "reply": {
+      "speaker": "boss",
+      "ja": "それは コピーだよ。",
+      "vi": "Thế là sao chép.",
+      "en": "That's a copy."
+     },
+     "knowledge": 0,
+     "reputation": -2,
+     "performance": -20,
+     "mood": "Embarrassed"
+    }
+   ]
+  },
+  {
+   "id": "fashion_6_stylist",
+   "career": "fashion",
+   "toLevel": 6,
+   "branch": "stylist",
+   "titleVi": "Áp phích khu phố",
+   "titleEn": "The street poster",
+   "titleJa": "商店街のポスター",
+   "cast": [
+    {
+     "id": "shopkeeper",
+     "vi": "Chủ tiệm trong phố",
+     "en": "Shop owner",
+     "ja": "店主"
+    }
+   ],
+   "lines": [
+    {
+     "speaker": "boss",
+     "ja": "町の 商店街の ポスターを まかせたい。",
+     "vi": "Anh muốn giao em làm áp phích cho khu phố mua sắm.",
+     "en": "I want you to handle the shopping street's posters."
+    }
+   ],
+   "ask": {
+    "speaker": "shopkeeper",
+    "ja": "どんな ポスターに しますか。",
+    "vi": "Làm áp phích thế nào?",
+    "en": "What kind of poster?"
+   },
+   "choices": [
+    {
+     "id": "best",
+     "kind": "best",
+     "ja": "町の 店の 人たちに、自分の 店の 服を 着て もらって 写真を とります。",
+     "vi": "Mời chủ các tiệm mặc đồ của tiệm mình rồi chụp ảnh.",
+     "en": "Have each shop's people wear their own shop's clothes and photograph them.",
+     "reply": {
+      "speaker": "shopkeeper",
+      "ja": "町が 一つに なった みたいだ！",
+      "vi": "Như cả phố hoà làm một!",
+      "en": "It's like the whole street came together!"
+     },
+     "knowledge": 5,
+     "reputation": 4,
+     "performance": 0,
+     "mood": "Proud"
+    },
+    {
+     "id": "poor",
+     "kind": "poor",
+     "ja": "うちの 店だけ 大きく のせます。",
+     "vi": "Chỉ in to tiệm mình.",
+     "en": "Feature only our shop, big.",
+     "reply": {
+      "speaker": "shopkeeper",
+      "ja": "それは ずるい……",
+      "vi": "Thế là ăn gian…",
+      "en": "That's not fair…"
+     },
+     "knowledge": 0,
+     "reputation": -2,
+     "performance": -20,
+     "mood": "Embarrassed"
+    },
+    {
+     "id": "ok",
+     "kind": "ok",
+     "ja": "モデルを 呼んで とります。",
+     "vi": "Thuê người mẫu chụp.",
+     "en": "Hire models.",
+     "reply": {
+      "speaker": "boss",
+      "ja": "きれいだけど、町らしさが 少ないね。",
+      "vi": "Đẹp nhưng thiếu chất phố mình.",
+      "en": "Pretty, but it lacks local feel."
+     },
+     "knowledge": 0,
+     "reputation": 1,
+     "performance": 0,
+     "mood": ""
+    }
+   ]
+  },
+  {
+   "id": "fashion_6_designer",
+   "career": "fashion",
+   "toLevel": 6,
+   "branch": "designer",
+   "titleVi": "Thương hiệu mới",
+   "titleEn": "A new brand",
+   "titleJa": "新ブランド",
+   "cast": [
+    {
+     "id": "guest",
+     "vi": "Khách",
+     "en": "Customer",
+     "ja": "お客様"
+    }
+   ],
+   "lines": [
+    {
+     "speaker": "boss",
+     "ja": "ひばりモードの 新しい ブランドを 作って ほしい。",
+     "vi": "Anh muốn em lập thương hiệu mới cho Hibari Mode.",
+     "en": "I want you to create a new brand for Hibari Mode."
+    },
+    {
+     "speaker": "narrator",
+     "ja": "工場の 人は、少ない 量で 作るのは 大変だと 言います。",
+     "vi": "Xưởng nói làm số lượng ít thì vất vả.",
+     "en": "The factory says small runs are hard."
+    }
+   ],
+   "ask": {
+    "speaker": "boss",
+    "ja": "どんな ブランドに する？",
+    "vi": "Thương hiệu thế nào?",
+    "en": "What kind of brand?"
+   },
+   "choices": [
+    {
+     "id": "ok",
+     "kind": "ok",
+     "ja": "毎週 新しい 服を たくさん 出します。",
+     "vi": "Mỗi tuần tung nhiều mẫu mới.",
+     "en": "Lots of new clothes every week.",
+     "reply": {
+      "speaker": "boss",
+      "ja": "売れるけど、すぐ すてられる 服も 多いね。",
+      "vi": "Bán chạy nhưng nhiều đồ bị vứt nhanh.",
+      "en": "They sell, but many get thrown away fast."
+     },
+     "knowledge": 0,
+     "reputation": 1,
+     "performance": 0,
+     "mood": ""
+    },
+    {
+     "id": "poor",
+     "kind": "poor",
+     "ja": "いちばん 安い 布で、たくさん 作ります。",
+     "vi": "Làm thật nhiều bằng vải rẻ nhất.",
+     "en": "Mass-produce with the cheapest fabric.",
+     "reply": {
+      "speaker": "guest",
+      "ja": "一回 洗ったら、のびて しまった……",
+      "vi": "Giặt một lần là giãn…",
+      "en": "It stretched after one wash…"
+     },
+     "knowledge": 0,
+     "reputation": -2,
+     "performance": -20,
+     "mood": "Embarrassed"
+    },
+    {
+     "id": "best",
+     "kind": "best",
+     "ja": "長く 着られる 服を、少しずつ 作ります。古い 服の 修理も 受けます。",
+     "vi": "Làm ít một những bộ mặc được lâu, nhận sửa cả đồ cũ.",
+     "en": "Clothes made to last, in small batches — and we'll repair old ones too.",
+     "reply": {
+      "speaker": "guest",
+      "ja": "十年 着たい 服に 出会えた。",
+      "vi": "Gặp được bộ muốn mặc mười năm.",
+      "en": "I found clothes I want to wear for ten years."
+     },
+     "knowledge": 5,
+     "reputation": 4,
+     "performance": 0,
+     "mood": "Proud"
+    }
+   ]
+  }
+ ]
+}
