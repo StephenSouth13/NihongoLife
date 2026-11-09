@@ -88,8 +88,7 @@ namespace NihongoLife.Interaction
             text.textWrappingMode = TextWrappingModes.NoWrap;
             text.rectTransform.sizeDelta = new Vector2(10f, 2.5f);
             text.color = Color.white;
-            text.outlineWidth = 0.22f;
-            text.outlineColor = new Color32(8, 10, 16, 255);
+            NihongoLife.UI.TmpOutline.Apply(text, 0.22f, new Color32(8, 10, 16, 255));
             return text;
         }
 

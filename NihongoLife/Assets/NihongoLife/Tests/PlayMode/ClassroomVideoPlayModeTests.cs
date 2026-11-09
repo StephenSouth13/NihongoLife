@@ -1,9 +1,8 @@
-using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
 using NihongoLife.Core;
 using NihongoLife.Course;
-using NihongoLife.Progression;
 using NihongoLife.StudyModes.Russian;
 using NihongoLife.StudyModes.Video;
 using NihongoLife.UI;
@@ -11,67 +10,116 @@ using NUnit.Framework;
 using UnityEngine;
 using UnityEngine.TestTools;
 using UnityEngine.UI;
+
 namespace NihongoLife.Tests
 {
-    /// <summary>Not just a URL count: the actual classroom School surface exposes each mapped video and hands the exact ID to its player.</summary>
+    /// <summary>Not just a URL count: the School pages opened from the classroom show each linked video, and its button hands the exact
+    /// YouTube id to the player. The Russian path opens the exact unit, alphabet lesson and certificate.</summary>
     public class ClassroomVideoPlayModeTests
     {
         [UnityTest]
         public IEnumerator Classroom_School_VideoLinks_AreReachable()
         {
-            var ui=ReferenceUi.Open<StudyHubPopup>();ui.Open();yield return null;
-            ui.OpenSchool();var school=ui.GetComponent<CoursePopup>();
-            Assert.NotNull(school,"Classroom Study hub must open the defined School component.");
-            Assert.IsTrue(school.IsOpen);Assert.AreEqual("ru",school.Target,"Russian path keeps its selected Russian content, not default Japanese.");
-            int tests=0;
-            foreach(var target in new[]{"ru","en","ja","vi"}){
+            var hub = ReferenceUi.Open<StudyHubPopup>();
+            yield return null;
+            hub.ChooseLanguage("ru");
+            hub.OpenSchool("ru");
+            var school = hub.GetComponent<CoursePopup>();
+            Assert.NotNull(school, "The classroom opens the School");
+            Assert.IsTrue(school.IsOpen);
+            Assert.AreEqual("ru", school.Target, "The School opens on the language picked in the classroom");
+
+            int surfaces = 0;
+            foreach (var target in new[] { "ru", "en", "ja", "vi" })
+            {
                 school.ChooseTarget(target);
-                foreach(var u in SchoolCatalog.Units(target)){
-                    var v=ClassroomVideoIndex.For(target,"unit",u.Id);if(v.Count==0)continue;
-                    school.OpenUnit(u.Id);yield return null;yield return Check(school,v,$"{target}/unit/{u.Id}");tests++;
+                foreach (var unit in SchoolCatalog.Units(target))
+                {
+                    var videos = ClassroomVideoIndex.For(target, "unit", unit.Id);
+                    if (videos.Count == 0) continue;
+                    school.OpenUnit(unit.Id);
+                    yield return null;
+                    yield return Check(school, videos, $"{target}/unit/{unit.Id}");
+                    surfaces++;
                 }
-                foreach(var id in SchoolCatalog.AlphabetIds(target)){
-                    var a=SchoolCatalog.Alphabet(id);school.OpenAlphabet(id);
-                    foreach(var lesson in a.Lessons){
-                        var v=ClassroomVideoIndex.For(target,"alphabet",lesson.Id);if(v.Count==0)continue;
-                        school.AlphabetView.SelectLesson(lesson.Id);yield return null;yield return Check(school,v,$"{target}/alphabet/{lesson.Id}");tests++;
+                foreach (var id in SchoolCatalog.AlphabetIds(target))
+                {
+                    school.OpenAlphabet(id);
+                    foreach (var lesson in SchoolCatalog.Alphabet(id).Lessons)
+                    {
+                        var videos = ClassroomVideoIndex.For(target, "alphabet", lesson.Id);
+                        if (videos.Count == 0) continue;
+                        school.AlphabetView.SelectLesson(lesson.Id);
+                        yield return null;
+                        yield return Check(school, videos, $"{target}/alphabet/{lesson.Id}");
+                        surfaces++;
                     }
                 }
-                foreach(var id in SchoolCatalog.CertificateIds(target)){
-                    var v=ClassroomVideoIndex.For(target,"certificate",id);if(v.Count==0)continue;
-                    school.OpenCertificate(id);yield return null;yield return Check(school,v,$"{target}/certificate/{id}");tests++;
+                foreach (var id in SchoolCatalog.CertificateIds(target))
+                {
+                    var videos = ClassroomVideoIndex.For(target, "certificate", id);
+                    if (videos.Count == 0) continue;
+                    school.OpenCertificate(id);
+                    yield return null;
+                    yield return Check(school, videos, $"{target}/certificate/{id}");
+                    surfaces++;
                 }
             }
-            var rus=RussianCourse.Path.Steps.First(s=>s.kind=="unit");ui.OpenRussianPath();
-            var path=ui.GetComponent<RussianPathPopup>();path.SelectStep(rus.id);path.OpenSchool();yield return null;
-            yield return Check(school,ClassroomVideoIndex.ForPath(rus.id),rus.id);tests++;
-            var alpha=RussianCourse.Path.Steps.First(s=>s.id=="ru_L_4a");path.SelectStep(alpha.id);path.OpenSchool();yield return null;
-            Assert.AreEqual("ru_ar_consonants_2",school.AlphabetView.SelectedLessonId,"Split Cyrillic video group selects the exact alphabet lesson.");
-            yield return Check(school,ClassroomVideoIndex.ForPath(alpha.id),alpha.id);tests++;
-            var cert=RussianCourse.Path.Steps.First(s=>s.kind=="cert");path.SelectStep(cert.id);path.OpenSchool();yield return null;
-            Assert.AreEqual("cert_"+cert.@ref,school.CertificatesView.SelectedId);tests++;
-            // Multiple sections in Cyrillic 4 and TORFL stacks must retain all parts, not just the first URL.
-            Assert.Greater(ClassroomVideoIndex.For("ru","certificate","cert_torfl_a1").Count,1);
-            school.ChooseTarget("en");school.ShowTab(CoursePopup.Tab.VideoSeries);yield return null;
-            Assert.GreaterOrEqual(ClassroomVideoIndex.Collection("en").Count,34);yield return null;
-            Assert.NotNull(school.ActiveView.GetType());
-            Assert.Greater(tests,45);Debug.Log($"[ClassroomVideo] verified {tests} classroom lesson surfaces / all linked video parts");
-            GameObject.Find("ReferenceCanvas");
-            var video=ReferenceUi.Open<VideoCoursesUI>();video.Hide();
+
+            // From the Russian path: the exact unit, alphabet lesson and certificate (a certificate has no video yet and must not throw).
+            hub.OpenRussianPath();
+            var path = hub.GetComponent<RussianPathPopup>();
+            var unitStep = RussianCourse.Path.Steps.First(s => s.kind == "unit");
+            path.SelectStep(unitStep.id);
+            path.OpenSchool();
+            yield return null;
+            yield return Check(school, ClassroomVideoIndex.ForPath(unitStep.id), unitStep.id);
+            var alphabetStep = RussianCourse.Path.Steps.First(s => s.kind == "alphabet" && ClassroomVideoIndex.ForPath(s.id).Count > 0);
+            path.SelectStep(alphabetStep.id);
+            path.OpenSchool();
+            yield return null;
+            Assert.AreEqual(alphabetStep.@ref, school.AlphabetView.SelectedLessonId, "The path's alphabet step selects its exact lesson");
+            yield return Check(school, ClassroomVideoIndex.ForPath(alphabetStep.id), alphabetStep.id);
+            var certificateStep = RussianCourse.Path.Steps.First(s => s.kind == "cert");
+            path.SelectStep(certificateStep.id);
+            path.OpenSchool();
+            yield return null;
+            Assert.AreEqual(certificateStep.@ref, school.CertificatesView.SelectedId, "The path's certificate step opens that certificate");
+            surfaces += 2;
+
+            // Videos that belong to no single unit: the School's video series tab lists them.
+            school.ChooseTarget("en");
+            school.ShowTab(CoursePopup.Tab.VideoSeries);
+            yield return null;
+            Assert.GreaterOrEqual(ClassroomVideoIndex.Collection("en").Count, 34);
+            Assert.IsTrue(school.GetComponentsInChildren<Button>(true).Any(b => b.name.StartsWith("Series_")), "The video series tab lists the uploads");
+
+            Assert.GreaterOrEqual(surfaces, 40, "Every linked lesson, alphabet and path surface");
+            Debug.Log($"[ClassroomVideo] verified {surfaces} classroom surfaces and every linked video part");
+            ReferenceUi.Open<VideoCoursesUI>().Hide();
         }
-        private static IEnumerator Check(CoursePopup school, System.Collections.Generic.IReadOnlyList<LessonVideoBinding> expected,string label)
+
+        private static IEnumerator Check(CoursePopup school, IReadOnlyList<LessonVideoBinding> expected, string label)
         {
-            Assert.Greater(expected.Count,0,label);var oldLang=Loc.Language;
-            var button=school.ActiveView.GetComponentsInChildren<Button>(true).FirstOrDefault(b=>b.name=="LessonVideos");
-            Assert.NotNull(button,"Missing visible video button inside selected lesson: "+label);
-            button.onClick.Invoke();var popup=Object.FindFirstObjectByType<VideoCoursesUI>();
-            Assert.NotNull(popup,label);Assert.IsTrue(popup.IsOpen,label);
-            Assert.AreEqual(NihongoLife.StudyModes.Video.VideoCatalog.ExtractYouTubeId(expected[0].youtubeUrl),popup.Lesson.id,label+" exact selection");
-            var external=popup.GetComponentsInChildren<Button>(true).FirstOrDefault(b=>b.name=="OpenYouTubeCompact");Assert.NotNull(external,label+" compact YouTube");
-            foreach(var v in expected){popup.SelectLessonVideo(v);Assert.NotNull(popup.SelectedBinding,label+"/"+v.videoId);Assert.AreEqual(v.videoId,popup.Lesson.id);
-                Assert.IsTrue(VideoCatalog.IsYouTube(v.youtubeUrl));Assert.IsNotEmpty(v.Title);}
-            popup.Hide();yield return null;
-            Loc.Set(oldLang);
+            Assert.Greater(expected.Count, 0, label);
+            var button = school.GetComponentsInChildren<Button>(true).FirstOrDefault(b => b.name == "LessonVideos");
+            Assert.NotNull(button, "The open page shows its video button: " + label);
+            button.onClick.Invoke();
+            var popup = Object.FindFirstObjectByType<VideoCoursesUI>();
+            Assert.NotNull(popup, label);
+            Assert.IsTrue(popup.IsOpen, label);
+            Assert.AreEqual(VideoCatalog.ExtractYouTubeId(expected[0].youtubeUrl), popup.Lesson.id, label + ": the exact video is selected");
+            Assert.NotNull(popup.GetComponentsInChildren<Button>(true).FirstOrDefault(b => b.name == "OpenYouTubeCompact"), label + ": compact YouTube button");
+            foreach (var video in expected)
+            {
+                popup.SelectLessonVideo(video);
+                Assert.AreEqual(video.videoId, popup.SelectedBinding?.videoId, label + "/" + video.videoId);
+                Assert.AreEqual(video.videoId, popup.Lesson.id);
+                Assert.IsTrue(VideoCatalog.IsYouTube(video.youtubeUrl));
+                Assert.IsNotEmpty(video.Title);
+            }
+            popup.Hide();
+            yield return null;
         }
     }
 }

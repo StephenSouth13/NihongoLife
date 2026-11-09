@@ -2,6 +2,8 @@
 Removes the blank lines, brings every figure and number up to date and adds the new sections, each with pictures from
 the game. The format stays: Times New Roman 13/18, line spacing 1.5, Word fields for the contents and lists.
 Run: python build_report_v11.py <v10.docx> <out.docx>  then the Word step fills the fields and exports the PDF.
+History: the v10 input was removed on 2026-11-04; the report (NihongoLife_Bao_Cao_Capstone.docx) is now edited in place
+(fix_credits.py), then v10_update_fields.ps1 refreshes the contents and exports the PDF, v10_verify_toc.py checks it.
 """
 import copy
 import glob

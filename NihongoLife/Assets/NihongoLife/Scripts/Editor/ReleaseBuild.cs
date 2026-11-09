@@ -65,6 +65,10 @@ namespace NihongoLife.Editor
                 WebGLZoneBundleBuilder.BuildBundles();
                 // Music and story voices stay out of the first download; they are fetched on demand (WebAudioOnDemand).
                 WebAudioOnDemand.Park();
+                // The player's files carry a hash in their names: the last build's stayed beside the new ones and grew the upload
+                // by 100 MB a build (itch.io stops at 500 MB).
+                string playerFiles = Path.Combine(output, "Build");
+                if (Directory.Exists(playerFiles)) Directory.Delete(playerFiles, true);
                 try { Build(BuildTarget.WebGL, output, BuildOptions.None, WebGLZoneBundleBuilder.PlayerScenes); }
                 finally { WebAudioOnDemand.Restore(); }
                 WebAudioOnDemand.Publish(output);

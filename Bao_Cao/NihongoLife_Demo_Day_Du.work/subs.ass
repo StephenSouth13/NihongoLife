@@ -1,0 +1,46 @@
+﻿[Script Info]
+ScriptType: v4.00+
+PlayResX: 1920
+PlayResY: 1080
+
+[V4+ Styles]
+Format: Name, Fontname, Fontsize, PrimaryColour, SecondaryColour, OutlineColour, BackColour, Bold, Italic, Underline, StrikeOut, ScaleX, ScaleY, Spacing, Angle, BorderStyle, Outline, Shadow, Alignment, MarginL, MarginR, MarginV, Encoding
+Style: Sub,Segoe UI,40,&H00FFFFFF,&H00FFFFFF,&H00000000,&H90000000,0,0,0,0,100,100,0,0,3,10,0,2,240,240,150,1
+
+[Events]
+Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
+Dialogue: 0,0:00:01.90,0:00:11.65,Sub,,0,0,0,,Chào bạn nha! Hôm nay mình dắt bạn đi một vòng NihongoLife, một thị trấn nhỏ ở Nhật, nơi bạn học tiếng bằng chính cuộc sống mỗi ngày.
+Dialogue: 0,0:00:12.37,0:00:25.63,Sub,,0,0,0,,Đây là màn hình đầu tiên. Game có bốn ngôn ngữ, tiếng Việt, tiếng Anh, tiếng Nhật và tiếng Nga. Bạn đổi một cái là mọi chữ, cả đơn vị tiền, đổi theo liền.
+Dialogue: 0,0:00:25.97,0:00:35.36,Sub,,0,0,0,,Chơi bằng máy tính hay điện thoại, bạn tự chọn ở nút này nhé. Điện thoại thì có cần điều khiển và các nút to, dễ bấm.
+Dialogue: 0,0:00:38.70,0:00:50.70,Sub,,0,0,0,,Và đây là thị trấn Hibari! Có đường phố, xe cộ, cửa hàng, và cả những người hàng xóm dễ thương. Mọi thứ đều nói tiếng Nhật với bạn.
+Dialogue: 0,0:00:51.03,0:01:02.50,Sub,,0,0,0,,Các phím tắt được gom gọn vào một nút thôi. Bấm một cái là thấy balo, bản đồ, nhiệm vụ, sổ tay. Bấm lại là gọn gàng ngay.
+Dialogue: 0,0:01:02.83,0:01:12.23,Sub,,0,0,0,,Màn hình chật quá hả? Bạn cất thẻ nhân vật hay thanh nhiệm vụ đi, lúc nào cần thì mở lại. Nhẹ nhàng lắm.
+Dialogue: 0,0:01:12.53,0:01:20.86,Sub,,0,0,0,,Lạc đường thì mở bản đồ lên nha. Chỗ nào cũng có ghi chú rõ ràng, chọn một nơi là có đường chỉ tới.
+Dialogue: 0,0:01:24.03,0:01:36.11,Sub,,0,0,0,,Nào, mình đi làm thêm thôi! Đây là anh Ito ở cửa hàng tiện lợi. Xếp hàng lên kệ, chỉ đường cho khách, tính tiền, tất cả đều bằng tiếng Nhật.
+Dialogue: 0,0:02:05.27,0:02:13.19,Sub,,0,0,0,,Xong ca là anh Ito trả lương liền. Có tiền, có kinh nghiệm, và thêm một chút trí tuệ nữa.
+Dialogue: 0,0:02:16.50,0:02:26.37,Sub,,0,0,0,,Có tiền rồi thì đi mua sắm nào! Đây là Hibari Mode, cửa hàng quần áo mới toanh của thị trấn, với mười tám bộ đồ hoàn chỉnh.
+Dialogue: 0,0:02:26.70,0:02:38.25,Sub,,0,0,0,,Thích bộ nào thì bấm mặc thử, nhân vật mặc liền cho bạn xem. Mũ, kính, khăn, đủ cả. Không ưng thì thôi, không mất đồng nào.
+Dialogue: 0,0:02:38.57,0:02:47.88,Sub,,0,0,0,,Ưng rồi thì mua thôi. Đồ đã mua nằm trong tủ đồ của bạn, đi đâu cũng thay được, và bạn bè online cũng nhìn thấy nữa.
+Dialogue: 0,0:02:48.20,0:02:59.22,Sub,,0,0,0,,Ở đây bạn còn xin làm được luôn. Gấp đồ, tư vấn cỡ áo, dẫn khách vào phòng thử. Đây là một ngành nghề hoàn toàn mới trong game.
+Dialogue: 0,0:03:15.07,0:03:28.54,Sub,,0,0,0,,Trời nắng gắt quá, bạn ấy bị say nắng rồi! Thấy không, bạn ấy quạt tay, người chao đảo, màn hình cũng nóng lên. Mỗi bệnh trong game đều hiện ra trên cơ thể như vậy.
+Dialogue: 0,0:03:28.87,0:03:36.46,Sub,,0,0,0,,Trong sổ tay có đủ mười sáu bệnh thường gặp, nguyên nhân, cách phòng, cách chữa, và đều viết theo y khoa thật.
+Dialogue: 0,0:03:36.77,0:03:45.45,Sub,,0,0,0,,Mệt thì đến phòng khám thôi. Bạn đăng ký ở quầy, điền phiếu hỏi bệnh, rồi kể cho bác sĩ nghe bằng tiếng Nhật.
+Dialogue: 0,0:03:48.93,0:03:57.09,Sub,,0,0,0,,Khám xong thì trả tiền, nhận thuốc, và nghe dặn cách uống. Từ vựng này ra Nhật là dùng được ngay đó.
+Dialogue: 0,0:04:00.40,0:04:07.72,Sub,,0,0,0,,Đói bụng rồi, mình ghé quán sushi nha. Gọi món xong là phục vụ bưng tận bàn.
+Dialogue: 0,0:04:11.20,0:04:23.41,Sub,,0,0,0,,Bạn ấy kéo ghế vào bàn, cầm đũa ăn thật ngon, xong thì ra quầy thanh toán. Lối vào và lối ra có hàng rào riêng, nên không ai bị lạc cả.
+Dialogue: 0,0:04:26.73,0:04:35.14,Sub,,0,0,0,,Đây là trường Nhật ngữ Hibari. Có lớp học, có thầy cô, và cả phòng luyện nói với giáo viên thật.
+Dialogue: 0,0:04:35.47,0:04:54.81,Sub,,0,0,0,,Ở trường có cửa sổ Lớp học. Chọn tiếng Nhật, tiếng Anh, tiếng Nga hay tiếng Việt, là thấy ngay bài học, video và đề thi của ngôn ngữ đó. Thư viện có gần hai trăm bài video theo khoá, tiếng Nga, tiếng Anh, tiếng Nhật, và game tự nhớ bạn đã học tới đâu.
+Dialogue: 0,0:04:55.13,0:05:02.55,Sub,,0,0,0,,Muốn thử sức thì có phòng thi JLPT và IELTS, chấm điểm rõ ràng, có cả phần nói và viết.
+Dialogue: 0,0:05:05.87,0:05:15.97,Sub,,0,0,0,,Học xong rồi, mình đi chơi nha. Game Center có cả chục máy, mỗi máy một trò, và trò nào cũng giúp bạn nhớ chữ.
+Dialogue: 0,0:05:16.30,0:05:24.22,Sub,,0,0,0,,Trò ném bóng rổ này nè, bạn vuốt để ném, canh lực cho khéo. Nghe vui tai lắm luôn.
+Dialogue: 0,0:05:26.70,0:05:37.56,Sub,,0,0,0,,Còn đây là máy gắp thú. Bạn tự lái càng, thả xuống, và cầu mong nó đừng tuột. Hồi hộp y như ngoài đời vậy đó.
+Dialogue: 0,0:05:42.87,0:05:51.40,Sub,,0,0,0,,Thích âm nhạc thì ghé tiệm Hibiki. Nhân vật tự chơi đàn cho bạn nghe, bạn chỉnh nhịp và âm lượng thôi.
+Dialogue: 0,0:05:54.93,0:06:03.87,Sub,,0,0,0,,Đi vào trong là phòng tranh, treo những kiệt tác thật. Đứng trước bức nào, bấm một cái là đọc được câu chuyện của bức đó.
+Dialogue: 0,0:06:07.20,0:06:15.68,Sub,,0,0,0,,Đi tàu một đoạn là tới Đảo Xanh. Ở đây có nông trại, có biển, không khí thoải mái hẳn.
+Dialogue: 0,0:06:16.00,0:06:27.42,Sub,,0,0,0,,Mình thử câu cá nha. Đảo có mười sáu loài, từ cá nhỏ tới cá mập, câu càng giỏi càng gặp cá hiếm. Trúng con to rồi nè!
+Dialogue: 0,0:06:27.73,0:06:36.47,Sub,,0,0,0,,Và giờ thì nhảy xuống biển được rồi nhé. Nhân vật bơi thật, nổi trên mặt nước, bơi vào bờ là tự leo lên.
+Dialogue: 0,0:06:43.00,0:06:56.65,Sub,,0,0,0,,Bay xa hơn nữa, chúng mình có đảo Phú Quốc, dựng theo bản đồ thật. Có chợ hải sản, có khu nghỉ dưỡng, và quán Gánh Ngon để bạn làm nghề khách sạn.
+Dialogue: 0,0:06:59.97,0:07:10.52,Sub,,0,0,0,,Từ cấp mười bạn chọn ngành của mình. Làm đúng ngành thì lên chức, làm trái ngành thì chỉ được một nửa lương và kinh nghiệm thôi, nên chọn cho kỹ nha.
+Dialogue: 0,0:07:10.83,0:07:19.39,Sub,,0,0,0,,Ngoài ra còn có ngân hàng, có khoản vay, mở công ty thì mỗi tuần phải trả chi phí, còn nhân viên thì làm ra tiền cho bạn.
+Dialogue: 0,0:07:22.10,0:07:33.17,Sub,,0,0,0,,Đăng nhập là gặp nhau ngay trong thị trấn. Voice khu vực tự bật, giữ phím T là nói chuyện được, thả biểu cảm, nhắn tin, và luyện nói cùng nhau.
+Dialogue: 0,0:07:34.77,0:07:45.32,Sub,,0,0,0,,Vậy là mình đã đi hết một vòng rồi đó. Cảm ơn bạn đã xem cùng mình. Hẹn gặp bạn ở thị trấn Hibari nha!

@@ -273,8 +273,7 @@ namespace NihongoLife.Clinic
             {
                 bubble = Label(who, "Speech", "", 2.6f / Mathf.Max(0.01f, who.lossyScale.y), 1.05f, Color.white);
                 bubble.gameObject.AddComponent<BillboardUI>();
-                bubble.outlineWidth = 0.22f;
-                bubble.outlineColor = new Color32(20, 40, 46, 255);
+                NihongoLife.UI.TmpOutline.Apply(bubble, 0.22f, new Color32(20, 40, 46, 255));
             }
             bubble.text = string.IsNullOrEmpty(meaning) ? ja : $"{ja}\n<size=62%><color=#D8F2EA>{meaning}</color></size>";
             bubble.gameObject.SetActive(true);

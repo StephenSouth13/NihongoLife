@@ -135,6 +135,7 @@ RU = {
     'Play on: Computer': 'Играть: компьютер',
     'Play on: Phone (detected)': 'Играть: телефон (определён)',
     'Play on: Computer (detected)': 'Играть: компьютер (определён)',
+    'Hibari Mode, main street': 'Hibari Mode, главная улица',
 }
 
 path = os.path.join('Assets', 'NihongoLife', 'Resources', 'Content', 'Localization', 'ru_table_extra.json')
@@ -145,6 +146,6 @@ for en, ru in RU.items():
 table['entries'] = list(entries.values())
 table['count'] = len(table['entries'])
 with open(path, 'w', encoding='utf-8', newline='\n') as f:
-    json.dump(table, f, ensure_ascii=True, indent=2)  # the table's own style: escaped, so any code page reads it
+    json.dump(table, f, ensure_ascii=False, indent=2)  # UTF-8 as the rest of the table (AGENTS.md: text files are UTF-8)
     f.write('\n')
 print(f'{len(RU)} Russian lines merged, {table["count"]} in the extra table')

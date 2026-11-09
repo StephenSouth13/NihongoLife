@@ -28,6 +28,14 @@ namespace NihongoLife.Tests
             var dm = DialogueManager.Instance;
             for (int guard = 0; guard < 40 && dm != null && dm.IsOpen; guard++) { dm.CancelDialogue(); if (dm.IsOpen) dm.ContinueDialogue(); }
             var player = Object.FindFirstObjectByType<PlayerController>();
+            // An earlier test in the full run can leave the input locked: the capsule then never steps onto the floor
+            // and the feet read 2 cm under it (the spawn's own height), which is not what this test measures.
+            if (player.InputLocked || !player.enabled)
+            {
+                Debug.LogWarning($"[Feet] left by an earlier test: input locked {player.InputLocked}, controller enabled {player.enabled}");
+                player.InputLocked = false;
+                player.enabled = true;
+            }
             // A known flat piece of pavement: earlier tests leave the player anywhere, on a kerb's edge too.
             var spot = GameObject.Find("Spawn_" + WorldLocationCatalog.CityClinicReturn);
             var capsule = player.GetComponent<CharacterController>();
@@ -53,15 +61,15 @@ namespace NihongoLife.Tests
                         input.SetMobileMove(move);
                         input.SetMobileButton(GameInputId.Sprint, sprint);
                         yield return new WaitForSecondsRealtime(0.8f);
-                        float minGap = float.MaxValue, maxGap = float.MinValue, transformGap = 0f;
+                        float minGap = float.MaxValue, maxGap = float.MinValue, transformGap = 0f; string floor = "";
                         for (int i = 0; i < 40; i++)
                         {
                             yield return null;
-                            var (gap, tgap) = Measure(player);
+                            var (gap, tgap, under) = Measure(player);
                             if (float.IsNaN(gap)) continue;
-                            minGap = Mathf.Min(minGap, gap); maxGap = Mathf.Max(maxGap, gap); transformGap = tgap;
+                            minGap = Mathf.Min(minGap, gap); maxGap = Mathf.Max(maxGap, gap); transformGap = tgap; floor = under;
                         }
-                        string line = $"{kid} {mode}: lowest foot to ground {minGap * 100:0.0} … {maxGap * 100:0.0} cm, transform to ground {transformGap * 100:0.0} cm";
+                        string line = $"{kid} {mode}: lowest foot to ground {minGap * 100:0.0} … {maxGap * 100:0.0} cm, transform to ground {transformGap * 100:0.0} cm on {floor}";
                         Debug.Log("[Feet] " + line);
                         report.AppendLine(line);
                         worst = Mathf.Min(worst, minGap);
@@ -86,11 +94,11 @@ namespace NihongoLife.Tests
             Assert.Less(worstIdleHigh, 0.03f, "Feet float above the ground while standing:\n" + report);
         }
 
-        /// <summary>(lowest foot/toe bone above the floor, player transform above the floor), metres.</summary>
-        private static (float, float) Measure(PlayerController player)
+        /// <summary>(lowest foot/toe bone above the floor, player transform above the floor, metres; the floor's collider).</summary>
+        private static (float, float, string) Measure(PlayerController player)
         {
             var animator = player.GetComponentInChildren<Animator>();
-            if (animator == null || !animator.isHuman) return (float.NaN, 0f);
+            if (animator == null || !animator.isHuman) return (float.NaN, 0f, null);
             float lowest = float.MaxValue;
             foreach (var b in new[] { HumanBodyBones.LeftFoot, HumanBodyBones.RightFoot, HumanBodyBones.LeftToes, HumanBodyBones.RightToes })
             {
@@ -104,9 +112,12 @@ namespace NihongoLife.Tests
                 lowest = Mathf.Min(lowest, r.bounds.min.y);
             }
             Vector3 p = player.transform.position;
-            if (!Physics.Raycast(p + Vector3.up * 1f, Vector3.down, out var hit, 3f, Physics.DefaultRaycastLayers, QueryTriggerInteraction.Ignore))
-                return (float.NaN, 0f);
-            return (lowest - hit.point.y, p.y - hit.point.y);
+            // Only the layers the player's capsule stands on: a collider it passes through is not its floor.
+            int layer = player.gameObject.layer, mask = 0;
+            for (int l = 0; l < 32; l++) if (!Physics.GetIgnoreLayerCollision(layer, l)) mask |= 1 << l;
+            if (!Physics.Raycast(p + Vector3.up * 1f, Vector3.down, out var hit, 3f, mask, QueryTriggerInteraction.Ignore))
+                return (float.NaN, 0f, null);
+            return (lowest - hit.point.y, p.y - hit.point.y, hit.collider.name);
         }
 
         private static void Shoot(PlayerController player, string name)

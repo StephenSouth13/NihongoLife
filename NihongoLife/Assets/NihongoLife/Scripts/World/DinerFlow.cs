@@ -194,8 +194,7 @@ namespace NihongoLife.World
                 bubble.fontSize = 1.05f;
                 bubble.alignment = TextAlignmentOptions.Center;
                 bubble.rectTransform.sizeDelta = new Vector2(3.2f, 1f);
-                bubble.outlineWidth = 0.22f;
-                bubble.outlineColor = new Color32(40, 24, 14, 255);
+                NihongoLife.UI.TmpOutline.Apply(bubble, 0.22f, new Color32(40, 24, 14, 255));
                 go.AddComponent<NihongoLife.UI.BillboardUI>();
             }
             bubble.text = string.IsNullOrEmpty(meaning) ? ja : $"{ja}\n<size=62%><color=#FFE9C8>{meaning}</color></size>";

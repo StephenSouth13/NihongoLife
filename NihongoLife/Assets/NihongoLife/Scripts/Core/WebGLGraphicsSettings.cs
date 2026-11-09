@@ -17,9 +17,13 @@ namespace NihongoLife.Core
         static readonly float[] DprCaps = { 1f, 1.5f, 2f };
         static readonly float[] RenderScales = { 0.75f, 1f, 1f };
 
+        /// <summary>A phone or tablet browser (Unity reads the user agent on WebGL).</summary>
+        public static bool Phone => Application.isMobilePlatform;
+
+        /// <summary>Phones start on Smooth (pixel ratio 1, render scale 0.75) until the player picks another preset.</summary>
         public static int Preset
         {
-            get => Mathf.Clamp(PlayerPrefs.GetInt(PrefKey, 1), 0, 2);
+            get => Mathf.Clamp(PlayerPrefs.GetInt(PrefKey, Phone ? 0 : 1), 0, 2);
             private set => PlayerPrefs.SetInt(PrefKey, Mathf.Clamp(value, 0, 2));
         }
 
@@ -32,6 +36,21 @@ namespace NihongoLife.Core
 #if UNITY_WEBGL && !UNITY_EDITOR
             ApplyQualityLevel();
             ApplyPreset();
+            if (Phone) ApplyPhoneLimits();
+#endif
+        }
+
+        /// <summary>
+        /// A GPU without DXT (most phone GPUs) gets every texture of the web build decompressed to full RGBA, 4-8x its size in
+        /// the phone's shared memory: textures go one mip level down there (a quarter of the memory). The browser is asked
+        /// directly; Unity reports DXT as supported because it can decompress it.
+        /// The frame rate is left to the browser: a targetFrameRate makes the web player leave requestAnimationFrame for a
+        /// timer, and in a phone-like run it fell from 8-15 to 3 frames a second and loaded several times slower.
+        /// </summary>
+        public static void ApplyPhoneLimits()
+        {
+#if UNITY_WEBGL && !UNITY_EDITOR
+            if (NL_HasS3TC() == 0) QualitySettings.globalTextureMipmapLimit = 1;
 #endif
         }
 
@@ -109,6 +128,9 @@ namespace NihongoLife.Core
 #if UNITY_WEBGL && !UNITY_EDITOR
         [System.Runtime.InteropServices.DllImport("__Internal")]
         static extern void NL_SetDprCap(float cap);
+
+        [System.Runtime.InteropServices.DllImport("__Internal")]
+        static extern int NL_HasS3TC();
 #endif
     }
 }

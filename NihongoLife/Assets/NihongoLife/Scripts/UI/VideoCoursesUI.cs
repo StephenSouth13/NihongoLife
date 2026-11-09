@@ -32,7 +32,6 @@ namespace NihongoLife.UI
 
         private RectTransform _body, _player;
         private System.Collections.Generic.IReadOnlyList<LessonVideoBinding> _lessonBindings;
-        private string _lessonName;
         public LessonVideoBinding SelectedBinding { get; private set; }
         private bool BindingMode => _lessonBindings != null;
         private string _language = "all";
@@ -143,33 +142,40 @@ namespace NihongoLife.UI
         public void OpenLessonBindings(string title, System.Collections.Generic.IReadOnlyList<LessonVideoBinding> links)
         {
             if (links == null || links.Count == 0) throw new System.ArgumentException("Lesson has no videos");
-            _lessonBindings=links; _lessonName=title;            OpenCourse(new VideoCourse { id="classroom_"+title, lang="all", titleVi=title, titleEn=title, titleJa=title, color="#176276",
-                sections=new[]{new VideoCourseSection { titleVi="Các phần bài học", titleEn="Lesson parts", titleJa="レッスンの各部分", lessons=links.Select(v=>new VideoLesson { id=YoutubeId(v.youtubeUrl), title=v.Title }).ToArray() } } });
-            SelectedBinding=links[0];
+            _lessonBindings = links;
+            var section = new VideoCourseSection
+            {
+                title = "Các phần bài học", titleEn = "Lesson parts", titleJa = "レッスンの各部分",
+                lessons = links.Select(v => new VideoLesson { id = VideoCatalog.ExtractYouTubeId(v.youtubeUrl), title = v.Title }).ToArray(),
+            };
+            OpenCourse(new VideoCourse { id = "classroom_" + title, lang = "all", titleVi = title, titleEn = title, titleJa = title, color = "#176276", sections = new[] { section } });
+            SelectedBinding = links[0];
         }
-        
-        public void OpenLibraryCourse(string id)
+
+        /// <summary>Opens the catalogue filtered to one language (ja, en, ru; anything else shows all).</summary>
+        public void ShowLanguage(string language)
         {
-            _lessonBindings=null; var course=VideoCourseCatalog.File.courses.FirstOrDefault(c=>c.id==id); if (course==null) throw new System.ArgumentException("Missing course "+id); OpenCourse(course);
+            _lessonBindings = null;
+            _language = language is "ja" or "en" or "ru" ? language : "all";
+            if (IsOpen) { Course = null; Rebuild(); } else Show();
         }
+
         public void SelectLessonVideo(LessonVideoBinding binding)
         {
-            if(_lessonBindings!=null && _lessonBindings.Contains(binding)){SelectedBinding=binding;SelectLesson(Course.Lessons.FirstOrDefault(l=>l.id==binding.videoId));}
+            if (_lessonBindings == null || !_lessonBindings.Contains(binding)) return;
+            SelectLesson(Course.Lessons.FirstOrDefault(l => l.id == binding.videoId));
         }
+
         private void BuildBindingPage()
         {
             BuildCoursePage();
-            // Large external action below becomes a compact secondary action; the on-player icon stays.
-            var external=_body.Find("OnYouTube");if(external!=null)external.gameObject.SetActive(false);
-            var next=_body.Find("Next");if(next!=null)UiKit.Place((RectTransform)next.transform,252f,638f,200f,48f);
+            // A lesson's videos: the big "open on YouTube" action goes (the player keeps its small icon) and "next" moves up.
+            var external = _body.Find("OnYouTube");
+            if (external != null) external.gameObject.SetActive(false);
+            var next = _body.Find("Next");
+            if (next != null) UiKit.Place((RectTransform)next.transform, 252f, 638f, 200f, 48f);
         }
-        public static string YoutubeId(string url)
-        {
-            if(string.IsNullOrEmpty(url))return null;
-            int at=url.IndexOf("youtu.be/",System.StringComparison.OrdinalIgnoreCase);
-            if(at>=0)return url.Substring(at+9).Split('?','&','/')[0];
-            at=url.IndexOf("v=",System.StringComparison.OrdinalIgnoreCase);return at<0?null:url.Substring(at+2).Split('&','/')[0];
-        }
+
         public void BackToCatalogue()
         {
             if (!BindingMode) Course = null;
@@ -240,7 +246,7 @@ namespace NihongoLife.UI
         public void SelectLesson(VideoLesson lesson)
         {
             Lesson = lesson;
-            if (BindingMode) SelectedBinding = _lessonBindings.FirstOrDefault(b => YoutubeId(b.youtubeUrl) == lesson.id);
+            if (BindingMode) SelectedBinding = _lessonBindings.FirstOrDefault(b => VideoCatalog.ExtractYouTubeId(b.youtubeUrl) == lesson.id);
             Rebuild();
         }
 
@@ -254,7 +260,6 @@ namespace NihongoLife.UI
         public void MarkDone()
         {
             if (Lesson == null) return;
-            if (BindingMode) SelectedBinding=_lessonBindings.FirstOrDefault(b=>b.videoId==YoutubeId(b.youtubeUrl) && b.videoId==Lesson.id);
             Store.MarkVideoWatched(Lesson.id);
             Rebuild();
         }
@@ -263,7 +268,6 @@ namespace NihongoLife.UI
         public void Play()
         {
             if (Lesson == null) return;
-            if (BindingMode) SelectedBinding=_lessonBindings.FirstOrDefault(b=>b.videoId==YoutubeId(b.youtubeUrl) && b.videoId==Lesson.id);
             Store.MarkVideoWatched(Lesson.id);
 #if UNITY_WEBGL && !UNITY_EDITOR
             var corners = new Vector3[4];

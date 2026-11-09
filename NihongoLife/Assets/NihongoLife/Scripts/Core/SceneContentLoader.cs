@@ -42,6 +42,35 @@ namespace NihongoLife.Core
 
         public static string LastError => _activeError;
 
+        /// <summary>Area packs held in memory now (the web QA report reads it).</summary>
+        public static int LoadedPacks => Loaded.Count;
+
+        [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
+        static void HookRelease()
+        {
+            SceneManager.sceneUnloaded -= ReleaseArea;
+            SceneManager.sceneUnloaded += ReleaseArea;
+        }
+
+        /// <summary>
+        /// An area that was left gives its pack and the pack's assets back. Every pack used to stay loaded: each area added
+        /// 50-160 MB to the browser's memory until a phone killed the tab. The town stays, it is under every area.
+        /// Every platform: TextMeshPro keeps the fallback-font copies of the area's outlined 3D labels (and through them the
+        /// labels' material instances) in a static list until cleaned up: +14 materials a round of areas
+        /// (ZoneMemoryPlayModeTests). Then textures loaded through Resources (the gallery's paintings) are let go.
+        /// </summary>
+        static void ReleaseArea(Scene scene)
+        {
+            if (scene.name == WorldLocationCatalog.CityScene || !BundleNames.TryGetValue(scene.name, out string bundleName)) return;
+            if (Loaded.TryGetValue(bundleName, out AssetBundle bundle))
+            {
+                Loaded.Remove(bundleName);
+                if (bundle != null) bundle.Unload(true);
+            }
+            TMPro.TMP_MaterialManager.CleanupFallbackMaterials();
+            Resources.UnloadUnusedAssets();
+        }
+
         public static bool IsOnDemandScene(string sceneName) =>
             !string.IsNullOrEmpty(sceneName) && BundleNames.ContainsKey(sceneName);
 

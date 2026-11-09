@@ -87,7 +87,7 @@ namespace NihongoLife.UI
             string best = entry == null ? Loc.T("Chưa làm bài", "Not practised yet", "未挑戦") : Loc.F("Tốt nhất {0}/{1} · {2} lần", "Best {0}/{1} · {2} tries", "最高 {0}/{1}・{2}回", entry.bestCorrect, entry.total, entry.attempts);
             var bestLabel = UiKit.Label(panel.transform, "Best", CourseUi.Stars(entry?.stars ?? 0) + "  " + best, 15f, UiTheme.TextSoft);
             UiKit.Place(bestLabel.rectTransform, 24f, 92f, w - 48f - 250f, 24f);
-            LessonVideoUi.AddHeaderButton(panel.transform, u.Title.Resolve(), ClassroomVideoIndex.ForContent(u.Target,"unit",u.Id), w - 24f - 294f, 35f);
+            LessonVideoUi.AddHeaderButton(panel.transform, u.Title.Resolve(), ClassroomVideoIndex.For(u.Target, "unit", u.Id), w - 24f - 176f, 88f); // under Practice, clear of it
             var start = UiKit.Button(panel.transform, "Practice", Loc.F("Luyện tập ({0} câu)", "Practice ({0} questions)", "練習（{0}問）", u.QuestionCount), StartPractice, UiKit.Kind.Primary, "quiz", 17f);
             UiKit.Place((RectTransform)start.transform, w - 24f - 240f, 30f, 240f, 52f);
 
@@ -96,7 +96,6 @@ namespace NihongoLife.UI
             var content = CourseUi.ScrollIn(host);
             var body = CourseUi.Body(content);
             float bw = w - 28f - 4f - 20f, y = 8f;
-            y = LessonVideoUi.AddStrip(body, u.Title.Resolve(), ClassroomVideoIndex.ForContent(u.Target,"unit",u.Id), y, bw);
             string target = Host.Target;
             string locale = CourseUi.LocaleOf(target);
 

@@ -72,7 +72,7 @@ namespace NihongoLife.Tests
             if (TourFrom <= 11) yield return TourCareer();
             if (TourFrom <= 12) yield return TourOnline();
 
-            _rec.ShowCard("Cảm ơn bạn đã xem", "NihongoLife · Quách Thành Long · Nguyễn Lê Gia Huy · Lương Nguyễn Tấn Dũng", false);
+            _rec.ShowCard("Cảm ơn bạn đã xem", "NihongoLife · thực hiện: Quách Thành Long", false);
             yield return _rec.FadeCard(true);
             Beat("outro");
             yield return Hold();
@@ -329,8 +329,12 @@ namespace NihongoLife.Tests
             Beat("courses");
             var hub = Object.FindFirstObjectByType<StudyHubPopup>(FindObjectsInactive.Include);
             hub.Show();
-            yield return Frames(2.5f);
-            hub.OpenVideos();
+            yield return Frames(1.5f);
+            hub.ChooseLanguage("ru"); // one window: a language first, then its lessons, videos and mock tests
+            yield return Frames(2.2f);
+            hub.ChooseLanguage("en");
+            yield return Frames(2.2f);
+            hub.OpenVideos("ru");
             var library = Object.FindFirstObjectByType<VideoCoursesUI>(FindObjectsInactive.Include);
             _rec.Recording = false;
             for (float t = 0f; t < 3f; t += Time.unscaledDeltaTime) yield return null; // the covers come from the network

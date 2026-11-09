@@ -55,8 +55,7 @@ namespace NihongoLife.Interaction
             _label.fontSize = 34f;
             _label.alignment = TextAlignmentOptions.Center;
             _label.color = Gold;
-            _label.outlineWidth = 0.25f;
-            _label.outlineColor = new Color32(30, 18, 0, 220);
+            NihongoLife.UI.TmpOutline.Apply(_label, 0.25f, new Color32(30, 18, 0, 220));
             _label.textWrappingMode = TextWrappingModes.NoWrap;
             _label.rectTransform.sizeDelta = new Vector2(60f, 8f);
         }

@@ -43,8 +43,7 @@ namespace NihongoLife.UI
             var label = NLUi.Label(transform, "Delta", $"<b>{(gain ? "+" : "−")}{NihongoLife.Core.Loc.Money(Math.Abs(e.amount))}</b>  <size=75%>{Loc.Resolve(e.reason)}</size>", 20f,
                 gain ? new Color(0.45f, 0.95f, 0.55f) : new Color(1f, 0.5f, 0.42f), _font, FontStyles.Normal, TextAlignmentOptions.Left);
             label.textWrappingMode = TextWrappingModes.NoWrap;
-            label.outlineWidth = 0.2f;
-            label.outlineColor = new Color32(0, 0, 0, 200);
+            NihongoLife.UI.TmpOutline.Apply(label, 0.2f, new Color32(0, 0, 0, 200));
             label.gameObject.Need<LayoutElement>().ignoreLayout = true;
             var rect = label.rectTransform;
             rect.anchorMin = rect.anchorMax = new Vector2(0f, 1f);

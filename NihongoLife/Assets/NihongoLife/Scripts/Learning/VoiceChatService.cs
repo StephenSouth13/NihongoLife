@@ -83,6 +83,11 @@ namespace NihongoLife.Learning
 
         public event Action OnStateChanged;
 
+        /// <summary>A registered player in the online world joins the nearby voice room by themselves, once a session (tests turn it off).</summary>
+        public static bool AutoJoinArea = true;
+        private bool _autoAreaTried;
+        private float _nextAutoArea;
+
         private void Awake()
         {
             if (Instance != null && Instance != this) { Destroy(this); return; }
@@ -306,6 +311,16 @@ namespace NihongoLife.Learning
                 SetStatus(NihongoLife.Core.Loc.Triple("Voice tạm dừng trong phòng Speaking.", "Voice is paused in the Speaking room.", "スピーキングルームではボイスを一時停止します。"));
                 return;
             }
+            if (AutoJoinArea && !_autoAreaTried && !Joined && !Busy && Time.unscaledTime >= _nextAutoArea)
+            {
+                // A chat game: being in the world means hearing the people nearby, T to talk. Leaving by hand is respected.
+                _nextAutoArea = Time.unscaledTime + 2f;
+                if (OnlineAccess.IsRegistered && GameServices.TryGet(out IOnlineWorldService world) && world is SupabaseOnlineWorldService live && live.ShardTopic != null)
+                {
+                    _autoAreaTried = true;
+                    JoinArea();
+                }
+            }
             if (_rejoinAt > 0f && Time.unscaledTime >= _rejoinAt && !Busy) { _rejoinAt = -1f; Rejoin(); }
             if (!Joined || _engine == null) return;
 
@@ -465,12 +480,14 @@ namespace NihongoLife.Learning
                 _owner.Joined = true;
                 _owner.HandleJoined();
                 string key = GameInputService.GetOrCreate().GetBindingLabel(GameInputId.PushToTalk);
+                bool area = _owner.Current == Mode.Area;
                 _owner.SetStatus(_owner.Current switch
                 {
                     Mode.Area => NihongoLife.Core.Loc.TripleF("Voice khu vực · giữ {0} để nói · nghe người trong {1:0} m", "Area voice · hold {0} to talk · hear people within {1:0} m", "エリアボイス · {0}を押して話す · {1:0}m以内が聞こえます", key, HearingRange),
                     Mode.Group => NihongoLife.Core.Loc.TripleF("Voice nhóm · giữ {0} để nói", "Group voice · hold {0} to talk", "グループボイス · {0}を押して話す", key),
                     _ => NihongoLife.Core.Loc.TripleF("Đang gọi · giữ {0} để nói", "In a call · hold {0} to talk", "通話中 · {0}を押して話す", key)
                 });
+                if (area) NihongoLife.UI.HudFeed.Post(_owner.Status, NihongoLife.UI.HudFeed.Kind.Info, 6f, "voice-area");
             });
 
             public override void OnUserJoined(RtcConnection connection, uint remoteUid, int elapsed) => _owner.Post(() => _owner._remotes.Add(remoteUid));

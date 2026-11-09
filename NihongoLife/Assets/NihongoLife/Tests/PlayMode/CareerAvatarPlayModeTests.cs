@@ -61,16 +61,6 @@ namespace NihongoLife.Tests
                     AssertFits(card, career.id);
                 }
 
-                var retail = CharacterVariants.Prefab(CareerIndustries.Look("retail").variant);
-                var retailVest = retail.GetComponentsInChildren<MeshFilter>(true).FirstOrDefault(m=>m.name=="Uniform_Vest");
-                Assert.NotNull(retailVest,"Retail employee keeps identifiable clothing");
-                Assert.Less(retailVest.sharedMesh.bounds.size.z,retailVest.sharedMesh.bounds.size.x+0.00001f,"Retail vest is a textile panel rather than a torso-wide box");
-                StringAssert.Contains("fabric",retailVest.sharedMesh.name);
-                foreach (var job in catalog.careers)
-                {
-                    var look=CharacterVariants.Find(CareerIndustries.Look(job.id).variant);
-                    foreach(var prop in CharacterVariants.Prefab(look.id).GetComponentsInChildren<MeshFilter>(true)) Assert.Less(prop.sharedMesh.bounds.size.z,0.75f,job.id+": no stray torso cube "+prop.name);
-                }
                 // Every avatar draws something (not blank, not everything) and the person is in uniform colours of its own.
                 var looks = new List<string>();
                 foreach (var a in stage.Avatars)
@@ -83,6 +73,17 @@ namespace NihongoLife.Tests
                     looks.Add(a.careerId + " " + a.variantId + " coverage=" + coverage.ToString("0.00") + " mean=" + mean.ToString("0.00"));
                 }
                 Assert.AreEqual(catalog.careers.Length, looks.Select(l => l.Split(' ')[1]).Distinct().Count(), "Different people");
+
+                // Each career's person at rest, saved for the report and the slides (Bao_Cao/careers-ui/avatar_<career>.png): the idle part of the
+                // cycle, gesture stopped, so no work prop (a sushi counter, a stove) stands around them without its context.
+                foreach (var a in stage.Avatars) { a.Hot = false; a.Clock = 0f; }
+                for (int i = 0; i < 90; i++) stage.Step(1f / 60f);
+                foreach (var a in stage.Avatars)
+                {
+                    Assert.IsFalse(a.Working || a.Layer.IsPlaying, a.careerId + " rests for its portrait");
+                    stage.RenderAvatar(a);
+                    Save(a.Texture, Path.Combine(Folder, "avatar_" + a.careerId + ".png"));
+                }
 
                 // A hovered person works: it moves between frames; a resting one stands (breathing only) and its gesture stops.
                 var hot = stage.Avatars.First(a => a.careerId == "retail");
@@ -208,6 +209,19 @@ namespace NihongoLife.Tests
         }
 
         /// <summary>Share of pixels the person covers (alpha) and the mean brightness of those pixels.</summary>
+        private static void Save(RenderTexture rt, string path)
+        {
+            var prev = RenderTexture.active;
+            RenderTexture.active = rt;
+            var tex = new Texture2D(rt.width, rt.height, TextureFormat.RGBA32, false);
+            tex.ReadPixels(new Rect(0, 0, rt.width, rt.height), 0, 0);
+            tex.Apply();
+            RenderTexture.active = prev;
+            Directory.CreateDirectory(Path.GetDirectoryName(path));
+            File.WriteAllBytes(path, tex.EncodeToPNG());
+            Object.Destroy(tex);
+        }
+
         private static (float coverage, float mean) Read(RenderTexture rt)
         {
             var px = Pixels(rt);

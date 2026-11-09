@@ -64,7 +64,7 @@ namespace NihongoLife.School
             if (!_welcomed && SceneManager.GetActiveScene() == gameObject.scene)
             {
                 _welcomed = true;
-                Banner("ひばり日本語学院 へ ようこそ", NihongoLife.Core.Loc.T("Lớp N5 của cô Morita · bàn thi ở đầu lớp — F để làm đề JLPT / IELTS", "Ms. Morita's N5 class · exam desk at the front — press F to take a JLPT / IELTS test", "森田先生のN5クラス · 教室の前の受験机 — Fで JLPT / IELTS の模試に挑戦"), new Color(0.55f, 0.85f, 1f), 5f);
+                Banner("ひばり日本語学院 へ ようこそ", NihongoLife.Core.Loc.T("Lớp của cô Morita · bàn đầu lớp — F để học bài, xem video, thi thử", "Ms. Morita's class · desk at the front — press F for lessons, videos and mock tests", "森田先生のクラス · 前の机 — Fでレッスン・動画・模試"), new Color(0.55f, 0.85f, 1f), 5f);
             }
             if (_exams == null && ExamManager.Instance != null) Bind(ExamManager.Instance);
             if (_exams == null) return;
@@ -74,7 +74,7 @@ namespace NihongoLife.School
         }
 
         public void OnExamDeskUsed() =>
-            Banner("しけん の じかん です", NihongoLife.Core.Loc.T("Chọn một đề: JLPT N5 hoặc IELTS — làm bài nghiêm túc nhé!", "Pick a test: JLPT N5 or IELTS — take it seriously!", "試験を選んでください：JLPT N5 または IELTS — まじめに頑張ろう！"), NLUi.Gold, 3f);
+            Banner("じゅぎょう の じかん です", NihongoLife.Core.Loc.T("Chọn ngôn ngữ, rồi học bài, xem video hoặc thi thử.", "Pick a language, then a lesson, a video or a mock test.", "言語を選んで、レッスン・動画・模試へ。"), NLUi.Gold, 3f);
 
         private void Bind(ExamManager exams)
         {

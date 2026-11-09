@@ -43,8 +43,7 @@ namespace NihongoLife.Interaction
             bubble._text.textWrappingMode = TextWrappingModes.NoWrap;
             bubble._text.rectTransform.sizeDelta = new Vector2(4f, 0.6f);
             bubble._text.color = Color.white;
-            bubble._text.outlineWidth = 0.15f;
-            bubble._text.outlineColor = new Color32(8, 10, 16, 255);
+            NihongoLife.UI.TmpOutline.Apply(bubble._text, 0.15f, new Color32(8, 10, 16, 255));
             // Every phrase once, so the font has its glyphs before the first emote needs them.
             var phrases = new System.Text.StringBuilder();
             foreach (var emote in EmoteCatalog.All) phrases.Append(emote.Ja);

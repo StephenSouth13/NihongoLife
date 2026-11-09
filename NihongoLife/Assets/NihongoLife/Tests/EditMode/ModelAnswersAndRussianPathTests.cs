@@ -328,7 +328,8 @@ namespace NihongoLife.Tests
         public void StudyHub_OpensModelAnswersAndRussianPath()
         {
             var hub = Open<StudyHubPopup>();
-            Assert.IsNotNull(Find(hub, "Tile6"), "tile 6");
+            hub.ChooseLanguage("en");
+            Assert.IsNotNull(Find(hub, "Tile3"), "English: lessons, basic, tenses, model answers");
             hub.OpenModelAnswers();
             Assert.IsTrue(_canvas.GetComponentsInChildren<ModelAnswersPopup>(true).Any(x => x.IsOpen));
             hub.Show();

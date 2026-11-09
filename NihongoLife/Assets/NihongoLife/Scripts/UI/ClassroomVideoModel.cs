@@ -4,27 +4,62 @@ using System.Linq;
 using NihongoLife.Core;
 using NihongoLife.StudyModes.Video;
 using UnityEngine;
+
 namespace NihongoLife.UI
 {
-    [Serializable] public sealed class LessonVideoLocalizedTitle { public string vi,en,ja,ru; public string Resolve() => Loc.IsVietnamese?vi:Loc.IsEnglish?en:Loc.IsJapanese?(ja??en):ru??en??vi; }
-    [Serializable] public sealed class LessonVideoBinding
+    [Serializable]
+    public sealed class LessonVideoLocalizedTitle
     {
-        public string target,kind,id,videoId,youtubeUrl,stepId,source;
+        public string vi, en, ja, ru;
+
+        public string Resolve() => Loc.IsVietnamese ? vi : Loc.IsEnglish ? en : Loc.IsJapanese ? ja ?? en : ru ?? en ?? vi;
+    }
+
+    /// <summary>One uploaded YouTube video tied to the exact School unit, alphabet lesson, certificate or Russian path step it teaches.</summary>
+    [Serializable]
+    public sealed class LessonVideoBinding
+    {
+        public string target, kind, id, videoId, youtubeUrl, stepId, source;
         public LessonVideoLocalizedTitle title;
+
         public string Title => title?.Resolve() ?? id;
     }
-    [Serializable] public sealed class LessonVideoIndexFile { public string schema; public LessonVideoBinding[] links; }
+
+    [Serializable]
+    public sealed class LessonVideoIndexFile
+    {
+        public string schema;
+        public LessonVideoBinding[] links;
+    }
+
+    /// <summary>Resources/Content/Video/lesson_video_index.json (built by Tools/classroom/build_lesson_videos.py): only real YouTube links are kept.</summary>
     public static class ClassroomVideoIndex
     {
         private static List<LessonVideoBinding> _links;
-        public static IReadOnlyList<LessonVideoBinding> All {get{Load();return _links;}}
-        private static void Load(){if(_links!=null)return;_links=new List<LessonVideoBinding>();var text=Resources.Load<TextAsset>("Content/Video/lesson_video_index");if(text==null)return;
-            var file=JsonUtility.FromJson<LessonVideoIndexFile>(text.text);foreach(var v in file?.links??Array.Empty<LessonVideoBinding>())if(VideoCatalog.IsYouTube(v?.youtubeUrl))_links.Add(v);}
-        public static IReadOnlyList<LessonVideoBinding> For(string target,string kind,string id){Load();return _links.Where(v=>v.target==target&&v.kind==kind&&v.id==id).ToList();}
-        public static IReadOnlyList<LessonVideoBinding> ForPath(string stepId){Load();return _links.Where(v=>v.stepId==stepId).GroupBy(v=>v.videoId).Select(v=>v.First()).ToList();}
-        public static IReadOnlyList<LessonVideoBinding> Collection(string target){Load();return _links.Where(v=>v.target==target&&v.kind=="collection").ToList();}
-        public static IReadOnlyList<LessonVideoBinding> Ielts(string id){return For("en","collection","ielts_course_"+id);}
-        public static IReadOnlyList<LessonVideoBinding> Patterns(){Load();return _links.Where(v=>v.target=="ja"&&v.kind=="grammar").ToList();}
-        public static void ResetCache()=>_links=null;
+
+        private static List<LessonVideoBinding> Links
+        {
+            get
+            {
+                if (_links != null) return _links;
+                _links = new List<LessonVideoBinding>();
+                var text = Resources.Load<TextAsset>("Content/Video/lesson_video_index");
+                if (text == null) return _links;
+                var file = JsonUtility.FromJson<LessonVideoIndexFile>(text.text);
+                foreach (var v in file?.links ?? Array.Empty<LessonVideoBinding>())
+                    if (VideoCatalog.IsYouTube(v?.youtubeUrl)) _links.Add(v);
+                return _links;
+            }
+        }
+
+        public static IReadOnlyList<LessonVideoBinding> For(string target, string kind, string id) =>
+            Links.Where(v => v.target == target && v.kind == kind && v.id == id).ToList();
+
+        /// <summary>The videos of a Russian path step, each video once.</summary>
+        public static IReadOnlyList<LessonVideoBinding> ForPath(string stepId) =>
+            Links.Where(v => v.stepId == stepId).GroupBy(v => v.videoId).Select(g => g.First()).ToList();
+
+        public static IReadOnlyList<LessonVideoBinding> Collection(string target) =>
+            Links.Where(v => v.target == target && v.kind == "collection").ToList();
     }
 }

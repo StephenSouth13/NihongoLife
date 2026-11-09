@@ -30,6 +30,8 @@ namespace NihongoLife.Player
         private readonly List<Sample> _samples = new List<Sample>(24);
 
         private TextMeshPro _nameTag;
+        private SpriteRenderer _speakingIcon;
+        private float _nextSpeakCheck;
         private CharacterAnimationController _anim;
         private Vector3 _lastPosition;
         private float _speed;
@@ -194,7 +196,16 @@ namespace NihongoLife.Player
                 float d = Vector3.Distance(cam.transform.position, transform.position);
                 _nameTag.alpha = Mathf.Clamp01(1.4f - d / 28f);
             }
+            if (_speakingIcon != null && Time.unscaledTime >= _nextSpeakCheck)
+            {
+                _nextSpeakCheck = Time.unscaledTime + 0.2f;
+                var voice = NihongoLife.Learning.VoiceChatService.Instance;
+                _speakingIcon.enabled = voice != null && voice.IsSpeaking(PlayerId);
+            }
         }
+
+        /// <summary>True while the sound-wave mark above the name shows that this player is talking.</summary>
+        public bool ShowsSpeaking => _speakingIcon != null && _speakingIcon.enabled;
 
         /// <summary>RemotePlayerManager hides far avatars beyond the visible cap.</summary>
         /// <summary>The bubble and the body language another player chose, as seen from here.</summary>
@@ -227,10 +238,18 @@ namespace NihongoLife.Player
             _nameTag.fontSize = 34f;
             _nameTag.alignment = TextAlignmentOptions.Center;
             _nameTag.color = NameTagColor;
-            _nameTag.outlineWidth = 0.22f;
-            _nameTag.outlineColor = new Color32(10, 30, 50, 200);
+            NihongoLife.UI.TmpOutline.Apply(_nameTag, 0.22f, new Color32(10, 30, 50, 200));
             _nameTag.enableAutoSizing = false;
             _nameTag.rectTransform.sizeDelta = new Vector2(40f, 6f);
+
+            _speakingIcon = new GameObject("SpeakingIcon").AddComponent<SpriteRenderer>();
+            _speakingIcon.transform.SetParent(go.transform, false);
+            _speakingIcon.sprite = NihongoLife.UI.UiIcons.Get("graphic_eq");
+            _speakingIcon.color = new Color(0.36f, 0.94f, 0.54f);
+            float width = _speakingIcon.sprite != null ? _speakingIcon.sprite.bounds.size.x : 1f;
+            _speakingIcon.transform.localScale = Vector3.one * (4.6f / width); // about 0.3 m above the 0.07-scaled name
+            _speakingIcon.transform.localPosition = new Vector3(0f, 6.5f, 0f);
+            _speakingIcon.enabled = false;
         }
 
         // ──────────────────────── IInteractable ────────────────────────

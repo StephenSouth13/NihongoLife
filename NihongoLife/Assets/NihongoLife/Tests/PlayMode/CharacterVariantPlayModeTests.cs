@@ -175,6 +175,8 @@ namespace NihongoLife.Tests
         {
             var file = CharacterVariants.File;
             const float step = 1.7f;
+            // High above the town: no building, door or tree between the camera and the people.
+            var stage = new Vector3(0f, 300f, 0f);
             // Overview: every person, 8 across.
             var order = file.variants.ToArray();
             int columns = 8, rows = (order.Length + columns - 1) / columns;
@@ -184,7 +186,7 @@ namespace NihongoLife.Tests
             {
                 int col = k % columns, row = k / columns;
                 var person = Spawn(order[k].id, new Vector3((col - (columns - 1) / 2f) * step, 0f, -row * 0.0f));
-                person.transform.position = new Vector3((col - (columns - 1) / 2f) * step, (rows - 1 - row) * 2.0f, 0f);
+                person.transform.position = stage + new Vector3((col - (columns - 1) / 2f) * step, (rows - 1 - row) * 2.0f, 0f);
                 index.AppendLine($"{row},{col},{order[k].id},{file.Uniform(order[k].uniform).nameEn},{order[k].person},{order[k].age},{order[k].skinHex}");
             }
             // The floor under the upper rows: thin slabs.
@@ -192,7 +194,7 @@ namespace NihongoLife.Tests
             {
                 var slab = GameObject.CreatePrimitive(PrimitiveType.Cube);
                 Object.Destroy(slab.GetComponent<Collider>());
-                slab.transform.position = new Vector3(0f, row * 2.0f - 0.05f, 0f); slab.transform.localScale = new Vector3(columns * step + 1f, 0.1f, 2.2f);
+                slab.transform.position = stage + new Vector3(0f, row * 2.0f - 0.05f, 0f); slab.transform.localScale = new Vector3(columns * step + 1f, 0.1f, 2.2f);
                 slab.GetComponent<Renderer>().sharedMaterial.color = new Color(0.86f, 0.87f, 0.88f);
                 SceneManager.MoveGameObjectToScene(slab, _scene); _spawned.Add(slab);
             }
@@ -204,7 +206,7 @@ namespace NihongoLife.Tests
             }
             var cam = NewCamera();
             float height = rows * 2.0f + 0.2f, width = columns * step + 0.4f;
-            Shoot(cam, new Vector3(0f, (rows * 2.0f - 0.2f) / 2f + 0.1f, 8f), Mathf.Max(height / 2f, width / 2f / (2400f / 1350f)), 2400, 1350, "01_all_people");
+            Shoot(cam, stage + new Vector3(0f, (rows * 2.0f - 0.2f) / 2f + 0.1f, 8f), Mathf.Max(height / 2f, width / 2f / (2400f / 1350f)), 2400, 1350, "01_all_people");
             File.WriteAllText(Path.Combine(Root, "01_all_people_index.csv"), "row,col,id,job,person,age,skin\n" + index);
             foreach (var go in _spawned.ToArray()) { Object.Destroy(go); _spawned.Remove(go); }
             yield return null;
@@ -213,10 +215,10 @@ namespace NihongoLife.Tests
             foreach (var uniform in file.uniforms)
             {
                 var team = file.variants.Where(v => v.uniform == uniform.id).ToArray();
-                for (int k = 0; k < team.Length; k++) Spawn(team[k].id, new Vector3((k - (team.Length - 1) / 2f) * 1.6f, 0f, 0f));
+                for (int k = 0; k < team.Length; k++) Spawn(team[k].id, stage + new Vector3((k - (team.Length - 1) / 2f) * 1.6f, 0f, 0f));
                 yield return new WaitForSecondsRealtime(0.6f);
                 float half = Mathf.Max(1.2f, (team.Length * 1.6f + 0.4f) / 2f / (1920f / 720f));
-                Shoot(cam, new Vector3(0f, half - 0.05f, 8f), half, 1920, 720, "02_job_" + uniform.id);
+                Shoot(cam, stage + new Vector3(0f, half - 0.05f, 8f), half, 1920, 720, "02_job_" + uniform.id);
                 foreach (var go in _spawned.ToArray()) { Object.Destroy(go); _spawned.Remove(go); }
                 yield return null;
             }

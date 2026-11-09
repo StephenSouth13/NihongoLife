@@ -104,7 +104,15 @@ namespace NihongoLife.UI
             for (int i = 0; i < SceneManager.sceneCount; i++) Scan(SceneManager.GetSceneAt(i));
         }
 
-        private static void OnSceneLoaded(Scene scene, LoadSceneMode mode) => Scan(scene);
+        private static void OnSceneLoaded(Scene scene, LoadSceneMode mode) { Prune(); Scan(scene); }
+
+        /// <summary>Forgets labels of areas that were left: each round of areas kept ~250 of them, and with them the area's objects.</summary>
+        private static void Prune()
+        {
+            var dead = new List<TMP_Text>();
+            foreach (var key in Entries.Keys) if (key == null) dead.Add(key);
+            foreach (var key in dead) Entries.Remove(key);
+        }
 
         private static void Scan(Scene scene)
         {
@@ -121,13 +129,8 @@ namespace NihongoLife.UI
 
         private static void ApplyAll()
         {
-            var dead = new List<TMP_Text>();
-            foreach (var pair in Entries)
-            {
-                if (pair.Key == null) { dead.Add(pair.Key); continue; }
-                Apply(pair.Key, pair.Value);
-            }
-            foreach (var key in dead) Entries.Remove(key);
+            Prune();
+            foreach (var pair in Entries) Apply(pair.Key, pair.Value);
         }
 
         private static void Apply(TMP_Text text, Entry entry)

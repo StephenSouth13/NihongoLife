@@ -124,6 +124,18 @@ namespace NihongoLife.Core
                 sb.Append(",\"pos\":[").Append(p.x.ToString("0.00")).Append(',').Append(p.y.ToString("0.00")).Append(',').Append(p.z.ToString("0.00")).Append(']');
             }
             sb.Append(",\"fps\":").Append((1f / Mathf.Max(Time.smoothDeltaTime, 0.001f)).ToString("0"));
+            sb.Append(",\"allocMB\":").Append(UnityEngine.Profiling.Profiler.GetTotalAllocatedMemoryLong() / 1048576);
+            sb.Append(",\"packs\":").Append(SceneContentLoader.LoadedPacks);
+            // What the memory is made of, to find what piles up when areas are left (only on request, it scans every object).
+            sb.Append(",\"monoMB\":").Append(UnityEngine.Profiling.Profiler.GetMonoUsedSizeLong() / 1048576)
+              .Append(",\"bundles\":").Append(System.Linq.Enumerable.Count(AssetBundle.GetAllLoadedAssetBundles()))
+              .Append(",\"tex\":").Append(Resources.FindObjectsOfTypeAll<Texture>().Length)
+              .Append(",\"mesh\":").Append(Resources.FindObjectsOfTypeAll<Mesh>().Length)
+              .Append(",\"mat\":").Append(Resources.FindObjectsOfTypeAll<Material>().Length)
+              .Append(",\"clip\":").Append(Resources.FindObjectsOfTypeAll<AudioClip>().Length)
+              .Append(",\"go\":").Append(Resources.FindObjectsOfTypeAll<GameObject>().Length)
+              .Append(",\"anim\":").Append(Resources.FindObjectsOfTypeAll<AnimationClip>().Length);
+            sb.Append(",\"targetFps\":").Append(Application.targetFrameRate).Append(",\"mipLimit\":").Append(QualitySettings.globalTextureMipmapLimit);
             sb.Append(",\"error\":\"").Append(Esc(SceneContentLoader.LastError ?? "")).Append("\"");
             sb.Append(",\"firstMissing\":[");
             for (int i = 0; i < firstMissing.Count; i++) sb.Append(i > 0 ? "," : "").Append('"').Append(Esc(firstMissing[i])).Append('"');

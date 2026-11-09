@@ -73,27 +73,6 @@
           "hex": "#9AA3AD"
         },
         {
-          "name": "IdBadge",
-          "shape": "cube",
-          "anchor": "chestFront",
-          "pos": [
-            0.26,
-            0.12,
-            0.02
-          ],
-          "rot": [
-            0,
-            0,
-            0
-          ],
-          "size": [
-            0.16,
-            0.09,
-            0.02
-          ],
-          "hex": "#3F7FBF"
-        },
-        {
           "name": "HeadMirror",
           "shape": "cylinder",
           "anchor": "head",
@@ -186,69 +165,6 @@
             0.03
           ],
           "hex": "#D9363E"
-        },
-        {
-          "name": "BadgeCross_V",
-          "shape": "cube",
-          "anchor": "chestFront",
-          "pos": [
-            0.26,
-            0.12,
-            0.02
-          ],
-          "rot": [
-            0,
-            0,
-            0
-          ],
-          "size": [
-            0.05,
-            0.14,
-            0.02
-          ],
-          "hex": "#D9363E"
-        },
-        {
-          "name": "BadgeCross_H",
-          "shape": "cube",
-          "anchor": "chestFront",
-          "pos": [
-            0.26,
-            0.12,
-            0.02
-          ],
-          "rot": [
-            0,
-            0,
-            0
-          ],
-          "size": [
-            0.14,
-            0.05,
-            0.02
-          ],
-          "hex": "#D9363E"
-        },
-        {
-          "name": "Apron",
-          "shape": "cube",
-          "anchor": "waistFront",
-          "pos": [
-            0.0,
-            -0.1,
-            0.02
-          ],
-          "rot": [
-            0,
-            0,
-            0
-          ],
-          "size": [
-            0.72,
-            0.4,
-            0.03
-          ],
-          "hex": "#FFFFFF"
         }
       ]
     },
@@ -322,69 +238,6 @@
             0.22
           ],
           "hex": "#C0392B"
-        },
-        {
-          "name": "Button_Top",
-          "shape": "sphere",
-          "anchor": "chestFront",
-          "pos": [
-            0.1,
-            0.05,
-            0.03
-          ],
-          "rot": [
-            0,
-            0,
-            0
-          ],
-          "size": [
-            0.07,
-            0.07,
-            0.05
-          ],
-          "hex": "#CFCFCF"
-        },
-        {
-          "name": "Button_Bottom",
-          "shape": "sphere",
-          "anchor": "chestFront",
-          "pos": [
-            0.1,
-            -0.14,
-            0.03
-          ],
-          "rot": [
-            0,
-            0,
-            0
-          ],
-          "size": [
-            0.07,
-            0.07,
-            0.05
-          ],
-          "hex": "#CFCFCF"
-        },
-        {
-          "name": "Apron",
-          "shape": "cube",
-          "anchor": "waistFront",
-          "pos": [
-            0.0,
-            -0.12,
-            0.03
-          ],
-          "rot": [
-            0,
-            0,
-            0
-          ],
-          "size": [
-            0.75,
-            0.42,
-            0.03
-          ],
-          "hex": "#EDEDE6"
         }
       ]
     },
@@ -393,30 +246,9 @@
       "nameVi": "Phục vụ bàn",
       "nameEn": "Waiter",
       "nameJa": "ウェイター",
-      "topHex": "#F3F0E8",
+      "topHex": "#25252D",
       "bottomHex": "#1E1E24",
       "pieces": [
-        {
-          "name": "Vest",
-          "shape": "cube",
-          "anchor": "chestFront",
-          "pos": [
-            0.0,
-            -0.04,
-            0.02
-          ],
-          "rot": [
-            0,
-            0,
-            0
-          ],
-          "size": [
-            0.66,
-            0.5,
-            0.03
-          ],
-          "hex": "#25252D"
-        },
         {
           "name": "BowTie_L",
           "shape": "sphere",
@@ -479,27 +311,6 @@
             0.07
           ],
           "hex": "#5E1520"
-        },
-        {
-          "name": "WaistApron",
-          "shape": "cube",
-          "anchor": "waistFront",
-          "pos": [
-            0.0,
-            -0.2,
-            0.03
-          ],
-          "rot": [
-            0,
-            0,
-            0
-          ],
-          "size": [
-            0.7,
-            0.38,
-            0.03
-          ],
-          "hex": "#F2F2F2"
         }
       ]
     },
@@ -552,48 +363,6 @@
             0.02
           ],
           "hex": "#7A1F2B"
-        },
-        {
-          "name": "TieKnot",
-          "shape": "cube",
-          "anchor": "chestFront",
-          "pos": [
-            0.0,
-            0.25,
-            0.04
-          ],
-          "rot": [
-            0,
-            0,
-            0
-          ],
-          "size": [
-            0.11,
-            0.09,
-            0.03
-          ],
-          "hex": "#5E1520"
-        },
-        {
-          "name": "NameTag",
-          "shape": "cube",
-          "anchor": "chestFront",
-          "pos": [
-            0.26,
-            0.1,
-            0.02
-          ],
-          "rot": [
-            0,
-            0,
-            0
-          ],
-          "size": [
-            0.16,
-            0.09,
-            0.02
-          ],
-          "hex": "#D4A72C"
         }
       ]
     },
@@ -667,69 +436,6 @@
             0.3
           ],
           "hex": "#11141B"
-        },
-        {
-          "name": "Button_Top",
-          "shape": "sphere",
-          "anchor": "chestFront",
-          "pos": [
-            -0.12,
-            0.1,
-            0.03
-          ],
-          "rot": [
-            0,
-            0,
-            0
-          ],
-          "size": [
-            0.07,
-            0.07,
-            0.05
-          ],
-          "hex": "#D4A72C"
-        },
-        {
-          "name": "Button_Bottom",
-          "shape": "sphere",
-          "anchor": "chestFront",
-          "pos": [
-            -0.12,
-            -0.1,
-            0.03
-          ],
-          "rot": [
-            0,
-            0,
-            0
-          ],
-          "size": [
-            0.07,
-            0.07,
-            0.05
-          ],
-          "hex": "#D4A72C"
-        },
-        {
-          "name": "Armband",
-          "shape": "cube",
-          "anchor": "chestFront",
-          "pos": [
-            0.3,
-            0.15,
-            0.0
-          ],
-          "rot": [
-            0,
-            0,
-            0
-          ],
-          "size": [
-            0.12,
-            0.1,
-            0.5
-          ],
-          "hex": "#F2F2F2"
         }
       ]
     },
@@ -738,7 +444,7 @@
       "nameVi": "Nhân viên quán cà phê",
       "nameEn": "Café staff",
       "nameJa": "カフェ店員",
-      "topHex": "#F1E4CF",
+      "topHex": "#C8704A",
       "bottomHex": "#4A3426",
       "pieces": [
         {
@@ -763,55 +469,13 @@
           "hex": "#5A3A29"
         },
         {
-          "name": "Apron",
-          "shape": "cube",
-          "anchor": "chestFront",
-          "pos": [
-            0.0,
-            -0.1,
-            0.03
-          ],
-          "rot": [
-            0,
-            0,
-            0
-          ],
-          "size": [
-            0.7,
-            0.75,
-            0.03
-          ],
-          "hex": "#C8704A"
-        },
-        {
-          "name": "ApronPocket",
-          "shape": "cube",
-          "anchor": "chestFront",
-          "pos": [
-            0.0,
-            -0.3,
-            0.055
-          ],
-          "rot": [
-            0,
-            0,
-            0
-          ],
-          "size": [
-            0.3,
-            0.16,
-            0.03
-          ],
-          "hex": "#A9573A"
-        },
-        {
-          "name": "ApronStrap",
+          "name": "Neckerchief",
           "shape": "cube",
           "anchor": "neck",
           "pos": [
-            0.0,
-            -0.04,
-            0.2
+            0,
+            -0.05,
+            0.26
           ],
           "rot": [
             0,
@@ -819,11 +483,11 @@
             0
           ],
           "size": [
-            0.36,
-            0.05,
-            0.1
+            0.46,
+            0.14,
+            0.2
           ],
-          "hex": "#C8704A"
+          "hex": "#F1E4CF"
         }
       ]
     },
@@ -1023,13 +687,13 @@
           "hex": "#1F6B42"
         },
         {
-          "name": "Vest",
+          "name": "Neckerchief",
           "shape": "cube",
-          "anchor": "chestFront",
+          "anchor": "neck",
           "pos": [
             0,
-            -0.08,
-            0.03
+            -0.05,
+            0.26
           ],
           "rot": [
             0,
@@ -1037,30 +701,9 @@
             0
           ],
           "size": [
-            0.66,
-            0.62,
-            0.03
-          ],
-          "hex": "#F4F6F2"
-        },
-        {
-          "name": "NameTag",
-          "shape": "cube",
-          "anchor": "chestFront",
-          "pos": [
-            0.18,
-            0.1,
-            0.055
-          ],
-          "rot": [
-            0,
-            0,
-            0
-          ],
-          "size": [
-            0.18,
-            0.1,
-            0.02
+            0.46,
+            0.14,
+            0.2
           ],
           "hex": "#FFD54A"
         }
@@ -1138,27 +781,6 @@
           "hex": "#B5483A"
         },
         {
-          "name": "Bib",
-          "shape": "cube",
-          "anchor": "chestFront",
-          "pos": [
-            0,
-            -0.12,
-            0.03
-          ],
-          "rot": [
-            0,
-            0,
-            0
-          ],
-          "size": [
-            0.52,
-            0.5,
-            0.03
-          ],
-          "hex": "#3E5C8A"
-        },
-        {
           "name": "Neckerchief",
           "shape": "cube",
           "anchor": "neck",
@@ -1230,27 +852,6 @@
             0.04
           ],
           "hex": "#C0392B"
-        },
-        {
-          "name": "Apron",
-          "shape": "cube",
-          "anchor": "waistFront",
-          "pos": [
-            0,
-            -0.14,
-            0.03
-          ],
-          "rot": [
-            0,
-            0,
-            0
-          ],
-          "size": [
-            0.72,
-            0.5,
-            0.03
-          ],
-          "hex": "#1F3A63"
         },
         {
           "name": "Collar",
@@ -1362,7 +963,7 @@
           "anchor": "headTop",
           "pos": [
             0,
-            0.46,
+            0.03,
             0
           ],
           "rot": [
@@ -1383,7 +984,7 @@
           "anchor": "headTop",
           "pos": [
             -0.56,
-            -0.02,
+            -0.42,
             0
           ],
           "rot": [
@@ -1404,7 +1005,7 @@
           "anchor": "headTop",
           "pos": [
             0.56,
-            -0.02,
+            -0.42,
             0
           ],
           "rot": [
@@ -1472,13 +1073,13 @@
           "hex": "#2F5D8C"
         },
         {
-          "name": "Smock",
-          "shape": "cube",
-          "anchor": "chestFront",
+          "name": "BeretTip",
+          "shape": "sphere",
+          "anchor": "headTop",
           "pos": [
-            0,
-            -0.1,
-            0.03
+            0.06,
+            0.22,
+            -0.02
           ],
           "rot": [
             0,
@@ -1486,20 +1087,20 @@
             0
           ],
           "size": [
-            0.7,
-            0.8,
-            0.03
+            0.14,
+            0.12,
+            0.14
           ],
-          "hex": "#F3F0E6"
+          "hex": "#2F5D8C"
         },
         {
-          "name": "SplashA",
-          "shape": "sphere",
-          "anchor": "chestFront",
+          "name": "Neckerchief",
+          "shape": "cube",
+          "anchor": "neck",
           "pos": [
-            -0.12,
-            0.0,
-            0.06
+            0,
+            -0.05,
+            0.26
           ],
           "rot": [
             0,
@@ -1507,53 +1108,11 @@
             0
           ],
           "size": [
-            0.1,
-            0.1,
-            0.03
+            0.46,
+            0.14,
+            0.2
           ],
           "hex": "#D64545"
-        },
-        {
-          "name": "SplashB",
-          "shape": "sphere",
-          "anchor": "chestFront",
-          "pos": [
-            0.14,
-            -0.2,
-            0.06
-          ],
-          "rot": [
-            0,
-            0,
-            0
-          ],
-          "size": [
-            0.08,
-            0.08,
-            0.03
-          ],
-          "hex": "#3B82F6"
-        },
-        {
-          "name": "SplashC",
-          "shape": "sphere",
-          "anchor": "chestFront",
-          "pos": [
-            -0.05,
-            -0.32,
-            0.06
-          ],
-          "rot": [
-            0,
-            0,
-            0
-          ],
-          "size": [
-            0.07,
-            0.07,
-            0.03
-          ],
-          "hex": "#F2C94C"
         }
       ]
     },
@@ -1627,27 +1186,6 @@
             0.02
           ],
           "hex": "#E8C34A"
-        },
-        {
-          "name": "Badge",
-          "shape": "cube",
-          "anchor": "chestFront",
-          "pos": [
-            0.06,
-            0.02,
-            0.05
-          ],
-          "rot": [
-            0,
-            0,
-            0
-          ],
-          "size": [
-            0.09,
-            0.05,
-            0.02
-          ],
-          "hex": "#D2558C"
         }
       ]
     }

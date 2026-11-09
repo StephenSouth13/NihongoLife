@@ -331,9 +331,7 @@ namespace NihongoLife.EditorTools
                 {
                     if (!anchors.TryGetValue(piece.anchor, out var anchor)) throw new Exception(uniform.id + "/" + piece.name + ": unknown anchor " + piece.anchor);
                     var bone = animator.GetBoneTransform(anchor.bone);
-                    var mesh = piece.shape == "sphere" ? Resources.GetBuiltinResource<Mesh>("Sphere.fbx")
-                        : piece.shape == "cylinder" ? Resources.GetBuiltinResource<Mesh>("Cylinder.fbx")
-                        : piece.shape == "vest" ? VestMesh(uniform.id, piece.name) : Resources.GetBuiltinResource<Mesh>("Cube.fbx");
+                    var mesh = Resources.GetBuiltinResource<Mesh>(piece.shape == "sphere" ? "Sphere.fbx" : piece.shape == "cylinder" ? "Cylinder.fbx" : "Cube.fbx");
                     var go = new GameObject("probe");
                     go.transform.SetPositionAndRotation(anchor.point + new Vector3(piece.pos[0], piece.pos[1], piece.pos[2]) * u, Quaternion.Euler(piece.rot[0], piece.rot[1], piece.rot[2]));
                     var size = new Vector3(piece.size[0], piece.size[1], piece.size[2]) * u;
@@ -353,28 +351,6 @@ namespace NihongoLife.EditorTools
                 UnityEngine.Object.DestroyImmediate(instance);
             }
             return result;
-        }
-
-        // A flat, chamfered two-sided bib, built and saved by this builder. The previous one full-depth cube framed the entire torso as a box.
-        private static Mesh VestMesh(string uniform, string piece)
-        {
-            if (uniform != "konbini" || piece != "Vest") return Resources.GetBuiltinResource<Mesh>("Cube.fbx");
-            // Composite shape lies in XY with zero extrusion. Mesh persists separately; no runtime object creation.
-            string path = Folder + "NL_Vest_konbini.asset";
-            var mesh = new Mesh { name = "NL_Vest_konbini_thin_fabric" };
-            // back outline clockwise around left neck gap; top neck is -x, right panel is +x
-            var outline = new [] { new Vector2(-0.42f,0.50f),new Vector2(-0.17f,0.50f),new Vector2(-0.07f,0.29f),
-                new Vector2(0f,0.19f),new Vector2(0.07f,0.29f),new Vector2(0.16f,0.50f),new Vector2(0.41f,0.50f),
-                new Vector2(0.43f,-0.50f),new Vector2(-0.43f,-0.50f) };
-            var triangles = new List<int>();
-            for (int i=0;i<outline.Length;i++) { int j=(i+1)%outline.Length; if(i==1||i==2)continue; triangles.AddRange(new[]{outline.Length,i,j}); }
-            mesh.vertices = outline.Select(v=>(Vector3)v).Append(Vector3.zero).ToArray();
-            mesh.triangles=triangles.ToArray();
-            mesh.uv=outline.Select(v=>new Vector2(v.x+0.5f,v.y+0.5f)).Append(new Vector2(0.5f,0.5f)).ToArray();
-            mesh.normals=Enumerable.Repeat(Vector3.forward,mesh.vertexCount).ToArray();mesh.RecalculateBounds();
-            var existing=AssetDatabase.LoadAssetAtPath<Mesh>(path);if(existing!=null)UnityEngine.Object.DestroyImmediate(existing);
-            AssetDatabase.CreateAsset(mesh,path);AssetDatabase.ImportAsset(path);
-            return AssetDatabase.LoadAssetAtPath<Mesh>(path);
         }
 
         private static Material PieceMaterial(string hex)

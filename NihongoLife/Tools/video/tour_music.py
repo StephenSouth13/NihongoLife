@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""The music under the product tour: each chapter plays the game's own track for that place, crossfaded at the cuts.
+"""The music under the product tour or the career video: each chapter plays the game's own track for that place, crossfaded at the cuts.
 Usage: python tour_music.py <frames_dir> <out.wav>   (frames_dir holds timeline.tsv)
 """
 import subprocess
@@ -10,6 +10,9 @@ MUSIC = Path(__file__).resolve().parents[2] / 'Assets' / 'NihongoLife' / 'Resour
 # The beat each track starts at.
 CHAPTERS = [('intro', 'menu_bgm'), ('town', 'city_day'), ('konbini', 'konbini'), ('fashion', 'spring'), ('heat', 'clinic'), ('sushi', 'sushi'), ('school', 'school'),
             ('arcade', 'game_center'), ('music', 'spring'), ('island', 'island'), ('career', 'city_day'), ('online', 'menu_bgm')]
+# The career video (DemoRecordingTests.Careers_RecordFrames): each career at its workplace's own track.
+CAREERS = [('intro', 'menu_bgm'), ('retail', 'konbini'), ('food', 'sushi'), ('medical', 'clinic'), ('musician', 'spring'), ('farm', 'island'),
+           ('hospitality', 'city_day'), ('fashion', 'work'), ('outro', 'menu_bgm')]
 FADE = 2.5
 
 
@@ -17,7 +20,8 @@ def main():
     frames, out = Path(sys.argv[1]), Path(sys.argv[2])
     beats = dict((b, int(f) / 30.0) for f, b in (l.split('\t') for l in (frames / 'timeline.tsv').read_text().splitlines() if l.strip()))
     total = len(list(frames.glob('f*.jpg'))) / 30.0
-    starts = [(beats[b] if i else 0.0, track) for i, (b, track) in enumerate(CHAPTERS)]
+    chapters = CAREERS if 'retail' in beats else CHAPTERS
+    starts = [(beats[b] if i else 0.0, track) for i, (b, track) in enumerate(chapters)]
     inputs, chain = [], []
     for i, (start, track) in enumerate(starts):
         end = starts[i + 1][0] if i + 1 < len(starts) else total

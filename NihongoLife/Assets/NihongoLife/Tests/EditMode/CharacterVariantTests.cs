@@ -68,7 +68,9 @@ namespace NihongoLife.Tests
             {
                 var u = File.Uniform(job);
                 Assert.NotNull(u, "uniform " + job);
-                Assert.GreaterOrEqual(u.pieces.Length, 3, job + ": a uniform is more than a colour (hat, tie, apron ...)");
+                Assert.GreaterOrEqual(u.pieces.Length, 2, job + ": a uniform is more than a colour (hat, scarf, tie, stethoscope ...)");
+                foreach (var p in u.pieces.Where(p => p.shape == "cube" && (p.anchor == "chestFront" || p.anchor == "waistFront")))
+                    Assert.IsFalse(p.size[0] > 0.25f && p.size[2] < 0.1f, job + "/" + p.name + ": a flat panel floats in front of the round body like a sticker; colour the clothes (topHex / bottomHex) instead");
                 Assert.IsTrue(IsHex(u.topHex) && IsHex(u.bottomHex), job + ": top / bottom colours");
                 var people = File.variants.Where(v => v.uniform == job).ToArray();
                 Assert.GreaterOrEqual(people.Length, 2, job + ": at least two different people wear it");

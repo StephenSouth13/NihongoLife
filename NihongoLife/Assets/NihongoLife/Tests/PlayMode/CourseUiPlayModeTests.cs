@@ -317,35 +317,41 @@ namespace NihongoLife.Tests
             var hub = canvas.gameObject.AddComponent<StudyHubPopup>();
             hub.Initialize(UiKit.Font);
             hub.Show(); yield return null; yield return null;
+            // English shows the most: lessons, basic English, tenses, IELTS model answers, videos, mock tests.
+            hub.ChooseLanguage("en"); yield return null;
             for (int i = 0; i < 6; i++) Assert.NotNull(hub.transform.GetComponentsInChildren<RectTransform>(true).FirstOrDefault(r => r.name == "Tile" + i), "tile " + i);
             var texts = Texts(hub);
-            Assert.IsTrue(texts.Any(t => t.Contains("Trường học")), "School tile");
+            Assert.IsTrue(texts.Any(t => t.Contains("Bài học")), "Lessons tile");
             Assert.IsTrue(texts.Any(t => t.Contains("12 thì")), "Tenses tile");
-            Assert.IsTrue(texts.Any(t => t.Contains("Từ điển")), "Dictionary tile");
+            Assert.IsTrue(texts.Any(t => t.Contains("Từ điển")), "Dictionary button");
             var report = new StringBuilder();
-            Overflows(hub, "studyhub", report);
-            yield return Capture("30_studyhub_six_tiles_vi");
+            Overflows(hub, "classroom-en", report);
+            yield return Capture("30_classroom_en_vi");
+            hub.ChooseLanguage("ru"); yield return null;
+            Overflows(hub, "classroom-ru", report);
+            yield return Capture("33_classroom_ru_vi");
             Loc.Set(GameLanguage.Russian); yield return null; yield return null;
-            Overflows(hub, "studyhub-ru", report);
-            yield return Capture("31_studyhub_six_tiles_ru");
+            Overflows(hub, "classroom-ru-ui", report);
+            yield return Capture("31_classroom_ru_ru");
             Loc.Set(GameLanguage.Vietnamese); yield return null; yield return null;
             File.WriteAllText(Path.Combine(Out, "overflow_studyhub.txt"), report.ToString(), new UTF8Encoding(false));
             Assert.AreEqual("", report.ToString(), report.ToString());
 
-            // School tile
-            var open = hub.transform.GetComponentsInChildren<RectTransform>(true).First(r => r.name == "Tile3").GetComponentInChildren<Button>(true);
-            open.onClick.Invoke(); yield return null;
+            // Lessons open the School on the chosen language
+            hub.ChooseLanguage("en"); yield return null;
+            hub.transform.GetComponentsInChildren<RectTransform>(true).First(r => r.name == "Tile0").GetComponentInChildren<Button>(true).onClick.Invoke(); yield return null;
             var school = canvas.GetComponent<CoursePopup>();
             Assert.NotNull(school); Assert.IsTrue(school.IsOpen); Assert.IsFalse(hub.IsOpen);
+            Assert.AreEqual("en", school.Target);
             school.Hide();
             // Tenses tile
             hub.Show(); yield return null;
-            hub.transform.GetComponentsInChildren<RectTransform>(true).First(r => r.name == "Tile4").GetComponentInChildren<Button>(true).onClick.Invoke(); yield return null;
+            hub.transform.GetComponentsInChildren<RectTransform>(true).First(r => r.name == "Tile2").GetComponentInChildren<Button>(true).onClick.Invoke(); yield return null;
             Assert.IsTrue(school.IsOpen); Assert.AreEqual(CoursePopup.Tab.Tenses, school.CurrentTab);
             school.Hide();
-            // Dictionary tile
+            // Dictionary button
             hub.Show(); yield return null;
-            hub.transform.GetComponentsInChildren<RectTransform>(true).First(r => r.name == "Tile5").GetComponentInChildren<Button>(true).onClick.Invoke(); yield return null; yield return null;
+            hub.transform.GetComponentsInChildren<Button>(true).First(b => b.name == "Dictionary").onClick.Invoke(); yield return null; yield return null;
             Assert.IsTrue(HandbookUI.IsOpen); Assert.AreEqual(HandbookUI.Chapter.Dictionary, HandbookUI.CurrentChapter);
             yield return Capture("32_dictionary_empty_vi");
             HandbookUI.Close();

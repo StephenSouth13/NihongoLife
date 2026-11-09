@@ -26,7 +26,7 @@ namespace NihongoLife.UI
         private RectTransform _area, _bar;
         private readonly Dictionary<Tab, CourseTabView> _views = new Dictionary<Tab, CourseTabView>();
         private Tab _tab = Tab.Path;
-        private string _target = "ru";
+        private string _target = "ja";
 
         public PathDraft Draft { get; } = new PathDraft();
         public string Target => _target;
@@ -115,13 +115,14 @@ namespace NihongoLife.UI
         public void OpenRussianStep(NihongoLife.StudyModes.Russian.RuPathStep step)
         {
             if (step == null) return;
-            string id = step.kind == "cert" ? "cert_" + step.@ref : step.@ref;
+            string id = step.@ref;
             if (step.kind == "cert") OpenCertificate(id);
             else if (step.kind == "mock") { /* the only exact mock-authored UI remains RussianPathPopup */ return; }
             else if (step.kind == "unit") OpenUnit(id);
             else if (step.kind == "alphabet") { OpenAlphabet("cyrillic"); AlphabetView.SelectLesson(id); }
             else { SetTarget("ru"); ShowTab(Tab.Path); }
-            LessonVideoUi.Open(step.title?.Get("vi") ?? step.id, ClassroomVideoIndex.ForPath(step.id));
+            var videos = ClassroomVideoIndex.ForPath(step.id);
+            if (videos.Count > 0) LessonVideoUi.Open(step.title?.Get(Loc.Code) ?? step.id, videos); // certificates have no video yet
         }
 
         public void OpenUnit(string unitId)
@@ -177,14 +178,14 @@ namespace NihongoLife.UI
                 (Tab.Alphabet, "Bảng chữ", "Alphabet", "文字", "translate"),
                 (Tab.Grammar, "Ngữ pháp", "Grammar", "文法", "edit_note"),
                 (Tab.Certificates, "Chứng chỉ", "Certificates", "検定", "workspace_premium"),
-                (Tab.Tenses, "12 thì tiếng Anh", "12 English tenses", "英語の12時制", "schedule"),
+                (Tab.Tenses, "12 thì", "12 tenses", "12時制", "schedule"),
                 (Tab.VideoSeries, "Bài giảng video", "Video series", "動画レッスン", "smart_display"),
             };
             float x = 0f;
             foreach (var t in tabs)
             {
                 var tab = t.tab;
-                float w = tab == Tab.Tenses ? 180f : tab == Tab.VideoSeries ? 164f : 122f;
+                float w = tab == Tab.Tenses ? 110f : tab == Tab.VideoSeries ? 164f : 118f; // all seven end before the language selector
                 var b = UiKit.Button(_bar, "Tab_" + tab, t.vi, t.en, t.ja, () => ShowTab(tab), _tab == tab ? UiKit.Kind.Primary : UiKit.Kind.Secondary, t.icon, 15f);
                 UiKit.Place((RectTransform)b.transform, x, 0f, w, 44f);
                 x += w + 6f;

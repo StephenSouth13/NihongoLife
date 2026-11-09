@@ -104,7 +104,9 @@
     };
 
     // Cap HiDPI. The in-game Web graphics button writes the same localStorage key; it applies on the next load.
-    var dprCap = 1.5;
+    // A phone starts on the light setting (the game's "Smooth": pixel ratio 1); the full ratio of a phone screen drew 4-9x the pixels.
+    var phone = /Android|iPhone|iPad|iPod|Mobile/i.test(navigator.userAgent) || (navigator.maxTouchPoints > 1 && /Macintosh/.test(navigator.userAgent));
+    var dprCap = phone ? 1 : 1.5;
     try {
       var stored = parseFloat(localStorage.getItem("nihongo.webgl.dprCap"));
       if (!isNaN(stored) && stored >= 0.5 && stored <= 3) dprCap = stored;

@@ -94,7 +94,6 @@ namespace NihongoLife.Health
                 label.alignment = TextAlignmentOptions.Center;
                 label.fontSize = 1.6f;
                 label.rectTransform.sizeDelta = new Vector2(3f, 0.6f);
-                label.outlineWidth = 0.25f;
                 var font = NLUi.ResolveFont();
                 if (font != null) label.font = font;
                 go.AddComponent<BillboardUI>();
@@ -102,7 +101,7 @@ namespace NihongoLife.Health
             if (label == null) return;
             label.text = text;
             label.color = Color.Lerp(tint, Color.white, 0.55f);
-            label.outlineColor = new Color32(30, 30, 40, 255);
+            NihongoLife.UI.TmpOutline.Apply(label, 0.25f, new Color32(30, 30, 40, 255)); // after the font: the font resets the material
             label.gameObject.SetActive(true);
             var host = actor.GetComponent<MonoBehaviour>();
             if (host != null && host.isActiveAndEnabled) host.StartCoroutine(Hide(label, seconds));

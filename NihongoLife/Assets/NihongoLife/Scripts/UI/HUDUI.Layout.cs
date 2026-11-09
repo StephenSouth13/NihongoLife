@@ -67,8 +67,7 @@ namespace NihongoLife.UI
                     UpdateOverlayInputLock();
                 }),
                 ("QuestButton", "N", "Nhiệm vụ", () => TaskJournalUI.Toggle()),
-                ("ExamButton", "K", "Luyện thi", () => TogglePopup(GetComponent<ExamCenterPopup>())),
-                ("StudyButton", "`", "Học thêm", () => TogglePopup(GetComponent<StudyHubPopup>())),
+                ("StudyButton", "`", "Lớp học", () => TogglePopup(GetComponent<StudyHubPopup>())), // exams open from the classroom too (K still opens them)
                 ("NotebookButton", "L", "Sổ ghi", () => NotebookUI.Toggle()),
                 ("HandbookButton", "Y", "Sổ tay", () => HandbookUI.Toggle()),
                 ("OverviewButton", "H", "Góc nhìn", ToggleOverviewCamera),

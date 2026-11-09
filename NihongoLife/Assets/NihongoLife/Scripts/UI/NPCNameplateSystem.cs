@@ -54,8 +54,8 @@ namespace NihongoLife.UI
             string name = string.IsNullOrWhiteSpace(npc.DisplayName) ? npc.name : npc.DisplayName;
             label.text = string.IsNullOrWhiteSpace(npc.Role) ? name : $"{name}\n<size=70%>{npc.Role}</size>";
             label.fontSize = 0.22f; label.alignment = TextAlignmentOptions.Center;
-            label.fontStyle = FontStyles.Bold; label.outlineWidth = 0.24f;
-            label.outlineColor = new Color(0.01f, 0.025f, 0.04f, 0.95f);
+            label.fontStyle = FontStyles.Bold;
+            TmpOutline.Apply(label, 0.24f, (Color32)new Color(0.01f, 0.025f, 0.04f, 0.95f));
             label.color = RoleColor(npc.Role);
             _labels[npc] = label;
         }

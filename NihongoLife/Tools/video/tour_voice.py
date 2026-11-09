@@ -38,7 +38,7 @@ LINES = {
     'sushi': 'Đói bụng rồi, mình ghé quán sushi nha. Gọi món xong là phục vụ bưng tận bàn.',
     'eat': 'Bạn ấy kéo ghế vào bàn, cầm đũa ăn thật ngon, xong thì ra quầy thanh toán. Lối vào và lối ra có hàng rào riêng, nên không ai bị lạc cả.',
     'school': 'Đây là trường Nhật ngữ Hibari. Có lớp học, có thầy cô, và cả phòng luyện nói với giáo viên thật.',
-    'courses': 'Thư viện video được làm lại như một trang học trực tuyến. Hơn một trăm năm mươi bài theo khoá, tiếng Nga, tiếng Anh, tiếng Nhật, và game tự nhớ bạn đã học tới đâu.',
+    'courses': 'Ở trường có cửa sổ Lớp học. Chọn tiếng Nhật, tiếng Anh, tiếng Nga hay tiếng Việt, là thấy ngay bài học, video và đề thi của ngôn ngữ đó. Thư viện có gần hai trăm bài video theo khoá, tiếng Nga, tiếng Anh, tiếng Nhật, và game tự nhớ bạn đã học tới đâu.',
     'exam': 'Muốn thử sức thì có phòng thi JLPT và IELTS, chấm điểm rõ ràng, có cả phần nói và viết.',
     'arcade': 'Học xong rồi, mình đi chơi nha. Game Center có cả chục máy, mỗi máy một trò, và trò nào cũng giúp bạn nhớ chữ.',
     'hoop': 'Trò ném bóng rổ này nè, bạn vuốt để ném, canh lực cho khéo. Nghe vui tai lắm luôn.',
@@ -51,7 +51,7 @@ LINES = {
     'phuquoc': 'Bay xa hơn nữa, chúng mình có đảo Phú Quốc, dựng theo bản đồ thật. Có chợ hải sản, có khu nghỉ dưỡng, và quán Gánh Ngon để bạn làm nghề khách sạn.',
     'career': 'Từ cấp mười bạn chọn ngành của mình. Làm đúng ngành thì lên chức, làm trái ngành thì chỉ được một nửa lương và kinh nghiệm thôi, nên chọn cho kỹ nha.',
     'bank': 'Ngoài ra còn có ngân hàng, có khoản vay, mở công ty thì mỗi tuần phải trả chi phí, còn nhân viên thì làm ra tiền cho bạn.',
-    'online': 'Đăng nhập là gặp nhau ngay trong thị trấn, thả biểu cảm, nhắn tin, gọi thoại, và luyện nói cùng nhau.',
+    'online': 'Đăng nhập là gặp nhau ngay trong thị trấn. Voice khu vực tự bật, giữ phím T là nói chuyện được, thả biểu cảm, nhắn tin, và luyện nói cùng nhau.',
     'outro': 'Vậy là mình đã đi hết một vòng rồi đó. Cảm ơn bạn đã xem cùng mình. Hẹn gặp bạn ở thị trấn Hibari nha!',
 }
 

@@ -21,6 +21,15 @@ mergeInto(LibraryManager.library, {
     window.addEventListener('beforeunload', function () { hide('beforeunload'); });
   },
 
+  // 1 when the browser's GPU reads DXT (S3TC) textures; most phone GPUs do not, and Unity then decompresses them to RGBA.
+  NL_HasS3TC: function () {
+    try {
+      var c = document.createElement('canvas');
+      var gl = c.getContext('webgl2') || c.getContext('webgl');
+      return gl && gl.getExtension('WEBGL_compressed_texture_s3tc') ? 1 : 0;
+    } catch (e) { return 0; }
+  },
+
   // Read by the WebGL template before Unity starts. 1.5 is the default cap.
   NL_SetDprCap: function (cap) {
     try { localStorage.setItem('nihongo.webgl.dprCap', String(cap)); } catch (e) {}

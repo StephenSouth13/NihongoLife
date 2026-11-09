@@ -139,9 +139,15 @@ namespace NihongoLife.Tests
             for (int stage = 1; stage <= 3; stage++)
             {
                 IslandState.ClockOffset += System.TimeSpan.FromSeconds(crop.secondsPerStage + 1);
-                yield return new WaitForSecondsRealtime(0.7f);
+                // The plot checks its clock on a timer: wait for the stage and its model rather than a fixed moment.
+                string model = null;
+                for (float t = 0f; t < 4f; t += Time.unscaledDeltaTime)
+                {
+                    model = plot.GetComponentsInChildren<Transform>().FirstOrDefault(x => x.name.StartsWith(crop.model + "_"))?.name;
+                    if (t > 0.7f && plot.Record.stage == stage && model == $"{crop.model}_{stage + 1}") break;
+                    yield return null;
+                }
                 Assert.AreEqual(stage, plot.Record.stage, $"Stage {stage} after the growth time.");
-                string model = plot.GetComponentsInChildren<Transform>().FirstOrDefault(t => t.name.StartsWith(crop.model + "_"))?.name;
                 Note($"stage {stage}: phase={plot.CurrentPhase} model={model}");
                 Assert.AreEqual($"{crop.model}_{stage + 1}", model, "The crop model grows with each stage.");
                 if (stage < 3) { Assert.AreEqual(FarmPlot.Phase.NeedsWater, plot.CurrentPhase); yield return new WaitForSecondsRealtime(0.3f); ClickText("FarmCard", "Tưới nước"); }
@@ -157,8 +163,10 @@ namespace NihongoLife.Tests
             Assert.IsTrue(UiModalStack.CloseTop());
 
             // ── 10–11. Sell with P ──
+            // P opens the store only over no other card; a card that popped up after the harvest (an achievement) closes first.
+            for (int guard = 0; guard < 5 && UiModalStack.AnyOpen; guard++) { Note("closing " + UiModalStack.TopName + " before P"); UiModalStack.CloseTop(); yield return null; }
             yield return Press(GameInputId.Shop);
-            Assert.IsTrue(IslandUI.ShopOpen, "P opens the Midori store anywhere on the island.");
+            Assert.IsTrue(IslandUI.ShopOpen, "P opens the Midori store anywhere on the island (top card: " + UiModalStack.TopName + ").");
             IslandUI.SelectShopTab("sell");
             IslandUI.SelectShopItem("carrot");
             Capture("13_shop_sell");

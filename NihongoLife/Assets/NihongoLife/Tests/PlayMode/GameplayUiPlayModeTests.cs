@@ -257,7 +257,7 @@ namespace NihongoLife.Tests
             Assert.NotNull(dock, "The compact status widget must be on the HUD.");
             Assert.NotNull(dock.StatusWidget, "Status widget (portrait, needs, yen) missing.");
             // HUD policy: no permanent shortcut bar on desktop — the keys are listed in Settings instead.
-            foreach (string name in new[] { "BagButton", "CharacterButton", "MapButton", "QuestButton", "ExamButton", "SettingsButton" })
+            foreach (string name in new[] { "BagButton", "CharacterButton", "MapButton", "QuestButton", "StudyButton", "SettingsButton" })
                 Assert.IsNull(GameObject.Find(name), name + " must not be on the desktop HUD");
 
             var portal = GameObject.Find("AdditiveZonePortals/StationPortal").GetComponent<ScenePortal>();
