@@ -1,0 +1,150 @@
+{
+  "courses": [
+    {
+      "id": "studio",
+      "lang": "ja",
+      "color": "#D9534F",
+      "titleVi": "NihongoLife Studio: tiếng Nhật trong game",
+      "titleEn": "NihongoLife Studio: Japanese in the game",
+      "titleJa": "NihongoLife スタジオ：日本語",
+      "blurbVi": "Bài giảng riêng của game, phát ngay trong game: chữ kana, chào hỏi, số đếm, konbini, nhà ga, phòng khám.",
+      "blurbEn": "The game's own lessons, played right in the game: kana, greetings, numbers, the konbini, the station, the clinic.",
+      "blurbJa": "ゲーム内で再生できるオリジナル授業：かな・あいさつ・数字・コンビニ・駅・クリニック。",
+      "sections": [
+        {
+          "title": "Bảng chữ cái kana",
+          "titleEn": "The kana",
+          "titleJa": "かな",
+          "lessons": [
+            {
+              "id": "studio_ja_hira_a",
+              "title": "Hiragana hàng あ · ひらがな あ行",
+              "seconds": 62,
+              "file": "Videos/Studio/ja_hira_a.mp4",
+              "thumb": "Videos/Studio/ja_hira_a.jpg"
+            },
+            {
+              "id": "studio_ja_hira_ka",
+              "title": "Hiragana hàng か · ひらがな か行",
+              "seconds": 63,
+              "file": "Videos/Studio/ja_hira_ka.mp4",
+              "thumb": "Videos/Studio/ja_hira_ka.jpg"
+            },
+            {
+              "id": "studio_ja_hira_sa",
+              "title": "Hiragana hàng さ · ひらがな さ行",
+              "seconds": 66,
+              "file": "Videos/Studio/ja_hira_sa.mp4",
+              "thumb": "Videos/Studio/ja_hira_sa.jpg"
+            },
+            {
+              "id": "studio_ja_hira_ta",
+              "title": "Hiragana hàng た · ひらがな た行",
+              "seconds": 63,
+              "file": "Videos/Studio/ja_hira_ta.mp4",
+              "thumb": "Videos/Studio/ja_hira_ta.jpg"
+            },
+            {
+              "id": "studio_ja_hira_na",
+              "title": "Hiragana hàng な · ひらがな な行",
+              "seconds": 63,
+              "file": "Videos/Studio/ja_hira_na.mp4",
+              "thumb": "Videos/Studio/ja_hira_na.jpg"
+            },
+            {
+              "id": "studio_ja_hira_ha",
+              "title": "Hiragana hàng は · ひらがな は行",
+              "seconds": 64,
+              "file": "Videos/Studio/ja_hira_ha.mp4",
+              "thumb": "Videos/Studio/ja_hira_ha.jpg"
+            },
+            {
+              "id": "studio_ja_hira_ma",
+              "title": "Hiragana hàng ま · ひらがな ま行",
+              "seconds": 64,
+              "file": "Videos/Studio/ja_hira_ma.mp4",
+              "thumb": "Videos/Studio/ja_hira_ma.jpg"
+            },
+            {
+              "id": "studio_ja_hira_ya",
+              "title": "Hiragana hàng や, わ và ん · ひらがな や行・わ行・ん",
+              "seconds": 79,
+              "file": "Videos/Studio/ja_hira_ya.mp4",
+              "thumb": "Videos/Studio/ja_hira_ya.jpg"
+            },
+            {
+              "id": "studio_ja_hira_ra",
+              "title": "Hiragana hàng ら · ひらがな ら行",
+              "seconds": 66,
+              "file": "Videos/Studio/ja_hira_ra.mp4",
+              "thumb": "Videos/Studio/ja_hira_ra.jpg"
+            },
+            {
+              "id": "studio_ja_hira_ga",
+              "title": "Âm đục: が ざ だ ば ぱ · 濁音・半濁音",
+              "seconds": 67,
+              "file": "Videos/Studio/ja_hira_ga.mp4",
+              "thumb": "Videos/Studio/ja_hira_ga.jpg"
+            },
+            {
+              "id": "studio_ja_kata_words",
+              "title": "Katakana trong đời sống · 生活のカタカナ",
+              "seconds": 79,
+              "file": "Videos/Studio/ja_kata_words.mp4",
+              "thumb": "Videos/Studio/ja_kata_words.jpg"
+            }
+          ]
+        },
+        {
+          "title": "Tiếng Nhật trong thị trấn",
+          "titleEn": "Japanese around town",
+          "titleJa": "町の日本語",
+          "lessons": [
+            {
+              "id": "studio_ja_greetings",
+              "title": "Chào hỏi mỗi ngày · 毎日のあいさつ",
+              "seconds": 69,
+              "file": "Videos/Studio/ja_greetings.mp4",
+              "thumb": "Videos/Studio/ja_greetings.jpg"
+            },
+            {
+              "id": "studio_ja_self_intro",
+              "title": "Tự giới thiệu · 自己紹介",
+              "seconds": 64,
+              "file": "Videos/Studio/ja_self_intro.mp4",
+              "thumb": "Videos/Studio/ja_self_intro.jpg"
+            },
+            {
+              "id": "studio_ja_numbers",
+              "title": "Số đếm 1 đến 10 · 数字 1〜10",
+              "seconds": 70,
+              "file": "Videos/Studio/ja_numbers.mp4",
+              "thumb": "Videos/Studio/ja_numbers.jpg"
+            },
+            {
+              "id": "studio_ja_konbini",
+              "title": "Ở cửa hàng tiện lợi · コンビニで",
+              "seconds": 69,
+              "file": "Videos/Studio/ja_konbini.mp4",
+              "thumb": "Videos/Studio/ja_konbini.jpg"
+            },
+            {
+              "id": "studio_ja_station",
+              "title": "Ở nhà ga · 駅で",
+              "seconds": 70,
+              "file": "Videos/Studio/ja_station.mp4",
+              "thumb": "Videos/Studio/ja_station.jpg"
+            },
+            {
+              "id": "studio_ja_clinic",
+              "title": "Ở phòng khám · クリニックで",
+              "seconds": 63,
+              "file": "Videos/Studio/ja_clinic.mp4",
+              "thumb": "Videos/Studio/ja_clinic.jpg"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

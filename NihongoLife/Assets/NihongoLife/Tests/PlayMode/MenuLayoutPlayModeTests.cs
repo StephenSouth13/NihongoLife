@@ -38,12 +38,13 @@ namespace NihongoLife.Tests
             new Size("phone_landscape_2400x1080", 2400, 1080, true, new Rect(110f, 0f, 2180f, 1080f)),
             new Size("phone_small_1334x750", 1334, 750, true),
             new Size("phone_browser_844x390_dpr2", 1688, 780, true),
+            new Size("phone_web_915x412_dpr1", 915, 412, true), // the web build on a phone draws at pixel ratio 1
         };
 
         static readonly GameLanguage[] Languages = { GameLanguage.Vietnamese, GameLanguage.English, GameLanguage.Japanese, GameLanguage.Russian };
         static readonly string[] Views = { "main", "mode", "character", "settings", "guide", "about", "auth" };
 
-        [UnityTest]
+        [UnityTest, Timeout(600000)] // 11 screens x 4 languages x 7 views
         public IEnumerator MainMenu_AndPopups_FitEveryScreenAndLanguage()
         {
             LogAssert.ignoreFailingMessages = true;

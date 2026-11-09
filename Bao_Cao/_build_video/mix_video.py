@@ -1,6 +1,6 @@
 """Turns recorded frames + timeline.tsv into a finished MP4: music bed, per-beat narration (ducked music),
 optional burned-in subtitles. Usage:
-  python mix_video.py <frames_dir> <tts_dir> <music.wav> <out.mp4> [--lead 0.4] [--mvol 0.5] [--subs] [--skip id,id]
+  python mix_video.py <frames_dir> <tts_dir> <music.wav> <out.mp4> [--lead 0.4] [--mvol 0.5] [--subs] [--subs-margin 150] [--skip id,id]
 <tts_dir> holds <id>.mp3 and lines.tsv (id\ttext); a beat id without an mp3 is silent."""
 import argparse
 import subprocess
@@ -11,6 +11,7 @@ ap.add_argument("frames"); ap.add_argument("tts"); ap.add_argument("music"); ap.
 ap.add_argument("--lead", type=float, default=0.4)
 ap.add_argument("--mvol", type=float, default=0.5)
 ap.add_argument("--subs", action="store_true")
+ap.add_argument("--subs-margin", type=int, default=150, help="pixels from the bottom: raise it above the game's dialogue box")
 ap.add_argument("--skip", default="")
 a = ap.parse_args()
 
@@ -53,7 +54,7 @@ if a.subs:
     ass = ["[Script Info]", "ScriptType: v4.00+", "PlayResX: 1920", "PlayResY: 1080", "",
            "[V4+ Styles]",
            "Format: Name, Fontname, Fontsize, PrimaryColour, SecondaryColour, OutlineColour, BackColour, Bold, Italic, Underline, StrikeOut, ScaleX, ScaleY, Spacing, Angle, BorderStyle, Outline, Shadow, Alignment, MarginL, MarginR, MarginV, Encoding",
-           "Style: Sub,Segoe UI,40,&H00FFFFFF,&H00FFFFFF,&H00000000,&H90000000,0,0,0,0,100,100,0,0,3,10,0,2,240,240,150,1",
+           "Style: Sub,Segoe UI,40,&H00FFFFFF,&H00FFFFFF,&H00000000,&H90000000,0,0,0,0,100,100,0,0,3,10,0,2,240,240," + str(a.subs_margin) + ",1",
            "", "[Events]", "Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text"]
     for t, i, p in voices:
         text = lines.get(i, "").strip()

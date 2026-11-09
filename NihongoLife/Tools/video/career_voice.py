@@ -35,16 +35,39 @@ START = {
     'painter': 'Góc giá vẽ của chú Hibiki dành cho người mê hội hoạ. Bạn khởi đầu là {first}, pha màu, căng toan.',
     'fashion': 'Cuối cùng là Hibari Mode. Người mới là {first}, gấp đồ, xếp kệ, rồi được anh Ren cho ra tư vấn khách.',
 }
+# A whole shift's task cards on screen (beat <career>_tasks).
+TASKS = [
+    'Mỗi ca có công việc thật ở chỗ làm, rồi hai thẻ nhiệm vụ tiếng Nhật. Nghe {who} nói, chọn đúng ngay lần đầu là thêm một nhiệm vụ. Muốn lên bậc hai, bạn cần {first_tasks} nhiệm vụ.',
+    'Một ca là bốn nhiệm vụ ở quầy, cộng thẻ nhiệm vụ tiếng Nhật: hiểu đúng câu của {who} là được tính thêm.',
+    'Làm xong ca, {who} nhờ thêm vài nhiệm vụ bằng tiếng Nhật. Hiểu ngay thì thêm nhiệm vụ, sai thì có gợi ý để học lại.',
+]
+# The counted fast-forward to the top (beat <career>_up).
 UP = [
-    'Làm tốt thì {boss} gọi phỏng vấn thăng chức, toàn bằng tiếng Nhật. Tới bậc bốn, bạn chọn {a} hay {b}, ở đây mình chọn {chosen}.',
-    'Mỗi lần lên chức là một buổi phỏng vấn tiếng Nhật với {boss}. Đến bậc bốn thì rẽ hướng, {a} hoặc {b}, mình đi theo {chosen}.',
-    'Cứ đủ hiệu suất là được gọi phỏng vấn. Trả lời đúng bằng tiếng Nhật là lên bậc. Ở bậc bốn, mình chọn hướng {chosen}.',
+    'Giờ mình tua nhanh, nhưng từng ca, từng thẻ nhiệm vụ vẫn được đếm thật: ba trăm ba mươi nhiệm vụ mới tới đỉnh. Đầy thanh là có truyện mốc, rồi phỏng vấn tiếng Nhật với {boss}. Tới bậc bốn, mình chọn {chosen}.',
+    'Đoạn này tua nhanh có đếm: khoảng năm mươi ca, ba trăm ba mươi nhiệm vụ. Mỗi lần lên chức là một truyện mốc và một buổi phỏng vấn với {boss}. Ở ngã rẽ, {a} hay {b}, mình đi theo {chosen}.',
+    'Tua nhanh, nhưng không bỏ nhiệm vụ nào: bảng phía trên đếm từng ca, từng nhiệm vụ. Truyện mốc, phỏng vấn, rồi bậc bốn chọn {chosen}.',
 ]
 TOP = [
-    'Và đây là đỉnh cao của nghề: {top}. Từ {first} đến {top}, đi từng bậc một.',
+    'Và đây là đỉnh cao của nghề: {top}. Từ {first} đến {top}, ba trăm ba mươi nhiệm vụ, đi từng bậc một.',
     'Sáu bậc sau, bạn đã là {top}. Nhìn lại, chặng đường bắt đầu chỉ từ một {first}.',
-    'Đỉnh cao rồi đó: {top}. Lương cao nhất ngành, và vốn tiếng Nhật cũng lên theo.',
+    'Đỉnh cao rồi đó: {top}. Lương cao nhất ngành, và vốn tiếng Nhật cũng lên theo từng nhiệm vụ.',
 ]
+# Who hands out the task cards, as the narration says it.
+SPEAKER = {'retail': 'khách', 'food': 'khách', 'farm': 'bác chủ trại', 'hospitality': 'khách du lịch', 'medical': 'bệnh nhân',
+           'chef': 'bếp trưởng', 'musician': 'người tổ chức', 'producer': 'khách thuê', 'painter': 'khách đặt tranh', 'fashion': 'khách'}
+TASKS_PER_LEVEL = json.load(open(Path('Assets/NihongoLife/Resources/Progression/career_tasks.json'), encoding='utf-8'))['tasksPerLevel']
+
+
+def words(n):
+    """A number under 100 as the voice should say it (the service refuses some sentences with digits)."""
+    units = ['', 'một', 'hai', 'ba', 'bốn', 'năm', 'sáu', 'bảy', 'tám', 'chín']
+    tens, one = divmod(n, 10)
+    head = 'mười' if tens == 1 else units[tens] + ' mươi' if tens else ''
+    tail = '' if one == 0 else ('mốt' if one == 1 and tens > 1 else 'lăm' if one == 5 and tens else units[one])
+    return (head + ' ' + tail).strip()
+
+
+assert words(32) == 'ba mươi hai' and words(15) == 'mười lăm' and words(41) == 'bốn mươi mốt'
 
 
 def lower_first(text):
@@ -54,7 +77,7 @@ def lower_first(text):
 
 
 def lines(careers):
-    out = {'intro': 'Trong NihongoLife có mười ngành nghề, mỗi ngành sáu bậc. Mình cùng xem một người mới đi từ những ngày đầu tới đỉnh cao của từng ngành nha.'}
+    out = {'intro': 'Trong NihongoLife có mười ngành nghề, mỗi ngành sáu bậc, và mỗi ngành cần ba trăm ba mươi nhiệm vụ mới lên tới đỉnh. Mình cùng xem một người mới đi từ những ngày đầu tới đỉnh cao của từng ngành nha.'}
     for i, c in enumerate(careers):
         branches = {b['id']: b for b in c['branches']}
         chosen = branches[BRANCH[c['id']]]
@@ -63,6 +86,8 @@ def lines(careers):
         names = [b['nameVi'] for b in c['branches']]
         spoken = lower_first(first)
         out[c['id']] = START[c['id']].format(first=spoken, First=spoken[0].upper() + spoken[1:])
+        who = SPEAKER[c['id']]
+        out[c['id'] + '_tasks'] = TASKS[i % len(TASKS)].format(who=who, first_tasks=words(TASKS_PER_LEVEL[0]))
         out[c['id'] + '_up'] = UP[i % len(UP)].format(boss=lower_first(c['bossNameVi']), a=lower_first(names[0]), b=lower_first(names[1]), chosen=lower_first(chosen['nameVi']))
         out[c['id'] + '_top'] = TOP[i % len(TOP)].format(top=lower_first(top), first=lower_first(first))
     out['outro'] = 'Mười ngành, mười con đường, và con đường nào cũng đi bằng tiếng Nhật. Bạn sẽ chọn nghề nào? Hẹn gặp bạn ở Hibari nha!'
@@ -76,8 +101,15 @@ async def main():
     rows = []
     for beat, text in lines(data['careers']).items():
         path = out / f'{beat}.mp3'
-        if not path.exists():
-            await speak(text, path)
+        for attempt in range(4):  # the service throttles after many requests: wait and ask again
+            if path.exists():
+                break
+            try:
+                await speak(text, path)
+            except RuntimeError:
+                if attempt == 3:
+                    raise
+                await asyncio.sleep(30)
         rows.append((beat, text, length(path)))
     (out / 'lines.tsv').write_text(''.join(f'{b}\t{t}\n' for b, t, _ in rows), encoding='utf-8')
     (out / 'durations.tsv').write_text(''.join(f'{b}\t{s:.2f}\n' for b, _, s in rows), encoding='utf-8')

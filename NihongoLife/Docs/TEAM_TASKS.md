@@ -2290,3 +2290,61 @@ Kiểm chứng: builder chạy headless bằng `nl_batch`, chỉ mở một Unit
 - Số ca mỗi bậc còn 1–3 (`careers.json`; công thức cũ − 1, kẹp 1..3; `Tools/music/add_arts_careers.py`, `Tools/fashion/build_fashion.py` dùng cùng công thức). Bán lẻ: 17 → 11 ca tới đỉnh.
 - `PlayModeSaveGuard`: `CareerStories.Enabled = false` cho các test khác. Test: `CareerStoriesCatalogTests` (EditMode), `CareerStoryPlayModeTests` (Esc giữ truyện, best → phỏng vấn, poor → phỏng vấn đợi, truyện chỉ một lần; ảnh `Bao_Cao/career-story/`); `CareerPlayModeTests` sửa theo số ca trong dữ liệu. Đạt cùng `CareerCatalogTests`, `CareerAvatarPlayModeTests`, `BusinessWorkersPlayModeTests`; biên dịch WebGL 0 lỗi.
 - Slide 99 trang: thêm "Truyện mốc trước mỗi lần thăng chức". Chưa quay lại video nghề nghiệp, chưa build lại bản web.
+
+## 2026-11-09 (chiều) — Điện thoại: joystick và nút mới; video bài giảng phát trong game; hơn 300 việc mỗi nghề; slide chuyển trang
+
+**Điện thoại (chủ dự án: "không thấy joystick và các nút").**
+- Lỗi thật: `MobileJoystick` tính ngón tay từ pivot ở mép trái của joystick chứ không phải từ tâm, nên chạm vào giữa là nhân vật bị kéo sang phải. Nay tính từ tâm, một ngón giữ joystick, không có ngưỡng kéo, ngón đặt yên không trôi (vùng chết 12 %).
+- Joystick nổi: ngón đặt ở đâu trong vùng trái (42 % bề ngang, dưới 74 % chiều cao) thì joystick tới đó (`MobileJoystick.PressAt` qua `TouchLookPad`). Ngón trên joystick không còn bị tính vào động tác chụm zoom (trước đây vừa đi vừa xoay camera là zoom).
+- Giao diện mới (`UI/TouchControlOverlay.cs`):
+  - joystick kính tối viền trắng, 4 mũi tên, núm vàng;
+  - nút tròn có bóng đổ, viền, biểu tượng (nhảy `keyboard_double_arrow_up`, tương tác `touch_app`, chạy `sprint`, ẩn `visibility_off`; 5 biểu tượng mới render từ Material Symbols vào `Resources/UI/Icons`), nhấn thì thu nhỏ;
+  - nút "Hiện nút" dạng viên thuốc vàng.
+- Cỡ điều khiển trên màn thấp lớn hơn (joystick 140, nút lớn 80, nút nhỏ 54); thẻ trạng thái trên màn cảm ứng thu còn 0,68.
+- Bản web trên điện thoại vẽ ở tỉ lệ điểm ảnh 1 (915×412): menu bị nút "Thoát" chồng thanh dưới. `ResponsiveCanvasFit` nay cho canvas điện thoại nằm ngang cao ít nhất 480 (`UiLayoutProbe` cùng công thức). `MenuLayoutPlayModeTests` và `GameplayPhoneLayoutPlayModeTests` thêm cỡ 915×412 (menu: Timeout 600 s).
+- Sửa phụ: `InGameVideoPlayerUI.FitScreen` bỏ `GetComponent<T>() ??` (lỗi fake null).
+
+**Video bài học (chủ dự án: "chưa thấy các video bài học" trên máy tính, trong slide và video, trên web).**
+- 181 bài trên kênh YouTube (khoảng 25 giờ) không đóng gói vào game được, và Unity trên máy tính không phát được YouTube.
+- Mới là khoá NihongoLife Studio: 17 bài giảng của chính game, 19 phút, 10,3 MB. Gồm hiragana từng hàng, âm đục, katakana đời sống, chào hỏi, tự giới thiệu, số đếm, konbini, nhà ga, phòng khám.
+  - Cách dựng: slide Pillow, giọng Nhật Nanami và giọng Việt HoaiMy (edge-tts), ghép bằng ffmpeg; công cụ `Tools/video/studio_lessons.py` và `studio_content.py`.
+  - Đầu ra: `StreamingAssets/Videos/Studio/*.mp4` và `.jpg`, cùng `Resources/Video/studio_courses.json`.
+  - Dịch vụ giọng đọc từ chối vài câu ngắn ("Nghĩa là biển."): script thử cách nói khác hoặc giọng khác, cuối cùng mới để im lặng có báo trong log.
+- `VideoCourseCatalog` đặt khoá Studio lên đầu. `VideoCoursesUI` phát bài của game bằng `VideoPlayer` ngay trong khung phát trên mọi nền tảng (chạm để dừng); bài YouTube giữ như cũ (web phát trong khung, máy tính mở trình duyệt).
+- Test: `VideoCoursesPlayModeTests.StudioLesson_PlaysInsideTheGame` (video chạy quá 6 s, có tiếng; ảnh `Bao_Cao/video-courses/03_*`, `04_*`). `WebQaBridge.Video(courseId)` để kiểm tra trên trình duyệt.
+
+**Hơn 300 việc mỗi nghề (chủ dự án chọn "mỗi nghề 300+ việc").**
+- Thanh hiệu suất đếm bằng việc:
+  - mỗi ca đúng giờ = 4 việc (ngoài giờ 2);
+  - sau ca có 2 thẻ việc tiếng Nhật (`Progression/CareerTasks.cs`, qua `JobQuizCard`); đúng ngay lần đầu thêm 1 việc (`JobQuizCard.LastMistakes`), sai thì có gợi ý;
+  - Esc kết thúc lượt thẻ (`JobQuizCard.OnClosedWithoutAnswer`).
+- Các bậc cần 32 / 48 / 64 / 82 / 104 việc, tổng 330 việc, khoảng 55 ca.
+- Dữ liệu: `Tools/story/career_tasks.py` và `career_tasks_data.py` sinh ra `Resources/Progression/career_tasks.json` (bậc thang) và `CareerTasks/<nghề>.json`.
+  - Mỗi nghề 320 thẻ khác nhau, 8 dạng: hỏi đồ, số lượng, hai món, việc sếp giao, chỗ để đồ, tính tiền đọc bằng kana, giờ làm, giao tiếp.
+  - Chỉ nạp file của nghề đang làm; thẻ đi theo thứ tự xáo cố định (`CareerState.taskCursor`), hết vòng mới lặp lại.
+- `CareerService.TaskGain`: tâm trạng tốt, danh tiếng không làm một việc tính hơn 1, nên lên đỉnh luôn cần ít nhất 330 việc. Ốm, mệt, tai tiếng làm chậm lại.
+- `CareerUI` hiện "việc ở bậc này x/y" và "đã làm n việc · lên đỉnh cần N việc".
+- `PlayModeSaveGuard` tắt `CareerTasks.Enabled` cho các test khác.
+- Test: `CareerTasksCatalogTests` (EditMode: mỗi nghề ≥ 300 thẻ, đúng 1 đáp án, gợi ý cho đáp án sai, đi hết kho trước khi lặp), `CareerTasksPlayModeTests` (ảnh `Bao_Cao/career-tasks/`); `CareerPlayModeTests` sửa theo số việc.
+
+**Video "Con đường sự nghiệp" làm lại.**
+- `DemoRecordingTests.Careers_RecordFrames`: mỗi nghề gồm ca thật, thẻ việc trả lời trên hình, rồi đoạn tua nhanh có đếm. Trong đoạn này mọi ca và thẻ việc đều chạy `ShiftDone` thật; bảng `DemoRecorder.Ticker` ghi số ca, số việc trên 330 và bậc; truyện mốc trước mỗi lần thăng chức (truyện đầu đọc chậm), phỏng vấn, nhánh bậc 4. Test kiểm tra lên đỉnh đã làm ≥ 300 việc.
+- Lời dẫn mới `Tools/video/career_voice.py`: các beat `_tasks`, `_up` mới; số đọc bằng chữ vì dịch vụ từ chối một số câu có chữ số.
+
+**Slide.** 100 trang:
+- thêm "Hơn 300 việc mới lên đỉnh một nghề";
+- "Học qua video: 198 bài" có khoá Studio;
+- slide điện thoại dùng ảnh joystick mới;
+- mọi slide cùng hiệu ứng chuyển trang Fade vừa (`build_deck.js` chèn `<p:transition>`).
+
+`export_pdf.ps1` không tắt PowerPoint nếu PowerPoint đang mở sẵn.
+
+**Kiểm tra (09/11/2026).**
+- Bộ test đầy đủ:
+  - EditMode 342/343, sau khi thêm 11 câu tiếng Nga vào `ru_table_extra.json` thì `RussianCoverageAuditTests` đạt;
+  - PlayMode 229 đạt, 13 ca quay/chụp chỉ chạy khi gọi riêng, 1 trượt `IllnessPlayModeTests` (lúc test xem động tác sờ trán thì nhân vật đang hắt hơi ngẫu nhiên). Chạy riêng lại thì đạt 3/3.
+- `Careers_RecordFrames` đạt: mọi nghề lên đỉnh với ≥ 300 việc, video 10 phút 26 giây (`Bao_Cao/NihongoLife_Con_Duong_Su_Nghiep.mp4`, phụ đề đặt cao hơn khung hội thoại: `mix_video.py --subs-margin 330`).
+- Bản web rel22 (`ReleaseBuild.BuildWebGL`): 112 MB, 0 lỗi biên dịch.
+  - Giả lập điện thoại 915×412: kéo vùng joystick thì nhân vật đi 6,1 m; bài Studio phát trong game ở giây 7,8; bài YouTube mở khung `#nl-video`.
+  - `web_qa_tour`: 13 khu sạch, tối đa 2 gói.
+- Gói itch: `Build/Release/NihongoLife_itch_20261109.zip` (384 MB).

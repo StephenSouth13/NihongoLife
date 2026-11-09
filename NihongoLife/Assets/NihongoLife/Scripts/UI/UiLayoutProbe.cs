@@ -23,7 +23,7 @@ namespace NihongoLife.UI
             if (phone)
             {
                 if (aspect < 1f) { reference = new Vector2(Mathf.Clamp(w, 360, 480), Mathf.Clamp(h, 640, 960)); match = 0f; }
-                else { reference = new Vector2(Mathf.Clamp(w, 640, 960), Mathf.Clamp(h, 320, 480)); match = 1f; }
+                else { reference = new Vector2(Mathf.Clamp(w, 640, 960), 480f); match = 1f; } // as ResponsiveCanvasFit
             }
             else if (aspect < 0.92f) { reference = new Vector2(720f, 1280f); match = 0f; }
             else if (aspect > 2.05f && shortSide >= 900) { reference = new Vector2(2560f, 1080f); match = 1f; }

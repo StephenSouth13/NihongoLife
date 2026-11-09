@@ -58,7 +58,9 @@ namespace NihongoLife.UI
                 }
                 else
                 {
-                    reference = new Vector2(Mathf.Clamp(UiScreen.Width, 640, 960), Mathf.Clamp(UiScreen.Height, 320, 480));
+                    // At least 480 tall: the web build draws at pixel ratio 1 on phones (915x412), and a 412-unit canvas
+                    // pushed Quit under the bottom row of the menu.
+                    reference = new Vector2(Mathf.Clamp(UiScreen.Width, 640, 960), 480f);
                     match = 1f;
                 }
             }

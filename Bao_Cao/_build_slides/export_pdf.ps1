@@ -1,6 +1,8 @@
-param([string]$Pptx, [string]$Pdf)
+﻿param([string]$Pptx, [string]$Pdf)
 # Opens the deck in PowerPoint, makes every embedded video start by itself when its slide shows (pptxgenjs cannot write the
 # slide timing; PowerPoint writes it), saves the deck, then saves it as PDF (what the audience sees, fonts included).
+# PowerPoint may already be open with other decks: then only this deck is closed, PowerPoint stays.
+$wasOpen = $null -ne (Get-Process POWERPNT -ErrorAction SilentlyContinue)
 $app = New-Object -ComObject PowerPoint.Application
 try {
     $deck = $app.Presentations.Open($Pptx, $false, $false, $false)
@@ -21,5 +23,5 @@ try {
     "slides: " + $deck.Slides.Count + ", videos that play by themselves: " + $videos
     $deck.Close()
 } finally {
-    $app.Quit()
+    if (-not $wasOpen) { $app.Quit() }
 }

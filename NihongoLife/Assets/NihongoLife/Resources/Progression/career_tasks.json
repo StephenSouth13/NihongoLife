@@ -1,0 +1,56 @@
+{
+ "schema": "nihongolife.career_tasks.v1",
+ "shiftTasks": 4,
+ "offHoursTasks": 2,
+ "cardsPerShift": 2,
+ "tasksPerLevel": [
+  32,
+  48,
+  64,
+  82,
+  104,
+  120
+ ],
+ "careers": [
+  {
+   "id": "retail",
+   "count": 320
+  },
+  {
+   "id": "food",
+   "count": 320
+  },
+  {
+   "id": "farm",
+   "count": 320
+  },
+  {
+   "id": "hospitality",
+   "count": 320
+  },
+  {
+   "id": "medical",
+   "count": 320
+  },
+  {
+   "id": "chef",
+   "count": 320
+  },
+  {
+   "id": "musician",
+   "count": 320
+  },
+  {
+   "id": "producer",
+   "count": 320
+  },
+  {
+   "id": "painter",
+   "count": 320
+  },
+  {
+   "id": "fashion",
+   "count": 320
+  }
+ ]
+}

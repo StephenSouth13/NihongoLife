@@ -327,9 +327,10 @@ const STUDY = [
     { pic: 'f_teacher', head: 'Cô Morita nhận xét', body: 'Khuyên ôn lại phần còn yếu' },
     { pic: 'f_jlpt_listen', head: 'Phần nghe', body: 'Nghe lời thoại rồi chọn đáp án' },
   ] },
-  { title: 'Học qua video: 181 bài', notes: '4 khoá video: tiếng Nga từ con số 0 (93 bài, 10 phần), tiếng Anh (71 bài, 7 phần), tiếng Nhật kana, mẫu câu, JLPT (10 bài), khám phá NihongoLife (7 bài). Làm như một trang học trực tuyến: giáo trình theo phần, lưu tiến độ đã xem, phát ngay trong game hoặc mở YouTube; video gắn đúng bài học trong Lớp học.', items: [
-    { pic: 'catalogue', head: '4 khoá học', body: 'Nga, Anh, Nhật và hướng dẫn game' },
-    { pic: 'courses', head: 'Giáo trình theo phần', body: 'Lưu tiến độ đã xem' },
+  { title: 'Học qua video: 198 bài', notes: '5 khoá video. Mới: NihongoLife Studio, 17 bài giảng của chính game (hiragana từng hàng, âm đục, katakana, chào hỏi, tự giới thiệu, số đếm, konbini, nhà ga, phòng khám), slide và giọng đọc tiếng Nhật kèm giải thích tiếng Việt, phát ngay trong game trên máy tính, web và điện thoại (19 phút, 10 MB). Kênh YouTube của game: tiếng Nga từ con số 0 (93 bài), tiếng Anh (71 bài), tiếng Nhật (10 bài), khám phá NihongoLife (7 bài): trên web phát trong khung ngay trong game, trên máy tính mở trình duyệt. Giáo trình theo phần, lưu tiến độ đã xem; video gắn đúng bài học trong Lớp học.', items: [
+    { pic: 'f_vs_play', head: 'Bài của game', body: '17 bài phát trong game' },
+    { pic: 'catalogue', head: '5 khoá học', body: 'Studio, Nga, Anh, Nhật, hướng dẫn' },
+    { pic: 'courses', head: 'Theo từng phần', body: 'Lưu tiến độ đã xem' },
     { pic: 'course_path', head: 'Video theo bài', body: 'Mỗi bài học có video đi kèm' },
   ] },
   { title: 'Lộ trình học của riêng mình', notes: 'Bài kiểm tra đầu vào 20 câu xếp người học vào đúng trình độ (ví dụ 12/20 → N3) rồi mở lộ trình từ bài phù hợp. Bảng chữ cái hiragana, katakana có âm đọc; ngữ pháp từng mẫu câu kèm ví dụ; 12 thì tiếng Anh; từ điển tra qua lại Nhật, Anh, Việt, Nga.', items: [
@@ -542,13 +543,18 @@ const SECTIONS = [
       });
     },
     ...CAREERS.map(c => () => careerSlide(c)),
-    () => features({ title: 'Truyện mốc trước mỗi lần thăng chức', notes: '70 cảnh truyện ngắn (10 ngành × bậc 2, 3, 4 và bậc 5, 6 của mỗi nhánh), dữ liệu career_stories.json sinh từ Tools/story/career_stories.py. Khi thanh hiệu suất đầy, một cảnh ở nơi làm việc diễn ra trước buổi phỏng vấn: sếp, đồng nghiệp hoặc khách nói bằng tiếng Nhật, người chơi chọn 1 trong 3 câu trả lời. Câu tốt nhất (lịch sự, chu đáo) được +5 trí tuệ và danh tiếng rồi vào phỏng vấn; câu tạm được thêm chút danh tiếng; câu kém mất 20% hiệu suất nên phỏng vấn lùi lại ca sau. Mỗi bậc giờ chỉ cần 1–3 ca. Câu trả lời của ngành y theo đúng thực tế: không kê kháng sinh cho cảm, đo huyết áp sau khi nghỉ, sổ thuốc khi uống chung thuốc.', items: [
+    () => features({ title: 'Truyện mốc trước mỗi lần thăng chức', notes: '70 cảnh truyện ngắn (10 ngành × bậc 2, 3, 4 và bậc 5, 6 của mỗi nhánh), dữ liệu career_stories.json sinh từ Tools/story/career_stories.py. Khi thanh hiệu suất đầy, một cảnh ở nơi làm việc diễn ra trước buổi phỏng vấn: sếp, đồng nghiệp hoặc khách nói bằng tiếng Nhật, người chơi chọn 1 trong 3 câu trả lời. Câu tốt nhất (lịch sự, chu đáo) được +5 trí tuệ và danh tiếng rồi vào phỏng vấn; câu tạm được thêm chút danh tiếng; câu kém mất 20% hiệu suất nên phỏng vấn lùi lại ca sau. Câu trả lời của ngành y theo đúng thực tế: không kê kháng sinh cho cảm, đo huyết áp sau khi nghỉ, sổ thuốc khi uống chung thuốc.', items: [
       { pic: 'f_cs_question', head: 'Tình huống ở nơi làm', body: 'Khách, sếp, đồng nghiệp nói tiếng Nhật' },
       { pic: 'f_cs_reply', head: '3 câu trả lời', body: 'Câu tốt nhất được +5 trí tuệ' },
       { pic: 'f_cs_interview', head: 'Rồi mới phỏng vấn', body: 'Trả lời kém: phỏng vấn lùi lại ca sau' },
     ] }),
+    () => features({ title: 'Hơn 300 việc mới lên đỉnh một nghề', notes: 'Yêu cầu của chủ dự án: mỗi nghề hơn 300 việc mới tới đỉnh. Thanh hiệu suất đếm bằng việc: mỗi ca đúng giờ là 4 việc (ngoài giờ 2), sau ca có 2 thẻ việc tiếng Nhật (khách hỏi đồ, lấy số lượng, việc sếp giao, tính tiền, lịch làm, giao tiếp), đúng ngay lần đầu thêm 1 việc, sai thì có gợi ý. Bậc 1 đến 5 cần 32, 48, 64, 82, 104 việc: 330 việc, khoảng 55 ca. Mỗi nghề có 320 thẻ việc khác nhau (3.200 thẻ cho 10 nghề), sinh từ từ vựng của từng nghề bằng Tools/story/career_tasks.py. Tâm trạng tốt hay danh tiếng không rút ngắn chặng đường; ốm, mệt, tai tiếng làm chậm lại.', items: [
+      { pic: 'f_ct_card', head: 'Thẻ việc tiếng Nhật', body: '320 thẻ khác nhau cho mỗi nghề' },
+      { pic: 'f_ct_hint', head: 'Sai có gợi ý', body: 'Đúng ngay lần đầu mới tính việc' },
+      { pic: 'f_ct_overview', head: '330 việc tới đỉnh', body: 'Khoảng 55 ca, đếm trong hồ sơ nghề' },
+    ] }),
     () => {
-      const s = slide('Video: con đường sự nghiệp', { notes: 'Mười ngành, mỗi ngành từ bậc 1 đến bậc 6, ghi trực tiếp trong game (DemoRecordingTests.Careers_RecordFrames): ca làm thật, phỏng vấn thăng chức tiếng Nhật, chọn nhánh ở bậc 4. Lời dẫn giọng nam. Bản đầy đủ: Bao_Cao/NihongoLife_Con_Duong_Su_Nghiep.mp4.' });
+      const s = slide('Video: con đường sự nghiệp', { notes: 'Mười ngành, mỗi ngành từ bậc 1 đến bậc 6, ghi trực tiếp trong game (DemoRecordingTests.Careers_RecordFrames): ca làm thật, thẻ việc tiếng Nhật, rồi đoạn tua nhanh có đếm (mọi ca và thẻ việc đều chạy thật, bảng phía trên ghi số ca và số việc tới 330), truyện mốc trước mỗi lần thăng chức, phỏng vấn tiếng Nhật, chọn nhánh ở bậc 4. Lời dẫn giọng nam. Bản đầy đủ: Bao_Cao/NihongoLife_Con_Duong_Su_Nghiep.mp4.' });
       video(s, 'careers.mp4', 'career_interview', 2.2, 1.85, 8.9, 5.0, '10 ngành · bậc 1 đến bậc 6');
     },
     () => {
@@ -578,10 +584,10 @@ const SECTIONS = [
   ]],
   ['Học tập', [
     () => {
-      const s = slide('Học tập: con số chính', { dark: false, notes: '40 bài cho mỗi ngôn ngữ (Việt, Anh, Nhật, Nga) với bảng chữ cái, ngữ pháp, chứng chỉ N5–N1 / A1–C1 và bài kiểm tra trình độ; 181 bài video theo khoá; lộ trình tiếng Nga 53 bước; 86 nhiệm vụ.' });
+      const s = slide('Học tập: con số chính', { dark: false, notes: '40 bài cho mỗi ngôn ngữ (Việt, Anh, Nhật, Nga) với bảng chữ cái, ngữ pháp, chứng chỉ N5–N1 / A1–C1 và bài kiểm tra trình độ; 198 bài video (17 bài giảng của game phát ngay trong game, 181 bài trên kênh YouTube); lộ trình tiếng Nga 53 bước; 86 nhiệm vụ.' });
       stat(s, 0.45, 2.0, 2.95, '4', 'ngôn ngữ', RED);
       stat(s, 3.6, 2.0, 2.95, '160', 'bài học', TEAL);
-      stat(s, 6.75, 2.0, 2.95, '181', 'video bài giảng', GOLD);
+      stat(s, 6.75, 2.0, 2.95, '198', 'video bài giảng', GOLD);
       stat(s, 9.9, 2.0, 2.95, '53', 'bước tiếng Nga', '4C6FD6');
       text(s, 'Mỗi ngôn ngữ: bài học, bảng chữ, ngữ pháp, chứng chỉ, kiểm tra trình độ.', { x: 0.45, y: 4.6, w: 12.4, h: 1.4, color: NAVY });
     },
@@ -619,10 +625,10 @@ const SECTIONS = [
       picture(s, 'web_pc', 0.45, 4.5, 12.45, 2.4, 'Bản web 101 MB, 60 fps');
     },
     () => {
-      const s = slide('Máy tính, web và điện thoại', { notes: 'Một bản build: máy tính, trình duyệt, điện thoại (xoay ngang). Chế độ điều khiển Tự động / Bật / Tắt chọn từ menu hoặc Cài đặt.' });
+      const s = slide('Máy tính, web và điện thoại', { notes: 'Một bản build: máy tính, trình duyệt, điện thoại (xoay ngang). Trên điện thoại: joystick kính tối viền trắng, núm vàng; đặt ngón ở đâu trong nửa trái màn hình thì joystick tới đó; nút tròn có biểu tượng (nhảy, tương tác, chạy, bản đồ, túi, chat, nói, menu, ẩn). Joystick đo từ tâm, một ngón giữ joystick, ngón kia xoay camera, hai ngón chụm để zoom. Bố cục kiểm thử từ 915×412 (bản web trên điện thoại vẽ ở tỉ lệ điểm ảnh 1) đến 2400×1080. Chế độ điều khiển Tự động / Bật / Tắt chọn từ menu hoặc Cài đặt.' });
       picture(s, 'web_pc', 0.45, 1.95, 7.4, 4.95, 'Máy tính và web');
-      picture(s, 'web_phone', 8.1, 1.95, 4.8, 2.35, 'Điện thoại');
-      picture(s, 'web_phone_menu', 8.1, 4.55, 4.8, 2.35, 'Menu điện thoại');
+      picture(s, 'f_ph_wide', 8.1, 1.95, 4.8, 2.35, 'Điện thoại');
+      picture(s, 'f_ph_menu', 8.1, 4.55, 4.8, 2.35, 'Menu 915×412');
     },
   ]],
   ['Người thực hiện và phát triển', [
@@ -698,11 +704,23 @@ for (const [title, list] of SECTIONS) {
 }
 
 // Folder entries in the zip break opening through cloud services: the deck is rewritten with its files only, in order.
+// Every slide gets the same transition (pptxgenjs writes none): a medium fade, placed where the schema wants it — after
+// <p:clrMapOvr>, before <p:timing> (the video slides have one).
+const TRANSITION = '<p:transition spd="med"><p:fade/></p:transition>';
 pres.writeFile({ fileName: OUT }).then(async f => {
   const JSZip = require('jszip');
   const source = await JSZip.loadAsync(fs.readFileSync(OUT));
   const clean = new JSZip();
-  for (const name of Object.keys(source.files)) if (!source.files[name].dir) clean.file(name, await source.files[name].async('nodebuffer'), { createFolders: false });
+  let faded = 0;
+  for (const name of Object.keys(source.files)) {
+    if (source.files[name].dir) continue;
+    if (/^ppt\/slides\/slide\d+\.xml$/.test(name)) {
+      let xml = await source.files[name].async('string');
+      if (!xml.includes('<p:transition')) { xml = xml.replace('</p:clrMapOvr>', '</p:clrMapOvr>' + TRANSITION); faded++; }
+      clean.file(name, xml, { createFolders: false });
+    } else clean.file(name, await source.files[name].async('nodebuffer'), { createFolders: false });
+  }
+  if (faded !== pres.slides.length) throw new Error(`transition on ${faded} of ${pres.slides.length} slides`);
   fs.writeFileSync(OUT, await clean.generateAsync({ type: 'nodebuffer', compression: 'DEFLATE' }));
   console.log('wrote', f, pres.slides.length, 'slides; sections start at', starts.join(', '));
 });

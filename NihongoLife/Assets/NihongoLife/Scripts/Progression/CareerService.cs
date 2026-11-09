@@ -45,6 +45,8 @@ namespace NihongoLife.Progression
         public List<string> milestones = new List<string>();
         /// <summary>Milestone stories already played before their interview (CareerStories, career_stories.json ids).</summary>
         public List<string> stories = new List<string>();
+        /// <summary>Tasks done in this career (shift work + task cards right the first time) and where its card order stands.</summary>
+        public int tasksDone, taskCursor;
         /// <summary>Clinical cases solved in the clinic's training room (Clinic/MedicalTraining) — the doctor's notebook.</summary>
         public List<string> trainedCases = new List<string>();
 
@@ -142,6 +144,7 @@ namespace NihongoLife.Progression
             state.startedDay = Today;
             state.totalSalary = 0;
             state.eventsHandled = 0;
+            state.tasksDone = state.taskCursor = 0;
             state.workedDays.Clear();
             Save();
             CheckMilestones();
@@ -190,9 +193,12 @@ namespace NihongoLife.Progression
             if (career == null || level == null) return;
             bool onTime = IsWorkTime(career, day, hour);
             bool firstToday = state.lastShiftDay != day;
-            float step = level.shiftsToPromote > 0 ? 100f / level.shiftsToPromote : 0f;
-            float gain = step * MoodFactor * (onTime ? 1f : 0.5f) * NihongoLife.Health.PlayerIllness.WorkFactor * CareerStanding.Performance; // ill: you work worse; fame helps, notoriety hurts
+            // A shift is tasks: its own work now, task cards right after (CareerTasks). A level needs TasksToPromote of them.
+            float perTask = TaskGain(level);
+            int shiftTasks = onTime ? CareerTasks.Ladder.shiftTasks : CareerTasks.Ladder.offHoursTasks;
+            float gain = perTask * shiftTasks;
             state.performance = Mathf.Clamp(state.performance + gain, 0f, 100f);
+            if (gain > 0f) state.tasksDone += shiftTasks;
             if (onTime && gain > 0f) SocialStanding.ReduceNotoriety(CareerStanding.GoodShiftRedemption, "good-shift"); // redemption: good shifts wear notoriety down
             state.shifts++;
             if (onTime) state.lastShiftDay = day;
@@ -207,13 +213,38 @@ namespace NihongoLife.Progression
                 PlayerInventory.Instance?.AddYen(PaidSalary(level.salary), Loc.Triple("Lương: " + level.titleVi, "Salary: " + level.titleEn, "給料：" + level.titleJa));
             CheckMilestones();
             HudFeed.Post(onTime
-                ? Loc.F("Ca làm đúng giờ · {0} · hiệu suất {1:0}%{2}", "On-time shift · {0} · performance {1:0}%{2}", "時間どおりの勤務 · {0} · 評価 {1:0}%{2}", level.Title, state.performance, firstToday && level.salary > 0 ? "  +" + Loc.Yen(PaidSalary(level.salary)) : "")
+                ? Loc.F("Ca làm đúng giờ · +{3} việc · {0} · hiệu suất {1:0}%{2}", "On-time shift · +{3} tasks · {0} · performance {1:0}%{2}", "時間どおりの勤務 · 仕事 +{3} · {0} · 評価 {1:0}%{2}", level.Title, state.performance, firstToday && level.salary > 0 ? "  +" + Loc.Yen(PaidSalary(level.salary)) : "", shiftTasks)
                 : Loc.F("Ca ngoài giờ làm ({0}): hiệu suất chỉ tăng một nửa, không có lương nghề.", "Shift outside working hours ({0}): half the performance, no salary.", "勤務時間外のシフト（{0}）：評価は半分、給料なし。", career.Schedule),
                 HudFeed.Kind.Reward, 6f, "career-shift");
 
-            var events = career.events;
-            if (onTime && events.Length > 0 && UnityEngine.Random.value < EventChance) ShowEvent(events[UnityEngine.Random.Range(0, events.Length)], () => TryOfferPromotion());
-            else TryOfferPromotion();
+            void AfterCards()
+            {
+                var events = career.events;
+                if (onTime && events.Length > 0 && UnityEngine.Random.value < EventChance) ShowEvent(events[UnityEngine.Random.Range(0, events.Length)], () => TryOfferPromotion());
+                else TryOfferPromotion();
+            }
+            bool cards = onTime && level.shiftsToPromote > 0 && CareerTasks.RunCards(career, state, CareerTasks.Ladder.cardsPerShift, right =>
+            {
+                if (right > 0)
+                {
+                    state.performance = Mathf.Clamp(state.performance + perTask * right, 0f, 100f);
+                    state.tasksDone += right;
+                    Save();
+                }
+                HudFeed.Post(Loc.F("Việc trong ca: đúng ngay {0} · việc ở bậc này {1}/{2}", "Shift tasks: {0} right first time · {1}/{2} tasks at this level", "仕事カード：一回で正解 {0} · この段階の仕事 {1}/{2}",
+                    right, CareerTasks.DoneAtLevel(state), CareerTasks.TasksToPromote(state.level)), right > 0 ? HudFeed.Kind.Reward : HudFeed.Kind.Info, 5f, "career-tasks");
+                AfterCards();
+            });
+            if (!cards) AfterCards();
+        }
+
+        /// <summary>The share of the bar one task fills at this level. A bad mood, illness or notoriety make a task count less;
+        /// nothing makes it count more, so the top always takes at least the ladder's tasks (more than 300, the owner's rule).</summary>
+        public static float TaskGain(CareerLevelDefinition level)
+        {
+            if (level == null || level.shiftsToPromote <= 0 || State == null) return 0f;
+            float factor = Mathf.Min(1f, MoodFactor * NihongoLife.Health.PlayerIllness.WorkFactor * CareerStanding.Performance);
+            return 100f / CareerTasks.TasksToPromote(Mathf.Max(1, State.level)) * factor;
         }
 
         /// <summary>Why the next promotion is not possible yet (null when the interview can happen).</summary>

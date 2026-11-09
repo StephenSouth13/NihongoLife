@@ -254,7 +254,7 @@ namespace NihongoLife.UI
 
         private void FitScreen(float w, float h)
         {
-            var fit = _screen.GetComponent<AspectRatioFitter>() ?? _screen.gameObject.Need<AspectRatioFitter>();
+            var fit = _screen.gameObject.Need<AspectRatioFitter>();
             fit.aspectMode = AspectRatioFitter.AspectMode.FitInParent;
             fit.aspectRatio = h > 0 ? w / h : 16f / 9f;
         }

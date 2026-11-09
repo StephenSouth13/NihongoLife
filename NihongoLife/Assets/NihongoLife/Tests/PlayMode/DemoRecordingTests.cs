@@ -685,6 +685,8 @@ namespace NihongoLife.Tests
         private CanvasGroup _keyGroup;
         private TextMeshProUGUI _keyText;
         private float _keyUntil;
+        private CanvasGroup _tickerGroup;
+        private TextMeshProUGUI _tickerText;
 
         public void Init(string folder)
         {
@@ -790,6 +792,14 @@ namespace NihongoLife.Tests
             _keyText = NLUi.Label(key, "Text", "", 30, new Color(0.1f, 0.12f, 0.16f), font, FontStyles.Bold, TextAlignmentOptions.Center);
             NLUi.Stretch(_keyText.rectTransform);
 
+            // The ticker: a counted fast-forward says so on screen, with the real counts (shifts, tasks, level).
+            var ticker = NLUi.Panel(root, "DemoTicker", new Color(0.04f, 0.055f, 0.08f, 0.88f));
+            NLUi.Anchor(ticker, new Vector2(0.5f, 1f), new Vector2(0f, -165f), new Vector2(1180f, 76f)); // under the quest card
+            _tickerGroup = ticker.gameObject.AddComponent<CanvasGroup>();
+            _tickerGroup.alpha = 0f;
+            _tickerText = NLUi.Label(ticker, "Text", "", 32, new Color(1f, 0.84f, 0.35f), font, FontStyles.Bold, TextAlignmentOptions.Center);
+            NLUi.Stretch(_tickerText.rectTransform);
+
             var pointer = new GameObject("DemoPointer", typeof(RectTransform), typeof(CanvasGroup), typeof(Image));
             pointer.transform.SetParent(root, false);
             _pointer = (RectTransform)pointer.transform;
@@ -840,6 +850,13 @@ namespace NihongoLife.Tests
         }
 
         public void ShowPointer(bool show) => _pointerGroup.alpha = show ? 1f : 0f;
+
+        /// <summary>The ticker line (null hides it).</summary>
+        public void Ticker(string text)
+        {
+            _tickerGroup.alpha = string.IsNullOrEmpty(text) ? 0f : 1f;
+            _tickerText.text = text ?? "";
+        }
 
         /// <summary>Glides the pointer to a UI element (the click itself is done by the caller) and pulses it.</summary>
         public IEnumerator PointTo(RectTransform target, bool pulse)

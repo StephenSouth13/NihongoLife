@@ -14,8 +14,10 @@ namespace NihongoLife.Tests
 {
     /// <summary>
     /// The career video: each of the ten careers from its first job to its top title, at its own workplace, through the real
-    /// career logic (a slice of the real shift, the Japanese promotion interviews, the branch at level 4). Beat ids and the
-    /// branch followed match Tools/video/career_voice.py.
+    /// career logic: a slice of the real shift, a whole shift's task cards answered on screen, then the climb to the top as a
+    /// counted fast-forward — every shift and task card really done (CareerService.ShiftDone, CareerTasks), the ticker shows
+    /// the counts (more than 300 tasks), each milestone story plays (the first one at reading speed) before its Japanese
+    /// interview, the branch at level 4. Beat ids and the branch followed match Tools/video/career_voice.py.
     /// Explicit: -testFilter Careers_RecordFrames, with NL_DEMO_DIR (frames) and NL_DEMO_VO (the voice durations.tsv).
     /// </summary>
     public partial class DemoRecordingTests
@@ -49,6 +51,8 @@ namespace NihongoLife.Tests
             ControlSettings.Scheme = ControlScheme.MouseLook;
             CareerService.EventChance = 0f;
             CareerClock.PromptEnabled = false;
+            CareerTasks.Enabled = true;
+            CareerStories.Enabled = true;
 
             SceneManager.LoadSceneAsync(WorldLocationCatalog.CityScene);
             yield return WaitZone(WorldLocationCatalog.CityScene, 90f);
@@ -76,6 +80,8 @@ namespace NihongoLife.Tests
             UiScreen.Override = null;
             UiScreen.PhoneOverride = null;
             CareerService.EventChance = 0.35f;
+            CareerTasks.Enabled = false;
+            CareerStories.Enabled = false;
         }
 
         private IEnumerator CareerChapter(string id, string branch, string scene, string spawn)
@@ -93,29 +99,74 @@ namespace NihongoLife.Tests
 
             Beat(id);
             yield return WorkSlice(career.shiftQuest, 2, id);
+            yield return Hold();
+
+            // A whole shift's task cards, read and answered on screen; the overview then counts the tasks.
+            Beat(id + "_tasks");
+            int day = DayNightCycle.Active != null ? DayNightCycle.Active.Day : 0;
+            int NextWorkday() { do day++; while (!CareerService.IsWorkDay(career, day)); return day; }
+            CareerService.ShiftDone(NextWorkday(), career.workStart + 1f);
+            for (int card = 0; card < 4 && JobQuizCard.IsOpen; card++) yield return AnswerCard(1.8f);
             CareerUI.Open(CareerUI.Tab.Overview);
             yield return Hold();
             CareerUI.Close();
 
+            // The climb, fast-forwarded but counted: every shift and card is really done; stories and interviews on the way.
             Beat(id + "_up");
-            for (int guard = 0; CareerService.State.level < career.MaxLevel; guard++)
+            var shown = default(NihongoLife.Dialogue.DialogueDisplayData);
+            void OnShown(NihongoLife.Dialogue.DialogueDisplayData d) => shown = d;
+            var dm = NihongoLife.Dialogue.DialogueManager.Instance;
+            dm.OnDialogueUpdated += OnShown;
+            bool firstStory = true;
+            int toTop = CareerTasks.TasksToTop(career);
+            try
             {
-                Assert.Less(guard, 8, id + ": promotions");
-                CareerService.State.performance = 100f;
-                Assert.IsTrue(CareerService.TryOfferPromotion(), id + ": " + CareerService.PromotionBlocker());
-                if (JobQuizCard.IsOpen)
+                for (int guard = 0; CareerService.State.level < career.MaxLevel; guard++)
                 {
-                    yield return Frames(2.2f);
-                    int pick = IndexOf(c => c.Id == branch);
-                    if (pick < 0) pick = IndexOf(c => c.Correct);
-                    Assert.GreaterOrEqual(pick, 0, id + ": an answer to give");
-                    JobQuizCard.Answer(pick);
-                    for (float t = 0f; t < 3f && JobQuizCard.IsOpen; t += 1f / 30f) yield return null;
+                    Assert.Less(guard, 400, id + ": the climb ends");
+                    var state = CareerService.State;
+                    _rec.Ticker($"» Tua nhanh · việc vẫn tính thật · ca {state.shifts} · {state.tasksDone}/{toTop} việc · bậc {state.level}");
+                    var story = CareerStories.Pending(career, state);
+                    CareerService.ShiftDone(NextWorkday(), career.workStart + 1f);
+                    for (int step = 0; step < 40 && (JobQuizCard.IsOpen || dm.IsOpen); step++)
+                    {
+                        if (dm.IsOpen)
+                        {
+                            // The milestone story: the first one of a career at reading speed, the others briefly.
+                            _rec.Ticker(null);
+                            if (shown.choices != null && shown.choices.Count > 0 && story != null)
+                            {
+                                yield return Frames(firstStory ? 2.6f : 0.6f);
+                                dm.SelectChoice(System.Array.FindIndex(story.choices, c => c.kind == "best"));
+                            }
+                            else
+                            {
+                                yield return Frames(firstStory ? 2.2f : 0.35f);
+                                dm.ContinueDialogue();
+                            }
+                            yield return null;
+                            if (!dm.IsOpen) firstStory = false;
+                            continue;
+                        }
+                        // Task cards number their answers ("0", "1", "2"); an interview names them (the branch, the Japanese answer).
+                        bool interview = !JobQuizCard.CurrentChoices.All(c => int.TryParse(c.Id, out _));
+                        if (interview) _rec.Ticker(null);
+                        int pick = IndexOf(c => c.Id == branch);
+                        if (pick < 0) pick = IndexOf(c => c.Correct);
+                        Assert.GreaterOrEqual(pick, 0, id + ": an answer to give");
+                        if (interview) yield return Frames(1.4f);
+                        JobQuizCard.Answer(pick);
+                        yield return null;
+                    }
+                    yield return null;
                 }
-                yield return Frames(1.1f);
             }
+            finally { dm.OnDialogueUpdated -= OnShown; }
+            _rec.Ticker($"Đỉnh nghề sau {CareerService.State.shifts} ca · {CareerService.State.tasksDone} việc");
             Assert.AreEqual(branch, CareerService.State.branchId, id + ": the branch the narration names");
+            Assert.GreaterOrEqual(CareerService.State.tasksDone, 300, id + ": more than 300 tasks to the top");
             yield return Hold();
+            _rec.Ticker(null);
 
             Beat(id + "_top");
             CareerUI.Open(CareerUI.Tab.Path);

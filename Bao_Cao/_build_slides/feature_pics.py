@@ -61,6 +61,11 @@ F = {
     # career milestone stories (CareerStoryPlayModeTests)
     'f_cs_question': 'career-story/02_story_question.png', 'f_cs_reply': 'career-story/03_story_reply.png',
     'f_cs_interview': 'career-story/04_interview_after_story.png',
+    # career tasks (CareerTasksPlayModeTests), the game's own lesson videos (VideoCoursesPlayModeTests), phone controls
+    'f_ct_card': 'career-tasks/01_task_card.png', 'f_ct_hint': 'career-tasks/03_wrong_hint.png', 'f_ct_overview': 'career-tasks/04_career_tasks.png',
+    'f_vs_course': 'video-courses/03_studio_course.png', 'f_vs_play': 'video-courses/04_studio_playing.png',
+    'f_ph_hud': 'phone-controls/phone_web_915x412_hud.png', 'f_ph_menu': 'phone-controls/phone_web_915x412_dpr1_vi_main.png',
+    'f_ph_wide': 'phone-controls/phone_2400x1080_hud.png',
 }
 
 if __name__ == '__main__':

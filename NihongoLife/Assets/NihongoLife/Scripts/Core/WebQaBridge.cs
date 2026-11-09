@@ -72,6 +72,21 @@ namespace NihongoLife.Core
             GameInputService.GetOrCreate().SetMobileMove(what == "start" ? Vector2.up : Vector2.zero);
         }
 
+        /// <summary>A course id ("studio", "japanese", …): the video library opens on that course and plays its first lesson —
+        /// the game's own lessons in a VideoPlayer (Report's videoTime moves), the channel's in the YouTube frame (#nl-video).</summary>
+        public void Video(string courseId)
+        {
+            var hub = FindFirstObjectByType<NihongoLife.UI.StudyHubPopup>(FindObjectsInactive.Include);
+            if (hub == null) return;
+            hub.OpenVideos();
+            var library = FindFirstObjectByType<NihongoLife.UI.VideoCoursesUI>(FindObjectsInactive.Include);
+            var course = System.Array.Find(NihongoLife.StudyModes.Video.VideoCourseCatalog.File.courses, c => c.id == courseId);
+            if (library == null || course == null) return;
+            library.OpenCourse(course);
+            foreach (var lesson in course.Lessons) { library.SelectLesson(lesson); break; }
+            library.Play();
+        }
+
         public void Report(string _)
         {
             var sb = new StringBuilder("{");
@@ -118,6 +133,9 @@ namespace NihongoLife.Core
             sb.Append(",\"missing\":").Append(missing).Append(",\"broken\":").Append(broken);
             sb.Append(",\"player\":").Append(player != null ? "true" : "false");
             sb.Append(",\"hud\":").Append(hud != null ? "true" : "false");
+            var videos = FindFirstObjectByType<NihongoLife.UI.VideoCoursesUI>(FindObjectsInactive.Include);
+            var lessonVideo = videos != null ? videos.LessonVideo : null;
+            sb.Append(",\"videoTime\":").Append(lessonVideo != null ? lessonVideo.time.ToString("0.0", System.Globalization.CultureInfo.InvariantCulture) : "-1");
             if (player != null)
             {
                 var p = player.transform.position;

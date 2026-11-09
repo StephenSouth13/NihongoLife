@@ -207,9 +207,12 @@ namespace NihongoLife.UI
             var right = NLUi.Group(columns, "Right", true, 6f);
             NLUi.Size(right, 440f);
 
-            NLUi.Label(left, "PerformanceLabel", Loc.F("Hiệu suất {0:0}%", "Performance {0:0}%", "評価 {0:0}%", state.performance), 18f, NLUi.Text, _font, FontStyles.Bold);
+            NLUi.Label(left, "PerformanceLabel", Loc.F("Hiệu suất {0:0}% · việc ở bậc này {1}/{2}", "Performance {0:0}% · {1}/{2} tasks at this level", "評価 {0:0}% · この段階の仕事 {1}/{2}",
+                state.performance, CareerTasks.DoneAtLevel(state), CareerTasks.TasksToPromote(state.level)), 18f, NLUi.Text, _font, FontStyles.Bold);
+            NLUi.Label(left, "TasksLabel", Loc.F("Đã làm {0} việc · lên đỉnh nghề cần {1} việc", "{0} tasks done · {1} tasks to the top", "これまでの仕事 {0} · 頂点まで {1}",
+                state.tasksDone, CareerTasks.TasksToTop(career)), 14f, NLUi.Muted, _font);
             Bar(left, "PerformanceBar", state.performance / 100f, state.performance >= 99.5f ? NLUi.Gold : NLUi.Good, 18f);
-            string mood = CareerService.MoodFactor > 1f ? Loc.T("Tâm trạng tốt: làm hiệu quả hơn (×1.25).", "Good mood: working better (×1.25).", "気分がいい：よく働ける（×1.25）。")
+            string mood = CareerService.MoodFactor > 1f ? Loc.T("Tâm trạng tốt: mỗi việc tính đủ.", "Good mood: every task counts in full.", "気分がいい：仕事が満点で数えられる。")
                 : CareerService.MoodFactor < 1f ? Loc.T("Đang mệt / căng / bực: hiệu suất ca này giảm (×0.75).", "Tired / tense / annoyed: this shift counts less (×0.75).", "疲れ・緊張・イライラ：評価が下がる（×0.75）。")
                 : Loc.T("Tâm trạng bình thường.", "Normal mood.", "ふつうの気分。");
             NLUi.Label(left, "Mood", mood, 15f, NLUi.Muted, _font);
@@ -260,9 +263,9 @@ namespace NihongoLife.UI
         {
             var career = CareerService.Current;
             var state = CareerService.State;
-            NLUi.Label(_body, "PathIntro", Loc.F("Mỗi bậc: làm đủ ca đúng giờ để đầy hiệu suất, đủ trí tuệ, rồi qua phỏng vấn tiếng Nhật với {0}. Bậc {1} chọn hướng đi riêng — hướng kia khép lại.",
-                "Each rung: fill the performance bar with on-time shifts, have the knowledge, then pass a Japanese interview with {0}. At level {1} you choose your path — the other one closes.",
-                "各レベル：時間どおりのシフトで評価を満たし、知識をため、{0}と日本語で面接。レベル{1}で自分のコースを選びます。", career.BossName, career.branchAtLevel), 15f, NLUi.Muted, _font);
+            NLUi.Label(_body, "PathIntro", Loc.F("Mỗi bậc: làm đủ việc (mỗi ca {3} việc + thẻ việc tiếng Nhật) để đầy hiệu suất, đủ trí tuệ, xem truyện mốc rồi qua phỏng vấn tiếng Nhật với {0}. Bậc {1} chọn hướng đi riêng. Lên đỉnh cần {2} việc.",
+                "Each rung: do enough tasks ({3} per shift + Japanese task cards) to fill the bar, have the knowledge, play the milestone story, then pass a Japanese interview with {0}. At level {1} you choose your path. The top takes {2} tasks.",
+                "各レベル：仕事（1シフト{3}件＋日本語の仕事カード）で評価を満たし、知識をため、ストーリーの後で{0}と日本語で面接。レベル{1}でコースを選びます。頂点まで{2}件。", career.BossName, career.branchAtLevel, CareerTasks.TasksToTop(career), CareerTasks.Ladder.shiftTasks), 15f, NLUi.Muted, _font);
 
             var tree = NLUi.Group(_body, "Tree", false, 16f, TextAnchor.UpperLeft, false);
             var trunk = NLUi.Group(tree, "Shared", true, 8f);

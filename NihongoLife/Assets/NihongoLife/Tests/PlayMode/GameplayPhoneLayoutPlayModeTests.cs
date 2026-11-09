@@ -30,6 +30,7 @@ namespace NihongoLife.Tests
             new MenuLayoutPlayModeTests.Size("phone_2340x1080", 2340, 1080, true, new Rect(100f, 0f, 2140f, 1080f)),
             new MenuLayoutPlayModeTests.Size("phone_1600x720", 1600, 720, true),
             new MenuLayoutPlayModeTests.Size("phone_1334x750", 1334, 750, true),
+            new MenuLayoutPlayModeTests.Size("phone_web_915x412", 915, 412, true), // the web build on a phone: pixel ratio 1
         };
 
         [UnityTest]
@@ -78,6 +79,7 @@ namespace NihongoLife.Tests
                         yield return new WaitForSecondsRealtime(0.6f);
                         var canvases = Canvases();
                         UiScreen.Override = new Vector2Int(size.W, size.H);
+                        UiScreen.DpiOverride = size.W < 1000 ? 96f : 96f * 2.75f; // the web build on a phone runs at pixel ratio 1
                         UiScreen.PhoneOverride = true;
                         UiScreen.SafeAreaOverride = size.Safe;
                         yield return null; yield return null; // fitters pick the canvas reference for this screen

@@ -36,6 +36,11 @@ namespace NihongoLife.UI
         public static bool IsOpen => _instance != null && _instance._card != null;
         /// <summary>Test hook: the answer labels in display order.</summary>
         public static IReadOnlyList<Choice> CurrentChoices { get; private set; } = Array.Empty<Choice>();
+        /// <summary>Wrong answers tried on the card that just closed with the right one (0: right the first time).</summary>
+        public static int LastMistakes { get; private set; }
+        /// <summary>Called once when the current card closes without the right answer (Esc, ✕); cleared by the next Show.</summary>
+        public static Action OnClosedWithoutAnswer;
+        private int _mistakes;
 
         public static void Show(string kicker, string speaker, string lineJa, string reading, string meaningVi, string question, IList<Choice> choices, Action onCorrect, string headerIcon = null)
             => Show(kicker, speaker, lineJa, reading, meaningVi, question, choices, _ => onCorrect?.Invoke(), headerIcon);
@@ -53,6 +58,8 @@ namespace NihongoLife.UI
             var ui = _instance;
             if (ui._card != null) Destroy(ui._card.gameObject);
             ui._onCorrect = onCorrect;
+            ui._mistakes = 0;
+            OnClosedWithoutAnswer = null;
             CurrentChoices = new List<Choice>(choices);
             if (ui._player == null)
             {
@@ -98,6 +105,7 @@ namespace NihongoLife.UI
                 button.onClick.AddListener(() =>
                 {
                     if (choice.Correct) { Close(success: true, chosen: choice); return; }
+                    ui._mistakes++;
                     feedback.text = string.IsNullOrEmpty(choice.WrongHint) ? NihongoLife.Core.Loc.T("Chưa đúng — thử lại nhé.", "Not quite — try again.", "ちがいます。もう一度。") : choice.WrongHint;
                     button.interactable = false;
                 });
@@ -134,7 +142,11 @@ namespace NihongoLife.UI
             _instance._player = null;
             var done = _instance._onCorrect;
             _instance._onCorrect = null;
+            LastMistakes = _instance._mistakes;
+            var left = OnClosedWithoutAnswer;
+            OnClosedWithoutAnswer = null;
             if (success) done?.Invoke(chosen);
+            else left?.Invoke();
         }
     }
 }

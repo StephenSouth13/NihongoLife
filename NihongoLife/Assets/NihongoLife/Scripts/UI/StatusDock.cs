@@ -281,7 +281,7 @@ namespace NihongoLife.UI
             var widget = NLUi.Panel(dock, "StatusWidget", new Color(0.04f, 0.05f, 0.07f, 0.9f), new RectOffset(14, 20, 14, 14), 18f, vertical: false);
             NLUi.Anchor(widget, Vector2.zero, new Vector2(24f, 24f), new Vector2(0f, 0f));
             widget.pivot = Vector2.zero;
-            if (HudCanvasFitter.IsTouchLayout(false)) widget.localScale = Vector3.one * 0.8f; // a phone held sideways: room for the joystick
+            if (HudCanvasFitter.IsTouchLayout(false)) widget.localScale = Vector3.one * 0.68f; // a phone held sideways: room for the joystick and its zone
             var widgetLayout = (HorizontalLayoutGroup)widget.GetComponent<HorizontalOrVerticalLayoutGroup>();
             widgetLayout.childForceExpandWidth = false;
             widgetLayout.childAlignment = TextAnchor.MiddleLeft;

@@ -14,9 +14,9 @@ namespace NihongoLife.UI
 {
     /// <summary>
     /// The video library as a course site: a catalogue of courses filtered by language, then a course page with the player, the
-    /// lesson's actions and the curriculum by section, with progress kept per lesson. In the browser a lesson plays right there
-    /// (an embedded YouTube frame over the player area); a desktop build opens it in the browser, because Unity cannot play
-    /// YouTube pages.
+    /// lesson's actions and the curriculum by section, with progress kept per lesson. The game's own lessons (NihongoLife Studio,
+    /// an mp4 under StreamingAssets) play in the player area on every platform. A channel lesson plays in an embedded YouTube
+    /// frame over the player area in the browser; a desktop build opens it in the browser, because Unity cannot play YouTube pages.
     /// </summary>
     public sealed class VideoCoursesUI : MenuPopupBase
     {
@@ -31,6 +31,9 @@ namespace NihongoLife.UI
 #endif
 
         private RectTransform _body, _player;
+        private UnityEngine.Video.VideoPlayer _video;
+        private RawImage _screen;
+        private RenderTexture _texture;
         private System.Collections.Generic.IReadOnlyList<LessonVideoBinding> _lessonBindings;
         public LessonVideoBinding SelectedBinding { get; private set; }
         private bool BindingMode => _lessonBindings != null;
@@ -74,7 +77,78 @@ namespace NihongoLife.UI
         private void StopPlayback()
         {
             Playing = false;
+            if (_video != null) _video.Stop();
             NL_VideoHide();
+        }
+
+        /// <summary>The game's own lesson plays here, in the player area (desktop and browser alike).</summary>
+        public UnityEngine.Video.VideoPlayer LessonVideo => _video;
+
+        private void PlayLocal()
+        {
+            if (_player == null || Lesson == null) return;
+            if (_video == null)
+            {
+                var host = UiBind.Make("LessonVideo");
+                host.transform.SetParent(transform, false);
+                _video = host.Need<UnityEngine.Video.VideoPlayer>();
+                _video.playOnAwake = false;
+                _video.waitForFirstFrame = true;
+                _video.skipOnDrop = true;
+                _video.isLooping = false;
+                _video.source = UnityEngine.Video.VideoSource.Url;
+                _video.renderMode = UnityEngine.Video.VideoRenderMode.RenderTexture;
+                _video.audioOutputMode = UnityEngine.Video.VideoAudioOutputMode.Direct;
+                _video.prepareCompleted += OnLessonPrepared;
+                _video.loopPointReached += _ => { Store.MarkVideoWatched(Lesson != null ? Lesson.id : ""); Rebuild(); };
+                _video.errorReceived += (_, message) => Debug.LogWarning("[VideoCourses] " + message);
+            }
+            _screen = new GameObject("Screen", typeof(RectTransform)).AddComponent<RawImage>();
+            _screen.transform.SetParent(_player, false);
+            _screen.transform.SetSiblingIndex(1); // over the cover picture, under nothing else: the buttons hide while it plays
+            _screen.color = Color.black;
+            UiKit.Fill(_screen.rectTransform);
+            var pause = _screen.gameObject.AddComponent<Button>();
+            pause.targetGraphic = _screen;
+            pause.onClick.AddListener(TogglePause);
+            foreach (var name in new[] { "Play", "OpenYouTubeCompact" })
+            {
+                var button = _player.Find(name);
+                if (button != null) button.gameObject.SetActive(false);
+            }
+            _video.url = Application.streamingAssetsPath + "/" + Lesson.file;
+            _video.Prepare();
+            Playing = true;
+        }
+
+        private void OnLessonPrepared(UnityEngine.Video.VideoPlayer video)
+        {
+            if (_screen == null || !Playing) return;
+            int w = (int)Mathf.Max(16, video.width), h = (int)Mathf.Max(16, video.height);
+            if (_texture == null || _texture.width != w || _texture.height != h)
+            {
+                if (_texture != null) { _texture.Release(); Destroy(_texture); }
+                _texture = new RenderTexture(w, h, 0) { name = "LessonVideoRT" };
+            }
+            video.targetTexture = _texture;
+            _screen.texture = _texture;
+            _screen.color = Color.white;
+            var fit = _screen.gameObject.Need<AspectRatioFitter>();
+            fit.aspectMode = AspectRatioFitter.AspectMode.FitInParent;
+            fit.aspectRatio = w / (float)h;
+            for (ushort t = 0; t < System.Math.Max((ushort)1, video.audioTrackCount); t++) video.SetDirectAudioVolume(t, 1f);
+            video.Play();
+        }
+
+        public void TogglePause()
+        {
+            if (_video == null || !Playing) return;
+            if (_video.isPlaying) _video.Pause(); else _video.Play();
+        }
+
+        protected override void OnDestroyed()
+        {
+            if (_texture != null) { _texture.Release(); Destroy(_texture); }
         }
 
         // ─────────── Catalogue ───────────
@@ -109,7 +183,7 @@ namespace NihongoLife.UI
             UiKit.Fill(picture.rectTransform);
             picture.raycastTarget = false;
             picture.uvRect = new Rect(0f, 0.17f, 1f, 0.66f); // the wide cover shows the middle of the 16:9 picture
-            StartCoroutine(VideoThumbnails.Load(course.Lessons.FirstOrDefault()?.id, picture));
+            StartCoroutine(VideoThumbnails.Load(course.Lessons.FirstOrDefault(), picture));
 
             UiKit.Place(UiKit.Label(card.transform, "Title", course.Title, 21f, UiTheme.Text, FontStyles.Bold, TextAlignmentOptions.TopLeft), 18f, 170f, CardW - 36f, 30f);
             UiKit.Place(UiKit.Label(card.transform, "Blurb", course.Blurb, 14f, UiTheme.TextSoft, FontStyles.Normal, TextAlignmentOptions.TopLeft, true), 18f, 200f, CardW - 36f, 40f);
@@ -196,9 +270,11 @@ namespace NihongoLife.UI
             picture.color = new Color(1f, 1f, 1f, 0f);
             UiKit.Fill(picture.rectTransform);
             picture.raycastTarget = false;
-            StartCoroutine(VideoThumbnails.Load(Lesson?.id, picture));
+            StartCoroutine(VideoThumbnails.Load(Lesson, picture));
+            bool local = Lesson != null && Lesson.IsLocal;
             var external = UiKit.Button(_player, "OpenYouTubeCompact", "YouTube", OpenOnYouTube, UiKit.Kind.Secondary, "public", 13f);
             UiKit.Pin((RectTransform)external.transform, new Vector2(1f,1f), -148f, 14f, 136f, 40f);
+            external.gameObject.SetActive(!local); // the game's own lessons are not on YouTube
             var play = UiKit.Button(_player, "Play", "Phát bài học", "Play lesson", "再生する", Play, UiKit.Kind.Primary, "play_arrow", 20f);
             UiKit.Pin((RectTransform)play.transform, new Vector2(0.5f, 0.5f), 0f, 0f, 260f, 72f);
 
@@ -210,6 +286,7 @@ namespace NihongoLife.UI
             UiKit.Place((RectTransform)next.transform, 252f, 638f, 200f, 48f);
             var site = UiKit.Button(_body, "OnYouTube", "Mở trên YouTube", "Open on YouTube", "YouTubeで開く", OpenOnYouTube, UiKit.Kind.Quiet, "public", 15f);
             UiKit.Place((RectTransform)site.transform, 464f, 638f, 220f, 48f);
+            site.gameObject.SetActive(!local);
 
             var side = UiKit.Rect(_body, "Curriculum");
             UiKit.Place(side, PlayerW + 24f, 0f, W - 64f - PlayerW - 24f, H - 124f);
@@ -269,6 +346,7 @@ namespace NihongoLife.UI
         {
             if (Lesson == null) return;
             Store.MarkVideoWatched(Lesson.id);
+            if (Lesson.IsLocal) { PlayLocal(); return; }
 #if UNITY_WEBGL && !UNITY_EDITOR
             var corners = new Vector3[4];
             _player.GetWorldCorners(corners);
@@ -284,7 +362,7 @@ namespace NihongoLife.UI
 
         public void OpenOnYouTube()
         {
-            if (Lesson != null) Application.OpenURL(Lesson.Url);
+            if (Lesson != null && !Lesson.IsLocal) Application.OpenURL(Lesson.Url);
         }
     }
 }

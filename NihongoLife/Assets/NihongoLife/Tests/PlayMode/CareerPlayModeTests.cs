@@ -69,18 +69,19 @@ namespace NihongoLife.Tests
                 var food = CareerService.Current;
                 int workday = Enumerable.Range(DayNightCycle.Active.Day + 1, 7).First(d => CareerService.IsWorkDay(food, d));
                 int yen = inventory.Yen;
-                float mood = CareerService.MoodFactor;
+                float mood = Mathf.Min(1f, CareerService.MoodFactor * NihongoLife.Progression.CareerStanding.Performance); // a task never counts more than one
                 int firstShiftReward = CareerService.Catalog.milestones.First(m => m.id == "first_shift").rewardYen;
                 CareerService.ShiftDone(workday, 12f);
                 Assert.AreEqual(yen + 220 + firstShiftReward, inventory.Yen, "Salary for the on-time shift + the first-shift milestone");
                 Assert.IsTrue(CareerService.State.milestones.Contains("first_shift"), "Milestone: first shift");
                 Assert.Contains(workday, CareerService.State.workedDays, "The worked day is on the record");
-                float step = 100f / food.levels[0].shiftsToPromote; // a shift fills 1/shiftsToPromote of the bar
+                float step = CareerTasks.Ladder.shiftTasks * 100f / CareerTasks.TasksToPromote(1); // a shift is shiftTasks of the level's tasks
                 Assert.AreEqual(Mathf.Min(100f, step * mood), CareerService.State.performance, 0.5f, "A shift fills its share of the bar, times the mood");
+                Assert.AreEqual(CareerTasks.Ladder.shiftTasks, CareerService.State.tasksDone, "The shift's work counts as tasks");
                 if (JobQuizCard.IsOpen) JobQuizCard.Close(); // a full bar already offers the interview: it is tested below
                 CareerService.State.performance = 0f;
                 yen = inventory.Yen;
-                mood = CareerService.MoodFactor;
+                mood = Mathf.Min(1f, CareerService.MoodFactor * NihongoLife.Progression.CareerStanding.Performance);
                 CareerService.ShiftDone(workday + 1, 20f);
                 Assert.AreEqual(Mathf.Min(100f, step * 0.5f * mood), CareerService.State.performance, 0.5f, "Outside working hours counts half");
                 if (JobQuizCard.IsOpen) JobQuizCard.Close();

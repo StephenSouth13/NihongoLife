@@ -11,7 +11,11 @@ namespace NihongoLife.StudyModes.Video
     {
         public string id, title;
         public int seconds;
+        /// <summary>A lesson made for the game (NihongoLife Studio): its mp4 and thumbnail under StreamingAssets. It plays inside
+        /// the game on every platform; the channel's lessons (no file) are YouTube videos.</summary>
+        public string file, thumb;
 
+        public bool IsLocal => !string.IsNullOrEmpty(file);
         public string Url => "https://www.youtube.com/watch?v=" + id;
         public string Length => seconds >= 3600 ? $"{seconds / 3600}:{seconds / 60 % 60:00}:{seconds % 60:00}" : $"{seconds / 60}:{seconds % 60:00}";
     }
@@ -49,10 +53,12 @@ namespace NihongoLife.StudyModes.Video
         public VideoCourse[] courses = Array.Empty<VideoCourse>();
     }
 
-    /// <summary>Courses built from the channel's playlists (Tools/video/build_courses.py → Resources/Video/video_courses.json).</summary>
+    /// <summary>Courses built from the channel's playlists (Tools/video/build_courses.py → Resources/Video/video_courses.json),
+    /// after the game's own lessons that play in the game (Tools/video/studio_lessons.py → Resources/Video/studio_courses.json).</summary>
     public static class VideoCourseCatalog
     {
         public const string Path = "Video/video_courses";
+        public const string StudioPath = "Video/studio_courses";
         private static VideoCourseFile _file;
 
         public static VideoCourseFile File
@@ -62,6 +68,9 @@ namespace NihongoLife.StudyModes.Video
                 if (_file != null) return _file;
                 var asset = Resources.Load<TextAsset>(Path);
                 _file = asset != null ? JsonUtility.FromJson<VideoCourseFile>(asset.text) ?? new VideoCourseFile() : new VideoCourseFile();
+                var studio = Resources.Load<TextAsset>(StudioPath);
+                var own = studio != null ? JsonUtility.FromJson<VideoCourseFile>(studio.text) : null;
+                if (own != null && own.courses.Length > 0) _file.courses = own.courses.Concat(_file.courses).ToArray();
                 return _file;
             }
         }
